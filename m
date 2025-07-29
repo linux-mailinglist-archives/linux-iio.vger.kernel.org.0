@@ -1,344 +1,224 @@
-Return-Path: <linux-iio+bounces-22139-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22140-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624D8B1533A
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 21:05:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C78EB15414
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 22:10:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80EC6541461
-	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 19:05:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5F9818A73AE
+	for <lists+linux-iio@lfdr.de>; Tue, 29 Jul 2025 20:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EA623FC42;
-	Tue, 29 Jul 2025 19:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DBB2BDC2B;
+	Tue, 29 Jul 2025 20:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I976hoEi"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uChDz+94"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B0F46447;
-	Tue, 29 Jul 2025 19:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B9B2BDC0F
+	for <linux-iio@vger.kernel.org>; Tue, 29 Jul 2025 20:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753815922; cv=none; b=TFGYK/HYiZGdld4rvcRmlm++g84VvbK+siLbkJDIIw6sC9TmUvaU87rSW3PbuYf8yoiHPxDS6oOgllNfqN1TW4p8LLLxjpa/gMYcaTskagaOp9CPjfEaPzY1VYOvsmg9BM2d28y+0vxexNfS/mwK8zaDQ7Tc27spGoP0MhFg5u8=
+	t=1753819787; cv=none; b=JjPwdsBZb6oxMfulTMJpT50ludcnuD5+oNATzhHuRWgSU2qDR1GHeC6jvuqLxPGRS0KXjbx8b5fu3FrIEPyUh2dAjNRegnnNUyaMIyZ/QKsP19tvJ0hXS7dY1ATqs02/Djz2KG63D1qg8tgf+SCMy0TheidFYlQ1qmTiwWac5i8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753815922; c=relaxed/simple;
-	bh=yxH+FULZ86o67g8LSiDf9ZC187TQ4TjAq094yJ7LAXs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lFd73WW4P7g9qToQYZcPs2THv3Cp5n99P8Ji2JIQNjgJ2Soyjbi7XGxhs8rLEDfSjCW/2k6dsKe9UwB3EZHepFCRYJB4oIZ+M0BjMIWG+VW+hXdt77EwZcqHRUuwfEq856+CgwTzzKSBPfYjCt7plVosOk8UQguonr4QH2kXGpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I976hoEi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D74CC4CEEF;
-	Tue, 29 Jul 2025 19:05:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753815922;
-	bh=yxH+FULZ86o67g8LSiDf9ZC187TQ4TjAq094yJ7LAXs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I976hoEiVTNqqmojBTOTca/IRNa8rVO0DHreW6OvAWDJYt2uGQhpSaUCvwSLl/BIw
-	 +QP696300upZaM904rfXCj3POg8LowIXZvBjGf/HBnCHGsgheKEQmOXxnKbf4ZTgat
-	 uNRbl03uMlz4eW91+CsRILMoaVVGNdz3k8FhiHutGO9OFSyfm7xux+5Pvam7ChztMS
-	 OLpisAKiW16MZeY+wy7RqMY3VJzd+8oi3Qizcov2ORQb7sAlvupkQlth0K6vK9biuG
-	 4lq+FAnasEMYaXKJUPmVhyvxKKQqq13uVxKosAHnPC82VNk1fUBAF4Ot2qW2R+NNYF
-	 YoRwMElX/O6hQ==
-Date: Tue, 29 Jul 2025 20:05:13 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Dixit Parmar <dixitparmar19@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: magnetometer: add support for Infineon TLV493D
- 3D Magentic sensor
-Message-ID: <20250729200513.275e0d98@jic23-huawei>
-In-Reply-To: <aIhE5zwrPljqHqGX@dixit>
-References: <20250726-tlv493d-sensor-v6_16-rc5-v1-0-deac027e6f32@gmail.com>
-	<20250726-tlv493d-sensor-v6_16-rc5-v1-1-deac027e6f32@gmail.com>
-	<20250727140559.1f6c1668@jic23-huawei>
-	<aIhE5zwrPljqHqGX@dixit>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1753819787; c=relaxed/simple;
+	bh=WLDylOIV5DSMc4Htd6swaNHV52iheLDXvOXUuB1Dke0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WKn1RbuUDlSHRLL4hrdcAS8ph6fS8TNaKDLikS8Imz57gwLNwozmvBIj6Livo645LIYRa1IzpSKzwVDFPGiWSCwobpPXW5a66ukvylOsMMJ3YDFjiMgrLr+KmtU/n2b/5rZtx4MZ01jfjydACvc8Gh8NOthaGemYGGVrf/znOmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uChDz+94; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <edb59657-ced2-4557-afe5-07bd83af848e@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753819783;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=f4G9jfzRkCbi/mdO+Af4USWQef/YfKBzN+BkPPWWEt4=;
+	b=uChDz+94+uHWqCtw9dDp1C8OkiF0RiZYFpLz2gaeoz1TgXkBVWUnJLeu1RXKRUMWBNyLCp
+	9LnM4w2SUCCPDoI9e5/7fvCC2if1a8o/m7eOaTG1Ao0KV6eD0m6f1yJXWae3uOyn6b3xZM
+	zQOwq4U1JpVYd1jHlpjwv4F/DsGxYrg=
+Date: Tue, 29 Jul 2025 16:09:20 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH 3/7] iio: Add in-kernel API for events
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+ linux-iio@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ Andy Shevchenko <andy@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, linux-kernel@vger.kernel.org,
+ David Lechner <dlechner@baylibre.com>
+References: <20250715012023.2050178-1-sean.anderson@linux.dev>
+ <20250715012023.2050178-4-sean.anderson@linux.dev>
+ <d8e5c8fbeaee42e9e0708460c47bd68053cd8710.camel@gmail.com>
+ <9b187e7f-a116-4aea-a9a6-b9222562868d@linux.dev>
+ <20250727172126.35d0a477@jic23-huawei>
+ <0ccf7735-6a2c-473a-ab67-ae0c5ff9a335@linux.dev>
+ <20250729193346.39791223@jic23-huawei>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <20250729193346.39791223@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, 29 Jul 2025 09:19:59 +0530
-Dixit Parmar <dixitparmar19@gmail.com> wrote:
+On 7/29/25 14:33, Jonathan Cameron wrote:
+> On Mon, 28 Jul 2025 18:44:30 -0400
+> Sean Anderson <sean.anderson@linux.dev> wrote:
+> 
+>> On 7/27/25 12:21, Jonathan Cameron wrote:
+>> > On Tue, 15 Jul 2025 12:52:19 -0400
+>> > Sean Anderson <sean.anderson@linux.dev> wrote:
+>> >   
+>> >> On 7/15/25 07:09, Nuno Sá wrote:  
+>> >> > On Mon, 2025-07-14 at 21:20 -0400, Sean Anderson wrote:    
+>> >> >> Add an API to notify consumers about events. Events still need to be
+>> >> >> enabled using the iio_read_event/iio_write_event functions. Of course,
+>> >> >> userspace can also manipulate the enabled events. I don't think this is
+>> >> >> too much of an issue, since userspace can also manipulate the event
+>> >> >> thresholds. But enabling events may cause existing programs to be
+>> >> >> surprised when they get something unexpected. Maybe we should set the
+>> >> >> interface as busy when there are any in-kernel listeners?
+>> >> >>     
+>> >> > 
+>> >> > Sensible question. I'm not that familiar with events but I suspect is not
+>> >> > trivial (if doable) to do a similar approach as with buffers? With buffers, an
+>> >> > inkernal consumer get's it's own buffer object (that goes into a list of active
+>> >> > buffers in the iio device) with all channels enabled and then we demux the
+>> >> > appropriate channels for each consumer.    
+>> >> 
+>> >> For in-kernel consumers I think it's reasonable to expect them to handle
+>> >> events they didn't explicitly enable. I'm not sure about userspace
+>> >> consumers.  
+>> > 
+>> > This already happens because we don't have a demux equivalent (what we do
+>> > for buffered data flow) so if a device only has a single enable bit that covers
+>> > multiple events (annoyingly common for accelerometers for example) then
+>> > userspace will get events it didn't ask for.   We 'could' fix that,
+>> > but it's never really been worth the effort.
+>> > 
+>> > Events tend to be low data rate so an occasionally extra is rather different
+>> > to having to have much larger data buffers to handle a range of channels you
+>> > never asked for.
+>> > 
+>> > Lets be careful to document this behaviour as 'may enable extra events'
+>> > as then if we decide later to do demux type stuff we won't be breaking ABI.
+>> > No one will mind getting fewer spurious events due to a core improvement.  
+>> 
+>> Where would this get documented?
+> 
+> Starting point will be in the docs for the ABI that asks for any events at all.
+> 
+> Also useful to add some thing to Documentation/IIO though there are lots of
+> other things those docs don't yet cover :(
 
-> On Sun, Jul 27, 2025 at 02:05:59PM +0100, Jonathan Cameron wrote:
-> > On Sat, 26 Jul 2025 15:07:01 +0530
-> > Dixit Parmar <dixitparmar19@gmail.com> wrote:
-> >=20
-> > Hi Dixit,
-> >=20
-> > Very clean driver for a v1. Nice.
-> >  =20
-> > > The Infineon TLV493D is a Low-Power 3D Magnetic Sensor. The Sensor =20
-> >=20
-> > Slightly odd wrap.  Aim for 75 chars for patch descriptions.
-> > =20
-> Okay, 75.
-> > > applications includes joysticks, control elements (white goods,
-> > > multifunction knops), or electric meters (anti tampering) and any
-> > > other application that requires accurate angular measurements at
-> > > low power consumptions.
-> > >=20
-> > > The Sensor is configured over I2C, and as part of Sensor measurement
-> > > data it provides 3-Axis magnetic fields and temperature core measurem=
-ent.
-> > >=20
-> > > The driver supports raw value read and buffered input via external tr=
-igger
-> > > to allow streaming values with the same sensing timestamp.
-> > >=20
-> > > The device can be configured in to different operating modes by optio=
-nal
-> > > device-tree "mode" property. Also, the temperature sensing part requi=
-res
-> > > raw offset captured at 25=C2=B0C and that can be specified by "temp-o=
-ffset"
-> > > optional device-tree property.
-> > >=20
-> > > While sensor has interrupt pin multiplexed with I2C SCL pin. But for =
-bus
-> > > configurations interrupt(INT) is not recommended, unless timing const=
-raints
-> > > between I2C data transfers and interrupt pulses are monitored and ali=
-gned.
-> > >=20
-> > > The Sensor's I2C register map and mode information is described in pr=
-oduct
-> > > User Manual[1].
-> > >=20
-> > > Datasheet: https://www.infineon.com/assets/row/public/documents/24/49=
-/infineon-tlv493d-a1b6-datasheet-en.pdf =20
-> > Tag, so in the tags block (no blank line to the SoB) =20
-> Sorry, didn't quite get it.
+Notably the whole events API :l
 
-You should have it as Datasheet: <link>
-That will then be a formal 'tag' so belongs alongside the Signed-off-by: et=
-c with no blank
-lines in that block.
+>> 
+>> >>   
+>> >> > Independent of the above, we can argue that having both inkernel and userspace
+>> >> > changing thresholds is ok (I mean, there's nothing stopping two userspace apps
+>> >> > doing that) but we should likely be careful with enabling/disabling. If multiple
+>> >> > consumers enable the same event, one of them disabling it should not disable it
+>> >> > for all the consumers, right?    
+>> >> 
+>> >> Right now the HWMON consumer never permanently disable events to avoid this
+>> >> issue. It does toggle the enable to determine if an alarm should stay
+>> >> enabled:
+>> >>              ________
+>> >> condition __/        \________
+>> >>           _____    ____    ___
+>> >> enable         \__/    \__/
+>> >> 
+>> >> event       |     |
+>> >>              __    ____
+>> >> alarm     __/  \__/    \_____
+>> >> 
+>> >> read           1       1    0
+>> >> 
+>> >> I suppose this could also be done by comparing the raw threshold to the
+>> >> channel.  
+>> > 
+>> > I wonder if we should add the option to do a 'get_exclusive' or similar
+>> > to block the IIO user interfaces if something critical is using the device.
+>> > 
+>> > If we were for instance to use this to block the IOCTL to get the events
+>> > fd then any built in driver etc will almost certainly load before anyone
+>> > can call the ioctl so it will fairly cleanly block things.  
+>> 
+>> This is how it currently works for userspace. Only one process can create
+>> the event fd, and everyone else gets -EBUSY.
+>> 
+>> Of course, it would be pretty surprising to have an IIO device where
+>> some channels were used by userspace and others were used by hwmon and
+>> then have your daemon stop working after you update your kernel because
+>> now the hwmon driver takes exclusive event access.
+> 
+> True.  I wonder how many boards we don't know about are using the iio-hwmon
+> bridge. We can check the ones in kernel for whether they grab all the
+> channels (which would rule this out).
+>
+> Another things we could do is have an opt in from the IIO driver.
+> That way only 'new' drivers would have this behaviour.  Not nice though.
 
-Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infin=
-eon-tlv493d-a1b6-datasheet-en.pdf=20
-Link: https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-UserM=
-anual-v01_03-EN.pdf #1
-Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+I would really like for this to "just work" if at all possible, so an
+opt-out would be preferable. Maybe a hwmon module parameter.
 
-> > > [1] https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-U=
-serManual-v01_03-EN.pdf =20
-> > Link: https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-U=
-serManual-v01_03-EN.pdf #1
-> >=20
-> > So make it a tag with a trailing comment to give the reference number.
-> >  =20
-> > >=20
-> > > Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com> =20
+But I think we can do better:
 
-> > > +
-> > > +#define TLV493D_DATA_X_GET(b)	\
-> > > +	sign_extend32(FIELD_GET(TLV493D_VAL_MAG_X_AXIS_MSB, b[TLV493D_RD_RE=
-G_BX]) << 4 | \
-> > > +			(FIELD_GET(TLV493D_VAL_MAG_X_AXIS_LSB, b[TLV493D_RD_REG_BX2]) >> =
-4), 11) =20
-> >=20
-> > These are odd enough I'd make them c functions rather than macros. Burn=
- a few lines
-> > for better readability.=20
-> >  =20
-> I saw this kind of data retrival and formation from registers as macros s=
-o I sticked to
-> it. Having all these as function will also require a seperate function
-> for each channel coz the masks and the layout of the bits changes over
-> the register. Do you still recommend it as c functions?
+- Both kernel/userspace can/should handle unexpected events
+  - This includes extra (synthetic) events.
+- Both kernel/userspace mostly just want to enable events
+- Disabling events is not as important because of the previous bullet.
+- But losing events is probably bad so we want to ensure we trigger
+  events at the same places they would have been triggered before.
 
-Is it more than 4 short functions?  I'd burn the few lines that costs.
+So maybe we have an implementation where
 
-s32 tlv493d_data_y_get(u8 *buff)
-{
-	u16 val =3D FIELD_GET(TLV493D_VAL_MAG_Y_AXIS_MSB, b[TLV493D_RD_REG_BY]) <<=
- 4 |
-		  FIELD_GET(TLV493D_VAL_MAG_Y_AXIS_LSB, b[TLV493D_RD_REG_BX2]);
+- Enabling an event disables the backing event before re-enabling it if
+  there are any existing users
+- Disabling an event only disables the backing event if all users are
+  gone
 
-	return sign_extend32(val, 11);
-}
-> > > +/*
-> > > + * The datasheet mentions the sensor supports only direct byte-strea=
-m write starting from
-> > > + * register address 0x0. So for any modification to be made to any w=
-rite registers, it must
-> > > + * be written starting from the register address 0x0.
-> > > + * I2C write operation should not contain register address in the I2=
-C frame, it should
-> > > + * contains only raw byte stream for the write registers. As below,
-> > > + * I2C Frame: |S|SlaveAddr Wr|Ack|Byte[0]|Ack|Byte[1]|Ack|.....|Sp|
-> > > + */
-> > > +static int tlv493d_write_all_regs(struct tlv493d_data *data)
-> > > +{
-> > > +	int ret;
-> > > +
-> > > +	if (!data || !data->client)
-> > > +		return -EINVAL;
-> > > +
-> > > +	/*
-> > > +	 * As regmap does not provide raw write API which perform I2C write=
- without
-> > > +	 * specifying register address, direct i2c_master_send() API is use=
-d.
-> > > +	 */
-> > > +	ret =3D i2c_master_send(data->client, data->wr_regs, ARRAY_SIZE(dat=
-a->wr_regs)); =20
-> >=20
-> > Given we have to do this, I'm a bit doubtful about regmap usage in gene=
-ral in here.
-> > Maybe it's just not a good fit and we should stick to direct use of the=
- i2c stuff
-> > like here?
-> >  =20
-> Sorry, didn't get entirely? From what I understood, you meant we could
-> drop regmap from this driver entirely and use direct I2C APIs. I believe
-> that would be too much, coz of the frequency we perform operations and
-> regmap is easier and clean imo.
+It could look something like
 
-The mixture is nasty though :(=20
-> Also, we could have used regmap_raw_write() API by specifying register
-> 0x0 as address and rest of the 3 bytes as data. regmap will perform raw
-> write of these byte stream over the I2C the same way sensor expects. But
-> the problem with that approach is we are not using it as per the API
-> convention. let me know your thoughts? Is it a good option, it'll look
-> like this:
-> regmap_raw_write(data->map, data->wr_regs[0], &data->wr_regs[1],
-> ARRAY_SIZE(data->wr_regs) - 1);
+iio_sysfs_event_set(event, val):
+    if val:
+        if !event.user_enable
+            disable(event)
+        enable(event)
+    else if !event.kernel_enables
+        disable(event)
+    event.user_enable = val
 
-I'm not keen on that either.
+iio_inkern_event_set(event, val):
+    if val:
+        if event.kernel_enables++ || event.user_enable
+            disable(event)
+        enable(event)
+    else if !--event.kernel_enables && !event.user_enable:
+        disable(event)
 
-If you really want to mix i2c and regmap then that's fine, I was just dubio=
-us
-whether we were getting value for money from regmap here.
+--Sean
 
-> > > +	if (ret < 0) {
-> > > +		dev_err(data->dev, "failed to write registers. error %d\n", ret);
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +	*x =3D TLV493D_DATA_X_GET(buff);
-> > > +	*y =3D TLV493D_DATA_Y_GET(buff);
-> > > +	*z =3D TLV493D_DATA_Z_GET(buff);
-> > > +	*t =3D TLV493D_DATA_TEMP_GET(buff);
-> > > +
-> > > +out:
-> > > +	pm_runtime_mark_last_busy(data->dev); =20
-> >=20
-> > As below  This should get simpler.
-> >=20
-> > Not directly relevant to this patch:
-> >=20
-> > If this cycle is quiet I plan to propose some cleanup.h based handling =
-for runtime
-> > pm as it's annoying how often we need a goto for it.  The new ACQUIRE()=
-  / ACQUIRE_ERR()
-> > should work for this.=20
-> >  =20
-> Does this need any modifications with current codebase?
-
-Needs a bunch of work to show generality across many drivers and
-convincing Rafael (PM maintainer) it's a good idea.
-Don't try to do it in this series!
-
-> >  =20
-> > > +	pm_runtime_put_autosuspend(data->dev);
-> > > +	return ret;
-> > > +}
-> > > +
-> > > +static int tlv493d_init(struct tlv493d_data *data)
-> > > +{
-> > > +	int ret;
-> > > +	u8 buff[TLV493D_RD_REG_MAX];
-> > > +
-> > > +	if (!data)
-> > > +		return -EINVAL;
-> > > +
-> > > +	/*
-> > > +	 * The sensor initialization requires below steps to be followed,
-> > > +	 * 1. Power-up sensor.
-> > > +	 * 2. Read and store read-registers map (0x0-0x9).
-> > > +	 * 3. Copy values from read reserved registers to write reserved fi=
-elds (0x0-0x3).
-> > > +	 * 4. Set operating mode.
-> > > +	 * 5. Write to all registers.
-> > > +	 */
-> > > +	ret =3D regmap_bulk_read(data->map, TLV493D_RD_REG_BX, buff, ARRAY_=
-SIZE(buff));
-> > > +	if (ret) {
-> > > +		dev_err(data->dev, "bulk read failed, error %d\n", ret);
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	data->wr_regs[0] =3D 0; /* Write register 0x0 is reserved. Does not=
- require to be updated.*/
-> > > +	data->wr_regs[1] =3D buff[TLV493D_RD_REG_RES1] & TLV493D_RD_REG_RES=
-1_WR_MASK;
-> > > +	data->wr_regs[2] =3D buff[TLV493D_RD_REG_RES2] & TLV493D_RD_REG_RES=
-2_WR_MASK;
-> > > +	data->wr_regs[3] =3D buff[TLV493D_RD_REG_RES3] & TLV493D_RD_REG_RES=
-3_WR_MASK;
-> > > +
-> > > +	ret =3D tlv493d_set_operating_mode(data, data->mode);
-> > > +	if (ret < 0) {
-> > > +		dev_err(data->dev, "failed to set operating mode\n");
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	return ret; =20
-> > return 0? =20
-> Its the same though. ret from tlv493d_set_operating_mode is 0 on
-> success and -ve on failure.
-
-Then return 0 to make it explicit that if we get here we only return 0.
-That can be useful to compilers.
-
-Also check above as if (ret) is cleaner still.
-
-
-> > > +	if (ret)
-> > > +		val =3D 340;
-> > > +	/*
-> > > +	 * The above is a raw offset; however, IIO expects a single effecti=
-ve offset.
-> > > +	 * Since final temperature includes an additional fixed 25=C2=B0C (=
-i.e. 25000 m=C2=B0C),
-> > > +	 * we compute a combined offset using scale =3D 1100 (1.1 * 1000).
-> > > +	 */
-> > > +	data->temp_offset =3D -val + (s32)div_u64(25000, 1100);
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static int tlv493d_read_raw(struct iio_dev *indio_dev, const struct =
-iio_chan_spec *chan, =20
-> >=20
-> > wrap to keep this under 80.  Doesn't look like it will hurt readability.
-> >  =20
-> Ack. Is 80 standard for whole kernel or iio only?
-
-It's kind of the the 'old' standard.  Used to be a fairly hard limit, but
-over time there has been some relaxation.  So, if your code is nice and rea=
-dable
-you will rarely get anyone complaining if you stick to 80 chars.
-
->=20
-> Thank you for such detailed review. Appriciate it,
-You are welcome.
-
-J
-> Dixit
-
+>> 
+>> I originally had kernel users read from the kfifo just like userspace,
+>> but I was concerned about the above scenario.
+>> 
+> 
+> yeah, always a problem to retrofit policy.
+> 
+>> --Sean
+>> 
+> 
 

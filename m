@@ -1,62 +1,62 @@
-Return-Path: <linux-iio+bounces-22156-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22157-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57E0B16800
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Jul 2025 23:06:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10859B16805
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Jul 2025 23:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 687CA1AA3CC5
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Jul 2025 21:06:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46B7A584D51
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Jul 2025 21:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DBD22156F;
-	Wed, 30 Jul 2025 21:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F401E22156F;
+	Wed, 30 Jul 2025 21:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4om4x4o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oM3UVRTV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9131023741;
-	Wed, 30 Jul 2025 21:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A897123741;
+	Wed, 30 Jul 2025 21:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753909569; cv=none; b=kkLxaCYmby1NGoqiDDe+LqOPlKoUvvUhIWK+luzSxJfljARTHGOjSM48/ia6sE1wVWhNiHD36tzec7Anm3eLFU5OOCg8QQohy2SLC9FNtNiPySdM9POF1hvBxpsXADqWZv2AW5Lvf4MhkzAACDvCiTzYvryKC3hFxsBQ/04cqvM=
+	t=1753909607; cv=none; b=uWLjlpB5RRLWooy1n19tPyGeysmAQxG/NdpMCCFbDysxTofLgtIbZxtnZGsZICNJipCA9neqegrkPX+WBfuNsKbJufyoxWd+jeR9KdSAGQFVNX6DXv35dmQqYxY6au0NG3SwfBTxcCLz0VqzkUUE2VcQji/RSCrrMBauwuRHtJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753909569; c=relaxed/simple;
-	bh=J/fViz4fQP+GBGjN0uvbi/XyNfQXS+vOpDnB9uFDGoc=;
+	s=arc-20240116; t=1753909607; c=relaxed/simple;
+	bh=N8B1RIJJdOCe90tQ0MOkEOONFi2Yq4hxMgW4vhvJIRM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=idIY0s505m6GKE+zDTwHOooBtMjwvZG+s+59CIv1G5R68eNdiobf+Otgj4zBk5NRVBEKV4/hKUzrNoi4gbDQWRnmydGhbcD4JXHn/FG+rNvMTE+U0VFZ7hXr1gXcaYHkMvPgRaDnKper1d2glEeokmJPGx4jLOFo/8eitlH4yZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4om4x4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE37DC4CEE3;
-	Wed, 30 Jul 2025 21:06:08 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=jUiJQrLJ0IO0BCOPnCFlQQLoixm8c9DXkgh48XmkvVoL4boqBi+aGcJRWMGFuWRNRjKuSzyoGBvYpbQSecFYX+FDYqG7YNl7wTK3CwiXcZ5WlL2c5yW4O6eJRz6a6Q+olsRjLAQAa24b5iTxCPKtub1EkTqP+pOpcownXV47jgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oM3UVRTV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569CBC4CEE3;
+	Wed, 30 Jul 2025 21:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753909569;
-	bh=J/fViz4fQP+GBGjN0uvbi/XyNfQXS+vOpDnB9uFDGoc=;
+	s=k20201202; t=1753909607;
+	bh=N8B1RIJJdOCe90tQ0MOkEOONFi2Yq4hxMgW4vhvJIRM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L4om4x4o6/U/y4vv+dXyMPxWsnpoAQ3oVh3+hEowmTBlSZDR8GCGQVy67gIhecmK1
-	 AVjt1+ZtKHJAr66y31h17W2PKCB00ppz5YRqSm4Q2CUn3RsIUNfZt7dnSeXN0DO//D
-	 i3XA0j1DYuQviqXDvh4i+kKvGzms2CL3Ua1In1sTbby/wyz/xIHAd1n9a2EoBQARxn
-	 Ubzyf9MFTvabp/ZERKOSwt2Cta53CQfa62RXAKLkjyeGCsSg4s01qmsrFAfTkTbht7
-	 KgZErFI5Z5j2C4SW05KjvKRhuflLgogBnDpan7WpKzt+IvOSXISCe1NIYUTOPdVsTz
-	 zKXLk2FW9vkRQ==
-Date: Wed, 30 Jul 2025 16:06:08 -0500
+	b=oM3UVRTVyAxlqlkuLsaj/5u1e6PYinue3MIj17nFnoNYOXvvjIExMcId2U1X0LLJS
+	 /amv5DIoTGN4C7zEe0mNXXncqMV2rny8K2h3b3eQvHfIp0tR+/F7G12zRGf9Ik92m+
+	 l5tULIEFk0sCvocb3ImwS8LpKMJk1yfgzWLUtQy6UtuDPjeaESEwDADhleucfwH68x
+	 IFWVp9mHfVRsgdQggNELWr6+2g2jreNi6pscPqBRpzfkIYuMV1k7dkPHDWh3r6tHd/
+	 9897nxiANwJRgusTPQzRJZ6qPf32VZavVzZw/15/1sgbDso2Yeyn8yV+2fkWSQ8+Pv
+	 Lc1lxPHSsguAg==
+Date: Wed, 30 Jul 2025 16:06:46 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Ioana Risteiu <Ioana.Risteiu@analog.com>
-Cc: Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-	David Lechner <dlechner@baylibre.com>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+Cc: Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
 	Ramona Nechita <ramona.nechita@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, linux-kernel@vger.kernel.org,
-	Andy Shevchenko <andy@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>
-Subject: Re: [PATCH 1/4] dt-bindigs: iio: adc: Add ad777x axi variant
-Message-ID: <175390956692.1744212.17205550995882250925.robh@kernel.org>
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, devicetree@vger.kernel.org,
+	Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH 3/4] dt-bindings: iio: adc: Add IIO backend support
+Message-ID: <175390960612.1745058.7399492503627683202.robh@kernel.org>
 References: <20250728134340.3644-1-Ioana.Risteiu@analog.com>
- <20250728134340.3644-2-Ioana.Risteiu@analog.com>
+ <20250728134340.3644-4-Ioana.Risteiu@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,22 +65,19 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250728134340.3644-2-Ioana.Risteiu@analog.com>
+In-Reply-To: <20250728134340.3644-4-Ioana.Risteiu@analog.com>
 
 
-On Mon, 28 Jul 2025 16:43:33 +0300, Ioana Risteiu wrote:
-> Add a new compatible for the AD777x AXI IP core, a variant of the
-> generic AXI ADC IP.
-> 
-> While sharing some operations with the generic AXI ADC IP, the AD777x
-> variant has specific requirements such as setting number of lanes.
+On Mon, 28 Jul 2025 16:43:35 +0300, Ioana Risteiu wrote:
+> Add the generic io-backends property to the AD7779 binding to enable
+> support for the IIO backend framework.
 > 
 > Signed-off-by: Ioana Risteiu <Ioana.Risteiu@analog.com>
 > ---
->  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+>  .../bindings/iio/adc/adi,ad7779.yaml          | 26 ++++++++++++++++++-
+>  1 file changed, 25 insertions(+), 1 deletion(-)
 > 
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
 

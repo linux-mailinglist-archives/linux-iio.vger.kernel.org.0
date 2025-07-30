@@ -1,338 +1,128 @@
-Return-Path: <linux-iio+bounces-22152-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22153-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F202BB15F6F
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Jul 2025 13:29:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FFB8B160CE
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Jul 2025 14:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA6B318C7383
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Jul 2025 11:29:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BC3D1AA1237
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Jul 2025 12:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32E129B200;
-	Wed, 30 Jul 2025 11:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65A029617F;
+	Wed, 30 Jul 2025 12:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="OGW+Maq8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RKdZFenv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCFD293B5E;
-	Wed, 30 Jul 2025 11:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8087A27AC34;
+	Wed, 30 Jul 2025 12:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753874822; cv=none; b=e0XQ5Wt24EjTEKYw//UbQkCDie8XOArsZ580aMWhUl46huWX8oiRbChaPClN5myF5j4DPnRItCWpLiDcI7PkbhavHDilpL1CLV8vWF82A8D/ShxSHKDBgbybPkj4+jwYIqQ8UKqPcP7ib/TfIbQJzuXkSDOISTuRbnYHEqWv3RM=
+	t=1753880187; cv=none; b=XHnDFeVpyohIdIKfb1KbNuaTswLkJOM1/7VlYtChCWxn3ntJ4SWRGfs82dndgulRPRO6I0xaE2+IO9llnDxiIC2SPA5PjG3xHhd4aljRpAsxi45GuJcPj1pjgWTYsxYE82U2lT/dLmKmGnbkQEPNeV7S2puP3uDAQtGWsNEs8i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753874822; c=relaxed/simple;
-	bh=/+i0k6+HHh7yw44vhasewogQ5oWwnNZClzxaia5J1gI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ke2kaUPvEnpq3Kq1R6mTebF0p16fYadOsybsmG+efIPG4rJn3K2VMYuQ2lKah7fzjQ7tEyf9MNN5UwLRjCY5KNc1iZoAORCLRj0PyRlegJ8jbXgT7FtJ+jPlHhOm18vBcOdSeo6XWeEH83KP3WOgpkBYM/6C/3s31jB4g/6xHRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=OGW+Maq8; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1753874818;
-	bh=/+i0k6+HHh7yw44vhasewogQ5oWwnNZClzxaia5J1gI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGW+Maq8cuzwUpjrNKwZlfXIacmFgnlLDPMFBlGJzAVMOblcKWjcNramc1ut8JsKO
-	 INIAe1tuIV/hTLU9ORKJuMgYbSiqgGmJCFLph1uEIUOTg9x+/BW0CQiQLjo5yP+Kkk
-	 a8Ngl8J74KWCr48ajxNRuhyotH7roR6qiyUJu5zSyZ8HT1jdvLdsb6aAntF6QEk/zE
-	 8sLUDR7yISquDK/ulnSs+6BzuAWiBU0iX+KgTt5Ay0jLGG0hHn4Z3usLvgW9a/KoWe
-	 zGOf+wKWVIfQSDG44fA6l0NMQ/Uv1crNBG2+PAeFRC3T74xvV2Pv0+HxwVSEn3v4sA
-	 n1V6d/EVPtaFQ==
-Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id F1CB817E0C83;
-	Wed, 30 Jul 2025 13:26:56 +0200 (CEST)
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-To: sboyd@kernel.org
-Cc: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org,
-	srini@kernel.org,
-	vkoul@kernel.org,
-	kishon@kernel.org,
-	sre@kernel.org,
-	krzysztof.kozlowski@linaro.org,
-	u.kleine-koenig@baylibre.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-arm-msm@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-pm@vger.kernel.org,
-	kernel@collabora.com,
-	wenst@chromium.org,
-	casey.connolly@linaro.org,
-	Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: [PATCH v3 7/7] iio: adc: qcom-spmi-iadc: Remove regmap R/W wrapper functions
-Date: Wed, 30 Jul 2025 13:26:45 +0200
-Message-ID: <20250730112645.542179-8-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250730112645.542179-1-angelogioacchino.delregno@collabora.com>
-References: <20250730112645.542179-1-angelogioacchino.delregno@collabora.com>
+	s=arc-20240116; t=1753880187; c=relaxed/simple;
+	bh=DACPd/y8QWIW1UrMQhXjMSxlXYxRti2Z23/eSzS9wGA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SoXK0wP1LFRaZSOmfqpiA17XQcayoGj2HD+a83QqgvwEXwqCVymK9uDr/SXDvo0gV/+xUGCP+LD49mneI1t69Fv+OImtuwRVestH6V3e64qIiKqskg8JWcDC9njSdtDySugCTo50iuuja9hz115l8oomix/5mElComoerPSgPGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RKdZFenv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 15083C4CEE7;
+	Wed, 30 Jul 2025 12:56:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753880187;
+	bh=DACPd/y8QWIW1UrMQhXjMSxlXYxRti2Z23/eSzS9wGA=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=RKdZFenvScq7XtzpdrLi0gfRBmU1GLujceubsD0WUGuuAsyEpsJf2WVnhNf4N12kd
+	 01F7TEAZKIoJrPz6SfAs/zMNWfY32aACsqVf/tr6pRDyyI0qOAoA8aY2sOg1GWr93w
+	 IJWmdQjioXKhfSRF06i3Xh5O7brlTkLG3dMR9SsV+baDGLLzSZuthfAsDgS+Obt017
+	 3OzzU+USli+PCVoNcF+pERhZgRpWfMHx9KhL4nsdPrgzXYbXDwtlFqy7wQUW1bqScJ
+	 lHE1OcmILw7tjeIf+AvaT242pLh9wmN+cJIskK7ocjcvJAKE+fV2NkFbsgDno5B3ct
+	 TANxbGQC8wDvQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F38B5C83F26;
+	Wed, 30 Jul 2025 12:56:26 +0000 (UTC)
+From: Cryolitia PukNgae via B4 Relay <devnull+liziyao.uniontech.com@kernel.org>
+Date: Wed, 30 Jul 2025 20:56:16 +0800
+Subject: [PATCH] iio: imu: bmi270: Match ACPI ID found on newer GPD
+ firmware
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250730-bmi270-gpd-acpi-v1-1-1ffc85b17266@uniontech.com>
+X-B4-Tracking: v=1; b=H4sIAG8WimgC/x3MQQqAIBBA0avErBvQoRK6SrRInWwWmShEIN09a
+ fkW/1conIULzF2FzLcUuWKD7jtwxxYDo/hmIEWjIjWhPYWMwpA8bi4Jeh68Jut4nAy0KmXe5fm
+ Py/q+HxuTkRdhAAAA
+X-Change-ID: 20250206-bmi270-gpd-acpi-de4d12bce567
+To: Alex Lanzano <lanzano.alex@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Yao Zi <ziyao@disroot.org>, WangYuli <wangyuli@uniontech.com>, 
+ Jun Zhan <zhanjun@uniontech.com>, Cryolitia PukNgae <liziyao@uniontech.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1753880186; l=1662;
+ i=liziyao@uniontech.com; s=20250730; h=from:subject:message-id;
+ bh=tfDPKjat9rlbUiCQbb3HHtNunn+iGtYvXq3O0y2Qh+g=;
+ b=LLI6ML1UHHB/RjQT+LS52yxqoWtKT7VwVJIiqKv+jIcM3jHAegOP76mcKY0NMnSU9cVg8zPFb
+ WtHkRien4rQCN9mPTIntTTuagB5l141KW9fbX8/e0xzL3aoHwvd+z0w
+X-Developer-Key: i=liziyao@uniontech.com; a=ed25519;
+ pk=tZ+U+kQkT45GRGewbMSB4VPmvpD+KkHC/Wv3rMOn/PU=
+X-Endpoint-Received: by B4 Relay for liziyao@uniontech.com/20250730 with
+ auth_id=471
+X-Original-From: Cryolitia PukNgae <liziyao@uniontech.com>
+Reply-To: liziyao@uniontech.com
 
-This driver doesn't need to add any register base address to any
-regmap call anymore since it was migrated to register as a SPMI
-subdevice with its own regmap reg_base, which makes the regmap
-API to automatically add such base address internally.
+From: Cryolitia PukNgae <liziyao@uniontech.com>
 
-Since the iadc_{read,write,read_result}() functions now only do
-call regmap_{read,write,bulk_read}() and nothing else, simplify
-the driver by removing them and by calling regmap APIs directly.
+Some GPD devices ship a buggy firmware that describes on-device BMI260
+with ACPI ID "BMI0160". Since this is fixed in BIOS update v0.40,
+let's match the correct ID to detect the device. The buggy ID "BMI0160"
+is kept as well to maintain compatibility with older firmwares.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://lore.kernel.org/r/20250722101317.76729-8-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Cryolitia PukNgae <liziyao@uniontech.com>
 ---
- drivers/iio/adc/qcom-spmi-iadc.c | 83 ++++++++++++--------------------
- 1 file changed, 30 insertions(+), 53 deletions(-)
+Some GPD devices ship a buggy firmware that describes on-device BMI260
+with ACPI ID "BMI0160". Since this is fixed in BIOS update v0.40[1],
+let's match the correct ID to detect the device. The buggy ID "BMI0160"
+is kept as well to maintain compatibility with older firmwares.
 
-diff --git a/drivers/iio/adc/qcom-spmi-iadc.c b/drivers/iio/adc/qcom-spmi-iadc.c
-index 67096952b229..7d46ec2d1a30 100644
---- a/drivers/iio/adc/qcom-spmi-iadc.c
-+++ b/drivers/iio/adc/qcom-spmi-iadc.c
-@@ -113,77 +113,59 @@ struct iadc_chip {
- 	struct completion complete;
+Link: http://download.softwincn.com/WIN%20Max%202024/Max2-7840-BIOS-V0.41.zip
+
+[1]. See the update nodes in the archive file above
+---
+ drivers/iio/imu/bmi270/bmi270_i2c.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
+index c77839b03a969f6f149c025a0305c4b9b8ac6571..b909a421ad0176ee414f2f96ff09db2297586ded 100644
+--- a/drivers/iio/imu/bmi270/bmi270_i2c.c
++++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
+@@ -41,6 +41,8 @@ static const struct i2c_device_id bmi270_i2c_id[] = {
+ static const struct acpi_device_id bmi270_acpi_match[] = {
+ 	/* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
+ 	{ "BMI0160",  (kernel_ulong_t)&bmi260_chip_info },
++	/* GPD Win Max 2 2023(sincice BIOS v0.40), etc. */
++	{ "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
+ 	{ }
  };
  
--static int iadc_read(struct iadc_chip *iadc, u16 offset, u8 *data)
--{
--	unsigned int val;
--	int ret;
--
--	ret = regmap_read(iadc->regmap, offset, &val);
--	if (ret < 0)
--		return ret;
--
--	*data = val;
--	return 0;
--}
--
--static int iadc_write(struct iadc_chip *iadc, u16 offset, u8 data)
--{
--	return regmap_write(iadc->regmap, offset, data);
--}
--
- static int iadc_reset(struct iadc_chip *iadc)
- {
--	u8 data;
-+	u32 data;
- 	int ret;
- 
--	ret = iadc_write(iadc, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
-+	ret = regmap_write(iadc->regmap, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = iadc_read(iadc, IADC_PERH_RESET_CTL3, &data);
-+	ret = regmap_read(iadc->regmap, IADC_PERH_RESET_CTL3, &data);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = iadc_write(iadc, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
-+	ret = regmap_write(iadc->regmap, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
- 	if (ret < 0)
- 		return ret;
- 
- 	data |= IADC_FOLLOW_WARM_RB;
- 
--	return iadc_write(iadc, IADC_PERH_RESET_CTL3, data);
-+	return regmap_write(iadc->regmap, IADC_PERH_RESET_CTL3, data);
- }
- 
- static int iadc_set_state(struct iadc_chip *iadc, bool state)
- {
--	return iadc_write(iadc, IADC_EN_CTL1, state ? IADC_EN_CTL1_SET : 0);
-+	return regmap_write(iadc->regmap, IADC_EN_CTL1, state ? IADC_EN_CTL1_SET : 0);
- }
- 
- static void iadc_status_show(struct iadc_chip *iadc)
- {
--	u8 mode, sta1, chan, dig, en, req;
-+	u32 mode, sta1, chan, dig, en, req;
- 	int ret;
- 
--	ret = iadc_read(iadc, IADC_MODE_CTL, &mode);
-+	ret = regmap_read(iadc->regmap, IADC_MODE_CTL, &mode);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_DIG_PARAM, &dig);
-+	ret = regmap_read(iadc->regmap, IADC_DIG_PARAM, &dig);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_CH_SEL_CTL, &chan);
-+	ret = regmap_read(iadc->regmap, IADC_CH_SEL_CTL, &chan);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_CONV_REQ, &req);
-+	ret = regmap_read(iadc->regmap, IADC_CONV_REQ, &req);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_STATUS1, &sta1);
-+	ret = regmap_read(iadc->regmap, IADC_STATUS1, &sta1);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_EN_CTL1, &en);
-+	ret = regmap_read(iadc->regmap, IADC_EN_CTL1, &en);
- 	if (ret < 0)
- 		return;
- 
-@@ -199,34 +181,34 @@ static int iadc_configure(struct iadc_chip *iadc, int channel)
- 
- 	/* Mode selection */
- 	mode = (IADC_OP_MODE_NORMAL << IADC_OP_MODE_SHIFT) | IADC_TRIM_EN;
--	ret = iadc_write(iadc, IADC_MODE_CTL, mode);
-+	ret = regmap_write(iadc->regmap, IADC_MODE_CTL, mode);
- 	if (ret < 0)
- 		return ret;
- 
- 	/* Channel selection */
--	ret = iadc_write(iadc, IADC_CH_SEL_CTL, channel);
-+	ret = regmap_write(iadc->regmap, IADC_CH_SEL_CTL, channel);
- 	if (ret < 0)
- 		return ret;
- 
- 	/* Digital parameter setup */
- 	decim = IADC_DEF_DECIMATION << IADC_DIG_DEC_RATIO_SEL_SHIFT;
--	ret = iadc_write(iadc, IADC_DIG_PARAM, decim);
-+	ret = regmap_write(iadc->regmap, IADC_DIG_PARAM, decim);
- 	if (ret < 0)
- 		return ret;
- 
- 	/* HW settle time delay */
--	ret = iadc_write(iadc, IADC_HW_SETTLE_DELAY, IADC_DEF_HW_SETTLE_TIME);
-+	ret = regmap_write(iadc->regmap, IADC_HW_SETTLE_DELAY, IADC_DEF_HW_SETTLE_TIME);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = iadc_write(iadc, IADC_FAST_AVG_CTL, IADC_DEF_AVG_SAMPLES);
-+	ret = regmap_write(iadc->regmap, IADC_FAST_AVG_CTL, IADC_DEF_AVG_SAMPLES);
- 	if (ret < 0)
- 		return ret;
- 
- 	if (IADC_DEF_AVG_SAMPLES)
--		ret = iadc_write(iadc, IADC_FAST_AVG_EN, IADC_FAST_AVG_EN_SET);
-+		ret = regmap_write(iadc->regmap, IADC_FAST_AVG_EN, IADC_FAST_AVG_EN_SET);
- 	else
--		ret = iadc_write(iadc, IADC_FAST_AVG_EN, 0);
-+		ret = regmap_write(iadc->regmap, IADC_FAST_AVG_EN, 0);
- 
- 	if (ret < 0)
- 		return ret;
-@@ -239,19 +221,19 @@ static int iadc_configure(struct iadc_chip *iadc, int channel)
- 		return ret;
- 
- 	/* Request conversion */
--	return iadc_write(iadc, IADC_CONV_REQ, IADC_CONV_REQ_SET);
-+	return regmap_write(iadc->regmap, IADC_CONV_REQ, IADC_CONV_REQ_SET);
- }
- 
- static int iadc_poll_wait_eoc(struct iadc_chip *iadc, unsigned int interval_us)
- {
- 	unsigned int count, retry;
- 	int ret;
--	u8 sta1;
-+	u32 sta1;
- 
- 	retry = interval_us / IADC_CONV_TIME_MIN_US;
- 
- 	for (count = 0; count < retry; count++) {
--		ret = iadc_read(iadc, IADC_STATUS1, &sta1);
-+		ret = regmap_read(iadc->regmap, IADC_STATUS1, &sta1);
- 		if (ret < 0)
- 			return ret;
- 
-@@ -267,11 +249,6 @@ static int iadc_poll_wait_eoc(struct iadc_chip *iadc, unsigned int interval_us)
- 	return -ETIMEDOUT;
- }
- 
--static int iadc_read_result(struct iadc_chip *iadc, u16 *data)
--{
--	return regmap_bulk_read(iadc->regmap, IADC_DATA, data, 2);
--}
--
- static int iadc_do_conversion(struct iadc_chip *iadc, int chan, u16 *data)
- {
- 	unsigned int wait;
-@@ -296,7 +273,7 @@ static int iadc_do_conversion(struct iadc_chip *iadc, int chan, u16 *data)
- 	}
- 
- 	if (!ret)
--		ret = iadc_read_result(iadc, data);
-+		ret = regmap_bulk_read(iadc->regmap, IADC_DATA, data, sizeof(*data));
- exit:
- 	iadc_set_state(iadc, false);
- 	if (ret < 0)
-@@ -392,10 +369,10 @@ static int iadc_update_offset(struct iadc_chip *iadc)
- 
- static int iadc_version_check(struct iadc_chip *iadc)
- {
--	u8 val;
-+	u32 val;
- 	int ret;
- 
--	ret = iadc_read(iadc, IADC_PERPH_TYPE, &val);
-+	ret = regmap_read(iadc->regmap, IADC_PERPH_TYPE, &val);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -404,7 +381,7 @@ static int iadc_version_check(struct iadc_chip *iadc)
- 		return -EINVAL;
- 	}
- 
--	ret = iadc_read(iadc, IADC_PERPH_SUBTYPE, &val);
-+	ret = regmap_read(iadc->regmap, IADC_PERPH_SUBTYPE, &val);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -413,7 +390,7 @@ static int iadc_version_check(struct iadc_chip *iadc)
- 		return -EINVAL;
- 	}
- 
--	ret = iadc_read(iadc, IADC_REVISION2, &val);
-+	ret = regmap_read(iadc->regmap, IADC_REVISION2, &val);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -428,7 +405,7 @@ static int iadc_version_check(struct iadc_chip *iadc)
- static int iadc_rsense_read(struct iadc_chip *iadc, struct device_node *node)
- {
- 	int ret, sign, int_sense;
--	u8 deviation;
-+	u32 deviation;
- 
- 	ret = of_property_read_u32(node, "qcom,external-resistor-micro-ohms",
- 				   &iadc->rsense[IADC_EXT_RSENSE]);
-@@ -440,7 +417,7 @@ static int iadc_rsense_read(struct iadc_chip *iadc, struct device_node *node)
- 		return -EINVAL;
- 	}
- 
--	ret = iadc_read(iadc, IADC_NOMINAL_RSENSE, &deviation);
-+	ret = regmap_read(iadc->regmap, IADC_NOMINAL_RSENSE, &deviation);
- 	if (ret < 0)
- 		return ret;
- 
+
+---
+base-commit: 0db240bc077fd16cc16bcecfd7f4645bc474aa7e
+change-id: 20250206-bmi270-gpd-acpi-de4d12bce567
+
+Best regards,
 -- 
-2.50.1
+Cryolitia PukNgae <liziyao@uniontech.com>
+
 
 

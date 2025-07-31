@@ -1,189 +1,127 @@
-Return-Path: <linux-iio+bounces-22159-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22160-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE432B16AAA
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Jul 2025 05:07:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 364BDB16B04
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Jul 2025 06:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDB333AAAE3
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Jul 2025 03:06:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CDFB18C4F1F
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Jul 2025 04:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6CA23ABAC;
-	Thu, 31 Jul 2025 03:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B8A23F40E;
+	Thu, 31 Jul 2025 04:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="QpXmZXmm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aLmGBqgu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9584B19F101;
-	Thu, 31 Jul 2025 03:06:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F6622F770;
+	Thu, 31 Jul 2025 03:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753931224; cv=none; b=bxOgaunTxDZGZOnAP6T4UT0tsOqicz6VEdJlQ+XlfQoTT5zZFlw75xI+rzz24GxrzOUcodgogKPoZL92Pn7/wNFstlKjADT7LzqIQocnk2eWIVamxCzt7jIv4b+g9SF9m3dt+gVd3bB9AHU5KLVzlQSA/ciuD4TNJE85FVA8asc=
+	t=1753934401; cv=none; b=iWgoUEh2MSP+w/E1IZL/sSkbPmSxqIsEvpzAnzw5fNT1UzdZMyzRw4ok7KbIizk8Lsx4jaCHE8qxNPSFgDJjBXtBa6OXY2ttNxp/yWkf2Fo11CiGkxBmtbnMAIUg5n8enaj9K4RrC4HskWDFsN4XugfU/2JqSq6Ugwn6oh5Hn18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753931224; c=relaxed/simple;
-	bh=14qxhzw+Tj7K+vUArLn/OHHypiZhci1uCf/09CN5zsM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MdtcORH5Pw40H+0gql5v7IO0P2AKqJ/rQM/ZCoMHI6jCOWnUKCaP7lJYE8HwPVZGFMzZ3lePt0tkiSNWBGA9GZPme+x5HuZzAIQ1LcQTOnDPJ9dmb5kD6X9fJbq+/1m1e/ERTZcFGx+CGymQt9Ie4iXHaqz3uBhXdZXoplHHhg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=QpXmZXmm; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1753931131;
-	bh=a9ucKx9IvRh9aqxJC8OiAB/VcwuKjCvIpVNT0ZYtewM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=QpXmZXmmCDVLZHinPic01Im8JazSBzY3ak5N8W40gbW+xjzg0dhmXutYOqyzWCl/h
-	 IufyMgRlbRLIULewgZQaOgboAuYfN2eX54WwLUFVfoIAuis7F5JZp80W6pPRAd6bho
-	 KS14run0ivEpS4U0LAxsj0lvBYJG653wGYHOYmmQ=
-X-QQ-mid: zesmtpsz4t1753931123t57ac76c2
-X-QQ-Originating-IP: UY//SYI0w2+/KZaYFYM7ig1bR3YjCAZjgRVLYqx062I=
-Received: from [198.18.0.1] ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 31 Jul 2025 11:05:21 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 16923455272017176677
-EX-QQ-RecipientCnt: 12
-Message-ID: <8C57A7CCEBFAEA59+b36cfd0d-2cd9-413e-b658-e82938f9d947@uniontech.com>
-Date: Thu, 31 Jul 2025 11:05:21 +0800
+	s=arc-20240116; t=1753934401; c=relaxed/simple;
+	bh=OcrZsUyHq3wWNpX5cgXufQ+ZLvYsQ6Y63zo9gqCOHL4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eq0Fb5D++Y7J04aqj+BSW4izzJo3NaQfMex6w6Dc+N2LA2TMapIvWF/MERvWCIbH4BR9NLJb6iuYGP943Rrnp+k2LWI0qL6LVJS5YCuTrLbcKOra7ah2pILiB8gz9bqGN/XFEAEI0QDLK9xCjwgVS5Qm/X81hC1ukpRsaw4/B30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aLmGBqgu; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753934399; x=1785470399;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OcrZsUyHq3wWNpX5cgXufQ+ZLvYsQ6Y63zo9gqCOHL4=;
+  b=aLmGBqguwPgC+ZAPOuB3E0kxCLB0MKUofJJQZksjB+ZtDzGGyfKcDtI/
+   Jk9MeFdP94zXwaEvD7rcW52cbW0HNU5oSmzO7zfRwpoJYrQmjHDx6W2He
+   5wlF/2fYecrqSEvI3T3RfbCY7Fmvomc9M7yseE+YbThJtlUhdN5gOkcni
+   hm4QzSxFIbLAy+yspVqRDoaevy/zjnIsvgIVkNH34OiS8sN26VmZeu3eq
+   Sk8Jw9iOoxdTpjKG/mc8rfjAm+gbOVH6KlBwihq+n5rkqELWqLos/ljUI
+   ygzcGWR0b5y9T9PDLUfI1dpgkWDyb3hQg67no/2XMkYgQ4M5obAi37up+
+   w==;
+X-CSE-ConnectionGUID: QP8b36mARpO8c+l4cfmB3A==
+X-CSE-MsgGUID: +9Fq4xwLTuycK4sPldo3yA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="56336418"
+X-IronPort-AV: E=Sophos;i="6.16,353,1744095600"; 
+   d="scan'208";a="56336418"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 20:59:59 -0700
+X-CSE-ConnectionGUID: gYjm9tjYSkK3pLYlL9EdZg==
+X-CSE-MsgGUID: p6F5ISCGQ2S6IQroCGXimQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,353,1744095600"; 
+   d="scan'208";a="194138761"
+Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 30 Jul 2025 20:59:54 -0700
+Received: from kbuild by 160750d4a34c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uhKSN-0003Oi-0h;
+	Thu, 31 Jul 2025 03:59:51 +0000
+Date: Thu, 31 Jul 2025 11:59:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	sboyd@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, jic23@kernel.org, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, arnd@arndb.de,
+	gregkh@linuxfoundation.org, srini@kernel.org, vkoul@kernel.org,
+	kishon@kernel.org, sre@kernel.org, krzysztof.kozlowski@linaro.org,
+	u.kleine-koenig@baylibre.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-pm@vger.kernel.org, kernel@collabora.com, wenst@chromium.org,
+	casey.connolly@linaro.org
+Subject: Re: [PATCH v3 4/7] phy: qualcomm: eusb2-repeater: Migrate to
+ devm_spmi_subdevice_alloc_and_add()
+Message-ID: <202507311150.5ofvQlKl-lkp@intel.com>
+References: <20250730112645.542179-5-angelogioacchino.delregno@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: imu: bmi270: Match ACPI ID found on newer GPD
- firmware
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Alex Lanzano <lanzano.alex@gmail.com>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Yao Zi <ziyao@disroot.org>, WangYuli <wangyuli@uniontech.com>,
- Jun Zhan <zhanjun@uniontech.com>
-References: <20250730-bmi270-gpd-acpi-v1-1-1ffc85b17266@uniontech.com>
- <CAHp75Vc2K3AmPhwme3+7cCGwDTA6V+4Ug8f++iFr8gCThCOnQw@mail.gmail.com>
-Content-Language: en-US
-From: Cryolitia PukNgae <liziyao@uniontech.com>
-In-Reply-To: <CAHp75Vc2K3AmPhwme3+7cCGwDTA6V+4Ug8f++iFr8gCThCOnQw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz3a-0
-X-QQ-XMAILINFO: NSl7+7iyUzmQJWoCXasJofXsPKFT1SG/MjojYKOsM1VsgrXvpdOGlGwa
-	d6EPHPMGuLmeAS1RXaEURvN24+I42jhXStjA1jMyF5x7F6QeZJpc/iK9MGss99Bh/K02GAz
-	zyiwviPW6eZUL+/FPgDvI4EHWpXHdeN50A48tRbu6oBOWkwbu8iEQxjvaMEFw2VnjCBWZc2
-	B6OhRjyp9g/bMACn4jqHYROM8Z4chGB+PZtB+FNRjyZQIz7QSzUez+JsZc9YIoQPQ6O/HxZ
-	MYjvfBkUIu9daKj8ul0KwXwjp6Lck5Hh9O9Wm/kjt3X/wxMsUiUeaU+u9ezypOdcAp9EXP9
-	aRWpjWlGMWKle1GrevDiBiBC9JX365yTyd9HKeLIlA/JztDFRLCZuWKZ+7f3Y0flZxrJ3ID
-	TaZ65mPAzan5PADs4tz1KrFZHGIjdYkYGzA+ohJrEpbNz748HFVBikTz/XqBho6DEB8XWp4
-	FElrAG1NYsoFVShorodiYGGZyPhQ0nsWRltfPk6lcgUfwU4CPXGnVRQ9RGhORm/qmPnd+lD
-	S3nNR0+gPFL4VHouLFmUZVawXDKo6874fyx2LhNKyjrXOC1BRFn4V0d3ZixO2bL2r0vtdmR
-	yHy5kuczdcOBHKIn4sx7IVdvD0ZyIPwK3oxScrdBAaRYiIFHqgKVDzxrjZI9ng4B/sfPuBD
-	Z3TJqWjpybMtZsBikfiIZF8Xl4Dg1e/BJqJx3tTKzKdKsVCygG76aMkIkXz5oO0zxOWGyJA
-	6LqLub5OXT0Mcb3MuK9qCa8XnFJr98wdIbBYAZIBy8ZOwVZ2rP5vgmHTVG0JmdKDCB9vvRY
-	9/HvQMANp7HHzrHiKn2t+Gm76cGAVnUuwtNRCSFGMXxeWyqmIjCe5pzBzlcb+78VdrzFveV
-	WuO3JbQw0A5apks/yPHHTNARgifi8pinL0N5WLgD6JLvUKeySy37uJaOPOCjwLCWQjhO/sr
-	G6n/aak4wNu863goxPH+m7qP/JIyIpFtJG1v9O8qyoUgYK9QNk1/qZRVVBdMMrwHZDTfqLc
-	p9ITOEhre2tuwaCAIwSVva23txv7Nhq7dtju9Qsw==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250730112645.542179-5-angelogioacchino.delregno@collabora.com>
 
-Dear Maintainer,
+Hi AngeloGioacchino,
 
-Thank you for your reply. I apologize for the confusion regarding the 
-PNP VID assignment - you are absolutely correct that "BMI0260" is not an 
-official Bosch PNP ID. Let me provide a more detailed context.
+kernel test robot noticed the following build errors:
 
-GPD devices originally used BMI160 sensors with the "BMI0160" PNP ID. 
-When they switched to BMI260 sensors in newer hardware, they reused the 
-existing Windows driver which accepts both "BMI0160" and "BMI0260" IDs. 
-Consequently, they kept "BMI0160" in DSDT tables for new BMI260 devices, 
-causing driver mismatches in Linux.
+[auto build test ERROR on next-20250730]
+[cannot apply to jic23-iio/togreg sre-power-supply/for-next char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus linus/master v6.16 v6.16-rc7 v6.16-rc6 v6.16]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Current Situation:
-   1. GPD updated BIOS v0.40+ for newer devices to report "BMI0260" for 
-BMI260 sensors to avoid loading bmi160 driver on Linux. While this isn't 
-Bosch's VID:
-   2. Bosch's official Windows driver uses "BMI0260" as a compatible ID
-   3. The ID "BMI0160" already exists in mainline (drivers/iio/imu/bmi160)
-   4. We're seeing real devices shipping with "BMI0260" in DSDT
+url:    https://github.com/intel-lab-lkp/linux/commits/AngeloGioacchino-Del-Regno/spmi-Implement-spmi_subdevice_alloc_and_add-and-devm-variant/20250730-193217
+base:   next-20250730
+patch link:    https://lore.kernel.org/r/20250730112645.542179-5-angelogioacchino.delregno%40collabora.com
+patch subject: [PATCH v3 4/7] phy: qualcomm: eusb2-repeater: Migrate to devm_spmi_subdevice_alloc_and_add()
+config: arm64-randconfig-002-20250731 (https://download.01.org/0day-ci/archive/20250731/202507311150.5ofvQlKl-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 13.4.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250731/202507311150.5ofvQlKl-lkp@intel.com/reproduce)
 
-Given the challenges we've faced in communicating with GPD regarding 
-Linux support, it seems unlikely that we can push for another change; 
-they are solely focused on ensuring compatibility with Bosch's official 
-Windows driver. Unfortunately, I do not have the means to contact Bosch 
-and urge them to abandon the use of these non-standard IDs.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507311150.5ofvQlKl-lkp@intel.com/
 
-Given existing devices use "BMI0260" and Windows drivers validate this 
-ID pattern, I propose temporarily adding it to bmi270_acpi_match as a 
-compatibility measure. This would immediately benefit already existing 
-users.
+All errors (new ones prefixed by >>):
 
-I'm happy to provide DSDT excerpts from GPD Win Max 2 2023 devices 
-showing the "BMI0260" declaration if needed.
+>> aarch64-linux-ld: Unexpected GOT/PLT entries detected!
+>> aarch64-linux-ld: Unexpected run-time procedure linkages detected!
+   aarch64-linux-ld: drivers/phy/qualcomm/phy-qcom-eusb2-repeater.o: in function `eusb2_repeater_probe':
+   drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c:228:(.text+0x5a8): undefined reference to `devm_spmi_subdevice_alloc_and_add'
+>> aarch64-linux-ld: drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c:236:(.text+0x61c): undefined reference to `__devm_regmap_init_spmi_ext'
 
-Thank you for your time and guidance.
-
-Best regards,
-Cryolitia PukNgae
-
-在 2025/7/31 04:57, Andy Shevchenko 写道:
-> On Wed, Jul 30, 2025 at 2:56 PM Cryolitia PukNgae via B4 Relay
-> <devnull+liziyao.uniontech.com@kernel.org> wrote:
->>
->> From: Cryolitia PukNgae <liziyao@uniontech.com>
->>
->> Some GPD devices ship a buggy firmware that describes on-device BMI260
->> with ACPI ID "BMI0160". Since this is fixed in BIOS update v0.40,
->> let's match the correct ID to detect the device. The buggy ID "BMI0160"
->> is kept as well to maintain compatibility with older firmwares.
-> 
-> No, it's not true. See below why,
-> 
->> ---
->> Some GPD devices ship a buggy firmware that describes on-device BMI260
->> with ACPI ID "BMI0160". Since this is fixed in BIOS update v0.40[1],
->> let's match the correct ID to detect the device. The buggy ID "BMI0160"
->> is kept as well to maintain compatibility with older firmwares.
->>
->> Link: http://download.softwincn.com/WIN%20Max%202024/Max2-7840-BIOS-V0.41.zip
->>
->> [1]. See the update nodes in the archive file above
-> 
-> Yeah... I think you need one more attempt to fix it right.
-> 
-> ...
-> 
->>   static const struct acpi_device_id bmi270_acpi_match[] = {
->>          /* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
->>          { "BMI0160",  (kernel_ulong_t)&bmi260_chip_info },
-> 
-> Unbelievable! How is the above supposed to work? Do we have DMI quirks
-> in both drivers (bmi160 and bmi270)?
-> 
->> +       /* GPD Win Max 2 2023(sincice BIOS v0.40), etc. */
->> +       { "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
-> 
-> For the record this is incorrect ACPI ID, nor PNP ID for Bosh, unless
-> I missed that https://www.bensonmedical.com/ is bought by Bosh or part
-> of the groups of the companies.,
-> 
->>          { }
->>   };
-> 
-> Can you work with Bosh to resolve this as soon as possible and use a
-> real Bosh ACPI ID (BOSCxxxx) or PNP ID (BSGxxxx)?
-> Also, each ACPI ID adding patch (when it's incorrect) must provide a
-> DSDT excerpt in the commit message to show this. Ideally this also
-> should be confirmed by the vendor of the device (GPD) that the ID is
-> incorrect and a correct one needs to be used.
-> 
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

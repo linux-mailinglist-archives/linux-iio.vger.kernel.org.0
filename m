@@ -1,238 +1,288 @@
-Return-Path: <linux-iio+bounces-22163-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22164-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB840B16EF3
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Jul 2025 11:47:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47133B16FDB
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Jul 2025 12:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04D687B48CE
-	for <lists+linux-iio@lfdr.de>; Thu, 31 Jul 2025 09:45:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DB8C582A16
+	for <lists+linux-iio@lfdr.de>; Thu, 31 Jul 2025 10:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61E924293F;
-	Thu, 31 Jul 2025 09:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347DD2BD5A3;
+	Thu, 31 Jul 2025 10:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C6H1Zc5F"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d8YHkASB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BA2EAF6;
-	Thu, 31 Jul 2025 09:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63282F4FA;
+	Thu, 31 Jul 2025 10:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753955232; cv=none; b=YKUkUjz3yFf+VJHEpJAIT3/vxazKR5kAyRBoMgWMbl0Lscz4EiUHz925xPCEckPkNwKLCKX1BpN/+MembnxWsdHWu9HUlShoCFFVNySrBqMHPlz5EYxmwBP3h8XYore/3qRtv7H6aN9SjPgO6noNSDbSnubKZMpjjWpc06vth2E=
+	t=1753959126; cv=none; b=YU+HKrQSZpGHU5taGQbGfA1avBhGZ/ByMVE0+794OaQierh8O2ovHEeh/K2s6jBtfjqLqHLNpb2lmrvJOjC+vwkUbU0ghZeStheCLk/q2fpHa3ZdNdVOTKyfNJrLXroZMS/1Lr8RO871jtt2NqrKQwSLeTzzpVe/2IJ3ZXPU7iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753955232; c=relaxed/simple;
-	bh=R+1bOSzZEqjFRCaNxT2wWiERvGTBCi+5k0ZAbCRUBUI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g1VqSSj06/9E3FBd3+f0rzbPrbH+j4v3R+bTN7331zBsyU/cjQrgQGgaHHHPuqSMDZbUxaR4SRYeih3QKq924ZAGe/DeBG0GeE4Lq5UvwZ5DOTpydy1/duUVMYN8zzSJkYVuG+ITH5HUZvIvv/nvfqZQrAnKOdry8ynGWq7QCWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C6H1Zc5F; arc=none smtp.client-ip=209.85.218.47
+	s=arc-20240116; t=1753959126; c=relaxed/simple;
+	bh=09eUtxy7BEVelvmPkGEU/1pIx6WqhhrhifwI4fNz/5M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I37lqUrRhK+o1KzYIMApHjzbQDn95XLXndHVdVKNOIBsCuIyQDBP4HgjoapHTm145qSSWx4HL2o53BuaOTppDsJlusa6am8DG999Sj+wk9QU5FD7EA0NLNm391e0TM2i9p9nB8qnY1k/3HP/nCrTgbsI9ubaBmvWEK6LtJR4Fd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d8YHkASB; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-af8ffa04463so128846566b.2;
-        Thu, 31 Jul 2025 02:47:10 -0700 (PDT)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76bd041c431so325056b3a.2;
+        Thu, 31 Jul 2025 03:52:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753955229; x=1754560029; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f8kXnSi2qDjtJhPZO3//zalJFhKJqhERDRrBw8g/t2Q=;
-        b=C6H1Zc5Fd8buGagEwEOb8XF7E2FHFQ48AkzVtcUnafQCf0jjsbY67MartWTy52fg+t
-         +/HfzDgzlkvBe0iaUKgNNLJFZgaSxZZo7lqcZToEjC3tWGP2nUiOvCWPInstyrKXwsDT
-         ibQ4SA+UmRqxTH48MLsWVUETq7uPz9D6Xvy24WgbP5XW7VEqD4IZlDelf7bcPioG1RWA
-         P47/zBLGCwQXRssYwgv5Ubmc59u1vt2meX59HpENTS3HMBpWv1ovodE1eWBnW4lZJz9w
-         hx7JBMeghaFeSbyW9yo0QBjAGaZnBpsdHnJssGCKaMm7DP9YcWcgFCw/e1QBPJg3ks4V
-         V7sA==
+        d=gmail.com; s=20230601; t=1753959123; x=1754563923; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6BNm2GTevFRvXJYfacbCY9tU3bk2KY3Lo3LH5vZNBH4=;
+        b=d8YHkASBecPls/MrQyu9w2eSwyMYebviY2YfjOhTnlApVFCV2ElfFbyupobcbEgUNY
+         Y0zb2YZhFQjIku9JtJAlkpJ3V0kfqZjGvPOOzY+v4Aj+pkbaH9pT5MVQmPK/4PU59ZPU
+         IbdMr49uydy+T1tljIoUS1XnF8v4AbLkVVFk3wKIaRLFvo9t/npA//NaukMvAGfa//zk
+         ZzfeWHORNnp8YrMwcI9jbNYYBAf+kaGRv/1bbk2kOrwNqd55OYy+OJnkQM3rbBFMVywa
+         Gml4d3yioJL7AtH0Qrq61hi8cxWNZWOGvq4SPBOsOxK8VWsW/KecG0/3PzR4of9dwF9T
+         ootA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753955229; x=1754560029;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f8kXnSi2qDjtJhPZO3//zalJFhKJqhERDRrBw8g/t2Q=;
-        b=RjcrPCIdMiHRdKIOMr8bDvqIrBISpQaHJuUlV1YRCTSYawPfbpUFM+ncXPfm5E6/gg
-         RjmJu9qtl87yqpWIgCGsfk3gf4H7tTC56Lfbk35baAM3aYVvxpLdc1tu2/nTkVBS2deQ
-         Sujzq5JMIGEHn/WhH7h5bTcOwQkmccSs7JcTd90eygvCyiS6Tfata7Wh1z+jUKTW2eZI
-         pgU6oVgqpVhTlNKan9wC1XHNjP7luOz5V4w37OWxQEkjz9qxwSzn1O3HRm40MwLraYZU
-         eoRJ91CEeV+/kjxdrfQPp805qnFzbTrw9voJMwW7DYzJGbBHhSW6d1CMo+Mbquv8fvJP
-         QRbg==
-X-Forwarded-Encrypted: i=1; AJvYcCUB2NjeURraGgeSWllQ8M5LBYlaKvBlVxOA7utc1ZAqjfXMoxEAf+osfneWmsiq1B2xTNKVxChMYeA=@vger.kernel.org, AJvYcCWVDtYw0cuJNjCf0EaXYX4gr/v3s25v7I2ctyBjgmyTB4gZzkqcJJN5qK96xi6W6qnc/hvmjEEBd8sj8tfg@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/eaFFM/Mhv41IRl/8V/m5pO9/cKBy/LDV4ZPoI26QT+LlS0+6
-	xFm4e3O1ho/AmyJHm+eAg2ecBKnyE1c4+eWH2FUGFQrHRQMbYCiSpwjaBdw3rceVrAjLkeNQMG0
-	cUIUsI9yzSiAh5wlOYMkmwMGgh5OBcjQ=
-X-Gm-Gg: ASbGncseZtoz355olgqChO82N16K2Ox/6vk4x5NbMDBR4oybZNUXtoCoSWOWyHtsNbJ
-	3QthZpCeJ9MSF54ZQ8E/9x2nMqXGIZuCwaWUtdfRWx2BBeJVZ5302fYNUwDbSDwgsT9mTSbFaXp
-	F/2qvD1qXn/7CFaQDAt8sAuqVVPD7S+eS8bTqJCx4Nei6pGpaLlLqI7SLznNESSY3t8p2tzUhhP
-	AlaLzoflQ==
-X-Google-Smtp-Source: AGHT+IGd53bTbRTN2ktOmG30+LUtJwMrDXeN2lT3oxeRZupwIyA9V2Vf0XZ7qlLMiLHm8VHmYyIvDkxm5Pt+Dxhwk3s=
-X-Received: by 2002:a17:906:7951:b0:ae0:b49d:9cd with SMTP id
- a640c23a62f3a-af8fda128f6mr783942666b.58.1753955228206; Thu, 31 Jul 2025
- 02:47:08 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753959123; x=1754563923;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6BNm2GTevFRvXJYfacbCY9tU3bk2KY3Lo3LH5vZNBH4=;
+        b=FXSKIWwwXsZhayZfIGcrzKyHMHhR+MBV53B5BIFeQ0KvX4q1mOwBFP4zGor2oq3h6w
+         KQ1QqcW3eu8cpvYoh38wv8WPKSj5H10SQ9I+mtbxdHKArXladuzkBZv+WIF708tvX2JF
+         HGTvOHC4QXtyW4sC9H5rbfkDebF6sOmzM/TLqy9gdIBIOrzpdG1j7jBiogK+nr9ZZPY1
+         eqsVDrhl1+S3xbiEotCJQc/y55iSatoPIFpBCwjUmDNM1moXk7qkHK1JR0fyPLi3tQW2
+         W9oel1SQ5leP7WCRFf9d2OZa48xxpdjk+GO1bb7O69m0b6Xko96udN5atD96OT+PyDCP
+         e7mg==
+X-Forwarded-Encrypted: i=1; AJvYcCVVqfNi0cmBiUxVs4KAxUMVBEAmKmgciEFMNk5MSK5EpKw5YmxEgu1mzLTOpcuAjA9zPFSGSLz+/Neq@vger.kernel.org, AJvYcCWV3LfCTh95OrxEi2JKoTKpcBNa35A+SvnECdQj3sZd9O6YxT9iMGmmBYbSsiSZbykJidD/pV8MYsR0ZQ==@vger.kernel.org, AJvYcCXApArLqWsWao9rlkZQriODxXiHaE0rJeAcDR/D0wD2MDcCxzDiFzimmGkoemmhO2doIsyFmqEsPbI1H/lQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxdiGm93WaGm5U5dEx33vVBj+3+0HleRwUatkNjbZKeJYI2NFW
+	C3t+aobAcb394Ie4jLkzXO4BUCCc8+Yb68DSdVuYXVdaZVgthuEsSZiN
+X-Gm-Gg: ASbGncvQqsQopd6lmLtna3rGY8+DySv9IxWVZQapV3fxc9m4Z7OqFuDWFZ+JIxoQPyJ
+	OGP3eCjcUOJ26xcbELsSctPae/CMBmuHHi3voBoF8dAy7/ADirFjFBLlh66dW05Ro7O8xiB8BDy
+	bemgOq1fYQrB9pt/bMRDbkfNoAZ9I5YjIu2eaGYnXtNrmIEDk3pG+c/mKMfxHuFXBeqBSlomtvh
+	28mPT+5K2mNnLU7FYZ91VNMN7LgAkUbCpDTJeevQnj5VhaG8uYHAZ5I/HeOlFpuPK6bP9Abqse+
+	xT+xjxSO4CYnosi4ElEDS2shaMPKcsFAkI+KE1JWZNAi1/WkIyU+HMEOu5rpuqsOH39LOUz5DKz
+	zmlzmVHnkWZ6v
+X-Google-Smtp-Source: AGHT+IEpUbFQBDbBzG/lmEXfkVk7OLRqFxEmhc33scO+8gpDjGb2RBZveXq6rfWnEpiuwIUpv5arlg==
+X-Received: by 2002:a05:6a00:ad6:b0:742:3fe0:8289 with SMTP id d2e1a72fcca58-76ab2b566b7mr10264426b3a.20.1753959123515;
+        Thu, 31 Jul 2025 03:52:03 -0700 (PDT)
+Received: from nsa ([45.248.78.239])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce89104sm1324539b3a.35.2025.07.31.03.51.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Jul 2025 03:52:02 -0700 (PDT)
+Date: Thu, 31 Jul 2025 11:52:10 +0100
+From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Jonathan Cameron <jic23@kernel.org>, Jean Delvare <jdelvare@suse.com>, 
+	Guenter Roeck <linux@roeck-us.net>, linux-iio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	Andy Shevchenko <andy@kernel.org>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
+Subject: Re: [PATCH 7/7] hwmon: iio: Add alarm support
+Message-ID: <pblyblite64vy5ghk77crga5y6f2a6bmngtxu6rlqmq3p7rzxt@srquqhwt43nr>
+References: <20250715012023.2050178-1-sean.anderson@linux.dev>
+ <20250715012023.2050178-8-sean.anderson@linux.dev>
+ <afc6aa6ad4b633f9d834acf933734985f14c5563.camel@gmail.com>
+ <6455be16-d287-4d5e-9556-e1789d43708c@linux.dev>
+ <9c6f99e022270b1b9c2f178f8f415270f11e59df.camel@gmail.com>
+ <11735f77-25cc-4220-b7be-e6fda8f72161@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250730-bmi270-gpd-acpi-v1-1-1ffc85b17266@uniontech.com>
- <CAHp75Vc2K3AmPhwme3+7cCGwDTA6V+4Ug8f++iFr8gCThCOnQw@mail.gmail.com> <8C57A7CCEBFAEA59+b36cfd0d-2cd9-413e-b658-e82938f9d947@uniontech.com>
-In-Reply-To: <8C57A7CCEBFAEA59+b36cfd0d-2cd9-413e-b658-e82938f9d947@uniontech.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 31 Jul 2025 11:46:30 +0200
-X-Gm-Features: Ac12FXx5V893iJMc7AvTeeQ6CM-nzlKlyoj-bP22QpfuRTUdxPh0XqJuY983hHU
-Message-ID: <CAHp75Vcr2nVHAgvegW=t70bBFhhk3w23HkT_Y+MZM00nkziZSQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: imu: bmi270: Match ACPI ID found on newer GPD firmware
-To: Cryolitia PukNgae <liziyao@uniontech.com>
-Cc: Alex Lanzano <lanzano.alex@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yao Zi <ziyao@disroot.org>, WangYuli <wangyuli@uniontech.com>, 
-	Jun Zhan <zhanjun@uniontech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <11735f77-25cc-4220-b7be-e6fda8f72161@linux.dev>
 
-On Thu, Jul 31, 2025 at 5:06=E2=80=AFAM Cryolitia PukNgae <liziyao@uniontec=
-h.com> wrote:
+On Thu, Jul 17, 2025 at 12:00:13PM -0400, Sean Anderson wrote:
+> On 7/16/25 02:37, Nuno Sá wrote:
+> > On Tue, 2025-07-15 at 13:02 -0400, Sean Anderson wrote:
+> >> On 7/15/25 07:28, Nuno Sá wrote:
+> >> > On Mon, 2025-07-14 at 21:20 -0400, Sean Anderson wrote:
+> >> > > Add alarm support based on IIO threshold events. The alarm is cleared on
+> >> > > read, but will be set again if the condition is still present. This is
+> >> > > detected by disabling and re-enabling the event. The same trick is done
+> >> > > when creating the attribute to detect already-triggered events.
+> >> > > 
+> >> > > The alarms are updated by an event listener. To keep the notifier call
+> >> > > chain short, we create one listener per iio device, shared across all
+> >> > > hwmon devices.
+> >> > > 
+> >> > > To avoid dynamic creation of alarms, alarms for all possible events are
+> >> > > allocated at creation. Lookup is done by a linear scan, as I expect
+> >> > > events to occur rarely. If performance becomes an issue, a binary search
+> >> > > could be done instead (or some kind of hash lookup).
+> >> > > 
+> >> > > Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+> >> > > ---
+> >> > > 
+> >> > >  drivers/hwmon/iio_hwmon.c | 322 +++++++++++++++++++++++++++++++++++++-
+> >> > >  1 file changed, 321 insertions(+), 1 deletion(-)
+> >> > > 
+> >> > > diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
+> >> > > index 3db4d4b30022..c963bc5452ba 100644
+> >> > > --- a/drivers/hwmon/iio_hwmon.c
+> >> > > +++ b/drivers/hwmon/iio_hwmon.c
+> >> > > @@ -8,6 +8,7 @@
+> >> > >  #include <linux/slab.h>
+> >> > >  #include <linux/mod_devicetable.h>
+> >> > >  #include <linux/module.h>
+> >> > > +#include <linux/notifier.h>
+> >> > >  #include <linux/err.h>
+> >> > >  #include <linux/platform_device.h>
+> >> > >  #include <linux/property.h>
+> >> > > @@ -15,7 +16,192 @@
+> >> > >  #include <linux/hwmon.h>
+> >> > >  #include <linux/hwmon-sysfs.h>
+> >> > >  #include <linux/iio/consumer.h>
+> >> > > +#include <linux/iio/events.h>
+> >> > > +#include <linux/iio/iio.h>
+> >> > >  #include <linux/iio/types.h>
+> >> > > +#include <uapi/linux/iio/events.h>
+> >> > > +
+> >> > > +/* Protects iio_hwmon_listeners and listeners' refcnt */
+> >> > > +DEFINE_MUTEX(iio_hwmon_listener_lock);
+> >> > > +LIST_HEAD(iio_hwmon_listeners);
+> >> > > +
+> >> > > +/**
+> >> > > + * struct iio_hwmon_listener - Listener for IIO events
+> >> > > + * @block: Notifier for events
+> >> > > + * @ids: Array of IIO event ids, one per alarm
+> >> > > + * @alarms: Bitmap of alarms
+> >> > > + * @num_alarms: Length of @ids and @alarms
+> >> > > + * @indio_dev: Device we are listening to
+> >> > > + * @list: List of all listeners
+> >> > > + * @refcnt: Reference count
+> >> > > + */
+> >> > > +struct iio_hwmon_listener {
+> >> > > +	struct notifier_block block;
+> >> > > +	u64 *ids;
+> >> > > +	unsigned long *alarms;
+> >> > > +	size_t num_alarms;
+> >> > > +
+> >> > > +	struct iio_dev *indio_dev;
+> >> > > +	struct list_head list;
+> >> > > +	unsigned int refcnt;
+> >> > > +};
+> >> > > +
+> >> > > +/**
+> >> > > + * iio_hwmon_lookup_alarm() - Find an alarm by id
+> >> > > + * @listener: Event listener
+> >> > > + * @id: IIO event id
+> >> > > + *
+> >> > > + * Return: index of @id in @listener->ids, or -1 if not found
+> >> > > + */
+> >> > > +static ssize_t iio_hwmon_lookup_alarm(struct iio_hwmon_listener *listener,
+> >> > > +				      u64 id)
+> >> > > +{
+> >> > > +	ssize_t i;
+> >> > > +
+> >> > > +	for (i = 0; i < listener->num_alarms; i++)
+> >> > > +		if (listener->ids[i] == id)
+> >> > > +			return i;
+> >> > > +
+> >> > > +	return -1;
+> >> > > +}
+> >> > > +
+> >> > > +static int iio_hwmon_listener_callback(struct notifier_block *block,
+> >> > > +				       unsigned long action, void *data)
+> >> > > +{
+> >> > > +	struct iio_hwmon_listener *listener =
+> >> > > +		container_of(block, struct iio_hwmon_listener, block);
+> >> > > +	struct iio_event_data *ev = data;
+> >> > > +	ssize_t i;
+> >> > > +
+> >> > > +	if (action != IIO_NOTIFY_EVENT)
+> >> > > +		return NOTIFY_DONE;
+> >> > > +
+> >> > > +	i = iio_hwmon_lookup_alarm(listener, ev->id);
+> >> > > +	if (i >= 0)
+> >> > > +		set_bit(i, listener->alarms);
+> >> > > +	else
+> >> > > +		dev_warn_once(&listener->indio_dev->dev,
+> >> > > +			      "unknown event %016llx\n", ev->id);
+> >> > > +
+> >> > > +	return NOTIFY_DONE;
+> >> > > +}
+> >> > > +
+> >> > > +/**
+> >> > > + * iio_event_id() - Calculate an IIO event id
+> >> > > + * @channel: IIO channel for this event
+> >> > > + * @type: Event type (theshold, rate-of-change, etc.)
+> >> > > + * @dir: Event direction (rising, falling, etc.)
+> >> > > + *
+> >> > > + * Return: IIO event id corresponding to this event's IIO id
+> >> > > + */
+> >> > > +static u64 iio_event_id(struct iio_chan_spec const *chan,
+> >> > > +			enum iio_event_type type,
+> >> > > +			enum iio_event_direction dir)
+> >> > > +{
+> >> > > +	if (chan->differential)
+> >> > > +		return IIO_DIFF_EVENT_CODE(chan->type, chan->channel,
+> >> > > +					   chan->channel2, type, dir);
+> >> > > +	if (chan->modified)
+> >> > > +		return IIO_MOD_EVENT_CODE(chan->type, chan->channel,
+> >> > > +					  chan->channel2, type, dir);
+> >> > > +	return IIO_UNMOD_EVENT_CODE(chan->type, chan->channel, type, dir);
+> >> > > +}
+> >> > > +
+> >> > > +/**
+> >> > > + * iio_hwmon_listener_get() - Get a listener for an IIO device
+> >> > > + * @indio_dev: IIO device to listen to
+> >> > > + *
+> >> > > + * Look up or create a new listener for @indio_dev. The returned listener is
+> >> > > + * registered with @indio_dev, but events still need to be manually enabled.
+> >> > > + * You must call iio_hwmon_listener_put() when you are done.
+> >> > > + *
+> >> > > + * Return: Listener for @indio_dev, or an error pointer
+> >> > > + */
+> >> > > +static struct iio_hwmon_listener *iio_hwmon_listener_get(struct iio_dev
+> >> > > *indio_dev)
+> >> > > +{
+> >> > > +	struct iio_hwmon_listener *listener;
+> >> > > +	int err = -ENOMEM;
+> >> > > +	size_t i, j;
+> >> > > +
+> >> > > +	guard(mutex)(&iio_hwmon_listener_lock);
+> >> > > +	list_for_each_entry(listener, &iio_hwmon_listeners, list) {
+> >> > > +		if (listener->indio_dev == indio_dev) {
+> >> > > +			if (likely(listener->refcnt != UINT_MAX))
+> >> > > +				listener->refcnt++;
+> >> > 
+> >> > I dunno for the above to ever happen :).
+> >> 
+> >> Well, I can remove it if you like.
+> >> 
+> >> > And as Andy stated, let's just use proper refcount APIs.
+> >> 
+> >> No point in using atomic ops if they are only accessed under a mutex.
+> > 
+> > Not the point... If there are proper APIs for handling things like this, not sure why
+> > not using and then coming up with things like the above? And the same goes to the
+> > release path.
+> 
+> The API is for doing reference counts *atomically*. If you do not need
+> atomic reference counting, then it is the *wrong* API. I suggest reading
 
-First of all, please do not top-post!
+Well, It won't make your code wrong. It's just about re-using what we have already.
+But my main complain was about having your own saturation checks in here.
+I also dislike the release path where you do have to explicitly check for 0 to
+call the cleanup API. That is all handled already. Not to mention that it is a fairly
+common pattern to use these APIs even if you don't really __need__ it's atomicity. 
 
-> Thank you for your reply. I apologize for the confusion regarding the
-> PNP VID assignment - you are absolutely correct that "BMI0260" is not an
-> official Bosch PNP ID. Let me provide a more detailed context.
->
-> GPD devices originally used BMI160 sensors with the "BMI0160" PNP ID.
-> When they switched to BMI260 sensors in newer hardware, they reused the
-> existing Windows driver which accepts both "BMI0160" and "BMI0260" IDs.
+> the block comment at the beginning of refcnt.h to see the sorts of
+> contortions it has to go through because it is an atomic API. Since we
 
-This part is missing in the commit message.
-But the question is how many DSDTs we know that are using it?
-I have checked
+And? It's very well hidden in the API... This is also not a fastpath at
+all so performance is also not a concern AFAICT.
 
-- https://www.catalog.update.microsoft.com/Search.aspx?q=3Dbosch%20BMI0260
-  (no results)
+Up to the maintainers anyways but I cannot say I agree with it. So, I
+guess we can agree in disagreeing :)
 
-- duckduckgo.com gives many links, one of which is interesting, i.e.
-  https://treexy.com/products/driver-fusion/database/sensors/bosch/accelero=
-meter/
-  that gives the list of the IDs in I assume Bosch issued drivers.
-
-Can you find the link to the official Bosch sensor driver for this
-family of sensors with the ID list provided (line on that link I
-found)?
-This may give us a reference and actually make it more clear in the
-future (also this makes an evidence for these IDs to be
-official which I was asking for during review of
-https://lore.kernel.org/lkml/20241020220011.212395-1-justin@justinweiss.com=
-/.
-
-> Consequently, they kept "BMI0160" in DSDT tables for new BMI260 devices,
-> causing driver mismatches in Linux.
-
-No doubts.
-
-> Current Situation:
->    1. GPD updated BIOS v0.40+ for newer devices to report "BMI0260" for
-> BMI260 sensors to avoid loading bmi160 driver on Linux. While this isn't
-> Bosch's VID:
->    2. Bosch's official Windows driver uses "BMI0260" as a compatible ID
-
-Yeah, please provide a link.
-
->    3. The ID "BMI0160" already exists in mainline (drivers/iio/imu/bmi160=
-)
-
-Yes, I know, and that is a problem, but we can't solve it as that boat
-already sailed.
-
->    4. We're seeing real devices shipping with "BMI0260" in DSDT
-
-Can you list them in the commit message?
-
-> Given the challenges we've faced in communicating with GPD regarding
-> Linux support, it seems unlikely that we can push for another change;
-> they are solely focused on ensuring compatibility with Bosch's official
-> Windows driver. Unfortunately, I do not have the means to contact Bosch
-> and urge them to abandon the use of these non-standard IDs.
->
-> Given existing devices use "BMI0260" and Windows drivers validate this
-> ID pattern, I propose temporarily adding it to bmi270_acpi_match as a
-> compatibility measure. This would immediately benefit already existing
-> users.
-
-Right, but the problem with the fake IDs that already existed in the
-devices on the market is the justification when adding them to Linux.
-I also request to have a communication between vendors of the device
-(HW) and platform that uses that HW with a fake (wrong) ID to make it
-clear that this is a clear abuse of the ACPI specification. And next
-time they should be aware of this.
-
-> I'm happy to provide DSDT excerpts from GPD Win Max 2 2023 devices
-> showing the "BMI0260" declaration if needed.
-
-Yes, this is a must (but not limited to, see above what else is required).
-
-> Thank you for your time and guidance.
-
-> =E5=9C=A8 2025/7/31 04:57, Andy Shevchenko =E5=86=99=E9=81=93:
-> > On Wed, Jul 30, 2025 at 2:56=E2=80=AFPM Cryolitia PukNgae via B4 Relay
-> > <devnull+liziyao.uniontech.com@kernel.org> wrote:
-> >>
-> >> From: Cryolitia PukNgae <liziyao@uniontech.com>
-> >>
-> >> Some GPD devices ship a buggy firmware that describes on-device BMI260
-> >> with ACPI ID "BMI0160". Since this is fixed in BIOS update v0.40,
-> >> let's match the correct ID to detect the device. The buggy ID "BMI0160=
-"
-> >> is kept as well to maintain compatibility with older firmwares.
-> >
-> > No, it's not true. See below why,
-> >
-> >> ---
-> >> Some GPD devices ship a buggy firmware that describes on-device BMI260
-> >> with ACPI ID "BMI0160". Since this is fixed in BIOS update v0.40[1],
-> >> let's match the correct ID to detect the device. The buggy ID "BMI0160=
-"
-> >> is kept as well to maintain compatibility with older firmwares.
-> >>
-> >> Link: http://download.softwincn.com/WIN%20Max%202024/Max2-7840-BIOS-V0=
-.41.zip
-> >>
-> >> [1]. See the update nodes in the archive file above
-> >
-> > Yeah... I think you need one more attempt to fix it right.
-
-It looks like BOSC0260 is also listed in the driver. Why can't you use that=
- one?
-
-...
-
-> >>   static const struct acpi_device_id bmi270_acpi_match[] =3D {
-> >>          /* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
-> >>          { "BMI0160",  (kernel_ulong_t)&bmi260_chip_info },
-> >
-> > Unbelievable! How is the above supposed to work? Do we have DMI quirks
-> > in both drivers (bmi160 and bmi270)?
-> >
-> >> +       /* GPD Win Max 2 2023(sincice BIOS v0.40), etc. */
-> >> +       { "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
-> >
-> > For the record this is incorrect ACPI ID, nor PNP ID for Bosh, unless
-> > I missed that https://www.bensonmedical.com/ is bought by Bosh or part
-> > of the groups of the companies.,
-> >
-> >>          { }
-> >>   };
-> >
-> > Can you work with Bosh to resolve this as soon as possible and use a
-> > real Bosh ACPI ID (BOSCxxxx) or PNP ID (BSGxxxx)?
-> > Also, each ACPI ID adding patch (when it's incorrect) must provide a
-> > DSDT excerpt in the commit message to show this. Ideally this also
-> > should be confirmed by the vendor of the device (GPD) that the ID is
-> > incorrect and a correct one needs to be used.
-
-
---=20
-With Best Regards,
-Andy Shevchenko
+- Nuno Sá
 

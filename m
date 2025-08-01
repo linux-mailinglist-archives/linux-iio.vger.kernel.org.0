@@ -1,112 +1,199 @@
-Return-Path: <linux-iio+bounces-22176-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22177-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23BEB18917
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 00:02:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B73B18928
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 00:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD335AA462D
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Aug 2025 22:02:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C7BA5A1EBF
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Aug 2025 22:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27402264CE;
-	Fri,  1 Aug 2025 22:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DF522A4F1;
+	Fri,  1 Aug 2025 22:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipvrn3ZA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fb2ksHyC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA488207E03;
-	Fri,  1 Aug 2025 22:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BA417DFE7;
+	Fri,  1 Aug 2025 22:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754085759; cv=none; b=fB5h9yrFU4QmExzbEbXIy9On2nyX28J1Ff5bV7Dj8kYQ0GOw2Q24L0SRtQhBdhNGtArXquBwGTNfZ0UV0RYadAWraiGX+sdgD4+aQHFXe7vvAwqkWwjqimF3uHs7s7O9a4+U4oYGGkL2IyzJTHtNxuxgVqjxF4dWYvDhSQtoTyA=
+	t=1754086475; cv=none; b=vBsjgyFA8P3GYOHmg/pWi2ambhLMmlcLpO+vSGYKirqToCQuuUy2Eu8GQGDFvz1/9OQAxvk9UqCz5bEcLmgUNXnLmhn7XVPokcdOX/rCvVj2DenH+zXZgXwB+R9Psv5P2hG2PO7FyKLyRro0CnGXZzRcLruEks9nbxz2ULWsU4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754085759; c=relaxed/simple;
-	bh=6shhsmOa9537nSzALzaClYTzvSQ041r/HPWfbFTrzu4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dXKYUDSUGgpRnf5ojHouu4tXMZLHSWtVclRXwWnmi7uV/aCiPrPdZV/a3JB09dUo9xhY6TZGotlQMB9SpSUY6O1z5zCbKSsF61vOLPW424UKKxfo5wP1vnlVV2OyesbAMwol0Zl2iZGld5tu/VJ+CumxMWmmbqx9SuBLNZKpH+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipvrn3ZA; arc=none smtp.client-ip=209.85.218.49
+	s=arc-20240116; t=1754086475; c=relaxed/simple;
+	bh=6jFFp2TF2ORPTUkoemrBDFo+C640qqrBvWnhcj9YQgk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MNALiS2nRIVdHHEiu0A2er3togetpDB52k3YCXfILo/uiRKG25igS97pQhiveOYDzsybrrPdGQUZfh/uQ0u84wMjR6fiW8FJKE6AlXccltJD08PudNJtHGhrVsE+tqjCIRki8AJioYi6Jbvelb3DFUvKj4khn56V/T+0RolS0Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fb2ksHyC; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-af93bcaf678so100808066b.0;
-        Fri, 01 Aug 2025 15:02:37 -0700 (PDT)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2405c0c431cso27378695ad.1;
+        Fri, 01 Aug 2025 15:14:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754085756; x=1754690556; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6shhsmOa9537nSzALzaClYTzvSQ041r/HPWfbFTrzu4=;
-        b=ipvrn3ZALX7GrY3ZFvq50CivTK1DkI4Dn1Pj5lZ5tShASvoErQiAoSn9jLaf0IH0tl
-         RczuRH87s+Qw5AHR/YkED8nOxlTVQb4yDSfLMkUGb0RTTQiiWun4UsfuFdRo58dB9v9t
-         Rl5SWaS1u/nzwhsTc58tqPXbLA3hE9emfk7gOmgzxBHHdvMToz7hfb3bWotWVvwnElMs
-         U7BJ2uKsl7/Is3XYKBHmlHpl3oro521Ncb+fGSNmNpfQnmkobKTYAumllB1K5DAvZGeC
-         IGA/pP6zGwKgC6cOAt5LGROYKQTl2cugol+Bc5BqQbmyRw4tT4uU6KTO5kMIZN18LGqq
-         gAXw==
+        d=gmail.com; s=20230601; t=1754086473; x=1754691273; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ka10QAcpnp+/cqg6oNfjmwxtyofLve/81RK2ixTruYE=;
+        b=Fb2ksHyCJzFmShK/zYVOPBCaCbtQTPi/hvzYsFdCdRu1Ex9UFOq2UodHCN2fVZsD/3
+         eWiwIq3BA0OSG9iOgZpXVtThAJWf1fSFFRywjMKeQL5/4cFZH1U8YhxRANQV/oOOEEwB
+         BYKlm7EBryHbovOtTWuc6RNvSdjmHD+9bObVQ9z2nRTPTpr0+T4L5h789vEblZM+VKtS
+         KV/ze3JxvuIntLAaN4rgaX0GoowU7vGdtd5n8jBbp23+5ffNH2xOQWYQ+aalkT2IoNCa
+         TQwOVB2cnKRe3WaAnAhMT0QX2WXfLQFx4NVk/jRp72ttFx25DuzT/xOAZRgNdpgYIKLJ
+         OocA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754085756; x=1754690556;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6shhsmOa9537nSzALzaClYTzvSQ041r/HPWfbFTrzu4=;
-        b=mhZk5LoI2vDjjgDzj1Ay8sW8Rqcho9EPvp88o2F+R894+utYScITsAiq3xO31pwoUE
-         SaJJ6d8Yuw1N7wndkzhLUgmHwakp6/TC8IsxjHLsfqltfHGO543gA3gtYV/es597VmqY
-         7tv/oSOCvGYT4Xb/M79gxZOhNu4AhLt+cICkvN5d3qC07lEhiwOhWLRFHyz+yUng54zN
-         sLfBFr9ibNueOJhBu6tLjAf1eGMsywPcpm6lQ+XraNE94nOn+Hws0DY7wleyKnGc58pY
-         ygu5mJUccxJ37+ueljDyfdmAo28jwH1VrDxXCokOSbn4ST4YbHVp8E1KtOlP5SinX8jB
-         KT/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVrf1ybnSRP5u7FLjb3U60kYMZc8qB8lOxQkPecDqTAgWh5RqMiiDwlukxjyIwI8Ye7aL7ZcYKJvcZMwebn@vger.kernel.org, AJvYcCXGRyjDP7Ap48D09LaxrHp1q5as+fdl9tbzGiqOyRmn9yjiMGuklSK3GU85NefVItD4k5I9ip2d3bI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZt9/KWvM4iU8/mWvUi3jK3o6KpBt22XIvAe0h1xTVgUcQ69B/
-	gg70sCiHwVXYgFiGTQ66/AAZgZGgwuCswn+MfhSfNi7DtRKjBE96ZcqJKYn5pNMs/xga5ACu2Vh
-	TT2dadnH4kF4UCGD+sG5nhZ2wFCxZ2UM=
-X-Gm-Gg: ASbGncvPNi5cy2etDZ1FBJotFUH617FNMh+VrEyoHcOSPYJwoBeAWNElgRypDq/MasN
-	CK3nuGvNrHjABm3iJH02o6ZKHK46qniBgNHaDYi0fhz0XC01RLhq5D2KBZwu5TCutPBNYkNOcKz
-	EIhyeCzU3RlcOOkyxvGCXQX7Q13nTOUsF1x6LztM1P5+ST1HcmQmv2qtTEJOTEwf4+PpPrN8h6P
-	ATlBG8Log==
-X-Google-Smtp-Source: AGHT+IEOrjdBS8qR0cLal4YE8OYocdcEucADefhnUSyEUlqAphqAR6aw+RfmQdz332wyWSHXM7HhYlhvxMmpogk/5mA=
-X-Received: by 2002:a17:907:7f0f:b0:ae0:db23:e3e3 with SMTP id
- a640c23a62f3a-af940017c8dmr157691766b.16.1754085755835; Fri, 01 Aug 2025
- 15:02:35 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754086473; x=1754691273;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ka10QAcpnp+/cqg6oNfjmwxtyofLve/81RK2ixTruYE=;
+        b=mr9I0JqCbAs/RzF/jw++xpZlcKk/gwgt/rx5o2ywch8t/0T2GXTKhE6cjgUETdIw7x
+         GUSCYsSOkGWTJTekEiUN9PTHbi2tnhbzSH1ufjGXf4PaXf+vuYhb8s/vmzLxUlnzmxbu
+         0JyNUmvkgCydhGnDTDK/QDWVJZdqiguLdkbbyUXb4i+6Erw6rqPDwL2bwcpuhnH7xKx8
+         GgPBO1xbGHscvlRwGX+/2xh4kYWjZQreU8KSNefSaLd2hCyF77qKPFqv3Xabw8y6xjOl
+         knD7milk0uD9jkQvUcqIwWQbp9o0OGA7bi+NJQDGKBw2DVPaLLCUw41S9KH8lS7YM6dt
+         OpZg==
+X-Forwarded-Encrypted: i=1; AJvYcCX3mSlz9+gkW6Ih5IcfTDIU+INcBl10huRZSJopsH+yzp7aKZ0oaFGIlVIYK+gK1hmPhNR6aRjjdidxwhor@vger.kernel.org, AJvYcCXJ6dEPhLg3qp5U78HEIsrovMcaJ4Zrda3CvcId5+f5OGH10zc2WV/297Fpb23Rd0l3tdlVdtVnLDQb@vger.kernel.org, AJvYcCXOAFXb/uLm7OUHFLsRBddUrB3ajE9ksSLnb6wVmeCQ02kGNACYrk6eX4nvMVGug/GL32J+0u90xgsJ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0AL0Jzhw0PAoP/Kaqc2QlyZL2IKfQ+dqNarH6maI1P2jgoRyU
+	CQjPIaYa7a1CZpZwUcKetxLgFVk/XZs1C/YXvX4zcq9cugJa7veOCpF/
+X-Gm-Gg: ASbGncudHYJg1HYrUZ2uJW9U/xWDdjqQKEqArTZl+TbmAUnlVsXWVyJ3dPvCP8zJG7S
+	3d4CJHmJnn8UBXJaEsRURSBPKkKfgSN4gn1HkfSTZkh40R1tpvZVULi7NpBvuj/qM/WaXJrHYqD
+	GfOxg7AzFXnkxJkMholPNxoAj9/2oYTz0fku49GUj8z5SfDPoVVF5J0gAV6f5vFb2r4yjvyAden
+	wm/Gmjb3x74LO35eY/63OlxNCmjHUyZrZJS7pwQgM9sU+LXM5ogvjmlROjV6p0zrGG7i8g61j30
+	fGV2ELFktrTIO9CKdzwZ0l/ZDcEgCEfogJtgJWlqMfJuaUTFPidn+s5SqshxEER7oUvQg3tz0BK
+	VvIByhqtt/4Qd7InqJcMeh34rl1xoWjLo1Y2ERUqbsk8M4w==
+X-Google-Smtp-Source: AGHT+IFaBUwtnQp/p9GpecBpVBytui4XP9GVir2TB1oy4UveZJZ7U//s9gPI6sWgitSbxDFIqaxXsg==
+X-Received: by 2002:a17:903:2351:b0:23f:c945:6081 with SMTP id d9443c01a7336-24246fe0988mr13127865ad.31.1754086472747;
+        Fri, 01 Aug 2025 15:14:32 -0700 (PDT)
+Received: from localhost.localdomain ([2804:14d:4c64:81ec:30ba:c1b2:e5d9:eced])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3207eba6f4csm5605047a91.5.2025.08.01.15.14.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Aug 2025 15:14:31 -0700 (PDT)
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+To: jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	conor+dt@kernel.org,
+	krzk+dt@kernel.org,
+	jean-baptiste.maneyrol@tdk.com,
+	robh@kernel.org
+Cc: ~lkcamp/patches@lists.sr.ht,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v4] dt-bindings: iio: pressure: add invensense,icp10100
+Date: Fri,  1 Aug 2025 19:10:00 -0300
+Message-ID: <20250801221424.132305-1-rodrigo.gobbi.7@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1754041258.git.mazziesaccount@gmail.com> <0ed3a1e9346d84d20838e89a531e8d99f95bcb97.1754041258.git.mazziesaccount@gmail.com>
-In-Reply-To: <0ed3a1e9346d84d20838e89a531e8d99f95bcb97.1754041258.git.mazziesaccount@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 2 Aug 2025 00:01:57 +0200
-X-Gm-Features: Ac12FXy2U3nHPM-c1Tv54OHI2hVcb8efeg1MS2GnbFr62Fx-8ffRLi45Z9KvkoY
-Message-ID: <CAHp75VerC+m1XMpZFO6dLp+0HdB1+Xn47on38Mg5AXfDYwWd4A@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] iio: adc: ad7476: Simplify chip type detection
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 1, 2025 at 12:07=E2=80=AFPM Matti Vaittinen
-<mazziesaccount@gmail.com> wrote:
->
-> The ad7476 driver uses a table of structures for defining the IC variant
-> specific data. Table is indexed using enum values, which are picked by
-> SPI ID.
->
-> Having the table and an enum adds extra complexity. It is potentially
-> unsafe if someone alters the enumeration values, or size of the IC data
-> table.
+There is no txt file for it, add yaml for invensense,icp10100
+which is already used in the driver. Also, document other compatibles
+for ICP-101xx family and add invensense,icp10100 as a fallback.
 
-I don't see the problem here. I like the part about converting ID
-tables to use chip_info instead of plain integers, but other than that
-I do not see how enum is worse than the split version.
+Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+---
+On 7/28/25 02:19, Krzysztof Kozlowski wrote:
+> On Sun, Jul 27, 2025 at 09:32:02PM -0300, Rodrigo Gobbi wrote:
+>> +properties:
+>> +  compatible:
+>> +    items:
+>> +      - enum:
+>> +          - invensense,icp10101
+>> +          - invensense,icp10110
+>> +          - invensense,icp10111
+>> +      - const: invensense,icp10100
+> 
+> This does not allow using invensense,icp10100 alone. Try it yourself on
+> DTS - you will see warnings.
+> 
+> You need oneOf, just takek a peak at some random bindings.
+> 
+> Best regards,
+> Krzysztof
+Tested against a dummy dtb/dtbs_check and with dt_binding_check,
+looks ok now.
+Tks and regards.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Changelog:
+v4: allow the fallback to be used alone
+v3: https://lore.kernel.org/all/20250728004039.8634-1-rodrigo.gobbi.7@gmail.com/
+v2: https://lore.kernel.org/linux-devicetree/20250701221700.34921-1-rodrigo.gobbi.7@gmail.com/
+v1: https://lore.kernel.org/all/20250626212742.7986-1-rodrigo.gobbi.7@gmail.com/
+---
+ .../iio/pressure/invensense,icp10100.yaml     | 52 +++++++++++++++++++
+ 1 file changed, 52 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/invensense,icp10100.yaml
+
+diff --git a/Documentation/devicetree/bindings/iio/pressure/invensense,icp10100.yaml b/Documentation/devicetree/bindings/iio/pressure/invensense,icp10100.yaml
+new file mode 100644
+index 000000000000..5d980aa04bb3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/pressure/invensense,icp10100.yaml
+@@ -0,0 +1,52 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/pressure/invensense,icp10100.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: InvenSense ICP-101xx Barometric Pressure Sensors
++
++maintainers:
++  - Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
++
++description: |
++  Support for ICP-101xx family: ICP-10100, ICP-10101, ICP-10110, ICP-10111.
++  Those devices uses a simple I2C communication bus, measuring the pressure
++  in a ultra-low noise at the lowest power.
++  Datasheet: https://product.tdk.com/system/files/dam/doc/product/sensor/pressure/capacitive-pressure/data_sheet/ds-000186-icp-101xx.pdf
++
++properties:
++  compatible:
++    oneOf:
++      - items:
++          - enum:
++              - invensense,icp10101
++              - invensense,icp10110
++              - invensense,icp10111
++          - const: invensense,icp10100
++      - const: invensense,icp10100
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        pressure@63 {
++            compatible = "invensense,icp10101", "invensense,icp10100";
++            reg = <0x63>;
++            vdd-supply = <&vdd_1v8>;
++        };
++    };
++...
+-- 
+2.48.1
+
 

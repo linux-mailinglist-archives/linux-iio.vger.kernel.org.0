@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-22182-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22183-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3042DB18B22
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 09:45:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DABEB18B4E
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 10:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8BC5612BF
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 07:45:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 395FC3BE03D
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 08:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B6E2E3701;
-	Sat,  2 Aug 2025 07:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4DE1EF36B;
+	Sat,  2 Aug 2025 08:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSFwOONn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="soCx0QuU"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659D93D6D;
-	Sat,  2 Aug 2025 07:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66828F7D;
+	Sat,  2 Aug 2025 08:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754120734; cv=none; b=N6pgLWSj912KfCJXAhFmrGeuW0dTmHaZhG7aRjOflMGT9QUqjrySPNHS67udlAe89g2cXeS5Zb6XZuwpFALmIXrNxd6Klyruev9c9Ks1tth5fipVmAM9SGm978iTpmCIgmmmBde3tq93G+eE1d1Sg764Zp71AGbGu9YvT8/qrRQ=
+	t=1754123066; cv=none; b=G5dSQgWBhJLItE2cD8ekeC+91appCHYJ1kJwtB6XfpH8AYh7Idf+J4ZNM0kSTCUzdceTua8myn5A5eOrFYbLo0iuvXN+h+rOrdtX4aR60NJNmsRblmsdiI6RT9UI6VTMySFMFyO6NvcCLvfF3Y0HTSKot37dxLnNHlSWsJaGDj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754120734; c=relaxed/simple;
-	bh=G6+we1PKrmDbd3zHN872Zvex7W9IVk0rbs92WnI/8W4=;
+	s=arc-20240116; t=1754123066; c=relaxed/simple;
+	bh=9TeLuMIA5QjbrZT+LVxSbbP+nYvNf4qxndO6xNCMFe4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GGN/eQdfjy6vsAPyE+aH6/NF+p3hG/r+/dka1vBywPqHFfMHaPqtSgW+M3r+Tf0s4LwtnifsHZ1RbUo2e29qlf8isWaMmNA26aw2+PudBfl3WCzUtnptkO+HCt46t4B2lfOefQj1bQXmnIlI53s/EHq3/OEj9tLSFm+tYqpZCv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSFwOONn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A71BC4CEEF;
-	Sat,  2 Aug 2025 07:45:31 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=dMsAQE+7op8dQsXjlLV1KXOsRYHR9wrFbLoWegMQIqGeGSjnpwku95TDTeL4NI8oTL4YJZE0ucM7zcT5BpqXaCaibO5aIZ485r3Sq6bDPW0+qRDpD2/5tDtUzmDuLHStec9vsUixeOPjpwlLCB7+b8rE/uQiOEqk9rNZCgCnhzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=soCx0QuU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1BCC4CEEF;
+	Sat,  2 Aug 2025 08:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754120733;
-	bh=G6+we1PKrmDbd3zHN872Zvex7W9IVk0rbs92WnI/8W4=;
+	s=k20201202; t=1754123065;
+	bh=9TeLuMIA5QjbrZT+LVxSbbP+nYvNf4qxndO6xNCMFe4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eSFwOONnkIuqgtmJBQI0+V2j6Bo0YSys28SXfNc7KPRM2OHhpTWD9zL3JFEnGa+wk
-	 zwfs46Omo89b7mbYAPzwJO287OvT9iNgdIgtY/iLKNUzQmYOeChjW7XY4cvVHGjMF8
-	 CpyL6feST5d1jZUPia3TLA6YdqAmOtesgR5kuMFhTR3zKMDtdwgXLLDaM3fRq55TUp
-	 /dMMev8OhweG9mK8skvq+8czmHk9TijyAPlw5k4rCh1oAncKxbvEbJUeo2+WTzNuqJ
-	 V90zGsmSOakxDhAE/b935tsyUPLRACDiipfPife0IUvhqtCWwKCIBAGBHduysBda1c
-	 lYtBRCV8Egi/w==
-Message-ID: <fc15279a-bf3e-4500-8dfc-651e6e2431d9@kernel.org>
-Date: Sat, 2 Aug 2025 09:45:29 +0200
+	b=soCx0QuUW7lmvlGlyAGWnmv849wtOjqu+RvKYqh0+kcHAaDBcugktRGCQWf36nBpZ
+	 x7sSnDT5LDQrWYlNJb7SEBJ/BNR9dUrjf9zz0yAycmRE+0TLQfwECrQ3LYWqdXeTYt
+	 PipVQX9zKtmymYmsqT38cBAPa6N5yTiurHiyj/Mir6NMyI3XKd8Q4TDOecska7uS1a
+	 W4b3vJLF/fIPA7COYobmyLl7nZ1mJGw3HOJqP1ItGzLmAJ7Rt+Z8e9oKdH1hHhedZr
+	 7tCn5d35NUvdNISBkQEpVMJheX+UOfa3sNqt9RzFrskXK8xiAaM3JYwqgivQM6tyHl
+	 uP3TXiZpov+rw==
+Message-ID: <4033d554-c537-4124-8a0f-24875ff9c2af@kernel.org>
+Date: Sat, 2 Aug 2025 10:24:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,17 +50,13 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: magnetometer: document Infineon
- TLV493D 3D Magnetic sensor
-To: Dixit Parmar <dixitparmar19@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250802-tlv493d-sensor-v6_16-rc5-v2-0-e867df86ad93@gmail.com>
- <20250802-tlv493d-sensor-v6_16-rc5-v2-2-e867df86ad93@gmail.com>
+Subject: Re: [PATCH v2] dt-bindings: iio: proximity: Add Lidar-lite-v2
+To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, robh@kernel.org,
+ krzk+dt@kernel.org, jic23@kernel.org, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, conor+dt@kernel.org, mranostay@gmail.com
+Cc: ~lkcamp/patches@lists.sr.ht, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20250801224112.135918-1-rodrigo.gobbi.7@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,33 +102,88 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250802-tlv493d-sensor-v6_16-rc5-v2-2-e867df86ad93@gmail.com>
+In-Reply-To: <20250801224112.135918-1-rodrigo.gobbi.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 02/08/2025 08:44, Dixit Parmar wrote:
-> Document the bindings for Infineon TLV493D Low-Power 3D Magnetic Sensor
-> controlled by I2C interface. Main applications includes joysticks, control
-> elements (white goods, multifunction knops), or electric meters (anti-
-> tampering).
-> Drop duplicated entry for infineon,tlv493d from trivial-devices.yaml as
-> its documented in infineon,tlv493d.yaml now.
+On 02/08/2025 00:39, Rodrigo Gobbi wrote:
+> Move existing ABI documentation from trivial to
+> a dedicated binding file since Lidar is not a trivial
+> device considering power-enable and mode control pin.
 > 
-> Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
-> Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+> Also, add a fallback compatible for v3, which has the
+> same pinout and is already supported by the driver.
+
+Please wrap commit message according to Linux coding style / submission
+process (neither too early nor over the limit):
+https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
+
+
+You add completely new compatible grmn,lidar-lite-v3 and nothing in
+subject or commit msg explains that. Actually subject is completely
+opposite - says v2, not v3.
+
+
+> 
+> Fixes: b257c1a45e99 ("iio: pulsedlight-lidar-lite-v2: add lidar-lite-v3 property")
+
+What is being fixed? I already asked to describe the issue and I do not
+see here issue being fixed. You add new stuff mixed with something else.
+
+See submitting patches how to organize your patchset.
+
+
+> Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
 > ---
->  .../iio/magnetometer/infineon,tlv493d.yaml         | 45 ++++++++++++++++++++++
->  .../devicetree/bindings/trivial-devices.yaml       |  2 -
->  2 files changed, 45 insertions(+), 2 deletions(-)
+> I was unsure about sending a new v0 patch for this or send a v2. To avoid losing
+> the lore about this topic, I`m sending a v2. If this is not correct, I can send a
+> new patch later.
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml
-> new file mode 100644
-> index 000000000000..ebcf29067a16
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml
 
 
-Filename should match compatible. Otherwise a1b6 is just confusing.
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - grmn,lidar-lite-v3
+> +          - const: pulsedlight,lidar-lite-v2
+> +      - const: pulsedlight,lidar-lite-v2
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  power-gpios:
+
+Please use standard gpio naming, see gpio-consumer-common.yaml.
+
+> +    description: GPIO that can be driven low to shut off power to the device.
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vdd-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        proximity@62 {
+
+lidar@
+
+> +            compatible = "grmn,lidar-lite-v3", "pulsedlight,lidar-lite-v2";
+> +            reg = <0x62>;
+> +            vdd-supply = <&vdd_5v0>;
+> +        };
+> +    };
+
 
 Best regards,
 Krzysztof

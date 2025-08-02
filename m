@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-22205-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22206-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE81B18F72
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 18:45:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 967DFB18F73
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 18:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCE4B17EEF9
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 16:45:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57A40AA1BC0
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 16:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FFB242D9C;
-	Sat,  2 Aug 2025 16:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29C324888A;
+	Sat,  2 Aug 2025 16:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d+3R4BrG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dRWTI39v"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87BC256D
-	for <linux-iio@vger.kernel.org>; Sat,  2 Aug 2025 16:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E1B235047
+	for <linux-iio@vger.kernel.org>; Sat,  2 Aug 2025 16:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754153140; cv=none; b=V2zVC0c3DRj0XE74GQssyeblHwYCw1Yyk1BqYOyKNsaTyc8QXoE655ioxTcyiHbYuWnIMuaiqTZL4mEL9luTd5tlMEnv6BORkR7qpMv4ao4Gt4+Ikmp7RihKn+9RT3zakh6CCAmkorCGXyIn6h/lp3El7DaQFOV365mUY1R6Xbc=
+	t=1754153147; cv=none; b=uI/hEkO9EYZgoK34mUs2CG6bUqhoXpt0926e6nJP8NohGRFxs8V/DExf705eRPWnWU5sCGXX4NfgLLnIhqpkiZFAJkmNMcvW1WT4+LjIsBX3i3T7frTJHTjBGOX69DjQDeh57jZwa4GgY6k1WZL1NowLprEPA9zJp7xIj34dqrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754153140; c=relaxed/simple;
-	bh=osW8ZX+XLjWRemlEKX2ihnIdD3p/g2QfMP9fS5+ID5E=;
+	s=arc-20240116; t=1754153147; c=relaxed/simple;
+	bh=JCWRSn1njYW7+7qgPea5gmUJ5Ak6qBCk3Qm6xzogczo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ygh13nRoQ8Ly6S+9NDYvePZBaDDI0ic5XTbAJexOPhzY8N2M++6lSPVrLbghJ1n0PMAwQGVxVzdMIcduIOZof9CBtDGzUFwKd4j+jn2JWil4gz/ks5vLkPUUZNLoCGr9rJ8r00OxFrAsfG+oMHwE5/as5DmvUrCOwQ5F2rOtE9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d+3R4BrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EBFC4CEEF;
-	Sat,  2 Aug 2025 16:45:34 +0000 (UTC)
+	 MIME-Version; b=Fjcn8jl8FspBNXOGSQCWmmyBJMETfQAGqLakMPYSNg4XPgYHfuDkmGHbZq84oCZ+EebyeB8YbB6sXsTxkyDiQ+9aa/ZpNjkhRbQJAZ57P0rIMROe03DpKmFjjyuyLxh+o7/wXQvKppUB7UKpGS3I4Jh4gz7iLPavGSlFeHrJ1HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dRWTI39v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B828C4CEEF;
+	Sat,  2 Aug 2025 16:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754153140;
-	bh=osW8ZX+XLjWRemlEKX2ihnIdD3p/g2QfMP9fS5+ID5E=;
+	s=k20201202; t=1754153147;
+	bh=JCWRSn1njYW7+7qgPea5gmUJ5Ak6qBCk3Qm6xzogczo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+3R4BrGrboPCp3p7Phk1CpmLNmxY6qLai3XC1MQthR1UpGLgSQKXvp1m8O2Qswfo
-	 Uvvzt2R6fY9Irt2KDNAyz3v/jJqceawhJKVry5HNkVFItHm4J3hH9LN29oXpbRsB1f
-	 lT04cjD5ltzl7xtLCWPNt9TMcxeao+aYS5jsjxdJ/3b7TyuezN0BDQ762zv9QL/TVT
-	 3KgP5ZQMMPC7RiSjFHxUtymngOrQatVe5nvQq33+ggXEUjgz+Hvn2kzpundtk0+DNC
-	 J7tcTTGpEJyCHXmaJv9SlxLN2cpix7NOw4WmJCXRSGxsSeBaLp4g9oV6T+YrKIT1y9
-	 /YLQxVdq0L/4g==
+	b=dRWTI39v/dk72dgFyo2nqPHnzKcWsoTsk4N3uYGoFn7OQRwRddzTqf2sUEBlaVEKZ
+	 WxNuRlf/uykgYGJA1crwe+avtpIcl8mENBgyj+mi6vn3y2YKf3g7d7iiKPelaPiKEM
+	 FaF5beA/Y63xPI1c3uTGfapm/j1M9BcF2005dF2dhMPZzaYHLbJIsc3phH4LkZFCXP
+	 /9rH5ymzN84RszlETdF5XGy2FvxDcG3WYQQ8FCVyzS4npJHdueRW4+sWfuoD9+x4RS
+	 0p1VBofRmrulpW/5VZdzhKTleo4Ddm74AeFcha5Wr0FvKS+TwxGxITmyRVfQDe8SLQ
+	 Y30Y4Wew/rZZg==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
@@ -57,9 +57,9 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>,
 	Gwendal Grignou <gwendal@chromium.org>,
 	Christian Eggers <ChristianEggersceggers@arri.de>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 07/16] iio: light: acpi-als: Use iio_push_to_buffers_with_ts() to allow runtime source size check
-Date: Sat,  2 Aug 2025 17:44:27 +0100
-Message-ID: <20250802164436.515988-8-jic23@kernel.org>
+Subject: [PATCH 08/16] iio: light: adjd_s311: Use iio_push_to_buffers_with_ts() to allow source size runtime check
+Date: Sat,  2 Aug 2025 17:44:28 +0100
+Message-ID: <20250802164436.515988-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250802164436.515988-1-jic23@kernel.org>
 References: <20250802164436.515988-1-jic23@kernel.org>
@@ -73,27 +73,52 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This function allows for runtime detection of undersized storage which
-can be non obvious due to the injection of a timestamp within the helper.
+Also move the structure used as the source to the stack as it is only 16
+bytes and not the target of an DMA or similar.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Gwendal Grignou <gwendal@chromium.org>
 ---
- drivers/iio/light/acpi-als.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/light/adjd_s311.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/light/acpi-als.c b/drivers/iio/light/acpi-als.c
-index 511ed37e783e..d5d1a8b9c035 100644
---- a/drivers/iio/light/acpi-als.c
-+++ b/drivers/iio/light/acpi-als.c
-@@ -167,7 +167,7 @@ static irqreturn_t acpi_als_trigger_handler(int irq, void *p)
- 	if (!pf->timestamp)
- 		pf->timestamp = iio_get_time_ns(indio_dev);
+diff --git a/drivers/iio/light/adjd_s311.c b/drivers/iio/light/adjd_s311.c
+index cf96e3dd8bc6..edb3d9dc8bed 100644
+--- a/drivers/iio/light/adjd_s311.c
++++ b/drivers/iio/light/adjd_s311.c
+@@ -54,10 +54,6 @@
  
--	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan), pf->timestamp);
- out:
- 	mutex_unlock(&als->lock);
+ struct adjd_s311_data {
+ 	struct i2c_client *client;
+-	struct {
+-		s16 chans[4];
+-		aligned_s64 ts;
+-	} scan;
+ };
+ 
+ enum adjd_s311_channel_idx {
+@@ -120,6 +116,10 @@ static irqreturn_t adjd_s311_trigger_handler(int irq, void *p)
+ 	struct adjd_s311_data *data = iio_priv(indio_dev);
+ 	s64 time_ns = iio_get_time_ns(indio_dev);
+ 	int i, j = 0;
++	struct {
++		s16 chans[4];
++		aligned_s64 ts;
++	} scan = { };
+ 
+ 	int ret = adjd_s311_req_data(indio_dev);
+ 	if (ret < 0)
+@@ -131,10 +131,10 @@ static irqreturn_t adjd_s311_trigger_handler(int irq, void *p)
+ 		if (ret < 0)
+ 			goto done;
+ 
+-		data->scan.chans[j++] = ret & ADJD_S311_DATA_MASK;
++		scan.chans[j++] = ret & ADJD_S311_DATA_MASK;
+ 	}
+ 
+-	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan, time_ns);
++	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan), time_ns);
+ 
+ done:
  	iio_trigger_notify_done(indio_dev->trig);
 -- 
 2.50.1

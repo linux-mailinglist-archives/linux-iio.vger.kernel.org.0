@@ -1,123 +1,151 @@
-Return-Path: <linux-iio+bounces-22184-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22185-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76EDB18B52
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 10:25:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7409CB18B7B
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 10:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02D8C564C98
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 08:25:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2702B7A2B46
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Aug 2025 08:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355131F09AC;
-	Sat,  2 Aug 2025 08:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59B71FECAF;
+	Sat,  2 Aug 2025 08:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GHYqvWuV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AAPLjFaE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC6A347DD;
-	Sat,  2 Aug 2025 08:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60F7188CC9;
+	Sat,  2 Aug 2025 08:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754123117; cv=none; b=uIMRdyAU58KCCPDPLDw2p+7rqidXZMQ86IG+i3UUtnfG0PwjyVpSTFv1EtEZtOzwdaGQ7j7cJZI1eJOVezzFH9BmtuyQLkkeOl/qjRe0BskKu+t5NHFOj4HcQ/u456dhYhUR6MOa8ERqMBYFmhfxA1hqsb0S9k7n+mqINSi//oI=
+	t=1754124850; cv=none; b=S8Pxk6EPz5y3cv56j86bK05MEAjGi+Lwvr3oQkZ6vE1+uc9eebV9A6hROw+fdG2ceKmp7mU45XFLtFCfT9Lm6eZvuFv5LfPgqD4rpUfTbLZ/qrZDyKwlZ1z09H9P4l/pXg3Ffh/SFzjMFrXjZfyA1V8kpowPdVwZNIGUn8kFW9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754123117; c=relaxed/simple;
-	bh=MffUBgPkii/m0LOYqFXnsXwddGM9bwCjWLp57BEWPbo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l1oKoWJBgVJUFDNEqOmonUuA9ncQH45Twm+4LEk05n0qXQQIKyED26lzgXeXIPcDbQXqVWpphKXAMPUxA/2eZWfwur+vwVppQkSgXnKFbGVps6TLNEU2cFAKXbjAs4HUFSNHUq1DPYwww7ZGb/joo+GjJhJBiBlvIyax02rDiEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GHYqvWuV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75764C4CEEF;
-	Sat,  2 Aug 2025 08:25:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754123116;
-	bh=MffUBgPkii/m0LOYqFXnsXwddGM9bwCjWLp57BEWPbo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GHYqvWuVPRaQ42Wpwv8/rSMaXI9M1C3OO/WOtGZu/DhK0oYeWYRfhBHiTs9vdHZqJ
-	 C8z05Zoe6sMwqMivAMjT7GQ1OeVtjWZgd3IGrBphLl+v9dNOYgatjuU4lgg3nFNTZt
-	 BLBNAhzJAUaY2lBYL7rPo0hLboLinOavTawx962vkdLFlPg+2md3voFV+SbzIZnbS+
-	 HwwS4v6D5uhBCp5I5ZnsvypqH8cUyblSBRU2Lo/VozwjSejlAvDxACNlNETI7JVL8X
-	 6iMZFdh2CpTxLkce9MHx0lMip/HOQIFEX09KFJMJnugcMvCt2qDDfFt3tD8c6oqS5u
-	 UasFLmZF847bQ==
-Message-ID: <5d0dd15b-3fbb-4a1f-a30f-ab4d7c3d01d0@kernel.org>
-Date: Sat, 2 Aug 2025 10:25:11 +0200
+	s=arc-20240116; t=1754124850; c=relaxed/simple;
+	bh=DceKwVjihrPeNuYll4AYwUb826BrPhH9qlfynWqNUqM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FrzXvQ7HINuKCuq4ioSoKCz4OPwbgm8ScJheOA7GsOMmjT3Ta/cp26jaKhtsC8reSP3vw5CC4JTmWC9CCWjq0H6mHL01LtzrYFoI+GmEUUmama2qIupNQqRNFj3TOQQW2hSiKNsLqO/qOFHNX8lei4JUNplg6bwtMpsctgrjjoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AAPLjFaE; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ae3cd8fdd77so375994266b.1;
+        Sat, 02 Aug 2025 01:54:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754124847; x=1754729647; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cU1HBrAjgvLCJiyBijqBt4BoY6iAZYa6lIWj6WSABpM=;
+        b=AAPLjFaEsZiMIBgBxUFMX28OspMENk3JHGCw+gHX4KA+5H/lNdWRi969qOaHTx7R5B
+         MrHvEeICqsw9YberH9EAy/3jxvwF+GNHsQLP7LcW7IfZKA1B3C0hTXz9amF6yF4jkXgv
+         V/miEds43QoQccdZA+P89l+XHbO5dI4zetQrrCd6tdYo5wsFkkvo2l05aGzV6Rw3Ga8i
+         R+UsmVT6Bf8nPIRlGtbUt5coJYhJx7dI9AUWXzcfEBz8glj0xXbeQGj9kwNNnSKLKCQL
+         zd2QkkPNzjGbTJD/8jF2a2KfGiwxDROaYmVlShokIpDl6/sjP0LG6isGip0fEI73b+ph
+         RFLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754124847; x=1754729647;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cU1HBrAjgvLCJiyBijqBt4BoY6iAZYa6lIWj6WSABpM=;
+        b=S6+Jmuse9Rx21XygGldXiVPDbsa7dD7a5UfZJY6bEtlmqUyNPF4TND0z1hTQuX52hp
+         6WJrVGuuwpiDm6XVYGz3O5ckrKfYzrdk8qLW1FPwyQzeJUfyfh3M99r4cgml/KHKakid
+         ZCGlgOslReUwu7brlR5xznfdfNv5G9IZqAumQKD9JeNsEG9q0GxstA1l67DKA3jJOT6+
+         ejVrLyd13dkYTSz8i7VXByBbjL2hlM6WprhFAUoybY8RoRgAOss2DDbg464xY5QwVgZw
+         TUmLuNcoaN1aHoz7yvbsiENJ+YQWLYeEmIScEmDitNl9MQdIauZ3p3QhkrojurEZLffB
+         bF2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU3SL8Z973OmTBli+9itlVOIEyxjKZL2sYwlBOREi7wWBzdmIofuSaR4ks6zfAYzloW3rKY4LHcacmn@vger.kernel.org, AJvYcCUUMRx1druffZsykEymFzE/4VEihcfOFcQBijIAd2PMMezf0WXjB8bTFVJ/Ybe/Tf+hPUfWF+wjDdPv@vger.kernel.org, AJvYcCX8lPcWnzv3JOBLN8GvSm4B5+PY1zIGi4I0EF14hyBjGjwY6iDQ3ixDFU++h87ygRUvaOonvgzCXKdE0kYQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZI/Bp4eJTYaQJVeiJv5U7FTK3yTsWJ4uJcdeaD3g2VJKYlaT5
+	mbz60DY5+WziR2bhOSrE+rUovrv+9pQNEQa+6PhZhPLIaia2dMcHDaOozXOgI+cLQQ63Xw1woS/
+	q6oVeqIM0g+k/AhHfw9XHkW83an7mCQI=
+X-Gm-Gg: ASbGnctTnV0lVatwU/cVAxWDvkz9CxHzTHILuPim6jbeOHWC0UNFkq03dpBtic5Bb4+
+	uaFPDjh2vfBrOyd78qpz8tTf225OK+Q5sB70eW8wP+CcFRwaKDtUVUMDyOovpHwzpX3KoRIwaEw
+	8UkGSkbZQMSATYCaw9W+2lEUNMooEWHF16LWyZ7qhElhCBXfmA2zml5ypkxLt2JPbAwBiNkdYAu
+	DVyiJUAcw==
+X-Google-Smtp-Source: AGHT+IGRQIv8+UsCudF7XcTshc97KPBhqgCTBCwoi4BZGKhvyPN88Z8+rithDAp0yFIHck8losjT/A35Y6AftYjN1sI=
+X-Received: by 2002:a17:907:d8d:b0:ae0:dfa5:3520 with SMTP id
+ a640c23a62f3a-af9401ef899mr234980566b.31.1754124846997; Sat, 02 Aug 2025
+ 01:54:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] dt-bindings: iio: pressure: add invensense,icp10100
-To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, jic23@kernel.org,
- dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- conor+dt@kernel.org, krzk+dt@kernel.org, jean-baptiste.maneyrol@tdk.com,
- robh@kernel.org
-Cc: ~lkcamp/patches@lists.sr.ht, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250801221424.132305-1-rodrigo.gobbi.7@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250801221424.132305-1-rodrigo.gobbi.7@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250802-tlv493d-sensor-v6_16-rc5-v2-0-e867df86ad93@gmail.com>
+In-Reply-To: <20250802-tlv493d-sensor-v6_16-rc5-v2-0-e867df86ad93@gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 2 Aug 2025 10:53:30 +0200
+X-Gm-Features: Ac12FXx8NIF0XC58CyyLB8MuiGbhCHGpnva1k4JAFViKmoM8cv18zU3ke-gEGsM
+Message-ID: <CAHp75Vdc7RB8MG+jYcSxkvD2EY2weZJMnvkbgmqibYGLkcUEBQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] iio: magnetometer: add support for Infineon
+ TLV493D 3D Magnetic Sensor
+To: Dixit Parmar <dixitparmar19@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 02/08/2025 00:10, Rodrigo Gobbi wrote:
-> There is no txt file for it, add yaml for invensense,icp10100
-> which is already used in the driver. Also, document other compatibles
-> for ICP-101xx family and add invensense,icp10100 as a fallback.
-> 
-> Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-> ---
+On Sat, Aug 2, 2025 at 8:44=E2=80=AFAM Dixit Parmar <dixitparmar19@gmail.co=
+m> wrote:
+>
+> The Infineon TLV493D is a Low-Power 3D Magnetic Sensor. The Sensor
+> applications includes joysticks, control elements (white goods,
+> multifunction knops), or electric meters (anti tampering) and any
+> other application that requires accurate angular measurements at
+> low power consumptions.
+>
+> The Sensor is configured over I2C, and as part of Sensor measurement
+> data it provides 3-Axis magnetic fields and temperature core measurement.
+>
+> The driver supports raw value read and buffered input via external trigge=
+r
+> to allow streaming values with the same sensing timestamp.
+>
+> While sensor has interrupt pin multiplexed with I2C SCL pin. But for bus
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+the sensor
+an interrupt
+an I2C
 
-Best regards,
-Krzysztof
+> configurations interrupt(INT) is not recommended, unless timing constrain=
+ts
+> between I2C data transfers and interrupt pulses are monitored and aligned=
+.
+>
+> The Sensor's I2C register map and mode information is described in produc=
+t
+> User Manual[Link].
+
+Replace Link here with 1...
+
+> Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/inf=
+ineon-tlv493d-a1b6-datasheet-en.pdf
+> Link: https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-Use=
+rManual-v01_03-EN.pdf
+
+...and add space followed by [1] here.
+
+...
+
+> Changes in v2:
+> - Drop regmap implementation in favor of using direct i2c APIs to
+>   have uniform communication APIs across the driver.
+
+This I don't understand. I mean the motivation behind this. Usually
+direct I2C communication is used to do some initial checks and
+configuration and rarely for the actuall run-time driver
+functionality. Otherwise it means that the regmap may be used with a
+customised read and write methods.
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

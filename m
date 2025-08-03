@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-22231-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22232-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6759B1951E
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Aug 2025 22:27:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760A8B19522
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Aug 2025 22:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01E1C189292E
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Aug 2025 20:27:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 332A13B54AD
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Aug 2025 20:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698011EDA3A;
-	Sun,  3 Aug 2025 20:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9581A1F099C;
+	Sun,  3 Aug 2025 20:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OImCVZhl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WEl+pZNA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2F01917CD
-	for <linux-iio@vger.kernel.org>; Sun,  3 Aug 2025 20:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1CD1D5CD4
+	for <linux-iio@vger.kernel.org>; Sun,  3 Aug 2025 20:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754252844; cv=none; b=p/WEGyhg2gk85OAdNhppYrKtxgDCoekci4lkm+8I/GjZCFotL+cpDZlQ2T4djg4BAy44/d/az5YWtnxMlHhK/rNz8YYS8oQlg+TGlXhxpowlItyjhmwsJGHDtYE9MmnmcmAduSlqHgO7S4eN62yQn8ZmHpfTBVqYzqxOgwN54JQ=
+	t=1754252972; cv=none; b=Wc3qXVeoDvq7TP3brpLQU6m1yerjjAikYbwmPzYU3OuOBMfi91e3lwErY37F6NGFOh8wYvgAkoYeAzUPGA2a1pcqbVo+6819zYxpy5i2uOPlLQdjAHfpLbFsXxHKTKDrLm7LdZvsghIqixVVqU0lzFvuVH5ZyBP6GB8IOWNKbJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754252844; c=relaxed/simple;
-	bh=XAQIG/U6Uc0FSw+atsdYcwUcJr9ca1Azaa4JDAdoL7A=;
+	s=arc-20240116; t=1754252972; c=relaxed/simple;
+	bh=LtC4bMDve9sQiJSMK6cvoNIP3MJpz04v/H2st0Ut+Qw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=co4eNZAsabyv/mJsQmeJM45c3QIC+8yJYVllBkerWj/HY+eDKXc0PPm53rxYKKF/n/E5fCdx+GTHX0n0kjglh2/KQ/dbRkyzmFvrLv2qaHsRRp1ae9b28UR1wqBap4kXQEIltKGPX/eXy9m8wkSHqsXJCFXGafyh1xFsNzj+E1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OImCVZhl; arc=none smtp.client-ip=209.85.218.48
+	 To:Cc:Content-Type; b=qoTWHyllE9SE3BR5Vac1i4NN5aSvZEHL9PchMxEXU/aIprx2mR73XiePBn7R+PxTU+l+jieBKHIIGMEPj+ebpbH8+g5dGhuORAAEMjuV0N1zbuDRtpiK08kySOF9ZlExyTFOhu9Xcle4TwCcRdufUlE5HK8c6z8tDwD2wrS9Pz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WEl+pZNA; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-af8f5e38a9fso643980966b.0
-        for <linux-iio@vger.kernel.org>; Sun, 03 Aug 2025 13:27:22 -0700 (PDT)
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-61592ff5df8so4518820a12.1
+        for <linux-iio@vger.kernel.org>; Sun, 03 Aug 2025 13:29:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754252841; x=1754857641; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754252969; x=1754857769; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AySg4syVl/wf5ppXcXn0sx0GkXKXDZPNyb2gn/J2Lcs=;
-        b=OImCVZhl4ri9/u2X5iEhTVgF/Hn+Wj5/1fq/6DqmWkKE8ty4XPahaIBljlPXPIYfWg
-         vwFxVRqJm5ctO/z2JiVDXvuqSIdtkTLDpleoyBC/wGZvZ2kzXRvV5+0MhggLJrxjbdSf
-         NV2jmBa42THrQjFNbf9q0HlK+UHvn8kmMmGv8/YNfF+lKLFITML7jKHcpkyuzUc5fGWz
-         b/CxcBrO0lYaFTL7CbNi2hBs+fCoLMSEIO//ceCotqlxDgxANEmQhADvkdVINffn8QQR
-         cQeU1OeenSuMvPZ4QHAKPzCWdofRUdSTVfl/Ljvb+IuncKBd4UkwAOXs0COxbHTmC1cc
-         JgLg==
+        bh=sdiHYqxEQDEy1N9AXAAgjKikNkWoUbVbOnSi9bVBXcA=;
+        b=WEl+pZNAs21M82JyL9tN7Hb/xflQ77GWmP0woxUEi4Vtm+pfBGazK0EogvM+ZapOtz
+         pPS6x85FQFL92Z0/r7Rf6pR2uY33rhRhoxFFCWV0Aw+clFdQBsmW3QRa3pWsNH3rMBT1
+         IK6z9Zt81VgMQshjHr9TuuQJOSQHFpGgWWLYLuDVa/Y339XKxGo76OTfGPJC86ZzFkgw
+         58Klbon9sV1Ua/AJkXGeNkRjB/dMvBxWFoy05gvgJ236TcLUDhC8L1OwI7hykEyP0cGM
+         h7wY5Y1c0IFX7vmStaSClRlGgnePQpiyXKC5pmGvY5+QDJHvuRdEFs1tZ5B0JP4WdIpI
+         umHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754252841; x=1754857641;
+        d=1e100.net; s=20230601; t=1754252969; x=1754857769;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AySg4syVl/wf5ppXcXn0sx0GkXKXDZPNyb2gn/J2Lcs=;
-        b=fFhUTo1N2WMRq58heB/3wepIdgWd/a3afG5RYobgpZo4MmSpIvxVLpCOkFchPr4YzZ
-         g47t8yJoIp1JysTnOuxIeRfZndKBkUxigxTw9Z9ftYGxr6uRstb+BaiwIvRsyAgLuYzK
-         aWXZFxeNgLWc2LqmWyGRhdmbYYGzKX3bjzXepPBkblbPS4/fwEttnxDYmVnTeQfvIgtu
-         Z+YbnGn8DWLy1q2iz2YfcCmLty98SSZWCJYKmXxBAvl2D10gtrQkThFKHcTRIFhrJY7E
-         ir+MH3q98CKgpK2HPAYLC7sWTs6RDZfPtXNe35ikItWQSFL1yq+fM2+f/sGjI670cO08
-         qzuw==
-X-Gm-Message-State: AOJu0Yyt7hzrnlwTjIoDC46pP699ZTZJ1xNrdK2oSaC2/beM9nuMXXqZ
-	xvKwHHSzCadZCa2P6b/0vvjk4xITKRSq/XGbO9WmHwSpUjD50xY6k6bhnhiInsWuZDEjtGK+V+w
-	TC7xramFgEBTVdO6z4qmQtzEkI1p9iuQ=
-X-Gm-Gg: ASbGncsaGUVGbIs4ECrF2+B811DZvh5AVsaZu+KQoU8e5jzfxg6R9kMPAFYpTZbXr94
-	ROk07TxqcrL1//BueaDs/9IZohtxUU48Lc3xkTUYtyw90KHS6l9AfqnbPSHzC2Xq8gvK+xWDLKy
-	pyIjyD/1mwLsym51mZjw5Vps8ZpbQ37Sc0OxxF7n9+qYBSwCMZecgrXS9WXUiv5BChFW4PlW7GG
-	/hfeLYz6g==
-X-Google-Smtp-Source: AGHT+IFN2ruPpX+rF3CSC3fCNb412lYmuHqhuMWiuWtoCdAs9xgtJHMTzjNJTXkuvgnkR3mx/81ySQNtS5IkrjwEqec=
-X-Received: by 2002:a17:906:d554:b0:ad4:f517:ca3 with SMTP id
- a640c23a62f3a-af94003330fmr773758866b.20.1754252840486; Sun, 03 Aug 2025
- 13:27:20 -0700 (PDT)
+        bh=sdiHYqxEQDEy1N9AXAAgjKikNkWoUbVbOnSi9bVBXcA=;
+        b=V5c0tehfj9MlCQg2SIx51vrTD/Qv5mfpwJ1YGNBukKccod8qDHT+Tjsh0lNV7LLQCr
+         YVrHgWALMwnaalH+m6qilJEERXDwy+VOeWi6fkKqHFh3E9lxHK9TayAo/wZuSZzL3sw9
+         FVr2rPV8Acc0p618nQSbFm/1DRgq1QhOVv8PF1MyzAMfz8w5GijD06sheqTCBFgIYrEP
+         b2x/HYeC2Jxqk9OjXzhmhYGT2n0NR7VPG2qIgJVc9xplnfecqfwu1aSPDW+b1hC4ecRK
+         vxX9WSfkYOsDlM+ZhXivhzq8T7o3trm8LSoDnAAMINb56ep2qSYwM1A587/UG/j6yVxL
+         XQMg==
+X-Gm-Message-State: AOJu0Yw1coayzbsROYFSDKsJf+ti3Z8RQbB4qyG0t8AN/LZYeikrMZ1t
+	gxJ5zWWCYXEKuikyibz06rXtv6gEjcLFzL+f09YsoyG6haTJVQsHF8FtHb4fuuGpBURR6Tpfj9+
+	V5gaYa+usqJySzfThR0GnFSL/5FfWH98=
+X-Gm-Gg: ASbGncua8ikVrhd7ewi26vW/kvQcpDBNlphJiS5dIRLL425BPJ74Ei09EB0uWLBiCnp
+	8BBwwSe2yQ0MOGd6prwsaTXFvQ5I/czk1En2QhKsw26lAzQ0IYMynMkviAsjlCLiGNZa5ndzRS8
+	8LEEtyPhDDnPIPQf5xze3RAaT1aMnEXEotkdze/AdUUe94SYFmTRBpe5oMHzs7mMB/6SAnidJU3
+	Q5V7j83noDgmDpoC4GLWExsC3hi7yppjjz2kc00Gg==
+X-Google-Smtp-Source: AGHT+IHm67UAzBcBKDh8qBppIIcJcxDt/Wx9ywht/fLrYo33T5hmUZJGO6FCXhiNMwl2/c+frf0Ya8FmsFD0KocyHb8=
+X-Received: by 2002:a17:906:9f92:b0:ae0:bff9:98de with SMTP id
+ a640c23a62f3a-af9401ff12cmr636371066b.40.1754252969159; Sun, 03 Aug 2025
+ 13:29:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,14 +75,13 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241017233022.238250-1-vassilisamir@gmail.com>
- <20250803140802.36888-1-Achim.Gratz@Stromeko.DE> <20250803140802.36888-4-Achim.Gratz@Stromeko.DE>
-In-Reply-To: <20250803140802.36888-4-Achim.Gratz@Stromeko.DE>
+ <20250803140802.36888-1-Achim.Gratz@Stromeko.DE> <20250803140802.36888-5-Achim.Gratz@Stromeko.DE>
+In-Reply-To: <20250803140802.36888-5-Achim.Gratz@Stromeko.DE>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 3 Aug 2025 22:26:44 +0200
-X-Gm-Features: Ac12FXwNImI-zfymMwzgc7ias5bvoBWOW5XmbnxhZ93gnwUyMKYPGOXVgkF0toU
-Message-ID: <CAHp75VfhzJrPU6E=potYqPDYMbimhOy7edw9U0MfKsYMYwo8Sw@mail.gmail.com>
-Subject: Re: [bmp280 v1 3/6] iio: pressure: bmp280: implement
- sampling_frequency for BMx280
+Date: Sun, 3 Aug 2025 22:28:53 +0200
+X-Gm-Features: Ac12FXykkPGNvqxcwoDngCh80TNHv2FdI3Y2sxI1T-9JQXSAkB2kqsOz-pqHqa0
+Message-ID: <CAHp75VfB0+aZKLmYYq3dYirQE0gXJeqNC2OkMR3s2PEzkT4uLQ@mail.gmail.com>
+Subject: Re: [bmp280 v1 4/6] iio: pressure: bmp280: enable filter settings for BMx280
 To: Achim Gratz <Achim.Gratz@stromeko.de>
 Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
 	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
@@ -92,209 +91,24 @@ Content-Transfer-Encoding: quoted-printable
 On Sun, Aug 3, 2025 at 4:09=E2=80=AFPM Achim Gratz <Achim.Gratz@stromeko.de=
 > wrote:
 >
-> As was already commented in bm280.h:468, sampling_frequency can be
-> emulated on BMx280 devices indirectly via t_standby configuration.
-> Actually implement it to enable this useful feature.  This allows to
-> switch between MODE_FORCED and MODE_NORMAL operation and use the same
-> sysfs reads for both modes.
->
-> The actual sampling frequency depends on the oversampling_ratio
-> settings. In order to not complicate the code too much, the available
-> sampling frequency values are fixed and have been calculated for
-> oversampling_ratio=3D1 on all three channels assuming maximum
-> measurement duration per the data sheet, corresponding to the minimum
-> achievable sampling frequency for the highest measurement speed
-> configuration.
->
-> THe ODR tables for the BM[35]80 devices have been extended to allow
-> for MODE_FORCED operation also and the handling of the table values
-> adapted accordingly.
->
-> Report of the actual sampling frequency via sysfs is possible, but not
-> yet implemented.  In preparation for that implementation the
-> calculation of measurement time has been factored out from
-> bmp280_wait_conv into bmp280_calc_meas_time_us.
-
-...
-
-The comments below make my eyebrows rise. Can you add a comment on top
-explaining the relation between ODR Hz and t_sb, because it's
-obviously not an inverted proportion.
-
-> +enum bmp280_odr {
-> +       BMP280_ODR_0HZ,         /* MODE_FORCED */
-> +       BMP280_ODR_110HZ,       /* t_sb =3D  0.5ms */
-> +       BMP280_ODR_14HZ,        /* t_sb =3D 62.5ms */
-> +       BMP280_ODR_7_5HZ,       /* t_sb =3D  125ms */
-> +       BMP280_ODR_3_85HZ,      /* t_sb =3D  250ms */
-> +       BMP280_ODR_1_96HZ,      /* t_sb =3D  500ms */
-> +       BMP280_ODR_0_99HZ,      /* t_sb =3D 1000ms */
-> +       BMP280_ODR_0_49HZ,      /* t_sb =3D 2000ms */
-> +       BMP280_ODR_0_24HZ,      /* t_sb =3D 4000ms */
-> +};
-> +
-> +enum bme280_odr {
-> +       BME280_ODR_0HZ,         /* MODE_FORCED */
-> +       BME280_ODR_110HZ,       /* t_sb =3D  0.5ms */
-> +       BME280_ODR_14HZ,        /* t_sb =3D 62.5ms */
-> +       BME280_ODR_7_5HZ,       /* t_sb =3D  125ms */
-> +       BME280_ODR_3_85HZ,      /* t_sb =3D  250ms */
-> +       BME280_ODR_1_96HZ,      /* t_sb =3D  500ms */
-> +       BME280_ODR_0_99HZ,      /* t_sb =3D 1000ms */
-> +       BME280_ODR_51HZ,        /* t_sb =3D   10ms */
-> +       BME280_ODR_34HZ,        /* t_sb =3D   20ms */
-> +};
-
-...
-
->         switch (mask) {
->         case IIO_CHAN_INFO_PROCESSED:
-> -               /* switch off unused channels */
->                 switch_off =3D 0;
-> -               switch (chan->type) {
-
-AFAIU this code piece was just invented by one of the previous
-patches. Can we just go to the point from the first one, please, and
-avoid this ping-pong style of patching?
-
-> -               case IIO_HUMIDITYRELATIVE:
-> -                       temp_oversampling_press =3D 0-1;
-> -                       switch_off |=3D (prev_oversampling_press > switch=
-_threshold);
-> -                       /* can't be switched off as it is needed for comp=
-ensation */
-> -                       temp_oversampling_temp  =3D 1-1;
-> -                       break;
-> -               case IIO_PRESSURE:
-> -                       temp_oversampling_humid =3D 0-1;
-> -                       switch_off |=3D (prev_oversampling_humid > switch=
-_threshold);
-> -                       /* can't be switched off as it is needed for comp=
-ensation */
-> -                       temp_oversampling_temp  =3D 1-1;
-> -                       break;
-> -               case IIO_TEMP:
-> -                       temp_oversampling_humid =3D 0-1;
-> -                       temp_oversampling_press =3D 0-1;
-> -                       switch_off =3D (prev_oversampling_humid > switch_=
-threshold) |
-> -                                    (prev_oversampling_press > switch_th=
-reshold);
-> -                       break;
-> -               default:
-> -                       return -EINVAL;
-> +               if (data->op_mode =3D=3D BMP280_FORCED) {
-> +                       /* switch off unused channels */
-> +                       switch (chan->type) {
-> +                       case IIO_HUMIDITYRELATIVE:
-> +                               temp_oversampling_press =3D 0-1;
-> +                               switch_off |=3D (prev_oversampling_press =
-> switch_threshold);
-> +                               /* can't be switched off as it is needed =
-for compensation */
-> +                               temp_oversampling_temp  =3D 1-1;
-> +                               break;
-> +                       case IIO_PRESSURE:
-> +                               temp_oversampling_humid =3D 0-1;
-> +                               switch_off |=3D (prev_oversampling_humid =
-> switch_threshold);
-> +                               /* can't be switched off as it is needed =
-for compensation */
-> +                               temp_oversampling_temp  =3D 1-1;
-> +                               break;
-> +                       case IIO_TEMP:
-> +                               temp_oversampling_humid =3D 0-1;
-> +                               temp_oversampling_press =3D 0-1;
-> +                               switch_off =3D (prev_oversampling_humid >=
- switch_threshold) |
-> +                                            (prev_oversampling_press > s=
-witch_threshold);
-> +                               break;
-> +                       default:
-> +                               return -EINVAL;
-> +                       }
->                 }
-
-Oh, yeah, my recommendation to refactor will really help to address
-the above comment. So, not just consider, but please indeed refactor
-code first. Ditto for the other switch-case and related pieces.
-
-...
-
-> +static const int bmp280_odr_table[][2] =3D {
-> +       [BMP280_ODR_0HZ]        =3D {0,       0}, /* MODE_FORCED */
-
-Why is the comment repeated here?
-
-> +       [BMP280_ODR_110HZ]      =3D {110,     0},
-> +       [BMP280_ODR_14HZ]       =3D {14,      0},
-> +       [BMP280_ODR_7_5HZ]      =3D {7,  500000},
-> +       [BMP280_ODR_3_85HZ]     =3D {3,  850000},
-> +       [BMP280_ODR_1_96HZ]     =3D {1,  960000},
-> +       [BMP280_ODR_0_99HZ]     =3D {0,  990000},
-> +       [BMP280_ODR_0_49HZ]     =3D {0,  490000},
-> +       [BMP280_ODR_0_24HZ]     =3D {0,  240000},
-> +};
-> +
-> +static const int bme280_odr_table[][2] =3D {
-> +       [BME280_ODR_0HZ]        =3D {0,       0}, /* MODE_FORCED */
-
-Ditto.
-
-> +       [BME280_ODR_110HZ]      =3D {110,     0},
-> +       [BME280_ODR_14HZ]       =3D {14,      0},
-> +       [BME280_ODR_7_5HZ]      =3D {7,  500000},
-> +       [BME280_ODR_3_85HZ]     =3D {3,  850000},
-> +       [BME280_ODR_1_96HZ]     =3D {1,  960000},
-> +       [BME280_ODR_0_99HZ]     =3D {0,  990000},
-> +       [BME280_ODR_51HZ]       =3D {51,      0},
-> +       [BME280_ODR_34HZ]       =3D {34,      0},
-> +};
-
-...
-
-> +static int bmp280_wait_conv(struct bmp280_data *data)
-> +{
-> +       unsigned int reg, meas_time_us;
-> +       int wait_cycles =3D BMP280_MEAS_WAITCYCLES;
-
-Signed?
-
-> +       int ret;
-
-...
-
-> +       u8 tstby =3D FIELD_PREP(BMP280_TSTBY_MASK,
-> +                             (data->sampling_freq ? data->sampling_freq =
-- 1 : 0));
-
-Redundant parentheses, also possible shorten this to
-
-(data->sampling_freq ?: 1)  - 1
+> These devices were using a hardcoded IIR filter of length 4.  Enable
+> filter_low_pass_3db_frequency settings to control the filter length
+> settings of the device (as done already for the BMx380 and BMx580
+> devices, even though the 3dB corner has an inverse relation to the
+> filter length).  Remove an offset of 1 from the internal handling of
+> the available values.
 
 ...
 
 >         ret =3D regmap_update_bits(data->regmap, BMP280_REG_CONFIG,
-> -                                BMP280_FILTER_MASK,
-> -                                BMP280_FILTER_4X);
-> +                                BMP280_FILTER_MASK |
-> +                                BMP280_TSTBY_MASK,
-> +                                tstby | BMP280_FILTER_4X);
+> -                                BMP280_FILTER_MASK |
+> -                                BMP280_TSTBY_MASK,
 
 
-Make this more consistent (same parameter on the same columns and
-perhaps one line for each)
+> +                                BMP280_TSTBY_MASK |
+> +                                BMP280_FILTER_MASK,
 
-_FILTER_MASK | _TSTBY_MASK,
-_FILTER_4X | tstby
-
-
-...
-
-> +       .sampling_freq_default =3D BMP280_ODR_0HZ, /* MODE_FORCED */
-
-Why is this comment repeated all over the code? Any justification why
-it's so important, please?
+What's the point of this change, please?
 
 --=20
 With Best Regards,

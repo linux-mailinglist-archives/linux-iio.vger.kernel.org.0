@@ -1,111 +1,133 @@
-Return-Path: <linux-iio+bounces-22223-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22224-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8AFB1947B
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Aug 2025 18:20:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F56B194F7
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Aug 2025 21:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E82831890C8D
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Aug 2025 16:21:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 002A43B0C15
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Aug 2025 19:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C731B4231;
-	Sun,  3 Aug 2025 16:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992701C8621;
+	Sun,  3 Aug 2025 19:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mvM4WN91"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZqBEKkOT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60310846F;
-	Sun,  3 Aug 2025 16:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4C53F9C5
+	for <linux-iio@vger.kernel.org>; Sun,  3 Aug 2025 19:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754238041; cv=none; b=DND+lf+jgeE1bylSJWJMxUFs0iKIl/XJmcBpY3nc2iwB21RD0xFDHNC/wfDnwxk3OHKObDEejuROovgtybWeJszbAT+Qx5c7VYnLzk/AqP6dVlPuBXJZtHWJxIdz70Aj1s2IMS6E182obiFP9U048LgxFiXhrffgE5j0Y1OADYw=
+	t=1754248628; cv=none; b=DyiBGEVAOsVP1LjwpNLJZdaKbjt2r/86KzzaIfs6WRYG6VIcMaxa2YGC1lNww1hfMC0WAv4YYOBe15ErasZsOw/tCQuY7vFFVLg7rtraq6KyTEzeR6wyrxwQk2ZWcVaNSRzefaz91vvtBnrgeHof1cxKYBd/KY3A7RxFGUQAx3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754238041; c=relaxed/simple;
-	bh=8mP9B31u/llko2MSJHuHMlix27uOYS85moCvfkTX4Ww=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=R7ZK800ToL0muUxw3QYqgX001QcLr2LLLk7GDo5zXCoFFwZON6prnSqfGjFsgzPGehlbkHW48O2AB+n/8m2dk0CIFxwxb7nsCUfq49S+DlCXqGPiVOUrD4w8Y9iORksPt6/m17HzqoNoTjCUMSMkE8mJTizwjrfT58o+LzJnr8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mvM4WN91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98E7C4CEEB;
-	Sun,  3 Aug 2025 16:20:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754238040;
-	bh=8mP9B31u/llko2MSJHuHMlix27uOYS85moCvfkTX4Ww=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=mvM4WN91kznNQNiBP5/warwOsHkIFygM/iruY5ahvmX4Uoppb/MoNHdECDyUTj8hj
-	 PDRSrLHx7UIUxFQj+dy5lssBj4s9cShOrPoCb87MuYZUngHc+fFxPMrxyR0UefTagy
-	 aWtgAph53Ur5Isaf+T3pe2lSJ8JsCiLNaP2NeoiLbNt4K5CgWZXDZyDg8qP8H+TSta
-	 SFVCov1WHTIlktqM5Bn3gK21ysWldAr4TcxPHL5GA1FEd+P1sMBCuQndP/qOmPLzBG
-	 dweuhHougfBnqkSFdpqlWSiudKHYvwj2jiJqaSZDurZduAR1yxJvfYtv3LAVySvQvw
-	 hX6eW8KCRplvA==
-Date: Sun, 03 Aug 2025 11:20:40 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1754248628; c=relaxed/simple;
+	bh=jMZgQ4MaH39mmPSv6IwHKqyOqiXSog2RUT8f/B59QnQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C/RCrwH6H3TgOjAPiRj8gQycmVaVvk3MIDE+yZ/Lhk/XjLgIKASM346NG0lfNPhXXAlMq5QG7LsYOqeh1BRvOe34UIqjyhJt8qZo2ZAPW4UDHQK/jfXBCnss3LHraozNkar6b3qV9L8Dxw/UO8TyDzFcGHpo4ED89uLkn8ZVIXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZqBEKkOT; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-af922ab4849so503780466b.3
+        for <linux-iio@vger.kernel.org>; Sun, 03 Aug 2025 12:17:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754248625; x=1754853425; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/Redh1TcC3oylIeRcbk3pByRnGzJu/vqqZdm6Wyx5W8=;
+        b=ZqBEKkOTrzZiSlRcKMXft12vb6VMst42GY1iqXIaDLNuenpeUIH9cNJHz4dApakLOi
+         W33smVkk7mcHCgLl7qvEftLW+hQopp4+OE6J41BJA2vVEq42HbfBtFRaBZSHteSBnwgs
+         72ESX11ZzL0PgYXcCS2W386yyASWqaPoWy5puCBiCUZAsMUKD5aY0f7+tVfpTaAZzQmq
+         vBONNsGBshDfh3+F1f5fDxpi9TSkU9+YlDyyOJFsivwRWyN4xG9odCwy1GhyYydj1p4Z
+         zDUmC0YAtxFN5WmjE+rsxKSQupsRh+tfRiiwQcc4B8ONos6ShhFbRnbnSAv3/ofvcJk9
+         me4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754248625; x=1754853425;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/Redh1TcC3oylIeRcbk3pByRnGzJu/vqqZdm6Wyx5W8=;
+        b=YaAJmDuCAHF9+XBdQM4+/6O0IbMZu6YxmmZomrzzjCbtioo1eB68vHulkE0kQusyqi
+         KGPDfqh0beDBm0Yr6d6LouN7lB6Wvdc9YT+bTPuBOBeGItWvdP1uTWOzTdyRxhHBgV+K
+         FHGG2DHVg8O1ABs2PGdWyppWK95gDrxgq+6crhLpIueO20OF84T06cFt8JjXVc9nhyFJ
+         d91ug5VeMxnO2q56mfxTw82f3kaFt0PFFO8eTWIL9B9fwjqst0YuNW7RvpWYoOxHCP/E
+         0fXne5rJUNurNppnOjp+IT3afbCgLxlzman0TO7shwllnQVhCHpTMIsVUA1bWbKuYGB1
+         CwLg==
+X-Gm-Message-State: AOJu0Yz4HX/LPvLjdKZwEUyswZMLUP2LRiDHBYGKk83D3l5ir3RfL8PV
+	A71DDhsgrq5moIJRG2tS94/qp8vJyHScxpYyZJXSqta7wlvZYXOSMv/PCEA3IVMg0v4hu+tOwzc
+	fq1Gws6R737iiFwhCh1EmQKURzPUBL60=
+X-Gm-Gg: ASbGncvQkQwo+iM6IAKsoNjNVnsl1SQ4G/wggEq5F1y/UyUwgkTfEdsldiWxSKLd/mS
+	cgqJWxaw6NO/ztdJEyfdV/CqGTTuZYPMupNnGq2v0RNT/R1qvO6yi8fpdrg8IyH/qwLNfpvPywK
+	OVOxEgbikSfNWoWmruh/tYY9EQUDCyvlRqd99xBbIFiNvhTT4oifi2p9EN8RL/z3LnElFanVkg7
+	yRyrgSrAA==
+X-Google-Smtp-Source: AGHT+IGq4eYgOJgwKjfO7T4tNOvPwSWygtS3pfuE+Ixhj4jRByaejOU5bPxHnwcigJ8iehqZvfPEQDx/oYNoinhymWs=
+X-Received: by 2002:a17:907:9407:b0:ae0:cc5f:88ef with SMTP id
+ a640c23a62f3a-af9401af514mr695138666b.32.1754248624734; Sun, 03 Aug 2025
+ 12:17:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org, 
- Conor Dooley <conor+dt@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-To: Dixit Parmar <dixitparmar19@gmail.com>
-In-Reply-To: <20250802-tlv493d-sensor-v6_16-rc5-v2-2-e867df86ad93@gmail.com>
-References: <20250802-tlv493d-sensor-v6_16-rc5-v2-0-e867df86ad93@gmail.com>
- <20250802-tlv493d-sensor-v6_16-rc5-v2-2-e867df86ad93@gmail.com>
-Message-Id: <175423802305.483875.12095436762674457962.robh@kernel.org>
-Subject: Re: [PATCH v2 2/2] dt-bindings: iio: magnetometer: document
- Infineon TLV493D 3D Magnetic sensor
+References: <20250802164436.515988-1-jic23@kernel.org> <20250802164436.515988-3-jic23@kernel.org>
+In-Reply-To: <20250802164436.515988-3-jic23@kernel.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sun, 3 Aug 2025 21:16:27 +0200
+X-Gm-Features: Ac12FXyLDlLfcWf6U54-2ShbRCl0g6bLOjwz_SgSJT7lhwxhptAX_oS9R8aNF-I
+Message-ID: <CAHp75Vd0KUs25P8cHM8EaAdLbXcDASXLs_nao8Qoee-pqQUF4A@mail.gmail.com>
+Subject: Re: [PATCH 02/16] iio: light: vcnl4035: Fix endianness vs data
+ placement in buffer issue.
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Mudit Sharma <muditsharma.info@gmail.com>, 
+	Jiri Kosina <jikos@kernel.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
+	Abhash Jha <abhashkumarjha123@gmail.com>, Astrid Rost <astrid.rost@axis.com>, 
+	=?UTF-8?Q?M=C3=A5rten_Lindahl?= <marten.lindahl@axis.com>, 
+	Gwendal Grignou <gwendal@chromium.org>, Christian Eggers <ChristianEggersceggers@arri.de>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Aug 2, 2025 at 6:45=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
+wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> The assumption is that the channel ends up in the first 16 bits
+> of the buffer.  On a big endian system, the regmap_read() will
+> read a 16 bit value into the 4 byte location, leaving the value in bytes
 
-On Sat, 02 Aug 2025 12:14:28 +0530, Dixit Parmar wrote:
-> Document the bindings for Infineon TLV493D Low-Power 3D Magnetic Sensor
-> controlled by I2C interface. Main applications includes joysticks, control
-> elements (white goods, multifunction knops), or electric meters (anti-
-> tampering).
-> Drop duplicated entry for infineon,tlv493d from trivial-devices.yaml as
-> its documented in infineon,tlv493d.yaml now.
-> 
-> Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
-> Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
-> ---
->  .../iio/magnetometer/infineon,tlv493d.yaml         | 45 ++++++++++++++++++++++
->  .../devicetree/bindings/trivial-devices.yaml       |  2 -
->  2 files changed, 45 insertions(+), 2 deletions(-)
-> 
+16-bit
+4-byte
 
-My bot found errors running 'make dt_binding_check' on your patch:
+> 2 and 3.  Fix this by using a a local variable and copying into the
 
-yamllint warnings/errors:
+a a --> a
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml: vdd: missing type definition
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml: 'example' is not one of ['$id', '$schema', 'title', 'description', 'examples', 'required', 'allOf', 'anyOf', 'oneOf', 'definitions', '$defs', 'additionalProperties', 'dependencies', 'dependentRequired', 'dependentSchemas', 'patternProperties', 'properties', 'not', 'if', 'then', 'else', 'unevaluatedProperties', 'deprecated', 'maintainers', 'select', '$ref']
-	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
+> current location.
 
-doc reference errors (make refcheckdocs):
+...
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250802-tlv493d-sensor-v6_16-rc5-v2-2-e867df86ad93@gmail.com
+> +       int val;
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+Why signed? regmap API uses an unsigned type for values.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+...
 
-pip3 install dtschema --upgrade
+> +       *((u16 *)buffer) =3D val;
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+I don't understand this fix. Does it mean we simply transfer from HW
+to the user space in whatever endianess HW does this?
 
+--=20
+With Best Regards,
+Andy Shevchenko
 

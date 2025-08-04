@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-22249-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22250-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31894B19B46
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 08:04:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28267B19B71
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 08:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52F731770A4
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 06:04:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A52273A300B
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 06:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E7222DA06;
-	Mon,  4 Aug 2025 06:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD4A227E9B;
+	Mon,  4 Aug 2025 06:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i67NM+P3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4//2Lzo"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742522264A1;
-	Mon,  4 Aug 2025 06:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D657DA6D;
+	Mon,  4 Aug 2025 06:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754287425; cv=none; b=hRMk1j5Y8qMRWJ326KHubyPVmKbJ66hA07YmHXoLnitvJhH4H/jZgq+mubZgtj4lwvBAc21yXzNKMm0M6LZZXcfUi3rBrP+SBtZjWuTvVLCs2klE60OB3nfWNIDCsnSlmH7eXu9Zf9P5ofGf9EEXZEvZKDPjg9InLOUU50863Pw=
+	t=1754288206; cv=none; b=MnTgx45qr+v6jwYVzEcywqJIS73tpebuL93+dT3z59qBhj7wviGBry7cZkGPjSIIFWiMww8wl52aPhPTUOzdH220wp+NtGNxTN6InxQwKcWmRfoE03RdTUPyc0WGdnzXmc62zEO6NTsJO2kwMj+zEyeYBQv41AAt3iWXfJnQHDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754287425; c=relaxed/simple;
-	bh=4g0So/KscdPaJ/4ZDhKbcEVg37nP7IyjIZTcN8FOlYs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eSuQywTNQhhWCQ/iZYFilLuR3MjK2fgbbDwEckRWiQqz7+QhTHX7XNWOs1web2CBY6kYBfignfquQ2l1A6YCxvhHwMQTKSIolqldEWY7jA5hyiGCzRyTi1diyhGzjNveZka3f22rKCaicgPzDNZkE8fXEkQs4tt4SbWcf2nQnyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i67NM+P3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70421C4CEE7;
-	Mon,  4 Aug 2025 06:03:42 +0000 (UTC)
+	s=arc-20240116; t=1754288206; c=relaxed/simple;
+	bh=JmBO1VEqzufgUpdUpdI3KBVxFu0LB9WVBNbx0Cnbrhs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=DZW6DY/WuFIbAjQdcX3Ek2l5at0o9RcZBQ9CU9xQPaEgLIzFqWi/Qk+XJ3GWhvbyRWNPzCteuntIesmDUpfztnGQbaKtVw/7bktCIf2RqQ2xCPJ5Wmn70czVxKLYh1m/vlDHDytSh9wTTp/6TMALwqiHaDi3fiYaNeJbi0Vi0pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4//2Lzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131B9C4CEE7;
+	Mon,  4 Aug 2025 06:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754287425;
-	bh=4g0So/KscdPaJ/4ZDhKbcEVg37nP7IyjIZTcN8FOlYs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i67NM+P3Ta4ThzfaAcgW5tK0WgueBOE2EW4GG9PgHkN7LGr2TnLR+VbkEfe1vSjkK
-	 sjRn7Z08taHIDt+mHIT+sQ0I5QzZm4UlZ5+qYKJjah5rQ8oYCIU29Pn+0KQlrIiP6p
-	 7XdDLjRlemUis7rZmkc5Br8SwONtsutn29+6Eu6NoSo7VvwhEe1O3/Y0Usb9M/jy//
-	 oR4ZqKYRzheTrnjsvc+9WTGBtpx6T2SuwlhCkuy6vwXJ/ypnTDpqdmWjp0KZRU65Qj
-	 bcVlr4dGPSrq9D6F3bDu7jskVr2aEsaLlCQ0mjn0MIXOchD93Ljph6DkHpVKQUcHan
-	 6rNw8ku4ZTJiA==
-Message-ID: <6b691092-f931-4140-8097-0ad67d02bde9@kernel.org>
-Date: Mon, 4 Aug 2025 08:03:40 +0200
+	s=k20201202; t=1754288206;
+	bh=JmBO1VEqzufgUpdUpdI3KBVxFu0LB9WVBNbx0Cnbrhs=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=D4//2Lzou7ZBmYoN/VjNp2Bo1B0O5AJ5P/qUdcAtvVmZmUowRVlTkVCDYUEPOuO59
+	 L/o3CV5lgS+kHB4hJU22e1Do/TAgtgNvaDvoxGjPDVT1pCE+irEyyU9RR9pNlXVurq
+	 gf344T3hDLdK9eQJYIs4dmZ2YGqi5Jr06TX+MNrMd1dR31JYJ5pOyJy2GB4bnO5KZc
+	 8pjdBLDRyjlSRNbdjxzChrTp1FeAfZqDBZXyhraDRuF5iltdsEUtViWiJNmw5IA8gK
+	 xjEbrvLWuipteJHZbsVC+28IZ9LcNf064rt8xcquLgfBkgBdYRS3jfnwW6ps5SrzSo
+	 qzfJb3mudZ6+A==
+Message-ID: <5999ba4a-79ec-45b1-9d91-0252669917fe@kernel.org>
+Date: Mon, 4 Aug 2025 08:16:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -52,6 +52,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/2] dt-bindings: iio: magnetometer: document Infineon
  TLV493D 3D Magnetic sensor
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Dixit Parmar <dixitparmar19@gmail.com>
 Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
  <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
@@ -62,7 +63,7 @@ Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
 References: <20250802-tlv493d-sensor-v6_16-rc5-v2-0-e867df86ad93@gmail.com>
  <20250802-tlv493d-sensor-v6_16-rc5-v2-2-e867df86ad93@gmail.com>
  <fc15279a-bf3e-4500-8dfc-651e6e2431d9@kernel.org> <aJAeoI4Iz_U06Wmo@dixit>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <6b691092-f931-4140-8097-0ad67d02bde9@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -107,45 +108,33 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <aJAeoI4Iz_U06Wmo@dixit>
+In-Reply-To: <6b691092-f931-4140-8097-0ad67d02bde9@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/08/2025 04:44, Dixit Parmar wrote:
-> On Sat, Aug 02, 2025 at 09:45:29AM +0200, Krzysztof Kozlowski wrote:
->> On 02/08/2025 08:44, Dixit Parmar wrote:
->>> Document the bindings for Infineon TLV493D Low-Power 3D Magnetic Sensor
->>> controlled by I2C interface. Main applications includes joysticks, control
->>> elements (white goods, multifunction knops), or electric meters (anti-
->>> tampering).
->>> Drop duplicated entry for infineon,tlv493d from trivial-devices.yaml as
->>> its documented in infineon,tlv493d.yaml now.
+On 04/08/2025 08:03, Krzysztof Kozlowski wrote:
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml
+>>>> new file mode 100644
+>>>> index 000000000000..ebcf29067a16
+>>>> --- /dev/null
+>>>> +++ b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml
 >>>
->>> Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
->>> Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
->>> ---
->>>  .../iio/magnetometer/infineon,tlv493d.yaml         | 45 ++++++++++++++++++++++
->>>  .../devicetree/bindings/trivial-devices.yaml       |  2 -
->>>  2 files changed, 45 insertions(+), 2 deletions(-)
 >>>
->>> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml
->>> new file mode 100644
->>> index 000000000000..ebcf29067a16
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml
->>
->>
->> Filename should match compatible. Otherwise a1b6 is just confusing.
->>
-> Idea behind having a1b6 is that the TLV493D is sensor series and this
-> a1b6 is one of the models. As this driver is intended, developed and
-> validated on a1b6 I kept it in compatible, though the file name contains
-> only the sensor series. In my undertanding, this same file & driver can
-> be reused for other drivers from same family with new compatible fields.
-> Does that make sense?
+>>> Filename should match compatible. Otherwise a1b6 is just confusing.
+>>>
+>> Idea behind having a1b6 is that the TLV493D is sensor series and this
+>> a1b6 is one of the models. As this driver is intended, developed and
+>> validated on a1b6 I kept it in compatible, though the file name contains
+>> only the sensor series. In my undertanding, this same file & driver can
+>> be reused for other drivers from same family with new compatible fields.
+>> Does that make sense?
+> 
+> No, because I did not speak about drivers at all. Please follow
+> kernel/DT conventions.
+> 
 
-No, because I did not speak about drivers at all. Please follow
-kernel/DT conventions.
+And now I see this wasn't ever tested. :/
 
 Best regards,
 Krzysztof

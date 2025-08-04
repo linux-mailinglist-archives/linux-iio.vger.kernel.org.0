@@ -1,125 +1,150 @@
-Return-Path: <linux-iio+bounces-22262-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22263-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C2AB19DAE
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 10:34:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF525B19E2B
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 11:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD7EE189A137
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 08:34:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBD73179714
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 09:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F110424061F;
-	Mon,  4 Aug 2025 08:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57798242D6F;
+	Mon,  4 Aug 2025 09:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gbnTVP2p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZGHDWdQK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BFD239E7F;
-	Mon,  4 Aug 2025 08:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EDA17D346;
+	Mon,  4 Aug 2025 09:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754296457; cv=none; b=fvv2EqtNj0GsVGAeQa5995SecZ2rjmOyylqM67cYqMUthPs4p6lUuRbZSUU+r9Gj+wsIN68t5BmK6Vu0LgMQTHs9r/IHz/b4Jdt3SJvwmhmU7p6y5wap8Jre9U80HS/+wFavn6txI/AcYCVjuLd42sm2L1L5D+uPfWe5T5Dxdrw=
+	t=1754298225; cv=none; b=BO96iDWv5jZFskBRjk699+8peKnMwi+Z5Sv+PpdtUZe4SpQiMq9RM6eg5SJPb1O0iKEW+NSh0C8LEOog5EC0iD6+RlNhxNknjZDgCjToVbYs5CD9aHOERcdmcIpYdfn8NcTR0CM3hDvyH1LSUBmG/31XH/Pt0ldTrW3VvJJGZGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754296457; c=relaxed/simple;
-	bh=dx2HpBOnPLsrb6oU+3Rzb9yQbsE1lsQjTTkyYt8N3jk=;
+	s=arc-20240116; t=1754298225; c=relaxed/simple;
+	bh=rAkT4G3+AqyG3hnCZhmDDpt6Y2bVYGkJsG5BnYmLvoU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IqkUeWChE4bGE2F1my/Cc2rOUODgutWnvrjHbPDaQ5epCPQnCzpqjifJGrnqvR9JLTzTEdUw1O7PPy+ZcQpHuBnB9U54HU4t5wQ8AhjGM2d1YjpbPMTJzn45TBp3svA+aOcFDfNJblfJQJqhzfSWP08go282Nt64z/cu1uz0ZdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gbnTVP2p; arc=none smtp.client-ip=209.85.218.46
+	 To:Cc:Content-Type; b=XCM3Kz1R2rPsJbVBGi2bSWIWf6NihbID2FHopRNfLOwrY/Ajd/QNZb8uXxDGkIUI5CrfwtUOvp5cXs9BBdlEUcTxD8C8GfYigqnz6zTLdeMl62My1CFbHshNrMn5bmmtjwivdORRYg1b26mEi0I/HgnKhJPM6bRccqvSdiuaTOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZGHDWdQK; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-af96d097df5so95946966b.3;
-        Mon, 04 Aug 2025 01:34:15 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-61557997574so6255969a12.3;
+        Mon, 04 Aug 2025 02:03:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754296454; x=1754901254; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754298222; x=1754903022; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BVAaWRDfZ5hL4Va+pKEsiC3nSrkETUshGtURrIEYCSc=;
-        b=gbnTVP2pIfa8pbJ+CV0T9Yn0Kvg1VEl7zgItpPscY8fIcyDuWAjTMrpRHSrj9ZVw9H
-         f+mlAguefKk+cYatWrZt0RNx3mg1S4x2cYmN/V+HRkmL6l1r8G/ICI6nHcdnJn4jeJsS
-         rTeYAOqVWFNFMAWKbpu0JaWbX+oLbzREaIDqDDf9HEZ+KyLnZUXBY5F0dCGPHbMOaQ02
-         h4HhLgCbMxt9uMVblcqXZ02GjQXjAGKJqX/vDF+ll/XuSJEzIP6is8AEJ4Vxr9dm8ddd
-         sXhhOSrRf+EfePMZIr/WWoYtSfBxKN+KrMrr4oAcvpma/cN2J8RIyTOG0V/g6jdPcFdU
-         4hUw==
+        bh=YAOqCNKvLaFqqXnTtW0ZhVTY5ltZEpsuEguzQwUg0Fc=;
+        b=ZGHDWdQK4SQ9K18EU2+bDahNfRIbdbRZfYDz4maCGGKvtnw1oCrClvKFQMLcgESbmq
+         DvSWu2SlgyaRdMlkg/Q47OAY4et1fzw+zd26lgaotVjY0Hk1wr0pfribjyqhAJYIeyCU
+         9oGoXu1k0sW/U7cJtexbxNUYoDNmrSoPC8KHYgCJ4juy8LQJ8BYguS2q80+fwGFuB4z5
+         YktinGEf12eSsjKIe8HpV0ZmZXIIPGZmPhLkIMBGrDjwLSrqjtDc3Ohw2tmPpUdk359P
+         EVt7K7RqhoevuBW0ihbcA+CqcA2I4xXUlIfYF7BPppslRieIkVnPOYFFaUn095YHxE35
+         vGRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754296454; x=1754901254;
+        d=1e100.net; s=20230601; t=1754298222; x=1754903022;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BVAaWRDfZ5hL4Va+pKEsiC3nSrkETUshGtURrIEYCSc=;
-        b=Yz1/1V+cB3bQ6M7dpGCh1xaj+YVURgXatIRnLSfA8/kvT9j6G4G4tOE840KImydUAI
-         SsE7NCqxGIcgvMP7Ro6uVMktqrwDcqJfXjduwIwx6d5OlfFzkHrD0b8rFRPoUd6bm74J
-         cp8BVEEQGk/runyVA9HYR0+egR5oDzkc4LX6SoK6rotAcJHZ0r4SHDsffRTcM7O606Kr
-         kaNYGB4LvGenRP8PzhtG01O4OTLcpMntEa6YKKFleNX/iAkPIRlgTRJJh/7Vv5NXASBf
-         ea3sutamm3QnuwVpjerwwfEChPQsw8g9jFKR8z1COtFvUOUi0WyEHyDsSDVG8f/L02qi
-         GmkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJRwC2ceEGCbmMVvu3S6Rdv3YbJ8swqoqpQ7/sDxIyPnypOKpbHqwR8RLVkY4MhB9Mtr6yCRGkb/8=@vger.kernel.org, AJvYcCUxy3lNOasBLj3i+fWYylAMxh3SopjyHH7ceStkigcyDhFHeUcck8SLpkOwGgv9xtyf4ImyVpOGkWt3muhB@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5ehfy9qKX3s7SOtEEzqtMC/0fnIIH0ZDosxKmOYBliSuA+Cg2
-	CVA4FcRd43A040a1rv8Zr1Yeh1iTO0dH4hFZpS6VO3AYxt4biyjvDP6V1IpIoRqrxgkuO47Ao6D
-	HSRLpECljFvGgWTFGLXN3SyApzTRZXOs=
-X-Gm-Gg: ASbGncsUycLbhNsCRsjMyLiiOZEn/X5COP+ECtOGSQa8aOQvjnWMiDk46C9XCLuqPLB
-	7ciHICZvBwzk+8/F5gZo7CXpPM3vDcylFGo3/6+SXUTywmlnkV0rI9ACSF9oU3vLId9e1ZFLNJE
-	CN79mv7C6uc3Ioz8aaYaJlTPlEx8MTVfUCMsbTjmY/M3r/kO7f4/5h9m937B6Lfm+utJd2sskHz
-	P5Hf9mAag==
-X-Google-Smtp-Source: AGHT+IE31LPTieeATPHB9TqfZ/rrNV8D2fuW9P6Ep8AruRk5dAs43xCQVMi8VZOonc4q/hIkzCr3X1rndXRHUQUdFyQ=
-X-Received: by 2002:a17:906:f749:b0:af9:5b1f:b87a with SMTP id
- a640c23a62f3a-af95b1fbb03mr472319166b.20.1754296454132; Mon, 04 Aug 2025
- 01:34:14 -0700 (PDT)
+        bh=YAOqCNKvLaFqqXnTtW0ZhVTY5ltZEpsuEguzQwUg0Fc=;
+        b=T7O0QlusWPNaEceo+18ZtXFxzTrfRD17f17nNgY93WqyriP38RgjpM3A7YSnay6PIt
+         a87Po85l4NnuvcMfHGA49tZCuETpjN8V8P8E+Xi7g6ZfRzyf78Hr4KCPgPBbYr5IVq1Z
+         wuBnU6b89QNW/NJqYYi3Kj7UQ90N0yB3FTu1xjfwrkTJFajTgktoYLImrfOX7YAK48ik
+         +IBuTeytqMeF03oi1sYsaOL/u4v27rRVFlDbZb6BPFNx8N6qlNwflFFYF/uTKrtZhJ2D
+         ClDB+qw+Qb1UL2bKxfRTMIEryQdLB3saighZSiwb7VGyVhrR2LmwhDB/zwG1OzE2iL4o
+         gD4g==
+X-Forwarded-Encrypted: i=1; AJvYcCUoazKf1M53rjZMTOgPNKDr8MfgipyXdDqymm4UVEMp0rM8f7R2mV87T9EEUloDWYUFS0NECBp7XwRXuW6f@vger.kernel.org, AJvYcCWGaT+0f8iIY6dfWQIGNzH+QzvOmnaGa7Ao4MwIqb6jdpdsttuY/28WYHU93gbCJwe4qEcakUdm2ofX@vger.kernel.org, AJvYcCXZNVB4PRmXCrD7DQJ4WQoQXnc2AFyl4r4/Z7fRKvBSDYDiu4RTLG8dMJMNioAGtP8tFCj16iUl7RPy@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8k+vHDLlPCtepEmygUxN0thvKBcu54IRfSZt1Wg6PRRFDxgMd
+	4jRuIFR44yvHossZ8RqByaoLU+JVYRCXVg09jcKAVXWCHk0YZYvpxTGhSiO5Igf1dVMBHVVVCrJ
+	h7X2laFs1zOngqDEea2WGgqXX94XZ3wI=
+X-Gm-Gg: ASbGncsW6E4J6Blk0aI2Zca12QjoV9Mcu7SnYjHKUN+xNe30VaRtdfqSFsv4p81k0g5
+	i8iSuLJicoRtgSuN9MBw5OTqXksyrMOOM1iRRnVMGNwmEyvDPJhQ8VcZ3KfPWYmhpVpAHXkXHgD
+	4kAFTcCNFDuxTnMQLt3va4gdxG/dKj4/iE3Ltr46NpH2TiYWFFG5OPDWetyADznHY9ME9y2uhbs
+	6Vgp1tS4w==
+X-Google-Smtp-Source: AGHT+IG37smr+oa/pNVI9r4qvVjRd0W8mfZh+jsrAalpKVF0WCTJA1uoS7ro2xYYBcvzgCrgyqbxIEbVxsv8OUxH/Dk=
+X-Received: by 2002:a17:907:970a:b0:ae9:8dcb:4dac with SMTP id
+ a640c23a62f3a-af940020412mr841012666b.14.1754298221551; Mon, 04 Aug 2025
+ 02:03:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1754041258.git.mazziesaccount@gmail.com>
- <0ed3a1e9346d84d20838e89a531e8d99f95bcb97.1754041258.git.mazziesaccount@gmail.com>
- <20250801120901.00004a67@huawei.com> <e91711f6-c943-402a-8502-52d8ed4c05a9@gmail.com>
-In-Reply-To: <e91711f6-c943-402a-8502-52d8ed4c05a9@gmail.com>
+References: <20250802-tlv493d-sensor-v6_16-rc5-v2-0-e867df86ad93@gmail.com>
+ <CAHp75Vdc7RB8MG+jYcSxkvD2EY2weZJMnvkbgmqibYGLkcUEBQ@mail.gmail.com> <aJAggwXNFsg0vA5H@dixit>
+In-Reply-To: <aJAggwXNFsg0vA5H@dixit>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 4 Aug 2025 10:33:37 +0200
-X-Gm-Features: Ac12FXyJn5xlYsUNgP8wKbi3hxvmGp2X0QFbWIChLgEX-msCXhk1pwj4nZoU8mE
-Message-ID: <CAHp75Vdyz6Pr1xm0LjhttVAO2GsLhWwb=OndvguSAqWqqhpMXg@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] iio: adc: ad7476: Simplify chip type detection
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 4 Aug 2025 11:03:04 +0200
+X-Gm-Features: Ac12FXzk_KoMT-5oqLv84qkTRSiIsruoY69DFy-LdW-WCbMTuYrlTvGQV5c_JWI
+Message-ID: <CAHp75VdrJvPSmZHmoffSSqEcNWEidkW_n=B3wCR0_ybhRfBxhA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] iio: magnetometer: add support for Infineon
+ TLV493D 3D Magnetic Sensor
+To: Dixit Parmar <dixitparmar19@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 4, 2025 at 7:57=E2=80=AFAM Matti Vaittinen <mazziesaccount@gmai=
+On Mon, Aug 4, 2025 at 4:53=E2=80=AFAM Dixit Parmar <dixitparmar19@gmail.co=
+m> wrote:
+> On Sat, Aug 02, 2025 at 10:53:30AM +0200, Andy Shevchenko wrote:
+> > On Sat, Aug 2, 2025 at 8:44=E2=80=AFAM Dixit Parmar <dixitparmar19@gmai=
 l.com> wrote:
-> On 01/08/2025 14:09, Jonathan Cameron wrote:
-> > On Fri, 1 Aug 2025 13:07:13 +0300
-> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
 ...
 
-> >>      st =3D iio_priv(indio_dev);
-> >>      st->chip_info =3D
-> >> -            &ad7476_chip_info_tbl[spi_get_device_id(spi)->driver_data=
-];
-> >> +            (struct ad7476_chip_info *)spi_get_device_id(spi)->driver=
-_data;
+> > > The Sensor's I2C register map and mode information is described in pr=
+oduct
+> > > User Manual[Link].
 > >
-> > Switch to spi_get_device_match_data()
-> > which checks via generic firmware paths first (so DT here) and then the
-> > old school tables.  Also returns a void * so gets rid of need to cast.
->
-> Ah. Right! Thanks!
+> > Replace Link here with 1...
+> >
+> > > Datasheet: https://www.infineon.com/assets/row/public/documents/24/49=
+/infineon-tlv493d-a1b6-datasheet-en.pdf
+> > > Link: https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic=
+-UserManual-v01_03-EN.pdf
+> >
+> > ...and add space followed by [1] here.
+> >
+> Orginally it was with [1] only. But I thought I should use known standard=
+ tag here
+> so came up with link. For my understanding, what is the standard practice=
+ for this?
 
-More importantly it returns _const_ void *. And qualifier makes a lot
-of sense here.
+The expected format is
 
-> > Only works with all pointers (or a lot of care) because a value 0 is a
-> > fail to match.  So kind of enabled by your patch.
+Link: $URL [1]
+
+where $URL is the above URL.
+
+...
+
+> > > Changes in v2:
+> > > - Drop regmap implementation in favor of using direct i2c APIs to
+> > >   have uniform communication APIs across the driver.
+> >
+> > This I don't understand. I mean the motivation behind this. Usually
+> > direct I2C communication is used to do some initial checks and
+> > configuration and rarely for the actuall run-time driver
+> > functionality. Otherwise it means that the regmap may be used with a
+> > customised read and write methods.
+> >
+> On addition to what Jonathan explained, reading from sensor also is not a=
+ddressable.
+> i.e. To read any sensor register the read op must be performed to read st=
+arting from 0
+> always, without specifying reg address.
+
+Okay, if not yet commented in the code, please add that somewhere in
+the top comment of the file.
 
 --=20
 With Best Regards,

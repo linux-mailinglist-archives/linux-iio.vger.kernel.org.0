@@ -1,81 +1,48 @@
-Return-Path: <linux-iio+bounces-22248-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22249-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862F7B19B32
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 07:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31894B19B46
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 08:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 956201767F5
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 05:57:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52F731770A4
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 06:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6DC221703;
-	Mon,  4 Aug 2025 05:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E7222DA06;
+	Mon,  4 Aug 2025 06:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RxDSAr5M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i67NM+P3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C05417555;
-	Mon,  4 Aug 2025 05:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742522264A1;
+	Mon,  4 Aug 2025 06:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754287065; cv=none; b=LAyKU0A4XJG9KiUrP/GOjy03wVvLezFZIiJiUc29tvv38Vh0FAbbvcoyxgF+kS6rlItCsnpXcqbfr1ZCQy1b4ykRvIEuXm/dBwlCewSCyEnHmadkNMz7bTH5fW6ykEKOW4ZoLq6mHPahgDuN3Gi79oE/yGNf45cd7bL+hXStOHw=
+	t=1754287425; cv=none; b=hRMk1j5Y8qMRWJ326KHubyPVmKbJ66hA07YmHXoLnitvJhH4H/jZgq+mubZgtj4lwvBAc21yXzNKMm0M6LZZXcfUi3rBrP+SBtZjWuTvVLCs2klE60OB3nfWNIDCsnSlmH7eXu9Zf9P5ofGf9EEXZEvZKDPjg9InLOUU50863Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754287065; c=relaxed/simple;
-	bh=r9HxNTjuW+NwRa/vmUebhaKdeexaUpFJ21+bMvxLq5E=;
+	s=arc-20240116; t=1754287425; c=relaxed/simple;
+	bh=4g0So/KscdPaJ/4ZDhKbcEVg37nP7IyjIZTcN8FOlYs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JuusTwTRgNFH0Qbp2YK88Ux37Ewt6/Rm04laqbkD+YUTf9cIbGJC/6ZBem2T6ij6JWs9CbXojZO6A/yqSvgOXd4VbPjwO2D+2mPfYA3AdIGdbnM5UrLlP5grjedajHwg8+rIWvVjbYnEW2fl+vlROjCfpEgoFnJQjcs9SkJExXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RxDSAr5M; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-332631e47afso11199191fa.0;
-        Sun, 03 Aug 2025 22:57:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754287061; x=1754891861; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DNeycstk/waeBDX6yIxRG1Q6VAGIwGEN5pZfK8U34gk=;
-        b=RxDSAr5M2erU3l7PORRIkF5CEwprVTT7bgGlxE5oG36YX/a05BOg4r6a4wtj+l8hx4
-         dTngQybVgAfonSLhsAiUdy4A75Xa31fz7Ts4yUG3YDyHBQ7lPn4RgoiSWQefq8RUbyAs
-         5gqMvW4Ex1Y/FqpVwZLn9v1THfwWWAcxFLyuA2k+hj9ShHeiwJYofrFV5SiGf/QCW5mu
-         QsvcpzQIMVmS3FBT4nnhb86wBd0hAM/hWp68QJO0pHjliIQwvwLXHHIFuQR1hspNumBu
-         +O8eqe0JJQB8o2PS7r2vtoZ4ZXL67pIzqI8i1IvRLnOt4soXdMokbkFSoYB6KTZSQ487
-         S+wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754287061; x=1754891861;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DNeycstk/waeBDX6yIxRG1Q6VAGIwGEN5pZfK8U34gk=;
-        b=W3k7eksRfI6xWc61CMYEXWZcFTHZnAAxGflL1vtLwl/pysLvaUWfdhl4PtkLEJHyiZ
-         eWV9nLbbPWh5ymf8hTVWtg5L0pPXTPYAnk/vjfY9Q+uxeZrRwvjFkg4rtwputIpy4Unu
-         t2kFU0AvHSAuVjwwQEBtUd+g3NmRnikBjovqRJoXIaklWxaPRB6i0F6BZyl/VEW2J3py
-         8YaU687aqqMTPYTSdCYEXcc9pEj16qkNJ7HuFAZeK9O07Yh+WsCqN+0qO9Q26TCb6een
-         E1oAKgF6fQYUDp596gRZzM+C1ky6zAr3/NEOPAucaY6w4zZ5s5QvWOil1UTEffoBelhx
-         QaMA==
-X-Forwarded-Encrypted: i=1; AJvYcCVh8x60tb0jwVem9tOGcJI6W8SstGM7UUJCFBYM4X9uxcqDTN5EVafvrOw96oN2TWNS+NHxXPcl3GY=@vger.kernel.org, AJvYcCXfumJhttfq0gEBAzOYw8rcT0McolwRnAY3HGYlNP5u9uxZXYNFy5GTNgjQmVNiL1f52wPnr1et5tqnJTJZ@vger.kernel.org
-X-Gm-Message-State: AOJu0Yydj0Uoqv7LETWSlkaMYKAtKFq2CXa5zvGqdkZG3c7SQvj54zdJ
-	vQ50/tMWhF1pp08kvhhgQ2Frs9vKkf7o0RSGzsFTBWVqlJhv9lhRgNDA
-X-Gm-Gg: ASbGncv39vIrBFB4Sxu5xXUbiwszXMdKhFraKjCVQL+Uqp0b7O3n9DX6ziN8c37P/Gn
-	daq43fEV+213yYFIfl0vAIke4MLdt9kLe40UOCT6qU1zS4+fqc2BnU6V+FUSM3gUpBAmVkRvCxa
-	hnx6Qx1Lk7ku9z60Jtoq4BSHbxaxT4AuVQdH21rh8HHQoVVptP9ji6t6B886NTUnlVobP0GUH2d
-	J/7RT/fmRYDTkxSgNf0q59zGVMWZ8PvL0el5NEwGPz0T2f9aW4QXwbRSNbFmBil0iRpWfou9qfZ
-	IzT246W/iJ0R4ow7YfM2p9aibJ/VZC/PJjX0K9aNPGQisxF1Tal0GEvb4WDgpYMK0xELMbiKoa6
-	7JOxZMGW7tPjnmJmxVDso+71VaqHjpNiOxBnddJCkMDYaKruZA1mlw1Leorp3nwn/ul+qLsLDzn
-	arrdyVBravI5eRQg==
-X-Google-Smtp-Source: AGHT+IFxrk3BlNSuDxrWs6tGLoW5EHUdQrcAffwvT6H3BlNChFGUTcRjdDb5+EvPrI0YePg2tmtXHA==
-X-Received: by 2002:a2e:bc23:0:b0:30b:ab00:846a with SMTP id 38308e7fff4ca-33255833cb2mr22606461fa.3.1754287061155;
-        Sun, 03 Aug 2025 22:57:41 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-332385b247csm16393251fa.39.2025.08.03.22.57.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 03 Aug 2025 22:57:39 -0700 (PDT)
-Message-ID: <e91711f6-c943-402a-8502-52d8ed4c05a9@gmail.com>
-Date: Mon, 4 Aug 2025 08:57:37 +0300
+	 In-Reply-To:Content-Type; b=eSuQywTNQhhWCQ/iZYFilLuR3MjK2fgbbDwEckRWiQqz7+QhTHX7XNWOs1web2CBY6kYBfignfquQ2l1A6YCxvhHwMQTKSIolqldEWY7jA5hyiGCzRyTi1diyhGzjNveZka3f22rKCaicgPzDNZkE8fXEkQs4tt4SbWcf2nQnyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i67NM+P3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70421C4CEE7;
+	Mon,  4 Aug 2025 06:03:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754287425;
+	bh=4g0So/KscdPaJ/4ZDhKbcEVg37nP7IyjIZTcN8FOlYs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=i67NM+P3Ta4ThzfaAcgW5tK0WgueBOE2EW4GG9PgHkN7LGr2TnLR+VbkEfe1vSjkK
+	 sjRn7Z08taHIDt+mHIT+sQ0I5QzZm4UlZ5+qYKJjah5rQ8oYCIU29Pn+0KQlrIiP6p
+	 7XdDLjRlemUis7rZmkc5Br8SwONtsutn29+6Eu6NoSo7VvwhEe1O3/Y0Usb9M/jy//
+	 oR4ZqKYRzheTrnjsvc+9WTGBtpx6T2SuwlhCkuy6vwXJ/ypnTDpqdmWjp0KZRU65Qj
+	 bcVlr4dGPSrq9D6F3bDu7jskVr2aEsaLlCQ0mjn0MIXOchD93Ljph6DkHpVKQUcHan
+	 6rNw8ku4ZTJiA==
+Message-ID: <6b691092-f931-4140-8097-0ad67d02bde9@kernel.org>
+Date: Mon, 4 Aug 2025 08:03:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,70 +50,103 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] iio: adc: ad7476: Simplify chip type detection
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <cover.1754041258.git.mazziesaccount@gmail.com>
- <0ed3a1e9346d84d20838e89a531e8d99f95bcb97.1754041258.git.mazziesaccount@gmail.com>
- <20250801120901.00004a67@huawei.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250801120901.00004a67@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 2/2] dt-bindings: iio: magnetometer: document Infineon
+ TLV493D 3D Magnetic sensor
+To: Dixit Parmar <dixitparmar19@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+References: <20250802-tlv493d-sensor-v6_16-rc5-v2-0-e867df86ad93@gmail.com>
+ <20250802-tlv493d-sensor-v6_16-rc5-v2-2-e867df86ad93@gmail.com>
+ <fc15279a-bf3e-4500-8dfc-651e6e2431d9@kernel.org> <aJAeoI4Iz_U06Wmo@dixit>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <aJAeoI4Iz_U06Wmo@dixit>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 01/08/2025 14:09, Jonathan Cameron wrote:
-> On Fri, 1 Aug 2025 13:07:13 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> The ad7476 driver uses a table of structures for defining the IC variant
->> specific data. Table is indexed using enum values, which are picked by
->> SPI ID.
+On 04/08/2025 04:44, Dixit Parmar wrote:
+> On Sat, Aug 02, 2025 at 09:45:29AM +0200, Krzysztof Kozlowski wrote:
+>> On 02/08/2025 08:44, Dixit Parmar wrote:
+>>> Document the bindings for Infineon TLV493D Low-Power 3D Magnetic Sensor
+>>> controlled by I2C interface. Main applications includes joysticks, control
+>>> elements (white goods, multifunction knops), or electric meters (anti-
+>>> tampering).
+>>> Drop duplicated entry for infineon,tlv493d from trivial-devices.yaml as
+>>> its documented in infineon,tlv493d.yaml now.
+>>>
+>>> Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
+>>> Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+>>> ---
+>>>  .../iio/magnetometer/infineon,tlv493d.yaml         | 45 ++++++++++++++++++++++
+>>>  .../devicetree/bindings/trivial-devices.yaml       |  2 -
+>>>  2 files changed, 45 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml
+>>> new file mode 100644
+>>> index 000000000000..ebcf29067a16
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml
 >>
->> Having the table and an enum adds extra complexity. It is potentially
->> unsafe if someone alters the enumeration values, or size of the IC data
->> table.
 >>
->> Simplify this by dropping the table and using individual structures for
->> the IC specific data, and storing the IC specific structure's address
->> directly in the SPI ID data.
+>> Filename should match compatible. Otherwise a1b6 is just confusing.
 >>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>
->> ---
->> 100% Untested.
->> No functional changes intended
-> 
-> One tiny thing inline, otherwise looks good to me.  This aligns with
-> how we prefer to do things these days.  Tends to end up easier to read
-> than the enum array thing and best of all removes any temptation to use
-> the enum for anything else.
-> 
->>   
->>   static const struct iio_info ad7476_info = {
->> @@ -312,7 +306,7 @@ static int ad7476_probe(struct spi_device *spi)
->>   
->>   	st = iio_priv(indio_dev);
->>   	st->chip_info =
->> -		&ad7476_chip_info_tbl[spi_get_device_id(spi)->driver_data];
->> +		(struct ad7476_chip_info *)spi_get_device_id(spi)->driver_data;
-> 
-> Switch to spi_get_device_match_data()
-> which checks via generic firmware paths first (so DT here) and then the
-> old school tables.  Also returns a void * so gets rid of need to cast.
+> Idea behind having a1b6 is that the TLV493D is sensor series and this
+> a1b6 is one of the models. As this driver is intended, developed and
+> validated on a1b6 I kept it in compatible, though the file name contains
+> only the sensor series. In my undertanding, this same file & driver can
+> be reused for other drivers from same family with new compatible fields.
+> Does that make sense?
 
-Ah. Right! Thanks!
+No, because I did not speak about drivers at all. Please follow
+kernel/DT conventions.
 
-> Only works with all pointers (or a lot of care) because a value 0 is a
-> fail to match.  So kind of enabled by your patch.
-
-Yours,
-	-- Matti
+Best regards,
+Krzysztof
 

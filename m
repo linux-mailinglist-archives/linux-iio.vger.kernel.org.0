@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-22237-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22238-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B075B1984A
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 02:34:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E142CB198DC
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 02:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E85E4175F86
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 00:34:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97D2A3A554D
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 00:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CECC1DDC1D;
-	Mon,  4 Aug 2025 00:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6ABE1DD0C7;
+	Mon,  4 Aug 2025 00:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hcZbIbfK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmD6fIxr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EEF1D8E10;
-	Mon,  4 Aug 2025 00:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A301A18CBE1;
+	Mon,  4 Aug 2025 00:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754267646; cv=none; b=hAQ4pIYFEClCd08t0CqyiwqGeWmed4M3Y5Yyoi8H1lB1vKOPLobO2nnB5smC6UNw6ldvZGD8BPy8njx/iXdiVHGrE7lD8cbMEBXVsj86j5ZMhTF9OEH+ZRihyg8AZT2tvwWgwLS1GRHMfX/L9U5DyD0m8+C78Y5ENql+XVreZNw=
+	t=1754267799; cv=none; b=KabNN3wdb4Hv2U1rwL14RrDjOg59zERhnMjwShy+M1olsoIjKieLFGS5f38x1/tci9I8DVtIboHYIg+YzLocmbD9w7WzcfEHiWc7vFz6roaggMC62dslH4Gi6UnHaThVZpzY3XB1vhHTchOTrUtnCIzhNm0Nz3FZVhKBcykwBHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754267646; c=relaxed/simple;
-	bh=Vl/ZRyDWANE9YVVQpNpRhokMIMNLsnrUTR4BBr6Ppp4=;
+	s=arc-20240116; t=1754267799; c=relaxed/simple;
+	bh=fHAaocERp0YyMO0m6xZVOjH5fnGKNvGMKTFMKsUKMPQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qCZU5jrPFpQ/IG5x3SDrAEI47jAs50VmXTRzsJIDygkdH0gDM7kGLFxkgR3joo/yy9l4D6Jbr7wap9HTEqwpJ6tq7sJUBQcaKuasoXjiGo1txxrx/qVBFd1t6h7Z6oD/v+pjBc96wLoZUXeMfOmZWbjlwR+i5ZjV9DEJ0MgB5gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hcZbIbfK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD6AC4CEF0;
-	Mon,  4 Aug 2025 00:34:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tFbLlEjDq+N6GPtX5mv8fOha+pT/pLB01ByV6fS7cD+VFJ/qYy28RCBXz2Kbf5Exapuc/MM4oj2vWMlwvjKWyP/3pGwxOOvXDWEFiOwQWwlojfhKDmOB/uvvI6Zi98cfdGQ2ZK4Rot+bxEjRLN35PISJZwqp6CzK/NxZGemq7cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmD6fIxr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AACFC4CEF8;
+	Mon,  4 Aug 2025 00:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754267646;
-	bh=Vl/ZRyDWANE9YVVQpNpRhokMIMNLsnrUTR4BBr6Ppp4=;
+	s=k20201202; t=1754267797;
+	bh=fHAaocERp0YyMO0m6xZVOjH5fnGKNvGMKTFMKsUKMPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcZbIbfKValC3w7WezbNnWUKFCZ/wAZ2wZwiIwKQ2tqOsgLZ7r5AlfpWmD0gTCtBz
-	 gtV4CwszDQq6o7Pe9W/wljje3tkyIWwt4HU8Tq6oQOuvo8S6XfJeeHDc6SQe+zel3N
-	 Ei5wWnPjTpGdUwRJfdhL8AqE1epGUA7c1jU6GmHIx5V/xhLu+nYnrQ/AqgCFweML/s
-	 AA41RSH6lxJ/mxVdIKS3OomAqAkFZnpwEVnzT8yVp/+lM6vS/vKS+F1pcc0EtwFz6W
-	 aFUb0vvJIZj7TDV74DC79ghmbTP3izbJcVYrvRi8vf2FyHkvh4HRVVC0g1gQwN72G7
-	 MZQfUPkjEbRqA==
+	b=DmD6fIxrVS43CFpHPvyvnxI33AsfJYvz+2jI7AY7LyGaIWwZwNcxF3LlR7hCBaTzZ
+	 sfy6In+XNEjoLw3GMmCT+cUBElYUTt9DcC+hTeMrtSfNQ6Vrfp7BGMBfdPjUiWVmDE
+	 cJiGT4oUDD3j6exDBVpd5BDhX++pckB9AGpXNWogULYzxMEQ2xsLFZBhBnkOxVPKQn
+	 X/p0IXcWuhoYniZa2aH1M74cQ52f3kv/G9/YKkeCyLI0CnG6+NoCWw67ky1lLwUPf+
+	 55of5o9cDE28v/GUAGt4hqLM53LIMxdWNKs3Ry/3EUk9pJyqhlP6mEOWa8UlJas0as
+	 JVJxNYA8bn8Aw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -52,12 +52,12 @@ Cc: Jonathan Santos <Jonathan.Santos@analog.com>,
 	Michael.Hennerich@analog.com,
 	lars@metafoo.de,
 	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 67/69] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
-Date: Sun,  3 Aug 2025 20:31:17 -0400
-Message-Id: <20250804003119.3620476-67-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 57/59] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
+Date: Sun,  3 Aug 2025 20:34:11 -0400
+Message-Id: <20250804003413.3622950-57-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250804003119.3620476-1-sashal@kernel.org>
-References: <20250804003119.3620476-1-sashal@kernel.org>
+In-Reply-To: <20250804003413.3622950-1-sashal@kernel.org>
+References: <20250804003413.3622950-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,7 +67,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.41
+X-stable-base: Linux 6.6.101
 Content-Transfer-Encoding: 8bit
 
 From: Jonathan Santos <Jonathan.Santos@analog.com>
@@ -159,7 +159,7 @@ regression risk.
  1 file changed, 19 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index a9248a85466e..7956948166ab 100644
+index 967f06cd3f94..e147eaf1a3b1 100644
 --- a/drivers/iio/adc/ad7768-1.c
 +++ b/drivers/iio/adc/ad7768-1.c
 @@ -203,6 +203,24 @@ static int ad7768_spi_reg_write(struct ad7768_state *st,

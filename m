@@ -1,205 +1,149 @@
-Return-Path: <linux-iio+bounces-22241-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22242-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6225AB1997B
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 02:42:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E28B19A40
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 04:41:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22D0A177B2C
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 00:42:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C28CE4E046C
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 02:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC921D86D6;
-	Mon,  4 Aug 2025 00:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A63021A44C;
+	Mon,  4 Aug 2025 02:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LU6rtVYm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NchxNRRc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADCB13E898;
-	Mon,  4 Aug 2025 00:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A0933993;
+	Mon,  4 Aug 2025 02:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754268143; cv=none; b=S3YlfLjkS4/x9h63eSFOAPjjVakIhh9DD57J9bMwJC05BD0uMGNjtIXSexvgHSoG5Z//QlfHq8idLfWFocfD7Zp0zzy16R4vnW/U/n9eAEr76X97Jy3K2B20nnDpkHXxhq5jwayI7Uk73VJVU3crnG5yckyqUjPIS7/z6oQI4ag=
+	t=1754275293; cv=none; b=mMsGghUb7uvJ7YGOhjaoWwwZ5viraXXSnmBj2vCl/A2SZR3B1+T7iWuSZu2R0MByB3dF2TrRpgd30zirwjwG1/1NZDnzUkRvZhBh8LseFaWYhZT/w/ilwuA2eGlK2mO4w50L5o81vy21YWdk0s4s9RRGqvaaaYvjdYqy64SK4BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754268143; c=relaxed/simple;
-	bh=FRN+ypN9VkurbjU55mYY7bPHV8Z+ejrLS96rmhEaUpk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KB4yIGi+/SgTujtZQGO4v6uLRKlrI1Vvm1lkCa2Ro8/ERxOoImWkNAilj8xp+5l6+kUTEXmMeR2ubkyedDLcXp8cENcB2KbesfImrfny62jX/M7kvAPtO61aWjt1sX+SQHmC6GHENJXTPpiKJ0k+Bv6VRsrHpz6jcBdBCqnQFtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LU6rtVYm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14117C4CEEB;
-	Mon,  4 Aug 2025 00:42:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754268143;
-	bh=FRN+ypN9VkurbjU55mYY7bPHV8Z+ejrLS96rmhEaUpk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LU6rtVYmCemPqyVrXPlRc2Ah1ia2nr0olX6X1OKR2VkK9nmwFny0h+5o4KwvWN02b
-	 DG7I0TFltNDcyi3cDbE1wy8ZaDwWEWuI/OcOW2Yc7azlSp2LKmTof8HJZ40NTWfXFz
-	 MIjQNOJ4ZVPACk2BoeJPFgcapL5+d91sSbEBimkIoJs9T3reZL1N1o/8vrMU+xHQMi
-	 wRr8UjK9OBB20RlWfSXObAs6t/+BUgkHCbMr//tP6vBKI+gzw/21xHigRAwhJo+on6
-	 uPajKbVU7ikB1+F23smsHZCPh39pjFJNH+XEmwMka0zlxtVu3q0XBIS+fjFRmUAKLn
-	 7Dea1beLYpuwA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 38/39] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
-Date: Sun,  3 Aug 2025 20:40:40 -0400
-Message-Id: <20250804004041.3628812-38-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250804004041.3628812-1-sashal@kernel.org>
-References: <20250804004041.3628812-1-sashal@kernel.org>
+	s=arc-20240116; t=1754275293; c=relaxed/simple;
+	bh=yF31kuPRqpeTTI+pJNKQuGhpe4j7lw9f+kTHTf7sw4U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hz4W+IKN9xct2JPj0NOFFmIxHlfFn8oreEfVjvPqupQTyklhtL92A/y2fiWsk3UbUxbUvoio9sL1LyOQ5emYW43ICKwz4X1s9uGm9S8yJmGX4uGftTjNyiqV6pC5eo1lBTG8S7RKlF5B0Ux+zro29chHBeYkfeHFuWGG1KedsxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NchxNRRc; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-31ee880f7d2so4072555a91.0;
+        Sun, 03 Aug 2025 19:41:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754275291; x=1754880091; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ICf5xJ6xg4MdvVyPWHXWuaEnY6bAabT5btl/udYFsbA=;
+        b=NchxNRRc/8naNQGwMR5fZ7jqM9pC7BIel5MBSilLNwRJN9ZQARFE70PZW+R5j1DGYG
+         9DWgQLEAqzIUyiVSlo5/J67axfkmIPoqQvZN1/Kc09j1AtS0nGEIC4gTZsz3oo9RDqN/
+         M8cJWGbpe5e0KxLogTjukEBHZ4GKXP2Z8EUH3pt8uNnOpmJPD7ThSGSQ4bHdHh3ye4J3
+         bgmZURqubfUUG9vgpOfPR+0P/FtTS2vYSBRtVf4HlZLKuNtus2FVBgHLmJpjok4biW7q
+         F3+A0rnecamALqz4m6bmhPzqmBHMZJ9FrzXaY92R0SxmRUYm8AfTj5MrPkWinqdxYZGX
+         Sziw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754275291; x=1754880091;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ICf5xJ6xg4MdvVyPWHXWuaEnY6bAabT5btl/udYFsbA=;
+        b=EZdkCkwS3hDhB770VOtPioBn+P0c5ePQ/Uum7cQpn/7j7R/30gWqjWTJJfobbd8rkZ
+         P8BYjsUa4+syVryphmJVGz11X86V+mECQHkWXfle1iB0ryrydeLEDXN2CNoyuly+y4pn
+         8VNM+/0udtOUW4zmFFjmeyRh7CPLOBGcdrry3hMwH/Z4H7WuG+31TPL7NIMrFOwB/+dN
+         O3tdtFayFHwNyi/V3zvKGlh7Kuq4HtCGOMyoFIcnRyqp32ewLYQVqf67JD0h0IxgiNbD
+         okWA0FW25jKUYYOc9gKx5Rrg50G9MePJjQ+R0lStp0S0t9gOtbZ2wM9YFQRLG4S5tRW+
+         gAtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqRmjpzIV8G7MWEhvw/31n6PDW5rnf1kZU/RpivHXbXVuMz0x+O6sITWUDuwK+abw+tOqHe8sv9/JYyFc9@vger.kernel.org, AJvYcCVoo9z4U8TKj+OWf6hJ89xr4DV5eqTg1Qv/YDvvqe4DMeE1oV7q+y4DcdthNJ3AWHPOQOTkTwI1xVct@vger.kernel.org, AJvYcCWPUqF4ycwE3NiA3AhlLx90YHY7E5PwjFUW+AHXqtK2WqkjOOijC6kuSZzhbKi16yaNvpbWsI5bCLCZ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yydmtk0UbXwTmXeHst6EwiJV9M69aD8JxcRcu2APkj/KU4gsOsc
+	/ICi13nNkrQTG5BjcPx3gwg8HRgxPJS2RInExRvpPIazUdARVQCQM3vy
+X-Gm-Gg: ASbGncvEZPj13TEilFFOw3SWju/cKHy13+oYKGWxiF6x2CtJEPBDFk62vj65H+6Dgkr
+	mq6s6fygqWQq/Y+msLsba6N0KUfLl2f8muAyS4VZUG7WK6HIOZ3jygc4PV22djslinjrL9f/Btu
+	+NR2u3wa5k+aZHmVgJB62uQTrXk1Li3R56Vo8IHKQbmiBfgrbGfWQh+dJAj65x3rIqNNZHNEQbI
+	j46uA8F0VktxJd8YWZx6Jnhg1F4VSTPlJczftV+u4Z+rKwWo2XzSGCVBaYOaj0Aq0Eb6C9VpWjT
+	HRc1OsaiFjqtpGJpa9H66CXcdii8WqwybUYdSqmHRwEpGcLb9484viyibhTJO1aC97ldboQORRk
+	eWHozs+Zp5utI9FUaC2tWaqg=
+X-Google-Smtp-Source: AGHT+IH/t0iEyDzAuGkZpl6GhgCR3HK/exZLgni1IPMsYXJvfTZ+QL9J22CL+JKK+W+pzS9oRBkeKQ==
+X-Received: by 2002:a17:90b:4ad2:b0:31e:ff94:3f9d with SMTP id 98e67ed59e1d1-3211631ad9cmr10565824a91.31.1754275290741;
+        Sun, 03 Aug 2025 19:41:30 -0700 (PDT)
+Received: from dixit ([2401:4900:1c43:eb01:acfe:5fdc:edb4:dbec])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3207ebc3266sm10338868a91.13.2025.08.03.19.41.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 Aug 2025 19:41:30 -0700 (PDT)
+Date: Mon, 4 Aug 2025 08:11:22 +0530
+From: Dixit Parmar <dixitparmar19@gmail.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] dt-bindings: iio: magnetometer: document Infineon
+ TLV493D 3D Magnetic sensor
+Message-ID: <aJAd0k-PGbQJqD_R@dixit>
+References: <20250802-tlv493d-sensor-v6_16-rc5-v2-0-e867df86ad93@gmail.com>
+ <20250802-tlv493d-sensor-v6_16-rc5-v2-2-e867df86ad93@gmail.com>
+ <175423802305.483875.12095436762674457962.robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.240
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <175423802305.483875.12095436762674457962.robh@kernel.org>
 
-From: Jonathan Santos <Jonathan.Santos@analog.com>
-
-[ Upstream commit 7e54d932873d91a55d1b89b7389876d78aeeab32 ]
-
-The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
-~2.5 µs at the lowest supported MCLK frequency. Add a 3 µs delay to
-ensure reliable synchronization timing even for the worst-case scenario.
-
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-**Backport Status: YES**
-
-This commit should be backported to stable kernel trees. Here's my
-extensive analysis:
-
-**1. Bug Fix Nature:**
-The commit fixes a timing violation bug where the SYNC_IN pulse width
-was not meeting the hardware's minimum timing requirement. According to
-the datasheet (as noted in the commit), the SYNC_IN pulse must be at
-least 1.5 × Tmclk (MCLK period). Without the proper delay, the
-synchronization pulse may be too short, especially at lower MCLK
-frequencies, causing unreliable synchronization.
-
-**2. Specific Code Analysis:**
-
-The original code had a critical timing issue:
-```c
-gpiod_set_value(st->gpio_sync_in, 1);
-gpiod_set_value(st->gpio_sync_in, 0);
-```
-
-This creates a pulse with essentially zero width (just the GPIO toggle
-time), which violates the hardware specification. The fix adds:
-- A new dedicated function `ad7768_send_sync_pulse()` that ensures
-  proper timing
-- Uses `gpiod_set_value_cansleep()` instead of `gpiod_set_value()` for
-  better reliability
-- Adds a 3 µs delay using `fsleep(3)` to guarantee the minimum pulse
-  width
-
-**3. Impact Analysis:**
-- **User Impact**: Without this fix, users may experience unreliable ADC
-  synchronization, particularly when changing filter decimation rates or
-  when operating at lower MCLK frequencies (0.6 MHz)
-- **Worst Case**: At 0.6 MHz, Tmclk = 1.67 µs, requiring a minimum pulse
-  width of 2.5 µs. The original code provides essentially 0 µs
-- **Data Integrity**: Improper synchronization can lead to incorrect ADC
-  readings or timing issues in multi-device setups
-
-**4. Risk Assessment:**
-- **Low Risk**: The change is minimal and contained - it only adds a 3
-  µs delay and switches to the cansleep GPIO variant
-- **No API Changes**: The fix is internal to the driver with no external
-  interface changes
-- **Conservative Fix**: The 3 µs delay provides margin above the 2.5 µs
-  worst-case requirement
-
-**5. Stable Kernel Criteria:**
-✓ Fixes a real bug that affects users (timing violation)
-✓ Small, contained change (adds one function, modifies one call site)
-✓ No new features or architectural changes
-✓ Minimal risk of regression
-✓ Clear hardware specification violation being fixed
-
-**6. Supporting Evidence:**
-- The driver has had multiple previous fixes backported (as seen in git
-  log with "Fixes:" tags)
-- Similar timing-related fixes are commonly backported for hardware
-  drivers
-- The AD7768-1 is an active production part used in data acquisition
-  systems where reliability is critical
-
-The commit meets all stable kernel criteria for backporting - it's a
-clear bug fix for a hardware timing violation that could cause
-unreliable operation, implemented with minimal changes and low
-regression risk.
-
- drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 9580a7f7f73d..883399ad80e0 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -202,6 +202,24 @@ static int ad7768_spi_reg_write(struct ad7768_state *st,
- 	return spi_write(st->spi, st->data.d8, 2);
- }
- 
-+static int ad7768_send_sync_pulse(struct ad7768_state *st)
-+{
-+	/*
-+	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 × Tmclk,
-+	 * where Tmclk is the MCLK period. The supported MCLK frequencies range
-+	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pulse
-+	 * width of approximately 2.5 µs in the worst-case scenario (0.6 MHz).
-+	 *
-+	 * Add a delay to ensure the pulse width is always sufficient to
-+	 * trigger synchronization.
-+	 */
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
-+	fsleep(3);
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
-+
-+	return 0;
-+}
-+
- static int ad7768_set_mode(struct ad7768_state *st,
- 			   enum ad7768_conv_mode mode)
- {
-@@ -287,10 +305,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
- 		return ret;
- 
- 	/* A sync-in pulse is required every time the filter dec rate changes */
--	gpiod_set_value(st->gpio_sync_in, 1);
--	gpiod_set_value(st->gpio_sync_in, 0);
--
--	return 0;
-+	return ad7768_send_sync_pulse(st);
- }
- 
- static int ad7768_set_freq(struct ad7768_state *st,
--- 
-2.39.5
-
+On Sun, Aug 03, 2025 at 11:20:40AM -0500, Rob Herring (Arm) wrote:
+> 
+> On Sat, 02 Aug 2025 12:14:28 +0530, Dixit Parmar wrote:
+> > Document the bindings for Infineon TLV493D Low-Power 3D Magnetic Sensor
+> > controlled by I2C interface. Main applications includes joysticks, control
+> > elements (white goods, multifunction knops), or electric meters (anti-
+> > tampering).
+> > Drop duplicated entry for infineon,tlv493d from trivial-devices.yaml as
+> > its documented in infineon,tlv493d.yaml now.
+> > 
+> > Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
+> > Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+> > ---
+> >  .../iio/magnetometer/infineon,tlv493d.yaml         | 45 ++++++++++++++++++++++
+> >  .../devicetree/bindings/trivial-devices.yaml       |  2 -
+> >  2 files changed, 45 insertions(+), 2 deletions(-)
+> > 
+> 
+> My bot found errors running 'make dt_binding_check' on your patch:
+> 
+> yamllint warnings/errors:
+> 
+> dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml: vdd: missing type definition
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d.yaml: 'example' is not one of ['$id', '$schema', 'title', 'description', 'examples', 'required', 'allOf', 'anyOf', 'oneOf', 'definitions', '$defs', 'additionalProperties', 'dependencies', 'dependentRequired', 'dependentSchemas', 'patternProperties', 'properties', 'not', 'if', 'then', 'else', 'unevaluatedProperties', 'deprecated', 'maintainers', 'select', '$ref']
+> 	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
+> 
+Ack.
+> doc reference errors (make refcheckdocs):
+> 
+> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250802-tlv493d-sensor-v6_16-rc5-v2-2-e867df86ad93@gmail.com
+> 
+> The base for the series is generally the latest rc1. A different dependency
+> should be noted in *this* patch.
+>
+I did not get this fully, is this concerning?
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+> 
+> pip3 install dtschema --upgrade
+> 
+> Please check and re-submit after running the above command yourself. Note
+> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+> your schema. However, it must be unset to test all examples with your schema.
+> 
+Thanks,
+Dixit
 

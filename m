@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-22269-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22270-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A53FB19F50
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 12:05:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B921BB19F4F
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 12:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7E467A72DF
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 10:03:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78BDC3B9501
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 10:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FD12505BA;
-	Mon,  4 Aug 2025 10:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE12257431;
+	Mon,  4 Aug 2025 10:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="kxyhckFG"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="bysfvyQZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D1E252917;
-	Mon,  4 Aug 2025 10:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD6D254AF0;
+	Mon,  4 Aug 2025 10:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754301797; cv=none; b=oY/+iOaCbe7UK6QfegUITJSbG55L4h4kAZou7Q/YwBtRSzVlmkO5adVa4NJQsmO6UxtYWim03IzyI6mgFUPDvEEXCpnqLW1joFod975PIgaULhGuBxjtjjVNvzWwiFaojZr7fqR6EHBKSnH0l28T00Vum8In5CDnetxAe5z3r8I=
+	t=1754301798; cv=none; b=FVItOIC79D+2hPZ87qWcuENFE0Dc1ARgP2DEKU4Kst4l/h3j3gNzPiJn1u0rvBuoCf0113RuCvm8b19H4NL07MZNvS4bXHSdzDHnncj1G3MIBSMrCeDj177rzAE90ZalIcoda4T1Cm1I9UC+g7gXV+UAhH6UdvG7/u6iToSj0G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754301797; c=relaxed/simple;
-	bh=uuIRyOEdnRLBFCKPdTmHEOMyyB5YLO4QgF/4XXDW/LU=;
+	s=arc-20240116; t=1754301798; c=relaxed/simple;
+	bh=rExnJEsUclWRnuXGTLi8ZjxHecMNknzyT1tPuf5PI9I=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BwCTLEV/MWLWiK+NSuyEubvsSTiZcBE+A4yis4EO9mmpNzXTI1AmvAEvXAtw4iyV42QzPbecemWmwTpL6yIDk+yr7cllkEp0ioVDQIHy3PhqEBLdnJymnZfhgyHeZFYJU3V4h/JHypUZG1g+VF5srrU0PpFXDqsuch0BDtavv3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=kxyhckFG; arc=none smtp.client-ip=68.232.154.123
+	 MIME-Version:Content-Type; b=it+GEB6fH/Qu4G/JjJNXl3UYOBsEjV1o/4p5fm5oK64HV/9dwnWRVDg5uUN4oI0vn0sAsUe8Ek8DC9wlwj3w70qhDJOS/PIPSEWfat32VMyXlC5B0IjDxklyQURdBBJ57VENsyQSJ7bTVerUuwauYDimE8dXVDI9KlW91nogqgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=bysfvyQZ; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1754301795; x=1785837795;
+  t=1754301797; x=1785837797;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=uuIRyOEdnRLBFCKPdTmHEOMyyB5YLO4QgF/4XXDW/LU=;
-  b=kxyhckFGqMCEShbPlxeenpcHPNfdEogKke5eGMtrLalW8QHXgXCGy8N/
-   ZR6WPOXCIHJyS74jgXkFSBpYFkD/k1odugn3gVKcqUplhYzMjofe1+xMW
-   tE//p7M4qwmYoMhr8ArMUuTlSGZhFGkMAb2Vao/8//bygT+HHbkLlIYFr
-   4NBk89uTYVXkUhq3Pz9rUW1vFzx4P6M5dtggYF+/ChY3RxZEcXrXgbdH3
-   frnGNVSAa3EeqbA2Kyn06PDxF2hQVjUe/5OfZPBXClr7DxYjalNEndHlh
-   27Rm986Yu2Erd31+Aek0BZ8f9i2Mk/YR3pf3J8cdWSxmA/sC2XWU6GpfK
-   g==;
+  bh=rExnJEsUclWRnuXGTLi8ZjxHecMNknzyT1tPuf5PI9I=;
+  b=bysfvyQZrs2FL0/0xqgMBLwM4hZeFEioyjAPo2PqRlej+8V8httAQtpk
+   O40t3Dat8mhSxGQhNM4jvndwf/FZwn7mIiTdttPmLAQs0zxfofkcGiOIJ
+   Itf7qQBsGrzW106O89a+RZQc7+Q78eTGSGqmZ55HBi34Fy7bHi5rLdoy1
+   wq+54rA1cGGS3xhG9WdhNJsCYUC/tJdF1G1jibOa3diWOcApiPZCih8D0
+   Wnb1RSR53A551hGiWi9W32K8CSb+njHTNEEXvpRfdkU0KWtTseIvSeMgg
+   cSuk2rQCWSe9sjZydQXlT4ahPIwyvG2O9qQ4CMpqQ9De8yKGKZxg9IEQ6
+   A==;
 X-CSE-ConnectionGUID: QrHuXWrSRt6GNRSNglLzJg==
-X-CSE-MsgGUID: VL8QDnfmR6Kw70ZIcKKS6A==
+X-CSE-MsgGUID: BPr72ON8RL2cJ2k6co4c9Q==
 X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="44245503"
+   d="scan'208";a="44245504"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 Aug 2025 03:03:14 -0700
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 Aug 2025 03:03:15 -0700
 Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 4 Aug 2025 03:03:00 -0700
+ 15.1.2507.44; Mon, 4 Aug 2025 03:03:06 -0700
 Received: from che-ll-i67070.microchip.com (10.10.85.11) by
  chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.44 via Frontend Transport; Mon, 4 Aug 2025 03:02:54 -0700
+ 15.1.2507.44 via Frontend Transport; Mon, 4 Aug 2025 03:03:01 -0700
 From: Varshini Rajendran <varshini.rajendran@microchip.com>
 To: <eugen.hristev@linaro.org>, <jic23@kernel.org>, <dlechner@baylibre.com>,
 	<nuno.sa@analog.com>, <andy@kernel.org>, <robh@kernel.org>,
@@ -67,9 +67,9 @@ To: <eugen.hristev@linaro.org>, <jic23@kernel.org>, <dlechner@baylibre.com>,
 	<devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-kernel@vger.kernel.org>
 CC: <varshini.rajendran@microchip.com>
-Subject: [PATCH 05/15] ARM: dts: microchip: sama7g5: add packet tag as offset for calib
-Date: Mon, 4 Aug 2025 15:32:09 +0530
-Message-ID: <20250804100219.63325-6-varshini.rajendran@microchip.com>
+Subject: [PATCH 06/15] dt-bindings: nvmem: microchip-otpc: remove stride details
+Date: Mon, 4 Aug 2025 15:32:10 +0530
+Message-ID: <20250804100219.63325-7-varshini.rajendran@microchip.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250804100219.63325-1-varshini.rajendran@microchip.com>
 References: <20250804100219.63325-1-varshini.rajendran@microchip.com>
@@ -82,29 +82,30 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Add packet tag as offset to access temperature calibration data from otp
-memory for sama7g5.
+Removed stride details from the bindings header as they are not relevant
+anymore since the access method of OTP packets is changed to TAG
+approach. Update the example binding according to the new changes.
 
 Signed-off-by: Varshini Rajendran <varshini.rajendran@microchip.com>
 ---
- arch/arm/boot/dts/microchip/sama7g5.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/dt-bindings/nvmem/microchip,sama7g5-otpc.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/microchip/sama7g5.dtsi b/arch/arm/boot/dts/microchip/sama7g5.dtsi
-index 17bcdcf0cf4a..62f946f3f894 100644
---- a/arch/arm/boot/dts/microchip/sama7g5.dtsi
-+++ b/arch/arm/boot/dts/microchip/sama7g5.dtsi
-@@ -1023,8 +1023,8 @@ otpc: efuse@e8c00000 {
- 			#address-cells = <1>;
- 			#size-cells = <1>;
+diff --git a/include/dt-bindings/nvmem/microchip,sama7g5-otpc.h b/include/dt-bindings/nvmem/microchip,sama7g5-otpc.h
+index f570b23165a2..682b040675fd 100644
+--- a/include/dt-bindings/nvmem/microchip,sama7g5-otpc.h
++++ b/include/dt-bindings/nvmem/microchip,sama7g5-otpc.h
+@@ -3,10 +3,4 @@
+ #ifndef _DT_BINDINGS_NVMEM_MICROCHIP_OTPC_H
+ #define _DT_BINDINGS_NVMEM_MICROCHIP_OTPC_H
  
--			temperature_calib: calib@1 {
--				reg = <OTP_PKT(1) 76>;
-+			temperature_calib: calib@41435354 {
-+				reg = <0x41435354 0x4c>;	/* Temp calib data packet TAG */
- 			};
- 		};
- 
+-/*
+- * Need to have it as a multiple of 4 as NVMEM memory is registered with
+- * stride = 4.
+- */
+-#define OTP_PKT(id)			((id) * 4)
+-
+ #endif
 -- 
 2.34.1
 

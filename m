@@ -1,186 +1,205 @@
-Return-Path: <linux-iio+bounces-22234-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22235-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE383B19526
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Aug 2025 22:38:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8283EB19767
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 02:27:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2179B7A4787
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Aug 2025 20:36:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4C13174CF7
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 00:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B97C1F461D;
-	Sun,  3 Aug 2025 20:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147961953BB;
+	Mon,  4 Aug 2025 00:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bVPeNkQd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2d4MePr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C0D19258E
-	for <linux-iio@vger.kernel.org>; Sun,  3 Aug 2025 20:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E5C29A2;
+	Mon,  4 Aug 2025 00:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754253501; cv=none; b=Uab882CGYFICtrW81qVOPHhgT7xn7C+EQEBrJN3L1rtJm01P3qSXTJ8p73K/QPzH446CnGXRY8x5piOGhZSTRUWHqsYLybhSCg6NMTE6AQh0ficDEsnhflEdTYBKZWHh0UlwuyTLzbh2pRbMQCaMf0D0NE9rodrTLEHjnHmcxqI=
+	t=1754267259; cv=none; b=ekDYC9eiKo0s2p3SviPRp7nNAMmA7H0v/KG2nDoOj9oexdy6IrUs7qXLQLli8EeISv5uLmvKJZhdi8j9J9OtkEFOOJwBosUknugr+5OHKooXzTd+5JzwD40J/mV3Zg4RBcKGLK8eClx2pbtgbcRCBJX61VEtUosu4agSCejw3ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754253501; c=relaxed/simple;
-	bh=F6EQ9viuOwYUComY2moLhGGie5+ZLE4a0d90tqmiQdU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OD5u87Isc4lbQ8pIFqaalyNmBYxcni60XM5rfCDBjMUnz26kyUXDmyr/uxkDzm9Wnw9UP36B7E0hL5k3sxurxcc1bx9XOdnwS11EaszpE1+KbKr5C1aGyqTAHWPKbZnsTDkx85vwnah/xYIr78OGR4mgyk04gWDVlntzt193zwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bVPeNkQd; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-af910372ab3so753772566b.1
-        for <linux-iio@vger.kernel.org>; Sun, 03 Aug 2025 13:38:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754253497; x=1754858297; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mIUEOqf/bMa5O0+Us5b3PylE3/IlVP9PpytASARWFxU=;
-        b=bVPeNkQddVT4TnwO6wjhJmmAZOM/1DxkAQPUGvSNwS6ATiUZm4ZNVPR/6P+RlEe2X9
-         nj6tCDas/5rqw/AQRExUuzgTaDXFHBDVmvgs6ds8edEbMjz4I4cEDltDFe9urIQ6q5ZP
-         WZXGcn/vFZGMshB0dWEeM6Zqqlu/8ephGEvE449bDNVcJ3dgt13xlTvIZVGpkTiaFuwn
-         jqhseAl0t9E5cudaBYCTAihBuIgpJ9BqBBQRlTvTS3ohJpw3hbPz+Fb1IBYsfmhpGVid
-         t8J4gzbvxeUYtrZTFzHuW5GzbW4G/cgXE3FcHphrUYYmQV1gAUi2usVohoJnY3TWW4Hp
-         EJ/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754253497; x=1754858297;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mIUEOqf/bMa5O0+Us5b3PylE3/IlVP9PpytASARWFxU=;
-        b=N+9Wubgf+CRhoddN0IZXTpOUiL9fBJogyeHC/GoLGEbIaX0fHsgGgPfSpP/GwVCCKi
-         Y+ByIKnIBKZiTyXrCclbSzGlzUbwQ6zB0FBKqoTM7afS2CbYwD3nzNSPAZVAB2m6Dttf
-         qCO229lsll5RcqUEY6rWCglBZOF71rk3uEQgjrww85wTqht67EZ+7J0Lj4gQM6uEYXjd
-         cwmHK4baMAlDMgf64hMXh8/tWZhDdgW/YLPD29qNGVt8JpckYjPc6QdDqMb9Ygyd1bxS
-         EYBHMYQUU/6/YMZKKLy61b5ttryCU1I3vZyPldYnCWRF4NGl4zBzeDArYnSKO3Vt7VAW
-         tLOw==
-X-Gm-Message-State: AOJu0YwEtU9D8vmsZgNvOZO3grZOWJ0OYiFToPqwxPShO83cZBqxDK2G
-	tjPCiZmJe1+I0RfGacvRnyRTrew2JGRHdap7qzHL6/qB+PJ/c3K0Pg971u9XaZgM7ma4+NCT/1O
-	69fvJbuKlZwO5hG3fFGzFfhBQhm2UOJo=
-X-Gm-Gg: ASbGncuVfm5veD8UFRZj7VaOeOTUP5gYdYk+E9dmWeLR4XHgTUo2/EWwm1TCzje9V+T
-	k3jLr5rF5NguOjV+BY3rDtZm/i2qCDIKZKzkRZrgah64xRFw4cA1dh3zW+X9MSFNirBRcLl0Jxs
-	rAnfPf6Ox0rBEX+nMsF/8U2oSaVOoNuiCwbbXIAtGiFKBM/XCCU0QgSdX1Pbf60OYcwyvuAxuCz
-	wDRNu0iI84bf8boCLKVran2OMbYm7VzG9nIQp28NQ==
-X-Google-Smtp-Source: AGHT+IEYApncBI0lRNkARIN6vxezghJ5vKAEqFUZZxti++4dYN0QXfOM8gAu5IhACv/njLUIei2dbysoBVlP75xbprw=
-X-Received: by 2002:a17:907:3cd2:b0:af9:3f53:ed1d with SMTP id
- a640c23a62f3a-af9408a1522mr762263566b.16.1754253496575; Sun, 03 Aug 2025
- 13:38:16 -0700 (PDT)
+	s=arc-20240116; t=1754267259; c=relaxed/simple;
+	bh=tCKE/jA1qylJwaEvES7Y4AcGWLhQZiDXUqhBGYPNcF0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZacDbK6WmeShdCyF59fPlL5J/fyuVXaIRDgromLSxWK25L2eycc9Fiwt8Q9w2A6aeGEg8Mnn/foWwCRZWBNcPlonbVRzOdlcIcfkCW4RHSNFWSOll3YPDDQlzU1QI2iXtUgjEMd84OUSyNNiVAbHrDQqNpzWWkapI2DxN7/hS1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2d4MePr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107D7C4CEF0;
+	Mon,  4 Aug 2025 00:27:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754267259;
+	bh=tCKE/jA1qylJwaEvES7Y4AcGWLhQZiDXUqhBGYPNcF0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=b2d4MePr9/YbmRQmisfAHP7CC49j8D6R5jNBZoynx7Am2xS92UCJsGBowl61zQlR/
+	 gO154XMzrburLRpx5cLrTrTGgiXB4zXWQESAFJN7qikZQ0MznjSf3BsS16vDzfJLB1
+	 NKOnLnuSaXJbAYZiQCKmvnFrqjcI8nZpAkWP+ybRpOAp0ouchPf+Ak/eJLYxrEVgvW
+	 hT1g7BLPZ6YC8FyKmIfZ73gAMD8AohxVDwLRmiUu8I+aHPJx5TT/ScBt7nW7FbcFDa
+	 gVY0lZ3njKWXmtVAC9Vo2Q2HKLG8YhoSxDkfA8lJiRyOFLrLTBqd7G7lAj2nXkbO1A
+	 xyqiWT9EcShVA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>,
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.16 83/85] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
+Date: Sun,  3 Aug 2025 20:23:32 -0400
+Message-Id: <20250804002335.3613254-83-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250804002335.3613254-1-sashal@kernel.org>
+References: <20250804002335.3613254-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241017233022.238250-1-vassilisamir@gmail.com>
- <20250803140802.36888-1-Achim.Gratz@Stromeko.DE> <20250803140802.36888-7-Achim.Gratz@Stromeko.DE>
-In-Reply-To: <20250803140802.36888-7-Achim.Gratz@Stromeko.DE>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 3 Aug 2025 22:37:40 +0200
-X-Gm-Features: Ac12FXx8JR-GyH6hRlyc9TYkk3R-ZDOPthIpWQrwBgohnqDC_zlYJiu32h5Hei4
-Message-ID: <CAHp75VdOFM5rpo7U0GMM74EsbKNHJH-gHU+Gq+kG5bwYUNbD0g@mail.gmail.com>
-Subject: Re: [bmp280 v1 6/6] iio: pressure: bmp280: implement
- sampling_frequency calculation for BMx280
-To: Achim Gratz <Achim.Gratz@stromeko.de>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.16
+Content-Transfer-Encoding: 8bit
 
-On Sun, Aug 3, 2025 at 4:09=E2=80=AFPM Achim Gratz <Achim.Gratz@stromeko.de=
-> wrote:
->
-> Report of the actual sampling frequency via sysfs is implemented based
-> on the nominal measurement cycle time, depending on oversampling_ratio
-> and t_standby settings.  If the device dependent table for the
-> t_standby values is missing, the reported value is taken from the ODR
-> table as before.
+From: Jonathan Santos <Jonathan.Santos@analog.com>
 
-...
+[ Upstream commit 7e54d932873d91a55d1b89b7389876d78aeeab32 ]
 
-> +static void bmp280_calc_sampling_frequency(struct bmp280_data *data, int=
- *val, int *val2)
-> +{
-> +       unsigned int cycle_time_us;
-> +       unsigned long freq_uHz;
-> +
-> +       if (data->chip_info->sampling_freq_tstby) {
-> +               cycle_time_us  =3D bmp280_calc_meas_time_us(data);
-> +               cycle_time_us +=3D data->chip_info->sampling_freq_tstby[d=
-ata->sampling_freq];
-> +               freq_uHz =3D 1000000000000L / cycle_time_us;
-> +               *val  =3D freq_uHz / 1000000L;
-> +               *val2 =3D freq_uHz % 1000000L;
+The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
+~2.5 µs at the lowest supported MCLK frequency. Add a 3 µs delay to
+ensure reliable synchronization timing even for the worst-case scenario.
 
-units.h and other constant definitions are for a reason.
+Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-> +       } else {
-> +               *val  =3D data->chip_info->sampling_freq_avail[data->samp=
-ling_freq][0];
-> +               *val2 =3D data->chip_info->sampling_freq_avail[data->samp=
-ling_freq][1];
-> +       }
-> +}
+LLM Generated explanations, may be completely bogus:
 
-...
+**Backport Status: YES**
 
->         case IIO_CHAN_INFO_RAW:
->                 raw =3D 1;
-> +               fallthrough;
+This commit should be backported to stable kernel trees. Here's my
+extensive analysis:
 
-Oh, first of all, why is it here in _this_ patch?! Second, this makes
-code harder to maintain and change. Think how to refactor to avoid
-this. Or justify in the comment field of the patch (after '---' line)
-why this is the best with the reference to what has been tried and
-becomes worse than this.
+**1. Bug Fix Nature:**
+The commit fixes a timing violation bug where the SYNC_IN pulse width
+was not meeting the hardware's minimum timing requirement. According to
+the datasheet (as noted in the commit), the SYNC_IN pulse must be at
+least 1.5 × Tmclk (MCLK period). Without the proper delay, the
+synchronization pulse may be too short, especially at lower MCLK
+frequencies, causing unreliable synchronization.
 
-...
+**2. Specific Code Analysis:**
 
-> +/* must be the same size as the ODR table */
+The original code had a critical timing issue:
+```c
+gpiod_set_value(st->gpio_sync_in, 1);
+gpiod_set_value(st->gpio_sync_in, 0);
+```
 
-Instead of the comment, use proper static_assert() here somewhere.
+This creates a pulse with essentially zero width (just the GPIO toggle
+time), which violates the hardware specification. The fix adds:
+- A new dedicated function `ad7768_send_sync_pulse()` that ensures
+  proper timing
+- Uses `gpiod_set_value_cansleep()` instead of `gpiod_set_value()` for
+  better reliability
+- Adds a 3 µs delay using `fsleep(3)` to guarantee the minimum pulse
+  width
 
-> +static const int bmp280_tstby_table[] =3D {
-> +       [BMP280_ODR_0HZ]        =3D       0,
-> +       [BMP280_ODR_110HZ]      =3D     500,
-> +       [BMP280_ODR_14HZ]       =3D   62500,
-> +       [BMP280_ODR_7_5HZ]      =3D  125000,
-> +       [BMP280_ODR_3_85HZ]     =3D  250000,
-> +       [BMP280_ODR_1_96HZ]     =3D  500000,
-> +       [BMP280_ODR_0_99HZ]     =3D 1000000,
-> +       [BMP280_ODR_0_49HZ]     =3D 2000000,
-> +       [BMP280_ODR_0_24HZ]     =3D 4000000,
-> +};
+**3. Impact Analysis:**
+- **User Impact**: Without this fix, users may experience unreliable ADC
+  synchronization, particularly when changing filter decimation rates or
+  when operating at lower MCLK frequencies (0.6 MHz)
+- **Worst Case**: At 0.6 MHz, Tmclk = 1.67 µs, requiring a minimum pulse
+  width of 2.5 µs. The original code provides essentially 0 µs
+- **Data Integrity**: Improper synchronization can lead to incorrect ADC
+  readings or timing issues in multi-device setups
 
-...
+**4. Risk Assessment:**
+- **Low Risk**: The change is minimal and contained - it only adds a 3
+  µs delay and switches to the cansleep GPIO variant
+- **No API Changes**: The fix is internal to the driver with no external
+  interface changes
+- **Conservative Fix**: The 3 µs delay provides margin above the 2.5 µs
+  worst-case requirement
 
-> +/* must be the same size as the ODR table */
+**5. Stable Kernel Criteria:**
+✓ Fixes a real bug that affects users (timing violation)
+✓ Small, contained change (adds one function, modifies one call site)
+✓ No new features or architectural changes
+✓ Minimal risk of regression
+✓ Clear hardware specification violation being fixed
 
-As per above.
+**6. Supporting Evidence:**
+- The driver has had multiple previous fixes backported (as seen in git
+  log with "Fixes:" tags)
+- Similar timing-related fixes are commonly backported for hardware
+  drivers
+- The AD7768-1 is an active production part used in data acquisition
+  systems where reliability is critical
 
-> +static const int bme280_tstby_table[] =3D {
-> +       [BME280_ODR_0HZ]        =3D       0,
-> +       [BME280_ODR_110HZ]      =3D     500,
-> +       [BME280_ODR_14HZ]       =3D   62500,
-> +       [BME280_ODR_7_5HZ]      =3D  125000,
-> +       [BME280_ODR_3_85HZ]     =3D  250000,
-> +       [BME280_ODR_1_96HZ]     =3D  500000,
-> +       [BME280_ODR_0_99HZ]     =3D 1000000,
-> +       [BME280_ODR_51HZ]       =3D   10000,
-> +       [BME280_ODR_34HZ]       =3D   20000,
+The commit meets all stable kernel criteria for backporting - it's a
+clear bug fix for a hardware timing violation that could cause
+unreliable operation, implemented with minimal changes and low
+regression risk.
 
-Why not order by value?
+ drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-> +};
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index 51134023534a..8b414a102864 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -252,6 +252,24 @@ static const struct regmap_config ad7768_regmap24_config = {
+ 	.max_register = AD7768_REG24_COEFF_DATA,
+ };
+ 
++static int ad7768_send_sync_pulse(struct ad7768_state *st)
++{
++	/*
++	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 × Tmclk,
++	 * where Tmclk is the MCLK period. The supported MCLK frequencies range
++	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pulse
++	 * width of approximately 2.5 µs in the worst-case scenario (0.6 MHz).
++	 *
++	 * Add a delay to ensure the pulse width is always sufficient to
++	 * trigger synchronization.
++	 */
++	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
++	fsleep(3);
++	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
++
++	return 0;
++}
++
+ static int ad7768_set_mode(struct ad7768_state *st,
+ 			   enum ad7768_conv_mode mode)
+ {
+@@ -339,10 +357,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
+ 		return ret;
+ 
+ 	/* A sync-in pulse is required every time the filter dec rate changes */
+-	gpiod_set_value(st->gpio_sync_in, 1);
+-	gpiod_set_value(st->gpio_sync_in, 0);
+-
+-	return 0;
++	return ad7768_send_sync_pulse(st);
+ }
+ 
+ static int ad7768_set_freq(struct ad7768_state *st,
+-- 
+2.39.5
 
-...
-
-For both, can you also utilize multipliers like USEC_PER_MSEC or so?
-Or is it a different unit?
-
---=20
-With Best Regards,
-Andy Shevchenko
 

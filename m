@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-22238-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22239-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E142CB198DC
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 02:38:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE75B198F2
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 02:39:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97D2A3A554D
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 00:37:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C641897EDF
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 00:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6ABE1DD0C7;
-	Mon,  4 Aug 2025 00:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D6D1DB356;
+	Mon,  4 Aug 2025 00:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmD6fIxr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ujJjTmIu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A301A18CBE1;
-	Mon,  4 Aug 2025 00:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F421DB34B;
+	Mon,  4 Aug 2025 00:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754267799; cv=none; b=KabNN3wdb4Hv2U1rwL14RrDjOg59zERhnMjwShy+M1olsoIjKieLFGS5f38x1/tci9I8DVtIboHYIg+YzLocmbD9w7WzcfEHiWc7vFz6roaggMC62dslH4Gi6UnHaThVZpzY3XB1vhHTchOTrUtnCIzhNm0Nz3FZVhKBcykwBHU=
+	t=1754267926; cv=none; b=r6QyKLqlnq7umuz8zQuUaY6f/1beLHZkwWqoQuX365DN2UOLOFlyg7sLHeOdY0xWnzvm1pBq+5q03JySX8cQ15q+4OipbpzWte/bbQ+91/9BHDCtDUO7nOIHlaaenpkE9Rv3HG4FgojvgLjJ8QJVz5fzVimMsayBHFbiUb8OmA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754267799; c=relaxed/simple;
+	s=arc-20240116; t=1754267926; c=relaxed/simple;
 	bh=fHAaocERp0YyMO0m6xZVOjH5fnGKNvGMKTFMKsUKMPQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tFbLlEjDq+N6GPtX5mv8fOha+pT/pLB01ByV6fS7cD+VFJ/qYy28RCBXz2Kbf5Exapuc/MM4oj2vWMlwvjKWyP/3pGwxOOvXDWEFiOwQWwlojfhKDmOB/uvvI6Zi98cfdGQ2ZK4Rot+bxEjRLN35PISJZwqp6CzK/NxZGemq7cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmD6fIxr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AACFC4CEF8;
-	Mon,  4 Aug 2025 00:36:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LL9kmiOeGZND0kxfIp/WBc3B9c9a0hfDiwEqzzxNG94LC1F3ybdtT3uhzG/45rtfWtyCxX/LI/MnNoQZN/JBAbR0VunPFUVSBlEN/CD2GOavIK6nnfRN5eAx7P0Qw4fZU2Y830r7FxkgihFdIG1kLP0v3DfEz8PxlWGnD/s95wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ujJjTmIu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D7FC4CEEB;
+	Mon,  4 Aug 2025 00:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754267797;
+	s=k20201202; t=1754267925;
 	bh=fHAaocERp0YyMO0m6xZVOjH5fnGKNvGMKTFMKsUKMPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DmD6fIxrVS43CFpHPvyvnxI33AsfJYvz+2jI7AY7LyGaIWwZwNcxF3LlR7hCBaTzZ
-	 sfy6In+XNEjoLw3GMmCT+cUBElYUTt9DcC+hTeMrtSfNQ6Vrfp7BGMBfdPjUiWVmDE
-	 cJiGT4oUDD3j6exDBVpd5BDhX++pckB9AGpXNWogULYzxMEQ2xsLFZBhBnkOxVPKQn
-	 X/p0IXcWuhoYniZa2aH1M74cQ52f3kv/G9/YKkeCyLI0CnG6+NoCWw67ky1lLwUPf+
-	 55of5o9cDE28v/GUAGt4hqLM53LIMxdWNKs3Ry/3EUk9pJyqhlP6mEOWa8UlJas0as
-	 JVJxNYA8bn8Aw==
+	b=ujJjTmIuwaRzRb6gOogIk0u7AcWw4STZpB6uJpXQ/qVpIeC34+vtOKjgoBt8pxVRF
+	 RFHNmeb4Tk3iGIjD+fppv63qVxuFXYj/yNevIe7w2mE0Rw6eYs+cnd49UJmm09GO5I
+	 Ong4M14E1BYg1xnOSFftgxRaOWDFyENMUh150wYRTQ0EaTIHr+hI8rxt5xDMWNjc0S
+	 vHKYyhuq9COtfRzs+JhWZp/ANB1a1aKCh/ozt9OnxCN5b+repbmGi+YI7DUnn1x7i3
+	 r9vheY7gYcYoGSsC9Dc73OlfzOcI2GCmzS9RFu39+6Kz17/KGpKv53tJOARPOVOtGG
+	 AOzlGcG6RpBqQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -49,15 +49,15 @@ Cc: Jonathan Santos <Jonathan.Santos@analog.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Michael.Hennerich@analog.com,
 	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
 	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 57/59] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
-Date: Sun,  3 Aug 2025 20:34:11 -0400
-Message-Id: <20250804003413.3622950-57-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 50/51] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
+Date: Sun,  3 Aug 2025 20:36:42 -0400
+Message-Id: <20250804003643.3625204-50-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250804003413.3622950-1-sashal@kernel.org>
-References: <20250804003413.3622950-1-sashal@kernel.org>
+In-Reply-To: <20250804003643.3625204-1-sashal@kernel.org>
+References: <20250804003643.3625204-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,7 +67,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.101
+X-stable-base: Linux 6.1.147
 Content-Transfer-Encoding: 8bit
 
 From: Jonathan Santos <Jonathan.Santos@analog.com>

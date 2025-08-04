@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-22256-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22257-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9678AB19BE3
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 09:04:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E218B19BE4
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 09:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11CEA18931DA
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 07:05:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2E6B1779DF
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Aug 2025 07:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5912248B0;
-	Mon,  4 Aug 2025 07:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898582309B3;
+	Mon,  4 Aug 2025 07:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lIhRYiYa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4HvCiuA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581313D3B3
-	for <linux-iio@vger.kernel.org>; Mon,  4 Aug 2025 07:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62D33D3B3
+	for <linux-iio@vger.kernel.org>; Mon,  4 Aug 2025 07:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754291087; cv=none; b=i9Wi8DIuQRZ2AMkwT/dyh3l9U2ixhs5XnXy3MmOKCvo1crKL1Z5gprocRA3wxtTs3Ee/pvPlDq/xQV8tzWon8fqHS2DJXE0SnyhsOjoujL/b/dd8xb1msvXufQ5ICMDAxE8Ky+LZ2SBL5xRcs99rbk31y3h/ZIc90nxOEi9yEjA=
+	t=1754291197; cv=none; b=GHgNjgJ9g/TprOzhgDfHw+S7qjII3eOVd5cg93l/EYx2hAfNt+Pl1iRHTXZhW1y+4pBfas4i7TjkTQQapSHsdwrr3a9Pi6vQUJRpEGGz4CDIEQPbrKQyeRcVt+4b5WOJImYu4AGR/Ekzn6XP6zqUEMsPRRf6wVplZOgXdqs24fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754291087; c=relaxed/simple;
-	bh=cm6bZ2dPRAXqLhGBfE2bMgTTXCHGN24TOIiCFUSZtwI=;
+	s=arc-20240116; t=1754291197; c=relaxed/simple;
+	bh=PDLYlQXLH1Lgj8UMMdqM0utJPIBau59i8mRqC+YXNJw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AdeAGl9PI44XoSQESmgFZ2J69u8ECJQ84lKsxdDNz5VTXnxXfaOWM7kz94sdgqc0AcQGaSpxMVIWllL9OOoSemYOlXnm/grfA0XMMZtg+GIZXkAG99EWQPAW8C+cbVX1lhGNVcxyfEqnZ9HmtwebWZdsAtIs4KuDDGsR3s0e85g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lIhRYiYa; arc=none smtp.client-ip=209.85.208.177
+	 In-Reply-To:Content-Type; b=dpDLx7DJ9qb5dL2Bszzv5ploWKch526k5Yz6+nEZFcBK/ICiGnNml2V8jLEUSUzGWTdee8ED/5PnXgM5gixl/r7csLv605pn/bPAy1Iozkw3V6ULkkiPQLGKAPJCJMzwST1Cpp3ymuGbShg+C1+lxXz2XRRrZdLRdhY9It+iajA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f4HvCiuA; arc=none smtp.client-ip=209.85.167.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-33229f67729so33573381fa.1
-        for <linux-iio@vger.kernel.org>; Mon, 04 Aug 2025 00:04:45 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55b9a3e69d3so2046626e87.0
+        for <linux-iio@vger.kernel.org>; Mon, 04 Aug 2025 00:06:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754291083; x=1754895883; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754291194; x=1754895994; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=YFKqQONYfMdt0FNGu4rUVXjva+W8LzWbQ6t1oIC2wbc=;
-        b=lIhRYiYaN+qTpEuyuEGUomtvJ1ql1V2inUbFku/3yD6mGIMQkArKgM7XOTYNgS9GrH
-         Hkv6jvuf22nt6txnR8iNgq2aGO9wKdFBsr/IC1daHvwk/Llp15M3CxkRdDIw7yJUJVwk
-         sk3OQ5/+O3u6ti/sThM5mNdkrwarqVzETL6ZW7dHiooTCBQvggflRkGvXl4DEGKeQafV
-         8m/olb7efzKvAYCKIIJk7OkD1oEMUE5a84FIWR3ZyadtnBi6ARyLhTgoEsYEh5YDJbzQ
-         nBZE1LDqjS8Ju1ZSwUg7VMJcrV9Y+DS/e0Sxin9QWunYMK55uaNvpHImvOPy+oWf2iZI
-         AsDw==
+        bh=mo38LrOuC4hOC5Cm4IaRJ4r2sbMwbvs0YL26VZZbWvA=;
+        b=f4HvCiuA66SdZNe/nMd7dP8AdkD4HXWQecMWjKB5XY14tG8blllo1bZgLtXbo3sT9v
+         wd6hRxfdxY0fHRcneZVsc+m+4Tnyz56MpascBscbIK9I0HNij6ZZwQ/fo/9LyAd0JuqQ
+         MS+Pa9PWNxbdXmXD8oopyicY56M7dFC8n5UH+M+PeecjePcyYeSm3dNiocNbPrsPJ2S4
+         C4kIvrnbTUK+70W1zb/qhfOCU0XwQ+HohNYWh76GHAPzPh9bT7/rFa1YDz58dL7I0NYL
+         xlnzKFpWzrmqcDlLukSJyYmR2CMzmICb/moqWMVFWGEZASVC6VrM6WCInPUlAvi6e6El
+         VuxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754291083; x=1754895883;
+        d=1e100.net; s=20230601; t=1754291194; x=1754895994;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YFKqQONYfMdt0FNGu4rUVXjva+W8LzWbQ6t1oIC2wbc=;
-        b=OfNTSNAHoFY/PLo8PDUUeLA9Ez3zwtdqfwyi3AOQqZ9729aGJ220L/IYGevb9WHaOd
-         5j6WjXYMPcnoweVhpnQTNFiMMOhmBA4KpHXRd1iE0dX4l1TA229XzpWeWUEjf3Sf4u4Y
-         BRhfFQpOcjBCBrW8QBOrO9b/XZvOCeUHf04JQtya1jSSIXczQ3FXGhunSKLJeDJM++/o
-         FdkpaCbMvjbpC651B2zeQCSnc6KNga5mCfvevlMDJDjjI/N6HmnQYbtfEgpeaVqudTXc
-         avBSB759VJgIrKjDHlKPDFm15TbgE4559h2FKseK3QbPUDA0OvU74Cu70GKH/E2naIsb
-         cTHA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDVXWfqxVXiJmv4jNvdt3TJRq3xcjArAR0zEFdj/NjPQKea5bHpOnt3UM/qIXVFwkvbGEzt+p8zHI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZRZQ8CebI0OELuU9u9+KbCp3Xklty95L9w2gfY5lXvd5rgs2d
-	U46DiMN3nyJw7YJAK4rlVLVIN+JonD0eevUkUerflUOdlsNuXGRr/Ezb
-X-Gm-Gg: ASbGncsBTh9txuVTB9eTZXjlYFJ+WPPvqAM+aHETkh9NSYgPR+uynmbMgfrMPKYiFAg
-	DodsRGtmyxWF+geUN1gbzlN/oR/HZmgrc30+IMqejEis3FCNdE27oA8sGJV2aVnZFf8Ih8gqGVp
-	98Zxx2UBmGFABbQ8ylvWL110gnLUtjmDwsP7JmRayZxUTGrhiIUp5MUQcoJhUfNATCGSkPUijEZ
-	gMe+4uoFEdM2WgrD7ohWRDbdB6HTQv6jkhAMRPAm9YxABM57o+Pu0PQ8gLtM7MbHI5M0CXt5+BG
-	8fMnjIuSMQzTSRXMMJX5q61J3vaGUEeVjccCCZ/rQMCkLBdE1u4pfd6dqbwfZhQB70lH5AdCmBb
-	qkQtFpt38kTRApCyFnu8OnAvJR4/D2DZNRoBom/N706XAlH40XKst7f6MFddWsT6oxPCvXRNvZv
-	mp/AE=
-X-Google-Smtp-Source: AGHT+IFSlXveaShlxfCCceK7Z47PL8hX3BGCHilI8R8U2t9TYd99g4+u+NfpqxHoe+Af/62IThh8TA==
-X-Received: by 2002:a05:6512:3e14:b0:553:aa2d:1af5 with SMTP id 2adb3069b0e04-55b97abd645mr2210880e87.8.1754291083216;
-        Mon, 04 Aug 2025 00:04:43 -0700 (PDT)
+        bh=mo38LrOuC4hOC5Cm4IaRJ4r2sbMwbvs0YL26VZZbWvA=;
+        b=J5yCE2xK94qKlKXafsxIotojyazr59vWX9pwTXbL3HsW7sF5HqmfuCAvz5WQlE/mgX
+         FD/aFM+6r1VmzgAZhg2Yp5aDKKt7Ri+J/lK7S3QTU1RQuN+WdiEGyuoUeuDiQcKBw6DC
+         oI4dckU3RDVN/Ukta6jMjJDJhGs4CF3c88fFJmdKuzoDnIfbxKVLTq0iZR+NRH03QkIf
+         uQWwQNAiSBVJIR2AZYix1FRqa+DW17CJ+V/hK/hdNZ+YZPURd5gg389DvLqceMerFLfd
+         bYefy+zMEErjwkXRfkNwxDHxYFpFxY98bJ5mwiD5bZywRxS8hroEMVCB0B9pp2PCauey
+         rtKA==
+X-Forwarded-Encrypted: i=1; AJvYcCUavLGlykeJCdWMXuJYAmAzccKWC3fOWqtaDt4u124p4sVHTFCh86A58yg+r4cg2Ne6PJfsEcoSVCQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfniECpGTiRxU/3a5RKf9ipTNHeH3K6X5Di3kn7abpdlAjK2j6
+	yH6hp8uvk5KexCH4lRNpxBNSgoFvMrp+oNDAycJ1NuPgxVJhc0QBf6Pt
+X-Gm-Gg: ASbGncuTB41XxyBvfpzdWZWfsYpLj+5za7DwqXcNXEYB/1yEQdXEreK9cBjhDO8ZUuM
+	3mqP0sBUBtD7Aao2HEbI4zYlhdZnpOawrDH0A6sfUzC9NoeGeaWNg2nl7e1R/zGWPvliusk8MTf
+	hAYVn2AuHWVVW+VFcqWSmbmX76+HSCxwLX1+1IqMEHJMVvg8jxGY+Y5NK6g9j5CPct6Wm0NBS/Q
+	KVhf4XMWlJXP/6OuJ7tHmflXirwdmtvOiREAo1GZJ3QhPyLKJLdxmCcVTBC9GKk9bmYESQd+jNv
+	Xn+JRBh5cruvxHhJIiCskAG0I8qvfe+yJBfbyVtmFsurFbsuYnaGhDHLk36yLozk+M1DGZyReIm
+	0ZQKULTHAMPFWziN27IhZSXdqRa3NJ3CSs9mgOnITviIHXyKLGfmb/BEVHry27SALdKEg5mkmbr
+	QFwJ0=
+X-Google-Smtp-Source: AGHT+IEmPgMUh8+bwWNWlHEwcqZMPHqfiuNNELRV+wOuE/ltV+v2Ls3dX6Jl+hqtiB5176IwdFnowQ==
+X-Received: by 2002:a05:6512:1289:b0:553:35f5:7a90 with SMTP id 2adb3069b0e04-55b97b5088bmr2240961e87.28.1754291193518;
+        Mon, 04 Aug 2025 00:06:33 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b8898be9bsm1531941e87.12.2025.08.04.00.04.40
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b8898be9bsm1532475e87.12.2025.08.04.00.06.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Aug 2025 00:04:41 -0700 (PDT)
-Message-ID: <2cf08478-ee73-45d0-b922-617349d33a7a@gmail.com>
-Date: Mon, 4 Aug 2025 10:04:40 +0300
+        Mon, 04 Aug 2025 00:06:31 -0700 (PDT)
+Message-ID: <5dc80967-6bfb-4caa-8e6c-dc8b7c533df9@gmail.com>
+Date: Mon, 4 Aug 2025 10:06:30 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/16] iio: light: adjd_s311: Use
+Subject: Re: [PATCH 09/16] iio: light: isl29125: Use
  iio_push_to_buffers_with_ts() to allow source size runtime check
 To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
  David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
@@ -98,10 +98,10 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>, Jiri Kosina
  Christian Eggers <ChristianEggersceggers@arri.de>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
 References: <20250802164436.515988-1-jic23@kernel.org>
- <20250802164436.515988-9-jic23@kernel.org>
+ <20250802164436.515988-10-jic23@kernel.org>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250802164436.515988-9-jic23@kernel.org>
+In-Reply-To: <20250802164436.515988-10-jic23@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
@@ -113,49 +113,50 @@ On 02/08/2025 19:44, Jonathan Cameron wrote:
 > 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->   drivers/iio/light/adjd_s311.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
+>   drivers/iio/light/isl29125.c | 14 +++++++-------
+>   1 file changed, 7 insertions(+), 7 deletions(-)
 > 
-> diff --git a/drivers/iio/light/adjd_s311.c b/drivers/iio/light/adjd_s311.c
-> index cf96e3dd8bc6..edb3d9dc8bed 100644
-> --- a/drivers/iio/light/adjd_s311.c
-> +++ b/drivers/iio/light/adjd_s311.c
-> @@ -54,10 +54,6 @@
->   
->   struct adjd_s311_data {
+> diff --git a/drivers/iio/light/isl29125.c b/drivers/iio/light/isl29125.c
+> index 6bc23b164cc5..3acb8a4f1d12 100644
+> --- a/drivers/iio/light/isl29125.c
+> +++ b/drivers/iio/light/isl29125.c
+> @@ -51,11 +51,6 @@
+>   struct isl29125_data {
 >   	struct i2c_client *client;
+>   	u8 conf1;
+> -	/* Ensure timestamp is naturally aligned */
 > -	struct {
-> -		s16 chans[4];
-> -		aligned_s64 ts;
+> -		u16 chans[3];
+> -		aligned_s64 timestamp;
 > -	} scan;
 >   };
 >   
->   enum adjd_s311_channel_idx {
-> @@ -120,6 +116,10 @@ static irqreturn_t adjd_s311_trigger_handler(int irq, void *p)
->   	struct adjd_s311_data *data = iio_priv(indio_dev);
->   	s64 time_ns = iio_get_time_ns(indio_dev);
+>   #define ISL29125_CHANNEL(_color, _si) { \
+> @@ -179,6 +174,11 @@ static irqreturn_t isl29125_trigger_handler(int irq, void *p)
+>   	struct iio_dev *indio_dev = pf->indio_dev;
+>   	struct isl29125_data *data = iio_priv(indio_dev);
 >   	int i, j = 0;
+> +	/* Ensure timestamp is naturally aligned */
 > +	struct {
-> +		s16 chans[4];
-> +		aligned_s64 ts;
+> +		u16 chans[3];
+> +		aligned_s64 timestamp;
 > +	} scan = { };
 >   
->   	int ret = adjd_s311_req_data(indio_dev);
->   	if (ret < 0)
-> @@ -131,10 +131,10 @@ static irqreturn_t adjd_s311_trigger_handler(int irq, void *p)
+>   	iio_for_each_active_channel(indio_dev, i) {
+>   		int ret = i2c_smbus_read_word_data(data->client,
+> @@ -186,10 +186,10 @@ static irqreturn_t isl29125_trigger_handler(int irq, void *p)
 >   		if (ret < 0)
 >   			goto done;
 >   
-> -		data->scan.chans[j++] = ret & ADJD_S311_DATA_MASK;
-> +		scan.chans[j++] = ret & ADJD_S311_DATA_MASK;
+> -		data->scan.chans[j++] = ret;
+> +		scan.chans[j++] = ret;
 >   	}
 >   
-> -	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan, time_ns);
-> +	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan), time_ns);
+> -	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+> +	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
+>   		iio_get_time_ns(indio_dev));
 >   
 >   done:
->   	iio_trigger_notify_done(indio_dev->trig);
 
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com
 

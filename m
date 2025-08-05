@@ -1,120 +1,117 @@
-Return-Path: <linux-iio+bounces-22310-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22311-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAD3B1B410
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Aug 2025 15:06:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E870B1B4A1
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Aug 2025 15:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B47934E250A
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Aug 2025 13:06:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9791118A4C18
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Aug 2025 13:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1749026B2AC;
-	Tue,  5 Aug 2025 13:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012F5277003;
+	Tue,  5 Aug 2025 13:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RlCXZQK8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T49CCZYf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43908231853;
-	Tue,  5 Aug 2025 13:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308D727510C;
+	Tue,  5 Aug 2025 13:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754399202; cv=none; b=b8XuZHgady94G/6ZJoErq3Vev0Syor7j9KNXQtMBqvkifYW3bRajfmtdxSMetWcML3esrdsudaKyyk7SSoSb45O/fCu+hGuyGgHOhUonTuSeS89qUIZiY+Xa2cxTo5/WwHDZQ65iAta94MwhLVkPmC9PeJyyXfqZLenz0zrQh0w=
+	t=1754399626; cv=none; b=tt/Y7Fv1qGiYEoInwuxXWQjdE17Vs91yvovfUcx/rsfJMq53L2V4S/7+Wg8rq+fVf3yVsHtC+Z+ttRbqV9PzWzPYRsHA2Ty8IYQB1mV4xUGareGVd/F5INKbgbTRpU3/2Tk2DEo4EP3kwT2cZGCOk6cxEayeRi6T8MJeefMlwFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754399202; c=relaxed/simple;
-	bh=MAh02TkFyzgFFZr3oxHjXV6dZOI2X7cgUfbU3vh9k5M=;
+	s=arc-20240116; t=1754399626; c=relaxed/simple;
+	bh=iUmfRK7Yn0oMF1Qo7GvW3i3Z6x6LFyVUCrNp+rmkznY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CNfd0GSn+WzajxaewlX8UvGybEtN9EJgdHq5mTQAqJSDT/ANVU4Cq1uNXCvuowYybMFEwPtrFZYfTf3byt3VxCpQwTbkqoUQfgDpLgm5Es7bSshrh5mkKgQOW8JzQUtkr9mzSousCyPFe2FoP14ojQUJrIMMdXJRzUS6ub6W54Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RlCXZQK8; arc=none smtp.client-ip=209.85.218.54
+	 To:Cc:Content-Type; b=QxBfAppxlqQV1yU3n/vOIScnHE0F3gjnlYd8WxroT4f6SNkDatfJoTwIWg1Hz9k808C9xwFH918W53789Yld2xVumjKDwBXN7kuGqAWCsyPv+BOFLmErF+yldQrdzx3NFuFd8ivwVmP7TQyY/7eiIQHE98yZ/4u40c1n8BLwNks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T49CCZYf; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-af9618282a5so508369666b.2;
-        Tue, 05 Aug 2025 06:06:40 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-615460d9897so6468293a12.0;
+        Tue, 05 Aug 2025 06:13:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754399199; x=1755003999; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754399623; x=1755004423; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MAh02TkFyzgFFZr3oxHjXV6dZOI2X7cgUfbU3vh9k5M=;
-        b=RlCXZQK8FKv5xziJPK3zjklobEcAvaDtnnS8YTmhRaJ6gUaVDsJLwGjRO2R/oKgrpX
-         BRj1QsGdpoqIOxz5yaK8KXcEkOB5bxVaMveaqiC/6MAbvosonFUIDnBfIehUmV/T600v
-         EAZgX9d5RX+XHdghS1AMmDeFBL0OYlhrz+hoN/UCHYEN6tzP7dPcA5vpGQoxfwTsECCh
-         6d3WWwSUHUN2Juq92y0VDnwbD8IakHZAIAwf8yEABOwmqhq+0/HYdlPrP6LbwrJU/YTw
-         Bz10vYFWbPYg9KsvIeLD/7WNV2m0z7K7gOciJmFX87Yt9cLUCwty/EcdgLKS/gqIDfCR
-         FMNg==
+        bh=jaOuyIHTmK9HSHFptV41yWxML0J6/z2Mgw5sUEoSVdg=;
+        b=T49CCZYfrEQxTNW+8UUzsIs/WjvF64GG5gOR3+Ak0u7VJKTqMX3hMkp2cYaJDD35uS
+         k2hbzEP0hNmPrJxOmKOU+lRhdEaXGmxgIt/MHZrMkuyPgsub/p/l5IJcpHoDLGmbL4Gz
+         GS9wcStkfTOUPUQlMG9dQIHQ1zVPIHhDWj5vxBkIKW7MrqM6P53wdhibCoO96mjbdfG8
+         7Gs38pExi2kA7DTgDjr57ht2HRFlldHP/Pd/+qwi//MUWoHc9CgX7scdGuZV/xKWueaL
+         3mIH1EjHIBBwPyN0ufNMo6yzkrG7VP95b++kWwcSHu7x2CvgBIYzB5QQNSaWEVeymvro
+         aRHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754399199; x=1755003999;
+        d=1e100.net; s=20230601; t=1754399623; x=1755004423;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MAh02TkFyzgFFZr3oxHjXV6dZOI2X7cgUfbU3vh9k5M=;
-        b=Go7j6u5K/HuXdcgUD/CvXDE/1+LNjoX8mzlMdWR2KhA9U+IG5U5WAt/ke3PLn5mL3y
-         iD4XtA+FIYd+y+a9qWJl3ux0lPqiyhoCXMOcE2Lnnea9xK+m+OMena4oufMvohfUQ3cM
-         E1qoA1D4zWGK6brYWHjClTxWFnFsM+TKp2FdGRIP1ajYfoppxs6K0U4GW+MguRYULmdF
-         zeTRskOxA52uuEPFWq2zYNuf4/nfFjwGscMGN0Fh9KmsbGn/iwqtjZDXhUMJN4rS4g3W
-         J2p2EWutPOQ2v+T1L4aZ2b9miseKB82upb4Frs+qz1DEf4ULtDO9UIVYivqkqGcgDCUb
-         OINA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUJs1Y+CLJ/jtXbXYaP7vgVCiQk5LhcXt21HEbBWszV0P025QhB9cmrS91hQ+1FH3Xchg7PLo28Hc=@vger.kernel.org, AJvYcCUuYi2iDb4kvZ86+OD/WIUFTeCQGqUQ1seT/0E9FNZPJFDHnpmn9sDIzEhPS8w5CEsYF35nfeJgwXbrIIeo@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmSQYqCib5JaqxP4xFTIaFMZ68zH3yqCraTfXLryvIBlim9Lq7
-	3UB41BV3tyVbh7CnYUHokFEiDXpujbwljSnEos40ItFg5ZXTqCpuV8PMC/PIziy0EYUNsOdN+97
-	wUZRoaWShPboc3khBn+7OR7m1FSSrSMQ=
-X-Gm-Gg: ASbGnctd4KxqbvsnCIGX4O5XtWVQ0fiA/FjM6jhKRcz7/hs+Qq666HkCIVFsVGmy6wt
-	ueRt5Pi5Zyri5UMvaf3PHENDZs7Ow+y5Vlu2nVOBNmp+Xpb25c2/hwg5yr1oEsw11i6x87nC9Bz
-	y9LuVFhBe+YaHVeKwUr/Zai+KH/YkUBLqofybgbM5dfLos+K7uJhNHtdOqWZXU9sgJvtZRqxNbD
-	A0rOh4RZg==
-X-Google-Smtp-Source: AGHT+IG+UhvnR8PgL0a0Zufs5S7y3V5pfr4M4F2QIupH8Wrp93UHwXEqXJVmQMM5LOZynRuY87KMSNBR1QBwOUx0aD8=
-X-Received: by 2002:a17:907:6e8f:b0:af9:3a3a:227e with SMTP id
- a640c23a62f3a-af9401bb461mr1278298266b.38.1754399199235; Tue, 05 Aug 2025
- 06:06:39 -0700 (PDT)
+        bh=jaOuyIHTmK9HSHFptV41yWxML0J6/z2Mgw5sUEoSVdg=;
+        b=HqGl4WqDTgRz+ESX4dLn+Yho43rOrUK5/Sa4tbihAyzXrc42cN4kfw8GkwcD7tMaGI
+         Quw+OF07vdgwf72amdOhDtxRRkKm7dFcfs/lzwadhI7GAzMIWe70cUTf2KXJRVKpH4sd
+         OC2d+XbYqviDMgfKHZ2iwozlYPUCE09aFIlaFAilZ4FEezICY1jwxTu4lOf8e4M5heiC
+         KdX/NqQ0yPfXVzgdzaLBrX0qThaqLESZ2A8Qn/b5wQoCjOxftfa0lkAjSjdetNf1MzpC
+         B7SBx6JNjSdUcG8XNbEZk6BMrrHro8plIpFnO5NT6ga0e3kqs+nUlP/B2aktglE7UlRJ
+         Eaew==
+X-Forwarded-Encrypted: i=1; AJvYcCXVHU74cd7N/p8vZzKfCWomOvMJYIj8I9KPkFfihbf8GdVmp4O6sPoed+9c70efG9OtAHkis67lekGmFRZO@vger.kernel.org, AJvYcCXhNdLfuukaENTLbcFGeLkgZK+k7FOqmW/kDrOEpge4AS4N8LiZf+XJ5WdzqumvBKkxFg/X/Qa2WdM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzEMBOOxXRr17h9c1WgQEgsfI53YL/9zUWoBgq4QFpe+32nbbq
+	UwfcoWdkQlqhxLkyWEayyg0QHTsJMqGwT6/Pe8Rt6xetgWQwZUqQ+4iU/ljTZ/qklv6Vrh+Vncf
+	37X+Jic5FIYGuDc/pGK9KKtlrO0R/6B4=
+X-Gm-Gg: ASbGncur9bX8IU4zsDfqun2uVYWnAM5gQO4WfhYS+y1Xk1BHK8w1alh/MRB2ICbsEui
+	JuhhJBl6nHWcxGr4YEe7OjOz5Cg8pd3LLvQpxhzKwfVkCP/pK+2IYlw1zMx1rAOSwGQ+jMq5HT2
+	+EizSgV28cBNakkoS1A3PyECtqNoVzefVkvE44z3PpXYxIG8IqxIqYujkZtyh7GzGks4eiNyz4C
+	s3ugnyCxh+jMebQSg6t
+X-Google-Smtp-Source: AGHT+IGGau0JaddIGiJL9dkAZZR6/DOBiDD6gXHxOfw+awZqPLbkj+6/f14g+6uRL/V+nsQrRnbNgqrqvP+1vl3dyQU=
+X-Received: by 2002:a17:907:2d1f:b0:af9:3ef6:86f4 with SMTP id
+ a640c23a62f3a-af94001e7d3mr1532662166b.20.1754399623444; Tue, 05 Aug 2025
+ 06:13:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <pndectqm7te.a.out@axis.com>
-In-Reply-To: <pndectqm7te.a.out@axis.com>
+References: <20250805142423.17710-1-stefano.manni@gmail.com>
+In-Reply-To: <20250805142423.17710-1-stefano.manni@gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 5 Aug 2025 15:06:02 +0200
-X-Gm-Features: Ac12FXzfhgsKY1Z4mDhPlXC5tTUlolIHxAiCVq_7VMItomP-88jysmgI3xJFCTw
-Message-ID: <CAHp75VeGvgv6TAYRRtEySmESkjygW79ms-Yd64h08_+7JjJMJw@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: Remove error prints for devm_add_action_or_reset()
-To: Waqar Hameed <waqar.hameed@axis.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Cosmin Tanislav <cosmin.tanislav@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Matteo Martelli <matteomartelli3@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Francesco Dolcini <francesco@dolcini.it>, 
-	=?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, 
-	Mudit Sharma <muditsharma.info@gmail.com>, Gerald Loacker <gerald.loacker@wolfvision.net>, 
-	Song Qiang <songqiang1304521@gmail.com>, Crt Mori <cmo@melexis.com>, kernel@axis.com, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org
+Date: Tue, 5 Aug 2025 15:13:06 +0200
+X-Gm-Features: Ac12FXyVCDTAR5h0FT-1_BJkfiQIKDeAeEYbRmtaE0EINzdk4axA3Cee3AjMpzs
+Message-ID: <CAHp75VfCL88GMSRYnJ+wh85Yj_RrBztSLWOvQJTapVdgFerMyg@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: ad799x: add reference supply for ad7994
+To: Stefano Manni <stefano.manni@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 5, 2025 at 11:33=E2=80=AFAM Waqar Hameed <waqar.hameed@axis.com=
-> wrote:
+On Tue, Aug 5, 2025 at 2:28=E2=80=AFPM Stefano Manni <stefano.manni@gmail.c=
+om> wrote:
 >
-> When `devm_add_action_or_reset()` fails, it is due to a failed memory
-> allocation and will thus return `-ENOMEM`. `dev_err_probe()` doesn't do
-> anything when error is `-ENOMEM`. Therefore, remove the useless call to
-> `dev_err_probe()` when `devm_add_action_or_reset()` fails, and just
-> return the value instead.
+> AD7994 supports the external reference voltage on pin REFIN.
 
-Even more, the devm has tracepoints in case somebody really wants to
-investigate failures.
+...
 
-Fully in support of this change.
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+> -               if ((st->id =3D=3D ad7991) || (st->id =3D=3D ad7995) || (=
+st->id =3D=3D ad7999)) {
+> +               if ((st->id =3D=3D ad7991) || (st->id =3D=3D ad7995) || (=
+st->id =3D=3D ad7999)
+> +                       (st->id =3D=3D ad7994)) {
+
+Instead of making this conditional longer and uglier, it is better to
+add a boolean field to chip_info and just check it instead. This will
+remove the churn when any new chip will require the same change in the
+future.
+
+So, please make it two patches:
+- introducing a field in chip_info and use it for the existing cases
+- add this field to be true for the ad7994 case.
+
+Is it doable?
 
 --=20
 With Best Regards,

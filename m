@@ -1,121 +1,135 @@
-Return-Path: <linux-iio+bounces-22332-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22326-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E995DB1C2B3
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 11:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D660AB1C0F1
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 09:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5A0A7B1B13
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 09:01:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 196247AA838
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 07:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F207328A407;
-	Wed,  6 Aug 2025 09:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A521A219300;
+	Wed,  6 Aug 2025 07:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b8tLZvNB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EUz3IkfC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76994289367;
-	Wed,  6 Aug 2025 09:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E153121773F;
+	Wed,  6 Aug 2025 07:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754470948; cv=none; b=jor0lgZwZUS0Wku+vQ0QluNC+E0dHr7+ju0g+xvKbVxU2mjNS0uoA5OX1WZQmelVrLchoIkrM2oR6Dp/aL3UxZYfMK6PjV46dKjGrjF4IegC7O4B/7mOCSHESoPEtHp62APa9QubGQvCsRGXxM85Vo1fz2G8ffh3wLUQlUtxXmQ=
+	t=1754463851; cv=none; b=Z304kWhwfzOOGUmNL4cwHNdHaU+JA5DHlE6ua6rk0mZUxixoITkhyFYenhoXRMRQqjAkAFvt8Z5fg77yB6JCB1fLvKPW7uKV5H4nXLO2XCiSfW2nf+4vYYruPDgehKUW3bW2fmJ0mOX+oPoruORqDJxmfPGB6poFnYys571lrdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754470948; c=relaxed/simple;
-	bh=Ti1HBlwmwAF/ato0E7ZuTCTGEIoTCuurdcPQu4asqWY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgfezgZTsGqHe5641+poP2mL4WcCIERIWeoVNq9PflBQJ0wkxN4+fgr88ahX97+hsTrQL8BVUc88+F6xrh22mDc7S9jYRtvajsBWDurfnxocQlK5zrcZ2c7ozAiSAgRHq3XiE2dsAOWGwzaO8ZdshET1LxtNTFcaWlnTNGZLsEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b8tLZvNB; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1754463851; c=relaxed/simple;
+	bh=8UXkdIj2KKTxghd+Ie/sybWZyOAN/ou5VGvye1L/CQA=;
+	h=Date:From:Subject:To:Cc:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gfAw66zdEQT9GnT9IpSSUoC01YWmhPhiqXRxy8/8+DywP91goAJbB0ihWZDK8r4Z0Q9nbNkuto7FqbMg7ivg7UN/P4bop0MYtxDfxk3KsiRB84/8vFqamAndKbVTcveOmLXQBwxMT5gGNUUu1jb+iWD6HuS4pzUoFGbJeu3lr5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EUz3IkfC; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-459e210bd2dso2165975e9.1;
-        Wed, 06 Aug 2025 02:02:24 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-459ddb41539so10161695e9.2;
+        Wed, 06 Aug 2025 00:04:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754470943; x=1755075743; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754463848; x=1755068648; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:cc:to:subject:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fvEDCWA8NiO6TZiT9vCBQ8PFW0GAZ62Xv+vkGxU00Gc=;
-        b=b8tLZvNBEyy8UoyFV+H+0sZb1DNjqiAHo8CK+Swk52QqyxaH2K96oS6V+eZJteBdjH
-         F8RGjcMyp90tjLiRU9jQyj53RBGRvOUtLPMKHfTAsR3kCdvSo+wkBvoL31kDLxr0zmC5
-         r8ncQfaIBBxz/yIdeW0Pnm75qhNjpw6zbvR49UotVUgozXPeUfTzA2lhrkPZ0sIHGaYI
-         aqkmtYPF8FWLnfeTQoUHXewyQ40z2wlCBBiT+uKL+oYHJslcrP46613iwrGTQ93npwJF
-         N78sgqKtO653YnEh1OSOrixUfZNwB/jCqpNdLlyC9AfD9GDdRpvJhDXe9zzgLZm4vvUK
-         SgCA==
+        bh=RmZ/6RCWVOtcwdLcrSjqIJKUrn7Zsl9ifaiHRynfve4=;
+        b=EUz3IkfCED5pD6CxQBBOT63GmqZHHqYFW7zGwu10Y372QhVLhhCcGrkg7STKIjpKSw
+         ObGPOF3n0Ec31hPK+ldGBqPNxFF79NjY6XBB2V69AwFi5guFx0UcguhOJfBtSylk+YJZ
+         81wkHI2D8YgWdobtckfakn62jIkirTjUZzSG8Mn+tJFUbAkWGKOl3UNr2iwQbjGtET+q
+         vSdYrVWLrxQRDso7FOdYUs1Sce8FHOYZIZ3ja1r64Y9H2zdV4PdNgbZAcE5V1OxifROD
+         46HELugDEFnkfKl0HTXjKjMbO8JwGOXgKE42pS1LTrQV/Pw2hbRAGDG7whxZwuagop2+
+         t8OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754470943; x=1755075743;
+        d=1e100.net; s=20230601; t=1754463848; x=1755068648;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :message-id:cc:to:subject:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fvEDCWA8NiO6TZiT9vCBQ8PFW0GAZ62Xv+vkGxU00Gc=;
-        b=lNSGV/gIMETRwf/8XvDSam0eHJTavp9/7YUjpez/KNrJmMqfs6bUBP8NN8gcEeoirg
-         Y1H1+CWByj+XqiVut2alfWz8FqUtn12da78QW6fSmFBVXH8MLaXM9UAy9h6spe/yCXb5
-         iqCaKVBJeSBCz88IRSPTxBorOXJc7CdbBoZLgbcfmqcFOpr7KaImI5xjMW9EncPS1EuI
-         Y/2X5sZbNMrKAxUI9XKBcS9nRpobvWRTj/ywDvm/i57MKwi5RPZqSHmRsVCdhKChbD91
-         b7wCF/iuveHEGm+PR9TyTfPoRwqdQgSBMO06m/BpJXrhajbW+iqn9iNbLvydbAbHm2Od
-         zVPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUPsWjoUYG+1vKQeti7aWnYXUEPcWya8auyDyptpr4wTO3N0Eyu1V7fIDZHgQbc+pKUH1zLNJV/u5RWxVg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3tFiBHApoeoVoVpo+eKjBPJS7a4fhOe5j8hjmrDZHaTnokpqs
-	5dY8HPx37NOTQAdmxPbyZvo1PZJgHEuCFxgRga7wGRwpbgeidKcqewp2
-X-Gm-Gg: ASbGncvlwply4bmyJEgT75kwp0BultNrmXPWFqCMbr8HDBpqu4LMxqJGG4Z9NJ3Vjkn
-	bd6mvod8Yqbp0TscqDDXWQ5VnqzCIPepORjGI/2qMcsYnBakqjM2+G2sR1R/SyMsRNguR1c0eBr
-	DiLUXdbxk1lL71jug4mQ57Lw+XjvAgxC2UbQ+cwtzmMIR6HSrVCNT8NNLvykeQXjQ4y5nBJxqy3
-	9i/DdQnht3Srh7kDSpuZsNScYGWVxyVRcplK7BZkWMVosxRI7qN1tVD/xxU/wZNuSXoF5N0azDW
-	GVmc6+4H4Bn/+JD2u/Ex1XB9ps6SySq70xXTu/IG6alZbcORpjjY6ZDEc20PIp6s5tTpcIZK+CA
-	wLgI8fYl2dQtaQWHah29+dD3xv5FlPQT57N596YA+8Yn3fMS5NAXawjHI
-X-Google-Smtp-Source: AGHT+IHK+oyrOOvlbADfCzYg6XYKvW6WAMjoynZ1m8kX8Rq4xjFKurhYYnRc0JXpr0ubDQ36E9qJYw==
-X-Received: by 2002:a05:600c:821a:b0:459:d577:bd24 with SMTP id 5b1f17b1804b1-459e70bdca8mr18129335e9.7.1754470942586;
-        Wed, 06 Aug 2025 02:02:22 -0700 (PDT)
-Received: from fedora.. (93-38-186-193.ip71.fastwebnet.it. [93.38.186.193])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c45346asm22309399f8f.39.2025.08.06.02.02.21
+        bh=RmZ/6RCWVOtcwdLcrSjqIJKUrn7Zsl9ifaiHRynfve4=;
+        b=W09DMUFVH2XTNwZpxcdk+0ml+zQMAA6qr/hJ9P4E21nETznOsiXx0qGO5oBXn9A+nO
+         Q8QRMR6tpV8IwRQtgb+iTXQKlCFYzVAa7etPnq5F785EIv5X2LGsb/xBaIOp4oYQJHlp
+         FkDvLkCE3U/Aj54OBeruPbGpVRunm0AV135tOvS1kPx/psJXCbviniuk4vaSC99VgozZ
+         7Zet5PzV2eQhLu2L0i56RtHYOG8iQdbgFXnXDG5QxjkhhgGEzZI8eG1xxBY8uILy+Mnl
+         5rmYOlQyl/KuONkgNW+uHCkYxsedjm47gYixn3gj3gd057KVx3XwBFbHhOnUwSBI4HCq
+         7tlw==
+X-Forwarded-Encrypted: i=1; AJvYcCVfMS6A0lmrFtcC6y1U1csaW2lPSnkwVQ3q/xEkWaLGtgcaZ1cfDjUFGBQcUIKkr/HHmDG9VwDNg+M=@vger.kernel.org, AJvYcCX0R6mRUGc/n8kFFf8Tmdg8Z2a6k75P1cZbDA7siiPTiYSM3RtN2SshRKInoBrbA821PTlUbOuadj3hwQSh@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMMLJY8YkxKy1wNMNnzwxypGC2YbcUmdzYY3sXiLEt27kinHT/
+	KZpl9JG0QCcq5mkpXW6SCIVjfL6ogvCn5KSF02qsZ4BB/+uARLwxVLdt
+X-Gm-Gg: ASbGnctw+o4HrQDRqsNdFHTo4afbBEo9EcwNJKv6iZV+B0JBFbd9uTCSEoKC+bRHoqg
+	9zPUKV9spibEIbv84YLL7g7GB27j95t41Vsxjj44LmcrJxAdicSGPO1HwfV7Jla+yS2/NBjCGSu
+	N9iSstm82cLiFxUyrzpfwwp33G/+fljnYK+5D/zr74gK0E2IjHtBKtt0K7QQbzJ/hsLinuDuIgj
+	WF+BooPo1yXjmYqMGg7DZGv9/XxKtq1hNQr7sB9vX2kRptvxn6vKTYOvBNcYvbGMNnQvhtJRyAv
+	AfdsReC67zJfGfYqwxgt5ZIlV+wUiMIP/UaMC4t6TlpEbLEyy02KHV/kRVDPPpZw82pd6UAMpeT
+	5bftBhpZcCz9uDpsU5KKVIn9+XijOTnDONNgGDU1Z6U3cxZW8m74bng4pPhAkoJA=
+X-Google-Smtp-Source: AGHT+IE5XexZbuxfSVv6NlHh2TsciIJIhOErVnDMu7opONBWHe8EiMXmL23fwmPcEW/qBEMLyiVLlw==
+X-Received: by 2002:a05:600c:1d08:b0:453:66f:b96e with SMTP id 5b1f17b1804b1-459e7450e71mr11984785e9.11.1754463847709;
+        Wed, 06 Aug 2025 00:04:07 -0700 (PDT)
+Received: from [10.14.5.169] (93-38-186-193.ip71.fastwebnet.it. [93.38.186.193])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459dcb86d6asm93686345e9.5.2025.08.06.00.04.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Aug 2025 02:02:22 -0700 (PDT)
+        Wed, 06 Aug 2025 00:04:07 -0700 (PDT)
+Date: Wed, 06 Aug 2025 11:03:45 +0200
 From: Stefano Manni <stefano.manni@gmail.com>
-To: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Stefano Manni <stefano.manni@gmail.com>
-Subject: [PATCH 2/2] iio: adc: ad799x: add reference voltage to ad7994
-Date: Wed,  6 Aug 2025 11:01:58 +0200
-Message-ID: <20250806090158.117628-3-stefano.manni@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250806090158.117628-1-stefano.manni@gmail.com>
-References: <20250806090158.117628-1-stefano.manni@gmail.com>
+Subject: Re: [PATCH] iio: adc: ad799x: add reference supply for ad7994
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <9IEK0T.R3JGMPI97ET21@gmail.com>
+In-Reply-To: <CAHp75VfCL88GMSRYnJ+wh85Yj_RrBztSLWOvQJTapVdgFerMyg@mail.gmail.com>
+References: <20250805142423.17710-1-stefano.manni@gmail.com>
+	<CAHp75VfCL88GMSRYnJ+wh85Yj_RrBztSLWOvQJTapVdgFerMyg@mail.gmail.com>
+X-Mailer: geary/46.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Stefano Manni <stefano.manni@gmail.com>
----
- drivers/iio/adc/ad799x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Andy,
 
-diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
-index 955d845407b9..21e03f0df889 100644
---- a/drivers/iio/adc/ad799x.c
-+++ b/drivers/iio/adc/ad799x.c
-@@ -694,7 +694,7 @@ static const struct ad799x_chip_info ad799x_chip_info_tbl[] = {
- 	},
- 	[ad7994] = {
- 		.num_channels = 5,
--		.has_vref = false,
-+		.has_vref = true,
- 		.noirq_config = {
- 			.channel = {
- 				AD799X_CHANNEL(0, 12),
--- 
-2.48.1
+On mar, ago 5 2025 at 15:13:06 +02:00:00, Andy Shevchenko=20
+<andy.shevchenko@gmail.com> wrote:
+> On Tue, Aug 5, 2025 at 2:28=E2=80=AFPM Stefano Manni=20
+> <stefano.manni@gmail.com> wrote:
+>>=20
+>>  AD7994 supports the external reference voltage on pin REFIN.
+>=20
+> ...
+>=20
+>>  -               if ((st->id =3D=3D ad7991) || (st->id =3D=3D ad7995) ||=
+=20
+>> (st->id =3D=3D ad7999)) {
+>>  +               if ((st->id =3D=3D ad7991) || (st->id =3D=3D ad7995) ||=
+=20
+>> (st->id =3D=3D ad7999)
+>>  +                       (st->id =3D=3D ad7994)) {
+>=20
+> Instead of making this conditional longer and uglier, it is better to
+> add a boolean field to chip_info and just check it instead. This will
+> remove the churn when any new chip will require the same change in the
+> future.
+>=20
+> So, please make it two patches:
+> - introducing a field in chip_info and use it for the existing cases
+> - add this field to be true for the ad7994 case.
+>=20
+> Is it doable?
+>=20
+
+Yes, it is. A patch series is coming.
+
+> --
+> With Best Regards,
+> Andy Shevchenko
+
 
 

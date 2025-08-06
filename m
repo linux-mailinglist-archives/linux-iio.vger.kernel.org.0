@@ -1,147 +1,75 @@
-Return-Path: <linux-iio+bounces-22348-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22349-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0873B1C9C9
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 18:28:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E26C8B1CB74
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 19:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EA8962425F
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 16:28:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB9DF162048
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 17:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B772429A323;
-	Wed,  6 Aug 2025 16:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e0DoNjOK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18B61990A7;
+	Wed,  6 Aug 2025 17:54:12 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from ciao.gmane.io (ciao.gmane.io [116.202.254.214])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADA842A9D;
-	Wed,  6 Aug 2025 16:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5093FE5F
+	for <linux-iio@vger.kernel.org>; Wed,  6 Aug 2025 17:54:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.254.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754497679; cv=none; b=QZSZVrYzBwYHDg+rZUwG1jTcdpPaaY7n8kshFG8n4iPahLQeLOIWwVtMjKZ2jXej6vSv45yN67QlB2D0Mw0ZhX/TSE0eC6GYB+s/cd+CrQ/YdgFcXApAFA0CY1UuwAwdSnAjWOl7M/qFIdldF34bHqel79hed72qhVO2VWB+ueo=
+	t=1754502852; cv=none; b=BYviwJIP3xVw8TmfIZeXoEDfWU0wGC2Ygwjm6k0qfveX/gjpnMK1Hjz/0IxbDOJR7skSzzAdB1cDHJT/7S7vFB9FRoshZRKTnn0kr3IVnpCUq+7Y+azpx6t8ksdOfOGivvDgVW9ToeyW+i9L7BW9Y6G4lsvXPXWyA4A/0/oO0I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754497679; c=relaxed/simple;
-	bh=bU/IJC15T0oubCQnc0y9FdLufr5bu1Qr58RvQity39Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mxVJBx95RG98hEeMblFd9INq4ZVKceA5Vt/UG+LnQxB6EUWltnfncVonBICzQeS1sjsqL7unSRr0gfqw1ROOO/6ioyYp0EzmaGG+wUlTS885/82RjMbvTOVpnasgK6Kxpbu+i6jUUIab0Xq9MwhncCGZ8JCtHllqNYBxIn/p0Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e0DoNjOK; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754497678; x=1786033678;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bU/IJC15T0oubCQnc0y9FdLufr5bu1Qr58RvQity39Y=;
-  b=e0DoNjOKxaAhxmIloQUntWRBgPfQcBTziAsOTLoUzWzsKRzfzg7ud7o2
-   v1gyGXjyfeTHgBCrClWCIkn8ZMhS6FJ1vShE5aFTpslmM+PizE8nXLuub
-   DVeAS1cxUi5UZWYEKC41WXMzggg2EIxYuJY8/dotHbAnOppOE+iYqT8F1
-   hHZlGKXRIBViaxOiGVSIkbgp89L56EWioBWCfiwUPx1mpnPK1rN3cjXXM
-   ZE7+Xq61gHinLs897e595Elyl0a99sMLR10ghI3z3vPfe3y7NgScNsXwR
-   V8P7QoLHgHgLnxIJPBmuKVfv+lHfDKu/ozaAGTc4iY46L0wdx8uqxVgir
-   g==;
-X-CSE-ConnectionGUID: J90PYadfRyqEw8FA7qO99Q==
-X-CSE-MsgGUID: x8qssiYERLGZBSp9dxHgkw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="60660106"
-X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="60660106"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2025 09:27:57 -0700
-X-CSE-ConnectionGUID: Mkl9LS57SSmGlzCvOPYSeg==
-X-CSE-MsgGUID: VImDhv19Rl+8lAy48kuPeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="165158265"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 06 Aug 2025 09:27:53 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ujgzX-0001sA-1N;
-	Wed, 06 Aug 2025 16:27:51 +0000
-Date: Thu, 7 Aug 2025 00:27:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dixit Parmar <dixitparmar19@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	Dixit Parmar <dixitparmar19@gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: magnetometer: add support for Infineon
- TLV493D 3D Magentic sensor
-Message-ID: <202508070051.wZvtQr6x-lkp@intel.com>
-References: <20250802-tlv493d-sensor-v6_16-rc5-v2-1-e867df86ad93@gmail.com>
+	s=arc-20240116; t=1754502852; c=relaxed/simple;
+	bh=piAFKenTgE1Y9tjKLJ1HGoDXjUCXFzaUnJRtH0jvopY=;
+	h=To:From:Subject:Date:Message-ID:References:Mime-Version:
+	 Content-Type; b=l61dyofCNLRlVRtw37rl7pH5XzNtM3L2isAxmys1U9ENSZ+JIus+/RPpJ75YZNXHnjOJx+wwWb1IP3S2fzhoI/LFIYcKYB+8w2278Od8slL6TE+P54EvcQccDr6ltSVIJsx3IfcPp3XJXTEw5NBaxPDfHZldxO7VKL5L9eHxeDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nexgo.de; spf=pass smtp.mailfrom=m.gmane-mx.org; arc=none smtp.client-ip=116.202.254.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nexgo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.gmane-mx.org
+Received: from list by ciao.gmane.io with local (Exim 4.92)
+	(envelope-from <glki-linux-iio@m.gmane-mx.org>)
+	id 1ujiKw-0005eI-D5
+	for linux-iio@vger.kernel.org; Wed, 06 Aug 2025 19:54:02 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: linux-iio@vger.kernel.org
+From: ASSI <Stromeko@nexgo.de>
+Subject: Re: [bmp280 v1 1/6] iio: pressure: bmp280: correct meas_time_us calculation
+Date: Wed, 06 Aug 2025 19:53:55 +0200
+Organization: Linux Private Site
+Message-ID: <87ectomj4c.fsf@Gerda.invalid>
+References: <20241017233022.238250-1-vassilisamir@gmail.com>
+	<20250803140802.36888-1-Achim.Gratz@Stromeko.DE>
+	<20250803140802.36888-2-Achim.Gratz@Stromeko.DE>
+	<20250806164625.0000217e@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250802-tlv493d-sensor-v6_16-rc5-v2-1-e867df86ad93@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+User-Agent: Gnus/5.13 (Gnus v5.13)
+Cancel-Lock: sha1:+KjggOhWHYK+8t2T5DGpD+C24UA=
 
-Hi Dixit,
+Jonathan Cameron writes:
+> I'm not following this. Why are we now effectively adding MP280_MEAS_OFFSET
+> that we weren't before whether or not oversampling is enabled?
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on d7b8f8e20813f0179d8ef519541a3527e7661d3a]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Dixit-Parmar/iio-magnetometer-add-support-for-Infineon-TLV493D-3D-Magentic-sensor/20250802-144615
-base:   d7b8f8e20813f0179d8ef519541a3527e7661d3a
-patch link:    https://lore.kernel.org/r/20250802-tlv493d-sensor-v6_16-rc5-v2-1-e867df86ad93%40gmail.com
-patch subject: [PATCH v2 1/2] iio: magnetometer: add support for Infineon TLV493D 3D Magentic sensor
-config: um-allyesconfig (https://download.01.org/0day-ci/archive/20250807/202508070051.wZvtQr6x-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250807/202508070051.wZvtQr6x-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508070051.wZvtQr6x-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from include/uapi/linux/posix_types.h:5,
-                    from include/uapi/linux/types.h:14,
-                    from include/linux/types.h:6,
-                    from include/linux/kasan-checks.h:5,
-                    from include/asm-generic/rwonce.h:26,
-                    from ./arch/x86/include/generated/asm/rwonce.h:1,
-                    from include/linux/compiler.h:390,
-                    from include/linux/build_bug.h:5,
-                    from include/linux/bits.h:32,
-                    from drivers/iio/magnetometer/tlv493d.c:8:
->> include/linux/stddef.h:8:14: error: positional initialization of field in 'struct' declared with 'designated_init' attribute [-Werror=designated-init]
-       8 | #define NULL ((void *)0)
-         |              ^
-   drivers/iio/magnetometer/tlv493d.c:438:64: note: in expansion of macro 'NULL'
-     438 | static const struct iio_buffer_setup_ops tlv493d_setup_ops = { NULL };
-         |                                                                ^~~~
-   include/linux/stddef.h:8:14: note: (near initialization for 'tlv493d_setup_ops')
-       8 | #define NULL ((void *)0)
-         |              ^
-   drivers/iio/magnetometer/tlv493d.c:438:64: note: in expansion of macro 'NULL'
-     438 | static const struct iio_buffer_setup_ops tlv493d_setup_ops = { NULL };
-         |                                                                ^~~~
-   cc1: some warnings being treated as errors
+Because that is a constant part of the actual measurement cycle that
+happens entirely independent of any later measurements (whose individual
+durations depend on the oversampling settings for the respective
+channel).  The graphics early in the datasheet don't show explicitly
+where in the cycle it happens (my conjecture is at the end when it has
+to update the IIR filters and swap the registers), however section 9.1
+in Appendix B is abundantly clear that it's there.
 
 
-vim +8 include/linux/stddef.h
-
-^1da177e4c3f41 Linus Torvalds   2005-04-16  6  
-^1da177e4c3f41 Linus Torvalds   2005-04-16  7  #undef NULL
-^1da177e4c3f41 Linus Torvalds   2005-04-16 @8  #define NULL ((void *)0)
-6e218287432472 Richard Knutsson 2006-09-30  9  
-
+Regards,
+Achim.
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
++<[Q+ Matrix-12 WAVE#46+305 Neuron microQkb Andromeda XTk Blofeld]>+
+
 

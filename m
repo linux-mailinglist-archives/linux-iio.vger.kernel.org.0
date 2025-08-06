@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-22341-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22342-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6973B1C8C6
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 17:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D34B1C8D7
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 17:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FD2318907CD
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 15:32:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E92F0188B716
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Aug 2025 15:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE82828EA4B;
-	Wed,  6 Aug 2025 15:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E0A28DB78;
+	Wed,  6 Aug 2025 15:36:22 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018522E370A;
-	Wed,  6 Aug 2025 15:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2120DAD5A
+	for <linux-iio@vger.kernel.org>; Wed,  6 Aug 2025 15:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754494311; cv=none; b=hl3B+U7OBAo/YqdJ4vpJUY2++znJw28HfflS6Wspj0iZGcuPZNdrzSFM/s/OOrtBo4jyDwU7EibS5EKoZOTR2tLCOZ8kRmuzYWwkUKbTdjGOAL3Sqop54oVYztAiFH7tiSL6s3DsO6e2ijTzFalht7VuH49zsCalnlBx7cR/uq8=
+	t=1754494581; cv=none; b=MhDcNA7frXOh1v3GJ/2OghIb4sFR7xQMv+jtQFqnohW/+Qx5pys0PRzE5gsuehYJTxykXKSiIIGDXK9GHxK9Sk2R3p/drZRG0q/VbLzuovX1u2YogkpUKSZRYb1SPnp+shjjxmafp/IY2OKeux0Ry1jbqfj4BPhAljopb983c8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754494311; c=relaxed/simple;
-	bh=RsvaOTpIAHltuIjZWM7I5SwR3disuxoHnJKNhDT8xPk=;
+	s=arc-20240116; t=1754494581; c=relaxed/simple;
+	bh=O1yxPhLAmi0iDESb4NA3PD7b+Kt74eOEiExACAQKMWo=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MD8ccEazLQQxbJl4RM3lcfqLjKRNk37lEPF6vn0WI0Y3a8bqFibBwoyquyWFgQWG2DNlGAy8VoLVdR4WNjE+orHmP47F06IIvDo8RVmqnpu9UP9I96rFpzpklPDcys9ohgrx6NjQkT09q2G+ggFqB6CMn3vCLBJjGBPDCWZmXwg=
+	 MIME-Version:Content-Type; b=B3/yE34FrfTRaoLssx7GHiM+LpWo3QkUSqgp+lnaWdWOFOh6rkgNOQHSll1UkFrC7oRZ1IHbNmldr2q1l742WM+ixRve2fy1fGq33m/jqT+LDDomU2uw7Dg8kQLZrfl6L4y5+jid+v/pXxrHLD8ZMoo7/wMog+baEZUSXfBAyEU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bxvKr1Stxz6GDGT;
-	Wed,  6 Aug 2025 23:27:12 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bxvR22qJGz6GDH9;
+	Wed,  6 Aug 2025 23:31:42 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id ACBF314037D;
-	Wed,  6 Aug 2025 23:31:45 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id D7CBD1402EC;
+	Wed,  6 Aug 2025 23:36:15 +0800 (CST)
 Received: from localhost (10.81.207.60) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 6 Aug
- 2025 17:31:44 +0200
-Date: Wed, 6 Aug 2025 16:31:41 +0100
+ 2025 17:36:14 +0200
+Date: Wed, 6 Aug 2025 16:36:13 +0100
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Varshini Rajendran <varshini.rajendran@microchip.com>
-CC: <eugen.hristev@linaro.org>, <jic23@kernel.org>, <dlechner@baylibre.com>,
-	<nuno.sa@analog.com>, <andy@kernel.org>, <robh@kernel.org>,
-	<krzk+dt@kernel.org>, <conor+dt@kernel.org>, <nicolas.ferre@microchip.com>,
-	<alexandre.belloni@bootlin.com>, <claudiu.beznea@tuxon.dev>,
-	<srini@kernel.org>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 09/15] iio: adc: at91-sama5d2_adc: adapt the driver for
- sama7d65
-Message-ID: <20250806163141.00005d83@huawei.com>
-In-Reply-To: <20250804100219.63325-10-varshini.rajendran@microchip.com>
-References: <20250804100219.63325-1-varshini.rajendran@microchip.com>
-	<20250804100219.63325-10-varshini.rajendran@microchip.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+CC: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>, Jonathan Cameron
+	<jic23@kernel.org>, <linux-iio@vger.kernel.org>, David Lechner
+	<dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Shen Jianping <Jianping.Shen@de.bosch.com>
+Subject: Re: [PATCH RFT] iio: Fix core buffer demux failure to account for
+ unwanted channels at tail
+Message-ID: <20250806163613.00003788@huawei.com>
+In-Reply-To: <CAHp75VcWepvA73Pv=JHZn3BAnnO=NcaEvU85p2yQrVJW_pXFmw@mail.gmail.com>
+References: <20250802171539.518747-1-jic23@kernel.org>
+	<73r5iyaprblcalagi7gt3bxjdnoudfyagwgz3n7dvmjhzjvure@2yekmv62faa4>
+	<CAHp75VcuWfQtxrhdZeX4cZ3aNnCZb1mKbZaUPVwF8oOnfpPcFw@mail.gmail.com>
+	<zaymyis6xp4t6qz6se2xehj4gp4lzaybuu2vzabew3pxqoxtsf@36dykzwuloq6>
+	<CAHp75VcWepvA73Pv=JHZn3BAnnO=NcaEvU85p2yQrVJW_pXFmw@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,84 +62,87 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
  frapeml500008.china.huawei.com (7.182.85.71)
 
-On Mon, 4 Aug 2025 15:32:13 +0530
-Varshini Rajendran <varshini.rajendran@microchip.com> wrote:
+On Tue, 5 Aug 2025 14:41:03 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Add support to sama7d65 ADC. The differences are highlighted with the
-> compatible. The init and parsing of the temperature sensor and
-> calibration indexes are the main differences.
-> 
-> Signed-off-by: Varshini Rajendran <varshini.rajendran@microchip.com>
-...
+> On Tue, Aug 5, 2025 at 10:16=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.c=
+om> wrote:
+> > On Mon, Aug 04, 2025 at 06:02:22PM +0200, Andy Shevchenko wrote: =20
+> > > On Mon, Aug 4, 2025 at 5:37=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmai=
+l.com> wrote: =20
+> > > > On Sat, Aug 02, 2025 at 06:15:39PM +0100, Jonathan Cameron wrote: =
+=20
+>=20
+> ...
+>=20
+> > > > > +     /* Walk remaining bits of active_scan_mask */
+> > > > > +     in_ind =3D find_next_bit(indio_dev->active_scan_mask, maskl=
+ength,
+> > > > > +                            in_ind + 1); =20
+> > > >
+> > > > I wonder if it matters to check that in_ind + 1 is in fact lower th=
+an
+> > > > masklength? Not that it will be an issue for find_next_bit() but we=
+ will
+> > > > fail the expectation:
+> > > >
+> > > > if (unlikely(__start >=3D sz)) [1]
+> > > >
+> > > > And being this a sensible path, I thought it's worth (at least) que=
+stioning... =20
+> > >
+> > > It doesn't matter. The find_*_bit() are all aligned to return sz for
+> > > anything "not found anymore" cases, so it will be okay. =20
+> >
+> > I know :):
+> >
+> > "...Not that it will be an issue for find_next_bit()..."
+> >
+> > I was mostly worried by performance as we'll have a compiler hint that
+> > will pretty much fail (that =C2=B4if (unlikely(__start >=3D sz))' for e=
+very sample we push and
+> > I guess the CPU will have to unroll that prediction. Maybe it will be s=
+mart enough to
+> > adapt. =20
+>=20
+> Ah, I see now. Yeah, there might be a hint to skip the branch which is
+> unlikely() for.
 
->  static int at91_adc_chan_xlate(struct iio_dev *indio_dev, int chan)
->  {
->  	int i;
-> @@ -2319,6 +2360,56 @@ static int at91_adc_temp_sensor_init(struct at91_adc_state *st,
->  	return ret;
->  }
->  
-> +static int at91_sama7d65_adc_temp_sensor_init(struct at91_adc_state *st,
-> +					      struct device *dev)
-> +{
-> +	struct at91_adc_temp_sensor_clb *clb = &st->soc_info.temp_sensor_clb;
-> +	struct nvmem_cell *temp_calib;
-> +	u32 *buf = NULL;
+Assuming I remember how this all works...
 
-As per earlier comment and I see Andy raised it as well. __free()
-magic dust is useful here.
+This doesn't happen on the fast path (pushing samples)
+It's a setup activity on a buffer being enabled.  The code is
+generating a table of offsets and sizes that are then used to
+on every sample.  So I don't think it's worth bothering to optimize it.
 
-> +	size_t len;
-> +	int ret = 0;
-> +
-> +	if (!st->soc_info.platform->temp_sensor)
-> +		return 0;
-> +
-> +	/* Get the calibration data from NVMEM. */
-> +	temp_calib = devm_nvmem_cell_get(dev, "temperature_calib");
-> +	if (IS_ERR(temp_calib)) {
-> +		ret = PTR_ERR(temp_calib);
-> +		if (ret != -ENOENT)
-> +			dev_err(dev, "Failed to get temperature_calib cell!\n");
-> +		return ret;
-> +	}
-> +
-> +	buf = nvmem_cell_read(temp_calib, &len);
-> +	if (IS_ERR(buf)) {
-> +		dev_err(dev, "Failed to read calibration data!\n");
-> +		return PTR_ERR(buf);
-> +	}
-> +
-> +	if (len < AT91_SAMA7D65_ADC_TS_CLB_IDX_MAX * sizeof(u32) ||
-> +	    buf[0] != AT91_TEMP_CALIB_TAG) {
-> +		dev_err(dev, "Invalid calibration data!\n");
-> +		ret = -EINVAL;
-> +		goto free_buf;
-> +	}
-> +
-> +	/* Store calibration data for later use. */
-> +	clb->p1 = buf[AT91_SAMA7D65_ADC_TS_CLB_IDX_P1];
-> +	clb->p4 = buf[AT91_SAMA7D65_ADC_TS_CLB_IDX_P4];
-> +	clb->p6 = buf[AT91_SAMA7D65_ADC_TS_CLB_IDX_P6];
+Jonathan
 
-only these indexes and the MAX check above make this different from
-the existing function.  Maybe we could just store those instead
-of a function pointer in the device type specific structure.
+>=20
+> > But as I said, it might be neglectable but still worth at least
+> > questioning...
+> > =20
+> > > > Other than that kind of nit comment, patch looks good.
+> > > >
+> > > > [1]: https://elixir.bootlin.com/linux/v6.16/source/lib/find_bit.c#L=
+50 =20
+> > > =20
+> > > > > +     while (in_ind !=3D masklength) {
+> > > > > +             ret =3D iio_storage_bytes_for_si(indio_dev, in_ind);
+> > > > > +             if (ret < 0)
+> > > > > +                     goto error_clear_mux_table;
+> > > > > +
+> > > > > +             length =3D ret;
+> > > > > +             /* Make sure we are aligned */
+> > > > > +             in_loc =3D roundup(in_loc, length) + length;
+> > > > > +             in_ind =3D find_next_bit(indio_dev->active_scan_mas=
+k,
+> > > > > +                                    masklength, in_ind + 1);
+> > > > > +     } =20
+>=20
 
-> +
-> +	/*
-> +	 * We prepare here the conversion to milli from micro to avoid
-> +	 * doing it on hotpath.
-> +	 */
-> +	clb->p1 = clb->p1 / 1000;
-> +
-> +free_buf:
-> +	kfree(buf);
-> +	return ret;
-> +}
 

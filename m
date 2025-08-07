@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-22410-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22411-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740A4B1DE98
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 23:02:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5003B1DE9A
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 23:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F8C23B48C3
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 21:02:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EECA2584A31
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 21:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A2A239E7D;
-	Thu,  7 Aug 2025 21:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C029B21147B;
+	Thu,  7 Aug 2025 21:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cfwcBntC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GXyR353J"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9685C23959D;
-	Thu,  7 Aug 2025 21:02:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC328145B27;
+	Thu,  7 Aug 2025 21:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754600538; cv=none; b=JBtJFNQFQlG949FhHmM5Tt1MOAqLe8mOwX0/Vxe6r4KonloukRmlwPEOgkraK5Tmfkilu982wvy55tIf7NsGfQcV4AAfQqe7114GDlazmiJGS86p3xl+Anm2RbdVWfaRdWjWZQjzlXi05RP+AiQVjCkPXqoivTlKOatF3q248bk=
+	t=1754600618; cv=none; b=ojyh60A17taXpOWyakNiOjF48nVLKwuaS9WHOw8v7guvOaF3IN9POIwkKJLM+AUDZ3d7sYa7C3MND0btPje9LAIUYoVRHmRfh6rtVTf2fnungntpp1jM53StYHkMI/uRBG7CWv2YcnUONJGafy49m79rDe2184BqdV2GIe7+UFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754600538; c=relaxed/simple;
-	bh=01z02HFWROB2Zl3fIAkQbe1K1I4+3DZzn/+UuKJr2aw=;
+	s=arc-20240116; t=1754600618; c=relaxed/simple;
+	bh=C2ka/i9O4z/Lm6KCfODZilTG9xf2MEUZFp5/I6xqiuY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FI0tWh2Zfbe7OEYVj+Jty/xhG1nbQY8Iwd/GbNbVZf3r5JKyTBk3p7g4ETOLzmU9T3zE+j5LjcWyW83jahca1K7l11kRWEW93XrhGvGvIw37e5/BoPxn0fKkTvCKAfR8gHc1Ndaecj1iUqNtVO3nSrjkHl0XnQ1kuQDg/xEDmuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cfwcBntC; arc=none smtp.client-ip=209.85.218.44
+	 To:Cc:Content-Type; b=WroutKtoBVyAHXgdaflTybSiWezbQQZW+EeRXqOTQ0jCGDus4ucHhk00auhch5J0TGi9dQIcKagFDjLMpNtF8Y7mS4k+b3HXkCBLBCNX2J1INsGXjEe5gY6TKhHFVoIK/H4lUPzkmgV1QjQbPUnIvdIB3vhA1cymQgCpbYFNQns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GXyR353J; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-af96d097df5so276666266b.3;
-        Thu, 07 Aug 2025 14:02:16 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-af66f444488so224226266b.0;
+        Thu, 07 Aug 2025 14:03:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754600535; x=1755205335; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754600615; x=1755205415; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=y19NW6nzgcJ1Pditu0KobyMToFqqyPC+EWFslF+SB7I=;
-        b=cfwcBntCwngSxXktx7d76nwBxze3dxkkPtlrUjYbyq8xL7NQUgBOllU/sBcYXB/ydy
-         CMF2qcMrLjQXMgUrhRqBSIalW2wACAj9rFh3MOXP7AaC+NaQOTiE5v0snbHG3WMHHl4P
-         OOsZ1/0dhO6ynNnzRzi7QaberUCdAvjOU/c1Bxe2cCHz3EAMOoJObnT/g/qS32vgUlUO
-         +HxVCpRzceNCRUx01shxUVuZMnATjq4YZ1ms4eT5w7B18iRO0AsL1UDy8u7srhW8D3fh
-         ozNDHoS2pau7kTDA/oRV0uPdAykY0vd6CzAkal3yHVJvsN8EGCKJDoFHkdlA2GLa2Xla
-         6FUA==
+        bh=C7gh6/dkJuAqQrETkPUriZg/rzrA25/MmM5b66PZwnY=;
+        b=GXyR353JOqczLjt8t8ZzGykMSEX4y6aMm6WzOnu7E15GrfraHoe+9Mc3qGftjiS4fJ
+         umQuRbn2QbP8wtOTp7hmySlEoiaP8/jeF3wHtV6hsIv6BKAr79UdSUtiVMnYKM4gKglN
+         xkBCBvO0f6XWwUDXSNfIsWcLVrCnZXTe0aAfg7Ei9/aIIbdsV0zsHxa3B0JOEXR/8HJR
+         KvxS+KonidZO/l1d3uqcNt1pjjpVmCkyfwj5bDlsRA5heqRR9WTYAxia1VJmB/5iiI8v
+         qrPmUb0GZ70mJihBeBH8xaMUl/FcI0zt43yLRvlv08kfTroFDmAmu7Ds252MBexJmQsc
+         vjZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754600535; x=1755205335;
+        d=1e100.net; s=20230601; t=1754600615; x=1755205415;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=y19NW6nzgcJ1Pditu0KobyMToFqqyPC+EWFslF+SB7I=;
-        b=o1XB5wCSHm9QCo1q2u20suxb+RDpOPm3GPOamekjxyJb/5LlkwQOtsqUAEoFoGCt70
-         Ul//ZLHc+11He1oGavlHh/R7YlCe22gCX6G10TFfUDdlyh9xPoe1M5RpoeBC57PLdz40
-         lda3W1FwyRZXtMBOt34kPQgmfw69ZLbg2KOp5UnIQHInxiUye2iQaRPHHPMCIICeVtXz
-         ByfA2A9RJ6CbyhscZg/qFGKpaCshhI3zciAjO2T3l4rT3wZ47r9r/Yh+OLEX9Ak+dKBV
-         kf1iscrD1rbuyj9zosSjx/baU7tHZuR2pgXH7nksKzW2s/1DUDpi/q2RcmAhRNCIgOtt
-         WiQg==
-X-Forwarded-Encrypted: i=1; AJvYcCUI8p4Bnv6mM6ZDaZAoHiSC4Gq0xQG/C4sChqVM1Cg723yMufngsrt17NglsNdt1naC46L3pF3UeElTeD3c@vger.kernel.org, AJvYcCWxPsyZWhXzy1XGgG/vPHWQ3d6gRYanG4LLNgQkhLIbp9jhm0/c1xuJc9VnaapK/EIBH56KQwBvpKQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF0K0+BplRSkJzAORC4ryARrvYxjQNgLRQ8ru721bH3aaXPKRg
-	NvN3kDfKIRo/FEVdtM3tDi5iAJDdpmV0SGU01d6Gl4vKqA8BqM4/LCpGSxAIIb7VdoD+ccMhATK
-	i3V3YsCWYQMYj/aDowX0ap+A2OMMzWZFRlVfGGpc=
-X-Gm-Gg: ASbGnctU4G090Tho8ub1zdswZCPUYyLdZEhDA/x+pO7luY7AXeyGLk9kwqaEX1+X+0J
-	rKw0ygV59YwPvrZmj2xTLfKO0B7d4h9YHnbbvAeywSXPY29q2C8eYFfdY63woKOZ2ZdmYDFdBeM
-	WrQiBFTWN5EgdzwPGbwepcUtJfG9tQSxSYQtY8NXX+Lo28Wwf1GrD47LagHP5xJAn3Z4Z3A/0d0
-	Ij622D7S2fxErOOxpFukBgee4vCwuIt5Bg1CXhZv/efABQrrP4f
-X-Google-Smtp-Source: AGHT+IEZWeTSzBkzGLVR2yaRBbMemXneCFlAQBdCD8/YCgdl7IV8CH88NNaVc+UHXhtDjTUX9Fe4uDmqRTei2KAi3eQ=
-X-Received: by 2002:a17:907:741:b0:af9:6065:fc84 with SMTP id
- a640c23a62f3a-af9c6495e76mr35380866b.27.1754600534714; Thu, 07 Aug 2025
- 14:02:14 -0700 (PDT)
+        bh=C7gh6/dkJuAqQrETkPUriZg/rzrA25/MmM5b66PZwnY=;
+        b=r0D1O7HhuvEFWeZTe5+rQjQ6TZgmHiXUDs1jQbR4KDdqIacKrlCMKehYvxERO/wAxH
+         ZWA9nBG7G7vOuZZRg3DIpA08d2H6dgquwAx8/cp2ZOyGKUgo+2ssIY+0ijKa2/lDJ6sM
+         ExO2FgPiVCLTo3xjmOOJPiueQq7Xu6q+8uHLhCnrVZZQc7kfucpwQMLynuGNFYCu0x3R
+         6c8b+yYq9DnbxTRUs4ywvxNZXKttQTTljaQtrFarowhDx4p8ynYAnEFYhGhXjJecQ6wT
+         VVXJnMbCaz2EejfX9vbaFrUFqYr7dsKAUSf3Awk6036xjdLY5TELvl65NmyqM3iYPaWh
+         dY6g==
+X-Forwarded-Encrypted: i=1; AJvYcCVi0TbDoW/SOw+FLlaBX/ib0ToK7GS3VJyBpmHuXFM2ZjGKkP7K/SyAukIciB56Qg+c1vYbICDRbCNl/3VC@vger.kernel.org, AJvYcCXbMLSK9MhpgB63yam/sXBh7qMAPfRbi1usRzqXawwV+4hoVWeWRElm5EqclCZNB6eQEiin7+UMFd0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6EvOoz4jFzVLb+ougqiVdiHaNX3qszz4JIZGPL6wa8915RSI6
+	crwMldZyoAbFQM2tjSo8rhEC+vccJGFW/13iqwiPTrtLhQsk1QTzQTOxDgNiStzm3LQFCgfJkzf
+	muhrpYPt7NqXVFbyFl1RBNM6BDU49+rI=
+X-Gm-Gg: ASbGncs1OnmJPlNs9BhyGW9zvHoizxDB0c2ePcWgFIGdcULJEg7Fa16+3mh07IzkJ+z
+	NtnEnm23Tc7gz16VYM3AU80Z857F67KmHRXu3SCgYqo4B3L4w0AyRzh2SgdyJ7A3MEhSASLGt5Y
+	Q0ekyYKpNk1i0J3YB0H0XFbQSfGmbzr66qYVq/JwT/aIr4HSSI3O9D1bY+v497LQ6fIoiJPcxr4
+	EqY1neCIQHHMwuKuSAGod2Q9iEH8LfQeAUQSyrbWQ==
+X-Google-Smtp-Source: AGHT+IH5zrOcMUHWMxEqysuw2N+2xJn0qPbo/D8z/ljWKqKHFw5vJs6hKTLqhk5J93Nm8BjRIbj6ZiKGSaxY+NVJz5c=
+X-Received: by 2002:a17:907:da4:b0:af9:3d0a:f38f with SMTP id
+ a640c23a62f3a-af9c6086b26mr41580266b.0.1754600615167; Thu, 07 Aug 2025
+ 14:03:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,11 +76,12 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <aJReTh-t5D45aZNV@pc> <fe98c2a2-ec8d-4352-a9fb-6f0e798f7268@baylibre.com>
-In-Reply-To: <fe98c2a2-ec8d-4352-a9fb-6f0e798f7268@baylibre.com>
+ <CAHp75VfH6xuiPNZA_eGmFgMGxdGTf-y6o+SEKeCbG=wsUOJYfg@mail.gmail.com>
+In-Reply-To: <CAHp75VfH6xuiPNZA_eGmFgMGxdGTf-y6o+SEKeCbG=wsUOJYfg@mail.gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 7 Aug 2025 23:01:38 +0200
-X-Gm-Features: Ac12FXynvbL8MhVZlmHQ4NJFHebs8w4OSIsZaoh9iNIoi8hSeaWfhdS0zYK3mYY
-Message-ID: <CAHp75VfH6xuiPNZA_eGmFgMGxdGTf-y6o+SEKeCbG=wsUOJYfg@mail.gmail.com>
+Date: Thu, 7 Aug 2025 23:02:58 +0200
+X-Gm-Features: Ac12FXzkTpOyXM6pkdEyyKM7WRhOKps98LBgWEFbwG0O6IBt0HKEVIuQ70Gdi_k
+Message-ID: <CAHp75VfEC3qUurUO4LKA1d6_Ot15AHY2zG9tk3wWrtYAgHrHgQ@mail.gmail.com>
 Subject: Re: [PATCH v2] iio: adc: ad4170-4: Use ERR_PTR() with %pe to improve
  error logging
 To: David Lechner <dlechner@baylibre.com>
@@ -91,45 +92,51 @@ Cc: Salah Triki <salah.triki@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 7, 2025 at 6:03=E2=80=AFPM David Lechner <dlechner@baylibre.com=
-> wrote:
-> On 8/7/25 3:05 AM, Salah Triki wrote:
+On Thu, Aug 7, 2025 at 11:01=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Thu, Aug 7, 2025 at 6:03=E2=80=AFPM David Lechner <dlechner@baylibre.c=
+om> wrote:
+> > On 8/7/25 3:05 AM, Salah Triki wrote:
 
 ...
 
-> >       ret =3D __ad4170_read_sample(indio_dev, chan, val);
-> >       if (ret) {
-> > -             dev_err(dev, "failed to read sample: %d\n", ret);
-> > +             dev_err(dev, "failed to read sample: %pe\n", ERR_PTR(ret)=
-);
+> > >       ret =3D __ad4170_read_sample(indio_dev, chan, val);
+> > >       if (ret) {
+> > > -             dev_err(dev, "failed to read sample: %d\n", ret);
+> > > +             dev_err(dev, "failed to read sample: %pe\n", ERR_PTR(re=
+t));
+> > >
+> > >               ret2 =3D ad4170_set_channel_enable(st, chan->address, f=
+alse);
+> > >               if (ret2)
+> > > -                     dev_err(dev, "failed to disable channel: %d\n",=
+ ret2);
+> > > +                     dev_err(dev, "failed to disable channel: %pe\n"=
+, ERR_PTR(ret2));
+> > >
+> > >               return ret;
+> > >       }
 > >
-> >               ret2 =3D ad4170_set_channel_enable(st, chan->address, fal=
-se);
-> >               if (ret2)
-> > -                     dev_err(dev, "failed to disable channel: %d\n", r=
-et2);
-> > +                     dev_err(dev, "failed to disable channel: %pe\n", =
-ERR_PTR(ret2));
-> >
-> >               return ret;
-> >       }
+> > Interesting, I didn't know we had this format specifier. But I think
+> > this is something we would want to do kernel-wide or not at all to stay
+> > consistent.
 >
-> Interesting, I didn't know we had this format specifier. But I think
-> this is something we would want to do kernel-wide or not at all to stay
-> consistent.
+> I'm sorry but I didn't follow. This is a kernel-wide format specifier.
+>
+> > And if we are doing this in more places, it would make sense to have a =
+new
+> > format specifier for integer error values instead of casting them to
+> > pointers.
+>
+> Will _very unlikely_ to happen. This has to be a C standard for that,
+> otherwise you are suggesting to always have a kernel warning for each
+> of these cases. The only way we can customize specifiers w/o
+> introducing a compiler warnings is to continue (and still carefully)
+> using %p extensions.
 
-I'm sorry but I didn't follow. This is a kernel-wide format specifier.
+And to be clear: I am not in favour of this change exactly due to a
+bit weird (for the reader) castings just for the sake of use of %pe.
 
-> And if we are doing this in more places, it would make sense to have a ne=
-w
-> format specifier for integer error values instead of casting them to
-> pointers.
-
-Will _very unlikely_ to happen. This has to be a C standard for that,
-otherwise you are suggesting to always have a kernel warning for each
-of these cases. The only way we can customize specifiers w/o
-introducing a compiler warnings is to continue (and still carefully)
-using %p extensions.
 
 --=20
 With Best Regards,

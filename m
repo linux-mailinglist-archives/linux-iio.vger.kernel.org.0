@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-22380-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22381-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1844EB1D3B4
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 09:50:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D32AB1D3F9
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 10:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 432E558090C
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 07:50:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C7B726372
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 08:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE27231C8D;
-	Thu,  7 Aug 2025 07:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2637323F405;
+	Thu,  7 Aug 2025 08:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FgFz7S02"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QiZ8UEUL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3411DF258;
-	Thu,  7 Aug 2025 07:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A714A02;
+	Thu,  7 Aug 2025 08:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754553034; cv=none; b=iNmQCJPRHwoslwJGyRJdqETKzTFtYxKCUUTnuTRWy+UrlJvERfuF9Za/aLaMIoguoADM0Zk/NCZGzbl/EAjMmK1/nkRJAdHG5kTIN/1xYoLTprxGSTXL663UGkV6q7dtjASugDZF+DlQWPnUjDWXiJnUQH9V8d8kxrVVW5hWJJ8=
+	t=1754553942; cv=none; b=W53yVqgkVZ7KM+v+9H5Q2rVaD8Ux/mYaWkFtKw0KM82RvZqkGlVLpzqW1IFJ83TPTU/c14r60/k3bkdRZgNKnyO2beQ4etLqf+vu7mvFsKk1/lw3Wv6+khoXbCCpUsdm19qSzZCM9W6wGGK34ZhfruHoGX9RFQGV0l8RRFTiwG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754553034; c=relaxed/simple;
-	bh=ZZZnBp9xWeQ6smT018/B/e2eSg53IiK5tyGbGbS7TMw=;
+	s=arc-20240116; t=1754553942; c=relaxed/simple;
+	bh=ip6K3fdTKfokHW17Y6B1Ps0/90JQcfs+OErW4kS5DuI=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=oa9Ov6EZ0j770fiqaToIJ6KCObQUYyq9Wp26QZvfR0lebjboKbhaFJKuT9c4PA40km/wFr7EBYF8mcw0NOHZnDagnYwQbPTBc3tGHDWyEe9IXTjB7yguPDNiVt12iMVD+vjENk4x3Y9bVkizm1jE35Lh8CKoem0LY5PW97a0eL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FgFz7S02; arc=none smtp.client-ip=209.85.221.41
+	 Content-Disposition; b=IKuO30Kzv5ez50y+vDmFHSaNDBaXh5lnq/diqnvAiVW8mOIWEYm88G/ifmEjnXmhLHpKhrKH6xh7QRj3CRSwj5+ecPjpCCUt1mbYqjKX0NFZbYlWgp3S1G8SqdL3Bg2I2PimcOSbqBhfJKztj4TAA3eXbngr+TjQDTrpZiK0tLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QiZ8UEUL; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3b7862bd22bso863073f8f.1;
-        Thu, 07 Aug 2025 00:50:32 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-454f428038eso5921755e9.2;
+        Thu, 07 Aug 2025 01:05:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754553031; x=1755157831; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754553938; x=1755158738; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=vE1Ew+5PrW0nrBONcPPkLQR+Kon8/dpKRYy4qBokinQ=;
-        b=FgFz7S02nCEgYghw2dXhNmwIDTLeMCMF4HPYl9wmiPdHKUY06maoahLgaPyiQltQmU
-         mFWG1vaj4pgvq+dNwW1Hlxz8DpqRoBn9Nj9k8FDftnbwI721/06KPCQWq2oN6rYTWVre
-         tvs28Qb3DDBh9F6teNIMnW9LMAi2IjS6AUZ2jbnAlcrw+kop4Z+ylFf6BL6gXjA3E8gS
-         pvMi+5t8pSSFaoxF+o1GR6exNXEL5edkzaQ/ma/pwYlxynNH4KVaTZEspmniA67sLrgc
-         YbMRrqCun/XsUn5j8GQRef0sOwrgJTe+WA061uVP9GoT7/eoIszhh8Ju4Z6PNiN9f5hg
-         ulFw==
+        bh=yTA2hXl02Bzi5wRFrDEw+E3Nz6ei7Gh7Y9iWwvyZTt8=;
+        b=QiZ8UEUL0k3yhE8IqCLV/e9JsJu0aicI9M/v/6ivd00SePvAqV7CXfGO310mI3hyut
+         XvqAywqU4JYTk72rMadJw6NseKJBPJZ/kE2LX8ex0hQxcEyjFg6bMVJQ2qfMDkoZwY/P
+         CtKm4UAEA/dH42HN8nzptpE5FWBPQuTplADWvRoKu8JP6c9gF/zfAIIevMi3mfR4Ofmf
+         f+n/wPRGf1IHsYfgjY852GzpJy+iMXIYGAr5IIurHcCBYkYsIRB4Yu7ZlWGeEI7e/0XH
+         SK6HzTexiWhbPauQPy5Y7oDL5TPkBR+A5NBCwyzCHaYa/AORCqsecwvoNIhlPPDlCLj8
+         nTcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754553031; x=1755157831;
+        d=1e100.net; s=20230601; t=1754553938; x=1755158738;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vE1Ew+5PrW0nrBONcPPkLQR+Kon8/dpKRYy4qBokinQ=;
-        b=ea8tARqLW+tbIxSv5Bc6Pj8byHkjBM5PObbCQjUqPqAWs3aY9nWFPk80vIKl+JxZCY
-         Ey0gPtxYG+jTIwXlhohPn2nhVz9DejEu0QG/nJnyk8509NxbMqmrZZFVwvQWL9QHFj86
-         Mtoh/PlInrYIps3d3weny8W8DMmUjDf04NtaciQ7mpOkw3cEvUcwV+XWQDWlw45TwHgt
-         vDoLEGp+d4hzOriauGkupjSBMzE1J5JsEPQUTVC3XRSDZsCRDcz1UZiYefQt+/D+2vwv
-         Z2SIo8P9nPhwbksKKq0dNxwJ5P3seOy5A2lotcGTmBDn3zOifg/01sZ4XHhouGwwTT2+
-         tOPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV2jpS0wWgejscfdFoKXovNt7CMVpBD37fEqjC+4PBIew+oUxErgArX+mTPnU+wciNlkK6L08crzTF9wLvS@vger.kernel.org, AJvYcCWE88e0ISU9L0tT+kQlDwXM8HK9UZxKV+9NZg90e8hL2xei31hhFam3hp+KiIOYZ+hummp6IR/eBQI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9tHC8G/+nmDGa2Ksu1G8vCTTtaEZB2/49oDnO2NaIYc3vi50Y
-	KdwWxJhJ0Ron1IOKEsRR5UI7CBKHMI9CfSy61c9bnrjax88mXfo0sBypbirANRdZ
-X-Gm-Gg: ASbGncvJ7XTEs9qtIaGppzMxuWuHFo80XSHTC0+o+DCnUKuVrXs+zCpUnqgAMAiKo8V
-	jwGJD1dEHqPwMgnIwybypMgS9rGTIDDRMH4ul5v/slKQ+4EK5cmmKpOfTzha7vfeVIra1/HjxHR
-	zVdLOVNY1JnhqcVUo+TYsPm5Myi5WHZ/wQxIxkdOROy1bBv82PGVIfYOflEPf1axLoPrrHln9Sp
-	jTuyi8ceOHpdIOXT3UvMFebYP6N1E5+mlESt3ZMlgDjKrhBkwEz3a8ri7+ydKz1KaCPq9KeuLOP
-	qXAEypnGR7+Wvxv0Xjh7VKXzSdE4RT0FqBy2B+K/LvUnwKFQ7rIRgR3jxrDR9T/EghsOvcpO+aJ
-	2M5imq7/Sg63g0Q==
-X-Google-Smtp-Source: AGHT+IHOLpwkt/HxAfu7/viPowRy2GQCUyvBVDKV8p48TOv0zTHZiLYbixYim7uMYQpoJJYbZRUsFg==
-X-Received: by 2002:a05:6000:1a45:b0:3a4:f7dd:6fad with SMTP id ffacd0b85a97d-3b8f97d9397mr1495027f8f.14.1754553030895;
-        Thu, 07 Aug 2025 00:50:30 -0700 (PDT)
+        bh=yTA2hXl02Bzi5wRFrDEw+E3Nz6ei7Gh7Y9iWwvyZTt8=;
+        b=CiVjgw5sk3Fxsbb0nQZl9FxrqEElvBRzSUjVYXhxEeKTR1w8/USspXsuBK+KXwCzMw
+         YCPhyFzVZFQzJk0rOWnVYDGZa6ULn0suXIJqUb72aGJ+XcOw+bq7qwMyQl6iA9I0jfqZ
+         tm1E0n9fTIZL9w9Ra2vfp+f02SxZqujlxdSK/3OcCLuzfGIORzi69bBsL1Orfmgzr9M6
+         RMCH3wGrqPrCDB5rJwBH+nhXUCU4+/ZUo6daufVwRG+DKLmxHLlJhWUBZ4V38dPpCCG/
+         G1C+DDWnGbLWTpfY6hMvFAlTaowN7hjVHNPuaTEhp903REUitDwl8NqeGA0Xjhu6lcSL
+         zMNA==
+X-Forwarded-Encrypted: i=1; AJvYcCUGvUep2d+0rkRWthMOsWeE1V2Lq6HSUyasBRYhG2vO9KoVDFJOZZi7pwryZvZFdN6F5CL5kS775yE=@vger.kernel.org, AJvYcCX4nWjD6MrVPzqBp2G/ycswNil16MnWkCBw+DnXq2ZrH39GKjUNDgx2gCSJ/BsENIZnZc33+6Un+d2lbiLL@vger.kernel.org
+X-Gm-Message-State: AOJu0YzH/66/IC5+NQ+KD/sfMmA2TUh9S3/Xlk0AFg9qu7l4zrX6ZVTP
+	/HkHWLpqGURiMfo28KDDoDgOETnMGpmPA8Nhye0nOXdpSpaMLw4gnsEP
+X-Gm-Gg: ASbGncsYyINy+eFwsjn+9hp1oqoBQk9DCwyIlevXE0mb+hA3rWFXK1mERmgwO2oQFoJ
+	N4A1MHkCwnKyMI0c7PCGJM46Pkg3tVYDkZnRLLan2s+NoA3FQk98lRTFUpExHKKnN3oglR6Pgxf
+	lFdHKwNqM+ZKKcuet2Xo+6I9UoszF8Wznj3Z1Px4Mpshfa5MtGQUGnjfSnmOjueqMAGbPmoJOFL
+	MYwwCCm6U5vj6kz6wnbN4t6KsS8FChdI9OWYJhazBBUCGBrTI/YOsqP1OpcLunlKZyQRQA9yTGI
+	xXu8441UmXbsC+SrroGSgYIze0kFY+tIisO8iX19QbUx/zINAdhpgIQvT7JVKALhu7brcxDCaVA
+	jZSaAsPgjysvAIg==
+X-Google-Smtp-Source: AGHT+IFqNRrMjMZ2LEIDWMHV9hg2RmoPj3QYwvILfyKFp0XwBTZwz1kdN5a9ezudOIdvz11DNt0BYA==
+X-Received: by 2002:a05:600c:3103:b0:459:e20e:be2f with SMTP id 5b1f17b1804b1-459e708e76emr61697195e9.14.1754553938150;
+        Thu, 07 Aug 2025 01:05:38 -0700 (PDT)
 Received: from pc ([196.235.182.191])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c46ee84sm25133415f8f.57.2025.08.07.00.50.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459eec47306sm20058095e9.28.2025.08.07.01.05.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Aug 2025 00:50:30 -0700 (PDT)
-Date: Thu, 7 Aug 2025 08:50:27 +0100
+        Thu, 07 Aug 2025 01:05:37 -0700 (PDT)
+Date: Thu, 7 Aug 2025 09:05:34 +0100
 From: Salah Triki <salah.triki@gmail.com>
 To: Lars-Peter Clausen <lars@metafoo.de>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -82,8 +82,9 @@ To: Lars-Peter Clausen <lars@metafoo.de>,
 	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: salah.triki@gmail.com
-Subject: [PATCH] iio: adc: ad4170-4: Use ERR_PTR() in ad4170_read_sample()
-Message-ID: <aJRaw57_P8pRxRNN@pc>
+Subject: [PATCH v2] iio: adc: ad4170-4: Use ERR_PTR() with %pe to improve
+ error logging
+Message-ID: <aJReTh-t5D45aZNV@pc>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -93,12 +94,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Use ERR_PTR(ret) with %pe in ad4170_read_sample() to properly display
-symbolic error codes (e.g. -ENOMEM) instead of raw integers (e.g. -12),
+Use `ERR_PTR(ret)` with `%pe` in `ad4170_read_sample()` to properly display
+symbolic error codes (e.g. `-ENOMEM`) instead of raw integers (e.g. `-12`),
 improving readability and debug clarity.
 
 Signed-off-by: Salah Triki <salah.triki@gmail.com>
 ---
+Changes in v2:
+   - Improve commit title
+
  drivers/iio/adc/ad4170-4.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 

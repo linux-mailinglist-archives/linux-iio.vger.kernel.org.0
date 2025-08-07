@@ -1,105 +1,125 @@
-Return-Path: <linux-iio+bounces-22376-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22377-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209DAB1D366
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 09:34:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 580FAB1D3AA
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 09:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D8BB7A3EE7
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 07:33:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 398EC188875F
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 07:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD12234963;
-	Thu,  7 Aug 2025 07:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FB5226CEB;
+	Thu,  7 Aug 2025 07:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ay4onxIC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="csKCKZsg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250832AD32;
-	Thu,  7 Aug 2025 07:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437F81DF258;
+	Thu,  7 Aug 2025 07:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754552074; cv=none; b=CbBRM4hbhNq/ZMGWA1RnDgpBvojcwdZon1QP6uacG5M7yvOuYeqveI0dHGx+pJzePfHvaP9peSq+cmjfbVu2xst4+RzsWtn+qNtXfBtx4Sbo/opgP+HOHs7RTkyJKNgDgjGDn9FEMnu/Z0mNdb5nLXKLoqJiQqlwfmAC3sIQRd4=
+	t=1754552960; cv=none; b=Md43opHTBzMdTum2kYgnQjHU5neBUvQQ8wZ0Hulx4aEzguzvLE3j+au9nXUp2ynqTwbCjWozJANVyljkvPlcQWw+9eeriNCN5Y18P+uFOlzZjhL2x+3ZH39tzc4n/eiZrYc6xnNsyRB0hUkM8SoVd/F/A9Xq4elhsghfZyAfz9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754552074; c=relaxed/simple;
-	bh=B/UtvXcFOeY5envt9lydHp3nNSJG8mqKsutu+u1GSlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rnEdRyaHefo/U2tEZoLxW/AWJ+5Swn5KIHxGbTy/p2K94NDVG+cAE9zCzFriNbBwIiKkz0nEad7GeCrlPtiLI8gcWy34KznQuy1jG5xNaUIDcw/oude2GnajIWwfPncp8xC0sDwZHbFSU2yomr0UbP4V9ai7trpQvoxmvczBKrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ay4onxIC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A47DC4CEF6;
-	Thu,  7 Aug 2025 07:34:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754552073;
-	bh=B/UtvXcFOeY5envt9lydHp3nNSJG8mqKsutu+u1GSlA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ay4onxIC/SboKhYrSARaX2TQi08DvUcGSD38g2FgUS4F7NrNSwtp+QB+I76QJbt/e
-	 yMSEFMunwFuOpwpaZbJkwxX6UCu1oiL+RCnLlkt+txXr5ynZCKlVrXjwR3OF6voCRz
-	 tJm2H7hNbmb0pS0CuD0LaJSo+lbzc1vIrAzz8GJoqpPRaqZET0o7mE8Bkgs9OeBNb3
-	 7MT4zW2A0dA3exY8Azhh234KQlzBjo4Z6Nm1fqmCPvrvwA54xvcBmFSDyAA5nA6RQH
-	 8L3q+50tSK5DaYfsXCkeyo0a30e9rsQNjJcxA8YctfY6Ya3dblMT60F3/Nf4CRbF2/
-	 Fgns0S43ZsSww==
-Date: Thu, 7 Aug 2025 09:34:31 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Dixit Parmar <dixitparmar19@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] dt-bindings: iio: magnetometer: document Infineon
- TLV493D 3D Magnetic sensor
-Message-ID: <20250807-offbeat-vehement-starfish-d4cee9@kuoka>
-References: <20250807-tlv493d-sensor-v6_16-rc5-v3-0-b80d2cb41232@gmail.com>
- <20250807-tlv493d-sensor-v6_16-rc5-v3-2-b80d2cb41232@gmail.com>
+	s=arc-20240116; t=1754552960; c=relaxed/simple;
+	bh=jaWHl5C+qwF5yMB1bbOvMBN6NmTUXEldg5LIb6dZ/qk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H27cUei72v41MLHM+1eTyfXFy0lTBgwBPMi3Hz2CKZOO+6sgs5aDgBvX4kgCRo8VPAdRrllKVJPeYXsvGAgjNccSPkNIBj6kEUSh1c7OPh99RYPTjhocLxhp2CH+lklBwXBBuLnMEOynauqlnYhscPbG6AfVk5bodAFPG1sr+Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=csKCKZsg; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3b792b0b829so513980f8f.3;
+        Thu, 07 Aug 2025 00:49:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754552956; x=1755157756; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bbiXVuMsAdtVfMvlH4oVO0pj5XaDz9g3ljq293tZP6E=;
+        b=csKCKZsgZA8ouzEOupwJrmbNbEBuuSFKJW08AUfUSPKZhQrJsTO514tXkrtNgS1l2T
+         b2aet2CvI8kJrf/y/1gOIdzAKp5iK7NBYpWs6CrYyYeKbLTgttscsq6NzO8tymZox5eM
+         7FfFbuueuHcjA2vCs3351UCuEQhspMWc2ySL5YuYDnspbCGBW6jAmdT6cY6y+LYd4l/o
+         838qpg9I8O2rnJxXBIHXmjztN5OM5K7naCUwas3FvD9fhcVi5fkCFHrO5yhmJCoPfa3i
+         C+ohGFebSLz5+KnefWZJru0C6WcWtOlhPG1fQtkwmhPQw3aGihJG3lJ4KO2Yicf5meJP
+         8PLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754552956; x=1755157756;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bbiXVuMsAdtVfMvlH4oVO0pj5XaDz9g3ljq293tZP6E=;
+        b=g6zPej6pp4+0ZmoGblh2fOAP0M7W+5oZi3BgATj9e/B1txUhz7nHdh032DJQK3V9eM
+         zWSru1RzryG1HLEt8Ay/nwMVNIxhdZI3R7AfQwkfPlrRX3Rr7a2yLFpYpO+rb7Ep0ANp
+         IWjWnvfBSO1CYgUs60Fxm6DMPRKuKQgKMidRzG7EGSig+6qhuJ3E4fEBeR3bg/b2zvTZ
+         +XWF0Io+ywc6PLDybw3U1WJgj5GyPaPHjShDkDUYyRgOg3ygF6BvG5uB/z0t28HO/g9j
+         F50cuFQKBxM388S+ChEoeQZJz6Axj0P14EJRt8ZMCxy4lIb8GKKSOSmQ3ByyGQhS5R1B
+         MHtA==
+X-Forwarded-Encrypted: i=1; AJvYcCX03flvMTeh42aoZbDug9SPFzH8diUk2uU1Iz/6moKDOEiG6ktB7+RIPK8Z9mL+DYjd1NqKzhLmZWfoc2E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwncaEqt/3aCa9KkOCy7QisMb377HA5kMtk54lvqczapu+qCEb3
+	dG8mMzvtjwD/fSQ60GHKDsyq+sjk8KEP2GCF3mH6SbC27EtTsjgM2G6k
+X-Gm-Gg: ASbGncuCwFqYLdTnStrKGmL/bu0AliSD5c6gf+CHhBhXptdKrMfowkJEvlBbC0bckCL
+	r3xqKu93s6IiuPWgMgVhI2f2qAizxFw2YCAPv8dIdEQfnB5ktcccvVbG0M43JuckDVy9+LXxqyG
+	6iu61uXgddHKSvcQBPrgclkJe6kP8QY6CEjwSNvN3UbH40zgSIgcECWb6ouk+/4BWYqq+IYcqO3
+	wgOQftKdyouchcQR4G6U2JTjH9R80DA7Eg6sQvE4kJHlrquRKkcOUiRmdL6pWKaM534DYi+Dn+c
+	66SI12NvfWYJHNHKBPEU4Nbs7wuCKaVToHD1OPHHQR6pN5SCMalP9a3trE0N0kszcwG3cIIhpS+
+	d6wdTx3xfukm5WcjLb1zTLCEfMyy31f2Ek/KfuBUjG993PcGlYw9yqcLS2ooQObxuSyi79dtGXT
+	M=
+X-Google-Smtp-Source: AGHT+IFLyrEn2NNfwuX+4H10AZyrE9XXLLaNbHn0WADHyQZkZ97vhyrJ2SNn5+K0eA8x+o2bzMhaEw==
+X-Received: by 2002:a5d:5887:0:b0:3b7:8c98:2f4c with SMTP id ffacd0b85a97d-3b8f4916c5fmr4840305f8f.33.1754552955310;
+        Thu, 07 Aug 2025 00:49:15 -0700 (PDT)
+Received: from localhost.localdomain (2-229-167-183.ip197.fastwebnet.it. [2.229.167.183])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c466838sm27054362f8f.49.2025.08.07.00.49.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Aug 2025 00:49:14 -0700 (PDT)
+From: Stefano Manni <stefano.manni@gmail.com>
+To: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Stefano Manni <stefano.manni@gmail.com>
+Subject: [PATCH v2 0/2] iio: adc: ad799x: reference voltage capability
+Date: Thu,  7 Aug 2025 09:48:48 +0200
+Message-ID: <20250807074850.130831-1-stefano.manni@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250807-tlv493d-sensor-v6_16-rc5-v3-2-b80d2cb41232@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 07, 2025 at 08:26:36AM +0530, Dixit Parmar wrote:
-> Document the bindings for Infineon TLV493D Low-Power 3D Magnetic Sensor
-> controlled by I2C interface. Main applications includes joysticks, control
-> elements (white goods, multifunction knops), or electric meters (anti-
-> tampering).
-> Drop duplicate entry for infineon,tlv493d from trivial-devices.yaml as
-> its documented in this seperate dt-binding file now.
+This patch series refactors 6b104e7895ab16b9b7f466c5f2ca282b87f661e8
+in order to add the capability of the chip to have an
+external reference voltage into the chip_info struct.
+And so avoid ugly conditional checks on the chip id.
 
-Typo, separate
+In addition the AD7994 is marked to have the external
+reference voltage as well.
 
-> 
-> Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
-> Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+Changes in v2 compared to v1 [1]:
+* remove has_vref from the chips that do not support it,
+  rely on the default false value
+* remove useless message "Supplied reference not supported"
+  shown for all the chips with has_vref = false
+* refactor check on regulator being err or zero
+* add external reference to ad7994 as oneliner
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+[1] https://lore.kernel.org/linux-iio/20250806090158.117628-1-stefano.manni@gmail.com/
 
-<form letter>
-This is an automated instruction, just in case, because many review
-tags are being ignored. If you know the process, just skip it entirely
-(please do not feel offended by me posting it here - no bad intentions
-intended, no patronizing, I just want to avoid wasted efforts). If you
-do not know the process, here is a short explanation:
+Stefano Manni (2):
+  iio: adc: ad799x: add reference voltage capability to chip_info
+  iio: adc: ad799x: add reference voltage to ad7994
 
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions of patchset, under or above your Signed-off-by tag, unless
-patch changed significantly (e.g. new properties added to the DT
-bindings). Tag is "received", when provided in a message replied to you
-on the mailing list. Tools like b4 can help here ('b4 trailers -u ...').
-However, there's no need to repost patches *only* to add the tags. The
-upstream maintainer will do that for tags received on the version they
-apply.
+ drivers/iio/adc/ad799x.c | 30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
-https://elixir.bootlin.com/linux/v6.15/source/Documentation/process/submitting-patches.rst#L591
-</form letter>
-
-Best regards,
-Krzysztof
+-- 
+2.48.1
 
 

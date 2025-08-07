@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-22378-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22379-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B345B1D3AD
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 09:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65262B1D3B0
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 09:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B693C188046A
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 07:49:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE5E21884A4E
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 07:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913232441A6;
-	Thu,  7 Aug 2025 07:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5FA2472B9;
+	Thu,  7 Aug 2025 07:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JJs2u9Vs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MANoIPj0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C40C1FBEB6;
-	Thu,  7 Aug 2025 07:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA20F23F42A;
+	Thu,  7 Aug 2025 07:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754552962; cv=none; b=bWWrBna0Tpp2Yn80uZn82tGGBGkGAqSs6pWwPUOJQjjfPr30aDaxvKKyJiRvl5qJyNb9t+zTmsVoAgpIRxLtKB+zZqN/LE0PFK34EA/EEaIUzYxLOGeoj4C2CFVTTfAyfNDb4d+gj3Dz/hwSFM6QAkWVB1J8eKM5lobJqMj10KA=
+	t=1754552963; cv=none; b=mXWHdAzLc2/5Fi+aLT0YH34QxAd2C3Qpf4JCV5RMAmdR3psnH0mGwexKOKfa4E7JUS22OIDelEaqSh8uzBvEEs5JoRmM7YGbhp3xcl7fQA4gB8AZUmaz0z8Lmxpu2+VSpvzLoWUJ6IKLyIlS/hWORSgtkfNAPvk7YJABeb73EmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754552962; c=relaxed/simple;
-	bh=FlmxjrCRrSH4gzueqNI22uxHGBJ7u4m45mHGfQOjsas=;
+	s=arc-20240116; t=1754552963; c=relaxed/simple;
+	bh=uAzacStBJwsWg8AFUrSslCCBYjuQKh+NwTcBPg7N1nY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYP8aAODSab8dI5FZ/y4c8F5gdm06hTiSlUGE6tQ5WfZ9S2Hy9q4iiHgq6svUFFPuREwskytaYagMNqq1JOGmpY7D8NgpLhXdpQyPAgDmbvTXc3rpc7m0g7fqyujnFdvIdt4fEfdrYBLSPEsKPwY6fj9H86YGZN1Ucor6ciqbso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JJs2u9Vs; arc=none smtp.client-ip=209.85.128.44
+	 MIME-Version; b=sHi178QjkA+0z8Vj0tXqnQwkQlRqCbtpR4cXnFV/q3JXg+QveGb62ORSagqFjlM4/9pRCMGQ9bBBOk2rhq5lUrlDukJKYhV8zgdFrYPTGzQZvX7sDUMorNrb74a5UYHn18dAYCm+lFFWOePKebnSoTZ5AR4q6xkriu82j0eLRP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MANoIPj0; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-459e72abdd2so3587675e9.2;
-        Thu, 07 Aug 2025 00:49:19 -0700 (PDT)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3b783d851e6so561260f8f.0;
+        Thu, 07 Aug 2025 00:49:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754552958; x=1755157758; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754552960; x=1755157760; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KKw3G4NXPyYj3JiCjqirXHYXq+afTsQ8eyBpGUSwIPc=;
-        b=JJs2u9VsYooDRycr0sIIxAhDNRBeU5L85PKn+Sf3y8jYtpcy1ljG7AqKpp/J/ibD7g
-         VvtkOdI8Q1sg/vzeLj32+AeTYE/0HeJkDFlYa9/8tWBjaQmHABDw3BB36iDVCyakJ2jf
-         1pTXk30vdcEoibw/wIWOtq9YahH91QNBsRLK9NSAajud7EkVBJsjZMgo+SnQNCL9Zl2y
-         YZkB1vo8F/AwtBwYS/+FOTPGXwRpWmKWXSwQn3/dsJyQHWtKUrVNjxT075UdkHKx8aZK
-         AWbx1ikK6CE700iOzBpdl5EQTaOH2ivLQfomTU1kOj82ZqRC/UykCrgUfidCMNAs8Vuz
-         ITxQ==
+        bh=Q0I69ypRA5Xwv5UMnjFfLGICyjveT/YVABctJWvudMI=;
+        b=MANoIPj0oRSClZTnRqm6JCeNu/Qi9YZU+3dwUxgLQ0XcXl5tTds+ebv6dWrxnCqb0j
+         El/tgyQZizUJ6JonxukxGxRzSK9UBHmrH5PvDjD08fHSD1GXmSl8/PFKDIoeNp5Oc520
+         JwGqer/7s66f7dU9eXzwbNR8Eo2uVi3vjfBhdOMlw19PZ40QjdoPwKlEVyvHDBGKgAE7
+         DLwI26y82lDFBiyyHlUvsCD7fE9H+SRsap0Wi/Q6G2697X+a8DTPUtjW8beKcWj2sZMK
+         D+EY0SLHsho+dPpxNeL+uK4q/YlDPWXJsYxZjLvyITPlFj5yQfjRuZvXD+WdDHPqdZB8
+         GOKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754552958; x=1755157758;
+        d=1e100.net; s=20230601; t=1754552960; x=1755157760;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KKw3G4NXPyYj3JiCjqirXHYXq+afTsQ8eyBpGUSwIPc=;
-        b=ivuqXcs0YuyaM+0OpcQ2s9LMGFlF22SWyrYwL7CkLdsoV+GYs0V5suMasXe9WfqBnx
-         dAHQ4Gd3zAU0DW4SfGTwRdKl3RjCtXLODvHAKdEUlxbgIx8mvkSlWDcUt/LuUMMdAkFu
-         kc18KHLord4EyebLIx0n3JNvFQKBHFRx9E7P3b4M5OIUqFNkwnnojlY5lUm3Ma5jPKoS
-         AKs40hPAjh7zkCMD0SZHwFlyG+8M6JRNRLjeqGxqnNzk7zd7iS/jmPcDPxY/q4yDP8Za
-         +XljoXpMNEDxMWNLWjZfQjEDs5bVGoxRv4sKB9w66t41Tcuaa4P/DoMjzANydbEjYFZb
-         ANxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZUZrIoz+QRvVYS0j5lP42ZmLWZrQtDqwkF4pC9QO+4PzQytlCCCzUuxgVVtzCtw8adKriITIHpaI8yRM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9ttPvi6TAc5jFKK4BPUJ07xQ8IKcKkfxDqMtCY0AR5mSukt+8
-	/TfEKdxMSSEMS5s0wIQjHVpCtJHUBGUoP/4DowdPb2CRALX5hq9rbTAY
-X-Gm-Gg: ASbGncsKsF0sH9AuNnch+oADtL0b1Fa48yh959btHeJfqCenmKOjOSg4/PiGMu0omvg
-	LDd5k/dl5p4qovcd4BZfr1pMBdHVyvEp5TcFvhRthtUWxVR/OmwbL/3jpbFdZYlUkEms+l6CCb7
-	szD+T2jQ7+gHpxD/6yqUs8z8GRkN2r1JZXJiPySkQfzrjLAmF/tY3MYpE9KrqpO19euY0zPBNTI
-	1ueoS6fkJ4uzNPZJqmpryia07na6QerF/zOIGKX5GqwIRHRk2cyomkyRjWY1CYzyRFRVkRUvSBB
-	EWJCr4ZoHV8qwSxo2ndpLDoDLSUmAcH18TRyspCUnAre4igP2YgT2Llz1lccvppIapgd7d3Fu/O
-	LIWNlGJ2MhLSSE4FCh5zVp2bGe2e5OHe4X4xIgkl01n7ExBGOTANHzQiAy13EHXjRNva8p/Lvbs
-	4=
-X-Google-Smtp-Source: AGHT+IHy5IQ+QnzDGQPwELWmsqk5i7TtfA49NP4hab2ATLdO0J5PGWMfQ81yHmPnYdRLfqZlTXZitw==
-X-Received: by 2002:a5d:5f94:0:b0:3b6:17b5:413c with SMTP id ffacd0b85a97d-3b8f9f70087mr1442198f8f.39.1754552957772;
-        Thu, 07 Aug 2025 00:49:17 -0700 (PDT)
+        bh=Q0I69ypRA5Xwv5UMnjFfLGICyjveT/YVABctJWvudMI=;
+        b=BKQKXjqElzFoCK+wMtClc+U3CX9HS44cx1mTaj/NvXzJqaM/3o9bEUgHznaNh1wBtq
+         M3zp2iTpcKl6/oPHMwMCixb9VFeH0MttYG19wIeMlIFILRn/2IzMRuopZuy75CDr94fH
+         OkPjI6lZL7sfRMwl2R9GvnWzscK59MZMZ3dgrTvRuKYVYvnwael7aWykm/mkUkA4tL5m
+         qelTNZpxI9a8rEomZlYnP3/V5gStfLiNPFH2Cg1AYXGIr56em55Z2mQQsVc05AichvMG
+         GneWMxVZ/Zd9ql4DcB4DxNe5eoWVinq4eDM35DS3fJHoQp253NVJ2EPw2OCT0Ec1qlM9
+         D9kw==
+X-Forwarded-Encrypted: i=1; AJvYcCWY9X/Nn1axhLisQAdRAP/rfYAQnAWQux6YdcCOBBGxabPitr1Z/bxnkT68GOm/9UCpLx16ka++E08f3rA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyyOzdXxf/rXuMEMjwYmvr7x5EtzB4w5sI430K57Kysahwh+FL
+	eqIm8TrsS8n6AsaTmn8RbSSz0jWWnbn4IUxJXjLp3mtzc92Bi9MBa/UW
+X-Gm-Gg: ASbGnctkBbFmHlhjzce6zFykhbI9iaH4uXgL5yGpkJjpbvN8a/45yFPirbkm8O0eu1R
+	kUnmddGTE4BwmN5psb19JAqpXre6PtGUhB5blt7Ce9T6AiwOkJGuz7RHCdRiQ3PAOP4y1WsmkHl
+	F+yju+66OxCknNTGbMVubrDMaD1Dt5eRnVbUUHu/nlFIyl1bX+c6F5Z9oYF/WM6RKtadfpQ//bH
+	I4e9e2vUN6J5hMnEM4chAytiTxKB2puCr6lGN47mwwmVltxU98S6pwDJbZHHcGgqetqiEp/Up5A
+	EOkowvfzvXzxxWWH19qzTGoSLBLayrpE5taaOV3pqY+gdA2JY3ve0ADBW6FfVoKu+k5RCs+I7Iw
+	VDgmPAA07fskN8HLSyBsveaGVwc94g7VzgDFK3XDW1xtA+m5GxRM7kVVrrUEzAlVRRRtYPQnYLd
+	Q=
+X-Google-Smtp-Source: AGHT+IGFHGotX1jXtvL4ELSMlr5Zn5+mwoOGK78n/949PjNl60tzbBiPOFBSa9JvXwG7onoT0zFJXw==
+X-Received: by 2002:a05:6000:18ab:b0:3b8:d32e:9231 with SMTP id ffacd0b85a97d-3b8f4915380mr4023440f8f.29.1754552959981;
+        Thu, 07 Aug 2025 00:49:19 -0700 (PDT)
 Received: from localhost.localdomain (2-229-167-183.ip197.fastwebnet.it. [2.229.167.183])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c466838sm27054362f8f.49.2025.08.07.00.49.17
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c466838sm27054362f8f.49.2025.08.07.00.49.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Aug 2025 00:49:17 -0700 (PDT)
+        Thu, 07 Aug 2025 00:49:19 -0700 (PDT)
 From: Stefano Manni <stefano.manni@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -83,11 +83,10 @@ To: lars@metafoo.de,
 	andy@kernel.org
 Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Stefano Manni <stefano.manni@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>
-Subject: [PATCH v2 1/2] iio: adc: ad799x: add reference voltage capability to chip_info
-Date: Thu,  7 Aug 2025 09:48:49 +0200
-Message-ID: <20250807074850.130831-2-stefano.manni@gmail.com>
+	Stefano Manni <stefano.manni@gmail.com>
+Subject: [PATCH v2 2/2] iio: adc: ad799x: add reference voltage to ad7994
+Date: Thu,  7 Aug 2025 09:48:50 +0200
+Message-ID: <20250807074850.130831-3-stefano.manni@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250807074850.130831-1-stefano.manni@gmail.com>
 References: <20250807074850.130831-1-stefano.manni@gmail.com>
@@ -99,102 +98,27 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If the chip supports an external reference voltage
-on REFIN pin then the "vref-supply" regulator may be used.
+AD7994 supports external reference voltage on REFIN
+pin so if a vref-supply has been defined it shall be
+used.
 
-This commit partially refactors 6b104e7895ab16b9b7f466c5f2ca282b87f661e8
-to add the capability of the chip to have an external
-voltage reference and then remove the ugly conditional check
-on chip id.
-
-Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Signed-off-by: Stefano Manni <stefano.manni@gmail.com>
 ---
- drivers/iio/adc/ad799x.c | 29 ++++++++++++-----------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ drivers/iio/adc/ad799x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
-index 9c02f9199139..f645995b0929 100644
+index f645995b0929..108bb22162ef 100644
 --- a/drivers/iio/adc/ad799x.c
 +++ b/drivers/iio/adc/ad799x.c
-@@ -114,11 +114,13 @@ struct ad799x_chip_config {
-  * @num_channels:	number of channels
-  * @noirq_config:	device configuration w/o IRQ
-  * @irq_config:		device configuration w/IRQ
-+ * @has_vref:		device supports external reference voltage
-  */
- struct ad799x_chip_info {
- 	int				num_channels;
- 	const struct ad799x_chip_config	noirq_config;
- 	const struct ad799x_chip_config	irq_config;
-+	bool has_vref;
- };
- 
- struct ad799x_state {
-@@ -604,6 +606,7 @@ static const struct iio_event_spec ad799x_events[] = {
- static const struct ad799x_chip_info ad799x_chip_info_tbl[] = {
- 	[ad7991] = {
+@@ -692,6 +692,7 @@ static const struct ad799x_chip_info ad799x_chip_info_tbl[] = {
+ 	},
+ 	[ad7994] = {
  		.num_channels = 5,
 +		.has_vref = true,
  		.noirq_config = {
  			.channel = {
  				AD799X_CHANNEL(0, 12),
-@@ -617,6 +620,7 @@ static const struct ad799x_chip_info ad799x_chip_info_tbl[] = {
- 	},
- 	[ad7995] = {
- 		.num_channels = 5,
-+		.has_vref = true,
- 		.noirq_config = {
- 			.channel = {
- 				AD799X_CHANNEL(0, 10),
-@@ -630,6 +634,7 @@ static const struct ad799x_chip_info ad799x_chip_info_tbl[] = {
- 	},
- 	[ad7999] = {
- 		.num_channels = 5,
-+		.has_vref = true,
- 		.noirq_config = {
- 			.channel = {
- 				AD799X_CHANNEL(0, 8),
-@@ -809,32 +814,22 @@ static int ad799x_probe(struct i2c_client *client)
- 		return ret;
- 
- 	/* check if an external reference is supplied */
--	st->vref = devm_regulator_get_optional(&client->dev, "vref");
--
--	if (IS_ERR(st->vref)) {
--		if (PTR_ERR(st->vref) == -ENODEV) {
-+	if (chip_info->has_vref) {
-+		st->vref = devm_regulator_get_optional(&client->dev, "vref");
-+		ret = PTR_ERR_OR_ZERO(st->vref);
-+		if (ret) {
-+			if (ret != -ENODEV)
-+				goto error_disable_reg;
- 			st->vref = NULL;
- 			dev_info(&client->dev, "Using VCC reference voltage\n");
--		} else {
--			ret = PTR_ERR(st->vref);
--			goto error_disable_reg;
- 		}
--	}
- 
--	if (st->vref) {
--		/*
--		 * Use external reference voltage if supported by hardware.
--		 * This is optional if voltage / regulator present, use VCC otherwise.
--		 */
--		if ((st->id == ad7991) || (st->id == ad7995) || (st->id == ad7999)) {
-+		if (st->vref) {
- 			dev_info(&client->dev, "Using external reference voltage\n");
- 			extra_config |= AD7991_REF_SEL;
- 			ret = regulator_enable(st->vref);
- 			if (ret)
- 				goto error_disable_reg;
--		} else {
--			st->vref = NULL;
--			dev_warn(&client->dev, "Supplied reference not supported\n");
- 		}
- 	}
- 
 -- 
 2.48.1
 

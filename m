@@ -1,148 +1,119 @@
-Return-Path: <linux-iio+bounces-22363-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22364-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09111B1D010
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 03:24:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AADB1D026
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 03:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD6516265F9
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 01:24:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99E1B625537
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 01:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8ADD19D09C;
-	Thu,  7 Aug 2025 01:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724E0195FE8;
+	Thu,  7 Aug 2025 01:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bHlB8/P9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jcPARo1F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5AE9461
-	for <linux-iio@vger.kernel.org>; Thu,  7 Aug 2025 01:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02F210E9;
+	Thu,  7 Aug 2025 01:39:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754529883; cv=none; b=uhv9zqRE2F1Wp1FC20MVhNGNAvyM7xvK2oqvd21T0afPspz4FrHfKJ0xWN4HC0SzDCKfxJavt1R8Fef+CW2bBsUe2S4XZb3D7Jwg/bR3EqZyBbRKkYYRXgrK8RmLy6p/NfeQhSvY4XPmGnCWjCk9Dh2wM3gCg9Kvp8ac1JexK34=
+	t=1754530771; cv=none; b=unaGLFiARAw/pxIn4OKVRq6B0qZ1FrVes3m03ktIP9H2p7iqHv60V/CQnSCl3UWDIxrzuOIKjQhbVPWEK4l5TBuGSNvUomYQ+FQnHfD4dmw/Vy/iVUmGI0ckYvOMj7FHAVOnK8mlA1uuTHngXW5Krc1Vgik0xV+WzWpuY/BKLPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754529883; c=relaxed/simple;
-	bh=7U4fHvP0ih8VFJgO3STDVGAT0vqMcDLOgP2/LcG5M0w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=N2zyYiLBb1I7Pkk9kBiXOhac5DPNcDMID1oGdrC+U2Ok1iTEjHpL6VuTyFBi6ipTLtpA5fGmyr/7TPRn+sHJWDvDV2/MdAPpw5c5/ChDrvJfp3E1GTtEvUMJsncUhr3fEvFNio1yCgqmtEMM+qM+3gpfRdlkNpdwZ/6bIl5lyms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bHlB8/P9; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-306e88f0b0aso186410fac.3
-        for <linux-iio@vger.kernel.org>; Wed, 06 Aug 2025 18:24:39 -0700 (PDT)
+	s=arc-20240116; t=1754530771; c=relaxed/simple;
+	bh=PDT9GuMb/u879R3g5593PFs7w0VAyXcCvu7d48Kp4k8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ba/hxKXq7naLcaCqmEXUzUUDyecocu1VP1Dst0EQly0pB82sOWpqCUkZx3Vo+5oB7Zu6yIQj0ljIUYyTzwi0CAOTe9eFZPgDkCNgFH6tTnmRvghrRSfdWEE5lGIMbc0kD5upF5p1OQzfw3HzgIqFzK+VgdNbD9NiR713F6RM87k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jcPARo1F; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3b7825e2775so344684f8f.2;
+        Wed, 06 Aug 2025 18:39:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1754529878; x=1755134678; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jlob5EoTKbwfdk1l3MgDDEiHlXNGbyvCLwvCntrqVtE=;
-        b=bHlB8/P9Buw2yIBk/eD8D+zl3e3hcwObWtpOkdrcOlE7nSg3Qw8LjlACJTcxHulyf3
-         C82pXSrRxEHYAKeSqLlrLrBKRFqwWWv59W3t0TOPz6crJPcYy6SPY9ACU/dEC8EOngDF
-         erB20RY3Nc4QHFKEAGXkdYgR+1g/lQEKubGpOEE7O+RWbs7Q2K1l+8K9Nr45Kjdgruxz
-         u1Yf02LOD0llubyA8clPidwGSUePdkvRl28JY00tghWQdvMAmaCfUJZE/7G1HGzJx3tL
-         nN6ytIHBUS+3Iu3O448LkSVkKQqsUu6qcmSryrKu1jhYtbJoVBc9oO/h/kze2UQd6/+j
-         QWeg==
+        d=gmail.com; s=20230601; t=1754530768; x=1755135568; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=j4xuTfsagYz2+8hLX5Pmbg+o1X+l2ulu4VJFs0h7n68=;
+        b=jcPARo1FCC1SqUn4xujWNyMmvaA4qkcMASkNscT++derjo2x7ayY8q5+4Sif6Uv3rA
+         SjsGXCeExUhrDrJM2HbuPWRnbaXWQldWR2br5U4MDxeFb8rdx18jLbM3hy/ZMKBKQU9H
+         9t3ZQ+Is/rP8OGx7BLECHNY9T37lcptr0bNWl04Rx2lqqu2IkxuvxYsNCijg1nV2PPJ1
+         Rh8kqpKlk0Bm//c0kP20lrquxM7OWd7F39fKMEkPj0WVCcpZYTK3YzYSSxWgc/OB+asa
+         ulaq5ZvmHSE+zHGHx21P3FtxeC8W+pN4RwiLWrmCgEWijjB2UCt5/NCW/ZG5u+PizqzR
+         hmNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754529878; x=1755134678;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1754530768; x=1755135568;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jlob5EoTKbwfdk1l3MgDDEiHlXNGbyvCLwvCntrqVtE=;
-        b=qFoH8Z3fdAEZdRK0kxwM8MmAJHGqn0jtoWHfNXPfRgNGjQ4H9eXDFzsI2SOn5+4DKs
-         Qp+rAOXJiAERNSdvx9hOzC6DkRoCoWY9DQK6HvrQI/fuicyEcFF6ThVHSvAFwc5fd8Fr
-         BUEL3m5DFcLTp5R7msdIdBzOurbllLQT4mwEAb5vPDArPGSVkgn5QWqJsSmAyOZJHdiQ
-         I3mCq9RZBbu8j8HNIBNV3keRaAUqOjLkFhHGGkJxxBHJnsspzH953lQ+l6dyUkofP/dg
-         Lz7SOLBVsy5/DGIfnHO1qRgj7RBHr9dA6B6kHvIQi2xv5TWjtXPTGvplBYCnw79NnwkE
-         /56w==
-X-Forwarded-Encrypted: i=1; AJvYcCWSd2ZpqgMqfaVwhSaJcHOf61Dkd6hO7M1EmnHsXeNiASw17XEvAdv9T+epmb8QvLDq/NnqoFaA+t4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnUYNzhffhGcHrPjtNaTkyE5HbkT586Poj2/BImpw0qTqznHnc
-	Ts4mCSP0QzdbxzlDeDDCKz+K3/+m9P3h7QWom7UYfjp/y+XMVuBnNrkYqrCPDzEWHPs=
-X-Gm-Gg: ASbGncsbO/7dda8BHAMANiO91GxtOpBinToKQQKSysGflh4zeoqonUh2ez6hVwmmGv0
-	eMCV9MtV4Z2I1ayBmh/xRufKu5/gM1rYzgzV8ndQvoo7/b5KqNGEECGCDBSc6+YAJyqS8KYf84U
-	azlTR22RCtEAV5SQA1qGTSHefIF1aDu3lelh7ffsBL0JlROeZX+/C7p8GY2C7vRihnE1wwDrnVc
-	cfSFQwFQ66hRtuPAOv6H3RNh0p+JrP3CaMfym0pctWBedBTzT6CJ2wJ1KZJ+gmlwlio5aAdruJ+
-	2XxNmX2aO3X2U4X3MUAt8T0cd8YObyiBPWPmN3yHmZx5u+vZxMfyWP7zMWJaRhugN0o6YvfOtYx
-	KhKe1jn1rMYlyeFZFDJ5PZulOFpACjCA4BUeodZgXryZAbU4Q9RC3sTiac8KJkTKUw1Mnoo7cfW
-	+4O50FOvSAXA==
-X-Google-Smtp-Source: AGHT+IEZAM7i8noTFma5wAnR8o4D7glt2vGuAH01kSmUPVRf7KW72alZoNCyV4wMEfKwuI1X7qG5Qg==
-X-Received: by 2002:a05:6870:3c0d:b0:2e9:4038:83d7 with SMTP id 586e51a60fabf-30be296ad83mr3038244fac.11.1754529878596;
-        Wed, 06 Aug 2025 18:24:38 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:a4aa:5c40:1610:d43d? ([2600:8803:e7e4:1d00:a4aa:5c40:1610:d43d])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-30b6dac161esm3485598fac.22.2025.08.06.18.24.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Aug 2025 18:24:38 -0700 (PDT)
-Message-ID: <b7288d5e-8dc8-4ee1-ae34-52904a3f989d@baylibre.com>
-Date: Wed, 6 Aug 2025 20:24:37 -0500
+        bh=j4xuTfsagYz2+8hLX5Pmbg+o1X+l2ulu4VJFs0h7n68=;
+        b=lvmWKeMOloOLfr+XngT77syZiExn8gWYTg6oif0MTBdG4CCCUbv/+6e9R6QuOv81A7
+         YCPHLzivdxERJ1hfMGwG/0rrgXY3pNk761ISlZEWEvSbyz1fL68mIMAMNVkGE2mXMlN7
+         Sge2cDmfh0N1Ms7+1qMIBC+hhBSdZUb0pAwa7z5agiDFou4NxArtN/jHzVk9cDU6xFkN
+         wExqKV8XXRPDaJ5ukypLJTobw5Stj1unxnwPSdh4lKMYXTS4wRKkzg7HC8qdi9Dl1MUO
+         K7/0gzOGXj+vdoxBR9/hE3x5IkRkx1NYhgmuPixW96i1ep91RbFAJ+LrIi+QdZjSfGdI
+         /+bw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQoVD/0y9QusBGTT62VdhVGFFXsmvaD474FqcEuciIPFRQFNSlX2VOm6HvBQcgIT+TRB8BS1PyYPhZbTdV@vger.kernel.org, AJvYcCWDYMDMTyrjQOp1iqhHsylLmmvDgWUc8bnpbrsYiZJHI3rUK2fPxsF9ilieP63scyCm1LSSh2zuxF0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgHHxKBdMcpkruvmP7CR2NnvQ9GLzR8qJ6ljLXflpHfnW4j//U
+	NJ4ZFzlH7ME6LxdHXaNgZXiOZJzklTXbN5WDeUWZJqXYZ3vKsmPJpMSW
+X-Gm-Gg: ASbGncstB8bW0dEPtsBKF/ueBBor47OGfGTt9lYjdjoEh3v5oQfcKYIcprXF9eJpjGB
+	4x7Pze4KxlfJEsaZICBvf1GyoxpWwd5guIH6RZ803l0LjW2M6H7ap0wiHbvRp+UnuL1SobJn56H
+	TobXALmdIgEOE3iq+7cw8At89r4M852Gr3QvTeHxXJf/+3pdtJi9yQTloI0WUaPxT/BEMg8ZYhe
+	DjgsyMmIq8rWLksbtCtj1g3DAk0b6PK7J7sA+XWGOdsI7vPgBOKqOAzeZjQ+nQ/mvmDMkZXRLax
+	RLgFBTCnVL63/ZUY1rgSOHgSz0pj5ID1rDjbHydmDktTVk5QHj/wutdDcm52GdtkZM5lt4mYXRh
+	KpD/xD6b5Ddj09uAAnXR2NY/Q
+X-Google-Smtp-Source: AGHT+IHqDnrVSLOXogXBLqS7HQd2Obxvb4ZStcdc39De8YJSVG9kMZykeFQ6BD3kmb5ap0/JvY9/sQ==
+X-Received: by 2002:a05:6000:2308:b0:3b7:6828:5f71 with SMTP id ffacd0b85a97d-3b8f415995emr3701971f8f.9.1754530767769;
+        Wed, 06 Aug 2025 18:39:27 -0700 (PDT)
+Received: from pc ([196.235.182.191])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459dd85f423sm130861015e9.18.2025.08.06.18.39.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Aug 2025 18:39:26 -0700 (PDT)
+Date: Thu, 7 Aug 2025 02:39:23 +0100
+From: Salah Triki <salah.triki@gmail.com>
+To: Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: salah.triki@gmail.com
+Subject: [PATCH] iio: adc: ad9467: Replace PTR_ERR_OR_ZERO() in ad9467_reset()
+Message-ID: <aJQDyzoxLsF8nKYW@pc>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: pressure: bmp280: Use IS_ERR_OR_NULL() in
- bmp280_common_probe()
-To: Salah Triki <salah.triki@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <aJP44mH0AXQGCFFR@pc>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aJP44mH0AXQGCFFR@pc>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 8/6/25 7:52 PM, Salah Triki wrote:
-> `devm_gpiod_get_optional()` may return non-NULL error pointer on failure.
-> Check its return value using `IS_ERR_OR_NULL()` and propagate the error if
-> necessary.
-> 
-> Signed-off-by: Salah Triki <salah.triki@gmail.com>
-> ---
->  drivers/iio/pressure/bmp280-core.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 74505c9ec1a0..2ac0188d2857 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -3213,11 +3213,13 @@ int bmp280_common_probe(struct device *dev,
->  
->  	/* Bring chip out of reset if there is an assigned GPIO line */
->  	gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-> +
+PTR_ERR_OR_ZERO() returns 0 if the argument is NULL, which can hide real
+issues when the caller expects an ERR_PTR on failure. Use a ternary
+expression instead to return the appropriate error code.
 
-No blank line here.
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+---
+ drivers/iio/adc/ad9467.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +	if (IS_ERR_OR_NULL(gpiod))
-
-This needs to be IS_ERR(). NULL is not an error and we
-cant return early here because there is more to do in
-the probe function.
-
-> +		return dev_err_probe(dev, PTR_ERR(gpiod), "failed to get GPIO\n");
-> +
->  	/* Deassert the signal */
-> -	if (gpiod) {
-> -		dev_info(dev, "release reset\n");
-> -		gpiod_set_value(gpiod, 0);
-> -	}
-> +	dev_info(dev, "release reset\n");
-> +	gpiod_set_value(gpiod, 0);
-
-If we drop the `if` here, we should also drop the
-dev_info(). gpiod_set_value() handles NULL gpiod value
-so that is fine, but the message is just noise.
-
-Also, gpiod_set_value_cansleep() would be more
-appropriate. This is not an atomic context.
-
->  
->  	data->regmap = regmap;
->  
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index f7a9f46ea0dc..70aee2666ff1 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -945,7 +945,7 @@ static int ad9467_reset(struct device *dev)
+ 
+ 	gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR_OR_NULL(gpio))
+-		return PTR_ERR_OR_ZERO(gpio);
++		return gpio ? PTR_ERR(gpio) : -ENODEV;
+ 
+ 	fsleep(1);
+ 	gpiod_set_value_cansleep(gpio, 0);
+-- 
+2.43.0
 
 

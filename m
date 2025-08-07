@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-22373-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22374-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA613B1D31C
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 09:14:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FF2B1D34C
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 09:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C255E174991
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 07:14:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 361B66240F7
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 07:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E675233713;
-	Thu,  7 Aug 2025 07:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B9723A58B;
+	Thu,  7 Aug 2025 07:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aPIF4UBG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YpICj5u6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358283FE7;
-	Thu,  7 Aug 2025 07:14:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E4523184F;
+	Thu,  7 Aug 2025 07:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754550853; cv=none; b=Pm1eUerxRy7PZjmJrY+k98qZxD/NL13+ZVYPLLIhvnih2dS8L0GtvdCKBd5ks79UzsYJxQ5+gesvY/0Vc7Wns/li0bKOkDI5sR6ZX43C0IMDusJlTu152X2PE4ac0TywSIL96JJvFvvBvHD1Wd4Itq75cBKGFgV476GcUX9vy6s=
+	t=1754551671; cv=none; b=rtPjD8gVG+1KYx2o3EMhkuUoMBZz923r4EJdsUFOOStViIkkh1o6A67J7AlZ9wfu1o+SDMoJE/x28inuZrFbnUh0lQZY1gvzPS8LZCJeOccIW7IKK//PRjx6aNJjDcO6dQvkhdA9MUvniFTyinlevHnLa/KnQvntr1xOC/+5Kmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754550853; c=relaxed/simple;
-	bh=3rWOqfJ9s4nsk42+0Lkf3fShUfgDtrdrHgjnMnJOx5A=;
+	s=arc-20240116; t=1754551671; c=relaxed/simple;
+	bh=SkTxJog/uq/QRE+prVJuk5pif6ZAmTcZRuXi/8ThBmM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LdSdOopNI/dZSCWROoZkH7A2ZdhtIH5xGA/ml9VOaBpBz4E/DvENTyqllP8CbYzO/v6fyCF8Qn5ogcFoiL8B4K3R15GIb19Y1hWYiD++3Km6wOcKNwo2vr38iOmKZcXtIq7QPldHkkePNhBpQzmdALIO7h5QtnmAofa8KmtOJ5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aPIF4UBG; arc=none smtp.client-ip=209.85.208.174
+	 In-Reply-To:Content-Type; b=s8rZsLfXojxHy08NhGV+yhu0tt3/rXhKPk9Qx3kk9Oe8wbdRBSqSDRVEN+xOWpCDqyDmWJ6/wYTkqGI/izGZYFe8UwiuL+xNJZA46bOy81Vu2WdNQJzQGTJnPibOIbvnwS+G/gcroMCv0tYkv/+B3zYcSL8XflVOe0z1rK01zWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YpICj5u6; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3323b99094fso5610411fa.0;
-        Thu, 07 Aug 2025 00:14:10 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55b79ea50f8so724571e87.0;
+        Thu, 07 Aug 2025 00:27:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754550849; x=1755155649; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754551667; x=1755156467; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=xNZ6B8Gr4WCNsBSx0OnMQeHirAX7DQf2f3C5knNNIbk=;
-        b=aPIF4UBGm1lGAT8Z6SB8q6r6Xbakbpu2aQkjlTFwpXhbsKMOcRTv2ZUpUpRXelNvAg
-         5M0vy+JBzD1T67lFWso+ZScey55O2siyS3uelzPB5k1W65Eo60HzpnTNQcRHLAW2F6zj
-         ZY/27wwdTMHtgBs8RGA6OgldMzuOVhWG1X83reBmdIfwVWRc+6Dlhm6L/UoawW/F1uDc
-         oSXmBNK3M7wVsDLAWn5gqICd5p1X53MsdJ0oGk36L7E6CNT1+DEi2k8PCMsHtRSz6uqp
-         ku/4NH6MaUY5dFBg7kObesbY9dsxULRAjsz6IAQ8lrZdxX1SGOibq9v9CL5YSy7d4/TE
-         o0yg==
+        bh=vPSZZvxQDM62BTi58d+C2YdbP59VdukNodMsPczgmyk=;
+        b=YpICj5u6bCC/R96cU8bE+2QEv9p5/2wNJ15RhzK7IOBd0kIzRJMaaJfGRkABbwykwn
+         qw11aQxe/gj28p9T6ztzQvrl36zaZE05KAmx4mqglZk4KvSQyCdynPJkS6I+43LX1nWE
+         me/+97PLmm3wN2StsBBGdBMa8NgrtukC6aAkFwVx4kuo62o8vKXp9uo/4hyI+ebdeb7M
+         4EAD8u1xnxKNMg7qoiMg06SwcHyzenLZUxTWVMCXh3JAZ0de+EiPULnTmJl7VrRAtb4J
+         UiqtAYQrHbRVjCak+dt5uKkaa5VMbAMnMHQK5vRExvl4cnGD+sDTOl5glBaopAv4Ezr6
+         4eHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754550849; x=1755155649;
+        d=1e100.net; s=20230601; t=1754551667; x=1755156467;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xNZ6B8Gr4WCNsBSx0OnMQeHirAX7DQf2f3C5knNNIbk=;
-        b=DC7EOUWozPMugjuSvFwHyuQpuCH/APiNVloipJX4FzW/Oh5S+/2JKmksrp1n2VYKGy
-         ClZ7XlVg0bkeiuZ7kdM5RmfYIlWk5imDEPlsgjk/UiRcSVa+ib+zS5b8PZja6Kj/k04a
-         RiCXYp5l634FrZmvUWo2uSGkFhOiC4j04ynt6hRdA74qaqODHyZmo1MWXfG+G/pXITjS
-         sa7oG1bOX4P+uKr0QPBJ4GIfyWhNXwLak7CHmjcN22vYvgK5I+kTvJpytljlkQJjVzqQ
-         z+bRDVpAWzCjT7IRd+mHI746n89AbFVfPwKKoLitZkv6c8dZ/Kp0CnzBUXvPiakP0E7K
-         5HMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXBE8YsaVTRMz5XTuS61I1oFykskkJJIFOq1eHMI1dIHAk0dFTgdXX5iKPbNwichOfhy4oS+dYkFgo/LL6@vger.kernel.org, AJvYcCXOnUM8T+11BWrgYgst4Y88SbKn1+4NWu9612s0TLiZa2z1ukkAzclAYdCvhO3n36vcRyQvDTFMqYzU@vger.kernel.org, AJvYcCXgMyIp9DlPYiwa/6XtoXh9fnZfzl/4PhWSQN6V7nuO/EH7qyDftLrMwiU/fhYcwlnc6xqUJrFzeLxX@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXymGgJHgrubCNBeiCwRD0AsX7LKVliguBfyiPbdma5lqWvtz0
-	o5vu4kBIyWz7Wy6fX8omPmo4XATJxYkfJmg0AGFRIjeOoVW4wqGsXh3W
-X-Gm-Gg: ASbGnct8uTISXKyxck1AjccAeoRq625mohdTDc3rOnd3b7Dt19TIjch9Qi5900uP4xd
-	fDQDd0DYL+VuZsinbYy9NdVz7DPEt3Qj/1zaEe8FuuZDuZOfapVgKXMNzK8804lfEL4faTgvXS1
-	57aJyRp3mmK3abiZeYiVc9Uy6sWwCT19y+fOyjchCeRqkbgRzbIk3OdfdEdQEziy7AY32RzIWLZ
-	5iIXltXkg6TJgFHGFHTQIs8wlWXcmovMiO+Rwu3b/hM8rsO+C2wj4Z+Or6ya4+hjI8iPox26b60
-	USSL24Y0pKez4RCpkTWrZEG0vkuA+lXuPXzHmUXkLiFjVnYbbvjKuZDRdLfzh2Q+rg1RfiFd+H+
-	+bBMm3bL0tMgYWbD2TVys764IIybnNL5ayZMVcZIbLjxgkdnwosxZVV7mS1P615yMHlcjrsDeQN
-	5HZ8I=
-X-Google-Smtp-Source: AGHT+IE+pO/21lxZBTuhD0vk4BsBusTBvO4EhD2FklE39MLJ5EoSnynwVxKXC86d216G9BaGwQ8wvg==
-X-Received: by 2002:a05:651c:4093:b0:32a:6a85:f294 with SMTP id 38308e7fff4ca-33381432df4mr9870821fa.35.1754550848874;
-        Thu, 07 Aug 2025 00:14:08 -0700 (PDT)
+        bh=vPSZZvxQDM62BTi58d+C2YdbP59VdukNodMsPczgmyk=;
+        b=U5mFjKCjiiM27oEPnliKJbep1yHk6REFobWnBQKzAceVhF1r+zqQfzlA3mXUMOTJtv
+         3OKW031nxcOvNNA7V8cuoTM1nU7QG4d10mfdmkCCbpQRhFus4Fy8K3OYYetwoTtwkEuA
+         Rqv2o2sfRp0umO0k9RD4qZZNFmiMxuXGJUmx54yAc0kS59WNiV8gJVN4JXFeHk2rHxVN
+         31q4KHkzFFg0Ccx/84JUZT2llAm2YgnEtpfr45Ptzdoyz2vSQgylj/qianW36QAgGw9K
+         BcL+6tGqAcHppJln2dLbKv2N4+ypNM4tzNoXKODVmvFnDxJVtHHLp9+NbDF4+ZOMjy9J
+         mxwg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0zhCJnGbB9iEE/NB4RZsZVMJjb4Yqa5ZhrvJCh8GRWc9Vr/dG95SJmfaQjxQh0DW4vWkyF0nVQvv3wTXb@vger.kernel.org, AJvYcCUkd4x73Kj43RDJGQ9WNflYi2LvY6ZE6j20HdTIZFlosbriUQm8etLG0ah2/UfiTJRnTld/bzpjYjzT@vger.kernel.org, AJvYcCX83uPIbxAoTcNpaTwboA+Np3evThOQjlr2eoI3ikYhALY22sw6o04OPvFY7lnT63VZGVx7ry4REAOL@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbbmLt8gYeEKBFTYS/s8ikDwVpJDF7RtLwWrQnNGAFVdsuxehG
+	lge9N5UKOY5CAqPn92YWbhyWmyxeZ2b5gOH/5lS0veNcdegGhpH6l6dL
+X-Gm-Gg: ASbGncuoKMLO/QWYAHye0N21uuMFN05gaNDM1WHJYXbEvjURVp1Pf/X0KIQV+jENpJ4
+	umIEPpH6MJe9rtLu5+PembnV5NDxHJ+10zmWuf6RHl2af7VHeXQLh5mJRUOxJqNRPN/wJFEAATc
+	CCpQf3AlRqvNM0JxqFL/H3xNnjmWnh3QwDg79ueEbU1bCjwfMa4grr37LUeGmjsMymEHmI008m6
+	sWwzTqRtOn/d9IzW4jwnV3kJzryeXFAWj/KDfFZPrUS9dKiAtoyTSh1cv0vJZvY2oMPawoPjd7r
+	4eFR/ymgDwGxuVRVbHDoQ3omKJMKNeIMoJNv/I6JBh25VIwUiSIZIivC7V6k4v4wHBibEP84VJZ
+	HBeXvHWU8TuHUc1A1PbC8TEqymdXrecjScBWgQbpxdSKk2twwlQUV5AFbVbOY49yJY7L+fv79Xd
+	bh1qM=
+X-Google-Smtp-Source: AGHT+IFtNR3rD4cKL88Zn6DvBYwzPeOYKFCM/K9IqHwK1lJTV9U815Mj9adWiw1lo33yAzgi1rOd4A==
+X-Received: by 2002:a05:6512:1584:b0:55b:885b:1ef2 with SMTP id 2adb3069b0e04-55caf385f5dmr1859047e87.54.1754551667009;
+        Thu, 07 Aug 2025 00:27:47 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-33281ad09e9sm7449301fa.63.2025.08.07.00.14.07
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88c98c8dsm2525236e87.90.2025.08.07.00.27.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Aug 2025 00:14:08 -0700 (PDT)
-Message-ID: <cd85d510-b4f3-4e01-b1c2-de84204c5892@gmail.com>
-Date: Thu, 7 Aug 2025 10:14:07 +0300
+        Thu, 07 Aug 2025 00:27:46 -0700 (PDT)
+Message-ID: <f33a391b-e7b1-422d-b265-4f00db3b9634@gmail.com>
+Date: Thu, 7 Aug 2025 10:27:45 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/8] dt-bindings: iio: adc: ad7476: Add ROHM bd79105
+Subject: Re: [PATCH 7/8] iio: adc: ad7476: Support ROHM BD79105
 To: David Lechner <dlechner@baylibre.com>,
  Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
@@ -95,55 +95,94 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <cover.1754463393.git.mazziesaccount@gmail.com>
- <3066337cb183afa5f53a4e6cf94ce15a36d14ec8.1754463393.git.mazziesaccount@gmail.com>
- <d37371a8-4a03-4893-a6bc-48b7f367c916@baylibre.com>
+ <c7f94cdf9bdc6882953f6a074db3fd87570fa98b.1754463393.git.mazziesaccount@gmail.com>
+ <629801b8-a647-442b-83ba-6328ecf7a977@baylibre.com>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <d37371a8-4a03-4893-a6bc-48b7f367c916@baylibre.com>
+In-Reply-To: <629801b8-a647-442b-83ba-6328ecf7a977@baylibre.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 06/08/2025 18:15, David Lechner wrote:
+Thanks again David.
+
+On 06/08/2025 18:23, David Lechner wrote:
 > On 8/6/25 2:04 AM, Matti Vaittinen wrote:
->> The ROHM BD79105 is a simple, 16-bit, 1-channel ADC with a 'CONVSTART'
->> pin used to start the ADC conversion. Other than the 'CONVSTART', there
->> are 3 supply pins (one used as a reference), analog inputs, ground and
->> communication pins. It's worth noting that the pin somewhat confusingly
->> labeled as 'DIN', is a pin which should be used as a chip-select. The IC
->> does not have any writable registers.
+>> The ROHM BD79105 is a simple 16-bit ADC accessible via SPI*.
 >>
->> The device is designed so that the output pin can, in addition to
->> outputting the data, be used as a 'data-ready'-IRQ. This, however, would
->> require the IRQ to be masked from host side for the duration of the data
->> reads - and it wouldn't also work when the SPI is shared. (As access to
->> the other SPI devices would cause data line changes to be detected as
->> IRQs - and the BD79105 provides no means to detect if it has generated
->> an IRQ).
+>> The BD79105 has a CONVSTART pin, which must be set high to start the ADC
+>> conversion. Unlike with the ad7091 and ad7091r which also have a
+>> CONVSTART pin, the BD79105 requires that the pin must remain high also
+>> for the duration of the SPI access.
 >>
->> Hence the device-tree does not contain any IRQ properties.
+>> (*) Couple of words about the SPI. The BD79105 has pins named as
+>> CONVSTART, SCLK, DIN and DOUT. For the curious reader, DIN is not SPI
+>> ISO.
+>>
+>> DIN is a signal which can be used as a chip-select. When DIN is pulled
+>> low, the ADC will output the completed measurement via DOUT as SCLK is
+>> clocked. According to the data-sheet, the DIN can also be used for
+>> daisy-chaining multiple ADCs. Also, DOUT can be used also for a
 > 
-> There are lots of other ADC chips that have a ready signal like this
-> and we've made them work.
+> Leave out one of the "also"s.
+> 
+>> 'data-ready' -IRQ. These modes aren't supported by this driver.
+>>
+>> Support reading ADC scale and data from the BD79105 using SPI, when DIN
+>> is used as a chip-select.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>> ---
+>>   drivers/iio/adc/ad7476.c | 36 +++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 35 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
+>> index 1f736be09663..fc98aadc4077 100644
+>> --- a/drivers/iio/adc/ad7476.c
+>> +++ b/drivers/iio/adc/ad7476.c
 
-Ah. I had no idea. Thanks for the insight!
+...
 
-> Since devicetree bindings should be as
-> complete as possible even if the driver doesn't use all of the
-> features, I think we should be including the interrupt in the binding.
+>> +
+>> +static void bd79105_convst_enable(struct ad7476_state *st)
+>> +{
+>> +	if (!st->convst_gpio)
+>> +		return;
+>> +
+>> +	gpiod_set_value(st->convst_gpio, 1);
+>> +	udelay(1); /* 10ns required for conversion */
+> 
+> So ndelay(10)?
 
-After what you wrote above, I do agree. There may be systems where the 
-IRQ is usable, so dt should have it even if the Linux driver never used it.
+Thanks for pointing this out. This delay was something I thought I must 
+clarify! This 10nS comment got just copied from the existing convstart, 
+it probably is wrong for the bd79105.
 
-> We have also found that some interrupt controllers won't work
-> as you have suggested and in that case we also needed a ready-gpios
-> to be able to read the state of the pin.
+...
+  >>   	st->xfer.rx_buf = &st->data;
+>>   	st->xfer.len = indio_dev->channels[0].scan_type.storagebits / 8;
+>>   
+>> @@ -393,6 +426,7 @@ static const struct spi_device_id ad7476_id[] = {
+>>   	{ "ads7866", (kernel_ulong_t)&ads7866_chip_info },
+>>   	{ "ads7867", (kernel_ulong_t)&ads7867_chip_info },
+>>   	{ "ads7868", (kernel_ulong_t)&ads7868_chip_info },
+>> +	{ "bd79105", (kernel_ulong_t)&bd79105_chip_info },
+>>   	/*
+>>   	 * The ROHM BU79100G is identical to the TI's ADS7866 from the software
+>>   	 * point of view. The binding document mandates the ADS7866 to be
+> 
+> Unrelated to this patch, but interesting that we don't also have
+> an of_ lookup table.
 
-Oh. My thinking was just hard-coding the conversion-time delay, but this 
-can indeed make sense - especially if there are other examples :)
+I am not sure what is the value of having the of_match table with the 
+SPI devices. The SPI-ID will in any case be required for the module 
+loading, and it can be built based on the DT compatible.
 
-Thanks a lot for the insight!
+I admit I don't really know all the dirty details but, from what I can 
+say, the only potential use would be if this driver supported two 
+variants (which needed to be distinguished) with identical 
+chip-compatible but different vendor part. I accept all education (also) 
+on this matter though :)
 
 Yours,
 	-- Matti
-
 

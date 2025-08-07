@@ -1,92 +1,89 @@
-Return-Path: <linux-iio+bounces-22414-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22415-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24FDB1DEA4
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 23:09:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C065B1DEA6
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 23:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 637527A2B0F
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 21:08:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBDD4621A9B
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 21:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7EA22A4D5;
-	Thu,  7 Aug 2025 21:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FAF234964;
+	Thu,  7 Aug 2025 21:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RNxIEJCk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q+ONzbr0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EBB1D6DDD;
-	Thu,  7 Aug 2025 21:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BA61D6DDD;
+	Thu,  7 Aug 2025 21:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754600967; cv=none; b=qwJmANnb+Z4jRDm4VwnBv9KF3l3C1ohEF/pdlF5fluGOLgWKmijx5F18/d8bzzqXDR+BunLgF1srKRXZixOO9AbNT+UvsxLdc0jHiupa1rA3jb8fd1WHoYYJ8WfyVacGhGaN0xnWLdwPzOsZu9WgfBB0r+BE2R4CPOVIDVta0tI=
+	t=1754601189; cv=none; b=jjS7NeVLp1NtEKraTPqp6fgBwCPCWUAxBzuCueeMPXOjNst24ws7HB5+Du5R5rFn1ItjnisLoSgRTNa6kmEKc2aQs6ht1g/pX7ZTtgFifhfJ/bw0dZ8pjIozXa2DJsTPvyV7xHhdN4ZHItcETqASvAqQI3ksakx/ZDd0/utY9Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754600967; c=relaxed/simple;
-	bh=O0mHde6WnBTZ5MgvvshFuh2INdC9WGHEWCvmUK9uiwQ=;
+	s=arc-20240116; t=1754601189; c=relaxed/simple;
+	bh=GmFYBr1GcHlNqpxd0OwYMyfM1UeTwsDVBCa24j1LqRM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qUXTfeGEM26sSbuxKDp4ltajm8zWw95f+xEjWqOL+TQrWnounvqvlC5XSbVBv/Qyjnv5iMclNaWxWNYgd5sdaC2xceO3XjHLv7MBHRr2q48W95rnESouaTVAH3oQeCdaLstDasFLZHFXViqZqXWqwEKhOn0YeS1L6Ezpc7i7cW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RNxIEJCk; arc=none smtp.client-ip=209.85.218.45
+	 To:Cc:Content-Type; b=VfHJnXKuMsc8992pOQtc6vhW1nwX5NEs/vPH5dHRnQwpRENjsmJVVlE/ICnOSDak3Z7yb3M4E6I63B7+NVqv5mziz0SP7JPMob5VTm5yEkkhbc95pDhAEnfWLsNYAdlWUZyED8nrSMS82+kjT9Y3rFuRu4/Ae9OXJKBYF9Y+UeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q+ONzbr0; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-af98841b4abso252141466b.0;
-        Thu, 07 Aug 2025 14:09:25 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-af98b77d2f0so268019666b.3;
+        Thu, 07 Aug 2025 14:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754600964; x=1755205764; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754601187; x=1755205987; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YmHCPaW6ggefEHmZS7Fxt70xyEe4A7AQ8DhQzt79KsM=;
-        b=RNxIEJCkmb71xwZ16JQrigidLTAsy0S/IU4PfaI1mkLSaiFnotZWMuS6VSfMxZtSMe
-         SCOYPnzlR9CwQi/ZzCxvkyLZvB7Dt6Zln5Jmyk0YbzBMTKcJAS/spguzE/BUnDUT4c17
-         awJ5OYxNrrUgX5cwjs9BVu+avVQAJZ/kI+joqumolI8fZha+3ggqy7xz6r/8czz1xiJb
-         rB68sDVVF8/fHT04Gj8peBuDkR5jjHOYQmG+D26qLU6+DSCRVr7kUK4iuy4ggPJKoqX1
-         1mDEjo7CFx3xQLFIHAuCgIRNPWMYhgLOlmd/J1bRQOGO2t1nbhbFnjc883A1YbYaAIcQ
-         rS5g==
+        bh=GmFYBr1GcHlNqpxd0OwYMyfM1UeTwsDVBCa24j1LqRM=;
+        b=Q+ONzbr0TuG1JsJu/OVj6Xr2Vlh31c15MB75DgHH6IdQe0k7s1hNSzQxVNSHocpgw3
+         hu+jpangsAIZHI+99AIHb8qqNA2qCEozLpGeoV47sAeheUuibl/dA+tWIL9EkDWi3+9H
+         WjRlQiO7js48PEg9Nee+9No45fINt85JmVwkihapp6rqxltABHhke4D3mGGYZhubLCrj
+         UIFar1fAbNj6yExh6rZ9RaCKTagmgWg5s7h8U1Xc1lPW8pDiUlDJgeG/sDKNch41oySF
+         +VpzUjV6/29PLvTd+2Pru4Ux1oL7Ne3ElJU7SKEIuH3wk6iJkoMXHHQuboW13MEiVn2U
+         bQ/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754600964; x=1755205764;
+        d=1e100.net; s=20230601; t=1754601187; x=1755205987;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YmHCPaW6ggefEHmZS7Fxt70xyEe4A7AQ8DhQzt79KsM=;
-        b=GrDB+my4yf/b9s+xJg4XqdEL+jzXLJI+IMLXMMQtSxwUf0+yGJUfRVDvKk3BhbS/A/
-         UmhTpMosfCCjC8A7pl5TCG0VEG4MXLtgmTqlCyORPk3KqbRsvGefAIONIyG6uSE7xWiw
-         Xw8MwRBpuPm2t0CzGNHLUtDe0vkj7Iax9Ibv++IxkjRnF+3vtsGhL14lNXAUG7xeo5HR
-         0dXaFRmM5sPnzZYVYjoYV0cuakaBFsCFLbA/VDxdkXNiioKoPLevunoJF8neBE7nLpC3
-         dDZNelwEbfa2H7nrE7tcTJ9RvUW2GzI1Xda0k3zlYNt1MhPpScGIdyJM6Ai5YnuSmVif
-         hEkg==
-X-Forwarded-Encrypted: i=1; AJvYcCUm69Dosp13PB8RQkDOvasXqnz6aNdfLyXgSil2fZBmk4yDbHCAkyScUdrk6fbDIEt1dXpPjnZxbUb2@vger.kernel.org, AJvYcCWh6FwfoZvOiur2NAuxLNM7iTO3Ek/2LY4mbvm/QucqvE0cMgp6U3fRZIgHQ2S4t+IDe3ztamZ1vjdy@vger.kernel.org, AJvYcCXHuLT+gnNtsd9q63ZpYmDeZ2xSBXveNZjZtM7w18am3B2jhPi6p5inp1LEfnF5QaxX5+bg5HsTaFPVIN+Y@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywbr4rfLFF/QzKy2wKmCzjkq5WM9l7uVcqNbYjv1sFToCZBYRar
-	be8N0e9QgW9TTjSTjn442wQZrXAV9bupSp5zvfcR+NYkT3b5iUaxkf5o1JOPXFYV3ve7JU4Xfj0
-	5UIwyjQGpGtyhrdvEERbNz5XwujEuNDs=
-X-Gm-Gg: ASbGncvs9/Xlk4uoPQNoVSiQF8AlfSn2JHR3+scB71PhNGQa9GgTKFVgd/Pr8qEL7+7
-	UoxYPwXj0m2hMXJk73+i5wCMNyWDiGcjzqzCDOtwXR/4qL9+iGUI/Gd6ulbTvr8x7UUcfenfk/k
-	IhjN6cs5/fz8yV5DRtHHaM4J7DXxiCGQbHaZuXFoe2mxj0AI+g6nEpX/dvnjIWkQJe+oQBoBOS+
-	MfkCi96wY7BK0W9uDO9bAxSGN7iaN13F12O2SJa0Q==
-X-Google-Smtp-Source: AGHT+IFNMng+1TQPi8H1kdbZcSxE1O+RTc1QDBVOPxslTWV1asIU4y0wZ0WFEUyq17vB+jE6ddI2+Uzsh/wAionLawo=
-X-Received: by 2002:a17:906:6a10:b0:af9:8c18:c11d with SMTP id
- a640c23a62f3a-af9c63428d8mr33360666b.8.1754600963650; Thu, 07 Aug 2025
- 14:09:23 -0700 (PDT)
+        bh=GmFYBr1GcHlNqpxd0OwYMyfM1UeTwsDVBCa24j1LqRM=;
+        b=lkrnjQqTeplsuXlJmV8EpXVjidGWS5Ol6yIZh9X5Flsaws2V0KRxlom/LmuAssTT2+
+         eEA7bHEY32v6if6DuhNfn6srXrF18Rf71TKttO7cNjf/H4m1HbVCD7Ksx59ZNhEQq2D3
+         Nwd0Ztil3LVRg95yeYWnuxTu19XBcBqDP95ztA6R253EyK6l2qFK6OEA68LqNvUoBCP6
+         PuD89if4HHBMZrHNzqtYEFzz9hvRyQtMJyIHUPjf4N9W7knQpS0AsIHAQ84BJHpxoFSP
+         uowQYujS3ScNd109M+1a78l+vDi4ljdhYhWG0X5+lhhS5y/0EgBSEC0ujx8OOpiQaYLt
+         vs+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVZoyzNO95D45lixqr0Mnsf5Yq4XFKN8Emttnb+c4qM/VPTYuyIK4V3FkIreyxVYf0nRNks5HplXDEmbBh2@vger.kernel.org, AJvYcCXjsMcVaqkyb5b9WG7ZuzG1KNmKFlWjJ6mXe9SDUbvUNtC/nIndat5j+1GkSAmxG2fqonIkvZ+R42kG@vger.kernel.org, AJvYcCXqS2xR0l2g2JeTCG5K8a42u624pPEk34pBEPXpKBR9LU6wY15ZH+YOXzxUugjNMdTnJa3OqesKYVDp@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBCobL1eI4kl1gtS5f1rXr69N72boMwrOXctR9Xaso6buw+23h
+	gThYTKOndYNNNft95j6D9j6mHiQ/AnarouvXx1c35p+/sSlrN175BPMmqX3109m3Jkn6ZNj71yl
+	QUqfjKmUQrLSrxz5o281XkuY4yEmeXJE=
+X-Gm-Gg: ASbGncsNiJbBKhwWmbgMLwRh1ZvAnJYdl38cm0ADQOJsCOC325BCegCVsO8iRfnSuBV
+	mgScHPiG4Hbz8EYnahQsaY0Gh5UJtw4hcDGWbH2DgX7Orq1QQjUWd3B+pvTpgycycoR49lUQ8Rm
+	jpjjEHTm+daH3Zc8pcs1dWBMbZ9Y4FRzHxm8A3Vy43UaYfHvjma1xX0ZrqP8DB6Eepnt1CshzBh
+	tjaHSdw1gD24X1lLFgf2PtqyutIHQt1BrRnoCsGYg==
+X-Google-Smtp-Source: AGHT+IEuI8VCy1EslHrE+4Z+UUz+p451H0mtrKKDMlq08ml5ds3IkxiZu08zCT7QWRTdtOjc+j8vo57n2RzhNXPHJd4=
+X-Received: by 2002:a17:906:7952:b0:af9:1184:68b3 with SMTP id
+ a640c23a62f3a-af9c658d4e5mr32875466b.55.1754601186623; Thu, 07 Aug 2025
+ 14:13:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1754463393.git.mazziesaccount@gmail.com>
- <c7f94cdf9bdc6882953f6a074db3fd87570fa98b.1754463393.git.mazziesaccount@gmail.com>
- <aJO6jVcITlOXp0YB@smile.fi.intel.com> <f738f3fb-2ce8-4699-bb13-3778ed1c6606@gmail.com>
-In-Reply-To: <f738f3fb-2ce8-4699-bb13-3778ed1c6606@gmail.com>
+References: <cover.1754559149.git.mazziesaccount@gmail.com> <b23ac0b287926b87c36c74e9057139c18e3f4c91.1754559149.git.mazziesaccount@gmail.com>
+In-Reply-To: <b23ac0b287926b87c36c74e9057139c18e3f4c91.1754559149.git.mazziesaccount@gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 7 Aug 2025 23:08:46 +0200
-X-Gm-Features: Ac12FXz27d6PABF7f5dpuzogOoVjo2wFGmpzZJfA1b4yV4j6m_WGzfSvNXZrBMQ
-Message-ID: <CAHp75VfsCHJtrueAVQdbwUjLBCo_kRKVfifUgVrhicvXftPrDQ@mail.gmail.com>
-Subject: Re: [PATCH 7/8] iio: adc: ad7476: Support ROHM BD79105
+Date: Thu, 7 Aug 2025 23:12:30 +0200
+X-Gm-Features: Ac12FXx1tHisvZX6gb317nkX4elI8JGSiIccFpBI9VuhFun0CsU3Ca_UZrGMjq0
+Message-ID: <CAHp75VeMwqxU9JaE6vb6xMffCTyAU2tevASduOWdgk3YMikPQA@mail.gmail.com>
+Subject: Re: [PATCH v2 05/10] iio: adc: ad7476: Limit the scope of the chip_info
 To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, 
 	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
 	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
 	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -96,35 +93,23 @@ Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 7, 2025 at 9:31=E2=80=AFAM Matti Vaittinen <mazziesaccount@gmai=
-l.com> wrote:
-> On 06/08/2025 23:26, Andy Shevchenko wrote:
-> > On Wed, Aug 06, 2025 at 10:04:43AM +0300, Matti Vaittinen wrote:
+On Thu, Aug 7, 2025 at 11:34=E2=80=AFAM Matti Vaittinen
+<mazziesaccount@gmail.com> wrote:
+>
+> The chip_info structure is not required to be accessed after probe.
+>
+> Remove the chip_info pointer from the driver data to reduce the scope
+> and to make driver clearer.
+
+the driver
+
+clearer or cleaner? I think you want the latter...
 
 ...
 
-> >> +static void bd79105_convst_enable(struct ad7476_state *st)
-> >> +{
-> >
-> >> +    if (!st->convst_gpio)
-> >> +            return;
-> >
-> > With 10ns sleep in mind this is also unneeded check.
-> >
-> >> +    gpiod_set_value(st->convst_gpio, 1);
-> >
-> >> +    udelay(1); /* 10ns required for conversion */
-> >
-> > We have ndelay(). But I believe toggling GPIO is much longer operation.
->
-> Thanks for the review Andy.
->
-> As I replied to David, this 10nS is rubbish. I need to clarify the right
-> value.
-
-Then probably you want to call fsleep(), and if the value is few /
-dozens of useconds, I would drop the check for GPIO and leave with a
-small delay.
+Not sure how the future of the development of this driver will look
+like, but it might be this patch will be reverted if one wants
+something else from chip_info to have a longer lifetime.
 
 --=20
 With Best Regards,

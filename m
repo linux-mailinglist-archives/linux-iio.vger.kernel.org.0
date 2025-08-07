@@ -1,154 +1,154 @@
-Return-Path: <linux-iio+bounces-22416-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22417-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302CEB1DEA8
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 23:14:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A99E1B1DEAE
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 23:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5DB27A4705
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 21:12:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE5CD3A3CF2
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 21:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F68B234964;
-	Thu,  7 Aug 2025 21:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C6623959D;
+	Thu,  7 Aug 2025 21:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nE2EqqIR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HYz+tPmN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040E11D6DDD
-	for <linux-iio@vger.kernel.org>; Thu,  7 Aug 2025 21:14:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F5C9478;
+	Thu,  7 Aug 2025 21:16:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754601256; cv=none; b=jD+ltGQOyo62NL1eTYm2zUUPnZ953sPAMFXZKH9v4VbHwAoqfdGHEgn0nGeldFu0OdjXlRc4TNEmB0CLlHG3R1W5iytjaX5qcub8GxGnXWjDB2j6tuUmRmYeQtNW7VKDd1XV0mzWQsmwgZxX8BrgDRv5RkzyKX73bmj0cYj9zXk=
+	t=1754601415; cv=none; b=PYPupb6nommkYV0C3becF9ahAlcR5P/FSRWwCBohHQG5iDzlrApsTosPgreco9bTMsIOJn4bzPaliZLTcCu9G173Jb+L632vpOMCJj+FNc3/inOYshtRKuYE6WmfqxuiRsvqXNgriWT9UTrg4ZcTpi2JhYQfOPvdWdg75/icFrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754601256; c=relaxed/simple;
-	bh=6Ayw09XT0CJz0Davh7kiq/R8BbFGczRapmLwMv6Khv0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q9/ZFUvRvpxuv2zB+oo1pIDJOWtrLwq+xX7QCn34ffzmVF1XRMAymDRlRrOwre0zG2ZECS1GGveUalQ0KCA8xGf+hfj6PfzZtiCmSxTddmKfzIU4mT7kSuxF2n0n7/vhlw90VjfbkrxQ4LsYRKNqCnVzLkBU7Ga7MiB+N734Ox0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nE2EqqIR; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-30b8c77361eso356173fac.0
-        for <linux-iio@vger.kernel.org>; Thu, 07 Aug 2025 14:14:13 -0700 (PDT)
+	s=arc-20240116; t=1754601415; c=relaxed/simple;
+	bh=9eUhhK5dfV8YL1qqjnFaB8UyCfsTlH1y3uerlBWSZeE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U6RfQRer/hHrJE7/0d8ecABCtooetDbQdCDUF7Om2WaUx0Ibk0IT3zlts+Ki4bT3c2df4oFDnbh1WtGhMlu26Arna3HPjykAC4LMIz4YC3A1biV16y+ycph3WhzwIrrHY4vQhlV8Ewv0VMG1OmCK3nnTUkTBZ1IkHzd7jpdnAs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HYz+tPmN; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-af937728c3eso426197266b.0;
+        Thu, 07 Aug 2025 14:16:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1754601253; x=1755206053; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0DbhLy+bgAv/5STLGUWAxLuPMJo5W/Wh/oHq0DyHIT4=;
-        b=nE2EqqIRaRRauw7KP8cFK2MrVBj+UoU/U3m4hGMl5sePIbpIbM04V5AiKDIOJmnS8P
-         e2sLFnevRLmd2KM8RD+n76kqRHlElSbW8TM7tNDJfYWqXrOGNDkuXWfHlXXZqB7OTjgq
-         NNFP4XGAVlZ40u60sUz8o/OTLfvx+IvV7KWSpjGWLQKMP7HROfdn2kHdhJ7p61xUx1aO
-         G6KcnHbytHO7NHmCYFkV4urrRv7kAPuEmqH3Xan0PxZ6cl146eraU0+vTHlfkzXu2t7C
-         qnfwdVhX9js1GSrvYjLUJcvlN3A9/QfrkUT2pvW58y3e1IhlL0JI8Ag6HR+s5hsShsuz
-         DzBQ==
+        d=gmail.com; s=20230601; t=1754601412; x=1755206212; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YW5VKuizdz3uQCAD3P3uaQbe86Sv96LJNl4VjT7BKPw=;
+        b=HYz+tPmNnTNWjbC25e5lgggvlbEIPbUPX4+NSb/dVTwGnS5KOBlHV+BhQ/4j8D+92s
+         CCjUuMthwnbsB22IqudR/Ynd4BDELr0zgiZVuSj64lxXtzw0YZ2igasjEylHKqWG0p4V
+         SgKkTBAn/J87FNzOlSbYgTmWrgp5khBuwKEWyVGJ22RIDuZgKdb8uNz2xd14OzogOM4K
+         06PClJATN0Sj0XDdLvvEjkHHocqjZ8KQgRcHdUfJ+JoYDmA6MsbEenODPDU/dA7QWk5g
+         iVyb54/yBYMEQ5LIt+kaTM/7y22+MoCFHtGOQ4gbFCoSJKfZ73EOfHXon9DO5Rq3bMm/
+         Q1Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754601253; x=1755206053;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0DbhLy+bgAv/5STLGUWAxLuPMJo5W/Wh/oHq0DyHIT4=;
-        b=r8lhCYPCq03KPEu9/N52MfeoFio0eKSIbZUqIJ7MN6I1sQ3tzuNJqDSzEhDRtNTttv
-         TXT5D1UqLLg2TfBvwddKTaWywNlAm4khLcQsIt7CmRkRw+yZckaLGcVz15HjXIwOPVFm
-         SCmLis9VTea1QtqAHSDNEIK9f6ftUZvfJ9gP/aAdd26SHttclqbe0WmSj20F4gpi0MUm
-         Kd4gFy9xjjgf27HGXsQxtOGUWmXRzDH+2pJEo+tw4SWo7J/geIgvSlhYL6VVW2o4/6vU
-         CDjkgJlf3gSHoN01HNefggNEwGAmDwzhnKa+YSSJnnGLN/kw2KbIILgB80J9/A63DVYU
-         FT/g==
-X-Forwarded-Encrypted: i=1; AJvYcCWtsrmSuO+oW2D0nfUZKbghgl1erYgKzTleLD5fD9egwa70oEVrdRwnstCYzev+yQlzAdE8JQ9oihE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwM1RZnH6L7yaW603DShaUkb7RR8Jei8tb7cGuolIwhNuef9cv6
-	QTa2yPXz3ayhaJiomRDYTB3bPrtzzuqNcrMGNsavbnFO4DruJNhyj5AwzvpBkJqeogk=
-X-Gm-Gg: ASbGncsKWHhglAsvtp9m72Q76DNctz8igWYSijqtnoHyB9GMKxpD/tI46rpDxAOwgPa
-	rWGyzoWb1p6raWpNViiDnvFsXTjMYV9YwWCKl6/ZGj7RKJNF1u7ryzMnWWnu0DIUlByicZLFLwO
-	AH2LXWGDtzz6wkiwUja9LX5koZ4xJqokwdddWrwctjUHdWzGwubKEFQ0ppSUVALlvQ9A5jgncny
-	8DTDbpJZJfXMsAkzCLrHXbJBUzqBbOKpJXJJQAHWYxEew+3bPYsiBGSmgoL5U7bViWyoACFL/A3
-	5ir2/QcuOEO/NpA2axj3CtZXRbzYXsCdZkb3KPkrCRn38VAM7nUIC2iQQgwtFv08hkYD/dtYEyq
-	nGQ2vC4iqrcPAgwwnMOWXpzSbbKbbbn+9gaAcXZXIheHS5Qo6WfXZICDSLFJLqV2FbflFVVNoCY
-	ACZ+sgDzQK8Q==
-X-Google-Smtp-Source: AGHT+IFCDFI5gLxcHkj/bB1qPktW/LvlhD6IbJboJThqZ2SohEA5Ma0Ti6VC/8SoqWmaCS4NRH7TfA==
-X-Received: by 2002:a05:6870:3d8f:b0:2ff:89c8:44f4 with SMTP id 586e51a60fabf-30c20f959ffmr468667fac.11.1754601252939;
-        Thu, 07 Aug 2025 14:14:12 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:ce54:d09f:5709:ac85? ([2600:8803:e7e4:1d00:ce54:d09f:5709:ac85])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-30b93b644d9sm3319195fac.30.2025.08.07.14.14.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Aug 2025 14:14:12 -0700 (PDT)
-Message-ID: <c8189da5-f660-4500-b3b3-246913453ad5@baylibre.com>
-Date: Thu, 7 Aug 2025 16:14:11 -0500
+        d=1e100.net; s=20230601; t=1754601412; x=1755206212;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YW5VKuizdz3uQCAD3P3uaQbe86Sv96LJNl4VjT7BKPw=;
+        b=jTm0+bUYn8pB4Cvwracq6vESvmkD1zIVCUZrv8EfZHngywmejPRFJHESagN5fXPm2T
+         dHk9D2zGlU1YqaTJoWsZZSGmn23K9zNgx76EP7iyoaTLMH3S6MPrJ1l0Gkf5lua4u7Wp
+         iqKb+AorSdXcyJ0izGCDZQcu3Os6OTLGBh/FA0krGgW60AdxKoCcY9fn3fYbWUG3mu1+
+         9yHnMqEsL9JLQCwHuSklaUGeue4V4YBR8s2EI9+z6CHwivgL9vOvIJFleVlg2lbv6K4Q
+         pFz7HWULXWkq3gVzrczOJzz2aKOsFw7tWHgMFh+I/p0q0deDV8LAaDUQMrSlUH3bYCcw
+         TPBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUsyJgCGl96XmFgRsN85hCN0z2/n2ZCwjbnKzfiTa73sKcr9Gf17NEOBPhbcZ6woZJ3hII+unKKTIVy@vger.kernel.org, AJvYcCVcUnSxWv36xyJw22s85TPYoV+7lKey6Xg/7/n3PN37RYhuWFwLnvrcoSZq8AE5t/pn/8Xyjw/bMa+8@vger.kernel.org, AJvYcCWJgtXN8IIH7bQvNbhKw1Pdo7cIApRg8aQP//T4h6idwT5ixQ7bM878twiAnDpEvbEUDEDMs1UKEsKQSA0T@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrU83azi89ogkZUXWwyUWAH8D6emn4GWtEHmN9Y3LnXR+6FyHh
+	xUERGrT65wmRPDeXcCyBY9R3M1e/isIXD0Lf/OQz3tV5AYntneO/xaw2svma0iaR5UMD1Fagmc8
+	XBkD2hMghgSX2plOMMfxPz67YJdG6Y60=
+X-Gm-Gg: ASbGncs2KhQkBPwJiW+E01nBjiTNqTdtwITc7q9DoVwSi9RSeDwzS5U5LWWSnHE0dkA
+	p8SH6H73haf4diVbgv+j95EHrmstafWL41mencn/22UeNV6nw+8YM8hpnrMCjLMKbT5a0r5k2Xm
+	GCn8OQp4jk066MqP1lMfXq3Pa2lKKCf3Srjjxs8IENcW7NaQdM2RQ6DcvxLSrRh6eN+1C1S7rPE
+	fxH9g7EVRtg0raXOB5Q8sKnuFtIgK0SRCGCOyc/QA==
+X-Google-Smtp-Source: AGHT+IF5mbNBW94ntEyvRzUawU+yBnKWoEcM/OnUqQN7n9Ea/8VYGKZD45os8JeDIaa6K+ZOhjnNz0shSTGeBPPSwns=
+X-Received: by 2002:a17:907:7e9d:b0:af8:fded:6bad with SMTP id
+ a640c23a62f3a-af9a3e3e611mr529635666b.18.1754601411885; Thu, 07 Aug 2025
+ 14:16:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iio: adc: ad4170-4: Use ERR_PTR() with %pe to improve
- error logging
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Salah Triki <salah.triki@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <aJReTh-t5D45aZNV@pc>
- <fe98c2a2-ec8d-4352-a9fb-6f0e798f7268@baylibre.com>
- <CAHp75VfH6xuiPNZA_eGmFgMGxdGTf-y6o+SEKeCbG=wsUOJYfg@mail.gmail.com>
- <CAHp75VfEC3qUurUO4LKA1d6_Ot15AHY2zG9tk3wWrtYAgHrHgQ@mail.gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <CAHp75VfEC3qUurUO4LKA1d6_Ot15AHY2zG9tk3wWrtYAgHrHgQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <cover.1754559149.git.mazziesaccount@gmail.com> <09bf5e7973c37413ada950741e6e09c375e37c57.1754559149.git.mazziesaccount@gmail.com>
+In-Reply-To: <09bf5e7973c37413ada950741e6e09c375e37c57.1754559149.git.mazziesaccount@gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 7 Aug 2025 23:16:15 +0200
+X-Gm-Features: Ac12FXykDcbCUdUI9iHmPN3WsJWpiJjJXg5mSCfo0Pc5LWH32gtNwUrRRah3vi4
+Message-ID: <CAHp75VcHR78Uwgo74n-i3a1sSfDxBwVKWihcnFp5x3d=puAySQ@mail.gmail.com>
+Subject: Re: [PATCH v2 06/10] iio: adc: ad7476: Drop convstart chan_spec
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/7/25 4:02 PM, Andy Shevchenko wrote:
-> On Thu, Aug 7, 2025 at 11:01 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
->> On Thu, Aug 7, 2025 at 6:03 PM David Lechner <dlechner@baylibre.com> wrote:
->>> On 8/7/25 3:05 AM, Salah Triki wrote:
-> 
-> ...
-> 
->>>>       ret = __ad4170_read_sample(indio_dev, chan, val);
->>>>       if (ret) {
->>>> -             dev_err(dev, "failed to read sample: %d\n", ret);
->>>> +             dev_err(dev, "failed to read sample: %pe\n", ERR_PTR(ret));
->>>>
->>>>               ret2 = ad4170_set_channel_enable(st, chan->address, false);
->>>>               if (ret2)
->>>> -                     dev_err(dev, "failed to disable channel: %d\n", ret2);
->>>> +                     dev_err(dev, "failed to disable channel: %pe\n", ERR_PTR(ret2));
->>>>
->>>>               return ret;
->>>>       }
->>>
->>> Interesting, I didn't know we had this format specifier. But I think
->>> this is something we would want to do kernel-wide or not at all to stay
->>> consistent.
->>
->> I'm sorry but I didn't follow. This is a kernel-wide format specifier.
+On Thu, Aug 7, 2025 at 11:35=E2=80=AFAM Matti Vaittinen
+<mazziesaccount@gmail.com> wrote:
+>
+> The ad7476 driver defines separate chan_spec structures for operation
+> with and without convstart GPIO. At quick glance this may seem as if the
+> driver did provide more than 1 data-channel to users - one for the
+> regular data, other for the data obtained with the convstart GPIO.
+>
+> The only difference between the 'convstart' and 'non convstart'
+> -channels is presence / absence of the BIT(IIO_CHAN_INFO_RAW) in
+> channel's flags.
+>
+> We can drop the convstart channel spec, and related convstart macro, by
+> allocating a mutable per driver instance channel spec an adding the flag
 
-I meant that it would be strange to make this change just in one
-driver and not do the same everywhere else.
+and adding
 
->>
->>> And if we are doing this in more places, it would make sense to have a new
->>> format specifier for integer error values instead of casting them to
->>> pointers.
->>
->> Will _very unlikely_ to happen. This has to be a C standard for that,
->> otherwise you are suggesting to always have a kernel warning for each
->> of these cases. The only way we can customize specifiers w/o
->> introducing a compiler warnings is to continue (and still carefully)
->> using %p extensions.
+> in probe if needed. This will simplify the driver with the cost of added
+> memory consumption.
+>
+> Assuming there aren't systems with very many ADCs and very few
+> resources, this tradeoff seems worth making.
+>
+> Simplify the driver by dropping the 'convstart' channel spec and
+> allocating the chan spec for each driver instance.
 
-OK, makes sense.
+channel
 
-> 
-> And to be clear: I am not in favour of this change exactly due to a
-> bit weird (for the reader) castings just for the sake of use of %pe.
-> 
-> 
+(you already used 'channel spec' above, be consistent)
 
+...
+
+> -       int ret;
+> +       int ret, i;
+
+Why? Is 'i' going to be used to hold a signed value?
+
+...
+
+> +       /*
+> +        * This will never realize. Unless someone changes the channel sp=
+ecs
+
+realize --> happen
+
+> +        * in this driver. And if someone does, without changing the loop
+> +        * below, then we'd better immediately produce a big fat error, b=
+efore
+> +        * the change proceeds from that developer's table.
+> +        */
+> +       BUILD_BUG_ON(ARRAY_SIZE(st->channel) !=3D ARRAY_SIZE(chip_info->c=
+hannel));
+
+We have static_assert(). Why can't it be used?
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

@@ -1,117 +1,154 @@
-Return-Path: <linux-iio+bounces-22415-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22416-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C065B1DEA6
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 23:13:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 302CEB1DEA8
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 23:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBDD4621A9B
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 21:13:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5DB27A4705
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 21:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FAF234964;
-	Thu,  7 Aug 2025 21:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F68B234964;
+	Thu,  7 Aug 2025 21:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q+ONzbr0"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nE2EqqIR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BA61D6DDD;
-	Thu,  7 Aug 2025 21:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040E11D6DDD
+	for <linux-iio@vger.kernel.org>; Thu,  7 Aug 2025 21:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754601189; cv=none; b=jjS7NeVLp1NtEKraTPqp6fgBwCPCWUAxBzuCueeMPXOjNst24ws7HB5+Du5R5rFn1ItjnisLoSgRTNa6kmEKc2aQs6ht1g/pX7ZTtgFifhfJ/bw0dZ8pjIozXa2DJsTPvyV7xHhdN4ZHItcETqASvAqQI3ksakx/ZDd0/utY9Qc=
+	t=1754601256; cv=none; b=jD+ltGQOyo62NL1eTYm2zUUPnZ953sPAMFXZKH9v4VbHwAoqfdGHEgn0nGeldFu0OdjXlRc4TNEmB0CLlHG3R1W5iytjaX5qcub8GxGnXWjDB2j6tuUmRmYeQtNW7VKDd1XV0mzWQsmwgZxX8BrgDRv5RkzyKX73bmj0cYj9zXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754601189; c=relaxed/simple;
-	bh=GmFYBr1GcHlNqpxd0OwYMyfM1UeTwsDVBCa24j1LqRM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VfHJnXKuMsc8992pOQtc6vhW1nwX5NEs/vPH5dHRnQwpRENjsmJVVlE/ICnOSDak3Z7yb3M4E6I63B7+NVqv5mziz0SP7JPMob5VTm5yEkkhbc95pDhAEnfWLsNYAdlWUZyED8nrSMS82+kjT9Y3rFuRu4/Ae9OXJKBYF9Y+UeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q+ONzbr0; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-af98b77d2f0so268019666b.3;
-        Thu, 07 Aug 2025 14:13:08 -0700 (PDT)
+	s=arc-20240116; t=1754601256; c=relaxed/simple;
+	bh=6Ayw09XT0CJz0Davh7kiq/R8BbFGczRapmLwMv6Khv0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q9/ZFUvRvpxuv2zB+oo1pIDJOWtrLwq+xX7QCn34ffzmVF1XRMAymDRlRrOwre0zG2ZECS1GGveUalQ0KCA8xGf+hfj6PfzZtiCmSxTddmKfzIU4mT7kSuxF2n0n7/vhlw90VjfbkrxQ4LsYRKNqCnVzLkBU7Ga7MiB+N734Ox0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nE2EqqIR; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-30b8c77361eso356173fac.0
+        for <linux-iio@vger.kernel.org>; Thu, 07 Aug 2025 14:14:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754601187; x=1755205987; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GmFYBr1GcHlNqpxd0OwYMyfM1UeTwsDVBCa24j1LqRM=;
-        b=Q+ONzbr0TuG1JsJu/OVj6Xr2Vlh31c15MB75DgHH6IdQe0k7s1hNSzQxVNSHocpgw3
-         hu+jpangsAIZHI+99AIHb8qqNA2qCEozLpGeoV47sAeheUuibl/dA+tWIL9EkDWi3+9H
-         WjRlQiO7js48PEg9Nee+9No45fINt85JmVwkihapp6rqxltABHhke4D3mGGYZhubLCrj
-         UIFar1fAbNj6yExh6rZ9RaCKTagmgWg5s7h8U1Xc1lPW8pDiUlDJgeG/sDKNch41oySF
-         +VpzUjV6/29PLvTd+2Pru4Ux1oL7Ne3ElJU7SKEIuH3wk6iJkoMXHHQuboW13MEiVn2U
-         bQ/g==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1754601253; x=1755206053; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0DbhLy+bgAv/5STLGUWAxLuPMJo5W/Wh/oHq0DyHIT4=;
+        b=nE2EqqIRaRRauw7KP8cFK2MrVBj+UoU/U3m4hGMl5sePIbpIbM04V5AiKDIOJmnS8P
+         e2sLFnevRLmd2KM8RD+n76kqRHlElSbW8TM7tNDJfYWqXrOGNDkuXWfHlXXZqB7OTjgq
+         NNFP4XGAVlZ40u60sUz8o/OTLfvx+IvV7KWSpjGWLQKMP7HROfdn2kHdhJ7p61xUx1aO
+         G6KcnHbytHO7NHmCYFkV4urrRv7kAPuEmqH3Xan0PxZ6cl146eraU0+vTHlfkzXu2t7C
+         qnfwdVhX9js1GSrvYjLUJcvlN3A9/QfrkUT2pvW58y3e1IhlL0JI8Ag6HR+s5hsShsuz
+         DzBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754601187; x=1755205987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GmFYBr1GcHlNqpxd0OwYMyfM1UeTwsDVBCa24j1LqRM=;
-        b=lkrnjQqTeplsuXlJmV8EpXVjidGWS5Ol6yIZh9X5Flsaws2V0KRxlom/LmuAssTT2+
-         eEA7bHEY32v6if6DuhNfn6srXrF18Rf71TKttO7cNjf/H4m1HbVCD7Ksx59ZNhEQq2D3
-         Nwd0Ztil3LVRg95yeYWnuxTu19XBcBqDP95ztA6R253EyK6l2qFK6OEA68LqNvUoBCP6
-         PuD89if4HHBMZrHNzqtYEFzz9hvRyQtMJyIHUPjf4N9W7knQpS0AsIHAQ84BJHpxoFSP
-         uowQYujS3ScNd109M+1a78l+vDi4ljdhYhWG0X5+lhhS5y/0EgBSEC0ujx8OOpiQaYLt
-         vs+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVZoyzNO95D45lixqr0Mnsf5Yq4XFKN8Emttnb+c4qM/VPTYuyIK4V3FkIreyxVYf0nRNks5HplXDEmbBh2@vger.kernel.org, AJvYcCXjsMcVaqkyb5b9WG7ZuzG1KNmKFlWjJ6mXe9SDUbvUNtC/nIndat5j+1GkSAmxG2fqonIkvZ+R42kG@vger.kernel.org, AJvYcCXqS2xR0l2g2JeTCG5K8a42u624pPEk34pBEPXpKBR9LU6wY15ZH+YOXzxUugjNMdTnJa3OqesKYVDp@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBCobL1eI4kl1gtS5f1rXr69N72boMwrOXctR9Xaso6buw+23h
-	gThYTKOndYNNNft95j6D9j6mHiQ/AnarouvXx1c35p+/sSlrN175BPMmqX3109m3Jkn6ZNj71yl
-	QUqfjKmUQrLSrxz5o281XkuY4yEmeXJE=
-X-Gm-Gg: ASbGncsNiJbBKhwWmbgMLwRh1ZvAnJYdl38cm0ADQOJsCOC325BCegCVsO8iRfnSuBV
-	mgScHPiG4Hbz8EYnahQsaY0Gh5UJtw4hcDGWbH2DgX7Orq1QQjUWd3B+pvTpgycycoR49lUQ8Rm
-	jpjjEHTm+daH3Zc8pcs1dWBMbZ9Y4FRzHxm8A3Vy43UaYfHvjma1xX0ZrqP8DB6Eepnt1CshzBh
-	tjaHSdw1gD24X1lLFgf2PtqyutIHQt1BrRnoCsGYg==
-X-Google-Smtp-Source: AGHT+IEuI8VCy1EslHrE+4Z+UUz+p451H0mtrKKDMlq08ml5ds3IkxiZu08zCT7QWRTdtOjc+j8vo57n2RzhNXPHJd4=
-X-Received: by 2002:a17:906:7952:b0:af9:1184:68b3 with SMTP id
- a640c23a62f3a-af9c658d4e5mr32875466b.55.1754601186623; Thu, 07 Aug 2025
- 14:13:06 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754601253; x=1755206053;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0DbhLy+bgAv/5STLGUWAxLuPMJo5W/Wh/oHq0DyHIT4=;
+        b=r8lhCYPCq03KPEu9/N52MfeoFio0eKSIbZUqIJ7MN6I1sQ3tzuNJqDSzEhDRtNTttv
+         TXT5D1UqLLg2TfBvwddKTaWywNlAm4khLcQsIt7CmRkRw+yZckaLGcVz15HjXIwOPVFm
+         SCmLis9VTea1QtqAHSDNEIK9f6ftUZvfJ9gP/aAdd26SHttclqbe0WmSj20F4gpi0MUm
+         Kd4gFy9xjjgf27HGXsQxtOGUWmXRzDH+2pJEo+tw4SWo7J/geIgvSlhYL6VVW2o4/6vU
+         CDjkgJlf3gSHoN01HNefggNEwGAmDwzhnKa+YSSJnnGLN/kw2KbIILgB80J9/A63DVYU
+         FT/g==
+X-Forwarded-Encrypted: i=1; AJvYcCWtsrmSuO+oW2D0nfUZKbghgl1erYgKzTleLD5fD9egwa70oEVrdRwnstCYzev+yQlzAdE8JQ9oihE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwM1RZnH6L7yaW603DShaUkb7RR8Jei8tb7cGuolIwhNuef9cv6
+	QTa2yPXz3ayhaJiomRDYTB3bPrtzzuqNcrMGNsavbnFO4DruJNhyj5AwzvpBkJqeogk=
+X-Gm-Gg: ASbGncsKWHhglAsvtp9m72Q76DNctz8igWYSijqtnoHyB9GMKxpD/tI46rpDxAOwgPa
+	rWGyzoWb1p6raWpNViiDnvFsXTjMYV9YwWCKl6/ZGj7RKJNF1u7ryzMnWWnu0DIUlByicZLFLwO
+	AH2LXWGDtzz6wkiwUja9LX5koZ4xJqokwdddWrwctjUHdWzGwubKEFQ0ppSUVALlvQ9A5jgncny
+	8DTDbpJZJfXMsAkzCLrHXbJBUzqBbOKpJXJJQAHWYxEew+3bPYsiBGSmgoL5U7bViWyoACFL/A3
+	5ir2/QcuOEO/NpA2axj3CtZXRbzYXsCdZkb3KPkrCRn38VAM7nUIC2iQQgwtFv08hkYD/dtYEyq
+	nGQ2vC4iqrcPAgwwnMOWXpzSbbKbbbn+9gaAcXZXIheHS5Qo6WfXZICDSLFJLqV2FbflFVVNoCY
+	ACZ+sgDzQK8Q==
+X-Google-Smtp-Source: AGHT+IFCDFI5gLxcHkj/bB1qPktW/LvlhD6IbJboJThqZ2SohEA5Ma0Ti6VC/8SoqWmaCS4NRH7TfA==
+X-Received: by 2002:a05:6870:3d8f:b0:2ff:89c8:44f4 with SMTP id 586e51a60fabf-30c20f959ffmr468667fac.11.1754601252939;
+        Thu, 07 Aug 2025 14:14:12 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:ce54:d09f:5709:ac85? ([2600:8803:e7e4:1d00:ce54:d09f:5709:ac85])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-30b93b644d9sm3319195fac.30.2025.08.07.14.14.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Aug 2025 14:14:12 -0700 (PDT)
+Message-ID: <c8189da5-f660-4500-b3b3-246913453ad5@baylibre.com>
+Date: Thu, 7 Aug 2025 16:14:11 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1754559149.git.mazziesaccount@gmail.com> <b23ac0b287926b87c36c74e9057139c18e3f4c91.1754559149.git.mazziesaccount@gmail.com>
-In-Reply-To: <b23ac0b287926b87c36c74e9057139c18e3f4c91.1754559149.git.mazziesaccount@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 7 Aug 2025 23:12:30 +0200
-X-Gm-Features: Ac12FXx1tHisvZX6gb317nkX4elI8JGSiIccFpBI9VuhFun0CsU3Ca_UZrGMjq0
-Message-ID: <CAHp75VeMwqxU9JaE6vb6xMffCTyAU2tevASduOWdgk3YMikPQA@mail.gmail.com>
-Subject: Re: [PATCH v2 05/10] iio: adc: ad7476: Limit the scope of the chip_info
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iio: adc: ad4170-4: Use ERR_PTR() with %pe to improve
+ error logging
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Salah Triki <salah.triki@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <aJReTh-t5D45aZNV@pc>
+ <fe98c2a2-ec8d-4352-a9fb-6f0e798f7268@baylibre.com>
+ <CAHp75VfH6xuiPNZA_eGmFgMGxdGTf-y6o+SEKeCbG=wsUOJYfg@mail.gmail.com>
+ <CAHp75VfEC3qUurUO4LKA1d6_Ot15AHY2zG9tk3wWrtYAgHrHgQ@mail.gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <CAHp75VfEC3qUurUO4LKA1d6_Ot15AHY2zG9tk3wWrtYAgHrHgQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 7, 2025 at 11:34=E2=80=AFAM Matti Vaittinen
-<mazziesaccount@gmail.com> wrote:
->
-> The chip_info structure is not required to be accessed after probe.
->
-> Remove the chip_info pointer from the driver data to reduce the scope
-> and to make driver clearer.
+On 8/7/25 4:02 PM, Andy Shevchenko wrote:
+> On Thu, Aug 7, 2025 at 11:01 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+>> On Thu, Aug 7, 2025 at 6:03 PM David Lechner <dlechner@baylibre.com> wrote:
+>>> On 8/7/25 3:05 AM, Salah Triki wrote:
+> 
+> ...
+> 
+>>>>       ret = __ad4170_read_sample(indio_dev, chan, val);
+>>>>       if (ret) {
+>>>> -             dev_err(dev, "failed to read sample: %d\n", ret);
+>>>> +             dev_err(dev, "failed to read sample: %pe\n", ERR_PTR(ret));
+>>>>
+>>>>               ret2 = ad4170_set_channel_enable(st, chan->address, false);
+>>>>               if (ret2)
+>>>> -                     dev_err(dev, "failed to disable channel: %d\n", ret2);
+>>>> +                     dev_err(dev, "failed to disable channel: %pe\n", ERR_PTR(ret2));
+>>>>
+>>>>               return ret;
+>>>>       }
+>>>
+>>> Interesting, I didn't know we had this format specifier. But I think
+>>> this is something we would want to do kernel-wide or not at all to stay
+>>> consistent.
+>>
+>> I'm sorry but I didn't follow. This is a kernel-wide format specifier.
 
-the driver
+I meant that it would be strange to make this change just in one
+driver and not do the same everywhere else.
 
-clearer or cleaner? I think you want the latter...
+>>
+>>> And if we are doing this in more places, it would make sense to have a new
+>>> format specifier for integer error values instead of casting them to
+>>> pointers.
+>>
+>> Will _very unlikely_ to happen. This has to be a C standard for that,
+>> otherwise you are suggesting to always have a kernel warning for each
+>> of these cases. The only way we can customize specifiers w/o
+>> introducing a compiler warnings is to continue (and still carefully)
+>> using %p extensions.
 
-...
+OK, makes sense.
 
-Not sure how the future of the development of this driver will look
-like, but it might be this patch will be reverted if one wants
-something else from chip_info to have a longer lifetime.
+> 
+> And to be clear: I am not in favour of this change exactly due to a
+> bit weird (for the reader) castings just for the sake of use of %pe.
+> 
+> 
 
---=20
-With Best Regards,
-Andy Shevchenko
 

@@ -1,63 +1,81 @@
-Return-Path: <linux-iio+bounces-22403-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22404-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F051FB1D987
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 15:57:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F32B1DAE2
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 17:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E77277AF137
-	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 13:55:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2964718C16B3
+	for <lists+linux-iio@lfdr.de>; Thu,  7 Aug 2025 15:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBDF262FC1;
-	Thu,  7 Aug 2025 13:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B722269B1C;
+	Thu,  7 Aug 2025 15:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="C65Wv9YT"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cm/CGNEn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0AA25D202;
-	Thu,  7 Aug 2025 13:56:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA57125F784
+	for <linux-iio@vger.kernel.org>; Thu,  7 Aug 2025 15:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754575001; cv=none; b=te5O9DAB7Za7GgA4ZQafmRkzladDZF+E0KheR41Vr1p9A/fp2gPm7d9lWGdhI54m5WhcVO0G5lID+ynlAUfUTj1b41eWX9mjH9CLGRtAnL2cJMtCKbuBjTKZ6hlEcpc9Jb70G5X8+hJhpHFwHLBrytAmhjXaNTUeW6QYhRbzQ7Q=
+	t=1754581204; cv=none; b=r4AOesoa9NbpfNYYEzemNFVsuyPtjCmH6MVVbMCTQzUFd5KuIptqWRlqE+P4mIiTijLIfo4Se5Ja6ypm7Ds7shHny+WPO/ImzUAevbreDHMm8qgCQYEnz5bl32dd5IEqHxbGIj1DHH5FE2DIT29ktTiVZLD9CSxahtamO76ECBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754575001; c=relaxed/simple;
-	bh=nT1zpSk6rGTxrru50YWAuKTr7MNceIHgrdP5v0fkZXQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=toET1yhtoeSqXYymrxdRvNqXbMC36XxoDaBv4cnpbWgBkePqsTQf4lfUoCL8lzV1IAwucYL+oPZpZZgCauJcuQw9bqja2ZSp6IZvXT7CQ/YATfbDqQctsuwFJE9+R2m0+7YXXI9Ti79REyzQovMPA8Rbb9YU5pzktI1zfb14mnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=C65Wv9YT; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 577DuTkD762015;
-	Thu, 7 Aug 2025 08:56:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1754574989;
-	bh=FMfZdYvWcj7ok+cOE4Q9MRpiB9xW2uWoiOdsYz0zI0w=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=C65Wv9YTl2fRaQKg2EksFl51HXGVR8c3bPnJ0HYJIwKOgPH535CGfMcN5saroH6ov
-	 D+QVUZyydtE7iOnvrueejTr1xkv5eHCNcgxgk6pWp0P08b72Ss7O4tGJV2v9nEviJn
-	 zqhZidxaT82xriM8Zlv8dkeFRqc2tvuJqF6N4lj0=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 577DuTcg923289
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 7 Aug 2025 08:56:29 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 7
- Aug 2025 08:56:28 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Thu, 7 Aug 2025 08:56:28 -0500
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 577DuSRL1410842;
-	Thu, 7 Aug 2025 08:56:28 -0500
-Message-ID: <c3277f21-14c4-40ca-9d48-a0aeecb54fb8@ti.com>
-Date: Thu, 7 Aug 2025 08:56:28 -0500
+	s=arc-20240116; t=1754581204; c=relaxed/simple;
+	bh=wIF+y5g2uGbuQo4bUcsxBrBWuM5465n72gjk9JaHt2Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=F6Asgv4OVyFsOiMsQxzOPookjxe0TF7PZ0+qxv0WtNZh/OWaEGVGcUJoNwRrgqq6AydELMAZDLkjhRkeigb7X6xDIcS6EWSM2gkhPwF9AJDolWpaDM4JFhbXfZqDJtE19PUn7KvLbMj2s+01D+/xi/p7UuRRQ5+xxlwCyCq9Wj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cm/CGNEn; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6198ece73e0so748276eaf.1
+        for <linux-iio@vger.kernel.org>; Thu, 07 Aug 2025 08:40:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1754581200; x=1755186000; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zoN9jTY+2MEeazt9V1rAxwiLT3ACLDoB1uh4EsCKwso=;
+        b=cm/CGNEnpChAKW6kpwaP9IYYyfYiiYfKUSEq43RBqQ6at/K883thVF2pgexq0oO1PE
+         +dhCIP7RgifEL0baiRC12cNhQfDV0SoNrOq/GcJG1HmcMLXJ8kvaJKdoywLm5Y/YzGnG
+         EyMFTEfn1tszXek+l/ZT1SjxrGqJf13kI4aOVehtVfhTeOKdjBGa8rVwzu+NLa743s6M
+         aNMj2wE4R0PNB3THiUkSKNU8fegIEzI9Mg1MUgKS3CCKh+Enf09QNcstOWJgAUZpGSgy
+         gMdhMesjrTi3YtxZfhpjLOTeO+rYROGcIMMXpgGWAZAjcDQv0w5DIkg5s0MvUthoFHqN
+         C4nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754581200; x=1755186000;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zoN9jTY+2MEeazt9V1rAxwiLT3ACLDoB1uh4EsCKwso=;
+        b=jF//pSbyWMup8P5ImgvwEUWDAglsFbjgCjoNOlbPdvk8KbK6Ts20fwHxaHNG+vrUKo
+         pqmv4OH/EatjqQPhz589IFreh/p9YArgg770PIM2Mt+lYwOTG7qm3QltgxtQj5uzvEs/
+         6J2JxrdUtVyvhn5fYEKUgyiDloBM84EctBQMTRZ3QvHZLxcG63dc5DsioTERq6ItAncH
+         sLvHUxVvMTOR7+BstUMoyNKFQYUq4KquDqq2CqZuVH3Eg4L9daosu2oXu1RyPc9kaDVg
+         no0+yRpe3WNMM2hI9LbPoDi6iLlWlAVXmLteO4lDjKgG4j0WoyHILm8pdpL3F7SvcJ2C
+         ZXWg==
+X-Forwarded-Encrypted: i=1; AJvYcCUfRS3HPfzdhK0LdUO5LVs/tz0ToIrUkZDp9GGs1kIjNcj7TkZGMU88sM73uA+3gyOErL9uNZnN/kg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywy965IsUeKWSOLLaODle10sSDY0EBFnSDmGuygiiaRPABqswqb
+	pgmKxdhZGAn11HOtkJpNfVdaq5SMC3tZSk6Kf+1cT/kyMMt/U/Mc9WkqmfYDZGwBkAI=
+X-Gm-Gg: ASbGncuLa8Fi71Em1fZ56m31oQd/KNhMoRhoURQI6BQr0bPGEImB1wUIwvx1+Py8y7N
+	6mAPB36bwBjnZqJBpzG+/j9OhwgqSJILD9ibtvyJuKs6rI1ANK0tdYiR+IQEOO4igXk6g0/eY9K
+	AhDppD4beFBuuylC8bBaSPU9BGPr5McczKROh0yM+L6n+w2xapC+qRJpknks69T/ZbzksHSD0NW
+	dolYql4hJ/kY95olU911Mh69sLJQQjF1agbybqk9nG5MBPFfxh8hq+lhCvhdcEj7I8T7dZDebeU
+	kQ1J+vAXDNbsPAvSEfFlcmqYKJ02WYTjt9Glb+fBvIi/9daIUqxQrm9QqrFeC/GjwTQZDTiMcnk
+	RODQqeznGDq8V7jtNB/VRHzZGgz7hMAGTTCPO9tKfKhKfzLZckM3+uvk1RyuVbTcFXK/OQOC2WD
+	Y=
+X-Google-Smtp-Source: AGHT+IH6AZ126w1Co9dLKeIbsdLPUJ9qvleOlVFbsD7VCIoegbLBFtcVomaYlYGr1sYxjG5QysSzcw==
+X-Received: by 2002:a05:6808:3198:b0:435:744c:929e with SMTP id 5614622812f47-43594a0a7b7mr368937b6e.17.1754581200539;
+        Thu, 07 Aug 2025 08:40:00 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:ce54:d09f:5709:ac85? ([2600:8803:e7e4:1d00:ce54:d09f:5709:ac85])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-742fd50d84dsm1487092a34.52.2025.08.07.08.39.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Aug 2025 08:39:59 -0700 (PDT)
+Message-ID: <a11e80b8-a52b-462f-8e69-b1fa7768a756@baylibre.com>
+Date: Thu, 7 Aug 2025 10:39:58 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,89 +83,66 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] counter: ti-ecap-capture: Use devm_pm_runtime_enable()
-To: Waqar Hameed <waqar.hameed@axis.com>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>,
-        Julien Panis <jpanis@baylibre.com>,
-        William Breathitt Gray
-	<wbg@kernel.org>
-CC: <kernel@axis.com>, <linux-iio@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <pnda54bjmij.a.out@axis.com>
+Subject: Re: [PATCH v2] iio: pressure: bmp280: Use IS_ERR() in
+ bmp280_common_probe()
+To: Salah Triki <salah.triki@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <aJQOmQKO219rS8ZN@pc>
 Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <pnda54bjmij.a.out@axis.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <aJQOmQKO219rS8ZN@pc>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 8/7/25 8:21 AM, Waqar Hameed wrote:
-> There is no need to register a manual `devm` action for
-> `pm_runtime_disable()` when `devm_pm_runtime_enable()` exists. It does
-> the same thing (but also calls `pm_runtime_dont_use_autosuspend()`,
-> which should be fine here).
+On 8/6/25 9:25 PM, Salah Triki wrote:
+> `devm_gpiod_get_optional()` may return non-NULL error pointer on failure.
+> Check its return value using `IS_ERR()` and propagate the error if
+> necessary.
 > 
-> Moreover, when `devm_add_action_or_reset()` fails, it is due to a failed
-> memory allocation and will thus return `-ENOMEM`. `dev_err_probe()`
-> doesn't do anything when error is `-ENOMEM`. Therefore, the call to
-> `dev_err_probe()` is useless. Note that `devm_pm_runtime_enable()` has a
-> tail call to `devm_add_action_or_reset()` and thus returns that value.
-> Therefore, replace `dev_err_probe()` with the returning value.
+> `dev_info()` has been dropped as it was considered noisy.
 > 
-> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+> Also switch to `gpiod_set_value_cansleep()`, which is safe to use in
+> sleepable contexts like probe.
+> 
+> Signed-off-by: Salah Triki <salah.triki@gmail.com>
 > ---
-
-Acked-by: Andrew Davis <afd@ti.com>
-
-> Changes in v3:
-> 
-> * Remove the manual `devm_add_action_or_reset()` and use
->    `devm_pm_runtime_enable()` instead.
->    
-> Link to v2: https://lore.kernel.org/lkml/pndms8em7tf.a.out@axis.com/
-> 
 > Changes in v2:
+>    - Use IS_ERR() instead of IS_ERR_OR_NULL()
+>    - Drop dev_info()
+>    - Use gpiod_set_value_cansleep()
+>    - Improve commit title and message
+>    
+>  drivers/iio/pressure/bmp280-core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> * Split the patch to one seperate patch for each sub-system.
-> 
-> Link to v1: https://lore.kernel.org/all/pnd7c0s6ji2.fsf@axis.com/
-> 
-> drivers/counter/ti-ecap-capture.c | 12 ++----------
->   1 file changed, 2 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
-> index 3faaf7f60539..3586a7ab9887 100644
-> --- a/drivers/counter/ti-ecap-capture.c
-> +++ b/drivers/counter/ti-ecap-capture.c
-> @@ -465,11 +465,6 @@ static irqreturn_t ecap_cnt_isr(int irq, void *dev_id)
->   	return IRQ_HANDLED;
->   }
->   
-> -static void ecap_cnt_pm_disable(void *dev)
-> -{
-> -	pm_runtime_disable(dev);
-> -}
-> -
->   static int ecap_cnt_probe(struct platform_device *pdev)
->   {
->   	struct device *dev = &pdev->dev;
-> @@ -523,12 +518,9 @@ static int ecap_cnt_probe(struct platform_device *pdev)
->   
->   	platform_set_drvdata(pdev, counter_dev);
->   
-> -	pm_runtime_enable(dev);
-> -
-> -	/* Register a cleanup callback to care for disabling PM */
-> -	ret = devm_add_action_or_reset(dev, ecap_cnt_pm_disable, dev);
-> +	ret = devm_pm_runtime_enable(dev);
->   	if (ret)
-> -		return dev_err_probe(dev, ret, "failed to add pm disable action\n");
-> +		return ret;
->   
->   	ret = devm_counter_add(dev, counter_dev);
->   	if (ret)
-> 
-> base-commit: 260f6f4fda93c8485c8037865c941b42b9cba5d2
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index 74505c9ec1a0..be6c981a4cc7 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -3213,11 +3213,11 @@ int bmp280_common_probe(struct device *dev,
+>  
+>  	/* Bring chip out of reset if there is an assigned GPIO line */
+>  	gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+> +	if (IS_ERR(gpiod))
+> +		return dev_err_probe(dev, PTR_ERR(gpiod), "failed to get GPIO\n");
+
+Could be slightly better if the error message said "reset GPIO".
+
+> +
+>  	/* Deassert the signal */
+> -	if (gpiod) {
+> -		dev_info(dev, "release reset\n");
+> -		gpiod_set_value(gpiod, 0);
+> -	}
+> +	gpiod_set_value_cansleep(gpiod, 0);
+>  
+>  	data->regmap = regmap;
+>  
+
+In any case...
+
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

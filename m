@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-22462-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22463-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54AC3B1EA48
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 16:22:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FDFFB1EA4E
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 16:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B8163A385B
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 14:22:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0252B18C6955
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 14:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD902750ED;
-	Fri,  8 Aug 2025 14:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FD227EFFA;
+	Fri,  8 Aug 2025 14:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UTUby8Tv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HfECbbgW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C22FF4F1;
-	Fri,  8 Aug 2025 14:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368BB246BCD;
+	Fri,  8 Aug 2025 14:23:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754662972; cv=none; b=qKeejky8tfiTmKUeTGV5emTnPeWbZ0uXZgI30idIFaPM1qztQtKclDxEwcN1mxQVAULv1af8mmTaXdhrhcyJolW54rsxWjrTSwTd6kFZ2qTFj+zbqv0rEE7o8yQdzRv4G0rNNbqMDN9fvi/rH79I0VFlF+kif5huQr1N1xKDZmY=
+	t=1754662996; cv=none; b=dhVprIK59y3jhU6dAaalg2tlrzadvJ+qY5Xe7hDVIrMjP8lqWkYxuyf2KJBLG2BEN0cffNHQe4+KfvxSlGRk/ZfkIgBd5LpC8km1FY77ZkGdD4MqLuPqfA7qlIL/Ll9sQJmEYMeIzVyw3GCzKK319KBrVR/TgI3PBV6t2EaGutk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754662972; c=relaxed/simple;
-	bh=e4cIma2bCVadsoxD9fLtfbZoX4Q0NQDC5sbF73+YsW4=;
+	s=arc-20240116; t=1754662996; c=relaxed/simple;
+	bh=lSyohJe+qMBCMoM0nviWkA0Dom8gQCGYgu/eDN5ZiBw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=faEIAUNh6D2dQypUweaO/5yINnoiEGO68w1DH4ZBk2B6cxtCCH4EHEeJOtRy6Pj1oPDETD16245n4J11vvecx5Y3dUEn5QNvzHj6zuOQSffry99Fa0OD0aujQMr4WBGPpi/Egbrq8w6vtGRwkbIC3WU55cFVlVNI5GwWjNFzjT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UTUby8Tv; arc=none smtp.client-ip=209.85.160.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=E/2MYsyVlHTowxsbAksdIXqLTrf4IaoI6atGdToyBPpyf7+YonR7MTiSSYj+M1Z4e5TKtPhF1mSpukyHoWxf48IwKEA0KYgqFDKU7gAGZawWn2mvlCziB75IyBADbHWZmROnCpAaewYFCNzjwZ8uhMGJj+mYJe2nu8/cQkJMz7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HfECbbgW; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b0619a353dso16212471cf.3;
-        Fri, 08 Aug 2025 07:22:50 -0700 (PDT)
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b0a2dd3a75so21857341cf.0;
+        Fri, 08 Aug 2025 07:23:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754662969; x=1755267769; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754662994; x=1755267794; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=PEtVUmrObki/Euxb5LDpNJRPeU+d/0g/RUaMnwv20+8=;
-        b=UTUby8TvZItP63m9we20RMnOujhXxbTvx/UgxuYmYR/6bAEVsXijNFB/79XNhAovg6
-         tb81tbSp6Rc/FiatwjIm5umxMzzgNruLDGYTh2U+awePdVqG1ye8pBSYdGHZbfktlyT3
-         dn8IRWvufAummVl1gmgJt21MxgNE/uUVLaPbrSvAgK0/qYz66oOxXSW+o5DIb14mCbNZ
-         c6nH/SS8QRUwbmgfGN2+Bj7GfuU8OsOD8ezFXZCBMg8pSfLQ2NkBxh66E40n9KEevS8o
-         GpySsdA+Sjq4dEFjq2SQxI6ngZ8WxjO/QZXE1haKdR/oDe41EzH/L81MpjklzpDT0wAu
-         IFQg==
+        bh=7t0Eg5w2mMzB5SCM9LOlQLAE2QMemnRv17xVtnDhBzc=;
+        b=HfECbbgWKKkboPaw0cAjPCg5e9dFTiNuRfyOfkll4xTGQ/bCZv7uUPj07varVEuBot
+         wsQSxqaKLRyly9EAFEC7rSIJOINYM+t9MOaTQIoadHHV+eG3VGN2Qf7ihf+3FfeohX9K
+         12kIfpAWKv8GJTHtjizVWiPUHDc+MZQx5JtYoH+J+yvJsA+9N7mtBJK9kHxiXpgO8dw8
+         wSI2dI1wcp7UsIyBWOfn0d9SCe3MGnUbd7F7jui+5ETPZo9NV5wppqCNGjAx/jW4Epb/
+         ++SkM89pVFi5n3EmAQuyTHymsvfe0ATKxNBb2xGvKYB7UddZs37Vk9KxYOS01QIVa15C
+         a+XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754662969; x=1755267769;
+        d=1e100.net; s=20230601; t=1754662994; x=1755267794;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PEtVUmrObki/Euxb5LDpNJRPeU+d/0g/RUaMnwv20+8=;
-        b=fb0piW3+q5uwvTdrLG33+IMASpfnxdBBhyUxlnFeth6UJGcKjzfCT+bD1h37bxj1Em
-         CFnAHS5iPR3WRYirY7PqrU90gBexO9hbQ5jdPMbg0kNraaJ8GeL8yIDF6E42jcKv3OLl
-         OVFpehuYgWq/TU3YDLSCnpNQQViGv3UVVRKD1Nrf50hLYoITxUr5VaSGYrVB5s60Yavr
-         ZRD64HY7d0pwfZ3iYQqOpWD9J+7kh43uHDpAg4dfeSPjhzRL8sMo5VRYhBxN6LTTIYz7
-         NFXE3y/gQ/9aJFfXhtsDp3+EoJSV4UMw7qzhqNDx+zzXFmrv2EytZR5kyuz3Bax8oYzZ
-         l6cw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDQgVUaNrBkdpEL/2pBneTlrIqp2NTGKOMuDje7UO3kcf8ciDOKFAqpZXOYGXHwbb1ZGF+fYHgLW8RtpCD@vger.kernel.org, AJvYcCWSTAjObF33EIjF4v5736+DW9xcX+FqTuYVO8KZaXzMXQAlFm1JRQGU3KME3DZN+p25VlrqvALnMK/+@vger.kernel.org, AJvYcCXm8FHVFt0BYxS6iI1W72sQm6NgKMXusnv1ikfACLNlSt3GoqyAqqxpM5EZHNcLETYu+FZR7pnI46k+@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu26UTyegRYpP9LQMjpskPPYf3d9Q/LT9GDq7zbldU67JyoScr
-	9pdZbEaC7IjGb83ax6PCE814CxNOQ9ilBQ2jHcFcQVehZhktfduupa1h
-X-Gm-Gg: ASbGncvO2knCFlXUZzhfLcfwS0MVNdIj7+z9/ajspM0JMMnojR4rgT+ZAtOkDvA5PA3
-	C44u69V58xjklM/Mgbeg1W3GuBoZIX+U+3hzOi+moChm/+x3SmWTahGYdAhBwFgEvkYSI+31+/x
-	ippwg7Cs36TWn6Um07+rhbeMGAZ3+aFJjbalC9GCSIFcauwxN+O1IaE5SAtXvf/FY8G9KjCrqgx
-	IUpD0WAI2Yk1SehJ5CgLLerLsgXYtmL6P1UsmXsedQgDpX58hON5eorqR4X3kp31aYQ9Yo7WC1b
-	wB5qcHP+2AjWDTTW0MGE+y+HjkeapyBfnfQXJCue5ScCMA88Cf4EkN0CBT4llD8IC3bMgUGixfD
-	sBWMnwbP7dOH6Mw==
-X-Google-Smtp-Source: AGHT+IGSnRj6VSelZgrYBqF4Yc8p+ydCCeOhnViWtR8z4uk9qaXosPEeCGzav0ejjHuC/9aPMRFwYg==
-X-Received: by 2002:a05:622a:53c4:b0:4af:2305:2c37 with SMTP id d75a77b69052e-4b0aed41cabmr45258421cf.21.1754662969440;
-        Fri, 08 Aug 2025 07:22:49 -0700 (PDT)
+        bh=7t0Eg5w2mMzB5SCM9LOlQLAE2QMemnRv17xVtnDhBzc=;
+        b=RdbFjpnUUtxPup1clzHD50n3pAbp5Re28JUWElvWM0Em4hCvTy089HS4WewVLb7L+z
+         NUw6KQOuiOajsJDwIDKG07BLVjRC72TI6JAY+WCF3DfSIUVADfENxTmNuINB4DZ0qsR0
+         sFZNuqnQ0W0ILSNFqg4LMfX4+p4IHJ24SW4d04esegSpONoqrZuxGFHPx7TRJRWyb+xZ
+         0BchQI3uR+SCRxfTvh7elYybbiMv315YPVgeg7qdKYuIXAo1VWhujZd3mHHCh4KxhPKZ
+         uUYtSAUs2toe7Qce1t0Accr0shKFxlEkwfDJL7p3+RCDDWbleEdTC37syVrsqE6wKl6R
+         Igzg==
+X-Forwarded-Encrypted: i=1; AJvYcCV6rLwHVgkNW+GJpR905JUtnWEcK0AAZdmySuLLYL37QMMK5GZStNYMe/obdxBbUdsoRDcbESSWG63f@vger.kernel.org, AJvYcCW1fgmVwYG037RAJ6o0k8xjxojrF0aGiYouwtYpVjpaCz/lWvJq30p8eV5gVzOfMSoIDWljhhn0C8eWyxbw@vger.kernel.org, AJvYcCX82UDXcxmjn5aLR6gYFdy+u+ChyA8GEunFh2aLfXXxIQRHDW/L02c/3PbQSkJOUh9wQgxrm0F88NVz@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLQNFj3pj47xsiobm6EYHxh5NoFoHMoBYcrPCi8Slzv5FrM2t1
+	/w+2i/tzo5YyJUwgJf6P9UHFWcV84TX3fIdACw5+jvFlL5Cqzo+NF2RhXOsHcVuJdkWHdw==
+X-Gm-Gg: ASbGncsVEgzFzYJNf/FTmaNCcS3jrIh2EdAkJxJ9UvFfkkH94HueYBhGzZChQoeYQUb
+	6SRe+wJyELIzjCw2UfJNxS03xz4jGNp9I4eDfq6Qhhk+TsZ8IC2hN6Kn2KHBNs/gvK/u721AJHW
+	5i1TpebgrfenB64H1J6jzCefrr0RjKsp2Pl3pGQTEYPr1gg8BhXa/ixQ9ZEhW0Ip4pnU//2L+iu
+	OcyOD1fOOlD7Uk4A+jdiE+8ZfGgzLThzbYP1eFixY1AvBnvNHExD65j3Vc1QrkCzC8jpplzX6g6
+	oXFZ/DX18r2DVx7yfS8JLCQtDQi1IZ3xoAZgjvwTAH87uLZflA9yhuI4bwukE+fIKKzn9B3i6Oq
+	91k8Et5Ub0jB8+A==
+X-Google-Smtp-Source: AGHT+IHnyD3ArD5JYGIqRAc6h/JGG3I2BZANQjUHGqSA2Sv3wJaQ+GuOQP6WzrD/oajdLgIUp6WlJA==
+X-Received: by 2002:a05:622a:5916:b0:4b0:b5b8:de03 with SMTP id d75a77b69052e-4b0b5b8e283mr23484101cf.50.1754662993645;
+        Fri, 08 Aug 2025 07:23:13 -0700 (PDT)
 Received: from nsa ([87.249.138.211])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b099b2c4c9sm31120771cf.58.2025.08.08.07.22.46
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b08cfbc7b9sm41242781cf.23.2025.08.08.07.23.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Aug 2025 07:22:49 -0700 (PDT)
-Date: Fri, 8 Aug 2025 15:23:03 +0100
+        Fri, 08 Aug 2025 07:23:12 -0700 (PDT)
+Date: Fri, 8 Aug 2025 15:23:27 +0100
 From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, 
@@ -83,10 +83,10 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 05/10] iio: adc: ad7476: use *_cansleep GPIO APIs
-Message-ID: <i76z277zwb5kc3yn6eeniopobd5drotz6msah2u7phx6cgsb7s@ywssyjymmyms>
+Subject: Re: [PATCH v3 06/10] iio: adc: ad7476: Drop convstart chan_spec
+Message-ID: <jarpgbc2p46mh6nqsrz2e6rb4l3f3gpc32ebberizv5x3bwg55@b6s6qu22eqjw>
 References: <cover.1754641960.git.mazziesaccount@gmail.com>
- <d6a8f19e26ffaa97da32317a9601147a11a82622.1754641960.git.mazziesaccount@gmail.com>
+ <8ed500a973d14460f541f1701e4423eb11b1f179.1754641960.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -96,52 +96,143 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d6a8f19e26ffaa97da32317a9601147a11a82622.1754641960.git.mazziesaccount@gmail.com>
+In-Reply-To: <8ed500a973d14460f541f1701e4423eb11b1f179.1754641960.git.mazziesaccount@gmail.com>
 
-On Fri, Aug 08, 2025 at 11:52:13AM +0300, Matti Vaittinen wrote:
-> The ad7476 driver supports ADCs which require a GPIO pin to be used to
-> start conversion. The GPIO line status seems to be always toggled from
-> a process context, either from the user-initiated "raw-read conversion",
-> or from a threaded IRQ handler. Furthermore, these ICs are connected via
-> SPI bus, which is usually implemented in a way that the access to the
-> device can sleep. The GPIO here is toggled from the same context which
-> is reading the results over SPI.
+On Fri, Aug 08, 2025 at 11:53:29AM +0300, Matti Vaittinen wrote:
+> The ad7476 driver defines separate chan_spec structures for operation
+> with and without convstart GPIO. At quick glance this may seem as if the
+> driver did provide more than 1 data-channel to users - one for the
+> regular data, other for the data obtained with the convstart GPIO.
 > 
-> Thus it seems very likely these GPIOs are toggled from a context which
-> can sleep.
+> The only difference between the 'convstart' and 'non convstart'
+> -channels is presence / absence of the BIT(IIO_CHAN_INFO_RAW) in
+> channel's flags.
 > 
-> Swap the gpiod_set_value() to gpiod_set_value_cansleep() accordinlgy.
+> We can drop the convstart channel spec, and related convstart macro, by
+> allocating a mutable per driver instance channel spec and adding the flag
+> in probe if needed. This will simplify the driver with the cost of added
+> memory consumption.
 > 
-> Suggested-by: Nuno Sá <noname.nuno@gmail.com>
+> Assuming there aren't systems with very many ADCs and very few
+> resources, this tradeoff seems worth making.
+> 
+> Simplify the driver by dropping the 'convstart' channel spec and
+> allocating the channel spec for each driver instance.
+> 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > 
 > ---
 > Revision history:
 >  v2 => v3:
+>  - Use __set_bit() instead of |=
+>  - Swicth BUILD_BUG_ON to static_assert
+>  - Clarify a comment
+>  - Improve commit message
+> 
+>  v1 => v2:
 >  - New patch
 > ---
 
 Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 
->  drivers/iio/adc/ad7476.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/ad7476.c | 31 +++++++++++++++++++------------
+>  1 file changed, 19 insertions(+), 12 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-> index fc701267358e..1445f0f599d9 100644
+> index 1445f0f599d9..ad9e629f0cbd 100644
 > --- a/drivers/iio/adc/ad7476.c
 > +++ b/drivers/iio/adc/ad7476.c
-> @@ -57,9 +57,9 @@ static void ad7091_convst(struct ad7476_state *st)
->  	if (!st->convst_gpio)
->  		return;
+> @@ -6,6 +6,7 @@
+>   * Copyright 2010 Analog Devices Inc.
+>   */
 >  
-> -	gpiod_set_value(st->convst_gpio, 0);
-> +	gpiod_set_value_cansleep(st->convst_gpio, 0);
->  	udelay(1); /* CONVST pulse width: 10 ns min */
-> -	gpiod_set_value(st->convst_gpio, 1);
-> +	gpiod_set_value_cansleep(st->convst_gpio, 1);
->  	udelay(1); /* Conversion time: 650 ns max */
->  }
+> +#include <linux/bitops.h>
+>  #include <linux/device.h>
+>  #include <linux/kernel.h>
+>  #include <linux/slab.h>
+> @@ -29,8 +30,6 @@ struct ad7476_state;
+>  struct ad7476_chip_info {
+>  	unsigned int			int_vref_mv;
+>  	struct iio_chan_spec		channel[2];
+> -	/* channels used when convst gpio is defined */
+> -	struct iio_chan_spec		convst_channel[2];
+>  	void (*reset)(struct ad7476_state *);
+>  	bool				has_vref;
+>  	bool				has_vdrive;
+> @@ -42,6 +41,7 @@ struct ad7476_state {
+>  	struct gpio_desc		*convst_gpio;
+>  	struct spi_transfer		xfer;
+>  	struct spi_message		msg;
+> +	struct iio_chan_spec		channel[2];
+>  	int				scale_mv;
+>  	/*
+>  	 * DMA (thus cache coherency maintenance) may require the
+> @@ -154,24 +154,18 @@ static int ad7476_read_raw(struct iio_dev *indio_dev,
+>  #define AD7940_CHAN(bits) _AD7476_CHAN((bits), 15 - (bits), \
+>  		BIT(IIO_CHAN_INFO_RAW))
+>  #define AD7091R_CHAN(bits) _AD7476_CHAN((bits), 16 - (bits), 0)
+> -#define AD7091R_CONVST_CHAN(bits) _AD7476_CHAN((bits), 16 - (bits), \
+> -		BIT(IIO_CHAN_INFO_RAW))
+>  #define ADS786X_CHAN(bits) _AD7476_CHAN((bits), 12 - (bits), \
+>  		BIT(IIO_CHAN_INFO_RAW))
 >  
+>  static const struct ad7476_chip_info ad7091_chip_info = {
+>  	.channel[0] = AD7091R_CHAN(12),
+>  	.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
+> -	.convst_channel[0] = AD7091R_CONVST_CHAN(12),
+> -	.convst_channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
+>  	.reset = ad7091_reset,
+>  };
+>  
+>  static const struct ad7476_chip_info ad7091r_chip_info = {
+>  	.channel[0] = AD7091R_CHAN(12),
+>  	.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
+> -	.convst_channel[0] = AD7091R_CONVST_CHAN(12),
+> -	.convst_channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
+>  	.int_vref_mv = 2500,
+>  	.has_vref = true,
+>  	.reset = ad7091_reset,
+> @@ -282,6 +276,7 @@ static int ad7476_probe(struct spi_device *spi)
+>  {
+>  	struct ad7476_state *st;
+>  	struct iio_dev *indio_dev;
+> +	unsigned int i;
+>  	int ret;
+>  
+>  	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> @@ -332,16 +327,28 @@ static int ad7476_probe(struct spi_device *spi)
+>  	if (IS_ERR(st->convst_gpio))
+>  		return PTR_ERR(st->convst_gpio);
+>  
+> +	/*
+> +	 * This will never happen. Unless someone changes the channel specs
+> +	 * in this driver. And if someone does, without changing the loop
+> +	 * below, then we'd better immediately produce a big fat error, before
+> +	 * the change proceeds from that developer's table.
+> +	 */
+> +	static_assert(ARRAY_SIZE(st->channel) == ARRAY_SIZE(st->chip_info->channel));
+> +	for (i = 0; i < ARRAY_SIZE(st->channel); i++) {
+> +		st->channel[i] = st->chip_info->channel[i];
+> +		if (st->convst_gpio)
+> +			__set_bit(IIO_CHAN_INFO_RAW,
+> +				  &st->channel[i].info_mask_separate);
+> +	}
+> +
+>  	st->spi = spi;
+>  
+>  	indio_dev->name = spi_get_device_id(spi)->name;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+> -	indio_dev->channels = st->chip_info->channel;
+> -	indio_dev->num_channels = 2;
+> +	indio_dev->channels = st->channel;
+> +	indio_dev->num_channels = ARRAY_SIZE(st->channel);
+>  	indio_dev->info = &ad7476_info;
+>  
+> -	if (st->convst_gpio)
+> -		indio_dev->channels = st->chip_info->convst_channel;
+>  	/* Setup default message */
+>  
+>  	st->xfer.rx_buf = &st->data;
 > -- 
 > 2.50.1
 > 

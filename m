@@ -1,286 +1,144 @@
-Return-Path: <linux-iio+bounces-22445-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22446-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80DC5B1E555
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 11:09:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AACB1E608
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 11:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 243277AD7E9
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 09:08:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C09EB18C8295
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 09:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C04526738D;
-	Fri,  8 Aug 2025 09:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C96272817;
+	Fri,  8 Aug 2025 09:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VOyTYQ8y"
+	dkim=pass (1024-bit key) header.d=iitb.ac.in header.i=@iitb.ac.in header.b="wbE23IyI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp1.iitb.ac.in (smtpd9.iitb.ac.in [103.21.126.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE4E185E7F;
-	Fri,  8 Aug 2025 09:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AEF2727EB
+	for <linux-iio@vger.kernel.org>; Fri,  8 Aug 2025 09:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.21.126.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754644167; cv=none; b=r00LyaOB0LeIKcu0DymV42nQS20zcN5NWGGTi2Sc4qLCzFgS259wJ5UWMOq4NckOmcw78nQasFNHzpBP+rOYk5UHb5T959sM8rUIL1FWX5uSg05xmYs6CpRcRyMChRuUiSEj8I1Jt4BzHWOs66E9K1pgjuXgDV62MgmPnuU+y+0=
+	t=1754647043; cv=none; b=Ogyu7VFTNcPIXz2ONgyHxnuErVGz/B37dugFvbMR5ke0K8T8xmKEBQK3KNTVygybcoUGjqCSenSGHYKCx0EDHar1cRWAKetwMZr/tfe5CXojy+3Sy5V6Bpqgz1x3Q+fHIwELwGRso6tkvT2rJBLZoytypxHcZLPnSQGptGf7htY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754644167; c=relaxed/simple;
-	bh=UHvouIrH/mfUJnNlR3Q/bjILhyKU9ohDk/1rFR6ApJU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W2qDVwFzyK35sjTBbE0Lt8WFjwsAd1yNUgAYq6CR8+sapSzoAxv+6flkn0H3gmPptd2iMdiKC/V3g+U8vPdNrKuPYpD0MDV9xikReYy14HKdWMVnjTpWVY7fYOx2VDCVoN3JKniXz+dbx/AuxPkh6oaw8pcjexsJfGV32iE0Tuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VOyTYQ8y; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-55b827aba01so1820603e87.0;
-        Fri, 08 Aug 2025 02:09:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754644163; x=1755248963; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XdTS2IbOaTlOvfIW5t2Y16yPR+poauLghlKNM78GqwY=;
-        b=VOyTYQ8yxhh8UmIRejUxoN+O6HbLvEKxMWrqDacHxWD/4MkmelWenI0vicM7T2AdGY
-         qG0mw+/1H0QS25H4T4mVYUlYSgU6RkbPqaoitR/UqDxQp16XtLj9pHmBMndksQVR35Kr
-         zUDrtUVjRBtg5dfXzdVKxd7yb4MQrP24di0q72viXMa0kL2GEj9my3EdcDEXLVRIrw9K
-         +pdFu3jZnZ26NMw2pAY95q+rwz0gRromPxfmp/tLp2TM7ttiHOm9NlOEvV7tQVP0VehR
-         dLcMoxS9yiz1NCx4pb67BoE+JTeIcPAayZQ2nv3no1wYFUgKbfCqQy8ObFHXqMcmyAs0
-         UI9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754644163; x=1755248963;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XdTS2IbOaTlOvfIW5t2Y16yPR+poauLghlKNM78GqwY=;
-        b=bRjs/wuSlgEu+0U2jgrWP0/3K2Sm07mnvyvEDVQ0OAiwoIxo8IPTP/K16GT+itbsKW
-         sJ7UMaXCQJeBNrUStJ/UNGLU808Brb/MxEbOUsE7YYeUTRBupsKX3305aqFWICdo3njy
-         sXfrnWv4M6VH/SyoQlseyQ7gTnKXc8tJ1sfzsE2kF/p5XD6fKMGYhaCdjzEEHoem22xE
-         pT4KUsvq+qxeMsJa1TXw9fCDEWDT1Ai0siTbXJOWxE9ODAOJ8Ad9RtrFyJrU8NJZAO77
-         y2pghK5ZaS3CNRRakWsE2naMjSvUDyFt/Kb3xbF+aXm5a8y290UiD2dQfm3IR+am3HiJ
-         ZbOg==
-X-Forwarded-Encrypted: i=1; AJvYcCWAx+q95SRzq173A91hEPpSnl0P/m3PdHj+jaG9lmalXnmvkqm0g2sSwDjsiTXotRaXEvdwiqLSmBTU@vger.kernel.org, AJvYcCXqpZFbiW9/VzzVHRmIUUtsnzjuFwn5iRVIh7fM9Y3rB2hNY8ATiDVbQ5FYm58bwBrXIMXD1Ovu2AQsZknJ@vger.kernel.org, AJvYcCXsqRCDe6l2sldM7QJOpBykDomT7R1/QU+v+HAAVbh2X1Mt7ScWDNkWS7N38XAj4nt7e3WrB25STeCR@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl8dArjeUIfx4HzyK85nf/grF8sJCJlANIkJLM9+zAEreHo9G9
-	+X9YD2YMncfmBLsBt9Y1VlHVUZyhGLld/p74E+7e7IwgN4ht8oDR9U27
-X-Gm-Gg: ASbGncvcp7O6oK8huZ3Phr2hjUWz1a3CAvg87B+zcddVRJ07nDiW/k79u3M2M5ffZmH
-	fDYI3XIqasU8UtL2FCmi1nn2e5BXCRHC8Rx/UPlgBgs/3uJEEG1pLR/O7aXodnxIZwHcGy0Fi5M
-	wZRoGWVkjK9M2guhSLUCKcFrQjNQyO/W75Dj6o2JKHtNGCrm0hdxhWVt+R5WSC+WHd8RODPRNgH
-	TwpLt3mja5bvCxNqvJQkTKVaAvlr//l5zt62RwUG4hZMIrHnyoecfgBxGX9vyiuNeydyUd+NoQh
-	ZZyKgQjK+bFSibstgpAb9wy4vZdmnbxXYAvOQ5fQ7fVB2TCTaPRMvMqZKTqOF0WrzwA7oCSs8z3
-	jSKyDErmn3DoFVccQCUHYD5en7sBlgETlMhHMNIDnG9E8m14sbESNiJh06utx92Ro94rz+TIRd6
-	l1zjU=
-X-Google-Smtp-Source: AGHT+IFAxXS5fmM5d7jNsC2BbaecBEp8fV5ejq2biueT5V0HQk9irrmyJdjtJ314bqpDST/JZeoCBA==
-X-Received: by 2002:a05:6512:1106:b0:55b:8827:b7b6 with SMTP id 2adb3069b0e04-55cc014a6efmr476437e87.48.1754644162889;
-        Fri, 08 Aug 2025 02:09:22 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88cabbd8sm3005319e87.149.2025.08.08.02.09.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Aug 2025 02:09:22 -0700 (PDT)
-Message-ID: <62dbfa31-002b-4008-9273-01b161a72cac@gmail.com>
-Date: Fri, 8 Aug 2025 12:09:21 +0300
+	s=arc-20240116; t=1754647043; c=relaxed/simple;
+	bh=TD6ycEpP0Ic2Cf/QILVrlMXzF1naP6yC1ssQpc7BjZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X/xGawjDIWszGGbUiwdqtLPMaTMbSWQfWjIkbiGtQQAOD4baQ+hnABF+l4ZsJCqcOuOinPXxrsQXNL0AGQ37lLbPecTUbA7u00zyulyW3IUc+5nqh7iBgAjoS1nuM08rXZZ5NHbLNsBbC2m6vbGR5ANcfUzPxJnJPHYMpcnHLUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in; spf=pass smtp.mailfrom=ee.iitb.ac.in; dkim=pass (1024-bit key) header.d=iitb.ac.in header.i=@iitb.ac.in header.b=wbE23IyI; arc=none smtp.client-ip=103.21.126.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ee.iitb.ac.in
+Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
+	by smtp1.iitb.ac.in (Postfix) with SMTP id 6C6211018FD8
+	for <linux-iio@vger.kernel.org>; Fri,  8 Aug 2025 15:27:15 +0530 (IST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.iitb.ac.in 6C6211018FD8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=iitb.ac.in; s=mail;
+	t=1754647035; bh=TD6ycEpP0Ic2Cf/QILVrlMXzF1naP6yC1ssQpc7BjZQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wbE23IyIpJePvbXvPMkKAtNrz5jpAbRv+9QKYnkcWjXiwu+c5BkUZWSkvJbaAe8Xa
+	 L5UQ+/93yyjpPhxDAewl3dT3RHKZd1qdeTdoeNaTX4UeFi5pn4PhELJUb2NjaquQrl
+	 x7dqEfq3isWQWWMqxgTraY0Fw9Z8bSbQX1UdlYKM=
+Received: (qmail 31965 invoked by uid 510); 8 Aug 2025 15:27:15 +0530
+X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <akhilesh@ee.iitb.ac.in>, uid 501) with qmail-scanner-2.11
+ spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/26337} 
+ Clear:RC:1(10.200.1.25):SA:0(0.0/7.0):. Processed in 3.405661 secs; 08 Aug 2025 15:27:15 +0530
+X-Spam-Level: 
+X-Spam-Pyzor: Reported 0 times.
+X-Envelope-From: akhilesh@ee.iitb.ac.in
+X-Qmail-Scanner-Mime-Attachments: |
+X-Qmail-Scanner-Zip-Files: |
+Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
+  by ldns2.iitb.ac.in with SMTP; 8 Aug 2025 15:27:11 +0530
+Received: from bhairav.ee.iitb.ac.in (bhairav.ee.iitb.ac.in [10.107.1.1])
+	by ldns2.iitb.ac.in (Postfix) with ESMTP id 008FC34155E;
+	Fri,  8 Aug 2025 15:27:11 +0530 (IST)
+Received: from bhairav-test.ee.iitb.ac.in (bhairav.ee.iitb.ac.in [10.107.1.1])
+	(Authenticated sender: akhilesh)
+	by bhairav.ee.iitb.ac.in (Postfix) with ESMTPSA id A95C31E81482;
+	Fri,  8 Aug 2025 15:27:09 +0530 (IST)
+Date: Fri, 8 Aug 2025 15:27:04 +0530
+From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	gregkh@linuxfoundation.org
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+	marcelo.schmitt1@gmail.com, gshahrouzi@gmail.com,
+	hridesh699@gmail.com, linux-iio@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+	akhileshpatilvnit@gmail.com, skhan@linuxfoundation.org
+Subject: Re: [PATCH] staging: iio: ad5933: Fix implicit fall-through in
+ switch()
+Message-ID: <aJXJ8PRPNT+kgozU@bhairav-test.ee.iitb.ac.in>
+References: <aIdKAJVnskdAVUMi@bhairav-test.ee.iitb.ac.in>
+ <2025072835-singer-penny-a421@gregkh>
+ <aIeDDsRurrgXqRQn@bhairav-test.ee.iitb.ac.in>
+ <2025072808-evict-snorkel-8998@gregkh>
+ <aJJ0npFx1mwJ-MoV@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/10] iio: adc: ad7476: Drop convstart chan_spec
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1754559149.git.mazziesaccount@gmail.com>
- <09bf5e7973c37413ada950741e6e09c375e37c57.1754559149.git.mazziesaccount@gmail.com>
- <tc4od3jtqnj743naxefx5lxkha46wohuuvw46mik6nullvsqbe@knj4t23eaodw>
- <ngcbj6p7vfakah5fqsxqjlmrcycpg5rxfrbh4s34fll2kb3zq2@eyesluawn5w2>
- <076b7f07-e755-4fe7-84b1-f3f495978008@gmail.com>
- <t54tty4xbcsozeouoqmytdw6saedgoxbemnr2azbiv2f4h2wta@rf4fnooawrgs>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <t54tty4xbcsozeouoqmytdw6saedgoxbemnr2azbiv2f4h2wta@rf4fnooawrgs>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJJ0npFx1mwJ-MoV@smile.fi.intel.com>
 
-On 08/08/2025 12:00, Nuno Sá wrote:
-> On Fri, Aug 08, 2025 at 08:37:07AM +0300, Matti Vaittinen wrote:
->> On 07/08/2025 16:10, Nuno Sá wrote:
->>> On Thu, Aug 07, 2025 at 01:41:31PM +0100, Nuno Sá wrote:
->>>> On Thu, Aug 07, 2025 at 12:34:52PM +0300, Matti Vaittinen wrote:
->>>>> The ad7476 driver defines separate chan_spec structures for operation
->>>>> with and without convstart GPIO. At quick glance this may seem as if the
->>>>> driver did provide more than 1 data-channel to users - one for the
->>>>> regular data, other for the data obtained with the convstart GPIO.
->>>>>
->>>>> The only difference between the 'convstart' and 'non convstart'
->>>>> -channels is presence / absence of the BIT(IIO_CHAN_INFO_RAW) in
->>>>> channel's flags.
->>>>>
->>>>> We can drop the convstart channel spec, and related convstart macro, by
->>>>> allocating a mutable per driver instance channel spec an adding the flag
->>>>> in probe if needed. This will simplify the driver with the cost of added
->>>>> memory consumption.
->>>>>
->>>>> Assuming there aren't systems with very many ADCs and very few
->>>>> resources, this tradeoff seems worth making.
->>>>>
->>>>> Simplify the driver by dropping the 'convstart' channel spec and
->>>>> allocating the chan spec for each driver instance.
->>>>
->>>> I do not agree with this one. Looking at the diff, code does not look
->>>> simpler to me...
->>>
->>> Ok, on a second thought I'm ok with this. It makes adding devices easier
->>> and (IIUC) for the one you're adding later we only have "convst_channel"
->>> channels.
->>
->> Yes, that's right. The BD79105 requires the convstart.
->>
->>> On comment though...
->>>
->>>>
->>>> - Nuno Sá
->>>>
->>>>>
->>>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>>>>
->>>>> ---
->>>>> Revision history:
->>>>>    v1 => v2:
->>>>>    - New patch
->>>>>
->>>>> I considered squashing this change with the one limiting the chip_info
->>>>> scope. Having this as a separate change should help reverting if someone
->>>>> complains about the increased memory consumption though.
->>>>> ---
->>>>>    drivers/iio/adc/ad7476.c | 31 ++++++++++++++++++-------------
->>>>>    1 file changed, 18 insertions(+), 13 deletions(-)
->>>>>
->>>>> diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
->>>>> index e97742912b8e..a30eb016c11c 100644
->>>>> --- a/drivers/iio/adc/ad7476.c
->>>>> +++ b/drivers/iio/adc/ad7476.c
->>>>> @@ -29,8 +29,6 @@ struct ad7476_state;
->>>>>    struct ad7476_chip_info {
->>>>>    	unsigned int			int_vref_mv;
->>>>>    	struct iio_chan_spec		channel[2];
->>>>> -	/* channels used when convst gpio is defined */
->>>>> -	struct iio_chan_spec		convst_channel[2];
->>>>>    	void (*reset)(struct ad7476_state *);
->>>>>    	bool				has_vref;
->>>>>    	bool				has_vdrive;
->>>>> @@ -41,6 +39,7 @@ struct ad7476_state {
->>>>>    	struct gpio_desc		*convst_gpio;
->>>>>    	struct spi_transfer		xfer;
->>>>>    	struct spi_message		msg;
->>>>> +	struct iio_chan_spec		channel[2];
->>>>>    	int				scale_mv;
->>>>>    	/*
->>>>>    	 * DMA (thus cache coherency maintenance) may require the
->>>>> @@ -153,24 +152,18 @@ static int ad7476_read_raw(struct iio_dev *indio_dev,
->>>>>    #define AD7940_CHAN(bits) _AD7476_CHAN((bits), 15 - (bits), \
->>>>>    		BIT(IIO_CHAN_INFO_RAW))
->>>>>    #define AD7091R_CHAN(bits) _AD7476_CHAN((bits), 16 - (bits), 0)
->>>>> -#define AD7091R_CONVST_CHAN(bits) _AD7476_CHAN((bits), 16 - (bits), \
->>>>> -		BIT(IIO_CHAN_INFO_RAW))
->>>>>    #define ADS786X_CHAN(bits) _AD7476_CHAN((bits), 12 - (bits), \
->>>>>    		BIT(IIO_CHAN_INFO_RAW))
->>>>>    static const struct ad7476_chip_info ad7091_chip_info = {
->>>>>    	.channel[0] = AD7091R_CHAN(12),
->>>>>    	.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
->>>>> -	.convst_channel[0] = AD7091R_CONVST_CHAN(12),
->>>>> -	.convst_channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
->>>>>    	.reset = ad7091_reset,
->>>>>    };
->>>>>    static const struct ad7476_chip_info ad7091r_chip_info = {
->>>>>    	.channel[0] = AD7091R_CHAN(12),
->>>>>    	.channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
->>>>> -	.convst_channel[0] = AD7091R_CONVST_CHAN(12),
->>>>> -	.convst_channel[1] = IIO_CHAN_SOFT_TIMESTAMP(1),
->>>>>    	.int_vref_mv = 2500,
->>>>>    	.has_vref = true,
->>>>>    	.reset = ad7091_reset,
->>>>> @@ -282,7 +275,7 @@ static int ad7476_probe(struct spi_device *spi)
->>>>>    	const struct ad7476_chip_info *chip_info;
->>>>>    	struct ad7476_state *st;
->>>>>    	struct iio_dev *indio_dev;
->>>>> -	int ret;
->>>>> +	int ret, i;
->>>>>    	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
->>>>>    	if (!indio_dev)
->>>>> @@ -332,16 +325,28 @@ static int ad7476_probe(struct spi_device *spi)
->>>>>    	if (IS_ERR(st->convst_gpio))
->>>>>    		return PTR_ERR(st->convst_gpio);
->>>>> +	/*
->>>>> +	 * This will never realize. Unless someone changes the channel specs
->>>>> +	 * in this driver. And if someone does, without changing the loop
->>>>> +	 * below, then we'd better immediately produce a big fat error, before
->>>>> +	 * the change proceeds from that developer's table.
->>>>> +	 */
->>>>> +	BUILD_BUG_ON(ARRAY_SIZE(st->channel) != ARRAY_SIZE(chip_info->channel));
->>>
->>> I guess it make sense but still looks too fancy for this :)
->>
->> Nothing else but a developer's carefulness keeps the number of channels "in
->> sync" for these two structs. I was originally doing WARN_ON() - but then I
->> thought that it's be even better to catch this at build time. Then I found
->> the BUILD_BUG_ON(). I see Andy suggested static_assert() instead - I've no
->> idea why one is preferred over other though. Let's see if I get educated by
->> Andy :)
->>
->>>
->>>>> +	for (i = 0; i < ARRAY_SIZE(st->channel); i++) {
->>>>> +		st->channel[i] = chip_info->channel[i];
->>>>> +		if (st->convst_gpio)
->>>
->>> I would flip this an do:
->>> 	if (!st->convst_gpio)
->>> 		break;
->>
->> To me this would just add an extra line of code, and more complex flow. I
->> would definitely agree if there were more operations to be done for the
->> 'convstart channels' - but since this is really just "if it's convstart,
->> then set a bit" - the
->>
->> if (foo)
->> 	bar;
->>
->> seems simpler than
->>
->> if (!foo)
->> 	break;
->> bar;
+On Wed, Aug 06, 2025 at 12:16:14AM +0300, Andy Shevchenko wrote:
+> On Mon, Jul 28, 2025 at 04:23:49PM +0200, Greg KH wrote:
+> > On Mon, Jul 28, 2025 at 07:32:54PM +0530, Akhilesh Patil wrote:
+> > > On Mon, Jul 28, 2025 at 12:39:21PM +0200, Greg KH wrote:
+> > > > On Mon, Jul 28, 2025 at 03:29:28PM +0530, Akhilesh Patil wrote:
 > 
-> Yes but in this particular case, you likely would not need to do any
-> line break afterward because of indentation. Logically it also makes
-> sense because st->convst_gpio is a device property (not a channel one).
-> So it makes no sense to check it for all channels (I know we only have two
-> channels). So if you prefer, you could even do:
+> ...
 > 
-> if (st->convst_gpio) {
-> 	for (...)
-> 		__set_bit(...);
-> }
+> > > > > +	default:
+> > > > > +		return -EINVAL;
+> > > > 
+> > > > What tool is requiring this to be added?  It's totally redundant and
+> > > > needs to have the tool fixed instead.
+> > > 
+> > > This patch is not inspired by any tool as such.
+> > > I observed this code pattern while manually reading the staging area iio
+> > > code. From my eyes, there is implicit intention to return from switch block if
+> > > no match is found which can be improved in readibility by explicit
+> > > default block returning error.
+> > > I agree this is redundant and will not have any functional impact.
+> > > However, imo - this can help support kernel wide efforts to
+> > > clarify switch() blocks.
+> > > 
+> > > The motivation for this patch is from a035d552 which talks about
+> > > eleminating ambiguity by clearly defining swich() case blocks.
+> > 
+> > Yes, but the code right after this does the "default return", so that is
+> > now dead code.
 > 
-> which also would make more sense to me.
+> Hmm... If I read the code correctly it is either already was a dead code before
+> that patch, or it's still accessible via goto label.
+> 
+> > I'd recommend the "pattern" that the current code is in, it's simpler.
+> 
+> The pattern to return from all switch cases, including default is commonly used
+> in IIO drivers.
+Thanks Andy for your view here. Yes, this pattern is seen in iio drivers
+including dead code as we discussed here.
+For example, v6.16: drivers/iio/chemical/sgp30.c:406-411 shows same
+pattern as this patch will introduce.
 
-I considered this option, but I need to populate all the channels in
-st->channel with the template data from chip_info->channel anyways. 
-Hence I want to loop through the channels also when the st->convst_gpio 
-is not there :)
+hence, IMO this patch can help this staging code align with coding
+pattern of iio drivers. However even without this patch there is no
+functional impact and it can be skipped also, I am okay either ways :)
+
+Regards,
+Akhilesh
 
 > 
-> Up to you now :)
-
-Well, I already sent the v3. (Sorry, I should've waited a bit more but 
-wanted to get it out before the weekend). I kept the same logic as in 
-v2. You can still suggest improvements there!
-
-Yours,
-	-- Matti
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
 

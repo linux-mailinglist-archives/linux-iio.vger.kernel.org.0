@@ -1,293 +1,123 @@
-Return-Path: <linux-iio+bounces-22485-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22486-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18128B1F073
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 23:54:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4029AB1F07A
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 23:57:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 284685A42A6
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 21:54:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E1D5188F64D
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 21:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427B128A72A;
-	Fri,  8 Aug 2025 21:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822C7244E8C;
+	Fri,  8 Aug 2025 21:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2nTL4j8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JYKwpXRu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC9A28A714;
-	Fri,  8 Aug 2025 21:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D522C181
+	for <linux-iio@vger.kernel.org>; Fri,  8 Aug 2025 21:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754689996; cv=none; b=j5TZrIsVKpxiMQjDz/IUhwCkdG83OZ5ynuGfHrcwJvpEhYiBwUjUCq57B13AvnFuZA4ikiIHEPcJ/dxasxCTKszaD37Y1Il1g52fnDPHbX8xw6USVXh8VZ0/bMnFycfHMAiai6+dR/uq1vhvmbfgc/QyqN2mi6cqiDkBMzZ/4VU=
+	t=1754690223; cv=none; b=pGm9DV+n2bMq21T88EcU4XsMrzsGig7eraLpQS+nJ3FerJEBjqgP3VncDEKCTtSefOlUHBJJxsIiZ6/tPraf8quT/rosp95Vqx+h8+U/n3u45bWTCMvYJGmVVsa6pU+F2JOvOH//E4bv4OKqZ7jFEZnUXeJjh2zOwFixijD0Ses=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754689996; c=relaxed/simple;
-	bh=FHdoU4mNeEPmLoDZXwy3/cdEdLB/1Dkosg+2BYHMKn4=;
+	s=arc-20240116; t=1754690223; c=relaxed/simple;
+	bh=ef7j2jX8ArUjPgRsRT2+H2NzOJVUeHwl/8WM72N7JLg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=seVb48lRS2x4M4OKR0s+/8/ANnYjjm7A2+PoC15F0PeGGCkxogvSJFynjjEhZjX3EbqK3BCpt7zMkvWK/TW18SrccVdCQouIufKPjNGQehyFaTFD0kpe+4ThRUwwa+/xR7RjfQladSWsX1hW/Hc1M6aOVdWpAlukCya//afCMck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2nTL4j8; arc=none smtp.client-ip=209.85.218.46
+	 To:Cc:Content-Type; b=KEYrnwAcMgU0qFdB+21Z9EvBgPVrwP8ra2UuKvcir8EN3MYtT5jHYlvurczZhj0dryCcc6XyN4eIAN7z9LUTQBLP9z2xOHqBpXjayhjl/Go0UBjpvJGRKt2kNMmNNp7eEwKHIYVzZ68Gvk3I3K8KCdesbp3aiDgMhbOao3Kj7X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JYKwpXRu; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-af93150f7c2so399375066b.3;
-        Fri, 08 Aug 2025 14:53:13 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-af93381a1d2so450007166b.3
+        for <linux-iio@vger.kernel.org>; Fri, 08 Aug 2025 14:57:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754689992; x=1755294792; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754690220; x=1755295020; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E2GN7W7Sz7gEboNuVXd3lEPoXXlYWcnFTU1ztKD3RZk=;
-        b=I2nTL4j8gCdVzWvR4DVkRUR2we563kAUu/EvIk5z+dvPtOPcoz1N4ORgpHjWCuBvWS
-         k6cZyCBHBonZKqVTPDsQCT00P+pRKaUJgQis/0C2mnFnlxVWjuWCjrpjJBpKsx8urj2X
-         BIilYc0fs/1w/bHHi0zeh1+jBiRMV3loTkAQrGGiiXg33Pd78A8zaqgorA4FT3nQOaa1
-         cL/5pKVhlQLQ71Y/dcBOFKWQXKeDwhnQPcGd8J1FE8aeCCyiBEGeE2T84xctaaY4IL4K
-         OVzEAxX+5OgJGtvGAPszE+IDVdPHABVHvTyw5MksqhdjdvSY5HkICsAGuuEMudqvh3Am
-         hISw==
+        bh=CLs3SsXryQfD/cAibSx76ItsdizwVEqnk+421pwNby4=;
+        b=JYKwpXRu/CMYVQNp/dHMFs71Xwc2biuFqjdIsSQBjV0TcBgog+kHNMNC+WGHrR5umF
+         udMZDCo4+AKu+7qPVEcKPt7Ev9b7JtrCCqvUTnBcYVlc+wRnZMiSa4LW25GBr+YtlU7f
+         pincdc9H4aeT3z9sttNQftRgpVndafpVUGEj/x957igEOrlK3uySNjBY032qVGwb3T/X
+         XMOeW9onpVfp8S4XXmWQ+5W5ezolVkCIY0td7jzKfGXMpKGiI5BDtUzqa5n1Mqdi0NMa
+         VhpenKKIdhKZdMY0WXRWl0Fja0weGlHBlAzIlT/+R9lwAo71PWqT256MCoUwaz4ka/lH
+         Uhtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754689992; x=1755294792;
+        d=1e100.net; s=20230601; t=1754690220; x=1755295020;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=E2GN7W7Sz7gEboNuVXd3lEPoXXlYWcnFTU1ztKD3RZk=;
-        b=F7ruHVmU7SrmLhS1aD151D6DVq7w9Zhq3yXF5Bhb0F58yOshCKNcliDP8KH/gbyk0j
-         vCgY/z4DJscdZSRBa54x+9m+gRCpbSL6ftQFUY2UPEQBLMim0tbxQxdcilIIXQjVd96G
-         fvEW7Ub2g8BE9pkY5/6okXaNAZ5s97JYyjUNWYNktSMEmOvxx7vUjNKcaLjc9wapVZBh
-         n2WG1K25WvqOeYkiW6Ew5rZ2dLWjG5jnisJAad47ldc3iyi7930rS9xM5RSZtESDbV+Z
-         NVePMgWdYPNxmcRjy34KUSKDslfX3B+kNwlPfH9rd7oxx5Q86kw8o5rdZG94wtUhiu6P
-         ugjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUNoB6z+MMX1rAKNnvLT0eBNsRfZpiiWElzlsR2yj7jicR2JdqrDyBTbaDlckt6aOfqGUZZGrONA+e6mkv5@vger.kernel.org, AJvYcCWztz3tZzVpalwCtaE0y6Is5oz0G/m1EtetTrHGoqi6mxwxgS0NqPkhZLMG4AK/KNlu5DkhrSWGleQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9t8APNqtBjGOz+ea6CTwVGt+iSQl6tF50rbTx1hQGPIRFvKwH
-	3Cqu1XjAAsgmbQzf6ekq4tt6jG3liwMUACGP8HO6hcXwzknYXct1mRGM0VK6/rNSTlAkzkspVB2
-	d4S74keF1BYne1W0SuanmWVo23Fl/n4k=
-X-Gm-Gg: ASbGncusybtge4jn10SQ2xIgBOaw/QXt30oENSXtK7NvAcRDSF7BHq7DzKbIYdyS8F2
-	7Vbm8jR2jEpY1ovVyyPlcZtTHHoGbYwvQxkKIYw1dgOzrlBJ7Ojt+xqpJTuX+QJ43rA4QAiaNeM
-	8GX7qxL8Whq+ok3ZjfvpD3R6Shx5sB4AF8VOfm/frXR9KplmFxeT0Rjk6nbSMf7mi0dKoSGN9mr
-	yDI0Cb8yA==
-X-Google-Smtp-Source: AGHT+IEX9iv8bZjifqSIW6eXeKVomU13zNO5NsGsWmF335itG5QWaqkagb+K3LBMo9DYi9YczpXRUgw7iHwyOT80QcY=
-X-Received: by 2002:a17:907:3f94:b0:af9:29c1:1103 with SMTP id
- a640c23a62f3a-af9c6591347mr419188566b.55.1754689992421; Fri, 08 Aug 2025
- 14:53:12 -0700 (PDT)
+        bh=CLs3SsXryQfD/cAibSx76ItsdizwVEqnk+421pwNby4=;
+        b=KuqkiNFd6Pg0ilVUzjnJ3/teOkAtZGZmLL7lwsTfh0dCaVFA3CBbF/euxIHhYvvVwa
+         OjfPqNqMeV2pXk9mq8SDGVRGFRdNun3ikcwyWVtqSApWSXlJ8uzQ1pBSyIsMZt5huEwG
+         ctjU/GQpuflggJgrZNNNpqDcyLRSISYZBj4Lct4yMgguAFbDFOrN4Q827bybctk04XF9
+         ODUxn9ept6w9a/Nwso1NFFvS+tvjibn1nFWqggGls2mETSHvPreitqNR5LP+zgRTjJxw
+         aH58uxZCQQYbEkTRvNFkkYbRQ7KwskHtHCBcC20aLumPUNCI+lYjouCLKZm22WBxvBnO
+         tlnw==
+X-Gm-Message-State: AOJu0YwqjS8Ul0SqZNCDtQnz90pcz8q4h4yJLWWjf9h0vAIThKG4U8t5
+	8rj3X4vHXYsnrDRh1NI//cFHxZ/qH6uQhWE/sDbSqSf5U593yZQ5TQNxsfuePM5COndirzBCatz
+	3fcC7KpbbZ7Ph2RXUr1dBbDpG2GOg5HV/f1B8/UgN5w==
+X-Gm-Gg: ASbGncs8wwN64kTB+xUxeMQQOHDr5r275+1jtY/iaTQr7EoxydS3vCDt0Q4UaDoDcbS
+	H4kFdh4ZvdB/nWg8Z5iDaYbNM6lZQjEAPfuWtuTDiTNjVlos0NIKL8+UB/7b6qNAXMyV7lu7g/1
+	LACIVV5V0jqIK9KOXgw98E0mWn5mnDYX35LXjdqNPuVpY0ddEUMW192wmh4KS6KHX8A2HaKGSU8
+	Ah7i8OR9QzDc1A2C6pK
+X-Google-Smtp-Source: AGHT+IFCwygGITvzjuZzklplCnrGK28uKLRexBa+yVIR1Tq/lFaWm12CmwxEC9Le0TG51c1Tl7UtTJJq9aea7YW6Jx0=
+X-Received: by 2002:a17:906:f58d:b0:ae3:6705:8918 with SMTP id
+ a640c23a62f3a-af9c64fcf27mr377054166b.49.1754690220028; Fri, 08 Aug 2025
+ 14:57:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250808-icm42pmreg-v2-0-a480279e7721@geanix.com> <20250808-icm42pmreg-v2-5-a480279e7721@geanix.com>
-In-Reply-To: <20250808-icm42pmreg-v2-5-a480279e7721@geanix.com>
+References: <20250808-adf4350-fix-v1-1-58eed5c07359@analog.com>
+In-Reply-To: <20250808-adf4350-fix-v1-1-58eed5c07359@analog.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 8 Aug 2025 23:52:35 +0200
-X-Gm-Features: Ac12FXxKpxuO8YMoYbsgDqhalk0UzbXLJ0r5sG70xlV3YnQfZtwgOelFnshdeEI
-Message-ID: <CAHp75VeA36CHbvmhHVesw3itRW0aGURTqCJPAtw_P=q12F_0Yw@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] iio: imu: inv_icm42600: use guard() to release mutexes
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Date: Fri, 8 Aug 2025 23:56:23 +0200
+X-Gm-Features: Ac12FXxxtrHqdYsQGpqZQ6xQ9E0M24HK3a5V3PieskHfV93DdvA1u0BRnntNsNQ
+Message-ID: <CAHp75VeXCrqzRFzNsMYHafRQ3SKztd-UaFKvvt_msh=O+Czb8Q@mail.gmail.com>
+Subject: Re: [PATCH] iio: frequency: adf4350: Fix prescaler usage.
+To: nuno.sa@analog.com
+Cc: linux-iio@vger.kernel.org, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 8, 2025 at 5:58=E2=80=AFPM Sean Nyekjaer <sean@geanix.com> wrot=
-e:
+On Fri, Aug 8, 2025 at 6:09=E2=80=AFPM Nuno S=C3=A1 via B4 Relay
+<devnull+nuno.sa.analog.com@kernel.org> wrote:
 >
-> Replace explicit mutex_lock() and mutex_unlock() with the guard() macro
-> for cleaner and safer mutex handling.
+> From: Michael Hennerich <michael.hennerich@analog.com>
+>
+> The ADF4350/1 features a programmable dual-modulus prescaler of 4/5 or 8/=
+9.
+> When set to 4/5, the maximum RF frequency allowed is 3 GHz.
+> Therefore, when operating the ADF4351 above 3 GHz, this must be set to 8/=
+9.
+> In this context not the RF output frequency is meant
+> - it's the VCO frequency.
+>
+> Therefore move the prescaler selection after we derived the VCO frequency
+> from the desired RF output frequency.
+>
+> This BUG may have caused PLL lock instabilities when operating the VCO at
+> the very high range close to 4.4 GHz.
 
 ...
 
->         pm_runtime_get_sync(dev);
-> -       mutex_lock(&st->lock);
-> +       guard(mutex)(&st->lock);
->
->         ret =3D inv_icm42600_set_accel_conf(st, &conf, NULL);
->
-> -       mutex_unlock(&st->lock);
->         pm_runtime_mark_last_busy(dev);
->         pm_runtime_put_autosuspend(dev);
+> +       st->r4_rf_div_sel =3D 0;
+> +
+> +       while (freq < ADF4350_MIN_VCO_FREQ) {
+> +               freq <<=3D 1;
+> +               st->r4_rf_div_sel++;
+> +       }
 
-This makes PM calls under the mutex. In some cases it may lead to deadlocks=
-.
-I think you wanted to use scoped_guard() here and in similar cases.
-
-...
-
->         struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
-v);
->         int ret;
->
-> -       mutex_lock(&st->lock);
-> +       guard(mutex)(&st->lock);
->
->         st->fifo.watermark.accel =3D val;
->         ret =3D inv_icm42600_buffer_update_watermark(st);
->
-> -       mutex_unlock(&st->lock);
-> -
->         return ret;
-
-Now remove ret and use return directly.
-
->  }
-
-> -       mutex_lock(&st->lock);
-> +       guard(mutex)(&st->lock);
->
->         ret =3D inv_icm42600_buffer_hwfifo_flush(st, count);
->         if (!ret)
->                 ret =3D st->fifo.nb.accel;
->
-> -       mutex_unlock(&st->lock);
-> -
->         return ret;
-
-In the similar way as above.
-
-ret =3D _flush();
-if (ret)
-  return ret;
-
-return ...nb.accel;
-
-...
-
->         struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_de=
-v);
-
->         int ret;
-
-Now unneeded, just return directly.
-
-> -       mutex_lock(&st->lock);
-> +       guard(mutex)(&st->lock);
->
->         if (readval)
->                 ret =3D regmap_read(st->map, reg, readval);
->         else
->                 ret =3D regmap_write(st->map, reg, writeval);
->
-> -       mutex_unlock(&st->lock);
-> -
->         return ret;
-
-...
-
->         int ret =3D 0;
-
-Now unneeded assignment.
-
-> -       mutex_lock(&st->lock);
-> +       guard(mutex)(&st->lock);
->
->         st->suspended.gyro =3D st->conf.gyro.mode;
->         st->suspended.accel =3D st->conf.accel.mode;
->         st->suspended.temp =3D st->conf.temp_en;
-> -       if (pm_runtime_suspended(dev))
-> -               goto out_unlock;
-> +       ret =3D pm_runtime_suspended(dev);
-> +       if (ret)
-> +               return ret;
-
-...
-
->         /* disable vddio regulator if chip is sleeping */
->         if (!wakeup)
->                 regulator_disable(st->vddio_supply);
->
-> -out_unlock:
-> -       mutex_unlock(&st->lock);
->         return ret;
-
-Now return 0 to make it clear that this is a success.
-
-...
-
-> @@ -881,10 +878,11 @@ static int inv_icm42600_resume(struct device *dev)
->         bool wakeup;
->         int ret =3D 0;
-
-Assignment is useless now.
-
-> -       mutex_lock(&st->lock);
-> +       guard(mutex)(&st->lock);
->
-> -       if (pm_runtime_suspended(dev))
-> -               goto out_unlock;
-> +       ret =3D pm_runtime_suspended(dev);
-> +       if (ret)
-> +               return ret;
-
-...
-
-> -out_unlock:
-> -       mutex_unlock(&st->lock);
->         return ret;
-
-  return 0;
-
-?
-
-...
-
->         regulator_disable(st->vddio_supply);
->
-> -error_unlock:
-> -       mutex_unlock(&st->lock);
->         return ret;
-
-Ditto.
-
->  }
-
-...
-
->         int ret;
-
-Now useless variable.
-
->
-> -       mutex_lock(&st->lock);
-> +       guard(mutex)(&st->lock);
->
->         ret =3D inv_icm42600_enable_regulator_vddio(st);
->
-> -       mutex_unlock(&st->lock);
->         return ret;
->  }
-
-...
-
->         int ret;
-
-Ditto.
-
-> -       mutex_lock(&st->lock);
-> +       guard(mutex)(&st->lock);
->
->         st->fifo.watermark.gyro =3D val;
->         ret =3D inv_icm42600_buffer_update_watermark(st);
->
-> -       mutex_unlock(&st->lock);
-> -
->         return ret;
->  }
-
-...
-
-> -       mutex_lock(&st->lock);
-> +       guard(mutex)(&st->lock);
->
->         ret =3D inv_icm42600_buffer_hwfifo_flush(st, count);
->         if (!ret)
->                 ret =3D st->fifo.nb.gyro;
-
-Invert conditional and return ret directly.
-
-> -       mutex_unlock(&st->lock);
-> -
->         return ret;
+This is a reimplementation of ffs()/fls() or similar calls. Do you
+have a plan to clean up?
 
 --=20
 With Best Regards,

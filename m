@@ -1,143 +1,151 @@
-Return-Path: <linux-iio+bounces-22455-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22456-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A883B1E9BB
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 15:59:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE75AB1EA04
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 16:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34C41175EF6
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 13:59:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF45A16B063
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 14:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C7D14B086;
-	Fri,  8 Aug 2025 13:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7CA27E05F;
+	Fri,  8 Aug 2025 14:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RFcI+hyZ"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="AGZd0/Yg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD8212CDA5;
-	Fri,  8 Aug 2025 13:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BE827E05E;
+	Fri,  8 Aug 2025 14:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754661564; cv=none; b=fyYGM6lO8phasg/Rdw4BEreJDyQpQrTq5v7NGNnvwHkdXG1qGTWt6qlgx6tCnFChqA086VAw9Rl4LeG8CZxq4yCdCLNK2GGo80bWI/dgJmJNHXnAOZE1i9RZUN5ApTDmsq7teUnSf6Uq0wbqcrJ9Y4bN/CdBbyT5hmyBVWHV1uc=
+	t=1754662281; cv=none; b=PzQONaL5plztEWUG1JUBIMH9n086d65k5lCobAqgUABDTcqzpcihKNraNklHB/IqLaRRKvoTOcwbAhUbVuYHv7g55Q2f72vjIOjaWjGybVeJQB7tSKd6gwutwOOwxfdSyueN0ajp9LdhDSJU2HKlyAA5IT0xZWIPT81oKJcPHr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754661564; c=relaxed/simple;
-	bh=n7Ysa+dxm5v8spXQntkPxQkNqTdCEe12rA4bvGJIlsg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jxm8D7Z97bXDtbED8Tn8ibjAzircizCE5vN3Cn4khkv1dk04BIXl8hzXO9MrVrrJ8qggjlhq4RAfF/vO0CCmgkf6og3oifK7tiAjuterLkxGvowB+2CjpbSihR+PyAAzi9pZmw1Q0fW0dt8g9sGxyYSoDfkYpXE4Syyn6BCyImM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RFcI+hyZ; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-af93381a1d2so375340866b.3;
-        Fri, 08 Aug 2025 06:59:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754661561; x=1755266361; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DcLQcAWgsSc68JDGp9ydxgV/pyrE7bzp3NUCYCyeOHo=;
-        b=RFcI+hyZA5l/Zuux9jSP6x8yVPWVaKR8Al6Jb/jhFXQmdlJkTAOL15EUDwZPXPbTox
-         IDehHXu6EmQIHk5yxEjxKUN0Ny7HWa8241gNEEIWlfOHl+MCE2BN93PlKYzm5GYyW2DE
-         shPAPz1BUp28jqzU66O9x/gg+pOcMJfUhwv9xhvEUnKZSN7CIGiZPjkxULdsnmwcJnwn
-         RrAfSwfxR7OxXv2VXDNiypQ5XM4+8vpuF63XKk1FqIEqqZ4AD61htMVq3BmAX54bDJU8
-         w+YVc8eQ1XRbsxB9xGoUg58p8eN+UY7IseANjrcajF64d+UPIxEg64JocfHedBzc+VlJ
-         Xo8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754661561; x=1755266361;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DcLQcAWgsSc68JDGp9ydxgV/pyrE7bzp3NUCYCyeOHo=;
-        b=I/qxUHNDpCAeetsj8XHhQhdUkpEOTLCH1yS0Il+9TsrbzaMfgBBxDlgPsWDnjw9HWa
-         nt9xvI8A1Yee3R5hJ+Mga1OQHaaY2f6d0RZIeQD9o4+NLSHyFK1JfrdgSTRjCgG6K5sb
-         0KOwN3gRWu4BA0OCnTX+ys/G8iJDYMpF+ceWjfJfpQjd3XFiLaR9EgRep2oamtUdRbYn
-         6+vcQBSQV53CbNXYmeXPF7ASFpXQE0fg16laISsOCCeVzI3xFDEz/9t+1o3th6TZvYmm
-         c6s8k0uPiN1f1QCm++VE2aNr1zXRTojT+C5hngolDCNFv8L/EZdgviwZaVGlhaGd59Wx
-         roqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUMhz/ZkjUnPwUMDY3crTJAG9mNLBejDAHxz4Iy2IrzVY6VGpgR5My9bIdsXzMl4IQF9xu+kstdGv/uTJTy@vger.kernel.org, AJvYcCVYe/OA9hXP61w+UbiEmzanEQ+1RP+4NYTAHaaCnvzwLa6n809DvaM/FsfuTWEbOpVY9WV4HRqq+Sdr@vger.kernel.org, AJvYcCWlzd0PKDw0zJIr6IdqsyvXjqmxAQayiSw5Xa8djF6i4jr5tqJf1OjBhdOL8VsKhmLtqajqQJLhWc+v@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzso44dmzkPD/BtY5ubJ1Dr1K1WppgaCakoY4Mq9LCu6HDraNKr
-	IY9whzfsHeLiLaRhljalgJ6BvTbn+++07lAyBwUDgwQNqAohfLEWhi3Wck+V0KY60oFyJb/r9QN
-	cs4NCFYM7uDYfikX4Ce0CFX3KMk9kfLQ=
-X-Gm-Gg: ASbGnct/kHPEjnaduosXJZjbaUHPSeAo5QMdF+OmIa/Z1NTD+dCFxgLa0twJcf3ZhGy
-	tRgn64qMH6HI9Z6J4Ird2j1Lg+ZM76Z7jAiGdqhq8QVTEyFuaGWgNL1qm5Oluh/ehtPrB1GooS/
-	TNjdJChAF4jpbRq5Wy8N2ZA6UPihr7TU8jk27MqK6W4Vtd6YqnI0sCuN497FkmzA65IUCAtJlPS
-	SbqYFIa+dsdrnHZkprW
-X-Google-Smtp-Source: AGHT+IHpkQ+u2CWeR1dH/haH7QYO+80WoQubSJ75IFnilLoEhsG/sE8G3N6mVHFCCV+EIG0EfIQzD0pvkaTyLYIYcxI=
-X-Received: by 2002:a17:907:9705:b0:ad8:9c97:c2e5 with SMTP id
- a640c23a62f3a-af9c606d956mr292716666b.0.1754661561089; Fri, 08 Aug 2025
- 06:59:21 -0700 (PDT)
+	s=arc-20240116; t=1754662281; c=relaxed/simple;
+	bh=nMg2b6x/9MBlQOj76X/PeJ+VTbAfV3eDFBOfaO6FsZY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dy1/cdt75YeC+NDPbcFAgTZeXGr4KnndBtjBKi5FiL3M3XFws3s5pAt+f5jqaiY8+d7/kwf/+N7ArM8Whob+UJ/w/UYxFw/TxTgPOtC+ULNSjxvVmZlRJ+rDsQBSxMTigZO0JGXOC0EngP61myhRS/dzU26U4x+Kx2maLlLI2wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=AGZd0/Yg; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 578DHp7a026122;
+	Fri, 8 Aug 2025 10:11:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=94LPkGFqnAm2n6dGMBjDHPJUj50
+	096iqhag5yT3Ea8Y=; b=AGZd0/YgNz9kXkOvXq5yF8ifvFB077u4KzUxACI49Ri
+	zcaDrPFrphTA6qLJqaxXHvnQ3DKvo0D5pyw8sM7QxAEZPpb4vIjCsZceGUzIc08s
+	qYabstLnjsbnnUkm2VcLMEemx//Wwj6r3ymNANRX9izsht+dNnlpqbl5G01QgRKT
+	aPaby90eluAf5bul/hqyNIF7PTfaLvOCrg0HIGZFG9dX+nKyaqOCWHRDUo1TQDRR
+	Sv8rkuacd4YrmbgpHLpiyBJUFraeJbkSMT5c2dhv9ZeDkmVO7+Iky3L/xUnT8LzF
+	uVKdPRKkfvEcNXuDgO89PRBH98J+W6Stil2wG43lMvA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 48dj0708ab-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Aug 2025 10:11:03 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 578EB2Ax062919
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 8 Aug 2025 10:11:02 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 8 Aug
+ 2025 10:11:02 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Fri, 8 Aug 2025 10:11:02 -0400
+Received: from Ubuntu.ad.analog.com ([10.32.13.94])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 578EAqfA014662;
+	Fri, 8 Aug 2025 10:10:55 -0400
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v3 0/4] iio: adc: add support for ADE9000 Energy Monitoring IC
+Date: Fri, 8 Aug 2025 14:10:12 +0000
+Message-ID: <20250808141020.4384-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1754559149.git.mazziesaccount@gmail.com>
- <09bf5e7973c37413ada950741e6e09c375e37c57.1754559149.git.mazziesaccount@gmail.com>
- <CAHp75VcHR78Uwgo74n-i3a1sSfDxBwVKWihcnFp5x3d=puAySQ@mail.gmail.com>
- <13505077-fb36-4126-9767-fead98e01009@gmail.com> <CAHp75Vf7PbHPFuVjmK1xPMZxotc81S6FAQkgZ0ETNXSWozaUQw@mail.gmail.com>
- <83a6949b-6e84-4a0d-9a95-a9f45f62e84e@gmail.com>
-In-Reply-To: <83a6949b-6e84-4a0d-9a95-a9f45f62e84e@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 8 Aug 2025 15:58:44 +0200
-X-Gm-Features: Ac12FXzgyAyc3seV6r0ebLtj_x5DG7zqv9HJrT_J2VShUz4lsBzxHTEsdsi5UdE
-Message-ID: <CAHp75VetWyWY9F6u6edADq2aUzdFOz8wWWhPsRs_fWk8eNGKmg@mail.gmail.com>
-Subject: Re: [PATCH v2 06/10] iio: adc: ad7476: Drop convstart chan_spec
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Authority-Analysis: v=2.4 cv=R4sDGcRX c=1 sm=1 tr=0 ts=68960577 cx=c_pps
+ a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
+ a=2OwXVqhp2XgA:10 a=MilyVcYQlkyFfA35S9cA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDEwNyBTYWx0ZWRfXy4sicPdqT4TV
+ svuTk0lIYIqlxRtdOMp0dzowY+w7SoK1uhyNXnSnjkZK77zvq+hakqvq1Zq4NN7fE5ejnLyni20
+ I3lj93YbZHQBezG3FEwPYkR/xUH/nt31VS0o2cIys2tgwU0LKzcDmzp5h2wM8gDugj3+6WaPmYe
+ 8hQbJJ9NSCBv6/c9dtU7dYMwFzveEuD8PBg/AMaatuHwfRPCDFadFNlmfKpxWF29Vu8FrvU6u9Z
+ 6Gbs2RrmqnQcat659nfoZpySVby7DP6JHwfXqE0gTLYC7Jq3XDgMlhDiPC1qKpHvUInFOEq/6q8
+ xA/RlxhW+1Hwz+bWD31Y4KOhxJoRao0p30uXBSEU5gwoIuTNoMM+I7G1EIdhxddm1sQGfjnfjvq
+ qTYcVXKJ
+X-Proofpoint-ORIG-GUID: GJ3qRYj0lwvkDXdmAglw3ZtfIJVxtSP5
+X-Proofpoint-GUID: GJ3qRYj0lwvkDXdmAglw3ZtfIJVxtSP5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-08_04,2025-08-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0 spamscore=0
+ adultscore=0 clxscore=1015 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508080107
 
-On Fri, Aug 8, 2025 at 3:30=E2=80=AFPM Matti Vaittinen <mazziesaccount@gmai=
-l.com> wrote:
->
-> On 08/08/2025 15:52, Andy Shevchenko wrote:
-> > On Fri, Aug 8, 2025 at 7:38=E2=80=AFAM Matti Vaittinen <mazziesaccount@=
-gmail.com> wrote:
-> >> On 08/08/2025 00:16, Andy Shevchenko wrote:
-> >>> On Thu, Aug 7, 2025 at 11:35=E2=80=AFAM Matti Vaittinen
-> >>> <mazziesaccount@gmail.com> wrote:
+This patch series adds support for the Analog Devices ADE9000, a highly
+accurate, fully integrated, multiphase energy and power quality monitoring
+device. The ADE9000 is capable of measuring energy consumption and power
+quality parameters in industrial and commercial applications.
 
-...
+The series includes:
 
-> >>>> +       BUILD_BUG_ON(ARRAY_SIZE(st->channel) !=3D ARRAY_SIZE(chip_in=
-fo->channel));
-> >>>
-> >>> We have static_assert(). Why can't it be used?
-> >>
-> >> Don't know. Can you please enlighten me why one is preferred over the =
-other?
-> >
-> > Despite already made changes, I answer to this. The static_assert()
-> > has at least two benefits over BUILD_BUG_ON():
-> > - it can be declared in a global scope
-> > - it produces more condensed (to the point) error message
-> >
-> > That's why in general it's preferable over BUILD_BUG_ON().
->
-> Thanks. It's always good to learn something new. One of the great things
-> when working upstream :) (Although neither of those points seem to make
-> a big difference here.
+1. New IIO modifiers for power and energy measurement devices, including
+   support for active/reactive/apparent power, RMS masurements.
 
-I think the second one is the main point in my comment. Yes, the first
-one doesn't matter.
+2. Device tree bindings for the ADE9000, supporting waveform buffer
+   configuration, phase configuration, and trigger settings.
 
-> Oh, and AFAIR, there was a variant of
-> BUILD_BUG_ON which allows you to add a message(?))
+3. Complete driver implementation supporting:
+   - Multi-phase energy measurement (3-phase support)
+   - Power quality monitoring (voltage swell/dip detection)
+   - Waveform buffer capture with configurable triggering
+   - Energy accumulation with configurable time windows
+   - IIO buffer interface for continuous data streaming
+   - Event-based notifications for power quality events
 
-static_assert() can be one or two args, the second variant is with the
-custom message added.
+The driver provides a comprehensive interface for energy monitoring
+applications through the IIO framework, enabling userspace applications
+to monitor power consumption, quality, and waveform data.
 
---=20
-With Best Regards,
-Andy Shevchenko
+The driver will be extended in the future to support multiple parts such as
+ade9039.
+
+Antoniu Miclaus (4):
+  iio: add power and energy measurement modifiers
+  dt-bindings: iio: adc: add ade9000
+  iio: adc: add ade9000 support
+  Documentation: ABI: iio: add sinc4+lp
+
+ Documentation/ABI/testing/sysfs-bus-iio       |   12 +
+ .../bindings/iio/adc/adi,ade9000.yaml         |  110 +
+ drivers/iio/adc/Kconfig                       |   19 +
+ drivers/iio/adc/Makefile                      |    2 +
+ drivers/iio/adc/ade9000.c                     | 2033 +++++++++++++++++
+ drivers/iio/industrialio-core.c               |    5 +
+ include/linux/iio/types.h                     |    1 +
+ include/uapi/linux/iio/types.h                |    4 +
+ 8 files changed, 2186 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
+ create mode 100644 drivers/iio/adc/ade9000.c
+
+-- 
+2.43.0
+
 

@@ -1,161 +1,122 @@
-Return-Path: <linux-iio+bounces-22451-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22452-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032E6B1E89B
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 14:47:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FCA0B1E8A2
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 14:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 864677B02B0
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 12:46:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3BBC5847D9
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 12:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FA72110;
-	Fri,  8 Aug 2025 12:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012F827A139;
+	Fri,  8 Aug 2025 12:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4FBdxyf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jc38OoL6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE6A25F963;
-	Fri,  8 Aug 2025 12:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FAB279DAD;
+	Fri,  8 Aug 2025 12:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754657264; cv=none; b=i/FJwEU6bOfb7mTPU1YRN/jhwumdgcpyVCIFvrctl6roKI4vu6xwUaKSr5QfpVOK6Yd84z83ruXYqccKZKbwpyO1Km7S6A5YPhKLDDigO86Oo34lF6CVA4Gd1ZiTDeP+psJWwovMUc/BQ0O5BHJyNHlY9MbN7XkEW/Rc59xtias=
+	t=1754657601; cv=none; b=taZCrgqnDWGX0L3p3TQTPSQ3K9nowKhsUnvzvk2AJD/6JWuFt9mrQgZQ/8Ttly2wqNW6qMsLyaY8CVSfhinzNH7enCNS2LcFHoq8dh/DYG7AhzlUFn0Q/bqIn+T83TlJC5l39rKZS8gJxm89GvLxyMMX1kCi6R+SuOx/np4miIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754657264; c=relaxed/simple;
-	bh=DMRmtI5vfjflBWV5IYbOF8or8OWG8tHzfN0UjAlhblo=;
+	s=arc-20240116; t=1754657601; c=relaxed/simple;
+	bh=b9w76l/dF5/PsV8fhzagizQRSQEVBdBkYYuMG2nBS30=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jto6mJMr0XKj1cb/GUXQ6YrKowpJJinGKq9zu25XLgoY0ffNipyKPCuvLB+0GMSQHpy8i1ATiI8Dowm5NZfbA6YoEN0+LK3jtqwStfogbOJ6e6sz5m4wOjbLOtU9+3JzEkIA7swZXThVW7ZLt33Lpr4ISB80YkwemxoZ7o9uVG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4FBdxyf; arc=none smtp.client-ip=209.85.218.52
+	 To:Cc:Content-Type; b=oc8ZmaQpx6cpniGsO3jUrfcuibhubf6/lKG1zzmORNJ6BcWg1J23TQwxzDZIei/O+d6LbIv2VLAC0y+rJr5QTEJZqSjcJpcENtMEkS/1tBHUS+8k0hyUmq1pFr3ZrEaa4gdhaVfdTB8ZUKNwMnTxA9JWYGJ5v/3jHap/0/JTR1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jc38OoL6; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-af95d5c0736so338215866b.2;
-        Fri, 08 Aug 2025 05:47:42 -0700 (PDT)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-60c9d8a169bso3688728a12.1;
+        Fri, 08 Aug 2025 05:53:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754657260; x=1755262060; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754657598; x=1755262398; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kL5wSCSzPKKT2qv06rDW308qSqj4y5bPXidLbR3fQVI=;
-        b=d4FBdxyfsujgjABIe8l0HWaXQ7OBjg+l+aq+EwtIDqf13BlYRENyJBtN7UG013zZHx
-         3jQC4cToh6tz5Dfb9neMZyM0Jq+ulmpeKjHiZI+TDjLnCy3wkDDWq071CVYOxZw/z+hQ
-         n6GNeHDobWrJ7w6d91ChA0n4cOIPTPjuVdJxsMdHf0q7z+LdM8DPt1rSJcn7ymo7JkJh
-         jNCZjU36uF70p5IlOCzsL12hpKMRENdYelmBcHR7P8rZmUI/sLB/Xt7gLKt8OCf5uWrO
-         BUfScUg0owAIcpJeCDxq/FdCnwqJma6O/73u5tm47Lm69lQPF7VFvuvu9iNwLLzeljgs
-         WLkw==
+        bh=PbxREPl4QZ5d1d6Rgrjzzhw7jd1PsCQZvw+2e8oVOVw=;
+        b=jc38OoL6e+9k6NKGa4bk5nJltKK7zOSgP3CQ25XyRsR0oUA4C4sQMKEqOboRUETDr0
+         WvMo2r63nzON5L2ey9c8mTX071S5t3QvlyG4+vXJ0kMGleFi2TOiD8jJvHt1ecDujiMB
+         cARcVe7L+K1DZVB0Q329WE62LCg31+bl285LqPto78Ce8nnV8AsTAqhZlHSKz3i5brjq
+         WHJfT4PT3aQOCTLHGk5VfjGGPvtYvijvV1YYpL6btCm+D7/CrY8vEU7ToeczaofqhWuI
+         0ndGuG0y97lZyn6AnBgKO4xrnHrEwtcXxOaq2ABV3PKkkQ4vHAx6PG/R0MgJn2QfBH4H
+         N4yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754657260; x=1755262060;
+        d=1e100.net; s=20230601; t=1754657598; x=1755262398;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kL5wSCSzPKKT2qv06rDW308qSqj4y5bPXidLbR3fQVI=;
-        b=wmW5Qjo0A1PIJdqINbKaRr9PL0AkPPEL6QshdthCOWHh1npIrliwXMNjBgBdjkB1CE
-         38/nuKUV4rQ6uG1WS5ZSKOKwZhubZAoI8A9aH9zyaVn4jBBwXFni9xICL7/dN4+xJbP+
-         FSBdESjZ4DHrsEO3d6NUsJ6dOokfC73HPvoxcT+gF2C6RxvCv5hURZt0PelaXBkIihHu
-         4qh4031IqTO3v5Zt1tOgj+jQQ6fLvRSriL+1uZw4Oj76XZv5WqqBkZn3AyIrPsmBbLiU
-         cuiUfYliFmPHYUKh+ZmY20z+IrVRSoDyDSlZvpgHMsdRq965c71BVhYi4aBwhhhu337b
-         O3Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXDgBLUnARzOo3xXcc5RI2psJ15pEQH1lusNh906EoYuY+NcVIjn48M5cgqQJRyA5BljYvOE10/rt7syor@vger.kernel.org, AJvYcCV+zABcY7oqDKeD22l/gv2TI2d3Sf0AP7i5QKztL7oTCqVHc223wn7tVW3a9gtwfWkNJi7yExO7zX4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTXgUG7jXcVd+TDc+Aj4vaJPYdyPqP2A3xQam2HhTUquQGKEmM
-	0/ySYY1PdgxNDef6WboYdC3yY/jZ2T4bddDoN+QGZkd+6VsEEn+VgVC9ZB0ninqgZfczlPSCpT0
-	3X+Hv+MGJoDUhVgHGdxC7+n65IWRZygw=
-X-Gm-Gg: ASbGncvskxKH0pREtQoWkwuHA43Fi43gDxn/LWuAXGbwxIAtVH9jFUuIJLbQ9FqTfZ6
-	J+mCLeAtXjNgpWwE6RZyVwwxzWgKv5F+0q18g/CIdnsBMPRLqR4f/JIptBRvUnVH+ThKTngFcHs
-	DwzZT9zwRPp1GjxB0w0yBSSPEV7cUygt/bT2SXUKbjns+YGPxbtgmUUtW8lGTUceEaIzK8jE7m2
-	653K9SmjQ==
-X-Google-Smtp-Source: AGHT+IECPrqeObsCZqT5CRIX+XrgsQBeCQf5z8IXv4JXjm/KlN5U526iDKVtr4z5se/rcTQp3/WjAn386p3AX0WvqZE=
-X-Received: by 2002:a17:907:94ca:b0:af9:b4e9:8638 with SMTP id
- a640c23a62f3a-af9c60797b4mr245311166b.0.1754657260294; Fri, 08 Aug 2025
- 05:47:40 -0700 (PDT)
+        bh=PbxREPl4QZ5d1d6Rgrjzzhw7jd1PsCQZvw+2e8oVOVw=;
+        b=OFe1CIH8fRBo+pFYRtbpfgaCPXdTzmfYUDh5lo9qWhLaHP6Qaun+u0U473GgQbeDiS
+         7L+qauRPMXFr0/w/Nn02w6noLNNzVpf6WjDVpCj4cg4RoKADp/OpaGvoCWtQ9U+AzgrO
+         7aRp7Ao4DNbsMkxZdlnVLasmdUgb3e7oESxfpXYJka7w+Srtwh38MM9IZpUFPGt5/vvF
+         9kftcYzgFUgaRnYI6muFCgmIwM7Ple0Cb0UNVwsZ7urJDF/zUEHrTI+XRTNW8koxSOmv
+         98FUw8dp/yGz/Mp4uIWnDIAWSFjBJqaeC7V5xQ5B+yJVHkISFSaxx4pGpCxfCLq0nFHq
+         LcKg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQnJkkjOVSE4hN5CnZpkEn2asdSw5HkoeUIHfjnnZKYUrHolxX7yzer4z0kOxIPDuLmJU+HLALqiz+@vger.kernel.org, AJvYcCUdlJiDAiHmYEmqh5GtDbqBahAu8Rvqa207AIlVy3iaQV4jR5rYB+S2FbM6C2G1MGBaZZ07KLYTUKIG@vger.kernel.org, AJvYcCXE7H4K4aE5lCZtPL2cgKl8lMm4kPUu2b9zZeLY1uRNfmE0ugu/LxZ3UGFB5x8pQT/7LemRWV4ozkIf1T7u@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4y3Rb+FV1IV0aCIdCfzL5TzVdzasYS8YSZjaZb0oM/Q8afHPy
+	6QBNyGk4jBzeUKpBP4wBgry+Y3P9ihK46SBxo8L/H1ZdSGjg7IDSLBR9tlHwuqg3NFyUvnAvFNo
+	87v8d0JKcDRpet2U8F/Oi1jba1XXbPeNcarHJC9zGRg==
+X-Gm-Gg: ASbGncvbEA5zX3tqnPLDWzIZKNnRpq87W6OGW3F7z4Ux+CINgOgFTf/xhFifQuvZL7R
+	mhANBhCut7WsHCeoY29Jt9uxbdc2KMLu0vkIp+WfqLxZ2dRDF6Wbnu/1DxmVWLQ20Q1jzOwIhbr
+	2BgJ4NKc6DMXZLwduCMwYQ3fPpoJ49ZrczC1PYvWOpYxG/qMSsIVVZ8TUHbjbGB/73Z1QJ8Dy7L
+	LkGuTVjaZgYxOvw0BaC
+X-Google-Smtp-Source: AGHT+IE6jxqNr85I7ZGkEkmU01kgCQJ33QIEpCnyzxl3L69ABnE2MV9BjbB9Verf2AUEMGXeGEB+/TMaOHdjorzlUBg=
+X-Received: by 2002:a17:907:d13:b0:af9:4fa9:b0fa with SMTP id
+ a640c23a62f3a-af9c6422244mr234707766b.27.1754657598429; Fri, 08 Aug 2025
+ 05:53:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aIdKAJVnskdAVUMi@bhairav-test.ee.iitb.ac.in> <2025072835-singer-penny-a421@gregkh>
- <aIeDDsRurrgXqRQn@bhairav-test.ee.iitb.ac.in> <2025072808-evict-snorkel-8998@gregkh>
- <aJJ0npFx1mwJ-MoV@smile.fi.intel.com> <aJXJ8PRPNT+kgozU@bhairav-test.ee.iitb.ac.in>
-In-Reply-To: <aJXJ8PRPNT+kgozU@bhairav-test.ee.iitb.ac.in>
+References: <cover.1754559149.git.mazziesaccount@gmail.com>
+ <09bf5e7973c37413ada950741e6e09c375e37c57.1754559149.git.mazziesaccount@gmail.com>
+ <CAHp75VcHR78Uwgo74n-i3a1sSfDxBwVKWihcnFp5x3d=puAySQ@mail.gmail.com> <13505077-fb36-4126-9767-fead98e01009@gmail.com>
+In-Reply-To: <13505077-fb36-4126-9767-fead98e01009@gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 8 Aug 2025 14:47:03 +0200
-X-Gm-Features: Ac12FXwaJ5Nfwg8ibclwjckIALyJVF9dUrO_kA13KenCYeCfF5jOTtu67n0BDMs
-Message-ID: <CAHp75VeUbi0Y7DgdAcw+bwSoB4w89Z0A_muery-aCAVwaiBbVA@mail.gmail.com>
-Subject: Re: [PATCH] staging: iio: ad5933: Fix implicit fall-through in switch()
-To: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, gregkh@linuxfoundation.org, 
-	lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, 
-	marcelo.schmitt1@gmail.com, gshahrouzi@gmail.com, hridesh699@gmail.com, 
-	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, akhileshpatilvnit@gmail.com, 
-	skhan@linuxfoundation.org
+Date: Fri, 8 Aug 2025 14:52:41 +0200
+X-Gm-Features: Ac12FXxd7zmXy-o_lQY2wGMCz9cEmsuTSrLvDzDvDqgNvrZCufAdpIwWoJ7-9H4
+Message-ID: <CAHp75Vf7PbHPFuVjmK1xPMZxotc81S6FAQkgZ0ETNXSWozaUQw@mail.gmail.com>
+Subject: Re: [PATCH v2 06/10] iio: adc: ad7476: Drop convstart chan_spec
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 8, 2025 at 11:57=E2=80=AFAM Akhilesh Patil <akhilesh@ee.iitb.ac=
-.in> wrote:
-> On Wed, Aug 06, 2025 at 12:16:14AM +0300, Andy Shevchenko wrote:
-> > On Mon, Jul 28, 2025 at 04:23:49PM +0200, Greg KH wrote:
-> > > On Mon, Jul 28, 2025 at 07:32:54PM +0530, Akhilesh Patil wrote:
-> > > > On Mon, Jul 28, 2025 at 12:39:21PM +0200, Greg KH wrote:
-> > > > > On Mon, Jul 28, 2025 at 03:29:28PM +0530, Akhilesh Patil wrote:
+On Fri, Aug 8, 2025 at 7:38=E2=80=AFAM Matti Vaittinen <mazziesaccount@gmai=
+l.com> wrote:
+> On 08/08/2025 00:16, Andy Shevchenko wrote:
+> > On Thu, Aug 7, 2025 at 11:35=E2=80=AFAM Matti Vaittinen
+> > <mazziesaccount@gmail.com> wrote:
 
 ...
 
-> > > > > > +     default:
-> > > > > > +             return -EINVAL;
-> > > > >
-> > > > > What tool is requiring this to be added?  It's totally redundant =
-and
-> > > > > needs to have the tool fixed instead.
-> > > >
-> > > > This patch is not inspired by any tool as such.
-> > > > I observed this code pattern while manually reading the staging are=
-a iio
-> > > > code. From my eyes, there is implicit intention to return from swit=
-ch block if
-> > > > no match is found which can be improved in readibility by explicit
-> > > > default block returning error.
-> > > > I agree this is redundant and will not have any functional impact.
-> > > > However, imo - this can help support kernel wide efforts to
-> > > > clarify switch() blocks.
-> > > >
-> > > > The motivation for this patch is from a035d552 which talks about
-> > > > eleminating ambiguity by clearly defining swich() case blocks.
-> > >
-> > > Yes, but the code right after this does the "default return", so that=
- is
-> > > now dead code.
+> >> +       BUILD_BUG_ON(ARRAY_SIZE(st->channel) !=3D ARRAY_SIZE(chip_info=
+->channel));
 > >
-> > Hmm... If I read the code correctly it is either already was a dead cod=
-e before
-> > that patch, or it's still accessible via goto label.
-> >
-> > > I'd recommend the "pattern" that the current code is in, it's simpler=
-.
-> >
-> > The pattern to return from all switch cases, including default is commo=
-nly used
-> > in IIO drivers.
-
-> Thanks Andy for your view here. Yes, this pattern is seen in iio drivers
-> including dead code as we discussed here.
-> For example, v6.16: drivers/iio/chemical/sgp30.c:406-411 shows same
-> pattern as this patch will introduce.
+> > We have static_assert(). Why can't it be used?
 >
-> hence, IMO this patch can help this staging code align with coding
-> pattern of iio drivers. However even without this patch there is no
-> functional impact and it can be skipped also, I am okay either ways :)
+> Don't know. Can you please enlighten me why one is preferred over the oth=
+er?
 
-Still, this leaves a goto label and makes code not really easy to
-read. What I recommend for all to be satisfied is to refactor the
-function so that it won't have a goto label after the switch. In this
-case it will be okay to use the above pattern and also for people not
-questioning the correctness of the code. Without that done I would
-tend to agree with Greg on the basis of unneeded churn.
+Despite already made changes, I answer to this. The static_assert()
+has at least two benefits over BUILD_BUG_ON():
+- it can be declared in a global scope
+- it produces more condensed (to the point) error message
+
+That's why in general it's preferable over BUILD_BUG_ON().
 
 --=20
 With Best Regards,

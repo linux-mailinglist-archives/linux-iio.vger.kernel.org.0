@@ -1,217 +1,259 @@
-Return-Path: <linux-iio+bounces-22437-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22436-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C20A0B1E50D
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 10:56:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CEFB1E515
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 10:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE35F1AA497F
-	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 08:56:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4EAB16405F
+	for <lists+linux-iio@lfdr.de>; Fri,  8 Aug 2025 08:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D56C26D4F7;
-	Fri,  8 Aug 2025 08:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A6B26AAB2;
+	Fri,  8 Aug 2025 08:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T1Cd4uvj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2sJ0XvF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4328A2690C4;
-	Fri,  8 Aug 2025 08:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD5B266565;
+	Fri,  8 Aug 2025 08:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754643258; cv=none; b=pspxTE9XKCFjyJpay6VRqB7aqvrMd8UAUFpZGYeCTkSP13LnD5ZfnijuxljiZ3jOjaoYto9XaAYoZaavI4Veqnlw3hcdhg5SMYs8k2VB+VQLrhRR+3HYSNaNnB57Lqy9yOzUoazHTlLo0O0SwavY6i+GR5+p3B/u8RiIl9lUwOk=
+	t=1754643240; cv=none; b=Mn4TlNbECU76ssH85pQ6c9mnhxxDFMf81t835BO7hc2HUxlUrhPvlBxB6WU7KCi7YCeuZ9H0L03IkGMvJ8ZvOst2vH1L4FhIuW0cpvARuHbAmeoppriFM/LjHdA7eqNV3PiddWkf/L1p8bn0/99r6SSW0m1mxUlvJU7ClTFMZB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754643258; c=relaxed/simple;
-	bh=nMzDRldyT6gamGZ8y4MMUQ0ws1QkdVOzdQy0YqPLcwo=;
+	s=arc-20240116; t=1754643240; c=relaxed/simple;
+	bh=+27YLCTX9hs95WcJyDn+H3oGT/rtvSb/bx40WCzCwVE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ozTmspt9PeaDroswemGLwotbHOcsT0rX7hKUiFKFQlAyuoz41Gg/av5/bKVq+nUC+vsMRLcsuKB4ocx8TrGL4f02wSU+Pl57mSuFS/1O9jkf/KElo3d5WXN5hFVjPxTHQvGLsPLlTi+gW74vvNTAG40JWMQl+lqgPRJTzDCxAss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T1Cd4uvj; arc=none smtp.client-ip=209.85.167.49
+	 Content-Type:Content-Disposition:In-Reply-To; b=SRQ2THp5uBq+9P1T8JTRD679IbqpCE+MBff9pocuPu9R0+d8FvmQxUUFqvlHYMy2IXFhUGhSnSuPso2oxJ4rZux76Wj/Oe3VC8NQnZQUysNidDRWfU+QMuU5lOXDhXN9PKJjJbxBcarOOd8nL7I2LkfkAD5hoKFywEiMI4TYLs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2sJ0XvF; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55b8b8e00caso2297526e87.3;
-        Fri, 08 Aug 2025 01:54:15 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-af9180a11bcso391444566b.0;
+        Fri, 08 Aug 2025 01:53:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754643254; x=1755248054; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RWogjGnTRuwcmlfIkxh4lLwLazo54YDHCMD6nS/8DMA=;
-        b=T1Cd4uvjTCzzb2zS9bgFwfVZNJvRyIktPDS/u+GqmuMEv8kVuQ9iSgO4htJzDDCG8l
-         GotGTvVrLZ4kbGBX66b1MBTwKa+ZN06bsl7KL8chyMRuyrUaIHVbhSs7/GV1TGx/k0k2
-         0XWLfqK/YBG78eErqlR7+he1bP2n+Nc9A3IVJY7M83n4Jzz0b2CpuVMt47YOTUSBn8u+
-         MOLNC2OXFJ6jLTa7rxtAZLmqAtr3IBfdbRBpd0ULkVa9Knw/bG7tsaOJKpu/R4CnMr7o
-         BM6DecPpYGMfKuLVTuSM92h+keGkepE4jmI8LGYOOLK9AjZQH9SE/LsAq2Rxb0CwjeK1
-         062Q==
+        d=gmail.com; s=20230601; t=1754643236; x=1755248036; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=r2C7ASj9t4ybFimtFtuG34MO5U16LP5ZLfqxX97dOSA=;
+        b=I2sJ0XvFr6s6l/gk7aLl8VkZQycCPpDsY6zEcfPIOnjggfqv9ksY7cx8Wzf34vY3Td
+         Uo3OrQKopoNDrfOiyybe6PMMIW6toQUO0Q7M6Movw0eKDYYhQBW95MhHHjarAl6dqUPI
+         UdGqB2ap2JpIyAHvk/qlRDjg2HS6ba3TzoMa5kvbjn3sEnD2ptm90Uv0Au+dWIkf8scG
+         nTCpzq1OdHszkQQ+NkFxweF/nLF5f/lX3Pa7ltnvB/vtvFtOjxpIvgH3jdSW32VGUj/f
+         ZY2fJeQISLANBFDNIm+M3UhwEc0FVwr+FmsZZlEiXvsje1TcIAW6mZaIcFsb59xFmxxU
+         l4GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754643254; x=1755248054;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RWogjGnTRuwcmlfIkxh4lLwLazo54YDHCMD6nS/8DMA=;
-        b=PleVK5f7HzuhwJQonCZjQFtbwulpGZTlebShVykTkccOv68AP1op2b8Dd+aBFUZbSf
-         1uXAk836dpm24RLC8toTGTnvKcCG2QdZdlAGl0yxrQDs/dXRExstHjRjTAZG+8f5xrmR
-         GXdBaM8dtc3WfXiS54VB47GyP/pu3YAsxCCueYCfy+5B6whUV0lpoukN80Oz+FQNiP7w
-         QQchAsPhF/sy/pUQKmXkE+cJ4DUjrHLMBxOkUzt+EgkCO+36v/qzPnE9r2NghPxK/+Wn
-         QA8tJ/gF115ShEIqx5qaBultXCcBlD5Ft6Apw9vvd+/XClfNM5da/BNgG1sa5sCrZinQ
-         GFpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUayg3H13Tny75zZ/xscgGzSe+Di/VWxgsLNmb7p1Zb/6zycgsi8iYAyGROL8wOsIT3ndssufn4CtkAx5mK@vger.kernel.org, AJvYcCWk0mWLISVOZMIx2cCrksYN5LrZDqcJOnwhP/9vMViktWUAE77EhvT53fHqTNcoL/mi+63NOj3RxHis@vger.kernel.org, AJvYcCX36fJlT0S/TmwLzMB/4azNBg5U8cd7tGyggjeJAOr7kPRhvAIYsz7qq/z4JfN8uQdnfnimOpm724Hv@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzoyvn2JkbVDV9wKKd6JfYgSmZR/3VmVGLO6ohI/QYCImQ4Lj49
-	vNDxRYc6OUJjd/ESKAc9PN8u0jKczdQCc0alziFPGIL3m7waAjk/eMMC+bMgWg==
-X-Gm-Gg: ASbGncs1Fcg1K6YSmgSSOLKo2kuMSfDiX0aOB8s1a409C84KHjhMV94RmFYbITW69cS
-	Pd4vvZXmrPJz44byTxm4z/BTc/eAn9hYY+692Otc3y+wVGgzKN2XzNjJHjA4pOczX2eMUftp4Fb
-	zQQs3JuMrdVpju27SXhqxn3+rlotBx8RfMFJsef2A5VNdLd7XAgdG3r9tRUpA55zcL5TphshbX2
-	skftrfqdpZkQJWGudNNkFzIUHq9uBD/gcvuIxY/bY57XUrA4LyjTCSenWrezfJJcuv4TJwAMQ84
-	1uydUaqo7g3hvNOzZBKznkV4gVEcDFeh1Krm4ynMe3YpcDVV7nvz70ZyMCLdVQrx7+ernd6D714
-	UZmh9X/WFjyL2vuUWCvaTB1+4vBSv
-X-Google-Smtp-Source: AGHT+IEDsSSIgbWeg2vqcDdGPmOdqerKcyBcMFifPi1Cnby+NU76x4CeDPpiP3/6+DXb9iajdac3lg==
-X-Received: by 2002:a05:6512:1591:b0:55b:8a07:7917 with SMTP id 2adb3069b0e04-55cc00fd54fmr520067e87.30.1754643254150;
-        Fri, 08 Aug 2025 01:54:14 -0700 (PDT)
-Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b9f77a1fbsm1912310e87.121.2025.08.08.01.54.12
+        d=1e100.net; s=20230601; t=1754643236; x=1755248036;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r2C7ASj9t4ybFimtFtuG34MO5U16LP5ZLfqxX97dOSA=;
+        b=hs1GOQhb19x6mZngb+KtMklAAiY8qSz2sMnk15/KGzcgdX+5rIjGrDC2twwvIjEokE
+         p+siaSxZX5a509AzSywcqI2ELHcp4sdK2/WUY2fGjD7WjEL1bjKH+PFV5AB5LXSjUZ6E
+         SkEcbOrLLn/Zk9L2kSQDDMtPAu5jVkgXOkrXLT3rOR8HFuOsdfcg5zW6ro9ki8/+igVS
+         OnHidaItJnl0++qkkPmdUf+/rTM0JB6Bx8avaVNvjhRp+f89uDl/Oe1JcDXfyZMQhalU
+         OB8vBzVKdbT/HajV+zY4D7sXPg5sTxvd1l7LA2n3wG8QDOAsvaxZBPKmhT1Z+t7FFbd6
+         h0fw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4laMiTCyQrEB54kPSOHPtTL0eacy8+7i4kzZDQ6oXDg4zIvo95N2qBRn7zk7bkxZ5iuhj+FKqeN9g+quS@vger.kernel.org, AJvYcCX7DmeXon1Ujmk2NcOpcIo4FNX93zZOWvt5373R4tvhbw/vtwMwHLTXgoqxmqOWt6jLI+0p/fuX96bD@vger.kernel.org, AJvYcCXpFg3AKeZ7A1zy8+cRrHCDa2gtVpR4HWPRntW8IE5fn1OKP5w3G9KgLpNJYOLovJU5JRsrNoWlUAlp@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyj7+7OFC+s1bT/L77GUXwMzk/R88ThknZ7nGI/W43ezTIpO9Hp
+	nLPquWx0uaHkhze5G0/pA43Y5FGFw27gazJtWM7XzNgNo+TOs+qAa106
+X-Gm-Gg: ASbGnctawtNBvseSVh4llRk7VO1J19LoZIeHSb+vPN0t+jW1rxXR+cz3/zujK8CZF3B
+	wfNVzho5+f3uZEwOPfhjjBII4YEXReickEaeHBuXkxzTt9i5HHEs2JGe0kpoRZQPQ8On0xq50Bd
+	gaD+4+GcM6o4RcpIl9+C1u1gDb78EatsqmocZrbTq6jCrIm3ud3uuFVtZJeUPhegeqCvwofCbUl
+	FrJH/s+KxLyByNsrNmXHRP98yfX0GkgKEKEdd+JRkxrFx0WiifKNHu8bCWszEg0LPp1gV/jNVkq
+	5l5zAg1qhH3/QQ2Q6S0SBA9wWU2kE3Xxz+jRhV2yhYZIVd6oZgCjGaRLuMSDl5kg4ismPS0RmRX
+	fPuXw3CN4Uw==
+X-Google-Smtp-Source: AGHT+IFDWoUsNJast/OF4ozkKL1WhnAmv1549wIl4YPt6LkjDcvKiHm6MT7NUYdutRryK0+xxqArCQ==
+X-Received: by 2002:a17:907:9344:b0:af9:479b:8c80 with SMTP id a640c23a62f3a-af9a3c5928fmr588777466b.4.1754643235393;
+        Fri, 08 Aug 2025 01:53:55 -0700 (PDT)
+Received: from nsa ([185.128.9.3])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0763e4sm1464649766b.1.2025.08.08.01.53.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Aug 2025 01:54:13 -0700 (PDT)
-Date: Fri, 8 Aug 2025 11:54:09 +0300
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        Fri, 08 Aug 2025 01:53:55 -0700 (PDT)
+Date: Fri, 8 Aug 2025 09:54:11 +0100
+From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 07/10] iio: adc: ad7476: Conditionally call convstart
-Message-ID: <57284a156afeb1531fae39897eba4e73d90fa5b9.1754641960.git.mazziesaccount@gmail.com>
-References: <cover.1754641960.git.mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 09/10] iio: adc: ad7476: Support ROHM BD79105
+Message-ID: <5w6ryx7dvu5fuxfyz3hwqbncwwh573a6nou3w3ebspbm4e4p7k@ne637fm22n5i>
+References: <cover.1754559149.git.mazziesaccount@gmail.com>
+ <da7e6b31a0f25106d7e2f56fb089c8fe71224654.1754559149.git.mazziesaccount@gmail.com>
+ <stmpyitqnjst2l26xdlkfqdedczpnxhoydges7xumtl5e46pof@cyidmsvdtdnj>
+ <2a678156-8e0b-4fa9-a940-f368cfac8f7a@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="MgcP2BfGJn65CyD4"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1754641960.git.mazziesaccount@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2a678156-8e0b-4fa9-a940-f368cfac8f7a@gmail.com>
 
+On Fri, Aug 08, 2025 at 09:11:03AM +0300, Matti Vaittinen wrote:
+> On 07/08/2025 16:01, Nuno Sá wrote:
+> > On Thu, Aug 07, 2025 at 12:35:25PM +0300, Matti Vaittinen wrote:
+> > > The ROHM BD79105 is a simple 16-bit ADC accessible via SPI*.
+> > > 
+> > > The BD79105 has a CONVSTART pin, which must be set high to start the ADC
+> > > conversion. Unlike with the ad7091 and ad7091r which also have a
+> > > CONVSTART pin, the BD79105 requires that the pin must remain high also
+> > > for the duration of the SPI access.
+> > > 
+> > > (*) Couple of words about the SPI. The BD79105 has pins named as
+> > > CONVSTART, SCLK, DIN and DOUT. For the curious reader, DIN is not SPI
+> > > ISO.
+> > > 
+> > > DIN is a signal which can be used as a chip-select. When DIN is pulled
+> > > low, the ADC will output the completed measurement via DOUT as SCLK is
+> > > clocked. According to the data-sheet, the DIN can also be used for
+> > > daisy-chaining multiple ADCs. Furthermore, DOUT can be used also for a
+> > > 'data-ready' -IRQ. These modes aren't supported by this driver.
+> > > 
+> > > Support reading ADC scale and data from the BD79105 using SPI, when DIN
+> > > is used as a chip-select.
+> > > 
+> > > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > > ---
+> > > Revision history:
+> > >   v1 => v2:
+> > >   - Fix the conversion delay for the BD79105
+> > >   - Drop unnecessary GPIO check from the convstart disable
+> > >   - Drop unintended whitespace change
+> > >   - Fix spelling
+> > > ---
+> > 
+> > IIUC, for this chip the CONV GPIO is actually mandatory no?
+> 
+> Yes. You're right.
+> 
+> > If so, we
+> > should likely fail probe in case there's no GPIO. And we could also change> the dt bindings accordingly.
+> 
+> I did change the dt-binding (patch 8/10):
+> +  # Devices with a convstart GPIO where it is not optional
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - rohm,bd79105
+> +    then:
+> +      required:
+> +        - adi,conversion-start-gpios
+> +
+> 
+> I didn't want to complicate the probe with extra checks for the GPIO based
+> on the IC-type. But I am having second thoughts - maybe it is the right
+> thing to do as you say :) Thanks!
+> 
+> > Some more comments inline...
+> > >   drivers/iio/adc/ad7476.c | 35 +++++++++++++++++++++++++++++++++++
+> > >   1 file changed, 35 insertions(+)
+> > > 
+> > > diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
+> > > index 8914861802be..aa8a522633eb 100644
+> > > --- a/drivers/iio/adc/ad7476.c
+> > > +++ b/drivers/iio/adc/ad7476.c
+> > > @@ -31,6 +31,7 @@ struct ad7476_chip_info {
+> > >   	struct iio_chan_spec		channel[2];
+> > >   	void (*reset)(struct ad7476_state *);
+> > >   	void (*conversion_pre_op)(struct ad7476_state *st);
+> > > +	void (*conversion_post_op)(struct ad7476_state *st);
+> > >   	bool				has_vref;
+> > >   	bool				has_vdrive;
+> > >   };
+> > > @@ -39,6 +40,7 @@ struct ad7476_state {
+> > >   	struct spi_device		*spi;
+> > >   	struct gpio_desc		*convst_gpio;
+> > >   	void (*conversion_pre_op)(struct ad7476_state *st);
+> > > +	void (*conversion_post_op)(struct ad7476_state *st);
+> > 
+> > Pointer duplication again :)
+> > 
+> > >   	struct spi_transfer		xfer;
+> > >   	struct spi_message		msg;
+> > >   	struct iio_chan_spec		channel[2];
+> > > @@ -63,6 +65,21 @@ static void ad7091_convst(struct ad7476_state *st)
+> > >   	udelay(1); /* Conversion time: 650 ns max */
+> > >   }
+> > > +static void bd79105_convst_disable(struct ad7476_state *st)
+> > > +{
+> > > +	gpiod_set_value(st->convst_gpio, 0);
+> > > +}
+> > > +
+> > > +static void bd79105_convst_enable(struct ad7476_state *st)
+> > > +{
+> > > +	if (!st->convst_gpio)
+> > > +		return;
+> > 
+> > I think the pattern for optional GPIOs is to just call
+> > gpiod_set_value_*() and the lib handles NULL pointers. Also the above is
+> > not coeherent with bd79105_convst_disable().
+> 
+> I definitely don't want to do *delay() if there is no reason. Haven't
+> checked the code lately, but I suppose the ndelay() is a busy-wait, blocking
+> _everything_ on the core it is executed.
+> 
+> I dropped the check from the _disable() variant since it doesn't call the
+> delay().
 
---MgcP2BfGJn65CyD4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It's a valid point but...
 
-The ad7476 supports two IC variants which may have a 'convstart' -GPIO
-for starting the conversion. Currently the driver calls a function which
-tries to access the GPIO for all of the IC variants, whether they
-support 'convstart' or not. This is not an error because this function
-returns early if GPIO information is not populated.
+> 
+> But now that you (and Andy) have commented on these checks...
+> 
+> (even though I don't really think these checks are THAT bad. It's almost as
+> if there were some reviewer's "unconditionally comment this"-list where NULL
+> check for the GPIO API's was written ;) These check's are quick and very
+> clear, and they avoid a blocking busy-wait)
+> 
+> ...I see two other options. One is adding the check in probe as you suggest.
 
-We can do a tad better by calling this function only for the ICs which
-have the 'convstart' by providing a function pointer to the convstart
-function from the chip_info structure, and calling this function only
-for the ICs which have the function pointer set.
+I do think this is the right approach. We should make sure no one tries
+to probe this device without any gpio because it will be pretty much
+useless so better to fail probe in the first place. I'm also not sure
+it's that complicated. Maybe just a chip_info flag like
+'convgpio_mandatory' (likelly a bad name) and act accordingly when
+checking the return value.
 
-This does also allow to support ICs which require different convstart
-handling than the currently supported ICs.
+- Nuno Sá
 
-Call convstart function only on the ICs which can support it and allow
-IC-specific convstart functions for the ICs which require different
-handling.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
-Revision history:
- v2 =3D> v3:
- - Use indirect call to convstart (via function pointer) also from the
-   ad7476_scan_direct().
- - Adapt to the change which returned the chip_info pointer back to the
-   driver's state structure.
-
- v1 =3D> v2:
- - Adapt to the change which removed the chip_info pointer from the
-  driver's state structure.
-
-The follow-up patch adding support for the ROHM BD79105 will bring
-different 'convstart' functions in use. The IC specific pointer will
-also prepare the way for this.
----
- drivers/iio/adc/ad7476.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-index ad9e629f0cbd..6cb2cbeafbd3 100644
---- a/drivers/iio/adc/ad7476.c
-+++ b/drivers/iio/adc/ad7476.c
-@@ -31,6 +31,7 @@ struct ad7476_chip_info {
- 	unsigned int			int_vref_mv;
- 	struct iio_chan_spec		channel[2];
- 	void (*reset)(struct ad7476_state *);
-+	void (*conversion_pre_op)(struct ad7476_state *st);
- 	bool				has_vref;
- 	bool				has_vdrive;
- };
-@@ -70,7 +71,8 @@ static irqreturn_t ad7476_trigger_handler(int irq, void  =
-*p)
- 	struct ad7476_state *st =3D iio_priv(indio_dev);
- 	int b_sent;
-=20
--	ad7091_convst(st);
-+	if (st->chip_info->conversion_pre_op)
-+		st->chip_info->conversion_pre_op(st);
-=20
- 	b_sent =3D spi_sync(st->spi, &st->msg);
- 	if (b_sent < 0)
-@@ -94,7 +96,8 @@ static int ad7476_scan_direct(struct ad7476_state *st)
- {
- 	int ret;
-=20
--	ad7091_convst(st);
-+	if (st->chip_info->conversion_pre_op)
-+		st->chip_info->conversion_pre_op(st);
-=20
- 	ret =3D spi_sync(st->spi, &st->msg);
- 	if (ret)
-@@ -160,12 +163,14 @@ static int ad7476_read_raw(struct iio_dev *indio_dev,
- static const struct ad7476_chip_info ad7091_chip_info =3D {
- 	.channel[0] =3D AD7091R_CHAN(12),
- 	.channel[1] =3D IIO_CHAN_SOFT_TIMESTAMP(1),
-+	.conversion_pre_op =3D ad7091_convst,
- 	.reset =3D ad7091_reset,
- };
-=20
- static const struct ad7476_chip_info ad7091r_chip_info =3D {
- 	.channel[0] =3D AD7091R_CHAN(12),
- 	.channel[1] =3D IIO_CHAN_SOFT_TIMESTAMP(1),
-+	.conversion_pre_op =3D ad7091_convst,
- 	.int_vref_mv =3D 2500,
- 	.has_vref =3D true,
- 	.reset =3D ad7091_reset,
---=20
-2.50.1
-
-
---MgcP2BfGJn65CyD4
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmiVuzEACgkQeFA3/03a
-ocWDrAf/cJ7BfiUMPb+mT/65RXiU+d/OYqvkHvOu/SEjFt0mZkg8WuUL+BG670XU
-gC1TvWjFV4fFUTpigq0wAHyrv6ILMKzS2qFVzSbXip5QBReqjs1QRhLsJkC+j0Uv
-F43L3W6HYfuFZe9HZUjNXHgqs3ykXhEzYcMJt6776/tIujyK/erqqDCSAcGBVQCE
-wqIa0lWypN4lyYSmZjLedno58s2pA/qiEZq/ACLgeiNCx7AyR+XihXXENVDJLqA8
-8z7gGcw+ITri6S2kh1O6UGuvoky96PEhotswYtZUPTNX97nJK46eLlCCqP1zwoMQ
-7uOGBd3Q5aZRU5kmBGellJLLP/gRrQ==
-=sPUM
------END PGP SIGNATURE-----
-
---MgcP2BfGJn65CyD4--
+> This check will however be substantially more complicated code than this
+> NULL check here, because it needs to be performed only for the ICs which
+> _require_ the convstart. Good thing is that it will error-out early and
+> clearly, whereas current solution will just lead bogus values to be read if
+> convstart is not correctly populated.
+> 
+> Other option would be making the conversion_*_op to return an error. I would
+> still keep the NULL check but the bd79105_convst_enable() could error out.
+> Delay would be avoided, user would get the error notification and
+> bd79105_convst_disable() wouldn't get called.
+> 
+> TLDR; I will see how the "check in probe" you suggested plays out. Then I
+> can omit these checks here :)
+> 
+> > 
+> > > +
+> > > +	gpiod_set_value(st->convst_gpio, 1);
+> > 
+> > gpiod_set_value_cansleep()? I do see the driver is calling the same API
+> > in other places but I do not see a reason for it... So, precursor patch?
+> 
+> Ah. Great catch. *kicking himself*. I should've noticed...
+> 
+> Thanks!
+> 
+> Yours,
+> 	-- Matti
 

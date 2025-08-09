@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-22488-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22489-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A33FB1F461
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 13:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49607B1F46A
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 13:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD5E46252A8
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 11:29:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBB5F722029
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 11:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D659E27F00A;
-	Sat,  9 Aug 2025 11:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5044C27F182;
+	Sat,  9 Aug 2025 11:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bd5HJpiU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sfv10rfH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC1027C864;
-	Sat,  9 Aug 2025 11:29:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4101CBA18;
+	Sat,  9 Aug 2025 11:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754738945; cv=none; b=eCgJZVz6AHdtOr2nyrxSgTOuddAVTdqEP9y8p6FcpRPGGAjHNVA9V1BtCfHZeK2AwICrnni+1DiqsKA/YmSOB6fSkx26hm836oX3Ngwsei+SMjg3CKx/euKjup7bQO7A/5DxsycS3MfxI+3nq6zXLgksL9U6YZPsHJmayvY1vjg=
+	t=1754739896; cv=none; b=P/Z74QMV7c3bk+kizqeWWVK2jRPNkqUNEzUTfYUXxmrWmXjNBs9mShu37YF4QLjXEFsdT07kaJylYwsr5Zk1PKqWwer5VsKL4rigmugoT7Uf+rtMdpx+mfUNWRHf96tuu8I/2zZsQxKTrh/PXhhXmOOfl1QXb1tFTP/+qPIF7Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754738945; c=relaxed/simple;
-	bh=AfFLWgoIvA4IGFwAe0geKaCh77ntPaCbb8ATrEfr9bY=;
+	s=arc-20240116; t=1754739896; c=relaxed/simple;
+	bh=Azvvfcb9SnOqvqu229kwZtw+F9tzwYrzTk1mDHyS+xk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h4Yxd0rxLJZ1O1NQRWVzbApI/gIfx+xMu1pMWTB8VsitXYChyokAVt8NEl+K8pjXapxf5krznATjS2iNWi+2KsBm5+Bmhb0rqGZ81k+rZ1uPpUYr79kUV1Co34gx3JHL5QMKO/jDXw1x4kTOnk6CsfV/ITo4HLzFsWmB27zvhH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bd5HJpiU; arc=none smtp.client-ip=209.85.210.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=qZKnYkZVIFExuH8qZdYohfVqT+g7JktnOkSoMYuPxGeZuuvFu7+yAIkRUTzGlcLsKkQDAVoGydB4Yo9NTsqB705dpt6rMdNrk5m7XSWkVKV9D2prNaw6jFbPx90emSsftMb7vuxr6vBkCj9abVG6Q2QZxw87X1uHGEm3saQ/Vco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sfv10rfH; arc=none smtp.client-ip=209.85.215.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-73c17c770a7so3861576b3a.2;
-        Sat, 09 Aug 2025 04:29:03 -0700 (PDT)
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b34a6d0c9a3so3478612a12.3;
+        Sat, 09 Aug 2025 04:44:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754738943; x=1755343743; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754739894; x=1755344694; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=M3jDSSsJNCbaqA/Grzma8s/dztuniQeQowWM9jbonBk=;
-        b=bd5HJpiU9RTNesWbhem6dhRKMxAw6SBwWBHyPHkMTyn1Zun8+7yRTtLQYIoZ106UDM
-         UTSd10THkCzy7sPkdexzEnNHrqELdx3t4j6NdVCRE6NyX9RgPj+qaPpB6eMq/4aHB+OC
-         JnaZfcUvvekjS9GQL9ref4/Azvp5lBe2yU5NGcZLThxwP+Ht3c/5pQ/1rjzpmvGOznJ5
-         Q88jPmChHw7lRLRDEdimOXxlAbc4TXM3NNS3sSFzKzMC2T/3+jKqSxaTYm+L/CwFoVSP
-         rpi9lnRqhIxe8HQ7lCe1w5wGZbHDuikpYMzYNUhVEUHxjAJKxsQHzw8vZaP0Q/iJfbPZ
-         4kXA==
+        bh=uT4no/pCag6wFWmsFofuh7pYlxDOOGT57ZsLXecReMk=;
+        b=Sfv10rfHq3N3POZZJMm3w6GCTXZfpRKqen3NdLuwfKOhup5ue0hvEEW/HRuc/4Lz1a
+         E7QtCUyxYOhtBM/wq8NfSUy2PH73Izya8t/r7yVFUfkRp1hE75OeRbGRCGtsR1VuojXU
+         iF8vYqlfg3L3gHpb3hefBeXv4owZWz7UjCmsgN+K+/fCkFW6nQKec1UCGFMO1PJjRHtG
+         sUBSVhzL5uhEs8vYIStqllzHyFspZoFEEVO0HUk64rtbCRJqOq3vR4uQgIu91tUrS6HE
+         IfZEP6OAh6Mklmh11HIWgZY//+Xcoufvag84c+TNrF+v+DF0BQ38JnC9dMubZvdfZKA6
+         Bt3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754738943; x=1755343743;
+        d=1e100.net; s=20230601; t=1754739894; x=1755344694;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M3jDSSsJNCbaqA/Grzma8s/dztuniQeQowWM9jbonBk=;
-        b=afGkE6Dd0YE0vE1pthGZ62jDORwaSYclRnPTrkoCK3d0RRjMnvFWluWXh+0iEmDHkR
-         VJ0dI6k0mUVho5sKCw+oPoxdSlYT6lb6ItjA4GXN3tXb3zLazMkFoMfMsK2+PgBabvup
-         OzamoyoNyiToKKudEeroe1ZhA3Zfc2HoHr0QOVazFqh38sr9VsbhXa55WwGVthhDtH//
-         qwV1iOaF3vImqhwTOgXS+7S8ohRO7YDNFp0CqZFkgs2hM7Bj+Jlu9QyfTMKzUfsqbf13
-         CxqiH5VJ2HUn8nPQSdVSa/sotR0ruFYsbpgzo2EaqCRgGgH5e5q4u11Y+ewVtwcbn+2V
-         OoZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKn4KpRn1ZKgyIXutMepD54V7oikNsFGptui3SbgaXSrnAwIiwvjK2cYTbkiYZYPoADXLvZe3xkGVM@vger.kernel.org, AJvYcCX7QhbjUT9JfvsmuoPQlT1avoKpYXHbAfrWJDRjpGmZ2ICfpR8vH7+UXHdxBCR4pCgwrr4sMHiLl/6tMUZ8@vger.kernel.org, AJvYcCXZsSi95hpDWGarZZwBWmLZyI0ePo2B16NfWsRmDIgyDcaWj3Ndl8LWjZzcwsXBGxAIZwbWfUegnDoa@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIq4oqOxU4ke/jQKNiYQ6MZDuvHf+gexbM/vJytju0LdaLFcPA
-	y5onL+0EV7+etDxq7PfNAdcrlmxbHYZXgf2+lIjxprhOfqo6IwSClahZ
-X-Gm-Gg: ASbGncsrTsf1W4yQCFE/fgGv/2T8meX9L5//vp4Ba0XAcsG7gesgTPGywZlJJKTKwtM
-	ldyKvL9ylM5hWDnKzgTw6yXScqHs8npvkWLtxIbDJdiUlrw3bapxklvx67gvZXPuh2UL7ctB75n
-	YsVllkVCKPaTq4pbivATBIgAcigu8/NK0fTkANGloiqk97ztMmY7Q98kf6Y+OESn07j10jwoPGa
-	7PYl1Ps9eyfd1q1RLQTbMmYibonSCN4tWyY34/N+PP00DJsD4bNyMPtxvU6FdISPCkYZDKJzOHN
-	oXAV+QSc8sCemxVYO610PeEELGJhdlYskG64n4ZrdNbPPif80ovKD7BjT+/cIBFuQoDN8OtAfUc
-	nFqp4x3ypfOayJmeRTxmJLQ==
-X-Google-Smtp-Source: AGHT+IGLhk53gdI3ahnykqnR/EMkkHKH72AEKv7zh101b/xTnzkApCLMrO71maSxXuIeMiaaStb6yw==
-X-Received: by 2002:a05:6a20:914d:b0:240:21e1:cb9b with SMTP id adf61e73a8af0-24055067f3amr10996884637.14.1754738943298;
-        Sat, 09 Aug 2025 04:29:03 -0700 (PDT)
+        bh=uT4no/pCag6wFWmsFofuh7pYlxDOOGT57ZsLXecReMk=;
+        b=EHMEiROuNeHqHtTqsWTHdZxoIrbcUD4eAmcSeI15jlHjlYdK9KNpuy/6woAX2Sanh+
+         wIHayzmBIYPXEyo4kGfPWgFAJJ6obK7d4Hq5SZ4YG5KV6dqyd1SLqQ/QfvlsytAjtoNJ
+         7mhgLLn7PkeQ1a5YjZtJUY+fVAYXc6Fn3isPPskzgAoDhcsFr2aL9a7nfH4AaEoGapa6
+         nYWwC2btuhqIrXNXUP54awmqPPI8XUJDtIUA5JrxmIEkh3/+xudcS1epAAhY0+1jWBJW
+         0Xnut/5+RthEVvnMu2FukSA8TR9EkkTPrD5gWz9HXqfBpZSuh0w0JYilHF9GGAF05tUW
+         jJ9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUIJgDJtBVxHW0xN+nOyxJX8PQIBusi8h1iQB5QcPW8wEb0W3VfS8+Y2SrgpVIfSpN1/XvKwQn84HGnn9Hb@vger.kernel.org, AJvYcCUJMi+jljRQyiyWv3PoSmLFz9qKmH6WC+D/aW3UjH+/j3O6g8PEoXWmUU5WX2oRYn4RxOKYdTbtg2Is@vger.kernel.org, AJvYcCXDZOkhDs4mgF7/B9E6+bc/Hfka/cxl6zSL1TZa2VKq2IVWnHFtfDTHAEfPmFGmvden1RUJ34IJWuU+@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywkni6e7XMf/9v0Jm8ZGFAo5PWtNJ11lJuz1byPyDREbdVXvmkp
+	VXVL2AbZpZR1mI0ROuxknt8mPyek4xr9YwcANsVRis/2O/g6t6Pj/87Z
+X-Gm-Gg: ASbGncvBdmHD2Jk2gPxjIrUh3JB+AMC36MgXQN4uMrpAIu0cPFQ/lCLVfPMeiVN8U8V
+	0x9uxTRt7dBbluexkCJ3MViiN5P8EOT3B8Vik5ncYpuop+NLaQfAUazt9gTZteMQ+swib2Wjwr7
+	D9dsl0b13nosuQREIiRZOh9WAqKqYAtEaxf93HYw7HgmLY0U8tFSRvOHnvpp+/7AnCmY/Ep/OWS
+	bK9PAz6Gda8nmktJRZ22PqiCo/lJ7ZOfOlar/UdxgOX9zPLoiKL3NdfyN0MStFy2LKDJpzd1GsU
+	W/Iul8N6DZKgWExKI39nXCD+Q8UC0s99KH2LKcbBTjMCaYbZl/3Xbv5CHCAmPdvgd7ZFdJrvBMY
+	ZJz6ESusQ1IU87yJbl4yiFQ==
+X-Google-Smtp-Source: AGHT+IFBNLoa1BBHg6PHmhCfIOsJf0knmpDONYUnnaDdcU3PfkWZsq79vjdgh5DKgImq2pj+maiSeA==
+X-Received: by 2002:a17:903:3bad:b0:234:b743:c7a4 with SMTP id d9443c01a7336-242c22c3c1emr92676985ad.38.1754739893419;
+        Sat, 09 Aug 2025 04:44:53 -0700 (PDT)
 Received: from dixit ([2401:4900:1c45:5acf:241:d77b:f6c0:54f8])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce89132sm22520715b3a.29.2025.08.09.04.28.57
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8975c89sm227668315ad.96.2025.08.09.04.44.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Aug 2025 04:29:02 -0700 (PDT)
-Date: Sat, 9 Aug 2025 16:58:50 +0530
+        Sat, 09 Aug 2025 04:44:53 -0700 (PDT)
+Date: Sat, 9 Aug 2025 17:14:45 +0530
 From: Dixit Parmar <dixitparmar19@gmail.com>
 To: Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -85,7 +85,7 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
 Subject: Re: [PATCH v3 1/2] iio: magnetometer: add support for Infineon
  TLV493D 3D Magentic sensor
-Message-ID: <aJcw8icGvsDzFGpJ@dixit>
+Message-ID: <aJc0rZmfc_zSzaG_@dixit>
 References: <20250807-tlv493d-sensor-v6_16-rc5-v3-0-b80d2cb41232@gmail.com>
  <20250807-tlv493d-sensor-v6_16-rc5-v3-1-b80d2cb41232@gmail.com>
  <CAHp75VeKPr=3H_wOvcesqj4OsrqN7zwRFFk3ys3O012JpQtxrQ@mail.gmail.com>
@@ -103,18 +103,73 @@ In-Reply-To: <CAHp75VeKPr=3H_wOvcesqj4OsrqN7zwRFFk3ys3O012JpQtxrQ@mail.gmail.com
 On Thu, Aug 07, 2025 at 10:57:16PM +0200, Andy Shevchenko wrote:
 > On Thu, Aug 7, 2025 at 4:57 AM Dixit Parmar <dixitparmar19@gmail.com> wrote:
 > >
+> > The Infineon TLV493D is a Low-Power 3D Magnetic Sensor. The Sensor
+> > applications includes joysticks, control elements (white goods,
+> > multifunction knops), or electric meters (anti tampering) and any
+> > other application that requires accurate angular measurements at
+> > low power consumptions.
+> >
+> > The Sensor is configured over I2C, and as part of Sensor measurement
+> > data it provides 3-Axis magnetic fields and temperature core measurement.
+> >
+> > The driver supports raw value read and buffered input via external trigger
+> > to allow streaming values with the same sensing timestamp.
+> >
+> > While the sensor has an interrupt pin multiplexed with an I2C SCL pin.
+> > But for bus configurations interrupt(INT) is not recommended, unless timing
+> > constraints between I2C data transfers and interrupt pulses are monitored
+> > and aligned.
+> >
+> > The Sensor's I2C register map and mode information is described in product
+> > User Manual [1].
+> 
+> ...
+> 
+> > +       help
+> > +         Say Y here to add support for the Infineon TLV493D-A1B6 Low-
+> > +         Power 3D Megnetic Sensor.
+> 
+> Megnetic?
+> 
+> > +         This driver can also be compiled as a module.
+> > +         To compile this driver as a module, choose M here: the module
+> > +         will be called tlv493d.
+> 
+> ...
+> 
+> > +#define TLV493D_RD_REG_BX      0x00
+> > +#define TLV493D_RD_REG_BY      0x01
+> > +#define TLV493D_RD_REG_BZ      0x02
+> > +#define TLV493D_RD_REG_TEMP    0x03
+> > +#define TLV493D_RD_REG_BX2     0x04
+> > +#define TLV493D_RD_REG_BZ2     0x05
+> > +#define TLV493D_RD_REG_TEMP2   0x06
+> > +#define TLV493D_RD_REG_RES1    0x07
+> > +#define TLV493D_RD_REG_RES2    0x08
+> > +#define TLV493D_RD_REG_RES3    0x09
+> > +#define TLV493D_RD_REG_MAX     0x0a
+> 
+> + blank line
+> 
+> > +#define TLV493D_WR_REG_RES     0x00
+> 
+> I would name it _RES0 in analogue with the _RES2 below.
+>
+We are not using these TLV493D_WR_REG_RES* registers anywhere,
+so I shall drop TLV493D_WR_REG_RES2 too.
+> > +#define TLV493D_WR_REG_MODE1   0x01
+> > +#define TLV493D_WR_REG_RES2    0x02
+> > +#define TLV493D_WR_REG_MODE2   0x03
+> > +#define TLV493D_WR_REG_MAX     0x04
+> 
+> ...
 > 
 > > +enum tlv493d_channels {
 > > +       TLV493D_AXIS_X = 0,
 > 
 > Why assignment? Is this HW defined value? Then you must assign all of
 > them explicitly to make code robust to changes.
->
-No, this is not HW defined value, these are used for iio channel and
-some internall indexing. Most of the driver I referred had this enum
-having assigned to 0 which i think gives clear intention and better
-understanding. either I can keep as it is assuming its good for
-readabilty or keep it unassigned. What do you suggest?
+> 
 > > +       TLV493D_AXIS_Y,
 > > +       TLV493D_AXIS_Z,
 > > +       TLV493D_TEMPERATURE
@@ -124,8 +179,7 @@ readabilty or keep it unassigned. What do you suggest?
 > > +       TLV493D_OP_MODE_POWERDOWN = 0,
 > 
 > Ditto.
->
-Same as above. Just different usecase as this is driver specific enums.
+> 
 > > +       TLV493D_OP_MODE_FAST,
 > > +       TLV493D_OP_MODE_LOWPOWER,
 > > +       TLV493D_OP_MODE_ULTRA_LOWPOWER,
@@ -139,7 +193,6 @@ Same as above. Just different usecase as this is driver specific enums.
 > > +       struct i2c_client *client;
 > 
 > Why do you need both?
-Indeed, I should drop struct device *dev member.
 > 
 > > +       /* protects from simultaneous sensor access and register readings */
 > > +       struct mutex lock;
@@ -155,10 +208,7 @@ Indeed, I should drop struct device *dev member.
 > 
 > No mask for the existing values in the respective wr_regs? Wouldn't
 > you need to use FIELD_MODIFY() instead?
->
-I believe, we are doing OR op with the value created using FIELD_PREP,
-so it should not interefere with the existing non-masked values.
-However, as FIELD_MODIFY is there, I should utilize it.
+> 
 > ...
 > 
 > > +static s16 tlv493d_get_channel_data(u8 *b, enum tlv493d_channels ch)
@@ -168,10 +218,6 @@ However, as FIELD_MODIFY is there, I should utilize it.
 > I would move the default assignment to the 'default' case. This makes
 > the intention clearer.
 > 
-As per the suggestion on privious version of the patch, we are having
-ch datatype as enum and as suggested, with enum as swicth-case, it
-should not have default case. so I think this initialisation to 0 at the
-beginning should be fine.
 > > +       switch (ch) {
 > > +       case TLV493D_AXIS_X:
 > > +               val = FIELD_GET(TLV493D_BX_MAG_X_AXIS_MSB, b[TLV493D_RD_REG_BX]) << 4 |
@@ -207,14 +253,6 @@ beginning should be fine.
 > 
 > No include for this API.
 > 
-General question for all the include related suggestions, all the
-required headers are being included by one of the included header(i2c.h,
-iio.h etc), in such case, is it necessary to have specific include for
-given API mentioned in source file? Will it not make it more clumsy
-in terms of repeatative header includes? I understand having all the
-includes mentioned in given source file makes it clear to understand the
-dependency the driver is having. Just want to undertand it bit more as
-learning.
 > > +       ret = pm_runtime_resume_and_get(data->dev);
 > > +       if (ret < 0)
 > > +               return ret;
@@ -230,7 +268,6 @@ learning.
 > 
 > Redundant parentheses.
 > 
-For (3 * sleep_us)?
 > > +                       ARRAY_SIZE(buff));
 > 
 > Missing include for this macro.
@@ -256,7 +293,6 @@ For (3 * sleep_us)?
 > 
 > out_put_autosuspend:
 > 
-Does it mean it should have whatever is being skipped in the flow?
 > > +       pm_runtime_put_autosuspend(data->dev);
 > > +       return ret;
 > > +}
@@ -278,10 +314,6 @@ Does it mean it should have whatever is being skipped in the flow?
 > 
 >   return ret;
 > 
-Yes, return 0 and the check for ret has been kept as per the previous
-review suggestion. The return value from the tlv493d_set_operating_mode
-is returned from i2c_master_send() via few function inbetween and its result
-has to be conveyed to the caller API as we are in initialization phase.
 > > +}
 > 
 > ...
@@ -335,7 +367,6 @@ has to be conveyed to the caller API as we are in initialization phase.
 > 
 > Choose one of them, the other can be derived.
 > 
-ACK.
 > ...
 > 
 > > +               return dev_err_probe(dev, ret, "failed to initialize\n");
@@ -358,9 +389,7 @@ ACK.
 > > +};
 > 
 > Missing include for both of the ID tables.
-The ID tables are defined mod_devicetable.h in which intern gets
-included in i2c.h and i2c.h is already included in this driver file,
-should I explicitely include mod_devicetable.h here?
+> 
 > ...
 > 
 > > +static struct i2c_driver tlv493d_driver = {
@@ -372,8 +401,6 @@ should I explicitely include mod_devicetable.h here?
 > 
 > Missing include for this macro I believe.
 > 
-No I guess. DEFINE_RUNTIME_DEV_PM_OPS is part of pm_runtime.h and its
-already included.
 > > +       },
 > > +       .probe = tlv493d_probe,
 > > +       .id_table = tlv493d_id,
@@ -388,7 +415,4 @@ already included.
 > -- 
 > With Best Regards,
 > Andy Shevchenko
-
-Thank you for careful review,
-Dixit
 

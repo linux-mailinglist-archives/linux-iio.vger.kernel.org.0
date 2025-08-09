@@ -1,151 +1,100 @@
-Return-Path: <linux-iio+bounces-22493-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22494-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66908B1F4FB
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 16:34:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5235BB1F5B7
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 19:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 295FA4E103F
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 14:34:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3CA434E10E1
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 17:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFAB2BDC34;
-	Sat,  9 Aug 2025 14:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799A2277CA0;
+	Sat,  9 Aug 2025 17:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xl0e39jD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T0VaT3/x"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD67429E10D;
-	Sat,  9 Aug 2025 14:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF551D618C;
+	Sat,  9 Aug 2025 17:47:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754750046; cv=none; b=uQrIXG9ir0jpJbve51qNdzDMJQn9SNTyU8pmQqrj659lJyxZMO8ywmrayUD6YrzxwI4ru4V8pI2DsyioDC1JEEzvuf2DHqRMDu6Q8miRgs8R+1h6/EDO2GVUpAaNndmxORwL5n36S4uA9ysfZhDP2oCvRRAi8A5x87V6Sw/7MKU=
+	t=1754761651; cv=none; b=L86zLxDR3L3ejlpkGPEWfkHzvRxbIq/jHeplC7Ft6T6X3vB/DZDorKbO4zGlHcybiCAn8MvSlm3ApweoL94XVxgEdjGWvHnkgGeHxo/Z9DjhOCH9+8XypSNDRL2qIfOtkuRvhKkuNCWs9b6PpcRc7GOd4dyN44r3pmHq2qLSVFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754750046; c=relaxed/simple;
-	bh=1VmpB5Ibj4Yszy6afKomstQ8c+4Jfgpb5dWPq5qaHsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FXJTzMwQu8TKJh+D1M80WHamfScUncOWvUSUr/iuW9wtrbzZX+0W3qgm0RouYX7UWIJgOnWXU/yu027WlWsngtKgQApNZpUkX6Joofk6hhUVyCpTENf8q3pQOUZImy0K0UMTQPWaLrztLHJL6eWZVVS/7ze19xah1KSHzHwMiMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xl0e39jD; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b2c4331c50eso2222850a12.3;
-        Sat, 09 Aug 2025 07:34:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754750044; x=1755354844; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6qWFAQa6ghWNAVFp90dmhpeqTC8dkDj2Z0djww0iqfM=;
-        b=Xl0e39jDp2ysUGJxRoMx0c+yrLc2KmBoSltcb1OYB25kq5PzpAFliwxbBSHgdJhkty
-         hMiyGXsBv6t2k66U94PzPRXDN3jxWkNR4hl01qwLEZrsixI0MTc7L9NZgqSKUPM2OoSU
-         DiBCdj0765tVkRusdkH/YRgkaunKSH+AeWWPAkZ32Ehx/jW8nzv2aPzG/0BrbvHy9xAP
-         nNPeXf+retq4liLGsZC1gndztatb4S55rF4DCtluJcUawp3MJjThLJvLXUJDK+adCwRq
-         8kmQmq3D/e0PRV+7GQtSkEcOeTWYbchKtXD7suTW+p97gS0zlhQGeCggOGn2D7bigSwz
-         1yog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754750044; x=1755354844;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6qWFAQa6ghWNAVFp90dmhpeqTC8dkDj2Z0djww0iqfM=;
-        b=mL8c03FOgH7D7rX7KcNPULK+3N+PUGQaBCr+nGLKVW/pXuAQ5qMNRIgMRzWjLJOx+/
-         afsFvLzSY1B/oEX+e7CDJ+hYkAxrzq9uPOzQZSrLjvwHORC2N4kwF+0QZeFxyzELSamy
-         2edipNpwxzBfk2Lcj/WWXErry/64y8ydQszrpAwmDqla/2o/kTT8HPb7ZSVxlP1xt6Rn
-         nxYSVrU94wZz8roo+naWiSMezp30X9S/3nXXkHG65QRsPS8sbIywAZ3iE+L3nWTjI0M2
-         +rh6DrsWP6XK0B9ue0QTVvqKto6wKjyThp3A3dN/yVhs1Tw8tiM9/zcrX57J3ipRMQKq
-         XIpg==
-X-Forwarded-Encrypted: i=1; AJvYcCVA55PI7UjtKhGkDhTLz7AHrPAUZKIi/4jCmoPV3QHqSa1eyHjopBmEu0VS2tgCcgESFdKpGL3QahqPy5eo@vger.kernel.org, AJvYcCWk/WV6KjBCpMgFjDR9xKlFoVCMfPt2nP7vliXzDXPi+MvwXifwBNaErQRe4T/AccmQED5D5D7qDwMK@vger.kernel.org, AJvYcCXNIqNCMrzedgvLkMzS/5QQY0ZtjtSZmG8jc+PWEUBEaN+YtRSuQRgUMMZWGp7NmdwT4G52RBy3X9jQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWzJdLehAbbVv0fmCrGVfSj85dmjQhxkpm6AmQ80m+yzhQpU1/
-	e9jgUbfLbSd9tQ9CAJUJWxEaHZizOzFvk7zM8Y19yHIf3LKj2gPr1mga
-X-Gm-Gg: ASbGncuGKI90Oas0PDRCqudrIvfLUqWWi9amyg9CbXErp7K3agsOMkwC/6DuKupijgt
-	EorQ120+2zWO5PIHKYM4op7zMB+xdmkK6bYAfWYEgFuz0rZ5uKR3hCaYG4FO0cixrIaVbuqzIvE
-	bqN6zQxsX6FWSo/maCFCtrSPxRvB9HCRsHowl3fq34WY0OVQMLDe+usFuIW7BNPs6r6GJznrQuH
-	bcsIhCkTK5RDFG70eqZswIs+oWVLZ4IF+7hYP1FX6c1kWw69+lMKhteZNxJI9oBAi45Oow1zuG1
-	qtLqvQwuWMdTxaNHSeVaqpCOy9tLurmjIOGMbGKTKfD4FusUc7mvenRfKeRgcenYvxRz3Akx3yk
-	ErP/dLGYWchfBHuobtg6PSg==
-X-Google-Smtp-Source: AGHT+IFLW6w5oB6ZXbuB7TpKPWatpCUluGeUA5lja2xOuxx1eqqEzTSB1q3l1GYm+kirkb7tz809Lg==
-X-Received: by 2002:a17:903:3b8c:b0:234:986c:66bf with SMTP id d9443c01a7336-242c20037f0mr87772355ad.11.1754750043928;
-        Sat, 09 Aug 2025 07:34:03 -0700 (PDT)
-Received: from dixit ([2401:4900:1c45:5acf:2843:11a:c808:689a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e897ef30sm230625275ad.106.2025.08.09.07.33.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Aug 2025 07:34:03 -0700 (PDT)
-Date: Sat, 9 Aug 2025 20:03:54 +0530
-From: Dixit Parmar <dixitparmar19@gmail.com>
+	s=arc-20240116; t=1754761651; c=relaxed/simple;
+	bh=2pySo+y0CSODRR5cdQftQZ1uLPdfSk0OHDudX+OWhQM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H/RnkAnLdDAg+HObny6WwKjkq/IO1YDrwk2VzjXd1PLFZith9fCfeqdbUdZe4zjSPJuzG7MOORHV9zGwgGEqYyT12YpxW1hVzVVUTv/uWDGyLlx4J0cYT+XtekZPLtuLu6u/4MNbd0qU0xKYDz6GTRXr52HAx86tgo8odxkbMEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T0VaT3/x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE7DC4CEE7;
+	Sat,  9 Aug 2025 17:47:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754761650;
+	bh=2pySo+y0CSODRR5cdQftQZ1uLPdfSk0OHDudX+OWhQM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=T0VaT3/xn09RQFBDQnSE7caWfHqXJ5Q1Mhq8LJP94fhaQR/sSxGZX5lFQ5M5wwXIp
+	 wIbegSNMpGmRhZMymWEwY8MxCi1fKIi+d9vwf6IS9ENazVrOIx4CzQmp6g1xS25Xsr
+	 6i96Vj9UkRygPftvrYRI0h9GVZ2YfU5X2JPIAT1mqEcZm1vQGBVt8JOW87o/9bVb6m
+	 c9TBhczMHAOpKc7O6HdNuNs0lkHQARsDb4jLteYZl8gTLeqft1vBHztkQBI7ikvqvL
+	 KCzADCppFsCr4jKYG0+/yCG1sTzKzRMEcbmMOh8zt87eYX7Lk6Yu8U5waNBU6s5olA
+	 NVLKBe5cpS61A==
+Date: Sat, 9 Aug 2025 18:47:23 +0100
+From: Jonathan Cameron <jic23@kernel.org>
 To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] iio: magnetometer: add support for Infineon
- TLV493D 3D Magentic sensor
-Message-ID: <aJdcUhz-vqnx8DwA@dixit>
-References: <20250807-tlv493d-sensor-v6_16-rc5-v3-0-b80d2cb41232@gmail.com>
- <20250807-tlv493d-sensor-v6_16-rc5-v3-1-b80d2cb41232@gmail.com>
- <CAHp75VeKPr=3H_wOvcesqj4OsrqN7zwRFFk3ys3O012JpQtxrQ@mail.gmail.com>
- <aJcw8icGvsDzFGpJ@dixit>
- <CAHp75Vc7Jftvmgb0EgnYmiKtT2TTYb2uQGNgaqm7hvkFWpJ9cg@mail.gmail.com>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dave.hansen@linux.intel.com, andy@kernel.org,
+ dlechner@baylibre.com, nuno.sa@analog.com
+Subject: Re: [PATCH] MAINTAINERS: Update max30208 maintainership
+Message-ID: <20250809184723.42ce6a70@jic23-huawei>
+In-Reply-To: <CAHp75Vdgafv9hqtZYiouC_RgY+0m2a3TfOOsk12LUMDEmY+4AQ@mail.gmail.com>
+References: <20250808190203.7493-1-marcelo.schmitt@analog.com>
+	<CAHp75Vc1KgiDUUEjeEKdrSfom6NThPG-383O=sezydnrZLoGqg@mail.gmail.com>
+	<aJdSYIv8_QX0WwdI@debian-BULLSEYE-live-builder-AMD64>
+	<CAHp75Vdgafv9hqtZYiouC_RgY+0m2a3TfOOsk12LUMDEmY+4AQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vc7Jftvmgb0EgnYmiKtT2TTYb2uQGNgaqm7hvkFWpJ9cg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 09, 2025 at 02:44:00PM +0200, Andy Shevchenko wrote:
-> > > > +       data->wr_regs[TLV493D_WR_REG_MODE1] |= mode1_cfg;
-> > > > +       data->wr_regs[TLV493D_WR_REG_MODE2] |= mode2_cfg;
-> > >
-> > > No mask for the existing values in the respective wr_regs? Wouldn't
-> > > you need to use FIELD_MODIFY() instead?
-> > >
-> > I believe, we are doing OR op with the value created using FIELD_PREP,
-> > so it should not interefere with the existing non-masked values.
-> 
-> I am talking about existing values in the array.
->
-Right. So in that I think it will make more sense to directly use
-FIELD_MODIFY instead of using FIELD_PREP first and then doing this OR
-op. Right?
-> > However, as FIELD_MODIFY is there, I should utilize it.
-> 
-> > > > +       u16 val = 0;
-> > >
-> > > I would move the default assignment to the 'default' case. This makes
-> > > the intention clearer.
-> > >
-> > As per the suggestion on privious version of the patch, we are having
-> > ch datatype as enum and as suggested, with enum as swicth-case, it
-> > should not have default case. so I think this initialisation to 0 at the
-> > beginning should be fine.
-> 
-> It will make no sense. Please, remove it. and perhaps the compiler
-> won't warn, otherwise the default case will be needed.
->
-Understood. Will keep it uninitialized.
+On Sat, 9 Aug 2025 15:53:42 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> > > Missing include for this macro I believe.
+> On Sat, Aug 9, 2025 at 3:51=E2=80=AFPM Marcelo Schmitt
+> <marcelo.schmitt1@gmail.com> wrote:
+> > On 08/08, Andy Shevchenko wrote: =20
+> > > On Fri, Aug 8, 2025 at 9:02=E2=80=AFPM Marcelo Schmitt
+> > > <marcelo.schmitt@analog.com> wrote: =20
+>=20
+> ...
+>=20
+> > > > -S:     Maintained
+> > > > +S:     Supported =20
 > > >
-> > No I guess. DEFINE_RUNTIME_DEV_PM_OPS is part of pm_runtime.h and its
-> > already included.
-> 
-> And how is it related to my comment _here_ in the code?
-Pardon my misunderstanding. Please ignore.
+> > > Just curious, are you really having this as a day job task? =20
+> >
+> > There is a request for MAX30210 support and so this driver may get exte=
+nded to
+> > also support that part. Though, even if we end up with a separate drive=
+r for
+> > MAX30210, it feel unlikely to me that people lost interest in MAX30208
+> > as that's still in production according to MAX30208's page [1]. =20
+>=20
+> Ah, cool, thanks for taking care of this!
+>=20
+> > [1]: https://www.analog.com/en/products/MAX30208.html =20
 
-> > > > +       },
-> > > > +       .probe = tlv493d_probe,
-> > > > +       .id_table = tlv493d_id,
-> > > > +};
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+Applied to the testing branch of iio.git.
+Thanks,
+
+Jonathan
+
 

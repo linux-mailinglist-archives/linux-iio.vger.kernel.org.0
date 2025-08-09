@@ -1,205 +1,135 @@
-Return-Path: <linux-iio+bounces-22506-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22507-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D03AB1F61F
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 22:04:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D579B1F62D
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 22:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B70A189C423
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 20:05:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DD58189D241
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 20:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99427264630;
-	Sat,  9 Aug 2025 20:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F70276022;
+	Sat,  9 Aug 2025 20:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LNHOnjGS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iV2bczuU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF66201276;
-	Sat,  9 Aug 2025 20:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AC42E36F1;
+	Sat,  9 Aug 2025 20:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754769889; cv=none; b=DckQ3zIT6etbGCzVszbpYSBnEf3LiOeN4m3ZolAFYj9RRO5bRbJlxebQvmdlMvWtU1Ify3yvMT1ZbsH70lbIJn968a/NotR7+9SVTSVhQMwcMNRwcGrikogPHVtg+jxueVoiQ1Nu2R4c3YW4Oy4/VUKIrE4vtLRVZf89GXSLLd8=
+	t=1754771313; cv=none; b=PnquUgR94F5N+8+bVZIetwNDi6pWMJbTvnWIi/YGyRzUjDNI2mM0LFKlsI7rjeZoo8DN0329Z+IabSr6/ZQsoJNzV8byH25NL+VVKWqWCB2CXffoc+7bs9UAFfs1/wFzKlA4adGkSw/n0SyBIKwOLeQ1jVQAllDgBZvctuva+5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754769889; c=relaxed/simple;
-	bh=q/5GUlOQTr3fIoGisjpYnV9hJAJvnNOPyRfBFJT/tI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UbzmsbvdGWoI2DBt17Bjp3KAiw20gyKeCnHQjE8n0WRNYpAinI9iNzbyj5xAPsWaX2hcvOw27ji6K7nyvDWIJMwCRs/SiRdejFit1isMMYTj+KwecBuhBkrCG9LFb+2lLV+3kYadzOJNeevrqPP8U5n7iJbiuxuNPu2M9zVgSyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LNHOnjGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3567C4CEE7;
-	Sat,  9 Aug 2025 20:04:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754769888;
-	bh=q/5GUlOQTr3fIoGisjpYnV9hJAJvnNOPyRfBFJT/tI4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LNHOnjGSYFKTneIKoyjKE6Foh0RdoJKu7teJX+7SSrPMmTYlP0samtCL/dbRg4jda
-	 ddktL6CQbZkcEDUDuSizAEYcWl6XQ8wNHBN0fXkb3thhC+hK3dffaDN1AXIWycS1nN
-	 8SDTMtUSqW/uUveqzT+Gd7o3ucQGdGXUf0qk7PAVSoPPCHXhhRmvfPdHgBKSCNqe/e
-	 gpL8h8OM6KFuVWNjtX9hIFjn1ZzX0FtfyAU56SfvNB9ke0E2PCnW1qfR4oGFEsbHrX
-	 r0xhWWsjezGtLn/+mdu5c0yTDo8xt9bsdSkFxSak9ytDpTdgfswuxZ8N7Fhj2hdFe+
-	 cCuPbyoMkhC6w==
-Date: Sat, 9 Aug 2025 21:04:38 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: Replace bouncing Analog emails
-Message-ID: <20250809210438.23fb5fd0@jic23-huawei>
-In-Reply-To: <20250728144901.3f646a4c@jic23-huawei>
-References: <20250724113826.61998-2-krzysztof.kozlowski@linaro.org>
-	<20250728144901.3f646a4c@jic23-huawei>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1754771313; c=relaxed/simple;
+	bh=37hFr4JQ5cAUiFBjprBnJALMGkmbzYbC5hvMuHDdEeg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f9laC04hjV21XTGoebqUxRv/CUX3C+kSqpFS93Bl1i92E3EFGjFJ8+AETccL762iIT8CEisaybS+tdTAdzFptEK4ehKU3ibN1UjU+1od7CUdx+Y2mEuxWovdmejmasXvpYrEfUX44gYaYKFGzWuIqFEeR22tbSONk3Guq1UD0rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iV2bczuU; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-af9618282a5so631799066b.2;
+        Sat, 09 Aug 2025 13:28:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754771310; x=1755376110; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EvCp3OvNUB4OhNHYWKMJm9g+RtzmygR3Z13148Yf9dI=;
+        b=iV2bczuUFFEqo7x3naXLETf4tnfSGgANKzYH0nClX7TFXHWAiw1Kgi60tPBXSfNAoX
+         xvj4Ewc/8Zbs9fw/hOUJ2wdcwuQCYe/X5Of27gybAi+HkmpiPoSJe8JedIziGJVJjLC1
+         PxiQi869Sj+QeV19f9SM+H1IpLbg3E0JwhgnMpD8EgUlbjjPQ3N46dUDm0frgqrIv75F
+         5nXsA85KzANNSz1Io4t5xgXpTH8XXMUpqla1blh6B/b7fzP83uG1dH/BKYcdam4WXEox
+         jF7e9Ot7M9/LDBWQVeL/SluwMc4umGQPpYpgsSKMCTHI3uiMrnCwZFdFZwHlJmVyvOGW
+         OUeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754771310; x=1755376110;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EvCp3OvNUB4OhNHYWKMJm9g+RtzmygR3Z13148Yf9dI=;
+        b=o1If/tpc2pbo/N4iRANiOKlLiESHeGYFIiwIBIE6mxFQJsl197jLVQP3KB8GIZ6EHn
+         8znM0rAmi7ZKiWFQOtzuW7JTTfT0oxV9hHTz/PFz2pQVI87urz8VBIRLRZhW4aq0jJjB
+         XGw48t4YA7lba0YBOGESNuppiq7DOVP/AaUVVLF77kOd1NvIHGJZLHw5dmgWImGv3YWi
+         +2at1X1gdNwxGXFcsr/RScs+IQP8YhRtuuMWWjZ5rca9DtNoqrVkQHRyVv6YyeZSl7nv
+         T6Hk5b0AN7z/IOksANSPiFD1lPp94kyclAFwhZT/GdtL9ERb23HD1rVUGdhETNluGOV/
+         TdRw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+/1mlrAkWgKIgihKkRAGvLgqMjmm6gxgmFr4OUxHdP9vKV7rdMi0E85uk7J5gVw12xBAPVRc8ay4=@vger.kernel.org, AJvYcCXCcK0AR6ON1IatHp7UITABeFD0mBT6mWU7vs9/uIwmrh0hqard6ip7uTHJ7Gnm/itqC3e9hMV5sqCnm15P@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywqr8DXXNMtHwhyCNhqP/HlMImwblDB88Q0IUNPk5bDVQ4aenri
+	3THfzt6TEDS8aoOoABF+uPIRpsrc0xBsDF8oBLw9pFvhIJKZkdPZC1UFU7+o5hL6li6ymB83VC8
+	lbxDlaH1PwB664V2xMnO5gUYgy0owWPA=
+X-Gm-Gg: ASbGncue8se5DbVaOfp99Nj46/PukyZqYeVdhrQPcr4BuIXXvk70mZm07bDdN5/tfjw
+	Ngi12K1yI9+cq5tY9Y5HVndhJeG590p7hS1HCQ/AC+rOWyEIVKs1/Hh4/9PjScbyTzsWLY/itpv
+	Cqz1JBH3uW1fttagbM9hPpaOUUEcDuljgP6MJDMkLcy4audsdx/rk87RR7Wksi6GGGwPASPQSe0
+	TuyBNjXqQ==
+X-Google-Smtp-Source: AGHT+IGcC8v+IXhY2ttWzIwIXrVDJZJwHOrz5ae0rZ55TlsOES7mAXPKPdPq5D0f+gfh8MsYX6xE8mXSdXxSj5318co=
+X-Received: by 2002:a17:907:948a:b0:af9:69d1:9c6d with SMTP id
+ a640c23a62f3a-af9c65b02d8mr723466366b.40.1754771309447; Sat, 09 Aug 2025
+ 13:28:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250808-icm42pmreg-v2-0-a480279e7721@geanix.com>
+ <20250808-icm42pmreg-v2-1-a480279e7721@geanix.com> <CAHp75VdKNE0xD8xbJQ2RSCA=_MB9DMZtXRTCNkpdKdv8vW-Q-w@mail.gmail.com>
+ <20250809190609.4fef9df7@jic23-huawei>
+In-Reply-To: <20250809190609.4fef9df7@jic23-huawei>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 9 Aug 2025 22:27:52 +0200
+X-Gm-Features: Ac12FXz9Qx9vHpjcHamJejeb1GK9RQZkty2IQjqDet9B67oLvWEl908F5wrZO8w
+Message-ID: <CAHp75Vc5CxOj77cw85hmioFTG6YJCe3ZJWwJsJW+QL79K8GpWw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] iio: imu: inv_icm42600: Simplify pm_runtime setup
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Sean Nyekjaer <sean@geanix.com>, 
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 28 Jul 2025 14:49:01 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sat, Aug 9, 2025 at 8:06=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
+wrote:
+> On Fri, 8 Aug 2025 23:37:51 +0200
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > On Fri, Aug 8, 2025 at 5:58=E2=80=AFPM Sean Nyekjaer <sean@geanix.com> =
+wrote:
 
-> On Thu, 24 Jul 2025 13:38:27 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
-> > Emails to stefan.popa@analog.com and alexandru.tachici@analog.com bounce
-> > permanently:
-> > 
-> >   Remote Server returned '550 5.1.10 RESOLVER.ADR.RecipientNotFound; Recipient not found by SMTP address lookup'
-> > 
-> > so replace them with Marcelo Schmitt from Analog where appropriate.
-> > 
-> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > 
-> > ---
-> > 
-> > I don't know who from Analog should maintain these devices, so I chosen
-> > author from Analog of one of last commits.
-> > 
-> > Marcelo Schmitt, could you confirm that you are okay (or not) with this?  
-> 
-> Nuno, Michael, other ADI folk.  Can someone confirm if we are making these Marcelo's
-> problem?
-> 
+...
 
-As amusing as it would be for me, I definitely can't pick this up without
-some tags from ADI folk and Marcelo in particular!!
+> > > +       struct device *dev =3D regmap_get_device(st->map);
+> > >
+> > > +       if (!pm_runtime_status_suspended(dev))
+> > > +               regulator_disable(st->vddio_supply);
+> >
+> > I would rather use positive conditional as it seems to me more scalable
+>
+> To potentially save time when Sean looks at this.  I don't follow. Do you=
+ mean
+> something like
+>         if (pm_runtime_status_suspended(dev))
+>                 return;
+>
+>         regulator_disable(st->vddio_supply);
+>
+> ?
 
-Jonathan
+Yes.
 
-> Jonathan
-> 
-> > ---
-> >  Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml | 2 +-
-> >  Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml   | 2 +-
-> >  Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml      | 2 +-
-> >  Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml    | 1 -
-> >  Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml     | 2 +-
-> >  Documentation/devicetree/bindings/iio/frequency/adf4371.yaml   | 2 +-
-> >  Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml   | 2 +-
-> >  7 files changed, 6 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> > index 3dc973b98f81..40e9a40a7a60 100644
-> > --- a/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> > @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
-> >  title: ADIS16240 Programmable Impact Sensor and Recorder driver
-> >  
-> >  maintainers:
-> > -  - Alexandru Tachici <alexandru.tachici@analog.com>
-> > +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> >  
-> >  description: |
-> >    ADIS16240 Programmable Impact Sensor and Recorder driver that supports
-> > diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> > index 88aa67bf2280..55e44c9292cf 100644
-> > --- a/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> > @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
-> >  title: Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer
-> >  
-> >  maintainers:
-> > -  - Stefan Popa <stefan.popa@analog.com>
-> > +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> >  
-> >  description: |
-> >    Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer that supports
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> > index 7146a654ae38..958a37def56c 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> > @@ -8,7 +8,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
-> >  title: Analog Devices AD7124 ADC device driver
-> >  
-> >  maintainers:
-> > -  - Stefan Popa <stefan.popa@analog.com>
-> > +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> >  
-> >  description: |
-> >    Bindings for the Analog Devices AD7124 ADC device. Datasheet can be
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml
-> > index 5207c919abe0..eac48166fe72 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml
-> > @@ -9,7 +9,6 @@ title: Linear Technology / Analog Devices LTC2496 ADC
-> >  maintainers:
-> >    - Lars-Peter Clausen <lars@metafoo.de>
-> >    - Michael Hennerich <Michael.Hennerich@analog.com>
-> > -  - Stefan Popa <stefan.popa@analog.com>
-> >  
-> >  properties:
-> >    compatible:
-> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> > index 82b0eed6a7b7..058df4c8ddf8 100644
-> > --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> > @@ -8,7 +8,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
-> >  title: Analog Devices AD5770R DAC device driver
-> >  
-> >  maintainers:
-> > -  - Alexandru Tachici <alexandru.tachici@analog.com>
-> > +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> >  
-> >  description: |
-> >    Bindings for the Analog Devices AD5770R current DAC device. Datasheet can be
-> > diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> > index 53d607441612..031b1657cde1 100644
-> > --- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> > @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
-> >  title: Analog Devices ADF4371/ADF4372 Wideband Synthesizers
-> >  
-> >  maintainers:
-> > -  - Popa Stefan <stefan.popa@analog.com>
-> > +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> >  
-> >  description: |
-> >    Analog Devices ADF4371/ADF4372 SPI Wideband Synthesizers
-> > diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-> > index 7a1a74fec281..e49d5e6fab61 100644
-> > --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-> > @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
-> >  title: Analog Devices ADIS16480 and similar IMUs
-> >  
-> >  maintainers:
-> > -  - Alexandru Tachici <alexandru.tachici@analog.com>
-> > +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> >  
-> >  properties:
-> >    compatible:  
-> 
-> 
+> If so I'm not seeing why we'd want this to scale as it's a single use
+> devm_set_action_or_reset() callback doing just one thing.
 
+While I agree in _this_ case, in general the check and return
+immediately is more scalable for reading purposes, e.g., indentation
+will be one level less. Also it won't require additional churn in
+adding {, i.e. changing conditional line just for that.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

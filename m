@@ -1,305 +1,147 @@
-Return-Path: <linux-iio+bounces-22508-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22509-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0216CB1F631
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 22:35:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF867B1F953
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 10:09:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDF7717F6E5
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Aug 2025 20:35:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D0DC7A4201
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 08:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B715201276;
-	Sat,  9 Aug 2025 20:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08560230BC5;
+	Sun, 10 Aug 2025 08:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kVWVm3Gq"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="t3fqqPUu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3621D2E36F1;
-	Sat,  9 Aug 2025 20:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D4814885D;
+	Sun, 10 Aug 2025 08:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754771698; cv=none; b=qytjbOwbTjFlOgsSFqO8fmETHUowHwclBukMLipr+7Tza4niaUFbtw82NtZZtHQgUGXxfM0wkm3uwNKfkUcI5n6hTioPlSpwGkx8O9u+RZUVDVx2yH1KrGgRr7IrXxUl4NuAgIJmWQGQbxby1qnUF5MvYK/sqVSJPJ9JQ9b3IdM=
+	t=1754813354; cv=none; b=kGnObdNd+dBRkA5xUEfClGk4S3Jfl7VAAebXr98AHMNbc28+YGe8eoBXBrq3dvc1g5MbgNmOrNuQLdIj5HX8sRckimhTmlV181W1voQgO9ab9GBelTFIaP7UTcSA92RrVtJIBCj6dGNGAmELCRDfTdqhwjE2XwCGywpFjZtABKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754771698; c=relaxed/simple;
-	bh=wqOLG9i9RjrWpwScItaVm5i8hEzKty+ljNIAUBVKf7c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BvxMwHOlqEiTbUKwiUrxXHOoWIXiFthcVQAAZex+ZuqtpLbSILgBin6y35eTTAy0k0pcn947Gi7P6N8u5dZ+Adlw6gZ50TiX+RzowYcIqrSTaAkuH299WrD5KUXUXmqkiG++a1la4TgGzeB1MwiiNu26IvvPOhVxh2lIw7TR0rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kVWVm3Gq; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-af95b919093so479965666b.2;
-        Sat, 09 Aug 2025 13:34:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754771694; x=1755376494; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8kZmH6zEe19LahdSi523CClX4+3HiP+RimCUczdeWDI=;
-        b=kVWVm3GqZq1whn6zUYE75gxKTSPs0y1jswUNSsTaQNr3TfgsbKpeCPwjeiuUPL77gc
-         FgTUyxLuCEHNThH+w/RGAWqdi3URlBSx4gg5eA8hRRKth2a7Ra1eWExqBmz/lVfE3opQ
-         qZBPN/8vh3452ADXCG0YNc7vn/W9FjvU0Q7e8X3f2kG2TdLM05dopG4pTBGMEP20HrHf
-         wG3HtdtL+ekSV/2JEA4atHcH7HjJ47ZdqqRWwbLKZ7aaTq1u2DyusLsU6thQ6wDo1rg8
-         hjhhg3udDVRMmtccv5ousQ/lehLl35ZHyJmPjwSN2sBAvEuraFCZr74F5dtjURO1db9Y
-         3vug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754771694; x=1755376494;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8kZmH6zEe19LahdSi523CClX4+3HiP+RimCUczdeWDI=;
-        b=iK2ZGeTbSJ1CF3VQFA6eLmR6aGVW76ROGe6nSUf6HtbwIg8uvlmm8PwBjQWtNwlmq+
-         s+86fk1fFJjNMBeO2wj/RSiLKpcYs1aCHvvOfcy2Zga4KVb11DfkJMkLmVo7B/jnJ71R
-         Z4BgKtijLpP9iIQuaV3NPPHLqkJJBpS0iaRkou2nEZ1R6K92uIEcGKSVtYrkoslzVeQN
-         FY0OfEouXouazNzzHHjxlfWpysqQEAxb2JC00RgUiv9BBwtXJf6hTc2ig0rf4mr4f5Xe
-         FgLqaF/5/Qa7qavEyv/6nrRsAVyzPZNIYVs9/C23GFTNlyulvz7OfSUHFd+NVu9InyNo
-         gcpw==
-X-Forwarded-Encrypted: i=1; AJvYcCW/7BlazN8oMLEVFBZlruTuK+xBuiPeig3zudzoXcVAUqBMBHiprKPWbbs1NRqkU7WiL3WQU4TqwgA=@vger.kernel.org, AJvYcCWe+kToo8BXd/7P6Bxi/yBYmMQ5zkwY/Qy5OYu4DvXhujYzYLaeb7dqbHRAdnDEItbNZqjzM04+Mhy61qKi@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyUFQtGvbCEIjeEIs1XUsefktStOfe8wKIYU+XMrstc8/MB5i5
-	Yb/xm88+kAI9Oy3rzvktLL78p1Drm+CGNwU0FA+HNR77dU8zwg+WgZ93aTB2YO1PyL/jD171cZf
-	iqdds9jpto1325zb88Flk5xysg4rqFSg=
-X-Gm-Gg: ASbGncsSayVPKVjXv/gDlJUyOvjObi9UJkbft5UsvrPhVReZFH4VesVxgMBvtlW/vDt
-	XuALc424XJyzZU3nVzUStEfdiuiUuxQhJ+K4/eyFwSmM9k6yZWWAGRKcIXUcDrr9n3YNXHg8L+U
-	TT4ETNl5NIdRBPhSoA3TEWc1DPeLtCzUJzA9z9eyS2r0mAftix9wJXy9OxQLGvgiEwPYS3poLcN
-	G2/gCHp9g==
-X-Google-Smtp-Source: AGHT+IEuz9sJpUKzmwW3Jy6jfLTjTrqYaKrZq54NviwCHzcqk8k4YCyVolw98oKgO5Jhk8p64YtViQ7X1Zdwx6hB5BE=
-X-Received: by 2002:a17:907:3d4c:b0:adb:229f:6b71 with SMTP id
- a640c23a62f3a-af9c640e627mr806927466b.5.1754771694444; Sat, 09 Aug 2025
- 13:34:54 -0700 (PDT)
+	s=arc-20240116; t=1754813354; c=relaxed/simple;
+	bh=Z4MkdGaD5yMVPCNaHWZ77bCzeRvGMa/DJf7l5HVwimc=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=CXunuT27LIuUmiYZ9ln4BKLS4yG7nzmYv06qdkSae8BYWa0zxjbQyxjW0PDFbGm/EB54+s7xBhiaOaz4VTppJKdR8TpfQ7hJ+vcvH+bxEo2yw1PtqQiZqkW3z2+T/WDlsKlE9hbX5kIPImayo5D2ey/P3fZem3zHO/BB/2qJ3iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=t3fqqPUu; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1754813345; x=1755418145; i=markus.elfring@web.de;
+	bh=Z4MkdGaD5yMVPCNaHWZ77bCzeRvGMa/DJf7l5HVwimc=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=t3fqqPUuLhL4lWZsUFryimW0Q/ffpNkk/sHZloFLA3StWeatVsxD2Ay3ejpxL6fb
+	 zJfEB0rW9hnXrqtyrvyjjWSg/w5jtu4phzGurKUa3J7kGeT+tZuu2G4fgUqIys7fi
+	 tB6r0ezXG8MDLXZ70hsiMGqeLXtVsHRv6blZspyM60rmIUdvvS4cFth7E4tcwEEuA
+	 4WxUDVw1Fkf7zpf/6+ovsGNv3e28kLB2bTomwLOfLOQB0eaHsUOY6Xk6j3+dtAWrr
+	 Gg5ufV7BywYk35Ig0oOQHO+toYLElwctRlmuXwCzF+TBMocmekBZIdUR9Yln8yllg
+	 8KzonRYCuHGSDyeXIQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.214]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mrfp8-1uHTeP3Fu0-00la50; Sun, 10
+ Aug 2025 10:09:05 +0200
+Message-ID: <f34219ae-098f-4732-94e9-f077316d843d@web.de>
+Date: Sun, 10 Aug 2025 10:08:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250804192513.62799-1-akshayaj.lkd@gmail.com>
- <CAHp75VfJzVAJYC9-2oyfV4qBLmraXRgqZFcho6b7orW+1sYkXw@mail.gmail.com>
- <CAE3SzaTBzF=W9++d4CmW-vRkKLy9zd2oB4ADX8NuH-woTvJxqg@mail.gmail.com>
- <CAHp75VePmhLstCraz_+7Cqc_bLQ49+1rV4oH59a1oo2xHp0R+Q@mail.gmail.com>
- <20250806161801.000061c0@huawei.com> <aJO05BNi2TsYtdwe@smile.fi.intel.com>
- <20250807140401.00006c85@huawei.com> <aJcapPt8f5YMUBH3@smile.fi.intel.com> <20250809205736.34b75763@jic23-huawei>
-In-Reply-To: <20250809205736.34b75763@jic23-huawei>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 9 Aug 2025 22:34:18 +0200
-X-Gm-Features: Ac12FXxOtcAJgzshVTz7po25h_GlHwg-lGid0lpBnMSErpDEP1DTXUeEYdmxHMY
-Message-ID: <CAHp75VffV4Xomb-1zp6_xB=r+PJzsDnj_gjwyWas8cX7dhuhng@mail.gmail.com>
-Subject: Re: [PATCH] iio: light: ltr390: Add remove callback with needed
- support in device registration
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Akshay Jindal <akshayaj.lkd@gmail.com>, 
-	anshulusr@gmail.com, dlechner@baylibre.com, nuno.sa@analog.com, 
-	andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+To: Salah Triki <salah.triki@gmail.com>, linux-iio@vger.kernel.org
+Cc: LKML <linux-kernel@vger.kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+References: <aJQOmQKO219rS8ZN@pc>
+Subject: Re: [PATCH v2] iio: pressure: bmp280: Use IS_ERR() in
+ bmp280_common_probe()
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <aJQOmQKO219rS8ZN@pc>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:AvhrCOMTUFsJvDkZwccEZtipCctmDl25pmwBYLrcGEL37WkwTdP
+ glGgxe06IKKG0oEdcIoyifhS09yU+GSUX+LEsfjTna6YFvgAaV3n0TCjhyIocni/cqhkVZP
+ xGSqEqX0cF4M8zqH6/Rd0u44dUHgYbGDMUJ6TGOPgThq2FrWxOqZYUhQE8u52sRjBUnc+er
+ NJWrLrsTqXvwTmzmyknOA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:KB2oqePxtVo=;brdJLwhkwmQ7H0WmT0/Pjqfx7vH
+ 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
 
-On Sat, Aug 9, 2025 at 9:57=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
-wrote:
-> On Sat, 9 Aug 2025 12:53:40 +0300
-> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
-> > On Thu, Aug 07, 2025 at 02:04:01PM +0100, Jonathan Cameron wrote:
-> > > On Wed, 6 Aug 2025 23:02:44 +0300
-> > > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
-> > > > On Wed, Aug 06, 2025 at 04:18:01PM +0100, Jonathan Cameron wrote:
-> > > > > On Tue, 5 Aug 2025 14:47:32 +0200
-> > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > > > On Tue, Aug 5, 2025 at 6:05=E2=80=AFAM Akshay Jindal <akshayaj.=
-lkd@gmail.com> wrote:
-> > > > > > > On Tue, Aug 5, 2025 at 2:36=E2=80=AFAM Andy Shevchenko
-> > > > > > > <andy.shevchenko@gmail.com> wrote:
-
-...
-
-> > > > > > > > Doesn't sound right to me. HAve you investigated PM runtime=
- paths?
-> > > > > > > Yes I did investigate and found that PM runtime->suspend() ca=
-llback
-> > > > > > > co-exists with remove callback.
-> > > > > > >
-> > > > > > > > Looking at what the code you added there it sounds to me li=
-ke a part
-> > > > > > > > of PM runtime ->suspend() callback.
-> > > > > > > Yes, part of functionality will always be common, because bot=
-h the
-> > > > > > > callback implementations put
-> > > > > > > the device into powered down or low power state which is what=
- has been done here
-> > > > > > > Both _suspend() and remove are called at different times in t=
-he lifecycle of the
-> > > > > > > driver, but with respect to register setting, they put the de=
-vice into
-> > > > > > > power down state.
-> > > > > >
-> > > > > > Are you sure about the remove stage and how it interacts with r=
-untime
-> > > > > > PM? Please, check how the device driver core manages PM on the =
-remove
-> > > > > > stage.
-> > > > > >
-> > > > > > > Additionally .remove() can have code for:
-> > > > > > > 1. disable runtime power management (if enabled while device =
-registration).
-> > > > > >
-> > > > > > If the device core enables it for you, it will disable it
-> > > > > > symmetrically. I don't see the issue here, it should be done
-> > > > > > automatically. If you do that explicitly, use the respective
-> > > > > > devm_pm_runtime_*() call.
-> > > > > >
-> > > > > > > 2. device cleanup (disabling interrupt and cleaning up other =
-configs done).
-> > > > > >
-> > > > > > Wrap them into devm if required.
-> > > > > >
-> > > > > > > 2. unregister the device.
-> > > > > >
-> > > > > > Already done in the original code which your patch reverts, why=
-?
-> > > > > >
-> > > > > > > For eg: another light sensor bh1750
-> > > > > > > static void bh1750_remove(struct i2c_client *client)
-> > > > > > > {
-> > > > > > >     iio_device_unregister(indio_dev);
-> > > > > > >     mutex_lock(&data->lock);
-> > > > > > >     i2c_smbus_write_byte(client, BH1750_POWER_DOWN);
-> > > > > > >     mutex_unlock(&data->lock);
-> > > > > > > }
-> > > > > > >
-> > > > > > > static int bh1750_suspend(struct device *dev)
-> > > > > > > {
-> > > > > > >     mutex_lock(&data->lock);
-> > > > > > >     ret =3D i2c_smbus_write_byte(data->client, BH1750_POWER_D=
-OWN);
-> > > > > > >     mutex_unlock(&data->lock);
-> > > > > > >     return ret;
-> > > > > > > }
-> > > > > >
-> > > > > > Correct and where do you see the problem here? Perhaps the prob=
-lem is
-> > > > > > in the cleanup aordering and some other bugs vs. devm calls?
-> > > > > >
-> > > > > > > In drivers/iio/light, you can find similar examples in pa1220=
-3001,
-> > > > > > > rpr0521, apds9960,
-> > > > > > > vcnl4000, isl29028, vcnl4035. You can find many more examples=
- in
-> > > > > > > sensors other than light sensors.
-> > > > > >
-> > > > > > Good, should all they need to be fixed?
-> > > > >
-> > > > > The complex corners that occur with devm + runtime pm are around
-> > > > > things that we must not run if we are already in runtime suspend.
-> > > > > Typically disabling power supplies (as we can underflow counters
-> > > > > and getting warning prints).  Seeing as this driver is not
-> > > > > doing that it should be simple to use a devm_add_action_or_reset(=
-)
-> > > > >
-> > > > > Key thing to consider is that runtime pm may not be built.
-> > > >
-> > > > This will mean that user does not want to handle PM at all at runti=
-me, so why
-> > > > should it be our problem? If device is off, it's not the problem of=
- the driver
-> > > > to do the power cycle at run time (yes, this might not apply to the=
- system
-> > > > suspend and resume cases, which has to be implemented as well).
-> > > >
-> > > > > So the flow should work with those calls doing nothing.  That mea=
-ns that
-> > > > > if you turn the device on in probe we should make sure to explici=
-tly turn
-> > > > > it off in the remove flow. That's where devm_add_action_or_reset(=
-)
-> > > > > comes in handy.
-> > > >
-> > > > I don't think we should do that explicitly in remove. As I pointed =
-out above,
-> > > > this the case that driver should not override.  Otherwise there is =
-no point in
-> > > > having the common runtime PM. User deliberately makes it not compil=
-ed, so they
-> > > > should prepare to leave with it.
-> > >
-> > > Hmm. I don't agree. We turned it on so on error or remove I think we
-> > > should turn it off again.  We do that in many drivers that never made=
- use of
-> > > any of the standard PM stuff because they only touch enable and disab=
-le in
-> > > probe and remove.  If nothing else I don't like the lack of balance b=
-etween
-> > > probe and remove if we don't do it.
-> >
-> > We can do it, but this sounds to me like a step back. Implementing prop=
-er PM
-> > runtime callbacks is a step forward.
-> I entirely agree that runtime PM is good to have and it does a lot more
-> than just turning the power on and off once per probe / remove cycle.
-
-> But runtime_pm is currently optional (system wide) and that's not somethi=
-ng
-> I think we are in a position to change.
-
-True.
-
->  We should support runtime pm in
-> as many drivers as possible but not rely on it for 'correct functionality=
-'.
-
-Why not? If the driver doesn't care about the PM, then why bother at
-all. The PM runtime is for that.
-
-> To me turning a device off at remove that
-
-> we turned
-
-Key words! And that can be done in different ways. One of which is the
-PM runtime. The custom on and off is basically an open coded part or
-the runtime PM functionality.
-
-> on at probe is something
-> we should do.
-
-Yes, of course. I do not object to this flow.
-
-> Now if it's already off, then sure don't turn it off again if
-> it has side effects to do so (which is the heart of the underflow warning=
- issue
-> with regulators)
-
-Sure.
-
-> > Doing the former in the existing drivers is not an argument to me becau=
-se all
-> > of them avoiding use of the PM APIs. Note, with PM APIs it may also inv=
-olve
-> > devlink and other benefits that device driver core gives us.
->
-> We have lots of drivers that do both minimal management at probe and remo=
-ve
-> as necessary to function, and if it is enabled, full runtime pm.
->
-> Though recently it has shown up that there are some underflow issues if w=
-e
-> aren't careful wrt to regulators being handled by devm.
->
-> > > > > ret =3D regmap_set_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_SE=
-NSOR_ENABLE);
-> > > > > Is the paired operation with the second disable you add in remove=
+> `devm_gpiod_get_optional()` may return non-NULL error pointer on failure=
 .
-> > > > > Wrap that in a devm callback.
-> > > > >
-> > > > > More complex is the interrupt enable as that doesn't pair with
-> > > > > anything in particular in probe. I'm curious though, do we need
-> > > > > to disable it given the next operation turns off the sensor and o=
-n
-> > > > > probe we reset the sensor.
-> > > > >
-> > > > > Is just clearing the enable bit enough?
+> Check its return value using `IS_ERR()` and propagate the error if
+> necessary.
 
---=20
-With Best Regards,
-Andy Shevchenko
+How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and =
+=E2=80=9CCc=E2=80=9D) accordingly?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.16#n145
+
+
+> Also switch to `gpiod_set_value_cansleep()`, which is safe to use in
+> sleepable contexts like probe.
+
+Would it be helpful to provide desirable changes by separate update steps?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.16#n81
+
+Regards,
+Markus
 

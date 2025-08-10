@@ -1,259 +1,186 @@
-Return-Path: <linux-iio+bounces-22523-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22525-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E2B4B1FBB9
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 20:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D07E9B1FBCE
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 20:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AA92188B9A2
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 18:35:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1CB91892971
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 18:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1774E1D5ABA;
-	Sun, 10 Aug 2025 18:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81A11FBEB6;
+	Sun, 10 Aug 2025 18:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lT7uGAOb"
+	dkim=pass (2048-bit key) header.d=stromeko.de header.i=@stromeko.de header.b="NbWwCQUY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp4.goneo.de (smtp4.goneo.de [85.220.129.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11F14690;
-	Sun, 10 Aug 2025 18:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60901EDA0F
+	for <linux-iio@vger.kernel.org>; Sun, 10 Aug 2025 18:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.129.59
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754850889; cv=none; b=u683sHXo6b72xziDAo+qzrgs21hwN04PH7HiSVCrMtP5sDaH1PZ2mBl8if1IPquhGHtf9tFjWafNfn+20tlDVR1uLDnGltrRavEHj+in+jasNjWUWmt0hPeJatNtd3JcPtSyh4ySid6mex/1tsqhe2KjfzpXmNEGZkYdoUq8VHg=
+	t=1754852362; cv=none; b=mW6uL/CrErOoqqzLnM57tH15BShHR5PLpdFOufVyUUEwxJoxGW0KxFLpQHQoIvtkGOZ9/iDhfdOrrKFLCFq1kH7ic1lNBOW1+WTQGZUMVsooRHvPDxczqqH6T5ki0uF+7YltlS2a1RWFZeTZMo2VcEbKyyUf5k1BDboDIBvrPSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754850889; c=relaxed/simple;
-	bh=X9feSVn04Fe0VusKDK08PZdkNEAq31A8exzGNeOhil0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i9QNWPJVWiHNwSzNZiLeWyHwzwVuS/UQ4dFUGjLkUCwPE/1wNVND02fF1+b4qA63KHkCn7YtEIESUnRLcks57bimezpsBBoBkBOJbZz+j6nYRuGI2PbV30DkwxDvT+hLhcfZ8W19P8oI87NUkOXjL7LL05cmRCLJXDMGwaFVIrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lT7uGAOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D32EC4CEEB;
-	Sun, 10 Aug 2025 18:34:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754850889;
-	bh=X9feSVn04Fe0VusKDK08PZdkNEAq31A8exzGNeOhil0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lT7uGAObO5BKH/YBZZe29j35aq9aVH+Pcso5FECNCcDm97ruzKZUEodems3mlk7zY
-	 u+pB2Ek3pahcc8WLm18Z/U7twHKlqbCSaFP+dRcsgXKnc0Qum2qF6LKOJ48Nz7XZCr
-	 zbkQGrgJtNf7VeIfaS+rJdXxgAr6VQmElgeL2T83QX0/rz6//3+OlDC7X3KGkvJWIM
-	 c8vxHF7jODjbLTFwLYo8u2+Dn0DUi66XbJpSOzo7mYbVqQvz8vvKqMB2vdcqLdvnmD
-	 xbhC6X8TJT4K4eW4ioVhz+F1Mm1/JdS6MVjrZqQG8CPMrqhVWhoB5cUXSgbUfrZNz9
-	 mmbs5YKln8E+Q==
-Date: Sun, 10 Aug 2025 19:34:40 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Dixit Parmar <dixitparmar19@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iio: magnetometer: add support for Infineon
- TLV493D 3D Magentic sensor
-Message-ID: <20250810193440.7b8ddc5f@jic23-huawei>
-In-Reply-To: <aJAmgX0876tu5Ss0@dixit>
-References: <20250802-tlv493d-sensor-v6_16-rc5-v2-0-e867df86ad93@gmail.com>
-	<20250802-tlv493d-sensor-v6_16-rc5-v2-1-e867df86ad93@gmail.com>
-	<20250802124333.67f64863@jic23-huawei>
-	<aJAmgX0876tu5Ss0@dixit>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1754852362; c=relaxed/simple;
+	bh=htY5xxUVitN5O79vmVM3/YBMn1BazPoesANcFfCWqpE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SN3k7gphAfUEogg/XOmyN0e0272Uxu+5GLXe9mDiSKIyqR6ybZuRbAd2qztpeF5QFGYDZ0byDQbbbbBdCDdJv9BbzC9nxn7RW/TyrzHqiq/DmzMib2saJO5ZGYvY5uVZG8qU7JtzbnLI9dK/xN0+NSlPs8b7jWB2o/VO5eyp2qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Stromeko.DE; spf=pass smtp.mailfrom=Stromeko.DE; dkim=pass (2048-bit key) header.d=stromeko.de header.i=@stromeko.de header.b=NbWwCQUY; arc=none smtp.client-ip=85.220.129.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Stromeko.DE
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Stromeko.DE
+Received: from hub2.goneo.de (hub2.goneo.de [85.220.129.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	by smtp4.goneo.de (Postfix) with ESMTPS id A06CB2405BD;
+	Sun, 10 Aug 2025 20:59:10 +0200 (CEST)
+Received: from hub2.goneo.de (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	by hub2.goneo.de (Postfix) with ESMTPS id 0ED3A24026C;
+	Sun, 10 Aug 2025 20:59:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stromeko.de; s=DKIM001;
+	t=1754852349;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2tPu6b7lP1v/xpgemD71tmomH0AKFGFY1WxKRKokjkc=;
+	b=NbWwCQUYUbsDe1+n1Mjp5DJDjhTwQfD10Zr58wcovV5jbyhx6TTgooYJZxXyzIRPcpdOyo
+	DWd3uNGRSiB55Adpg3whsvVInVkP9te7yS7E0fYjuITfHJB3PnBL35UklyjNpvKB/618yi
+	u6Hp9Hz1quJjArW7TpOhhw8YJ3zfQbtQMNB4Go3NO1t3JI8yc/QaaBIaiBfNQdRxefiWzj
+	Aao2pW+LbgtE2WMvIWTZit2L9AGFdtq74GchaN4xiCa9RTioiD9nlSIpJ+Di/RQc/ps5zm
+	I2WBqljlpPJumgWnx1vJqNcio3bk7NPoAyiratEDMct7E0ahfEOy9VGhZpKokQ==
+Received: from Gerda.fritz.box (p54a0c448.dip0.t-ipconnect.de [84.160.196.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hub2.goneo.de (Postfix) with ESMTPSA id B4473240195;
+	Sun, 10 Aug 2025 20:59:08 +0200 (CEST)
+From: Achim Gratz <Achim.Gratz@Stromeko.DE>
+To: linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Achim Gratz <Achim.Gratz@Stromeko.DE>
+Subject: [RFC PATCH v2 0/9] Fixes and enhancements for the bmp280 driver
+Date: Sun, 10 Aug 2025 20:58:37 +0200
+Message-ID: <20250810185846.114355-1-Achim.Gratz@Stromeko.DE>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20241017233022.238250-1-vassilisamir@gmail.com>
+References: <20241017233022.238250-1-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-UID: cd7416
+X-Rspamd-UID: 679d61
 
-On Mon, 4 Aug 2025 08:48:25 +0530
-Dixit Parmar <dixitparmar19@gmail.com> wrote:
+Revision History:
+=================
 
-> On Sat, Aug 02, 2025 at 12:43:33PM +0100, Jonathan Cameron wrote:
-> > On Sat, 02 Aug 2025 12:14:27 +0530
-> > Dixit Parmar <dixitparmar19@gmail.com> wrote:
-> >   
-> > > The Infineon TLV493D is a Low-Power 3D Magnetic Sensor. The Sensor
-> > > applications includes joysticks, control elements (white goods,
-> > > multifunction knops), or electric meters (anti tampering) and any
-> > > other application that requires accurate angular measurements at
-> > > low power consumptions.
-> > > 
-> > > The Sensor is configured over I2C, and as part of Sensor measurement
-> > > data it provides 3-Axis magnetic fields and temperature core measurement.
-> > > 
-> > > The driver supports raw value read and buffered input via external trigger
-> > > to allow streaming values with the same sensing timestamp.
-> > > 
-> > > While sensor has interrupt pin multiplexed with I2C SCL pin. But for bus
-> > > configurations interrupt(INT) is not recommended, unless timing constraints
-> > > between I2C data transfers and interrupt pulses are monitored and aligned.
-> > > 
-> > > The Sensor's I2C register map and mode information is described in product
-> > > User Manual[Link].
-> > > 
-> > > Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
-> > > Link: https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-UserManual-v01_03-EN.pdf
-> > > Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>  
-> > 
-> > Hi Dixit,
-> > 
-> > Some additional comments inline.
-> >   
-> > > diff --git a/drivers/iio/magnetometer/tlv493d.c b/drivers/iio/magnetometer/tlv493d.c
-> > > new file mode 100644
-> > > index 000000000000..da1569ae97bf
-> > > --- /dev/null
-> > > +++ b/drivers/iio/magnetometer/tlv493d.c  
-> >   
-> > > +enum tlv493d_op_mode {
-> > > +	TLV493D_OP_MODE_POWERDOWN = 0,
-> > > +	TLV493D_OP_MODE_FAST,
-> > > +	TLV493D_OP_MODE_LOWPOWER,
-> > > +	TLV493D_OP_MODE_ULTRA_LOWPOWER,
-> > > +	TLV493D_OP_MODE_MASTERCONTROLLED,
-> > > +	TLV493D_OP_MODE_MAX  
-> > In order to be able to use this as the type for a parameter as suggested
-> > below, you'll need to drop MODE_MAX.  Comments on why you shouldn't
-> > need that anyway below.
-> >   
-> > > +};
-> > > +
-> > > +struct tlv493d_mode {
-> > > +	u8 m;  
-> > You have an enum type.  Much better to use it.
-> >   
-> > > +	u32 sleep_us;
-> > > +};
-> > > +
-> > > +struct tlv493d_data {
-> > > +	struct device *dev;
-> > > +	struct i2c_client *client;
-> > > +	/* protects from simultaneous sensor access and register readings */
-> > > +	struct mutex lock;
-> > > +	u8 mode;
-> > > +	u8 wr_regs[TLV493D_WR_REG_MAX];
-> > > +};
-> > > +
-> > > +/*
-> > > + * Different mode has different measurement cycle time, this time is
-> > > + * used in deriving the sleep and timemout while reading the data from
-> > > + * sensor in polling.
-> > > + * Power-down mode: No measurement.
-> > > + * Fast mode: Freq:3.3 KHz. Measurement time:305 usec.
-> > > + * Low-power mode: Freq:100 Hz. Measurement time:10 msec.
-> > > + * Ultra low-power mode: Freq:10 Hz. Measurement time:100 msec.
-> > > + * Master controlled mode: Freq:3.3 Khz. Measurement time:305 usec.
-> > > + */
-> > > +static struct tlv493d_mode tlv493d_mode_info[TLV493D_OP_MODE_MAX] = {  
-> > If you want to size it, do it using the enum values. [] is fine here
-> > 	[TLV493D_OP_MODE_POWERDOWN] = { }
-> > 
-> > I'm not sure why this should embed the index.  Can you just drop .m?
-> >  
-> Indeed, In V2 I wanted to change this to a u32 array containing the
-> timing values for all mode and drop struct, but was skeptical.
-> IMO that would also be a clean way rather than having it in struct. Makes sense?
+v1:
+	- initial proposal, incorrectly prefixed "bmp280" instead of "RFC PATCH"
+	- patch series presented in the order it was created
 
+v1 -> v2:
+	- prefix as "RFC PATCH"
+	- drop channel switching
+	- rewrite to present patches in smaller units and in logical steps
 
-Yes, an array is what we want here.  But use the enum to index it both
-when setting and querying.
+With v6.13 a change was made to the bmp280 drivers to use MODE_FORCED
+instead of MODE_NORMAL.  This broke userspace functionality: reading
+from sysfs interfaces no longer worked and an error was thrown
+"Measurement cycle didn't complete".  This series fixes the underlying
+bugs affecting the measurement time calculation and implements
+additional functionality not available for the BMx280 devices
+previously to allow the use of the sysfs interface in MODE_NORMAL
+again and control the corresponding parameters.  The implementation
+follows the already existing facilities for the BMx[35]80 devices even
+though the actual functionality of the BMx280 devices is slightly
+different.
 
+Achim Gratz (9):
+  iio: pressure: bmp280: correct meas_time_us calculation
+  iio: pressure: bmp280: implement adaptive wait for BMx280 devices
+  iio: pressure: bmp280: implement adaptive wait for BMP380 devices
+  iio: pressure: bmp280: refactoring
+  iio: pressure: bmp280: remove code duplication
+  iio: pressure: bmp280: enable filter settings for BMx280
+  iio: pressure: bmp280: implement sampling_frequency for BMx280
+  iio: pressure: bmp280: implement sampling_frequency calculation for
+    BMx280
+  iio: pressure: bmp280: test longer autosuspend (WIP)
 
-> > > +	{ .m = TLV493D_OP_MODE_POWERDOWN, .sleep_us = 0 },
-> > > +	{ .m = TLV493D_OP_MODE_FAST, .sleep_us = 305 },
-> > > +	{ .m = TLV493D_OP_MODE_LOWPOWER, .sleep_us = 10 * USEC_PER_MSEC	},
-> > > +	{ .m = TLV493D_OP_MODE_ULTRA_LOWPOWER, .sleep_us = 100 * USEC_PER_MSEC },
-> > > +	{ .m = TLV493D_OP_MODE_MASTERCONTROLLED, .sleep_us = 305 }
-> > > +};
-> > > +
-> > > +/*
-> > > + * The datasheet mentions the sensor supports only direct byte-stream write
-> > > + * starting from register address 0x0. So for any modification to be made to
-> > > + * any write registers, it must be written starting from the register address
-> > > + * 0x0. I2C write operation should not contain register address in the I2C
-> > > + * frame, it should contains only raw byte stream for the write registers.
-> > > + * I2C Frame: |S|SlaveAddr Wr|Ack|Byte[0]|Ack|Byte[1]|Ack|.....|Sp|
-> > > + */
-> > > +static int tlv493d_write_all_regs(struct tlv493d_data *data)
-> > > +{
-> > > +	int ret;
-> > > +
-> > > +	if (!data || !data->client)  
-> > If either of these happen, something went very very wrong.
-> > No need for the checks.  Remove all similar ones.
-> >   
-> Interesting, Is the idea behind is that this API is used within the
-> driver and the inputs are known? Ofcourse it saves some CPU cycles.
+ drivers/iio/pressure/bmp280-core.c | 350 +++++++++++++++++++++++------
+ drivers/iio/pressure/bmp280.h      |  22 ++
+ 2 files changed, 300 insertions(+), 72 deletions(-)
 
-Exactly - if it's local and we can see the tests are never needed then
-maybe the compiler will notice, but we can avoid even having the code.
+---
 
-> > > +		return -EINVAL;
-> > > +
-> > > +	ret = i2c_master_send(data->client, data->wr_regs, ARRAY_SIZE(data->wr_regs));
-> > > +	if (ret < 0) {
-> > > +		dev_err(data->dev, "i2c write registers failed, error: %d\n", ret);
-> > > +		return ret;
-> > > +	}
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static int tlv493d_set_operating_mode(struct tlv493d_data *data, u8 mode)  
-> > As below. Use the enum type.  
-> > > +{
-> > > +	if (!data)
-> > > +		return -EINVAL;  
-> > 
-> > As above. Data is never going to be NULL, so don't check it.
-> >   
-> > > +
-> > > +	u8 mode1_cfg, mode2_cfg;
-> > > +
-> > > +	switch (mode) {
-> > > +	case TLV493D_OP_MODE_POWERDOWN:
-> > > +		mode1_cfg = FIELD_PREP(TLV493D_MODE1_MOD_LOWFAST, 0);
-> > > +		mode2_cfg = FIELD_PREP(TLV493D_MODE2_LP_PERIOD, 0);
-> > > +		break;
-> > > +
-> > > +	case TLV493D_OP_MODE_FAST:
-> > > +		mode1_cfg = FIELD_PREP(TLV493D_MODE1_MOD_LOWFAST, 1);
-> > > +		mode2_cfg = FIELD_PREP(TLV493D_MODE2_LP_PERIOD, 0);
-> > > +		break;
-> > > +
-> > > +	case TLV493D_OP_MODE_LOWPOWER:
-> > > +		mode1_cfg = FIELD_PREP(TLV493D_MODE1_MOD_LOWFAST, 2);
-> > > +		mode2_cfg = FIELD_PREP(TLV493D_MODE2_LP_PERIOD, 1);
-> > > +		break;
-> > > +
-> > > +	case TLV493D_OP_MODE_ULTRA_LOWPOWER:
-> > > +		mode1_cfg = FIELD_PREP(TLV493D_MODE1_MOD_LOWFAST, 2);
-> > > +		mode2_cfg = FIELD_PREP(TLV493D_MODE2_LP_PERIOD, 0);
-> > > +		break;
-> > > +
-> > > +	case TLV493D_OP_MODE_MASTERCONTROLLED:
-> > > +		mode1_cfg = FIELD_PREP(TLV493D_MODE1_MOD_LOWFAST, 3);
-> > > +		mode2_cfg = FIELD_PREP(TLV493D_MODE2_LP_PERIOD, 0);
-> > > +		break;
-> > > +
-> > > +	default:
-> > > +		dev_err(data->dev, "invalid mode configuration\n");
-> > > +		return -EINVAL;  
-> > And with the enum type you shouldn't need a default.
-> >   
-> Can you please help me understand this better? So far my learning was,
-> wherever there is switch case, it must have default case handled
-> appropriatly.
+Comments:
 
-If you passing in an enum, the compiler should be able to tell if you
-are out of range.  Every enum value has an entry in the switch statement
-therefore default is covering nothing and can be dropped.
+Thanks for allo the comments on my v1 patch series.  I have not seen
+any reaction to my on-list replies however, so it appears y'all are
+expecting to Cc: everyone involved?
 
-That then defends against later adding a new enum value and failing
-to cover it as the compiler then complains a case is not handled.
+I've just seen new responses from James, but these are not taken into
+account for v2 obviously.
 
-Jonathan
+The dropped channel switching code may be revisited / resurrected at a
+later time.  However it can not fully achieve what I want anyway for
+how I use the sensor and the later implemented controls for several
+sensor parameters get the desired performance back.
 
+The remaining sticky point is the control of the autosuspend delay.
+If the sensor is suspended between measurements, then even when it is
+operating in MODE_NORMAL, an additional latency of 12…15ms is incured
+when the interval between measurements is long enough to trigger
+autosuspend.  I have set the hardcoded value to 2s as a test (see the
+last patch in the series) and this additional latency vanishes,
+interestingly also the tailing to long measurement times I have
+observed otherwise is also much reduced.  However so far I've not come
+up with an idea of how to control the autosuspend delay from
+userspace, to wit:
+
+ /sys/bus/iio/devices/iio:device0/power/async: disabled
+ /sys/bus/iio/devices/iio:device0/power/autosuspend_delay_ms:
+ '/sys/bus/iio/devices/iio:device0/power/autosuspend_delay_ms': Input/output error
+ /sys/bus/iio/devices/iio:device0/power/control: auto
+ /sys/bus/iio/devices/iio:device0/power/runtime_active_kids: 0
+ /sys/bus/iio/devices/iio:device0/power/runtime_active_time: 0
+ /sys/bus/iio/devices/iio:device0/power/runtime_enabled: disabled
+ /sys/bus/iio/devices/iio:device0/power/runtime_status: unsupported
+ /sys/bus/iio/devices/iio:device0/power/runtime_suspended_time: 0
+ /sys/bus/iio/devices/iio:device0/power/runtime_usage: 0
+ -rw-r--r-- 1 root root 4096 Aug 10 18:41 async
+ -rw-r--r-- 1 root root 4096 Aug 10 18:41 autosuspend_delay_ms
+ -rw-r--r-- 1 root root 4096 Aug 10 18:41 control
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_active_kids
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_active_time
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_enabled
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_status
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_suspended_time
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_usage
+
+…which according to the kernel documentation is due to a lack of
+unspecified support from the driver.  Now, it appears I should be able
+to switch off autosuspend altogether by changing control from "auto"
+to "on", but that doesn't seem to take effect; also I'd rather
+configure a sensible value in accordance to my measurement settings.
+The other handful of IIO drivers I've looked at that set this
+parameter don't do things differently, so I don't know if there's
+anything that can be done about it.
+
+-- 
+2.50.1
 

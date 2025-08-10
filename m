@@ -1,116 +1,89 @@
-Return-Path: <linux-iio+bounces-22533-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22534-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40BAB1FBD5
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 20:59:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3946B1FBD7
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 21:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFFD81892765
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 18:59:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBFB317376A
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 19:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16161FF1A0;
-	Sun, 10 Aug 2025 18:59:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=stromeko.de header.i=@stromeko.de header.b="Da3o4lQw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC351EE019;
+	Sun, 10 Aug 2025 19:01:36 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp4.goneo.de (smtp4.goneo.de [85.220.129.59])
+Received: from ciao.gmane.io (ciao.gmane.io [116.202.254.214])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327781FDA82
-	for <linux-iio@vger.kernel.org>; Sun, 10 Aug 2025 18:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.129.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EAC19DF9A
+	for <linux-iio@vger.kernel.org>; Sun, 10 Aug 2025 19:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.254.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754852373; cv=none; b=gEJHJZDRhDwv61knIH0+KXfcu5nfGWalUFORoWV6Rqh6o9F7UHV8il8kS6Q89E3WrjxNCBoyDAvlh00jFu8rEdZ9Py75m1Yu3dam+nnBOEv2tw7mTVsnrOI1OgwrpjrDMdyR4k+tnOgvL+928jIILALYXRohxLkbrk5wXlSsUV0=
+	t=1754852496; cv=none; b=TjvWcppuNF7Zrwqw4ecrx9aU+kg+HjeopzrWZltDpHVCPbiuklYHy5hrNhUQDfBS5+XZpQ3JkB4We3hJTpzKGbfO+9M64lefo/tpNEoubGVDw1uZH47eU5fj5wwWgZM5UIHjL6XO+Iz/4ADdajsBE33UX8RuqwKRj1W7GNpaHzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754852373; c=relaxed/simple;
-	bh=JtiTh7gIpgmRbrf9mbHTxlyX74No5RGkWMbhBPGjWKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tkcBHgX4mw8mdGsZfv1+6+RRrh78VDaCmh7Zc/S5KiW0YwFzkSC3geOZVXBmp2PjzmMeLEOj21+i/eItb9H67wg8XTjd8ZeEAJlS9Y2Cv5QJRX5D/YJTJRHoJeQZ6Yqg5c1qneuPs3sYwe5BViH9GEsH3nEVKLtAFPm3ymf4UiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Stromeko.DE; spf=pass smtp.mailfrom=Stromeko.DE; dkim=pass (2048-bit key) header.d=stromeko.de header.i=@stromeko.de header.b=Da3o4lQw; arc=none smtp.client-ip=85.220.129.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Stromeko.DE
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Stromeko.DE
-Received: from hub2.goneo.de (hub2.goneo.de [85.220.129.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	by smtp4.goneo.de (Postfix) with ESMTPS id B232E2405BD;
-	Sun, 10 Aug 2025 20:59:29 +0200 (CEST)
-Received: from hub2.goneo.de (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	by hub2.goneo.de (Postfix) with ESMTPS id 216C4240166;
-	Sun, 10 Aug 2025 20:59:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stromeko.de; s=DKIM001;
-	t=1754852368;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6g3526ujYw3CNvmCVLFfL443TX17sZ19v8DvKWD1joE=;
-	b=Da3o4lQwproTxVTSSoAMohrw2PrWitdXgipTJkMEYZgXyKWN4xYkKNNOiaKmYv6c4Ze/8B
-	mS7KIKZEnIvLfLLq3MbnCcGpdOsRrkzbZv/0Z+O+dWg2Hg8XpnXdN5gUtaM9Q0DVzcioz5
-	mEt/7dGbexRjznBiSqM1e8aaFdscdlMLlDpLT2bEhwXbm8vQ6HT5hXF285s/zA/glayuxp
-	9LDpSIDQt88yn0xlb1vQ3V3uMKLMtuhKRTKmZCuEUCA/dv/C9FGXJk8TD5TD7tCgVK+KOD
-	j6C/8CS6BNNlv5TDpB6zoXMQqhLEokAKoGzHRD8TDsLSJHFsvMRfhAqE/tRacg==
-Received: from Gerda.fritz.box (p54a0c448.dip0.t-ipconnect.de [84.160.196.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hub2.goneo.de (Postfix) with ESMTPSA id DDF2E240159;
-	Sun, 10 Aug 2025 20:59:27 +0200 (CEST)
-From: Achim Gratz <Achim.Gratz@Stromeko.DE>
+	s=arc-20240116; t=1754852496; c=relaxed/simple;
+	bh=YCJJAH3Sh78h82k/yvI6YnGqxTuo8mRiMEMnXlCEQGE=;
+	h=To:From:Subject:Date:Message-ID:References:Mime-Version:
+	 Content-Type; b=gwCY8QnKbe/HKHOMFzXlfFu8JIg8WhLQNh3vm8lAY37a2nyje5JF6tY3hEyYWuuF/uPGKI/ZB32snQ56PcG66dFfmlRknKbXAmzADmxLAbQ2E7PMtiRFvbMooM381pY/8pp7CxrhfMWFBoHAkWadyLgdM0wVgvW5Ez2tWOujpPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nexgo.de; spf=pass smtp.mailfrom=m.gmane-mx.org; arc=none smtp.client-ip=116.202.254.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nexgo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.gmane-mx.org
+Received: from list by ciao.gmane.io with local (Exim 4.92)
+	(envelope-from <glki-linux-iio@m.gmane-mx.org>)
+	id 1ulBIQ-0003Su-85
+	for linux-iio@vger.kernel.org; Sun, 10 Aug 2025 21:01:30 +0200
+X-Injected-Via-Gmane: http://gmane.org/
 To: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Achim Gratz <Achim.Gratz@Stromeko.DE>
-Subject: [RFC PATCH v2 9/9] iio: pressure: bmp280: test longer autosuspend (WIP)
-Date: Sun, 10 Aug 2025 20:58:46 +0200
-Message-ID: <20250810185846.114355-10-Achim.Gratz@Stromeko.DE>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250810185846.114355-1-Achim.Gratz@Stromeko.DE>
+From: ASSI <Stromeko@nexgo.de>
+Subject: Re: [bmp280 v1 4/6] iio: pressure: bmp280: enable filter settings for BMx280
+Date: Sun, 10 Aug 2025 21:01:24 +0200
+Organization: Linux Private Site
+Message-ID: <87bjonf1bv.fsf@Gerda.invalid>
 References: <20241017233022.238250-1-vassilisamir@gmail.com>
- <20250810185846.114355-1-Achim.Gratz@Stromeko.DE>
+	<20250803140802.36888-1-Achim.Gratz@Stromeko.DE>
+	<20250803140802.36888-5-Achim.Gratz@Stromeko.DE>
+	<20250810191338.12b568df@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-UID: df0487
-X-Rspamd-UID: 5e4b8e
+Mime-Version: 1.0
+Content-Type: text/plain
+User-Agent: Gnus/5.13 (Gnus v5.13)
+Cancel-Lock: sha1:uNNTB0y3Qp48WcauGNSrvvn3wjI=
 
-Autosuspend delay should be configurable from sysfs via the power
-attributes, but that is apparently not working for me.  Since the
-standard value for autosuspend_delay is shorter than my typical
-measurement period and a suspend/resume incurs both additional latency
-and stronger tailing on the acquisition time, monkey-patch a 2s value
-in until I can figure out how to do this properly.
+Jonathan Cameron writes:
+> On Sun,  3 Aug 2025 16:08:00 +0200
+> Achim Gratz <Achim.Gratz@Stromeko.DE> wrote:
+>
+>> These devices were using a hardcoded IIR filter of length 4.  Enable
+>> filter_low_pass_3db_frequency settings to control the filter length
+>> settings of the device (as done already for the BMx380 and BMx580
+>> devices, even though the 3dB corner has an inverse relation to the
+>> filter length).  Remove an offset of 1 from the internal handling of
+>> the available values.
+>
+> This confuses me.  Are we saying those other devices have a 3db frequency
+> control that is not obeying the ABI? If so that sneaked in past me but
+> please don't continue that (and we should fix that broken use of the ABI).
 
-Signed-off-by: Achim Gratz <Achim.Gratz@Stromeko.DE>
----
- drivers/iio/pressure/bmp280-core.c | 2 ++
- 1 file changed, 2 insertions(+)
+This is correct.  The attribute directly controls the tap length of the
+filter and more taps means lower 3dB corner frequency.  Besides, it
+isn't easy to even figure out what the corner frequency is, since it
+depends both on further settings of the device (provided you want the
+actual corner frequency and not one that's normalized to the sampling
+frequency) and the internal IIR equation, although you could sort of
+reverse engineer it from the step response graph in the datasheet since
+it's unlikely to be something complex.  I've had a brief look, but there
+doesn't appear to be a more appropriate attribute that could be used
+within the IIO framework, like timeconstant / tau maybe?
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 5c4126e4eccd..7d51ab0b92e9 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -3500,6 +3500,8 @@ int bmp280_common_probe(struct device *dev,
- 	 * start-up time.
- 	 */
- 	pm_runtime_set_autosuspend_delay(dev, data->start_up_time_us / 10);
-+	/* test */
-+	pm_runtime_set_autosuspend_delay(dev, 2*MSEC_PER_SEC);
- 	pm_runtime_use_autosuspend(dev);
- 	pm_runtime_put(dev);
- 
+
+Regards,
+Achim.
 -- 
-2.50.1
++<[Q+ Matrix-12 WAVE#46+305 Neuron microQkb Andromeda XTk Blofeld]>+
 
 

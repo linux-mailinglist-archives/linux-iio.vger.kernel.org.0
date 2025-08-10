@@ -1,339 +1,98 @@
-Return-Path: <linux-iio+bounces-22516-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22517-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C0DB1FB64
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 19:36:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3462EB1FB88
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 20:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48F2C7AAAD5
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 17:35:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCD1F18831D3
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Aug 2025 18:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C77267B89;
-	Sun, 10 Aug 2025 17:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6918D226D00;
+	Sun, 10 Aug 2025 18:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="jtrxiA0A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGR04YNG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-28.smtpout.orange.fr [80.12.242.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FDB1DDA15;
-	Sun, 10 Aug 2025 17:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DC48F66
+	for <linux-iio@vger.kernel.org>; Sun, 10 Aug 2025 18:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754847395; cv=none; b=LUEEqav40hseyVDBotLdHmDz+wL0ztriPqlcjrAg4Oy+yRMcJe7evEf4FAYn2MWhuRo9C4789b3XVM+ta1NWXm3+v/HexR1va7maUXpgr4XMDWeYOQpRfA3o4oX6ExfycKNGExBk7SxzmCv7KEjeyYpXSOCDMD1jNAdGGra8WYY=
+	t=1754849074; cv=none; b=UgfkthVPiWDvdq01OkaIRzKm/Y+gPnzTWG760I3zfBoNwR237jLgcLYyC4/NB2pC8FIVrhs5GfDOPnlzpkEcm2xTqUps5U+FVcMD7M3JVLpEOOnIqTxVh7vF9g+KfZcyY2ZynSTbUWTL+ZIvcv/j/LA645hgihsBTFHKHKzGsIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754847395; c=relaxed/simple;
-	bh=TFw3Jt4Nf6T+M/9R2NIHl5Pu487SyK04JZQm86A00rw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=SyHwD8a6K9m9hlzKKq0yOrgqSZBF48caLu73jTQMjtT+FbCApf4wTKWXbyVtA15ETFpBhAMQqsC8PMCviwHAAK63cyuDmNnaT+yk9ZEQsjqDDA+fnhXOQwytbrTe3DAJXYJeiI/6ienkGlOFRVpe6nt+VqkJ4+bGyZ9qYM3sB8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=jtrxiA0A; arc=none smtp.client-ip=80.12.242.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
- ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
-	by smtp.orange.fr with ESMTPA
-	id l9x1upD4iPUh5l9x1uh8r7; Sun, 10 Aug 2025 19:35:20 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1754847320;
-	bh=97gR4svqUgNl2V2IPUV7h4EF2W6dzUtZbbMTKvsvGcY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=jtrxiA0ANe71GcesZsKA2kxMQ4ACEfK6q4ZRnmBry5SHvBrjKu6FhdNIj7BXFWx+q
-	 eX1nDJdAXMtHKUDoF65/5p9Z/VCDij46cWq84HCqvPyuDvnJlma1AuvabGo1fYRrod
-	 kAuHZOI43NTi/dQw8F47LG4NN7zVxTH10DcezeILXn+auDfcfbdSHQJgc3FUmU2xkP
-	 HnDFSYol8Y7vVJT1bs9RrncqV3CEEcX4rOdNE+7g1u2J4WlID7stBgMul6YCIfo8I2
-	 T04TLA7H5qULZHV72JRO+rWFRTgCaRMELmCBurBRwNwKDAg7O/trqwq2rvgF/uhayO
-	 jLw2qoiv334oA==
-X-ME-Helo: [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Sun, 10 Aug 2025 19:35:20 +0200
-X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
-Message-ID: <d19e7b07-369f-4909-b931-af881a2a4425@wanadoo.fr>
-Date: Sun, 10 Aug 2025 19:35:19 +0200
+	s=arc-20240116; t=1754849074; c=relaxed/simple;
+	bh=lAUGWwwvKUp65D+DlUj7GyYAICBa/CPr5fZicrdUv1I=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xnl5Wh0WTEQSbGN0rWFbjwkH6Pp5jRI79i8fui/uSESzcTkMKokFOvSKAl/QKvzAvGJxG2tf/k5gL/tTzdcMVGXf0vJD4kv+sgvraj44UYesFqflPfK5MpADEHFLEKB7Ie2lQD4bTWMkaNap2+wTvjIahZ2SByny4QPsPBxsAuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGR04YNG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB3AC4CEEB;
+	Sun, 10 Aug 2025 18:04:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754849073;
+	bh=lAUGWwwvKUp65D+DlUj7GyYAICBa/CPr5fZicrdUv1I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=UGR04YNGl6IS1TTrQG2I8zs7Uw3Cfd7rtjV4/7imtcexLMH9CRVAqvrYjzurqyDj0
+	 PMS4Ya19LL6GohiXH4pHolu2RAs7dUg2J9PXv2TKL6O4/qQLzKRaOORWYuPn8RGUTc
+	 XILJJxWudHesAxmFaRsCl526z8PDBO79B7qxw+qM7ZaOoZn/DG7+9rTiZr2G7ZgSqe
+	 MQicOcJLP3q3+naW6dFIBM+1FR49gS7cPuIwQpcDXsiUBjXKPWcyMbN5T6PjopIZF6
+	 FgBg3GVzm5YyR2/rNz2JgLMWx16tsTbN9tC+QdTibG7DyG3ADmK+RLlgU8DhJjpP8p
+	 8ihd0pxTSJprA==
+Date: Sun, 10 Aug 2025 19:04:26 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: ASSI <Stromeko@nexgo.de>
+Cc: linux-iio@vger.kernel.org
+Subject: Re: [bmp280 v1 1/6] iio: pressure: bmp280: correct meas_time_us
+ calculation
+Message-ID: <20250810190426.75a84359@jic23-huawei>
+In-Reply-To: <87ectomj4c.fsf@Gerda.invalid>
+References: <20241017233022.238250-1-vassilisamir@gmail.com>
+	<20250803140802.36888-1-Achim.Gratz@Stromeko.DE>
+	<20250803140802.36888-2-Achim.Gratz@Stromeko.DE>
+	<20250806164625.0000217e@huawei.com>
+	<87ectomj4c.fsf@Gerda.invalid>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] iio: adc: add ade9000 support
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
- robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250808141020.4384-1-antoniu.miclaus@analog.com>
- <20250808141020.4384-4-antoniu.miclaus@analog.com>
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Content-Language: en-US, fr-FR
-In-Reply-To: <20250808141020.4384-4-antoniu.miclaus@analog.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Le 08/08/2025 à 16:10, Antoniu Miclaus a écrit :
-> Add driver support for the ade9000. highly accurate,
-> fully integrated, multiphase energy and power quality
-> monitoring device.
+On Wed, 06 Aug 2025 19:53:55 +0200
+ASSI <Stromeko@nexgo.de> wrote:
 
-Hi,
-...
+> Jonathan Cameron writes:
+> > I'm not following this. Why are we now effectively adding MP280_MEAS_OFFSET
+> > that we weren't before whether or not oversampling is enabled?  
+> 
+> Because that is a constant part of the actual measurement cycle that
+> happens entirely independent of any later measurements (whose individual
+> durations depend on the oversampling settings for the respective
+> channel).  The graphics early in the datasheet don't show explicitly
+> where in the cycle it happens (my conjecture is at the end when it has
+> to update the IIR filters and swap the registers), however section 9.1
+> in Appendix B is abundantly clear that it's there.
+> 
+> 
+> Regards,
+> Achim.
 
-> +static int ade9000_clkout_prepare(struct clk_hw *hw)
-> +{
-> +	return 0;
-> +}
-> +
-> +static void ade9000_clkout_unprepare(struct clk_hw *hw)
-> +{
-> +}
+Hi Achim. I'm a bit behind on reviews this weekend after a garage door related
+crisis (now resolved) so might be a few days before I fully catch up.
 
-Is it really needed to have these 2 empty functions?
-clk core seems to accept NULL for .prepare and .unprepare.
+I have few mins now though so quick replies where I can!
 
-> +
-> +static unsigned long ade9000_clkout_recalc_rate(struct clk_hw *hw,
-> +						unsigned long parent_rate)
-> +{
-> +	/* CLKOUT provides the same frequency as the crystal/external clock */
-> +	return parent_rate ? parent_rate : 24576000; /* Default 24.576 MHz */
-> +}
-> +
-> +static const struct clk_ops ade9000_clkout_ops = {
-> +	.prepare = ade9000_clkout_prepare,
-> +	.unprepare = ade9000_clkout_unprepare,
-> +	.recalc_rate = ade9000_clkout_recalc_rate,
-> +};
+For this, thanks for the description.  Please add something on this either
+as a comment alongside that constant referring to the datasheet stuff you
+mention, and/or something in the patch description.
 
-...
+Thanks,
 
-> +static irqreturn_t ade9000_irq0_thread(int irq, void *data)
-> +{
-> +	struct iio_dev *indio_dev = data;
-> +	struct ade9000_state *st = iio_priv(indio_dev);
-> +	s64 timestamp = iio_get_time_ns(indio_dev);
-> +	u32 handled_irq = 0;
-> +	u32 interrupts;
-> +	u32 status;
-> +	int ret;
-> +
-> +	ret = regmap_read(st->regmap, ADE9000_REG_STATUS0, &status);
-> +	if (ret) {
-> +		dev_err(&st->spi->dev, "IRQ0 read status fail");
-> +		return IRQ_HANDLED;
-> +	}
-> +
-> +	ret = regmap_read(st->regmap, ADE9000_REG_MASK0, &interrupts);
-> +	if (ret) {
-> +		dev_err(&st->spi->dev, "IRQ0 read status fail");
-
-s/status/interrupts/ maybe?
-
-> +		return IRQ_HANDLED;
-> +	}
-> +
-> +	if ((status & ADE9000_ST0_PAGE_FULL_BIT) &&
-> +	    (interrupts & ADE9000_ST0_PAGE_FULL_BIT)) {
-> +		/* Always use streaming mode */
-> +		ret = ade9000_iio_push_streaming(indio_dev);
-> +		if (ret) {
-> +			dev_err(&st->spi->dev, "IRQ0 IIO push fail");
-> +			return IRQ_HANDLED;
-> +		}
-> +
-> +		handled_irq |= ADE9000_ST0_PAGE_FULL_BIT;
-> +	}
-> +
-> +	if ((status & ADE9000_ST0_WFB_TRIG_BIT) &&
-> +	    (interrupts & ADE9000_ST0_WFB_TRIG_BIT)) {
-> +		ret = ade9000_waveform_buffer_en(st, false);
-> +		if (ret) {
-> +			dev_err(&st->spi->dev, "IRQ0 WFB fail");
-> +			return IRQ_HANDLED;
-> +		}
-> +
-> +		ret = ade9000_iio_push_buffer(indio_dev);
-> +		if (ret) {
-> +			dev_err(&st->spi->dev, "IRQ0 IIO push fail @ WFB TRIG");
-> +			return IRQ_HANDLED;
-> +		}
-> +
-> +		handled_irq |= ADE9000_ST0_WFB_TRIG_BIT;
-> +	}
-> +
-> +	if ((status & ADE9000_ST0_EGYRDY) &&
-> +	    (interrupts & ADE9000_ST0_EGYRDY)) {
-> +		iio_push_event(indio_dev,
-> +			       IIO_UNMOD_EVENT_CODE(IIO_ENERGY,
-> +						    ADE9000_ST0_EGYRDY,
-> +						    IIO_EV_TYPE_MAG,
-> +						    IIO_EV_DIR_NONE),
-> +			       timestamp);
-> +
-> +		handled_irq |= ADE9000_ST0_EGYRDY;
-> +	}
-> +
-> +	ret = regmap_write(st->regmap, ADE9000_REG_STATUS0, handled_irq);
-> +	if (ret)
-> +		dev_err(&st->spi->dev, "IRQ0 write status fail");
-> +
-> +	return IRQ_HANDLED;
-> +}
-
-...
-
-> +static int ade9000_probe(struct spi_device *spi)
-> +{
-> +	struct device *dev = &spi->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct ade9000_state *st;
-> +	struct regmap *regmap;
-> +	int irq;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return dev_err_probe(dev, -ENOMEM, "Unable to allocate ADE9000 IIO");
-> +	st = iio_priv(indio_dev);
-> +
-> +	regmap = devm_regmap_init(dev, NULL, spi, &ade9000_regmap_config);
-> +	if (IS_ERR(regmap))
-> +		return dev_err_probe(dev, PTR_ERR(regmap), "Unable to allocate ADE9000 regmap");
-> +	spi_set_drvdata(spi, st);
-> +
-> +	irq = fwnode_irq_get_byname(dev_fwnode(dev), "irq0");
-> +	if (irq < 0)
-> +		return dev_err_probe(dev, -EINVAL, "Unable to find irq0");
-> +
-> +	ret = devm_request_threaded_irq(dev, irq, NULL,
-> +					ade9000_irq0_thread,
-> +					IRQF_ONESHOT,
-> +					KBUILD_MODNAME, indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to request threaded irq: %d", ret);
-> +
-> +	irq = fwnode_irq_get_byname(dev_fwnode(dev), "irq1");
-> +	if (irq < 0)
-> +		return dev_err_probe(dev, -EINVAL, "Unable to find irq1");
-> +
-> +	ret = devm_request_threaded_irq(dev, irq, NULL,
-> +					ade9000_irq1_thread,
-> +					IRQF_ONESHOT,
-> +					KBUILD_MODNAME, indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to request threaded irq: %d", ret);
-> +
-> +	irq = fwnode_irq_get_byname(dev_fwnode(dev), "dready");
-> +	if (irq < 0)
-> +		return dev_err_probe(dev, -EINVAL, "Unable to find dready");
-> +
-> +	ret = devm_request_threaded_irq(dev, irq, NULL,
-> +					ade9000_dready_thread,
-> +					IRQF_ONESHOT,
-> +					KBUILD_MODNAME, indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to request threaded irq: %d", ret);
-> +
-> +	st->spi = spi;
-> +
-> +	/* Optional external clock input */
-> +	st->clkin = devm_clk_get_optional_enabled(dev, "clkin");
-> +	if (IS_ERR(st->clkin))
-> +		return dev_err_probe(dev, PTR_ERR(st->clkin), "Failed to get and enable clkin: %ld", PTR_ERR(st->clkin));
-
-No need to dupliacte PTR_ERR(clkin) in the error message. Same for 
-several messages above.
-
-> +
-> +	/* Register clock output provider */
-> +	if (device_property_present(dev, "#clock-cells")) {
-> +		struct clk_init_data clk_init = {};
-> +		struct clk *clkout;
-> +		unsigned long parent_rate = 24576000; /* Default crystal frequency */
-> +
-> +		if (st->clkin)
-> +			parent_rate = clk_get_rate(st->clkin);
-
-parent_rate seems to be unused.
-
-> +
-> +		clk_init.name = "clkout";
-> +		clk_init.ops = &ade9000_clkout_ops;
-> +		clk_init.flags = CLK_GET_RATE_NOCACHE;
-> +		clk_init.num_parents = 0;
-
-Would it make sense to have clk_init a "static const struct 
-clk_init_data" defined outside of the probe to have the code be less 
-verbose?
-
-> +
-> +		st->clkout_hw.init = &clk_init;
-> +
-> +		clkout = devm_clk_register(dev, &st->clkout_hw);
-> +		if (IS_ERR(clkout))
-> +			return dev_err_probe(dev, PTR_ERR(clkout), "Failed to register clkout: %ld", PTR_ERR(clkout));
-
-No need to dupliacte PTR_ERR(clkout) in the error message.
-
-> +
-> +		ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, &st->clkout_hw);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret, "Failed to add clock provider: %d", ret);
-
-No need to dupliacte ret in the error message.
-
-> +	}
-> +
-> +	indio_dev->name = spi_get_device_id(spi)->name;
-> +	indio_dev->dev.parent = &st->spi->dev;
-> +	indio_dev->info = &ade9000_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
-> +	indio_dev->setup_ops = &ade9000_buffer_ops;
-> +
-> +	st->regmap = regmap;
-> +
-> +	ret = devm_regulator_get_enable(&spi->dev, "vdd");
-> +	if (ret)
-> +		return dev_err_probe(&spi->dev, ret,
-> +				     "Failed to get and enable vdd regulator\n");
-> +
-> +	ret = devm_regulator_get_enable_optional(dev, "vref");
-> +	if (ret < 0 && ret != -ENODEV)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to get and enable vref regulator\n");
-> +
-> +	/* Configure reference selection based on vref regulator availability */
-> +	if (ret != -ENODEV) {
-> +		ret = regmap_update_bits(st->regmap, ADE9000_REG_CONFIG1,
-> +					 ADE9000_EXT_REF_MASK,
-> +					 ADE9000_EXT_REF_MASK);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	indio_dev->channels = ade9000_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(ade9000_channels);
-> +	ret = devm_iio_kfifo_buffer_setup(dev, indio_dev,
-> +					  &ade9000_buffer_ops);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to setup IIO buffer");
-> +
-> +	ret = ade9000_reset(st);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "ADE9000 reset failed");
-> +
-> +	ret = ade9000_setup(st);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Unable to setup ADE9000");
-
-Missing \n at the end of the message. Same for some other messages above 
-using dev_err_probe() or dev_err().
-
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +};
-
-...
-
-CJ
-
+Jonathan
 

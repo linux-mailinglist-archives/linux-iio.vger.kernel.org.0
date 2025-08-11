@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-22548-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22549-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E2AB20249
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 10:51:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8746B2024E
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 10:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C317D4216FE
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 08:51:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E613E18C010B
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 08:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1922D2DCBF3;
-	Mon, 11 Aug 2025 08:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3892DE1E2;
+	Mon, 11 Aug 2025 08:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P8aU3SFF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="By7m2rDx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ACC2DCBF2;
-	Mon, 11 Aug 2025 08:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922252DD5E0;
+	Mon, 11 Aug 2025 08:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754902296; cv=none; b=k4zT6nTYs30GCuDo8R1jgNgp7yH/uSV2HQad5JjorkmWN7szkfQypUBpij0/aQSl48cLP8i0ygKYfSgbFAXNCgF9yAqf8YXUhyx1OKulNhMtkUwWI6/QSFoEG7rdBIikz9214ygihbvtD5Yy3Z7YrFe21qPyWJES0FCWmac2eHs=
+	t=1754902307; cv=none; b=F9O2Osl1haDjcvXgh6+rXDxWlZpQ/B2nx/Dcmu3Wp9CVN8cRgvUtvDvSV2QNXAFgxv+j5VDKQi0sG9Pt9Dw1C6o0Bz2JGB3f0OencmDLsP0Py3/8mG3/R3rcosDW9KUp/iBpZ6pEis/4nxIpFOR63PNM1Ewd4q5cdVKnScYK4yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754902296; c=relaxed/simple;
-	bh=/Vnky2iqRMx7r7Ax8IGIXak+StDACGUg1XrbsYbfuF4=;
+	s=arc-20240116; t=1754902307; c=relaxed/simple;
+	bh=Fk+3uilsvTXsZ4oTWbIlmyRSY9KBkFoqsH0gBQl2XZ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zc0Omop3fB86dijdh0c/Wx2lxQPYoKF8KvMN2NFaRcKkrd4YkrZ7nTrC2OWLE6xjazjRNpAtmSIGGW6EGgEnpYSzQC5tqxVtGUHpNaVJh0V2rYp9CjJBHpS7LGiuaP7FmIZ/zFeXCzvc6YbmW365tzv/aKdDieOcbVzSlR5/3cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P8aU3SFF; arc=none smtp.client-ip=209.85.167.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=WGiZdfE+73fsTaZy9DQ9R4117DVdcMLr2rC0uXSM3W7xCi5JmhQc3ShVX9yGMOJpBupbCLTLw0G3K3J4N251GgbnNBMbmFm9a9lqoRp8D8urYSNL5jvMMoNS7aztWgJ+2lqWtLrQSidVGaszPfBoxCUkCmurfFGrvp01BjGdaHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=By7m2rDx; arc=none smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55b9375d703so3956104e87.3;
-        Mon, 11 Aug 2025 01:51:34 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-55b9375d703so3956286e87.3;
+        Mon, 11 Aug 2025 01:51:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754902293; x=1755507093; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754902304; x=1755507104; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LuWxdzDiaehJlYEQjhVRrrYl9Kyef8+nTjKfvh6jf68=;
-        b=P8aU3SFFGyMRO1a2FNjt+Lkb+PIjqzVerT5CewWO4mR8m0zi5vK8duRvPONhFeubnJ
-         BIySO5jaKFPNtGoOkdkgK5GwXuAXR1KzZ5UXddUfgBePckUouR0rLd0LDPZIwk/pmBzy
-         s4+SmLAaQz7AoioYrXtc+QHOh03aI35BlX6wSB8VoCYjVz544aHwT6wc/NeMrAHzXpNH
-         5b0fmeKlb4qfGGrajCqAjx+DLciK3ihKNmCX0mUspFC5Wg9soe6PM2fSM0tMZciA++uA
-         xDZ4AMreSyR8KAacKduXL1uACtPlN60g2xecyc9GDBPTM19TPNPHfVs/OCyapiDZDI3I
-         Inng==
+        bh=vr3xE3E1ywd/XOxjJYuL9VMaaS8/27KJS7LUx7CgcI0=;
+        b=By7m2rDxfkXXDjy5jYuuZXnQwtiC6fBVnwk3hyehRpsakRq0198DVwJKn0v6hihZgs
+         Etw8DgeVHLxyNWwW4IaReILcuYEVrsR3PtsTVscWpZEgr796j2MWg0HQtbXF5gf+USr5
+         p0dJ56jTSNukwTDvM7mIznaRyiTO0xwBto7TZC9of7YjDO18AsXiCJVCzPR0XBRhAat3
+         i7BWQVcqF3Tx3mpKTsw/lsGqLL/ulscYmclaTeyyiekWCN/hYPGoEcIOQWy+gIub5V30
+         8dXi4P54fo3n9F5vY77dt2nuhdy/pctfQPWX9urbSALtTSk32Ko9aVQdY+HIRKAAzR4U
+         P/Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754902293; x=1755507093;
+        d=1e100.net; s=20230601; t=1754902304; x=1755507104;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LuWxdzDiaehJlYEQjhVRrrYl9Kyef8+nTjKfvh6jf68=;
-        b=gWcZYa6VDohml6QtyTazgue2NeAvcwJendLRd2MWz2rMPWiNMTIEvVpMIdzRhHtuUk
-         w1lvjsPKLbXQX4ncGU2DM9tgL2HG4D8B+eIWsJOfiNDna+TqzvFf89T5yxAVDhcV2SMH
-         PIylK7Cif2MWXYrNk683tstkLVBOfb/zppFStPjUPX1tBB3kVeNB8XHpPC0IE/pSeXD3
-         K+Zrhwk5VoT1uGZMXH2GgiGVefh2AkzJ+hPAWUWCtOC94inOVH5/Hr6sxRjOmGBA+0w0
-         pCu4Wc8YkVKXKTYvQctYQQB3uETf2xFrR+U0CQfeRJiJ87ORuUYnGWAInNrmTnix0iPb
-         PIhw==
-X-Forwarded-Encrypted: i=1; AJvYcCV1KFfhxlGm/2ndkxdJ4ojxIHtJTR2fwphmHlhohfiVTbRfH615oWZPswOliWPVHaP+x2fizbiYN9kRaafw@vger.kernel.org, AJvYcCWqExposjdY5ksQXbhSPVv53zSZay+AgLVvzDf9hrKHRwC2tB8idEaSJbIj0Lb7NHihjKqpuWEmJkUx@vger.kernel.org, AJvYcCXB/hX0MtdQcZrEG4DzGEYH4ZfkRai4tWgfxi+CPYOwSV39JDSqGuzORwQL88HgDX6yOM9OPtEik/yj@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4Y3GIuSHfkVHJaOGh8QwgKCQEv5dWfqGUxiSzhCQlh93Cizwh
-	CGgVoxyggqQFScl6slnHJo77beii2dP1W/gLnTrPifv8rBxK7Z0y2C52
-X-Gm-Gg: ASbGncs+LoRZSeS6m73clraSwq21oLhD+4rRwxZUcEFkt7a89fbALWHeqw6ndWubGua
-	OeGTmLcSVhtlSL6HD3bsdRJBUdzRvzgLky6CLXdOyW7rdjA3i8a1cbyMouTgrEQ5QMqt4k4Cv5r
-	uRYypyW1smI85B2byzv13onYexQkGUmZmwKt5WVCK+A2XkzuWV1WbrtenBdEj7nkpGjak7rQNUz
-	F5uomn3Vjx5B0fD8M0n6ZlyFYLJzoJBuDfh2+o98Nx+Qf0ke/IeXLkGN6yq9YdWstAylcCMFt24
-	l+JN5LR6bQA9E5WRiO25AHJLvUNGQHUK4+0K/ZM/CgcuLDrPACjWeVC9os/6gtw9igylEShdzKj
-	lbb+HYMv9iNitFp/wcMnjaexZqUfl
-X-Google-Smtp-Source: AGHT+IHNVyQLH0DilTgBNOFCK9SlfrEy0aR3YzUjpUY0uxGDQP+JsKJIRT1iU0SsfDGwPJNXSGQPuw==
-X-Received: by 2002:a05:6512:10d0:b0:55b:9483:81b with SMTP id 2adb3069b0e04-55cc0123bf3mr3340354e87.34.1754902292823;
-        Mon, 11 Aug 2025 01:51:32 -0700 (PDT)
+        bh=vr3xE3E1ywd/XOxjJYuL9VMaaS8/27KJS7LUx7CgcI0=;
+        b=t2RgNuH4m+nzW8Iq1cySSNpwqJLUwIBTl86ZP+ma1Hg7HN/nDEyYzxkkr4M3fGWsmf
+         SrMOHCu6QTePMgVHrHvDuTal2jPgviC+plTtERfe56/wYklGJA3Ft7IS3Ff+UZwpOhY0
+         5NS2IpgPxYnRcw0a6Cfp3gQ6p9ZCwrrfCFShj31I7VZTHmDYtxDrQiWtfVxBuemN+ZnZ
+         vLQ7mI4XCOqk4HvwpwK7ZBjrP+4Kt5N53jkvfqYQ7QFDOeqI3yAyNvB2S0N87rkBmgwl
+         0QYyuTaYHU4ZEfzojQW6IN/27vCVWKzhREcRVemOLtQHJOeuxKiOkQYK12ynVAOBQgIn
+         qHtA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7F7/O0EPvCp9qfoAD7c84PXcylemGSRyv7iBnP9RWONa1kCqEvIxmnkjkSJ4P/t7RqxgKjjxjIzrV@vger.kernel.org, AJvYcCUQgDY8OGEguCvEw7NhO/km5y7OoGooYybtVxSJ7Z11cV8gr52nQU094oLOJtn4DLhUEbGKf0MnX+n9@vger.kernel.org, AJvYcCUpYGEZ3qe7MLTyAKzi7NKVzh9OUaMouDBRFf0hbLRjcVg5ZBBlGOAamCZ5pOcesptxNsnz4WDRy+Ysbipq@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGsa9bPO+mD8uX5wOLZ9MTQ2lQhPsEbw7BsmQ0b8pACDSGhYBk
+	W03Cr3mYb90aYykCnf+zYNbOD0Sgb3DfSKxeLQNLAxSY7hH/qUimnRgf
+X-Gm-Gg: ASbGncsq/rRTIKbYRzL4n/8snWxJ1cRdgk9XJf0mqDnXqkqpROVCx3K/e6MdY+czQab
+	vEk4eUEnEQ4BOphaBHrG3LWLtz6ri18tYZsNEgT/Vc+1vP+WtLEV2ww+A7kyCQ9tNCW0GRIwKKQ
+	dDFHkgE6R81vQDxG5MtlWKZVgQn2zkJtREW7hbNpSUZ6Z4RseZwW9pbw99EWLFLVrDtS2K5CkDI
+	oagKgXhF/AqOncm2DNGYaPBzdLMY5q/wgpxTqOYuoIrgcqHvPaSQWp3NYvt65XjOiIt/dG8hNoN
+	vf+e/ueW8OjHIJVmAGL8Qu5DNqPODUt9fuihKshuCp87cgAHAkScRQlYT8yTO6Ih/ldBEomajf1
+	OzjOnqJiVGalnQdJCZY9Y0HcUwDzeTC9ViQXCjbo=
+X-Google-Smtp-Source: AGHT+IGgBdiV+baojFAyaObCoheXQKCKeuqGTNM+PXMyb0753GRatdjOVxHL44bz8CY9cIFkwuow8w==
+X-Received: by 2002:a05:6512:2348:b0:55b:91b6:446b with SMTP id 2adb3069b0e04-55cc009e883mr2959808e87.2.1754902303561;
+        Mon, 11 Aug 2025 01:51:43 -0700 (PDT)
 Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b887f72f4sm4237349e87.0.2025.08.11.01.51.31
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b889ad021sm4233661e87.74.2025.08.11.01.51.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Aug 2025 01:51:31 -0700 (PDT)
-Date: Mon, 11 Aug 2025 11:51:28 +0300
+        Mon, 11 Aug 2025 01:51:42 -0700 (PDT)
+Date: Mon, 11 Aug 2025 11:51:39 +0300
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -88,8 +88,8 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4 06/11] iio: adc: ad7476: Drop convstart chan_spec
-Message-ID: <cd7c72e3ee00f279d3381873f54e0c5b75b5ad11.1754901948.git.mazziesaccount@gmail.com>
+Subject: [PATCH v4 07/11] iio: adc: ad7476: Conditionally call convstart
+Message-ID: <9760cde888fac7335c17d7ab63d5fb2e7c59ac51.1754901948.git.mazziesaccount@gmail.com>
 References: <cover.1754901948.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -98,35 +98,33 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qUzuhLq20cKqadNw"
+	protocol="application/pgp-signature"; boundary="sZzpSYC3Ny0Q1aET"
 Content-Disposition: inline
 In-Reply-To: <cover.1754901948.git.mazziesaccount@gmail.com>
 
 
---qUzuhLq20cKqadNw
+--sZzpSYC3Ny0Q1aET
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-The ad7476 driver defines separate chan_spec structures for operation
-with and without convstart GPIO. At quick glance this may seem as if the
-driver did provide more than 1 data-channel to users - one for the
-regular data, other for the data obtained with the convstart GPIO.
+The ad7476 supports two IC variants which may have a 'convstart' -GPIO
+for starting the conversion. Currently the driver calls a function which
+tries to access the GPIO for all of the IC variants, whether they
+support 'convstart' or not. This is not an error because this function
+returns early if GPIO information is not populated.
 
-The only difference between the 'convstart' and 'non convstart'
--channels is presence / absence of the BIT(IIO_CHAN_INFO_RAW) in
-channel's flags.
+We can do a tad better by calling this function only for the ICs which
+have the 'convstart' by providing a function pointer to the convstart
+function from the chip_info structure, and calling this function only
+for the ICs which have the function pointer set.
 
-We can drop the convstart channel spec, and related convstart macro, by
-allocating a mutable per driver instance channel spec and adding the flag
-in probe if needed. This will simplify the driver with the cost of added
-memory consumption.
+This does also allow to support ICs which require different convstart
+handling than the currently supported ICs.
 
-Assuming there aren't systems with very many ADCs and very few
-resources, this tradeoff seems worth making.
-
-Simplify the driver by dropping the 'convstart' channel spec and
-allocating the channel spec for each driver instance.
+Call convstart function only on the ICs which can support it and allow
+IC-specific convstart functions for the ICs which require different
+handling.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 Reviewed-by: Nuno S=E1 <nuno.sa@analog.com>
@@ -138,131 +136,88 @@ Revision history:
  - No changes
 
  v2 =3D> v3:
- - Use __set_bit() instead of |=3D
- - Swicth BUILD_BUG_ON to static_assert
- - Clarify a comment
- - Improve commit message
+ - Use indirect call to convstart (via function pointer) also from the
+   ad7476_scan_direct().
+ - Adapt to the change which returned the chip_info pointer back to the
+   driver's state structure.
 
  v1 =3D> v2:
- - New patch
+ - Adapt to the change which removed the chip_info pointer from the
+  driver's state structure.
+
+The follow-up patch adding support for the ROHM BD79105 will bring
+different 'convstart' functions in use. The IC specific pointer will
+also prepare the way for this.
 ---
- drivers/iio/adc/ad7476.c | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ drivers/iio/adc/ad7476.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7476.c b/drivers/iio/adc/ad7476.c
-index 1445f0f599d9..ad9e629f0cbd 100644
+index ad9e629f0cbd..6cb2cbeafbd3 100644
 --- a/drivers/iio/adc/ad7476.c
 +++ b/drivers/iio/adc/ad7476.c
-@@ -6,6 +6,7 @@
-  * Copyright 2010 Analog Devices Inc.
-  */
-=20
-+#include <linux/bitops.h>
- #include <linux/device.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -29,8 +30,6 @@ struct ad7476_state;
- struct ad7476_chip_info {
+@@ -31,6 +31,7 @@ struct ad7476_chip_info {
  	unsigned int			int_vref_mv;
  	struct iio_chan_spec		channel[2];
--	/* channels used when convst gpio is defined */
--	struct iio_chan_spec		convst_channel[2];
  	void (*reset)(struct ad7476_state *);
++	void (*conversion_pre_op)(struct ad7476_state *st);
  	bool				has_vref;
  	bool				has_vdrive;
-@@ -42,6 +41,7 @@ struct ad7476_state {
- 	struct gpio_desc		*convst_gpio;
- 	struct spi_transfer		xfer;
- 	struct spi_message		msg;
-+	struct iio_chan_spec		channel[2];
- 	int				scale_mv;
- 	/*
- 	 * DMA (thus cache coherency maintenance) may require the
-@@ -154,24 +154,18 @@ static int ad7476_read_raw(struct iio_dev *indio_dev,
- #define AD7940_CHAN(bits) _AD7476_CHAN((bits), 15 - (bits), \
- 		BIT(IIO_CHAN_INFO_RAW))
- #define AD7091R_CHAN(bits) _AD7476_CHAN((bits), 16 - (bits), 0)
--#define AD7091R_CONVST_CHAN(bits) _AD7476_CHAN((bits), 16 - (bits), \
--		BIT(IIO_CHAN_INFO_RAW))
- #define ADS786X_CHAN(bits) _AD7476_CHAN((bits), 12 - (bits), \
- 		BIT(IIO_CHAN_INFO_RAW))
+ };
+@@ -70,7 +71,8 @@ static irqreturn_t ad7476_trigger_handler(int irq, void  =
+*p)
+ 	struct ad7476_state *st =3D iio_priv(indio_dev);
+ 	int b_sent;
 =20
+-	ad7091_convst(st);
++	if (st->chip_info->conversion_pre_op)
++		st->chip_info->conversion_pre_op(st);
+=20
+ 	b_sent =3D spi_sync(st->spi, &st->msg);
+ 	if (b_sent < 0)
+@@ -94,7 +96,8 @@ static int ad7476_scan_direct(struct ad7476_state *st)
+ {
+ 	int ret;
+=20
+-	ad7091_convst(st);
++	if (st->chip_info->conversion_pre_op)
++		st->chip_info->conversion_pre_op(st);
+=20
+ 	ret =3D spi_sync(st->spi, &st->msg);
+ 	if (ret)
+@@ -160,12 +163,14 @@ static int ad7476_read_raw(struct iio_dev *indio_dev,
  static const struct ad7476_chip_info ad7091_chip_info =3D {
  	.channel[0] =3D AD7091R_CHAN(12),
  	.channel[1] =3D IIO_CHAN_SOFT_TIMESTAMP(1),
--	.convst_channel[0] =3D AD7091R_CONVST_CHAN(12),
--	.convst_channel[1] =3D IIO_CHAN_SOFT_TIMESTAMP(1),
++	.conversion_pre_op =3D ad7091_convst,
  	.reset =3D ad7091_reset,
  };
 =20
  static const struct ad7476_chip_info ad7091r_chip_info =3D {
  	.channel[0] =3D AD7091R_CHAN(12),
  	.channel[1] =3D IIO_CHAN_SOFT_TIMESTAMP(1),
--	.convst_channel[0] =3D AD7091R_CONVST_CHAN(12),
--	.convst_channel[1] =3D IIO_CHAN_SOFT_TIMESTAMP(1),
++	.conversion_pre_op =3D ad7091_convst,
  	.int_vref_mv =3D 2500,
  	.has_vref =3D true,
  	.reset =3D ad7091_reset,
-@@ -282,6 +276,7 @@ static int ad7476_probe(struct spi_device *spi)
- {
- 	struct ad7476_state *st;
- 	struct iio_dev *indio_dev;
-+	unsigned int i;
- 	int ret;
-=20
- 	indio_dev =3D devm_iio_device_alloc(&spi->dev, sizeof(*st));
-@@ -332,16 +327,28 @@ static int ad7476_probe(struct spi_device *spi)
- 	if (IS_ERR(st->convst_gpio))
- 		return PTR_ERR(st->convst_gpio);
-=20
-+	/*
-+	 * This will never happen. Unless someone changes the channel specs
-+	 * in this driver. And if someone does, without changing the loop
-+	 * below, then we'd better immediately produce a big fat error, before
-+	 * the change proceeds from that developer's table.
-+	 */
-+	static_assert(ARRAY_SIZE(st->channel) =3D=3D ARRAY_SIZE(st->chip_info->ch=
-annel));
-+	for (i =3D 0; i < ARRAY_SIZE(st->channel); i++) {
-+		st->channel[i] =3D st->chip_info->channel[i];
-+		if (st->convst_gpio)
-+			__set_bit(IIO_CHAN_INFO_RAW,
-+				  &st->channel[i].info_mask_separate);
-+	}
-+
- 	st->spi =3D spi;
-=20
- 	indio_dev->name =3D spi_get_device_id(spi)->name;
- 	indio_dev->modes =3D INDIO_DIRECT_MODE;
--	indio_dev->channels =3D st->chip_info->channel;
--	indio_dev->num_channels =3D 2;
-+	indio_dev->channels =3D st->channel;
-+	indio_dev->num_channels =3D ARRAY_SIZE(st->channel);
- 	indio_dev->info =3D &ad7476_info;
-=20
--	if (st->convst_gpio)
--		indio_dev->channels =3D st->chip_info->convst_channel;
- 	/* Setup default message */
-=20
- 	st->xfer.rx_buf =3D &st->data;
 --=20
 2.50.1
 
 
---qUzuhLq20cKqadNw
+--sZzpSYC3Ny0Q1aET
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmiZrxAACgkQeFA3/03a
-ocVDzAgAmXdxFkwmCGS3i4kD4BBfxI0MVfpwsQucvEu8r0VF3x2T1G2Nm9J8WZCx
-tciL00SL1sY5c+KbFZ6kppfbU6skJCqbLPxYQQ4fSfAmwFRK9i2TI87+S6pdlja5
-FPXhTz5py7X4JaJkOWtIbprC74yuznFLw/M18Mnq3xVHFViUUUjPaicn3B0Dxe7d
-bgCAItpOWn907PZfxg3grUWQ6EYV3ego/Zdb1TomMvijR3JlySv4NY+nRkl7sF87
-rMnPXThbPdG8BUgUajziBvRXKT7bJw2nm3MDWsA/RTC0Psa/tcYZv1rAVDamxI/p
-yef/q0We3rWBkPSdqiwqaZ5JUn9oog==
-=KcP+
+iQEzBAEBCgAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmiZrxsACgkQeFA3/03a
+ocUvSQf+IvW6HdeYk/he3GicwRposZgQSmMXpvu6Brmdy3Qm/VejXDK16dyC6knO
+ttxjiGZ82/HrcoqPFcCLguxS1Pkn+TpYB7kwWVsT5ffpbUNoeRB6jlIorChLRa1U
+b4dcz+FsIYi4vkBX+r3r3zS61exjYE69zopnw2JOunfwIuuh5KgmZVdBDiJh5xga
+w+STlIl13X2rBkKhVrf+lNQ/Nsr+ifR0Vzipk1zN+UXa5XRYMQsyYoX17/pc4fJL
+EzD+9DI8m2aN2gx/YIk9zsZaNM2ual5QwtTw08cRVAe8gpzkk4Axh/wieKS+pei/
+/1fNry1f38o1KzN/iCDJugJdgk4wGg==
+=yApc
 -----END PGP SIGNATURE-----
 
---qUzuhLq20cKqadNw--
+--sZzpSYC3Ny0Q1aET--
 

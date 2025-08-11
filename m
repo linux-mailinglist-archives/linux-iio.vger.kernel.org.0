@@ -1,170 +1,111 @@
-Return-Path: <linux-iio+bounces-22569-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22570-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81181B20993
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 15:04:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A4DB209A6
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 15:09:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DDDD7A5480
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 13:03:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0676E1891C62
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 13:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6EBB2D7819;
-	Mon, 11 Aug 2025 13:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5120F2D8379;
+	Mon, 11 Aug 2025 13:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H26eF4zV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tra6V5YM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95BF3B29E
-	for <linux-iio@vger.kernel.org>; Mon, 11 Aug 2025 13:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909112D3A97;
+	Mon, 11 Aug 2025 13:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754917451; cv=none; b=at/pqt00d1F6rX7u9ntedkJsYupufP9lETvyB7ga6hbaDfxS0wz3gWUZBJaXM7zWzrpJvDz+wYh4LQ/EwEIY44xx0V0wO8OJ3NtlXrhzOdrfnE7K7EvORA7X1+sScg7lQRQMoi9v1UvlYIhDuoyH5GD/fgmWdR/aKJXcDV8qYaI=
+	t=1754917741; cv=none; b=ex34lK6bnVUSiRfMXWD73g+J4z6n7wsqcYlMUrolkFxHTsnyfEoUOVri0UQIb+XVxp2LoBOBewEcR4h1zMKjCzYZ85ubJAzA+D6R7wNoTpNIrm7rGpbymagefY0fY0FbdJbis7BKBM9jyAZGSHWCqOVxroSheyv+dXXzrzQDnUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754917451; c=relaxed/simple;
-	bh=kA4iN6kFCmAFDmMNaA9yHIcAe4VTB5zK9azrKiAAGAk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EqSS2STISSu0o1Sz4G6A7/tbeZQVYTM7RfGUhKpe88XY0BeJWDtS4N2WlsXkdgf0tacK5uNovR5Kqu8DWqS4PfohVfuerV6ZXx7PmOXLMThoHcXtwBN9rcIQ6lTPlIKGAMGNOa/OIe6sZGJwxEc4t8hGJPCdO0kGodXHoyy9xaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H26eF4zV; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-af96d097df5so787898666b.3
-        for <linux-iio@vger.kernel.org>; Mon, 11 Aug 2025 06:04:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754917448; x=1755522248; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DIZ+dOfFnG1IxDS5aQIpDXTEJTUl9Zq0jm+qMgh9mV0=;
-        b=H26eF4zVAbITQ0znyeDo+1io90lAUoA3hxs/Lu2yd5U2j2QBCk6ITA4KRrSzr5Uixl
-         Z6v3JM/wkqRJqOIWZrRIIyOPTY80sGZalErCr0Vdg0uSZqRIXco/k2mOWEQ5A/N32KpY
-         lv1kOC6JRMFpJ8Z/vTy+oAU7ZA1NW9PWz19LNzSeOTTx8pWD6lFHUF3oqm4a3PAw7eRu
-         yAVF8QM5GdTwTdhrxwzxmLkjFIpKbFnKH7eOdld+jfwfVmXEYs7XerbLMs79WJxL6g0D
-         JVO/c5NsAvJOWSlF/ja7Q1etPZq+J8+xzW2fsYyl/CaagoQQ2wtWbOvIEb3+mInNf9dN
-         Qcvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754917448; x=1755522248;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DIZ+dOfFnG1IxDS5aQIpDXTEJTUl9Zq0jm+qMgh9mV0=;
-        b=gf6raigdNdwXBNS+ia9NrQeTSNfK2Y58ECWtp4yQy88huKC3bwY8bgq/aOqfns4JV8
-         CrORVzV4yna7O/UMaImqbWP8Q6TDUGkdwJu1uzJV43gGNWun7rjhyBok1M6ebf8YpbNZ
-         yXgsAsOsnFIi/vcpSJOPOO2a6dN89gKMpwx7kj9Zs6TTrot/lQOZXTZWCHNR4lXx2Jh2
-         hkm2c1AEAMRm60ygxJWo8LtuKN3h5kikLl9CBIAGIwpnl4ubjuZPn+NrVec/FO3X/tzV
-         Gh5DHfiQj12aqHVjEl3VkewYolhYTJmBMK+zHhQvCpSGHohFY+1Sl63kWdnLgl2YCC7J
-         R/uA==
-X-Forwarded-Encrypted: i=1; AJvYcCV2PBfwa7BDnUbAF3rzAUbrQfrUbCS5GBFq4DUR9fPsUqjcDdB2Jr5AwvXwwen0se3qYkhI++K/qo0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwX42zLmX39xnbu7j6i0zgq5QfgtrG0tG7D0XPiB1nEKmljmBfA
-	CX9uUkyscnyhHVHVBSWaM5broqYgOxvTIo7BzxzDxe10U5eV3YAGVp71BtYL0+j/8A8nF2ihs+r
-	RX3qoi+307MS11r6jh5l3i3cX9ChnB6tq1EBNorLyaw==
-X-Gm-Gg: ASbGncvtBIfE7D2QVbfIRtLPFfX7gh0HK1/PVYVCzTiKULKnGicbHoCAQYJ9o+TL2xN
-	KHG6mKDKoXqGSCC9DUbYYfutcKz49s/ZkH24RMD6gbwMvqOtgL0kpRjz+X4JzqrdknIy++0zxuZ
-	fxisgLXfEagULHSOX6DXy2QzCiDLyFJirNSaqTqUIaKd2qLjjYKZOrCVxferTDXY5z1KZuZMbGu
-	WlP/0nvRA==
-X-Google-Smtp-Source: AGHT+IFpX6PQ4xIOqy1nFMqEk14gU8QPk0MvoGy3o/zXPCH1mXpAN7mMsJ6S2n6xnZOi7cliKdk60KneLJGTxCdWGnE=
-X-Received: by 2002:a17:906:9fd0:b0:af9:495b:99e1 with SMTP id
- a640c23a62f3a-af9c65b086cmr1253282966b.43.1754917447567; Mon, 11 Aug 2025
- 06:04:07 -0700 (PDT)
+	s=arc-20240116; t=1754917741; c=relaxed/simple;
+	bh=VzHXqC2FOe2KCOSC1mIYSSArknEXZse0xSxw2U8P/cY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U5cSxXi2wGNY3qo6LNv1AzRz6b1CqqcJdRNOA+HKEOKruK4W/WFyv051D04A3YgBPnAUvjOT3S2VPLZSv8C8/ZABtGmgimVGKQ96jebsBRDS8k5AfkRfflkcR5BoQnWQ3Kp5h+NJ+0+Yk59vcBaIkaG2o/VnlEO2aR2nB/Yq2/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tra6V5YM; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754917740; x=1786453740;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VzHXqC2FOe2KCOSC1mIYSSArknEXZse0xSxw2U8P/cY=;
+  b=Tra6V5YMxC3x21GNYLJziXD0Rnf9ljiQ/kSCA9YLNy5M08IXB+XgZQ53
+   1O5aBr5gKenHUOvZbbztKC+9w9OgB7IcfQ1iw0Rf4fkUWjE+nRCttpM75
+   NYq1viBhF2/0OkinhrlUYbZdX8oVBhNOJNwV16gMT7KJ2fg9Fp598cAF7
+   Xqm9SUo6siaWJsX0wVDGF3mVVVqNnQYBUwWyl2mVivRAvGgHtL0pUkWpW
+   0qxCSkue8a4zmloMvsZI/JTt6JbhK5NIMly5+QMrYH2cYQgE624u2h3UB
+   +0AqW0lbmfldoqFw7udtwhCCxwc7xGVO0PdOBboHjmNEJdAj/spS/h53z
+   Q==;
+X-CSE-ConnectionGUID: SJOFSmPxR5+Onqc2tk4Ukg==
+X-CSE-MsgGUID: 11yP72t1T8yNPg/R3doQJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="68248671"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="68248671"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 06:08:59 -0700
+X-CSE-ConnectionGUID: TlO0PjuDSnS/tPNXZ569Mw==
+X-CSE-MsgGUID: gZI7L7K9SmGcZ/GX2cWytw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="189592004"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 06:08:56 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1ulSGj-000000052lp-0ay9;
+	Mon, 11 Aug 2025 16:08:53 +0300
+Date: Mon, 11 Aug 2025 16:08:52 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: liziyao@uniontech.com
+Cc: Alex Lanzano <lanzano.alex@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Yao Zi <ziyao@disroot.org>,
+	WangYuli <wangyuli@uniontech.com>, Jun Zhan <zhanjun@uniontech.com>
+Subject: Re: [PATCH] iio: imu: bmi270: Match ACPI ID found on newer GPD
+ firmware
+Message-ID: <aJnrZNCpBYD92-n1@smile.fi.intel.com>
+References: <20250730-bmi270-gpd-acpi-v1-1-1ffc85b17266@uniontech.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250808-adf4350-fix-v1-1-58eed5c07359@analog.com>
- <CAHp75VeXCrqzRFzNsMYHafRQ3SKztd-UaFKvvt_msh=O+Czb8Q@mail.gmail.com>
- <g7qklr4fx7qria6yeztybimqa26nyysmalbr7vbotjsojw63cw@6n36krmjw77v>
- <CAHp75Vcz1Syosz_uSOka2RCWP7-xiRB5f4iqmWkEPz12iLmkcQ@mail.gmail.com> <yvqbio6ip6zeycuccihiqnxpho4p7bpg6uk53zgdbwazlwpwkk@lozrfgb7ul7d>
-In-Reply-To: <yvqbio6ip6zeycuccihiqnxpho4p7bpg6uk53zgdbwazlwpwkk@lozrfgb7ul7d>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 11 Aug 2025 15:03:30 +0200
-X-Gm-Features: Ac12FXyUcjS46EBoUgCdcY7HEYlh-tL8_Uv1EuPpVFqVCfcCJsrPbH8mjeqDANo
-Message-ID: <CAHp75Ve-dYcD1j0n3PeRbUJO-8TR1ADyKp-u75sLysNp-uNxwg@mail.gmail.com>
-Subject: Re: [PATCH] iio: frequency: adf4350: Fix prescaler usage.
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250730-bmi270-gpd-acpi-v1-1-1ffc85b17266@uniontech.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Aug 11, 2025 at 2:48=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.com=
-> wrote:
-> On Mon, Aug 11, 2025 at 01:53:20PM +0200, Andy Shevchenko wrote:
-> > On Mon, Aug 11, 2025 at 11:42=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmai=
-l.com> wrote:
-> > > On Fri, Aug 08, 2025 at 11:56:23PM +0200, Andy Shevchenko wrote:
-> > > > On Fri, Aug 8, 2025 at 6:09=E2=80=AFPM Nuno S=C3=A1 via B4 Relay
-> > > > <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Wed, Jul 30, 2025 at 08:56:16PM +0800, Cryolitia PukNgae via B4 Relay wrote:
+> From: Cryolitia PukNgae <liziyao@uniontech.com>
+> 
+> Some GPD devices ship a buggy firmware that describes on-device BMI260
+> with ACPI ID "BMI0160". Since this is fixed in BIOS update v0.40,
+> let's match the correct ID to detect the device. The buggy ID "BMI0160"
+> is kept as well to maintain compatibility with older firmwares.
 
-...
+I think I saw this patch already and there was even an (unfinished)
+discussion...
+https://lore.kernel.org/linux-iio/20250730-bmi270-gpd-acpi-v1-1-1ffc85b17266@uniontech.com/
 
-> > > > > +       st->r4_rf_div_sel =3D 0;
-> > > > > +
-> > > > > +       while (freq < ADF4350_MIN_VCO_FREQ) {
-> > > > > +               freq <<=3D 1;
-> > > > > +               st->r4_rf_div_sel++;
-> > > > > +       }
-> > > >
-> > > > This is a reimplementation of ffs()/fls() or similar calls. Do you
-> > > > have a plan to clean up?
-> > >
-> > > Oh so? Not seeing any direct way of using ffs()/fls() for achieving t=
-he
-> > > same as the above.
-> >
-> > Bit operations are hard, I know :-)
-> >
->
-> Even more in the morning :)
->
-> > r4_rf_div_sel is a power-of-two shift to make sure the freq is just
-> > above the MIN_VCO_FREQ. Of course it's just a subtraction between
-> > fls() of the MIN_VCO_FREQ (which is compile-time constant, I believe),
-> > and fls(freq). No need to loop, really.
->
-> Yes, I agree the loop is not needed and if I got you right, you mean some=
-thing like:
->
-> if (freq < ADF4350_MIN_VCO_FREQ) {
->         st->r4_rf_div_sel =3D fls(MIN_VCO_FREQ) - fls(freq);
->         /* But then, you would need to re-check the if condition.
->          * AFAICT, it is not guaranteed that we will always get
->          * the condition right just by subtracting (or shifting freq til
->          * the same MSbit)
->          */
->         if (freq * 2^st->r4_rf_div_sel < ADF4350_MIN_VCO_FREQ)
->                 st->r4_rf_div_sel++;
-> }
->
-> So yes, we can skip the loop but in terms of code it's not really convinc=
-ing me
-> to bother in changing it. I also don't have HW with me to test it (but
-> it does look like a safe change though). I guess we could also use
-> ilog2() but I think we always need to recheck to see if we need and
-> extra shift.
+So, why are you sending the same patch again?
 
-Yes, ilog2() to make compile-time constant for minimum.
-But also one may think more about this and come with the idea of only
-one check. I don't see why the second check is needed.
-
-The question the code tries to answer is "how is the freq lesser than
-the minimum in terms of power-of-two multiplier?". I have that already
-done in some drivers. And that becomes fls_long(). See implementations
-of roundup_pow_of_two() and rounddown_pow_of_two().
-
-https://elixir.bootlin.com/linux/v6.16/source/drivers/tty/serial/8250/8250_=
-mid.c#L220
-https://elixir.bootlin.com/linux/v6.16/source/drivers/spi/spi-pxa2xx.c#L820
-...
-
-> That said, I would ack a change like (or better) the above.
-
---=20
+-- 
 With Best Regards,
 Andy Shevchenko
+
+
 

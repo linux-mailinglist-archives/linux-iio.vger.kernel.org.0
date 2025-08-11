@@ -1,124 +1,121 @@
-Return-Path: <linux-iio+bounces-22575-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22576-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7E5B20BD9
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 16:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29711B20C40
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 16:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9360C3B8F29
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 14:25:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF8EF6263EF
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 14:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC2E23D2BA;
-	Mon, 11 Aug 2025 14:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8D22571B8;
+	Mon, 11 Aug 2025 14:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JB4Wm3rC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EqI5z/pX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433F25FEE6;
-	Mon, 11 Aug 2025 14:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD3A253B64
+	for <linux-iio@vger.kernel.org>; Mon, 11 Aug 2025 14:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754922330; cv=none; b=aw4ejKAoiILKfWxQpkDHK1b3IAZaUpMQalX7kGc80LEANtLk6ubG5imkrd0IjDl+myjDhM7v1ak8p/umxfzZ/6IQav76aPKZiw3TtWZqJDqyfWBJ27iGIqCtjFp4vLapJxsPqddQAtCz4Urn0KJb2S28683x9DGgf4NKR4Yfkvg=
+	t=1754922960; cv=none; b=FAhyvuf6bAkUCfq2cBONRA7hfoNGQRubgpR3FmspSV/j1HTej5ewuCzABxK4rlnrnpsbCmzeVetrSsqafhOYqRKLkHIw2dPuZujvUu9KPjneQV79wolUmUSaS98w0XESJftGDn1AoDqxJw3AeBnuH+LTK1U82AvoP7CSrkdGff8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754922330; c=relaxed/simple;
-	bh=iWqnGf/hu1RSzlIIZddfO5a/PW2ZykqHUtyn5u3/88c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ogBynTwDQEpbjX0LCKfagi2yVWVCt04I7nJDOBHMxdlZZPfajupjXq72EPsRuydqXQhCzTC/72IPETUOW7UGgpyJwtoAnd82guBRXB71U1/YulaY9kPCFLUyLrgjaCVk38NQWydyL2QTOuNZzV7Udrboqv+BYx5n8WdeY1/EaD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JB4Wm3rC; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6182ea5a6c0so1600731a12.0;
-        Mon, 11 Aug 2025 07:25:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754922328; x=1755527128; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yLfTfi5NEouKdnEk0ve7RHoemhhaVCQClGf6sNPBYTw=;
-        b=JB4Wm3rCnJQIaXHi7EdpbYHL2eOZ1iryp4T1Sl+SDujD2Xn2AmD0HpG8hzR/1pMixi
-         1V+Srm2BU2O3w58biiF23S6Hm5lTZfg3nk9qKgmevmgVMuBmCAhtTNU73eyKN74jMFe+
-         KG1xFf7BG64Yzk7W3Tv/WP98zV62fL6lhV2KIeCI5oBSMZ6cdDHycL2h1VlucQdLuNeL
-         leWTPyT1DbdmG867bRaPQoxaK5kIiQcb9IIJuhbmfNv+QfuyKjfzZ/uWklHS9eenom0z
-         edHhvo0aouu98C4W6ZdgoD86gTIaFvD5sV8YStKwTlh1nD2vtKoHDmGylrtiHG5qjEHQ
-         r4wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754922328; x=1755527128;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yLfTfi5NEouKdnEk0ve7RHoemhhaVCQClGf6sNPBYTw=;
-        b=ubOvnKjqKEf2LT1ky9Ub3SXrlnCqlZFJOsz+wTY1X3cf6CTquyUorcF3Q3kW+iANL4
-         SdyrRNcMVpvKs2bZ01MMpXW3UCz+QiaU/gbP8hyUFTTXuLFih/GKYo6n/oyFjxL8KuH2
-         JsjAvUf1180epsgd8uRnuKUj6H4O19QZHkb7hOITC/C5a1GZtlSdKJhGfsOWeyLNYCBE
-         8ZV9HokfwijDUlvYfKxM4FuyZcQz9e7OonqS/rIm8asSP1iuzEB8OhXE3MDfPhcPjtry
-         BFyU1hpbnbo/X+mYJ3bDW//SMmYcfQIXNg36WatVDhkfbMHBpW9piPNGAzwGYgv1CFDx
-         3X0w==
-X-Forwarded-Encrypted: i=1; AJvYcCUsWzGhgSVkgleBfDaDMzXjp63iqLdXsxW5AjPPiMWEIExoNUxF1eTsKJ+KE3p1yt0iifMoGqSinbk=@vger.kernel.org, AJvYcCWyJ97au2TeWsIvyd0SkzleHst0XFOBA0Qfayg2VhJqEPVp5rJxnxlTglyPfqcWj5WJbMW1hjwxpBN2a/QR@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF0wCgrSpvHkc3VBsigyC3R3c/qypP2+gVekvGbl239qdYtH1O
-	HToNrXzG3F7YMHZ/lnLtIJIJqd/iXC2fT7rdYIyC9jTL7ABPbe/pT2wcF9upp4gO1XG/KFy7M7T
-	9QpFwysR6s8TbVvdGKTMDxT76TuS47y4=
-X-Gm-Gg: ASbGncu4COM65GyUHRFu95zDF/7EhgASpmS5wBEGMK7Wg+xCHajBuhTJAIqU3XokHzU
-	FGzULyceaQSHt1YPZmf0s62GbLJ6ndcwHQ7cttPfPNozOSIqSAZYtGEABfbUxJbagh5/hcbXjiJ
-	EFMON+L+fW4HBhem4sk0ZT1j+tCxl8HKtXH+4HQxqoAvkAR5965QvK91KkKA656AIoaPH9uE05i
-	IpIyfLtZA==
-X-Google-Smtp-Source: AGHT+IGdU10NGg29khHjBwddhKjzTQJs2rQO8SQqzjT97HlICwegX0ze2wGY0caE5t0GfFviiUx1pTHyctKVkMMLAjc=
-X-Received: by 2002:a17:907:1c29:b0:ae3:c968:370 with SMTP id
- a640c23a62f3a-af9c6545861mr1085689166b.59.1754922327440; Mon, 11 Aug 2025
- 07:25:27 -0700 (PDT)
+	s=arc-20240116; t=1754922960; c=relaxed/simple;
+	bh=aG2r8k3HZO6CkEAEOvANO4fnBvXMhklWc9N7xTLohTI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CLNRDACvdYWAnR5hOD7vwUY4rbHellxx8/MZH0qdRJKWQW3xFW6mFqixqwOt/lhoOmCUTsoJZrdqnFtx7/UJlzqaU5oEwKyiK3l85Yzjxw4c6vRyNu+fDBuUe2KH+R+FGNcZn3xEBsVpiaWIrKvNn8gImxyFLW65Jf/HAQeoXQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EqI5z/pX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1F8C4CEF4;
+	Mon, 11 Aug 2025 14:35:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754922960;
+	bh=aG2r8k3HZO6CkEAEOvANO4fnBvXMhklWc9N7xTLohTI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EqI5z/pXu93eU9pmuDbu/EiZknSqMwc1xii8gcdm1BZw155piaXpZddgbPi45gi6N
+	 NdLyg5lbkffYbcacAduZn0u6v/S8HiK9d/CLY8cz34s8/pXBZw057etGxYftVX4UCG
+	 wMECnaDhS2J7N4TKVfjvBbzkZDT8qjgLpNzmWu3aOMz+WJktsle0TFPo9GMSDh7l8x
+	 kuxJ4lhyEHsPgyA0qdBS6c+HcPw6214pbPy3R1wQLBjGvD9J3GRo/pdKeahwhGnO5h
+	 JtuuOSXeXj5yd9htJo5osr9bz+p5KcsjroVb++nwTmwooyGdyU3AqgtCuazgIxT7tg
+	 6LtNBr7n7xcpQ==
+Message-ID: <4a9cd814-6019-442e-829a-794bb3216e5c@kernel.org>
+Date: Mon, 11 Aug 2025 16:35:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250808-icm42pmreg-v2-0-a480279e7721@geanix.com>
- <20250808-icm42pmreg-v2-1-a480279e7721@geanix.com> <CAHp75VdKNE0xD8xbJQ2RSCA=_MB9DMZtXRTCNkpdKdv8vW-Q-w@mail.gmail.com>
- <20250809190609.4fef9df7@jic23-huawei> <CAHp75Vc5CxOj77cw85hmioFTG6YJCe3ZJWwJsJW+QL79K8GpWw@mail.gmail.com>
- <yegzkmvizfcxwohvkxtfguylamvlpy3hsabkxydjwhyiy3fonn@mqjqdpkpo375>
-In-Reply-To: <yegzkmvizfcxwohvkxtfguylamvlpy3hsabkxydjwhyiy3fonn@mqjqdpkpo375>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 11 Aug 2025 16:24:50 +0200
-X-Gm-Features: Ac12FXxR_g_-ECRSvcsngPlXK6CwvVYVWvq7G3YjjLZOjzN1FTCGFPqDKcdvpx4
-Message-ID: <CAHp75Vf-WGZ53Hj=QOgeft3oWYnO3kPFXsDSD0gaAqTNdciHfQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] iio: imu: inv_icm42600: Simplify pm_runtime setup
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] iio: Improve iio_read_channel_processed_scale()
+ precision
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org
+References: <20250727210639.196351-1-hansg@kernel.org>
+ <20250727210639.196351-2-hansg@kernel.org>
+ <de1b173b-d6fa-4ebf-a399-262c035ecef8@baylibre.com>
+ <73d5746d-a9fb-40c2-9ad2-bcf970683284@kernel.org>
+ <7810b341-1216-4fe4-8c05-17acb00430c7@kernel.org>
+ <aJnj7w5aJ3B-AGGD@smile.fi.intel.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <aJnj7w5aJ3B-AGGD@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 11, 2025 at 4:21=E2=80=AFPM Sean Nyekjaer <sean@geanix.com> wro=
-te:
-> On Sat, Aug 09, 2025 at 10:27:52PM +0100, Andy Shevchenko wrote:
-> > On Sat, Aug 9, 2025 at 8:06=E2=80=AFPM Jonathan Cameron <jic23@kernel.o=
-rg> wrote:
-> > > On Fri, 8 Aug 2025 23:37:51 +0200
-> > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > On Fri, Aug 8, 2025 at 5:58=E2=80=AFPM Sean Nyekjaer <sean@geanix.c=
-om> wrote:
+Hi,
 
-...
+On 11-Aug-25 2:37 PM, Andy Shevchenko wrote:
+> On Sun, Aug 10, 2025 at 11:12:24PM +0200, Hans de Goede wrote:
+>> On 10-Aug-25 9:25 PM, Hans de Goede wrote:
+>>> On 29-Jul-25 7:26 PM, David Lechner wrote:
+>>>> On 7/27/25 4:06 PM, Hans de Goede wrote:
+> 
+> ...
+> 
+>> +		switch (scale_type) {
+>> +		case IIO_VAL_INT_PLUS_MICRO: denominator = 1000000LL; break;
+>> +		case IIO_VAL_INT_PLUS_NANO: denominator = 1000000000LL; break;
+> 
+> (s64)MICRO
+> (s64)NANO
+> ?
 
-> > > > > +       struct device *dev =3D regmap_get_device(st->map);
-> > > > >
-> > > > > +       if (!pm_runtime_status_suspended(dev))
-> > > > > +               regulator_disable(st->vddio_supply);
+Ack.
+
+> ...
+> 
+>> +	ret = iio_multiply_value(processed, raw64 * scale,
+>> +				 scale_type, scale_val, scale_val2);
+>> +	if (ret < 0)
+>> +		return ret;
+>>  
+>>  	return 0;
+> 
+> Simply return iio_...(...); ?
+
+That will change the return value on success from 0 to
+IIO_VAL_INT, which is 1 not 0.
+
+> ...
+> 
+>> +int iio_multiply_value(int *result, s64 multiplier,
+>> +		       unsigned int type, int val, int val2);
+> 
+> There is room for type in the previous line.
+
+type, val and val2 is a triplet which belongs together,
+since it does not matter for the number of lines this
+takes it seems better to keep the 3 together.
+
+Regards,
+
+Hans
 
 
-> Andy, when doing reviews please keep the function name, as it's much
-> easier to add the changes.
-
-Sure, sorry I missed it, I thought it was obvious, but you are right,
-it's better to keep more context.
-
---=20
-With Best Regards,
-Andy Shevchenko
 

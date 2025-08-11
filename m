@@ -1,126 +1,158 @@
-Return-Path: <linux-iio+bounces-22596-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22597-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F68B21540
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 21:18:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5B4B21545
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 21:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 069413B79FA
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 19:18:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F6B016FFB9
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 19:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381E62D6635;
-	Mon, 11 Aug 2025 19:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7626311C13;
+	Mon, 11 Aug 2025 19:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="k35B6yyD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTrRW7lu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2254C29B216
-	for <linux-iio@vger.kernel.org>; Mon, 11 Aug 2025 19:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BD12D4813
+	for <linux-iio@vger.kernel.org>; Mon, 11 Aug 2025 19:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754939895; cv=none; b=cZyc83PftY0xe8XqRj83HQeOlMR63PriRzRufZ5moPM8F8hFGVxhEneykvrhm69pF0KcFe9Y+Z6qMLHZBJw6yWosHfAgcqP3XJm6kQdMyN3AfQRyKSD7Ms0Eh1auCi9fFBxiyYBf1yTAvlrs/83285H/AcBjUD7bq025/KV0nFI=
+	t=1754940016; cv=none; b=C+NPHblNJz3MHlrAaakYKJgBJprJtYeo6SQiFT2q9+Q+JpzX54IpLeERTH2KRNo4dsHavRhnDPEAQ6y1QZMidZjedVfbh6UnXGw6/Gw2hfLjzll7mU7/hstDkue5SbrunaWmpxenoZBL2Wr7pOwk2ZNlrYsbSHhRj4y/JCZuJ9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754939895; c=relaxed/simple;
-	bh=NQZV9bm3Gom84bDFKkgr3+KlA71bM5X2Com280Owt/A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WP6n2v4eYTmZEQfwqRUuXLDwZCBmoGwemfeTEeSrkfT3XdgS4fu0Y29VxtDIv9LsBuzfo9sZHVLidC8tV0P5YMMaK71Lt0No06PO2smJbC1+YAJV4EpQbPBhoIjTURGfejmSJYtfoozVKqT9d9HytBmHkICnpDMiuwJXALY/Tdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=k35B6yyD; arc=none smtp.client-ip=209.85.160.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-30b6c230808so1200788fac.3
-        for <linux-iio@vger.kernel.org>; Mon, 11 Aug 2025 12:18:11 -0700 (PDT)
+	s=arc-20240116; t=1754940016; c=relaxed/simple;
+	bh=3bIlRhwcI1+h7nv51j4VrkjENTzO/xLxR90wdBsqQQo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RR2uoSrDHFMFUNSGmcXR9S4o6lhP52T27Mt8xaG8paa8ptXy1gZZ+MSnHIOOipbSwUM8HILELJAurzsVThxN6AKRjjjuIC0VHyMgQikwObYZTKS1knCsAfhz60lhNniQwpxTDcnbNVQxF0ya9OMqCeIM2WfNi3SGrkpoyxhPXMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LTrRW7lu; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-af95ecfbd5bso789937666b.1
+        for <linux-iio@vger.kernel.org>; Mon, 11 Aug 2025 12:20:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1754939891; x=1755544691; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7AI/sGQsL/aW+QHdvLDtUmPvb4wNwg5knHWyurN/Guw=;
-        b=k35B6yyDOeXzytZZKiVTgoIHEQl0/t+rH+JZu+0sBEjzVJ+lDYk863Dldr4k7m+YNW
-         RvcNC1Ny4i2lxScHc/RNw0UY0qk553Jq9qt3ir7eurWtmxgW1Tk1pTTXUEkbQFagqZG9
-         Mgdi+AmkZ/fz+/fEbuqytv7IeSRCknDcQjazdSZdtuM+e49XToKd4FMZ89Y8gr0BedLG
-         iMHt+M8omYWB00buLb54cSZvlNLHGhZw4KUWdlVoK3HS6ksS9KKW96olI7mUFQX9F6Wt
-         f8gzXR7eBLoPBLEVKVAh+q49dZy0iADVOFG1cJvAgT+9KmirICcqGbHas8nCNSP+RTnH
-         hNmA==
+        d=gmail.com; s=20230601; t=1754940013; x=1755544813; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qpPp5bEZyU1lFhxZe99QopWjy0DQcPLOdlguwnbWoqA=;
+        b=LTrRW7luQF/pFmMT70A2LIZP7if8MuoMKB9vyj/h0tdjEUR2S1Xy7w/Q0z2pYC9gJl
+         XPDgME7N+BuwISjHldoTY1WpTGV1UcQp+p6HZHGCGkVBBbS9C7T9j82YvDOV7fT+DjZP
+         4yN1Nehr8+tKUIp1mHt2+VN7da/qRR23n+QMq1OVUOYBV2OT1Rbwr2ickCwl/FoH01dv
+         VP3ME5AgcqX9qO1TepgZzro6Rn9u8US2+y+jTLC5AM3U/A/hREHMrobyG7YpXsnCZxtL
+         oQZP5umBdlPsnJ/M3qAvOvbONZfIkLok6z8q/UgtQbZKktSbF9MMRgzwqe4hGt0J6+6W
+         SQwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754939891; x=1755544691;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7AI/sGQsL/aW+QHdvLDtUmPvb4wNwg5knHWyurN/Guw=;
-        b=VhEG302BYDFou4Jd8yJFvU2P8IP8hci80J67V/q5gRXNU2opkd4wA3s7PseXhWECxQ
-         l0Nblqm1BI+kkZ8NGHRIYvtBzJvlbL7wMw/sYEbyPLHIRMY2ezgNh/z3s2LI1dHacmAp
-         ZHy3WD/tH+2poXrughxV+PA33giTNNtpriz0XQ6RLHXtZ4YWOm5qrBD2g46/T5luq12l
-         h9V05DmtNaot9PNsZY7z1GWuPTFKNQ7wlduRGKKAo8wQEijeGDSyZ4QH59vNSxoi06vY
-         H5mJZGiSUpwmCFQBtnQRryHyxYYo/2DjMDoimuEkXd1Nd5koQYT8lu0+sTPtXSz9VjRl
-         NoUA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTYi6E3i7xk3ys7YHp3S5eWtBgM6t9xAoQ3INDxRSNNXQWf05eLbXWmeFblgWt99yCmaixmYB0n18=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgzteaE0SCEEtWt1Aq5xMr72dcnCmMYgV9DTq9ZcgI9FlCDSA5
-	73x5jzkPrlsX5viCqXvMW3YjMe7Y9uxneio78V+rIyyJHKjvEh6qIkPCgPZzJXJi9uGbGdb5Sxe
-	QD6Rf
-X-Gm-Gg: ASbGnctUU2R+S+6G6oZkU7se0Mye2wSbs7rnzgqIgASXOXA428FIZYmVFOG1nRNZKO9
-	/1EvkYe4iyPuaTznGRLG4LjrAOVEvfiAk6cv4sfhAk12vFuQ5EF8pD1580hcemCsL6d/E3jwUtU
-	Je7VMZKUEQeBFeSrguab81XPKHwZAVYP9jngRlvU43X/+94W6gRBlsxm5T01734q35SaB1TJf9c
-	D35pnIGixga0PSAlY6K0/RDFnTTyY/zWrvoikAO8c4D9CGpf3cfzqzKlrJEr+owr3V/j0a2paWs
-	cK2jwzWtg9ndjKGnopmLCC9CggbKFWCzzqSCsdk4ywKSpA26KSaHD7oHyttLp0GmRvia5AaUMiw
-	3R1nhFP+x8pX7QODzbiOgHbuPbbGCYfgrRWq2moQEKgw1hIiC5ZmfJSNNKTph3EPZLqi9UQtO4p
-	E=
-X-Google-Smtp-Source: AGHT+IEk4tJYU293i2xanK9PPMki/B/oadFN1LAk0tX3PXUVY4o8rCfhXdsvnLhc2bj8rE/LJaOkBw==
-X-Received: by 2002:a05:6871:e486:b0:30b:cba0:31d2 with SMTP id 586e51a60fabf-30c950a75ccmr627923fac.31.1754939891168;
-        Mon, 11 Aug 2025 12:18:11 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:4a4f:fe55:51b4:b5ba? ([2600:8803:e7e4:1d00:4a4f:fe55:51b4:b5ba])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-30b8d44e03asm6293482fac.31.2025.08.11.12.18.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 12:18:10 -0700 (PDT)
-Message-ID: <5732b907-ccb8-4302-8fd7-ded63a5d852b@baylibre.com>
-Date: Mon, 11 Aug 2025 14:18:10 -0500
+        d=1e100.net; s=20230601; t=1754940013; x=1755544813;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qpPp5bEZyU1lFhxZe99QopWjy0DQcPLOdlguwnbWoqA=;
+        b=czHtCjDJWJts+88HWnUEvnbsRSzRO041caiPpQHziM81HitOQrElBwb69iGdXHAADC
+         /WPsC/nTvsV6J4WLKf98bS901UGNvChldzPyrOBoSleNzj95HV1Drnmn860vnNiOxqK9
+         oy31MOpUAnOEk9kY5ogGVPuP2609Rw2y7LCaiIU013RFhGWcSktcotB+DwDqX680llem
+         jy073Krm5lHbtZ0ZUnT98WXMl4pk5RHYzHbsdXWcf3wnEGFBJaZpK5WK8r7jxq1sS81D
+         3F9FMBGBbU07RfY3VSZ//cSfJa6ITzPzoznrGWBp+Q1ofqNiW5qegVVnMeGEAPVWn1iK
+         oVbA==
+X-Forwarded-Encrypted: i=1; AJvYcCWfrxZAQ9wlIK0VE92V5bZY3I0bjRvvAoEyVrVgQuQe7vC07Wf/Rmq3r3zCY/wWnkx7/JvoH8Ma4Q0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYqNICT1qVPyQiiuR9qt9nhoFlPbunW9b3bDh2yARaglKQXbtF
+	BIS8WvPxdm9jfz4D53vFkOoFOXA5bxa93dkqkUavkxwWdWxNyogsSpUI9BYiXUgQIX5vEunZw+A
+	fUvuLcdJQKtHFfzJ7cCdcpDsThvIc6Cg=
+X-Gm-Gg: ASbGncs2c7TjrJteBQlHHiZdydHZ76FlCcGYOS/jnT1lR5INpZ9WR3yxdoRZa8i9I5i
+	QSQ78mkfUL+X0opVp+5bZsR4cAKgOblmLLNkZwR7TkShAaFa44vKozHudG+QYt22Drgbvm1OJnW
+	KH7kLs8ZKHk4j6pik1P2kFX+uDDvlCzd7uKA7C58ElWh58LICG4vgrS43UEG0rDFafRwLSq8bnS
+	LTeHl2hPQ==
+X-Google-Smtp-Source: AGHT+IHNFddxUfMnsR3OZaGALO5eW7GHSslcRvSB5FxfHD+/GjRM2EDGH4/EMm/rM9N62/mSXGOyziafSRq+gupbKt8=
+X-Received: by 2002:a17:907:6d24:b0:af9:6065:fc84 with SMTP id
+ a640c23a62f3a-afa1e02cf42mr63240366b.27.1754940013140; Mon, 11 Aug 2025
+ 12:20:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: ad7380: fix missing max_conversion_rate_hz on
- adaq4381-4
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- Angelo Dureghello <adureghello@baylibre.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250811-iio-adc-ad7380-fix-missing-max_conversion_rate_hs-on-ad4381-4-v1-1-ffb728d7a71c@baylibre.com>
- <CAHp75Vc_-2czsaZ_-3+cSWAzyvz-PASR5mjCyoAxTu9qSEYyLA@mail.gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <CAHp75Vc_-2czsaZ_-3+cSWAzyvz-PASR5mjCyoAxTu9qSEYyLA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250811155453.31525-1-hansg@kernel.org> <20250811155453.31525-2-hansg@kernel.org>
+In-Reply-To: <20250811155453.31525-2-hansg@kernel.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 11 Aug 2025 21:19:36 +0200
+X-Gm-Features: Ac12FXyWE1WMF8t6vteUtgTPaVWR9XF18YK6AH-jRAq4cBhPhysK9KKuI4dS534
+Message-ID: <CAHp75VckeZczX4yniOy30PFg7TZRJM2D=GJEKX8s2EAcBK9F9g@mail.gmail.com>
+Subject: Re: [PATCH v4 1/6] iio: consumers: Fix handling of negative channel
+ scale in iio_convert_raw_to_processed()
+To: Hans de Goede <hansg@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Andy Shevchenko <andy@kernel.org>, Matteo Martelli <matteomartelli3@gmail.com>, 
+	Liam Beguin <liambeguin@gmail.com>, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/11/25 2:07 PM, Andy Shevchenko wrote:
-> On Mon, Aug 11, 2025 at 8:32 PM David Lechner <dlechner@baylibre.com> wrote:
->>
->> Add max_conversion_rate_hz to the chip info for "adaq4381-4". Without
->> this, the driver fails to probe because it tries to set the initial
->> sample rate to 0 Hz, which is not valid.
-> 
-> ...
-> 
->> +       .max_conversion_rate_hz = 4 * MEGA,
-> 
-> MEGA --> HZ_PER_MHZ
+On Mon, Aug 11, 2025 at 5:55=E2=80=AFPM Hans de Goede <hansg@kernel.org> wr=
+ote:
+>
+> There is an issue with the handling of negative channel scales
+> in iio_convert_raw_to_processed_unlocked() when the channel-scale
+> is of the IIO_VAL_INT_PLUS_[MICRO|NANO] type:
+>
+> Things work for channel-scale values > -1.0 and < 0.0 because of
+> the use of signed values in:
+>
+>         *processed +=3D div_s64(raw64 * (s64)scale_val2 * scale, 1000000L=
+L);
+>
+> Things will break however for scale values < -1.0. Lets for example say
+> that raw =3D 2, (caller-provided)scale =3D 10 and (channel)scale_val =3D =
+-1.5.
+>
+> The result should then be 2 * 10 * -1.5 =3D -30.
+>
+> channel-scale =3D -1.5 means scale_val =3D -1 and scale_val2 =3D 500000,
+> now lets see what gets stored in processed:
+>
+> 1. *processed =3D raw64 * scale_val * scale;
+> 2. *processed +=3D raw64 * scale_val2 * scale / 1000000LL;
+>
+> 1. Sets processed to 2 * -1 * 10 =3D -20
+> 2. Adds 2 * 500000 * 10 / 1000000 =3D 10 to processed
+>
+> And the end result is processed =3D -20 + 10 =3D -10, which is not correc=
+t.
+>
+> Fix this by always using the abs value of both scale_val and scale_val2
+> and if either is negative multiply the end-result by -1.
+>
+> Note there seems to be an unwritten rule about negative
+> IIO_VAL_INT_PLUS_[MICRO|NANO] values that:
+>
+> i.   values > -1.0 and < 0.0 are written as val=3D0 val2=3D-xxx
+> ii.  values <=3D -1.0 are written as val=3D-xxx val2=3Dxxx
+>
+> But iio_format_value() will also correctly display a third option:
+>
+> iii. values <=3D -1.0 written as val=3D-xxx val2=3D-xxx
+>
+> Since iio_format_value() uses abs(val) when val2 < 0.
+>
+> This fix also makes iio_convert_raw_to_processed() properly handle
+> channel-scales using this third option.
 
-If we do this, we should fix up all of the other similar ones
-in a separate patch. So I would leave this patch as-is.
+...
 
-> 
-> With that done
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> 
-> 
+> +               switch (scale_type) {
+> +               case IIO_VAL_INT_PLUS_MICRO: denominator =3D MICRO; break=
+;
+> +               case IIO_VAL_INT_PLUS_NANO: denominator =3D NANO; break;
+> +               }
 
+Now wondering if checkpatch et al. are happy with this style. Not a
+big deal personally to me, but if we have warnings from the tools
+perhaps it's better to avoid them.
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

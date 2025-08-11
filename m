@@ -1,69 +1,60 @@
-Return-Path: <linux-iio+bounces-22606-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22607-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80BCFB21663
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 22:25:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 765B0B21683
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 22:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3425D3B68DE
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 20:25:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADD08423FA4
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 20:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A658F2DA775;
-	Mon, 11 Aug 2025 20:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369E52D9EE8;
+	Mon, 11 Aug 2025 20:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ob/yIfzH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmSosz69"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFC12D47F9;
-	Mon, 11 Aug 2025 20:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C943E311C31;
+	Mon, 11 Aug 2025 20:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754943943; cv=none; b=JlYKFsU6qQ4372R60sLjOXmv7oXpJUxXg468OcOGS6JPd7GaLP4Oh2U5IfbLJZFdCGis/RI4z7u91N/a5Er7LxgwH/59gaNL+R9MtjBCGYsRGPXuKla9W4qJMvDuKaTPo48ebius9507yR38F2tr3slihJWNeAFtAghb+7OOKFQ=
+	t=1754944330; cv=none; b=gg6ulMkCEMLi6CO8ungJi3kLB00OYfCieMv5Q5h5kn5TNIZr90HAaWy1BDGg1ZhqygqmSmlvqDNa/rlbhPMzmHNhXTBVMtDPDVP5wf+Ex6PWzYCbUiT7cVu7nS/5wR114Oyem856ICm8QiTTfi/dny/jeRiFxNGDMzJch0N2miM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754943943; c=relaxed/simple;
-	bh=z+N9HKMf43dB8SbHDpAKnQGM462JuzP2hLnzywSwO8A=;
+	s=arc-20240116; t=1754944330; c=relaxed/simple;
+	bh=ly505YzUJCW+w4zhIqTBgdX8GQwNdFihL6xwl57D2e8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CjGqprOZ6ocbdw2eRN7ccK60j4tO6BNOluWZ1/5inkkT9KNsm9kC+vxmCSkjJrPlVeY8UKuH1bdIAS/of2wrnsT+xjFmqIiJRtJ3hh8CMQMbdjaq6vug1HxEIpqq+tJGv9YLqZLI7dfyt8C3NySLgxWpC2T6h6accVCnxqZ/NyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ob/yIfzH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86ABBC4CEED;
-	Mon, 11 Aug 2025 20:25:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aI8FQOUjIejNHAYcQxR+FoJsb1UZdgMqrbnI4XETU8QzH4Y839YPktmSwHv9he8zxLSc8/PIcI8+/DwHWNMVC3azMnEViGCxoUp+LhrE/hF9yfBnv7uzJEsJ9/hVrjFyCdMUf4n/zctTwhH89RTbKvvMN38Z20KP4DaSgGXKciQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmSosz69; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF9FC4CEED;
+	Mon, 11 Aug 2025 20:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754943942;
-	bh=z+N9HKMf43dB8SbHDpAKnQGM462JuzP2hLnzywSwO8A=;
+	s=k20201202; t=1754944330;
+	bh=ly505YzUJCW+w4zhIqTBgdX8GQwNdFihL6xwl57D2e8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ob/yIfzHWPzoT+uIL2DAMepsicYWZRV0VNecgGFL21mNBP5gC6ZBaXvNCH8922OQ1
-	 pBXKgFGdDeR0n2ulZ7xZ+VQCMm39yt6J2BqlCD6XvJA5kYE9Z9XOtFbX7p9VJYQtci
-	 IoeRPM1iAWInBB/pYtF8yKds1BNM3UNgdOfLaGTM5x9waobDHjcpE6A+0DDqMC1cMx
-	 gCbBJB1sG283BypTNR+kq+c15Z1p1GFTQYSZhHPWoSUsBw2CRbPZAWrQQF6p3BCvZn
-	 QCHeZVEAm8fV8p3bE84/LFjShidVG0WTFF0F0+8C3MiVx5JSfI3nKYu+lpTBKqvIWO
-	 mank+bfqSBEXA==
-Date: Mon, 11 Aug 2025 21:25:33 +0100
+	b=DmSosz69RADL61BU8YtrkDonA6FsRPJqOl2gRpOcoJj5nvL4/uwrGydZdT+xpkn2B
+	 mxSYa0jmyzZnDQ5htfR/Nf3x8DCeyTO0/Hsx+HOtlzdnvtLPmH873jwwh37Nsks9Nq
+	 9q0MkssxJNwFUd7n+BHeklO8vAupuhXH9dmMnWD9f7Tho6DTTLBStfWjM5KQ6QIzKq
+	 vvqt2vmRV9215aH9qHQKZxei9bIyH4ivLTLLbAiSUlh1QW1iM9pHJNbfDLOvAhLEz1
+	 KuKKMTNEjSRNeCsfyvWeD6CYTodak4s20fh5xju9uXUz4JlcIOsv3gfy1xFSuWkvIi
+	 T8iaYQixe8XKQ==
+Date: Mon, 11 Aug 2025 21:32:00 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Akshay Jindal <akshayaj.lkd@gmail.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Andy Shevchenko
- <andriy.shevchenko@intel.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, anshulusr@gmail.com, dlechner@baylibre.com,
- nuno.sa@analog.com, andy@kernel.org, shuah@kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: ltr390: Add remove callback with needed
- support in device registration
-Message-ID: <20250811212533.341e7c44@jic23-huawei>
-In-Reply-To: <CAE3SzaRZGvOwi0UeBU9Nw2=_jwF9AYLyY0BFG9tHzwbMFv1o7g@mail.gmail.com>
-References: <20250804192513.62799-1-akshayaj.lkd@gmail.com>
-	<CAHp75VfJzVAJYC9-2oyfV4qBLmraXRgqZFcho6b7orW+1sYkXw@mail.gmail.com>
-	<CAE3SzaTBzF=W9++d4CmW-vRkKLy9zd2oB4ADX8NuH-woTvJxqg@mail.gmail.com>
-	<CAHp75VePmhLstCraz_+7Cqc_bLQ49+1rV4oH59a1oo2xHp0R+Q@mail.gmail.com>
-	<20250806161801.000061c0@huawei.com>
-	<aJO05BNi2TsYtdwe@smile.fi.intel.com>
-	<20250807140401.00006c85@huawei.com>
-	<aJcapPt8f5YMUBH3@smile.fi.intel.com>
-	<20250809205736.34b75763@jic23-huawei>
-	<CAHp75VffV4Xomb-1zp6_xB=r+PJzsDnj_gjwyWas8cX7dhuhng@mail.gmail.com>
-	<CAE3SzaRZGvOwi0UeBU9Nw2=_jwF9AYLyY0BFG9tHzwbMFv1o7g@mail.gmail.com>
+To: Dixit Parmar <dixitparmar19@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] iio: magnetometer: add support for Infineon
+ TLV493D 3D Magentic sensor
+Message-ID: <20250811213200.2a5da728@jic23-huawei>
+In-Reply-To: <20250807-tlv493d-sensor-v6_16-rc5-v3-1-b80d2cb41232@gmail.com>
+References: <20250807-tlv493d-sensor-v6_16-rc5-v3-0-b80d2cb41232@gmail.com>
+	<20250807-tlv493d-sensor-v6_16-rc5-v3-1-b80d2cb41232@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,71 +62,58 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 11 Aug 2025 02:18:34 +0530
-Akshay Jindal <akshayaj.lkd@gmail.com> wrote:
+On Thu, 07 Aug 2025 08:26:35 +0530
+Dixit Parmar <dixitparmar19@gmail.com> wrote:
 
-> On Sun, Aug 10, 2025 at 2:04=E2=80=AFAM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> >
-> > On Sat, Aug 9, 2025 at 9:57=E2=80=AFPM Jonathan Cameron <jic23@kernel.o=
-rg> wrote: =20
-> > > On Sat, 9 Aug 2025 12:53:40 +0300
-> > > Andy Shevchenko <andriy.shevchenko@intel.com> wrote: =20
-> > > > On Thu, Aug 07, 2025 at 02:04:01PM +0100, Jonathan Cameron wrote: =
-=20
-> > > > > On Wed, 6 Aug 2025 23:02:44 +0300
-> > > > > Andy Shevchenko <andriy.shevchenko@intel.com> wrote: =20
-> > > > > > On Wed, Aug 06, 2025 at 04:18:01PM +0100, Jonathan Cameron wrot=
-e: =20
-> > > > > > > On Tue, 5 Aug 2025 14:47:32 +0200
-> > > > > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote: =20
-> > > > > > > > On Tue, Aug 5, 2025 at 6:05=E2=80=AFAM Akshay Jindal <aksha=
-yaj.lkd@gmail.com> wrote: =20
-> > > > > > > > > On Tue, Aug 5, 2025 at 2:36=E2=80=AFAM Andy Shevchenko
-> > > > > > > > > <andy.shevchenko@gmail.com> wrote: =20
-> >
-> > ...
-> > =20
-> > > > We can do it, but this sounds to me like a step back. Implementing =
-proper PM
-> > > > runtime callbacks is a step forward. =20
-> > > I entirely agree that runtime PM is good to have and it does a lot mo=
-re
-> > > than just turning the power on and off once per probe / remove cycle.=
- =20
->=20
-> Initially, while working on a patch for this driver(sysfs for data
-> freshness), while testing
-> I needed to suspend the sensor but could not because the driver only supp=
-orts
-> system suspend and resume. At that time, I had made up my mind that I
-> have to add
-> runtime suspend support for this driver because before Andy's
-> comments, I used to consider
-> runtime PM support as a way to give control to users to do on-demand
-> suspension and
-> resuming sensor operations. But now I learnt that it is so much more.
->=20
-> So Irrespective of the acceptance of this patch, my next patch was
-> going to be runtime PM support.
->=20
-> Will it be acceptable, that this driver like many other drivers have
-> support for both remove callback
-> and runtime PM?
-Sounds good. Though you probably don't need an explicit remove callback,
-just one more devm_add_action_or_reset().
+> The Infineon TLV493D is a Low-Power 3D Magnetic Sensor. The Sensor
+> applications includes joysticks, control elements (white goods,
+> multifunction knops), or electric meters (anti tampering) and any
+> other application that requires accurate angular measurements at
+> low power consumptions.
+> 
+> The Sensor is configured over I2C, and as part of Sensor measurement
+> data it provides 3-Axis magnetic fields and temperature core measurement.
+> 
+> The driver supports raw value read and buffered input via external trigger
+> to allow streaming values with the same sensing timestamp.
+> 
+> While the sensor has an interrupt pin multiplexed with an I2C SCL pin.
+> But for bus configurations interrupt(INT) is not recommended, unless timing
+> constraints between I2C data transfers and interrupt pulses are monitored
+> and aligned.
+> 
+> The Sensor's I2C register map and mode information is described in product
+> User Manual [1].
+> 
+> Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
+> Link: https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-UserManual-v01_03-EN.pdf [1]
+> Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
 
-That stuff just allows you to register the 'undo' immediately after the
-'do' in probe which makes for easy to read code in many cases.
+Andy did a detailed review, so I only took a quick glance at this version.
+One additional thing I noticed though.
 
-Jonathan
+> +	pm_runtime_get_noresume(dev);
+> +	pm_runtime_set_autosuspend_delay(dev, 500);
+> +	pm_runtime_use_autosuspend(dev);
+> +
+> +	pm_runtime_mark_last_busy(dev);
 
->=20
-> Thanks,
-> Akshay.
->=20
+Drop the mark last busy.  That's now always called in pm_runtime_put_autosuspend()
+after a patch that just merged in this merge window.
+
+Seems you got it for the other cases but maybe just missed this call.
+
+> +	pm_runtime_put_autosuspend(dev);
+> +
+> +	ret = devm_iio_device_register(dev, indio_dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "iio device register failed\n");
+> +
+> +	return 0;
+> +}
+>
 
 

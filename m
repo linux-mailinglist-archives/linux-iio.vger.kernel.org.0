@@ -1,277 +1,124 @@
-Return-Path: <linux-iio+bounces-22563-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22564-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5204AB20826
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 13:47:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC316B20838
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 13:54:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57AD117FFB7
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 11:47:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A00E7A4501
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 11:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62242D12F5;
-	Mon, 11 Aug 2025 11:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE6D2D29C6;
+	Mon, 11 Aug 2025 11:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="tajw3JHx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ALhyrOvZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E289199223;
-	Mon, 11 Aug 2025 11:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B71E21D3E6
+	for <linux-iio@vger.kernel.org>; Mon, 11 Aug 2025 11:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754912852; cv=none; b=ktanWHLNyYI1YbjPxWJ7Y1vxwi47hVJBe2f+npos3Bs9AwBlTaB4YKEU+Bk0zjTPvRZuJhcO6UptGcpQEsY1vMa5ROxw/2H3mEPn00+HEZbH+/txp/Z6MrGtRGLjfBHP048liWdGrvej/5Asp9qIC5CbfCcL/9vwlpwV3Y/wkE8=
+	t=1754913240; cv=none; b=WlPFIYk5MQVx1EZ3hfNqnIlJUA7AH9IDefSiHyTyPq5U/Kak3NvmdoIgSNkWqvWxflFBLjBKJjbjy2leJf7cu1PFAYqDchRYTQO3kIYDgUXSicRlGGDnUAZAtcWvQFvAePy0gI7cDqYjOvGi3h5/x2BwdL7E+SDQRyQGVilsNOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754912852; c=relaxed/simple;
-	bh=/p6Q049hw1l1zYvuZ+KcNIZ36piU6tuOii3hGZZoO/4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ftCmwM9hq0/902VTXJOkZ8CTidkkjazmVYWpV7MK3kcAaHYJY8S1FiiFpdDJo8Q6Hth92aTK4rYmnAeq+agoG/dMZDRB1hytJkiwHBBG0Zt33iD2Y73c2zBa9jpKrNliFp/mRA506xsUilP12KvNCxVSixjEbIgpIMcPREg7B4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=tajw3JHx; arc=none smtp.client-ip=185.70.43.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail2; t=1754912846; x=1755172046;
-	bh=DN21fo4yJLr20gLctH3PuCOSw+cuLOWAFF5dG6rvYwk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=tajw3JHxzsSC2nDu9QJET1kVyECGqLIjyJG/39SwvCvWnOsmPATa9Jb7tM/pOZTM7
-	 ArDRkZGLqo2H/IfihZtQwDaoG4BB4fAyyHoHLjyBPmCdeGZIf5biCHJO9/8Z8niU4t
-	 41WNDT202Kr3HEZCwc3x85lHoti7xDlhhjj3kiKVk5sGjWCj9bOxzz9KnkH9uY6HOR
-	 Fg7R6u3k96cCq79jp3toHkC2bXqZlRq7JBJg6W8NGrE5TgbBkzs0s2DEfQoE3wSw0Y
-	 hsreveWq6K2IvsgkwaLeD74VXR1J05KOWgRQ9sWOH6W5rbXrXxJpRF8dBhjxifggEh
-	 sw0lEYet9LufQ==
-Date: Mon, 11 Aug 2025 11:47:23 +0000
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-From: Sean Nyekjaer <sean@geanix.com>
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 5/5] iio: imu: inv_icm42600: use guard() to release mutexes
-Message-ID: <2g4hn5nulrstqdo4rjd2uyniyuoupbvwbuf34ng47wz6d5hih3@67mtm2t5yuhu>
-In-Reply-To: <CAHp75VeA36CHbvmhHVesw3itRW0aGURTqCJPAtw_P=q12F_0Yw@mail.gmail.com>
-References: <20250808-icm42pmreg-v2-0-a480279e7721@geanix.com> <20250808-icm42pmreg-v2-5-a480279e7721@geanix.com> <CAHp75VeA36CHbvmhHVesw3itRW0aGURTqCJPAtw_P=q12F_0Yw@mail.gmail.com>
-Feedback-ID: 134068486:user:proton
-X-Pm-Message-ID: 4e7266c2de6ef5d2b98ad893c99702cb3dce862d
+	s=arc-20240116; t=1754913240; c=relaxed/simple;
+	bh=vTcVajWZSwWJAW4aC+2CIlen/+PKnf8e1kdvcsRlZn0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=df2aJhyvuoXi/FvaCYHCb2MoCPtFR+DJT8YyPDYRn066OITJv/3HnU82SQtzHCI7aHtzGtF4kNOACZCBkLAtVlNvYF2QyhbA0W71A7q4LAIPKbuTQJB0HustatGZz4/h6am+Gw7IB0fZOFflev971JZ5K+TG78WVrJl9gb49EQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ALhyrOvZ; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-af949bdf36cso674802266b.0
+        for <linux-iio@vger.kernel.org>; Mon, 11 Aug 2025 04:53:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754913237; x=1755518037; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=84q/Xk0mDJYqnl19VrH9YlNpD9nrRtfnSD0rO+JesEk=;
+        b=ALhyrOvZR74Z8Yktj1mwmQpaM4jEfDehnUxDEFMJlGdusJ8mgDHJgUxd6+4ePnqKql
+         t8CY0LalXAb5kT4ypAG0738krrrdKjKLx2MOwBktKVANlFvmAOz1Eu/khM8qNbiRrUoU
+         GhgqnrJ4zg+QJ0Fy/MBoLIb6smTXO4IHywh8SgEuYpymBybKENmdOp9IYOXYcafMZbIZ
+         CVgWlLjVFAg07Zp/mD3sVLAgfx8nwhlqE8B8Zil8uwRKlz/uWQeb9CXr9nGPLAvSFZqK
+         nXXR+rFoCkMekBvsdr7hvgaQDs1NgF2OK5Pk7hefovh66bIPel2Hq1HyZ5In68Tk3nxq
+         VH1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754913237; x=1755518037;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=84q/Xk0mDJYqnl19VrH9YlNpD9nrRtfnSD0rO+JesEk=;
+        b=cSCf58eDQsh5DtRAbWKtbNUlBZzejPip4psXQZSs/mUZBlmMUqxCQWy3+gm7oKn+2A
+         ccSAiNoDZeAgvJA3jDHv+Bu6ZxFf34EkNQaVOw4AMAOMIuqxvp24L+yPoywqE+CybkRo
+         nJPHvdAgoYxrzoxJbyyHn5L/8C9UEbw+8zCkO3pRzekzRElB2S82AhVLOTgZVBTqQjy4
+         JFdWDKoKL90ANkNCSo8Wejlr0HO/b/Y151UnfFiT9E0q3UTt3S5iPOttIyDy+lf6tHOf
+         p97qs6mnlUu8pnmjWH3hwgO0Jvuz0ymoHYj0IE1Vp2xgyQK+qtJIIOQU0rEy2ze/xFo1
+         iYaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqS5kZ5X3MChd4ylA8ttKinh2v5v4L3+iIAsDX3/aTMYjUpMgM2/6iDbCU4OHJIFg7xpEGD8pSod8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLBHz5/CwncRKcgCz1O2zrmoygKFnRH0pR6E4Q/0+172PbzUUY
+	vHddUdIZJFsBorJGnZ1C5cBLgF9G3ZArmrjWCagLQGTDjrwGl0XVTRWKjUscIHQXUVHv1sf5Fqy
+	QhprxpvC+ip4bAnssHakglMMF40mCpTdxScOsvMU=
+X-Gm-Gg: ASbGnctOEJsmfRJcz53XSDg3mR5CPn2h8yFeSkcPTwAc0qTUvt6Pslxq44AwUcBWjq1
+	lCZN4XFVoNRKs07ETUuVfzJCxdiQoFzH9aQD1QbGYr4XrF8oMdPFcA88ENWBqkI53Uhe7JsZvwr
+	kfr8vCDV4wGf+9QAy4rviSeg+5XOqaiG2hZanQ0NU/mUZZhVqNH5YVv3w1hadnyOjixsQXOsxig
+	q+rkNwfZg==
+X-Google-Smtp-Source: AGHT+IHp0yygxy+LV3ehWMpn/lTZnERs+tAoXnoEztlmQNj6spapJJRi6BoOuousJrflr1vBhlW34v+gy4FMJx0t5Nw=
+X-Received: by 2002:a17:907:8690:b0:ae3:ed38:8f63 with SMTP id
+ a640c23a62f3a-af9c63fc36bmr1209206266b.14.1754913237128; Mon, 11 Aug 2025
+ 04:53:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250808-adf4350-fix-v1-1-58eed5c07359@analog.com>
+ <CAHp75VeXCrqzRFzNsMYHafRQ3SKztd-UaFKvvt_msh=O+Czb8Q@mail.gmail.com> <g7qklr4fx7qria6yeztybimqa26nyysmalbr7vbotjsojw63cw@6n36krmjw77v>
+In-Reply-To: <g7qklr4fx7qria6yeztybimqa26nyysmalbr7vbotjsojw63cw@6n36krmjw77v>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 11 Aug 2025 13:53:20 +0200
+X-Gm-Features: Ac12FXyN-3gkQ7mOD2hVG4SdjB1Quh4RP7GiKVofhAkaO-ySlPrT2QVSfZkHPQc
+Message-ID: <CAHp75Vcz1Syosz_uSOka2RCWP7-xiRB5f4iqmWkEPz12iLmkcQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: frequency: adf4350: Fix prescaler usage.
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 08, 2025 at 11:52:35PM +0100, Andy Shevchenko wrote:
-> On Fri, Aug 8, 2025 at 5:58=E2=80=AFPM Sean Nyekjaer <sean@geanix.com> wr=
-ote:
-> >
-> > Replace explicit mutex_lock() and mutex_unlock() with the guard() macro
-> > for cleaner and safer mutex handling.
->=20
-> ...
->=20
-> >         pm_runtime_get_sync(dev);
-> > -       mutex_lock(&st->lock);
-> > +       guard(mutex)(&st->lock);
-> >
-> >         ret =3D inv_icm42600_set_accel_conf(st, &conf, NULL);
-> >
-> > -       mutex_unlock(&st->lock);
-> >         pm_runtime_mark_last_busy(dev);
-> >         pm_runtime_put_autosuspend(dev);
->=20
-> This makes PM calls under the mutex. In some cases it may lead to deadloc=
-ks.
-> I think you wanted to use scoped_guard() here and in similar cases.
+On Mon, Aug 11, 2025 at 11:42=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.co=
+m> wrote:
+> On Fri, Aug 08, 2025 at 11:56:23PM +0200, Andy Shevchenko wrote:
+> > On Fri, Aug 8, 2025 at 6:09=E2=80=AFPM Nuno S=C3=A1 via B4 Relay
+> > <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-Oh, good catch :)
+...
 
->=20
-> ...
->=20
-> >         struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_=
-dev);
-> >         int ret;
+> > > +       st->r4_rf_div_sel =3D 0;
+> > > +
+> > > +       while (freq < ADF4350_MIN_VCO_FREQ) {
+> > > +               freq <<=3D 1;
+> > > +               st->r4_rf_div_sel++;
+> > > +       }
 > >
-> > -       mutex_lock(&st->lock);
-> > +       guard(mutex)(&st->lock);
-> >
-> >         st->fifo.watermark.accel =3D val;
-> >         ret =3D inv_icm42600_buffer_update_watermark(st);
-> >
-> > -       mutex_unlock(&st->lock);
-> > -
-> >         return ret;
->=20
-> Now remove ret and use return directly.
->=20
-> >  }
->=20
-> > -       mutex_lock(&st->lock);
-> > +       guard(mutex)(&st->lock);
-> >
-> >         ret =3D inv_icm42600_buffer_hwfifo_flush(st, count);
-> >         if (!ret)
-> >                 ret =3D st->fifo.nb.accel;
-> >
-> > -       mutex_unlock(&st->lock);
-> > -
-> >         return ret;
->=20
-> In the similar way as above.
->=20
-> ret =3D _flush();
-> if (ret)
->   return ret;
->=20
-> return ...nb.accel;
->=20
-> ...
->=20
-> >         struct inv_icm42600_state *st =3D iio_device_get_drvdata(indio_=
-dev);
->=20
-> >         int ret;
->=20
-> Now unneeded, just return directly.
->=20
-> > -       mutex_lock(&st->lock);
-> > +       guard(mutex)(&st->lock);
-> >
-> >         if (readval)
-> >                 ret =3D regmap_read(st->map, reg, readval);
-> >         else
-> >                 ret =3D regmap_write(st->map, reg, writeval);
-> >
-> > -       mutex_unlock(&st->lock);
-> > -
-> >         return ret;
->=20
-> ...
->=20
-> >         int ret =3D 0;
->=20
-> Now unneeded assignment.
->=20
-> > -       mutex_lock(&st->lock);
-> > +       guard(mutex)(&st->lock);
-> >
-> >         st->suspended.gyro =3D st->conf.gyro.mode;
-> >         st->suspended.accel =3D st->conf.accel.mode;
-> >         st->suspended.temp =3D st->conf.temp_en;
-> > -       if (pm_runtime_suspended(dev))
-> > -               goto out_unlock;
-> > +       ret =3D pm_runtime_suspended(dev);
-> > +       if (ret)
-> > +               return ret;
->=20
-> ...
->=20
-> >         /* disable vddio regulator if chip is sleeping */
-> >         if (!wakeup)
-> >                 regulator_disable(st->vddio_supply);
-> >
-> > -out_unlock:
-> > -       mutex_unlock(&st->lock);
-> >         return ret;
->=20
-> Now return 0 to make it clear that this is a success.
->=20
-> ...
->=20
-> > @@ -881,10 +878,11 @@ static int inv_icm42600_resume(struct device *dev=
-)
-> >         bool wakeup;
-> >         int ret =3D 0;
->=20
-> Assignment is useless now.
->=20
-> > -       mutex_lock(&st->lock);
-> > +       guard(mutex)(&st->lock);
-> >
-> > -       if (pm_runtime_suspended(dev))
-> > -               goto out_unlock;
-> > +       ret =3D pm_runtime_suspended(dev);
-> > +       if (ret)
-> > +               return ret;
->=20
-> ...
->=20
-> > -out_unlock:
-> > -       mutex_unlock(&st->lock);
-> >         return ret;
->=20
->   return 0;
->=20
-> ?
->=20
-> ...
->=20
-> >         regulator_disable(st->vddio_supply);
-> >
-> > -error_unlock:
-> > -       mutex_unlock(&st->lock);
-> >         return ret;
->=20
-> Ditto.
->=20
-> >  }
->=20
-> ...
->=20
-> >         int ret;
->=20
-> Now useless variable.
->=20
-> >
-> > -       mutex_lock(&st->lock);
-> > +       guard(mutex)(&st->lock);
-> >
-> >         ret =3D inv_icm42600_enable_regulator_vddio(st);
-> >
-> > -       mutex_unlock(&st->lock);
-> >         return ret;
-> >  }
->=20
-> ...
->=20
-> >         int ret;
->=20
-> Ditto.
->=20
-> > -       mutex_lock(&st->lock);
-> > +       guard(mutex)(&st->lock);
-> >
-> >         st->fifo.watermark.gyro =3D val;
-> >         ret =3D inv_icm42600_buffer_update_watermark(st);
-> >
-> > -       mutex_unlock(&st->lock);
-> > -
-> >         return ret;
-> >  }
->=20
-> ...
->=20
-> > -       mutex_lock(&st->lock);
-> > +       guard(mutex)(&st->lock);
-> >
-> >         ret =3D inv_icm42600_buffer_hwfifo_flush(st, count);
-> >         if (!ret)
-> >                 ret =3D st->fifo.nb.gyro;
->=20
-> Invert conditional and return ret directly.
->=20
-> > -       mutex_unlock(&st->lock);
-> > -
-> >         return ret;
->=20
-> --
-> With Best Regards,
-> Andy Shevchenko
+> > This is a reimplementation of ffs()/fls() or similar calls. Do you
+> > have a plan to clean up?
+>
+> Oh so? Not seeing any direct way of using ffs()/fls() for achieving the
+> same as the above.
 
-Thanks for the review.
+Bit operations are hard, I know :-)
 
-/Sean
+r4_rf_div_sel is a power-of-two shift to make sure the freq is just
+above the MIN_VCO_FREQ. Of course it's just a subtraction between
+fls() of the MIN_VCO_FREQ (which is compile-time constant, I believe),
+and fls(freq). No need to loop, really.
 
+--=20
+With Best Regards,
+Andy Shevchenko
 

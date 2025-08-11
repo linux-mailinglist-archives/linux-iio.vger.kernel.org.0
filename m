@@ -1,111 +1,104 @@
-Return-Path: <linux-iio+bounces-22594-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22595-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DECB21525
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 21:08:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EA9B2153C
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 21:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 556F07A99DB
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 19:07:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 117BA17EDEC
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Aug 2025 19:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7602D9EEF;
-	Mon, 11 Aug 2025 19:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4348C2BCF68;
+	Mon, 11 Aug 2025 19:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NlSinD29"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CFGDbkS/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1041D288C12;
-	Mon, 11 Aug 2025 19:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739E8311C2A;
+	Mon, 11 Aug 2025 19:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754939313; cv=none; b=sZ4ePY+sOSRnjVz+hJ4vP8yvFIC6W81e9vg9mlqn1kKDXragrKwgGVp+QdP/8TsjcWVH4lZI21eDalbQuivhY/lA4ZgXGLbTELuZ7Cw9b68Ls6zJw5q2/ZwcOXvvCDbeHEF0c2G8ZbDB02bpnO2ZIzGW2nmzcSAS72m/cOLPsXw=
+	t=1754939879; cv=none; b=NQFTNTHjVFK+cYPh4bRMgo3ePPqzldHeOjp5L8RdKYkiEtDZra1kgRg1MiNib+cdwHfaqJz3jepEauoskBdjOTutizA0M1l38HHFe5T6EMlAjpQwb8TEWMqgG7ekvM544voCgNPw4XBS4A5OzuSiZcZRp1AS+1B6ITCmDQf/oPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754939313; c=relaxed/simple;
-	bh=NHQSVnc5+tACV3yqddnCZc/tQspWSnzMjasUFcwRzFE=;
+	s=arc-20240116; t=1754939879; c=relaxed/simple;
+	bh=NqCbTnm1d8r8NAcwLbCEavG/3vW5JpCp0c6eGWldrgM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ax7wn/8yrr6tGSFM95UVKRkuCXZHAgsqqc3wA1xm1ryCQqca3E4YFA1hwT9SKG3LYsvJDn2MIUZtYunn+3vAvVQRrfS35FLb8dHeWNUX3g3l7jtaXfGTvdOxMcAFFA0UiU8PGqKLeSC8fVfFR+uylY3/49q5+CwGqmX21rcbk5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NlSinD29; arc=none smtp.client-ip=209.85.218.45
+	 To:Cc:Content-Type; b=Ixd//zsFGaMYcIY1ADE46pPsmz8nkluHR1z1KCmcyo3IYwEmWa0wB/BVPFo7cCXYS9iHbxMaGVPom3FSNQ/ntUfv83MV0bnuUsdVRCgAo9OkUpyu8R3vX/dZdOD5uxdlWNk4o0FmCF4hdVYNbGzw647O2/tA+N7OG2ffoeqdf1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CFGDbkS/; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-af66d49daffso790650366b.1;
-        Mon, 11 Aug 2025 12:08:26 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-af66d49daffso791999166b.1;
+        Mon, 11 Aug 2025 12:17:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754939305; x=1755544105; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754939876; x=1755544676; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3NJk4h4fsJ5/xDMCZWar+AJr9mE49P7ldYeZaehXKkM=;
-        b=NlSinD29ztInfvnRh6xNk1S1t8P3NF/kl3dMFq2ZCCxKXAx0ifPfKFxHv9X3+8mdLE
-         Jk0CT6WGvbMAmOzsxDhQd2xpwmEaOJ2qK2sIApz9zZ9pNij88TLLSAS/qSKkawgx6Qva
-         R1yn0mw07LdDHlNvHfTQMi2/z6N3XI17RcziZdvFtmXwB4i/6BDHQTeqA8DF+5Jfpu1h
-         4cgRRe0C93s2crpuLtsPGGuu93JSlLIMaf2G03yy/Nj+1XgZutFv751RliPYwSj7OKUZ
-         oOsyzsexINH6bkNgDkJzNTN93WaeoXqA3iM0GId/Ul8RryTxANNJTHjRmGi2QnGMvg8c
-         LuVw==
+        bh=NqCbTnm1d8r8NAcwLbCEavG/3vW5JpCp0c6eGWldrgM=;
+        b=CFGDbkS/xWmFlAEsV824cNPp0kgYasrjdqxbPdty93gWXuy5rtmkPNaFHoCkLlHE/a
+         E3w6M1uT9ZgV/QG/X056b5O9FdPsKcojM3A3cs1FRKqfM8kKAyxQnJNPvS0J0JPaaEpL
+         81ebjXpg3wEyRWbX3yn9vIrFaoYz8KoToIDpT9y2xAR5SfgSESSpXSPfHpmQVyUL6EHI
+         If5x1UvV9sgLhU7i0oXzHZ3kwZrg5GTDQjqXu8K0Ce1Ob6bJRalvzH++CBgr38I6ondI
+         rTRzNnk2EC4RJO4lpENNFC5xhLnsyTYAvmOJcTTOQDkGthlIQHn2xSibQAIbrUnOluXJ
+         /UTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754939305; x=1755544105;
+        d=1e100.net; s=20230601; t=1754939876; x=1755544676;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3NJk4h4fsJ5/xDMCZWar+AJr9mE49P7ldYeZaehXKkM=;
-        b=S6rktY+ustraGECCLXbNo356ToHqjyFrDj78KWigFlFCIVUqP/FQoSrYsHaDf0J4TA
-         0vUhQm5TBJ5svykYgvIraICJ4sDy7HkiM1PjA8orLru5qf/QYXAhNu7ke4zf/2H8OxH/
-         vvfxgpQ4jznuM2KubYQCh76ikeole9f4VUuW/pC+wmvBlepK0LiR/MXePK69btdUQUH4
-         nDYxXJlQfpIpELSehhBxOfIU2BkK26BTrq4DieCUBhRIRok9K7xsZr1IH04+Uv2rGot2
-         chHZk02n+qKZve5k0UtPT0yBbjfKEpe85o/dHdcofIT3yv/Ro5ZwwsYtsyDT/r/M1VJ2
-         5pyg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3MWvt7nOhbfKuWv435rTEeh77GVGQnb6fhvQAbLdEx+p4UyavjQkrY9/uoT6B1Dx1B3FYI9Bgd8yHq9Cm@vger.kernel.org, AJvYcCUOuCChSsAySAQm69DA/sUGkg2Oew0aSl9PRl2QfGfnJdKEVXvorjilISJJV3V3NlxxCrf7ontS120=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgWspOfza2MaqeDtGXULt4rnOF+4G16situD398DEbO5nNW5DY
-	1FNc7wyV2Qmrgeq9kbCKmwhS+SR4BEE/yfmZNShy0o5QX1vwBmcktfPfqs9Y9bv8fZ4DCUo2IU+
-	SF2jvHaE4GHy2C5290kG9ts8dOWLsq9o=
-X-Gm-Gg: ASbGncuuvtuahZ0gs3duo5hIhzhEGd0ppXqeB/cOGD0qMmIwTMOzn95nQPtSmHMbYRT
-	z26tWWSQr8eRVLC1Pn0xTP8yMLTCETkHpxlZz2Zc8aQYxCX1XW3PSgKZCu9Km/LDlAzPHGqvGjB
-	sNLzuX+zdz2J0qwE/e1eq+xnjqzBxuLptUlwEPPz4WF0UQJzSwHfwAU6iqUa23EBkW6V1DzfBdr
-	AQbzDv2Ig==
-X-Google-Smtp-Source: AGHT+IHLbgyTqPIe1rLnsQquscLMx3yX6mJjAryYPpGCtXZv2P23eDwUTQ6d3YbnJoQMq5v43w5rvz2ozkfWgXvAWeM=
-X-Received: by 2002:a17:907:7f12:b0:af8:ed6a:a9c6 with SMTP id
- a640c23a62f3a-af9c640e32emr1143102566b.20.1754939305051; Mon, 11 Aug 2025
- 12:08:25 -0700 (PDT)
+        bh=NqCbTnm1d8r8NAcwLbCEavG/3vW5JpCp0c6eGWldrgM=;
+        b=E2MCV+4cjRGDVvvtiA90UUjSR+oRKpmIIWICtUHFFUGpbwylGVkXEo/ZACCxcki5eW
+         GJMHxK81KjOwX6HotmsPVRGBeBTWFUhIV2eyLtplmkEG/NvIBCfTrZW7B/k0JHmC4f8G
+         Vhm+7Xx5MQyKteIyLp2ZVjxYZnipI0spj7ZiFso5RRqRUg93mSIwhUm0L9uCEa1pBvis
+         ZimJ6uXeJ8Kh3LjktZmHWFu5sLOrc2ktoKRoHVQMJsAUJfD73cMyqE2X7n+cpO64OEhB
+         nuGoMqFS+Xud6MJDwMvvJDkHKg4ALu56Nap3MzD1IUYs9spBI3lL2QkkP6cikh4bmYNy
+         aX5A==
+X-Forwarded-Encrypted: i=1; AJvYcCU80buTPeA7yjEncAWso9vgvjrgzYOAiub2sZZlzAPG3QBoKtVOuFqkC7LDz7nR7WOC2KNXPgR2hDU=@vger.kernel.org, AJvYcCV5rnQLZCMSiUdsUFaTQo7TSGbXFbBqWXxQ3tqMHq3sJ6CzrUaYGOLzIZKnKCMbuODuO9xTAAtr45URWWeD@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZqfY3AFs8LPl8BizwXKJ02rMtP6MCVBolJlG2mMgRnASj0oH4
+	TlXCwwtLcxn8GUH7JrLy/rLiuoli4PtcmfnvdTtT2PjDpjIwiGIp1UY49PyWN5fBiN3f2Pjt8Dj
+	UjRejTwDXE+0Hd63kQ+1csD0wpzKV1xU=
+X-Gm-Gg: ASbGncs8Nbfcr+qZhLianFV6hEqD9Eq78w9Bea+v6PKoJt1GklriXAnDaTer3h2KW9Y
+	TYGiM2Ku8jBklATLAB2vO8O1StZO907F3qOKq1eUxhjTGPvuo664wNGOP7Xe3k9AjtlHTwYvZU/
+	WavZH1nzE4jp3IEsTzp2mgwVyPO34nNIb17kbPx1HFSZXLnMITiQCLG2tUNOSgRFT2T1MCC6+LN
+	l6sq62qlQ==
+X-Google-Smtp-Source: AGHT+IFvg8MC5VPTI0mMDr3ZjgO1hZC1hJecNIRmoxJEiJKBNdvG9BGTH1cso4p7E/UN4aUaP5ETWA5ERS8g7nlGVtk=
+X-Received: by 2002:a17:906:730b:b0:af9:5366:b42c with SMTP id
+ a640c23a62f3a-af9c655d50fmr1072472466b.59.1754939875626; Mon, 11 Aug 2025
+ 12:17:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250811-iio-adc-ad7380-fix-missing-max_conversion_rate_hs-on-ad4381-4-v1-1-ffb728d7a71c@baylibre.com>
-In-Reply-To: <20250811-iio-adc-ad7380-fix-missing-max_conversion_rate_hs-on-ad4381-4-v1-1-ffb728d7a71c@baylibre.com>
+References: <20250811165641.1214347-1-akbansd@gmail.com>
+In-Reply-To: <20250811165641.1214347-1-akbansd@gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 11 Aug 2025 21:07:48 +0200
-X-Gm-Features: Ac12FXz-j2X-yjzU8w23g1OeQ3kOpA2cYoHVVaXRdUW_7bY4aftbWUkZlzhT0ws
-Message-ID: <CAHp75Vc_-2czsaZ_-3+cSWAzyvz-PASR5mjCyoAxTu9qSEYyLA@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: ad7380: fix missing max_conversion_rate_hz on adaq4381-4
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
-	Angelo Dureghello <adureghello@baylibre.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+Date: Mon, 11 Aug 2025 21:17:18 +0200
+X-Gm-Features: Ac12FXzC64AiqIcJl4Ec1rvXpqcZkAusyqNclxgfoE58mv5kghsnOOO9xit8ieE
+Message-ID: <CAHp75Vf7r53wQtGWes9WH1UubEjhAju+tN0OORTrkNxgTQPsWw@mail.gmail.com>
+Subject: Re: [PATCH v4] iio: st_lsm6dsx: Replace scnprintf with sysfs_emit
+To: Akshay Bansod <akbansd@gmail.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-kernel-mentees@lists.linuxfoundation.org, 
 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 11, 2025 at 8:32=E2=80=AFPM David Lechner <dlechner@baylibre.co=
-m> wrote:
+On Mon, Aug 11, 2025 at 6:57=E2=80=AFPM Akshay Bansod <akbansd@gmail.com> w=
+rote:
 >
-> Add max_conversion_rate_hz to the chip info for "adaq4381-4". Without
-> this, the driver fails to probe because it tries to set the initial
-> sample rate to 0 Hz, which is not valid.
+> Update the sysfs interface for sampling frequency and scale attributes.
+> Replace `scnprintf()` with `sysfs_emit_at()` which is PAGE_SIZE-aware
+> and recommended for use in sysfs.
 
-...
-
-> +       .max_conversion_rate_hz =3D 4 * MEGA,
-
-MEGA --> HZ_PER_MHZ
-
-With that done
+LGTM,
 Reviewed-by: Andy Shevchenko <andy@kernel.org>
-
 
 --=20
 With Best Regards,

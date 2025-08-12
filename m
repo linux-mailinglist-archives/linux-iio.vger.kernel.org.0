@@ -1,54 +1,62 @@
-Return-Path: <linux-iio+bounces-22622-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22623-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4998EB22C33
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Aug 2025 17:53:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D02EB22CD4
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Aug 2025 18:12:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEF437B6BA3
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Aug 2025 15:50:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F39C96210E1
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Aug 2025 16:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9412F8BE0;
-	Tue, 12 Aug 2025 15:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDAF23D7F0;
+	Tue, 12 Aug 2025 15:53:53 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF252F8BC0;
-	Tue, 12 Aug 2025 15:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399AB305E3D;
+	Tue, 12 Aug 2025 15:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755013888; cv=none; b=jSXAI/cJnKsBXsFTMNWQ8WuGGzdS57XCm/Squ9S3knl/IIXYMQU8Rm3kitCXKkfk5DmeQu5I4SkUPFmtdvsscxYTdTHWjnDq7QA6gJwSzbzvkoKt5MarXhUBvp6H6uenr1RfDkeTy+zAmxqr0unxc8A7K0nqbKql6rBbp/rldXs=
+	t=1755014033; cv=none; b=spLygUvNLU+/y6At2EX1SIFDwDk42zoaomPJrfBdqhozTo77jQglAK6KV5Btxbw10pl5JayfTBkiEQIdNLb4WGxn0DjlcVsIYBdg0wDQIsWVf5rzGtCjp7UgfY6xOuW9J7MzkL3FrMc8tAbbr3vLU6OWxJa13llOSUgu3z5V6z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755013888; c=relaxed/simple;
-	bh=cdXT8AVx8pqaZS/+Q3ats7KiTGHzgAqxLywHSBVRKA4=;
+	s=arc-20240116; t=1755014033; c=relaxed/simple;
+	bh=BBheX8sbWCgYegYhKcL7467b7LoL9F8LRRRwdBxBPuo=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gKk4NrlC4aR59MtcajWkvjc+bcFhwnsaVdZ5qa/uoMymnmlsFJH6W/7Tj7esy4Wk83vm6c2weFGJlhaelVU8Qdo4GbGmOzoDJXBAi29pvtF6mKD9XcPTF0Z5wgLEIiQMoVZ5p901EVWl/qLEVzM2n0sYvJEl8nJHCPeVTXcnuIk=
+	 MIME-Version:Content-Type; b=ZSx4VbEIwDpTul6y/VnQ5dYv20zxFVLHly/2cisuCDICQQ0fpbHfVXbHIBKQuMy1bi00+KkY1lNOPxcOSUS4+ZKXZC0XLCmq1fU3Hnx4YnFCtyXB1gZHYcFTOmN6fU0dR5NUi8/lLMSjTHtw9ABMEqxwuf2dOyUAIbfy0MvUJ98=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c1bXj5d5Gz6M4cP;
-	Tue, 12 Aug 2025 23:49:25 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c1bbV6Zzlz6M4bb;
+	Tue, 12 Aug 2025 23:51:50 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3B45A140427;
-	Tue, 12 Aug 2025 23:51:22 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 5929F1401DC;
+	Tue, 12 Aug 2025 23:53:47 +0800 (CST)
 Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 12 Aug
- 2025 17:51:21 +0200
-Date: Tue, 12 Aug 2025 16:51:20 +0100
+ 2025 17:53:46 +0200
+Date: Tue, 12 Aug 2025 16:53:45 +0100
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Ben Collins <bcollins@kernel.org>
-CC: <linux-iio@vger.kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Subject: Re: [PATCH] mcp9600: Add support for mcp9601 and sensor config
-Message-ID: <20250812165120.00004f37@huawei.com>
-In-Reply-To: <6esdq4e4r7vmxwlyfs4a3sgdomazxospr3go2oaqkwhpgw6mkh@hdca2d3f6zwp>
-References: <6esdq4e4r7vmxwlyfs4a3sgdomazxospr3go2oaqkwhpgw6mkh@hdca2d3f6zwp>
+To: Primoz Fiser <primoz.fiser@norik.com>
+CC: Haibo Chen <haibo.chen@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	<linux-iio@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	"upstream@lists.phytec.de" <upstream@lists.phytec.de>
+Subject: Re: [PATCH v2 2/2] iio: adc: imx93_adc: load calibrated values even
+ calibration failed
+Message-ID: <20250812165345.000002a4@huawei.com>
+In-Reply-To: <ffafc9d6-2cfe-4e3f-a610-9bddc7eb49f4@norik.com>
+References: <20250812-adc-v2-0-0260833f13b8@nxp.com>
+	<20250812-adc-v2-2-0260833f13b8@nxp.com>
+	<ffafc9d6-2cfe-4e3f-a610-9bddc7eb49f4@norik.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -56,225 +64,105 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
  frapeml500008.china.huawei.com (7.182.85.71)
 
-On Tue, 12 Aug 2025 09:08:30 -0400
-Ben Collins <bcollins@kernel.org> wrote:
+On Tue, 12 Aug 2025 10:45:48 +0200
+Primoz Fiser <primoz.fiser@norik.com> wrote:
 
-> The mcp9600 dt binding doc claims to support thermocouple-type but
-> I don't see where this is implemented.
->=20
-> - Add support to detect mcp9601 device type
-> - Add support to use thermocouple-type dt prop
-> - Add thrermocouple iio info to get/set this from sysfs
-> - Add filter-level dt prop to set the filtering level of the chip
-> - Update dt binding docs
->=20
-> Signed-off-by: Ben Collins <bcollins@kernel.org>
-> Cc: Andrew Hepp <andrew.hepp@ahepp.dev>
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-iio@vger.kernel.org
-> Cc: "Nuno S=E1" <nuno.sa@analog.com>
+> Hi Haibo,
+> 
+> On 12. 08. 25 10:04, Haibo Chen wrote:
+> > ADC calibration might fail because of the noise on reference voltage.
+> > To avoid calibration fail, need to meet the following requirement:
+> >     ADC reference voltage Noise < 1.8V * 1/2^ENOB
+> > 
+> > For the case which the ADC reference voltage on board do not meet
+> > the requirement, still load the calibrated values, so ADC can also
+> > work but maybe not that accurate.  
+> 
+> Reviewed-by: Primoz Fiser <primoz.fiser@norik.com>
+> 
+> Thanks for fixing this.
+> 
+> BR,
+> Primoz
+> 
+> > 
+> > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> > ---
+> >  drivers/iio/adc/imx93_adc.c | 18 +++++++++++++++---
+> >  1 file changed, 15 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
+> > index 8471737ac04a2bac0417a6397f20865f6a2c01ca..17b0a2548b0a3614ac537b01e28bc3144d17d6fc 100644
+> > --- a/drivers/iio/adc/imx93_adc.c
+> > +++ b/drivers/iio/adc/imx93_adc.c
+> > @@ -38,6 +38,7 @@
+> >  #define IMX93_ADC_PCDR6		0x118
+> >  #define IMX93_ADC_PCDR7		0x11C
+> >  #define IMX93_ADC_CALSTAT	0x39C
+> > +#define IMX93_ADC_CALCFG0	0x3A0
+> >  
+> >  /* ADC bit shift */
+> >  #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
+> > @@ -58,6 +59,8 @@
+> >  #define IMX93_ADC_IMR_ECH_MASK			BIT(0)
+> >  #define IMX93_ADC_PCDR_CDATA_MASK		GENMASK(11, 0)
+> >  
+> > +#define IMX93_ADC_CALCFG0_LDFAIL_MASK		BIT(4)
+> > +
+> >  /* ADC status */
+> >  #define IMX93_ADC_MSR_ADCSTATUS_IDLE			0
+> >  #define IMX93_ADC_MSR_ADCSTATUS_POWER_DOWN		1
+> > @@ -145,7 +148,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
+> >  
+> >  static int imx93_adc_calibration(struct imx93_adc *adc)
+> >  {
+> > -	u32 mcr, msr;
+> > +	u32 mcr, msr, calcfg;
+> >  	int ret;
+> >  
+> >  	/* make sure ADC in power down mode */
+> > @@ -158,6 +161,11 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
+> >  
+> >  	imx93_adc_power_up(adc);
+> >  
+> > +	/* Enable loading of calibrated values even in fail condition */
+> > +	calcfg = readl(adc->regs + IMX93_ADC_CALCFG0);
+> > +	calcfg |= IMX93_ADC_CALCFG0_LDFAIL_MASK;
+> > +	writel(calcfg, adc->regs + IMX93_ADC_CALCFG0);
+> > +
+> >  	/*
+> >  	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
+> >  	 * can add the setting of these bit if need in future.
+> > @@ -180,9 +188,13 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
+> >  	/* check whether calbration is success or not */
+> >  	msr = readl(adc->regs + IMX93_ADC_MSR);
+> >  	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
+> > +		/*
+> > +		 * Only give warning here, this means the noise of the
+> > +		 * reference voltage do not meet the requirement:
+> > +		 *     ADC reference voltage Noise < 1.8V * 1/2^ENOB
+> > +		 * And the resault of ADC is not that accurate.
 
-Hi
+result
 
-I tried not to overlap too much with David's review.
-A few additional things inline.
+If nothing else comes up I'll probably just fix that whilst applying.
 
 Jonathan
 
-> diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/=
-mcp9600.c
-> index 6e9108d5cf75f..c1fe1e530786c 100644
-> --- a/drivers/iio/temperature/mcp9600.c
-> +++ b/drivers/iio/temperature/mcp9600.c
 
-> +
-> +static int mcp9600_write_raw_get_fmt(struct iio_dev *indio_dev,
-> +				     struct iio_chan_spec const *chan,
-> +				     long mask)
-> +{
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
-> +		return IIO_VAL_CHAR;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int mcp9600_config(struct mcp9600_data *data)
-> +{
-> +	struct i2c_client *client =3D data->client;
-> +	int ret, cfg;
-> +
-> +	cfg  =3D MCP9600_SENSOR_TYPE(mcp9600_type_map[data->thermocouple_type])=
- |
-> +		MCP9600_FILTER(data->filter);
-> +
-> +	ret =3D i2c_smbus_write_byte_data(client, MCP9600_SENSOR_CFG, cfg);
-> +
-No blank line here. Keep error check associated with the call.
-> +	if (ret < 0) {
-> +		dev_err(&client->dev, "Failed to set sensor configuration\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int mcp9600_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int val, int val2, long mask)
-> +{
-> +	struct mcp9600_data *data =3D iio_priv(indio_dev);
-> +	int tc_type =3D -1;
-> +	int i, ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
-If this is something we specify in DT (which I think is valid) then
-we probably should not allow override from userspace.
-
-We might want a read only parameter though as type of thermocouple is
-probably something that is useful to be able to read back.
-
-> +		for (i =3D 0; i < ARRAY_SIZE(mcp9600_tc_types); i++) {
-> +			if (mcp9600_tc_types[i] =3D=3D toupper(val)) {
-> +				tc_type =3D i;
-> +				break;
-> +			}
-> +		}
-> +		if (tc_type < 0)
-> +			return -EINVAL;
-> +
-> +		data->thermocouple_type =3D tc_type;
-> +		ret =3D mcp9600_config(data);
-> +		if (ret < 0)
-> +			return ret;
-		return mcp9600_config(data);
-Assuming that never returns > 0.
-> +
-> +		break;
-> +
->  	default:
->  		return -EINVAL;
->  	}
-> +
-> +	return 0;
-Might as well return rather than break above.
->  }
-
-
->  static irqreturn_t mcp9600_alert_handler(void *private,
-> @@ -418,26 +538,65 @@ static int mcp9600_probe(struct i2c_client *client)
->  {
->  	struct iio_dev *indio_dev;
->  	struct mcp9600_data *data;
-> -	int ret, ch_sel;
-> +	int ch_sel, dev_id, ret;
-> =20
-> -	ret =3D i2c_smbus_read_byte_data(client, MCP9600_DEVICE_ID);
-> -	if (ret < 0)
-> -		return dev_err_probe(&client->dev, ret, "Failed to read device ID\n");
-> -	if (ret !=3D MCP9600_DEVICE_ID_MCP9600)
-> -		dev_warn(&client->dev, "Expected ID %x, got %x\n",
-> -				MCP9600_DEVICE_ID_MCP9600, ret);
-> +	dev_id =3D i2c_smbus_read_byte_data(client, MCP9600_DEVICE_ID);
-> +	if (dev_id < 0)
-> +		return dev_err_probe(&client->dev, dev_id, "Failed to read device ID\n=
-");
-> +
-> +	switch (dev_id) {
-> +	case MCP9600_DEVICE_ID_MCP9600:
-> +		dev_info(&client->dev, "Identified as mcp9600");
-
-Too noisy.  It is fine to over ride the DT compatible if we match a known I=
-D, but if
-not paper over the missmatch so that in future a new chip can be supported =
-via
-a fall back compatible entry without a kernel upgrade.  dev_info on an unkn=
-own
-device is fine though.
-
-> +		break;
-> +	case MCP9600_DEVICE_ID_MCP9601:
-> +		dev_info(&client->dev, "Identified as mcp9601");
-> +		break;
-> +
-> +	default:
-> +		return dev_err_probe(&client->dev, -EINVAL, "Unknown device ID: %x\n",
-> +				     dev_id);
-> +	}
-> =20
->  	indio_dev =3D devm_iio_device_alloc(&client->dev, sizeof(*data));
->  	if (!indio_dev)
->  		return -ENOMEM;
-> =20
->  	data =3D iio_priv(indio_dev);
-> +
-> +	ret =3D device_property_read_u32(&client->dev, "thermocouple-type",
-> +				       &data->thermocouple_type);
-> +	if (ret) {
-
-Likewise, must have a default value if it wasn't there from start so with
-that in mind can use a similar pattern to the below suggestion.
-
-
-> +		dev_warn(&client->dev,
-> +			 "Missing thermocouple-type property, using Type-K\n");
-> +		data->thermocouple_type =3D THERMOCOUPLE_TYPE_K;
-> +	} else if (data->thermocouple_type < 0 || data->thermocouple_type >=3D
-> +		   ARRAY_SIZE(mcp9600_type_map)) {
-> +		dev_warn(&client->dev,
-> +			 "Invalid thermocouple-type property, using Type-K\n");
-> +		data->thermocouple_type =3D THERMOCOUPLE_TYPE_K;
-> +	}
-> +
-> +	ret =3D device_property_read_u32(&client->dev, "filter-level",
-> +				       &data->filter);
-> +	if (ret) {
-> +		dev_warn(&client->dev,
-> +			 "Missing filter-level property, using 0\n");
-> +		data->filter =3D 0;
-If we were keeping this a common pattern for this sort of property (which c=
-an't
-be required as wasn't there from the start) is
-make data->filter a u32 if it isn't already.
-
-	data->filter =3D 0;
-	device_property_read_u32(&client->dev, "filter-level", &data->filter);
-	if (data->filter > 7) {
-		dev_warn(&...
-		data->filter =3D 0;
-	}
-
-That is rely on no side effects in the property read if it returns an error,
-unsigned property not less than 0  and that 0 is an allowed value.
-
-However as David said unlikely to be something that belongs in DT.
-
-
-> +	} else if (data->filter < 0 || data->filter > 7) {
-> +		dev_warn(&client->dev,
-> +			 "Invalid filter-level property, using 0\n");
-> +		data->filter =3D 0;
-> +	}
-> +
-> +	data->dev_id =3D dev_id;
->  	data->client =3D client;
-> =20
->  	ch_sel =3D mcp9600_probe_alerts(indio_dev);
->  	if (ch_sel < 0)
->  		return ch_sel;
-> =20
-> +	mcp9600_config(data);
-> +
->  	indio_dev->info =3D &mcp9600_info;
->  	indio_dev->name =3D "mcp9600";
->  	indio_dev->modes =3D INDIO_DIRECT_MODE;
+> > +		 */
+> >  		dev_warn(adc->dev, "ADC calibration failed!\n");
+> > -		imx93_adc_power_down(adc);
+> > -		return -EAGAIN;
+> >  	}
+> >  
+> >  	return 0;
+> >   
+> 
 
 

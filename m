@@ -1,124 +1,156 @@
-Return-Path: <linux-iio+bounces-22689-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22690-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067D7B2520A
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 19:23:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4BDB25500
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 23:12:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE8BD680437
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 17:18:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42D417B8EB5
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 21:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B11281352;
-	Wed, 13 Aug 2025 17:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950722DE216;
+	Wed, 13 Aug 2025 21:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E+xnHhCw"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="d6OTku5E"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B75246765;
-	Wed, 13 Aug 2025 17:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065492BE05E
+	for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 21:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755105519; cv=none; b=c6BGvLpPWKI8KXDei7DWBLhsnYY0hYwmToDhIDLulFm16hbZC49XaZu9FlhuOSV35fW8/YJIs4vKsSJ4P1Xyi51FQqaL55FsrFIQ3myOjrr9DHvv3p+1QWI1k2CR90XI3d3Q2lkgyCKnu9gdOqIQcBnY7ZjFIYKt7P4ZRPjTxns=
+	t=1755119524; cv=none; b=ZWlOSTJKXZc/rg8YNLAvB7GZh8zHbj12DKWtnktdKiH5MnrYTyZfcTZwt93bNME/qYVd5LFhWvm4Ubol9VALBTh227H9LEMKMMIVGOCC3uA8QK3WKo0pwbB+PxsATTWDPfb8MCNueY6ARmblRzYH7xl9bcFboF+DEp0WTXaOiUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755105519; c=relaxed/simple;
-	bh=ZdO3vj+x81gpLTOdoeLc9zE8DEJLrZ6F5do/Ku+TBSc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TxJZsbVUEsjoB3geDZrrfDoAeai9BVWyawK97F2+rwS8Wk2rJxLSqZPNyE6ilDKSS6Yux6R8O1DlCPtwjiqiHtfgvzLhuIpxKLFRcsin2H/TV4Jory0CUpZ8SkoLvYaCIUue6luFKr99+b94kOc2B3SuETj2jxHKQiszJHemveA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E+xnHhCw; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb732eee6so17154266b.0;
-        Wed, 13 Aug 2025 10:18:35 -0700 (PDT)
+	s=arc-20240116; t=1755119524; c=relaxed/simple;
+	bh=27dZsSSc1FtLXlHOWPlo1du2AL2+YgSkzTVnQqxIWgI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FNn1hYCAFQoycSQepuc+hp1dinpslZJ9Bb92fGD8IWy47AzfgnHFwjRVt04bdrmbsvfWAb33cdzM+WJz6qP5EICzmeBhHcI2GUFA/xVrCBX3wsy55yxJck6EAMmAaGzv4gKAAEZasQVqiJg2e/NVmzd0cb1uT3RUMgOnNWhjG+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=d6OTku5E; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-74381fdb5faso148181a34.2
+        for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 14:12:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755105514; x=1755710314; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T9cFUtAJj7xlAv9nBAyLCc5TYl6OBifBoQUVoLy+YEo=;
-        b=E+xnHhCw4RAEK7ETWykMuOacselKovGY5AsEsgZoZSqBte0e0r79oXy+BGA3qLUBIa
-         nxC5n1IX/utTJjeOwvxhT2R5eKHZ2snxt45Rf5BSNGoGzUvD/vL594nXzP7NdZ6CqWwR
-         wTR46YeiEt6Pc0chlEio6s+dj3k0bBfIG3cVDm82t5F+xpeM7WlpfZ01iaq50DGG+54y
-         dWEtz+glL2WCXxl4OYQ0nKFdUO9RWtUyBqTkDr5at/hvrsu5psbFEqS97wx+QOhT9T4i
-         /gc+8MKFUP4vgZWpSwBB2MNfoybw48FgCkcglkq8z75kRMlGWYd66B2w7KK9NnJWe2Sr
-         zOUg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755119521; x=1755724321; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Xf3//GLvnzT9i6WfKITOLt4ui/tLiyvxxLpHItWn5zc=;
+        b=d6OTku5EfpvZOZvCDJTaH0fK6IFEjDOXJfxOdWGVJ1S6f5B1yAFp53KrV1d4WxIQqD
+         D9aR4j5PZgeMZyI1MMryu+iHlZZAv0UZSMbSse32lRDZpfo3tXc232UbuMpjy+5Mio5B
+         DxjVPlsjnOzdRjtYt9K0TQ0WfmNmWNqiROFpS3eKLTncTgB4Owg45lXVNgZFlJoPIexu
+         DfiOiaRy9qG+7OfPkDpE6RlMcmrAFWIDDJQPI22qmiRdz44aTSpOsgeTfp40bNhK0Jtk
+         1BHoIYQQzTCF4q2yWc15p31RDZlu/WrkdR8ij4dhzSmSostqMQXtDFbvNhO+rrRJbj17
+         tOSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755105514; x=1755710314;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T9cFUtAJj7xlAv9nBAyLCc5TYl6OBifBoQUVoLy+YEo=;
-        b=jKWaxBNnJhhR4qGCzP/T66JZD1IX77xXunFGxaP5oleIYNmXa22GgXdysjZGmBThwA
-         TN2c7HsNr3qoi6IzhDqipkKINfwOuxySGPJS0qYZrauzI0lW8X5rfn56QnedKREx0dnV
-         LvihD7A8WCZNiUJyLnfAOSbGGL0IHjoTcbZRBp5k/wUBdWUvp4wKi1UoqhrLeZ7wljry
-         +CHLF4hn7+hoQp2Yu63DDp2EazJ74zzGMLRy6AeIjBSgV2gd492NyAIG+T6LmrU1t2Iw
-         9UBP8V9E9tUi94ii9/oLcwzOWajv3+Ze+NNNpXp9QXl8ReB7Vw9Mr0EDkWFpBeonA7ck
-         DWuw==
-X-Forwarded-Encrypted: i=1; AJvYcCUHcKu/gRxQ7g4Vi+yQ9rX3fkzJuGG7hGp5NrOZXjNHn8gVGsRy056YWm8jhYBndzZZ/xEbv2JpPZ3T@vger.kernel.org, AJvYcCWRDHOyX7ibkovbY3fIJbpwvah0Hjk6ek3Ze5/NhRVu49jbJKrZkEc9zM1oLzN6yJRUjKcBiZlw2xxF71/Y@vger.kernel.org, AJvYcCXYL0jFJF2C8s5fMpiHlRkZVctDomrV1E6tCK4QB9nSQzfNeZ3D8wTx6En2R2vNRq/m15Tu1tJ9f4l7@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfZnMBzcUg1DfyO3L/tbKX6Gii9zdrk475JGtyKVEZWbv8Ewk+
-	U8kKa+PoqGh91QEg91eSACpm1TtGZg6eyZc/1kLxOHyodCl5oNEa+3/hfCiVXYu+tWbNvE0mtC8
-	dHBJTKOx0uwLRXtQvs0UFsWwyrRKa6Js=
-X-Gm-Gg: ASbGncszC9fI5nVwBqn2B4M8+4haekIjUZTOVoxfLJxebxTmlkv6N2f6zh4xY0aJCBm
-	DJvNW4RsQBikLJWWorg2I3+Q0c8pOKFPj1qrO0sjlWVvc5H1Uo/uV1xrpV02N0C5CsjJjn0k0Q2
-	QvZ6SuPABe878DI0H83ZZMF7JPKIs+KDrtqHLtdmIgVI1pA/MLOW2bYH07VtSiHNxb1Z1jlEZQK
-	IkvxG6FFw==
-X-Google-Smtp-Source: AGHT+IHJRX8gcbrpt6fHwXcSzar55gkLr4CKmHsuuvq5FOw0YFxGXD8cf9KgKZK/ajb0i1C82kDqzCXjd2pxQNmVLXQ=
-X-Received: by 2002:a17:906:6a22:b0:af9:237c:bb1c with SMTP id
- a640c23a62f3a-afca4e7c1camr410625466b.43.1755105513755; Wed, 13 Aug 2025
- 10:18:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755119521; x=1755724321;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xf3//GLvnzT9i6WfKITOLt4ui/tLiyvxxLpHItWn5zc=;
+        b=lfQud0IxgvgihTJHgrXtwb70/KzVPjtA/lI8dT6AhaKbHsYh+zRB7HlCOuwO5FINOB
+         HP3a7KYn6EbSZeuG2WBbtxR00l6B8FHSws8e1k3Jn30HvJEATjiVPmB9wkd7STMvoeN0
+         2ohu/gprgR34meXVazPtn4ZT2j0JpjlkrPYkWpG62dyLs4/Xp1yjf+0SKAXpx+Xj87z4
+         gBgj5sfd6k9DjXtDIAd5+JTCr5OSoa2EnICoDO53LzJ7IqeM31HG6eVM9ocAVo+T224v
+         ULRp+LmwGPYlDaBVOgi0AS0FpgkQ3AWJCI5KABL40JcNSTNvIp+OVJMi9y74mVo8blMN
+         mcHA==
+X-Gm-Message-State: AOJu0YyLWUSkXw5LGzTeh//jeWaJfAKGI7h0U+ve2Pbz2JPTPmpFph7E
+	1aTL2HTyLSnFRFMsfbQp9z8nlu/yq68oIMOXmsmyO/4lyIK2Wm98nmtV5rk5DGGXvRg1TTUh2qF
+	+jtVZ
+X-Gm-Gg: ASbGncvQNJuqP8Xv2YJ6r53hQHvhivNTXo6U4XRuCMk2x/83YjLHgP6M9ny2wRJYykW
+	3sL4IewLOaCWdZspQ2kdtY2QCdqN0G+3xulRza2/gKNeZvD3VbZdubuVd6fP0+EAO/Cb5iUg/Gn
+	JJExwVPm8XtEXX0MZfnNY7c4mXmwWyUzqi4IAVEbAjaen+7zLAZ3kzqh1mWPLJeyUiJTgrRHXqP
+	2TEFQgqb6eTqj8kjrgdEuzyhqFSfxoqMIJVuJ/aehErpLB2z7V7Dna2b0ol40SsP3hz2EEAso+I
+	5BpnMQS/V6HKRUs2b3tp2kx7owkw96E0pCYUd5whplTH04B7m7pSQikf1bMLsEs2w4xkVydRB/M
+	e6KCi+CM73nFBs5CKlnBwNgKBgimyNsyCWEs+UKxxu+3hw5bUplcSt8y59XS2DL6ceCMAv+ssoX
+	NVQNhODCo=
+X-Google-Smtp-Source: AGHT+IF9n+F8e1mm/IyBfw7ePpfBTnEUME8yX6HA27qwsIWM/khGHlIzwyYXURZx3W+3vhm1Xj1CzQ==
+X-Received: by 2002:a05:6830:60db:20b0:742:f93c:194c with SMTP id 46e09a7af769-74382c06774mr157158a34.27.1755119520991;
+        Wed, 13 Aug 2025 14:12:00 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:ae46:dfe2:81c8:dde? ([2600:8803:e7e4:1d00:ae46:dfe2:81c8:dde])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-30ccfdf5075sm180592fac.1.2025.08.13.14.11.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Aug 2025 14:12:00 -0700 (PDT)
+Message-ID: <623c0ef4-98c0-410c-abf3-fa9563f52688@baylibre.com>
+Date: Wed, 13 Aug 2025 16:11:59 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250813-ltc2495-v2-0-bbaf20f6ba07@gmail.com>
-In-Reply-To: <20250813-ltc2495-v2-0-bbaf20f6ba07@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 13 Aug 2025 19:17:57 +0200
-X-Gm-Features: Ac12FXzSXyjK3LWLAixYn4dav8CEFlNoAdUe5OFp4hPJ228WqnbJD-U8MYY6ZPg
-Message-ID: <CAHp75VcmNtLD+ZmjgLsV0xPHOZkRwRZW0-dnKYa2JhXxYpHc4g@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] Add LTC2495 support
-To: Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Beguin <liambeguin@gmail.com>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] dt-bindings: iio: mcp9600: Add compatible for
+ microchip,mcp9601
+To: Ben Collins <bcollins@watter.com>, Jonathan Cameron <jic23@kernel.org>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250813151614.12098-1-bcollins@watter.com>
+ <20250813151614.12098-2-bcollins@watter.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250813151614.12098-2-bcollins@watter.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 13, 2025 at 6:54=E2=80=AFPM Yusuf Alper Bilgin
-<y.alperbilgin@gmail.com> wrote:
->
-> Hi All,
->
-> This is the v2 of the patch series to add support for the LTC2495 ADC to
-> the ltc2497 driver and to enable the internal temperature channel for
-> the LTC2495 and LTC2499.
->
-> Many thanks to Andy Shevchenko and Krzysztof Kozlowski for their
-> detailed and helpful reviews on v1. I believe I've addressed all
-> feedbacks in this version.
+On 8/13/25 10:15 AM, Ben Collins wrote:
+> MCP9601 is a superset of MCP9600 and is supported by the driver.
+> 
+> Signed-off-by: Ben Collins <bcollins@watter.com>
+> ---
 
-You're welcome!
 
->       iio: adc: ltc2497: add support for LTC2495
+Please include a cover letter with a changelog in v3.
 
-I'm fine with this patch...
 
->       iio: adc: ltc2497: add temperature sensor support
->       iio: adc: ltc2497: reorder ltc2497core_driverdata members to remove=
- hole
+>  .../bindings/iio/temperature/microchip,mcp9600.yaml         | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> index d2cafa38a5442..d8af0912ce886 100644
+> --- a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> +++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> @@ -4,7 +4,7 @@
+>  $id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9600.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+> -title: Microchip MCP9600 thermocouple EMF converter
+> +title: Microchip MCP9600 and similar thermocouple EMF converters
+>  
+>  maintainers:
+>    - Andrew Hepp <andrew.hepp@ahepp.dev>
+> @@ -14,7 +14,9 @@ description:
+>  
+>  properties:
+>    compatible:
+> -    const: microchip,mcp9600
+> +    enum:
+> +      - microchip,mcp9600
+> +      - microchip,mcp9601
+>  
 
-...but these two need a bit of work, I hope the next version will be final.
+It sounds like it would be useful to have a fallback in this case:
 
---=20
-With Best Regards,
-Andy Shevchenko
+properties:
+  compatible:
+    oneOf:
+      - const: microchip,mcp9600
+      - items:
+          - - microchip,mcp9600
+          - microchip,mcp9600
+
+>    reg:
+>      maxItems: 1
+
+Usage would then be:
+
+	compatible = "microchip,mcp9601", "microchip,mcp9600";
+
 

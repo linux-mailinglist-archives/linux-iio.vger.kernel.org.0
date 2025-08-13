@@ -1,176 +1,162 @@
-Return-Path: <linux-iio+bounces-22648-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22649-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78917B24519
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 11:16:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8279BB245FC
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 11:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44C2A177F1F
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 09:16:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD4151716DA
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 09:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B863D2EFD9F;
-	Wed, 13 Aug 2025 09:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7862A212573;
+	Wed, 13 Aug 2025 09:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d3wofiyS"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="hMuMMVzg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37B31A9F94;
-	Wed, 13 Aug 2025 09:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409C62F49F6
+	for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 09:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755076581; cv=none; b=SLMRsjI7Fcg9KovLm00KynkQKA3hYmV+xNqM8VA8n5PlisxPJCrz2KC1VhQ0QS0jMlPocwZAZ9dpAusfTiMtey+5nmt+TJoxMfbbBjsQ9rvfE9nkgNm/5UBAOGk4PZpGiW+fibtFA59Cq0Tjh9RtID9HvvgTmAVs9tNJaXibklM=
+	t=1755078024; cv=none; b=Aj2ez/NPrMoemUBhEMqdQzn+sdu2MkPzl9rN8ug5Kq0brsQq5RVHzum79Zb/u2ElSjXmIaPi+Rlz2Gf0dFsUocLRtVSYsR3jO58zCQXlDMYlih2i+FQuKfgUlQCRDQDLFeo5dlhOlj3vDo+87969AObJlqYQPE3Dbx9nf22BK9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755076581; c=relaxed/simple;
-	bh=F39zDA7nOTvNVqAZkmcQePxxokk3Ju+xnSyr2fLJBns=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=P3CN25X/0BnqHQ2bo7xGwjn1910DZWsF/HDtbUu0wUHTLj/dDZhKbWA0a4MFlE+xowl+4WAkv+T/Ds+8VxmueICAXZGUYpw15wLHtWS3tJKcGew2NyUoGZIhMqNfs/yQHJD5nWsyWVsuuVRAaibnhQxno5LvMJ1wl4IsIV8KGVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d3wofiyS; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55cb8ab1010so6438977e87.1;
-        Wed, 13 Aug 2025 02:16:19 -0700 (PDT)
+	s=arc-20240116; t=1755078024; c=relaxed/simple;
+	bh=Bzl1fTy5zn3FKPpn8SCij3fXaOSeVZvede8RiBegfvw=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mh/Bf6wu/dtEBRCGgORFY+gN9KIjEitDzWuuWQ0wb4jY/ZdrE7raRY68vbckY0E++uYNncMa7Pbixd/AL/1oyM277ogSi7m7DNGpfQAwSCg107bIpOOrjrleiSwz/tmoJhrxfU2WGjuH2+rr3XDgSkIUSTU7hIHOokN0u+fg88c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=hMuMMVzg; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-556fd896c99so5405958e87.3
+        for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 02:40:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755076578; x=1755681378; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fHenvKdm0XlJ0qMDu0g9fGeQieCcfVRkZfzmaedut9s=;
-        b=d3wofiySW7e8bXRvRGTuB9jN8L91yBoIue2l52GxW9/bzdlTLR7kbKJWYy14ZKqK6D
-         wQZjJEZ3ubmnXu6TJfa0jTnY5BNxrGzA8YXcEP4sPC1bZDodvWSz1viPEM6b8uDsnUTA
-         X1YPuh/qgY1xYfgodBIHUweBpv+Hqa5LXm3ENJK6RftNIniJHw8X9fjgVmInIwhbScPh
-         59it3y6ofz61CJ8TDJ47csVk/H2otXb9Cfl2FX1B8wbP0qXG5Y83t/ygco+nkJpbWfVQ
-         TtH8/Xcpvhc4VYP5B5mkweRBsQZKZC0c0+ZtNCwQUG+K469PdkN7gLvgwbGhLXuknHGW
-         KNSw==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1755078020; x=1755682820; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:references:mime-version:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TCLr2/gBgA535ijZwC7LDnHGKufszujGdP3EdKtVNas=;
+        b=hMuMMVzgJw6F4GsH9IWakin6qXABGRo96PjIRDCQ0T10OkS6zyjG0RJHvwuBtBQeHS
+         /EVORnMIHLtwDoQd/bCfVGyrNldQSq9+vvVmU4EdZDeCw2Xj05TLVenDyhizDbyBsqeU
+         TSDucsiVSCVlf7Rko+6APRn2qaPPaE+HfJUxfwtXCmCMVtCfBSeVO5UfMaHD0O6yQ1Uo
+         fZ0NHBS7Znrq0194PKLjvTdoyePViM/e7D+OUZj9cSSF37/l+LNoW4m0TeKFB/KTd3Nc
+         hlzrtx8V4cPzCmCIV7HY01JWGfMuWASlJ7Au2cuNlBZ0GumyVDGR9ninWw15ZEjU2f/N
+         Z/Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755076578; x=1755681378;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fHenvKdm0XlJ0qMDu0g9fGeQieCcfVRkZfzmaedut9s=;
-        b=TI1dBK+e/O6NsysyN4Yy/07yuIKz2/7BRwkQnT395auaD7lvFzxV6FWQQV8f+BjV5X
-         GEhwRGnThSQser/zodmwBtGVuVhwLyoYbEYInxIYhgJRgb3Eeh/TsvIlY4tEjRPsUHtk
-         T4U6VhZxfhOjyNUVu2hv0FuwMlP3MtSZlQCNL7RcerA5ll7pTnX+rItuGUBiXD50Yc1g
-         bNzlfj6hiTBRAFiTweajhWPdLT+N7d9fmOvpm7nV0TakXrUmsaY2Ep08Wr4iklBYAWHO
-         6J0DT26Rs5DBd1W3Gbj4MOK6ZBIWK1WtoLTW6PGjZhQQcuXoU3wFCzCUZ2Hny69W91NK
-         02WA==
-X-Forwarded-Encrypted: i=1; AJvYcCUp6jfNPLnm4CYdICEqB2gJGHG5e3vxv9bOcKeXmFpsNZw57lZfnHMlsvxY41XbrFSjZKoZi2Zdu/wbFnn+@vger.kernel.org, AJvYcCVjehT0sxW5EKXE3el8JZQB6q5jHhkm4JjQT3NaaZr0VM9qxlUIII7RLAePCXeXeuShNRsrTkW3g5wB@vger.kernel.org, AJvYcCXBovj8+J8w1p2PE7AemFA/lqGbLdWl+82+wf/n+oXsgKE//YHhaCAnoyU385ltwengDUDjC5rsSv+X@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAlsCZQf7SZnBQePsoM6tuKwZ7dLjgRj8X3sp6+QKAUh503i7G
-	qMifSkFs/5tJgFqC/xvCmXYam0DpjLy3sipWu8hTZ5WNoPoz4zMyzP7B
-X-Gm-Gg: ASbGncse7p76L371z34bx5jApVZb21VpjsaKHeQAt2PxrdGJG9ekvNcnkfGgdDpbmIq
-	Dd7tmp0tbEZskWh1mUwaYDkVHvqY/R8oLk8ejcJL8sWHM/YOYirSNof2sM8E+PwJvng+iRS+eII
-	JaYeK6V299c0raLMTDYgEfDvrQBg/oX0o+FFDJZdGyQV9UvbbuUASEClFnzud+KLdWYXFB1t2DZ
-	ZX6Uo56qt/w8m5BPcnf8s8F7HSZ/uXs36d/WkvXpdAzpkVlbCBKx4jK1JbV75ubyoCFPMWSmFLa
-	Ehq0OKqEsB194GmCsV/CzljufXHiynNE/RLnCw6u9QB1mQBNpKMfmHHTyV7qSonlliEVj+vzAFk
-	kKBrKwElxUz4cQY9idqIMMmYxLifuWnVVBrYhjPA=
-X-Google-Smtp-Source: AGHT+IGKfz9vP96Ie7xpbZJ3khaoiRw8h7lam59TWUNckN8Airi9tcAgeYhGcUSZV5GCv58k8YuQrQ==
-X-Received: by 2002:a05:6512:3b2c:b0:55b:760d:c2e2 with SMTP id 2adb3069b0e04-55ce038eaefmr653659e87.19.1755076577806;
-        Wed, 13 Aug 2025 02:16:17 -0700 (PDT)
-Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88cae595sm5184834e87.155.2025.08.13.02.16.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 02:16:16 -0700 (PDT)
-Date: Wed, 13 Aug 2025 12:16:06 +0300
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Tobias Sperling <tobias.sperling@softing.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Esteban Blanc <eblanc@baylibre.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: bd79124: Add GPIOLIB dependency
-Message-ID: <6837249bddf358924e67566293944506206d2d62.1755076369.git.mazziesaccount@gmail.com>
+        d=1e100.net; s=20230601; t=1755078020; x=1755682820;
+        h=cc:to:subject:message-id:date:references:mime-version:in-reply-to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TCLr2/gBgA535ijZwC7LDnHGKufszujGdP3EdKtVNas=;
+        b=V5ObNRoPi0tpT5wB/73A7IDKgp6ghBDqP1ikz1VOaY3X5Z5juab45cJ1Cf0keb0b7D
+         Y1/Xdfo2VVGSqFC92CUrBawm4S103mFcKq1dcHGU3qHCszh5GTrRYzpOya7l0+7AHu3t
+         wdzwkz1th6w7wdyiOATrBNjoKPheFb2U0QjhdE2E0CmpXXr9zwNgRR0+w0xGzU9cZeRV
+         R76F1VrzEC6p5VGrvDJrl24VsSceppIye4y2aSOA+5IRMcLB+bw6D44cEISk8qkKrtCG
+         qBgWpcs0/CmquxWtYY4IhY93BZtbDsAfxgZEE3cTf5w8srviP2OVABTRMezcLBnfV6j+
+         GMfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqi8TdRvPr3nzpEYbxE3hn5hS8nVeIc7F8GbnfcTqYXT9rEnvpRny/8PG/ahNx/OzCgLYkDM564Ic=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVWxA7kK14rU+bUcF1V92xiW7V+l+6NoVw2SwoBSzzS+tO2DlX
+	vLWlJxFwBdZskUaC6vOZarP/iT2soZuGa6GxOfdfIAyUcDqPfeHrLHZDa2ZHZyPMH1C+nhLjWt2
+	Fw8xlwlpx0CKxPpH2pL9o2pBqA+C4Jtf8nJJftGPUew==
+X-Gm-Gg: ASbGnctobiZbM+F52tPOyuaW8SgjGZlv5P9WKCBOUP1gBsLUdpd+0sqzBvZgHLSPLKz
+	wICqbl9g0ndaAWKF3vGFT7omQmm/iv1v49G5DcugltIJnOGjccTkB+UEF76LdBcm8fWopVkeccX
+	qJLVbsZJ30Acs2Tl4PeeL3XK4U2n7QhV3JVTCGd3YmUDA99/EVA91hudf3pZgmHiLLuUGMwFktk
+	75JNENmDxN/GhsHF3b+uDV3c8UH97gZrWqi6Yk=
+X-Google-Smtp-Source: AGHT+IGRkmCRYjQdB/zuZeZqz/1pbYUJ5kWF1/Fnvca1BsseHJzKEkX+Ipcliv5kgaQGrHnHPdceKTRbNuzvOMwZtj4=
+X-Received: by 2002:a05:6512:1396:b0:55b:8863:2b64 with SMTP id
+ 2adb3069b0e04-55ce03c7c16mr795502e87.57.1755078020190; Wed, 13 Aug 2025
+ 02:40:20 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 13 Aug 2025 05:40:19 -0400
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 13 Aug 2025 05:40:19 -0400
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+In-Reply-To: <6837249bddf358924e67566293944506206d2d62.1755076369.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jcbngrjPf9mCZaYW"
-Content-Disposition: inline
+References: <6837249bddf358924e67566293944506206d2d62.1755076369.git.mazziesaccount@gmail.com>
+Date: Wed, 13 Aug 2025 05:40:19 -0400
+X-Gm-Features: Ac12FXxS1Ph05y4YxBBe16rtMjc9WlhA3zcIzqCoM52YkPZ7kk1KgpF7Zpp__fk
+Message-ID: <CAMRc=Mf75cangdeg7T4E0nAhJs_BTdLyCu6GcrCL8vJzzAkFWg@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: bd79124: Add GPIOLIB dependency
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>, 
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
+	Tobias Sperling <tobias.sperling@softing.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+	Trevor Gamblin <tgamblin@baylibre.com>, Esteban Blanc <eblanc@baylibre.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Content-Type: text/plain; charset="UTF-8"
 
+On Wed, 13 Aug 2025 11:16:06 +0200, Matti Vaittinen
+<mazziesaccount@gmail.com> said:
+> The bd79124 has ADC inputs which can be muxed to be GPIOs. The driver
+> supports this by registering a GPIO-chip for channels which aren't used
+> as ADC.
+>
+> The Kconfig entry does not handle the dependency to GPIOLIB, which
+> causes errors:
+>
+> ERROR: modpost: "devm_gpiochip_add_data_with_key" [drivers/iio/adc/rohm-bd79124.ko] undefined!
+> ERROR: modpost: "gpiochip_get_data" [drivers/iio/adc/rohm-bd79124.ko] undefined!
+>
+> at linking phase if GPIOLIB is not configured to be used.
+>
+> Fix this by adding dependency to the GPIOLIB.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202508131533.5sSkq80B-lkp@intel.com/
+> Fixes: 3f57a3b9ab74 ("iio: adc: Support ROHM BD79124 ADC")
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>
 
---jcbngrjPf9mCZaYW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-The bd79124 has ADC inputs which can be muxed to be GPIOs. The driver
-supports this by registering a GPIO-chip for channels which aren't used
-as ADC.
+> ---
+>
+> I am somewhat curious why the failure occurs only at the linking phase?
+> Wouldn't it either be better to have these functions
+> devm_gpiochip_add_data_with_key() and gpiochip_get_data() only declared
+> when the CONFIG_GPIOLIB is y/m, to get errors already during
+> compilation, or provide stubs?
 
-The Kconfig entry does not handle the dependency to GPIOLIB, which
-causes errors:
+Providing stubs is not correct for sure - a GPIO provider must always pull
+in the relevant infrastructure over Kconfig. As for the former: it seems it's
+a common pattern for the headers containing the "provider" part of the
+subystem API, you'd get the same issue with regulators or pinctrl.
 
-ERROR: modpost: "devm_gpiochip_add_data_with_key" [drivers/iio/adc/rohm-bd7=
-9124.ko] undefined!
-ERROR: modpost: "gpiochip_get_data" [drivers/iio/adc/rohm-bd79124.ko] undef=
-ined!
+I don't have a good answer, I'd just apply this as it's not a common issue
+from what I can tell.
 
-at linking phase if GPIOLIB is not configured to be used.
+Bartosz
 
-Fix this by adding dependency to the GPIOLIB.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202508131533.5sSkq80B-lkp@int=
-el.com/
-Fixes: 3f57a3b9ab74 ("iio: adc: Support ROHM BD79124 ADC")
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
----
-
-I am somewhat curious why the failure occurs only at the linking phase?
-Wouldn't it either be better to have these functions
-devm_gpiochip_add_data_with_key() and gpiochip_get_data() only declared
-when the CONFIG_GPIOLIB is y/m, to get errors already during
-compilation, or provide stubs?
----
- drivers/iio/adc/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 6de2abad0197..24f2572c487e 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1300,7 +1300,7 @@ config RN5T618_ADC
-=20
- config ROHM_BD79124
- 	tristate "Rohm BD79124 ADC driver"
--	depends on I2C
-+	depends on I2C && GPIOLIB
- 	select REGMAP_I2C
- 	select IIO_ADC_HELPER
- 	help
---=20
-2.50.1
-
-
---jcbngrjPf9mCZaYW
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmicV9MACgkQeFA3/03a
-ocXb+Af+NIGlMnF50TrH0tWe5+RTbHSUKhqoO3EOSceKHXvL8xmEQfYVUYHTPmN1
-M4zS5DiZfnafHjKyDbdvpHqI+/xdNi+flOx4+RDKl+DZF1OKQ6bYqCwUEb3oU/Kd
-wihjuo+VYiQQY9T0fE7DXgselJ1eybci2UhxpqAgfEL2pSspWD/ETiONObr6pw1l
-4mYJ90AkKBgoIpcqajUqEhr8OQPbyiHdUn9g8YohCq0b/q4g2Ew/eGdxpVqpIWwU
-xQBd/2eiWSXHaWQVk1J1EJS/aVa1B61Ve8p34BQPDlEEhBgq34hOxmhumbdST/lI
-opJuDq/4+UcH2DYNN97yUacBaWWI5A==
-=Pm2h
------END PGP SIGNATURE-----
-
---jcbngrjPf9mCZaYW--
+> ---
+>  drivers/iio/adc/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 6de2abad0197..24f2572c487e 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -1300,7 +1300,7 @@ config RN5T618_ADC
+>
+>  config ROHM_BD79124
+>  	tristate "Rohm BD79124 ADC driver"
+> -	depends on I2C
+> +	depends on I2C && GPIOLIB
+>  	select REGMAP_I2C
+>  	select IIO_ADC_HELPER
+>  	help
+> --
+> 2.50.1
+>
+>
 

@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-22698-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22701-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E08B25719
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 00:59:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA1FB2571F
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 00:59:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66507880A64
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 22:59:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B2E3628797
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 22:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2702C2FE053;
-	Wed, 13 Aug 2025 22:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663822FC868;
+	Wed, 13 Aug 2025 22:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="p2sPgbiW"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="KBKzM3CA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C78A2FB98D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881312980A8;
 	Wed, 13 Aug 2025 22:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755125929; cv=none; b=N0dKZkK9q7v7vrUFNBer3fk3adPEKmhqgwZYaZio1oHvqB2vZuZdNcRq0qGND5hccer3k3+7Q4GJ7ZpmrFxaDdtrBX4bw0xaqyUQPiVezOQunVp9ubuKXnbQt/6tURqB/MF8lNDHnMSaA31H/vij0t9TdXW5e78usTLyuHZr/Ok=
+	t=1755125931; cv=none; b=TPHdEOtgfb3qDbJWbx5dDMrCJlW6mlURYBSk/PDQPHvfvRtB0fg27/nshubElKw0W1OIC47a4wOl1cVPMClTlfrHMmXf5fVMmYDL5jg5BkGPK2khtOa9hIAKSY2eT47KVVKs+DNu6Lsb5lUDMu7TtIXy7KTrQ+hgsXheXtolKho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755125929; c=relaxed/simple;
-	bh=VcZBIdcjzMxjTL3snw5jmRRRO5DhaqnjK4yu/tUYq0A=;
+	s=arc-20240116; t=1755125931; c=relaxed/simple;
+	bh=7VPTVLLxq/DNYimYLPn12eRXgDEfiaC8/D5Y/XfUGtU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uxW5mY+c/VQN+BwoOkKoUmIYbfl1GG3d8JITA3/CUhUyynjOmCz8fxY7JQ3ScquM+YKLfps9CSR2KfiAO7Czy3F4pt6OVuJerC2g9Pkhxkj/GNeqF/8XBuWtT3fc5gz3mehnZfod1VUwuDzowJWppjaa4JXX7JE3uTCxMLJFCTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=p2sPgbiW; arc=none smtp.client-ip=198.47.23.234
+	 MIME-Version:Content-Type; b=nZUm65cwStHo1B2AL0Ap7lkcJFignqcxxqyyRdGxD945fPnm7lxF9TzDVPLvrYD8iIE2l9DQ+oSfMOarJbx4zevFu8YS/wA9qKOPL0Q76KDZGottDddeF5akiDAJXJVFXCk/jgegxaE1GofASCKq7xFoTV/2buTYQp1Wa2tCf/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=KBKzM3CA; arc=none smtp.client-ip=198.47.23.235
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57DMwhlJ1798737;
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57DMwhIL2248377;
 	Wed, 13 Aug 2025 17:58:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
 	s=ti-com-17Q1; t=1755125923;
-	bh=IbUI2n2kGj3kC/eXNndXcoiUOnopCoF1AnB4pJ6MbP8=;
+	bh=zW7wf8U7H0k219rYyFqzmSOqAbuZmutUlJ3BdxBMu3g=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=p2sPgbiWvzctpdWgc1lcyKqv5oRnWLMbT2jcRJJMrWzN0PGg3AsHukrZMs6TYpik4
-	 tHvPI97LmDwszoY+sFrc4E91lTBY8HH2qYkPdI6SxY2BPyP7R6SEHT0tfOWB2jWcp3
-	 7D+hYfEJ5ANoe0p0huHT67p9F93yMB/4dwKQPYm4=
-Received: from DLEE110.ent.ti.com (dlee110.ent.ti.com [157.170.170.21])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57DMwgg4390337
+	b=KBKzM3CA1dZPvJk8nqj+Biwwfs/EmDVJ5QBM04ClSG98b2Sd3Wc2SFb+/PLVj4vBg
+	 GYC1q/vV+bmnoFr+cSxEEgp6mRFKrNn1/TAkbx80KBEKhUePSLiriakoaxJcfbKveo
+	 jR4xceXyfAmJAEeBNYFcNHuqoZ4pLag9lSi+UlXE=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57DMwhl61288260
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
 	Wed, 13 Aug 2025 17:58:43 -0500
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Wed, 13
  Aug 2025 17:58:42 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
  Frontend Transport; Wed, 13 Aug 2025 17:58:42 -0500
 Received: from lelvem-mr05.itg.ti.com ([10.249.42.149])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57DMwfwd2683333;
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57DMwfwe2683333;
 	Wed, 13 Aug 2025 17:58:42 -0500
 From: Andrew Davis <afd@ti.com>
 To: Jonathan Cameron <jic23@kernel.org>,
@@ -65,9 +65,9 @@ To: Jonathan Cameron <jic23@kernel.org>,
 CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         Andrew Davis
 	<afd@ti.com>
-Subject: [PATCH 5/6] iio: health: afe4404: Use devm_regulator_get_enable() helper
-Date: Wed, 13 Aug 2025 17:58:39 -0500
-Message-ID: <20250813225840.576305-5-afd@ti.com>
+Subject: [PATCH 6/6] iio: health: afe4404: Use dev_err_probe() helper
+Date: Wed, 13 Aug 2025 17:58:40 -0500
+Message-ID: <20250813225840.576305-6-afd@ti.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250813225840.576305-1-afd@ti.com>
 References: <20250813225840.576305-1-afd@ti.com>
@@ -81,96 +81,124 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-This takes care of both getting and enabling the regulator in one
-function, it also handles the devm action, so remove that. Also
-do not disable the regulator on suspend, this will be handled for
-us. We now do not need to track the regulator at all, so drop it
-from the device struct.
+This checks for EPROBE_DEFER and allows us to print out the error code
+while return it directly saving some lines of code.
 
 Signed-off-by: Andrew Davis <afd@ti.com>
 ---
- drivers/iio/health/afe4404.c | 33 +--------------------------------
- 1 file changed, 1 insertion(+), 32 deletions(-)
+ drivers/iio/health/afe4404.c | 62 +++++++++++++-----------------------
+ 1 file changed, 22 insertions(+), 40 deletions(-)
 
 diff --git a/drivers/iio/health/afe4404.c b/drivers/iio/health/afe4404.c
-index 29e030943f599..19dd821155dd4 100644
+index 19dd821155dd4..18f3cf94e8f71 100644
 --- a/drivers/iio/health/afe4404.c
 +++ b/drivers/iio/health/afe4404.c
-@@ -79,7 +79,6 @@ static const struct reg_field afe4404_reg_fields[] = {
-  * struct afe4404_data - AFE4404 device instance data
-  * @regmap: Register map of the device
-  * @fields: Register fields of the device
-- * @regulator: Pointer to the regulator for the IC
-  * @trig: IIO trigger for this device
-  * @irq: ADC_RDY line interrupt number
-  * @buffer: Used to construct a scan to push to the iio buffer.
-@@ -87,7 +86,6 @@ static const struct reg_field afe4404_reg_fields[] = {
- struct afe4404_data {
- 	struct regmap *regmap;
- 	struct regmap_field *fields[F_MAX_FIELDS];
--	struct regulator *regulator;
- 	struct iio_trigger *trig;
- 	int irq;
- 	s32 buffer[10] __aligned(8);
-@@ -346,13 +344,6 @@ static irqreturn_t afe4404_trigger_handler(int irq, void *private)
- 	return IRQ_HANDLED;
- }
+@@ -460,39 +460,31 @@ static int afe4404_probe(struct i2c_client *client)
+ 	afe->irq = client->irq;
  
--static void afe4404_regulator_disable(void *data)
--{
--	struct regulator *regulator = data;
--
--	regulator_disable(regulator);
--}
--
- /* Default timings from data-sheet */
- #define AFE4404_TIMING_PAIRS			\
- 	{ AFE440X_PRPCOUNT,	39999	},	\
-@@ -432,12 +423,6 @@ static int afe4404_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	ret = regulator_disable(afe->regulator);
--	if (ret) {
--		dev_err(dev, "Unable to disable regulator\n");
--		return ret;
+ 	afe->regmap = devm_regmap_init_i2c(client, &afe4404_regmap_config);
+-	if (IS_ERR(afe->regmap)) {
+-		dev_err(dev, "Unable to allocate register map\n");
+-		return PTR_ERR(afe->regmap);
 -	}
--
- 	return 0;
- }
++	if (IS_ERR(afe->regmap))
++		return dev_err_probe(dev, PTR_ERR(afe->regmap),
++				     "Unable to allocate register map\n");
  
-@@ -447,12 +432,6 @@ static int afe4404_resume(struct device *dev)
- 	struct afe4404_data *afe = iio_priv(indio_dev);
- 	int ret;
- 
--	ret = regulator_enable(afe->regulator);
--	if (ret) {
--		dev_err(dev, "Unable to enable regulator\n");
--		return ret;
--	}
--
- 	ret = regmap_clear_bits(afe->regmap, AFE440X_CONTROL2,
- 				AFE440X_CONTROL2_PDN_AFE);
- 	if (ret)
-@@ -495,17 +474,7 @@ static int afe4404_probe(struct i2c_client *client)
- 		}
+ 	for (i = 0; i < F_MAX_FIELDS; i++) {
+ 		afe->fields[i] = devm_regmap_field_alloc(dev, afe->regmap,
+ 							 afe4404_reg_fields[i]);
+-		if (IS_ERR(afe->fields[i])) {
+-			dev_err(dev, "Unable to allocate regmap fields\n");
+-			return PTR_ERR(afe->fields[i]);
+-		}
++		if (IS_ERR(afe->fields[i]))
++			return dev_err_probe(dev, PTR_ERR(afe->fields[i]),
++					     "Unable to allocate regmap fields\n");
  	}
  
--	afe->regulator = devm_regulator_get(dev, "tx_sup");
--	if (IS_ERR(afe->regulator))
--		return dev_err_probe(dev, PTR_ERR(afe->regulator),
--				     "Unable to get regulator\n");
--
--	ret = regulator_enable(afe->regulator);
+ 	ret = devm_regulator_get_enable(dev, "tx_sup");
 -	if (ret) {
 -		dev_err(dev, "Unable to enable regulator\n");
 -		return ret;
 -	}
--	ret = devm_add_action_or_reset(dev, afe4404_regulator_disable, afe->regulator);
-+	ret = devm_regulator_get_enable(dev, "tx_sup");
- 	if (ret) {
- 		dev_err(dev, "Unable to enable regulator\n");
- 		return ret;
++	if (ret)
++		return dev_err_probe(dev, ret, "Unable to enable regulator\n");
+ 
+ 	ret = regmap_write(afe->regmap, AFE440X_CONTROL0,
+ 			   AFE440X_CONTROL0_SW_RESET);
+-	if (ret) {
+-		dev_err(dev, "Unable to reset device\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Unable to reset device\n");
+ 
+ 	ret = regmap_multi_reg_write(afe->regmap, afe4404_reg_sequences,
+ 				     ARRAY_SIZE(afe4404_reg_sequences));
+-	if (ret) {
+-		dev_err(dev, "Unable to set register defaults\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Unable to set register defaults\n");
+ 
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = afe4404_channels;
+@@ -505,43 +497,33 @@ static int afe4404_probe(struct i2c_client *client)
+ 						   "%s-dev%d",
+ 						   indio_dev->name,
+ 						   iio_device_id(indio_dev));
+-		if (!afe->trig) {
+-			dev_err(dev, "Unable to allocate IIO trigger\n");
+-			return -ENOMEM;
+-		}
++		if (!afe->trig)
++			return dev_err_probe(dev, -ENOMEM, "Unable to allocate IIO trigger\n");
+ 
+ 		iio_trigger_set_drvdata(afe->trig, indio_dev);
+ 
+ 		ret = devm_iio_trigger_register(dev, afe->trig);
+-		if (ret) {
+-			dev_err(dev, "Unable to register IIO trigger\n");
+-			return ret;
+-		}
++		if (ret)
++			return dev_err_probe(dev, ret, "Unable to register IIO trigger\n");
+ 
+ 		ret = devm_request_threaded_irq(dev, afe->irq,
+ 						iio_trigger_generic_data_rdy_poll,
+ 						NULL, IRQF_ONESHOT,
+ 						AFE4404_DRIVER_NAME,
+ 						afe->trig);
+-		if (ret) {
+-			dev_err(dev, "Unable to request IRQ\n");
+-			return ret;
+-		}
++		if (ret)
++			return dev_err_probe(dev, ret, "Unable to request IRQ\n");
+ 	}
+ 
+ 	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+ 					      &iio_pollfunc_store_time,
+ 					      afe4404_trigger_handler, NULL);
+-	if (ret) {
+-		dev_err(dev, "Unable to setup buffer\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Unable to setup buffer\n");
+ 
+ 	ret = devm_iio_device_register(dev, indio_dev);
+-	if (ret) {
+-		dev_err(dev, "Unable to register IIO device\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Unable to register IIO device\n");
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 

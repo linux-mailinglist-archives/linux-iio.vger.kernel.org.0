@@ -1,87 +1,87 @@
-Return-Path: <linux-iio+bounces-22678-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22679-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66D3B25006
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 18:43:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A3EB2500F
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 18:46:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D5513BE52B
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 16:37:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03EAA18832B9
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 16:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9856286D52;
-	Wed, 13 Aug 2025 16:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6A62874F3;
+	Wed, 13 Aug 2025 16:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c/f2c/67"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4kof0zn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F50A277C8B;
-	Wed, 13 Aug 2025 16:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78811232395;
+	Wed, 13 Aug 2025 16:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755102913; cv=none; b=G7B2NTcka8RN36htWtEGq8/08Z7l4/C9fcxLekiFCXokiua2SVGm+RtnpilVmL/nvvPISDO7D0IVNQLZK1U4BT5kCoGpr/gCFMJv/Vy/9P/L8Fn1qnpfXp3tJ1kG1+YNG3UaNHKUGyyLlYM0GyLUVqn6zlup7vZsVNewie7Blxk=
+	t=1755103266; cv=none; b=RcH1ktBMTjvHExAM6XNQTf/IeWnq8EvIIn59lBVovNIHQSYDzYFsKblupXWX3MG6yqVtYAPzHNdJwpGU5Od8TS3eBsPDjBvRXwr72O6gq9srtCHSw7EywuFrjIXfeAGSBkzvU7luupOYvC4519tp7YnhqQa65RTm84R5T75Rjkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755102913; c=relaxed/simple;
-	bh=SbjAzfC7xqc19ZyKjr+F0OqaWcbfKbVoBmLSIqb7gUs=;
+	s=arc-20240116; t=1755103266; c=relaxed/simple;
+	bh=yBwHHprknj6PkryIXl//LRsEtTiobpZSjvx+rnjm8mY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q712/kxs9LM1zQafaR1MZsncYfY2NDt89ewbw02eNdmNkXxjMYQ3ro56uVqxoqW9mnj2t9gE958PQ+wcYFy7aI4pDWr0OpJ5H1+D7nZHnn1zp5baAfj6SYjelAOu0sFrsTHN1sPIjWIA3sFrixQGiDPnHT6lNbjU1+kc2uZ6fGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c/f2c/67; arc=none smtp.client-ip=209.85.218.54
+	 To:Cc:Content-Type; b=XUfkKMKBno/0PQLCwJZpK7qhKeKf1VncuCYi49nU3vnICIK/+fqiwd/FYaQb/rQrXsKN46igl6+9UGvWtnJAWtOKBouBsncsag6Mjs1rKpwSx7UCG8k5oJ2J1zt7I6J80Hzl6On9Au8cvgjXiqpq7sjrEkur2PRvBhJghV9MdRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4kof0zn; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-afcb78ead12so4355666b.1;
-        Wed, 13 Aug 2025 09:35:11 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-afcb78d5e74so5706566b.1;
+        Wed, 13 Aug 2025 09:41:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755102910; x=1755707710; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755103263; x=1755708063; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=V53p2xgGxvMjhr/LjpOSzUL0hXLz8c+ehuQIsAQ3YGk=;
-        b=c/f2c/67BwqOB6KVpcqmWf42UBGOo33cjrAajrO5cxundp4zUC9nmU881QogaGQuxk
-         KNUsyxrJ10IXQvhEoUHUBTVWzPfTDmaumDm5FfsuIarnFp9Zv3BBPqeb6R9VNxtRwfMI
-         nUmt3MqjSrewxdzeNuaduEbRmQSzELqf6QCr/HQse1Bn6ty9rpbh1w7Zwk8+iopPil3Q
-         fPSi3AaG5b1azpgsFLNdSxBfz/Rv3jadLX/EpBZnIU8byGqLy1imuJ9AqQPa//31RZSL
-         A30VgHW7eTScDdMKinlNXgXuGutUiH1MkIV5pakcDKUE2MtRN1pei2HjJ1uV3g3dTWME
-         WCpA==
+        bh=i8lrtRx8jCEAKl+bITh8cA+FmiqZOy9jagxjCWazHmw=;
+        b=N4kof0zn10IFTI3eg0bvg/6e3BCwhhJklzc1Uz97WdSTvUXYVg4MbJJh3yYuYnmZ9g
+         ttz5oMu4+uiL9spd/SAmSvlHKlAxH/1A7zr+0DuAFIsmu0mc1TxtmpKsyECJDCfpyRwW
+         sDWd8m4gRqcXVkL2jEt1bPgayP6KG3vJ8E4ZVo65Wgwd1AUxqjan0opyKv4rcpR/jlxj
+         fNhXyLrbwuJbJOjdX6KxbuW/iVFdVb+tXXbH2hl86eKMv3EeYf5lcCQFMzw0yzFSr88e
+         fpZ5PYGyRnYikEKXaKPF++4eq8bzNYq7slndy5LQLeywtgzOLe2SM4n9OBlvAbv4WOo7
+         kB7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755102910; x=1755707710;
+        d=1e100.net; s=20230601; t=1755103263; x=1755708063;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=V53p2xgGxvMjhr/LjpOSzUL0hXLz8c+ehuQIsAQ3YGk=;
-        b=a1aACWVY2zUj0LlMC/icDFYQl+GLq1FS9dWXtqKS+DoXeO+PjB6IiFtfg6pdvM/aCG
-         eUke4i/ViEXl2br4U84jgxz7pPqJU1W9AC3SO8Pc/89D83LlP70m6ooufBefnyo9asQv
-         8UPJ+HLQrkzSdWJdca2Ft8vnksEHF+GIPdAd9bwUphbkQc5050l9B97GGk2m2K0soyYT
-         JocFtrUS56zQ0qW6eYDTOnaNwbhy6CT+xdEwvFfzQ3htk+d2DIFAuGnCNphWB8f+w8oR
-         Ne2oB761knhxAGSOIBQJlNQmq210nFSNDtbsKHPaVEdmNF7PCUOMJYLvLZ9Jqw3WB289
-         GS1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWGWAQqBicWgHWrgn4JTTihtBUfrKtMT6nrmArZZeteGCnUcha916k2nJSmpAXmcJWIX37gFAlTSjI=@vger.kernel.org, AJvYcCX9XrWY8qS3/Xn6BR0QYDFy8U6g/Hl+oaCkqpZHwM3KKiln22xTdJdDdwUFzmKGub71EhzZ8gQdKpVqDkIv@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5sV3Y0uwe9wqIzPfz3Sc3IqCkXzRFFxS7PAzzLbRQKYUOVy/A
-	GAPQilFNlPTlAaHyBZR9mlQMyi5SqvJmhJ7XhgGAMDOkmAjLNH8s+xYpEYg+4tm5iXaD63r+HTU
-	aXysA5H+bGKr2SyZDEioANTxVUYitq5w=
-X-Gm-Gg: ASbGncuxKcq0dgId1tFKsY/nvsMDfoJRQ5YwuZLlpOVewdhFC5CO9vSwE50uFRLFBOE
-	hczQW89G5oy5Zl/ROYoiAW+8t0pHWdAzzz1DPxSWXM+fShXPn5H7O0Lll0KvrVc3jtwU7f2hE6+
-	y9zBQUJQVhq7GsjCu5AcOpRDXoW0FOB0ZKOhoIN+66yIGZV3gspzxG0Z0VN+MevFnpKJtrcHCmC
-	AYuUcu+xw==
-X-Google-Smtp-Source: AGHT+IFN+/9UEaYIopmVsqzTFFShmJ1JFg3773xhcVzOmX8/lDm+cUKFC6tSMnaaty4PTwr7yqc2GwECkmREDMGkCxc=
-X-Received: by 2002:a17:907:3f0b:b0:af9:116c:61c4 with SMTP id
- a640c23a62f3a-afca4e44cd7mr352302666b.48.1755102910228; Wed, 13 Aug 2025
- 09:35:10 -0700 (PDT)
+        bh=i8lrtRx8jCEAKl+bITh8cA+FmiqZOy9jagxjCWazHmw=;
+        b=WJQuH93bmEMnoHj1wD6y/WZqRH663pnsgvXYNG4kGZJeJjJkkOtv6Zy7iE8497Rp0B
+         lyqCCFrcv8VQNuk8RT0/8kiFfKUZc7gbnhkjPcGiqvJ9T7PPXVQGTbsYK3ZIw3yu2Moy
+         ZAwWBj5WSmoWfQc+lw/fAGAH8ml21k2yiPpON0b/3cfNAaIkrBq/loUMXFUi1oLgwSUd
+         rgXHkh+070v3A4G7C0eS17kza3Czx2L+oS0dB7lyFYAkwAU4aqRTLRjZIKUgNsHe2HmH
+         0hXevM7L3bEXWGA4mWlRSW4nAYGph641gDdfRorRhMHol09VDFlsgBkK56C5LHqL2fCZ
+         oxWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVaLjAaT6HVL5yvgsq4N4WuW4sUZTq2sRgGNN70Q/gXzN1VIhFZF4DLMGwI9SGCZUr4HGiq9d0Ou/QttnvJ@vger.kernel.org, AJvYcCWTvSTYLD1aWFSAboVoni/EgIYneuDBFM89KM6ZlZjqzZ0pc9v0OTVsiL3UstyU96UfU5IFQlBkFig=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymfQm5dWQR//SO6Sxk5uyWB5GXVMaETAMERz64B+ES0TkIklkP
+	BoE885WD0eqy99Cgsgcl1VU2L7Y/F5MWgHPEmlMNMaKS2BZRFSKxyoVhMazH1OTNNaviVHtuslM
+	60Axdf/MGxei0WMTO3edTGHvHdrtlgrAde7IhLDE=
+X-Gm-Gg: ASbGncv3ygoRUAvD0rb36E3W3FKmn762FGM290oT3C2WsDFXUaiSuK6Z/MGhjZXzUJM
+	doIMxTbohE/oMPGOfhmSfVP4x5qZTYaXBf78Me+P2/wMxFT8K2wlcIFq6H5ouSJMocXK0AX4zHj
+	nSxqISKxqCxi8Zn3kuhiuw72sk94nKgjdReUX/idIvk5WHAIaEqc42+WGKFphMyNsW8RwXlK/dN
+	+SFtW1eFfx6gw4rofLy
+X-Google-Smtp-Source: AGHT+IHpyocSa1M8AilZduqJlSalEcEYBrFzv1dUwM9wYZQD5lOoEfwF0sEPN64AvptMj8eQOzqyBAVkMN+LWXPkqac=
+X-Received: by 2002:a17:907:1c09:b0:ad8:a04e:dbd9 with SMTP id
+ a640c23a62f3a-afca4df4cb9mr350701066b.31.1755103262647; Wed, 13 Aug 2025
+ 09:41:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250813151614.12098-1-bcollins@watter.com> <20250813151614.12098-3-bcollins@watter.com>
-In-Reply-To: <20250813151614.12098-3-bcollins@watter.com>
+References: <20250813151614.12098-1-bcollins@watter.com> <20250813151614.12098-4-bcollins@watter.com>
+In-Reply-To: <20250813151614.12098-4-bcollins@watter.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 13 Aug 2025 18:34:33 +0200
-X-Gm-Features: Ac12FXxhGZ2znF1wGqytSvPwyXLJE0lFYKwuAn9dJUBYWMnH6jBtFRLDZTHXesQ
-Message-ID: <CAHp75VcG0PoZZQ+=DNqzvdJrTcGe=2V5H97vhter4zeOQz1e2A@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] iio: mcp9600: White space cleanup for tab alignment
+Date: Wed, 13 Aug 2025 18:40:25 +0200
+X-Gm-Features: Ac12FXyDfASdwmfoCUCeh8J29MH2VM_-BxZ0HM94ZZP1YHdB1y4mzbbhq9VhfVc
+Message-ID: <CAHp75Vc6DwpCps9kuXjaCCPrYycbFf3NV2Ye+aEM2_9LWJqMBA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] iio: mcp9600: Add compatibility for mcp9601
 To: Ben Collins <bcollins@watter.com>
 Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
 	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
@@ -92,19 +92,86 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Aug 13, 2025 at 5:17=E2=80=AFPM Ben Collins <bcollins@watter.com> w=
 rote:
 >
-> Purely to align tabs for #defines.
+> MCP9601 is a super set of MCP9600. The drivers works without changes
+
+superset
+
+> on this chipset.
 
 ...
 
-> +#define MCP9600_HOT_JUNCTION           0x0
-> +#define MCP9600_COLD_JUNCTION          0x2
->  #define MCP9600_STATUS                 0x4
+>  config MCP9600
+> -       tristate "MCP9600 thermocouple EMF converter"
+> +       tristate "MCP9600 and similar thermocouple EMF converters"
+>         depends on I2C
+>         help
+> -         If you say yes here you get support for MCP9600
+> -         thermocouple EMF converter connected via I2C.
 
->  #define MCP9600_ALERT_CFG1             0x8
+> +         If you say yes here you get support for MCP9600, MCP9601, and
+> +         similar thermocouple EMF converters connected via I2C.
 
-I would also suggest making the register offsets to be fixed-width, e.g.
-0x04 for STATUS. And since these are the most lines you are already
-touching in this patch, repurpose it.
+To avoid a potential churn in the further changes to support a new HW,
+I would suggest to convert this to the list of supported chips:
+
+  ...get support for:
+  - MCP9600
+  - MCP9601
+  and similar...
+
+>           This driver can also be built as a module. If so, the module
+>           will be called mcp9600.
+
+...
+
+> +       switch (dev_id) {
+> +       case MCP9600_DEVICE_ID_MCP9600:
+> +       case MCP9600_DEVICE_ID_MCP9601:
+> +               if (dev_id !=3D id->driver_data)
+
+I prefer to see this to be converted to use chip_info before getting
+to a new HW support.
+
+> +                       dev_warn(&client->dev,
+> +                                "Expected id %x but detected %x. Ensure =
+dt is correct\n",
+
+dt --> firmware description
+(the world is not rotating around DT only)
+
+> +                                (u8)id->driver_data, (u8)dev_id);
+
+Use proper specifiers and drop castings.
+
+> +               break;
+>
+
+> +       default:
+> +               dev_warn(&client->dev, "Unknown id %x, using %x\n", (u8)d=
+ev_id,
+> +                       (u8)id->driver_data);
+
+Ditto.
+
+> +       }
+
+...
+
+> +       { "mcp9600", MCP9600_DEVICE_ID_MCP9600 },
+> +       { "mcp9601", MCP9600_DEVICE_ID_MCP9601 },
+
+Nope, use chip_info from day 1, please.
+
+...
+
+>  static const struct of_device_id mcp9600_of_match[] =3D {
+>         { .compatible =3D "microchip,mcp9600" },
+> +       { .compatible =3D "microchip,mcp9601" },
+
+Missed driver data.
+
+>         { }
+>  };
 
 --=20
 With Best Regards,

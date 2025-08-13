@@ -1,181 +1,392 @@
-Return-Path: <linux-iio+bounces-22694-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22695-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83615B256CF
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 00:40:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 191E8B256FE
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 00:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51D545C0D76
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 22:40:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCBCE587017
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 22:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E242FCBE4;
-	Wed, 13 Aug 2025 22:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61922FB986;
+	Wed, 13 Aug 2025 22:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MJ0vQxBz"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="YxHxc1hv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C87F21257E;
-	Wed, 13 Aug 2025 22:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7AF2FB978
+	for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 22:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755124765; cv=none; b=ksHQAwSStdrtWR5IJHkOrehZj85QVnOodYmu9JyORknRPWW+p3VRLVJpuCHd/CCVqM6WsueRkxyItgfEgs6JJ68d86iaPEKwFfcBBazhwn1ED1lu++kJPqEP6I79pV8PchPE9R00QDxcfh//gjyMp3fvGj6pokHNQJEdArB7idI=
+	t=1755125530; cv=none; b=ggv+3DmCa8TV4MxhyU1YovN0YfTm+Qpkwg9vUAVu/AeD5owpII+bj+pHenPAzc+O/06dxUgSYZkCfTipyHRPpF5KCfW6S9ZEgygKBsaFlllqKNCxjJHbSTy+QhQXZWQc9XoyZWosJIBBPZj0eM/TMrju03TJFOctJ0NejP3Hslo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755124765; c=relaxed/simple;
-	bh=e3D/RVjYhFjtnEQ+KTEqSanCLTiM0h1saYQ3wtMZYgs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RMaoh8Hbk0gkU9BfUSRENwmG2AH43i8R7OPEuXN7hWrgkeubFtmePs5Sg/zFcjW/t08NDzQ/ncM84BsJ0Ckb1Ctsl1hjWzvsmhFlx8YG1KB+Dw5nWY/8EZgFbwZrALUV6vT6r3ncnKuXPgytHN1NgMvhpVeVT1EApx2aG7bDd4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MJ0vQxBz; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b9dc52c0bfso34070f8f.0;
-        Wed, 13 Aug 2025 15:39:21 -0700 (PDT)
+	s=arc-20240116; t=1755125530; c=relaxed/simple;
+	bh=lM6h9VAGsNX2peqZz8B6wOCriawc3WHsBUMuxw4Ch9o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RMx/pnAbo4ZsQ8S5yX9sfSfKh+AfSyIXiJxmgJRcRyGiUkXJ2iT5TozcW3zALNFtx6nkYOMkFcaYM79/SLrdr3iTfkRwxSwIBWcPyNP7XR6i230eOgkQ8inxWxjagR1hP42AHNbgw26Wp+MluZ7+5o4oL72OimNbfA6yYM9vLbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=YxHxc1hv; arc=none smtp.client-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-61bd4ea1ba2so130834eaf.3
+        for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 15:52:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755124760; x=1755729560; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755125526; x=1755730326; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=OlFov5VVAGyPXif8j4DcuOjAK/mA5lVh4XRxLzIxvJg=;
-        b=MJ0vQxBzk4UjuxbyhIlFOuKHMWCvCD2QI6r9Yo2XFdAx4IQKTYLQzsxLozAhG8+J4U
-         TOmFBn7yNjpyVl7iXM/PymRCRQuN5awqDO4S+1m9SXhA8PUrOFNlBpr1UcaOojuNejVB
-         JSVRNWh0jEbWODqE7buNQMtMAAZtp3zpBu/0b58ntE6X80lDQ61z+EcAO9d2EE8moPj0
-         V6+Omk6wOlmoKDOIpKJ4wFJKs6an/Au/qIIyd3Zk+bb3H+ls8ny/BF5KSl7fsbCTI0Yg
-         rPL8BH4HvJLrOw95/3C+LSBwE+TU7utCTiD8aPNcydOdZ+4CWpMoExkHLTLLiz0lpuyP
-         ZfLA==
+        bh=YR+pparO5lMmpwodiXHM01B1J05m89PsBgRh94RBDlw=;
+        b=YxHxc1hvtNEwJi4EDb/xukt4YJWGi5L0RrR7MGhUN+QllxJwpL0xrMVgw1u9uTLMRR
+         35MmJJ4Dv83c+vyzM/w0dUR4Ms7oVl6f3MA+k0FJ+eHAWBqzdnoY1TlGQq82HSlmVERq
+         xaLrZS6aVkVnecnt+7iY4QQfneXlgBgAO698+tPhVzLDx44bI2Ab+uGQh86txFAucZIT
+         1IQnqiespOcn2RAGA3up0Z6RZDrAJC4Tn0Xtgb+n8C1qlPNqtwU5icQumrqHQKAzpB3/
+         ph1HeQBAsvYKrnFOfGaTxhDVbfmGfG38KUo2I8fpUkJ04mBxqu4d5c5i37hXxNW6oMPN
+         ScIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755124760; x=1755729560;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1755125526; x=1755730326;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OlFov5VVAGyPXif8j4DcuOjAK/mA5lVh4XRxLzIxvJg=;
-        b=FeZYSQWrOwkaZqDLWKsnv9JGYUlScE/UXhJnWFc2y/ml8bQu9T7YJWGDLQBPdysDJ3
-         3FgcVsaIq7G/3ZraFeGAga4OnEwxWuBkep960HJ5PKCaI+zz5iuhMQmyxZ5Aaed6C9N8
-         CDo4B8TH25TxGWR1lLlWxe+NfDb3sJKcwDpchEOtX/kJZmq7dS7NxLIgkdBYfx/uvabl
-         TAeJ/+6aAwSV0vlV4jbH2wEXW/5QhXDAC+txYSZxGmfcASuURjIWAwR/Ol58hlsa4/Tx
-         P0HU42Z4p+zJ5glC/QA+XONtZ/IKlfS33IFmiU6B1fQG8mekNzoZz1AAP/30VemzfqJl
-         Iqlw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKATjNJy2IE9xSYC6b9QOfrFMXhSGJBZMD+qEb1PRtDf/318EG9o3wzWyYPKUJ/DuuYrvejPfQ01+h@vger.kernel.org, AJvYcCWoBKJwrPeRLTSarlyeNl/oXs+23k99+4sUzrckMioX84fy0Er58tNmPfWz9XEVT0u/+ii3Dx9wnHmY@vger.kernel.org, AJvYcCXDPiTw1AeiEz9Nal4HMCWvkLkXfp2WxVJfr4KFytklp6Dcx/O1u6lxmyOvIEyQ8JSPhRmdNMF8fV6eis3z@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2mzW9M0NMlrN829um8x+aP8Ukb5vKF7ufyuQBNbxdILeR43V5
-	IAcbKS38pM1dZwTS6ArejZc+0hboeOazpMdNsQkdvgqxFkY/EPvr0x1r
-X-Gm-Gg: ASbGncthEKR69UKjy7VZvgSD75VoOnloR/ghiRtwP3bcUPPRpeD3y6Zyo4xdOodzMh6
-	orfEP28PL7q9eINuT5CBInE337jyhdSFxd8SKn7SK1fpzGQdWpKXdo87O8oiYBfpgXr+BRLanvN
-	etj3YLSFwZk+aSFLH0PECpelH7N70T0epDHx6nbkSSDiRc/6YdNjUk2XuaBewaft/0CgDdQ1UEj
-	L+NfEtE22PRuWtC9gt7C0fW7rQm/o8RsS3P8shfntqlX9rbdWMT8bjn9+tKGk6o+zUlTHInKZ8s
-	fAAyGVsERJGqLmkO6ycRdM858oSw93oXBY6RleA4Mm/UbHTM895fdq68q8OnFk5Nomb23fBiSoT
-	DyeM2IPYNxc6LX7HkZLcw+PlhcLirB3abyANxCaf9e7ygMNYjqVU=
-X-Google-Smtp-Source: AGHT+IEy35Qbld+uNsrWNezbKbUR5c3avaJGDSwRcRjeN+RvRY5QydlzE5iVFGgqs2uD0727jErYdQ==
-X-Received: by 2002:a05:6000:2289:b0:3b7:8d0b:3261 with SMTP id ffacd0b85a97d-3b917ef5d71mr1759295f8f.12.1755124760088;
-        Wed, 13 Aug 2025 15:39:20 -0700 (PDT)
-Received: from JSANTO12-L01.ad.analog.com ([189.79.20.14])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c453333sm50620455f8f.45.2025.08.13.15.39.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 15:39:19 -0700 (PDT)
-Date: Wed, 13 Aug 2025 19:39:13 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Michael.Hennerich@analog.com, jic23@kernel.org,
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
-Subject: Re: [PATCH 1/4] dt-bindings: iio: adc: ad7768-1: add new supported
- parts
-Message-ID: <aJ0UEUVmIH94Nuwi@JSANTO12-L01.ad.analog.com>
-Reply-To: c3cf9b97-3883-4ebb-a2ed-0033adebda87@kernel.org
-References: <cover.1754617360.git.Jonathan.Santos@analog.com>
- <ecb7406f54938658b51b4469034d87a57086bd1e.1754617360.git.Jonathan.Santos@analog.com>
- <c3cf9b97-3883-4ebb-a2ed-0033adebda87@kernel.org>
+        bh=YR+pparO5lMmpwodiXHM01B1J05m89PsBgRh94RBDlw=;
+        b=Qal1FdUlcITcqlJZHbO7wrANGBad4Zgrd/ncP2/KpJMUYLNj4lbrKeJ7jkWQw2PVkq
+         eijhd7EStsJKQeiwpNtJHc4vQEA7ruJhRf4XeWDzbvAFm+CVPwnfWBt6rKrlhJzXFslU
+         T/U1ETnA/z0Cz+MGNibOYRN8tr6gGXpy9s2719TdPSrEWo82tYKJHwBL9J/mBZy8M01e
+         xF/vKuoGUsHBTGOuKzBGrWjaK7LgXzY2kBQu/D54WeQblUZ+Cr85LQcjQCx55+nyhF1N
+         DZ/qSY9Ln6cBOJqC0N+sKNBKaEo6WQyBrX0AUsin/MaKijaSRz4/DMUomAOsbC3EK2ZG
+         bY+Q==
+X-Gm-Message-State: AOJu0YwwyGTBuD+cFaMGsjGMzZ6RaCXYgIBZ0s+fCol0N4jERW1PhaNJ
+	6Pqd6mH6WbkTqwlcWFTnZ6HoZcmQxBfARXfAlNzXBIXciZDFnEeUT4jzafLALzK/cag=
+X-Gm-Gg: ASbGncv6r/MobL3Y7YT+foLLzE29JhXRrzGcef01WsEvojPuNv1ty+/iWhYGfAmIJfe
+	MZtv/FgRHAEhzLT+/cEImEROS9PG43kd9i5XnSw2Agu7+u+1fm6CgtrLcq43vyvEeTlJatOwk1t
+	7idantdQSAWtsRw4c3ZGxJ6HiQT+/JdvCIRM0Uxy0a09mxZJHh6sF4NcByofhmUnBlEhdPJjtjp
+	0qhv51Xbu2s6Xe4yVbaVwoj2Rl3mQc7PJqGz6OpffqGeZcyZTuG5/oQXvJT/nEzkHDKnx61plYq
+	RaRwqEe36Mei6vHETyY9M8yJxi+8wj1U/KWIOSVVy66Iya5vU+t3Eibcs1F/7RvGfAUtkxx54zK
+	DXpnMFvyYjiA+8TFDYR/2KCbTofgnPKWVwJonpojcXQQpTKxVdJp6oF96b3vwvkpH6ljFhzQM
+X-Google-Smtp-Source: AGHT+IHfo6uXwN/BY2d0D2Jf9uM1T6WNTdYdD36cnpICFH/KEheufBKno0BTwfp20wfyaWAjHp7dcw==
+X-Received: by 2002:a05:6820:228b:b0:61b:931a:a9a0 with SMTP id 006d021491bc7-61bd5b28509mr581532eaf.3.1755125525888;
+        Wed, 13 Aug 2025 15:52:05 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:ae46:dfe2:81c8:dde? ([2600:8803:e7e4:1d00:ae46:dfe2:81c8:dde])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61b7cac4d37sm1775241eaf.30.2025.08.13.15.52.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Aug 2025 15:52:05 -0700 (PDT)
+Message-ID: <a9c8457f-a364-46e2-9e31-ceab0e1c9894@baylibre.com>
+Date: Wed, 13 Aug 2025 17:52:04 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/5] iio: mcp9600: Add support for IIR filter
+To: Ben Collins <bcollins@watter.com>, Jonathan Cameron <jic23@kernel.org>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250813151614.12098-1-bcollins@watter.com>
+ <20250813151614.12098-6-bcollins@watter.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250813151614.12098-6-bcollins@watter.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c3cf9b97-3883-4ebb-a2ed-0033adebda87@kernel.org>
 
-On 08/13, Krzysztof Kozlowski wrote:
-> On 13/08/2025 04:48, Jonathan Santos wrote:
-> > Add compatibles for supported parts in the ad7768-1 family:
-> > 	ADAQ7767-1, ADAQ7768-1 and ADAQ7769-1
-> > 
-> > Add property and checks for AFF gain, supported by ADAQ7767-1
-> > and ADAQ7769-1 parts:
-> > 	adi,aaf-gain
-> > 
-> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> > ---
-> >  .../bindings/iio/adc/adi,ad7768-1.yaml        | 48 +++++++++++++++++--
-> >  1 file changed, 44 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-> > index c06d0fc791d3..568a85e0d052 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-> > @@ -4,18 +4,26 @@
-> >  $id: http://devicetree.org/schemas/iio/adc/adi,ad7768-1.yaml#
-> >  $schema: http://devicetree.org/meta-schemas/core.yaml#
-> >  
-> > -title: Analog Devices AD7768-1 ADC device driver
-> > +title: Analog Devices AD7768-1 ADC family device driver
+On 8/13/25 10:15 AM, Ben Collins wrote:
+> MCP9600 supports an IIR filter with 7 levels. Add IIR attribute
+> to allow get/set of this value.
 > 
-> If doing this, drop device driver. It should not be here in the first place.
+> Signed-off-by: Ben Collins <bcollins@watter.com>
+> ---
+>  drivers/iio/temperature/mcp9600.c | 43 +++++++++++++++++++++++++++++++
+>  1 file changed, 43 insertions(+)
 > 
+> diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
+> index 5ead565f1bd8c..5bed3a35ae65e 100644
+> --- a/drivers/iio/temperature/mcp9600.c
+> +++ b/drivers/iio/temperature/mcp9600.c
+> @@ -31,6 +31,7 @@
+>  #define MCP9600_STATUS_ALERT(x)		BIT(x)
+>  #define MCP9600_SENSOR_CFG		0x5
+>  #define MCP9600_SENSOR_TYPE_MASK	GENMASK(6, 4)
+> +#define MCP9600_FILTER_MASK		GENMASK(2, 0)
+>  #define MCP9600_ALERT_CFG1		0x8
+>  #define MCP9600_ALERT_CFG(x)		(MCP9600_ALERT_CFG1 + (x - 1))
+>  #define MCP9600_ALERT_CFG_ENABLE	BIT(0)
+> @@ -111,6 +112,7 @@ static const struct iio_event_spec mcp9600_events[] = {
+>  			.address = MCP9600_HOT_JUNCTION,		       \
+>  			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	       \
+>  					      BIT(IIO_CHAN_INFO_SCALE) |       \
+> +					      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) |  \
+>  					      BIT(IIO_CHAN_INFO_THERMOCOUPLE_TYPE), \
+>  			.event_spec = &mcp9600_events[hj_ev_spec_off],	       \
+>  			.num_event_specs = hj_num_ev,			       \
+> @@ -149,6 +151,7 @@ static const struct iio_chan_spec mcp9600_channels[][2] = {
+>  struct mcp9600_data {
+>  	struct i2c_client *client;
+>  	u32 thermocouple_type;
+> +	u32 filter_level;
+>  };
+>  
+>  static int mcp9600_read(struct mcp9600_data *data,
+> @@ -186,6 +189,9 @@ static int mcp9600_read_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
+>  		*val = mcp9600_tc_types[data->thermocouple_type];
+>  		return IIO_VAL_CHAR;
+> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +		*val = data->filter_level;
 
-Noted.
+We can't just pass the raw value through for this. The ABI is defined
+in Documentation/ABI/testing/sysfs-bus-iio and states that the value
+is the frequency in Hz.
 
-> >  
-> >  maintainers:
-> >    - Michael Hennerich <michael.hennerich@analog.com>
-> >  
-> >  description: |
-> > -  Datasheet at:
-> > -    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7768-1.pdf
-> > +  Analog Devices AD7768-1 24-Bit Single Channel Low Power sigma-delta ADC family
-> > +
-> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7768-1.pdf
-> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7767-1.pdf
-> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7768-1.pdf
-> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7769-1.pdf
-> >  
-> >  properties:
-> >    compatible:
-> > -    const: adi,ad7768-1
-> > +    enum:
-> > +      - adi,ad7768-1
-> > +      - adi,adaq7767-1
-> > +      - adi,adaq7768-1
-> > +      - adi,adaq7769-1
-> >  
-> >    reg:
-> >      maxItems: 1
-> > @@ -58,6 +66,23 @@ properties:
-> >      description:
-> >        ADC reference voltage supply
-> >  
-> > +  adi,aaf-gain:
-> > +    description: |
-> > +      Specifies the gain of the Analog Anti-Aliasing Filter (AAF) applied to the
-> > +      ADC input, measured in milli-units. The AAF provides additional signal
-> 
-> What is milli unit? Isn't gain in dB, so maybe you want mB? Quite
-> unpopular to see mB, but we cannot use 1/100 of dB, so I could
-> understand it.
->
+So we need to do the math to convert from the register value to
+the required value.
 
-Actually, the gain is expressed in V/V, not in dB. I may have phrased it poorly, but since
-there are fractional values like 0.364 and 0.143, I chose to represent it
-in milli-units.
+I'm a bit rusty on my discrete time math, so I had chatgpt help me
+do the transform of the function from the datasheet to a transfer
+function and use that to find the frequency response.
 
-> > +      rejection within the frequency range of fs � f3dB, where fs is the sampling
-> > +      frequency, and f3dB is the -3dB cutoff frequency. The specific values of
-> > +      fs and f3dB, as well as the rejection intensity, depend on the digital
-> > +      filter configuration.
-> Best regards,
-> Krzysztof
+It seemed to match what my textbook was telling me, so hopefully
+it got it right.
+
+Then it spit out the following program that can be used to make
+a table of 3dB points for a given sampling frequency. If I read the
+datasheet right, the sampling frequency depends on the number of
+bits being read.
+
+For example, for 3 Hz sample rate (18-bit samples), I got:
+
+  n  f_3dB (Hz)
+  1  0.58774
+  2  0.24939
+  3  0.12063
+  4  0.05984
+  5  0.02986
+  6  0.01492
+  7  0.00746
+
+I had to skip n=0 though since that is undefined. Not sure how we
+handle that since it means no filter. Maybe Jonathan can advise?
+
+
+```python
+import numpy as np
+import pandas as pd
+
+# Sampling rate (can be replaced with actual sampling rate if known)
+fs = 1.0  # Hz
+
+# Define alpha as a function of n
+def alpha(n):
+    return 2 / (2**n + 1)
+
+# Compute 3 dB frequency for each n from 0 to 7
+results = []
+
+for n in range(0, 8):
+    a = alpha(n)
+
+    numerator = -(a**2 + 2*a - 2)
+    denominator = 2 * (1 - a)
+    cos_val = numerator / denominator
+
+    if -1 <= cos_val <= 1:
+        omega_3dB = np.arccos(cos_val)  # radians/sample
+        f_3dB = (omega_3dB * fs) / (2 * np.pi)  # Hz
+    else:
+        f_3dB = np.nan  # Outside arccos domain
+
+    results.append({
+        "n": n,
+        "alpha": round(a, 5),
+        "f_3dB (Hz)": None if np.isnan(f_3dB) else round(f_3dB, 5)
+    })
+
+# Display the results
+df = pd.DataFrame(results)
+print(df)
+
+```
+
+
+Here is the chatgpt transcript for checking the math:
+To find the **3 dB point** (i.e., the cutoff frequency) of the given digital low-pass filter, we need to analyze its frequency response. The equation you've provided is a common **first-order IIR low-pass filter**:
+
+$$
+Y_k = (1 - n) \cdot Y_{k-1} + n \cdot X_k
+$$
+
+Where:
+
+* $Y_k$: current filtered output
+* $Y_{k-1}$: previous filtered output
+* $X_k$: current input (unfiltered)
+* $n$: filter coefficient (0 < $n$ < 1)
+
+---
+
+### Step 1: Transfer Function
+
+We can find the transfer function $H(z)$ using Z-transforms.
+
+Take the Z-transform of both sides:
+
+$$
+Y(z) = (1 - n) \cdot z^{-1} Y(z) + n \cdot X(z)
+$$
+
+Solve for $H(z) = \frac{Y(z)}{X(z)}$:
+
+$$
+Y(z) \left(1 - (1 - n) z^{-1} \right) = n X(z)
+$$
+
+$$
+H(z) = \frac{Y(z)}{X(z)} = \frac{n}{1 - (1 - n) z^{-1}}
+$$
+
+---
+
+### Step 2: Frequency Response
+
+Substitute $z = e^{j\omega}$ to find the frequency response:
+
+$$
+H(e^{j\omega}) = \frac{n}{1 - (1 - n) e^{-j\omega}}
+$$
+
+We want the magnitude response $|H(e^{j\omega})|$, and the **3 dB point** is defined where the magnitude drops to:
+
+$$
+|H(e^{j\omega_{3dB}})| = \frac{1}{\sqrt{2}} \cdot |H(e^{j0})|
+$$
+
+At $\omega = 0$:
+
+$$
+|H(e^{j0})| = \frac{n}{1 - (1 - n)} = 1
+$$
+
+So the 3 dB point occurs when:
+
+$$
+|H(e^{j\omega_{3dB}})| = \frac{1}{\sqrt{2}} \approx 0.707
+$$
+
+---
+
+### Step 3: Solving Numerically (Approximation)
+
+The magnitude of the frequency response is:
+
+$$
+|H(e^{j\omega})| = \frac{n}{\sqrt{1 - 2(1 - n)\cos(\omega) + (1 - n)^2}}
+$$
+
+Set this equal to 0.707:
+
+$$
+\frac{n}{\sqrt{1 - 2(1 - n)\cos(\omega) + (1 - n)^2}} = 0.707
+$$
+
+This is a transcendental equation and cannot be solved algebraically in closed-form. However, you can **solve numerically** for $\omega_{3dB}$ for a given $n$.
+
+---
+
+### Step 4: Approximate Formula for 3 dB Frequency
+
+For small $n$, an **approximate formula** for the normalized cutoff frequency (in radians/sample) is:
+
+$$
+\omega_{3dB} \approx n
+$$
+
+In terms of frequency in Hz (assuming a sample rate $f_s$):
+
+$$
+f_{3dB} \approx \frac{n \cdot f_s}{2\pi}
+$$
+
+---
+
+### ✅ Summary
+
+* **Filter type**: First-order IIR low-pass
+* **Filter equation**:
+
+  $$
+  Y_k = (1 - n) Y_{k-1} + n X_k
+  $$
+* **3 dB point (approximate in Hz)**:
+
+  $$
+  f_{3dB} \approx \frac{n \cdot f_s}{2\pi}
+  $$
+
+  where $f_s$ is the sampling rate in Hz
+
+Let me know your value of $n$ and the sampling rate if you want a specific 3 dB frequency calculated.
+
+---
+
+You're given a **discrete-time system** defined by the difference equation:
+
+$$
+y[n] = \alpha \cdot x[n] + (1 - \alpha) \cdot y[n - 1]
+$$
+
+This is a classic **first-order IIR low-pass filter**, just like in your previous question.
+
+---
+
+### 🔹 Step 1: Take the Z-transform
+
+Using the properties of the Z-transform (assuming zero initial conditions):
+
+* $\mathcal{Z}\{y[n]\} = Y(z)$
+* $\mathcal{Z}\{y[n - 1]\} = z^{-1} Y(z)$
+* $\mathcal{Z}\{x[n]\} = X(z)$
+
+Substitute into the difference equation:
+
+$$
+Y(z) = \alpha X(z) + (1 - \alpha) z^{-1} Y(z)
+$$
+
+---
+
+### 🔹 Step 2: Solve for the Transfer Function
+
+Rearrange:
+
+$$
+Y(z) - (1 - \alpha) z^{-1} Y(z) = \alpha X(z)
+$$
+
+Factor $Y(z)$:
+
+$$
+Y(z) \left(1 - (1 - \alpha) z^{-1} \right) = \alpha X(z)
+$$
+
+$$
+H(z) = \frac{Y(z)}{X(z)} = \frac{\alpha}{1 - (1 - \alpha) z^{-1}}
+$$
+
+---
+
+### ✅ Final Answer:
+
+$$
+\boxed{H(z) = \frac{\alpha}{1 - (1 - \alpha) z^{-1}}}
+$$
+
+This is the **transfer function** of the filter in the Z-domain.
+
+Let me know if you want the frequency response, pole/zero plot, or time-domain behavior from this!
+
+
 

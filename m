@@ -1,48 +1,161 @@
-Return-Path: <linux-iio+bounces-22674-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22676-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5A2B24D17
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 17:18:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49874B24F89
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 18:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7F7D7B7E9C
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 15:16:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 954915A7453
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 16:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076B82192E4;
-	Wed, 13 Aug 2025 15:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E540285C97;
+	Wed, 13 Aug 2025 16:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="QCJ48aON"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DCF214A64
-	for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 15:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E372853F7
+	for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 16:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755098236; cv=none; b=gTY8OzhZWDXCBp5ham9moH7W/MzRn+kpq+0ZGjIeMLyHB/lOyNxWfIYVAcJ1Ob8kfF8jarBNUJQ3RMrDvRwTz2USXv9wNhS6fKPU4ueKFVI0OZqvOU1yT6tyFn3HK02w+afpn0xeQQCWE9BwLxw8Il3uppBwZmOA9d47WqccUxA=
+	t=1755101769; cv=none; b=bpqxPchbvgNTMPw3UupBb3WUNmZmy4JoANvzI1154Tqwm3wlj2QvKTCLDgE0dpwyiAblxBFd3d7gHPlprF9fYDetLhvleJ+5cTtSnrvus8GHH8h/njIOr4BMOSIRLTG0xIOPF12lUDGXp8xFM3aI38CnbaOky5tRkBNwx00fRvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755098236; c=relaxed/simple;
-	bh=cvjCLEcOkiK4BcbgnXUpI166R37zKxUZkOm8pseZKGE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XuLHK/bEFvxM6edUEuDzSQsVN6dFd6AM0bpT4lYYyluMIuds6mjtMc10bAnqfYLfMWLQLWEB/5Ns/O1/NxW1S/4V6DXJQODexmJhKmTTeoPv+/sy1gcOnnI14I5o8HG6mm3q7k4E1/cv6weKcak1N1HdDpUO+nuDSFhZn6utOtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=watter.com; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=watter.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ben Collins <bcollins@watter.com>
-To: Jonathan Cameron <jic23@kernel.org>,
+	s=arc-20240116; t=1755101769; c=relaxed/simple;
+	bh=KmcwvgRJ1zt5K4wDAvtiaw17GSzeXpuI2dv9vCkYQUg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sv8gflOzvoA/NdOO/IUXeIRrVzl0QsncSHmmq10Fr2uIFm9gTsFvnZpNofe7kKj2YwmwJbEQo/lHoSkorOu/4YZZO3islHdIBhVC53+3MoUrOUyQCzR/wHFgQkSBJzRyF/k3yBi2jd/hleSrcdHK5D4rzWx5ZQxXBK1/KRhymb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=QCJ48aON; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=from:to:cc:subject:date:message-id
+	:mime-version:content-transfer-encoding; s=k1; bh=8r/LCX9rzyog3y
+	rylwFjwRMpIaemTxzslMXi3Wwcda8=; b=QCJ48aONHnHPI67IOJ/3D8OQB3Cd/k
+	va3dqQAxVecMFTPLNQfZkeRCBnr21f5AP85A+ko/Co2kn3d1vUsGdjjGnQSoqHT/
+	XhtDURAzo7LNMG2Hw6aJkJP1nHKCJDt/I4UFOhqYSkFA3npSGKStA4S5hsN3gfb8
+	C8iP/CLkf5T/WRnlry5E/M4rY/ikuUABioRBeFix0sZAgPzikWKDzZXwcrM/PlZn
+	9QF5GBzn0iIdqib/tI3qtiZXmnTMTK2djC7YMTKPNRHBv7OXt7TeyHMZFzQFHHD9
+	4yuXLJeM/fwFHXJlvGUnp8QGyn4bljRJZaBZSVKQgiNlixK49bkom2HA==
+Received: (qmail 694422 invoked from network); 13 Aug 2025 18:15:54 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 13 Aug 2025 18:15:54 +0200
+X-UD-Smtp-Session: l3s3148p1@6vOVeEE8NodtKLKq
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-kernel@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Andrea della Porta <andrea.porta@suse.com>,
+	=?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Avi Fishman <avifishman70@gmail.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Benjamin Fair <benjaminfair@google.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	David Airlie <airlied@gmail.com>,
 	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: Ben Collins <bcollins@watter.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Drew Fustini <fustini@kernel.org>,
+	dri-devel@lists.freedesktop.org,
+	Fabio Estevam <festevam@gmail.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Fu Wei <wefu@redhat.com>,
+	Guo Ren <guoren@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
+	imx@lists.linux.dev,
+	Iwona Winiarska <iwona.winiarska@intel.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Lee Jones <lee@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-actions@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
 	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] iio: mcp9600: Add support for IIR filter
-Date: Wed, 13 Aug 2025 15:15:55 +0000
-Message-ID: <20250813151614.12098-6-bcollins@watter.com>
-In-Reply-To: <20250813151614.12098-1-bcollins@watter.com>
-References: <20250813151614.12098-1-bcollins@watter.com>
+	linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-pm@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-pwm@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-rtc@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
+	Liu Ying <victor.liu@nxp.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Nancy Yuen <yuenn@google.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	openbmc@lists.ozlabs.org,
+	Patrick Venture <venture@google.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Sandy Huang <hjc@rock-chips.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Takashi Iwai <tiwai@suse.com>,
+	Tali Perry <tali.perry1@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomer Maimon <tmaimon77@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Yangtao Li <tiny.windzz@gmail.com>,
+	Zhang Rui <rui.zhang@intel.com>
+Subject: [PATCH 00/21] treewide: remove unneeded 'fast_io' parameter in regmap_config
+Date: Wed, 13 Aug 2025 18:14:46 +0200
+Message-ID: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,120 +163,134 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-MCP9600 supports an IIR filter with 7 levels. Add IIR attribute
-to allow get/set of this value.
+While working on a driver using regmap with MMIO, I wondered if I need
+to set 'fast_io' in the config. Turned out I don't need to, so I added
+documentation for it with commit ffc72771ff6e ("regmap: Annotate that
+MMIO implies fast IO").
 
-Signed-off-by: Ben Collins <bcollins@watter.com>
----
- drivers/iio/temperature/mcp9600.c | 43 +++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+This series fixes the existing users in the tree which needlessly set
+the flag. They have been found using this coccinelle script:
 
-diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
-index 5ead565f1bd8c..5bed3a35ae65e 100644
---- a/drivers/iio/temperature/mcp9600.c
-+++ b/drivers/iio/temperature/mcp9600.c
-@@ -31,6 +31,7 @@
- #define MCP9600_STATUS_ALERT(x)		BIT(x)
- #define MCP9600_SENSOR_CFG		0x5
- #define MCP9600_SENSOR_TYPE_MASK	GENMASK(6, 4)
-+#define MCP9600_FILTER_MASK		GENMASK(2, 0)
- #define MCP9600_ALERT_CFG1		0x8
- #define MCP9600_ALERT_CFG(x)		(MCP9600_ALERT_CFG1 + (x - 1))
- #define MCP9600_ALERT_CFG_ENABLE	BIT(0)
-@@ -111,6 +112,7 @@ static const struct iio_event_spec mcp9600_events[] = {
- 			.address = MCP9600_HOT_JUNCTION,		       \
- 			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	       \
- 					      BIT(IIO_CHAN_INFO_SCALE) |       \
-+					      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) |  \
- 					      BIT(IIO_CHAN_INFO_THERMOCOUPLE_TYPE), \
- 			.event_spec = &mcp9600_events[hj_ev_spec_off],	       \
- 			.num_event_specs = hj_num_ev,			       \
-@@ -149,6 +151,7 @@ static const struct iio_chan_spec mcp9600_channels[][2] = {
- struct mcp9600_data {
- 	struct i2c_client *client;
- 	u32 thermocouple_type;
-+	u32 filter_level;
- };
- 
- static int mcp9600_read(struct mcp9600_data *data,
-@@ -186,6 +189,9 @@ static int mcp9600_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
- 		*val = mcp9600_tc_types[data->thermocouple_type];
- 		return IIO_VAL_CHAR;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		*val = data->filter_level;
-+		return IIO_VAL_INT;
- 
- 	default:
- 		return -EINVAL;
-@@ -199,6 +205,7 @@ static int mcp9600_config(struct mcp9600_data *data)
- 
- 	cfg  = FIELD_PREP(MCP9600_SENSOR_TYPE_MASK,
- 			  mcp9600_type_map[data->thermocouple_type]);
-+	cfg |= FIELD_PREP(MCP9600_FILTER_MASK, data->filter_level);
- 
- 	ret = i2c_smbus_write_byte_data(client, MCP9600_SENSOR_CFG, cfg);
- 	if (ret < 0) {
-@@ -209,6 +216,37 @@ static int mcp9600_config(struct mcp9600_data *data)
- 	return 0;
- }
- 
-+static int mcp9600_write_raw_get_fmt(struct iio_dev *indio_dev,
-+				     struct iio_chan_spec const *chan,
-+				     long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int mcp9600_write_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int val, int val2, long mask)
-+{
-+	struct mcp9600_data *data = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		if (val < 0 || val > 7)
-+			return -EINVAL;
-+
-+		data->filter_level = val;
-+		return mcp9600_config(data);
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int mcp9600_get_alert_index(int channel2, enum iio_event_direction dir)
- {
- 	if (channel2 == IIO_MOD_TEMP_AMBIENT) {
-@@ -346,6 +384,8 @@ static int mcp9600_write_thresh(struct iio_dev *indio_dev,
- 
- static const struct iio_info mcp9600_info = {
- 	.read_raw = mcp9600_read_raw,
-+	.write_raw = mcp9600_write_raw,
-+	.write_raw_get_fmt = mcp9600_write_raw_get_fmt,
- 	.read_event_config = mcp9600_read_event_config,
- 	.write_event_config = mcp9600_write_event_config,
- 	.read_event_value = mcp9600_read_thresh,
-@@ -501,6 +541,9 @@ static int mcp9600_probe(struct i2c_client *client)
- 				     "Invalid thermocouple-type property %d.\n",
- 				     data->thermocouple_type);
- 
-+	/* Default filter level of the chip is 0 (off) */
-+	data->filter_level = 0;
-+
- 	/* Set initial config. */
- 	ret = mcp9600_config(data);
- 	if (ret < 0)
+===
+
+@ match @
+expression dev, clk, regs;
+identifier config;
+@@
+
+(
+	regmap_init_mmio(dev, regs, &config)
+|
+	devm_regmap_init_mmio(dev, regs, &config)
+|
+	regmap_init_mmio_clk(dev, clk, regs, &config)
+|
+	devm_regmap_init_mmio_clk(dev, clk, regs, &config)
+)
+
+@ fix depends on match @
+identifier match.config;
+@@
+
+	struct regmap_config config = {
+-	.fast_io = true,
+	};
+
+===
+
+It misses occasions where 'config' is an expression and not an
+identifier. These are rare, though, I can fix them manually later. The
+advantage of this approach is that it produces no false positives to the
+best of my knowledge.
+
+Please apply individually per subsystem. There are no dependencies and
+buildbot is happy. Patches are based on 6.17-rc1
+
+Happy hacking,
+
+   Wolfram
+
+
+Wolfram Sang (21):
+  bus: remove unneeded 'fast_io' parameter in regmap_config
+  clk: remove unneeded 'fast_io' parameter in regmap_config
+  gpio: remove unneeded 'fast_io' parameter in regmap_config
+  drm: remove unneeded 'fast_io' parameter in regmap_config
+  iio: remove unneeded 'fast_io' parameter in regmap_config
+  Input: remove unneeded 'fast_io' parameter in regmap_config
+  mailbox: remove unneeded 'fast_io' parameter in regmap_config
+  media: remove unneeded 'fast_io' parameter in regmap_config
+  mfd: remove unneeded 'fast_io' parameter in regmap_config
+  mmc: remove unneeded 'fast_io' parameter in regmap_config
+  peci: remove unneeded 'fast_io' parameter in regmap_config
+  phy: remove unneeded 'fast_io' parameter in regmap_config
+  pinctrl: remove unneeded 'fast_io' parameter in regmap_config
+  pmdomain: remove unneeded 'fast_io' parameter in regmap_config
+  regulator: remove unneeded 'fast_io' parameter in regmap_config
+  reset: remove unneeded 'fast_io' parameter in regmap_config
+  rtc: remove unneeded 'fast_io' parameter in regmap_config
+  soc: remove unneeded 'fast_io' parameter in regmap_config
+  spi: remove unneeded 'fast_io' parameter in regmap_config
+  thermal: remove unneeded 'fast_io' parameter in regmap_config
+  ASoC: remove unneeded 'fast_io' parameter in regmap_config
+
+ drivers/bus/bt1-apb.c                             | 1 -
+ drivers/clk/actions/owl-common.c                  | 1 -
+ drivers/clk/clk-axm5516.c                         | 1 -
+ drivers/clk/nxp/clk-lpc32xx.c                     | 1 -
+ drivers/clk/qcom/a53-pll.c                        | 1 -
+ drivers/clk/qcom/a7-pll.c                         | 1 -
+ drivers/clk/qcom/apss-ipq-pll.c                   | 1 -
+ drivers/clk/qcom/clk-cbf-8996.c                   | 1 -
+ drivers/clk/qcom/clk-cpu-8996.c                   | 1 -
+ drivers/clk/qcom/hfpll.c                          | 1 -
+ drivers/clk/qcom/ipq-cmn-pll.c                    | 1 -
+ drivers/clk/thead/clk-th1520-ap.c                 | 1 -
+ drivers/gpio/gpio-mvebu.c                         | 1 -
+ drivers/gpio/gpio-sifive.c                        | 1 -
+ drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c    | 1 -
+ drivers/gpu/drm/imx/dc/dc-cf.c                    | 1 -
+ drivers/gpu/drm/imx/dc/dc-de.c                    | 1 -
+ drivers/gpu/drm/imx/dc/dc-ed.c                    | 2 --
+ drivers/gpu/drm/imx/dc/dc-fg.c                    | 1 -
+ drivers/gpu/drm/imx/dc/dc-fl.c                    | 1 -
+ drivers/gpu/drm/imx/dc/dc-fw.c                    | 2 --
+ drivers/gpu/drm/imx/dc/dc-ic.c                    | 1 -
+ drivers/gpu/drm/imx/dc/dc-lb.c                    | 2 --
+ drivers/gpu/drm/imx/dc/dc-tc.c                    | 1 -
+ drivers/gpu/drm/imx/ipuv3/imx-tve.c               | 2 --
+ drivers/gpu/drm/rockchip/dw-mipi-dsi2-rockchip.c  | 1 -
+ drivers/iio/adc/sun4i-gpadc-iio.c                 | 1 -
+ drivers/input/touchscreen/fsl-imx25-tcq.c         | 1 -
+ drivers/mailbox/qcom-apcs-ipc-mailbox.c           | 1 -
+ drivers/media/cec/platform/stm32/stm32-cec.c      | 1 -
+ drivers/mfd/exynos-lpass.c                        | 1 -
+ drivers/mfd/fsl-imx25-tsadc.c                     | 1 -
+ drivers/mfd/stm32-lptimer.c                       | 1 -
+ drivers/mfd/sun4i-gpadc.c                         | 1 -
+ drivers/mmc/host/sdhci_am654.c                    | 1 -
+ drivers/peci/controller/peci-npcm.c               | 1 -
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 1 -
+ drivers/phy/rockchip/phy-rockchip-usbdp.c         | 1 -
+ drivers/phy/ti/phy-am654-serdes.c                 | 1 -
+ drivers/phy/ti/phy-j721e-wiz.c                    | 1 -
+ drivers/pinctrl/pinctrl-rp1.c                     | 1 -
+ drivers/pmdomain/imx/gpc.c                        | 1 -
+ drivers/regulator/qcom-refgen-regulator.c         | 1 -
+ drivers/reset/reset-intel-gw.c                    | 1 -
+ drivers/reset/reset-qcom-pdc.c                    | 1 -
+ drivers/reset/reset-th1520.c                      | 1 -
+ drivers/rtc/rtc-meson.c                           | 1 -
+ drivers/soc/qcom/llcc-qcom.c                      | 1 -
+ drivers/soc/qcom/ramp_controller.c                | 1 -
+ drivers/spi/spi-altera-platform.c                 | 1 -
+ drivers/thermal/armada_thermal.c                  | 1 -
+ drivers/thermal/sun8i_thermal.c                   | 1 -
+ sound/soc/fsl/fsl_sai.c                           | 1 -
+ 53 files changed, 57 deletions(-)
+
 -- 
-2.50.1
+2.47.2
 
 

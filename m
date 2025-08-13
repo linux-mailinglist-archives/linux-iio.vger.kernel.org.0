@@ -1,81 +1,79 @@
-Return-Path: <linux-iio+bounces-22690-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22691-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4BDB25500
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 23:12:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F32E7B25518
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 23:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42D417B8EB5
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 21:10:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 948437242E6
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 21:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950722DE216;
-	Wed, 13 Aug 2025 21:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C992C21D4;
+	Wed, 13 Aug 2025 21:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="d6OTku5E"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dlEyGOU6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065492BE05E
-	for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 21:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F09722F389
+	for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 21:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755119524; cv=none; b=ZWlOSTJKXZc/rg8YNLAvB7GZh8zHbj12DKWtnktdKiH5MnrYTyZfcTZwt93bNME/qYVd5LFhWvm4Ubol9VALBTh227H9LEMKMMIVGOCC3uA8QK3WKo0pwbB+PxsATTWDPfb8MCNueY6ARmblRzYH7xl9bcFboF+DEp0WTXaOiUM=
+	t=1755119955; cv=none; b=XPtI4fdsM5oHp6jwA0bepRGifXDS7U1ScsXCuR3TiwrCVVM0ad3KboTmlRrtol7di2vI5FkzRjmrQwpFnizQKLGbcdEOEXPMfdkeJCbaUPz3rb9alukFNHUoFMj3lvaK2uSL1An8FKtVA/Wu2ixmVaefAxc603Zrexa6ds9y0HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755119524; c=relaxed/simple;
-	bh=27dZsSSc1FtLXlHOWPlo1du2AL2+YgSkzTVnQqxIWgI=;
+	s=arc-20240116; t=1755119955; c=relaxed/simple;
+	bh=5Dtc8i2j9SZ7V4cNxuQ2cMweRkAia6s3wQYOCEF0+k8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FNn1hYCAFQoycSQepuc+hp1dinpslZJ9Bb92fGD8IWy47AzfgnHFwjRVt04bdrmbsvfWAb33cdzM+WJz6qP5EICzmeBhHcI2GUFA/xVrCBX3wsy55yxJck6EAMmAaGzv4gKAAEZasQVqiJg2e/NVmzd0cb1uT3RUMgOnNWhjG+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=d6OTku5E; arc=none smtp.client-ip=209.85.210.43
+	 In-Reply-To:Content-Type; b=FzJHE05xPe2cXYEaDQ8lkDaxLJOmdlq8SMQD3dhtrZPmZAk6z71eB84LT30Pvd2qoS16GTFl3II0ZKrU588hmmESNB1koi4GSlP4Yb6ZFREkbdtISbwQD9TTQfCz3CWG+P/P4USjInXbODdk1+MWyrqPZuYmB3O+xPKuTavTutI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dlEyGOU6; arc=none smtp.client-ip=209.85.167.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-74381fdb5faso148181a34.2
-        for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 14:12:01 -0700 (PDT)
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-435de86378eso230678b6e.3
+        for <linux-iio@vger.kernel.org>; Wed, 13 Aug 2025 14:19:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755119521; x=1755724321; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755119952; x=1755724752; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Xf3//GLvnzT9i6WfKITOLt4ui/tLiyvxxLpHItWn5zc=;
-        b=d6OTku5EfpvZOZvCDJTaH0fK6IFEjDOXJfxOdWGVJ1S6f5B1yAFp53KrV1d4WxIQqD
-         D9aR4j5PZgeMZyI1MMryu+iHlZZAv0UZSMbSse32lRDZpfo3tXc232UbuMpjy+5Mio5B
-         DxjVPlsjnOzdRjtYt9K0TQ0WfmNmWNqiROFpS3eKLTncTgB4Owg45lXVNgZFlJoPIexu
-         DfiOiaRy9qG+7OfPkDpE6RlMcmrAFWIDDJQPI22qmiRdz44aTSpOsgeTfp40bNhK0Jtk
-         1BHoIYQQzTCF4q2yWc15p31RDZlu/WrkdR8ij4dhzSmSostqMQXtDFbvNhO+rrRJbj17
-         tOSg==
+        bh=RAZbSGzMF2aCOavRS9phDDmLw+wZHgg5nRlBuGSNPYY=;
+        b=dlEyGOU67qauKmm0S91jJ3I/RELB+Sl7XLjlf6FWkpZciybF3rko5cU1YIFkApFSvu
+         HxuWRBZhDDBdOPJPy6qiEkF3hODoeL4xUer+5AL/Sdg8j4xiDs1JFqEc6S8fY/n7adbo
+         vwbL+6yR9csELGEVJoKiS9CYu7Btz2GeaNwUylqoQOhT73WbTD0mEb57ZxpczkUu2ww7
+         GE9F2axaXlIWpTTY28czSWeUWI8gBWPmQnygRKHylf46wzr6tUyMuG/6cC+nEDCUBQuA
+         Yp5d07RJYqv49JEcZtL0OP0ub+vMh0MmEXf0J8Cre9TaNCghGqFVSvgQ40Jx6tZksfWN
+         jotw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755119521; x=1755724321;
+        d=1e100.net; s=20230601; t=1755119952; x=1755724752;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xf3//GLvnzT9i6WfKITOLt4ui/tLiyvxxLpHItWn5zc=;
-        b=lfQud0IxgvgihTJHgrXtwb70/KzVPjtA/lI8dT6AhaKbHsYh+zRB7HlCOuwO5FINOB
-         HP3a7KYn6EbSZeuG2WBbtxR00l6B8FHSws8e1k3Jn30HvJEATjiVPmB9wkd7STMvoeN0
-         2ohu/gprgR34meXVazPtn4ZT2j0JpjlkrPYkWpG62dyLs4/Xp1yjf+0SKAXpx+Xj87z4
-         gBgj5sfd6k9DjXtDIAd5+JTCr5OSoa2EnICoDO53LzJ7IqeM31HG6eVM9ocAVo+T224v
-         ULRp+LmwGPYlDaBVOgi0AS0FpgkQ3AWJCI5KABL40JcNSTNvIp+OVJMi9y74mVo8blMN
-         mcHA==
-X-Gm-Message-State: AOJu0YyLWUSkXw5LGzTeh//jeWaJfAKGI7h0U+ve2Pbz2JPTPmpFph7E
-	1aTL2HTyLSnFRFMsfbQp9z8nlu/yq68oIMOXmsmyO/4lyIK2Wm98nmtV5rk5DGGXvRg1TTUh2qF
-	+jtVZ
-X-Gm-Gg: ASbGncvQNJuqP8Xv2YJ6r53hQHvhivNTXo6U4XRuCMk2x/83YjLHgP6M9ny2wRJYykW
-	3sL4IewLOaCWdZspQ2kdtY2QCdqN0G+3xulRza2/gKNeZvD3VbZdubuVd6fP0+EAO/Cb5iUg/Gn
-	JJExwVPm8XtEXX0MZfnNY7c4mXmwWyUzqi4IAVEbAjaen+7zLAZ3kzqh1mWPLJeyUiJTgrRHXqP
-	2TEFQgqb6eTqj8kjrgdEuzyhqFSfxoqMIJVuJ/aehErpLB2z7V7Dna2b0ol40SsP3hz2EEAso+I
-	5BpnMQS/V6HKRUs2b3tp2kx7owkw96E0pCYUd5whplTH04B7m7pSQikf1bMLsEs2w4xkVydRB/M
-	e6KCi+CM73nFBs5CKlnBwNgKBgimyNsyCWEs+UKxxu+3hw5bUplcSt8y59XS2DL6ceCMAv+ssoX
-	NVQNhODCo=
-X-Google-Smtp-Source: AGHT+IF9n+F8e1mm/IyBfw7ePpfBTnEUME8yX6HA27qwsIWM/khGHlIzwyYXURZx3W+3vhm1Xj1CzQ==
-X-Received: by 2002:a05:6830:60db:20b0:742:f93c:194c with SMTP id 46e09a7af769-74382c06774mr157158a34.27.1755119520991;
-        Wed, 13 Aug 2025 14:12:00 -0700 (PDT)
+        bh=RAZbSGzMF2aCOavRS9phDDmLw+wZHgg5nRlBuGSNPYY=;
+        b=fzaxNUeQ2Xe9b5HqaPCROJc+2RaRKgzE65exTSe6aHstzCm4ojY9mtoAAdd4Y5kxVx
+         mfA21BaoqcfVLIthr1gWpGGU+eBjxQIy/pKsupaWu3Qu8cadfbFnHDC/l/kY5sKtUfxl
+         dTgEfjmDxvZnM61017nKkqKGty0DbLvHW4nVVL4qGhq+tbwZdsTzkiks+JahbAqeQ9vb
+         g6WWbXvo2YnzpSFYQANw6/TCzN/pkgtuIxMMPmXIU7lnqMshvmHwu3EaWzSPo61KBauA
+         IHBa937V7yW1WEAh7UadlU/JR8rx5f+/hDdFSlrObQYo2ytjIyg8pqDI2e8Xn2yPEOZI
+         Gt2Q==
+X-Gm-Message-State: AOJu0Yy83KRC9vXZ9P/zmHvZ44GoHBR6/rfkoA/8ZqGeRIYiGqCstdFx
+	G0KX39kchR8TB9LdKfMzYJM+yuF5Kkl1Q/SRWeMu/P6pDs1bKNbw1i4E8txGC2sAf5s=
+X-Gm-Gg: ASbGnctQLLoJZt20odve/ACDpA7JJa3GqXpntegNam811NcfTm5p0LJMif4dh2z9HXL
+	MIlqX7MSvZ4eJKHUpy3yi+zhzYu1QRytZHvjC6vu7SIIvgjcifhsaXCB46iL38yd1nfE2nRhNux
+	Em3ghLLY5C9U4OaDMNHmxdlc32u/zRprPoMDpWH+ZH2JewNqs69IO/84zO0lQxBdZpq1VAeXukS
+	Vmj0sKsVaV4jHsON6UzB5wqTFaFObmy+1/MsKLajYgiPMXuQ+D31psdbS8M7ieOJp0CwQUuX4Dp
+	T1K2FaOoniWM8cTbte7rnXKA6UcI9YuVqTigj6hxI11UzgYyYy2zIZogqJClXWiCBhpxZ8U8bpt
+	kk0fPgTsAyGA6nwSI+awWfMDFSadMfIx8ULaUimATMarkXry39AGPNWRDeXlPT4J5fCqg7YYD
+X-Google-Smtp-Source: AGHT+IGHPcA55SVa24yWW3URShXaLfqVASGeLPjXlijGLEddyw8GnVhiSSMBPgkVFwlHujOhRbTPHQ==
+X-Received: by 2002:a05:6808:4a41:10b0:435:8506:2263 with SMTP id 5614622812f47-435df7a7f40mr289564b6e.24.1755119952173;
+        Wed, 13 Aug 2025 14:19:12 -0700 (PDT)
 Received: from ?IPV6:2600:8803:e7e4:1d00:ae46:dfe2:81c8:dde? ([2600:8803:e7e4:1d00:ae46:dfe2:81c8:dde])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-30ccfdf5075sm180592fac.1.2025.08.13.14.11.59
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-435ce856832sm844327b6e.23.2025.08.13.14.19.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Aug 2025 14:12:00 -0700 (PDT)
-Message-ID: <623c0ef4-98c0-410c-abf3-fa9563f52688@baylibre.com>
-Date: Wed, 13 Aug 2025 16:11:59 -0500
+        Wed, 13 Aug 2025 14:19:11 -0700 (PDT)
+Message-ID: <00a3c27f-34a4-4e56-8f7d-4eeaa3c19556@baylibre.com>
+Date: Wed, 13 Aug 2025 16:19:10 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,74 +81,59 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] dt-bindings: iio: mcp9600: Add compatible for
- microchip,mcp9601
+Subject: Re: [PATCH v2 4/5] iio: mcp9600: Add support for dtbinding of
+ thermocouple-type
 To: Ben Collins <bcollins@watter.com>, Jonathan Cameron <jic23@kernel.org>,
  =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250813151614.12098-1-bcollins@watter.com>
- <20250813151614.12098-2-bcollins@watter.com>
+ <20250813151614.12098-5-bcollins@watter.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250813151614.12098-2-bcollins@watter.com>
+In-Reply-To: <20250813151614.12098-5-bcollins@watter.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 8/13/25 10:15 AM, Ben Collins wrote:
-> MCP9601 is a superset of MCP9600 and is supported by the driver.
+> Adds dtbinding check for thermocouple-type and sets sensor config
+> to match. Add iio info attribute to show state as well.
 > 
 > Signed-off-by: Ben Collins <bcollins@watter.com>
 > ---
 
+...
 
-Please include a cover letter with a changelog in v3.
-
-
->  .../bindings/iio/temperature/microchip,mcp9600.yaml         | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
-> index d2cafa38a5442..d8af0912ce886 100644
-> --- a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
-> +++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
-> @@ -4,7 +4,7 @@
->  $id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9600.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> @@ -447,6 +492,20 @@ static int mcp9600_probe(struct i2c_client *client)
+>  	data = iio_priv(indio_dev);
+>  	data->client = client;
 >  
-> -title: Microchip MCP9600 thermocouple EMF converter
-> +title: Microchip MCP9600 and similar thermocouple EMF converters
->  
->  maintainers:
->    - Andrew Hepp <andrew.hepp@ahepp.dev>
-> @@ -14,7 +14,9 @@ description:
->  
->  properties:
->    compatible:
-> -    const: microchip,mcp9600
-> +    enum:
-> +      - microchip,mcp9600
-> +      - microchip,mcp9601
->  
+> +	/* Accept type from dt with default of Type-K. */
+> +	data->thermocouple_type = THERMOCOUPLE_TYPE_K;
+> +	ret = device_property_read_u32(&client->dev, "thermocouple-type",
+> +				       &data->thermocouple_type);
 
-It sounds like it would be useful to have a fallback in this case:
+ret is not checked. We should either check it or drop it and add
+a comment explaining why it is OK to ignore the return value.
 
-properties:
-  compatible:
-    oneOf:
-      - const: microchip,mcp9600
-      - items:
-          - - microchip,mcp9600
-          - microchip,mcp9600
+Typically, for optional properties, we would ignore only -EINVAL
+meaning the property is not present and fail on other errors.
 
->    reg:
->      maxItems: 1
+We also need another dt-bindings patch to add the default in the
+bindings.
 
-Usage would then be:
-
-	compatible = "microchip,mcp9601", "microchip,mcp9600";
+> +	if (data->thermocouple_type >= ARRAY_SIZE(mcp9600_type_map))
+> +		return dev_err_probe(&client->dev, -EINVAL,
+> +				     "Invalid thermocouple-type property %d.\n",
+> +				     data->thermocouple_type);
+> +
+> +	/* Set initial config. */
+> +	ret = mcp9600_config(data);
+> +	if (ret < 0)
+> +		return ret;
+> +
+>  	ch_sel = mcp9600_probe_alerts(indio_dev);
+>  	if (ch_sel < 0)
+>  		return ch_sel;
 
 

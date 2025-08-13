@@ -1,181 +1,141 @@
-Return-Path: <linux-iio+bounces-22646-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22647-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3550DB24456
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 10:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21866B2449D
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 10:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 562975A335D
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 08:29:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBC835813E3
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 08:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4682EFD98;
-	Wed, 13 Aug 2025 08:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763632EFD99;
+	Wed, 13 Aug 2025 08:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pRk/y4Uz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dsYBIe7x"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52DA2ED85F;
-	Wed, 13 Aug 2025 08:27:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FAA2BE039;
+	Wed, 13 Aug 2025 08:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755073667; cv=none; b=ZECYSg0QkxdIOQGgU0sqZFY+E7EtjoAXyBz9QnB3BdLWuiZ0vdsbLazw2yo6vFNQ1+Z0LBTM7Rzq/6jkkeSxm6CEeVvVYuX1v/ZlD9WB0dG96aBYeqpgj0p7mZTV27TAnXPZyzo9LEtdDTm3yrSqQT811SPVyP9qbh2vM1JsOnE=
+	t=1755074690; cv=none; b=FNOukhCvrOqEOj3ngb8/TXYIQO0jD+sJQzvb1eyoArliBzTM+8SCaGYvS6Kdh3LTBo/xb6L5uLF4cqBdssgStKBraYXKI5r33sAvhL9kH22ZAMHzh6qKopulSlqTVDWI4Hsc9EJeQLPjqnzl539D1yV69rrWDSfjgsdQLYbTS8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755073667; c=relaxed/simple;
-	bh=oEWD46vDy9z48drINkgK+NrICiqVXzJRKRKE95sUsUs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DAK/TtwkOUny3nEFaPdSLJSi0GwRO71Wi8qvm2dRj+C+4bCG6krsoEb7ZCDcIf6+zI5eIs84RNR1pFTZZMszIh2pCg+lflQXNdTN2OeQQXYoZ0wbZ5AFOhgm1BB2saBh5/rvtOFzmKXNPc4kawmrA5bsoqU3jrqPNGfpTk8Pkrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pRk/y4Uz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B037C4CEEB;
-	Wed, 13 Aug 2025 08:27:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755073667;
-	bh=oEWD46vDy9z48drINkgK+NrICiqVXzJRKRKE95sUsUs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pRk/y4UzDZ+EtlkFst7bXN5++uMaluUTW59uizh4+TKxO49bW5PxisxOs8UAUkGfm
-	 HNyO/HZIzliD/3pnmZJToE+0WnzA4vgqgajdXgSufqONXFd45i2CHR/BNTz/q2BTfI
-	 AblwcTwi0TxsvG71Zgqg/JQHIx3ErIG41+nNz2x1k5R7VKUK/P+3GWLiU+IS6pRwn5
-	 icOOHQiaIM+wdWo3eKApc154+xJAsTw1LEx3dGlH9GQJIcrZwDlotgiaXPPSpFLC+U
-	 GXrcYpkLwWSuThw2F3QgnICE6dVU6eVHjTfdmcsRLBZl0bi66P3xWMjwYzrLW9Somd
-	 H8AxBv7UTGzuw==
-Message-ID: <c3cf9b97-3883-4ebb-a2ed-0033adebda87@kernel.org>
-Date: Wed, 13 Aug 2025 10:27:42 +0200
+	s=arc-20240116; t=1755074690; c=relaxed/simple;
+	bh=8/EBl2j/gQtNgFz/HCLpcSGDp4zxZoA4vaoh6GEUCRc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tSFFEvOgedCf0vPe9bpWh8pimc5RKuBKZKE57JlRNeJNeYXoYtdoLcUkiJa2saAtgYyaZaF2m9SyeuZWWcZe9ztebuZqU2BgV/QLoPYSRiY271iAX7bl+chau65HHhuItM2nbFJY/GtVGWMxl7+zXvx/Y5eBhw/WGOFpf0TCI4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dsYBIe7x; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-61592ff5ebbso10008025a12.3;
+        Wed, 13 Aug 2025 01:44:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755074687; x=1755679487; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8/EBl2j/gQtNgFz/HCLpcSGDp4zxZoA4vaoh6GEUCRc=;
+        b=dsYBIe7xwdO4CjImi54hU5Kcoh92Uhx/OiJBh9+UxlsR9PDiAgzCmpORN0JAhjZOsc
+         i7aaRuEtoglrbWyLt5kexrCjaGdrb36tY9HR0pm4GqukCye0HLbuq1s0PA4dsu/7OEm6
+         +YEIPjfHKPFB454pV1nuEmLkwOCRqC1v8WgXaNqCJeHoXWc6QZCH/75tYID+eSA7ZHnY
+         YmIVJS46PDZF+vtidMZo8yU1YOktew9n36LsRL7i73h+yi8bFsv9UuS++DEPMdV3ph1o
+         andcoxR/lc9eXP74tKyA4gbjswh3llI2Sq+lt98AX/hNX3Zo6gBF5WR6nnYLdjOTNAMl
+         Y7kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755074687; x=1755679487;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8/EBl2j/gQtNgFz/HCLpcSGDp4zxZoA4vaoh6GEUCRc=;
+        b=j4WjAFsIJzQaot7t6f0qaC3fKN/CcEZRN9dXwJS0qNOwQ2WOmM8NRqenu4mYUj9Qy/
+         UtAOoFdqKCe6FvJEz4p4YS6tP9kscbSuFUW/WmhvrEUAaJeHXPmN2QHzdpQxSd3WJyjy
+         RWPp4k2yU1ky+og+GuGO3m2xlR48ORhqOWFtYpf3nh0Tx9b7OWlDmC/GZ6R5lODtAcOr
+         eXcR+mq+Fk1ETN5tceAb+V5THFdhwa1KrlFu/+cil3hXC30FnxBNFTtAo5LIt4UdzO1z
+         y2nduSE1M+sqcmygQ5fJ/gd8Uc55UGB9xpNWqiXjWd2D4K79Ja3jT+ralPXP4SX49JCP
+         1X0A==
+X-Forwarded-Encrypted: i=1; AJvYcCUXNwMCG9rgGOrVQRuMGpAL4lKIp91jgdIrVRKG/lKLqxTYIffWX7g2CzfY1x1a6H8aEBkUiW3yEznM@vger.kernel.org, AJvYcCWD8cLAtfy/Rbat65zfshsyekHZnIHVEQe9P6sOSXd0/VHD/pm6iL3P9JOHKQBRcb4b4iAQZKQ+uR9m@vger.kernel.org, AJvYcCX6LJmNXTx2oujvcszLoIrJTASnUXki+biJ33RC+q7XlBL1mM6wSB/D4nUz9a68jX3cqXP1rLw+KgpYeRW8@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPyWLOATTTaCrMDkEleD5MauoE9OnF/JuWs90+LFCFHBQwMn6K
+	b8xZf9fYM4htGPc+X+1Bk8991FVh1LDQ3xriLPUF6ZyoKCldfP1Msq/M
+X-Gm-Gg: ASbGnctkSFIE0YMyHPWutW+R9uBAgv/qIsPlw4PPpIs+H5NFAX0iPimbsOWL6TidRVn
+	EId08U5OzkCMHvSPR2b6pd/eM+zPWTCpU9xNPQ/x3heJuTKTAAQnQc5fCKGJJZCAfhgceabiWWL
+	QtGdM9Wn8xCyB6PSPRdOXR1yt5DmMtvSFB7CTssb9CnVtFjGMzImzkvLPL6y3c1pFk/jsCcdD/r
+	QOmjEVaeU/CgqSKm9hd2cMSzD2jTa1e+xsGOsh1ZRiJ/wJCOFm2W91JQRI8mj3s5myF4MrTKuw8
+	rHJr9uCHPc6qCNqgSUVM+i18M1ZvnzgSGctGkiR6iLngbvLW6pSfbtLY8GgIRi0ooYEqGhRV8eJ
+	Fbqtk7BiQPaqGrh/VVA8kiPyryQ==
+X-Google-Smtp-Source: AGHT+IF7uMnc5o/irDCqk0i1Wmgov16LZRE6rSY5uPo9FezlPkT0mz0qwPic/4Lxr9OIbiek/KnV4w==
+X-Received: by 2002:a05:6402:2546:b0:618:4ab5:e85c with SMTP id 4fb4d7f45d1cf-6186bfed0f0mr1756973a12.34.1755074686568;
+        Wed, 13 Aug 2025 01:44:46 -0700 (PDT)
+Received: from alper.lan ([185.177.137.147])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6184b807728sm2945572a12.12.2025.08.13.01.44.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 01:44:45 -0700 (PDT)
+From: Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
+To: krzk@kernel.org
+Cc: Michael.Hennerich@analog.com,
+	andy@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	dlechner@baylibre.com,
+	jic23@kernel.org,
+	krzk+dt@kernel.org,
+	lars@metafoo.de,
+	liambeguin@gmail.com,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nuno.sa@analog.com,
+	robh@kernel.org,
+	y.alperbilgin@gmail.com
+Subject: Re: [PATCH 1/3] dt-bindings: iio: adc: ltc2497: add docs for LTC2495
+Date: Wed, 13 Aug 2025 10:44:44 +0200
+Message-ID: <20250813084444.1842413-1-y.alperbilgin@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <0ece8b0e-6c20-42ca-a3a6-4c35ee2be07b@kernel.org>
+References: <0ece8b0e-6c20-42ca-a3a6-4c35ee2be07b@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: iio: adc: ad7768-1: add new supported
- parts
-To: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Michael.Hennerich@analog.com, jic23@kernel.org, dlechner@baylibre.com,
- nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, jonath4nns@gmail.com
-References: <cover.1754617360.git.Jonathan.Santos@analog.com>
- <ecb7406f54938658b51b4469034d87a57086bd1e.1754617360.git.Jonathan.Santos@analog.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <ecb7406f54938658b51b4469034d87a57086bd1e.1754617360.git.Jonathan.Santos@analog.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 13/08/2025 04:48, Jonathan Santos wrote:
-> Add compatibles for supported parts in the ad7768-1 family:
-> 	ADAQ7767-1, ADAQ7768-1 and ADAQ7769-1
-> 
-> Add property and checks for AFF gain, supported by ADAQ7767-1
-> and ADAQ7769-1 parts:
-> 	adi,aaf-gain
-> 
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> ---
->  .../bindings/iio/adc/adi,ad7768-1.yaml        | 48 +++++++++++++++++--
->  1 file changed, 44 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-> index c06d0fc791d3..568a85e0d052 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-> @@ -4,18 +4,26 @@
->  $id: http://devicetree.org/schemas/iio/adc/adi,ad7768-1.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
->  
-> -title: Analog Devices AD7768-1 ADC device driver
-> +title: Analog Devices AD7768-1 ADC family device driver
+Hi Krzysztof,
 
-If doing this, drop device driver. It should not be here in the first place.
+Thank you for the review and guidance.
 
->  
->  maintainers:
->    - Michael Hennerich <michael.hennerich@analog.com>
->  
->  description: |
-> -  Datasheet at:
-> -    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7768-1.pdf
-> +  Analog Devices AD7768-1 24-Bit Single Channel Low Power sigma-delta ADC family
-> +
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7768-1.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7767-1.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7768-1.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7769-1.pdf
->  
->  properties:
->    compatible:
-> -    const: adi,ad7768-1
-> +    enum:
-> +      - adi,ad7768-1
-> +      - adi,adaq7767-1
-> +      - adi,adaq7768-1
-> +      - adi,adaq7769-1
->  
->    reg:
->      maxItems: 1
-> @@ -58,6 +66,23 @@ properties:
->      description:
->        ADC reference voltage supply
->  
-> +  adi,aaf-gain:
-> +    description: |
-> +      Specifies the gain of the Analog Anti-Aliasing Filter (AAF) applied to the
-> +      ADC input, measured in milli-units. The AAF provides additional signal
+On Tue, Aug 12, 2025 at 07:04:00PM +0200, Krzysztof Kozlowski wrote:
+> What are the differences, why it cannot be made compatible with 2497
+> (fallback)?
 
-What is milli unit? Isn't gain in dB, so maybe you want mB? Quite
-unpopular to see mB, but we cannot use 1/100 of dB, so I could
-understand it.
+The LTC2495 offers a more advanced feature set compared to the LTC2497,
+including:
 
-> +      rejection within the frequency range of fs ± f3dB, where fs is the sampling
-> +      frequency, and f3dB is the -3dB cutoff frequency. The specific values of
-> +      fs and f3dB, as well as the rejection intensity, depend on the digital
-> +      filter configuration.
+- Adjustable input gain
+- A selectable 50Hz/60Hz lowpass filter to reject line frequency noise
+- Selectable speed modes
+- An internal temperature sensor
+
+All of these features are configured via a second I2C command byte
+(listed in Table 4 of:
+https://www.analog.com/media/en/technical-documentation/data-sheets/2495fe.pdf),
+which changes the driver's communication protocol compared to the
+single-byte commands of the LTC2497.
+
+This patch series begins to support reading the internal temperature
+sensor by implementing driver logic for the two-byte I2C command format
+and exposing the IIO temperature channel. Therefore, I added a new
+binding. Without the support for the temperature sensor and this
+different command structure, a simple fallback would be sufficient.
+
+Let me know if you agree with the reasoning to add the binding. If so, I
+will update the commit messages in v2 to include this justification and
+ensure they follow the imperative mood convention.
+
 Best regards,
-Krzysztof
+
+Alper
 

@@ -1,231 +1,193 @@
-Return-Path: <linux-iio+bounces-22644-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22645-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78EBBB2435C
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 09:56:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC518B2436E
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 09:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0777418817D7
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 07:54:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BA6588210F
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 07:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DBA2E3B17;
-	Wed, 13 Aug 2025 07:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E692E9EAB;
+	Wed, 13 Aug 2025 07:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rx4LG8lH"
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="XZMtCH69"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11012056.outbound.protection.outlook.com [40.107.75.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690A62E36F4;
-	Wed, 13 Aug 2025 07:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755071653; cv=none; b=nDlIDVzWIWAj3PQzYiQr22HqrozZlB819xwPmKVl+5GlYyEME2PsQKFlBYMsNUCEEwPkZYvRB0/InQAVpc0yzwYB6G2MlqGPOQfSLeHwFu46igZ0gEKupftfXfZ0ldO0hIV2MICuNj9nOpEMaxF8WzDPNRgh6JESC1s4FpOe4AY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755071653; c=relaxed/simple;
-	bh=Se+R3SRBnQAUbFZPplFYB0lmjvDbELTuqeQUIydxg5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pa8yXX2/ZtlSFbVV4bBVbHym+0FEApO/OMYfwgy/wuEA+DxSKh3EpyzAo0U5BzglMOjvsSzOp/Y35y5iB2Vo/7Bk24RuxYcftq09qRJpcIv73QKYeMuQvOP7xgQ0daUMOchSFW53Lu9TsJDPohBKhWHTucX7PTlv8RlPGr+wGvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rx4LG8lH; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7e8248ee36cso554266985a.2;
-        Wed, 13 Aug 2025 00:54:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755071650; x=1755676450; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=2UybIz5RKzn5qYjRcunlta4nxb7ffklkg0o7NA7aXmE=;
-        b=Rx4LG8lHY2SX6BknK5UstA3nbosQEjZ0XbqJ+RlP6ObJ8bI2vJcON7NVsh0hIWjcbN
-         ovfmi2hhoGqbdCTa3IoOaQNIbh5zELM/MDeXCkcPo7kt9Fj6Mq0Kbx7BvMOdi0VaLqiV
-         EIYJDL7BTIE3p66Ln1Thg41F1gUBLowQDIv1TntTWjZItJUw8nzcIx8dchMxtrycDmyz
-         wDhyL7b7N2FWRIACbWTB00NAFzg1STfi+ow0F42TvYHrpGSvDP/N5jjvAcb9H7eTo+PW
-         UWeJ2V/F3/yX7e8ajZ4mbqwN9YVGzqxNjqr9T6JHYvx//q/joyLoBF4Q5N8BIF/GuPy5
-         kHHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755071650; x=1755676450;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2UybIz5RKzn5qYjRcunlta4nxb7ffklkg0o7NA7aXmE=;
-        b=ZzWlKRWXD899iEziaOMDO/vLi6icw3q70UHDlvkRLEV2Osk3XY3lTFcLmU/zBWWypY
-         rHEGQTeHB0ICy/UmybFzPcuTz9wyKfWdfuGpPPEIPZV27aHqPT3/ojwOYbSsjZ6l1Tis
-         04VsB6rX7Jm/2F6iLGuWKgleRTnBvMdeKJ/qwjaMAJprrgS/SIQ0wHNEbn48RK7IDnQK
-         FdA/SQej6U5dS2GmGytjU6auDEa270lgTscmPh65+Zc3NcyUxj5+kym6Zx+gLKzct069
-         /8vh7V5OC0AwE3ZBey+obGFz+VgnE6Pi91KprIDmWsj+P3pHh3EizTsvq2HIihtny8nG
-         Wptg==
-X-Forwarded-Encrypted: i=1; AJvYcCWrsjb+ex1BIhsQsrjQrKyFk5PQenpFP1dvWC30kG/ti4bSIP+PsFCuvfsRpaE3QTCRXKhgkTn2XqtNTy/i@vger.kernel.org, AJvYcCWsYJBfgjMOHwVEKqVtBqV0sEvNfj4nnUtYbeCiazSnnNCekgCXyE6tghkEYNvJq8wIf3TEJxG6IDDl@vger.kernel.org, AJvYcCX5WtBNCcqtthngkLJVrcd5KCGoP4InfrqwAjcUAa1vZHUKQwzVVA6AQ+ncelIYZirywYBRQyChPAcd@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuSwjcgZuk1qror0KD6W4DXINIIldI8blQAyDF7M42lmJopkrn
-	WCokmB2ZfItVVmzbqhsA6ky3vA78icaofoAJ2x3eKAjo3jkrItFGO12l
-X-Gm-Gg: ASbGncsAYPOS3qK7NBmp00wEGvAuVLErx4PrRvVZr9l4WN3l1zkGrSAKanTgiJ5z2gH
-	c6oJ/7ZZX03MyrzpqiwiqZGsFVJVmANQxf/HLcsyKkT8ozCCuq+jAXJsyZ3T7943b3nCOBz9Zr4
-	BI3rtJhiiI6K+cuth1HvNhv9Ej5CA/xJanP16gEQ92xWZDofWOwjnIf7n6opKj1hy3ga7Ge6Mj4
-	farHA6Y97Vu43oWc47KFF51QRrsuemx/6lo191Q+DQeLRs3aBfw8TlVu6sc7zo9TC4xXdzELFKT
-	IUKd55jmHUMWWCFuw8hxBkQ740kL/M5qdNlLJjAq3IuWwadvaIEeC4Y7zPgIiRkyDdNjXLqjeuT
-	an/9shmPo2/s=
-X-Google-Smtp-Source: AGHT+IG43rF9yFYmKpQf+pkO92Bo4veU5NRhAxmIcO1Unuk2b5QG17zeBJ5XdkFwEaFlvk0TdGVUZQ==
-X-Received: by 2002:a05:620a:d5b:b0:7e3:46da:9e1f with SMTP id af79cd13be357-7e8653259d6mr242571085a.56.1755071650030;
-        Wed, 13 Aug 2025 00:54:10 -0700 (PDT)
-Received: from nsa ([45.88.190.11])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e67f595525sm1922281085a.2.2025.08.13.00.54.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 00:54:09 -0700 (PDT)
-Date: Wed, 13 Aug 2025 08:54:25 +0100
-From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: iio: Replace bouncing Analog emails
-Message-ID: <whi5if3mrfjtszczpgerdzv457iihcf6bbywbrt5i7javoap4u@dtgd4ncum4gt>
-References: <20250812132445.75398-2-krzysztof.kozlowski@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BE82E92AC;
+	Wed, 13 Aug 2025 07:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.75.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755071774; cv=fail; b=AFItMbVJzapqeN5wpGN6SYsnVnsvK/q4SqqnutvS+qZxZDlSm7DFB8VI3rPXPFZ70DOE9lj8+FC85NfTNseRm3oSxIX3zhrqr4ZUtMUUzVxA0rwlAFutkRCmgM3N2ZlXsMaVFvlxtbzQuIzkBkCCeMadycq9SNmrAjP7ac0IfFs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755071774; c=relaxed/simple;
+	bh=h9R3qNAHP29g3HcT9lJGbqP9iEFfSUJvMFStTWyM91c=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=aRIWVJ7DiIg44lYUiha5F92rRIfTiBEFPciiYv/ZlxqjBHxlbPOt5j89ZLdqq6cuZmx4PZyOWklCy4SYZVe0tasXAHkOnCri38XxymNPvRjVZbA2yPwAQLE3GnWxwutf7G1OAT1UwDI7OZGxKLsWWRIlrkJ/H+Iu7RWbxxy0RzE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=XZMtCH69; arc=fail smtp.client-ip=40.107.75.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tqzrAqueIAjDSGYbvUCr/fKkbdtuu/kqVxomO3RItFAMNUdVQluc2drlSRRybslIqj/E35y43KlCLrQYoHL4plS3JR5FK1+73z6CLfRKkBF+LD5r0ID2UvOfugDznbRNMUhjwD5i7r0t6qNjEf2FVsG6aO3HG6qVybFEPGp5ITRQILZHvFXCCEvZoJ0qscSC1IdVSRpb7Uot6yE/n2+0bplWIrzfa8IQWGqKmMym/hD/G1HLbvRpVlPInXXNaqfI+Rw4yMxT1MukdS7AYY2iECB7RY0+rbbZWfXFY7VRtZzOiUSRhFfRHsGewz8+ijcjPQme9uVhdLiPHkWbGjaUsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tMQ0q4RjFe7Ym2MeaVWH+AqYCrPdurLbQIDCdiThtX4=;
+ b=NgxxfRVISidCabNWTuDPyZO9+z+ZDpVGiUPx6Q2oxuZ8h+MPHvYwr+klklob+Iz9LwoGG7Hnndt5gDzRhAuZZE+p+Kf1OdjD04MbgtC/0T0B5THAnyfyoKn7DOSsPpkTiwBmPFUJSicNqMtk4ZlKYWK4nQjc5JlHvHGQWD3hMwsMmVIBTxnMHYnpY6VERllY5Gf4GBpSeLm9cXV4nFbqfAdURjHXVLkFW1ySqyQvHBaveuI1hYsGwQQT3+iCD8L8R87s0+1gmnwoOLzsI5Ar2+pfWAoeq4sjk6SBwuC79PU9B3GjBEBkAkjmZ7Altb9kSDewTYIIMgLOpgc9bqWuOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tMQ0q4RjFe7Ym2MeaVWH+AqYCrPdurLbQIDCdiThtX4=;
+ b=XZMtCH69a2kCfX7U4wubJhakKcXCMqfBic3/wGMiqwPFAD14cLixsrpcRL8mv98kC6ieTgN0Qb36ebLN81/aQIzfbla2SgF9acoCY62gOk5sAr+i5izluBb1oRcS7b4nPpVlQHnyHTQfnneUtlLij8poxhHw3V9LWOtCTkCMz1oPR035SyICOKyeBT8AkYjyT10UrbqFQTQyZw66NebAPuQPV86HyNnCNF0IIDKtwY6mdUMF9QcGgdMVcx8UvE8FO6srs/p49hU/xYftbfX5XbJiSt0ViCt8lIJBXCfvgMt0mL1gqUxZx30haW614AeisV2WgTZoxtwT89kz6yczHQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from KL1PR06MB6020.apcprd06.prod.outlook.com (2603:1096:820:d8::5)
+ by TYSPR06MB7205.apcprd06.prod.outlook.com (2603:1096:405:93::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Wed, 13 Aug
+ 2025 07:56:08 +0000
+Received: from KL1PR06MB6020.apcprd06.prod.outlook.com
+ ([fe80::4ec9:a94d:c986:2ceb]) by KL1PR06MB6020.apcprd06.prod.outlook.com
+ ([fe80::4ec9:a94d:c986:2ceb%5]) with mapi id 15.20.9031.012; Wed, 13 Aug 2025
+ 07:56:08 +0000
+From: Xichao Zhao <zhao.xichao@vivo.com>
+To: o.rempel@pengutronix.de,
+	jic23@kernel.org
+Cc: dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xichao Zhao <zhao.xichao@vivo.com>
+Subject: [PATCH] iio: adc: ti-tsc2046: use us_to_ktime() where appropriate
+Date: Wed, 13 Aug 2025 15:55:56 +0800
+Message-Id: <20250813075556.466872-1-zhao.xichao@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0024.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::11)
+ To KL1PR06MB6020.apcprd06.prod.outlook.com (2603:1096:820:d8::5)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250812132445.75398-2-krzysztof.kozlowski@linaro.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: KL1PR06MB6020:EE_|TYSPR06MB7205:EE_
+X-MS-Office365-Filtering-Correlation-Id: f0a253f1-8c1b-47e5-1523-08ddda3edccb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ASfDP7DN6UIdGdsMje7QebektIYPbv8eM6r69J61xvWsX/3DnlKDLItHxGqz?=
+ =?us-ascii?Q?3sWcJeHSgpLq8LAbIaz4wFhoJoNnooxI43Gy/8O6faeqwL5Gs4NVAeOCHe+B?=
+ =?us-ascii?Q?WWtlKxqd4umibfbE+NIzBot7RB12Vpvfs+pzytTIvb7C5mqr5i45BWsG2D4z?=
+ =?us-ascii?Q?9J4d8zNtJcPYYlyDhp1UH00pcNR34KwxrMkXhd6Kl6CqHCbOG0Zm/4Jsxnxd?=
+ =?us-ascii?Q?Oo89JE7SuWPX58mCpCNI5ijHOngSFkLAx0q6MOYjgpgKVvX5g2FG1v5CLdZt?=
+ =?us-ascii?Q?aJJELoqimOTv02KmSKXT+rh7QFGiQr2cerpQzPeMTborQnehFCT7cM6vFGZu?=
+ =?us-ascii?Q?tRqhePFDquiaTPGzzorAtY1t1bKxi2j6R2P3BSvP3H4QAg9hcRsRzT4kRNE5?=
+ =?us-ascii?Q?t2bC2USYS4azAtRna2j/bJinEOAMgdU5uY5zUDYu/1oLEXnBVibIt8urjhDh?=
+ =?us-ascii?Q?1XaaUDxyukTUigq6bmHEGXe5ZdoYkRgqWN+svpE5Z6XjBmIolWKVRhbKxXFp?=
+ =?us-ascii?Q?OPDnIvKH2czDWxuFHDBnLlJ+KCmLVUVV9paWa2P+BoOHGQX11nn6I6ZyAGO4?=
+ =?us-ascii?Q?w3j3tNpZSH4Xwpz8dgg5bfISIqzDEGA4akxcrUEANn7na765Wy8zb1EhkSyc?=
+ =?us-ascii?Q?W9LhZjhJDPYCXt4dYXVd/0mAtGtWw4/hy5/1woUUcWqU0NcGUWcPMI09rrwK?=
+ =?us-ascii?Q?mJfHX915K1SidwFK/KkA547uGai4YdEYk1w1+ugpBgkAjt/W+5T0RYqLHPgP?=
+ =?us-ascii?Q?iZJWxlY+m3ry/8YFX+Da4JHMPU678ts6fEWmsh11BHj45ANFVlfLbEXr2bSn?=
+ =?us-ascii?Q?bVMJRB5hubIerSjhv2vTr0VIB6lGYOjr+t8FtENAS7LXJVJP8m5zz5VA8Q9T?=
+ =?us-ascii?Q?1hNZ8vnVBwHNwv/9zXTW5sKH2V13tewXI6CA7OeGInuKChagX3NV2jojQJ7w?=
+ =?us-ascii?Q?Ne1+tLQjqW2tt0D+mpXph9zzkWLtBPBm0mCxaEc46qwjLNJri9johAC6z47g?=
+ =?us-ascii?Q?kAnwSvJ7Be/v0UefbJeDoAoZbtS8DSWmDakxNgwwdQxM1Sm2DiaZj3NKNJ3l?=
+ =?us-ascii?Q?ML+AVylfECwGMgwgs4Jtztj7B+7wcHia9x+2FDv+ZiGXmQbizyYyL/qNUKeF?=
+ =?us-ascii?Q?v79SysgYoHrjNj3/W6D8yQTS5oiXzZMKyhnr3CWC59s/ZrMf8n1YsID1dDkT?=
+ =?us-ascii?Q?W9ZNJCzJbtnd3iukkvBhKVarJCfhE+LGZgeKVFEHqcEzA0xafP52KO3nJbi1?=
+ =?us-ascii?Q?POkkJUCaeWHLRRjcksmLSAXUkdcvI73OJUR3UluUFHlIY2uDGPdwzt20R7bs?=
+ =?us-ascii?Q?H3tlepYNNFPfDvoqhjwBUih9JyhfJ/V47K15pnY+RDPpVAkTT9OZ8lFENifI?=
+ =?us-ascii?Q?d5HcKQn564haqdOGzt2bnGyv4gsfPKh2ke8/KeYTtNHI5HgoJyiYIwERyEYq?=
+ =?us-ascii?Q?XOqWzPk2a+3ryeLCls+a5Hvl9jVk2Gg+hm8V0tZEJ08p0K4GRMgUfw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR06MB6020.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?XQ7MlhPPAgL+FEeeUk7gtEGVuwpTYBo9bD2u9qirBKYQyT2FAdibjvZ+7BKo?=
+ =?us-ascii?Q?DUaIATXZsrAA+2pPa6afEXXOqxZUMpLVY2ZAa39c8k4GV3qvXNwVxvf7iUMn?=
+ =?us-ascii?Q?swyrOWqN27tx1YJw4y9M9m1URIdO09G21pjBdHnuZTtGMZ3snPaavTr4dIhH?=
+ =?us-ascii?Q?RC8HRSs0SNg28N53FpALas105TkGXOnKToLLjLqtaUYDkNmPJANKokJXlTGc?=
+ =?us-ascii?Q?p/sGBudYwQO+Qr40kG78zjQWMtnjv/2qieswPuXk/0Emsf5ToG+AgE0m8Pxk?=
+ =?us-ascii?Q?NG8dc9McZ4Pc1WMV2J/J7i5R2/iJcFf8Qx0OzJOIAux9BfaTVV1ojZJepnoA?=
+ =?us-ascii?Q?LqBVJ9mpXjqHElXnVlI4bTam17lU776L5s2uCHCO0CuhSm0soVgNKj0uI/oD?=
+ =?us-ascii?Q?5XMGWq18zLPTOcDSJhCd5YTR6PiUPSvnyvpCeYxUrcTa/ukHHecx3NB9L3E4?=
+ =?us-ascii?Q?+TPq6hyiPjspWsoMk9UQnH6HCUph9AXwGa6cAM58bpTWjuV2jt/9eg5Ct2A5?=
+ =?us-ascii?Q?vTwW+5FgjhUBogz7kRm+o1M3Nl6/O/BzGmGUzh9UfRnK/cM4t2vKgOYUezOt?=
+ =?us-ascii?Q?IVhKMP+idQr7LLRf/q9zFzP1K444LJmkSlvVLAUzg2KIWBryNpTZHpxcRokX?=
+ =?us-ascii?Q?1iZqNP3Qk9eB8OtIXWl0OdW4w/rqB+/aQ42J5T8XmcsKy8E/gcpHjjJBRmnN?=
+ =?us-ascii?Q?Fon+Ix4PypWzH/PGaHE0K/gbn6AsRbcaMT62akNKSGloz6xZVpNhXVnWEcTd?=
+ =?us-ascii?Q?gsDWq0ceEvNV2Z4xrBRt68uLl9Dy2j3N+ZsOhva0engCONVMZW1/PQFaQwnp?=
+ =?us-ascii?Q?9GkuuGSd2QI1C9BToSv/njxhv0wLr6VaAj3pRyilCkQTLGwlCRBi+xGmeA1Y?=
+ =?us-ascii?Q?LvmqXuoqN12RaRMiko5BsaoynadJrlL/cG0D+CUjGMtfFpyUh0d0n9xbhKZt?=
+ =?us-ascii?Q?NH34ytBTa7bWOQiT4jFs2QImgEvs+cFuTmuPJ2wvlJeflK34jhGQgBn9rjb0?=
+ =?us-ascii?Q?0tOLzGn+jXwWboI+GGW7dQz0ZO5bIomNXwcz2EKleRktDBvWisMzziYlzsPt?=
+ =?us-ascii?Q?HYLHN1yL2ODBpLJ2psBKgX49hjxKe56703LQura8d6ujDNJ846+C1C3RudFc?=
+ =?us-ascii?Q?UqYA9TBg2b2+Vqiu1rzzHLhtScHd8nFyYNjuET97freAiJkfQzbR4fEmHV03?=
+ =?us-ascii?Q?kopmRVgLAkq8f26IXoxpe6eSMonFqeyzm7GpB4Lkn9MC22FrosRgIFFF0LWp?=
+ =?us-ascii?Q?Fc1r8k5gjaP1hOVct/8f3X2AwSWVlx2NL/zic6AaPyOb24zZJv1CslwxNknv?=
+ =?us-ascii?Q?mgAtvjXRNaxVkKMW9vZM+d+YULJ7uibmKIe3cK09eLscv26nUygU1cLiJmyo?=
+ =?us-ascii?Q?svpb4AGEoTsU1aeS16dGeR4w6SdvJ2FCBFAxnN/r3R+ZyZNoYZe2il+iLvWa?=
+ =?us-ascii?Q?ZM3baetzKFhRtZYlDx1nGpOkx390oJUFmoZvsPs6g4pvsF5Mz7c3l/AvdaGg?=
+ =?us-ascii?Q?iNcy2sfx6VMvsyPIUvZK4xejXA8J+9Y3J9jGF6tdE2DRDFE3X1BeRjACWRyu?=
+ =?us-ascii?Q?oRy6NiTiSkYg5/gAxcfp5oII2ooojeQl23QiOHbd?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0a253f1-8c1b-47e5-1523-08ddda3edccb
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR06MB6020.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 07:56:08.5635
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wQDBV/PLk+tNlEWDLLxinN1wtDUc6nFFjR4fk5cx1cGfYzzI6NoLNVOv9ge256unDjR+rKgBYq9r8yjYbAZP6w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYSPR06MB7205
 
-On Tue, Aug 12, 2025 at 03:24:46PM +0200, Krzysztof Kozlowski wrote:
-> Emails to stefan.popa@analog.com and alexandru.tachici@analog.com bounce
-> permanently:
-> 
->   Remote Server returned '550 5.1.10 RESOLVER.ADR.RecipientNotFound; Recipient not found by SMTP address lookup'
-> 
-> so replace them with Marcelo Schmitt and Nuno Sá (listed alphabetically
-> by first name) from Analog where appropriate.
-> 
-> Acked-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
+The scan_interval_us and time_per_scan_us are more suitable for 
+using the us_to_ktime(). This can make the code more concise and
+enhance readability. Therefore, replace ns_to_ktime() with us_to_ktime().
 
-Acked-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
+---
+ drivers/iio/adc/ti-tsc2046.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-> 
-> Changes in v2:
-> 1. Add Nuno, based on discussions on the list.
-> 2. Add Rob's Ack.
-> 
-> This change got agreement on the list, but still would be nice if you
-> folks Ack it formally.
-> ---
->  Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml | 3 ++-
->  Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml   | 3 ++-
->  Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml      | 3 ++-
->  Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml    | 1 -
->  Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml     | 3 ++-
->  Documentation/devicetree/bindings/iio/frequency/adf4371.yaml   | 3 ++-
->  Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml   | 3 ++-
->  7 files changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> index 3dc973b98f81..a92e153705f3 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adis16240.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: ADIS16240 Programmable Impact Sensor and Recorder driver
->  
->  maintainers:
-> -  - Alexandru Tachici <alexandru.tachici@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> +  - Nuno Sá <nuno.sa@analog.com>
->  
->  description: |
->    ADIS16240 Programmable Impact Sensor and Recorder driver that supports
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> index 88aa67bf2280..0ba0df46c3a9 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl372.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer
->  
->  maintainers:
-> -  - Stefan Popa <stefan.popa@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> +  - Nuno Sá <nuno.sa@analog.com>
->  
->  description: |
->    Analog Devices ADXL372 3-Axis, +/-(200g) Digital Accelerometer that supports
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> index 7146a654ae38..4dd5395730c1 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-> @@ -8,7 +8,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analog Devices AD7124 ADC device driver
->  
->  maintainers:
-> -  - Stefan Popa <stefan.popa@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> +  - Nuno Sá <nuno.sa@analog.com>
->  
->  description: |
->    Bindings for the Analog Devices AD7124 ADC device. Datasheet can be
-> diff --git a/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml
-> index 5207c919abe0..eac48166fe72 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2496.yaml
-> @@ -9,7 +9,6 @@ title: Linear Technology / Analog Devices LTC2496 ADC
->  maintainers:
->    - Lars-Peter Clausen <lars@metafoo.de>
->    - Michael Hennerich <Michael.Hennerich@analog.com>
-> -  - Stefan Popa <stefan.popa@analog.com>
->  
->  properties:
->    compatible:
-> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> index 82b0eed6a7b7..091cc93f1f90 100644
-> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5770r.yaml
-> @@ -8,7 +8,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analog Devices AD5770R DAC device driver
->  
->  maintainers:
-> -  - Alexandru Tachici <alexandru.tachici@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> +  - Nuno Sá <nuno.sa@analog.com>
->  
->  description: |
->    Bindings for the Analog Devices AD5770R current DAC device. Datasheet can be
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> index 53d607441612..2e1ff77fd1de 100644
-> --- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analog Devices ADF4371/ADF4372 Wideband Synthesizers
->  
->  maintainers:
-> -  - Popa Stefan <stefan.popa@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> +  - Nuno Sá <nuno.sa@analog.com>
->  
->  description: |
->    Analog Devices ADF4371/ADF4372 SPI Wideband Synthesizers
-> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-> index 7a1a74fec281..43ecf46e9c20 100644
-> --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16480.yaml
-> @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->  title: Analog Devices ADIS16480 and similar IMUs
->  
->  maintainers:
-> -  - Alexandru Tachici <alexandru.tachici@analog.com>
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> +  - Nuno Sá <nuno.sa@analog.com>
->  
->  properties:
->    compatible:
-> -- 
-> 2.48.1
-> 
+diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+index 74471f08662e..8eb717b11cff 100644
+--- a/drivers/iio/adc/ti-tsc2046.c
++++ b/drivers/iio/adc/ti-tsc2046.c
+@@ -535,8 +535,7 @@ static enum hrtimer_restart tsc2046_adc_timer(struct hrtimer *hrtimer)
+ 		if (priv->poll_cnt < TI_TSC2046_POLL_CNT) {
+ 			priv->poll_cnt++;
+ 			hrtimer_start(&priv->trig_timer,
+-				      ns_to_ktime(priv->scan_interval_us *
+-						  NSEC_PER_USEC),
++				      us_to_ktime(priv->scan_interval_us),
+ 				      HRTIMER_MODE_REL_SOFT);
+ 
+ 			if (priv->poll_cnt >= TI_TSC2046_MIN_POLL_CNT) {
+@@ -605,8 +604,7 @@ static void tsc2046_adc_reenable_trigger(struct iio_trigger *trig)
+ 	 * many samples. Reduce the sample rate for default (touchscreen) use
+ 	 * case.
+ 	 */
+-	tim = ns_to_ktime((priv->scan_interval_us - priv->time_per_scan_us) *
+-			  NSEC_PER_USEC);
++	tim = us_to_ktime(priv->scan_interval_us - priv->time_per_scan_us);
+ 	hrtimer_start(&priv->trig_timer, tim, HRTIMER_MODE_REL_SOFT);
+ }
+ 
+-- 
+2.34.1
+
 

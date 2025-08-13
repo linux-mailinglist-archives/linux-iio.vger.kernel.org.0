@@ -1,119 +1,204 @@
-Return-Path: <linux-iio+bounces-22703-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22704-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF0FB2576C
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 01:21:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FCCB25771
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 01:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8705D7AC029
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 23:20:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B9F71C82C47
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 23:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D3F2FC87A;
-	Wed, 13 Aug 2025 23:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C05E2FC899;
+	Wed, 13 Aug 2025 23:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZmVQa/9K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAgBCGVL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0611366;
-	Wed, 13 Aug 2025 23:21:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C522FC866;
+	Wed, 13 Aug 2025 23:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755127303; cv=none; b=ii8iIBdHBI+QpqI//rAavsNPWFp/enlYWShOG1OdbzLgwTF1xAl+mvBMKoo8p6JXsAaUmcw+DwuJyAfrKyJWN7D3X5mdcbdksQLtsbM9z+zGdbW1cbQNzOTp1KUOVxXLVj0oH/YdUmLVKe2/taY6mqwQxRe3u7mlTJs+HFerkfQ=
+	t=1755127443; cv=none; b=SI7AXFPKveArLAkILVOqS7libv39TqICprIPz25712ufta44/ilViRidxbwNkwyzJr9DM3c4ZhpG/BoNsnxpf1BMVARYf1r1HlEIwImytKSAPrFm5uZQ+v8KO14yh1b+mShbbrmWK/ZcxQrymrmgb9NTZ4oStzF3+PMDQgVps6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755127303; c=relaxed/simple;
-	bh=3FUHzB5zFPjRpIGR9t/HnNbe+pc72m44Y8u/Tn0719M=;
+	s=arc-20240116; t=1755127443; c=relaxed/simple;
+	bh=14HP2KXJaaX6lYjuA7ln3CVRevS3gHQcCQ4Z1sbdRR4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lVhHYiBFMxgUT6GRWGuHnfBrVl7LYGspGNrShza6RmKAUQGVlHR3eIqlFSIhofy+iKLK7nK/9eiyLbCbdw6nD8w9vNklsDiqi5Bi4sv3G2nds//FiKZ3QtewY+mrY/V2ADi5ncCXn32LlhtdljSWW6KdKrSRMge1IkhjcXbNQ80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZmVQa/9K; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755127302; x=1786663302;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3FUHzB5zFPjRpIGR9t/HnNbe+pc72m44Y8u/Tn0719M=;
-  b=ZmVQa/9K1M/9szvnBXqvVWDL+Rnut3IRbxsbqkiNw9pw61islh4JCPXb
-   7sEOoSpb4P8RGJeBULpBPaUwFH6SNq3NnJVdoy5dL/+BqUKrCzoJ+V+a/
-   FNfP2KGMub9wFzlCO5xOoD5obvorW+vPowrejZAo5WagL4tHtQP6rbjIF
-   9pZz2ZSp5qXWBV26hcArfjpg+a+toVZrUd/OH+RfA8/h/MCDSWSL3z268
-   FYNUPagtyockwiHiwVOhENL82PQ9we6m+S3huxuxPnkbeY/BuhujPgFju
-   /fCfJfG1cOQsMFd8KnmRrnh8JbIMSV4ipQEneEbCt9Ibgvmw2wKhExxSY
-   g==;
-X-CSE-ConnectionGUID: vK982s33RPiaJrImb2z4Fw==
-X-CSE-MsgGUID: 1w4mavA3QXOe2zFfji+qzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57154934"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="57154934"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 16:21:41 -0700
-X-CSE-ConnectionGUID: zqWI8wdARxiqbK0emdenWw==
-X-CSE-MsgGUID: GmLq9DUqTWWYubE5nQx4Ng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="166096675"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 13 Aug 2025 16:21:38 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1umKml-000AOi-0m;
-	Wed, 13 Aug 2025 23:21:35 +0000
-Date: Thu, 14 Aug 2025 07:21:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	Michael.Hennerich@analog.com, jic23@kernel.org,
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	jonath4nns@gmail.com
-Subject: Re: [PATCH 4/4] iio: adc: ad7768-1: add support for ADAQ776x-1 ADC
- Family
-Message-ID: <202508140742.AhFMglnF-lkp@intel.com>
-References: <f0c1cbc9c2994a90113788cad57df1f32f9db45e.1754617360.git.Jonathan.Santos@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=J3YgNDnWfD0e3NKdGjghfGJTNp2Va+rbH78UG1Oc/+dUDUYpNHkvANjXqv6I9UQtJjLmLUXQL5th32cZM/z7t92IlC1P2nCVrVphorx1Dmkr6xgN/HrRr/ajJxc2jodzA6FpDV05hEhEiTWGta9nacGMsHLc+/cOdKNEYP3yRGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAgBCGVL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F195C4CEEB;
+	Wed, 13 Aug 2025 23:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755127442;
+	bh=14HP2KXJaaX6lYjuA7ln3CVRevS3gHQcCQ4Z1sbdRR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bAgBCGVLihLVi/iuC48YBVbB3aDd9McJp7YMRvPDzJaLy7CTS2+gCfKFZX8IgNHRc
+	 JTYA/iI9FIzIYH6SiPbTqtRyBWa+J0lQ7+asXst9++8pqxWRQ/8EtKVQB67i5Iuz57
+	 wTUmI+/eLh+mkpMON1ypLoNLpFp4QYbMNtHIxS7RDWlYr8lt0sB8nweW6lXyQjIXwz
+	 /4NdMBtPdNJE6Ax6Bgb1MUiqHpqO7dGsiog3vFk95P8q6v+/V6/jOMAVr06p6Kgddn
+	 xQkKNUn8R1pOWBS9ckn9RiXNAIcnzwddWgku5/dpYXV2W1GQ2fX7Vj77paLpHHIdUV
+	 OFNKquwSWH8cQ==
+Date: Wed, 13 Aug 2025 18:24:01 -0500
+From: Rob Herring <robh@kernel.org>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: jic23@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] dt-bindings: iio: adc: add ade9000
+Message-ID: <20250813232401.GA1035450-robh@kernel.org>
+References: <20250808141020.4384-1-antoniu.miclaus@analog.com>
+ <20250808141020.4384-3-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <f0c1cbc9c2994a90113788cad57df1f32f9db45e.1754617360.git.Jonathan.Santos@analog.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250808141020.4384-3-antoniu.miclaus@analog.com>
 
-Hi Jonathan,
+On Fri, Aug 08, 2025 at 02:10:14PM +0000, Antoniu Miclaus wrote:
+> Add devicetree bindings support for ade9000.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> changes in v3:
+>  - fix $id schema URL format
+>  - remove address/size-cells and channel subnodes
+>  - add dready interrupt support
+>  - add clock input/output support
+>  - simplify device tree structure
+>  .../bindings/iio/adc/adi,ade9000.yaml         | 110 ++++++++++++++++++
+>  1 file changed, 110 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
+> new file mode 100644
+> index 000000000000..07bc49acc920
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
+> @@ -0,0 +1,110 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2025 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ade9000.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices ADE9000 High Performance, Polyphase Energy Metering driver
+> +
+> +maintainers:
+> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
+> +
+> +description: |
+> +  The ADE9000 s a highly accurate, fully integrated, multiphase energy and power
+> +  quality monitoring device. Superior analog performance and a digital signal
+> +  processing (DSP) core enable accurate energy monitoring over a wide dynamic
+> +  range. An integrated high end reference ensures low drift over temperature
+> +  with a combined drift of less than ±25 ppm/°C maximum for the entire channel
+> +  including a programmable gain amplifier (PGA) and an analog-to- digital
+> +  converter (ADC).
+> +
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ADE9000.pdf
+> +
+> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ade9000
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 20000000
+> +
+> +  interrupts:
+> +    maxItems: 3
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: irq0
+> +      - const: irq1
+> +      - const: dready
+> +
+> +  reset-gpios:
+> +    description: |
 
-kernel test robot noticed the following build errors:
+Don't need '|'.
 
-[auto build test ERROR on 0a686b9c4f847dc21346df8e56d5b119918fefef]
+> +      Must be the device tree identifier of the RESET pin. As the line is
+> +      active low, it should be marked GPIO_ACTIVE_LOW.
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +  vref-supply: true
+> +
+> +  clocks:
+> +    description: External clock source when not using crystal
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: clkin
+> +
+> +  "#clock-cells":
+> +    description: ADE9000 can provide clock output via CLKOUT pin with external buffer
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jonathan-Santos/dt-bindings-iio-adc-ad7768-1-add-new-supported-parts/20250813-145315
-base:   0a686b9c4f847dc21346df8e56d5b119918fefef
-patch link:    https://lore.kernel.org/r/f0c1cbc9c2994a90113788cad57df1f32f9db45e.1754617360.git.Jonathan.Santos%40analog.com
-patch subject: [PATCH 4/4] iio: adc: ad7768-1: add support for ADAQ776x-1 ADC Family
-config: hexagon-randconfig-002-20250814 (https://download.01.org/0day-ci/archive/20250814/202508140742.AhFMglnF-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 3769ce013be2879bf0b329c14a16f5cb766f26ce)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250814/202508140742.AhFMglnF-lkp@intel.com/reproduce)
+Wrap at 80 char. Or start on the next line.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508140742.AhFMglnF-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> ld.lld: error: undefined symbol: rational_best_approximation
-   >>> referenced by ad7768-1.c:554 (drivers/iio/adc/ad7768-1.c:554)
-   >>>               drivers/iio/adc/ad7768-1.o:(ad7768_configure_dig_fil) in archive vmlinux.a
-   >>> referenced by ad7768-1.c:554 (drivers/iio/adc/ad7768-1.c:554)
-   >>>               drivers/iio/adc/ad7768-1.o:(ad7768_configure_dig_fil) in archive vmlinux.a
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> +    const: 0
+> +
+> +  clock-output-names:
+> +    items:
+> +      - const: clkout
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reset-gpios
+> +  - interrupts
+> +  - interrupt-names
+> +  - vdd-supply
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      adc@0 {
+> +          compatible = "adi,ade9000";
+> +          reg = <0>;
+> +          spi-max-frequency = <7000000>;
+> +
+> +          #clock-cells = <0>;
+> +          reset-gpios = <&gpio 4 GPIO_ACTIVE_LOW>;
+> +          interrupts = <2 IRQ_TYPE_EDGE_FALLING>, <3 IRQ_TYPE_EDGE_FALLING>, <4 IRQ_TYPE_EDGE_FALLING>;
+> +          interrupt-names = "irq0", "irq1", "dready";
+> +          interrupt-parent = <&gpio>;
+> +          /* Optional: external clock instead of crystal */
+> +          /* clocks = <&ext_clock_24576khz>; */
+> +          /* clock-names = "clkin"; */
+> +          clock-output-names = "clkout";
+> +          vdd-supply = <&vdd_reg>;
+> +      };
+> +    };
+> -- 
+> 2.43.0
+> 
 

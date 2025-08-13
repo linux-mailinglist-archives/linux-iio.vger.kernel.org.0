@@ -1,82 +1,81 @@
-Return-Path: <linux-iio+bounces-22683-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22684-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8B3B25051
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 18:57:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D686DB2504C
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 18:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D43E572753F
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 16:54:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A1931BC74ED
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Aug 2025 16:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7607B28BAB3;
-	Wed, 13 Aug 2025 16:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD3B28C84A;
+	Wed, 13 Aug 2025 16:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jG45woBt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IgXR3qs7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12452874ED;
-	Wed, 13 Aug 2025 16:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9319D289357;
+	Wed, 13 Aug 2025 16:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755104089; cv=none; b=HSEV2YXdDOJYupiLt8iVTQW1rd+Qw5GSh2iHJ55kaZH8QbwFmQG+Pbbp88jzJagsTfs3ySukVR3ytij9qAEb17cEhwiHb1xTnWUB94sO4U38d8553T1V/Q1GJOTHn7YN8lwG8WXO8TPsOtl3xStOrCDXC/4gVRLXaAsu1Ioqg1E=
+	t=1755104090; cv=none; b=Hm7KSOyWqPcQAa/pJJUfphLhnls8/o4LjCUUUVRibEazHkJC5Dr8RTZi/W1mOUIxCvwHGc9KJv0idCr0AovwZ/7odbJO4o7aQSK10TkbOkNv6ZRypabCq9emMsS+FJNNdAIwjoDsGugrfdacZUHuUPQ6C4z9sT6wMjpZuFe5ghE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755104089; c=relaxed/simple;
-	bh=7ZAY+2Peo7S2rRiLYIRAhUNbUzK4+1P+0qH+dyOPnWc=;
+	s=arc-20240116; t=1755104090; c=relaxed/simple;
+	bh=7dL620a4ki2oCdeq6jvorfDoA7+7B+wm9Jmm2GXEtLw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OBr/G+cWRstnfUe+N/2/vro3lPnz2G9M/nll8G09WmuD/NRgVD+nxWw21jE/V7+LhfVpIEaw+GAMXYSd+82AZcPDebmzbkqwpLHZtLShaBxksq0//vDXtn9g091fnEq8SZYRE+5A1qZf0xypqwGlCJwjToN+l8190Z41OxH3XYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jG45woBt; arc=none smtp.client-ip=209.85.218.42
+	 In-Reply-To:To:Cc; b=GADzqwydPFspFXGALIAmzUnZkq+Am5zGWSc7qC1y9nhbLvNBDjBgFOM3yPiFDS19n4fh0vbiDA1bJCNx7W/XAQDHrRQqLS25w9m0B2m/hrhQUoYyTqR+ko79EUUBOoDz5kmXR8bQiYizcvRPlonVeUjFlcDrTeeen2D57Ayycc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IgXR3qs7; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-afcb78c66dcso8472966b.1;
-        Wed, 13 Aug 2025 09:54:47 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-afcb732eee6so12116366b.0;
+        Wed, 13 Aug 2025 09:54:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755104086; x=1755708886; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755104087; x=1755708887; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Xe/jpg8erHMI8XAl5plVXtak/ycKmWW+BnUpeddeEcY=;
-        b=jG45woBt8NqOOZhatTA0vNf9mjWvxucIWsTE4/BARnFKIQVBHXJzf1euONV8hsWzt+
-         pcsnFP3Y4fqFk0NXtrdJ9q1P7ZtB3IUZDTjXxHY+LxsHYbCFeaTBCFXu+eovXSlD9u/9
-         uDYgVY9p4DGcZlbJd2nUmsLvwz4EmQL6gK/QDmkaeVP/5FbsgRxGvzX9tCmcpG0OTbr6
-         6rNVV5OZ66Go1gTw8HN53D+ChMfREo/B1jqHeyfgbKqt6ajaCq8h5ZAaqCK7q9n4ACzO
-         RFW4Shp7zkm9NGBiw4mJB8AnYPTEbnyUi6wuR27FBFS1797NLtwNl9Fm0TNqeRnyaYf5
-         2v0A==
+        bh=WEhRKi0HmzptgOPz8lO5moCSp0j9P7xyPzVGCUEQhMI=;
+        b=IgXR3qs7IXByeUWH++eMGOoqTf5zs4xGYi2rtjV+aLjd9saM1oYpNCNDRD/wrXCi+0
+         AJx8lXIVnhFJ2rsOqylexU2cTOAqbiSXgNMUWhCEhKuUwV/j5Cyajrvung1MxAKfHIDa
+         gJITtoSaolGFRR1197QqbsyCyrztXlHrUHiuXttYeAD13o606nVcmim2IvKokqsCchBf
+         8i0Kzj5G5p52UO00yrdpzXXH/8QUhjPzARoSEpZFsNNh4JlaF6gesNY+jpZH6WKR/+Qm
+         pq6SzsZE02PhBX+7XCFimANVPrrRivxr/kst3rQvfSip56x4pKOJeQgdGaVD9VojMpuK
+         6HgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755104086; x=1755708886;
+        d=1e100.net; s=20230601; t=1755104087; x=1755708887;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Xe/jpg8erHMI8XAl5plVXtak/ycKmWW+BnUpeddeEcY=;
-        b=qBjZJtzdNVBLCwY3eE/wRfCGXpYdP1cOLBdKhmu9KjgdZRycIzPQZ5Ko0KcgDZnfdj
-         3miFVjhFqJEJ9d33evEOSh2ZYLA++RUhBh9mD/+vogt5s8lrWX3zx4qimPq38wqU9Wnn
-         VcPmilISvD94xtMowVfFyo92NNEU6nfhteFX+ktdg7svuo09bkC9eG6d+ZjYUNABtefW
-         +Jk0F5JeKNkpNQmwH7AeC2hr3GkrXES8jAh/UekdRU2BOL4Jqiy1q2v7hBUppbsb/zOi
-         qDuYqv1Xwc2xS+aWdqtsdg+NoFzFh0zdIWvjLsJpPhYTPl/FcdG73P4vGYuYcuBy34q4
-         QgQw==
-X-Forwarded-Encrypted: i=1; AJvYcCUIEh570KoCrUaoBeJwfwTBWJVFdAdSRvef4DkQ0ssoBToKUpC785M8z4V5tRokVB6HG9EzRTugRxwA@vger.kernel.org, AJvYcCULJIiuRR2AQIDXT4EVCioZmg1QODOFpS2ZUOh9nru5bhYzxAFKNF8poe/CAFMDHjbcvw3LHo8nl/xOI+5g@vger.kernel.org, AJvYcCXQqxzBOdRaTbeejlaUZIvmKbRwixNBth5i6DO5ZEKNm8CjTIFVnWY7Efjy0ZOJZjaTGzX3H2VZv0oI@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZWjpET5K6Un2BIMFk6XehCt36vMVHDX4dc4duR0H8Dl/OyWly
-	csZvizRqM8OBkasFpl2dTDC+i4bcG8WnUn3N2zYfrqwWnIOiK3GHDYOG
-X-Gm-Gg: ASbGncsh8qFd4Sy888QXjhkijOktJKx8myiPlV79x5/OL3pUdLjqvs4aWTW/5eWVoav
-	CT8gr9Ac59kZZojnmm0HJPuYMyC4vF2Ey9ijOwWLwHIH+X/tftNuoJ7Vk5VF8qRSijN68oRxy+5
-	4F71ZNM0Dwcv820g1MCmjRE9jddZkbMfziXB/dy8DWJCI9DJ1NAMur7j7cg6vBqX1nP/Z3+iEdy
-	3bglXWrHAKzcdU+6GjlaxxvpNmO2lt8YOS0XCU0IG9XKbXcTzN9dzpKMThcs06ijRxPTYu9GX73
-	SWkZAR+C/51ONQsf+752mjgeCVcXz+iSGOr7cJHaazJOjbvI/wluwfcGA6dDD4zA2ueMkOFOYgq
-	pOGx6eaIpL6zhRXHAzOkHJo8lk+pa
-X-Google-Smtp-Source: AGHT+IHPFeXX+HURtJQtp4tZ1Sf/tzFbmOItLXWhDtsdSG6P9lJxjSbu4QqPESDcJHgTrPsizLZIWQ==
-X-Received: by 2002:a17:907:7e96:b0:ae3:c767:da11 with SMTP id a640c23a62f3a-afca4e5efefmr330067466b.50.1755104085722;
-        Wed, 13 Aug 2025 09:54:45 -0700 (PDT)
+        bh=WEhRKi0HmzptgOPz8lO5moCSp0j9P7xyPzVGCUEQhMI=;
+        b=peeQ4zc+3Kpgm/tpUXNHgyqVPCLCRpVDjAG9u0Jk62e2x3IkZdLJDesKKBMeRwX37b
+         d1rD1BTPfimZ2f/qTD2psx3l71d9ikLw8AoyUQYFEOFvTPrTQeVEZ2oU9ktK0VA4+lFj
+         CriJDoy+JVMjxWco/RcHMoUhypCTxqkt0LZ74BBsukqtVMJKi0NOD8MEro+/1oXDWXRG
+         hpDSv46d3xwysZZWEuG+VqxcvviP6m+xXwlCeRad6crJ99VfkKEyZ/9fGhMZOSWGFUsG
+         PoTlxG6PF9J+7hcSRa4k9taQlMSEJmLnF6DN2v38qWVlzvH9+T2SQj/8XcqpJWf2QEe0
+         fMbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDx3a2IWODA0kg1SonWfKvtHDIGBVClFTY+NmIIYSLlq5z5TiLPFnPTyzH4Mt39el9SMSBV+zS2Og4G9Ho@vger.kernel.org, AJvYcCUt0HlB/598nXQB1QhoGr8eeX0R8y8E8KgcOz/kkjO34vQlBe8/Nlx8HErrLlVVkSHfecKreSqg4BvQ@vger.kernel.org, AJvYcCVjsUh+EV/avXjub8pfB9XoCCM3ZnjaZ2ZLU3Gpcrdx4BzkI8ANiKrYKHSZChloCH0a0+Zm20n5h7nZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBxFbTx0m5kQzkq4M4U0z7sRVGOpMCxpEOjfw3cY5SmqWvh+oC
+	qJJ2FSGlzHRLkXcoBAQ47OmCzaBVvOD8vR4JLiUHa5dRdfjmQq/vCi5/
+X-Gm-Gg: ASbGncs7lDiHAGiwEAdcdrnTSXWRpLXJmXVb9Bju0C8Z0g209u0NqkooDKWeze+7ZCu
+	8F56QEkm+w4umjDY12VDZksOgsT9wjB6YiB6bkL/NeAyV556dGQndeplte2smRiBLGStIySCXV6
+	W49QUKdvHuZi+e6soHoTqU4s2rKH1fs+sk3rlfEP6Iy4+3MmBbh/PlkT8PMXjsSrKG37ntxK8aR
+	Trs7bXrsWROId5VkiZHIkeGKR3fLQ8aJ/b5RFy7OPH4DQNf63GZ9H35HD27vi2MIPsQhh9bCgxB
+	ObRrsQb2KViYXj4HAk3iCzTASdm/Tp0885GJdSLlOW5n7u66c2yHZYUTtvOufPAVqDU88Tp1YG5
+	aHbCc1gQL0aqiXlLg8+D8w47ddKNc
+X-Google-Smtp-Source: AGHT+IGbIy0t+cv87axBnTczH6JnGFlpDASg3yYTJxc3Lt9IBLpKfzxeToWCTP8/ZKwMMg9JatNFVQ==
+X-Received: by 2002:a17:907:a4a:b0:ae9:a1f1:2b7d with SMTP id a640c23a62f3a-afca4d458c8mr433120166b.17.1755104086624;
+        Wed, 13 Aug 2025 09:54:46 -0700 (PDT)
 Received: from [127.0.1.1] ([185.177.137.147])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a1e82a5sm2428573766b.82.2025.08.13.09.54.44
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a1e82a5sm2428573766b.82.2025.08.13.09.54.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 09:54:45 -0700 (PDT)
+        Wed, 13 Aug 2025 09:54:46 -0700 (PDT)
 From: Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
-Date: Wed, 13 Aug 2025 18:54:29 +0200
-Subject: [PATCH v2 1/4] dt-bindings: iio: adc: ltc2497: add lltc,ltc2495
- bindings
+Date: Wed, 13 Aug 2025 18:54:30 +0200
+Subject: [PATCH v2 2/4] iio: adc: ltc2497: add support for LTC2495
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,7 +84,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250813-ltc2495-v2-1-bbaf20f6ba07@gmail.com>
+Message-Id: <20250813-ltc2495-v2-2-bbaf20f6ba07@gmail.com>
 References: <20250813-ltc2495-v2-0-bbaf20f6ba07@gmail.com>
 In-Reply-To: <20250813-ltc2495-v2-0-bbaf20f6ba07@gmail.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -99,49 +98,60 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755104084; l=1424;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755104084; l=1588;
  i=y.alperbilgin@gmail.com; s=20250811; h=from:subject:message-id;
- bh=7ZAY+2Peo7S2rRiLYIRAhUNbUzK4+1P+0qH+dyOPnWc=;
- b=u9C2vZ5QWj43U/isacaWwihEG5Y0XBGgciAiGN0TAr0rnDF7CfJcqtem3NakXDncIalJLDvkq
- xC+Pr4ndV8ACpPtp0fdvfR8p+B0ohUR/UvX16wgUEPMmUFxaIvwWSiG
+ bh=7dL620a4ki2oCdeq6jvorfDoA7+7B+wm9Jmm2GXEtLw=;
+ b=A64wy1iR6PNTT8FN+0ia2z3zO+jISd6O+CMWuYM132PamqnlF2Otm0Ee/ynrVSpT7NLg9GkEd
+ r4xqLqzIwMGBfWNSFhjODQiSh1e8Cf4yI9j5PwYq8BJElvm2+DUiqis
 X-Developer-Key: i=y.alperbilgin@gmail.com; a=ed25519;
  pk=FtW2oyQ0+xlYU0XmhYiJYC3lNPtPrgeE6i4WXPwaFnY=
 
-Update the binding documentation for LTC2497 to include LTC2495 to
-enable support for its internal temperature sensor, which requires a
-different I2C command format and a new IIO channel.
+Update the LTC2497 driver to also support the LTC2495.
 
 Signed-off-by: Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
 ---
- Documentation/devicetree/bindings/iio/adc/lltc,ltc2497.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/adc/ltc2497.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/lltc,ltc2497.yaml b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2497.yaml
-index 5cc6a96840778473895f436b7e2627d6240b254b..2a3e3dcc6ca7a48a0fccb88d8d42fee34efcff73 100644
---- a/Documentation/devicetree/bindings/iio/adc/lltc,ltc2497.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2497.yaml
-@@ -17,11 +17,13 @@ description: |
+diff --git a/drivers/iio/adc/ltc2497.c b/drivers/iio/adc/ltc2497.c
+index eb9d521e86e54def0493ea0e81f63b37900c56a5..8f4665547b5b0d32084599f8557c40102c37a4ce 100644
+--- a/drivers/iio/adc/ltc2497.c
++++ b/drivers/iio/adc/ltc2497.c
+@@ -19,6 +19,7 @@
+ #include "ltc2497.h"
  
-     https://www.analog.com/media/en/technical-documentation/data-sheets/2309fd.pdf
+ enum ltc2497_chip_type {
++	TYPE_LTC2495,
+ 	TYPE_LTC2497,
+ 	TYPE_LTC2499,
+ };
+@@ -131,6 +132,10 @@ static void ltc2497_remove(struct i2c_client *client)
+ }
  
-+  LTC2495:
-   LTC2497:
-   LTC2499:
-     16bit ADC supporting up to 16 single ended or 8 differential inputs.
-     I2C interface.
+ static const struct ltc2497_chip_info ltc2497_info[] = {
++	[TYPE_LTC2495] = {
++		.resolution = 16,
++		.name = "ltc2495",
++	},
+ 	[TYPE_LTC2497] = {
+ 		.resolution = 16,
+ 		.name = NULL,
+@@ -142,6 +147,7 @@ static const struct ltc2497_chip_info ltc2497_info[] = {
+ };
  
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/2495fe.pdf
-     https://www.analog.com/media/en/technical-documentation/data-sheets/2497fb.pdf
-     https://www.analog.com/media/en/technical-documentation/data-sheets/2499fe.pdf
+ static const struct i2c_device_id ltc2497_id[] = {
++	{ "ltc2495", (kernel_ulong_t)&ltc2497_info[TYPE_LTC2495] },
+ 	{ "ltc2497", (kernel_ulong_t)&ltc2497_info[TYPE_LTC2497] },
+ 	{ "ltc2499", (kernel_ulong_t)&ltc2497_info[TYPE_LTC2499] },
+ 	{ }
+@@ -149,6 +155,7 @@ static const struct i2c_device_id ltc2497_id[] = {
+ MODULE_DEVICE_TABLE(i2c, ltc2497_id);
  
-@@ -29,6 +31,7 @@ properties:
-   compatible:
-     enum:
-       - lltc,ltc2309
-+      - lltc,ltc2495
-       - lltc,ltc2497
-       - lltc,ltc2499
- 
+ static const struct of_device_id ltc2497_of_match[] = {
++	{ .compatible = "lltc,ltc2495", .data = &ltc2497_info[TYPE_LTC2495] },
+ 	{ .compatible = "lltc,ltc2497", .data = &ltc2497_info[TYPE_LTC2497] },
+ 	{ .compatible = "lltc,ltc2499", .data = &ltc2497_info[TYPE_LTC2499] },
+ 	{ }
 
 -- 
 2.43.0

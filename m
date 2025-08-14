@@ -1,191 +1,190 @@
-Return-Path: <linux-iio+bounces-22707-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22708-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92FAB259A4
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 04:54:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9BCB25A13
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 05:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA9DD58290C
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 02:54:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF98D889A7C
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 03:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7611725CC40;
-	Thu, 14 Aug 2025 02:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE8A1F12E0;
+	Thu, 14 Aug 2025 03:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bR6tajBe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H1BRIVFn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A928725A2A7;
-	Thu, 14 Aug 2025 02:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37AC3D6D;
+	Thu, 14 Aug 2025 03:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755140062; cv=none; b=GURvsMibw9CB3MPwyJfatAXkOQu3TaB/LpW13ubdAUAnH75QfvaCAQwqfeJx5AMdh62MoXfPSzzNgetHChbXwjh23J76nQuIF28ixYyfq85pPJakyzWxbkXJzkAPsng9KsU/OHvlsfPm3Qj11sIhstalfapMGcwBygGLI0Qy54s=
+	t=1755143170; cv=none; b=Ldcol9aGmhxzmXT7vHR5nPAjGF6vaKwmpX9bDAgIuIMkr5r2KvkBxxNvNoCoHNmmzARO73GS4lkWRu+ZmlPvTV+I1y4AswRcGyXuv37F4DuYHcfRGke3n9SHoFSXuECug0ZK3v/6w5Jtm/HS/cDaXBMwRGnSn5wysC3lZByHuPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755140062; c=relaxed/simple;
-	bh=DUD+i5GUorzmyFBIbvOlFraLYTZ2PMn7XBjxYVx4gNA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ffnzng3vIe42OjwS1ircvbjTcZmvP5sxW6xfGSCatU3peK46HCb2EOrLRAwP6L19U7iPxkrEShZ+J1R3NmJXQd9g1/S7vMwr+J5WLLqJQYqcCAhI5C7GW225v0H9eAjVWpWwp48dOuqGZww2nw8v0E9kOJKM/937lKqE0H8G4Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bR6tajBe; arc=none smtp.client-ip=209.85.210.169
+	s=arc-20240116; t=1755143170; c=relaxed/simple;
+	bh=SoCybG3RxH9DT8voZUnLlDQ0grdZZd96BaZUrq9N85Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EJXW82Ui/MU/hQwyTwICdI7gk6NpHMIdQ5Hd3cee65uxIHPyYdJpkvZGnzSb8/rZTsq+D3HDRWZD1Gx0ZFp5EY8OIn0OJ59IA+N8MkUIV6SZAzOXcCQHRBCjQMT2GBsZ9iBhoyevBtS48bFxR0tCFeGPa1ddafpdy17pzpRvyFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H1BRIVFn; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-76e2e614b84so542559b3a.0;
-        Wed, 13 Aug 2025 19:54:20 -0700 (PDT)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2445824dc27so4138515ad.3;
+        Wed, 13 Aug 2025 20:46:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755140060; x=1755744860; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QcSr48CYfkXX8nf/xlhKJbn2nmydypNX8xOgSCNkXgQ=;
-        b=bR6tajBehw+q5/lVVjX9Ge+9B+ZrP/dMW/TqQxvMOY72BO4SSckYFOT4wZwMi4nOzX
-         kiSR8BvhnEsbPgE/bnem4Y3hEM9PU95nXVBJXHfG8Xef2ltUzd0Pjt5rPjhk4s0OaDBl
-         LBXv0zFRH6LBT6jegV4dGM+ODz2kKTL/qAwWTFWR/NF4AjMmyrvw9QXP17MLjafFt4r8
-         1TluBBaPv1qyk+AT1T0xHj8gwocAiMz88Oxp9bDh5iFFIe0au+YKXaPPC3QAIsfm0gjw
-         e/WVeyus7HTg0o/wnfQgc/NdB3uH0/ybaFSmENML8aFFrNY8TTumJHb2Tojt9g+kVrdQ
-         wqow==
+        d=gmail.com; s=20230601; t=1755143168; x=1755747968; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=K9KEtNPvnqPORiFNnpq5rZwSW5K9PoES//U7K/xZsS4=;
+        b=H1BRIVFne53wY7/4nerGx34sAUT1oEw8y0cUU8xceyCIF6YXti6sWq/LqUCzv0JXLi
+         iCsRWsKrZLRUrrOZe+ZwMQxmmmeNlpyCeE76UnGHIVLGgcGIQ7yC63mmO0M4JXsQ5lz3
+         OshcNq0ptomvx1MJB88XGOfukhHo8OlXesGENLq7BUAO/FxXuUKuT984Ksb5K/yhpX1x
+         nI3t/hSdWcI2dBvrkZxjuW6xbds18QgFheu9UspiQkEp/X9PUFq1ovVjoF+SqXfftBCg
+         I3joWkEgkQYe+4w2F9Ogr1e/37cSvotLBEVAZEpoSeH+VKaSj/fdMCz+uqeY4n6hPBJJ
+         hJmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755140060; x=1755744860;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QcSr48CYfkXX8nf/xlhKJbn2nmydypNX8xOgSCNkXgQ=;
-        b=V5wzDG7tAbz9sz+4p64xZNVx+XNYfECJaciIIiwv/sSIEegivsssdRJjUJji5/u851
-         UcflXGdmOnTkycIPbNVwSHgU6HTqN+yqAxXP1dEmpn09o7C0mc+7d2ed/zxTUinjGScG
-         0OY39GrLmWueRabRuTg1Fy3yuKdZm84fbTGUwSGIa+uu2uQjLdm9sMIwKprgbrzLfT7G
-         lEJIhWnx0nMLee9gK6TnAN4VAFpLsEVUXB6n4A0ovlrOqi/cRZqm3lX/3aaFoquLn1aS
-         MBnAgazR1+zctWDYEBWBUjLF3Hh+vPG4Yc9GWWfOawxDpIpehEQMpO1Khdo31TgUs/6H
-         YUbg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/xQl3ifVVQ/fflJ2S+G2I9t6l0qf9gesHDdcNWkg1it4+GOrqFNVwnZKf0rrZ4B7ItHgoCdBYqPx+@vger.kernel.org, AJvYcCXaCle4ldoscoYg1B4fku1W5ld7RMvKFujViciOcawfLx/6dwVGKbfZsDQyzZIhq68Fo55eaQeejJ8v@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzxhiu1GR091E6OgUt7MsRYuBSP/1CFt2b82EneKregVc3kLd5V
-	0IL8mjpvttPtV70Tajc0Hr065pHFZrSJq4/R1U13WvutZdxpTy7Wbfhv
-X-Gm-Gg: ASbGncuRGL6GWiu5kojPEjibXdamZzbUN2GwiS2ipINqRnEvRjXPUkKaxUGCxmzo/GJ
-	N5kzRTP70/+MOg8K/iIQcOpupp37zhPufReET50BK+4kwaBHoQWiDBmmBgxw/3K7Y+GH2u+FVM8
-	OaI0urjWBAt6uRjpPJGO669IOWsoFVoo+1KmDNGnCGTHgEXAfbwZkfqFOgXtmKTrsYGgRLHXiMs
-	zMAwKR7jqDhzJVOeaITkigXNgLciN8xh1QsoRiBOVcc1CzSslddDWy0kwh/v2LEPhcxAmInfr6M
-	BstvMkuh8v3PYqVAHk3gSTYu3C1fVahDNavXhIwMsHyFEZ1EDMxfg0i8XIPV3BEnx8tgRuVEAn3
-	f2slpZaxHEjjIanci+j8vxie2WqPm6A==
-X-Google-Smtp-Source: AGHT+IElBKzQsJtO7lQISS0E15pxdO9aXaHMpROIQ192oq/xulwkXmjJ3tYdIcSz+3pkY6DlmwYArg==
-X-Received: by 2002:a05:6a00:a29:b0:76b:f01c:ff08 with SMTP id d2e1a72fcca58-76e2fbe9206mr2083620b3a.2.1755140059842;
-        Wed, 13 Aug 2025 19:54:19 -0700 (PDT)
-Received: from [127.0.1.1] ([2401:4900:1c45:768d:a218:ee72:b12d:78b])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76c09adf8efsm24716473b3a.68.2025.08.13.19.54.14
+        d=1e100.net; s=20230601; t=1755143168; x=1755747968;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K9KEtNPvnqPORiFNnpq5rZwSW5K9PoES//U7K/xZsS4=;
+        b=Z11QE8gvHt0t2MRiIQlZ8MddCvGHwOS5v/Lb7rST4hsI39LE+wEOlK0hYdefjzhkA5
+         FirptqOHVT+HY0YbuSCdN8QCMhh5IJO8/z5l2g5OmFoa1Fwj63xcpGEjNQoWN1q6yNJV
+         4oEYUBKwCYCnd3vTMrJJfpjbMQnIqB0io5JEB5/YidftiQ9wXhrURj2ckdpT5Ce5F6rS
+         2PEY32/I5M9SKdg/BBvCPYYwv/JIyFtirtDaZmLi3JvfK0AH3MWDxdXu+5lMSHSMnVjY
+         SmFhWLj7vXO4CsOBjbYQbwMbqhVZqNlBX8rF2aTyOzfdC5dpCNW2sX8O+YvYzc9WnvaR
+         +tIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWC7W0wnqE5+dcnzl82C9gS9/W27w9Fj9kYa/ad5PQBCFJURUyHeR51vWdgslKziW7hN8UFXzELpkPYt3z/@vger.kernel.org, AJvYcCX2rvbprLa170LI7wAso1H6zmYSXtT/hhCwF8IEiUKe40UP3jBPjxdF4W7EyQzZr6qExGZMESeeG2I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0SA1H051BBrWSC8/8jvVgRReVO8m23F+VOqf7wgmho8D/NmnL
+	9dZqBBlQPmZg77TBXNzIzw53QiyLAhtEvUBOnmjsPKDpMHs5KoNWNDt+
+X-Gm-Gg: ASbGnctdU18iPsfbcKSsIyX79C0d4Nz7+8Wp7eXM2fwu5UVLMs8ItwN6zEwczEgsXUT
+	bHzcCvJ834UltC6PKuZeLHQ5X38m9Txmwba2Psl3bwL9WOh99+kujLR0Od1gYfdqOa7tTDRKJjw
+	CU+4yoLt8frKau+H7QTgt/Ejxf5hdrRHAJFTUF92j+Bu5ZP9togyJmtEOjMDQcTgDi67odBZUv7
+	IyQlcrx7AgWfpST63BOiIKGESG6J2igajcIyi64cMFj93b1IAFQWs11s7rwdFkLdCmXn2mB9TBt
+	WVIUD9NupeZ5d/i5moWmbRbj3mK5W8ZqaMSZCi8JA02xxIJ4x4zg7GVBghJWyoMw+qxQPulHa52
+	n++gYPqXmN/q1n0HRQBjjQ5zJKt49MZ6LP/v3Kojq/7WC
+X-Google-Smtp-Source: AGHT+IFhiSif59h02ASAFmjymBOYhKlCsKDnTRp8va5rcib9l7OdRsfPMCGKQqzlKZLW5FNUZa1+7Q==
+X-Received: by 2002:a17:903:1b6f:b0:240:725d:c396 with SMTP id d9443c01a7336-2445868e731mr20075115ad.34.1755143168068;
+        Wed, 13 Aug 2025 20:46:08 -0700 (PDT)
+Received: from akshayaj-lenovo.. ([223.233.77.228])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e899af03sm336927765ad.126.2025.08.13.20.46.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 19:54:19 -0700 (PDT)
-From: Dixit Parmar <dixitparmar19@gmail.com>
-Date: Thu, 14 Aug 2025 08:23:44 +0530
-Subject: [PATCH v4 2/2] dt-bindings: iio: magnetometer: document Infineon
- TLV493D 3D Magnetic sensor
+        Wed, 13 Aug 2025 20:46:07 -0700 (PDT)
+From: Akshay Jindal <akshayaj.lkd@gmail.com>
+To: anshulusr@gmail.com,
+	jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org
+Cc: Akshay Jindal <akshayaj.lkd@gmail.com>,
+	shuah@kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4] iio: light: ltr390: Add device powerdown functionality via devm api
+Date: Thu, 14 Aug 2025 09:15:43 +0530
+Message-ID: <20250814034544.93331-1-akshayaj.lkd@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250814-tlv493d-sensor-v6_16-rc5-v4-2-81b82805aae0@gmail.com>
-References: <20250814-tlv493d-sensor-v6_16-rc5-v4-0-81b82805aae0@gmail.com>
-In-Reply-To: <20250814-tlv493d-sensor-v6_16-rc5-v4-0-81b82805aae0@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, Dixit Parmar <dixitparmar19@gmail.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755140034; l=2793;
- i=dixitparmar19@gmail.com; s=20250726; h=from:subject:message-id;
- bh=DUD+i5GUorzmyFBIbvOlFraLYTZ2PMn7XBjxYVx4gNA=;
- b=fKg+LPMNgMuRk1CcfnY3/tDWxLXHdQ5qWhJcu9wUbiWhO7/eZI8pdTnvLcpg5mS1kUxdhMW9/
- rbWwEcVUvETC2CmZpQYfaUzqZRB60T/A9wNYR2pOcv2LP/oQd1k8uZS
-X-Developer-Key: i=dixitparmar19@gmail.com; a=ed25519;
- pk=TI6k8pjTuLFcYiHazsate3W8rZGU2lbOrSJ4IWNoQhI=
+Content-Transfer-Encoding: 8bit
 
-Document the bindings for Infineon TLV493D Low-Power 3D Magnetic Sensor
-controlled by I2C interface. Main applications includes joysticks, control
-elements (white goods, multifunction knops), or electric meters (anti-
-tampering).
-Drop duplicate entry for infineon,tlv493d from trivial-devices.yaml as
-its documented in this separate dt-binding file now.
+Use devm_add_action_or_reset() to do cleanup when the device is removed.
 
-Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
 ---
- .../iio/magnetometer/infineon,tlv493d-a1b6.yaml    | 45 ++++++++++++++++++++++
- .../devicetree/bindings/trivial-devices.yaml       |  2 -
- 2 files changed, 45 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d-a1b6.yaml b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d-a1b6.yaml
-new file mode 100644
-index 000000000000..dd23a9370a71
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d-a1b6.yaml
-@@ -0,0 +1,45 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/magnetometer/infineon,tlv493d-a1b6.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Infineon Technologies TLV493D Low-Power 3D Magnetic Sensor
-+
-+maintainers:
-+  - Dixit Parmar <dixitparmar19@gmail.com>
-+
-+properties:
-+  $nodename:
-+    pattern: '^magnetometer@[0-9a-f]+$'
-+
-+  compatible:
-+    const: infineon,tlv493d-a1b6
-+
-+  reg:
-+    maxItems: 1
-+
-+  vdd-supply:
-+    description: 2.8V to 3.5V VDD supply
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - vdd-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      magnetometer@5e {
-+        compatible = "infineon,tlv493d-a1b6";
-+        reg = <0x5e>;
-+        vdd-supply = <&hall_vcc>;
-+      };
-+    };
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 27930708ccd5..9e0eb5c873d2 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -125,8 +125,6 @@ properties:
-           - infineon,ir36021
-             # Infineon IRPS5401 Voltage Regulator (PMIC)
-           - infineon,irps5401
--            # Infineon TLV493D-A1B6 I2C 3D Magnetic Sensor
--          - infineon,tlv493d-a1b6
-             # Infineon Hot-swap controller xdp710
-           - infineon,xdp710
-             # Infineon Multi-phase Digital VR Controller xdpe11280
+Changes Since v3:
+-----------------
+- Removed call i2c_set_clientdata().
+- Modified changelog accordingly.
 
+Changes Since v2:
+-----------------
+- Replace i2c_client with ltr390_data as action parameter of devm_add_action_or_reset().
+- Place i2c_set_clientdata above data population line.
+- Modify changelog accordingly.
+
+Changes Since v1:
+-----------------
+- Switch from remove callback to devm_* API for powerdown.
+- Modify changelog and summary accordingly.
+
+Testing details:
+----------------
+-> Tested on Raspberrypi 4B. Following tests were performed.
+
+1. Sensor and interrupts should be disabled after module unload.
+-> Before unload
+akshayaj@raspberrypi:~ $ echo 1 | sudo tee /sys/bus/iio/devices/iio\:device0/events/in_illuminance_thresh_either_en
+1
+akshayaj@raspberrypi:~ $ cat /sys/bus/iio/devices/iio\:device0/events/in_illuminance_thresh_either_en
+1
+akshayaj@raspberrypi:~ $ i2cget -f -y 1 0x53 0x19
+0x14
+akshayaj@raspberrypi:~ $ i2cget -f -y 1 0x53 0x0
+0x02
+
+-> After unload
+akshayaj@raspberrypi:~ $ sudo rmmod ltr390
+akshayaj@raspberrypi:~ $ i2cget -f -y 1 0x53 0x0
+0x00
+akshayaj@raspberrypi:~ $ i2cget -f -y 1 0x53 0x19
+0x10
+
+ drivers/iio/light/ltr390.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
+index 7733830dca67..2e1cf62e8201 100644
+--- a/drivers/iio/light/ltr390.c
++++ b/drivers/iio/light/ltr390.c
+@@ -680,6 +680,22 @@ static irqreturn_t ltr390_interrupt_handler(int irq, void *private)
+ 	return IRQ_HANDLED;
+ }
+ 
++static void ltr390_powerdown(void *priv)
++{
++	struct ltr390_data *data = priv;
++
++	guard(mutex)(&data->lock);
++
++	/* Ensure that power off and interrupts are disabled */
++	if (regmap_clear_bits(data->regmap, LTR390_INT_CFG,
++				LTR390_LS_INT_EN) < 0)
++		dev_err(&data->client->dev, "failed to disable interrupts\n");
++
++	if (regmap_clear_bits(data->regmap, LTR390_MAIN_CTRL,
++			LTR390_SENSOR_ENABLE) < 0)
++		dev_err(&data->client->dev, "failed to disable sensor\n");
++}
++
+ static int ltr390_probe(struct i2c_client *client)
+ {
+ 	struct ltr390_data *data;
+@@ -693,7 +709,6 @@ static int ltr390_probe(struct i2c_client *client)
+ 		return -ENOMEM;
+ 
+ 	data = iio_priv(indio_dev);
+-
+ 	data->regmap = devm_regmap_init_i2c(client, &ltr390_regmap_config);
+ 	if (IS_ERR(data->regmap))
+ 		return dev_err_probe(dev, PTR_ERR(data->regmap),
+@@ -733,6 +748,10 @@ static int ltr390_probe(struct i2c_client *client)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "failed to enable the sensor\n");
+ 
++	ret = devm_add_action_or_reset(dev, ltr390_powerdown, data);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to add action or reset\n");
++
+ 	if (client->irq) {
+ 		ret = devm_request_threaded_irq(dev, client->irq,
+ 						NULL, ltr390_interrupt_handler,
 -- 
 2.43.0
 

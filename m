@@ -1,77 +1,78 @@
-Return-Path: <linux-iio+bounces-22716-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22717-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCA5B25EF4
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 10:35:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04512B25EF8
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 10:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ED275A2A2A
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 08:35:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3301D8807F7
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 08:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4BD2D63E0;
-	Thu, 14 Aug 2025 08:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6207E2D63E0;
+	Thu, 14 Aug 2025 08:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hIYycoX5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MqtSYFy9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE20239581;
-	Thu, 14 Aug 2025 08:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7826821255E;
+	Thu, 14 Aug 2025 08:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755160506; cv=none; b=FZhoIjsiF5q/QpMkr2mRywhErs2OqeAAERPwF9NjFimjh3S+onMtI5BivdmEfGXXxHqAa50AGf1BNzrdSJvcizYNkVlS18NPPO6Tg5V06iP5SVvU6DwKs41L8mYBZV2c2SY5/14h/wk8a4jwhM4OD9oDbPSNoBxij6EVaRRoBes=
+	t=1755160521; cv=none; b=kKgVmSrI7mxK2Vy8k0VR7aYb6QuJ3a3kHvrUGWdDPP2LtTHrZto+T/lOnBNhYhwyDo3q2SW1NBiwSu5pEzMIUzJpjYYjyVrNXSCK8R+pP40MsTGhq6crM2Y2ZaxsKydWm9LlDQ+D4AIf5DKhHOlKxmu9+glKBB2yvzvp/kBO1GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755160506; c=relaxed/simple;
-	bh=btMaktMsMFdvjb/8kiNjF7N+VOtWOxJQuOFY4wPqgbU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=PMQXABACZh3W1iVeWD9XIvgDXtPSCRWpu+Pw5y6Ggk/tVedj1oTDlRAAQHIhKirFUfCThmb+R+xa8W67EgxSw9lyHHoDM8bvfGjHXghfAzQyZv9hUxyxlWsKN72dS9cKGTbTrmmAoW/03yjcPtGk+7CoBjI6UjlHevP0xHfmwUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hIYycoX5; arc=none smtp.client-ip=209.85.208.180
+	s=arc-20240116; t=1755160521; c=relaxed/simple;
+	bh=GrauMcqTptX20P3k/gQBfC4mz8ZlS1892uGLTze9knw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XjV8XEN/sBlFNfocb0SssjdWCtqmE6S9ea9DxhDgZf2ETOiFDYjYyt9V3MFn6XpqYYYCx34wQnjaOIUbQa6e4JW3YF1fSFvPcOhDsEmukska8V9jS3blW5TCNUlrwD6DQ5nEjOs0ju1BNWMx5ULAY9WpU+bxF90SBkOZkp+Zl6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MqtSYFy9; arc=none smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-333f92a69d4so5069301fa.2;
-        Thu, 14 Aug 2025 01:35:04 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55ce52807f8so630717e87.2;
+        Thu, 14 Aug 2025 01:35:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755160503; x=1755765303; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=R7aR8S9FRLta1axStaNt4O0Wb6l880Eq2jEsm/C+nIM=;
-        b=hIYycoX51mM186Jjc3Dyi6QOsiichlPNvaGGn6AgkjYcjrxuAQJXg0iS5U3jMRUZbU
-         Om9hgcy+5+IqqQ7GHlJb2WPBz01ihEV5L//l4SA1lwKi5qH28+o7IZe4Wp5IGTvPRDc3
-         zKiQdiCNeBgW2IMbfuuiq2YGda+OeWRzjrbtIBFlFZtNQMfXFSJemrvnwIDF1gbaPsIE
-         76PONA4kniwYiGuC8JpBDiOtOSalYVfjI5DbyPlVwQDm6JiNZM6htbBUyzgCHH37Ody6
-         1FxZGyYdd+Dp4B7n5stQ7YT4sgLsp14vhiq/4PuMKDfClD+JYinW5cQGTino/SufrDVB
-         DyUw==
+        d=gmail.com; s=20230601; t=1755160516; x=1755765316; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jQ9vfZoIQnPu8V4AGCiAple7OJw+lWEZqoNWuIXlFQ8=;
+        b=MqtSYFy9MOfg169gEp9C39Gne8lq5EF6HLksXbKAxhW/Ep46Et0zmH38jWtCwCpAC/
+         wP5aU2DM4Ep8i4suoROGVnPhxyjGdLzwjAK6cQoNDFWjmvozOfYJKDHCExzCOY28A2/Z
+         45kmP6wO1ey0291Lszy2DK+oVUaJ2u4mEHBCukTVdA54jNT4C3BDadnG+M9oxxr46dgp
+         j3bJ7HK/L4SoGBX2YSBGVvvqIZVth3FHYlcHeXJddfrRlUSd0WWAbBf8QekNDBQY37iP
+         DPjofjDVEP6MzKPvQAtQwmWZ9pSgyAs7/NQmRjXFP9CL8buSpHiebJxIB66kNvTGWDda
+         f6Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755160503; x=1755765303;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R7aR8S9FRLta1axStaNt4O0Wb6l880Eq2jEsm/C+nIM=;
-        b=UXTyaBFaXe26zYy+HPPvafjl6NtsIy940mKJAMcNDc0msaxj0ISHnVIOlk/NfeLR7X
-         cqKYALKdma9+xxnMDmtsNaCXp4kEVB5jK0w89NdCyfc9fgA12ADF80FyIU65GVCRSyZA
-         JYfSsRc36+pKT1d8EKVUljmWDwZjXqKW9ThGOYCtNqMC4C8Fl9izhE4rNR0QbtkMR2Bg
-         KwWJvjxwI+fVZL/FUZP8fCrNaYW42rneTxfFpajYDsfOWW/RoDOjjWwezyytDvY+qqhh
-         qWqIDmRm2NrWQLgxzHt3ABoVjKSYkWR14nwQOCsVK+KiM+phCCCsjiXyZN/Yg3YQdgJr
-         bCwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUEBYyFEyRvoM5s5aIpxRaoJn8NBdh57zHk+Wwl21THcGZKZjAvBnzZQFN8Ta73v+tBAZVrFmZmK3MO@vger.kernel.org, AJvYcCV0Vgj7FoOzghyDnJa3bgAuzLuj4oVAXJ+YTygiMJOA0Qa3O3Tnf6D1SHR9RVpQz7yqKDAcGvPDFbbn2Paj@vger.kernel.org, AJvYcCX0lzLOeoqm78bruuhSPQ3h/ffhzCT/zx1mpeHCnE+mdceZoYpatxieZTb+mn58NvYKe7GLJqXTRmaY@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl8OdsfcoALTosqv4aIxDGzda7pQsMuasjInNrEsHTYoiNDvt8
-	KRY3hpHo1KC+rt9stlqWyseo4gY1WcdqeQvSKwFObSVf6obi1cYmJeX6
-X-Gm-Gg: ASbGnct1YMG+f/yB/ajJXVI5jw6k5S63wVqE07LE3PUQ5l22q789MFRQMD3uAHs9WBi
-	UyzYO/GBkDcK1buFcnN3AFzCJSnjt/9rJR6LWjTlsMeG5EW8ZPgfOCF9IdK0uEXyR8u14Oq/tKk
-	CKhECQ4frNzjiXwy5qtbi581wDNXhEKu7FiD3daBka9OlZplr5+nsZnKsZUyErJpqqoqCAa5DpI
-	5agGbs3OyM5bFFLaYY/onC3gWY2rrF1XciwHpCS6+VEGAJFXTQYHOfnDyIU9tenHdpsgXFM3kyJ
-	RLZh7MD6b3uRVm65N7/4zCs1sZkw3TMPGeLRe74Il/RkyDAWa7ASS9ukNWl91mmY4/XSSUtFt1V
-	mxOYYwapQvMpfrOrEgE9A7cP2
-X-Google-Smtp-Source: AGHT+IEZeHzlXMMVE4kRk5QCaLTyFIuAx0jVdWQvsbTeSj+GjEtfhbgXIYu9OpDKv1NCBoqSdv8c2Q==
-X-Received: by 2002:a2e:2e1a:0:b0:333:f952:e3da with SMTP id 38308e7fff4ca-333fa824acdmr3588921fa.31.1755160502712;
-        Thu, 14 Aug 2025 01:35:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755160516; x=1755765316;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jQ9vfZoIQnPu8V4AGCiAple7OJw+lWEZqoNWuIXlFQ8=;
+        b=TzYJKOT7oORb3yqS0icgHwaPtaIqdP0hZuZYS8Hm5O+ERyvFn9DGVU3XatJgtFSOtd
+         CViUlZ2mzp35vBMQ+GTwwwyw5LXHZlureZPuKWxiuJWIN1WMCzbkNI5jVhQNuOwvk++C
+         H+3THR8KPFjFS2t7SK5paOl0n6sTA8dcpkJ31BkkgXRKNJLl4yc6gv/E2ueNuIsr49AC
+         iAmGcTsg3fdaVF9W2QPqgGydhqknwtGym3BQFK+VHQaex7grFcbZnP3ems/huuk0YtFX
+         trMzuHa5HgOr5Svs6XbpNfIC1L5LsUL6xFhxRh3RIyh7eVH79YvC0e6XUVsO3IXYL00o
+         4RBw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+JS9fnJ2h11uwPAG5fCt5HJNuA0n9tlBFxGDViBP7LWfRFHQG8emCTCAlcAEEuJTdRiYsagv5u6vB@vger.kernel.org, AJvYcCV/Cs3XBszPPMp6FlRTSQofRieUGgcDqEHUhTlHl+hYJ3zbFotx5hR+KYiR9NF2i0zLnW/t6S0JwmocbPn5@vger.kernel.org, AJvYcCVb3T0ERu+s6GwPk96mT63E+65BfPkn6gbegZ/vQ44J6XSS7AuHDp8//9yPJbI8frOLnN/oyXjiw1zT@vger.kernel.org
+X-Gm-Message-State: AOJu0Yye+yoUqNXFB5iFAO+UCLw5JsaVWaJCY0uumr30pMbvEGHfnWrs
+	9ot/Zj5OeGYwVyCuYlpgnB2gdPPPqi5SExda2OlbJ4oQVAacDXIsLqmU
+X-Gm-Gg: ASbGncv3igbmi5o/rVxX4xBD5JxLHWsjtUbUFaUlbicbBAqyFFk+N0SVh/jjDa1DvEd
+	rNBI1Yet9Dzd71d+oP6neprhEgA5Etq5IfCdlfEQQ/5LHRxfUlATub+9fXNmHzgBI9ZyQKExyQb
+	Z4lfes7gf7vEWdGd/j1jIJw4Oh3ikrl7Ba6YkA0rU/t536kEtooKDcQMAKmUr7OjIQX/tYDPCT1
+	RsyU8xvjXCx3a84iRC3j4AP5MWem7HJvKpfwMJDtYg0Bwhtonbf+BA3RnZgDMWiDpVeVOoYLSae
+	RxWCyJ/6sSc6Mxz8UUsmNpDA5z8ylQ+SsU6z/uCfhyuffnE+y7bHHt3zAvNW13XQOKCb+ussN+/
+	ZKsrmvSZRRvtNAJABFAOxD4Lu
+X-Google-Smtp-Source: AGHT+IG0LqtwKE4lmtneN52Me6K3H+ZWEVkK8R3xRxq4Gb/UU3T4DZD6SkmnZS6pYKi8FhDm0mIceA==
+X-Received: by 2002:a05:6512:b99:b0:55a:26ae:56e1 with SMTP id 2adb3069b0e04-55ce501a97cmr647024e87.27.1755160516077;
+        Thu, 14 Aug 2025 01:35:16 -0700 (PDT)
 Received: from mva-rohm ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-333f8cbbfd3sm1920661fa.3.2025.08.14.01.35.01
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b9fd163dbsm4659496e87.156.2025.08.14.01.35.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 01:35:01 -0700 (PDT)
-Date: Thu, 14 Aug 2025 11:34:50 +0300
+        Thu, 14 Aug 2025 01:35:15 -0700 (PDT)
+Date: Thu, 14 Aug 2025 11:35:11 +0300
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -83,11 +84,10 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Matti Vaittinen <mazziesaccount@gmail.com>,
 	David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Sukrut Bellary <sbellary@baylibre.com>,
-	Lothar Rubusch <l.rubusch@gmail.com>
-Subject: [PATCH 0/3] Support ROHM BD7910[0,1,2,3]
-Message-ID: <cover.1755159847.git.mazziesaccount@gmail.com>
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/3] dt-bindings: iio: adc: Add BD7910[0,1,2,3]
+Message-ID: <8ef78e3cffcfdf99153a3fcf57860771890f1632.1755159847.git.mazziesaccount@gmail.com>
+References: <cover.1755159847.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -95,62 +95,68 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Bf1rqEWCO5/UOXc+"
+	protocol="application/pgp-signature"; boundary="gDcFeKkCusZoWwZZ"
 Content-Disposition: inline
+In-Reply-To: <cover.1755159847.git.mazziesaccount@gmail.com>
 
 
---Bf1rqEWCO5/UOXc+
+--gDcFeKkCusZoWwZZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Add support for ROHM BD7910[0,1,2,3] ADCs.
+The ROHM BD79100, BD79101, BD79102, BD79103 are very similar ADCs as the
+ROHM BD79104. The BD79100 has only 1 channel. BD79101 has 2 channels and
+the BD79102 has 4 channels. Both BD79103 and BD79104 have 4 channels,
+and, based on the data sheets, they seem identical from the software
+point-of-view.
 
-The ROHM BD79100, BD79101, BD79102 and BD79103 are ADCs derived from the
-BD79104. According to the data-sheets, the BD79103 is compatible with the
-BD79104. Rest of the ICs have different number of analog input channels.
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+---
+ .../devicetree/bindings/iio/adc/rohm,bd79104.yaml     | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-This series adds support for these ICs using the ti-adc128s052.c.
-
-NOTE: There has been work on couple of other patch series [1][2] touching
-this same driver. I haven't considered those changes because, AFAICS,
-there has been no new revisions of these series since mid June.
-
-[1]: https://lore.kernel.org/all/20250614091504.575685-1-sbellary@baylibre.=
-com/
-[2]: https://lore.kernel.org/all/20250625170218.545654-2-l.rubusch@gmail.co=
-m/
-
-
-Matti Vaittinen (3):
-  dt-bindings: iio: adc: Add BD7910[0,1,2,3]
-  iio: adc: adc128s052: Simplify matching chip_data
-  iio: adc: adc128s052: Support ROHM BD7910[0,1,2,3]
-
- .../bindings/iio/adc/rohm,bd79104.yaml        |  11 +-
- drivers/iio/adc/ti-adc128s052.c               | 114 ++++++++++++------
- 2 files changed, 87 insertions(+), 38 deletions(-)
-
-
-base-commit: 856d7be7f3c459a6d646b1f8432c6f616ade0d10
+diff --git a/Documentation/devicetree/bindings/iio/adc/rohm,bd79104.yaml b/=
+Documentation/devicetree/bindings/iio/adc/rohm,bd79104.yaml
+index f0a1347ba4db..6a6e6ab4aca3 100644
+--- a/Documentation/devicetree/bindings/iio/adc/rohm,bd79104.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/rohm,bd79104.yaml
+@@ -14,7 +14,16 @@ description: |
+=20
+ properties:
+   compatible:
+-    const: rohm,bd79104
++    oneOf:
++      - items:
++          - enum:
++              - rohm,bd79100
++              - rohm,bd79101
++              - rohm,bd79102
++              - rohm,bd79104
++      - items:
++          - const: rohm,bd79104
++          - const: rohm,bd79103
+=20
+   reg:
+     maxItems: 1
 --=20
 2.50.1
 
 
---Bf1rqEWCO5/UOXc+
+--gDcFeKkCusZoWwZZ
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmidn6MACgkQeFA3/03a
-ocX1Jgf/cmjpNbrghOnqLYHfkVAYA/QfNxEgLBQQFPptiQuWTYO+Ya8b0QQjwEHx
-s0lscWStFTwd8hVNsgcmxX2DSrG3+eUizMm9rUexpEkiB+//QC3WeHKPblNOx/Iy
-FpHD1KR7uvXUADiGl//9WMPil7P7KThQKYJJLtbCHGo7rt9aY5HBk76HM6XtlgV8
-k/VKdXIamyQt8GdTOh5xRtqni4/S95LNqy1Kvajyxpt9G1naMZjT1FCvBwBy5HFg
-A44vNP84pUfgc3ll8ipOxzi3z/rbfZ/XFN5ZA2Ci7Kr0QN+5CI1ASqmGJ+BTkKsW
-reC9pt5YQeGuGfB83VbtUTtIylIOrQ==
-=cw0a
+iQEzBAEBCgAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmidn78ACgkQeFA3/03a
+ocUqWwf+MwpKHSS/SFqDncO5qLx8XUKgm8nVokZjUkPtDAqBgEDaCb1o5X9WkMMK
+r+Y4sRNPeMghThcMxHc1xSx9eJ71JPVq7IXg+C4NiboTGw/HVMwP6COJMRSt4iiQ
+/LFuteK4ZIaUOiyGcIbps7ZE7iVqUiHWH0XPdmpwKmhsmy3vXnDwpZV9GwAo26ny
+Dz7xi0BL8IBLPCKkFGSRHZR7kOIKJtIYmIngwEFeQWhO4oywXSyyINwZDKNTFd8M
+UsqMiRIEO7OQiwZNgZkrQoTxMUOliFBfhtgdRn5HW4DHetwT20X1wOIVDRlYRcb7
+UClUzVOn84bbwqJlXFHzG3q3X2jADg==
+=ivEM
 -----END PGP SIGNATURE-----
 
---Bf1rqEWCO5/UOXc+--
+--gDcFeKkCusZoWwZZ--
 

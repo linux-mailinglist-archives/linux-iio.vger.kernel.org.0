@@ -1,82 +1,125 @@
-Return-Path: <linux-iio+bounces-22735-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22736-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93D6B263C1
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 13:03:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F22B263EB
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 13:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD21A16D323
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 11:01:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EC677B3A65
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Aug 2025 11:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7A32F28EE;
-	Thu, 14 Aug 2025 11:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541C02F99BE;
+	Thu, 14 Aug 2025 11:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X7qTVoxT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNpjrfeQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67642EAB9F;
-	Thu, 14 Aug 2025 11:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D472F39B2;
+	Thu, 14 Aug 2025 11:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755169236; cv=none; b=bBmZ2zXt8i/5eVHZZ0/o9+0xJk1hZ4g/EKu4H4iRO8W76E0WqFoUgXM0UNK6NFuHxqh7rrEwbPuZvv3CTAbUFsjkdiE7JTKT8dxjy2IXCQCyCPldBvNUNU1i98TFmvAalsOZluqPqyjB06/wbPsSr8qPHFMp+L6pJL+fW+l3d9c=
+	t=1755170054; cv=none; b=Ut15ndK9suyWTvlPi7DRjKmO94cmLLVDWMaRypWKxuWA8pHu+VadjJ6yv6l6yEZp82zCdcyPcg7J2QmL6NLM/Mn/GPL9gb4POPCN2yXj2gwqSWNVcr1EyFTdvAOID7POMYFRvLQ3eEjz5vah/gFkgjO6Bm6y49ViemAkEAi2Xws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755169236; c=relaxed/simple;
-	bh=ha3TYWbV+huAwQsCRTUDSrSg0nq7+oWMtWJZ76ApaJI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Qvj867XdxlqDpOdD6XLBdvqtQktKV4l7mZhWN+k/tX9HnicYr+YVeBRQLisscQJTxrza+u2X+an6drqYWaYu3NVluG/EeeQCx6Sv6Ut2fYw1GcLx1LdCszOUlaaprgHtbgvV36Ir75o87hq2FvoczMh0jVcC4xv6fcy/+asFtm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X7qTVoxT; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb73621fcso116010166b.0;
-        Thu, 14 Aug 2025 04:00:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755169233; x=1755774033; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IVqngp6d0YHayShjN7NcmU4rtRaIIuqWkl5dT+TPW6Y=;
-        b=X7qTVoxTrnD5iZ4vLXQhCv7dg8n/5otgdhrv3ZjXzQodLLWUW2/x8+l2sM7CwgmZiD
-         12QbHgyD3i9MC38NkJ0U6PThONi68zGw6UDdn5yN/mFiLJ+OGpACdmTrbIqTn0T4oAU0
-         xd16gyaHZYo0HiDIsKFswUYOa9bQvJcNh37G7mdEe2+bejhqQdgEobeYkaIxCSHi7koa
-         ovKuRwayjigJtzve78zkcHpJOaVNjc7dDI3YNfE7Bs9bkwTMdlTyJeVGk8e7Nee26nyR
-         7hlAHLwEdmf0A1+e7GMe1drdS9bowgXNpP0E2L1mNuTxcR+MKk9LUVc5CNRlOzPnhrKd
-         1aRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755169233; x=1755774033;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IVqngp6d0YHayShjN7NcmU4rtRaIIuqWkl5dT+TPW6Y=;
-        b=eZ25GEjgdyQz7UQnUiryuzPwQW3QlvxBdWMyL166RRihMd6oVcMXPTNKVbXqOARgGd
-         WlGsnb3MNnT/+SWt1ckjrBK1tBH7dJ6CEADuxJ74unyXW0ETVq11DUn7rjaDgLjYk9DN
-         6SGp7Eu/DLxa8SILcG5XCL6XUC5MwdXy+ySyaEHDNgnqoyY/MGvHcUJTp1yNyq2hBzKB
-         5E++8H59I0P53kt5Foa9FHPWwi83dWPfjsupwkmCMDLdGPvljmrXUgoX17F/pU32SWll
-         lWxmKsv1scIaKelptJ/3XyK9SVZ52HsEqzVW4/VY7+HH8qu8DGC7zyz3gHUrm8X7B8yM
-         mnRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5qmbSk0BXExHSCWygFfRUPWKVURAGc94aI68tBup28PSlPTT7V1hdSeBxru1nzy/7iGMwBC2HADWvXxmA@vger.kernel.org, AJvYcCUdkoZ5+dAvzSiE9SHXxgPwzjPq8+aMkO/AgZd5j1o3+jRQn5BY5lwsRje1bdXotQSGGgY9uT+hYJs0@vger.kernel.org, AJvYcCWBdWgk4y/n+GALc8SrzCR7lkdPcKkxpHL1PmHrcONwaXDZOM3BWMoXH8lQfsoasKkdxCKQpZONz4ir@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaaAnDM7X2Mhwy4NM2iQKcyVLQIRqkH6rBOdY8bohrHIAuoQeg
-	CbOXu3XFWhe2Wn2SaH9TV/LL7muD+5clgDkHvAT4Yl1Q0gb11EpPMKJ2
-X-Gm-Gg: ASbGncuORQ6va4e0VKODOmENhE3CIXSVCEd8lcAk6z/9neHdwEDcdVfQOeRfYvdNyY9
-	S2fBLBrfZ2jiPWF2cqkU+9aZj44HmgykV/nNCVOrfd86J/m7Fc93S78gR574Z+8YHFX6AaYQjY2
-	P3nLQHMlGskcZJ1mzJy4SVbd54q4vOZw3htZG4MLaWS0k/O/cHYsoTWwaIOv4kuTvw7mhYRnihX
-	wHQ5TIlAFa0kzJzt3CC8MXWGdvZklA4/gx5EfuoOR8FlzC7FAkomuPQOKwuheHlmOqRoMoDkc7d
-	ZFZeU5evtKDHqBCmFYm4TmAqLCI33oCA0w+B9DilZrJcnr/O7/Fq0Ic5CMwt7nXKcP9nMzkuOQE
-	CYAcTGD1VBA5RWyn4AZAYHtwMuSJd
-X-Google-Smtp-Source: AGHT+IFb4uqgKytb6JRIALaC3r7ae///g9Z/qOGjhuJ/hLXr/TVNVTsIfJAGTCy8LbQPDjrIaOnPKA==
-X-Received: by 2002:a17:907:9487:b0:ae0:ab3f:36b5 with SMTP id a640c23a62f3a-afcb981ee79mr254524466b.4.1755169233178;
-        Thu, 14 Aug 2025 04:00:33 -0700 (PDT)
-Received: from [127.0.1.1] ([185.177.137.147])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91dfd4b31sm2542980066b.85.2025.08.14.04.00.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 04:00:32 -0700 (PDT)
-From: Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
-Date: Thu, 14 Aug 2025 13:00:20 +0200
-Subject: [PATCH v3 4/4] iio: adc: ltc2497: reorder struct members to fix
- memory holes
+	s=arc-20240116; t=1755170054; c=relaxed/simple;
+	bh=tEQmYgzbbnDyqDEJWRtGvNd+F5EzBR/vQBdSyaJQhYo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=f8zoWRljDaUtkBEG9jh9Akue/JgQHMQF2UYUfm6gU4hT/joe+akAkfpcd0ZHLLYz2KzJli0+FGfjLaIpZN4Vt1/8xS3graQCyQD/V4f92xGOE0q/i4rZPBfKTyrijFZMf6hOgat7utoV3U51SBti+RH3jtwtejtHqLftwZnUyC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNpjrfeQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF02C4CEED;
+	Thu, 14 Aug 2025 11:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755170053;
+	bh=tEQmYgzbbnDyqDEJWRtGvNd+F5EzBR/vQBdSyaJQhYo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=nNpjrfeQtIacQG0WEX7mhSYTd7hQlnB7xgoGgJ3v0sCDCZTw/gWywOLfqOYZY4LEw
+	 5E1vCRzlD1L7yPW24oE8hMcbLDvBgKF7UglcpNWQtk+d21igAN/jkLiw4vfw95mmaO
+	 Wy7Aqpr6pD43wwMPVYuuHLtW+Bl/6xetkfjwBZUQFNWFgaJ0eeIdJk6JAFWM+nmE53
+	 +kHohC9FP8zxW9RrnA7dkwqqcgSuN4MKh4R6jlzu+aBiOCgoS1PQtvycwFenFDAKSf
+	 8NGwtU+raJOCaLGmFHJD4RvJXWWS3gsAOxCpMzRtcOJrdMPkcN8DQ2NiQbSAuAjRLj
+	 ccmAEOd0wNzVg==
+From: Mark Brown <broonie@kernel.org>
+To: linux-kernel@vger.kernel.org, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Andrea della Porta <andrea.porta@suse.com>, 
+ =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, Andy Shevchenko <andy@kernel.org>, 
+ Andy Yan <andy.yan@rock-chips.com>, Avi Fishman <avifishman70@gmail.com>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Benjamin Fair <benjaminfair@google.com>, 
+ Bjorn Andersson <andersson@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, 
+ David Airlie <airlied@gmail.com>, David Lechner <dlechner@baylibre.com>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Drew Fustini <fustini@kernel.org>, dri-devel@lists.freedesktop.org, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Fu Wei <wefu@redhat.com>, 
+ Guo Ren <guoren@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, imx@lists.linux.dev, 
+ Iwona Winiarska <iwona.winiarska@intel.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Jassi Brar <jassisinghbrar@gmail.com>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Jerome Brunet <jbrunet@baylibre.com>, Jonas Karlman <jonas@kwiboo.se>, 
+ Jonathan Cameron <jic23@kernel.org>, Kevin Hilman <khilman@baylibre.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Lee Jones <lee@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, linux-actions@lists.infradead.org, 
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-input@vger.kernel.org, linux-media@vger.kernel.org, 
+ linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org, 
+ linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-rtc@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-sunxi@lists.linux.dev, Liu Ying <victor.liu@nxp.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Maxime Ripard <mripard@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, Nancy Yuen <yuenn@google.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Nicolin Chen <nicoleotsuka@gmail.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, openbmc@lists.ozlabs.org, 
+ Patrick Venture <venture@google.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Robert Foss <rfoss@kernel.org>, 
+ Samuel Holland <samuel.holland@sifive.com>, 
+ Samuel Holland <samuel@sholland.org>, Sandy Huang <hjc@rock-chips.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Stephen Boyd <sboyd@kernel.org>, Takashi Iwai <tiwai@suse.com>, 
+ Tali Perry <tali.perry1@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Tomer Maimon <tmaimon77@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Vasily Khoruzhick <anarsoul@gmail.com>, Vinod Koul <vkoul@kernel.org>, 
+ Vladimir Zapolskiy <vz@mleia.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Yangtao Li <tiny.windzz@gmail.com>, Zhang Rui <rui.zhang@intel.com>
+In-Reply-To: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
+References: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
+Subject: Re: (subset) [PATCH 00/21] treewide: remove unneeded 'fast_io'
+ parameter in regmap_config
+Message-Id: <175517003454.17441.365944262533574232.b4-ty@kernel.org>
+Date: Thu, 14 Aug 2025 12:13:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,77 +128,45 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250814-ltc2495-v3-4-c2a6cecd6b99@gmail.com>
-References: <20250814-ltc2495-v3-0-c2a6cecd6b99@gmail.com>
-In-Reply-To: <20250814-ltc2495-v3-0-c2a6cecd6b99@gmail.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Liam Beguin <liambeguin@gmail.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755169221; l=1743;
- i=y.alperbilgin@gmail.com; s=20250811; h=from:subject:message-id;
- bh=ha3TYWbV+huAwQsCRTUDSrSg0nq7+oWMtWJZ76ApaJI=;
- b=AAUFkHhsavrGE02LDakST86q8xbNc5p47qQxtm45rVCCHo0N+t1JNejhdY+/4DuJPXDJbui/D
- OW2xs1Rczi/BgFqc/a2zKjM//RR2j8u2LNCKtz9VkkydLJO3bfEwWY3
-X-Developer-Key: i=y.alperbilgin@gmail.com; a=ed25519;
- pk=FtW2oyQ0+xlYU0XmhYiJYC3lNPtPrgeE6i4WXPwaFnY=
+X-Mailer: b4 0.15-dev-cff91
 
-Reorder members in the `ltc2497_chip_info` and `ltc2497core_driverdata`
-structs to eliminate memory holes identified by the `pahole` tool.
+On Wed, 13 Aug 2025 18:14:46 +0200, Wolfram Sang wrote:
+> While working on a driver using regmap with MMIO, I wondered if I need
+> to set 'fast_io' in the config. Turned out I don't need to, so I added
+> documentation for it with commit ffc72771ff6e ("regmap: Annotate that
+> MMIO implies fast IO").
+> 
+> This series fixes the existing users in the tree which needlessly set
+> the flag. They have been found using this coccinelle script:
+> 
+> [...]
 
-Confirm via the `bloat-o-meter` that this change has no significant
-impact on the final code size:
+Applied to
 
-| Object File     | Total Size Change |
-|-----------------|-------------------|
-| ltc2497-core.o  | 0 (0.00%)         |
-| ltc2497.o       | +2 (+0.10%)       |
-| ltc2496.o       | 0 (0.00%)         |
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Signed-off-by: Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
----
- drivers/iio/adc/ltc2497.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Thanks!
 
-diff --git a/drivers/iio/adc/ltc2497.h b/drivers/iio/adc/ltc2497.h
-index 65f406bc61c24b912de4beed604a074b3ea9df91..578f55efc5c400980fe8bbd2b220aafb222d6f33 100644
---- a/drivers/iio/adc/ltc2497.h
-+++ b/drivers/iio/adc/ltc2497.h
-@@ -10,8 +10,8 @@
- #define LTC2497_ENABLE_TEMPERATURE_CONV	(LTC2497_EN2 | LTC2497_IM)
- 
- struct ltc2497_chip_info {
--	u32 resolution;
- 	const char *name;
-+	u32 resolution;
- 	/*
- 	 * Represents the datasheet constant from the temperature formula:
- 	 * T_Kelvin = (DATAOUT * Vref) / temp_scale, where Vref is in Volts.
-@@ -27,12 +27,12 @@ struct ltc2497_chip_info {
- struct ltc2497core_driverdata {
- 	struct regulator *ref;
- 	ktime_t	time_prev;
--	/* lock to protect against multiple access to the device */
--	struct mutex lock;
- 	const struct ltc2497_chip_info	*chip_info;
--	u8 addr_prev;
- 	int (*result_and_measure)(struct ltc2497core_driverdata *ddata,
- 				  u8 address, int *val);
-+	/* lock to protect against multiple access to the device */
-+	struct mutex lock;
-+	u8 addr_prev;
- };
- 
- int ltc2497core_probe(struct device *dev, struct iio_dev *indio_dev);
+[19/21] spi: remove unneeded 'fast_io' parameter in regmap_config
+        commit: 48124569bbc6bfda1df3e9ee17b19d559f4b1aa3
 
--- 
-2.43.0
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 

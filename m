@@ -1,82 +1,52 @@
-Return-Path: <linux-iio+bounces-22762-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22763-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70947B27DE6
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 12:06:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92894B27EA5
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 12:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FEA6AE6682
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 10:02:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 869F3AA671A
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 10:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD9D2FF64A;
-	Fri, 15 Aug 2025 10:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E782FFDF6;
+	Fri, 15 Aug 2025 10:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UaKXJR+4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZkqJOGKH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C886A2FE06D;
-	Fri, 15 Aug 2025 10:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C4D2FD1B7;
+	Fri, 15 Aug 2025 10:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755252132; cv=none; b=kEPOOqKmJTkjJyOCbFBoMmY0qInC0oQ5fRp1pVKGn12aqElg2C2sRuHBuCQE/8sJ+M5lVV/Tgxc4aRukoCFWNi3AbvG8vyIdwJrz19FqYUPczIfa/mWfHJtotDZVheNK4HLAG1tuHvyhlpdeEfH1aTyCO+auNE/Hzwikc8L33qI=
+	t=1755254608; cv=none; b=Cgg6NKidfHtDYowt3KT9vpAXPM9VBk6ROviVGUBMo6l+wTwau9WuAw6v0JYPsTystBAZrWZ/46RVsqrbPrLAXM3V8EHc4TqgJHdzhyeAZbVQFBm+h2YNZRlrCyNK/ojwN+nYpuy8anK3ZrSBaFFsNeimKoPkiz0pEfr5+s16G8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755252132; c=relaxed/simple;
-	bh=sw/GxrjNBfbj/4YWc+dvIqX6eB1g/so/jFMom8jSTms=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FA8HxsV2YLQyhUCGegDV8/cLbSEkoTeBsEDiDDQLrWovIxW0RrTTH2kjzMTWrMMiS8bk9XVITX0/K5IskKwTxVoTujLGKktfZC4wOMev6F+64VYnLzGFv4Co38ovKyASdr0Edjua9ZeXjU6hWZKZ4hGozt6W213j5Geoe8cFu9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UaKXJR+4; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb731caaaso245985166b.0;
-        Fri, 15 Aug 2025 03:02:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755252129; x=1755856929; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hSHiYv82zlQIjN/InQskDU2zSOHyGcoOeUDBehBVTYs=;
-        b=UaKXJR+4Qao7Db1GQsHwiJGhOiDFtFvdfSy0Fmtedgv5q0SfYKjAMNfbw0K+y+QJYC
-         oGaR6GLWSy5DPbmDRiU+7XOreFJ7JZ6Jyre8iyCCT2YOXEBssXVjPBZzuosJuZsYkafB
-         Ve4QnrE7MOKIRjOPsQtkqjI3L7yXF2Csoh0OMGKAiMij4oxbPyP1LB0x/uyxO8mG79rd
-         TfWJz2hln9UsChiegWe0+f205gecUvULQVl1o04as1jc0Cm2fgS08y5tK8lV58LU00+Y
-         7pAZTQOBPeMd+vOuosVMSsUy8ZOu0C2oLaKlWZynW7ZEOGAgNyTAhQopdmGRnXxDURoO
-         0ojA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755252129; x=1755856929;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hSHiYv82zlQIjN/InQskDU2zSOHyGcoOeUDBehBVTYs=;
-        b=jM6nz/xy65Xrt9F9LW5IwmtQSu3ctzk9F3fL8BBOclWCzsZmyA/W88znSuMow/Ojox
-         T0RzSDCG2hp7qYzpKl0NTucoY9jDjYw9AYdiibwRBZLVRVExwaHoJuaaCzpShbn2zPyf
-         5bBtzM7KQDXb7wZRHHQL0j1h9gURwkybkmpAOwJ1TLoGcXfo9crr3m1LTmzAFnhSrXgf
-         IWhomuRzqalXBa9R+SmA35mzC9br8xGivJqNqzqqru53BWYAEFamKjI5FOYd71nCO61W
-         xH9YAUx+pnzkTcCGRcqAEDqD5yQCq3WW9ydNzUcuyOb0Nvkln/3at76+oLl56N5ZAHF9
-         VCPw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/jcI+MDXTJNJSKhJ4vTPyltr4aBX3gqXiwkhlujzkEt5ScY74u3inxJ0Yt7T3k95tlnCgvmJt+ocSMsv+@vger.kernel.org, AJvYcCUz585K39GW9JfFKpF0a/WHorugpzD1qDA3wEvtC3k3znl1Ka5rcJUTWcDGiRzDRtTxgcrIxRosPcYn@vger.kernel.org, AJvYcCWOVbU/PNbug4x9KJzV6ZyK7ZxyGKxS2TDpNsexBD34wEDHDGOkbM51nWnrU+Tm9wMQhYa3Sxl7tw/P@vger.kernel.org
-X-Gm-Message-State: AOJu0YzU/cx/+u436qYAi3G6b5RgFa/6+FndEfXhQgSlzqa37XTsM0R0
-	cfxqJx8qkGaBxoVuriYPfnO5gXH663cOH2N1RbcTY0NQYcUe7dhgmfnN
-X-Gm-Gg: ASbGnctKsrbTPfkl6ho7oBUFf1zmgoSKdunlgkorciU9tFaLMWBPqYs4UGUpGVg9sbW
-	J3QAD7Qm9skXLPESYNQhYml7TN8o8K41LRhJ4lZ0OTSdr3uuQFv2RaGLGuQaQB2BvIRp2xGc3Vv
-	+iv1xHrrMFTc8ZweiT+bKqmSyvU0Y4vCxHAkIvv7MVgmuO1rf2ObbFUOXLy1FqpagiuxkQYmPVJ
-	CWcG1k3NAtXtSH6Oesi86eqjiYrdscUkMWSUt5HNM7SvheLoWI06oW4jsM12IGl6MTRg3X9zOE4
-	W3D+9/GB3eAA6vNMg+0j3Z6RVhtXdYbmmLHIVVBDh33cc4+RmakWsma5W8+iCm7AQD1APITdujj
-	u+Vvh3mdLJuGtcc0289B5h2OnlvG2
-X-Google-Smtp-Source: AGHT+IEYbc66YvfCs6ShJHKZ/L9mKZnKgiRZcakuMlRBlVprbCd3+5uLUPKmYBIOV4eOJnJJE3XQuw==
-X-Received: by 2002:a17:907:961a:b0:afc:d5a3:90c1 with SMTP id a640c23a62f3a-afcdc3f8108mr128940366b.55.1755252128842;
-        Fri, 15 Aug 2025 03:02:08 -0700 (PDT)
-Received: from [127.0.1.1] ([185.177.137.147])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdce72d5dsm119031766b.37.2025.08.15.03.02.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 03:02:08 -0700 (PDT)
-From: Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
-Date: Fri, 15 Aug 2025 12:02:04 +0200
-Subject: [PATCH v4 3/3] iio: adc: ltc2497: reorder struct members to fix
- memory holes
+	s=arc-20240116; t=1755254608; c=relaxed/simple;
+	bh=nKouKwDx7P5dYPm7742XNUng89mPki2Zh6qNh4A1sdg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KrGi0jsCT2bb6+uigdiIMgLZyu+O/8n8A6Tv/0a3wr9r46cL36ipaXSl1axt0TG3E9PctsGSiXuP+sSl94iJNaGPrtyaEN0ZlO2OegmbMEm9aA6mIPMfQwLPV2QSvfEmwNuw7tLqRWKoltz/wEg0IhaEAmUuHnKK96VnnhEAK4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZkqJOGKH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 919DFC4CEEB;
+	Fri, 15 Aug 2025 10:43:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755254607;
+	bh=nKouKwDx7P5dYPm7742XNUng89mPki2Zh6qNh4A1sdg=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=ZkqJOGKHy/j1XVEfM77utQvsO+8njz9NvLzuFkdUVIKokOS4NsAQIrMmKVYuL1Efw
+	 5WNivJSizT4MpxrNnlAo/75lgHAM5qmc78ZVskbmT+hIMkpIfuT3Yl+y/eg5tq0deh
+	 +Cog6S5f7ql3wCm1xcro/FQ9oN29aMP/6YHlElDVc+ES5/DL0Tm6ternapbnUfvXZ4
+	 LG64i4AAljwzg00InAf6MRshVa+O87plqZdB7oL3j46MR+G7wiTpLWdnZyp+DCU5Aa
+	 MJQVzrtPuJPiptah2uLpbjbEulxGMCHolHOpHu/Id3yX4vyroV/MHUsHLRCDyUh+8K
+	 PV3VS5OHrMe3g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82282CA0EE6;
+	Fri, 15 Aug 2025 10:43:27 +0000 (UTC)
+From: Cryolitia PukNgae via B4 Relay <devnull+cryolitia.uniontech.com@kernel.org>
+Date: Fri, 15 Aug 2025 18:43:26 +0800
+Subject: [PATCH v2] iio: imu: bmi270: Match PNP ID found on newer GPD
+ firmware
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,80 +55,148 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250815-ltc2495-v4-3-2d04e6005468@gmail.com>
-References: <20250815-ltc2495-v4-0-2d04e6005468@gmail.com>
-In-Reply-To: <20250815-ltc2495-v4-0-2d04e6005468@gmail.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+Message-Id: <20250815-bmi270-gpd-acpi-v2-1-8e1db68d36d1@uniontech.com>
+X-B4-Tracking: v=1; b=H4sIAE0Pn2gC/2WOyw7CIBBFf6WZtRgYBYyr/ofpooWhnUUfgUo0T
+ f9drEszq3OTe+5skCgyJbhXG0TKnHieCuCpAje0U0+CfWFAiVqiNKIbGa0U/eJF6xYWnq5eYed
+ IGwultUQK/DqMj6bwwGmd4/sYyOqb/lz2Iv9cWYlyIbib7pRFY+rnVP5ZyQ1nN4/Q7Pv+AaKmZ
+ QWyAAAA
+X-Change-ID: 20250206-bmi270-gpd-acpi-de4d12bce567
+To: Alex Lanzano <lanzano.alex@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ David Lechner <dlechner@baylibre.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Liam Beguin <liambeguin@gmail.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Yao Zi <ziyao@disroot.org>, WangYuli <wangyuli@uniontech.com>, 
+ Jun Zhan <zhanjun@uniontech.com>, Niecheng1@uniontech.com, 
+ Cryolitia PukNgae <cryolitia@uniontech.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755252124; l=1725;
- i=y.alperbilgin@gmail.com; s=20250811; h=from:subject:message-id;
- bh=sw/GxrjNBfbj/4YWc+dvIqX6eB1g/so/jFMom8jSTms=;
- b=d8g6Yo0+oXnGNBwncQwM8nzxDDbU3Xg4nhfwKFfM0Gd3Z60y0JOkJJalMl1+97MwIdolHEXkr
- XPOsP/1BqziAE0nEMLH4u/RL5aMtRxQL4RVjbRLf3QF11vrwOUecqm+
-X-Developer-Key: i=y.alperbilgin@gmail.com; a=ed25519;
- pk=FtW2oyQ0+xlYU0XmhYiJYC3lNPtPrgeE6i4WXPwaFnY=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755254606; l=3638;
+ i=cryolitia@uniontech.com; s=20250730; h=from:subject:message-id;
+ bh=cRdDaRlLYPiX6dG03rLc7quVy0SONfVczgAvR3VW1gE=;
+ b=VPB8N+7w56/MR5SXHKN09rA32MIAb4EzJnIMz0nXOGWrtjwuoD2nVeV3PELYN7FjgdAia4Hoi
+ aKIl2kwkW3tCEzjZSgPx76Mq0OUnnzYAdayWgBh/lhgsvq3xfxvZZYz
+X-Developer-Key: i=cryolitia@uniontech.com; a=ed25519;
+ pk=tZ+U+kQkT45GRGewbMSB4VPmvpD+KkHC/Wv3rMOn/PU=
+X-Endpoint-Received: by B4 Relay for cryolitia@uniontech.com/20250730 with
+ auth_id=474
+X-Original-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+Reply-To: cryolitia@uniontech.com
 
-Reorder members in the `ltc2497_chip_info` and `ltc2497core_driverdata`
-structs to eliminate memory holes identified by the `pahole` tool.
+From: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-Confirm via the `bloat-o-meter` that this change has no significant
-impact on the final code size:
+GPD devices originally used BMI160 sensors with the "BMI0160" PNP ID.
+When they switched to BMI260 sensors in newer hardware, they reused
+the existing Windows driver which accepts both "BMI0160" and "BMI0260"
+IDs. Consequently, they kept "BMI0160" in DSDT tables for new BMI260
+devices, causing driver mismatches in Linux.
 
-| Object File     | Total Size Change |
-|-----------------|-------------------|
-| ltc2497-core.o  | 0 (0.00%)         |
-| ltc2497.o       | +2 (+0.10%)       |
-| ltc2496.o       | 0 (0.00%)         |
+1. GPD updated BIOS v0.40+[1] for newer devices to report "BMI0260" for
+BMI260 sensors to avoid loading bmi160 driver on Linux. While this
+isn't Bosch's VID;
+2. Bosch's official Windows driver uses "BMI0260" as a compatible ID
+3. We're seeing real devices shipping with "BMI0260" in DSDT
 
-Signed-off-by: Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
+The DSDT excerpt of GPD G1619-04 with BIOS v0.40:
+
+Scope (_SB.I2CC)
+{
+    Device (BMA2)
+    {
+        Name (_ADR, Zero)  // _ADR: Address
+        Name (_HID, "BMI0260")  // _HID: Hardware ID
+        Name (_CID, "BMI0260")  // _CID: Compatible ID
+        Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
+        Name (_UID, One)  // _UID: Unique ID
+        Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
+        {
+            Name (RBUF, ResourceTemplate ()
+            {
+                I2cSerialBusV2 (0x0069, ControllerInitiated, 0x00061A80,
+                    AddressingMode7Bit, "\\_SB.I2CC",
+                    0x00, ResourceConsumer, , Exclusive,
+                    )
+            })
+            Return (RBUF) /* \_SB_.I2CC.BMA2._CRS.RBUF */
+        }
+
+        OperationRegion (CMS2, SystemIO, 0x72, 0x02)
+        Field (CMS2, ByteAcc, NoLock, Preserve)
+        {
+            IND2,   8,
+            DAT2,   8
+        }
+
+        IndexField (IND2, DAT2, ByteAcc, NoLock, Preserve)
+        {
+            Offset (0x74),
+            BACS,   32
+        }
+
+        Method (ROMS, 0, NotSerialized)
+        {
+            Name (RBUF, Package (0x03)
+            {
+                "0 -1 0",
+                "-1 0 0",
+                "0 0 -1"
+            })
+            Return (RBUF) /* \_SB_.I2CC.BMA2.ROMS.RBUF */
+        }
+
+        Method (CALS, 1, NotSerialized)
+        {
+            Local0 = Arg0
+            If (((Local0 == Zero) || (Local0 == Ones)))
+            {
+                Return (Local0)
+            }
+            Else
+            {
+                BACS = Local0
+            }
+        }
+
+        Method (_STA, 0, NotSerialized)  // _STA: Status
+        {
+            Return (0x0F)
+        }
+    }
+}
+
+1. http://download.softwincn.com/WIN%20Max%202024/Max2-7840-BIOS-V0.41.zip
+
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
 ---
- drivers/iio/adc/ltc2497.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Changes in v2:
+- Improve commit message
+- Add DSDT table
+- Link to v1: https://lore.kernel.org/r/20250730-bmi270-gpd-acpi-v1-1-1ffc85b17266@uniontech.com
+---
+ drivers/iio/imu/bmi270/bmi270_i2c.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/adc/ltc2497.h b/drivers/iio/adc/ltc2497.h
-index dfe2d5c30017adeb3f17e57fc5bf1e0e792ff30f..48e9f74870ab489b5df6e69a39446610c6a72b93 100644
---- a/drivers/iio/adc/ltc2497.h
-+++ b/drivers/iio/adc/ltc2497.h
-@@ -5,8 +5,8 @@
- #define LTC2497_CONVERSION_TIME_MS	150ULL
- 
- struct ltc2497_chip_info {
--	u32 resolution;
- 	const char *name;
-+	u32 resolution;
- 	/*
- 	 * Represents the datasheet constant from the temperature formula:
- 	 * T_Kelvin = (DATAOUT * Vref) / temp_scale, where Vref is in Volts.
-@@ -20,15 +20,15 @@ struct ltc2497_chip_info {
+diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
+index c77839b03a969f6f149c025a0305c4b9b8ac6571..b909a421ad0176ee414f2f96ff09db2297586ded 100644
+--- a/drivers/iio/imu/bmi270/bmi270_i2c.c
++++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
+@@ -41,6 +41,8 @@ static const struct i2c_device_id bmi270_i2c_id[] = {
+ static const struct acpi_device_id bmi270_acpi_match[] = {
+ 	/* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
+ 	{ "BMI0160",  (kernel_ulong_t)&bmi260_chip_info },
++	/* GPD Win Max 2 2023(sincice BIOS v0.40), etc. */
++	{ "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
+ 	{ }
  };
  
- struct ltc2497core_driverdata {
--	struct regulator *ref;
--	ktime_t	time_prev;
- 	/* lock to protect against multiple access to the device */
- 	struct mutex lock;
-+	struct regulator *ref;
-+	ktime_t	time_prev;
- 	const struct ltc2497_chip_info	*chip_info;
--	u8 addr_prev;
- 	int (*result_and_measure)(struct ltc2497core_driverdata *ddata,
- 				  u8 address, int *val);
- 	enum iio_chan_type chan_type_prev;
-+	u8 addr_prev;
- };
- 
- int ltc2497core_probe(struct device *dev, struct iio_dev *indio_dev);
 
+---
+base-commit: 24ea63ea387714634813359e2c8e0e6c36952f73
+change-id: 20250206-bmi270-gpd-acpi-de4d12bce567
+
+Best regards,
 -- 
-2.43.0
+Cryolitia PukNgae <cryolitia@uniontech.com>
+
 
 

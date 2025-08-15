@@ -1,202 +1,163 @@
-Return-Path: <linux-iio+bounces-22763-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22764-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92894B27EA5
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 12:48:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37476B27F2E
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 13:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 869F3AA671A
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 10:44:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FDAB1CE20AB
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 11:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E782FFDF6;
-	Fri, 15 Aug 2025 10:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86AA287243;
+	Fri, 15 Aug 2025 11:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZkqJOGKH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aZbo72NX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C4D2FD1B7;
-	Fri, 15 Aug 2025 10:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE2224466C;
+	Fri, 15 Aug 2025 11:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755254608; cv=none; b=Cgg6NKidfHtDYowt3KT9vpAXPM9VBk6ROviVGUBMo6l+wTwau9WuAw6v0JYPsTystBAZrWZ/46RVsqrbPrLAXM3V8EHc4TqgJHdzhyeAZbVQFBm+h2YNZRlrCyNK/ojwN+nYpuy8anK3ZrSBaFFsNeimKoPkiz0pEfr5+s16G8I=
+	t=1755257548; cv=none; b=XMmVmoAE3OQ8m5QhsF/wQYFA1R5WUiFy1jMqTJHXoBBGq7P9q70i+0FEtgqlz00DxYYetxfogKUGv/WmuwJEXojqe0a5k+Wg/pJqnfhKNp7WL0H6Df/ehimJ2VfI3ho0saWuGzz9pPN6nmH7Fb1YO4d0SfVGhaX8QK7u2wBNIsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755254608; c=relaxed/simple;
-	bh=nKouKwDx7P5dYPm7742XNUng89mPki2Zh6qNh4A1sdg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KrGi0jsCT2bb6+uigdiIMgLZyu+O/8n8A6Tv/0a3wr9r46cL36ipaXSl1axt0TG3E9PctsGSiXuP+sSl94iJNaGPrtyaEN0ZlO2OegmbMEm9aA6mIPMfQwLPV2QSvfEmwNuw7tLqRWKoltz/wEg0IhaEAmUuHnKK96VnnhEAK4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZkqJOGKH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 919DFC4CEEB;
-	Fri, 15 Aug 2025 10:43:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755254607;
-	bh=nKouKwDx7P5dYPm7742XNUng89mPki2Zh6qNh4A1sdg=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=ZkqJOGKHy/j1XVEfM77utQvsO+8njz9NvLzuFkdUVIKokOS4NsAQIrMmKVYuL1Efw
-	 5WNivJSizT4MpxrNnlAo/75lgHAM5qmc78ZVskbmT+hIMkpIfuT3Yl+y/eg5tq0deh
-	 +Cog6S5f7ql3wCm1xcro/FQ9oN29aMP/6YHlElDVc+ES5/DL0Tm6ternapbnUfvXZ4
-	 LG64i4AAljwzg00InAf6MRshVa+O87plqZdB7oL3j46MR+G7wiTpLWdnZyp+DCU5Aa
-	 MJQVzrtPuJPiptah2uLpbjbEulxGMCHolHOpHu/Id3yX4vyroV/MHUsHLRCDyUh+8K
-	 PV3VS5OHrMe3g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82282CA0EE6;
-	Fri, 15 Aug 2025 10:43:27 +0000 (UTC)
-From: Cryolitia PukNgae via B4 Relay <devnull+cryolitia.uniontech.com@kernel.org>
-Date: Fri, 15 Aug 2025 18:43:26 +0800
-Subject: [PATCH v2] iio: imu: bmi270: Match PNP ID found on newer GPD
- firmware
+	s=arc-20240116; t=1755257548; c=relaxed/simple;
+	bh=l2mefawQlsuZdyigHB0Y5oDct27lMf5ynCTq6Z52qlE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hmnZdsq3whTk6eOIksMnte+gkpOAZpcooOc5V0PoAXEFgRaecWKwad484MPW/ZZVBpyrMMdaaS7NpGNSg5/Zl8omi3TiZwU4sG0IdEVPzwVk2ZW5la+nlZ0CS+4r4G5eqA+ODKRlbAUSrM4SdPpS1KU+iAGL3V7T3tSHFUyTfX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aZbo72NX; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755257547; x=1786793547;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=l2mefawQlsuZdyigHB0Y5oDct27lMf5ynCTq6Z52qlE=;
+  b=aZbo72NXLgCbVzRZ2/3SMywtCSY5qDKt0LOWFcgSkK7pXj+yF5DRCmZC
+   OZ7PQnDaG83Xx3iHqbe/Fb9ePt/qbQpJeHHvFMC8VNZTYWOvBjbfqD28O
+   7C8O51F8CzXqdImsWEm1qqyIQP/IdZ455v+YuaDXT/AIfILxG8qR3SD9y
+   rHhM7oDwb9ak0jmdwbJty00czQ5dwD99K9NJMxkEK45kfKhah8or3VxCY
+   7OOpyLZnrXS/9nPRBKZIkGOsw/qGc452EDyugp9j0u93wbG4M0USQeo7H
+   frzw//r3WG4s5hV6QRrD+7bIbaBBgMXmo2az8FcQ7uwHd4YCNaaNuqWz6
+   g==;
+X-CSE-ConnectionGUID: +vQeLbjoSXu7N5+P6yjLKA==
+X-CSE-MsgGUID: m0ds6bi4SOewJd34Afll/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="60206412"
+X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
+   d="scan'208";a="60206412"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2025 04:32:26 -0700
+X-CSE-ConnectionGUID: HeACYR4lTB6BD+CZwbus5Q==
+X-CSE-MsgGUID: YpBAb1a/TCCJ1DUCYTHx/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
+   d="scan'208";a="190709485"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa002.fm.intel.com with ESMTP; 15 Aug 2025 04:32:23 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1umsfU-000Buw-2p;
+	Fri, 15 Aug 2025 11:32:20 +0000
+Date: Fri, 15 Aug 2025 19:31:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, Remi Buisson <remi.buisson@tdk.com>
+Subject: Re: [PATCH v4 6/9] iio: imu: inv_icm45600: add I2C driver for
+ inv_icm45600 driver
+Message-ID: <202508151941.BweGaEVT-lkp@intel.com>
+References: <20250814-add_newport_driver-v4-6-4464b6600972@tdk.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250815-bmi270-gpd-acpi-v2-1-8e1db68d36d1@uniontech.com>
-X-B4-Tracking: v=1; b=H4sIAE0Pn2gC/2WOyw7CIBBFf6WZtRgYBYyr/ofpooWhnUUfgUo0T
- f9drEszq3OTe+5skCgyJbhXG0TKnHieCuCpAje0U0+CfWFAiVqiNKIbGa0U/eJF6xYWnq5eYed
- IGwultUQK/DqMj6bwwGmd4/sYyOqb/lz2Iv9cWYlyIbib7pRFY+rnVP5ZyQ1nN4/Q7Pv+AaKmZ
- QWyAAAA
-X-Change-ID: 20250206-bmi270-gpd-acpi-de4d12bce567
-To: Alex Lanzano <lanzano.alex@gmail.com>, 
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Yao Zi <ziyao@disroot.org>, WangYuli <wangyuli@uniontech.com>, 
- Jun Zhan <zhanjun@uniontech.com>, Niecheng1@uniontech.com, 
- Cryolitia PukNgae <cryolitia@uniontech.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755254606; l=3638;
- i=cryolitia@uniontech.com; s=20250730; h=from:subject:message-id;
- bh=cRdDaRlLYPiX6dG03rLc7quVy0SONfVczgAvR3VW1gE=;
- b=VPB8N+7w56/MR5SXHKN09rA32MIAb4EzJnIMz0nXOGWrtjwuoD2nVeV3PELYN7FjgdAia4Hoi
- aKIl2kwkW3tCEzjZSgPx76Mq0OUnnzYAdayWgBh/lhgsvq3xfxvZZYz
-X-Developer-Key: i=cryolitia@uniontech.com; a=ed25519;
- pk=tZ+U+kQkT45GRGewbMSB4VPmvpD+KkHC/Wv3rMOn/PU=
-X-Endpoint-Received: by B4 Relay for cryolitia@uniontech.com/20250730 with
- auth_id=474
-X-Original-From: Cryolitia PukNgae <cryolitia@uniontech.com>
-Reply-To: cryolitia@uniontech.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250814-add_newport_driver-v4-6-4464b6600972@tdk.com>
 
-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+Hi Remi,
 
-GPD devices originally used BMI160 sensors with the "BMI0160" PNP ID.
-When they switched to BMI260 sensors in newer hardware, they reused
-the existing Windows driver which accepts both "BMI0160" and "BMI0260"
-IDs. Consequently, they kept "BMI0160" in DSDT tables for new BMI260
-devices, causing driver mismatches in Linux.
+kernel test robot noticed the following build warnings:
 
-1. GPD updated BIOS v0.40+[1] for newer devices to report "BMI0260" for
-BMI260 sensors to avoid loading bmi160 driver on Linux. While this
-isn't Bosch's VID;
-2. Bosch's official Windows driver uses "BMI0260" as a compatible ID
-3. We're seeing real devices shipping with "BMI0260" in DSDT
+[auto build test WARNING on f8f559752d573a051a984adda8d2d1464f92f954]
 
-The DSDT excerpt of GPD G1619-04 with BIOS v0.40:
+url:    https://github.com/intel-lab-lkp/linux/commits/Remi-Buisson-via-B4-Relay/dt-bindings-iio-imu-Add-inv_icm45600/20250814-170722
+base:   f8f559752d573a051a984adda8d2d1464f92f954
+patch link:    https://lore.kernel.org/r/20250814-add_newport_driver-v4-6-4464b6600972%40tdk.com
+patch subject: [PATCH v4 6/9] iio: imu: inv_icm45600: add I2C driver for inv_icm45600 driver
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20250815/202508151941.BweGaEVT-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250815/202508151941.BweGaEVT-lkp@intel.com/reproduce)
 
-Scope (_SB.I2CC)
-{
-    Device (BMA2)
-    {
-        Name (_ADR, Zero)  // _ADR: Address
-        Name (_HID, "BMI0260")  // _HID: Hardware ID
-        Name (_CID, "BMI0260")  // _CID: Compatible ID
-        Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
-        Name (_UID, One)  // _UID: Unique ID
-        Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
-        {
-            Name (RBUF, ResourceTemplate ()
-            {
-                I2cSerialBusV2 (0x0069, ControllerInitiated, 0x00061A80,
-                    AddressingMode7Bit, "\\_SB.I2CC",
-                    0x00, ResourceConsumer, , Exclusive,
-                    )
-            })
-            Return (RBUF) /* \_SB_.I2CC.BMA2._CRS.RBUF */
-        }
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508151941.BweGaEVT-lkp@intel.com/
 
-        OperationRegion (CMS2, SystemIO, 0x72, 0x02)
-        Field (CMS2, ByteAcc, NoLock, Preserve)
-        {
-            IND2,   8,
-            DAT2,   8
-        }
+All warnings (new ones prefixed by >>):
 
-        IndexField (IND2, DAT2, ByteAcc, NoLock, Preserve)
-        {
-            Offset (0x74),
-            BACS,   32
-        }
+>> drivers/iio/imu/inv_icm45600/inv_icm45600_core.c:908:12: warning: result of comparison of constant 32768 with expression of type 's16' (aka 'short') is always false [-Wtautological-constant-out-of-range-compare]
+     908 |         if (*temp == INV_ICM45600_DATA_INVALID)
+         |             ~~~~~ ^  ~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/imu/inv_icm45600/inv_icm45600_core.c:785:12: warning: unused function 'inv_icm45600_suspend' [-Wunused-function]
+     785 | static int inv_icm45600_suspend(struct device *dev)
+         |            ^~~~~~~~~~~~~~~~~~~~
+   drivers/iio/imu/inv_icm45600/inv_icm45600_core.c:820:12: warning: unused function 'inv_icm45600_resume' [-Wunused-function]
+     820 | static int inv_icm45600_resume(struct device *dev)
+         |            ^~~~~~~~~~~~~~~~~~~
+   drivers/iio/imu/inv_icm45600/inv_icm45600_core.c:860:12: warning: unused function 'inv_icm45600_runtime_suspend' [-Wunused-function]
+     860 | static int inv_icm45600_runtime_suspend(struct device *dev)
+         |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/imu/inv_icm45600/inv_icm45600_core.c:879:12: warning: unused function 'inv_icm45600_runtime_resume' [-Wunused-function]
+     879 | static int inv_icm45600_runtime_resume(struct device *dev)
+         |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   5 warnings generated.
 
-        Method (ROMS, 0, NotSerialized)
-        {
-            Name (RBUF, Package (0x03)
-            {
-                "0 -1 0",
-                "-1 0 0",
-                "0 0 -1"
-            })
-            Return (RBUF) /* \_SB_.I2CC.BMA2.ROMS.RBUF */
-        }
 
-        Method (CALS, 1, NotSerialized)
-        {
-            Local0 = Arg0
-            If (((Local0 == Zero) || (Local0 == Ones)))
-            {
-                Return (Local0)
-            }
-            Else
-            {
-                BACS = Local0
-            }
-        }
+vim +908 drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
 
-        Method (_STA, 0, NotSerialized)  // _STA: Status
-        {
-            Return (0x0F)
-        }
-    }
-}
+8891b99381240f Remi Buisson 2025-08-14  887  
+2570c7e48ace35 Remi Buisson 2025-08-14  888  static int _inv_icm45600_temp_read(struct inv_icm45600_state *st, s16 *temp)
+2570c7e48ace35 Remi Buisson 2025-08-14  889  {
+2570c7e48ace35 Remi Buisson 2025-08-14  890  	struct inv_icm45600_sensor_conf conf = INV_ICM45600_SENSOR_CONF_KEEP_VALUES;
+2570c7e48ace35 Remi Buisson 2025-08-14  891  	int ret;
+2570c7e48ace35 Remi Buisson 2025-08-14  892  
+2570c7e48ace35 Remi Buisson 2025-08-14  893  	/* Make sure a sensor is on. */
+2570c7e48ace35 Remi Buisson 2025-08-14  894  	if (st->conf.gyro.mode == INV_ICM45600_SENSOR_MODE_OFF &&
+2570c7e48ace35 Remi Buisson 2025-08-14  895  	    st->conf.accel.mode == INV_ICM45600_SENSOR_MODE_OFF) {
+2570c7e48ace35 Remi Buisson 2025-08-14  896  		conf.mode = INV_ICM45600_SENSOR_MODE_LOW_POWER;
+2570c7e48ace35 Remi Buisson 2025-08-14  897  		ret = inv_icm45600_set_accel_conf(st, &conf, NULL);
+2570c7e48ace35 Remi Buisson 2025-08-14  898  		if (ret)
+2570c7e48ace35 Remi Buisson 2025-08-14  899  			return ret;
+2570c7e48ace35 Remi Buisson 2025-08-14  900  	}
+2570c7e48ace35 Remi Buisson 2025-08-14  901  
+2570c7e48ace35 Remi Buisson 2025-08-14  902  	ret = regmap_bulk_read(st->map, INV_ICM45600_REG_TEMP_DATA,
+2570c7e48ace35 Remi Buisson 2025-08-14  903  				&st->buffer.u16, sizeof(st->buffer.u16));
+2570c7e48ace35 Remi Buisson 2025-08-14  904  	if (ret)
+2570c7e48ace35 Remi Buisson 2025-08-14  905  		return ret;
+2570c7e48ace35 Remi Buisson 2025-08-14  906  
+2570c7e48ace35 Remi Buisson 2025-08-14  907  	*temp = (s16)le16_to_cpup(&st->buffer.u16);
+2570c7e48ace35 Remi Buisson 2025-08-14 @908  	if (*temp == INV_ICM45600_DATA_INVALID)
+2570c7e48ace35 Remi Buisson 2025-08-14  909  		return -EINVAL;
+2570c7e48ace35 Remi Buisson 2025-08-14  910  
+2570c7e48ace35 Remi Buisson 2025-08-14  911  	return 0;
+2570c7e48ace35 Remi Buisson 2025-08-14  912  }
+2570c7e48ace35 Remi Buisson 2025-08-14  913  
 
-1. http://download.softwincn.com/WIN%20Max%202024/Max2-7840-BIOS-V0.41.zip
-
-Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
----
-Changes in v2:
-- Improve commit message
-- Add DSDT table
-- Link to v1: https://lore.kernel.org/r/20250730-bmi270-gpd-acpi-v1-1-1ffc85b17266@uniontech.com
----
- drivers/iio/imu/bmi270/bmi270_i2c.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
-index c77839b03a969f6f149c025a0305c4b9b8ac6571..b909a421ad0176ee414f2f96ff09db2297586ded 100644
---- a/drivers/iio/imu/bmi270/bmi270_i2c.c
-+++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
-@@ -41,6 +41,8 @@ static const struct i2c_device_id bmi270_i2c_id[] = {
- static const struct acpi_device_id bmi270_acpi_match[] = {
- 	/* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
- 	{ "BMI0160",  (kernel_ulong_t)&bmi260_chip_info },
-+	/* GPD Win Max 2 2023(sincice BIOS v0.40), etc. */
-+	{ "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
- 	{ }
- };
- 
-
----
-base-commit: 24ea63ea387714634813359e2c8e0e6c36952f73
-change-id: 20250206-bmi270-gpd-acpi-de4d12bce567
-
-Best regards,
 -- 
-Cryolitia PukNgae <cryolitia@uniontech.com>
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

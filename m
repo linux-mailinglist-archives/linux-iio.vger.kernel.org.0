@@ -1,127 +1,146 @@
-Return-Path: <linux-iio+bounces-22765-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22766-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DE7B28142
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 16:07:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12DECB28175
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 16:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7E54AE43AA
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 14:06:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 267FDB675B5
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 14:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37034136358;
-	Fri, 15 Aug 2025 14:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE649202983;
+	Fri, 15 Aug 2025 14:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FORdYRj+"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="L4Em8DIT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1031A262D;
-	Fri, 15 Aug 2025 14:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5150821C9ED
+	for <linux-iio@vger.kernel.org>; Fri, 15 Aug 2025 14:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755266782; cv=none; b=bGJ7sTZSAiV258uqyHYvP3CJeuA8Y8AZatSD11AekovylMPEa2RgxkCyv2a222JK3piNyVZq//sx4LTnvJ/BhEKkATiz2GyFitCSBR+gJSmXylZpz8hCIDulasf+dSm9oDhuq6ny4p8If1BbaHQ4VfcpaMc14Mo/iTJKHZsHxoI=
+	t=1755267391; cv=none; b=BXUMD4enUg8Rnd7fg1nPA8UR0Aet3e2RSqlRwPzsrN8c/2O/AJ+yq8uLJw2wmjOGCmAwAsWMOegEOmxKO07AbA10TjafgT3UeBVw3PiK/hKJVBsUvjy9yZbYHZT68SXWTNmLEZP62U0hfVr+IZkk2uIKpjBLgTsVwefaqoTLUTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755266782; c=relaxed/simple;
-	bh=CqiTid4pNN3W+ULrEQG68THPXuGhAkKq4wAnz7BZ/Ao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bg1+5jYybr1XQsWrVnBr3Ec2CYUzR8PchwGzx7LzAOxWiA1sxBbmAxeO2mzr4m50ZaiFd90itiGWwfTaLelktXIhEfuSM1PQMZ+I+VLxxQGo02Ag1XTuPp+22gtzpUkPlG9zJ/xau7efyfznHkxYC/SsU0q9fZVXwVMLv1sCsM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FORdYRj+; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-76e2e618a98so1577901b3a.0;
-        Fri, 15 Aug 2025 07:06:19 -0700 (PDT)
+	s=arc-20240116; t=1755267391; c=relaxed/simple;
+	bh=KOhlSg0qcYg9ob3Mm7f2krs+0oUtcXnKHGyVvRFd7qA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LJ44BNVxDM1RtE228Xbc3+EtgWAwz/NdQIYXMw3kZdOlArc/T1OYJY8sPKb0oO7EX9v9Zki0jNqQchUe16MOqJq88A0cE6b4RXb1FtFowYKsf4JPfTJ+c2XPox/fSuIS2UUa4zfOg+uVuZA763D5P5zhxwE+Uhcoa3ZQ6sGWPZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=L4Em8DIT; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-74382048b8cso1047922a34.3
+        for <linux-iio@vger.kernel.org>; Fri, 15 Aug 2025 07:16:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755266779; x=1755871579; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CqiTid4pNN3W+ULrEQG68THPXuGhAkKq4wAnz7BZ/Ao=;
-        b=FORdYRj+zeNquOoZVrJfUazKmwVZYFAiTiqVEcCr0lbNwE0d4UvrKGuGvRb0UR4G/C
-         g9TVHWDc12BhQgqSg5BYUclt52Iw0/Oatkyze2OEOCgV1Yv+S7rH3nHdCYeWkFjcm+IW
-         fdAUDJIz60XX1N1jCepVlvZAD0SgLUacYaNSwtlDlv/l6vk0seB0mS43ojCMyULDKODN
-         Rvo3L2GwPoFxZm+tKvpVXOtKktSJ2cFOwnZmJVURUJ79DXdOBFITJMF9LDRwHSLldKB7
-         kled8ZjCVS7opzAu2/c3a8ZzHqYKHqfoAgyK6xD6iW7XhMt9woCMkqbemlUQD9nuBw+a
-         7qTw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755267387; x=1755872187; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=l+dzZAqMWMrU9JQ+HnPQcZbDejbmWGfSuQd14G8BjoE=;
+        b=L4Em8DITgSwkQaL2gneAQwGvbYpPWWUKhAmzj8MnnTVT/ewnqtdk/KVoLzoCjaLsuo
+         Z1iVBXVHARtmuCP7RsKOYODxBWenZwwdMKJ+WbTnI4cUg4T067WJiVfMNGDdjtu7HrpH
+         unVuTuImmmuod3GEXDdCLL7+nuWxdHaiSO84rs8i8sGiWRJSajnR8W8ORMe8K4BaYIqX
+         3ilgJxEwREfO5MRFdXVkQAVOA25o5IW+uM8Fwui4JETnB1nVecPOExzpwlfu+E2xwZ4A
+         vVfiuKY2K0F3VWl6islCSTJENFECRhZ6pHYnK8HC71AwiRHnnr8wzGWGBXjM5A6et6b7
+         ktCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755266779; x=1755871579;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CqiTid4pNN3W+ULrEQG68THPXuGhAkKq4wAnz7BZ/Ao=;
-        b=dHghgBd+iE4csHUzXPLLkTDsEzjz6eCflmLtFaqd0tfvUyNbPmtGz1cUt2G488cZGH
-         s3phMkkFpCr9OCuglVGBjKy5f0ZVSCK6ovJOxBd2dZu64dNp/Y8S+uoB8fl8WXvXM+su
-         uOZcEkIt4U7M4LXThQ2QjSPCDOxLhCtdynmMOhISOab7uZfHrp75tYdAijNFfcjhJgP2
-         Zn6hrsz9BZLZLrg6K9+xPBc5Ce889BqZl59CU7krYTZqdDRR6GLw5tt4PIq/xgYcIiSx
-         oSLG70VvoWsob7YjCzcjVZMERrFlwig2IIe9b4idkU8s9ktG5VGnZRPvUhCb86or0u4Z
-         G5Hg==
-X-Forwarded-Encrypted: i=1; AJvYcCXDu6DEFBq5Ik2mTFIyriQzGHDBm8gkNXvsSmsqahmmSB1DWqRX9zWeQS3Epv4f+kb1UDAzs7tTUZX1GdjC@vger.kernel.org, AJvYcCXSmlpE3TrUB0ywrhZomc1zJsZQwv6Yn2tSfTZNOndKaqFYQLk+jS1/c89Zhdww6oot33LiYMZdoHU=@vger.kernel.org, AJvYcCXqLeTQW+earo2+b7c4cZE0QMKuzCda8FMkDjOFBAXd36snNCXxp2+bIxl1K5TcW/0Y3NY0DiVeNzMZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYTkPVGTzZi9QIg15hMoHwyD5fbzMCUBmlfGzjKPJp0NOLofSJ
-	JHYusegDIyOrGmQYwZR8GohSWb6cqJy/A9CqCIPDVQBlj2CTXRWn6XXm
-X-Gm-Gg: ASbGncveQqd1+ldPk1we36Rdo740l4nwlUV4q3WaIJfMmcRr+6tVoaC6UaczZaGYlIH
-	ptfBbJOYj0OCRe0OsHUv+da8slFOJCVKzDmZ2EevawGjlq+pp0FB6ID3HXnsIO26uJfnCzD7/Qm
-	peU0DcXch3szOXhdsJQ8MvA3a7+BZmHE690afGAmj3OGOzrmQt2n500/buUNjMCrFmpjqzdBxQO
-	1Xlufz+gPZxr1RABLEtFhYU573CD0j8OWqIFQqcvAJlnxiw9asQkasGIhoTXUlJo3yeDsqX0tlw
-	kTPUltwgedKSMHU/McFmYZgW9d0cewsvV0zqw00dMxN8HudhB0UIyUt8a5JdylIVXUpreQxOhMp
-	jZaSduh1HCok4HRpoW7TdbA==
-X-Google-Smtp-Source: AGHT+IGUBfSwcmRDZE+tanvnB1WTuwEMQwR/R7Q1oiogmNFE8jXio6mf05OIZBi4bGXXGiyvENDiQQ==
-X-Received: by 2002:a17:902:d603:b0:240:99f7:6c10 with SMTP id d9443c01a7336-2446d5afb9fmr40542235ad.1.1755266778612;
-        Fri, 15 Aug 2025 07:06:18 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d5775eesm14870765ad.150.2025.08.15.07.06.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 07:06:16 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 4065241D3396; Fri, 15 Aug 2025 21:06:11 +0700 (WIB)
-Date: Fri, 15 Aug 2025 21:06:10 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Erick Setubal Bacurau <erick.setubal@gmx.de>, jic23@kernel.org,
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
-	corbet@lwn.net, linux-iio@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: skhan@linuxfoundation.org
-Subject: Re: [PATCH] docs: iio: bno055: Correct wording in driver
- documentation
-Message-ID: <aJ8-0gzc_XJ_1YoI@archie.me>
-References: <20250815070001.55185-1-erick.setubal@gmx.de>
+        d=1e100.net; s=20230601; t=1755267387; x=1755872187;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=l+dzZAqMWMrU9JQ+HnPQcZbDejbmWGfSuQd14G8BjoE=;
+        b=o+yBOcdBZd+c0p0l4QEBkPwDoOZ9a2Cake3yB1pfNjPWkzMUy6iz+/X3kT/V0xbZDT
+         gIARmdosHwvAM6Y7+taRbCGdgIPPeA4VuUlAVwLwbLdms6BzjqyUNY4BPsfmarJJQo9j
+         zpn+gNooXqg1Dr2O3nJgkeYjzuG4Bv3qn5WLeXCBfxu9XMU0mUsaDU+f9jRLrBWbckHA
+         LpYLJsqUe924pavshovMul8a90u5sr66l0NhhkzEs45SQUNLARw6Ksv9M2zZSsBKV0/U
+         Ww2aS6ylstMK/gj8apw9NFSGRX29Krv//PaBITfqYbEubRx7pjx+z7pVGgBHBFVQxpVB
+         R+sg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpnZMOSvsOnd6AQKNPK8Y0pptgMPZyRQHRBCVI21A1QvYwZgq7a+KCmTPbIwG0SJ2/hFUDyScNRgQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYIG52mWWkxrHWyqNChPxC00DQPOWKsjjXsU+zA3iZTOj70ArT
+	Eba0Ix/ize6eK79PxMvmJYp2DHZt2nyjtkEUiVlJ974zYgHXuxt7pqjOifmhTCHrbow=
+X-Gm-Gg: ASbGncuDTel+QtEn2DX6kyqOoaJ/33scVq84nl1OBGpqx8n2clhpCnnuR8hYkySuW1N
+	QxfZmcTI5Y5mrV7dh/2J3tToyyromIhezsRN6OhBvgRLKvDdHU9/a7xg1fesK4hU5GuZ99eqnot
+	1BQiMvRo4skJ50S7i1LljeVVRoD6iJlFWQMA9zMIkqttHKLUTOhv917X62pKFBvMUUyBXhFJTpR
+	2i0Z0kOPQShW17qP4kQfndV2ImBmQVZzMYwCGQGTtEEk8n5gclDrdGxDkC7eJ/mMd4dd+pCiayi
+	mgHzwNmo+thxnWYXWZJpaZdkfaBJ7t1dL54fuBL5Dk6Sk3E1AyPivmICbMEdDlbX77I1irTOcmn
+	cFCftbDI5FI92FpV7ZKut1h/SQ52O6xIZOX3RO8fUMlApzvu31JxzimLznnNwYn55NCRj234L
+X-Google-Smtp-Source: AGHT+IHUesJ2V4GKpXl067F97odMOMFwnwY0zqEdIAx4kIEiR13a/+37EIRwtokkyj02SDIkZXFr9Q==
+X-Received: by 2002:a05:6830:6585:b0:741:9b10:5f80 with SMTP id 46e09a7af769-743923abd24mr1135235a34.7.1755267387266;
+        Fri, 15 Aug 2025 07:16:27 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:677:c1a1:65b9:2b0c? ([2600:8803:e7e4:1d00:677:c1a1:65b9:2b0c])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7439204d28dsm318773a34.35.2025.08.15.07.16.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Aug 2025 07:16:26 -0700 (PDT)
+Message-ID: <384f56af-efb3-412b-9874-4d422fe2ac8c@baylibre.com>
+Date: Fri, 15 Aug 2025 09:16:24 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Ry8EOtcKYwNErLhj"
-Content-Disposition: inline
-In-Reply-To: <20250815070001.55185-1-erick.setubal@gmx.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] iio: adc: adc128s052: Support ROHM BD7910[0,1,2,3]
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+ Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sukrut Bellary <sbellary@baylibre.com>,
+ Lothar Rubusch <l.rubusch@gmail.com>
+References: <cover.1755159847.git.mazziesaccount@gmail.com>
+ <e43c184fc6aa5c768045fc772b64d812fdb06254.1755159847.git.mazziesaccount@gmail.com>
+ <014487e4-f8c7-42e6-a68a-9e984002fd46@baylibre.com>
+ <3024c64b-48e4-4a28-bbab-b80cdaec4a9a@gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <3024c64b-48e4-4a28-bbab-b80cdaec4a9a@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On 8/15/25 12:23 AM, Matti Vaittinen wrote:
+> On 14/08/2025 18:01, David Lechner wrote:
+>> On 8/14/25 3:35 AM, Matti Vaittinen wrote:
+>>> The ROHM BD79100, BD79101, BD79102, BD79103 are very similar ADCs as the
+>>> ROHM BD79104. The BD79100 has only 1 channel. BD79101 has 2 channels and
+>>> the BD79102 has 4 channels. Both BD79103 and BD79104 have 4 channels,
+>>> and, based on the data sheets, they seem identical from the software
+>>> point-of-view.
+>>>
+>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>>
+>>> ---
+>>
+>> One small suggestion. With that:
+>>
+>> Reviewed-by: David Lechner <dlechner@baylibre.com>
+>>
+>>> ---
+>>>   drivers/iio/adc/ti-adc128s052.c | 36 +++++++++++++++++++++++++++++++++
+>>>   1 file changed, 36 insertions(+)
+>>>
+>>> diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+>>> index 81153253529e..2f2ed438cf4e 100644
+>>> --- a/drivers/iio/adc/ti-adc128s052.c
+>>> +++ b/drivers/iio/adc/ti-adc128s052.c
+>>> @@ -122,6 +122,10 @@ static const struct iio_chan_spec adc124s021_channels[] = {
+>>>       ADC128_VOLTAGE_CHANNEL(3),
+>>>   };
+>>>   +static const struct iio_chan_spec bd79100_channels[] = {
+>>
+>> Even though the driver doesn't support it yet, there is a
+>> adc121s021 [1] so would be nice to use that instead of bd79100
+>> to keep the naming consistent.
+> 
+> I have to disagree on this one. For people who don't use the TI ADCs, the TI numbering does not bring any clarity. 
 
 
---Ry8EOtcKYwNErLhj
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Aug 15, 2025 at 09:00:01AM +0200, Erick Setubal Bacurau wrote:
-> Fix typos and improve wording in the bno055 driver documentation.
-
-Looks good, thanks!
-
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---Ry8EOtcKYwNErLhj
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCaJ8+zgAKCRD2uYlJVVFO
-o019AP97cIwuMcKDt6izMysmB8ee/SFzqwZFPzLqn6tJrdv3GQEA8v3mycRowGP3
-cREnsqSBEGqTzOCBb5OAPCqsX39tFQI=
-=NcVQ
------END PGP SIGNATURE-----
-
---Ry8EOtcKYwNErLhj--
+I think it does in this case because the part number includes the bits
+and number of channels. And the pattern is pretty easy to spot without
+looking at the datasheets. This is why I suggested it. Otherwise, I would
+agree with your points in general.
 

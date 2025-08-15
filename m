@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-22746-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22747-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5B0B277EE
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 07:00:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5120B27863
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 07:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F245E6061
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 05:00:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C04162DFD
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Aug 2025 05:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFCF223DEC;
-	Fri, 15 Aug 2025 05:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB4428724C;
+	Fri, 15 Aug 2025 05:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hndl5ASm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hdBtJLVI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395071E502;
-	Fri, 15 Aug 2025 05:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7492A38FB9;
+	Fri, 15 Aug 2025 05:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755234029; cv=none; b=OnfY5z7psssz7gXoIUW68JH5jOxCxQU/5rePG0NgoEiQQZLgqWaQFHfYaDUQSDb4+37ULiY85uwN9oSNCdU1HzeazIqbC2tmaWd2TDJ5OWpOGfWE7WogPHiYfCHX4lnbBNj84I0dnAUk3ZrpiWx1cJz1mRlFwoOi+zExCFhp0i4=
+	t=1755235403; cv=none; b=JQ5l8yOZLGIBci6mpjg282S3OmYgDR9MpkBalJMLCeopa0Zyc8Q/51uHtJSrliYeorkyUsSwEIk4SZpBf0xcEuESNwJHkBI8SopQ40s+fo3FpLFBwq1DLRigZmWahVWyg+JECjeNzb2GsL25uHKMYStQvXNEOL2UsVhQP8zJM8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755234029; c=relaxed/simple;
-	bh=BdXI9uDWb7s6Nrk7XG//Z7OFsqMRPHqalYnUc4lXmwc=;
+	s=arc-20240116; t=1755235403; c=relaxed/simple;
+	bh=MTFecpPPCPbUkZL8jf5i93249tFE3tGa3UD3woMkHI8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NJOI/+c7brNPvSB/Uy+M6uv3LPVauHlrwICugDJKMgWfr/XlqwXef1mVJJvj6gYnXkfU/zFKmw6orwqTjTsWUm/k010MHMEpg4V5A4o/pqGNnIn/ac+o+JtybahMRFGkhcPlx3O3p1vhXPsjUcr7/jHfolwE9OjKRZytkxC0DTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hndl5ASm; arc=none smtp.client-ip=209.85.167.43
+	 In-Reply-To:Content-Type; b=fX6kjvPpteS9wxhtk3bPmQI7WnIe70toniuPiP7wXeT05IbOfDbesliRbxIpSpAdrVI3a8PDQ3qcVdgruEzhu4i9O/3pn9/BIME26RwsyShiKuiG2gQ9ExTJSw8V7FYkJHpTdOHFgUxqyEPU1wmfy3bTa3zsEPI2ti7AD4ecfwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hdBtJLVI; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-55ce5287a47so1482793e87.3;
-        Thu, 14 Aug 2025 22:00:26 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-333f92a69d4so12849061fa.2;
+        Thu, 14 Aug 2025 22:23:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755234025; x=1755838825; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755235399; x=1755840199; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ibYV2DXy3yJ+JImrUWfFgpWrleNjyaOJiO783aX8k0M=;
-        b=hndl5ASmhFn0ORJVS9H8//T31Pi1+HXJBOjnuQUGl0eBNei0Cf2NaI7JDg/LdSHCmP
-         c+wAL3/Rn+ih+sTTNlvPayEjrqHt5sNPtC4NN7VSrxQqeZwCdqohL2snND2AmXrXmbn/
-         506M/+VptmHnao1z/oCNfrmRcmpDi75O/a/tSlN4RzQTbhWXry42X/+cspUx5BggYPyw
-         uEPdkwFt5f3QBe779ufSCdPXV97eWt6xW6gP7C1YTrQfoMHYyneOKGYrpnFyLN/rmnUV
-         LY5vCBeU5CUZsl89j/SdmSu13Tz/4g2QzmD/RijTb8MtmLMeDNp80d6rb5711FSWvnPl
-         zf+g==
+        bh=7Vj1KPFsbq/RlaOOlkDBH66m6Sda7aTjtiK8NBu/QXw=;
+        b=hdBtJLVIojxn4KRnxp0+0ZPMeoTywDv2e2QjQ7CRgbEFgU4BRgRiGEMSYPLIPhG6t/
+         TiuLsGBmhl+tzyXZEHh9yofvXrDUOBtI3NWg/0odV6R8mErZMXwol/taFCcnE/9YHscN
+         RQ8zB3hgmRu7VEG+afmzzBABUra5kdqu1tOG0dyncOy5jcsFYmejKx8b0jvq5ey5LeJn
+         mRSCxsKp1ltqK3Wk44gBJcoLI9ICOJm03TBqCF5/WXfGNY/lQrOddv2ZacvTDvlC/3M2
+         uE851IbA+K45d3LIHt0TdxpwCtTdu+10gQgEUNJ+XI+4M+Ei3kLkqIlXP2u5UPAC7AJN
+         m1Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755234025; x=1755838825;
+        d=1e100.net; s=20230601; t=1755235399; x=1755840199;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ibYV2DXy3yJ+JImrUWfFgpWrleNjyaOJiO783aX8k0M=;
-        b=TUlCBieGZdViqh3qWZCmFUG/y1XWublofVvpD8ZwCB83PCxrDetUgYaNupMsrAeUto
-         EJ6MC8IDqtLqWLSTNSi+KQWacJs41u4lQkSDBF/D1sgdQvmxMrqh8fUMvHICVYK6Euyo
-         WRoepdTLJk7L+7nITPTCtW2/StTwTQn9trd3ljE2HSY8Xpyq7HRJqzlNK8CghamB7XSD
-         nX58POq9rFKvIzZA4/v2x5flxx5iGXiJIK6AdGiqaPqrgQeXCysPQY/Xz3e9kMErPS9E
-         rSGvcrH2KCvuMub4n2a9D382RQONOdRyMMaKe4rJcVBhQzw46cfXyqZlwEWV56X2rjRe
-         xGog==
-X-Forwarded-Encrypted: i=1; AJvYcCWii6DFR+opnzHMx2k/oZ2FHdFGIkSuSQJerAY1Ufsi8CVv6CmLSmq45Zhq/DjelhALSDa0aroZCsme@vger.kernel.org, AJvYcCWyrhnnL8fQudECSUjWc8jLEptOqDPQv0vCl8S3rzVHhecjiIF+ntaSDzwuV4OmuiF/6/jrqe/K9C4g@vger.kernel.org, AJvYcCXeyksVeNvgt6mec1CHG0oMhAg2Qs089iEjDqNidfH6wElCZbsGIHRfjlPy2JkN1KQ+HH4GVHtRyGkdwazH@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzv5I4sV9btFmkf1r+YotaNdVCLZt5G5vqJ3UyaP8o3zIREh9Yq
-	ig9O6XQC7RQ2i6aD5fb5qqBHJYLeLY7jWcy57i5MZpCNClkrGjayFzhn
-X-Gm-Gg: ASbGncvP48LqP4iS22Z+DRIv7XSJGLGDa+NtQ3T5+atCoCz0I0g/MorhRuWegCBbSfs
-	ly5icGKn/MD7RGIDVZE9ULjoralA8RtjMJbLi6MtaT6hd7cmpQJpjzNZtgA8QHRrVohhBTJREz2
-	sJI3KzQigd5g1+6mieq/vuxBwSlAD02z63lGhG2ixO5tKvFy9YjWaDiUnjAUJjd/PF4EhH1uE52
-	dY//MH+z7XyVqEB5XTcia3nxCPIVz+OIgbFMa41Qe57Ou7IK1IOlasikt7nRD+ywfpbyfD3LaAh
-	5xNIhy+gf0TN+UeYbh8yppQoN9dqtggrPC8HfhPjQL0dCKTqxgkPs35oZlEeSGb8MtNqHTRSMrC
-	Qt7nv8UyfElk+mtQ/USpAof6PCSdwc6Lqr2WGIBqDRDFV1ZYv/Cq8x02XluFzi+7OwcMFcFvPOc
-	RQQd1331XwTLAgdw==
-X-Google-Smtp-Source: AGHT+IEdtb+aXAX0+qkW3BXed4xKLSwz6zWlk3z6/Lm5JIc0U6agAFpFu98uH0yqHouY6nnMyIkPng==
-X-Received: by 2002:a05:6512:1383:b0:55c:e988:9440 with SMTP id 2adb3069b0e04-55ceeaa185bmr176750e87.6.1755234024976;
-        Thu, 14 Aug 2025 22:00:24 -0700 (PDT)
+        bh=7Vj1KPFsbq/RlaOOlkDBH66m6Sda7aTjtiK8NBu/QXw=;
+        b=GUVm2TMohh7JH7NSYmOTKV11KPEUsrfZKYgkcz+40KNbukmy6xku2nwZB3lVbU9/To
+         pp5cuiSJMCiFvo5t3VJM+OaTJLk34a2I4O9lpVoLsve9ak+cwMdVV0KJQsKezn6Hy9nc
+         Vxg5AdvQYVLESwgPhRW5H9tyG8I4WmA6Ek0swYBQSp0iOY4L4F4BorYqa1O5c9oQCK1F
+         f64NXeA0u2Vt2fSYqY+g+cXlQB28PK4PVOxG1fB7N8tsrVQ/1a4Aqr/4tvLnMf377BB/
+         aB+eIEges5MloipSRyVsMhrDyIyhLffyFaBrqUnKl0IiZMTtybP1t1gcQrzRTgNiTrvH
+         OJQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVXFd54HPL/WUFsJBstraI2aH6w4zzVa+oe9X+ft7+Wt7JA/uUIS1fxzbHqmKtRuPr2mSbxL3sHYWi+@vger.kernel.org, AJvYcCVcx57/OatmDWNaVC7tSJNdmMseiMaHXLK9PfaGTMW1zkXQFgKppxPfs5qhJlbtf6BFtC8EcVuKVL4cFqia@vger.kernel.org, AJvYcCXi6XFpPP56M87yoxLv8A1Zmwlp562DA2fy3EtgleZg4blTk62iomBnVmqM6sclXpZ+HNqkd6ZzBp9B@vger.kernel.org
+X-Gm-Message-State: AOJu0YzP2v6CoiERk6Nid4TQ2dxSfEECnGvN/epfVpR7u6gkpinH+VN6
+	79Eshbz1CwQfVjnYaRPF0aHCb1m/GxChNI1Acn62c2jnn9hz/xRo/WWW
+X-Gm-Gg: ASbGnctTi+VNABt07LorZlKbJiUcr9g2JNxA/aozk1F5+FdJnARky8UxtaS6/mlvWfr
+	IuVGraYgO+SrvZhAc8Y4OvHA0IfCopcWCfwxClEVh8FnlioedCYa2+BC0AqbnOrXChr2AfbzLRu
+	bHECTCQS+zCuDV4t4K0/vB8+6pRd6INmy3v7zlvtQ1amKTaFOdN5dXdy+KJiXtjJ2QWL8bUN3DP
+	z58k0uHDREOdkHZ33J0EdkwueVBmau7HqM3oDcXOWiOp8mVs9MVgtNcoZO0o7G/MnnVlXXAqBjv
+	Sx1f5V8miDcHaEwMAvvbiW0Nmh4V66B8cpM2yXHgr51UDY8xO+BMQEKn9qjyjIA1+/iK/ywmVEJ
+	5mVW55H2X2GuKVm2znAdAeEmUOnXWgZRBhodSem8Bcz6+qtC+7VswO9cuA4beKhp2vc1XhnpB4N
+	cCxW8=
+X-Google-Smtp-Source: AGHT+IH9+pyxeVQJuWJ7xU8GiuE3ts6G80OQ7UFSgxSDjeJeDwup2vWcuq9x3CeqT9yzy8Qmtkn1Mw==
+X-Received: by 2002:a05:651c:4112:20b0:331:eb47:69fc with SMTP id 38308e7fff4ca-3340997aa36mr1417371fa.29.1755235399127;
+        Thu, 14 Aug 2025 22:23:19 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55cef351646sm79928e87.17.2025.08.14.22.00.23
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3340a43b7b2sm1353031fa.22.2025.08.14.22.23.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Aug 2025 22:00:24 -0700 (PDT)
-Message-ID: <2a757c8d-4ac5-47b7-920b-96575213d6e1@gmail.com>
-Date: Fri, 15 Aug 2025 08:00:23 +0300
+        Thu, 14 Aug 2025 22:23:17 -0700 (PDT)
+Message-ID: <3024c64b-48e4-4a28-bbab-b80cdaec4a9a@gmail.com>
+Date: Fri, 15 Aug 2025 08:23:16 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: iio: adc: Add BD7910[0,1,2,3]
+Subject: Re: [PATCH 3/3] iio: adc: adc128s052: Support ROHM BD7910[0,1,2,3]
 To: David Lechner <dlechner@baylibre.com>,
  Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
 Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
@@ -91,88 +91,83 @@ Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ linux-kernel@vger.kernel.org, Sukrut Bellary <sbellary@baylibre.com>,
+ Lothar Rubusch <l.rubusch@gmail.com>
 References: <cover.1755159847.git.mazziesaccount@gmail.com>
- <8ef78e3cffcfdf99153a3fcf57860771890f1632.1755159847.git.mazziesaccount@gmail.com>
- <175ce750-7f5d-477c-8d18-dd418ba749be@gmail.com>
- <b1cc499b-403e-4dcf-9e6a-10d4d43a8b30@baylibre.com>
+ <e43c184fc6aa5c768045fc772b64d812fdb06254.1755159847.git.mazziesaccount@gmail.com>
+ <014487e4-f8c7-42e6-a68a-9e984002fd46@baylibre.com>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <b1cc499b-403e-4dcf-9e6a-10d4d43a8b30@baylibre.com>
+In-Reply-To: <014487e4-f8c7-42e6-a68a-9e984002fd46@baylibre.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 14/08/2025 17:51, David Lechner wrote:
-> On 8/14/25 4:57 AM, Matti Vaittinen wrote:
->> On 14/08/2025 11:35, Matti Vaittinen wrote:
->>> The ROHM BD79100, BD79101, BD79102, BD79103 are very similar ADCs as the
->>> ROHM BD79104. The BD79100 has only 1 channel. BD79101 has 2 channels and
->>> the BD79102 has 4 channels. Both BD79103 and BD79104 have 4 channels,
-> 
-> Is it just a difference in max sample rate? or pinout?
-
-The BD79104 comes in 2 different packages (BD79104MUF - VQFN16FV3030 and 
-BD79104FV - SSOP-B16).
-
-BD79103MUF pins seem identical to the BD79104MUF pins. Not sure if there 
-is (or will be) BD79103FV. (Both the MUF and FV have identically named 
-pins, with same functionality. Only the pin positioning and potentially 
-amount of unused pins differ).
-
-So, looking at the functionality, the pinout is same. Looking at the 
-physical IC, they may use different packaging for these ICs.
-
-Finally, the only difference between BD79104 and BD79103 I have been 
-able to find from the data-sheet is the differential nonlinearity.
-
-For BD79104 it is said to be:
-DNL: +1.2 / -0.99 LSB @ VDD = 3 V (Typ)
-
-For BD79103 it is said to be:
-DNL: ±0.99 LSB @ VDD = 3 V (Typ)
-
-> 
->>> and, based on the data sheets, they seem identical from the software
->>> point-of-view.
->>>
->>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>> ---
->>>    .../devicetree/bindings/iio/adc/rohm,bd79104.yaml     | 11 ++++++++++-
->>>    1 file changed, 10 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/adc/rohm,bd79104.yaml b/Documentation/devicetree/bindings/iio/adc/rohm,bd79104.yaml
->>> index f0a1347ba4db..6a6e6ab4aca3 100644
->>> --- a/Documentation/devicetree/bindings/iio/adc/rohm,bd79104.yaml
->>> +++ b/Documentation/devicetree/bindings/iio/adc/rohm,bd79104.yaml
->>> @@ -14,7 +14,16 @@ description: |
->>>      properties:
->>>      compatible:
->>> -    const: rohm,bd79104
->>> +    oneOf:
->>> +      - items:
-> 
-> You can drop the items: here since there is only one item.
-
-Thanks.
-
-> 
->>> +          - enum:
->>> +              - rohm,bd79100
->>> +              - rohm,bd79101
->>> +              - rohm,bd79102
->>> +              - rohm,bd79104
->>> +      - items:
->>> +          - const: rohm,bd79104
->>> +          - const: rohm,bd79103
+On 14/08/2025 18:01, David Lechner wrote:
+> On 8/14/25 3:35 AM, Matti Vaittinen wrote:
+>> The ROHM BD79100, BD79101, BD79102, BD79103 are very similar ADCs as the
+>> ROHM BD79104. The BD79100 has only 1 channel. BD79101 has 2 channels and
+>> the BD79102 has 4 channels. Both BD79103 and BD79104 have 4 channels,
+>> and, based on the data sheets, they seem identical from the software
+>> point-of-view.
 >>
->> Oops. I believe the order of the compatibles is wrong for the fallback.
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>
+>> ---
 > 
-> Indeed.
+> One small suggestion. With that:
+> 
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> 
+>> ---
+>>   drivers/iio/adc/ti-adc128s052.c | 36 +++++++++++++++++++++++++++++++++
+>>   1 file changed, 36 insertions(+)
+>>
+>> diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+>> index 81153253529e..2f2ed438cf4e 100644
+>> --- a/drivers/iio/adc/ti-adc128s052.c
+>> +++ b/drivers/iio/adc/ti-adc128s052.c
+>> @@ -122,6 +122,10 @@ static const struct iio_chan_spec adc124s021_channels[] = {
+>>   	ADC128_VOLTAGE_CHANNEL(3),
+>>   };
+>>   
+>> +static const struct iio_chan_spec bd79100_channels[] = {
+> 
+> Even though the driver doesn't support it yet, there is a
+> adc121s021 [1] so would be nice to use that instead of bd79100
+> to keep the naming consistent.
 
-Probably needless to say, but I'll fix this for the next version :)
+I have to disagree on this one. For people who don't use the TI ADCs, 
+the TI numbering does not bring any clarity. Furthermore, I don't like 
+preparing for the support added somewhere in the future - because future 
+is uncertain. It could be this TI's variant never gets added here. If 
+this series gets merged now, then there is only one IC using this 
+channel spec - the bd79100. Naming it after unsupported TI's IC would be 
+plain confusing.
 
-Thanks for the review David!
+In my opinion, structs should get either named based on the IC model 
+which is using them first - or based on the functionality. And actually, 
+when the design of the IC is not too obscure, I would prefer naming 
+based on the functionality, which should help others to re-use the 
+driver. Hence, I wouldn't object someone re-naming all these channel 
+structs based on functionality though - for example something like:
+
+static const struct iio_chan_spec simple_adc_channels1 {}
+static const struct iio_chan_spec simple_adc_channels2 {}
+static const struct iio_chan_spec simple_adc_channels4 {}
+static const struct iio_chan_spec simple_adc_channels8 {}
+
+This which should be clear(ish) for developer no matter which of the 
+supported IC(s) were used. But if we stick with the IC based naming, 
+then we should use naming by supported IC.
+
+> 
+> [1]: https://www.ti.com/product/ADC121C021
+> 
+>> +	ADC128_VOLTAGE_CHANNEL(0),
+>> +};
+>> +
 
 Yours,
 	-- Matti
+
 

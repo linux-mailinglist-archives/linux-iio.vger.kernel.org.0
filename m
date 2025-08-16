@@ -1,66 +1,65 @@
-Return-Path: <linux-iio+bounces-22830-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22831-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D019EB28E97
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 16:47:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 278D1B28E9B
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 16:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD3537BE7D9
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 14:45:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3127916CD87
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 14:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8409C23D291;
-	Sat, 16 Aug 2025 14:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB3B2DF3F9;
+	Sat, 16 Aug 2025 14:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="supULa7D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vFRTUtwo"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4377B22D7A5
-	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 14:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCB91E520C
+	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 14:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755355616; cv=none; b=uM6WUmmigCHoPdeQVWZ8OIb7MYJ7INfWse+tBxnCRNRrfJhDP5+SOEHf9zJFgAMnjqRqTfwxVgVfJnx9pGLz3pbQztyRnDQQ5vxB1puNc2q5/gx0T+XMCj4quF+DN2ysDmM3vacHPRGJiyAFK79qYH8te8RjMFXC/3Z6jWsiIWM=
+	t=1755355735; cv=none; b=eLFSKv+a5DVXR3Bdgvpw3WwaLdRzyiqcDFziSt10K5eAfLDUM8H1mkOVIh80xhu14PtL9MCZCrOzoBpMmtG/dtKYCTGQ8tDeMPMMlLm2EWs+B3Rcyr/Mh7+L1P1ummcuJ45cb7/fz7fZmw/p1EvuggczKUw9VwoZPw0r7wfvDqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755355616; c=relaxed/simple;
-	bh=wPhVoZrGEe0u1BE7EAVBymZc4aOAdUYfe+gkFPUOaeQ=;
+	s=arc-20240116; t=1755355735; c=relaxed/simple;
+	bh=jgVl7ApfncLrYH28rpWtJ7UbvrbGj4+So88rtUEKb5c=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V9zsxMnEH2tICzJUDlkSAI34jYkWZQ+8dpBW8a4ilQiFnho+u7LDStzRvmu0luLLBmL8KT0qSgu94tCvK8SKXMWouJwr6gZyzUGOZ7oNaG+p62sBH50gFQX0N8jiAr8dS1wiUBco6YWelXDmOc2GyZ+IXsUvriXm4LHfR4MoKD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=supULa7D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1137C4CEEF;
-	Sat, 16 Aug 2025 14:46:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o1lJ9h5JRA01VB2H7ZNI/ezR056vbPrYuXPmqMOux/3/oZbGEoSf8A8XAO+PvxpVcxYfxpZoip3uvPITFGm1wA9NJggGJh2NdJ9fauhDNHlJuMk3ABW39GCaERaF731Y5N2KMIq9Bx1/nKw1uVN2uFfYUDPbrQ0d6BrHHhqrfG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vFRTUtwo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E2DC4CEEF;
+	Sat, 16 Aug 2025 14:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755355615;
-	bh=wPhVoZrGEe0u1BE7EAVBymZc4aOAdUYfe+gkFPUOaeQ=;
+	s=k20201202; t=1755355735;
+	bh=jgVl7ApfncLrYH28rpWtJ7UbvrbGj4+So88rtUEKb5c=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=supULa7DRL5KoszA11IH0/CA7YLJUrsZp3Wb6RsjsCSYmFFCj5S0fN7xAp/2+vDXD
-	 Vtqk4XpeMkuE3Odut6RASSaTf04AkxrG4Fagba9kYtfP6Ynk0y0JlWmM3vHHXGNmcN
-	 2hhsNsULsaVb+hl1HxvSVaRNaXkZZXl+gS1qCw1p6XSbKSliEYSUKYwtioevx8a3YS
-	 MqtxdnYQZvpQR10ZK4cGYw4ZX/oTcypetat7TE5f973y5Pz2sDtjikaXGomhXoyFtL
-	 CI5dToaJKc523lhKmr7TXk79tVdbizTdGgdeNkAq9dsXN5N8t/5R9dXt+Ga/CwqFRa
-	 cCs8RjwzAqk5Q==
-Date: Sat, 16 Aug 2025 15:46:44 +0100
+	b=vFRTUtwovpc8WLEE+7Nm9aNNoXQLk0LliKVOMCYCgwwvOjkAEnXBiPmKKN60eZdPB
+	 DitYWZiUXPC1VBqBV3un2TFKzbuUK8CR+DLvmzxGQEpCOJPAuyAE0ov4QfAYKI+hc+
+	 624VT2cw7eSP1FT6NTHfsiC4nWD0HbkOlutL/k6Hj3kBWEXRuG5hMQPSUWkVGZwbho
+	 0skwWiHz6OdZ0/YPLZ7Tu0zDboIGY6MYmRSu84ILHSft5vwkxcKdIWRN58Xscvdb4P
+	 oZvzV9WIKlkz2xv+CkQvTB8VUBJaKBOic7WwvbY+LAy7btvjc/CLVOAgHjfkdmv7KX
+	 zM2p3sMCeOt0A==
+Date: Sat, 16 Aug 2025 15:48:44 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>, Nuno
  =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
  Mudit Sharma <muditsharma.info@gmail.com>, Jiri Kosina <jikos@kernel.org>,
  Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Matti Vaittinen
- <mazziesaccount@gmail.com>, Abhash Jha <abhashkumarjha123@gmail.com>,
+ <javier.carrasco.cruz@gmail.com>, Abhash Jha <abhashkumarjha123@gmail.com>,
  Astrid Rost <astrid.rost@axis.com>, =?UTF-8?B?TcOlcnRlbg==?= Lindahl
  <marten.lindahl@axis.com>, Gwendal Grignou <gwendal@chromium.org>,
  Christian Eggers <ChristianEggersceggers@arri.de>, Jonathan Cameron
  <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 02/16] iio: light: vcnl4035: Fix endianness vs data
- placement in buffer issue.
-Message-ID: <20250816154644.24919262@jic23-huawei>
-In-Reply-To: <CAHp75Vd0KUs25P8cHM8EaAdLbXcDASXLs_nao8Qoee-pqQUF4A@mail.gmail.com>
+Subject: Re: [PATCH 05/16] iio: light: vcnl4035: Use
+ iio_push_to_buffers_with_ts() to allow runtime source buffer size check.
+Message-ID: <20250816154844.0de9563e@jic23-huawei>
+In-Reply-To: <5388ed7a-4555-4932-9f31-d7d25e5d8474@gmail.com>
 References: <20250802164436.515988-1-jic23@kernel.org>
-	<20250802164436.515988-3-jic23@kernel.org>
-	<CAHp75Vd0KUs25P8cHM8EaAdLbXcDASXLs_nao8Qoee-pqQUF4A@mail.gmail.com>
+	<20250802164436.515988-6-jic23@kernel.org>
+	<5388ed7a-4555-4932-9f31-d7d25e5d8474@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,62 +67,57 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 3 Aug 2025 21:16:27 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon, 4 Aug 2025 09:57:46 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On Sat, Aug 2, 2025 at 6:45=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
-> >
+> On 02/08/2025 19:44, Jonathan Cameron wrote:
 > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > The assumption is that the channel ends up in the first 16 bits
-> > of the buffer.  On a big endian system, the regmap_read() will
-> > read a 16 bit value into the 4 byte location, leaving the value in byte=
-s =20
->=20
-> 16-bit
-> 4-byte
->=20
-> > 2 and 3.  Fix this by using a a local variable and copying into the =20
->=20
-> a a --> a
->=20
-> > current location. =20
->=20
-> ...
->=20
-> > +       int val; =20
->=20
-> Why signed? regmap API uses an unsigned type for values.
->=20
-Good point. I got thrown by the type in the incorrect cast.
+> > 
+> > As the sizing of the source data has to include space for an aligned
+> > timestamp it is a common source of bugs.  Using this new function that
+> > takes the size of the provided buffer enables runtime checks for
+> > possible bugs.
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >   drivers/iio/light/vcnl4035.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
+> > index dca229e74725..2ebc1e9496f3 100644
+> > --- a/drivers/iio/light/vcnl4035.c
+> > +++ b/drivers/iio/light/vcnl4035.c
+> > @@ -117,8 +117,8 @@ static irqreturn_t vcnl4035_trigger_consumer_handler(int irq, void *p)
+> >   		goto fail_read;
+> >   	}
+> >   	scan.chan = val;
+> > -	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
+> > -					iio_get_time_ns(indio_dev));
+> > +	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
+> > +				    iio_get_time_ns(indio_dev));
+> >   
+> >   fail_read:
+> >   	iio_trigger_notify_done(indio_dev->trig);  
+> 
+> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> 
+> (Although, seeing there is 3 patches touching the same spot, I might 
+> squash the patch 04/16 with the 03/16. I would leave this one as a 
+> standalone so the fix can be backported without this new API, if needed).
+Whilst all the same spot I'm keen to keep them separate as they are all
+unrelated changes.
 
-> ...
->=20
-> > +       *((u16 *)buffer) =3D val; =20
->=20
-> I don't understand this fix. Does it mean we simply transfer from HW
-> to the user space in whatever endianess HW does this?
->=20
-I was thinking that was dealt with by the regmap and the iio_chan_spec.
-
-The regmap part is fine as sets REGMAP_ENDIAN_LITTLE but then I'd expect
-the reads to result in cpu endian from that.  The chan spec says little end=
-ian though
-and I think it should CPU endian.
-
-I'll spin a new little series to resolve that as well and fix this one up.
+I'll be respinning this anyway with an additional fix for the buffer
+type.
 
 Jonathan
 
-
-
-
-
-
-
+> 
+> Yours,
+> 	-- Matti
+> 
 
 

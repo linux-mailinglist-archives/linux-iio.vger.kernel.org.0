@@ -1,248 +1,107 @@
-Return-Path: <linux-iio+bounces-22848-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22849-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B439B28FA3
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 18:53:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 113F7B28FA7
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 18:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76BC95C21BD
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 16:53:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19BB717491F
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 16:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303022FDC2A;
-	Sat, 16 Aug 2025 16:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A05802FDC33;
+	Sat, 16 Aug 2025 16:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wk5Cb79j"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EI+c/A57"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CB019006B;
-	Sat, 16 Aug 2025 16:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5658A211460
+	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 16:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755363186; cv=none; b=SW+RItHE4doQLg8HEnZyA472H7dogZ/39ERc6tIMEBBAGev/+kxQGNWJ22axIQSmrCZjLmChaMnt6+N9IH0Qu3rwzF2JRpO3sxDB4eN8zg5Zclmh0OFRykZQFSUaSK8eiixKZwUrbU/7aEE/SAF2AmbCPlcf3Dj3CqUUVERWu8g=
+	t=1755363389; cv=none; b=a8jr1FzrdpW0lyDrtGHBTe4UdDgHEH48M6+d+tAWDhTUHUA+vpyHViZBPs+4FlaAjhnh0GjYwfOt7dzq60Q8YEQu8mq64VAibxuaGELSbr86uwkEvTSlIe7wDMwEh0ouJKVO9cpbYmX6xY+1sxdXxfrNLShYeF8pfT/DL3bh7vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755363186; c=relaxed/simple;
-	bh=qkucZBqfyXM1IoYj9VCRVJSt5ZKnweElt8uY1jlL0uw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WYkWOE87QtVdNg20wCCQMSkjlwu30MdUTdpIxn8c+xZngRL1ZjtkbCo1gwddUNIgAOLnbUIUC9Buz0922DrLeYdoot9rCko7xQ7u2RLwOs200og7BayhKt+MQN+A/M6nMHtMnCsJsV4wNnZaI8Ms2w1OLWES42idVrO5GICjuyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wk5Cb79j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D06C4CEEF;
-	Sat, 16 Aug 2025 16:53:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755363185;
-	bh=qkucZBqfyXM1IoYj9VCRVJSt5ZKnweElt8uY1jlL0uw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Wk5Cb79jDjj7h5A45pJu/w3qx/KleJZ06N622MUeoVcKsEhPP//22m44/oPBXmtTm
-	 BxuWapYLdxsdFmZaeb4srP2pijf1sZ28Jcv8A/Iqezvl7GStgUetvX38bjstEsVrXt
-	 pxyATHQ0Y2B7EH5F1X2xHprZGLM7J2vELMkDgKTFOc1TYZZDlw0EDEDm6anniya+00
-	 yWEFgGnHiB1L8D9M5krkAIC+zF/3kIlwTxMb+/539KQmeDVz0wb8zhxJUn1UvpMHej
-	 hkJhpqpjSCeRIof1xpcyw/vQJv79d25QLpEPi0e4kMDMbTmKP3S9WTUDswr/U3IAMH
-	 OM6R/fjLy6peA==
-Date: Sat, 16 Aug 2025 17:52:58 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v4 3/5] dt-bindings: iio: adc: add ade9000
-Message-ID: <20250816175258.42286693@jic23-huawei>
-In-Reply-To: <20250815095713.9830-4-antoniu.miclaus@analog.com>
-References: <20250815095713.9830-1-antoniu.miclaus@analog.com>
-	<20250815095713.9830-4-antoniu.miclaus@analog.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1755363389; c=relaxed/simple;
+	bh=woclP5+jEBRau2wQUGhcWNrJqopsedVvlkWQeccJ4uY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=XOqpRP2jPD9+q/zGmjIo8/vEF34p6GvpBGU87rFVrWR0ihCkMn4vU7Qie43tEZc9WyIIcEdVFkMBIo6JZX3pfcj3mfthoYsWmH+CU2e9CVfzPnHeRBjiFOInEVQ+dNSJ7xEpQ+0XkAvl/iHPoqnhcArh+DIjtZg+FR3S8TfaRkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EI+c/A57; arc=none smtp.client-ip=209.85.167.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-435de81b368so1349142b6e.3
+        for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 09:56:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755363386; x=1755968186; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JbRjZf6ZRf2jst0Yfan9jOOyyn6yhDJByZN4z1KAmss=;
+        b=EI+c/A57kEDHsOpVRpH+GTuod8FRe7y0k7USltKWAwuQloU6Bq/Ynd+kVNzCummFbX
+         CYBIwNtj/Ff1tB66PTfpMnIqxcdr0VPLRDyaepAQp4OsvWNQ6S1HA1lR/iajHJ/5A1aE
+         g1XNZjYL+q5ugZQuK239u/B4oAH8lkBTWTPj6HY380zv9+DrB/0CppN+MT5osJG6qs1K
+         hej04tU2g8R6BB6Upm0VHw+G8P/C8r/9ANjJqTuW4w98kuycxGa+Brk//jUIxzU1aEp9
+         zgh0rSSX0WkcreiLprzPcPHr/3F0RJ2RjoE2RWNW1g3tr0bPf8Eu/zvcwY73j2Y1aaej
+         zZiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755363386; x=1755968186;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JbRjZf6ZRf2jst0Yfan9jOOyyn6yhDJByZN4z1KAmss=;
+        b=Tigj7+PiaGV7pghjt3OKONSK9uF+iY6d3lxM9E83K/WaxLv5+9pRGTdEjsydEBuHIX
+         wKl6WfwlhhVgY2DPt9GeYAqsPRpg4N6N3Gy73X8m9OvQM/rZCQ2uRuZaHhCNKI1Yqf4G
+         CJS9W2taOQ8hPD184LoLeUbVlwoNn7WUx0iykbeRJgiVyIHIac9cxXgDuyCV3IFjBd36
+         5jD1eM+F5gnfY0SnsDaSKPFkloodxmC/jyhpqwo7o6gFnHK465YJg1nYTP6J01ruwaOW
+         ewncIgxsdXpcDAevP1ounxgSd6k5NuQ1PaMZTH40D6RVrQUbUnpq2V6SE4OTsgkip8mY
+         Mt/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVhj7JhlhxeWZphmEJQNcR+glkpJMOHKz29yCJQrIFHkzNWBvvaeYd+DsENtjDylKtmg2NrHtBfx9I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz87mQpAFRX9DE3v7N/wRlPEH6rORBGz5BcbHtU4mskiuRiyByN
+	5xx/tmOiEj3rCuidyr9H71k5rukeVBI4oc7mRPFmW7r7w10uDNfneIcTO85MStmu254/iS2sFgV
+	4PhUz
+X-Gm-Gg: ASbGncuZDMQU7Vj9mcQ+clOndK5LitD5he+xUd1ny4Zwqnj6bcf6vJip297iO7cwEeq
+	aFlzbJRE7EhNB3gkhd7h7oCISOf+kSVdKvN9ZKmQIO90yTrC/u5AAHo+lWu0w1jiksYOoPmYpKc
+	MyX5f0MqtzhWUI4jyX7cHNISJxd138zMSDnunZGSBYTXNYLbUIxaDUyND+XedjvZJqi8m7JAvhx
+	n/3xz3zfBLPZMtTTxLTKZs7Sw7cPAuGhZ0WzkxypE2PbfdriNIJYaGLEZrRbY/YLn5G+BqwNxLl
+	3rOYl/aZ1uqvqabFAW+E+Z6U+4OVY1XRDD6ntUnPn2xr5QxispQZiutD3xyt62u5Qu1xkh0CIXP
+	Z421jnk2uXFi81D7dvz+oiH1FXdEW8/MVM8yY4fyvXb0as4uR1OvfumTGPlGw+Zia4rC8XRXc
+X-Google-Smtp-Source: AGHT+IE+uLxK9MUTBgNY5LCQoebQIqITz8zvrHvCJ8AkNytTsjr9Sa0XKikZwV3Jg9G284HPN76+vA==
+X-Received: by 2002:a05:6808:50d8:b0:435:f353:a648 with SMTP id 5614622812f47-435f353acb8mr1895881b6e.2.1755363386222;
+        Sat, 16 Aug 2025 09:56:26 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:fcf8:116:11db:fbac? ([2600:8803:e7e4:1d00:fcf8:116:11db:fbac])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7439203bd13sm932593a34.24.2025.08.16.09.56.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 16 Aug 2025 09:56:25 -0700 (PDT)
+Message-ID: <f089d2fe-562f-46bf-aef2-f19302d3196e@baylibre.com>
+Date: Sat, 16 Aug 2025 11:56:24 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iio: imu: use min() to improve code
+To: Qianfeng Rong <rongqianfeng@vivo.com>,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250816120510.355835-1-rongqianfeng@vivo.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250816120510.355835-1-rongqianfeng@vivo.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Fri, 15 Aug 2025 09:56:36 +0000
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
-
-> Add devicetree bindings support for ade9000.
->=20
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-
-Hi Antoniu,
-Sorry I missed v3 last week. Garage door crisis ate up my review time!
-
-A few minor comments inline.
-
-Jonathan
-
+On 8/16/25 7:05 AM, Qianfeng Rong wrote:
+> Use min() to reduce code in inv_icm42600_buffer_update_fifo_period()
+> and inv_icm42600_buffer_update_watermark(), and improve readability.
+> 
+> Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
 > ---
-> changes in v4:
->  - improve description formatting (remove unnecessary pipe symbols)
->  - move $ref to end and remove allOf section for cleaner structure
->  .../bindings/iio/adc/adi,ade9000.yaml         | 108 ++++++++++++++++++
->  1 file changed, 108 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ade9000=
-.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml b=
-/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
-> new file mode 100644
-> index 000000000000..bd374c0d57d4
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
-> @@ -0,0 +1,108 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2025 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ade9000.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices ADE9000 High Performance, Polyphase Energy Meterin=
-g driver
-> +
-> +maintainers:
-> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
-> +
-> +description: |
-> +  The ADE9000 s a highly accurate, fully integrated, multiphase energy a=
-nd power
-
-is a=20
-
-> +  quality monitoring device. Superior analog performance and a digital s=
-ignal
-> +  processing (DSP) core enable accurate energy monitoring over a wide dy=
-namic
-> +  range. An integrated high end reference ensures low drift over tempera=
-ture
-> +  with a combined drift of less than =C2=B125 ppm/=C2=B0C maximum for th=
-e entire channel
-> +  including a programmable gain amplifier (PGA) and an analog-to- digital
-analog-to-digital
-
-> +  converter (ADC).
-> +
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD=
-E9000.pdf
-> +
-> +$ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ade9000
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 20000000
-> +
-> +  interrupts:
-> +    maxItems: 3
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: irq0
-> +      - const: irq1
-> +      - const: dready
-
-I always forget how these work.  Does this allow me to say irq1 and dready
-are wired but not irq0?=20
-
-Similar to question on interrupts being required below, if it is plausible
-the driver could be modified to work with a lesser set, the binding should =
-allow
-it.
-
-> +
-> +  reset-gpios:
-> +    description:
-> +      Must be the device tree identifier of the RESET pin. As the line is
-> +      active low, it should be marked GPIO_ACTIVE_LOW.
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +
-> +  vref-supply: true
-> +
-> +  clocks:
-> +    description: External clock source when not using crystal
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    items:
-> +      - const: clkin
-> +
-> +  "#clock-cells":
-> +    description:
-> +      ADE9000 can provide clock output via CLKOUT pin with external buff=
-er.
-> +    const: 0
-> +
-> +  clock-output-names:
-> +    items:
-> +      - const: clkout
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reset-gpios
-
-As with interrupts, can we not use it at all if the reset line is tied
-to not reset?   Or is it a driver limitation (which is fine to have but sho=
-uldn't
-affect the binding).
-
-> +  - interrupts
-> +  - interrupt-names
-My usual question on interrupts.  Is the device completely useless without =
-them or
-is it just the case that we currently require them in the driver because we=
- don't
-poll for completion as an alternative?  Fine to require them in the driver =
-even
-if the binding doesn't require them.
-
-> +  - vdd-supply
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    spi {
-> +      #address-cells =3D <1>;
-> +      #size-cells =3D <0>;
-> +
-> +      adc@0 {
-> +          compatible =3D "adi,ade9000";
-> +          reg =3D <0>;
-> +          spi-max-frequency =3D <7000000>;
-> +
-> +          #clock-cells =3D <0>;
-> +          reset-gpios =3D <&gpio 4 GPIO_ACTIVE_LOW>;
-> +          interrupts =3D <2 IRQ_TYPE_EDGE_FALLING>, <3 IRQ_TYPE_EDGE_FAL=
-LING>, <4 IRQ_TYPE_EDGE_FALLING>;
-> +          interrupt-names =3D "irq0", "irq1", "dready";
-> +          interrupt-parent =3D <&gpio>;
-> +          /* Optional: external clock instead of crystal */
-> +          /* clocks =3D <&ext_clock_24576khz>; */
-> +          /* clock-names =3D "clkin"; */
-It's an example so pick one of them - if anyone wants to know what else wor=
-ks they can
-look at the binding.  If there is something sufficiently unusual to be non =
-obvious, have
-a second example. Having stuff as comment in here is untestable and not par=
-ticularly
-easy to find.
-
-> +          clock-output-names =3D "clkout";
-> +          vdd-supply =3D <&vdd_reg>;
-> +      };
-> +    };
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

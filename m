@@ -1,60 +1,62 @@
-Return-Path: <linux-iio+bounces-22801-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22802-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C47B28D92
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 14:08:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75CBB28D99
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 14:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B19165E356A
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 12:08:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E13FE7B42FE
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 12:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9392C21EE;
-	Sat, 16 Aug 2025 12:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173C12877FA;
+	Sat, 16 Aug 2025 12:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B12Xdd39"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IN+fA+et"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4347248F4E;
-	Sat, 16 Aug 2025 12:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5423202963;
+	Sat, 16 Aug 2025 12:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755346113; cv=none; b=EH0wv0ZQYv5o9huIOM95JXS2O8lNtlR93VaTWO+Bsg0s/hzsG0qr+o3PomTkSYQqRDxkQxNcwB5Bi8a3a510Zzrrd1rAX27vBjp6FbovFZNa33XxM6yNLF07H1Lgye+WWnANhaPxvwXfleIKIJf1G/On7F/lm9g0pLZaEKxZciU=
+	t=1755346613; cv=none; b=AoSHIgGFLm6F62lI4YloEncw3GVqofYMwf+sPLqL7bv+DkO6qvyrCGiQOoIXaQRp1zDvlJW2w6n0jvYEauFjRcd198cQiJa3Dm6kEbn/XuUru0qD705LBTjm/xAu2P+UfjqfgR3Xg88XcZFh1TSD1ztFlCLPECXVKryaRMDSSDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755346113; c=relaxed/simple;
-	bh=qlB4X8NEdQ6H1pEuGtG2U39RBECS7RzEFldDRG+JH8Y=;
+	s=arc-20240116; t=1755346613; c=relaxed/simple;
+	bh=gfket+V11Lez8BS3IM3c/+h8aRCcutug/kXRynqIesg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rGWCA2IyE85It7gGz5VRfUijc2VgrN8LKOEaCpIgVWo2LRiycC6ruBQN6fFslpSZeOm2+P5eW+CJx4Jnc8+9jWRn0HhVHtMgm4WwrWykOZoso3oEF5oFI1vWVm/J9d5L/4D2SFxu6sOINGc5/aWtpJJib4VXC3n1Ysuy6WxLXfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B12Xdd39; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C522C4CEF1;
-	Sat, 16 Aug 2025 12:08:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aolnzwncWpVhSjrsjSC6bZqr2qvJrjQkOM3u9NBUidEasQC8M2Zt5HwkFpdrBH/AG1AZx5Ptx4TyRSePOEXfydW7nQ6yKpsQ66Ld6sKNupUZxZ4966K4eu3bjPp1Km5xuAf5Owse8YqD6m9VUZ7AyXrIEPmUNKdxYnSksNqUulo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IN+fA+et; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D95C4CEEF;
+	Sat, 16 Aug 2025 12:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755346113;
-	bh=qlB4X8NEdQ6H1pEuGtG2U39RBECS7RzEFldDRG+JH8Y=;
+	s=k20201202; t=1755346613;
+	bh=gfket+V11Lez8BS3IM3c/+h8aRCcutug/kXRynqIesg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=B12Xdd39E5EgFqfC1+nwjbiIqR6E/+ZVUD+juS9DMrxLGKGmhrDEFhdNtDz6eIRHa
-	 jyEkBFMTgcDpXQw02gCjBS2hoEIgpJfwEk/2sfIyrmb2w5Ohb4kUYshAT1C/CzWuWd
-	 k0q7caCSyXrZK6WqZb22Rj+MGZsZVhaOsUxUj/GmOEtmwssCFNSOWsFHSJ42zN2zJA
-	 MoMpxAFEfe4uBLOAa3FWxFohMwht4ZQ3VbNM9In33Y8KxCs1B3069Ze4gl6go6JJ54
-	 k7pucOViUeMUyrW1dehZz4/UoFW67ozOwS0WW55GFp6vjPwQBHrvpnGSd34Lu7T0ed
-	 uuRSNjf1O5K2g==
-Date: Sat, 16 Aug 2025 13:08:23 +0100
+	b=IN+fA+et9rspeMG+wkRMPcbDcbtQL7Bo2+79OZ8yR7aHpq5ZHTBvam+Ze5A61VytV
+	 5lh1ljH+RwHZufFeN8gSq+OFc23Eynx9fug7sllhLMfv5L3Wz0TU723l5MqmPXVZJl
+	 vIN00gr5svIBW7dMVarqCB8uAkT1Ja3LZBvPNT14VQdEHzYNHRvkUw47ghXugHmLhQ
+	 g1CmD13VOTZ7ezcjFB0AJ6r+qXC7o14Z0xd3EF2v1aA4/1Z89pKZX0n2ujht9h5lZ8
+	 JYtlQ3ohGcbzfZ67jy2bpqqter+vuVB52B61zYl9jYV9+Q6NR8QcZn/7PU83nDzgeq
+	 zSPfrd0M8hbCQ==
+Date: Sat, 16 Aug 2025 13:16:43 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
-Cc: remi.buisson@tdk.com, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 4/9] iio: imu: inv_icm45600: add IMU IIO gyroscope
- device
-Message-ID: <20250816130823.3cb14980@jic23-huawei>
-In-Reply-To: <20250814-add_newport_driver-v4-4-4464b6600972@tdk.com>
-References: <20250814-add_newport_driver-v4-0-4464b6600972@tdk.com>
-	<20250814-add_newport_driver-v4-4-4464b6600972@tdk.com>
+To: kernel test robot <lkp@intel.com>
+Cc: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Remi Buisson <remi.buisson@tdk.com>
+Subject: Re: [PATCH v4 6/9] iio: imu: inv_icm45600: add I2C driver for
+ inv_icm45600 driver
+Message-ID: <20250816131643.635ed15c@jic23-huawei>
+In-Reply-To: <202508151941.BweGaEVT-lkp@intel.com>
+References: <20250814-add_newport_driver-v4-6-4464b6600972@tdk.com>
+	<202508151941.BweGaEVT-lkp@intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,78 +67,97 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 14 Aug 2025 08:57:18 +0000
-Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org> wrote:
+On Fri, 15 Aug 2025 19:31:38 +0800
+kernel test robot <lkp@intel.com> wrote:
 
-> From: Remi Buisson <remi.buisson@tdk.com>
+> Hi Remi,
 > 
-> Add IIO device for gyroscope sensor
-> with data polling interface and FIFO parsing.
-> Attributes: raw, scale, sampling_frequency, calibbias.
-> Temperature is available as a processed channel.
+> kernel test robot noticed the following build warnings:
 > 
-> Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
-A few minor comments.
+> [auto build test WARNING on f8f559752d573a051a984adda8d2d1464f92f954]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Remi-Buisson-via-B4-Relay/dt-bindings-iio-imu-Add-inv_icm45600/20250814-170722
+> base:   f8f559752d573a051a984adda8d2d1464f92f954
+> patch link:    https://lore.kernel.org/r/20250814-add_newport_driver-v4-6-4464b6600972%40tdk.com
+> patch subject: [PATCH v4 6/9] iio: imu: inv_icm45600: add I2C driver for inv_icm45600 driver
+> config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20250815/202508151941.BweGaEVT-lkp@intel.com/config)
+> compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250815/202508151941.BweGaEVT-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202508151941.BweGaEVT-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+> >> drivers/iio/imu/inv_icm45600/inv_icm45600_core.c:908:12: warning: result of comparison of constant 32768 with expression of type 's16' (aka 'short') is always false [-Wtautological-constant-out-of-range-compare]  
+>      908 |         if (*temp == INV_ICM45600_DATA_INVALID)
+>          |             ~~~~~ ^  ~~~~~~~~~~~~~~~~~~~~~~~~~
+That one will need fixing up.
 
-> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_gyro.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_gyro.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..7a5a2ce77f3e176bdcb5657c0b8d547024d04930
-> --- /dev/null
-> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_gyro.c
+>    drivers/iio/imu/inv_icm45600/inv_icm45600_core.c:785:12: warning: unused function 'inv_icm45600_suspend' [-Wunused-function]
+>      785 | static int inv_icm45600_suspend(struct device *dev)
+>          |            ^~~~~~~~~~~~~~~~~~~~
+These too me a minute.  You have the deprecated functions for actually filling in 
 
-> +int inv_icm45600_gyro_parse_fifo(struct iio_dev *indio_dev)
++EXPORT_NS_GPL_DEV_PM_OPS(inv_icm45600_pm_ops, IIO_ICM45600) = {
++	SET_SYSTEM_SLEEP_PM_OPS(inv_icm45600_suspend, inv_icm45600_resume)
++	SET_RUNTIME_PM_OPS(inv_icm45600_runtime_suspend,
++			   inv_icm45600_runtime_resume, NULL)
++};
++
 
-Ah. This is where this comes in.  Add header definition in this
-patch as well.
+should be
++EXPORT_NS_GPL_DEV_PM_OPS(inv_icm45600_pm_ops, IIO_ICM45600) = {
++	SYSTEM_SLEEP_PM_OPS(inv_icm45600_suspend, inv_icm45600_resume)
++	RUNTIME_PM_OPS(inv_icm45600_runtime_suspend,
++			   inv_icm45600_runtime_resume, NULL)
++};
++
+Or use _DEFINE_DEV_PM_OPS() to set all this.
 
-> +{
-> +	struct inv_icm45600_state *st = iio_device_get_drvdata(indio_dev);
-> +	struct inv_icm45600_sensor_state *gyro_st = iio_priv(indio_dev);
-> +	struct inv_sensors_timestamp *ts = &gyro_st->ts;
-> +	ssize_t i, size;
-> +	unsigned int no;
-> +
-> +	/* parse all fifo packets */
-> +	for (i = 0, no = 0; i < st->fifo.count; i += size, ++no) {
-> +		struct inv_icm45600_gyro_buffer buffer = { };
-> +		const struct inv_icm45600_fifo_sensor_data *accel, *gyro;
-> +		const __le16 *timestamp;
-> +		const s8 *temp;
-> +		unsigned int odr;
-> +		s64 ts_val;
-> +
-> +		size = inv_icm45600_fifo_decode_packet(&st->fifo.data[i],
-
-can drag size into this scope as well.
-
-> +				&accel, &gyro, &temp, &timestamp, &odr);
-> +		/* quit if error or FIFO is empty */
-> +		if (size <= 0)
-> +			return size;
-> +
-> +		/* skip packet if no gyro data or data is invalid */
-> +		if (gyro == NULL || !inv_icm45600_fifo_is_data_valid(gyro))
-> +			continue;
-> +
-> +		/* update odr */
-> +		if (odr & INV_ICM45600_SENSOR_GYRO)
-> +			inv_sensors_timestamp_apply_odr(ts, st->fifo.period,
-> +							st->fifo.nb.total, no);
-> +
-> +		memcpy(&buffer.gyro, gyro, sizeof(buffer.gyro));
-> +		/* convert 8 bits FIFO temperature in high resolution format */
-> +		buffer.temp = temp ? (*temp * 64) : 0;
-> +		ts_val = inv_sensors_timestamp_pop(ts);
-> +		iio_push_to_buffers_with_timestamp(indio_dev, &buffer, ts_val);
-
-Please switch to new iio_push_to_buffers_with_ts().
-I want to get rid of the with_timestamp() version eventually as we might as well
-always provide the buffer size.
-
-> +	}
-> +
-> +	return 0;
-> +}
+>    drivers/iio/imu/inv_icm45600/inv_icm45600_core.c:820:12: warning: unused function 'inv_icm45600_resume' [-Wunused-function]
+>      820 | static int inv_icm45600_resume(struct device *dev)
+>          |            ^~~~~~~~~~~~~~~~~~~
+>    drivers/iio/imu/inv_icm45600/inv_icm45600_core.c:860:12: warning: unused function 'inv_icm45600_runtime_suspend' [-Wunused-function]
+>      860 | static int inv_icm45600_runtime_suspend(struct device *dev)
+>          |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    drivers/iio/imu/inv_icm45600/inv_icm45600_core.c:879:12: warning: unused function 'inv_icm45600_runtime_resume' [-Wunused-function]
+>      879 | static int inv_icm45600_runtime_resume(struct device *dev)
+>          |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    5 warnings generated.
+> 
+> 
+> vim +908 drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+> 
+> 8891b99381240f Remi Buisson 2025-08-14  887  
+> 2570c7e48ace35 Remi Buisson 2025-08-14  888  static int _inv_icm45600_temp_read(struct inv_icm45600_state *st, s16 *temp)
+> 2570c7e48ace35 Remi Buisson 2025-08-14  889  {
+> 2570c7e48ace35 Remi Buisson 2025-08-14  890  	struct inv_icm45600_sensor_conf conf = INV_ICM45600_SENSOR_CONF_KEEP_VALUES;
+> 2570c7e48ace35 Remi Buisson 2025-08-14  891  	int ret;
+> 2570c7e48ace35 Remi Buisson 2025-08-14  892  
+> 2570c7e48ace35 Remi Buisson 2025-08-14  893  	/* Make sure a sensor is on. */
+> 2570c7e48ace35 Remi Buisson 2025-08-14  894  	if (st->conf.gyro.mode == INV_ICM45600_SENSOR_MODE_OFF &&
+> 2570c7e48ace35 Remi Buisson 2025-08-14  895  	    st->conf.accel.mode == INV_ICM45600_SENSOR_MODE_OFF) {
+> 2570c7e48ace35 Remi Buisson 2025-08-14  896  		conf.mode = INV_ICM45600_SENSOR_MODE_LOW_POWER;
+> 2570c7e48ace35 Remi Buisson 2025-08-14  897  		ret = inv_icm45600_set_accel_conf(st, &conf, NULL);
+> 2570c7e48ace35 Remi Buisson 2025-08-14  898  		if (ret)
+> 2570c7e48ace35 Remi Buisson 2025-08-14  899  			return ret;
+> 2570c7e48ace35 Remi Buisson 2025-08-14  900  	}
+> 2570c7e48ace35 Remi Buisson 2025-08-14  901  
+> 2570c7e48ace35 Remi Buisson 2025-08-14  902  	ret = regmap_bulk_read(st->map, INV_ICM45600_REG_TEMP_DATA,
+> 2570c7e48ace35 Remi Buisson 2025-08-14  903  				&st->buffer.u16, sizeof(st->buffer.u16));
+> 2570c7e48ace35 Remi Buisson 2025-08-14  904  	if (ret)
+> 2570c7e48ace35 Remi Buisson 2025-08-14  905  		return ret;
+> 2570c7e48ace35 Remi Buisson 2025-08-14  906  
+> 2570c7e48ace35 Remi Buisson 2025-08-14  907  	*temp = (s16)le16_to_cpup(&st->buffer.u16);
+> 2570c7e48ace35 Remi Buisson 2025-08-14 @908  	if (*temp == INV_ICM45600_DATA_INVALID)
+> 2570c7e48ace35 Remi Buisson 2025-08-14  909  		return -EINVAL;
+> 2570c7e48ace35 Remi Buisson 2025-08-14  910  
+> 2570c7e48ace35 Remi Buisson 2025-08-14  911  	return 0;
+> 2570c7e48ace35 Remi Buisson 2025-08-14  912  }
+> 2570c7e48ace35 Remi Buisson 2025-08-14  913  
 > 
 
 

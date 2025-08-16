@@ -1,65 +1,59 @@
-Return-Path: <linux-iio+bounces-22796-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22797-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC087B28D57
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 13:17:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B55B28D66
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 13:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E73031CC04F1
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 11:17:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A662B3BAAC3
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 11:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C6A2C0F77;
-	Sat, 16 Aug 2025 11:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4982D0610;
+	Sat, 16 Aug 2025 11:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxnA0JpT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kh8pD0Nd"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5576023D281;
-	Sat, 16 Aug 2025 11:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB831DF742;
+	Sat, 16 Aug 2025 11:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755343044; cv=none; b=romDy3oE+vqpx+Z7wD4MlwG+HsZPOX3azUYAgYYm+DwGausdHY1Jgr6Px+VHnyj56YlOBajkXPqwVEL/zPiBN6APu9GGbuPaIwMgrfvdhjkKMdX1XIDx1VmJBdnSpOfRLdmetTSzb3JvsikhK+OXuOVoT+7FdhVl/2TU1e8GWLo=
+	t=1755343529; cv=none; b=PK8JJPCkU3nT0KvaMwoTq3TcmuSK1NXBIlkstLyscoT9WGTWhz6hjQ9H90OV2I5bkU/DdpZCLpQDciZKMlqKAViNQtIw2kyn3xeZA82fDSSvAxWiKHeu71PdhDxoJ2aDH6NNW4lwaoEKMCTStUrRAWkXlahNXRzwW3k12CPGw9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755343044; c=relaxed/simple;
-	bh=3ERxZaRS4qcwh/mtcVTYLz86jmNS0EKbfeCWGsT0/LA=;
+	s=arc-20240116; t=1755343529; c=relaxed/simple;
+	bh=5C84l4xZ1NV/v27biPkkCIjMZop57ZB3qzqqFyLS+jU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pp+HlpukjsZ3+tJ8A8CQwKNVe1J8hohgpUjAGkhbbicNQlFy4BWGnHz4TUiLtgoyVmqygfn6XaOUkETzNYxtLgE+lkzVi/MExI4ffk286KtjoBuI2LK2FP3ZD/1W18ezjvmM82QBvxsF7bcHVTI5wL4oAzS/ZXgEc9pnKBwFiv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxnA0JpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E93C4CEEF;
-	Sat, 16 Aug 2025 11:17:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SAqjFhIjSArluVcPdkg77ww0ZAepa7ZqxmQQ6DAPXy5FYvswNEOoygOW4fpulzz8CWMvW59ukNFFMhoDH9CWi2DrIy3idAImILoMOhN7gGTMJvl8rpwwu4invRGZDh3cH7BprmQTfLAvNW19NcU6vVLFhyNWrZ98XIaRS91u8Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kh8pD0Nd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783CFC4CEEF;
+	Sat, 16 Aug 2025 11:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755343043;
-	bh=3ERxZaRS4qcwh/mtcVTYLz86jmNS0EKbfeCWGsT0/LA=;
+	s=k20201202; t=1755343528;
+	bh=5C84l4xZ1NV/v27biPkkCIjMZop57ZB3qzqqFyLS+jU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WxnA0JpTQqtIDZt0Bf6hj3C37sfWBpU0RIjETATjD816dw/9cRyttfTuVDN84mviu
-	 OG9aKvSLMlDzzS0BkSk5zzSKHNhsN+BQYVzIlCSOVt3KgVmAlAxlQtDQkmc2WaJXuA
-	 J1GESMK+miOW9N6HDJR2ZZ8NEGGH7stIjqxPTZjV14DXTxEENAbD+AdCoOa275tUOg
-	 Ve8t5tCGWLw9366AAijhB/NGMkxzllWACwktVaGwG2LpFDjCUiD9Dc6NL+T53VV1Cw
-	 eonFHCmFw4MrWWQ6LSa1z+lXIbnHoV2sjZBRUuDRvZlNif9sUCbnjC4FpwHs9evMI3
-	 cjLs96QzUyqhg==
-Date: Sat, 16 Aug 2025 12:17:13 +0100
+	b=kh8pD0Nda/J7JqycDC8vYqFJOKj/hlQH8ZKorpiXMMH6QJYWQn4+eQ7yIR7LmlSIK
+	 CyQTBf6TYbpfC/8hnjmWCPI8InZzP+6G4pOqIcLbYvDjbBAxQII2ZC839QHzS68R/l
+	 rn7FW9NsMM24vjPsyqGiAtTUWaCJkZW4zQAXLAYvwqXfHXFNiTQ/Red5W4+r3YOn2E
+	 eIwFqpTdKu1sBmpMn0kYHfRDHp6YbG6/Gq8m96vnY9i03RNC1njN0EecIYjDC0qQW0
+	 zP7NdYrFWI0cSRpenZSYNCRoCkvBIhglWUC+QRypcLRwPXRaZFnFWP5eOGIDN7nNV3
+	 Ccy6BwIIxOU8Q==
+Date: Sat, 16 Aug 2025 12:25:19 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Remi Buisson <Remi.Buisson@tdk.com>
-Cc: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>,
- David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 3/8] iio: imu: inv_icm45600: add buffer support in
- iio devices
-Message-ID: <20250816121713.48c01e62@jic23-huawei>
-In-Reply-To: <FR2PPF4571F02BCAEF9767DFCEAC0031CB08C28A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
-References: <20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com>
-	<20250710-add_newport_driver-v2-3-bf76d8142ef2@tdk.com>
-	<20250717153340.33eb92b4@jic23-huawei>
-	<FR2PPF4571F02BCAEF9767DFCEAC0031CB08C28A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
+To: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
+Cc: remi.buisson@tdk.com, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 1/9] dt-bindings: iio: imu: Add inv_icm45600
+Message-ID: <20250816122519.2c7a5d9e@jic23-huawei>
+In-Reply-To: <20250814-add_newport_driver-v4-1-4464b6600972@tdk.com>
+References: <20250814-add_newport_driver-v4-0-4464b6600972@tdk.com>
+	<20250814-add_newport_driver-v4-1-4464b6600972@tdk.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,131 +61,146 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 11 Aug 2025 14:13:54 +0000
-Remi Buisson <Remi.Buisson@tdk.com> wrote:
+On Thu, 14 Aug 2025 08:57:15 +0000
+Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org> wrote:
 
-> >
-> >
-> >From: Jonathan Cameron <jic23@kernel.org>=20
-> >Sent: Thursday, July 17, 2025 4:34 PM
-> >To: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
-> >Cc: Remi Buisson <Remi.Buisson@tdk.com>; David Lechner <dlechner@baylibr=
-e.com>; Nuno S=C3=A1 <nuno.sa@analog.com>; Andy Shevchenko <andy@kernel.org=
->; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>;=
- Conor Dooley <conor+dt@kernel.org>; linux-kernel@vger.kernel.org; linux-ii=
-o@vger.kernel.org; devicetree@vger.kernel.org
-> >Subject: Re: [PATCH v2 3/8] iio: imu: inv_icm45600: add buffer support i=
-n iio devices
-> >On Thu, 10 Jul 2025 08:57:58 +0000
-> >Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org> wrot=
-e:
-> > =20
-> >> From: Remi Buisson <remi.buisson@tdk.com>
-> >>=20
-> >> Add FIFO control functions.
-> >> Support hwfifo watermark by multiplexing gyro and accel settings.
-> >> Support hwfifo flush.
-> >>=20
-> >> Signed-off-by: Remi Buisson <remi.buisson@tdk.com> =20
-> >Hi Remi,
-> >
-> >Sorry for delay - hectic week.
-> >
-> >Jonathan =20
-> No problem, thanks for the review ! (and sorry for my late reply)
-> > =20
-> >> ---
-> >>  drivers/iio/imu/inv_icm45600/Makefile              |   1 +
-> >>  drivers/iio/imu/inv_icm45600/inv_icm45600.h        |   4 +
-> >>  drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 514 ++++++++++++=
-+++++++++
-> >>  drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h |  99 ++++
-> >>  drivers/iio/imu/inv_icm45600/inv_icm45600_core.c   | 137 +++++- =20
-> >We used to do the buffer / core split a lot but it often ends up more tr=
-ouble
-> >that it is worth and we no longer make buffer support a build time optio=
-n (which was
-> >what motivated the separate files)  Consider how much simplification you=
-'d get by squashing them into
-> >one file.   =20
-> I understand the point.
-> However merging files will allow to remove 5 lines at most,
-> while the length of the core file will increase a lot.
-> I'm not sure of the benefit in the end, but=20
-> please let me know if you really want me to proceed with the merge.
+> From: Remi Buisson <remi.buisson@tdk.com>
+> 
+> Document the ICM-45600 devices devicetree bindings.
+> 
+> Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
+> ---
+>  .../bindings/iio/imu/invensense,icm45600.yaml      | 97 ++++++++++++++++++++++
+>  1 file changed, 97 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,icm45600.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,icm45600.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..f43258124c32ebf850fc29b2e97643885e6f8480
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/imu/invensense,icm45600.yaml
+> @@ -0,0 +1,97 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/imu/invensense,icm45600.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: InvenSense ICM-45600 Inertial Measurement Unit
+> +
+> +maintainers:
+> +  - Remi Buisson <remi.buisson@tdk.com>
+> +
+> +description: |
+> +  6-axis MotionTracking device that combines a 3-axis gyroscope and a 3-axis
+> +  accelerometer.
+> +
+> +  It has a configurable host interface that supports I3C, I2C and SPI serial
+> +  communication, features up to 8kB FIFO and 2 programmable interrupts with
+> +  ultra-low-power wake-on-motion support to minimize system power consumption.
+> +
+> +  Other industry-leading features include InvenSense on-chip APEX Motion
+> +  Processing engine for gesture recognition, activity classification, and
+> +  pedometer, along with programmable digital filters, and an embedded
+> +  temperature sensor.
+> +
+> +  https://invensense.tdk.com/wp-content/uploads/documentation/DS-000576_ICM-45605.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - invensense,icm45605
+> +      - invensense,icm45606
+> +      - invensense,icm45608
+> +      - invensense,icm45634
+> +      - invensense,icm45686
+> +      - invensense,icm45687
+> +      - invensense,icm45688p
+> +      - invensense,icm45689
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  interrupt-names:
+> +    minItems: 1
+> +    maxItems: 2
+> +    items:
+> +      enum:
+> +        - INT1
+> +        - INT2
+> +    description: Choose chip interrupt pin to be used as interrupt input.
 
-It's only a combined 1.5k. That would be fine even if the savings are fairl=
-y small.
+See v1 review on this from Krzysztof that you seem to have missed.
 
-It's not something I care that much about though.
+> +
+> +  drive-open-drain:
+> +    type: boolean
+> +
+> +  vdd-supply:
 
+Description doesn't add much so simply
+  vdd-supply: true
 
+Might be enough.
 
+> +    description: Regulator that provides power to the sensor
+> +
+> +  vddio-supply:
+> +    description: Regulator that provides power to the bus
+Also very standard description so probably doesn't add anything.
 
+> +
+> +  mount-matrix:
+> +    description: an optional 3x3 mounting rotation matrix
 
-> >> +const struct iio_buffer_setup_ops inv_icm45600_buffer_ops =3D {
-> >> +	.preenable =3D inv_icm45600_buffer_preenable,
-> >> +	.postenable =3D inv_icm45600_buffer_postenable,
-> >> +	.predisable =3D inv_icm45600_buffer_predisable,
-> >> +	.postdisable =3D inv_icm45600_buffer_postdisable,
-> >> +};
-> >> +
-> >> +int inv_icm45600_buffer_fifo_read(struct inv_icm45600_state *st,
-> >> +				  unsigned int max) =20
-> >What is max here?  Seems to be passed 0 in the only caller. =20
-> Function call with max > 0 is implemented later in the same patch
-> (in 4/8, from inv_icm45600_buffer_hwfifo_flush).
+Could do
+  mount-matrix: true
 
-Maybe push the parameter being introduced to ther.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+Needed for any functionality to be available?
+Note that this isn't a question of what driver currently requires, but
+more what someone could implement if they happen not to have wired interrupts.
 
-> >> +{
-> >> +	const ssize_t packet_size =3D INV_ICM45600_FIFO_2SENSORS_PACKET_SIZE;
-> >> +	__le16 *raw_fifo_count;
-> >> +	size_t fifo_nb, i;
-> >> +	ssize_t size;
-> >> +	const struct inv_icm45600_fifo_sensor_data *accel, *gyro;
-> >> +	const __le16 *timestamp;
-> >> +	const s8 *temp;
-> >> +	unsigned int odr;
-> >> +	int ret;
-> >> +
-> >> +	/* Reset all samples counters. */
-> >> +	st->fifo.count =3D 0;
-> >> +	st->fifo.nb.gyro =3D 0;
-> >> +	st->fifo.nb.accel =3D 0;
-> >> +	st->fifo.nb.total =3D 0;
-> >> +
-> >> +	/* Read FIFO count value. */
-> >> +	raw_fifo_count =3D &st->buffer.u16;
-> >> +	ret =3D regmap_bulk_read(st->map, INV_ICM45600_REG_FIFO_COUNT,
-> >> +			       raw_fifo_count, sizeof(*raw_fifo_count)); =20
-> >
-> >For IIO drivers at least we still operated under some guidance the regma=
-p maintainer
-> >gave years ago to never assume regmap (for busses that otherwise require=
- DMA safe
-> >buffers) will always bounce the data.  So bulk reads with SPI buffers ne=
-ed
-> >DMA safe buffers. Easiest is usually an __aligned(IIO_DMA_MINALIGN) buff=
-er
-> >(or set of buffers) at the end of st.
-> >
-> >In practice last time I checked regmap doesn't bother with the zero copy
-> >optimization that would need this safety so you won't actually hit this
-> >issue. =20
-> From my understanding, alignment of &st->buffer.u16 is correct because th=
-e union is aligned,
->=20
-> 	union {
-> 		u8 buff[2];
-> 		__le16 u16;
-> 	} buffer __aligned(IIO_DMA_MINALIGN);
->=20
-> Please let me know if my answer is not correct.
-Ah. I probably just missed that.  can't remember!
+That happens annoyingly often!
 
-> > =20
+Jonathan
+> +  - interrupt-names
+> +  - vdd-supply
+> +  - vddio-supply
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        imu@68 {
+> +            compatible = "invensense,icm45605";
+> +            reg = <0x68>;
+> +            interrupt-parent = <&gpio2>;
+> +            interrupt-names = "INT1";
+> +            interrupts = <7 IRQ_TYPE_EDGE_RISING>;
+> +            vdd-supply = <&vdd>;
+> +            vddio-supply = <&vddio>;
+> +            mount-matrix = "0", "-1", "0",
+> +                           "1", "0", "0",
+> +                           "0", "0", "1";
+> +        };
+> +    };
+> 
+
 

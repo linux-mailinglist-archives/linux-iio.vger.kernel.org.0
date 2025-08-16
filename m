@@ -1,69 +1,63 @@
-Return-Path: <linux-iio+bounces-22805-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22806-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6383DB28DA2
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 14:25:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44B9B28DA7
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 14:28:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5000E5E24CF
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 12:25:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 930E6567FE3
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 12:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255402D1900;
-	Sat, 16 Aug 2025 12:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994EE2D1900;
+	Sat, 16 Aug 2025 12:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EW8PHnpg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hyyn2Yko"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DB9218AD4;
-	Sat, 16 Aug 2025 12:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51031202963;
+	Sat, 16 Aug 2025 12:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755347140; cv=none; b=EEYhHDOutMNo+fOH5MiCG3CKZiaDBTsSQwUXPsOYTZP1nrZcO+JuxCaOZmSw2c9FW78zwW0IvWRw/YShUJymn2E3OwtVbMkOV8tOWbB3gms0wOLdwUKpnjHTjVev5tUxify0uAG+m/OQxw37xD0rsfJakCELz1VtlcZcx1iS9f8=
+	t=1755347313; cv=none; b=atE6wv+tlcYzBWMdpG6wbOSeJq87uiAnAzM2gU9RNODtXlvT2yAdWydbHrA1/3FuDllLkFTzBCljXBWQDkrsEp7QxM6gGW0uISQ+w6w5Aw8xVZQrdRg/xH14NrKjvg/4IWCfoTKbNHglrdI0rVwxK1MzaGBMDXST+/oOZCbcTks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755347140; c=relaxed/simple;
-	bh=oY+B/69Adbi0UwVW0u+fwOZzOEl8NwITqag5KhSbxfY=;
+	s=arc-20240116; t=1755347313; c=relaxed/simple;
+	bh=LJeFZtZTd/y7pEigZxfXECcr2D/HhqEwT40BN7OnCwE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OaSmsGoO/VmYtqFDIpyhB6BhwplGBMUZ0YRpq5sAXAJbGpsFo+ilibN30ojQ6Cx7uE86F0g4kflzv9Tv9xjvGUsGGke6lTC4FSzFc7bK4JKzRl0IU3yyTn4VqxDy7688E8sD51KlnZpP+fQxR1OWg+uTXPOEIbW4C/weD+8GV8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EW8PHnpg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C147FC4CEEF;
-	Sat, 16 Aug 2025 12:25:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t7jR5JfV+NZqkxP+7u/+4264evfgEwj5vYMZirOB14cCKof/U3G02fvfHyf0as1tmvI8j/Zhmd8h0i/NPHRbP+KtwokS455vaRDeKWZ5S5AXrDxuq5HBSPdUBVA+bC46y8y9X4t5FuJsTLbk0Ig6quiyKshvGefHh5+NwBUhe4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hyyn2Yko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAB9C4CEEF;
+	Sat, 16 Aug 2025 12:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755347140;
-	bh=oY+B/69Adbi0UwVW0u+fwOZzOEl8NwITqag5KhSbxfY=;
+	s=k20201202; t=1755347311;
+	bh=LJeFZtZTd/y7pEigZxfXECcr2D/HhqEwT40BN7OnCwE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EW8PHnpg2h2sn4euvj3mYUdJzPuA6sEy5cAqQLa2eDtTahTGPTAmfRzGjci/fcUCJ
-	 r02u4iVTitqa8gBM+C2YTh3JkPRN3qFLAc0spYERVOXakyjk20lJXfjr1b9Obnv8kF
-	 hDHfD3uCEClcrm9wt8+ioLBAI3a93OAanoPrRqE7g4fs7LoAKo2GeY9NLG1UKpl0vx
-	 GNXddeU4gZHWTC8Xah7JMwcy7i2+SgWsnZZ9U1MgCaxa5Ky6LacuRagJQqC36MD2X7
-	 sbnuFZ3tDh0uS6H7YTTcJq8OS+/nQvqOH6J9s7D8WRF0YYW0njYvQbStCZ6qCATw3h
-	 er1Q2m9ogyTrw==
-Date: Sat, 16 Aug 2025 13:25:28 +0100
+	b=Hyyn2Yko7QeeCmR0DNlCNH3cd4y8EfJ6ln/6wWQJnuXhAAlZ3gAiJZIuxpcWVPP4z
+	 F0cznSiLVlmWuG2gudGIZZglWw+mZR1HUTX3t3emy8nRT5Jo4na49PtomzDuhtQZ1E
+	 DNgW6m+ceGjNliKFeB+Q3pwShmHDX+TiCL0C+yno9nthZ3WUBw73vykUTx3+rnO8W4
+	 cv0UgID+MCDuBWrsQ3iYjqgefVPgW4fNea/nGscBWNewLRCtKkXIYUhWy+JhzF5sWK
+	 mT7jk3LMU4HvwY+6DzbPsIua7iwilfxxj+aco4AIzzUAAQ2mH05rrj5k0i0wIYDjVj
+	 d49EsVy55WRwA==
+Date: Sat, 16 Aug 2025 13:28:23 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko
- <andy.shevchenko@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>,
- David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Tobias Sperling
- <tobias.sperling@softing.com>, Antoniu Miclaus
- <antoniu.miclaus@analog.com>, Trevor Gamblin <tgamblin@baylibre.com>,
- Esteban Blanc <eblanc@baylibre.com>, Linus Walleij
- <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Matti Vaittinen
- <matti.vaittinen@fi.rohmeurope.com>
-Subject: Re: [PATCH] iio: adc: bd79124: Add GPIOLIB dependency
-Message-ID: <20250816132528.29180c38@jic23-huawei>
-In-Reply-To: <aJyEzsbYrwwzCdcL@smile.fi.intel.com>
-References: <6837249bddf358924e67566293944506206d2d62.1755076369.git.mazziesaccount@gmail.com>
-	<CAMRc=Mf75cangdeg7T4E0nAhJs_BTdLyCu6GcrCL8vJzzAkFWg@mail.gmail.com>
-	<CAHp75VcY9JWGH3+HmmJQQtLLTLPvaZ1RJzmPZ1wFBM+gqRiTHw@mail.gmail.com>
-	<CAMRc=McL04Sk9YRmimKAALyuDJc75vSJJuZQGWOP87Jv=o7cyw@mail.gmail.com>
-	<aJyEzsbYrwwzCdcL@smile.fi.intel.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, David Heidelberg <david@ixit.cz>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sukrut Bellary <sbellary@baylibre.com>,
+ Lothar Rubusch <l.rubusch@gmail.com>
+Subject: Re: [PATCH 2/3] iio: adc: adc128s052: Simplify matching chip_data
+Message-ID: <20250816132823.0d987b20@jic23-huawei>
+In-Reply-To: <d817f2c9-063f-4506-888f-f3c6faef53c4@baylibre.com>
+References: <cover.1755159847.git.mazziesaccount@gmail.com>
+	<b91ca4c576aac225525bbd7cd904bf684e796987.1755159847.git.mazziesaccount@gmail.com>
+	<d817f2c9-063f-4506-888f-f3c6faef53c4@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,46 +65,40 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 13 Aug 2025 15:27:58 +0300
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+On Thu, 14 Aug 2025 09:53:21 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On Wed, Aug 13, 2025 at 02:17:44PM +0200, Bartosz Golaszewski wrote:
-> > On Wed, Aug 13, 2025 at 12:07=E2=80=AFPM Andy Shevchenko
-> > <andy.shevchenko@gmail.com> wrote: =20
-> > > On Wed, Aug 13, 2025 at 11:40=E2=80=AFAM Bartosz Golaszewski <brgl@bg=
-dev.pl> wrote: =20
-> > > > On Wed, 13 Aug 2025 11:16:06 +0200, Matti Vaittinen
-> > > > <mazziesaccount@gmail.com> said: =20
->=20
-> ...
->=20
-> > > > As for the former: it seems it's
-> > > > a common pattern for the headers containing the "provider" part of =
-the
-> > > > subystem API, you'd get the same issue with regulators or pinctrl.
-> > > >
-> > > > I don't have a good answer, I'd just apply this as it's not a commo=
-n issue
-> > > > from what I can tell. =20
-> > >
-> > > If the GPIO functionality is optional (not the main one), the user
-> > > should be able to compile it conditionally, in such a case it's either
-> > > an ifdeffery in the code, or separate module with its own stubs. =20
-> >=20
-> > Honestly, it makes much more sense to factor out that optional
-> > functionality into its own compilation unit that can be left out
-> > completely for !CONFIG_GPIOLIB with a single internal registration
-> > function being stubbed within the driver. =20
->=20
-> That's what I suggested under "separate module with its own stubs" above.
->=20
+> On 8/14/25 3:35 AM, Matti Vaittinen wrote:
+> > The adc128s052 driver supports a few different ICs. IC specific
+> > configuration data is stored in an array. IC data, residing in a
+> > specific point of the array, is pointed from the SPI device match data.
+> > 
+> > There is no need to have the chip config data structures in an array
+> > and splitting them out of an array has at least following benefits:
+> > 
+> > - Chip-specific structures can be named after the chips they support.
+> >   This makes referring them a tad cleaner, compared to using a generic
+> >   array name with a numerical index.
+> > 
+> > - Avoid all potential 'out of bounds' errors which can result if the
+> >   array is changed.
+> > 
+> > Split the chip configuration data array to individual structures.
+> > 
+> > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > 
+> > ---  
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> 
+Any racing series get to rebase on top of this.
 
-I agree that's the long term ideal. For now I'm going to queue this fix
-up and mark it for stable.  We can tidy up and make it optional again
-as a follow up.
+Applied this patch as it is good in it's own right.
+
+Thanks,
 
 Jonathan
+
 

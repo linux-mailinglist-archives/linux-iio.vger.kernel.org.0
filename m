@@ -1,140 +1,91 @@
-Return-Path: <linux-iio+bounces-22852-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22853-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 376DAB29012
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 20:24:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C08F1B2901E
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 20:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8807E1C879CF
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 18:24:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 490391B68A97
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 18:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778212D3A80;
-	Sat, 16 Aug 2025 18:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1FAVt5eW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D741FF1B5;
+	Sat, 16 Aug 2025 18:42:51 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ciao.gmane.io (ciao.gmane.io [116.202.254.214])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339891FAC4E
-	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 18:24:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619A4317709
+	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 18:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.254.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755368669; cv=none; b=LQA20FOYlSSKVHMi/1Cp3jJ2XIwS4HMWdtAwTOE0BYkCjwSC6tAiS1uX3tFJh1GonaaHCIiVmzSF9eWKkFXbInGWK7MBFOxy2/nOk0i3QRmYQpdj8fc04l4K4UdhHFT9lKVlb3BaGhR0LJe9SS9X4N8mTDiGgJRTuTM7iWmMIWo=
+	t=1755369771; cv=none; b=P/vU70DYwhEKiAd6H1YZZqsn49kNvXezYS/97f7SBfw666TwbquU3Tgfiz3z6KGlbkX6V/+sfzsOSie9Sog4OJnSOtdZP07OHaGAMF4BndpPjhQlj3SLPJDDE0488ryy0sDC3F4uxa/QFIX/whyaSB6/7rbUhaGwz+pMA/uTKTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755368669; c=relaxed/simple;
-	bh=JnJIOlsGDO2UgNwnN1Ia+2CZfap16BIfk8Z5hv3zESg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O8kH9EWUYsV91wKOpQsJocOw+IQ737O9LP4vB7IP0X2XapyPOPPz1YOvZdzSz6fx+Z9zdkAtg3lXBGgqBh5BFAV775+9MoOupLYzLsxacKnEF451MPwgLv9/jYoia5XKAjIjqydHyvxGbYosYWT3SXhRZeCVynzSMwTJmsA7A20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1FAVt5eW; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-74381ed5567so1632581a34.1
-        for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 11:24:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755368666; x=1755973466; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qNUlCKf+PozSMhiOiUc8QNdxtKMKbQOVsk7v2FaWGKw=;
-        b=1FAVt5eWY8DS0VDeHQN1P/lVuT7fjFXnqX9KoiolRwnSg8zjv/Z7VVZm/gXVKcwEL+
-         KnCAjPuJ4cLpkiipHRAoVipMG32MK/IWfkcxmW3INNm+xgBl8ddH+N/l0sjM+xcQkwa8
-         gim0Kp9fq8efYBsGG+URQjY/GNvE2VIeKDxQOpQuxhc63fHl0s9/1qx/BhZ6x+ScgAhs
-         NMjVhCKraYxm3CTLYIjc21Oo6wh3hpB9gnRYUDKzRg6ztdFQNzPhUpcxgMuGDWOK/ttd
-         fpF5CxYn0M1E5QmlOb43cBIxixol7avtbfaECWWHQaCnVEsgcupis4CcvHJF+JegkoY+
-         6bvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755368666; x=1755973466;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qNUlCKf+PozSMhiOiUc8QNdxtKMKbQOVsk7v2FaWGKw=;
-        b=Hm6xMTpWwzlKWZRpPnTUzbKfCHAr/19kICSn1pib1u2K2GH7MmQ2doQclrwtbwx4Aa
-         IUzrESjI+7ZzyppxOFm2LKi0e3ML0CQdKIkIWfqFuJnbGQpZGzBoAqv2fz190eAZNXXJ
-         NVBB0U+0k0hDRiCdbEIrMrRwfsUyDVhzxi/lwTZwz+LOC3g4MEeso33LnIlRaPPGF9Cf
-         cEhfxUl+dDHP6+vy5J8FPHuPY2F0O17NSFEQc9ySMkwr+4yHSXyUwdbqFDCStQ0jId/k
-         /TAGIe7p+4CRem4tRQzt/ju5/qZ3c5CfNf0H8ItBGnL6gQ9xX2GMRnOtyVmbEk4NzxPe
-         WXCA==
-X-Gm-Message-State: AOJu0Yxix845NURVpNE+XIXJtx2VSj8tjJyPFrF4+lntxjknRRIkuNIu
-	seI2T3kKq9tlXwu2atwi4e5LPq56dGg4Td11Tv9cWoDgbxwYiscYRj3CXYkEgwmtteA=
-X-Gm-Gg: ASbGncto8Qz1T1Vo2gzOimfVqp02WE6AT+IxG0CY26PAqGkXCTnw1APkspi40WYfC76
-	hlk8cg0sRIALwLLC23G2f9QN6l7hKl8tS11dfVBjqjyINeBocdBs35UGccPrhO3ue3d5nTyjxzS
-	kmQf6KwkbZ5nPdOYiJE/cohJniadZbNdFK70N9lAzwku+Ys6HMJKgG527wCLFRhUbA8iIlcjg27
-	HqolCeFG+i4+ZBkW/W5M05LyiRNYEnEpVytr0I8C1HozuHl+zPb+yY49Rus2tkH88y2bV98Pwrt
-	wl+VsrTUgfabjKnNkd3y0ESAWZvW7S6DQCOJp3kno4KoJ31cVckLBnE2lFB5g9mz9Q7i9XSnAvW
-	8QXOU1d0Cwma3QFzwamYdIiKw0POkfLBzunNOdGub72J5PJTeLgLtGicW2YiedMTZB/N18Pj73p
-	YHlYRhoPo=
-X-Google-Smtp-Source: AGHT+IG4x9+lZonQLtZAv5o+14TpRzPIGvwvJFP8LMAyvwlY/f86+nqIN4zZje7xbJPshmzcKpQvVA==
-X-Received: by 2002:a05:6830:2a8a:b0:743:823:a094 with SMTP id 46e09a7af769-743923d34b2mr4625028a34.10.1755368666249;
-        Sat, 16 Aug 2025 11:24:26 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:fcf8:116:11db:fbac? ([2600:8803:e7e4:1d00:fcf8:116:11db:fbac])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61bebfb2a02sm456819eaf.11.2025.08.16.11.24.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Aug 2025 11:24:24 -0700 (PDT)
-Message-ID: <7cd6f642-b26a-45aa-a2f2-ccb7fbc28b20@baylibre.com>
-Date: Sat, 16 Aug 2025 13:24:24 -0500
+	s=arc-20240116; t=1755369771; c=relaxed/simple;
+	bh=/hk2jMpuXcj3axf4dXiUFfumZAgs9fjEQkhPQ3QpDEY=;
+	h=To:From:Subject:Date:Message-ID:References:Mime-Version:
+	 Content-Type; b=hl+GPvmxr6sUF/blpBLT2zMWbeEVEkNFprfyNEJETLd7lLUySbkKK2jo9gFTm8q3JRsXBkRNUDrkrmQ1hnZn25S+e4GTq7aIKZN8CVglKd0q8rk7+n2wYorzTlE0WAf4zJTMppLiL+8oygozOx/fU5GuBu3IQYcx135nKj1lxuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nexgo.de; spf=pass smtp.mailfrom=m.gmane-mx.org; arc=none smtp.client-ip=116.202.254.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nexgo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.gmane-mx.org
+Received: from list by ciao.gmane.io with local (Exim 4.92)
+	(envelope-from <glki-linux-iio@m.gmane-mx.org>)
+	id 1unLrS-0003eD-3I
+	for linux-iio@vger.kernel.org; Sat, 16 Aug 2025 20:42:38 +0200
+X-Injected-Via-Gmane: http://gmane.org/
+To: linux-iio@vger.kernel.org
+From: ASSI <Stromeko@nexgo.de>
+Subject: Re: [RFC PATCH v2 2/9] iio: pressure: bmp280: implement adaptive wait for BMx280 devices
+Date: Sat, 16 Aug 2025 20:42:33 +0200
+Organization: Linux Private Site
+Message-ID: <87h5y7cdly.fsf@Gerda.invalid>
+References: <20241017233022.238250-1-vassilisamir@gmail.com>
+	<20250810185846.114355-1-Achim.Gratz@Stromeko.DE>
+	<20250810185846.114355-3-Achim.Gratz@Stromeko.DE>
+	<CAHp75VdYRRR8OOSSkC+x3ihcUVjvm5eDinsZhGq4bCr2FJKYrg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] iio: mcp9600: Add support for thermocouple-type
-To: Ben Collins <bcollins@watter.com>, Jonathan Cameron <jic23@kernel.org>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250815164627.22002-1-bcollins@watter.com>
- <20250815164627.22002-5-bcollins@watter.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250815164627.22002-5-bcollins@watter.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: text/plain
+User-Agent: Gnus/5.13 (Gnus v5.13)
+Cancel-Lock: sha1:SsVq/NP7lK4vWNrjc4QvqxHMaR4=
 
-On 8/15/25 11:46 AM, Ben Collins wrote:
-> dt-bindings documentation for this driver claims to support
-> thermocouple-type, but the driver does not actually make use of
-> the property.
-> 
-> Implement usage of the property to configure the chip for the
-> selected thermocouple-type.
-> 
-> Signed-off-by: Ben Collins <bcollins@watter.com>
-> ---
+Andy Shevchenko writes:
+>> Suggested-by: Andy Shevchenko <andy@kernel.org>
+>
+> I'm not sure this tag may be used as I suggested implementation detail
+> and not the idea behind the change as a whole.
 
-...
+OK, will remove this.
 
-> @@ -453,6 +504,24 @@ static int mcp9600_probe(struct i2c_client *client)
->  	data = iio_priv(indio_dev);
->  	data->client = client;
->  
-> +	/* Accept type from dt with default of Type-K. */
+>> Tested-by: Achim Gratz <Achim.Gratz@Stromeko.DE>
+>
+> This is confusing. Does it mean you haven't tested the patches without this tag?
+> Note, it's a must to test by the author that's why the tag is
+> _implied_, no need to make it explicit. I.o.w. author of the code is
+> supposed to test that before sending (or comment that the code is
+> untested in the cover letter and/or comment block of the email).
 
-We still also need a dt-bindings patch to specify the default there as well.
+I intended it to mean that I actually tested the full range of
+attributes, unlike what apparently happened with the previous version of
+this function.  But I see what you mean, I'll take it out then.
 
-> +	data->thermocouple_type = THERMOCOUPLE_TYPE_K;
-> +	ret = device_property_read_u32(&client->dev, "thermocouple-type",
-> +				       &data->thermocouple_type);
-> +	if (ret < 0 && ret != -EINVAL)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "Error reading thermocouple-type property\n");
-> +
-> +	if (data->thermocouple_type >= ARRAY_SIZE(mcp9600_type_map))
-> +		return dev_err_probe(&client->dev, -EINVAL,
-> +				     "Invalid thermocouple-type property %u.\n",
-> +				     data->thermocouple_type);
-> +
-> +	/* Set initial config. */
-> +	ret = mcp9600_config(data);
-> +	if (ret < 0)
-> +		return ret;
-> +
->  	ch_sel = mcp9600_probe_alerts(indio_dev);
->  	if (ch_sel < 0)
->  		return ch_sel;
+> MIN() is for the constants, please change it to the proper macro.
+> Also note that this is a C language and not LISP, i.e. remove unneeded
+> parentheses.
+
+Ack, the macro probably has enough argument sanitization so this is no
+worry here.
+
+
+Regards,
+Achim.
+-- 
++<[Q+ Matrix-12 WAVE#46+305 Neuron microQkb Andromeda XTk Blofeld]>+
+
 
 

@@ -1,57 +1,55 @@
-Return-Path: <linux-iio+bounces-22826-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22827-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03FA7B28E38
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 15:42:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF6BB28E3B
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 15:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9091CE2353
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 13:42:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47B5E3A803A
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 13:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FE32E612A;
-	Sat, 16 Aug 2025 13:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF39E2E7F1F;
+	Sat, 16 Aug 2025 13:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bTh3QbLY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8JVqC1x"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615CB284B41
-	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 13:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4AC2D1303
+	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 13:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755351740; cv=none; b=tlHFYQ2dtPuiJda+Wl1YC1pgRM+bx4s1bdbymzcIEJSKk/sCVlYeOM8N9DDUr8HSe++gV0QZV2/n/Py4dUVjseuXSYt0Z13pb3UecMj54Emcrknn7yw5e2cyTY1r/N/oLPXRguaGTBkbCAtzNAgqUCn43pGvfKOsbjQ4rBa6YPo=
+	t=1755351839; cv=none; b=j2Ye5un3Am+g5M/XqjSJo+nGqxT+HymcfhIn1DEPvHDWc+EDvwNSNb5+tuNebEki17JgJOJmBGEtufqPf+uYyNQH++27B7u/VYw/OtoiudHKr0EwkwnyVLLRHKXZJC0X1UXvCw66n1U1uNmHiLPtrMt4vAv+HVQQxLJpS635QQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755351740; c=relaxed/simple;
-	bh=oo1oI8rKsuUr6O/0hsBZUwNfDT0hZGXtjVP7pvTomm4=;
+	s=arc-20240116; t=1755351839; c=relaxed/simple;
+	bh=a31K5zqEVACpgPYT3tuJh8Ph/iBybpGtyyeVAa1zL6Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EpHAar16gUUz7EDwTrti/ggEBVwV8L/PIvf3WkFPc7dFwGp6NGFjrFOuB9TixI9niIG5CbwfD3aMc/oiuQYyuREiTrVlsd8qNfjeriLMjm/BqlrYmqEEEsJgBbMsO7xqcBzaRyk6OjzGhE8xrRl8wrIspkAeDbn4IuFLyMBGgNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bTh3QbLY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC41C4CEEF;
-	Sat, 16 Aug 2025 13:42:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BH65qGvYlcGbfitTLlsuX2KafbphJ2xA/hHg+PIWw7MKT/NaaT5IWsq/IyDdJsfQBKDHxpRsZR1P5SDTagR7ofOPSw26ELxqsBIBnIeSnHh4JbSKcbvVDzKwlgOTgbh/ehCYmOmaVsODTu7cYic0ow74YwRMBsmo+zirEffeO5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8JVqC1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C78AC4CEEF;
+	Sat, 16 Aug 2025 13:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755351738;
-	bh=oo1oI8rKsuUr6O/0hsBZUwNfDT0hZGXtjVP7pvTomm4=;
+	s=k20201202; t=1755351839;
+	bh=a31K5zqEVACpgPYT3tuJh8Ph/iBybpGtyyeVAa1zL6Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bTh3QbLY6AH4KZPLoGswY+FfxFL+4IPXo9kPpcY3PapG79wehsyrBMHGN9jOhm1Lv
-	 BsFPZoqJW1Cz+PgY98/washJ8bK3bVN2XvTdy8FFBw+sYSmFvMOMOFwXzoJKHmuXbm
-	 9p5n0FzzwpIZqFjqzIGgWY8ffauXyXpDAZkxrIwpFKkefWgyxcTLfYdU8HZXMcZEBI
-	 qUVMrkZZytg9+u8nRUGtnS2qwNlhqgfuo+HY+X1z+y6TjkzJBhz4CrM+vbgQOgz9RT
-	 QR3sQSiR1TQ8H69TOXg5tvM6B/GfseAWRrsaXGTyPstKWpUtfyTgVOU1X+dJacgRTF
-	 dSzIkvgg7Kb8Q==
-Date: Sat, 16 Aug 2025 14:42:11 +0100
+	b=D8JVqC1xaqE9WwRVWW4IFqyVwCoCfBFrtRatmovHhdIDwLPxPQmdI9/M+dDkVJiVQ
+	 EkvZt02uaUGsdZpMikemNKrUbfVSCGqdneRC776yFmrmYsrk2RIJCE7CKwanNnn4CQ
+	 6Cz+8kiNPjmXSfdmUpc1zQQteKDgj3Vl22CZDne2ZLLKMXNNy0lknMJMiE0PuZasgZ
+	 QAZYblTrUMuP47H/pHN1QgnvQqd3wJYwe1lUhv1YriZxLMVX5AZjWPKEnmc6L+bkSr
+	 e9Kacw5Z8Mxjj8ukye7dDDRrvOIJHVyNr9f+wQKhZMvW3T5RiRHqI3MnGLljnaR/rL
+	 4WjounrPD6HGA==
+Date: Sat, 16 Aug 2025 14:43:52 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Michael Hennerich
- <Michael.Hennerich@analog.com>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH] iio: dac: ad5791: drop unused member of struct
- ad5791_state
-Message-ID: <20250816144211.7001b1dd@jic23-huawei>
-In-Reply-To: <fbe6c762-d71a-4654-bd58-01063a036ff5@baylibre.com>
-References: <20250811-ad5791-drop-unused-v1-1-3412fbf3ba36@analog.com>
-	<fbe6c762-d71a-4654-bd58-01063a036ff5@baylibre.com>
+To: Aleksandar Gerasimovski <aleksandar.gerasimovski@belden.com>
+Cc: linux-iio@vger.kernel.org, marius.cristea@microchip.com,
+ rene.straub@belden.com
+Subject: Re: [PATCH] iio/adc/pac1934: fix channel disable configuration
+Message-ID: <20250816144352.53e61562@jic23-huawei>
+In-Reply-To: <20250811130904.2481790-1-aleksandar.gerasimovski@belden.com>
+References: <20250811130904.2481790-1-aleksandar.gerasimovski@belden.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,22 +57,80 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 11 Aug 2025 13:36:04 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Mon, 11 Aug 2025 13:09:04 +0000
+Aleksandar Gerasimovski <aleksandar.gerasimovski@belden.com> wrote:
 
-> On 8/11/25 11:13 AM, Nuno S=C3=A1 via B4 Relay wrote:
-> > From: Nuno S=C3=A1 <nuno.sa@analog.com>
-> >=20
-> > The regulator pointers reg_vdd and reg_vss are no longer used. So drop
-> > them.
-> >=20
-> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > --- =20
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
->=20
+> There are two problems with the chip configuration in this driver:
+> - First, is that writing 12 bytes (ARRAY_SIZE(regs)) would anyhow
+>   lead to a config overflow due to HW auto increment implementation
+>   in the chip.
+> - Second, the i2c_smbus_write_block_data write ends up in writing
+>   unexpected value to the channel_dis register, this is because
+>   the smbus size that is 0x03 in this case gets written to the
+>   register. The PAC1931/2/3/4 data sheet does not really specify
+>   that block write is indeed supported.
+> 
+> This problem is probably not visible on PAC1934 version where all
+> channels are used as the chip is properly configured by luck,
+> but in our case whenusing PAC1931 this leads to nonfunctional device.
+> 
+> Signed-off-by: Rene Straub <rene.straub@belden.com>
+> Signed-off-by: Aleksandar Gerasimovski <aleksandar.gerasimovski@belden.com>
 
-Applied
+Hi, Thanks for the patch.
+
+Needs a fixes tag so we know how far to back port it.
+You can just reply with one to this thread rather than sending a new
+version.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/adc/pac1934.c | 20 ++++++++++++++++++--
+>  1 file changed, 18 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
+> index 09fe88eb3fb0..2e442e46f679 100644
+> --- a/drivers/iio/adc/pac1934.c
+> +++ b/drivers/iio/adc/pac1934.c
+> @@ -88,6 +88,7 @@
+>  #define PAC1934_VPOWER_3_ADDR			0x19
+>  #define PAC1934_VPOWER_4_ADDR			0x1A
+>  #define PAC1934_REFRESH_V_REG_ADDR		0x1F
+> +#define PAC1934_SLOW_REG_ADDR			0x20
+>  #define PAC1934_CTRL_STAT_REGS_ADDR		0x1C
+>  #define PAC1934_PID_REG_ADDR			0xFD
+>  #define PAC1934_MID_REG_ADDR			0xFE
+> @@ -1265,8 +1266,23 @@ static int pac1934_chip_configure(struct pac1934_chip_info *info)
+>  	/* no SLOW triggered REFRESH, clear POR */
+>  	regs[PAC1934_SLOW_REG_OFF] = 0;
+>  
+> -	ret =  i2c_smbus_write_block_data(client, PAC1934_CTRL_STAT_REGS_ADDR,
+> -					  ARRAY_SIZE(regs), (u8 *)regs);
+> +	/*
+> +	 * Write the three bytes sequentially, as the device does not support
+> +	 * block write.
+> +	 */
+> +	ret = i2c_smbus_write_byte_data(client, PAC1934_CTRL_STAT_REGS_ADDR,
+> +					regs[PAC1934_CHANNEL_DIS_REG_OFF]);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = i2c_smbus_write_byte_data(client,
+> +					PAC1934_CTRL_STAT_REGS_ADDR + PAC1934_NEG_PWR_REG_OFF,
+> +					regs[PAC1934_NEG_PWR_REG_OFF]);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = i2c_smbus_write_byte_data(client, PAC1934_SLOW_REG_ADDR,
+> +					regs[PAC1934_SLOW_REG_OFF]);
+>  	if (ret)
+>  		return ret;
+>  
+
 

@@ -1,61 +1,62 @@
-Return-Path: <linux-iio+bounces-22814-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22815-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA8BB28E01
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 15:09:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD384B28E08
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 15:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F00E6A28347
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 13:08:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51CB91891D92
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 13:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF3E2D0616;
-	Sat, 16 Aug 2025 13:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F792E2672;
+	Sat, 16 Aug 2025 13:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LXByhVDk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fLdLj3pV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6322566E9;
-	Sat, 16 Aug 2025 13:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F2B23A562;
+	Sat, 16 Aug 2025 13:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755349698; cv=none; b=ANw8xSnb0k65HuZ+FmhxtZD1boAWRRrCYMYCiANvJWBzBEDufaqLc+Pehff0Kjr4u1WV6J0cgjMe/NAPRYJ0n6mtqseZVJHZ6ihkFgiOJgcSEMtgcqYb8hteRots8mR9cFPGrezniX0rj76gYFlU0rFJMcgRwmme9T3URs9FGgU=
+	t=1755349950; cv=none; b=FwKEDBodr85T93rRi2/JqcNFvwAC9cdpoPOMauG84XeYj0EExzk7OSgpQI8G5YYG6hb00M0nOCdu64eIpAQvsPsSs1C9SMJarghbj9lX2BKJWeEMPXQJ2xDjUIegyDpvlxyUDQ+9egis8hRQS/w798dMrUXG+oMJ0NgPKVNxlPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755349698; c=relaxed/simple;
-	bh=ohFfaNHc2qw5CgEesJPXZJR+Bykk3NLX9ZZFQ1Bx/AI=;
+	s=arc-20240116; t=1755349950; c=relaxed/simple;
+	bh=T0ihUu05oB0idqYsW4ppls0Ccy84ClVeS8cutf1iMJw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XSh8QVrkSrUr+Mw9cEFQAXwh8lRgWjMinohOE0fiJ5oaXS2NTUNKZJcd6JALK/nVcwN49eRffRb0kYEyUJA7Q0+uyKeUA6q7H79MGzbT0nBRVZyiMZPfJA1HaJMgBt58uY9fIw7Wilm7Y2RQM2x5ssazhbnIP1R5Jq1GxVfi1Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LXByhVDk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62676C4CEEF;
-	Sat, 16 Aug 2025 13:08:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D8eYDkmxrGqSzKWOoQ5qXCsXHXYv2lCQVrohB6HIyBvFl2lQqiJDhmJcITj+tWKj7VTmxeKNBir9a2HeviR2GfLA+vXpw42mSNSCp8HfslYpk9ftUBQWo66HesXMcB2itj+9URVhnsgwS1OG+ZGo58HAY3RRjRDnASCmygBaQ4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fLdLj3pV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC68C4CEEF;
+	Sat, 16 Aug 2025 13:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755349697;
-	bh=ohFfaNHc2qw5CgEesJPXZJR+Bykk3NLX9ZZFQ1Bx/AI=;
+	s=k20201202; t=1755349950;
+	bh=T0ihUu05oB0idqYsW4ppls0Ccy84ClVeS8cutf1iMJw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LXByhVDkUNE3A/4V8FwAUJKOKyj+NcFcKriN/icGvskynFqJbwE030y4NJT7/gdzV
-	 F+Nu/PzS6ACl926GzQSQMg3nmYRjpkahap0j+9HItgrUqFeNvpNq3MWHV/GyNgGRu0
-	 GOasyz8MB3FmPHOnm+nZDMg+mlr5rKce5lsEaZ9EC9tPTOF2wM7zR+Xfh0ghDC+uHb
-	 TR+v5QpvA4pEG/g7LQlt1DiqOdOxqYM5IBmQffgykS+rpuP5KI7OPQIimD5vHwn3Z6
-	 Shmqnt9JlqnQcEOLzLIdkEPJlynz6lzMBoKVMaEo4XtGqIKnpvNnI4mzmoM4POdS8I
-	 utPEOcCg3T+3g==
-Date: Sat, 16 Aug 2025 14:08:09 +0100
+	b=fLdLj3pVC2liA2pM+LgfBMrAYou3OYlJ6bKUpA94Lwn1vQfIzPXwHJt+0smyFtxFB
+	 nBI8FHnhdod6JIo0YLjFot69M+j9Md2fuacttWVSugJNVkdvXDwW9WX8lDc/WGorJ+
+	 H4RL57YpIucgMV++PMBv5+f1N06hMYXjgmIX70KRtxHe0pNmB1EhRiHsNbg9/MKGby
+	 L+1tNTty579ZHXXxe/HRghrT3FC8DocspI1Vzon3KFWed5Mbiv8UX/qGch8Dro62xz
+	 +aFAuTuHV5a1IJhkR55mBydlVaUVR6hrtxTuHdlm6hOpTSTYYyxDKKXG/1sp3yEBwe
+	 GzjFjfY/pxylQ==
+Date: Sat, 16 Aug 2025 14:12:20 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: =?UTF-8?B?6LW16KW/6LaF?= <zhao.xichao@vivo.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, "o.rempel@pengutronix.de"
- <o.rempel@pengutronix.de>, "dlechner@baylibre.com" <dlechner@baylibre.com>,
- "nuno.sa@analog.com" <nuno.sa@analog.com>, "andy@kernel.org"
- <andy@kernel.org>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: adc: ti-tsc2046: use us_to_ktime() where
- appropriate
-Message-ID: <20250816140809.2121a864@jic23-huawei>
-In-Reply-To: <92f45b4d-447e-45ea-8fc0-a003a32d934c@vivo.com>
-References: <20250813075556.466872-1-zhao.xichao@vivo.com>
-	<CAHp75VeRb6HV80P1B60sr4=-pdWW+GS1dQDYUbO0PWLhkKZsGA@mail.gmail.com>
-	<92f45b4d-447e-45ea-8fc0-a003a32d934c@vivo.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Michael.Hennerich@analog.com, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH 1/4] dt-bindings: iio: adc: ad7768-1: add new supported
+ parts
+Message-ID: <20250816141220.0dd8d68f@jic23-huawei>
+In-Reply-To: <8c27b00c-5b80-400f-8538-b9ad96fd5feb@kernel.org>
+References: <cover.1754617360.git.Jonathan.Santos@analog.com>
+	<ecb7406f54938658b51b4469034d87a57086bd1e.1754617360.git.Jonathan.Santos@analog.com>
+	<c3cf9b97-3883-4ebb-a2ed-0033adebda87@kernel.org>
+	<aJ0UEUVmIH94Nuwi@JSANTO12-L01.ad.analog.com>
+	<8c27b00c-5b80-400f-8538-b9ad96fd5feb@kernel.org>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,49 +64,43 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 13 Aug 2025 11:33:24 +0000
-=E8=B5=B5=E8=A5=BF=E8=B6=85 <zhao.xichao@vivo.com> wrote:
+On Thu, 14 Aug 2025 08:03:23 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> =E5=9C=A8 2025/8/13 18:34, Andy Shevchenko =E5=86=99=E9=81=93:
->=20
-> On Wed, Aug 13, 2025 at 9:56=E2=80=AFAM Xichao Zhao <zhao.xichao@vivo.com=
-><mailto:zhao.xichao@vivo.com> wrote:
->=20
->=20
->=20
-> The scan_interval_us and time_per_scan_us are more suitable for
-> using the us_to_ktime(). This can make the code more concise and
->=20
->=20
->=20
-> This makes....
->=20
->=20
->=20
-> enhance readability. Therefore, replace ns_to_ktime() with us_to_ktime().
->=20
->=20
->=20
-> Perhaps Jonathan may tweak the commit message to be more English, but
-> code wise I agree with you.
-> Reviewed-by: Andy Shevchenko <andy@kernel.org><mailto:andy@kernel.org>
->=20
-> --
-> With Best Regards,
-> Andy Shevchenko
->=20
->=20
-> Okay, thank you!
->=20
+> On 14/08/2025 00:39, Jonathan Santos wrote:
+> >>>  
+> >>> +  adi,aaf-gain:
+> >>> +    description: |
+> >>> +      Specifies the gain of the Analog Anti-Aliasing Filter (AAF) applied to the
+> >>> +      ADC input, measured in milli-units. The AAF provides additional signal  
+> >>
+> >> What is milli unit? Isn't gain in dB, so maybe you want mB? Quite
+> >> unpopular to see mB, but we cannot use 1/100 of dB, so I could
+> >> understand it.
+> >>  
+> > 
+> > Actually, the gain is expressed in V/V, not in dB. I may have phrased it poorly, but since
+> > there are fractional values like 0.364 and 0.143, I chose to represent it
+> > in milli-units.  
+> 
+> Why your reply to is corrupted:
+> "c3cf9b97-3883-4ebb-a2ed-0033adebda87@kernel.org"?
+> 
+> 
+> What sort of unit is milli-unit? Isn't this 1/1000 of some BASE unit,
+> but you do not have here a base?
+> 
+> I think you want just basis point if this is V/V (already in common
+> property suffixes)
+Nice. I didn't know about -bp.   That does sound like a good choice for ratio
+stuff and here would be 100x larger actual values which is fine.
+
+> 
 > Best regards,
->=20
-> Xichao Zhao
->=20
+> Krzysztof
+> 
 
-Tweaked description and applied.  Thanks for a nice cleanup.
-
-Jonathan
 

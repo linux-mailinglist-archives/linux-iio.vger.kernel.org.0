@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-22788-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22789-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22646B28CC7
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 12:19:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE31B28CCD
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 12:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3125AC8481
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 10:19:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DAFB16DCFF
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 10:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA7523CF12;
-	Sat, 16 Aug 2025 10:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD1E28F948;
+	Sat, 16 Aug 2025 10:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kg/DGjvS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/Mxq2yr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038B01BC3F;
-	Sat, 16 Aug 2025 10:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255642BCF5;
+	Sat, 16 Aug 2025 10:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755339544; cv=none; b=HKWsTpNkEulkGz7TZqpUA+ZtsrWxFFRuMtYj3Iyutm4zNNRt+CqsfWSAtk0Zn4rpmH3befdXyOGzBLnPKq2pJx/pEXoIldScn4Amng5Eav6Yi3o3YCULNEw+pdAawWtykcU6eeJUHcGFJzBWgeMSr/b93KJjq7hU+uGxLCrAHXY=
+	t=1755339798; cv=none; b=deSDH+1QyFnmFI0Jje6T3wJ3YU46hwlC1k1I7UeIFWCH9H5qHMv+/jqT9WNQM7/V8SaeXBEfS2yAw52SQcKBV5RjR4nRIXWBeo3kHA6F6qmEVhLF1tKqc7TEWAOj4ie0viLtAIYk6BQUcw/BPNUTNy4VRdE41gnamYony08toMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755339544; c=relaxed/simple;
-	bh=5NWhecVS2/AkV4nKyydh9LzhF8tYLJWu8T8ZtYaFAiA=;
+	s=arc-20240116; t=1755339798; c=relaxed/simple;
+	bh=jZPpKfzcezgme07WiUAYhWu+QycIoJb/waNgS7U1ggQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cje8/BoV/HjtOqsIePsp4G/lnkAqriH1Tv0l5aVIGd0uM7nEPQZ1fWPlF7lan/LQDRNwlN8X6r+rG9otQmGiGWbIzgZ/bHOpYn4JFrzAI6EddspEkJkq4vDgbd93LgAh6DPqwiuphhrFX8MPmMDD6kE9b/nyfzoTr83vjTo9YNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kg/DGjvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E2AC4CEEF;
-	Sat, 16 Aug 2025 10:18:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ClglaQrCPwrJqkxw9bnfP3sGAu6wrtDYjMqAILM/2QfLQMbLFPaf804BJMj0xcGzD2TVmgl1ugY8oClkKdNPWfVnueCsHs06Iku6NnLAVGdenyRuB+qXAiMQbYOqYSfUJ01IptJ9dcPvgFdg8HIu6v7OxxcSlEU0Q/5l8A7LbnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/Mxq2yr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55605C4CEEF;
+	Sat, 16 Aug 2025 10:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755339543;
-	bh=5NWhecVS2/AkV4nKyydh9LzhF8tYLJWu8T8ZtYaFAiA=;
+	s=k20201202; t=1755339797;
+	bh=jZPpKfzcezgme07WiUAYhWu+QycIoJb/waNgS7U1ggQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Kg/DGjvSRSjvpuL0i6KsABAKxqcwW4z/YYtBF3zbY75FotPoVzg8EwTSc8wG7/79P
-	 jLMW4wKnfjbpuslmQe5nDGlDhy6uF1fAOJqiuR4XN9mAq0afZmc8bWkxduIm9wXrw1
-	 NLKs8wKDFS1VKMW3wWT9tCOgHhfPkucD+5BkhdPjMTfImgnCfI7t/APrkrFAt8BBR3
-	 Ej9iNb6TMpCNwAFrI4y6jR+7RVhFvGv/SfSZ+BgbrdVtoyAEOJjgBB49qlSIy9sCA/
-	 0aqG7AbFogRNahMEL4J2Ka0tq0lffLWVo/EGnixaSw0VDam3/Milt9x4JASefUss3w
-	 cGn2IxGo7a9hQ==
-Date: Sat, 16 Aug 2025 11:18:55 +0100
+	b=R/Mxq2yrF1YNrw0Tvjha0/D4vxGTfwyEOJrXQ8Bc2kRjqcGJVjGsPZQdHUJIw3Yil
+	 UeT2bnADft86EtBxQSDGr6RTCODQ+hg4Vbjnin67X9ibMSarcscq2FBwvqukY9x5tN
+	 QenXTJa6qvWheTt/lZamZP61QVlMdjqPD2thT4WH76hqHb0G9NJCKmbYVovWf3r/dN
+	 01LDiGqwREsQohw1x7cU41qZMBA7nQrs/DyDiaNolreCFEZfYPlQeZGISEbIAEevhf
+	 9XzFvcRXqEfp4p9yRNkYNo/26UCD1OUsXLEObgmRedpUikUn+SPwa+hYkxVuMOPJ9P
+	 OXPaHfoyxNchg==
+Date: Sat, 16 Aug 2025 11:23:07 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Liam Beguin <liambeguin@gmail.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] Add LTC2495 support
-Message-ID: <20250816111855.7e934f4d@jic23-huawei>
-In-Reply-To: <20250815-ltc2495-v4-0-2d04e6005468@gmail.com>
-References: <20250815-ltc2495-v4-0-2d04e6005468@gmail.com>
+Cc: krzk@kernel.org, Michael.Hennerich@analog.com, andy@kernel.org,
+ conor+dt@kernel.org, devicetree@vger.kernel.org, dlechner@baylibre.com,
+ krzk+dt@kernel.org, lars@metafoo.de, liambeguin@gmail.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ nuno.sa@analog.com, robh@kernel.org
+Subject: Re: [PATCH 1/3] dt-bindings: iio: adc: ltc2497: add docs for
+ LTC2495
+Message-ID: <20250816112307.642ea373@jic23-huawei>
+In-Reply-To: <20250813084444.1842413-1-y.alperbilgin@gmail.com>
+References: <0ece8b0e-6c20-42ca-a3a6-4c35ee2be07b@kernel.org>
+	<20250813084444.1842413-1-y.alperbilgin@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,99 +65,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 15 Aug 2025 12:02:01 +0200
+On Wed, 13 Aug 2025 10:44:44 +0200
 Yusuf Alper Bilgin <y.alperbilgin@gmail.com> wrote:
 
-> Hi All,
+> Hi Krzysztof,
 > 
-> This is the v4 of the patch series to add support for the LTC2495 ADC
-> and to enable the internal temperature channel for the LTC2495 and
-> LTC2499.
+> Thank you for the review and guidance.
 > 
-> Thanks to Andy Shevchenko for his helpful reviews on earlier versions,
-> and to David Lechner and Krzysztof Kozlowski for their feedbacks on
-> v3. This version addresses all feedback from v3.
+> On Tue, Aug 12, 2025 at 07:04:00PM +0200, Krzysztof Kozlowski wrote:
+> > What are the differences, why it cannot be made compatible with 2497
+> > (fallback)?  
 > 
-> Best Regards,
+> The LTC2495 offers a more advanced feature set compared to the LTC2497,
+> including:
 > 
-> Alper
+> - Adjustable input gain
+> - A selectable 50Hz/60Hz lowpass filter to reject line frequency noise
+> - Selectable speed modes
+> - An internal temperature sensor
+> 
+> All of these features are configured via a second I2C command byte
+> (listed in Table 4 of:
+> https://www.analog.com/media/en/technical-documentation/data-sheets/2495fe.pdf),
+> which changes the driver's communication protocol compared to the
+> single-byte commands of the LTC2497.
+> 
+Is that second byte optional?  Figure 3b seems to suggest so but I haven't
+taken the time to read the rest of the data sheet.
+If it is never written does this new device function as backwards compatible
+with the LTC2497?
 
-Hi Alper,
+If so a fallback compatible is appropriate.  This is used when we have
+new newer DT against an older driver that doesn't support new features.
 
-A small process thing.  Wait a little longer between versions
-as it tends to save time for both the submitter and reviewers.
+A newer kernel will match on the new ID and hence provide these extended
+features you have here.
 
-At least a few days is appropriate typically and for first versions
-I'd generally advise a week. Many reviewers only get to the list
-once a week or so (some less than that!)
-
-Thanks,
+Note this discussion should have happened before you posted v2, let alone v3 and v4!
 
 Jonathan
 
+> This patch series begins to support reading the internal temperature
+> sensor by implementing driver logic for the two-byte I2C command format
+> and exposing the IIO temperature channel. Therefore, I added a new
+> binding. Without the support for the temperature sensor and this
+> different command structure, a simple fallback would be sufficient.
 > 
-> Signed-off-by: Yusuf Alper Bilgin <y.alperbilgin@gmail.com>
-> ---
-> Changes in v4:
->   - Removed the verbose formula derivation comment from `read_raw`.
->   - Reworked the temperature channel definition to omit the redundant
->     `.address` and `.channel` fields.
->   - Moved I2C-specific bit definitions from the shared header into
->     `ltc2497.c` and removed the pre-combined command macro.
->   - Simplified I2C logic to check the channel type instead of a
->     non-standard address.
->   - Combined the basic device support (#2) and temperature sensor feature (#3)
->     patches into a single patch (#2).
->   - Link to v3: https://lore.kernel.org/r/20250814-ltc2495-v3-0-c2a6cecd6b99@gmail.com
-> 
-> Changes in v3:
->   - Used the standard `kelvin_to_celsius()` helper instead of a custom
->     define.
->   - Corrected macro definition style.
->   - Renamed `LTC2497_CHANNELS` and `LTC_T_CHAN` for clarity.
->   - Combined all struct layout optimizations into a single patch.
->   - Link to v2: https://lore.kernel.org/r/20250813-ltc2495-v2-0-bbaf20f6ba07@gmail.com
-> 
-> Changes in v2:
->   - Rewrote all commit messages to use the imperative mood.
->   - Added a justification for the new compatible string to the device
->     tree binding commit message.
->   - Removed all unrelated whitespace and formatting changes.
->   - Removed redundant explicit `false` initializers from structs.
->   - Replaced the magic number for Kelvin conversion with a define.
->   - Improved comments for defines and temperature scaling constants.
->   - Renamed confusing macros and struct fields to be more descriptive.
->   - Replaced dynamic channel allocation with a static array approach
->     using a shared macro to improve readability.
->   - Optimized data structure layouts based on pahole output to remove
->     memory holes.
->   - Link to v1: https://lore.kernel.org/r/20250812-ltc2495-v1-0-7bf4c6feec2e@gmail.com
-> ---
-> Implementation Notes
->  - checkpatch warning: The new static array approach uses a shared macro
->    for the common channels (`LTC2497_CHANNELS`), which triggers a
->    checkpatch.pl warning: "Macros with complex values should be enclosed
->    in parentheses". However, this will cause a compilitaion error, as an
->    initializer list cannot be parenthesized.
->  - uV to mV conversion: I could not find a standard macro, so a manual
->    division is used for now. This could be a point of future
->    improvement.
-> 
-> ---
-> Yusuf Alper Bilgin (3):
->       dt-bindings: iio: adc: ltc2497: add lltc,ltc2495 bindings
->       iio: adc: ltc2497: add support for LTC2495
->       iio: adc: ltc2497: reorder struct members to fix memory holes
-> 
->  .../devicetree/bindings/iio/adc/lltc,ltc2497.yaml  |   3 +
->  drivers/iio/adc/ltc2497-core.c                     | 132 ++++++++++++++-------
->  drivers/iio/adc/ltc2497.c                          |  39 +++++-
->  drivers/iio/adc/ltc2497.h                          |  19 ++-
->  4 files changed, 147 insertions(+), 46 deletions(-)
-> ---
-> base-commit: acbbb5a20971089064ca6b271dd251e629be8d4d
-> change-id: 20250811-ltc2495-572817c13fd3
+> Let me know if you agree with the reasoning to add the binding. If so, I
+> will update the commit messages in v2 to include this justification and
+> ensure they follow the imperative mood convention.
 > 
 > Best regards,
+> 
+> Alper
 
 

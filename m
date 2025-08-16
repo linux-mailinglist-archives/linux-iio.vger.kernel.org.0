@@ -1,65 +1,66 @@
-Return-Path: <linux-iio+bounces-22831-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22832-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278D1B28E9B
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 16:49:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6693B28E9E
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 16:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3127916CD87
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 14:49:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86D76189BC3A
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 14:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB3B2DF3F9;
-	Sat, 16 Aug 2025 14:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388BD2E3705;
+	Sat, 16 Aug 2025 14:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vFRTUtwo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XVMjWvT6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCB91E520C
-	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 14:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5FA2D46CA
+	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 14:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755355735; cv=none; b=eLFSKv+a5DVXR3Bdgvpw3WwaLdRzyiqcDFziSt10K5eAfLDUM8H1mkOVIh80xhu14PtL9MCZCrOzoBpMmtG/dtKYCTGQ8tDeMPMMlLm2EWs+B3Rcyr/Mh7+L1P1ummcuJ45cb7/fz7fZmw/p1EvuggczKUw9VwoZPw0r7wfvDqI=
+	t=1755355822; cv=none; b=uuV3jhWBRPD3UpCzLnBd65yeshpJ9CND4oxDvqBkCGAcLgjMRFNRP3DqbR0agcvopa0BtcPwpNAbY5PmgbE/jAncq4xPd9a5xvYstFYxFFlIZiOiomHbEU/wq7RkH0T/0KZlWnXyzvdpZNehznReDTvt+NcAcWZzWtWnuneM1mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755355735; c=relaxed/simple;
-	bh=jgVl7ApfncLrYH28rpWtJ7UbvrbGj4+So88rtUEKb5c=;
+	s=arc-20240116; t=1755355822; c=relaxed/simple;
+	bh=U9ghDi7DCpcNknX7qWRvmGHzEFOkfdcEPTWfuQONGtk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o1lJ9h5JRA01VB2H7ZNI/ezR056vbPrYuXPmqMOux/3/oZbGEoSf8A8XAO+PvxpVcxYfxpZoip3uvPITFGm1wA9NJggGJh2NdJ9fauhDNHlJuMk3ABW39GCaERaF731Y5N2KMIq9Bx1/nKw1uVN2uFfYUDPbrQ0d6BrHHhqrfG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vFRTUtwo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E2DC4CEEF;
-	Sat, 16 Aug 2025 14:48:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IuWREZ5m7XnB1SnXZ43xStzc7NZyHJGBwRUue9mkmOFNwdSzo+R+wgp5Gr89SlbfnLdKEpft3gn4VveIxe7mrniY8TujpIrb1mukj1Tj5TRB5G6ywhsxO8qrsqWc06cQrbNHH6T5FPl2iiCbUioyeSbhksnhwAAkV5DHR9zZZws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XVMjWvT6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54CFC4CEEF;
+	Sat, 16 Aug 2025 14:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755355735;
-	bh=jgVl7ApfncLrYH28rpWtJ7UbvrbGj4+So88rtUEKb5c=;
+	s=k20201202; t=1755355821;
+	bh=U9ghDi7DCpcNknX7qWRvmGHzEFOkfdcEPTWfuQONGtk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vFRTUtwovpc8WLEE+7Nm9aNNoXQLk0LliKVOMCYCgwwvOjkAEnXBiPmKKN60eZdPB
-	 DitYWZiUXPC1VBqBV3un2TFKzbuUK8CR+DLvmzxGQEpCOJPAuyAE0ov4QfAYKI+hc+
-	 624VT2cw7eSP1FT6NTHfsiC4nWD0HbkOlutL/k6Hj3kBWEXRuG5hMQPSUWkVGZwbho
-	 0skwWiHz6OdZ0/YPLZ7Tu0zDboIGY6MYmRSu84ILHSft5vwkxcKdIWRN58Xscvdb4P
-	 oZvzV9WIKlkz2xv+CkQvTB8VUBJaKBOic7WwvbY+LAy7btvjc/CLVOAgHjfkdmv7KX
-	 zM2p3sMCeOt0A==
-Date: Sat, 16 Aug 2025 15:48:44 +0100
+	b=XVMjWvT6+z1MNYUgsmLnSRFFwBL8wVWhurqjLojLZUjkqI8Y1L1ge6FnA9/Sfnp9t
+	 FqyzLZC3Wf27U6ixlUK+pZliPnbFAUWOpodj7RDdE4uahmdWZJPZoqQ/ElUyLFn5vG
+	 Yo3/uBl1EeEA9c/a9Enkw46AI589eeUJbbo7EKJNN1fVFCsEpOLUjiiJwa59UbIypi
+	 RlP/P18R7V728/hMIPNHM2+MBU0mHz5lBukHjVlj1Iy8PeL3LIad5e7QVdvUZNS5vc
+	 mPGF31V7J9dZQuTZYj0DMk5nZ50cAjcWfqHKuvK4bNg4nh4DIoh9SDc4/axVN9wkwS
+	 jmAstBK8cARXA==
+Date: Sat, 16 Aug 2025 15:50:11 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>, Nuno
  =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
  Mudit Sharma <muditsharma.info@gmail.com>, Jiri Kosina <jikos@kernel.org>,
  Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Abhash Jha <abhashkumarjha123@gmail.com>,
+ <javier.carrasco.cruz@gmail.com>, Matti Vaittinen
+ <mazziesaccount@gmail.com>, Abhash Jha <abhashkumarjha123@gmail.com>,
  Astrid Rost <astrid.rost@axis.com>, =?UTF-8?B?TcOlcnRlbg==?= Lindahl
  <marten.lindahl@axis.com>, Gwendal Grignou <gwendal@chromium.org>,
  Christian Eggers <ChristianEggersceggers@arri.de>, Jonathan Cameron
  <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 05/16] iio: light: vcnl4035: Use
- iio_push_to_buffers_with_ts() to allow runtime source buffer size check.
-Message-ID: <20250816154844.0de9563e@jic23-huawei>
-In-Reply-To: <5388ed7a-4555-4932-9f31-d7d25e5d8474@gmail.com>
+Subject: Re: [PATCH 06/16] iio: light: acpi-als: Use a structure for layout
+ of data to push to buffer.
+Message-ID: <20250816155011.032c03f6@jic23-huawei>
+In-Reply-To: <CAHp75Vd3czzACQy4k1fUaFea9+ZG+y2dnz_3kcbG+x2g6xw_9g@mail.gmail.com>
 References: <20250802164436.515988-1-jic23@kernel.org>
-	<20250802164436.515988-6-jic23@kernel.org>
-	<5388ed7a-4555-4932-9f31-d7d25e5d8474@gmail.com>
+	<20250802164436.515988-7-jic23@kernel.org>
+	<CAHp75Vd3czzACQy4k1fUaFea9+ZG+y2dnz_3kcbG+x2g6xw_9g@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,57 +68,37 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 4 Aug 2025 09:57:46 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Sun, 3 Aug 2025 21:24:13 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On 02/08/2025 19:44, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > As the sizing of the source data has to include space for an aligned
-> > timestamp it is a common source of bugs.  Using this new function that
-> > takes the size of the provided buffer enables runtime checks for
-> > possible bugs.
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >   drivers/iio/light/vcnl4035.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
-> > index dca229e74725..2ebc1e9496f3 100644
-> > --- a/drivers/iio/light/vcnl4035.c
-> > +++ b/drivers/iio/light/vcnl4035.c
-> > @@ -117,8 +117,8 @@ static irqreturn_t vcnl4035_trigger_consumer_handler(int irq, void *p)
-> >   		goto fail_read;
-> >   	}
-> >   	scan.chan = val;
-> > -	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
-> > -					iio_get_time_ns(indio_dev));
-> > +	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
-> > +				    iio_get_time_ns(indio_dev));
-> >   
-> >   fail_read:
-> >   	iio_trigger_notify_done(indio_dev->trig);  
-> 
-> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> 
-> (Although, seeing there is 3 patches touching the same spot, I might 
-> squash the patch 04/16 with the 03/16. I would leave this one as a 
-> standalone so the fix can be backported without this new API, if needed).
-Whilst all the same spot I'm keen to keep them separate as they are all
-unrelated changes.
+> On Sat, Aug 2, 2025 at 6:45=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+> >
+> > Using a structure makes the padding and alignment rules explicit,
+> > removing the need for a comment.
+> >
+> > Also move the storage to the stack as it is only 16 bytes. =20
+>=20
+> ...
+>=20
+> > -/*
+> > - * The event buffer contains timestamp and all the data from
+> > - * the ACPI0008 block. There are multiple, but so far we only
+> > - * support _ALI (illuminance): One channel, padding and timestamp.
+> > - */
+> > -#define ACPI_ALS_EVT_BUFFER_SIZE               \
+> > -       (sizeof(s32) + sizeof(s32) + sizeof(s64)) =20
+>=20
+> IIUC this definition is named in a bit ambiguous way. This size is
+> related to the driver for ACPI light sensor, but it doesn't mean that
+> size is derived from any of the ACPI specification, killing that is a
+> right thing to do, hence I like this patch very much.
+>=20
+Applied.
 
-I'll be respinning this anyway with an additional fix for the buffer
-type.
-
-Jonathan
-
-> 
-> Yours,
-> 	-- Matti
-> 
+J
 
 

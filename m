@@ -1,58 +1,61 @@
-Return-Path: <linux-iio+bounces-22779-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22780-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7187AB28C96
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 11:54:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386ECB28C99
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 11:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 659445C7B84
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 09:54:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 210D15E054A
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 09:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F316328A3EA;
-	Sat, 16 Aug 2025 09:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E438D28A40C;
+	Sat, 16 Aug 2025 09:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fI8czEog"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhWCRGYf"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3B715E97;
-	Sat, 16 Aug 2025 09:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A95712DDA1;
+	Sat, 16 Aug 2025 09:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755338057; cv=none; b=jcaJqP+MnxTYaYWWxGPZdGP0qriVGb8ghj3BrKfERoIkLugZMBX/40ogCZKCxgTEyyVh7ozgJBjysgCUGS70dslORVtbj8pCNtCkNedMJXUNSgHGrKJF6CoQ0tregX4bO0+YQcGXVvzEf2MZpQUK8Vj3aMm+3/Za9VzrCKKzXRw=
+	t=1755338313; cv=none; b=Q9IhFWjc0S9p/ls045iF/WQj1ceMDQsPbxiiEVHcDidWAEFiAeJdadTpk7pqFN/iWKzIR39DllL60VjPobYLVYsz1z14sALOOqz1FGu8pLQ6h90odL1TuYnrdY3TUVIy24Z1mX2sKjb1yG98gIaiSXFjhBZFpZOeNpTnhoK0n6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755338057; c=relaxed/simple;
-	bh=NtLH2o5zFdwL8qLnkv2fWmiwgZJi4KCQFqICzRQxE4M=;
+	s=arc-20240116; t=1755338313; c=relaxed/simple;
+	bh=A6xhkDoqh/p5IPvE0iFDdQ2CqbMjCAgnmgHx9uL/1nU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f9Dd52TdIq1U91YLG5BKhA8mim3ZmIKOcnbkqD5GY6T8iHuPce39mtdqFw4gWJ/d7H3R2W+fooubKOQzCpiQE2JxJgZOkQRsPuCOx71glWLy177Ilfs/6Yi6suzKI5dMMgrM0268uZ0toft4M2DAViLPYCQkbyJO1/lqIHHuSd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fI8czEog; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9724C4CEEF;
-	Sat, 16 Aug 2025 09:54:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i+1aFWW1i8gXYGSitL8dY43yndMwF1ofKQTGawMmBRwby2+9kj9ngiSCm/U1d6S4kLGxlJS08/S7TMtyEIW/8G788Q6puAak0sndq67c8BndqRTeafHh1vUzypoN6xsoL5SS/LVDu3PBtmLTBNrx4bkBbpmg77ijaHtSRHoEKyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhWCRGYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D133C4CEEF;
+	Sat, 16 Aug 2025 09:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755338057;
-	bh=NtLH2o5zFdwL8qLnkv2fWmiwgZJi4KCQFqICzRQxE4M=;
+	s=k20201202; t=1755338313;
+	bh=A6xhkDoqh/p5IPvE0iFDdQ2CqbMjCAgnmgHx9uL/1nU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fI8czEogd8nQ0MJyN+ikp5ha0X9Hnj3k38RpvscZnt/uGura+0KTetoMXs4KUa0Iv
-	 waYJdzjv88/3Wj/UxUTd0tW3Rmo8KVEbp2bMSAUQt3N4JvoAiqLjRtV5yAHCfRVrSE
-	 1mjPJRZIcusHuZxsx9EhD6BMQVAy4hdpfwGV3oAp/j175fUCESGpMGY38hyHtp82CJ
-	 uv4Znmf+TBRsjNi90a0dcgooDHC08HbPIEajcBOZJUSxtORodI7pr8c/zUqE/N5fhX
-	 gZt84Kv+ZVBQRtF676EFKUdMnvMletZBvnwJ+EMXLwJTEHfzQ+ef7/nHXHvIu+ITAN
-	 CrbS4V6QKA3cw==
-Date: Sat, 16 Aug 2025 10:54:10 +0100
+	b=hhWCRGYfhXsFPU7p3fvXGllz3f3H4yZ66juw/dJrjIG8zbys1S5cODQIqQzVuca8Y
+	 BD6tcI5rqNmzm4keqc+tmcjBiTj08Bi4U6oEojpWKpFBaL6LlPDYu/7+cLSm2JyUNU
+	 XeWamJmJY6gdgI1yigdiM4iL4ZcxA8IxFJsnC4Hi/C5xv5M57x5icwQUb+SLKx1sYp
+	 F6wVPr1iQGRdh42BzCZV8ttWT7CWBj08uWR2NIhRHJDy17XA52VxfB1WOn2RbC5FKF
+	 enee0vMjNmmdsURz9VPC3xUVzV4AMGEbMwqF2eKqxRC9o2u95j+fOXc+JBfpN6JunL
+	 HqhY6szbHn+BQ==
+Date: Sat, 16 Aug 2025 10:58:25 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Ben Collins <bcollins@watter.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] iio: mcp9600: Add support for IIR filter
-Message-ID: <20250816105410.70e47dac@jic23-huawei>
-In-Reply-To: <a9c8457f-a364-46e2-9e31-ceab0e1c9894@baylibre.com>
-References: <20250813151614.12098-1-bcollins@watter.com>
-	<20250813151614.12098-6-bcollins@watter.com>
-	<a9c8457f-a364-46e2-9e31-ceab0e1c9894@baylibre.com>
+To: Ben Collins <bcollins@watter.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] dt-bindings: iio: mcp9600: Add compatible for
+ microchip,mcp9601
+Message-ID: <20250816105825.35e69652@jic23-huawei>
+In-Reply-To: <20250815164627.22002-2-bcollins@watter.com>
+References: <20250815164627.22002-1-bcollins@watter.com>
+	<20250815164627.22002-2-bcollins@watter.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,99 +66,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 13 Aug 2025 17:52:04 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Fri, 15 Aug 2025 16:46:03 +0000
+Ben Collins <bcollins@watter.com> wrote:
 
-> On 8/13/25 10:15 AM, Ben Collins wrote:
-> > MCP9600 supports an IIR filter with 7 levels. Add IIR attribute
-> > to allow get/set of this value.
-> > 
-> > Signed-off-by: Ben Collins <bcollins@watter.com>
-> > ---
-> >  drivers/iio/temperature/mcp9600.c | 43 +++++++++++++++++++++++++++++++
-> >  1 file changed, 43 insertions(+)
-> > 
-> > diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
-> > index 5ead565f1bd8c..5bed3a35ae65e 100644
-> > --- a/drivers/iio/temperature/mcp9600.c
-> > +++ b/drivers/iio/temperature/mcp9600.c
-> > @@ -31,6 +31,7 @@
-> >  #define MCP9600_STATUS_ALERT(x)		BIT(x)
-> >  #define MCP9600_SENSOR_CFG		0x5
-> >  #define MCP9600_SENSOR_TYPE_MASK	GENMASK(6, 4)
-> > +#define MCP9600_FILTER_MASK		GENMASK(2, 0)
-> >  #define MCP9600_ALERT_CFG1		0x8
-> >  #define MCP9600_ALERT_CFG(x)		(MCP9600_ALERT_CFG1 + (x - 1))
-> >  #define MCP9600_ALERT_CFG_ENABLE	BIT(0)
-> > @@ -111,6 +112,7 @@ static const struct iio_event_spec mcp9600_events[] = {
-> >  			.address = MCP9600_HOT_JUNCTION,		       \
-> >  			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	       \
-> >  					      BIT(IIO_CHAN_INFO_SCALE) |       \
-> > +					      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) |  \
-> >  					      BIT(IIO_CHAN_INFO_THERMOCOUPLE_TYPE), \
-> >  			.event_spec = &mcp9600_events[hj_ev_spec_off],	       \
-> >  			.num_event_specs = hj_num_ev,			       \
-> > @@ -149,6 +151,7 @@ static const struct iio_chan_spec mcp9600_channels[][2] = {
-> >  struct mcp9600_data {
-> >  	struct i2c_client *client;
-> >  	u32 thermocouple_type;
-> > +	u32 filter_level;
-> >  };
-> >  
-> >  static int mcp9600_read(struct mcp9600_data *data,
-> > @@ -186,6 +189,9 @@ static int mcp9600_read_raw(struct iio_dev *indio_dev,
-> >  	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
-> >  		*val = mcp9600_tc_types[data->thermocouple_type];
-> >  		return IIO_VAL_CHAR;
-> > +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-> > +		*val = data->filter_level;  
+> The mcp9600 driver supports the mcp9601 chip, but complains about not
+> recognizing the device id on probe. A separate patch...
 > 
-> We can't just pass the raw value through for this. The ABI is defined
-> in Documentation/ABI/testing/sysfs-bus-iio and states that the value
-> is the frequency in Hz.
+> 	iio: mcp9600: Recognize chip id for mcp9601
 > 
-> So we need to do the math to convert from the register value to
-> the required value.
+> ...addresses this. This patch updates the dt-bindings for this chip to
+> reflect the change to allow explicitly setting microchip,mcp9601 as
+> the expected chip type.
 > 
-> I'm a bit rusty on my discrete time math, so I had chatgpt help me
-> do the transform of the function from the datasheet to a transfer
-> function and use that to find the frequency response.
-> 
-> It seemed to match what my textbook was telling me, so hopefully
-> it got it right.
-> 
-> Then it spit out the following program that can be used to make
-> a table of 3dB points for a given sampling frequency. If I read the
-> datasheet right, the sampling frequency depends on the number of
-> bits being read.
-> 
-> For example, for 3 Hz sample rate (18-bit samples), I got:
-> 
->   n  f_3dB (Hz)
->   1  0.58774
->   2  0.24939
->   3  0.12063
->   4  0.05984
->   5  0.02986
->   6  0.01492
->   7  0.00746
-> 
-> I had to skip n=0 though since that is undefined. Not sure how we
-> handle that since it means no filter. Maybe Jonathan can advise?
+> The mcp9601 also supports features not found on the mcp9600, so this
+> will also allow the driver to differentiate the support of these
+> features.
 
-This is always a fun corner case.  Reality is there is always
-some filtering going on due to the analog side of things we
-just have no idea what it is if the nicely defined filter is
-turned off.  I can't remember what we have done in the past,
-but one option would be to just have anything bigger than 0.58774
-defined as being filter off and return a big number. Not elegant
-though.  Or just don't bother supporting it if we think no one
-will ever want to run with not filter at all.
+If it's additional features only then you can still use a fallback
+compatible.  Intent being that a new DT vs old kernel still 'works'.
 
-Hmm. or given this is a digital filter on a sampled signal, can we establish
-an effective frequency that could be detected without aliasing and
-use that?  Not sure - I'm way to rusty on filter theory (and was
-never that good at it!)
+Then for the driver on new kernels we match on the new compatible and
+support those new features.  Old kernel users get to keep the ID
+mismatch warning - they can upgrade if they want that to go away ;)
+
+Krzysztof raised the same point on v2 but I'm not seeing it addressed
+in that discussion.
 
 Jonathan
+
+> 
+> Signed-off-by: Ben Collins <bcollins@watter.com>
+> ---
+>  .../bindings/iio/temperature/microchip,mcp9600.yaml         | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> index d2cafa38a5442..d8af0912ce886 100644
+> --- a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> +++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> @@ -4,7 +4,7 @@
+>  $id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9600.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+> -title: Microchip MCP9600 thermocouple EMF converter
+> +title: Microchip MCP9600 and similar thermocouple EMF converters
+>  
+>  maintainers:
+>    - Andrew Hepp <andrew.hepp@ahepp.dev>
+> @@ -14,7 +14,9 @@ description:
+>  
+>  properties:
+>    compatible:
+> -    const: microchip,mcp9600
+> +    enum:
+> +      - microchip,mcp9600
+> +      - microchip,mcp9601
+>  
+>    reg:
+>      maxItems: 1
+
 

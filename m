@@ -1,62 +1,59 @@
-Return-Path: <linux-iio+bounces-22822-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22823-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EF2B28E26
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 15:33:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AC4B28E2B
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 15:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD79A58786D
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 13:33:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17DAEB01F46
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 13:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E85221C9E1;
-	Sat, 16 Aug 2025 13:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430D02E5B38;
+	Sat, 16 Aug 2025 13:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l1aeo4fd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQBXWQZ9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3951826281;
-	Sat, 16 Aug 2025 13:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC19323A562;
+	Sat, 16 Aug 2025 13:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755351192; cv=none; b=oKAka03jrAvrUWHqRQxjOTrdDMu9OwT1rTJV+6fdBfcw0r35NuBblScTdijKM2myufBzhrXRXDEqRmfZOa5omGXnxec9e2cOGVht8afu7DH55Bfz5BoJIOutykAJIEoralg2hvRct9LtC3aaD0Neas0uElYB4t4K8+IIO0u+RTM=
+	t=1755351294; cv=none; b=HwIf5OUgLmaQ1/DBlorC8MpupEDyJkZNWDIUNnHO8TGRUGbxZhDDo+Ne8JD4iOXjcceJTx9GBwFiVXCrqlZLt9FJk1It2lo8ivLsI/zL3LygzkaIYtbzvVZ/DceCsj1Bf/R7TOyw+nd0U5S+7ECTa9m6l9jEWlIM7smht6v/Swg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755351192; c=relaxed/simple;
-	bh=5z/Ngh1sow4p1DfepKszTyKq2cFs4DdXPS1bYQr+7SM=;
+	s=arc-20240116; t=1755351294; c=relaxed/simple;
+	bh=tJC2fP8R8CE59ewJaA1jMoW76rPBtMtDYVgvZDtO3q4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SfJNoaUtmsirLcXcnn2TPtM2bPuHzofMJGGhDRep8hwJFj4iz7t0YQX/RAAJZ2RxeXS7xfVaAboIm9OsXoasHQ7GlVEIhMPNenH2AkWsmmb045H1/dPbtQ+lVnDS/7TWE89ds02PzxNeVbMNnSC5ZfP+IKtf41HHUUAyE6wr98E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l1aeo4fd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DC6C4CEEF;
-	Sat, 16 Aug 2025 13:33:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KUkVn7Hk7CYgE+XVr1PmdIY1sf1cr3tM48w1fIIzPKtVwPX5lNdIcaOUoB09mDtXeARycx6h6eG7P+TyQfw+l3uh69AiobLqMbkdzx33mKRzrZmL9EUVHm8aw5q641Rti2G1rPlyQhgo4hQwu9pkysjOUMrV9sOrb0L6lgAzuEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQBXWQZ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37872C4CEEF;
+	Sat, 16 Aug 2025 13:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755351191;
-	bh=5z/Ngh1sow4p1DfepKszTyKq2cFs4DdXPS1bYQr+7SM=;
+	s=k20201202; t=1755351293;
+	bh=tJC2fP8R8CE59ewJaA1jMoW76rPBtMtDYVgvZDtO3q4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=l1aeo4fdpSU/R3S4NPRhw46HyHttezNFaZOT6MyGafT5debrBdfEbI++fLMkuqzFU
-	 28Jtut4aB0ymi0bDIH8NqieFIizIQCXkZWmXwB4JDdl34Fhcw/4T3xqVMF4Y/IIe3T
-	 DN9uLXBj+M+DL5EUoEJapofPdLNsMdW8dDp2KF54GtIXqTzezfCdyyJjj6+d4ceELT
-	 N1YV+fl1/dmiyPv2rsoMznNdgAFN6t6pqsHTSiCbK7gGAuIq0ZrVHpRyXxQ5Xr9uYR
-	 H1OmqaIJmf7WuRXbGijNF4F7q/5Y2sr/P/0xhB30B7jW+2KtB9AtLJxNGnWyac1fH+
-	 YEAwpTsZkfu5Q==
-Date: Sat, 16 Aug 2025 14:33:03 +0100
+	b=TQBXWQZ9TY9fe5hbnCoxP1TwOCK1clE/ivn8njEPlRbATyxEbDU9BrnYu1PAmzjsI
+	 M0u5x1WGLe+LYK+fqxjeDxWExPJwjephPyW9g7l8f6cE1zW5uMWkITvwLD7lee6fXE
+	 kvZ6HgwPBztb6kiKU1fRz1LjnTFhkF156H8CfEiy8dsEk3q5Z7BOEYzlbOOetnjXk0
+	 1UUIJYxuX9nyMc09rm8sNnZ2wOYZ28Jnwt/jyG19H7BmJBMaftjlGXBlAEFWugFbch
+	 mHT9Ecgg1Mbt5sCJZffc21W/LIEWFGqNMvupCJwD9pZRVU/WDpjZlXi10KH1TLUua1
+	 LbRqM74LSEHUg==
+Date: Sat, 16 Aug 2025 14:34:45 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Michael Hennerich
- <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Angelo Dureghello
- <adureghello@baylibre.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7380: fix missing max_conversion_rate_hz on
- adaq4381-4
-Message-ID: <20250816143303.6fe40510@jic23-huawei>
-In-Reply-To: <CAHp75Vf3s1ftm0wBPbeTuKgO0W22ndpdcGE+zSMSHD=4z1O4Xg@mail.gmail.com>
-References: <20250811-iio-adc-ad7380-fix-missing-max_conversion_rate_hs-on-ad4381-4-v1-1-ffb728d7a71c@baylibre.com>
-	<CAHp75Vc_-2czsaZ_-3+cSWAzyvz-PASR5mjCyoAxTu9qSEYyLA@mail.gmail.com>
-	<5732b907-ccb8-4302-8fd7-ded63a5d852b@baylibre.com>
-	<CAHp75Vf3s1ftm0wBPbeTuKgO0W22ndpdcGE+zSMSHD=4z1O4Xg@mail.gmail.com>
+Cc: Akshay Bansod <akbansd@gmail.com>, Lorenzo Bianconi
+ <lorenzo@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-kernel-mentees@lists.linuxfoundation.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] iio: st_lsm6dsx: Replace scnprintf with sysfs_emit
+Message-ID: <20250816143445.3dd52031@jic23-huawei>
+In-Reply-To: <CAHp75Vf7r53wQtGWes9WH1UubEjhAju+tN0OORTrkNxgTQPsWw@mail.gmail.com>
+References: <20250811165641.1214347-1-akbansd@gmail.com>
+	<CAHp75Vf7r53wQtGWes9WH1UubEjhAju+tN0OORTrkNxgTQPsWw@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,41 +64,22 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 11 Aug 2025 21:22:28 +0200
+On Mon, 11 Aug 2025 21:17:18 +0200
 Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Mon, Aug 11, 2025 at 9:18=E2=80=AFPM David Lechner <dlechner@baylibre.=
-com> wrote:
-> > On 8/11/25 2:07 PM, Andy Shevchenko wrote: =20
-> > > On Mon, Aug 11, 2025 at 8:32=E2=80=AFPM David Lechner <dlechner@bayli=
-bre.com> wrote: =20
->=20
-> ...
->=20
-> > >> +       .max_conversion_rate_hz =3D 4 * MEGA, =20
-> > >
-> > > MEGA --> HZ_PER_MHZ =20
+> On Mon, Aug 11, 2025 at 6:57=E2=80=AFPM Akshay Bansod <akbansd@gmail.com>=
+ wrote:
 > >
-> > If we do this, we should fix up all of the other similar ones
-> > in a separate patch. So I would leave this patch as-is. =20
+> > Update the sysfs interface for sampling frequency and scale attributes.
+> > Replace `scnprintf()` with `sysfs_emit_at()` which is PAGE_SIZE-aware
+> > and recommended for use in sysfs. =20
 >=20
-> Will it happen sooner?
->=20
-> > > With that done
-> > > Reviewed-by: Andy Shevchenko <andy@kernel.org> =20
->=20
-> I leave this to Jonathan because in spite of being a fix I still think
-> it's better to use an appropriate multiplier (also note, MEGA appeared
-> in the kernel much later than HZ_PER_* constants, which sounds in my
-> favour).
+> LGTM,
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
 >=20
 
-I'll take this as is.  A future tidy up might switch them all over.
-I've always been in two minds as to whether the unit specific ones
-are helpful for this case where one of the scales is 1.
+Tweaked patch title to include () for the two functions mentioned.
+I think that just makes things a tiny bit clearer.
 
-Applied to the fixes-togreg branch of iio.git.
-
-Jonathan
-
+Applied.
 

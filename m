@@ -1,113 +1,145 @@
-Return-Path: <linux-iio+bounces-22817-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22818-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA52FB28E0D
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 15:16:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A51B28E10
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 15:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 959853B7A12
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 13:16:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E922CB0108A
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 13:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF852E424B;
-	Sat, 16 Aug 2025 13:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E1C2E4265;
+	Sat, 16 Aug 2025 13:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DHCV/+0/"
+	dkim=pass (2048-bit key) header.d=watter-com.20230601.gappssmtp.com header.i=@watter-com.20230601.gappssmtp.com header.b="KETBCVjh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20426BE46;
-	Sat, 16 Aug 2025 13:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F405E2288D5
+	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 13:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755350211; cv=none; b=AQlsslzXQv/lYGt3dkavQfC41ypq/nb15JSAKSDq/x5L2xJZ8xXbFJWfkmuuAs19YvUJMsN3oqPlo9BFq1d32RV+5WG1qFUfKkhQWD4ozmzXwdUJzDIHjmrp20eqc98wd31kK88VfFD7sn28VQr+O760D7xpM2jAJyltIagohJ4=
+	t=1755350303; cv=none; b=s+nm/f2EZz3rbpk5+Ft++zv5WNbebwrojqw3JGrxsC2jDw2q3IL3Vjmlt7goLl0N24icMKcy0u0oX/oajtqUqY3VqCU1VFe+SJVA4CHKdsFAFWsnqy20gxtm9pTqbBxT++kx+A0vg55rpDEldW1qn1Vk7PCHH6KITEoPXa8THYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755350211; c=relaxed/simple;
-	bh=xg5WwaXC31zocxGYhM43TBO5weENvX9hgjSvsSRgut8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DvSQ9skyYs7QZzeN8R3U95d3VufaVozz5i891XxQ6wTH40aMyKF3r5efYQ3cyoAgFHQxfwBlqp3P26khJdz5iZXzBeCT6gEL+lwsH+ZyBsJNllQauNWp6cCGKicieTnEzduzDP/ujUSCYcEPOlTSqHbu6RJv+bpW7gb3stwNfs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DHCV/+0/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC30C4CEEF;
-	Sat, 16 Aug 2025 13:16:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755350210;
-	bh=xg5WwaXC31zocxGYhM43TBO5weENvX9hgjSvsSRgut8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DHCV/+0/eYi0UmiBwxBy22tY+RpoiqHVFqF/PC+75eLeALQ0sTdt63hRe0AFUp80z
-	 mckas/JjNiZ6nzv96CoxQVJkxW1OYr1kaxfowq61YZNqZvQASb8jw7SP8veDjeTZuC
-	 /k4qBoxS/F+uA/gJfQO718eUx2z7oFh7Dq1QfkXxNyv5phYZ3cY24vbcGf5G2pmqn2
-	 MLytbaLgZxoLqmEeb0Lq1OJk+BfaC7s58MtNPQ3x2wAnh2zomxXEkNWUz4ANZnow8u
-	 u+TXg4x33nYSAdIdssBcKN6g6LgT8mRzwk+GTU/6KfJg/mYVdNZP1SbCZF7UIIEnyZ
-	 GXbKJZQRjP8Vw==
-Date: Sat, 16 Aug 2025 14:16:40 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <Michael.Hennerich@analog.com>,
- <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
- <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
- <jonath4nns@gmail.com>
-Subject: Re: [PATCH 2/4] iio: adc: ad7768-1: introduce chip info for future
- multidevice support
-Message-ID: <20250816141640.4059d337@jic23-huawei>
-In-Reply-To: <22ea35425827176a842ea0e523040acd20e27bcc.1754617360.git.Jonathan.Santos@analog.com>
-References: <cover.1754617360.git.Jonathan.Santos@analog.com>
-	<22ea35425827176a842ea0e523040acd20e27bcc.1754617360.git.Jonathan.Santos@analog.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1755350303; c=relaxed/simple;
+	bh=gFv5AiUoDKOtaASrGVzw6Cfk5wDTFd1ZbzMigzVHKts=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=H4RbDkjPVvJqSuwVO2URPBSiwFjnREL///HYkzhtzx+sfUanI9Md2xU2Sdws9aEbexWDLKoKJ4xZakhJP3pJ6LZG/b5mmjL5/w86GQLzPxIm0p3AfXKAysE7Ag+E7FIrDHt3N2sEnIttTg/qtFyAMaJAd390d0HQ+YYIE67MpVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=watter.com; spf=pass smtp.mailfrom=watter.com; dkim=pass (2048-bit key) header.d=watter-com.20230601.gappssmtp.com header.i=@watter-com.20230601.gappssmtp.com header.b=KETBCVjh; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=watter.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=watter.com
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7e870666dd4so328672385a.2
+        for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 06:18:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=watter-com.20230601.gappssmtp.com; s=20230601; t=1755350301; x=1755955101; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Oz9ukFrqWFqJqtKjXZoI2WNXCzAlVgUQ0S7OAE8fvOw=;
+        b=KETBCVjh5KnOiWSQqLzVwLvA2SC4ef2mH2GkuVQQdksCwnuVAkE+Uk8ii/27EJm0ak
+         UUcWotrlDhMw6+daWyK9z/Zjw4zTgcRn/CIWlgLO0dCB0zvMprR74dAPH0kbnWCTM2nP
+         4c3hJV+Dg6awfTYGDfgWMOsANBVUWZ5fk+2fja8MaQyVIVJ7tVFWG5BY989p6wPXKASd
+         TfzrJoFqnBqGbcFrRa9R21Bx6Ch1geXDt/mwXC0cO/yh1Qdl9+UnNX2/MBnwaBxsyjTv
+         yfo37eyHCJt+7qqmOhL4nWg3TKDCqReafxhN02cq0vbqGflarFB43QfDxDCKHf7+hVtW
+         7WHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755350301; x=1755955101;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Oz9ukFrqWFqJqtKjXZoI2WNXCzAlVgUQ0S7OAE8fvOw=;
+        b=N2kVCHN9dRWIAu1Ou8QFpOsePFv8dEUCm56xcCrL3FNkVuAk12WActoo9BWZIvIMtv
+         di/wZm7sgl2IC/b+YUybCF5o9A/Wx1Q12nzK1lcNT8Y+JLHL2MzLbzX9BtbPADUft43M
+         e17798SaFhdWkCsO1ulnQ7rDmJpHTEJ0Q/5iisGandm0vfkR4S9/dFuOOLzNd0fj8XhP
+         gwx994HixuPL7MTbYxMfU18plpMRxsipuNE0eUmpf90w0mH2FVX0MWV7T+vsEk2JRvLn
+         nx1IHcIO5G/UsLbfL3BVJHQVOyFVTkjqvy7O7VhqhTS3QT94e8vP0UpZ+UbZg9eCHNaP
+         rMdg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrreSsbaDOgxFLHvZw35Kon6BRMoXEDwtnquEIRyEZtJ+8l1vVGEWM0I6bQdDR+nWtwZ6tPWi4Bpg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAW3Ld8KEyg9OehVb4D6o9oloEN0k8jfCm4m8mljIWMVeEig10
+	oBnIOvLmT6mbaNx/4yNRH9b8OuB65D3iwOeivmqpH7EbpplbKaOyyT6Xn8l6NTs8zw==
+X-Gm-Gg: ASbGncsniiDMgFPpU3T5AN6EF51YJ/BPlwBiBzFYGCeZCqZPqt8MaB4CsDGaXl7Ii0Z
+	qlkyuLuDvQV7OEaUCAKhasPdArTB8Ji4Td4zSx/zquW+qGHdCesTvh9QrarIBx7UZlB11iQVah3
+	6d4Obv3jt9eF5MlBD7VQwec7Dx9MUg04a8jfZDNLi5jdGRsGvyZLIN+7ljryUm4aOIV4U4xH5Rq
+	nrmPD+7QVPe0tjm65ciFF7CTQkFOA9W+2n5QRowa4XDofiqioq/PUF+VRwHPOQHylpzlSX67fr2
+	AzkY3kPYZbM52oP+pEQcUE2/jRq0nHHJ88FvFnssYyUd33F570HXahrHfCnAk5heaLeiJsJFW/8
+	nb0M+1ky+VVJU6ipXbewjcKIDanbvnyEQBtwIjg2T2mOvCyecpqmu
+X-Google-Smtp-Source: AGHT+IFO2mPLcoMCnsyNEjljs3NIOEYHeTiCubF3Jca2hjGQBdeRt/V2zlsf3Sb3WYvz2a/hFw9ULQ==
+X-Received: by 2002:a05:620a:a905:b0:7e8:8ec9:bdfd with SMTP id af79cd13be357-7e88ec9beb2mr67617585a.16.1755350300982;
+        Sat, 16 Aug 2025 06:18:20 -0700 (PDT)
+Received: from smtpclient.apple ([70.32.192.89])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e87e020514sm266847385a.17.2025.08.16.06.18.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 16 Aug 2025 06:18:20 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.100.1.1.2\))
+Subject: Re: [PATCH 4/5] iio: mcp9600: Add support for thermocouple-type
+From: Ben Collins <bcollins@watter.com>
+In-Reply-To: <20250816111125.65fcbb09@jic23-huawei>
+Date: Sat, 16 Aug 2025 09:18:09 -0400
+Cc: David Lechner <dlechner@baylibre.com>,
+ =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1CAB4E66-23B6-41F6-9782-3F3D66AB9908@watter.com>
+References: <20250815164627.22002-1-bcollins@watter.com>
+ <20250815164627.22002-5-bcollins@watter.com>
+ <20250816111125.65fcbb09@jic23-huawei>
+To: Jonathan Cameron <jic23@kernel.org>
+X-Mailer: Apple Mail (2.3864.100.1.1.2)
 
-On Tue, 12 Aug 2025 23:48:57 -0300
-Jonathan Santos <Jonathan.Santos@analog.com> wrote:
 
-> Add Chip info struct in SPI device to store channel information for
-> each supported part.
-> 
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Some minor comments
 
-> ---
->  drivers/iio/adc/ad7768-1.c | 76 ++++++++++++++++++++++++++------------
->  1 file changed, 53 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index a2e061f0cb08..36ba208fc119 100644
-> --- a/drivers/iio/adc/ad7768-1.c
-> +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -106,6 +106,7 @@
->  #define AD7768_GPIO_READ_MSK		GENMASK(3, 0)
->  
->  #define AD7768_VCM_OFF			0x07
-> +#define AD7768_CHAN_INFO_NONE		0
+> On Aug 16, 2025, at 6:11=E2=80=AFAM, Jonathan Cameron =
+<jic23@kernel.org> wrote:
+>=20
+> On Fri, 15 Aug 2025 16:46:06 +0000
+> Ben Collins <bcollins@watter.com> wrote:
+>=20
+>> dt-bindings documentation for this driver claims to support
+>> thermocouple-type, but the driver does not actually make use of
+>> the property.
+>>=20
+>> Implement usage of the property to configure the chip for the
+>> selected thermocouple-type.
+>>=20
+>> Signed-off-by: Ben Collins <bcollins@watter.com>
+> Hi Ben,
+>=20
+> Just one trivial thing inline.
+...
+>>=20
+>> +static int mcp9600_config(struct mcp9600_data *data)
+>> +{
+>> + struct i2c_client *client =3D data->client;
+>> + int ret;
+>> + u8 cfg;
+>> +
+>> + cfg  =3D FIELD_PREP(MCP9600_SENSOR_TYPE_MASK,
+>> +  mcp9600_type_map[data->thermocouple_type]);
+>> +
+>> + ret =3D i2c_smbus_write_byte_data(client, MCP9600_SENSOR_CFG, cfg);
+>> + if (ret < 0) {
+>> + dev_err(&client->dev, "Failed to set sensor configuration\n");
+>=20
+> Only called from probe so use return dev_err_probe() here
 
-I'm not convinced this is worthwhile vs 0 which is fairly obviously
-a 'nothing to see here' value.
+Hi Johnathan. That=E2=80=99s correct in this patch. However, in the IIR =
+patch
+I call this when the filter is set, so it didn=E2=80=99t seem to make =
+sense to
+do it that way, just to change it in the next patch.
 
->  
->  #define AD7768_TRIGGER_SOURCE_SYNC_IDX 0
->  
-> @@ -213,6 +214,13 @@ static const struct iio_scan_type ad7768_scan_type[] = {
->  	},
->  };
->  
-> +struct ad7768_chip_info {
-> +	const char *name;
-> +	const struct iio_chan_spec *channel_spec;
-> +	const unsigned long *available_masks;
-> +	int num_channels;
-
-I guess hole concerns pushed num_channels after the pointers.
-That's fine but if you move available_masks up one line, then
-we can still have channel_spec and the thing that says
-how bit it is next to each other.
-
-> +};
+I appreciate all the feedback. I=E2=80=99ll get things cleaned in for =
+v4.=
 

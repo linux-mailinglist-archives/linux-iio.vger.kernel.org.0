@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-22811-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22812-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B40B28DF4
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 14:56:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D2FB28DF5
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 14:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EA6D7B4557
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 12:54:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E3895C0152
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 12:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AFF2DFA34;
-	Sat, 16 Aug 2025 12:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A5F2E36F6;
+	Sat, 16 Aug 2025 12:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAO1gN0N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EX5mNu72"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A556323D291;
-	Sat, 16 Aug 2025 12:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC27D1E0E1F;
+	Sat, 16 Aug 2025 12:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755348955; cv=none; b=qsZojL8v3KuZCeEeXENt2ktSk9u7Sdsp0D+W200QFJLC5bxINcgUJCOcLKXRLIW7y4EIR+RlXY+nVRfyXgu2CA8SxzLBRWA6GnN6zXOAyXlYTRiQqwOKSLYSX99fb4cFx9EN4e49czpRq+EiW6+hOjIL9mBCYNoYwvV0Bbqew7s=
+	t=1755349053; cv=none; b=r0c1RqE1w7KYcT5WWd9PygbFWY7UDfSEhVlsN5tShfaZJPAKefWlGF0JG6w3q7OMKhy1KNSnjMLm9URevYttaKwmeQ1ghYwNz/PbG2AbM28JZlHrQ4+AYnIj1upgXAOKcnVmsKuebNvVM5142DCVKzAIhT2bO4QknhgNhTDohVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755348955; c=relaxed/simple;
-	bh=P+D75MyVifQL7tDuakNzZ9agkknvPrUgW6XT6jLTc98=;
+	s=arc-20240116; t=1755349053; c=relaxed/simple;
+	bh=IHOT59Weeub264TkQZetcMqUCa5S/NmdbN0rLQ4XC1U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HKMH4iljKKyVU/t0DLoQqon8+jqyRntVj6FlhB0+j5PUKPr2Nr4Nqpx4Ims8LbkEDOGLUB/cwn3WjAaw0cXdYO+jjBicQ5pCDk7in7+vQiBFdSkcqj/9gEhSRd63Zir1DlwHmSc/k8x6cc84zgBMRi48RLGKVZT/82WCOiUrqDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAO1gN0N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E67C4CEEF;
-	Sat, 16 Aug 2025 12:55:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=toj5Bh4kCyurKTuv+pcM2+aqC7BZePRDzgo2Du1WFGV4ngdS4o/ex/vjt4BusYmlZVj3haLUApEy80FRIPWLNwlyIN0tWvtVuYgAqJeUfDbZ+ZlqE9xwSblvOqRMh3ulEf0sivYu25L96br0I90caCohpbQ3h1iBBFtf2YndNXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EX5mNu72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B70FC4CEEF;
+	Sat, 16 Aug 2025 12:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755348955;
-	bh=P+D75MyVifQL7tDuakNzZ9agkknvPrUgW6XT6jLTc98=;
+	s=k20201202; t=1755349052;
+	bh=IHOT59Weeub264TkQZetcMqUCa5S/NmdbN0rLQ4XC1U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bAO1gN0NEZvgTKb+vacMEG2XXp7t1zqZo8XMTonK7jEke8x5fg2x/WhnC8eiYZQ2A
-	 Q0YxNpcWydumpPTd/PD+niGRc6qSKbVE8X56qD5zVc8BU/ke7DHVx1zMBgeltE727f
-	 A+O/DtjVeEtqUDWTFeY86mLU8cMDEGni0ZdT0OJLId7iZXKYmthmC2WEnqHH/+/OjA
-	 wVhnQpWSra9zyl4JmcbSH607N5m+UjFXZcnijXLy4jrL1NWrKPyBv5yi2UgJaKZbul
-	 oBdFvKCkTwbyUpcM0XNbBMKQ5PcNDGhEu4bXF3yfLFiYL42uYc37mBIP2lHS2kGh6Z
-	 t4EUw8ObKgmKw==
-Date: Sat, 16 Aug 2025 13:55:47 +0100
+	b=EX5mNu72Vuudk6uil2fu7PcoOwAFIxkIKrc3NtdMo4XU9L4ulTEFdog/CM5yikuD4
+	 tP5anYqq1eBz8Z2Pw7ZC+8QovToD8/P+oGU6FZ/rmp4S5Td3H+tF/j/WQ1W11wIQaV
+	 DEvqp/KnKvurcoMCmnyuGcBNUwdHJNG6QeH2xS6/uKBqvHVqXBY5jRyWI/sScdhqFn
+	 0H0XGPEZMO8za+keNSArZdYMubow7td9pUIz4McGYZEpc7DhjeMkPyyEhP0lbrLWZA
+	 l1LV1YPhItouBH1tV/49sawKfM2FOQ5ml2Wz8TE+CARTRB8EWSgtMqcNASO0EFTJQd
+	 iWCkuK45p+S4A==
+Date: Sat, 16 Aug 2025 13:57:23 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andrew Davis <afd@ti.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 4/6] iio: health: afe4404: Do not store dev pointer in
- device struct
-Message-ID: <20250816135547.617de9e7@jic23-huawei>
-In-Reply-To: <20250813225840.576305-4-afd@ti.com>
-References: <20250813225840.576305-1-afd@ti.com>
-	<20250813225840.576305-4-afd@ti.com>
+To: Akshay Jindal <akshayaj.lkd@gmail.com>
+Cc: anshulusr@gmail.com, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] iio: light: ltr390: Add device powerdown
+ functionality via devm api
+Message-ID: <20250816135723.11026da0@jic23-huawei>
+In-Reply-To: <20250814034544.93331-1-akshayaj.lkd@gmail.com>
+References: <20250814034544.93331-1-akshayaj.lkd@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,15 +62,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 13 Aug 2025 17:58:38 -0500
-Andrew Davis <afd@ti.com> wrote:
+On Thu, 14 Aug 2025 09:15:43 +0530
+Akshay Jindal <akshayaj.lkd@gmail.com> wrote:
 
-> The device *dev is only used in probe(), so no need to store it
-> in the device local data struct. In all the places in probe()
-> we did use that, just use a new local variable for the same.
+> Use devm_add_action_or_reset() to do cleanup when the device is removed.
 > 
-> Signed-off-by: Andrew Davis <afd@ti.com>
-Applied. I'll hold off on 2,3,5 and 6 until discussion on the question David raised
-is concluded.
+> Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
+LGTM and I think you've addressed Andy's remaining feedback.
 
+Applied to the togreg branch of iio.git and pushed out for testing.
+
+Thanks,
+
+Jonathan
 

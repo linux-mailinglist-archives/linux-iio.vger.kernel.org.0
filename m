@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-22847-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22848-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B131B28F82
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 18:42:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B439B28FA3
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 18:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6E08188FF30
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 16:41:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76BC95C21BD
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 16:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C17A2E8DE9;
-	Sat, 16 Aug 2025 16:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303022FDC2A;
+	Sat, 16 Aug 2025 16:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iU3aUcWJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wk5Cb79j"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D652E7261C;
-	Sat, 16 Aug 2025 16:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CB019006B;
+	Sat, 16 Aug 2025 16:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755362439; cv=none; b=LIOvCmJGrPsVSKJawuu2hwNgnA+hivrZ9XgYVl47W9Psxk6taKWxZp5u7i44IEjptt9e4ADQucmKkuFMvAYf4DbC/zLPVy6mu84uLqfhp8n4ibiW/XR+QY6ut74L9C+TpAPgYHqo/hpluidQGA9MzTL6xnoKByJ1YuWGkIVZT2g=
+	t=1755363186; cv=none; b=SW+RItHE4doQLg8HEnZyA472H7dogZ/39ERc6tIMEBBAGev/+kxQGNWJ22axIQSmrCZjLmChaMnt6+N9IH0Qu3rwzF2JRpO3sxDB4eN8zg5Zclmh0OFRykZQFSUaSK8eiixKZwUrbU/7aEE/SAF2AmbCPlcf3Dj3CqUUVERWu8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755362439; c=relaxed/simple;
-	bh=n20ZocEQ5b486yxGjR3mzMYx8wP1tNaCNGvSml+GYMI=;
+	s=arc-20240116; t=1755363186; c=relaxed/simple;
+	bh=qkucZBqfyXM1IoYj9VCRVJSt5ZKnweElt8uY1jlL0uw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qQPoKeBNeS9rcDsFpoKSrsQ/9rJ740Xco4IQD8dWg1hG6zg4gprSs3qkn1fu8GwldKQ/jvQNXpk0+pH49tDbx3yuFZaQrV/CzKwTivTz3BSlEfEDL41bzCmN0736YRkRdIj8Tb2YKo2Alv7yZvuFTon9R+uHWkPtOarSNfltzgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iU3aUcWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0061C4CEEF;
-	Sat, 16 Aug 2025 16:40:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WYkWOE87QtVdNg20wCCQMSkjlwu30MdUTdpIxn8c+xZngRL1ZjtkbCo1gwddUNIgAOLnbUIUC9Buz0922DrLeYdoot9rCko7xQ7u2RLwOs200og7BayhKt+MQN+A/M6nMHtMnCsJsV4wNnZaI8Ms2w1OLWES42idVrO5GICjuyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wk5Cb79j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D06C4CEEF;
+	Sat, 16 Aug 2025 16:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755362438;
-	bh=n20ZocEQ5b486yxGjR3mzMYx8wP1tNaCNGvSml+GYMI=;
+	s=k20201202; t=1755363185;
+	bh=qkucZBqfyXM1IoYj9VCRVJSt5ZKnweElt8uY1jlL0uw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iU3aUcWJe6DVw83sxI/iUaAOuPGuL+xif6/Xdk+fc7dgE8Sgwoge8i76um9RPHFEU
-	 5lJz7LBRRDauZoKnlWepDeIEA6UCK65L9Bod3LLA4v1bCdKdOFVDw/2AIlbyNNZcVJ
-	 nQK53FnzI2e0WcLOhYsKVG6YDkAE3Gc1Vp0vcE7s2icPCAIGNgwIzyyKPulb7mnS6o
-	 xzlVz8/nO6a4AHf6jK2+PUCNYspr5/SvOvfgdH27ny+ml3dGgdOAARnqv0wqkGvAVM
-	 57oiyf82Gdskp9O4mJdw5EYn7RufNYAtDYz3NdU9rJjDP955Y0gng4aYV+n97z4/zz
-	 U+q3V0AT7EOTw==
-Date: Sat, 16 Aug 2025 17:40:30 +0100
+	b=Wk5Cb79jDjj7h5A45pJu/w3qx/KleJZ06N622MUeoVcKsEhPP//22m44/oPBXmtTm
+	 BxuWapYLdxsdFmZaeb4srP2pijf1sZ28Jcv8A/Iqezvl7GStgUetvX38bjstEsVrXt
+	 pxyATHQ0Y2B7EH5F1X2xHprZGLM7J2vELMkDgKTFOc1TYZZDlw0EDEDm6anniya+00
+	 yWEFgGnHiB1L8D9M5krkAIC+zF/3kIlwTxMb+/539KQmeDVz0wb8zhxJUn1UvpMHej
+	 hkJhpqpjSCeRIof1xpcyw/vQJv79d25QLpEPi0e4kMDMbTmKP3S9WTUDswr/U3IAMH
+	 OM6R/fjLy6peA==
+Date: Sat, 16 Aug 2025 17:52:58 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v4 2/5] iio: add power and energy measurement modifiers
-Message-ID: <20250816174030.124d280c@jic23-huawei>
-In-Reply-To: <20250815095713.9830-3-antoniu.miclaus@analog.com>
+Subject: Re: [PATCH v4 3/5] dt-bindings: iio: adc: add ade9000
+Message-ID: <20250816175258.42286693@jic23-huawei>
+In-Reply-To: <20250815095713.9830-4-antoniu.miclaus@analog.com>
 References: <20250815095713.9830-1-antoniu.miclaus@analog.com>
-	<20250815095713.9830-3-antoniu.miclaus@analog.com>
+	<20250815095713.9830-4-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,94 +58,191 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 15 Aug 2025 09:56:35 +0000
+On Fri, 15 Aug 2025 09:56:36 +0000
 Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> Add new IIO modifiers to support power and energy measurement devices:
-> 
-> Power modifiers:
-> - IIO_MOD_ACTIVE: Real power consumed by the load
-> - IIO_MOD_REACTIVE: Power that oscillates between source and load
-> - IIO_MOD_APPARENT: Magnitude of complex power
-> - IIO_MOD_FUND_REACTIVE: Reactive power at fundamental frequency
-> - IIO_MOD_FACTOR: Power factor (ratio of active to apparent power)
-> 
-> Signal quality modifiers:
-> - IIO_MOD_RMS: Root Mean Square value
-> 
-> These modifiers enable proper representation of power measurement
-> devices like energy meters and power analyzers.
-> 
+> Add devicetree bindings support for ade9000.
+>=20
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
-> changes in v4:
->  - add proper KernelVersion and Contact fields to ABI documentation
->  - add detailed description for power factor measurement
->  - add altcurrent RMS measurement support
->  Documentation/ABI/testing/sysfs-bus-iio | 27 +++++++++++++++++++++++++
->  drivers/iio/industrialio-core.c         |  5 +++++
->  include/linux/iio/types.h               |  1 +
->  include/uapi/linux/iio/types.h          |  4 ++++
->  4 files changed, 37 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index 2fb2cea4b192..9d283b23d3c0 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -167,7 +167,17 @@ Description:
->  		is required is a consistent labeling.  Units after application
->  		of scale and offset are millivolts.
->  
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_altvoltageY_rms_raw
-> +KernelVersion:	6.15
 
-That was a while back. Will be at least 6.18 unless this was hiding in use in
-a driver that I didn't notice.
+Hi Antoniu,
+Sorry I missed v3 last week. Garage door crisis ate up my review time!
 
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Raw (unscaled) RMS voltage measurement from
-
-Spell out RMS so
-		Raw (unscaled) Root Mean Square (RMS) voltge measurement from
-
-Also wrapping is odd.  Match rest of file.
-
-
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_powerY_powerfactor
-> +KernelVersion:	6.15
-
-6.18
-
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Power factor measurement from channel Y. Power factor is the
-> +		ratio of active power to apparent power. The value is unitless.
-> +
->  What:		/sys/bus/iio/devices/iio:deviceX/in_capacitanceY_raw
->  KernelVersion:	3.2
->  Contact:	linux-iio@vger.kernel.org
-> @@ -1569,6 +1586,9 @@ Description:
-
->  
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_altcurrentY_rms_raw
-> +KernelVersion:	6.15
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Raw (unscaled no bias removal etc.) RMS current measurement from
-> +		channel Y. Units after application of scale and offset are milliamps.
-As above.
-
-Otherwise all looks good to me.
+A few minor comments inline.
 
 Jonathan
 
+> ---
+> changes in v4:
+>  - improve description formatting (remove unnecessary pipe symbols)
+>  - move $ref to end and remove allOf section for cleaner structure
+>  .../bindings/iio/adc/adi,ade9000.yaml         | 108 ++++++++++++++++++
+>  1 file changed, 108 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ade9000=
+.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml b=
+/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
+> new file mode 100644
+> index 000000000000..bd374c0d57d4
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
+> @@ -0,0 +1,108 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2025 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ade9000.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->  What:		/sys/.../iio:deviceX/in_energy_en
->  What:		/sys/.../iio:deviceX/in_distance_en
->  What:		/sys/.../iio:deviceX/in_velocity_sqrt(x^2+y^2+z^2)_en
+> +title: Analog Devices ADE9000 High Performance, Polyphase Energy Meterin=
+g driver
+> +
+> +maintainers:
+> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
+> +
+> +description: |
+> +  The ADE9000 s a highly accurate, fully integrated, multiphase energy a=
+nd power
+
+is a=20
+
+> +  quality monitoring device. Superior analog performance and a digital s=
+ignal
+> +  processing (DSP) core enable accurate energy monitoring over a wide dy=
+namic
+> +  range. An integrated high end reference ensures low drift over tempera=
+ture
+> +  with a combined drift of less than =C2=B125 ppm/=C2=B0C maximum for th=
+e entire channel
+> +  including a programmable gain amplifier (PGA) and an analog-to- digital
+analog-to-digital
+
+> +  converter (ADC).
+> +
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD=
+E9000.pdf
+> +
+> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ade9000
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 20000000
+> +
+> +  interrupts:
+> +    maxItems: 3
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: irq0
+> +      - const: irq1
+> +      - const: dready
+
+I always forget how these work.  Does this allow me to say irq1 and dready
+are wired but not irq0?=20
+
+Similar to question on interrupts being required below, if it is plausible
+the driver could be modified to work with a lesser set, the binding should =
+allow
+it.
+
+> +
+> +  reset-gpios:
+> +    description:
+> +      Must be the device tree identifier of the RESET pin. As the line is
+> +      active low, it should be marked GPIO_ACTIVE_LOW.
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +  vref-supply: true
+> +
+> +  clocks:
+> +    description: External clock source when not using crystal
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: clkin
+> +
+> +  "#clock-cells":
+> +    description:
+> +      ADE9000 can provide clock output via CLKOUT pin with external buff=
+er.
+> +    const: 0
+> +
+> +  clock-output-names:
+> +    items:
+> +      - const: clkout
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reset-gpios
+
+As with interrupts, can we not use it at all if the reset line is tied
+to not reset?   Or is it a driver limitation (which is fine to have but sho=
+uldn't
+affect the binding).
+
+> +  - interrupts
+> +  - interrupt-names
+My usual question on interrupts.  Is the device completely useless without =
+them or
+is it just the case that we currently require them in the driver because we=
+ don't
+poll for completion as an alternative?  Fine to require them in the driver =
+even
+if the binding doesn't require them.
+
+> +  - vdd-supply
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +      #address-cells =3D <1>;
+> +      #size-cells =3D <0>;
+> +
+> +      adc@0 {
+> +          compatible =3D "adi,ade9000";
+> +          reg =3D <0>;
+> +          spi-max-frequency =3D <7000000>;
+> +
+> +          #clock-cells =3D <0>;
+> +          reset-gpios =3D <&gpio 4 GPIO_ACTIVE_LOW>;
+> +          interrupts =3D <2 IRQ_TYPE_EDGE_FALLING>, <3 IRQ_TYPE_EDGE_FAL=
+LING>, <4 IRQ_TYPE_EDGE_FALLING>;
+> +          interrupt-names =3D "irq0", "irq1", "dready";
+> +          interrupt-parent =3D <&gpio>;
+> +          /* Optional: external clock instead of crystal */
+> +          /* clocks =3D <&ext_clock_24576khz>; */
+> +          /* clock-names =3D "clkin"; */
+It's an example so pick one of them - if anyone wants to know what else wor=
+ks they can
+look at the binding.  If there is something sufficiently unusual to be non =
+obvious, have
+a second example. Having stuff as comment in here is untestable and not par=
+ticularly
+easy to find.
+
+> +          clock-output-names =3D "clkout";
+> +          vdd-supply =3D <&vdd_reg>;
+> +      };
+> +    };
 
 

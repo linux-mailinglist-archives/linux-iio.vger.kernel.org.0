@@ -1,79 +1,80 @@
-Return-Path: <linux-iio+bounces-22854-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22855-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50EFFB29021
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 20:44:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB395B29027
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 20:55:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD3C1B68AC4
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 18:44:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CA701B67CF2
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Aug 2025 18:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26CE207A26;
-	Sat, 16 Aug 2025 18:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700BE205E2F;
+	Sat, 16 Aug 2025 18:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xxGf0Zo+"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="S1igk2Qo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDF81F4C99
-	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 18:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6761FE470
+	for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 18:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755369834; cv=none; b=T8upXQW6cry/T4uqoDKZT8b51zAzl8MFBEZ+CdeG90GlgyMEz0uSnoXPTQamzzsQPAU5JchYm3I/kGBacPiBkUTJ9vPdSr0f9LnVEFP27oePqcYkOasHH3QcFwilApWDMhKCLZCl3H1D6lTd0vMvDaNBHo9+Bbk0TmE5HPVem3g=
+	t=1755370537; cv=none; b=DRZxEb1z+ZhmoxJTHe7k8Mk0sST1ou6A5XwbOdtpxPJuxQIK0gA6TNl2mkn8NXtsJnd1ZtkKVOaE9t7uVWJNn+FPcMBEzKvYOjDZvGkkP2JUAeGOxhIa9eEXcJ05qztXZM+8hfU2q7JQaAD/li1B+6CATf+BEmGiV42kMKHRcA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755369834; c=relaxed/simple;
-	bh=K8MMx+BgUTjelkpi5h0lubeR2iZfAo8T07Wso3PSfe0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=aEDtnsy+hg+3sQF9YXlYk5Islr8wVkzNbv6S5cI2jWwIm69J/fEnuJPZGRPd6q+LnlyGO3CwzOkopn5+qOHyeArblAMRqxBz9UIqTobrJJDPNk768+d/Ruho7XwN1JBH7oQPoAfQMMeSxg5hRdFWodTQDC12pp7ISCa9/FsGk98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xxGf0Zo+; arc=none smtp.client-ip=209.85.160.52
+	s=arc-20240116; t=1755370537; c=relaxed/simple;
+	bh=e7uChWhGMvZHa6Mpyo4vNChVMnVBmFr56RHl7o6kiq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PpYdrqQSU4JHgmPB66p8Y1vldfjqOispoXvLNUSYe8seAz4yNIOJT/JyRgfw6juh8qqqKFKNgelZMw6UrKuGxJ+RDZoNu/qDHzKMpWeDlELy43te5Zseom/jBjsFzNG6RT4FXVOfZTtBxiN7smkQ6Q3VRcWrH/e2ra+o9upD5Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=S1igk2Qo; arc=none smtp.client-ip=209.85.210.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-30cce908e12so2308909fac.1
-        for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 11:43:51 -0700 (PDT)
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-74381e0a227so2125449a34.0
+        for <linux-iio@vger.kernel.org>; Sat, 16 Aug 2025 11:55:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755369831; x=1755974631; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:cc:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=S1jsNiINDg+jou+qZJDnS2+osG4c6UiQjY6RKX9f5D4=;
-        b=xxGf0Zo+yiejmMKJbwWScO6yq+wN2TLozAIyHh30rdmRoSUysNpked6os91zG0T1kd
-         QxrStajuQvN5/uK9PWrMoMGGJsrLhimZrAwAKDR6h1oHuQK5b3Vwe/MxzKGGbbdOdkik
-         ckis1zgiPe6xnoru2VcadeMrv8cDAgoEjDyRMXGFi1ou54t8v1AvhcZ/uOW8yFyDmVaa
-         bYzTOfjYYoS6pKAun9dayLbL4ieiHMk/Zx4n2txyZNm7NthuiXv20C7E3jrwhR2Cqv8k
-         wrZFr99R8wMiyXsvA7d/fpf33CsbYP1yQp+VgEZ6VymP8+v/0GtCsRzvuZeRaK7Jfkee
-         y2+Q==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755370534; x=1755975334; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ffPmnzaqLO3di+HvejIJSUJDzn9TWvgequfo9PXfSM0=;
+        b=S1igk2Qoa9bDBOAF/e5k3FdjHD1V2HTomiRHp40QZE0MPI3d92UOrh22x7QsJlZIz5
+         uKaTMObYlBAiLh52RXauM/3mpg1x1A8lNz/UxUgLw/JoKiXeeEF87axSVbip7bg40IKH
+         LqNsft42EzC7NKB6vhfpfYwp7Hi3P31dviBnmQzoni9pp1zPwmuuWGf7E6Gf+4aoEgtc
+         H1mFKNCGllFy04RF2g0qW5MqrgYWphclRO/EX67pYUd/2+SUB9w41hpMFIDlJ3Dsd0kc
+         CW8KIiCyORqODQSrwQJ1oHub2DrYhP8OK0T4iTSgCPVzMegokvMd5/tw1M8wwj7naVE4
+         FLKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755369831; x=1755974631;
-        h=content-transfer-encoding:in-reply-to:from:cc:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1755370534; x=1755975334;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S1jsNiINDg+jou+qZJDnS2+osG4c6UiQjY6RKX9f5D4=;
-        b=MyW9XIol9W/pjjwtmSTQ7EDWQhQKEudcWrDC6HHFoyHZ/NhzbBbh3zvaEc7kVsYeF5
-         3dxRnoG8TKXD6qzmSGWj6EYNVq+BWb4GzNZnMlyXMiv7DOtG0pX16PiHxXNdKIZGhuQ/
-         0SVF78kGgfLxcHn0em5NjW/vcSLguUMyrZzJxG4r1FL8IfI1zMlNbr5WLRm29hUGXLUT
-         IPkpNk2afTGxTMToeLavxnCLHHlUHsGHH1nMqkU1O5Jsc3I0xf3k4pSjxKlJhj2YPI4C
-         Z+gUSJFjRGbKRY76ve2RxiVO1bsJYHIyrPO+L57bOb48PuBRg4FNMjd48MZCxm1CvKH2
-         L7Qw==
-X-Gm-Message-State: AOJu0Yws3yqlF1EQE2QZMqPZ9+5x32E3qmD06OXPEuc+18K9fYUzp7TZ
-	Q2X0ntOfL7E/nyZZSg33uzTG9JP2GleBpSlR9RBha3yI/78FBhJfrMGscrthlFZPkcw=
-X-Gm-Gg: ASbGncsBuMfnXd7vk+RoTN8Uc8yajJpDFnZ0+XEUjoZn6eCAvkVkKjfJ97OxTUIk0zm
-	ct++09C9OYuhOkliXFCt0C5B6IGoJCbEF6d9klmVNkG9x7vzd/RUVy6UEy2H02YYrHBbtxM5Fus
-	dudQjwZuhpbBrOU+hYknjvbs7RiExdHkUtWtSUpmfknugZlHOXiS8ZRTCXPiM7cVGTHo4LiYtcR
-	ybMS0Sym+VHI+Kys2b6Nva41+QKAxaBbPA71MO1TWy2RyFknb02eKYL36cBNPtswcbJiN+s0VuL
-	ybxxP8sQTNBMlnOBbCrLpxuOggICeuOZ6wa5GrJMIRDdWmF/R7H6JzwFfYHmM3kuUsoZvA/QR0J
-	1Pw6vUsr+rR0MlYlKy1bsACcM7YNbpeQvxn8mQIDC+Iv39a2idV5lqa4dYhLjZuQ7MAWDbi2+
-X-Google-Smtp-Source: AGHT+IGBoWnvKFnrL59tcdrwycUM3/742dFlpnhv7GOYA9WCbLlFcoq+rdKa3z0jczLqd4y3TNBh0Q==
-X-Received: by 2002:a05:6871:409b:b0:308:fc2b:b7a with SMTP id 586e51a60fabf-310aaf3c403mr3608587fac.43.1755369830805;
-        Sat, 16 Aug 2025 11:43:50 -0700 (PDT)
+        bh=ffPmnzaqLO3di+HvejIJSUJDzn9TWvgequfo9PXfSM0=;
+        b=Yl3D+FSn5tLo476K2b/CRIISNPxQpADWfQpSaMXA0sru78bkxsBjDT+2cg8P1ay3ft
+         eWcKZ0jgBKujeogn7Pxd/+bLi5TqrKI3G5gM5u5pNOkek8CtMHuTInuQEbgVyq7QhtIn
+         6kQKvSpxC/7N+eR1E3n4NtS34SNgo42whs/8KveXjKeLEJdvvxRgR93Z19JT4at4Zkc9
+         ehyYYUrL3s1HM9BopKJ096gMXSzxuM5BT0EOkDpp3U6HE/n9Wh6CQ+g3gKzdZt4yRF+L
+         okZkglJgjrylotzPyUb3amkpjakQyKktcFNKpNnuqtbRNQMV+YPCS5kz02X0N221bSbM
+         +AvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqINbbceyFrMnS4fPB9Y15Wynfi1eAOSG6n3HeQ0SlTXNIyc9zV3Tv4FZndhFjD0IqOJdIcss0JPE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxDPGkZ62SN3Gad57Lx25FDblsBpY63A2dzwU3/Ie/dqACdpt6
+	uTOjhzRSxmE7mu7zAKIzC4IS2qStSxx0+2iuY3tgWFi1esw0Z0rcXjphA2f6u9gW3Lg=
+X-Gm-Gg: ASbGncvPlAarXM7EJCu5IO/c/5dxWu7O0vnY5g8aRBSxbsisyjnceggDcZNF25yCZ77
+	upb1HfEsdbndhPI8uC7CvPNRyMkV2mRfI6sJ7oIJWUEOOB58sjLkJgoxPlAKyoF9/pZyDYokFDj
+	KjtQDi+svzbsFJixo6imT6hBuq30riXJP6FcJIMg4HcjFZAZxbj0dxgI+ZDNQIRg1mYZ98nBNHR
+	xVhJ/O03eh9I/Ec+vK3iWn1kBkfNn0FDJDTuQ1DWR475aetNRvyqXL08J/32xdS7QOr5vscZMcw
+	MUc4i7Z6anIq/sZHYmvDbwhDFpgQnDUUSzAgztTe/gip195AqmzR8bVjotXbLYmSkco/8iIttuN
+	AQK1xP5MnkCwLtvi5WUYVLa+n9dcVhmPwqSr52JJ/FeYpl8a0VXaMggGLPX6EhJQaUbvjdVXp
+X-Google-Smtp-Source: AGHT+IEo6Cd9FfYudnBVmWWkFVcb8dBQtaWN3pYM49rfwJr5rFglXZnKGElmuA2TlxnPrLBE2fctyw==
+X-Received: by 2002:a05:6830:6f8c:b0:741:a842:18a8 with SMTP id 46e09a7af769-7439bae80a5mr1909896a34.22.1755370533643;
+        Sat, 16 Aug 2025 11:55:33 -0700 (PDT)
 Received: from ?IPV6:2600:8803:e7e4:1d00:fcf8:116:11db:fbac? ([2600:8803:e7e4:1d00:fcf8:116:11db:fbac])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-310abbb405asm1383455fac.30.2025.08.16.11.43.50
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61bebfb34f2sm488110eaf.10.2025.08.16.11.55.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Aug 2025 11:43:50 -0700 (PDT)
-Message-ID: <4fd47b7c-84e0-4a7c-8e5d-5bb6f0982f59@baylibre.com>
-Date: Sat, 16 Aug 2025 13:43:49 -0500
+        Sat, 16 Aug 2025 11:55:32 -0700 (PDT)
+Message-ID: <66063382-78c6-4d93-be25-46e972e390f4@baylibre.com>
+Date: Sat, 16 Aug 2025 13:55:31 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,119 +82,94 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] dt-bindings: iio: mcp9600: Add compatible for
+Subject: Re: [PATCH 1/5] dt-bindings: iio: mcp9600: Add compatible for
  microchip,mcp9601
-To: Ben Collins <bcollins@kernel.org>, Ben Collins <bcollins@watter.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-References: <20250813151614.12098-1-bcollins@watter.com>
- <20250813151614.12098-2-bcollins@watter.com>
- <623c0ef4-98c0-410c-abf3-fa9563f52688@baylibre.com>
- <2025081319-abiding-muskox-c434f3@boujee-and-buff>
+To: Jonathan Cameron <jic23@kernel.org>, Ben Collins <bcollins@watter.com>
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250815164627.22002-1-bcollins@watter.com>
+ <20250815164627.22002-2-bcollins@watter.com>
+ <20250816105825.35e69652@jic23-huawei>
 Content-Language: en-US
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <2025081319-abiding-muskox-c434f3@boujee-and-buff>
+In-Reply-To: <20250816105825.35e69652@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/13/25 7:04 PM, Ben Collins wrote:
-> On Wed, Aug 13, 2025 at 04:11:59PM -0500, David Lechner wrote:
->> On 8/13/25 10:15 AM, Ben Collins wrote:
->>> MCP9601 is a superset of MCP9600 and is supported by the driver.
->>>
->>> Signed-off-by: Ben Collins <bcollins@watter.com>
->>> ---
-
-
-Looks like reply-all was missed on this one and it ended up in my spam,
-so I'm just now seeing the reply for the first time. Adding back the
-others since I don't think that was intentional.
-
->>
->>
->> Please include a cover letter with a changelog in v3.
+On 8/16/25 4:58 AM, Jonathan Cameron wrote:
+> On Fri, 15 Aug 2025 16:46:03 +0000
+> Ben Collins <bcollins@watter.com> wrote:
 > 
-> I had one, but I'm not sure why it didn't get Cc'd around. I'll check on
-> that in the v3.
-> 
->>>  .../bindings/iio/temperature/microchip,mcp9600.yaml         | 6 ++++--
->>>  1 file changed, 4 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
->>> index d2cafa38a5442..d8af0912ce886 100644
->>> --- a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
->>> +++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
->>> @@ -4,7 +4,7 @@
->>>  $id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9600.yaml#
->>>  $schema: http://devicetree.org/meta-schemas/core.yaml#
->>>  
->>> -title: Microchip MCP9600 thermocouple EMF converter
->>> +title: Microchip MCP9600 and similar thermocouple EMF converters
->>>  
->>>  maintainers:
->>>    - Andrew Hepp <andrew.hepp@ahepp.dev>
->>> @@ -14,7 +14,9 @@ description:
->>>  
->>>  properties:
->>>    compatible:
->>> -    const: microchip,mcp9600
->>> +    enum:
->>> +      - microchip,mcp9600
->>> +      - microchip,mcp9601
->>>  
+>> The mcp9600 driver supports the mcp9601 chip, but complains about not
+>> recognizing the device id on probe. A separate patch...
 >>
->> It sounds like it would be useful to have a fallback in this case:
+>> 	iio: mcp9600: Recognize chip id for mcp9601
 >>
->> properties:
->>   compatible:
->>     oneOf:
->>       - const: microchip,mcp9600
->>       - items:
->>           - - microchip,mcp9600
->>           - microchip,mcp9600
+>> ...addresses this. This patch updates the dt-bindings for this chip to
+>> reflect the change to allow explicitly setting microchip,mcp9601 as
+>> the expected chip type.
 >>
->>>    reg:
->>>      maxItems: 1
+>> The mcp9601 also supports features not found on the mcp9600, so this
+>> will also allow the driver to differentiate the support of these
+>> features.
+> 
+> If it's additional features only then you can still use a fallback
+> compatible.  Intent being that a new DT vs old kernel still 'works'.
+> 
+> Then for the driver on new kernels we match on the new compatible and
+> support those new features.  Old kernel users get to keep the ID
+> mismatch warning - they can upgrade if they want that to go away ;)
+> 
+> Krzysztof raised the same point on v2 but I'm not seeing it addressed
+> in that discussion.
+
+One could make the argument that these are not entirely fallback
+compatible since bit 4 of the STATUS register has a different
+meaning depending on if the chip is MCP9601/L01/RL01 or not.
+
+Interestingly, the existing bindings include interrupts for
+open circuit and short circuit alert pins. But these pins
+also only exist on MCP9601/L01/RL01. If we decide these aren't
+fallback compatible, then those properties should have the
+proper constraints added as well.
+
+> 
+> Jonathan
+> 
 >>
->> Usage would then be:
+>> Signed-off-by: Ben Collins <bcollins@watter.com>
+>> ---
+>>  .../bindings/iio/temperature/microchip,mcp9600.yaml         | 6 ++++--
+>>  1 file changed, 4 insertions(+), 2 deletions(-)
 >>
->> 	compatible = "microchip,mcp9601", "microchip,mcp9600";
+>> diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+>> index d2cafa38a5442..d8af0912ce886 100644
+>> --- a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+>> @@ -4,7 +4,7 @@
+>>  $id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9600.yaml#
+>>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>>  
+>> -title: Microchip MCP9600 thermocouple EMF converter
+>> +title: Microchip MCP9600 and similar thermocouple EMF converters
+>>  
+>>  maintainers:
+>>    - Andrew Hepp <andrew.hepp@ahepp.dev>
+>> @@ -14,7 +14,9 @@ description:
+>>  
+>>  properties:
+>>    compatible:
+>> -    const: microchip,mcp9600
+>> +    enum:
+>> +      - microchip,mcp9600
+>> +      - microchip,mcp9601
+>>  
+>>    reg:
+>>      maxItems: 1
 > 
-> The main reason for the compatible is so I can designate the difference
-> between 9600 and 9601 for the next patch I am working on which supports
-> open-circuit and short-circuit detection. This is a feature in the 9601
-> variant.
-> 
-> The feature depends on the chip being wired to support it, which means
-> there will need to be a way to let the driver know that reading
-> the OC and SC register bits will produce useful information. I'm leaning
-> toward device-tree props to enable this and limiting that for only when
-> the driver is told it should assume a 9601.
-> 
-> Given this info, what seems like the best approach here?
-> 
-> Thanks
-> 
-
-
-The devicetree already has open-circuit and short-circuit interrupts
-for the corresponding pins. So it looks like the binding was written
-for both chips already.
-
-If those aren't wired up, falling back to reading registers to get
-the status is fine.
-
-I also see there is a V_SENSE pin. So I think it would make sense
-to add a microchip,vsense boolean property ($ref: /schemas/types.yaml#/definitions/flag)
-that indicates that the V_SENSE pin is wired up.
-
-The driver could then use that to know if it can actually provide
-events short/open circuit events or not.
-
-
 
 

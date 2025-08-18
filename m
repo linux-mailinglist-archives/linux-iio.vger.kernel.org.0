@@ -1,32 +1,32 @@
-Return-Path: <linux-iio+bounces-22945-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22947-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FFCB2B07B
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 20:33:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18326B2B07E
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 20:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADFFE683554
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 18:33:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C97CA6832AE
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 18:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726142773E1;
-	Mon, 18 Aug 2025 18:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DD22D24A8;
+	Mon, 18 Aug 2025 18:32:40 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75512273D68
-	for <linux-iio@vger.kernel.org>; Mon, 18 Aug 2025 18:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AC0224AF9
+	for <linux-iio@vger.kernel.org>; Mon, 18 Aug 2025 18:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755541959; cv=none; b=E8epLKT16V7tOwZfPL/qYObrpvGCsQoEEO0SBWfYfqHW+9I01zuIKA/FReyA5NK6Vr5O4a2oTX/Wx8gZzV+wPfhkG27vtl9iG/qJL1TgYN1KAn3a8WQvVpYGMxvyV0SCpomNi5Rhz3aVUPpf8ooqcspylweeST39KCuyGXAq1uU=
+	t=1755541960; cv=none; b=H1jID1Uuy0QS8WkYIE7b1LLMRNKWXXBJtwyTSdIJQ4YMFU+HeBRBkjZsrTtEzGs6Ck0YEtIo2ca/hbr1V31u87o8XeC+3EyIe8Fjh0Gh7NjeUcMcD5+MNojqGPhN9eaJTglZFDBT7rpoxYofHrKHDorWvQIPlJhP8ZbNsF08sLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755541959; c=relaxed/simple;
-	bh=L3xMOG9WePvHrT3MEdtiMzqT9SAxkZsCeWRwVmxoJps=;
+	s=arc-20240116; t=1755541960; c=relaxed/simple;
+	bh=RL8XtDY8Tzi1/X7SpFPKSJptRATbpWDXcOQSvV+ecFs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kFqnHeftEEftUlGHdd2cKm6WRjmJqSjRBEIx4nwFoADX/Wc2gLy5n0UUUMJ48sxN/Ea7wGx7GSM74CIsK0F5jDDYtqNOLCdEPLgpqma9SlHztIsIY/ZYbeCiVw+8xNdwM1MeA8dgX83MCSJkqYwpAm4KO4Sko52OVHWn/uYlvFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=95.215.58.180
+	 MIME-Version; b=hculC64bkExYy/Tji1nafCK9HP5N087p2B1H2xQXYoNXUVzX6+m8DdGm0fMtJPVgKgP1Wlv/0n78/FObJCiS6aacNxRhkyiF+k+84Ub8aFvKHwJPideBwmOXFuCuQUv4IoidL1KKt8cZC67xHhoYMdcnxrGqA8Ad69SEKs8XCUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=95.215.58.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
@@ -38,9 +38,9 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: Ben Collins <bcollins@watter.com>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/6] iio: mcp9600: Recognize chip id for mcp9601
-Date: Mon, 18 Aug 2025 14:32:12 -0400
-Message-Id: <20250818183214.380847-5-bcollins@kernel.org>
+Subject: [PATCH 5/6] iio: mcp9600: Add support for thermocouple-type
+Date: Mon, 18 Aug 2025 14:32:13 -0400
+Message-Id: <20250818183214.380847-6-bcollins@kernel.org>
 In-Reply-To: <20250818183214.380847-1-bcollins@kernel.org>
 References: <20250818183214.380847-1-bcollins@kernel.org>
 Precedence: bulk
@@ -54,145 +54,143 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Ben Collins <bcollins@watter.com>
 
-The current driver works with mcp9601, but emits a warning because it
-does not recognize the chip id.
+dt-bindings documentation for this driver claims to support
+thermocouple-type, but the driver does not actually make use of
+the property.
 
-MCP9601 is a superset of MCP9600. The drivers works without changes
-on this chipset.
-
-However, the 9601 chip supports open/closed-circuit detection if wired
-properly, so we'll need to be able to differentiate between them.
+Implement usage of the property to configure the chip for the
+selected thermocouple-type.
 
 Signed-off-by: Ben Collins <bcollins@watter.com>
 ---
- drivers/iio/temperature/Kconfig   |  8 +++--
- drivers/iio/temperature/mcp9600.c | 55 +++++++++++++++++++++++++------
- 2 files changed, 50 insertions(+), 13 deletions(-)
+ drivers/iio/temperature/mcp9600.c | 69 +++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
-index 1244d8e17d50..9328b2250ace 100644
---- a/drivers/iio/temperature/Kconfig
-+++ b/drivers/iio/temperature/Kconfig
-@@ -173,11 +173,13 @@ config MAX31865
- 	  will be called max31865.
- 
- config MCP9600
--	tristate "MCP9600 thermocouple EMF converter"
-+	tristate "MCP9600 and similar thermocouple EMF converters"
- 	depends on I2C
- 	help
--	  If you say yes here you get support for MCP9600
--	  thermocouple EMF converter connected via I2C.
-+	  If you say yes here you get support for...
-+	  - MCP9600
-+	  - MCP9601
-+	  ...thermocouple EMF converters connected via I2C.
- 
- 	  This driver can also be built as a module. If so, the module
- 	  will be called mcp9600.
 diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
-index 40906bb200ec..a5fad80250d3 100644
+index a5fad80250d3..9b017820efc1 100644
 --- a/drivers/iio/temperature/mcp9600.c
 +++ b/drivers/iio/temperature/mcp9600.c
-@@ -42,6 +42,7 @@
+@@ -22,11 +22,15 @@
+ #include <linux/iio/events.h>
+ #include <linux/iio/iio.h>
  
- /* MCP9600 device id value */
- #define MCP9600_DEVICE_ID_MCP9600	0x40
-+#define MCP9600_DEVICE_ID_MCP9601	0x41
- 
- #define MCP9600_ALERT_COUNT		4
- 
-@@ -123,6 +124,11 @@ static const struct iio_chan_spec mcp9600_channels[][2] = {
- 	MCP9600_CHANNELS(2, 0, 2, 0), /* Alerts: 1 2 3 4 */
++#include <dt-bindings/iio/temperature/thermocouple.h>
++
+ /* MCP9600 registers */
+ #define MCP9600_HOT_JUNCTION		0x00
+ #define MCP9600_COLD_JUNCTION		0x02
+ #define MCP9600_STATUS			0x04
+ #define MCP9600_STATUS_ALERT(x)		BIT(x)
++#define MCP9600_SENSOR_CFG		0x05
++#define MCP9600_SENSOR_TYPE_MASK	GENMASK(6, 4)
+ #define MCP9600_ALERT_CFG1		0x08
+ #define MCP9600_ALERT_CFG(x)		(MCP9600_ALERT_CFG1 + (x - 1))
+ #define MCP9600_ALERT_CFG_ENABLE	BIT(0)
+@@ -66,6 +70,30 @@ static const char * const mcp9600_alert_name[MCP9600_ALERT_COUNT] = {
+ 	[MCP9600_ALERT4] = "alert4",
  };
  
-+struct mcp_chip_info {
-+	u8 chip_id;
-+	const char *chip_name;
++/* Map between dt-bindings enum and the chip's type value */
++static const unsigned int mcp9600_type_map[] = {
++	[THERMOCOUPLE_TYPE_K] = 0,
++	[THERMOCOUPLE_TYPE_J] = 1,
++	[THERMOCOUPLE_TYPE_T] = 2,
++	[THERMOCOUPLE_TYPE_N] = 3,
++	[THERMOCOUPLE_TYPE_S] = 4,
++	[THERMOCOUPLE_TYPE_E] = 5,
++	[THERMOCOUPLE_TYPE_B] = 6,
++	[THERMOCOUPLE_TYPE_R] = 7,
 +};
 +
++/* Map thermocouple type to a char for iio info in sysfs */
++static const int mcp9600_tc_types[] = {
++	[THERMOCOUPLE_TYPE_K] = 'K',
++	[THERMOCOUPLE_TYPE_J] = 'J',
++	[THERMOCOUPLE_TYPE_T] = 'T',
++	[THERMOCOUPLE_TYPE_N] = 'N',
++	[THERMOCOUPLE_TYPE_S] = 'S',
++	[THERMOCOUPLE_TYPE_E] = 'E',
++	[THERMOCOUPLE_TYPE_B] = 'B',
++	[THERMOCOUPLE_TYPE_R] = 'R',
++};
++
+ static const struct iio_event_spec mcp9600_events[] = {
+ 	{
+ 		.type = IIO_EV_TYPE_THRESH,
+@@ -89,6 +117,7 @@ static const struct iio_event_spec mcp9600_events[] = {
+ 			.type = IIO_TEMP,				       \
+ 			.address = MCP9600_HOT_JUNCTION,		       \
+ 			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	       \
++					      BIT(IIO_CHAN_INFO_THERMOCOUPLE_TYPE) | \
+ 					      BIT(IIO_CHAN_INFO_SCALE),	       \
+ 			.event_spec = &mcp9600_events[hj_ev_spec_off],	       \
+ 			.num_event_specs = hj_num_ev,			       \
+@@ -131,6 +160,7 @@ struct mcp_chip_info {
+ 
  struct mcp9600_data {
  	struct i2c_client *client;
++	u32 thermocouple_type;
  };
-@@ -416,16 +422,33 @@ static int mcp9600_probe_alerts(struct iio_dev *indio_dev)
  
- static int mcp9600_probe(struct i2c_client *client)
- {
-+	const struct mcp_chip_info *chip_info = i2c_get_match_data(client);
- 	struct iio_dev *indio_dev;
- 	struct mcp9600_data *data;
--	int ret, ch_sel;
-+	int ch_sel, dev_id, ret;
-+
-+	if (!chip_info)
-+		return dev_err_probe(&client->dev, -EINVAL,
-+				     "No chip-info found for device\n");
-+
-+	dev_id = i2c_smbus_read_byte_data(client, MCP9600_DEVICE_ID);
-+	if (dev_id < 0)
-+		return dev_err_probe(&client->dev, dev_id,
-+				     "Failed to read device ID\n");
-+
-+	switch (dev_id) {
-+	case MCP9600_DEVICE_ID_MCP9600:
-+	case MCP9600_DEVICE_ID_MCP9601:
-+		if (dev_id != chip_info->chip_id)
-+			dev_warn(&client->dev,
-+				 "Expected id %02x, but device responded with %02x\n",
-+				 chip_info->chip_id, dev_id);
-+		break;
- 
--	ret = i2c_smbus_read_byte_data(client, MCP9600_DEVICE_ID);
--	if (ret < 0)
--		return dev_err_probe(&client->dev, ret, "Failed to read device ID\n");
--	if (ret != MCP9600_DEVICE_ID_MCP9600)
--		dev_warn(&client->dev, "Expected ID %x, got %x\n",
--				MCP9600_DEVICE_ID_MCP9600, ret);
-+	default:
-+		dev_warn(&client->dev, "Unknown id %x, using %x\n", dev_id,
-+			 chip_info->chip_id);
-+	}
- 
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (!indio_dev)
-@@ -439,7 +462,7 @@ static int mcp9600_probe(struct i2c_client *client)
- 		return ch_sel;
- 
- 	indio_dev->info = &mcp9600_info;
--	indio_dev->name = "mcp9600";
-+	indio_dev->name = chip_info->chip_name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = mcp9600_channels[ch_sel];
- 	indio_dev->num_channels = ARRAY_SIZE(mcp9600_channels[ch_sel]);
-@@ -447,14 +470,26 @@ static int mcp9600_probe(struct i2c_client *client)
- 	return devm_iio_device_register(&client->dev, indio_dev);
+ static int mcp9600_read(struct mcp9600_data *data,
+@@ -165,11 +195,32 @@ static int mcp9600_read_raw(struct iio_dev *indio_dev,
+ 		*val = 62;
+ 		*val2 = 500000;
+ 		return IIO_VAL_INT_PLUS_MICRO;
++	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
++		*val = mcp9600_tc_types[data->thermocouple_type];
++		return IIO_VAL_CHAR;
+ 	default:
+ 		return -EINVAL;
+ 	}
  }
  
-+static const struct mcp_chip_info mcp9600_chip_info = {
-+	.chip_id   = MCP9600_DEVICE_ID_MCP9600,
-+	.chip_name = "mcp9600",
-+};
++static int mcp9600_config(struct mcp9600_data *data)
++{
++	struct i2c_client *client = data->client;
++	int ret;
++	u8 cfg;
 +
-+static const struct mcp_chip_info mcp9601_chip_info = {
-+	.chip_id   = MCP9600_DEVICE_ID_MCP9601,
-+	.chip_name = "mcp9601",
-+};
++	cfg  = FIELD_PREP(MCP9600_SENSOR_TYPE_MASK,
++			  mcp9600_type_map[data->thermocouple_type]);
 +
- static const struct i2c_device_id mcp9600_id[] = {
--	{ "mcp9600" },
-+	{ "mcp9600", .driver_data = (kernel_ulong_t)&mcp9600_chip_info },
-+	{ "mcp9601", .driver_data = (kernel_ulong_t)&mcp9601_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, mcp9600_id);
++	ret = i2c_smbus_write_byte_data(client, MCP9600_SENSOR_CFG, cfg);
++	if (ret < 0) {
++		dev_err(&client->dev, "Failed to set sensor configuration\n");
++		return ret;
++	}
++
++	return 0;
++}
++
+ static int mcp9600_get_alert_index(int channel2, enum iio_event_direction dir)
+ {
+ 	if (channel2 == IIO_MOD_TEMP_AMBIENT) {
+@@ -457,6 +508,24 @@ static int mcp9600_probe(struct i2c_client *client)
+ 	data = iio_priv(indio_dev);
+ 	data->client = client;
  
- static const struct of_device_id mcp9600_of_match[] = {
--	{ .compatible = "microchip,mcp9600" },
-+	{ .compatible = "microchip,mcp9600", .data = &mcp9600_chip_info },
-+	{ .compatible = "microchip,mcp9601", .data = &mcp9601_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, mcp9600_of_match);
++	/* Accept type from dt with default of Type-K. */
++	data->thermocouple_type = THERMOCOUPLE_TYPE_K;
++	ret = device_property_read_u32(&client->dev, "thermocouple-type",
++				       &data->thermocouple_type);
++	if (ret < 0 && ret != -EINVAL)
++		return dev_err_probe(&client->dev, ret,
++				     "Error reading thermocouple-type property\n");
++
++	if (data->thermocouple_type >= ARRAY_SIZE(mcp9600_type_map))
++		return dev_err_probe(&client->dev, -EINVAL,
++				     "Invalid thermocouple-type property %u.\n",
++				     data->thermocouple_type);
++
++	/* Set initial config. */
++	ret = mcp9600_config(data);
++	if (ret < 0)
++		return ret;
++
+ 	ch_sel = mcp9600_probe_alerts(indio_dev);
+ 	if (ch_sel < 0)
+ 		return ch_sel;
 -- 
 2.39.5
 

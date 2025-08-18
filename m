@@ -1,139 +1,117 @@
-Return-Path: <linux-iio+bounces-22951-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22952-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EB4B2B123
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 21:07:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF31B2B14D
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 21:13:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 731C53A70C4
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 19:02:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5DE47B91F6
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 19:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B9122ACF3;
-	Mon, 18 Aug 2025 18:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172DF13C3F6;
+	Mon, 18 Aug 2025 19:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="E2Akqu2k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EAmv/8cf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9A634320E
-	for <linux-iio@vger.kernel.org>; Mon, 18 Aug 2025 18:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68F73451A0;
+	Mon, 18 Aug 2025 19:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755543579; cv=none; b=lI97B0zro4HNb/dNi01tBHv/PHhtIxerSg96rw9K7q7xk8LUemb07MYzIhQcpFChO7lMNxk7/Z7A5qu0cjskc/O1Hk2RAFUFrBnrdfgb1PncHX3orwVkA+y1mSBburCrPC9ZbdP0xxS1nPVoQmIUkkIJG75v9UVWZu+gulEoZnw=
+	t=1755544242; cv=none; b=oSEwRDO7o1egJHArRoH1j4U67jbhjI8h+w+f4HolDf5izP9KfQT5QYmD0mBsNJ6SZsXFEyk/vJjzUvSg8RpNDaz0/A+HdJFO34SotSMlGr+N3stLgnr2w1M8To3GABXDnu5EkP6yOzvPD8bMGd+H4YC7cDRWBvh6xEz+N3yhIdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755543579; c=relaxed/simple;
-	bh=TKCCw8hxZx4LVNHBY9YD1eV99l6dol3ZQ7qCTmBpYeE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=dMWcvkaHQoTAAOrJpg1QDjVt2N8OGAh+G6RERZzCHwu24HFM4P9rFGfVnY5oJaf/X/B5xwOW70V3VytqX69Y7ZCKRxRkYaxBUKvy8a533VpWYsNNp8O2IhSj5NVytEE5SV1P/v8UdLuGwSgLIHHbkslY+GE0gHaZRSjc5SNCNPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=E2Akqu2k; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-30ccebab736so3851801fac.3
-        for <linux-iio@vger.kernel.org>; Mon, 18 Aug 2025 11:59:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755543577; x=1756148377; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GlFt92LPhKKS01GxFk+3B9rLETOli+lTNFbApZNS7uE=;
-        b=E2Akqu2kdKqk9LByI5Mu41SCz+cFCC9vdDmIV7ZMa9cMEfRd7Ix8N3ZynKHiPGgwZe
-         fN341G57r1thuKx2q9L1/yB0o070LUdlqWJZ8jjjvDkgVCaWNeTjkoJ1iQ9k2DqNllQ3
-         zGbzfpS+CzQoe5L/kHaCPyGE2zIXBRmf+Zl4JJucAXd8t4W4ddGmtA/VWEfQ2tXvIi+D
-         6ZUvlgfBUCLVFXx/w1O8dfsODQYa/w9ysfGFFkG48nCQMx3EkQJx+F5FE6nRN4J+DL7K
-         XcH2ENmeWLUoJ7r2mOW7I/eDKaGqfeZDaOViSnYyRgvHjhCuEoq3uDvGjB/h6gYZ/vYS
-         WPoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755543577; x=1756148377;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GlFt92LPhKKS01GxFk+3B9rLETOli+lTNFbApZNS7uE=;
-        b=k/YV6Nj1c92J7zJyl8oID1eZvlr+EiNdeVAtJVAL4Gi9HVuiub91mLWeRVbQ5JnRXt
-         L0QirijAJr4Bff7M3mlJkyCR48Uf6BvD+FfBews2woPKcTflFcFyj0eBrFsS6V4hsM0M
-         rBL2f5yAdkswo1z6UaFy2eCj85F87bTTeytgZejbyLCjLUss0xxIdjtZ0vPl5Gb7rN7k
-         KT1Q5N6nBXG35704PjzbZoKddRTaGLIdF3ovqH4cMTkI5vL/nWnJlJ6JGU/9j3KUCbCX
-         0PQ+qWmantId//AQPh39pcN+Z6esgrI2UngqGn2cuPDMcYYqfQtMAsFr2fcLaDHc5QZp
-         KndA==
-X-Forwarded-Encrypted: i=1; AJvYcCXBe/c/0cCf/MRWefBC3BAhTEnHtnkVQYp8briHUcrkg0q0/i5sNQ/4a+Hgv+MuU9l6XrkzEGrMFmk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUQsaB1FGnBY6igoTF680Ey0M5JPwuUUFqyn7wPJY+Y1eEdly1
-	zwnmo26Eq1CRiOn6n84YORytVacGwYyYGzJ0azFf7NpCzbI1J0y8Qdyxqua2v/ueqto=
-X-Gm-Gg: ASbGncsjk+ap6wzml9qPYcCGPol0Y0qN4/LYvroLX9QH1NH6qlPDsDHHui/stzArdKG
-	D4tdU1AsThWXNAaAw+9Vw/QuWD6VED1Lv6U0ne8lkQxcEsLuBerT+LWpqXRa/31I59Q6feawznf
-	i93m7qb9xZJlIiiN1JMzWLtj3RlVxx3TFJNV+gZpM4EgkBDtXg48tgNi6BDk2waotrhczyq4Zes
-	/l2f9dhHa5C/2yinemKpW687rwcueDgnakRRfKwDMOe0tY9cuEE17G6tO416NPXM3MTF9N7lotl
-	lp3CKp3imzkQKwPXtWb49bLrQproIC0MMHyMNEEAe3sVjzLR58iE0FKRrTtQdcdiV6pXvmLVt7p
-	68P7GoXZRzZ3EilwGEd3acTS5lgiMAmcJMPkMT5ul7TkblvPXmKU/Xtg/fVNQRDKLtNeC66tQTw
-	A=
-X-Google-Smtp-Source: AGHT+IHn7xbYfVCjCn3B+LxjKaU8SE92tJikPGsdCOYbX/YUHwX3Y5pn9k9bm7xFGgU57eO/UzXIiQ==
-X-Received: by 2002:a05:6871:29d:b0:2d6:2a40:fb9d with SMTP id 586e51a60fabf-310be68e4d7mr5826676fac.28.1755543576697;
-        Mon, 18 Aug 2025 11:59:36 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:ee1a:f057:94fa:9a73? ([2600:8803:e7e4:1d00:ee1a:f057:94fa:9a73])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-310abbf8442sm2819512fac.31.2025.08.18.11.59.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Aug 2025 11:59:35 -0700 (PDT)
-Message-ID: <afffc91a-d4fa-47d5-bb59-fad879a2ac6d@baylibre.com>
-Date: Mon, 18 Aug 2025 13:59:34 -0500
+	s=arc-20240116; t=1755544242; c=relaxed/simple;
+	bh=5/ixijNOzOLZSZAqRBwF7DSxVCuJHp2ukINgkc6/kM8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j9+7llwgPNmwhY/RY8LveBXjSv2UMeFk6YEED401VwECFwJOF/sPWlRNQX0kYM7KOOLnGWcfvqmIhBBCSUs7m/NJDGM/fkDAGJ+51xn1+RBIFHKXPIX7jenQA1q6reOPnNBV0w9pdfbd+h/i1r9XOrxj2Fyer5ViHCyKubmOcz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EAmv/8cf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB611C4CEEB;
+	Mon, 18 Aug 2025 19:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755544242;
+	bh=5/ixijNOzOLZSZAqRBwF7DSxVCuJHp2ukINgkc6/kM8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EAmv/8cfXKp+Lwqc8z3dR0fQ5chBKPisEW1JT8cYm5TexEmeus7XhKdfbB3CpClXL
+	 OsgR972i8zITPKCLegQgYCXgaERYoSQF9A1lzRQz3pFkg1spGlX/6gyW3a6UpBMh9D
+	 P9g5b9dguTAbEhUU287EuIUIPUx+z8UW2gKBam1QZCPsFLk9ZtVSQyx5JJoGWKo92K
+	 VgVbezGFbuujHn7AyNDzVEwfPGzYK5gc9Lvd/wQPxYLhAasGJdCmfUZlMPu771QQv0
+	 XI73vJCvoVrojmseX/bPM8Nm3oU3cohLWzVU9xAqZn6FGvMAJ+66kYTEBRbnMKcOU2
+	 juJ7o6GrXAbbQ==
+Date: Mon, 18 Aug 2025 20:10:35 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Ben Collins <bcollins@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 5/5] iio: mcp9600: Add support for IIR filter
+Message-ID: <20250818201035.7a107dec@jic23-huawei>
+In-Reply-To: <2025081814-grumpy-prawn-ef1a0e@boujee-and-buff>
+References: <20250818035953.35216-1-bcollins@kernel.org>
+	<20250818035953.35216-6-bcollins@kernel.org>
+	<20250818191539.69e1882a@jic23-huawei>
+	<2025081814-grumpy-prawn-ef1a0e@boujee-and-buff>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/5] iio: mcp9600: Add support for IIR filter
-To: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250818035953.35216-1-bcollins@kernel.org>
- <20250818035953.35216-6-bcollins@kernel.org>
- <20250818191539.69e1882a@jic23-huawei>
- <2025081814-grumpy-prawn-ef1a0e@boujee-and-buff>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <2025081814-grumpy-prawn-ef1a0e@boujee-and-buff>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 8/18/25 1:47 PM, Ben Collins wrote:
-> On Mon, Aug 18, 2025 at 07:15:39PM -0500, Jonathan Cameron wrote:
->> On Sun, 17 Aug 2025 23:59:53 -0400
->> Ben Collins <bcollins@kernel.org> wrote:
->>
->>> From: Ben Collins <bcollins@watter.com>
->>>
->>> MCP9600 supports an IIR filter with 7 levels. Add IIR attribute
->>> to allow get/set of this value.
->>>
->>> Use a filter_type[none, ema] for enabling the IIR filter.
->> Hi Ben,
->>
->> A few comments inline. You also need to send an additional patch to update
->> the filter_type docs in Documentation/ABI/testing/sysfs-bus-iio
-> 
-> Hi Jonathan,
-> 
-> I just sent a v6 because I was getting too many comments on the
-> dt-bindings patch.
 
-Actually, folks will be happier if you slow down a bit. General
-advice is only submit one revision per week since some people only
-have time to review once per week.
-
-If you are really in a hurry, there should still be no more than
-one revision per day. Otherwise, it is really hard for reviewers
-to keep up.
-
-As it is, the subject of what I presume is v6 still says v5 in the
-cover letter and doesn't have a version in the rest of the patches.
-And there are still some of the same problems with the devicetree
-patch that didn't get addressed. If you slow down a bit and take
-a little more care before firing off the next one, it will likely
-be better received.
-
+> > >  	case IIO_CHAN_INFO_SCALE:
+> > >  		*val = 62;
+> > >  		*val2 = 500000;
+> > >  		return IIO_VAL_INT_PLUS_MICRO;
+> > > +  
+> > If you want the extra space put it in previous patch.
+> >   
+> > >  	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
+> > >  		*val = mcp9600_tc_types[data->thermocouple_type];
+> > >  		return IIO_VAL_CHAR;
+> > > +
+> > > +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> > > +		if (data->filter_level == 0)  
+> > 
+> > Return the current requested value. An error is just going to confuse
+> > someone who tried to write this before enabling the filter and then
+> > checked to see if the write was successful.  
 > 
-> I'll send a v7 with these changes and anything else that comes up.
-> 
+> I could not get a concensus on this. On the one hand, if a user sets a
+> value here, would they not assume that the filter was enabled? What
+> about cases where a filter_type can be more than one valid type with
+> different available coefficients for each? What should it show then?
+
+So I was thinking of this like other things with 'enables' such as events.
+For those you always set the value first.  They don't really have a type
+field though (well they do but the ABI allows multiple at once unlike filters
+so we end up with a quite different looking ABI).
+
+Agreed it gets challenging with multiple filter types. If it weren't for
+advertising the range I'd suggest just stashing whatever was written and
+then mapping it to nearest possible when the filter type is set.
+That's what the ad7124 does for changing between filters anyway
+though oddly it doesn't seem to have a control for filter type.
+
+This is a good argument against the whole 'none' value for filter type
+- that's not much used so we could deprecate it for new drivers.
+
+I'm not particularly keen on filter_enable but seems we are coming back
+around to that option to avoid this corner case.  Alternative being what
+you have here which isn't great for ease of use.
+
+So for next version let's go for that. Make sure to include Documentation
+in a separate patch though so it's easy to see an poke holes in.
+
+ABI design is a pain sometimes.
+
+Thanks,
+
+Jonathan
 

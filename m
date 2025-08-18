@@ -1,153 +1,119 @@
-Return-Path: <linux-iio+bounces-22899-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22900-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D23B299EC
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 08:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 413D5B299FF
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 08:46:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 698E91B20990
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 06:43:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01E61888312
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 06:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD969275B04;
-	Mon, 18 Aug 2025 06:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmX4cNcg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4E42701D2;
+	Mon, 18 Aug 2025 06:46:13 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CB1209F43;
-	Mon, 18 Aug 2025 06:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A944D19D8A8
+	for <linux-iio@vger.kernel.org>; Mon, 18 Aug 2025 06:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755499382; cv=none; b=nkQtMBxJ+7X16VyYp+u+HbHsixBKCDiAl3rCdiSVml0ZPHfO/HAH9A7cKMMmHgiNYU5PglyZp6ZPcswrAMzYFc701PNlLch/UizG8i+InXdDPkyuJ2uqQjTp+Xl3Q3sMtiUwRr7cROcXECox9lpPK943/DDfdbEqt4hKkSf0dIk=
+	t=1755499573; cv=none; b=VmrPOhWsr8QG13mMNRgSi8uZIY3Aqyr1jFF1H5nLIndeIgGHvEppSc4xmT+GX6avjvAa6HiUONz3DhSM7uybBiKRV70gOVBs5ktP1r2xUzhSE5HnPVZ1AkLDgGwSrjHazV0Xfs/NQZnxoPxFhrzIVlZNCoXDkSfivtCQRp/EdpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755499382; c=relaxed/simple;
-	bh=rHLZVE+q9UBpLepVIpZp8NDD7WiYm8U2I5diRkJMZoA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=VLvCXe5dxwie9blDM7ObAEOQd3BMOMPebXxK137n24An1PqXsgGb4Nw7iSHSTm/bVd35aYJCY3BVAreBvuVkQSw6Nx+XYiVkXUEnYDhC+UKB/N9txggPoPBYZ2hQJpefPcMgDSsH9gxrlxcXeZZnylnMl5aa3RyRi3TiVxT+ZRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmX4cNcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF64C4CEEB;
-	Mon, 18 Aug 2025 06:42:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755499382;
-	bh=rHLZVE+q9UBpLepVIpZp8NDD7WiYm8U2I5diRkJMZoA=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=VmX4cNcg9f5KeLUQMKQdBbU627r45g6Y0/OgTBDsFfmF/1yW9b0Ag26MqHtANg5tt
-	 WPOQxgzfYlLRWpRoxeA30LQljto+IhNuupS4LD6SevlMP4LzeifcEc1FJoX4mciz1Y
-	 qWOCKKTTLjdrCgyybKuEeIM/I/IKwgLIOpwhPSapLJy/Bgxd5JkHGb6F46Strhr9Ya
-	 g3YY7nfzjmj5SmYBthSWPxWni5U63T4BvNwvaZ9wZURQ17FC0u4ixXYX/mnRW8R85S
-	 KiE3v03YMUiORZTqhKLBpQfXoQ5WoBEs7FvJX29zeqZG6YPXZlkYGj/u6D7es6um7S
-	 m7+GvQ+cNec5Q==
-Message-ID: <3f256b8e-dc7a-466d-be53-d6e324b44cb7@kernel.org>
-Date: Mon, 18 Aug 2025 08:42:57 +0200
+	s=arc-20240116; t=1755499573; c=relaxed/simple;
+	bh=h/6c7Gz4xEzFlrmMg0LHnC6xxRCSwZVPe0AbEFhJ2y8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wtjho+JQQhaX/rIq0CHZ0VNAacSXtJiNrO5K85LMR+qHwWi0I0F8jhMRj3Q1ZpygEAw7Nh3vn8IJ3oJK5ysLFqqIv4xgj+/zuTw5ylIevFSyOXpmZsp4QdDD0eeOT0E4Css0c/F9EP0YZ4Y9kSzKpQhHr/CZO6OkBqR4ouPtU8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=95.215.58.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Mon, 18 Aug 2025 02:46:05 -0400
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ben Collins <bcollins@kernel.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Andrew Hepp <andrew.hepp@ahepp.dev>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Conor Dooley <conor+dt@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH v5 1/5] dt-bindings: iio: mcp9600: Add microchip,mcp9601
+ and add constraints
+Message-ID: <2025081802-busy-chital-df0ef6@boujee-and-buff>
+Mail-Followup-To: "Rob Herring (Arm)" <robh@kernel.org>, 
+	Andrew Hepp <andrew.hepp@ahepp.dev>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Andy Shevchenko <andy@kernel.org>
+References: <20250818035953.35216-1-bcollins@kernel.org>
+ <20250818035953.35216-2-bcollins@kernel.org>
+ <175549878302.4073296.5081888197780869494.robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] dt-bindings: iio: mcp9600: Add compatible for
- microchip,mcp9601
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
- <jic23@kernel.org>, Ben Collins <bcollins@watter.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250815164627.22002-1-bcollins@watter.com>
- <20250815164627.22002-2-bcollins@watter.com>
- <20250816105825.35e69652@jic23-huawei>
- <66063382-78c6-4d93-be25-46e972e390f4@baylibre.com>
- <2025081711-coral-aardwark-9f061b@boujee-and-buff>
- <8e228d2d-d22f-4092-8c6d-94ce989b4a84@baylibre.com>
- <2025081713-wooden-clam-aee35a@boujee-and-buff>
- <65ca6431-56e1-4798-9ecc-6e6adf664f96@baylibre.com>
- <2025081716-tan-pillbug-ff2cb5@boujee-and-buff>
- <2025081717-fabulous-chameleon-5ad9bb@boujee-and-buff>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <2025081717-fabulous-chameleon-5ad9bb@boujee-and-buff>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="p6cczt6sxnnsh3tz"
+Content-Disposition: inline
+In-Reply-To: <175549878302.4073296.5081888197780869494.robh@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-On 17/08/2025 23:10, Ben Collins wrote:
->>>>>
->>>>
->>>> I couldn't find anything that would easily describe this type of layout:
-> ...
->>> We usually do this the other way around. The base binding lists
->>> all of the possibilities then an -if: constraint limits them
->>> if needed.
->>>
->>>
->>> So don't change what is there already and then add:
->>>
-> ...
->> This might be a little more complicated. I want to add a boolean for
->> microchip,vsense so the SC/OC aren't even available without that flag
->> being true (default false).
->>
->> I could just assume that having the interrupts means this flag is true,
->> but that doesn't cover the case where the interrupts might not be used
->> or even wired up, but the SC/OC detection in the status register can be
->> used.
->>
->> I was going with this:
->>
-> 
-> Nevermind, I figured this out. I'll send v4 soon.
 
-You received from David correct code, good idea... yet you ignored it
-and sent something incorrect - breaking ABI.
-Best regards,
-Krzysztof
+--p6cczt6sxnnsh3tz
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v5 1/5] dt-bindings: iio: mcp9600: Add microchip,mcp9601
+ and add constraints
+MIME-Version: 1.0
+
+On Mon, Aug 18, 2025 at 01:33:03AM -0500, Rob Herring (Arm) wrote:
+>=20
+> On Sun, 17 Aug 2025 23:59:49 -0400, Ben Collins wrote:
+> > From: Ben Collins <bcollins@watter.com>
+> >=20
+> dtschema/dtc warnings/errors:
+> Error: Documentation/devicetree/bindings/iio/temperature/microchip,mcp960=
+0.example.dts:34.34-35 syntax error
+> FATAL ERROR: Unable to parse input tree
+> make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/binding=
+s/iio/temperature/microchip,mcp9600.example.dtb] Error 1
+> make[2]: *** Waiting for unfinished jobs....
+> make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1527: dt_bin=
+ding_check] Error 2
+> make: *** [Makefile:248: __sub-make] Error 2
+
+Thanks. Found this already and fix will be in v6.
+
+--=20
+ Ben Collins
+ https://libjwt.io
+ https://github.com/benmcollins
+ --
+ 3EC9 7598 1672 961A 1139  173A 5D5A 57C7 242B 22CF
+
+--p6cczt6sxnnsh3tz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEPsl1mBZylhoRORc6XVpXxyQrIs8FAmiizC0ACgkQXVpXxyQr
+Is+HFA//a1oHbWeGRhfcz5KGFd+Fp3ZqKHDbt1UFszFghFAn+3/df/UD38dhskF2
+SeWrvIbNNWSz/hmOyjOZPsx+nmQGi3o3rgeLf/S/p9aVkCBYFKdxibAUdL+P93wZ
+2Xcyf/ro/cI5AiCBZqDYrJciSzsJv8Nj1WbHiYud1Q7MJMNVtfcAtt6BSE+9pLVM
+mYMw/M1/1VGa+XZ04YNOyvC4G4ydbSA5Hkwjeb0u9k9FOE8wI1Rz6+S/OpCL0Ibl
+b1cQYwfGbkvtYZOj1TB2IE7qchi72hZ/DQLDH21ZdQ7uDjRzYJRYe6pNI0oOlQbP
+vXK1y9G84oAeCLVxWzFG3wsmXVxM7SrvbiNVHSwqcOM7Cv09QT2qokzJlSLrEUcO
+pR7NNHDux0xwco+3Ahvp63jjNAgbQhTa3py95nnXU2Xr3H1E3dKmfz7ClGReHIkq
+tyTT/GE7T3EoFW2fAy1qoNqUWlmGn/nJ3XIxmc4nDfcQG/bqUDA4TjgASbOHYPRa
+otZtrqhbqOXkMkksGLEcjGU1vTpMxpXmCc/z1jxhMjAA6NAVy1XF1jRIj/LIKwXU
+uQqnWy+6edVunI64RIQVuRVosZlhVDo7dyFg/cxZmu8Kx4p8AnmIDO19s+G9T04d
+MoOtVxC/mqAJIHMuvJeWVeHgCdq7OQOq7ypsMst+X2qA8nowXbk=
+=YbUe
+-----END PGP SIGNATURE-----
+
+--p6cczt6sxnnsh3tz--
 

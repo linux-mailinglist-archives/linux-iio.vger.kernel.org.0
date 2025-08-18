@@ -1,48 +1,81 @@
-Return-Path: <linux-iio+bounces-22922-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22923-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E34B2A6D2
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 15:47:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420F9B2A6C1
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 15:47:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8895C58088F
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 13:40:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EF7474E3A54
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 13:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B32A322A1E;
-	Mon, 18 Aug 2025 13:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D0E218ABD;
+	Mon, 18 Aug 2025 13:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IlAH2QD2"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BVuujlT3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B0E335BA0;
-	Mon, 18 Aug 2025 13:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A0D2E2283
+	for <linux-iio@vger.kernel.org>; Mon, 18 Aug 2025 13:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524239; cv=none; b=r80udWUBzdvfLCxzdcX0eE39vymTalu1I5XV/vos3pkUawyJB17A3GiPyD+pH+00KgsyXmEdBHaMeToTyY2GYZZBXh6HkbPhrdA8O4wzyzl68Xkjnog9z3lcd1P7Js6we7Yfm4pn1LfiQ7suAW4cyacdzHn2Cow3jMiujp2om+w=
+	t=1755524737; cv=none; b=o76Ra7sdYQXF7aPC3f91PHWlFmnISq9MJPeKPsJfU+FHQ1kwa/Cm8CaIJGbZ+ssxirZBbNOi84HZAOPxvXNsaARv5tbiw5v7ikYnorlO3Ai9p4aTSVzE6un53rGoKf1dtlvHW3X/KDBF7uPyh4hcYqNMl/+AAEKWoMhofnOSBDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524239; c=relaxed/simple;
-	bh=61HFGD+oYOsszVUkuk4ut0gPjAfycFvHvohHBcgc5mk=;
+	s=arc-20240116; t=1755524737; c=relaxed/simple;
+	bh=STUgQqWAjMIDSo5i9CNXFPPNs8IXyZkPpT1rTamUjss=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=AMRqoLXnYx/swu31OqTBUM+bg60bWxColatVOvepWX4aqXn4YY982uz9d/dEieVPMfz5d389Mg2cx+UHB69/E45O+oIBg0BvDJpU1FXds71eU2JfIC7OP5EZvF4pc4YyU/cK8elUtp4Fmmso9oGNVy2WG3O/YLmn7HEZR3/fNbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IlAH2QD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1618C4CEEB;
-	Mon, 18 Aug 2025 13:37:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755524239;
-	bh=61HFGD+oYOsszVUkuk4ut0gPjAfycFvHvohHBcgc5mk=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=IlAH2QD2TaP1UOani5WX8CxC+M+uokYhm8ldpXArtlALGlfv0w4r74/M1A0mHDCBJ
-	 fPolvivTIMIOnyvQVfgjKBI/vYrbCESG6Sv5O90LsSKKFsWsrWx9Z/N2lrDDzhnlqF
-	 cffX6WZYsXbnsH4rBZLJyTiWkI9d0oiQtrFSfPtpie3Pn64ZcxMqBO+OsAL9/7QywG
-	 SU/2GBcJCGNI2Vvs6/ZN4TS5R0J591vN/0hIvwLgKu4MBQQn+y8RFmg4bgDHRseMht
-	 8J365hkLfimI0BbMCWWjcw2qTwE/l3+e8eql5qcgb8SW0nzmMrwqd4CoMUwNqIV4lj
-	 Js2UH5rHwRApg==
-Message-ID: <da849603-b4f9-4a38-bd5d-d68143c25713@kernel.org>
-Date: Mon, 18 Aug 2025 15:37:14 +0200
+	 In-Reply-To:Content-Type; b=W2C8aZwDUseBmWiasQ2HOR1N/4CkPg+5KNFUsHTnSPI65B/l2UqCjcddrDOEmrgLuW2t4HwPT6nOrE+uUNJtc8NyyZeOWb0THuHcOXcTVqbutdxT+e3tH5RY4CLDgVbnlcip8Xmg3FxmFbJ17zE6txXoI9fYlo6qRNkk+Sml8Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BVuujlT3; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-30cceaaecd8so1643278fac.2
+        for <linux-iio@vger.kernel.org>; Mon, 18 Aug 2025 06:45:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755524733; x=1756129533; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=10gZZQnBGMVk+f8qeUN3o4WqLNCEED7akiLQmYC5IOc=;
+        b=BVuujlT3Q63n/8JHdVtF2SjZ2L+RzHDNF6eZkZFWpqET/PmOeG/IzZX8QsL6loycTJ
+         71sXQ5lvHqx2sxYv2jg+Ge3lDRW13u1XEAEdEjSrln4t+ZKyXayShFeUW944Ke6l0KEZ
+         VfnplEN62blktyihRxTgGOBl2Yj6B0CBIrSZOo2cW1APcqrVoZ2J2sCONp1OfOhlNjBc
+         5IKLsvKe3KRIxW28GgpYGXo2DNQrKsvHnOmGW0NFgHcWQeYpSsBb2yCqXsSghU/kssyh
+         5oqC+SBhBaYxBRwEHon5kznX665yTcx1HhAkCAtfsXcEHS745J02o+q9rHJMYd+IK6RU
+         wsSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755524733; x=1756129533;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=10gZZQnBGMVk+f8qeUN3o4WqLNCEED7akiLQmYC5IOc=;
+        b=FhpJFFHBEDMSVnWOeueH+32b3Jafh4783G8fnTqNSDbVbQOebJIEmHDHUp8xKCVWoh
+         1MudcRkN16sv6OExzd4zJqtGqyFFdrT22s1kPZvqi1Wo/5r/Zmo1ktOfuifPh29q0vNA
+         Gj6z8iA0yxowriiLKqNbPAMlkcOp7VOSplclhDgUCXc51V3a7pp1Boq9Ogjt7cZktXMM
+         v3rxt6VPe48azckhfZ5XsWti2kn1aKj1Eu0aX+/V21WF/HR/RPnUsuPe58qKjcKrRq2f
+         RPuUz+3HgZX6lYCxkxZYpi0oMpn4xm/JCtxA5SB2x7T0ouYcYM7yJzIf/YQd09tOS2vo
+         DNBA==
+X-Forwarded-Encrypted: i=1; AJvYcCXurcJznjY/APz82ET7sa6POyyxVnEvEM1x5t4689jb+EsNUrwKDYCBVcixruYWIeLBTnwhi5B1yQY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuCB/Eh4Ne3+sVmpk5/PgTxxH3bSMO8HerVH7k+1I08d5njiI4
+	78LG5jurNj6rXuy8RQztk75Hy+AJnXDLoVdQiwoxbKPjv4X8ke6XcbyWDoeE0JCXmUQ=
+X-Gm-Gg: ASbGnctDtIVuLCG16qGUZ92bq49pANNKVTBK9WG8gDnYFCCI4RaxBFnv13Ru4r+6ah1
+	shsvnuU+yR0QksF0rKuOGKaCPWfaFQuDRM2XVMCcvvNhKqwsMSxniMzIuZSZdcgPMxwLQvdoZbG
+	Sn4jiofMHh6kOg5lk3Kx9L5Ruhc8ZprTrh/qZJV17XH1wh1bfDf9lgxYhbvBnyuNFw0anT1Xlaf
+	adjr3xbbZUOBMm3q4ofbUO8Uhks+Yua8RTOZL8BD8o8oOJUaS4rxqvKt80vGIER9DoptZGkV7RS
+	afWCNImzvmE8q6USaW7WdbLBG53PFsQhgJ3ICrW6527/6ckSf9O2RFXXa6Ghox88rjfQcAWGaGw
+	3PT1072EC9duC60qlHI2WoY957/cIF9mv/320r1Gsm08fj2KslEbYRRE1XtffOID2ryI3nA/5nV
+	0=
+X-Google-Smtp-Source: AGHT+IHkEIqXEKYW0YNfPwdn51TV3aOxjzPemzFAD5aoQACwyHFGGzbO2hendQDxiUtyNr97EYzhxA==
+X-Received: by 2002:a05:6871:7283:b0:30b:af6d:f92 with SMTP id 586e51a60fabf-310aaf6f1ecmr7757906fac.34.1755524733102;
+        Mon, 18 Aug 2025 06:45:33 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:ee1a:f057:94fa:9a73? ([2600:8803:e7e4:1d00:ee1a:f057:94fa:9a73])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7439204e5easm1851721a34.38.2025.08.18.06.45.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Aug 2025 06:45:32 -0700 (PDT)
+Message-ID: <6c323896-10b9-455a-ae8a-bbe1e2a80e5d@baylibre.com>
+Date: Mon, 18 Aug 2025 08:45:31 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -54,65 +87,21 @@ Subject: Re: [PATCH v3 2/4] dt-bindings: iio: adc: add IIO backend support
 To: Ioana Risteiu <Ioana.Risteiu@analog.com>,
  Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Ramona Nechita <ramona.nechita@analog.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Ramona Nechita <ramona.nechita@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250818131253.8854-1-Ioana.Risteiu@analog.com>
  <20250818131253.8854-3-Ioana.Risteiu@analog.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
+From: David Lechner <dlechner@baylibre.com>
 In-Reply-To: <20250818131253.8854-3-Ioana.Risteiu@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 18/08/2025 15:12, Ioana Risteiu wrote:
+On 8/18/25 8:12 AM, Ioana Risteiu wrote:
 > Add the generic io-backends property to the AD7779 binding to enable
 > support for the IIO backend framework.
 > 
@@ -121,13 +110,30 @@ On 18/08/2025 15:12, Ioana Risteiu wrote:
 > 
 > Signed-off-by: Ioana Risteiu <Ioana.Risteiu@analog.com>
 > ---
-Nothing changed? No improvements? No review?
+>  .../bindings/iio/adc/adi,ad7779.yaml          | 35 ++++++++++++++++++-
+>  1 file changed, 34 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+> index 044f92f39cfa..4a212c8bc9d3 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+> @@ -80,11 +80,27 @@ properties:
+>    reset-gpios:
+>      maxItems: 1
+>  
+> +  io-backends:
+> +    maxItems: 1
+> +
+> +  adi,num-lanes:
+> +    description:
+> +      Number of lanes on which the data is sent on the output when the data
+> +      output interface is used.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [1, 2, 4]
+> +    default: 4
 
-Your changelog should explain why you drop review and why you disagree
-with comments.
+Isn't 0 lanes wired up an option? I.e. it is possible to use the
+chip in SPI-only mode. So it seems like 0 should be the default.
 
-BTW, where is the changelog in the first place?
 
-Best regards,
-Krzysztof
 

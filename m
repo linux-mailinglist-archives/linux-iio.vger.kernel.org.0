@@ -1,144 +1,97 @@
-Return-Path: <linux-iio+bounces-22933-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22934-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F32B2AF42
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 19:20:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E5BB2AFC6
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 19:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1E0DD4E3642
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 17:20:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF5FE17CB6B
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 17:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38CC2356A4;
-	Mon, 18 Aug 2025 17:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69A42D24B0;
+	Mon, 18 Aug 2025 17:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+WMttaC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cgn3c1c+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C321F91C8;
-	Mon, 18 Aug 2025 17:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A743B2D24A8
+	for <linux-iio@vger.kernel.org>; Mon, 18 Aug 2025 17:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755537614; cv=none; b=hTUEDrj+naFSTWauBg4dfHku53lm6J4XV1aj5ZZiV1xykm9DYUwygnpHwjaTiEa3YcwkCOab+yc5bcLq5nW/EAcFfe9ZlG2VYPkpj4eh1nxkSQ3C1U4cAnOuXJzDV4dz8Q9zA3bIO02I5ofj/g1bEjyoo7mG1VWysl6hFV7uiC0=
+	t=1755539527; cv=none; b=Af1U7bho74U42cAaNlb86g4VBxuQWX2x7BVNndhUhgfaqi14897EnoEEYfZFRVtxD8Z4qrpW55szJT5+4zKI+4/YqbjDNnHN2pJXIDW1ec4nAuLwfot/mLJl5AGuXkBnJ8gSxuU837syGOI4cWjKi6B6ZhOvkC8+kiqMCxi7EL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755537614; c=relaxed/simple;
-	bh=E11dK3FYT6Ml9nmOMIUnAM2Fz9JmU9Xtv7UOfHCb+tE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C7DzgwjN7u+H3O5vqzjoiLova/7SKn6VjKYk6FMDZ/xVfG93OAjG7tqFV+8tE5qO7HecphKw7soF161BW3dDUDBNve/uSHyTlDfzLvLO/vGUuOEgFSfluAap2GMbEPMAJJ+UGHcpa28dh7A7fcc4HC6dwg4KFEEacBMKohO0gKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+WMttaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7DFC4CEEB;
-	Mon, 18 Aug 2025 17:20:11 +0000 (UTC)
+	s=arc-20240116; t=1755539527; c=relaxed/simple;
+	bh=ISYfXVSerFWi+GkqW+zdxgB/O5nROE+nAivoL33COhs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LdOtbAgv3lm7OLffp//86dO4tBgrxoD+73qqcQA1yVbRavgy0j6vs0axgONR+NaQMR2452j8oZBKHDy9bYhD9FKTE9xOl9M9qdUPSUNzFHkjQYG/gaGQrtNeCfqEGjUBjDmgteotm6HFQ43FuEeNsd512T4GkzS/ZlGhFsAj/p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cgn3c1c+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A249C4CEEB;
+	Mon, 18 Aug 2025 17:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755537614;
-	bh=E11dK3FYT6Ml9nmOMIUnAM2Fz9JmU9Xtv7UOfHCb+tE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K+WMttaC1O9hi7rpl97qqYudfL+t/uXf2mSgraCsYPeY0vM2WBHSWS3pd7KEWJUJm
-	 Ecpvjck+wpvCaQMDe5bGhUEvw6LJBvDteImw1JEZGMGc3B50YjSVz7tmxjV09HDqDP
-	 +eeE0zjwHOUYMByjPEZx8eooKcBFXQScN+RjvKJa++U5++pBOyRIhMWV1wX12t1mfz
-	 fkyn8R3F2kdyiNYFCPKzcFxulNMsphTFqVJADTfbskRNTVfh41ZAmyRyQKsvv25Zmi
-	 jNkPT3W3Nz2IwKt35WDvY1PB/an3jvLQdi8ebOAR5K9twveAnOt0g1JfH2e0fu7CWG
-	 k2GxGLzRAWIAA==
-Date: Mon, 18 Aug 2025 18:20:09 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Ben Collins <bcollins@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Hepp <andrew.hepp@ahepp.dev>,
-	Ben Collins <bcollins@watter.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/5] dt-bindings: iio: mcp9600: Add microchip,mcp9601
- and add constraints
-Message-ID: <20250818-platinum-elude-894088c738d2@spud>
-References: <20250818035953.35216-1-bcollins@kernel.org>
- <20250818035953.35216-2-bcollins@kernel.org>
- <cb826943-69d8-4fc9-8597-fbb2439f04f2@kernel.org>
+	s=k20201202; t=1755539527;
+	bh=ISYfXVSerFWi+GkqW+zdxgB/O5nROE+nAivoL33COhs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Cgn3c1c+y5+/xdlY7YO0JWIvehHrvyrs08BU5jTpwKfhBN0dmBQZWscwFVlG1Jz2o
+	 LlgTrxI3mxAUvx03DBej/vBSS23TNMKUpq2/NZOTXwxyHC7J6qWIMlM8FHLIP4X7dc
+	 46ouUq836cll02geEWfizIHfvgZpIvb0t1Kd6/5LWLT38XWT1D5Qmk2Y6MUgWILmTH
+	 +8cE5Iczg1uqsxjstOUr1rQj48oxfFbU3nmf9nH81YySzAc0HI9q+dYVNXY/GQk7fl
+	 qDt3KPXfBdYd+Pst6TQwgJbq5JsUYvpDa0EBTlX/I020uMk5ywiG2smBD44O74dDpe
+	 Dc5hPf+K7Yarg==
+Date: Mon, 18 Aug 2025 18:52:00 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: ASSI <Stromeko@nexgo.de>
+Cc: linux-iio@vger.kernel.org
+Subject: Re: [RFC PATCH v2 8/9] iio: pressure: bmp280: implement
+ sampling_frequency calculation for BMx280
+Message-ID: <20250818185200.0367f873@jic23-huawei>
+In-Reply-To: <87ldnhonha.fsf@Gerda.invalid>
+References: <20241017233022.238250-1-vassilisamir@gmail.com>
+	<20250810185846.114355-1-Achim.Gratz@Stromeko.DE>
+	<20250810185846.114355-9-Achim.Gratz@Stromeko.DE>
+	<20250817180421.1d9edb28@jic23-huawei>
+	<87ldnhonha.fsf@Gerda.invalid>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9HYvEexqxeK9/fff"
-Content-Disposition: inline
-In-Reply-To: <cb826943-69d8-4fc9-8597-fbb2439f04f2@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Sun, 17 Aug 2025 19:40:49 +0200
+ASSI <Stromeko@nexgo.de> wrote:
 
---9HYvEexqxeK9/fff
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Jonathan Cameron writes:
+> > This driver seems to have the infrastructure for providing available attributes
+> > but is it hooked up?  I can't find where info_mask_*_available is set for
+> > any of the channels.  Maybe I'm missing something, but if not would be
+> > good to fix that as part of your improvements.  
+> 
+> I think not, there isn't any *_available sysfs files I can see.  Where
+> can I look up examples of how to enable these?
+Any driver that sets both iio_dev.info_mask_*_available 
+(separate, shared_by_type etc)
+and the read_avail callback. 
 
-On Mon, Aug 18, 2025 at 08:28:30AM +0200, Krzysztof Kozlowski wrote:
-> On 18/08/2025 05:59, Ben Collins wrote:
-> >    interrupts:
-> >      minItems: 1
-> > -    maxItems: 6
-> > +    maxItems: 4
->=20
-> Why?
-> I did not find explanation of this in commit msg.
+There are two ways to represent data, either a list in which case return
+IIO_AVAIL_LIST from the callback and provide a suitable array of value / value pairs
+or a range with start, step, stop in which case return IIO_AVAIL_RANGE.
 
-It's also not correct, since the outermost constraint remains 6 after
-the patch, so the if/else should reduce the constraints, rather than
-increase it as is done here.
+Seems like someone half implemented it in this driver but then stopped.
+Not something I tend to look for when reviewing, but I guess I should add that
+to my mental list of things to check.
 
->=20
-> > =20
-> >    interrupt-names:
-> >      minItems: 1
-> > -    maxItems: 6
-> >      items:
-> > -      enum:
-> > -        - open-circuit
-> > -        - short-circuit
-> > -        - alert1
-> > -        - alert2
-> > -        - alert3
-> > -        - alert4
-> > +      - const: alert1
-> > +      - const: alert2
-> > +      - const: alert3
-> > +      - const: alert4
->=20
-> Neither this and it is ABI break. ABI breaking needs clear reasoning why
-> and some evaluation of impact on users.
+Jonathan
 
-I think it should be a standalone patch too, since it is a fix for the
-existing mcp9600 device rather than something for the mcp9601 device
-that is being added by this patch...
->=20
->=20
-> > =20
-> >    thermocouple-type:
-> >      $ref: /schemas/types.yaml#/definitions/uint32
-> > +    default: 3
+> 
+> 
+> Regards,
+> Achim.
 
-As is this, which is codifying the existing restriction rather than
-being something new as 0x03 is what THERMOCOUPLE_TYPE_K is defined to
-be.
-
-> >      description:
-> >        Type of thermocouple (THERMOCOUPLE_TYPE_K if omitted).
-> >        Use defines in dt-bindings/iio/temperature/thermocouple.h.
-
---9HYvEexqxeK9/fff
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaKNgyQAKCRB4tDGHoIJi
-0sXWAP9JCGXBBPthOxpSomXlDG+knctam0O5gcVjqRNdWIOQWgD/encff2KHr1D9
-Eg2Om5A2W7Nc+HhhOR1lpLQRmmqeDwg=
-=ZxR8
------END PGP SIGNATURE-----
-
---9HYvEexqxeK9/fff--
 

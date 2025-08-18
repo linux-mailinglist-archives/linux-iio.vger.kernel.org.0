@@ -1,106 +1,159 @@
-Return-Path: <linux-iio+bounces-22928-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22929-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3234AB2AC63
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 17:17:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ECCBB2AC90
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 17:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A89E7A8E8A
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 15:15:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 111F61675E4
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 15:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA6E433C4;
-	Mon, 18 Aug 2025 15:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="t8dIHHYV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D72A1DA3D;
+	Mon, 18 Aug 2025 15:18:54 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B835123182D
-	for <linux-iio@vger.kernel.org>; Mon, 18 Aug 2025 15:16:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE06C21ABDB;
+	Mon, 18 Aug 2025 15:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755530221; cv=none; b=moxu9ARWoZfRA02bzo3inpLmvXsOMf7eIoX37CmraA4+FzA5L93TI9MvJKbzV4T32r/9TgEe4DkJgcGqo9IYrfXFOjMxY6knUacLUsAM4W7O4fJqDPIxrMLgppmJ5hSOS7dtOoMsqiRvetuxR5glc9V78TAHfrHQ2Jg2/dvbChU=
+	t=1755530334; cv=none; b=j45Qz58haPzOAqaL0QjsoeNnubp0CCobmDz6QvEBcHtX9oSSGcpWr5PPzjJ4JrabgkwaVmUmIfwDdM4sC9s4qmN8EzegkzUU4gLP1B0lh+i4vi9hRkh/9ZR3reldSgpp6d5XwzHcZdB0tCT35AvQfiJz08naBrJCOBbwLFK64zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755530221; c=relaxed/simple;
-	bh=ZQ5q5cwLBvzEWKcFeidAaKR4mpwl8Ihe+MXj7VrWfMo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HoQXDeF0rsIeZd50qPZt/C5Ql1mNGQlbPtg/YAMbYTknBlJiJj7KbRO2tsG8IJdq6/pp8m3QG8lmgmF0PtmAfZ7UbfWtB2CrOqsxRKeYluremiwlfEvN42FFqFVjkXeCbpxC+/N8pQgPkewjS1uImifGhmdahm3aflDxv753dpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=t8dIHHYV; arc=none smtp.client-ip=209.85.160.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-30cceb83f85so2316191fac.2
-        for <linux-iio@vger.kernel.org>; Mon, 18 Aug 2025 08:16:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755530219; x=1756135019; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l3c3Gvew1aX6fRPuhI9Jg/FD49YDakQTVCTXjiPRQnM=;
-        b=t8dIHHYVFwQr+rcY69trDG2w2EVOJ5jP9uBnl3tvtiVlgQKDq40uRUyzCVQTGzRgby
-         e2smdDMUZsbt9Jaa47BMq7zarVoLTmsqfAdVrQmCOsJwMznEwxbMP3/72Hjz0QoGoCD9
-         AOc6mjmeXl2svHZnrwx5QltaulCDP1uZzDlYoqicb4shEjmQh5wNknbYtlm0WjRzqSgv
-         wfdwXYE8l08PH/JV7WpbJ6BILVfsUCtZBX0cuGe5OXKbZYoph2HZj95c3WeLrlED1Xst
-         9r4fe9ld+5R+87Ib7/CsLQcXGg0HdhBWs2+85NTGFZ2qnyswiL2EVC1VF7MZSqThWBlC
-         6Qjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755530219; x=1756135019;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l3c3Gvew1aX6fRPuhI9Jg/FD49YDakQTVCTXjiPRQnM=;
-        b=EbxHpWkyr8iFN4Z/+m3brc3PCdxEtgDcgAjWUYQ6hZKKjKEHWOfHmCQyOkO061uEAL
-         s+gql+HSOqXJ1rYHlCJilVT/lt2DXetcVKNhQOh2v3+jK8oUNduqssoY+54Q+aGTd3OC
-         jEUwJlY/8XkHg2G0DqXJm/OfYwnAl02n+cMFp9Ek7XUMPJW0oi+V3u+Xx0g1QiVrNZ8Y
-         56Q6cVqNd1hkUOwaUNkwD4/8T0tdFX3Dw8U/QeRupz//56DXRzRfbhAbVP95uTq4tk4k
-         Q2pqfaGXnuwh5GG5IvuGmh0f1C4frZy8A5k2goC1I3ixzTxSKAnZeJWL4eYFK3UEH64o
-         yviQ==
-X-Gm-Message-State: AOJu0YwKirMBqk9r/fL2K338Z3/TfexvtkYTKvz3Z1ER0NzdqIpOu2h5
-	D2K3gpR+IgiRxJiKQ3dF9RbENI8eAxRXVz0rhZFPcd/Xc34333/xi5juioP7D463y2M=
-X-Gm-Gg: ASbGncuYNoO7tNnxwzpyYfJJtoak/l3Evoy8PVLsb2cx5QEwZyz9UxCxg3YdNeeD/x4
-	ci5R1nc59ppjiKcC0MPrTtwjtOYN6JczIvkKFJoupZTyzXSGx6zfIoEZ7EdKHCQlkFMiHSWu6eX
-	QsZ9ZnhyNHUfKQYVTTIpiHWLV99/ktZ+7QiSDtBPjtwAWjKneBNIZGz1/GmRt8EM8IV2DKaYCar
-	WfESUEnGrfjL7O1wU9DU2K+g7Gi9tQf8xixlfBdvgS71L/EaUh/VnhmdWadX5tnVxdVtJ04U3Ed
-	1dCjZhV/4Fhvn4tAhhDDGqHOZJJWQURIRYemin82i1LbYt/AEuPvTzBc3NiC3n8RNabTHQpoaVK
-	VKwc4TbY8+IxgGd1NcFYnyRPRobneSjTPCPc3ZsLxmhdNE4vNIh0dkueFun+X/kQHxnnaVbqAgq
-	Cr/PlEAFMnzw==
-X-Google-Smtp-Source: AGHT+IHZyxk+kZ7n3rFj6tDtFYVDJ76v+ifqvF7+ofV/wgR1Z5viCvG2a2JUh6/y2oi4HtsHAUqRNA==
-X-Received: by 2002:a05:6871:7283:b0:30b:c9ed:7f91 with SMTP id 586e51a60fabf-310aaf7bd7bmr7700347fac.31.1755530218704;
-        Mon, 18 Aug 2025 08:16:58 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:ee1a:f057:94fa:9a73? ([2600:8803:e7e4:1d00:ee1a:f057:94fa:9a73])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-310abbf853bsm2713127fac.32.2025.08.18.08.16.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Aug 2025 08:16:58 -0700 (PDT)
-Message-ID: <a7ce7e35-b761-49c6-9e8c-e3f849fae846@baylibre.com>
-Date: Mon, 18 Aug 2025 10:16:56 -0500
+	s=arc-20240116; t=1755530334; c=relaxed/simple;
+	bh=ukmlTHTouf5G9dMeqhHxsdEphPg6Nyz2tjN77gIOvQc=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xv7ppXTA9SVW5CseTWCrTayDmREqETqngDzEzHe4pPBS9lFgatV4xy94uJ1LTPFGB0kLW63RlywVF71KoU2NNeWUTbbLt+RWfCv5Oy7HC5kW/fjxQDI4Nl3HqTBd2jpcWquXPZBx7Dha1RuwlnZdZWlx+1G/O0Ea/oDL2LlDrjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c5GX54YLFz6D9JR;
+	Mon, 18 Aug 2025 23:16:37 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 55A881402F8;
+	Mon, 18 Aug 2025 23:18:42 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 18 Aug
+ 2025 17:18:41 +0200
+Date: Mon, 18 Aug 2025 16:18:40 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Nathan Chancellor <nathan@kernel.org>
+CC: Jonathan Cameron <jic23@kernel.org>, kernel test robot <lkp@intel.com>,
+	Ben Collins <bcollins@watter.com>, David Lechner <dlechner@baylibre.com>,
+	Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy Shevchenko
+	<andy@kernel.org>, <llvm@lists.linux.dev>, <oe-kbuild-all@lists.linux.dev>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 3/5] iio: mcp9600: Recognize chip id for mcp9601
+Message-ID: <20250818161840.00002ecd@huawei.com>
+In-Reply-To: <20250818150659.GA2948920@ax162>
+References: <20250815164627.22002-4-bcollins@watter.com>
+	<202508161646.PDl6V4EU-lkp@intel.com>
+	<20250816110243.06fbf7fb@jic23-huawei>
+	<20250818150659.GA2948920@ax162>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: iio: ad3552r: Fix malformed code-block directive
-To: Jorge Marques <jorge.marques@analog.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
- Andy Shevchenko <andy@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250818-docs-ad3552r-code-block-fix-v1-1-4430cbc26676@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250818-docs-ad3552r-code-block-fix-v1-1-4430cbc26676@analog.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On 8/18/25 9:44 AM, Jorge Marques wrote:
-> Missing required double dot and line break.
+On Mon, 18 Aug 2025 08:06:59 -0700
+Nathan Chancellor <nathan@kernel.org> wrote:
+
+> Hi Jonathan,
 > 
-> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-> ---
+> On Sat, Aug 16, 2025 at 11:02:43AM +0100, Jonathan Cameron wrote:
+> > On Sat, 16 Aug 2025 16:46:12 +0800
+> > kernel test robot <lkp@intel.com> wrote:
+> >   
+> > > Hi Ben,
+> > > 
+> > > kernel test robot noticed the following build warnings:
+> > > 
+> > > [auto build test WARNING on jic23-iio/togreg]
+> > > [also build test WARNING on linus/master v6.17-rc1 next-20250815]
+> > > [If your patch is applied to the wrong git tree, kindly drop us a note.
+> > > And when submitting patch, we suggest to use '--base' as documented in
+> > > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> > > 
+> > > url:    https://github.com/intel-lab-lkp/linux/commits/Ben-Collins/dt-bindings-iio-mcp9600-Add-compatible-for-microchip-mcp9601/20250816-005705
+> > > base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+> > > patch link:    https://lore.kernel.org/r/20250815164627.22002-4-bcollins%40watter.com
+> > > patch subject: [PATCH 3/5] iio: mcp9600: Recognize chip id for mcp9601
+> > > config: riscv-randconfig-001-20250816 (https://download.01.org/0day-ci/archive/20250816/202508161646.PDl6V4EU-lkp@intel.com/config)
+> > > compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 93d24b6b7b148c47a2fa228a4ef31524fa1d9f3f)
+> > > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250816/202508161646.PDl6V4EU-lkp@intel.com/reproduce)
+> > > 
+> > > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > > the same patch/commit), kindly add following tags
+> > > | Reported-by: kernel test robot <lkp@intel.com>
+> > > | Closes: https://lore.kernel.org/oe-kbuild-all/202508161646.PDl6V4EU-lkp@intel.com/
+> > > 
+> > > All warnings (new ones prefixed by >>):  
+> 
+> <trim unrelated -Wnull-pointer-arithmetic>
+> 
+> > > >> drivers/iio/temperature/mcp9600.c:440:53: warning: invalid conversion specifier '\x0a' [-Wformat-invalid-specifier]    
+> > >      440 |                                 "Expected id %02x, but device responded with %02\n",
+> > >          |                                                                              ~~~^
+> > >    include/linux/dev_printk.h:156:62: note: expanded from macro 'dev_warn'
+> > >      156 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
+> > >          |                                                                     ^~~
+> > >    include/linux/dev_printk.h:19:22: note: expanded from macro 'dev_fmt'
+> > >       19 | #define dev_fmt(fmt) fmt
+> > >          |                      ^~~
+> > >    include/linux/dev_printk.h:110:16: note: expanded from macro 'dev_printk_index_wrap'
+> > >      110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+> > >          |                              ^~~  
+> > > >> drivers/iio/temperature/mcp9600.c:441:26: warning: data argument not used by format string [-Wformat-extra-args]    
+> > >      440 |                                 "Expected id %02x, but device responded with %02\n",
+> > >          |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >      441 |                                  chip_info->chip_id, dev_id);
+> > >          |                                                      ^
+> > >    include/linux/dev_printk.h:156:70: note: expanded from macro 'dev_warn'
+> > >      156 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
+> > >          |                                                                     ~~~     ^
+> > >    include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
+> > >      110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+> > >          |                              ~~~    ^
+> > >    drivers/iio/temperature/mcp9600.c:428:22: warning: unused variable 'ret' [-Wunused-variable]
+> > >      428 |         int ch_sel, dev_id, ret;
+> > >          |                             ^~~
+> > >    10 warnings generated.
+> > > 
+> > > 
+> > > vim +/x0a +440 drivers/iio/temperature/mcp9600.c
+> > > 
+> > >    422	
+> > >    423	static int mcp9600_probe(struct i2c_client *client)
+> > >    424	{
+> > >    425		const struct mcp_chip_info *chip_info = i2c_get_match_data(client);  
+> > 
+> > Probably a false positive as I don't think we can probe without something matching and hence
+> > that not being NULL but an error check on that match is still a nice to have and should
+> > resolve this build warning.  Note there is very little chance a compiler could ever figure
+> > out if this can be NULL or not so it's a reasonable warning!  
+> 
+> I am not sure I follow if you are referring to the -Wformat warnings
+> above. Isn't it pointing out that the second specifier is missing the
+> actual type? Shouldn't it be '%02x' or something of the sort?
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+I think I completely misread the report!  Sorry about that. Ignore my comment.
+
+Jonathan
+
+> 
+> Cheers,
+> Nathan
+> 
 
 

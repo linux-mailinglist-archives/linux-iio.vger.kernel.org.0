@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-22898-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22899-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DEBB299E3
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 08:41:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D23B299EC
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 08:43:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84FFE1B20A84
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 06:41:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 698E91B20990
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Aug 2025 06:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0547727602F;
-	Mon, 18 Aug 2025 06:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD969275B04;
+	Mon, 18 Aug 2025 06:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MtrFYQ1/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmX4cNcg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF7D276023;
-	Mon, 18 Aug 2025 06:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CB1209F43;
+	Mon, 18 Aug 2025 06:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755499232; cv=none; b=P/bBVtN3L9V958VcGhQfTwchgi6VGT/vGfslirXTHhVvh18BUj+TJezPjxfq/wS2JhcAv/wx7Iy9rcA6o4mTDgL1AbjyPQyn2QrCIFm/JZDPey0dDdKYU+9cyJowHoFBM7BA9tRDO4WZXwY45XxKGIHP/kkfy+5ykeMPE7nVx18=
+	t=1755499382; cv=none; b=nkQtMBxJ+7X16VyYp+u+HbHsixBKCDiAl3rCdiSVml0ZPHfO/HAH9A7cKMMmHgiNYU5PglyZp6ZPcswrAMzYFc701PNlLch/UizG8i+InXdDPkyuJ2uqQjTp+Xl3Q3sMtiUwRr7cROcXECox9lpPK943/DDfdbEqt4hKkSf0dIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755499232; c=relaxed/simple;
-	bh=IKPiSme5OD/tqcQ27ZzIvhJ2M6iOf0cyBGWlQSnLr3g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CSqKVR5ywcdboXp2IuV4VGCnl+kMvBWTm5t1Dx1F0H2+U2AIkwooM4GqR0XHXzVhn7l5LVKMzz6+aUYlN6BdUuvLAljau0AxIY7iSiT2V5x0w7VmlyxxmfASEVMSmJMf752ZCrSxBTijxD2I8AL50uMOfJUNhnEjTi/vBPyM7FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MtrFYQ1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFA6C4CEEB;
-	Mon, 18 Aug 2025 06:40:28 +0000 (UTC)
+	s=arc-20240116; t=1755499382; c=relaxed/simple;
+	bh=rHLZVE+q9UBpLepVIpZp8NDD7WiYm8U2I5diRkJMZoA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=VLvCXe5dxwie9blDM7ObAEOQd3BMOMPebXxK137n24An1PqXsgGb4Nw7iSHSTm/bVd35aYJCY3BVAreBvuVkQSw6Nx+XYiVkXUEnYDhC+UKB/N9txggPoPBYZ2hQJpefPcMgDSsH9gxrlxcXeZZnylnMl5aa3RyRi3TiVxT+ZRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmX4cNcg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF64C4CEEB;
+	Mon, 18 Aug 2025 06:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755499231;
-	bh=IKPiSme5OD/tqcQ27ZzIvhJ2M6iOf0cyBGWlQSnLr3g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MtrFYQ1/HytgfAGdcHngfoCrNcxUUYV+37JbBvs2p4KSAHwxemBLTONNxTM9RKIDx
-	 CRGx/UH5U/0XKD9uig4apFmi3XYdlKIAzwsDP9Sj7muM4CLPgS0WPBXtmohE45cGgA
-	 62JjRL5KXaiiXgoLCpQEgkXL92oAXV3DVZ3vbqb+EZYVFh4+UHr19WQa45ebrjj/pa
-	 GoqwJ7VKs9FevQyYPBoJ2cNMwhEodI7fL+c4vYjAiiIgbIjNQgZRGECOOotkX1SC6/
-	 IAsDD0QOj54NUUN+xGCl7fm3xGhCEZSElgQJk4uak4Qt8sIPpLUCauf1pELzwJbGYC
-	 l4C6crtP8gxWA==
-Message-ID: <062512ca-7069-4fc5-bcbf-a076203399f0@kernel.org>
-Date: Mon, 18 Aug 2025 08:40:26 +0200
+	s=k20201202; t=1755499382;
+	bh=rHLZVE+q9UBpLepVIpZp8NDD7WiYm8U2I5diRkJMZoA=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=VmX4cNcg9f5KeLUQMKQdBbU627r45g6Y0/OgTBDsFfmF/1yW9b0Ag26MqHtANg5tt
+	 WPOQxgzfYlLRWpRoxeA30LQljto+IhNuupS4LD6SevlMP4LzeifcEc1FJoX4mciz1Y
+	 qWOCKKTTLjdrCgyybKuEeIM/I/IKwgLIOpwhPSapLJy/Bgxd5JkHGb6F46Strhr9Ya
+	 g3YY7nfzjmj5SmYBthSWPxWni5U63T4BvNwvaZ9wZURQ17FC0u4ixXYX/mnRW8R85S
+	 KiE3v03YMUiORZTqhKLBpQfXoQ5WoBEs7FvJX29zeqZG6YPXZlkYGj/u6D7es6um7S
+	 m7+GvQ+cNec5Q==
+Message-ID: <3f256b8e-dc7a-466d-be53-d6e324b44cb7@kernel.org>
+Date: Mon, 18 Aug 2025 08:42:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,17 +50,26 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/5] dt-bindings: iio: mcp9600: Add microchip,mcp9601
- and add constraints
-To: Ben Collins <bcollins@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>
-Cc: Ben Collins <bcollins@watter.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250818035953.35216-1-bcollins@kernel.org>
- <20250818035953.35216-2-bcollins@kernel.org>
+Subject: Re: [PATCH 1/5] dt-bindings: iio: mcp9600: Add compatible for
+ microchip,mcp9601
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>, Ben Collins <bcollins@watter.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250815164627.22002-1-bcollins@watter.com>
+ <20250815164627.22002-2-bcollins@watter.com>
+ <20250816105825.35e69652@jic23-huawei>
+ <66063382-78c6-4d93-be25-46e972e390f4@baylibre.com>
+ <2025081711-coral-aardwark-9f061b@boujee-and-buff>
+ <8e228d2d-d22f-4092-8c6d-94ce989b4a84@baylibre.com>
+ <2025081713-wooden-clam-aee35a@boujee-and-buff>
+ <65ca6431-56e1-4798-9ecc-6e6adf664f96@baylibre.com>
+ <2025081716-tan-pillbug-ff2cb5@boujee-and-buff>
+ <2025081717-fabulous-chameleon-5ad9bb@boujee-and-buff>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,52 +115,39 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250818035953.35216-2-bcollins@kernel.org>
+In-Reply-To: <2025081717-fabulous-chameleon-5ad9bb@boujee-and-buff>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 18/08/2025 05:59, Ben Collins wrote:
-> From: Ben Collins <bcollins@watter.com>
+On 17/08/2025 23:10, Ben Collins wrote:
+>>>>>
+>>>>
+>>>> I couldn't find anything that would easily describe this type of layout:
+> ...
+>>> We usually do this the other way around. The base binding lists
+>>> all of the possibilities then an -if: constraint limits them
+>>> if needed.
+>>>
+>>>
+>>> So don't change what is there already and then add:
+>>>
+> ...
+>> This might be a little more complicated. I want to add a boolean for
+>> microchip,vsense so the SC/OC aren't even available without that flag
+>> being true (default false).
+>>
+>> I could just assume that having the interrupts means this flag is true,
+>> but that doesn't cover the case where the interrupts might not be used
+>> or even wired up, but the SC/OC detection in the status register can be
+>> used.
+>>
+>> I was going with this:
+>>
 > 
-> The mcp9600 driver supports the mcp9601 chip, but complains about not
-> recognizing the device id on probe. A separate patch...
-> 
-> 	iio: mcp9600: Recognize chip id for mcp9601
-> 
-> ...addresses this. This patch updates the dt-bindings for this chip to
-> reflect the change to allow explicitly setting microchip,mcp9601 as
-> the expected chip type.
-> 
-> The mcp9601 also supports features not found on the mcp9600, so this
-> will also allow the driver to differentiate the support of these
-> features.
-> 
-> In addition, the thermocouple-type needs a default of 3 (k-type). The
-> driver doesn't support this, yet. A later patch in this series adds it:
-> 
-> 	iio: mcp9600: Add support for thermocouple-type
-> 
-> Lastly, the open/short circuit functionality is dependent on mcp9601
-> chipsset. Add constraints for this and a new property, microchip,vsense,
-> enables this feature since it depends on the chip being wired
-> properly.
-> 
-> Passed dt_binding_check.
+> Nevermind, I figured this out. I'll send v4 soon.
 
-Yeah...
-
-...
-
-
-> -            interrupts = <25 IRQ_TYPE_EDGE_RISING>;
-> -            interrupt-names = "open-circuit";
-> +            interrupts = <25 IRQ_TYPE_EDGE_RISIN>;
-
-Except that it wasn't it. You need to test your final code, after you
-commit. Mentioning that you tested it and then actually do not test and
-send something which does not build, heh...
-
-
+You received from David correct code, good idea... yet you ignored it
+and sent something incorrect - breaking ABI.
 Best regards,
 Krzysztof
 

@@ -1,81 +1,48 @@
-Return-Path: <linux-iio+bounces-22986-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22987-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD48B2C6BB
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 16:17:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 699E1B2C714
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 16:33:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7463C18979AD
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 14:15:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 760BD16EF52
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 14:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D7723909F;
-	Tue, 19 Aug 2025 14:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD33265CDD;
+	Tue, 19 Aug 2025 14:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FnHNivYE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCmPzvSp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3C420DD52
-	for <linux-iio@vger.kernel.org>; Tue, 19 Aug 2025 14:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14019253939;
+	Tue, 19 Aug 2025 14:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755612927; cv=none; b=LCFri1/0cS+tphhm4pTNOXe61URjNa2eNi8xvljcjApwPt3Y6n5wrjoxOgXsnXe8tChijoqUHJD4wV+bsxMrVFUY57hfx7Gx1OofYy+OPj8x+rGFohRJOzRN1QLKM3P8SYmhiwV3ZsECGHnbDG2YGqqDO4cRsx8eKz+vR6mBR5s=
+	t=1755613740; cv=none; b=mDICTGuKu3swdUsm0I/QuXI/UTAZX6wPmdwd5wt200FHHtdWbNl4ZpDN02rZcET3nrrpDjwohfqnOhZUB+FkxFMT4rEuwocdiI2XWeIQ8qZz+z7RB8Cs2aTW3NonWWqbb5sHx33fVWsVg+YXpRZkNFZKaeEzibG4GC/ozPWvInk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755612927; c=relaxed/simple;
-	bh=E91A0EvBQGwTzDoV07eJuCoxJjwmCa8uGCWrOxeGhdw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=pDFmvqAr2SZiZfHaQL/6dtWI2Ij9ye8X8YntQwPalkCKmwgRCK90+dBZYQjL5T4xRX/sUvrMxIAl0CJndI5g76g/LomSL0wrjy/8jN10kO7ivYEb2OK/aQ6aaOtaD1eUazQgdzgmMf4tLUtxHw5Elz095d4SbGnRoL6meA3gDs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FnHNivYE; arc=none smtp.client-ip=209.85.160.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-30cce534a91so2014892fac.0
-        for <linux-iio@vger.kernel.org>; Tue, 19 Aug 2025 07:15:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755612925; x=1756217725; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6iJgXIyjoxyQaOeBIKWzkn4AAW3hsDkELpNRI4OWlq8=;
-        b=FnHNivYE1FDnpTbo8xLF9Off5ZfZUFb294LvL/yvxW/WwTdQRDRhiiJ9+8OfqE8OpT
-         Kw38xzrMVZDjUh3uq12WtgOt2BGIOMGFrY5YDFmewjnTY3eaLwPkU5AxO94aZRJifUmo
-         UtDL9b2qyGqnrrsrD/BdwmKW/ar92p6xCmuoGa/cNrcEl+OVJRA/hitCW553mptKseVV
-         oUymiKFyMIU97+gzeZ7WI5V7L5V+AA++QkwGfzWqYiZqcvVBcTKPlj5qT73iC7218nvt
-         fetzBkMJRIcF7qSe58rvJgSwIkxVDxSUs+Y65H3AozZ/B4rCRKXqicJuOVjttyLg5+6I
-         GS9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755612925; x=1756217725;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6iJgXIyjoxyQaOeBIKWzkn4AAW3hsDkELpNRI4OWlq8=;
-        b=XqGPgCc2nS8gxGR0WFUWEjpJAgiykC4NApLT8ATHTEgSZndNXtehntB486l4vQiHWA
-         cGNRl7f80tvC8ByyAE82wTrnMmOmmAaEqDEN/ttJJws1hKFfDM8kcVUUAZMMtYvOykMW
-         dD7YDyumoSivnlw090UHDXj6NsuSnfYMj89+34Jz9JJWo6TDZficw7jrV2HZDqpa41Es
-         0IH/7GxjgBCXwEbQ7mxEf3n6iK6FFX3x/h3OlomT92oc+J9uR2qNHDpgdtUY3UN3bndZ
-         yTY8wbaf+ebvk0azGi7uJf9V2TgF3m5Gwma8jOCcaE4zRJw9KCRRKN+IorqsKHuuBXVb
-         D3Sw==
-X-Forwarded-Encrypted: i=1; AJvYcCXdGxshbC7bwfwy64+DTKll0OlbSp2kb6JxsEMhOIBqo5DhcPr31xm1pCf0PaQ18S+bKJShRGsmTWg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOwuWf20i4nY1M6+8lwCSCSbGvmfd2hTFC2MEEwpqKSOy3QY6i
-	2klFKnqd0/us6+XSW9jiAQSo++YWkKGtiMESHDj9ohr7hwdyFN/Xya0QZnsp7kHhYko=
-X-Gm-Gg: ASbGnctC6t8U/CMRMRNUbgY4y/cVJym3O49E8uUB4YP+L/Uu4n4CbdTvggQNtKQM+TL
-	a8RtVpMeA9J0IMnH1GQZxHApkC598ip+HFpcalr4kA4+I7FTLZsag7n2k4cvvB79/YQHinXbPnL
-	OK4sHf6dhfXIPOY1F27LmFvxgNDsrt81tkY0wSb2xuvT/QSoHrQ+zIomCyhZ8WNP8im9/hplRAg
-	P6hFS5jQIzjqzCelzOOiagJ0Yir8Ao2peFObAtbpVvkDl1cZYybnK74FPZJfUvWKdDQk4zalhTI
-	wvKnQxcw9o6VmfHlPlAegjkP9OcBdQ3QlAPy3yFc5mt4Lz0RrMaFK/V07CkBGka+Qz/TlUDqGPY
-	YNViBSe2oJCunlWe6hGOZ/CEkfhkxwmlrZPMtfNea7/MvwlERlGfpjOQTLAGgSAkeUDSpT/6T1/
-	KztcihsVg6xg==
-X-Google-Smtp-Source: AGHT+IEt6dwsX4DtUvqC7sEljEdquQSqUldMPbdUrFmoYm8as/bmWB3i+egN0ftcqMAL3gZVqjC+cQ==
-X-Received: by 2002:a05:6871:a1d1:b0:307:bfe5:481e with SMTP id 586e51a60fabf-3110c4bc7a6mr2132053fac.27.1755612925043;
-        Tue, 19 Aug 2025 07:15:25 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:990c:4d50:9c6c:f367? ([2600:8803:e7e4:1d00:990c:4d50:9c6c:f367])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-310abbb4463sm3480511fac.29.2025.08.19.07.15.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Aug 2025 07:15:24 -0700 (PDT)
-Message-ID: <f7292e8d-ac7f-43af-b77a-7a1ad8403962@baylibre.com>
-Date: Tue, 19 Aug 2025 09:15:23 -0500
+	s=arc-20240116; t=1755613740; c=relaxed/simple;
+	bh=rhLZ+zn5W3hX2QFZuINZfmdYdcKZOSjlP/kaSUEejh8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o+j3TrUHUJvEt96z2+mZCCEkv7EJuELXkXXV4wPGBrIEQi3fMwpBv+RwfkYIoT3J3rKwCCrCixIIEdN0t3OKb9KvQr2mrffoCRuLrhwnd0XG/5zeM4V2+nGbvsdXmh7RofEMg6U7Q22QjQZX+IkGXEy4NBaNXxXzDZEH59kJ27A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCmPzvSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA504C113D0;
+	Tue, 19 Aug 2025 14:28:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755613739;
+	bh=rhLZ+zn5W3hX2QFZuINZfmdYdcKZOSjlP/kaSUEejh8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lCmPzvSpfZpZO9CpMeq0tF2NKOXQQ1ZLd6GPDEIemGMX5YYUn145s5spbomxmU1fK
+	 in/fD33ZW4se5HOBGABwZU+c5WordqUuu/KzA4yjyXIpSxiwNFxQ4md+1uhCEOeSfq
+	 hxyr7GSnxvtc8L9TGXzSyKwTtjwVnXMYwkVrN90AiN5tPeYvVdTv06tEgBXCIDASM8
+	 icGakY5OQYY4SAquktUqlFjhYITqWZ5O1padbkIIfZfDTc/KMVWxO7nkiFBQzXjmNt
+	 Kx9yKhv2Ux2/tPyqlUl2XlyEdKXABMT7ndYV3EnqvTBi0VLGdc99eABn79FariFy/V
+	 RafTevuXdCUaQ==
+Message-ID: <f1269f60-4347-455a-819e-6b35177cca3c@kernel.org>
+Date: Tue, 19 Aug 2025 16:28:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,52 +50,96 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] iio: mcp9600: Add support for IIR filter
-To: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+Subject: Re: [PATCH v2 1/8] dt-bindings: iio: imu: Add inv_icm45600
+To: Remi Buisson <Remi.Buisson@tdk.com>, Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
  <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250818183214.380847-1-bcollins@kernel.org>
- <20250818183214.380847-7-bcollins@kernel.org>
- <f8e95533-c486-442f-a186-5e746dad2f4c@baylibre.com>
- <2025081910-arcane-parakeet-ded8c5@boujee-and-buff>
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+References: <20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com>
+ <20250710-add_newport_driver-v2-1-bf76d8142ef2@tdk.com>
+ <65d7009e-dc4a-44b4-88fe-b5c7e1ecdfc1@kernel.org>
+ <FR2PPF4571F02BC2C08BFD80F57AC4F45AA8C30A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <2025081910-arcane-parakeet-ded8c5@boujee-and-buff>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <FR2PPF4571F02BC2C08BFD80F57AC4F45AA8C30A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/19/25 9:11 AM, Ben Collins wrote:
-> On Tue, Aug 19, 2025 at 09:05:39AM -0500, David Lechner wrote:
->> On 8/18/25 1:32 PM, Ben Collins wrote:
->>> From: Ben Collins <bcollins@watter.com>
->>>
->>> MCP9600 supports an IIR filter with 7 levels. Add IIR attribute
->>> to allow get/set of this value.
->>>
->>> Use a filter_type[none, ema] for enabling the IIR filter.
->>>
->>> Signed-off-by: Ben Collins <bcollins@watter.com>
->>> ---
->>> +		if (data->filter_level == 0)
->>> +			return -EINVAL;
+On 19/08/2025 12:18, Remi Buisson wrote:
+>>> +  interrupt-names:
+>>> +    minItems: 1
+>>> +    maxItems: 2
+>>> +    items:
+>>> +      enum:
+>>> +        - INT1
+>>> +        - INT2
 >>
->> To implement Jonathan's request from v5, drop this error return.
->> We'll also need a separate bool data->is_filter_enabled field so
->> that we can keep the last set filter_level even when the filter
->> is disabled. (i.e. data->filter_level is never == 0).
+> Hello Krzysztof,
+> Could you please help me understand the proposed simplification?
+>> This can be simpler
 >>
->> This way, if you set the filter level, you can enable and disable
->> the filter via filter_type and still have the same filter level.
->>
-> 
-> Thanks, David. This is exactly what I've implemented, plus the
-> filter_enable attribute.
-> 
-> Adding the ABI doc updates as well.
-> 
+>> minItems: 1
+>> items:
+>>  - enum: [ int1, int2 ]
+> This should be the one-lined "original" list.
+>>  - const: int 2
+> I don't understand what this "int 2" does.
+
+space was a typo, obviously
+
+> Why do we need a const here ?
+
+Because you cannot have here int1. Order of items is fixed.
 
 
-Don't add the filter_enable attribute. The filter_type attribute
-already does the job.
 
+Best regards,
+Krzysztof
 

@@ -1,145 +1,187 @@
-Return-Path: <linux-iio+bounces-22997-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22999-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7DEB2C7FF
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 17:07:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C7CB2C815
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 17:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2FFD1C2576B
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 15:03:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB3035C410E
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 15:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7AAF27AC21;
-	Tue, 19 Aug 2025 15:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E457427FB2D;
+	Tue, 19 Aug 2025 15:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lM46UYUv"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="nOjVpYf1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2077.outbound.protection.outlook.com [40.107.101.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA7C1FBCA1
-	for <linux-iio@vger.kernel.org>; Tue, 19 Aug 2025 15:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755615781; cv=none; b=M+tkh4p7lnOgLrBMNO16lYXKE0IQsSQv6VsHjfsmgx+VTWG2iJRxdKydlAH4TK3ZGlVsd7Ue5CHPJnmDDc4WTeF4Th2eEppD9fiTpRom4IBPLTrH2ky3YVeWoOZG3nynJ0CnXSVIqhr+60k44JDSJFT476GAPRRHNn81nTgvHsA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755615781; c=relaxed/simple;
-	bh=nDsBN31ZPTJxWv5+xI/XKIMoevKJa238JoEMH3TkX7g=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=nePLFm5dGiG9ecg4pvK7o//1ukZZmcRfbxcxfSSIpRAaFnz0fS5CHh+lVqClOQX5YCVQDLsbIV1HsCz9StxlyzS3vWFuJfRQVFg2unyQqTDdxEVSqiI2oHejaBOddExp85X0o0K5XPyCs02iyCUXQmSNQDWZz/lDhMZsV9pHEHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lM46UYUv; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3b9e414252dso2616740f8f.3
-        for <linux-iio@vger.kernel.org>; Tue, 19 Aug 2025 08:02:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755615777; x=1756220577; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=k7444yQJ0rbL29maRl29fRLR2UuJK6Q0bhtUk89IdD0=;
-        b=lM46UYUvzuwBGRf6sqgIXwzjuOMkbQsnmFtz2+R8hLhfxzivfroRVDUEcjweD5prk8
-         bRg1SE5HuXpjI9KO2/heIhzQ0cFW4ERxBT+XWl5NnmvXQMf6mXfdQVDHh53JBAInmrsU
-         l8+jGse2VJZgbvo3TKpl9Tm+VBwzDf/T6vZgFh8tp/J1nSwEsvU+BmESCJtvoObHa6Ne
-         RLXel9FqWM4NdtD55ZPEzxNPnbzvuNZizhIV3oXGcKtrEpP/Twlas1K+63+HVF/4Gtpw
-         hCq1nrkIso071vnzo6LU1BuVtwcBZpkUv7sFskQpq/HJeVTUETNYiqcsoxs9d29PVSyf
-         9bOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755615777; x=1756220577;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k7444yQJ0rbL29maRl29fRLR2UuJK6Q0bhtUk89IdD0=;
-        b=MFgs7gb3yDnjJyWRTan8g+TxI2zmtVQk+Iy8XuXrGV/6cFiVGzXNiLebxIh7mhFB9H
-         s8CtH0tvKUCdf0LYZemgVyQ/anuzs2EBuMwF8wGPu0W9Z+JnRznkR3eiq3m3To7r0YUw
-         tj6WQQlP2CVX8u9wR9ARkkoTqXGspupriFiDuA6Gg19xfRPx5hO2aiPlmQ9ynAGiZmYs
-         k3zFOwYG3wLA6R79S+vaAbwXEznyiZupPu2M98FF4p3VHZp90rtwuCGQginirNrLoYCA
-         H3DQJ4ZFuIPB9liGCx95N3rqEnMBczPifXrmepDDZh1dinbmjdkrpWTOHiJs7yyktk6g
-         BQng==
-X-Forwarded-Encrypted: i=1; AJvYcCXd9BXRIQLAQdXdOlzkNWheDPB8I/SJGkoZdHUyII2B21QiTsG8PazTxRIhAN+jzpi74bAWqJ6ptlQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywfz8Km6+q2ftXELYvFDYMAkh+vOGY38po0xnd3soExpvFtT97H
-	Azvf2+zDMaEv4MfbKBL6SSthb6y2pM0mcSZgpSpN6S0Qe0hgm/eYW6KeHBBPKQ1zOy4=
-X-Gm-Gg: ASbGncuxcn7bGzeLaXEx49dQz/XcVLkPQN/4DFyOBTXMXpaKCvyuRgzUC+DRXWRticA
-	hyUIdRt61NfNBJh9I3Za4bQzSSkJwjWu7XCTiiLuLZ7g8smpHCAjta4ywlIAPW/1Y9VQB0Zq9tU
-	ikuJ3Jl5seqTXV7tKEKvXJzRMdztKofysG2HBUL8o/EaibSVSZNEUqNiYjOfArb3QuG0TX15W+4
-	N0nNEqOXb3fqx3Zi9xgAWOQV8zgMQdqQf827K9h0OyxoHFvmKrzPsWOniIHPKprQ9cWKDH1CS0l
-	PqoIZ54iZju+N3ckK55IyoM2WPk2RMJ7bCBoD9fN3sb7zu+/ZRuX3xM0hfZBkzQOeU9j4bNqA/L
-	y8Grx7PocRq+R3R+pVZdolYBa2l/1UwfI0M4VTg==
-X-Google-Smtp-Source: AGHT+IFWnJ6Oo82ofz39gNSEwN0Z3yDLui3rTcpuA0COSeut86mLsEFA0jwdaleJOlWjIR41+mglKw==
-X-Received: by 2002:a05:6000:2404:b0:3b7:9d99:c0cc with SMTP id ffacd0b85a97d-3c0ed6c38ecmr2311284f8f.51.1755615776853;
-        Tue, 19 Aug 2025 08:02:56 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3c074879864sm4134355f8f.13.2025.08.19.08.02.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Aug 2025 08:02:56 -0700 (PDT)
-Date: Tue, 19 Aug 2025 18:02:53 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Waqar Hameed <waqar.hameed@axis.com>
-Cc: Song Qiang <songqiang1304521@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2 next] iio: proximity: vl53l0x-i2c: Fix error code in
- probe()
-Message-ID: <aKSSHTdJf5QoYiRx@stanley.mountain>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDEE27F18F;
+	Tue, 19 Aug 2025 15:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755615918; cv=fail; b=lGRnWr36C1dB+xs+2nVLOc4/P1Zkv8T3VYU8J0qr7A0NC9btI1zak3yOtFxZ5QpGq1TEgop/o4lLRjaP3cBPCWI1kF5yWqzs2EKKPY11/a94eoqJuTKZBbTgRBBCekav5O3nNxeXzh/ai1rEhMQOkPMpDDqFwG7B31/3TYsFga4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755615918; c=relaxed/simple;
+	bh=BOeZQEkuzH4H4Zb2M5ex+1BSGiLSzTz2Y8uLYAIvCok=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WkSGFz8aQ2EnTK2Kk9AQmezrFn8XV7hRK+GJydAHs6wS/dzkRchC9SHtssL/dJjBO6J4Q6AcWrJbOArYFcbuBzQMC6fxpmygMxZE5TFwUZPN0m9M7V+bFVFhOMD+dPDZ8vkFsyraZ8XwKUXCmQ0lVqR0vn2kQFU/BPknurOH3aA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=nOjVpYf1; arc=fail smtp.client-ip=40.107.101.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vDxpsz3oTrU5CVl1Ke4h2zJYrvp1LQTtr/XoHls+oLG6QR2xxjEWqf4fDxurLjjbxKULC7mBGgP1RSptLIv3WwfGT9w9Zwbl7bclDfgBs228NuDGMd4qZ01mWFPzgSIdTDstf0MrHXASPOG+OFU8X5W4IHXO82/arbNuLt1PNO02rUBecONJvYQdCk82c/I0h90CNLhLlLvwKA0Rw3e2qPcDLDJ2w8cPs8K6vTpZjbxzF38QmNQvGZFyVfVOq4QajMu3KG8FvkXWID1A+03EnROkJfMz8BrV+kpe1sTLT1f1YOm8zRFxv5Uj9QMpEeiNbvTaVq/HFjPc2GmxIzq3HQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EUj+GcilTQNry3tbuJmUG8ur83xO/rILt9yNghGiIFA=;
+ b=T3AXFOJx6/A6h3SWqI6ljwoR6Vqs67OLD/7Z09odOKz2NPV+wAHokJI0hwwImpVjXZu51HIM94lCMbqirlSMs1mPSCHIQao+tDY8wPh3D56fn6mQh4hPbG+X7taweDBlFValf1jqanzQppjqZvSsIxxB0QugQNhV00pAu9cEIC9sKXBsjzZYSmth6IiOl10CKBIF0JpRo0BcXxRd9NwB49k2EJY3T1/BhtrrIx5SN5kH7wsiWRaeH0nF/BDj7BhkLFe9YQiF3qwRN44FDkToIFITyZTmIZA+LFkhgutCqO9kqjUC8c3PAI8NIdctajCecYA7CPsb062ze7XmsSIafw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EUj+GcilTQNry3tbuJmUG8ur83xO/rILt9yNghGiIFA=;
+ b=nOjVpYf1K+D/lchixbN7ahuEgbXkFxH2vNGPq531oLl7ILnqtJdI9NG+bu/SaUt+D81Pu6MMRzxsdFlJy0ddcngdExXVb+a+4IkRmY+9emFt9Yd5YzPtmr0JqkOlfbp1P0+ZsR+HiE9/WABUCBmhurHFbqOhptiUiWa240DumIc=
+Received: from BN0PR02CA0033.namprd02.prod.outlook.com (2603:10b6:408:e5::8)
+ by CYYPR12MB8937.namprd12.prod.outlook.com (2603:10b6:930:cb::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Tue, 19 Aug
+ 2025 15:05:12 +0000
+Received: from MN1PEPF0000ECD4.namprd02.prod.outlook.com
+ (2603:10b6:408:e5:cafe::57) by BN0PR02CA0033.outlook.office365.com
+ (2603:10b6:408:e5::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.13 via Frontend Transport; Tue,
+ 19 Aug 2025 15:05:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MN1PEPF0000ECD4.mail.protection.outlook.com (10.167.242.132) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9052.8 via Frontend Transport; Tue, 19 Aug 2025 15:05:12 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 19 Aug
+ 2025 10:05:11 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 19 Aug
+ 2025 10:05:11 -0500
+Received: from xirsalihe40.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Tue, 19 Aug 2025 10:05:10 -0500
+From: Salih Erim <salih.erim@amd.com>
+To: <salih.erim@amd.com>, <conall.ogriofa@amd.com>, <jic23@kernel.org>
+CC: <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
+	<michal.simek@amd.com>, <linux-iio@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<devicetree@vger.kernel.org>
+Subject: [PATCH] MAINTAINERS: Update xilinx-ams driver maintainers
+Date: Tue, 19 Aug 2025 16:04:48 +0100
+Message-ID: <20250819150448.1979170-1-salih.erim@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB05.amd.com: salih.erim@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD4:EE_|CYYPR12MB8937:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d7fd2a4-8901-40a7-5e1a-08dddf31cbc3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?y6ZfhsIoYVuFmkFgs2vRTOBXAv1WyxV7VGFRFuGMpI9QSwObNLD2zu6UkDiP?=
+ =?us-ascii?Q?BtxEWv6HRGsBw0n5a9bWv6xUTso459tVm0gXSUxKPsZLr3huApZXDSyngzfQ?=
+ =?us-ascii?Q?fIUhHyvgHp9z2zQNqhXzX71ntk+oY9yf5YBitmikAL4byrcmbMCG5FB01gt3?=
+ =?us-ascii?Q?G9xLlXu8W6ZagQ9AdZOhxBBRHmHb1f728suUKO2tT/6hAcNwMCXAedEiHXrX?=
+ =?us-ascii?Q?Oza3Qdia0mD6eeS7QgEHBp1f7HFQtmPuJW/JK1wYPmMmvb7Wd6puEvzE/Xtg?=
+ =?us-ascii?Q?asYr1PG2XdE3ftWZAPMhOE34am1lnZw15UXvayCwBDwkPWrf5UMJ/WvQZ1vZ?=
+ =?us-ascii?Q?Cw1d9PRp/+1xt5Eg8UMvaDfPHLFFqQkxJIX3x8cNvcDiHFjOPO1DYALatk0a?=
+ =?us-ascii?Q?pmjf7+khvHQ/NR6wKpB3xNa0kskeflF3jMm7Ybh0BgwnMD9Wyv52nfWN3Yhq?=
+ =?us-ascii?Q?aGQrj5uQTCcyJhw7gzu5ugY0QRjm2CPtk64SzDVgpz7PSLAh3JMEVD5dqkUc?=
+ =?us-ascii?Q?rbacFdQ9BOBHZIMcjgQoRw1g5cbseZMyezjBFr0a+VggDug8CG98JZ9Fm6+/?=
+ =?us-ascii?Q?b2eLrRkzPgIayNdJ7NYbeEz20sOvocJMHtiSAj/9Jaii28wEy+BjJF1Z0W4+?=
+ =?us-ascii?Q?zZgA3V5zrcg41ZXqp3RVtL80gcPJB93kDmH+Vk1mQIWUrD50d+ud//22nGB0?=
+ =?us-ascii?Q?R0F86WWYNd9ekeL8ughRc72Re0rnZ2VKLGuwjac2IRca/JoMflEzqziqr6ol?=
+ =?us-ascii?Q?L0ZWg5Adat2wwX3T6XNkmRqjCNY6abs2DrEkaHsi/AoFMnZALTPlsIR6zuTX?=
+ =?us-ascii?Q?yXxSzxYgRB0/l0n+1pNBzj+hNSBTP3iyXZk/924tm07J6N6ddsZ9Dx2pqOl4?=
+ =?us-ascii?Q?Km9KUUUYCw9PUy9cTQC2ZfQqprO3KAGvt8bZ18AwXoSe8ZjINSnh0hwV23gG?=
+ =?us-ascii?Q?4geokLRDUWqtxBy+ePZly7o/reShBoPOi0fUDSOYvXId7edvHSAgwdmDO6Z9?=
+ =?us-ascii?Q?2E1BWdwJKQ8zTWp+y9xcz9UP6+zwNHYrEtCmXR+voqfGxQrlJdKpo4XaYmN1?=
+ =?us-ascii?Q?nqEvOuihWx82deu5yQJi48GCeZVNF9I0zGrXQ32JqAvMQRvGGfXPyAhTSXd2?=
+ =?us-ascii?Q?NB9eFammUXwqj/GBQiznGTLsrokbpTbaer3wlDDkwaFMyQBc1sx5WaQdxgoX?=
+ =?us-ascii?Q?3DBevr/Rj7RXVZA5AghG4cqJ6AaYjUGGTlkhJfYBN6R6yIrkWDm16UUIVYb6?=
+ =?us-ascii?Q?Fpo2A8dXwm4zyEA5+stx99Z7UULkXSjAaYURuZqy4g9jb3o4CtW8ky3o3CpN?=
+ =?us-ascii?Q?GahQ4ZVPQQz1hhQbPUHh+W/4g/2QPauqH54VAO7K8Wv81i8LwTHuhqlW0orH?=
+ =?us-ascii?Q?Hi5WYDrkb7z8SQA+OL5gTF6JrBhQtUcVtXS7VoHF6QVOpsFxVuwOlRbSxRBx?=
+ =?us-ascii?Q?IakycHtNRKJSmH4OjlG4f7tnVceU0ucoUUOVQ53g2OZSpa39ejbIFA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 15:05:12.0983
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d7fd2a4-8901-40a7-5e1a-08dddf31cbc3
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000ECD4.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8937
 
-Commit 65e8202f0322 ("iio: Remove error prints for
-devm_add_action_or_reset()") accidentally introduced a bug where we
-returned "ret" but the error code was stored in "error" if
-devm_add_action_or_reset() failed.  Using two variables to store error
-codes is unnecessary and confusing.  Delete the "error" variable and use
-"ret" everywhere instead.
+Removes Anand Ashok from maintainers and adds Salih
+and Conall as new maintainers.
 
-Fixes: 65e8202f0322 ("iio: Remove error prints for devm_add_action_or_reset()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Salih Erim <salih.erim@amd.com>
 ---
-v2: Fix typos.  Add Andy's r-b tag.
+ Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml | 3 ++-
+ MAINTAINERS                                                    | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
- drivers/iio/proximity/vl53l0x-i2c.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+diff --git a/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml b/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+index a403392fb263..3ae1a0bab38f 100644
+--- a/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+@@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Xilinx Zynq Ultrascale AMS controller
 
-diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-index 696340ec027a..ad3e46d47fa8 100644
---- a/drivers/iio/proximity/vl53l0x-i2c.c
-+++ b/drivers/iio/proximity/vl53l0x-i2c.c
-@@ -311,7 +311,6 @@ static int vl53l0x_probe(struct i2c_client *client)
- {
- 	struct vl53l0x_data *data;
- 	struct iio_dev *indio_dev;
--	int error;
- 	int ret;
- 
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-@@ -344,13 +343,13 @@ static int vl53l0x_probe(struct i2c_client *client)
- 		return dev_err_probe(&client->dev, PTR_ERR(data->reset_gpio),
- 				     "Cannot get reset GPIO\n");
- 
--	error = vl53l0x_power_on(data);
--	if (error)
--		return dev_err_probe(&client->dev, error,
-+	ret = vl53l0x_power_on(data);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret,
- 				     "Failed to power on the chip\n");
- 
--	error = devm_add_action_or_reset(&client->dev, vl53l0x_power_off, data);
--	if (error)
-+	ret = devm_add_action_or_reset(&client->dev, vl53l0x_power_off, data);
-+	if (ret)
- 		return ret;
- 
- 	indio_dev->name = "vl53l0x";
--- 
-2.47.2
+ maintainers:
+-  - Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
++  - Salih Erim <salih.erim@amd.com>
++  - Conall O'Griofa <conall.ogriofa@amd.com>
+
+ description: |
+   The AMS (Analog Monitoring System) includes an ADC as well as on-chip sensors
+diff --git a/MAINTAINERS b/MAINTAINERS
+index daf520a13bdf..b4b27a31a782 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -27537,7 +27537,8 @@ F:	include/uapi/linux/dqblk_xfs.h
+ F:	include/uapi/linux/fsmap.h
+
+ XILINX AMS DRIVER
+-M:	Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
++M:	Salih Erim <salih.erim@amd.com>
++M:	Conall O'Griofa <conall.ogriofa@amd.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+--
+2.34.1
 
 

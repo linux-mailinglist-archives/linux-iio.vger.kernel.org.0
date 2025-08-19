@@ -1,50 +1,62 @@
-Return-Path: <linux-iio+bounces-23002-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23003-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D24AB2CB4A
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 19:47:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593F8B2CB4E
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 19:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D85433B49E2
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 17:42:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6181A05028
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 17:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D14230DEAD;
-	Tue, 19 Aug 2025 17:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE744307AC3;
+	Tue, 19 Aug 2025 17:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ieB4k9Cp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="suyIBS+H"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9572E2297
-	for <linux-iio@vger.kernel.org>; Tue, 19 Aug 2025 17:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E02E267B89;
+	Tue, 19 Aug 2025 17:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755625212; cv=none; b=mDV19wgjR36pB18g5fXTt+qqCWTTFe6fPxuew1trvDFGnWK3CiXyimlcvsa4/9ykWmNalYwezXwkb8dXBGsHmLdEtlZ3G2yVDd77yNoRk7Ft761pMfSYTIBVWOxOqVGbHI08lCNs71St2AvfwUGVM3Plnk9epvYlP+0YoY5pfBQ=
+	t=1755625526; cv=none; b=L4DS1RV/krcYFaX0/18AsQPX03tK/sya8zMFi3YuodBWW9PZRR285q93wda9JJXwotKkgCTd5pT/TgWGvWTo2ADq/EOtp5/8/gY//anBnxflhpJtrfy5o4FTNpkUoKmfjBzppumQ/S/z551yhL1tqm+y1tcBc9PYUcluML2fox0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755625212; c=relaxed/simple;
-	bh=BAqRdHNrTfdNVrqcdVyA+LO5n2MJDiMaJKjgQ6KsFuc=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=e86yTsgInS+fxcbP9g4T5nBbI0MPb0FU0w4ZgamVcEMXGevrDNVNFnBU3sVRgYd2g0wCTDC+MyfKud6AT92VDUbuJ1LcNyDXGs+05PzCdypl72aqqXrPholmfPRpSWw/lR6py5fw38LB9M/p6nBTI3znR8HsGNJKFWCwxukfZFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ieB4k9Cp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F67C4CEF1;
-	Tue, 19 Aug 2025 17:40:10 +0000 (UTC)
+	s=arc-20240116; t=1755625526; c=relaxed/simple;
+	bh=DtrKhkB5ryM3ThMC1G9NOf7X3JSBqYTo0pkcmv1KFFw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s7Qtaa/exu+dJENZnipM1UVf+ljVtWx3RPy5Yg/cVTcu6BJfdP1IqIQw+Vkd/oFffHiE1sR1UWE8bMYsUp/PmlFMMb5zT81/mLQuW54EA6LjP4VKqr6NElxjVn6mwjhM2MpU6ruYbGHyFsUpOId4OTrQcwh7fVi/wl3mHKVPvcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=suyIBS+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30523C4CEF1;
+	Tue, 19 Aug 2025 17:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755625211;
-	bh=BAqRdHNrTfdNVrqcdVyA+LO5n2MJDiMaJKjgQ6KsFuc=;
-	h=Date:From:To:Subject:From;
-	b=ieB4k9Cpk4bXrsje0+iRpxwqQLAtcpOdbdnmKa9SkrIoS+DNcZHwHaDd8W22aOzmU
-	 BMYHIMWAnRP2L1vmjYz5q+boN/c/z862GpnRTUcj77Ty/Jr331e2fIN3uxpUVoiHoR
-	 bN66jvXc3fscjmHsuQaMcMO6jp7/6nib+6NxLgryuuBHPGpW73WW4Zf4vWBfh1sB2T
-	 c16ehrC74SwyGVo6wBzzCK0KZtCY2t2POaJuISScC6aIXYsJmMFL0gTNuQhJ2tyZTy
-	 dU8WCb1qmJIVRMYXMVzNhIATwG4lrT7cNLSscN4pW4h3KVijMyYlMe/KJuzklHxJkv
-	 a1FW09vJfC/wQ==
-Date: Tue, 19 Aug 2025 18:40:05 +0100
+	s=k20201202; t=1755625526;
+	bh=DtrKhkB5ryM3ThMC1G9NOf7X3JSBqYTo0pkcmv1KFFw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=suyIBS+Hz9tOiYiyMeqt0DrLTdK10UHR/pK/mcyUh74/6m2e6llELdkzR0qKnI4Cv
+	 AFNxspBPi6ItduOnJtf8IF+rd6D2J0FdtsS/UDAiFKF5yNBZMCToKyYuP2hrQ2wS0L
+	 AQyo0gcajG0jPk4a37rYP6TSWLL4yMqjy6evj6NyIEPVnIIoCFsgjFFLEGTFneX6pU
+	 WH1iH9znN2nUtR1qpNTmENsDEyskR2M2fcLhQhgUu0v2sG/bcaOcFdk2lDyGTIIMA9
+	 NMTK+mAcPNG4nn+rKRXu1IWEpNuzt5ugp3xrTAiMWN+uTqoTB98scumWC0flba699/
+	 +ZalplsFY/USg==
+Date: Tue, 19 Aug 2025 18:45:17 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] IIO: 1st set of fixes for 6.17
-Message-ID: <20250819184005.301b9cf5@jic23-huawei>
+To: "O'Griofa, Conall" <conall.ogriofa@amd.com>
+Cc: "Erim, Salih" <Salih.Erim@amd.com>, "dlechner@baylibre.com"
+ <dlechner@baylibre.com>, "nuno.sa@analog.com" <nuno.sa@analog.com>,
+ "andy@kernel.org" <andy@kernel.org>, "Simek, Michal"
+ <michal.simek@amd.com>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "devicetree@vger.kernel.org"
+ <devicetree@vger.kernel.org>
+Subject: Re: [PATCH] MAINTAINERS: Update xilinx-ams driver maintainers
+Message-ID: <20250819184442.25f6904e@jic23-huawei>
+In-Reply-To: <BY5PR12MB4212A540F9799D6F326003388B30A@BY5PR12MB4212.namprd12.prod.outlook.com>
+References: <20250819150448.1979170-1-salih.erim@amd.com>
+	<BY5PR12MB4212A540F9799D6F326003388B30A@BY5PR12MB4212.namprd12.prod.outlook.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -55,87 +67,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-The following changes since commit 8f5ae30d69d7543eee0d70083daf4de8fe15d585:
+On Tue, 19 Aug 2025 15:10:15 +0000
+"O'Griofa, Conall" <conall.ogriofa@amd.com> wrote:
 
-  Linux 6.17-rc1 (2025-08-10 19:41:16 +0300)
+> [AMD Official Use Only - AMD Internal Distribution Only]
+> 
+> Acked-by: O'Griofa, Conall <conall.ogriofa@amd.com>
 
-are available in the Git repository at:
+I'm not entirely sure why but b4 only picked up:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.17a
+[PATCH] MAINTAINERS: Update xilinx-ams driver maintainers
+    + Acked-by: Michal Simek <michal.simek@amd.com>
+    + Acked-by: 
+    + Link: https://patch.msgid.link/20250819150448.1979170-1-salih.erim@amd.com
 
-for you to fetch changes up to 43c0f6456f801181a80b73d95def0e0fd134e1cc:
+Anyhow I fixed it up to include Connal's ack whilst applying.
 
-  iio: pressure: bmp280: Use IS_ERR() in bmp280_common_probe() (2025-08-18 19:22:18 +0100)
+Salih and Connal, thanks for stepping up.
 
-----------------------------------------------------------------
-IIO: 1st set of fixes for 6.17
+Jonathan
 
-Usual mixed bunch of ancient issues and relatively new ones.
+> 
+> > -----Original Message-----
+> > From: Salih Erim <salih.erim@amd.com>
+> > Sent: 19 August 2025 16:05
+> > To: Erim, Salih <Salih.Erim@amd.com>; O'Griofa, Conall
+> > <conall.ogriofa@amd.com>; jic23@kernel.org
+> > Cc: dlechner@baylibre.com; nuno.sa@analog.com; andy@kernel.org; Simek,
+> > Michal <michal.simek@amd.com>; linux-iio@vger.kernel.org; linux-arm-
+> > kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
+> > devicetree@vger.kernel.org
+> > Subject: [PATCH] MAINTAINERS: Update xilinx-ams driver maintainers
+> >
+> > Removes Anand Ashok from maintainers and adds Salih and Conall as new
+> > maintainers.
+> >
+> > Signed-off-by: Salih Erim <salih.erim@amd.com>
+> > ---
+> >  Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml | 3 ++-
+> >  MAINTAINERS                                                    | 3 ++-
+> >  2 files changed, 4 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> > b/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> > index a403392fb263..3ae1a0bab38f 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> > @@ -7,7 +7,8 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+> >  title: Xilinx Zynq Ultrascale AMS controller
+> >
+> >  maintainers:
+> > -  - Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+> > +  - Salih Erim <salih.erim@amd.com>
+> > +  - Conall O'Griofa <conall.ogriofa@amd.com>
+> >
+> >  description: |
+> >    The AMS (Analog Monitoring System) includes an ADC as well as on-chip
+> > sensors diff --git a/MAINTAINERS b/MAINTAINERS index
+> > daf520a13bdf..b4b27a31a782 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -27537,7 +27537,8 @@ F:    include/uapi/linux/dqblk_xfs.h
+> >  F:   include/uapi/linux/fsmap.h
+> >
+> >  XILINX AMS DRIVER
+> > -M:   Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>
+> > +M:   Salih Erim <salih.erim@amd.com>
+> > +M:   Conall O'Griofa <conall.ogriofa@amd.com>
+> >  L:   linux-iio@vger.kernel.org
+> >  S:   Maintained
+> >  F:   Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> > --
+> > 2.34.1  
+> 
 
-adi,ad7124
-- Fix channel lookup to use chan->address for indexing array.
-adi,ad7173
-- Stop accidentally enabling more configs than supported at one time.
-adi,ad7380
-- Fill in missing max_conversion_rate_hz for adaq4381-4
-ams,as73211
-- Fix uninitialized holes in scan data exposed to userspace.
-bosch,bmp280
-- Check for error when requesting optional GPIO rather than simply assuming
-  success or a NULL return when no GPIO provided.
-invensense,icm42600
-- Change error code returned to -EBUSY on a temperature read with neither
-  accelerometer nor gyroscope in use.  Reduces chance of misinterpretation
-  by userspace.
-kionix,sca3300
-- Fix uninitialized holes in scan data exposed to userspace.
-maxim,thermocouple
-- Use a DMA-safe buffer for spi_read().
-renesas,isl29501
-- Fix ordering issue for big endian systems
-renesas,rsg2l
-- Fix an underflow issue around suspend/resume.
-- Make sure driver data is in place before enabling runtime PM that uses
-  it.
-rohm,bd79124
-- Add missing GPIOLIB dependency.  May rework in future to allow this to be
-  optional in future but for now this is the least invasive build fix.
-
-----------------------------------------------------------------
-Claudiu Beznea (2):
-      iio: adc: rzg2l: Cleanup suspend/resume path
-      iio: adc: rzg2l_adc: Set driver data before enabling runtime PM
-
-David Lechner (6):
-      iio: accel: sca3300: fix uninitialized iio scan data
-      iio: proximity: isl29501: fix buffered read on big-endian systems
-      iio: adc: ad7173: prevent scan if too many setups requested
-      iio: temperature: maxim_thermocouple: use DMA-safe buffer for spi_read()
-      iio: adc: ad7124: fix channel lookup in syscalib functions
-      iio: adc: ad7380: fix missing max_conversion_rate_hz on adaq4381-4
-
-Jean-Baptiste Maneyrol (1):
-      iio: imu: inv_icm42600: change invalid data error to -EBUSY
-
-Jonathan Cameron (1):
-      iio: light: as73211: Ensure buffer holes are zeroed
-
-Matti Vaittinen (1):
-      iio: adc: bd79124: Add GPIOLIB dependency
-
-Salah Triki (1):
-      iio: pressure: bmp280: Use IS_ERR() in bmp280_common_probe()
-
- drivers/iio/accel/sca3300.c                      |  2 +-
- drivers/iio/adc/Kconfig                          |  2 +-
- drivers/iio/adc/ad7124.c                         | 14 ++--
- drivers/iio/adc/ad7173.c                         | 87 ++++++++++++++++++++----
- drivers/iio/adc/ad7380.c                         |  1 +
- drivers/iio/adc/rzg2l_adc.c                      | 33 +++------
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |  6 +-
- drivers/iio/light/as73211.c                      |  2 +-
- drivers/iio/pressure/bmp280-core.c               |  9 +--
- drivers/iio/proximity/isl29501.c                 | 16 +++--
- drivers/iio/temperature/maxim_thermocouple.c     | 26 ++++---
- 11 files changed, 133 insertions(+), 65 deletions(-)
 

@@ -1,258 +1,367 @@
-Return-Path: <linux-iio+bounces-22982-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-22983-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F05B2C4CC
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 15:11:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C08FAB2C685
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 16:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97966724B4B
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 13:04:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92E0B7A5838
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 14:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF79340D91;
-	Tue, 19 Aug 2025 13:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742DD2147E6;
+	Tue, 19 Aug 2025 14:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="UCF11LiS"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PGEkbVgu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00549402.pphosted.com (mx0b-00549402.pphosted.com [205.220.178.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A3333CEA0;
-	Tue, 19 Aug 2025 13:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755608496; cv=fail; b=P8G7/DC/v1FCanZAeO79qLszu557NUDokUtjvpoyM1xu5ywubWwGC/bo6YQ7Cv21qjCwm6hLC+7xp1Zn7xnavncG+EF7JlTqHOTQMSkt3/iI23XfpN6OW93QlzN2asAz9BQu2Z/4zgasjy9zNGNWGdxrx2ujWbK9TqNQYiC9+VY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755608496; c=relaxed/simple;
-	bh=PhFeykH/7vxkgEEXzoT72G3rWm6dB+V/qViANA/TlLA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=K3xbTDKo0TDQbVaHFDMiuYJHkvOD9fSf7MAi6N7nK94mwugapvkZ04kibL3cx//+0ZQObla55EcJD5DJj+fOx+tTDXR84Liov7wLoTlVvCTf3uvpN4I89uX4VChVmRg/wayZQ98IgZlNomnLuK0MP3EaMtzz3YVXFE1gy3QpGKg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=UCF11LiS; arc=fail smtp.client-ip=205.220.178.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
-Received: from pps.filterd (m0233779.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57INJRgP006391;
-	Tue, 19 Aug 2025 13:01:25 GMT
-Received: from fr6p281cu001.outbound.protection.outlook.com (mail-germanywestcentralazon11010062.outbound.protection.outlook.com [52.101.171.62])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 48jkbk25vq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Aug 2025 13:01:25 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C4gI2n3zWOfA/0zDS2fTQFq8FSpRtq64EpGFJY+CPVCuxGLZ6iifLotIwX4M8Mf82kDkGbldPc9t6C1MbCJGbE1hl+xFwd2iIK4OgDS3Y2BTE4jnB/oA8Y5iO2vvdjgd7VeAEt4v46qkKTMEZDZECMJp7oPmpHsYoaQxBR3vR7zZbC7PDcazAHM6orYGzXBl9qkc8kjhwg8zmMZkfUV/r2CopSZDvanMm585XW6bsSTuyXrMBX847N28r7S9jSUpQV4B1aGz/kwXL4Ja6MdLse5LZY4Bc6yOL752cQcKmEPXRjzz7ZozoRSnBa7ai92Y4nF8PN368YTb2tVNTyVNMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PhFeykH/7vxkgEEXzoT72G3rWm6dB+V/qViANA/TlLA=;
- b=e2FwRDi+M1r+sv56DyHO7jdLA/JQfDTr0839ee/+vSwXB5ENI3HMyhUJu2gtpz5PdkiWjOPO2REDgRMGUmmv2XI3t79kVijwtJN5g6jgl7xGKF2g/7wR9Re5IeaOyQCAkUEjuTa22JhojSJmn4RiN1WJdQXWP0kLsV9kIJqHz9Qehn9JvnRfGMQRLskQGTzOYUvsG3mdT/3RFGZ5xsOOAaR/9QJvjuj3GRRi2DyWIer9pJW2CRxornt9OunOm0XAmvEnU7dtVlyK4xZIqYgI4fXtpPXhrJGkcInj43rkmBIbJnXq/LvlU+N38N+N7EpULEo298BGitFGBPv90HwlOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PhFeykH/7vxkgEEXzoT72G3rWm6dB+V/qViANA/TlLA=;
- b=UCF11LiShrzeL2asK4owH7MnN6e9KrL5gwhhMwlL6KFwD3ppHTQvFEzK3iC8ThPOJlO7E8nvSuqOIugUuRN3hPyw6nLQC9cD7WQEVzL5V8PXfTB7MbfxWSs2AT7f2RwlfGHzAo1PGBGUqurseVUejEu3D/U7fxFj+CFp3CR7jm9WKCm3LmXPc5lZNavARRATJAP9/iC8xXOQDwfNR1U9K/k3WKCiBamc9agcm6uR5KKBvKc776x0ytz+2YtQB7aO2Ni+EvXR8IQz4i+1uehyyIgSumYelkpAEzrGFsNo13z3nWAO98EJPnkw5jnbStFinOo6aKxlkSIoDSXor1B8ww==
-Received: from FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d18:2::2d)
- by BEUP281MB3633.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:9f::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.25; Tue, 19 Aug
- 2025 13:01:14 +0000
-Received: from FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM
- ([fe80::903d:f362:450:c7bf]) by FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM
- ([fe80::903d:f362:450:c7bf%3]) with mapi id 15.20.9031.023; Tue, 19 Aug 2025
- 13:01:14 +0000
-From: Remi Buisson <Remi.Buisson@tdk.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-        Remi Buisson via B4 Relay
-	<devnull+remi.buisson.tdk.com@kernel.org>
-CC: David Lechner <dlechner@baylibre.com>,
-        =?utf-8?B?TnVubyBTw6E=?=
-	<nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>
-Subject: RE: [PATCH v4 9/9] MAINTAINERS: add entry for inv_icm45600 6-axis imu
- sensor
-Thread-Topic: [PATCH v4 9/9] MAINTAINERS: add entry for inv_icm45600 6-axis
- imu sensor
-Thread-Index: AQHcDPl6hHmixzrE3EqUJai+ozk2qbRlNY6AgATC/EA=
-Date: Tue, 19 Aug 2025 13:01:13 +0000
-Message-ID:
- <FR2PPF4571F02BC619F96128FE247DA2C6C8C30A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
-References: <20250814-add_newport_driver-v4-0-4464b6600972@tdk.com>
-	<20250814-add_newport_driver-v4-9-4464b6600972@tdk.com>
- <20250816131737.64905aa5@jic23-huawei>
-In-Reply-To: <20250816131737.64905aa5@jic23-huawei>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: FR2PPF4571F02BC:EE_|BEUP281MB3633:EE_
-x-ms-office365-filtering-correlation-id: 3c5d274d-09cb-419a-e3c4-08dddf207a4c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7416014|19092799006|3613699012|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?YXhuTUp0dkVKSnZYT0tPYjRMRkpBUndFYkFxbzJhZVRKNG96MzVIbFR6WTE2?=
- =?utf-8?B?ZzZTekppNjhROG9IcGdib0VMbTNnY0ErZVExVVYyQ0xTOW9weE1uV2ZQOTlF?=
- =?utf-8?B?QmloRE5ib1YzWmNRZVR6Umlkbld3TE1mVjdEVzdNcXcyd3pGZGNjRll2RGp4?=
- =?utf-8?B?SlFpYVptN1BCVkFqMXVaWVozMlg2NkM3eXVOMFpWdEdWdGt1dEJ2aUdyOGR5?=
- =?utf-8?B?ME03aDlXNm1heXdUdzcrZVV2ck9qTWdieWlheFdKTDl3eUpwUk00c1ZpdUF3?=
- =?utf-8?B?V0l4WkNQTW9wblZEWDQwU1ZuUzJJYTZlb2dmY2ZDN0xKSkFILytvYVZZTzNL?=
- =?utf-8?B?UHFaazIvQjF6YzRjSy9sdEVZT2dkeHF5YlJmUE9HbGJhQk96eGNvRTJCU0Jr?=
- =?utf-8?B?TU45R2ZoKzU3V0xmTG95MjlLdVhPcmdLUlpMK0ZrbWhLZzhYUTQyZ3RiSHNY?=
- =?utf-8?B?bkJMYkxOZDd2ZERjWnBCNHNZdGhtK1RqZzN2VnA4WlBadi8zV1dOdXlKR3N3?=
- =?utf-8?B?eU11OUdmL053YytJQVBsLy9jWmoxY0JmeU1LWWxjNVFvdFVqcTYzYWd0OW1q?=
- =?utf-8?B?UURVMDZZWGJQTGZHVFdiejhsejhJazA3Q2hQSDMrZnJGOGlQaVJWNXhiTkJP?=
- =?utf-8?B?ZXV3SVpOTGs4d1NaK2JMRllsMlZSeFN5SENvanpJTmFlenJpVW1DVFlMaXpt?=
- =?utf-8?B?bFdVT0d6NXAyMXM4bUVnbUlXakVDTXEraDl2Q09aTmdVbWU2NGQwamlqY2dG?=
- =?utf-8?B?dEhIcW93bDFON0lveDhOaU90dkVWNENLOGkvWXdpbHd0QXZ4ZU92N0dsalhC?=
- =?utf-8?B?QmFJZUY4VVZDZWhQOC9pZU85bU56alc0Tjd1THNnZ0xxL0djeVJwcWhiSURl?=
- =?utf-8?B?L1ltbTVVQ2oyZkFhTUFOYmZsL3YwakxDZURkbEEwdVZEMGFSemVzR3lxREti?=
- =?utf-8?B?UUczSmZjaytnZGJEKzNxanVVWGJQelJEbUxEYTJzb3MxRDNIMEZJSjdZZHZG?=
- =?utf-8?B?NGVzUlU2U0EzcUxPT01EYXcreTlDYjZ4eldaN004Z3UyNzBaNHJ3clFLRVpZ?=
- =?utf-8?B?YVFvVTl3WmVHb1ZHelhRZXRiWm9CZDlOQkJ0OU9TS25JWHBTYm9oM0JjaS95?=
- =?utf-8?B?T25mS20vQk1Va0M4TnRjemozdXh3UER2MnpqYkhUeFdjUTR3WHJDeXRpcVk4?=
- =?utf-8?B?Z3QvOFQ2SUxaV0hvNW9zRUR2QjUzRkk3Vkd4N01CVzZDSkU1RUJEN09CVFhL?=
- =?utf-8?B?cmk3WWl0REZ3MU5BU1QrYWQxNXBMS1orM2pKNnBGRmhkODEwckljaGhQdEJs?=
- =?utf-8?B?TW5LNFNaempvZE4yV0xQT1lJdXNhMUFQSERXMjNmZkh4bWppRitaaWpvUmlF?=
- =?utf-8?B?STJZY3hSZnJnNWU4SjlTb1NqdlBWQnRld3oxb0ljNGlCN2d5R0VmdXpqcnpx?=
- =?utf-8?B?TWxOTWlZQW8vYU1YeFcvTUdja3VsTkU0M25RM2haeVkxazQxOW5iL0k0R2ky?=
- =?utf-8?B?WUw0WjI1OHkxdTFCMk5MNmVCMFlCVU1scXhJaFNlczNsRnRPRlkyWUIydXlp?=
- =?utf-8?B?QUdtNDlwdXFSeGRxdDV3MzdhTkRjSElFNXJuemlCdyt3ZEkvNnRvYmxiZmZu?=
- =?utf-8?B?MUo3Q3pDUnBJTE56UTk2VndHTDMwdVJRWWNnOEZDOGlMbDRxWjFoWXZjd3ha?=
- =?utf-8?B?SmFsY0RPUExRRXpGSUl2VTVXeUtraWxpTC84aUUzSnVIcWczUGNzL1J3b0VR?=
- =?utf-8?B?S3BvUWJDWnhpcEJiTjlVNjBBZ3B1bzg3Zk5ZdXpVdzRWZjJZUUd2MUJJZWR4?=
- =?utf-8?B?Mkxwc0dMd0RpME1IUDFqMUpYREd3ZHJLRldhaUNKcGMzUDFnUmJ3MnhHR0Ns?=
- =?utf-8?B?NXI1TnUrTGc1ZUZ3clE0SFVlNHk3bXREUEdXeG9rZlVsSGpURlBUYTRGaXc2?=
- =?utf-8?Q?IcEawolKOArt7aWNR39eU15fJl2Hbf1l?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7416014)(19092799006)(3613699012)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?RkQwbGhHTlBhNldUMVhGbE5SRUt6bHRpN2QzM295NTMrWXlFMStUL1JrZjVJ?=
- =?utf-8?B?a2t1L3dPeDVCVTJ4YzZmVVAzYVEvOXFhUmFnYTFPZHBHWE54UGxveThoN25U?=
- =?utf-8?B?TWM2OTQzbXB1a2ZiK1pLODhSNE9LZUxUSC83aktXTDMrMGF4dmpuQ1ovcXdr?=
- =?utf-8?B?bVZaeUM1aWZtWUcvanVuc1hkQldmdDNlSUQ3MCtyUFhlREQySXNCNkt0YW5J?=
- =?utf-8?B?M1g3bW1UT2lEUjAwYUs2S2pzVE45RTdJUm8yQ1d0ZkZsVHQvc2NTbnFUcytS?=
- =?utf-8?B?Sy8yUit0K1ZLUlkyWGZJZ2xIa2hueHlXa1ZvQXZrTFFiN21IdHFqRE5LVHYy?=
- =?utf-8?B?eGxmcHlQd201NVE2UHhqd0wyNFl4TkppR2RUaHZBMEdQNEF1Zkw1U2NOVjl4?=
- =?utf-8?B?OUdaL3lEY0g3MWh0NU5VdmZrSTcyNTIwUi84bXp2ZkpiV1BJYmhGem42ZEJj?=
- =?utf-8?B?SWc0WWZhNEswTlMvNFQ0UHdXRFRuRURKQjhQajZQZ3RLV1RCSDN0K1FKVjI3?=
- =?utf-8?B?em9UMFREdFZUblpiRW9iWDhwL1RVN3pJdzlTMHQ2bVhTM2V1RW4vMW5HL1d5?=
- =?utf-8?B?dmZZOXpDYU5mQ2xGTmorNHpEZWZTOGhpTXRoeXpuaTJYa0RLRE00dWV6VGlu?=
- =?utf-8?B?c1l1eHBRTWNhSWNibnJPTkdnMFl4Z21RRmhLL3daN0p0QXhtVlN5Wm9XcUZ3?=
- =?utf-8?B?ZTErTUVHYUE5bjlYakRacVZFdlRocDJVYWRrRlRzZlk2NzZ2cjVndDQ3ZWpB?=
- =?utf-8?B?bWRkL3pmSVh6QzBqbVVReTFHeko4RTYrS21OMisyMmJpTFFQYlNGd3JVNnJE?=
- =?utf-8?B?QjFrZUFrYm9FVC91enk3OFdWWUNNZkdxTFIzWFZtRnhHSk4va2dkSVVPTjBl?=
- =?utf-8?B?dDJhMUc0Ymo0a3ZaTVlLQzI4aGJnUFBOMFBjWXM0UVJ0Z0kvUWVTRG5ncDRj?=
- =?utf-8?B?b0szelk2WCtEMTRHUlRZbjFiUDdxbE83OVovb3dEWWVrTlBpc1docmZWQis0?=
- =?utf-8?B?VFJacGdiOWJmUWUrblVTU2hjZ3BCL3V4UkJBb0sxNEY0eFlad2I2T25ZV2ls?=
- =?utf-8?B?SmQwZkhKbGwvanMvQmYvaGFKTkViSUtpblZiR0VzMXl5WWkza3FOL0ZqYnFR?=
- =?utf-8?B?WDBzV3A1RlZMU1ptbDV4MVkweThFM0dndWMzQjhXUnJIY3VKMktGMDdMeGdL?=
- =?utf-8?B?MWl1czVqOWY1UEJSczVxT1VZYWpCS3pGL1gvSFRxM2FPUkluN3NuK2hxa2JM?=
- =?utf-8?B?N2NwQlJpMElxYkQ4QWVJOE1KK3FaZHRCZDJJM3ZWUzlJaWlvTGVFc0xPQjRQ?=
- =?utf-8?B?NjJqaHVmWUFUK2JiaWJhYmFzYkpmbVNCcHNYOFU1TVdOb21mVUhXTXBxZnJx?=
- =?utf-8?B?V25ObTFQc1VzbmRZbW91WmVsSE41cHl2OUNxc3kyZkNTQjI3ZEJTUld2TmpE?=
- =?utf-8?B?NVU0N2lvQ3IwaXpEbG1ackpQcTFITC9ZQjNLUUxZK2I0cU9iR29BZHUzUFNS?=
- =?utf-8?B?cC8zdXRVNGVBemNRL1JsbDhQQW9pNFQyMWl2MndyWUkvRk1BejhiSFNSNzFo?=
- =?utf-8?B?aG9EVitpL1NVaXFqbUh4ZDNsQVNNbXRIaXVISkgwZThZdHhKNWoyYTY2eFZI?=
- =?utf-8?B?T2FuSkxPaWFxR2RkTU1XTUNGSy80UVUyL2hoUVZ4L0dnd3RXSVVRMGhtY3hR?=
- =?utf-8?B?MG9iY1hENklVMHFQUHpjMXp6R3Y3aWxYMzVDUlFRaTk1azlXNmp5NitORGlE?=
- =?utf-8?B?OGVMcXFLbmVibGhwbkk0YXZSWmlVTHhJd09WM1lLY2J4S3BXSFByaHVvVUhv?=
- =?utf-8?B?T0h2VGY2bENqUVd3Nm1GZms5eEdQWnZqVWdWU0wzakFGMzB4TEJlMUY4VVBZ?=
- =?utf-8?B?MVZ0SmZIYVlBeWRjSHYxaWZjOXFMclpCYkdHWkNreDZrVWtsT3BjTTNmOWRG?=
- =?utf-8?B?WVB0ZFhOejRHWm10V3NrSzJPc2p2ekRudUs4QmNsQ1UvL0lzNHJWQXR6OXZS?=
- =?utf-8?B?ajBHT2RDc2ZTYXRaajVEbi8zaGNkN0JFczF1dHJyYUlNUFF6b0pPNG81NmZk?=
- =?utf-8?B?Qm1EeDFvVjVjdC9IeUpXKzl3OTMrQlhjTk9lRDJKc1QwdnMwMmd3YS9uK2JM?=
- =?utf-8?B?eFFjYzVyZzg5R2M5SHhHaWw0QytEWElQVXpiV2dIUnV3MytHd3ZqUnR5VlVX?=
- =?utf-8?Q?JxfD4XvWxIt/kn/n0sYRscjoynCDwhgBJlUmGQVKSjuP?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0996204F8C
+	for <linux-iio@vger.kernel.org>; Tue, 19 Aug 2025 14:05:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755612344; cv=none; b=ilv2qp5h16VsTcvkFK/B8tes2iK4bJD0Eevau0mQp4OPkU6w07E1a9RkOSDLYYUpBrshLx2m7ctquVSVSlh59aJ0yRGPKg1EAmIDjqn/qJn6IyPyTt/vgGMKwXQ+ZDNqM55iBFP2+pcHGK8ih5NbrzTt0NIfyQibsuM0YKWLDt0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755612344; c=relaxed/simple;
+	bh=U9I9HNEp0+4Gz5xEHfaKauD4IVv3OHGVKeBcb/I6od0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NQG9bxSGMPpP6S+FUGo8EYCq7HX2dEk9kaB+ACh6i36Z9nONP4SghRTXBGKtBgwlSC+I/abN6jh6oYi+Q1YCn2LmIqwmnrLCcRs6aArT6Pm3kWfMeLPiiyEkvTTz2gpDKbQwUHky+tWRZvOXOkTW9CoopySrZ7NcSnLIOBfIEX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PGEkbVgu; arc=none smtp.client-ip=209.85.161.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-61c0b19b14bso648163eaf.3
+        for <linux-iio@vger.kernel.org>; Tue, 19 Aug 2025 07:05:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755612341; x=1756217141; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a7IXcxSq366tXdmeyBNegwQEPnHuF26aW6nAQ3VNfA0=;
+        b=PGEkbVgu9NXAXUDLDXtM2rXxeLtnpVrPAkcJ5mgjaXoeAgOUoCSjmFAs0GNdsbCy8y
+         rh9PIohRWXp2prWZScagkpBdU/56QhfPQ458HsSIu8lnuSAxLw8e1TuCaNNdQaMLvw+x
+         alkDOGMtLgeX5LDJK8HttvHJ8SgdspKuv5E0/ITZs2DmlV7L+/+SzkKnW9T3d4T/dfFs
+         qoa1NU8v2m3U2NQEjhLW7OdXa5/Mw8VGzTiIUWjzx0QXhpkt45Q8C3Tf2piJxNzzhvMI
+         J6BdE7tGcgSI+BGu6uLZERCgujRPjKOA4sziYzJYuO72rtLBRSqYBtI1G+mAUulwqQ1m
+         MIig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755612341; x=1756217141;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a7IXcxSq366tXdmeyBNegwQEPnHuF26aW6nAQ3VNfA0=;
+        b=EpKB/IrH6m56jxLHq2GPOsvqdksyqQnuoMttb/gnwgjTSU0lI6x1mocWk7YM8P8sWW
+         LPECmUW7fixDPcYNCyhT31+LUIB1PLIAKZrBsYtx+iXLcaX7lOkeJgI0wsdYuzHPIrRx
+         7vtWXUd3l4hXZKvu++Ehb1PRpj+FgcFhUZumWmdHzvtk3e2yry30DiEE7s73K2tRiB0k
+         rLVcUv6XzBsSELuZulCjjYaZbOVKNzx/o+yvlJs3T4JxNPVKseOHofGNygryPPyQEbrV
+         kdttMe/3LMi4sK3wtdY4K2E2l0nD2hq5+8Tikr1viBunecfn7LlcsRQPkkXrQiScFZ9f
+         i2Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCWy+XbSodKADFkECRM2aaU2Z1SBxymcm6sBCctr7iBsyMMmgqvqPhBR5GVbKQJ5+/sjMFfUYRfhBtg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIupqnS4EkGgFy/DkaBW1A78P3751Jo+MVtEKGjuC2jnYfFSoy
+	mSvko0I2wKJEyffOYVcLRNYdsQJe8d+aJsGEw416mSlYVdetxi+xBTFSV8VbMg2Xy0s=
+X-Gm-Gg: ASbGncuIXfRvW1yuqjWFUmkiMiq+TGuSyNkM+/UcvC3cz58j9MPPAjEx4ua61vQ7r3z
+	UFmyJtueiwuO+C7HtwJjfWs4WGAA2fY4mpxlEGIY2CdgRaGuzoeLGXScvGAq7N3GADehR0QgoJu
+	bFamKVisnPJPaE+f6qIMvYrLGe99jS8QLxB59vL9FdezHpZJqvRjDZA/a5cW+NT1XziXXabXEWW
+	8DFiIuxryGgffYBO2we4Mrg0DORhDhPnumqRZbjeToFbIwx2Zkrnv0kfLvutC5t5f8wQsJlxoDp
+	ej9mKD61t71AY7ui4H4YPmNPJQpI12xly6jWRHUkNw0yABnafUQhDNuPOrGWLPvMr4E07fD2lk+
+	uXbytItrBMPjbViDL47pgAqKwZbuTA1bums3E2lOWAzZgUwKFNkaLVN9IgbHK1WyLH0nzCDY6As
+	M=
+X-Google-Smtp-Source: AGHT+IHjF7sm3BM6UqpsCOtViY+JAbenMV7/s4EAL5cMuLNS5sTyBZc8mLeIWMkrcU5gOa4R+PWZaQ==
+X-Received: by 2002:a05:6820:2214:b0:61c:60:a68d with SMTP id 006d021491bc7-61d919f3ae6mr1887604eaf.6.1755612340610;
+        Tue, 19 Aug 2025 07:05:40 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:990c:4d50:9c6c:f367? ([2600:8803:e7e4:1d00:990c:4d50:9c6c:f367])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61bec14b3cesm1082668eaf.27.2025.08.19.07.05.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 07:05:40 -0700 (PDT)
+Message-ID: <f8e95533-c486-442f-a186-5e746dad2f4c@baylibre.com>
+Date: Tue, 19 Aug 2025 09:05:39 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c5d274d-09cb-419a-e3c4-08dddf207a4c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2025 13:01:13.9859
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3MgUNP9MdY3cVW+XWHUuBmhgyVfhH1szFkM3HnFyUJLLPYFymNzoauOpaBasPrl3+dIa3kybNOqRCMtoqesoUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BEUP281MB3633
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDA0NiBTYWx0ZWRfX/ryer445jkTH
- stSYU8nT5r16rKuMvZv8zfH3kvYLTF5S3RbKr0jMt3zkKwdgjB5SmLuoG1FGbIoe6Q69Us/0bRy
- kMO/v4omiPNUjKiqCnIxm+lk7WQrXwoRxv3qJGBkJJMEheVJo1r4GFbjDIA9RQ5abybMAKlK7bX
- ArwYPCLOgoXvJWM8D8gli2sLYkvMkGVXlRPP+gqQrVKbMWym+NVNSCZ+2vX+lLBWWI9RXGNMg1T
- 3y7yGqVKWaQHYj+TndEVbLujYJfZLP6Bqyua1PE6U4DmPX29tzaj1letBSDXTeSMi3MaU/PKe09
- /IeRnuZaV3yT0E25yqPrzInG7XkO7qLb7bmnx8Gb4pl7JMGESlHdRw7Mri74V5wN4Bl2d9VnmUM
- kPI24u+D
-X-Authority-Analysis: v=2.4 cv=Ne/m13D4 c=1 sm=1 tr=0 ts=68a475a5 cx=c_pps
- a=e3GqXd3Pxf9yZ94BK4RHdg==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=2OwXVqhp2XgA:10 a=Uwzcpa5oeQwA:10 a=In8RU02eAAAA:8 a=VwQbUJbxAAAA:8
- a=IpJZQVW2AAAA:8 a=gAnH3GRIAAAA:8 a=KKAkSRfTAAAA:8 a=Jsx2dPa9ajw8zc_NyisA:9
- a=QEXdDO2ut3YA:10 a=EFfWL0t1EGez1ldKSZgj:22 a=IawgGOuG5U0WyFbmm1f5:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: ZUS5BQ8_Vd-pCjrJCOUtucXUQyB_mSMC
-X-Proofpoint-ORIG-GUID: ZUS5BQ8_Vd-pCjrJCOUtucXUQyB_mSMC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-19_02,2025-08-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 impostorscore=0 malwarescore=0 suspectscore=0
- clxscore=1015 bulkscore=0 phishscore=0 spamscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160046
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/6] iio: mcp9600: Add support for IIR filter
+To: Ben Collins <bcollins@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>
+Cc: Ben Collins <bcollins@watter.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250818183214.380847-1-bcollins@kernel.org>
+ <20250818183214.380847-7-bcollins@kernel.org>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250818183214.380847-7-bcollins@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Pg0KPg0KPkZyb206IEpvbmF0aGFuIENhbWVyb24gPGppYzIzQGtlcm5lbC5vcmc+IA0KPlNlbnQ6
-IFNhdHVyZGF5LCBBdWd1c3QgMTYsIDIwMjUgMjoxOCBQTQ0KPlRvOiBSZW1pIEJ1aXNzb24gdmlh
-IEI0IFJlbGF5IDxkZXZudWxsK3JlbWkuYnVpc3Nvbi50ZGsuY29tQGtlcm5lbC5vcmc+DQo+Q2M6
-IFJlbWkgQnVpc3NvbiA8UmVtaS5CdWlzc29uQHRkay5jb20+OyBEYXZpZCBMZWNobmVyIDxkbGVj
-aG5lckBiYXlsaWJyZS5jb20+OyBOdW5vIFPDoSA8bnVuby5zYUBhbmFsb2cuY29tPjsgQW5keSBT
-aGV2Y2hlbmtvIDxhbmR5QGtlcm5lbC5vcmc+OyBSb2IgSGVycmluZyA8cm9iaEBrZXJuZWwub3Jn
-PjsgS3J6eXN6dG9mIEtvemxvd3NraSA8a3J6aytkdEBrZXJuZWwub3JnPjsgQ29ub3IgRG9vbGV5
-IDxjb25vcitkdEBrZXJuZWwub3JnPjsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgbGlu
-dXgtaWlvQHZnZXIua2VybmVsLm9yZzsgZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmcNCj5TdWJq
-ZWN0OiBSZTogW1BBVENIIHY0IDkvOV0gTUFJTlRBSU5FUlM6IGFkZCBlbnRyeSBmb3IgaW52X2lj
-bTQ1NjAwIDYtYXhpcyBpbXUgc2Vuc29yDQo+T24gVGh1LCAxNCBBdWcgMjAyNSAwODo1NzoyMyAr
-MDAwMA0KPlJlbWkgQnVpc3NvbiB2aWEgQjQgUmVsYXkgPGRldm51bGwrcmVtaS5idWlzc29uLnRk
-ay5jb21Aa2VybmVsLm9yZz4gd3JvdGU6DQo+DQo+PiBGcm9tOiBSZW1pIEJ1aXNzb24gPHJlbWku
-YnVpc3NvbkB0ZGsuY29tPg0KPj4gDQo+PiBBZGQgTUFJTlRBSU5FUlMgZW50cnkgZm9yIEludmVu
-U2Vuc2UgSUNNLTQ1NjAwIElNVSBkZXZpY2UuDQo+PiANCj4+IFNpZ25lZC1vZmYtYnk6IFJlbWkg
-QnVpc3NvbiA8cmVtaS5idWlzc29uQHRkay5jb20+DQo+QnVzIHNwZWNpZmljIHBhdGNoZXMgYW5k
-IHRoaXMgb25lIGFsbCBsb29rIGZpbmUgdG8gbWUuDQpHb29kIG5ld3MsIHRoYW5rcyAhDQo+DQo+
-PiAtLS0NCj4+ICBNQUlOVEFJTkVSUyB8IDggKysrKysrKysNCj4+ICAxIGZpbGUgY2hhbmdlZCwg
-OCBpbnNlcnRpb25zKCspDQo+PiANCj4+IGRpZmYgLS1naXQgYS9NQUlOVEFJTkVSUyBiL01BSU5U
-QUlORVJTDQo+PiBpbmRleCBlM2IwMTA5YTIzMDQ1OTI2ZDZhN2U5NjU5YWZkYWIwYTZkYmY3YmVk
-Li5jNGFhMjEwMmVmMzk4MTMwMDc0ZDIwZGQ1YjkzNjdjZTNmYTUxOTY4IDEwMDY0NA0KPj4gLS0t
-IGEvTUFJTlRBSU5FUlMNCj4+ICsrKyBiL01BSU5UQUlORVJTDQo+PiBAQCAtMTI2MjEsNiArMTI2
-MjEsMTQgQEAgRjoJRG9jdW1lbnRhdGlvbi9BQkkvdGVzdGluZy9zeXNmcy1idXMtaWlvLWludl9p
-Y200MjYwMA0KPj4gIEY6CURvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vaW11
-L2ludmVuc2Vuc2UsaWNtNDI2MDAueWFtbA0KPj4gIEY6CWRyaXZlcnMvaWlvL2ltdS9pbnZfaWNt
-NDI2MDAvDQo+PiAgDQo+PiArSU5WRU5TRU5TRSBJQ00tNDU2eHggSU1VIERSSVZFUg0KPj4gK006
-CVJlbWkgQnVpc3NvbiA8cmVtaS5idWlzc29uQHRkay5jb20+DQo+PiArTDoJbGludXgtaWlvQHZn
-ZXIua2VybmVsLm9yZw0KPj4gK1M6CU1haW50YWluZWQNCj4+ICtXOglodHRwczovL2ludmVuc2Vu
-c2UudGRrLmNvbS8gDQo+PiArRjoJRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lp
-by9pbXUvaW52ZW5zZW5zZSxpY200NTYwMC55YW1sDQo+PiArRjoJZHJpdmVycy9paW8vaW11L2lu
-dl9pY200NTYwMC8NCj4+ICsNCj4+ICBJTlZFTlNFTlNFIE1QVS0zMDUwIEdZUk9TQ09QRSBEUklW
-RVINCj4+ICBNOglMaW51cyBXYWxsZWlqIDxsaW51cy53YWxsZWlqQGxpbmFyby5vcmc+DQo+PiAg
-TDoJbGludXgtaWlvQHZnZXIua2VybmVsLm9yZw0KPj4gDQo+DQo+DQo=
+On 8/18/25 1:32 PM, Ben Collins wrote:
+> From: Ben Collins <bcollins@watter.com>
+> 
+> MCP9600 supports an IIR filter with 7 levels. Add IIR attribute
+> to allow get/set of this value.
+> 
+> Use a filter_type[none, ema] for enabling the IIR filter.
+> 
+> Signed-off-by: Ben Collins <bcollins@watter.com>
+> ---
+>  drivers/iio/temperature/mcp9600.c | 157 ++++++++++++++++++++++++++++++
+>  1 file changed, 157 insertions(+)
+> 
+> diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
+> index 9b017820efc1..0ec47cbeb88c 100644
+> --- a/drivers/iio/temperature/mcp9600.c
+> +++ b/drivers/iio/temperature/mcp9600.c
+> @@ -31,6 +31,7 @@
+>  #define MCP9600_STATUS_ALERT(x)		BIT(x)
+>  #define MCP9600_SENSOR_CFG		0x05
+>  #define MCP9600_SENSOR_TYPE_MASK	GENMASK(6, 4)
+> +#define MCP9600_FILTER_MASK		GENMASK(2, 0)
+>  #define MCP9600_ALERT_CFG1		0x08
+>  #define MCP9600_ALERT_CFG(x)		(MCP9600_ALERT_CFG1 + (x - 1))
+>  #define MCP9600_ALERT_CFG_ENABLE	BIT(0)
+> @@ -94,6 +95,27 @@ static const int mcp9600_tc_types[] = {
+>  	[THERMOCOUPLE_TYPE_R] = 'R',
+>  };
+>  
+> +enum mcp9600_filter {
+> +	MCP9600_FILTER_TYPE_NONE,
+> +	MCP9600_FILTER_TYPE_EMA,
+> +};
+> +
+> +static const char * const mcp9600_filter_type[] = {
+> +	[MCP9600_FILTER_TYPE_NONE] = "none",
+> +	[MCP9600_FILTER_TYPE_EMA] = "ema",
+> +};
+> +
+> +static const int mcp_iir_coefficients_avail[7][2] = {
+> +	/* Level 0 is no filter */
+> +	{ 0, 524549 },
+> +	{ 0, 243901 },
+> +	{ 0, 119994 },
+> +	{ 0,  59761 },
+> +	{ 0,  29851 },
+> +	{ 0,  14922 },
+> +	{ 0,   7461 },
+> +};
+> +
+>  static const struct iio_event_spec mcp9600_events[] = {
+>  	{
+>  		.type = IIO_EV_TYPE_THRESH,
+> @@ -118,7 +140,11 @@ static const struct iio_event_spec mcp9600_events[] = {
+>  			.address = MCP9600_HOT_JUNCTION,		       \
+>  			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	       \
+>  					      BIT(IIO_CHAN_INFO_THERMOCOUPLE_TYPE) | \
+> +					      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) |  \
+>  					      BIT(IIO_CHAN_INFO_SCALE),	       \
+> +			.info_mask_separate_available =                        \
+> +					      BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY), \
+> +			.ext_info = mcp9600_ext_filter,			       \
+>  			.event_spec = &mcp9600_events[hj_ev_spec_off],	       \
+>  			.num_event_specs = hj_num_ev,			       \
+>  		},							       \
+> @@ -134,6 +160,26 @@ static const struct iio_event_spec mcp9600_events[] = {
+>  		},							       \
+>  	}
+>  
+> +static int mcp9600_get_filter(struct iio_dev *indio_dev,
+> +			      struct iio_chan_spec const *chan);
+> +static int mcp9600_set_filter(struct iio_dev *indio_dev,
+> +			      struct iio_chan_spec const *chan,
+> +			      unsigned int mode);
+> +
+> +static const struct iio_enum mcp9600_filter_enum = {
+> +	.items = mcp9600_filter_type,
+> +	.num_items = ARRAY_SIZE(mcp9600_filter_type),
+> +	.get = mcp9600_get_filter,
+> +	.set = mcp9600_set_filter,
+> +};
+> +
+> +static const struct iio_chan_spec_ext_info mcp9600_ext_filter[] = {
+> +	IIO_ENUM("filter_type", IIO_SHARED_BY_ALL, &mcp9600_filter_enum),
+> +	IIO_ENUM_AVAILABLE("filter_type", IIO_SHARED_BY_ALL,
+> +			   &mcp9600_filter_enum),
+> +	{ }
+> +};
+> +
+>  static const struct iio_chan_spec mcp9600_channels[][2] = {
+>  	MCP9600_CHANNELS(0, 0, 0, 0), /* Alerts: - - - - */
+>  	MCP9600_CHANNELS(1, 0, 0, 0), /* Alerts: 1 - - - */
+> @@ -161,6 +207,8 @@ struct mcp_chip_info {
+>  struct mcp9600_data {
+>  	struct i2c_client *client;
+>  	u32 thermocouple_type;
+> +	/* Filter enabled is 1-7, with 0 being off (filter_type none) */
+> +	u8 filter_level;
+>  };
+>  
+>  static int mcp9600_read(struct mcp9600_data *data,
+> @@ -191,13 +239,45 @@ static int mcp9600_read_raw(struct iio_dev *indio_dev,
+>  		if (ret)
+>  			return ret;
+>  		return IIO_VAL_INT;
+> +
+>  	case IIO_CHAN_INFO_SCALE:
+>  		*val = 62;
+>  		*val2 = 500000;
+>  		return IIO_VAL_INT_PLUS_MICRO;
+> +
+>  	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
+>  		*val = mcp9600_tc_types[data->thermocouple_type];
+>  		return IIO_VAL_CHAR;
+> +
+> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +		if (data->filter_level == 0)
+> +			return -EINVAL;
+
+To implement Jonathan's request from v5, drop this error return.
+We'll also need a separate bool data->is_filter_enabled field so
+that we can keep the last set filter_level even when the filter
+is disabled. (i.e. data->filter_level is never == 0).
+
+This way, if you set the filter level, you can enable and disable
+the filter via filter_type and still have the same filter level.
+
+> +
+> +		*val = mcp_iir_coefficients_avail[data->filter_level - 1][0];
+> +		*val2 = mcp_iir_coefficients_avail[data->filter_level - 1][1];
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int mcp9600_read_avail(struct iio_dev *indio_dev,
+> +			      struct iio_chan_spec const *chan,
+> +			      const int **vals, int *type, int *length,
+> +			      long mask)
+> +{
+> +	struct mcp9600_data *data = iio_priv(indio_dev);
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +		if (data->filter_level == 0)
+> +			return -EINVAL;
+> +
+> +		*vals = (int *)mcp_iir_coefficients_avail;
+> +		*type = IIO_VAL_INT_PLUS_MICRO;
+> +		*length = 2 * ARRAY_SIZE(mcp_iir_coefficients_avail);
+> +		return IIO_AVAIL_LIST;
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -211,6 +291,7 @@ static int mcp9600_config(struct mcp9600_data *data)
+>  
+>  	cfg  = FIELD_PREP(MCP9600_SENSOR_TYPE_MASK,
+>  			  mcp9600_type_map[data->thermocouple_type]);
+> +	FIELD_MODIFY(MCP9600_FILTER_MASK, &cfg, data->filter_level);
+
+And change the logic here to:
+
+	FIELD_MODIFY(MCP9600_FILTER_MASK, &cfg, data->is_filter_enabled ?
+		     data->filter_level : 0);
+
+>  
+>  	ret = i2c_smbus_write_byte_data(client, MCP9600_SENSOR_CFG, cfg);
+>  	if (ret < 0) {
+> @@ -221,6 +302,79 @@ static int mcp9600_config(struct mcp9600_data *data)
+>  	return 0;
+>  }
+>  
+> +static int mcp9600_write_raw_get_fmt(struct iio_dev *indio_dev,
+> +				     struct iio_chan_spec const *chan,
+> +				     long mask)
+> +{
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int mcp9600_write_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int val, int val2, long mask)
+> +{
+> +	struct mcp9600_data *data = iio_priv(indio_dev);
+> +	int i;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +		for (i = 0; i < ARRAY_SIZE(mcp_iir_coefficients_avail); i++) {
+> +			if (mcp_iir_coefficients_avail[i][0] == val &&
+> +			    mcp_iir_coefficients_avail[i][1] == val2)
+> +				break;
+> +		}
+> +
+> +		if (i == ARRAY_SIZE(mcp_iir_coefficients_avail))
+> +			return -EINVAL;
+> +
+> +		data->filter_level = i + 1;
+> +		return mcp9600_config(data);
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int mcp9600_get_filter(struct iio_dev *indio_dev,
+> +			      struct iio_chan_spec const *chan)
+> +{
+> +	struct mcp9600_data *data = iio_priv(indio_dev);
+> +
+> +	if (data->filter_level == 0)
+> +		return MCP9600_FILTER_TYPE_NONE;
+> +
+> +	return MCP9600_FILTER_TYPE_EMA;
+> +}
+> +
+> +static int mcp9600_set_filter(struct iio_dev *indio_dev,
+> +			      struct iio_chan_spec const *chan,
+> +			      unsigned int mode)
+> +{
+> +	struct mcp9600_data *data = iio_priv(indio_dev);
+> +
+> +	switch (mode) {
+> +	case MCP9600_FILTER_TYPE_NONE:
+> +		data->filter_level = 0;
+
+Don't touch data->filter_level here, just set data->is_filter_enabled = false.
+
+> +		return mcp9600_config(data);
+> +
+> +	case MCP9600_FILTER_TYPE_EMA:
+> +		if (data->filter_level == 0) {
+> +			/* Minimum filter by default */
+> +			data->filter_level = 1;
+
+And similar, just set data->is_filter_enabled = true without changing filter_level.
+
+> +			return mcp9600_config(data);
+> +		}
+> +		return 0;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+>  static int mcp9600_get_alert_index(int channel2, enum iio_event_direction dir)
+>  {
+>  	if (channel2 == IIO_MOD_TEMP_AMBIENT) {
+> @@ -358,6 +512,9 @@ static int mcp9600_write_thresh(struct iio_dev *indio_dev,
+>  
+>  static const struct iio_info mcp9600_info = {
+>  	.read_raw = mcp9600_read_raw,
+> +	.read_avail = mcp9600_read_avail,
+> +	.write_raw = mcp9600_write_raw,
+> +	.write_raw_get_fmt = mcp9600_write_raw_get_fmt,
+>  	.read_event_config = mcp9600_read_event_config,
+>  	.write_event_config = mcp9600_write_event_config,
+>  	.read_event_value = mcp9600_read_thresh,
+
 

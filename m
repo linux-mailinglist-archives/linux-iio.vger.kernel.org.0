@@ -1,130 +1,113 @@
-Return-Path: <linux-iio+bounces-23032-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23033-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC192B2D940
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 11:53:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA06B2D96B
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 11:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A6235C7BB9
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 09:48:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6B0E188C01C
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 09:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1852DE6F6;
-	Wed, 20 Aug 2025 09:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552F629B233;
+	Wed, 20 Aug 2025 09:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BsTFUzgu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fl2lEtFI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF822DE6F2;
-	Wed, 20 Aug 2025 09:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707312DAFC1;
+	Wed, 20 Aug 2025 09:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755683121; cv=none; b=DIxxWdPQt2ouGmlVZFRUnynRA/uo7a4Zu+ZINENdNlL9Lj42cVwZO6c9/vT1Rll+i4Pcep6+sC99cM86f468TTqykEveVSM8Tm6JR0Q7/6qw12+JOyL8oFq6rpsiwAXbIfaEnI5WqvBaYHv0zfaU+g8xJ+WtFqNuY8ohVvr9+ZM=
+	t=1755683579; cv=none; b=j+dEDUwU6XCAneRD5KX/NApTbhOnQOcx+W6Wi6WkyC3OLBLm/ylX78l36GrX/RJUFSHUjun68IL3P2OBm3YxgbeZXlL5xc9YoF4zTKjoRV7CgWvfE4B2TKOV+2qVJun7rZFeeitYkA3vjXSQGuF5I4OkUxcpUsG1RmM5jJ9Iy1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755683121; c=relaxed/simple;
-	bh=9Ow/lpQ1zZH0deSwrOd3Aa2pmlE4AXa6soIfo0gK3Gw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g++eYoGJQIAGLi4TMqXCXzcruhhc74iSBdlanPRRomiEW/ljjwW9IVJMc9JJ7uQRlMN9Cjn3xADZE1z+oClFXpahVAopxvZmTQ5nXU9yLNEkxAUXHj3gclekEtHZWVjkdJuQn/MoJw3ACxcPz/rKni7vIaE7+paS8fKxRYa0fVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BsTFUzgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634BAC4CEEB;
-	Wed, 20 Aug 2025 09:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755683120;
-	bh=9Ow/lpQ1zZH0deSwrOd3Aa2pmlE4AXa6soIfo0gK3Gw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BsTFUzgu8K5SweINNGRHyp9W7MKIR4xDIq5IKV/AnibgTtucIeznIrQNwSzl+aXui
-	 2+D5+RRZNZYU1v/2orLSbY5SugqQRaAtuN5EvNPO5t6igPVWQrPUScaHUb6L3Esep3
-	 tXnXkZ/sn4W8U1IwfwgVVcB0AW6yHfv0lfXCYYR9qQMPvtDCLc+iX75/gshkjYg218
-	 851iszCAGj8OjRVc0PRLp6ekQxPAB5uvNA3unB9hUJUha+VA4G61KSf5p+1D0k2LZZ
-	 /wL2EbNHvOpjNAPwD86Ouom9LP/d1r3IxadxxKWUvnGLT0VEnTRxMDnWRjto2l3IlD
-	 U1TzFK+xC20Lg==
-Message-ID: <44c20b00-a71e-4d1f-8d73-d4255025d9ab@kernel.org>
-Date: Wed, 20 Aug 2025 11:45:16 +0200
+	s=arc-20240116; t=1755683579; c=relaxed/simple;
+	bh=u9uYRjdMv075l6PIR/dTBMlODMX366ucyedSlgz1Gxk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TE5TXqiaWqvJqaVmPHzYiBpWGu8YYKA3KnTMl+GCW1KboIvBH88gqAfGEBdCZwyGz3l4Z82xZwKtX5sidkoDq4fkOzgQ38k2Ey6wA25DCHc7dMiOvn2j/pCg0gUD7b0qJCurlz1GP+eHdeYwlz0dPZwU1SRWiKqDuGdfbNMKDBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fl2lEtFI; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-afcb72d51dcso875437766b.0;
+        Wed, 20 Aug 2025 02:52:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755683574; x=1756288374; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u9uYRjdMv075l6PIR/dTBMlODMX366ucyedSlgz1Gxk=;
+        b=fl2lEtFIkVRE2lsxwvxOHRYmUGUnXdY5GJJWOW9E9dS+Uk40RwOy79BAEbmV1A9YmV
+         VZUWMSWuxhwUu5fotco8DVCAXC5BjJj+TrdWl6X0XpH6vG5WdPsvKIT0t8fMyQvFwKTu
+         BWji3TwEdYEDk2g4oAEUrYakrBxkFbqXby+ibR7M45hxxasr0Mp4Sc7WtXD+P5wsqw2g
+         M2WQHsiAUuQGFcdDIBCd2+AnlLjSNmioi3UJGFwxdX9hJ7nLXK1Ua4EMrXC6+HbrFBYv
+         TdTZqaQ9wqBgAXyS57waNTFLc0mts1feKCQAuzTFB3C8EFiwW8jpCxGr+ZXIQlYoOjQ1
+         zeSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755683574; x=1756288374;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u9uYRjdMv075l6PIR/dTBMlODMX366ucyedSlgz1Gxk=;
+        b=OrXGNYYofjNdc1+Sfg4a/PgMeeCLZz588f6O1+gUGN91gAI7xraO7cOD9fYJoCsvE8
+         enuONT9ZdL4izqA5qeu/UA4oTLVK6kauxrYmpZbo7t/ts0KlOZ/yCuvUQK2pHE2emNjb
+         DNdqDJ6NiWyfPnt0qF9BzNFYIzaccd/5oJVahyp1A/gd4QflOuDAORDELXNszz+wzU6W
+         uemPMxo711WXOULmykiNshZbxAISSPxBIzpQk2UJiJCVfJY5yPEyg7Qmc4mK/ORDFYh0
+         /BATbjaCgdkxzFw/anxOfsphJ5tcq0rvGPZZm3xm92r0yD9R3osmRIqMbVgW1pKPf4Ts
+         qZqA==
+X-Forwarded-Encrypted: i=1; AJvYcCWuqt2SOpFfVm/5bmXwujAi3qpbiHYM4ZNxF4yZkgQCAGBJ8oxDSr3MFDhjNNAd6kCJKbv/3Pl0WYo=@vger.kernel.org, AJvYcCWzp8j6cwiB6hCVN1w/A2EmAKk+pScP2elJfrdm+Acu82QV+b4pRFfIEMZb9SZ1dgTyLo1g6Vd4xQ2k14gi@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSqHVL2CaDBd9d6RuIIiEqfKhHFbBHkWCZ+QJs7O8UiF8C+Bzo
+	Sa+GXSqbvapkYj26OQ3gU69dOv4J/LjYUNsCEfOxamCPunPj8yqVWDzgbZ37C+guv+gea3lzt81
+	vJ8toCb5AipfFo8u5fq7pE06q/rRrfBc=
+X-Gm-Gg: ASbGncv/gLoaH8YErT58wWaQEddpX9NzaCC6ao07n4orGncFnGbEBmuIfvmFEEzNT6G
+	zOkRKZcni2FI0n8D0Bfa6spLAVezA4mcvyYT8893JgNb9FONKw58tBVmWin2uo1uyNwIw7IxBAs
+	TDSeuKpznG54XW1wF91KbECpYK49R8suBmD+evzhEJJv1nBxVQU8bJ0jeS6o/2UtfWCW4A8IwQm
+	9v9MlTtnA==
+X-Google-Smtp-Source: AGHT+IEqLNj6s7JGPI5J10T3PIT0G1ZblMYikwSDez3UXjYHwf4mAPTJU/mWilnwAxR8b7eYeW286woPMUcNE06+0nI=
+X-Received: by 2002:a17:907:2dac:b0:af9:3ef6:86f4 with SMTP id
+ a640c23a62f3a-afdf00fb159mr189733466b.20.1755683574290; Wed, 20 Aug 2025
+ 02:52:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Update xilinx-ams driver maintainers
-To: "Erim, Salih" <Salih.Erim@amd.com>,
- "O'Griofa, Conall" <conall.ogriofa@amd.com>,
- "jic23@kernel.org" <jic23@kernel.org>
-Cc: "dlechner@baylibre.com" <dlechner@baylibre.com>,
- "nuno.sa@analog.com" <nuno.sa@analog.com>, "andy@kernel.org"
- <andy@kernel.org>, "Simek, Michal" <michal.simek@amd.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <20250819150448.1979170-1-salih.erim@amd.com>
- <6048713c-9be8-4078-b612-b67c7bd39103@kernel.org>
- <IA1PR12MB7736460C9ACC449D58F992559F33A@IA1PR12MB7736.namprd12.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <IA1PR12MB7736460C9ACC449D58F992559F33A@IA1PR12MB7736.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250820004755.69627-1-junjie.cao@intel.com>
+In-Reply-To: <20250820004755.69627-1-junjie.cao@intel.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 20 Aug 2025 12:52:18 +0300
+X-Gm-Features: Ac12FXwc84J_va7In0sSLVCwiScoaEQxVZfEGZAQVCVk70zVR_-Mmfrtc4GKm1g
+Message-ID: <CAHp75Vc_GYzDw77deKjK5Pn9duGi0p8W4C2Z9kmVWBWK5qgETg@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: core: switch info_mask fields to unsigned long to
+ match find_bit helpers
+To: Junjie Cao <junjie.cao@intel.com>
+Cc: jic23@kernel.org, linux-iio@vger.kernel.org, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 20/08/2025 11:10, Erim, Salih wrote:
->> We see that from the diff. Don't write what is obvious. Explain what is not obvious:
->> why you are doing this.
-> 
-> As Michal explained, Anand left AMD while ago. Me and Conall continue to maintain the driver.
-> 
-> Thanks for warning, I will be careful about future comments and communications.
-> 
+On Wed, Aug 20, 2025 at 3:48=E2=80=AFAM Junjie Cao <junjie.cao@intel.com> w=
+rote:
+>
+> for_each_set_bit()/find_*_bit() expect arrays of unsigned long (see
+> include/linux/find.h), but industrialio-core passed const long * into
+> iio_device_add_info_mask_type{,_avail}().
+>
+> These masks are used purely as bit arrays and are populated via BIT()
+> (1UL << n). Switch the info_mask_* fields and the corresponding function
+> parameters to unsigned long so the types match the helpers. This removes
+> sparse warnings about signedness mismatches (seen with 'make C=3D1'
+> CF=3D'-Wsparse-all') without changing behavior or struct layout.
+>
+> No functional change intended.
 
-No, your commit msg should explain that. Do not say what you do.
+Thanks, this is better than v1.
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
-Best regards,
-Krzysztof
+--=20
+With Best Regards,
+Andy Shevchenko
 

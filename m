@@ -1,186 +1,154 @@
-Return-Path: <linux-iio+bounces-23026-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23027-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD83B2D0CA
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 02:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE2BB2D327
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 06:46:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AF063B1484
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 00:48:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36CAA724836
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 04:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604C818C91F;
-	Wed, 20 Aug 2025 00:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D8B257846;
+	Wed, 20 Aug 2025 04:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nFa+8X9k"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mv0mbxsM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EF7A945;
-	Wed, 20 Aug 2025 00:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E25257820;
+	Wed, 20 Aug 2025 04:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755650933; cv=none; b=bPMxF/KXoIutuZM42NfNRXiw0SXNwxSuxAdN793Yf6Br/BlMWa8dMhSs5xmNPAgOHlVoWojAzP/U7vmvqLhwD5HDPqkMVE1pF/p40H0zeNhlFqqzb9Xnrcq2bwHLV5240BrRZ1AKFnx2Auo9V0OurN7tSRrE7fyOiuIo755LAJg=
+	t=1755665205; cv=none; b=FxPRLmXOQom697Wdno9d5K5GH/9muNYOANLF8QN95gdJZcFryWMkEpbUetfgAU7F7qQOo8yay4iOsNRyfxh3fvWNrpu9rSheov9WGjpNVY1gg4MIvs8nu5zQ/bZROsiozC4fmJKzNWhz2A/bulu/wPTVo+NSXFDs1lXs5D8CC1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755650933; c=relaxed/simple;
-	bh=eI9RekPteR9Uu/w6sEe2zM8O3JmSk36sEouzlpxRogc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SYRZrix+YhXhfP/JqKL/6/MAIblL86IYKWjdl7nnC5ZjDjzFYyyD2Eo5Fj+uFiEgYoeA8yUWGdpmdQb6tXUpa73rus6PQJwW00w9Mb2bIIE3NeoHTIRP98EPQSlFXnOwFGLulCXOCxHWTMH5tUO6i45pGJE3OSjcs6vUg9ufQuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nFa+8X9k; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755650931; x=1787186931;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=eI9RekPteR9Uu/w6sEe2zM8O3JmSk36sEouzlpxRogc=;
-  b=nFa+8X9krTbB3+yo0APgvN3epRzVRaEz+qwYtMfKerI9+LFwI7eqvDCw
-   oGM4Ka+XVQ5YtESzEEgJmVpGc2FWsbPau8mvA7VNv3dsldq1YfUHakw+s
-   p8oNPrAFwIll4NXWVMLwCvX0tWhnazqdbhpmtllVXgz5U/mvNYRo6o1WA
-   s+6PlhDWDGk2Y8nbZoyaMRlulvWCLC9S6Ug7ZSRDAtPKiz7kL4XCecjGL
-   BGbHCngtK6DSGVQDx7s+V45iSe7zHzS/yQfIb1aFZMnaoX7ZRrog5X3Yg
-   iUxVgjUP09hUlGx/iITlEsblxBeTYhH4/JXGBlMorSvm6u5cuNpv4gYe/
-   w==;
-X-CSE-ConnectionGUID: kU0QAcmeQKGZ94HZVCfaRw==
-X-CSE-MsgGUID: KLgQJj+jTMG3Q7P8hmapfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="75488203"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="75488203"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 17:48:51 -0700
-X-CSE-ConnectionGUID: w/K6pqDXT2Ov6YKfASs8LA==
-X-CSE-MsgGUID: d6iT+cm2S6qjH+BNh7m1rw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="167609252"
-Received: from junjie-nuc.bj.intel.com ([10.238.156.159])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 17:48:48 -0700
-From: Junjie Cao <junjie.cao@intel.com>
-To: jic23@kernel.org,
-	linux-iio@vger.kernel.org
-Cc: dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Junjie Cao <junjie.cao@intel.com>
-Subject: [PATCH v2] iio: core: switch info_mask fields to unsigned long to match find_bit helpers
-Date: Wed, 20 Aug 2025 08:47:55 +0800
-Message-ID: <20250820004755.69627-1-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1755665205; c=relaxed/simple;
+	bh=1vQ/1al6KZ3n5t/tJ5DyWbLg4g2xkxVaVjbobiDk8EY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sI/G+vQsqMPpIcPIJCRczPxPKu5X8pM5knmbfl0bIKNmULuFETrG3K1o2lw0e7CB3OLu7UIsirHBAjtXMWN4gATqPRyWkmi8f8OqQv7Rh2s44OmTOZYhxye0zycOp/Dkm5rzJAsLbKjD7GZfPMkUT8gMtr+tpYPqYVymmrls3h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mv0mbxsM; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2449788923eso19747645ad.2;
+        Tue, 19 Aug 2025 21:46:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755665203; x=1756270003; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DarzXDuH+ffptNMW35ITw+JWwVE8qFcBtwND6II5+Pw=;
+        b=mv0mbxsMIzDrCPk7ORnB0N0jjQuP6kpIQTd87WWM8SLkkVZcaMBaXh/5Gh2/ayJ+8B
+         bGU1rxdpdD8jetWf4pIXR7OVs515UVs9uMU+5Bs7i8m36IkVR9SOmHKBKtOn7aUi0FDl
+         ybsrl1gwrNJWYXJ6EMxjyg5PCnGF8EeXj7VBYF5EUDA67xqwa8JzHpTur97F31NzJ2sg
+         XqCZFus+gcQtlkpdWEBpv7YqyDqBsH3F+awwM86Cw97S22f9UsY2O9WxbK72BUBoG1uS
+         2XcxPxmJPLCa6DzbwEaGm8Wa10ULYmv3jM0swkZ/hdlXKu2dJ6crIsA2KaeDc5V8ndmI
+         v9iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755665203; x=1756270003;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DarzXDuH+ffptNMW35ITw+JWwVE8qFcBtwND6II5+Pw=;
+        b=Phd/b6zhCPRn6ZOc6wZ19BurA1j7voCWL+I1ODgMiboaAUdyXKk0rNQLpZUJy7pNIM
+         7mcY56GhlCNcy6G1n1Xeg6mWufaAsijrs2QWfygRtVXDMqTelQlO1M+VFeV8XmWkXvLe
+         0fiwQCjMKt2T+WSueG0QZ4e8+zGecnYRWkdzdBgXwKxVKDprwv/lhIvVgnAoYmtJmIj2
+         AuWweoRzQr0B6WBSUrOK+O3hukmTWp00nAIAX3OM9NlU7z0YRxpCqeS13OhA/pbtk3ee
+         hiYAyUBuq/qaGRkockKYbmF9k74+yIkjfVdd8N6BP22fQYr7oth0MGWQXA7LQWJLs6Jy
+         EuPw==
+X-Forwarded-Encrypted: i=1; AJvYcCU4a1tT3s31RL3NZdU6AFTmM+J/bWcMYk6W7/glJtkQvuSGuMvalqzsUhRlEheKm5F7ki//0Jw/gQFVY0gC@vger.kernel.org, AJvYcCUHJ2kgbpi+FqEH+fvcOjKJnsPuiBQhC1dic6JDrX45TPtg8scbf9D3UT9zkTM13MfEmZNTB2/d7YeL@vger.kernel.org, AJvYcCVqpWY98iVCL1fbGSCzEpqsW7qouTptvlKA0jIRnGp3qdI1PUH7AKwu427nLYmW7MNl2u4F9su3BgEv@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGLvB/N2A937pwoiGpSo06AAV9xjb/tgZfLdsnGn6cecSrGzCL
+	yDjoL98hSKDwJ3LtyQX91OSfZfy/IiBEjbxXezWdttLSCRgmGK6P7uRa
+X-Gm-Gg: ASbGncvDFfmKWFVxRC9En0mawE5Salc8MNhQINYVarSPlPCZWc+BX/fPSQEntjQtoYt
+	/BulaCrP9D7foWJ1dl9QZ/pY1S33Nf1OPuybULR+gEX3muVjLc8VYYtRFiTlDb33RIjLY6RJ7d9
+	59Mbch9LUkfJG7irkJlKrDTlF/plXGwohRUWRchl0SeEvY72jRdw9U2kBLlLbZ7pNEpTP+Rq8oW
+	35Lh60qdsKBtefvWOxl7vpF4DJnyPYowyFHane6M4MgtbkIGeoj3YDMrvfVwrssi+jwo3ndIVTl
+	GZ/SK0rMDShpdI/K5asJXPXNqC/teUMWqeaWm5UIQB0VeKB7LUhLe8jkQo6QJsVBP6TjcdaMpxn
+	ms9VPAp0jehNR1niE43n30w==
+X-Google-Smtp-Source: AGHT+IFP+L16oHaOm3NEbnsDegMl6fP87dVGenQVIRTDtsvxjEewVa+y5/ksq3qQr79odJCBXtGF6w==
+X-Received: by 2002:a17:903:15c8:b0:240:2b97:9102 with SMTP id d9443c01a7336-245ef252a2fmr16920955ad.46.1755665202836;
+        Tue, 19 Aug 2025 21:46:42 -0700 (PDT)
+Received: from dixit ([2401:4900:1c7e:5eb1:987b:ce27:5cd5:4ef])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245ed375db3sm13659485ad.59.2025.08.19.21.46.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Aug 2025 21:46:42 -0700 (PDT)
+Date: Wed, 20 Aug 2025 10:16:29 +0530
+From: Dixit Parmar <dixitparmar19@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] iio: magnetometer: add support for Infineon
+ TLV493D 3D Magentic sensor
+Message-ID: <aKVTJXe50zf07ipR@dixit>
+References: <20250814-tlv493d-sensor-v6_16-rc5-v4-0-81b82805aae0@gmail.com>
+ <20250814-tlv493d-sensor-v6_16-rc5-v4-1-81b82805aae0@gmail.com>
+ <20250816140448.37f38d0f@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250816140448.37f38d0f@jic23-huawei>
 
-for_each_set_bit()/find_*_bit() expect arrays of unsigned long (see
-include/linux/find.h), but industrialio-core passed const long * into
-iio_device_add_info_mask_type{,_avail}().
+On Sat, Aug 16, 2025 at 02:04:48PM +0100, Jonathan Cameron wrote:
+> Hi Dixit,
+> 
+> A couple of really minor things inline. Given Andy has been doing most of the review
+> work on this one I'll leave it for a few days to give him chance for a final look.
+> 
+> The stuff below is small so if nothing else comes up I can tweak it whilst applying
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> > diff --git a/drivers/iio/magnetometer/tlv493d.c b/drivers/iio/magnetometer/tlv493d.c
+> > new file mode 100644
+> > index 000000000000..ee72211576a6
+> > --- /dev/null
+> > +++ b/drivers/iio/magnetometer/tlv493d.c
+> > @@ -0,0 +1,530 @@
+> 
+> > +	TLV493D_AXIS_X,
+> > +	TLV493D_AXIS_Y,
+> > +	TLV493D_AXIS_Z,
+> > +	TLV493D_TEMPERATURE
+> As below.
+> 
+> > +};
+> > +
+> > +enum tlv493d_op_mode {
+> > +	TLV493D_OP_MODE_POWERDOWN,
+> > +	TLV493D_OP_MODE_FAST,
+> > +	TLV493D_OP_MODE_LOWPOWER,
+> > +	TLV493D_OP_MODE_ULTRA_LOWPOWER,
+> > +	TLV493D_OP_MODE_MASTERCONTROLLED
+> This is not a terminating entry, so would typically have a trailing comma.
+Isn't the last entry in the enum list is termintating entry and it should
+not have trailing comma?
+> > +};
+> 
+> > +
+> > +static int tlv493d_init(struct tlv493d_data *data)
+> 
+> I think this is only called from probe, so it would be appropriate
+> to use return dev_err_probe() in all the error paths.
+There is dev_err_probe() being called based on the return value of this
+tlv493d_init(). This function reports the approproiate error(if any) and
+the negative return value will result in dev_error_probe().
+So I believe having single dev_err_probe() in the _probe() function would
+be more appropriate, IMO.
+> 
+> If nothing else comes up I might tweak that whilst applying.
+Much appreciated.
 
-These masks are used purely as bit arrays and are populated via BIT()
-(1UL << n). Switch the info_mask_* fields and the corresponding function
-parameters to unsigned long so the types match the helpers. This removes
-sparse warnings about signedness mismatches (seen with 'make C=1'
-CF='-Wsparse-all') without changing behavior or struct layout.
-
-No functional change intended.
-
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
----
-Hi Jonathan,
-
-Thanks so much for the feedback and the clear fix suggestion.
-
-Changes in v2:
-- Implemented Jonathan's suggestion to change info_mask_* fields to unsigned long
-- Updated commit message based on feedback
-
-v1: https://lore.kernel.org/linux-iio/20250815022528.24705-1-junjie.cao@intel.com/
-
-Regarding how I triggered the warning, I can reproduce it with:
-  make M=drivers/iio clean
-  make C=1 drivers/iio/industrialio-core.o CF='-Wsparse-all' 2>&1 | grep signedness
-
-Environment details:
-- Tree: linux-next (tag next-20250808)
-- GCC: gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-- Sparse: v0.5.0-8881-g2fb2b909
-
-I completely agree that your approach is much better. The masks are indeed 
-used purely as bit arrays, so making them unsigned long must be the right 
-solution.
-
-To double-check beyond industrialio-core, I (1) ran a subsystem-wide sparse 
-pass and a clean build of drivers/iio, (2) audited usages of info_mask_*, 
-and (3) reviewed other for_each_set_bit() sites. With the type change applied, 
-there were no remaining signedness diagnostics, no new build warnings, and no 
-sites relying on these fields being signed.
-
-Here is the v2 patch implementing your suggestion. No functional change 
-intended; the patch has been build- and sparse-tested.
-
-Thanks,
-Junjie
-
- drivers/iio/industrialio-core.c |  4 ++--
- include/linux/iio/iio.h         | 16 ++++++++--------
- 2 files changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 159d6c5ca3ce..9125d466118d 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1243,7 +1243,7 @@ static int iio_device_add_channel_label(struct iio_dev *indio_dev,
- static int iio_device_add_info_mask_type(struct iio_dev *indio_dev,
- 					 struct iio_chan_spec const *chan,
- 					 enum iio_shared_by shared_by,
--					 const long *infomask)
-+					 const unsigned long *infomask)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 	int i, ret, attrcount = 0;
-@@ -1273,7 +1273,7 @@ static int iio_device_add_info_mask_type(struct iio_dev *indio_dev,
- static int iio_device_add_info_mask_type_avail(struct iio_dev *indio_dev,
- 					       struct iio_chan_spec const *chan,
- 					       enum iio_shared_by shared_by,
--					       const long *infomask)
-+					       const unsigned long *infomask)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 	int i, ret, attrcount = 0;
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index d11668f14a3e..39c55116939e 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -271,14 +271,14 @@ struct iio_chan_spec {
- 			unsigned int num_ext_scan_type;
- 		};
- 	};
--	long			info_mask_separate;
--	long			info_mask_separate_available;
--	long			info_mask_shared_by_type;
--	long			info_mask_shared_by_type_available;
--	long			info_mask_shared_by_dir;
--	long			info_mask_shared_by_dir_available;
--	long			info_mask_shared_by_all;
--	long			info_mask_shared_by_all_available;
-+	unsigned long			info_mask_separate;
-+	unsigned long			info_mask_separate_available;
-+	unsigned long			info_mask_shared_by_type;
-+	unsigned long			info_mask_shared_by_type_available;
-+	unsigned long			info_mask_shared_by_dir;
-+	unsigned long			info_mask_shared_by_dir_available;
-+	unsigned long			info_mask_shared_by_all;
-+	unsigned long			info_mask_shared_by_all_available;
- 	const struct iio_event_spec *event_spec;
- 	unsigned int		num_event_specs;
- 	const struct iio_chan_spec_ext_info *ext_info;
--- 
-2.43.0
-
+Thank you,
+Dixit Parmar
 

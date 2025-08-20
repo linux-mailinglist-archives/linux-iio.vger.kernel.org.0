@@ -1,320 +1,218 @@
-Return-Path: <linux-iio+bounces-23047-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23048-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559A1B2DC0D
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 14:06:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4D3B2DC94
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 14:33:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FDD9A0473D
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 12:04:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0B0C16ADE8
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 12:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA0E2F0C6A;
-	Wed, 20 Aug 2025 12:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF12311C3C;
+	Wed, 20 Aug 2025 12:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="sA9hxJPx"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2xVRuAkm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2049.outbound.protection.outlook.com [40.107.243.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8482E8889;
-	Wed, 20 Aug 2025 12:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755691434; cv=none; b=gQ9xFbMu7pVb3uawF8Aw/ydxWjQeMAD3n/quuyF/8ditUAwAQkbb6hzm1Hlp0k44WDRQjJfJVsUf7K6W1XMR9UdS+17hEC0kQ9sI00goaFpFcfzAz104+BBdFl8NdkuyLmMvAtm/fRTrmLSaajJrnVoxgw7R5MVEsE/N/iItZg8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755691434; c=relaxed/simple;
-	bh=Ksl/P0FewlvtlAM4h8GRfzNWfnApy8twRnod3sBzruo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WJekBwBZ6UhZmCcs2MqPWoztQU+0ZRyQMhSXu731xBm6JXrzYZqGx346fxbAgBqOYKR7UBQWg1JY5FR/vK6bryGhClJi8lgKJpv2tG1sfHfoDU0QWrMLBnm5u8C5z/dZz5OkYWMUgRRqtUzu9kCp8vcSo0VXEB5mnwh9TFy+yWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=sA9hxJPx; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57KAeT6E009192;
-	Wed, 20 Aug 2025 08:03:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=szKwJ
-	DHvtugDHsPzhtNq0i+ZtQ0tz1Z1J3+jkQRTVn0=; b=sA9hxJPx3OTi6QXz/RiAt
-	4wBhjxWlgmGEzbLNzprFuFVc2nUSpW3FB/IoBnQPoPW5/zHgM62j0rQ1ANLOQ0vn
-	MSC5QCz6D5Eh7k1zEdacXYlp5hjrPA8uTn6M4YFbZ+Vh6FlDBnVnY7NK+aKaKH/F
-	/64KadhfJpiejZKYPmZPC1cULSuChMIh7THFpR3oBVUwZ+7LEyFJpVkm9HSOGPyY
-	VH3TXZ+8p+df1wCJ3lSioMaQ+hlvO9kvlkIR/NTvYZBDW5rMovTwQEOh+Gncv+EL
-	uWEhNF04RnWxQs+BX3C2qLCPLWMBlTNj700G0IcQhlTuSHdy663zfIcrgKfGku44
-	A==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 48n0tdufhq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Aug 2025 08:03:37 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 57KC3aqH037366
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 20 Aug 2025 08:03:36 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 20 Aug 2025 08:03:36 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Wed, 20 Aug 2025 08:03:36 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Wed, 20 Aug 2025 08:03:36 -0400
-Received: from IRISTEIU-L01.ad.analog.com (IRISTEIU-L01.ad.analog.com [10.48.65.173])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 57KC31n4020092;
-	Wed, 20 Aug 2025 08:03:29 -0400
-From: Ioana Risteiu <Ioana.Risteiu@analog.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich
-	<Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "David
- Lechner" <dlechner@baylibre.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?=
-	<nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Ramona Nechita <ramona.nechita@analog.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Ioana Risteiu <Ioana.Risteiu@analog.com>
-Subject: [PATCH v4 4/4] iio: adc: update ad7779 to use IIO backend
-Date: Wed, 20 Aug 2025 15:02:45 +0300
-Message-ID: <20250820120247.3012-5-Ioana.Risteiu@analog.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250820120247.3012-1-Ioana.Risteiu@analog.com>
-References: <20250820120247.3012-1-Ioana.Risteiu@analog.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F84B311C16;
+	Wed, 20 Aug 2025 12:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755693078; cv=fail; b=A0aBhVjCOEillk/eOnzwQO69dVuf+y7lhDlVX/2as19nVAcR4nQAK2pCwTwYDA9SPxXK5rikPrnrbycBn/BwIf1hTpz2S10AH0YyBbdy5Bv4RHCa1RL64mDkYW14RM0Sb7oWevJaZAVEE66QgpjTMF9FKAZSwXUkRE26CK9U8ck=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755693078; c=relaxed/simple;
+	bh=NMmbJb/F3sf3+NQNJylqMBwtUArrt96lR9vpnC8BoeA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=NEe6Bq/lB7H1ZvI/2QQmtvkLFJucEWZEP5IM5NpJjZBriwdG0I8gc4M+Oe9iEQqZB/cym+HuIMZdpT31+RJJMhSelCkWH14pfkwvChl10f+HbTjyPNE0Jp4oUc6gWTCiH9ph8rzMYjyP8+atFO56sz4/ocic2xkITY/2AiL0/x8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2xVRuAkm; arc=fail smtp.client-ip=40.107.243.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V94H9L7SvoFi3dxOt7bJRmId29x2kz1FcMv1YHcozkJ5I887dEqHKZqBCrD1ai7A3PJ+k2+EHQWCY0HQeRcbH5n3a1khMv2J4lkAcTmn6l5Qq6lo/+nNSDoYIQQ7BvNl/EQ4TY3gOwl4u9Ojz0KiGJKZXbSOxAL9ASKn+7GOBsj1NfIDy08lv6la9U/XBjcelIU+aSgQkIJ0ef6qua/jd6O785KAkmbPQgma5YLc+P8CxGFyYO3yAQYfmQCit4ohfP8QptpHQ+XN7ixmrqM++rEUJNwrBFfOFUnzhwgHvlRcxN68lB/D/PI1JOJKImHhQuo0ibuwjbo6yW6tQ/rIrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NMmbJb/F3sf3+NQNJylqMBwtUArrt96lR9vpnC8BoeA=;
+ b=OsDmYbY8GzYxpjaQK8x52f0Gb0+4xVOQZFzH9YGupPRG0WA3T7yUAqisSY2IKarnfh8hdIMMuIB813aI32+UeLFzqEWys6iDRJyy3LDlprn6E4pUlufFL7slSxbB8/oiXK7KKGi/v0ysubXps+jxnTgjxc057G+p7dRLX8BNzxuxelFmYQkUMW8DS0XiMKDS6ef+Sqi5RerObTXC5oq4bH8yZRzbG3nENVmYrnP58CUzmXjhe9q0oiGPiHU9LadJujzSlORhTkSyUhvRWNra27myc9MHFp8+A2jcpf3jRt2ChT9COh5UUUFRppdCqOTMWW23mn8a+yGnQsYlziuKfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NMmbJb/F3sf3+NQNJylqMBwtUArrt96lR9vpnC8BoeA=;
+ b=2xVRuAkmp594jf++Ltut+Ja8HtIjf8hSC30xMsioMqLErNiu8OziKvPzKwt5y9KCzQjS5Hlw7rctpJWAf8qiab/w5Cf1a5vR7J6lDuT6CvSlVYA/Wl5gczLtZ/3h9J8Y6Ev9wgU614VxGUEw6VcI1qkhHwtjFsJ20yj5tv7uNOo=
+Received: from MN2PR12MB4223.namprd12.prod.outlook.com (2603:10b6:208:1d3::18)
+ by SJ0PR12MB7005.namprd12.prod.outlook.com (2603:10b6:a03:486::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Wed, 20 Aug
+ 2025 12:31:12 +0000
+Received: from MN2PR12MB4223.namprd12.prod.outlook.com
+ ([fe80::76e1:d6f4:2e56:e813]) by MN2PR12MB4223.namprd12.prod.outlook.com
+ ([fe80::76e1:d6f4:2e56:e813%7]) with mapi id 15.20.9031.023; Wed, 20 Aug 2025
+ 12:31:12 +0000
+From: "O'Griofa, Conall" <conall.ogriofa@amd.com>
+To: Sean Anderson <sean.anderson@linux.dev>, Anand Ashok Dumbre
+	<anand.ashok.dumbre@xilinx.com>, Jonathan Cameron <jic23@kernel.org>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC: Andy Shevchenko <andy@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Simek, Michal" <michal.simek@amd.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, David Lechner
+	<dlechner@baylibre.com>, Manish Narani <manish.narani@xilinx.com>,
+	=?utf-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
+Subject: RE: [PATCH] iio: xilinx-ams: Fix AMS_ALARM_THR_DIRECT_MASK
+Thread-Topic: [PATCH] iio: xilinx-ams: Fix AMS_ALARM_THR_DIRECT_MASK
+Thread-Index: AQHcEc5PO2M1kUNsM0mFkeX76rFsUQ==
+Date: Wed, 20 Aug 2025 12:31:12 +0000
+Message-ID:
+ <MN2PR12MB4223B775F240DFD91C6131138B33A@MN2PR12MB4223.namprd12.prod.outlook.com>
+References: <20250715003058.2035656-1-sean.anderson@linux.dev>
+In-Reply-To: <20250715003058.2035656-1-sean.anderson@linux.dev>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_ActionId=651d3a75-41ca-44c3-b8b2-92e7948e4251;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_ContentBits=0;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Enabled=true;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Method=Privileged;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Name=Third
+ Party_New;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_SetDate=2025-08-20T12:30:13Z;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_7ab537de-9a15-4e91-8150-78a9f873b18c_Tag=10,
+ 0, 1, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN2PR12MB4223:EE_|SJ0PR12MB7005:EE_
+x-ms-office365-filtering-correlation-id: 4145a0ad-cc06-4ddf-2e38-08dddfe572d3
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?UU91SUpSQ0V6c1I5b2Zqa1lpVDdlaGpKNWhTSUNxR3ZDNGdWWU05N0VuRmx6?=
+ =?utf-8?B?ZzJlYWtEUUZkQ3hJVkliZzdDdVpOUWExeUNqdFZlcUxORnBRREpUaXlGODh5?=
+ =?utf-8?B?amRnRXcwY0lCSElHaHBtYkdSN1dIeUFuanBwU205TUxNNkRXZlhNMUE3REpw?=
+ =?utf-8?B?Tk0zaW5PVWRYRm1SdUJ5a3RRQW0rbWdNSkx0UlhrTDVqckt6eXRzdGJ1WlBX?=
+ =?utf-8?B?RGF5SnlZb1l1emhwNTcyMlFZenZZaVRBeTJQWkZJQ3F3OEdGWlNmYk5Oc2Fv?=
+ =?utf-8?B?QkNBeHlIOW1zbDh2dk1pdDh0Q0pCbUkzbHFtL0xNb1licmtaZk9VdVJIaEkr?=
+ =?utf-8?B?WUZyMm9BZmtzQ0ttN2FyVFJIRnZ4eDc2T3dFRjZEWk9Kd251eUw1NkFpMzlC?=
+ =?utf-8?B?ekxHNGl4eC9vMFVPK1ZJZ01iRjZ1eDhYQ3dEelBVZ2RrYUZnODlLVUh5akM2?=
+ =?utf-8?B?dDFLRVEwMjRZYVBhVXd6eitJRjRUTmViRFlhblFUQ3g0M0s3N3pZYXVsTTJP?=
+ =?utf-8?B?Uzc0ajBhSnExbENqcFpSVXg0OU83MWpjNWtzb3lSeGMxRjB0bHRJRGl3Tk41?=
+ =?utf-8?B?MHZpcUZPR0twWHBpN2wyYllZMkRRaUttZHRMK3doaGNJOEZ3Nk5uNE5zWVhR?=
+ =?utf-8?B?ellUTHExam1xOTZWN0lVOVVJL3IrRHVlYkVMa2tzVjFEYm9mbk50Z0hFV0NU?=
+ =?utf-8?B?RmZEdGIvQVI3R2Qva09kL3ZvNkdPMkdXeko2aWF6QUd1R3kwU2s4SGtDQXd4?=
+ =?utf-8?B?d2MrZ1pMQ2pJOU1qSmdTbDNLaXpFQmx1emowRzFHeUdFZjFyWURybmRUVGZU?=
+ =?utf-8?B?amRLTWVMc2phVGhINC9oLzM3d2REYkNvNnFITEFBY1lNUmE4bEcvRXQ2UUtQ?=
+ =?utf-8?B?My9tcFcyNjZxTGVuZHdBR2hzL1hTTUJpdS9peVBaaEYvdlV4MW9JMkVvNk53?=
+ =?utf-8?B?Ny9SQWZDNFF5OWlJUU9mNlpqTG9IZVUzaC9OanpnY250QUFzTTR2TzlJQ0Zt?=
+ =?utf-8?B?SG5vcUNEUGpibjhaZFlRR0k3akpzVnRyMlVNU2NIS2pUTjNRd3pwdFZqL25j?=
+ =?utf-8?B?TnYycmhmeFkxdVQ2TjJQaTRWdVBZTDFyRGloNGVOUnRnVXZweDY5bVl4eEd6?=
+ =?utf-8?B?M0gwbzlrSjJRMHFGRzdIcmJuM3l5a0pMekY3Y0thWUpvNHdleWlSL21KZDY5?=
+ =?utf-8?B?elNPTUczS1JGNFVMc2N3Q20xeVExbUJWeEtRY2MxZWh5aEJ1Rmh4ak9NRFZM?=
+ =?utf-8?B?NXlyZ2xESGFRV2pLQmFzdmJncEZPTzJ4ak5LNjVjdFYrakkwNm54OG9zQ3BQ?=
+ =?utf-8?B?VzlpMldaWWU5YTBLaVEzTHNCWTJocVdrYXVBWEdMK1NRMTlpTkdIV0FoTHc0?=
+ =?utf-8?B?SkFQY09mL1hGRlFmNG5PMHZFU2lzQUt1N1FBeWhiNE5qQlBpMXBkQVhYMTQ0?=
+ =?utf-8?B?emNscHpkZW1zUFNMN2tPRUp1S0JFdjE2bGVWWHoxRVMrU3YxY2psU3RrZVRm?=
+ =?utf-8?B?NEs1WVp5Y2kyWllsSHVDOTBockVEQ1NyRFZscVMrSUdUZ3VVSlpVdmMrMUgy?=
+ =?utf-8?B?K252MFd2LzkxWVRPckNaSmRIQTlBKy9XUENsSjZjdmx6alRaR2NxekxxL29h?=
+ =?utf-8?B?NE5XMmJiTmg3UHlTRWxBN3dCbW9rVXJHbGs2Z2NYU1J3WndoQ2d2YjE5QXdD?=
+ =?utf-8?B?YjRZMWQzSEdZRjFjL2dHWW12UHFyV0N1b0d6a2lRSzZPdTZyTEsxMFpKZFB2?=
+ =?utf-8?B?bkhlOGJ1M1Q5a2lpRVUxdjBGelRQN25vdTVGem1OV3RLeU9ES1R3dzFoQnFD?=
+ =?utf-8?B?ZjRrMnhLWDd5RHMxRmJKQTltL1RwNC9pVUY5YTlsY0VGbXA2MHVrcHE0Zkpm?=
+ =?utf-8?B?Q2ZkTjBIdnhSWEJXTlhOYXdQYkUyemt1MDdwbmtuT1VCTzNTWHc4Ykc0VzBq?=
+ =?utf-8?B?WGw3QXVqdWZrM0xJd2NVeGVlM2hqSWFDcmpNNDF2VjV3V2pwR1c2aThSSE4x?=
+ =?utf-8?B?MVkxSEdGc2Z3PT0=?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4223.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?d1VyUDRrNG82S0NrdmdYYnNXNk1oK3hRQUVZc05xMVdEckNya2pDVnFxM1dB?=
+ =?utf-8?B?TzYxdFBXWW5kWWFUbEh3blFoandaMyt2eGZsNXhrb21WZDkrRXVLMU9rY2Jj?=
+ =?utf-8?B?aHpSS05PV3AySksxRk9qVFNoMFdlaDc5SncwcEJMc0s4dVBweUdTUmhRcW41?=
+ =?utf-8?B?UGs4a1N4UWtlU203ejNSaHdTR1ZhYmFjVmhRU29ubHhmc3hYbDlRV1QrRWIx?=
+ =?utf-8?B?MDNzK2RLMk9lbm05Sno0cWVuL1kzOUpoY2V1MWg0azVRUzNHZ0tQUTRtSjdB?=
+ =?utf-8?B?aUFRL0xRQ01vR0g1cVRHVHdvdEFOYloxMzdiWE5tTTRvbC9yTVpyL2g2OXkz?=
+ =?utf-8?B?YUgwQ1JyMHcwenVvaEVQNnZZR3hob2lYcGZ0UytzMWFyY0psZURaQ2JlVWFm?=
+ =?utf-8?B?SFA2SHExMDlzbWllcXJaVnp6M2FoaGtKR1M3Mk5kTXkrZXNQY0M5NFg0NXhs?=
+ =?utf-8?B?YjlvaUVjSzNBT08zVjVrODB4RjRWWVN5a3U1OFV2R1h0ZWwrMFNsanJlTFFX?=
+ =?utf-8?B?QUlSWWJaWk41SWVHc293OUdSQllLYitWQ2hIQjRTeVhISk1senZUK2tOWGZT?=
+ =?utf-8?B?M3VENGtkN295R09IM28rRWJRaVppdjVaMG1LWmgzQjlacUZwVDBnWFB1SHEx?=
+ =?utf-8?B?dFBYQkhDTllLcEVoOGRORVBOUHhBeE9LMmV2RUhSNU43T1NQWEJONzJ3dCtr?=
+ =?utf-8?B?Ynp6d2d3bGFrbVd5UW5uSURVY2lTM2ExWHRyZU1aVUo3WHp5N2gvRHJNeTR5?=
+ =?utf-8?B?VVBnZWJnL0p0dElYZTVlOTRtLzh2enNiME91bGhsVjRhM2dMN2pSRDZ6M3Jx?=
+ =?utf-8?B?R2M0eWJTc0pIMmM4RXpZelcvZ2ZjdFVHd2ZuSmdkazQ0ckhDYll2T2Q3dHEz?=
+ =?utf-8?B?VmhsaTVyUU1TeHoyVVZXRnpjTGIvbitCVVFCUGp2UjM3VkxLNGE0OVdZUDhv?=
+ =?utf-8?B?SGlTREkzdUlvZWJ1WTZPSGtCS3JiUXJkTWR4WUhpVHhNc3cvK2xDNkFmVm9l?=
+ =?utf-8?B?REI5b2YwbWF4YktWKzY0ZStCYTVxVVdmYzNqcE90bVMzcjVhdW1jejhaYjV6?=
+ =?utf-8?B?aEJDUTd0S2V0VWpZbS8vT2NvOXl2eXpxUENzcE1oRFpaQjRYRVRzYndLcGJx?=
+ =?utf-8?B?L25yNEFFbG15T0tkdE85b2ZkMG9PUFZ6WHdFdGNieTdGcGlvUmVMUkMwRDMz?=
+ =?utf-8?B?ay8vN2ZXbWk0dDhVNHdRTEdqeStPdmJLTlBFOFJJRlMzN3VaYW96dVMwNFAz?=
+ =?utf-8?B?V0hWYjM5bWM2SXE1ODdWMDdBL2hCVFNhQ0VFeGdSeHZOWHZ3NSsvd0R6VzJj?=
+ =?utf-8?B?WWw4NFRKbEpXM0ZjL05BNDV2V1hxbGVwM25ld0pLb1I3QklZOFNOOGpHOUJB?=
+ =?utf-8?B?TUZ3NjNRbEhIbTVlRTdaQ0pPMWtnUVljQ2hENUsrZU5sNVZpcEk5MGMxeVZX?=
+ =?utf-8?B?RTA3VzhpbnJJRWJmOVBHOWdzdFBySmk2VzBXRG5rSUVFcTIraG90TUpZekkr?=
+ =?utf-8?B?ZVlTcjlXOG5GZnJiZUlDY1R4Tm9Rbk1pV2JJZUxMVVM3WjNLYVJzVTBRdFZB?=
+ =?utf-8?B?NXA4ckVXL1d4MWs1OFR2TnhaWkFUWURuOCtqeUNQMFM3RTBZNnlTSDAyZ2tr?=
+ =?utf-8?B?VzArTFhhVUVYQWlEOUJpYnNaelFwV0JEby9FN05vQ0ZvVE0rMnpOSDFUZm5J?=
+ =?utf-8?B?K0N4RmdDOTJpLzVtOWh5SWtmZ003RFRscGJXelJibk1nUzhWeThSZmtJdjYr?=
+ =?utf-8?B?T0g2NkRtL0o3YjE1N2RTWTRGamNBWktQN1hvVXBGeHRBNGZ0U09ReVBpWldl?=
+ =?utf-8?B?ZUM0SVQ5V0NYRHdsWC9kYUpsQ0NsMDNRdFFvRGRnMlFKclh0T1N3STZJeVJM?=
+ =?utf-8?B?ck1OZm1VS2NGNTIxK205OHZDNFprNHBVNys3cHZMRmNSdFpxZFA1KzBtalM2?=
+ =?utf-8?B?bDV3c2c5cUI5Skc1eUw2aTlkODhnM2UvZkFpcG82dDhsVVh5TSsrNFBOVVFk?=
+ =?utf-8?B?VXpQRk9hZEZWRjV6cUJuSzM1WStCb2N2L0xZRmd2V3BsMmRPTm1ab3FkU2F5?=
+ =?utf-8?B?K3VwVzdsVm5kbURYWUM2aEV1VlkxNWU2WVFmR21PZTl6NnhFVHBQc2VMek5J?=
+ =?utf-8?Q?1AGI=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NSBTYWx0ZWRfX0B6s+v+BXogx
- u4PCRGjlJMqip62mE7N/4AUl3x9rqeoqeVjhZHMrGKVdj/mZBto2vFnFz0auUJOqzYkpffuqZjf
- Ire7Py9W9FH/0BtRnNTGHSjGsVMhySNADIAdT+xSe7NSJ+iMnq0GeZLjgRTPmNEUTfbvrIxTeyA
- j/XbYPC/jXbZ7wTeC5tWNkRQwnAfHttMLlST8yV3lzjIIPMKu6YVOWVi4gwW/MRaSA16mLI04v2
- IuH9uX7AsrNMWbkoDIuw4ChovZ7T5bLGDIIg2o8FA5ArYHWKdIABirDRZbbNxuO5IwYhXq9MTZu
- gNwvNc/+RASmRs5aaHUcg86v90EVA3jr6gK9gF1H2Zg9yPV0sFvIv19HnhrbCSvpDms6ajlIfuu
- 3iz4SOspI9OiItlAt0s0274dFe1d2g==
-X-Proofpoint-ORIG-GUID: hiXJFulbev_dI0BC2Put3c1GCiTAzDcB
-X-Authority-Analysis: v=2.4 cv=BoHEAYX5 c=1 sm=1 tr=0 ts=68a5b999 cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=2OwXVqhp2XgA:10 a=gAnH3GRIAAAA:8 a=VjRcvFoKhyOr0kwuT1sA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: hiXJFulbev_dI0BC2Put3c1GCiTAzDcB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-20_03,2025-08-20_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 phishscore=0 spamscore=0 impostorscore=0
- malwarescore=0 bulkscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2508110000
- definitions=main-2508190195
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB4223.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4145a0ad-cc06-4ddf-2e38-08dddfe572d3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Aug 2025 12:31:12.2809
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +zPQj4eZKeL0wOlYpGJBx5rc802qA0l8zkaStWwFNSC/Gs4Jj5dr168X8xM4Qd4U
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7005
 
-Add a new functionality to ad7779 driver that streams data through data
-output interface using IIO backend interface.
-
-Signed-off-by: Ioana Risteiu <Ioana.Risteiu@analog.com>
----
-changes in v4:
- - grouped includes in alphabetical order
- - reordered fields in struct ad7779_state
- - modified logic of setting the number of lanes 
- - validating devicetree value
- drivers/iio/adc/ad7779.c | 116 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 115 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/ad7779.c b/drivers/iio/adc/ad7779.c
-index f7e681c0e8c0..adca490061c9 100644
---- a/drivers/iio/adc/ad7779.c
-+++ b/drivers/iio/adc/ad7779.c
-@@ -25,6 +25,7 @@
- #include <linux/units.h>
- 
- #include <linux/iio/iio.h>
-+#include <linux/iio/backend.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/sysfs.h>
- #include <linux/iio/trigger.h>
-@@ -116,6 +117,12 @@
- #define AD7779_CRC8_POLY			0x07
- DECLARE_CRC8_TABLE(ad7779_crc8_table);
- 
-+enum ad7779_data_lines {
-+	AD7779_1LINE = 1,
-+	AD7779_2LINES = 2,
-+	AD7779_4LINES = 4,
-+};
-+
- enum ad7779_filter {
- 	AD7779_SINC3,
- 	AD7779_SINC5,
-@@ -145,6 +152,7 @@ struct ad7779_state {
- 	struct completion completion;
- 	unsigned int sampling_freq;
- 	enum ad7779_filter filter_enabled;
-+	struct iio_backend *back;
- 	/*
- 	 * DMA (thus cache coherency maintenance) requires the
- 	 * transfer buffers to live in their own cache lines.
-@@ -630,12 +638,38 @@ static int ad7779_reset(struct iio_dev *indio_dev, struct gpio_desc *reset_gpio)
- 	return ret;
- }
- 
-+static int ad7779_update_scan_mode(struct iio_dev *indio_dev,
-+				   const unsigned long *scan_mask)
-+{
-+	struct ad7779_state *st = iio_priv(indio_dev);
-+	unsigned int c;
-+	int ret;
-+
-+	for (c = 0; c < AD7779_NUM_CHANNELS; c++) {
-+		if (test_bit(c, scan_mask))
-+			ret = iio_backend_chan_enable(st->back, c);
-+		else
-+			ret = iio_backend_chan_disable(st->back, c);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static const struct iio_info ad7779_info = {
- 	.read_raw = ad7779_read_raw,
- 	.write_raw = ad7779_write_raw,
- 	.debugfs_reg_access = &ad7779_reg_access,
- };
- 
-+static const struct iio_info ad7779_info_data = {
-+	.read_raw = ad7779_read_raw,
-+	.write_raw = ad7779_write_raw,
-+	.debugfs_reg_access = &ad7779_reg_access,
-+	.update_scan_mode = &ad7779_update_scan_mode,
-+};
-+
- static const struct iio_enum ad7779_filter_enum = {
- 	.items = ad7779_filter_type,
- 	.num_items = ARRAY_SIZE(ad7779_filter_type),
-@@ -752,6 +786,49 @@ static int ad7779_conf(struct ad7779_state *st, struct gpio_desc *start_gpio)
- 	return 0;
- }
- 
-+static int ad7779_set_data_lines(struct iio_dev *indio_dev,
-+				 unsigned int num_lanes)
-+{
-+	struct ad7779_state *st = iio_priv(indio_dev);
-+	int ret = -EINVAL;
-+
-+	if (num_lanes != AD7779_1LINE &&
-+		num_lanes != AD7779_2LINES &&
-+		num_lanes != AD7779_4LINES)
-+		return ret;
-+
-+	ret = ad7779_set_sampling_frequency(st, num_lanes * AD7779_DEFAULT_SAMPLING_1LINE);
-+	if (ret)
-+		return ret;
-+
-+	ret = iio_backend_num_lanes_set(st->back, num_lanes);
-+	if (ret)
-+		return ret;
-+
-+	return ad7779_spi_write_mask(st, AD7779_REG_DOUT_FORMAT,
-+				    AD7779_DOUT_FORMAT_MSK,
-+				    FIELD_PREP(AD7779_DOUT_FORMAT_MSK, 2 - ilog2(num_lanes)));
-+}
-+
-+static int ad7779_setup_channels(struct iio_dev *indio_dev, const struct ad7779_state *st)
-+{
-+	struct iio_chan_spec *channels;
-+	struct device *dev = &st->spi->dev;
-+
-+	channels = devm_kmemdup_array(dev, st->chip_info->channels,
-+					ARRAY_SIZE(ad7779_channels),
-+					sizeof(*channels), GFP_KERNEL);
-+	if (!channels)
-+		return -ENOMEM;
-+
-+	for (int i = 0; i < ARRAY_SIZE(ad7779_channels); i++)
-+		channels[i].scan_type.endianness = IIO_CPU;
-+
-+	indio_dev->channels = channels;
-+
-+	return 0;
-+}
-+
- static int ad7779_setup_without_backend(struct ad7779_state *st, struct iio_dev *indio_dev)
- {
- 	int ret;
-@@ -796,6 +873,39 @@ static int ad7779_setup_without_backend(struct ad7779_state *st, struct iio_dev
- 				    FIELD_PREP(AD7779_DCLK_CLK_DIV_MSK, 7));
- }
- 
-+static int ad7779_setup_backend(struct ad7779_state *st, struct iio_dev *indio_dev)
-+{
-+	struct device *dev = &st->spi->dev;
-+	int ret = -EINVAL;
-+	int num_lanes;
-+
-+	indio_dev->info = &ad7779_info_data;
-+
-+	ret = ad7779_setup_channels(indio_dev, st);
-+	if (ret)
-+		return ret;
-+
-+	st->back = devm_iio_backend_get(dev, NULL);
-+	if (IS_ERR(st->back))
-+		return dev_err_probe(dev, PTR_ERR(st->back),
-+				     "failed to get iio backend");
-+
-+	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_iio_backend_enable(dev, st->back);
-+	if (ret)
-+		return ret;
-+
-+	num_lanes = 4;
-+	ret = device_property_read_u32(dev, "adi,num-lanes", &num_lanes);
-+	if (ret && ret != -EINVAL)
-+		return ret;
-+
-+	return ad7779_set_data_lines(indio_dev, num_lanes);
-+}
-+
- static int ad7779_probe(struct spi_device *spi)
- {
- 	struct iio_dev *indio_dev;
-@@ -848,7 +958,10 @@ static int ad7779_probe(struct spi_device *spi)
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->num_channels = ARRAY_SIZE(ad7779_channels);
- 
--	ret = ad7779_setup_without_backend(st, indio_dev);
-+	if (device_property_present(dev, "io-backends"))
-+		ret = ad7779_setup_backend(st, indio_dev);
-+	else
-+		ret = ad7779_setup_without_backend(st, indio_dev);
- 
- 	if (ret)
- 		return ret;
-@@ -943,3 +1056,4 @@ module_spi_driver(ad7779_driver);
- MODULE_AUTHOR("Ramona Alexandra Nechita <ramona.nechita@analog.com>");
- MODULE_DESCRIPTION("Analog Devices AD7779 ADC");
- MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS("IIO_BACKEND");
--- 
-2.47.2
-
+SGksDQoNCkdvb2Qgc3BvdCwgdGhhbmtzIGFnYWluIQ0KDQpDaGVlcnMsDQpDb25hbGwuDQoNCj4g
+LS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU2VhbiBBbmRlcnNvbiA8c2Vhbi5h
+bmRlcnNvbkBsaW51eC5kZXY+DQo+IFNlbnQ6IDE1IEp1bHkgMjAyNSAwMTozMQ0KPiBUbzogQW5h
+bmQgQXNob2sgRHVtYnJlIDxhbmFuZC5hc2hvay5kdW1icmVAeGlsaW54LmNvbT47IEpvbmF0aGFu
+IENhbWVyb24NCj4gPGppYzIzQGtlcm5lbC5vcmc+OyBsaW51eC1paW9Admdlci5rZXJuZWwub3Jn
+DQo+IENjOiBBbmR5IFNoZXZjaGVua28gPGFuZHlAa2VybmVsLm9yZz47IGxpbnV4LWtlcm5lbEB2
+Z2VyLmtlcm5lbC5vcmc7IFNpbWVrLA0KPiBNaWNoYWwgPG1pY2hhbC5zaW1la0BhbWQuY29tPjsg
+bGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBEYXZpZA0KPiBMZWNobmVyIDxk
+bGVjaG5lckBiYXlsaWJyZS5jb20+OyBNYW5pc2ggTmFyYW5pIDxtYW5pc2gubmFyYW5pQHhpbGlu
+eC5jb20+Ow0KPiBOdW5vIFPDoSA8bnVuby5zYUBhbmFsb2cuY29tPjsgU2VhbiBBbmRlcnNvbiA8
+c2Vhbi5hbmRlcnNvbkBsaW51eC5kZXY+DQo+IFN1YmplY3Q6IFtQQVRDSF0gaWlvOiB4aWxpbngt
+YW1zOiBGaXggQU1TX0FMQVJNX1RIUl9ESVJFQ1RfTUFTSw0KPiANCj4gQU1TX0FMQVJNX1RIUl9E
+SVJFQ1RfTUFTSyBzaG91bGQgYmUgYml0IDAsIG5vdCBiaXQgMS4gVGhpcyB3b3VsZCBjYXVzZQ0K
+PiBoeXN0ZXJlc2lzIHRvIGJlIGVuYWJsZWQgd2l0aCBhIGxvd2VyIHRocmVzaG9sZCBvZiAtMjhD
+LiBUaGUgdGVtcGVyYXR1cmUgYWxhcm0NCj4gd291bGQgbmV2ZXIgZGVhc3NlcnQgZXZlbiBpZiB0
+aGUgdGVtcGVyYXR1cmUgZHJvcHBlZCBiZWxvdyB0aGUgdXBwZXIgdGhyZXNob2xkLg0KPiANCj4g
+Rml4ZXM6IGQ1YzcwNjI3YTc5NCAoImlpbzogYWRjOiBBZGQgWGlsaW54IEFNUyBkcml2ZXIiKQ0K
+PiBTaWduZWQtb2ZmLWJ5OiBTZWFuIEFuZGVyc29uIDxzZWFuLmFuZGVyc29uQGxpbnV4LmRldj4N
+Cj4gLS0tDQo+IA0KPiAgZHJpdmVycy9paW8vYWRjL3hpbGlueC1hbXMuYyB8IDIgKy0NCj4gIDEg
+ZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAt
+LWdpdCBhL2RyaXZlcnMvaWlvL2FkYy94aWxpbngtYW1zLmMgYi9kcml2ZXJzL2lpby9hZGMveGls
+aW54LWFtcy5jIGluZGV4DQo+IDc2ZGQwMzQzZjVmNy4uNTUyMTkwZGQwZTZlIDEwMDY0NA0KPiAt
+LS0gYS9kcml2ZXJzL2lpby9hZGMveGlsaW54LWFtcy5jDQo+ICsrKyBiL2RyaXZlcnMvaWlvL2Fk
+Yy94aWxpbngtYW1zLmMNCj4gQEAgLTExOCw3ICsxMTgsNyBAQA0KPiAgI2RlZmluZSBBTVNfQUxB
+Uk1fVEhSRVNIT0xEX09GRl8xMAkweDEwDQo+ICAjZGVmaW5lIEFNU19BTEFSTV9USFJFU0hPTERf
+T0ZGXzIwCTB4MjANCj4gDQo+IC0jZGVmaW5lIEFNU19BTEFSTV9USFJfRElSRUNUX01BU0sJQklU
+KDEpDQo+ICsjZGVmaW5lIEFNU19BTEFSTV9USFJfRElSRUNUX01BU0sJQklUKDApDQo+ICAjZGVm
+aW5lIEFNU19BTEFSTV9USFJfTUlOCQkweDAwMDANCj4gICNkZWZpbmUgQU1TX0FMQVJNX1RIUl9N
+QVgJCShCSVQoMTYpIC0gMSkNCj4gDQo+IC0tDQo+IDIuMzUuMS4xMzIwLmdjNDUyNjk1Mzg3LmRp
+cnR5DQoNClJldmlld2VkLWJ5OiBPJ0dyaW9mYSwgQ29uYWxsIDxjb25hbGwub2dyaW9mYUBhbWQu
+Y29tPg0K
 

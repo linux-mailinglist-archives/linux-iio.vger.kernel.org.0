@@ -1,193 +1,156 @@
-Return-Path: <linux-iio+bounces-23071-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23072-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC318B2E100
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 17:27:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4DEB2E2D5
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 19:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1634EA261D9
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 15:17:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5B207B1E1A
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 17:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AA6322A13;
-	Wed, 20 Aug 2025 15:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2CF334707;
+	Wed, 20 Aug 2025 17:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="frL5AAR+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dr1d03/z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788C22E8B81;
-	Wed, 20 Aug 2025 15:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41FF221F2F;
+	Wed, 20 Aug 2025 17:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755702559; cv=none; b=diLfxqVIsbDlthqsvNr/GiW6spNXvYezUISrqHd0TnOZHA9aLvm7qfLEZlFd+5JOCxvsinA5WWLTyAf0DWiKMzs2YIzzH+Bk+WtR4nPNxH21A9AtlHnc40HISaW6cVnXc5jraPkCyZd+AWN9RPDuIbuUkYS9f1V0t/wzo7Nm6Qs=
+	t=1755709380; cv=none; b=I76Kx4ye36sfgAxHK6r4H42NVC0LQIRlQbOnTawxGVEsh713QYk8nj2vkEGoz16tOtOvVIRjyjViunSklbRJryLfRjTXExhTAgvpGLUyuGSh7yUlmdLtKxhdgjtE0PE1mifwp/cO/wXiTuroQzQ04ohSdL5B1kQqFAz9SR5vGN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755702559; c=relaxed/simple;
-	bh=LCVLvmXp8GhH3jfjnnZtTRaXTBMo68xWvBNThq4DNP4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FvJO/h63u8YIbLRm/gvST4ZAqYblq4hdR5XJmM2RzDdeABXTUCOIqqgX7gYGD4sJmCUP7ZtPtjkAmT0Fleut6zz4bCle7qPkoSKLsjlz5kHNfSVrXuUPk7GRQq+S3FmimKagCf/iVRh1k6iZ0XS0M+zYw8FnlzTcRb3eA6DysyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=frL5AAR+; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755702558; x=1787238558;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LCVLvmXp8GhH3jfjnnZtTRaXTBMo68xWvBNThq4DNP4=;
-  b=frL5AAR+s+aRJLkL0iBGQkDXtPXBDUhR/bYIRdeUIxxsA7YWmFawkEAf
-   0hr6zVl2e/aXE4lcUlo8KCpmDvb1BT3bsi5K8xQjb7SZsmWDJYc2Mn77T
-   CbCco1zDY2NgbmAnsv4OwwUyykBtv3XQHrp8Qf90wO6Encvl0KKa4Cjng
-   9E/+3MeFQe6sZsfLDZDnbPlqYaBqDn8AzDCqkmPhNzoxOVzsQxfrZ6i1t
-   ivMjY4VIwZyuL/8ZazXx0hf5cUcDgBJFAbUOYJyQBXuZhK7RxAw4UO18d
-   AbJS20R7vxn6QnCwP41tf1OmddJui4dgb5HNvRoWuIAtry3IX+72Du4+z
-   A==;
-X-CSE-ConnectionGUID: LHint3cfSp6ALG7SrObX0w==
-X-CSE-MsgGUID: EjLuyg6SRXa7dietz8ZNhg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="58070150"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="58070150"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 08:09:16 -0700
-X-CSE-ConnectionGUID: ciJw3CfvQ0+BVu5at19++w==
-X-CSE-MsgGUID: xUJPfrHHRIy4TBi8Oy473A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="168067907"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 08:09:12 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uokR3-00000006y2m-3mq9;
-	Wed, 20 Aug 2025 18:09:09 +0300
-Date: Wed, 20 Aug 2025 18:09:09 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: cryolitia@uniontech.com
-Cc: Alex Lanzano <lanzano.alex@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Yao Zi <ziyao@disroot.org>,
-	WangYuli <wangyuli@uniontech.com>, Jun Zhan <zhanjun@uniontech.com>,
-	Niecheng1@uniontech.com
-Subject: Re: [PATCH v2] iio: imu: bmi270: Match PNP ID found on newer GPD
- firmware
-Message-ID: <aKXlFZmIaefBPlw0@smile.fi.intel.com>
-References: <20250815-bmi270-gpd-acpi-v2-1-8e1db68d36d1@uniontech.com>
+	s=arc-20240116; t=1755709380; c=relaxed/simple;
+	bh=Zv4ujPO3KQCQ/S/zZ+87yMEeTHGtDtwjmsw35eFBLPg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=GJeKu3gn/6repjJ2Tilsx8ObkFzt3ZlNB8lv0AdCbKsv3nJDGWP6bkp8t5bVVAacMd/DPFGlnZEQgz9CoeLBGJ3w+qUhW+e4gwleM8BlFaSX4VU+tc4tQS1wiR7PRw4YAqwHkYNsp3abWm86rAQt+Q3szir5y4AiBa5c8JjHUW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dr1d03/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A73AC113CF;
+	Wed, 20 Aug 2025 17:02:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755709379;
+	bh=Zv4ujPO3KQCQ/S/zZ+87yMEeTHGtDtwjmsw35eFBLPg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Dr1d03/ztQZzehnuA3pVpw7eG2apfzSIzXWZn4V8PSF/oxOnzaMyj6VZxDgQ3XY0C
+	 nca+A2IJDoLbxKo30R/YmbItPPf92i6LVVRW7LTdmYn+yLP3bLCTrV977h9BaHEtKx
+	 NXa2PCl2PJ+9sKMlIBp1C0l2xmBSHRNp1Ot+Slf6644+zsAzHmD5BYUvfwKZ1SqBPg
+	 b3bNilTK6GPtQRkA2c0x0ltTwqwessPnwFUwQuinpUV1sWYrBj8/SGJJQ8Wlda48Mw
+	 vcZIdxxAkqbQkwlZ9DlQZ/Zs8lvh3SMTfcqlJlRdXT5KDCZbCRFgNoX/rafdY4my5h
+	 Ujim+Xbb9lOhA==
+From: Vinod Koul <vkoul@kernel.org>
+To: linux-kernel@vger.kernel.org, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Mark Brown <broonie@kernel.org>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Andrea della Porta <andrea.porta@suse.com>, 
+ =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, Andy Shevchenko <andy@kernel.org>, 
+ Andy Yan <andy.yan@rock-chips.com>, Avi Fishman <avifishman70@gmail.com>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Benjamin Fair <benjaminfair@google.com>, 
+ Bjorn Andersson <andersson@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, 
+ David Airlie <airlied@gmail.com>, David Lechner <dlechner@baylibre.com>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Drew Fustini <fustini@kernel.org>, dri-devel@lists.freedesktop.org, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Fu Wei <wefu@redhat.com>, 
+ Guo Ren <guoren@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, imx@lists.linux.dev, 
+ Iwona Winiarska <iwona.winiarska@intel.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Jassi Brar <jassisinghbrar@gmail.com>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Jerome Brunet <jbrunet@baylibre.com>, Jonas Karlman <jonas@kwiboo.se>, 
+ Jonathan Cameron <jic23@kernel.org>, Kevin Hilman <khilman@baylibre.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Lee Jones <lee@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, linux-actions@lists.infradead.org, 
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-input@vger.kernel.org, linux-media@vger.kernel.org, 
+ linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org, 
+ linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-rtc@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-sunxi@lists.linux.dev, Liu Ying <victor.liu@nxp.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Maxime Ripard <mripard@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, Nancy Yuen <yuenn@google.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Nicolin Chen <nicoleotsuka@gmail.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, openbmc@lists.ozlabs.org, 
+ Patrick Venture <venture@google.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Robert Foss <rfoss@kernel.org>, 
+ Samuel Holland <samuel.holland@sifive.com>, 
+ Samuel Holland <samuel@sholland.org>, Sandy Huang <hjc@rock-chips.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Stephen Boyd <sboyd@kernel.org>, Takashi Iwai <tiwai@suse.com>, 
+ Tali Perry <tali.perry1@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Tomer Maimon <tmaimon77@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Vasily Khoruzhick <anarsoul@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
+ Xiubo Li <Xiubo.Lee@gmail.com>, Yangtao Li <tiny.windzz@gmail.com>, 
+ Zhang Rui <rui.zhang@intel.com>
+In-Reply-To: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
+References: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
+Subject: Re: (subset) [PATCH 00/21] treewide: remove unneeded 'fast_io'
+ parameter in regmap_config
+Message-Id: <175570934550.66459.15951444863822303407.b4-ty@kernel.org>
+Date: Wed, 20 Aug 2025 22:32:25 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250815-bmi270-gpd-acpi-v2-1-8e1db68d36d1@uniontech.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-On Fri, Aug 15, 2025 at 06:43:26PM +0800, Cryolitia PukNgae via B4 Relay wrote:
-> From: Cryolitia PukNgae <cryolitia@uniontech.com>
+
+On Wed, 13 Aug 2025 18:14:46 +0200, Wolfram Sang wrote:
+> While working on a driver using regmap with MMIO, I wondered if I need
+> to set 'fast_io' in the config. Turned out I don't need to, so I added
+> documentation for it with commit ffc72771ff6e ("regmap: Annotate that
+> MMIO implies fast IO").
 > 
-> GPD devices originally used BMI160 sensors with the "BMI0160" PNP ID.
-> When they switched to BMI260 sensors in newer hardware, they reused
-> the existing Windows driver which accepts both "BMI0160" and "BMI0260"
-> IDs. Consequently, they kept "BMI0160" in DSDT tables for new BMI260
-> devices, causing driver mismatches in Linux.
+> This series fixes the existing users in the tree which needlessly set
+> the flag. They have been found using this coccinelle script:
 > 
-> 1. GPD updated BIOS v0.40+[1] for newer devices to report "BMI0260" for
-> BMI260 sensors to avoid loading bmi160 driver on Linux. While this
-> isn't Bosch's VID;
-> 2. Bosch's official Windows driver uses "BMI0260" as a compatible ID
-> 3. We're seeing real devices shipping with "BMI0260" in DSDT
-> 
-> The DSDT excerpt of GPD G1619-04 with BIOS v0.40:
-> 
-> Scope (_SB.I2CC)
-> {
->     Device (BMA2)
->     {
->         Name (_ADR, Zero)  // _ADR: Address
->         Name (_HID, "BMI0260")  // _HID: Hardware ID
->         Name (_CID, "BMI0260")  // _CID: Compatible ID
->         Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
->         Name (_UID, One)  // _UID: Unique ID
->         Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
->         {
->             Name (RBUF, ResourceTemplate ()
->             {
->                 I2cSerialBusV2 (0x0069, ControllerInitiated, 0x00061A80,
->                     AddressingMode7Bit, "\\_SB.I2CC",
->                     0x00, ResourceConsumer, , Exclusive,
->                     )
->             })
->             Return (RBUF) /* \_SB_.I2CC.BMA2._CRS.RBUF */
->         }
+> [...]
 
-Everything from this line...
+Applied, thanks!
 
->         OperationRegion (CMS2, SystemIO, 0x72, 0x02)
->         Field (CMS2, ByteAcc, NoLock, Preserve)
->         {
->             IND2,   8,
->             DAT2,   8
->         }
-> 
->         IndexField (IND2, DAT2, ByteAcc, NoLock, Preserve)
->         {
->             Offset (0x74),
->             BACS,   32
->         }
-> 
->         Method (ROMS, 0, NotSerialized)
->         {
->             Name (RBUF, Package (0x03)
->             {
->                 "0 -1 0",
->                 "-1 0 0",
->                 "0 0 -1"
->             })
->             Return (RBUF) /* \_SB_.I2CC.BMA2.ROMS.RBUF */
->         }
-> 
->         Method (CALS, 1, NotSerialized)
->         {
->             Local0 = Arg0
->             If (((Local0 == Zero) || (Local0 == Ones)))
->             {
->                 Return (Local0)
->             }
->             Else
->             {
->                 BACS = Local0
->             }
->         }
+[12/21] phy: remove unneeded 'fast_io' parameter in regmap_config
+        commit: e1e1e77f7df7cbee959ba024e5475907fe561c98
 
->         Method (_STA, 0, NotSerialized)  // _STA: Status
->         {
->             Return (0x0F)
->         }
-
-...till this line is a noise.
-
->     }
-> }
-
-> 1. http://download.softwincn.com/WIN%20Max%202024/Max2-7840-BIOS-V0.41.zip
-> 
-
-Make it a Link tag.
-
-Link: http://download.softwincn.com/WIN%20Max%202024/Max2-7840-BIOS-V0.41.zip #1
-Signed-of-by: ...
-
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
+~Vinod
 
 
 

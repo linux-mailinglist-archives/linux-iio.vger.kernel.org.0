@@ -1,204 +1,211 @@
-Return-Path: <linux-iio+bounces-23055-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23057-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23ED2B2DF20
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 16:24:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DC4B2DF4A
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 16:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CE9262301C
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 14:18:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C19741C20257
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 14:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4C526E6E3;
-	Wed, 20 Aug 2025 14:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0929276024;
+	Wed, 20 Aug 2025 14:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X1aDnEjR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gkzHMx6c"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC3918C031;
-	Wed, 20 Aug 2025 14:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F8426FA5B;
+	Wed, 20 Aug 2025 14:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755699493; cv=none; b=bAzqiOzCIi6qwsoSvwHXUMOOpR1fdeMnw6GXBns7hbo2WBZeDmDDcAewdc23nUOF98MLQICjN22dTg+oj7UXrU0VFpYJAANzR6THQCSlygInsVfAIOKzMz8igIGi1OaSHev83++oWztzYaqCpdW22WfTmc4cnaAPP6OuqSbe4jk=
+	t=1755699885; cv=none; b=Q2p/IaUATwONqOQ5DZZbf4ytux/oB/3PmNoLdFCN/j+5/TDkRX//FEw/tWVUu0uz6iOAsjDS5cbFxKDteDjvcgvwLoNMuXwZaJ9508omqMGCJokT8f7Ce/1GccImBO04x6iFVP1rCYO7vZz90IPmfz6eKDcmKOGI6Hf7L02mdV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755699493; c=relaxed/simple;
-	bh=MequawHGbH8y9CuIP03AIdFN2olF7rn3Pf0V+3e0akU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nRD2q2Z+cKkPu9DreCdocpfSF8ii9WoQ3ObUdu+fPWZhXcpunaio/o8PB+QeFUQziQACC7qb+AHlVW90jDwuljNGLzFACwvwtQ9jhstDIZd8Gorpi7CqIS0fVooyZZccHR5SKhy1+41y9A4pKJS6fPK32TbVt6XFzWuNDfarwSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X1aDnEjR; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755699493; x=1787235493;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MequawHGbH8y9CuIP03AIdFN2olF7rn3Pf0V+3e0akU=;
-  b=X1aDnEjR2sye5FT0jy3ieNfuT0iDuswr0SrRGvNaq1w6biKW6FC3qFXJ
-   SchDLpkWrYXWkgB0VaX2s/U+oiFI0f8LicIYRhoYt3rordJpmADti4dGL
-   wA5ZdIPH5er14TGEWuIjN4VYAVNIiLds5sz2ycybYOwyvtcu95bknNa8H
-   aJmE+xR132I7yKOwIh7i5MKx6eWzG6vEAQVVjccWs1COh4hnUfKaGWd0a
-   EPiExQzbPbwv85Y6vm6gaeojHEHB4XrScKtvT1MHEnPqztzZg2esWovA5
-   4VYTcCs5xWUBj8ogA0cMzgtccf0Cl+3Aiz2yb4G3wy2Z/8JImoSgkcuFc
-   g==;
-X-CSE-ConnectionGUID: Dgc9qBfzQzOgEkXhcUhbrw==
-X-CSE-MsgGUID: 3ZmKyzwVSJmLT7qVgjLteA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="69412045"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="69412045"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 07:18:12 -0700
-X-CSE-ConnectionGUID: 3EIpFeO2QCKVP73XKK9jVg==
-X-CSE-MsgGUID: FjAFMUfHSjqyKjJNlazMEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="172366765"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 07:18:08 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uojdd-00000006xGt-40Rt;
-	Wed, 20 Aug 2025 17:18:05 +0300
-Date: Wed, 20 Aug 2025 17:18:05 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Ioana Risteiu <Ioana.Risteiu@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ramona Nechita <ramona.nechita@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 4/4] iio: adc: update ad7779 to use IIO backend
-Message-ID: <aKXZHVpcenaOkvrv@smile.fi.intel.com>
-References: <20250820120247.3012-1-Ioana.Risteiu@analog.com>
- <20250820120247.3012-5-Ioana.Risteiu@analog.com>
+	s=arc-20240116; t=1755699885; c=relaxed/simple;
+	bh=FaJBnayLLeeHXIkZMFvhM3bi2xMW6chEyzv8fyYvAg8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=updku0G2KoLmh1Y+CHJWAuZgdU8sx2Fcu8zZ77MptsGg/zNarBTBf4hKyGqZuipBQw7EnT9Gng2Riiych7yzOsDHD5vPCo8ma9D/XMF36hBlBu1leUHyGtkGdtVW3IaINVJ/ocujv5+/9p3YqnQQgQ0xi44OFE4PKLRUBYmSpGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gkzHMx6c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 432B3C4CEEB;
+	Wed, 20 Aug 2025 14:24:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755699885;
+	bh=FaJBnayLLeeHXIkZMFvhM3bi2xMW6chEyzv8fyYvAg8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=gkzHMx6cFHuLRvblLm58t+avG3WRcHpshRCdxGdkKbS6fEANab1ESqzND3bdcC6nF
+	 xzggHbCcVUCpbz22NMyZPzQmpyBNMzF05IyrR2iFT2DrFFXXpIniBCDfcMjqc7QsYg
+	 KtROLFjq9l4xKC2Lr0Z5PZNLewVkW9LbSidWa0us/9wkCRNPVfs+d+86YJ8M6fj9ZS
+	 If8x0Y6TxMpQQLnw5pnhmMRTxRvuPrZoqBMen90l9PaLVdseo5OuKCS0caGGLL9+M8
+	 +8+8ifdFiLX7txBMNIRQ/wlkI6qytfqQDok2gNzkZyQRgNMHRVZX8bpf48xMca4VjZ
+	 dA8YZr5hKn8sA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32F9CCA0EED;
+	Wed, 20 Aug 2025 14:24:45 +0000 (UTC)
+From: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
+Subject: [PATCH v5 0/9] iio: imu: new inv_icm45600 driver
+Date: Wed, 20 Aug 2025 14:24:18 +0000
+Message-Id: <20250820-add_newport_driver-v5-0-2fc9f13dddee@tdk.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250820120247.3012-5-Ioana.Risteiu@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJLapWgC/33NTW7CMBCG4asgrzGaGfwTd9V7oAol9gQsRIKcy
+ LRCuXudbIAq6vIdaZ7vIQZOkQfxsXmIxDkOse9K6O1G+HPdnVjGUFoQkAaFKOsQjh3fb30ajyH
+ FzElqcr7VjUWuK1Eeb4nb+L2gh6/S5ziMffpZNjLO13+5jBIkaqgIDTSA7nMMl53vr2LGMj0Bi
+ 7AKUAGa1ppQoSJu6R3YvwJ2FdgXwBtwjoG8Nn8A9QTKwCqgCqCUUY0xAM6+ANM0/QK98Gj1dQE
+ AAA==
+X-Change-ID: 20250411-add_newport_driver-529cf5b71ea8
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, Remi Buisson <remi.buisson@tdk.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755699883; l=6453;
+ i=remi.buisson@tdk.com; s=20250411; h=from:subject:message-id;
+ bh=FaJBnayLLeeHXIkZMFvhM3bi2xMW6chEyzv8fyYvAg8=;
+ b=R0vZ7Y3wJaWHzjP29xah7pfLZ6dcKw0HI4Ac2msXQYpB3/uNeqWGKENXA0npWdES4bG8QbWcp
+ JaKg8GZsoVhAwgJkZoQ9gY/N7/Zgb0yHdm6pwtU5xhBkpFF19HKaMa7
+X-Developer-Key: i=remi.buisson@tdk.com; a=ed25519;
+ pk=yDVMi4C7RpXN4dififo42A7fDDt3THYzoZoNq9lUZuo=
+X-Endpoint-Received: by B4 Relay for remi.buisson@tdk.com/20250411 with
+ auth_id=372
+X-Original-From: Remi Buisson <remi.buisson@tdk.com>
+Reply-To: remi.buisson@tdk.com
 
-On Wed, Aug 20, 2025 at 03:02:45PM +0300, Ioana Risteiu wrote:
-> Add a new functionality to ad7779 driver that streams data through data
-> output interface using IIO backend interface.
+This series add a new driver for managing InvenSense ICM-456xx 6-axis IMUs.
+This next generation of chips includes new generations of 3-axis gyroscope
+and 3-axis accelerometer, support of I3C in addition to I2C and SPI, and
+intelligent MotionTracking features like pedometer, tilt detection, and
+tap detection.
 
-...
+This series is delivering a driver supporting gyroscope, accelerometer and
+temperature data, with polling and buffering using hwfifo and watermark,
+on I2C, SPI and I3C busses.
 
-> +static int ad7779_set_data_lines(struct iio_dev *indio_dev,
-> +				 unsigned int num_lanes)
-> +{
-> +	struct ad7779_state *st = iio_priv(indio_dev);
+Gyroscope and accelerometer sensors are completely independent and can have
+different ODRs. Since there is only a single FIFO a specific value is used to
+mark invalid data. For keeping the device standard we are de-multiplexing data
+from the FIFO to 2 IIO devices with 2 buffers, 1 for the accelerometer and 1
+for the gyroscope. This architecture also enables to easily turn each sensor
+on/off without impacting the other. The device interrupt is used to read the
+FIFO and launch parsing of accelerometer and gyroscope data. This driver
+relies on the common Invensense timestamping mechanism to handle correctly
+FIFO watermark and dynamic changes of settings.
 
-> +	int ret = -EINVAL;
+The structure of the driver is quite similar to the inv_icm42600 driver,
+however there are significant reasons for adding a different driver for
+inv_icm45600, such as:
+- A completely different register map.
+- Different FIFO management, based on number of samples instead of bytes.
+- Different indirect register access mechanism.
 
-In general the split assignment is easier to maintain and less prone to subtle
-errors. In this case it's even worse as it's not needed...
+Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
+---
+Changes in v5:
+- Simplified device tree, removed interrupts from mandatory param list
+- Allocated regmap_bulk_read/write buffers to dma-capable memory (for indirect reg accesses)
+- Use min/max to simplify code
+- Reordered some code/include/prototypes to the patch they belong
+- Updated to latest iio_push_to_buffers_with_ts API
+- Fix build warning with clang 18.1.8
+- Fixed some alignements
+- Avoiding irq_type silly assignation
+- Simplified fwnode_irq_get_byname error management
+- Re-ordered suspend/resume process to match + comments
+- Reverted VDDIO init to make it work without PM
+- Avoid PM underflow on VDDIO when removing inv_icm456000 module, by checking suspend state
+- Link to v4: https://lore.kernel.org/r/20250814-add_newport_driver-v4-0-4464b6600972@tdk.com
 
-> +	if (num_lanes != AD7779_1LINE &&
-> +		num_lanes != AD7779_2LINES &&
-> +		num_lanes != AD7779_4LINES)
-> +		return ret;
+Changes in v4:
+- Introduce gyro and accel in different patches.
+- Move IRQ probe to next patch.
+- Allocate fifo memory instead of static definition.
+- Rework VDDIO management to avoid underflow.
+- Rework suspend/resume using force suspend/resume API.
+- Use helper min, clamp and sizeof instead of custom implementation.
+- Re-scoping some variables, using reverse xmas tree for declarations.
+- Fix formatting: end of list, end of file, spaces, alignments.
+- Use dev_err_probe for I3C errors.
+- Factorizing default config code.
+- Link to v3: https://lore.kernel.org/r/20250717-add_newport_driver-v3-0-c6099e02c562@tdk.com
 
-...just return the error code directly here.
+Changes in v3:
+- Macros renamed and added to the patch using it.
+- Using unsigned for sensor configuration parameters.
+- Using sizeof instead of raw values.
+- Using fsleep instead of usleep.
+- Simplified dt-bindings examples, setting supplies as mandatory
+- Fix bad or useless casts.
+- Partially aligned power management following 20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com
+- Fix "uninitialized symbols" warnings.
+- Link to v2: https://lore.kernel.org/r/20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com
 
-> +	ret = ad7779_set_sampling_frequency(st, num_lanes * AD7779_DEFAULT_SAMPLING_1LINE);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = iio_backend_num_lanes_set(st->back, num_lanes);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return ad7779_spi_write_mask(st, AD7779_REG_DOUT_FORMAT,
-> +				    AD7779_DOUT_FORMAT_MSK,
-> +				    FIELD_PREP(AD7779_DOUT_FORMAT_MSK, 2 - ilog2(num_lanes)));
-> +}
+Changes in v2:
+- Reworked patches order and content to ease review and make sure everything compiles
+- Reworked gyro and accel FSR as 2D arrays
+- Moved temperature processed sensor to core module
+- Use latest API to claim/release device
+- Implemented chip_info structure instead of relying on an enum
+- Removed power-mode ABI, only relying on ODR to switch power_mode
+- Reworked regulator control to use devm_ API where relevant
+- Reworked inv_icm45600_state.buffer as a union to avoid casts, using getter/setter instead of memcpy
+- Fixed dt-binding error and moved patch at the beginning of the patch-set
+- Reworked macros to use FIELD_PREP inline instead of inside the header
+- Fixed comment's grammar
+- Removed extra blank lines
+- Reordered part numbers alphanumerically
+- Removed useless default/error fallbacks
+- Typed accel, gyro and timestamp data when parsing FIFO
+- Fixed I2C module return code
+- Use Linux types instead of C standard
+- Reviewed headers inclusion to remove useless #include and to add missing ones
+- Link to v1: https://lore.kernel.org/r/20250411-add_newport_driver-v1-0-15082160b019@tdk.com
 
-...
+---
+Remi Buisson (9):
+      dt-bindings: iio: imu: Add inv_icm45600
+      iio: imu: inv_icm45600: add new inv_icm45600 driver
+      iio: imu: inv_icm45600: add buffer support in iio devices
+      iio: imu: inv_icm45600: add IMU IIO gyroscope device
+      iio: imu: inv_icm45600: add IMU IIO accelerometer device
+      iio: imu: inv_icm45600: add I2C driver for inv_icm45600 driver
+      iio: imu: inv_icm45600: add SPI driver for inv_icm45600 driver
+      iio: imu: inv_icm45600: add I3C driver for inv_icm45600 driver
+      MAINTAINERS: add entry for inv_icm45600 6-axis imu sensor
 
-> +static int ad7779_setup_channels(struct iio_dev *indio_dev, const struct ad7779_state *st)
-> +{
-> +	struct iio_chan_spec *channels;
-> +	struct device *dev = &st->spi->dev;
-> +
-> +	channels = devm_kmemdup_array(dev, st->chip_info->channels,
-> +					ARRAY_SIZE(ad7779_channels),
-> +					sizeof(*channels), GFP_KERNEL);
+ .../bindings/iio/imu/invensense,icm45600.yaml      |  90 ++
+ MAINTAINERS                                        |   8 +
+ drivers/iio/imu/Kconfig                            |   1 +
+ drivers/iio/imu/Makefile                           |   1 +
+ drivers/iio/imu/inv_icm45600/Kconfig               |  70 ++
+ drivers/iio/imu/inv_icm45600/Makefile              |  16 +
+ drivers/iio/imu/inv_icm45600/inv_icm45600.h        | 380 ++++++++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_accel.c  | 781 +++++++++++++++++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 566 ++++++++++++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h | 101 +++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_core.c   | 969 +++++++++++++++++++++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_gyro.c   | 792 +++++++++++++++++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_i2c.c    |  98 +++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c    |  77 ++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_spi.c    | 106 +++
+ 15 files changed, 4056 insertions(+)
+---
+base-commit: f8f559752d573a051a984adda8d2d1464f92f954
+change-id: 20250411-add_newport_driver-529cf5b71ea8
 
-Indentation...
-
-> +	if (!channels)
-> +		return -ENOMEM;
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(ad7779_channels); i++)
-
-Why signed iterator?
-
-> +		channels[i].scan_type.endianness = IIO_CPU;
-> +
-> +	indio_dev->channels = channels;
-> +
-> +	return 0;
-> +}
-
-...
-
-> +static int ad7779_setup_backend(struct ad7779_state *st, struct iio_dev *indio_dev)
-> +{
-> +	struct device *dev = &st->spi->dev;
-
-> +	int ret = -EINVAL;
-
-Why?!
-
-> +	int num_lanes;
-
-Can it be negatie?
-
-> +	indio_dev->info = &ad7779_info_data;
-> +
-> +	ret = ad7779_setup_channels(indio_dev, st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->back = devm_iio_backend_get(dev, NULL);
-> +	if (IS_ERR(st->back))
-> +		return dev_err_probe(dev, PTR_ERR(st->back),
-> +				     "failed to get iio backend");
-> +
-> +	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = devm_iio_backend_enable(dev, st->back);
-> +	if (ret)
-> +		return ret;
-> +
-> +	num_lanes = 4;
-> +	ret = device_property_read_u32(dev, "adi,num-lanes", &num_lanes);
-> +	if (ret && ret != -EINVAL)
-> +		return ret;
-> +
-> +	return ad7779_set_data_lines(indio_dev, num_lanes);
-> +}
-
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
+Remi Buisson <remi.buisson@tdk.com>
 
 
 

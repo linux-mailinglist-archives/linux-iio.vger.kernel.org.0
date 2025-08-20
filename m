@@ -1,195 +1,186 @@
-Return-Path: <linux-iio+bounces-23025-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23026-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A39B2D05C
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 01:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD83B2D0CA
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 02:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E4F66875F0
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Aug 2025 23:46:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AF063B1484
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 00:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421FF27B34B;
-	Tue, 19 Aug 2025 23:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604C818C91F;
+	Wed, 20 Aug 2025 00:48:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nFa+8X9k"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AB6277CB6
-	for <linux-iio@vger.kernel.org>; Tue, 19 Aug 2025 23:45:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EF7A945;
+	Wed, 20 Aug 2025 00:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755647119; cv=none; b=Z9GBILRNMW9dPRbVfhRe3YlUAehldGj19FvpVOF1L4HSYxwfSKFuObIM2xTJ4fNXZbSYPrUSGGL0U4EwF/Z5d6JhA17JBeOyY9NslgsIroXdJiWMME8MZ4HtmKBvdpnRMvx5ZjIlnvReNZ3y07fRi+OUi2eSbsBzKlTzwE4qang=
+	t=1755650933; cv=none; b=bPMxF/KXoIutuZM42NfNRXiw0SXNwxSuxAdN793Yf6Br/BlMWa8dMhSs5xmNPAgOHlVoWojAzP/U7vmvqLhwD5HDPqkMVE1pF/p40H0zeNhlFqqzb9Xnrcq2bwHLV5240BrRZ1AKFnx2Auo9V0OurN7tSRrE7fyOiuIo755LAJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755647119; c=relaxed/simple;
-	bh=Kbg4kCcOfqnSkOACGBz38mpEKOLEwmk7jtHfzfX9H70=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LFeSyOMwIh8nbmuDEYv2N56paZBR1c16JZ0NnK47zyfg+u2r8hK6RQ4U+Qt/3RTsFEBYHgtS6dpmWtT0uAiWmzIcHJkrlbr5zW7dcvXK7BitBFmc8jcK0FIclAoD9/XKcFQP4DjsSj+/mtcG+EB6366kMtegNb1OJEm3kNwZgMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=watter.com; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=watter.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ben Collins <bcollins@watter.com>
-Date: Tue, 19 Aug 2025 19:44:46 -0400
-Subject: [PATCH v7 5/5] iio: mcp9600: Add support for thermocouple-type
+	s=arc-20240116; t=1755650933; c=relaxed/simple;
+	bh=eI9RekPteR9Uu/w6sEe2zM8O3JmSk36sEouzlpxRogc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SYRZrix+YhXhfP/JqKL/6/MAIblL86IYKWjdl7nnC5ZjDjzFYyyD2Eo5Fj+uFiEgYoeA8yUWGdpmdQb6tXUpa73rus6PQJwW00w9Mb2bIIE3NeoHTIRP98EPQSlFXnOwFGLulCXOCxHWTMH5tUO6i45pGJE3OSjcs6vUg9ufQuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nFa+8X9k; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755650931; x=1787186931;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eI9RekPteR9Uu/w6sEe2zM8O3JmSk36sEouzlpxRogc=;
+  b=nFa+8X9krTbB3+yo0APgvN3epRzVRaEz+qwYtMfKerI9+LFwI7eqvDCw
+   oGM4Ka+XVQ5YtESzEEgJmVpGc2FWsbPau8mvA7VNv3dsldq1YfUHakw+s
+   p8oNPrAFwIll4NXWVMLwCvX0tWhnazqdbhpmtllVXgz5U/mvNYRo6o1WA
+   s+6PlhDWDGk2Y8nbZoyaMRlulvWCLC9S6Ug7ZSRDAtPKiz7kL4XCecjGL
+   BGbHCngtK6DSGVQDx7s+V45iSe7zHzS/yQfIb1aFZMnaoX7ZRrog5X3Yg
+   iUxVgjUP09hUlGx/iITlEsblxBeTYhH4/JXGBlMorSvm6u5cuNpv4gYe/
+   w==;
+X-CSE-ConnectionGUID: kU0QAcmeQKGZ94HZVCfaRw==
+X-CSE-MsgGUID: KLgQJj+jTMG3Q7P8hmapfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="75488203"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="75488203"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 17:48:51 -0700
+X-CSE-ConnectionGUID: w/K6pqDXT2Ov6YKfASs8LA==
+X-CSE-MsgGUID: d6iT+cm2S6qjH+BNh7m1rw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="167609252"
+Received: from junjie-nuc.bj.intel.com ([10.238.156.159])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 17:48:48 -0700
+From: Junjie Cao <junjie.cao@intel.com>
+To: jic23@kernel.org,
+	linux-iio@vger.kernel.org
+Cc: dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Junjie Cao <junjie.cao@intel.com>
+Subject: [PATCH v2] iio: core: switch info_mask fields to unsigned long to match find_bit helpers
+Date: Wed, 20 Aug 2025 08:47:55 +0800
+Message-ID: <20250820004755.69627-1-junjie.cao@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250819-upstream-changes-v7-5-88a33aa78f6a@watter.com>
-References: <20250819-upstream-changes-v7-0-88a33aa78f6a@watter.com>
-In-Reply-To: <20250819-upstream-changes-v7-0-88a33aa78f6a@watter.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Ben Collins <bcollins@watter.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-dt-bindings documentation for this driver claims to support
-thermocouple-type, but the driver does not actually make use of
-the property.
+for_each_set_bit()/find_*_bit() expect arrays of unsigned long (see
+include/linux/find.h), but industrialio-core passed const long * into
+iio_device_add_info_mask_type{,_avail}().
 
-Implement usage of the property to configure the chip for the
-selected thermocouple-type.
+These masks are used purely as bit arrays and are populated via BIT()
+(1UL << n). Switch the info_mask_* fields and the corresponding function
+parameters to unsigned long so the types match the helpers. This removes
+sparse warnings about signedness mismatches (seen with 'make C=1'
+CF='-Wsparse-all') without changing behavior or struct layout.
 
-Signed-off-by: Ben Collins <bcollins@watter.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+No functional change intended.
+
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
 ---
- drivers/iio/temperature/mcp9600.c | 69 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+Hi Jonathan,
 
-diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
-index 4654b3aaaf2a..cd46f48e47d6 100644
---- a/drivers/iio/temperature/mcp9600.c
-+++ b/drivers/iio/temperature/mcp9600.c
-@@ -22,11 +22,15 @@
- #include <linux/iio/events.h>
- #include <linux/iio/iio.h>
- 
-+#include <dt-bindings/iio/temperature/thermocouple.h>
-+
- /* MCP9600 registers */
- #define MCP9600_HOT_JUNCTION		0x00
- #define MCP9600_COLD_JUNCTION		0x02
- #define MCP9600_STATUS			0x04
- #define MCP9600_STATUS_ALERT(x)		BIT(x)
-+#define MCP9600_SENSOR_CFG		0x05
-+#define MCP9600_SENSOR_TYPE_MASK	GENMASK(6, 4)
- #define MCP9600_ALERT_CFG1		0x08
- #define MCP9600_ALERT_CFG(x)		(MCP9600_ALERT_CFG1 + (x - 1))
- #define MCP9600_ALERT_CFG_ENABLE	BIT(0)
-@@ -66,6 +70,30 @@ static const char * const mcp9600_alert_name[MCP9600_ALERT_COUNT] = {
- 	[MCP9600_ALERT4] = "alert4",
- };
- 
-+/* Map between dt-bindings enum and the chip's type value */
-+static const unsigned int mcp9600_type_map[] = {
-+	[THERMOCOUPLE_TYPE_K] = 0,
-+	[THERMOCOUPLE_TYPE_J] = 1,
-+	[THERMOCOUPLE_TYPE_T] = 2,
-+	[THERMOCOUPLE_TYPE_N] = 3,
-+	[THERMOCOUPLE_TYPE_S] = 4,
-+	[THERMOCOUPLE_TYPE_E] = 5,
-+	[THERMOCOUPLE_TYPE_B] = 6,
-+	[THERMOCOUPLE_TYPE_R] = 7,
-+};
-+
-+/* Map thermocouple type to a char for iio info in sysfs */
-+static const int mcp9600_tc_types[] = {
-+	[THERMOCOUPLE_TYPE_K] = 'K',
-+	[THERMOCOUPLE_TYPE_J] = 'J',
-+	[THERMOCOUPLE_TYPE_T] = 'T',
-+	[THERMOCOUPLE_TYPE_N] = 'N',
-+	[THERMOCOUPLE_TYPE_S] = 'S',
-+	[THERMOCOUPLE_TYPE_E] = 'E',
-+	[THERMOCOUPLE_TYPE_B] = 'B',
-+	[THERMOCOUPLE_TYPE_R] = 'R',
-+};
-+
- static const struct iio_event_spec mcp9600_events[] = {
- 	{
- 		.type = IIO_EV_TYPE_THRESH,
-@@ -90,14 +118,34 @@ struct mcp_chip_info {
- 
- struct mcp9600_data {
- 	struct i2c_client *client;
-+	u32 thermocouple_type;
- };
- 
-+static int mcp9600_config(struct mcp9600_data *data)
-+{
-+	struct i2c_client *client = data->client;
-+	int ret;
-+	u8 cfg;
-+
-+	cfg  = FIELD_PREP(MCP9600_SENSOR_TYPE_MASK,
-+			  mcp9600_type_map[data->thermocouple_type]);
-+
-+	ret = i2c_smbus_write_byte_data(client, MCP9600_SENSOR_CFG, cfg);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "Failed to set sensor configuration\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
- #define MCP9600_CHANNELS(hj_num_ev, hj_ev_spec_off, cj_num_ev, cj_ev_spec_off) \
- 	{								       \
- 		{							       \
- 			.type = IIO_TEMP,				       \
- 			.address = MCP9600_HOT_JUNCTION,		       \
- 			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	       \
-+					      BIT(IIO_CHAN_INFO_THERMOCOUPLE_TYPE) | \
- 					      BIT(IIO_CHAN_INFO_SCALE),	       \
- 			.event_spec = &mcp9600_events[hj_ev_spec_off],	       \
- 			.num_event_specs = hj_num_ev,			       \
-@@ -165,6 +213,9 @@ static int mcp9600_read_raw(struct iio_dev *indio_dev,
- 		*val = 62;
- 		*val2 = 500000;
- 		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_THERMOCOUPLE_TYPE:
-+		*val = mcp9600_tc_types[data->thermocouple_type];
-+		return IIO_VAL_CHAR;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -457,6 +508,24 @@ static int mcp9600_probe(struct i2c_client *client)
- 	data = iio_priv(indio_dev);
- 	data->client = client;
- 
-+	/* Accept type from dt with default of Type-K. */
-+	data->thermocouple_type = THERMOCOUPLE_TYPE_K;
-+	ret = device_property_read_u32(&client->dev, "thermocouple-type",
-+				       &data->thermocouple_type);
-+	if (ret < 0 && ret != -EINVAL)
-+		return dev_err_probe(&client->dev, ret,
-+				     "Error reading thermocouple-type property\n");
-+
-+	if (data->thermocouple_type >= ARRAY_SIZE(mcp9600_type_map))
-+		return dev_err_probe(&client->dev, -EINVAL,
-+				     "Invalid thermocouple-type property %u.\n",
-+				     data->thermocouple_type);
-+
-+	/* Set initial config. */
-+	ret = mcp9600_config(data);
-+	if (ret < 0)
-+		return ret;
-+
- 	ch_sel = mcp9600_probe_alerts(indio_dev);
- 	if (ch_sel < 0)
- 		return ch_sel;
+Thanks so much for the feedback and the clear fix suggestion.
 
+Changes in v2:
+- Implemented Jonathan's suggestion to change info_mask_* fields to unsigned long
+- Updated commit message based on feedback
+
+v1: https://lore.kernel.org/linux-iio/20250815022528.24705-1-junjie.cao@intel.com/
+
+Regarding how I triggered the warning, I can reproduce it with:
+  make M=drivers/iio clean
+  make C=1 drivers/iio/industrialio-core.o CF='-Wsparse-all' 2>&1 | grep signedness
+
+Environment details:
+- Tree: linux-next (tag next-20250808)
+- GCC: gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+- Sparse: v0.5.0-8881-g2fb2b909
+
+I completely agree that your approach is much better. The masks are indeed 
+used purely as bit arrays, so making them unsigned long must be the right 
+solution.
+
+To double-check beyond industrialio-core, I (1) ran a subsystem-wide sparse 
+pass and a clean build of drivers/iio, (2) audited usages of info_mask_*, 
+and (3) reviewed other for_each_set_bit() sites. With the type change applied, 
+there were no remaining signedness diagnostics, no new build warnings, and no 
+sites relying on these fields being signed.
+
+Here is the v2 patch implementing your suggestion. No functional change 
+intended; the patch has been build- and sparse-tested.
+
+Thanks,
+Junjie
+
+ drivers/iio/industrialio-core.c |  4 ++--
+ include/linux/iio/iio.h         | 16 ++++++++--------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 159d6c5ca3ce..9125d466118d 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1243,7 +1243,7 @@ static int iio_device_add_channel_label(struct iio_dev *indio_dev,
+ static int iio_device_add_info_mask_type(struct iio_dev *indio_dev,
+ 					 struct iio_chan_spec const *chan,
+ 					 enum iio_shared_by shared_by,
+-					 const long *infomask)
++					 const unsigned long *infomask)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 	int i, ret, attrcount = 0;
+@@ -1273,7 +1273,7 @@ static int iio_device_add_info_mask_type(struct iio_dev *indio_dev,
+ static int iio_device_add_info_mask_type_avail(struct iio_dev *indio_dev,
+ 					       struct iio_chan_spec const *chan,
+ 					       enum iio_shared_by shared_by,
+-					       const long *infomask)
++					       const unsigned long *infomask)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 	int i, ret, attrcount = 0;
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index d11668f14a3e..39c55116939e 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -271,14 +271,14 @@ struct iio_chan_spec {
+ 			unsigned int num_ext_scan_type;
+ 		};
+ 	};
+-	long			info_mask_separate;
+-	long			info_mask_separate_available;
+-	long			info_mask_shared_by_type;
+-	long			info_mask_shared_by_type_available;
+-	long			info_mask_shared_by_dir;
+-	long			info_mask_shared_by_dir_available;
+-	long			info_mask_shared_by_all;
+-	long			info_mask_shared_by_all_available;
++	unsigned long			info_mask_separate;
++	unsigned long			info_mask_separate_available;
++	unsigned long			info_mask_shared_by_type;
++	unsigned long			info_mask_shared_by_type_available;
++	unsigned long			info_mask_shared_by_dir;
++	unsigned long			info_mask_shared_by_dir_available;
++	unsigned long			info_mask_shared_by_all;
++	unsigned long			info_mask_shared_by_all_available;
+ 	const struct iio_event_spec *event_spec;
+ 	unsigned int		num_event_specs;
+ 	const struct iio_chan_spec_ext_info *ext_info;
 -- 
-2.39.5
+2.43.0
 
 

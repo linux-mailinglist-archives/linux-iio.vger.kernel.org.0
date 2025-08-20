@@ -1,154 +1,118 @@
-Return-Path: <linux-iio+bounces-23027-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23028-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE2BB2D327
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 06:46:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E09B2D3E7
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 08:11:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36CAA724836
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 04:46:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 58B484E237F
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 06:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D8B257846;
-	Wed, 20 Aug 2025 04:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E4A283FCD;
+	Wed, 20 Aug 2025 06:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mv0mbxsM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AhucbLaN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E25257820;
-	Wed, 20 Aug 2025 04:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6EC244692;
+	Wed, 20 Aug 2025 06:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755665205; cv=none; b=FxPRLmXOQom697Wdno9d5K5GH/9muNYOANLF8QN95gdJZcFryWMkEpbUetfgAU7F7qQOo8yay4iOsNRyfxh3fvWNrpu9rSheov9WGjpNVY1gg4MIvs8nu5zQ/bZROsiozC4fmJKzNWhz2A/bulu/wPTVo+NSXFDs1lXs5D8CC1k=
+	t=1755670286; cv=none; b=SvJc2Av54b3X4DxQyaynx1I39M0SQfBpcI/W3YMwRJ5etnOHwA4DGG88AFx8jLtLCrmnZ95uXpR7Sj8azs/ZObJMEtpmITaEeH/B6n8HmIuEycZMe1eTkTl8YRRJENfDDXGus1Rd89flt/0pvZ41IwWGwsHdm9GSSXq3bnaIP5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755665205; c=relaxed/simple;
-	bh=1vQ/1al6KZ3n5t/tJ5DyWbLg4g2xkxVaVjbobiDk8EY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sI/G+vQsqMPpIcPIJCRczPxPKu5X8pM5knmbfl0bIKNmULuFETrG3K1o2lw0e7CB3OLu7UIsirHBAjtXMWN4gATqPRyWkmi8f8OqQv7Rh2s44OmTOZYhxye0zycOp/Dkm5rzJAsLbKjD7GZfPMkUT8gMtr+tpYPqYVymmrls3h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mv0mbxsM; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2449788923eso19747645ad.2;
-        Tue, 19 Aug 2025 21:46:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755665203; x=1756270003; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DarzXDuH+ffptNMW35ITw+JWwVE8qFcBtwND6II5+Pw=;
-        b=mv0mbxsMIzDrCPk7ORnB0N0jjQuP6kpIQTd87WWM8SLkkVZcaMBaXh/5Gh2/ayJ+8B
-         bGU1rxdpdD8jetWf4pIXR7OVs515UVs9uMU+5Bs7i8m36IkVR9SOmHKBKtOn7aUi0FDl
-         ybsrl1gwrNJWYXJ6EMxjyg5PCnGF8EeXj7VBYF5EUDA67xqwa8JzHpTur97F31NzJ2sg
-         XqCZFus+gcQtlkpdWEBpv7YqyDqBsH3F+awwM86Cw97S22f9UsY2O9WxbK72BUBoG1uS
-         2XcxPxmJPLCa6DzbwEaGm8Wa10ULYmv3jM0swkZ/hdlXKu2dJ6crIsA2KaeDc5V8ndmI
-         v9iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755665203; x=1756270003;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DarzXDuH+ffptNMW35ITw+JWwVE8qFcBtwND6II5+Pw=;
-        b=Phd/b6zhCPRn6ZOc6wZ19BurA1j7voCWL+I1ODgMiboaAUdyXKk0rNQLpZUJy7pNIM
-         7mcY56GhlCNcy6G1n1Xeg6mWufaAsijrs2QWfygRtVXDMqTelQlO1M+VFeV8XmWkXvLe
-         0fiwQCjMKt2T+WSueG0QZ4e8+zGecnYRWkdzdBgXwKxVKDprwv/lhIvVgnAoYmtJmIj2
-         AuWweoRzQr0B6WBSUrOK+O3hukmTWp00nAIAX3OM9NlU7z0YRxpCqeS13OhA/pbtk3ee
-         hiYAyUBuq/qaGRkockKYbmF9k74+yIkjfVdd8N6BP22fQYr7oth0MGWQXA7LQWJLs6Jy
-         EuPw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4a1tT3s31RL3NZdU6AFTmM+J/bWcMYk6W7/glJtkQvuSGuMvalqzsUhRlEheKm5F7ki//0Jw/gQFVY0gC@vger.kernel.org, AJvYcCUHJ2kgbpi+FqEH+fvcOjKJnsPuiBQhC1dic6JDrX45TPtg8scbf9D3UT9zkTM13MfEmZNTB2/d7YeL@vger.kernel.org, AJvYcCVqpWY98iVCL1fbGSCzEpqsW7qouTptvlKA0jIRnGp3qdI1PUH7AKwu427nLYmW7MNl2u4F9su3BgEv@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGLvB/N2A937pwoiGpSo06AAV9xjb/tgZfLdsnGn6cecSrGzCL
-	yDjoL98hSKDwJ3LtyQX91OSfZfy/IiBEjbxXezWdttLSCRgmGK6P7uRa
-X-Gm-Gg: ASbGncvDFfmKWFVxRC9En0mawE5Salc8MNhQINYVarSPlPCZWc+BX/fPSQEntjQtoYt
-	/BulaCrP9D7foWJ1dl9QZ/pY1S33Nf1OPuybULR+gEX3muVjLc8VYYtRFiTlDb33RIjLY6RJ7d9
-	59Mbch9LUkfJG7irkJlKrDTlF/plXGwohRUWRchl0SeEvY72jRdw9U2kBLlLbZ7pNEpTP+Rq8oW
-	35Lh60qdsKBtefvWOxl7vpF4DJnyPYowyFHane6M4MgtbkIGeoj3YDMrvfVwrssi+jwo3ndIVTl
-	GZ/SK0rMDShpdI/K5asJXPXNqC/teUMWqeaWm5UIQB0VeKB7LUhLe8jkQo6QJsVBP6TjcdaMpxn
-	ms9VPAp0jehNR1niE43n30w==
-X-Google-Smtp-Source: AGHT+IFP+L16oHaOm3NEbnsDegMl6fP87dVGenQVIRTDtsvxjEewVa+y5/ksq3qQr79odJCBXtGF6w==
-X-Received: by 2002:a17:903:15c8:b0:240:2b97:9102 with SMTP id d9443c01a7336-245ef252a2fmr16920955ad.46.1755665202836;
-        Tue, 19 Aug 2025 21:46:42 -0700 (PDT)
-Received: from dixit ([2401:4900:1c7e:5eb1:987b:ce27:5cd5:4ef])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245ed375db3sm13659485ad.59.2025.08.19.21.46.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Aug 2025 21:46:42 -0700 (PDT)
-Date: Wed, 20 Aug 2025 10:16:29 +0530
-From: Dixit Parmar <dixitparmar19@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] iio: magnetometer: add support for Infineon
- TLV493D 3D Magentic sensor
-Message-ID: <aKVTJXe50zf07ipR@dixit>
-References: <20250814-tlv493d-sensor-v6_16-rc5-v4-0-81b82805aae0@gmail.com>
- <20250814-tlv493d-sensor-v6_16-rc5-v4-1-81b82805aae0@gmail.com>
- <20250816140448.37f38d0f@jic23-huawei>
+	s=arc-20240116; t=1755670286; c=relaxed/simple;
+	bh=USra0jssnVeb3QB98kDilg6Zutgvup3e2NZU+4UR7kg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nt2p5wqNlvIak3NQiB3mHW/OcI/Sir5Ku8XykBWrd+Bgtvs89BZU9xrff3lFhjJAm877Mdl3jq+5SgVJ24td8m8fgQgQkoyubOT+PKhKIQTKFkBQmJKJ0sg2XuXxi48Lgiif8kVzWgLNi2E6uSo65BCXFr5giNSOuaWknMsr0hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AhucbLaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADDDC4CEEB;
+	Wed, 20 Aug 2025 06:11:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755670285;
+	bh=USra0jssnVeb3QB98kDilg6Zutgvup3e2NZU+4UR7kg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AhucbLaNUkHpV75a6PeGEyeas85IfcVi3BIKOEOBuKizS4CppwLswKUZBp+z+YgZe
+	 s9yQQMBiQmnGJJXSoHKnk7JICoqgfeGkkeK1UxPMDJgA2p9oicgvNvRPtipMZ56JBB
+	 wRoTC8HFUdCLIfenylNJ5QxhQoAFGD7O8//PDIBOnIzk7YT+sYG9EpPrs43GgWygAD
+	 GPKQTy+MOPpiDtYL+SODvs83rvP/GGTPhvype+mgVBC7+ZIE/Tw+gddK4MGGWXmAfU
+	 TQGI3RwncbTxKhr8nPCaC77yk/z8gvYWyVlRCkwA6kntz0cpnE9blBqpb9TpbLqU8s
+	 BNi3oshDttseA==
+Message-ID: <6048713c-9be8-4078-b612-b67c7bd39103@kernel.org>
+Date: Wed, 20 Aug 2025 08:11:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250816140448.37f38d0f@jic23-huawei>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Update xilinx-ams driver maintainers
+To: Salih Erim <salih.erim@amd.com>, conall.ogriofa@amd.com, jic23@kernel.org
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ michal.simek@amd.com, linux-iio@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20250819150448.1979170-1-salih.erim@amd.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250819150448.1979170-1-salih.erim@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Aug 16, 2025 at 02:04:48PM +0100, Jonathan Cameron wrote:
-> Hi Dixit,
-> 
-> A couple of really minor things inline. Given Andy has been doing most of the review
-> work on this one I'll leave it for a few days to give him chance for a final look.
-> 
-> The stuff below is small so if nothing else comes up I can tweak it whilst applying
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> > diff --git a/drivers/iio/magnetometer/tlv493d.c b/drivers/iio/magnetometer/tlv493d.c
-> > new file mode 100644
-> > index 000000000000..ee72211576a6
-> > --- /dev/null
-> > +++ b/drivers/iio/magnetometer/tlv493d.c
-> > @@ -0,0 +1,530 @@
-> 
-> > +	TLV493D_AXIS_X,
-> > +	TLV493D_AXIS_Y,
-> > +	TLV493D_AXIS_Z,
-> > +	TLV493D_TEMPERATURE
-> As below.
-> 
-> > +};
-> > +
-> > +enum tlv493d_op_mode {
-> > +	TLV493D_OP_MODE_POWERDOWN,
-> > +	TLV493D_OP_MODE_FAST,
-> > +	TLV493D_OP_MODE_LOWPOWER,
-> > +	TLV493D_OP_MODE_ULTRA_LOWPOWER,
-> > +	TLV493D_OP_MODE_MASTERCONTROLLED
-> This is not a terminating entry, so would typically have a trailing comma.
-Isn't the last entry in the enum list is termintating entry and it should
-not have trailing comma?
-> > +};
-> 
-> > +
-> > +static int tlv493d_init(struct tlv493d_data *data)
-> 
-> I think this is only called from probe, so it would be appropriate
-> to use return dev_err_probe() in all the error paths.
-There is dev_err_probe() being called based on the return value of this
-tlv493d_init(). This function reports the approproiate error(if any) and
-the negative return value will result in dev_error_probe().
-So I believe having single dev_err_probe() in the _probe() function would
-be more appropriate, IMO.
-> 
-> If nothing else comes up I might tweak that whilst applying.
-Much appreciated.
+On 19/08/2025 17:04, Salih Erim wrote:
+> Removes Anand Ashok from maintainers and adds Salih
+> and Conall as new maintainers.
 
-Thank you,
-Dixit Parmar
+We see that from the diff. Don't write what is obvious. Explain what is
+not obvious: why you are doing this.
+
+Best regards,
+Krzysztof
 

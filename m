@@ -1,96 +1,197 @@
-Return-Path: <linux-iio+bounces-23073-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23074-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2642B2E5AC
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 21:33:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA01DB2E711
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 22:58:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C8F5727A69
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 19:33:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6E5ED4E17C6
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Aug 2025 20:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E732848BC;
-	Wed, 20 Aug 2025 19:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6E42DA77B;
+	Wed, 20 Aug 2025 20:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6wpkuqy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZzoXi1uk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEB636CE0C;
-	Wed, 20 Aug 2025 19:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124E5258CDC;
+	Wed, 20 Aug 2025 20:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755718432; cv=none; b=Nl7VfCUpb1U1awtSkponJ+c+u70RyaLXBelTKnGygy1qnLCnGfhpoS7quMG/SAbOkaXEfYcNuwaipbx+knKLhPBMEy3rLyvcDtQ2y20CDyhi4/Bfi60C0sPcmr4P5+N0cIs3yojRNGNUO2VR9NvlaJuZ/sR0Jc1u18Tj8Pc043g=
+	t=1755723521; cv=none; b=ljUdY/raL2v7HR3v0p2unmvvzyHvh50K51SrDc467Ip1gU5nMmIvhX+skjYKCHgT5FRzkChmS/chaJer986idLTPmsDGB+EEp9dP7aKvW52PYxj3mK8/2kMjUxWLL5SucC74jV+qnCbvGjp7J2Exd2G65T7uozHU5tsB5soZcB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755718432; c=relaxed/simple;
-	bh=oaWPMSjxQnZr7qgJMIj4hchkhbV9nr70B3dzzNr6DdI=;
+	s=arc-20240116; t=1755723521; c=relaxed/simple;
+	bh=poaWP6dzopbmjIrDsPn4oWiiKrVjTMwMGwjEelXVxvs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IrnWFjwExDzqgHtFbWWQOdQSTjjFO7EvPEbk+VHEo9HRez81C+GDgIb29BzRiA0DAOb6KGJPJ2GmraL3dqx1YBE7/VTKUU5Q1RukHgNF7wWbtqqUu+vUu1E/JAr3nAGtOfPNMgoLUr34OZVOa0FGRiNKTjfDFWQFyiixrsRH/uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6wpkuqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A3CC4CEE7;
-	Wed, 20 Aug 2025 19:33:49 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wk8EoZAeb2rVIl27UptLcK5HntmIwRzVRl5uq+ulgORQJ6+vnDkyx7SpLr9xvsgm3lZNybx3eG6IY1Ek8Cj8QZsUVRl9+9Pk4dJmvQuq7un8tGTjOQOb2cgooqpbOlKq4lKdBoxoVykl8Lc14lEni0sizbCbrNrYPKWjLItnWy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZzoXi1uk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781C5C4CEED;
+	Wed, 20 Aug 2025 20:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755718431;
-	bh=oaWPMSjxQnZr7qgJMIj4hchkhbV9nr70B3dzzNr6DdI=;
+	s=k20201202; t=1755723519;
+	bh=poaWP6dzopbmjIrDsPn4oWiiKrVjTMwMGwjEelXVxvs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S6wpkuqyOOZ7VeI+eTzcnehvvKa0/gPeodSNx0Qobjdt6z2z+l3wdW23K2brI26Ww
-	 kjGW5MHUO4lsA4RFiMlN5UHa08CmFwkprjI126B7IOyslDyQQSRqK9XJ4+mlRSngep
-	 L9PUWX1muebFDPmY6RuPVIRMfpalfpdnm7Qdu3PeLmD1f47TEO3VviX4Us1+3UDp1B
-	 S9ov0NptNvIjhkl6KYuo5iLTasymXldCGnMoloAz/foo6t11pSnGuIeij1wsztfU84
-	 Wcv6DSiMSFkqda53049FSy+zMDckwvZsoanuTT4baVSSjg2jF6UBZZWaKGdhOKqh/J
-	 UKkzen5fWSiLw==
-Date: Wed, 20 Aug 2025 20:33:47 +0100
-From: Conor Dooley <conor@kernel.org>
-To: remi.buisson@tdk.com
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 1/9] dt-bindings: iio: imu: Add inv_icm45600
-Message-ID: <20250820-decode-move-3a4497d2df72@spud>
-References: <20250820-add_newport_driver-v5-0-2fc9f13dddee@tdk.com>
- <20250820-add_newport_driver-v5-1-2fc9f13dddee@tdk.com>
+	b=ZzoXi1ukjWxn/kPSMPSabKqTD/h3ORlnKugYDnw8W+X0mC3ENIdPlYM0h9uAD4I1B
+	 o1kpUOQNGfNvqkSJJw1GPgSmPFkpuOjprBrlgNqRaY/6/UqUnZRZUKnlqMtsmzlqR4
+	 yaDXk++QJ70HPkimtjS9bvncrrCWzFPCfaBW0WFHk6k73Qj32SmVnoulEFWSpg07Ng
+	 Z2OEbempQlar7Qx4cy99Bt6ZPRtlbof5xW30wWrl6Vsjn2qOwfKKoeYvAW0LGg8lXQ
+	 XNqcZ/HTDIi1IJDrdMXdVfjvHKDzdnpWiB03g+lnnIuxlcRcQyoq+dHVb24wtfzBff
+	 IGCZjspLHrLtg==
+Date: Wed, 20 Aug 2025 15:58:38 -0500
+From: Rob Herring <robh@kernel.org>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: jic23@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 3/5] dt-bindings: iio: adc: add ade9000
+Message-ID: <20250820205838.GA986565-robh@kernel.org>
+References: <20250815095713.9830-1-antoniu.miclaus@analog.com>
+ <20250815095713.9830-4-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="JOFvzgy1b8g+glJG"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250820-add_newport_driver-v5-1-2fc9f13dddee@tdk.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250815095713.9830-4-antoniu.miclaus@analog.com>
 
+On Fri, Aug 15, 2025 at 09:56:36AM +0000, Antoniu Miclaus wrote:
+> Add devicetree bindings support for ade9000.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> changes in v4:
+>  - improve description formatting (remove unnecessary pipe symbols)
+>  - move $ref to end and remove allOf section for cleaner structure
+>  .../bindings/iio/adc/adi,ade9000.yaml         | 108 ++++++++++++++++++
+>  1 file changed, 108 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
+> new file mode 100644
+> index 000000000000..bd374c0d57d4
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml
+> @@ -0,0 +1,108 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2025 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ade9000.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices ADE9000 High Performance, Polyphase Energy Metering driver
+> +
+> +maintainers:
+> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
+> +
+> +description: |
+> +  The ADE9000 s a highly accurate, fully integrated, multiphase energy and power
+> +  quality monitoring device. Superior analog performance and a digital signal
+> +  processing (DSP) core enable accurate energy monitoring over a wide dynamic
+> +  range. An integrated high end reference ensures low drift over temperature
+> +  with a combined drift of less than ±25 ppm/°C maximum for the entire channel
+> +  including a programmable gain amplifier (PGA) and an analog-to- digital
+> +  converter (ADC).
+> +
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ADE9000.pdf
+> +
+> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ade9000
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 20000000
+> +
+> +  interrupts:
+> +    maxItems: 3
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: irq0
+> +      - const: irq1
+> +      - const: dready
+> +
+> +  reset-gpios:
+> +    description:
+> +      Must be the device tree identifier of the RESET pin. As the line is
+> +      active low, it should be marked GPIO_ACTIVE_LOW.
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +
+> +  vref-supply: true
+> +
+> +  clocks:
+> +    description: External clock source when not using crystal
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - const: clkin
+> +
+> +  "#clock-cells":
+> +    description:
+> +      ADE9000 can provide clock output via CLKOUT pin with external buffer.
+> +    const: 0
+> +
+> +  clock-output-names:
+> +    items:
+> +      - const: clkout
 
---JOFvzgy1b8g+glJG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+No point in having this if there is only 1 possible value. Unless you 
+have some need, just drop this.
 
-On Wed, Aug 20, 2025 at 02:24:19PM +0000, Remi Buisson via B4 Relay wrote:
-> From: Remi Buisson <remi.buisson@tdk.com>
->=20
-> Document the ICM-45600 devices devicetree bindings.
->=20
-> Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
-
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-
---JOFvzgy1b8g+glJG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaKYjGwAKCRB4tDGHoIJi
-0uiFAQCRXy/GGeKkcNM7BR8TWYgymdQ6LYkEegpPsL4t9EpoLwD+MeJa+7vmDp9v
-7zUFb15dWYjjMD4xdolU09uhNQWDpww=
-=L/O/
------END PGP SIGNATURE-----
-
---JOFvzgy1b8g+glJG--
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reset-gpios
+> +  - interrupts
+> +  - interrupt-names
+> +  - vdd-supply
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    spi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      adc@0 {
+> +          compatible = "adi,ade9000";
+> +          reg = <0>;
+> +          spi-max-frequency = <7000000>;
+> +
+> +          #clock-cells = <0>;
+> +          reset-gpios = <&gpio 4 GPIO_ACTIVE_LOW>;
+> +          interrupts = <2 IRQ_TYPE_EDGE_FALLING>, <3 IRQ_TYPE_EDGE_FALLING>, <4 IRQ_TYPE_EDGE_FALLING>;
+> +          interrupt-names = "irq0", "irq1", "dready";
+> +          interrupt-parent = <&gpio>;
+> +          /* Optional: external clock instead of crystal */
+> +          /* clocks = <&ext_clock_24576khz>; */
+> +          /* clock-names = "clkin"; */
+> +          clock-output-names = "clkout";
+> +          vdd-supply = <&vdd_reg>;
+> +      };
+> +    };
+> -- 
+> 2.43.0
+> 
 

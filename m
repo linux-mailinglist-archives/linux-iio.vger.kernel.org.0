@@ -1,126 +1,104 @@
-Return-Path: <linux-iio+bounces-23107-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23109-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A90B2FBD4
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 16:07:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B29B2FE8B
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 17:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA484A22A4D
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 14:01:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD2AE1CE7E9C
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 15:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91934221572;
-	Thu, 21 Aug 2025 14:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BBC2D063E;
+	Thu, 21 Aug 2025 15:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=melexis.com header.i=@melexis.com header.b="XgXgIs3r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IbiVPoNK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65731FAC42
-	for <linux-iio@vger.kernel.org>; Thu, 21 Aug 2025 14:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A5D275AE4;
+	Thu, 21 Aug 2025 15:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755784877; cv=none; b=RGqQDYUoeaRBvhhcdclWW0Q0gaNBP4cfFP1MmtdhW096egV0/o9PlAUL/atdZEoUIgC70L2e6LJgcsdOMkdgjbv97vFbDa6/4jmNehmMm5RlIjaEDa7W4XAp6yQQn6kh4oG1b9VdgKtv4oZ+DhBWUT11xnSJnN5D2orQhIxF+qs=
+	t=1755789853; cv=none; b=tPNGopbs5RgaAWsW+jR3qz1goHDgFENR/xJ4OQMH8zdA0CrY9xJ5XG2mVuGkcOxPJlopZVWTJ3ducFWiBDvFo5k1UB6q1y5zJrb2mm9Jeh41MaGF+aqq45/LGm+T0mMcM8jw8RC6p3VhwP6JZSFpCBxD9mBTIu7AhpBC8gueyDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755784877; c=relaxed/simple;
-	bh=/uTdTO/nDUx+eAcgds196YVNmXM00r28OyJIQuGSYR4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VA63PkQMnBKlvYaCl0+LAdv/zHQW72BlEQlOOedMYEUVapxpp/+No9uT/DDWNZPbFw99B9PppSCMsE8esqYFCoZl6XGrQjMe1etHdajxfIjYaix5rf2IV4T00CdnrDhVCPhPloqHOrpLtDskPDE0mOGkySXCBTJ7ayUWAbvLdMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=melexis.com; spf=pass smtp.mailfrom=melexis.com; dkim=pass (2048-bit key) header.d=melexis.com header.i=@melexis.com header.b=XgXgIs3r; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=melexis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=melexis.com
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7e8704c52b3so111759785a.1
-        for <linux-iio@vger.kernel.org>; Thu, 21 Aug 2025 07:01:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google; t=1755784874; x=1756389674; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/uTdTO/nDUx+eAcgds196YVNmXM00r28OyJIQuGSYR4=;
-        b=XgXgIs3rSk7ivvqz0AUBUWQSQvlGIjosjPnHdlmp+dmsST9NiZN/x7Sa76WfQZq6qN
-         UnnYoZUE6kgKoP+garm/j6OBRZZ7jNoyIPRaPZZAWiKNv1FWhmvuiBJvTAEEIFJRzG+y
-         e98sXtRCIpXBLlRYvwb33x50ZdgIF8F/a/lWSP5MkFOZRD0xklua0UwJdL7xECLGG1jT
-         t8Z1FYmtb9jKFW1yLzni5IaSZ96LfwlLKKA1Yz9KkITByOBgkjhkdHO43JL0MbrFfpBD
-         7EAmv5X3ktPlR7UHsGjYiel8EedWJdm9Z9la7IWvZniGx+PZzFpH+q6wFWa85ax3mpU6
-         7r2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755784874; x=1756389674;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/uTdTO/nDUx+eAcgds196YVNmXM00r28OyJIQuGSYR4=;
-        b=GOhunv1AgVxc713l6OEziUvOuq+urRtZY8zUcCC9nfPD1BWz8Jo3lXw64l9j52ieM3
-         yAhj3ki/j6gsZxieE7Pb1tq/KG1SpmemOVX1yreFAaol1FmxhVvdxPq0wrDcraJmnPnj
-         gGRzt3ShhZ9nIoRIRPrKcjpCptGpSOs2yqpW29FKSPWYtrXhx2gmR+8G7i9wflgqz8vO
-         wLIz17Nke9sFFjz1iXb1V2jouEmaPdQc6oyqosR6Bh9pgpdkHOFOp1Z+jrDLcpSdw89Z
-         5e2v7xPM//CUIEdMVtZzSvBzqhykbnrCAjVl70Ggod7a7coP4OVSaDNFUdIvdKPPD1Eg
-         vx2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXr9IgPL/ep2ODhYyAURt5SY7a3j10bU59Ji5UMMK947nTLKi04cppArWPFJEf2q0k/4WRryg5XvUE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcHaBZcrWLUiE7qcDw4JkEB4rlgMMvk75odhR65VdVyoPRYdWw
-	W8cdM7m6w2IMieQKOcTeQwrgC+BTy5GjBC/bwGqUCvQWOgl3GvIWc7hr4pIUrvJ0P/faCnRFsNF
-	5di5O1EO1wgIwhS/k6qbobaQ1iBapIYGF2mvXEWq4
-X-Gm-Gg: ASbGncudAxBXOl0Ojtm5fwMOgefb7SI0u5P5FD4mBaIeHtxVZsCyKXQ7UFadV0MsNX9
-	Q6FCSnlAK942uVpu3/1WGEV/kIo1NR6CQ0tYXplEPQu4DgR4zZZXX0kOFOQz3NwgIfk3iXz5RoM
-	4LUGZS+HnqGMZdpW8Al7US4Iom6dM1Ha5UY2YBMzcCGF5TylFy1ZBHfEu45Wln0zDAPRx/D9dKU
-	2ZA6deqqA==
-X-Google-Smtp-Source: AGHT+IFrTmd6PZscCgHOXkg/jLaGOEY9AFZjzY8D6UcfbNdWBrcE8ZI5Z+Or0cCq7HQqU9l75OgLwmXGP6qzjQ+iRcI=
-X-Received: by 2002:a05:620a:1a23:b0:7e8:137d:3528 with SMTP id
- af79cd13be357-7ea08d86dffmr264808185a.8.1755784872867; Thu, 21 Aug 2025
- 07:01:12 -0700 (PDT)
+	s=arc-20240116; t=1755789853; c=relaxed/simple;
+	bh=j5HMtzj02bE7jOzvhivWK4JuewQ6uKDmB/pcYi4qcJA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F3JxAy0nWac77EnWHV1cOWV/xKm3/f5X0vvJXSxhZL9IbWjRnWdS9/VOgNle8nMBkXTC5VwYXs96GZnHZwjJQIxYS6yoFnYd3BN4+45ETyXYgF/873GJEAM14YRHyE00bZ7OswsU4DWTR/7M4qlCaFAvEBeiSrtZ2Ekp88NHOc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IbiVPoNK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2FE0CC4CEEB;
+	Thu, 21 Aug 2025 15:24:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755789853;
+	bh=j5HMtzj02bE7jOzvhivWK4JuewQ6uKDmB/pcYi4qcJA=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=IbiVPoNK7y4ufGx9tMj5WkZKM1e8mErIoPfwXarSQll5foSBCFuTosfj/w8vc+zzG
+	 w0b58qDZzcdBBuZgU/KS1QmcIii+FZxRQhvk4gGdwnd+RcgmUT2jDughVD9AjMK0Ge
+	 EYHUSPuDAa2fC0wdr6Bm/LIq3F2OVIgDu1ItXCco/Vqn7HfXDdfaHTcN6aa43e38D0
+	 Gr1xsLRi/ADaWom/C7bNN3ZKPnyA8GINlIMKtJSj78or2xuRKz3q2/ziMRyEE7G1D+
+	 Y0fvYFwtkQ4c3i5pwHbtA2Y5OCKcpiPiqVFsnN31ZethmINSrsso6sVxRVsZyR1+b4
+	 0c3GHTojxJYhA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20FC3CA0EFC;
+	Thu, 21 Aug 2025 15:24:13 +0000 (UTC)
+From: Dimitri Fedrau via B4 Relay <devnull+dimitri.fedrau.liebherr.com@kernel.org>
+Subject: [PATCH 0/2] iio: humditiy: hdc3020: fix units
+Date: Thu, 21 Aug 2025 17:23:53 +0200
+Message-Id: <20250821-hdc3020-units-fix-v1-0-6ab0bc353c5e@liebherr.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250821080723.525379-1-zhao.xichao@vivo.com> <20250821080723.525379-8-zhao.xichao@vivo.com>
- <CAKv63usy7FsiUCjrqibcr196kVGb5_FDeU__OwLWJxasb3MgZg@mail.gmail.com> <CAHp75Vd+p1kPPZyrkOsE7EUpCEjd0ii+uHR69EvGNbbDOFuA6w@mail.gmail.com>
-In-Reply-To: <CAHp75Vd+p1kPPZyrkOsE7EUpCEjd0ii+uHR69EvGNbbDOFuA6w@mail.gmail.com>
-From: Crt Mori <cmo@melexis.com>
-Date: Thu, 21 Aug 2025 16:00:35 +0200
-X-Gm-Features: Ac12FXzWKQ44hpbQEumVQBTi8x-Bmw7JFWW4iGNpkw6vhDhhAYvMf5d021Ujt-c
-Message-ID: <CAKv63usB4zfOUFHy3WCdQn20egsAjrq76AkaQ2KxdAFO0UjOcw@mail.gmail.com>
-Subject: Re: [PATCH 7/7] iio: temperature: mlx90635: Remove dev_err_probe() if
- error is -ENOMEM
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Xichao Zhao <zhao.xichao@vivo.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, 
-	"open list:MELEXIS MLX90635 DRIVER" <linux-iio@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAk6p2gC/x2MSwqAMAwFryJZW4gV8XMVcWGbqNlUaVWE4t0Nr
+ oYZeC9D4iicYCgyRL4lyR5UqrIAv81hZSOkDhZtg51Fs5GvUXkFOZNZ5DF9xeRc5z1hC7o7Imv
+ +P8fpfT/+WaSRYwAAAA==
+X-Change-ID: 20250820-hdc3020-units-fix-91edbb8ccd07
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
+ Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dimitri Fedrau <dimitri.fedrau@liebherr.com>, 
+ Chris Lesiak <chris.lesiak@licorbio.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755789852; l=687;
+ i=dimitri.fedrau@liebherr.com; s=20241202; h=from:subject:message-id;
+ bh=j5HMtzj02bE7jOzvhivWK4JuewQ6uKDmB/pcYi4qcJA=;
+ b=4Rb/szGb6OxfFXpOylVFSLvZkCNBkkMeNtlU/nhO4B5VOB47d6xmHgFUAKQuKsTNEtCG+SGEK
+ IERaq0i0Z1VDe1L7+XpbRuyp//h/PfbXN/lnxSipa6yKDXJ9vqPrnua
+X-Developer-Key: i=dimitri.fedrau@liebherr.com; a=ed25519;
+ pk=rT653x09JSQvotxIqQl4/XiI4AOiBZrdOGvxDUbb5m8=
+X-Endpoint-Received: by B4 Relay for dimitri.fedrau@liebherr.com/20241202
+ with auth_id=290
+X-Original-From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Reply-To: dimitri.fedrau@liebherr.com
 
-Ok, fair enough. (sorry was html message before)
+Fix units to milli degree celsius and milli percent for temperature
+respectively relative humidity measurements and thresholds.
 
-Acked-by: Crt Mori<cmo@melexis.com>
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+---
+Dimitri Fedrau (2):
+      iio: humditiy: hdc3020: fix units for temperature and humidity measurement
+      iio: humditiy: hdc3020: fix units for thresholds and hysteresis
 
-On Thu, 21 Aug 2025 at 14:47, Andy Shevchenko <andy.shevchenko@gmail.com> w=
-rote:
->
-> On Thu, Aug 21, 2025 at 2:47=E2=80=AFPM Crt Mori <cmo@melexis.com> wrote:
-> >
-> > I am not sure I agree with this. It provides an error message with
-> > reason and I understand we want as few as possible, but this would be
-> > a valid remark inside the logs?
->
-> How? dev_err_probe() is no-op for ENOMEM.
->
-> Also there is an agreement inside the kernel community that ENOMEM
-> errors need no log, as if it's the case, we have much bigger issues
-> than that.
->
-> > On Thu, 21 Aug 2025 at 10:08, Xichao Zhao <zhao.xichao@vivo.com> wrote:
-> > >
-> > > The dev_err_probe() doesn't do anything when error is '-ENOMEM'.
-> > > Therefore, remove the useless call to dev_err_probe(), and just
-> > > return the value instead.
->
-> With all that said, the series is correct and good to go. I don't see
-> obstacles otherwise.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+ drivers/iio/humidity/hdc3020.c | 46 +++++++++++++++++++++---------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
+---
+base-commit: 43c0f6456f801181a80b73d95def0e0fd134e1cc
+change-id: 20250820-hdc3020-units-fix-91edbb8ccd07
+
+Best regards,
+-- 
+Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+
+
 

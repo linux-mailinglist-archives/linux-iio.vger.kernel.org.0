@@ -1,68 +1,78 @@
-Return-Path: <linux-iio+bounces-23113-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23114-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0B9DB301B4
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 20:07:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA31EB302CD
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 21:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8187E3B7BBD
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 18:07:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19C281BC6D32
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 19:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACF8342CBB;
-	Thu, 21 Aug 2025 18:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C761C34AAFE;
+	Thu, 21 Aug 2025 19:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i77FBwAj"
+	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="PyOYl/Aa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008491FE44D;
-	Thu, 21 Aug 2025 18:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC9E34AAF0;
+	Thu, 21 Aug 2025 19:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755799615; cv=none; b=ppH6l+YelXlWhUuD6ZNb/L1UQZM+EM9OIAM5wvWIF3EIfh1EebvDojlQJjYBkocI7dnZYxFiVf8LE5c4DZH66Vesw9mKo5T9dUjeVvL/mZLU9adW3bPPITgVUPJwtZbjp2R7BK0sqcTNTs9yw+wKhEoAMX1jxl1uWRseqg+5268=
+	t=1755804103; cv=none; b=gpZl7YEwqa4ZHV05swSxl9Q5wfOkkO85A3MpHL6rNo7E9csMutQIp4G8MB4CpHaf7mxLarmQz7Fng4Hpj1buT3O5GBHPPOWi/3qcr8vE0lp2kFwS86iNNv2bjl3ibotjgG7qfVlOLPnDurTo0mfKDTkFl1agqd4puw/ii7oj7Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755799615; c=relaxed/simple;
-	bh=L/oJic+hclWcb0OI6z6PFM6TWuSsr8HbYDJJztF2IHM=;
+	s=arc-20240116; t=1755804103; c=relaxed/simple;
+	bh=9mmC57fqiW/CDgmXrXmLgJFmPtncNpi9tgM8einNv+g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hEHQhIR2GEHgtjVzDxMQb19ZyUoftr3egay7nJ9XX5lajsDgPfweVb6ZClwIEpJzlcLY7jBkmj3VK4JdcPCNdYRsTynth4Z47e7WWs4xQV1dVZOy07iIDi1u3EjdcUKXonZFIWb00fRHGtPsnH7kWfXsw5ddMOxsdB74FwdhZZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i77FBwAj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D557C113CF;
-	Thu, 21 Aug 2025 18:06:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755799614;
-	bh=L/oJic+hclWcb0OI6z6PFM6TWuSsr8HbYDJJztF2IHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i77FBwAj5KCJ1unBguppDBo8oE61T2JpPjBkc1QTmATgP+nvT6ovEVnJB4nnCupgV
-	 EGei9Yw/8szzsDdUF4mk+iNg3nq7pZ2PzDJ3ftUYE4RWNjXHosxGX0TOJxoXfyRTPe
-	 uOsxzNMsRNtIR3YBkO/Vt/EN8f+Rm9brNDcGg/YMYqWnnOLLKItKL0agfqz4htTpn6
-	 jPKbL2s1bj0R/qFZjTQXjXcWzmDIUVXKaksq4GPtti1HjpTAWTXxIlghoK3TIeeiYL
-	 pepjs4HRi6TEQt9u2lu49/ZpUrzI1VrIbE2TiqReXkhW0QwXtiaZzvj5K7YSE21kWL
-	 rppp67bMMl6GA==
-Date: Thu, 21 Aug 2025 19:06:48 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Marcelo Schmitt <Marcelo.Schmitt@analog.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	Dragos Bogdan <dragos.bogdan@analog.com>,
-	Kim Seer Paller <kimseer.paller@analog.com>
-Subject: Re: [PATCH v1 0/2] Add MAX14001/MAX14002 support
-Message-ID: <20250821-haziness-squeamish-81713e94d079@spud>
-References: <cover.1755778211.git.marilene.agarcia@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=mKvyIrHa0zUb6Wqr19ZKnXXcGM9TW8w+j8qvJAOH9eIC0FT7U8mlQXiShRvvqB4dDzdwhxKe8ajEt6FHjN/uqSmuH6exAS74nHXW2aGeCaMFPk6X9ph999Uaua0QZP3c/6iQe0krD8BXSd0IGSQJ/piGOh3EqRPuSaeXm1vkTwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=PyOYl/Aa; arc=none smtp.client-ip=78.46.3.230
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=it-klinger.de; s=default2502; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=MJPn6pdlhSOyboOro+8VXBZQMw43Z9UgpGkHulJjXTE=; b=PyOYl/AaZYJ2hjEzZVWDwnNXQR
+	NqNR2MSP0z6owBZQLtgUOqNyj9ECsdf8ehWSAJqxaLHRVQfooQ0D6GTuLJO8gtLA4uCs3D6KqLVPt
+	Vxl8sa60OpIMDIJj/hj+s0KJZwq+jbKPELQm1UvCv9W03AyCO+Km8K4XX0e0uWphgbdiCOVylfNkH
+	ffq7oF+fi4tqVdHd+UrGmb3034uifGkeMtmB0fK0GS4dRs6toGa3ad2dIKtnO1nkiKUj6UmIkrnmM
+	cDogbj98thcuF1P3Q2JvQuAy9Sez7SXYl1Vm/zr9mE+iRHXEHP7os46NPOFXBSnphKTgB80Jm0kW2
+	VQJFHHYQ==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <ak@it-klinger.de>)
+	id 1upAQ2-000CVe-07;
+	Thu, 21 Aug 2025 20:53:49 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ak@it-klinger.de>)
+	id 1upAQ1-0006XM-10;
+	Thu, 21 Aug 2025 20:53:49 +0200
+Date: Thu, 21 Aug 2025 20:53:47 +0200
+From: Andreas Klinger <ak@it-klinger.de>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, lars@metafoo.de,
+	javier.carrasco.cruz@gmail.com, mazziesaccount@gmail.com,
+	arthur.becker@sentec.com, perdaniel.olsson@axis.com,
+	mgonellabolduc@dimonoff.com, muditsharma.info@gmail.com,
+	clamor95@gmail.com, emil.gedenryd@axis.com,
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/3] iio: light: add support for veml6046x00 RGBIR
+ color sensor
+Message-ID: <aKdrO7DE8ky2DBu2@mail.your-server.de>
+References: <20250715085810.7679-1-ak@it-klinger.de>
+ <20250715085810.7679-3-ak@it-klinger.de>
+ <aHdWAUMMH43tIqV4@smile.fi.intel.com>
+ <aIMy_BHJYNA20k-x@mail.your-server.de>
+ <aKbqLpJMCxJd3QXW@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -70,96 +80,53 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CmbokF2ke1ZZ2/fW"
+	protocol="application/pgp-signature"; boundary="BsflbtbAoRY220fB"
 Content-Disposition: inline
-In-Reply-To: <cover.1755778211.git.marilene.agarcia@gmail.com>
+In-Reply-To: <aKbqLpJMCxJd3QXW@smile.fi.intel.com>
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27739/Thu Aug 21 10:27:23 2025)
 
 
---CmbokF2ke1ZZ2/fW
-Content-Type: text/plain; charset=utf-8
+--BsflbtbAoRY220fB
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 21, 2025 at 10:36:06AM -0300, Marilene Andrade Garcia wrote:
-> Hello maintainers,
->=20
-> This patch series adds basic support for the Analog Devices=20
-> MAX14001/MAX14002, configurable, isolated 10-bit ADCs for multi-range=20
-> binary inputs. Besides the implemented ADC readings, these devices have=
-=20
-> more features, like a binary comparator; a filtered reading that can=20
-> provide the average of the last 2, 4, or 8 ADC readings; and an inrush=20
-> comparator that triggers the inrush current. There is also a fault featur=
-e=20
-> that can diagnose seven possible fault conditions.=20
->=20
-> To keep the commits simple and organized, these initial driver support=20
-> patches aim to upstream only the features related to reading two register=
-s,=20
-> one that contains the latest ADC reading, and another one that contains=
-=20
-> the latest filtered ADC readings. Though, _raw and _mean_raw are providin=
-g=20
-> the same results in this initial version since the data averaging config=
-=20
-> interface is not implemented yet. For this, IIO_CHAN_INFO_AVERAGE_RAW was=
-=20
-> used to return the filtered average of ADC readings. An additional patch=
-=20
-> documenting the in_voltageY_mean_raw interface can be added on v2 if that=
-=20
-> would be desirable. The idea is to use in_voltageY_mean_raw to return the=
-=20
-> filtered average value, and also to set how many ADC readings (0, 2, 4,=
-=20
-> or 8) are included in the mean calculation. I would also like to know if=
-=20
-> you have any feedback on using IIO_CHAN_INFO_AVERAGE_RAW in this way.
->=20
-> The changes were tested using the Raspberry Pi modified kernel version=20
-> rpi-6.6 on Raspberry Pi 5 hardware. For testing, the MAX14001PMB evaluati=
-on=20
-> board was used, which contains two MAX14001 devices. According to the=20
-> board=E2=80=99s circuit configuration, one device measures current and th=
-e other=20
-> measures voltage. Due to the evaluation board=E2=80=99s circuitry, the de=
-vices=20
-> also receive an offset that allows them to measure negative values. None=
-=20
-> of these evaluation board-specific characteristics were included in the=
-=20
-> driver code (neither the offset nor the current channel capability).=20
-> However, they were considered in the calculation of the values read by th=
-e=20
-> devices. Should the code that applies these board configuration parameter=
-s=20
-> be added as an additional driver file inside the IIO subsystem, or should=
-=20
-> it remain only in a user application file?
->=20
-> The code was developed during the GSoC program as part of the Analog=20
-> Devices Mentorship. Many thanks to my mentors Marcelo Schmitt,  Ceclan=20
-> Dumitru, Jonathan Santos and Dragos Bogdan for their guidance, reviews,=
-=20
-> and explanations about the IIO subsystem code.
->=20
-> I intend to keep sending patches to cover all the features of the device.
+Hi Andy,
 
-Something gone wrong here? There's already a v9 from another ADI
-employee on the list:
-https://lore.kernel.org/all/20230710042723.46084-2-kimseer.paller@analog.co=
-m/
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> schrieb am Do, 21. Aug =
+12:43:
+> > > > +	part_id =3D le16_to_cpu(reg);
+> > > > +	if (part_id !=3D 0x0001)
+> > > > +		dev_info(dev, "Unknown ID %#04x\n", part_id);
+> > >=20
+> > > For 0 it will print 0 and not 0x0000. Is it okay?
+> >=20
+> > I just tried and it prints 0x00 if the part_id is 0.
+>=20
+> This is interesting... So it's not 0, nor 0x0000?
 
---CmbokF2ke1ZZ2/fW
+No. It prints 0x00 on my BeagleBoneBlack with kernel 6.16.0-rc5.
+
+Andreas
+
+
+--BsflbtbAoRY220fB
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaKdgOAAKCRB4tDGHoIJi
-0ndsAP99s7LMlpgxtMf7eN2DmaSN0b8LV21wDZYkD2RqSqpaoAEAz2PZfylULpkf
-XMvWyYRkXnivvg/7pKONfBaScDs7gAg=
-=ShSV
+iQGzBAABCgAdFiEE7/NrAFtB/Pj7rTUyyHDM+xwPAVEFAminazsACgkQyHDM+xwP
+AVErKQv7BcvpopjcA540YIbkMLjXkAhC4E2sIeu0ECxlfQ/1MgQeLW/K99kULoQl
+2m2JxkVaHl43qmmLdZwOAsWLOLGMmVrOJVambXsMTHAYqj3iP1sKB7TVmOvW6x0M
+VtkRF+41spEStMUfkv8WViRVUvDHM8n/kI1EPZzcxqTBMF4FOyhBVVvM0qMZQDzs
+f6SKi3xP8L1i5mCmHlZCC2o3t4Pwq0YT0x7iUGwq1RvGw1cVTkznYZLm8EbiqIt5
+gvi3/s+Bp2RA+Hq1jKYEfDIikryYxRKns2UKsjfJ1lQDI9IG2Oqv6DjK0I+GEYLE
+ZRQbMLEf9Vi+7/IGvCmHXhU7KJgJmXrMiJlA+g78jR8GjXqjmhKekQfcimsriVFY
+z5YiR/zTcqw0iFKfRbDO9rHS7ZuBGiqhnfNmJ8TcXLHUHIMBLWmPZwt61XXTrNUM
+Pic8ZJAv4ayAticgCBwz/zzhJt9YrYJktmc6w8hrq4UAbGMtn7pB89HrtxwWLQkF
+93iem3Xg
+=9IwD
 -----END PGP SIGNATURE-----
 
---CmbokF2ke1ZZ2/fW--
+--BsflbtbAoRY220fB--
 

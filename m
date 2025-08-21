@@ -1,161 +1,209 @@
-Return-Path: <linux-iio+bounces-23078-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23079-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D5A5B2EFE3
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 09:39:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66539B2EFEE
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 09:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BADEE176C71
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 07:37:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DACF93B9B0A
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Aug 2025 07:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D8827FB2D;
-	Thu, 21 Aug 2025 07:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C493B28031D;
+	Thu, 21 Aug 2025 07:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y56494OW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E10EehIu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A77A2475E3;
-	Thu, 21 Aug 2025 07:37:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DB64690;
+	Thu, 21 Aug 2025 07:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755761845; cv=none; b=MptdsZVhiZm74jiuz+9b7r1+vm0co8DDTZxRUaGZMBWXfQzWHuimxw+/2Zkn6Ejs9gic1DZd7hI41cv9Jqja7xSxc4lVw4bHs6J1zmd5OdhTaWSPpPLOh4KiKkEb0CvTcF4teSl0tnZGaeftNoyZueLOM6what2n/DDIODM0oVE=
+	t=1755762103; cv=none; b=eTAXOP2HY8Ypbi2fnGXEg1FOfkZunYJYnhtrbBvR1ajotP4OzugX8mxX8VpQ/9vgAFoKCdjKlk5bSXweSVmTVA3hvCXrjblm5Z/ISkELgQci6h+I0vMdeRw7jsdbOnonTelIdjFRhT8Xum0YtXtQZhcewUAFr7coxXbRJP8n1DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755761845; c=relaxed/simple;
-	bh=3kbdTGNhBGkfs11dz/zU9MhRJkL/GeXAirIfRKZE6cU=;
+	s=arc-20240116; t=1755762103; c=relaxed/simple;
+	bh=kPrcHdkc/3j6mEtJqp6XmZ7ZekHXYjAyIttUc51h7/k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uzG/6UZR0ayaQiEafs5wQnc+L+pkwB+npqBPL0hvIdgNWMaM1YOTv3kPC9bvCzoJoIw4ls0l0o2Mtd6UacKuV0YTVw1jNoY6Lta0vPP2wemsqUlnlb1nFSpcZAHTOXQ9BCXI5fmKJpoPzLOeO1pOOxcAmxuTXs6bei0i2Rfk0ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y56494OW; arc=none smtp.client-ip=209.85.218.41
+	 To:Cc:Content-Type; b=KdjjQSTPB8xcZwcoIqsjJco+M1NyrrFTyUCjWdBHsJUzsRA5sNUtVL6jrVecNXJYN2Z4+HIiKwONKHZLqCwXCb3ZWSaOgQEcfxcqnC0TF59solP50ve6oqUC6n8ZmTOfP4nTDVJQ7pVYs4UFIcq5PZkVWxVnMOcjW/5dIHLeZiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E10EehIu; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb7ae31caso133554166b.3;
-        Thu, 21 Aug 2025 00:37:23 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6188b7532f3so1144934a12.2;
+        Thu, 21 Aug 2025 00:41:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755761842; x=1756366642; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755762100; x=1756366900; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=24G+nBqd0Wh3p3XQK8bKfArAh0wXUKeakrnoiFr0zuE=;
-        b=Y56494OWEjELxukDDN58prMPfAJX6cX/cK4gleJBW3Bfkwp7pQrCc/1a63jGbXlo6w
-         rrS3XKPfST5FaSM69rHq8m1ukeOYWh1vdPqzwrngpH0lyJDsxlQzAKoKbc+uAiu/SozV
-         CjoW1GItyOylSNq20pXnChYW5KmNJI5a+1AnZw4C8tPwYjwKhqm9Ls0flsPrSg5ZmZYl
-         n3B/UIA+TGC3/GilefLRcR/PffVQwt/iDlEiBt4Y3tfBAHUeZ7/vbd7M3a+MV3PD+hG0
-         1whwtG02nMiTarSV4R/+j4oOYn9kZpaQPfQo6vL62+sha2V4cuPNfeMM9ZTmg5I0fLqh
-         ghHg==
+        bh=EIZhMIR98sN11ESgeJLOLyQsEESU4OFFo5q5jHVEOWw=;
+        b=E10EehIuI+t5Eszr2SqDYcXVpvJuU2pGjBJp8QrEqM+dYJ7ryeybOHeV7IGt02FJ3x
+         Q+feDy2MWl7rnJArrbOuo17zklcD4vIItrfKcEXw8fQZGooOqkA+X5iOf9qZ+phNyk0v
+         Ooo561QdPqQJQvzrwb4FvTC8FpanCYEFpPvGp9B0jFRSFJhZYF8HbdADha0CPMlEXZ+c
+         LiMZ8M3Bl2zvrPrD2S5Zlyd/43k12BAJlqwaXzcpQHYgSZg+KJpQi7HzTBEAUFwGltFd
+         m62sFBq2C+P5HD9peSulvO5jXjx0sWqd8nJioptCpvRsF1UZySXeVYAvdcBXerUqJut0
+         3XPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755761842; x=1756366642;
+        d=1e100.net; s=20230601; t=1755762100; x=1756366900;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=24G+nBqd0Wh3p3XQK8bKfArAh0wXUKeakrnoiFr0zuE=;
-        b=m0O2TFiy1uLShC+k2QSuVazUOjXuwfuB/WDVtClutyAr+z7XXIKI5Y1K7+hEd111sD
-         y+q+rmQPC2h0jPhdBDtFOozPO6gWs/DgEoFkC2szdtktcivSY0ls2x5XmoNoGfd8z9/K
-         FSTmxPIncJzC8VHDaY9rI48XE8OE6Vcmt1MPlbwYdZ0fE2NpGl2TIYjQx+Dk/BfQA9Mh
-         DkTfq3ljWXK91chhD2Jkg2zJjQgqqk64FzHbjCagIXcQHAHc3Y4ESWE2E8csEmfXJEpR
-         n8b23fa3ZJwVKAgAubxL8sPddG9athyfsAL5CR+G59IsXr0rnA9Z1g3+jp0C3T7C9P/n
-         jfRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUqAjJkjKO4cLcJ5TWtyZa0XjAlVoiG+yoctJyPsT9J/nlPKrEqPcN1oUMst46DTwQSbsTX9aGpMOMECJxn@vger.kernel.org, AJvYcCXYT8Lf7w47xhNEwFVjKcplHod1/h7GYtTCZXaA9FSQsk7F74E+SiU1dwj3wAml6dB2qP5FE7SUq14=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeOfb+dp1Qd3oYVy1SxTH3SsK2gC1WbU7DgSSW+AguVmeKRBLc
-	saYixwYcKl7lTaDr8dKbtehzue3ZV26XMfbgHcgSjzX+LVGqt+qN92/173L//Gdw+Y4L+/MoCH1
-	Y84nTlhNhlg+Xh7FhvpflI6HkL5JeIEvQBzfG9XY=
-X-Gm-Gg: ASbGncs9Z6mlIp0aTl1cVZ97nlqPp6S/jvZRlDO96N+5tYjoADjimTWPquPLa7/o8QL
-	hTh7VcF0RUqICYT5sJC6nzcKwreiqW0DebfcAJDUergOXZqoRAQUJ/mStvUCRKbdAeFAUrtxftN
-	hjzGlnyQn3JPgSCPVHa3qbO5ZWYj4qtDDD/OlYAwhF5XVgDcJIb1Cnu7UjJp+OEhHmPE0ITAWim
-	TZcCfFi4g==
-X-Google-Smtp-Source: AGHT+IHV+N7yC+M0hWbA3nhwDnasBe568CCNA+rn05cUkQzYm3tjh2I5R97rqFeRh8pRmLl9frw7PWFFKL7CEcGCHHM=
-X-Received: by 2002:a17:907:7f29:b0:ae3:6ff6:1aad with SMTP id
- a640c23a62f3a-afe079ac04dmr139223066b.14.1755761841507; Thu, 21 Aug 2025
- 00:37:21 -0700 (PDT)
+        bh=EIZhMIR98sN11ESgeJLOLyQsEESU4OFFo5q5jHVEOWw=;
+        b=Ss+n2jNqwnk5thNtLmUh2oM2BdAYgtPBr/bO3ufacahghOio2ejyGx6V7XG0xV1inr
+         QxtiFvi8iablEguhvGGFOJOvoFPbIrzpunWseT2JYHliVeyg1j4PnqeO+/3RWs8bm+fL
+         gGHzkxQ8F1IYrkeSYqCX1Flu0YJaZ8iy06GOA0IxGRpB5GMdnedrdRDKJEVKEelWeH1z
+         Unya/OIgtK82q/D4q/MSuGd//x6fIA14fTI2fnNqkTCqbvDQOQulUJV9IgATQs0i8Ugo
+         ENFPfleo8VeUi8MABr9Bey1s3nDsKx9gTHM+O/ooWTFo3z2jS4OjrglugUBpw1Gl5n/Z
+         NxeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVidJDQu11PsFWRsPaomHSabQKGKw4fmj7PzAYHYsV+D8eLJ0dkDOQkD8N5BHaHfvDNawR65CmH64xQh/U8@vger.kernel.org, AJvYcCWfZd/usTxE+EbwxQqBxW+57lQUjYlz3E4CG5chlsNuz6WUlP2WrNFY606r+dFLWKHR8ZPnmG1C6Jv+@vger.kernel.org, AJvYcCXOSqQQH4BiigAv5joGoj/gov6HlSfd6Auy6tDlYI5tOhJQFGBWqluJ4hJ/AAug9g8HeykWYGkVOdMs@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVG+664vezUmofG0BA3EpEo9yQSoo8BIvNNg8rOVHW6ey8QKMk
+	h44yMx+InDdCLNBePUVgdhscOViof1dnyNeRVkpm3eZM9XwncRpVT/oSTSalzNgrCGNBWpi6fhK
+	pAFvRCkjQJNus0gmpCs549d1OV+QMtTo=
+X-Gm-Gg: ASbGncsx4wpbc4FIL3lW5LIikm+zQhH3balhxXSp8IFV5ekKm7T0MjepUhyHemTWOnP
+	/CEMNv6RUlDGK53gSa+mM88nmS4X3a14i8WSAvY8qaoPyRnlwYylBK8Jc20uNAox0IqUkW8szmE
+	9y1UZbVoM6ACSg18uLiOzPFJ8ZWAryU9b6QvdGz3BToHRkN2Alg0IWOYYLIOVkqEwx4A2I0QFxP
+	nZAzqJkrg==
+X-Google-Smtp-Source: AGHT+IGWrfnL2SF9aG13X/8PLv4wY0UjJxCUOu5WcsnQ/IYf2m8xwQLk9znhMWW+p4PGneh9sBL6NNAwfLOYS8k/ngk=
+X-Received: by 2002:a17:907:9814:b0:af2:b9b5:1c06 with SMTP id
+ a640c23a62f3a-afe079d37a9mr127119666b.14.1755762099776; Thu, 21 Aug 2025
+ 00:41:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250821-bmi270-gpd-acpi-v3-1-91a873cb87c0@uniontech.com>
-In-Reply-To: <20250821-bmi270-gpd-acpi-v3-1-91a873cb87c0@uniontech.com>
+References: <20250814-tlv493d-sensor-v6_16-rc5-v4-0-81b82805aae0@gmail.com>
+ <20250814-tlv493d-sensor-v6_16-rc5-v4-1-81b82805aae0@gmail.com>
+ <aKXW5pGiN18DyIZ7@smile.fi.intel.com> <aKaMPMnGRyvKqTny@dixit>
+In-Reply-To: <aKaMPMnGRyvKqTny@dixit>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 21 Aug 2025 10:36:45 +0300
-X-Gm-Features: Ac12FXz2ox-pqRAZ7X8Nl5-8RH4Q6MPpmTutuZ7rN_2YCcDTx9ilamgDvwop_a0
-Message-ID: <CAHp75VeTgWifRnqYxi8P_yfMv_GMvJJi4+xJNB98gtKp0z93=A@mail.gmail.com>
-Subject: Re: [PATCH v3] iio: imu: bmi270: Match PNP ID found on newer GPD firmware
-To: cryolitia@uniontech.com
-Cc: Alex Lanzano <lanzano.alex@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yao Zi <ziyao@disroot.org>, WangYuli <wangyuli@deepin.org>, 
-	Jun Zhan <zhanjun@uniontech.com>, niecheng1@uniontech.com2
+Date: Thu, 21 Aug 2025 10:41:03 +0300
+X-Gm-Features: Ac12FXz4IG57-fSP6z8NGcm7Oz5k2l0xepeyfpOthmM1oC4nqwZJWP_9DzbV7KQ
+Message-ID: <CAHp75Vdw5X1Y057fpGjdvVGwKq0x0UBdm8py+m+55RbzXi1PJw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] iio: magnetometer: add support for Infineon
+ TLV493D 3D Magentic sensor
+To: Dixit Parmar <dixitparmar19@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 21, 2025 at 9:17=E2=80=AFAM Cryolitia PukNgae via B4 Relay
-<devnull+cryolitia.uniontech.com@kernel.org> wrote:
->
-> From: Cryolitia PukNgae <cryolitia@uniontech.com>
->
-> GPD devices originally used BMI160 sensors with the "BMI0160" PNP ID.
-> When they switched to BMI260 sensors in newer hardware, they reused
-> the existing Windows driver which accepts both "BMI0160" and "BMI0260"
-> IDs. Consequently, they kept "BMI0160" in DSDT tables for new BMI260
-> devices, causing driver mismatches in Linux.
->
-> 1. GPD updated BIOS v0.40+[1] for newer devices to report "BMI0260" for
-> BMI260 sensors to avoid loading bmi160 driver on Linux. While this
-
-the bmi160 driver
-
-> isn't Bosch's VID;
-> 2. Bosch's official Windows driver uses "BMI0260" as a compatible ID
-> 3. We're seeing real devices shipping with "BMI0260" in DSDT
->
-> The DSDT excerpt of GPD G1619-04 with BIOS v0.40:
->
-> Scope (_SB.I2CC)
-> {
->     Device (BMA2)
->     {
->         Name (_ADR, Zero)  // _ADR: Address
->         Name (_HID, "BMI0260")  // _HID: Hardware ID
->         Name (_CID, "BMI0260")  // _CID: Compatible ID
->         Name (_DDN, "Accelerometer")  // _DDN: DOS Device Name
->         Name (_UID, One)  // _UID: Unique ID
->         Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settin=
-gs
->         {
->             Name (RBUF, ResourceTemplate ()
->             {
->                 I2cSerialBusV2 (0x0069, ControllerInitiated, 0x00061A80,
->                     AddressingMode7Bit, "\\_SB.I2CC",
->                     0x00, ResourceConsumer, , Exclusive,
->                     )
->             })
->             Return (RBUF) /* \_SB_.I2CC.BMA2._CRS.RBUF */
->         }
->         # omit some noise
->     }
-> }
->
-> Link: http://download.softwincn.com/WIN%20Max%202024/Max2-7840-BIOS-V0.41=
-.zip #1
-
->
-
-This blank line is not supposed to be here (the tag block is
-considered as the last lines in the commit message without blank
-lines, like a text paragraph).
-
-> Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+On Thu, Aug 21, 2025 at 6:02=E2=80=AFAM Dixit Parmar <dixitparmar19@gmail.c=
+om> wrote:
+> On Wed, Aug 20, 2025 at 05:08:38PM +0300, Andy Shevchenko wrote:
 
 ...
 
-No need to resend for these nit-picks, I hope Jonathan will tweak them
-whilst applying.
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+> > >  st_magn-$(CONFIG_IIO_BUFFER) +=3D st_magn_buffer.o
+> > >  obj-$(CONFIG_IIO_ST_MAGN_I2C_3AXIS) +=3D st_magn_i2c.o
+> > >  obj-$(CONFIG_IIO_ST_MAGN_SPI_3AXIS) +=3D st_magn_spi.o
+> > >
+> > > +obj-$(CONFIG_INFINEON_TLV493D)             +=3D tlv493d.o
+> > > +
+> > >  obj-$(CONFIG_SENSORS_HMC5843)              +=3D hmc5843_core.o
+> > >  obj-$(CONFIG_SENSORS_HMC5843_I2C)  +=3D hmc5843_i2c.o
+> > >  obj-$(CONFIG_SENSORS_HMC5843_SPI)  +=3D hmc5843_spi.o
+> >
+> > I haven't got the ordering rules here and in Kconfig. Can it be alphabe=
+tical?
+> From what I can see, the order is alphabetical based on the CONFIG option=
+ in the
+> Makefile and Kconfig, and I kept CONFIG_INFINEO_TLV493D after CONFIG_IIO_=
+ST*.
+> Isn't it in correct order? or my understanding is incorrect?
 
---=20
+I dunno, The file name there is with the vendor prefix, in many cases
+the configuration option is with vendor prefix as well, but the file.
+
+...
+
+> > > +   switch (ch) {
+> > > +   case TLV493D_AXIS_X:
+> > > +           val =3D FIELD_GET(TLV493D_BX_MAG_X_AXIS_MSB, b[TLV493D_RD=
+_REG_BX]) << 4 |
+> > > +                   FIELD_GET(TLV493D_BX2_MAG_X_AXIS_LSB, b[TLV493D_R=
+D_REG_BX2]) >> 4;
+> >
+> > Wrong indentation, make both 'F':s to be in the same column.
+> To have 'F' in the same column, it will need spaces after tab (I think it=
+s not
+> advisable to mix spaces and tabs).
+
+No, mixing tabs and spaces basically means spaces inside TABs or
+before TABs. The TABS followed by solely spaces is okay and the
+correct way to indent.
+
+> With just tabs the second FIELD_GET will be
+> align to 'v' of val. What will be the correct indentation?
+
+...
+
+> > > +static int tlv493d_get_measurements(struct tlv493d_data *data, s16 *=
+x, s16 *y,
+> > > +                           s16 *z, s16 *t)
+> >
+> > Indentation issue. Please, check fully the code for such issues.
+> I followed the single tab after default as suggested. At which column the=
+ s16 *z should be align to?
+
+s16 starts with the same column as struct.
+
+...
+
+> > > +   ret =3D read_poll_timeout(i2c_master_recv, err, err ||
+> > > +                   FIELD_GET(TLV493D_TEMP_CHANNEL, buff[TLV493D_RD_R=
+EG_TEMP]) =3D=3D 0,
+> >
+> > Please, resplit logically, i.e leave the condition on the single line.
+> > Also to make it shorter you can use '!' instead of ' =3D=3D 0'.
+> Having both conditions in same line will go out of 80 char length limit, =
+even with !.
+> Is it fine?
+
+In _this_ case yes. I expect something like this to see
+
+   ret =3D read_poll_timeout(i2c_master_recv, err,
+                   err || !FIELD_GET(TLV493D_TEMP_CHANNEL,
+buff[TLV493D_RD_REG_TEMP]),
+
+...
+
+> > Just wondering if you have tested for negative coordinates, does it pro=
+pagate
+> > correctly?
+> Yes I have validated, it reports correct negative coordinate values.
+
+OK!
+
+> > > +   iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
+> > > +                           pf->timestamp);
+> >
+> > Interestingly that you have used 100 limit and suddenly don't do it her=
+e
+> > and maybe elsewhere. Why inconsistent style? Please, go through the who=
+le
+> > file and make sure the style is consistent in all of the aspects:
+> > - C style used
+> > - comments style (one-line and multi-line)
+> > - indentation
+> > - etc.
+> I tried to follow 80 limit(except few places where it was just on border =
+or not
+> clear to read). I belive the standard is to use 80 limit(correct me if I =
+referred
+> wrong place) and I will recheck to meet that.
+
+There are two standards, the old and strict one -- 80 characters, and
+this subsystem _tries_ to follow it and relaxed with 100 limit.
+The exceptions are possible when it affects readability.
+
+--
 With Best Regards,
 Andy Shevchenko
 

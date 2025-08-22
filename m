@@ -1,135 +1,157 @@
-Return-Path: <linux-iio+bounces-23153-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23157-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FDC4B32020
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 18:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 672DEB3203A
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 18:13:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F22BD1D2819D
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 16:03:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 874E51D63D47
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 16:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01FD277CAF;
-	Fri, 22 Aug 2025 16:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CEB279DC3;
+	Fri, 22 Aug 2025 16:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="SS1uCrt5"
+	dkim=pass (2048-bit key) header.d=watter.com header.i=@watter.com header.b="ZnNCh69a"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9442825B1DA;
-	Fri, 22 Aug 2025 16:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933C12405E1
+	for <linux-iio@vger.kernel.org>; Fri, 22 Aug 2025 16:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755878555; cv=none; b=LxH/zgChn6X0N2ZO+dGaSmoahuFtspu3XIYA9FqLOefQSpbE4IZCa1Bcrp/xlcmR+mHadbHqJH0BbbUNupnO66+IQ4xhD2njXcPGGPzUqTzLBC+ZbHt/lZG9fXQTTZ21OPFMqD2sVJ2Qq/M/fDMoSSR4852MWeVNIhFe6HXZubE=
+	t=1755878826; cv=none; b=U28Sg/MiWqdNvST48TTb2LE1PUwUUdqLjFlPt2fNZIkXJa+s8MbIk3xDFMY4gkQb6hd1XAa51/hKGRdKN7bVWPjRr3v+lmgvxhQci+WNaUte6PJy5lpR9tv/qguwTzhP12motuZrTEGz5wQfOjnERo6TgxGU/pQb9GGu54a/HxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755878555; c=relaxed/simple;
-	bh=kspGLdPkNtzhu4rQDp5/TVNuldcYtNLHK/6wJj3wquE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kap85PJJ4UX+xi91kmzyKpaxog79s2Jy2NrbhRWDCtyz0r3P2WgX6KAuQtf4MCPeKJa+TYG2LNJn0Br9gFX0kQ8nH1IylC3JaUccFPaf2UIOyuX+4FzgHI/LSqMARS9N7qEE3KDLRFYS2iH5DWt7fqWgvdJg4ZbzgYHyWrHG1vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=SS1uCrt5; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57MEEmvV004396;
-	Fri, 22 Aug 2025 12:02:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=PozY+
-	M/LDTJ0jNL4YP/Fx/ozmIWeWf340wZY8rrkRC0=; b=SS1uCrt5Qr6jIgaUBXCqU
-	wBlK+s4X5DkEgYUTq5wtwtDazCxyPvd+PQ0RBfwxJ4bhgPnbXbsNljFgjajgVj4E
-	a3cGcp5RWoCLMTduRayysVJH8+PWi/IF06D73wELdjuucVHyZG2oMn6sOjgTYM9p
-	8J+8//H8KirXo9yaUCKT/+RHDikxL9IvoDoWeto4HIRnnFSF+uhJwi2+CAHp/AT8
-	Gq6qnPdl92dMwpmlBefmDaDagJQi7ELNFmr8IfzxW+PW+irkRUT6wHmh6TlAuzRO
-	YxcZMn7zo4pKaAePTwekfDTcpU1D8giQI++t7AUlThXqU2QwgLx1ljL32mIQfy0V
-	Q==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 48n0tdh4uj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Aug 2025 12:02:25 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 57MG2OQ2033828
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 22 Aug 2025 12:02:24 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 22 Aug 2025 12:02:24 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Fri, 22 Aug 2025 12:02:24 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Fri, 22 Aug 2025 12:02:24 -0400
-Received: from Ubuntu.ad.analog.com ([10.32.13.98])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 57MG263R000568;
-	Fri, 22 Aug 2025 12:02:20 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v5 6/6] Documentation: ABI: iio: add sinc4+lp
-Date: Fri, 22 Aug 2025 16:01:55 +0000
-Message-ID: <20250822160157.5092-7-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250822160157.5092-1-antoniu.miclaus@analog.com>
-References: <20250822160157.5092-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1755878826; c=relaxed/simple;
+	bh=PeFWqmKvO1chHjKzpamnENPM1xecjmZuSEwZ1WqrNeU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=oTZkD0YhXxGfFaVIoN6WzhmUBEVu59N/Vdk1yYYMgmm7d85BgeJmLEegEoHVn4X/bAuQZN7GgLWzVRlhZ0P233N9VEUNmyMrkIs5cEmq9+L9+WyBicMf6UbAy0gfSDswBVkxQyxrYMl//HPcu0SX5Uiqye1CNY5nEukfdOG2z7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=watter.com; spf=pass smtp.mailfrom=watter.com; dkim=pass (2048-bit key) header.d=watter.com header.i=@watter.com header.b=ZnNCh69a; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=watter.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=watter.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4b1099192b0so37504491cf.0
+        for <linux-iio@vger.kernel.org>; Fri, 22 Aug 2025 09:07:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=watter.com; s=google; t=1755878823; x=1756483623; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v3a0v0yEWcj3RiPcDwFFeqOwhcQzYtQNA5v8wZVyGNw=;
+        b=ZnNCh69aYatPDomewHW3izDxvTaBbOmll+HCCioEBkaP+q8OoqigkBu19KJDsO8pa9
+         D4DmSAlBX5a06MTjjFc3iWNcwg2louEdBB9YwV/gxXN1IfOLyZhHqrEnamHwHOdOU/Hl
+         zaXim4jO71kDYLCI/4gMc/F4jmEB0D5KNSM6YOJ0t+R5vtrAPLN9/xVJzgNUZXFugMCY
+         /+j5qR6x2OCUGpTWs3Qf+Fw+cACwMTomXD1KjEP0S3fxJ3l9K5tCpNPDZolaDpTSxulv
+         zXuK9RCIItVPnjyoGv6L3PG3O79kghlBAqQdrVpaokCMl/eHiMqN1aGd71uOOnHvENd2
+         Qbkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755878823; x=1756483623;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v3a0v0yEWcj3RiPcDwFFeqOwhcQzYtQNA5v8wZVyGNw=;
+        b=UBfJ4tkYjzBQZhN410BN2U2B9NJsR8Z/kut1JKUhAh3T5uvWdHy/Z3Ghk2hv6L3R7D
+         /n2NrI349G1GK0em3gIEPpVeWErBeOnvtUmDGc8qxwOpFCk83AJO1YE5dQoG56XxzlbS
+         d2qsDooa7WoAYKXsCOfTahW6/8u7g3I35JJURCwftr8xaWckxjb3PQuwwKhwRGfkK/EM
+         4j4Sv3eslaFVJTtlBKXoDNq0tEGcgJb7P9xGwqOedqYXi/LMpSWRtdG1lwhd8nHhmiZL
+         262bs7zwIDY6LTsoh/afTGq0EeM93yQtH5e+jkboeNJuOWXQOFoq9RBvuZcmVFgnSxYh
+         AbOA==
+X-Forwarded-Encrypted: i=1; AJvYcCVyx5qatv+qaeZGZRR1UGSGoUsoYHaB3/eSppml4eloV/npFhu+FegrQLmUqwViuJTXVW4QamNhZ9w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLWil2umIU/SPUguSdZXPX0qqKtKQIOaRdiL8GZhtCbQ+WAD2j
+	aqCUMmmpXWuI8WGN145kp4UIponQvsSvenkWji1O553A9KGSx2PELtGzFKYUwPC3XQ==
+X-Gm-Gg: ASbGncvcvnGA085Ho57sd7XemGXCyh+5PtKp3MJqhaaAdCvlCIYkcNlna1ZbxGojIis
+	sJCESQalKjVbi0XgrB+G3hzS4twFkU5hmVV4RImrdzsTRkfzKs+Stp32UoJ6lHbZRARUT53TEDv
+	GaFEmLKREgoAH2PwDCf8yPJMPah85tgtPOSOpn+AP9ExyEm8x4fCkVpwjhreEDui7+Qzta4j78A
+	6bnc5kdPK+4AEuEsdYEJ72ygizyWc5jlSx+bJ+ThgoOBxqtAaxS0uof0SjbdW0yWr0eFrs6MPzy
+	KAWyl3YmmI7NbzxyCTmYHRvjZYh0tTCq6mHU7genyhoBgBt9UaGBULbQJHXhjGMMJGnX9L56zVN
+	ZNEchWu2LeHVChi5rHkDugFZ3V8yQKYhshGdl0faueQ==
+X-Google-Smtp-Source: AGHT+IHAD7H5L6yCdeTC6tSubZLEJn8ENm+E+LtaoKzBuMfi/WRcDB8L8WglMrH9i33FpqnhIRJ71A==
+X-Received: by 2002:a05:622a:4e06:b0:4b2:8ac4:f07c with SMTP id d75a77b69052e-4b2aab8ac98mr53224851cf.78.1755878823153;
+        Fri, 22 Aug 2025 09:07:03 -0700 (PDT)
+Received: from smtpclient.apple ([70.32.192.89])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b2b8e514fesm1661981cf.50.2025.08.22.09.07.02
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 22 Aug 2025 09:07:02 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=bvAVxEai c=1 sm=1 tr=0 ts=68a89491 cx=c_pps
- a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=2OwXVqhp2XgA:10 a=gAnH3GRIAAAA:8 a=U6ZNB8FNVxHzf_OyWnsA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: KcVwS01EDW1wDpRwWC4SLuRL8xH7JakT
-X-Proofpoint-ORIG-GUID: KcVwS01EDW1wDpRwWC4SLuRL8xH7JakT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE5MDE5NSBTYWx0ZWRfX1Gyx0lGlWRJD
- sapyqPY+Yl6thDQ8W24we8ef3RDQcnxuSOpnHKTGAwzS369hmKebT0NvMZs1TQa9v77z5KjlxbW
- 76iP8mZo//1JILQIP9L/kgcCnKSsU4YPrldWotUnG2HH2nzCesNgtbnmDfnGcPYF0nMlw94+ekq
- RLKhKfj07vp4MiGsUElI0kxt0eiqZQIygonL8ZZbMcCHUX74MvjK3KYyIlzcr148ChSWZnVYnDj
- MnGkpXtErefAKwdLeK2BQguLeKihdrExiZg/7dxlNrhhaFYCZTBzw9Wt2/1Rxh9N3G0sbHR3tcV
- vO+jWhwiuDakmPcXEapkEJaJHLnOtGtZXSq1hJ25EZQ1lI7q2uHLVkIUZo+o9tXOS+QXPIug8vL
- XtMVdi/zU8PntQEeDMLjl+EK6L/IzQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-22_04,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- spamscore=0 suspectscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2508110000 definitions=main-2508190195
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.100.1.1.5\))
+Subject: Re: [PATCH v8 4/5] iio: mcp9600: Recognize chip id for mcp9601
+From: Ben Collins <bcollins@watter.com>
+In-Reply-To: <CAHp75VdMCY3=bL2t7zWw0D1WqtiLXrWi+ptjpaxK16b8J1KVSg@mail.gmail.com>
+Date: Fri, 22 Aug 2025 12:06:51 -0400
+Cc: Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>,
+ =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Andrew Hepp <andrew.hepp@ahepp.dev>,
+ linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7C976B5E-781D-472B-B2C8-3AD22550E036@watter.com>
+References: <20250822-upstream-changes-v8-0-40bb1739e3e2@watter.com>
+ <20250822-upstream-changes-v8-4-40bb1739e3e2@watter.com>
+ <CAHp75VdMCY3=bL2t7zWw0D1WqtiLXrWi+ptjpaxK16b8J1KVSg@mail.gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+X-Mailer: Apple Mail (2.3864.100.1.1.5)
 
-Add new filter type to the sysfs-bus-iio ABI documentation:
-- "sinc4+lp" for Sinc4 + Low Pass Filter
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-no changes in v5.
- Documentation/ABI/testing/sysfs-bus-iio | 1 +
- 1 file changed, 1 insertion(+)
+> On Aug 22, 2025, at 11:57=E2=80=AFAM, Andy Shevchenko =
+<andy.shevchenko@gmail.com> wrote:
+>=20
+> On Fri, Aug 22, 2025 at 4:24=E2=80=AFPM Ben Collins =
+<bcollins@watter.com> wrote:
+>>=20
+>> The current driver works with mcp9601, but emits a warning because it
+>> does not recognize the chip id.
+>>=20
+>> MCP9601 is a superset of MCP9600. The drivers works without changes
+>> on this chipset.
+>>=20
+>> However, the 9601 chip supports open/closed-circuit detection if =
+wired
+>> properly, so we'll need to be able to differentiate between them.
+>>=20
+>> Moved "struct mcp9600_data" up in the file since a later patch will
+>> need it and chip_info before the declarations.
+>=20
+> ...
+>=20
+>> +struct mcp9600_data {
+>> +       struct i2c_client *client;
+>> +};
+>> +
+>=20
+>> -struct mcp9600_data {
+>> -       struct i2c_client *client;
+>> -};
+>> -
+>=20
+> Seems we discussed this. And my suggestion was to defer the change to
+> when it will be needed.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index 78da68826307..cb300135b4c4 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -2319,6 +2319,7 @@ Description:
- 		  time.
- 		* "sinc4" - Sinc 4. Excellent noise performance. Long
- 		  1st conversion time.
-+		* "sinc4+lp" - Sinc4 + Low Pass Filter.
- 		* "sinc4+sinc1" - Sinc4 + averaging by 8. Low 1st conversion
- 		  time.
- 		* "sinc5" - The digital sinc5 filter. Excellent noise
--- 
-2.43.0
+And my response was that it=E2=80=99s needed in 5/5 where I add the =
+mcp9600_config()
+function. That function will need to be before mcp9600_channels[] in the
+IIR patch series.
 
+So either I move mcp9600_data now, or I leave it and put =
+mcp9600_config()
+below it, and then in the IIR series I=E2=80=99ll have to move both up.
+
+Didn=E2=80=99t seem to make sense to move 30 lines of code later when I =
+can move
+3 lines now.
+
+Regards,
+  Ben=
 

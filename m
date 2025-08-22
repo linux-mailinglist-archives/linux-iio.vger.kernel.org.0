@@ -1,38 +1,39 @@
-Return-Path: <linux-iio+bounces-23147-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23142-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24665B3197A
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 15:29:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39716B31959
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 15:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A488362330D
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 13:25:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9921893ABE
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 13:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A022FB993;
-	Fri, 22 Aug 2025 13:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B942FFDD2;
+	Fri, 22 Aug 2025 13:24:12 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D0F3043A9
-	for <linux-iio@vger.kernel.org>; Fri, 22 Aug 2025 13:24:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B592FE586
+	for <linux-iio@vger.kernel.org>; Fri, 22 Aug 2025 13:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755869060; cv=none; b=Le9VN+rD18+MWfbvSdJqSF/FqGgpxKgkQyqOX4n15nNkmfKxOszD1h4DWD4gjWO8SJdchY0fcS53FG9v2RXS1o2cpazZmvKIyEDn3/YAYOfzK2jynzYVI5xzi2rRE6eQqiMfFgWpYmEQH6B0Jdm6Wi97R9PN9z8hChZpQfUwlAA=
+	t=1755869052; cv=none; b=CcXuZa/mjzVl0DqOLJhxBwjayj3LKpHm2g13N5Bpnmiud9ee4kAPKKRC1N6Z3iRlFwSrkVZxcFcr6KiiHRbh5P0RceItrht3l+jGFVaRW7HQLG5eXmDTGHllNJiirjTv4pHtzps3OdlJZvSpx9q7JACg7jUNcp5wRAeeuj+OAfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755869060; c=relaxed/simple;
-	bh=isJP0LwpNltVD4ln3oiGLB/8LCrIVyDtABbKd8g4b8A=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RkHDTHppV7QIBypWixm4t97FrZ3kekcHuzXNsCi8sEfknY5plVYAZj3ts+ScD40qQ5oG+8YkMlTKsgBsvFiEb1ppW3YMA0IC7dGy/oJg8rnC+cng4ZPREfQTo0T/enHPAuGJHgYarPoXyGsuQkIuqPxIM/ilLCObO5qmiJu74AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=watter.com; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=95.215.58.186
+	s=arc-20240116; t=1755869052; c=relaxed/simple;
+	bh=fEvV/+Ani8LY6L3ztHsoTyS0k/1ewvS/N96D8j5c0k0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QTJbNz4N7ZgB1EcBSKkECD2nVrNBfP3pqggBsho8X4EW+S7IUYeou5Bu6NXCYD+sqESBlSwDmzYhvc+CPaaKa9xZpXtykupakGMTYyTzW5PRrE7MJfo+GRlOQ+zVmsreAG4K/gCRk+wLlEcHxsaWtfgVLgcrB/+QgjahwY+Cz0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=watter.com; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=95.215.58.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=watter.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Ben Collins <bcollins@watter.com>
-Subject: [PATCH v8 0/5] iio: mcp9600: Features and improvements
-Date: Fri, 22 Aug 2025 09:23:49 -0400
-Message-Id: <20250822-upstream-changes-v8-0-40bb1739e3e2@watter.com>
+Date: Fri, 22 Aug 2025 09:23:50 -0400
+Subject: [PATCH v8 1/5] dt-bindings: iio: mcp9600: Set default 3 for
+ thermocouple-type
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -41,11 +42,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGVvqGgC/32NQQ6CMBBFr2K6dgyC0sGV9zAshjqVJlDItKCGc
- Hcr7l2+//PyFhVYHAd12S1KeHbBDT4B7nfKtOQfDO6eWOVZfs7wWME0hihMPfzuAAYrsljqU2F
- JJa2hwNAIedMm0U9dl8ZR2LrX1rnViVsX4iDvLTvr7/qnMGvIAJGKgkijLen6pBhZDmboVb2u6
- wcmeszDxgAAAA==
-X-Change-ID: 20250819-upstream-changes-c89af86743fa
+Message-Id: <20250822-upstream-changes-v8-1-40bb1739e3e2@watter.com>
+References: <20250822-upstream-changes-v8-0-40bb1739e3e2@watter.com>
+In-Reply-To: <20250822-upstream-changes-v8-0-40bb1739e3e2@watter.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  David Lechner <dlechner@baylibre.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
@@ -54,86 +53,32 @@ To: Jonathan Cameron <jic23@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Ben Collins <bcollins@watter.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Andy Shevchenko <abdy@kernel.org>
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Migadu-Flow: FLOW_OUT
 
-ChangeLog:
-v7 -> v8:
-  - Style changes in dt-bindings example
-  - Simplify some return value checks
-  - Move assignment to where it's checked
-  - Speeling
-
-v6 -> v7:
-  - Separate out the mcp9600 IIR series into its own series as there is
-    a lot of conversation around implementation (removed related
-    comments from this changelog).
-
-v5 -> v6:
-  - Fix accidental typo added in dt-bindings: IRQ_TYPE_EDGE_RISIN
-  - Correct some constraints in dt-bindings
-  - Reverse if/then for mcp9601 vs mcp9600 constraints in dt-bindings
-  - Updates to changelog for patch 2/6 (dt-bindings mcp9600)
-  - Cleanup tabs that were converted to spaces
-  - Split thermocouple-type default to separate patch
-
-v4 -> v5:
-  - None
-
-v3 -> v4:
-  - Based on feedback from David Lechner <dlechner@baylibre.com>
-    * Allow fallback compatible in dt-bindings for mcp9601.
-  - Based on feedback from Jonathan Cameron <jic23@kernel.org>
-    * Be explicit in patch description for fixed width changes.
-    * Check chip_info for NULL to quiet warnings from kernel-test-robot
-    * Remove "and similar" for long description of MCP9600.
-  - Set default 3 for thermocouple in dt-binding
-  - Rework open/short circuit in dt-bindings
-
-v2 -> v3:
-  - Improve changelogs in each patch
-  - Based on feedback from Andy Shevchenko <andy.shevchenko@gmail.com>
-    * Set register offsets to fixed width
-    * Fix typos
-    * Future-proof Kconfig changes
-    * Convert to using chip_info paradigm
-    * Verbiage: dt -> firmware description
-    * Use proper specifiers and drop castings
-    * Fix register offset to be fixed-width
-    * u8 for cfg var
-    * Fix % type for u32 to be %u
-    * Make blank lines consistent between case statements
-
-v1 -> v2:
-  - Break into individual patches
-
-v1:
-  - Initial patch to enable IIR and thermocouple-type
-  - Recognize mcp9601
+As is already documented in this file, Type-K is the default, so make
+that explicit in the dt-bindings.
 
 Signed-off-by: Ben Collins <bcollins@watter.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
-- Link to v7: https://lore.kernel.org/r/20250819-upstream-changes-v7-0-88a33aa78f6a@watter.com
+ Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
----
-Ben Collins (5):
-      dt-bindings: iio: mcp9600: Set default 3 for thermocouple-type
-      dt-bindings: iio: mcp9600: Add microchip,mcp9601 and add constraints
-      iio: mcp9600: White space and fixed width cleanup
-      iio: mcp9600: Recognize chip id for mcp9601
-      iio: mcp9600: Add support for thermocouple-type
+diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+index d2cafa38a5442e229be8befb26ae3f34bae44cdb..57b387a1accc776683500949a22ef0290fc876e8 100644
+--- a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
++++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+@@ -37,6 +37,7 @@ properties:
+ 
+   thermocouple-type:
+     $ref: /schemas/types.yaml#/definitions/uint32
++    default: 3
+     description:
+       Type of thermocouple (THERMOCOUPLE_TYPE_K if omitted).
+       Use defines in dt-bindings/iio/temperature/thermocouple.h.
 
- .../iio/temperature/microchip,mcp9600.yaml         |  57 +++++++-
- drivers/iio/temperature/Kconfig                    |   8 +-
- drivers/iio/temperature/mcp9600.c                  | 151 +++++++++++++++++----
- 3 files changed, 187 insertions(+), 29 deletions(-)
----
-base-commit: c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9
-change-id: 20250819-upstream-changes-c89af86743fa
-
-Best regards,
 -- 
-Ben Collins <bcollins@watter.com>
+2.39.5
 
 

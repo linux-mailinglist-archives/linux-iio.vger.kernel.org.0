@@ -1,145 +1,135 @@
-Return-Path: <linux-iio+bounces-23129-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23130-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B1DCB30E2A
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 07:39:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C156B30E8D
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 08:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7FD15A82CA
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 05:39:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 774D61CE3FAF
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 06:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49472E2286;
-	Fri, 22 Aug 2025 05:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF862E282B;
+	Fri, 22 Aug 2025 06:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C5UspzPJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eFNfNOPf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FF8223DF5;
-	Fri, 22 Aug 2025 05:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9851D7262F;
+	Fri, 22 Aug 2025 06:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755841180; cv=none; b=dypxWL9+MEIvcksDxzlAQhugAikeVrZHVVTCpy7+2czimQlxh4MusO0SOkggYhbvhAo5uaCCrydnXLMRNNtc1MsjxcleSHAnbykt9eqciDTa5tcDGeQnqJYl63SCH4HnCafQtEXALOeyHCHVvLl3i2k8e4W3VZNlhjH9ZTYf8FU=
+	t=1755843153; cv=none; b=LIx3L7ehx7RmZM7fcl2AK456feTh/XtBLfCtZJ9RdPE/qrm8BdmJ7LVIueVOtrP2ycsAHBjGgSQfHUiwkmy+1DKeMZtoSASxOpsoLvkQQT9DyYKpBDRCKDs7cajSkCZLms8IxTQPK59wnITbrXx99dp7NvJxyyJLx2nWW+owOk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755841180; c=relaxed/simple;
-	bh=DUOcddI3mXvRcjypV5McRymWt4WifssDE6eXu1LlC+E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eTOMQgMp4oxZEUBpLS4f5ZPHGo85WVSse9+s3E8FCIaW0PrUUZ05ZCPZ9hBIjEVU2AoxeUhZvcW04KTTtM83OecEaRRTfMrrf7FlxbkkvnBaAFrK3D7IQ/Y0MP1ubowAMAepQxSPX5wKqkKZpeTSjDNawpiCib/zE/ArFuxgVdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C5UspzPJ; arc=none smtp.client-ip=209.85.167.44
+	s=arc-20240116; t=1755843153; c=relaxed/simple;
+	bh=LhSLL9e6B9AAwZvmGOujsflvopTdIP4LayPRhrm+i3g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hx/5qV7xugnjLwE5w1bEQTxUJ1BJkecA2AabQouiZ1DuvcR0RNWS3XaYVD6QKvGQz+ubAjj+WbDp6jl/MDNJ0gkrROW2UIAUx6HiUZMm1xF3BTq5YBIwwkbH24g+GSFVZ6Sfzu7MoVHS4YD+tTKtmaFBnINbtW7P70d6jM26cMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eFNfNOPf; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55ce508cfe0so1640239e87.0;
-        Thu, 21 Aug 2025 22:39:38 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-afcb61f6044so301746766b.0;
+        Thu, 21 Aug 2025 23:12:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755841177; x=1756445977; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cktSZhhDXy0hCif2W3DZbZQLN29cfh8CxR1aWKR6R68=;
-        b=C5UspzPJPF6swIKGPttrOJ6ScqTd1tcK2fiLrmHobRYFDiTBdIK+IsSiIk9H69Wj98
-         SGy8soQ8BcwLhDYl+eIaEIKy3nv8Eay0Cdw4RkszNVrmYxPjHL0TFkzSVc//fAxDKHqh
-         Vc8jpR6uv4sdKm82AgsBJ6HLZXR65S/abuyxBdLYJGp+ugSHqTLjSrPLFlVd9MJPQnHk
-         o8C0nggu2rpdJRBdaUs2JMyx+A5BPlpvRb6pX4SgN7bgULE4rfkWQYIVK51MVrQ+3x+H
-         bhgte2K28l5KZh+1MysFxqWUHpGALlP7w8m8603tRebd/IbKls2bu+S7NVL3Kkkv0QW3
-         g4Ug==
+        d=gmail.com; s=20230601; t=1755843150; x=1756447950; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LhSLL9e6B9AAwZvmGOujsflvopTdIP4LayPRhrm+i3g=;
+        b=eFNfNOPfGTlSFricJZt000adwYUWI5DAKpgaVMTAL5RR7gfMnUJSvY6tsa0ngyH0E+
+         /WAwWDHeU2XAh6FnPJfZi1E0lIx0zfgnRHGYQDdbOOraXht1lbJOljD514GpA8t7/4W1
+         hJn8XUCXHyYeI6SGAOWZ9zgy7LbcNRPR79HPJx/NnmSvtVeDCac3bmUCQ2BGPFA9rTat
+         MiGOaHiRG0poi89JFvor1Yk/BnzHrMe2XrBs45M4ocJuWAZxC7Cb2Y4flEsUFrCb+Y4g
+         BNlHqb2MDpAHte1YjCo/e3+VReouJuHSQ8wr2d6w8DKTWBeDGUljdjv8kZCPm5Qijt1i
+         l2mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755841177; x=1756445977;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cktSZhhDXy0hCif2W3DZbZQLN29cfh8CxR1aWKR6R68=;
-        b=cKF301h0AYgB0ROcxLc2shgl9c9wKJ+YrF2agsiipsVJy7eupN9NkPeQBRw7Nn6Z7y
-         Kf5FMdjapM54NEHtKLztEfvlKHtoHEZnbNud32UA6SKh8V+tgrYkUw11HpZiKeoVwC4Q
-         bFu9B3Zm1MNFx6O54qclXU5aoKJC3xCAjm1cprArHcSqnCXs9D+9Mo0sv7+UaYn4GOPb
-         wShqRIesBw0u06crGGkWIRq9iqk1UEb3fS6BRHvcuc1F9fu2ZQ/1v22UkxK8jMSRVm+y
-         mRZsmxnkXs/zFy763TfkI+75Ms1frDNq/BwQyC6qWEh6flg7fxTj80E8RQv4DRSrK/Gg
-         TT4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUdDBsCYP92d1Z9VqyJKBJttIrekOVsP2dii5z5xiBApn7c031wSixQQDIZBBiZIagDh3AjwBMk6MID@vger.kernel.org, AJvYcCVQptUJGtNhf4oZiu4sQj0EZ94f23tqqMvCJFMAmSfpa0VhFs3ul4P4jT9+PfanNjm9OdcRntKvTuQu@vger.kernel.org, AJvYcCXECMAWSgjhg+iFY3+lk23sufxWSX2CPiLfjdgz7+tAsi5KtzklRyJzyf8WYmY2ePEbk0RGSihJLhuF923c@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNG7lanzLjHyh1VqT6Sk086QWKNxXXiiUgh/e1EQRa7e7zsRyF
-	//kBzqUsDPj9sPZvytIU0SnzTO12/eaK83AyUHmLrPq0brRoa3zIo9Bx
-X-Gm-Gg: ASbGncvu4Jc7fAiKIGVd/H8zs1VZCv6Aqf1Frf/0+IlaNBZMImBDzuac7vzgMw2d+Gj
-	d9Or8w84TO97TQxI1SyceYVhIRWJFyBVqaDtSCX1QR9hZQFmBvcUYCpxIzQx/sPKJBpU2S18ZCo
-	is6X7EHzT8G1IqwtAj7kfwi5zt5qI1Cv4cfGaHRJ5EX9I5Oujk7zF6Q++1kO2xwcE9D/g305Yvl
-	mKXtZyfGeL3Bqo5ShAt51VdRDvx4QeD2EB8sIUvnBIL38Qtfxqm/9RGuRCHUa+hnod5PM89P1Ad
-	T78svP6vVdyhRzXxI7dFjPIe17Fr0FQmEHJkOXgqx250sbg7mtWJjO9v6IjRE0dANpdcgZswGbD
-	fDlR7Isrpe0RmuNXsN0WkWZX5YVjiS4WFBlvn6pD1uFR7SQxu5aVK/zHIGXOYGRXMR1fge1djvO
-	+TbNY=
-X-Google-Smtp-Source: AGHT+IFdQlgDjn1LUPHReBm14miSwkL8ekDjE0cyhua5Y4fRBWhxH4K9ZBeoTPcaldW02MqLA7962w==
-X-Received: by 2002:a05:6512:260f:b0:55c:d5f8:7866 with SMTP id 2adb3069b0e04-55f0d3e3306mr539973e87.57.1755841176778;
-        Thu, 21 Aug 2025 22:39:36 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55cef47387esm3297633e87.164.2025.08.21.22.39.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Aug 2025 22:39:36 -0700 (PDT)
-Message-ID: <4d4120fa-3a20-4cc4-a078-ee94e03229f9@gmail.com>
-Date: Fri, 22 Aug 2025 08:39:35 +0300
+        d=1e100.net; s=20230601; t=1755843150; x=1756447950;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LhSLL9e6B9AAwZvmGOujsflvopTdIP4LayPRhrm+i3g=;
+        b=PBr6Xyc/0yGX9ZBjrRvkMSkfXlUlhfMJnpP6snV5wjtjGa0ZE7nCf/CLjucWoZFelX
+         D1LECFBdSBUQEU4OnqIV7s6zPXKAliq6KU9Br/nCE7S34KVkOsks02xOHiSYz/angynJ
+         3veu2aV9YSKjyxiGhDzKu3f8ipkA2G8J1prFETfYKmD1wWC8FcTrfjsWEAOhYDlPTKJy
+         03lFowbpaGwwJnW+mPUMityIadmExgXPSWH4xTxo43Dct4WkvCAVL0koy8qDhhcwM27f
+         sq18k6pb+Nx19ysb46qiGB8BGWbsfV/cdP9nu1JAdioFQ7gqc99+D11xlB7zokh3t+DX
+         AbSA==
+X-Forwarded-Encrypted: i=1; AJvYcCUEx/ipWefmWcG4b1ILYl0EnEZERZyq90tYYfyH8/S1Hy2ro3Xe4P/DF1mtZPKj//MaG0XVF/0LcUtC@vger.kernel.org, AJvYcCVBZWAXKQkzJAZSnVihTguasBN3+FiJnEH8t6UjGPUTuCX9/Ifbo/jgRZFh5vRS76a5vHKlqMZ7/b2AjfOi@vger.kernel.org, AJvYcCXbq8VYYKrXEBimk4+DxPyQqcLgm7Psz06647WB9b7KsTa8qZwM6RWhD/aPY7Nj6MhRixxTZHU5zoUs@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx744jxQZWSTDP6U9gZQ4xCgytmtlelL4dkh/EL2ijayO/WIBoD
+	BtXhftFH6au4GdUNtvLPSL9MeawakwlxBMp91nVzgyFhA8nSd4ukfeN2OPqFrq5Ug/4q5yNwDm9
+	cn/oatkwjCj7eAE82I1GlAmJozESex5mDPZ8PLF0=
+X-Gm-Gg: ASbGncvfxVrvcYrnoSqkRKHN6uwkttMBxlAqHQdyS4yj0YDSmdAwQ4h5ABledehz0b7
+	q9Uz3No6d9Zy5LwKV2k7oGvjaC3WhohVFXyPziYogzSuxnX+3wHWbuzyQmkGflDkEkpmYX6AcUQ
+	TrjKMCRSK0eJEU+U2s8RN00FhDUnquFnBwCGGH+buyB/8u8DCyLrSojElgFTs/D6ueI8HCi23cu
+	/yPLso=
+X-Google-Smtp-Source: AGHT+IHhYMuJFyaWh7s3kCivnxAbgWFVJsFET1lvGj1oS6aO8CW5sWhRa/8NlKjsTAxe7mAAoWCmJ/1pE8MO9LMieVI=
+X-Received: by 2002:a17:907:a089:b0:af9:5b51:2e6d with SMTP id
+ a640c23a62f3a-afe28c96336mr191277666b.0.1755843149602; Thu, 21 Aug 2025
+ 23:12:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/3] iio: light: add support for veml6046x00 RGBIR
- color sensor
-To: Andreas Klinger <ak@it-klinger.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, lars@metafoo.de, javier.carrasco.cruz@gmail.com,
- arthur.becker@sentec.com, perdaniel.olsson@axis.com,
- mgonellabolduc@dimonoff.com, muditsharma.info@gmail.com, clamor95@gmail.com,
- emil.gedenryd@axis.com, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250715085810.7679-1-ak@it-klinger.de>
- <20250715085810.7679-3-ak@it-klinger.de>
- <aHdWAUMMH43tIqV4@smile.fi.intel.com> <aIMy_BHJYNA20k-x@mail.your-server.de>
- <aKbqLpJMCxJd3QXW@smile.fi.intel.com> <aKdrO7DE8ky2DBu2@mail.your-server.de>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <aKdrO7DE8ky2DBu2@mail.your-server.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250814-tlv493d-sensor-v6_16-rc5-v4-0-81b82805aae0@gmail.com>
+ <20250814-tlv493d-sensor-v6_16-rc5-v4-1-81b82805aae0@gmail.com>
+ <aKXW5pGiN18DyIZ7@smile.fi.intel.com> <aKaMPMnGRyvKqTny@dixit>
+ <CAHp75Vdw5X1Y057fpGjdvVGwKq0x0UBdm8py+m+55RbzXi1PJw@mail.gmail.com> <aKfYlP-yWdQi34db@dixit>
+In-Reply-To: <aKfYlP-yWdQi34db@dixit>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 22 Aug 2025 09:11:53 +0300
+X-Gm-Features: Ac12FXxcbGBvQWNbfM4ap7xlZtMvAEEgt4gYfh6-pLar28-Ixfel30OkWz8zK8s
+Message-ID: <CAHp75VfDR0UsjSufDQmO5+nx5jqoPL+qHgGRVMdH4Tp0+3wsoA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] iio: magnetometer: add support for Infineon
+ TLV493D 3D Magentic sensor
+To: Dixit Parmar <dixitparmar19@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 21/08/2025 21:53, Andreas Klinger wrote:
-> Hi Andy,
-> 
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> schrieb am Do, 21. Aug 12:43:
->>>>> +	part_id = le16_to_cpu(reg);
->>>>> +	if (part_id != 0x0001)
->>>>> +		dev_info(dev, "Unknown ID %#04x\n", part_id);
->>>>
->>>> For 0 it will print 0 and not 0x0000. Is it okay?
->>>
->>> I just tried and it prints 0x00 if the part_id is 0.
->>
->> This is interesting... So it's not 0, nor 0x0000?
-> 
-> No. It prints 0x00 on my BeagleBoneBlack with kernel 6.16.0-rc5.
+On Fri, Aug 22, 2025 at 5:40=E2=80=AFAM Dixit Parmar <dixitparmar19@gmail.c=
+om> wrote:
+> On Thu, Aug 21, 2025 at 10:41:03AM +0300, Andy Shevchenko wrote:
+> > On Thu, Aug 21, 2025 at 6:02=E2=80=AFAM Dixit Parmar <dixitparmar19@gma=
+il.com> wrote:
+> > > On Wed, Aug 20, 2025 at 05:08:38PM +0300, Andy Shevchenko wrote:
 
-I think this makes sense because of the '#' -flag. The "0x" is appended 
-because of it, and this consumes 2 characters from the 4 character 
-field, leaving only 2 chars left for the value.
+...
 
-What I find interesting is that gcc on my PC does:
+> > > > Interestingly that you have used 100 limit and suddenly don't do it=
+ here
+> > > > and maybe elsewhere. Why inconsistent style? Please, go through the=
+ whole
+> > > > file and make sure the style is consistent in all of the aspects:
+> > > > - C style used
+> > > > - comments style (one-line and multi-line)
+> > > > - indentation
+> > > > - etc.
+> > > I tried to follow 80 limit(except few places where it was just on bor=
+der or not
+> > > clear to read). I belive the standard is to use 80 limit(correct me i=
+f I referred
+> > > wrong place) and I will recheck to meet that.
+> >
+> > There are two standards, the old and strict one -- 80 characters, and
+> > this subsystem _tries_ to follow it and relaxed with 100 limit.
+> > The exceptions are possible when it affects readability.
+> Understood, I will go with 100 limit and make sure everything is well wit=
+hin it.
 
-         printf("%#04x\n", 0);
-         printf("%#04x\n", 1);
-         printf("%#04x\n", 10);
-         printf("%#04x\n", 17);
+It seems I was not clear enough. The IIO hardly tries to use the 80
+limit, so don't go for 100 until it's agreed upon with the
+maintainers.
 
-0000
-0x01
-0x0a
-0x11
-
-gcc version 15.2.1 20250808 (Red Hat 15.2.1-1) (GCC)
-
-It'd be nice to learn why the zero is treated differently? Andy, did you 
-have some insight as you asked this?
-
-Yours,
-	-- Matti
+--=20
+With Best Regards,
+Andy Shevchenko
 

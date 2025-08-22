@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-23123-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23124-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3373EB30CF5
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 05:51:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0241B30CF8
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 05:51:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 347DC1CE45CB
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 03:51:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0F1D1CE493B
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 03:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBF02253FD;
-	Fri, 22 Aug 2025 03:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118E926D4CE;
+	Fri, 22 Aug 2025 03:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MlAG2IiH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iQ+ZaWlN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABB11FECBA;
-	Fri, 22 Aug 2025 03:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABDD1A01BF;
+	Fri, 22 Aug 2025 03:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755834671; cv=none; b=kpkMZ4umNh62vtiVa5yqFqM5976RXFrd0BQoREyMRdE6l2Y/CG3xqie5VepJEfu3mxmmkio1GzBoivhdUZf2B65acTy9TGYDI3/QVDB63EorwuNoV2SzXQcQSbUcNBW2GU0iuoSufWo0lXxsw+jRohE26RXU1582pQ4vPa5dUw4=
+	t=1755834683; cv=none; b=N4mb/zTv/6QDRNaw8CdhRgX/Vgm5LchG4+GnbLrhXxxSnTd1ySOBzJlTfMYnhdj8X/BIOLrJ95i21jVWQJUNLOKKdBekFYbN7iKt3l4NjwMDBdHVHMzcg7BVy0LQVaVB3RwCI/bZYx5+yV98msmQqlFaWC0DH2QrnL9qtGsBgRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755834671; c=relaxed/simple;
-	bh=c8hX9rvl6rr2dhjjNLkJgB0+zkmehac1mQEbRhCM7pU=;
+	s=arc-20240116; t=1755834683; c=relaxed/simple;
+	bh=pH5Ai2hUrCDisN8BOZgbmkwzCO0ZlcGH3OL3twprr98=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ofx+4s5lsh1Eo9rhm1BPjjOZXz/FPv4CZL0PD8G3gw78JKoIkqFQB0kNuU2nGsLNa7CAuXpngx6oQCSu1kBLta14lWBAGT4H81qJ7GSVQVt9pyEXv+PZ2WMOTziRv5ErsjhMTmMPUFQNZZMSPa9dsmhkJQRdFpBhU2y5cjiJjbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MlAG2IiH; arc=none smtp.client-ip=209.85.216.54
+	 In-Reply-To:To:Cc; b=a2HVFdXRi/LinVIWee5tsW2T0iO46tEyIoW1XO6WtCytgeTBrhbj6TQ8N3YQ8doRnQ7PbwjC7C9xV3vQ2S6jeu0pWm1Yc4S8CmKPA1l5z6lAXkooD1UWMNWlT6Y+UQf+Lqt+fkhzQy0b34lV1UdJE6xuyQvt4NwlfgsFvNlNDJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iQ+ZaWlN; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-323266b2368so1126124a91.0;
-        Thu, 21 Aug 2025 20:51:09 -0700 (PDT)
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32326e09f58so1939966a91.2;
+        Thu, 21 Aug 2025 20:51:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755834669; x=1756439469; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755834680; x=1756439480; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hqrtxAz9cctGN9u8jlxCJdnxps3sEfbBI35+GThZJ5o=;
-        b=MlAG2IiHPD8MSj+Lwl1GbSb0A5tiVmJjF/HBAZDO0WL34+XmRQL8AE8FhBTd8m/iRR
-         DLrz8kJyMsRMvFF/bSsqTNMqHlLA2K9l4cQJYcbEyH+2x8wgeZ0ZAVf+OSVX8xAFwlYf
-         AIRZBf1vpeNo391DOy3eueN73flv/XBul+hmY8otPCjWUQUNJVjndnZuuOZnfxo5+UXo
-         gtaAI7TK+fKzhTLg10k1QhngRiv5LSo0wNB3sVHxDYw7BNtMWt4o110RHEQ0YEYU0gU5
-         Am6VVhVCSLit2WF9f2CCZgBEn27C8YbrqfBsTXx1zKDb4QqCZIbwIRtXUNncN87RlAp8
-         xzXQ==
+        bh=np6SZ5B7upvOBORmSoVmVjKcF6KBdFBAeJOHZZ+4P0U=;
+        b=iQ+ZaWlNwZGlZZjr+GQ+sYPi1eeE4ypGJk3XNqj/1lBEbIVuX2V1GDHreuRQ0yslqt
+         SLji+M4IvPwbBDtfvPYJRRcgK3nzJnjPICt9z01ZnlZdksoKX4EYe+WOpm9gYCvJ1ORK
+         BnjrUSY6B6rLOp1PeEWRReS4GZcPjKUsUMlDLsSyLhnfFGuRVs5wYpxr9ICMI1IWY29E
+         6snLhCsS8aQhFXBaHdRLlkQJ/K57kxlCjJrKp2txHR8vEpszxx2wnJhyX7kcJwoMSnmY
+         ABLZN4j/vJ2ebUW52nyGc3BkjuvkXMMrzBpqJPjqzpokhJk4y7tI5SZ2hJapmSyB1W8j
+         2A1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755834669; x=1756439469;
+        d=1e100.net; s=20230601; t=1755834680; x=1756439480;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hqrtxAz9cctGN9u8jlxCJdnxps3sEfbBI35+GThZJ5o=;
-        b=Q78PuAFxTJZo0o5DQE23XB2SGZ0Qdmt2qmsy4/6EJEdu/zWfhPFmUrnNMoqeP32CYh
-         1CCCBQ2ArJHy8CtFI6xqjHFn7nfz7C7SBd0rtW8k/MTnNLSyK9a0aqzB4ih9cPD6svNK
-         Pu2MMwQ8hVBAWOBqM0Zsmt5rLp7Akxe09j3nlv5P0/aMh4VoOsH4SoleErWKQr6mQLxg
-         2PsI24WfJ3O5JnineIiuQSGpZaklAqXhEM1TACueJCjbO87WTHlk+RN2MKYHLyjzfdp5
-         B8C/ot40Gt+0W+KFzlp4FAQh/n4g6z68Eh76lQdZ6vxOjgMvZwcrpMl78rmaq33gn1Oq
-         id7g==
-X-Forwarded-Encrypted: i=1; AJvYcCU/BUNNFYRYBACJpgeVxFy9ZEGVSthZIYlzdvTMDTL66TacCNhi2KnHDTS05yjTfrqPsz7Ua7MuI/ikxZH8XLxzCf4=@vger.kernel.org, AJvYcCV5fU80g12vnHXHKgIozAEdAn3ZnIhkkMYSJL+PkLSZHR7MdSfddgGduUtxX9O5EBQIHM2+KrxjYdCHtu8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9qtaO5dibllfJ+lziV6+ueyLf1TraYSrgU/4Nfa5LTtOdorbJ
-	zEwelPBYSHBoTLruW2+ql5C1cIJ4KA+nuf17OMVmcVi56QfFpOyyDOAA
-X-Gm-Gg: ASbGnctE/RMjrBOU1ChoafqZjB8de1dRtJphAlTP1nwFEgRZwxqPefducuSthBLoQhb
-	2PnQyFs+nvmqDiADP+H8ErlNpfvhxF0937q5jSFFhKwwyx/7WnEtZYI5X4A06nyQ8eXFkMfVIsr
-	yogVP4BCeWtZJ0mUvBpHZxg4Oq+rJLQ6z7hAjCteLNDpuxylA7JJT9Yb+UYeg4H9ysYOdha8nAG
-	rgk8mdHUg7jUVDm+1lc819EXCkM0Sw6g4Y6P6OO1023Q6Nq3X26KVericyn24QmQUlZwWEs7P5s
-	dfhjwrvsyNz+1CDbFZROhVNcZeauJ6CZrK4ubmVs98kEEOoqaWE0TtysXwJE8aXiTwyvttvRRmp
-	NT00BT8bZ2DWHNuyJ5i7CO1cGWOGC
-X-Google-Smtp-Source: AGHT+IFlyHvge1r2eEDywa691vO3EH8Zw57rYlejYo//N9dseDi4JFrUwk2dU+AEjPu1HGJfNaSDAg==
-X-Received: by 2002:a17:90b:278b:b0:323:7e7f:b8f4 with SMTP id 98e67ed59e1d1-32518b80cfamr2288523a91.37.1755834669027;
-        Thu, 21 Aug 2025 20:51:09 -0700 (PDT)
+        bh=np6SZ5B7upvOBORmSoVmVjKcF6KBdFBAeJOHZZ+4P0U=;
+        b=YtrRis7lyvnnpeeVhBv2DYUDnyxyAxvzb/UnIbXvJ645yVG/i8MLDdT9kDDgYlQA9S
+         zxaW4wVLx1QIMLCqV2xLVaa9mBuN41hUstxFc4eLwu1Q2BLFX8j1brjn2hmWkkVDqxmP
+         ZjOE9W3rIrUPQY2Uqt7zTW9z+kX30AmLTiMFdHpVT6HA8bKuTzeAK/R6agn65FnsWhb1
+         RmL2HxJ4yH+tfA/YBtWo9Dch0/v9PLbwINr9irCwzt8C0UKDG4MyyzuzWu1VSmj5RVUy
+         e/0tfX/+g6OU1lmy+548HH+RLRpmcUHjGk/8ncY3chPgKQf/zsSIxZQN0DQ02ZqW3nJu
+         MBSg==
+X-Forwarded-Encrypted: i=1; AJvYcCVVZr8KLqiLXWyTY4PPkMNa79heAarpCCzi3zdY157TFDMx1xlqk7nfIq6Qb+OvJSaUvIPjkyEeFQVYVG3W8pEdIEw=@vger.kernel.org, AJvYcCWRPtFWu4MgdNLPtk9WGoW+/FzRaNra56S1zjD5sZ4mvve+BWru70LfUeJxrIqWBkl0rKWGwmjwqvLEwr4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyL/sYNQMqdzfDe4A8f1XZLzkqjbswghAUM8VObhvMSvdFVLbNM
+	5NDi1ocxNJsx3kuOg2Zbbhq4hD0WMuZ5dOBLW5ybQ+6BViFLqCi/u0Xm
+X-Gm-Gg: ASbGncv71977fn9oDqhsdfPhkBxKJnOBySOlB/b/RSS6XVzcX/3qxbKVpDyIwwkiltq
+	jqkDP6miUCEVRdzT9ivKqUi+5yFiXfggTAtFJdvF+7NEUg5QQoYAL8tN8M/YUprwUspQdDgQnox
+	yDEwS5uol49EYx2nJwZA7Gsml5qGEurm99dMCKpJF+PkKa64a22Yervo/a80rv0aeonDFqwwAvs
+	EZuFx74oKpviVbD3I9g4kJU5AEkiMtmQFYSLGakJp6FUfQdXBkTH96+f+S/k35QizE+1BJ4wNMf
+	eWq3jJNm6bCCOVY22FQxag9rCgx7shiPRmNJjyOanDQTglwqdykTQfj3r3iEaLHry6Y16WxI8JX
+	rhyHLH3pzxOnd6b16U2unoFNd7HL1
+X-Google-Smtp-Source: AGHT+IF0W1wMk0TjpqOG5yWpDYSHE+kGycH9vB3pAPEZix8kJbdhTkbj67P4mBR5VUeKZQKxuFXy/Q==
+X-Received: by 2002:a17:90b:2f47:b0:31e:cc6b:320f with SMTP id 98e67ed59e1d1-32515ee3cf2mr2179359a91.5.1755834679733;
+        Thu, 21 Aug 2025 20:51:19 -0700 (PDT)
 Received: from [127.0.1.1] ([2401:4900:1c7e:807:34f9:502:b902:b409])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d10fdb1sm9449656b3a.27.2025.08.21.20.50.56
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e7d10fdb1sm9449656b3a.27.2025.08.21.20.51.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 20:51:08 -0700 (PDT)
+        Thu, 21 Aug 2025 20:51:19 -0700 (PDT)
 From: Dixit Parmar <dixitparmar19@gmail.com>
-Date: Fri, 22 Aug 2025 09:19:53 +0530
-Subject: [PATCH 05/10] iio: humidity: Drop unnecessary -ENOMEM messages
+Date: Fri, 22 Aug 2025 09:19:54 +0530
+Subject: [PATCH 06/10] iio: light: Drop unnecessary -ENOMEM messages
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,7 +84,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250822-enomam_logs-v1-5-db87f2974552@gmail.com>
+Message-Id: <20250822-enomam_logs-v1-6-db87f2974552@gmail.com>
 References: <20250822-enomam_logs-v1-0-db87f2974552@gmail.com>
 In-Reply-To: <20250822-enomam_logs-v1-0-db87f2974552@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -108,11 +108,11 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
  Dixit Parmar <dixitparmar19@gmail.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755834598; l=1404;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755834598; l=855;
  i=dixitparmar19@gmail.com; s=20250726; h=from:subject:message-id;
- bh=c8hX9rvl6rr2dhjjNLkJgB0+zkmehac1mQEbRhCM7pU=;
- b=ZgaeM24zC7IN3+he8TY2T9s8YSEkwL7SoNKuSaTSjAtLL/67LBM7qENhJcDRsU+1mIQixXTl8
- Ul2eMZUGNU4CG0gfDDCnLldXt5ixt1iTh4jFKaiKgitF507++7QKEdv
+ bh=pH5Ai2hUrCDisN8BOZgbmkwzCO0ZlcGH3OL3twprr98=;
+ b=Y4ggOYOq64L6yz5Aop13NAzu+enc9eQG0wtQN7sAaQGY/CtYvE7KKRmnVjQ/LyhlGnFPJNk+s
+ 4PGO2+PkJQrCiL+ev9sp3RlbFbdj4x77C3RhVe0TX59MpA67qjAQTzb
 X-Developer-Key: i=dixitparmar19@gmail.com; a=ed25519;
  pk=TI6k8pjTuLFcYiHazsate3W8rZGU2lbOrSJ4IWNoQhI=
 
@@ -122,16 +122,15 @@ messages from the probe().
 
 Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
 ---
- drivers/iio/humidity/am2315.c | 4 +---
- drivers/iio/humidity/dht11.c  | 4 +---
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ drivers/iio/light/stk3310.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/iio/humidity/am2315.c b/drivers/iio/humidity/am2315.c
-index f021c3e6d886..02ca23eb8991 100644
---- a/drivers/iio/humidity/am2315.c
-+++ b/drivers/iio/humidity/am2315.c
-@@ -224,10 +224,8 @@ static int am2315_probe(struct i2c_client *client)
- 	struct am2315_data *data;
+diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+index deada9ba4748..c7ccf58e52d7 100644
+--- a/drivers/iio/light/stk3310.c
++++ b/drivers/iio/light/stk3310.c
+@@ -609,10 +609,8 @@ static int stk3310_probe(struct i2c_client *client)
+ 	struct stk3310_data *data;
  
  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
 -	if (!indio_dev) {
@@ -142,22 +141,6 @@ index f021c3e6d886..02ca23eb8991 100644
  
  	data = iio_priv(indio_dev);
  	data->client = client;
-diff --git a/drivers/iio/humidity/dht11.c b/drivers/iio/humidity/dht11.c
-index 48c59d09eea7..cc8f02f3b763 100644
---- a/drivers/iio/humidity/dht11.c
-+++ b/drivers/iio/humidity/dht11.c
-@@ -296,10 +296,8 @@ static int dht11_probe(struct platform_device *pdev)
- 	struct iio_dev *iio;
- 
- 	iio = devm_iio_device_alloc(dev, sizeof(*dht11));
--	if (!iio) {
--		dev_err(dev, "Failed to allocate IIO device\n");
-+	if (!iio)
- 		return -ENOMEM;
--	}
- 
- 	dht11 = iio_priv(iio);
- 	dht11->dev = dev;
 
 -- 
 2.43.0

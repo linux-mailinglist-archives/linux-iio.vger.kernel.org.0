@@ -1,90 +1,60 @@
-Return-Path: <linux-iio+bounces-23132-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23133-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9247BB30F9E
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 08:54:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B190DB31046
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 09:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E46631787E1
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 06:53:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EE151CE3AC7
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 07:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E382E5B12;
-	Fri, 22 Aug 2025 06:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PJrfF+3Q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055BB2E7BCD;
+	Fri, 22 Aug 2025 07:25:17 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1382E22AE;
-	Fri, 22 Aug 2025 06:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE6B2E6114
+	for <linux-iio@vger.kernel.org>; Fri, 22 Aug 2025 07:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755845614; cv=none; b=bGCyjqEYnMBFyXHPUHN4MqE64LhcoVjO/+7DqbO2/afQWCjIPu2+tEdg42rwZZCRR0l7qKeiavDVgPW4ek79Fd6N6+oJkBseFIRSfauj1iEKog0JanjW1X/QCPXZhT4TNMNbb94RML+OrS6tDR5kPHXsi2oKB1DgKzjv6nm2RxM=
+	t=1755847516; cv=none; b=Dir+itnprE3h3Bt/H6TJGHt4Ix6yM/6Jn16WBGSlSrnjt7WcWpK5qj7u69T7X87udZBzOri5ootcEfBYGO8DoKz6zXaCua2WgYqEAywjcqArlj79BDELJkLxekBdoRaA6i01uiMr8+PfHmqL4AJ76mf2onIeEDWjuM4VNXAuBQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755845614; c=relaxed/simple;
-	bh=9wRvB665rcxu8fe1PXnuVkbMQ0wZR5mh+LTi0x0XhqE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JikeXitFyAeBiGv79bng246zl2fPN9RRn//YlQyZONFRy83sqPRmxAhOvmMDQrbSnIFst+NK2AM+CQe2uCpiPsLuI8VWo26ZXmVM981KiMxXdlybW+MGNTf8CDa8hqr2lkypaMP7xm5H0Aq8nbPds+xsZE5o4/lvGzHYo/0RHpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PJrfF+3Q; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755845613; x=1787381613;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9wRvB665rcxu8fe1PXnuVkbMQ0wZR5mh+LTi0x0XhqE=;
-  b=PJrfF+3QstoDlAtbXlZJWNTKjqqbwHl8UnYyTw7dn/64uFZA3tlZlFa7
-   kOqvmmjL7VrGa7nugOHZ0UPKXD0Pzt1MrAfhVehkTA5dR0iVf3Khl79yp
-   hnUZ6OQ9E+/GOTfUu/JVkBlL9/z515Wov4CyzU3rsvq3gMiJYvsqTIj/C
-   tHtbj8cybYhf59+alT0JAOXAK9B9zoqGrUgnrdj6TtJU6fYFhEsC7Ob8S
-   tZ3SeJfUDsWtKS7g6Qnqg2vdHswtYl+iQ2EOJxevqW30730JR0gMZA4YU
-   3ZmBpiwajQJikVWFdVb6wzYtlOdIrROwMwXqDyJI1mCHsDMLrQx5Lt5Al
-   g==;
-X-CSE-ConnectionGUID: 8h4QFdWqQ3OEHDaz8pFaZA==
-X-CSE-MsgGUID: /5W3JcALQE+1b3P1vkNzaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="60777425"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="60777425"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 23:53:32 -0700
-X-CSE-ConnectionGUID: G0lx52a5T56sJGD0DmjRDQ==
-X-CSE-MsgGUID: q6bYU03qRYWZlhUkuK6F1w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="168246511"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 21 Aug 2025 23:53:28 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1upLeP-000Kzf-0H;
-	Fri, 22 Aug 2025 06:53:25 +0000
-Date: Fri, 22 Aug 2025 14:52:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	Dragos Bogdan <dragos.bogdan@analog.com>
-Subject: Re: [PATCH v1 2/2] iio: adc: Add basic support for MAX14001
-Message-ID: <202508221427.TaHJJwvG-lkp@intel.com>
-References: <2919a00f86c1188b83446853bcb9740138d70f44.1755778212.git.marilene.agarcia@gmail.com>
+	s=arc-20240116; t=1755847516; c=relaxed/simple;
+	bh=52izTYgMEdjIP4k2Ao5qp2Debi3MKaEkalsTTFyU1Rc=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KYufkIpYfQcnPzj0EyMdKRR7Nxmqbb4tXhSbwlgYXyTCet6BMVA0Mk1HAQatTTfdrMDHeNu2nOfYoozDO6ouYCbsYZEy5agNGChs2aeoO8KD4o0xZRrcUBB4WA2epVEPoi9lhTK8ZX3wOxWrYvq3oTDKlWYpVR/tJQbVWcYJiDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-26-232.elisa-laajakaista.fi [88.113.26.232])
+	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+	id f70bf665-7f28-11f0-a198-005056bd6ce9;
+	Fri, 22 Aug 2025 10:23:57 +0300 (EEST)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 22 Aug 2025 10:23:56 +0300
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Andreas Klinger <ak@it-klinger.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, lars@metafoo.de,
+	javier.carrasco.cruz@gmail.com, arthur.becker@sentec.com,
+	perdaniel.olsson@axis.com, mgonellabolduc@dimonoff.com,
+	muditsharma.info@gmail.com, clamor95@gmail.com,
+	emil.gedenryd@axis.com, devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/3] iio: light: add support for veml6046x00 RGBIR
+ color sensor
+Message-ID: <aKgbDAk9G5Vbsxeq@pixelbook>
+References: <20250715085810.7679-1-ak@it-klinger.de>
+ <20250715085810.7679-3-ak@it-klinger.de>
+ <aHdWAUMMH43tIqV4@smile.fi.intel.com>
+ <aIMy_BHJYNA20k-x@mail.your-server.de>
+ <aKbqLpJMCxJd3QXW@smile.fi.intel.com>
+ <aKdrO7DE8ky2DBu2@mail.your-server.de>
+ <4d4120fa-3a20-4cc4-a078-ee94e03229f9@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -93,47 +63,63 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2919a00f86c1188b83446853bcb9740138d70f44.1755778212.git.marilene.agarcia@gmail.com>
+In-Reply-To: <4d4120fa-3a20-4cc4-a078-ee94e03229f9@gmail.com>
 
-Hi Marilene,
+Fri, Aug 22, 2025 at 08:39:35AM +0300, Matti Vaittinen kirjoitti:
+> On 21/08/2025 21:53, Andreas Klinger wrote:
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> schrieb am Do, 21. Aug 12:43:
+> > > > > > +	part_id = le16_to_cpu(reg);
+> > > > > > +	if (part_id != 0x0001)
+> > > > > > +		dev_info(dev, "Unknown ID %#04x\n", part_id);
+> > > > > 
+> > > > > For 0 it will print 0 and not 0x0000. Is it okay?
+> > > > 
+> > > > I just tried and it prints 0x00 if the part_id is 0.
+> > > 
+> > > This is interesting... So it's not 0, nor 0x0000?
+> > 
+> > No. It prints 0x00 on my BeagleBoneBlack with kernel 6.16.0-rc5.
+> 
+> I think this makes sense because of the '#' -flag. The "0x" is appended
+> because of it, and this consumes 2 characters from the 4 character field,
+> leaving only 2 chars left for the value.
+> 
+> What I find interesting is that gcc on my PC does:
+> 
+>         printf("%#04x\n", 0);
+>         printf("%#04x\n", 1);
+>         printf("%#04x\n", 10);
+>         printf("%#04x\n", 17);
+> 
+> 0000
+> 0x01
+> 0x0a
+> 0x11
+> 
+> gcc version 15.2.1 20250808 (Red Hat 15.2.1-1) (GCC)
+> 
+> It'd be nice to learn why the zero is treated differently? Andy, did you
+> have some insight as you asked this?
 
-kernel test robot noticed the following build errors:
+Nice, we have so many variants now on how to treat 0 with %#x cases...
+My understanding was that it should print plain 0 without even 0x prefix, but
+since we specify 04 it prints 4 of them, so this behaviour seems consistent to
+me, the 0x00 case seems buggy.
 
-[auto build test ERROR on 7c680c4dbbb5365ad78ce661886ce1668ff40f9c]
+Now to the standards...
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marilene-Andrade-Garcia/dt-bindings-iio-adc-Add-MAX14001/20250821-225647
-base:   7c680c4dbbb5365ad78ce661886ce1668ff40f9c
-patch link:    https://lore.kernel.org/r/2919a00f86c1188b83446853bcb9740138d70f44.1755778212.git.marilene.agarcia%40gmail.com
-patch subject: [PATCH v1 2/2] iio: adc: Add basic support for MAX14001
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20250822/202508221427.TaHJJwvG-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250822/202508221427.TaHJJwvG-lkp@intel.com/reproduce)
+https://pubs.opengroup.org/onlinepubs/9699919799/functions/fprintf.html
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508221427.TaHJJwvG-lkp@intel.com/
+Read this:
+"For x or X conversion specifiers, a **non-zero** result shall have 0x (or 0X) prefixed to it."
 
-All errors (new ones prefixed by >>):
+** -- is my marking to make a point.
 
->> drivers/iio/adc/max14001.c:10:10: fatal error: 'asm/unaligned.h' file not found
-      10 | #include <asm/unaligned.h>
-         |          ^~~~~~~~~~~~~~~~~
-   1 error generated.
-
-
-vim +10 drivers/iio/adc/max14001.c
-
-  > 10	#include <asm/unaligned.h>
-    11	#include <linux/bitfield.h>
-    12	#include <linux/bitrev.h>
-    13	#include <linux/module.h>
-    14	#include <linux/spi/spi.h>
-    15	#include <linux/iio/iio.h>
-    16	#include <linux/regulator/consumer.h>
-    17	
+So, 0x00 is a bug in Andreas case and has to be fixed somewhere.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With Best Regards,
+Andy Shevchenko
+
+
 

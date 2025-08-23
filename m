@@ -1,246 +1,195 @@
-Return-Path: <linux-iio+bounces-23162-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23163-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB0DB32368
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 22:12:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA00DB32648
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Aug 2025 03:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CA13685741
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Aug 2025 20:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B50A1B61F9F
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Aug 2025 01:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91BF2D660E;
-	Fri, 22 Aug 2025 20:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569871C84B2;
+	Sat, 23 Aug 2025 01:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WDVUNafm"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmcHuJ7s"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12EE296BC2;
-	Fri, 22 Aug 2025 20:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEDCAD4B
+	for <linux-iio@vger.kernel.org>; Sat, 23 Aug 2025 01:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755893520; cv=none; b=KiG/3547IcvSeUcNIv3dk+vKG9pXGztc1i0U9vge29Vk+npMYbdxXmQYs5Re94wSzsuLYIP/Ov/e43Dru4oDBFPu0J9YBtmjqlfTohm2Z0pQepgPd2Y/WoGR9YTbSoIcDKKULp3O4QJ5/+VGehAaPfXsGEJuPmlwgn7g1ShFdq4=
+	t=1755913795; cv=none; b=IQ0wycibJnNfqDaq7Sd9kKikFXmo21BpaDbIxrVC2bbviZcVu10KEVPicA6gn+9ZZRITI/wt8Yaic9qDDhQKz65pYc8UUKjNbAvxQSa5GgR5T+w1ZUSbd+jGbskDOZu5COeQvkuqX0BXTaaHFGYlwAFoLVTOR4/Ff0da2Xh8vNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755893520; c=relaxed/simple;
-	bh=Qc+tAas79SoueLGZxYqBMNxoUP0dz7M7A9BmuH2IGqc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OB0HLWjYABHnJv9Db8Y78DsuZzvFR1Pfj2m9qmBFs6uilaMKhdLimD8gtVHBWy92d25p3wUtFNLH/4OvuDaJkOm0ZrE9/fvMn6kgvbdEIM+noYlYy1PrTY6/fnPbVcxFthT4jSSwe57TmDTqyIO9CG7IRRkinSreXRLytQjXgtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WDVUNafm; arc=none smtp.client-ip=209.85.218.54
+	s=arc-20240116; t=1755913795; c=relaxed/simple;
+	bh=wYteqE0aKnD426DWmNaWKQfe9QGYxEItZXnrQs8i6jg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o2+CBKSo78pdtZY3XzItiYoQ/NTXNYEvZaAKdFeyeg+0u+j0Tnp0v9DhjD95QsognNf7eyXwjGHc5odBHXQndPCKe7kv05b6nhOJTlD4/YhOn5KIJklR2Hu9EEuvDW5ZGM6AyArywFEAdYWC0BpntA4tCbtLEVnz/PnRJwku9eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=fail (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmcHuJ7s reason="signature verification failed"; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-afcb7347e09so413454566b.0;
-        Fri, 22 Aug 2025 13:11:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755893517; x=1756498317; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4A1Ql4lSxr5sI97S3+o3OJuBZrWXIlFBUEQUap99xyg=;
-        b=WDVUNafmOHTNx9eMfCHB9SGoSj1P4OTdSrTE6q3npaCf3esuxh6xOan6iG7j8BBz5D
-         FrsZwRkAAU91NrQy53854JN7+WOxOCkijK97sQ2PzkuVxuInPvwAr6eCBBSzD3Kt7r1G
-         IbFzcwl5CO8jU8/NLN5FtLnz9FaJ3DTt3KjD4k7Yl28ULrxQVSbVzhYuknx8lnTF4atg
-         Eqmh3GxNBfmdK9K11VC8AXpToLTNrpNiWo23L/yjJD1IZnoCNkq/35bdARxQo2azuvQL
-         RjyWN1ZrM9Klhc2KO82lVbAGzRaeLi5drGeN81qswtsZI0RBrofdf8C+JfqIrD+PKIBh
-         menw==
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-244582738b5so23179705ad.3
+        for <linux-iio@vger.kernel.org>; Fri, 22 Aug 2025 18:49:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755893517; x=1756498317;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4A1Ql4lSxr5sI97S3+o3OJuBZrWXIlFBUEQUap99xyg=;
-        b=G9AvguYa71G2RKJUQAbKyz8Sdgq3g30660rLEo1BQKh1Rqil7Fvuona1Ika6F9HMEb
-         swoDUdxyWiFoErPW2HwQy+L6zS0Vj3cTaOumA47Jmf5BCbMcA8uV5k9cbqGEixz0H/Mh
-         tfMeU/wP/w25e3M9yXrNtMinEFMG0KklO0YyPkjOGASjS8zUBAIvVow37JGauETlKQDt
-         /1gvGONWfPV163HLvtx4ii/L83/xiD1SBIGCm/zcCyZ0oiE83iqeDPhkPQXGsmDLJWe6
-         97t4OraMePOrh2FzTucoBMPcTqLxzYD9eDhLSTbZF2XtV1pdEpHDU1kOSfz8jTUnXBlG
-         QxXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUlqKuJSkBQE3aBliodBJMCOG53wkUyqz9RUpW1I0eKdfOp4lvh1ToI46XaU2kcNWQ7MuwwB4bGOS+CNNW8@vger.kernel.org, AJvYcCVguX9cEkxUsDAyGrokC1rrEsbSLhGT+esRAW2ijHpUaLvSdbRvP89yZ8sQ1JnylBqZLDRenMK5OJc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxe3E3cli2eJ8pi7vOf90gftCtRI0ck7WDs86zyqa+PUunB3XjG
-	o6SeMaK8AGPOEoECXpgsZLF6pftnS+AuRd808zRYH6rbRX8iTOSDZTStbXl77zXxtuQ2QoyQmwQ
-	/8SaQ8sZzIAWc8hLPYH9ubs2+Kzg9wpg=
-X-Gm-Gg: ASbGnctT8YqObxJS7/9OYsJnTMuidDdJDhrBxk5xCdiYLnWNBETR4Z09o93kA3QXYi8
-	i0tl+gJjfMpo8coMwySsrosAvNM+5iwLpBeBJzLVQJ3JqB6tSyUtpXgCK7eNm2Ojr3dYEDYWIx+
-	JK+xUbJERi41aC6ZwW78I1SZ5sIrEfokDm12n0oe061TS1xeWPaQawljqdOJfFccMYvJ2BCMCBy
-	rvtsP0=
-X-Google-Smtp-Source: AGHT+IHn4GOiuwGaU6VFDIZs961JwxHdDxXoF3cqv0zx77t33hP5YIEeDsdS5T62+lZsEVADGUhPBA0EQmaSJmo6/R0=
-X-Received: by 2002:a17:907:ea0:b0:afd:fed4:9bec with SMTP id
- a640c23a62f3a-afe29548e90mr398121066b.31.1755893516882; Fri, 22 Aug 2025
- 13:11:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755913793; x=1756518593;
+        h=list-id:precedence:dkim-signature:in-reply-to
+         :content-transfer-encoding:content-disposition:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ipPc4V15HDdiIPDzQvJpe9DKR7y7xzPkKym2S+s13kw=;
+        b=gDYqpdlUx2lD6GlL2kG0oPvaDUzeOovo5y718u+ADfPQBxzokwMWse+/7CCpBdzOVk
+         6d+VCHse0adWueplwD9bmaYZ5u5pOn3ihjDs5VxL4kk2v/Yb4Bi67LMbXNNcjbu2bFXc
+         tUuScH9SkbghUQw2z8psYbJpSC4tF4qx0iPurPiImgss57ew2zrhNqU6g5UOGiU+Wk4S
+         g2UKFSRt6K41OM44k5Atj4wYAK6Y5qJ8n8TIdS/Q8gqLNmDoFPR9geTbOVGON1CJKX12
+         gBTb6geUAWNZwzC2D85atOptTMMViLW9hGrZEm61HpoitHhWnhy0nOQaBvsmoQxNF/7P
+         KM7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXn7jhLW6N9uElDOehQ+2eu0riBgiwTR0HVpSuXUpwZmWhjN55DWNcUewk4AGj4fmu9VS6i+0iqOj0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYuhHdFAwee7r1Q4R0z9z6vlkEYixI87fxXLXM3/J9n7qys6Io
+	0jGf8R591fM33tyLukHo+y+bgJUtq6T3WJDnbgsm6IifsgZD3dMXvDjOSQpqmUNX
+X-Gm-Gg: ASbGncsvx4MvKxyVMZW134NTh9L3xQcCb9o6cuzeYg+5blyjyYHeE4BfUeiENAeDz5M
+	qm6W9A/KLv56eO1wFhoe6MkdbrxeKqBFwV9QJpQ84rfmxhbrGTES/y3UR1ZygnXCtM6K5b7jZ1V
+	CL+fMSB6U4e7sjHNQIaphEIWGsfZKIxFyazs75nXGWMV2sayQohbRL3Hn0VlSBCWmZMsvsffeX8
+	lH7hsgkL5blV/UjTLujNEw9m9AY2aBq4ceeXZEuMBP/GAote6GHSdrlUQex0WAbXF/Q1WCGUfJt
+	yyHbdgc/Y9K+GtKNoHF7xtNx8oOT08oDXXs1CSQE3y2RG5/f5G8TEbxVzGVfxzp/1wiPXHTeLaQ
+	pUZb6XkSRvv75Dfn+xxdBKrzWKR3iYA==
+X-Google-Smtp-Source: AGHT+IFIrj4d9QviDIppwbw9T9KU4pJkGlbXnigVQZMc+JA4IhVp12lKiEt46pmG8jyd9ZgMxDREqQ==
+X-Received: by 2002:a17:903:3850:b0:234:a734:4ab1 with SMTP id d9443c01a7336-2462edecb80mr62579895ad.3.1755913792569;
+        Fri, 22 Aug 2025 18:49:52 -0700 (PDT)
+Received: from localhost ([2804:30c:1f77:e900:8ef5:b053:b8a:9345])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7703ffebd33sm1129655b3a.29.2025.08.22.18.49.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Aug 2025 18:49:51 -0700 (PDT)
+Date: Fri, 22 Aug 2025 22:50:12 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: "Paller, Kim Seer" <KimSeer.Paller@analog.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	"Hennerich, Michael" <Michael.Hennerich@analog.com>,
+	linux-iio <linux-iio@vger.kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, marilene.agarcia@gmail.com,
+	marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v9 2/2] iio: adc: max14001: New driver
+Message-ID: <20230720192428.2faaaf68@jic23-huawei>
+References: <20230710042723.46084-1-kimseer.paller@analog.com>
+ <20230710042723.46084-2-kimseer.paller@analog.com>
+ <CAHp75Vd386P9xM_+wLahp6B_XwYVq1AZxaFQeWvZ2pnk-tFGHA@mail.gmail.com>
+ <11c30a02df784ca78be271fdf9190dad@analog.com>
+ <CAHp75VegvKFUXoJoJnuXstJa_L66M2Ah9yf1aEQ8-ET1QczDtQ@mail.gmail.com>
+ <fe0cd5348f864a6392a7e0e5ca93bec5@analog.com>
+ <CAHp75VcpguSN9DkuCtpaB+_=sY7+Ot1MGPWToe-2pYjFXC9=4Q@mail.gmail.com>
+ <20230716144223.0d9260d3@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250822180335.362979-1-akshayaj.lkd@gmail.com>
-In-Reply-To: <20250822180335.362979-1-akshayaj.lkd@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 22 Aug 2025 23:11:20 +0300
-X-Gm-Features: Ac12FXxqaQRGd6tU76w-OOR4W7PTDWpiileG2wHNSCaUs6qC23trjcC1zzJpbqs
-Message-ID: <CAHp75Veqf6tKiFh=dNkgNkc2qE17VM7u-Yt8CZaXOsnEFUwd_w@mail.gmail.com>
-Subject: Re: [PATCH] iio: light: ltr390: Add runtime PM support
-To: Akshay Jindal <akshayaj.lkd@gmail.com>
-Cc: anshulusr@gmail.com, jic23@kernel.org, dlechner@baylibre.com, 
-	nuno.sa@analog.com, andy@kernel.org, shuah@kernel.org, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230716144223.0d9260d3@jic23-huawei>
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18]) by
+ smtp.lore.kernel.org (Postfix) with ESMTP id 39CA2EB64DA for
+ <linux-iio@archiver.kernel.org>; Thu, 20 Jul 2023 18:24:47 +0000 (UTC)
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand id
+ S231667AbjGTSYq (ORCPT <rfc822;linux-iio@archiver.kernel.org>); Thu, 20 Jul
+ 2023 14:24:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2767A2D6D for
+ <linux-iio@vger.kernel.org>; Thu, 20 Jul 2023 11:24:35 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140]) (using
+ TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits) key-exchange
+ X25519 server-signature RSA-PSS (2048 bits)) (No client certificate
+ requested) by dfw.source.kernel.org (Postfix) with ESMTPS id 7965D61BCD for
+ <linux-iio@vger.kernel.org>; Thu, 20 Jul 2023 18:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E52EC433C8; Thu, 20
+ Jul 2023 18:24:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1689877474; bh=j6roh86w0wqMDaRHLfYK6RyFNcvUKUKczN6VMLN9uA4=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=KmcHuJ7sdwa0kFdc3KUH/f/VFrACU5123HkW99KiZYCrxof2niVHD3Gt5sUFxoI5l
+ QWcPI0lzhVGefGSd7aG7xCh1pO7y7KYZBhVbNpsWuW78HSILof6yvHEvzFAIBrIV/s
+ 6yQdth8+l+QbrlXy0awDEfIJoEypc0MwRpE1CS5RPDcbxLb6kx3kvm+ZMtUipfEdHL
+ AEZwr55iJ2oph39jUAui+rSWIdveSUoAOX0SlwfK5S2dBb2OSUNQbzfFOIR/Iak9kT
+ Yk3hm7oNdna1jNXwl7hng1DRi496kQrN7l4JRPY+pNiodLZj4eAx2Y+WJI5nxXV5yh
+ kJ4PdOEXilCyw==
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+Precedence: bulk
 
-On Fri, Aug 22, 2025 at 9:03=E2=80=AFPM Akshay Jindal <akshayaj.lkd@gmail.c=
-om> wrote:
->
-> Implement runtime power management for the LTR390 sensor.
-> The device would now autosuspend after 1s of idle time.
-> This would save the overall power consumption by the sensor.
->
-> Ensure that interrupts continue to be delivered during
-> runtime suspend by disabling the sensor only when no
-> interrupts are enabled. This prevents loss of events
-> while still allowing power savings when IRQs are unused.
+> On Sun, 16 Jul 2023 14:42:23 +0100
+> Jonathan Cameron <jic23@kernel.org> wrote:
+> 
+> > On Tue, 11 Jul 2023 12:08:04 +0300
+> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > 
+> > > On Tue, Jul 11, 2023 at 9:55 AM Paller, Kim Seer
+> > > <KimSeer.Paller@analog.com> wrote:  
+> > > > > From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > > > On Mon, Jul 10, 2023 at 11:17 AM Paller, Kim Seer
+> > > > > <KimSeer.Paller@analog.com> wrote:    
+> > > 
+> > > ...
+> > >   
+> > > > > Hence instead of v10, reply with a draft of the comment in the code (I
+> > > > > have asked before) that explains these bit twiddlers.    
+> > > >
+> > > > In patch v9, regarding with my bit arrangement comments, is it somewhat correct
+> > > > or do I need to totally replace it?
+> > > >
+> > > > I am not yet familiar with the terminologies, so I hope you can provide some
+> > > > suggestions and I'll definitely send the draft first.    
+> > > 
+> > > I'm not sure I understand what comments you are referring to.
+> > > The v9 does not explain the algorithm clearly.
+> > > 
+> > > What you need is to cite or retell what the datasheet explains about
+> > > bit ordering along with the proposed algo (in AN as far as I
+> > > understood). Because I haven't got, why do you need to use be16 +
+> > > bitrev if your data is le16 (and that's my understanding of the
+> > > datasheet). Is it because of the answer from the device? I don't
+> > > remember if it keep the bit order the same (i.e. D0...D9) as on the
+> > > wire.
+> > > 
+> > > For the terminology, use what the datasheet and AN provide you. Also
+> > > good to put those URLs to the code and datasheet as Datasheet: tag in
+> > > the commit message.
+> > >   
+> > 
+> > Absolutely agree.  The data format is weird enough we need the
+> > info to be available for anyone who tries to work out what is going
+> > on in the future.  This is a case where I'd rather see too much detail
+> > in the comments than too little!
+> > 
+> > Jonathan
+> 
+> Note that I had applied (and forgotten I'd done so) this driver.
+> Given the outstanding questions and a build issue with clang, I'm dropping
+> it for now.  Hopefully that doesn't cause anyone too many problems (those
+> based on my togreg branch which rarely rebases)
 
-Have you tried to enable it as a wake source and disable it?
+It feels like in a cartoon, when there's banana peel on the floor and somebody
+comes and steps right into it. Oh my, hope at least the title of most
+spectacular patch set fail of the year can be ours.
 
-...
+Jokes apart, what would be the best way to collaborate towards
+providing/improving support for max14001? I suppose the only option left was to
+apply something on top of Kim's patch set, but maybe Kim's work can be improved
+with a few things from Marilene's set. Her device tree documentation is more
+complete and follows datasheet nomenclature for voltage supplies. Her set also
+uses newer regulator APIs and adds support for max14002.
 
-> --- a/drivers/iio/light/ltr390.c
-> +++ b/drivers/iio/light/ltr390.c
-> @@ -30,6 +30,7 @@
->
->  #include <linux/iio/iio.h>
->  #include <linux/iio/events.h>
+Kim, would you mind if Marilene generates a v10 of your set with the suggested
+improvements?
 
-> +#include <linux/pm_runtime.h>
+Besides that, I think Marilene has the evaluation board set up to do any
+additional tests if needed. 
 
-Please, preserve ordering.
-
->  #include <linux/unaligned.h>
-
-(This is here due to historical reasons when mass move from
-asm/unaligned to linux/unaligned happened)
-
-...
-
-> +static int ltr390_set_power_state(struct ltr390_data *data, bool on)
-> +{
-> +       struct device *dev =3D &data->client->dev;
-> +       int ret =3D 0;
-
-Replace this assignment...
-
-> +       if (on) {
-> +               ret =3D pm_runtime_resume_and_get(dev);
-> +               if (ret) {
-> +                       dev_err(dev, "failed to resume runtime PM: %d\n",=
- ret);
-> +                       return ret;
-> +               }
-> +       } else {
-> +               pm_runtime_mark_last_busy(dev);
-> +               pm_runtime_put_autosuspend(dev);
-
-mark_last_busy is redundant.
-
-> +       }
-
-> +       return ret;
-
-...calling return 0; here.
-
-> +}
-
-
-...
-
-> +       ltr390_set_power_state(data, true);
-
-The boolean parameter is a sign for refactoring to have just two
-functions for false and for true cases respectively.
-
-...
-
->                 default:
-> -                       return -EINVAL;
-> +                       ret =3D -EINVAL;
->                 }
-> +               break;
->
->         case IIO_CHAN_INFO_INT_TIME:
->                 *val =3D data->int_time_us;
-> -               return IIO_VAL_INT;
-> +               ret =3D IIO_VAL_INT;
-> +               break;
->
->         case IIO_CHAN_INFO_SAMP_FREQ:
->                 *val =3D ltr390_get_samp_freq_or_period(data, LTR390_GET_=
-FREQ);
-> -               return IIO_VAL_INT;
-> +               ret =3D IIO_VAL_INT;
-> +               break;
->
->         default:
-> -               return -EINVAL;
-> +               ret =3D -EINVAL;
->         }
-> +
-> +handle_pm:
-> +       ltr390_set_power_state(data, false);
-> +       return ret;
+Let me know your thoughts.
 
 
-Instead, refactor the code the way that it just will have a wrapper
-with power state calls. The change will be much smaller and easier to
-understand, review, etc.
-
-...
-
->  static int ltr390_write_raw(struct iio_dev *indio_dev, struct iio_chan_s=
-pec const *chan,
->                                 int val, int val2, long mask)
->  {
-> +       int ret;
->         struct ltr390_data *data =3D iio_priv(indio_dev);
->
-> +       ltr390_set_power_state(data, true);
-> +
->         switch (mask) {
->         case IIO_CHAN_INFO_SCALE:
-> -               if (val2 !=3D 0)
-> -                       return -EINVAL;
-> -
-> -               return ltr390_set_gain(data, val);
-> +               if (val2 !=3D 0) {
-> +                       ret =3D -EINVAL;
-> +                       goto handle_pm;
-> +               }
-
-Ditto.
-
-And so on. I stop here, because this seems needlessly invasive change.
-Just refactor first.
-
-...
-
-> +       ret =3D devm_pm_runtime_enable(dev);
-> +       if (ret)
-> +               return dev_err_probe(dev, ret,
-> +                                       "failed to enable powermanagement=
-\n");
-
-Missed space.
-
-...
-
-> +static _DEFINE_DEV_PM_OPS(ltr390_pm_ops,
-
-Why _DEFINE_... macro? This one is internal to the header.
-
-> +               ltr390_suspend, ltr390_resume,
-> +               ltr390_runtime_suspend, ltr390_runtime_resume, NULL);
-
---=20
-With Best Regards,
-Andy Shevchenko
+Thanks,
+Marcelo
 

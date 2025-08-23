@@ -1,81 +1,79 @@
-Return-Path: <linux-iio+bounces-23165-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23166-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D8AB32A73
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Aug 2025 18:10:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43021B32A77
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Aug 2025 18:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71FD93B4C0E
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Aug 2025 16:06:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F8841897F20
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Aug 2025 16:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B6C2EB854;
-	Sat, 23 Aug 2025 16:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF9420297E;
+	Sat, 23 Aug 2025 16:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FZEHH0DZ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Qdg2WYrS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477842EB5B4
-	for <linux-iio@vger.kernel.org>; Sat, 23 Aug 2025 16:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7331DB375
+	for <linux-iio@vger.kernel.org>; Sat, 23 Aug 2025 16:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755964998; cv=none; b=PUVgGLWOrOAUblTZaJ59V5Mii5YDflpFD/0OG06PYok4BawpTZK67Go1iHx7qohELe4B3hAm3R2pNt5E1T3bQvjiggQMG4sPPtWHeq2j56AiZ3I/e2tHcY8bTsuPFpwpHZnOwlrJrvjgctnoZ9S+YC6KOyzYHXZ34Om+rhVwwEk=
+	t=1755965195; cv=none; b=jaHnXixUXK9iDfqD2qNVRX35+uOoq6fKmgoD5rDz5EEdPl2a6Yklh/W7vCgxVywIm4ome/tPm0HRoUZ6eU3c8eNnqELooGY0rFAQwMojrKM0iy2F5zgeoTFeo+B5WUAyL7/iCmePFf2g5J3j/2zORSOZCR8bMPOWlBqEC32A7Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755964998; c=relaxed/simple;
-	bh=bua1tPQwfQWa+hvfw1onqoeCC8jdTz/SIM8NGi2GfA4=;
+	s=arc-20240116; t=1755965195; c=relaxed/simple;
+	bh=ebM0IdDULzwaHyK8sfmNQvqNW9VpejYpzO1DUZFcvuI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GyhpTQpdTfRQA7edl4ogRUJ8DUGekedGKoWSjmUNXzbTqkEyK+eC6pH3rpVQgmKVIK59KZ+8TI9jggx5qMpYX7meW7CJThBD42GWKzEEUjJ1yB00Ak1T9/pW1nEnmll0nC2RGmT4jofa3z2CrLS4IIFB2yWqkw99JqxJ1tU+tTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FZEHH0DZ; arc=none smtp.client-ip=209.85.167.169
+	 In-Reply-To:Content-Type; b=bkTJYid7Jdk0dx0OxcsfmllzRll9wPuK4JGjBQG4qXrNXto/GwpaWD0R9BBYeuWXU0htSuMKtrYHFP9uhr6A8Uc0U2UKv6od7aM/Sk2uWoAc4InTO7XyhMozUx7jxHbIEgoSP5pV1xNRSPYPSIBYLoQHE08s0BlrFBAnine4fEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Qdg2WYrS; arc=none smtp.client-ip=209.85.210.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-435de81b368so1481745b6e.3
-        for <linux-iio@vger.kernel.org>; Sat, 23 Aug 2025 09:03:14 -0700 (PDT)
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-74381efd643so740094a34.1
+        for <linux-iio@vger.kernel.org>; Sat, 23 Aug 2025 09:06:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755964994; x=1756569794; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755965192; x=1756569992; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=f15oMbDITgq7oB6xJ/vYq6N1D3lMcONr/Su4wF27UoA=;
-        b=FZEHH0DZh51EF7Rkn4sF5+t9zG/nrnwUt9qEbMI3mp7Vu0Q/AdoRr5GJblL5Z4KjLn
-         hMhG4Pp3LKTfoiH4Ynrjyk3URoRWKEXTQH9gweWupUN+UixwUlIXO7uerkk8/PyNCPA9
-         M7snZxuhquuf29LkdX64ZBLdAFbfVx0od+RTSB154Vr1OWGV6MaKLxq0BlRZufdILBtV
-         JXuMRf+RBJSj+0FwkHeEGIcVeUb4nY2tfm7hsW0tk3bDIraxl4VcKDYS/sZKWcjtePH8
-         pAIyBJHOlcSI8SgTr7sNbMOv/PVRy7QyWwUAxj48ouXTw2MVAeJ4pzed0bMnz+Iszn1+
-         PZtQ==
+        bh=MH429/Xzff4T9QzrkUeAzGoqfBH4kBxhtsjO5g2qhx8=;
+        b=Qdg2WYrSvcAEdw0hDQAuQZV30EddACkeYqfLKZitb7mTJRYnc9T1iBBDwHzrf4V9d4
+         qRGlzbMp3q9BHRKftMJ0A4GuOst1LadbEZ4PrOqUNOEu+b98XaCZ4/Yjis3wBmZWobWg
+         53NoRi3thvda1TLPPcbJk7Lk9AqYPO1v6aAjwb7brohRZQZjO4NPEz0jE7ZGhB5sKIZc
+         dKA2zZxVRjnzOWLQLxkPkdgGXYv+8cYM4F9NZLDooPoZ9BjopK+ZLXMYmbuEMmHCoHy2
+         NBfq2TLW0EvEWI5YblbrZGocwV7tSea5wtnbsVwofopR9zyvMuXvjPYWYifJTCmvtFSk
+         j4eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755964994; x=1756569794;
+        d=1e100.net; s=20230601; t=1755965192; x=1756569992;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f15oMbDITgq7oB6xJ/vYq6N1D3lMcONr/Su4wF27UoA=;
-        b=F86NiEs9+X2fHNTHJZhEd+REp7whnyb3kjRk4ENRexOXf87gp92pn1bhObvU72UKNU
-         7KRJGs47XRU5OLsH/ecy5OYjb0bro/E2bAbYaMkc2sN/rZ3WW6kLJdpReovg7DZ2p0Uv
-         2La+J6dPdbyTVu4z++IPlkzOLOVKRyQ1Co242aA7xi+Kxt867ryXGaR13F6LKe+3jilE
-         jHCtSDx5g0WgZ+5P/LW2rweLG9ioO+mWHls2/NzdysVIhxraGZF2GuJZwTqm58r94Uy/
-         pA9vdNa5GzqiXgMEfhRaZF3nw/7UAQOK5JismKqO9jU8DaNTVomRXDLQE0k+JpwJD1uR
-         /N9g==
-X-Forwarded-Encrypted: i=1; AJvYcCUbHxpN87DrttycR1Y+jET6Q49GsJjyrrue6gbYZuIMqP8mBmfaRx35YeTlx0N07HFA3Flu52BDhac=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc8+OrV/zQITB3+FTFxfSE3pEtNgybWoli8q/LO06uDSBD+07w
-	ZELEAeKqy5uM7M+3Ed0PSzD2ubiUs/XCCvrp2qcaBC0jt6WjTcb81yCsADEXrAfNb+E=
-X-Gm-Gg: ASbGncvD97GPBqkdTiWDaNew3kPSRPl4wwTpWKWFvr8cG/DwY57BZ4whnR5b/jkOlp2
-	2K5ZH+e1JEyjj/bLloDaAIbNcQmB20bMB08I+9edLl0EODgcJcdXTxKzEgQ9AKeHClUJF/FVxtE
-	zlvuR2GNRDtw9k4h4lxjEpts73CQqQK1+GGCaljvUAAEaZDPPlnPwOhe1WqxR1/DkVOKukZftGm
-	6wPpd4Gx/+IxqqaDKFSELdeUJ4RfMBGLf4xLpsLGPJQJcR3BAwySMYaXHglnAl76LLIFBUFUnt9
-	p1huA6Inz5AVv42dFpgpltRNXg3687Pe6cR0Xdea9qp5z9EvjE5fSZxsvBL/PZEUh/S2Y6QaGTz
-	x3dDPrmS8a7IBS/+0bk3bI1imUICwzLArYzz3P/xM1rc9+qWEM04JwLcSPHRlWOW22ijhLC7hgB
-	BzyTr36xs=
-X-Google-Smtp-Source: AGHT+IF5S5n10x8t6fzxv7W+hQlkYBgQ5KnbdgnfR/wPKi0MkIYRDyZabVifnoN80ZoF4puOCUaYzg==
-X-Received: by 2002:a05:6808:1a01:b0:434:aadd:727b with SMTP id 5614622812f47-437851dc733mr3895334b6e.20.1755964994112;
-        Sat, 23 Aug 2025 09:03:14 -0700 (PDT)
+        bh=MH429/Xzff4T9QzrkUeAzGoqfBH4kBxhtsjO5g2qhx8=;
+        b=uo2AkeM5SH6ItZ0OoRKBfnvMsp4v+P6NYQ4VykK3XWXCSoFBYSmirSVreH3hs8Atsk
+         hxqwaGZy86A3ajukj06H7wfHbhYBr1XhnR9aBBdwN4dKhorb3588tO7ZVl2G+dviYUkc
+         jJOzi4JQxyfJ5QTRSN79C9JTK6ZdmgWbmxPkqTkEptTTELqZo6Z15WIo+Dr7P6QP6yZn
+         fdyKi7sbwOzMQvN+5l4jAv/FT2qMEHi9ihbl/mIjKrdgx7VyjaR1slXevjSVVha4bGSi
+         LJadHwAhaCqVb3uSSdSNc3tIm1Z6Iom/JgkLMnczTYX11D8r0r26oDklYGmHJQLRbnGa
+         M9SQ==
+X-Gm-Message-State: AOJu0Yzgj26LdWn/qaW5UbeC4JQOVqD828wO3mz2fd1rhKx9uBo4oSBu
+	Wigq/MZG+dsr5HEiLWdjF6b+Gp52K1ULK5zM+5hkLWZltZn5jW+NTAFp4lkhwtmDQb8=
+X-Gm-Gg: ASbGnctNVenBTF+5GBRGlwNhaGd3FCk85Xd6nzP1Of1w93MD+dUyd8cGOORSk90Wqjy
+	P2NIr3v61VEagLMaq+0x1G450kKXllPQ8N0pipZ4EttVt5vuqF7rp+5ycggJEKrB4DtqvOEYD4d
+	g7M+OfMemliRn5/vdZGT6HlsMky10tN1uuDXoTZSAMd+fHZTp7DlcnTv00C2yWoJLbUkMweZNOO
+	xcS67tle75QPE+0X1aJyf6vPoju0ldlpdDYUx2lBPI6FhlBhezaKYYKcD9ohWHbuw8uPfS7XbXW
+	RzNr2o6hxNPkIl22Ncnb1cO+/CNPsOUqTWplrFIuWZ569tbfzEHWDQt7rQ/BfctZ1Sr3qB7w7YE
+	tuRgT44aRromkmiJoZOZ1mA58WklVVa9nwZpgekh1eKwfaSXdi6cPx/t//UB+HwdftsEHu57c
+X-Google-Smtp-Source: AGHT+IEyRUbE9O2Dou5JQoL703SRQU0rAXzxfBj2sNtV84omC7i2T9OV2vhzOcAE7/ImVyLQKsdiWA==
+X-Received: by 2002:a05:6830:2a16:b0:741:aa58:d500 with SMTP id 46e09a7af769-7450098d167mr3600537a34.3.1755965191927;
+        Sat, 23 Aug 2025 09:06:31 -0700 (PDT)
 Received: from ?IPV6:2600:8803:e7e4:1d00:4d25:af10:67ec:53d? ([2600:8803:e7e4:1d00:4d25:af10:67ec:53d])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-437967bf1bbsm405969b6e.7.2025.08.23.09.03.13
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61dc7470b02sm354328eaf.0.2025.08.23.09.06.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 Aug 2025 09:03:13 -0700 (PDT)
-Message-ID: <1c0fe63a-e13b-4e01-9032-686298d3b632@baylibre.com>
-Date: Sat, 23 Aug 2025 11:03:12 -0500
+        Sat, 23 Aug 2025 09:06:31 -0700 (PDT)
+Message-ID: <f7089447-f164-406b-8e59-3bd3e8f94d59@baylibre.com>
+Date: Sat, 23 Aug 2025 11:06:30 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,100 +81,145 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: light: ltr390: Add runtime PM support
-To: Akshay Jindal <akshayaj.lkd@gmail.com>, anshulusr@gmail.com,
- jic23@kernel.org, nuno.sa@analog.com, andy@kernel.org
-Cc: shuah@kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250822180335.362979-1-akshayaj.lkd@gmail.com>
+Subject: Re: [PATCH v8 2/5] dt-bindings: iio: mcp9600: Add microchip,mcp9601
+ and add constraints
+To: Ben Collins <bcollins@watter.com>, Jonathan Cameron <jic23@kernel.org>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20250822-upstream-changes-v8-0-40bb1739e3e2@watter.com>
+ <20250822-upstream-changes-v8-2-40bb1739e3e2@watter.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250822180335.362979-1-akshayaj.lkd@gmail.com>
+In-Reply-To: <20250822-upstream-changes-v8-2-40bb1739e3e2@watter.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 8/22/25 1:03 PM, Akshay Jindal wrote:
-> Implement runtime power management for the LTR390 sensor.
-> The device would now autosuspend after 1s of idle time.
-> This would save the overall power consumption by the sensor.
-
-How much power does it actually save?
-
+On 8/22/25 8:23 AM, Ben Collins wrote:
+> Add microchip,mcp9601 compatible in addition to the original
+> microchip,mcp9600 to designate support between these two chips.
 > 
-> Ensure that interrupts continue to be delivered during
-> runtime suspend by disabling the sensor only when no
-> interrupts are enabled. This prevents loss of events
-> while still allowing power savings when IRQs are unused.
+> The current dt-binding has open-circuit and short-circuit as interrupt
+> names, but these are only supported in mcp9601.
 > 
-> Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
+> The OC and SC detection requires that mcp9601 VSENSE be wired up, which
+> not only enables the OC SC interrupts, but also the OC and SC status
+> register bits.
+> 
+> Add a microchip,vsense boolean to show the chip is wired for this
+> support.
+> 
+> Add constraints so this feature only applies if the mcp9601 compatible
+> is selected.
+> 
+> Signed-off-by: Ben Collins <bcollins@watter.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > ---
+>  .../iio/temperature/microchip,mcp9600.yaml         | 56 ++++++++++++++++++++--
+>  1 file changed, 53 insertions(+), 3 deletions(-)
 > 
-> Testing summary:
-> ================
-> -> Tested on Raspberrypi 4B. Following tests were performed.
-> 1. Verified that /sys/bus/i2c/devices/i2c-1/1-0053/power/control contains ‘auto’ value.
-> 2. Verified the /sys/bus/i2c/devices/i2c-1/1-0053/power/autosuspend_delay_ms contains 1000 which is assigned by the driver.
-> 3. Changed the autosuspend_delay_ms value from 1000 to 2000ms and verified it.
-> 	3.1 Verified through the timestamp that whatever autosuspend_delay_ms is set, it is being honoured.
-> 4. Verified that runtime_suspend and runtime_resume callbacks are called whenever any IO is done on a channel attribute.
-> 	4.1 Verified that power/runtime_status first becomes active and then becomes suspended.
-> 	4.2 Verified that power/runtime_active_time keeps on increasing with a delta of autosuspend_delay_ms.
-> 
-> Interrupt Handling Verification:
-> --------------------------------
-> 1. Verified that when interrupts are enabled on the device, then the device does not get put in standby mode and keeps sampling.
-> 	a. As a result interrupts are delivered to the driver and are handled.
-> 2. Verified that when interrupts are disabled, the device is put in standby mode and stops sampling.
-> 	a.Since there is no sampling, so no IRQs will be generated. They are only generated when the device is resumed due to I/O on some sysfs attribute from userspace.
-> 
->  drivers/iio/light/ltr390.c | 246 +++++++++++++++++++++++++++++--------
->  1 file changed, 193 insertions(+), 53 deletions(-)
-> 
-> diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
-> index 2e1cf62e8201..9e2f33a401f2 100644
-> --- a/drivers/iio/light/ltr390.c
-> +++ b/drivers/iio/light/ltr390.c
-> @@ -30,6 +30,7 @@
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> index 57b387a1accc776683500949a22ef0290fc876e8..fb3661c805934255d35f664e1018ed2ec91d05f0 100644
+> --- a/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> +++ b/Documentation/devicetree/bindings/iio/temperature/microchip,mcp9600.yaml
+> @@ -4,7 +4,7 @@
+>  $id: http://devicetree.org/schemas/iio/temperature/microchip,mcp9600.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
 >  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/events.h>
-> +#include <linux/pm_runtime.h>
+> -title: Microchip MCP9600 thermocouple EMF converter
+> +title: Microchip MCP9600 and similar thermocouple EMF converters
 >  
->  #include <linux/unaligned.h>
+>  maintainers:
+>    - Andrew Hepp <andrew.hepp@ahepp.dev>
+> @@ -14,7 +14,11 @@ description:
 >  
-> @@ -105,6 +106,7 @@ struct ltr390_data {
->  	enum ltr390_mode mode;
->  	int gain;
->  	int int_time_us;
-> +	bool irq_enabled;
->  };
+>  properties:
+>    compatible:
+> -    const: microchip,mcp9600
+> +    oneOf:
+> +      - const: microchip,mcp9600
+> +      - items:
+> +          - const: microchip,mcp9601
+> +          - const: microchip,mcp9600
 >  
->  static const struct regmap_range ltr390_readable_reg_ranges[] = {
-> @@ -154,6 +156,25 @@ static const int ltr390_samp_freq_table[][2] = {
->  		[7] = { 500, 2000 },
->  };
+>    reg:
+>      maxItems: 1
+> @@ -43,8 +47,37 @@ properties:
+>        Use defines in dt-bindings/iio/temperature/thermocouple.h.
+>        Supported types are B, E, J, K, N, R, S, T.
 >  
-> +static int ltr390_set_power_state(struct ltr390_data *data, bool on)
+> +  microchip,vsense:
+> +    type: boolean
+> +    description:
+> +      This flag indicates that the chip has been wired with VSENSE to
+> +      enable open and short circuit detect.
+> +
+>    vdd-supply: true
+>  
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          not:
+> +            contains:
+> +              const: microchip,mcp9601
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          minItems: 1
+> +          maxItems: 4
+> +        interrupt-names:
+> +          minItems: 1
+> +          maxItems: 4
+> +          items:
+> +            enum:
+> +              - alert1
+> +              - alert2
+> +              - alert3
+> +              - alert4
+> +        microchip,vsense: false
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -64,8 +97,25 @@ examples:
+>              reg = <0x60>;
+>              interrupt-parent = <&gpio>;
+>              interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> -            interrupt-names = "open-circuit";
+> +            interrupt-names = "alert1";
+>              thermocouple-type = <THERMOCOUPLE_TYPE_K>;
+>              vdd-supply = <&vdd>;
+>          };
+>      };
+> +  - |
+> +    #include <dt-bindings/iio/temperature/thermocouple.h>
 
-This function does completely different things depending on if the
-last argument is true or false. It should just be two separate
-functions and avoid the parameter and the if statement.
+This header isn't used in this example.
 
-> +{
-> +	struct device *dev = &data->client->dev;
-> +	int ret = 0;
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
 > +
-> +	if (on) {
-> +		ret = pm_runtime_resume_and_get(dev);
-> +		if (ret) {
-> +			dev_err(dev, "failed to resume runtime PM: %d\n", ret);
-> +			return ret;
-> +		}
-> +	} else {
-> +		pm_runtime_mark_last_busy(dev);
-> +		pm_runtime_put_autosuspend(dev);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
+> +        temperature-sensor@62 {
+> +            compatible = "microchip,mcp9601", "microchip,mcp9600";
+> +            reg = <0x62>;
+> +            interrupt-parent = <&gpio>;
+> +            interrupts = <22 IRQ_TYPE_EDGE_RISING>, <23 IRQ_TYPE_EDGE_RISING>;
+> +            interrupt-names = "open-circuit", "short-circuit";
+> +            vdd-supply = <&vdd>;
+> +            microchip,vsense;
+> +        };
+> +    };
+> 
+
+With that fixed:
+
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+
 

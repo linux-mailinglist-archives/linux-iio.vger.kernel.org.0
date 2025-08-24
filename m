@@ -1,146 +1,191 @@
-Return-Path: <linux-iio+bounces-23178-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23179-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA83B32EF6
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Aug 2025 12:23:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D7E1B32F57
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Aug 2025 13:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6F61B60541
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Aug 2025 10:24:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAAB2205AF8
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Aug 2025 11:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDAE253F05;
-	Sun, 24 Aug 2025 10:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D4B2D5432;
+	Sun, 24 Aug 2025 11:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rL43HlqO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Loerx6e1"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5141FE474;
-	Sun, 24 Aug 2025 10:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8E22C327D;
+	Sun, 24 Aug 2025 11:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756031016; cv=none; b=jo5hcbz4JsoCT/5chDErBBTAR/fLf129gSXt+ZCJHx+UTe/JvWvpuA140mvHi+zqyZJzvB2QVn0E115M0QGvzpgzT3Djro9XNBPGysnHcW5eAvjiCMyCNxqmplfunJDqFr2zoI6++l5CCMmbe3GVuEP+hPesDuvi6mNPaDi+oPc=
+	t=1756034426; cv=none; b=Sp3huwp1hGBx/UM1spkm9+VlY1JqT2edoGJcY75gGJubctbiRsPvL3AdFF1ZcP65wnfhlSTQl6417teVJoeIh/Trd8LMvHK82eM1vHBOgANI2gQHX0F97lZ5N2hte4QWIJgiJDxZ6VL192wSusoNBJrL9HDhUE4UTtB9Z3qZgP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756031016; c=relaxed/simple;
-	bh=/JlW/aeDjeVIjiBoLSu7Lu4ouEASj/9Nv2pswZgq+h4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnSvdIX9yMmkRnp+dkqjnkO364nZiwMtUVI14+0tRB2DgxJtsthRjPClFEUzv4yqEtoKR8VBL846Rs1BhOalRDoa7iunVi1HETDe1JUDZicsZAKsH4qO2bSZxrgg2y2rwRkryXnF1MnnCjZaCpPWiasO19jl159aadgJfogN4ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rL43HlqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F34C4CEEB;
-	Sun, 24 Aug 2025 10:23:30 +0000 (UTC)
+	s=arc-20240116; t=1756034426; c=relaxed/simple;
+	bh=+OkOBQx3yRrZpTiq/fQPXgpZZZmpP5pqcfVE/IglG0g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FGHH+aKvcL3kSrwtil60OblZu/D9/WzIUy0yjj1KVBOSZVuUL4rp4yKFzv/u47UFG/Ay/0YY80lENiXvbIGZvYwCt5VqioARx1PeO6C5+cXdFdzqaP8g9B/9QY4LLrYqplzKxfpoAeGbG3wiuDKhgURY7qIh6axC4GrgPXSiQtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Loerx6e1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48748C4CEEB;
+	Sun, 24 Aug 2025 11:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756031015;
-	bh=/JlW/aeDjeVIjiBoLSu7Lu4ouEASj/9Nv2pswZgq+h4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rL43HlqOWN+PJSQmBIjMMSKEq2/Frp/370xGinFn4iLNWsKvRBJ5QY4+U+w1EqSXR
-	 btM2qGLG1aao48I9L8tNcSylrZ9FfClXZz8EvzoqnYlXiHY1SQmw90FOKfsncL5ADj
-	 PP8tJCOdks/QWzyF/nnirnC651fb/qo8DV8xbHRHypcl9KH6l56Iq3kEGWQfkStMom
-	 qD9KdmWAkjcHu2yfp08K4Sga5Y0kkmFsA7uea2nwDKBnmMkq4bD+h0SFegL1oc8Dbm
-	 2N6U45awYyyt2z9+t0RcbvuL6aCMelpwao1a9JbE7UyH5bPz+HP0ANoZ3tb25oeSKa
-	 4j0MWGXpdKIsQ==
-From: William Breathitt Gray <wbg@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: William Breathitt Gray <wbg@kernel.org>,
-	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	conor+dt@kernel.org,
-	mranostay@gmail.com,
-	~lkcamp/patches@lists.sr.ht,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: iio: proximity: Add Lidar-lite-v2
-Date: Sun, 24 Aug 2025 19:23:22 +0900
-Message-ID: <20250824102324.427517-1-wbg@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250802121238.108ebfad@jic23-huawei>
-References: 
+	s=k20201202; t=1756034426;
+	bh=+OkOBQx3yRrZpTiq/fQPXgpZZZmpP5pqcfVE/IglG0g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Loerx6e1x2VjRNcM3MW45r4qwsF0WnebjbFtGiqfIagnabuMUrPsqGjz/8pdXARkw
+	 pDcnCxi84CPtleCDboazXwXvUSBdvtnBj6PkheZq+ulDz55VkY8MH8RI90GNG8yesn
+	 71NL7ijnhCN0VO3XcIQh5OnC6br9qCwbApjL+qo/Ms5KG+Kbti/S03Yi9OvQxm5F+3
+	 JUAxtYBZGnf0WIOQ3MRZeU6DVtDJRx2z5e6hJOlucBxNfcrNKlq8DGN7H9ckKOu5pW
+	 RGxFM59tXzm/yIgwyvh1fkMLeuAEnA54Zem231jrT3scTFk0YXJeXXWfgCWTHQvv93
+	 GJ5HTTBbOvgjw==
+Message-ID: <510f6efb-ada3-4848-ac8e-16fa5d1b5284@kernel.org>
+Date: Sun, 24 Aug 2025 13:20:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3800; i=wbg@kernel.org; h=from:subject; bh=/JlW/aeDjeVIjiBoLSu7Lu4ouEASj/9Nv2pswZgq+h4=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDBmrXnAKFOql/5h9ibdSQvDXCeV59e2zvR8L3H7/8Jif+ q5ZzKo1HaUsDGJcDLJiiiy95mfvPrikqvHjxfxtMHNYmUCGMHBxCsBEdq5n+F+zsrW44kfjlsdN 75dvOri5havWwrTjoukcjZe14SpOvBsZGZbf+PtXanbW6shZ82dN5d8qzbEk/MSRx6LCOzlen32 uOJEbAA==
-X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] dt-bindings: iio: adc: ad7768-1: add new supported
+ parts
+To: Jonathan Santos <Jonathan.Santos@analog.com>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org
+Cc: Michael.Hennerich@analog.com, lars@metafoo.de, jic23@kernel.org,
+ dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com
+References: <20250824040943.9385-1-Jonathan.Santos@analog.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250824040943.9385-1-Jonathan.Santos@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Aug 02, 2025 at 12:12:38PM +0100, Jonathan Cameron wrote:
-> > On 7/3/25 18:26, David Lechner wrote:
-> > > On 7/1/25 5:30 PM, Rodrigo Gobbi wrote:  
-> > >> The compatible grmn,lidar-lite-v3 is managed by the same
-> > >> driver of pulsedlight,lidar-lite-v2, which is a trivial device.  
-> > > 
-> > > As a general rule of thumb, using the driver as justification for
-> > > dt-bindings is never a good reason. The bindings describe the hardware,
-> > > not the driver.
-> > > 
-> > > Assuming I found the correct datasheet [1], I see a power enable pin
-> > > and a mode control pin, so I would say that this isn't a trivial device.
-> > > Therefore this will need it's own new file. We could at least add
-> > > power-gpios and power-supply properties. How to handle the mode pin
-> > > isn't so clear to me though, so might omit that for now.  
-> > About the mode control pin and the data being returned within PWM, it`s also
-> > unclear to me how to describe that here. Looking other kind of existing iio
-> > devices, couldn`t find a reference for it so I`ve not described that.
+On 24/08/2025 06:09, Jonathan Santos wrote:
+> Add compatibles for supported parts in the ad7768-1 family:
+> 	ADAQ7767-1, ADAQ7768-1 and ADAQ7769-1
 > 
-> So far we've never supported a sensor with a PWM output.  Needs some capture logic
-> and whilst there is some supported in the kernel, I don't think we have the
-> infrastructure to describe the sensor beyond it. It relies on an odd combination
-> of triggering via a light pull low that the device then drives high.  To make
-> that work with a standard capture unit is probably a case of wiring multiple pins
-> or some external components.
+> Add property and checks for AAF gain, supported by ADAQ7767-1
+> and ADAQ7769-1 parts:
+> 	adi,gain-milli
 > 
-> +CC counters subsystem maintainer William.
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+
+git send-email v2*
+
+Not patch by patch. You made it very difficult for us to review and to
+apply.
+
+> ---
+> v2 Changes:
+> * adi,aaf-gain property renamed to adi,gain-milli. Description was 
+>   simplified.
+> * default value add to adi,gain-milli.
+> ---
+>  .../bindings/iio/adc/adi,ad7768-1.yaml        | 43 +++++++++++++++++--
+>  1 file changed, 39 insertions(+), 4 deletions(-)
 > 
-> https://static.garmin.com/pumac/LIDAR_Lite_v3_Operation_Manual_and_Technical_Specifications.pdf
-> for reference
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> index c06d0fc791d3..0c39491f6179 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> @@ -4,18 +4,26 @@
+>  $id: http://devicetree.org/schemas/iio/adc/adi,ad7768-1.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+> -title: Analog Devices AD7768-1 ADC device driver
+> +title: Analog Devices AD7768-1 ADC family
+>  
+>  maintainers:
+>    - Michael Hennerich <michael.hennerich@analog.com>
+>  
+>  description: |
+> -  Datasheet at:
+> -    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7768-1.pdf
+> +  Analog Devices AD7768-1 24-Bit Single Channel Low Power sigma-delta ADC family
+> +
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7768-1.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7767-1.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7768-1.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7769-1.pdf
+>  
+>  properties:
+>    compatible:
+> -    const: adi,ad7768-1
+> +    enum:
+> +      - adi,ad7768-1
+> +      - adi,adaq7767-1
+> +      - adi,adaq7768-1
+> +      - adi,adaq7769-1
+>  
+>    reg:
+>      maxItems: 1
+> @@ -58,6 +66,18 @@ properties:
+>      description:
+>        ADC reference voltage supply
+>  
+> +  adi,gain-milli:
+> +    description: |
+> +       Specifies the gain applied by the Analog Anti-Aliasing Filter (AAF) to the
+> +       ADC input (in milli units). The hardware gain is determined by which input
 
-So how does this look from the monitor pin side; a low level for some
-amount of time followed by a high for a set duration, where distance can
-then be derived from the amount of time spanning between falling edge
-and rising edge?
 
-In theory this could be represented as a counter device (in the context
-of the Generic Counter paradigm the monitor pin would serve as the
-"Signal"), then Counter events could be defined for the edge
-transitions, and finally distance can be derived by userspace by
-capturing the edge transition events and comparing the timestamps.
+I don't think there is no such thing as "milli units". milli is SI
+prefix, not unit. So "units" is the unit? Or how exactly?
 
-However, while that approach works in a technical sense, it definitely
-feels clunky. On a conceptual level, a remote detection instrument
-like a lidar isn't really a counter device: it's purpose isn't to track
-the progression of a count.
+Basis points were before since 2022 so I don't get why these other
+bindings introduced in 2024 could not use it?
 
-I think it would be more appropriate for us first to properly define an
-abstract representation for these kind of range-finding devices. For
-example, these devices are going to have some sort of trigger (whether a
-pin polarity or command sequence), some sort
-of transmission signal (involving a particular strength, frequency, and
-duration), and some sort of reception interpretation (perhaps involving
-noise filtration, multiple previous record averaging, and timestamping).
+Anyway, if you ever do not apply reviewers comment, then your commit msg
+should explain this. Otherwise you get the same discussion here.
 
-Once the general abstract representation of these types of devices is
-adequately defined, the DT-binding design will naturally arise from it
-and subsequently a proper driver interface.
-
-> However, I'm also in agreement with others that this is an unusual case where
-> we are very likely to missdesign a DT-binding without having explored what the
-> driver stack looks like and so are best just leaving a gap for now.
-> 
-> Even if we did describe the mode stuff it would be optional so not describing it
-> for now should be fine.
-
-I second this as well for now. There may be other devices that we will
-encounter with similar mode pins and such that would help us figure out
-the best way to introduce these to a DT-binding in the future.
-
-William Breathitt Gray
+Best regards,
+Krzysztof
 

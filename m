@@ -1,186 +1,146 @@
-Return-Path: <linux-iio+bounces-23181-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23182-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369CAB32FEA
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Aug 2025 14:37:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF6FB33255
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Aug 2025 21:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FB172066D4
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Aug 2025 12:37:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D70753BA39F
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Aug 2025 19:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFB828980A;
-	Sun, 24 Aug 2025 12:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7D31F91C7;
+	Sun, 24 Aug 2025 19:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U8E+MzeP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hf3OMcO/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385B92B2D7;
-	Sun, 24 Aug 2025 12:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD14614A4F9;
+	Sun, 24 Aug 2025 19:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756039027; cv=none; b=tiHHTOOma8dTf/15d+CO2GpaeqhOTCmdKTwpd+oSQJA55O+NCsZLhFr55IbVo2E4ihXaOB9oJ4bh3gwMOVJ/mlpKdG9u29hLjcr+bl2XE4mUPOrKJzGJqeWwTtWaTLylCbDIiFiFHSPv+Y5UCvgjf88sx9PqNy1oE78iMpXlQWQ=
+	t=1756063158; cv=none; b=im9LDOZrfLHQy7yTPZJy7DyYJ8WMRRZ9lF9DW93YmIAaWOD72RsEbEqUa8pEcRhaSZ1edRTNZ7ANcC66VDE/y6boa1TDpRhgOIUOKA8JJxwoCJnnGCdzklPpyby38LAPytIiKwmXesFJwQzxUe3sgXEi+sQKQsH9jgyC1/jiW6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756039027; c=relaxed/simple;
-	bh=UKWtuPYTxNHdFvtfzHlR5rgBM6cG3Z9Sqr1MtSciDdg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=B1rrIu+IBm+KF4WEo1X2nqoKn4fpqyxWCxEjkE2p4yLLt2C5TzsO4ANVgGAMG3sfyYYJr8nUkp65cLAEl40Wkj9PeF0VlYTfrA5bUiq9MNB68obflVdFzbx2ZLe2RKpLP5BEfW0w6wH3FRintTqMImyXu7zE+q9Zfr8Agq1X5bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U8E+MzeP; arc=none smtp.client-ip=209.85.219.175
+	s=arc-20240116; t=1756063158; c=relaxed/simple;
+	bh=FF2wwvnb7LeI/rXhcslh/3INph1e8ZefN7u6tDjJ7mI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t1u2ao+ioMp41WVLAh/JkZ3pDsGOT5ShiNP3OtG75euH5da4RaHYk2CueUmXl/a5qzKP47JerFBSIzjwLfal16r/wCzozdxlq3Pugs8Av9IXrRy13UJ4qINit7ZxpWsPS2DAE42N4YaDTlOoyLQFS92RW5H4B5KAPf/i7n+YF4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hf3OMcO/; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e93498d435cso3409729276.1;
-        Sun, 24 Aug 2025 05:37:05 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb7347e09so630257866b.0;
+        Sun, 24 Aug 2025 12:19:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756039025; x=1756643825; darn=vger.kernel.org;
-        h=in-reply-to:references:to:cc:subject:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1756063154; x=1756667954; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vVrYLaOumo8kIkzX/KWXeeqenR1JWl7YJ864174T5ZQ=;
-        b=U8E+MzePlZyt6kR7PKyRf9EKGA5TJ/6LydP9h5uKRr28/R4teHTpPRdPGG7yRW1S96
-         7E0qrXUgKgR/WVeXO4ndEW156FNCvPuAm8fVVLrBFFq7Qm9Bi9MOANSXSHquUqpLqii5
-         tP71pGlNSAPzQcz1+simIz0oc0RPnqbjAg7xqAy7eV36w8fVKOiCEaCLESt2CdB0ZZEF
-         2wg4iltzK7rIph/XOZE+ktT71wRUXWZt29HmTTCo1o6CjDhhF3UvDkjr8HtkB6WEWOnR
-         jZDHzayood8n+HuLGZI6QKfbfctjNiwuarXmolcv7V4MDvuzhwSLNYQDjEt/86IocEBs
-         CTcg==
+        bh=P31MEFWfiBDcFLjasshG2Q33dnrA+kN2tAwhwtnYyuo=;
+        b=Hf3OMcO/5cSu8VqIos0dvc6DtwFlLTw09/ocHt03of7d79y5xIaa60mEQmDg3UoCbo
+         0DLNflh37FCAXcs8NvEdP5J3sgk7MO1F0GfSxSz0xE926WdV9aIq+HZT+u2JU07KJYaX
+         4p7UyxkhxsC4Lm+K1/MdAiMCr/1G2Rubky6jfwHTPy1EzK1CSF6nMl408e4nIxf0MWTr
+         9H3CbR7Lb9JdeGovoSsUNt+svNE2A4zCvbDFksmXV4yUHVa1kHy4U0yviV2zYzrr8PGo
+         tzVwzMO4DqhhqD4epUAr20S1NQIIX7Me4bp6EE3+iozQ88dXeL0USi1ZwO/zwFz6IVKr
+         WQXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756039025; x=1756643825;
-        h=in-reply-to:references:to:cc:subject:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vVrYLaOumo8kIkzX/KWXeeqenR1JWl7YJ864174T5ZQ=;
-        b=JHW5COTeoCfnIdbOBjBGrVjlXnPTfb31NA/JM0sbTJe50zUrpalX1KfOoDWQ5n35SD
-         u8Ggm5xEMCPIfDFXO/TnnFq8CJXgZAMt7JX6MK2Kleb7VCRiXaJUG0qSF5eLduHzaw7j
-         aiQET4vyfsTuniI+Cn74zNB9+8vwKGZ07dS8TwtMx6GBvapApOw1RcshbE+USDctdHXN
-         lh6lcsvsSOUHmMg4zuWjAk6FfUCt2zvMYpcqkr3ZpdmVCdGLe2mMoeARIv3KlrSqgRo1
-         pky/54mFuKwPhvHUVqv9sbW8JTZC4IMWMNtYV2ezWInT2VwCxrQ/q9KSNDx6RyYqfXxR
-         4lPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/i3qHHUxv97zbqBrhbSe/XLs0/v8FWrseb6kZDMhBFlLBUKyMy6/x0flmSN514EV0QDLKcHXErcA=@vger.kernel.org, AJvYcCXgPx7uyDrk77+rWgORrGloHjXk6t0F3Ia7XGHvMEVltgTT5sXiXQq7eGU7dEZXjr4AlT1jvMZjWuWumOoc@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN3sEQ9zJ0fWvvXNBQfko6VkNVVBqZqOLkPMk6peZijiEBJv3v
-	QviR1bpffedFUSGPvmrhrxlhHeBztDf1pjsjHu2CHzmidUQAwWZ10I4H
-X-Gm-Gg: ASbGnctMlTubIlnubxNWF6FznANfVBEwLECLbFSw/jEnVKb3XAUZ5nyDINsL62iwUk4
-	lejDpf17Jp78otpdO5EF2488E/gKWUkPT7mRV6UPHZIpO9IVWzhKrJpcuZ7G5E+DqJTCGq2o3YX
-	4OS7MgeR/NSZ/VHpVO+oiqEKq8LiFRFJFeWMWW5umSdAaasgTtFAZLmU/HDsHySZxelRKohdyqd
-	kG8BPAtC7JQrnHydw1hUUrhKLNwNpKTYAa0zT+gQ2Cs/0FaO5q+uiZmgq1z9BcHsvVNfkSSyLI3
-	zhS6eViOqaFTYCFhVufZbVg0fgfTFu40dPcAMCYbnfvCt7HDpYHTGsrUUO2FeGNsy/vWOrVfg7j
-	AleonBBTuXNaj3701A2oPdEj0bg50
-X-Google-Smtp-Source: AGHT+IHHWjC8qOT4Oi2eYAHCKIBiFYj6dF5DkKOLHX8nPNZYjrjycduDD7FWBxGdo3pOjWUbgIex5g==
-X-Received: by 2002:a05:690c:a08c:20b0:71f:f359:6ca2 with SMTP id 00721157ae682-71ff3596fe7mr37428677b3.52.1756039025026;
-        Sun, 24 Aug 2025 05:37:05 -0700 (PDT)
-Received: from localhost ([14.1.81.27])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-71ff18e31acsm10981137b3.67.2025.08.24.05.37.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 24 Aug 2025 05:37:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756063154; x=1756667954;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P31MEFWfiBDcFLjasshG2Q33dnrA+kN2tAwhwtnYyuo=;
+        b=G9A+RC4EKybfgJ9qCjXiPSFqkOlFlCq2fSPVxcKIxlPCxLE64TvP+xlRmrPpps9Ibn
+         aENmTh+bi1a7xZ5s//g3Dya5R88mU2s7bvdwirlbj2v9KxLqc+IMUJVl/2NnwWPt8RB/
+         eqCncPzI4bEM1SzkCZoGnbcEdzoyyHSqddvPEqnTP3YJyv1e6fbvPahJ8IFmKt577qKQ
+         Ycn96sGw3n2Bm0EWRyOAdsYt3ddSheTWmm4TBv8gNjqTg+vST2SnPnHuo9S3KHNIeVBD
+         Ka4DfhcsXBj57BeYqRvs54PXBGqbOIszG8Ivt4yl362y5QRvIlV1Nfgw6coeKpSGRrA1
+         5eUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUz3PEx224f4HuJmmVTP/j3z8If+70H/GWf/8alwlsfuOpUxhKYs2eoV4mHJmilaPqeq/BCGOViTco=@vger.kernel.org, AJvYcCXmpGAug2tSO6/QhUogKfZtH32Wfu4/LRYu4N6+jEZ5dGtlWlVYq87vNoMA2JL5hpDDUz5wJC16kSnaeole@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfkjOsfZpudvzn+x2/ZF9V+IWYFGgpuJx0dem0ft6huIVmYPB6
+	tiFG6k9jP4rtMNEOp6IDOHuy1lc0ZuEn3xXHrClsRU4gP/c5+WLwFr59QXrWMYYIY6Gv56xRhZF
+	MbLNkdBKMuaIXeB+At+IObXwpPDLujsBzmvnqJt8zQg==
+X-Gm-Gg: ASbGncsB8hujECu6Tgx/FCsiKBj3rLbHn7k2fHMINHVuVtiYmYcXPh3HDzQuvR2WNdd
+	M6tej7Vs0RAr7X2J3OnXs2/V9pPvOK/SPsWOD/Vz7nCAtoeXNHWSAoyLT5JP+ZRMN6xMlBkoNfO
+	qgVW3Ips641d8/i++T2x6UVFppotsnYE1JYFIiWMyotHNnWFXwJA62KG/1fsKGKGuLqLpLBQzXc
+	mN9T70=
+X-Google-Smtp-Source: AGHT+IHCT2zDSXD/L3GSuxA+gxdGUgwEs8H2u4IqtSR8nJxD8VlOUizuwPWSwQJDYYyjlCqGJcnZmVMIzg9Qb2BouMc=
+X-Received: by 2002:a17:906:7953:b0:ae0:b847:435 with SMTP id
+ a640c23a62f3a-afe295c1e9bmr841553566b.49.1756063153670; Sun, 24 Aug 2025
+ 12:19:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250822180335.362979-1-akshayaj.lkd@gmail.com>
+ <CAHp75Veqf6tKiFh=dNkgNkc2qE17VM7u-Yt8CZaXOsnEFUwd_w@mail.gmail.com> <CAE3SzaSW7j0yNaD9yQzc5KcJ-LH00TGebLQYDkuqwjky3ZBohA@mail.gmail.com>
+In-Reply-To: <CAE3SzaSW7j0yNaD9yQzc5KcJ-LH00TGebLQYDkuqwjky3ZBohA@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sun, 24 Aug 2025 22:18:37 +0300
+X-Gm-Features: Ac12FXxhmGNy1qak8a9MGAxjdIWYXkbNbXmrNAurlxqWTWJFphO6xqyA0T4FCHM
+Message-ID: <CAHp75Vd4V5o90q7-burt-S3_YnZ3bfaKXdFuTRcy05x0cvz8DA@mail.gmail.com>
+Subject: Re: [PATCH] iio: light: ltr390: Add runtime PM support
+To: Akshay Jindal <akshayaj.lkd@gmail.com>
+Cc: anshulusr@gmail.com, jic23@kernel.org, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, shuah@kernel.org, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 24 Aug 2025 20:36:58 +0800
-Message-Id: <DCANVO3ZBHUN.A8E9WABNLHG4@gmail.com>
-From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
-Subject: Re: [PATCH 2/2] iio: humditiy: hdc3020: fix units for thresholds
- and hysteresis
-Cc: "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
- <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Chris Lesiak"
- <chris.lesiak@licorbio.com>
-To: <dimitri.fedrau@liebherr.com>, "Li peiyu" <579lpy@gmail.com>, "Jonathan
- Cameron" <jic23@kernel.org>, "David Lechner" <dlechner@baylibre.com>,
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
- <andy@kernel.org>, "Dimitri Fedrau" <dima.fedrau@gmail.com>
-X-Mailer: aerc 0.20.1-4-g02324e9d9cab
-References: <20250821-hdc3020-units-fix-v1-0-6ab0bc353c5e@liebherr.com>
- <20250821-hdc3020-units-fix-v1-2-6ab0bc353c5e@liebherr.com>
-In-Reply-To: <20250821-hdc3020-units-fix-v1-2-6ab0bc353c5e@liebherr.com>
 
-Hello Dimitri, thank you for your patch. A few comments inline:
-
-> From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
->
-> According to the ABI the units after application of scale and offset are
-> milli degree celsius for temperature thresholds and milli percent for
-> relative humidity thresholds. Change scale factor to fix this issue.
-
-I miss some explanation of what is going on (i.e. wrong) at the moment,
-the scale factor that is being used and what results are being obtained.
-
-> @@ -379,12 +379,12 @@ static int hdc3020_thresh_get_temp(u16 thresh)
->  	 * Get the temperature threshold from 9 LSBs, shift them to get
->  	 * the truncated temperature threshold representation and
->  	 * calculate the threshold according to the formula in the
-
-Having used 65535 back then without explaining why, or at least without usi=
-ng
-a #define was not the best idea. It's difficult to understand why it is use=
-d
-without getting into details.
-
-13107 is even less obvious. I believe you divided 65535 by 5 everywhere in =
-the
-code, but it's not clear why.
-
-I'd suggest a clear definition at the beginning of the code because it
-is used in different parts of the code, after having explained why it
-is necessary in the commit message as I mentioned before.
-
-> -	 * datasheet. Result is degree celsius scaled by 65535.
-> +	 * datasheet. Result is degree celsius scaled by 13107.
->  	 */
->  	temp =3D FIELD_GET(HDC3020_THRESH_TEMP_MASK, thresh) <<
->  	       HDC3020_THRESH_TEMP_TRUNC_SHIFT;
-> =20
-
-Again, it's difficult to understand why everything is divided by 5.
-
-> -	return -2949075 + (175 * temp);
-> +	return -589815 + (35 * temp);
->  }
-> =20
->  static int hdc3020_thresh_get_hum(u16 thresh)
-> @@ -395,12 +395,12 @@ static int hdc3020_thresh_get_hum(u16 thresh)
->  	 * Get the humidity threshold from 7 MSBs, shift them to get the
->  	 * truncated humidity threshold representation and calculate the
->  	 * threshold according to the formula in the datasheet. Result is
-> -	 * percent scaled by 65535.
-> +	 * percent scaled by 13107.
->  	 */
->  	hum =3D FIELD_GET(HDC3020_THRESH_HUM_MASK, thresh) <<
->  	      HDC3020_THRESH_HUM_TRUNC_SHIFT;
-> =20
-
-Similarly, multiplying by 20 (100/5) looks weird for a percentage.
-
-> -	return hum * 100;
-> +	return hum * 20;
->  }
+On Sat, Aug 23, 2025 at 12:10=E2=80=AFPM Akshay Jindal <akshayaj.lkd@gmail.=
+com> wrote:
+> On Sat, Aug 23, 2025 at 1:41=E2=80=AFAM Andy Shevchenko <andy.shevchenko@=
+gmail.com> wrote:
+> > On Fri, Aug 22, 2025 at 9:03=E2=80=AFPM Akshay Jindal <akshayaj.lkd@gma=
+il.com> wrote:
 
 ...
 
-> @@ -630,7 +630,7 @@ static int hdc3020_read_thresh(struct iio_dev *indio_=
-dev,
->  		thresh =3D hdc3020_thresh_get_temp(ret);
->  		switch (info) {
->  		case IIO_EV_INFO_VALUE:
+> > >Ensure that interrupts continue to be delivered during
+> > >runtime suspend by disabling the sensor only when no
+> > >interrupts are enabled. This prevents loss of events
+> > >while still allowing power savings when IRQs are unused.
+> > >
+> > Have you tried to enable it as a wake source and disable it?
+>
+> Yes, before coming onto this approach, I had given it a thought and hence=
+ did some R&D for this.
+> Official documentation here & here talks about power.wakeup being an attr=
+ibute for system wakeup
+> NOT runtime. This checks out because in the complete IIO subsystem, there=
+ is not a single driver
+> which implements both runtime PM and wakeup functionality.
+> As of now there are 4 drivers in the whole of IIO, which enable this wake=
+up capability
+> and that too are only using it in system_suspend callbacks. Hence I had t=
+o come up with this approach.
 
-MILLI, as suggested for [1/2]? The same would apply to the following
-diffs.
+Please, make sure in the next version the summary of the above is
+present in the commit message or comment block.
 
-> -			*val =3D thresh;
-> +			*val =3D thresh * 1000;
->  			break;
->  		case IIO_EV_INFO_HYSTERESIS:
->  			ret =3D hdc3020_read_be16(data, reg_clr);
-> @@ -638,18 +638,18 @@ static int hdc3020_read_thresh(struct iio_dev *indi=
-o_dev,
->  				return ret;
-> =20
->  			clr =3D hdc3020_thresh_get_temp(ret);
+...
 
-Thanks and best regards,
-Javier Carrasco
+> > > +               pm_runtime_mark_last_busy(dev);
+> > > +               pm_runtime_put_autosuspend(dev);
+> >
+> > mark_last_busy is redundant.
+> >
+> Pardon me here, but I am not able to see the redundancy.
+> I think this should be very much there before we call _put_autosuspend wh=
+ich further calls
+> autosuspend_expiration() which reads this last_busy field.
+> Did you mean dev->power.last_busy is being updated elsewhere too? or some=
+thing else?
+> Can you please clarify?
+
+https://elixir.bootlin.com/linux/v6.17-rc2/source/include/linux/pm_runtime.=
+h#L603
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

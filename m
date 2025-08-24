@@ -1,109 +1,143 @@
-Return-Path: <linux-iio+bounces-23170-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23171-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25EDEB32B4A
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Aug 2025 19:27:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE7CB32D75
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Aug 2025 06:11:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB70D7B43D4
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Aug 2025 17:25:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C35F447AAD
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Aug 2025 04:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9E02367B0;
-	Sat, 23 Aug 2025 17:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F93E1E1E12;
+	Sun, 24 Aug 2025 04:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cT+cqhzh"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="AXAUr971"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCBE1A288;
-	Sat, 23 Aug 2025 17:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E72DDA9;
+	Sun, 24 Aug 2025 04:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755970042; cv=none; b=Bv8qaV1H3iSSiSOY8kANBa3cLrkVQbDlGYnue8BoEyWRvZAVWoRgMHPqHjKARicGywlcgPY8hrZtHk4CuK7oIkHs7l/XU+cugU8ipYgqXaliud7ykVnQl/1Ik3ZCnAyhtqs2MEDIuGovzFnUNidA2+1j7a4icLYDp5Q65MaqaCc=
+	t=1756008620; cv=none; b=dKF3C4Zl4PH/4xJo9+0elUbuXXm4iqj0bwAC/SHMda/PbmgOImaJtc9Bv3hEil7vS1dqz3p0aq+EW7OPRWztxubNqEpf+shcAGmGSmSFxW/HdF7AGEpYHPc8BagK8zARyw7/EmV3SRuk0jXQ4WM6lhF3Gsdc3aYYPWxRHA78ELM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755970042; c=relaxed/simple;
-	bh=5mQ5TAyduzyoir5ioPBW61IHUPHBdHOokgstGaDR/4Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e72dJZStr+NceuCq/jNF13mHB3/PXLay7Osf980SHIcRdFYEBucnhSlGoo9HgVEY4YyEb0FP6CQZ+NLYrNx3SsxX+osQRQl08mbvYNynYO7iN4EvA8Ihjof/rqAejO1ALNTBu2AIwN8111OIgtlShfba/uEy/w2Tv2DXVSJUt8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cT+cqhzh; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-76e2eb09041so2777454b3a.3;
-        Sat, 23 Aug 2025 10:27:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755970038; x=1756574838; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZxPm1yRekm/+3b/b/E2m9eg4tpzRVDbuEKTHuhBVPyI=;
-        b=cT+cqhzhfdofQw2CLwHjcJLuUcf6NnwbAHZX5ZR4sM1Y0C9tbVXNMvg2PTFd9ylN28
-         UTMwI1Dx5CwHLwueEzVFYxZupBQAgu1tKuoyxpEs8pV3DL8dBTe724uPDRIPbjK73vVs
-         YgkvmqYNHhU/Us4XhVrqz4J+x86seHXJnsoCA8ZvTa92wjfjPGrv5JHqdMsslpIhCcRK
-         Kb6pOSthvpUvTuEt1i6LeaFWDCmqr/2JR6ct63ntUvhGTk3JbU9yAMeCaUhBNRo0axoB
-         igOwIQoE+RkjLkG14WsvXYMIYvbSPiyrQSJul07AgUofhSJAQ6BP3gyY/KvWN8PNlPkv
-         qvgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755970038; x=1756574838;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZxPm1yRekm/+3b/b/E2m9eg4tpzRVDbuEKTHuhBVPyI=;
-        b=ICjkolgkNTNl9HaWqSSE75cEbrkY1BoH6Nk2Lrdr1WE8b22z88ol0d7Kc42rnTKAPB
-         bpEJqXNd4zZAoPmaqA8y9Ek4VK0v4cbp2Fhw4/LgZ6Wzcq5pvuxgNKSB3QAGg0RH2DEU
-         nUqbRqBL+H8CXgFxHIihO0gHCCmX3mpzVklAhhVeI2R55uHsPPFylPudpJHM9FMTgXdq
-         N3ZSPsd48+J6pVMk1mllYGgcj7xTbx8o6MTa4GjIm8XUKU9lC7XcDReG6qGxWn4u4nxV
-         ve7Q/f6H4sxd2B5+3DcT0P19GHfzEsy4A/FpnqT1KMFQiexs10n2YK4ROuUCwx38Ai/s
-         HwZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGxSOeIu2x/t5AntWKVY1i3QVyAlSNDQBn/GsJ+l5P2qGMiY8MfmhCZDu6tdvPIrjVkVucXgMo+bA=@vger.kernel.org, AJvYcCX+7zJVhFFu74U30qgpRwXqZll2i0ai2EvMUENmVqoXU7xiSBpAbPjw9MrwpnA8Av5g0ddwW0sTlfcGOV0h@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDaZ2+pEyVzu21pGbA2JsZnoPk0F2nn/5fbQ/IUtQJZy+Qmn+W
-	aBj72lMyYZSgFHm1dNycCBBx80Shvtv/zAykUVvKZvsKiAKD41CqaMTf
-X-Gm-Gg: ASbGncvHfKFlhMVmfqYJNW/c6jhVQU7RhElUYalBAy2S07lkxuJ/x0PGlZCY5UU47YJ
-	unPEbdhXGmiXpFXR1oyAYjxKhwG+qgCtkSIszkOF5UoVEG4DxP8NFJAC72W/MkEu5cUGUg+Dg9U
-	wQV2AOOYFPQEvCPSEmXMVgKihNIO819hAV8qbdNrgqcu7ytXaTXaMILCq0ayj6dljthJapD3kRp
-	W6eg2AWyjEFNAKNEVhALyKPPacUmI80WEJDbW5N7+xFyaWLtAmv/B3EVhnHdNXyF4t51bNflZn8
-	2yJ6xX3p11mOaAX8jklmBP6TzgyroePj7biNAkg6iG4ns/i+TWcW4j5ylrA2Tdsj1S46sSvDM60
-	2Kyk/pw==
-X-Google-Smtp-Source: AGHT+IHWSbw1qdXlPsZeWT2i31LU/xLlq6B0wGE78zmgmS/Sq+I0Bff1BbMMJzItCwE5x/J3gmtzDw==
-X-Received: by 2002:a05:6a20:9151:b0:226:d295:bd6a with SMTP id adf61e73a8af0-243408348bbmr10049986637.0.1755970038068;
-        Sat, 23 Aug 2025 10:27:18 -0700 (PDT)
-Received: from archlinux ([2804:14d:90a8:4498::6b2])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b49cb8c369csm2707952a12.24.2025.08.23.10.27.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Aug 2025 10:27:17 -0700 (PDT)
-Date: Sat, 23 Aug 2025 14:27:55 -0300
-From: Gustavo Silva <gustavograzs@gmail.com>
-To: Xichao Zhao <zhao.xichao@vivo.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Tomasz Duszynski <tomasz.duszynski@octakon.com>, 
-	"open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/7] iio: chemical: Remove dev_err_probe() if error is
- -ENOMEM
-Message-ID: <y3pmdf6swvsqltu3imitrcietjybbwtmewjmmk326o4oqzadh4@pyxfp3czft2n>
-References: <20250821080723.525379-1-zhao.xichao@vivo.com>
- <20250821080723.525379-4-zhao.xichao@vivo.com>
+	s=arc-20240116; t=1756008620; c=relaxed/simple;
+	bh=jq3F1zDJ2yZcCXOErAn7hE/PCpZ6bt+ZlM2OukJrQQM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rVk8Y9I09mHb0Pgy8GT+sFDGpJKbg7dJ2SqSlFGXaAx6FveBDuG+LFsiyk6zilDwuBuMKf5TnKCxGWCeAujpeE12kcxUYkbd6GuzByehjGayl3Opqe03slIIHp+ngw0hS6bfxQzSGM+Y8ZlQgoE2+XMLzbmJ5iH8XbSgCqf8Sq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=AXAUr971; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57O1Y6aZ016602;
+	Sun, 24 Aug 2025 00:09:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=cCWLrFENcMrCC98jYhox49b/WLG
+	aapMV8dVSyXpwcOk=; b=AXAUr97176CA9ML9FGKczKxDIQL7+a1F8LGbf2TrSyC
+	tD12nexeVohkaEUMscDj/N/RIA3FtvStyWO02ta99v4RMWZ7AvDEAP1oXhoHTx7V
+	OGxCtzlgm2PGMnyRB97Zw5/5WgfnZVvDjtNjInK9aOgSMBPCoICXA2ceKnpGgbu5
+	tMTIVaptAjtP+7Sirep660qPZ0xqIZBI4hn/BRifrZYxFwfde6lnrMNOJg8PFDLL
+	P0JY8E3ccgw96jycSNYpCvAKL28k3OwPQc7DQK/qBIWyhgM/5H3lkD1cvrfYiXks
+	CEV5juA3FR1kfJ2sB87oNVeF658sFeqP1fmEqcGgErg==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 48q5uhktj7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 24 Aug 2025 00:09:49 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 57O49mv7051698
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sun, 24 Aug 2025 00:09:48 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Sun, 24 Aug 2025 00:09:48 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Sun, 24 Aug 2025 00:09:47 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Sun, 24 Aug 2025 00:09:47 -0400
+Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 57O49YM9006311;
+	Sun, 24 Aug 2025 00:09:36 -0400
+From: Jonathan Santos <Jonathan.Santos@analog.com>
+To: <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC: Jonathan Santos <Jonathan.Santos@analog.com>,
+        <Michael.Hennerich@analog.com>, <lars@metafoo.de>, <jic23@kernel.org>,
+        <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v2 0/4] Add support for ADAQ776x-1 ADC Family
+Date: Sun, 24 Aug 2025 01:09:33 -0300
+Message-ID: <20250824040933.9134-1-Jonathan.Santos@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250821080723.525379-4-zhao.xichao@vivo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMiBTYWx0ZWRfXyN4on4XJvT5f
+ gxjEGuQhN/gdsKX8+RsszZxU2JZCbLGd/M8vB7DkRZpa/Qmq1j9oUyCg7Tn9A+39aUqullYhmKi
+ HtgzUtCZyJnoI9BDcQFkv5vJ3smiQfjH4Sv6rBxMt/fMWuVBjQkLtB0qHr0gwzLtONcCGHJ60FB
+ hVp14vGccNsSZWqIZSL7sI18BDFAr6MX6SJ/YFLltTDRkk3Xi/VOnGivqnC8CPllzbMmIOaF1Df
+ Dr/jopsdK63/3ddRPIrs+rzwbu5LdpiwJ6EVuJTyeBT2LYiGAcohBv4mB54sInY6+BuO+lxFlZb
+ ZhHRPy7A7R0B6JdwKwfCgB9+/9X0ZwzG8AbHtm9jqBq7muBpkDk6lEo1dDtBCYwcnYzekTbR+EQ
+ mJ5ZlfYw
+X-Proofpoint-ORIG-GUID: oau-2dlmdTg02khvktFce47swSoYHgka
+X-Proofpoint-GUID: oau-2dlmdTg02khvktFce47swSoYHgka
+X-Authority-Analysis: v=2.4 cv=S8XZwJsP c=1 sm=1 tr=0 ts=68aa908d cx=c_pps
+ a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8
+ a=uFM56Sq5py_6AZWyf6cA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-23_05,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 spamscore=0 clxscore=1011 phishscore=0
+ suspectscore=0 malwarescore=0 adultscore=0 bulkscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508230032
 
-On Thu, Aug 21, 2025 at 04:06:47PM +0800, Xichao Zhao wrote:
-> The dev_err_probe() doesn't do anything when error is '-ENOMEM'.
-> Therefore, remove the useless call to dev_err_probe(), and just
-> return the value instead.
-> 
-> Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
-> ---
->  drivers/iio/chemical/ens160_core.c | 3 +--
->  drivers/iio/chemical/scd30_core.c  | 2 +-
->  2 files changed, 2 insertions(+), 3 deletions(-)
-For ens160:
-Reviewed-by: Gustavo Silva <gustavograzs@gmail.com>
+This adds support for the ADAQ7767-1, ADAQ7768-1 and ADAQ7769-1 devices. 
+
+The ADAQ7768-1 and ADAQ7769-1 integrate a programmable gain amplifier (PGA)
+with 7 and 8 gain options, respectively. The ADAQ7767-1 and ADAQ7769-1 
+also feature a 3-pin selectable Anti-aliasing filter (AAF) gain.
+
+---
+Changes in v2:
+* adi,aaf-gain property renamed to adi,gain-milli. Default value added.
+* fixed some commit messages. 
+* Added 'select RATIONAL' to Kconfig.
+* Added lock to protect PGA value access.
+* rewrote AAF gain check and replaced error returns with warnings.
+* Addressed other review comments, see individual patches.
+* Link to v1: https://lore.kernel.org/linux-iio/cover.1754617360.git.Jonathan.Santos@analog.com/T/#t
+---
+
+Jonathan Santos (4):
+  dt-bindings: iio: adc: ad7768-1: add new supported parts
+  iio: adc: ad7768-1: introduce chip info for future multidevice support
+  iio: adc: ad7768-1: use devm_regulator_get_enable_read_voltage()
+  iio: adc: ad7768-1: add support for ADAQ776x-1 ADC Family
+
+ .../bindings/iio/adc/adi,ad7768-1.yaml        |  43 +-
+ drivers/iio/adc/Kconfig                       |   1 +
+ drivers/iio/adc/ad7768-1.c                    | 396 +++++++++++++++---
+ 3 files changed, 384 insertions(+), 56 deletions(-)
+
+
+base-commit: 0a686b9c4f847dc21346df8e56d5b119918fefef
+-- 
+2.34.1
+
 

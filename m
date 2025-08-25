@@ -1,129 +1,148 @@
-Return-Path: <linux-iio+bounces-23263-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23264-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0798AB34D20
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 22:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB55B34DEA
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 23:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D91F6203F51
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 20:59:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 160DC242BBD
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 21:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEB729992A;
-	Mon, 25 Aug 2025 20:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1652868A9;
+	Mon, 25 Aug 2025 21:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PRvpxB6a"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Du/euM9X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15A61E89C;
-	Mon, 25 Aug 2025 20:59:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479A21E9B37;
+	Mon, 25 Aug 2025 21:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756155568; cv=none; b=cHkYXBSKBBTrRIRd5mp3cV/VjwZsR2EQMkYNGzDM+QCbLYy1WBsEzZ8rfvuHOZuHJReiZmUg8sILGqCDx9z9jU4v0+3yDhAO/hyf5FDj+Mm2YXnCmhT+mU49KuWx9jdLZ5nAaYLQpY6g96BiOEfPtFWE1qdq5JH9nJlok0n9oIw=
+	t=1756157114; cv=none; b=q/OCrH3BQzycFm5ol4oa3qQM4CHt9JLge3F0wpU4/O+XFoWoqtntWX7qVbrqcchDU9TM7MhDCH1bfNIcv67gXLjQc4J8zpZnBx9wlHicu8/0s5BHUVD4scM1FzoJwT156so8MZcvwhnOeT9QoeE+GrCZRnnVBCPX1eYhDBQHEks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756155568; c=relaxed/simple;
-	bh=P+f9GWoudFIxOthJoiv89uXLOQljtr15VfO53YgP3og=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ug3GvYgmpNesbZgr6hk1Jyptt+YWU/8xSo0UX5C8PfXzucRnN45pXyiIw1vnzTWDtoSoLkqOo3n8sz5ngMqVTOfmqqnGXyTjgaiInfR08jNy+xTaLlKQwxlik9HBO0zBOHTW2beKOQMak/RAOUpKIO50KylxtWhUaAcRij7zrWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PRvpxB6a; arc=none smtp.client-ip=209.85.167.44
+	s=arc-20240116; t=1756157114; c=relaxed/simple;
+	bh=rQxIqt9FXbMgo+hxm7zsm7EwkedUpyQFNcVlhvMM6JI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=OwXvj178eNJNdP8BM5/SbAmVAHPaPptFW7QA2BZ99ahZEyOsjzHLY1QSh9LvJbheRj2QQ6EWpRhV7MCavfpyJrBy9nknro0EZfckim11kDrS0SHT19Yi0YI7ooJ7pdVY6tcAS3hx+QQTG5S7DKub+snmOlbLy356DWvDxQ9ezVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Du/euM9X; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55f499c7f0cso988419e87.0;
-        Mon, 25 Aug 2025 13:59:26 -0700 (PDT)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-770d7dafacdso1819473b3a.0;
+        Mon, 25 Aug 2025 14:25:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756155565; x=1756760365; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NEDyZPVAqJd7dy++5AJb59bf7HNDp+oeDl1YcGWBAgw=;
-        b=PRvpxB6a0AOkVmZl8nWYRcAXmiBwxB+TtWm98sVGpC5ZykDZp3xzXX8MzSNu6EwhjL
-         UIE3hohcYhGKUo9cpQmnlpRQSLP7CZ7HgpORafsHnCZgaEajGbj1E0QOlXxZr0AIy530
-         glQ2L3Ir9uGxVuc+xfYWrn5jIb6Tvium4Q4uYHeqSv625y0q0s3UpYEYa8gZ1q1vXzEN
-         MEEhsg7BIkJZdHZsElaTp5MmZoapJMCFFm86tSiINMhl+jxbEVdJv9l4EAXAUOiYLDOr
-         xrvxpPhgqiTespRDwBNtYGv/v478zseBGhE/24A+NZ3vv9mMtV//uC9/fe9ut1e+JPGZ
-         6GTw==
+        d=gmail.com; s=20230601; t=1756157112; x=1756761912; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KhRjzJlPiyfcS2ozpWwEMLYKLiRTg5NWYtDZLjk6AuY=;
+        b=Du/euM9XaZWrJYAu1+DhwFZC+wy4ajvK+j4vZukQFI73wM2NdAcVycypdlM9JOdv+a
+         GsrXUr5eNMqdHbCJYKYZ297JHbyv0u7viiVow3hrPaRC0X1pB+2l/6L2TrsbqE2yX+2R
+         t3ie3F+oAeC5kEjcKVlpEZiJcX5zzexV5cVBHNSjuH/pewtT7N0XsZVVLX/lAy5KHnRs
+         TmNxSFzkfBFhxDdS0Wpuuo0OReS4lXjnpD/fZAYhI4mE8P+I6mkK6EvWlpRHNSSCjVct
+         aRn1PLs5kmdMgu6noPejN+t3O2M0z/suL5E20L9b9A8+3Ge3iiTFQsFg6lgHnjxndj9D
+         vpLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756155565; x=1756760365;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NEDyZPVAqJd7dy++5AJb59bf7HNDp+oeDl1YcGWBAgw=;
-        b=tdmFGEnXbg1Xg7+R5ZJvNfhppH5zA14LHHbRyDzRO4tsqTwCJhHAEG0XCCJ7NiAFiD
-         yQnNREHOfTUykDM72JZ4zTQnc3dgOcrWsjhKNeX32jskLlhoZWrgLB+khTavMwWFHil1
-         +Jxe/P2CyW8pBLA5USCC5aLbaf7+3FEuBkG4j6Djb7afM0wZ7Bn8A7MluugaZ1xZuawM
-         m+Y+X4l4YuMIBFwAZzn30OrPFgEju5l9AcSfzdTlFX7IfomRMbklh6Mlw3034XcOUiEZ
-         SDUQyCYrJciFEa4AH8zwq3P1IplTOhZG1engyyTt5md4o9BOEBAoaRdDAzjYdyeVvouS
-         /Bag==
-X-Forwarded-Encrypted: i=1; AJvYcCWtJwwoog2Gb43pnpKODkJbDWthdHesW01qJNLuOlXhHhMbB1+pjTV8NEdFFT/S8t20XgcTtat6yS8=@vger.kernel.org, AJvYcCXHEezEpd8yIVaZzWinoORLs0vmiBp3XkDZeVvNWaKD+4bO6mQhL57Ke5PnD4OA6CWJOk+JElF2Vh73qu2H@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUxEef00Ye7zdZ1CshqHFfhDj9ZPRTn3t2lSqBYy21kGxHIZvQ
-	+Wx9WR7H158TDKv6WU3Mvg0XONeMLA6e+7maxd03A1rvDxY2TUXaqcb9YuBDmHYt6EX9/2WyERp
-	s8kMcfWBsrXNIgb4NhZKIUTw6XEOKvhs=
-X-Gm-Gg: ASbGnct5KdxSvEtX6cA4yNpazspoL/ezIBPPeTsTFlZ0OdxCq334lEtpoc7m3AtA84p
-	rRd5UcE4tTBGMkOUUcO3/NR9dM4kvuunESbCaJtiaftaViBU54dkHMM/MDSqOISTboCkkpoRwwA
-	cT/jmSYHY23DK45z+SP8auJwbQ8U/+N6X1lnO2WQnTRsPZp/YFIGd7vSksfG9y2ZmHizd2Ntu/A
-	hsqmU8bAErYaTdhV1DkwOxFc6IqGPtrjRqOdc74Jg==
-X-Google-Smtp-Source: AGHT+IGqCPX51Ss3DOPVVuYpEQYg8NqfIXNFIutjVci2omtiLZJsnfXe8YEYi2uoT4Y/9ZKYK072kPWj6B7xClz5wN0=
-X-Received: by 2002:a05:6512:1581:b0:55c:c937:1106 with SMTP id
- 2adb3069b0e04-55f0d3715b2mr3714312e87.28.1756155564703; Mon, 25 Aug 2025
- 13:59:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756157112; x=1756761912;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KhRjzJlPiyfcS2ozpWwEMLYKLiRTg5NWYtDZLjk6AuY=;
+        b=Mn8Elq/ExP1PvTjUQUx8+iR7axPzC52EzWwrKgVVcJfqJCcUYs+kU+HxBOza6pz4hM
+         Gv4/DVLgWnWASXvfaEmGKFGO2vA03dPrmVXrGuJ1liingqdbB9l0/vo2MzuCDcGiybDT
+         j/DTdgNN6dJt2I+kGYb6TQgkAM/rvAYcQ6FSolVc9LIbM5pTrWaZWqkwSdqwa4lLS56e
+         yv/XCDwysUTylUY5T1rBwPx/8oJ3PFVBGB4SslRjMYlzsJNWNgwDLWxfgBAGpYuSTfuS
+         4RulPC4nM0960pfQeGzux8DdWVp1GMaEcz1KZrsn//wiZmk1cokhIu89kvWTZn3wXoja
+         MudA==
+X-Forwarded-Encrypted: i=1; AJvYcCUlmslu0x1Iy8ZC4EPQ8potBzoUXAeppGaIhS35P393ieMzZsfbEpBKcTjTylT5SUTXPD4/dQis0T1d@vger.kernel.org, AJvYcCV4tLzJ+re3qeA7tWPA82g/NWUO62PGWd7Wv5AIt1+C+OWUNd5PJuX9ZVHdCJCdvlAj9sU37fW8pi1MeRtm@vger.kernel.org
+X-Gm-Message-State: AOJu0YyY8GTzIRL3DRUYcB64lcxt4kh7wOUtsF17xaB/I3DjrwNWHD2W
+	kEB4QgZRZwhR6YbbwVGAN9aDDz8DGczyfWYRHMl0tQTKlw+BOUrEk8PjMR314VQg6ao=
+X-Gm-Gg: ASbGncvTbkS/EkmOaWTf5LggJDroUpzarWN3+KOX6jcglZSX/C+j+E82w7mYlb96KC2
+	OB3L6SIJApn/v6RRVvMglVbg4zBix8o37jE1TiyEyQ0Ql10VG8wCmHYGnftSK75MWKKuiT9RMLl
+	dA4wngaO43QBIA8KECeNXb7glxfbi1yzwlwLq3srQ+E3F8JMTrfIEAiSJmgXTqHOCYBhxsIHNbT
+	Mjsp3eBJJ3JY4LS7CjOolh0UrcgdPl+BtT4Ld9WUxRqNOXOYFSmfvldboqhc2JS1pK8gfhxlEuW
+	C16uCWBYhWQhtjSSfbTnOxrhCwjIa3b75vmDAqFniUAnzKs+sNv7wl5wESiZUYFLKihywNr+aK+
+	Q/+epojMzWstFjdTIxora6OM43w==
+X-Google-Smtp-Source: AGHT+IFiarZ0wz0nrNJ/qvabISz051tH5tU8iSA9KMAy5JPdael09C9wleVkzmDNR3oS5rXFqmdVUw==
+X-Received: by 2002:a05:6a00:390c:b0:769:93fb:210a with SMTP id d2e1a72fcca58-7702faac2bcmr16923829b3a.21.1756157112248;
+        Mon, 25 Aug 2025 14:25:12 -0700 (PDT)
+Received: from dev0.. ([2405:201:6803:38cc:eb35:b786:98be:f27d])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-771e814cbbasm2930206b3a.36.2025.08.25.14.25.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Aug 2025 14:25:11 -0700 (PDT)
+From: Abhinav Jain <jain.abhinav177@gmail.com>
+To: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	alexandru.ardelean@analog.com,
+	jlc23@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	Marcelo.Schmitt@analog.com,
+	dumitru.ceclan@analog.com,
+	Jonathan.Santos@analog.com,
+	dragos.bogdan@analog.com,
+	Abhinav Jain <jain.abhinav177@gmail.com>
+Subject: [PATCH v1 0/2] Add MAX22530-MAX22532 ADC Support
+Date: Tue, 26 Aug 2025 02:54:50 +0530
+Message-Id: <cover.1756115378.git.jain.abhinav177@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250822180335.362979-1-akshayaj.lkd@gmail.com> <20250825152608.6468c27b@jic23-huawei>
-In-Reply-To: <20250825152608.6468c27b@jic23-huawei>
-From: Akshay Jindal <akshayaj.lkd@gmail.com>
-Date: Tue, 26 Aug 2025 02:29:12 +0530
-X-Gm-Features: Ac12FXyCinT6t4daEAj_YSmGc2pAsrD-_LPnxBN2FPcqHRneEAD2IAxJm6uvRjY
-Message-ID: <CAE3SzaR14zWWM_g-H4C76+6fBDotuAux7n2V1g94R2xLFQZOYQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: light: ltr390: Add runtime PM support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: anshulusr@gmail.com, dlechner@baylibre.com, nuno.sa@analog.com, 
-	andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Jonathan,
-Thanks for your review. Please see my followup inline.
+Hello iio/maintainers,
 
-On Mon, Aug 25, 2025 at 7:56=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Fri, 22 Aug 2025 23:33:26 +0530
-> Akshay Jindal <akshayaj.lkd@gmail.com> wrote:
-> > +
-> > +     if (!state) {
-> > +             ret =3D regmap_clear_bits(data->regmap, LTR390_INT_CFG, L=
-TR390_LS_INT_EN);
-> > +             data->irq_enabled =3D false;
->
-> Just take an extra reference to runtime pm on enable of event and put it =
-disable.
-> Then no need for special handling with a local flag etc.
+This patch series adds initial support for the Analog Devices Maxim family
+of MAX22530-MAX22532 ADCs. These are galvanically isolated, 4-channel,
+multiplexed, 12-bit, analog-to-digital converters (ADC) in the MAXSafe™
+family product line. An integrated, isolated, DC-DC converter powers all
+fieldside circuitry, and this allows field-side diagnostics even when no
+input signal is present.
 
-Consider a scenario, where the user only disables the event instead of
-enabling it,
-(i.e. user wrote 0 on the sysfs attribute before it was 1). In this case,
-If enable means inc ref count and disable means dec ref count, then
-this would lead to refcount underflow and the suspend callback will
-not be called.
+The first patch adds the device tree documentation for the ADC. The DT
+binding has been verified with DT_BINDING_CHECK. The second patch adds the
+read functionality for raw and average ADC values from registers.
 
-To handle this case, we would need to check whether irq/event was
-enabled or not.
-For that either we can use the local flag as I did, or I would need to
-do a read and test
-for the interrupt bit being set. I feel using the local flag would be
-cleaner and would
-require less code.
-If you are fine with local flag usage, then shall I not stick to only
-local flag usage?
+The code was tested with Raspberry Pi5 and MAX22531_EVKIT_A. With the
+current driver version, it is possible to do single-shot read of ADC
+sample data. On a preliminary version of the max22531 driver with
+debugfs_reg_access callbacks, it was also possible to read/write from/to
+different device registers and obtain the expected results.
 
-Thanks,
-Akshay
+Details of the test setup can be found at
+https://wiki.analog.com/resources/tools-software/linux-drivers/iio-adc/max22531
+
+This code was developed as part of the GSoC project for Linux
+Foundation. Many thanks to my mentors Marcelo Schmitt, Ceclan Dumitru,
+Jonathan Santos & Dragos Bogdan for their guidance and reviews
+throughout the course of this programme.
+
+Abhinav Jain (2):
+  dt-bindings: iio: adc: Add device tree binding for MAX22531 ADC
+  iio: adc: Add initial support for MAX22531 ADC
+
+ .../bindings/iio/adc/adi,max22531.yaml        |  75 +++++++
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/max22531.c                    | 191 ++++++++++++++++++
+ 5 files changed, 285 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max22531.yaml
+ create mode 100644 drivers/iio/adc/max22531.c
+
+
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+-- 
+2.34.1
+
 

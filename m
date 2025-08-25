@@ -1,62 +1,70 @@
-Return-Path: <linux-iio+bounces-23216-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23217-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA487B33DE6
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 13:25:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FDAEB33E12
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 13:31:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1286B7AD910
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 11:23:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AD7F1A82E72
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 11:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B838B2E7BC9;
-	Mon, 25 Aug 2025 11:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340E72DBF47;
+	Mon, 25 Aug 2025 11:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojMEJtVl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L/bp8JiS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7460A2E7BB3;
-	Mon, 25 Aug 2025 11:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824E62E1C63;
+	Mon, 25 Aug 2025 11:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756121075; cv=none; b=MpHpDJq89sTXAxkjhqljF/pRXcwfIgFVsjY1thyHRVQlo0IuYahPcECkLK/GSFVo+HNSE/ZTd37gaMPbaWCzUuyiEG21TuEN9Wg/7uTMW2WbkuUBh6hZJhDiuPCIUHonIXhjvjufWun01KbJz5QGN14vN5sXBvldGcuE63N53RM=
+	t=1756121475; cv=none; b=sYbC+n5C0vcGB9q3VR8vpw8im0QdsarV2qjG+ey9C/FkoL4LA06c8ommox1H8UAkANNRHNgNGcZMuRGlbfa6PwW+EypQk3PxZyTEYPLrq0RPkzGy1dKDzlSLBHU4tEVPot8PIF1qqDeYN84+SMaTzX/VrmiM9giS2VHFcuZtaQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756121075; c=relaxed/simple;
-	bh=XFCAtpJ/d92BaV2RcCmleQHUp/r6mqPPDKzSnsbrl8w=;
+	s=arc-20240116; t=1756121475; c=relaxed/simple;
+	bh=OgbR/W4gItCa2yQLXixaqQP3APnO9bdaKfA3LJBQfCg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IygvoD9Q3JIkDzUIL6w+FqxeiyJMYxU2xJcj4rfVQ5saeytiBayr3/s/TI7tzE4Vnlv+bryuQ3+J5gg40Or1OtGoJFC6lRkLyIoXKvoSJAH+F0d967aRUubPflPBVXeEckA02Gz5HYglATfUuJ+iG7U/yxdcY+9utgjgLhuOVgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojMEJtVl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13ADC4CEED;
-	Mon, 25 Aug 2025 11:24:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pUMor6dtcI5DWJalEBxk6/s8xm2oM9dMZ++FU+qS9xsvFbybScWYfXczfOEpSxkfLHS/frEOZNOv3BGJByhnJjAwk/mUQUc0j18MLOUphD1KTgFGH7+yR0vki+bnHTqP/+KlWHvdyRxpzWal63WMHyITy21Tkjp0dT0qVQOSkEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L/bp8JiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE62C4CEED;
+	Mon, 25 Aug 2025 11:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756121074;
-	bh=XFCAtpJ/d92BaV2RcCmleQHUp/r6mqPPDKzSnsbrl8w=;
+	s=k20201202; t=1756121473;
+	bh=OgbR/W4gItCa2yQLXixaqQP3APnO9bdaKfA3LJBQfCg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ojMEJtVlaHdhwhg3QiH8bqRwbUWNBQRFRH5BtImPXDFnLkv5odG0KffEEct+EESFE
-	 Q0SYEmrpBSdkhcIbbvZOY303oFUEcqz6i+Xq1zGnt4YYqEhsq5LqlOzpo6XydJUmsr
-	 lZUraNH/7jNFVIQTohJu/0Xc9OHWuKoTUmhbT+sMEeRvZwUP/6LjiCxvnakdNQb2ET
-	 UXVB9Vp5YvzhlEYT0lOWjZ0N+19LJJSSLYekOcmq4fowV3dh5GyH05fyoVNxOAjogP
-	 PWzT3rdK/0hFbWUoQk1tcOf9nyuO2jsBLewpg7T697upcvAoMmOZk4GV9opPMqxCwq
-	 JdbjyVmlkAljQ==
-Date: Mon, 25 Aug 2025 12:24:25 +0100
+	b=L/bp8JiSSu+DlgC5Jlw27azJqw5qLfIPDzMWuWAVBFPdKWEEDCulvu0L+jZv6fqfs
+	 8t/v6LSdy7Eo44fugSbuHh85J3k7JnIBwt4hbQMAAr5kmbgIN+Y1HaadG7wACwCM32
+	 Uk01Y6fBU95g41Qx4lOb75wliUbj41wOVpN4415IB84qZot8lJoPgwvH1qqse6qsVv
+	 ZSxCqjrUCOwcZFqTFWpBvo4CZqbQhuJBAAkGHz4Fp+7DlHCIqeE+Tj2g9ES2VT5JWw
+	 iY8BLMV9Ej4+JIfEV2QrNjEVEdzfAQMicwOeUVuk94uDqkSzX6Bh9HQpcwPQe487Bh
+	 iv1JIsfuKy/HQ==
+Date: Mon, 25 Aug 2025 12:31:00 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: "O'Griofa, Conall" <conall.ogriofa@amd.com>
-Cc: Sean Anderson <sean.anderson@linux.dev>, Anand Ashok Dumbre
- <anand.ashok.dumbre@xilinx.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, Andy Shevchenko <andy@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Simek,
- Michal" <michal.simek@amd.com>, "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, David Lechner
- <dlechner@baylibre.com>, Manish Narani <manish.narani@xilinx.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Subject: Re: [PATCH] iio: xilinx-ams: Fix AMS_ALARM_THR_DIRECT_MASK
-Message-ID: <20250825122425.4c656d31@jic23-huawei>
-In-Reply-To: <MN2PR12MB4223B775F240DFD91C6131138B33A@MN2PR12MB4223.namprd12.prod.outlook.com>
-References: <20250715003058.2035656-1-sean.anderson@linux.dev>
-	<MN2PR12MB4223B775F240DFD91C6131138B33A@MN2PR12MB4223.namprd12.prod.outlook.com>
+To: Dixit Parmar <dixitparmar19@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Ray
+ Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+ Support Opensource <support.opensource@diasemi.com>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, Haibo Chen
+ <haibo.chen@nxp.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Cai Huoqing <cai.huoqing@linux.dev>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Andreas Klinger <ak@it-klinger.de>, Crt
+ Mori <cmo@melexis.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 03/10] iio: dac: Drop unnecessary -ENOMEM messages
+Message-ID: <20250825123100.43d8c4ff@jic23-huawei>
+In-Reply-To: <20250822-enomam_logs-v1-3-db87f2974552@gmail.com>
+References: <20250822-enomam_logs-v1-0-db87f2974552@gmail.com>
+	<20250822-enomam_logs-v1-3-db87f2974552@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,69 +72,27 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 20 Aug 2025 12:31:12 +0000
-"O'Griofa, Conall" <conall.ogriofa@amd.com> wrote:
+On Fri, 22 Aug 2025 09:19:51 +0530
+Dixit Parmar <dixitparmar19@gmail.com> wrote:
 
-> Hi,
->=20
-> Good spot, thanks again!
-Applied to the fixes-togreg branch of iio.git and marked for stable.
-Thanks,
+> The drivers do not require their own error messages for error
+> -ENOMEM, memory allocation failures. So remove the dev_err
+> messages from the probe().
+> 
+> Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+> ---
+>  drivers/iio/dac/ad5380.c     | 4 +---
+>  drivers/iio/dac/ad5764.c     | 4 +---
+>  drivers/iio/dac/ds4424.c     | 4 +---
+>  drivers/iio/dac/ti-dac7311.c | 4 +---
+>  drivers/iio/dac/vf610_dac.c  | 4 +---
+Raced with another series doing a dev_err_probe() conversion and the relevant
+lines are gone.
+
+I'll fix up.
 
 Jonathan
-
->=20
-> Cheers,
-> Conall.
->=20
-> > -----Original Message-----
-> > From: Sean Anderson <sean.anderson@linux.dev>
-> > Sent: 15 July 2025 01:31
-> > To: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>; Jonathan Cameron
-> > <jic23@kernel.org>; linux-iio@vger.kernel.org
-> > Cc: Andy Shevchenko <andy@kernel.org>; linux-kernel@vger.kernel.org; Si=
-mek,
-> > Michal <michal.simek@amd.com>; linux-arm-kernel@lists.infradead.org; Da=
-vid
-> > Lechner <dlechner@baylibre.com>; Manish Narani <manish.narani@xilinx.co=
-m>;
-> > Nuno S=C3=A1 <nuno.sa@analog.com>; Sean Anderson <sean.anderson@linux.d=
-ev>
-> > Subject: [PATCH] iio: xilinx-ams: Fix AMS_ALARM_THR_DIRECT_MASK
-> >=20
-> > AMS_ALARM_THR_DIRECT_MASK should be bit 0, not bit 1. This would cause
-> > hysteresis to be enabled with a lower threshold of -28C. The temperatur=
-e alarm
-> > would never deassert even if the temperature dropped below the upper th=
-reshold.
-> >=20
-> > Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
-> > Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> > ---
-> >=20
-> >  drivers/iio/adc/xilinx-ams.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.=
-c index
-> > 76dd0343f5f7..552190dd0e6e 100644
-> > --- a/drivers/iio/adc/xilinx-ams.c
-> > +++ b/drivers/iio/adc/xilinx-ams.c
-> > @@ -118,7 +118,7 @@
-> >  #define AMS_ALARM_THRESHOLD_OFF_10	0x10
-> >  #define AMS_ALARM_THRESHOLD_OFF_20	0x20
-> >=20
-> > -#define AMS_ALARM_THR_DIRECT_MASK	BIT(1)
-> > +#define AMS_ALARM_THR_DIRECT_MASK	BIT(0)
-> >  #define AMS_ALARM_THR_MIN		0x0000
-> >  #define AMS_ALARM_THR_MAX		(BIT(16) - 1)
-> >=20
-> > --
-> > 2.35.1.1320.gc452695387.dirty =20
->=20
-> Reviewed-by: O'Griofa, Conall <conall.ogriofa@amd.com>
-
 

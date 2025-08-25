@@ -1,124 +1,164 @@
-Return-Path: <linux-iio+bounces-23255-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23256-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B748B34557
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 17:14:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F5DB3455F
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 17:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 924FA1885F0C
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 15:15:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E68103A6A7E
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 15:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA182F39A7;
-	Mon, 25 Aug 2025 15:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E83221F32;
+	Mon, 25 Aug 2025 15:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="AHTmaT4j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRFES+Kt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5FD2F360C
-	for <linux-iio@vger.kernel.org>; Mon, 25 Aug 2025 15:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD29917BA9;
+	Mon, 25 Aug 2025 15:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756134878; cv=none; b=fFBQZVk5FDs1kyzVwAgoW6rnq9RIHMeDTnjPviK1Y+1GCmMVAtEQJeNQdREMGd1te2AvsEXB7jTvURyQ155uKHGm0dSrH64AlxXWjNY9Bl9DAPMWBZOZEuQBL4idUhXnm80UUbYWBdjyFEiF7RW06W9rA9U9JUk8UkHCBhGXX7E=
+	t=1756134982; cv=none; b=YfuCGPcoqwIQoiv827wtmirwJLFzJ1lLFiF23hQKQG4LPD7D2N//FWLhZ66gEjEcC+KSOndhm+1Ljw+bg+sfR4V3QHR3kFfo+4Kr4uqkW1RdLjKOSu/Puh79yVurFrjr7cA23oeW4eqn48H1/wFSlBmO3SBiHxGzhyRJojH3LF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756134878; c=relaxed/simple;
-	bh=rXdwHNU85Qjk0GtyGVi9u1XRwpYcyepp/ONeSlt5oIA=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CHOSXUOO4hNCq20RQTLz2lkroaz32g4w7pNDnEvdrXKl5waXSjmkw9HBaKlW9XeapJghmWkeW2bJvywSPa9BaNa6UW/VNvg9jomB6UXLi2VE/zwE4xjDYr7aeCPcRRMpvz1GAof6eQTg74xb6AOqQn7b4YcB3iRLjTo5zxEJIcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=AHTmaT4j; arc=none smtp.client-ip=85.9.206.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail2; t=1756134861; x=1756394061;
-	bh=3/6Aun7aUZM0TUc8HgYjVm375wAKs/aNao7PL8OhJ/Y=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=AHTmaT4jNTvu0jCNmKr6qAOZYSUT4rNmhgZo5XBECd0WH40ravtq6FfQhw/QmhMw9
-	 i0Tovk+RwRRANg5TcB9ikSYiFOuA/d5g6qYxE5ubbipLSeTRGdQ1FMsb8IQHjtNTe1
-	 MOpQv47xDnvT4aN1an2sihY0cQ7HMJRKUW+F4LTRogrZtewytCm0xipArG9KGIELpo
-	 /IiLdRwSMTYoPBL7BccCotF7aWPJiHukJxMPXcmvAgTT1sNrPXvExINb15zS3PACk+
-	 umnKQyfSTRPImd/sOs2R1k+xAOHThDjbIkeD/hMrNEgpnhHzmy7rgMuackp91Z1s3E
-	 H/t01WqMKOqFA==
-Date: Mon, 25 Aug 2025 15:14:15 +0000
-To: Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan Cameron <jic23@kernel.org>, Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, David Lechner <dlechner@baylibre.com>, =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From: Sean Nyekjaer <sean@geanix.com>
-Subject: Re: [PATCH v2 1/5] iio: imu: inv_icm42600: Simplify pm_runtime setup
-Message-ID: <6utm3ywkymr3hretvru7xkdv7p7p3wtmd62blfyapmgagr3pzc@42oiakgdxmqp>
-In-Reply-To: <yegzkmvizfcxwohvkxtfguylamvlpy3hsabkxydjwhyiy3fonn@mqjqdpkpo375>
-References: <20250808-icm42pmreg-v2-0-a480279e7721@geanix.com> <20250808-icm42pmreg-v2-1-a480279e7721@geanix.com> <CAHp75VdKNE0xD8xbJQ2RSCA=_MB9DMZtXRTCNkpdKdv8vW-Q-w@mail.gmail.com> <20250809190609.4fef9df7@jic23-huawei> <CAHp75Vc5CxOj77cw85hmioFTG6YJCe3ZJWwJsJW+QL79K8GpWw@mail.gmail.com> <yegzkmvizfcxwohvkxtfguylamvlpy3hsabkxydjwhyiy3fonn@mqjqdpkpo375>
-Feedback-ID: 134068486:user:proton
-X-Pm-Message-ID: 8ac87c0f8133c81bbced517b3d3a312ea4133a34
+	s=arc-20240116; t=1756134982; c=relaxed/simple;
+	bh=ksZo7O/an1egh++NqqPXMDhaLDy/S33PXrwPNp3MOqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V9n5aJYbbCPw798NpcL+e3PNQOIXYU4FrlzMElg+8GqalPWLrycO7a1X476Q7a3SSVFRRUxJ4HApG6Lh2GNRfYY0U3uq3sCLaw7yj8b7SN1JnzUHE1pjg8KKm2pdOpo3fP9ZaCOkA5MV/YWjKq35VSRa78hZDmFXz/g9FqaWZA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRFES+Kt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2ADEC4CEED;
+	Mon, 25 Aug 2025 15:15:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756134981;
+	bh=ksZo7O/an1egh++NqqPXMDhaLDy/S33PXrwPNp3MOqY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rRFES+Ktw15O9XiztMF+h5Ctk8J+tgDGriguGscvOgMkpP3xu6yBEm3LWCmuU94T1
+	 MbRDUU5ADf/JMaIpqI3l0pkcEM0JoB3/cDA44R3DFNGGR5VQVTTEeShD4qV/CQE3cH
+	 mNqtElV+9S4LbJyBfpsz4s/9BzU1aE7bx8H3SZ1WpRI28CZE8qShhrrwqPKGLUwDKT
+	 e6Qe6SQcamXATW7mDhkwQY2h+/fFW9vjI3Q7FL9Yq2K5QBzepGznkQeFjGMHY6kJl3
+	 HQ32NjopO8g4ti6oxIAD5MTPbNFO6NcBBHDrqKE8o4lfnkMZKQSJDsyVw1cl85O6CN
+	 qzydW110cddSQ==
+Date: Mon, 25 Aug 2025 16:15:52 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Linus Walleij
+ <linus.walleij@linaro.org>, Eugen Hristev <eugen.hristev@linaro.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Cai Huoqing <cai.huoqing@linux.dev>, Haibo Chen <haibo.chen@nxp.com>, Shawn
+ Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, Marek Vasut <marek.vasut@gmail.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
+ <magnus.damm@gmail.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Chen-Yu Tsai <wens@csie.org>, Jernej
+ Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>,
+ Francesco Dolcini <francesco@dolcini.it>, =?UTF-8?B?Sm/Do28=?= Paulo
+ =?UTF-8?B?R29uw6dhbHZlcw==?= <jpaulo.silvagoncalves@gmail.com>, Rui Miguel
+ Silva <rmfrfs@gmail.com>, Jean-Baptiste Maneyrol
+ <jean-baptiste.maneyrol@tdk.com>, Subhajit Ghosh
+ <subhajit.ghosh@tweaklogic.com>, Gerald Loacker
+ <gerald.loacker@wolfvision.net>, Andreas Klinger <ak@it-klinger.de>, Crt
+ Mori <cmo@melexis.com>, Waqar Hameed <waqar.hameed@axis.com>, Julien
+ Stephan <jstephan@baylibre.com>, Peter Zijlstra <peterz@infradead.org>,
+ Greg KH <gregkh@linuxfoundation.org>, Bo Liu <liubo03@inspur.com>, Al Viro
+ <viro@zeniv.linux.org.uk>, Sean Nyekjaer <sean@geanix.com>, Frank Li
+ <Frank.Li@nxp.com>, Han Xu <han.xu@nxp.com>, Rayyan Ansari
+ <rayyan@ansari.sh>, Gustavo Vaz <gustavo.vaz@usp.br>, Matti Vaittinen
+ <mazziesaccount@gmail.com>, Alexandru Ardelean <aardelean@baylibre.com>,
+ "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, "Rob Herring (Arm)"
+ <robh@kernel.org>, Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>, Olivier
+ Moysan <olivier.moysan@foss.st.com>, Christophe JAILLET
+ <christophe.jaillet@wanadoo.fr>, Marcelo Schmitt
+ <marcelo.schmitt1@gmail.com>, Vasileios Amoiridis <vassilisamir@gmail.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Hans de Goede
+ <hansg@kernel.org>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Abhash Jha <abhashkumarjha123@gmail.com>, chuguangqing
+ <chuguangqing@inspur.com>, Shreeya Patel <shreeya.patel@collabora.com>,
+ Per-Daniel Olsson <perdaniel.olsson@axis.com>, =?UTF-8?B?QmFybmFiw6FzIEN6?=
+ =?UTF-8?B?w6ltw6Fu?= <barnabas.czeman@mainlining.org>, Neil Armstrong
+ <neil.armstrong@linaro.org>, David Laight <david.laight@aculab.com>, Jakob
+ Hauser <jahau@rocketmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v3 09/12] iio: magnetometer: Remove redundant
+ pm_runtime_mark_last_busy() calls
+Message-ID: <20250825161552.69b6e5a3@jic23-huawei>
+In-Reply-To: <20250825135401.1765847-10-sakari.ailus@linux.intel.com>
+References: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
+	<20250825135401.1765847-10-sakari.ailus@linux.intel.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 11, 2025 at 02:21:26PM +0100, Sean Nyekjaer wrote:
-> On Sat, Aug 09, 2025 at 10:27:52PM +0100, Andy Shevchenko wrote:
-> > On Sat, Aug 9, 2025 at 8:06=E2=80=AFPM Jonathan Cameron <jic23@kernel.o=
-rg> wrote:
-> > > On Fri, 8 Aug 2025 23:37:51 +0200
-> > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > On Fri, Aug 8, 2025 at 5:58=E2=80=AFPM Sean Nyekjaer <sean@geanix.c=
-om> wrote:
-> >=20
-> > ...
-> >=20
-> > > > > +       struct device *dev =3D regmap_get_device(st->map);
-> > > > >
-> > > > > +       if (!pm_runtime_status_suspended(dev))
-> > > > > +               regulator_disable(st->vddio_supply);
-> > > >
-> > > > I would rather use positive conditional as it seems to me more scal=
-able
-> > >
-> > > To potentially save time when Sean looks at this.  I don't follow. Do=
- you mean
-> > > something like
-> > >         if (pm_runtime_status_suspended(dev))
-> > >                 return;
-> > >
-> > >         regulator_disable(st->vddio_supply);
-> > >
-> > > ?
-> >=20
-> > Yes.
-> >=20
-> > > If so I'm not seeing why we'd want this to scale as it's a single use
-> > > devm_set_action_or_reset() callback doing just one thing.
-> >=20
-> > While I agree in _this_ case, in general the check and return
-> > immediately is more scalable for reading purposes, e.g., indentation
-> > will be one level less. Also it won't require additional churn in
-> > adding {, i.e. changing conditional line just for that.
-> >=20
->=20
-> I like the return early if pm_runtime_status_suspended() is true.
->=20
-> Andy, when doing reviews please keep the function name, as it's much
-> easier to add the changes.
->=20
-> Jonathan, do we think checking pm_runtime_status_suspended() is a viable
-> option? Should we ask on the linux-pm list?
->=20
-> If it's ok; I will patch:
-> drivers/iio/adc/ti-ads1100.c
-> drivers/iio/pressure/bmp280-core.c
-> drivers/iio/pressure/icp10100.c
+On Mon, 25 Aug 2025 16:53:58 +0300
+Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
 
-Hi Jonathan,
+> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> pm_runtime_mark_last_busy().
+> 
+> Also drop checking for errors on pm_runtime_put_autosuspend() in
+> bmc150_magn_set_power_state().
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Did you see my question here?
-Just ignore this if you are vacationing...
+One comment inline, but similar to the light sensors, I think it
+still makes sense to take this patch now.
 
-/Sean
+Applied
 
+Thanks,
+
+Jonathan
+
+> diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
+> index 761daead5ada..6a73f6e2f1f0 100644
+> --- a/drivers/iio/magnetometer/bmc150_magn.c
+> +++ b/drivers/iio/magnetometer/bmc150_magn.c
+> @@ -257,22 +257,17 @@ static int bmc150_magn_set_power_mode(struct bmc150_magn_data *data,
+>  
+>  static int bmc150_magn_set_power_state(struct bmc150_magn_data *data, bool on)
+>  {
+This is another 'helper' that should probably go away in the longer term.
+
+> -#ifdef CONFIG_PM
+> -	int ret;
+> +	int ret = 0;
+>  
+> -	if (on) {
+> +	if (on)
+>  		ret = pm_runtime_resume_and_get(data->dev);
+> -	} else {
+> -		pm_runtime_mark_last_busy(data->dev);
+> -		ret = pm_runtime_put_autosuspend(data->dev);
+> -	}
+> -
+> +	else
+> +		pm_runtime_put_autosuspend(data->dev);
+>  	if (ret < 0) {
+>  		dev_err(data->dev,
+>  			"failed to change power state to %d\n", on);
+>  		return ret;
+>  	}
+> -#endif
+>  
+>  	return 0;
+>  }
 

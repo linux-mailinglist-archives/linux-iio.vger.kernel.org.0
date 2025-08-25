@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-23258-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23259-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE9BB3456E
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 17:18:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE002B3457F
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 17:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1D8D3B9ABC
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 15:18:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5F09188B6D5
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 15:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CBA2FE059;
-	Mon, 25 Aug 2025 15:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60262FCBF1;
+	Mon, 25 Aug 2025 15:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BV2UIFwW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UsZXTCZj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EA72F2916;
-	Mon, 25 Aug 2025 15:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7230F217705;
+	Mon, 25 Aug 2025 15:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756135068; cv=none; b=hXKtDOBYs7eYcOT4dwv1HHestYq0alcSABt7LL/jO5t0W165xF8fwuLjDcP3uWkFsuDUKV0oJNyi2Eo7OmQdvAVujVHLh4bgWDs4drHoeD/JYLeeRuqMLLBYcWumUrew+KVWvHMLHGo4h2BnvHBA36aS/5VsDuAtDXqAXp/1voQ=
+	t=1756135141; cv=none; b=VXWwhewalE4tr3XFc/Gn7dJcX3zBs3vCS4ckrFfTBJu+Yd2sor+tUhgmzuWGS3NigUNPPyxmFRV6QzhGDKgZ40uWshEM68Au7O5puJxDtccbrBsUnrDV6eAWy3roDm2T/iEXYSQGou21O99cvq27NJxt9zhp6h7LxbqlOfWhcto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756135068; c=relaxed/simple;
-	bh=ygOKofieAuYX9xZmlHzgVr7NEyqnOdJZIQfa/ZE7W3Y=;
+	s=arc-20240116; t=1756135141; c=relaxed/simple;
+	bh=nHuCQbrTPbcmXuutp5NmWaPpQuYwRH2Nm0kKtyCKxVM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CY0wxKA7xTj55K64dDO+WGtZLpAEbbOX9r5pUcii2j+cZjZ2VtR5WYc66IT8prZ0JDKopYiQug08ph8iD18qfEFlM/r3eNnI+xd2oxPtnF76+5GynvCXCtJ8IAf4pqby4AF5GfLmRvAdRmp0nCuaFbHikGyOUr/Iwak0riFwnE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BV2UIFwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B230C4CEED;
-	Mon, 25 Aug 2025 15:17:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HuacGNtuqsoEQ0pzuy/eR3zU9GuKxCxJRWnQBl5UHVU1tGD4kbPe+vL0JT36JnARUjV1AQ4wYk3xp9FRHCkgoHQG+yvy3PIdu7TWvtWvKqfqiS3NMEya+UZCr/5twYxbq1XuGEr7ywVp7Jdu+9uFIRPX+CRRVwxc+55CtwghKec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UsZXTCZj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074AEC4CEED;
+	Mon, 25 Aug 2025 15:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756135067;
-	bh=ygOKofieAuYX9xZmlHzgVr7NEyqnOdJZIQfa/ZE7W3Y=;
+	s=k20201202; t=1756135141;
+	bh=nHuCQbrTPbcmXuutp5NmWaPpQuYwRH2Nm0kKtyCKxVM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BV2UIFwWRC++PKgc4dpvEzT+tAPRCS9+NJgTxI7AVYyPM3nKuBMkyjvdkcwUfYZHS
-	 4CxhwEEZ7TEDMAMAXJKKfISeuAYf4pesVpKboRkapXfe7cOu8Dz00oIAcbLjPFI80m
-	 9nHIpGEO+Qu1Ug714Yvfu+xngFKGLzRviTsMRge693KxVSTa06ssDDfu7l+YRiSKEw
-	 605faDIaNKUfOwd71apzT3c0dWoP1eHNLaPwmCQoQOXEkBlqitrsftePex9XL2TKBJ
-	 HW8RuzcAxLq71/4iL0z77qyHxXTEbE/9TaQ14n98Fo7HKr58H+7mrSTXVwbHihrkZt
-	 XnM7FkPcxOLug==
-Date: Mon, 25 Aug 2025 16:17:20 +0100
+	b=UsZXTCZjKhznSyvwbIwFCXFzkzdukSZhWWYbG9lxGvSvJzJBOe+Ewe3WcdE/tQQqZ
+	 /RtW7YibalaIbJQzl+CTwjFQ3gzC1FdzJCt8wwf0QgIpR9NEPXJ1VKFPMDHd/9ymk5
+	 moD4K3zdtMRteagNBPxWyHoAhc24Q50iFbLY8a0fdFOuV5nHSyw0r+NwkmQlwRxCw+
+	 UjGCUXYJPXJStm3A/lIhB/p+Wuetp/GZGNwmrCidRdah+JuDcTuk3T/4cWL1eySU8K
+	 B1FXGQx4uyiZiiZZIdgQIaq/kPnuDtefDextHVnHCtxo78OVgeRhsC+FcxEGSm2JV2
+	 HAD08Xp0UiCbg==
+Date: Mon, 25 Aug 2025 16:18:32 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>
 Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
@@ -89,12 +89,12 @@ Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v3 11/12] iio: proximity: Remove redundant
+Subject: Re: [PATCH v3 12/12] iio: temperature: Remove redundant
  pm_runtime_mark_last_busy() calls
-Message-ID: <20250825161720.65bdf415@jic23-huawei>
-In-Reply-To: <20250825135401.1765847-12-sakari.ailus@linux.intel.com>
+Message-ID: <20250825161739.292542bf@jic23-huawei>
+In-Reply-To: <20250825135401.1765847-13-sakari.ailus@linux.intel.com>
 References: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
-	<20250825135401.1765847-12-sakari.ailus@linux.intel.com>
+	<20250825135401.1765847-13-sakari.ailus@linux.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -105,7 +105,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 25 Aug 2025 16:54:00 +0300
+On Mon, 25 Aug 2025 16:54:01 +0300
 Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
 
 > pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
@@ -114,5 +114,10 @@ Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
 > pm_runtime_mark_last_busy().
 > 
 > Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Applied,
+> Acked-by: Crt Mori <cmo@melexis.com>
+Applied.
+
+thanks
+
+Jonathan
 

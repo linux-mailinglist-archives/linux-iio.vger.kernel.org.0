@@ -1,59 +1,60 @@
-Return-Path: <linux-iio+bounces-23243-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23244-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF62DB34420
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 16:37:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E092B34448
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 16:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6630188221E
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 14:36:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D61FE1674EC
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 14:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A582FD1BF;
-	Mon, 25 Aug 2025 14:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8ED2FD7A5;
+	Mon, 25 Aug 2025 14:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LWTOH8fY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uJdKUiAY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E93E2FABE3;
-	Mon, 25 Aug 2025 14:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AAC2FB987;
+	Mon, 25 Aug 2025 14:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756132414; cv=none; b=mTLSDlP/KPr1+ySLl1n9Ea4tdE7umlqfs9MG81IHhtLJdOj2udxVuoEtW2q9T4qNDuLmhqRI0nzDpHbckuzzKxOQNEXBjhE0PNi86Zq17BJJ8ndC7EFRF3KIZDsbcwRF3RrkcBNwiQs1tqCNqMov6T4e+J4gt4drynksoAYtZXA=
+	t=1756132508; cv=none; b=imCsML/GsiJQbCR1S8yYZt8m67F/cU1S/FxnJGxO16+Gxkg0d/1FYYENAN9AZyRi8QV+o/rLS/RJ/uoy6seBKF3FuuAA8P1iop4JfIb1lOEni+klAe/S0H+kTKzToJLg7RkJ1zwVTGetuEbU/CEBRLVagewifIecM2L5j9RKO/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756132414; c=relaxed/simple;
-	bh=xhSK8G/YNCbg2RlmI771QtKKh27941TambAywmDzy9c=;
+	s=arc-20240116; t=1756132508; c=relaxed/simple;
+	bh=3snOTNTnBVzm/Wq0dYUe0DK+V1Yn9vByQ4fFZ9yqbQs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d7uaJlCpgk98jI2XpP3pEN6OGuJIgslOKEenZ6xr7z/9ktcfVHL3afHe3H4sip77K4S2x4r1CAUneg2hXdNZJqY73O5Ig3BuAE7fR+QsyEtiLWs8Z0DtqhGJXFvEjc5E5bIQ/w6R9DwDnikXnFSaUFVYRYo71u1aTbKjOQvqesw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LWTOH8fY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0420C4CEED;
-	Mon, 25 Aug 2025 14:33:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jy37OUUh50qj/YGmfeQ97jFOZ8Q8lGTzZcFiwERK3yGqaoM3SnL6aB+vPgOd+R7FVPOYUxFe27rLyCznIIaLiSgFfGNSOcf0JW1FE6uo4nF3H7LFZdEG5B+rJ1epuqjJIm6iW11Z7kzC6YGYIyTp53wV/B49dO8ddWETXLST5h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uJdKUiAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5967CC4CEF4;
+	Mon, 25 Aug 2025 14:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756132414;
-	bh=xhSK8G/YNCbg2RlmI771QtKKh27941TambAywmDzy9c=;
+	s=k20201202; t=1756132507;
+	bh=3snOTNTnBVzm/Wq0dYUe0DK+V1Yn9vByQ4fFZ9yqbQs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LWTOH8fY1roq57qXjs3WI/lZEP/bsdBR4bYrmPvYbrPLFt6yLQ3c5usp/ZS4fp+4C
-	 0CETysSPlzvQJshm9ZjJYT0swptyOBauYqtBfiZj/wEUHiIfZ/2GqHwONw8Np0WMwC
-	 n8couoUddgyHAxm/fZe5E3ZMg/XckhXsJ6jnHTdz5Bf95s+mQoTtE4Hoemyse0Ay6v
-	 ABD3S1/sD8MFHTpbxgnge0xtYfcqP0/5Qpd74bw3suZapCikWCEsQmGmXYXgImYPqg
-	 We4oJKxAo+3eWGsu15bK6ofIOpHwvsNd/xwExYoBHeYscFMBfekKqzqRhUFeqhnrfe
-	 ahigTTgSP3siA==
-Date: Mon, 25 Aug 2025 15:33:25 +0100
+	b=uJdKUiAYVljjP/ILKpLivdMPyNwqunWBQoILJZLcj/721BQsBnwEGuiPTSn8mDANG
+	 p1A4NJCGmLlyf1+Yig5eabFJFlbLcu73IWX701MNOqoiUTDDTeocmDtBhkZ1lEZWbD
+	 N+/54wEQnqzUP6LlInVx90E9HM8HK5nOMTHIofweGn00u3r6AzyS5RMjQs6tupW268
+	 QY4BOTHRNZbA6dO7YoXidlL3o8gINk6edJ4+ZfF0uZBWbxOVwsBatyWjRQy0O1CkcX
+	 SlDno4ukj1+mGlRybenyjQVV4jmejiOac04434m5G3IFaXWcFl7CIh/ABc8BcBccat
+	 SuJahravPt7FA==
+Date: Mon, 25 Aug 2025 15:35:00 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jonathan Santos <Jonathan.Santos@analog.com>
 Cc: <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
  <devicetree@vger.kernel.org>, <Michael.Hennerich@analog.com>,
  <lars@metafoo.de>, <dlechner@baylibre.com>, <nuno.sa@analog.com>,
  <andy@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
- <conor+dt@kernel.org>, <marcelo.schmitt1@gmail.com>
-Subject: Re: [PATCH v2 2/4] iio: adc: ad7768-1: introduce chip info for
- future multidevice support
-Message-ID: <20250825153325.421d2a4d@jic23-huawei>
-In-Reply-To: <20250824040953.9547-1-Jonathan.Santos@analog.com>
-References: <20250824040953.9547-1-Jonathan.Santos@analog.com>
+ <conor+dt@kernel.org>, <marcelo.schmitt1@gmail.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>
+Subject: Re: [PATCH v2 3/4] iio: adc: ad7768-1: use
+ devm_regulator_get_enable_read_voltage()
+Message-ID: <20250825153500.66c658b0@jic23-huawei>
+In-Reply-To: <20250824041003.9727-1-Jonathan.Santos@analog.com>
+References: <20250824041003.9727-1-Jonathan.Santos@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,112 +62,111 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 24 Aug 2025 01:09:53 -0300
+On Sun, 24 Aug 2025 01:10:03 -0300
 Jonathan Santos <Jonathan.Santos@analog.com> wrote:
 
-> Add Chip info struct in SPI device to store channel information for
-> each supported part.
-> 
+> Use devm_regulator_get_enable_read_voltage() function as a standard and
+> concise way of reading the voltage from the regulator and keep the
+> regulator enabled. Replace the regulator descriptor with the direct
+> voltage value in the device struct.
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+
+This makes sense even without the rest of the series, so to reduce
+what you have to deal with in v3, applied to the togreg branch of iio.git
+
+thanks,
+
+Jonathan
+
 > ---
 > v2 Changes:
-> * removed AD7768_CHAN_INFO_NONE macro.
-> * reordered fields in ad7768_chip_info struct.
-> * removed trailing comma.
+> * Removed regulator value check (already done in probe).
+> * Fixed commit message and description as requested.
 > ---
->  drivers/iio/adc/ad7768-1.c | 75 ++++++++++++++++++++++++++------------
->  1 file changed, 52 insertions(+), 23 deletions(-)
-> 
+>  drivers/iio/adc/ad7768-1.c | 35 ++++++++---------------------------
+>  1 file changed, 8 insertions(+), 27 deletions(-)
+>=20
 > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index a2e061f0cb08..83b0907b068d 100644
+> index 83b0907b068d..51562367a9d4 100644
 > --- a/drivers/iio/adc/ad7768-1.c
 > +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -213,6 +213,13 @@ static const struct iio_scan_type ad7768_scan_type[] = {
->  	},
->  };
->  
-> +struct ad7768_chip_info {
-> +	const char *name;
-> +	const unsigned long *available_masks;
-> +	const struct iio_chan_spec *channel_spec;
-> +	int num_channels;
-> +};
-> +
->  struct ad7768_state {
+> @@ -224,7 +224,7 @@ struct ad7768_state {
 >  	struct spi_device *spi;
 >  	struct regmap *regmap;
-> @@ -234,6 +241,7 @@ struct ad7768_state {
->  	struct gpio_desc *gpio_reset;
->  	const char *labels[AD7768_MAX_CHANNELS];
->  	struct gpio_chip gpiochip;
-> +	const struct ad7768_chip_info *chip;
->  	bool en_spi_sync;
->  	/*
->  	 * DMA (thus cache coherency maintenance) may require the
-> @@ -750,24 +758,27 @@ static const struct iio_chan_spec_ext_info ad7768_ext_info[] = {
->  	{ }
+>  	struct regmap *regmap24;
+> -	struct regulator *vref;
+> +	int vref_uv;
+>  	struct regulator_dev *vcm_rdev;
+>  	unsigned int vcm_output_sel;
+>  	struct clk *mclk;
+> @@ -787,7 +787,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+>  {
+>  	struct ad7768_state *st =3D iio_priv(indio_dev);
+>  	const struct iio_scan_type *scan_type;
+> -	int scale_uv, ret, temp;
+> +	int ret, temp;
+> =20
+>  	scan_type =3D iio_get_current_scan_type(indio_dev, chan);
+>  	if (IS_ERR(scan_type))
+> @@ -808,11 +808,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+>  		return IIO_VAL_INT;
+> =20
+>  	case IIO_CHAN_INFO_SCALE:
+> -		scale_uv =3D regulator_get_voltage(st->vref);
+> -		if (scale_uv < 0)
+> -			return scale_uv;
+> -
+> -		*val =3D (scale_uv * 2) / 1000;
+> +		*val =3D (st->vref_uv * 2) / 1000;
+>  		*val2 =3D scan_type->realbits;
+> =20
+>  		return IIO_VAL_FRACTIONAL_LOG2;
+> @@ -1145,13 +1141,6 @@ static const struct iio_trigger_ops ad7768_trigger=
+_ops =3D {
+>  	.validate_device =3D iio_trigger_validate_own_device,
 >  };
->  
-> +#define AD7768_CHAN(_idx, _msk_avail) {	\
-
-Check for consistency.  looks like you were aiming for 1 space before \ but didn't
-get it the same everywhere?
-
-> +	.type = IIO_VOLTAGE,\
-> +	.info_mask_separate_available = _msk_avail,\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),\
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) | \
-> +			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) | \
-> +			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),\
-> +	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),\
-> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
-> +	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),\
-> +	.ext_info = ad7768_ext_info,\
-> +	.indexed = 1,\
-> +	.channel = _idx,\
-> +	.scan_index = _idx,\
-> +	.has_ext_scan_type = 1,\
-> +	.ext_scan_type = ad7768_scan_type,\
-> +	.num_ext_scan_type = ARRAY_SIZE(ad7768_scan_type),\
-> +}
-> +
->  static const struct iio_chan_spec ad7768_channels[] = {
-> -	{
-> -		.type = IIO_VOLTAGE,
-> -		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> -		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |
-> -					    BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) |
-> -					    BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> -		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> -		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> -		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> -		.ext_info = ad7768_ext_info,
-> -		.indexed = 1,
-> -		.channel = 0,
-> -		.scan_index = 0,
-> -		.has_ext_scan_type = 1,
-> -		.ext_scan_type = ad7768_scan_type,
-> -		.num_ext_scan_type = ARRAY_SIZE(ad7768_scan_type),
-> -	},
-> +	AD7768_CHAN(0, 0),
->  };
->  
->  static int ad7768_read_raw(struct iio_dev *indio_dev,
-> @@ -1334,6 +1345,18 @@ static int ad7768_register_regulators(struct device *dev, struct ad7768_state *s
->  	return 0;
->  }
->  
-> +static const unsigned long ad7768_channel_masks[] = {
-> +	BIT(0),
-
-That doesn't make a lot of sense. Don't provide one for devices with
-only one channel.  Leave it set to NULL and everything should just work.
-
-> +	0
-> +};
-
+> =20
+> -static void ad7768_regulator_disable(void *data)
+> -{
+> -	struct ad7768_state *st =3D data;
+> -
+> -	regulator_disable(st->vref);
+> -}
+> -
+>  static int ad7768_set_channel_label(struct iio_dev *indio_dev,
+>  						int num_channels)
+>  {
+> @@ -1395,19 +1384,11 @@ static int ad7768_probe(struct spi_device *spi)
+>  		return dev_err_probe(&spi->dev, PTR_ERR(st->regmap24),
+>  				     "Failed to initialize regmap24");
+> =20
+> -	st->vref =3D devm_regulator_get(&spi->dev, "vref");
+> -	if (IS_ERR(st->vref))
+> -		return PTR_ERR(st->vref);
+> -
+> -	ret =3D regulator_enable(st->vref);
+> -	if (ret) {
+> -		dev_err(&spi->dev, "Failed to enable specified vref supply\n");
+> -		return ret;
+> -	}
+> -
+> -	ret =3D devm_add_action_or_reset(&spi->dev, ad7768_regulator_disable, s=
+t);
+> -	if (ret)
+> -		return ret;
+> +	ret =3D devm_regulator_get_enable_read_voltage(&spi->dev, "vref");
+> +	if (ret < 0)
+> +		return dev_err_probe(&spi->dev, ret,
+> +				     "Failed to get VREF voltage\n");
+> +	st->vref_uv =3D ret;
+> =20
+>  	st->mclk =3D devm_clk_get_enabled(&spi->dev, "mclk");
+>  	if (IS_ERR(st->mclk))
 
 

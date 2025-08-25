@@ -1,69 +1,69 @@
-Return-Path: <linux-iio+bounces-23234-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23235-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6FE4B34289
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 16:02:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19016B34275
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 16:00:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA7E5E4269
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 13:58:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BCFD2A23E9
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 13:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC73C2F6170;
-	Mon, 25 Aug 2025 13:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1A123D7CB;
+	Mon, 25 Aug 2025 13:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JWfoTzo2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cjQl/6xT"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D502F60B2;
-	Mon, 25 Aug 2025 13:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C125A2797AA;
+	Mon, 25 Aug 2025 13:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756130070; cv=none; b=hNuUroRCJhMDmhDNS1Mrs7CLx8Q47DtfTAsCvuXbIcJupecw5KAGi49jfdaBLTOYG+FfrzVcvkc5gkCpK5SIynsUMLNoyouMwI8J+wWPvdL0zreEZ9mUdXYh7NI4e8CLJ+lAlMbusZ9fcEhrn4gOgGGQhLL32W9VzHULdQznGoE=
+	t=1756130071; cv=none; b=LYE9pt0tDm6jGKispzMeaoH87U2hzv8CbvDgf61l3EMUlmPW1+ODtLSCuIrTzJBHQndBFAIeA+8M4QxPI7rtsPe+pGi3yOA1YchX93bLD5je6KDsvjJYB7jKs8oRNiBgrDjbqQb9Rny7rYWsUSsDaxNbOQ9M2qb4BGWWrg8B2Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756130070; c=relaxed/simple;
-	bh=Y6BmQsoHEXKtoNEql38zgrbM5vjoAf3tiVb+ccRW6lQ=;
+	s=arc-20240116; t=1756130071; c=relaxed/simple;
+	bh=JGUMCbb2jJCc1rUIo+reE75z35JPcdws3MpXvLdGhaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+4ewM4cwPgsEkbqSt0I0hQW+3E/OJlbEFOUL74ifHfySBCY1c2388vrzsZ2wbO2Gzx71/lwQsaEwEI09FX4h1TDlNSv4P5Rnt1S00x/TTjYlZiKBX5YWS9GNyMxI3E/dLp5/weuD5hqwmkKmuKdIUfTn3a6y0RaHBqAu7NjESU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JWfoTzo2; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=lkcNF/gRvbivPhfosljMaY+HlIrPXTW99b0TUGyG0klRRJ26xf8+HKjPGHCQmOaqiblXdJBGbPfHThpnc6N1Som0M8uFuScWJfNfY+T4KjXyF81lDNkrSkV74IkzZ64osdMVaSz+HbcDbPRhKEkHZaXPLwS2oe/jkaJ+Co/TNMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cjQl/6xT; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756130068; x=1787666068;
+  t=1756130069; x=1787666069;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Y6BmQsoHEXKtoNEql38zgrbM5vjoAf3tiVb+ccRW6lQ=;
-  b=JWfoTzo2qGPgPdIhRUeZHcnG4/uNE2B5+3jEFOY3OoX8fRymjVI9eP6I
-   F90dkgtESVuruD7mb50oxYkvGoJlm0VupBnMhtnUx2KvcFtWhQo/UXjEi
-   TvH97hJ+Z5v+yvXv7wOFbCM7ZiadALhU9M29BoVv3Y2bMBbfkNGxPFxs0
-   XxUT4nXoy1BlGG3JeGmf28hCKIvA2RiF1khHHG/7+murYyrV3rdk9J4vg
-   6vpLIxVPLZw9lHmXk77JIRtaAZb79MLsVBWpSuZv4eFSVsQG3k0l2oltw
-   FeZaCg/b1GKt7VJKfqYOxMlM7UdVjjWwfjtWDsrLHl6lwnuRHVU252aO7
-   Q==;
-X-CSE-ConnectionGUID: g++ESyYvQBOI5h5DmydInQ==
-X-CSE-MsgGUID: gxHiNuEWRgq7rw5PqYFXgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68936694"
+  bh=JGUMCbb2jJCc1rUIo+reE75z35JPcdws3MpXvLdGhaY=;
+  b=cjQl/6xTItslfoqqc1L5rJCDgXZelwl8Q71YLPQpgv5mZkl75UuKIf7D
+   ykcsX5/lJqEI/7KiTJ2CAn0wJ4JABQBILFqHgRuw41fzysGUk8jhcI5sV
+   G6LKxOZXtMZsOnVm8BSCuE0pwetaUwC2VV8Qt3fua5hYGQs321wg0qbze
+   KdBwE2bXSgUMYYEddXaQSRTZRcLuEyGjpwQBvgJYcut5gqd1G6QlKrIHI
+   PpshJXPcqQTpJb/Vo3Bk6ijAPrzO9dDipWo7o/eVA2jVM6HgljMTaFWt4
+   f5l0SUHcRJ9796ATMdSUA/Rwlr3/cEOi2/jGmYJOcnQiDNzpyOg4DSI2w
+   g==;
+X-CSE-ConnectionGUID: 5C4rUb8HQl+stZGohWGiwg==
+X-CSE-MsgGUID: AcViXlhjTMupdGi1LdZEcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68936703"
 X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
-   d="scan'208";a="68936694"
+   d="scan'208";a="68936703"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
   by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:23 -0700
-X-CSE-ConnectionGUID: iB8M4n4+QkurhYzn8JVT1w==
-X-CSE-MsgGUID: NLoPB0QnQCecCSyvVSxz6g==
+X-CSE-ConnectionGUID: KwSioaM3Rw2uJuAG6v80pA==
+X-CSE-MsgGUID: vS1ZLyJ/RNCoLz0J0eVOgg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
-   d="scan'208";a="168547681"
+   d="scan'208";a="168547683"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.7])
   by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:18 -0700
 Received: from punajuuri.localdomain (unknown [192.168.240.130])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id C755E121F6F;
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id CC2DE121F72;
 	Mon, 25 Aug 2025 16:54:01 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
 	(envelope-from <sakari.ailus@linux.intel.com>)
-	id 1uqXe5-00000007PON-3Hj0;
+	id 1uqXe5-00000007POT-3N1t;
 	Mon, 25 Aug 2025 16:54:01 +0300
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
@@ -139,9 +139,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-sunxi@lists.linux.dev
-Subject: [PATCH v3 06/12] iio: gyro: Remove redundant pm_runtime_mark_last_busy() calls
-Date: Mon, 25 Aug 2025 16:53:55 +0300
-Message-ID: <20250825135401.1765847-7-sakari.ailus@linux.intel.com>
+Subject: [PATCH v3 07/12] iio: imu: Remove redundant pm_runtime_mark_last_busy() calls
+Date: Mon, 25 Aug 2025 16:53:56 +0300
+Message-ID: <20250825135401.1765847-8-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
 References: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
@@ -159,84 +159,210 @@ to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
 pm_runtime_mark_last_busy().
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Rui Miguel Silva <rui.silva@linaro.org>
 ---
- drivers/iio/gyro/bmg160_core.c     | 4 +---
- drivers/iio/gyro/fxas21002c_core.c | 2 --
- drivers/iio/gyro/mpu3050-core.c    | 3 ---
- drivers/iio/gyro/mpu3050-i2c.c     | 1 -
- 4 files changed, 1 insertion(+), 9 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  | 5 -----
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 1 -
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c   | 5 -----
+ drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c   | 1 -
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c         | 6 ------
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c      | 1 -
+ drivers/iio/imu/kmx61.c                            | 6 ++----
+ 7 files changed, 2 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
-index 781d3e96645f..38394b5f3275 100644
---- a/drivers/iio/gyro/bmg160_core.c
-+++ b/drivers/iio/gyro/bmg160_core.c
-@@ -309,10 +309,8 @@ static int bmg160_set_power_state(struct bmg160_data *data, bool on)
- 
- 	if (on)
- 		ret = pm_runtime_get_sync(dev);
--	else {
--		pm_runtime_mark_last_busy(dev);
-+	else
- 		ret = pm_runtime_put_autosuspend(dev);
--	}
- 
- 	if (ret < 0) {
- 		dev_err(dev, "Failed: bmg160_set_power_state for %d\n", on);
-diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21002c_core.c
-index 754c8a564ba4..a88670207cec 100644
---- a/drivers/iio/gyro/fxas21002c_core.c
-+++ b/drivers/iio/gyro/fxas21002c_core.c
-@@ -373,8 +373,6 @@ static int  fxas21002c_pm_put(struct fxas21002c_data *data)
- {
- 	struct device *dev = regmap_get_device(data->regmap);
- 
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+index 7a28051330b7..48014b61ced3 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -315,7 +315,6 @@ static int inv_icm42600_accel_read_sensor(struct iio_dev *indio_dev,
+ 		ret = -EINVAL;
+ exit:
+ 	mutex_unlock(&st->lock);
 -	pm_runtime_mark_last_busy(dev);
--
- 	return pm_runtime_put_autosuspend(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 	return ret;
  }
+@@ -567,7 +566,6 @@ static int inv_icm42600_accel_write_scale(struct iio_dev *indio_dev,
+ 	ret = inv_icm42600_set_accel_conf(st, &conf, NULL);
  
-diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
-index 16553948c5c3..67ae7d1012bc 100644
---- a/drivers/iio/gyro/mpu3050-core.c
-+++ b/drivers/iio/gyro/mpu3050-core.c
-@@ -370,7 +370,6 @@ static int mpu3050_read_raw(struct iio_dev *indio_dev,
- 
- out_read_raw_unlock:
- 	mutex_unlock(&mpu3050->lock);
--	pm_runtime_mark_last_busy(mpu3050->dev);
- 	pm_runtime_put_autosuspend(mpu3050->dev);
+ 	mutex_unlock(&st->lock);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
  
  	return ret;
-@@ -662,7 +661,6 @@ static int mpu3050_buffer_postdisable(struct iio_dev *indio_dev)
- {
- 	struct mpu3050 *mpu3050 = iio_priv(indio_dev);
+@@ -675,7 +673,6 @@ static int inv_icm42600_accel_write_odr(struct iio_dev *indio_dev,
  
--	pm_runtime_mark_last_busy(mpu3050->dev);
- 	pm_runtime_put_autosuspend(mpu3050->dev);
+ out_unlock:
+ 	mutex_unlock(&st->lock);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
  
- 	return 0;
-@@ -976,7 +974,6 @@ static int mpu3050_drdy_trigger_set_state(struct iio_trigger *trig,
- 		if (ret)
- 			dev_err(mpu3050->dev, "error resetting FIFO\n");
+ 	return ret;
+@@ -727,7 +724,6 @@ static int inv_icm42600_accel_read_offset(struct inv_icm42600_state *st,
+ 	memcpy(data, st->buffer, sizeof(data));
  
--		pm_runtime_mark_last_busy(mpu3050->dev);
- 		pm_runtime_put_autosuspend(mpu3050->dev);
- 		mpu3050->hw_irq_trigger = false;
+ 	mutex_unlock(&st->lock);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 	if (ret)
+ 		return ret;
+@@ -865,7 +861,6 @@ static int inv_icm42600_accel_write_offset(struct inv_icm42600_state *st,
  
-diff --git a/drivers/iio/gyro/mpu3050-i2c.c b/drivers/iio/gyro/mpu3050-i2c.c
-index 8e284f47242c..092878f2c886 100644
---- a/drivers/iio/gyro/mpu3050-i2c.c
-+++ b/drivers/iio/gyro/mpu3050-i2c.c
-@@ -27,7 +27,6 @@ static int mpu3050_i2c_bypass_deselect(struct i2c_mux_core *mux, u32 chan_id)
- {
- 	struct mpu3050 *mpu3050 = i2c_mux_priv(mux);
- 
--	pm_runtime_mark_last_busy(mpu3050->dev);
- 	pm_runtime_put_autosuspend(mpu3050->dev);
- 	return 0;
+ out_unlock:
+ 	mutex_unlock(&st->lock);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 	return ret;
  }
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+index ca744aaee542..36d69a0face6 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+@@ -430,7 +430,6 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
+ 	if (sleep)
+ 		msleep(sleep);
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	return ret;
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+index 9ba6f13628e6..8a7cc9127631 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -184,7 +184,6 @@ static int inv_icm42600_gyro_read_sensor(struct inv_icm42600_state *st,
+ 		ret = -EINVAL;
+ exit:
+ 	mutex_unlock(&st->lock);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 	return ret;
+ }
+@@ -283,7 +282,6 @@ static int inv_icm42600_gyro_write_scale(struct iio_dev *indio_dev,
+ 	ret = inv_icm42600_set_gyro_conf(st, &conf, NULL);
+ 
+ 	mutex_unlock(&st->lock);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	return ret;
+@@ -378,7 +376,6 @@ static int inv_icm42600_gyro_write_odr(struct iio_dev *indio_dev,
+ 
+ out_unlock:
+ 	mutex_unlock(&st->lock);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	return ret;
+@@ -430,7 +427,6 @@ static int inv_icm42600_gyro_read_offset(struct inv_icm42600_state *st,
+ 	memcpy(data, st->buffer, sizeof(data));
+ 
+ 	mutex_unlock(&st->lock);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 	if (ret)
+ 		return ret;
+@@ -567,7 +563,6 @@ static int inv_icm42600_gyro_write_offset(struct inv_icm42600_state *st,
+ 
+ out_unlock:
+ 	mutex_unlock(&st->lock);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 	return ret;
+ }
+diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+index 271a4788604a..30f6a9595eea 100644
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+@@ -41,7 +41,6 @@ static int inv_icm42600_temp_read(struct inv_icm42600_state *st, s16 *temp)
+ 
+ exit:
+ 	mutex_unlock(&st->lock);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	return ret;
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index 39eb516acc73..b2fa1f4957a5 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -735,7 +735,6 @@ static int inv_mpu6050_read_channel_data(struct iio_dev *indio_dev,
+ 		break;
+ 	}
+ 
+-	pm_runtime_mark_last_busy(pdev);
+ 	pm_runtime_put_autosuspend(pdev);
+ 
+ 	return ret;
+@@ -938,7 +937,6 @@ static int inv_mpu6050_write_raw(struct iio_dev *indio_dev,
+ 		break;
+ 	}
+ 
+-	pm_runtime_mark_last_busy(pdev);
+ 	pm_runtime_put_autosuspend(pdev);
+ error_write_raw_unlock:
+ 	mutex_unlock(&st->lock);
+@@ -1146,14 +1144,12 @@ static int inv_mpu6050_enable_wom(struct inv_mpu6050_state *st, bool en)
+ 			st->chip_config.wom_en = false;
+ 		}
+ 
+-		pm_runtime_mark_last_busy(pdev);
+ 		pm_runtime_put_autosuspend(pdev);
+ 	}
+ 
+ 	return result;
+ 
+ error_suspend:
+-	pm_runtime_mark_last_busy(pdev);
+ 	pm_runtime_put_autosuspend(pdev);
+ 	return result;
+ }
+@@ -1249,7 +1245,6 @@ static int inv_mpu6050_write_event_value(struct iio_dev *indio_dev,
+ 	value = (u64)val * 1000000ULL + (u64)val2;
+ 	result = inv_mpu6050_set_wom_threshold(st, value, INV_MPU6050_FREQ_DIVIDER(st));
+ 
+-	pm_runtime_mark_last_busy(pdev);
+ 	pm_runtime_put_autosuspend(pdev);
+ 
+ 	return result;
+@@ -1357,7 +1352,6 @@ inv_mpu6050_fifo_rate_store(struct device *dev, struct device_attribute *attr,
+ 	if (result)
+ 		goto fifo_rate_fail_power_off;
+ 
+-	pm_runtime_mark_last_busy(pdev);
+ fifo_rate_fail_power_off:
+ 	pm_runtime_put_autosuspend(pdev);
+ fifo_rate_fail_unlock:
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+index 5b1088cc3704..10a473342075 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+@@ -194,7 +194,6 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enable)
+ 		result = inv_mpu6050_prepare_fifo(st, false);
+ 		if (result)
+ 			goto error_power_off;
+-		pm_runtime_mark_last_busy(pdev);
+ 		pm_runtime_put_autosuspend(pdev);
+ 	}
+ 
+diff --git a/drivers/iio/imu/kmx61.c b/drivers/iio/imu/kmx61.c
+index 55c82891e08c..3cd91d8a89ee 100644
+--- a/drivers/iio/imu/kmx61.c
++++ b/drivers/iio/imu/kmx61.c
+@@ -747,12 +747,10 @@ static int kmx61_set_power_state(struct kmx61_data *data, bool on, u8 device)
+ 		data->mag_ps = on;
+ 	}
+ 
+-	if (on) {
++	if (on)
+ 		ret = pm_runtime_resume_and_get(&data->client->dev);
+-	} else {
+-		pm_runtime_mark_last_busy(&data->client->dev);
++	else
+ 		ret = pm_runtime_put_autosuspend(&data->client->dev);
+-	}
+ 	if (ret < 0) {
+ 		dev_err(&data->client->dev,
+ 			"Failed: kmx61_set_power_state for %d, ret %d\n",
 -- 
 2.47.2
 

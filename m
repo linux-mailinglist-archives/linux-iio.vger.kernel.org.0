@@ -1,156 +1,129 @@
-Return-Path: <linux-iio+bounces-23262-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23263-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10467B34CD6
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 22:53:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0798AB34D20
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 22:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB897189BE9D
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 20:53:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D91F6203F51
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 20:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7C1298CDC;
-	Mon, 25 Aug 2025 20:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEB729992A;
+	Mon, 25 Aug 2025 20:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P49mH/My"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PRvpxB6a"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F01428688E;
-	Mon, 25 Aug 2025 20:53:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15A61E89C;
+	Mon, 25 Aug 2025 20:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756155209; cv=none; b=BQ5Ni/ckgWrwf6n9yeqbm5gZsRurdBvu3kGdTDeogcaDulFjgk2PO+ZtXbFf3SjAHc1ux29/syQTap4NIothDoLhPlXk9yC0/ZwgJONH1Fu8ifwHE6DCjBKGv0YknIyTYwgaHD4uMHJxw0haZCB8g1HPxkHYR922qLddjHs7dUE=
+	t=1756155568; cv=none; b=cHkYXBSKBBTrRIRd5mp3cV/VjwZsR2EQMkYNGzDM+QCbLYy1WBsEzZ8rfvuHOZuHJReiZmUg8sILGqCDx9z9jU4v0+3yDhAO/hyf5FDj+Mm2YXnCmhT+mU49KuWx9jdLZ5nAaYLQpY6g96BiOEfPtFWE1qdq5JH9nJlok0n9oIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756155209; c=relaxed/simple;
-	bh=s3tmR7nxofceGS0RADamNfNDc9paoHZFEDJVu8jYTu8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TdWsa1eK/vx91q2p6zOzUmzLfPOmqf3KTHzM8egbJJA0veR2GtxrWze0ck7qQhfqeDBzBTGunrqvG8S+RaZlpMxxdLHTb9zBUcNoFC/Z7d85gyF+X8CsPgtOAL/qVRYB+DPvrgg8IeYBP/2LW4FjCF1OkVLJMASGh0jLduaHoPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P49mH/My; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756155209; x=1787691209;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=s3tmR7nxofceGS0RADamNfNDc9paoHZFEDJVu8jYTu8=;
-  b=P49mH/MyecKbEK3JICS+vRL+ppUb8iHHnZcb+m7txh9YTm3LgXRlJPyC
-   dvS5HMcH+sYwMJ0aMDBlWccUtV2ON5jbj9sTg23bGQ63dT8yATBb1hHN0
-   S7D6vP8bGRizHh3RbIjHLKzdUx+d4b+RYASWUlAhcotoIKNBrAes+132L
-   l18HnCcx1cV7liid0Zvr29u43YBlrx5L3ZsBMqzvZ7wFTq+54QDNS0myD
-   +YCMAoeEXPHSKbmNHYgfuV7Q1CKYyOrXUyg5m/KFQZ5miiKVEvbcsFXmA
-   JUY7Ey0Jp7wmsi2a4lhpNGsnpbWzAaxTSK65339rSkacsgpigzDGfpljf
-   w==;
-X-CSE-ConnectionGUID: o+9OSFHvRK2zlk53zvYocQ==
-X-CSE-MsgGUID: iXvPoQivSEq+4M/DQYhtKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62205754"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62205754"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:52:43 -0700
-X-CSE-ConnectionGUID: F+7z9UEqTpCLzRepANTSzQ==
-X-CSE-MsgGUID: hMmmi/nIT2mlfySCXjSzQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="200286930"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.157])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 13:52:39 -0700
-Received: from punajuuri.localdomain (unknown [192.168.240.130])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 33C1C11FB0F;
-	Mon, 25 Aug 2025 23:52:36 +0300 (EEST)
-Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
-	(envelope-from <sakari.ailus@linux.intel.com>)
-	id 1uqeBA-00000007PWX-0Pyt;
-	Mon, 25 Aug 2025 23:52:36 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Subject: [PATCH v4 1/1] iio: dac: Remove redundant pm_runtime_mark_last_busy() calls
-Date: Mon, 25 Aug 2025 23:52:35 +0300
-Message-ID: <20250825205235.1766401-1-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1756155568; c=relaxed/simple;
+	bh=P+f9GWoudFIxOthJoiv89uXLOQljtr15VfO53YgP3og=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ug3GvYgmpNesbZgr6hk1Jyptt+YWU/8xSo0UX5C8PfXzucRnN45pXyiIw1vnzTWDtoSoLkqOo3n8sz5ngMqVTOfmqqnGXyTjgaiInfR08jNy+xTaLlKQwxlik9HBO0zBOHTW2beKOQMak/RAOUpKIO50KylxtWhUaAcRij7zrWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PRvpxB6a; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-55f499c7f0cso988419e87.0;
+        Mon, 25 Aug 2025 13:59:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756155565; x=1756760365; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NEDyZPVAqJd7dy++5AJb59bf7HNDp+oeDl1YcGWBAgw=;
+        b=PRvpxB6a0AOkVmZl8nWYRcAXmiBwxB+TtWm98sVGpC5ZykDZp3xzXX8MzSNu6EwhjL
+         UIE3hohcYhGKUo9cpQmnlpRQSLP7CZ7HgpORafsHnCZgaEajGbj1E0QOlXxZr0AIy530
+         glQ2L3Ir9uGxVuc+xfYWrn5jIb6Tvium4Q4uYHeqSv625y0q0s3UpYEYa8gZ1q1vXzEN
+         MEEhsg7BIkJZdHZsElaTp5MmZoapJMCFFm86tSiINMhl+jxbEVdJv9l4EAXAUOiYLDOr
+         xrvxpPhgqiTespRDwBNtYGv/v478zseBGhE/24A+NZ3vv9mMtV//uC9/fe9ut1e+JPGZ
+         6GTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756155565; x=1756760365;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NEDyZPVAqJd7dy++5AJb59bf7HNDp+oeDl1YcGWBAgw=;
+        b=tdmFGEnXbg1Xg7+R5ZJvNfhppH5zA14LHHbRyDzRO4tsqTwCJhHAEG0XCCJ7NiAFiD
+         yQnNREHOfTUykDM72JZ4zTQnc3dgOcrWsjhKNeX32jskLlhoZWrgLB+khTavMwWFHil1
+         +Jxe/P2CyW8pBLA5USCC5aLbaf7+3FEuBkG4j6Djb7afM0wZ7Bn8A7MluugaZ1xZuawM
+         m+Y+X4l4YuMIBFwAZzn30OrPFgEju5l9AcSfzdTlFX7IfomRMbklh6Mlw3034XcOUiEZ
+         SDUQyCYrJciFEa4AH8zwq3P1IplTOhZG1engyyTt5md4o9BOEBAoaRdDAzjYdyeVvouS
+         /Bag==
+X-Forwarded-Encrypted: i=1; AJvYcCWtJwwoog2Gb43pnpKODkJbDWthdHesW01qJNLuOlXhHhMbB1+pjTV8NEdFFT/S8t20XgcTtat6yS8=@vger.kernel.org, AJvYcCXHEezEpd8yIVaZzWinoORLs0vmiBp3XkDZeVvNWaKD+4bO6mQhL57Ke5PnD4OA6CWJOk+JElF2Vh73qu2H@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUxEef00Ye7zdZ1CshqHFfhDj9ZPRTn3t2lSqBYy21kGxHIZvQ
+	+Wx9WR7H158TDKv6WU3Mvg0XONeMLA6e+7maxd03A1rvDxY2TUXaqcb9YuBDmHYt6EX9/2WyERp
+	s8kMcfWBsrXNIgb4NhZKIUTw6XEOKvhs=
+X-Gm-Gg: ASbGnct5KdxSvEtX6cA4yNpazspoL/ezIBPPeTsTFlZ0OdxCq334lEtpoc7m3AtA84p
+	rRd5UcE4tTBGMkOUUcO3/NR9dM4kvuunESbCaJtiaftaViBU54dkHMM/MDSqOISTboCkkpoRwwA
+	cT/jmSYHY23DK45z+SP8auJwbQ8U/+N6X1lnO2WQnTRsPZp/YFIGd7vSksfG9y2ZmHizd2Ntu/A
+	hsqmU8bAErYaTdhV1DkwOxFc6IqGPtrjRqOdc74Jg==
+X-Google-Smtp-Source: AGHT+IGqCPX51Ss3DOPVVuYpEQYg8NqfIXNFIutjVci2omtiLZJsnfXe8YEYi2uoT4Y/9ZKYK072kPWj6B7xClz5wN0=
+X-Received: by 2002:a05:6512:1581:b0:55c:c937:1106 with SMTP id
+ 2adb3069b0e04-55f0d3715b2mr3714312e87.28.1756155564703; Mon, 25 Aug 2025
+ 13:59:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250822180335.362979-1-akshayaj.lkd@gmail.com> <20250825152608.6468c27b@jic23-huawei>
+In-Reply-To: <20250825152608.6468c27b@jic23-huawei>
+From: Akshay Jindal <akshayaj.lkd@gmail.com>
+Date: Tue, 26 Aug 2025 02:29:12 +0530
+X-Gm-Features: Ac12FXyCinT6t4daEAj_YSmGc2pAsrD-_LPnxBN2FPcqHRneEAD2IAxJm6uvRjY
+Message-ID: <CAE3SzaR14zWWM_g-H4C76+6fBDotuAux7n2V1g94R2xLFQZOYQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: light: ltr390: Add runtime PM support
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: anshulusr@gmail.com, dlechner@baylibre.com, nuno.sa@analog.com, 
+	andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-pm_runtime_mark_last_busy().
+Hi Jonathan,
+Thanks for your review. Please see my followup inline.
 
-Also clean up error handling in stm32_dac_set_enable_state().
+On Mon, Aug 25, 2025 at 7:56=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Fri, 22 Aug 2025 23:33:26 +0530
+> Akshay Jindal <akshayaj.lkd@gmail.com> wrote:
+> > +
+> > +     if (!state) {
+> > +             ret =3D regmap_clear_bits(data->regmap, LTR390_INT_CFG, L=
+TR390_LS_INT_EN);
+> > +             data->irq_enabled =3D false;
+>
+> Just take an extra reference to runtime pm on enable of event and put it =
+disable.
+> Then no need for special handling with a local flag etc.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
-since v3:
+Consider a scenario, where the user only disables the event instead of
+enabling it,
+(i.e. user wrote 0 on the sysfs attribute before it was 1). In this case,
+If enable means inc ref count and disable means dec ref count, then
+this would lead to refcount underflow and the suspend callback will
+not be called.
 
-- Fix condition for calling pm_runtime_put_autosuspend().
+To handle this case, we would need to check whether irq/event was
+enabled or not.
+For that either we can use the local flag as I did, or I would need to
+do a read and test
+for the interrupt bit being set. I feel using the local flag would be
+cleaner and would
+require less code.
+If you are fine with local flag usage, then shall I not stick to only
+local flag usage?
 
- drivers/iio/dac/stm32-dac.c | 18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/iio/dac/stm32-dac.c b/drivers/iio/dac/stm32-dac.c
-index 344388338d9b..874e6dcc0d61 100644
---- a/drivers/iio/dac/stm32-dac.c
-+++ b/drivers/iio/dac/stm32-dac.c
-@@ -82,9 +82,9 @@ static int stm32_dac_set_enable_state(struct iio_dev *indio_dev, int ch,
- 
- 	ret = regmap_update_bits(dac->common->regmap, STM32_DAC_CR, msk, en);
- 	mutex_unlock(&dac->lock);
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(&indio_dev->dev, "%s failed\n", str_enable_disable(en));
--		goto err_put_pm;
-+		goto err_pm_put;
- 	}
- 
- 	/*
-@@ -95,18 +95,9 @@ static int stm32_dac_set_enable_state(struct iio_dev *indio_dev, int ch,
- 	if (en && dac->common->hfsel)
- 		udelay(1);
- 
--	if (!enable) {
--		pm_runtime_mark_last_busy(dev);
--		pm_runtime_put_autosuspend(dev);
--	}
--
--	return 0;
--
--err_put_pm:
--	if (enable) {
--		pm_runtime_mark_last_busy(dev);
-+err_pm_put:
-+	if (!enable || (enable && ret))
- 		pm_runtime_put_autosuspend(dev);
--	}
- 
- 	return ret;
- }
-@@ -349,7 +340,6 @@ static int stm32_dac_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_pm_put;
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return 0;
--- 
-2.47.2
-
+Thanks,
+Akshay
 

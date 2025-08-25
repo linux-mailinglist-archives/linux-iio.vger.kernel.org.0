@@ -1,204 +1,115 @@
-Return-Path: <linux-iio+bounces-23192-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23193-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0E3B33A3C
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 11:12:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24285B33B39
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 11:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6D191897ED8
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 09:12:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4F817AAEEA
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 09:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009F22C08DB;
-	Mon, 25 Aug 2025 09:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302202C21F7;
+	Mon, 25 Aug 2025 09:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b="YflggP6f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IriaYIoi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B85E29D283;
-	Mon, 25 Aug 2025 09:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756113137; cv=pass; b=Ys22pExr0wTjhKtjViKFZtYMBVH7YVm2jwAr+Q0df2YH47+dO2ppW4pqBXqwjcGngApw+jcctJJvB4YREsSiJ2wCxK4E5Me41L4JLSTfyFdcXfyFG5dFezz/Wky4PWRlVEaN6S1RYs7ApZojtIQDnOSCdUA+omUZS/eT4lJLrpk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756113137; c=relaxed/simple;
-	bh=UN7tZ7Mi8e7wrHnMuWaGhmTuxgnsZLQrHzqrSQdh1q0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N/n1eAwDWGv9V5E5MymhLceDk/YYwV3c0YJ27qdjJz34rCPHI4HibZB1OAdBmCco9RUHPjj1BNPB9yywxfUM4Zx0wOwQcPfK+ZPsoRXgb+vu0GULE4f3kVh7kUm6uFkDFIMePPmSo6GS34rCXts7ZckhihZivkI29ayu5IQUtMo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b=YflggP6f; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1756113100; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ec8cyEUwiNI3LFhu8Bjr6TA4Ifd4X3t9gH9QHQqcOXK5FOOElNUvv5JYceocSXO76UZHo3rRHHjwd8h/U5yHjJBua+x0EpRi6KWh2jNzCa7gDYs0/H5b0mcM+Lb3wmWa2Cc8pkXK40RQOBqFpFx9Icyhna1Cyl/tPt8Ti/1Wv6E=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1756113100; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=4zV5r8kLElpBRlahVoUG9dL32SfwaAS/peHVJEeTGgE=; 
-	b=lOKX1ACuePfLg2c3+K7V6XewlAr9NPK6aQIa+PiyZGEZu+FbNLcKFi49vlmzKNn78T9vJzkaNQ6Nm61ps1chz7JbJgTAhN+iLpkv6iLkvQIOMHxC0fPWt+WhrOs7hWB9QSniAL/bpVkzE+g797gn47L0KLEsZ7dWLBMEzIk/Qc8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
-	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1756113100;
-	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-	bh=4zV5r8kLElpBRlahVoUG9dL32SfwaAS/peHVJEeTGgE=;
-	b=YflggP6f4+3KqQMd0IzfGOdaBd89fbchQZvRAVp0mLKhEIKs53GprABEnKxJPcDh
-	wiokus9kcYMAMiiIHJ+ek6m1oeuUL0XkEHZwa85lcOdVJxbNHO7Eq3Nodlmj2fHWWzH
-	AZq4MRi5Ef45b3RLoZtGziyTi0o7e4d8t47xZDg0=
-Received: by mx.zohomail.com with SMTPS id 1756113097823724.7840177435801;
-	Mon, 25 Aug 2025 02:11:37 -0700 (PDT)
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-To: William Breathitt Gray <wbg@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Kever Yang <kever.yang@rock-chips.com>, Yury Norov <yury.norov@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Leon Romanovsky <leon@kernel.org>, Lee Jones <lee@kernel.org>,
- linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
- linux-iio@vger.kernel.org, kernel@collabora.com,
- Jonas Karlman <jonas@kwiboo.se>,
- Detlev Casanova <detlev.casanova@collabora.com>
-Subject: Re: [PATCH v2 6/7] counter: Add rockchip-pwm-capture driver
-Date: Mon, 25 Aug 2025 11:11:31 +0200
-Message-ID: <3367507.aeNJFYEL58@workhorse>
-In-Reply-To: <20250720002024.696040-1-wbg@kernel.org>
-References: <20250720002024.696040-1-wbg@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC94C26C3BF;
+	Mon, 25 Aug 2025 09:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756114611; cv=none; b=Tgz39XDVAOotlkBdcCk3l4QVKKvpSm+I19nAU+InbHmlbD5PG6ylwDJpdcRhI0fJsU9+viBTjOmZlmKur8+pdJMZJ1zyTbBtSZAHXJHD1n4IAztAbs531CPpnKHAjRKwXZh7RFuOz/VLkDUVdr5FTd4CmHXqydng0ymUpuGcvIw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756114611; c=relaxed/simple;
+	bh=x/CJrxvLnj/WFwj3bwcQs4OK07U8P14cEQTlusC5AD8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CHmdn5YEmNusGEO1lW6C1AFSJPqvkZyNr2e04zN1L/TLaoFZ4s3N/448UubT9oFRN+Yurelo5VJYVHdMERcbNiI5SZSlqt8XfbGK9d1mzMueSf873T4mwLdkR+vLfy2CWOITbvrAAampynVNJu2+P1lvha2wJ47sGkDKC3mNS2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IriaYIoi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BD5C4CEED;
+	Mon, 25 Aug 2025 09:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756114610;
+	bh=x/CJrxvLnj/WFwj3bwcQs4OK07U8P14cEQTlusC5AD8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=IriaYIoiRrQn89cVRgRq5OfkNAXlZ87gX0CYvi/Y25n6FxXyhLzxGoucEzatFJX8n
+	 K9Qwa0TBOAucLWwD0a5yFKAYoEQEB79A4AhY3hd41NXRtw41yH0+4oEgpE4c/J5NFC
+	 Ppc2wcOuJ0RrF69uoLOd64ZV8l0UK2EUlkzk8/1BuJb1WGyNpdLUHOCl7nz6/CgiMB
+	 BCi1hLAhyWsMBeWAv8ryrQsXse/EqoG42N/nC9zyTv3pzBbSnoCY/CvA0BxJS2cKvl
+	 P1hWOYX1SJs1viGOe2majnXkjKgX+DyzfexKTzIZzYjqjyS2cokVX0LO2dijE+7nDH
+	 l9luc1IXVE+sQ==
+Date: Mon, 25 Aug 2025 10:36:40 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Ben Collins <bcollins@watter.com>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew
+ Hepp <andrew.hepp@ahepp.dev>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 4/5] iio: mcp9600: Recognize chip id for mcp9601
+Message-ID: <20250825103640.5ed775bb@jic23-huawei>
+In-Reply-To: <CAHp75VdbfCenb+N4rY59hG1E9DL9s4ibCdQX=Ar8hT0_wi5h+Q@mail.gmail.com>
+References: <20250822-upstream-changes-v8-0-40bb1739e3e2@watter.com>
+	<20250822-upstream-changes-v8-4-40bb1739e3e2@watter.com>
+	<CAHp75VdMCY3=bL2t7zWw0D1WqtiLXrWi+ptjpaxK16b8J1KVSg@mail.gmail.com>
+	<7C976B5E-781D-472B-B2C8-3AD22550E036@watter.com>
+	<CAHp75VdbfCenb+N4rY59hG1E9DL9s4ibCdQX=Ar8hT0_wi5h+Q@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sunday, 20 July 2025 02:20:15 Central European Summer Time William Breathitt Gray wrote:
-> On Mon, Jun 02, 2025 at 06:19:17PM +0200, Nicolas Frattaroli wrote:
-> > Among many other things, Rockchip's new PWMv4 IP in the RK3576 supports
-> > PWM capture functionality.
-> > 
-> > Add a basic driver for this that works to capture period and duty cycle
-> > values and return them as nanoseconds to the user. It's quite basic, but
-> > works well enough to demonstrate the device function exclusion stuff
-> > that mfpwm does, in order to eventually support all the functions of
-> > this device in drivers within their appropriate subsystems, without them
-> > interfering with each other.
-> > 
-> > Once enabled, the counter driver waits for enough high-to-low and
-> > low-to-high interrupt signals to arrive, and then writes the cycle count
-> > register values into some atomic members of the driver instance's state
-> > struct. The read callback can then do the conversion from cycle count to
-> > the more useful period and duty cycle nanosecond values, which require
-> > knowledge of the clock rate, which requires a call that the interrupt
-> > handler cannot make itself because said call may sleep.
-> > 
-> > To detect the condition of a PWM signal disappearing, i.e. turning off,
-> > we modify the delay value of a delayed worker whose job it is to simply
-> > set those atomic members to zero. Should the "timeout" so to speak be
-> > reached, we assume the PWM signal is off. This isn't perfect; it
-> > obviously introduces a latency between it being off and the counter
-> > reporting it as such. Because there isn't a way to reset the internal
-> > double-buffered cycle count in the hardware, we filter out unreliable
-> > periods above the timeout value in the counter read callback.
-> > 
-> > Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-> 
-> Hi Nicolas,
+On Fri, 22 Aug 2025 19:47:39 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Hi William,
+> On Fri, Aug 22, 2025 at 7:07=E2=80=AFPM Ben Collins <bcollins@watter.com>=
+ wrote:
+> > > On Aug 22, 2025, at 11:57=E2=80=AFAM, Andy Shevchenko <andy.shevchenk=
+o@gmail.com> wrote:
+> > > On Fri, Aug 22, 2025 at 4:24=E2=80=AFPM Ben Collins <bcollins@watter.=
+com> wrote: =20
+>=20
+> ...
+>=20
+> > >> +struct mcp9600_data {
+> > >> +       struct i2c_client *client;
+> > >> +};
+> > >> + =20
+> > > =20
+> > >> -struct mcp9600_data {
+> > >> -       struct i2c_client *client;
+> > >> -};
+> > >> - =20
+> > >
+> > > Seems we discussed this. And my suggestion was to defer the change to
+> > > when it will be needed. =20
+> >
+> > And my response was that it=E2=80=99s needed in 5/5 where I add the mcp=
+9600_config()
+> > function. That function will need to be before mcp9600_channels[] in the
+> > IIR patch series.
+> >
+> > So either I move mcp9600_data now, or I leave it and put mcp9600_config=
+()
+> > below it, and then in the IIR series I=E2=80=99ll have to move both up.
+> >
+> > Didn=E2=80=99t seem to make sense to move 30 lines of code later when I=
+ can move
+> > 3 lines now. =20
+>=20
+> TBH, I have no strong preference, I leave this to Jonathan and other revi=
+ewers.
+>=20
 
-> 
-> Would you help me understand the computations in this driver?
-> 
-> If I understand the purpose of this driver correctly, it's meant to
-> compute the period and duty cycle of a PWM signal. What do LPC and HPC
-> represent? I'm guessing they are the low period count (LPC) and the high
-> period count (HPC). So then you calculate the total period by adding
-> LPC and HPC, whereas the duty cycle derives from HPC.
-> 
-> Am I understanding the algorithm correctly? What are the units of HPC
-> and LPC; are they ticks from the core clock? Are PWMV4_INT_LPC and
-> PWM4_INT_HPC the change-of-state interrupts for LPC and HPC
-> respectively?
-
-HPC = High Polarity Cycles, LPC = Low Polarity Cycles. They are counted
-based on the pwm clock that the hardware runs at. PWMV4_INT_LPC and
-PWMV4_INT_HPC are one-bit flags that are raised in the interrupt register
-of this hardware when the interrupt is fired, to signal that LPC or HPC
-changed state.
-
-Your understanding of the algorithm appears to be correct, from my memory
-of when I wrote the code. The 4 captures left logic is because the
-hardware needs 4 level transitions before it can provide a useful
-number for those two counts; thinking about it more now, I'm surprised it
-can't do it in 3, so I'll need to double-check that next time I work on
-this.
-
-As an aside note, Rockchip has recently published the RK3506 Technical
-Reference Manual, and the RK3506 SoC uses the same PWM IP as the RK3576
-for which this driver is for. You can find it here in Chapter 31:
-
-https://opensource.rock-chips.com/images/3/36/Rockchip_RK3506_TRM_Part_1_V1.2-20250811.pdf
-
-This driver specifically implements "31.3.1 Capture Mode", later down
-the line I may want to add "31.3.4 Clock Counter", "31.3.5 Clock
-Frequency Meter" and "31.3.6 Biphasic Counter" but I lack a proper
-signal generator so didn't want to bite off more than I could test.
-
-> 
-> The Counter subsystem can be used to derive the period and duty cycle of
-> a signal, but I believe there's a more idiomatic way to implement this.
-> Existing counter drivers such as microchip-tcb-capture achieve this by
-> leveraging Counter events exposed via the Counter chrdev interface.
-> 
-> The basic idea would be:
->     * Expose LPC and HPC as count0 and count1;
->     * Push the PWMV4_INT_LPC and PWMV4_INT_HPC interrupts as
->       COUNTER_EVENT_CHANGE_OF_STATE events on channel 0 and channel 1
->       respectively;
->     * Register Counter watches in userspace to capture LPC and HPC on
->       each interrupt;
-> 
-> The Counter chrdev interface records a timestamp in nanoseconds with
-> each event capture. So to compute period and duty cycle, you would
-> subtract the difference between two HPC/LPC captures; the difference in
-> the timestamps gives you the elapsed time between the two captures in
-> nanoseconds.
-> 
-> Would that design work for your use case?
-
-Basically, any design would work for me. I've only implemented the
-counter driver to make sure the PWM reading part of the hardware works,
-and Uwe advised me that new PWM drivers should use the counter
-subsystem as opposed to implementing the PWM capture operation.
-
-So I think your design makes more sense; any user of this driver would
-likely want it to work like the other counter drivers, and exposing
-LPC and HPC directly would also let me get rid of the quirky "is the
-PWM actually off now" logic.
-
-I'll do this when I get the chance to work on this patch series again,
-as it needs a rewrite anyway to plug it into the MFD subsystem.
-
-> 
-> William Breathitt Gray
-> 
-
-Thank you for your review and suggestions!
-
-Kind regards,
-Nicolas Frattaroli
-
+Not significant enough to worry about. So I left it as is whilst applying.
 
 

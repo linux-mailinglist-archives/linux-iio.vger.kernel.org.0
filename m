@@ -1,115 +1,131 @@
-Return-Path: <linux-iio+bounces-23184-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23185-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC4CB3337A
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 03:20:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A677B33466
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 05:03:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 869243B9362
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 01:20:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25F8A1712AC
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 03:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0461F4174;
-	Mon, 25 Aug 2025 01:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A90C226CF0;
+	Mon, 25 Aug 2025 03:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KBSloFax"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fFpsJJo+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEC1194C75;
-	Mon, 25 Aug 2025 01:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAD92AC17;
+	Mon, 25 Aug 2025 03:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756084816; cv=none; b=CdLcnl0uNkEZHa35BT2pxWE3NyATVkKYHzKjDhzq4lFtWCOR08O+Lu1H9cd5fkemGc3a3ufGpSNK9l9MVQP+WgzPd/TVlV599+BxLbnYW87vsK1HZW888kbh5XaDii3rDsgrQdwoVdCLIx5lnpewKYGZU1CnQltK9z706QgGwPk=
+	t=1756091002; cv=none; b=ZyP+GupjpoN4S32wiu8S1ah6PiE/BzY2jtvZJ9uicWnh9Ml3sMHsWrMmBra5a3pvuxevcIPWnCTDmivv9fikZK6aUcK6pC7MhUWotK6mlG15yt1/NbxyCD2UaszEe6pawVWy++qtwFerkZUFx2U4EnD1Bm4HeALt/ytKWoTbmSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756084816; c=relaxed/simple;
-	bh=i0RXekYR/78nngGBKq7LfKNLYqV8jqmvi+5G0IVH1+g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dO24+cXrFM9VKcNakyUTteJBkP7tVwAxg/Jc0D92Dh+i2tFXRccyk9TvxHLYTCniNYa4lt2YoUxWONZI/cAYget6LBh+5TheqWka1dVrdCnAinR2mNzbINsyjMc1D13Hsf4qO1fNJ4sXRfTA3wwLkDRmE80gnZd0wEWUQjGjzaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KBSloFax; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756084815; x=1787620815;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=i0RXekYR/78nngGBKq7LfKNLYqV8jqmvi+5G0IVH1+g=;
-  b=KBSloFax/rObWuRFFUeziOlfg4OaonkgK7BZ1jZCtkXtMlI/Ci4aaCAR
-   5bM14AoNVWSaaPh4L4V95rqHlcJj4/IINL23bRyv15i22VM3FMIMYQFud
-   dxoi0mFkFLGpwf15LBSN55zjRlQz/r5gJuJeHtaLCoXbOhJl/7LkoDyCE
-   oisLMoSm/2Ngh3Eibi0wJzYFXVuVgGbfctzTDqzb5QEpPtp0NP0nG2waN
-   aNnxQ/rrt1YxnX9TGDszuxD/M45Ruq2zjfjE7KU2dAyWte+XqqOa6Zb6P
-   auV38oqDZ1jaNOHeogkst5hSQdQhDdVMq1KEWqIUYVhD47p7EF4/N3H5/
-   Q==;
-X-CSE-ConnectionGUID: +1keEsYERWaCBAvbkO7k5Q==
-X-CSE-MsgGUID: LGN4GjswRrysDwNqyIPlAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11532"; a="69395213"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="69395213"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2025 18:20:14 -0700
-X-CSE-ConnectionGUID: c631AIrjRRKQ4uvTXEIvbg==
-X-CSE-MsgGUID: kSUpzhevSlqVTHXoTMLhbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="174444050"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa004.fm.intel.com with ESMTP; 24 Aug 2025 18:20:12 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uqLsP-000NIV-1s;
-	Mon, 25 Aug 2025 01:20:07 +0000
-Date: Mon, 25 Aug 2025 09:19:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
-	robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: Re: [PATCH v5 4/6] iio: adc: add ade9000 support
-Message-ID: <202508250933.cmESvJJG-lkp@intel.com>
-References: <20250822160157.5092-5-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1756091002; c=relaxed/simple;
+	bh=L+YG8ZIiGO46gNNpEJPdjTGtiTb5VapUZKUwrMIfvPs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nSEC9GrbkHvmR10M1GPnE9loBAJqP6Oa6r/9jHpgC6I/D06oKUGleQMIliQ0iQekmZTha7T9u2V3gsqrQrdYuXFGVsLQSgW/ixOJvAKeC2yFCFBiVmW/Bd+JMqwilZ1VFR8AgTlkjfwsDL/m27kMkwRSw0nSnnSAWMMyYA4MpfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fFpsJJo+; arc=none smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-435de702f1fso2461074b6e.1;
+        Sun, 24 Aug 2025 20:03:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756090999; x=1756695799; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kIfF/bUBS2PRy5s8bH2c65DdiYIuLHlslVTvH4qD7YY=;
+        b=fFpsJJo+okulOUUh1yuVMuYHLhtYY/OomjL6bt/+XEWIp1S7+gAxnpFtvaVT/3CB19
+         Z/M1rPOqTvFcgkWHUFVo7Q3fMcbzXe0rwe41knx7eodBBd19sMPc15F55PL/Yl5nFLVL
+         95MAR1ipOQdP6ECXDjbBkb1ZeFSYW8AHlAZpicYS7pWLfTAHORXCIpUNzYphM/A9cBOF
+         CpiL0gvac9kzAvcDsC/J77IJkD0BAw/63Q6cQC8XSiQQ4gC8Eo/D7I6+PZSZ6o1n7PPb
+         Sjm63sGp6Pb6rmzV8cI4xvZY5Bu+qUC9ZyhDObTQwNalTMIuYtJO5rgtL0XPqb4rDXLE
+         vOoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756090999; x=1756695799;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kIfF/bUBS2PRy5s8bH2c65DdiYIuLHlslVTvH4qD7YY=;
+        b=CLxz+yQF99pqtdtLulISLHFwdZn+5sGfFyoBZeRD1D+1hi7zKWB4H38grrWzouOvBo
+         plLlicq56BFIHUWsLCZ6lcQXqZSWsk9SMqcS7ax2n8sabm08xhBIg7/oMP4WDKLaKMUk
+         r7tCzJ2KH4w3/cqpEM4FM0W1sf/f0CJqXFz6zHPHuGO+86z9ziNitsfNwuwWXIMN1v6w
+         yIhgWBmQUoacs2kWGtP7IzzvxOCwTUP9F52rmfPoJlzBY9xqHBF/No6sNjQTubw5zXch
+         KR/b+4XkG92D5jXqA2OoX8JMGABXNqBECN6d1xmE0fzxkMvbVfrTRzcp+aOujGVhM+eL
+         h2FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8TIGNApj8Bauuk9JNVkefNtsCGKWmb0ww0eLAjQOeR4gnsQmg5fmxSjIhBm6FP3O2Jl3kx1d7OXud@vger.kernel.org, AJvYcCVVTbGDnJaVJiunQrhDWv1bQQCss/VsAjP/QJ3X0+ISlJHL9jmKPEO/O/T8ETh5b1yIrN9npzEk0HiC@vger.kernel.org, AJvYcCWsNdTrVqyCsY70PA1BuCEmbJ9u1IepqFPdQh/jHPK+UhuZ854mPvCiLy3ZmbHy8FWQ+vYiU12NmGiDe2IN@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxybi+QhWNXXuf+zV/zFX3gnsDIsXl5RSBjMb0DnO8PEzMAjbpP
+	iKHxPBo1tjpPRsF/h/6WLcO6ideji+8HJNc3VB1WLLJ2Z0mFCQFmrY+Y/QPlWPl0U+ZCmRT8P+Q
+	v80npkVymD40LrOKMSfhsoWh11h1NGfA=
+X-Gm-Gg: ASbGncvGol+eRBooHDdJPvSQk2kW/t2DGbdZLaiRy5j8e7ameeg15VBRJSbEtV0dGvt
+	uGIMqCSZYMCSBlRRVQWDub8VYjk/1Kg59TLnTwwzTQl/cvOYS6pssyLRclK9hkS6HY0FZjTvzaz
+	7srVXnwv83wOM/HGbmgGUbGT6Zp8GcWFBqWIyKUoE780FPDsFqJzRVGlBTCKFV1JQRMcIoHfTD5
+	Hyl43YyHJIxJHIFtHXAMBkqQfzNPq29/nPlFppZew==
+X-Google-Smtp-Source: AGHT+IFX53/kszwxRt1GhAgbINJJC/3ZV1X9ajkUooF/ir0imJBzt15fFyfp5Kdh/rslmxB6L5Tg4FR+MuMxXZdS/qQ=
+X-Received: by 2002:a05:6808:3985:b0:41c:2a71:86e6 with SMTP id
+ 5614622812f47-437851dc8f0mr5795561b6e.10.1756090999405; Sun, 24 Aug 2025
+ 20:03:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250822160157.5092-5-antoniu.miclaus@analog.com>
+References: <20250814-tlv493d-sensor-v6_16-rc5-v4-0-81b82805aae0@gmail.com>
+ <20250814-tlv493d-sensor-v6_16-rc5-v4-1-81b82805aae0@gmail.com>
+ <aKXW5pGiN18DyIZ7@smile.fi.intel.com> <aKaMPMnGRyvKqTny@dixit>
+ <CAHp75Vdw5X1Y057fpGjdvVGwKq0x0UBdm8py+m+55RbzXi1PJw@mail.gmail.com> <aKfYlP-yWdQi34db@dixit>
+In-Reply-To: <aKfYlP-yWdQi34db@dixit>
+From: Dixit Parmar <dixitparmar19@gmail.com>
+Date: Mon, 25 Aug 2025 08:33:07 +0530
+X-Gm-Features: Ac12FXxQWZrZa3bb-wdXQtG8WqmXlJ0TEPQu6HdbvGoJdXEg-xtC3turKV934ZA
+Message-ID: <CAFmh=S0gAB93Gqnrt9NdtLA=cjOcYwy6+ECnwH-j9sN_sZYjZw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] iio: magnetometer: add support for Infineon
+ TLV493D 3D Magentic sensor
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Antoniu,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on robh/for-next linus/master v6.17-rc3 next-20250822]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Antoniu-Miclaus/iio-add-IIO_ALTCURRENT-channel-type/20250823-001017
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20250822160157.5092-5-antoniu.miclaus%40analog.com
-patch subject: [PATCH v5 4/6] iio: adc: add ade9000 support
-config: i386-randconfig-r123-20250824 (https://download.01.org/0day-ci/archive/20250825/202508250933.cmESvJJG-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250825/202508250933.cmESvJJG-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508250933.cmESvJJG-lkp@intel.com/
-
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
->> ERROR: modpost: "devm_clk_register" [drivers/iio/adc/ade9000.ko] undefined!
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On Fri, Aug 22, 2025 at 8:10=E2=80=AFAM Dixit Parmar <dixitparmar19@gmail.c=
+om> wrote:
+>
+> On Thu, Aug 21, 2025 at 10:41:03AM +0300, Andy Shevchenko wrote:
+> > On Thu, Aug 21, 2025 at 6:02=E2=80=AFAM Dixit Parmar <dixitparmar19@gma=
+il.com> wrote:
+> > > On Wed, Aug 20, 2025 at 05:08:38PM +0300, Andy Shevchenko wrote:
+> >
+> > ...
+> >
+> > > > >  st_magn-$(CONFIG_IIO_BUFFER) +=3D st_magn_buffer.o
+> > > > >  obj-$(CONFIG_IIO_ST_MAGN_I2C_3AXIS) +=3D st_magn_i2c.o
+> > > > >  obj-$(CONFIG_IIO_ST_MAGN_SPI_3AXIS) +=3D st_magn_spi.o
+> > > > >
+> > > > > +obj-$(CONFIG_INFINEON_TLV493D)             +=3D tlv493d.o
+> > > > > +
+> > > > >  obj-$(CONFIG_SENSORS_HMC5843)              +=3D hmc5843_core.o
+> > > > >  obj-$(CONFIG_SENSORS_HMC5843_I2C)  +=3D hmc5843_i2c.o
+> > > > >  obj-$(CONFIG_SENSORS_HMC5843_SPI)  +=3D hmc5843_spi.o
+> > > >
+> > > > I haven't got the ordering rules here and in Kconfig. Can it be alp=
+habetical?
+> > > From what I can see, the order is alphabetical based on the CONFIG op=
+tion in the
+> > > Makefile and Kconfig, and I kept CONFIG_INFINEO_TLV493D after CONFIG_=
+IIO_ST*.
+> > > Isn't it in correct order? or my understanding is incorrect?
+> >
+> > I dunno, The file name there is with the vendor prefix, in many cases
+> > the configuration option is with vendor prefix as well, but the file.
+> Hi Jonathan, Can you please suggest best possible way here?
+Hi Jonathan, When you get a chance, please share your thoughts on this.
 

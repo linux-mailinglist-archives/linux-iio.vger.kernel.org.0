@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-23241-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23242-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 568D3B342E6
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 16:14:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A5DB343E6
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 16:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A36A1770D7
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 14:14:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4C223AF7E4
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 14:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045542EF65F;
-	Mon, 25 Aug 2025 14:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1632FF653;
+	Mon, 25 Aug 2025 14:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KVMqiJb/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BA5j8v/d"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0296F9C0;
-	Mon, 25 Aug 2025 14:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CC62FF64C;
+	Mon, 25 Aug 2025 14:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756131262; cv=none; b=bD9pvbjb5JIhvxWzxLpY6r4o09LADIwz6LPCKX2oxyjD0sBvTxPFDfqN+gOC0GX8PcSS/o4mfN2DmvTKIesafJhSZrdn2+sz+ChtkpqD6hiwfkuKiTtqreMT5qu3dzuP+ltCFwu5IthUVSyqMj+K3d4vDFLoam1nJpGjWpFIEEw=
+	t=1756131977; cv=none; b=lhMtBezhpJxlM5gVmOmC6BdRUEzSCKHY1gTWdsl+aGIhcwZVsnz4RCpTpMWiq8zOGSeibP9poilLDJY4qhPMwzWRCE0NOM4PhzoLryfzZ7q0CD5rDFHSdFT4QeejDxDn3VTT8mBiPJv+ZLnczSM8mr7DIblf3waaBAkNSqHamtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756131262; c=relaxed/simple;
-	bh=O27boypHUmVhtmIw+EGKRt2WuczW77KvPjxjYV//udI=;
+	s=arc-20240116; t=1756131977; c=relaxed/simple;
+	bh=BVn/Lrf+nq8C1Bil6LvGOFtBUm06xHJUyJev7CoLF6Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WppG8OozyH1vbvDBdSd4d0Xu2AJm16AMO9nyNFnaw6DxE7wy2NGEQGb+1T1KbMM1+R22pPewKjtzZTASc5bM/aN0XLEzEVyxn+N+MZd4THwo+kCnxB7MafK6U1GVfEXcN2his5UyTZPNVHFVaSSJFB3bfXoHyJ1Le6Qy8w8f03k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KVMqiJb/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFEEC4CEED;
-	Mon, 25 Aug 2025 14:14:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZyQhQkK/exLPFN04n0zpgRKdirqgwH2Y3yQWBwZ4+IoqBfH8JnAYumy9eGRBbec6E9y8YY+N1fzQyZMUbyszKmaw+0vF0LH7oVnyFMI1nctm+widytydejBGpYrEsAb4OkqNR9nV7HF9WpL2N3xS7CxXqVX59bqifb3qOzvUkdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BA5j8v/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F58DC113D0;
+	Mon, 25 Aug 2025 14:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756131261;
-	bh=O27boypHUmVhtmIw+EGKRt2WuczW77KvPjxjYV//udI=;
+	s=k20201202; t=1756131977;
+	bh=BVn/Lrf+nq8C1Bil6LvGOFtBUm06xHJUyJev7CoLF6Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KVMqiJb/tJ4nLHwYltL5ujq5Q10ZC2JaODEweCLFO4wD578pQZJbK9Kuqw1I9PviF
-	 wyX5fl/AQx8IsLqavU+6DtDn5ydNLdMTZeO0JDsT7JNl4vRRAVx1QPrnu/jWWyDCqb
-	 8+z03H6c6RAe/E3dDlvxZRAXLMVMpr55VDuAYoSvCNWbZjZixE1RpVIygLbZxKGSPj
-	 MYmFQpckWelqjejH1yg+du1BeKgTVqW4naXp6IbX9p6P5uac0rzzrG31Sv1Xr4GdFD
-	 ttqvJ6GaRiT1OCcZoR0wcojtTZZwqu4y5f3tvD9LTmTC6/wf4oL8fPXAlLIgzRyNbx
-	 Yfj1b+bTNogIg==
-Date: Mon, 25 Aug 2025 15:14:13 +0100
+	b=BA5j8v/dm3IduJgaWuZACJU8XMjSPVUwmQL7voySO4B4AKdPwZd9llA7wdjl/tpaS
+	 kIN/8YYwXye7aN6ItDvOpHhxWSv5BVyJA9TIHd+A1Z3Hp8bygjUJMzjWbcEFJGjlso
+	 20SKMg8hoTivfszZ5PaNUWFfi2x3QDXI5RZrecVdTOywCE55hDzfb4UAPGgcmL4WXP
+	 LLGn0akS2caEY0XbLdUartETPgOGnWsgrKB9t2ZgcY5cLoplwjOK0wTdZ+rjBK5JqQ
+	 g6YHaso9GEbxR84ZSVWYverHVBNZ3BbJc/lb+87+AkzKxpY7Uunl2NT+0tC41Dz+xe
+	 14SJABLiMr5Vg==
+Date: Mon, 25 Aug 2025 15:26:08 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v5 5/6] docs: iio: add documentation for ade9000 driver
-Message-ID: <20250825151413.2a1e60a8@jic23-huawei>
-In-Reply-To: <20250822160157.5092-6-antoniu.miclaus@analog.com>
-References: <20250822160157.5092-1-antoniu.miclaus@analog.com>
-	<20250822160157.5092-6-antoniu.miclaus@analog.com>
+To: Akshay Jindal <akshayaj.lkd@gmail.com>
+Cc: anshulusr@gmail.com, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: light: ltr390: Add runtime PM support
+Message-ID: <20250825152608.6468c27b@jic23-huawei>
+In-Reply-To: <20250822180335.362979-1-akshayaj.lkd@gmail.com>
+References: <20250822180335.362979-1-akshayaj.lkd@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,521 +61,339 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 22 Aug 2025 16:01:54 +0000
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Fri, 22 Aug 2025 23:33:26 +0530
+Akshay Jindal <akshayaj.lkd@gmail.com> wrote:
 
-> Add documentation for ade9000 driver which describes the driver
-> device files and shows how the user may use the ABI for various
-> scenarios (configuration, measurement, etc.).
+> Implement runtime power management for the LTR390 sensor.
+> The device would now autosuspend after 1s of idle time.
+> This would save the overall power consumption by the sensor.
 >=20
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> Ensure that interrupts continue to be delivered during
+> runtime suspend by disabling the sensor only when no
+> interrupts are enabled. This prevents loss of events
+> while still allowing power savings when IRQs are unused.
+
+Wrap closer to 75 chars.
+
+Main comment that follows is that runtime pm is reference
+counted.  That is you can take multiple references in different
+paths at the same time and only when they are all released does
+the put actually cause it to be suspended.  So for events
+just grab an extra reference.  Lots of drivers do this in the
+buffer enables for example - probably some in event handling
+as well I just can't remember which one right now and am too lazy
+to go find out.
+
+
+>=20
+> Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
 > ---
->  Documentation/iio/ade9000.rst | 286 ++++++++++++++++++++++++++++++++++
->  Documentation/iio/index.rst   |   1 +
->  2 files changed, 287 insertions(+)
->  create mode 100644 Documentation/iio/ade9000.rst
 >=20
-> diff --git a/Documentation/iio/ade9000.rst b/Documentation/iio/ade9000.rst
-> new file mode 100644
-> index 000000000000..fcb4a36c0282
-> --- /dev/null
-> +++ b/Documentation/iio/ade9000.rst
-> @@ -0,0 +1,286 @@
-> +.. SPDX-License-Identifier: GPL-2.0
+> Testing summary:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> -> Tested on Raspberrypi 4B. Following tests were performed. =20
+> 1. Verified that /sys/bus/i2c/devices/i2c-1/1-0053/power/control contains=
+ =E2=80=98auto=E2=80=99 value.
+> 2. Verified the /sys/bus/i2c/devices/i2c-1/1-0053/power/autosuspend_delay=
+_ms contains 1000 which is assigned by the driver.
+> 3. Changed the autosuspend_delay_ms value from 1000 to 2000ms and verifie=
+d it.
+> 	3.1 Verified through the timestamp that whatever autosuspend_delay_ms is=
+ set, it is being honoured.
+> 4. Verified that runtime_suspend and runtime_resume callbacks are called =
+whenever any IO is done on a channel attribute.
+> 	4.1 Verified that power/runtime_status first becomes active and then bec=
+omes suspended.
+> 	4.2 Verified that power/runtime_active_time keeps on increasing with a d=
+elta of autosuspend_delay_ms.
+>=20
+> Interrupt Handling Verification:
+> --------------------------------
+> 1. Verified that when interrupts are enabled on the device, then the devi=
+ce does not get put in standby mode and keeps sampling.
+> 	a. As a result interrupts are delivered to the driver and are handled.
+> 2. Verified that when interrupts are disabled, the device is put in stand=
+by mode and stops sampling.
+> 	a.Since there is no sampling, so no IRQs will be generated. They are onl=
+y generated when the device is resumed due to I/O on some sysfs attribute f=
+rom userspace.
+>=20
+>  drivers/iio/light/ltr390.c | 246 +++++++++++++++++++++++++++++--------
+>  1 file changed, 193 insertions(+), 53 deletions(-)
+>=20
+> diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
+> index 2e1cf62e8201..9e2f33a401f2 100644
+> --- a/drivers/iio/light/ltr390.c
+> +++ b/drivers/iio/light/ltr390.c
+> @@ -30,6 +30,7 @@
+> =20
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/events.h>
+> +#include <linux/pm_runtime.h>
+> =20
+>  #include <linux/unaligned.h>
+> =20
+> @@ -105,6 +106,7 @@ struct ltr390_data {
+>  	enum ltr390_mode mode;
+>  	int gain;
+>  	int int_time_us;
+> +	bool irq_enabled;
+>  };
+> =20
+>  static const struct regmap_range ltr390_readable_reg_ranges[] =3D {
+> @@ -154,6 +156,25 @@ static const int ltr390_samp_freq_table[][2] =3D {
+>  		[7] =3D { 500, 2000 },
+>  };
+> =20
+> +static int ltr390_set_power_state(struct ltr390_data *data, bool on)
+> +{
+> +	struct device *dev =3D &data->client->dev;
+> +	int ret =3D 0;
 > +
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +ADE9000 driver
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +This driver supports Analog Device's ADE9000 energy measurement IC on SP=
-I bus.
-> +
-> +1. Supported devices
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +* `ADE9000 <https://www.analog.com/media/en/technical-documentation/data=
--sheets/ADE9000.pdf>`_
-> +
-> +The ADE9000 is a highly accurate, fully integrated, multiphase energy an=
-d power
-> +quality monitoring device. Superior analog performance and a digital sig=
-nal
-> +processing (DSP) core enable accurate energy monitoring over a wide dyna=
-mic
-> +range. An integrated high end reference ensures low drift over temperatu=
-re
-> +with a combined drift of less than =C2=B125 ppm/=C2=B0C maximum for the =
-entire channel
-> +including a programmable gain amplifier (PGA) and an analog-to-digital
-> +converter (ADC).
-> +
-> +2. Device attributes
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Power and energy measurements are provided for voltage, current, active =
-power,
-> +reactive power, apparent power, and power factor across three phases.
-> +
-> +Each IIO device has a device folder under ``/sys/bus/iio/devices/iio:dev=
-iceX``,
-> +where X is the IIO index of the device. Under these folders reside a set=
- of
-> +device files, depending on the characteristics and features of the hardw=
-are
-> +device in question. These files are consistently generalized and documen=
-ted in
-> +the IIO ABI documentation.
-> +
-> +The following tables show the ADE9000 related device files, found in the
-> +specific device folder path ``/sys/bus/iio/devices/iio:deviceX``.
-> +
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| Current measurement related device files          | Description       =
-                                       |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_current[0-2]_raw                               | Raw current measur=
-ement for phases A, B, C.              |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_current[0-2]_scale                             | Scale for current =
-channels.                              |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_current[0-2]_calibscale                        | Calibration gain f=
-or current channels (AIGAIN reg).      |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_current[0-2]_offset                            | Offset correction =
-for current channels (IRMSOS reg).     |
+> +	if (on) {
+> +		ret =3D pm_runtime_resume_and_get(dev);
 
-So this is not an offset of the _raw reading above.  I.e. userspace should =
-do (_raw + _offset) * _scale I think?
-Even for the RMS calc there is a 2^15 multiplier involved.
+David touched on this.  Put the calls inline - there is no benefit to this
+function as it calls one of two unrelated paths at each call site.
 
-So think this one needs a rethink.  Definitely a calibbias not an offset as=
- it's not something for userspace
-to apply but rather a calibration tweak. Possibly something new is needed t=
-o indicate this only affects
-the RMS calculation.  I'm open to suggestions on how to do that.
-
-
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_altcurrent[0-2]_rms_raw                        | RMS current measur=
-ement for phases A, B, C.              |
-
-Add something kernel on the calc, particularly the influence of what you cu=
-rrently have as offset above. That
-is not obvious.
-
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
+> +		if (ret) {
+> +			dev_err(dev, "failed to resume runtime PM: %d\n", ret);
+> +			return ret;
+> +		}
+> +	} else {
+> +		pm_runtime_mark_last_busy(dev);
+> +		pm_runtime_put_autosuspend(dev);
+> +	}
 > +
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| Voltage measurement related device files          | Description       =
-                                       |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage[0-2]_raw                               | Raw voltage measur=
-ement for phases A, B, C.              |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage[0-2]_scale                             | Scale for voltage =
-channels.                              |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage[0-2]_calibscale                        | Calibration gain f=
-or voltage channels (AVGAIN reg).      |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage[0-2]_offset                            | Offset correction =
-for voltage channels (VRMSOS reg).     |
-
-As above.
-
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage[0-2]_frequency                         | Measured line freq=
-uency for phases A, B, C.              |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_altvoltage[0-2]_rms_raw                        | RMS voltage measur=
-ement for phases A, B, C.              |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
+> +	return ret;
+> +}
 > +
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| Power measurement related device files            | Description       =
-                                       |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_power[0-2]_raw                                 | Raw active power m=
-easurement for phases A, B, C.         |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_power[0-2]_active_raw                          | Active power measu=
-rement for phases A, B, C.             |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_power[0-2]_reactive_raw                        | Reactive power mea=
-surement for phases A, B, C.           |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_power[0-2]_apparent_raw                        | Apparent power mea=
-surement for phases A, B, C.           |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_power[0-2]_powerfactor                         | Power factor for p=
-hases A, B, C.                         |
-
-Currently I'm fairly sure this is _active_powerfactor which is not where it=
- should be.
-please check this doc again vs attributes on the running driver.
-
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_power[0-2]_scale                               | Scale for power ch=
-annels.                                |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_power[0-2]_calibscale                          | Calibration gain f=
-or power channels (APGAIN reg).        |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_power[0-2]_calibbias                           | Calibration offset=
- for power channels (xWATTOS regs).    |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
+>  static int ltr390_register_read(struct ltr390_data *data, u8 register_ad=
+dress)
+>  {
+>  	struct device *dev =3D &data->client->dev;
+> @@ -223,61 +244,76 @@ static int ltr390_read_raw(struct iio_dev *iio_devi=
+ce,
+>  	struct ltr390_data *data =3D iio_priv(iio_device);
+> =20
+>  	guard(mutex)(&data->lock);
 > +
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| Energy measurement related device files           | Description       =
-                                       |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_energy[0-2]_raw                                | Raw energy measure=
-ment for phases A, B, C.               |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_energy[0-2]_scale                              | Scale for energy c=
-hannels.                               |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +
-> ++------------------------------+----------------------------------------=
---------------------------+
-> +| Shared device attributes     | Description                            =
-                          |
-> ++------------------------------+----------------------------------------=
---------------------------+
-> +| name                         | Name of the IIO device.                =
-                          |
-> ++------------------------------+----------------------------------------=
---------------------------+
-> +| frequency                    | System line frequency configuration (50=
-Hz/60Hz).                |
-> ++------------------------------+----------------------------------------=
---------------------------+
-> +| scale                        | Shared PGA gain setting (1x, 2x, 4x) af=
-fecting all channels.   |
-> ++------------------------------+----------------------------------------=
---------------------------+
+> +	ltr390_set_power_state(data, true);
+Can fail so you should check.
 
-Looks like something odd with formatting in the table here.
+Wrap ltr390_register_read() in an outer function that does the powerstate
+management.  Then no need to have all the gotos in here.
+
+I am intending to see what appetite there is for a ACQUIRE() conditional
+guard set of macros around autosuspend, but for now a separate wrapper func=
+tion
+is the cleanest path. Be careful with the locking though.
 
 
 > +
-> +3. Calibration and scaling
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_RAW:
+>  		switch (chan->type) {
+>  		case IIO_UVINDEX:
+>  			ret =3D ltr390_set_mode(data, LTR390_SET_UVS_MODE);
+>  			if (ret < 0)
+> -				return ret;
+> +				goto handle_pm;
+> =20
+>  			ret =3D ltr390_register_read(data, LTR390_UVS_DATA);
+>  			if (ret < 0)
+> -				return ret;
+> +				goto handle_pm;
+>  			break;
+> =20
+>  		case IIO_LIGHT:
+>  			ret =3D ltr390_set_mode(data, LTR390_SET_ALS_MODE);
+>  			if (ret < 0)
+> -				return ret;
+> +				goto handle_pm;
+> =20
+>  			ret =3D ltr390_register_read(data, LTR390_ALS_DATA);
+>  			if (ret < 0)
+> -				return ret;
+> +				goto handle_pm;
+>  			break;
+> =20
+>  		default:
+> -			return -EINVAL;
+> +			ret =3D -EINVAL;
+> +			goto handle_pm;
+>  		}
+>  		*val =3D ret;
+> -		return IIO_VAL_INT;
+> +		ret =3D IIO_VAL_INT;
+> +		break;
 > +
-> +The ADE9000 provides multiple levels of gain and offset correction:
+>  	case IIO_CHAN_INFO_SCALE:
+>  		switch (chan->type) {
+>  		case IIO_UVINDEX:
+>  			*val =3D LTR390_WINDOW_FACTOR * LTR390_FRACTIONAL_PRECISION;
+>  			*val2 =3D ltr390_counts_per_uvi(data);
+> -			return IIO_VAL_FRACTIONAL;
+> +			ret =3D IIO_VAL_FRACTIONAL;
+> +			break;
+> =20
+>  		case IIO_LIGHT:
+>  			*val =3D LTR390_WINDOW_FACTOR * 6 * 100;
+>  			*val2 =3D data->gain * data->int_time_us;
+> -			return IIO_VAL_FRACTIONAL;
+> +			ret =3D IIO_VAL_FRACTIONAL;
+> +			break;
+> =20
+>  		default:
+> -			return -EINVAL;
+> +			ret =3D -EINVAL;
+>  		}
+> +		break;
+> =20
+>  	case IIO_CHAN_INFO_INT_TIME:
+>  		*val =3D data->int_time_us;
+> -		return IIO_VAL_INT;
+> +		ret =3D IIO_VAL_INT;
+> +		break;
+> =20
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		*val =3D ltr390_get_samp_freq_or_period(data, LTR390_GET_FREQ);
+> -		return IIO_VAL_INT;
+> +		ret =3D IIO_VAL_INT;
+> +		break;
+> =20
+>  	default:
+> -		return -EINVAL;
+> +		ret =3D -EINVAL;
+>  	}
 > +
-> +**PGA Gain (shared)**
-> +  The programmable gain amplifier affects the analog input stage for all=
- channels.
-> +  Controlled via the shared ``scale`` attribute with values 1, 2, or 4.
-> +
-> +**Calibration Gain (per-channel)**
-> +  Fine-tuning calibration gains applied in the digital domain for each c=
-hannel type.
-> +  Controlled via ``calibscale`` attributes (AIGAIN, AVGAIN, APGAIN regis=
-ters).
-> +
-> +**Calibration Offset (per-channel)**
-> +  Hardware calibration offsets applied by the device for power measureme=
-nts.
-> +  Controlled via ``calibbias`` attributes for power channels.
-> +
-> +**Correction Offsets (per-channel)**
-> +  RMS offset corrections for current and voltage measurements.
-> +  Controlled via ``offset`` attributes (IRMSOS, VRMSOS registers).
+> +handle_pm:
+> +	ltr390_set_power_state(data, false);
+> +	return ret;
+>  }
 
-As per the above - these only affect RMS not the direct measurements so nee=
-d a rethink.
-=20
+> @@ -595,32 +670,43 @@ static int ltr390_write_event_config(struct iio_dev=
+ *indio_dev,
+>  	struct ltr390_data *data =3D iio_priv(indio_dev);
+>  	int ret;
+> =20
+> -	if (!state)
+> -		return regmap_clear_bits(data->regmap, LTR390_INT_CFG, LTR390_LS_INT_E=
+N);
+> +	ltr390_set_power_state(data, true);
+> =20
+>  	guard(mutex)(&data->lock);
 > +
-> +4. Event attributes
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The ADE9000 provides various interrupts that are mapped to IIO events.
-> +Event functionality is only available if the corresponding interrupts are
-> +connected in the device tree.
-> +
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| IIO Event Attribute                               | ADE9000 Datasheet =
-Equivalent                             |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage0_thresh_either_en                      | Zero crossing dete=
-ction interrupt (ZXVA)                 |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage0_thresh_rising_en                      | Swell detection in=
-terrupt (SWELLA)                       |
+> +	if (!state) {
+> +		ret =3D regmap_clear_bits(data->regmap, LTR390_INT_CFG, LTR390_LS_INT_=
+EN);
+> +		data->irq_enabled =3D false;
 
-These seem to be on something to do with RMS not the main voltage channel. =
- They aren't indicating the peak went
-out of range but rather the RMS value did. Given RMS is a channel modifier,=
- maybe in_voltage0_rms_thresh_rising
-is enough?  Does the RMS half cycle update change how we should represent t=
-his?  I'm not sure and looking for
-inputs from others more familiar with energy meters.  I had to dig to find =
-what RMS 1/2 was.
+Just take an extra reference to runtime pm on enable of event and put it di=
+sable.
+Then no need for special handling with a local flag etc.
 
 
 
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage0_thresh_falling_en                     | Sag/dip detection =
-interrupt (DIPA)                       |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage0_thresh_none_en                        | Zero crossing time=
-out interrupt (ZXTOVA)                 |
+> +static int ltr390_pm_init(struct ltr390_data *data)
+> +{
+> +	int ret;
+> +	struct device *dev =3D &data->client->dev;
+> +
+> +	ret =3D pm_runtime_set_active(dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D devm_pm_runtime_enable(dev);
 
-Not seeing how a timeout maps to a threshold without a direction.  This is =
-a failure to see an event
-for some time.  The 'for sometime' could be done with a period control but =
-I'm not sure on what.  Maybe a new
-event direction in_voltage0_notthresh_either_en to say a threshold was not =
-crossed?
+devm_pm_runtime_set_active_enabled() I think would work here.
 
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| events_mag_none_en                                | Energy ready inter=
-rupt (EGYRDY)                          |
+That shortens this setup enough I'd not bother with this function.
 
-Not an event in IIO terms.  Could map this to a trigger as it's indicating =
-a data update of small set of the channels.
-However we'd have to deal with buffering on our slowest channel.
-Do we need to support a dataready on something so slow?  Just poll it enoug=
-h?
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +					"failed to enable powermanagement\n");
+> +
+> +	pm_runtime_set_autosuspend_delay(dev, 1000);
+> +	pm_runtime_use_autosuspend(dev);
+> +	return 0;
+> +}
+> +
+>  static int ltr390_probe(struct i2c_client *client)
+>  {
+>  	struct ltr390_data *data;
+> @@ -708,6 +820,8 @@ static int ltr390_probe(struct i2c_client *client)
+>  	if (!indio_dev)
+>  		return -ENOMEM;
+> =20
+> +	i2c_set_clientdata(client, indio_dev);
+> +
+>  	data =3D iio_priv(indio_dev);
+>  	data->regmap =3D devm_regmap_init_i2c(client, &ltr390_regmap_config);
+>  	if (IS_ERR(data->regmap))
+> @@ -721,6 +835,8 @@ static int ltr390_probe(struct i2c_client *client)
+>  	data->gain =3D 3;
+>  	/* default mode for ltr390 is ALS mode */
+>  	data->mode =3D LTR390_SET_ALS_MODE;
+> +	/* default irq_enabled is false */
+> +	data->irq_enabled =3D false;
+> =20
+>  	mutex_init(&data->lock);
+> =20
+> @@ -763,6 +879,7 @@ static int ltr390_probe(struct i2c_client *client)
+>  					     "request irq (%d) failed\n", client->irq);
+>  	}
+> =20
+> +	ltr390_pm_init(data);
+>  	return devm_iio_device_register(dev, indio_dev);
+>  }
+> =20
+> @@ -784,7 +901,30 @@ static int ltr390_resume(struct device *dev)
+>  				LTR390_SENSOR_ENABLE);
+>  }
+> =20
+> -static DEFINE_SIMPLE_DEV_PM_OPS(ltr390_pm_ops, ltr390_suspend, ltr390_re=
+sume);
+> +static int ltr390_runtime_suspend(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
+> +	struct ltr390_data *data =3D iio_priv(indio_dev);
+> +
+> +	guard(mutex)(&data->lock);
+> +	if (data->irq_enabled)
 
-Also what is the events_ prefix here?
+As above. When you have events enabled, grab an extra reference and don't
+put it until you disable the event. That way we never enter
+runtime_suspend whilst they are enabled.
 
-
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| events_change_none_en                             | Sequence error int=
-errupt (SEQERR)                        |
-
-Why this mapping?  If this is an error condition then maybe use the EV_TYPE=
-_FAULT and add something alongside the openwire
-support we have already upstream.
-
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| events_thresh_none_value                          | Zero crossing time=
-out threshold (ZXTOUT register)        |
-I'd group these so the _value entries come right next the _en entries as th=
-en we can consider them together.
-
-This smells like period which we already have for events when they need to =
-be true for a 'while'. Note the
-units though so you'll have to deal with mapping to those.
-
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage0_thresh_falling_value                  | Sag/dip threshold =
-(DIP_LVL register)                     |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
-> +| in_voltage0_thresh_rising_value                   | Swell threshold (S=
-WELL_LVL register)                     |
-> ++---------------------------------------------------+-------------------=
----------------------------------------+
+> +		return 0;
+> +	return regmap_clear_bits(data->regmap, LTR390_MAIN_CTRL,
+> +				LTR390_SENSOR_ENABLE);
+> +}
 > +
-> +Event directions:
-> +- ``rising``: Upper threshold crossing (swell detection)
-> +- ``falling``: Lower threshold crossing (sag/dip detection)
-> +- ``either``: Any threshold crossing (zero crossing detection)
-> +- ``none``: Timeout or non-directional events
+> +static int ltr390_runtime_resume(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
+> +	struct ltr390_data *data =3D iio_priv(indio_dev);
 > +
-> +**Note**: Event attributes are only available if the corresponding inter=
-rupts
-> +(irq0, irq1, dready) are specified in the device tree. The driver works =
-without
-> +interrupts but with reduced functionality.
+> +	return regmap_set_bits(data->regmap, LTR390_MAIN_CTRL,
+> +				LTR390_SENSOR_ENABLE);
+> +}
 > +
-> +5. Device buffers
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +This driver supports IIO buffers for waveform capture. Buffer functional=
-ity
-> +requires the dready interrupt to be connected.
-> +
-> +The device supports capturing voltage and current waveforms for power qu=
-ality
-> +analysis. The waveform buffer can be configured to capture data from dif=
-ferent
-> +channel combinations.
-> +
-> +Supported channel combinations for buffered capture:
-> +- Phase A: voltage and current (IA + VA)
-> +- Phase B: voltage and current (IB + VB)
-> +- Phase C: voltage and current (IC + VC)
-> +- All phases: all voltage and current channels
-> +- Individual channels: IA, VA, IB, VB, IC, VC
-> +
-> +Usage examples
-> +--------------
-> +
-> +Enable waveform capture for Phase A:
-> +
-> +.. code-block:: bash
-> +
-> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in=
-_current0_en
-> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in=
-_voltage0_en
-> +
-> +Set buffer length and enable:
-> +
-> +.. code-block:: bash
-> +
-> +        root:/sys/bus/iio/devices/iio:device0> echo 100 > buffer/length
-> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > buffer/enable
-> +
-> +6. Clock output
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The ADE9000 can provide a clock output via the CLKOUT pin when using an =
-external
-> +crystal/clock source. This feature is enabled by specifying ``#clock-cel=
-ls =3D <0>``
-> +in the device tree. The output clock will be registered as "clkout" and =
-can be
-> +referenced by other devices.
-> +
-> +7. Usage examples
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Show device name:
-> +
-> +.. code-block:: bash
-> +
-> +	root:/sys/bus/iio/devices/iio:device0> cat name
-> +        ade9000
-> +
-> +Read voltage measurements:
-> +
-> +.. code-block:: bash
-> +
-> +        root:/sys/bus/iio/devices/iio:device0> cat in_voltage0_raw
-> +        12345
-> +        root:/sys/bus/iio/devices/iio:device0> cat in_voltage0_scale
-> +        0.000030517
-> +
-> +- Phase A voltage =3D in_voltage0_raw * in_voltage0_scale =3D 0.3769 V
-> +
-> +Read power measurements:
-> +
-> +.. code-block:: bash
-> +
-> +        root:/sys/bus/iio/devices/iio:device0> cat in_power0_active_raw
-> +        5678
-> +        root:/sys/bus/iio/devices/iio:device0> cat in_power0_scale
-> +        0.000244140
-> +
-> +- Phase A active power =3D in_power0_active_raw * in_power0_scale =3D 1.=
-386 W
-> +
-> +Configure PGA gain (affects all channels):
-> +
-> +.. code-block:: bash
-> +
-> +        # Set PGA gain to 2x
-> +        root:/sys/bus/iio/devices/iio:device0> echo 2 > scale
-> +        # Read current gain setting
-> +        root:/sys/bus/iio/devices/iio:device0> cat scale
-> +        2
-> +
-> +Configure line frequency:
-> +
-> +.. code-block:: bash
-> +
-> +        # Set to 60Hz operation
-> +        root:/sys/bus/iio/devices/iio:device0> echo 60 > frequency
-> +        # Read current frequency setting
-> +        root:/sys/bus/iio/devices/iio:device0> cat frequency
-> +        60
-> +
-> +Configure calibration gains:
-> +
-> +.. code-block:: bash
-> +
-> +        # Set current channel 0 calibration gain
-> +        root:/sys/bus/iio/devices/iio:device0> echo 0x800000 > in_curren=
-t0_calibscale
-> +        # Set voltage channel 0 calibration gain
-> +        root:/sys/bus/iio/devices/iio:device0> echo 0x7FFFFF > in_voltag=
-e0_calibscale
-> +
-> +Configure voltage event thresholds (requires interrupts):
-> +
-> +.. code-block:: bash
-> +
-> +        # Set sag detection threshold
-> +        root:/sys/bus/iio/devices/iio:device0> echo 180000 > events/in_v=
-oltage0_thresh_falling_value
-> +        # Enable sag detection
-> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > events/in_voltag=
-e0_thresh_falling_en
-> +
-> +        # Set swell detection threshold
-> +        root:/sys/bus/iio/devices/iio:device0> echo 260000 > events/in_v=
-oltage0_thresh_rising_value
-> +        # Enable swell detection
-> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > events/in_voltag=
-e0_thresh_rising_en
-> +
-> +8. IIO Interfacing Tools
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +See ``Documentation/iio/iio_tools.rst`` for the description of the avail=
-able IIO
-> +interfacing tools.
-> \ No newline at end of file
-
-fix that.
-
-> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-> index c106402a91f7..792c815286f4 100644
-> --- a/Documentation/iio/index.rst
-> +++ b/Documentation/iio/index.rst
-> @@ -28,6 +28,7 @@ Industrial I/O Kernel Drivers
->     ad7606
->     ad7625
->     ad7944
-> +   ade9000
->     adis16475
->     adis16480
->     adis16550
+> +static _DEFINE_DEV_PM_OPS(ltr390_pm_ops,
+> +		ltr390_suspend, ltr390_resume,
+> +		ltr390_runtime_suspend, ltr390_runtime_resume, NULL);
+> =20
+>  static const struct i2c_device_id ltr390_id[] =3D {
+>  	{ "ltr390" },
+> @@ -802,7 +942,7 @@ static struct i2c_driver ltr390_driver =3D {
+>  	.driver =3D {
+>  		.name =3D "ltr390",
+>  		.of_match_table =3D ltr390_of_table,
+> -		.pm =3D pm_sleep_ptr(&ltr390_pm_ops),
+> +		.pm =3D pm_ptr(&ltr390_pm_ops),
+>  	},
+>  	.probe =3D ltr390_probe,
+>  	.id_table =3D ltr390_id,
 
 

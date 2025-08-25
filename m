@@ -1,69 +1,69 @@
-Return-Path: <linux-iio+bounces-23235-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23239-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19016B34275
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 16:00:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5C7B3427B
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 16:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BCFD2A23E9
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 13:58:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93FBA1A8770D
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Aug 2025 13:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1A123D7CB;
-	Mon, 25 Aug 2025 13:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B342F83CB;
+	Mon, 25 Aug 2025 13:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cjQl/6xT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NjsqP9fF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C125A2797AA;
-	Mon, 25 Aug 2025 13:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D123F2F4A13;
+	Mon, 25 Aug 2025 13:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756130071; cv=none; b=LYE9pt0tDm6jGKispzMeaoH87U2hzv8CbvDgf61l3EMUlmPW1+ODtLSCuIrTzJBHQndBFAIeA+8M4QxPI7rtsPe+pGi3yOA1YchX93bLD5je6KDsvjJYB7jKs8oRNiBgrDjbqQb9Rny7rYWsUSsDaxNbOQ9M2qb4BGWWrg8B2Os=
+	t=1756130078; cv=none; b=fAIGiiONS6JL/uQUPpMZBNruEZjqtwj5WuZfId71/cNyiCciUurpjDz4ODXdz8PC/M0PJ7X3BcSQw78N5Keso8aoDyeCVgykDE1rFOkq1SHcCjBQQ+lhS7+rfnqyAzq96wj9va59N1DcL99kSWuoVYatwPPqxeqZxrAPYUKAPnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756130071; c=relaxed/simple;
-	bh=JGUMCbb2jJCc1rUIo+reE75z35JPcdws3MpXvLdGhaY=;
+	s=arc-20240116; t=1756130078; c=relaxed/simple;
+	bh=LRR0plu8SYXqyVRth71qqQ/aAQawpUOpDZtM4lvjubk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkcNF/gRvbivPhfosljMaY+HlIrPXTW99b0TUGyG0klRRJ26xf8+HKjPGHCQmOaqiblXdJBGbPfHThpnc6N1Som0M8uFuScWJfNfY+T4KjXyF81lDNkrSkV74IkzZ64osdMVaSz+HbcDbPRhKEkHZaXPLwS2oe/jkaJ+Co/TNMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cjQl/6xT; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=P7THIHFVgF0sV75cPpVXC2KVEJAcW7CO7tWo/t1tCC31jHc0DiCBEqflOrI8Iz45K2VNbCglU7wqKIJ0KtAV9AIkakyuQ0vuVJYlbFN1RiGTntp5HHNCXfX2CcrL0e8Cov53uYQehj/qS/7n6tynXHjdo3RqX7D7Tj3JqMLD34U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NjsqP9fF; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756130069; x=1787666069;
+  t=1756130073; x=1787666073;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=JGUMCbb2jJCc1rUIo+reE75z35JPcdws3MpXvLdGhaY=;
-  b=cjQl/6xTItslfoqqc1L5rJCDgXZelwl8Q71YLPQpgv5mZkl75UuKIf7D
-   ykcsX5/lJqEI/7KiTJ2CAn0wJ4JABQBILFqHgRuw41fzysGUk8jhcI5sV
-   G6LKxOZXtMZsOnVm8BSCuE0pwetaUwC2VV8Qt3fua5hYGQs321wg0qbze
-   KdBwE2bXSgUMYYEddXaQSRTZRcLuEyGjpwQBvgJYcut5gqd1G6QlKrIHI
-   PpshJXPcqQTpJb/Vo3Bk6ijAPrzO9dDipWo7o/eVA2jVM6HgljMTaFWt4
-   f5l0SUHcRJ9796ATMdSUA/Rwlr3/cEOi2/jGmYJOcnQiDNzpyOg4DSI2w
-   g==;
-X-CSE-ConnectionGUID: 5C4rUb8HQl+stZGohWGiwg==
-X-CSE-MsgGUID: AcViXlhjTMupdGi1LdZEcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68936703"
+  bh=LRR0plu8SYXqyVRth71qqQ/aAQawpUOpDZtM4lvjubk=;
+  b=NjsqP9fFEDEfHLlOGELyGLaFfGBpKg09MVl3fbgEELmIgq7uYtuasINQ
+   X5WLaOlQk0Ia69EgwROb+8inM6aFgjndEuitD4H5WYjAmw84Sd0jBS6Tl
+   +/o6BqUP5i3ux8yJ4v1gdLaGswoyydhsP8EgWXjW0J/m8t3vpHGpDNrdk
+   LYBFSR/B75bjAgOZmnPNvoXOIYa84kZtE0/fNgQHPj6pm39mqAijm52/i
+   9OvqvTDuAhY06S57pyTyi3f1rXnLhpGgzBEkULLm7eKtXF//D7/QULs9v
+   XiNS1EntTmtCyCEJ0J9QlFs9c2PdK61WdioAO9xDvKt2Re+RDrGjCQ61r
+   w==;
+X-CSE-ConnectionGUID: REQMD5O0TSSZh80a0oMvIw==
+X-CSE-MsgGUID: IXjrkf0GR7eAZA3qjCjBpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="68936826"
 X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
-   d="scan'208";a="68936703"
+   d="scan'208";a="68936826"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:23 -0700
-X-CSE-ConnectionGUID: KwSioaM3Rw2uJuAG6v80pA==
-X-CSE-MsgGUID: vS1ZLyJ/RNCoLz0J0eVOgg==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:29 -0700
+X-CSE-ConnectionGUID: NSethckKQ/e9N5zzLrUNbQ==
+X-CSE-MsgGUID: 6o58nIBvQX2dZ/CRqIrXDA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
-   d="scan'208";a="168547683"
+   d="scan'208";a="168547693"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.7])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:18 -0700
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 06:54:24 -0700
 Received: from punajuuri.localdomain (unknown [192.168.240.130])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id CC2DE121F72;
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id D0299121F73;
 	Mon, 25 Aug 2025 16:54:01 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
 	(envelope-from <sakari.ailus@linux.intel.com>)
-	id 1uqXe5-00000007POT-3N1t;
+	id 1uqXe5-00000007POZ-3Rcg;
 	Mon, 25 Aug 2025 16:54:01 +0300
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
@@ -139,9 +139,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-sunxi@lists.linux.dev
-Subject: [PATCH v3 07/12] iio: imu: Remove redundant pm_runtime_mark_last_busy() calls
-Date: Mon, 25 Aug 2025 16:53:56 +0300
-Message-ID: <20250825135401.1765847-8-sakari.ailus@linux.intel.com>
+Subject: [PATCH v3 08/12] iio: light: Remove redundant pm_runtime_mark_last_busy() calls
+Date: Mon, 25 Aug 2025 16:53:57 +0300
+Message-ID: <20250825135401.1765847-9-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
 References: <20250825135401.1765847-1-sakari.ailus@linux.intel.com>
@@ -159,199 +159,154 @@ to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
 pm_runtime_mark_last_busy().
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  | 5 -----
- drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 1 -
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c   | 5 -----
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c   | 1 -
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c         | 6 ------
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c      | 1 -
- drivers/iio/imu/kmx61.c                            | 6 ++----
- 7 files changed, 2 insertions(+), 23 deletions(-)
+ drivers/iio/light/apds9306.c   |  2 --
+ drivers/iio/light/apds9960.c   |  1 -
+ drivers/iio/light/bh1780.c     |  1 -
+ drivers/iio/light/gp2ap002.c   |  2 --
+ drivers/iio/light/isl29028.c   | 11 +++--------
+ drivers/iio/light/ltrf216a.c   |  1 -
+ drivers/iio/light/pa12203001.c | 11 +++--------
+ drivers/iio/light/rpr0521.c    |  6 ++----
+ drivers/iio/light/tsl2583.c    | 12 +++---------
+ drivers/iio/light/tsl2591.c    |  2 --
+ drivers/iio/light/us5182d.c    | 12 +++---------
+ drivers/iio/light/vcnl4000.c   | 11 +++--------
+ drivers/iio/light/vcnl4035.c   | 11 +++--------
+ 13 files changed, 20 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-index 7a28051330b7..48014b61ced3 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -315,7 +315,6 @@ static int inv_icm42600_accel_read_sensor(struct iio_dev *indio_dev,
- 		ret = -EINVAL;
- exit:
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 	return ret;
- }
-@@ -567,7 +566,6 @@ static int inv_icm42600_accel_write_scale(struct iio_dev *indio_dev,
- 	ret = inv_icm42600_set_accel_conf(st, &conf, NULL);
+diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+index 5eb33e8e3ad9..389125675caa 100644
+--- a/drivers/iio/light/apds9306.c
++++ b/drivers/iio/light/apds9306.c
+@@ -537,7 +537,6 @@ static int apds9306_read_data(struct apds9306_data *data, int *val, int reg)
  
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
+ 	*val = get_unaligned_le24(&buff);
  
- 	return ret;
-@@ -675,7 +673,6 @@ static int inv_icm42600_accel_write_odr(struct iio_dev *indio_dev,
+-	pm_runtime_mark_last_busy(data->dev);
+ 	pm_runtime_put_autosuspend(data->dev);
  
- out_unlock:
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
+ 	return 0;
+@@ -1121,7 +1120,6 @@ static int apds9306_write_event_config(struct iio_dev *indio_dev,
+ 			if (ret)
+ 				return ret;
  
- 	return ret;
-@@ -727,7 +724,6 @@ static int inv_icm42600_accel_read_offset(struct inv_icm42600_state *st,
- 	memcpy(data, st->buffer, sizeof(data));
+-			pm_runtime_mark_last_busy(data->dev);
+ 			pm_runtime_put_autosuspend(data->dev);
  
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 	if (ret)
- 		return ret;
-@@ -865,7 +861,6 @@ static int inv_icm42600_accel_write_offset(struct inv_icm42600_state *st,
- 
- out_unlock:
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 	return ret;
- }
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-index ca744aaee542..36d69a0face6 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-@@ -430,7 +430,6 @@ static int inv_icm42600_buffer_postdisable(struct iio_dev *indio_dev)
- 	if (sleep)
- 		msleep(sleep);
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-index 9ba6f13628e6..8a7cc9127631 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -184,7 +184,6 @@ static int inv_icm42600_gyro_read_sensor(struct inv_icm42600_state *st,
- 		ret = -EINVAL;
- exit:
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 	return ret;
- }
-@@ -283,7 +282,6 @@ static int inv_icm42600_gyro_write_scale(struct iio_dev *indio_dev,
- 	ret = inv_icm42600_set_gyro_conf(st, &conf, NULL);
- 
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-@@ -378,7 +376,6 @@ static int inv_icm42600_gyro_write_odr(struct iio_dev *indio_dev,
- 
- out_unlock:
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-@@ -430,7 +427,6 @@ static int inv_icm42600_gyro_read_offset(struct inv_icm42600_state *st,
- 	memcpy(data, st->buffer, sizeof(data));
- 
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 	if (ret)
- 		return ret;
-@@ -567,7 +563,6 @@ static int inv_icm42600_gyro_write_offset(struct inv_icm42600_state *st,
- 
- out_unlock:
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 	return ret;
- }
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-index 271a4788604a..30f6a9595eea 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-@@ -41,7 +41,6 @@ static int inv_icm42600_temp_read(struct inv_icm42600_state *st, s16 *temp)
- 
- exit:
- 	mutex_unlock(&st->lock);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 39eb516acc73..b2fa1f4957a5 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -735,7 +735,6 @@ static int inv_mpu6050_read_channel_data(struct iio_dev *indio_dev,
- 		break;
+ 			return 0;
+diff --git a/drivers/iio/light/apds9960.c b/drivers/iio/light/apds9960.c
+index b92d0fce5aec..79b202c59a0f 100644
+--- a/drivers/iio/light/apds9960.c
++++ b/drivers/iio/light/apds9960.c
+@@ -495,7 +495,6 @@ static int apds9960_set_power_state(struct apds9960_data *data, bool on)
+ 			usleep_range(data->als_adc_int_us,
+ 				     APDS9960_MAX_INT_TIME_IN_US);
+ 	} else {
+-		pm_runtime_mark_last_busy(dev);
+ 		ret = pm_runtime_put_autosuspend(dev);
  	}
  
--	pm_runtime_mark_last_busy(pdev);
- 	pm_runtime_put_autosuspend(pdev);
+diff --git a/drivers/iio/light/bh1780.c b/drivers/iio/light/bh1780.c
+index c7c877d2fe67..5d3c6d5276ba 100644
+--- a/drivers/iio/light/bh1780.c
++++ b/drivers/iio/light/bh1780.c
+@@ -111,7 +111,6 @@ static int bh1780_read_raw(struct iio_dev *indio_dev,
+ 			value = bh1780_read_word(bh1780, BH1780_REG_DLOW);
+ 			if (value < 0)
+ 				return value;
+-			pm_runtime_mark_last_busy(&bh1780->client->dev);
+ 			pm_runtime_put_autosuspend(&bh1780->client->dev);
+ 			*val = value;
  
- 	return ret;
-@@ -938,7 +937,6 @@ static int inv_mpu6050_write_raw(struct iio_dev *indio_dev,
- 		break;
+diff --git a/drivers/iio/light/gp2ap002.c b/drivers/iio/light/gp2ap002.c
+index 42859e5b1089..a0d8a58f2704 100644
+--- a/drivers/iio/light/gp2ap002.c
++++ b/drivers/iio/light/gp2ap002.c
+@@ -271,7 +271,6 @@ static int gp2ap002_read_raw(struct iio_dev *indio_dev,
  	}
  
--	pm_runtime_mark_last_busy(pdev);
- 	pm_runtime_put_autosuspend(pdev);
- error_write_raw_unlock:
- 	mutex_unlock(&st->lock);
-@@ -1146,14 +1144,12 @@ static int inv_mpu6050_enable_wom(struct inv_mpu6050_state *st, bool en)
- 			st->chip_config.wom_en = false;
+ out:
+-	pm_runtime_mark_last_busy(gp2ap002->dev);
+ 	pm_runtime_put_autosuspend(gp2ap002->dev);
+ 
+ 	return ret;
+@@ -353,7 +352,6 @@ static int gp2ap002_write_event_config(struct iio_dev *indio_dev,
+ 		pm_runtime_get_sync(gp2ap002->dev);
+ 		gp2ap002->enabled = true;
+ 	} else {
+-		pm_runtime_mark_last_busy(gp2ap002->dev);
+ 		pm_runtime_put_autosuspend(gp2ap002->dev);
+ 		gp2ap002->enabled = false;
+ 	}
+diff --git a/drivers/iio/light/isl29028.c b/drivers/iio/light/isl29028.c
+index 0e4284823d44..374bccad9119 100644
+--- a/drivers/iio/light/isl29028.c
++++ b/drivers/iio/light/isl29028.c
+@@ -336,16 +336,11 @@ static int isl29028_ir_get(struct isl29028_chip *chip, int *ir_data)
+ static int isl29028_set_pm_runtime_busy(struct isl29028_chip *chip, bool on)
+ {
+ 	struct device *dev = regmap_get_device(chip->regmap);
+-	int ret;
+ 
+-	if (on) {
+-		ret = pm_runtime_resume_and_get(dev);
+-	} else {
+-		pm_runtime_mark_last_busy(dev);
+-		ret = pm_runtime_put_autosuspend(dev);
+-	}
++	if (on)
++		return pm_runtime_resume_and_get(dev);
+ 
+-	return ret;
++	return pm_runtime_put_autosuspend(dev);
+ }
+ 
+ /* Channel IO */
+diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
+index 61f57a82b872..5f27f754fe1c 100644
+--- a/drivers/iio/light/ltrf216a.c
++++ b/drivers/iio/light/ltrf216a.c
+@@ -208,7 +208,6 @@ static int ltrf216a_set_power_state(struct ltrf216a_data *data, bool on)
+ 			return ret;
  		}
- 
--		pm_runtime_mark_last_busy(pdev);
- 		pm_runtime_put_autosuspend(pdev);
+ 	} else {
+-		pm_runtime_mark_last_busy(dev);
+ 		pm_runtime_put_autosuspend(dev);
  	}
  
- 	return result;
- 
- error_suspend:
--	pm_runtime_mark_last_busy(pdev);
- 	pm_runtime_put_autosuspend(pdev);
- 	return result;
- }
-@@ -1249,7 +1245,6 @@ static int inv_mpu6050_write_event_value(struct iio_dev *indio_dev,
- 	value = (u64)val * 1000000ULL + (u64)val2;
- 	result = inv_mpu6050_set_wom_threshold(st, value, INV_MPU6050_FREQ_DIVIDER(st));
- 
--	pm_runtime_mark_last_busy(pdev);
- 	pm_runtime_put_autosuspend(pdev);
- 
- 	return result;
-@@ -1357,7 +1352,6 @@ inv_mpu6050_fifo_rate_store(struct device *dev, struct device_attribute *attr,
- 	if (result)
- 		goto fifo_rate_fail_power_off;
- 
--	pm_runtime_mark_last_busy(pdev);
- fifo_rate_fail_power_off:
- 	pm_runtime_put_autosuspend(pdev);
- fifo_rate_fail_unlock:
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-index 5b1088cc3704..10a473342075 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -194,7 +194,6 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enable)
- 		result = inv_mpu6050_prepare_fifo(st, false);
- 		if (result)
- 			goto error_power_off;
--		pm_runtime_mark_last_busy(pdev);
- 		pm_runtime_put_autosuspend(pdev);
+diff --git a/drivers/iio/light/pa12203001.c b/drivers/iio/light/pa12203001.c
+index 8885852bef22..98a1f1624c75 100644
+--- a/drivers/iio/light/pa12203001.c
++++ b/drivers/iio/light/pa12203001.c
+@@ -185,15 +185,10 @@ static int pa12203001_set_power_state(struct pa12203001_data *data, bool on,
+ 		mutex_unlock(&data->lock);
  	}
  
-diff --git a/drivers/iio/imu/kmx61.c b/drivers/iio/imu/kmx61.c
-index 55c82891e08c..3cd91d8a89ee 100644
---- a/drivers/iio/imu/kmx61.c
-+++ b/drivers/iio/imu/kmx61.c
-@@ -747,12 +747,10 @@ static int kmx61_set_power_state(struct kmx61_data *data, bool on, u8 device)
- 		data->mag_ps = on;
- 	}
+-	if (on) {
+-		ret = pm_runtime_resume_and_get(&data->client->dev);
++	if (on)
++		return pm_runtime_resume_and_get(&data->client->dev);
  
+-	} else {
+-		pm_runtime_mark_last_busy(&data->client->dev);
+-		ret = pm_runtime_put_autosuspend(&data->client->dev);
+-	}
+-
+-	return ret;
++	return pm_runtime_put_autosuspend(&data->client->dev);
+ 
+ err:
+ 	mutex_unlock(&data->lock);
+diff --git a/drivers/iio/light/rpr0521.c b/drivers/iio/light/rpr0521.c
+index fbd116272921..9341c1d58cbe 100644
+--- a/drivers/iio/light/rpr0521.c
++++ b/drivers/iio/light/rpr0521.c
+@@ -358,12 +358,10 @@ static int rpr0521_set_power_state(struct rpr0521_data *data, bool on,
+ 	 * Note: If either measurement is re-enabled before _suspend(),
+ 	 * both stay enabled until _suspend().
+ 	 */
 -	if (on) {
 +	if (on)
  		ret = pm_runtime_resume_and_get(&data->client->dev);
@@ -362,7 +317,127 @@ index 55c82891e08c..3cd91d8a89ee 100644
 -	}
  	if (ret < 0) {
  		dev_err(&data->client->dev,
- 			"Failed: kmx61_set_power_state for %d, ret %d\n",
+ 			"Failed: rpr0521_set_power_state for %d, ret %d\n",
+diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
+index fc3b0c4226be..8801a491de77 100644
+--- a/drivers/iio/light/tsl2583.c
++++ b/drivers/iio/light/tsl2583.c
+@@ -641,16 +641,10 @@ static const struct iio_chan_spec tsl2583_channels[] = {
+ 
+ static int tsl2583_set_pm_runtime_busy(struct tsl2583_chip *chip, bool on)
+ {
+-	int ret;
++	if (on)
++		return pm_runtime_resume_and_get(&chip->client->dev);
+ 
+-	if (on) {
+-		ret = pm_runtime_resume_and_get(&chip->client->dev);
+-	} else {
+-		pm_runtime_mark_last_busy(&chip->client->dev);
+-		ret = pm_runtime_put_autosuspend(&chip->client->dev);
+-	}
+-
+-	return ret;
++	return pm_runtime_put_autosuspend(&chip->client->dev);
+ }
+ 
+ static int tsl2583_read_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/light/tsl2591.c b/drivers/iio/light/tsl2591.c
+index 08476f193a44..c5557867ea43 100644
+--- a/drivers/iio/light/tsl2591.c
++++ b/drivers/iio/light/tsl2591.c
+@@ -772,7 +772,6 @@ static int tsl2591_read_raw(struct iio_dev *indio_dev,
+ err_unlock:
+ 	mutex_unlock(&chip->als_mutex);
+ 
+-	pm_runtime_mark_last_busy(&client->dev);
+ 	pm_runtime_put_autosuspend(&client->dev);
+ 
+ 	return ret;
+@@ -995,7 +994,6 @@ static int tsl2591_write_event_config(struct iio_dev *indio_dev,
+ 		pm_runtime_get_sync(&client->dev);
+ 	} else if (!state && chip->events_enabled) {
+ 		chip->events_enabled = false;
+-		pm_runtime_mark_last_busy(&client->dev);
+ 		pm_runtime_put_autosuspend(&client->dev);
+ 	}
+ 
+diff --git a/drivers/iio/light/us5182d.c b/drivers/iio/light/us5182d.c
+index 61a0957317a1..d2f5a44892a8 100644
+--- a/drivers/iio/light/us5182d.c
++++ b/drivers/iio/light/us5182d.c
+@@ -361,19 +361,13 @@ static int us5182d_shutdown_en(struct us5182d_data *data, u8 state)
+ 
+ static int us5182d_set_power_state(struct us5182d_data *data, bool on)
+ {
+-	int ret;
+-
+ 	if (data->power_mode == US5182D_ONESHOT)
+ 		return 0;
+ 
+-	if (on) {
+-		ret = pm_runtime_resume_and_get(&data->client->dev);
+-	} else {
+-		pm_runtime_mark_last_busy(&data->client->dev);
+-		ret = pm_runtime_put_autosuspend(&data->client->dev);
+-	}
++	if (on)
++		return pm_runtime_resume_and_get(&data->client->dev);
+ 
+-	return ret;
++	return pm_runtime_put_autosuspend(&data->client->dev);
+ }
+ 
+ static int us5182d_read_value(struct us5182d_data *data,
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index cc81a30b7c70..4dbb2294a843 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -576,16 +576,11 @@ static bool vcnl4010_is_in_periodic_mode(struct vcnl4000_data *data)
+ static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data *data, bool on)
+ {
+ 	struct device *dev = &data->client->dev;
+-	int ret;
+ 
+-	if (on) {
+-		ret = pm_runtime_resume_and_get(dev);
+-	} else {
+-		pm_runtime_mark_last_busy(dev);
+-		ret = pm_runtime_put_autosuspend(dev);
+-	}
++	if (on)
++		return pm_runtime_resume_and_get(dev);
+ 
+-	return ret;
++	return pm_runtime_put_autosuspend(dev);
+ }
+ 
+ static int vcnl4040_read_als_it(struct vcnl4000_data *data, int *val, int *val2)
+diff --git a/drivers/iio/light/vcnl4035.c b/drivers/iio/light/vcnl4035.c
+index 01bc99564f98..963747927425 100644
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -141,17 +141,12 @@ static const struct iio_trigger_ops vcnl4035_trigger_ops = {
+ 
+ static int vcnl4035_set_pm_runtime_state(struct vcnl4035_data *data, bool on)
+ {
+-	int ret;
+ 	struct device *dev = &data->client->dev;
+ 
+-	if (on) {
+-		ret = pm_runtime_resume_and_get(dev);
+-	} else {
+-		pm_runtime_mark_last_busy(dev);
+-		ret = pm_runtime_put_autosuspend(dev);
+-	}
++	if (on)
++		return pm_runtime_resume_and_get(dev);
+ 
+-	return ret;
++	return pm_runtime_put_autosuspend(dev);
+ }
+ 
+ static int vcnl4035_read_info_raw(struct iio_dev *indio_dev,
 -- 
 2.47.2
 

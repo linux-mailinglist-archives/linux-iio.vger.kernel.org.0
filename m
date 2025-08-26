@@ -1,112 +1,128 @@
-Return-Path: <linux-iio+bounces-23317-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23318-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5103FB372F6
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 21:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCFBB3731A
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 21:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30CFF1B6738A
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 19:21:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCCA81BA61F9
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 19:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81D32F60A7;
-	Tue, 26 Aug 2025 19:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF419270551;
+	Tue, 26 Aug 2025 19:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tag5K1h7"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xdSyAYyI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A662D46B4
-	for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 19:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3734431A554
+	for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 19:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756236049; cv=none; b=mvqml6KVVpumTT9kXTtzJkFjRs+hI/c0uhnLKmfUQmf1mjd/sFUYW+NChDml3zcWfTNdHde6SMJn3FqAMXktgUR4ySR/uBuec9oj9TGevde4bBvnfXjE2pLxKKnMVhxOKl7iidspCAc7wkhjrBUH079ty8aIT4bc6iwU/WbWekU=
+	t=1756236813; cv=none; b=mG4TMLRobyxJHnhS1wAD8CwmWzoFIMvmapTF24QZpzi0RfhRjkuV8t/zpb3foZ5T2cQEnyzonHoxDM7zm20qBpQpTtrZHmbIrRovebLvE4qghHTdKlL9xRND9piV/feqJKDTTsfaP87h46YfJc0v3MYWnmitNlwZUZiUjFKbAcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756236049; c=relaxed/simple;
-	bh=ry3N32N+DjfqMYYRPckyB1ZRvTp7udEqnMEm7cyiPz0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qTkuJTbGmqVMa9Q7+2H4ihqjUqsw34s91VZlHu9uxwGjYOngxv/huQvekNrl1BdWGiFjwXnHS7Ke5dTzwM98qxxBxxYYhOoanSBB6uaymzVVTg6Mmxm1HCPqRRAR5vyNjxviuSv8KQJoytmrNkbicy7GOvzEUYpwQFFei35Yado=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tag5K1h7; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6188b7550c0so8288996a12.2
-        for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 12:20:47 -0700 (PDT)
+	s=arc-20240116; t=1756236813; c=relaxed/simple;
+	bh=8mAXObn2zhzFjP8c+rF5rcPzrMNFR3itCTjsQpX1Rxc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nMuF/xYcE/3O1lA8RjVZP4id+X87VM1YEdMEqmLk6DTLokaCGvHOQh3UlZmKnYAZF4OEsjiRLllL1apSV8KZ3yMfxhveyFu9tC73wRcujJaNk96p12nLxyGR8InIiIIY/wROlvFDzmdomyGsv9VAt/nJcaxG7tEnxRXQb6TYHv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xdSyAYyI; arc=none smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-30ccea6239bso3662118fac.2
+        for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 12:33:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756236046; x=1756840846; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=02+rESFuNlSWXg4eQ3p9GiZr5jN6yQn8zm4BP3ZW60I=;
-        b=Tag5K1h7fk7pJjYGUCqAMan5Af+fw2wIxHRH0Pnnj5wAX8kS82b2xa/pP1xKEu7o4x
-         g80EYxjdLyWIzOprkkXkGy9XL0xwaJK4hn+2zaTjSG0f6HMR6R4kieMnXks4vGAwezen
-         e+uq5tPkNUloC3bfTOuiWfdREAn4h5ePVsX+A0hqkQrn2p/5PIlZR/ujtqiIRVvazRn6
-         OZigjoCunFML7naoO41//nfKBzAp8qExxxMfpw6kYVgofmPkpO5jts3NV+nV5SlHQMVx
-         RyMKllfJnD89+S/kZwX2vrvYAk46vwzxoE/8PCB70dzA4YP3cSZKkfRQbPFrtBcMPukG
-         LQ3Q==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756236810; x=1756841610; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8mAXObn2zhzFjP8c+rF5rcPzrMNFR3itCTjsQpX1Rxc=;
+        b=xdSyAYyIS5odTe3ELO1wUmFIkRJ+YL6zm4h9Lo6533Gx12ijQPLGp5bN4wzceOweHP
+         Mm3pRxzvJu4D08PUOFGxq1RLP9uasvj0sVY/6R51P0eRrvZ9awkzxo7S6kjjWdGnj9sk
+         WiyZFku30v1pIvBJ16O0rFtkbqfws6o+YZZn3I90JKZtKmLxQhgi6Gth0SShIchonOkb
+         1priukbr83fKPM3GDlg3Oox/qg0KD0x8h8bWuGUrpwqwQfpkRnGLt7PQH9zSElfuNTNp
+         8qh7avy018rrEgTMiqVtlRq/Z4bocn8/Uu3RPg/5CPXR3L1hIUVwLhILtqIchBpYR9/B
+         cVPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756236046; x=1756840846;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=02+rESFuNlSWXg4eQ3p9GiZr5jN6yQn8zm4BP3ZW60I=;
-        b=jHfBnLwj0Fhix9ZUBL201LYfsNYPuqFLXLp5R7mrt/QFN3DqtxUCI74WViuI18KE9q
-         22x4Woa40jTciicx8WA2AKUWiPcZWSyBVS/UCeBeaX2/trr6vjXdtD+dgaua3CA7I4qp
-         FO5TNVKiSl1E9fNIsZdv501sNY+eFamFfMX6G1U38zY9xyC11Hq5EB+CRN+GuDZQ0sJp
-         kBKwMaZlz01b+i9kS07rykMINzQD5csYMCcCK3nQLOsWj7hpiXxb2IdMDkRSgwWl+wnj
-         rEhQY9A5jUQjQhmhxWwGKWDjFfETHqjERQPkgqmo64fJOOimqdVCJMXuQcZqCelme31V
-         zVjg==
-X-Forwarded-Encrypted: i=1; AJvYcCXnaqShPkYzNVbnqg5H+38hEqU2hN6mYf+E7pzHgn1YdpppKC5A0dor+MnDvw72AyY3FRSwQ/IKnJU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyENcOa5ZnTv992Vi8wRQxFv2Jn3M7rZj1gYGAnHPAjDHTZXpf5
-	1Vi54Vap/k7DH+k4nwT+5/LELM24qzL9k55K6Zm9kp5VBbwGXepCGgQLECNZuG/XdJv3z42oZXr
-	vQod04vArqOhk6Zx4KI+WNsNu6Ylx9G/7K/7dD7Q=
-X-Gm-Gg: ASbGncuRpdiGFMWHDXQMxxAfin7hdRnJ3B6/elo/a7NNezIjT2Pn0LD8RU7Cn6T3vcV
-	EosHfrnzcTtBePal/3c0F3ubm1KosXQ5yrP+X55WnKOaLT5aznugpdjgOcIsKTXlVqucoHr2FSZ
-	NdabPYDmS+7u8LBivvTaYhDV4t5XsnXEjH6VKJXiDQYmpTUj+aeByI2H6YyW/Qcx2Ell7Gt01Zp
-	vqjikT9WbOUC9G6MYwYaC47znanxQUFQqGKCDRvkQ==
-X-Google-Smtp-Source: AGHT+IHuxl03XRlG6YvKgfGJ2cVPr142ZivLtUkvBVMJe1/p9nSUlXJIscZUCW4ZM4MHpEMbK2zp5+wwT5ClbEYPezk=
-X-Received: by 2002:a05:6402:2786:b0:61c:8c63:a91e with SMTP id
- 4fb4d7f45d1cf-61c8c63adfamr3629105a12.25.1756236045906; Tue, 26 Aug 2025
- 12:20:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756236810; x=1756841610;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8mAXObn2zhzFjP8c+rF5rcPzrMNFR3itCTjsQpX1Rxc=;
+        b=Unf9y3ONMBWtz9+3rMNRCuKHgxxLewxHv5JTZcUiGpL2fZmY5l/D0+Tb9JaE8GwRgq
+         48IHnWIDgQ+YxIBHfSnAmz3bNLAvsV68Fbbfuy+GrZQPgzFotXLOXOfDJqeV6Po03WSc
+         engBIs9m2vTuXajy32cTrBdvZyfybaevKsNpKa5ujpQKz6CDJky4L+Vv/RQsD8bzpaDh
+         4g9L9/hSq/G4lxDe6cZD73OTA09zOCSobPiH4980zJvdOnd1DboZES3pT6hDtr9fcsOE
+         bUGcYQDhomNldL81YhmgxOcBLD5fZOwSnmqZpv9nnPE8R/5Esv44J7+jG9HkdPwCBma1
+         gjDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXEJGYicrePgZS/LifN/XRfy08QFv2658qppZTnmhD+dLSqKSDr/2v88FJdkDvWgq4xa1AjGd2TVI0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGjQ0b12FxsnV2pzg1Z2uafKu5uudDWvqUhiXKfBwT0vG16NaH
+	yXh2KpT2ZGC8n8zd1LVcpOsau64olb4DjslpR67ULBhuEUCX4Aa/LYb4fXhPA/7MwRw=
+X-Gm-Gg: ASbGncuRAXzZr+d+ElUvU6p2sJa2gA8b/KCyRh90OCP3Ytv9oNs7uw7LfRygAZWeSn6
+	SYF4KLgJxZSOtinYFSEM/D3hq+0x6HFi32fgrHkFGp9ID5Vi/YiSi/EXzrkWfRWWYjyk57sdnnl
+	UFcAJcqNo/0CpsER2vydazfFf6YdwRJ/pToCPbzDt2Emr889IaKUQ7UOxStsxeAm4z7GyvtWvzA
+	jFgHKDTqn0fNVNjV26SLe21EVAV4CwDYG780sYu4q/i0FFi/87DTFitv4hRjWFX7b+uTHtBl0KB
+	JfuaSDmSkpfWJJsNY1NvG45ZTTIIq4kL3mDck9RtZlyv1lI6XZsLam0Rnd6dvjtnNKkqDGZ0dOT
+	aTGnL6hQbgik68I4TlOB/tXvXy7aQDAVnm4y8v3A9UI4K6/P4EoJwXmrHkJ2bdzsz9cWrxexf0E
+	8=
+X-Google-Smtp-Source: AGHT+IE96e3ueTi+4l1XgQb+3Z0q645uY+kt2kT4Wdlq/gIGZc6KepaE/3EwdSb/UYukIE5K5hx7ow==
+X-Received: by 2002:a05:6870:c98f:b0:30b:582d:8eed with SMTP id 586e51a60fabf-314dcdd52b4mr8242972fac.39.1756236810161;
+        Tue, 26 Aug 2025 12:33:30 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:aa9f:f4cd:76b1:fecb? ([2600:8803:e7e4:1d00:aa9f:f4cd:76b1:fecb])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-314f7d9852bsm2629677fac.32.2025.08.26.12.33.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Aug 2025 12:33:29 -0700 (PDT)
+Message-ID: <0e475ae0-acd7-4eca-915c-9dd44682db2d@baylibre.com>
+Date: Tue, 26 Aug 2025 14:33:28 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] chemical/mhz19b.c: Replaced datasheet reference to new
+ revision.
+To: Sidharth Seela <sidharthseela@gmail.com>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: "gye976@gmail.com" <gye976@gmail.com>, "jic23@kernel.org"
+ <jic23@kernel.org>, nuno.sa@analog.com, andy@kernel.org,
+ linux-iio@vger.kernel.org
 References: <CAJE-K+D_U3F_61vzXPHDZV_Rm4Jzd--nO3yf083g7-0=Hh7OFw@mail.gmail.com>
- <CAHp75Vcte3F3VNhKZPd4vv45Kedzok0LKQax1jt=geG9w7b1EQ@mail.gmail.com> <CAJE-K+CNsGdJWeYW-NL7PtkOog3YfLEeqJLJRHEtTfb=A=o8pg@mail.gmail.com>
-In-Reply-To: <CAJE-K+CNsGdJWeYW-NL7PtkOog3YfLEeqJLJRHEtTfb=A=o8pg@mail.gmail.com>
-From: Sidharth Seela <sidharthseela@gmail.com>
-Date: Wed, 27 Aug 2025 00:50:34 +0530
-X-Gm-Features: Ac12FXyklB_D-8lhVliPGmPFPXnbH1bucaXYtl8EW03qC5mkVJ-OFSNV8WD_XSg
-Message-ID: <CAJE-K+BjnNdE0kN1fqfZQGb+9Gcdead=DRiAXn6qpSz-WKOj9w@mail.gmail.com>
-Subject: Re: [PATCH v1] chemical/mhz19b.c: Replaced datasheet reference to new revision.
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: "gye976@gmail.com" <gye976@gmail.com>, "jic23@kernel.org" <jic23@kernel.org>, 
-	"dlechner@baylibre.com" <dlechner@baylibre.com>, nuno.sa@analog.com, andy@kernel.org, 
-	linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+ <CAHp75Vcte3F3VNhKZPd4vv45Kedzok0LKQax1jt=geG9w7b1EQ@mail.gmail.com>
+ <CAJE-K+CNsGdJWeYW-NL7PtkOog3YfLEeqJLJRHEtTfb=A=o8pg@mail.gmail.com>
+ <CAJE-K+BjnNdE0kN1fqfZQGb+9Gcdead=DRiAXn6qpSz-WKOj9w@mail.gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <CAJE-K+BjnNdE0kN1fqfZQGb+9Gcdead=DRiAXn6qpSz-WKOj9w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Code referenced the mhz19b sensor's datasheet i.e mh-z19b-co2-ver1_0.pdf ,
-newer revision is mh-z19b-co2-manual(ver1_7).pdf. Hence, the document's URL
-has been updated.
-Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
----
+On 8/26/25 2:20 PM, Sidharth Seela wrote:
+> Code referenced the mhz19b sensor's datasheet i.e mh-z19b-co2-ver1_0.pdf ,
+> newer revision is mh-z19b-co2-manual(ver1_7).pdf. Hence, the document's URL
+> has been updated.
+> Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
+Please give at least 24-hours for other reviewers to have a look before
+sending a new revision (for things more than a few lines, allow a week).
 
-diff --git a/drivers/iio/chemical/mhz19b.c b/drivers/iio/chemical/mhz19b.c
-index 3c64154918b1..05e739e962f0 100644
---- a/drivers/iio/chemical/mhz19b.c
-+++ b/drivers/iio/chemical/mhz19b.c
-@@ -5,7 +5,7 @@
-  * Copyright (c) 2025 Gyeyoung Baek <gye976@gmail.com>
-  *
-  * Datasheet:
-- * https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver1_0.pdf
-+ * https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-manual(ver1_7).pdf
-  */
+The second revision should have been v2, not v1 and should not be sent
+in reply to the previous version.
 
- #include <linux/array_size.h>
--- 
-2.47.2
+Also, the subject should be "iio: chemical: mhz19b: Replace datasheet
+reference to new revision."
+
+And there should be a blank line between the message and the
+Signed-off-by:.
+
+And revisions should contain an additional changelog so that reviewers
+know what change since the last revision.
+
+All of these expectations and more are documented at [1].
+
+[1]: https://www.kernel.org/doc/html/latest/process/submitting-patches.html
+
+
 

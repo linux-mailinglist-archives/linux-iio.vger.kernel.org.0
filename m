@@ -1,127 +1,108 @@
-Return-Path: <linux-iio+bounces-23311-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23312-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB2DB372A1
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 20:52:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3594AB372C5
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 20:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 667775E8689
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 18:52:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F18D1882848
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 19:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6323C2F0C48;
-	Tue, 26 Aug 2025 18:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B61A371EA5;
+	Tue, 26 Aug 2025 18:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IOkhu02F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030FE3AC22
-	for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 18:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782E62F3603
+	for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 18:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756234356; cv=none; b=fH2728OdzFo7f32ZMOp8OVmHZDOKkPVD5esTRonyri9Rjo4Wh3yCWKRyOxyn98F+iiOGErhf8ODLDYCULaJyc5jtmiYjoExoDIsmYeyofkcDnTLYCTe3j5StLqk2iDpWWDtzeDxc/Tn6XxVxi8klZ1mDrkKjiyRXfebIFnHv7/Q=
+	t=1756234777; cv=none; b=q1CqFITN9MGzHyuUJazNR2BoBzo+7RgKZIaiOPcgn8DIok5Jl/T/JZLQzEJFI4TipXSaTaZuD/C8ltUznvhxVJZaAVDdA/o70gjbrAI00rC48WJNROE5tN6+/+eKZh+sDBSUuqg6za90ieQ/N0GcZmiTrhBsv9qlmj7CP+kwCjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756234356; c=relaxed/simple;
-	bh=ysGMvxjXeLxucIqZRoBjJFzvfOCN+qR2v3Hnbp0cf4s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bKA73dw/bgtLsTSqkUWZJn4KqiKOKWAoEu25q6IrvakA5fHmu/fqi57TywvOnV0QSOIuKaKTj8OmGAYHAwDViyNjbRAolxNTJkIjbPHldSPycwKaF4PBORpkwAt1Sse7dai9CMCwBahy1XGCrKGd1KyHVAPYgklzeMT3I9oXXAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 26 Aug 2025 14:52:27 -0400
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ben Collins <bcollins@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, 
-	Antoniu Miclaus <antoniu.miclaus@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/5] iio: core: Add IIO_VAL_EMPTY type
-Message-ID: <2025082614-passionate-panther-8016ba@boujee-and-buff>
-Mail-Followup-To: David Lechner <dlechner@baylibre.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Antoniu Miclaus <antoniu.miclaus@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250825-mcp9600-iir-v7-0-2ba676a52589@kernel.org>
- <20250825-mcp9600-iir-v7-1-2ba676a52589@kernel.org>
- <9fd7f08f-51cc-4155-a5e2-c6ba2f1c4897@baylibre.com>
+	s=arc-20240116; t=1756234777; c=relaxed/simple;
+	bh=PXhHRnVdWtjBaKmSaYCtoLI6A0W2o5SRma4C+6touTU=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=JQeA3OV9m/0U5X6XgaxhZ3tSLq1BPR9UbjSCHuXujsTtL6iqgnbwfkt06k5GFlWH+Wv+pobyxPPrzZK/LdqaVsd2VxAdSxzfTLy0skt0gz/loxCKdU/zgIShMG22Qp6N43LziiUNR6FbY7ipVFJL+M4Q0DO18oQJb2RrfPS2fec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IOkhu02F; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-61caf8fc422so362285a12.2
+        for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 11:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756234774; x=1756839574; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DKtEbCA2vknB1KJWr9VH3PpUW8aBLTZhAjkkk2SmOZg=;
+        b=IOkhu02FvOswMD0ZNF1MyKjtXEE/Hboki+mGQu7l++CG2CWLg2mshvrCuQVDKOeRrN
+         fBfJ2tqESLrhIq/sVTOS3AEFXUOqM7QBCrcfCQhK20woYmVyEdPT27DlxqpHDmrv1gX/
+         LyifT4IrK6AjccNXHYSbsRI9LILW3dIigy/vlWoxWl5J0FRAOK9T24LBQEZzbJSXhSca
+         7i1Lv5HQDXIj+tB4UJbSU/+jKwNytHMGd4q8bMlLGSMK0nM/LrjBGhJ6sYYOBmybJpHg
+         xAETT5kNWsknn4CHwXTAGGb4ZtoA0uHb8TCLZlG6uWfs8cHIXnoi+JetUiU4sHiYdPUn
+         NqIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756234774; x=1756839574;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DKtEbCA2vknB1KJWr9VH3PpUW8aBLTZhAjkkk2SmOZg=;
+        b=s7w7y1y9x7FJ47XjMRDLtUoDix8WO7/NeK007y3k8XW+l7nF/fQ0x6Q6Aq962mhUmi
+         CrSR6DBRlXDpgj0p8xZc20QgY5RCc5gRLNppknekjICHXPes80wWzLq1hDBdiuqzp9x1
+         f+WqXCAjWbUChyKjoZsZ4+q/jiqxeWu208pd0UEtywbDoRo8J/oh5zOE8wz1mqT6LS3H
+         j8syH8mkfHMjKNpN8gUEbjcSP7uYLW4fdmcxXfyxHGMzaj/iQHb+sotEcnN3idy6LLR5
+         mvh8kbTngYLa5aBT9BmdmmW/Jxm4PDPOReo5ovyKZRDdoQkynPkXxl7lu2VB/ZuMLyuB
+         mM2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWtRMQq0SRF5NkmstAC2eNlVoGMKdTJ4oiIeqsYodCE7cXvfEvzNfbSfgNmgmjIxRINFXEwcCHHep8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoPHullhksfDtMsaGU8vgtuSAeqiAo1ITxEu5hBg7fIUeYi5BN
+	PgcjT6eamxhOy8mt6IlpTa5NTUsL5AqiK00XZLW11WUNCIMMVB1XTnHB98F4Rj5kzMdBgwA16fH
+	XuDbNsxU4qP5rTsQ0oMDFHcHIyUjevRc=
+X-Gm-Gg: ASbGnctwkgL/Rsw9R4RQ8Ux68euGE9SnSSFTQGCjD3W8dUH31VFt7W7FO158JMiormj
+	tusvxBjyrVfSYDBHiWSFsBNFQsmWMWyxdxQl1/M867Mzr8DLE0pxIYTb8h+XE+BoX3Vm7sdntFb
+	5AU520R+OQVuoW+Fm6cI7txu+b/lZR8AaNgEDxWUYUmzR8ICMqGOHCdeq4vo73JY+3p1sT3S/r4
+	O4XGMHBVxUFKvloRzZic2zCFUIucJtB0Qc0tiR7nw==
+X-Google-Smtp-Source: AGHT+IGfgAqHYDatvKqLbESii2a0AQ5a8M1036uMntISg6ij3AsW7eEWZvrAc8vyHm7qBNqWjU+ipC7HKfWEYLBertc=
+X-Received: by 2002:a05:6402:1d49:b0:61c:926e:24fd with SMTP id
+ 4fb4d7f45d1cf-61c926e25dfmr2702995a12.34.1756234773551; Tue, 26 Aug 2025
+ 11:59:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9fd7f08f-51cc-4155-a5e2-c6ba2f1c4897@baylibre.com>
-X-Migadu-Flow: FLOW_OUT
+From: Sidharth Seela <sidharthseela@gmail.com>
+Date: Wed, 27 Aug 2025 00:29:22 +0530
+X-Gm-Features: Ac12FXyY9CLw58IHIPNzy-h7bUmDUoEwizCgPPXQR0eGGMnoF2Tbt978pnhYCM0
+Message-ID: <CAJE-K+D_U3F_61vzXPHDZV_Rm4Jzd--nO3yf083g7-0=Hh7OFw@mail.gmail.com>
+Subject: [PATCH] chemical/mhz19b.c: Replaced datasheet reference to new revision.
+To: "gye976@gmail.com" <gye976@gmail.com>
+Cc: "jic23@kernel.org" <jic23@kernel.org>, "dlechner@baylibre.com" <dlechner@baylibre.com>, nuno.sa@analog.com, 
+	andy@kernel.org, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Aug 26, 2025 at 12:00:05PM -0500, David Lechner wrote:
-> On 8/25/25 7:10 PM, Ben Collins wrote:
-> > In certain situations it may be necessary to return nothing when reading
-> > an attribute.
-> > 
-> > For example, when a driver has a filter_type of "none" it should not
-> > print any information for frequency or available frequencies.
-> > 
-> > Signed-off-by: Ben Collins <bcollins@kernel.org>
-> > ---
-> >  drivers/iio/industrialio-core.c | 1 +
-> >  include/linux/iio/types.h       | 1 +
-> >  2 files changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> > index 159d6c5ca3cec3f5c37ee9b85ef1681cca36f5c7..e4ff5b940223ab58bf61b394cc9357cd3674cfda 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -702,6 +702,7 @@ static ssize_t __iio_format_value(char *buf, size_t offset, unsigned int type,
-> >  	case IIO_VAL_INT_64:
-> >  		tmp2 = (s64)((((u64)vals[1]) << 32) | (u32)vals[0]);
-> >  		return sysfs_emit_at(buf, offset, "%lld", tmp2);
-> > +	case IIO_VAL_EMPTY:
-> >  	default:
-> >  		return 0;
-> >  	}
-> > diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
-> > index ad2761efcc8315e1f9907d2a7159447fb463333e..261745c2d94e582bcca1a2abb297436e8314c930 100644
-> > --- a/include/linux/iio/types.h
-> > +++ b/include/linux/iio/types.h
-> > @@ -32,6 +32,7 @@ enum iio_event_info {
-> >  #define IIO_VAL_FRACTIONAL 10
-> >  #define IIO_VAL_FRACTIONAL_LOG2 11
-> >  #define IIO_VAL_CHAR 12
-> > +#define IIO_VAL_EMPTY 13
-> >  
-> >  enum iio_available_type {
-> >  	IIO_AVAIL_LIST,
-> > 
-> 
-> This is an interesting idea, but I think it would be a lot of work
-> to teach existing userspace tools to handle this new possibility.
-> 
-> On top of that, I'm not quite convinced it is necessary. If a numeric
-> value is undefined, then there is already a well known expression for
-> that: "nan". Or in the case of this series, the 3dB point when the
-> filter is disable could also be considered "inf". Using these would have
-> a better chance of working with existing userspace tools since things
-> like `scanf()` can already handle these.
+Hello Gyeyoung,
+The previous reference was to datasheet's v1.0, newer revision at
+winsen-sensor's website is at v1.7.
+Hence made changes accordingly.
+Thanks
+Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
+---
 
-I'm ok with "inf", but then would there also be an "inf" in available
-frequencies?
+diff --git a/drivers/iio/chemical/mhz19b.c b/drivers/iio/chemical/mhz19b.c
+index 3c64154918b1..05e739e962f0 100644
+--- a/drivers/iio/chemical/mhz19b.c
++++ b/drivers/iio/chemical/mhz19b.c
+@@ -5,7 +5,7 @@
+  * Copyright (c) 2025 Gyeyoung Baek <gye976@gmail.com>
+  *
+  * Datasheet:
+- * https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver1_0.pdf
++ * https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-manual(ver1_7).pdf
+  */
 
-This would take us all the way back to where I could just not even need
-a filter_type==none and make the 3db available values:
-
-{ inf, 0.5xxx, ... }
-
-And inf would just be the filter is disabled.
-
+ #include <linux/array_size.h>
 -- 
- Ben Collins
- https://libjwt.io
- https://github.com/benmcollins
- --
- 3EC9 7598 1672 961A 1139  173A 5D5A 57C7 242B 22CF
+2.47.2
 

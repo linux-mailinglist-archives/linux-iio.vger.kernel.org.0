@@ -1,102 +1,158 @@
-Return-Path: <linux-iio+bounces-23315-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23316-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A31B372DD
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 21:10:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC7EB372E0
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 21:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFF181BA5A69
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 19:11:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 700514628CF
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 19:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68CF350830;
-	Tue, 26 Aug 2025 19:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T/OP6+27"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B13374267;
+	Tue, 26 Aug 2025 19:11:27 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B7D86342
-	for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 19:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752D331A54F
+	for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 19:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756235453; cv=none; b=GKlGSjbwr7r5uWO72/xnfVwKPn8gNzamqHRz015x5Bl/++t3lRKKPHOxRpQXZ7JD/gJ7tZfkXn4SBcMuAly7jbalhA7HXy8estD2vwCXaOeI9ilaSGDubENh9MYan8MRYjLyJCit/x9CK4yuBFYujboBCY8DGwCZJ6eSpAHFyG8=
+	t=1756235487; cv=none; b=hrgwQ2aQr4nXZqsKF9OsM23Vpxf3CuFJYsN6HdmNhFEvsHVFzvgGwgUGQTZSuCMscaTMxVHkRfSbDYyYYp4nYOv6aCv8+p1wOiqkuDtCRO6P3s0E1LFJcbeDyC5eRtaJv9Szrk5J39JrEfb5Uh3bMM++5ShTbCiNgIOit+EkaGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756235453; c=relaxed/simple;
-	bh=sYKuiAsM4isLGCVMmKUHyt8gzP965rdusshsguULdfU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DuKGDFmKin91PWGHmjVQuB6t+w6DD5sWIVKBSOJeFnAHws+q+8mSaQN0plLIkqT3s4crNBrNYBYKp+fCobRMbK8dsM6M3rwfPOebXnuJAuDGoAW9frIJqBA/R4sbxfm50bWoXTMvSop0LlJTtgUT6hi8/gGoAbNl/4CaBj/LGtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T/OP6+27; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-61c21e50168so5695549a12.3
-        for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 12:10:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756235450; x=1756840250; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sYKuiAsM4isLGCVMmKUHyt8gzP965rdusshsguULdfU=;
-        b=T/OP6+27ElVL4EW1kOcNhuGciFUwKYMS+Gv1sFO31Ds9fZIlmHz1wzSvORzW1eRO78
-         GOQQgBmUtVc3EGCBp5jY8fyNClZMaSMcATaJ0KJiLiMVepAZ+2H7fUz6OXYjmgi+BMdW
-         JsnB5etXW9FF+CcwL04BvypDZBQmpBlGltrgZg/+Czr3enqk2m16iaGZIGjE6HRieoaq
-         q8cno0fINK/nQj6Th/fE6qa3nN6tsb6eLDbY9/1+1CHTLMTy1FwHtr1uBpiz/8wRrtUj
-         qdbnDLyUbfIlOUghqqejQrzwpEt9caHRA0zL+jQzQsomsJrK+lLimRaHVMn+cipS73lR
-         2sCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756235450; x=1756840250;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sYKuiAsM4isLGCVMmKUHyt8gzP965rdusshsguULdfU=;
-        b=xRlh8iQk+vHXSgDGZo6LcMvvEI7ZdS7z+m4OQebcXnEh0M6mebrCDV0Wsi0fOWOAmW
-         crgXIONHXbfC+sLKNv8tfq8Yj/sU30Ho0Yj1SDVIgfQMheqQqTHyzOaUnNsNWVj2qxyc
-         gt513Gw7OCjry3t1Lv3G30OaxmcDMXEYiaHxEm8xVMG97DMi9OalF8hgfRkEHXwHltf1
-         bDYqyUsh49y+g4Vx/lZjtlkWYe5XrLCAv2S2AmFu4Rnn0DkPCpCgC9AIHv5cZnyJzPgQ
-         Jl9/0w+XYz2VX3L+rsYAEGvNdVw/ut9olnDi1y50jZzkfAJQ2xU5NLrvK2hIr444vVTf
-         cwhg==
-X-Forwarded-Encrypted: i=1; AJvYcCWKtQiSs8AcejfEFMUCxNQP6OqXa+AIxjCBmcxokOMgB24kTCIYlHAjx9u7wpOTj9Cnb+8PhqYayGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoVTDBZT039SFwaX44wnjQB5EK3wLjSUrVl0dhd0cHjubM6w18
-	Z3IL/YuZ5/6k1sGiSWLzPHz/1KkJYZ8uVMH49A7LsI6T0Rbvd0Kf91UMow9/FdBj+rPDbpIRWfj
-	KCe8wTpfdzMZLJhBWh5n2eIbMQknuLi8=
-X-Gm-Gg: ASbGncs1yN7epVPNs4G1C1M5k8sknuMSwa1+CJhkdMMbwYoPnYHQU7Juxzb7g0vsuc6
-	3o2/LD7kQj5UEgmtIk2M1TOibSi26JSJXqHkcpn26wnid083sF8RsZClscQZz/Kxe8H3H4TBJHD
-	AJzWJUvJbjZGHH0ghPs6NBuxCYVFEVcK/agzAgLHp5FfWTZhwHEUFMZdET9wg/x2d1tuUL16IAM
-	0KUeizDMB3SO0bBTCNeb9C3V4N6cwLbySbJUV1REA==
-X-Google-Smtp-Source: AGHT+IHV6T+opSXl4/wTmC0jPSV67txnBJeLtenlyGfnn4TDzGZEZtL/2mp5YoLhFe/dAM9xsLN7ngTC2qJTUneKyZQ=
-X-Received: by 2002:a05:6402:35c1:b0:61c:5cf9:c690 with SMTP id
- 4fb4d7f45d1cf-61c5cf9cb1bmr8057670a12.5.1756235450069; Tue, 26 Aug 2025
- 12:10:50 -0700 (PDT)
+	s=arc-20240116; t=1756235487; c=relaxed/simple;
+	bh=Uhdzc8EEUYuWN+cZjWFk5mNDLydwMtF2JLNcSZ5LYgA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TLl0x86X/KQd2nFliGNmwfOvEjzPQ0wVSW8jh03FbW/s3XXE2iU8Feag93vpYn7+SD8S0SjLJvlGwosCRjfFAb8hNV/DFJf/UURgCXiC8+SXSIGp9BK31A2cV6c0PgPT68h3OsMfliGlE55yzjcq+YNKaOpxU8df2f7UAkwEd2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linux.dev; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Tue, 26 Aug 2025 15:11:14 -0400
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ben Collins <bcollins@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, 
+	Antoniu Miclaus <antoniu.miclaus@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 5/5] iio: ad4080: Rework filter_type "none" logic
+Message-ID: <2025082615-striped-crocodile-9cb63f@boujee-and-buff>
+Mail-Followup-To: David Lechner <dlechner@baylibre.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250825-mcp9600-iir-v7-0-2ba676a52589@kernel.org>
+ <20250825-mcp9600-iir-v7-5-2ba676a52589@kernel.org>
+ <0f515c35-b2ac-4d23-b8bb-77151ed2eb9f@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJE-K+D_U3F_61vzXPHDZV_Rm4Jzd--nO3yf083g7-0=Hh7OFw@mail.gmail.com>
- <CAHp75Vcte3F3VNhKZPd4vv45Kedzok0LKQax1jt=geG9w7b1EQ@mail.gmail.com>
-In-Reply-To: <CAHp75Vcte3F3VNhKZPd4vv45Kedzok0LKQax1jt=geG9w7b1EQ@mail.gmail.com>
-From: Sidharth Seela <sidharthseela@gmail.com>
-Date: Wed, 27 Aug 2025 00:40:38 +0530
-X-Gm-Features: Ac12FXwoE5DB65f2Eilh7T9DT7SDAmCkip0R7LF58eSrK8zAHrWUJjPuhnq5qCk
-Message-ID: <CAJE-K+CNsGdJWeYW-NL7PtkOog3YfLEeqJLJRHEtTfb=A=o8pg@mail.gmail.com>
-Subject: Re: [PATCH] chemical/mhz19b.c: Replaced datasheet reference to new revision.
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: "gye976@gmail.com" <gye976@gmail.com>, "jic23@kernel.org" <jic23@kernel.org>, 
-	"dlechner@baylibre.com" <dlechner@baylibre.com>, nuno.sa@analog.com, andy@kernel.org, 
-	linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0f515c35-b2ac-4d23-b8bb-77151ed2eb9f@baylibre.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Aug 27, 2025 at 12:34=E2=80=AFAM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> Commit message is not an email in a free form. It should follow a
-> specific template.
-Thank-you Andy, will keep in mind for next.
-Sending a revision.
+On Tue, Aug 26, 2025 at 11:51:56AM -0500, David Lechner wrote:
+> On 8/25/25 7:10 PM, Ben Collins wrote:
+> > The filter_type logic for "none" needed to be reworked to be more
+> > general.
+> > 
+> > As documented, return IIO_VAL_EMPTY for sampling rates in "none" type
+> > and EINVAL when there's an attempt to write a rate for "none" type.
+> 
+> This patch breaks usespace, which is something we always must avoid.
 
-Thanks,
-Sidharth Seela
+I was under the impression there was a need to make the use of
+filter_type "none" more consistent.
+
+I don't disagree with not breaking userspace, but it does create
+ambiguity for other implementations.
+
+> > 
+> > Signed-off-by: Ben Collins <bcollins@kernel.org>
+> > ---
+> >  drivers/iio/adc/ad4080.c | 23 ++++++++++-------------
+> >  1 file changed, 10 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
+> > index 6e61787ed3213fe4332bd92b938a7a717dada99f..c7408b9703731ee5d4229a85ffa91ea64b233cd9 100644
+> > --- a/drivers/iio/adc/ad4080.c
+> > +++ b/drivers/iio/adc/ad4080.c
+> > @@ -154,8 +154,6 @@ static const int ad4080_dec_rate_avail[] = {
+> >  	2, 4, 8, 16, 32, 64, 128, 256, 512, 1024,
+> >  };
+> >  
+> > -static const int ad4080_dec_rate_none[] = { 1 };
+> > -
+> >  static const char * const ad4080_power_supplies[] = {
+> >  	"vdd33", "vdd11", "vddldo", "iovdd", "vrefin",
+> >  };
+> > @@ -268,13 +266,13 @@ static int ad4080_read_raw(struct iio_dev *indio_dev,
+> >  			*val = st->clk_rate;
+> >  		return IIO_VAL_INT;
+> >  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> > -		if (st->filter_type == FILTER_NONE) {
+> > -			*val = 1;
+> > -		} else {
+> > -			*val = ad4080_get_dec_rate(indio_dev, chan);
+> > -			if (*val < 0)
+> > -				return *val;
+> > -		}
+> > +		if (st->filter_type == FILTER_NONE)
+> > +			return IIO_VAL_EMPTY;
+> > +
+> > +		*val = ad4080_get_dec_rate(indio_dev, chan);
+> > +		if (*val < 0)
+> > +			return *val;
+> > +
+> >  		return IIO_VAL_INT;
+> >  	default:
+> >  		return -EINVAL;
+> > @@ -289,7 +287,7 @@ static int ad4080_write_raw(struct iio_dev *indio_dev,
+> >  
+> >  	switch (mask) {
+> >  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> > -		if (st->filter_type == FILTER_NONE && val > 1)
+> > +		if (st->filter_type == FILTER_NONE)
+> >  			return -EINVAL;
+> >  
+> >  		return ad4080_set_dec_rate(indio_dev, chan, val);
+> > @@ -376,17 +374,16 @@ static int ad4080_read_avail(struct iio_dev *indio_dev,
+> >  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> >  		switch (st->filter_type) {
+> >  		case FILTER_NONE:
+> > -			*vals = ad4080_dec_rate_none;
+> > -			*length = ARRAY_SIZE(ad4080_dec_rate_none);
+> > +			*type = IIO_VAL_EMPTY;
+> >  			break;
+> >  		default:
+> >  			*vals = ad4080_dec_rate_avail;
+> >  			*length = st->filter_type >= SINC_5 ?
+> >  				  (ARRAY_SIZE(ad4080_dec_rate_avail) - 2) :
+> >  				  ARRAY_SIZE(ad4080_dec_rate_avail);
+> > +			*type = IIO_VAL_INT;
+> >  			break;
+> >  		}
+> > -		*type = IIO_VAL_INT;
+> >  		return IIO_AVAIL_LIST;
+> >  	default:
+> >  		return -EINVAL;
+> > 
+> 
+> Returning a value of 1 for the oversampling ratio when there is no
+> oversampling going on is perfectly reasonable and mathematically correct.
+> So I don't consider this change an improvement.
+
+-- 
+ Ben Collins
+ https://libjwt.io
+ https://github.com/benmcollins
+ --
+ 3EC9 7598 1672 961A 1139  173A 5D5A 57C7 242B 22CF
 

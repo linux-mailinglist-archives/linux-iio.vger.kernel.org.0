@@ -1,128 +1,100 @@
-Return-Path: <linux-iio+bounces-23318-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23319-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCFBB3731A
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 21:33:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6CDB37355
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 21:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCCA81BA61F9
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 19:34:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9052D464E0C
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Aug 2025 19:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF419270551;
-	Tue, 26 Aug 2025 19:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85B130CDA3;
+	Tue, 26 Aug 2025 19:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xdSyAYyI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A+K9RdtB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3734431A554
-	for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 19:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A02A30CDA0
+	for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 19:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756236813; cv=none; b=mG4TMLRobyxJHnhS1wAD8CwmWzoFIMvmapTF24QZpzi0RfhRjkuV8t/zpb3foZ5T2cQEnyzonHoxDM7zm20qBpQpTtrZHmbIrRovebLvE4qghHTdKlL9xRND9piV/feqJKDTTsfaP87h46YfJc0v3MYWnmitNlwZUZiUjFKbAcA=
+	t=1756237385; cv=none; b=Kw91NunRhuj0qfOv9BHC1kbWlM9ZN+Wor2DQ86qDlJtGYZxqFGG5FDoCUqabGZTjO6WjupPiOouFumtzQ0fV26kDyT76fFhKQFR8ML427+KyQ22ni0T1950oCeyyxyxuHhpdZ25PrpIPnShyemzu0IBks1e8iHyYIz2vEQvyj1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756236813; c=relaxed/simple;
-	bh=8mAXObn2zhzFjP8c+rF5rcPzrMNFR3itCTjsQpX1Rxc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nMuF/xYcE/3O1lA8RjVZP4id+X87VM1YEdMEqmLk6DTLokaCGvHOQh3UlZmKnYAZF4OEsjiRLllL1apSV8KZ3yMfxhveyFu9tC73wRcujJaNk96p12nLxyGR8InIiIIY/wROlvFDzmdomyGsv9VAt/nJcaxG7tEnxRXQb6TYHv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xdSyAYyI; arc=none smtp.client-ip=209.85.160.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-30ccea6239bso3662118fac.2
-        for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 12:33:30 -0700 (PDT)
+	s=arc-20240116; t=1756237385; c=relaxed/simple;
+	bh=LvQe/BpNjn8bn6jp4Tt7K4HhcDgqBNu2fVY5eKQaPKI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Ih4vNP3/LQHFaLN99GSvBhLN/Jok/CSEvAK5/puNejm0QA+zmHi9Lm2kIi0NqRA3173Wd9ILWAa+ltzPJm3u5glbmpgfkcVVN/2yFtKFMSxEiZx8XTAZtbdiH8O3NeJuOWJUTViXEvbMGsTFjZdsplFnXELnzJAlTB2A6dU4Ho0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A+K9RdtB; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61c38da68ddso8142740a12.2
+        for <linux-iio@vger.kernel.org>; Tue, 26 Aug 2025 12:43:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756236810; x=1756841610; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8mAXObn2zhzFjP8c+rF5rcPzrMNFR3itCTjsQpX1Rxc=;
-        b=xdSyAYyIS5odTe3ELO1wUmFIkRJ+YL6zm4h9Lo6533Gx12ijQPLGp5bN4wzceOweHP
-         Mm3pRxzvJu4D08PUOFGxq1RLP9uasvj0sVY/6R51P0eRrvZ9awkzxo7S6kjjWdGnj9sk
-         WiyZFku30v1pIvBJ16O0rFtkbqfws6o+YZZn3I90JKZtKmLxQhgi6Gth0SShIchonOkb
-         1priukbr83fKPM3GDlg3Oox/qg0KD0x8h8bWuGUrpwqwQfpkRnGLt7PQH9zSElfuNTNp
-         8qh7avy018rrEgTMiqVtlRq/Z4bocn8/Uu3RPg/5CPXR3L1hIUVwLhILtqIchBpYR9/B
-         cVPQ==
+        d=gmail.com; s=20230601; t=1756237381; x=1756842181; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FfL+ngd7KhbcAHFsv/1qrUYzK8qx3sWC+Nmjao33YS0=;
+        b=A+K9RdtBdD4QQn+9BRcLBmtOfXEvoeJVaV2tbviDE6kdEDrlrRU/hA4Ot09llBjYK7
+         Jrw91YKyVw8vs6XwkODDHI72DcrzhpGHmgHfyvmc4olI2vR6PIRWsdEyECGQOk2EnzDa
+         FZVJ+BQNB5XYdnKZSwsT0gEaAz1tPjNJqvHMV96N8f06mINGwqaa4/7iIFV6AOQOxYyW
+         nZrwhnZVHRS+hUNYeXXxzIvM78bKIALZMaX1WYvHw6W17Y4FrcQywzUdkHdhpM/expbR
+         NizC3rDQ1iJ7ygjN1BGm7QrAAyoDyg5g072crXImRuadQEg3baoxvA4ecJMCaTVxJK81
+         /zDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756236810; x=1756841610;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8mAXObn2zhzFjP8c+rF5rcPzrMNFR3itCTjsQpX1Rxc=;
-        b=Unf9y3ONMBWtz9+3rMNRCuKHgxxLewxHv5JTZcUiGpL2fZmY5l/D0+Tb9JaE8GwRgq
-         48IHnWIDgQ+YxIBHfSnAmz3bNLAvsV68Fbbfuy+GrZQPgzFotXLOXOfDJqeV6Po03WSc
-         engBIs9m2vTuXajy32cTrBdvZyfybaevKsNpKa5ujpQKz6CDJky4L+Vv/RQsD8bzpaDh
-         4g9L9/hSq/G4lxDe6cZD73OTA09zOCSobPiH4980zJvdOnd1DboZES3pT6hDtr9fcsOE
-         bUGcYQDhomNldL81YhmgxOcBLD5fZOwSnmqZpv9nnPE8R/5Esv44J7+jG9HkdPwCBma1
-         gjDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEJGYicrePgZS/LifN/XRfy08QFv2658qppZTnmhD+dLSqKSDr/2v88FJdkDvWgq4xa1AjGd2TVI0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGjQ0b12FxsnV2pzg1Z2uafKu5uudDWvqUhiXKfBwT0vG16NaH
-	yXh2KpT2ZGC8n8zd1LVcpOsau64olb4DjslpR67ULBhuEUCX4Aa/LYb4fXhPA/7MwRw=
-X-Gm-Gg: ASbGncuRAXzZr+d+ElUvU6p2sJa2gA8b/KCyRh90OCP3Ytv9oNs7uw7LfRygAZWeSn6
-	SYF4KLgJxZSOtinYFSEM/D3hq+0x6HFi32fgrHkFGp9ID5Vi/YiSi/EXzrkWfRWWYjyk57sdnnl
-	UFcAJcqNo/0CpsER2vydazfFf6YdwRJ/pToCPbzDt2Emr889IaKUQ7UOxStsxeAm4z7GyvtWvzA
-	jFgHKDTqn0fNVNjV26SLe21EVAV4CwDYG780sYu4q/i0FFi/87DTFitv4hRjWFX7b+uTHtBl0KB
-	JfuaSDmSkpfWJJsNY1NvG45ZTTIIq4kL3mDck9RtZlyv1lI6XZsLam0Rnd6dvjtnNKkqDGZ0dOT
-	aTGnL6hQbgik68I4TlOB/tXvXy7aQDAVnm4y8v3A9UI4K6/P4EoJwXmrHkJ2bdzsz9cWrxexf0E
-	8=
-X-Google-Smtp-Source: AGHT+IE96e3ueTi+4l1XgQb+3Z0q645uY+kt2kT4Wdlq/gIGZc6KepaE/3EwdSb/UYukIE5K5hx7ow==
-X-Received: by 2002:a05:6870:c98f:b0:30b:582d:8eed with SMTP id 586e51a60fabf-314dcdd52b4mr8242972fac.39.1756236810161;
-        Tue, 26 Aug 2025 12:33:30 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:aa9f:f4cd:76b1:fecb? ([2600:8803:e7e4:1d00:aa9f:f4cd:76b1:fecb])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-314f7d9852bsm2629677fac.32.2025.08.26.12.33.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 12:33:29 -0700 (PDT)
-Message-ID: <0e475ae0-acd7-4eca-915c-9dd44682db2d@baylibre.com>
-Date: Tue, 26 Aug 2025 14:33:28 -0500
+        d=1e100.net; s=20230601; t=1756237381; x=1756842181;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FfL+ngd7KhbcAHFsv/1qrUYzK8qx3sWC+Nmjao33YS0=;
+        b=kbRYfI9W6VHHhqiJQPxVtz5ciqwjhTmtxAGO6xmT1nWTeG/K1cqJwhR+duPk8PZvws
+         URkD0EQgpQfRNHFoOjRUKrJy/gkNLKXziD5AJ9l2QH+PB+G8IpvE8c91LO3PcwJis9P+
+         Xha23HGCYUTGYmwq9Jk/7DEe14ZG62nTih/IZhdn0vhI4qW+X0Ixz/h+xJIawbM39QEv
+         CBTw4OdS4sxEzhiWSpvGbZuhM/XSoxO5g9pjJQOaIH1+zNWs7mb29kAWZM5UvvR3RoKB
+         Kxbf1nJkR/JN+bPfxlpuHtP3XXHX2o7E327n1cSThppM1Mo+peSSppB/JEyKtW/T1una
+         NrEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUoCp7tZrp3CAxBFs5ycqHfPHecJU+przg+YscbaEOjq7w3Um78F0toFAe807yxoPYrAkZvhPMvXiw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznE5T4A7ls3BKsOjh2gnpgYPdfT/DJmxyhThNQ1UKZ4AJx94p/
+	6Ybm9jEp1YcRGTpSaSWj4tCY6In8sC2o/wQoGmeZNZK0NSN8XN4lZLZvlHW1ag/oFCJXr7uLc/J
+	U05VfCyv3/5w4GEkRgKBHnaR4wOate/I=
+X-Gm-Gg: ASbGncvkv1YVaL5PEbfOlSCAUoixLZQeRgdlngr9euQrxL7ivlu7AJwOhFxV8iJO8Ee
+	U6tt3aiLhZ7nn+7HVNsDrCAsbe66fhNQB4XpTkBTYOzNmcm0VK2eYLqIq4TjYyZIfLO/ga6E1+c
+	OCdsSbZwLniDLIuRzDXaNMbUtCOcknsOe2+Ai62N1JDXIwPGj8CsUst3tw+/GU2mP0Vef8kFzy9
+	vawgIeaVK1XaCpMkZIiqyCn5s8OhagmhbfpwFXU73hEuLURaHa1
+X-Google-Smtp-Source: AGHT+IE19iKwq1z17FcaMnPZGDa0Wt3IrfzGoLObNJRTmNPEZvHD6T+1QTYRrYNIpvzgr4vKhHclNVCy+ChIxoKA/2c=
+X-Received: by 2002:a05:6402:5194:b0:61c:93fb:a33b with SMTP id
+ 4fb4d7f45d1cf-61c93fba6f5mr2628019a12.21.1756237381195; Tue, 26 Aug 2025
+ 12:43:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] chemical/mhz19b.c: Replaced datasheet reference to new
- revision.
-To: Sidharth Seela <sidharthseela@gmail.com>,
- Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: "gye976@gmail.com" <gye976@gmail.com>, "jic23@kernel.org"
- <jic23@kernel.org>, nuno.sa@analog.com, andy@kernel.org,
- linux-iio@vger.kernel.org
-References: <CAJE-K+D_U3F_61vzXPHDZV_Rm4Jzd--nO3yf083g7-0=Hh7OFw@mail.gmail.com>
- <CAHp75Vcte3F3VNhKZPd4vv45Kedzok0LKQax1jt=geG9w7b1EQ@mail.gmail.com>
- <CAJE-K+CNsGdJWeYW-NL7PtkOog3YfLEeqJLJRHEtTfb=A=o8pg@mail.gmail.com>
- <CAJE-K+BjnNdE0kN1fqfZQGb+9Gcdead=DRiAXn6qpSz-WKOj9w@mail.gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <CAJE-K+BjnNdE0kN1fqfZQGb+9Gcdead=DRiAXn6qpSz-WKOj9w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Sidharth Seela <sidharthseela@gmail.com>
+Date: Wed, 27 Aug 2025 01:12:50 +0530
+X-Gm-Features: Ac12FXwCVC6eWjvYa4EZGiJcdtxDkno_Tc3ZmoIMAyhZS-xldZJcvmo0cbhivq4
+Message-ID: <CAJE-K+CTfwVJkKEzb8D0hijg1VRK4EUOBCytbFJme7EiLMFWBw@mail.gmail.com>
+Subject: [RFC] chemical/mhz19b.c: Integrating mh-z-series in mhz19b_of_match.
+To: "gye976@gmail.com" <gye976@gmail.com>
+Cc: "jic23@kernel.org" <jic23@kernel.org>, "dlechner@baylibre.com" <dlechner@baylibre.com>, nuno.sa@analog.com, 
+	andy@kernel.org, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/26/25 2:20 PM, Sidharth Seela wrote:
-> Code referenced the mhz19b sensor's datasheet i.e mh-z19b-co2-ver1_0.pdf ,
-> newer revision is mh-z19b-co2-manual(ver1_7).pdf. Hence, the document's URL
-> has been updated.
-> Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
-Please give at least 24-hours for other reviewers to have a look before
-sending a new revision (for things more than a few lines, allow a week).
+Greetings,
+As the mhz19b has been discontinued [1]. I was wondering if the newer
+series sensors,
+could be added to the mhz19b_of_match, particularly "winsen,mh-z19c"
+and "winsen,mh-z19e".
+Note: In mh-z19 series 'e' [2]  'b' [4] doesn''t provide a
+communication scheme in its latest datasheet, only 'c' [3] provides
+such a scheme in its datasheet.
 
-The second revision should have been v2, not v1 and should not be sent
-in reply to the previous version.
-
-Also, the subject should be "iio: chemical: mhz19b: Replace datasheet
-reference to new revision."
-
-And there should be a blank line between the message and the
-Signed-off-by:.
-
-And revisions should contain an additional changelog so that reviewers
-know what change since the last revision.
-
-All of these expectations and more are documented at [1].
-
-[1]: https://www.kernel.org/doc/html/latest/process/submitting-patches.html
-
-
+Refs: [1] https://www.winsen-sensor.com/sensors/co2-sensor/mh-z19b.html
+[2] https://www.winsen-sensor.com/d/files/mh-z19e-co2-sensor-manual-v1_0.pdf
+[3] https://www.winsen-sensor.com/d/files/mh-z19c-pins%26terminal-type-co2-manual(ver1_2).pdf
+[4] https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-manual(ver1_7).pdf
+Thanks,
+Sidharth Seela
 

@@ -1,137 +1,114 @@
-Return-Path: <linux-iio+bounces-23382-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23383-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396E3B3BFC1
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 17:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42566B3BFC9
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 17:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C04318850C4
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 15:46:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DEE51886448
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 15:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADD8322A25;
-	Fri, 29 Aug 2025 15:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566DF322C87;
+	Fri, 29 Aug 2025 15:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YebqOPZp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZLywLSEx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFEB1FDA8E;
-	Fri, 29 Aug 2025 15:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F62C322A3B;
+	Fri, 29 Aug 2025 15:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756482386; cv=none; b=Ooe1HH4/3KZCkt9DGz77RNnMgfbyt1JzHrfZIkN/0I3FwLI271VCDyT7/1xzJbFD7GJ6Y7UGKKd1IxKVhfUCyoykiAnvfqBVNEPzXpnhAh5NI5CVG4k8zd71RikYb7mmBpdz7W6rhhSTBzEKqLWbmHj2KZBJrSjE+W9mlH08NS8=
+	t=1756482479; cv=none; b=gaN+BwV/Ib1takpV8SiFGf2F6Kf7KWpw564Rs2zYCBWPSbwW5jFPIXhsbIyx7CVd4kd68FGYTH8yW83M+rvonp1WnaqBc6WyhlmSDwA82gOluVYalcMymV2tbIRSwc5LKn3qWGLvMKi0fGtpxjTHTgPtNoiZOvOvekR9LzJLpao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756482386; c=relaxed/simple;
-	bh=e8sPJ17X+lx75ldP5qXIgx8J6qr4yE02nWaybFqGuV8=;
+	s=arc-20240116; t=1756482479; c=relaxed/simple;
+	bh=lnwOaQYRQcYYMVH8ncbgN/sEc5KTSu1MghIcOaktWoI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X711LWqKh3N3aRcjs19zJhjWLHq1vatSaYFVLhfKlsbvDuL2UwuQY9qmIAfusA0w/vdpmGZXFVTxM1t2ur0bm0/C2xfsvap49rdE2Uoo2auVfQNIXGd+dDFgWEmi1kEfhP+il7tJaX4h9pIKabq9pClZmXM1OrkVtCu8LwBpLY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YebqOPZp; arc=none smtp.client-ip=209.85.218.45
+	 To:Cc:Content-Type; b=C8xFqjViqIKi9gDUaXTVVIAdpPh0N6YDLFAvpIM77xRp5k7+4RfwPPnnge2tbSANFGmnBDvEK/AxO4YXlwZfKLlDQNCSm+alEMP6SeEE6jGhJAz0cp4oNrUwJRR5DqCP+i0fTGKdR2lkQylpkzZ9BgvNgXhA6KZ6cAKzI3gmxgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZLywLSEx; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afcb7322da8so413486966b.0;
-        Fri, 29 Aug 2025 08:46:24 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afcb72d5409so384651066b.0;
+        Fri, 29 Aug 2025 08:47:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756482383; x=1757087183; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756482476; x=1757087276; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JtBPqIA1JNDFzQcRGMtKE4PPP5Dg2NN/VZpcc5GHJUc=;
-        b=YebqOPZpWCLr6AnBw7hxSQpAAfoHk7UEIMRMlJMQ2Qlc0CCTrTI9GJ2C2/ABeRUzDp
-         B5sdYpFmvOb/mbHzzCG9F5TC2YzkVDgZNP+eHsNRqrzh9LyyPoILgxRCI8zIB0ECths6
-         z8NagLDnj9mM02M12H+wx7qqaUYL3bfePGmWrQBB87AcSlS4ouKgzYSl2een8Fs/2RO3
-         q1RC1PYKmMwurjrfvV+4pAEUQmHuTe4hvhDkfxaRcCscU6PGimIN/9iZQ7wclJSwzPNG
-         /iY89c9TV7LDlDNDLl34iHPVudiSCV18DfgVE8OYi5X6RzPci3RtRqjeR6D/dRh696O0
-         vglA==
+        bh=cAJIIWls01qcbdO+Zw0VxcPwlrsbBbyxT5nPcRBFdos=;
+        b=ZLywLSEx6h/sVFfSbp99BbtqFA9WOCA/FY+VZwox1dzlDneAb35o0Nd/XznWzPRDBy
+         KFujILIC1eRQf/SSUOVSjZqbY3cU6os2xuLPDl25kR2o7vBwqW1btxI3y8Yz5wS9yMV+
+         asAU5U972Idsqi7pr/Lio3Xz6WVcg/HlEnWjeDad7zj9Nn3I93cdUEGbgOL1EEE7IsJd
+         oqFwi4fsQ9zVp0wYk51R6308+YRUssi7DK1Nb480lDuS4apC16pNRzgS7LEz+vyWNDrE
+         B1B8A8Xa/DYoSh0me199h15ZCNb6NCy1gf++edCRv790RalpbKnADFhI4lpSs84y6rsJ
+         L7dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756482383; x=1757087183;
+        d=1e100.net; s=20230601; t=1756482476; x=1757087276;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JtBPqIA1JNDFzQcRGMtKE4PPP5Dg2NN/VZpcc5GHJUc=;
-        b=jTiWcU4vaYgJNexfrrbFuPfJaAKFyPYW+x25J1WcrF7wtLo4I37EzZQucbZPew2BKS
-         Fxi6s8HtpJ+PjpuIl8Sxv3QDisVwO3lvnxKZCYp1EkFZ9jZRqwiS8SC5dywGTY5Fc/4w
-         LqE63AuomtygxfgimG/nfvokg/+PDbQhzm5AJ7uzVB3Fj7AbdfexHWbAKq3i3g+vftD/
-         2GJcXlw+aFac+JohsLGIcRqQ3cWlwp+Ka7LcvBmpaTjpC+R5jalSkxun+1Fjlub7+UHw
-         HVXFGuLB1+fde1MoIUoqm4cfWUK2yBWMDbTTT65HVg6Jdhv72brYkCsWKuFuyLofP0yQ
-         p3/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUgY8gTaZOBJT1pSQ+pfFUhEtTqJcTT1ktCaWUdVD61siKutuKkmplF+8HB094mM94/xZxvL9zWgOo=@vger.kernel.org, AJvYcCWKquYuqlFMZSZ2noX0dHti2oesDFQ7hV8cEaXDqWdPBDV0DBwdhrauOPSjrsLamxU2dCf3XZSN8sicI+Zb@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcxQ1bPU6YdvyG0xDSjdFy0JLheg4r7klyuzl4fJbmQ3Plca/u
-	Am3tnE4Q9kaW2/p6i53/UvqPAJZuh6wwA0dEPO1BKwv1a/BGHdDGRE03eLPVYZUe+D3ZljmP93r
-	nxoOKAADIq7rtFZwPyA2xh67sD8vBgGI=
-X-Gm-Gg: ASbGncuYArWZAdVnjCiQ9wxhAXFsXr9RfRFudCOeTpuPzenQ0HTFAf8P4LvG6V3lk5c
-	NeXrBb6foofIVTqvkGFg8vsh0UMXtbel/f1cJSol8FJTFghcIOYiyeEK0CJiaj4J1BjBQU4R7E7
-	aciL0oAYaPMtYehGpG7VO+XQ6FeuaStjoL4P4W3j8xmNlaI41nVvKxPPZ0zBQCZ3fsei628yFJ4
-	368HhBMysi9Phc/MRhnVielnels
-X-Google-Smtp-Source: AGHT+IHKZ0uhaYWfLOR20ILvJCb538AxW9DNi1ux4ORmh8nz6Oiwfh9sRLvxz0fzGbs+0PGLmbhhcDthOMbxWdll2uE=
-X-Received: by 2002:a17:907:3cc8:b0:afe:c2e7:3705 with SMTP id
- a640c23a62f3a-afec2e74289mr956271666b.22.1756482383014; Fri, 29 Aug 2025
- 08:46:23 -0700 (PDT)
+        bh=cAJIIWls01qcbdO+Zw0VxcPwlrsbBbyxT5nPcRBFdos=;
+        b=S/fkhr0is2uWswl15whDvgOIVtJ/C/koSDwb1jDhlh5AkBJZqVM2e2cM3/EMjAtgUI
+         EZXpZwRonvkijUcG6U/oKh9j91YDuTey/vgOQt8GOaefhCl9wMJaiaTSVfsqMOTeaLnT
+         8a8nWOtPnqpJzsQ5hgkndoc2Om+0bdLZB+X5w1galtjxJhoMaFZrrKkTRe21C0tdqDaU
+         LONMWnsyPbGgGulDqHHVhAJEsuVbSjJX/WdRfSd0asACdSJ0UdduOERFMoXZJAxQGsxs
+         z65ngc44VgOaqx9jvZ4N3uQKrdHfr+wtmP2dcuiIFDYtgUgBodBZMpP/Gx0tGWM4nye/
+         1arQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV548k3xBrnAXiNh96q9XJp075een6JjcvVXf8iFp74RJpwF6chmGoJAxHAAJlW1DEJL5Pa+3mbnEwb02U=@vger.kernel.org, AJvYcCVW4OUKK4SADxwv5i1liqP8jHdH4XoyPSXobCHj3/y07Y5YSueKSSunMY9c7Vi8MSKGCD63qZYL/kI=@vger.kernel.org, AJvYcCW4FgsN9oc1qq3hkwGJCgx9xOTCdjC8Ti2rFZIH4i7FLZAEjQ7m+a3zdWIboT6s5l1LGPHG+F6ALoAPoHnX@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqZNC2w45x6fHljSYAQ1asvmY2YREPQXnyZ/7CDKt5mme3iw31
+	HkHBo0PKzCliVIt/BlD6N0GSIO5NnRn1TJIiageDTB1agJcOJIDC2zIfWxIrnBPmAyewxhz0hAz
+	jY/XWUJVg8UA3cfBlwFH4I8Ne6NEPwB0=
+X-Gm-Gg: ASbGncuwxdWQXhOXnIhMwriizzEDholLfQcbZijr/lXXwZcHODq4MjoGp6LJVmvRvM7
+	V59uA85iqFCjSeXR82Q4qmHWmoygiLWjrUqY0p4lx2TNPlI2NgR1i72RgOdGgvkOeE4VEWy8sjd
+	n6p9OWQx1BLRbRLh62rWQkppOj3uhmE/OcwUoDQEQ3X65j/0YPHWtwBqMYqUV3bk4XS1F9hq360
+	RPzp32qegIpQ+lRsA==
+X-Google-Smtp-Source: AGHT+IFJq4hKgpclpLAzxMbJKPxkfTuTBk+yeSHiyUHSoi5ySksUHWMjTOQ/E9rzP4cQzVNVXKhPw9IIS83Ir4FS3n0=
+X-Received: by 2002:a17:907:948a:b0:aff:1719:a477 with SMTP id
+ a640c23a62f3a-aff171a7dbamr84852466b.31.1756482475759; Fri, 29 Aug 2025
+ 08:47:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250827191919.1361787-1-akshayaj.lkd@gmail.com>
- <CAHp75VdQB673=qXBp0mPUHxQGxM=Z1CNSmEpP82OprVn++Y5uw@mail.gmail.com> <CAE3SzaTJTi3bHnqNbAfQ3W2jHcmhQHqa2ZtKE7=2BnP+onJv-w@mail.gmail.com>
-In-Reply-To: <CAE3SzaTJTi3bHnqNbAfQ3W2jHcmhQHqa2ZtKE7=2BnP+onJv-w@mail.gmail.com>
+References: <20250829-88pm886-gpadc-v1-0-f60262266fea@dujemihanovic.xyz> <20250829-88pm886-gpadc-v1-2-f60262266fea@dujemihanovic.xyz>
+In-Reply-To: <20250829-88pm886-gpadc-v1-2-f60262266fea@dujemihanovic.xyz>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 29 Aug 2025 18:45:46 +0300
-X-Gm-Features: Ac12FXy0Uq5hmJ8bzIiGaGfVOD5zp_OIHnBu4TEY5qqqagBQgF8nppcVFglAx9s
-Message-ID: <CAHp75VeSMApm0TPU1=myhJiXQjWVpebbWEPGcRJQhfSaffdYmw@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: light: ltr390: Implement runtime PM support
-To: Akshay Jindal <akshayaj.lkd@gmail.com>
-Cc: anshulusr@gmail.com, jic23@kernel.org, dlechner@baylibre.com, 
-	nuno.sa@analog.com, andy@kernel.org, shuah@kernel.org, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 29 Aug 2025 18:47:19 +0300
+X-Gm-Features: Ac12FXwHNw5zWhs_BHazXdsjfePEaiLMfI77QMptP_oixXXRAfk8XbUX9VDuX3c
+Message-ID: <CAHp75VdxGs-tifyD+T+H+TPq9ZY0Oz5zfKsoqf2uuekZCnfizA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mfd: 88pm886: Add GPADC cell
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>, 
+	David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 28, 2025 at 9:47=E2=80=AFPM Akshay Jindal <akshayaj.lkd@gmail.c=
-om> wrote:
-> On Thu, Aug 28, 2025 at 7:17=E2=80=AFAM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Wed, Aug 27, 2025 at 10:19=E2=80=AFPM Akshay Jindal <akshayaj.lkd@gm=
-ail.com> wrote:
+On Fri, Aug 29, 2025 at 1:18=E2=80=AFAM Duje Mihanovi=C4=87 <duje@dujemihan=
+ovic.xyz> wrote:
+>
+> Add a cell for the PMIC's onboard General Purpose ADC.
 
 ...
 
-> > > +static int ltr390_read_raw(struct iio_dev *iio_device,
-> > > +                          struct iio_chan_spec const *chan, int *val=
-,
-> > > +                          int *val2, long mask)
-> > > +{
-> > > +       int ret, retval;
-> > > +       struct ltr390_data *data =3D iio_priv(iio_device);
-> > > +       struct device *dev =3D &data->client->dev;
-> > > +
-> > > +       ret =3D pm_runtime_resume_and_get(dev);
-> > > +       if (ret < 0)
-> > > +               dev_err(dev, "runtime PM failed to resume: %d\n", ret=
-);
-> >
-> > If it fails, there is no point to read the value, it will be garbage
-> > or even can make the bus stuck.
-> >
-> My rationale behind this approach is that earlier ltr390_read_raw()
-> had all the functionality
-> of the .read_raw callback so the return value whether success or
-> failure was of the core functionality.
-> But now, since the core functionality has been relocated into
-> __ltr390_read_raw(), I felt the return value
-> ltr390_read_raw should be the return value of __ltr390_read_raw().
+>  static const struct mfd_cell pm886_devs[] =3D {
 
-"Main" returned value. But this is not the point. The Q is, how do you
-expect to get not a garbage from, e.g., powered off device, please?
+>         MFD_CELL_RES("88pm886-onkey", pm886_onkey_resources),
+>         MFD_CELL_NAME("88pm886-regulator"),
+>         MFD_CELL_NAME("88pm886-rtc"),
+> +       MFD_CELL_NAME("88pm886-gpadc"),
 
-> Hence I thought, it will be better to
-> just print dev_err for runtime PM failures and return the retval of
-> __ltr390_read_raw only.
-> Let me know your thoughts on this. Will make the change accordingly in
-> the next version.
+List seems ordered, please prevent it.
+
+>  };
 
 
 --=20

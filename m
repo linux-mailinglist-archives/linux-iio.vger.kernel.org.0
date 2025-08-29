@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-23399-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23400-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63276B3C334
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 21:40:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D64B3C346
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 21:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D1327B7FB9
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 19:38:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AE575A10A6
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 19:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DB024418E;
-	Fri, 29 Aug 2025 19:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8E2223322;
+	Fri, 29 Aug 2025 19:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="3YB22hFK"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="H3O+12gQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA60B2417D1
-	for <linux-iio@vger.kernel.org>; Fri, 29 Aug 2025 19:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B95B54279
+	for <linux-iio@vger.kernel.org>; Fri, 29 Aug 2025 19:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756496209; cv=none; b=dGeTdDlp5/Y68hXYoGB9JLG5VpDTe9Bysp5QfPGE8epO/naoIUZMEz4ce4Ojx+P+b1gqHjannMRe86Rsn7q4gDStksqIEKf4aY1+6CRSI+C+tL7x/W8IBi3B2kphAnPqqKHMsKmCcgasXeXPw8J0IfFxXwsnbeAy+buCCZODgSY=
+	t=1756496831; cv=none; b=q+3OZBWKRhMkZ7nrF80pUViMEJvmsBN3r1Zlgc7+BWbRUzPO+AtLbgP59ChCgmAgUz9gec023glANwNUkwSuR9DlB0DNukOy5lQpN7efwfnPPxSb8Gua+QAeUDF6S42A+ferzX6l3ckiuZCAhHVIhLttU2bwP8V5wVXxKvwPpT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756496209; c=relaxed/simple;
-	bh=j9/zs3DzwPfXvdpJMbMm17iNjJOHTALKsWVQf588f/o=;
+	s=arc-20240116; t=1756496831; c=relaxed/simple;
+	bh=01xYwzEgQqARR+trB3+eOkbrnHfqiRT5HTlVuT4VGJ4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=kfR5vapbodbKyaUhGBNdBY2a3/xXEy2ytU6Tnmug/sqBlvgr80L7B3XZOcAQRX3thMJtuYXvWPQHZzwQSTFUsLk1Jgo8YiAwmUADHJbh3VkdLCVzMtlHz3jn+pVC3qCqYkFk+i700WfgL2G57URJiRtsL3xoZCbXAj8cuGKHeVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=3YB22hFK; arc=none smtp.client-ip=209.85.210.51
+	 In-Reply-To:Content-Type; b=MF6bjRBIGIVOQaSAsgXaSB5594JXwyZaFfMa9WStqvwRmidO9FdXsEEqciuaeQPpKwivt9+HQVnLxS05Lg1aVuylwB95ySRBW+J0w1eqYfbYKfVf/1box5YEJlRnrDAaRk6GhteUJ9/auWYJtC4PcpzJU/US9imj4/aL3k2pHFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=H3O+12gQ; arc=none smtp.client-ip=209.85.210.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-745514a7b1fso698163a34.2
-        for <linux-iio@vger.kernel.org>; Fri, 29 Aug 2025 12:36:45 -0700 (PDT)
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7454a992f7dso1587354a34.3
+        for <linux-iio@vger.kernel.org>; Fri, 29 Aug 2025 12:47:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756496205; x=1757101005; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756496828; x=1757101628; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=l5wFPgG8+kGlbWw0vVHwkPA8651tLivp0zt7xRaHtk8=;
-        b=3YB22hFK6t/tWAsBKlKwIe+y4BqHv9b7EEKyPgQ10U2aXjcFWuSL3I1yW8D6Hw0AW+
-         krM3S853kjMEqZVJpOki2Tu9gQIpM04wBzvzlulmLmOnE9i6Hw4B9R9YGU+z1NJGh0Hm
-         tMXrn6++BztBP+yPkmhwaF6NMQvNBu+iiQn12IDQEQYSdxNRq7kClOOp95Clvh63pxn/
-         O92G+SPrSuVMmgAe0BXGuECloqoeD61rEAf8+uhMDateSrvnCFYeCmSRLqN/Rv5e+fjp
-         5WHTABzYyAjls8twh+teG7hVJxDaTVZesukl78/MVQHpehJw6gA1HbA2IpjYkk+v8lhc
-         Py8g==
+        bh=JVGUg0SDLAjEzLHUVtikB/WVSwbBEdHlzNQeODDBtr8=;
+        b=H3O+12gQhMEoHO+spTEJmboBEeydxF0GtBvT+vg+4/AqsbIcOdFPk/gpwx9h+fOtwo
+         O+/UDYztpqt1tZUnZ5Db452Ue2g/xhtOXAC6sFOd1BteRdP8f0javz8rX50QtaSZqJ5w
+         rDpkdOO+PXORbNJMLJLSFUg4IXSvYc15kfJbAw1i3RU7jt2MoO1zXO4JxNQUpCXaIFQe
+         aG/DwSBb21ISzOuzZ4vTK6JC/y1w/8fas1AxunVEa+o0wbdTDRPNsyKWxTB0RqaVehPQ
+         rz+rK/479O4f1dQOk9tmrTEwDN0IBjIEHVgax1BAP/OcUXhan9fcwtgDaFPk55vgC7wX
+         ZJjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756496205; x=1757101005;
+        d=1e100.net; s=20230601; t=1756496828; x=1757101628;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l5wFPgG8+kGlbWw0vVHwkPA8651tLivp0zt7xRaHtk8=;
-        b=fF8f7u+LAKO/k7AOMqt+oZ/UYKyzake1t04tqvpYtcsa6Pu+21HC/AUc+Qz5avRH2+
-         4VWnXoeap+olOuPyg/fG9ydPF4jC35kir6+A37bua1lPHSICNIVxq8wQBIGnyxQvnSQZ
-         6cBehq3yUiUmUP7byHgRIBF/KbGuA9cXvFCbxru3McJYwcF/R4q29MTp7nHrYGyf371/
-         C3ExZRDJrUAJLd4BVMjReeHlOd0AlwVW08pNBMr2kTzJew5NKUvlVIkrP/nZshbQnzA1
-         SuiMhkb2+wXIIcjlJBLEAH9JIYYJYCtlKDSGLp+TNDv1Q4jiJbycWasX/pAUG4NwtxkN
-         85HA==
-X-Forwarded-Encrypted: i=1; AJvYcCV2WkzBjPZWgdswzexgCztzGfC7D7MhCQkYTkkPXmdgE5z4oMh05YjcTbP/TJ65WPVNsb9C4m4VS8I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznwujEsjjwFWlMalZKEmsjBEZz+McqZMhjL7w27t3ZI0eX5wLY
-	hK6q+P3zHPitQyEhOOJC2yQgi0r4bazZRgUuctfpUwsF2ALWx2a5Bt0eeTNPodvUZLw=
-X-Gm-Gg: ASbGncsORuEe21ifDqcmKxN9T6yzP93pa7IMUtNEr/VopElcVgsA8daJ5p3noYPZB67
-	z08G8lVkG3T5NdahYdElR3HbUqW6L4CjGG5wY/Gs8eIeT2/8E8DzB7jutjkkpb8HWKReKzNAk6y
-	lxXBJ5qGx7r98wTRMDfETG3IZBAmB6Uwd9jIRQS1izs0ya11btNO46eQN9k67uEo5ah3eTy2zXF
-	AUPcOz5FYcDFYm2h0YcU9yJbkNwYO1gqqEb5IW2cPZQ5UWlg9NqM0bqpvGhRgReM0wMc7UtsAzx
-	A1U8JIMwSmca4sYW8OAlJ/x9lYN7nnn/2I2fGJxJAQ+bNYq+/BdczXn/lChBN+6EXFa8Ioaoy6d
-	GplwEI2UAJqejPuKjvUzMavSZ1MmhcBqIXW36w0uX2bw9dfzxnzdlwYobL3nW8WftX7duJgI/Ca
-	Ixw93Kc1visg==
-X-Google-Smtp-Source: AGHT+IGbpxjEich0l11Kif6Yw3AW0cxQTiekdjGQDOk7KPD7cDY7n0i8k2PCtI5oXon+AaezHGCtMg==
-X-Received: by 2002:a05:6808:2187:b0:437:d7b0:878c with SMTP id 5614622812f47-437d7b08d5dmr5070233b6e.20.1756496204928;
-        Fri, 29 Aug 2025 12:36:44 -0700 (PDT)
+        bh=JVGUg0SDLAjEzLHUVtikB/WVSwbBEdHlzNQeODDBtr8=;
+        b=uREIB519HY7f7jRfa3+JaCN58jidP8NBuzH7c/Gb/6+vitTMGkGWSIA/9lrrgfS0JU
+         pt2FWSWnP6h8ehNbNtkeaLzARJ2Cf6pnit7HWgRJrXaak9P86QmzNuuX2BBL+4NtVedm
+         dr/WpL3X6u4XBDalJxt1F/4WyC+b8JazayLA/x3J/4lrJhYLbsxnr+d4HwjEJ8GQ72Ve
+         sU/T0hTLk6xUszWkC8Y43z01w0fcEpZ7YOeRtyiEXI5IxXPNModBjBGFLgFS9DVeg0lM
+         pL1xh6rH8T5IfC4lPP4M5g9eEkTkeaLBmJzwu8pJkhACPX095o6N5joK93hG3O59beMp
+         2vLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVlnYXvjVXSENhnlTPtuCmFQ/EcNtEVcJBfvZWxtwophbd0ATzTzrfFFAgK7RO9PDn01VoGHyoC9Ss=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLCEkmLC3OiUYIqmDao/MdCEO6eJP3GDSqcUDtPDk8PjAtzkzP
+	KEWEA9gXUAkp8K7SfHjI571Q9AwFqtyxY+o7M0sqMbf93ndTgS/Tml/RgSBJo+LK3X8=
+X-Gm-Gg: ASbGnctj1G7vcd5uB/ULDqiCmhTyyulcdMdUySpQVM9rIEyR8dzvUP/NPTlJpBcJKWH
+	SvdQ4PxEVkjZdYVEZabRVZb9fi4XXknaQI/czfio77XtWrt+nQzlC2lNrxa+j3IkMtVX7OuLqzH
+	k0bfYks7va+jH9U7ukOQfAWc+p2IAQIqWUSpxpXXJWlDCSkdix7Ec8HRAibOak9lSreeBWOIMRn
+	9nGYhly8qW4s1CYbQyAD6xbANJy0m9faDrCMoqdUu50nm8q0HVJlFevhO1Bjdo8FzIr/fWHfUb0
+	ZB/vkntzDkvmjhBuzhk2WqC6UuIEFDfSGnYLYX5zsMdwsj11ac/yLceSKaDPAtXMxz0nZEFfqwZ
+	SnsCLxXRnlHhBjgoRPwDGlIQ0DyoWkx9h7ZnL9xy9KRqczwUa0s6NwcMFs+pgFtHELh+pfN3sHC
+	c=
+X-Google-Smtp-Source: AGHT+IHkZbHxDOuHzCi5F+tf8HGqWEtfZdGb6ilH+q4mQdnXgfq0WBgXtPNPqptAdN4u6rI4AG7U/w==
+X-Received: by 2002:a05:6808:a5c7:10b0:437:ae34:16b7 with SMTP id 5614622812f47-437ae341c86mr6947930b6e.31.1756496828382;
+        Fri, 29 Aug 2025 12:47:08 -0700 (PDT)
 Received: from ?IPV6:2600:8803:e7e4:1d00:8d0a:2553:5881:1318? ([2600:8803:e7e4:1d00:8d0a:2553:5881:1318])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-315afe69465sm1589729fac.28.2025.08.29.12.36.44
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-315afc5a74asm1579763fac.11.2025.08.29.12.47.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Aug 2025 12:36:44 -0700 (PDT)
-Message-ID: <c4336dfa-e185-429c-8e96-99a3ea99322f@baylibre.com>
-Date: Fri, 29 Aug 2025 14:36:43 -0500
+        Fri, 29 Aug 2025 12:47:07 -0700 (PDT)
+Message-ID: <1350f948-85d3-410d-9e9c-8d0fe4237a32@baylibre.com>
+Date: Fri, 29 Aug 2025 14:47:07 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,25 +83,93 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/6] iio: add IIO_ALTCURRENT channel type
+Subject: Re: [PATCH v6 2/6] iio: add power and energy measurement modifiers
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
  robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 References: <20250829115227.47712-1-antoniu.miclaus@analog.com>
- <20250829115227.47712-2-antoniu.miclaus@analog.com>
+ <20250829115227.47712-3-antoniu.miclaus@analog.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250829115227.47712-2-antoniu.miclaus@analog.com>
+In-Reply-To: <20250829115227.47712-3-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 8/29/25 6:41 AM, Antoniu Miclaus wrote:
-> Add support for IIO_ALTCURRENT channel type to distinguish AC current
-> measurements from DC current measurements. This follows the same pattern
-> as IIO_VOLTAGE and IIO_ALTVOLTAGE.
+> Add new IIO modifiers to support power and energy measurement devices:
+> 
+> Power modifiers:
+> - IIO_MOD_ACTIVE: Real power consumed by the load
+> - IIO_MOD_REACTIVE: Power that oscillates between source and load
+> - IIO_MOD_APPARENT: Magnitude of complex power
+> - IIO_MOD_FUND_REACTIVE: Reactive power at fundamental frequency
+> - IIO_MOD_FACTOR: Power factor (ratio of active to apparent power)
+> 
+> Signal quality modifiers:
+> - IIO_MOD_RMS: Root Mean Square value
+
+The message doesn't match what got implemented in the patch.
+
+> 
+> These modifiers enable proper representation of power measurement
+> devices like energy meters and power analyzers.
 > 
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
-Reviewed-by: David Lechner <dlechner@baylibre.com>
 
+...
+
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index 8c9098668772..9e372ed38552 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -153,6 +153,10 @@ static const char * const iio_modifier_names[] = {
+>  	[IIO_MOD_PITCH] = "pitch",
+>  	[IIO_MOD_YAW] = "yaw",
+>  	[IIO_MOD_ROLL] = "roll",
+> +	[IIO_MOD_RMS] = "rms",
+> +	[IIO_MOD_ACTIVE] = "active",
+> +	[IIO_MOD_REACTIVE] = "reactive",
+> +	[IIO_MOD_APPARENT] = "apparent",
+>  };
+>  
+>  /* relies on pairs of these shared then separate */
+> @@ -190,6 +194,7 @@ static const char * const iio_chan_info_postfix[] = {
+>  	[IIO_CHAN_INFO_ZEROPOINT] = "zeropoint",
+>  	[IIO_CHAN_INFO_TROUGH] = "trough_raw",
+>  	[IIO_CHAN_INFO_CONVDELAY] = "convdelay",
+> +	[IIO_CHAN_INFO_POWERFACTOR] = "powerfactor",
+>  };
+>  /**
+>   * iio_device_id() - query the unique ID for the device
+> diff --git a/include/linux/iio/types.h b/include/linux/iio/types.h
+> index ad2761efcc83..34eebad12d2c 100644
+> --- a/include/linux/iio/types.h
+> +++ b/include/linux/iio/types.h
+> @@ -70,6 +70,7 @@ enum iio_chan_info_enum {
+>  	IIO_CHAN_INFO_ZEROPOINT,
+>  	IIO_CHAN_INFO_TROUGH,
+>  	IIO_CHAN_INFO_CONVDELAY,
+> +	IIO_CHAN_INFO_POWERFACTOR,
+>  };
+>  
+>  #endif /* _IIO_TYPES_H_ */
+> diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
+> index 3c3cc1497a1e..6d269b844271 100644
+> --- a/include/uapi/linux/iio/types.h
+> +++ b/include/uapi/linux/iio/types.h
+> @@ -109,6 +109,10 @@ enum iio_modifier {
+>  	IIO_MOD_ROLL,
+>  	IIO_MOD_LIGHT_UVA,
+>  	IIO_MOD_LIGHT_UVB,
+> +	IIO_MOD_RMS,
+> +	IIO_MOD_ACTIVE,
+> +	IIO_MOD_REACTIVE,
+> +	IIO_MOD_APPARENT,
+>  };
+>  
+>  enum iio_event_type {
+
+
+Do we need to add these to tools/iio/iio_event_monitor.c as well?
 

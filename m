@@ -1,130 +1,131 @@
-Return-Path: <linux-iio+bounces-23384-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23385-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3E8B3C000
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 17:57:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B64AB3C008
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 17:57:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B84517692F
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 15:55:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89888161037
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 15:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D744832A3CE;
-	Fri, 29 Aug 2025 15:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2C3334705;
+	Fri, 29 Aug 2025 15:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bnJl5F14"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jz96YVGF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA50C319878
-	for <linux-iio@vger.kernel.org>; Fri, 29 Aug 2025 15:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFA9322C72;
+	Fri, 29 Aug 2025 15:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756482757; cv=none; b=SknOQR75TpIxlmPoH8IPGgEQLiR29B4B3+SNBPTRfZ9BVIMlIzb1q1QcZLJM7aaXrut8seIZWCbHEnWYBRt5YAzNOjOGL/vOMMnsSQWFmKCyXENz9fGCaM6Z4Td0K3h6jRCCxpZG9SIEnsVmzo2YBpuNc2PPeWOPIxkmgAYVSfs=
+	t=1756482826; cv=none; b=ormjvak0vrgz/8o1TzpC+3hJp7Uyy7KZOsZnnxY71CvD7PgkpDc0YwJvwOACD2897XWJxrrTEs/0AUMfJcWciq6zMdHdoOdsBFo1YNpSb5DRwJh6F/dS7OcccaRG+pIS6Ymc4MgxHL1q25JtiB8mMiv6ebBiatRX0S+VmmVqwmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756482757; c=relaxed/simple;
-	bh=5Ym/jwTYuBac6qN/bi6EC8idQbMmFWSlyiT3FprCvsQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BnHWqrgctQlYIJGCGNKv8sygyrmrHoC2ozap36ogUMgjxPwtRqZ+L9F+1McrvdQtRxRO1Rtq7B2Et1e11c0Ym9+eBADz0Pq5CbPhgWgqtzL5paL2zKZ/LwHwWKei4f62HtA+JLHFeSmrc7QAmykOLorQgo/mm6tKKeMBpypOjKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bnJl5F14; arc=none smtp.client-ip=209.85.160.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-30cceb07f45so2192116fac.2
-        for <linux-iio@vger.kernel.org>; Fri, 29 Aug 2025 08:52:35 -0700 (PDT)
+	s=arc-20240116; t=1756482826; c=relaxed/simple;
+	bh=L+BUnyhPFgXQc3V7hCxEwlEVhbHqw8k+eGLkf2A0g3g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AKmAHpk85/YXKgZ5Mfkh7G4X+OkW5T7UfJqFxzz85r1RH6QIiybyT+7zJtl+F/D0RkrKciQ1+FtwGQVWrQ7O2/rcukR7K9Q3O2SYYaQVxVFXGAjViWDrfZV/q3Bhk4cLnHFEvd0RBxHyS1PpM/iinoqhQ6ntirADMRxQ4Dk2Dpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jz96YVGF; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afcb7ae6ed0so318288766b.3;
+        Fri, 29 Aug 2025 08:53:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756482755; x=1757087555; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+23BJPCKtGorADDC890VMTVjWSuA//k7zazsu5ZdqXU=;
-        b=bnJl5F14HpVRdVjNzcgeaOWTEPn3joHTxD4OBFMS+NtSkqpX0mNowq2qQ23e+D6PKF
-         xK4BU4OOzUbIYf+sXLQ14p3/9rIvd7E7Nv65CT/yJ3+3MAWbwRyf5cbUJdO1SeCS5wOq
-         y9jcafCdq7kpcOCXVsfFXsNocNcTNMDA6OalA/pC2QfSmvJWCV3jaW27wSqZvi/JmPib
-         0Z7TknDHnkWjLLukCWIhavuLBz4f6HYPk7n+UdLC00wFmgFMiRqQWnGm7I3DZ+8VAkVX
-         1W8hCKWtGGnzPOi7IoEZfZGIStiRIE/oRyHXjjXyN9XCGdNKXKl7ZiXg/dKBdBzd0+L4
-         UpOQ==
+        d=gmail.com; s=20230601; t=1756482823; x=1757087623; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZHLotxYLpLB+HIJgp+C7C4cykVUndwDRsak3JNVQh1s=;
+        b=Jz96YVGFuqNuzq/cM9CAY/9l5KlF4TZlTXcYy/ZiPAF2jcpKw6R2b/rdPG8YUCb0w6
+         R8ZjVQoKYQhYPgOqe4J6K+i4UTQARYeibZ3+lhZn6av+V0w4KfpbHGlBUWsG51WcrHYl
+         N39y9M7Yzk34MgGYOmzdt8z7OlzX5X1uCsuAJCwPGtsCeuNpkpgQVyXS+6Fd3B8VKHWN
+         KQL0iWh2KqYUHl6na9YwbgN6vFv9gpwqUmC+SygNuNAxetQKvPNImLnxYpQtJlw4cfGY
+         3EaMrIQpiMzRIwPbyn+gsNB2LC6OdC4SkBv18b/Xlqizh+qPuSPrCs4PnAE9dSStWTJT
+         tlXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756482755; x=1757087555;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+23BJPCKtGorADDC890VMTVjWSuA//k7zazsu5ZdqXU=;
-        b=dwpeOdkKVa6jMW6ZLh5CamSPLag47NJK7yeMfqwOJluHCnsqdBoSG4aFbA3Nw64xY0
-         VyN0rIM1YLDybmCofKBPqdbvzh/ok58V3EvmSf+QLqPl4uPSiedl/s2DnvATsm1JWD3t
-         x/z2+tMqvmpWYV26MzBbxSsqvpWSA/F9gf82brsLkNIAGSDZS8PNFXHGUCbyxqKteMFw
-         Akn1b6PH7Ttr5UdswU8eLhGj7+qbPllJ6LiiMVESkzMMm4H/BEy/FYNRPMPzbWErsWBf
-         N2E8hlwnq3dcxqUcAXp3wZL448yYNLyM6Ze63jYiT6LXa1yo3/G4tqncew0QaovfZ8Pf
-         l3ig==
-X-Forwarded-Encrypted: i=1; AJvYcCUKeTqD1pZc/+5lypCiDDS0VTUmxoSoNsmwTf71yeY7qLVLIsoc8FPfxA6gysTQh7Y8az2yKeJP2Ro=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRvQiMZmvb7vuXCkIowMuG4TssafwaDD35L4/sQiTSn8TcYFMW
-	KKsilb8K+jXWLFE64yjn6uXtVFy3SQUm5OVyzfiVbPAfbJh1xjhyPddknWXnWp6Y5fI=
-X-Gm-Gg: ASbGncsB36BT9M4CqFmPU0RKvt5YNmPL4TetjuAt+WkmZYIOAEdUUjamyig+c7SBzBc
-	tr6ZIfJXXynWTuhSJpZKNHxV25qf4TF8pRkX0LUKOB+QPyVw09BlOCfF81RZ6lmUpKMK3XUkqoU
-	TmOLgizvymbeaVb4P2PT7+U+Bnk8k0d5QnwEiPw95MgDyg/gpMqolEoDN79Ndsh8Ztv74HkItHm
-	w3GWSAH/Fj6vzT7vZu+R41+tTDlYNHLG/sNuOSPh3mOm5XT3HFdBEXSa2IxV+qIToR9+DB9ne9O
-	1s+T8pcX355QD6gKgfYqFxq3IM4gZzkGIZOcpRIAMywUUAnxxZsnTR0vmZogtUTVDcTKWyiqhGk
-	z6C9JkeS9qHMGk8exQ9EgMo1AcF0DkEvkuOO+Mk5EWTZfDvTXP5peOWlen6SLnbySn3uTiUQNBI
-	b/JJO0y7IFlFR8Ul0HnVj9
-X-Google-Smtp-Source: AGHT+IEXWYEKh1DA738p/y0oOalJucxmoKHVU9lI6MvOI7wGYxwoLUOBIB8PEz52I2MRTw1eKDB1JA==
-X-Received: by 2002:a05:6808:81d3:b0:437:aedd:f87 with SMTP id 5614622812f47-437aedd13admr7644840b6e.41.1756482754716;
-        Fri, 29 Aug 2025 08:52:34 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:8d0a:2553:5881:1318? ([2600:8803:e7e4:1d00:8d0a:2553:5881:1318])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-437f41765fasm21636b6e.8.2025.08.29.08.52.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Aug 2025 08:52:33 -0700 (PDT)
-Message-ID: <960b23ff-827f-4ac6-a951-c61a0fec0c11@baylibre.com>
-Date: Fri, 29 Aug 2025 10:52:32 -0500
+        d=1e100.net; s=20230601; t=1756482823; x=1757087623;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZHLotxYLpLB+HIJgp+C7C4cykVUndwDRsak3JNVQh1s=;
+        b=BtfziYSG9XB6rVGCZlpJYSc4kAgEKmUItwt10OBiBeoD4gvrrzR2jM4akMbLmmLFAN
+         6AurYYCOkc1WmBswuMwwKMKbMtktgoy+Ogg/jzcueLk+9mj0B6JYKi5kvETW4Gz8XyuC
+         WAB7w+b/Qo2HSEsZDii2/s4uOQGS4D+infsAg4vj0Rhgj3lcgaylkicqR32rE8O5fFfQ
+         i8+PbkgJmcfXhpa8NgJbqKcV46iLocQTlzqWMigRWjhIXcuK4xs0pNjgKPQlF1t8IzRM
+         QaZ96Z1nVejYfTXzfW8ID9dgBBuahM1mwb3/W0jopU42vxK1yMDa1kpp5rIhIZa8hwra
+         wv6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUVXV3rXZCFZ9nQg8s/w5n+JScQ1nMH/EDLMMsLjoXnE1nvJtV9GcghyMeCVBKHhGs4mepvEvWLA0gE@vger.kernel.org, AJvYcCUjgSoH9jnvzl4BD27+PL7Csrf05bl+nyxEFeqPFuKa7shI9FYzIr22veADe5U2JldJDvuPvaNTDQ27HRDw@vger.kernel.org, AJvYcCXsgRfvDvSP+kSlXgsoAd8jgZi/g1Sglli44fLJ2aVVMJ0Jz7WiuFHh6ZKJ30X4D5NQhL95DK2XWFmH@vger.kernel.org
+X-Gm-Message-State: AOJu0Yztn77ovJgNrgkbXLUCkiQTkY6bOeJUuWMiJvuEx0PWOg5lXBdV
+	xxXncOWHePJNhOvqJoVyT0nrjzJoGz6BzNq257mylkVX+QeNtQfdBmefps3ps4OE96EqLNaCcjM
+	K8j0wwAgIemeTxBuHk7Z2qhgOrfV9U7pVKutzDuo=
+X-Gm-Gg: ASbGncsjNnldy9+lpHEYgbPxtxvcC5/jRSlwPF39Mr0bdkhItq9TS8J2Fefk1/BUFcA
+	ODLjzhp5gVij2rRD/fZiSKPVy0QRLlhKjJNP4r0/K0Wt32MO3qRcsqL51o2Nq/nC/c5yLbyc4V7
+	fGwl1CsHd9ujP15WhREY836ZqbMnHepD2mhUK0toxioCRBpsX2n6fHgvroRIngQAyG2ZidGXzRg
+	h18h6EMVnsX3cndkA==
+X-Google-Smtp-Source: AGHT+IH5QTLsYG8TGUnZZ2bd5tAwCv10yDcdICWw9dZ/g2XMa2bLjUryKSA9bygz9qTUl4JzuvpEaUDKCtP+UPuQWMY=
+X-Received: by 2002:a17:907:c1f:b0:afe:e0f2:759 with SMTP id
+ a640c23a62f3a-afee0f208f8mr703458166b.38.1756482823131; Fri, 29 Aug 2025
+ 08:53:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] iio: adc: Add driver for Marvell 88PM886 PMIC ADC
-To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>,
- David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20250829-88pm886-gpadc-v1-0-f60262266fea@dujemihanovic.xyz>
- <20250829-88pm886-gpadc-v1-1-f60262266fea@dujemihanovic.xyz>
- <4f93d53a-3dfa-4b9f-8c09-73703888d263@baylibre.com>
- <2250556.Mh6RI2rZIc@radijator>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <2250556.Mh6RI2rZIc@radijator>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250828-iio-adc-ad7124-proper-clock-support-v3-0-0b317b4605e5@baylibre.com>
+ <20250828-iio-adc-ad7124-proper-clock-support-v3-3-0b317b4605e5@baylibre.com>
+In-Reply-To: <20250828-iio-adc-ad7124-proper-clock-support-v3-3-0b317b4605e5@baylibre.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 29 Aug 2025 18:53:06 +0300
+X-Gm-Features: Ac12FXyCiycxmXsmtTSntH0kziV5Tpp-WcN-mxLsyB6yWNH2RuTa1ep4f0HhUwo
+Message-ID: <CAHp75VdtQ8vKULomgqPxwX=WZWUde7PC129BEznYqefd-U4DEQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/4] iio: adc: ad7124: add external clock support
+To: David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/29/25 10:20 AM, Duje Mihanović wrote:
-> On Friday, 29 August 2025 01:40:56 Central European Summer Time David Lechner wrote:
+On Fri, Aug 29, 2025 at 12:55=E2=80=AFAM David Lechner <dlechner@baylibre.c=
+om> wrote:
+>
+> Add support for an external clock source to the AD7124 ADC driver.
+>
+> Previously, the driver only supported using the internal clock and had
+> bad devicetree bindings that used a fake clock to essentially select
+> the power mode. This is preserved for backwards compatibility.
+>
+> If the clock is not named "mclk", then we know that the devicetree is
+> using the correct bindings and we can configure the chip to use an
+> external clock source rather than internal.
+>
+> Also drop a redundant comment when configuring the register fields
+> instead of adding more.
 
 ...
 
->>> +		*val = raw;
->>> +		dev_dbg(&iio->dev, "chan: %d, raw: %d\n", chan->channel, *val);
->>> +		ret = IIO_VAL_INT;
->>> +		break;
->>> +	case IIO_CHAN_INFO_PROCESSED: {
->>
->> Unusual to have both raw and processed. What is the motivation?
-> 
-> I was following what ab8500-gpadc does, no particular motivation.
-> Considering the above, to me it makes the most sense to limit it to
-> processed.
-> 
+> +                       if (clk_hz > MEGA) {
 
-In IIO, we generally prefer do the least amount of processing on
-the value from the hardware, so IIO_CHAN_INFO_RAW is mostly used
-and processed is only used in cases where there isn't linear scaling
-or some other unusually thing going on.
+I read your answer, but maybe I missed something?  Can we use (1 *
+HZ_PER_MHZ) here?
 
-So in this driver, processed probably makes sense for the resistance
-channels since we have to do some calculation anyway, but for the
-voltage channels, raw would be preferred.
+> +                               clk_sel =3D AD7124_ADC_CONTROL_CLK_SEL_EX=
+T_DIV4;
+> +                               st->clk_hz =3D clk_hz / 4;
+> +                       } else {
+> +                               clk_sel =3D AD7124_ADC_CONTROL_CLK_SEL_EX=
+T;
+> +                               st->clk_hz =3D clk_hz;
+> +                       }
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

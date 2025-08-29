@@ -1,132 +1,209 @@
-Return-Path: <linux-iio+bounces-23397-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23396-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AF7B3C2E1
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 21:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 473E3B3C2DE
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 21:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ECED582B8F
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 19:11:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11AC52052A0
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 19:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBC3239E6C;
-	Fri, 29 Aug 2025 19:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CF1239099;
+	Fri, 29 Aug 2025 19:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DFp9jkIt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S7MzxbPK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F286238D54;
-	Fri, 29 Aug 2025 19:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE9B230BF8;
+	Fri, 29 Aug 2025 19:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756494714; cv=none; b=CENS/XBhTuJNatc29+YPAiLGF4MRZJGyAwnN1vj1lq75R5FVH0970sM0dwfASnSxpqsuo1FMB8N3dHOfZHpR7IcrNK63wEcGRaeGlRUUxSEpHBRPut7xqg+k1QfmbbVM0M6yZUbf12/a2Ilr2o/510tdzqJ5UAp4o/l4WQgkppk=
+	t=1756494697; cv=none; b=s1TOfj3l/Sx8TQ/C66YTxyZgMagD6jS/SzWWPwT/Krx7wRAKiGsYRH1u46sMgTIcaC3y+XE7f8ihUTVhlT1dHQcQ+BtlMdZm4qh553hICV8uVTgQw12gxPb+BfhEtT4c1nxGlkeGn+rigUqTqH4YBGCIGdbx64Ag68UtwNwz7rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756494714; c=relaxed/simple;
-	bh=Fuj6D0zW+DGqNmXsWTSh98hjxolyVyCn1KRczDru8/c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wwf0G0gFo8C+jzxzJSgn+cNw8eWGtVe8PiZ3OPEsvQTFKd2ckYvD5Hf9n6AjncY6PsnkS3FJQEr/jI+FiifL0vqhffhcYuUaAmf510TTBimbJ8p5IPUeabtDbbJzT3IbAAX03zGvOlJZO11Nm7e16mK76w1ozpr3caXwh5WXu0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DFp9jkIt; arc=none smtp.client-ip=209.85.218.50
+	s=arc-20240116; t=1756494697; c=relaxed/simple;
+	bh=m19CyVA+09J41w+ehwzrXQaJ3vuX9Uo+a+GSNb7y1Gs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZOSkYNKrKeWmmtY6BdscNirnoyxKVgyeefP420MekeOfDm3T5VFxTOng/dUokp72kLLY/JKNTsU2VXLIZJwhlefb23ZIJJCP5woTMaJr35zJfat+t9FT0iPyxZS/rZ/e+zSH+JDn9vA8+R3hqGETZ6T8ac9lRQZOVA/saBqwT2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S7MzxbPK; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afeee20b7c0so305440366b.3;
-        Fri, 29 Aug 2025 12:11:52 -0700 (PDT)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-24914277174so1606405ad.2;
+        Fri, 29 Aug 2025 12:11:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756494711; x=1757099511; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1KrY9Cwk2A6SDLbzKOA/S9ShMFQemtMswFHSYX9H3MQ=;
-        b=DFp9jkItqraztkoG/oH5fLGTCYivNWq7wBJjNJVjCUCVPXGwXGyYo22A2Se9agF9PS
-         ZEFSA1o7L3FOow+POHdEiT8hrRbkEkqrpyaT7yx5tERVMJADnRkOQKpOjbXrZcCOX52Y
-         a8djwXrRo0DHsjnKIrqCoZTjUFdYF4+hbL/ezRUzJ40XqAGuy+2ow5e4GozFS4AsW36B
-         fcJ40Fpww5UXLv/hmcBDdOn0vi7djsstRIOqeTBDx26KwOaFkjy2iq6hpfAcHOabvG35
-         2vxC1HPteSn/UDudorJirTT/ni+eNCAhhayn9TmAFWoxnOIH/5r6OB5R51c8D38it3HN
-         tmLg==
+        d=gmail.com; s=20230601; t=1756494695; x=1757099495; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LVGx6TDkYH55EDpIhumx3GF2YudEet8rojsYiNRrkLA=;
+        b=S7MzxbPKKRVpf/xS/mYGn/gpwwmJlYNxPLBYIJt/m3fPgFaoOpxPNzL8IDHs58ovR/
+         w2dV75eodRer5WARYDnWwUX95LUAvYsxlJJlgrC6lw8A5yrJvIgxw9Wxb68nEJMHm2ih
+         rVspuF8aqfiK8ljP3i1iwq2jVubnPrmh0Zd5PrklpwIR8JLa4QgUpMgN8xyW4VMN4SCf
+         /Zsmqe96gpkajT9f3T6jxMO4/1lTXqh0rDOFN2YDozru5Fop/8Wzz4DQGsqHcjIiXNJ2
+         wIm1mlYSKM9RBfrU5bpFsZJZ5vFkm5mwCu1n2xTS0o4PyXym9p/zHQH5Sk0W+4rhiEPB
+         us2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756494711; x=1757099511;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1KrY9Cwk2A6SDLbzKOA/S9ShMFQemtMswFHSYX9H3MQ=;
-        b=l8Y6TNrYtx4INKJivoMpldELAno70Ztm/DwzZ9MM9SPA9z+gXMDG45OhNhD22TeZqC
-         lwLdp/FF0QtxNXn2XKz+Y0InAX8FsV9wqqfWt41zI5DK/Wx9HMFAvx52BBo+4P83zv8e
-         KgJak0rh1KP6gJkr/0Gif2WSfDO03UlWelWeMF5Cd6s/60IC26CMzEGt1/vwShdNAt0n
-         52/Bm/YGN1W81lpCYNiBDqXjaXmiQvUxKIwArsgBOI7sMyEZ4MQYBAaWl/nCNNrbOaOR
-         OMOgrtcb/x+FonmPCebPJzszGWD83IgcgVNAg/lwHBSEf512s6x0EvvOqd+0Rb0SnfDz
-         E1UA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYi/PecOElsxK0hLP7CsWY3kq9XJO6lxcFeLTBZvFZ5IRwSFWJQGvGeVOCURvnbSu8X0Vk6CZBpW5FqGs/@vger.kernel.org, AJvYcCWx9vIHaSJfbvzsIvPAleobJOU8LB3UoDcRNN9WGxO5ufmqtVm24x1qa4JtY3XU6WDTglxRO7d7Gqti@vger.kernel.org, AJvYcCXQuFppz0Heur6cTZ/xPjl35oNc4KDfJ0nCa1QzEoFm2zotf8Bk64dN+4B+sx5s9VqxOhqsCewdfq1W@vger.kernel.org
-X-Gm-Message-State: AOJu0Yys6SCoTPGz6Ncw/AOLAFeIyVsxSdrs6DvDG4HWxe2ddX+9+2MU
-	EJAhp89sMhGwQvhhKXAaFMau6kXP+eZKf4olrai3tiic0qAFyXWGGLNdkRJ6A8AOlO6ExefgSNw
-	4smixCj37UQgYWCUG+3ajz0y2ggDU/VE=
-X-Gm-Gg: ASbGncsLNcMtOcHPfDNId825v6lCCy/VN/CZSCBKHOMda2CNWGZnkjC/b4PDD5A0OTQ
-	SBvy//XjspBInCjxb7GmVm8kvJiFofhGpe/MiDerzNnQQBNZOfEX/B/fZCE/iR9MMxDETSmoe3l
-	rx/k5YYira9D7oCfc1mugYBqL4hWVlapORuiax4TvwPR4RZRvc8u2u3qfEf1EP22zAyIMRINyhw
-	/ruepLYWkZ+Vqe8qIA0tu3vMQZD
-X-Google-Smtp-Source: AGHT+IHoLfOYIGXesMOJz7PlMIWE8EucCQX6fHarlka2VTVEP4xLnkqmHESieocix4CFJxHjmjzYogGgzh9h96yewgM=
-X-Received: by 2002:a17:907:1c92:b0:afc:b617:de96 with SMTP id
- a640c23a62f3a-afe2963b638mr2378979366b.49.1756494710438; Fri, 29 Aug 2025
- 12:11:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756494695; x=1757099495;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LVGx6TDkYH55EDpIhumx3GF2YudEet8rojsYiNRrkLA=;
+        b=T1Lgk+wkEb+vbqpIHQKchx6pvMAZzIjuemQ2mw70qRVsf7V6KnvTgj3amNqFysf+P4
+         3CoPRW1PBIbHkjWHjbnRj5fDDUAm6v33VD3Oh51Pkv3WiAv0V/JAhkHq2XEnmq4cX3wS
+         FtAsFG1rO1U2OInXs9zJY0VgbI7poRMhoCTZ1FWce7qkzx9LyxZVfBNRDhtgD3r2+6bs
+         RdzkzRaxauZloTvLz+XN7SYtD2eOJLhrtKW+rg6GhUJJeLrrjYzscUOmp+WoXvmEq2Ne
+         Bpp9HS6akyeZxm5GYhpqeulejTjSjXpvb7mGeQP7g1rC4Q0xdbcavrEsIkoe0f8kygIH
+         fRBw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1OBJxz1IRaBeGJygkU6regRrX/TzBJAHZS8Zh71zm92U82uYagYwK8Z3BosBbh/bOUbjJbqXbLVPz@vger.kernel.org, AJvYcCVeIGn1cp2v6WpBqbsHtVEtfOJgJqMctefuASNCNKnRWdGryhYbQDssFff8A/pRig5vewwOU6WqZyBGINVs@vger.kernel.org, AJvYcCWPyb7YLiZKfasDDUQ/r0JIZdf5Ici6csW5I+TkXPTEm+zMwHzvcU9BvPaB0MacFSv0JkSIm3xcV2DW@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqCBaETBLMoCc4gl7VcL/HqYw+88zeMRswK/BpRSdXYZGMoNOC
+	Z1oeoJhasZmB80CpO0YMk5zsIpzNpRIIlFembPUn0A6QJbZbwtymsOXQ
+X-Gm-Gg: ASbGncvQGPX/92feL/l4TkLwY29RD3VKX59rhg0xau+Pv0c45MGMcl284GC8UmHQ07c
+	R3d7Bkujsx1mFjwnR5ArYvkIVCaGDwxBoNDWVeXhjaYkS6B8XUHUW3RLPMXAT9NPphCdcRt+Ukj
+	pE5j6LwLR25MAAF7F6LMMJyFQ8WjUL4pE9AdgfhVSTIGWNUC52SfM5C6NHjV5GznFtUuKVDRRMZ
+	VZu59OtFbmRvKq8uH0Gn+AfMKzbqt7yaE3fEyXN1M0VzuqBsnvoHilaaAJWPuR28JB5ZzIFSPu4
+	gF43Ro0T/Z1a/qM3+NyljN3QQ1eFdcid/EVKkvXuoUo11A/NANMX0+Ctbr7t+l4D2L/ZXt8lwx3
+	xYJCYK1K53BOis9EK1DfXmhw039WeXlox0izl7SgEdJXK35zDJU23KA==
+X-Google-Smtp-Source: AGHT+IHWqc+I8uAx3S96UwMbBHH1P00t+luv1SUl0QJsFSxjOnqx1lb5UFbcsPn4bnOrEAkFLU4ovg==
+X-Received: by 2002:a17:902:f687:b0:246:b3cc:f854 with SMTP id d9443c01a7336-2490f6bd83dmr25833635ad.2.1756494694972;
+        Fri, 29 Aug 2025 12:11:34 -0700 (PDT)
+Received: from JSANTO12-L01.ad.analog.com ([191.255.131.70])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24903705b91sm32467915ad.12.2025.08.29.12.11.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Aug 2025 12:11:34 -0700 (PDT)
+Date: Fri, 29 Aug 2025 16:11:24 -0300
+From: Jonathan Santos <jonath4nns@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, Michael.Hennerich@analog.com,
+	lars@metafoo.de, jic23@kernel.org, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v2 4/4] iio: adc: ad7768-1: add support for ADAQ776x-1
+ ADC Family
+Message-ID: <aLH7XNuaZ2CkQVWo@JSANTO12-L01.ad.analog.com>
+Reply-To: CAHp75VcGG_h+wpo7hHL=ERYqbrvvAaufwPAYBsEbRn3dB8-dfA@mail.gmail.com
+References: <20250824041013.9872-1-Jonathan.Santos@analog.com>
+ <CAHp75VcGG_h+wpo7hHL=ERYqbrvvAaufwPAYBsEbRn3dB8-dfA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250828-iio-adc-ad7124-proper-clock-support-v3-0-0b317b4605e5@baylibre.com>
- <20250828-iio-adc-ad7124-proper-clock-support-v3-3-0b317b4605e5@baylibre.com>
- <CAHp75VdtQ8vKULomgqPxwX=WZWUde7PC129BEznYqefd-U4DEQ@mail.gmail.com> <a20356ca-05ca-4c99-819b-4b278e799f2a@baylibre.com>
-In-Reply-To: <a20356ca-05ca-4c99-819b-4b278e799f2a@baylibre.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 29 Aug 2025 22:11:12 +0300
-X-Gm-Features: Ac12FXxOhkvK29FRssLfGKIp7tr3Tyfrj4DQU3WAlTOm9wwu2MUZHEFn0xlevUM
-Message-ID: <CAHp75Vf8fAFin1tJ-yjr22RPuDgBEBnj6JO3GkjDcZsmYoOfYA@mail.gmail.com>
-Subject: Re: [PATCH v3 3/4] iio: adc: ad7124: add external clock support
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VcGG_h+wpo7hHL=ERYqbrvvAaufwPAYBsEbRn3dB8-dfA@mail.gmail.com>
 
-On Fri, Aug 29, 2025 at 8:19=E2=80=AFPM David Lechner <dlechner@baylibre.co=
-m> wrote:
-> On 8/29/25 10:53 AM, Andy Shevchenko wrote:
-> > On Fri, Aug 29, 2025 at 12:55=E2=80=AFAM David Lechner <dlechner@baylib=
-re.com> wrote:
+On 08/24, Andy Shevchenko wrote:
+> On Sun, Aug 24, 2025 at 7:10 AM Jonathan Santos
+> <Jonathan.Santos@analog.com> wrote:
+> >
+> > Add support for ADAQ7767/68/69-1 series, which includes PGIA and
+> > Anti-aliasing filter (AAF) gains. Unlike the AD7768-1, they do not
+> > provide a VCM regulator interface.
+> >
+> > The PGA gain is configured in run-time through the scale attribute,
+> > if supported by the device. PGA is enabled and controlled by the GPIO
+> > controller (GPIOs 0, 1 and 2) provided by the device with the SPI
+> > interface.
+> >
+> > The AAF gain is defined by hardware connections and should be specified
+> > in device tree.
+> 
+> the device
+> 
+> ...
+> 
 
 ...
 
-> >> +                       if (clk_hz > MEGA) {
-> >
-> > I read your answer, but maybe I missed something?  Can we use (1 *
-> > HZ_PER_MHZ) here?
->
-> I suppose we can. But it doesn't add any additional information.
-> We already know we are dealing with Hz because of clk_hz and 1
-> is implicit. So it is just a matter of style preference. Since I
-> read a lot of code, I tend to prefer the minimal approach - it is
-> less to read and still has the same meaning.
+> >         struct completion completion;
+> >         struct iio_trigger *trig;
+> >         struct gpio_desc *gpio_sync_in;
+> 
+> >         struct gpio_chip gpiochip;
+> >         const struct ad7768_chip_info *chip;
+> >         bool en_spi_sync;
+> > +       struct mutex pga_lock; /* protect PGA value access */
+> 
+> >  }
+> 
+> Have you run `pahole`? Does it suggest a better layout?
+> 
+> ...
+> 
+yes, I have run with the reorganaize option, tried a few combinations, but couldn't found a better arrengement.
 
-Physicist in me prefers pedantism in comparison of the units. We don't
-compare kilometers with kilograms (maybe not the best example, though,
-if you understand what I mean :-).
+> > +static void ad7768_fill_scale_tbl(struct iio_dev *dev)
+> > +{
+> > +       struct ad7768_state *st = iio_priv(dev);
+> > +       const struct iio_scan_type *scan_type;
+> > +       int val, val2, tmp0, tmp1, i;
+> 
+> > +       unsigned long denominator, numerator;
+> 
+> struct u32_fract fract;
+> 
 
-> >> +                               clk_sel =3D AD7124_ADC_CONTROL_CLK_SEL=
-_EXT_DIV4;
-> >> +                               st->clk_hz =3D clk_hz / 4;
-> >> +                       } else {
-> >> +                               clk_sel =3D AD7124_ADC_CONTROL_CLK_SEL=
-_EXT;
-> >> +                               st->clk_hz =3D clk_hz;
-> >> +                       }
+Problem is that rational_best_approximation requires a unsigned long. I
+could do:
 
+rational_best_approximation(fract.numerator, fract.denominator,
+					    INT_MAX, INT_MAX,
+					    (unsigned long *)&fract.numerator,
+					    (unsigned long *)&fract.denominator);
 
---=20
-With Best Regards,
-Andy Shevchenko
+But I don't know if this is the best practice.
+
+One way around this would be to represent the gains in fractions instead
+of 1000x, example:
+
+static const int ad7768_gains_frac[][2] = {
+...
+	[AD7768_PGA_GAIN_3] = { 13, 5 }, /* 2.600 */
+...
+};
+
+then we could drop the rational approximation.
+
+> > +       u64 tmp2;
+> > +
+> > +       scan_type = iio_get_current_scan_type(dev, &dev->channels[0]);
+> > +       if (scan_type->sign == 's')
+> > +               val2 = scan_type->realbits - 1;
+> > +       else
+> > +               val2 = scan_type->realbits;
+> > +
+> > +       for (i = 0; i < st->chip->num_pga_modes; i++) {
+> > +               /* Convert gain to a fraction format */
+> > +               numerator = st->chip->pga_gains[i];
+> > +               denominator = MILLI;
+> > +               if (st->chip->has_variable_aaf) {
+> > +                       numerator *= ad7768_aaf_gains[st->aaf_gain];
+> > +                       denominator *= MILLI;
+> > +               }
+> > +
+> > +               rational_best_approximation(numerator, denominator, INT_MAX, INT_MAX,
+> > +                                           &numerator, &denominator);
+> > +
+> > +               val = mult_frac(st->vref_uv, denominator, numerator);
+> > +               /* Would multiply by NANO here, but value is already in milli */
+> > +               tmp2 = shift_right((u64)val * MICRO, val2);
+...
+> >         init_completion(&st->completion);
+> > +       mutex_init(&st->pga_lock);
+> 
+> Perhaps devm_mutex_init()?
+> 
+
+sure!
+
+> -- 
+> With Best Regards,
+> Andy Shevchenko
 

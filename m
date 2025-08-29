@@ -1,179 +1,157 @@
-Return-Path: <linux-iio+bounces-23359-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23360-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438B6B3B708
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 11:21:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B2AB3B7A5
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 11:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08395189E8D1
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 09:21:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D6CE3AFAAD
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 09:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F223043CC;
-	Fri, 29 Aug 2025 09:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DRyib/iq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509D62E2EF3;
+	Fri, 29 Aug 2025 09:47:59 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1A73043A5
-	for <linux-iio@vger.kernel.org>; Fri, 29 Aug 2025 09:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3379E33985;
+	Fri, 29 Aug 2025 09:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756459253; cv=none; b=JqH6WiNl4emr27InKS4TaU6acLGsyW+K3sivUWKTbE+5MAs8Wa7S6+rCHJr7284CplmBLRVolTrajUomQZzrHL1HvJErJSxGGQ+MStZesYZv1yCImRbMhPeBkRxqzaL+Bw3frAMU8Me3h960fLCJBLm8xirvXqcfQbVTaP1rCYk=
+	t=1756460879; cv=none; b=ChSD7ktySnDRbmn6ld7pqbdOKX6h4m/G4zmSyhkDFy1M+80C+YKcNGuTw7/EydzqvvLdtAEsTSux67FKwVIc7B47GtnlhiROsxJtbIyAOA3IZ0hnS4z4GqoCmos96YYjQVStsbD47Co+Aq7tiJam78Ccbyj5mkuahjISZXvVh40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756459253; c=relaxed/simple;
-	bh=41cPbZW2JuUamvHD0ni/4zW5qEt98VIFHzay0uJyE64=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ktkQ/TCazm3pTEbif3MA4g4Q101vw9vLTQ/4FT5gSK9vB6eLiQM1kwjtXbdt4+caZqIX8G2/YYBXZoFI8s7uBl7byJBnZ+7z6d3GrS+9YngPg/4OsmPMHXLq76+VQry17iCFT7m4GZ248u8bMR5hQh09mnB7lFQuzfdj0VSAJ5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DRyib/iq; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57T862Fw000762
-	for <linux-iio@vger.kernel.org>; Fri, 29 Aug 2025 09:20:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=VsGRi9TWtut80xRESvMijlEz
-	Jj+9BIG8rviOsUN+Q2w=; b=DRyib/iqMVUgY+4U2/xa1PZEfrNYqH+CO6TheLAM
-	f754gQa0ypq9f/ZcukNVmys08FJn+FxHy1J22okyW5Sb8nIUWpHGAjLDQoBaSNyz
-	Kv/+IfVKWqKJMBfn2XtQMUIC/lj1JBTbjMudKe/c0HfCVJCrclLXhYwxIr44m4Sy
-	cyyl3s1k3F+H47dD7qF4OHNWDkXq3KGkP/uj15XGoBit9PPFJSTpwnYbaJlP+Kqv
-	TpVVCx8N0k0FHJGoSYDC7Xk6lJVFiZklYyvXo6qOCXfbynPAjcT0VUMuqqPmfOhS
-	Ze80Ap2WaPsTEU6KQ1IeVoOdZPDjKLV2RztEoLrPWKEMYg==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5y5u7k1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-iio@vger.kernel.org>; Fri, 29 Aug 2025 09:20:50 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-70dfbead769so19280786d6.2
-        for <linux-iio@vger.kernel.org>; Fri, 29 Aug 2025 02:20:49 -0700 (PDT)
+	s=arc-20240116; t=1756460879; c=relaxed/simple;
+	bh=Uam47n9XP2yNSU+KEkGNi082Ub+UjYkvl37Onz7YMGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W8Y54Yj3Oc7co2VBFzuZd1Frf/pqtPim2/GfPKuPtBTr46aMcDC3Evht3Oa2rIUougATWt8pZYKigJsADCIW1R136EUmLJS82HtB16fsbFjSEm4dcIL8/exhr6YQEa1Lfc3TD5FeVJcm258q4G5iMvXtPZub8rEvzbyd97z02sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-54494c3f7e3so93524e0c.3;
+        Fri, 29 Aug 2025 02:47:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756459249; x=1757064049;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VsGRi9TWtut80xRESvMijlEzJj+9BIG8rviOsUN+Q2w=;
-        b=JvBPSw2FgE5kWLOJFjz8qqrV2Hkmdf2VZ8rv46dQh9PIztT16CLWD2AmmfmIeoKMJF
-         SCdPppp8miKlWVmy5PErSpC9m554FYAYMuBR7TLpd9zSPQRT4a4bmLm1OxGurprcKg9g
-         /8p9QMuRk/PFv6T+GYKq81+e+G/BMuOxcwxYAQDVjNoAompz907rJMSUEh1QR0QHSdwL
-         vABwvaAsZ7fvf07Ac2TSp5+WZusf68Jo8ihZtPkXEEQ37svxpNhoZZ5KN+buxNquE6px
-         74AoOQPHDdxYLASggWICihgbc2VLIjzEVp07/t+2Q2Ui1KaFXolIbqGLynjCsU/V9Hf/
-         VCdg==
-X-Forwarded-Encrypted: i=1; AJvYcCXsKvIxNC4YaJUV3LC777+Z+j+1saeg48hCGs1HERNW31FvZLLAJSIjDxUZrLqlyHbpERnRXu+g89k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAaTDlgqzvsr5Kn2Qe4u6OFy2K18UDpsT7sxIkRbyiluWkD0DG
-	MXWeAu/FB2s4lgBgkonHMbQBPWeMWblysT2TZJJQit5G3sFHYtfOPj6WE6aEic8tpF3Db3XycbF
-	rFdcf0KHTVoyWYcZ6oFKjQ0cD8QoR23GZNqnmyTIYVhjbukMN1SJB572BJp1IEfc=
-X-Gm-Gg: ASbGncsRJnLbSTHXvBf0e+z9heEN8GvR9KB2eNAUjesmf2BDYBLNnHTYfgU20XuoGKP
-	GtYmo2EhrLmOoynMJE7jrG6VEqUs/QfYJj8phBh/EWWkmTUb8Uou6zsl1wHmGnPogKNb3BxhWhm
-	d6v8rZLVrsakZdRJXqVhmAHo12gPE1tsJf5pRh543HhVPHfx8KF2MVPwZoYkXXO+VMQL+xqu3Kk
-	Bb+5p330ND6IcI14RjdpBoZyDzwjCQfpH36nSfTprXbIHZo2wQcEPvsVP518BjRKdV66bjj1NdJ
-	NNMoe+Sd+oPE+h/GBoz+jGipUMkOa6Ym2DLBSf3tcwpJEJZDev8/AyEvFyJtPfi21MZ3z94bzGU
-	8F6OZrHECDoQ1puSGIWJExlJ2bLvlg7qZrPZ6ece5eIRxiHtoh7we
-X-Received: by 2002:ad4:5ce4:0:b0:70d:d5eb:cb09 with SMTP id 6a1803df08f44-70dd5ebccafmr134046256d6.20.1756459249024;
-        Fri, 29 Aug 2025 02:20:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFu+l8+GZuUy+NaTPLiPmyXfppCCrSzXfTWjiiARcq2CiwkxvRqPIvCjYJyzT2ulw8LGLrwHQ==
-X-Received: by 2002:ad4:5ce4:0:b0:70d:d5eb:cb09 with SMTP id 6a1803df08f44-70dd5ebccafmr134046086d6.20.1756459248542;
-        Fri, 29 Aug 2025 02:20:48 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-336b9462e97sm2472451fa.11.2025.08.29.02.20.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 02:20:47 -0700 (PDT)
-Date: Fri, 29 Aug 2025 12:20:45 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>, jic23@kernel.org,
-        robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-        agross@kernel.org, andersson@kernel.org, lumag@kernel.org,
-        konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
-        amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
-        rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
-        david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
-        kamal.wadhwa@oss.qualcomm.com, rui.zhang@intel.com,
-        lukasz.luba@arm.com, devicetree@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        cros-qcom-dts-watchers@chromium.org, quic_kotarake@quicinc.com,
-        neil.armstrong@linaro.org, stephan.gerhold@linaro.org
-Subject: Re: [PATCH V7 0/5] Add support for QCOM SPMI PMIC5 Gen3 ADC
-Message-ID: <nsyhau4pnn2nbxdf35npwq4gvjiphocrftrwi4seirxqzurww6@6jgyzzmjyg7q>
-References: <20250826083657.4005727-1-jishnu.prakash@oss.qualcomm.com>
- <20250829-demonic-soft-guppy-512c13@kuoka>
- <zgm2k2osmasdal6anba66pw24a7fiypgwlf3c36kvteshz7uef@wee4had7x54u>
- <8fdc99b6-4ad2-4a08-9dca-6289c8fdddd6@linaro.org>
+        d=1e100.net; s=20230601; t=1756460876; x=1757065676;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SjwK9jXSJ6vy5qbcZE6vx6xB7K4aY3jNf25jf3fHvcU=;
+        b=nsJxo684igLQkv5DrQsu13X3rn6GfzCCXBIadNcZIcawPKLiHxSzDOyuVI85FvbxqE
+         +lUHCYs0p3bxo521EHh1ZxHHq4uf2D3r6gCAElQ0/0I3SQewRhBAyXn8yQqrSVHBfaeX
+         hOVFN7cG1LwkSuayb4ZT2kHSbHbNkNaS6Oq325GCvmVdJIjSpKsVSyjCURkRq6ETgCIJ
+         vheblAT3fSpFSO1JYxPsWTGte/+cNgcc31XpphGdv9c6U8NtqS5kQppUWBS7hEcjCdWX
+         s6tgcF11r3OUbqO3naANmv6B5LVAIedrBjgfF/F+UaMga8KxF2nCvcHpecmUKaBjH3P7
+         GMOw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqAPKSuOszS4lp+sf9ovfmiuBaiu0wSh0yIafVsf9vjsmMx1hHb+8EaVUBPo3z5MlXPIg/toA8M7GVxsPa@vger.kernel.org, AJvYcCX1tdKExWHSDtHR/yu2Il+k8B4s/G8yL5fnR53Zx7Al2/mDEbI5f05pyr06oLVznoMz8+wqo9fqigY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy18+xjA7F0gpqu9IVLtGi3q/VeUnx00yUCbRPG3BAtH1psXyh0
+	dQwicYy2TeoFfq5lgoxQ0l+gDZJmAbgHS9I+55VfUC1zwuQYWFb0abu9siy2EIc5
+X-Gm-Gg: ASbGnctJEiy0D6VWdrYylh6vCY+Uw3Xmc3DMBXcKkJf1fT4vYnvKbU2vPG02kjsNy1Z
+	ibiDcquXxWN89/Cce/P6Ya/AKpFZ3QSx3BFYRl1rfUTsNIJ4eO0TJXxS8Ikcekz8gvIs7ErEgp9
+	TEkACl+12+Y3OedDtbnWfAdNsE+2svIfU+6LChcqWoFz1uxTdaltZ0nPQ8xeJM6XuQO/YtREEkp
+	bfh/dtaALlfdkLHUw9nxNTlTGC/uNPNZvyzseEcMsIL68dhLQXnowZZ8/uvNhFZjXLls640nTLO
+	TgS6fX0papcuFvQfgxfbCDPMqU+a2nyxlrdzEA6ZRiqdSgtCsAowmTMZ3vU03p3L5jzgqoaQ2qP
+	zXws4Eli8v89KI/ma/hpUqs+ISlpwBLJFNieUnb3qXKwFlGJJ31pcOMmf0l71TLxACLuDQ0Y=
+X-Google-Smtp-Source: AGHT+IG8jIKDsVWnAuswpo/MqWNPhyyrZCHuqJY72pBh0mx+lvb5wymxARAFOAJ0RFD3rfp1xyu3Uw==
+X-Received: by 2002:a05:6122:25e7:b0:541:366:d15a with SMTP id 71dfb90a1353d-5410366d42emr4515194e0c.2.1756460875666;
+        Fri, 29 Aug 2025 02:47:55 -0700 (PDT)
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com. [209.85.217.50])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-544914c0e8esm637779e0c.28.2025.08.29.02.47.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Aug 2025 02:47:55 -0700 (PDT)
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-52069272157so295727137.3;
+        Fri, 29 Aug 2025 02:47:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUnkWB7FZ03ZIMOo6vOb5aqqknwPHM6/f3BxOAMelzGmhkm6+kvNseKgjXCrLnvKRgHKr2U/R50HoU=@vger.kernel.org, AJvYcCV+wcayYkck0zLXs1tkIkt5mdsTqRg/0B0pIWtZgYN56JR+VxYwco46S8GO9qmr0rZD5bp3Hcm2qkwr6x+o@vger.kernel.org
+X-Received: by 2002:a05:6102:5045:b0:4e9:9659:3a5f with SMTP id
+ ada2fe7eead31-51d0d3295fcmr9051801137.10.1756460875111; Fri, 29 Aug 2025
+ 02:47:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8fdc99b6-4ad2-4a08-9dca-6289c8fdddd6@linaro.org>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfX6Gve2fwnwnRE
- 2MQo9v+J4eU2NA5uforqdqRJmO+J+VffjC3RN7X233Kh6/87ZZoEpntgcyJjut3UJ7zKZCsSZa1
- 34hsybYvac9QLuO4M6ManRE03O/QPMdo83Yo9ta4W3tCGG85WqFFkxD4+0wvxPP/H0V4B4PZPUN
- B1fbtQdRTtZV86xy7IFjavrcc3O++0nACIZf9NuQPazkM18WVRQ9Qi8zaJJxC3Nr25pGl4ZMScl
- 6+dfqdiRQo8dYaZD3/aqbw73ElCqXd3aIZMrJZ89lp8EdBmke+o0q2/Xhbf/KUwjUTev3GMuhWU
- TIDR7Pa9DUf05Dey8LAFpe6VPF8AepCi71jhA08Om5KiFewNMzPDBuxHkNgGl7YwJy9jMWck3ge
- AqhWYO22
-X-Authority-Analysis: v=2.4 cv=Lco86ifi c=1 sm=1 tr=0 ts=68b170f2 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=cXZZpXjwJqeueyEXUCgA:9 a=CjuIK1q_8ugA:10
- a=1HOtulTD9v-eNWfpl4qZ:22
-X-Proofpoint-GUID: -ZQEyD317WiEZG0xjn6IKEEvfx4J9XRb
-X-Proofpoint-ORIG-GUID: -ZQEyD317WiEZG0xjn6IKEEvfx4J9XRb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-29_03,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 clxscore=1015 malwarescore=0 spamscore=0
- suspectscore=0 phishscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230033
+References: <20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com>
+In-Reply-To: <20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 29 Aug 2025 11:47:44 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWNNu+gwHdhfaShLyXHqxD=esp4CXpWiHJCqrCGho0z3g@mail.gmail.com>
+X-Gm-Features: Ac12FXw4ySjEeOeCH0mF3GQ3nupnIdCJpFWX1FkdY409glgjEvUK-Xh-p3wrdqg
+Message-ID: <CAMuHMdWNNu+gwHdhfaShLyXHqxD=esp4CXpWiHJCqrCGho0z3g@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: proximity: isl29501: fix buffered read on
+ big-endian systems
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Mathieu Othacehe <othacehe@gnu.org>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Aug 29, 2025 at 11:11:48AM +0200, Krzysztof Kozlowski wrote:
-> On 29/08/2025 10:09, Dmitry Baryshkov wrote:
-> > On Fri, Aug 29, 2025 at 09:12:59AM +0200, Krzysztof Kozlowski wrote:
-> >> On Tue, Aug 26, 2025 at 02:06:52PM +0530, Jishnu Prakash wrote:
-> >>>  create mode 100644 drivers/iio/adc/qcom-spmi-adc5-gen3.c
-> >>>  create mode 100644 drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c
-> >>>  create mode 100644 include/dt-bindings/iio/adc/qcom,pm8550-adc5-gen3.h
-> >>>  create mode 100644 include/dt-bindings/iio/adc/qcom,pm8550b-adc5-gen3.h
-> >>>  create mode 100644 include/dt-bindings/iio/adc/qcom,pm8550vx-adc5-gen3.h
-> >>>  create mode 100644 include/dt-bindings/iio/adc/qcom,pmk8550-adc5-gen3.h
-> >>>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm7325.h (98%)
-> >>>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350.h (98%)
-> >>>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pm8350b.h (99%)
-> >>>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmk8350.h (97%)
-> >>>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735a.h (95%)
-> >>>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-pmr735b.h (95%)
-> >>>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-adc7-smb139x.h (93%)
-> >>>  rename include/dt-bindings/iio/{ => adc}/qcom,spmi-vadc.h (78%)
-> >>>  create mode 100644 include/linux/iio/adc/qcom-adc5-gen3-common.h
-> >>>
-> >>>
-> >>> base-commit: 0f4c93f7eb861acab537dbe94441817a270537bf
-> >>
-> >> What's the base commit?
-> >>
-> >> git show 0f4c93f7eb861acab537dbe94441817a270537bf
-> >> fatal: bad object 0f4c93f7eb861acab537dbe94441817a270537bf
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?h=next-20250822&id=0f4c93f7eb861acab537dbe94441817a270537bf
-> 
-> I see:
-> "Notice: this object is not reachable from any branch."
-> 
-> I guess you think this is 20250822?
+Hi David,
 
-Well, it kinda is. It's a commit by Stephen, it has proper contents,
-etc.  next-20250822 is not a branch, but a tag, that's why you observe
-the warning from gitweb. You can verify it yourself by manually pulling
-the tag from the repo.
+On Tue, 22 Jul 2025 at 22:55, David Lechner <dlechner@baylibre.com> wrote:
+> Fix passing a u32 value as a u16 buffer scan item. This works on little-
+> endian systems, but not on big-endian systems.
+>
+> A new local variable is introduced for getting the register value and
+> the array is changed to a struct to make the data layout more explicit
+> rather than just changing the type and having to recalculate the proper
+> length needed for the timestamp.
+>
+> Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+
+Thanks for your patch, which is now commit de18e978d0cda23e ("iio:
+proximity: isl29501: fix buffered read on big-endian systems")
+in v6.17-rc3.
+
+> --- a/drivers/iio/proximity/isl29501.c
+> +++ b/drivers/iio/proximity/isl29501.c
+> @@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_handler(int irq, void *p)
+>         struct iio_dev *indio_dev = pf->indio_dev;
+>         struct isl29501_private *isl29501 = iio_priv(indio_dev);
+>         const unsigned long *active_mask = indio_dev->active_scan_mask;
+> -       u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
+> -
+> -       if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
+> -               isl29501_register_read(isl29501, REG_DISTANCE, buffer);
+> +       u32 value;
+> +       struct {
+> +               u16 data;
+> +               aligned_s64 ts;
+> +       } scan = { };
+
+This still looks rather obfuse to me: you rely on the implicit
+presence of a 6-byte hole between data and ts, and on the implicit
+64-bit alignment of data.
+
+What about making this explicit?
+
+    struct {
+            u16 data;
+            u16 unused[3];
+            s64 ts;
+    } __aligned(8) scan = { };
+
+> +
+> +       if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
+> +               isl29501_register_read(isl29501, REG_DISTANCE, &value);
+> +               scan.data = value;
+> +       }
+>
+> -       iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
+> +       iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
+>         iio_trigger_notify_done(indio_dev->trig);
+>
+>         return IRQ_HANDLED;
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-With best wishes
-Dmitry
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 

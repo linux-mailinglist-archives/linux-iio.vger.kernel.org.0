@@ -1,157 +1,113 @@
-Return-Path: <linux-iio+bounces-23360-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23361-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B2AB3B7A5
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 11:48:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F30B3B824
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 12:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D6CE3AFAAD
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 09:48:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54FFFA003A5
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Aug 2025 10:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509D62E2EF3;
-	Fri, 29 Aug 2025 09:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918A63081A2;
+	Fri, 29 Aug 2025 10:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PmzOyMsJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3379E33985;
-	Fri, 29 Aug 2025 09:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAC3283FD4;
+	Fri, 29 Aug 2025 10:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756460879; cv=none; b=ChSD7ktySnDRbmn6ld7pqbdOKX6h4m/G4zmSyhkDFy1M+80C+YKcNGuTw7/EydzqvvLdtAEsTSux67FKwVIc7B47GtnlhiROsxJtbIyAOA3IZ0hnS4z4GqoCmos96YYjQVStsbD47Co+Aq7tiJam78Ccbyj5mkuahjISZXvVh40=
+	t=1756462061; cv=none; b=rL2GGOCXDjNdAuwJWbIHlCI+pCpIfQ/2y+hYqMreA/UIHese1vS6kTFBh+J0xCqbv/VMrERy15YSujAV6EvcAeRWqteXxLYv3VrHjmMTYBeJHbzrBkW4hap13Vci8FYSZ8x1sUAWx5BHwm5JyFlHtaRDULIpip+EyRbiX3hs2AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756460879; c=relaxed/simple;
-	bh=Uam47n9XP2yNSU+KEkGNi082Ub+UjYkvl37Onz7YMGc=;
+	s=arc-20240116; t=1756462061; c=relaxed/simple;
+	bh=xlzZpvpnlF9szsb6ciLkXdVcuaZUTR4t8w+9GIT2sMY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W8Y54Yj3Oc7co2VBFzuZd1Frf/pqtPim2/GfPKuPtBTr46aMcDC3Evht3Oa2rIUougATWt8pZYKigJsADCIW1R136EUmLJS82HtB16fsbFjSEm4dcIL8/exhr6YQEa1Lfc3TD5FeVJcm258q4G5iMvXtPZub8rEvzbyd97z02sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	 To:Cc:Content-Type; b=IpI7xRwh6P9xbiwRNACThmib20I0EAarR4mvisSp3V+I2E83Jmz5drzwfuxSTcklHg/jlWGyWD3qWcMQV+wNyeeA4SuHd17JXHIcvAHfyubB2YdUBtbUJNcrQVHLwCRMp6ve5bTY/emrCDN9ZKUOqJf7E4sAItIUj8RLFkrGhro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PmzOyMsJ; arc=none smtp.client-ip=209.85.161.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-54494c3f7e3so93524e0c.3;
-        Fri, 29 Aug 2025 02:47:56 -0700 (PDT)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-61dd3b5cdd7so468879eaf.1;
+        Fri, 29 Aug 2025 03:07:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756462059; x=1757066859; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YBk7Y2iWMRq0omIsrbGFJSS7mEZPKHS+EpyaCaFiIs8=;
+        b=PmzOyMsJtU3DcHkECNgXbphdb63ffTskIexmnF5HawBaarvqA1MXtLT5rTrm2EBWvn
+         MAxtTmVDNPCFzIQGVwfv65c7CvtpmOpkK3m1XpCaSahXZes+6qpB4iWzHhFPwmKALFzG
+         iqJwnh3TCdJQjpKeWDHcXCDHq8vjyF74UFmIP1xkRkpkC86Fb31HS4wIbs/XIUSVnzwG
+         MJtjZC/swkJQHLMROK+/2zRZ0+mzgDeADDWRH8Lw9b6Q4hhJKP3WsK6uyJwm17gFSjYk
+         u/VfheC6J8zVVsCaB3SOp//vIiV+/o35Wb1fJrTP8HPKgxfAzMzkfALmwdwlIkBARhF7
+         p+6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756460876; x=1757065676;
+        d=1e100.net; s=20230601; t=1756462059; x=1757066859;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SjwK9jXSJ6vy5qbcZE6vx6xB7K4aY3jNf25jf3fHvcU=;
-        b=nsJxo684igLQkv5DrQsu13X3rn6GfzCCXBIadNcZIcawPKLiHxSzDOyuVI85FvbxqE
-         +lUHCYs0p3bxo521EHh1ZxHHq4uf2D3r6gCAElQ0/0I3SQewRhBAyXn8yQqrSVHBfaeX
-         hOVFN7cG1LwkSuayb4ZT2kHSbHbNkNaS6Oq325GCvmVdJIjSpKsVSyjCURkRq6ETgCIJ
-         vheblAT3fSpFSO1JYxPsWTGte/+cNgcc31XpphGdv9c6U8NtqS5kQppUWBS7hEcjCdWX
-         s6tgcF11r3OUbqO3naANmv6B5LVAIedrBjgfF/F+UaMga8KxF2nCvcHpecmUKaBjH3P7
-         GMOw==
-X-Forwarded-Encrypted: i=1; AJvYcCUqAPKSuOszS4lp+sf9ovfmiuBaiu0wSh0yIafVsf9vjsmMx1hHb+8EaVUBPo3z5MlXPIg/toA8M7GVxsPa@vger.kernel.org, AJvYcCX1tdKExWHSDtHR/yu2Il+k8B4s/G8yL5fnR53Zx7Al2/mDEbI5f05pyr06oLVznoMz8+wqo9fqigY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy18+xjA7F0gpqu9IVLtGi3q/VeUnx00yUCbRPG3BAtH1psXyh0
-	dQwicYy2TeoFfq5lgoxQ0l+gDZJmAbgHS9I+55VfUC1zwuQYWFb0abu9siy2EIc5
-X-Gm-Gg: ASbGnctJEiy0D6VWdrYylh6vCY+Uw3Xmc3DMBXcKkJf1fT4vYnvKbU2vPG02kjsNy1Z
-	ibiDcquXxWN89/Cce/P6Ya/AKpFZ3QSx3BFYRl1rfUTsNIJ4eO0TJXxS8Ikcekz8gvIs7ErEgp9
-	TEkACl+12+Y3OedDtbnWfAdNsE+2svIfU+6LChcqWoFz1uxTdaltZ0nPQ8xeJM6XuQO/YtREEkp
-	bfh/dtaALlfdkLHUw9nxNTlTGC/uNPNZvyzseEcMsIL68dhLQXnowZZ8/uvNhFZjXLls640nTLO
-	TgS6fX0papcuFvQfgxfbCDPMqU+a2nyxlrdzEA6ZRiqdSgtCsAowmTMZ3vU03p3L5jzgqoaQ2qP
-	zXws4Eli8v89KI/ma/hpUqs+ISlpwBLJFNieUnb3qXKwFlGJJ31pcOMmf0l71TLxACLuDQ0Y=
-X-Google-Smtp-Source: AGHT+IG8jIKDsVWnAuswpo/MqWNPhyyrZCHuqJY72pBh0mx+lvb5wymxARAFOAJ0RFD3rfp1xyu3Uw==
-X-Received: by 2002:a05:6122:25e7:b0:541:366:d15a with SMTP id 71dfb90a1353d-5410366d42emr4515194e0c.2.1756460875666;
-        Fri, 29 Aug 2025 02:47:55 -0700 (PDT)
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com. [209.85.217.50])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-544914c0e8esm637779e0c.28.2025.08.29.02.47.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Aug 2025 02:47:55 -0700 (PDT)
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-52069272157so295727137.3;
-        Fri, 29 Aug 2025 02:47:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUnkWB7FZ03ZIMOo6vOb5aqqknwPHM6/f3BxOAMelzGmhkm6+kvNseKgjXCrLnvKRgHKr2U/R50HoU=@vger.kernel.org, AJvYcCV+wcayYkck0zLXs1tkIkt5mdsTqRg/0B0pIWtZgYN56JR+VxYwco46S8GO9qmr0rZD5bp3Hcm2qkwr6x+o@vger.kernel.org
-X-Received: by 2002:a05:6102:5045:b0:4e9:9659:3a5f with SMTP id
- ada2fe7eead31-51d0d3295fcmr9051801137.10.1756460875111; Fri, 29 Aug 2025
- 02:47:55 -0700 (PDT)
+        bh=YBk7Y2iWMRq0omIsrbGFJSS7mEZPKHS+EpyaCaFiIs8=;
+        b=mYFMh0hxSCdLv1Z37n8f9jMdGkHsp8xxWOfLFhn4e0pU38q+rp2U/Q5nsG5BYPQSWn
+         ojwr0Aonoy31AhvoB/a1c0Zx5oHThaE9sK2fyslS32QlcGC6/AetrQ8RgaYd4/bqM929
+         rBHbKofu/y5M7bVkedlaccavnBrVPO1hUWJ43ymKYVz7t4bUELk/CZsp4ZJPduyffRlw
+         DZULIqid7DDMUdRC9nVZwKGLWQsXHgnoJEbT0GsO2bbxYRV2hVlUO0TuZ/fQDdDnrJ3R
+         dBL5n9dMAfH/29vhPlFOqEoU/1BV7MI0Ihq8OTESo7/yxah0rntwXDmgZaPlnG3U2/Pf
+         CKpw==
+X-Forwarded-Encrypted: i=1; AJvYcCX10UC1elyP2u9ldmqh1WL4AzoMWRxo7SUY9mlZXDcIQAviNyvsJUsv2n40+jonT+R96qhE0Cn4ogOm@vger.kernel.org, AJvYcCXZDTvqd9CzslgxNVRRxJxN8+RPNSCYeM1JQI1r7dsN7M/UB4mRYF4mL8JNvgdhYQIcdNhEZFxLcZdf@vger.kernel.org, AJvYcCXtP+beD5muUE72mgAgdHVlhZlYVdqyJrlBlvNxshYwVaiuSFUByscdXWAq7vX1BcEePd6tvKEgSzWcge+j@vger.kernel.org
+X-Gm-Message-State: AOJu0YytCua1+NeyxOUoKSRjC+AAYi9h8aE69JrPm1a3DxGPU98aZlDx
+	NRzuyFBaw/7qr9dgAjC0yJ+OtYIwHVIXCL9aABf40+GpA1CsCmaEcIhmAmI/qCqVcsL1CaVN6S/
+	y0N1Yhp9KEfdKfft3WzT+qWuQ90pXN9YF4EcovPw=
+X-Gm-Gg: ASbGncsm/PbZjO/tSy5ta5aHoRnCEH8Vo/cQA2sDyBuO2gm3LMuIInP0CH8rriFhYuR
+	+AB/EDMrm2U0T/g3QSN7x+7YEF0efpF/tewJGGhArAbihAubhgsVlWEICpV17vW3hkpmwcVOT5U
+	TywmGYJ/4PbL2l3P2I2uQqTwWFqEjI3wnZIoqTPOr/NVR5AeQZlLiTLtMRqZj0zMtcXqp0ugtEm
+	rU5vr8Xz8AdTJhVocAb/qw=
+X-Google-Smtp-Source: AGHT+IGk8RMeVt/fJADqPDSRP6KA6wIF1G9j9WjvxgiJD8WWnKelP8KyxuFev8iaLjFKZS/+HLKE+pId4Rxaq0PtQqs=
+X-Received: by 2002:a05:6808:4f53:b0:437:eb74:5786 with SMTP id
+ 5614622812f47-437eb745a16mr554694b6e.0.1756462058815; Fri, 29 Aug 2025
+ 03:07:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com>
-In-Reply-To: <20250722-iio-use-more-iio_declare_buffer_with_ts-7-v2-1-d3ebeb001ed3@baylibre.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 29 Aug 2025 11:47:44 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWNNu+gwHdhfaShLyXHqxD=esp4CXpWiHJCqrCGho0z3g@mail.gmail.com>
-X-Gm-Features: Ac12FXw4ySjEeOeCH0mF3GQ3nupnIdCJpFWX1FkdY409glgjEvUK-Xh-p3wrdqg
-Message-ID: <CAMuHMdWNNu+gwHdhfaShLyXHqxD=esp4CXpWiHJCqrCGho0z3g@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: proximity: isl29501: fix buffered read on
- big-endian systems
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Mathieu Othacehe <othacehe@gnu.org>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250829-tlv493d-sensor-v6_16-rc5-v5-0-746e73bc6c11@gmail.com>
+ <20250829-tlv493d-sensor-v6_16-rc5-v5-1-746e73bc6c11@gmail.com> <20250829-fluorescent-delicate-pogona-c96b5f@kuoka>
+In-Reply-To: <20250829-fluorescent-delicate-pogona-c96b5f@kuoka>
+From: Dixit Parmar <dixitparmar19@gmail.com>
+Date: Fri, 29 Aug 2025 15:37:25 +0530
+X-Gm-Features: Ac12FXwR0MQiuHh0zwiEuNw7iCVMWUBcIA0OU2ImZqD4BhBQugafXR3GPO9F1uI
+Message-ID: <CAFmh=S3jKfGMek=ZPUrfgh9fXZaaq6zNBOmCyEpoe0qGpfbt5w@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] iio: magnetometer: add support for Infineon
+ TLV493D 3D Magentic sensor
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hi David,
-
-On Tue, 22 Jul 2025 at 22:55, David Lechner <dlechner@baylibre.com> wrote:
-> Fix passing a u32 value as a u16 buffer scan item. This works on little-
-> endian systems, but not on big-endian systems.
+> > +INFINEON TLV493D Driver
+> > +M:   Dixit Parmar <dixitparmar19@gmail.com>
+> > +L:   linux-iio@vger.kernel.org
+> > +S:   Maintained
+> > +W:   https://www.infineon.com/part/TLV493D-A1B6
+> > +F:   Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d-a1b6.yaml
 >
-> A new local variable is introduced for getting the register value and
-> the array is changed to a struct to make the data layout more explicit
-> rather than just changing the type and having to recalculate the proper
-> length needed for the timestamp.
+> There is no such file here. Apply this *patch* and check by yourself.
+That file is being added as a separate patch(Patch 2/2) of this same
+patch series. It's already reviewed by you only(based on the name).
+https://lore.kernel.org/linux-iio/20250829-tlv493d-sensor-v6_16-rc5-v5-2-746e73bc6c11@gmail.com
 >
-> Fixes: 1c28799257bc ("iio: light: isl29501: Add support for the ISL29501 ToF sensor.")
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-
-Thanks for your patch, which is now commit de18e978d0cda23e ("iio:
-proximity: isl29501: fix buffered read on big-endian systems")
-in v6.17-rc3.
-
-> --- a/drivers/iio/proximity/isl29501.c
-> +++ b/drivers/iio/proximity/isl29501.c
-> @@ -938,12 +938,18 @@ static irqreturn_t isl29501_trigger_handler(int irq, void *p)
->         struct iio_dev *indio_dev = pf->indio_dev;
->         struct isl29501_private *isl29501 = iio_priv(indio_dev);
->         const unsigned long *active_mask = indio_dev->active_scan_mask;
-> -       u32 buffer[4] __aligned(8) = {}; /* 1x16-bit + naturally aligned ts */
-> -
-> -       if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask))
-> -               isl29501_register_read(isl29501, REG_DISTANCE, buffer);
-> +       u32 value;
-> +       struct {
-> +               u16 data;
-> +               aligned_s64 ts;
-> +       } scan = { };
-
-This still looks rather obfuse to me: you rely on the implicit
-presence of a 6-byte hole between data and ts, and on the implicit
-64-bit alignment of data.
-
-What about making this explicit?
-
-    struct {
-            u16 data;
-            u16 unused[3];
-            s64 ts;
-    } __aligned(8) scan = { };
-
-> +
-> +       if (test_bit(ISL29501_DISTANCE_SCAN_INDEX, active_mask)) {
-> +               isl29501_register_read(isl29501, REG_DISTANCE, &value);
-> +               scan.data = value;
-> +       }
+> Your patchset is still incorrectly organized. See submitting patches in
+> DT dir.
+By "incorrectly organized" do you mean order of the patches in the
+patchset or anything else?
 >
-> -       iio_push_to_buffers_with_timestamp(indio_dev, buffer, pf->timestamp);
-> +       iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
->         iio_trigger_notify_done(indio_dev->trig);
->
->         return IRQ_HANDLED;
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thank you for the review,
+Dixit
 

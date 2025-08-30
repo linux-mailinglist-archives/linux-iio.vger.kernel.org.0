@@ -1,80 +1,81 @@
-Return-Path: <linux-iio+bounces-23471-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23472-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC78B3CD6F
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 18:49:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8ED9B3CD72
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 18:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E74A81B27026
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 16:49:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14B3E1B26418
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 16:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856BA2D46CC;
-	Sat, 30 Aug 2025 16:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999BE2D480A;
+	Sat, 30 Aug 2025 16:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nASJHhB2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oNw4/1yr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364B22D3743
-	for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 16:48:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C97F2D3ECE
+	for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 16:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756572531; cv=none; b=T/BT2dCYRl5BdOvxQPDH17utdWt7fvt14lkHlPN1Hsqn6nzv1NC4Rs3pBpTAPIJWPBSApbdPDvMMcqteQd5d0Ygijpfpqdo2l+T9QnGlJuQuZNUTnUq+fjL5+y/+euixCywkeKbtdkPK6B6rGPLTC5jEWMC3FLMpImrUqR+mrYs=
+	t=1756572532; cv=none; b=XALbYE2Q+v16z1QdAUrrBw2v1YmGkDROAaQKZ2spJz/RwZ+g1tSmFT0/GQ1Ya2MwfdmAhVSuzrG03ftXLuiLv4hpnVTNBzFi+jLVE7v8ezQZZ0moN7vqCO5EDFxpt78JsW01jO2qYB06UXmRKb+AVxJWNQGzY4qTVI5nlKipYi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756572531; c=relaxed/simple;
-	bh=ebjPcUawDuyYiStYmNU5ZL3R3L1PNedniR0atYT+P1Y=;
+	s=arc-20240116; t=1756572532; c=relaxed/simple;
+	bh=M52Ix5e2ZfY480bhbf4Da85nfANVV5Q7GQgHm64bNig=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bWYPclEMwInlFLTUnuJiWsB6W0Z7S1ypsR4AV1wmaayiUPxwh8tsCkRwy8tSAcW03yhm16SIoF+p0p0OhvanMgngX0JBQ9wfpD4rn+B42aSyiqYCseH/glcGkjitbypaumNyL5BUadbvdi/bpAxBBoD9EmEniP5uqD5DDj1ZjG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nASJHhB2; arc=none smtp.client-ip=209.85.221.46
+	 In-Reply-To:To:Cc; b=PnfgSx4CHvl5xA5DYs9RA56Pta+aau/fQYgd5JJTgHyHKKDNDKqaDiNGw9WLqihSpFxxk24W/vwHyYnS91ZvhQnkNJYif0BkuFO1BfRpEgGy3in8qN85VwSc2ELl2R9S8W793+98JD071+eHaZPEJzu2et6s0r+6frIRwzTecwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oNw4/1yr; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3cd99b4bb72so274871f8f.0
-        for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 09:48:48 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45b8960b48aso4845e9.2
+        for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 09:48:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756572527; x=1757177327; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756572529; x=1757177329; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=lR2F57pXZlUmDDCYEA5++08US32un21m5O7B8t3ZqrM=;
-        b=nASJHhB27GAWfqIrPfwhzZLmmEJrZPfQFU8WkT1oxfsDcWkZx8Id2GeKaEdn+AA0xJ
-         VdF4ELszycKD/WozZlDxoMko6i9gi0LHzdcHeeD8/OdSq+S+SBiL9VbKugpbOU0mPOo1
-         KinXYOVEK43cLaGA45KvnpGfV7K9nGOZ0BdYL6cCdVm/kjdsS9Hu2CjSvreBwWiM3MSN
-         g3xB7rdO1zdvp68bhcEb5heKMjlWsl+PYHoW38VPXUaqO3jPigjeLoXx+3HuB/x2bUeb
-         99t/F6N1rZSMrYY3ch2KVI5VUmooj3qL10NFVtoykQ1rnP0R473DWUPVHWzOdDSCiWAz
-         2VbQ==
+        bh=uGegaPWxGQTvhFdIvhwtl2HHlep4qKtefJBT6reESx0=;
+        b=oNw4/1yrgC+H4hxF6bq8ekB3HHQBRX5KEKOPChF/jGjXghdRlsll5jFF2EBrQPrrMB
+         5Nd9s6nVaJ7BH1q5zol39pNHiT1TgWnbmgvOOwy5lDdgnAbL/MIsO74gCJ5yiBehlWO3
+         r9l3PAyTXH9Qd3EKoExWKx/CLpSSmBhTl4YVtSTZ3BQrLmestqQJ+r3PYBGuffaSSs9u
+         uLHR8layFQg60YfaDNdeJoiFgoUXMk9YHozh5KuVXncJtnOuNOWAukeEYU053cIqjRP2
+         jtImcUizqppPyo1cjIujUaMPmDHgv+hWVgzW4kzXCrydBHofEZvM+XHAN5wySRF1UA3Y
+         2NWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756572527; x=1757177327;
+        d=1e100.net; s=20230601; t=1756572529; x=1757177329;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lR2F57pXZlUmDDCYEA5++08US32un21m5O7B8t3ZqrM=;
-        b=J4E96cBRaiPkIGwinFmyQMU0EbWSr8dGn064PPv92k5r7l1ex/6fmt4i5FevFkpTXB
-         gyHCoiPRb8eFuUEqQJnXRhE5DV7kcpfdsUpDAkuKxBA7Ik/X5WiE2YjOzqn+Gcg48/m4
-         OcpPpo8b5z8Y0FXYcJtHUBtqAtPv3uxmrYN0VwdkRZTl3wdMLjZDQFnkQ/IuRtSsVXXh
-         +eQawWSmyLU6Ey2JMufkCodtD9xr7zIOkoUqMd2thTrLD0GruF/0Rfdh9xlqnxnnDmKY
-         O2lZ4Vxyr4A5h38mBH11EF+f8RJvFWVr1OzJ9CQeMIMJzjjHzejkBTLOWFeOinW6lVIq
-         Kkjw==
-X-Gm-Message-State: AOJu0Ywdr1lBxomyE6I48BldCYwUSeRbJsU2EqqoTMblqkuM4sE/+EIC
-	FJuf5tBxWGwZH97RPEU1qhaek05Vc2V4QVzCkV0rTpPUOa74EXHqXuw1ED32J6Nq6XM=
-X-Gm-Gg: ASbGncu47w1yJOYOhx/I4Gii7N3HDalFC3lIUaigJuFxYGQST6rsYGp1f1IHfeyU5Hq
-	andgu4KNq3OjVbsZxqvfiJzSCTWAlzqZeRhMBNN4sivHF7BEymgNN0rWphDMNYcbYE1MCzUB2Vz
-	I6c4oVDSXbvs1EcAPvLTSzoIlexYMg/dGvQYbvHxbGo9LE5CnttOBfrxRQJhopRdHMjfMWEMwyx
-	wnw0CPh0Ms2Oz4cmEKYYNe0FUhiiJ5zb8mlJwReNo/QUV2A4zTnJwiapAviLCM54t/oBKVGC55q
-	goOXCTLBzfw7YDxzBo2mWkguA7wSNwdJ3GbOy2Ed29McsrfmwdxK/j0zlenasCIiP5FRbFPgD8W
-	fJatglGlXd8uJUaekD9P2H1esmhFOuXNr2VJTQhs=
-X-Google-Smtp-Source: AGHT+IHt0KuSMQTDPQqKwlDvsHq9uYVnTMb+JaxUV+LdGdK88mtHqEQl+7TJcM0mcCtVtJuqsHFZ5w==
-X-Received: by 2002:a05:6000:2dc7:b0:3b7:8890:8e71 with SMTP id ffacd0b85a97d-3d0fdc6311amr1950866f8f.11.1756572527510;
-        Sat, 30 Aug 2025 09:48:47 -0700 (PDT)
+        bh=uGegaPWxGQTvhFdIvhwtl2HHlep4qKtefJBT6reESx0=;
+        b=c0SikV0F+8zKtP1vVewphEFyfykHu6jmgFiDYg/0u7EoDax9Nk4t3fVNIkdBVtmvAF
+         9iUmQXrukIeakCWaXv7ClD1u9Q0jjXpOQFwylv//kWduawZvpgv3EyIzN4fwqCB8Y1Zl
+         iZ1xvnjz5WSCwUVkRzah//h5uy8rHDcusUF3/nteELDZDu+hYlcRYzo/waTn3jvBoAx0
+         u0UF7l3Gz4xJCa/9uFeG4IhUfYIgDjFJKnMrQ+H+XUHBrAH7GonWbALcKuC6U0nTFeeB
+         rfGT6HAU7nIA7n1rsN8368mJGnhfGSoA7u3leg0aUMEI8ZdFztkrzWNkgi+YgMlK7ou4
+         8fxw==
+X-Gm-Message-State: AOJu0YxfpuNXQRYUi876nGgAVbs8aMWw9oZ+oacddiNci4AOw+CMZxqz
+	ilyjt7boJXaFV9C8OatOOB/Qz+/TAT+lvukOFFFmjLoY89VVHnPtu6+VCMzTeDEYSLY=
+X-Gm-Gg: ASbGncs6VyZx9l+aWcisbRcQUpeFlMA2UCTC7MXeuZ4zHc/m881Fmb9oxZogDllQp4z
+	CeIKr7+HyxO3sw1c8+o6mqjOa9tXjKzCIAqTNrZ1WVXIkbJ5NstI8IiSbakdqJVtLWC2SNobd/t
+	HFcrP6kxPl9rcpK+/eQDAAFNpTeTEap3iahLfIO0qImsxD5ZO2K2up3Njk2NSE8PhtGSoZzQ0OY
+	2ceQGyiJvE85qglTJIQphdRyUoEkmV6FBytCPqJU709kLOVmHLSPyvTcGz16VuTHpSlguT+4UQe
+	fTF89JvfyGfLOBRkDN0f32lLZYe6qefE3HyG4aNZgSHE8zGNN0sgfdz6+HrF8V6f03WequMW4eD
+	QWFqmg6yutnaD4gKUbMUAdl1YoQliWdHJUnUjoFI=
+X-Google-Smtp-Source: AGHT+IH7Z/kvyvopM2ZnHxAu+WCRchp8R1OWKLCzlB4yVnosvVIsNOGkgCloMAkokNIzpMGMhjhXuw==
+X-Received: by 2002:a05:600c:5287:b0:456:2137:5662 with SMTP id 5b1f17b1804b1-45b81f120bamr22809295e9.7.1756572528946;
+        Sat, 30 Aug 2025 09:48:48 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf274dde69sm7818129f8f.14.2025.08.30.09.48.46
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf274dde69sm7818129f8f.14.2025.08.30.09.48.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Aug 2025 09:48:47 -0700 (PDT)
+        Sat, 30 Aug 2025 09:48:48 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Sat, 30 Aug 2025 18:48:33 +0200
-Subject: [PATCH v2 4/5] dt-bindings: iio: adc: samsung,exynos: Drop S3C2410
+Date: Sat, 30 Aug 2025 18:48:34 +0200
+Subject: [PATCH v2 5/5] dt-bindings: iio: adc: samsung,exynos: Drop
+ touchscreen support
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +84,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250830-s3c-cleanup-adc-v2-4-4f8299343d32@linaro.org>
+Message-Id: <20250830-s3c-cleanup-adc-v2-5-4f8299343d32@linaro.org>
 References: <20250830-s3c-cleanup-adc-v2-0-4f8299343d32@linaro.org>
 In-Reply-To: <20250830-s3c-cleanup-adc-v2-0-4f8299343d32@linaro.org>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -98,48 +99,89 @@ Cc: linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  devicetree@vger.kernel.org, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1211;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1987;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=ebjPcUawDuyYiStYmNU5ZL3R3L1PNedniR0atYT+P1Y=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBosytleZMp+yMmU7xsdbFO7JlxlKksf/lRJNJaZ
- YnqE1JDQ0CJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaLMrZQAKCRDBN2bmhouD
- 10QUD/4gM1mCrSjYdcPTKpWDO6kCTZbB6/rtQiu0sGhp1ajK+tkWUy1YKGoYABMormyPFvjUzls
- 4xbQEJN5gc40zxgmpfXhXLCfD7wl7VQsCVTtMAycfoR7jhL8kL2OB+vaNPXyE85AyseRAEnvYAv
- IDDGCmTzXLhDx+HejGYmRE/6Xeh2UWau1h6nkxpE6RPsTkr2P8VsGyYtqwuIvhluJShhDAW7DSG
- oPtUQr5q2g8KUANF6+JswThvWjwy0ImF+dNRp+1dHdeg46dbXLuzviBtqGzGw1syBI4N0uyS24D
- UcpQCZ+F4MZLpV0Z4TfQkf8bAr8gwB2DMAEkBZOML7culmARpQnlbqPA9do2wc+bDQkP66EuRsB
- 7QzCly5CwNSmvfX5kOcmkhggEY7fSzm025jZLBwEVTs2iskQ8VZTnuUzTDU3jWkgF1bZY+olaVX
- s37qaxVKymOdFawq/CMkiAmqz3E/Nuwi1Uk0RzqejCeuqArxiwsWKp7QfqEribbB7X3BYbmgAMl
- tqsbPGMttaqCRBMqUi1B1UdZeP9DjS2ZNWfI/Jt3Bdgi0L5CZSJAIL/Td07t4tXZ3joYpp+p5Ou
- nGEmXkZeVdmhA8UPjHErtSQ85D6cRgivmj+rE1dXRgsgmZfpzXxRTx+sOGdE/R8pz2K02gZgJm1
- c0y2ypd7f+7giyA==
+ bh=M52Ix5e2ZfY480bhbf4Da85nfANVV5Q7GQgHm64bNig=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBosytm4JHyzH+AmZV5ywRHpisz2B5V10Ey2ZqXi
+ ZkjUY5CvsOJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaLMrZgAKCRDBN2bmhouD
+ 1zmzD/4ppk5vO9b3vahpeArWbxkYzHayHXHpMN8v8pvD3pzMJ029qz5Zkv3REblrgn8HRmobbak
+ 5rGSq5Yrfo6/aF7cfHFUfpBOoUBRjNGyRyaMK/e4gESo+l0qJrrSHhWMQzuT/kezBuT9VNs6gox
+ sfhS1/Y/RvAckDeLV46jXtRNAcIEE1xbnxezlRkemJPd9GHz/5FikDKOTLuTR03020aLhGpJlgD
+ 6gb5/yQguf2lK1zBQ2OynKcpzAaRFpF5HNmFAgx0CvbqAtqhSOBl34MR3rzjzfMC1BaEQv7qjNK
+ pt1o9mgMZiMNfTf3WQkR8aJ5YIPwWJUKICCwTIzdndDc8FI2kk2q0llE1BnBamT/n0AqppNc8wU
+ rCfdwcv1zx6irWkafqebcuyOGlqMNCHCUPl07bGU+Dw/qBL/AAoX/7Hg9POwHjgpn0wAvCvUShJ
+ A2K1Sr4WRuJ2kJoXHev458ou4bcsPRW4Fsdy5M9lvaTEbVKpSp6ot8//nWkoCv7VdUX0InOIMwU
+ ej/oLXtYnCSDLITwtiVt/RwMxMN7bghJdgW6DmFJ6RYayGLrWLQhSi9vL5Vox7a1j1S+2Vb8s3/
+ HCZROQXDgwxx4e87GeXNVc+mqmZgdcnEab1k+5uxz9eZSUgsgrR5RpkRtvRYfRq31MeZXcGiDoX
+ MgEQgosc2lfW7qA==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Samsung S3C24xx family of SoCs was removed the Linux kernel in the
-commit 61b7f8920b17 ("ARM: s3c: remove all s3c24xx support"), in January
-2023.  There are no in-kernel users of remaining S3C24xx compatibles.
+With last user of touchscreen via ADC (S3C24xx SoC) gone, drop the
+unused has-touchscreen property and optional touchscreen interrupt for
+samsung,s3c6410-adc.  The samsung,s5pv210-adc is the only platform
+having two interrupts, so add a constrain for that.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 ---
- Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml | 4 ----
- 1 file changed, 4 deletions(-)
+
+Changes in v2:
+1. Fix S5Pv210 interrupts
+---
+ .../bindings/iio/adc/samsung,exynos-adc.yaml       | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-index 8069e99ddac860b22c793c3ef9479f720cfd8c65..73d7ba0fda1def433a97d10bce21e762a307e36c 100644
+index 73d7ba0fda1def433a97d10bce21e762a307e36c..def879f6ed20a3ad40baebed6557082a358cae2e 100644
 --- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
 +++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-@@ -18,10 +18,6 @@ properties:
-           - samsung,exynos3250-adc
-           - samsung,exynos4212-adc                # Exynos4212 and Exynos4412
-           - samsung,exynos7-adc
--          - samsung,s3c2410-adc
--          - samsung,s3c2416-adc
--          - samsung,s3c2440-adc
--          - samsung,s3c2443-adc
-           - samsung,s3c6410-adc
-           - samsung,s5pv210-adc
-       - items:
+@@ -42,8 +42,6 @@ properties:
+     maxItems: 2
+ 
+   interrupts:
+-    description:
+-      ADC interrupt followed by optional touchscreen interrupt.
+     minItems: 1
+     maxItems: 2
+ 
+@@ -58,11 +56,6 @@ properties:
+       Phandle to the PMU system controller node (to access the ADC_PHY
+       register on Exynos3250/4x12/5250/5420/5800).
+ 
+-  has-touchscreen:
+-    description:
+-      If present, indicates that a touchscreen is connected and usable.
+-    type: boolean
+-
+ required:
+   - compatible
+   - reg
+@@ -114,13 +107,20 @@ allOf:
+             - const: adc
+ 
+   - if:
+-      required:
+-        - has-touchscreen
++      properties:
++        compatible:
++          contains:
++            const: samsung,s5pv210-adc
+     then:
+       properties:
+         interrupts:
+-          minItems: 2
+-          maxItems: 2
++          items:
++            - description: main (ADC)
++            - description: pending (PENDN)
++    else:
++      properties:
++        interrupts:
++          maxItems: 1
+ 
+ examples:
+   - |
 
 -- 
 2.48.1

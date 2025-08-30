@@ -1,134 +1,205 @@
-Return-Path: <linux-iio+bounces-23491-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23496-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A75B3CEBC
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 20:44:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F4137B3CED5
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 20:45:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6A031897A3C
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 18:44:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5A0B189C14E
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 18:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5F92DAFBF;
-	Sat, 30 Aug 2025 18:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE002DAFA4;
+	Sat, 30 Aug 2025 18:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZpxBXs7"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="q+A+ZUAn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EBD2DAFA5;
-	Sat, 30 Aug 2025 18:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8962D9EE7
+	for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 18:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756579401; cv=none; b=iVnCj6yEvH+IxpDOgT2jp5q2ZojShwEpf0lDA5j9oA+RmYXjd0IbkcGpRTp6rGwW6YkbRKlpKUnc55uljCyM9beR8Uz9IOd81jS6a9b/PanAWkR48jTavHcRJ8FuwzsOTQhK+9CIMCI2RFPhjZGKBbuGwYQfHEBZwRhCc8uPyss=
+	t=1756579520; cv=none; b=SRfhAXqZWOF0WuqTuhVopYMqxhK10VQCAsqVAUkBS7huWFlnsS1AonhzEBRZ9pG3dejzIGabF0s1TDcFj3Zfa6ouMAyg9L+7Fem2LsoV1daHeAXMzc9GS14vSSulXxGDIx7LF6NXnnM5hTXHe3wlQtLC4iW0jwdl0QGaNPJDNNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756579401; c=relaxed/simple;
-	bh=0/4i5sW5GYY43WWd8JCcpS/pAorDT72EtPMpDi0pbLs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nLf0QLbUQtKD67UomXkbXfA7AIoMlX4+3Jeoxsx5bCQXtinKLQJVvNTl3koIICFwymi8xA1oaCf+90886YwucusBB9tWq8pvEZuhecPDVuOwAoV9TUo1BgxXZhPszaa5ASEPSxMiyQ7R1l76/5kC6CKadhIQlPhqZ13pTWd8S7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZpxBXs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DACC4CEF1;
-	Sat, 30 Aug 2025 18:43:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756579401;
-	bh=0/4i5sW5GYY43WWd8JCcpS/pAorDT72EtPMpDi0pbLs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hZpxBXs7cohSvfKdWaw/D65K8ETuNQ91Ii3IKaomU/bGjTEgrB6KAKUe0sjuvPc7O
-	 Ox91lKmqCXqVsesTPjxsZImlJl4aCDXCpQUy54JiRhG1iOzkzOnqMLoFZtohhUKehy
-	 Zz2BHtPFtQUqiD461d6CEWuDzXyoNAoAR8MOjNioHQLRKr+zfDwZ7I+kFgcB2QLhqy
-	 PU0dI1Y+LTLwulxGFfppoZa0qwlSyFyWKKRu4NsmFwwWkPgeQA/TRex5BKQ4qAEovk
-	 QQ+YiGYQSq8YhIzjYg0SdjABh1e9/RE+4ZG01GrWH/Nw4FUma0HtOFAmcQjTwtgUPy
-	 aiGrbZuARHfTw==
-Date: Sat, 30 Aug 2025 19:43:08 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-spi@vger.kernel.org>, <Michael.Hennerich@analog.com>,
- <nuno.sa@analog.com>, <eblanc@baylibre.com>, <dlechner@baylibre.com>,
- <andy@kernel.org>, <corbet@lwn.net>, <robh@kernel.org>,
- <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <broonie@kernel.org>,
- <Jonathan.Cameron@huawei.com>, <andriy.shevchenko@linux.intel.com>,
- <ahaslam@baylibre.com>, <marcelo.schmitt1@gmail.com>
-Subject: Re: [PATCH 01/15] iio: adc: ad4030: Fix _scale for when
- oversampling is enabled
-Message-ID: <20250830194308.32def0e5@jic23-huawei>
-In-Reply-To: <f9d40e8deb3d17a41b4fd6ecc1b8ac92275f0078.1756511030.git.marcelo.schmitt@analog.com>
-References: <cover.1756511030.git.marcelo.schmitt@analog.com>
-	<f9d40e8deb3d17a41b4fd6ecc1b8ac92275f0078.1756511030.git.marcelo.schmitt@analog.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1756579520; c=relaxed/simple;
+	bh=A6/ow0zfZVWRQiTl9Wxuq88PZFNMRCn7+IJy+ae1z5o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NuFOUjfxESTMxTVhk4i7DeKFbatByfgJIJwUBvOmpxoeIQ+hkBBOKPQrRf+N7mqW57hSwxvRqNQPJ6TJ/mPtEHNqLb4AgBCyvVmR2jl8Ssy70nHqMGtNJxI4JSggsVZ90Ab616PIK/qCtip7yCskx/1QWWp0z7A/JSzxC6yInFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=q+A+ZUAn; arc=none smtp.client-ip=209.85.160.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-30ccec928f6so1578954fac.3
+        for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 11:45:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756579516; x=1757184316; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CPiezsjLUnzBqGwDjKVX6a94n9N1zDOYr4AgH99/0TU=;
+        b=q+A+ZUAnPa3pIOgcgoNUaVcb6gueKaPfPJaZRh/PdLJ9Kq91g54ZZhXivvUYVVDqYj
+         +lrFA7UuPKZsdLwDBfMSaPSSMLZ+3WUhQ+1OxW94rYBNugHdDypN5i4O3+wFIe6UoiI+
+         BT1+06ct/n6zz/uNfjlr5Dv8foYHn8D7FDa1BBVFDDEaqm5vAn3mpZQQXoWtYeagX+Ox
+         FwUe3IJNq2Ftc0gMw9mEs8zyx22YSaDGWfPuetowzOfXeWaU+6Fqhj80b1D+ZhcbkB6k
+         2X4Jq7yBmghfUmBkyccZi7Kab5qtuQY6mvaxM5dp4fI5zDHuh2NVsEpzpvbx5aQD/MW9
+         K40A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756579517; x=1757184317;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CPiezsjLUnzBqGwDjKVX6a94n9N1zDOYr4AgH99/0TU=;
+        b=upPXwob7OFwYYVwSoc9AsLMhKAIXwtasgKKsFh+/KQKydAfgW4RA2d+BiPNsnWKcNU
+         QDbRjDuibTLM3jnLNrCf7win2/s4nc4dFrks7Jy2zSV7+qyarCKkx2LRbIzaXZ++xvH/
+         ciGxlkLF6byZ78N872sl0yMTXkcBGTizS+Q+hIS+wljKEKhzU4e4Q6aPLbrVHf2G47Xj
+         THZZUi6tLbLR+9sr4pCiHZlhbbQfLZ6zrG7/22CzQZC8q5q6SwJOJTVMQqH+xc2lGg1p
+         01iChy7iKLctGPXDzotjeyIDNbMNwcIuTgl+qqRGVPM6ZK0LfUM6BEFj/8b6FmN5GkP7
+         G/5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUzScwyj/e9o7Dxvw9k5O60vbgaFNEwhSEytA/axMBONLPxw9aoCBd3IWEabF5f3MjdD7TG0YynwA0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxgk7bkjuQWvJpm+WfqTp7CeCLCgWsp7s/oKOBcXoWK62n0zQc1
+	j6uOHylmFWxQIMSibTYz8JRaDSvH4z/0I1Os4ZoYhgUwgwWAoQAUuUERcN6K5BntMcM=
+X-Gm-Gg: ASbGncueatXPiDzP2xCPD+Tu1DwDvzSBVagUzozw1l70qMbsGTNpHRcYLPe2eSXKA1B
+	ldqB/k4c+4d6IrfE2qLm6xahZamVDNxNZ3mzRLR2i/QlMn0kKq3ixi25cLx9CrDaH6fH2nFU3PG
+	PjHtnsjR3nW3Sim7/CKME4EspnNkWmV6AyX9TLFbr/64tDGalbE2Oc88kCAQSzX80M+ey5wv7ZE
+	q4vLVV2axj7vpIi27PgQSPr48nnc5NP/fb5KwU4Izn1bpTDXsK6zP/aGlTfG7ova7XFC3dCO5V0
+	9vbnRkTsC5o1GdmCK0lQkOF2jN8WWazTdCn8kyIX9gJS9Ht4bLIQId9MZzhcMWzg65UqYmXTr7Z
+	OC/zVwU/RZfVjLd5o4TpdsGlazckGN7GJKggFWpP3268Tf9cKg6+8WCb6/jqQ4GzxQza0+4qhej
+	0=
+X-Google-Smtp-Source: AGHT+IGv9C+6T4KddzZvtjmPR5YaSWFbXjOWucy8kEyzoY7r1q/BobV4qLWBoksIlhBWe9W/PezVCA==
+X-Received: by 2002:a05:6808:1809:b0:437:df8f:699b with SMTP id 5614622812f47-437f7ce0b66mr1214908b6e.14.1756579516610;
+        Sat, 30 Aug 2025 11:45:16 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:f7b4:dfbd:5110:c59d? ([2600:8803:e7e4:1d00:f7b4:dfbd:5110:c59d])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-437fff0819dsm20451b6e.14.2025.08.30.11.45.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 30 Aug 2025 11:45:16 -0700 (PDT)
+Message-ID: <bf2a2ef0-0ae0-4a57-a3be-e0062190da42@baylibre.com>
+Date: Sat, 30 Aug 2025 13:45:15 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/15] dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216 and
+ ADAQ4224
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+Cc: jic23@kernel.org, Michael.Hennerich@analog.com, nuno.sa@analog.com,
+ eblanc@baylibre.com, andy@kernel.org, corbet@lwn.net, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, broonie@kernel.org,
+ Jonathan.Cameron@huawei.com, andriy.shevchenko@linux.intel.com,
+ ahaslam@baylibre.com, marcelo.schmitt1@gmail.com
+References: <cover.1756511030.git.marcelo.schmitt@analog.com>
+ <31584fd69731bf75967a0fa75302bd7402f6705f.1756511030.git.marcelo.schmitt@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <31584fd69731bf75967a0fa75302bd7402f6705f.1756511030.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Fri, 29 Aug 2025 21:40:24 -0300
-Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
-
-> Previously, the AD4030 driver was using the number of scan realbits for the
-> voltage channel to derive the scale to millivolts. Though, when sample
-> averaging is enabled (oversampling_ratio > 1), the number of scan realbits
-> for the channel is set to 30 and doesn't match the amount of conversion
-> precision bits. Due to that, the calculated channel scale did not correctly
-> scale raw sample data to millivolt units in those cases. Use chip specific
-> precision bits to derive the correct channel _scale on every and all
-> channel configuration.
+On 8/29/25 7:45 PM, Marcelo Schmitt wrote:
+> ADAQ4216 and ADAQ4224 are similar to AD4030 except ADAQ devices have a PGA
+> (programmable gain amplifier) that scales the input signal prior to it
+> reaching the ADC inputs. The PGA is controlled through a couple of pins (A0
+> and A1) that set one of four possible signal gain.
 > 
-> Fixes: dc78e71d7c15 ("iio: adc: ad4030: remove some duplicate code")
 > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-
-Hi Marcelo
-
-I was assuming that when this said 'averaging' it actually meant
-summing (there is a note about using the upper precision bits to get the same
-scaling which is what we'd expect it were simply summing over X samples).
-
-So given that we don't divide back down to get the original scaling I'm
-not following how this works.
-
-E.g. If we 'averaged' just 2 values of 3 then we'd go from a value of 3 to
-one of 6.  Therefore I'd expect the scale to halve as each lsb represents
-half the voltage it did when we weren't averaging those 2 samples.
-
-I think that is what we'd see with the current code, so my reasoning is
-clearly wrong, but why?
-
-Jonathan
-
 > ---
-> This was probalby buggy since 
-> commit 949abd1ca5a4 ("iio: adc: ad4030: add averaging support")
-> but I decided to set the fixes tag with dc78e71d7c15 because this patch will
-> not apply cleanly over 949abd1ca5a4.
+> The PGA doc was inspired on ad7191 dt-binding and uses the same properies (but
+> with different values) to describe the hardware.
 > 
->  drivers/iio/adc/ad4030.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+>  .../bindings/iio/adc/adi,ad4030.yaml          | 39 +++++++++++++++++++
+>  1 file changed, 39 insertions(+)
 > 
-> diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
-> index 1bc2f9a22470..82784593f976 100644
-> --- a/drivers/iio/adc/ad4030.c
-> +++ b/drivers/iio/adc/ad4030.c
-> @@ -394,7 +394,14 @@ static int ad4030_get_chan_scale(struct iio_dev *indio_dev,
->  	else
->  		*val = st->vref_uv / MILLI;
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+> index 9adb60629631..36fd2aa51922 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+> @@ -19,6 +19,8 @@ description: |
+>    * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4030-24-4032-24.pdf
+>    * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4630-24_ad4632-24.pdf
+>    * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4630-16-4632-16.pdf
+> +  * https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4216.pdf
+> +  * https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4224.pdf
 >  
-> -	*val2 = scan_type->realbits;
-> +	/*
-> +	 * Even though the sample data comes in a 30-bit chunk when the ADC
-> +	 * is averaging samples, the conversion precision is still 16-bit or
-> +	 * 24-bit depending on the device. Thus, instead of scan_type->realbits,
-> +	 * use chip specific precision bits to derive the correct scale to mV.
-> +	 */
-> +	*val2 = scan_type->realbits == 30 ? st->chip->precision_bits
-> +					  : scan_type->realbits;
+>  $ref: /schemas/spi/spi-peripheral-props.yaml#
 >  
->  	return IIO_VAL_FRACTIONAL_LOG2;
->  }
+> @@ -31,6 +33,8 @@ properties:
+>        - adi,ad4630-24
+>        - adi,ad4632-16
+>        - adi,ad4632-24
+> +      - adi,adaq4216
+> +      - adi,adaq4224
+>  
+>    reg:
+>      maxItems: 1
+> @@ -64,6 +68,27 @@ properties:
+>        The Reset Input (/RST). Used for asynchronous device reset.
+>      maxItems: 1
+>  
+> +  pga-gpios:
+> +    description:
+> +      A0 and A1 pins for gain selection. For devices that have PGA configuration
+> +      input pins, pga-gpios should be defined if adi,gain-milli is absent.
+> +    minItems: 2
+> +    maxItems: 2
+> +
+> +  adi,pga-value:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      Should be present if PGA control inputs are pin-strapped. The values
+> +      specify the gain per mille. For example, 333 means the input signal is
+> +      scaled by a 0.333 factor (i.e. attenuated to one third of it's original
+> +      magnitude). Possible values:
+> +      Gain 333 (A1=0, A0=0)
+> +      Gain 556 (A1=0, A0=1)
+> +      Gain 2222 (A1=1, A0=0)
+> +      Gain 6667 (A1=1, A0=1)
+> +      If defined, pga-gpios must be absent.
+> +    enum: [333, 556, 2222, 6667]
+> +
+
+It looks like these chips have some different power supplies
+as well. E.g. V_DDH, VDD_FDA, VSS_FDA, VLDO. And there is only
+REFIN, no REF.
+
+>    pwms:
+>      description: PWM signal connected to the CNV pin.
+>      maxItems: 1
+> @@ -120,6 +145,20 @@ allOf:
+>      then:
+>        properties:
+>          adi,dual-data-rate: false
+> +  # ADAQ devices require a gain property to indicate how hardware PGA is set
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - adi,adaq4216
+> +              - adi,adaq4224
+
+Could use pattern instead:
+
+		pattern: ^adi,adaq
+
+> +    then:
+> +      oneOf:
+> +        - required:
+> +            - adi,pga-value
+> +        - required:
+> +            - pga-gpios
+
+  	else:
+	  adi,pga-value: false
+	  pga-gpios: false
+
+>  
+>  unevaluatedProperties: false
+>  
 
 

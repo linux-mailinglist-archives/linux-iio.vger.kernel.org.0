@@ -1,87 +1,87 @@
-Return-Path: <linux-iio+bounces-23432-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23433-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA9EB3C8DE
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 09:43:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47FB7B3C8E4
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 09:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB5C5E8280
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 07:43:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A53DA1B256A4
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 07:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743A827D77B;
-	Sat, 30 Aug 2025 07:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F315927C854;
+	Sat, 30 Aug 2025 07:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X76d7ux0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FzTEfo6d"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8C5277CB8;
-	Sat, 30 Aug 2025 07:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E012264A3;
+	Sat, 30 Aug 2025 07:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756539800; cv=none; b=lVEPony13CUoUMBsfSeCTllPVZQ2vYp6Qm2fZ59FbhgVfdL5vhr1ZHnNghuRLNazCxxISQIzRl2TH7Ur6Rro4G9ryNEIlmI0228+dn4dzcu0jGuOk9EOybi3OwqI4siJlsW++MqdNDwxi/51bor1i5o84IPomSX6vb3fTj3QMos=
+	t=1756540011; cv=none; b=f7xX5prjTVn2iMYdA9geV1CDcrH8zv9EnOTZdW/HAJzcUZWYrqE937IFFuNCshsfwWCMSGbLjjWEMzwTjojWKp3Px95ZhJY8pVp3BjrQcoO7jPDCd4jtILvYHtqcidXvzkiHzfDAdbItMJTkbwqE4hwLubv9JlKyOn6Pz32Kkmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756539800; c=relaxed/simple;
-	bh=/GUcf1mnnRLd1XbhLCrasAZm5Jsw+M7OVdREvx4qwgs=;
+	s=arc-20240116; t=1756540011; c=relaxed/simple;
+	bh=joqA3WBk7uZDgfCA474wYs9Yexu7WW7ZJa/JQJXBojs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YuC8PCuuTqJb3Kjd9+FWXzEFzV2jm3D7j9jWwkwchsPcjdFrD6ipXoDyTRRii2t848A9AGZSZ2IXoffAelpeWKhKh0DY4HvAgis0Z+ATAW9Kqtj168/PtsQLNwxq53lcqTAJDmMiYiXwg+uXDexo0D8TuZQ4ZSCwc5IJ9P4gU4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X76d7ux0; arc=none smtp.client-ip=209.85.218.41
+	 To:Cc:Content-Type; b=VzXr8ckInRrxlR1oiVl5p7K8nBYR/Hdr91LfzJpV3PK1pmEYn++1v1qOyyekzDtbWvgPw+I/xXhZhHC4Q+FHIpBGBYl0LAeqmLF7+kDmSUvfUrzvd65ztRZ3f8XXo6SkU836OcJISYErsqhm5CynnaqxKgxnXTJDv02LEG9ZzYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FzTEfo6d; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb7a16441so418741566b.2;
-        Sat, 30 Aug 2025 00:43:18 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afe9358fe77so408496866b.1;
+        Sat, 30 Aug 2025 00:46:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756539797; x=1757144597; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756540008; x=1757144808; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gURzqUmGeKrmX4dhppb9QlLLCg/dh2IS2zWou5cVXvQ=;
-        b=X76d7ux06nU954FVrBm62GSW5P031d12wnSYX8xyceBKM9JhmvHjlMwhw9iECXlfxN
-         cBPmzbdkhJj2gz4f3LLwlnQhKX1ugDmNnyqPNTgefUc2jzK3eMpEqOJABR44Pj4CIxXW
-         7d3YDCJgMYM6Qjg0DuLR3uyMomO75iCmPywlPoqvBwXHiCE9PupoxH3QuMu8Bxnq6Z+C
-         TYslIjOzXLnY4bHUK2O+oNfE7TPNTcuxuB7QmVa/b1ne59267n6llHHSU0BReI/UD9C2
-         KpNj2ZZCzKExIHD7rDVrkuZhd6z1dpb7mPAt7qA9zyMF4oy81JTr5CjiIamveVdJGmnR
-         UQ6g==
+        bh=gksmX//afEFXTpT9qikoMfE6YMYjCcvIqKqPnbndjIg=;
+        b=FzTEfo6dH1zwRKJSGe6tf88rW1BzrDBup/zbtHY69hb6T4NuGIlinfZtIL7ZWi+ad6
+         aajCVS5G6OTqMPGICoqPACzYZ9tNm0witkwJiNSfPuc1ZF97SqaEotO7sJGTNiviRsQw
+         0XIWSejUoxydCYQYfp4e+3RbNTACDB65NJe8gGc5tfXGeaBHcC9nf8CWuWVP7QmrepD/
+         hsaBuX9k02GhYUy1BgprJXYYeCes48ieVaIPTFvS+vr0AvTSm7cREyzCw623taGsQ0BO
+         TSHR9r3tc+onsi/5vIQXRwL60KvoN/LSMLf++96cE5lnaOviB9xPaJY5E5cVX2nt6X8D
+         bVUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756539797; x=1757144597;
+        d=1e100.net; s=20230601; t=1756540008; x=1757144808;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gURzqUmGeKrmX4dhppb9QlLLCg/dh2IS2zWou5cVXvQ=;
-        b=CH/P8UhaMiVGhQvrqCp3/6EknGVWvFKmk2WnYz8dPgv0VgdCMt9K24ykx8NXPYoxIb
-         C/Ezue2qCpnMk6kJMV1eCKHaMt1D7q4JJ7AzoNrWwxFIyj2OqjOM7ZKgh2Nc7L10DzEA
-         8fnNIHFLFtGGXz8Op96uvAJKvDXgH5ScBnFLCrWzQ3c+aYTVnCtVG98jZPWVfL6ZBREC
-         pFLDX9RpVOfqEYvVKfXp8Fdc5yJ1uUAGaMj3b9//C48xecCM2/M3RsjjW3yTfoNdU69e
-         Kcqjc4AMJMBu3t87tGHqVOf1t0i+iTqfFomJm/XIkfgQ8OVLulpm2m5LrBOBx9p8HTGg
-         +tBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUDcbDtNjOA7vu5AeJlqR1ttbGzet+kDKYvmDUCQ1o2FJXeFGaxqqZByy27ZglRmU2vHZ00yuQSUid3@vger.kernel.org, AJvYcCV4PPQ3ESM5cxV3LTkrB1400raNOtdE6kafge6mDE8Ncp9WDF8kBYhv8CSLMLQaVxLT/o+uuw+tAcwz@vger.kernel.org, AJvYcCWccT+WdpBBLEdoILCkRsKmEw/bz5nCdfaN5uu1uR2SpAw4ZCskA533YkgZMKMhXoGgMpcuTV1yLYnu@vger.kernel.org, AJvYcCXq2GHh4httP7OK4xlIJpLYuHcmFDk723m77zwq6gd0ihq4LZmp7B54mceg8z9BwOe9IfG7T/LUPWCbI/kC@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiG+9PWvFE2eK6bkITjvroYWp69COEu+/nRWsIWx1FWpF4KjDr
-	IfY6CrBQ97J2xEiOrTTup8F9VOlNZEWVEqHOWiu3k6bgziJneZc2kjeKtYV/bqPdkO0MSSY0Zy1
-	6S5S4cmukP5u224bFGL4cqrQ+vi3jWF4=
-X-Gm-Gg: ASbGnctMi1mTW5FdY9vvzCJcdaGBgYWDt1uP4toiVpgHm/vR9doQyqf/98HzmkvgIEc
-	5AccdhrUOHMPt3I+JFWwjhdFx7VioU7XWAKvTIunKgMdCKDj1TI47+clPHsaYviSGIr3uVtih++
-	9Cr1j0XU8lxo8axPOWsW9Qw/RFJJSfnOpO4qkJFRUuzdz8QHYXOMvvCCPOlGWj4+rugbOBIuf8L
-	nREVhWeR3Hf2+9z2A==
-X-Google-Smtp-Source: AGHT+IEY2oLBKT6+HGAYixezZFibnn/igblSvV5V+/2cx5/ECPFYwYJW3hDUtnlycz99C1cnWWFo/bl1TA1+WzOwDLA=
-X-Received: by 2002:a17:907:1c87:b0:aff:40f:491f with SMTP id
- a640c23a62f3a-b01f20ccc95mr122341566b.64.1756539796809; Sat, 30 Aug 2025
- 00:43:16 -0700 (PDT)
+        bh=gksmX//afEFXTpT9qikoMfE6YMYjCcvIqKqPnbndjIg=;
+        b=lZT7RBNkIOJIofO8KuJLPa1qSKlMBhxN/X/EzwcmfRVsEBVzQYTli5nHasS4cCqRAH
+         +deNz/j1rAahFJ15JpbOQtwmeUzNCpvBooHNG9swQrjj6U2p7COse+i+D5HC2O6X9IDn
+         xoKzpHW4DnzrnVg7voQxuOS+vnk+r+vhASa5tc1KMTGXaovH+yZ6jX3macK2x3ogbVpt
+         Tq2ggDI3ZgEejrPZmdoza4EtE1oP0vsQ9KOjOH9SCQQfppFnqfqpgkj0mECGJfD6/hcn
+         aIUxaFOy7UxJtFvEgaLHEkNABblD1rPGgwQlr9FjUopgCgLhHnB85ijSQi5OHvUfRI68
+         /7tQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU00yRwmk9jvYaTj5wCgIS6A/NQnfZU6zE8+8ULA6afYeNS5VPe/zvL5wXuOGHFr+YSiPYr801DH3AeVHQ1@vger.kernel.org, AJvYcCUSJBrxHr8DTikfiu+c2S71S3xfeBGECQLHhaGgWXEKt9aPUD8/LDxDERqUIuhERYhDc5LmrG6whS2D@vger.kernel.org, AJvYcCWZ8HW0HDZNWSxem4Od56Nx47oHKlr/J1UvsBVsRAJoeCx6qShazkHZil2N4QJ+qdDPpjxQihG44yLT@vger.kernel.org, AJvYcCXOc7iSWYpFBFnKnp9g6iAKarLc0VNszxkSpy/4HVtOBrv+6/NGi30M7P3Iz9MoMbH+nIF47PBnr7iy@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7vNBqj35u0Pq8HuO30zzMTnOeJbZx0AWzx06U6u7FtyGZp4Xc
+	pEWdGnb0jVS1gcFP9Ty3iqLgZRp/fhMeJDIm/9yBU1DpiyDmqpujCPuJpshxTo+msfXZRkIgWop
+	n+7z3BXCQsE32XVOHs3BQD/HNYqRm5Gg=
+X-Gm-Gg: ASbGncttHNDBzObJdW0IGM1gzzDSIe3BNjmYmfUc+HF2SSHQZwEb7mBZGnJAnmGKWTd
+	Gcl42+woHpTK85HjxBbwUnlEPt4YDZw3ZLAKvYZd/Idf/ow0LXUPBLaglfo5CvdOVvUNrAj2Kxk
+	vmc3qm9Jkht8VPnDlDj179jE/UNufOxNQQIWfs/T1/0d6XPC9xvi8cTWYfqrOcemXhdAXC/L6gX
+	/BSUXc=
+X-Google-Smtp-Source: AGHT+IHLzOD/D3jEmGgz82HPiOxb2uycjGsV7OfoYxh7M5Fydb9RtUTa8j3fiOzoBEO33RqMZwJlGaOedPnxFrEffPg=
+X-Received: by 2002:a17:907:7e85:b0:afe:9ae1:114b with SMTP id
+ a640c23a62f3a-b01d973f4b0mr113693766b.40.1756540008426; Sat, 30 Aug 2025
+ 00:46:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1756511030.git.marcelo.schmitt@analog.com> <344c3797fe8e5aa9177ef8c0633d1eedd32563fa.1756511030.git.marcelo.schmitt@analog.com>
-In-Reply-To: <344c3797fe8e5aa9177ef8c0633d1eedd32563fa.1756511030.git.marcelo.schmitt@analog.com>
+References: <cover.1756511030.git.marcelo.schmitt@analog.com> <47b2cf01555c31126bc2133526317c7829cb59ab.1756511030.git.marcelo.schmitt@analog.com>
+In-Reply-To: <47b2cf01555c31126bc2133526317c7829cb59ab.1756511030.git.marcelo.schmitt@analog.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 30 Aug 2025 10:42:40 +0300
-X-Gm-Features: Ac12FXysrcFjcTtPyekcpdB2bENednecYuAPaeyAdDUgvgGErGBxwhYuAYYiOrw
-Message-ID: <CAHp75VeTqm+aAt47rSRznpZe5=wd_X24ZtvjXJNj=b3HGu5Sxw@mail.gmail.com>
-Subject: Re: [PATCH 11/15] iio: adc: ad4030: Add clock mode option parse and setup
+Date: Sat, 30 Aug 2025 10:46:12 +0300
+X-Gm-Features: Ac12FXw8gqRcCqiIz6LmDFBy64KDow5ZwkmjjRFsNp6APgoSqzFOQB-UC1Pp9Fo
+Message-ID: <CAHp75VcnE4-nMrL7HS4UeNCtb1w-kQRjkixROS4jociQJurdbA@mail.gmail.com>
+Subject: Re: [PATCH 13/15] iio: adc: ad4030: Enable dual data rate
 To: Marcelo Schmitt <marcelo.schmitt@analog.com>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
@@ -94,44 +94,56 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 30, 2025 at 3:44=E2=80=AFAM Marcelo Schmitt
+On Sat, Aug 30, 2025 at 3:45=E2=80=AFAM Marcelo Schmitt
 <marcelo.schmitt@analog.com> wrote:
 >
-> AD4030 series of ADCs support three different options for the clock that
-> frames data output. Since each clock option implies a different hardware
-> setup, the clock mode to use is specified in firmware. Read the designate=
-d
-> clock option from firmware and configure the device to work accordingly.
+> Set AD4030 series device to do two data bit transitions per clock cycle p=
+er
+> active lane when specified by firmware. The dual data rate (DDR) feature =
+is
+> available only for host clock mode and echo clock mode.
 
 ...
 
-> +       ret =3D device_property_match_property_string(dev, "adi,clock-mod=
-e",
-> +                                                   ad4030_clock_mode_str=
-,
-> +                                                   ARRAY_SIZE(ad4030_clo=
-ck_mode_str));
-> +       /* Default to SPI clock mode. */
-> +       reg_modes |=3D FIELD_PREP(AD4030_REG_MODES_MASK_CLOCK_MODE,
-> +                               ret >=3D 0 ? ret : AD4030_SPI_CLOCK_MODE)=
-;
+>  struct ad4030_state {
 
-FIELD_MODIFY() ?
+>         enum ad4030_out_mode mode;
+>         enum ad4030_lane_mode lane_mode;
+>         enum ad4030_clock_mode clock_mode;
+> +       bool ddr;
 
-Also, I would rather put it as proper if
+I believe you run `pahole` each time you modify the data type like this.
 
-if (ret >=3D 0)
-  FIELD_MODIFY(...)
-else
-  FIELD_MODIFY(...)
+>         /* offload sampling spi message */
+>         struct spi_transfer offload_xfer;
+>         struct spi_message offload_msg;
 
-> +
+...
 
-I would not add this blank line as these are coupled.
+>         else
+>                 offload_bpw  =3D data_width / (1 << st->lane_mode);
 
->         ret =3D regmap_write(st->regmap, AD4030_REG_MODES, reg_modes);
->         if (ret)
->                 return ret;
+With the previous comment WRT right shift...
+
+> +       if (st->ddr)
+> +               offload_bpw  /=3D 2;
+
+...this also can use right shift, but I understand that 2 is more
+explicit to show the point of DDR (as "double").
+
+...
+
+> +       /* DDR is only valid for echo clock and host clock modes */
+> +       if (ret =3D=3D AD4030_ECHO_CLOCK_MODE || ret =3D=3D AD4030_CLOCK_=
+HOST_MODE) {
+> +               st->ddr =3D device_property_read_bool(dev, "adi,dual-data=
+-rate");
+> +               reg_modes |=3D FIELD_PREP(AD4030_REG_MODES_MASK_DDR_MODE,=
+ st->ddr);
+
+FIELD_MODIFY()?
+
+> +       }
 
 --=20
 With Best Regards,

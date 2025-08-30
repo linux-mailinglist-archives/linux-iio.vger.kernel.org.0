@@ -1,199 +1,112 @@
-Return-Path: <linux-iio+bounces-23447-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23448-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DC6B3CAB7
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 14:09:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF44EB3CAC8
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 14:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93DC87AA94E
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 12:07:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13F081BA6B61
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 12:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E80C279DA3;
-	Sat, 30 Aug 2025 12:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6287727B353;
+	Sat, 30 Aug 2025 12:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XpQZjXeM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k//+X7Sd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB79326461F;
-	Sat, 30 Aug 2025 12:09:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8B527A916;
+	Sat, 30 Aug 2025 12:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756555762; cv=none; b=hQbu0/QadR8u7Yw0w0eOSH/eYD7LuhjeaVHIacg037xa/fE8yNZVT3afVLzEj+SkhTP2preL/3XVeF8eEjx8DxgxPTl8HpYvCwdlu1nC781Jtm629YyHajmbbXRhRobO8yg0kb0QbYSpBhLkxU7WCmqNJ7pq5ifPk4AFQGxavds=
+	t=1756556893; cv=none; b=pBPqxCzDCd31iyftmqQQ7uOPB1vCcV8fQODaQxkD5ollVBkOF61p5PfKE9JRLm9aunTAhVK5DludDo0X91oyDGJdXjam95zAlaBNBrS/Suci215WYeJrEMHi0lE6b3vKPEIzTQD9Gj+NAmns+EV8G7fHH3u830HZB+HI1CwGVls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756555762; c=relaxed/simple;
-	bh=1+xq6OH5070SzEoSMljxDD2Dtf3DYllZFYJcUxswmQo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pM6+skPsRf0+P7N3r+lPYB8SV/rwDUH3PJ20BjUlvHP9FoRUcun2koN2mSuPR8C7nVstCyf8rUiexroCrD8cMjUGeZRPjeIdsIDEU+xbaqgie43MImBZ/rAk5cYnijMk/sRvQxQAsirwhXoWy0Y+6XnVQkoGTFwgR2QsPM3vgjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XpQZjXeM; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756555759; x=1788091759;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1+xq6OH5070SzEoSMljxDD2Dtf3DYllZFYJcUxswmQo=;
-  b=XpQZjXeMlGd/eRixVem5MjRl1MwW1mArgTCc9LxvcWrfEDtIpfT5Fe88
-   ySgHHYEA/Kwi/FSEcRuh3fXeVfD8FVgLA5pa1aMNV3YA5TTg9Fk4V9zcx
-   4h0jTeqIpiHGFn9lcyULMMAcLSjCj/adXvEYMjHiRk7SRkQ++3GEBnFHQ
-   cugRKpN78rmEEeyMluJnnbWrZbwlkNfLL3nl5vy+gvfVs/ipFbGge5AVk
-   U7Inwe94l2+fu+siC623WUkSMrev8jbftbnm0f+fbFPm/C9Fi+s38KcEi
-   pTh0bAFVRHAGgz1YHx2EKj+PGZBLWXc0DzWK39gQijdCz5Ma9knNfoOM1
-   A==;
-X-CSE-ConnectionGUID: neV2N1BhTA+5fB6fZ7/XGg==
-X-CSE-MsgGUID: GAipdPOhShyqFHdFMfxKfA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="81415163"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="81415163"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2025 05:09:19 -0700
-X-CSE-ConnectionGUID: CDsjC0QASdmYqG2IE1GfVA==
-X-CSE-MsgGUID: 0TCqgrzkQ76l4KQQn0hFRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="174931769"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 30 Aug 2025 05:09:14 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1usKOB-000VLL-1G;
-	Sat, 30 Aug 2025 12:09:04 +0000
-Date: Sat, 30 Aug 2025 20:08:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, jic23@kernel.org,
-	Michael.Hennerich@analog.com, nuno.sa@analog.com,
-	eblanc@baylibre.com, dlechner@baylibre.com, andy@kernel.org,
-	corbet@lwn.net, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, broonie@kernel.org,
-	Jonathan.Cameron@huawei.com, andriy.shevchenko@linux.intel.com,
-	ahaslam@baylibre.com, sergiu.cuciurean@analog.com,
-	tgamblin@baylibre.com, marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH 07/15] iio: adc: ad4030: Add SPI offload support
-Message-ID: <202508301919.3TZbcu20-lkp@intel.com>
-References: <0d9f377295635d977e0767de9db96d0a6ad06de0.1756511030.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1756556893; c=relaxed/simple;
+	bh=K1QUqIQmmrtYo2Q5+MJeWsGVTSkJyPL+YyobkmmGhKY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gI5o3AnfI5bUryGzgfH09jfpYRfFQ/pSTdY74B4TtvBzY2Z8DJY/yQH+Y6HvGR4+7gU8LDZdvNum1jATnV6P2b6VC2uhm3zN8RWZtDCes99QmQ5GCAbX+GUY5TAcd9w8CwB1XQiDTINyR+EEbTjFhf4pNpjW/lLGYK6069Xeae0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k//+X7Sd; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-afcb72d5409so512158766b.0;
+        Sat, 30 Aug 2025 05:28:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756556890; x=1757161690; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nvc8o7UNrMIYNJEN9nvLvWQOOGJV+mKtBRbCIep0MbE=;
+        b=k//+X7SdfvfoVCYygWGPr5YoKhOvsZMefmVVuJYFtXW+mmZxHa8ZjkmzhPJCPY+SsO
+         NcSsu5XePIn9OLdG5pTyPnw7XJe4WqgGw/94Bdn2ggnIyZWElrXVdOrNV7QvrqEJJQrN
+         L/Rl+hjSdcN6mhu3OLasyd/PCkfPeiQAlaEKge34n3djQsP+R7qW4243HhjUnkr2eW72
+         pU558emGIYKA3YtqdShodPItVVZthGranJ1IpPwmHTCJM6Bh6Vp0pqOC7khGFIufgUxQ
+         F2RZ/DH+XQfQsXVJghO+9FSXcrKxtqZESSpTluWRqaNscEfi2/p/50LHDA2I967vOBlS
+         RpgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756556890; x=1757161690;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nvc8o7UNrMIYNJEN9nvLvWQOOGJV+mKtBRbCIep0MbE=;
+        b=hVq835exd2UPw/myhRX2tYvUmGT689ubrMfn21faVHGe5BXQI/APXR/J4aCbh8KlQh
+         jKGvJdvWxSCL4ggCmGVamv8dRClTStG8rm0uAQ6VktVsI9VqOBhmyDbHTyYs3CTN/A8+
+         BjaHB2C3i1idh3A2Mkc66nU3B1wJlGvUbmIdhXwzahOs6aOdlfjj6j6TI4vOah6nDg12
+         QNS0Kh5EN6howhiM2OVjZ0KEbdfrQkpHhEdgWqzrrk/DxITKXOixrnLJhIkpAEm2qgXl
+         IG5hqHqHnYpUSzb9Sjh/H3FM9KOqLqWVLSjkp9de3wHHfMuXRbzouKjYykBDnbx+g2VQ
+         GA9A==
+X-Forwarded-Encrypted: i=1; AJvYcCU3vlRSKbT8lVFoLWvrNnDy4AUXZTJS8mEo06TCALlSmiD5x7ihIfQzmeZH85RPr3ZE4z851+lNvv8R@vger.kernel.org, AJvYcCV3pcaOjanD9C7oWK049Hey2FTsgcF1LPV//fiKwBRSVhzgKdY95n6oHFOdYnX+xtU2FSP5d6nJQtn1g30x/DMKvR8=@vger.kernel.org, AJvYcCWIk5/w2LgQ/8/M+hwQwYnsMC9vfAjc9DNrg5E+lqY90Mn77m+OFgFbsiqcla7PrfubfoWDzCXTleSr@vger.kernel.org, AJvYcCWLbnuF2RUaSglUj07VircZxgQ8i0NCVrHkBEs+fDDo+/ou4+JhIB5oXNUUS6sszy7d2mS4YbEOu661wJ0o@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPqAN84wABt+/NFm+/WVmSzz8uJBNx3yzKN06A98Yi+X5qtKw3
+	RhRCLh686j25n4NQtTKDv/Q4ZpEqBaeCuIfNtSBqoCNsYVmNATdMqjqsbrvTM5LndX3DSnAbqr0
+	zkBEa8FREvOAdt8p58p9eQi+A/9QJy2k=
+X-Gm-Gg: ASbGnct1/1Rw+UzXnCQi/Zec72mh11AsjhuBUOQMj+ObCCtNAAWqUXIVIAmHBeTpa+C
+	nyfgA3J4lgh9/M66IP4N9YR/Jc2i43PDEmJPK6DXXsJN7/IcmtOwJSbrgqAw+zAYfcbJ8FMUzkn
+	ygJR5veoHFh3oyUDDDNZbafv5HdAkhje+FlUCigODgoBr8wS4pq9vi2dPRtuF9ZS63XHhKyN/PI
+	Jy2r58=
+X-Google-Smtp-Source: AGHT+IEr0gAqLRVPp+T6uONOIrQAUIkZ8IPlCVuv/BuIBm4huTRigMtOCfRrrfAh3rWu2s7VHQSCiaBIs2UpJH3Iosw=
+X-Received: by 2002:a17:906:c149:b0:afe:af91:2e44 with SMTP id
+ a640c23a62f3a-b01d8a6ac14mr178645166b.14.1756556889693; Sat, 30 Aug 2025
+ 05:28:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d9f377295635d977e0767de9db96d0a6ad06de0.1756511030.git.marcelo.schmitt@analog.com>
+References: <20250830-s3c-cleanup-adc-v1-0-de54dfb1d9ea@linaro.org>
+In-Reply-To: <20250830-s3c-cleanup-adc-v1-0-de54dfb1d9ea@linaro.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 30 Aug 2025 15:27:33 +0300
+X-Gm-Features: Ac12FXzTMEaLZRx4DmdS9a1kWVVbTCHUuOOLisze_-ZWmUB9tOIR-XUWXvJJxDc
+Message-ID: <CAHp75VfTk7Vr6Rccq0DFDm8Qnhb37iPYj4DwH1U2bwDMV4h_Qw@mail.gmail.com>
+Subject: Re: [PATCH 0/5] iio: adc: samsung: Simplify, cleanup and drop S3C2410
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Marcelo,
+On Sat, Aug 30, 2025 at 2:09=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> S3C2410 is gone from kernel, so we can drop its support and remaining
+> related pieces.
 
-kernel test robot noticed the following build errors:
+>       iio: adc: exynos_adc: Drop S3C2410 support
+>       iio: adc: exynos_adc: Drop touchscreen support
+>       iio: adc: exynos_adc: Drop platform data support
 
-[auto build test ERROR on 91812d3843409c235f336f32f1c37ddc790f1e03]
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+for patches 1-3.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marcelo-Schmitt/iio-adc-ad4030-Fix-_scale-for-when-oversampling-is-enabled/20250830-084901
-base:   91812d3843409c235f336f32f1c37ddc790f1e03
-patch link:    https://lore.kernel.org/r/0d9f377295635d977e0767de9db96d0a6ad06de0.1756511030.git.marcelo.schmitt%40analog.com
-patch subject: [PATCH 07/15] iio: adc: ad4030: Add SPI offload support
-config: x86_64-buildonly-randconfig-005-20250830 (https://download.01.org/0day-ci/archive/20250830/202508301919.3TZbcu20-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250830/202508301919.3TZbcu20-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508301919.3TZbcu20-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/iio/adc/ad4030.c: In function '__ad4030_set_sampling_freq':
->> drivers/iio/adc/ad4030.c:518:23: error: implicit declaration of function 'pwm_round_waveform_might_sleep' [-Werror=implicit-function-declaration]
-     518 |                 ret = pwm_round_waveform_might_sleep(st->conv_trigger, &conv_wf);
-         |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/ad4030.c: In function 'ad4030_offload_buffer_postenable':
->> drivers/iio/adc/ad4030.c:1055:15: error: implicit declaration of function 'pwm_set_waveform_might_sleep' [-Werror=implicit-function-declaration]
-    1055 |         ret = pwm_set_waveform_might_sleep(st->conv_trigger, &st->conv_wf, false);
-         |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +/pwm_round_waveform_might_sleep +518 drivers/iio/adc/ad4030.c
-
-   496	
-   497	static int __ad4030_set_sampling_freq(struct ad4030_state *st, unsigned int freq)
-   498	{
-   499		struct spi_offload_trigger_config *config = &st->offload_trigger_config;
-   500		struct pwm_waveform conv_wf = { };
-   501		u64 offload_period_ns;
-   502		u64 offload_offset_ns;
-   503		u32 mode;
-   504		int ret;
-   505		u64 target = AD4030_TCNVH_NS;
-   506	
-   507		conv_wf.period_length_ns = DIV_ROUND_CLOSEST(NSEC_PER_SEC, freq);
-   508		/*
-   509		 * The datasheet lists a minimum time of 9.8 ns, but no maximum. If the
-   510		 * rounded PWM's value is less than 10, increase the target value by 10
-   511		 * and attempt to round the waveform again, until the value is at least
-   512		 * 10 ns. Use a separate variable to represent the target in case the
-   513		 * rounding is severe enough to keep putting the first few results under
-   514		 * the minimum 10ns condition checked by the while loop.
-   515		 */
-   516		do {
-   517			conv_wf.duty_length_ns = target;
- > 518			ret = pwm_round_waveform_might_sleep(st->conv_trigger, &conv_wf);
-   519			if (ret)
-   520				return ret;
-   521			target += 10;
-   522		} while (conv_wf.duty_length_ns < 10);
-   523	
-   524		offload_period_ns = conv_wf.period_length_ns;
-   525	
-   526		ret = regmap_read(st->regmap, AD4030_REG_MODES, &mode);
-   527		if (ret)
-   528			return ret;
-   529		if (FIELD_GET(AD4030_REG_MODES_MASK_OUT_DATA_MODE, mode) == AD4030_OUT_DATA_MD_30_AVERAGED_DIFF) {
-   530			u32 avg;
-   531	
-   532			ret = regmap_read(st->regmap, AD4030_REG_AVG, &avg);
-   533			if (ret)
-   534				return ret;
-   535	
-   536			offload_period_ns <<= FIELD_GET(AD4030_REG_AVG_MASK_AVG_VAL, avg);
-   537		}
-   538	
-   539		config->periodic.frequency_hz =  DIV_ROUND_UP_ULL(NSEC_PER_SEC,
-   540								  offload_period_ns);
-   541	
-   542		/*
-   543		 * The hardware does the capture on zone 2 (when spi trigger PWM
-   544		 * is used). This means that the spi trigger signal should happen at
-   545		 * tsync + tquiet_con_delay being tsync the conversion signal period
-   546		 * and tquiet_con_delay 9.8ns. Hence set the PWM phase accordingly.
-   547		 *
-   548		 * The PWM waveform API only supports nanosecond resolution right now,
-   549		 * so round this setting to the closest available value.
-   550		 */
-   551		offload_offset_ns = AD4030_TQUIET_CNV_DELAY_NS;
-   552		do {
-   553			config->periodic.offset_ns = offload_offset_ns;
-   554			ret = spi_offload_trigger_validate(st->offload_trigger, config);
-   555			if (ret)
-   556				return ret;
-   557			offload_offset_ns += 10;
-   558	
-   559		} while (config->periodic.offset_ns < AD4030_TQUIET_CNV_DELAY_NS);
-   560	
-   561		st->conv_wf = conv_wf;
-   562	
-   563		return 0;
-   564	}
-   565	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--=20
+With Best Regards,
+Andy Shevchenko
 

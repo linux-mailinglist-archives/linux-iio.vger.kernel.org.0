@@ -1,544 +1,364 @@
-Return-Path: <linux-iio+bounces-23499-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23500-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1534B3CEF4
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 21:17:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D49B3CF17
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 21:35:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BB2B17F7F7
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 19:17:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6DB62045BB
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 19:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486912D24A6;
-	Sat, 30 Aug 2025 19:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6627A2DE70A;
+	Sat, 30 Aug 2025 19:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HU0Rp16M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I9kR3ht/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DEA254848
-	for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 19:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E44942A8C;
+	Sat, 30 Aug 2025 19:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756581451; cv=none; b=dOaobGE2OMxiwgJD1bVmaai7eqHUTfrxaAsS8WpXaet7xaWg2AfKIkl4btETkCDzdl3c8cC9ldOI5n64CqBNFIyl0reZU+Jsr4jrPfd8paD/MZkdEskhejI7mBLnaO5o9COGYgyeVvMbEssWlB7Q8nU4Ah+j1azXwHbhHDj1De0=
+	t=1756582496; cv=none; b=Un6enJmPTo/iCOnzdgp5hR3r/QQ6BnlAYdMYibCBJCi6IEiRWgdM4xagrYzD3rAZMeyKdEdLMraBYuEpTWsAbM1ctC+KxMD6tm+wehkYXrwjRevZSivacyb7u6A0NGxIioMpS5/VWvljaOspJdRmPghuMsnNnLp5vAXjbGN3z0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756581451; c=relaxed/simple;
-	bh=WdVF2BAL9RHtgGJ8oH6ri2G6ozpp7byX6Zutkplyh5Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RFUecqEi3A3P+3LSCQGsa4yvC9Cq9itJWse6MKjH5VMCbOl3jOT4QC8PoGqGk1snFcnTTrk2XSe2fKkolEmro7Jxw6vta53ZqtOjN9PBHzRyHWhziMXoc35qrt/JsnovHRwwuFMAVkGyzU1XKmbLTo2D9CfPIoVblAeyLGI0BPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HU0Rp16M; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-74381e2079fso2595727a34.0
-        for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 12:17:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756581447; x=1757186247; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nqGSGUwLUq1KdTzX1+8uUT3YWh+WYtzDjLeR09YION0=;
-        b=HU0Rp16M0sOPq89dy9YjicCRV5eAWWNCrlfCjcJroWy5xbyLvivYe/fTMRb4t9vvRy
-         6wZPcZFWE95RP3Fzq9IHHLi+lu2k+udMU1JaTlVr+sfiuGFEkxGX0BDROZwfOyIya/4q
-         bW//OuXWJGJQS6mulVwlc4WpI1wWCLvq8W1S3akBJATuN3z/bUqrvMrdzTqrVOENxZmH
-         P3NeCw5JmKXIkJeN8QoDWBXkpP3c+7iQS7J08Mvj2O+/TQ26HYM28Sxa6DbNCADtVST6
-         pZHB0ZDmP8jM68E4giUJ7v8ADdctmjGGIgLk9d8pn0fvTfiGXITLWIooAcnMGHZ0P7cU
-         lNNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756581447; x=1757186247;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nqGSGUwLUq1KdTzX1+8uUT3YWh+WYtzDjLeR09YION0=;
-        b=shiuleuaD8ttWKu7jfLNKugqsxREQJkg8uXHWuAmR2cwtbpdEPUbnuGB3co15E3toK
-         rZep2ssVGmAR3wIWffFXTq+hgS0XhQ4C4WbzRc6iLAxjn1sbMswdOdv2tgnVf0/j1/uC
-         OnHsV42OK31K807z2ARmJD/5FZIEnQJfxCYq848RQj1yw/g/2Y6FVGkZMv4BBdEniJd9
-         zHeNRt9OujdX5W4oa4r7Ab0JF9nKYHHCuEGxgtAjT5hvcTMMq9Rq61k7djAwVdbBR9+X
-         k1TROUBwdfRp/Qgr+Df++vM6OT6S8GpWLkweQj79iuobI+0/Zsr+d2Gsx33k4r+WBSAa
-         0fpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVUESdkg9YDbQuC6MAOJcwdZyUfkx7IDWGqasX1dApfVHCq1Lwkx8JTrMVzZowSKEZkmC/Ssl4FSBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVcVhpmQWKfzkscOu+7kwk5dufRRCRHkykHANhPOWpoBAkKxc1
-	2kfT0EDSKSgWoVXuBe2c3baLsghLZZ8xTR5hxA5BkJtFrQZS4PSu5mECIXdptYJJ59M=
-X-Gm-Gg: ASbGncswZs+xWZx/wrDThq1dl4+SvllUDA3QN+MwTWumRIm9fZOvMj36ui+tbNjwK0U
-	pH2DHxMZv3/7uQ2gY95SlSoYuZ5jAj8kGFkKTL3tXfSaRwvsiuVuwX+x5BPd0EWyVPZJMjcjBvN
-	DZeIsa1sKyBmic09Cf9fbQsPRu7MVkOB9jsojIqCXH2iapUiJqp3l9D0syvvP6Aa3cSmDgpdrrS
-	N2kb3/QZl9RH1Kb7pH5EH4CrbKu8CEohYbNBjLc3Z8/14qDFdusa2pvMZkZdJM/hVqOkulKwnqJ
-	BZ6zHW79Q/1sgc3IZi7xagB0IwC4Ttdw+7YBh+w/kyW10pRbeh3nTM8K6xHeoQ3pF82eZyRz/ar
-	WnqTne0magxDfAOKnScRE5yHxTEK0H1xXmcnSovYpvbYcJYimYhun9QMNJRXcm6NFE6ah+p4kiS
-	8Y7mPMY1SZAg==
-X-Google-Smtp-Source: AGHT+IHIlNcGEM1D5+J0O6wJj6KCZd05RjnLhvwN2uXB1r6JWS0bniIEtPjY99c5/cSdvWwXX6E5sg==
-X-Received: by 2002:a05:6830:dcc:b0:745:54e4:6da5 with SMTP id 46e09a7af769-74569c6972emr1783634a34.0.1756581446605;
-        Sat, 30 Aug 2025 12:17:26 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:f7b4:dfbd:5110:c59d? ([2600:8803:e7e4:1d00:f7b4:dfbd:5110:c59d])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7457438873dsm57361a34.24.2025.08.30.12.17.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Aug 2025 12:17:26 -0700 (PDT)
-Message-ID: <121b632b-1cac-41dc-a33e-f17b8e32523b@baylibre.com>
-Date: Sat, 30 Aug 2025 14:17:25 -0500
+	s=arc-20240116; t=1756582496; c=relaxed/simple;
+	bh=k2lX4RtwlSIenNxC+6rKn/33k8gMOJEl99vjUv10qjk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZOiv/Dox0BgP6MSH0O8s+ANo4Ywn6lTfu7zZq15R1NyUxduqGe3g+wP02ixE72L4e3zfc0GYnhCocbi3AupqPghtBzUHjgL8afpED0yAR2CFs+d/cVPhwNvrGqDiCGE/afaY30Xxjp5JN/vFdivrJgyAYE4jgsqXjJ9ZjrNM820=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I9kR3ht/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8789CC4CEEB;
+	Sat, 30 Aug 2025 19:34:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756582495;
+	bh=k2lX4RtwlSIenNxC+6rKn/33k8gMOJEl99vjUv10qjk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=I9kR3ht/Ul4bgtNu2lQju7flghcjGVm1B4xEknRLvqq/eH2OrvHAhgtA6xI87+n4c
+	 jO8AZ0dqgm7HawuSYydR4ORPPvtCFUQ+bkgsm1pjFFwKz1rFxwT9j9uC2H+MWYNcZ/
+	 feDD7LdLFD/k/sINrbeTEWNYpzpdBkYYH+y1XWUa7SAfOHJTdAfD4n/9Ze5z6R0ToQ
+	 Kbeg2VCbULg/kNhZK1PceuZcZGNbdNilzJZqreJ2D81EYb4C7PxyfdiAfCfZEr+Qkz
+	 lVpSWZot7tNgaoYnV5EKlXzB15hyoZId9cNylJoxhF97qElx9OW6FgiLhKCA5+BxLt
+	 IKJK5CL1jTSFA==
+Date: Sat, 30 Aug 2025 20:34:46 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: <victor.duicu@microchip.com>
+Cc: <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+ <marius.cristea@microchip.com>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v4 2/2] iio: temperature: add support for MCP998X
+Message-ID: <20250830203446.5c164f74@jic23-huawei>
+In-Reply-To: <20250829143447.18893-3-victor.duicu@microchip.com>
+References: <20250829143447.18893-1-victor.duicu@microchip.com>
+	<20250829143447.18893-3-victor.duicu@microchip.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/15] iio: adc: ad4030: Add support for ADAQ4216 and
- ADAQ4224
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-spi@vger.kernel.org
-Cc: jic23@kernel.org, Michael.Hennerich@analog.com, nuno.sa@analog.com,
- eblanc@baylibre.com, andy@kernel.org, corbet@lwn.net, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, broonie@kernel.org,
- Jonathan.Cameron@huawei.com, andriy.shevchenko@linux.intel.com,
- ahaslam@baylibre.com, marcelo.schmitt1@gmail.com
-References: <cover.1756511030.git.marcelo.schmitt@analog.com>
- <006ac88a667ce0d2c751946b562af83d0f27a44f.1756511030.git.marcelo.schmitt@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <006ac88a667ce0d2c751946b562af83d0f27a44f.1756511030.git.marcelo.schmitt@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 8/29/25 7:45 PM, Marcelo Schmitt wrote:
-> ADAQ4216 and ADAQ4224 are similar to AD4030, but feature a PGA circuitry
-> that scales the analog input signal prior to it reaching the ADC. The PGA
-> is controlled through a pair of pins (A0 and A1) whose state define the
-> gain that is applied to the input signal.
+On Fri, 29 Aug 2025 17:34:47 +0300
+<victor.duicu@microchip.com> wrote:
+
+> From: Victor Duicu <victor.duicu@microchip.com>
 > 
-> Add support for ADAQ4216 and ADAQ4224. Provide a list of PGA options
-> through the IIO device channel scale available interface and enable control
-> of the PGA through the channel scale interface.
+> This is the driver for Microchip MCP998X/33 and MCP998XD/33D
+> Multichannel Automotive Temperature Monitor Family.
 > 
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
->  drivers/iio/adc/ad4030.c | 239 ++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 235 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
-> index 37ba00097efe..32157b3a0420 100644
-> --- a/drivers/iio/adc/ad4030.c
-> +++ b/drivers/iio/adc/ad4030.c
-> @@ -21,6 +21,7 @@
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/iio/triggered_buffer.h>
->  #include <linux/log2.h>
-> +#include <linux/minmax.h>
->  #include <linux/pwm.h>
->  #include <linux/regmap.h>
->  #include <linux/regulator/consumer.h>
-> @@ -42,6 +43,8 @@
->  #define     AD4030_REG_CHIP_GRADE_AD4630_24_GRADE	0x00
->  #define     AD4030_REG_CHIP_GRADE_AD4632_16_GRADE	0x05
->  #define     AD4030_REG_CHIP_GRADE_AD4632_24_GRADE	0x02
-> +#define     AD4030_REG_CHIP_GRADE_ADAQ4216_GRADE	0x1E
-> +#define     AD4030_REG_CHIP_GRADE_ADAQ4224_GRADE	0x1C
->  #define     AD4030_REG_CHIP_GRADE_MASK_CHIP_GRADE	GENMASK(7, 3)
->  #define AD4030_REG_SCRATCH_PAD			0x0A
->  #define AD4030_REG_SPI_REVISION			0x0B
-> @@ -121,6 +124,10 @@
->  /* Datasheet says 9.8ns, so use the closest integer value */
->  #define AD4030_TQUIET_CNV_DELAY_NS	10
->  
-> +/* HARDWARE_GAIN */
-> +#define ADAQ4616_PGA_PINS		2
-> +#define ADAQ4616_GAIN_MAX_NANO		6666666667
+> Signed-off-by: Victor Duicu <victor.duicu@microchip.com>
+Tried to avoid duplication with other reviewers but probably failed!
+
+Jonathan
+
+> diff --git a/drivers/iio/temperature/mcp9982.c b/drivers/iio/temperature/mcp9982.c
+> new file mode 100644
+> index 000000000000..2f0b9c4674fb
+> --- /dev/null
+> +++ b/drivers/iio/temperature/mcp9982.c
+
 > +
->  enum ad4030_out_mode {
->  	AD4030_OUT_DATA_MD_DIFF,
->  	AD4030_OUT_DATA_MD_16_DIFF_8_COM,
-> @@ -149,6 +156,20 @@ enum {
->  	AD4030_OFFLOAD_SCAN_TYPE_AVG,
->  };
->  
-> +/*
-> + * Gains computed as fractions of 1000 so they can be expressed by integers.
+> +static const struct regmap_config mcp9982_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.rd_table = &mcp9982_regmap_rd_table,
+> +	.wr_table = &mcp9982_regmap_wr_table,
+> +	.volatile_reg = mcp9982_is_volatile_reg,
+> +};
+> +
+> +/**
+> + * struct mcp9992_priv - information about chip parameters
+> + * @regmap:			device register map
+> + * @chip			pointer to structure holding chip features
+> + * @lock			synchronize access to driver's state members
+> + * @iio_chan			specifications of channels
+> + * @labels			labels of the channels
+> + * @ideality_value		ideality factor value for each external channel
+> + * @sampl_idx			index representing the current sampling frequency
+> + * @time_limit			time when it is safe to read
+> + * @recd34_enable		state of REC on channels 3 and 4
+
+Spell out REC fully. It's not a well enough known term anyone reading that comment
+might be expected to know what it means.
+
+> + * @recd12_enable		state of REC on channels 1 and 2
+> + * @apdd_enable			state of anti-parallel diode mode
+> + * @run_state			chip is in run state, otherwise is in standby state
+> + * @wait_before_read		whether we need to wait a delay before reading a new value
+> + * @num_channels		number of active physical channels
 > + */
-> +static const int ad4030_hw_gains[] = {
-> +	333, 556, 2222, 6667,
+> +struct mcp9982_priv {
+> +	struct regmap *regmap;
+> +	const struct mcp9982_features *chip;
+> +	/*
+> +	 * Synchronize access to private members, and ensure atomicity of
+> +	 * consecutive regmap operations.
+> +	 */
+> +	struct mutex lock;
+> +	struct iio_chan_spec *iio_chan;
+> +	const char *labels[MCP9982_MAX_NUM_CHANNELS];
+> +	unsigned int ideality_value[4];
+> +	unsigned int sampl_idx;
+> +	unsigned long  time_limit;
+> +	bool recd34_enable;
+> +	bool recd12_enable;
+> +	bool apdd_enable;
+> +	bool run_state;
+> +	bool wait_before_read;
+> +	u8 num_channels;
 > +};
-> +
-> +static const int ad4030_hw_gains_frac[4][2] = {
-> +	{ 1, 3 },  /* 1/3 gain */
-> +	{ 5, 9 },  /* 5/9 gain */
-> +	{ 20, 9 }, /* 20/9 gain */
-> +	{ 20, 3 }, /* 20/3 gain */
-> +};
-> +
->  struct ad4030_chip_info {
->  	const char *name;
->  	const unsigned long *available_masks;
-> @@ -160,6 +181,7 @@ struct ad4030_chip_info {
->  	int num_voltage_inputs;
->  	unsigned int tcyc_ns;
->  	unsigned int max_sample_rate_hz;
-> +	unsigned int num_pga_pins;
 
-This is only usesd for boolean checks, so perhaps:
 
-	bool has_pga;
-
->  };
->  
->  struct ad4030_state {
-> @@ -183,6 +205,10 @@ struct ad4030_state {
->  	struct spi_offload *offload;
->  	struct spi_offload_trigger *offload_trigger;
->  	struct spi_offload_trigger_config offload_trigger_config;
-> +	struct gpio_descs *pga_gpios;
-> +	int pga_index;
-> +	unsigned int scale_avail[ARRAY_SIZE(ad4030_hw_gains)][2];
-> +	size_t scale_avail_size;
->  
->  	/*
->  	 * DMA (thus cache coherency maintenance) requires the transfer buffers
-> @@ -239,7 +265,7 @@ struct ad4030_state {
->   * - voltage0-voltage1
->   * - voltage2-voltage3
->   */
-> -#define __AD4030_CHAN_DIFF(_idx, _scan_type, _offload) {		\
-> +#define __AD4030_CHAN_DIFF(_idx, _scan_type, _offload, _pga) {		\
->  	.info_mask_shared_by_all =					\
->  		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),			\
->  	.info_mask_shared_by_all_available =				\
-> @@ -250,6 +276,7 @@ struct ad4030_state {
->  		BIT(IIO_CHAN_INFO_CALIBBIAS) |				\
->  		BIT(IIO_CHAN_INFO_RAW),					\
->  	.info_mask_separate_available = BIT(IIO_CHAN_INFO_CALIBBIAS) |	\
-> +		(_pga ? BIT(IIO_CHAN_INFO_SCALE) : 0) |			\
->  		BIT(IIO_CHAN_INFO_CALIBSCALE),				\
->  	.type = IIO_VOLTAGE,						\
->  	.indexed = 1,							\
-> @@ -264,10 +291,16 @@ struct ad4030_state {
->  }
->  
->  #define AD4030_CHAN_DIFF(_idx, _scan_type)				\
-> -	__AD4030_CHAN_DIFF(_idx, _scan_type, 0)
-> +	__AD4030_CHAN_DIFF(_idx, _scan_type, 0, 0)
->  
->  #define AD4030_OFFLOAD_CHAN_DIFF(_idx, _scan_type)			\
-> -	__AD4030_CHAN_DIFF(_idx, _scan_type, 1)
-> +	__AD4030_CHAN_DIFF(_idx, _scan_type, 1, 0)
-> +
-> +#define ADAQ4216_CHAN_DIFF(_idx, _scan_type)				\
-> +	__AD4030_CHAN_DIFF(_idx, _scan_type, 0, 1)
-> +
-> +#define ADAQ4216_OFFLOAD_CHAN_DIFF(_idx, _scan_type)			\
-> +	__AD4030_CHAN_DIFF(_idx, _scan_type, 1, 1)
->  
->  static const int ad4030_rx_bus_width[] = {
->  	1, 2, 4, 8,
-> @@ -429,6 +462,74 @@ static const struct regmap_config ad4030_regmap_config = {
->  	.max_register = AD4030_REG_DIG_ERR,
->  };
->  
-> +static void ad4030_fill_scale_avail(struct ad4030_state *st)
+> +static int mcp9982_write_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan, int val,
+> +			     int val2, long mask)
 > +{
-> +	unsigned int mag_bits, tmp0, tmp1, i;
-> +	u64 range;
+> +	unsigned int i, start, previous_sampl_idx;
+> +	struct mcp9982_priv *priv = iio_priv(indio_dev);
+> +	int ret;
+> +	unsigned long new_time_limit;
+> +
+> +	start = 0;
+> +	guard(mutex)(&priv->lock);
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		previous_sampl_idx = priv->sampl_idx;
+> +		/*
+> +		 * For MCP998XD and MCP9933D sampling frequency can't
+> +		 * be set lower than 1.
+
+wrap at 80 chars, not 70ish.
+
+> +		 */
+> +		if (priv->chip->hw_thermal_shutdown)
+> +			start = 4;
+> +		for (i = start; i < ARRAY_SIZE(mcp9982_conv_rate); i++)
+> +			if (val == mcp9982_conv_rate[i][0] &&
+> +			    val2 == mcp9982_conv_rate[i][1])
+> +				break;
+> +
+> +		if (i == ARRAY_SIZE(mcp9982_conv_rate))
+> +			return -EINVAL;
+> +
+> +		ret = regmap_write(priv->regmap, MCP9982_CONV_ADDR, i);
+> +		if (ret)
+> +			return ret;
+> +
+> +		priv->sampl_idx = i;
+> +
+> +		/*
+> +		 * in Run mode, when changing the frequency, wait a delay based
+In Run mode,
+> +		 * on the previous value to ensure the new value becomes active
+> +		 */
+> +		if (priv->run_state) {
+> +			new_time_limit = jiffies +
+> +					   msecs_to_jiffies(mcp9982_delay_ms[previous_sampl_idx]);
+> +			if (time_after(new_time_limit, priv->time_limit)) {
+> +				priv->time_limit = new_time_limit;
+> +				priv->wait_before_read = true;
+> +			}
+> +			return 0;
+> +		}
+> +
+> +		break;
+>
+
+> +static int mcp9982_init(struct mcp9982_priv *priv)
+> +{
+> +	int ret;
+> +	unsigned int i;
+> +	u8 val;
+> +
+> +	/* Chips 82/83 and 82D/83D do not support anti-parallel diode mode */
+> +	if (!priv->chip->allow_apdd)
+> +		priv->apdd_enable = 0;
 > +
 > +	/*
-> +	 * The maximum precision of differential channels is retrieved from the
-> +	 * chip properties. The output code of differential channels is in two's
-> +	 * complement format (i.e. signed), so the MSB is the sign bit and only
-> +	 * (precision_bits - 1) bits express voltage magnitude.
+> +	 * Chips with "D" work in Run state and those without work
+> +	 * in Standby state
 > +	 */
-> +	mag_bits = st->chip->precision_bits - 1;
-
-Seems odd that function below checks for if (scan_type->sign == 's') but this
-doesn't.
-
-> +
-> +	for (i = 0; i < ARRAY_SIZE(ad4030_hw_gains); i++) {
-> +		range = mult_frac(st->vref_uv, ad4030_hw_gains_frac[i][1],
-> +				  ad4030_hw_gains_frac[i][0]);
-> +		/*
-> +		 * If range were in mV, we would multiply it by NANO below.
-> +		 * Though, range is in µV so multiply it by MICRO only so the
-> +		 * result after right shift and division scales output codes to
-> +		 * millivolts.
-> +		 */
-> +		tmp0 = div_u64_rem(((u64)range * MICRO) >> mag_bits, NANO, &tmp1);
-> +		st->scale_avail[i][0] = tmp0; /* Integer part */
-> +		st->scale_avail[i][1] = tmp1; /* Fractional part */
-
-Could just give the variables meaningful names and avoid the comments.
-
-> +	}
-> +}
-> +
-> +static int ad4030_set_pga_gain(struct ad4030_state *st)
-> +{
-> +	DECLARE_BITMAP(bitmap, ADAQ4616_PGA_PINS) = { };
-> +
-> +	bitmap_write(bitmap, st->pga_index, 0, 2);
-
-Use ADAQ4616_PGA_PINS here instead of 2?
-
-> +
-> +	return gpiod_multi_set_value_cansleep(st->pga_gpios, bitmap);
-> +}
-> +
-> +static int ad4030_set_pga(struct iio_dev *indio_dev,
-> +			  struct iio_chan_spec const *chan, int gain_int,
-> +			  int gain_fract)
-> +{
-> +	struct ad4030_state *st = iio_priv(indio_dev);
-> +	const struct iio_scan_type *scan_type;
-> +	unsigned int mag_bits;
-> +	u64 gain_nano, tmp;
-> +
-> +	if (!st->pga_gpios)
-> +		return -EINVAL;
-> +
-> +	scan_type = iio_get_current_scan_type(indio_dev, chan);
-
-Need to check for error.
-
-> +	if (scan_type->sign == 's')
-> +		mag_bits = st->chip->precision_bits - 1;
+> +	if (priv->chip->hw_thermal_shutdown)
+> +		priv->run_state = 1;
 > +	else
-> +		mag_bits = st->chip->precision_bits;
-> +
-> +	gain_nano = gain_int * NANO + gain_fract;
-> +
-> +	if (!in_range(gain_nano, 0, ADAQ4616_GAIN_MAX_NANO))
-> +		return -EINVAL;
-> +
-> +	tmp = DIV_ROUND_CLOSEST_ULL(gain_nano << mag_bits, NANO);
-> +	gain_nano = DIV_ROUND_CLOSEST_ULL(st->vref_uv, tmp);
-> +	st->pga_index = find_closest(gain_nano, ad4030_hw_gains,
-> +				     ARRAY_SIZE(ad4030_hw_gains));
-> +
-> +	return ad4030_set_pga_gain(st);
-> +}
-> +
->  static int ad4030_get_chan_scale(struct iio_dev *indio_dev,
->  				 struct iio_chan_spec const *chan,
->  				 int *val,
-> @@ -455,7 +556,14 @@ static int ad4030_get_chan_scale(struct iio_dev *indio_dev,
->  	*val2 = scan_type->realbits == 30 ? st->chip->precision_bits
->  					  : scan_type->realbits;
->  
-> -	return IIO_VAL_FRACTIONAL_LOG2;
-> +	/* The LSB of the 8-bit common-mode data is always vref/256. */
-> +	if (scan_type->realbits == 8 || !st->chip->num_pga_pins)
+> +		priv->run_state = 0;
 
-`if` statement should be earlier so that we don't set *val, *val2
-twice.
 
-> +		return IIO_VAL_FRACTIONAL_LOG2;
+	runstate = priv->chip->hw_thermal_shutdown;
+
 > +
-> +	*val = st->scale_avail[st->pga_index][0];
-> +	*val2 = st->scale_avail[st->pga_index][1];
-> +
-> +	return IIO_VAL_INT_PLUS_NANO;
->  }
->  
->  static int ad4030_get_chan_calibscale(struct iio_dev *indio_dev,
-> @@ -654,6 +762,19 @@ static int ad4030_set_chan_calibbias(struct iio_dev *indio_dev,
->  				 st->tx_data, AD4030_REG_OFFSET_BYTES_NB);
->  }
->  
-> +static int ad4030_write_raw_get_fmt(struct iio_dev *indio_dev,
-> +				    struct iio_chan_spec const *chan, long mask)
-> +{
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		return IIO_VAL_INT_PLUS_NANO;
-> +	default:
-> +		return IIO_VAL_INT_PLUS_MICRO;
+> +	/*
+> +	 * For chips with "D" in the name set the below parameters to default to
+> +	 * ensure that hardware shutdown feature can't be overridden.
+> +	 */
+> +	if (priv->chip->hw_thermal_shutdown) {
+> +		priv->recd12_enable = true;
+> +		priv->recd34_enable = true;
 > +	}
 > +
-> +	return -EINVAL;
+> +	/*
+> +	 * Set default values in registers. APDD, RECD12 and RECD34 are active
+> +	 * on 0.
 
-Unreachable code.
+Probably add a line break between those sentences. I think the first one
+is applying to all these writes, whereas second sentence is just about this one.
 
-> +}
+> +	 */
+> +	val = FIELD_PREP(MCP9982_CFG_MSKAL, 1) |
+> +	      FIELD_PREP(MCP9982_CFG_RS, !priv->run_state) |
+> +	      FIELD_PREP(MCP9982_CFG_ATTHM, 1) |
+> +	      FIELD_PREP(MCP9982_CFG_RECD12, !priv->recd12_enable) |
+> +	      FIELD_PREP(MCP9982_CFG_RECD34, !priv->recd34_enable) |
+> +	      FIELD_PREP(MCP9982_CFG_RANGE, 1) | FIELD_PREP(MCP9982_CFG_DA_ENA, 0) |
+> +	      FIELD_PREP(MCP9982_CFG_APDD, !priv->apdd_enable);
 > +
->  static int ad4030_set_avg_frame_len(struct iio_dev *dev, int avg_val)
->  {
->  	struct ad4030_state *st = iio_priv(dev);
-> @@ -891,6 +1012,15 @@ static int ad4030_read_avail(struct iio_dev *indio_dev,
->  		*length = ARRAY_SIZE(ad4030_average_modes);
->  		return IIO_AVAIL_LIST;
->  
-> +	case IIO_CHAN_INFO_SCALE:
-> +		if (!st->pga_gpios)
-
-		if (st->scale_avail_size == 1)
-
-would make more sense here.
-
-> +			*vals = (int *)st->scale_avail[st->pga_index];
-> +		else
-> +			*vals = (int *)st->scale_avail;
-> +		*length = st->scale_avail_size * 2; /* print int and nano part */
-> +		*type = IIO_VAL_INT_PLUS_NANO;
-> +		return IIO_AVAIL_LIST;
+> +	ret = regmap_write(priv->regmap, MCP9982_CFG_ADDR, val);
+> +	if (ret)
+> +		return ret;
 > +
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -966,6 +1096,9 @@ static int ad4030_write_raw_dispatch(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_SAMP_FREQ:
->  		return ad4030_set_sampling_freq(indio_dev, val);
->  
-> +	case IIO_CHAN_INFO_SCALE:
-> +		return ad4030_set_pga(indio_dev, chan, val, val2);
+> +	ret = regmap_write(priv->regmap, MCP9982_CONV_ADDR, 6);
+> +	if (ret)
+> +		return ret;
+> +	priv->sampl_idx = 6;
 > +
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -1037,6 +1170,7 @@ static const struct iio_info ad4030_iio_info = {
->  	.read_avail = ad4030_read_avail,
->  	.read_raw = ad4030_read_raw,
->  	.write_raw = ad4030_write_raw,
-> +	.write_raw_get_fmt = &ad4030_write_raw_get_fmt,
->  	.debugfs_reg_access = ad4030_reg_access,
->  	.read_label = ad4030_read_label,
->  	.get_current_scan_type = ad4030_get_current_scan_type,
-> @@ -1318,6 +1452,51 @@ static int ad4030_spi_offload_setup(struct iio_dev *indio_dev,
->  							   IIO_BUFFER_DIRECTION_IN);
->  }
->  
-> +static int ad4030_setup_pga(struct device *dev, struct iio_dev *indio_dev,
-> +			    struct ad4030_state *st)
-> +{
-> +	unsigned int i;
-> +	int pga_value;
-> +	int ret;
+> +	ret = regmap_write(priv->regmap, MCP9982_HYS_ADDR, 10);
+> +	if (ret)
+> +		return ret;
 > +
-> +	ret = device_property_read_u32(dev, "adi,pga-value", &pga_value);
-> +	if (ret && ret != -EINVAL)
-> +		return dev_err_probe(dev, ret, "Failed to get PGA value.\n");
+> +	ret = regmap_write(priv->regmap, MCP9982_CONSEC_ALRT_ADDR, 112);
+> +	if (ret)
+> +		return ret;
 > +
-> +	if (ret == -EINVAL) {
-> +		/* Setup GPIOs for PGA control */
-> +		st->pga_gpios = devm_gpiod_get_array(dev, "pga", GPIOD_OUT_LOW);
-> +		if (IS_ERR(st->pga_gpios))
-> +			return dev_err_probe(dev, PTR_ERR(st->pga_gpios),
-> +					     "Failed to get PGA gpios.\n");
+> +	ret = regmap_write(priv->regmap, MCP9982_RUNNING_AVG_ADDR, 0);
+> +	if (ret)
+> +		return ret;
 > +
-> +		if (st->pga_gpios->ndescs != 2)
-
-s/2/ADAQ4616_PGA_PINS/?
-
-> +			return dev_err_probe(dev, -EINVAL,
-> +					     "Expected 2 GPIOs for PGA control.\n");
+> +	ret = regmap_write(priv->regmap, MCP9982_HOTTEST_CFG_ADDR, 0);
+> +	if (ret)
+> +		return ret;
 > +
-> +		st->scale_avail_size = ARRAY_SIZE(ad4030_hw_gains);
-> +		st->pga_index = 0;
-> +		return ad4030_set_pga_gain(st);
-
-We already intialized the array to GPIO_OUT_LOW, so isn't calling
-ad4030_set_pga_gain() here with index of 0 redundant?
-
+> +	/* Set auto-detection beta compensation for channels 1 and 2 */
+> +	for (i = 0; i < 2; i++) {
+> +		ret = regmap_write(priv->regmap, MCP9982_EXT_BETA_CFG_ADDR(i),
+> +				   MCP9982_BETA_AUTODETECT);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +	/* Set ideality factor for all external channels */
+> +	for (i = 0; i < ARRAY_SIZE(priv->ideality_value); i++) {
+> +		ret = regmap_write(priv->regmap, MCP9982_EXT_IDEAL_ADDR(i),
+> +				   priv->ideality_value[i]);
+> +		if (ret)
+> +			return ret;
 > +	}
 > +
-> +	/* Set ADC driver to handle pin-strapped PGA pins setup */
-> +	for (i = 0; i < ARRAY_SIZE(ad4030_hw_gains); i++) {
-> +		if (pga_value != ad4030_hw_gains[i])
-> +			continue;
-> +
-> +		st->pga_index = i;
-> +		break;
-> +	}
-> +	if (i == ARRAY_SIZE(ad4030_hw_gains))
-> +		return dev_err_probe(dev, -EINVAL, "Invalid PGA value: %d.\n",
-> +				     pga_value);
-> +
-> +	st->scale_avail_size = 1;
-> +	st->pga_gpios = NULL;
-
-This seems reduandant.
-
+> +	priv->wait_before_read = false;
+> +	priv->time_limit = jiffies;
 > +
 > +	return 0;
 > +}
 > +
->  static int ad4030_probe(struct spi_device *spi)
->  {
->  	struct device *dev = &spi->dev;
-> @@ -1360,6 +1539,14 @@ static int ad4030_probe(struct spi_device *spi)
->  	if (ret)
->  		return ret;
->  
-> +	if (st->chip->num_pga_pins > 0) {
-> +		ret = ad4030_setup_pga(dev, indio_dev, st);
-> +		if (ret)
-> +			return ret;
+> +static int mcp9982_parse_of_config(struct iio_dev *indio_dev, struct device *dev,
+> +				   int device_nr_channels)
+> +{
+> +	unsigned int reg_nr, iio_idx;
+> +	struct mcp9982_priv *priv = iio_priv(indio_dev);
 > +
-> +		ad4030_fill_scale_avail(st);
+> +	priv->apdd_enable = device_property_read_bool(dev,
+> +						      "microchip,enable-anti-parallel");
+I'd suggestion these are more readable as.
+
+	priv->apdd_enable =
+		device_property_read_bool(dev, "microchip,enable-anti-parallel");
+
+> +
+> +	priv->recd12_enable = device_property_read_bool(dev,
+> +							"microchip,parasitic-res-on-channel1-2");
+> +
+> +	priv->recd34_enable = device_property_read_bool(dev,
+> +							"microchip,parasitic-res-on-channel3-4");
+> +
+> +	priv->num_channels = device_get_child_node_count(dev) + 1;
+> +
+> +	if (priv->num_channels > device_nr_channels)
+> +		return dev_err_probe(dev, -E2BIG,
+> +				     "More channels than the chip supports\n");
+> +
+> +	priv->iio_chan = devm_kcalloc(dev, priv->num_channels,
+> +				      sizeof(*priv->iio_chan), GFP_KERNEL);
+
+Seems channels can't be more than 6(?)  I'd just directly embed a large enough array
+in priv so no allocation here necessary.
+
+> +	if (!priv->iio_chan)
+> +		return -ENOMEM;
+> +
+> +	priv->iio_chan[0] = MCP9982_CHAN(0, 0, MCP9982_INT_VALUE_ADDR(0));
+> +
+> +	priv->labels[0] = "internal diode";
+> +	iio_idx++;
+> +	device_for_each_child_node_scoped(dev, child) {
+> +		fwnode_property_read_u32(child, "reg", &reg_nr);
+> +		if (!reg_nr || reg_nr >= device_nr_channels)
+> +			return dev_err_probe(dev, -EINVAL,
+> +				     "The index of the channels does not match the chip\n");
+> +
+> +		priv->ideality_value[reg_nr - 1] = 18;
+> +		if (fwnode_property_present(child, "microchip,ideality-factor")) {
+> +			fwnode_property_read_u32(child, "microchip,ideality-factor",
+> +						 &priv->ideality_value[reg_nr - 1]);
+> +			if (priv->ideality_value[reg_nr - 1] > 63)
+> +				return dev_err_probe(dev, -EOVERFLOW,
+> +				     "The ideality value is higher than maximum\n");
+> +		}
+> +
+> +		fwnode_property_read_string(child, "label",
+> +					    &priv->labels[reg_nr]);
+> +
+> +		priv->iio_chan[iio_idx++] = MCP9982_CHAN(reg_nr, reg_nr,
+> +							 MCP9982_INT_VALUE_ADDR(reg_nr));
 > +	}
 > +
->  	ret = ad4030_config(st);
->  	if (ret)
->  		return ret;
-> @@ -1611,12 +1798,54 @@ static const struct ad4030_chip_info ad4632_24_chip_info = {
->  	.max_sample_rate_hz = 500 * KILO,
->  };
->  
-> +static const struct ad4030_chip_info adaq4216_chip_info = {
-> +	.name = "adaq4216",
-> +	.available_masks = ad4030_channel_masks,
-> +	.channels = {
-> +		ADAQ4216_CHAN_DIFF(0, ad4030_16_scan_types),
-> +		AD4030_CHAN_CMO(1, 0),
-> +		IIO_CHAN_SOFT_TIMESTAMP(2),
-> +	},
-> +	.offload_channels = {
-> +		ADAQ4216_OFFLOAD_CHAN_DIFF(0, ad4030_16_scan_types),
-> +		AD4030_CHAN_CMO(1, 0),
-> +	},
-> +	.grade = AD4030_REG_CHIP_GRADE_ADAQ4216_GRADE,
-> +	.precision_bits = 16,
-> +	.num_voltage_inputs = 1,
-> +	.tcyc_ns = AD4030_TCYC_ADJUSTED_NS,
-> +	.max_sample_rate_hz = 2 * MEGA,
-> +	.num_pga_pins = ADAQ4616_PGA_PINS,
-> +};
+> +	return 0;
+> +}
 > +
-> +static const struct ad4030_chip_info adaq4224_chip_info = {
-> +	.name = "adaq4224",
-> +	.available_masks = ad4030_channel_masks,
-> +	.channels = {
-> +		ADAQ4216_CHAN_DIFF(0, ad4030_24_scan_types),
-> +		AD4030_CHAN_CMO(1, 0),
-> +		IIO_CHAN_SOFT_TIMESTAMP(2),
-> +	},
-> +	.offload_channels = {
-> +		ADAQ4216_OFFLOAD_CHAN_DIFF(0, ad4030_24_scan_types),
-> +		AD4030_CHAN_CMO(1, 0),
-> +	},
-> +	.grade = AD4030_REG_CHIP_GRADE_ADAQ4224_GRADE,
-> +	.precision_bits = 24,
-> +	.num_voltage_inputs = 1,
-> +	.tcyc_ns = AD4030_TCYC_ADJUSTED_NS,
-> +	.max_sample_rate_hz = 2 * MEGA,
-> +	.num_pga_pins = ADAQ4616_PGA_PINS,
-> +};
-> +
->  static const struct spi_device_id ad4030_id_table[] = {
->  	{ "ad4030-24", (kernel_ulong_t)&ad4030_24_chip_info },
->  	{ "ad4630-16", (kernel_ulong_t)&ad4630_16_chip_info },
->  	{ "ad4630-24", (kernel_ulong_t)&ad4630_24_chip_info },
->  	{ "ad4632-16", (kernel_ulong_t)&ad4632_16_chip_info },
->  	{ "ad4632-24", (kernel_ulong_t)&ad4632_24_chip_info },
-> +	{ "adaq4216", (kernel_ulong_t)&adaq4216_chip_info },
-> +	{ "adaq4224", (kernel_ulong_t)&adaq4224_chip_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(spi, ad4030_id_table);
-> @@ -1627,6 +1856,8 @@ static const struct of_device_id ad4030_of_match[] = {
->  	{ .compatible = "adi,ad4630-24", .data = &ad4630_24_chip_info },
->  	{ .compatible = "adi,ad4632-16", .data = &ad4632_16_chip_info },
->  	{ .compatible = "adi,ad4632-24", .data = &ad4632_24_chip_info },
-> +	{ .compatible = "adi,adaq4216", .data = &adaq4216_chip_info },
-> +	{ .compatible = "adi,adaq4224", .data = &adaq4224_chip_info },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, ad4030_of_match);
+> +static int mcp9982_probe(struct i2c_client *client)
+> +{
+> +	struct device *dev = &client->dev;
+...
 
+
+> +	ret = mcp9982_parse_of_config(indio_dev, &client->dev, chip->phys_channels);
+
+parse_fw_config as its not DT specific (which is excellent!)
+Also use dev.
+
+
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Parameter parsing error\n");
 

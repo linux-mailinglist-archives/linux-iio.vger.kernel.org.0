@@ -1,159 +1,183 @@
-Return-Path: <linux-iio+bounces-23456-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23457-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3ADAB3CB13
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 15:09:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F9EB3CB30
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 15:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A82A5E5AC4
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 13:09:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F2B41BA4482
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 13:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7352253A1;
-	Sat, 30 Aug 2025 13:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99777223DD6;
+	Sat, 30 Aug 2025 13:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MANnYzIa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m6+Y8Hz8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524592147E5
-	for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 13:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B502144D7;
+	Sat, 30 Aug 2025 13:24:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756559377; cv=none; b=gJvfFes/BwMBqKxpmFkTbCC0+O7QHFfm/+6Iet/Pxz1rgc/l0RbxIdnUNUjbMvuybVcgibT9jOnVVddwVG8z3U6gkUKcFFW0l4WQ0M9ZCx8sEedXMQIXKsCKDZ184V0X/RMtKEJ7Zg9obaJVJXyHTQzWvi9387xeIzdA1X0FFds=
+	t=1756560261; cv=none; b=QEmTrUAYmChyp9c213L3GesusYdiEIXhZitwFFP4PmQAnE1gz5cNrjVbq/T5K4pNMUH1zDjkfu15bPpMpwn6/Z1Tg1vFrFACqSFeEuYsbbkylS5vbvxpG/D5p5FKIBwRuBUHxNGR8is1sGn9i5PiYRObz5+PO4k72p6TAbs/BYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756559377; c=relaxed/simple;
-	bh=E+8gaoJ2YD8eTRn2TEIvrhYnUYkXpKKcBdMxCF6j6ls=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hD6TNOZLS9wxxuagFvQY1o8tcCMsQ9tVSNmo24EwwoKyvjD+ThYKo/VKqra9VB5NFJ9MUB1NyARh1SsA/J3w0N7IlHI3bXB/xMut7snPz3e5yld5QZdmTZf7i9jpE7ZZZVwe06qIU7X21mTLjXg5kO0OpNZayXBx2IYuGFJD/xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MANnYzIa; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45b7f52cdf6so507155e9.0
-        for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 06:09:35 -0700 (PDT)
+	s=arc-20240116; t=1756560261; c=relaxed/simple;
+	bh=v1S8PwCYxbPDEaSi9ebrVlh9Cc9cdjf1qti9Yi5A7ew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NtLeXnDQkimBQqbllj78qOzVLwi/pwWz8bb+KUdwxs1v9NtrgYm2IHPSRvpDgVTsQYvSVlpLVusHBkS2DSnFn9LWsT5oWfPk2Cdf8BnsEbg73i6KBzhMO6MoXu52JYymp08gb/hv/AVGZG0pneoo0oYHDiDnqEJQvvXhds0tuhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m6+Y8Hz8; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-55f6f7edf45so579220e87.2;
+        Sat, 30 Aug 2025 06:24:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756559373; x=1757164173; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=NvZr+jIhkslKZB56cSZ0aYjmrmFIErH1qN8pLQMr07w=;
-        b=MANnYzIaw/jywGoOyO/2rDmg18zjyD2Vbof20/phNpxQBiYdxP2UsMkB/1bi3d47HZ
-         4XYO5NWgQUpBdBQERfyNS4sx9MlWX+E0OA/pioqRCjP76TeFIznHFhYnLfLurzf8nRyP
-         /kZ3E9ZQmeitxG/O9iQtLdDz57s/iOnYI/VBIYEu8vpM+2px6En8u2YZIyuRgCglQT5n
-         p3oHXfOjGd30x6XC1RB8ylCxaWvvSy13VY/ygLSIjD7yyQ+FrdYZp7/3F7C8p1yYSHnf
-         smpPclhSJZ0dFOoJ8j4wYKbMNZ5e5Ot/dqLyVEMBjqLW7PMuiGP5hJpUw9UxIJbDuiJ6
-         0kHg==
+        d=gmail.com; s=20230601; t=1756560258; x=1757165058; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WRR1X5lDkWRdj6f4lzCozikifP8gzwHC2QO/O204APA=;
+        b=m6+Y8Hz8ZdktXjk0j2lNRznyUfhJszSCOp5oGBwM5ovJjp4HRRyxqFmJDOabZd4QL0
+         79fYHJTVkzMa1apwvb8bvIJm37y7bp/HKFMYGj9GTMOJNOd8ioGYOe3Qb/T2+xngDXTR
+         27B+1Qi9gVXMF/SHXKKejVyuynvwYUPzpDewAY6mcGCLna6lVzqO5NWSo8A4Zaq9OOYu
+         uYPIvKZW92Iy3QV0B8E84xSOKq1jLb4M+CC1I+Z1s7xhXjt0u4xCUfMiKg7cB9rGi2qn
+         y8g23GRFmjEUbogn0OXZe0ijlZryURC3XzlMLiD8sQxb8lvAtD3XXF045uv6rSEIS9cH
+         7abg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756559374; x=1757164174;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NvZr+jIhkslKZB56cSZ0aYjmrmFIErH1qN8pLQMr07w=;
-        b=H/r8pRD4HQXgAIM48jSxDab7duOOm2KursAHgK19jRbj65TaUtH7Bd+o1XJ8IhMYuM
-         QSrjNdlvLwJ59La8VOzPvAUC5avoThq0UsGl5Om9cswwKX//1YgaP9Ggl1hMvIidr+Ep
-         3k3/B2K9Jsmej6XHPuwq8a/q2/ntCbKEtP1Jl+BQx9qLQESKpkmlV3OM/IVDYnaWLix1
-         ozfmEt2K0zrtBUdRrQIaH8mBdvYDfs1794+TEBAJMWod63LtU3LM4YT8h+UoY+MHjwvk
-         t6rMzOLYCYKihWuDW8D+MRf+lkhtyZY3d6qasF83hgDYEf55Q8cLbMv1C7W1tM1RiUlG
-         foaw==
-X-Gm-Message-State: AOJu0Yz4jA+frgLH2yLVGdJm3n5+P79f5kYNHblC0MH5hFZ1UyUDrcC3
-	C81XVLZ/9Kt3bKR6lmQYOJskGDnECWAg+MJSJKwdb/iiW1XNHOZm0G6KAbLrM7NhcRQ=
-X-Gm-Gg: ASbGnct1z3L7mRXNoyGPQOX9leJKdhghSDdRzy1BFF7hKDOkk1pc1pTmVXxl01J/d1y
-	A6OWI/BtbrDf36kdBrkHJ7NDhm39zfkrsUaMLUGvuTe5Avz5Hy5XHXf3+rq/GF/9st45/bESGT0
-	G6kY7aYuA29p+lus3uX2LrwgTchV5foLaxTMn4vaYf0KT8WXAdUKyqT+bWEeZ/6jDLfWeRzaXdY
-	6h/SZxlG5DnD+TlueFIqn74RUyhKF2sM3OnB59uiImibwwi6sPVrZQl7eKS1T+XQH567EP633Vn
-	Nek39PaiUtR2xN6x83RuGNbeiisSHDg/53hQvUE6iwaHaptYUZtqJx2X0DD6wE4DVPjZZELz1vd
-	tRDcqgBtl3hZ9K6/Pm1GSnuV14KvW7D+iRZ6ANOggVTA=
-X-Google-Smtp-Source: AGHT+IGa11CZQ7OVZSmolgs+BRgFwXxqJG6ECjAUdkPSx7J7mhDxvu3DET96g8lfamRAEETYvSkTZw==
-X-Received: by 2002:a05:600c:4f8b:b0:455:f12f:e3fc with SMTP id 5b1f17b1804b1-45b81e92f7fmr22047405e9.2.1756559373590;
-        Sat, 30 Aug 2025 06:09:33 -0700 (PDT)
-Received: from [192.168.1.29] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e68c83asm84593585e9.20.2025.08.30.06.09.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Aug 2025 06:09:32 -0700 (PDT)
-Message-ID: <2bb6af10-c74d-450d-9932-8d161ae56a85@linaro.org>
-Date: Sat, 30 Aug 2025 15:09:31 +0200
+        d=1e100.net; s=20230601; t=1756560258; x=1757165058;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WRR1X5lDkWRdj6f4lzCozikifP8gzwHC2QO/O204APA=;
+        b=GGqx/LoD3i+Dzo4PgJV11Zq53cl6wD2BwKYg9dnPOQbA28PwHcApysfegXri4Onq0g
+         9fUC+T5OdvM8YHe4ZOM27UF4Mcsidko1wdkKXYUdoc3AEvDRAKAmQ7VCmhE1nwhNT/v2
+         Qay8OJAyBTGRAgECLAcFGhgWa83nDRJK63nLK4sn5IyLrz2cp5zZLlgKp5P0SWJNdjSE
+         JSbrRvxMGEBD7pR2CxD+N2812AoSC4/iYAQgCoqhW8EMFuM5XqYYnmAMLAuK7z3NVstF
+         WxJT7HpFhsxabFT+BCJmj1HN4r3xVhqJldYb3heyuNwW34WHeRfTiIJQbRqBi8DUF8XD
+         M0DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWPO43rzw8xvYV5a3rI87wHpRvAL5p+HIz5Si5x909dDeXURcBhRyuk2h9M8cd08QinuLnf3h5SYaXIjhgq@vger.kernel.org, AJvYcCWcDfSVQ524wWZaY6Bsnv9FZ/6BY+ZzpCUf0cT1Os9UOehkFpr43GBwQ9sPpsdIhJhxYaseSqPx9vE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHci4Z54yK7eqpWjhg1DHKIs+unv0KPzAWjhX1ZtKnTxH3hpfS
+	LpWY0DDZMI4ybqx12BaGaXAh3ItwzHnY3bdwmJps6ZKOm8IuyoFXV4QIOSMMaw3ZVFVPqe/Pw/a
+	yxMBrBoMVkAJHea8FSLr0ETPNE5tQMcT+EO3p
+X-Gm-Gg: ASbGncuHMw8O5+uXVzfetJAxpfNvY6ln/jK/xbcSWl/kX/Np4J7sQGWr42otubohXQQ
+	uzSd4ORqltqOyrTriLFw+f13fmcJn0bntI4iGh665dX55N1m1v1LhyywFuqHc/EX0QsAEME9EKi
+	SEWZCEvlrFjOz0tTctmDg0OtOk4cIBVoKnO09aqMqq2p1tvvQQ93Ixyxkdavk7buoIeHJpB50gC
+	S59IPqqueFTp5aypmslIEw/vD/d5lJwyWagOeu0M7YYIEEu0JPt
+X-Google-Smtp-Source: AGHT+IHY+dztU/fvgeXUkQuh1oo2N8+Y4J1J9NKU3rw1ZWywfAgvZ/5f6SkE0cQZsiZzIzBuzWhFJOR/y/uQ38RTmKE=
+X-Received: by 2002:a05:651c:50e:b0:336:bc68:d29c with SMTP id
+ 38308e7fff4ca-336ca910440mr4561671fa.3.1756560257355; Sat, 30 Aug 2025
+ 06:24:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] iio: adc: exynos_adc: Drop touchscreen support
-To: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250830-s3c-cleanup-adc-v1-0-de54dfb1d9ea@linaro.org>
- <20250830-s3c-cleanup-adc-v1-2-de54dfb1d9ea@linaro.org>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- 2+47PN9NZAOyb771QoVr8A==
-In-Reply-To: <20250830-s3c-cleanup-adc-v1-2-de54dfb1d9ea@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250830113502.83102-1-akshayaj.lkd@gmail.com> <CAHp75Vc6J+Qm4hsV=PJn9Oyfn5xr9SZLGMagHm9NdFrkk9Y_5A@mail.gmail.com>
+In-Reply-To: <CAHp75Vc6J+Qm4hsV=PJn9Oyfn5xr9SZLGMagHm9NdFrkk9Y_5A@mail.gmail.com>
+From: Akshay Jindal <akshayaj.lkd@gmail.com>
+Date: Sat, 30 Aug 2025 18:54:05 +0530
+X-Gm-Features: Ac12FXw9iYlLGUmW6NRlKatRbg2atIdjgh0CQHtEvNtaZw_ZEHvUlOwAQzYs5Ug
+Message-ID: <CAE3SzaSYLFFRL4OuqUbk8J0dWCuxedCyGiX2_tJySG1FC=w95g@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: light: ltr390: Implement runtime PM support
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: anshulusr@gmail.com, jic23@kernel.org, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, shuah@kernel.org, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 30/08/2025 13:09, Krzysztof Kozlowski wrote:
-> With last user of touchscreen via ADC (S3C24xx SoC) gone, drop the
-> remaining code from Samsung SoC ADC driver.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  drivers/iio/adc/exynos_adc.c | 196 +------------------------------------------
->  1 file changed, 1 insertion(+), 195 deletions(-)
-> 
-I need to drop also touchscreen-s3c2410.h header.
+Thanks for the speedy review Andy. Follow-up inline.
 
-Best regards,
-Krzysztof
+On Sat, Aug 30, 2025 at 6:04=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Sat, Aug 30, 2025 at 2:35=E2=80=AFPM Akshay Jindal <akshayaj.lkd@gmail=
+.com> wrote:
+> > @@ -27,6 +27,7 @@
+> >  #include <linux/module.h>
+> >  #include <linux/mutex.h>
+> >  #include <linux/regmap.h>
+> > +#include <linux/pm_runtime.h>
+>
+> You missed my comment.
+Yeah, this got missed. Will address this.
+
+>
+> > +static int ltr390_write_event_config(struct iio_dev *indio_dev,
+> > +                               const struct iio_chan_spec *chan,
+> > +                               enum iio_event_type type,
+> > +                               enum iio_event_direction dir,
+> > +                               bool state)
+> > +{
+> > +       int ret;
+> > +       struct ltr390_data *data =3D iio_priv(indio_dev);
+> > +       struct device *dev =3D &data->client->dev;
+> > +
+> > +       guard(mutex)(&data->lock);
+> > +
+> > +       if (state && !data->irq_enabled) {
+> > +               ret =3D pm_runtime_resume_and_get(dev);
+> > +               if (ret < 0) {
+> > +                       dev_err(dev, "runtime PM failed to resume: %d\n=
+", ret);
+> > +                       return ret;
+> > +               }
+> > +               data->irq_enabled =3D true;
+> > +       }
+> > +
+> > +       ret =3D __ltr390_write_event_config(indio_dev, chan, type, dir,=
+ state);
+> > +
+> > +       if (!state && data->irq_enabled) {
+> > +               data->irq_enabled =3D false;
+> > +               pm_runtime_put_autosuspend(dev);
+> > +       }
+> > +
+> > +       return ret;
+> > +}
+>
+> This looks like overcomplicated and duplicate checks. Just make two
+> functions with and without IRQ enabling handling.
+>
+LTR390 only supports 1 event/interrupt which is toggled in this callback ba=
+sed
+on value provided to sysfs entry. There cannot be a version of this without=
+ IRQ
+handling. It is supposed to do IRQ handling only.
+
+Pseudo code of the said function will be something as follows:
+ltr390_write_event_config() {
+if (interrupt needs to be enabled && previously it was disabled)
+     pm_runtime_resume_and_get()
+do_actual_reg_writes()
+if (interrupt needs to be disabled && previously it was enabled)
+    pm_runtime_put_autosuspend().
+}
+
+With the current function , we achieve the following objectives:
+1. idempotency in refcount change. Meaning if IRQ is already enabled and
+if someone enables it again, it will not increase the refcount, same goes f=
+or
+double disable case. This has been tested as well.
+2. Only if the new and previous config is different, then only the refcount=
+ will
+change.
+3. Adheres to previous comments received regarding checking return value
+of _get and ignoring that of _put.
+
+I genuinely don't see any duplicate checks here. In addition, I feel the ab=
+ove
+function is fine from a simplification point of view and cannot be bifurcat=
+ed
+further.
+
+Although, if you could clarify what you mean by further bifurcation, I migh=
+t be
+able to connect with your thoughts.
+
+Thanks,
+Akshay
 

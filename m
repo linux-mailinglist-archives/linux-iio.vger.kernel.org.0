@@ -1,143 +1,130 @@
-Return-Path: <linux-iio+bounces-23425-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23426-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5233B3C7FD
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 06:55:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 328B0B3C809
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 07:01:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5BD11BA7475
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 04:55:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94B4A18946DD
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 05:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA2427BF7C;
-	Sat, 30 Aug 2025 04:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE1E241663;
+	Sat, 30 Aug 2025 05:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I4buTszi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OZXnCGVz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB1C21B199;
-	Sat, 30 Aug 2025 04:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1B11C1F05;
+	Sat, 30 Aug 2025 05:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756529702; cv=none; b=PuXCoigRkiPTaV5GsaGnJp3KEG0CSYqJMVOWDccG4xSruzO2hRAPUOsh+VWkTk3njUtrx5KmFHzn48asTI0lBpkLQiFZeBAhsQ3OSrCCg4NqZj6XY2wtzm1roHbhcEay3T9UDcbBcUFNXfotyjklDi1hPZOUsfxRVAQaw78/2k8=
+	t=1756530056; cv=none; b=Vv2RpvznYP5BXi5g+Vbx8xAQARI+cQN+c1/WpvXxge0Qhc2bJrT3mz5sVMXnvYmjgqSbkmD0fpEGLMOvDtLVo4iVnIqbyKGTW/HByHBhYPZNmcbZUbCxijeQ8lnpH7i75kBk5W9FwMuIxxjZtBYfMfgghOH96vL5iJUr2sK6OBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756529702; c=relaxed/simple;
-	bh=PblzP8bpvQ+dLTi4ROYQbeGB9S4128ks9eaC/YIJxJc=;
+	s=arc-20240116; t=1756530056; c=relaxed/simple;
+	bh=sUWCFQiozcXf8RFq48scZRqotCkwmrulquliXottWRM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wa8325teicEabi0LMpcaKDM4LCuVUATAEJ+8pxCn7PUb1vu8zPSTXiGeCmTrtGjanV3MiwMu3ugkpLefdWWIBV1O2a1RnE2vslWa88UzbRbPpj4FMfQcq7P+BP13ZIbz/dux9WfzjO5K8768tiZEhap/f66lWI54udtfwX2glc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I4buTszi; arc=none smtp.client-ip=209.85.218.50
+	 To:Cc:Content-Type; b=f4KxYyOZqH1sxeQTBfjyQvv/QrVZy1ILDErWhalZ31kz+Enu76Gdj8XXkOed2l/99dqoQjdJJrfX9QneUZAWwM7/ANgYUqzkutPKDXdVrp8Yp6s6skFf1+E5q9qD7Y2tywW1cd9Xhwj8ySWk+83j69TSsn/cTOgaPWyV5k1I6y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OZXnCGVz; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afcb72d51dcso405695666b.0;
-        Fri, 29 Aug 2025 21:55:00 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afede1b3d05so480799666b.2;
+        Fri, 29 Aug 2025 22:00:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756529699; x=1757134499; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756530052; x=1757134852; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L+yI5stLOIjwsXcdEiYs3bjB2p7CosaRO1p+h70Op2g=;
-        b=I4buTszimWuv8rveKFArOLd/pcB5kqhuC2grgX0w/rvqNeKjapR6kW4qp2WIMCqSCc
-         oBHuaEbrN/YEZylCs/tgtCcRWffwv+iLVdoZ2i7EH2MVr5ZXFPhRF2WITho8QuB4lVhW
-         eytcMjAYNwFBJBGQSrq0VaO6KTWP0xxvfeDww/9WWb+jhkzhzRMk+qLJmFgZKEolp0+y
-         GUIMOO0kADWFvimISnfqKtWmDipA/Eam04675XCZ398Lv0GAL/mbHJn1HWVuGnZh4dHF
-         NOwuB8h723Gvho1ifQgPSE9sFusvv6PnZTkPmx5nto4WhZN2aiGG1uH6Y42txGG3LzkM
-         R8dA==
+        bh=sUWCFQiozcXf8RFq48scZRqotCkwmrulquliXottWRM=;
+        b=OZXnCGVzWmR5x5wfKPX9u/EjpUcSdTSlI6kw2lrywUiuLMtUswJPVWwYLV/EFkVWdY
+         ru73xLpJkalGrriSJ4AIhSK8uK7maib8x0ENupEd8d10knnCvY9NzBJWwkOZhXumuGZH
+         C8ilUXGJp9peSsW83hX0i36JG8uSkyjN75USgHvQnrRTgJV2+DonNf8cd54XLPIB+1lQ
+         RxQM/7Qs84F10Ya9QDDwcj5dzppN9s4UfZB144/thSsrNgMErlsgL6cnyz0eAX6bMk7L
+         4HHkpMVkWY0xf+nctv0Isv5jtT6t7F4WwXp0LPNZ1r8LaxM8J1d/co7h3Wie5H5da4ng
+         C1Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756529699; x=1757134499;
+        d=1e100.net; s=20230601; t=1756530052; x=1757134852;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=L+yI5stLOIjwsXcdEiYs3bjB2p7CosaRO1p+h70Op2g=;
-        b=X9+3KxpZgnhZPUKp51rMBNVzlPkBbcugYup1aPrF16RAFtHRWVG7UovDUonOS0PvnL
-         9LFJHhUleRSTBW12YI+Uuzdexv9OhrilJ7s/AaA12atuNwx2BupN1MXClDtmkj8VVi4H
-         wXabOYHcGbgYayRxrfyYftyEAFtA7iOjXS9ByvrtCy+rxObd3Ba+oYxScwkk8FwPE7MZ
-         K0kKvTaW3+KGft93x/rbPO7F7y7n5OCMXrxXY60+FD5B+H6YjC31/uwRrc2Ed+8GcLIX
-         e4jPx+Am+NnXH9rO9POArMh21uSCCeW6RJ5ZRqzZFCqWGz1MCkEkFZnZIO8RIM0P131M
-         ADcw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1TzOVSGQFIEzTssjJBq/xb/N4EIOO92OqkDICHj7qYcqxzjiiL/3F+Lgp1dEsnYtSEOyzYQXRLKl7@vger.kernel.org, AJvYcCWfIGS9qykbuCfBEHxAUdFrY4wcXtD/jnvlAswcdgATSuu/GI+lg5ZKk9yAK87rfd5C2MmTNVwAgfLRPEpO@vger.kernel.org, AJvYcCXFfMm1HvsMICX8brhs6YBDNkj9redkRf1hHR/Oq4xmklNXUsVnH6/wGn0CQoFmwk9PxtEl8yX6wfPu@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNO9n4AZx22YFqq6rVwhNybIyVBp1VY8rWb8bBcsrwjWYTNfRC
-	JZDfeaPi+IGEo9JaGP1OIOQ7SPdGGX3wt0Krkb63ZcnMztE96N69D17L44WNNkznB/Xz6J5pNTI
-	2lB8hz2W0knaz3vlvAaG0NBgEQmz2xQESvdl+HCwYUA==
-X-Gm-Gg: ASbGncsY0q/UMSjcTwMfhlP+EJh3GtjUyvY5T3V9o3738XYeTtsL5rwDc7MfWgv9oSK
-	F2KkYQjGnTZAu/qg6bQfpW9QzfrP4RLPLGIVg9BX/k6Ej/U3Tfwha5sUKY9dbfZXSMOB5T0e1pu
-	sHl512E2Gk6JpS/AYfi0q2kCTXG/ymjA/6rNfewlCDJ+HJ8EoeBMHt+z9Qv6ntJ7DAV+safcLPb
-	ef4S1Nd8aExk/+wuQ==
-X-Google-Smtp-Source: AGHT+IFj0e6R7gW2dq3SzRGVuI1tLR8avZykV/RaQ/6DCp+U4IEsYzRITqaeMNPY0l+hpisRYcj9AGWI2otRn873in0=
-X-Received: by 2002:a17:907:940a:b0:afe:f8cb:f8bc with SMTP id
- a640c23a62f3a-b01d9732721mr80627866b.35.1756529699312; Fri, 29 Aug 2025
- 21:54:59 -0700 (PDT)
+        bh=sUWCFQiozcXf8RFq48scZRqotCkwmrulquliXottWRM=;
+        b=bzuCug5UJdAkfuFXIWvc0jbd3vd2TsmL8Cv+959Jy8RRmrTmO82kpm0JJabRWbB0Lx
+         eKMtZZ7+aqpOwZ0eVeXI6sFJJX2itb+iLWtutqAEGYTXL5V9OALVR7C3zdpHKJZd59g4
+         Mwm4fgc8oKTuVA261/FyjonD94W6uqDMNRIogy5WYJOOXB1Mv9GEXSa+P/UEHCctayau
+         PYXb1N3SLqWtQ/BUBm7xKGRGNqFBxZNCsVB6R3Rf8qYg35nq1NoMLB0syFVSpJfDcLaw
+         7hYkkTx1WjPVT8EiUdsUIZDG0Nic2U/DOGLN/83h3Y30lQL26+ZS6IVUG/8FrR4tKk1l
+         VjVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUO+LFmWcnsdRPJazrH4WK1p+WjqjXs2l62VcghScyqw7hHHzVjBMGuGp9GG2lrCMyfk6s1V9+RzcNy8yf8@vger.kernel.org, AJvYcCVZuz7sZi/oPT5MXxye/SQ5E58XbqnJcMiHDTd8LYVgRSbefbYozH2Kscbi/xqYRHC0Ag2D00KzWWfj@vger.kernel.org, AJvYcCXIBD4/kNypaAZRvk6WkBNg+ALoi42viYlX2wnb8xskKS5roO1KoPDkXKnLXrGE98fmysoRzy7m7pAd@vger.kernel.org, AJvYcCXfwjUvsur85kmTsKgP2AIstyKH4ibz7Z4UK2KZPnba4EiUJuyV06BefnozvzIY87kTmRX7HM7SmSxE@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/EvDVkRWuiKWH0GwpMRlnlDFdngu2QzxgwTyJUf/g/MK7dw94
+	Ju7rwSU9uK1PAm4wCLOTS/9al+Pkx+AE7TeEnexX/uqyDrTFhxbcqjrsmF7fsBoA3Ml/X5Zt2a0
+	qy7fa9+hlMRGtz/e/k/Gt3x8qLcxkeaSkFvtMx6c=
+X-Gm-Gg: ASbGncvC3pRTm48b7XVMIa7O3Dp8syrc8itLBc0vGl26CpnA6Kp/u9Rm/KpPerxZJX1
+	awibUqqtH8AtZUGlHwwBewix7i8DU/G8aIZIVO++rQ0ayzWtZ4eVPyzZV8sOXrs7Uv/cEyMwQzw
+	c8llT0+OWTayZF3E1Q6eIBSiviNT386VS4eS8i5VdBudk2cVOGQa9+2sZxba//42uNnagiiGXSv
+	KwrsBY=
+X-Google-Smtp-Source: AGHT+IEjDHP1unXxSQbNQm1sw4+9qAhjYAtuNlGfL1MCTN0zUKm27Bv7C4qDJsHhC00wyklQz0F5kXgoDhH7BebhRkw=
+X-Received: by 2002:a17:907:749:b0:afe:8761:e77a with SMTP id
+ a640c23a62f3a-b01d8a7311cmr89257966b.19.1756530051865; Fri, 29 Aug 2025
+ 22:00:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250824041013.9872-1-Jonathan.Santos@analog.com>
- <CAHp75VcGG_h+wpo7hHL=ERYqbrvvAaufwPAYBsEbRn3dB8-dfA@mail.gmail.com> <aLH7XNuaZ2CkQVWo@JSANTO12-L01.ad.analog.com>
-In-Reply-To: <aLH7XNuaZ2CkQVWo@JSANTO12-L01.ad.analog.com>
+References: <cover.1756511030.git.marcelo.schmitt@analog.com> <f9d40e8deb3d17a41b4fd6ecc1b8ac92275f0078.1756511030.git.marcelo.schmitt@analog.com>
+In-Reply-To: <f9d40e8deb3d17a41b4fd6ecc1b8ac92275f0078.1756511030.git.marcelo.schmitt@analog.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 30 Aug 2025 07:54:22 +0300
-X-Gm-Features: Ac12FXw4AD2S_KJ5yR8SUzJlz6H_1uxrxXZpHKycQS1wQzd31-mvrNC149lZJY0
-Message-ID: <CAHp75VeP=G1Pa6=Q1gok5+mA7grDWrgAEM_m8FqjAwme==jt-A@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] iio: adc: ad7768-1: add support for ADAQ776x-1 ADC Family
-To: CAHp75VcGG_h+wpo7hHL=ERYqbrvvAaufwPAYBsEbRn3dB8-dfA@mail.gmail.com
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	Michael.Hennerich@analog.com, lars@metafoo.de, jic23@kernel.org, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com
+Date: Sat, 30 Aug 2025 08:00:15 +0300
+X-Gm-Features: Ac12FXy_P7anbjpt8vW1zV6UGse9GLLWxC5jXgoPInY0GO9P8lb1L2avEZxEEIE
+Message-ID: <CAHp75VdhtF1NgygHCRaW-+A83Qz-O8bMEfeMoF9ke-Hno+e4tQ@mail.gmail.com>
+Subject: Re: [PATCH 01/15] iio: adc: ad4030: Fix _scale for when oversampling
+ is enabled
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-spi@vger.kernel.org, jic23@kernel.org, Michael.Hennerich@analog.com, 
+	nuno.sa@analog.com, eblanc@baylibre.com, dlechner@baylibre.com, 
+	andy@kernel.org, corbet@lwn.net, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, broonie@kernel.org, Jonathan.Cameron@huawei.com, 
+	andriy.shevchenko@linux.intel.com, ahaslam@baylibre.com, 
+	marcelo.schmitt1@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 29, 2025 at 10:11=E2=80=AFPM Jonathan Santos <jonath4nns@gmail.=
-com> wrote:
-> On 08/24, Andy Shevchenko wrote:
-> > On Sun, Aug 24, 2025 at 7:10=E2=80=AFAM Jonathan Santos
-
-...
-
-> > > +       unsigned long denominator, numerator;
-> >
-> > struct u32_fract fract;
+On Sat, Aug 30, 2025 at 3:40=E2=80=AFAM Marcelo Schmitt
+<marcelo.schmitt@analog.com> wrote:
 >
-> Problem is that rational_best_approximation requires a unsigned long. I
-> could do:
+> Previously, the AD4030 driver was using the number of scan realbits for t=
+he
+> voltage channel to derive the scale to millivolts. Though, when sample
+> averaging is enabled (oversampling_ratio > 1), the number of scan realbit=
+s
+> for the channel is set to 30 and doesn't match the amount of conversion
+> precision bits. Due to that, the calculated channel scale did not correct=
+ly
+> scale raw sample data to millivolt units in those cases. Use chip specifi=
+c
+> precision bits to derive the correct channel _scale on every and all
+> channel configuration.
 >
-> rational_best_approximation(fract.numerator, fract.denominator,
->                                             INT_MAX, INT_MAX,
->                                             (unsigned long *)&fract.numer=
-ator,
->                                             (unsigned long *)&fract.denom=
-inator);
+> Fixes: dc78e71d7c15 ("iio: adc: ad4030: remove some duplicate code")
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+> This was probalby buggy since
+> commit 949abd1ca5a4 ("iio: adc: ad4030: add averaging support")
+> but I decided to set the fixes tag with dc78e71d7c15 because this patch w=
+ill
+> not apply cleanly over 949abd1ca5a4.
 
-No, this is not good. And it will overflow. See below for a better alternat=
-ive.
-
-> But I don't know if this is the best practice.
-
-The best practice is to add a patch to extend that to cover unsigned
-long and long
-https://elixir.bootlin.com/linux/v6.17-rc3/source/include/linux/math.h#L122
-It's just a couple of lines which I review and acknowledge
-immediately. (Just make them a precursor patch)
-
-BUT, looking at the code, I don't see that people use the same
-variables for input and output (otherwise it's also considered not the
-best practice, for example, in the cases when input can be made a
-const).
-
-That said, the patching math.h is optional, either way, make sure your
-input and output are different variables.
-
-> One way around this would be to represent the gains in fractions instead =
-of 1000x, example:
-> then we could drop the rational approximation.
-
-I like the use of rational best approximation. I think it gives a
-really nice algo for simplifying fractions.
+FWIW, you may add a few Fixes tags: The original one, and the one(s)
+which changed
+ drastically the code. In any case for the small conflicts we don't
+care, just put the correct Fixes and if needed to backport, one
+provides an updated patch specifically for backporting.
 
 
 --=20

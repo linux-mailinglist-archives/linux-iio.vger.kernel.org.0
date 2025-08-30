@@ -1,189 +1,170 @@
-Return-Path: <linux-iio+bounces-23472-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23473-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8ED9B3CD72
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 18:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AD4B3CD7A
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 18:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14B3E1B26418
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 16:50:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DA70189A749
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 16:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999BE2D480A;
-	Sat, 30 Aug 2025 16:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317622C3757;
+	Sat, 30 Aug 2025 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oNw4/1yr"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="W+5l9BOJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C97F2D3ECE
-	for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 16:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072E32797BD
+	for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 16:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756572532; cv=none; b=XALbYE2Q+v16z1QdAUrrBw2v1YmGkDROAaQKZ2spJz/RwZ+g1tSmFT0/GQ1Ya2MwfdmAhVSuzrG03ftXLuiLv4hpnVTNBzFi+jLVE7v8ezQZZ0moN7vqCO5EDFxpt78JsW01jO2qYB06UXmRKb+AVxJWNQGzY4qTVI5nlKipYi4=
+	t=1756572567; cv=none; b=a9pF+AB/OB6QKZxPs1z3ORM8UST1nHSfTElt5onZcuGqU3x0TjZ8rOUIkZ7KiNbL3T7sV5llEfMDfcMboOR/jCgLkAH+34X2xFDZOwFjNZZiZ2l0hea1C4BhLisGtpsHfP1iQdz+rJDyuNM07WZkVW1GBSS3jtkB8iCXbGecnpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756572532; c=relaxed/simple;
-	bh=M52Ix5e2ZfY480bhbf4Da85nfANVV5Q7GQgHm64bNig=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PnfgSx4CHvl5xA5DYs9RA56Pta+aau/fQYgd5JJTgHyHKKDNDKqaDiNGw9WLqihSpFxxk24W/vwHyYnS91ZvhQnkNJYif0BkuFO1BfRpEgGy3in8qN85VwSc2ELl2R9S8W793+98JD071+eHaZPEJzu2et6s0r+6frIRwzTecwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oNw4/1yr; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45b8960b48aso4845e9.2
-        for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 09:48:50 -0700 (PDT)
+	s=arc-20240116; t=1756572567; c=relaxed/simple;
+	bh=pqWpXbFcE609uQqR01kW7hm82CkHD8Rd6qNu7+Mm3Nk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AzrFemJLG2aTXXtgxV7BQRHvu7rwVfeDKGtNUOLF36TgNHebkcrPiSYJ3oYgJn62rwRqwQevvbbJzusmO7SVY0tZEhe1Zv1i58rLdvOxHTTAOLZK07eSupJkh+Opf4duOaGoldp/k0CgvoLMFbsebLZLDiMsd+UKy7+PsTZXuVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=W+5l9BOJ; arc=none smtp.client-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-61bd4a3f39cso757988eaf.0
+        for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 09:49:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756572529; x=1757177329; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uGegaPWxGQTvhFdIvhwtl2HHlep4qKtefJBT6reESx0=;
-        b=oNw4/1yrgC+H4hxF6bq8ekB3HHQBRX5KEKOPChF/jGjXghdRlsll5jFF2EBrQPrrMB
-         5Nd9s6nVaJ7BH1q5zol39pNHiT1TgWnbmgvOOwy5lDdgnAbL/MIsO74gCJ5yiBehlWO3
-         r9l3PAyTXH9Qd3EKoExWKx/CLpSSmBhTl4YVtSTZ3BQrLmestqQJ+r3PYBGuffaSSs9u
-         uLHR8layFQg60YfaDNdeJoiFgoUXMk9YHozh5KuVXncJtnOuNOWAukeEYU053cIqjRP2
-         jtImcUizqppPyo1cjIujUaMPmDHgv+hWVgzW4kzXCrydBHofEZvM+XHAN5wySRF1UA3Y
-         2NWA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756572564; x=1757177364; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kBuLfFgHrxPEkeUpMGG9r71kM7QEpK8DGwxPWbzpVPw=;
+        b=W+5l9BOJLWKRqqTmUOR4rNzlvBovp7zGu6PRQUUi5FV/Dba2FYyWw9R/xZcTmVf1rL
+         uKmxAKZvJySjz8MQxE1ZamSMSFQoQBEwSRKoBg2iYt1lt4ne3UrqTSOYIQMMFb45sAgV
+         KMsZ9sfDbGCjEcM+dVJCm3+CV2UttIZIkXZYnnNgT/3sUAzZnek4U6NsqDNU0hVKSMBm
+         fubS5lfufmh9tsYkDbGL7CipxmFHvr/QfD9OHxsrSq4G7bZZ6778UkUXPYd9wcvSRf7D
+         8uq8da0L4vv2rZWZxe3AQGjrK6ZsW75X5ne5XpX/kVom97wfIwkG+e3rIRVMCGcxUNw4
+         LrKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756572529; x=1757177329;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uGegaPWxGQTvhFdIvhwtl2HHlep4qKtefJBT6reESx0=;
-        b=c0SikV0F+8zKtP1vVewphEFyfykHu6jmgFiDYg/0u7EoDax9Nk4t3fVNIkdBVtmvAF
-         9iUmQXrukIeakCWaXv7ClD1u9Q0jjXpOQFwylv//kWduawZvpgv3EyIzN4fwqCB8Y1Zl
-         iZ1xvnjz5WSCwUVkRzah//h5uy8rHDcusUF3/nteELDZDu+hYlcRYzo/waTn3jvBoAx0
-         u0UF7l3Gz4xJCa/9uFeG4IhUfYIgDjFJKnMrQ+H+XUHBrAH7GonWbALcKuC6U0nTFeeB
-         rfGT6HAU7nIA7n1rsN8368mJGnhfGSoA7u3leg0aUMEI8ZdFztkrzWNkgi+YgMlK7ou4
-         8fxw==
-X-Gm-Message-State: AOJu0YxfpuNXQRYUi876nGgAVbs8aMWw9oZ+oacddiNci4AOw+CMZxqz
-	ilyjt7boJXaFV9C8OatOOB/Qz+/TAT+lvukOFFFmjLoY89VVHnPtu6+VCMzTeDEYSLY=
-X-Gm-Gg: ASbGncs6VyZx9l+aWcisbRcQUpeFlMA2UCTC7MXeuZ4zHc/m881Fmb9oxZogDllQp4z
-	CeIKr7+HyxO3sw1c8+o6mqjOa9tXjKzCIAqTNrZ1WVXIkbJ5NstI8IiSbakdqJVtLWC2SNobd/t
-	HFcrP6kxPl9rcpK+/eQDAAFNpTeTEap3iahLfIO0qImsxD5ZO2K2up3Njk2NSE8PhtGSoZzQ0OY
-	2ceQGyiJvE85qglTJIQphdRyUoEkmV6FBytCPqJU709kLOVmHLSPyvTcGz16VuTHpSlguT+4UQe
-	fTF89JvfyGfLOBRkDN0f32lLZYe6qefE3HyG4aNZgSHE8zGNN0sgfdz6+HrF8V6f03WequMW4eD
-	QWFqmg6yutnaD4gKUbMUAdl1YoQliWdHJUnUjoFI=
-X-Google-Smtp-Source: AGHT+IH7Z/kvyvopM2ZnHxAu+WCRchp8R1OWKLCzlB4yVnosvVIsNOGkgCloMAkokNIzpMGMhjhXuw==
-X-Received: by 2002:a05:600c:5287:b0:456:2137:5662 with SMTP id 5b1f17b1804b1-45b81f120bamr22809295e9.7.1756572528946;
-        Sat, 30 Aug 2025 09:48:48 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf274dde69sm7818129f8f.14.2025.08.30.09.48.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Aug 2025 09:48:48 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Sat, 30 Aug 2025 18:48:34 +0200
-Subject: [PATCH v2 5/5] dt-bindings: iio: adc: samsung,exynos: Drop
- touchscreen support
+        d=1e100.net; s=20230601; t=1756572564; x=1757177364;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kBuLfFgHrxPEkeUpMGG9r71kM7QEpK8DGwxPWbzpVPw=;
+        b=qt8Q/asqW3iXeEIkJfnzTPKTCxGGEgkfOKj/h/hu2Jzm/Vrtl/7U022mu+R3IdTxQ7
+         Coxe7xJssRuKGX1ml2v8diUXHc0GZ3tXTNAEBx0t+6IlbMpgUwze0jsmuRL071AQgKrr
+         A2A0j/CI5mKdY01owEhaZIF8KRmGy5RqXYaHmUtp9h+Vv0JdUPi+W/OAfiHgzYezp0go
+         UmmTrZGFyht+vLjzp3t0kORP1vDj1bKDruCNiy8ygKhjBiU/2f7u6rxZS1YTCzLQAAg/
+         7lTqtPMZDcpbEsQVaLr/dr1d6prJAQo96YqND6TTizX0gEPbfda1TUqWsMiuuaSJCKF4
+         vzgA==
+X-Forwarded-Encrypted: i=1; AJvYcCXtQWhgw2ZGBiux0NSFPRRjnFvLNUdXnc73YDjDHP4oc15I+tpvo4XMM9maKIzBVfKw4pQdlykO+60=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw16CULevv7utZEXcO4JcAt732BKtz22AClokAcY0Wm3Jvr9u0o
+	KxVdt7C7Tj/qHPICdnCqJrHMTnorMLOkaKM09pcFq4tP6Ji7bfPynriLNfXMDLGLqGE=
+X-Gm-Gg: ASbGncvy0vaM1NBugNYcF7lmxf2U57aw0rY+gSczq1nSfYuuHXkWZj1Wv4BFvWIqYsZ
+	bdoaV56EB9XXsH9j5CDQ6jHgvCFQNKb75vlLcYYPpOnKRax78v8kypZ05+Rru4H6ALmAg81t7v8
+	50n2L6II9GAec9M2A4iq7HvU5hZmTiSTcsWVfx0ZAxs7ME/BFoSxxcaStMH/KfX/rPFW1UHYyqi
+	nIoZtLrY37bDnujWDLyDS3AozSdu2rNCroWgPF7Ds79RG1AO8RqFwmz1kF0SUcgXHzytWIWLWOH
+	jzuGqUxXVywMQ3xyBjCQIuR3KJaV9dYrByOKtSkn6iYr3VGG6ARuBAZP9Dhs6ts6L18HEZUMNXD
+	Nin3E17I50SOUv4oMMgq5pWCDNqrw3cfF0IXcll1hLxX7IOEwFSNKviQZm2Jlxui5RphdRGkk6g
+	o=
+X-Google-Smtp-Source: AGHT+IFu2ryWAbQjLQmOFSwzl839yLjB1FcTVR4u+JiQkg49Vg88/OQH6BXsgfWPJMxa0TmaCtPuBw==
+X-Received: by 2002:a05:6820:1acb:b0:61e:2be3:97b4 with SMTP id 006d021491bc7-61e335b8e70mr1078229eaf.2.1756572563897;
+        Sat, 30 Aug 2025 09:49:23 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:f7b4:dfbd:5110:c59d? ([2600:8803:e7e4:1d00:f7b4:dfbd:5110:c59d])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61e357137d6sm160026eaf.4.2025.08.30.09.49.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 30 Aug 2025 09:49:23 -0700 (PDT)
+Message-ID: <34c23490-470d-45b1-a8a6-e9e1ee82f5c8@baylibre.com>
+Date: Sat, 30 Aug 2025 11:49:21 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/15] Documentation: iio: ad4030: Add double PWM SPI
+ offload doc
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+Cc: jic23@kernel.org, Michael.Hennerich@analog.com, nuno.sa@analog.com,
+ eblanc@baylibre.com, andy@kernel.org, corbet@lwn.net, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, broonie@kernel.org,
+ Jonathan.Cameron@huawei.com, andriy.shevchenko@linux.intel.com,
+ ahaslam@baylibre.com, marcelo.schmitt1@gmail.com
+References: <cover.1756511030.git.marcelo.schmitt@analog.com>
+ <4425996699ceca9fa909bdad86b41abe8b25aad4.1756511030.git.marcelo.schmitt@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <4425996699ceca9fa909bdad86b41abe8b25aad4.1756511030.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250830-s3c-cleanup-adc-v2-5-4f8299343d32@linaro.org>
-References: <20250830-s3c-cleanup-adc-v2-0-4f8299343d32@linaro.org>
-In-Reply-To: <20250830-s3c-cleanup-adc-v2-0-4f8299343d32@linaro.org>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1987;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=M52Ix5e2ZfY480bhbf4Da85nfANVV5Q7GQgHm64bNig=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBosytm4JHyzH+AmZV5ywRHpisz2B5V10Ey2ZqXi
- ZkjUY5CvsOJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaLMrZgAKCRDBN2bmhouD
- 1zmzD/4ppk5vO9b3vahpeArWbxkYzHayHXHpMN8v8pvD3pzMJ029qz5Zkv3REblrgn8HRmobbak
- 5rGSq5Yrfo6/aF7cfHFUfpBOoUBRjNGyRyaMK/e4gESo+l0qJrrSHhWMQzuT/kezBuT9VNs6gox
- sfhS1/Y/RvAckDeLV46jXtRNAcIEE1xbnxezlRkemJPd9GHz/5FikDKOTLuTR03020aLhGpJlgD
- 6gb5/yQguf2lK1zBQ2OynKcpzAaRFpF5HNmFAgx0CvbqAtqhSOBl34MR3rzjzfMC1BaEQv7qjNK
- pt1o9mgMZiMNfTf3WQkR8aJ5YIPwWJUKICCwTIzdndDc8FI2kk2q0llE1BnBamT/n0AqppNc8wU
- rCfdwcv1zx6irWkafqebcuyOGlqMNCHCUPl07bGU+Dw/qBL/AAoX/7Hg9POwHjgpn0wAvCvUShJ
- A2K1Sr4WRuJ2kJoXHev458ou4bcsPRW4Fsdy5M9lvaTEbVKpSp6ot8//nWkoCv7VdUX0InOIMwU
- ej/oLXtYnCSDLITwtiVt/RwMxMN7bghJdgW6DmFJ6RYayGLrWLQhSi9vL5Vox7a1j1S+2Vb8s3/
- HCZROQXDgwxx4e87GeXNVc+mqmZgdcnEab1k+5uxz9eZSUgsgrR5RpkRtvRYfRq31MeZXcGiDoX
- MgEQgosc2lfW7qA==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-With last user of touchscreen via ADC (S3C24xx SoC) gone, drop the
-unused has-touchscreen property and optional touchscreen interrupt for
-samsung,s3c6410-adc.  The samsung,s5pv210-adc is the only platform
-having two interrupts, so add a constrain for that.
+On 8/29/25 7:41 PM, Marcelo Schmitt wrote:
+> Document double PWM setup SPI offload wiring schema.
+> 
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+>  Documentation/iio/ad4030.rst | 29 +++++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
+> 
+> diff --git a/Documentation/iio/ad4030.rst b/Documentation/iio/ad4030.rst
+> index b57424b650a8..dc3ac253ef66 100644
+> --- a/Documentation/iio/ad4030.rst
+> +++ b/Documentation/iio/ad4030.rst
+> @@ -92,6 +92,35 @@ Interleaved mode
+>  In this mode, both channels conversion results are bit interleaved one SDO line.
+>  As such the wiring is the same as `One lane mode`_.
+>  
+> +SPI offload wiring
+> +^^^^^^^^^^^^^^^^^^
+> +
+> +.. code-block::
+> +
+> +    +-------------+         +-------------+
+> +    |         CNV |<-----+--| GPIO        |
+> +    |             |      +--| PWM1        |
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Would be more logical to swap the PWM numbers since CNV
+is triggered first.
 
----
+> +    |             |         |             |
+> +    |             |      +--| PWM0        |
+> +    |             |      |  +-------------+
+> +    |             |      +->| TRIGGER     |
+> +    |          CS |<--------| CS          |
+> +    |             |         |             |
+> +    |     ADC     |         |     SPI     |
+> +    |             |         |             |
+> +    |         SDI |<--------| SDO         |
+> +    |         SDO |-------->| SDI         |
+> +    |        SCLK |<--------| SCLK        |
+> +    +-------------+         +-------------+
+> +
+> +In this mode, both the ``cnv-gpios`` and a ``pwms`` properties are required.
+> +The ``pwms`` property specifies the PWM that is connected to the ADC CNV pin.
+> +The SPI offload will have a ``trigger-sources`` property to indicate the SPI
+> +offload (PWM) trigger source. The IIO device driver synchronizes the PWMs to do
 
-Changes in v2:
-1. Fix S5Pv210 interrupts
----
- .../bindings/iio/adc/samsung,exynos-adc.yaml       | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+suggest to add something like:
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-index 73d7ba0fda1def433a97d10bce21e762a307e36c..def879f6ed20a3ad40baebed6557082a358cae2e 100644
---- a/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/samsung,exynos-adc.yaml
-@@ -42,8 +42,6 @@ properties:
-     maxItems: 2
- 
-   interrupts:
--    description:
--      ADC interrupt followed by optional touchscreen interrupt.
-     minItems: 1
-     maxItems: 2
- 
-@@ -58,11 +56,6 @@ properties:
-       Phandle to the PMU system controller node (to access the ADC_PHY
-       register on Exynos3250/4x12/5250/5420/5800).
- 
--  has-touchscreen:
--    description:
--      If present, indicates that a touchscreen is connected and usable.
--    type: boolean
--
- required:
-   - compatible
-   - reg
-@@ -114,13 +107,20 @@ allOf:
-             - const: adc
- 
-   - if:
--      required:
--        - has-touchscreen
-+      properties:
-+        compatible:
-+          contains:
-+            const: samsung,s5pv210-adc
-     then:
-       properties:
-         interrupts:
--          minItems: 2
--          maxItems: 2
-+          items:
-+            - description: main (ADC)
-+            - description: pending (PENDN)
-+    else:
-+      properties:
-+        interrupts:
-+          maxItems: 1
- 
- examples:
-   - |
+with an offset between the rising edge of PWM0 and PWM1 to delay the SPI
+transfer until some time after the conversion. This requires a specialized
+PWM controller that can provide such an offset.
 
--- 
-2.48.1
+> +ADC transfer zone 2 data capture.
+
+What is "zone 2"?
+
+> +
+> +.. seealso:: `SPI offload support`_
+
+There is no section that this links to. Add the section or delete this.
+
+> +
+>  SPI Clock mode
+>  --------------
+>  
 
 

@@ -1,302 +1,114 @@
-Return-Path: <linux-iio+bounces-23484-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23486-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E846B3CE76
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 19:58:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81D1B3CE80
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 20:02:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 908181B23481
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 17:58:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 342721B25DE9
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 18:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60112D8372;
-	Sat, 30 Aug 2025 17:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A022D8789;
+	Sat, 30 Aug 2025 18:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YpOHG9Z0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NB62WKQS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90255214A9B;
-	Sat, 30 Aug 2025 17:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF20B2D8779;
+	Sat, 30 Aug 2025 18:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756576706; cv=none; b=ODJVnPn2hzbJA0/S9CaEneRCgBXI2NBkBxbkfGrU9xdnupCIIhcRwbJ/s36fXSIGxcnL7CNHM1a9ufIU3Od4+9cooseQxiaNc3dhIQfnk/xJjEGfwqmYeqN1ZGdTxHqpUqMmiV/9Ao2rUnzC/ej+yCyUYuVfXG9qmYKYS86W6xE=
+	t=1756576957; cv=none; b=QsUFyz+8n6ggiv2bL2/p+60js4i2M8hbxIhLOMX6v/A1VALmevwCt4Ypvy6L8Eagb6cRSwnq4HhNruEYG+cZ/CHAMyczpVeSFi7boPfgq5JBlh8yKjRpWiMBzn2xFFXZNKsCmhuRdxfcbAPBt4qlVIAPfPBZevoBgzDtJfcgk0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756576706; c=relaxed/simple;
-	bh=gLEo2uJLmeD2rR9NOYEoCgLlxswyya3IZn7gOnZtxFA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hRw/oqjmKFRpn+NpvyiNQtgVa9z36J0c5ZeLHKTRpbIZeK+UXdBPpQgBQ4qt7wfqld9cJGoI8V04sUz8CeXaP9Dt/pOYqdS183orDePfsz/Sv3BYpPKKsWhkr21T75IyuEbEd0q0nmmXdyel8xeWaJLC7mBa41ukmqomuH+TFHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YpOHG9Z0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98409C4CEEB;
-	Sat, 30 Aug 2025 17:58:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756576706;
-	bh=gLEo2uJLmeD2rR9NOYEoCgLlxswyya3IZn7gOnZtxFA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YpOHG9Z0DYuWh8xIkWjRHdBtNFjJj/psL6PFm0jZXSPaYqOcl/AXbIBmDcX2hD9YY
-	 8hqmvUXWIV/Dlu3PwzLO32cecNlaiqLGkI01yDFerWB/YxVgQvW4SU5/5Ln0iTuUrH
-	 Wf4sqaFG9npL4Jk5DlAN/UIj2lgCuc2ICc3uHsE9UIDYkc2C9V46embsFkYdO0Nymp
-	 HbRHSjKj7SVMR1/VHT4R1kQ87fuH8PHNjxongb+aFjm2eiucDO6KCmUqVzSM4mF2Sh
-	 wMmiSTN0M+SXl/yqkOiFN694gPvF3RFsg7hc+FN2vATTpXyP1qnh+h4otBQ2k2Llha
-	 OuX3pFTa8QG4A==
-Date: Sat, 30 Aug 2025 18:58:09 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
-Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
- lumag@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
- konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
- amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
- rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
- david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
- kamal.wadhwa@oss.qualcomm.com, rui.zhang@intel.com, lukasz.luba@arm.com,
- devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
- quic_kotarake@quicinc.com, neil.armstrong@linaro.org,
- stephan.gerhold@linaro.org
-Subject: Re: [PATCH V7 5/5] thermal: qcom: add support for PMIC5 Gen3 ADC
- thermal monitoring
-Message-ID: <20250830185809.5bc010cb@jic23-huawei>
-In-Reply-To: <20250826083657.4005727-6-jishnu.prakash@oss.qualcomm.com>
-References: <20250826083657.4005727-1-jishnu.prakash@oss.qualcomm.com>
-	<20250826083657.4005727-6-jishnu.prakash@oss.qualcomm.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1756576957; c=relaxed/simple;
+	bh=Ao8imHYo5IzQ9Frm5yhbR77Zb2XvtE17zjk66X/cYUo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HUSaTmnL5SKQGIFAxlVOzu1kWpY/VhteUqxxcQQNmTl8D4NypksKAgsL69uz9CJE6XkOJOt2p9yiLaNm6TKYHWckvqFFPAkifyiisXcjdZPCEmr/pvLqAK6y2gxbkJOz53FqfJOvb0a5eIVrzoWRH3CI6VcqCoh9DCQTGGwNwzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NB62WKQS; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-336ce4a8bfcso3258181fa.0;
+        Sat, 30 Aug 2025 11:02:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756576954; x=1757181754; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=epsny7acfAGYj85X4uwMr4fqde6oRVpKItTrIp/5hXw=;
+        b=NB62WKQSK5W1lKJKY1DXedDAT6jMUsL8016hm2fJgz3T8JMldWLwPVDEHLJzbtWjfY
+         sS6rucCLLuTqQoHC+eryoYHJz3OTbA2Rlj4CBArci9QFRNP70hWnaG3HTlSb2qQEFrCp
+         7PTL90hcfFn0zGIC+2h3lBxfRpFgGQqBEJrpKCuNEOpw9rUzCn5lbtIDyMioZvnjuYlI
+         H3I6i8t2myMwnqpM8WF4eQjsqIFj8PXVjgJbe/LZuYHScb83CU2IOLkScSDbN1xR9s+2
+         YmNEVvvx0mEftVYxmHX4dX70HXMmFYDw85wzHliG2iGx347/eboWPRnbsIJ6ND68e6yU
+         YodA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756576954; x=1757181754;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=epsny7acfAGYj85X4uwMr4fqde6oRVpKItTrIp/5hXw=;
+        b=lD7auitj5WB+kMLhtp/W4OOolJsSL3JEpXLEAc+vuhwVpSb9wvWroFRl9kNAzWJEmK
+         oFauKDsYOQMGclwTpm929LdKj+013puZ7G9e1ou6wWOmb9DRmmqmyS/39LRB32B8YmWL
+         zS8AROHHAEunxSvF0p6iZotvPZFrJr1AYAlqBR1AvlZx4z2/NuFPvGJ+U/nsOn56rrQW
+         TDHwuoDp8SJNfS6p44ao5PDyKNkJVI7c8c/QbFh1sVcr5IEBZNyx9N7h6lXRHxpwL+hF
+         noc/lB8X8A9yoS60khUB7nSbJfCyFNPp22NJaRzmANWgVf1sqb2ZSAIEp0kgLlntqkQo
+         GHNg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+Sbr7OgjBZpqu7LdKpWHseI2AQBiy3u/0wm6FX9FgFxXOrDnnR0aR8FBEoWXrJO28gq8tX0sEdEsK5nqF@vger.kernel.org, AJvYcCX17n9gcFQTSL/zja+6ZYdJR5MK4e54un7xahEq0k6Xtku4h4/NtPylDPqt59jsl/VU4HsvgEkH45Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxceMstn69Laj6DVtyE5kq3W1st2mqyoQUTCaaRg4ap3wmbLlD
+	tEealNLwriEB25qi55a5xqjAt/gz/F9ipxcFDxgspuvcwo0nXooS91mYNU69ObqXsjBj5DnBDKn
+	fAln9T4syjyT+hl0E4zQqlldNgZQ6s0o=
+X-Gm-Gg: ASbGncugodXbA6l5WQA3vCryCaPV9N1h3T6dg8dsHFY6QkbRkljq7jreQaoHiDGTVMB
+	dwawxhisdZ/qv/ZFL9CiMH2RlM0hk4pkHEW1Vj8AlN9+iSiPTkyLygG31Fwwcsmk2MD0/zzr3yj
+	MYSfjPBWWQROiZRsoria9GY/DcHCXKCy1skmVIQECwK6GCo3v+7GfiW5bGENz2DKjk50qcK4+JA
+	D+Bin0=
+X-Google-Smtp-Source: AGHT+IFYbWcvlq4vBHu7LPLPkJqryqkTThxW7bWrivBX1b8nehyrj26P86tSJh21eVC980GYXhTbwoZ5Jk1PoUPQ8eE=
+X-Received: by 2002:a2e:be24:0:b0:336:b941:4ac1 with SMTP id
+ 38308e7fff4ca-336cae3b72amr6297091fa.30.1756576953563; Sat, 30 Aug 2025
+ 11:02:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250830113502.83102-1-akshayaj.lkd@gmail.com>
+ <CAHp75Vc6J+Qm4hsV=PJn9Oyfn5xr9SZLGMagHm9NdFrkk9Y_5A@mail.gmail.com>
+ <CAE3SzaSYLFFRL4OuqUbk8J0dWCuxedCyGiX2_tJySG1FC=w95g@mail.gmail.com> <CAHp75Vcitq5+fJJMKFGC9Qsqe8yAuoxK99YohR8N9218iR_Ocw@mail.gmail.com>
+In-Reply-To: <CAHp75Vcitq5+fJJMKFGC9Qsqe8yAuoxK99YohR8N9218iR_Ocw@mail.gmail.com>
+From: Akshay Jindal <akshayaj.lkd@gmail.com>
+Date: Sat, 30 Aug 2025 23:32:20 +0530
+X-Gm-Features: Ac12FXzcCU-jNW_S8F494tnEXjlXNBKI-Q7NsUK_8okhnUZWGsU6PS4EDQU0rGs
+Message-ID: <CAE3SzaSmkjiqkAG8CCsu_ZOqSFSAaETNeZu+mSL9=MHoiSmX2Q@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: light: ltr390: Implement runtime PM support
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: anshulusr@gmail.com, jic23@kernel.org, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, shuah@kernel.org, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 26 Aug 2025 14:06:57 +0530
-Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
+Thanks Andy for acknowledging. Follow-up inline.
 
-> Add support for ADC_TM part of PMIC5 Gen3.
-> 
-> This is an auxiliary driver under the Gen3 ADC driver, which implements the
-> threshold setting and interrupt generating functionalities of QCOM ADC_TM
-> drivers, used to support thermal trip points.
-> 
-> Signed-off-by: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
-Hi Jishnu,
+On Sat, Aug 30, 2025 at 8:16=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Sat, Aug 30, 2025 at 4:24=E2=80=AFPM Akshay Jindal <akshayaj.lkd@gmail=
+.com> wrote:
+> > On Sat, Aug 30, 2025 at 6:04=E2=80=AFPM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Sat, Aug 30, 2025 at 2:35=E2=80=AFPM Akshay Jindal <akshayaj.lkd@g=
+mail.com> wrote:
+>
+>
+> I see now, yeah, this is unfortunate.
+> Just rename the leading __ to  the _unlocked() suffix. It's easier to rea=
+d.
+I did not get this part. Which function do you think needs to be renamed?
 
-A few comment inline from a fresh read
-
-Jonathan
-
-
-> diff --git a/drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c b/drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c
-> new file mode 100644
-> index 000000000000..9ec0d4e058b8
-> --- /dev/null
-> +++ b/drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c
-> @@ -0,0 +1,535 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-> + */
-
-
-> +
-> +static void tm_handler_work(struct work_struct *work)
-> +{
-> +	struct adc_tm5_gen3_chip *adc_tm5 = container_of(work, struct adc_tm5_gen3_chip,
-> +							 tm_handler_work);
-> +	struct adc_tm5_gen3_channel_props *chan_prop;
-> +	u8 tm_status[2] = {0};
-> +	u8 buf[16] = {0};
-
-Small preference for { };
-which is effectively the same but for structures (so not relevant here) that is
-also defined by newer c specs to initialize holes which the {0}; version is not
-(but actually does in compilers with the settings the kernel uses).
-
-> +	int i, ret = 0, sdam_index = -1;
-> +
-> +	for (i = 0; i < adc_tm5->nchannels; i++) {
-> +		bool upper_set = false, lower_set = false;
-> +		int temp, offset;
-> +		u16 code = 0;
-> +
-> +		chan_prop = &adc_tm5->chan_props[i];
-> +		offset = chan_prop->tm_chan_index;
-> +
-> +		adc5_gen3_mutex_lock(adc_tm5->dev);
-> +		if (chan_prop->sdam_index != sdam_index) {
-> +			sdam_index = chan_prop->sdam_index;
-> +			ret = adc5_gen3_tm_status_check(adc_tm5, sdam_index,
-> +							tm_status, buf);
-> +			if (ret) {
-> +				adc5_gen3_mutex_unlock(adc_tm5->dev);
-> +				break;
-> +			}
-> +		}
-> +
-> +		if ((tm_status[0] & BIT(offset)) && chan_prop->high_thr_en)
-> +			upper_set = true;
-		upper_set = ((tm_status[0] & BIT(offset)) && chan_prop->high_thr_en;
-
-seems as clear to me and avoid need to initialize above.
-
-The
-	for (i...) {
-		if (x)
-			b = true;
-	}
-
-pattern made me thing this was a check that built up over iterations, but it's
-not so avoiding that is probably a good thing as well!
-
-> +
-> +		if ((tm_status[1] & BIT(offset)) && chan_prop->low_thr_en)
-> +			lower_set = true;
-> +		adc5_gen3_mutex_unlock(adc_tm5->dev);
-> +
-> +		if (!(upper_set || lower_set))
-> +			continue;
-> +
-> +		code = get_unaligned_le16(&buf[2 * offset]);
-> +		pr_debug("ADC_TM threshold code:%#x\n", code);
-> +
-> +		ret = adc5_gen3_therm_code_to_temp(adc_tm5->dev,
-> +						   &chan_prop->common_props,
-> +						   code, &temp);
-> +		if (ret) {
-> +			dev_err(adc_tm5->dev,
-> +				"Invalid temperature reading, ret = %d, code=%#x\n",
-> +				ret, code);
-> +			continue;
-> +		}
-> +
-> +		chan_prop->last_temp = temp;
-> +		chan_prop->last_temp_set = true;
-> +		thermal_zone_device_update(chan_prop->tzd, THERMAL_TRIP_VIOLATED);
-> +	}
-> +}
-
-
-> +
-> +static int adc_tm5_gen3_configure(struct adc_tm5_gen3_channel_props *prop,
-> +				  int low_temp, int high_temp)
-> +{
-> +	struct adc_tm5_gen3_chip *adc_tm5 = prop->chip;
-> +	u8 conv_req = 0, buf[ADC_TM5_GEN3_CONFIG_REGS];
-Spit these sort of complex mix of types of declaration up.
-	u8 buf[*];
-	u8 conv_reg = 0;
-
-etc as it helps readability.  Generally I wouldn't mix assignment and
-non assignment and also not arrays or pointers and non pointers etc.
-
-> +	u16 adc_code;
-> +	int ret;
-
-> +
-> +	/* Select HW settle delay for channel */
-> +	buf[6] = FIELD_PREP(ADC5_GEN3_HW_SETTLE_DELAY_MASK,
-> +			    prop->common_props.hw_settle_time_us);
-> +
-> +	/* High temperature corresponds to low voltage threshold */
-> +	if (high_temp != INT_MAX) {
-> +		prop->low_thr_en = true;
-Perhaps neater as a assignment then use of the bool
-
-	prop->low_thr_en = (hightemp != INT_MAX);
-	if (prp->low_thr_en) {
-		adc_code = qcom_adc_tm5_gen2_temp_res_scale(high_temp);
-		put_unaligned_le16(adc_code, &buf[8]);
-	}
-
-Applies to below similar case as well.
-
-	
-> +		adc_code = qcom_adc_tm5_gen2_temp_res_scale(high_temp);
-> +		put_unaligned_le16(adc_code, &buf[8]);
-> +	} else {
-> +		prop->low_thr_en = false;
-> +	}
-> +
-> +	/* Low temperature corresponds to high voltage threshold */
-> +	if (low_temp != -INT_MAX) {
-> +		prop->high_thr_en = true;
-> +		adc_code = qcom_adc_tm5_gen2_temp_res_scale(low_temp);
-> +		put_unaligned_le16(adc_code, &buf[10]);
-> +	} else {
-> +		prop->high_thr_en = false;
-> +	}
-> +
-> +	buf[7] = 0;
-> +	if (prop->high_thr_en)
-> +		buf[7] |= ADC5_GEN3_HIGH_THR_INT_EN;
-> +	if (prop->low_thr_en)
-> +		buf[7] |= ADC5_GEN3_LOW_THR_INT_EN;
-> +
-> +	ret = adc5_gen3_write(adc_tm5->dev_data, prop->sdam_index, ADC5_GEN3_SID,
-> +			      buf, sizeof(buf));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	conv_req = ADC5_GEN3_CONV_REQ_REQ;
-> +	return adc5_gen3_write(adc_tm5->dev_data, prop->sdam_index,
-> +			       ADC5_GEN3_CONV_REQ, &conv_req, sizeof(conv_req));
-> +}
-
-> +
-> +static int adc_tm5_probe(struct auxiliary_device *aux_dev,
-> +			 const struct auxiliary_device_id *id)
-> +{
-> +	struct adc_tm5_gen3_chip *adc_tm5;
-> +	struct tm5_aux_dev_wrapper *aux_dev_wrapper;
-> +	struct device *dev = &aux_dev->dev;
-> +	int i, ret;
-> +
-> +	adc_tm5 = devm_kzalloc(dev, sizeof(*adc_tm5), GFP_KERNEL);
-> +	if (!adc_tm5)
-> +		return -ENOMEM;
-> +
-> +	aux_dev_wrapper = container_of(aux_dev, struct tm5_aux_dev_wrapper,
-> +				       aux_dev);
-> +
-> +	adc_tm5->dev = dev;
-> +	adc_tm5->dev_data = aux_dev_wrapper->dev_data;
-> +	adc_tm5->nchannels = aux_dev_wrapper->n_tm_channels;
-> +	adc_tm5->chan_props = devm_kcalloc(dev, aux_dev_wrapper->n_tm_channels,
-> +					   sizeof(*adc_tm5->chan_props), GFP_KERNEL);
-> +	if (!adc_tm5->chan_props)
-> +		return -ENOMEM;
-> +
-> +	for (i = 0; i < adc_tm5->nchannels; i++) {
-> +		adc_tm5->chan_props[i].common_props = aux_dev_wrapper->tm_props[i];
-> +		adc_tm5->chan_props[i].timer = MEAS_INT_1S;
-> +		adc_tm5->chan_props[i].sdam_index = (i + 1) / 8;
-> +		adc_tm5->chan_props[i].tm_chan_index = (i + 1) % 8;
-> +		adc_tm5->chan_props[i].chip = adc_tm5;
-> +	}
-> +
-> +	ret = devm_add_action_or_reset(dev, adc5_gen3_disable, adc_tm5);
-
-I'd normally expect a pairing of a devm action with whatever it is undoing.
-If not add a comment for why that isn't the case here.
-
-> +	if (ret)
-> +		return ret;
-> +
-> +	INIT_WORK(&adc_tm5->tm_handler_work, tm_handler_work);
-
-> +}
-> +
-> +static const struct auxiliary_device_id adctm5_auxiliary_id_table[] = {
-> +	{ .name = "qcom_spmi_adc5_gen3.adc5_tm_gen3", },
-> +	{}
-
-For IIO drivers I'm trying to slowly standardize some formatting choices.
-For these I picked (for no particular reason)
-	{ }
-
-> +};
+Thanks,
+Akshay.
 

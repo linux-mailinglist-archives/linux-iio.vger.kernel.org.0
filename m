@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-23483-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23484-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A1AB3CE52
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 19:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E846B3CE76
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 19:58:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D1951B21069
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 17:43:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 908181B23481
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 17:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5592D660B;
-	Sat, 30 Aug 2025 17:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60112D8372;
+	Sat, 30 Aug 2025 17:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxZ4GrcS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YpOHG9Z0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5C921B1BC;
-	Sat, 30 Aug 2025 17:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90255214A9B;
+	Sat, 30 Aug 2025 17:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756575770; cv=none; b=MFqePeT6YkUEvI6tiftrQ446YuDeRpznxbw6BwmHSlyIxq/iGkfT67yF4Q/GtboIATE65S90jhD972P0FP03sjFQcVCWH2vdaq1ihZ8HAZCaU4C44dtoxbwJdwDpMuV1tsMJfMcTcVap0n76wscYXcf8OYM6I3S9F1Fo1qg0N70=
+	t=1756576706; cv=none; b=ODJVnPn2hzbJA0/S9CaEneRCgBXI2NBkBxbkfGrU9xdnupCIIhcRwbJ/s36fXSIGxcnL7CNHM1a9ufIU3Od4+9cooseQxiaNc3dhIQfnk/xJjEGfwqmYeqN1ZGdTxHqpUqMmiV/9Ao2rUnzC/ej+yCyUYuVfXG9qmYKYS86W6xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756575770; c=relaxed/simple;
-	bh=jFJt86/DZ9iE6qIgTPeN7i5Gs1LDuWlzNpdOtPnpk3U=;
+	s=arc-20240116; t=1756576706; c=relaxed/simple;
+	bh=gLEo2uJLmeD2rR9NOYEoCgLlxswyya3IZn7gOnZtxFA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=beQighWF3EbJ30VoRfD2k9m1MywIoH4f3dpBlbr4Tyn2ylw0/K0aPIBcBqaX9PGPrx+n/fuT8UlHXW67cdNXNglHeNfuzmMV7T7eQMpuLLeiTvKL2zwvM3upPXz4fJCgg4+VcvQAJ8pceFSFa/Na7irHzX5dCUEsN3K/6qGxyNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxZ4GrcS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79222C4CEEB;
-	Sat, 30 Aug 2025 17:42:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hRw/oqjmKFRpn+NpvyiNQtgVa9z36J0c5ZeLHKTRpbIZeK+UXdBPpQgBQ4qt7wfqld9cJGoI8V04sUz8CeXaP9Dt/pOYqdS183orDePfsz/Sv3BYpPKKsWhkr21T75IyuEbEd0q0nmmXdyel8xeWaJLC7mBa41ukmqomuH+TFHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YpOHG9Z0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98409C4CEEB;
+	Sat, 30 Aug 2025 17:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756575769;
-	bh=jFJt86/DZ9iE6qIgTPeN7i5Gs1LDuWlzNpdOtPnpk3U=;
+	s=k20201202; t=1756576706;
+	bh=gLEo2uJLmeD2rR9NOYEoCgLlxswyya3IZn7gOnZtxFA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lxZ4GrcS5S5b/z6tGf4na0QlKpZFB9j85eIrH11OLgDhO81v3WOLkXUDl/lpoIpff
-	 4OENQZYEdo2gR4WxtlMfQbJih5IsZPZOvyZhU0bzO/ywt1cyz2VWQiS/I9KUyiLguV
-	 UpUmcifVbJ8tBqRCSMOVvyLXU1CXoPbQyD6/ZYdwbeESyDIBnmEhzMOICuIq8/m6u+
-	 yI3YK+37eQP+qKdbCNCmIus4tCxuZIfn5XMEGIl71sdRybtyR3Tg/e30FnA3si7FTs
-	 TGQPgO87Y0nt+mU3S8UkJPq9q9UyQVsVKIRcmyBzfOLgex2JKEQ0UUr+M5p4hnfLhh
-	 wYtUYF12lFO0Q==
-Date: Sat, 30 Aug 2025 18:42:33 +0100
+	b=YpOHG9Z0DYuWh8xIkWjRHdBtNFjJj/psL6PFm0jZXSPaYqOcl/AXbIBmDcX2hD9YY
+	 8hqmvUXWIV/Dlu3PwzLO32cecNlaiqLGkI01yDFerWB/YxVgQvW4SU5/5Ln0iTuUrH
+	 Wf4sqaFG9npL4Jk5DlAN/UIj2lgCuc2ICc3uHsE9UIDYkc2C9V46embsFkYdO0Nymp
+	 HbRHSjKj7SVMR1/VHT4R1kQ87fuH8PHNjxongb+aFjm2eiucDO6KCmUqVzSM4mF2Sh
+	 wMmiSTN0M+SXl/yqkOiFN694gPvF3RFsg7hc+FN2vATTpXyP1qnh+h4otBQ2k2Llha
+	 OuX3pFTa8QG4A==
+Date: Sat, 30 Aug 2025 18:58:09 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
 Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
@@ -57,11 +57,12 @@ Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
  linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
  quic_kotarake@quicinc.com, neil.armstrong@linaro.org,
  stephan.gerhold@linaro.org
-Subject: Re: [PATCH V7 4/5] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
-Message-ID: <20250830184233.7ddf6ae8@jic23-huawei>
-In-Reply-To: <20250826083657.4005727-5-jishnu.prakash@oss.qualcomm.com>
+Subject: Re: [PATCH V7 5/5] thermal: qcom: add support for PMIC5 Gen3 ADC
+ thermal monitoring
+Message-ID: <20250830185809.5bc010cb@jic23-huawei>
+In-Reply-To: <20250826083657.4005727-6-jishnu.prakash@oss.qualcomm.com>
 References: <20250826083657.4005727-1-jishnu.prakash@oss.qualcomm.com>
-	<20250826083657.4005727-5-jishnu.prakash@oss.qualcomm.com>
+	<20250826083657.4005727-6-jishnu.prakash@oss.qualcomm.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -72,218 +73,230 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 26 Aug 2025 14:06:56 +0530
+On Tue, 26 Aug 2025 14:06:57 +0530
 Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
 
-> The ADC architecture on PMIC5 Gen3 is similar to that on PMIC5 Gen2,
-> with all SW communication to ADC going through PMK8550 which
-> communicates with other PMICs through PBS.
+> Add support for ADC_TM part of PMIC5 Gen3.
 > 
-> One major difference is that the register interface used here is that
-> of an SDAM (Shared Direct Access Memory) peripheral present on PMK8550.
-> There may be more than one SDAM used for ADC5 Gen3 and each has eight
-> channels, which may be used for either immediate reads (same functionality
-> as previous PMIC5 and PMIC5 Gen2 ADC peripherals) or recurring measurements
-> (same as ADC_TM functionality).
-> 
-> By convention, we reserve the first channel of the first SDAM for all
-> immediate reads and use the remaining channels across all SDAMs for
-> ADC_TM monitoring functionality.
-> 
-> Add support for PMIC5 Gen3 ADC driver for immediate read functionality.
-> ADC_TM is implemented as an auxiliary thermal driver under this ADC
-> driver.
+> This is an auxiliary driver under the Gen3 ADC driver, which implements the
+> threshold setting and interrupt generating functionalities of QCOM ADC_TM
+> drivers, used to support thermal trip points.
 > 
 > Signed-off-by: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
-
 Hi Jishnu,
 
-A few additional comments from a fresh read through.
-
-Thanks,
+A few comment inline from a fresh read
 
 Jonathan
 
-> diff --git a/drivers/iio/adc/qcom-adc5-gen3-common.c b/drivers/iio/adc/qcom-adc5-gen3-common.c
+
+> diff --git a/drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c b/drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c
 > new file mode 100644
-> index 000000000000..c84e75859958
+> index 000000000000..9ec0d4e058b8
 > --- /dev/null
-> +++ b/drivers/iio/adc/qcom-adc5-gen3-common.c
-> @@ -0,0 +1,106 @@
+> +++ b/drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c
+> @@ -0,0 +1,535 @@
 > +// SPDX-License-Identifier: GPL-2.0-only
 > +/*
 > + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-> + *
-> + * Code shared between the main and auxiliary Qualcomm PMIC voltage ADCs
-> + * of type ADC5 Gen3.
 > + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/delay.h>
-> +#include <linux/iio/adc/qcom-adc5-gen3-common.h>
 
-Follow (approximate) include what you use principles for includes.
-So here I'd expect to at least see a regmap include.
 
 > +
-> +int adc5_gen3_read(struct adc5_device_data *adc, unsigned int sdam_index,
-> +		   u16 offset, u8 *data, int len)
+> +static void tm_handler_work(struct work_struct *work)
 > +{
-> +	return regmap_bulk_read(adc->regmap,
-> +				adc->base[sdam_index].base_addr + offset,
-> +				data, len);
+> +	struct adc_tm5_gen3_chip *adc_tm5 = container_of(work, struct adc_tm5_gen3_chip,
+> +							 tm_handler_work);
+> +	struct adc_tm5_gen3_channel_props *chan_prop;
+> +	u8 tm_status[2] = {0};
+> +	u8 buf[16] = {0};
+
+Small preference for { };
+which is effectively the same but for structures (so not relevant here) that is
+also defined by newer c specs to initialize holes which the {0}; version is not
+(but actually does in compilers with the settings the kernel uses).
+
+> +	int i, ret = 0, sdam_index = -1;
+> +
+> +	for (i = 0; i < adc_tm5->nchannels; i++) {
+> +		bool upper_set = false, lower_set = false;
+> +		int temp, offset;
+> +		u16 code = 0;
+> +
+> +		chan_prop = &adc_tm5->chan_props[i];
+> +		offset = chan_prop->tm_chan_index;
+> +
+> +		adc5_gen3_mutex_lock(adc_tm5->dev);
+> +		if (chan_prop->sdam_index != sdam_index) {
+> +			sdam_index = chan_prop->sdam_index;
+> +			ret = adc5_gen3_tm_status_check(adc_tm5, sdam_index,
+> +							tm_status, buf);
+> +			if (ret) {
+> +				adc5_gen3_mutex_unlock(adc_tm5->dev);
+> +				break;
+> +			}
+> +		}
+> +
+> +		if ((tm_status[0] & BIT(offset)) && chan_prop->high_thr_en)
+> +			upper_set = true;
+		upper_set = ((tm_status[0] & BIT(offset)) && chan_prop->high_thr_en;
+
+seems as clear to me and avoid need to initialize above.
+
+The
+	for (i...) {
+		if (x)
+			b = true;
+	}
+
+pattern made me thing this was a check that built up over iterations, but it's
+not so avoiding that is probably a good thing as well!
+
+> +
+> +		if ((tm_status[1] & BIT(offset)) && chan_prop->low_thr_en)
+> +			lower_set = true;
+> +		adc5_gen3_mutex_unlock(adc_tm5->dev);
+> +
+> +		if (!(upper_set || lower_set))
+> +			continue;
+> +
+> +		code = get_unaligned_le16(&buf[2 * offset]);
+> +		pr_debug("ADC_TM threshold code:%#x\n", code);
+> +
+> +		ret = adc5_gen3_therm_code_to_temp(adc_tm5->dev,
+> +						   &chan_prop->common_props,
+> +						   code, &temp);
+> +		if (ret) {
+> +			dev_err(adc_tm5->dev,
+> +				"Invalid temperature reading, ret = %d, code=%#x\n",
+> +				ret, code);
+> +			continue;
+> +		}
+> +
+> +		chan_prop->last_temp = temp;
+> +		chan_prop->last_temp_set = true;
+> +		thermal_zone_device_update(chan_prop->tzd, THERMAL_TRIP_VIOLATED);
+> +	}
 > +}
-> +EXPORT_SYMBOL_NS_GPL(adc5_gen3_read, "QCOM_SPMI_ADC5_GEN3");
-> +
-> +int adc5_gen3_write(struct adc5_device_data *adc, unsigned int sdam_index,
-> +		    u16 offset, u8 *data, int len)
-> +{
-> +	return regmap_bulk_write(adc->regmap,
-> +				 adc->base[sdam_index].base_addr + offset,
-> +				 data, len);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(adc5_gen3_write, "QCOM_SPMI_ADC5_GEN3");
 
-> diff --git a/drivers/iio/adc/qcom-spmi-adc5-gen3.c b/drivers/iio/adc/qcom-spmi-adc5-gen3.c
-> new file mode 100644
-> index 000000000000..f01a56363389
-> --- /dev/null
-> +++ b/drivers/iio/adc/qcom-spmi-adc5-gen3.c
 
 > +
-> +#define ADC5_GEN3_READ_CONFIG_REGS 7
-> +
-> +static int adc5_gen3_configure(struct adc5_chip *adc,
-> +			       struct adc5_channel_common_prop *prop)
+> +static int adc_tm5_gen3_configure(struct adc_tm5_gen3_channel_props *prop,
+> +				  int low_temp, int high_temp)
 > +{
-> +	u8 buf[ADC5_GEN3_READ_CONFIG_REGS];
-> +	u8 conv_req = 0;
+> +	struct adc_tm5_gen3_chip *adc_tm5 = prop->chip;
+> +	u8 conv_req = 0, buf[ADC_TM5_GEN3_CONFIG_REGS];
+Spit these sort of complex mix of types of declaration up.
+	u8 buf[*];
+	u8 conv_reg = 0;
+
+etc as it helps readability.  Generally I wouldn't mix assignment and
+non assignment and also not arrays or pointers and non pointers etc.
+
+> +	u16 adc_code;
 > +	int ret;
+
 > +
-> +	ret = adc5_gen3_read(&adc->dev_data, ADC5_GEN3_VADC_SDAM, ADC5_GEN3_SID,
-> +			     buf, sizeof(buf));
+> +	/* Select HW settle delay for channel */
+> +	buf[6] = FIELD_PREP(ADC5_GEN3_HW_SETTLE_DELAY_MASK,
+> +			    prop->common_props.hw_settle_time_us);
+> +
+> +	/* High temperature corresponds to low voltage threshold */
+> +	if (high_temp != INT_MAX) {
+> +		prop->low_thr_en = true;
+Perhaps neater as a assignment then use of the bool
+
+	prop->low_thr_en = (hightemp != INT_MAX);
+	if (prp->low_thr_en) {
+		adc_code = qcom_adc_tm5_gen2_temp_res_scale(high_temp);
+		put_unaligned_le16(adc_code, &buf[8]);
+	}
+
+Applies to below similar case as well.
+
+	
+> +		adc_code = qcom_adc_tm5_gen2_temp_res_scale(high_temp);
+> +		put_unaligned_le16(adc_code, &buf[8]);
+> +	} else {
+> +		prop->low_thr_en = false;
+> +	}
+> +
+> +	/* Low temperature corresponds to high voltage threshold */
+> +	if (low_temp != -INT_MAX) {
+> +		prop->high_thr_en = true;
+> +		adc_code = qcom_adc_tm5_gen2_temp_res_scale(low_temp);
+> +		put_unaligned_le16(adc_code, &buf[10]);
+> +	} else {
+> +		prop->high_thr_en = false;
+> +	}
+> +
+> +	buf[7] = 0;
+> +	if (prop->high_thr_en)
+> +		buf[7] |= ADC5_GEN3_HIGH_THR_INT_EN;
+> +	if (prop->low_thr_en)
+> +		buf[7] |= ADC5_GEN3_LOW_THR_INT_EN;
+> +
+> +	ret = adc5_gen3_write(adc_tm5->dev_data, prop->sdam_index, ADC5_GEN3_SID,
+> +			      buf, sizeof(buf));
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	conv_req = ADC5_GEN3_CONV_REQ_REQ;
+> +	return adc5_gen3_write(adc_tm5->dev_data, prop->sdam_index,
+> +			       ADC5_GEN3_CONV_REQ, &conv_req, sizeof(conv_req));
+> +}
+
+> +
+> +static int adc_tm5_probe(struct auxiliary_device *aux_dev,
+> +			 const struct auxiliary_device_id *id)
+> +{
+> +	struct adc_tm5_gen3_chip *adc_tm5;
+> +	struct tm5_aux_dev_wrapper *aux_dev_wrapper;
+> +	struct device *dev = &aux_dev->dev;
+> +	int i, ret;
+> +
+> +	adc_tm5 = devm_kzalloc(dev, sizeof(*adc_tm5), GFP_KERNEL);
+> +	if (!adc_tm5)
+> +		return -ENOMEM;
+> +
+> +	aux_dev_wrapper = container_of(aux_dev, struct tm5_aux_dev_wrapper,
+> +				       aux_dev);
+> +
+> +	adc_tm5->dev = dev;
+> +	adc_tm5->dev_data = aux_dev_wrapper->dev_data;
+> +	adc_tm5->nchannels = aux_dev_wrapper->n_tm_channels;
+> +	adc_tm5->chan_props = devm_kcalloc(dev, aux_dev_wrapper->n_tm_channels,
+> +					   sizeof(*adc_tm5->chan_props), GFP_KERNEL);
+> +	if (!adc_tm5->chan_props)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; i < adc_tm5->nchannels; i++) {
+> +		adc_tm5->chan_props[i].common_props = aux_dev_wrapper->tm_props[i];
+> +		adc_tm5->chan_props[i].timer = MEAS_INT_1S;
+> +		adc_tm5->chan_props[i].sdam_index = (i + 1) / 8;
+> +		adc_tm5->chan_props[i].tm_chan_index = (i + 1) % 8;
+> +		adc_tm5->chan_props[i].chip = adc_tm5;
+> +	}
+> +
+> +	ret = devm_add_action_or_reset(dev, adc5_gen3_disable, adc_tm5);
+
+I'd normally expect a pairing of a devm action with whatever it is undoing.
+If not add a comment for why that isn't the case here.
+
 > +	if (ret)
 > +		return ret;
 > +
-> +	/* Write SID */
-> +	buf[0] = FIELD_PREP(ADC5_GEN3_SID_MASK, prop->sid);
-> +
-> +	/*
-> +	 * Use channel 0 by default for immediate conversion and
-> +	 * to indicate there is an actual conversion request
+> +	INIT_WORK(&adc_tm5->tm_handler_work, tm_handler_work);
 
-Wrap to 80 chars, not 68ish.
-
-> +	 */
-
-> +static irqreturn_t adc5_gen3_isr(int irq, void *dev_id)
-> +{
-> +	u8 status, tm_status[2], eoc_status, val;
-> +	struct adc_tm5_auxiliary_drv *adrv_tm;
-> +	struct adc5_chip *adc = dev_id;
-> +	struct device *dev = adc->dev;
-> +	struct auxiliary_device *adev;
-> +	int ret;
-> +
-> +	ret = adc5_gen3_read(&adc->dev_data, ADC5_GEN3_VADC_SDAM,
-> +			     ADC5_GEN3_STATUS1, &status, sizeof(status));
-> +	if (ret) {
-> +		dev_err(dev, "adc read status1 failed with %d\n", ret);
-> +		return IRQ_HANDLED;
-> +	}
-> +
-> +	ret = adc5_gen3_read(&adc->dev_data, ADC5_GEN3_VADC_SDAM,
-> +			     ADC5_GEN3_EOC_STS, &eoc_status, sizeof(eoc_status));
-> +	if (ret) {
-> +		dev_err(dev, "adc read eoc status failed with %d\n", ret);
-> +		return IRQ_HANDLED;
-> +	}
-> +
-> +	if (status & ADC5_GEN3_STATUS1_CONV_FAULT) {
-> +		dev_err_ratelimited(dev,
-> +				    "Unexpected conversion fault, status:%#x, eoc_status:%#x\n",
-> +				    status, eoc_status);
-> +		val = ADC5_GEN3_CONV_ERR_CLR_REQ;
-> +		adc5_gen3_status_clear(&adc->dev_data, ADC5_GEN3_VADC_SDAM,
-> +				       ADC5_GEN3_CONV_ERR_CLR, &val, 1);
-> +		return IRQ_HANDLED;
-> +	}
-> +
-> +	/* CHAN0 is the preconfigured channel for immediate conversion */
-> +	if (eoc_status & ADC5_GEN3_EOC_CHAN_0)
-> +		complete(&adc->complete);
-> +
-> +	ret = adc5_gen3_read(&adc->dev_data, ADC5_GEN3_VADC_SDAM,
-> +			     ADC5_GEN3_TM_HIGH_STS, tm_status, sizeof(tm_status));
-> +	if (ret) {
-> +		dev_err(dev, "adc read TM status failed with %d\n", ret);
-> +		return IRQ_HANDLED;
-> +	}
-> +
-> +	dev_dbg(dev, "Interrupt status:%#x, EOC status:%#x, high:%#x, low:%#x\n",
-> +		status, eoc_status, tm_status[0], tm_status[1]);
-> +
-> +	if (tm_status[0] || tm_status[1]) {
-> +		adev = adc->tm_aux;
-> +		if (!adev || !adev->dev.driver) {
-> +			dev_err(dev, "adc_tm auxiliary device not initialized\n");
-> +			return IRQ_HANDLED;
-> +		}
-> +
-> +		adrv_tm = container_of(adev->dev.driver,
-> +				       struct adc_tm5_auxiliary_drv,
-> +				       adrv.driver);
-> +
-> +		if (adrv_tm && adrv_tm->tm_event_notify)
-
-Container_of is never going to return NULL unless the offset is 0 and the thing
-passed in is null (already checked above).
-
-Also flip this to keep the error as the only out of line bit.
-
-		if (!adrv_tm->tm_event_notify) {
-			dev_err(dev, "adc_tm auxiliary driver not initialized\n");
-			return IRQ_HANDLED;
-		}
-
-		adrv_tm->tm_event_notify(adev);
-	}
-> +			adrv_tm->tm_event_notify(adev);
-> +		else
-> +			dev_err(dev, "adc_tm auxiliary driver not initialized\n");
-> +	}
-> +
-> +	return IRQ_HANDLED;
 > +}
-
 > +
-> +static int adc5_gen3_get_fw_channel_data(struct adc5_chip *adc,
-> +					 struct adc5_channel_prop *prop,
-> +					 struct fwnode_handle *fwnode)
-> +{
-> +	const char *name = fwnode_get_name(fwnode);
-> +	const struct adc5_data *data = adc->data;
-> +	u32 chan, value, varr[2], sid = 0;
+> +static const struct auxiliary_device_id adctm5_auxiliary_id_table[] = {
+> +	{ .name = "qcom_spmi_adc5_gen3.adc5_tm_gen3", },
+> +	{}
 
-Why initialize sid?
+For IIO drivers I'm trying to slowly standardize some formatting choices.
+For these I picked (for no particular reason)
+	{ }
 
-> +	struct device *dev = adc->dev;
-> +	const char *channel_name;
-> +	int ret;
-> +
-> +	ret = fwnode_property_read_u32(fwnode, "reg", &chan);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "invalid channel number %s\n",
-> +				     name);
-> +
-> +	/*
-> +	 * Value read from "reg" is virtual channel number
-> +	 * virtual channel number = sid << 8 | channel number
-> +	 */
-> +	sid = FIELD_GET(ADC5_GEN3_VIRTUAL_SID_MASK, chan);
-> +	chan = FIELD_GET(ADC5_GEN3_CHANNEL_MASK, chan);
-
-> +	return 0;
-> +}
-
+> +};
 

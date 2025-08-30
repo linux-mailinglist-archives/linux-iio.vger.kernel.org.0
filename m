@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-23414-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23415-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E7AB3C696
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 02:44:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91644B3C69B
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 02:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CF5CE4E3F9D
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 00:44:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45E87A02F72
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 00:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58CE1D435F;
-	Sat, 30 Aug 2025 00:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAC21D54FE;
+	Sat, 30 Aug 2025 00:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="U0EJh+uh"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="1goyN8Y6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0801C1AF0A7;
-	Sat, 30 Aug 2025 00:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1856B26281;
+	Sat, 30 Aug 2025 00:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756514639; cv=none; b=NqZzkwFE9F45gDf/ASfEoaSXNsyy796FA+lFsHWmvrB4rXVpdQFRKl3c1xSvuz7VIx8CoLjYmWPl/Cs1fMDq/Mu1tz2fOzTyARihSKc9P24pPcGyoraVQK2e4IBHh3nHMpoi0zp0keSqiuAvnZICLw0S68VY9g5am8/9cNoN8/A=
+	t=1756514662; cv=none; b=IS41cYNwPA45j3wYV6W4BWLs+V4lD/eL5cTjWXw4rYh4y+GnprMumPXm1mZil9V/2hePcQm0f6BIgns4uX0xZ/79JJcktyMpvYEXTgyXNjsN3xXSe3cvSLuMwZvNQHls9vWuDma31K0W9nyXayU579KPWrm4fxkJKzMlkBbXnGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756514639; c=relaxed/simple;
-	bh=OXeVdrho3GoxweVNKuR6XRHI3Lqzv2OxDj/0YJ2vif8=;
+	s=arc-20240116; t=1756514662; c=relaxed/simple;
+	bh=P1ORQ8JeKo3jpYma9eqqn7fH4n+0e6kjM6qSYOkNj7Q=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H0ClLXioV4rx9wDjl/tZO6K5UgdVcTbwtBhkgjouD5wWhqxkC2ImVCR3i31/IQkJETuPid2ovwuWsTNJcO7ktqFECMolyirDIp3bHNuqT9uMbvFA0KU/3zYJMrmsGor6wo8Cu8X7uuE66WqSME3NV76aIapsSBErP6Sqva30dT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=U0EJh+uh; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=KOtqgU62KfYY4EV8z1na6xDP5N/tUlZjzGSc/i1uddIiyFPghS/FHKRWpgp8U47mokEoiYxLn721dgaWXXRlJ3EKp/GGi7MUJH9rMK6Fqf+1hoLHsiVPnJtvmYuSQQkhSBllgrzxJJ0Af0wLp8qsBaiz3Yznfi6V9luuyAOeCaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=1goyN8Y6; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57U0B1No026873;
-	Fri, 29 Aug 2025 20:43:53 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57U0DHQn021582;
+	Fri, 29 Aug 2025 20:44:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=y7kkL
-	yIA2xfdBdRTnMPxpOpQAVzS1Iq4yr8f29s48XY=; b=U0EJh+uhJz81U5bS/beIw
-	n1K4I1QkXjmTxJt3RNS5c7a7malL4SaBU4qy9PEMOAIqA+jOdFUQL2EeIbBTyiae
-	6oLrXAMmOowvQ9CAUiLaj/9+yYhc3EChWY10gyJ6Wo8GcuUN/2WNIa7qsO+QEP4/
-	tnMhJ6y1uaafuHKPrhW8Ra8Xj7uwIHBH7bDtjrAYwTm49/yg3AsHpzB1EQGYaRgk
-	mGkfqw9x2/2DlF5JKizAuhLDsYo3vfpuLOkXXjcWDdNo+7mZqoYLowhv+BWgsl89
-	lC35Qv/j4/qbVhjfx4Oz/gNBRcHASo2Rr1KP8z776eKaVioWr39ZqoYT17f/zZJI
-	A==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=QSNGc
+	R0+nAqXvUhmFR0YT5+pqELaZV7l3w+ISmZCkR8=; b=1goyN8Y6OEH/mNC0zlGzg
+	CCHr7EaPWPqfncyLVPDeJR2822kxzfoaQjCPFegW9k/YxeXNee5C8VFBBMg8/Qe5
+	Jbc66eM3WmmTAcSR8yb6B5qtOxCrqqr8Zc2x0ebktiZokhy3J5wOUK20NKHhypL8
+	yeVxLctCIxFx9Iy/MGp1x4aFH0wWHVbpKbN5qJMKfaB3Xi4LXvbf9yXTZv72m4vP
+	fkgDCU/CmRk+7Ba/+gtzWCYQI1RRapZXdzz2Z3qOBdyMayz/qkI57wJdlExAzHDO
+	7mw0tXNX+OQaxgQCmP2ou1S/EYNGaHOH3Jd7A9vQ1r36BJApI2jTNsFZBUWUcq8l
+	Q==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 48sqataje6-1
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 48rmagch1s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 20:43:52 -0400 (EDT)
-Received: from m0167088.ppops.net (m0167088.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57U0eBKN006053;
-	Fri, 29 Aug 2025 20:43:52 -0400
+	Fri, 29 Aug 2025 20:44:16 -0400 (EDT)
+Received: from m0167089.ppops.net (m0167089.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57U0hYps005067;
+	Fri, 29 Aug 2025 20:44:16 -0400
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 48sqataje0-1
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 48rmagch1j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 20:43:52 -0400 (EDT)
+	Fri, 29 Aug 2025 20:44:15 -0400 (EDT)
 Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 57U0hoFr041072
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 57U0iE9F041109
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 29 Aug 2025 20:43:50 -0400
+	Fri, 29 Aug 2025 20:44:14 -0400
 Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 29 Aug
- 2025 20:43:50 -0400
+ 2025 20:44:14 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Fri, 29 Aug 2025 20:43:50 -0400
+ Transport; Fri, 29 Aug 2025 20:44:14 -0400
 Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 57U0hV7V004991;
-	Fri, 29 Aug 2025 20:43:33 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 57U0huxE004996;
+	Fri, 29 Aug 2025 20:43:58 -0400
 From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 To: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-doc@vger.kernel.org>, <devicetree@vger.kernel.org>,
@@ -80,9 +80,9 @@ CC: <jic23@kernel.org>, <Michael.Hennerich@analog.com>, <nuno.sa@analog.com>,
         <Jonathan.Cameron@huawei.com>, <andriy.shevchenko@linux.intel.com>,
         <ahaslam@baylibre.com>, <sergiu.cuciurean@analog.com>,
         <marcelo.schmitt1@gmail.com>
-Subject: [PATCH 09/15] iio: adc: ad4030: Support multiple data lanes per channel
-Date: Fri, 29 Aug 2025 21:43:30 -0300
-Message-ID: <4e2b2d07a255bb249a1dc40a4470c7e123d4213f.1756511030.git.marcelo.schmitt@analog.com>
+Subject: [PATCH 10/15] dt-bindings: iio: adc: adi,ad4030: Add adi,clock-mode
+Date: Fri, 29 Aug 2025 21:43:55 -0300
+Message-ID: <1acb071f7140c9d44ed616a9eaea00b0ee423164.1756511030.git.marcelo.schmitt@analog.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1756511030.git.marcelo.schmitt@analog.com>
 References: <cover.1756511030.git.marcelo.schmitt@analog.com>
@@ -95,114 +95,61 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI3MDAwMCBTYWx0ZWRfX+Eqfr8TG7pzK
- eCdfq0OMfbX8TvjZAz09VqB0FT5Y1gLKuakFDmD8bUxM/OpIMi6ZLeuegPEw9WHEvDESrp3Yu2j
- DBC7GTDhy8Y+p/Ak9j3BWUoc0VuoS9fFKLaAw7cfS+Kk+V+gr4RTTjxjE4ODo+6FS7NbFy+wMzG
- m8Rb5CKhyhYBXP9hJIWaW8QYcFSjM0kzPfwP75VCreij0Wv9wQnx8+4gxtgZl7Q/BjGUwu8o3vC
- gcy62C6S8zDrreCD4tWhmNdGeQobvsuI5V3iiUmz67FKYH4cHbcpT0+eCGw0BgVG5AkNdxzpakF
- CsDbD0sk3TSqtEWJv/0GTDF2vsMS5hsBjbObX7v4DpRVYPp7VJz3C+PGkXKMpV2b6cukL3QBy/g
- MeZtDXr3
-X-Authority-Analysis: v=2.4 cv=Z4bsHGRA c=1 sm=1 tr=0 ts=68b24948 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI1MDA3NSBTYWx0ZWRfXwhfImnu1EObD
+ TJX3VdUJIGGA/h46CJXCl84VxG7wwUXW44pWYAaKso4h7Cv9x8gvsdqvtG7bTpQoNm0aUzMdL11
+ cfijO6bXsLXyqhXh6Ah2eJICkTwzKaUPAKr9XCqwH8xiF5N6ugZW6mms4+j2edfLblinYVhAMOl
+ hFmId7jcgTYTU1ejTHBV8zVQtNvUhCRIWTXIGAK7tt431LZK5VVhexpaVYw71vDKiTAFUITCj+/
+ IQ3haxUOZnl/+s6xGHSGicueS/spmD5fjz4IpR+Alq17Jr9BOXbGwa6dMvi5HyimSHyMAe3Fs/t
+ 6QBGbUHQxQloaGoA3s3bqaFlrtWhHd9w1U0omeHrMewQPPRRAHTBq4aXlGW/QtKDbL2rSD5sAaf
+ r4/1GdHl
+X-Proofpoint-ORIG-GUID: 6se98caPMIOueh0uyJxyfnSFIZqvf-5r
+X-Proofpoint-GUID: k1OgY46jvqeXBS3TqDn29_yFw37ZO4O8
+X-Authority-Analysis: v=2.4 cv=AoXu3P9P c=1 sm=1 tr=0 ts=68b24960 cx=c_pps
  a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=2OwXVqhp2XgA:10 a=gAnH3GRIAAAA:8 a=v3oLJsYcB7DOy6y-vfUA:9
- a=br55WurUj89AL1qEz8Q6:22
-X-Proofpoint-ORIG-GUID: tLA22jJgyI46VTWqLIyiv692W-WFrJiQ
-X-Proofpoint-GUID: F2yzzaIrmRv3Taoi7U_dvz-sML0RWQgH
+ a=2OwXVqhp2XgA:10 a=gAnH3GRIAAAA:8 a=nnYS0bij2i_Gjx_wgb8A:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-29_07,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1015 malwarescore=0 bulkscore=0 adultscore=0
- priorityscore=1501 impostorscore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508270000
+ suspectscore=0 spamscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ adultscore=0 bulkscore=0 phishscore=0 impostorscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508250075
 
-AD4030 and similar chips can output ADC sample data through 1, 2, or 4
-lines per channel. The number of SPI lines the device uses to output data
-is specified in firmware. Parse SPI read bus width setting from firmware
-and configure the device to use that amount of lines to output data.
+AD4030 and similar designs support three different options for the clock
+that frames ADC output data. Each option implies a different hardware
+configuration for reading ADC data. Document AD4030 clock mode options.
 
 Co-developed-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 ---
- drivers/iio/adc/ad4030.c | 33 ++++++++++++++++++++++++++++++---
- 1 file changed, 30 insertions(+), 3 deletions(-)
+ .../devicetree/bindings/iio/adc/adi,ad4030.yaml      | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
-index 68f76432dbfd..e6c1c9be1632 100644
---- a/drivers/iio/adc/ad4030.c
-+++ b/drivers/iio/adc/ad4030.c
-@@ -20,6 +20,7 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
-+#include <linux/log2.h>
- #include <linux/pwm.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
-@@ -258,6 +259,10 @@ struct ad4030_state {
- #define AD4030_OFFLOAD_CHAN_DIFF(_idx, _scan_type)			\
- 	__AD4030_CHAN_DIFF(_idx, _scan_type, 1)
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+index bee85087a7b2..1e4e025b835f 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+@@ -78,6 +78,18 @@ properties:
+   interrupt-names:
+     const: busy
  
-+static const int ad4030_rx_bus_width[] = {
-+	1, 2, 4, 8,
-+};
++  adi,clock-mode:
++    $ref: /schemas/types.yaml#/definitions/string
++    enum: [ spi, echo, host ]
++    default: spi
++    description:
++      Describes how the clock that frames ADC data output is setup.
++      spi  - Spi-compatible. Normal SPI operation clocking.
++      echo - Echo-clock. Synchronous clock echoing to ease timing requirements
++             when using isolation on the digital interface.
++      host - Host. The Host clock mode uses an internal oscillator to clock out
++             the data bits. In this mode, the spi controller is not driving SCLK.
 +
- static const int ad4030_average_modes[] = {
- 	1, 2, 4, 8, 16, 32, 64, 128,
- 	256, 512, 1024, 2048, 4096, 8192, 16384, 32768,
-@@ -1197,7 +1202,7 @@ static void ad4030_prepare_offload_msg(struct ad4030_state *st)
- 		 */
- 		offload_bpw = data_width * st->chip->num_voltage_inputs;
- 	else
--		offload_bpw  = data_width;
-+		offload_bpw  = data_width / (1 << st->lane_mode);
- 
- 	st->offload_xfer.speed_hz = AD4030_SPI_MAX_REG_XFER_SPEED;
- 	st->offload_xfer.bits_per_word = offload_bpw;
-@@ -1208,6 +1213,10 @@ static void ad4030_prepare_offload_msg(struct ad4030_state *st)
- 
- static int ad4030_config(struct ad4030_state *st)
- {
-+	struct device *dev = &st->spi->dev;
-+	const char *propname;
-+	u32 rx_bus_width;
-+	unsigned int i;
- 	int ret;
- 	u8 reg_modes;
- 
-@@ -1215,10 +1224,28 @@ static int ad4030_config(struct ad4030_state *st)
- 	st->offset_avail[1] = 1;
- 	st->offset_avail[2] = BIT(st->chip->precision_bits - 1) - 1;
- 
--	if (st->chip->num_voltage_inputs > 1)
-+	/* Optional property specifying the number of lanes to read ADC data */
-+	propname = "spi-rx-bus-width";
-+	rx_bus_width = ad4030_rx_bus_width[0]; /* Default to 1 rx lane. */
-+	device_property_read_u32(dev, propname, &rx_bus_width);
-+	/* Check the rx bus width is valid */
-+	for (i = 0; i < ARRAY_SIZE(ad4030_rx_bus_width); i++)
-+		if (ad4030_rx_bus_width[i] == rx_bus_width)
-+			break;
-+
-+	if (i >= ARRAY_SIZE(ad4030_rx_bus_width))
-+		return dev_err_probe(dev, -EINVAL, "Invalid %s: %u\n",
-+				     propname, rx_bus_width);
-+
-+	rx_bus_width = ad4030_rx_bus_width[i];
-+
-+	if (rx_bus_width == 8 && st->chip->num_voltage_inputs == 1)
-+		return dev_err_probe(dev, -EINVAL, "1 channel with 8 lanes?\n");
-+
-+	if (rx_bus_width == 1 && st->chip->num_voltage_inputs > 1)
- 		st->lane_mode = AD4030_LANE_MD_INTERLEAVED;
- 	else
--		st->lane_mode = AD4030_LANE_MD_1_PER_CH;
-+		st->lane_mode = ilog2(rx_bus_width / st->chip->num_voltage_inputs);
- 
- 	reg_modes = FIELD_PREP(AD4030_REG_MODES_MASK_LANE_MODE, st->lane_mode);
- 
+ required:
+   - compatible
+   - reg
 -- 
 2.39.2
 

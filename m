@@ -1,87 +1,87 @@
-Return-Path: <linux-iio+bounces-23431-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23432-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228B6B3C8D6
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 09:39:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA9EB3C8DE
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 09:43:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF940580E9C
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 07:39:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB5C5E8280
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 07:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B7B27CCF0;
-	Sat, 30 Aug 2025 07:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743A827D77B;
+	Sat, 30 Aug 2025 07:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H+MjoK3w"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X76d7ux0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A1D278150;
-	Sat, 30 Aug 2025 07:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8C5277CB8;
+	Sat, 30 Aug 2025 07:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756539573; cv=none; b=caAWrUiX1/w9pHHYAeYEkghKb0KzkUx2PAzpQAjP+3P255YOVpZibrO8CVni277cPCw0l5fthcqSNAmXJLU9URRnX1QEAsDVpVBSeA22JSuNB/zumrbtnUBVq3u0eam8YtjfAx0cwL9GCYbMNWlT3BbSo52MF5KCtk/hRMsqipg=
+	t=1756539800; cv=none; b=lVEPony13CUoUMBsfSeCTllPVZQ2vYp6Qm2fZ59FbhgVfdL5vhr1ZHnNghuRLNazCxxISQIzRl2TH7Ur6Rro4G9ryNEIlmI0228+dn4dzcu0jGuOk9EOybi3OwqI4siJlsW++MqdNDwxi/51bor1i5o84IPomSX6vb3fTj3QMos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756539573; c=relaxed/simple;
-	bh=Bg9g1x1rYaTs+copcNUaaE4C4bSo4LI700eHfn+A6lU=;
+	s=arc-20240116; t=1756539800; c=relaxed/simple;
+	bh=/GUcf1mnnRLd1XbhLCrasAZm5Jsw+M7OVdREvx4qwgs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=reGC5GMgJd5DJykpr/WAr1MPeQve5a9vkGPOFB5HtAIgQIHRGyDxaruVui1FXnGYzKfGUUd0ykdfttXDHZZdaTUAqChgBFzIB8ZUbbYVEqlYQLgCalMZkJD1dsozpSJjAA4aN3BdZveZDoZoVAaJf7yqpxlkkDf31QvgN9r6pfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H+MjoK3w; arc=none smtp.client-ip=209.85.218.50
+	 To:Cc:Content-Type; b=YuC8PCuuTqJb3Kjd9+FWXzEFzV2jm3D7j9jWwkwchsPcjdFrD6ipXoDyTRRii2t848A9AGZSZ2IXoffAelpeWKhKh0DY4HvAgis0Z+ATAW9Kqtj168/PtsQLNwxq53lcqTAJDmMiYiXwg+uXDexo0D8TuZQ4ZSCwc5IJ9P4gU4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X76d7ux0; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-afcb7ace3baso483385866b.3;
-        Sat, 30 Aug 2025 00:39:31 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb7a16441so418741566b.2;
+        Sat, 30 Aug 2025 00:43:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756539570; x=1757144370; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756539797; x=1757144597; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j/ZMWXFdOhhGWVgKNOZATkobr1qFVHPKCGw846d0Eko=;
-        b=H+MjoK3wfl0htYP2pnyUYw6kX79gg2WvoYjJMnfVOsENKfPd662eOiRwKDardBVjc2
-         Gz48WLDFZdn4o2/MjfddsVueEgHPsXZoQIciLDDP/zTzX7nDOmxIdXjaWPTlw30tNPro
-         FEzjuDRdHUMx7KhhHH4Cy+T4/6B/4I1ORWFhxHDwv1KIzZ4O2WQk0LvBGbByE6Uou+gm
-         6elq3SAH4KB0vRp/RM/bJgomv1B2aUzA4PjoZdepGybMN5Mxdh95oz+h8iKortiaeLsk
-         lIkJ0sw5M+B+s3gDjnl5Cyu0X1fD1Cs1hpA9ZCRKiCmWN62L+jDQ2jJKT+G3SuJUNIQc
-         Hqaw==
+        bh=gURzqUmGeKrmX4dhppb9QlLLCg/dh2IS2zWou5cVXvQ=;
+        b=X76d7ux06nU954FVrBm62GSW5P031d12wnSYX8xyceBKM9JhmvHjlMwhw9iECXlfxN
+         cBPmzbdkhJj2gz4f3LLwlnQhKX1ugDmNnyqPNTgefUc2jzK3eMpEqOJABR44Pj4CIxXW
+         7d3YDCJgMYM6Qjg0DuLR3uyMomO75iCmPywlPoqvBwXHiCE9PupoxH3QuMu8Bxnq6Z+C
+         TYslIjOzXLnY4bHUK2O+oNfE7TPNTcuxuB7QmVa/b1ne59267n6llHHSU0BReI/UD9C2
+         KpNj2ZZCzKExIHD7rDVrkuZhd6z1dpb7mPAt7qA9zyMF4oy81JTr5CjiIamveVdJGmnR
+         UQ6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756539570; x=1757144370;
+        d=1e100.net; s=20230601; t=1756539797; x=1757144597;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=j/ZMWXFdOhhGWVgKNOZATkobr1qFVHPKCGw846d0Eko=;
-        b=WwcfC1mvwJ3yXxnXvQK/ol7ZOx4UIPPKe6ToMy5AayWLleqxT/uhYHbDPWVtSyLyNP
-         GfkCuUw/XvUbOZeSLhvgFsBLl8ZT8I4c3sMh/JfU0vOubPaWJNOd41ZMY9QbUlEiCmiw
-         RdlDRIWBfU0y9EvqeZ/YXeI8b9EOT5QUTxrLYrsI52GeSy+/aMRncMhHeczSZ0gccq4c
-         XCobGrfBILPUt9/5DNLdcwsrCsUcQUh6GQVopJ555nxcsNPzg9UYSx0zyfDtlyT3WUDk
-         uIePvugZGwvNb5YN8vGYl0m0dI16UW8s5pfWJaqvG8YMnx5f4Kaxn3aVHpQPgR6PE+on
-         EXKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVAZyQYPcdwVMLcCy9JHNZ6clfBrWWfgTk29J2gf98pcdGD179Hi7BP+S0iDSp8Ujf2RLX5vR3iM6vL@vger.kernel.org, AJvYcCVLjI0Lua3D4Y5IgP5Pg+9aDi3ZFiV8NzPzaRka/obOev5KHs2sXJ5tuFsdbPfE72zodwxhVYLEZyC00JL0@vger.kernel.org, AJvYcCX8EfGb9ZcfJPitgb76zbvKqkSERW0qxX3AQ3LCR/epK1EEDuaXZecIGtEJO3eDd9zBsp7rz3V6zIYR@vger.kernel.org, AJvYcCXtmYAOvGKbgFfPI+1pnDy2lgTudvd6oi342yGRUgwYOSwh1d8j5IfHZK8PlkIR6QaYn+sXGevv0nCr@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3ESWnU+w10MJ+G7B6hm4gTKadsnPAX2T49s62NBgmWFB4IovR
-	3GFncC+ijUFE3WVZVvhG5Q1tThYumiFYucxJiURPzGP8TQZr+IvVFB3i0q3ZfVB7ORZzp6t1tgo
-	ih3zYawESvyK78NeXCLZShlfyMZ/sVI8=
-X-Gm-Gg: ASbGnctnuYKtfD7I3KkeX8gszqURspPUZ7Wcvr21tVTB8teyMNbDVmcX9PEe9iSTaFA
-	eQt/VyE+NxyPc2+27JU5cKQ6vphQycZDPtr8Jk85TyguQAfaP4/ED/baBufW4Kbt5W9eQsYpwYd
-	OsbYYGE+7yU4H4ud+3cb3PY54FuwCzes4AqkdpiVa1RnTk1MZqqi+sK8AZwMzyNAB7S1v4oO14i
-	jgdlrE=
-X-Google-Smtp-Source: AGHT+IFp2u3E8NDGllQA8/h/rnikwJVHJdBwq1/zISCcd50jQPdSoWEhx3RdWQ7Tbe6a1BaxlRZ/yqbws6XG7K7lxvk=
-X-Received: by 2002:a17:907:9623:b0:afe:ca13:a1ea with SMTP id
- a640c23a62f3a-b01af2db751mr100999966b.0.1756539570015; Sat, 30 Aug 2025
- 00:39:30 -0700 (PDT)
+        bh=gURzqUmGeKrmX4dhppb9QlLLCg/dh2IS2zWou5cVXvQ=;
+        b=CH/P8UhaMiVGhQvrqCp3/6EknGVWvFKmk2WnYz8dPgv0VgdCMt9K24ykx8NXPYoxIb
+         C/Ezue2qCpnMk6kJMV1eCKHaMt1D7q4JJ7AzoNrWwxFIyj2OqjOM7ZKgh2Nc7L10DzEA
+         8fnNIHFLFtGGXz8Op96uvAJKvDXgH5ScBnFLCrWzQ3c+aYTVnCtVG98jZPWVfL6ZBREC
+         pFLDX9RpVOfqEYvVKfXp8Fdc5yJ1uUAGaMj3b9//C48xecCM2/M3RsjjW3yTfoNdU69e
+         Kcqjc4AMJMBu3t87tGHqVOf1t0i+iTqfFomJm/XIkfgQ8OVLulpm2m5LrBOBx9p8HTGg
+         +tBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDcbDtNjOA7vu5AeJlqR1ttbGzet+kDKYvmDUCQ1o2FJXeFGaxqqZByy27ZglRmU2vHZ00yuQSUid3@vger.kernel.org, AJvYcCV4PPQ3ESM5cxV3LTkrB1400raNOtdE6kafge6mDE8Ncp9WDF8kBYhv8CSLMLQaVxLT/o+uuw+tAcwz@vger.kernel.org, AJvYcCWccT+WdpBBLEdoILCkRsKmEw/bz5nCdfaN5uu1uR2SpAw4ZCskA533YkgZMKMhXoGgMpcuTV1yLYnu@vger.kernel.org, AJvYcCXq2GHh4httP7OK4xlIJpLYuHcmFDk723m77zwq6gd0ihq4LZmp7B54mceg8z9BwOe9IfG7T/LUPWCbI/kC@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiG+9PWvFE2eK6bkITjvroYWp69COEu+/nRWsIWx1FWpF4KjDr
+	IfY6CrBQ97J2xEiOrTTup8F9VOlNZEWVEqHOWiu3k6bgziJneZc2kjeKtYV/bqPdkO0MSSY0Zy1
+	6S5S4cmukP5u224bFGL4cqrQ+vi3jWF4=
+X-Gm-Gg: ASbGnctMi1mTW5FdY9vvzCJcdaGBgYWDt1uP4toiVpgHm/vR9doQyqf/98HzmkvgIEc
+	5AccdhrUOHMPt3I+JFWwjhdFx7VioU7XWAKvTIunKgMdCKDj1TI47+clPHsaYviSGIr3uVtih++
+	9Cr1j0XU8lxo8axPOWsW9Qw/RFJJSfnOpO4qkJFRUuzdz8QHYXOMvvCCPOlGWj4+rugbOBIuf8L
+	nREVhWeR3Hf2+9z2A==
+X-Google-Smtp-Source: AGHT+IEY2oLBKT6+HGAYixezZFibnn/igblSvV5V+/2cx5/ECPFYwYJW3hDUtnlycz99C1cnWWFo/bl1TA1+WzOwDLA=
+X-Received: by 2002:a17:907:1c87:b0:aff:40f:491f with SMTP id
+ a640c23a62f3a-b01f20ccc95mr122341566b.64.1756539796809; Sat, 30 Aug 2025
+ 00:43:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1756511030.git.marcelo.schmitt@analog.com> <4e2b2d07a255bb249a1dc40a4470c7e123d4213f.1756511030.git.marcelo.schmitt@analog.com>
-In-Reply-To: <4e2b2d07a255bb249a1dc40a4470c7e123d4213f.1756511030.git.marcelo.schmitt@analog.com>
+References: <cover.1756511030.git.marcelo.schmitt@analog.com> <344c3797fe8e5aa9177ef8c0633d1eedd32563fa.1756511030.git.marcelo.schmitt@analog.com>
+In-Reply-To: <344c3797fe8e5aa9177ef8c0633d1eedd32563fa.1756511030.git.marcelo.schmitt@analog.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 30 Aug 2025 10:38:53 +0300
-X-Gm-Features: Ac12FXxKDFZV9bCsQANXtl7PzxIoEWWvJTOokcoVBhIUQhe739fQCVQJ5uBpgkg
-Message-ID: <CAHp75Vf6xa_ei1WbhGaQ+xKUEp_6JKcXFYJZpQvYd8YN-33S_g@mail.gmail.com>
-Subject: Re: [PATCH 09/15] iio: adc: ad4030: Support multiple data lanes per channel
+Date: Sat, 30 Aug 2025 10:42:40 +0300
+X-Gm-Features: Ac12FXysrcFjcTtPyekcpdB2bENednecYuAPaeyAdDUgvgGErGBxwhYuAYYiOrw
+Message-ID: <CAHp75VeTqm+aAt47rSRznpZe5=wd_X24ZtvjXJNj=b3HGu5Sxw@mail.gmail.com>
+Subject: Re: [PATCH 11/15] iio: adc: ad4030: Add clock mode option parse and setup
 To: Marcelo Schmitt <marcelo.schmitt@analog.com>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, devicetree@vger.kernel.org, 
@@ -94,23 +94,44 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 30, 2025 at 3:43=E2=80=AFAM Marcelo Schmitt
+On Sat, Aug 30, 2025 at 3:44=E2=80=AFAM Marcelo Schmitt
 <marcelo.schmitt@analog.com> wrote:
 >
-> AD4030 and similar chips can output ADC sample data through 1, 2, or 4
-> lines per channel. The number of SPI lines the device uses to output data
-> is specified in firmware. Parse SPI read bus width setting from firmware
-> and configure the device to use that amount of lines to output data.
+> AD4030 series of ADCs support three different options for the clock that
+> frames data output. Since each clock option implies a different hardware
+> setup, the clock mode to use is specified in firmware. Read the designate=
+d
+> clock option from firmware and configure the device to work accordingly.
 
 ...
 
-> -               offload_bpw  =3D data_width;
-> +               offload_bpw  =3D data_width / (1 << st->lane_mode);
+> +       ret =3D device_property_match_property_string(dev, "adi,clock-mod=
+e",
+> +                                                   ad4030_clock_mode_str=
+,
+> +                                                   ARRAY_SIZE(ad4030_clo=
+ck_mode_str));
+> +       /* Default to SPI clock mode. */
+> +       reg_modes |=3D FIELD_PREP(AD4030_REG_MODES_MASK_CLOCK_MODE,
+> +                               ret >=3D 0 ? ret : AD4030_SPI_CLOCK_MODE)=
+;
 
-This is interesting. What's the difference you see to the use of the
-right shift?
-Also note, in case of lane_mode =3D=3D 31 (yeah, I understand that here
-it's not the case) this is UB in accordance with C standard.
+FIELD_MODIFY() ?
+
+Also, I would rather put it as proper if
+
+if (ret >=3D 0)
+  FIELD_MODIFY(...)
+else
+  FIELD_MODIFY(...)
+
+> +
+
+I would not add this blank line as these are coupled.
+
+>         ret =3D regmap_write(st->regmap, AD4030_REG_MODES, reg_modes);
+>         if (ret)
+>                 return ret;
 
 --=20
 With Best Regards,

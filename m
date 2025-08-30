@@ -1,170 +1,289 @@
-Return-Path: <linux-iio+bounces-23482-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23483-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69081B3CE37
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 19:33:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A1AB3CE52
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 19:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BC53563629
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 17:33:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D1951B21069
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Aug 2025 17:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358702D46B1;
-	Sat, 30 Aug 2025 17:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5592D660B;
+	Sat, 30 Aug 2025 17:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1cbToZpi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxZ4GrcS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4446E23ED5E
-	for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 17:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5C921B1BC;
+	Sat, 30 Aug 2025 17:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756575190; cv=none; b=l0z7WhUHF0sMBFBXb/MRxOb3TOKsBqgz0Jj9cuY6LS0lLmxLnjnXhadfzbXsk46iO12ENW9+g/zI0XEa+zJvRqGhn0pY4a47R1XVn/qAZInbqRWjNN3GA7ohE4mGlrm2/Hjias6lp6UDnvqVB13dhzT1HUGpK5iziS2hNCk2JBU=
+	t=1756575770; cv=none; b=MFqePeT6YkUEvI6tiftrQ446YuDeRpznxbw6BwmHSlyIxq/iGkfT67yF4Q/GtboIATE65S90jhD972P0FP03sjFQcVCWH2vdaq1ihZ8HAZCaU4C44dtoxbwJdwDpMuV1tsMJfMcTcVap0n76wscYXcf8OYM6I3S9F1Fo1qg0N70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756575190; c=relaxed/simple;
-	bh=Vya6+lJmTJWfY/M8wUra0srurpA1liqHsz60MVER1eg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VABxF8EO3GbVyj0/nznR/cmO+L2PVRFKdZTvLl10XndFj8DZYYOqNnlIVDmFNClWJ3yiaWU3WAC9s0uj7ukUY7VaDWfQwbkAg3jFkW60wIYb1X+qRaI7C0RcjNVUA6gC9B7V7FSRvIkdD8Jwj1FQfh5cBGKjrbFLzRtTzdRvaHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1cbToZpi; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-314f332e064so1096169fac.2
-        for <linux-iio@vger.kernel.org>; Sat, 30 Aug 2025 10:33:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756575186; x=1757179986; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UwGfxy65ZWGgnex0UcGnWFkAe5/xQalwPutBYQHrYU0=;
-        b=1cbToZpi2/q9zCSHq8cYBfTH1RjbdXdQRgzYH+U8VF4TRyJwx/Pjfuwt3XWvXfEZ3O
-         hyda4xkvT3rp9kNq5NESq9/eUbiWrs2jxXoKZiyrr9rQ6qWewVXbTyyTX9WG7/QBS7mA
-         i9TCg3scXUoZqEK7Tt1dkPacrBXfAWxqh7Zn0EUMCkwmnlpISmQ51T6vyp8/Pstdk7pB
-         YLwjfM78DSZV0MyETDNhRN0RCzKeyDpl69INMjyhA7aL7Q8y7J/pWiBAe5iijdez7zM6
-         CnS/k195tOfluSr8ItPZRt0c9XgsmhG79cQIbVzrHnVXoD0upuPisT5JM6FXW/+SRQde
-         BJAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756575186; x=1757179986;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UwGfxy65ZWGgnex0UcGnWFkAe5/xQalwPutBYQHrYU0=;
-        b=ieSLFy8cEGsibCTB+S+3cC1xbf+v/tpNTPhcCQxMDOPl8sefjd9w3WrdywR0jijRRF
-         Fe95dI+6fH2hkEqIsdKUbodJkoNOOvG9UNnRvDBqMv0t3kbtLLr2R91rHtTrIL7Wuq20
-         vL69HWx4xD5Vv9CVxB0xIxYp26xSEXhy6fAD/wh8O8JBv5VyVqYenCgiazaV6GZ9dYbj
-         WLAwhFjU5G1gDE26zydLVUs5PJT6lxsWukXCR2IWRx88Rkqj7gSicYf/btjTdQdFeCAe
-         DtJamWm6SoiWgnSNIDxI5NaLCCq30z/vmfkaORB2nv65Ewrr3dpjhdH6k7FFRfrumQ1m
-         4T5g==
-X-Forwarded-Encrypted: i=1; AJvYcCX/Kifu+XJToAmOP3aHTY0w58VF5EAHiD7beD5iNURKJAojhy6XfRv5OBAXXZOO+0A33Uonu6S5aeU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzniQowdgCxUYkIwGEavbFoctwyKee8B5tAaNXPZuXmtfcaevFX
-	jGyIlUKjnFMdoU/rvb5uO4Vg4HSfqIra2x0/WoQDnCjJdGP7xEHHcVhM8X4EnI7O/KQ=
-X-Gm-Gg: ASbGncvlN0FnhMRgG0CEV15omXC4C6LeLMFC5QUOnLyGFGDEHwrt3Ke7CFcHidzyowI
-	ZSFgfyJB7OSp0yM9kPPDApz2ES16woLabr+98cn4FkplxUE4Fifrl8ILNO34loZ0KfNDcxT+aKt
-	pRtpL9EcvrWt4BW5AGGACTz6tPrmXH4RkDxlh0PtJDqIocDV6ltoBLJ4+ARtCCggvOV40nTS1t0
-	/PgEV8rCBSI9mifwXkwgdWVwG6iYueRL+sjiLKfpD/CQW6R5KRdRASGR/MjqanMf6iMwHSurP/X
-	p9tCzdo+WA7QDPHqM5civzI8jFS/HQlrrQUJLdAGLa/pTF1IEovBZRP2z0hbWKVO+uRDj0tghtJ
-	BCgD4HIyHzubAf/k8jjF/S48lPaA0AZ//tyQMzUkdqfK7PpmrRKVOSO+p1n9Xj4axIWGOfJyows
-	9nK6qKXEFdqA==
-X-Google-Smtp-Source: AGHT+IFcICIgTAwdd2cegX4yfW7wbywNdgh/DYrUWm0XZ+08pLIWWYSQjsp1DI9hm/xDxEm0jp5Vpg==
-X-Received: by 2002:a05:6871:b0d:b0:315:351d:bcf2 with SMTP id 586e51a60fabf-3196307edcfmr1120526fac.2.1756575186272;
-        Sat, 30 Aug 2025 10:33:06 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:f7b4:dfbd:5110:c59d? ([2600:8803:e7e4:1d00:f7b4:dfbd:5110:c59d])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3196d4c1132sm369525fac.28.2025.08.30.10.33.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Aug 2025 10:33:04 -0700 (PDT)
-Message-ID: <bb8f120b-db75-4dbf-8473-3ef6f340c38a@baylibre.com>
-Date: Sat, 30 Aug 2025 12:33:04 -0500
+	s=arc-20240116; t=1756575770; c=relaxed/simple;
+	bh=jFJt86/DZ9iE6qIgTPeN7i5Gs1LDuWlzNpdOtPnpk3U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=beQighWF3EbJ30VoRfD2k9m1MywIoH4f3dpBlbr4Tyn2ylw0/K0aPIBcBqaX9PGPrx+n/fuT8UlHXW67cdNXNglHeNfuzmMV7T7eQMpuLLeiTvKL2zwvM3upPXz4fJCgg4+VcvQAJ8pceFSFa/Na7irHzX5dCUEsN3K/6qGxyNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxZ4GrcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79222C4CEEB;
+	Sat, 30 Aug 2025 17:42:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756575769;
+	bh=jFJt86/DZ9iE6qIgTPeN7i5Gs1LDuWlzNpdOtPnpk3U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lxZ4GrcS5S5b/z6tGf4na0QlKpZFB9j85eIrH11OLgDhO81v3WOLkXUDl/lpoIpff
+	 4OENQZYEdo2gR4WxtlMfQbJih5IsZPZOvyZhU0bzO/ywt1cyz2VWQiS/I9KUyiLguV
+	 UpUmcifVbJ8tBqRCSMOVvyLXU1CXoPbQyD6/ZYdwbeESyDIBnmEhzMOICuIq8/m6u+
+	 yI3YK+37eQP+qKdbCNCmIus4tCxuZIfn5XMEGIl71sdRybtyR3Tg/e30FnA3si7FTs
+	 TGQPgO87Y0nt+mU3S8UkJPq9q9UyQVsVKIRcmyBzfOLgex2JKEQ0UUr+M5p4hnfLhh
+	 wYtUYF12lFO0Q==
+Date: Sat, 30 Aug 2025 18:42:33 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
+Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
+ lumag@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
+ konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
+ amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
+ rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
+ david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
+ kamal.wadhwa@oss.qualcomm.com, rui.zhang@intel.com, lukasz.luba@arm.com,
+ devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
+ quic_kotarake@quicinc.com, neil.armstrong@linaro.org,
+ stephan.gerhold@linaro.org
+Subject: Re: [PATCH V7 4/5] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+Message-ID: <20250830184233.7ddf6ae8@jic23-huawei>
+In-Reply-To: <20250826083657.4005727-5-jishnu.prakash@oss.qualcomm.com>
+References: <20250826083657.4005727-1-jishnu.prakash@oss.qualcomm.com>
+	<20250826083657.4005727-5-jishnu.prakash@oss.qualcomm.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/15] iio: adc: ad4030: Enable dual data rate
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-spi@vger.kernel.org
-Cc: jic23@kernel.org, Michael.Hennerich@analog.com, nuno.sa@analog.com,
- eblanc@baylibre.com, andy@kernel.org, corbet@lwn.net, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, broonie@kernel.org,
- Jonathan.Cameron@huawei.com, andriy.shevchenko@linux.intel.com,
- ahaslam@baylibre.com, sergiu.cuciurean@analog.com, marcelo.schmitt1@gmail.com
-References: <cover.1756511030.git.marcelo.schmitt@analog.com>
- <47b2cf01555c31126bc2133526317c7829cb59ab.1756511030.git.marcelo.schmitt@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <47b2cf01555c31126bc2133526317c7829cb59ab.1756511030.git.marcelo.schmitt@analog.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 8/29/25 7:45 PM, Marcelo Schmitt wrote:
-> Set AD4030 series device to do two data bit transitions per clock cycle per
-> active lane when specified by firmware. The dual data rate (DDR) feature is
-> available only for host clock mode and echo clock mode.
+On Tue, 26 Aug 2025 14:06:56 +0530
+Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
+
+> The ADC architecture on PMIC5 Gen3 is similar to that on PMIC5 Gen2,
+> with all SW communication to ADC going through PMK8550 which
+> communicates with other PMICs through PBS.
 > 
-> Co-developed-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
->  drivers/iio/adc/ad4030.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+> One major difference is that the register interface used here is that
+> of an SDAM (Shared Direct Access Memory) peripheral present on PMK8550.
+> There may be more than one SDAM used for ADC5 Gen3 and each has eight
+> channels, which may be used for either immediate reads (same functionality
+> as previous PMIC5 and PMIC5 Gen2 ADC peripherals) or recurring measurements
+> (same as ADC_TM functionality).
 > 
-> diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
-> index a5931056936a..37ba00097efe 100644
-> --- a/drivers/iio/adc/ad4030.c
-> +++ b/drivers/iio/adc/ad4030.c
-> @@ -74,6 +74,7 @@
->  	(AD4030_REG_GAIN_X0_MSB + (AD4030_REG_GAIN_BYTES_NB * (ch)))
->  #define AD4030_REG_MODES			0x20
->  #define     AD4030_REG_MODES_MASK_OUT_DATA_MODE	GENMASK(2, 0)
-> +#define     AD4030_REG_MODES_MASK_DDR_MODE	BIT(3)
->  #define     AD4030_REG_MODES_MASK_CLOCK_MODE	GENMASK(5, 4)
->  #define     AD4030_REG_MODES_MASK_LANE_MODE	GENMASK(7, 6)
->  #define AD4030_REG_OSCILATOR			0x21
-> @@ -175,6 +176,7 @@ struct ad4030_state {
->  	enum ad4030_out_mode mode;
->  	enum ad4030_lane_mode lane_mode;
->  	enum ad4030_clock_mode clock_mode;
-> +	bool ddr;
->  	/* offload sampling spi message */
->  	struct spi_transfer offload_xfer;
->  	struct spi_message offload_msg;
-> @@ -1218,6 +1220,9 @@ static void ad4030_prepare_offload_msg(struct ad4030_state *st)
->  	else
->  		offload_bpw  = data_width / (1 << st->lane_mode);
->  
-> +	if (st->ddr)
-> +		offload_bpw  /= 2;
+> By convention, we reserve the first channel of the first SDAM for all
+> immediate reads and use the remaining channels across all SDAMs for
+> ADC_TM monitoring functionality.
+> 
+> Add support for PMIC5 Gen3 ADC driver for immediate read functionality.
+> ADC_TM is implemented as an auxiliary thermal driver under this ADC
+> driver.
+> 
+> Signed-off-by: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
+
+Hi Jishnu,
+
+A few additional comments from a fresh read through.
+
+Thanks,
+
+Jonathan
+
+> diff --git a/drivers/iio/adc/qcom-adc5-gen3-common.c b/drivers/iio/adc/qcom-adc5-gen3-common.c
+> new file mode 100644
+> index 000000000000..c84e75859958
+> --- /dev/null
+> +++ b/drivers/iio/adc/qcom-adc5-gen3-common.c
+> @@ -0,0 +1,106 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+> + *
+> + * Code shared between the main and auxiliary Qualcomm PMIC voltage ADCs
+> + * of type ADC5 Gen3.
+> + */
 > +
+> +#include <linux/bitfield.h>
+> +#include <linux/delay.h>
+> +#include <linux/iio/adc/qcom-adc5-gen3-common.h>
 
-There is already an existing dtr_mode flag in struct spi_transfer. We should
-be using that instead of providing an inaccurate bits per word value.
+Follow (approximate) include what you use principles for includes.
+So here I'd expect to at least see a regmap include.
 
->  	st->offload_xfer.speed_hz = AD4030_SPI_MAX_REG_XFER_SPEED;
->  	st->offload_xfer.bits_per_word = offload_bpw;
->  	st->offload_xfer.len = roundup_pow_of_two(BITS_TO_BYTES(offload_bpw));
-> @@ -1271,6 +1276,12 @@ static int ad4030_config(struct ad4030_state *st)
->  	reg_modes |= FIELD_PREP(AD4030_REG_MODES_MASK_CLOCK_MODE,
->  				ret >= 0 ? ret : AD4030_SPI_CLOCK_MODE);
->  
-> +	/* DDR is only valid for echo clock and host clock modes */
-> +	if (ret == AD4030_ECHO_CLOCK_MODE || ret == AD4030_CLOCK_HOST_MODE) {
-> +		st->ddr = device_property_read_bool(dev, "adi,dual-data-rate");
+> +
+> +int adc5_gen3_read(struct adc5_device_data *adc, unsigned int sdam_index,
+> +		   u16 offset, u8 *data, int len)
+> +{
+> +	return regmap_bulk_read(adc->regmap,
+> +				adc->base[sdam_index].base_addr + offset,
+> +				data, len);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(adc5_gen3_read, "QCOM_SPMI_ADC5_GEN3");
+> +
+> +int adc5_gen3_write(struct adc5_device_data *adc, unsigned int sdam_index,
+> +		    u16 offset, u8 *data, int len)
+> +{
+> +	return regmap_bulk_write(adc->regmap,
+> +				 adc->base[sdam_index].base_addr + offset,
+> +				 data, len);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(adc5_gen3_write, "QCOM_SPMI_ADC5_GEN3");
 
-As mentioned in the dt-bindings patch review, we can already get this info
-from the spi controller via dtr_caps. 
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5-gen3.c b/drivers/iio/adc/qcom-spmi-adc5-gen3.c
+> new file mode 100644
+> index 000000000000..f01a56363389
+> --- /dev/null
+> +++ b/drivers/iio/adc/qcom-spmi-adc5-gen3.c
 
-> +		reg_modes |= FIELD_PREP(AD4030_REG_MODES_MASK_DDR_MODE, st->ddr);
+> +
+> +#define ADC5_GEN3_READ_CONFIG_REGS 7
+> +
+> +static int adc5_gen3_configure(struct adc5_chip *adc,
+> +			       struct adc5_channel_common_prop *prop)
+> +{
+> +	u8 buf[ADC5_GEN3_READ_CONFIG_REGS];
+> +	u8 conv_req = 0;
+> +	int ret;
+> +
+> +	ret = adc5_gen3_read(&adc->dev_data, ADC5_GEN3_VADC_SDAM, ADC5_GEN3_SID,
+> +			     buf, sizeof(buf));
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Write SID */
+> +	buf[0] = FIELD_PREP(ADC5_GEN3_SID_MASK, prop->sid);
+> +
+> +	/*
+> +	 * Use channel 0 by default for immediate conversion and
+> +	 * to indicate there is an actual conversion request
+
+Wrap to 80 chars, not 68ish.
+
+> +	 */
+
+> +static irqreturn_t adc5_gen3_isr(int irq, void *dev_id)
+> +{
+> +	u8 status, tm_status[2], eoc_status, val;
+> +	struct adc_tm5_auxiliary_drv *adrv_tm;
+> +	struct adc5_chip *adc = dev_id;
+> +	struct device *dev = adc->dev;
+> +	struct auxiliary_device *adev;
+> +	int ret;
+> +
+> +	ret = adc5_gen3_read(&adc->dev_data, ADC5_GEN3_VADC_SDAM,
+> +			     ADC5_GEN3_STATUS1, &status, sizeof(status));
+> +	if (ret) {
+> +		dev_err(dev, "adc read status1 failed with %d\n", ret);
+> +		return IRQ_HANDLED;
 > +	}
 > +
->  	ret = regmap_write(st->regmap, AD4030_REG_MODES, reg_modes);
->  	if (ret)
->  		return ret;
+> +	ret = adc5_gen3_read(&adc->dev_data, ADC5_GEN3_VADC_SDAM,
+> +			     ADC5_GEN3_EOC_STS, &eoc_status, sizeof(eoc_status));
+> +	if (ret) {
+> +		dev_err(dev, "adc read eoc status failed with %d\n", ret);
+> +		return IRQ_HANDLED;
+> +	}
+> +
+> +	if (status & ADC5_GEN3_STATUS1_CONV_FAULT) {
+> +		dev_err_ratelimited(dev,
+> +				    "Unexpected conversion fault, status:%#x, eoc_status:%#x\n",
+> +				    status, eoc_status);
+> +		val = ADC5_GEN3_CONV_ERR_CLR_REQ;
+> +		adc5_gen3_status_clear(&adc->dev_data, ADC5_GEN3_VADC_SDAM,
+> +				       ADC5_GEN3_CONV_ERR_CLR, &val, 1);
+> +		return IRQ_HANDLED;
+> +	}
+> +
+> +	/* CHAN0 is the preconfigured channel for immediate conversion */
+> +	if (eoc_status & ADC5_GEN3_EOC_CHAN_0)
+> +		complete(&adc->complete);
+> +
+> +	ret = adc5_gen3_read(&adc->dev_data, ADC5_GEN3_VADC_SDAM,
+> +			     ADC5_GEN3_TM_HIGH_STS, tm_status, sizeof(tm_status));
+> +	if (ret) {
+> +		dev_err(dev, "adc read TM status failed with %d\n", ret);
+> +		return IRQ_HANDLED;
+> +	}
+> +
+> +	dev_dbg(dev, "Interrupt status:%#x, EOC status:%#x, high:%#x, low:%#x\n",
+> +		status, eoc_status, tm_status[0], tm_status[1]);
+> +
+> +	if (tm_status[0] || tm_status[1]) {
+> +		adev = adc->tm_aux;
+> +		if (!adev || !adev->dev.driver) {
+> +			dev_err(dev, "adc_tm auxiliary device not initialized\n");
+> +			return IRQ_HANDLED;
+> +		}
+> +
+> +		adrv_tm = container_of(adev->dev.driver,
+> +				       struct adc_tm5_auxiliary_drv,
+> +				       adrv.driver);
+> +
+> +		if (adrv_tm && adrv_tm->tm_event_notify)
 
-We will need a separate patch to add support for dtr_caps and dtr_mode to the
-axi-spi-engine driver. And likely some HDL work for that as well. So I would
-suggest splitting this out into a separate series.
+Container_of is never going to return NULL unless the offset is 0 and the thing
+passed in is null (already checked above).
+
+Also flip this to keep the error as the only out of line bit.
+
+		if (!adrv_tm->tm_event_notify) {
+			dev_err(dev, "adc_tm auxiliary driver not initialized\n");
+			return IRQ_HANDLED;
+		}
+
+		adrv_tm->tm_event_notify(adev);
+	}
+> +			adrv_tm->tm_event_notify(adev);
+> +		else
+> +			dev_err(dev, "adc_tm auxiliary driver not initialized\n");
+> +	}
+> +
+> +	return IRQ_HANDLED;
+> +}
+
+> +
+> +static int adc5_gen3_get_fw_channel_data(struct adc5_chip *adc,
+> +					 struct adc5_channel_prop *prop,
+> +					 struct fwnode_handle *fwnode)
+> +{
+> +	const char *name = fwnode_get_name(fwnode);
+> +	const struct adc5_data *data = adc->data;
+> +	u32 chan, value, varr[2], sid = 0;
+
+Why initialize sid?
+
+> +	struct device *dev = adc->dev;
+> +	const char *channel_name;
+> +	int ret;
+> +
+> +	ret = fwnode_property_read_u32(fwnode, "reg", &chan);
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "invalid channel number %s\n",
+> +				     name);
+> +
+> +	/*
+> +	 * Value read from "reg" is virtual channel number
+> +	 * virtual channel number = sid << 8 | channel number
+> +	 */
+> +	sid = FIELD_GET(ADC5_GEN3_VIRTUAL_SID_MASK, chan);
+> +	chan = FIELD_GET(ADC5_GEN3_CHANNEL_MASK, chan);
+
+> +	return 0;
+> +}
+
 

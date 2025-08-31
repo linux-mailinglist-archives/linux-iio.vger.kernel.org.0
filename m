@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-23547-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23548-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FBBB3D472
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 18:47:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E08B3D475
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 18:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8010189AEDF
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 16:48:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 233693BD94D
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 16:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DD4270552;
-	Sun, 31 Aug 2025 16:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D7827057B;
+	Sun, 31 Aug 2025 16:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZfV9JxXp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pmd8d66u"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A94926CE39;
-	Sun, 31 Aug 2025 16:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E238E2701D8;
+	Sun, 31 Aug 2025 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756658874; cv=none; b=Q+MM4jkea3kbWm9GIme4wrjSDVsiS8G5BzT2bXCycGBidLVNvHg9obJMSeNpPkmfB5SAClx/1YuYUTqZyP/Pj7LbrVSoGrM/e79wCPuc7OAmwZjcYQYqwjgGTZpCWkjW7OtazZIgPkjlT3V05U/MWwIDClH4PfHj22smaqPbRfU=
+	t=1756658968; cv=none; b=nxpwphirKIp84ZCH5Ium77lteGXU0ThwoieQc7urdm21uGowrwLbHUTgMdLn2SPJ/FEisluZk7d6B7OzT1e8M+g5XJDgaZoOEDsRT6zK3DbQX28fInTGqUbcdQEilPCa9wHCkwKegn3qqQyNh3cqnQYBBlY9p3D5T3fjNHL/XpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756658874; c=relaxed/simple;
-	bh=JTnmKJKL3G1MU26AydhExn3eBf+nz8rBFKiO/bxK4zQ=;
+	s=arc-20240116; t=1756658968; c=relaxed/simple;
+	bh=fN75beyYd9fQZUDCcpXgfQXxHpdUy09txv7XCycftak=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jrEDYxOC6eweKOiB/t7WvYB8FRVoI4kH7FrD6Ta5X+HNt4EMgsk1MdsUwd5jdm1TnzQb3UqKnEJOYM3phKZxTviwkCFqhIes1Hz2kIMvVYquWZ5vUvrS0KqRLYcnHXyTA2sCeHY3crg9/w+A5joK2mdpdqGPbYQe0Oe8esCf2nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZfV9JxXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B25C4CEED;
-	Sun, 31 Aug 2025 16:47:47 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=LA/SecWBgt7p4MsAXp9tBR/xfPDXfDxqj/au4OxsNQwGElTjNXKC2c5GPDgH9LLlx++wvgadIgqUkaCDKG9tGT9SBxUE7+kiM1A+27X3eFDHjJJHdhwsrlwv978sw04GC70k/JMvFHZWW4Sd4Z2RM3otL7G8KJvaMW3W95cOPO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pmd8d66u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AB0C4CEED;
+	Sun, 31 Aug 2025 16:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756658873;
-	bh=JTnmKJKL3G1MU26AydhExn3eBf+nz8rBFKiO/bxK4zQ=;
+	s=k20201202; t=1756658967;
+	bh=fN75beyYd9fQZUDCcpXgfQXxHpdUy09txv7XCycftak=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZfV9JxXp65IEldUdmfTWZ+hpAg+XmjuQ7TKmZUoLBjqR9O2oj29Uk5q68TS9LsN8s
-	 jUo5U9bJh2aWc6Frd8r5bQYPo4Bf1A8DNNGk8TgzxWTZ0gG9ATDRpjRXFnx+IdXCWQ
-	 20r1+nQI/r5NOP5hXOGanXk9RjJMfZ7pn5ZWY38NL9CKsjBHDSvxdc/jY5pCGKyRKh
-	 ZtgN9wXbUk5sM8iXcVZbcuAVtS2ewXIAphfUZLOcIAmHsfU5KK4H1C5SipFQhVJ64+
-	 fqj9cEoRrFCjNp8wbXQnm8aGXqlod6bmsTTRWHsNC69BgHwkBzVMVJHsDSWqmUDq12
-	 +aVcrYiYpfrYg==
-Message-ID: <6a7a2721-063d-490a-8fd9-bec101531027@kernel.org>
-Date: Sun, 31 Aug 2025 18:47:45 +0200
+	b=pmd8d66ups72nzH0C6pVm3GZY93jIJ3i5M5MIaPeJXuU2hzwzZWOwEdUkUe8gq/vW
+	 dOklp0lvl0Dns3KNPdtpweyezbHQnyiEZWDX8g9tEO8FZ7UAArN3DteJxmajyNju39
+	 bURYTJPm3wwktRJszAR0+dSEJXReymmhXpbXyJKxfYPKmg4AsyZwKCTHwg/BOS0E+1
+	 QST5r1YNd/MbMY/WGIvbu83NWTTXXMypchd2qv3Ez4UShWLrfsQHBGrhyMkzEdk1rU
+	 1lXjof4pPhwgAIYG/bnm8KwbfbM45UOmR0kffTGeyFgYrsf5UAa95pf84R3B9R1m7r
+	 J8lpvy366pFQQ==
+Message-ID: <b460d65a-8bce-4f5d-892b-39e05fbcd0a2@kernel.org>
+Date: Sun, 31 Aug 2025 18:49:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,19 +50,18 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: temperature: Add NXP P3T175x
- support
-To: Lakshay Piplani <lakshay.piplani@nxp.com>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, jic23@kernel.org, dlechner@baylibre.com,
- nuno.sa@analog.com, andy@kernel.org, marcelo.schmitt1@gmail.com,
- gregkh@linuxfoundation.org, viro@zeniv.linux.org.uk, peterz@infradead.org,
- jstephan@baylibre.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, devicetree@vger.kernel.org,
- ilpo.jarvinen@linux.intel.com, jonathan.cameron@huawei.com,
- akpm@linux-foundation.org, chao@kernel.org, jaegeuk@kernel.org
-Cc: vikash.bansal@nxp.com, priyanka.jain@nxp.com,
- shashank.rebbapragada@nxp.com, Frank.Li@nxp.com
-References: <20250827103105.2472328-1-lakshay.piplani@nxp.com>
+Subject: Re: [PATCH v2 1/3] dt-bindings: mfd: 88pm886: Add #io-channel-cells
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>,
+ Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+References: <20250831-88pm886-gpadc-v2-0-759c1e14d95f@dujemihanovic.xyz>
+ <20250831-88pm886-gpadc-v2-1-759c1e14d95f@dujemihanovic.xyz>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -108,152 +107,17 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250827103105.2472328-1-lakshay.piplani@nxp.com>
+In-Reply-To: <20250831-88pm886-gpadc-v2-1-759c1e14d95f@dujemihanovic.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 27/08/2025 12:31, Lakshay Piplani wrote:
-> Add bindings for the NXP P3T175x (P3T1750/P3T1755) temperature
-> sensor, supporting both I2C & I3C interfaces.
+On 31/08/2025 12:33, Duje Mihanović wrote:
+> Add an #io-channel-cells property to the Marvell 88PM886 PMIC binding to
+> allow referencing the IO channels exposed by its GPADC.
 > 
-> Signed-off-by: Lakshay Piplani <lakshay.piplani@nxp.com>
-> ---
-> Changes in v2 (addressed review comments from Krzysztof Kozlowski):
->  - Dropped nxp,alert-active-high: unnecessary as polarity handling is implicit in driver.
->  - Retained nxp,interrupt-mode: required to program TM(thermostat mode) bit; enables interrupt
->    (latched) mode. If not present in DT entry comparator mode is set as default.
->  - Retained nxp,fault-queue: This needs to be configured during device initialization.
->    This property configures the hardware fault queue length. Defines how many consecutive faults
->    are required before ALERT/IBI is asserted, preventing false triggers in noisy environments.
->  - The `reg` property remains required to satisfy `dt_binding_check`.
+> Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
 
-Where was v1? Why aren't you using b4 for all this?
-
->  - Fixed YAML formatting, line wrapping, and examples.
->  - Changed compatibles from nxp,p3t1755 to nxp,p3t1755-iio and nxp,p3t1750 to nxp,p3t1750-iio
->    as reported by kernel test robot.
-
-Huh? Why?
-
-> 
->  .../bindings/iio/temperature/nxp,p3t1755.yaml | 97 +++++++++++++++++++
->  1 file changed, 97 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/temperature/nxp,p3t1755.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/nxp,p3t1755.yaml b/Documentation/devicetree/bindings/iio/temperature/nxp,p3t1755.yaml
-> new file mode 100644
-> index 000000000000..4eb6fc5cb247
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/temperature/nxp,p3t1755.yaml
-> @@ -0,0 +1,97 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/temperature/nxp,p3t1755.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP P3T175x Temperature Sensor
-> +
-> +maintainers:
-> +  - Lakshay Piplani <lakshay.piplani@nxp.com>
-> +
-> +description: |
-> +  Datasheet: https://www.nxp.com/docs/en/data-sheet/P3T1755.pdf
-> +
-> +  P3T175x (P3T1750/P3T1755) is a digital temperature sensor with a range of -40°C to
-> +  +125°C and a 12-bit resolution. It supports communication over
-> +  both I2C and I3C interfaces.
-> +
-> +  The I2C interface supports up to 32 static addresses and provides
-> +  an ALERT output to signal when temperature thresholds are crossed.
-> +
-> +  The I3C interface supports In-Band interrupts (IBI) in interrupt mode,
-> +  allowing the device to notify the controller of threshold events without
-> +  dedicated alert pin.
-> +
-> +  The device supports configurable thermostat modes (interrupt or comparator),
-> +  fault queue length etc.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nxp,p3t1750-iio
-> +      - nxp,p3t1755-iio
-
-Drop iio
-
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reg:
-> +    maxItems: 1
-> +    description: |
-> +      In I2C mode, the device supports up to 32 static addresses.
-> +      In I3C mode, the 'reg' property encodes a triplet of
-> +      <static-address BCR PID> used for device matching.
-> +      Static address is optional if matching is done via PID.
-> +
-> +  nxp,interrupt-mode:
-> +    type: boolean
-> +    description: |
-> +      Enables interrupt mode (TM = 1), where alerts are latched until
-> +      cleared by a register read.
-> +      Required for IBI support over I3C. On I2C, both interrupt and
-> +      comparator mode support events.
-> +
-> +  nxp,fault-queue:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [1, 2, 4, 6]
-> +    description: |
-> +      Number of consecutive temperature limit
-> +      violations required before an alert is triggered.
-> +      valid values:- 1, 2, 4 or 6.
-> +      If unspecified, hardware default (2) is used.
-> +
-> +  assigned-address:
-> +    true
-
-Drop and instead we need to define i3c-peripheral-properties, just like
-spi has. Then you reference here that file.
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        temp-sensor@48 {
-> +            compatible = "nxp,p3t1755-iio";
-> +            reg = <0x48>;
-> +            nxp,interrupt-mode;
-> +            nxp,fault-queue = <6>;
-> +            interrupt-parent = <&gpio2>;
-> +            interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
-> +        };
-> +    };
-> +
-> +  - |
-> +    i3c {
-> +      #address-cells = <3>;
-> +      #size-cells = <0>;
-> +      temp-sensor@48,236152a00 {
-> +        reg = <0x48 0x236 0x152a00>;
-> +        assigned-address = <0x50>;
-
-This example is pretty incomplete.
-
-> +      };
-> +    };
-
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof

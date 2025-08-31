@@ -1,112 +1,116 @@
-Return-Path: <linux-iio+bounces-23513-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23517-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F130AB3D198
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 11:19:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B24BB3D227
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABCED3BED00
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 09:18:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DC6C17AB58
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 10:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FEF2522A7;
-	Sun, 31 Aug 2025 09:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7BA256C6C;
+	Sun, 31 Aug 2025 10:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cCVHsTPL"
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="XgxVDxrJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82854C79
-	for <linux-iio@vger.kernel.org>; Sun, 31 Aug 2025 09:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B39212566;
+	Sun, 31 Aug 2025 10:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756631930; cv=none; b=UDf5r6y0mSSCkh6OxQ1KGrFykLKWMN3m340+Pbv2EHTVL80A9ascyECENcq7hkR+54YAY/rEqSujLwmDue81JexpZcqfXeM2PnvvewgkzDrEDnNsquJ1vRT7gHWlfzAl8qptbDJvUkVwS/iEbbvo3fJnZgahjRHizvJfo9FdKs4=
+	t=1756636423; cv=none; b=fXwE9DKQCFRRARTTIzL2Nu15PfgTVr18M8XD9ERK6QGrjfiPpa/z/vbBaGqn42+4QlTb8Ziqj64gP47puL4mmo9Xm7nWxTS0iJ068s0O5JYbZTJZUqcNITc6rsREEV0/mF1+GG8CdBIZCN4HOh7XH36r0m7+EIlpKe0au0EeoLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756631930; c=relaxed/simple;
-	bh=zeP7v7PvH3I59PkjU+yEpd1kCf+EPT2yJwPUGhoEPt4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=suKv0uP1WyLNj+6PdpLPbLFle14f+nECQPGM1KuX+ep12dgr0GZ++UIVlM2/DfrovAnc+toKei6BMqmaH3L7R2Q+IVLt6+XSaA1qdP9HCgLzbDc/fA8WwsyPDCQ3PwPGFzuzhnthyDC4kp3WUQid9cHkYej4gyvUP0fxN4wDS4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cCVHsTPL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250B1C4CEF5;
-	Sun, 31 Aug 2025 09:18:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756631929;
-	bh=zeP7v7PvH3I59PkjU+yEpd1kCf+EPT2yJwPUGhoEPt4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cCVHsTPLmrSCzg3wPsDQVVJpYLFp13K0jo7PHmHGQL2Ly1gprLzFh4/FOXFo3TyHu
-	 ehjL4QSUnuo92+jb7UIn4Bet/zdjdCu0JbwFiKpezvRUdIrKsYrjTfRU2AYCKMktQI
-	 lhJjpueg31cu5byX4e181SPSJ0FxxCQRzhT4Nz7cVRG856gHCZ2m7w/B5nsc+5j1HD
-	 x02UANcuv9Ve6i15+ZH5fgGMKD47/tvzjEXzO9McaJciR6U0XVqTBxlh/bcNGw+9oB
-	 V1xU0I1K0fJMfT2uCe7o2JQV/OrOoLxHV1mdSKNT14oOtysHhM6yvS53sAsIEFnkv0
-	 wFV20Vn9JjbqQ==
-Message-ID: <ac53c02d-45d5-4ca8-9a2c-15a097e627a0@kernel.org>
-Date: Sun, 31 Aug 2025 11:18:45 +0200
+	s=arc-20240116; t=1756636423; c=relaxed/simple;
+	bh=ope+mfKis5PHmRi4hHU32TZUCGyXa9GWHFlOjUlR70o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mFHn00jMM7aJIBKDe/Y6+B8vorKsfkQoN4KVnSQ90u6eevM+Lgh5udJ4ufFHP4KZekDijLyPxOo7Dv0DE5HX66wd7QWIJjHcWyctgc4kufF6DZSvHDUDZx0/Gpd5u43mjBXW72D1SDcFo3jx4Ra1MnQYvjJNzYjB8besihlYyD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=XgxVDxrJ; arc=none smtp.client-ip=37.205.8.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
+DKIM-Signature: a=rsa-sha256; bh=xPcQftlnTMJXqDvzSyQmVAo4telOxyGxWkU01QZoEeA=;
+ c=relaxed/relaxed; d=dujemihanovic.xyz;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:Message-Id:Message-Id:References:Autocrypt:Openpgp;
+ i=@dujemihanovic.xyz; s=default; t=1756636408; v=1; x=1757068408;
+ b=XgxVDxrJF8Gczy0R51NJGwjF9A+6o6FWJxuhSQQmIXwhvPbf7eN1p3SXsPLGkXnOFVBnuIaC
+ kAL1mB7zpMk8N8huusb30pWsloiwNTPYycpgIVsjdeBG9sx7bvfMXzJDXlCMfLnOlpaOTb530ri
+ 3t0accMxVpDjOSFX/qV76/U3uLbt5GbcPuCA9PQ+tPo04bnJsjlZMfPnQyWs3BGX82AxwO2yPhw
+ D9yiQ9qEb5wL951XsoZetfLa7BMJX7qjnFTOs4YwlKob1ALCLrfgpXl7SuSlh9PVlK+AGp60BLs
+ pelySZjXz93fnEAcpc4AyX0ekgRx+ojVbIqXnRhjDQrQA==
+Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
+ ESMTPS id 5a3db84b; Sun, 31 Aug 2025 12:33:28 +0200
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Subject: [PATCH v2 0/3] Marvell 88PM886 PMIC GPADC driver
+Date: Sun, 31 Aug 2025 12:33:03 +0200
+Message-Id: <20250831-88pm886-gpadc-v2-0-759c1e14d95f@dujemihanovic.xyz>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/6] iio: adc: Add Intel Dollar Cove TI PMIC ADC driver
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
- Matteo Martelli <matteomartelli3@gmail.com>,
- Liam Beguin <liambeguin@gmail.com>, linux-iio@vger.kernel.org
-References: <20250811155453.31525-1-hansg@kernel.org>
- <20250811155453.31525-7-hansg@kernel.org>
- <CAHp75VcozYvcAbWZ6Yvudzu6jj39fNbGD-8T=F=v+6QxEGxiKA@mail.gmail.com>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <CAHp75VcozYvcAbWZ6Yvudzu6jj39fNbGD-8T=F=v+6QxEGxiKA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAN8ktGgC/13OTQrCMBCG4auUWRtJBhqjK+8hXYRk2o7QH5IaW
+ kvubiy4cfl+MA+zQ6TAFOFW7RAoceRpLIGnClxvx44E+9KAEmtp8CKMmQdjtOhm650witBZ5Wt
+ 0BOVmDtTyeniPpnTPcZnCdvBJfdefdP2TkhJStFqiRtS6JXv3rycNXJ6YErvzur2hyTl/ANJce
+ /iyAAAA
+X-Change-ID: 20250827-88pm886-gpadc-81e2ca1d52ce
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>, 
+ Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1272;
+ i=duje@dujemihanovic.xyz; s=20240706; h=from:subject:message-id;
+ bh=ope+mfKis5PHmRi4hHU32TZUCGyXa9GWHFlOjUlR70o=;
+ b=owGbwMvMwCW21nBykGv/WmbG02pJDBlbVL5L2J3fzC+3u36G5e1QI4/I55eZlURZzTZ0S4d/s
+ j+m8WdBRykLgxgXg6yYIkvuf8drvJ9Ftm7PXmYAM4eVCWQIAxenAEzkYAbDP4uXCbpFDIxbw27f
+ Wnk4/m/p2WfZLXP61/Ra9QqLTO98VMXwzyZou1vRBVn7mGnsVocS9t9z3BWZ+OhK54Js5VNucq1
+ 3uAA=
+X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
+ fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
 
-Hi Andy,
+This series adds a driver for the GPADC found on the Marvell 88PM886
+PMIC. The GPADC monitors various system voltages and is a prerequisite
+for battery monitoring on boards using the PMIC.
 
-On 11-Aug-25 9:52 PM, Andy Shevchenko wrote:
-> On Mon, Aug 11, 2025 at 5:55 PM Hans de Goede <hansg@kernel.org> wrote:
->>
->> Intel has 2 completely different "Dollar Cove" PMICs for its Bay Trail /
->> Cherry Trail SoCs. One is made by X-Powers and is called the AXP288.
->> The AXP288's GPADC is already supported by the X-Powers AXP288 ADC driver.
->>
->> The other "Dollar Cove" PMIC is made by TI and does not have any clear TI
->> denomination, its MFD driver calls it the "Intel Dollar Cove TI PMIC".
->>
->> Add a driver for the Intel Dollar Cove TI PMIC's general purpose ADC,
->> binding to the "chtdc_ti_adc" MFD cell of the MFD driver.
->>
->> The "cht" in the cell name comes from Cherry Trail, but it turns out that
->> just like the AXP288 the Intel Dollar Cove TI PMIC is also used with both
->> Intel Bay Trail and Intel Cherry Trail SoCs, so this new ADC driver does
->> not include the cht part in its name.
->>
->> This is loosely based on kernel/drivers/iio/adc/iio_dc_ti_gpadc.c
->> from the Acer A1-840 Android kernel source-code archive named:
->> "App. Guide_Acer_20151221_A_A.zip"
->> which is distributed by Acer from the Acer A1-840 support page:
->> https://www.acer.com/us-en/support/product-support/A1-840/downloads
+Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
+---
+Changes in v2:
+- Refactor driver according to comments
+- Add binding patch
+- Link to v1: https://lore.kernel.org/r/20250829-88pm886-gpadc-v1-0-f60262266fea@dujemihanovic.xyz
 
-Thank you for the review. I've addressed all your remarks for v5.
+---
+Duje Mihanović (3):
+      dt-bindings: mfd: 88pm886: Add #io-channel-cells
+      iio: adc: Add driver for Marvell 88PM886 PMIC ADC
+      mfd: 88pm886: Add GPADC cell
 
-...
+ .../bindings/mfd/marvell,88pm886-a1.yaml           |   4 +
+ MAINTAINERS                                        |   5 +
+ drivers/iio/adc/88pm886-gpadc.c                    | 383 +++++++++++++++++++++
+ drivers/iio/adc/Kconfig                            |  13 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/mfd/88pm886.c                              |   1 +
+ include/linux/mfd/88pm886.h                        |  54 +++
+ 7 files changed, 461 insertions(+)
+---
+base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
+change-id: 20250827-88pm886-gpadc-81e2ca1d52ce
 
->> +MODULE_AUTHOR("Ramakrishna Pallala <ramakrishna.pallala@intel.com>");
-> 
-> Wondering if the address is still alive. In this case perhaps even ask
-> for SoB/Co-developed-by? Otherwise if you still wish to have this
-> credit make it in the form of "First Last (Intel)".
-
-Good point, I asked about co-maintaining and got a bounce so I'll replace
-this with "First Last (Intel)".
-
-Regards,
-
-Hans
-
+Best regards,
+-- 
+Duje Mihanović <duje@dujemihanovic.xyz>
 
 

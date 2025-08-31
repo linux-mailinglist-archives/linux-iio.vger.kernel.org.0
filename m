@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-23528-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23529-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED9DB3D36C
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 14:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D2AB3D36E
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 14:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C37A17D431
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:53:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A251217D3B2
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45252258EC2;
-	Sun, 31 Aug 2025 12:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B713258EC2;
+	Sun, 31 Aug 2025 12:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNhemR8P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKeVOwGL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A3045029;
-	Sun, 31 Aug 2025 12:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572C945029;
+	Sun, 31 Aug 2025 12:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756644792; cv=none; b=W5xg+cS5x/mXI02UuJmtZYWZKrRTv+XrIsnLt6JXjaZQ6YapMBcaxmGIJjhGbvgMqJ+gxJv4VDnhN0jT8OQ1tgzI/xTg9FYp4LiBp/kZ3OJtISS/4evn2dL7VaWTwgMMWP+wtHZaOVh4KmzGDxTw8AhUKnC//PJIWkBeWo18xL8=
+	t=1756644824; cv=none; b=ZSqVj4hI/N4clRtuodrnmE5kFSGpqumVoYvAk316utnvOOoMCXAk2oL2LwU+0/SXYlfc3UXlmuPMka7C/+sF/O7gmpL65Pv6Zu/UFhJk3wGMmhoZHm4tOO7FXTugqGCzbJvz/RkRJ20cRc3wEx4ahxVZwlpf2wJ5RQ32AOKYxPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756644792; c=relaxed/simple;
-	bh=srvVdICkHEYis3YiFCRu9eNUuNEP5bA8paJ5iT6htOI=;
+	s=arc-20240116; t=1756644824; c=relaxed/simple;
+	bh=AhI3GhgmMbR77FbaoKApUgl2h3leL80SPyN3Q2zODi4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SGYH/y2QmeLsqfoV8Ug4fd+4j4aXNcin9UIiS3AN6pH9QoXLc5I7Idh38Bo6UqUqtnhQ4a+quq7Oo8FZQpwbSlPEJmoZ1Us25X1jMrk+9hA0nyfKQIJa7U+OlE5IQs9Q5Xb/3NbMXav2cJa627Uk2FIsTEIL+cQfTf1qnq8d6Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNhemR8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEB2C4CEED;
-	Sun, 31 Aug 2025 12:53:08 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=jgXNjSu4+7WkHiLQFLCq8QCMt0/zaXVl9qScMRrMHag6BkKl+r0rgpND/3zRUt9NdDveRUjDihpKAG5kyy6RdJYJ4M3vk1M3puDR5qOplRgxn2vmWV9Vp86Ixhu+/cwYbjyOJcRIzvEdDYtYHSlGZmdewhOkTJ45Hlk1queB1BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKeVOwGL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD28C4CEED;
+	Sun, 31 Aug 2025 12:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756644791;
-	bh=srvVdICkHEYis3YiFCRu9eNUuNEP5bA8paJ5iT6htOI=;
+	s=k20201202; t=1756644823;
+	bh=AhI3GhgmMbR77FbaoKApUgl2h3leL80SPyN3Q2zODi4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gNhemR8PGKHVacED/7VabmCj9IegZ3DXgsFakCKXPJ59Gq1K0rhLLtXAD9ATR+n4/
-	 Q/sgOZxsWsTB1q9obw0C7+dyRnv10lbXV6Jk+MKbwk0QOFUtJtUhAEh4L6EYl2+FUP
-	 3FoCCt9F+SClSVvfcte5Yswx5XALn9sLEgEGymPRgJJpf2STygNz7J9U/kyWsCG3uO
-	 i3tMsWuWI2l9nzYdBhP/tMtwOIqmE65nXo86I0qpIeSSjY0aMvkgXLRDOmF2IENwU7
-	 SQPHgY7HccHAIXp1AWKOscJibhiCflgdcjEO51xRkfGQu2ujCDCsiOSpeqBt5odKf8
-	 UPT45ZTEs8xFw==
-Message-ID: <661af11d-1d09-42e5-89e5-a0945e21ad67@kernel.org>
-Date: Sun, 31 Aug 2025 14:53:06 +0200
+	b=UKeVOwGL3mB9Kkz5VPw+dIeicMs29kR+WgCVDID434YwNSTuILqG2Z4oRd0LZAD5a
+	 4QP9QcJ7wEP8VIUbw5/GM86EJRNrMNMISY4+qrwlvkUIVK1mzsWHuWL9JsGo6ax5/d
+	 5cU+3LfWx8DPCsIYNU3DsLyiQfWV4STrCNtamDoTmkKBIV8fPE9zVvpxcOfUaGIer5
+	 DaxT2vM2ListhitscfsKfJ3/Gbv2qMAKCudpuNCHsulA5v25LRWTHDDZI58XVnbXyO
+	 PIcEocPx0wcv5oEwsec1ZbDCXPW5UWTSSBDLto6OtEOMc/SL+Vbls2+KXMqkPmhYBf
+	 Jq3Aec+3ADKaA==
+Message-ID: <b77f90f8-5017-4137-bc8a-57229537e8b8@kernel.org>
+Date: Sun, 31 Aug 2025 14:53:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,14 +50,15 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] Added mh-z19c to compatible enum list
+Subject: Re: [PATCH v1 0/2] winsen,mhz19b: added compatibility and of_match
+ for mhz19c.
 To: Sidharth Seela <sidharthseela@gmail.com>, Gyeyoung Baek <gye976@gmail.com>
 Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
  andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <CAJE-K+DSw5PWdxqdTMO1oXcAQs9cH04jAVeajFuBcZf==jP=Og@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+References: <CAJE-K+Ctp7sps9yhyagxzL-SJYfyN8mPSz87ALD5XOZqYMru7Q@mail.gmail.com>
 Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -101,62 +102,16 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <CAJE-K+DSw5PWdxqdTMO1oXcAQs9cH04jAVeajFuBcZf==jP=Og@mail.gmail.com>
+In-Reply-To: <CAJE-K+Ctp7sps9yhyagxzL-SJYfyN8mPSz87ALD5XOZqYMru7Q@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 31/08/2025 10:11, Sidharth Seela wrote:
-> Winsen sensor's mh-z19c and mh-z19b are pin-compatible and also share
-> the same UART parameters. Hence, it makes sense to add it as a
-> compatible in the yaml file. Also mh-z19b is discontinued.
+On 31/08/2025 10:05, Sidharth Seela wrote:
+> The winsen mhz19c is physically and pin-to-pin compatible with mhz19b.
+> The need for the compatibility stems from the discontinuance of mhz19b
+> as explained on winsen's website.
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
-
-Please use but imperative mood. See longer explanation here:
-https://elixir.bootlin.com/linux/v6.16/source/Documentation/process/submitting-patches.rst#L94
-
-
-> 
-> Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
-> ---
->  .../devicetree/bindings/iio/chemical/winsen,mhz19b.yaml      | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml
-> b/Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml
-> index 2a6ddb33f163..e8520d9095f3 100644
-> --- a/Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml
-> +++ b/Documentation/devicetree/bindings/iio/chemical/winsen,mhz19b.yaml
-> @@ -11,7 +11,10 @@ maintainers:
-> 
->  properties:
->    compatible:
-> -    const: winsen,mhz19b
-> +    items:
-
-No need for items, that's just enum but...
-
-
-> +      - enum:
-> +        - winsen,mhz19b
-> +        - winsen,mhz19c
-
-your commit msg said these are compatible so express that. See my OSSE25
-talk or hundreds of other examples.
-
-Anyway, never tested :( (I should not even bother with review...)
-
-It does not look like you tested the bindings, at least after quick
-look. Please run `make dt_binding_check` (see
-Documentation/devicetree/bindings/writing-schema.rst for instructions).
-Maybe you need to update your dtschema and yamllint. Don't rely on
-distro packages for dtschema and be sure you are using the latest
-released dtschema.
-
+You patchset has broken threading. Use b4 or just git send-email.
 
 Best regards,
 Krzysztof

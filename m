@@ -1,157 +1,136 @@
-Return-Path: <linux-iio+bounces-23532-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23533-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F885B3D386
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 15:12:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CD4B3D3D0
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 16:07:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62F167ADF0C
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 13:11:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30E613BEF7B
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 14:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78E225B30E;
-	Sun, 31 Aug 2025 13:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BB5263F43;
+	Sun, 31 Aug 2025 14:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fp/gfpZv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lFF9oPfi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C74A81AA8;
-	Sun, 31 Aug 2025 13:12:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF14A1DF99C;
+	Sun, 31 Aug 2025 14:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756645955; cv=none; b=F9Tq+fXxZRtJucrBOPmxcDHBRsbe0hTIKeZGK+B3Ji/taoG/iOyZD4ei3YQIU6aPV0MTJJUWBQdN2jGiCL+O8hug/Z27dOLpbSv/7l9kKp5fXGHeDg1OVf5lQdxqdTGvF5AhMi6wtJV+9KVZW8H7eoHslXOXK5aO3QWB86aXOj4=
+	t=1756649243; cv=none; b=loZtEhL0nOnc+1qtXaoMwPlgePdglf+kmvzk5/2AOmt3svDQP3wMpSc/kXPI0oPbuTKEc/9XdpLCLMMPkX8ZFZ4GjZdZ2tMXhyitqB+fgBkpm1Pw/hkL6ioyb/R/298qdIFULDm9cmwHSFN424BdSrGN4T91xjnNfZG41xor72U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756645955; c=relaxed/simple;
-	bh=s0aG3Pz4rxOaLzqq5OJGfcesnNayyMdkZnhc6vu4xNM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OlclqZJbwSA09cCLc336B7lmWnOgIZxGWa+tm+weY4WjeQ9Iua5etHVRiXDEB4kgUpJQcbMYFgQ6ejt8tdAWDoty/r2OrNa0564LxOFRrXupkpBl34Z5Ro+IqT4IXhkEB13saM9m01zrUxStHYIPR7qw6XNXGmd8QbTjzyrKbYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fp/gfpZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F4AC4CEED;
-	Sun, 31 Aug 2025 13:12:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756645955;
-	bh=s0aG3Pz4rxOaLzqq5OJGfcesnNayyMdkZnhc6vu4xNM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fp/gfpZvqPdYs42Itq73X1rP9NQLDxhthmFjdJ62b1JTTNuXvoqTTvxNVIUHKXNDP
-	 5DIn9Mrv4Tr/+BjNwS91rXhZP321pMIGn9mQOrYXpwgFURG4GHmUlcF5xW+O0/1wBt
-	 FqPmk+LUfm2RN3S6x+Y/mCuHPYu65UFUcdqqFiih+8C9GrPl05QZ/dGfHKinNcsokl
-	 p4bCSVOl8YEa4KaP2bnpEYHHC5/lufuTFNK60iIavsJisoReETWTUzzG+767AkjDEY
-	 TucNUTvWD6t0jXMIkCZrNI8SuaxNCHtbrXZ3olhsXu4m0/Zdhiu4Hy4tyyowjCLYnk
-	 v/MEeO7HvoFAA==
-Message-ID: <e98ed14b-ed97-4e1c-a758-97b9bfc8ded4@kernel.org>
-Date: Sun, 31 Aug 2025 15:12:29 +0200
+	s=arc-20240116; t=1756649243; c=relaxed/simple;
+	bh=42UJ9qEiQVPuEtVkeYAq3kUVHCwCtU/EXKkv9z0KyK8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gWvie53/USb3TyXE2ZAFTdtmEjfjcPXF6kDmetOMBWUFMxPypmFai/07OWllNonKFxL6zh6Py9/8YbiPY/0h7RwL9MTxEIg+v2yPYD24bU7J8Dw8FLWaDIj9RNInv5L5Y/KlZ931Cxx7fClsVbN97Y/vKQM4EB+Vsi7vHBDJaT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lFF9oPfi; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b042cc3953cso6859166b.2;
+        Sun, 31 Aug 2025 07:07:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756649240; x=1757254040; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=42UJ9qEiQVPuEtVkeYAq3kUVHCwCtU/EXKkv9z0KyK8=;
+        b=lFF9oPfiCWxpFI51GFQBurKv3k5pWGN4I396QWpglh8+gjdE/LkuuIaPVVW1s+HI5e
+         vCR1KUQZ73n/Ahm7b1OzrpYFQle/z+wSWoVHtQlBKpZr5ZIrwMEu1IIdmIBfAlvbptIl
+         L8duvQQZS+l651lt6LftDcv/giSjNF98W7hNTLqVdet0KPCciNyAoQnA9mPq8UwgCeCb
+         kmVce5tqlQYgArA57eXGYl3skgJzIf/suG20iGhPQqP8XrWO/g1aenlyPqvf0QPC9dck
+         DlnxVBUshPZu7v/Tsy/z8vT3Lw4Smpumpg9haq8r/eOcfbsDADxSfaiAc12IA10rBoHQ
+         O5jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756649240; x=1757254040;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=42UJ9qEiQVPuEtVkeYAq3kUVHCwCtU/EXKkv9z0KyK8=;
+        b=ro011+u2C1ClmmSUO7iOp/ZD/6DRUAeUcyfaXBlSdOYKUkaaQWpP6UbjAg4Z7qzLcw
+         bNKCGyJNhiI8+P+kE4WePmO/0l1f1FlgTOzKs3ljWdcKWctFjmMqehwC9oeZAFZj9vnf
+         ys/4JxyOPw8TTh2z012VUcM/907j5qDOBxJW7Y5PPNTArWj0404vC+nnGqpbOIfYuDkc
+         VIADASLhPJzG12touyr8HpVV/FhclFiC6UkSBjhBpRRqaHnt5jpAhMNb3PojDIVs6UoO
+         wpAuw4FuEi0yQPFSh8oODta6DxoNHm+cHTncf2UR6acZI+fp0Q+5qE/hyK6rl+8Qai3A
+         EHuA==
+X-Forwarded-Encrypted: i=1; AJvYcCVcoQiDIeUryh8KcBrCV/ut/kTg6iaxbCcec5G3/6W8ejAGVSgBL2MB3Biy3EKB33JTl+lYCsoNeAKr@vger.kernel.org, AJvYcCX6+YveiBWhqf1VvH/xUgaoUCrUkBqkH0ah0aRUyPSgysryFYtQC2arrR6bEYOxB2H33HALZMT3tLG+@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAoBkttQoetaW6gfJXgtmIFyYqUF45WO7SOo13NBQm5jQBsBFa
+	X7gwVHEThdIj3anwNm6knq1ZQLMhmO+6SJ339bbxSpimWK+ZEwBRRTwH/xQLEK+SAzXF22WTIEI
+	46AEodMmQYzdyBQ1OLgZmWiSmX7hDchA=
+X-Gm-Gg: ASbGncs7KDICJmyiqeZn1oYFGxCWxVdHZCVsybVcey8IS4ficc5g3wLnbTY1gWPz1VE
+	JiIp36lWRt5N1mrggxKKALgEOPHR2MziH5j4Xh4TliaiMOQhSUVtOkB3jLj4JjYVNJI9KQG5mKm
+	1Ea/UpOm67ZzIqpvF+Vd5l7CSXriGXRhos4TNBc1RRXjT6hU5sovIGhYhOxNO8hwW2upalFTZzM
+	aSshOBRDvcep0GM16E=
+X-Google-Smtp-Source: AGHT+IH0Xl0/W0c9vgy60ZM13U26KVIbdLaIyx5uS75uXxEy57W9+t84jA9KedoaH8q6cicSLHscTKjLqe1P+adXj24=
+X-Received: by 2002:a05:6402:84c:b0:61c:e99d:fdef with SMTP id
+ 4fb4d7f45d1cf-61d26988c6amr4894248a12.2.1756649239836; Sun, 31 Aug 2025
+ 07:07:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] dt-bindings: iio: adc: ad7768-1: add new supported
- parts
-To: linux-kernel@vger.kernel.org
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Michael.Hennerich@analog.com, lars@metafoo.de,
- jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- marcelo.schmitt1@gmail.com
-References: <20250824040943.9385-1-Jonathan.Santos@analog.com>
- <510f6efb-ada3-4848-ac8e-16fa5d1b5284@kernel.org>
- <aLPE3yiSTReS7B2J@JSANTO12-L01.ad.analog.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aLPE3yiSTReS7B2J@JSANTO12-L01.ad.analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAJE-K+DSw5PWdxqdTMO1oXcAQs9cH04jAVeajFuBcZf==jP=Og@mail.gmail.com>
+ <661af11d-1d09-42e5-89e5-a0945e21ad67@kernel.org>
+In-Reply-To: <661af11d-1d09-42e5-89e5-a0945e21ad67@kernel.org>
+From: Sidharth Seela <sidharthseela@gmail.com>
+Date: Sun, 31 Aug 2025 19:52:08 +0545
+X-Gm-Features: Ac12FXxdD74L9FwLyRpnPDsSA4vrjV4zXrGPvf49Gc96RLz3-8y-DxfZUgnlySw
+Message-ID: <CAJE-K+DOReK7+4+98qz-O+gjxZk-BfH4GBU8jTdLfRExudHuFg@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] Added mh-z19c to compatible enum list
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Gyeyoung Baek <gye976@gmail.com>, jic23@kernel.org, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 31/08/2025 05:43, Jonathan Santos wrote:
->>>      maxItems: 1
->>> @@ -58,6 +66,18 @@ properties:
->>>      description:
->>>        ADC reference voltage supply
->>>  
->>> +  adi,gain-milli:
->>> +    description: |
->>> +       Specifies the gain applied by the Analog Anti-Aliasing Filter (AAF) to the
->>> +       ADC input (in milli units). The hardware gain is determined by which input
->>
->>
->> I don't think there is no such thing as "milli units". milli is SI
->> prefix, not unit. So "units" is the unit? Or how exactly?
->>
->> Basis points were before since 2022 so I don't get why these other
->> bindings introduced in 2024 could not use it?
->>
->> Anyway, if you ever do not apply reviewers comment, then your commit msg
->> should explain this. Otherwise you get the same discussion here.
->>
-> 
-> Yes, you are right. We shouldn't use milli as suffix. However, may I
-> suggest another option?
-> 
-> I believe -permille is more appropriate because it represents a 1/1000
-> proportion, which gives the precision we need to cover all values.
-> 
-> so it would be something like: adi,aaf-gain-permille
-> 
-> Is that ok for you?
-> 
-> Thanks for the feedback,
-> Jonathan S.
+On Sun, Aug 31, 2025 at 6:38=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> Please use subject prefixes matching the subsystem. You can get them for
+> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+> your patch is touching. For bindings, the preferred subjects are
+> explained here:
+> https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-pat=
+ches.html#i-for-patch-submitters
+>
+> Please use but imperative mood. See longer explanation here:
+> https://elixir.bootlin.com/linux/v6.16/source/Documentation/process/submi=
+tting-patches.rst#L94
+>
+>
+>
+> No need for items, that's just enum but...
+>
 
+>
+> your commit msg said these are compatible so express that. See my OSSE25
+> talk or hundreds of other examples.
+>
+> Anyway, never tested :( (I should not even bother with review...)
+>
+> It does not look like you tested the bindings, at least after quick
+> look. Please run `make dt_binding_check` (see
+> Documentation/devicetree/bindings/writing-schema.rst for instructions).
+> Maybe you need to update your dtschema and yamllint. Don't rely on
+> distro packages for dtschema and be sure you are using the latest
+> released dtschema.
+>
+>
+> Best regards,
+> Krzysztof
 
-What's wrong with existing unit I pointed out before?
-
-BTW, any idea why your reply-to header is completely corrupted (copies
-in-reply-to...)?
-
-
-Best regards,
-Krzysztof
+Thanks Krzysztof, will retry later after checking and testing.
+I understand that it must have been a bit frustrating,but thank-you for bea=
+ring
+with me as I am new :) .
+--=20
+Best,
+Sidharth Seela
 

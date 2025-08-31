@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-23529-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23530-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D2AB3D36E
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 14:53:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848DBB3D377
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 14:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A251217D3B2
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:53:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40B1F3BFC2A
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B713258EC2;
-	Sun, 31 Aug 2025 12:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DFC1E47A3;
+	Sun, 31 Aug 2025 12:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKeVOwGL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OlN6m9Hj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572C945029;
-	Sun, 31 Aug 2025 12:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7314325D209;
+	Sun, 31 Aug 2025 12:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756644824; cv=none; b=ZSqVj4hI/N4clRtuodrnmE5kFSGpqumVoYvAk316utnvOOoMCXAk2oL2LwU+0/SXYlfc3UXlmuPMka7C/+sF/O7gmpL65Pv6Zu/UFhJk3wGMmhoZHm4tOO7FXTugqGCzbJvz/RkRJ20cRc3wEx4ahxVZwlpf2wJ5RQ32AOKYxPs=
+	t=1756645064; cv=none; b=omHKhgvlUQH19v5mGeixr2zX+no2f/P149UJRAqFs2RYgrkM/trDqFN8/Dt3LyTN39g4sUzMpRpeKd7oRc34wxOSRZrSWsoNSWdZlg31ESfxER+aEf6vEZh2d+/WVrhSlWS5Mh9VS/1FHDsVgBVWEkITWzBrl7JYl3UVRcn/dn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756644824; c=relaxed/simple;
-	bh=AhI3GhgmMbR77FbaoKApUgl2h3leL80SPyN3Q2zODi4=;
+	s=arc-20240116; t=1756645064; c=relaxed/simple;
+	bh=VB4toxjTUZH/JpzWaH4j4uzD3yqjXAV34v9Cxuq8/vM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jgXNjSu4+7WkHiLQFLCq8QCMt0/zaXVl9qScMRrMHag6BkKl+r0rgpND/3zRUt9NdDveRUjDihpKAG5kyy6RdJYJ4M3vk1M3puDR5qOplRgxn2vmWV9Vp86Ixhu+/cwYbjyOJcRIzvEdDYtYHSlGZmdewhOkTJ45Hlk1queB1BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKeVOwGL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD28C4CEED;
-	Sun, 31 Aug 2025 12:53:40 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=gX9q8j8o2AkDa5p0xlnkSntG7lH3jVrOwQDZl8V0uYjzdEmVh+FpSIY1+OHyoLosZJJDXQqpWjvTJlnUCHwskK0wORYetbGdUEDPkIRLNWYh277V1SsLPA0lk8IV2T0dQ4GdniFIQ+gHpqSFhXukbzLp7Jvj26yemIoYMnTDgPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OlN6m9Hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B6CC4CEED;
+	Sun, 31 Aug 2025 12:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756644823;
-	bh=AhI3GhgmMbR77FbaoKApUgl2h3leL80SPyN3Q2zODi4=;
+	s=k20201202; t=1756645063;
+	bh=VB4toxjTUZH/JpzWaH4j4uzD3yqjXAV34v9Cxuq8/vM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UKeVOwGL3mB9Kkz5VPw+dIeicMs29kR+WgCVDID434YwNSTuILqG2Z4oRd0LZAD5a
-	 4QP9QcJ7wEP8VIUbw5/GM86EJRNrMNMISY4+qrwlvkUIVK1mzsWHuWL9JsGo6ax5/d
-	 5cU+3LfWx8DPCsIYNU3DsLyiQfWV4STrCNtamDoTmkKBIV8fPE9zVvpxcOfUaGIer5
-	 DaxT2vM2ListhitscfsKfJ3/Gbv2qMAKCudpuNCHsulA5v25LRWTHDDZI58XVnbXyO
-	 PIcEocPx0wcv5oEwsec1ZbDCXPW5UWTSSBDLto6OtEOMc/SL+Vbls2+KXMqkPmhYBf
-	 Jq3Aec+3ADKaA==
-Message-ID: <b77f90f8-5017-4137-bc8a-57229537e8b8@kernel.org>
-Date: Sun, 31 Aug 2025 14:53:38 +0200
+	b=OlN6m9Hj1fiiGfLG7NO//elgbtAdSpUMwPSPRd+r5mEqWpIXrrxBIaYmBfMp+DAzX
+	 zPxqnckZAczgPemgCyVZYsPQOQgVErxIhhSIccINA43ovi5UyheMw3LNQ9VlQ/KCFA
+	 oKN2rM8fBurquY308aSHmmR836unozrg+umzPJBQeAMzjYvy1iHSJuikF9oxBzfSwH
+	 tFWM9assjtQ7ZpSOwki28OCgPJGvKc6MBnyAFO+LQ3CAQac9UhlMFP/ZiGMoIoDGN4
+	 5baPh8QajE2UCnMiKErOb3xNfHhTPh4A9VBtgH8QkCKE1R2/bpoRsZKvXbEHAnhR6A
+	 L9GLBJCWlG/FA==
+Message-ID: <f39bf664-1c06-4ef9-a8db-65b53b5e5270@kernel.org>
+Date: Sun, 31 Aug 2025 14:57:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,15 +50,19 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/2] winsen,mhz19b: added compatibility and of_match
- for mhz19c.
-To: Sidharth Seela <sidharthseela@gmail.com>, Gyeyoung Baek <gye976@gmail.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <CAJE-K+Ctp7sps9yhyagxzL-SJYfyN8mPSz87ALD5XOZqYMru7Q@mail.gmail.com>
-Content-Language: en-US
+Subject: Re: [PATCH 1/5] dt-bindings: iio: imu: Add ICM-20948
+To: Bharadwaj Raju <bharadwaj.raju777@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, shuah@kernel.org,
+ linux-kernel-mentees@lists.linux.dev
+References: <20250831-icm20948-v1-0-1fe560a38de4@gmail.com>
+ <20250831-icm20948-v1-1-1fe560a38de4@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -102,16 +106,51 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <CAJE-K+Ctp7sps9yhyagxzL-SJYfyN8mPSz87ALD5XOZqYMru7Q@mail.gmail.com>
+In-Reply-To: <20250831-icm20948-v1-1-1fe560a38de4@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 31/08/2025 10:05, Sidharth Seela wrote:
-> The winsen mhz19c is physically and pin-to-pin compatible with mhz19b.
-> The need for the compatibility stems from the discontinuance of mhz19b
-> as explained on winsen's website.
+On 30/08/2025 20:42, Bharadwaj Raju wrote:
+> +description: |
+> +  9-axis motion-tracking device that combines a 3-axis gyroscope, 3-axis
+> +  accelerometer, and a 3-axis magnetometer.
+> +
+> +  https://invensense.tdk.com/wp-content/uploads/2024/03/DS-000189-ICM-20948-v1.6.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - invensense,icm20948
+> +
 
-You patchset has broken threading. Use b4 or just git send-email.
+That's pretty incomplete. See existing invense bindings. Explain in
+commit msg how this is different than existing devices.
+
+> +  reg:
+> +    maxItems: 1
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      icm20948 {
+
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+If you cannot find a name matching your device, please check in kernel
+sources for similar cases or you can grow the spec (via pull request to
+DT spec repo).
+
+
+> +        compatible = "invensense,icm20948";
+> +        reg = <0x69>;
+> +      }
+> +    }
+> 
+
 
 Best regards,
 Krzysztof

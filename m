@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-23531-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23532-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C89B3D37B
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 14:58:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F885B3D386
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 15:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BA5694E142D
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:58:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62F167ADF0C
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 13:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1111A25EFBB;
-	Sun, 31 Aug 2025 12:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78E225B30E;
+	Sun, 31 Aug 2025 13:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lb+qhHwC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fp/gfpZv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FF5156F5E;
-	Sun, 31 Aug 2025 12:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C74A81AA8;
+	Sun, 31 Aug 2025 13:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756645110; cv=none; b=SeC1+gfeY4OJJ998iHyU8zt8Vqyq2nH+EX5SHyNacYweyaEiKbpmo6EC3xNx7i4/2NB30CKWhK1CUu7fhdONQZp80TFnwG+grSA8+bUppvG3a9B59r6eIKToDkx76I9J7SwXLAJ2QLNCR68a2HGkU/D621B5XTJvs3iNI2LdYSU=
+	t=1756645955; cv=none; b=F9Tq+fXxZRtJucrBOPmxcDHBRsbe0hTIKeZGK+B3Ji/taoG/iOyZD4ei3YQIU6aPV0MTJJUWBQdN2jGiCL+O8hug/Z27dOLpbSv/7l9kKp5fXGHeDg1OVf5lQdxqdTGvF5AhMi6wtJV+9KVZW8H7eoHslXOXK5aO3QWB86aXOj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756645110; c=relaxed/simple;
-	bh=yJ0uIpHm+mUKrddjCoiv9Fi3F7RElGG2VRluOwc4MHY=;
+	s=arc-20240116; t=1756645955; c=relaxed/simple;
+	bh=s0aG3Pz4rxOaLzqq5OJGfcesnNayyMdkZnhc6vu4xNM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R2fyLppdXauhH/oFiQZBTb4NKwZNzV3J0HsJeR4A+k4i4ahs+xHVSMznhIAO79ThjnelPZ+bH8g66ewI53ngZpA+OYUc+5XKRElJri5lJGvRaJ5Af2GCYNCdZr7DHY8lL+A1zpup9ZWL+6jzxaJG3VkUd+0NWA2qCZsPZxNviJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lb+qhHwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E475C4CEED;
-	Sun, 31 Aug 2025 12:58:26 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=OlclqZJbwSA09cCLc336B7lmWnOgIZxGWa+tm+weY4WjeQ9Iua5etHVRiXDEB4kgUpJQcbMYFgQ6ejt8tdAWDoty/r2OrNa0564LxOFRrXupkpBl34Z5Ro+IqT4IXhkEB13saM9m01zrUxStHYIPR7qw6XNXGmd8QbTjzyrKbYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fp/gfpZv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F4AC4CEED;
+	Sun, 31 Aug 2025 13:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756645110;
-	bh=yJ0uIpHm+mUKrddjCoiv9Fi3F7RElGG2VRluOwc4MHY=;
+	s=k20201202; t=1756645955;
+	bh=s0aG3Pz4rxOaLzqq5OJGfcesnNayyMdkZnhc6vu4xNM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Lb+qhHwCpKJrLmMfGb+TU30yG0OySR+8ZFFyYPtAivqyAiXJN33DKmVMzeOA5tbjP
-	 UzmQN5HXg9Qk8knKCCsv7acZiJ5skFAgEAK2byapc9W7+szc8FCQ6AOcFJUcnLjYFA
-	 kDPVnyVrIQ8FlpATsL6VznJ2/KEOvRhHJe+qY2GcL85vdiafZ6J+G7on+8ZfgSbF9S
-	 IS1Z5/hPnxNpNx2Aa//WRKxoJJvDlTY3WLkWSXwatg3AMft74ggY53g6ECeEhctmV9
-	 LMcoHzRwxTXhrfwavuK3X2vFTVGB0s8FeEk1ANRFDBCJNBFv9NKskKpiv5/0Er49L/
-	 GNelUsTaMstJA==
-Message-ID: <7c98542d-c196-4071-b29c-91cd81072aa5@kernel.org>
-Date: Sun, 31 Aug 2025 14:58:24 +0200
+	b=fp/gfpZvqPdYs42Itq73X1rP9NQLDxhthmFjdJ62b1JTTNuXvoqTTvxNVIUHKXNDP
+	 5DIn9Mrv4Tr/+BjNwS91rXhZP321pMIGn9mQOrYXpwgFURG4GHmUlcF5xW+O0/1wBt
+	 FqPmk+LUfm2RN3S6x+Y/mCuHPYu65UFUcdqqFiih+8C9GrPl05QZ/dGfHKinNcsokl
+	 p4bCSVOl8YEa4KaP2bnpEYHHC5/lufuTFNK60iIavsJisoReETWTUzzG+767AkjDEY
+	 TucNUTvWD6t0jXMIkCZrNI8SuaxNCHtbrXZ3olhsXu4m0/Zdhiu4Hy4tyyowjCLYnk
+	 v/MEeO7HvoFAA==
+Message-ID: <e98ed14b-ed97-4e1c-a758-97b9bfc8ded4@kernel.org>
+Date: Sun, 31 Aug 2025 15:12:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,17 +50,17 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] iio: imu: icm20948: add support for gyroscope
-To: Bharadwaj Raju <bharadwaj.raju777@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, shuah@kernel.org,
- linux-kernel-mentees@lists.linux.dev
-References: <20250831-icm20948-v1-0-1fe560a38de4@gmail.com>
- <20250831-icm20948-v1-3-1fe560a38de4@gmail.com>
+Subject: Re: [PATCH v2 1/4] dt-bindings: iio: adc: ad7768-1: add new supported
+ parts
+To: linux-kernel@vger.kernel.org
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Michael.Hennerich@analog.com, lars@metafoo.de,
+ jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ marcelo.schmitt1@gmail.com
+References: <20250824040943.9385-1-Jonathan.Santos@analog.com>
+ <510f6efb-ada3-4848-ac8e-16fa5d1b5284@kernel.org>
+ <aLPE3yiSTReS7B2J@JSANTO12-L01.ad.analog.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,90 +106,51 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250831-icm20948-v1-3-1fe560a38de4@gmail.com>
+In-Reply-To: <aLPE3yiSTReS7B2J@JSANTO12-L01.ad.analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 30/08/2025 20:42, Bharadwaj Raju wrote:
-> Add support for reading the gyroscope, which is exposed as another IIO
-> device under the icm20948 driver.
+On 31/08/2025 05:43, Jonathan Santos wrote:
+>>>      maxItems: 1
+>>> @@ -58,6 +66,18 @@ properties:
+>>>      description:
+>>>        ADC reference voltage supply
+>>>  
+>>> +  adi,gain-milli:
+>>> +    description: |
+>>> +       Specifies the gain applied by the Analog Anti-Aliasing Filter (AAF) to the
+>>> +       ADC input (in milli units). The hardware gain is determined by which input
+>>
+>>
+>> I don't think there is no such thing as "milli units". milli is SI
+>> prefix, not unit. So "units" is the unit? Or how exactly?
+>>
+>> Basis points were before since 2022 so I don't get why these other
+>> bindings introduced in 2024 could not use it?
+>>
+>> Anyway, if you ever do not apply reviewers comment, then your commit msg
+>> should explain this. Otherwise you get the same discussion here.
+>>
 > 
-> For now, the only configuration supported is changing the full-scale
-> range.
+> Yes, you are right. We shouldn't use milli as suffix. However, may I
+> suggest another option?
 > 
-> Signed-off-by: Bharadwaj Raju <bharadwaj.raju777@gmail.com>
-> ---
->  drivers/iio/imu/inv_icm20948/Makefile            |   1 +
->  drivers/iio/imu/inv_icm20948/inv_icm20948.h      |  78 ++++--
->  drivers/iio/imu/inv_icm20948/inv_icm20948_core.c |  55 ++--
->  drivers/iio/imu/inv_icm20948/inv_icm20948_gyro.c | 343 +++++++++++++++++++++++
->  4 files changed, 432 insertions(+), 45 deletions(-)
+> I believe -permille is more appropriate because it represents a 1/1000
+> proportion, which gives the precision we need to cover all values.
 > 
-> diff --git a/drivers/iio/imu/inv_icm20948/Makefile b/drivers/iio/imu/inv_icm20948/Makefile
-> index c508c2dc3eee2c32be20067e3e0868a203d8aa1a..88a37be159e1d6f575da1c070c84ac94cd963020 100644
-> --- a/drivers/iio/imu/inv_icm20948/Makefile
-> +++ b/drivers/iio/imu/inv_icm20948/Makefile
-> @@ -3,6 +3,7 @@
->  obj-$(CONFIG_INV_ICM20948) += inv-icm20948.o
->  inv-icm20948-y += inv_icm20948_core.o
->  inv-icm20948-y += inv_icm20948_temp.o
-> +inv-icm20948-y += inv_icm20948_gyro.o
->  
->  obj-$(CONFIG_INV_ICM20948_I2C) += inv-icm20948-i2c.o
->  inv-icm20948-i2c-y += inv_icm20948_i2c.o
-> diff --git a/drivers/iio/imu/inv_icm20948/inv_icm20948.h b/drivers/iio/imu/inv_icm20948/inv_icm20948.h
-> index f9830645fbe96fd02eef7c54d1e5908647d5a0fe..ca2513114378cdcba5bc315fc94cd61f930b4dfa 100644
-> --- a/drivers/iio/imu/inv_icm20948/inv_icm20948.h
-> +++ b/drivers/iio/imu/inv_icm20948/inv_icm20948.h
-> @@ -3,45 +3,83 @@
->   * Copyright (C) 2025 Bharadwaj Raju <bharadwaj.raju777@gmail.com>
->   */
->  
-> -#ifndef INV_ICM20948_H_
-> -#define INV_ICM20948_H_
-> + #ifndef INV_ICM20948_H_
-> + #define INV_ICM20948_H_
->  
-> -#include <linux/bits.h>
-> -#include <linux/bitfield.h>
-> -#include <linux/mutex.h>
-> -#include <linux/regmap.h>
-> -#include <linux/i2c.h>
-> -#include <linux/iio/iio.h>
-> -#include <linux/err.h>
-> + #include <linux/bits.h>
-> + #include <linux/bitfield.h>
-> + #include <linux/mutex.h>
-> + #include <linux/regmap.h>
-> + #include <linux/i2c.h>
-> + #include <linux/iio/iio.h>
-> + #include <linux/err.h>
->  
->  /* accel takes 20ms, gyro takes 35ms to wake from full-chip sleep */
-> -#define INV_ICM20948_SLEEP_WAKEUP_MS 35
-> + #define INV_ICM20948_SLEEP_WAKEUP_MS 35
->  
-> -#define INV_ICM20948_REG_BANK_SEL 0x7F
-> -#define INV_ICM20948_BANK_SEL_MASK GENMASK(5, 4)
-> + #define INV_ICM20948_REG_BANK_SEL 0x7F
-> + #define INV_ICM20948_BANK_SEL_MASK GENMASK(5, 4)
->  
-> -#define INV_ICM20948_REG_WHOAMI 0x0000
-> -#define INV_ICM20948_WHOAMI 0xEA
-> + #define INV_ICM20948_REG_WHOAMI 0x0000
-> + #define INV_ICM20948_WHOAMI 0xEA
->  
-> -#define INV_ICM20948_REG_FIFO_RW 0x0072
-> + #define INV_ICM20948_REG_FIFO_RW 0x0072
->  
-> -#define INV_ICM20948_REG_PWR_MGMT_1 0x0006
-> -#define INV_ICM20948_PWR_MGMT_1_DEV_RESET BIT(7)
-> -#define INV_ICM20948_PWR_MGMT_1_SLEEP BIT(6)
-> + #define INV_ICM20948_REG_PWR_MGMT_1 0x0006
-> + #define INV_ICM20948_PWR_MGMT_1_DEV_RESET BIT(7)
+> so it would be something like: adi,aaf-gain-permille
+> 
+> Is that ok for you?
+> 
+> Thanks for the feedback,
+> Jonathan S.
 
 
-This makes no sense.
+What's wrong with existing unit I pointed out before?
+
+BTW, any idea why your reply-to header is completely corrupted (copies
+in-reply-to...)?
+
 
 Best regards,
 Krzysztof

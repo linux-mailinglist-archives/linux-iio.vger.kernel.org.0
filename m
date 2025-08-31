@@ -1,108 +1,136 @@
-Return-Path: <linux-iio+bounces-23515-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23518-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5278B3D222
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:33:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D3EB3D234
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1A9F3B1A33
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 10:33:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEAC37A1325
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 10:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A481E25485F;
-	Sun, 31 Aug 2025 10:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4DF23BD1B;
+	Sun, 31 Aug 2025 10:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="E0KbgRZW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezvDM4AZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BFC245010;
-	Sun, 31 Aug 2025 10:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2C41E502
+	for <linux-iio@vger.kernel.org>; Sun, 31 Aug 2025 10:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756636422; cv=none; b=i1Hqgc2tqK3opvwxz4WgK0X3GukzGY5FEHGVamLnaHbKQzNHhphPVYfYDJSrLexgc6/Rq8oqXEf5XpJfSVDYF4lxMunJtA51ZwecuM0Jp4HQEZINb8mssl/Lg3RJ18xMjpOYptm4XwzT7l4AtEA1LeUCWupnKtlWRIBX2ky7kxI=
+	t=1756637309; cv=none; b=j09etpDw4W7i18DndBh0dm8gBSy0ncsb22EG8vVxLwAKaW+1n8mwE2nC5ObXiyn72MPXKHo/MwWc0RhdExuaSLxavD2toO5q4sA0uS9U4n3ll43lVhUZMOrODTD6MSjCjD76z4oj0WTvEMSWECPHNPqSiIbCCD8gCRNzRnurAEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756636422; c=relaxed/simple;
-	bh=9JhG6l9aYXd0tr5rpMP/JH7+4zmVZlrSGb616SvhYjU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Buc7kcXJwvIyC/2RBIlAFlTvfBOOilPn8oSyQ1qlobHtBfQTHUujXtq2HvK06TYDbBgqRMJT9kOY46w2yExz5TZ4wlLFXLjT9N+gScJagCKxUvKrmYtGia3j9nBFNtxQ/Z4O9xbwwoCrz0wap0GXZ6KCnBOETxz0XIDxWHdbHh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=E0KbgRZW; arc=none smtp.client-ip=37.205.8.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
-DKIM-Signature: a=rsa-sha256; bh=rlGvPgM9RCjyuzqwy9Jz8R1zuOjSOwFc2U7uSTIgvLY=;
- c=relaxed/relaxed; d=dujemihanovic.xyz;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1756636411; v=1; x=1757068411;
- b=E0KbgRZW95vL1xuiXutYVE1TgT8oKdytvqGxh5eWODOhdzxV/KGK9njPALJJIyXqsHgW+80D
- LuR/IE3zfeYjOOcrgP3S+VX+JunHRiO9EPWEDJ4b+F1uPqW045qm3MnWqHT8C2/US6yKhE4rE5X
- 9dBztiT32gyHChpQLpdpQ7b+1aYnDSr/3hSyL2scslNPKDCGIt0TOB0RpDpyKOzKhJZHUXvcqH1
- r3I+Ob3Yd6HhEUB+Nm8IZSe02/HVaLFXQVEjXS5GoVK4gltsv8vCv7jGD8gWfW/lYmnRWe21r7w
- Iww+w7BVcFpnriQXmDURH1zBqSGEPqmqt6ng07AlwW1FA==
-Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 02b68ab0; Sun, 31 Aug 2025 12:33:31 +0200
-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Date: Sun, 31 Aug 2025 12:33:06 +0200
-Subject: [PATCH v2 3/3] mfd: 88pm886: Add GPADC cell
+	s=arc-20240116; t=1756637309; c=relaxed/simple;
+	bh=xbZgwQDmbBMHezLzHgzhWuMVe0mib8q80dgAd1hNzKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WB4BF/SE6Wtl4/D73jLKQrvRMeqVKIi/WOSO/OfR8DszrQLAwJJdZhY+c1HWzZFlqW+uek5AtaT78Iwe6GSZVgQWedMFHCDCYmYT3F5gW4mSK1fC8hgLvOl+GiAwrDusIy0hOO22lNN0bJDEXK+j/gFaGL5LJIwhfpCqRmOJNWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezvDM4AZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C3EC4CEED;
+	Sun, 31 Aug 2025 10:48:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756637309;
+	bh=xbZgwQDmbBMHezLzHgzhWuMVe0mib8q80dgAd1hNzKg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ezvDM4AZ6XNBACTO2qTR0GDRPvRSSh8Bwm651J9HLkXXa5G104RnumF/kdtzePV2T
+	 OH5MH8T0LH5MmBkn110C/bEqK3RNhJT4OhNMRqj5TA65eyaN8qsnd4INgxQknGHj+L
+	 YJm2dc/uTrwVE3zXOvwU+RmOW4yk8xWVC3QnxkPMO8OFE4Fm5Yum46id5p6oEzH/NJ
+	 w7OhcNevGTbo43l+5SFr9nn6sBsM+8OsxtTWrW2SiHEMq/8ddSf8UWsf3w9p02+G8m
+	 mWtkXFcDfshuB5XXYqd07Selt6zG78IbUQNkL4pmEGJS86NCsrDyUu/r/S4eUmOKkv
+	 lMFCuHpNOssXw==
+From: Hans de Goede <hansg@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>
+Cc: Hans de Goede <hansg@kernel.org>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Liam Beguin <liambeguin@gmail.com>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH v5 0/6] iio: processed channel handling fixes + Intel Dollar Cove TI PMIC ADC driver
+Date: Sun, 31 Aug 2025 12:48:19 +0200
+Message-ID: <20250831104825.15097-1-hansg@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250831-88pm886-gpadc-v2-3-759c1e14d95f@dujemihanovic.xyz>
-References: <20250831-88pm886-gpadc-v2-0-759c1e14d95f@dujemihanovic.xyz>
-In-Reply-To: <20250831-88pm886-gpadc-v2-0-759c1e14d95f@dujemihanovic.xyz>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>, 
- Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=797; i=duje@dujemihanovic.xyz;
- s=20240706; h=from:subject:message-id;
- bh=9JhG6l9aYXd0tr5rpMP/JH7+4zmVZlrSGb616SvhYjU=;
- b=owGbwMvMwCW21nBykGv/WmbG02pJDBlbVL5rXCz59eGsemH9ix7/Sk4zgykFW19dnXnl8E6lu
- 4H7qvcqd5SyMIhxMciKKbLk/ne8xvtZZOv27GUGMHNYmUCGMHBxCsBE/hkx/A8PvZ2nUKkqvFxO
- 6p+aRfPWeLXbJxp0Jj/5/PzTrHLWRf8ZGV78+MPYEb44e8sDviNvHc1vxb5/udm7/fNzxzl+9qV
- TOTgB
-X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
- fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
 
-Add a cell for the PMIC's onboard General Purpose ADC.
+Hi All,
 
-Acked-by: Karel Balej <balejk@matfyz.cz> # for the PMIC
-Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
----
-v2:
-- Sort cell names
----
- drivers/mfd/88pm886.c | 1 +
- 1 file changed, 1 insertion(+)
+Here is v5 of my patch-set to add an IIO driver for the Intel Dollar Cove
+TI PMIC ADC. This has turned more into a series with fixes / changes
+to iio_convert_raw_to_processed() and iio_read_channel_processed_scale(),
+with the new driver tagged on as the last patch :)
 
-diff --git a/drivers/mfd/88pm886.c b/drivers/mfd/88pm886.c
-index 39dd9a818b0f0e1e5839f76768ff54940f4cefa5..e411d8dee55420e10b6d7ad7069576c681360de1 100644
---- a/drivers/mfd/88pm886.c
-+++ b/drivers/mfd/88pm886.c
-@@ -35,6 +35,7 @@ static const struct resource pm886_onkey_resources[] = {
- };
- 
- static const struct mfd_cell pm886_devs[] = {
-+	MFD_CELL_NAME("88pm886-gpadc"),
- 	MFD_CELL_RES("88pm886-onkey", pm886_onkey_resources),
- 	MFD_CELL_NAME("88pm886-regulator"),
- 	MFD_CELL_NAME("88pm886-rtc"),
+Changes in v5:
+- Do not put case foo: val = x; break; statements on a single line
+- Use IIO_UNIT_TEST module-namespace for iio_multiply_value()
+- iio_read_channel_processed_scale(): Use pval + pval2 local variables for
+  better readability
+- Consistenly use s / ms / ųs for seconds in comments
+- Various other small (comment) style fixups
+- Add Andy's Reviewed-by to all patches
+
+Changes in v4:
+- 2 new bug-fixes for iio_convert_raw_to_processed()
+- Factor the bugfixed code multiply a s64 and an iio (type, val, val2)
+  triplet out of iio_convert_raw_to_processed() into a new
+  iio_multiply_value() helper
+- Add a KUnit test for iio_multiply_value()
+- Redo the "Improve iio_read_channel_processed_scale() precision"
+  patch using the iio_multiply_value() helper
+
+Changes in v3:
+- "iio: Improve iio_read_channel_processed_scale() precision"
+  - Use div_s64() instead of div_u64() to fix -1.0 - 0.0 range
+  - Directly return IIO_VAL_INT from valid cases and drop the final
+    return ret after the switch-case
+- "iio: adc: Add Intel Dollar Cove TI PMIC ADC driver"
+  - Use new more compact DC_TI_ADC_DATA_REG_CH(x) macro
+  - Use regmap_set_bits() regmap_clear_bits() where applicable
+  - Use regmap_bulk_read() + be16_to_cpu() to read ADC value
+  - Use sign_extend32() for vbat_zse and vbat_ge reading in probe()
+
+Changes in v2:
+- Add new "iio: Improve iio_read_channel_processed_scale() precision"
+  patch to the series
+- Add IIO_CHAN_INFO_SCALE and provide ADC scale info for Vbat
+- Add IIO_CHAN_INFO_PROCESSED which applies calibration and
+  scaling for the VBat channel
+- Address some other small review remarks
+
+Regards,
+
+Hans
+
+
+Hans de Goede (6):
+  iio: consumers: Fix handling of negative channel scale in
+    iio_convert_raw_to_processed()
+  iio: consumers: Fix offset handling in iio_convert_raw_to_processed()
+  iio: consumers: Add an iio_multiply_value() helper function
+  iio: Improve iio_read_channel_processed_scale() precision
+  iio: test: Add KUnit tests for iio_multiply_value()
+  iio: adc: Add Intel Dollar Cove TI PMIC ADC driver
+
+ drivers/iio/adc/Kconfig              |  11 +
+ drivers/iio/adc/Makefile             |   1 +
+ drivers/iio/adc/intel_dc_ti_adc.c    | 328 +++++++++++++++++++++++++++
+ drivers/iio/inkern.c                 |  81 ++++---
+ drivers/iio/test/Kconfig             |  12 +
+ drivers/iio/test/Makefile            |   1 +
+ drivers/iio/test/iio-test-multiply.c | 212 +++++++++++++++++
+ include/linux/iio/consumer.h         |  18 ++
+ 8 files changed, 629 insertions(+), 35 deletions(-)
+ create mode 100644 drivers/iio/adc/intel_dc_ti_adc.c
+ create mode 100644 drivers/iio/test/iio-test-multiply.c
 
 -- 
 2.51.0
-
 

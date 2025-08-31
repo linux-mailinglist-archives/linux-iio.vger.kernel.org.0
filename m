@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-23530-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23531-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848DBB3D377
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 14:57:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C89B3D37B
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 14:58:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40B1F3BFC2A
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:57:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BA5694E142D
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DFC1E47A3;
-	Sun, 31 Aug 2025 12:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1111A25EFBB;
+	Sun, 31 Aug 2025 12:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OlN6m9Hj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lb+qhHwC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7314325D209;
-	Sun, 31 Aug 2025 12:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FF5156F5E;
+	Sun, 31 Aug 2025 12:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756645064; cv=none; b=omHKhgvlUQH19v5mGeixr2zX+no2f/P149UJRAqFs2RYgrkM/trDqFN8/Dt3LyTN39g4sUzMpRpeKd7oRc34wxOSRZrSWsoNSWdZlg31ESfxER+aEf6vEZh2d+/WVrhSlWS5Mh9VS/1FHDsVgBVWEkITWzBrl7JYl3UVRcn/dn4=
+	t=1756645110; cv=none; b=SeC1+gfeY4OJJ998iHyU8zt8Vqyq2nH+EX5SHyNacYweyaEiKbpmo6EC3xNx7i4/2NB30CKWhK1CUu7fhdONQZp80TFnwG+grSA8+bUppvG3a9B59r6eIKToDkx76I9J7SwXLAJ2QLNCR68a2HGkU/D621B5XTJvs3iNI2LdYSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756645064; c=relaxed/simple;
-	bh=VB4toxjTUZH/JpzWaH4j4uzD3yqjXAV34v9Cxuq8/vM=;
+	s=arc-20240116; t=1756645110; c=relaxed/simple;
+	bh=yJ0uIpHm+mUKrddjCoiv9Fi3F7RElGG2VRluOwc4MHY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gX9q8j8o2AkDa5p0xlnkSntG7lH3jVrOwQDZl8V0uYjzdEmVh+FpSIY1+OHyoLosZJJDXQqpWjvTJlnUCHwskK0wORYetbGdUEDPkIRLNWYh277V1SsLPA0lk8IV2T0dQ4GdniFIQ+gHpqSFhXukbzLp7Jvj26yemIoYMnTDgPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OlN6m9Hj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B6CC4CEED;
-	Sun, 31 Aug 2025 12:57:40 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=R2fyLppdXauhH/oFiQZBTb4NKwZNzV3J0HsJeR4A+k4i4ahs+xHVSMznhIAO79ThjnelPZ+bH8g66ewI53ngZpA+OYUc+5XKRElJri5lJGvRaJ5Af2GCYNCdZr7DHY8lL+A1zpup9ZWL+6jzxaJG3VkUd+0NWA2qCZsPZxNviJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lb+qhHwC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E475C4CEED;
+	Sun, 31 Aug 2025 12:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756645063;
-	bh=VB4toxjTUZH/JpzWaH4j4uzD3yqjXAV34v9Cxuq8/vM=;
+	s=k20201202; t=1756645110;
+	bh=yJ0uIpHm+mUKrddjCoiv9Fi3F7RElGG2VRluOwc4MHY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OlN6m9Hj1fiiGfLG7NO//elgbtAdSpUMwPSPRd+r5mEqWpIXrrxBIaYmBfMp+DAzX
-	 zPxqnckZAczgPemgCyVZYsPQOQgVErxIhhSIccINA43ovi5UyheMw3LNQ9VlQ/KCFA
-	 oKN2rM8fBurquY308aSHmmR836unozrg+umzPJBQeAMzjYvy1iHSJuikF9oxBzfSwH
-	 tFWM9assjtQ7ZpSOwki28OCgPJGvKc6MBnyAFO+LQ3CAQac9UhlMFP/ZiGMoIoDGN4
-	 5baPh8QajE2UCnMiKErOb3xNfHhTPh4A9VBtgH8QkCKE1R2/bpoRsZKvXbEHAnhR6A
-	 L9GLBJCWlG/FA==
-Message-ID: <f39bf664-1c06-4ef9-a8db-65b53b5e5270@kernel.org>
-Date: Sun, 31 Aug 2025 14:57:38 +0200
+	b=Lb+qhHwCpKJrLmMfGb+TU30yG0OySR+8ZFFyYPtAivqyAiXJN33DKmVMzeOA5tbjP
+	 UzmQN5HXg9Qk8knKCCsv7acZiJ5skFAgEAK2byapc9W7+szc8FCQ6AOcFJUcnLjYFA
+	 kDPVnyVrIQ8FlpATsL6VznJ2/KEOvRhHJe+qY2GcL85vdiafZ6J+G7on+8ZfgSbF9S
+	 IS1Z5/hPnxNpNx2Aa//WRKxoJJvDlTY3WLkWSXwatg3AMft74ggY53g6ECeEhctmV9
+	 LMcoHzRwxTXhrfwavuK3X2vFTVGB0s8FeEk1ANRFDBCJNBFv9NKskKpiv5/0Er49L/
+	 GNelUsTaMstJA==
+Message-ID: <7c98542d-c196-4071-b29c-91cd81072aa5@kernel.org>
+Date: Sun, 31 Aug 2025 14:58:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] dt-bindings: iio: imu: Add ICM-20948
+Subject: Re: [PATCH 3/5] iio: imu: icm20948: add support for gyroscope
 To: Bharadwaj Raju <bharadwaj.raju777@gmail.com>,
  Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
  =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
@@ -60,7 +60,7 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, shuah@kernel.org,
  linux-kernel-mentees@lists.linux.dev
 References: <20250831-icm20948-v1-0-1fe560a38de4@gmail.com>
- <20250831-icm20948-v1-1-1fe560a38de4@gmail.com>
+ <20250831-icm20948-v1-3-1fe560a38de4@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -106,51 +106,90 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250831-icm20948-v1-1-1fe560a38de4@gmail.com>
+In-Reply-To: <20250831-icm20948-v1-3-1fe560a38de4@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 30/08/2025 20:42, Bharadwaj Raju wrote:
-> +description: |
-> +  9-axis motion-tracking device that combines a 3-axis gyroscope, 3-axis
-> +  accelerometer, and a 3-axis magnetometer.
-> +
-> +  https://invensense.tdk.com/wp-content/uploads/2024/03/DS-000189-ICM-20948-v1.6.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - invensense,icm20948
-> +
-
-That's pretty incomplete. See existing invense bindings. Explain in
-commit msg how this is different than existing devices.
-
-> +  reg:
-> +    maxItems: 1
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      icm20948 {
-
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-If you cannot find a name matching your device, please check in kernel
-sources for similar cases or you can grow the spec (via pull request to
-DT spec repo).
-
-
-> +        compatible = "invensense,icm20948";
-> +        reg = <0x69>;
-> +      }
-> +    }
+> Add support for reading the gyroscope, which is exposed as another IIO
+> device under the icm20948 driver.
 > 
+> For now, the only configuration supported is changing the full-scale
+> range.
+> 
+> Signed-off-by: Bharadwaj Raju <bharadwaj.raju777@gmail.com>
+> ---
+>  drivers/iio/imu/inv_icm20948/Makefile            |   1 +
+>  drivers/iio/imu/inv_icm20948/inv_icm20948.h      |  78 ++++--
+>  drivers/iio/imu/inv_icm20948/inv_icm20948_core.c |  55 ++--
+>  drivers/iio/imu/inv_icm20948/inv_icm20948_gyro.c | 343 +++++++++++++++++++++++
+>  4 files changed, 432 insertions(+), 45 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm20948/Makefile b/drivers/iio/imu/inv_icm20948/Makefile
+> index c508c2dc3eee2c32be20067e3e0868a203d8aa1a..88a37be159e1d6f575da1c070c84ac94cd963020 100644
+> --- a/drivers/iio/imu/inv_icm20948/Makefile
+> +++ b/drivers/iio/imu/inv_icm20948/Makefile
+> @@ -3,6 +3,7 @@
+>  obj-$(CONFIG_INV_ICM20948) += inv-icm20948.o
+>  inv-icm20948-y += inv_icm20948_core.o
+>  inv-icm20948-y += inv_icm20948_temp.o
+> +inv-icm20948-y += inv_icm20948_gyro.o
+>  
+>  obj-$(CONFIG_INV_ICM20948_I2C) += inv-icm20948-i2c.o
+>  inv-icm20948-i2c-y += inv_icm20948_i2c.o
+> diff --git a/drivers/iio/imu/inv_icm20948/inv_icm20948.h b/drivers/iio/imu/inv_icm20948/inv_icm20948.h
+> index f9830645fbe96fd02eef7c54d1e5908647d5a0fe..ca2513114378cdcba5bc315fc94cd61f930b4dfa 100644
+> --- a/drivers/iio/imu/inv_icm20948/inv_icm20948.h
+> +++ b/drivers/iio/imu/inv_icm20948/inv_icm20948.h
+> @@ -3,45 +3,83 @@
+>   * Copyright (C) 2025 Bharadwaj Raju <bharadwaj.raju777@gmail.com>
+>   */
+>  
+> -#ifndef INV_ICM20948_H_
+> -#define INV_ICM20948_H_
+> + #ifndef INV_ICM20948_H_
+> + #define INV_ICM20948_H_
+>  
+> -#include <linux/bits.h>
+> -#include <linux/bitfield.h>
+> -#include <linux/mutex.h>
+> -#include <linux/regmap.h>
+> -#include <linux/i2c.h>
+> -#include <linux/iio/iio.h>
+> -#include <linux/err.h>
+> + #include <linux/bits.h>
+> + #include <linux/bitfield.h>
+> + #include <linux/mutex.h>
+> + #include <linux/regmap.h>
+> + #include <linux/i2c.h>
+> + #include <linux/iio/iio.h>
+> + #include <linux/err.h>
+>  
+>  /* accel takes 20ms, gyro takes 35ms to wake from full-chip sleep */
+> -#define INV_ICM20948_SLEEP_WAKEUP_MS 35
+> + #define INV_ICM20948_SLEEP_WAKEUP_MS 35
+>  
+> -#define INV_ICM20948_REG_BANK_SEL 0x7F
+> -#define INV_ICM20948_BANK_SEL_MASK GENMASK(5, 4)
+> + #define INV_ICM20948_REG_BANK_SEL 0x7F
+> + #define INV_ICM20948_BANK_SEL_MASK GENMASK(5, 4)
+>  
+> -#define INV_ICM20948_REG_WHOAMI 0x0000
+> -#define INV_ICM20948_WHOAMI 0xEA
+> + #define INV_ICM20948_REG_WHOAMI 0x0000
+> + #define INV_ICM20948_WHOAMI 0xEA
+>  
+> -#define INV_ICM20948_REG_FIFO_RW 0x0072
+> + #define INV_ICM20948_REG_FIFO_RW 0x0072
+>  
+> -#define INV_ICM20948_REG_PWR_MGMT_1 0x0006
+> -#define INV_ICM20948_PWR_MGMT_1_DEV_RESET BIT(7)
+> -#define INV_ICM20948_PWR_MGMT_1_SLEEP BIT(6)
+> + #define INV_ICM20948_REG_PWR_MGMT_1 0x0006
+> + #define INV_ICM20948_PWR_MGMT_1_DEV_RESET BIT(7)
 
+
+This makes no sense.
 
 Best regards,
 Krzysztof

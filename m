@@ -1,60 +1,57 @@
-Return-Path: <linux-iio+bounces-23540-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23541-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A2CB3D426
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 17:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C027B3D42B
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 17:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B86DD3BF0F6
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 15:32:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F10B53BABC4
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 15:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BCB218580;
-	Sun, 31 Aug 2025 15:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2E026E6E2;
+	Sun, 31 Aug 2025 15:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gtyvF//U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NQJrXKhl"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427867261E
-	for <linux-iio@vger.kernel.org>; Sun, 31 Aug 2025 15:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D152080C0;
+	Sun, 31 Aug 2025 15:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756654324; cv=none; b=OThyp0pMRSuHdqm1eYT23WjdzQkEuFUk+lwfNvuXXvRuFWgBOQpkDiLA2iGSSZI/GctjfqkrdUBgEryt6rpjlup3eQhF+5hCv4qyyfd3mzaqKLGGc6SKjoiDne6YTBPMhrfl1VRiDIUvuHa/QHhQ6rAipGt40HqogImjMj2NQpQ=
+	t=1756654620; cv=none; b=DgwSV9DtVOza1uj+uv1JqB5iPA0C8ZCzcZeb64ydUMMm298ShsKArYxOFBMpkNHOEG6OLiGnCh5YwdVYMNz6O6DsbDeutW9TEPml06zosZd1/uzTksyFByL/g64D1FLPv8NTPabI6h2Q1H79wfq0pM7PoHVMDrgKuP/NSMKjyCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756654324; c=relaxed/simple;
-	bh=9DiTigFKgq3LRYcYCL5ysCeqd8Q8UgOjVXRU9ktHStA=;
+	s=arc-20240116; t=1756654620; c=relaxed/simple;
+	bh=ifYaRs57UYOQrGLzjXP5Nk2vToZ0HAhHWjEve55W3hM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pTE2eSmRC0yRwdRItwddC6BrRyinM4Af5pY5qJ1I6y3rL+DZJndI+f3qfjZ5YpfzeXZRDPTeqVXZ/3SQzLgkaAPfH6UeMvckIyDD6ToE3KUh4C7V7TTmY6jmSpyAJSZVRhieY6I8c2B77Q5hG+2WThfr+pLyn8wEiEHbpa3oQtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gtyvF//U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5893C4CEED;
-	Sun, 31 Aug 2025 15:32:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YctQwQjutfvlmdvh7Nty3FTbB+BYrUnJdVvc1npyW/Sz29sMREvER1dFkY67B75PFpG0zsCjta4ZlPFMvk35c05XdpNJsyO6L8d+fCDC7pGVB+NqEf+e2KULC7wurwo5fW9GYXyLGfiBwRV3cXhfXYkwaxb1Yy0wRjdoYVA6zDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NQJrXKhl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C498BC4CEED;
+	Sun, 31 Aug 2025 15:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756654323;
-	bh=9DiTigFKgq3LRYcYCL5ysCeqd8Q8UgOjVXRU9ktHStA=;
+	s=k20201202; t=1756654619;
+	bh=ifYaRs57UYOQrGLzjXP5Nk2vToZ0HAhHWjEve55W3hM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gtyvF//UCl5UpCvLRjdXLNQ7GaejcXidL3WEuLL2ebSQmwWLT4tkRp3Xy5rNEb4gC
-	 BoIgCjdYWfQUHw8k7UtooDlPLzKWm543TxwsqrYngAfk2qJbFc0j7pcfpUKaqo36Ae
-	 ANYJXkpECnGgpJ6TQiOYvl4tbx7JaztQrAcDkFPn3siMF0tyJIveVMdMtM/mqy8rc3
-	 IpgJVMT44WLoFYFe3YBI81YhVqr2vJU6mIQang1+i+6GNEDl3kpPLMi8e29ThfNaUt
-	 3onwEYEvo91HBuBLLLCqBTB+iEwCIdzlYnrLT+25tq1e+AeMDpDnH1QPoZUVPugWCu
-	 6FZN42y2PCCaQ==
-Date: Sun, 31 Aug 2025 16:31:55 +0100
+	b=NQJrXKhlR0USur85N5lln0dpcIf/2LrAk3Mvw1k7GTw9a4LUAGz8LahRxFURt1e1N
+	 t6gkLY6wAxVWQu02Sna775q9dWw5s2ccPiDD68G27RiPDg+SD/wZ/UTkHgEGAZtQVh
+	 Sj4U8q3RAfgkJHFmPixaKTlqkXQA7nexzbv9yC3WDkHMpEWUsbju3KTqNESMFIxyxb
+	 pwRrWk7LnFLn9QKsFwjk+wBZa1tJAlW51U01TiE7IYqLpurcByOflzV6Y9dHUgymBg
+	 xsDTbj0UbrqhVyR7qntZ2ugEOtMmFMyIWYFtP02yHL6O/2zJjk6tFmQdtbho2wQNY7
+	 mQXAnS4NviIWg==
+Date: Sun, 31 Aug 2025 16:36:51 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Gyeyoung Baek <gye976@gmail.com>
-Cc: Sidharth Seela <sidharthseela@gmail.com>, "dlechner@baylibre.com"
- <dlechner@baylibre.com>, nuno.sa@analog.com, andy@kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [RFC] chemical/mhz19b.c: Integrating mh-z-series in
- mhz19b_of_match.
-Message-ID: <20250831163155.43574713@jic23-huawei>
-In-Reply-To: <CAKbEznu_LH9azd-xF3hizsrqzJm51K-ixi32VNXe93vvR4WrAA@mail.gmail.com>
-References: <CAJE-K+CTfwVJkKEzb8D0hijg1VRK4EUOBCytbFJme7EiLMFWBw@mail.gmail.com>
-	<CAKbEzntRe1h_5_5JqJ0hTgYdSsrHZ=ZNtZiTTJVuRAMAEmpSKA@mail.gmail.com>
-	<CAJE-K+A1MG1rg1-y15GqWUravy9xsjYgemFhgJpEBEitzM3wzA@mail.gmail.com>
-	<CAKbEznu_LH9azd-xF3hizsrqzJm51K-ixi32VNXe93vvR4WrAA@mail.gmail.com>
+To: Sidharth Seela <sidharthseela@gmail.com>
+Cc: Gyeyoung Baek <gye976@gmail.com>, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] Added mhz19c to compatible list in mhz19b
+ driver.
+Message-ID: <20250831163651.41d79348@jic23-huawei>
+In-Reply-To: <CAJE-K+CiQdZ9mpqom0HdGoCqrt3v7Dkj2DM5WtumoGhhtduumQ@mail.gmail.com>
+References: <CAJE-K+CiQdZ9mpqom0HdGoCqrt3v7Dkj2DM5WtumoGhhtduumQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,53 +59,63 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 30 Aug 2025 01:03:23 +0900
-Gyeyoung Baek <gye976@gmail.com> wrote:
+On Sun, 31 Aug 2025 13:54:20 +0545
+Sidharth Seela <sidharthseela@gmail.com> wrote:
 
-> Hello Sidharth,
->=20
-> On Fri, Aug 29, 2025 at 3:58=E2=80=AFAM Sidharth Seela <sidharthseela@gma=
-il.com> wrote:
-> >
-> > Thank You for your response Gyeyoung,
-> >
-> > On Thu, Aug 28, 2025 at 7:18=E2=80=AFPM Gyeyoung Baek <gye976@gmail.com=
-> wrote: =20
-> > > Yes, that sounds good.
-> > > As David suggested, using compatible =3D "winsen,mh-z19c",
-> > > "winsen,mh-z19b" looks simple and appropriate. =20
-> >
-> > But How can we confirm if mh-z19c supports Range settings, Zero-calibra=
-te,
-> > Span-calibrate? which Winsen's documentation skipped. =20
->=20
-> Ah, if the commands for z19c are not documented, then maybe it=E2=80=99s =
-not
-> ideal to unify them..
-> But for this driver I don=E2=80=99t think we need to be that strict.
-> So IMO we could just add it to the compatible list for now, with a
-> comment noting the uncertainty.
+> The pin-compatiblity and UART configuration are same. Although
+> documentation on mhz19c's UART commands is sparse. It can be reasonably
+> thought of that the commands from mhz19b will be supported in mhz19c.
+> The mhz19b document mentions all the different commands. Still the
+> uncertainity is noted.
+> 
+> Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
+> ---
+>  drivers/iio/chemical/mhz19b.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/iio/chemical/mhz19b.c b/drivers/iio/chemical/mhz19b.c
+> index 3c64154918b1..4899aad895d5 100644
+> --- a/drivers/iio/chemical/mhz19b.c
+> +++ b/drivers/iio/chemical/mhz19b.c
+> @@ -297,7 +297,17 @@ static int mhz19b_probe(struct serdev_device *serdev)
+>  }
+> 
+>  static const struct of_device_id mhz19b_of_match[] = {
+> +       /* It should be noted that mhz19b is discontinued*/
+>         { .compatible = "winsen,mhz19b", },
+> +       /* Beware that mhz19c has same pinout, UART characteristics.But there
+> +        * are gaps in the official user-manual[1], specifically
+> +        * regarding.
+> +        *              Calibrate Zero Point.
+> +        *              Calibrate Span Point.
+> +        *              Detection range setting.
 
-I'm a bit later to the discussion (so maybe this is resolved later)
-but if we have an existing compatible that we have documentation suggesting
-supports more features, then we can't have a fallback compatible to that.
-The other way around would have been fine though. So fallback from more
-featured device to less featured devices (as long as the control / features
-are a strict subset).
+If those are not documented, unless we can definitely confirm they are
+present, we should not enable those features for this device.
+
+That means you'll need more substantial driver changes and a chip_info type
+structure via the data fields in these firmware match tables.
+
+That structure would have a bunch of boolean flags for features so
+we can work out what to turn on for a given part.  We shouldn't expose
+any interface that doesn't make sense for a given part.
 
 Jonathan
 
->=20
->=20
-> > I still am worried just about this, all the other specs are almost too =
-similar.
-> > Would anyone be having a mhz-19c with them to check those 3 commands.
-> > --
-> > Thanks,
-> > Sidharth Seela =20
->=20
+
+
+
+> +        * Ref [1]:
+> https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19c-pins-type-co2-manual-ver1_0.pdf
+> +        */
+> +       { .compatible = "winsen,mhz19c", },
+>         { }
+>  };
+>  MODULE_DEVICE_TABLE(of, mhz19b_of_match);
+> --
+> 2.39.5 (Apple Git-154)
 
 

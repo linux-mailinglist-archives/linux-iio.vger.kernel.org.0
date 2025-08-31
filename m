@@ -1,60 +1,62 @@
-Return-Path: <linux-iio+bounces-23525-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23526-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36FEB3D2D2
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 14:27:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6452B3D2DD
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 14:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1F29189899B
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:28:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EEFE17B54C
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 12:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D8325A631;
-	Sun, 31 Aug 2025 12:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E520E257852;
+	Sun, 31 Aug 2025 12:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrFqNhLz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CR74TKDc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F988259C80;
-	Sun, 31 Aug 2025 12:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953D41CD15;
+	Sun, 31 Aug 2025 12:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756643264; cv=none; b=oDr31pLx4DDZlqz7w7y+CG9P5TBzGMBtjkaevrq7wMJ3/bOC6Rn0/0FHSo+8UV1OiuM/sgfxcRh7+xzCccRur7/TlYbp32V+scu4BhSwNGzopNfKXEtnL7Ww0kN9c+4QYK2zHhl1Oniwrd4U5t3iYdB07sa4tyD+DuVZcv00sw0=
+	t=1756643449; cv=none; b=ns04NOsrQM/T4Dd086iFl+o8PGB97ETfYV2PYVfDTmWpQTwJAQPIZzyJGy6HFoUtUisgwXYSDLen0Mu389pGci4skdy6XIuXF8Bo/oRi4/qcdfRxO1gaUW7VSnp9GXWeU7u4ahAh8V7c53kdtXDbAtjguI2KgDHInGEWXc7xHnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756643264; c=relaxed/simple;
-	bh=bPKhfTBzMY9I92soo2FdT1/MUwIki7DO1HtC3OssbrY=;
+	s=arc-20240116; t=1756643449; c=relaxed/simple;
+	bh=R8eLqhlHR7/jOIwbmu0MvYDVty+235CBqHedPu5Xeco=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YJ2u1aWeNxCCl+AqVGy9bLktNDlHfFGEhIPHQvBQ+W3xllGOj3lWqBG4JF3PVRzUlKtBH9VuUCrZJLPnykPK0qw3gwceiMdKm1kmz8xSHrTVS3MGoApyZ5en/+ThQerfTCyGmbUlBGT/tuceRIg0Ugu2ruTVP504a8+GFhsscuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrFqNhLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F958C4CEED;
-	Sun, 31 Aug 2025 12:27:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YEvCKdkTPT66PyDGYr8YXJejcbDa8qrogHsl83r/rF16HSGrlCaGM1Ee0mrep/cQhMVqDTRpT0jW5BRgRcaQg4PygJRC/5sWDbka4i/eTHo3kkWwJktrqH0upSptYO5ptaYfEceiQmRBGWasXUsB1S+X2PbDMUa0hLcR69fFbpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CR74TKDc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0AFC4CEED;
+	Sun, 31 Aug 2025 12:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756643264;
-	bh=bPKhfTBzMY9I92soo2FdT1/MUwIki7DO1HtC3OssbrY=;
+	s=k20201202; t=1756643449;
+	bh=R8eLqhlHR7/jOIwbmu0MvYDVty+235CBqHedPu5Xeco=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KrFqNhLzXXvM/UuFyfKFctDtC/tH+kl2th7u23gvZqoW/QajK9dQ9fBCNUuEQyc14
-	 2eK/eJjiSyGrGYVGPnpkdcc13gcVIn2LauZEZTJ5XnKAzBLIfZfdsFtdQ8SNLSh8cF
-	 4Iw/jk5mSUIKFVKKxRS3QQD/oI8827QEwT7dxjSwutQM6dEy8xFWjhu5723ltXozTz
-	 SvHtwfT/s4hB1bzzpwC8L8lWAT/NbiWdBZoozmDG8axEBG1nUVjNaxEEKu/0KzQQDl
-	 NVBqD391fX+SwSHuKUD8q+1d6yZpICtto2AtxWgf/jrokbqiElQFzSMummdxujmlx/
-	 EMw/uubsmvLFA==
-Date: Sun, 31 Aug 2025 13:27:33 +0100
+	b=CR74TKDclYSFAjjTFj308sBh+T64w7SYrhqVrmtwp8k6uo1yb/PRRYFWl0oUjuRgS
+	 0k3aZ33KXGoWNu59Zmd4bG4cm14oM4gK3wItDR92G38eaIr8V14ZqrOr5lUBKHSZZ7
+	 dPCXvFF1OFJ6Sz8NL2TRtNMn8IcatZtHaTKY0Hl8nUkxYwrveE5fEtftv00dgsv6kf
+	 3Gba1sezPLixdNbzCobw9XyrLJi0udnt66Q3mEShMAIJZ0vfJ2mJEPPDVaPFiw0DYa
+	 RgHyVzjNr3u1/YHAvKFWw7dgCgQxP/gofCOumAxNGR+TiDUvlFq+s1SswRpY6bqD00
+	 PzKjIh0I/EAEg==
+Date: Sun, 31 Aug 2025 13:30:38 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Abhinav Jain <jain.abhinav177@gmail.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, alexandru.ardelean@analog.com,
- jic23@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, Marcelo.Schmitt@analog.com, dumitru.ceclan@analog.com,
- Jonathan.Santos@analog.com, dragos.bogdan@analog.com
-Subject: Re: [PATCH v1 2/2] iio: adc: Add initial support for MAX22531 ADC
-Message-ID: <20250831132643.647f7c4d@jic23-huawei>
-In-Reply-To: <edc52c93e0d4e08619ba8a98674aeb7d49e6dd1b.1756115378.git.jain.abhinav177@gmail.com>
-References: <cover.1756115378.git.jain.abhinav177@gmail.com>
-	<edc52c93e0d4e08619ba8a98674aeb7d49e6dd1b.1756115378.git.jain.abhinav177@gmail.com>
+To: Jonathan Santos <jonath4nns@gmail.com>
+Cc: 20250825154450.75eedc9b@jic23-huawei.smtp.subspace.kernel.org, Jonathan
+ Santos <Jonathan.Santos@analog.com>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ Michael.Hennerich@analog.com, lars@metafoo.de, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v2 4/4] iio: adc: ad7768-1: add support for ADAQ776x-1
+ ADC Family
+Message-ID: <20250831133038.026d56e2@jic23-huawei>
+In-Reply-To: <aK50KITsXoPTkRbA@JSANTO12-L01.ad.analog.com>
+References: <20250824041013.9872-1-Jonathan.Santos@analog.com>
+	<20250825154450.75eedc9b@jic23-huawei>
+	<aK50KITsXoPTkRbA@JSANTO12-L01.ad.analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,176 +67,96 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 26 Aug 2025 02:55:49 +0530
-Abhinav Jain <jain.abhinav177@gmail.com> wrote:
+On Tue, 26 Aug 2025 23:57:44 -0300
+Jonathan Santos <jonath4nns@gmail.com> wrote:
 
-> Add device support for MAX22530-MAX22531.
-> Implement scale and read functionality for raw/filtered ADC readings.
+> On 08/25, Jonathan Cameron wrote:
+> > On Sun, 24 Aug 2025 01:10:13 -0300
+> > Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+> >   
+> > > Add support for ADAQ7767/68/69-1 series, which includes PGIA and
+> > > Anti-aliasing filter (AAF) gains. Unlike the AD7768-1, they do not
+> > > provide a VCM regulator interface.
+> > > 
+> > > The PGA gain is configured in run-time through the scale attribute,
+> > > if supported by the device. PGA is enabled and controlled by the GPIO
+> > > controller (GPIOs 0, 1 and 2) provided by the device with the SPI
+> > > interface.
+> > > 
+> > > The AAF gain is defined by hardware connections and should be specified
+> > > in device tree.
+> > > 
+> > > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>  
+> > Hi Jonathan
+> > 
+> > Various minor comments inline.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> >   
+> ...
+> > >  	/* Register VCM output regulator */
+> > > -	ret = ad7768_register_regulators(&spi->dev, st, indio_dev);
+> > > -	if (ret)
+> > > -		return ret;
+> > > +	if (st->chip->has_vcm_regulator) {
+> > > +		ret = ad7768_register_regulators(&spi->dev, st, indio_dev);
+> > > +		if (ret)
+> > > +			return ret;
+> > > +	}
+> > > +
+> > > +	st->aaf_gain = AD7768_AAF_IN1;
+> > > +	ret = device_property_read_u32(&spi->dev, "adi,gain-milli", &val);
+> > > +	if (ret && st->chip->has_variable_aaf)
+> > > +		dev_warn(&spi->dev, "AAF gain not specified, using default\n");
+> > > +
+> > > +	if (!ret && !st->chip->has_variable_aaf)
+> > > +		dev_warn(&spi->dev, "AAF gain not supported for %s\n", st->chip->name);  
+> > 
+> > I'm confused.  If you hit this warn, you then go ahead and set it anyway. How does that
+> > work?
+> >   
 > 
-> Signed-off-by: Abhinav Jain <jain.abhinav177@gmail.com>
-Hi Abhinav,
+> I would be setting a variable that will not be used, so no functional impact.
+> I could add another condition to avoid assigning it, or do you believe it
+> is better to return error like before? 
+Just don't set it to avoid confusion.  Alternative would be a comment that says that
+it won't be used, which is probably more complex than the code.
 
-A few minor style related things and one question on FADC registers address.
+> 
+> > > +
+> > > +	if (!ret) {  
+> > use a local bool for ret here with a suitable name. Carrying on using ret is
+> > fragile against later code changes where someone doesn't realise it is still in use.
+> >   
+> 
+> Maybe it is better to handle this in a helper function and apply the
+> suggestion.
 
-Thanks,
+If that works, sounds good!
 
-Jonathan
-
->  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index ea3ba1397392..a35c3c945e27 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -933,6 +933,16 @@ config MAX1363
->  	  To compile this driver as a module, choose M here: the module will be
->  	  called max1363.
->  
-> +config MAX22531
-> +        tristate "Analog Devices MAX22531 ADC Driver"
-> +        depends on SPI
-> +        help
-> +          Say yes here to build support for field-side self-powered 12-bit
-> +	   isolated Maxim ADCs. (max22530, max22531, max22532).
-Use a list
-	  - max22530
-	  - max22531
-etc
-because it means new parts being added create less fuzz.  We've gotten this wrong
-in far too many drivers and ended up with messier follow up series as a result!
-
-> +
-> +	   To compile this driver as a module, choose M here: the module will be
-> +	   called max22531.
-Should be tab index + 2 spaces for whole help block. 
-> +
-
-> diff --git a/drivers/iio/adc/max22531.c b/drivers/iio/adc/max22531.c
-> new file mode 100644
-> index 000000000000..fb035225e426
-> --- /dev/null
-> +++ b/drivers/iio/adc/max22531.c
-> @@ -0,0 +1,191 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * MAX22531 SPI ADC Driver
-> + *
-> + * Copyright (C) 2025 Abhinav Jain
-> + *
-> + * Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/max22530-max22532.pdf
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/unaligned.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/regulator/consumer.h>
-
-As per the build bot report, there are some headers that want to be here and
-aren't. In general aim for following Include What You Use IWYU principles
-for kernel code, subject to some fuzz around headers that are always used via
-an other one.
-
-> +
-> +#define MAX22531_REG_PROD_ID		0x00
-> +#define MAX22531_REG_ADC_CHAN(x)	((x) + 1)
-> +#define MAX22531_REG_FADC_CHAN(x)	((x) + 1)
-
-I'm confused. Why the same registers for both of these?  If they really
-are the same, perhaps one macro is enough.
-
-> +
-> +#define MAX22531_VREF_MV		1800
-> +#define MAX22531_DEVICE_REV_MSK		GENMASK(6, 0)
-> +#define MAX22531_DEVICE_REV		0x01
-> +
-> +#define MAX22531_REG_ADDR_MASK		GENMASK(7, 2)
-> +#define MAX22531_REG_WRITE_MASK		BIT(1)
-> +
-> +enum max22531_id {
-> +	max22530,
-> +	max22531,
-> +	max22532,
-> +};
-> +
-> +struct max22531_chip_info {
-> +	const char *name;
-> +};
-> +
-> +static struct max22531_chip_info max22531_chip_info_tbl[] = {
-> +	[max22530] = {
-> +		.name = "max22530",
-> +	},
-> +	[max22531] = {
-> +		.name = "max22531",
-> +	},
-> +	[max22532] = {
-> +		.name = "max22532",
-> +	},
-> +};
-
-See below for reasoning. Split these into separate structures rather
-than an array.
-
-> +static int max22531_reg_read(struct max22531 *adc, unsigned int reg,
-> +			     unsigned int *readval)
-> +{
-> +	u8 cmd;
-> +
-> +	cmd = FIELD_PREP(MAX22531_REG_ADDR_MASK, reg);
-> +	*readval = spi_w8r16be(adc->spi_dev, cmd);
-
-Rather than having side effect of leaving a negative in *readval, use
-a local variable and only assign readval if all is good.
-
-> +	if (*readval < 0)
-> +		return *readval;
-> +
-> +	return 0;
-> +}
-
-> +static int max22531_probe(struct spi_device *spi)
-> +{
-
-> +	ret = max22531_reg_read(adc, MAX22531_REG_PROD_ID, &prod_id);
-> +	if (ret ||
-A failure to read is a bug that we should fail on, whereas the value
-read not matching is indeed something were a warn or info makes sense.
-So split this check 
-	if (ret)
-		return ret;
-
-	if (FIELD_GET()...
-		dev_warn
-
-> +	    FIELD_GET(MAX22531_DEVICE_REV_MSK, prod_id) != MAX22531_DEVICE_REV)
-> +		dev_warn(&spi->dev, "PROD_ID verification failed\n");
-> +
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
-> +}
-> +
-> +static const struct spi_device_id max22531_id[] = {
-> +	{ "max22530", (kernel_ulong_t)&max22531_chip_info_tbl[max22530] },
-> +	{ "max22531", (kernel_ulong_t)&max22531_chip_info_tbl[max22531] },
-> +	{ "max22532", (kernel_ulong_t)&max22531_chip_info_tbl[max22532] },
-
-Whilst this style used to be common, over time we've come to the conclusion
-that an indexed array for these doesn't bring value. Instead
-just have separate structures with names that indicate which chip they
-are for.  max22532_chip_info etc  That allows the enum to be dropped which
-has the advantage of removing the temptation to use it for anything else
-(which is usually a bad idea)
-
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(spi, max22531_id);
-> +
-> +static const struct of_device_id max22531_spi_of_id[] = {
-> +	{ .compatible = "adi,max22530",
-> +		.data = &max22531_chip_info_tbl[max22530], },
-> +	{ .compatible = "adi,max22531",
-> +		.data = &max22531_chip_info_tbl[max22531], },
-> +	{ .compatible = "adi,max22532",
-> +		.data = &max22531_chip_info_tbl[max22532], },
-> +	{ }
+J
+> 
+> > > +		/* If provided, validate and set the gain */
+> > > +		switch (val) {
+> > > +		case 1000:
+> > > +			st->aaf_gain = AD7768_AAF_IN1;
+> > > +			break;
+> > > +		case 364:
+> > > +			st->aaf_gain = AD7768_AAF_IN2;
+> > > +			break;
+> > > +		case 143:
+> > > +			st->aaf_gain = AD7768_AAF_IN3;
+> > > +			break;
+> > > +		default:
+> > > +			return dev_err_probe(&spi->dev, -EINVAL,
+> > > +					     "Invalid firmware provided AAF gain\n");
+> > > +		}
+> > > +	}  
+> 
+> Regards,
+> Jonathan S.
+> 
 
 

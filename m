@@ -1,58 +1,63 @@
-Return-Path: <linux-iio+bounces-23544-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23545-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3F0B3D437
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 17:47:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 024EBB3D444
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 18:01:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5503B1052
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 15:47:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 857993B8A66
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Aug 2025 16:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DDC1A8412;
-	Sun, 31 Aug 2025 15:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9801FECD4;
+	Sun, 31 Aug 2025 16:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZMC+vjQO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7sc1cCI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4046148830
-	for <linux-iio@vger.kernel.org>; Sun, 31 Aug 2025 15:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1056A5464E;
+	Sun, 31 Aug 2025 16:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756655266; cv=none; b=KpF//9Xx7x3MTEQ88odwU0G+pbZXZ5J3dze28E7hf1amgFwyizNis3t1QdVYKrv0gISoe5qZJZjZzFu6DnPi3q2E6FJOUTGzWFHH5E3aj3HCZWa91w2uyFG95xInEuAiHAaZ26EqHrDJr3s7asRjGorvvbnSBOCBthw8kSMK4qU=
+	t=1756656102; cv=none; b=H8C5ZiF7MG6KpauYx4rA7PLft9NTaMJg7qKkbRJc9x/gZ8UGrfVDsgS1iIdv8ofRz57IJW6NFJkhyu5kdmUkOOXuYmd4n5XlxjZD9MAFGXd8N6ok/LZpYrPd7bnA3iHJp8NCIWDlRpXmNF6cdymRR+IbKsTmYuuYPIRAA7MrKvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756655266; c=relaxed/simple;
-	bh=YzG+/qbsocM0904WNAYE40FeEyaZBbz3adihEW+MQ5s=;
+	s=arc-20240116; t=1756656102; c=relaxed/simple;
+	bh=2gNH/RzO1V0JsfglSgx1jzUzgMbIO9CB7CQt5QHDaiE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jJushinucCjnazNQ2Yt+IFonJZ6ipkujUBnVOiYXioIMcwPLS3He0HPCyhD55qfGBMbQDILtDidFUAn2aKw97sW1vC8h6rGNPpU8nwo4rxECLxvo0FEfAs+BwJfoPhflRAZKLRB82//P9LpxJS+76RAqSY5J9R0Ed7A2akY7dok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZMC+vjQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3386C4CEED;
-	Sun, 31 Aug 2025 15:47:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I5OpkdSkc8tjkQXdmtkmPa9F/o2KLxczePOdJR9LWLWFLp0pul04gv4H9EN2TliCFIuZIZagP7bIwd3UGeWWdcbYQt4oFbn8AYWd57JfqY7k1TDP3H0OYNs9ayuAoOQI4o0pO4n6xiNiZVUACISbw1z9GDbSEaJybbqJhvcO8Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7sc1cCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E01C4CEED;
+	Sun, 31 Aug 2025 16:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756655266;
-	bh=YzG+/qbsocM0904WNAYE40FeEyaZBbz3adihEW+MQ5s=;
+	s=k20201202; t=1756656101;
+	bh=2gNH/RzO1V0JsfglSgx1jzUzgMbIO9CB7CQt5QHDaiE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZMC+vjQOV6q9GtDXJ+dB6n9BYIVeH+gKZCIeWRlTM/s9hRJK6uS9sNpgXcaFaz04P
-	 Rb3fxRaSBkW9BTwQAKDTS1PvJJV6vu/4cDkagIchL0kn+3YpyZfYulh8BdG1Tag4+6
-	 1kAq1KxrF4ikRlS33V3xRVwf+mQc6+AxRyhASxaxNtymFWvAc5JJ3U1q5NPWkxHPKN
-	 n7GSORhnuxbXEGpeGKjjF+WBmoviLK5GgDpjEc0+e/iYk0LwFDLgWBi2NKvKcOg7m3
-	 8DxS4mEHXN/CfYomAriP0MN5DbtCTn0xBsOwF4+mzvEKjCxQHENQWVRgrFURbrIy2c
-	 dpcEFLeuI+ezQ==
-Date: Sun, 31 Aug 2025 16:47:38 +0100
+	b=O7sc1cCIAJLHudpybzjPxTmNCgUawvKCj4pT2k14Rd3/tSuebiso0jIAudclYzGQY
+	 fYJo+EgIK4F8eCHTtPEHTXKukpLJY4soO5jecySRSrh7Bx6UpdvGx8bR5FRjH0q+Tc
+	 vfHJ93dSxmTtMK6bmRKvc2UPGFUIbyf8eheiSnuxEcUqJVbfrdB/qom5qoVaigXzgh
+	 mJNRirQPnkdMv5HrHrlbDJZxDfi4fbxtOX1R1ORhsNebBrNnSmd75Nkw/96spGsxdo
+	 +KE7VA9ofuhbAtuYEWBFhd98HSWkfplfzXGoq6YSIJ1pEvO7SNsr+FUDGq/9sX94RC
+	 XrAcPrPhHJDaQ==
+Date: Sun, 31 Aug 2025 17:01:27 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Andy
- Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v2 1/2] iio: frequency: adf4350: Fix prescaler usage.
-Message-ID: <20250831164738.28fad39e@jic23-huawei>
-In-Reply-To: <CAHp75Vd-_iDZw70+T9uSQm96d=+-puPOihGt+9TLsamW5bkWvA@mail.gmail.com>
-References: <20250829-adf4350-fix-v2-0-0bf543ba797d@analog.com>
-	<20250829-adf4350-fix-v2-1-0bf543ba797d@analog.com>
-	<CAHp75Vd-_iDZw70+T9uSQm96d=+-puPOihGt+9TLsamW5bkWvA@mail.gmail.com>
+To: Lakshay Piplani <lakshay.piplani@nxp.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ marcelo.schmitt1@gmail.com, gregkh@linuxfoundation.org,
+ viro@zeniv.linux.org.uk, peterz@infradead.org, jstephan@baylibre.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, ilpo.jarvinen@linux.intel.com,
+ jonathan.cameron@huawei.com, akpm@linux-foundation.org, chao@kernel.org,
+ jaegeuk@kernel.org, vikash.bansal@nxp.com, priyanka.jain@nxp.com,
+ shashank.rebbapragada@nxp.com, Frank.Li@nxp.com
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: temperature: Add NXP P3T175x
+ support
+Message-ID: <20250831170127.3c7d9bf7@jic23-huawei>
+In-Reply-To: <20250827103105.2472328-1-lakshay.piplani@nxp.com>
+References: <20250827103105.2472328-1-lakshay.piplani@nxp.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,45 +68,132 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 30 Aug 2025 10:58:49 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Wed, 27 Aug 2025 16:01:04 +0530
+Lakshay Piplani <lakshay.piplani@nxp.com> wrote:
 
-> On Fri, Aug 29, 2025 at 2:25=E2=80=AFPM Nuno S=C3=A1 via B4 Relay
-> <devnull+nuno.sa.analog.com@kernel.org> wrote:
-> >
-> > From: Michael Hennerich <michael.hennerich@analog.com>
-> >
-> > The ADF4350/1 features a programmable dual-modulus prescaler of 4/5 or =
-8/9.
-> > When set to 4/5, the maximum RF frequency allowed is 3 GHz.
-> > Therefore, when operating the ADF4351 above 3 GHz, this must be set to =
-8/9.
-> > In this context not the RF output frequency is meant
-> > - it's the VCO frequency.
-> >
-> > Therefore move the prescaler selection after we derived the VCO frequen=
-cy
-> > from the desired RF output frequency.
-> >
-> > This BUG may have caused PLL lock instabilities when operating the VCO =
-at
-> > the very high range close to 4.4 GHz.
-> >
-> > Fixes: e31166f0fd48 ("iio: frequency: New driver for Analog Devices ADF=
-4350/ADF4351 Wideband Synthesizers")
-> > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> >
-> > ---
-> > v2:
-> >  * Added fixes tag;
-> >  * Added TODO (suggested by Andy). =20
+> Add bindings for the NXP P3T175x (P3T1750/P3T1755) temperature
+> sensor, supporting both I2C & I3C interfaces.
 >=20
-> Thanks, this is a compromise I can agree with.
-> Reviewed-by: Andy Shevchenko <andy@kernel,org>
+> Signed-off-by: Lakshay Piplani <lakshay.piplani@nxp.com>
+> ---
+> Changes in v2 (addressed review comments from Krzysztof Kozlowski):
+>  - Dropped nxp,alert-active-high: unnecessary as polarity handling is imp=
+licit in driver.
+>  - Retained nxp,interrupt-mode: required to program TM(thermostat mode) b=
+it; enables interrupt
+>    (latched) mode. If not present in DT entry comparator mode is set as d=
+efault.
+>  - Retained nxp,fault-queue: This needs to be configured during device in=
+itialization.
+>    This property configures the hardware fault queue length. Defines how =
+many consecutive faults
+>    are required before ALERT/IBI is asserted, preventing false triggers i=
+n noisy environments.
+>  - The `reg` property remains required to satisfy `dt_binding_check`.
+>  - Fixed YAML formatting, line wrapping, and examples.
+>  - Changed compatibles from nxp,p3t1755 to nxp,p3t1755-iio and nxp,p3t175=
+0 to nxp,p3t1750-iio
+>    as reported by kernel test robot.
 >=20
-Fixed up email address and series applied to the fixes-togreg branch of iio=
-.git.
+>  .../bindings/iio/temperature/nxp,p3t1755.yaml | 97 +++++++++++++++++++
+>  1 file changed, 97 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/nxp=
+,p3t1755.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/nxp,p3t175=
+5.yaml b/Documentation/devicetree/bindings/iio/temperature/nxp,p3t1755.yaml
+> new file mode 100644
+> index 000000000000..4eb6fc5cb247
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/temperature/nxp,p3t1755.yaml
+> @@ -0,0 +1,97 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/temperature/nxp,p3t1755.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP P3T175x Temperature Sensor
+> +
+> +maintainers:
+> +  - Lakshay Piplani <lakshay.piplani@nxp.com>
+> +
+> +description: |
+> +  Datasheet: https://www.nxp.com/docs/en/data-sheet/P3T1755.pdf
+> +
+> +  P3T175x (P3T1750/P3T1755) is a digital temperature sensor with a range=
+ of -40=C2=B0C to
+> +  +125=C2=B0C and a 12-bit resolution. It supports communication over
+
+Wrap consistently to 80 chars
+
+> +  both I2C and I3C interfaces.
+> +
+> +  The I2C interface supports up to 32 static addresses and provides
+> +  an ALERT output to signal when temperature thresholds are crossed.
+> +
+> +  The I3C interface supports In-Band interrupts (IBI) in interrupt mode,
+> +  allowing the device to notify the controller of threshold events witho=
+ut
+> +  dedicated alert pin.
+> +
+> +  The device supports configurable thermostat modes (interrupt or compar=
+ator),
+> +  fault queue length etc.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - nxp,p3t1750-iio
+> +      - nxp,p3t1755-iio
+
+Wouldn't expect an 'iio' bit in a compatible. It's not about what driver
+is binding, it's about what the device is.
+
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reg:
+> +    maxItems: 1
+> +    description: |
+> +      In I2C mode, the device supports up to 32 static addresses.
+> +      In I3C mode, the 'reg' property encodes a triplet of
+> +      <static-address BCR PID> used for device matching.
+> +      Static address is optional if matching is done via PID.
+> +
+> +  nxp,interrupt-mode:
+> +    type: boolean
+> +    description: |
+> +      Enables interrupt mode (TM =3D 1), where alerts are latched until
+> +      cleared by a register read.
+> +      Required for IBI support over I3C. On I2C, both interrupt and
+> +      comparator mode support events.
+
+What David said wrt to this. If it is discoverable from the bus type
+doesn't need a property.
+
+> +
+> +  nxp,fault-queue:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [1, 2, 4, 6]
+> +    description: |
+> +      Number of consecutive temperature limit
+> +      violations required before an alert is triggered.
+> +      valid values:- 1, 2, 4 or 6.
+> +      If unspecified, hardware default (2) is used.
+
+This is the userspace period control. Don't have it in DT
+as nothing much to do with wiring.
+
+> +
+> +  assigned-address:
+> +    true
+
+Is there not a top level i3c file that we can $ref like tend to do for spi-=
+peripheral-props.yaml?
+Seems not unfortunately but we do need some sort of reference for this.
+
 
 
 

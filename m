@@ -1,61 +1,58 @@
-Return-Path: <linux-iio+bounces-23590-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23591-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987F6B3EC5A
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 18:38:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B074B3EC68
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 18:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57DC648034B
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 16:38:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D89031A87A0D
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 16:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B885730F538;
-	Mon,  1 Sep 2025 16:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54222EC097;
+	Mon,  1 Sep 2025 16:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ny/GUxBW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzqleyRw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFAB2DF13F;
-	Mon,  1 Sep 2025 16:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923262356CE;
+	Mon,  1 Sep 2025 16:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756744688; cv=none; b=VVhu2cIaldqwe0QuNbGUggtJTaKwVgBODundfsj9Q+2YykLUyjiDxRiDrCz9SR04aqgbBNd3MM3rOl9wy+UuufPHxjjfyDfV2I7Ln4JwRxTLPdomNqrsFrAFx+5CvDl+45lF6igCNHK8B35kcFpr3n+oMkhKejZtotZZ5NsziqU=
+	t=1756744812; cv=none; b=DP8BfLswRM+UWewDSp9bKd7MggDYLhfHfryQHiMZjWDXBINmxaMP3kczFy7z8dI1V+Tb/YbHLnPEiAcYdWMeoiiROBC51xdSW/sfEjHl+0CKiNWUpT+wKYj54BEc4zcS+du6u4UC5jRugtwnUJ1azzk8vrguYYRiRut1S2oFB3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756744688; c=relaxed/simple;
-	bh=8G+3XGg+quEZEXW/fQFez+5wUY0vAqJwQES5pLF72xQ=;
+	s=arc-20240116; t=1756744812; c=relaxed/simple;
+	bh=tDb88lFCA9cbKoJXMvuaDvWAEZD/O4+t/o9l90JG9lQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rHLCbizKqsGV2lhg+UHQpi6Y75CUXmY7xuLlM3dqiDhpYJXSQihrGrXsfphAMyauCmyNXJ5pl/Z9UN0h6N6bb00LqiV+EPrNGhKStAHDbowRAJBev7XmqNe0Xv/wrB3opWph21gtRcZXHsIXEfVN1nSGgEQQqvHceli2Pg6dk9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ny/GUxBW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64067C4CEF1;
-	Mon,  1 Sep 2025 16:38:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lFZUaSVRyXCGnm3nMelssy1IyKXWvMDMBtFuJR6oodv/0icpd/Rty10zLMw0qKJRf30wXxXIveARdLTbYRON8nD5cgHMztj+cwMjk5VDei33r1Xo4kbNPXK6sdzJf21PyYtdajEmKGcDtn/bZGiEsjy3fDJwixSyi0MosRYZPxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzqleyRw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD5FC4CEF0;
+	Mon,  1 Sep 2025 16:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756744688;
-	bh=8G+3XGg+quEZEXW/fQFez+5wUY0vAqJwQES5pLF72xQ=;
+	s=k20201202; t=1756744812;
+	bh=tDb88lFCA9cbKoJXMvuaDvWAEZD/O4+t/o9l90JG9lQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ny/GUxBWZwE4W1umy2rxcrMweeo9RKyZRsJLOg13X3WfmceJw7p0TpnGAA0vUst+i
-	 zDQt2MMPOi8Zmlkr4jxd4j1hKfyqWGaTnxpiFmpmGRaPyKCiJ9fFRd8ZEVsdKLDoWu
-	 whjRJXANxxKovvZPyx+1agpkPN60AqE8Lbt9tYRu8liNFOmXH8n9o1QT4DTitdgmf+
-	 QuzcbdNo1IgRliehimrqSFLHPHg+FgUZcJrdQ/Po0MMR269d7c4BPSMupe+oZs0yj0
-	 3XNYhWJuwuAK7UclXFwXI/16WrScUuZ2/VPgBNGDZorm4IAuU1fByO1VRE3EtjyxHU
-	 4XKC7YTedG3aQ==
-Date: Mon, 1 Sep 2025 17:38:00 +0100
+	b=AzqleyRwkS3wNp0SvAlt6HCrlQLpgiFr7gIiNBtDDk8QQOXWAlE7gwzQ44BphC959
+	 sCvWWbqPuleCkuHiUZPdH1Sw33Gu8BkTa0SKYOcF0MqulJc1Z6DsD1sB1MI8QETYc8
+	 52hRCeVrC8UMUoUh0re0QPEPPJyHC8pWdqStB8f2+fUdX+BS+i9d4EqjZ9PLvmPR2/
+	 iZEZCRgRxTgYxOAtBBhhYX5BGY9oB89drdZUL7wAU7B9waXYR8ClIRZGF7uQ0XQPJH
+	 SqWiaQ04KZ43W17ZbfGNEwAvGRZs8I6migogvognStf6oXre8Q9Qvs/gVVRRfAdayy
+	 tDEsbFAo9mCMw==
+Date: Mon, 1 Sep 2025 17:40:06 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Krzysztof
- Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] iio: adc: samsung: Simplify, cleanup and drop
- S3C2410
-Message-ID: <20250901173800.48133c60@jic23-huawei>
-In-Reply-To: <20250830-s3c-cleanup-adc-v2-0-4f8299343d32@linaro.org>
-References: <20250830-s3c-cleanup-adc-v2-0-4f8299343d32@linaro.org>
+To: Qianfeng Rong <rongqianfeng@vivo.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Greg Kroah-Hartman <gregkh@suse.de>, linux-iio@vger.kernel.org (open
+ list:IIO SUBSYSTEM AND DRIVERS), linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH v2 0/2] iio: use int type to store negative error codes
+Message-ID: <20250901174006.11bf48a8@jic23-huawei>
+In-Reply-To: <20250901135726.17601-1-rongqianfeng@vivo.com>
+References: <20250901135726.17601-1-rongqianfeng@vivo.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,44 +63,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 30 Aug 2025 18:48:29 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Mon,  1 Sep 2025 21:57:24 +0800
+Qianfeng Rong <rongqianfeng@vivo.com> wrote:
 
-> Changes in v2:
-> - Patch #5: Fix S5Pv210 interrupts
-> - Patch #3: Drop touchscreen-s3c2410.h
-> - Add Rb tags
-> - Link to v1: https://lore.kernel.org/r/20250830-s3c-cleanup-adc-v1-0-de54dfb1d9ea@linaro.org
+> Use int instead of unsigned int for 'ret' variable in ad5360_update_ctrl()
+> and ad5421_update_ctrl() to store negative error codes or zero returned by
+> other functions.
 > 
-> S3C2410 is gone from kernel, so we can drop its support and remaining
-> related pieces.
+> Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+> ---
+> v2: Split each driver into a separate patch.
+Thanks for doing that.
 
-I've queued this up to get some test coverage from zero day.
-I'll not push it out for linux-next for a few more days though so happy to
-add tags (or drop it if anything comes up!)
+Applied to the fixes-togreg branch of iio.git and marked for stable inclusion.
+
+Thanks,
 
 Jonathan
 
-> 
-> Best regards,
-> Krzysztof
-> 
 > ---
-> Krzysztof Kozlowski (5):
->       iio: adc: exynos_adc: Drop S3C2410 support
->       iio: adc: exynos_adc: Drop touchscreen support
->       iio: adc: exynos_adc: Drop platform data support
->       dt-bindings: iio: adc: samsung,exynos: Drop S3C2410
->       dt-bindings: iio: adc: samsung,exynos: Drop touchscreen support
+> Qianfeng Rong (2):
+>   iio: dac: ad5360: use int type to store negative error codes
+>   iio: dac: ad5421: use int type to store negative error codes
 > 
->  .../bindings/iio/adc/samsung,exynos-adc.yaml       |  26 +-
->  drivers/iio/adc/exynos_adc.c                       | 282 +--------------------
->  include/linux/platform_data/touchscreen-s3c2410.h  |  22 --
->  3 files changed, 14 insertions(+), 316 deletions(-)
-> ---
-> base-commit: 642543fe9a04beda174633dff607429dc1734b2a
-> change-id: 20250830-s3c-cleanup-adc-71ac80978520
+>  drivers/iio/dac/ad5360.c | 2 +-
+>  drivers/iio/dac/ad5421.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
-> Best regards,
 
 

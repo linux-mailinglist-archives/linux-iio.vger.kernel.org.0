@@ -1,71 +1,105 @@
-Return-Path: <linux-iio+bounces-23592-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23593-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7ECB3EC9B
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 18:47:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F3BB3EC9D
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 18:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48715189042A
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 16:48:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 714084801CB
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 16:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61232E041D;
-	Mon,  1 Sep 2025 16:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E352DF156;
+	Mon,  1 Sep 2025 16:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aki2bgBA"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HY723NAh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDC31E2853;
-	Mon,  1 Sep 2025 16:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66022DF13C
+	for <linux-iio@vger.kernel.org>; Mon,  1 Sep 2025 16:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756745254; cv=none; b=TSfBQSe7+71SYxgkMXv3USrXmPhboUxoB5RPtrbMAUsgMqrovG8uhCE/iX50xGDdqgKNZyFxY+ZLUJ0/LZwU2SYkq3rk3TJZgSgAWpt5WCWbwoWBn0YycRDJWma7uQr7x+yaN6CCzMvp0VuNWzOt6bafPxlKCUs7ik94YCTeVNo=
+	t=1756745283; cv=none; b=VDe5nKmEEumAAFK7VDbaL12+r+3TY8PjNt7fotqht6eA+ipOQlMgbT88HRSR4raQDGsmUD2YMsKug7NmrNM57x3l/0mEWrUKKQczp6LuD5mTwzIYrq9cNmKZY5EbY8GEJEoLQyt08mtHl/X+A/0ZEi8gAJcrvBnAgpQjFK3Cz68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756745254; c=relaxed/simple;
-	bh=G9RVU0XMahbtLMFQF4HVKxUSFrJaGgUuOm1NURKyju8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X6+v2YAySeCXbsNLiScl/zRAOGxxR7yOcbT9I4n6cLYenlNCxnjcEuBaAqnP6nf0u35dpEb5cR5tjiCj0OWeug0NyaJqUv7q/18soRDiKcHMkLISpjEJGge0byVHaW16owhV6xgGB05LMf6lt5/cUhJKUNq3ln+8I2ysBPp21VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aki2bgBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3645FC4CEF0;
-	Mon,  1 Sep 2025 16:47:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756745254;
-	bh=G9RVU0XMahbtLMFQF4HVKxUSFrJaGgUuOm1NURKyju8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aki2bgBANIr2O+LWByCAgEOs4u7GS1rW1uLMpuC6dUg2gF+lEB/SO4RFCCAO2Cr03
-	 VBZQ9gF4CHTvX0u4xQQKqwZu0TVu4xisiQAGjBhvCc6HQqKdszRLqoOssdfwJXDD4/
-	 e+FeieuZRfmCg2rxIlcPG0S/TiDZupzIAyNhQ1HXzsP3OltFW/Am9gw5za31mHC0YL
-	 WOfJgZ3Pn8p73NbyzY+6lLQZFVUB3WGxckTRZKFeWI/9DYmw3GTtZ/wslcMe13JEkL
-	 6dAeL9qrJx/dboNL7JPBD3oJAdimX5FOPnLbUs1f7Iu+qeU7tvwe2xCXw/tXbQwrrC
-	 NVD1YJ/TjWb0g==
-Date: Mon, 1 Sep 2025 17:47:24 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
-Cc: linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org
-Subject: Re: [PATCH v3] staging: iio: adc: ad7816: add mutex to serialize
- SPI/GPIO operations
-Message-ID: <20250901174724.351237f0@jic23-huawei>
-In-Reply-To: <20250901073750.22687-1-moahmmad.hosseinii@gmail.com>
-References: <20250901073750.22687-1-moahmmad.hosseinii@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1756745283; c=relaxed/simple;
+	bh=fkryIHu4I1xIx2CWEKCdM9po9RrcPxRizn7i/jnNbiI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gw1YgndrJJVhGyRnYvaFwbONah94puY3wbantPWncFEhpgJXz1NOgAx9qofUkFnpDbgbbl46lQTVw+yuJRHMsaED3oahaMcoCTz/EOo6tXMo7jGL9cZCdrSQxr9gsdcVArZkMMwN2hDNBCirsEAdU8+RZbNJaWvv5vouZCv0gFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HY723NAh; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-30ccec928f6so2230126fac.3
+        for <linux-iio@vger.kernel.org>; Mon, 01 Sep 2025 09:48:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756745280; x=1757350080; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YmhTGKLssoVeGJ2/TQJ8RgkIS6rn9bKv2i70wU++5KI=;
+        b=HY723NAhJukyBMQYQ1aCbZ5Gke9Z8m7owqwCoBy70lILZ9DPH5JL8oLz6Hqo9djoqg
+         ZZKMaLMUpWM7pK1t6w6DZY1WDjc5vh9F+4f7QBUnzFJVSeunu0uEFLrNNz87xVGBijcT
+         RL+Pdp1Ip5Wfva5+yp7cRTDWNPNc3F8f4Y8hzh/7UnjE+nvBPG1ZgA/w8JNDhA8CnZfG
+         mxQwfzGjhulnvR/86UTesEy5vW1ga/3NOdgtaorJ0g8qEYscjLL8UorxhhlC4N3MvnPT
+         +CiTS8cCd0nlukYuf9uIfVZrIXqd4wVoU04l0cz9193Inwq5RgewepeURrrXs0OGtusK
+         c8jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756745280; x=1757350080;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YmhTGKLssoVeGJ2/TQJ8RgkIS6rn9bKv2i70wU++5KI=;
+        b=f6MZXmJwFMNfGF+TD6CLKlewhtBa2XTtcDtX7Cn+GuVbRL6das/vmmeWt4xlFhu+aQ
+         EHpixSWHld5cEmj7efzbV+aKmHwCxBRBGVlFAC7386AOLi4WKzQlGh1lsltMyCSY43xQ
+         2+LUgxx4c+nFUq3hbjeSRijMYhJfcUjGzbi324hyNWEAJ47hT2h4GSEVe4oiW+584Jjw
+         pTWeRzF4bx4uhbmR+fmhh6YZVzVF06nrf6Gq/q+FeAFaaBLzyGQWowqKyqiTQuUGWwtq
+         WEF9uUvDbImwFGzL3lgfsfF3lJak2Yi8DEy7jXAoIJm8xB8ctm+TQIxDjrVlJdGN8Ol8
+         haQg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPkQaL2VEGuGLDpv5yqwQv6GBMFd/fx75MXlcgz4rR71fEdCcBjeTnJRrOuq+pWhi12SjZF2c6bEM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPismMmDo7nfAUppF5uxEfpX3OlDVyntHuK6eD9FCAHy+ArtpB
+	apUZNCqN7Jp76k5WIMRAHDfqGA1mpQPPeUizQoFlIT4PjPhnvwDsrdRezHaAz8csHxo=
+X-Gm-Gg: ASbGncvrU5wUuXP5R0B0kuI76KXdSw7AerenLSLykEMAsx1SEWZ/3SL/DgiVGYNYEHG
+	BxVPRfJIgN9TGAT1c+xO/CxHHnMekEuuqLDj7sJquxkqZJkHCr25Zfq/TzhY5s2k3mwEx2Hkh83
+	uBzGFIzTNoXGbNaWj6WoumDvzdq3CjL50wlIcJGP5/3CA/4HJ4mDcjI7lfHxDtlLbQX2D9epT4i
+	1+UExFBd/SHD1nw0Z52fYrHFb3xtbFhpqiN570CXRNA/osdKjo+t571Ta8G8O5BpAxnBn+JkHH2
+	+0t+NOGImnk8hRfUT3JjG+BBQ+XVSVVSEA2SYf4erOPhYp/TJP0RSTfZ8+hCVMeZsQSXk7BzjEl
+	CzYsFZ9+Xbnw3JJIHPYjXmQxbFgWEcJEHeKuoTZDSSgT5UzJerN0iH6WNsBmqFbJuwaLH4fO+N1
+	8hTIrcArF6FfcgHSsW7w==
+X-Google-Smtp-Source: AGHT+IFMcJUfkp0DBfp/hK2wpKwhpqBEsHP4VYRpkRr7ud68ywPh/oMdr28/f25+B6OHHS1ppf8vDg==
+X-Received: by 2002:a05:6871:4b8a:b0:30b:85e1:d3ea with SMTP id 586e51a60fabf-31963183f91mr3959730fac.21.1756745279707;
+        Mon, 01 Sep 2025 09:47:59 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:3c0d:2a9:2478:d89e? ([2600:8803:e7e4:1d00:3c0d:2a9:2478:d89e])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7457428c153sm1091594a34.8.2025.09.01.09.47.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 09:47:58 -0700 (PDT)
+Message-ID: <b6c2ac13-2781-49ba-964f-ca821b32e2a2@baylibre.com>
+Date: Mon, 1 Sep 2025 11:47:57 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] staging: iio: adc: ad7816: add mutex to serialize
+ SPI/GPIO operations
+To: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>,
+ linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+ jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+ nuno.sa@analog.com, andy@kernel.org
+References: <20250831153741.8820-1-moahmmad.hosseinii@gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250831153741.8820-1-moahmmad.hosseinii@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon,  1 Sep 2025 11:07:50 +0330
-Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com> wrote:
-
+On 8/31/25 10:37 AM, Mohammad Amin Hosseini wrote:
+> From: mohammad amin hosseini <moahmmad.hosseinii@gmail.com>
+> 
 > The ad7816 driver was accessing SPI and GPIO lines without
 > synchronization, which could lead to race conditions when accessed
 > concurrently from multiple contexts. This might result in corrupted
@@ -74,38 +108,12 @@ Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com> wrote:
 > Introduce an io_lock mutex in the driver structure to serialize:
 > - SPI transactions in ad7816_spi_read() and ad7816_spi_write()
 > - GPIO pin toggling sequences
-
-Split this into two patches (but wait a few days for current discussions to
-finish).  Patch 1 do the SPI / GPIO groups (and use guard() as Andy pointed out).
-
 > - Updates to device state via sysfs store functions (mode, channel, oti)
-
-This one is less clearly required. We might get races but it's not obvious
-to me that they will hurt as tends to be one writer / one reader of a
-small variable. In theory the accesses might get split / torn but in practice that
-doesn't happen.  Anyhow, that one needs more info on why the protection
-is necessary.
-
-One other comment inline.
-
-
-Jonathan
-
-
 > 
 > The mutex ensures proper mutual exclusion and prevents race
 > conditions under concurrent access.
 > 
 > Signed-off-by: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
-> 
-> ---
-> Changes in v3:
-> - Restore proper capitalization in From:/Signed-off-by lines
-> - Move v2 changelog below the --- line
-> 
-> Changes in v2:
-> - Fixed mismatch between From: and Signed-off-by lines
-> - Verified style compliance with checkpatch.pl
 > ---
 >  drivers/staging/iio/adc/ad7816.c | 29 +++++++++++++++++++----------
 >  1 file changed, 19 insertions(+), 10 deletions(-)
@@ -127,6 +135,11 @@ Jonathan
 >  	__be16 buf;
 >  
 > +	mutex_lock(&chip->io_lock);
+
+Could avoid the gotos by using:
+
+	guard(mutex)(&chip->io_lock);
+
 > +
 >  	gpiod_set_value(chip->rdwr_pin, 1);
 >  	gpiod_set_value(chip->rdwr_pin, 0);
@@ -174,55 +187,16 @@ Jonathan
 >  	return ret;
 >  }
 >  
-> @@ -136,6 +138,7 @@ static ssize_t ad7816_store_mode(struct device *dev,
->  	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
->  	struct ad7816_chip_info *chip = iio_priv(indio_dev);
->  
-> +	mutex_lock(&chip->io_lock);
->  	if (strcmp(buf, "full") == 0) {
->  		gpiod_set_value(chip->rdwr_pin, 1);
->  		chip->mode = AD7816_FULL;
-> @@ -143,6 +146,7 @@ static ssize_t ad7816_store_mode(struct device *dev,
->  		gpiod_set_value(chip->rdwr_pin, 0);
->  		chip->mode = AD7816_PD;
->  	}
-> +	mutex_unlock(&chip->io_lock);
->  
->  	return len;
->  }
-> @@ -200,7 +204,9 @@ static ssize_t ad7816_store_channel(struct device *dev,
->  		return -EINVAL;
->  	}
->  
-> +	mutex_lock(&chip->io_lock);
->  	chip->channel_id = data;
-> +	mutex_unlock(&chip->io_lock);
->  
->  	return len;
->  }
-> @@ -322,7 +328,9 @@ static inline ssize_t ad7816_set_oti(struct device *dev,
->  	if (ret)
->  		return -EIO;
->  
-> +	mutex_lock(&chip->io_lock);
->  	chip->oti_data[chip->channel_id] = data;
-> +	mutex_unlock(&chip->io_lock);
->  
->  	return len;
->  }
+
+...
+
 > @@ -363,6 +371,7 @@ static int ad7816_probe(struct spi_device *spi_dev)
 >  	dev_set_drvdata(&spi_dev->dev, indio_dev);
 >  
 >  	chip->spi_dev = spi_dev;
 > +	mutex_init(&chip->io_lock);
-For new mutex prefer 
-	ret = devm_mutex_init();
-	if (ret)
-		return ret;
 
-The advantage this brings for very particular log debugging cases isn't
-huge, but it is also not remotely costly to do this (in new code, 
-I don't want the churn of mass updates!)
+Prefer devm_mutex_init() instead.
 
 >  	for (i = 0; i <= AD7816_CS_MAX; i++)
 >  		chip->oti_data[i] = 203;

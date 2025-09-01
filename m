@@ -1,200 +1,515 @@
-Return-Path: <linux-iio+bounces-23586-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23587-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D9CB3EBAE
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 17:59:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63ADEB3EC37
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 18:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26FF71894526
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 15:58:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB251A87A35
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 16:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CE92D594D;
-	Mon,  1 Sep 2025 15:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312C62EC080;
+	Mon,  1 Sep 2025 16:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILl/M67h"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WE2n/3tQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D763F22DF95;
-	Mon,  1 Sep 2025 15:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3447532F763;
+	Mon,  1 Sep 2025 16:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756742278; cv=none; b=OTOh5mMTFVyO83578fEu6K5CHwjRPMtIM3slHB3ug471AwbfeiQ7R6mB4xJMTjyBfglOjKjhA5mjgG6I1QhFugOAhXqWXCOIA0nXlKu/EGIS0uaxvN34ioD8rKAWx9u1sJiDKQbDQKgD79w0b4lSEq945Q69GjMeEOjsfX5Xdn0=
+	t=1756744223; cv=none; b=YyXACvAiAtP2RD32ZiGHYQnMJCt6JQTuF8UcbXyhE4pFBklz8bT3l/q0bULLnboDGVJCJNcnFdxEPDp7x1ERNWrds1y2dyWhoi53rlhYe17A2vQqOWLepsxSj3Cxd1MT8qgd3zGT+BD5e/95kfCuSjtMdktULTcRAcmOfEh85Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756742278; c=relaxed/simple;
-	bh=UGkUSdVdIFBvsm+oD4Xzw82yx2nmQBmXIiJ9qIDdMcI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tllELRK1py0H26IbwaJ0c0WK7PUmSZasX8GO0x0iIg4LjBSgECMfk8TiVBzqsOLxc2pYYBW9PyaOJ/YUZv40hj+juSBx1/mWGnDBVr/Ya8jhvTV/0AsEwCTSfw0h/23KfqzHPlnVvfVO2JgTgUgOD6ePsSp0lGv59/wyxebS2Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILl/M67h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7849FC4CEF0;
-	Mon,  1 Sep 2025 15:57:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756742278;
-	bh=UGkUSdVdIFBvsm+oD4Xzw82yx2nmQBmXIiJ9qIDdMcI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ILl/M67hwB5Muz+QBpvfxKHuBKTUjnIzQtvNVY14X2WGd25HssXTwGgLwmbJ+ydGg
-	 SCKBiz5+Qi/gXgvzOc4xVqz9Uwfag2BnMxrxN782bRB3wfXtSBz+gRRf4q1uREOD3N
-	 sC0Cxjz4FebR28Yhn4W0oTbLjb3QWZi7r/Fx2rk68v3UxK7Mmm0QZf2Az/1JeRN+c6
-	 LlJL/KNz1jtLubwUu1fb5l2fBZkYXF7az3LSE1VbqSMICQfDTU5agCv7HQichuahRc
-	 IM7+qlbad0WOqojkPXahllZP5vOLi5mcFSLU80CwN3O8pLNxugp6ZP4XWK+ougl65b
-	 AHnh2gT9qd54Q==
-Date: Mon, 1 Sep 2025 16:57:51 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7124: fix sample rate for multi-channel use
-Message-ID: <20250901165751.305d0a68@jic23-huawei>
-In-Reply-To: <20250828-iio-adc-ad7124-fix-samp-freq-for-multi-channel-v1-1-f8d4c920a699@baylibre.com>
-References: <20250828-iio-adc-ad7124-fix-samp-freq-for-multi-channel-v1-1-f8d4c920a699@baylibre.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1756744223; c=relaxed/simple;
+	bh=5MbhYRR7ia2Bp43TUPq4uWWsrrgfE9gSOjX0JBp/ffc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qf1ys4w5pvSNXGBzv/EAMoLCg6BcYp6CY7ySOelnce9imyol4HbjbhxELfyGcgZAhe2HPSIsjx5V86chfteOsdYOy8PJiDoWmvVqg1gN0u2ff3UT5PixowE7fes6wlfNhoiOrUs56PzhIfEFS+AqG8yHq6MgW/lqwtiZmBniDcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WE2n/3tQ; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7723bf02181so1473542b3a.1;
+        Mon, 01 Sep 2025 09:30:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756744219; x=1757349019; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iQbwh9gW/KCMF3I3nRMdjid1pOiXqMevll3f8gBU79M=;
+        b=WE2n/3tQfxN6OouIxb+FPBLzEwo3VoXTl9kyEqzZQtJV5KBrzKNs8C+Tk7mcMaYwN3
+         Q1DCNjvW4FyC+WW3t332oSS9e8h5+fv6xOMdhDYDxa/chpw6QFFVg2DDwpHOrJBSwgq4
+         avHzGcI6SWCWjYuVEs+WXi64Yee78dfj8IMjjxls/dBFc+SxL/1y6j5JQ/BwLXyKnWNn
+         AGCirrFhAT5dk3dgmR1s8h7PlBosvmEJeyjYv0ip2IYq0p3giqYyo/doNy74Qy1Gul8R
+         tlvXOANbNhJFus4Y7PC1bJ3t4w6FhHoDeyMjJbF1QdgqHou7HpvrQsgLKkuWqEoKuBEK
+         Y+TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756744219; x=1757349019;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iQbwh9gW/KCMF3I3nRMdjid1pOiXqMevll3f8gBU79M=;
+        b=ED3vMJ9OC7yjkHR+msHRowvArV0/Ks086d8VJWwJho6E/ZROXdC6uNAy825mF5HN/p
+         aK7EvJH4w4YQquMaOnJ4NnicBFoaHIX7vmNHsAIFGawTMSANsqBChWju9RdfipicTgdx
+         9ZpAZ2LErcGnlByR0NQYV1gLpx0u3PArDkBJTO4k09JzOk3rOu8UbjzhufREXAqX1A9/
+         qAdmlkVGKbmnsNILi2uZCnIvQet02WLUe66xBkHyyy/mNjRFyX7a0Q8DnoMbsg/8gFjO
+         MJG1HmfoUtLiU9wvkJIm1UwX8umZSrf50esac9YemURyEmvqM49uCllGm22rqH/Pn89C
+         Jusw==
+X-Gm-Message-State: AOJu0Yx8fwESsLn/wABvqaxVWYpZ1UMn/FJl3xG7HU6b9sv9GvBucmvj
+	k3wrI7XK90gTpOAiQRWUlqF29zyGuw1JiTYLHHrDqmn8Q5AUCepyrsJpqCfJjQ==
+X-Gm-Gg: ASbGncu2iAVzvVP/3F9euHQKXeFnqLLQX++/n9N9sK4EV7oB+TTCSjGUCLxYzcwRSy8
+	QZ3Tms6ILqAQpiXq5Xa79ZuosQymWMv3dZoz72lUezp9ihGbDR61Gbm235Lr+2zUyZxfZugSuj7
+	fQFSpU5IJEg6BJmPP/sdMLRuVZykCUIdNZis0NCROGZbsVqjZUy6OYh1WP5aps7rTUifj+flLDw
+	ESXekVfS95gh39AH8L7z8+lpr815k9AR9x60ZaxK+h3QbuKfDSfD5MuUVWsCD3k5K6IfRc5annN
+	JL+EIod3It6KxxG9Cnq5oBPqXJebu263r9lPZfVdV7xxBOmxspjNt4+BbF5HCH+ZR7DbT0lNw54
+	IdykXZwR1/1y7EzFMRjUTZtQIfaIJONzfAbJQibpZQcFj1N8ISAA=
+X-Google-Smtp-Source: AGHT+IF9shMssr20uteXd5yIgsFVl8e6wjoDha0bCciLIbcU7tpP3dq9+ctu/AhveciwjTC5ez1/Mw==
+X-Received: by 2002:a05:6a20:72a4:b0:243:d121:67c9 with SMTP id adf61e73a8af0-243d6f37d74mr13520229637.46.1756744218741;
+        Mon, 01 Sep 2025 09:30:18 -0700 (PDT)
+Received: from localhost ([77.111.118.146])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-77241f08b45sm7234480b3a.22.2025.09.01.09.30.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Sep 2025 09:30:18 -0700 (PDT)
+From: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
+To: linux-iio@vger.kernel.org,
+	linux-staging@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	sonic.zhang@analog.com,
+	vapier@gentoo.org,
+	dan.carpenter@linaro.org,
+	Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
+Subject: [PATCH v4] staging: iio: adc: ad7816: fix race condition in SPI operations
+Date: Mon,  1 Sep 2025 19:33:10 +0330
+Message-ID: <20250901160310.399-1-moahmmad.hosseinii@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 28 Aug 2025 11:42:28 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+The ad7816 driver lacks proper synchronization around SPI operations
+and device state access. Concurrent access from multiple threads can
+lead to data corruption and inconsistent device state.
 
-> Change how the FS[10:0] field of the FILTER register is calculated to
-> get consistent sample rates when only one channel is enabled vs when
-> multiple channels are enabled in a buffered read.
-> 
-> By default, the AD7124 allows larger sampling frequencies when only one
-> channel is enabled. It assumes that you will discard the first sample or
-> so to allow for settling time and then no additional settling time is
-> needed between samples because there is no multiplexing due to only one
-> channel being enabled. The conversion formula to convert between the
-> sampling frequency and the FS[10:0] field is:
-> 
->     fADC = fCLK / (FS[10:0] x 32)
-> 
-> which is what the driver has been using.
-> 
-> On the other hand, when multiple channels are enabled, there is
-> additional settling time needed when switching between channels so the
-> calculation to convert between becomes:
-> 
->     fADC = fCLK / (FS[10:0] x 32 x (4 + AVG - 1))
-> 
-> where AVG depends on the filter type selected and the power mode.
-> 
-> The FILTER register has a SINGLE_CYCLE bit that can be set to force the
-> single channel case to use the same timing as the multi-channel case.
-> 
-> Before this change, the first formula was always used, so if all of the
-> in_voltageY_sampling_frequency attributes were set to 10 Hz, then doing
-> a buffered read with 1 channel enabled would result in the requested
-> sampling frequency of 10 Hz. But when more than one channel was
-> enabled, the actual sampling frequency would be 2.5 Hz per channel,
-> which is 1/4 of the requested frequency.
-> 
-> After this change, the SINGLE_CYCLE flag is now always enabled and the
-> multi-channel formula is now always used. This causes the sampling
-> frequency to be consistent regardless of the number of channels enabled.
-> 
-> Technically, introducing the avg parameter is not needed at this time
-> since we currently only support a single filter mode which always has an
-> AVG value of 1. But it helps to show where the factor comes from in the
-> datasheet and will be used in the future when supporting additional
-> filter types.
-> 
-> The AD7124_FILTER_FS define is moved while we are touching this to
-> keep the bit fields in descending order to be consistent with the rest
-> of the file.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-> This is one of those unfortunate cases where we are fixing a bug but we
-> risk breaking userspace that may be depending on the buggy behavior.
-> 
-> I intentionally didn't include a Fixes: tag for this reason.
-> 
-> Given some of the other shortcomings of this driver, like using an
-> integer IIO_CHAN_INFO_SAMP_FREQ value when it really needs to allow a
-> fractional values, it makes me hopeful that no one is caring too much
-> about the exact value of the sampling frequency. So I'm more willing
-> than I would normally be to take a risk on making this change.
-> 
-> I also have a plan to resolve things if we do find we broke someone and
-> need to revert the change. We have a recent devicetree fix [1] for these
-> chips that would allow us to detect "new" users using the correct DT
-> bindings and "old" users using the buggy bindings. So we could use this
-> as a way to also enable the old buggy sampling frequency behavior only
-> for "old" users while allowing "new" users to get the correct behavior.
+The driver performs sequences of GPIO pin manipulations followed by
+SPI transactions without any locking. Device state variables (mode,
+channel_id, oti_data) are also accessed without synchronization.
 
-I'm not convinced this is a good plan as it may avoid regressions on a
-particular board, but they are going to get unexpected changes if say
-they order a new board of same type that has a newer DT.
+This bug was found through manual code review using static analysis
+techniques. The review focused on identifying unsynchronized access
+patterns to shared resources. Key indicators were:
+- GPIO pin state changes followed by SPI operations without atomicity
+- Shared state variables accessed from multiple sysfs entry points
+- No mutex or spinlock protection around sections
+- Potential for interleaved execution in multi-threaded environments
 
-Anyway hopefully we won't need it!
+The review methodology involved tracing data flow paths and identifying
+points where concurrent access could corrupt device state or SPI
+communication sequences.
 
-> 
-> [1] https://lore.kernel.org/linux-iio/20250825-iio-adc-ad7124-proper-clock-support-v2-0-4dcff9db6b35@baylibre.com/
+Add io_lock mutex to protect:
+- SPI transactions and GPIO sequences in read/write functions
+- Device state variables in sysfs show/store functions
+- Concurrent access to chip configuration
 
-Just one comment on the comment.
+This prevents race conditions when multiple processes access the device
+simultaneously through sysfs attributes or device file operations.
 
-I'd like some more eyes on this though as whilst it seems reasonable
-the whole different modes bit changing timings is not particularly obvious.
+Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
 
-> ---
->  drivers/iio/adc/ad7124.c | 26 ++++++++++++++++++--------
->  1 file changed, 18 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> index 3fc24f5fffc8f200c8656cb97f9e7f80546f688b..d75ef4d5de233c2a548c732b36440d0d82c86f34 100644
-> --- a/drivers/iio/adc/ad7124.c
-> +++ b/drivers/iio/adc/ad7124.c
-> @@ -84,10 +84,11 @@
->  #define AD7124_CONFIG_PGA		GENMASK(2, 0)
->  
->  /* AD7124_FILTER_X */
-> -#define AD7124_FILTER_FS		GENMASK(10, 0)
->  #define AD7124_FILTER_FILTER		GENMASK(23, 21)
->  #define AD7124_FILTER_FILTER_SINC4		0
->  #define AD7124_FILTER_FILTER_SINC3		2
-> +#define AD7124_FILTER_SINGLE_CYCLE	BIT(16)
-> +#define AD7124_FILTER_FS		GENMASK(10, 0)
->  
->  #define AD7124_MAX_CONFIGS	8
->  #define AD7124_MAX_CHANNELS	16
-> @@ -250,9 +251,10 @@ static int ad7124_set_mode(struct ad_sigma_delta *sd,
->  	return ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL, 2, st->adc_control);
->  }
->  
-> -static void ad7124_set_channel_odr(struct ad7124_state *st, unsigned int channel, unsigned int odr)
-> +static void ad7124_set_channel_odr(struct ad7124_state *st, unsigned int channel,
-> +				   unsigned int odr, unsigned int avg)
->  {
-> -	unsigned int fclk, odr_sel_bits;
-> +	unsigned int fclk, factor, odr_sel_bits;
->  
->  	fclk = clk_get_rate(st->mclk);
->  	/*
-> @@ -261,8 +263,12 @@ static void ad7124_set_channel_odr(struct ad7124_state *st, unsigned int channel
->  	 * fCLK is the master clock frequency
->  	 * FS[10:0] are the bits in the filter register
->  	 * FS[10:0] can have a value from 1 to 2047
-> +	 * When multiple channels in the sequencer or the SINGLE_CYCLE bit is
-This sentence doesn't read. Maybe something with a few more words like.
+Signed-off-by: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
 
-	 * When multiple channels are enabled in the sequencer, the
-	 * SINGLE_CYCLE bit is set or when certain filter modes are enabled,...
+---
+Changes in v4:
+- Added locking to reader functions (show_mode, show_channel, show_oti)
+- Fixed incomplete reader/writer synchronization that could still race
+- Ensured all device state access is properly synchronized
+- Replace sprintf() with sysfs_emit() in all sysfs show functions
+- Use sysfs_streq() instead of strcmp() for proper input parsing
+- Implement locked/unlocked SPI function variants to prevent deadlock
+- Use channel snapshot to ensure atomic read operations
+- Fix sizeof() usage in spi_read to be more explicit (sizeof(buf))
+- Make oti write operations atomic (SPI write + shadow update under lock)
+- Fix race condition in ad7816_set_oti() by taking channel_id snapshot under lock
+- Fix return type consistency (ssize_t vs int) in show functions
+- Use chip->id instead of string comparison for channel validation
+- Add explicit cast for narrowing assignment
+- Add default case for unknown chip ID validation
+- Use cansleep GPIO variants in sleepable context
+- Improve lock documentation for protected resources
+---
+ drivers/staging/iio/adc/ad7816.c | 210 ++++++++++++++++++++-----------
+ 1 file changed, 138 insertions(+), 72 deletions(-)
 
-> +	 * or when certain filter modes are enabled, there is an extra factor
-> +	 * of (4 + AVG - 1) to allow for settling time.
->  	 */
-> -	odr_sel_bits = DIV_ROUND_CLOSEST(fclk, odr * 32);
-> +	factor = 32 * (4 + avg - 1);
-> +	odr_sel_bits = DIV_ROUND_CLOSEST(fclk, odr * factor);
-
+diff --git a/drivers/staging/iio/adc/ad7816.c b/drivers/staging/iio/adc/ad7816.c
+index 4774df778de9..49a67e1b76f6 100644
+--- a/drivers/staging/iio/adc/ad7816.c
++++ b/drivers/staging/iio/adc/ad7816.c
+@@ -50,6 +50,15 @@ struct ad7816_chip_info {
+ 	u8  oti_data[AD7816_CS_MAX + 1];
+ 	u8  channel_id;	/* 0 always be temperature */
+ 	u8  mode;
++  /*
++   * Protects:
++   *  - SPI transactions
++   *  - GPIO toggling
++   *  - channel_id
++   *  - mode
++   *  - oti_data
++   */
++	struct mutex io_lock;
+ };
+ 
+ enum ad7816_type {
+@@ -59,60 +68,71 @@ enum ad7816_type {
+ };
+ 
+ /*
+- * ad7816 data access by SPI
++ * ad7816 data access by SPI - locked versions assume io_lock is held
+  */
+-static int ad7816_spi_read(struct ad7816_chip_info *chip, u16 *data)
++static int ad7816_spi_read_locked(struct ad7816_chip_info *chip, u8 channel, u16 *data)
+ {
+ 	struct spi_device *spi_dev = chip->spi_dev;
+ 	int ret;
+ 	__be16 buf;
+ 
+-	gpiod_set_value(chip->rdwr_pin, 1);
+-	gpiod_set_value(chip->rdwr_pin, 0);
+-	ret = spi_write(spi_dev, &chip->channel_id, sizeof(chip->channel_id));
+-	if (ret < 0) {
+-		dev_err(&spi_dev->dev, "SPI channel setting error\n");
++	gpiod_set_value_cansleep(chip->rdwr_pin, 1);
++	gpiod_set_value_cansleep(chip->rdwr_pin, 0);
++	/* AD7816_CS_MASK: broadcast/all-channels per hw programming model */
++	ret = spi_write(spi_dev, &channel, sizeof(channel));
++	if (ret < 0)
+ 		return ret;
+-	}
+-	gpiod_set_value(chip->rdwr_pin, 1);
++	gpiod_set_value_cansleep(chip->rdwr_pin, 1);
+ 
+ 	if (chip->mode == AD7816_PD) { /* operating mode 2 */
+-		gpiod_set_value(chip->convert_pin, 1);
+-		gpiod_set_value(chip->convert_pin, 0);
++		gpiod_set_value_cansleep(chip->convert_pin, 1);
++		gpiod_set_value_cansleep(chip->convert_pin, 0);
+ 	} else { /* operating mode 1 */
+-		gpiod_set_value(chip->convert_pin, 0);
+-		gpiod_set_value(chip->convert_pin, 1);
++		gpiod_set_value_cansleep(chip->convert_pin, 0);
++		gpiod_set_value_cansleep(chip->convert_pin, 1);
+ 	}
+ 
+ 	if (chip->id == ID_AD7816 || chip->id == ID_AD7817) {
+-		while (gpiod_get_value(chip->busy_pin))
++		while (gpiod_get_value_cansleep(chip->busy_pin))
+ 			cpu_relax();
+ 	}
+ 
+-	gpiod_set_value(chip->rdwr_pin, 0);
+-	gpiod_set_value(chip->rdwr_pin, 1);
+-	ret = spi_read(spi_dev, &buf, sizeof(*data));
+-	if (ret < 0) {
+-		dev_err(&spi_dev->dev, "SPI data read error\n");
++	gpiod_set_value_cansleep(chip->rdwr_pin, 0);
++	gpiod_set_value_cansleep(chip->rdwr_pin, 1);
++	ret = spi_read(spi_dev, &buf, sizeof(buf));
++	if (ret < 0)
+ 		return ret;
+-	}
+ 
+ 	*data = be16_to_cpu(buf);
++	return 0;
++}
+ 
++static int __maybe_unused ad7816_spi_read(struct ad7816_chip_info *chip, u8 channel, u16 *data)
++{
++	int ret;
++
++	mutex_lock(&chip->io_lock);
++	ret = ad7816_spi_read_locked(chip, channel, data);
++	mutex_unlock(&chip->io_lock);
+ 	return ret;
+ }
+ 
+-static int ad7816_spi_write(struct ad7816_chip_info *chip, u8 data)
++static int ad7816_spi_write_locked(struct ad7816_chip_info *chip, u8 data)
+ {
+ 	struct spi_device *spi_dev = chip->spi_dev;
+-	int ret;
+ 
+-	gpiod_set_value(chip->rdwr_pin, 1);
+-	gpiod_set_value(chip->rdwr_pin, 0);
+-	ret = spi_write(spi_dev, &data, sizeof(data));
+-	if (ret < 0)
+-		dev_err(&spi_dev->dev, "SPI oti data write error\n");
++	gpiod_set_value_cansleep(chip->rdwr_pin, 1);
++	gpiod_set_value_cansleep(chip->rdwr_pin, 0);
++	return spi_write(spi_dev, &data, sizeof(data));
++}
++
++static int __maybe_unused ad7816_spi_write(struct ad7816_chip_info *chip, u8 data)
++{
++	int ret;
+ 
++	mutex_lock(&chip->io_lock);
++	ret = ad7816_spi_write_locked(chip, data);
++	mutex_unlock(&chip->io_lock);
+ 	return ret;
+ }
+ 
+@@ -122,10 +142,13 @@ static ssize_t ad7816_show_mode(struct device *dev,
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
++	ssize_t ret;
++
++	mutex_lock(&chip->io_lock);
++	ret = sysfs_emit(buf, "%s\n", chip->mode ? "power-save" : "full");
++	mutex_unlock(&chip->io_lock);
+ 
+-	if (chip->mode)
+-		return sprintf(buf, "power-save\n");
+-	return sprintf(buf, "full\n");
++	return ret;
+ }
+ 
+ static ssize_t ad7816_store_mode(struct device *dev,
+@@ -136,13 +159,18 @@ static ssize_t ad7816_store_mode(struct device *dev,
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
+ 
+-	if (strcmp(buf, "full") == 0) {
+-		gpiod_set_value(chip->rdwr_pin, 1);
++	mutex_lock(&chip->io_lock);
++	if (sysfs_streq(buf, "full")) {
++		gpiod_set_value_cansleep(chip->rdwr_pin, 1);
+ 		chip->mode = AD7816_FULL;
+-	} else {
+-		gpiod_set_value(chip->rdwr_pin, 0);
++	} else if (sysfs_streq(buf, "power-save")) {
++		gpiod_set_value_cansleep(chip->rdwr_pin, 0);
+ 		chip->mode = AD7816_PD;
++	} else {
++		mutex_unlock(&chip->io_lock);
++		return -EINVAL;
+ 	}
++	mutex_unlock(&chip->io_lock);
+ 
+ 	return len;
+ }
+@@ -156,7 +184,7 @@ static ssize_t ad7816_show_available_modes(struct device *dev,
+ 					   struct device_attribute *attr,
+ 					   char *buf)
+ {
+-	return sprintf(buf, "full\npower-save\n");
++	return sysfs_emit(buf, "full\npower-save\n");
+ }
+ 
+ static IIO_DEVICE_ATTR(available_modes, 0444, ad7816_show_available_modes,
+@@ -168,8 +196,13 @@ static ssize_t ad7816_show_channel(struct device *dev,
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
++	ssize_t ret;
+ 
+-	return sprintf(buf, "%d\n", chip->channel_id);
++	mutex_lock(&chip->io_lock);
++	ret = sysfs_emit(buf, "%u\n", chip->channel_id);
++	mutex_unlock(&chip->io_lock);
++
++	return ret;
+ }
+ 
+ static ssize_t ad7816_store_channel(struct device *dev,
+@@ -190,17 +223,34 @@ static ssize_t ad7816_store_channel(struct device *dev,
+ 		dev_err(&chip->spi_dev->dev, "Invalid channel id %lu for %s.\n",
+ 			data, indio_dev->name);
+ 		return -EINVAL;
+-	} else if (strcmp(indio_dev->name, "ad7818") == 0 && data > 1) {
+-		dev_err(&chip->spi_dev->dev,
+-			"Invalid channel id %lu for ad7818.\n", data);
+-		return -EINVAL;
+-	} else if (strcmp(indio_dev->name, "ad7816") == 0 && data > 0) {
+-		dev_err(&chip->spi_dev->dev,
+-			"Invalid channel id %lu for ad7816.\n", data);
++	}
++
++	switch (chip->id) {
++	case ID_AD7816:
++		if (data > 0) {
++			dev_err(&chip->spi_dev->dev,
++				"Invalid channel id %lu for ad7816.\n", data);
++			return -EINVAL;
++		}
++		break;
++	case ID_AD7818:
++		if (data > 1) {
++			dev_err(&chip->spi_dev->dev,
++				"Invalid channel id %lu for ad7818.\n", data);
++			return -EINVAL;
++		}
++		break;
++	case ID_AD7817:
++		/* AD7817 allows all channels up to AD7816_CS_MAX */
++		break;
++	default:
++		dev_err(&chip->spi_dev->dev, "Unknown chip id %lu\n", chip->id);
+ 		return -EINVAL;
+ 	}
+ 
+-	chip->channel_id = data;
++	mutex_lock(&chip->io_lock);
++	chip->channel_id = (u8)data;
++	mutex_unlock(&chip->io_lock);
+ 
+ 	return len;
+ }
+@@ -219,21 +269,25 @@ static ssize_t ad7816_show_value(struct device *dev,
+ 	u16 data;
+ 	s8 value;
+ 	int ret;
++	u8 ch;
+ 
+-	ret = ad7816_spi_read(chip, &data);
++	mutex_lock(&chip->io_lock);
++	ch = chip->channel_id;                                   /* snapshot */
++	ret = ad7816_spi_read_locked(chip, ch, &data);           /* same lock */
++	mutex_unlock(&chip->io_lock);
+ 	if (ret)
+-		return -EIO;
++		return ret;
+ 
+ 	data >>= AD7816_VALUE_OFFSET;
+ 
+-	if (chip->channel_id == 0) {
++	if (ch == 0) {
+ 		value = (s8)((data >> AD7816_TEMP_FLOAT_OFFSET) - 103);
+ 		data &= AD7816_TEMP_FLOAT_MASK;
+ 		if (value < 0)
+ 			data = BIT(AD7816_TEMP_FLOAT_OFFSET) - data;
+-		return sprintf(buf, "%d.%.2d\n", value, data * 25);
++		return sysfs_emit(buf, "%d.%.2d\n", value, data * 25);
+ 	}
+-	return sprintf(buf, "%u\n", data);
++	return sysfs_emit(buf, "%u\n", data);
+ }
+ 
+ static IIO_DEVICE_ATTR(value, 0444, ad7816_show_value, NULL, 0);
+@@ -273,58 +327,69 @@ static ssize_t ad7816_show_oti(struct device *dev,
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
+ 	int value;
++	ssize_t ret;
+ 
++	mutex_lock(&chip->io_lock);
+ 	if (chip->channel_id > AD7816_CS_MAX) {
+-		dev_err(dev, "Invalid oti channel id %d.\n", chip->channel_id);
++		dev_err(dev, "Invalid oti channel id %u.\n", chip->channel_id);
++		mutex_unlock(&chip->io_lock);
+ 		return -EINVAL;
+ 	} else if (chip->channel_id == 0) {
+ 		value = AD7816_BOUND_VALUE_MIN +
+-			(chip->oti_data[chip->channel_id] -
+-			AD7816_BOUND_VALUE_BASE);
+-		return sprintf(buf, "%d\n", value);
++			(chip->oti_data[chip->channel_id] - AD7816_BOUND_VALUE_BASE);
++		ret = sysfs_emit(buf, "%d\n", value);
++	} else {
++		ret = sysfs_emit(buf, "%u\n", chip->oti_data[chip->channel_id]);
+ 	}
+-	return sprintf(buf, "%u\n", chip->oti_data[chip->channel_id]);
++	mutex_unlock(&chip->io_lock);
++
++	return ret;
+ }
+ 
+-static inline ssize_t ad7816_set_oti(struct device *dev,
+-				     struct device_attribute *attr,
+-				     const char *buf,
+-				     size_t len)
++static ssize_t ad7816_set_oti(struct device *dev,
++			      struct device_attribute *attr,
++			      const char *buf,
++			      size_t len)
+ {
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
+ 	long value;
+-	u8 data;
++	u8 data, ch;
+ 	int ret;
+ 
+ 	ret = kstrtol(buf, 10, &value);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (chip->channel_id > AD7816_CS_MAX) {
+-		dev_err(dev, "Invalid oti channel id %d.\n", chip->channel_id);
++	mutex_lock(&chip->io_lock);
++	ch = chip->channel_id;
++
++	if (ch > AD7816_CS_MAX) {
++		dev_err(dev, "Invalid oti channel id %u.\n", ch);
++		mutex_unlock(&chip->io_lock);
+ 		return -EINVAL;
+-	} else if (chip->channel_id == 0) {
++	} else if (ch == 0) {
+ 		if (value < AD7816_BOUND_VALUE_MIN ||
+-		    value > AD7816_BOUND_VALUE_MAX)
++		    value > AD7816_BOUND_VALUE_MAX) {
++			mutex_unlock(&chip->io_lock);
+ 			return -EINVAL;
+-
++		}
+ 		data = (u8)(value - AD7816_BOUND_VALUE_MIN +
+ 			AD7816_BOUND_VALUE_BASE);
+ 	} else {
+-		if (value < AD7816_BOUND_VALUE_BASE || value > 255)
++		if (value < AD7816_BOUND_VALUE_BASE || value > 255) {
++			mutex_unlock(&chip->io_lock);
+ 			return -EINVAL;
+-
++		}
+ 		data = (u8)value;
+ 	}
+ 
+-	ret = ad7816_spi_write(chip, data);
+-	if (ret)
+-		return -EIO;
++	ret = ad7816_spi_write_locked(chip, data);
++	if (!ret)
++		chip->oti_data[ch] = data;
+ 
+-	chip->oti_data[chip->channel_id] = data;
+-
+-	return len;
++	mutex_unlock(&chip->io_lock);
++	return ret ? ret : len;
+ }
+ 
+ static IIO_DEVICE_ATTR(oti, 0644,
+@@ -363,6 +428,7 @@ static int ad7816_probe(struct spi_device *spi_dev)
+ 	dev_set_drvdata(&spi_dev->dev, indio_dev);
+ 
+ 	chip->spi_dev = spi_dev;
++	mutex_init(&chip->io_lock);
+ 	for (i = 0; i <= AD7816_CS_MAX; i++)
+ 		chip->oti_data[i] = 203;
+ 
+-- 
+2.43.0
 
 

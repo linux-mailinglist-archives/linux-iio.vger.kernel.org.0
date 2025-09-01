@@ -1,314 +1,372 @@
-Return-Path: <linux-iio+bounces-23608-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23609-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAEFBB3EE80
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 21:41:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6055B3EE83
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 21:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A4CA4847FE
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 19:41:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E922008B8
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 19:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23395324B30;
-	Mon,  1 Sep 2025 19:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C8F32ED4A;
+	Mon,  1 Sep 2025 19:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DZBk+tWg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0iYBfwv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FF419C560;
-	Mon,  1 Sep 2025 19:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377D619C560;
+	Mon,  1 Sep 2025 19:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756755658; cv=none; b=VgvXVsCXrRFrGiNUui9kiirnfvuLaOqPe2LpWk+MMOi5Lxlvd//MlOEn6xy5WbRA4LItdIRi/q+UfFGXHsYGIZiyiD8g9szvw4fa59o56XwqOYe7myesVnw/+6muXD/yexjCt5IirE4KsX35p1QbdRvmjv0Has8MFIJdmWJT+fE=
+	t=1756755665; cv=none; b=AG840toZpie8YnK3Gf/d9h2O9+D3KfjBgvW03GrSGW2zfLisicz4aBO5eWUTuZJkHO0ckHzNK4w8eN7saNKpDp+XcGV+H1TaXC9bRKX09feW4WEdu+jmMbjHGZ7a4ShtMtNIsPaBqRZGIAABNyDOyjPOJnJaffbyWkNkMuBjngM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756755658; c=relaxed/simple;
-	bh=ocPt+1SEyi2oxhty1jMpyx8kNNmUVJy3vIvSzgAdcnM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sUInTqeOaaIrvc/FCu7/rltuG5Yyc3lJ4oQ+uXFr04I0v3gx3/2o5P77+VC0rYSQNfJQoIIth4eFe3xhzJFK6xL8wFEGWxIdos7A1z2nDoW6H6Mvv/6Jx/cssaLNZgib9bYU8PhCx8swISSK4vkRsm2JUsC981WmEv0LxWHs7QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DZBk+tWg; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b4c1fc383eeso3124142a12.1;
-        Mon, 01 Sep 2025 12:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756755656; x=1757360456; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qa/cEbiE4sQZ3vUxdQQl0nT9RvVdeZXT1WSTRxsefWA=;
-        b=DZBk+tWgfuUXKGODV7/7Oe1q3tURTcnBnkb8wh1nEMx/JfZUAqJMH5ETJOKDaJwOA1
-         El3KlUMB7ruwMdLbFC/S0CkZLCaWYrgpkODgnqhNj7+YTEYLLhMFx6ubQ/9aNcjYvAfw
-         2ulWKvgbiWf6HHRVT7qlegoastY4n37tzNl9WReB4POVa8nTK3ouP9QtKVAaG2F++i83
-         omPPWWfOhwi4UT/jkJaIm82M3jTfTVelCc+G9TjdGc2hP/6paQ+WHpN069ah1Q/Kxi0G
-         mwrzINW7I5kbJJQQ8Ozws1VTcLgl8FU4CzdUNDQONQsdEBLmUJQuGsbuXWVVP5ac354U
-         QG2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756755656; x=1757360456;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qa/cEbiE4sQZ3vUxdQQl0nT9RvVdeZXT1WSTRxsefWA=;
-        b=qN3AtB1ImmviVYFxiI43scRsIAggPCqUMojEBgJh6Op4xo03XNRa4urtPQOkfG4/1d
-         dk+YGlCaj8RYXwe0BrMFgXc8yiAjkumVl3AnLgJ3/xP3/qPot79bvQCxktQfYdzYqb9Z
-         wyn1yTH9q61C7UdQFaXAUjA7MPqD/TZdojZb6uCXXlTYPh1v14vI2EW0PCxUKK/rW/z2
-         B+wtEngAMe/bsEy7qGpEAyhlNzFSID97VWTjEmX3r0NEwfJuXc4QdjjEtLAIOkGjHxzq
-         RvF7vJgZo4qQ901GXW98TxbPKk9IVNMGKz++lkmcMq0e5UyeSuNCDe2xwXuYgTQpSs+U
-         P/mA==
-X-Gm-Message-State: AOJu0YwLRRRDVZKjo/iHDaiayGqx13pA3PGrSAqKZeONHvmT1NpSogUP
-	8V3MRmovLnYWkM+OPVKwmHBW+1VFOWq2FR1vyUHkxZyVMl7aFJ/2Atcqu7361g==
-X-Gm-Gg: ASbGncvU4qAlcwnEHNJ66F9jIuf1MxrAgKiil/oW1/HKCEAShYYceu9p++6NYYHDS7O
-	J9k1Dvbn7D76mOxZKP/32vBqMNnZZp5TlRe66iqf/g/CG9QaHeAnrh1e02AqTKkK5hLJCgBXvX0
-	B6BaR7z3kebHUV/9+x71faZ4kzQ9nz9u71V0Q2MgfbOGINc/3B3tUcifMRJ7bt1ViNbeaijU20z
-	YtThnO3Vvn3zJ4sltxRQNtqHP+0Oln/RQm516E9eIjeHYRNP5h9WcQgBFazH8tc43FiZ3P4S0EY
-	gb0zlzirO3x4nS4rDZZqBTxEyVb058+Z7E1oH9jGpXQHtaWxnDspTQGxnGX7CSkPIrJyd/ThkLK
-	BwnnX44MpnC8kfgLwYE/w0t6NVTGM8yRtV+GJCr+k
-X-Google-Smtp-Source: AGHT+IFCgaPwB1AZFWs6YC+/QsEhL0kuUZgRKMZPd5F6euzOV99R5UJHdxfe/uF0njZacaSk+zP97g==
-X-Received: by 2002:a17:903:2385:b0:246:80ef:87fc with SMTP id d9443c01a7336-24944af38c7mr101747845ad.45.1756755656416;
-        Mon, 01 Sep 2025 12:40:56 -0700 (PDT)
-Received: from localhost ([77.111.118.146])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-24905da470dsm112384625ad.89.2025.09.01.12.40.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 12:40:55 -0700 (PDT)
-From: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
-To: linux-iio@vger.kernel.org,
-	linux-staging@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	sonic.zhang@analog.com,
-	vapier@gentoo.org,
-	dan.carpenter@linaro.org,
-	Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
-Subject: [PATCH v5] staging: iio: adc: ad7816: fix race condition in SPI operations
-Date: Mon,  1 Sep 2025 23:10:43 +0330
-Message-ID: <20250901194043.20366-1-moahmmad.hosseinii@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1756755665; c=relaxed/simple;
+	bh=wOOOkXIryu8rOSbBi5Cjd3s24L10n/BjeLfojfJtkuw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ims8Es1H3kzF5tYCc/K0LmW6zho5dT2yPNvpRmuvyj2e67hePjFmzD0RLBeTY7tiaHwJmbFPWIm55G7vPWgnwFsEM7hP7zwnWviEj1fRiNbSoNLyS0OVskWLXHCLHrAl8D+MSlbwMapjG4gBoLmpHRtmMdG/2+vmHHDgfMDX0wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0iYBfwv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978E8C4CEF5;
+	Mon,  1 Sep 2025 19:41:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756755664;
+	bh=wOOOkXIryu8rOSbBi5Cjd3s24L10n/BjeLfojfJtkuw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=f0iYBfwvkiq5BPWCcodZSg0DRF130UuefySDD90q7vbit8anK7a0jXVz2IgTM4Of8
+	 PcaUO8zjyW27vwe5oNL5tYqUYGBMxq9fB8WMqxzt97eHnm4Rm5smuuowufGtZ+AdYW
+	 ZdOvFvBWgCS+E2a2ruoi2hI67rFkEzzOFiTadEJOPbVAdjd8SZ3ifICkJDLjgWLoIR
+	 j4G+bR5qgUZKCYbeEpSW5LBWmWBTjc2QPwxFLzQVMLyLt977LI7Ivk6wQ5eND8qa82
+	 uUJayNPZCnMc0DUoEP72og8MtczWD/j91T6hGZ4JMmGHGQf7R3boGVjTihHGzrc8GB
+	 EA/Do2w5WpQzA==
+Date: Mon, 1 Sep 2025 20:40:55 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Bharadwaj Raju <bharadwaj.raju777@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, shuah@kernel.org,
+ linux-kernel-mentees@lists.linux.dev
+Subject: Re: [PATCH 5/5] iio: imu: icm20948: add runtime power management
+ support
+Message-ID: <20250901204055.106e6f42@jic23-huawei>
+In-Reply-To: <20250831-icm20948-v1-5-1fe560a38de4@gmail.com>
+References: <20250831-icm20948-v1-0-1fe560a38de4@gmail.com>
+	<20250831-icm20948-v1-5-1fe560a38de4@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The ad7816 driver lacks proper synchronization around SPI operations
-and device state access. Concurrent access from multiple threads can
-lead to data corruption and inconsistent device state.
+On Sun, 31 Aug 2025 00:12:49 +0530
+Bharadwaj Raju <bharadwaj.raju777@gmail.com> wrote:
 
-The driver performs sequences of GPIO pin manipulations followed by
-SPI transactions without any locking. Device state variables (mode,
-channel_id, oti_data) are also accessed without synchronization.
+> Implement runtime power management support for the ICM20948
+> sensor. The device autosuspends after 2 seconds of idle time.
 
-This bug was found through manual code review using static analysis
-techniques. The review focused on identifying unsynchronized access
-patterns to shared resources. Key indicators were:
-- GPIO pin state changes followed by SPI operations without atomicity
-- Shared state variables accessed from multiple sysfs entry points
-- No mutex or spinlock protection around sections
-- Potential for interleaved execution in multi-threaded environments
+This is an unusual feature to bring in at this point in developing
+a driver, but fair enough if you want to it doesn't hurt!
 
-The review methodology involved tracing data flow paths and identifying
-points where concurrent access could corrupt device state or SPI
-communication sequences.
+Anyhow, various comments inline and requests for more information.
 
-Add io_lock mutex to protect:
-- SPI transactions and GPIO sequences in read/write functions
-- Device state variables in sysfs show/store functions
-- Concurrent access to chip configuration
+Jonathan
 
-This prevents race conditions when multiple processes access the device
-simultaneously through sysfs attributes or device file operations.
 
-Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
+> 
+> Signed-off-by: Bharadwaj Raju <bharadwaj.raju777@gmail.com>
+> ---
+>  drivers/iio/imu/inv_icm20948/Makefile             |  1 +
+>  drivers/iio/imu/inv_icm20948/inv_icm20948.h       |  7 +++
+>  drivers/iio/imu/inv_icm20948/inv_icm20948_core.c  |  3 +-
+>  drivers/iio/imu/inv_icm20948/inv_icm20948_gyro.c  | 28 ++++++---
+>  drivers/iio/imu/inv_icm20948/inv_icm20948_power.c | 73 +++++++++++++++++++++++
+>  drivers/iio/imu/inv_icm20948/inv_icm20948_temp.c  | 15 +++--
+>  6 files changed, 114 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm20948/Makefile b/drivers/iio/imu/inv_icm20948/Makefile
+> index 88a37be159e1d6f575da1c070c84ac94cd963020..0a17ad1c003e6a93f3431f7a998e56cdf975d245 100644
+> --- a/drivers/iio/imu/inv_icm20948/Makefile
+> +++ b/drivers/iio/imu/inv_icm20948/Makefile
+> @@ -4,6 +4,7 @@ obj-$(CONFIG_INV_ICM20948) += inv-icm20948.o
+>  inv-icm20948-y += inv_icm20948_core.o
+>  inv-icm20948-y += inv_icm20948_temp.o
+>  inv-icm20948-y += inv_icm20948_gyro.o
+> +inv-icm20948-y += inv_icm20948_power.o
+>  
+>  obj-$(CONFIG_INV_ICM20948_I2C) += inv-icm20948-i2c.o
+>  inv-icm20948-i2c-y += inv_icm20948_i2c.o
+> diff --git a/drivers/iio/imu/inv_icm20948/inv_icm20948.h b/drivers/iio/imu/inv_icm20948/inv_icm20948.h
+> index ca2513114378cdcba5bc315fc94cd61f930b4dfa..194dcccabc2162334779b285320187c7ff1f5236 100644
+> --- a/drivers/iio/imu/inv_icm20948/inv_icm20948.h
+> +++ b/drivers/iio/imu/inv_icm20948/inv_icm20948.h
+> @@ -13,10 +13,13 @@
+>   #include <linux/i2c.h>
+>   #include <linux/iio/iio.h>
+>   #include <linux/err.h>
+> + #include <linux/pm_runtime.h>
+>  
+>  /* accel takes 20ms, gyro takes 35ms to wake from full-chip sleep */
+>   #define INV_ICM20948_SLEEP_WAKEUP_MS 35
+>  
+> + #define INV_ICM20948_SUSPEND_DELAY_MS 2000
+I'd just use the value inline.  It should only be in one place
+and the meaning of the value there is well understood by reviewers.
 
-Signed-off-by: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
+> +
+>   #define INV_ICM20948_REG_BANK_SEL 0x7F
+>   #define INV_ICM20948_BANK_SEL_MASK GENMASK(5, 4)
+>  
+> @@ -46,6 +49,8 @@
+>  
+>  extern const struct regmap_config inv_icm20948_regmap_config;
+>  
+> +extern const struct dev_pm_ops inv_icm20948_pm_ops;
+> +
+>  enum inv_icm20948_gyro_fs {
+>  	INV_ICM20948_GYRO_FS_250 = 0,
+>  	INV_ICM20948_GYRO_FS_500 = 1,
+> @@ -82,4 +87,6 @@ extern int inv_icm20948_core_probe(struct regmap *regmap);
+>  struct iio_dev *inv_icm20948_temp_init(struct inv_icm20948_state *state);
+>  struct iio_dev *inv_icm20948_gyro_init(struct inv_icm20948_state *state);
+>  
+> +int inv_icm20948_pm_setup(struct inv_icm20948_state *state);
+> +
+>   #endif
+> diff --git a/drivers/iio/imu/inv_icm20948/inv_icm20948_core.c b/drivers/iio/imu/inv_icm20948/inv_icm20948_core.c
+> index eb4f940de7013bf4ddeb69b6380a60fbde49964a..e6e670d96e40c3663e55d1545b52f609603a02ed 100644
+> --- a/drivers/iio/imu/inv_icm20948/inv_icm20948_core.c
+> +++ b/drivers/iio/imu/inv_icm20948/inv_icm20948_core.c
+> @@ -101,7 +101,7 @@ static int inv_icm20948_setup(struct inv_icm20948_state *state)
+>  	if (IS_ERR(state->gyro_dev))
+>  		return PTR_ERR(state->gyro_dev);
+>  
+> -	return 0;
+> +	return inv_icm20948_pm_setup(state);
+>  }
+>  
+>  int inv_icm20948_core_probe(struct regmap *regmap)
+> @@ -113,6 +113,7 @@ int inv_icm20948_core_probe(struct regmap *regmap)
+>  	state = devm_kzalloc(dev, sizeof(*state), GFP_KERNEL);
+>  	if (!state)
+>  		return -ENOMEM;
+> +	dev_set_drvdata(dev, state);
+>  
+>  	state->regmap = regmap;
+>  	state->dev = dev;
+> diff --git a/drivers/iio/imu/inv_icm20948/inv_icm20948_gyro.c b/drivers/iio/imu/inv_icm20948/inv_icm20948_gyro.c
+> index 2d4d598eb21c8ce98d4ee3c72504554ab49ea596..9cefb47a46b1a323202aa84f0de647d7b7b89728 100644
+> --- a/drivers/iio/imu/inv_icm20948/inv_icm20948_gyro.c
+> +++ b/drivers/iio/imu/inv_icm20948/inv_icm20948_gyro.c
 
----
-Changes in v5:
-- Rebased on top of latest staging tree
-- Dropped unrelated cleanups (sysfs_emit, sysfs_streq, type casts, etc.)
-- Keep only the mutex locking for SPI and GPIO access
----
- drivers/staging/iio/adc/ad7816.c | 59 +++++++++++++++++++++++---------
- 1 file changed, 42 insertions(+), 17 deletions(-)
+>  
+>  static int inv_icm20948_gyro_read_sensor(struct inv_icm20948_state *state,
+> @@ -99,23 +103,25 @@ static int inv_icm20948_gyro_read_sensor(struct inv_icm20948_state *state,
+>  		return -EINVAL;
+>  	}
+>  
+> +	pm_runtime_get_sync(state->dev);
+> +
+>  	__be16 raw;
+>  	int ret = regmap_bulk_read(state->regmap, reg, &raw, sizeof(raw));
+>  
+>  	if (ret)
+> -		return ret;
+> +		goto out;
+>  
+>  	*val = (s16)be16_to_cpu(raw);
+>  
+> -	return 0;
+> +out:
+> +	pm_runtime_put_autosuspend(state->dev);
 
-diff --git a/drivers/staging/iio/adc/ad7816.c b/drivers/staging/iio/adc/ad7816.c
-index 4774df778de9..669572c04181 100644
---- a/drivers/staging/iio/adc/ad7816.c
-+++ b/drivers/staging/iio/adc/ad7816.c
-@@ -50,6 +50,7 @@ struct ad7816_chip_info {
- 	u8  oti_data[AD7816_CS_MAX + 1];
- 	u8  channel_id;	/* 0 always be temperature */
- 	u8  mode;
-+	struct mutex io_lock;	/* Protects SPI transactions and GPIO toggling */
- };
- 
- enum ad7816_type {
-@@ -67,13 +68,13 @@ static int ad7816_spi_read(struct ad7816_chip_info *chip, u16 *data)
- 	int ret;
- 	__be16 buf;
- 
-+	mutex_lock(&chip->io_lock);
-+
- 	gpiod_set_value(chip->rdwr_pin, 1);
- 	gpiod_set_value(chip->rdwr_pin, 0);
- 	ret = spi_write(spi_dev, &chip->channel_id, sizeof(chip->channel_id));
--	if (ret < 0) {
--		dev_err(&spi_dev->dev, "SPI channel setting error\n");
--		return ret;
--	}
-+	if (ret < 0)
-+		goto unlock;
- 	gpiod_set_value(chip->rdwr_pin, 1);
- 
- 	if (chip->mode == AD7816_PD) { /* operating mode 2 */
-@@ -92,13 +93,13 @@ static int ad7816_spi_read(struct ad7816_chip_info *chip, u16 *data)
- 	gpiod_set_value(chip->rdwr_pin, 0);
- 	gpiod_set_value(chip->rdwr_pin, 1);
- 	ret = spi_read(spi_dev, &buf, sizeof(*data));
--	if (ret < 0) {
--		dev_err(&spi_dev->dev, "SPI data read error\n");
--		return ret;
--	}
-+	if (ret < 0)
-+		goto unlock;
- 
- 	*data = be16_to_cpu(buf);
- 
-+unlock:
-+	mutex_unlock(&chip->io_lock);
- 	return ret;
- }
- 
-@@ -107,12 +108,13 @@ static int ad7816_spi_write(struct ad7816_chip_info *chip, u8 data)
- 	struct spi_device *spi_dev = chip->spi_dev;
- 	int ret;
- 
-+	mutex_lock(&chip->io_lock);
-+
- 	gpiod_set_value(chip->rdwr_pin, 1);
- 	gpiod_set_value(chip->rdwr_pin, 0);
- 	ret = spi_write(spi_dev, &data, sizeof(data));
--	if (ret < 0)
--		dev_err(&spi_dev->dev, "SPI oti data write error\n");
- 
-+	mutex_unlock(&chip->io_lock);
- 	return ret;
- }
- 
-@@ -122,10 +124,16 @@ static ssize_t ad7816_show_mode(struct device *dev,
- {
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
-+	int ret;
- 
-+	mutex_lock(&chip->io_lock);
- 	if (chip->mode)
--		return sprintf(buf, "power-save\n");
--	return sprintf(buf, "full\n");
-+		ret = sprintf(buf, "power-save\n");
-+	else
-+		ret = sprintf(buf, "full\n");
-+	mutex_unlock(&chip->io_lock);
-+
-+	return ret;
- }
- 
- static ssize_t ad7816_store_mode(struct device *dev,
-@@ -136,6 +144,7 @@ static ssize_t ad7816_store_mode(struct device *dev,
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
- 
-+	mutex_lock(&chip->io_lock);
- 	if (strcmp(buf, "full") == 0) {
- 		gpiod_set_value(chip->rdwr_pin, 1);
- 		chip->mode = AD7816_FULL;
-@@ -143,6 +152,7 @@ static ssize_t ad7816_store_mode(struct device *dev,
- 		gpiod_set_value(chip->rdwr_pin, 0);
- 		chip->mode = AD7816_PD;
- 	}
-+	mutex_unlock(&chip->io_lock);
- 
- 	return len;
- }
-@@ -168,8 +178,13 @@ static ssize_t ad7816_show_channel(struct device *dev,
- {
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
-+	int ret;
- 
--	return sprintf(buf, "%d\n", chip->channel_id);
-+	mutex_lock(&chip->io_lock);
-+	ret = sprintf(buf, "%d\n", chip->channel_id);
-+	mutex_unlock(&chip->io_lock);
-+
-+	return ret;
- }
- 
- static ssize_t ad7816_store_channel(struct device *dev,
-@@ -200,7 +215,9 @@ static ssize_t ad7816_store_channel(struct device *dev,
- 		return -EINVAL;
- 	}
- 
-+	mutex_lock(&chip->io_lock);
- 	chip->channel_id = data;
-+	mutex_unlock(&chip->io_lock);
- 
- 	return len;
- }
-@@ -272,18 +289,23 @@ static ssize_t ad7816_show_oti(struct device *dev,
- {
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
--	int value;
-+	int value, ret;
- 
-+	mutex_lock(&chip->io_lock);
- 	if (chip->channel_id > AD7816_CS_MAX) {
- 		dev_err(dev, "Invalid oti channel id %d.\n", chip->channel_id);
--		return -EINVAL;
-+		ret = -EINVAL;
- 	} else if (chip->channel_id == 0) {
- 		value = AD7816_BOUND_VALUE_MIN +
- 			(chip->oti_data[chip->channel_id] -
- 			AD7816_BOUND_VALUE_BASE);
--		return sprintf(buf, "%d\n", value);
-+		ret = sprintf(buf, "%d\n", value);
-+	} else {
-+		ret = sprintf(buf, "%u\n", chip->oti_data[chip->channel_id]);
- 	}
--	return sprintf(buf, "%u\n", chip->oti_data[chip->channel_id]);
-+	mutex_unlock(&chip->io_lock);
-+
-+	return ret;
- }
- 
- static inline ssize_t ad7816_set_oti(struct device *dev,
-@@ -322,7 +344,9 @@ static inline ssize_t ad7816_set_oti(struct device *dev,
- 	if (ret)
- 		return -EIO;
- 
-+	mutex_lock(&chip->io_lock);
- 	chip->oti_data[chip->channel_id] = data;
-+	mutex_unlock(&chip->io_lock);
- 
- 	return len;
- }
-@@ -363,6 +387,7 @@ static int ad7816_probe(struct spi_device *spi_dev)
- 	dev_set_drvdata(&spi_dev->dev, indio_dev);
- 
- 	chip->spi_dev = spi_dev;
-+	mutex_init(&chip->io_lock);
- 	for (i = 0; i <= AD7816_CS_MAX; i++)
- 		chip->oti_data[i] = 203;
- 
--- 
-2.43.0
+A common thing to do when runtime pm is involved is to have a wrapper function
+around the main code.  That wrapper then deals with runtime pm, but lets you
+use direct returns in the inner function, which tends to improve readability.
+
+> +	return ret;
+>  }
+>  
+>  static int inv_icm20948_gyro_read_calibbias(struct inv_icm20948_state *state,
+>  					    struct iio_chan_spec const *chan,
+>  					    int *val, int *val2)
+>  {
+> -	guard(mutex)(&state->lock);
+> -
+>  	unsigned int reg;
+>  
+>  	switch (chan->channel2) {
+> @@ -133,8 +139,11 @@ static int inv_icm20948_gyro_read_calibbias(struct inv_icm20948_state *state,
+>  	}
+>  
+>  	__be16 offset_raw;
+> +
+> +	pm_runtime_get_sync(state->dev);
+>  	int ret = regmap_bulk_read(state->regmap, reg, &offset_raw,
+>  				   sizeof(offset_raw));
+> +	pm_runtime_put_autosuspend(state->dev);
+>  
+>  	if (ret)
+>  		return ret;
+> @@ -216,8 +225,6 @@ static int inv_icm20948_write_calibbias(struct inv_icm20948_state *state,
+>  					struct iio_chan_spec const *chan,
+>  					int val, int val2)
+>  {
+> -	guard(mutex)(&state->lock);
+> -
+>  	unsigned int reg;
+>  
+>  	switch (chan->channel2) {
+> @@ -246,8 +253,13 @@ static int inv_icm20948_write_calibbias(struct inv_icm20948_state *state,
+>  	s16 offset = clamp(offset64, (s64)S16_MIN, (s64)S16_MAX);
+>  	__be16 offset_write = cpu_to_be16(offset);
+>  
+> -	return regmap_bulk_write(state->regmap, reg, &offset_write,
+> +	pm_runtime_get_sync(state->dev);
+> +	mutex_lock(&state->lock);
+> +	int ret = regmap_bulk_write(state->regmap, reg, &offset_write,
+>  				 sizeof(offset_write));
+> +	mutex_unlock(&state->lock);
+> +	pm_runtime_put_autosuspend(state->dev);
+> +	return ret;
+>  }
+>  
+>  static int inv_icm20948_gyro_write_raw(struct iio_dev *gyro_dev,
+> diff --git a/drivers/iio/imu/inv_icm20948/inv_icm20948_power.c b/drivers/iio/imu/inv_icm20948/inv_icm20948_power.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..1281a5e5acb539cd3f91ca8ed8d52371f330b60a
+> --- /dev/null
+> +++ b/drivers/iio/imu/inv_icm20948/inv_icm20948_power.c
+
+Don't have a separate file for this. It is not that much code so much more
+obvious to just have it in the core file.
+
+> @@ -0,0 +1,73 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (C) 2025 Bharadwaj Raju <bharadwaj.raju777@gmail.com>
+> + */
+> +
+> +#include "inv_icm20948.h"
+> +
+> +static int inv_icm20948_suspend(struct device *dev)
+> +{
+> +	if (pm_runtime_suspended(dev))
+> +		return 0;
+> +
+> +	struct inv_icm20948_state *state = dev_get_drvdata(dev);
+> +
+> +	guard(mutex)(&state->lock);
+
+What data is this mutex protecting here?  Regmap has it's own locks
+internally and I'm not immediately sure what else needs to be protected
+against races.
+
+> +
+> +	return regmap_write_bits(state->regmap, INV_ICM20948_REG_PWR_MGMT_1,
+> +				 INV_ICM20948_PWR_MGMT_1_SLEEP,
+> +				 INV_ICM20948_PWR_MGMT_1_SLEEP);
+> +}
+> +
+> +static int inv_icm20948_resume(struct device *dev)
+> +{
+> +	struct inv_icm20948_state *state = dev_get_drvdata(dev);
+> +
+> +	guard(mutex)(&state->lock);
+> +
+> +	pm_runtime_disable(state->dev);
+> +	pm_runtime_set_active(state->dev);
+> +	pm_runtime_enable(state->dev);
+
+Which device is this on?  I'd not expect to typically see runtime pm state
+manipulated in runtime pm ops for another device. The parent /child relationships
+etc (more complex options exist) should deal with that.
+> +
+> +	int ret = regmap_write_bits(state->regmap, INV_ICM20948_REG_PWR_MGMT_1,
+> +				    INV_ICM20948_PWR_MGMT_1_SLEEP, 0);
+> +	if (ret)
+> +		return ret;
+> +
+> +	msleep(INV_ICM20948_SLEEP_WAKEUP_MS);
+> +
+> +	return 0;
+> +}
+> +
+> +static void inv_icm20948_pm_disable(void *data)
+> +{
+> +	struct device *dev = data;
+> +
+> +	pm_runtime_put_sync(dev);
+> +	pm_runtime_disable(dev);
+> +}
+> +
+> +int inv_icm20948_pm_setup(struct inv_icm20948_state *state)
+> +{
+> +	struct device *dev = state->dev;
+> +
+> +	guard(mutex)(&state->lock);
+> +
+> +	int ret;
+> +
+> +	ret = pm_runtime_set_active(dev);
+> +	if (ret)
+> +		return ret;
+> +	pm_runtime_get_noresume(dev);
+> +	pm_runtime_enable(dev);
+> +	pm_runtime_set_autosuspend_delay(dev, INV_ICM20948_SUSPEND_DELAY_MS);
+> +	pm_runtime_use_autosuspend(dev);
+> +	pm_runtime_put(dev);
+> +
+> +	return devm_add_action_or_reset(dev, inv_icm20948_pm_disable, dev);
+> +}
+> +
+> +EXPORT_NS_GPL_DEV_PM_OPS(inv_icm20948_pm_ops, IIO_ICM20948) = {
+> +	SYSTEM_SLEEP_PM_OPS(inv_icm20948_suspend, inv_icm20948_resume)
+> +	RUNTIME_PM_OPS(inv_icm20948_suspend, inv_icm20948_resume, NULL)
+If you want to use runtime pm ops for both this is not how it is done.
+See DEFINE_RUNTIME_DEV_PM_OPS()
+
+> +};
+> diff --git a/drivers/iio/imu/inv_icm20948/inv_icm20948_temp.c b/drivers/iio/imu/inv_icm20948/inv_icm20948_temp.c
+> index 916053740cc5acda0316c76504d4086eff5ec7f0..6e17b3719301d6d7f005d545587f558fcadd2f40 100644
+> --- a/drivers/iio/imu/inv_icm20948/inv_icm20948_temp.c
+> +++ b/drivers/iio/imu/inv_icm20948/inv_icm20948_temp.c
+> @@ -24,17 +24,24 @@ static const struct iio_chan_spec
+>  static int inv_icm20948_temp_read_sensor(struct inv_icm20948_state *state,
+>  					 s16 *temp)
+>  {
+> -	guard(mutex)(&state->lock);
+> +	int ret;
+> +
+> +	pm_runtime_get_sync(state->dev);
+> +	mutex_lock(&state->lock);
+>  
+>  	__be16 raw;
+> -	int ret = regmap_bulk_read(state->regmap, INV_ICM20948_REG_TEMP_DATA,
+> +	ret = regmap_bulk_read(state->regmap, INV_ICM20948_REG_TEMP_DATA,
+>  				   &raw, sizeof(raw));
+>  	if (ret)
+> -		return ret;
+> +		goto out;
+>  
+>  	*temp = __be16_to_cpu(raw);
+> +	ret = 0;
+>  
+> -	return 0;
+> +out:
+> +	mutex_unlock(&state->lock);
+> +	pm_runtime_put_autosuspend(state->dev);
+> +	return ret;
+>  }
+>  
+>  static int inv_icm20948_temp_read_raw(struct iio_dev *temp_dev,
+> 
 
 

@@ -1,121 +1,140 @@
-Return-Path: <linux-iio+bounces-23577-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23578-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D069EB3E39E
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 14:47:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F037B3E3C9
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 14:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 350D416FA26
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 12:45:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EBDC1A83C19
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 12:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6184D2561AF;
-	Mon,  1 Sep 2025 12:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEF724DCF9;
+	Mon,  1 Sep 2025 12:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jXdQuO4T"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Awce9pZ6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A291257849;
-	Mon,  1 Sep 2025 12:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61222FA0FF
+	for <linux-iio@vger.kernel.org>; Mon,  1 Sep 2025 12:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756730598; cv=none; b=nlm48f9BXh6XWxDStx3zmSP3Dj+Qaj2ErHptKBvm/xFcxZVmjiR3g8HMe0eQZWVoVLdEF4v2Ft8sEUXAH4qE5Qmu0x5El/l8wss3GPsYZqigehFx3KdkH0qYw2aNRXUic5W4+UORvKvWbpJiWYPadT0BES+jw0e2l2h5g6VNkQc=
+	t=1756731436; cv=none; b=sZAx7yJ7JAN4aqGpCqaEtpWBleYHrC4rQvh+3lMg1/8WcYIIDXQF741ViDb+JuyHOAbRt34OtvW9BwRBIuYkOjyPJuvoenGdbEF2TYMmR0rh3gWsAt03YT2y6Y5iXQqLkA8cq6cNuhhibedz8UnwgbZqll6WRqZkolm+MEXgSjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756730598; c=relaxed/simple;
-	bh=JV3RmCj1JMN6vIPs9w1LUVvRoHj1GcIh6KrLOIR/RlU=;
+	s=arc-20240116; t=1756731436; c=relaxed/simple;
+	bh=LA2Cde+xwNLHGVNxK+nOoJLLEK4E0j9VLsGVDb7DoCg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TC48KyguTpVE9nVVNZFHXwIoNDH8lkvgTB9j2sB/qT1hMbwOxalBY4kISceQgHT3nx/0t5ExKxfmRVjZ7kpWDdKmYUEQnTxnz/4dJG0mXihB//AdyA0pFPJpOP1mPOdEINWYB4xBaAEsxC+Nlhm7qTlMZfKgpmn2kTICK2yLLI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jXdQuO4T; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756730596; x=1788266596;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=JV3RmCj1JMN6vIPs9w1LUVvRoHj1GcIh6KrLOIR/RlU=;
-  b=jXdQuO4T89qdaspNpy0KKe3sSbeg28/wTlP8sjFuSCYbjrIvsBCpKKXE
-   NZJ+DWtsMYQAmAjdvyJan2SrKRzf+u8dSQWXt+BEqwMW8SKHMgQtCiyuG
-   j4PTbE/FL3P5PIIxFWCThtrXl0b27/vBU4GSoKRhPm4LhjnH+vkQfoaVJ
-   lrPAxG7Su0MDM/v8D/Qa6PoQSpB4PnrIU3hZkAxP84vXPXJirm2Bm7DPR
-   xCb797AxUoBVrBJUsI0yv8XAZEzAB5KJOJh2f63Kuvy9wupYpCVmBHC31
-   kF0sxtWBr4DSonnTZtRq8KjCa5VI+ZYD8ozMqIk16CU6TofbZxwms4EYZ
-   Q==;
-X-CSE-ConnectionGUID: 3Vn31p95R1mtzhQ05BJgww==
-X-CSE-MsgGUID: kPMLKY2ETaimIhBb9JmNZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62821495"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62821495"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 05:43:16 -0700
-X-CSE-ConnectionGUID: BuhrxOKbQ9+4gTuoB5MZsg==
-X-CSE-MsgGUID: 6uN3xkOnSVOA2l5NeF2Alg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="170868578"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 05:43:12 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1ut3sL-0000000APj6-1CGF;
-	Mon, 01 Sep 2025 15:43:09 +0300
-Date: Mon, 1 Sep 2025 15:43:08 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Lee Jones <lee@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Karel Balej <balejk@matfyz.cz>,
-	David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] iio: adc: Add driver for Marvell 88PM886 PMIC ADC
-Message-ID: <aLWU3AwC37jpV9W_@smile.fi.intel.com>
-References: <20250831-88pm886-gpadc-v2-0-759c1e14d95f@dujemihanovic.xyz>
- <20250831-88pm886-gpadc-v2-2-759c1e14d95f@dujemihanovic.xyz>
- <DCGUXTSZ8B9G.2S2Q2JXYMBSRY@matfyz.cz>
- <5048048.31r3eYUQgx@radijator>
+	 Content-Type:Content-Disposition:In-Reply-To; b=KDDQk6CCCt8htTGXTnj4RqxtgSI2F3B55lQr5JOwE+neKw4TxCJ1vaBQFoC+g3e1NS7+3NsOXZGqSzwBAhp+VH3OzZC3lOA876AuxBRtoI+Y3BDWSbpq2/jIdmW8Kr+sCoGYwfpldUkg2690LPArpKbI4HLBzrc3w6f9aSd04fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Awce9pZ6; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45b8b8d45b3so10358965e9.1
+        for <linux-iio@vger.kernel.org>; Mon, 01 Sep 2025 05:57:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756731433; x=1757336233; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6CcZZgmXTEgXi67UOd8flewdG478TxsuC7DDhDV9EhI=;
+        b=Awce9pZ6KKPpqfDStm6grTv6TraGZ2p8PretycNa9sV5G3eSgzJvqpCJcm8gV4EWSb
+         D5toCoTaOa8VA6BgR0rFcZ5O3B9qFcROxZaOdj7gG9KYPw20eidJ3E3WYqsKcXyAWMpW
+         7gM0nrHH0z+sVCJ3we8YL+x3i00B41E8hnVJ3c0R0J1Wh7vjKIh54G9yUl2s5C6rxy5f
+         raqPU5Rg0x95su+ppJz8/HXtucfzq7cfw1S/8URMIcgPgOgFgh8fH8txVPpIgPjKzY82
+         BgdVu6ALnGakh3TLcMPeozZ9SQg6/HpikTF1EP5P3UEMwUWbr6iqziC6DWj2tMd89Vv9
+         OfdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756731433; x=1757336233;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6CcZZgmXTEgXi67UOd8flewdG478TxsuC7DDhDV9EhI=;
+        b=PXrL4WOSvAuWuMFRxb7byIxbT/srRDqxGNWK+624S+tkAWYdNdoVzZ0TUKhC2W0/4C
+         PbDyCXguBm4kY/c4HanSozCX0Fo4XXcedPyh+q+kmud0Q71h77pqwuZAbum1/OAiycl1
+         WTMzYfJeI1/Mal5CAcE8MW1jrCy2MeAHSkpgmB/f1zW1Ug0KjMOhHRoMJQE/8MT/ku55
+         0uAJli3XQEblxYaRIbtR2Lvm3SwCeEXxM0jiCkP+fZCR1UcxyHUMQw4CsOMsYI+ny68I
+         8ZQFDBeV0ky5S4zrOqp8NvwUdOEhpnbMxqXoONOMdkTsrf69AromUeRvBbE+GMeQBvYG
+         oW4A==
+X-Forwarded-Encrypted: i=1; AJvYcCV/8eo3fBqhpbFyo0W3JhIAlZGZZnR+szKQ12WAtfIKtDiGnxn9N5KcnS8O0aSiVsbilxKElfZLLPY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSK01POOCcYd0L5Iea3aP6ieek8I5U+L33tDIkNc5pbpZW91nz
+	o52GIEGxcf7teIL1XkVEAcYZRgRRkW5HMFruEXQAIgl2xd0gLSNYQOIXHxgm6LqI3TY=
+X-Gm-Gg: ASbGncvsiJuq74w3A2M9TH+tbFt5GGzCra3HNJ6VOrbr+rVz32mdLVpNQB0nGOBltsc
+	nlL08xCGqQM2l1jx2VhtPGRMSeY8QvOPp1fTesHJpJmDNgIMQFYCuytp1rElrsz61oRai0bONxD
+	11Gd2jThls2yOE72U+x6EC0efWHwAXCy3vOQZjvsOuxRaSfabsuPHq0dcNlHwsP9pkUn8HSw5dd
+	c88z57OXOP7+SpSMriqGpGVCX3uFZOzq/Y7Aahyinor3iu1sXWP1K9bcRQlySI43qMPmCWJCkvU
+	V3wCsZSf9WI4xdxdvRWnMkd5axZOft1krF95Xzw7w6QkSr7i58/3qyW/fsjfqalRLe9GLJ050Xg
+	SKtCCjBvYohoixd4fNPuleVEwNNtAvjKQCKLuAg==
+X-Google-Smtp-Source: AGHT+IFGr7/8/ZT9kzcrMvxG5Dy4K+Li2LIxqb9UOtAyrwkmZc8eBIyFR7BB1vat/tRDTqmJKwd0jQ==
+X-Received: by 2002:a05:6000:4013:b0:3b7:94a2:87e8 with SMTP id ffacd0b85a97d-3d1dcb75006mr6117687f8f.18.1756731432991;
+        Mon, 01 Sep 2025 05:57:12 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b87b38fcfsm51362895e9.0.2025.09.01.05.57.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Sep 2025 05:57:12 -0700 (PDT)
+Date: Mon, 1 Sep 2025 15:57:08 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>,
+	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+	jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org
+Subject: Re: [PATCH v2] staging: iio: adc: ad7816: add mutex to serialize
+ SPI/GPIO operations
+Message-ID: <aLWYJKSDjNajmAlh@stanley.mountain>
+References: <20250901065445.8787-1-moahmmad.hosseinii@gmail.com>
+ <aLV0LBxD0KIHPSmo@stanley.mountain>
+ <aLWULUIcYEz3N-Rx@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5048048.31r3eYUQgx@radijator>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <aLWULUIcYEz3N-Rx@smile.fi.intel.com>
 
-On Sun, Aug 31, 2025 at 10:19:38PM +0200, Duje Mihanović wrote:
-> On Sunday, 31 August 2025 21:24:54 Central European Summer Time Karel Balej wrote:
-> > Duje Mihanović, 2025-08-31T12:33:05+02:00:
-
-...
-
-> > > +	iio->dev.of_node = dev->parent->of_node;
-> > 
-> > Didn't you mean to drop this since Jonathan pointed out that it's done
-> > by the core?
+On Mon, Sep 01, 2025 at 03:40:13PM +0300, Andy Shevchenko wrote:
+> On Mon, Sep 01, 2025 at 01:23:40PM +0300, Dan Carpenter wrote:
+> > On Mon, Sep 01, 2025 at 10:24:45AM +0330, Mohammad Amin Hosseini wrote:
+> > > From: mohammad amin hosseini <moahmmad.hosseinii@gmail.com>
+> > > 
+> > > The ad7816 driver was accessing SPI and GPIO lines without
+> > > synchronization, which could lead to race conditions when accessed
+> > > concurrently from multiple contexts. This might result in corrupted
+> > > readings or inconsistent GPIO states.
+> > > 
+> > > Introduce an io_lock mutex in the driver structure to serialize:
+> > > - SPI transactions in ad7816_spi_read() and ad7816_spi_write()
+> > > - GPIO pin toggling sequences
+> > > - Updates to device state via sysfs store functions (mode, channel, oti)
+> > > 
+> > > The mutex ensures proper mutual exclusion and prevents race
+> > > conditions under concurrent access.
 > 
-> Actually I have found that device tree consumers fail to get their IO
-> channels without this line, so I left it.
+> ...
+> 
+> > > +	mutex_lock(&chip->io_lock);
+> > >  	chip->channel_id = data;
+> > > +	mutex_unlock(&chip->io_lock);
+> 
+> > > +	mutex_lock(&chip->io_lock);
+> > >  	chip->oti_data[chip->channel_id] = data;
+> > > +	mutex_unlock(&chip->io_lock);
+> 
+> > I'm not really knowledgeable to review the others, if they are
+> > required or how the locking is supposed to work.  But these aren't
+> > correct because we're only locking around the writers and not the
+> > readers so it could still race.
+> 
+> Readers are in spi_write(), or what do you imply by this comment?
+> I.o.w. I do not see the issue with the idea of locking and how it's
+> done (I haven't checked all of the details, though).
 
-because the passed device is not parent?
+Sorry, I meant we don't have locking in ad7816_show_oti(), for example.
 
-In any case this line is problematic. Use device_set_node() instead with the
-proper dev_fwnode() parameter.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+regards,
+dan carpenter
 

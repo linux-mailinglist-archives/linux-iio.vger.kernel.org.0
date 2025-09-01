@@ -1,128 +1,83 @@
-Return-Path: <linux-iio+bounces-23559-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23560-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CA9B3D982
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 08:08:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 038F7B3D98D
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 08:10:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC26E16EA1D
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 06:08:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC354179EF4
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Sep 2025 06:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD4724418E;
-	Mon,  1 Sep 2025 06:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8204242930;
+	Mon,  1 Sep 2025 06:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhwBYEG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdSVmUwF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9DA23E25B;
-	Mon,  1 Sep 2025 06:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E67921019C;
+	Mon,  1 Sep 2025 06:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756706887; cv=none; b=UDW1a4YUCSS+0g/ZK3C8d2kepsngCB+bRmNPNfgyL2GRdHQTpsddEpwZfikB+B440DEgO5MeEfNTZfxidsJ5r9D3KWtJYwKTSCAfexxD9uSkz2cZili2GYAvzdHBvOwZWEtRQJogCcdGlEYFPmCxaTwxKQt/7XNbXOpiXYZJAHw=
+	t=1756707026; cv=none; b=BlZ+L1ee44MU3Iad21VvH90Gc4HOcWwdoJ+ZNNtN4G0CRDvSLGVeYNcihY04YT5VYzHKjAF38yQ8B/x+xr+AjibzGL1inpZ5gq2QAlIS6s4LiGhCTZircO89wTpyOldkJqeSs8LgqBzkAaCv8aIGmQ6sg1wG+zWexU81dVchIgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756706887; c=relaxed/simple;
-	bh=dzIS5KQ4sPo2lK7s10+eDwEJp7PENpB3PEARRrzqWiA=;
+	s=arc-20240116; t=1756707026; c=relaxed/simple;
+	bh=DgRuaBcNWQtJ24Tl7NhKDs3+2MFCajM3UYXIaPKY8uQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uRtp8IagTRmEr1IVIo2aTe+y06h6hl+03vhpVOyeS68YSMcuIbTDWphAlapx/GNOLPcL+LgR1Ock1gmiKem+YYZSPSp/z2///+m6ucZHU+QHYkT/gG3E/VPHWzbWU2TLlYZz8HZlmp8qdxb2JmVd8qg4w+FeIGF0JCF/fqwqNOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhwBYEG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE123C4CEF5;
-	Mon,  1 Sep 2025 06:08:05 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=nrZ6hzK0Y81HkbPeQBYZVh3EPc+y+jC6R5w61WcaUmzuB2ALUB5iAF7etr90MXOZjPhDpDipcjaeyWezWQI3uVtiTkoAtNiGCXwvdqU2Px9nv9k8JGhfK7zj6mB3PSbugyrp1EeNBAMMQWT8MAuszdxwm4EAMKrJvMFALKuy8vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdSVmUwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EF4C4CEF0;
+	Mon,  1 Sep 2025 06:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756706886;
-	bh=dzIS5KQ4sPo2lK7s10+eDwEJp7PENpB3PEARRrzqWiA=;
+	s=korg; t=1756707026;
+	bh=DgRuaBcNWQtJ24Tl7NhKDs3+2MFCajM3UYXIaPKY8uQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LhwBYEG7qkvhhdtMVHJCIbfscHl22xUCQ5lUih/UYYZ+7HQs7eXIGHEMz6/rK3qHC
-	 +dnDiBl94G3Ot/ie5X1YnWyuEWa/kPsbMrK36AtyTC0Goq3An5etzWfxgUdxZsrD3L
-	 D3NBzoIAXKryQi8J6ssZBfkB3CVc99TFt2zcbuUI=
-Date: Mon, 1 Sep 2025 08:08:00 +0200
+	b=bdSVmUwFWL02V5muTJ9zoZcNw1MkXOseAo6mSWuGoisau8nSj1WEPTkvgaC4sHC/5
+	 EprOs8nOwH+1La96sHR2QJRHccLiWDA8/qSvwrWSBFS5Ma9Pm+L9Vz0WdV0C/3cyPN
+	 33BB8kZR+w1GdRG3bW1eI1V85nyJ2j1OVFyiATew=
+Date: Mon, 1 Sep 2025 08:10:23 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Bharadwaj Raju <bharadwaj.raju777@gmail.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
-	LKML <linux-kernel@vger.kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Rob Herring <robh@kernel.org>, Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH 5/5] iio: imu: icm20948: add runtime power management
- support
-Message-ID: <2025090154-whiny-output-3f73@gregkh>
-References: <20250831-icm20948-v1-5-1fe560a38de4@gmail.com>
- <33ca2805-aa52-4b27-9fa9-ec582b7129f2@web.de>
+To: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
+	Michael.Hennerich@analog.com, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org
+Subject: Re: [PATCH] staging: iio: adc: ad7816: add mutex to serialize
+ SPI/GPIO operations
+Message-ID: <2025090150-backspace-undone-e11d@gregkh>
+References: <20250831153741.8820-1-moahmmad.hosseinii@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <33ca2805-aa52-4b27-9fa9-ec582b7129f2@web.de>
+In-Reply-To: <20250831153741.8820-1-moahmmad.hosseinii@gmail.com>
 
-On Sun, Aug 31, 2025 at 09:23:08PM +0200, Markus Elfring wrote:
-> …
-> > @@ -24,17 +24,24 @@ static const struct iio_chan_spec
-> >  static int inv_icm20948_temp_read_sensor(struct inv_icm20948_state *state,
-> >  					 s16 *temp)
-> >  {
-> > -	guard(mutex)(&state->lock);
-> > +	int ret;
-> > +
-> > +	pm_runtime_get_sync(state->dev);
-> > +	mutex_lock(&state->lock);
-> >  
-> >  	__be16 raw;
-> > -	int ret = regmap_bulk_read(state->regmap, INV_ICM20948_REG_TEMP_DATA,
-> > +	ret = regmap_bulk_read(state->regmap, INV_ICM20948_REG_TEMP_DATA,
-> >  				   &raw, sizeof(raw));
-> >  	if (ret)
-> > -		return ret;
-> > +		goto out;
-> >  
-> >  	*temp = __be16_to_cpu(raw);
-> > +	ret = 0;
-> >  
-> > -	return 0;
-> > +out:
-> > +	mutex_unlock(&state->lock);
-> > +	pm_runtime_put_autosuspend(state->dev);
-> > +	return ret;
-> >  }
-> …
+On Sun, Aug 31, 2025 at 07:07:41PM +0330, Mohammad Amin Hosseini wrote:
+> From: mohammad amin hosseini <moahmmad.hosseinii@gmail.com>
 > 
-> Does anything hinder you with the continued application of scope-based resource management
-> for such a function implementation?
+> The ad7816 driver was accessing SPI and GPIO lines without
+> synchronization, which could lead to race conditions when accessed
+> concurrently from multiple contexts. This might result in corrupted
+> readings or inconsistent GPIO states.
 > 
-> Regards,
-> Markus
+> Introduce an io_lock mutex in the driver structure to serialize:
+> - SPI transactions in ad7816_spi_read() and ad7816_spi_write()
+> - GPIO pin toggling sequences
+> - Updates to device state via sysfs store functions (mode, channel, oti)
 > 
+> The mutex ensures proper mutual exclusion and prevents race
+> conditions under concurrent access.
+> 
+> Signed-off-by: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
+
+Doesn't match the From: line exactly :(
 
 
-
-Hi,
-
-This is the friendly semi-automated patch-bot of Greg Kroah-Hartman.
-You have sent him a patch that has triggered this response.
-
-Right now, the development tree you have sent a patch for is "closed"
-due to the timing of the merge window.  Don't worry, the patch(es) you
-have sent are not lost, and will be looked at after the merge window is
-over (after the -rc1 kernel is released by Linus).
-
-So thank you for your patience and your patches will be reviewed at this
-later time, you do not have to do anything further, this is just a short
-note to let you know the patch status and so you don't worry they didn't
-make it through.
-
-thanks,
-
-greg k-h's patch email bot
 

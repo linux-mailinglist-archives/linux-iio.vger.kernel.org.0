@@ -1,190 +1,150 @@
-Return-Path: <linux-iio+bounces-23645-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23646-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A5DB405E5
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Sep 2025 16:01:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7128B40660
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Sep 2025 16:16:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B5CE1886893
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Sep 2025 13:56:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6194171564
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Sep 2025 14:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A97530648F;
-	Tue,  2 Sep 2025 13:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CDC2F068E;
+	Tue,  2 Sep 2025 14:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TsSaQf4y"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="X8CPfwPl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6084E28AB1E;
-	Tue,  2 Sep 2025 13:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CFE2DECBF
+	for <linux-iio@vger.kernel.org>; Tue,  2 Sep 2025 14:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756821250; cv=none; b=CExRXTV3CU33YTWHCcpUM7p//zvYMf4vj0AhZTrbmmj/U1Cpo6xmdb3sxd9y8n77ujYa09HCUXt0ZEDlYttyOCkGyNUarOX9v7AnJWlB1J/+LnVr9RR1mjWqc/OG0RI+gucSJK/54FZ8//vmq5Gj8nZb8bvzPFU7kLNrz3yrNbE=
+	t=1756822333; cv=none; b=KBZp99a668iq+XsMZg3sD4sVDp59XzjefGjrIjzEv0Mvd8RE4e0fiw2SXf3fm2+PB+yyBMwMepUiCwcJxMjsqciQLiv7byaYXP1nI5Ci0uEfQgSUNCBpTbWGG9f48RgH7v3VAS4Bbw5N/Fccu3wmRtwGvHnT1iyQYzkWwHhyXtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756821250; c=relaxed/simple;
-	bh=69wVv6bbvG6MEXiXXjr7hj29YgvfryWOViB465bVb8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XZsIy1v21KGEmZiGN7kHGuU44REvca3wZRIRAGVVbQ+9CKAT6DcqsN3rVeq381+Y24qViXWcoHBpoqmXmOJ0y+msZPLYIQtskbgtcDerXsPFrNe47/iW405CtBIVw4FEFlOX+tBC8PHqPblf/KA2jGLe50XC6pxEBO7YOj79Zu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TsSaQf4y; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b04163fe08dso411394466b.3;
-        Tue, 02 Sep 2025 06:54:08 -0700 (PDT)
+	s=arc-20240116; t=1756822333; c=relaxed/simple;
+	bh=xgRzeXI2CD5w/fM4iCTLNx0usBOQ59YNNKel8DP+qug=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j12G5jOcB7a09okSv+L0pX1x3+tfbYIRL2X526Z/uxOHw6GEJ8CXf/TeNOcmCoGaj2zsccHCyYg431sI4ljQai6+xQuOJkZONYt5cOq/phfDe53hB6mLbcbS+gSuPaeydjZt3MFKA+V4qUgd6cJPPmc60Q6x7iG1J5LtUuaczMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=X8CPfwPl; arc=none smtp.client-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-61e4c824615so921990eaf.2
+        for <linux-iio@vger.kernel.org>; Tue, 02 Sep 2025 07:12:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756821247; x=1757426047; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZcxMe3QH1ctzyMJBWwg/0kpd4+pnYIbcDb1kDpHMe0U=;
-        b=TsSaQf4yMYI9xSZ1YXSlMbSF3ELwEikYNOTYx/B9kv9X9aHzY5XnIu/2Pzf2uTKHkn
-         jnBM26fWGbdUNak3IT4sWl1+c6nMr4LhtuR6wv8lR3KeOnR2JWhbmUHkxdZVErGuL33N
-         5NqSLX5RYLX7kjyfS6R3gs22k3PxrQQpXwKHZOFs/yvubImbAcw6MUvxRPdvuh1JwnyL
-         6Simr2QKnxsVqkpOWi+xQgtWtP12akCmXI9s0oRbgE3JEKzn6e5M5KVaLWZrZW+ujXJ5
-         kHoZXGKB/wUiwJqPpXosiRiUg2hPw7bzbrnO8zmdGn1iDgq9e0LeJvHMmaGTDXCBMEdc
-         +7fw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1756822330; x=1757427130; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rNZKVTJfYG5mU9g/1mQ/DuNW173Ja54Z3lvAivJbbvI=;
+        b=X8CPfwPl/w1H4cfcEG/iP0c2UeQrUabl68gBwbwapsQYkPgB8BCiblYAV7u9a/oS/U
+         iNbEtgULIEvR5794aW0IctA+xpb8s6Mcy4gDxdzkl1fOZkyXeJOhSlluYymrm3KBkmCY
+         NQCmVie1kGYTAc2P6DHl73Sk3WFtlb3MveIgiTUKVX1AmTHgF2dNjAHcJ7ekK1+xmSFS
+         9ddQ3+FwgEUZZ7vk9U+C8UMzQ2fSB649rkhVBCtuV9+lZQjFjPJdfPV/1xammkqQ/vx5
+         gnHg7yr8/6V5bvxAkECXo2cuodxS1a2Tkq4IdPH3oYqWZRA89H41wUvRjg3MQPxw2co5
+         w3Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756821247; x=1757426047;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZcxMe3QH1ctzyMJBWwg/0kpd4+pnYIbcDb1kDpHMe0U=;
-        b=NpYjRUpr/HdftdMaypvxr8JJ5nnYGH0dm2cpLWE3R6tocZljOhRE1cITPCIws7JXwP
-         qmKNz2PO9YeB9b4XlcYtDPyKmghStHdm6KgIp3msIUqk52WRAGR2MX7996CVfN2qfDzO
-         s2rBeVjM9X37kPmF/GqrbmOkMQdeRfrFdc9fmu2FKl66YYj8q4cBFgTfHKrzcB52jnIi
-         EEV7hekQ5rfD8wsjtorlAZHM9et9xevx3cR0nTtJB9tbFnFJaGY6THG1RkI7XYCiLqG7
-         evWtAthDBpt0FnJThvCSGojCT/6jWxSsbsg3ciDjvGgqgfQsMSpXcZ45RJMUtIlDHLvl
-         r7fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7ShZlw0dqr6fi1AmApkUBWY8llxVmh4vuTzzv4Rw7F0ZLufB7GAx+l2qPiCuMHkuQ/mSD7AKohzc=@vger.kernel.org, AJvYcCXVlLZpVVFMmV6MWyimoh0MM9H/PjMr/9Rbl3d9JRa/bJoL/xUNzKmERM6bC4Z6bpub3nMoOczu+p8hmdxh@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvJHcOO4RE67wxkeMOubxvuwr0dMQGkMW6JT1KqEPMnVmTzfCh
-	Ow+d/QlVj+SYFJ/J4Jq16teKqPJsG8yE7P3Qb+65vl4cLJq7sxco6kft
-X-Gm-Gg: ASbGncvNtgrG7Fa6fco9tOIf6tJce+MmcZHEHaZFxniPc/hvJk3ch+nmXYkhqg9OnPM
-	H95Xa9aGDDFyuejVHlXGVehfymZrzcgrS34R1Pg7VOvIg91H4df1xH+OiRTkAEDCvguVVzy66lc
-	AiKvZKOqeKy5sA6yd8r/CSJo5EKSaE11wnItufSPSqL/jmM10BCVLQ4naGG/yTkPjHAYCBKWX8g
-	dYleUHp3wLHVo5VdW5+S9z9rpEovflSZMr6S9rzNcT3WzsDWJ8Xsbcf5vznZdGzn1Xg1/uKyW1K
-	7BQ5uQYmcxJmfCAVVg3P8gkpjeUNwDMcTwFK/BYHT7IybzXEkZOKu3jIuksIBEjl+CywXldoX2d
-	7YOa9wWsam9AT/W02O7xNpkXGL57ggPU=
-X-Google-Smtp-Source: AGHT+IGENRHM1Pz8hFEdjUOEOg5BzHynebxQ7yjCDQCZKi11h/lXs56X+WsaUOZOeNjIy9LnLTpGzQ==
-X-Received: by 2002:a17:907:94c9:b0:b04:2f81:5c35 with SMTP id a640c23a62f3a-b042f817f8cmr699512066b.34.1756821246348;
-        Tue, 02 Sep 2025 06:54:06 -0700 (PDT)
-Received: from legfed1 ([2a00:79c0:620:3f00:22ea:3d6a:5919:85f8])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b01902d0e99sm836219566b.12.2025.09.02.06.54.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 06:54:05 -0700 (PDT)
-Date: Tue, 2 Sep 2025 15:54:04 +0200
-From: Dimitri Fedrau <dima.fedrau@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: dimitri.fedrau@liebherr.com,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Chris Lesiak <chris.lesiak@licorbio.com>
-Subject: Re: [PATCH v2 2/2] iio: humditiy: hdc3020: fix units for thresholds
- and hysteresis
-Message-ID: <20250902135404.GA145952@legfed1>
-References: <20250901-hdc3020-units-fix-v2-0-082038a15917@liebherr.com>
- <20250901-hdc3020-units-fix-v2-2-082038a15917@liebherr.com>
- <aLbneKXFd7Nc711T@smile.fi.intel.com>
+        d=1e100.net; s=20230601; t=1756822330; x=1757427130;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rNZKVTJfYG5mU9g/1mQ/DuNW173Ja54Z3lvAivJbbvI=;
+        b=XV7O9y5Uoh9tlVDgqAMzWvAYWjdiwdxZG0DOoXAzAoOyQwZSvEGxsTOYg6NHL4ZpUc
+         4k0b5ny+hqNLHqoiXlOzI8xa2o9wlErBqzv/VhuVTTQ7rL2qc+qt3U1oszAbRhAHvsTE
+         Fhogv1LTm34Tvg1EGN+AEWld8BSNh0xsRL31rvYh4h9jCHerGuv5TEW+D9RRyN95K8ZY
+         KeVRCjaL3b71saMUaq/e3ENx9CSs9xkBJokZofPVKk9COR1jErEBw7kAzlcSrAidVIqw
+         dKnrfQxgudaz3sn/+REoN3AwzhLER59+7Pca1UNN5j/qlxrieT3k1YfVbbfR5SZxHy+Q
+         Uiag==
+X-Gm-Message-State: AOJu0YyRXokFXDnWeaV1CWtwTEakcz8IVP78YZCJvZLd6GCbTqqj47wk
+	LN/aZbgG82S0DY9Nbv7pJd3SfyUHOhaHoz93e3g7FNxLYqPoZ1j/Rnyu5WZEG7hr0yQ=
+X-Gm-Gg: ASbGnct+wL1YomQrHZThuw45JPLvgfLh4u9KQpnY/fcH0dkNzRk38/sRcqemEUPHCFM
+	UX0uvQ1p9M3RxRgKe+lYVlCbUMBrKJGLBkgFto8wXELamWcvlKzzxZqZSkLrnKmsxkaTCZ5wX1i
+	G4JPOvNW3g/6hCNZPoMtsCE/sD0GDlrXUavG0OtXCzBd3V+0MXwx+hv30HffWuRJ2C51Nu6j/eT
+	hvf6SL3D5RodiDTCLLKpZRQBWWP6i39tSkVsnfH2IaoBLF+t/iQ4z2Qvrzjb5qrkf3ugXMZjZGQ
+	/iGqJNyDKJSIVibfwsXMRXWmoQIVyrrLPLNKvyoxC9r/ik1h/B1WXopm7LR/K9Pt42bZM7mPoTO
+	of24+nYJp00xa/nkMECVMtFHdpuLMjv0Ki6F3sQBG4F0tCuvvk+DsGpQitHGxWlyzr3VUTdOVF0
+	53qo1ZyIRifStCj9ih0Q==
+X-Google-Smtp-Source: AGHT+IENGpjIQSKPQ3/J4nef7N7bdmmja3tu+Ub53CLM4ZX5k8/MduKyP43yqbZL+BkgmS4ttc1JIg==
+X-Received: by 2002:a05:6820:1c9f:b0:61e:1fa9:ad86 with SMTP id 006d021491bc7-61e336f522emr6089858eaf.3.1756822330090;
+        Tue, 02 Sep 2025 07:12:10 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:8d95:114e:b6f:bf5b? ([2600:8803:e7e4:1d00:8d95:114e:b6f:bf5b])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61e31f1d616sm912783eaf.8.2025.09.02.07.12.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Sep 2025 07:12:09 -0700 (PDT)
+Message-ID: <0cc072ab-dbf6-40fb-b753-13453b904974@baylibre.com>
+Date: Tue, 2 Sep 2025 09:12:08 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLbneKXFd7Nc711T@smile.fi.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 2/2] iio: adc: max14001: New driver
+To: Andy Shevchenko <andriy.shevchenko@intel.com>,
+ Marilene Andrade Garcia <marilene.agarcia@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, Kim Seer Paller <kimseer.paller@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+ Marcelo Schmitt <Marcelo.Schmitt@analog.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>,
+ Jonathan Santos <Jonathan.Santos@analog.com>,
+ Dragos Bogdan <dragos.bogdan@analog.com>
+References: <cover.1756816682.git.marilene.agarcia@gmail.com>
+ <f3ea9c127b7836cc978def5d906740c6da1cfb1e.1756816682.git.marilene.agarcia@gmail.com>
+ <aLb0_TKn96nGbk6l@smile.fi.intel.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <aLb0_TKn96nGbk6l@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Andy,
+On 9/2/25 8:45 AM, Andy Shevchenko wrote:
 
-Am Tue, Sep 02, 2025 at 03:47:52PM +0300 schrieb Andy Shevchenko:
-> On Mon, Sep 01, 2025 at 07:51:59PM +0200, Dimitri Fedrau via B4 Relay wrote:
-> > From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-> > 
-> > According to the ABI the units after application of scale and offset are
-> > milli degree celsius for temperature thresholds and milli percent for
-> > relative humidity thresholds. Currently the resulting units are degree
-> > celsius for temperature thresholds and hysteresis and percent for relative
-> > humidity thresholds and hysteresis. Change scale factor to fix this issue.
-> 
-> ...
-> 
-> >  	/*
-> > -	 * Get the temperature threshold from 9 LSBs, shift them to get
-> > -	 * the truncated temperature threshold representation and
-> > -	 * calculate the threshold according to the formula in the
-> > -	 * datasheet. Result is degree celsius scaled by 65535.
-> > +	 * Get the temperature threshold from 9 LSBs, shift them to get the
-> > +	 * truncated temperature threshold representation and calculate the
-> > +	 * threshold according to the formula in the datasheet and additionally
-> 
-> Replace "formula in the datasheet" by explicit formula
-> 
+...
 
-Ok.
-> > +	 * scale by HDC3020_THRESH_FRACTION to avoid precision loss when
-> > +	 * calculating threshold and hysteresis values.
-> >  	 */
-> >  	temp = FIELD_GET(HDC3020_THRESH_TEMP_MASK, thresh) <<
-> >  	       HDC3020_THRESH_TEMP_TRUNC_SHIFT;
-> >  
-> > -	return -2949075 + (175 * temp);
-> > +	return -589815 + (35 * temp);
+>> +	ret = devm_regulator_get_enable_read_voltage(dev, "vrefin");
+>> +	if (ret < 0) {
+>> +		st->vref_mv = 1250000 / 1000;
 > 
-> TBH, I prefer to have the proper units be mentioned in the comment along with
+> (MICRO / MILLI)
 > 
-> 	return -2949075 / 5 + ((175 / 5) * temp);
+>> +	} else {
+>> +		st->vref_mv = ret / 1000;
 > 
-
-You are right, will add the units again.
-
-> 5 itself can be a definition
+> Ditto.
 > 
-> #define ..._PRE_SCALE	5
+>> +		ext_vrefin = 1;
+>> +	}
 > 
-> and used everywhere.
+> And with deduplication refactored code:
 > 
-> ...
+> 	ret = devm_regulator_get_enable_read_voltage(dev, "vrefin");
+
+	if (ret < 0 && ret != -ENODEV)
+		return dev_err_probe(dev, ret, "Failed to get REFIN voltage\n");
+
+Most errors should be propagated, so we should also add this.
+Only -ENODEV means that the supply was omitted from the devicetree
+and we should use the internal reference voltage.
+
+> 	if (ret < 0)
+> 		ret = 1250000;
+> 	else
+> 		ext_vrefin = 1;
+> 	st->vref_mv = ret / (MICRO / MILLI);
 > 
-
-The explicit formula in the datasheet:
-
-T(degree celsius) = -45 + (175 * temp) / 65535
-
-The formula before the patch:
-
-T(degree celsius) * 65525 = -2949075 + (175 * temp)
-
-Adding the PRE_SCALE into the formula doesn't improve readability from
-my perspective. I would prefer to just scale the result as it has been
-done before.
-
-> >  	/*
-> >  	 * Get the humidity threshold from 7 MSBs, shift them to get the
-> >  	 * truncated humidity threshold representation and calculate the
-> > -	 * threshold according to the formula in the datasheet. Result is
-> > -	 * percent scaled by 65535.
-> > +	 * threshold according to the formula in the datasheet and additionally
-> > +	 * scale by HDC3020_THRESH_FRACTION to avoid precision loss when
-> > +	 * calculating threshold and hysteresis values.
-> >  	 */
+>> +	ret = devm_mutex_init(dev, &st->lock);
+>> +	if (ret)
+>> +		return dev_err_probe(dev, ret,
+>> +			"Failed to init the mutex\n");
 > 
-> Ditto. "percent scaled by ..." is much better to understand.
-> 
-
-Ok.
-> >  	hum = FIELD_GET(HDC3020_THRESH_HUM_MASK, thresh) <<
-> >  	      HDC3020_THRESH_HUM_TRUNC_SHIFT;
-> >  
-> > -	return hum * 100;
-> > +	return hum * 20;
-> >  }
-
-Best regards,
-Dimitri Fedrau
 

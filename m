@@ -1,143 +1,121 @@
-Return-Path: <linux-iio+bounces-23628-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23629-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2477B3FB39
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Sep 2025 11:52:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70584B3FD54
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Sep 2025 13:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A671616B57A
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Sep 2025 09:52:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32BF84884D5
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Sep 2025 11:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551C92F49FE;
-	Tue,  2 Sep 2025 09:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A54B2F83B1;
+	Tue,  2 Sep 2025 11:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lmDZFSnK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XC0EUBnf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A8B8F49;
-	Tue,  2 Sep 2025 09:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672AB28541A;
+	Tue,  2 Sep 2025 11:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756806614; cv=none; b=ZzsohBLdr5kPW0SswBka7uMygQOTWaZF/NgEv4ozWn7xJWnTWkVArbSnSI8NKAbE5rg4mvHirA9iY9ATJDPuNxKpyS2HuIjuaj1xEcvHKOsMbBcMpUN75MoeRqOKYawAsA2arRLcExadpi6p69IxRGXTVIqIXCGg7RARrsqjWBg=
+	t=1756811218; cv=none; b=GJXKROApomwepYtVkawwKzBB5sfQpALb5/NUlCSo9wOnfWyfypnag9kitzdpsflojoWU6DxfxWXqECd6x+rUOy8Va5yT9gPsGHNo5iGS7e4d9hdJKHy1YrWfYLad1fXnseV270LkGJ1wI9/E8dlkXWPmi/7WxSW1NlGN/yOpfLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756806614; c=relaxed/simple;
-	bh=A2Fv5RDR544whpRy4Vv95fjWFBquzxcBPQkrdLpUAso=;
+	s=arc-20240116; t=1756811218; c=relaxed/simple;
+	bh=bqhKBbFaxlfNUpOUFZdfQ3oL0LBK5S3VEHPSL8knTQI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LE8PmNCMm6HdavZ2NypnpBcBBq0tLwM9BFzsBoxZtmkYXM41AMUWDeCqHmtdxEYgo8Ffe+FkVGGKZYqsC/e6eqD4TrmIy1okz22qzZymVVZscrmfk7k+HQO7XIdmsGzIwWV89u4iipn1PGB/sqHoGCixiLmyZUVLz1m0lOjFluE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lmDZFSnK; arc=none smtp.client-ip=198.175.65.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=RdZ5fyhB3J0zBVLN+zeMD2uBGOS32jZPL9xIUvGVqiJ2thF/OCubMzoZghkG/c/WXCbXU01Dw/rxdnooMuk+haXFD4lAplCnRgdasKCe93LX7Rj9jHe+LsSY1JOjS+9drs/wgo1QfID6PV+U+msesKBrIf7Rrl5R85eGwKT2qK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XC0EUBnf; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756806612; x=1788342612;
+  t=1756811218; x=1788347218;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=A2Fv5RDR544whpRy4Vv95fjWFBquzxcBPQkrdLpUAso=;
-  b=lmDZFSnKaFOVjokz+vw7SymOavSEbvI7GpaNYkeU/kMJ4xFwQr2j+7zY
-   dvC57iOu4ZUAv1BIUCrJV/4lR4P7eW5Q1/qbnuYfBN04Wl2TauV+/sQw2
-   P+3llk6++UyS0Zgc0l/fOO9yjk0z2ex6Hm8J5HL2xU85mrk2YjIHssIz5
-   9DWss6rABBxQcJD//GWtwsT08l17U+81OpUiAijIpxro/Qyu67A9PqaYN
-   wJwuXbS0eKO7bSygXH3dAGCtnc+MaWQY3Nd1nNqtDfdP9tQ+C7tpfLchu
-   RQMHqY1CgCz0/4KBlPyU4Y6ZkzyeBwkUafk9W9toHuwEV11BsW0LTQl+4
-   A==;
-X-CSE-ConnectionGUID: DFYlQKWBRi2SNlnv1SXpWg==
-X-CSE-MsgGUID: rHaECquQSX6TRc95d1ABHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="70174250"
+   mime-version:in-reply-to;
+  bh=bqhKBbFaxlfNUpOUFZdfQ3oL0LBK5S3VEHPSL8knTQI=;
+  b=XC0EUBnfmMNB4KdOn/MV9gdDib1Z5FFmKn0AJ3bC+EzaSjiimziUl1SZ
+   RRNBDQNuXl8RC7qYJFW7Hfc2723Mszsa5h9FIiv8LNJjM6A0PNcrjQo2W
+   OC+KnlbNEz7XglIfPjg0BGK2ucP6c5B7HCEsAlK3oG3Fj2vXz4wpmyGn7
+   QC48Io6xTobIHuUU9C6c6LjrMTQsUWOnLrdg7Er/MoWV5L20OLR46eXCx
+   kESrBnoHuSHjGy/WZ6ncDtjdc/7p3ZaEDXdaG1fE+LnFUB6QlsSblYkzM
+   XojCnv3sFt75W3rZ1DmbjQ5B6nWhPNAk9NT2ROmgGyKlzanM4Ex9/IJYD
+   Q==;
+X-CSE-ConnectionGUID: xBSqz30/S2qTu3UKFaA3nw==
+X-CSE-MsgGUID: Q60/psc+ThWaosTUxkmo4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="70460314"
 X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="70174250"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 02:50:12 -0700
-X-CSE-ConnectionGUID: fhCWKXC+Q0i1cOxPYiuDVA==
-X-CSE-MsgGUID: 0rsr/RUeTIOZHYHBMtqPAg==
+   d="scan'208";a="70460314"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 04:06:57 -0700
+X-CSE-ConnectionGUID: wGl8brGaRp2Au9fh2S0SJA==
+X-CSE-MsgGUID: khpair++SS2sFMTJC8qy8g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="175612542"
+   d="scan'208";a="202193796"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 02:50:08 -0700
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 04:06:51 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utNeP-0000000Aev1-1FkK;
-	Tue, 02 Sep 2025 12:50:05 +0300
-Date: Tue, 2 Sep 2025 12:50:05 +0300
+	id 1utOqe-0000000AfvR-0aC0;
+	Tue, 02 Sep 2025 14:06:48 +0300
+Date: Tue, 2 Sep 2025 14:06:47 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>,
-	Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] iio: adc: Add driver for Marvell 88PM886 PMIC ADC
-Message-ID: <aLa9zbls-Cl4PNQd@smile.fi.intel.com>
-References: <20250831-88pm886-gpadc-v2-0-759c1e14d95f@dujemihanovic.xyz>
- <20250831-88pm886-gpadc-v2-2-759c1e14d95f@dujemihanovic.xyz>
- <aLW9O1rnhUqqh02r@smile.fi.intel.com>
- <3031049.e9J7NaK4W3@radijator>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+	Lakshay Piplani <lakshay.piplani@nxp.com>,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+	marcelo.schmitt1@gmail.com, gregkh@linuxfoundation.org,
+	viro@zeniv.linux.org.uk, peterz@infradead.org,
+	jstephan@baylibre.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, devicetree@vger.kernel.org,
+	ilpo.jarvinen@linux.intel.com, jonathan.cameron@huawei.com,
+	akpm@linux-foundation.org, chao@kernel.org, jaegeuk@kernel.org,
+	vikash.bansal@nxp.com, priyanka.jain@nxp.com,
+	shashank.rebbapragada@nxp.com, Frank.Li@nxp.com
+Subject: Re: [PATCH v2 2/2] iio: temperature: Add driver for NXP P3T175x
+ temperature sensor
+Message-ID: <aLbPx8yPP_EgzTmW@smile.fi.intel.com>
+References: <20250827103105.2472328-1-lakshay.piplani@nxp.com>
+ <20250827103105.2472328-2-lakshay.piplani@nxp.com>
+ <72c3ae7d-cb54-4a1b-a27a-9e673ffaddcc@kernel.org>
+ <20250901164717.6cba2d50@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3031049.e9J7NaK4W3@radijator>
+In-Reply-To: <20250901164717.6cba2d50@jic23-huawei>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Sep 01, 2025 at 06:51:19PM +0200, Duje Mihanović wrote:
-> On Monday, 1 September 2025 17:35:23 Central European Summer Time Andy Shevchenko wrote:
-> > On Sun, Aug 31, 2025 at 12:33:05PM +0200, Duje Mihanović wrote:
+On Mon, Sep 01, 2025 at 04:47:17PM +0100, Jonathan Cameron wrote:
+> On Sun, 31 Aug 2025 18:46:32 +0200
+> Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
 ...
 
-> > > +	.max_register = PM886_REG_GPADC_VBAT_SLP + 1,
-> > 
-> > What is this + 1 register? Why is it not defined / documented?
+> This device does have a novel definition of register. There
+> are 4 of them, 3 of which are 12 bits zero padded to 16 and
+> the other 8 bits.
 > 
-> It is the second field of the vbat_slp channel.
-
-Can you define it separately? Or define _MAX_REGISTER to be equal to that and
-put a comment that _VBAT_SLP takes two (byte) offsets.
-
-...
-
-> > > +err:
-> > > +	gpadc_set_bias(gpadc, chan->channel, false);
-> > 
-> > You do the same in the other branch and checking there for an error. Why this
-> > one is so special?
+> So, I think only way to wrap that up fully in regmap would be
+> a pair of regmaps one of which has only a single register in it.
 > 
-> My rationale here was to not override the error from either the first
-> gpadc_set_bias() call or the subsequent gpadc_find_bias_current() call.
+> Agreed though that using bulk accesses is not a good plan.
+> I'd been assuming that was actually a pair of registers, not
+> a single larger one.
 
-Maybe this needs splitting / refactoring to call bias setting separately?
-
-...
-
-> > > +	iio->dev.of_node = dev->parent->of_node;
-> > 
-> > No, use device_set_node() with the respective parameters.
-> > 
-> > But rather debug why firmware node (or OF in your case) is not propagated from
-> > the parent device.
-> 
-> I guess it is because the IIO device is registered as a child of the
-> GPADC platform device, which does not have a node unlike the PMIC
-> device (GPADC pdev's parent). It seems that the regulator cell
-> registers its regulators directly under the PMIC dev, so maybe I should
-> do the same here with the IIO dev?
-
-Maybe. Not an expert in DT.
+Why is it a problem? We have PMICs which have 16- and 8-bit registers and we do
+use the bulk transfers. Yes, we have also an exception when it's required to
+use byte transfers to make device work, but otherwise it works fine.
 
 -- 
 With Best Regards,

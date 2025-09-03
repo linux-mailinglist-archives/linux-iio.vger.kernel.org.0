@@ -1,268 +1,197 @@
-Return-Path: <linux-iio+bounces-23686-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23687-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2B3B4219F
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 15:31:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10362B4241B
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 16:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70B13189C944
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 13:30:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A069A482CC6
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 14:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AED63090CC;
-	Wed,  3 Sep 2025 13:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B55930E829;
+	Wed,  3 Sep 2025 14:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GwxHvLJj"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ElGRsFvJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A905306D36;
-	Wed,  3 Sep 2025 13:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6C730ACFD
+	for <linux-iio@vger.kernel.org>; Wed,  3 Sep 2025 14:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756906232; cv=none; b=Oy3QqYITlRjoxyazpo5gH+HpsIE6c+JW/pGpgY/DIF4a3I2Jn9ttpLivXmxrKDvHFHcnLvxWKV6RV/NiDWpYoWUjr0Bs+Ffs+rrLNjA/GzbXi91EmvcCfyZAWj3n2tkBr0CHFYgILw79slhtkySyqUgqA+4IxchC1CGeU/CdCOY=
+	t=1756911242; cv=none; b=ouV5y17slz73mqLGltv27d38p86sOujxgb8xnu1wWC2EpGZv41hAA1pakrqFNEpAxKuXZmeuBc/8gR7NBzYPQx85g8gHUA73k+o9Wue6JpdJqPMuDN9whcN2o1kTw62Gx1xfyN0P+5mbHqzs//enGJQsuukwGcnJBR3FH9bw+Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756906232; c=relaxed/simple;
-	bh=KQI7/pDIhz5ZQM/Z/ICCvoi8h1PcS9zhNsNSDrzD4gI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B/5y0/018fEI8AZbSlM2/oGC79zwGDuEaXm3QJrOE3cTQnz8xeACFhN5Onu429NHjHIyYQHdgvKcLYPrJ+pKZULi1fwS4THQ+B2X9JKE1gdK0/XEcl9g4/1oqcQHxinNEgGfoIT+/a6qmFoj445Hi7xU0GeuGfaY92tTfLb+QA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GwxHvLJj; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6188b5b113eso8807096a12.0;
-        Wed, 03 Sep 2025 06:30:29 -0700 (PDT)
+	s=arc-20240116; t=1756911242; c=relaxed/simple;
+	bh=unDqZyH1QB0AZnE+jIy/cbveVXnikGD65lmG99tqIe0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QG7En+ipq3CPpGBRM4vC36QEZXvFHEAiozrThWZOShFgTfDhhriybzfJVTzXQGtlKnPhEzg6pqmIQf2kj2aPvDf+RLCECCilgFJQllnajs6QDIghVFyB3QoF3lcecDyerMy9MK18NjgwfboPL2r4CjRxCmIRYc4GGP1Lpcy93Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ElGRsFvJ; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3dae49b1293so15098f8f.1
+        for <linux-iio@vger.kernel.org>; Wed, 03 Sep 2025 07:53:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756906228; x=1757511028; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9kY4ld87xkJ109VN1e4fZ8Pvba4PV6yLWSNAEFQE588=;
-        b=GwxHvLJjags3l5ZaPhN6a0gimXjNJfsNlg1R1sMMbtN5D3C7KtN+JCRgFds7PJAXh6
-         3d7ETmZYfw2GoM7omqLnQ810ITpEUlSjW7OgY9iKJx04PwMTy9BNZmVM8ZCY10Fl7A/8
-         nASBDbW6H7r2t9FFBkylNVJz2damEe3WXd02OAM6QpSyqar1LB4RRzglO448pHJkEgMR
-         O04Sq1G2DvpJGkZGS4g+Ky+R770wKE7eCj94SvLC7XWQoixDKN/aK9m+LFjN9KIDWQud
-         p1AeqYPSJtCLXdErLc+Vwf12CThqqWaIDaGjjkKQYp7UNNLmPE3HsLGP9VFtZTy/hTwk
-         FGaA==
+        d=linaro.org; s=google; t=1756911238; x=1757516038; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yoaNAmWhIibGu6l1WRy5RqFKcSEP315ehpRCdLHsl14=;
+        b=ElGRsFvJjKb6W+daOxlv/O2CFyeAtJ9hdLOWpcnFaGSxSPsuYAkaxMmOAg1MW9sP/G
+         vLzzNlbMhIlhOer4oDjNeEqtqVnfOO200OW9o9b9qbjgtypayBW2sIMiifggZFNwx14y
+         /ZMgdlaE7XoJVhotKXe9+KajSTPcCUWhvfiZJPnwDFRDLRjL4Wq8CS1ZIR6da0mjq7P9
+         apEVHzZtQVfRodptHAtsVTcT3/XqT0WDMG5oEnpkm0LRK3fmsw5n7npiV9aP3cKAPzQS
+         37F+atFcfecj2TJlaucd08UiTxlytYxBsairpQY68RtR5uBWiIztgvvEJ0a+61TDflWE
+         cQeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756906228; x=1757511028;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9kY4ld87xkJ109VN1e4fZ8Pvba4PV6yLWSNAEFQE588=;
-        b=SRgRHmNBdccfj8hvq0AVKRNuwUnnqwMPRX+0PEurIswdL+Izjep1sc5JiHHtfSZrZX
-         82O+r3LwkPlGaB1JGRymKpquRXK3RnQYdnu7yFDPJCSM4mVyi3XRX60BW0flYWQeT+Ng
-         c4Rlcjqt3zqvoqPiIDuvxToopThDp0Sl8E/6VGJQIYNpoQv7HFOqrwzFVfseIasAFA0d
-         acNjTLui0Xl+JZkERWsXEdcXwL9bUjX1huslhUmE8O9zwmeBuHLMw40ZlPYnB59SVhon
-         pjpzH+bAhkRKJHyOgljO1wc2qGpvlfybrqwziqqUfpjuQeuVd7KaVMTiFK/sseNsPZmF
-         4Q3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV/HV97cwEGBTfUJODCJPtp0PlmjTisqQ/9lpb6sJD6XNEt7DBRH4Y9POh4kqjCI9/yOLs5VF5s5LjssQ==@vger.kernel.org, AJvYcCX32MDaBsC13NVkSCJoa90/IlmVLcYmEmec0lcWyCB5V3GJBOUtRd2L9Pxges5AIIkrX57gbuwPHbl5@vger.kernel.org, AJvYcCXPsN2b2nMo9mGe3DSKMiEgSFv8e4A9NONUVdCV5N3pl5//WU2ueCyMe8nxomRAUk9/4eIl6twPEyFaYd2O@vger.kernel.org, AJvYcCXa2zvyg5oaqwtb+Zh7pY4WuyF1v0ZFynVgDZT/lEylKUKrdztPJisaD3H2xUE6wHRyEyjQyDuYo++9@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwQEHNiaa6G4pnBFR5NbZW+ywVg4JdFgoip9MU/LaZaDHIkGtH
-	pwMJwrxcTg5RNwx0YrQSGJxLhj+RvDYBAp9LrKwFqaWYsIV9HP8XMpooiAkNOUvt3ATl1osVKzu
-	HNyC5EV+XmKM/vToHYil9ogbNWlRAGFs=
-X-Gm-Gg: ASbGncvtl9mUcCX97rbRv00gUalkHKLYkZ9o7vQa38irIrDJmdIl3jjHmWwPnv6JaZK
-	WJFi38FPkeu38LtZDhl4eHNyYMqbcJ05tfqqa4jGkhIfsYWqZz/WSU5ffVYlOeNtxM1dKG+I+Vv
-	/zWyW22p5F4+B8GmWwRCvfTIuB7YNRXq8NNr8GOwKVV2jORyrmpekJpiyMczlh7L8B0D9x8RVUs
-	8x2k5ypRteY3896RDuv
-X-Google-Smtp-Source: AGHT+IFi3i9QappuV1Dxsy0Wf3FMyqqZE3MA60vyMDHwbi3OD+mCvydMq+joyaZp/sQKizttQjpuUyL0BU+nG4cZmoI=
-X-Received: by 2002:a17:906:9fc6:b0:ad5:d597:561e with SMTP id
- a640c23a62f3a-b01f20c2808mr1493846766b.56.1756906228106; Wed, 03 Sep 2025
- 06:30:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756911238; x=1757516038;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yoaNAmWhIibGu6l1WRy5RqFKcSEP315ehpRCdLHsl14=;
+        b=K67DNEsd/vsDr2Arh67M34dX0Rv/NKBiWTGnBQT2K3B75vkyat4P6/X6eAbfiy+KNS
+         2jeE5wS234kQ10vxaF4I+MPv9SQyz0u3/K9ss7/y+wF1kg4s9Aeqd8jzTNJpUbXrtSse
+         BP8r/jimCVMa0Ny1ykStJzTSr8RdWqurTl9nON0x9EEwtc/K2kQx3ZVv5pLdgNVD5g+A
+         rArUW52nuA+gA/5DBH29D9z92JPFc4v60qL85QQ3WlWYxdRjSr4wtgJLZ2asrrobqM5c
+         AoA6B0rcIJuKGYHsU8U+TetvjLJPZXclYcqrwC2qRqlSucu8XyWhyriY2xevrZINetnR
+         QUjg==
+X-Gm-Message-State: AOJu0Yw24zcjNgNebV/JBy8mY3GgEKAcjSvdNWC94Z8AEbBKGgPqR4p9
+	2V3FtBXh4d1YrIIpCQwtYq31BwLtXsnYP3HpYt1PCmjZb50gWvlewalM64JN2UGIILs=
+X-Gm-Gg: ASbGncvabc8bUrnQSxNGqQag/XOurG9C2negADc3ruX8Oe6KyXHFUD+QEqvOwC2pjCe
+	8092L5+lOfrpiXuktjZKqr8nKDyGEB9wHAKTLdAkPcZsMaUiCD3q8OvU7SNITXYUw8nP/h+41mx
+	iZ2B/qBaGCpIIkyYDRC4hf5Mi2o4JAPLhV8qIxn6aS0mPU/vlz3rCuQVRUwlrO9huayLFOUjDhp
+	fjpPVYTsRorHhYjcd7pbZZQzyo1THrflgXS/7Mcv+LDN4AV7UFT/Bh1Yuw4Zjef7Jpifao79Vkh
+	iQg9szMC8oA4PPrmH1d4RxDppYJRJLE+XsubDJgVzQN6lWHnI+0QyWzA0xtQHwFICtakCpye7cC
+	HBvXDRWBlzOwQgzsRm1eKOefkXS+z2WWjy/7KwLhs3qE0c9JayK8TY6vt3LioCPMU1R4qnZfUY1
+	Gn/De89wybZv2lSh50qGBKDXk=
+X-Google-Smtp-Source: AGHT+IHKfKTbLX6DEzjRIqHHgWQYsVAqnbGKlA7TGvZ37mdtddbwJKcqflssNkEpjctd+pomGp9Tmg==
+X-Received: by 2002:a05:6000:2908:b0:3d1:8d1e:906 with SMTP id ffacd0b85a97d-3d1e08a06aemr12584267f8f.59.1756911237655;
+        Wed, 03 Sep 2025 07:53:57 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:2a30:223c:d73b:565a? ([2a05:6e02:1041:c10:2a30:223c:d73b:565a])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-45b940bbc0dsm89079915e9.2.2025.09.03.07.53.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Sep 2025 07:53:57 -0700 (PDT)
+Message-ID: <3659b492-c135-4fe1-9ffe-70877e4da0f5@linaro.org>
+Date: Wed, 3 Sep 2025 16:53:56 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1756813980.git.mazziesaccount@gmail.com>
- <08929460fe11dd0b749c50a72a634423f13f4104.1756813980.git.mazziesaccount@gmail.com>
- <aLb8HuIG0XXLu653@smile.fi.intel.com> <00ee1968-a471-4d2b-a024-4bee00e40513@gmail.com>
- <aLglJoqBDap_eMIj@smile.fi.intel.com> <10c6b0c4-d75f-494c-bb3c-883c06cf3bc2@gmail.com>
-In-Reply-To: <10c6b0c4-d75f-494c-bb3c-883c06cf3bc2@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 3 Sep 2025 16:29:51 +0300
-X-Gm-Features: Ac12FXztiXPEVydU5mzlqQ25Dyf9oVnKji_S6mRJICGVz4OIiv4RxuoHYKEGzMA
-Message-ID: <CAHp75Ve4vgU5kK3z3bZyGqDOPVkMbW7RUd6_EA3jjZSeruWs=Q@mail.gmail.com>
-Subject: Re: [PATCH 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Marcelo Schmitt <marcelo.schmitt@analog.com>, 
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
-	Tobias Sperling <tobias.sperling@softing.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>, 
-	Trevor Gamblin <tgamblin@baylibre.com>, Esteban Blanc <eblanc@baylibre.com>, 
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>, 
-	Thomas Bonnefille <thomas.bonnefille@bootlin.com>, Hans de Goede <hansg@kernel.org>, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] iio: adc: Add the NXP SAR ADC support for the
+ s32g2/3 platforms
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>, jic23@kernel.org,
+ dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
+ conor+dt@kernel.org, krzk+dt@kernel.org
+Cc: linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
+ ghennadi.procopciuc@oss.nxp.com
+References: <20250903102756.1748596-1-daniel.lezcano@linaro.org>
+ <20250903102756.1748596-3-daniel.lezcano@linaro.org>
+ <eedbfbfd1ba625b6750eb3ae20a69301b8bc3ef9.camel@gmail.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <eedbfbfd1ba625b6750eb3ae20a69301b8bc3ef9.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 3, 2025 at 3:14=E2=80=AFPM Matti Vaittinen <mazziesaccount@gmai=
-l.com> wrote:
-> On 03/09/2025 14:23, Andy Shevchenko wrote:
-> > On Wed, Sep 03, 2025 at 09:52:02AM +0300, Matti Vaittinen wrote:
-> >> On 02/09/2025 17:15, Andy Shevchenko wrote:
-> >>> On Tue, Sep 02, 2025 at 03:24:31PM +0300, Matti Vaittinen wrote:
 
-...
+Hi Nuno,
 
-> >>>> +static int bd79112_probe(struct spi_device *spi)
-> >>>> +{
-> >>>> +  /* ADC channels as named in the data-sheet */
-> >>>> +  static const char * const chan_names[] =3D {
-> >>>> +          "AGIO0A", "AGIO1A", "AGIO2A", "AGIO3A", "AGIO4A", "AGIO5A=
-",
-> >>>> +          "AGIO6A", "AGIO7A", "AGIO8A", "AGIO9A", "AGIO10A", "AGIO1=
-1A",
-> >>>> +          "AGIO11A", "AGIO12A", "AGIO13A", "AGIO14A", "AGIO15A",
-> >>>> +          "AGIO0B", "AGIO1B", "AGIO2B", "AGIO3B", "AGIO4B", "AGIO5B=
-",
-> >>>> +          "AGIO6B", "AGIO7B", "AGIO8B", "AGIO9B", "AGIO10B", "AGIO1=
-1B",
-> >>>> +          "AGIO11B", "AGIO12B", "AGIO13B", "AGIO14B", "AGIO15B",
-> >>>
-> >>> Can you make all of the lines to be the same in terms of amount of en=
-tries?
-> >>
-> >> Maybe :) I would like to know why? As you know, I prefer to keep lines=
- short
-> >> to fit multiple terminals in parallel, so this will probably make the =
-entry
-> >> to consume more rows. Thus, I would like to have a solid reason.
-> >
-> > Sure, the array above is unindexed. It's prone to errors and typos.
->
-> Ha. Thanks :) I see it now when I count the entries :) Should be 32,
-> was 34. I agree this would have been easier to spot!
->
-> > Moreover, it's really hard to follow in case one needs to debug such
-> > a typo and see which value needs to be fixed (imagine you typed twice
-> > the same name).
->
-> Or, if I typed twice the same name twice ;) Thanks!
+On 03/09/2025 13:20, Nuno Sá wrote:
+> On Wed, 2025-09-03 at 12:27 +0200, Daniel Lezcano wrote:
+>> From: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
+>>
+>> The NXP S32G2 and S32G3 platforms integrate a successive approximation
+>> register (SAR) ADC. Two instances are available, each providing 8
+>> multiplexed input channels with 12-bit resolution. The conversion rate
+>> is up to 1 Msps depending on the configuration and sampling window.
+>>
+>> The SAR ADC supports raw, buffer, and trigger modes. It can operate
+>> in both single-shot and continuous conversion modes, with optional
+>> hardware triggering through the cross-trigger unit (CTU) or external
+>> events. An internal prescaler allows adjusting the sampling clock,
+>> while per-channel programmable sampling times provide fine-grained
+>> trade-offs between accuracy and latency. Automatic calibration is
+>> performed at probe time to minimize offset and gain errors.
+>>
+>> The driver is derived from the BSP implementation and has been partly
+>> rewritten to comply with upstream requirements. For this reason, all
+>> contributors are listed as co-developers, while the author refers to
+>> the initial BSP driver file creator.
+>>
+>> All modes have been validated on the S32G274-RDB2 platform using an
+>> externally generated square wave captured by the ADC. Tests covered
+>> buffered streaming via IIO, trigger synchronization, and accuracy
+>> verification against a precision laboratory signal source.
+>>
+>> Co-developed-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
+>> Signed-off-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
+>> Co-developed-by: Ciprian Costea <ciprianmarian.costea@nxp.com>
+>> Signed-off-by: Ciprian Costea <ciprianmarian.costea@nxp.com>
+>> Co-developed-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+>> Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+>> Signed-off-by: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
+>> Co-developed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+>> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+>> ---
+> 
+> Hi David,
 
-TBH, I even haven't noticed that the array _has_ already mistakes :-)
+s/David/Daniel/ :)
 
-> > Recommended way is to use power-of-two per line (and even add a comment
-> > at the end), like
-> >
-> > static const char * const chan_names[] =3D {
-> >       "AGIO0A", "AGIO1A", "AGIO2A", "AGIO3A",         /*  0 -  3 */
-> >       "AGIO4A", "AGIO5A", "AGIO6A", "AGIO7A",         /*  4 -  7 */
-> >       "AGIO8A", "AGIO9A", "AGIO10A", "AGIO11A",       /*  8 - 11 */
-> >       ...
-> >
-> > (or hexadecimal offsets, whatever is better and more in accordance with
-> >   the SW / data sheet).
->
-> Ok, This makes sense now.
->
-> >>>> +  };
+> Just some minor review for now...
 
-...
+Whow, thanks for fast review !
 
-> >>>> +  data->vref_mv =3D ret / 1000;
-> >>>
-> >>> (MICRO / MILLI)
-> >>
-> >> I find this much more confusing than plain 1000. (I know we had this t=
-ype of
-> >> discussion before. See [1] again).
-> >
-> > Rings a bell, but that's what IIO reviewers suggest to do nowadays as a
-> > compromise between creating a new bunch of unit (V) related definitions=
-.
->
-> I am sorry, but this just seems stupid to me. I'd say that it is very
-> obvious for most of the readers dividing microvolts by 1000 results
-> millivolts. And if it is not, then having this MICRO / MILLI is likely
-> to just cause more confusion.
+[ ... ]
 
-No, it tells that we have a value in microSOMETHING that is converted
-to MILLIsomething.
+>> +static int nxp_sar_adc_dma_probe(struct device *dev, struct nxp_sar_adc
+>> *info)
+>> +{
+>> +	struct device *dev_dma;
+>> +	int ret;
+>> +	u8 *rx_buf;
+>> +
+>> +	info->dma_chan = devm_dma_request_chan(dev, "rx");
+>> +	if (IS_ERR(info->dma_chan))
+>> +		return PTR_ERR(info->dma_chan);
+>> +
+>> +	dev_dma = info->dma_chan->device->dev;
+>> +	rx_buf = dma_alloc_coherent(dev_dma, NXP_SAR_ADC_DMA_BUFF_SZ,
+>> +				    &info->rx_dma_buf, GFP_KERNEL);
+>> +	if (!rx_buf)
+>> +		return -ENOMEM;
+>> +
+> 
+> The above needs some discussion at the very least. Have you considered the IIO
+> DMA buffer interface? It should be extendable to accommodate any particularity
+> of your usecase (or we should at least discuss it).
+> 
+> With it, you also gain a userspace interface where you can actually share DMA
+> buffers in a zero copy fashion. You can also share these buffers with USB
+> gadgets. For instance, with libiio, you would be able to fetch samples from your
+> host machine (through USB) in a very fast way (zero copy between IIO and USB).
+> 
+> Setting up DMA to then "having" to push it to a SW buffer and needing a syscall
+> to retrieve the data seems counter-productive.
 
-> I _really_ dislike these defines. Why is MILLI 1000? Why it isn't 0.001?
+I'm not very used to dma. If there is a better implementation to put in 
+place I'll be glad to take any suggestion to understand the approach.
 
-You know exactly a few reasons why it's not.
+Is there any driver using the IIO DMA buffer interface I can refer to ?
 
-> It makes no sense that KILO and MILLI are the same. Especially not when
-> we are dealing with physics.
+[ ... ]
 
-Yes, this is the limitation of computers and particularly of _a_ kernel.
 
-> This is just an obfuscation compared to using plain 1000. (I kind of
-> understand having a define for a value like 100000 - where counting the
-> zeros gets cumbersome, although 100 * 1000 would be equally clear. But
-> 1000 _is_ really 100% clear, whereas MICRO / MILLI is not).
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-See above why this way.
-
-...
-
-> >>>> +  gpio_pins =3D bd79112_get_gpio_pins(iio_dev->channels,
-> >>>> +                                    iio_dev->num_channels);
-> >>>
-> >>>> +
-> >>>
-> >>> Instead of leaving this rather unneeded blank line I would move above=
-...
-> >>>
-> >>>> +  /* We're done if all channels are reserved for ADC. */
-> >>>
-> >>> ...to be here
-> >>>
-> >>>     gpio_pins =3D bd79112_get_gpio_pins(iio_dev->channels,
-> >>>                                       iio_dev->num_channels);
-> >>
-> >> I suppose you mean something like:
-> >>
-> >> register_gpios:
-> >>      /* We're done if all channels are reserved for ADC. */
-> >>      gpio_pins =3D bd79112_get_gpio_pins(iio_dev->channels,
-> >>                                            iio_dev->num_channels);
-> >>      if (!gpio_pins)
-> >>              return 0;
-> >>
-> >> right?
-> >
-> > Yes.
-> >
-> >> I don't like this because now the comment suggests we do call
-> >> bd79112_get_gpio_pins() only to see if all channels were for ADCs. Thi=
-s,
-> >> however, is not THE reason for this call, only an optimization. I thin=
-k:
-> >> having:
-> >>
-> >>          /* We're done if all channels are reserved for ADC. */
-> >
-> > Then you can amend the comment
-> >
-> >           /* If all channels are reserved for ADC, we are done. */
-> >
-> >>          if (!gpio_pins)
-> >>                  return 0;
-> >>
-> >> is clearer.
-> >
-> > Which makes my approach sustainable.
->
-> I like your wording better, but placing this comment before the call to
-> bd79112_get_gpio_pins() is still more confusing that placing it before
-> the actual check:
->         if (!gpio_pins)
-> is still misleading. Comment applies to the check, not the retrieval.
-
-The variable assignment, or i.o.w. the source of the value we are
-testing is also part of the equation.
-
---=20
-With Best Regards,
-Andy Shevchenko
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 

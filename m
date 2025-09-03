@@ -1,94 +1,82 @@
-Return-Path: <linux-iio+bounces-23692-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23693-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F145B426E3
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 18:28:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12F4B4295A
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 21:01:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFAB13A58E1
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 16:28:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1049169E0C
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 19:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BA02F0C5F;
-	Wed,  3 Sep 2025 16:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936572D29B7;
+	Wed,  3 Sep 2025 19:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rap7OZnB"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="haDmpr0F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231FB2DCF6A;
-	Wed,  3 Sep 2025 16:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916F929BD96
+	for <linux-iio@vger.kernel.org>; Wed,  3 Sep 2025 19:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756916883; cv=none; b=Tw68MfGM34kuPiP29w7Jm2uQFhMj+VTEfMyo54eg3hgZVfxqbGK0/w4OA6uidJ65lh3LH7F6cOduoocN9MDGhBcGEDM5/J3jcQWsFcy9swfX/1BumOnS75IPCFHkgulrRBa+4J6YyYysaEBt4eXhqkg1kugJUXLMA0bFGIcnEMI=
+	t=1756926069; cv=none; b=AnOtAWJZWuEdlySO24chMsUI4jxMp2atLhhMZ3Prxwb3Q1tIfZiCU/J4s/k2CL8wulsjPR77egdhzskkhiV3xTE1GMn/Oe9fHoKbq7KERIjtF2JSiXSu9WLCPh1NNAYnrTSOsyMub/8reZT3i5WE6VAcu+z8NwibPmnfj22Wsf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756916883; c=relaxed/simple;
-	bh=EBohViFOa+dsXa4yyop0Bt5H7z7JZZZrsgz7QvPUJ/Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tym4nJ6Sh+vamWvTwIxzYKrdri/6COdpZ0NXRFiEQrTGoiynWyunWMuX4dLQ0Dtp/X7uIrxFcIB53zGkxkRBfk355R5XreA89yuW7rEe0y/skV0KZ5bTTp/C3bKlAqC71fCvNFBnQoFKV/PV/krQwSiYr+6dM4uLsL55bPauv/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rap7OZnB; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55f646b1db8so30814e87.0;
-        Wed, 03 Sep 2025 09:28:01 -0700 (PDT)
+	s=arc-20240116; t=1756926069; c=relaxed/simple;
+	bh=xODGLZ9Q+1m5yw6J5GEe7EMwMLa+qa7Zhi6EYDdMSec=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G7VFyrB+WpC+pzmkw9vbP0CmNp7tKRc5WgFswXQt3fIwPsksd0X0Bh36RRvuxa2qhdOASitNkiWyOFlxcMeg4s4NV08P0yszX5hthnWswx9YuuwoCKf2t3/uxzp4smGD1FU26ouXxsmB6HOostvg4Wwpd1Mk3vwYLFMH2Nb+ipA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=haDmpr0F; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b4d118e13a1so104853a12.3
+        for <linux-iio@vger.kernel.org>; Wed, 03 Sep 2025 12:01:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756916880; x=1757521680; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XKwY4DhElzmLAW44tC2u8BXph+snXe7hdxovk055nXI=;
-        b=Rap7OZnBfV11F8QjOCvFhL7pTrwl6ELtOxYcpkIcgAJiF6pTJ3Md3o+a66dYdbIVpn
-         AVzveGOrD2oBBiXVtM4FAI7+4ynqmuciKlvjfd4heZUAqugnZi0wzdkBjw45bgEf8t2i
-         ABiwqLvAgCrbK8rhUBBGioTGZeZZz5M45Uu4/Ps2C4wtljbGZaMXCPfa98SfKqnSTiCN
-         soOnVLpmfMXHo4PtD0fbDNMLCDKpmH+wu3X0BB7Ie5IMwDftgjvzcdCEzGJ77uu9z6xz
-         hOMZmAflJs/i7vq6vtFWRUWesuHOUKwtD4vQ51V9/aVbRQnOMfcT/RLlhQ3t3zz5bHG1
-         AcLQ==
+        d=chromium.org; s=google; t=1756926067; x=1757530867; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9zm25MUhrKlRPESzXD6p8pratl9QRA/8mwXbQn2w/AU=;
+        b=haDmpr0Fs76AHvjckeqB5d/iUuGiu9lZd6PgvZAjKCmENX6Qu52LxwigLOFzlD306L
+         sfLDcX8qaaTeGu1KfSzCu351D/tZ1cxatspT3vH480HseOU6vjOe/n43+TVRceh3VkIP
+         5Wr3VSuT0aKaROyTPciOQ5nm4BjSG21mbiQW0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756916880; x=1757521680;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XKwY4DhElzmLAW44tC2u8BXph+snXe7hdxovk055nXI=;
-        b=vG87iBiE0FY4upxEabOf7756V7iYxxmkC4rZT8ZYDPWE5XKMCSURmFS00IuGuz1fMC
-         mRuTCfhv3FcqWwo9z+wOohl+p/uL45bUPqMcol6n+rsHEuUuBpW7l5V7mCvej6WlG3E+
-         t/Yq5ojG1QfzgxY1uVKnZiTJwq7Dl5Q4jhZu9YrtDBSi8FnRx2IBi10OAKjr4AtOwaYS
-         Nw8V4ZW3kHFXrqMqxnQIC1qfsnP+BPHsOSZmobKcOjeWU7/QVT0qiXcXSiSgNo0tH3GB
-         srabAI3k+7A4+4hBMkFT1MD4g2Wlf0UdhAp68SW1UCXBlTprnUx55s8O9aTbShoi8Uh9
-         7/nw==
-X-Forwarded-Encrypted: i=1; AJvYcCUC+u1nCWlQvnsnexx8tsMz0jJe9xsCG9CpE1ohFg/sglViAB/CtKtVHg7Kkg/3x+jEGyOTTE4ske9kfiZL@vger.kernel.org, AJvYcCXDu1v5WHkAbY+Nni94B8B9Z+JclSC++0Bryzs5HDUtZAbaCnytA2UUCT1TeILwrRmE7a2J9pQ0X2Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyymWtxahszyyWL/ww5nwS4kRu2TxHoXOtGqfHlGZJ4TgMg8qJ
-	89brf8Jk303sPh2WD7wyKeJKXgPCtkyvj//G6eZp8aKGQcp5lkkLcyRD8BcZQA==
-X-Gm-Gg: ASbGncvPBMcP8CZZjDnN+0bK72Kbif9YiFlz4s6DMpO7eU2sGzVs8nk8N7XiGU2lB13
-	m7R9Uvitso2M+JB8OTns1bKNjuz/4up6Ptq+zNNM2C9ZMwD9eD4E85fJE7764ozDsOv/HltkEZy
-	Tkmo7550dZFs6FdiwiwkvcRKkj88k6aBv6drD9swCC3hiNN6GHsjmUSehfb5PdI23I9EOBLomK/
-	o0TCc+2Skc7QNAm0Wmw+P6FMwbsA3jAOMQXzvWVQI7DA1j3eDdipZhQZ8m7hdGlBa9VoRIsrqYR
-	3hRaQl8Dy7rRAD8KfOZkUsgPsn+oeQ5WklCDjw4006HlDhaDTLPyvVoMKcaAxkrQlUHlmzEHYdD
-	n6FaygMUmfIIQqYBgKjbPrXwX
-X-Google-Smtp-Source: AGHT+IHj3SgFaGchsUOft9OXgYR7Y+TN/YuP+QCJMCjTUO6YbeYAfxIj5WXG+eqiQKKKgXaivyyiMg==
-X-Received: by 2002:a05:6512:eaa:b0:55f:6f76:418 with SMTP id 2adb3069b0e04-55f70948ae4mr5186334e87.44.1756916880061;
-        Wed, 03 Sep 2025 09:28:00 -0700 (PDT)
-Received: from xeon.. ([188.163.112.70])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5608ace9fddsm604665e87.78.2025.09.03.09.27.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 09:27:59 -0700 (PDT)
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Svyatoslav Ryhel <clamor95@gmail.com>
-Cc: linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH v5 1/1 RESEND] thermal: thermal-generic-adc: add temperature sensor channel
-Date: Wed,  3 Sep 2025 19:27:49 +0300
-Message-ID: <20250903162749.109910-2-clamor95@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250903162749.109910-1-clamor95@gmail.com>
-References: <20250903162749.109910-1-clamor95@gmail.com>
+        d=1e100.net; s=20230601; t=1756926067; x=1757530867;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9zm25MUhrKlRPESzXD6p8pratl9QRA/8mwXbQn2w/AU=;
+        b=M14HKIO5uhlyURAZvTGmzn058jfJAhA5P95bk9XCqmTTs6YhSJ1HxXYJK22AWhe7A/
+         710yG3jAIMhRCxswOQcDOzrfpbRdFyutV/i+8Ekc3So/r9aXmTANTfkJqqWcjSIHYqjj
+         clVf0R3IZkusw8zDHwaNPvEfXI8ivXnIgqWIGAXKkBX5vSQDCG2eoUJyGycvyAig3feD
+         O0vFuj78wbwRjH0LgdySKio+VJI4XCdTTu5OboPIUIu/uIguYdwD5O+oPfLdNJhepmhO
+         W3KQLYVo32r/GPJLB/NL2B2mEnBk8cR0LxJhk3UFMfwHj4dJqcxC1lCS6wWgyOXOExK4
+         2C7A==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ7tTochXFgRc7mYK3AH+FdhGHCk6E3pj058keW8ZY/lkUedKJkaB5WmBYbsOLOIwEhrlbcaRgpiQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywse2M1MBlgEkAI8N/g66BwECvaof0ZXt/KYZvOIwWyaubOYRoc
+	S06MZ0QGUuLsrzhOu2ob3+dHJWcbQNwXwWFqN0Zg2WNmHlcosOmNe+OsADzvRVRVHQ==
+X-Gm-Gg: ASbGncuK/qSieXLS4r17B9xC/i0cQzwLXABp3RgUeVhYmN+LtcjaEZJvxGULByTA7yJ
+	xvw8LGd6d5q842fU98kjgalcHZ/gw4b+1wK3HdtmT6mcWT13T9YPQpfqIcSnKCIltuo+/Gbj4y6
+	f6RYENcPhZxgzaeyRSdKAN+8B4ieih77HEdzs5QtCT2YffgXxP69dmk4IPu78Y8GybFTkGzPpP4
+	RsMjL3puRTwI2qNXalYqEQmPdOdBE1DoxaFIC2P1+1brCdHmPWHPyGoMmn+uS9ORkem4HsJppF/
+	3KJnYChNONUtCgJc88H7MrzuxtUiJ/rHPxdIs6wMapf+vhU9FScGMO3u5rNTFzbsonGM/oZZ/8k
+	ShVUXl2reSIedZct4C8ZGWlTn+Q==
+X-Google-Smtp-Source: AGHT+IF6RJ3VWh8pBV8nB/HBuNwbzt9XTbo+IwHS2AZQXF4GDbKt8c1HFhojNQPLHiVMQ1tXgO3K7Q==
+X-Received: by 2002:a17:903:37cb:b0:242:9bc6:6bc0 with SMTP id d9443c01a7336-24944b73618mr220103835ad.55.1756926066474;
+        Wed, 03 Sep 2025 12:01:06 -0700 (PDT)
+Received: from localhost ([2620:15c:9d:2:bd57:efc6:8cb7:9d2d])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-24c9304b7eesm24969275ad.102.2025.09.03.12.01.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Sep 2025 12:01:05 -0700 (PDT)
+From: Gwendal Grignou <gwendal@chromium.org>
+To: jic23@kernel.org
+Cc: tzungbi@kernel.org,
+	linux-iio@vger.kernel.org,
+	Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH] Documentation: iio: Remove location attribute
+Date: Wed,  3 Sep 2025 12:01:02 -0700
+Message-ID: <20250903190102.1647098-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.51.0.338.gd7d06c2dae-goog
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -97,101 +85,37 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-To avoid duplicating sensor functionality and conversion tables, this
-design allows converting an ADC IIO channel's output directly into a
-temperature IIO channel. This is particularly useful for devices where
-hwmon isn't suitable or where temperature data must be accessible through
-IIO.
+The cros-ec specific |location| attribute has been superseded by the
+generic |label| attribute.
 
-One such device is, for example, the MAX17040 fuel gauge.
-
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 7cbb6681d7e5 ("iio: common: cros_ec_sensors: Add label attribute")
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
- drivers/thermal/thermal-generic-adc.c | 55 ++++++++++++++++++++++++++-
- 1 file changed, 54 insertions(+), 1 deletion(-)
+ Documentation/ABI/testing/sysfs-bus-iio-cros-ec | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/thermal/thermal-generic-adc.c b/drivers/thermal/thermal-generic-adc.c
-index ee3d0aa31406..7c844589b153 100644
---- a/drivers/thermal/thermal-generic-adc.c
-+++ b/drivers/thermal/thermal-generic-adc.c
-@@ -7,6 +7,7 @@
-  * Author: Laxman Dewangan <ldewangan@nvidia.com>
-  */
- #include <linux/iio/consumer.h>
-+#include <linux/iio/iio.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-@@ -73,6 +74,58 @@ static const struct thermal_zone_device_ops gadc_thermal_ops = {
- 	.get_temp = gadc_thermal_get_temp,
- };
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-cros-ec b/Documentation/ABI/testing/sysfs-bus-iio-cros-ec
+index adf24c40126f0..9e39262437979 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio-cros-ec
++++ b/Documentation/ABI/testing/sysfs-bus-iio-cros-ec
+@@ -7,16 +7,6 @@ Description:
+                 corresponding calibration offsets can be read from `*_calibbias`
+                 entries.
  
-+static const struct iio_chan_spec gadc_thermal_iio_channels[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-+	}
-+};
-+
-+static int gadc_thermal_read_raw(struct iio_dev *indio_dev,
-+				 struct iio_chan_spec const *chan,
-+				 int *val, int *val2, long mask)
-+{
-+	struct gadc_thermal_info *gtinfo = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_PROCESSED:
-+		ret = gadc_thermal_get_temp(gtinfo->tz_dev, val);
-+		if (ret)
-+			return ret;
-+
-+		return IIO_VAL_INT;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info gadc_thermal_iio_info = {
-+	.read_raw = gadc_thermal_read_raw,
-+};
-+
-+static int gadc_iio_register(struct device *dev, struct gadc_thermal_info *gti)
-+{
-+	struct gadc_thermal_info *gtinfo;
-+	struct iio_dev *indio_dev;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*gtinfo));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	gtinfo = iio_priv(indio_dev);
-+	memcpy(gtinfo, gti, sizeof(*gtinfo));
-+
-+	indio_dev->name = dev_name(dev);
-+	indio_dev->info = &gadc_thermal_iio_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = gadc_thermal_iio_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(gadc_thermal_iio_channels);
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
- static int gadc_thermal_read_linear_lookup_table(struct device *dev,
- 						 struct gadc_thermal_info *gti)
- {
-@@ -153,7 +206,7 @@ static int gadc_thermal_probe(struct platform_device *pdev)
- 
- 	devm_thermal_add_hwmon_sysfs(dev, gti->tz_dev);
- 
--	return 0;
-+	return gadc_iio_register(&pdev->dev, gti);
- }
- 
- static const struct of_device_id of_adc_thermal_match[] = {
+-What:		/sys/bus/iio/devices/iio:deviceX/location
+-Date:		July 2015
+-KernelVersion:	4.7
+-Contact:	linux-iio@vger.kernel.org
+-Description:
+-		This attribute returns a string with the physical location where
+-                the motion sensor is placed. For example, in a laptop a motion
+-                sensor can be located on the base or on the lid. Current valid
+-		values are 'base' and 'lid'.
+-
+ What:		/sys/bus/iio/devices/iio:deviceX/id
+ Date:		September 2017
+ KernelVersion:	4.14
 -- 
-2.48.1
+2.51.0.338.gd7d06c2dae-goog
 
 

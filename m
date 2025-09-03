@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-23668-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23669-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01642B415C7
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 09:03:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 761D0B4160E
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 09:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5173564F55
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 07:03:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D921B21795
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 07:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EBE2D7DCA;
-	Wed,  3 Sep 2025 07:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E5E2D7DF1;
+	Wed,  3 Sep 2025 07:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IFIuHZgW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YGwoJCjJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2B72D877A;
-	Wed,  3 Sep 2025 07:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A32B14A4CC;
+	Wed,  3 Sep 2025 07:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756883010; cv=none; b=NQw366h4zmezQ5klOIwEdb7s2N2O8wl5GhyqAMiGJhZRWflBDa12F6ZSGonpqmbPUxMO5M9wn2DizzW3LrgyE6AOD76FWmvkrz68fZ55MI/ow7qbjFzeanvdVOKhmhsgJShEXNuA6CDW3D0fhEY9jgPz/0Nd6Pbx0fbY/rLf/Rw=
+	t=1756883846; cv=none; b=r+UJOQQXU3At/YED5HFGvj07wYR7cgbjl3VvqBOzo55jMjNki7HdGlyR/eiwWexm25/Fiu5MtbreYP4eWhCqK8ASKU55tzWb63wj8HL5jx7XR4/k0OWsfZblUOF/wbx+5lUJagrthwS/KCtOkHCbao+ddcDRipsPZFjxanguUsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756883010; c=relaxed/simple;
-	bh=twKg17NiiaX4b+nsPqQ7l1vh4UkOISR51Ac1/4E0fdo=;
+	s=arc-20240116; t=1756883846; c=relaxed/simple;
+	bh=rS+GMFN6DYpMK/tMXtZeCXtyfW339LfrvEVMkyMjPf4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ACrmVZGe/hvsjnGhdJTRPA47scXI3QKsPY7x4PBzBW0f+OqKbfWam5gjypxnqyBJN9t2r3FsayyETCIT1/NDO9zJmYlNPq1N1xOrbCg6Y5D2DqA303gIsfsJpitez9wZhpbJmKiGULKiO4q0NoWNKS2Mv5CVNpPrH0Abl5IJVa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IFIuHZgW; arc=none smtp.client-ip=209.85.167.49
+	 In-Reply-To:Content-Type; b=onC+mfnVD17FKiI+cJzZ0ui8IuQ188RuVxSkiRCNai/+d9uZpECanwaMBKGdrlwLSUSkPQT20NmFvlz8c0qVzlyzVSJiQKIhxAqHjpCfd0jbX/cc598GxaaI4bYAqWoPAEQQGFq4hqqo34pKXF/6hEuug97nd6yE4ysaxkfR5I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YGwoJCjJ; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55f720ffe34so902470e87.1;
-        Wed, 03 Sep 2025 00:03:28 -0700 (PDT)
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-336cdca667aso31072091fa.0;
+        Wed, 03 Sep 2025 00:17:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756883007; x=1757487807; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756883843; x=1757488643; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=QqbTa59zKcp1kRY3+8ifl5pxub5gmL+oR4nSabqGse8=;
-        b=IFIuHZgWqq8XO2f8hU2hNfHMeuSNFWRtks3MfAiDX+ryNOdpdq0vqdw+ffYl95RGBg
-         Fwp6PpLvXVZ+DIdw6fPFukS/WhNwJ8AgH2ZgdgJcvm3n1re81BH06il2I4jHlRZrE6fM
-         IAlBLO7nW44Mwud8wbBjOs5Lfibms3ZkdeViQyu/dp7UeA/k2fFlXsTPwvTRYt6CiBDW
-         5tvTRnre8Nap/jMP1lX4iB/A0YGiZeJrtvAyAnpZqTeP8hPOPab8vbmOulyNYaPaKTow
-         x6GA3rXeiaHicxUowV0qvmgagyr88UKCyc8GJQk1+vN9s85dAYTiLR17WF7IFGnkLpCG
-         0tgA==
+        bh=IeRZ06/PcOGv5wFop3bzPLZKGGCh1W+n5JN85+7/Z4g=;
+        b=YGwoJCjJH7BtaTb+GF+EE3Cn2LyufMMouAwZhJoFs7HeTV+KsFt320QGxxiHtIB6nL
+         m0S6f27dYE9IIBdhvwX9BpdeYvmkgs0V7kju1HeHuyiOielhvIDJM4NolMgfIKMDJleF
+         9eVdvgtg12zSN9XuCPJB9wA934uthQKlok1bvGdvwL94feNj/5GjmbaSmJ6fWitJf0tV
+         WwQVIJVbM3urZ4Wn3SOte2jAPfaDXewUxMWbc9oqU/oj8CG/eMi44EaJR/amgx8jzI5R
+         xFPPtGxKI1LG4tuyw96FpXB54wSgvoWKY4xPk0atABeGykldiKtezXwrrn5vMYc6woZ7
+         XmbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756883007; x=1757487807;
+        d=1e100.net; s=20230601; t=1756883843; x=1757488643;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QqbTa59zKcp1kRY3+8ifl5pxub5gmL+oR4nSabqGse8=;
-        b=DhklmfM6FC6I4PLjGzogfPL7jFDzPaDFEWqCkQ34g3rGhyTJKlmdj2sno2E24mSVBo
-         SwH+RKPk5gF/j+cg01kQBXnVromW/YVIn9UrzZYTla7wj5nkKmtJ+Kns4Fp1T/x2QUEF
-         6P25RvyC+G+JA+hj8ShbtTAml6qZWotCayac2CIz4Q4nVzZAClsi25jbZdNrrFViKUp+
-         6EL0XlCB10LLAZbB6lqmjQiV2E1i23wsg7VorJh8y18jpU8owHeJqD+oiQPRphC2Fnmm
-         iviEkr0hCd+XLejuYOSB0OqkuQl/8qlljJPLIVWyk98cBOtvFMzjjA6crbR6Y5LjvkJs
-         p7Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUyT5hSBrS8FklrqnZ6kUaHyXCJv8Ue8zbt8Hn9ssQg2CcweanFoBViZO0JeaBnISl9KJZrFeAKIfgb@vger.kernel.org, AJvYcCV61G3lzhN1Lajb5NjyiGDFNKn3KPbwn2YIsgIs5RBGyfgNCPk6dQ01xlO0th1hVBw1KfOMyB7Jd0Lfeg==@vger.kernel.org, AJvYcCWUI0LfW1JIq1AtkZcsezE+I5zb+AhOXI2f1OorwoQjbrlNo4NxolrvbXkODMFflj3Io5KGtz4bVJsQ@vger.kernel.org, AJvYcCXm4pSWyOdo5Uz7ld+V3u7eIGk24+4UrrhfFiekxHdT8chhClvpP5KFgKcKWdr2M0UXGvJ6Plq9sYZ/fHwX@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5l9lW8O6xsaa12IDvn94UAP4V6ttnxbw9KQc9TeianGnauGPc
-	R6tqTI2YiC1Dqbw7wm9otuyN4hAE7WYXIB3cP+R52CxDRvZItjFDp7gr
-X-Gm-Gg: ASbGncsofnQxiC/ZKe0LEvmvxx12FJUzfqLJuVRQqW92fNYqeQ9Rue5BAmNN230MZxN
-	W/jMmVxMP5LssIjpwp995szIWd2a/ouQ5nVkFhe8xSd0Z5MM+1rg7LNKFOcntQhjQvu8KiivNNn
-	j/OMlCvfA7ytmPIWkgUyBB1d6uSUHyw14SpphPHrDG8TZwKJs1mbI0vtTW6aXCGPMkMMObw8npv
-	zx0JrQ403+lOVGuinr782beoLjwoe+a6c9B7AtygfQ1fTqT0e//rgEvVrJvAGoUSnPCk5n7dUAC
-	Qzpf3nKYHRR1Bmj9HT3CIOgv+CKhyyjKjg8pxGLHiI3vdIpkPluRWBemLy0gvxFUqjGRP+ERF7U
-	MiRDWXtAWGeng5r1OG7GZ0ef3OGkbXLs6CLNGIgMJQfLLCo04/2gOSBT4nDAZuExx5dZiQnYNIY
-	MA+9bC
-X-Google-Smtp-Source: AGHT+IF0p3WcBP/JALbJd3F0HgYZLGRyq6GR53LXy15SNQwHDfi88vjTB+GOxRtGp/dyIU/NC667YA==
-X-Received: by 2002:ac2:5f72:0:b0:55f:552c:f731 with SMTP id 2adb3069b0e04-55f6f6b4c11mr3068666e87.7.1756883006453;
-        Wed, 03 Sep 2025 00:03:26 -0700 (PDT)
+        bh=IeRZ06/PcOGv5wFop3bzPLZKGGCh1W+n5JN85+7/Z4g=;
+        b=YUsCahL6hhEEXXHrpXue+gPZLxynwlTTrQ+7+lKMerBL7snTyDj4HDPKoVwqopL2G/
+         imF9Q1ryUHkoFRDpXw/NuD9rey9CQ1qTKS1l+YLkJZs2IjU/duzamt0LmnBAXcLqpiVH
+         idGnVQGFuR2PEf9/hXgXIoXMup/5YeVxbwaHd24z30vUWs2lXWiruZvZkKJZ1qltRsmM
+         ID6giZREonKa4VfxSIemu2TzJE5ur/5NyiHuWbra696a5+LcTNFNhC+vWHgI9WgOtRP/
+         ClbfdAdy6cP+WfgLxaGQgpr1cjrVL4AWTwelud+X7DLHr8mt9+RWFx1oRRxY7uZnJu0d
+         nXRA==
+X-Forwarded-Encrypted: i=1; AJvYcCUA3UnV4qaPlfaBFgIsH0x878aKwCS79c5MdLVWzFW6u/kAQlmceRW8CKqrvjHD0TxU3H0aPYGyBuOH@vger.kernel.org, AJvYcCUnPUbLryrf2Tt3beZArNo28ceVL0hXM0SVSHXbN2qhuJzmULXmzlQEBx4gnAGHKVq5KNW7AL8UIJ3Eqrjx@vger.kernel.org, AJvYcCUz+CJLsFR13MwagQ55Gb3h/efheHhIp3lgE/PnU3ikP+H8/AC5q8sg862AXu5C3apjGsqVMeLw75nomQ==@vger.kernel.org, AJvYcCXPyMVbyGBdtyh/IOfyTcJLg6HiN9S4n728EGiIIBTVOCjDyJ1n7VjF41CAPhX7L8s8MA1DNuW8w5Gh@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSd9EexxQUZyA1h7UtsxoxjZSn7QyPax27URdS4Iw9iDevLm3u
+	UY6+yJTnhtMYeiWl2RnsIDblQHLxOX1mJ9roTJy+8w3FX0VEyzhR7NKE
+X-Gm-Gg: ASbGncsFh8Qie4IG6LlX7JuB1UB/YeKh+NlhY1216mNP1jME9FjFGHVW/TN6vXeSvdy
+	btabDXMfGdq6E34QbYy6HcTm+IGvJLXvpaD/ejlJxVvPfNgpDcpr8hXRges6Y0I2kX+ArLdvwyj
+	w7aW4jzAfPVMrvataCWY/jqBWuKRBPX5cjKQTfd0n3Y8qY+0yG1p8899Mf3PqVeug9/LcEJU0jn
+	/mHVhwGFALYayb7ffNxuuXfYuNANrcIMG8reooL49NdnToK3YGFvNPErnKhZrg28A5K0uaq9iLk
+	B3CmleyoZ6+aUtIWAD2akpDVR9i/9iDYlt6yH8IrbWi1pWLqkDyDN8VfCZmH4ywj+5DApHyJfjb
+	Y7jR57PrBq4qCAUp29+3e4A5QWPxayBbVkTBMudWUuBeV889jAaKxjXHHWwoXjT/C0eH8ODOKMu
+	ZnekEhGGtIc8X5oyQ=
+X-Google-Smtp-Source: AGHT+IH4donoMajQ1ZDtMHQf7JgfO1jPt6SevfQxLs1STRELrKW/ySlmrBxaws4E9U+sRDecrkzamA==
+X-Received: by 2002:a05:651c:19a3:b0:336:7e2f:cc0d with SMTP id 38308e7fff4ca-336caae0708mr42291641fa.23.1756883842863;
+        Wed, 03 Sep 2025 00:17:22 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5608abc1fdesm327943e87.58.2025.09.03.00.03.25
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-337f5032aaesm8252801fa.37.2025.09.03.00.17.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 00:03:25 -0700 (PDT)
-Message-ID: <b2650751-2f23-4508-9959-c55bc0530dfa@gmail.com>
-Date: Wed, 3 Sep 2025 10:03:24 +0300
+        Wed, 03 Sep 2025 00:17:22 -0700 (PDT)
+Message-ID: <7fcdd66c-4c3a-4df0-b4ef-ce61cdaf5112@gmail.com>
+Date: Wed, 3 Sep 2025 10:17:21 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,13 +84,14 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-To: David Lechner <dlechner@baylibre.com>,
- Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij
- <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+To: Linus Walleij <linus.walleij@linaro.org>,
+ Michael Walle <mwalle@kernel.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
  Marcelo Schmitt <marcelo.schmitt@analog.com>,
  Javier Carrasco <javier.carrasco.cruz@gmail.com>,
  Tobias Sperling <tobias.sperling@softing.com>,
@@ -103,112 +104,36 @@ Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
  linux-gpio@vger.kernel.org
 References: <cover.1756813980.git.mazziesaccount@gmail.com>
  <08929460fe11dd0b749c50a72a634423f13f4104.1756813980.git.mazziesaccount@gmail.com>
- <a6ae372e-e0c9-4874-8be1-8070ee3e880f@baylibre.com>
+ <CACRpkdbOhm4PawYZUxU1SMi8WGr-LxhR1jhSVPDvPh3TTp8SWQ@mail.gmail.com>
+ <ffef0fa6-45e4-467b-b264-1df15754d213@gmail.com>
+ <CACRpkdbPzq6yKMHJXaFmXZSsttUkt5OAKRTSc_pjLwZZiZr7Gw@mail.gmail.com>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <a6ae372e-e0c9-4874-8be1-8070ee3e880f@baylibre.com>
+In-Reply-To: <CACRpkdbPzq6yKMHJXaFmXZSsttUkt5OAKRTSc_pjLwZZiZr7Gw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 02/09/2025 18:14, David Lechner wrote:
-> On 9/2/25 7:24 AM, Matti Vaittinen wrote:
->> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
->> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
->>
->> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
->> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
->> daisy-chain configuration) and maximum sampling rate is 1MSPS.
->>
->> The IC does also support CRC but it is not implemented in the driver.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> ---
->>   drivers/iio/adc/Kconfig        |  10 +
->>   drivers/iio/adc/Makefile       |   1 +
->>   drivers/iio/adc/rohm-bd79112.c | 542 +++++++++++++++++++++++++++++++++
->>   3 files changed, 553 insertions(+)
->>   create mode 100644 drivers/iio/adc/rohm-bd79112.c
->>
->> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
->> index e3d3826c3357..4b78929bb257 100644
->> --- a/drivers/iio/adc/Kconfig
->> +++ b/drivers/iio/adc/Kconfig
->> @@ -1309,6 +1309,16 @@ config RN5T618_ADC
->>   	  This driver can also be built as a module. If so, the module
->>   	  will be called rn5t618-adc.
->>   
->> +config ROHM_BD79112
->> +	tristate "Rohm BD79112 ADC driver"
->> +	depends on I2C && GPIOLIB
->> +	select REGMAP_I2C
+On 03/09/2025 09:47, Linus Walleij wrote:
+> On Wed, Sep 3, 2025 at 7:23 AM Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-> I think you want SPI rather than I2C. :-)
+>> Anyways, fast-forward to this day, I don't see it handling valid_mask. I
+>> think it is a must for this device/driver, where pins can be either
+>> GPIOs or ADC inputs.
+> 
+> Why not just add a .init_valid_mask() to
+> struct gpio_regmap_config so it can just pass that
+> down to its gpio_chip?
 
-Ouch! :) Well spotted! Thanks!
+Sigh. I suppose that would technically make sense. (So would allowing 
+other IC-specific callbacks ;) ).
 
-> 
->> +	select IIO_ADC_HELPER
->> +	help
->> +	  Say yes here to build support for the ROHM BD79112 ADC. The
->> +	  ROHM BD79112 is a 12-bit, 32-channel, SAR ADC, which analog
->> +	  inputs can also be used for GPIO.
->> +
-> 
-> 
-> 
->> +struct bd79112_data {
->> +	struct spi_device *spi;
->> +	struct regmap *map;
->> +	struct device *dev;
->> +	struct gpio_chip gc;
->> +	unsigned long gpio_valid_mask;
->> +	unsigned int vref_mv;
->> +	struct spi_transfer read_xfer[2];
->> +	struct spi_transfer write_xfer;
->> +	struct spi_message read_msg;
->> +	struct spi_message write_msg;
->> +	/* 16-bit TX, valid data in high byte */
->> +	u8 read_tx[2] __aligned(IIO_DMA_MINALIGN);
->> +	/* 8-bit address followed by 8-bit data */
->> +	u8 reg_write_tx[2] __aligned(IIO_DMA_MINALIGN);
->> +	/* 12-bit of ADC data or 8 bit of reg data */
->> +	__be16 read_rx __aligned(IIO_DMA_MINALIGN);
-> 
-> Usually, we only need one __aligned(IIO_DMA_MINALIGN) (on the first
-> field). Since these are only used for SPI messages and we can only
-> send one message at a time, there isn't a way for there to be a
-> problem that would require them to each need to be in their own
-> cache line.
+> OK I don't want to load you with too much extra work for
+> the driver, but it seems such a small thing for a blocker,
+> and Michael who wrote the library is really helpful
+> with extending the code, so consider it!
 
-I was wondering about this and hoping to get a good comment explaining 
-it :) I noticed I don't really know how different SPI controllers handle 
-DMA or cache. Hence I just went with what felt like safest option - and 
-hoped to get a comment like yours if it wasn't needed ;) So, Thanks!
-
-> 
->> +};
->> +
-> 
-> 
-> 
->> +static int bd79112_probe(struct spi_device *spi)
->> +{
-> 
-> ...
-> 
->> +	iio_dev->channels = cs;
->> +	iio_dev->num_channels = ret;
-> 
-> This is quite far from where it is assigned. Better to have a dedicated
-> local variable for this.
-
-Gah! I agree. Actually there is now a bug where the 
-iio_dev->num_channels is used before it is set. So, datasheet names 
-won't be assigned correctly. (I did some re-ordering of stuff in probe 
-to cover the 'all ADCs and all GPIOs cases. I must've messed this at 
-that point!).
-
-Thanks! I feel like I owe you a beer :] Just remind me if we meet! ;)
+I suppose I can see how that works out. I am not a fan of maintaining 
+the extra code. Thanks for the suggestion.
 
 Yours,
 	-- Matti

@@ -1,248 +1,168 @@
-Return-Path: <linux-iio+bounces-23664-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23665-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE097B41317
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 05:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C1DB4144F
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 07:23:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 591191B274E3
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 03:46:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 328351BA04A9
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 05:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B571E9919;
-	Wed,  3 Sep 2025 03:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89ED2D594B;
+	Wed,  3 Sep 2025 05:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GbVmQPzu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b89xv3a+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A7BBA4A;
-	Wed,  3 Sep 2025 03:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20342D24A4;
+	Wed,  3 Sep 2025 05:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756871169; cv=none; b=ZAat9AGfKfN8ESrsL/8oV2HMD/SXmGeW1j/Fzqkk5GljRWavM5NBHcr9TX0luhuWWJ7rqOlXU6uM8ouLb+vO4Q/Be3AzS9Fzxzq1RAaQrD4wvPbHyiQq7xapzY1n1z3T3vjIrs7sZZZe2+Jr6cpQyU0GfJown2AbSYTPCpjQMac=
+	t=1756877005; cv=none; b=cvsEYfbr9moFprENBsj6/KnLYkeZVVsN283mqY4AzqkGjRxe0S8ZafyOM//AvEZqZ4gto4eYy3476sIsVBtGcSV3HctZD+BYIk1p14z+K/8JDyqH45uWiqcMh5/zRDs8FWAzseNT9HMbtIVSEezB5SKsCh8VseGtlCoOkjzH7BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756871169; c=relaxed/simple;
-	bh=6JeODGhUmfMgsEw5AyH9a8tSkHZ61ujB953Yz6MMK58=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jz7FXryJivKgVTjJYE9kTih4BSJKKluQ9QJJVZABtHQsQ82iGuH7LcEj/pPrdez/kxE6dRdDEJ5pUfIWm5KbbI4l/ZvqMjSCwHRe48CVjsiqO0Dh/3TmQrwXGJl2MdTTW87ziuuRA7mOBcu/Py+uZmWhYP8Nrr/SDNHiMTAxu4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GbVmQPzu; arc=none smtp.client-ip=209.85.208.171
+	s=arc-20240116; t=1756877005; c=relaxed/simple;
+	bh=KaObTtBgadRB4aZZUNrcngukeIsotpLMlnkYwfPODPE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JnE6pecJ7SMayLMY8WrKgHQjdXaJUAYIuFOAxybK7VS1tnm29PeZfcbFPL2muOKVJcUiVn5f75KQHy5jeXld0nLc6ud7J47EnKNmiNWJlsQbye2scAItD1XGrzJlQT0cRoqpiwIepIYBUkNzWpRq5JrJtwj2P7sD3hbfGLSjDZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b89xv3a+; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-336cee72f40so31656081fa.2;
-        Tue, 02 Sep 2025 20:46:07 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-336b5c44a5bso4539561fa.1;
+        Tue, 02 Sep 2025 22:23:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756871165; x=1757475965; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V0Z7nLA7aVtrFGgmeGm/eI0r1k5QWi+ahYOUOcO2AD0=;
-        b=GbVmQPzu+7GLPcGoX3OLMoP/MW7GgPMzFZEBcuBEf3Gbeok1cu7VfOHDbgBeloLWg2
-         UcUWpyFkVAsLTWi8Ss7bKNbJfzt9feCyV1aVZ6ZZujfU+pCL460oK1K0eb619GRLY6Mc
-         mUe+alYV3WauxfFtSB5v5Qzxfhh22rSYn9ynKvDp+8UZjYComLctE8xjl5K9rRx/8gtj
-         KNGcmDL7fTOWVgoF+XpC4m4OEfEJYsFCZUSoo3+bfhS3TxgS6fNzU+or29MR5j0SGNH3
-         emXflpqFQ60/qXrpaTyfmeVnVpIarevctc6LGa/dcCKNKrDtsUk+JGB8Sv9KJUFhdim4
-         sQfA==
+        d=gmail.com; s=20230601; t=1756877002; x=1757481802; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OgWMe5VZc0P4oCL4svW7wUtQ2mqMGRwwRtj+h0neqNo=;
+        b=b89xv3a+8QWvDPLz2JuqIpX9+dTkjJBe60COpJYySj9pLNG24pFSorYEXGczV7NayI
+         /lCi3v6jGI/rSuLC4jnw9YHeyk1yjViBwStyvu7+Ptd9nMWSjOjZ0NUr43V1253OYAqJ
+         al5SWht5n+beuQwxlZeObcir+u8Zk8aNu3Z5KUVdz85Y6VKrHhLy5B7gC4RTvS1NLXxw
+         Y/R3ptv10qevwzmU5ojZqBhFMAMUTC+kjM7q8VxPBM80ej7srLfeMdt+UdRECAD3UuIw
+         ODpniEXGi2X2otrOT2hqFJpVIjev3UVlepRyKcr2w7J89r1c4JlOUASyJq7kkUjBEp7u
+         mUkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756871165; x=1757475965;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V0Z7nLA7aVtrFGgmeGm/eI0r1k5QWi+ahYOUOcO2AD0=;
-        b=ikNN59GjlseQ/Yv4NVWN7wXWPH9r6NYw31zEH+TGQkC3EECgFXFMJdRFOePt+Sez5G
-         CH0Jwsu6bx1k0t0nbAf/Hn9VK++YwVVl/70Oj7KgRPy/Iw7co+4PSmTQ8FhA25ER1DKI
-         fZO61EXnmRUMX0OZFJHGXU8sxJrdbPY3cxovL6oL+JRa/brgmN5mbdUTA22pKWJTxs/3
-         97Bo8dI5ePlcon7A+xgm2vSQ0HkrHFO0hQO+S3e9H1AQThAFuXPgUfe/PeMh7OqjCloo
-         Q3Tg8SEREVI859O2Sz81CCKY0hMiSutMBZB65EZt9zD6vGeRufHpPxqy8WUbY0RB+DNp
-         8Zzw==
-X-Forwarded-Encrypted: i=1; AJvYcCU0pH3zu0fQrskeC7NEV/QZfimDDC7j1F7zgVFYZ3U9yW7FGEH5o4f3s+zbZOXqFMLk9e2wuokGA9I=@vger.kernel.org, AJvYcCUb0BVD3Tpk0fWzaaW4Ekf1AVC0VhiWQv37my/X/CUMUqilSwi5C2y13J9aGp3Mz+SDAKb5YNidbdLklzWs@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxe3BANevUCXmiE+8mQXXNHs1LZ2gdGjjgaD1sWFPuzSOZl3Ret
-	yqPINIk18VTvl4GIzAKWlhGRy+d5Ab3QxNIUgehVic5DGHib9hW4aaNsepVbbj1YG900J/Mebnw
-	2vlHBJ5rr0HLl7ozrY6VyhfgKkTBxDjc=
-X-Gm-Gg: ASbGncujT7vcUhk0R3O6IUeyv/XDFIH/0SrJ4e+nNxhWSy8+t6S4DFjt7b+IfX0g/lL
-	YTrxPvnciK/vb2A+Lg+cq0uMZEJjja/FnXqlRMLAZ4v+F+of9WwaZKnK6CPj/rOxGTfPjJf3IfN
-	ouMJGKykO5gjU0SE8wpMILXSyzJtFianPFHe3VeDMnVTdZDYmCZwGw1gNVLkIcWei8dkgH2lUcJ
-	hHN0GgYxP0Ek2/rVzwk4LVdvTbszi1b9OXMBnbdZjiX2JZpG6Wj
-X-Google-Smtp-Source: AGHT+IHBvgqTlzo2mrZAhB7FN0BcOeT+9TYJbXmMqfp//04ZfjspH+O9ZZ/2oaqqDqrZX0ztFAnYJ5zo6YWJVX8KqnM=
-X-Received: by 2002:a05:651c:4ca:b0:32b:7472:c334 with SMTP id
- 38308e7fff4ca-336ca988152mr49278681fa.16.1756871165026; Tue, 02 Sep 2025
- 20:46:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756877002; x=1757481802;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OgWMe5VZc0P4oCL4svW7wUtQ2mqMGRwwRtj+h0neqNo=;
+        b=s/Gqk9oB8/XC4I7nOLgbsNxy7aIy5RlFruzUNw13t/bOTY8kPXg+50nC9m4qzlr1YB
+         n1LRTXETf6v1lIK0v4HXKblDNNrCnB4sSOyaFMjoXOuWQVuDkym96mcqISsb2vCJyTZT
+         6zjnsApzdkJbI0MkhXE032e6l3uf7YCFHinwcX82Adq8qYhs2eJSNbLBT2yMfQ7wKQoX
+         Pf+LlftaMy7evcGp3BJ1EkxVMY0cet9iVEQ3kQ4VoFyKmKIRpIhXJwslZsGllrS4V2/E
+         XOMwVHR4hVw+dknEW9rMHf/tQLFkw6LUXLrY56Rn5bN4ogOlVWowGPgH8VlIYhNgK5gh
+         0MsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV2dThuaRr9sEQ36M0d7ro7BFrmO9U31cNjSJPx7yS01n2MpPEx9S4Fqw7UgoWNN1CAft9qip5tLlhH@vger.kernel.org, AJvYcCVX8fhcAmqTGU48QmYgDO9fAVKDuV3s8m56snMAduhM+PdXu5YVQOip82bWkSrkENW0PkJdFdf73Myd52nb@vger.kernel.org, AJvYcCWYJigmS3YimjOqre93jS40MsbkksIBD4+n3zVQ7GK8UkhUOafex8NHtOGejqVqtcDWVjNNHjPrYQZO@vger.kernel.org, AJvYcCXPcwGWdu/0y2Dfr5b9hm2syYsnpCeX4OQ9hVQaiEG3STSTWP++mExlSUejlHZPJhQV7/wGukavs8aSUg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu+q4CI3uAS3sYmVkush2taNao80VAs5/Gd7qLe0CXV98YkZAi
+	fQuDtuBSh0mLFcviVzB9wR+s8fP3CjsYSSGwe/EkFBO3drCidh+sSQ5g
+X-Gm-Gg: ASbGncsnxu4d9gpme42mtSkaAES9PFpWZ6FHa3DIg/OsU03Qf/HHgd1LV7mV9BTHMIM
+	W++feW0mpDBsJxEqWXd1LBSNALyp6VbgS+bL8nMPT7p2aq1cPAfb7He4VmKk2SzwVmMMEUCM6FW
+	RMm+T1Y+eHrwTQOzkppGmPrVoNWFhVfKPXHi1rDY9jJGDmA7hNI19QVMeKMKXIH2tGJxuwYti0r
+	G37hA3KI2fDAei6JFxs99BEN3mdQ4mpl9i8gR4WL24CKDD0hiIxmz51V6pOt8i6Y9fgAXUXk5j6
+	GX5InE31oS+d4oC2t2m9W4XEG7p58+hvc3Es88gLRDZQBu98dYsYRCECw9Zx9QSRHH2EJsbfoHs
+	7wTcUrrYnVJavGjnewMDApMoxdbSoGUeBsuJJ9ecZsgMoFsijKs+TqTRXhBkd1zNLGMHZ33nuFK
+	7wbuqqBsmBM6RcDso=
+X-Google-Smtp-Source: AGHT+IGWPOQdXbzAlZL/kPLWMGdVLFFRdkHqC80V2OpQ8IVEg4/tdgoa4gAcBqd0FUQy+LPGtCcCQw==
+X-Received: by 2002:a2e:a00d:0:b0:334:145:4fa3 with SMTP id 38308e7fff4ca-336c7f29c0amr28522651fa.4.1756877001624;
+        Tue, 02 Sep 2025 22:23:21 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-337f5032caasm8320201fa.35.2025.09.02.22.23.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Sep 2025 22:23:19 -0700 (PDT)
+Message-ID: <ffef0fa6-45e4-467b-b264-1df15754d213@gmail.com>
+Date: Wed, 3 Sep 2025 08:23:18 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250901184238.34335-1-akshayaj.lkd@gmail.com> <aLbptFRh9ZvAVfLn@smile.fi.intel.com>
-In-Reply-To: <aLbptFRh9ZvAVfLn@smile.fi.intel.com>
-From: Akshay Jindal <akshayaj.lkd@gmail.com>
-Date: Wed, 3 Sep 2025 09:15:53 +0530
-X-Gm-Features: Ac12FXwVvsbM41bQHZ82XJLOIt2xRM2n18hDbxMUQC2jLBsuDabZ9aKHLtKLWbw
-Message-ID: <CAE3SzaTnNckFDRMDqGPDAg471bRskJ=_n5C_qSLKQeq3F-Lu_g@mail.gmail.com>
-Subject: Re: [PATCH v4] iio: light: ltr390: Implement runtime PM support
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: anshulusr@gmail.com, jic23@kernel.org, dlechner@baylibre.com, 
-	nuno.sa@analog.com, andy@kernel.org, shuah@kernel.org, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Tobias Sperling <tobias.sperling@softing.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>, Esteban Blanc <eblanc@baylibre.com>,
+ Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+ Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
+ Hans de Goede <hansg@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org
+References: <cover.1756813980.git.mazziesaccount@gmail.com>
+ <08929460fe11dd0b749c50a72a634423f13f4104.1756813980.git.mazziesaccount@gmail.com>
+ <CACRpkdbOhm4PawYZUxU1SMi8WGr-LxhR1jhSVPDvPh3TTp8SWQ@mail.gmail.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <CACRpkdbOhm4PawYZUxU1SMi8WGr-LxhR1jhSVPDvPh3TTp8SWQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thanks Andy for the review. Follow-ups inline.
+Hi deee Ho Linus,
 
-On Tue, Sep 2, 2025 at 6:27=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
->
-> On Tue, Sep 02, 2025 at 12:12:36AM +0530, Akshay Jindal wrote:
-> > Implement runtime power management for the LTR390 sensor. The device
-> > autosuspends after 1s of idle time, reducing current consumption from
-> > 100 =E6=B8=99 in active mode to 1 =E6=B8=99 in standby mode as per the =
-datasheet.
-> >
-> > Ensure that interrupts continue to be delivered with runtime PM.
-> > Since the LTR390 cannot be used as a wakeup source during runtime
-> > suspend, therefore increment the runtime PM refcount when enabling
-> > events and decrement it when disabling events or powering down.
-> > This prevents event loss while still allowing power savings when IRQs
-> > are unused.
->
-> ...
->
-> > -static int ltr390_read_raw(struct iio_dev *iio_device,
-> > -                        struct iio_chan_spec const *chan, int *val,
-> > -                        int *val2, long mask)
-> > +
-> > +static int __ltr390_read_raw(struct iio_dev *iio_device,
-> > +                     struct iio_chan_spec const *chan, int *val,
-> > +                     int *val2, long mask)
->
-> Can we avoid using leading __ (double underscore)? Better name is
-> ltr390_read_raw_no_pm(). But you may find even better one.
+Long time no chat. Thanks for the review!
 
-renamed as follows:
-__ltr390_read_raw()-->ltr390_do_read_raw()
+On 03/09/2025 01:34, Linus Walleij wrote:
+> Hi Matti,
+> 
+> On Tue, Sep 2, 2025 at 2:24 PM Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
+>> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
+>>
+>> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
+>> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
+>> daisy-chain configuration) and maximum sampling rate is 1MSPS.
+>>
+>> The IC does also support CRC but it is not implemented in the driver.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> 
+>> +static int bd79112_gpio_dir_get(struct gpio_chip *gc, unsigned int offset)
+>> +static int bd79112_gpio_get(struct gpio_chip *gc, unsigned int offset)
+>> +static int bd79112_gpio_set(struct gpio_chip *gc, unsigned int offset,
+>> +                           int value)
+>> +static int bd79112_gpio_set_multiple(struct gpio_chip *gc, unsigned long *mask,
+>> +                                    unsigned long *bits)
+>> +static int bd79112_gpio_dir_set(struct bd79112_data *data, unsigned int offset,
+>> +                               int dir)
+>> +static int bd79112_gpio_input(struct gpio_chip *gc, unsigned int offset)
+>> +static int bd79112_gpio_output(struct gpio_chip *gc, unsigned int offset,
+>> +                              int value)
+> 
+> This looks like it could use
+> 
+> select GPIO_REGMAP
+> 
+> #include <linux/gpio/regmap.h>
+> 
+> struct gpio_regmap_config config = {};
+> 
+> etc. Did you check out the GPIO_REGMAP
+> helper library?
 
->
-> ...
->
-> > -static int ltr390_write_event_config(struct iio_dev *indio_dev,
-> > +static int __ltr390_write_event_config(struct iio_dev *indio_dev,
->
-> Ditto.
-__ltr390_write_event_config--->ltr390_do_event_config()
+I did - but that was couple of years ago :) I was very excited about it 
+back then. I actually tried (tried hard, fingers almost bleeding) to 
+write a patch to make it cover all of the ROHM PMIC GPIOs which I had to 
+deal with. I thought it won't get it's full potential due to it's 
+somewhat inflexible design. (And to tell the truth, I still believe so).
 
->
-> ...
->
-> > +static int ltr390_write_event_config(struct iio_dev *indio_dev,
-> > +                             const struct iio_chan_spec *chan,
-> > +                             enum iio_event_type type,
-> > +                             enum iio_event_direction dir,
-> > +                             bool state)
-> > +{
-> > +     int ret;
-> > +     struct ltr390_data *data =3D iio_priv(indio_dev);
-> > +     struct device *dev =3D &data->client->dev;
->
-> ^^^ (1) for the reference below.
->
-> >       /* Ensure that power off and interrupts are disabled */
-> > -     if (regmap_clear_bits(data->regmap, LTR390_INT_CFG,
-> > -                             LTR390_LS_INT_EN) < 0)
-> > -             dev_err(&data->client->dev, "failed to disable interrupts=
-\n");
-> > +     if (data->irq_enabled) {
-> > +             if (regmap_clear_bits(data->regmap, LTR390_INT_CFG,
-> > +                                     LTR390_LS_INT_EN) < 0)
->
-> Wrong indentation, hard to read line, either one line, or do better. Actu=
-ally
-> why not assign it to ret? The above not only simple style issue, but also=
- makes
-> readability much harder as the semantics of '0' is completely hidden. Thi=
-s style
-> is discouraged.
-Earlier did not use ret here, because powerdown function is of type void.
-But if readability is the issue, I have used ret.
+Anyways, fast-forward to this day, I don't see it handling valid_mask. I 
+think it is a must for this device/driver, where pins can be either 
+GPIOs or ADC inputs.
 
-Regarding clubbing into 1 line, I have my reservations there. I think
-we should not
-violate the 80 char line limit. Also since the line is already 1-level
-indented (begins
-at 9th column, due to if(data->irq_enabled) check), the spillover will
-be too much.
-The readability does not seem to be taking a substantial hit here.
-Let me know if this is non-negotiable for you. Will happily make the change=
-s.
->
-> > +                     dev_err(&data->client->dev,
-> > +                                     "failed to disable interrupts\n")=
-;
->
-> Why not doing (1) here as well and with that
-done
->
->                         dev_err(dev, "failed to disable interrupts\n");
->
-> besides the fact of wrong indentation.
-fixed
->
-> > +             data->irq_enabled =3D false;
-> > +
-> > +             pm_runtime_put_autosuspend(&data->client->dev);
-> > +     }
->
-> ...
->
-> > +static int ltr390_pm_init(struct ltr390_data *data)
-> > +{
-> > +     int ret;
-> > +     struct device *dev =3D &data->client->dev;
-> > +
-> > +     ret =3D devm_pm_runtime_set_active_enabled(dev);
-> > +     if (ret)
-> > +             return dev_err_probe(dev, ret,
-> > +                                     "failed to enable runtime PM\n");
->
-> Something wrong with your editor or so, please check and make proper
-> indentation _everywhere_ (in your changes).
-Fixed.
-Editor is fine, just did not pay attention here. Matched with existing dev_=
-err
-statements and understood what you meant.
->
-> > +     pm_runtime_set_autosuspend_delay(dev, 1000);
-> > +     pm_runtime_use_autosuspend(dev);
-> > +     return 0;
-> > +}
->
-> ...
->
-> > +static int ltr390_runtime_suspend(struct device *dev)
-> > +{
-> > +     struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
-> > +     struct ltr390_data *data =3D iio_priv(indio_dev);
-> > +
-> > +     return regmap_clear_bits(data->regmap, LTR390_MAIN_CTRL,
-> > +                             LTR390_SENSOR_ENABLE);
->
-> I would make it one line despite being 87 character long.
-Same as above
->
-> > +}
-> > +
-> > +static int ltr390_runtime_resume(struct device *dev)
-> > +{
-> > +     struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
-> > +     struct ltr390_data *data =3D iio_priv(indio_dev);
-> > +
-> > +     return regmap_set_bits(data->regmap, LTR390_MAIN_CTRL,
-> > +                             LTR390_SENSOR_ENABLE);
->
-> Ditto. (Here it's even shorter)
-Same as above
-
-Thanks,
-Akshay
+Yours,
+	-- Matti
 

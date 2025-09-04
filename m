@@ -1,200 +1,154 @@
-Return-Path: <linux-iio+bounces-23715-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23716-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3DFB43DAC
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 15:49:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E934BB43DFE
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 16:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 437367C6B3D
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 13:49:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B12B1161E41
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 14:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8D82D8771;
-	Thu,  4 Sep 2025 13:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A223054C0;
+	Thu,  4 Sep 2025 14:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a6DjApMN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KfJohFUH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F4223B616;
-	Thu,  4 Sep 2025 13:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3952D8771;
+	Thu,  4 Sep 2025 14:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756993762; cv=none; b=guc8kvdYMrqFfz2NKhiRaC4CL5bsT3p1ATS9OjFLh8MkM+ll9HCzaW5sSxFmDoG1b3l9p+x8rPZQBwJ15GC8SJ07bYVs38CluQzp09WfdSOR5EzA9AAUZIvFBoR5La1JcOfN08TYINNO7jQ//fp2S4vCJNVo5ARodGpTkFHfKak=
+	t=1756994679; cv=none; b=dEzAtVj0GQJ9AX9aQt+97z+jLJirH3ZnHunQZYL95n/gJCx6XqepipXK4rbIVMiTn9FWG2vhaTC2tXox0SC8j1W45GcDyq6tCgdHo2GrxGpBwmcqoy+gcFLJym4+9R4pb8C6hBfB7DD5ukoqMbyq99JZF63+VvdwuGX0MqzqPGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756993762; c=relaxed/simple;
-	bh=AkLMZM2IWuZTM3/2Jc4sRylXbsnaUGbk4biSzT3SKRY=;
+	s=arc-20240116; t=1756994679; c=relaxed/simple;
+	bh=8D15COu2exGUd3E0Qy8knhTqB4T/stT3kGk+YvNt1Xc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fh5drxCVF3hHoSdxMkXYZ8TC03l/sYmbuV7OctEAI+8RjqBn4nHDJRbQME2cXp3sVOTrAjdZg+SHQCjV5E4InDdu50e1D1AfSqMncy+3qCcNYKZD0xQu1H/pJMNAuIRpHPMUFEFS3ORIW6eGiJh3gSKZZA+gdNeiJQU9k57DaBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a6DjApMN; arc=none smtp.client-ip=198.175.65.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=BtGJNnHqiAsLiPU25ARVPZjYgLNvKVd4UdnlFgS/1OMVsiss/8/lLDdB+NOB7m6XCEe8jNou9HJbFshHdqRu1qa5nACBSipqdYFWmIJRtcDk1Z0KWCf18f2+ZRSss1X9koT7pZqQ8DCJwerWs+VOBuCUQ7mZi9YC+oRrhAZKg+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KfJohFUH; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756993761; x=1788529761;
+  t=1756994678; x=1788530678;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=AkLMZM2IWuZTM3/2Jc4sRylXbsnaUGbk4biSzT3SKRY=;
-  b=a6DjApMNScDsM5T1tiqiPuxTfniOnorUhfnlD8nHvESLAa3W55lNvNXs
-   hS1kFOhJz3mBVb1lCrfhqIlhkIqZbbvJH0E/Z9cqPC9JWA6G7OXR/3TfD
-   DL4UZ5uVOWx0H6vFxTMKJPc/aRsRrmZPDktkE139Jdz1eml/RYNal9/Kz
-   t92O+cjEWPElMHDNT2Dx3w69SAZ5VuIC5pVeoAXB1rMf1u1EydAYpTdvp
-   LoNuKfdDynMDt5xPQnh89BLTDZ1bj+ooXYDXTJVIjzklbTNm/raVDisdy
-   p0f+/6ysAfUljZc+8vBdBurXjTvM/sCHZJKmWApWDNJ3K252tTPDeUGX9
-   A==;
-X-CSE-ConnectionGUID: SAPTXMoHT+eEH3l3vII1VA==
-X-CSE-MsgGUID: 901zvDddTjeoG9P6iJiNfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="69595854"
+   mime-version:in-reply-to;
+  bh=8D15COu2exGUd3E0Qy8knhTqB4T/stT3kGk+YvNt1Xc=;
+  b=KfJohFUH7Hn1UeO43oPCiN3r+3F941+Cogr92jFKdEr40icswc/cO/Q1
+   P4ZXVOEFo4TOHlPuR/3xJYWVJqbuoj3LLbSOOUmWEF59xJhZaQ3xqLwIV
+   zZoIdG376fb/57Zl6nMqJdCHKUNd7dd0WnXBywvjPToeTaNJ72YD+D/tu
+   CJfOt1RX9do3P6jR3r2MnvnazJ302KTRUQ6dbBbpXXiZG7BmOdpt89X5Q
+   qjPZJ0WiQoBA4A6BVYaZ33ifaOVyiSKNgcjAHI3jgdLGIQKL/JIh53vMN
+   iqYLxc84JY6RmGVe1btPRJFy225gJwcXpk0s3EbEe1d4kWXe+lIfJPH+z
+   w==;
+X-CSE-ConnectionGUID: dur8aXbyR4icYs9PvtclUw==
+X-CSE-MsgGUID: 8XQCbnVKQZGLYFK/yZFDaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="70431585"
 X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="69595854"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 06:49:20 -0700
-X-CSE-ConnectionGUID: mAtn5fxNRc2bybinVojzcg==
-X-CSE-MsgGUID: zJgKwK+8QS2lsmlHSg5pnA==
+   d="scan'208";a="70431585"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 07:04:37 -0700
+X-CSE-ConnectionGUID: jk3xqa1ERUuvLneeMH0DuQ==
+X-CSE-MsgGUID: ZlXGG7xRRzuIrTFtgMNG7w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="177113763"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 06:49:17 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uuAKw-0000000BHbp-2mBK;
-	Thu, 04 Sep 2025 16:49:14 +0300
-Date: Thu, 4 Sep 2025 16:49:14 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Remi Buisson <Remi.Buisson@tdk.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
+   d="scan'208";a="202827580"
+Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 04 Sep 2025 07:04:31 -0700
+Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uuAYv-0005Mt-2U;
+	Thu, 04 Sep 2025 14:03:53 +0000
+Date: Thu, 4 Sep 2025 22:02:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v5 3/9] iio: imu: inv_icm45600: add buffer support in iio
- devices
-Message-ID: <aLmY2mKg_FsPOpsq@smile.fi.intel.com>
-References: <20250820-add_newport_driver-v5-0-2fc9f13dddee@tdk.com>
- <20250820-add_newport_driver-v5-3-2fc9f13dddee@tdk.com>
- <aKbk9WYtfb5L5la4@smile.fi.intel.com>
- <FR2PPF4571F02BCCFD984FDD99C69CAE7298C00A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Tobias Sperling <tobias.sperling@softing.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Esteban Blanc <eblanc@baylibre.com>,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
+	Hans de Goede <hansg@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
+Message-ID: <202509042119.GiwpuwCl-lkp@intel.com>
+References: <08929460fe11dd0b749c50a72a634423f13f4104.1756813980.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <FR2PPF4571F02BCCFD984FDD99C69CAE7298C00A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <08929460fe11dd0b749c50a72a634423f13f4104.1756813980.git.mazziesaccount@gmail.com>
 
-+Cc I³C people to comment on the returned values on the regmap. See below.
+Hi Matti,
 
-On Thu, Sep 04, 2025 at 01:01:32PM +0000, Remi Buisson wrote:
-> >From: Andy Shevchenko <andriy.shevchenko@intel.com> 
-> >Sent: Thursday, August 21, 2025 11:21 AM
-> >On Wed, Aug 20, 2025 at 02:24:21PM +0000, Remi Buisson via B4 Relay wrote:
+kernel test robot noticed the following build warnings:
 
-...
+[auto build test WARNING on d1487b0b78720b86ec2a2ac7acc683ec90627e5b]
 
-> >> +#define INV_ICM45600_SENSOR_CONF_KEEP_VALUES {U8_MAX, U8_MAX, U8_MAX, U8_MAX, }
-> >
-> >When one line, no need to have inner trailing comma, besides that missed
-> >space.
-> The trailing comma was a request from Jonathan Cameron on the v2 of patchset.
-> Let me know, if you disagree with him and I'll fix.
+url:    https://github.com/intel-lab-lkp/linux/commits/Matti-Vaittinen/dt-bindings-iio-adc-ROHM-BD79112-ADC-GPIO/20250902-203558
+base:   d1487b0b78720b86ec2a2ac7acc683ec90627e5b
+patch link:    https://lore.kernel.org/r/08929460fe11dd0b749c50a72a634423f13f4104.1756813980.git.mazziesaccount%40gmail.com
+patch subject: [PATCH 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
+config: sparc-randconfig-r071-20250904 (https://download.01.org/0day-ci/archive/20250904/202509042119.GiwpuwCl-lkp@intel.com/config)
+compiler: sparc-linux-gcc (GCC) 14.3.0
 
-I see, then let's ask him, because it's a usual pattern for
-the one-line arrays like this to have no inner trailing commas.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509042119.GiwpuwCl-lkp@intel.com/
 
-> And I'll add a space before first element.
+smatch warnings:
+drivers/iio/adc/rohm-bd79112.c:212 bd79112_read_raw() warn: inconsistent indenting
 
-...
+vim +212 drivers/iio/adc/rohm-bd79112.c
 
-> >> +	/* Try to read all FIFO data in internal buffer. */
-> >> +	st->fifo.count = fifo_nb * packet_size;
-> >> +	ret = regmap_noinc_read(st->map, INV_ICM45600_REG_FIFO_DATA,
-> >> +				st->fifo.data, st->fifo.count);
-> >> +	if (ret == -ENOTSUPP || ret == -EFBIG) {
-> >
-> >Strictly speaking this is a bit of layering issue, do we have other means to
-> >check the support before even trying?
-> 
-> No unfortunately, we can't with current I3C regmap implementation.
-> I2C and SPI regmaps are able to split transfers according to max_read_len.
-> But for I3C, it is left to the controller driver, which usually only returns an error.
-
-Have it been discussed with I³C maintainers / stakeholders? Because this kind of APIs
-will be hard to follow and even change for both sides caller and callee.
-
-> >> +		/* Read full fifo is not supported, read samples one by one. */
-> >> +		ret = 0;
-> >> +		for (i = 0; i < st->fifo.count && ret == 0; i += packet_size)
-> >> +			ret = regmap_noinc_read(st->map, INV_ICM45600_REG_FIFO_DATA,
-> >> +						&st->fifo.data[i], packet_size);
-> >> +	}
-> >> +	if (ret)
-> >> +		return ret;
-
-...
-
-> >> +	/* Disable FIFO and set depth. */
-> >> +	val = FIELD_PREP(INV_ICM45600_FIFO_CONFIG0_MODE_MASK,
-> >> +			 INV_ICM45600_FIFO_CONFIG0_MODE_BYPASS);
-> >> +	val |= INV_ICM45600_FIFO_CONFIG0_FIFO_DEPTH_MAX;
-> >
-> >FIELD_MODIFY()
-> Ok, great.
-
-Actually this is not a modification per se, it's just an assignment (PREP)
-split to two lines, can you just make it a single expression (wrapped on a few
-lines, though)?
-
-...
-
-> >asm/byteorder.h ?
-> Yes.
-> Is linux/byteorder/generic.h OK?
-
-No, as I put it.
-
-linux/*
-...blank line...
-asm/*
-...blank line...
-linux/iio/*
-...blank line...
-
-...
-
-> >> -	scoped_guard(mutex, &st->lock)
-> >> +	scoped_guard(mutex, &st->lock) {
-> >
-> >Ah, nice. It should have been done in the first place and put a comment to that
-> >patch that scoped_guard() {} used specifically for limiting churn in the next
-> >changes.
-> If ok for you, I'll keep that as it is.
-> If I add a comment in previous patch, I'll anyway have to delete it this patch.
-
-"Comment" is to be added to the email and not the code. It's a free words to
-the cover letter and/or to this email after '---' line but before the actual
-diff.
-
-But {} should be added as even in the first patch this is multi-line body.
-
-> >> +	}
+   192	
+   193	static int bd79112_read_raw(struct iio_dev *indio_dev,
+   194				    struct iio_chan_spec const *chan, int *val,
+   195				    int *val2, long m)
+   196	{
+   197		struct bd79112_data *data = iio_priv(indio_dev);
+   198		int ret;
+   199	
+   200		switch (m) {
+   201		case IIO_CHAN_INFO_RAW:
+   202			ret = regmap_read(data->map, chan->channel, val);
+   203			if (ret < 0)
+   204				return ret;
+   205	
+   206			return IIO_VAL_INT;
+   207	
+   208		case IIO_CHAN_INFO_SCALE:
+   209			 *val = data->vref_mv;
+   210			 *val2 = 12;
+   211	
+ > 212			return IIO_VAL_FRACTIONAL_LOG2;
+   213		}
+   214	
+   215		return -EINVAL;
+   216	}
+   217	
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

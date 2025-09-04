@@ -1,115 +1,135 @@
-Return-Path: <linux-iio+bounces-23724-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23725-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0CDFB44651
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 21:24:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBEFB446B4
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 21:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACC8C1CC3A9C
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 19:24:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DA817AB07E
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 19:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153352727E3;
-	Thu,  4 Sep 2025 19:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816CF272811;
+	Thu,  4 Sep 2025 19:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gp3+Ln+h"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hIxA6llD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B687915DBC1;
-	Thu,  4 Sep 2025 19:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CE2237707
+	for <linux-iio@vger.kernel.org>; Thu,  4 Sep 2025 19:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757013850; cv=none; b=cluZMhdtDCGUw+hW7+XLp2+C3TejE+revnsiMZ1TGNtZofL1ATvA2MrTPyauzdaOMAZskxquz1eBWp4Pqu06ui9OhF1RqEc2r0dS3liivje2Q2jZXKZV5fdBEilm71PeNGYW5Z1O1HneTJikByp1xw1VJX0Y63jefACNTzUbnp0=
+	t=1757015241; cv=none; b=dPS84PxRQWpfZ3ANx2cn4MB2XhIlw0D1hn1G4/kRmxq5euMT2WQUzIfhfDJdmDsnRFKc3viQAQY5wmoI1oq+2cFBFB+4WD7zaZ99/7OehkosakDpfT4REEJzjdClSxFi4pDItlDoNR6HgSi9LOGKg5kjHmmwb0HQPJYBqphxD1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757013850; c=relaxed/simple;
-	bh=DcZBwbvCs/APcDLJmkpflaT6uT/JUTX4N2f8nqi57sg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RkIYsHGyWGqDauWJwQdeBy1szEu7C1HooWifexcYJc4UtqcFXNAJY4OP9YkczUHkLA7IZg5NF6j6NAUCsQaNKb6AmXTVMWiXPEYj9QIyx9WuNur5w/wQ9Z/2VicyA0aleF+Z9ohXMXZvjmU/qMcmIvzG/v9tcuiXWmLQpyvPOTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gp3+Ln+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D14C4CEF0;
-	Thu,  4 Sep 2025 19:24:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757013850;
-	bh=DcZBwbvCs/APcDLJmkpflaT6uT/JUTX4N2f8nqi57sg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gp3+Ln+hhB1+8+lkFXXSillDiYum+dAPdUfELaZ7FRDiOTzBpVrgbAwIhJ+3hXR1s
-	 dOn4PqmUueHjXKJUs635qGZN7SZRDdWsMXwiPlPWkYDXvLnR8QGou6xrYNB97GTIXE
-	 PbOMK2KV0EMEuszui0Rr+3gdzdcyUC3XFFgRw1qNt7Jarycl+lPLEq7BWZZWAuS7pO
-	 SpxTYO34dGmrwlyYX+yQTNkv3IentC7g/DdNwluX0DVdFU7WWzab0K57zoWo9IXl+E
-	 OVGDEjjhcfpPp6NAjNrqHvOxoSDwRDe09WSFwDba3EIevvWIpnxJAEsbyA48Y61ecz
-	 kz8xv94usKF6A==
-Date: Thu, 4 Sep 2025 20:24:02 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Tobias Sperling <tobias.sperling@softing.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Esteban Blanc <eblanc@baylibre.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	Eason Yang <j2anfernee@gmail.com>,
-	Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: iio: adc: ROHM BD79112 ADC/GPIO
-Message-ID: <20250904-suffering-napping-cfb886addf1e@spud>
-References: <cover.1756988028.git.mazziesaccount@gmail.com>
- <af7292dea5cebe97553af67a8897e092bef3ec56.1756988028.git.mazziesaccount@gmail.com>
+	s=arc-20240116; t=1757015241; c=relaxed/simple;
+	bh=0uKBluwkW8S9ZJojZ77XmvLQl0hO1ujm9d+I2eVJD9Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nRp4cTOF1trx250lCMXj2yCLSTYowDZkaLXV3+evJsCK2ebrlOnW4hTSBvn0dW+eGFKjhsSIXYPEzAnRw8BN3HMsAcvaMiSnP2+ZoZOEt8qZkXR3ujs6gbdxgUccnJO7yhqG0FgX314AXxtHrnPxyl82UkWqwWnaM5Yl8gPZKiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hIxA6llD; arc=none smtp.client-ip=209.85.161.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-61e23ec2538so972882eaf.2
+        for <linux-iio@vger.kernel.org>; Thu, 04 Sep 2025 12:47:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757015238; x=1757620038; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WdrAdy+IWPnyy2x2OiP/b29/tYOXeCzQkBFpQM/hl8M=;
+        b=hIxA6llDXXzK/GvZGyMiInf0MscUctA466Fj1Wik4GeERuD/lkfbpApQC5uw3iUp81
+         d2f6VHqKy6lTeS2r+tKJCLpSS7uus40IolEbHY92ylL/6vc/wlU3wPV8L+/agsyaJeLL
+         stVIVfVEM0OOpmaecAZT9pOet9VUF8duv3eDJByMi301CHuo0t725Tk5TWPBI0LZpdqi
+         zFN1OyI9TMyW8y6+DesETY9ary9+jStO+ZBoobVWUz1VM2Sm14Y4z1XtW+JK7JfpSK+J
+         9ZDAcA51hhEEgo5Q7Qc+xRNqi3+r3wi/hZF0aZ3e9aHSMctrBrohq2Y9Ogafzh8cSfKo
+         QNVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757015238; x=1757620038;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WdrAdy+IWPnyy2x2OiP/b29/tYOXeCzQkBFpQM/hl8M=;
+        b=KV1l/lwRPcvgmS44RmCLL2/cOb75Xy6zN0ZUqncGu7cqIyzChQI/2UeagT86cOkh06
+         /a+MBgXCWxmtuFgei4RXh1lOFxbvCg7QK+CJsrlK2hJzQkG6OKhBiVVkHX3S5eR3NSaN
+         Sa4manbevsvAiukBjdwTyeRsRsjFxEtB2HiehM7LyiQ+iWAYsndMUV1/pBeu1CwOATvv
+         M14FMgw4nfhMj9RpA0z/g0+RHSlFKybh0g2JtPsnR1xGLumh6Q2rfXKWoobiLGGKVnjk
+         M4rm2hML0PtL6XtBuCsfl5izSZ5iwlh5rB9KBziS/pspKkMhQFzIFf71c+YklhjmG64D
+         CFtQ==
+X-Gm-Message-State: AOJu0Ywolq5mm/slVkUdLjsRVIRKfGDczMqWF9/PdYe/j0Fy2l65j3BO
+	kPmqPhuFKjlThgkS5mQ3oq660jSsNtjKkI+8oCeLinwPLP1LF9KWvSlhh66KVEeGMhs=
+X-Gm-Gg: ASbGncuRGHB3hgvoZx7FTm4WPDY95tRTPwPPvNvUbcqkdYjflw4KnZ8uNeklLg0lAHq
+	LjK7/pet30cN0dRpCVnMWfPLmoGse12lTuGFhOHbo21BVEVMEH+iDQaht7mPnyYD2Hf/tp6dVu1
+	tq9aynCV7csV7JE4A3gzI34jbuHbT80kkgBFvASBkc6HuoqLnErQ+iDJuW/MHfFu3qBt+SeXDQL
+	7EKBj6aCpSQrHDiGVbRoMNL1GkiSzJ/RXvd8OqOuu4BCfTAichQviKx4shAu+toVC+0ep5aGhu4
+	5Yne+JFr0Gz/GJ0CVoIF1Fgf/OSUNrwOkQRDwOsM5HGItwx7vKsKRYzq7Bh/FUzwxvA49j6CIGe
+	3NJkf4wqDlkYcLktTTrGP1fSmnJ7xNlhqr4I2dTec6bAwCgzF6lTpgi24SGo6KrRV2j6FaHiPNt
+	ryN2kcEe2h6Q==
+X-Google-Smtp-Source: AGHT+IEw0CdMxMBJHWPN4YIH+Prs/3E9C5k20ULoXPlkVgyx+QT8YIIdd6jgssVML2iYRirYhicCOg==
+X-Received: by 2002:a05:6808:8117:b0:438:8c9:5d8 with SMTP id 5614622812f47-43808c90671mr7979280b6e.48.1757015238298;
+        Thu, 04 Sep 2025 12:47:18 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:a178:aa1c:68f0:444a? ([2600:8803:e7e4:1d00:a178:aa1c:68f0:444a])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4380001d11asm2968057b6e.16.2025.09.04.12.47.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Sep 2025 12:47:17 -0700 (PDT)
+Message-ID: <99775fab-c0b3-4ecb-bc79-eabbc4975d28@baylibre.com>
+Date: Thu, 4 Sep 2025 14:47:16 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="TYMVqA+xISrwz0kg"
-Content-Disposition: inline
-In-Reply-To: <af7292dea5cebe97553af67a8897e092bef3ec56.1756988028.git.mazziesaccount@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: Add the NXP SAR ADC for
+ s32g2/3 platforms
+To: Daniel Lezcano <daniel.lezcano@linaro.org>, jic23@kernel.org,
+ nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, conor+dt@kernel.org,
+ krzk+dt@kernel.org
+Cc: linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
+ ghennadi.procopciuc@oss.nxp.com
+References: <20250903102756.1748596-1-daniel.lezcano@linaro.org>
+ <20250903102756.1748596-2-daniel.lezcano@linaro.org>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250903102756.1748596-2-daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 9/3/25 5:27 AM, Daniel Lezcano wrote:
 
---TYMVqA+xISrwz0kg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-On Thu, Sep 04, 2025 at 03:36:30PM +0300, Matti Vaittinen wrote:
-> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
-> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
->=20
-> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
-> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
-> daisy-chain configuration) and maximum sampling rate is 1MSPS.
->=20
-> Add a device tree binding document for the ROHM BD79112.
->=20
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> +  clock-names:
+> +    minItems: 1
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Usually if there is only 1 clock, we don't bother with clock-names.
 
---TYMVqA+xISrwz0kg
-Content-Type: application/pgp-signature; name="signature.asc"
+If we keep clock names though, I think it should be:
 
------BEGIN PGP SIGNATURE-----
+  clock-names:
+    items:
+      const: adc
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaLnnUgAKCRB4tDGHoIJi
-0hpgAQDEQSDG09i4H4ASWiQgAGYg6VSHoZz4ZF4QmHuzBaKuagD/ScVzBQXl5SZQ
-ctKeXmDU5aEZNzQzIDFHLgQG0q0O6w4=
-=YMPt
------END PGP SIGNATURE-----
+Since that is the only allowed name.
 
---TYMVqA+xISrwz0kg--
+Although the reference manual calls this the "bus" clock, so that might be a
+better name.
+
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    adc@401f8000 {
+> +        compatible = "nxp,s32g2-sar-adc";
+> +        reg = <0x401f8000 0x1000>;
+> +        interrupts = <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
+> +        clocks = <&clks 0x41>;
+> +        clock-names = "adc";
+> +        dmas = <&edma0 0 32>;
+> +        dma-names = "rx";
+> +    };
+
 

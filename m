@@ -1,326 +1,196 @@
-Return-Path: <linux-iio+bounces-23714-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23715-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C88B43D63
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 15:36:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3DFB43DAC
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 15:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE27A7C3FB7
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 13:36:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 437367C6B3D
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 13:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB24303C9D;
-	Thu,  4 Sep 2025 13:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8D82D8771;
+	Thu,  4 Sep 2025 13:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SKRN3AkH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a6DjApMN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAF62629C;
-	Thu,  4 Sep 2025 13:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F4223B616;
+	Thu,  4 Sep 2025 13:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756992985; cv=none; b=t+nVExi/f7di9WFZPrzhRc4C7KwctJxQ/+HSZN4dlTodWUXyvbFPtKouiJE7n7OuMNVe2IQmen+WF0nldbQHsnfIbXiW6wJ2aNYrMu6b8HGvO2xiOl5UnToASuGnL7bL6MhbQpt5SvOz7oa8DA/UYDptyEnl4sOinz5Xu8RsMUo=
+	t=1756993762; cv=none; b=guc8kvdYMrqFfz2NKhiRaC4CL5bsT3p1ATS9OjFLh8MkM+ll9HCzaW5sSxFmDoG1b3l9p+x8rPZQBwJ15GC8SJ07bYVs38CluQzp09WfdSOR5EzA9AAUZIvFBoR5La1JcOfN08TYINNO7jQ//fp2S4vCJNVo5ARodGpTkFHfKak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756992985; c=relaxed/simple;
-	bh=TiOuqBeVJygk4aY0wrM/xxlmUMCcvt2l9zB12toud4E=;
+	s=arc-20240116; t=1756993762; c=relaxed/simple;
+	bh=AkLMZM2IWuZTM3/2Jc4sRylXbsnaUGbk4biSzT3SKRY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gI3Ts0UjaRwjngVyG5+nGSbFYlF0xrPCWapDB57AK8mAyN8KrUXVnPJIgOCyDO6YE3PklgjoL2bC/Ugf7sMC6EIcVHm1Gc3s7Dl5Tu+Ildi5KQJ3D15daSdH7kw+dcL3eDve96xQw/binFSg+2fp0vBDRsASOHeHMSHJQQFxKNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SKRN3AkH; arc=none smtp.client-ip=198.175.65.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fh5drxCVF3hHoSdxMkXYZ8TC03l/sYmbuV7OctEAI+8RjqBn4nHDJRbQME2cXp3sVOTrAjdZg+SHQCjV5E4InDdu50e1D1AfSqMncy+3qCcNYKZD0xQu1H/pJMNAuIRpHPMUFEFS3ORIW6eGiJh3gSKZZA+gdNeiJQU9k57DaBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a6DjApMN; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756992983; x=1788528983;
+  t=1756993761; x=1788529761;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TiOuqBeVJygk4aY0wrM/xxlmUMCcvt2l9zB12toud4E=;
-  b=SKRN3AkHhRmegEa18HgJ7dQHa7do1ek5S7LF3QTISuVUd5x3AWiuLfid
-   uKVHyyc6958uEmgK2iB53QxOnVVXKytkeW+Tr8aBm/oFuiqCne6H0EQAo
-   mspuecB0v9oSAoTAHEKUBCJpMJPeBkDDQd6J3IYJw13ZIMxihgDXi4pqL
-   ciUlPgTyb/ntObnhINjeH/0oU/T4XWSJbl7ocIxEAm7nNfKezVNy+Nuj4
-   EfMusTJ2wlWTVDXDHZMbDzVPLR2G+lOc1L8/74xBqnL0tdsQBjLSnHXp1
-   7UaMT42X1ZP/9M9yu6N0iS1VemPllP4j+6AU0vkYwNXbcp4ODx0mZHjvL
-   g==;
-X-CSE-ConnectionGUID: Qht1AMVpQOOyybz08P9/zQ==
-X-CSE-MsgGUID: nvFrPkNITz6JbCp6YwhL7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="70426669"
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=AkLMZM2IWuZTM3/2Jc4sRylXbsnaUGbk4biSzT3SKRY=;
+  b=a6DjApMNScDsM5T1tiqiPuxTfniOnorUhfnlD8nHvESLAa3W55lNvNXs
+   hS1kFOhJz3mBVb1lCrfhqIlhkIqZbbvJH0E/Z9cqPC9JWA6G7OXR/3TfD
+   DL4UZ5uVOWx0H6vFxTMKJPc/aRsRrmZPDktkE139Jdz1eml/RYNal9/Kz
+   t92O+cjEWPElMHDNT2Dx3w69SAZ5VuIC5pVeoAXB1rMf1u1EydAYpTdvp
+   LoNuKfdDynMDt5xPQnh89BLTDZ1bj+ooXYDXTJVIjzklbTNm/raVDisdy
+   p0f+/6ysAfUljZc+8vBdBurXjTvM/sCHZJKmWApWDNJ3K252tTPDeUGX9
+   A==;
+X-CSE-ConnectionGUID: SAPTXMoHT+eEH3l3vII1VA==
+X-CSE-MsgGUID: 901zvDddTjeoG9P6iJiNfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="69595854"
 X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="70426669"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 06:36:21 -0700
-X-CSE-ConnectionGUID: dUOgLSaRS6mmqVk9h+dXqA==
-X-CSE-MsgGUID: 06UZQSg/SxOlKs4DqVJvag==
+   d="scan'208";a="69595854"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 06:49:20 -0700
+X-CSE-ConnectionGUID: mAtn5fxNRc2bybinVojzcg==
+X-CSE-MsgGUID: zJgKwK+8QS2lsmlHSg5pnA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="202741001"
+   d="scan'208";a="177113763"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 06:36:15 -0700
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 06:49:17 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uuA8K-0000000BHR6-3I7V;
-	Thu, 04 Sep 2025 16:36:12 +0300
-Date: Thu, 4 Sep 2025 16:36:12 +0300
+	id 1uuAKw-0000000BHbp-2mBK;
+	Thu, 04 Sep 2025 16:49:14 +0300
+Date: Thu, 4 Sep 2025 16:49:14 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>,
+To: Remi Buisson <Remi.Buisson@tdk.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Tobias Sperling <tobias.sperling@softing.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Esteban Blanc <eblanc@baylibre.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	Eason Yang <j2anfernee@gmail.com>,
-	Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-Message-ID: <aLmVzDB4bk-z5d16@smile.fi.intel.com>
-References: <cover.1756988028.git.mazziesaccount@gmail.com>
- <facc8b9255a754f767807b7e5c79c0eb20c680e4.1756988028.git.mazziesaccount@gmail.com>
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v5 3/9] iio: imu: inv_icm45600: add buffer support in iio
+ devices
+Message-ID: <aLmY2mKg_FsPOpsq@smile.fi.intel.com>
+References: <20250820-add_newport_driver-v5-0-2fc9f13dddee@tdk.com>
+ <20250820-add_newport_driver-v5-3-2fc9f13dddee@tdk.com>
+ <aKbk9WYtfb5L5la4@smile.fi.intel.com>
+ <FR2PPF4571F02BCCFD984FDD99C69CAE7298C00A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <facc8b9255a754f767807b7e5c79c0eb20c680e4.1756988028.git.mazziesaccount@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <FR2PPF4571F02BCCFD984FDD99C69CAE7298C00A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Sep 04, 2025 at 03:36:46PM +0300, Matti Vaittinen wrote:
-> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
-> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
++Cc I³C people to comment on the returned values on the regmap. See below.
+
+On Thu, Sep 04, 2025 at 01:01:32PM +0000, Remi Buisson wrote:
+> >From: Andy Shevchenko <andriy.shevchenko@intel.com> 
+> >Sent: Thursday, August 21, 2025 11:21 AM
+> >On Wed, Aug 20, 2025 at 02:24:21PM +0000, Remi Buisson via B4 Relay wrote:
+
+...
+
+> >> +#define INV_ICM45600_SENSOR_CONF_KEEP_VALUES {U8_MAX, U8_MAX, U8_MAX, U8_MAX, }
+> >
+> >When one line, no need to have inner trailing comma, besides that missed
+> >space.
+> The trailing comma was a request from Jonathan Cameron on the v2 of patchset.
+> Let me know, if you disagree with him and I'll fix.
+
+I see, then let's ask him, because it's a usual pattern for
+the one-line arrays like this to have no inner trailing commas.
+
+> And I'll add a space before first element.
+
+...
+
+> >> +	/* Try to read all FIFO data in internal buffer. */
+> >> +	st->fifo.count = fifo_nb * packet_size;
+> >> +	ret = regmap_noinc_read(st->map, INV_ICM45600_REG_FIFO_DATA,
+> >> +				st->fifo.data, st->fifo.count);
+> >> +	if (ret == -ENOTSUPP || ret == -EFBIG) {
+> >
+> >Strictly speaking this is a bit of layering issue, do we have other means to
+> >check the support before even trying?
 > 
-> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
-> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
-> daisy-chain configuration) and maximum sampling rate is 1MSPS.
-> 
-> The IC does also support CRC but it is not implemented in the driver.
+> No unfortunately, we can't with current I3C regmap implementation.
+> I2C and SPI regmaps are able to split transfers according to max_read_len.
+> But for I3C, it is left to the controller driver, which usually only returns an error.
+
+Have it been discussed with I³C maintainers / stakeholders? Because this kind of APIs
+will be hard to follow and even change for both sides caller and callee.
+
+> >> +		/* Read full fifo is not supported, read samples one by one. */
+> >> +		ret = 0;
+> >> +		for (i = 0; i < st->fifo.count && ret == 0; i += packet_size)
+> >> +			ret = regmap_noinc_read(st->map, INV_ICM45600_REG_FIFO_DATA,
+> >> +						&st->fifo.data[i], packet_size);
+> >> +	}
+> >> +	if (ret)
+> >> +		return ret;
 
 ...
 
-> +/*
-> + * The data-sheet explains register I/O communication as follows:
-> + *
-> + * Read, two 16-bit sequences separated by CSB:
-> + * MOSI:
-> + * SCK:	| 1 | 2 | 3   | 4      | 5 .. 8 | 9 .. 16 |
-> + * data:| 0 | 0 |IOSET| RW (1) | ADDR   | 8'b0    |
-> + *
-> + * MISO:
-> + * SCK:	| 1 .. 8 | 9 .. 16 |
-> + * data:| 8'b0   | data    |
-> + *
-> + * Note, CSB is shown to be released between writing the address (MOSI) and
-> + * reading the register data (MISO).
-> + *
-> + * Write, single 16-bit sequence:
-> + * MOSI:
-> + * SCK:	| 1 | 2 | 3   | 4     | 5 .. 8 |
-> + * data:| 0 | 0 |IOSET| RW(0) | ADDR   |
-> + *
-> + * MISO:
-> + * SCK:	| 1 .. 8 |
-> + * data:| data   |
-> + */
+> >> +	/* Disable FIFO and set depth. */
+> >> +	val = FIELD_PREP(INV_ICM45600_FIFO_CONFIG0_MODE_MASK,
+> >> +			 INV_ICM45600_FIFO_CONFIG0_MODE_BYPASS);
+> >> +	val |= INV_ICM45600_FIFO_CONFIG0_FIFO_DEPTH_MAX;
+> >
+> >FIELD_MODIFY()
+> Ok, great.
 
-I don't know how to read this comment. In the monospace font the whole block
-looks like a mess.
+Actually this is not a modification per se, it's just an assignment (PREP)
+split to two lines, can you just make it a single expression (wrapped on a few
+lines, though)?
 
 ...
 
-> +static int _get_gpio_reg(unsigned int offset, unsigned int base)
-> +{
-> +	int regoffset = offset / 8;
-> +
-> +	if (offset > 31 || offset < 0)
+> >asm/byteorder.h ?
+> Yes.
+> Is linux/byteorder/generic.h OK?
 
-So, < 0 is now unneeded and offset > 31 can be rewritten as
+No, as I put it.
 
-	if (regoffset >= 4)
-
-which is more clear to me (like we have 4 banks and here is the check for
-the bank. Maybe you can even call the variable 'bank'.
-
-> +		return -EINVAL;
-> +
-> +	return base - regoffset;
-> +}
+linux/*
+...blank line...
+asm/*
+...blank line...
+linux/iio/*
+...blank line...
 
 ...
 
-> +#define GET_GPIO_BIT(offset) BIT((offset) % 8)
+> >> -	scoped_guard(mutex, &st->lock)
+> >> +	scoped_guard(mutex, &st->lock) {
+> >
+> >Ah, nice. It should have been done in the first place and put a comment to that
+> >patch that scoped_guard() {} used specifically for limiting churn in the next
+> >changes.
+> If ok for you, I'll keep that as it is.
+> If I add a comment in previous patch, I'll anyway have to delete it this patch.
 
-I suggest to make it to be a returned parameter of _get_gpio_reg(). This will
-give better code generation on some architectures, see, for example, this
-commit: 9b3cd5c7099f regmap: place foo / 8 and foo % 8 closer to each other.
+"Comment" is to be added to the email and not the code. It's a free words to
+the cover letter and/or to this email after '---' line but before the actual
+diff.
 
-...
+But {} should be added as even in the first patch this is multi-line body.
 
-> +static const struct regmap_access_table bd79112_volatile_regs = {
-> +	.yes_ranges = &bd71815_volatile_ro_ranges[0],
-> +	.n_yes_ranges = ARRAY_SIZE(bd71815_volatile_ro_ranges),
-
-+ array_size.h
-(and btw we put generic asm/* _after_ generic linux/*, just noticed that).
-
-> +};
-
-...
-
-> +static int bd79112_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan, int *val,
-> +			    int *val2, long m)
-> +{
-> +	struct bd79112_data *data = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (m) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = regmap_read(data->map, chan->channel, val);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		return IIO_VAL_INT;
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		 *val = data->vref_mv;
-> +		 *val2 = 12;
-> +
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-> +	default:
-> +		return -EINVAL;
-> +	}
-
-> +
-
-Unneeded blank line.
-
-> +}
-
-...
-
-> +static int bd79112_gpio_set_multiple(struct gpio_chip *gc, unsigned long *mask,
-> +				     unsigned long *bits)
-> +{
-> +	struct bd79112_data *data = gpiochip_get_data(gc);
-> +	unsigned long i, bank_mask;
-> +
-> +	for_each_set_clump8(i, bank_mask, mask, /* gc->ngpio */ 32) {
-
-Hmm... Why constant and not gc->ngpio?
-
-> +		unsigned long bank_bits;
-> +		unsigned int reg;
-> +		int ret;
-
-> +		if (bank_mask) {
-
-This is a duplication, the iterator only gives non-zero "clumps".
-
-> +			bank_bits = bitmap_get_value8(bits, i);
-> +			reg = BD79112_REG_GPO_VALUE_A0_A7 - i / 8;
-> +			ret = regmap_update_bits(data->map, reg, bank_mask,
-> +						 bank_bits);
-> +			if (ret)
-> +				return ret;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-
-...
-
-> +static int bd79112_get_gpio_pins(const struct iio_chan_spec *cs, int num_channels)
-> +{
-> +	int i, gpio_channels;
-> +
-> +	/*
-> +	 * Let's initialize the mux config to say that all 32 channels are
-> +	 * GPIOs. Then we can just loop through the iio_chan_spec and clear the
-> +	 * bits for found ADC channels.
-> +	 */
-> +	gpio_channels = GENMASK(31, 0);
-
-This is negative number, it might bait one at a surprising time. Hence once
-again, why not make them unsigned?
-
-> +	for (i = 0; i < num_channels; i++)
-> +		gpio_channels &= ~BIT(cs[i].channel);
-> +
-> +	return gpio_channels;
-> +}
-
-...
-
-> +/* ADC channels as named in the data-sheet */
-> +static const char * const bd79112_chan_names[] = {
-> +	"AGIO0A", "AGIO1A", "AGIO2A", "AGIO3A", "AGIO4A",	/* 0 - 4 */
-> +	"AGIO5A", "AGIO6A", "AGIO7A", "AGIO8A", "AGIO9A",	/* 5 - 9 */
-> +	"AGIO10A", "AGIO11A", "AGIO12A", "AGIO13A", "AGIO14A",	/* 10 - 14 */
-> +	"AGIO15A", "AGIO0B", "AGIO1B", "AGIO2B", "AGIO3B",	/* 15 - 19 */
-> +	"AGIO4B", "AGIO5B", "AGIO6B", "AGIO7B", "AGIO8B",	/* 20 - 24 */
-> +	"AGIO9B", "AGIO10B", "AGIO11B", "AGIO12B", "AGIO13B",	/* 25 - 29 */
-> +	"AGIO14B", "AGIO15B",					/* 30 - 31 */
-
-O-o-key, but why not power-of-two per line (esp. taking into account
-the whole size)? (Whatever, it's not something I would fight for.)
-
-> +};
-
-...
-
-> +	data->vref_mv = ret / 1000;
-
-Yeah, mV, (MICRO / MILLI) and other things I leave to other people to discuss.
-
-
-...
-
-> +	ret = devm_iio_adc_device_alloc_chaninfo_se(dev, &bd79112_chan_template,
-> +						    BD79112_MAX_NUM_CHANNELS - 1,
-> +						    &cs);
-> +	if (ret < 0) {
-
-> +		/* Register all pins as GPIOs if there are no ADC channels */
-> +		if (ret == -ENOENT)
-> +			goto register_gpios;
-
-As I showed this can be checked before other case, but I kinda have an idea why
-you are liking to do it this way.
-
-> +		return ret;
-> +	}
-
-...
-
-> +register_gpios:
-> +	gpio_pins = bd79112_get_gpio_pins(iio_dev->channels,
-> +					  iio_dev->num_channels);
-> +
-> +	/* If all channels are reserved for ADC, then we're done. */
-
-I still consider the assignment to be located here is a better place,
-but I leave it to maintainers.
-
-> +	if (!gpio_pins)
-> +		return 0;
+> >> +	}
 
 -- 
 With Best Regards,

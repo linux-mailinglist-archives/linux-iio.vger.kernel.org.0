@@ -1,197 +1,214 @@
-Return-Path: <linux-iio+bounces-23695-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23696-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35862B42CC7
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 00:30:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52388B43419
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 09:34:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5521F1B274B5
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Sep 2025 22:30:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13EA8585DAC
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 07:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8EA72EDD76;
-	Wed,  3 Sep 2025 22:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646B32BDC3D;
+	Thu,  4 Sep 2025 07:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e8MsM39I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G93hqpCp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A1C2EDD64;
-	Wed,  3 Sep 2025 22:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2977F29D27F;
+	Thu,  4 Sep 2025 07:33:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756938589; cv=none; b=XIdFcia1qK9LpNH7u7BJY1q57AjVifUcPVKPc6hxV+MW5EZ+m8yZKohbOHaRLAUqX1z6I9k77MKLRe7XSuK/wtIkehi2poozbQGbT7GBfmacFj8DqgV6siUuRLL39UaAhZOMYeRWz6QKcZZ7Q7f9PcSW01b2xgGgZUJO1ER9kh4=
+	t=1756971205; cv=none; b=tVhEtZoRHr7o1VG2wE9VFv2jnmdxBLFPljMfUssnN2CnO40fOXmXf/ubx+nNRk6kXfFWZ09H5kPaFoewf5/7IYUMCxtv8UzwR4nOrDln15tXh+am7DIYh2CS4fiZ8PA1ZXuiRpVqcVmj9dn112pnR43boX31VFcGMvXjdmGjCgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756938589; c=relaxed/simple;
-	bh=PSEVuZUNWlueqS+Ui8pc2fm3qOdMiz+R5imI8e5EXAw=;
+	s=arc-20240116; t=1756971205; c=relaxed/simple;
+	bh=cXJUlEC+sK546VLltjJSXzal14Out0qsO9EqICM0M94=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ix1Vxbw5ALQbdayYfJ/RbM3iNaiuEAOsfRt+j7qKqjwEPKyeNYpNLM9b6SgtQe68v+3lTgmdvTJapaFCvViuDqoI22PouJxCwvQ6ZGoAjkdwiswtoRSR4FGiELGaq3ijFutcUAwa0otJQ6WJXu4gJ9xVRkdhjUftdhPfNtrRtIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e8MsM39I; arc=none smtp.client-ip=192.198.163.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=huKMHzm7cH2WHGyD0zpem8i0t/yebfMM5o3KhJiov3Iph8VeEs1E1lbbGqcbVVpnJloKvAqAOTcJAXJ2kti4tZx1PKIVN9Wjl1/tLdGCjqYJBu8Mq5LpTpPtRYblIQ6DxmH/1pA41Om5ti5CJYkNfisSPYNI+paBwny6W4///hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G93hqpCp; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756938588; x=1788474588;
+  t=1756971204; x=1788507204;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PSEVuZUNWlueqS+Ui8pc2fm3qOdMiz+R5imI8e5EXAw=;
-  b=e8MsM39ITKnyhH7t9WtSxSpg+qD7sH6h/RlV+cn406O8eHFBmqRbN/p/
-   9AS7e7rriVKgifKOE0BdplgG7Xfo/DrkCwslTLjcvr8hrKIir32WLOL6J
-   +oJuRlUcq8xKsISbcfc87SY2R5hZrbLl8hcVMqV26ZDlz059/sQWmucB7
-   ghPnd2EMKIsk+PPhME2La3WWjxZ4+g9hZrdrSasHCzBAtFRMJE9p6tDtN
-   apGxnzl8FTybkfYwMT8aEW0dRrV5de0fVJo9J9+MfRKx2YSMnv4AGXkbO
-   gokN2UAEQ3Sj0x36DzhBXA6+AB+jftVTIvivfBxeGJzqg5tBBlB1HV+m0
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=cXJUlEC+sK546VLltjJSXzal14Out0qsO9EqICM0M94=;
+  b=G93hqpCpMkDhoDOBVOMG5KPtP2KN7yJVSDR1UxL3dFzIm4+gM3yhkF1s
+   OMLttppSwIycaIQHzXL7G+4l9dlDtj7iV0EHN7NsbENbu66xNcEnyZbsf
+   fR+CsTlBrL0u1wC6nER7QrrcCYdCgwF/USyacpHMgdWUoXwXrPbGIy2j/
+   3edq4TrJ57JiePEWVfx49vZP5830jb1ixeAis6TvQzqobqlm0jyZE+rxf
+   SJiDjvHFEo6nuQnQQnjZscEyoqY6ollSuwV4pZ1jqYGYzqdKgwRP+9hmS
+   Syp9df9fWFWTdraosrDMXs1YDAGvLDI3P8JhexWZ3jljwNAU70QPwuFXQ
    Q==;
-X-CSE-ConnectionGUID: ugixRcPGQwehC63L/m7Dlw==
-X-CSE-MsgGUID: WAlhLn7YRmaYYhqKSg/FeA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="59378141"
-X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; 
-   d="scan'208";a="59378141"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 15:29:47 -0700
-X-CSE-ConnectionGUID: 40QyShBNR7CMykOLW2VH5Q==
-X-CSE-MsgGUID: mfOXVpV6SzGI80goFY9hpg==
+X-CSE-ConnectionGUID: 0b0FIOs4TleVJjSP/sSusw==
+X-CSE-MsgGUID: shcQJgJWTDm5n7S8pLqTLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="59369793"
+X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
+   d="scan'208";a="59369793"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 00:33:21 -0700
+X-CSE-ConnectionGUID: eMMfcbkqRCOWVV2RjKkbtQ==
+X-CSE-MsgGUID: X75BcxkyRTG4FAFe4GGqjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; 
-   d="scan'208";a="172161049"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by fmviesa009.fm.intel.com with ESMTP; 03 Sep 2025 15:29:43 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1utvyk-0004Tz-1o;
-	Wed, 03 Sep 2025 22:29:33 +0000
-Date: Thu, 4 Sep 2025 06:28:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
-	Kim Seer Paller <kimseer.paller@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	Dragos Bogdan <dragos.bogdan@analog.com>
-Subject: Re: [PATCH v10 2/2] iio: adc: max14001: New driver
-Message-ID: <202509040617.gcAKQNlG-lkp@intel.com>
-References: <f3ea9c127b7836cc978def5d906740c6da1cfb1e.1756816682.git.marilene.agarcia@gmail.com>
+X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
+   d="scan'208";a="171693241"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 00:33:17 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uu4T4-0000000BCO3-13Ek;
+	Thu, 04 Sep 2025 10:33:14 +0300
+Date: Thu, 4 Sep 2025 10:33:14 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, robh@kernel.org, conor+dt@kernel.org,
+	krzk+dt@kernel.org, linux-iio@vger.kernel.org, s32@nxp.com,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	chester62515@gmail.com, mbrugger@suse.com,
+	ghennadi.procopciuc@oss.nxp.com
+Subject: Re: [PATCH v1 2/2] iio: adc: Add the NXP SAR ADC support for the
+ s32g2/3 platforms
+Message-ID: <aLlAugdr-hwMNIje@smile.fi.intel.com>
+References: <20250903102756.1748596-1-daniel.lezcano@linaro.org>
+ <20250903102756.1748596-3-daniel.lezcano@linaro.org>
+ <aLgrGlpNrDTC5LAd@smile.fi.intel.com>
+ <a34efc36-0100-4a7f-b131-566413ab88ae@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f3ea9c127b7836cc978def5d906740c6da1cfb1e.1756816682.git.marilene.agarcia@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a34efc36-0100-4a7f-b131-566413ab88ae@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Marilene,
+On Wed, Sep 03, 2025 at 05:28:09PM +0200, Daniel Lezcano wrote:
+> On 03/09/2025 13:48, Andy Shevchenko wrote:
+> > On Wed, Sep 03, 2025 at 12:27:56PM +0200, Daniel Lezcano wrote:
 
-kernel test robot noticed the following build warnings:
+...
 
-[auto build test WARNING on d1487b0b78720b86ec2a2ac7acc683ec90627e5b]
+> > > +#include <linux/circ_buf.h>
+> > 
+> > Why not kfifo?
+> 
+> Are you suggesting to use kfifo instead of the circular buffer in the code ?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marilene-Andrade-Garcia/dt-bindings-iio-adc-add-max14001/20250902-212046
-base:   d1487b0b78720b86ec2a2ac7acc683ec90627e5b
-patch link:    https://lore.kernel.org/r/f3ea9c127b7836cc978def5d906740c6da1cfb1e.1756816682.git.marilene.agarcia%40gmail.com
-patch subject: [PATCH v10 2/2] iio: adc: max14001: New driver
-config: hexagon-randconfig-r113-20250904 (https://download.01.org/0day-ci/archive/20250904/202509040617.gcAKQNlG-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 2e122990391b2ba062e6308a12cfedf7206270ba)
-reproduce: (https://download.01.org/0day-ci/archive/20250904/202509040617.gcAKQNlG-lkp@intel.com/reproduce)
+Asking, due to relatively recent move in the whole serial subsystem.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509040617.gcAKQNlG-lkp@intel.com/
+...
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/adc/max14001.c:109:27: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be16 [usertype] spi_tx_buffer @@     got unsigned long @@
-   drivers/iio/adc/max14001.c:109:27: sparse:     expected restricted __be16 [usertype] spi_tx_buffer
-   drivers/iio/adc/max14001.c:109:27: sparse:     got unsigned long
->> drivers/iio/adc/max14001.c:110:29: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned short [usertype] val @@     got restricted __be16 [usertype] spi_tx_buffer @@
-   drivers/iio/adc/max14001.c:110:29: sparse:     expected unsigned short [usertype] val
-   drivers/iio/adc/max14001.c:110:29: sparse:     got restricted __be16 [usertype] spi_tx_buffer
->> drivers/iio/adc/max14001.c:110:29: sparse: sparse: cast from restricted __be16
->> drivers/iio/adc/max14001.c:110:29: sparse: sparse: cast from restricted __be16
->> drivers/iio/adc/max14001.c:110:29: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned short [usertype] __x @@     got restricted __be16 [usertype] @@
-   drivers/iio/adc/max14001.c:110:29: sparse:     expected unsigned short [usertype] __x
-   drivers/iio/adc/max14001.c:110:29: sparse:     got restricted __be16 [usertype]
->> drivers/iio/adc/max14001.c:110:27: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be16 [usertype] spi_tx_buffer @@     got int @@
-   drivers/iio/adc/max14001.c:110:27: sparse:     expected restricted __be16 [usertype] spi_tx_buffer
-   drivers/iio/adc/max14001.c:110:27: sparse:     got int
->> drivers/iio/adc/max14001.c:120:27: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be16 [usertype] spi_rx_buffer @@     got int @@
-   drivers/iio/adc/max14001.c:120:27: sparse:     expected restricted __be16 [usertype] spi_rx_buffer
-   drivers/iio/adc/max14001.c:120:27: sparse:     got int
->> drivers/iio/adc/max14001.c:121:21: sparse: sparse: cast to restricted __be16
->> drivers/iio/adc/max14001.c:121:21: sparse: sparse: restricted __be16 degrades to integer
->> drivers/iio/adc/max14001.c:121:21: sparse: sparse: restricted __be16 degrades to integer
-   drivers/iio/adc/max14001.c:133:27: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be16 [usertype] spi_tx_buffer @@     got unsigned long @@
-   drivers/iio/adc/max14001.c:133:27: sparse:     expected restricted __be16 [usertype] spi_tx_buffer
-   drivers/iio/adc/max14001.c:133:27: sparse:     got unsigned long
-   drivers/iio/adc/max14001.c:136:29: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned short [usertype] val @@     got restricted __be16 [usertype] spi_tx_buffer @@
-   drivers/iio/adc/max14001.c:136:29: sparse:     expected unsigned short [usertype] val
-   drivers/iio/adc/max14001.c:136:29: sparse:     got restricted __be16 [usertype] spi_tx_buffer
-   drivers/iio/adc/max14001.c:136:29: sparse: sparse: cast from restricted __be16
-   drivers/iio/adc/max14001.c:136:29: sparse: sparse: cast from restricted __be16
-   drivers/iio/adc/max14001.c:136:29: sparse: sparse: incorrect type in initializer (different base types) @@     expected unsigned short [usertype] __x @@     got restricted __be16 [usertype] @@
-   drivers/iio/adc/max14001.c:136:29: sparse:     expected unsigned short [usertype] __x
-   drivers/iio/adc/max14001.c:136:29: sparse:     got restricted __be16 [usertype]
-   drivers/iio/adc/max14001.c:136:27: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be16 [usertype] spi_tx_buffer @@     got int @@
-   drivers/iio/adc/max14001.c:136:27: sparse:     expected restricted __be16 [usertype] spi_tx_buffer
-   drivers/iio/adc/max14001.c:136:27: sparse:     got int
+> > > +#define NXP_SAR_ADC_CAL_TIMEOUT_US	100000
+> > 
+> > (100 * USEC_PER_MSEC)
+> > 
+> > > +#define NXP_SAR_ADC_WAIT_US		2000
+> > 
+> > (2 * USEC_PER_MSEC)
+> 
+> Why is this more understandable than the raw value ?
 
-vim +109 drivers/iio/adc/max14001.c
+Because instead of counting 0:s and checking the suffix, I can immediately read
+from the value like:
 
-    89	
-    90	static int max14001_read(struct max14001_state *st, u16 reg_addr, u16 *reg_data)
-    91	{
-    92		struct spi_transfer xfers[] = {
-    93			{
-    94				.tx_buf = &st->spi_tx_buffer,
-    95				.len = sizeof(st->spi_tx_buffer),
-    96				.cs_change = 1,
-    97			}, {
-    98				.rx_buf = &st->spi_rx_buffer,
-    99				.len = sizeof(st->spi_rx_buffer),
-   100			},
-   101		};
-   102		int ret;
-   103	
-   104		/*
-   105		 * Prepare SPI transmit buffer 16 bit-value big-endian format and
-   106		 * reverses bit order to align with the LSB-first input on SDI port
-   107		 * in order to meet the device communication requirements.
-   108		 */
- > 109		st->spi_tx_buffer = FIELD_PREP(MAX14001_MASK_ADDR, reg_addr);
- > 110		st->spi_tx_buffer = bitrev16(cpu_to_be16(st->spi_tx_buffer));
-   111	
-   112		ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
-   113		if (ret)
-   114			return ret;
-   115	
-   116		/*
-   117		 * Convert received 16-bit value from big-endian to cpu-endian format
-   118		 * and reverses bit order.
-   119		 */
- > 120		st->spi_rx_buffer = bitrev16(be16_to_cpu(st->spi_rx_buffer));
- > 121		*reg_data = FIELD_GET(MAX14001_MASK_DATA, st->spi_rx_buffer);
-   122	
-   123		return 0;
-   124	}
-   125	
+"This is 2 milliseconds in microseconds units."
+
+It's more understandable and robust against possible typos.
+
+...
+
+> > > +#define NXP_SAR_ADC_DMA_BUFF_SZ		(PAGE_SIZE * NXP_SAR_ADC_DMA_SAMPLE_SZ)
+> > 
+> > Oh, PAGE_SIZE is not good to use. I believe this HW is not tolerant to any page size.
+> > (Note, we made similar mistake in Intel IPU3 camera driver, which is now fixed)
+> 
+> Is it acceptable to put a hardcoded 4096 value ?
+
+Sure, define it like HW page size
+
+/* This ADC relies on the page size to be 4kB */
+NXP_SAR_PAGE_SIZE		0x1000 // or SZ_4K, or ...
+
+...
+
+> > > +	ret = read_poll_timeout(readl, msr, !(msr & REG_ADC_MSR_CALBUSY),
+> > 
+> > Why not readl_poll_timeout()?
+> > 
+> > > +				NXP_SAR_ADC_WAIT_US,
+> > > +				NXP_SAR_ADC_CAL_TIMEOUT_US,
+> > > +				true, REG_ADC_MSR(base));
+> > > +	if (ret)
+> > > +		return ret;
+> > 
+> > > +	if (!(msr & REG_ADC_MSR_CALFAIL))
+> > > +		return 0;
+> > 
+> > I would expect standard pattern — "errors first", but here either works.
+> 
+> Does it mean this chunk of code can be preserved or do you prefer an error
+> block followed with a return 0 ?
+
+Up to you. Only the question above (readl_poll_timeout() use) stays unanswered
+so far.
+
+...
+
+> > > +	/*
+> > > +	 * On disable, we have to wait for the transaction to finish.
+> > > +	 * ADC does not abort the transaction if a chain conversion
+> > > +	 * is in progress.
+> > > +	 * Wait for the worst case scenario - 80 ADC clk cycles.
+> > > +	 */
+> > > +	ndelay(div64_u64(NSEC_PER_SEC, clk_get_rate(info->clk)) * 80U);
+> > 
+> > Could it possible go wrong and with low rate clocks (kHz:ish) this will go into
+> > lo-o-o-o-ng *atomic* delay?
+> 
+> It is the ADC clock where we need to wait for 80 cycles. The lowest clock
+> rate is 40MHz, but on this platform it is 80MHz IIRC. This routine is called
+> only when the capture finishes. Except I'm missing something, this scenario
+> should not happen.
+
+So, you guarantee that clk_get_rate() never returns, let's say 1000, right?
+(Personally I don't see how it's possible to guarantee...)
+
+...
+
+> > > +		nxp_sar_adc_channels_enable(info, 1 >> chan->channel);
+> > 
+> > 1 >> ?!? Did you want BIT(channel)? Or simply channel != 0?
+> 
+> Yeah, BIT(chan->channel) is better
+
+But is the above a bug in the original proposal or not? I mean one wanted left
+instead of right shift.
+
+...
+
+> > > +	dmaengine_tx_status(info->dma_chan,
+> > > +			    info->cookie, &state);
+> > 
+> > Perfectly one line. No return check?
+> 
+> Ok, will see if the IIO DMA API has an impact on this portion of code before
+> checking the return code. However, the status is often ignored in the other
+> drivers.
+
+...which doesn't mean it's a good example to follow.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With Best Regards,
+Andy Shevchenko
+
+
 

@@ -1,153 +1,115 @@
-Return-Path: <linux-iio+bounces-23723-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23724-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B741FB44540
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 20:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CDFB44651
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 21:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B90C1CC1431
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 18:21:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACC8C1CC3A9C
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Sep 2025 19:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E23634165E;
-	Thu,  4 Sep 2025 18:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153352727E3;
+	Thu,  4 Sep 2025 19:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ot5JOORl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gp3+Ln+h"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C132531A54C;
-	Thu,  4 Sep 2025 18:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B687915DBC1;
+	Thu,  4 Sep 2025 19:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757010076; cv=none; b=JJuG8FJLGxpz3CiT6MtNzVQ0BdtfZaWM+gkHjJ4bfGGb2fmTU7wrkX7z+Har+ukGq1WEZDfDEuiC8oNogFtW+Hf+nJ6juACGmO7i72qVyDeHOGk96ES+OEjI/mC7Hs5tzwDhJjX32T0OfqCSfSjN9v+sZJyOuFNto/nQPt5DPKE=
+	t=1757013850; cv=none; b=cluZMhdtDCGUw+hW7+XLp2+C3TejE+revnsiMZ1TGNtZofL1ATvA2MrTPyauzdaOMAZskxquz1eBWp4Pqu06ui9OhF1RqEc2r0dS3liivje2Q2jZXKZV5fdBEilm71PeNGYW5Z1O1HneTJikByp1xw1VJX0Y63jefACNTzUbnp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757010076; c=relaxed/simple;
-	bh=oWzvywWktWhzJsp0F5tCpXdiwFL7jrcYj/ogPZsDT04=;
+	s=arc-20240116; t=1757013850; c=relaxed/simple;
+	bh=DcZBwbvCs/APcDLJmkpflaT6uT/JUTX4N2f8nqi57sg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sRuiCUevVMAvxTvXcUVIZl8aMp1M07k/qbemOjI5szzj77L0jOnZsBRoprJhTSbLZDhBMz7r4PZHNge8rp0wOGlwNZVWUTw9yxPPlo8yKv29M5YM4jTQauRxsGgtgVJM+bAqLUWyntR29UbHAn9SOy76SiqHg1LwEmOtuyQMhOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ot5JOORl; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757010074; x=1788546074;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oWzvywWktWhzJsp0F5tCpXdiwFL7jrcYj/ogPZsDT04=;
-  b=Ot5JOORlAOBSRIB9X1PI1qPTf6RwrqaynRCxaJN6wNBJqMZxR7gfObmp
-   JbYpwQiZQ+MMFcBnAAAqBU1klNoNfgi/qHCDXGlYyNijEpXkpV35dL9VP
-   j881KjNREfY/Khzha8Lp4dw45OVIXHj2zapYaP/lUoZ666ral4Ff8y1zU
-   CiDxrg2ByQB6KykQqIKtv0F8z2LvYLa9riUi3Vppt3mWQOa0x9h8wO4wk
-   TjntrbPFmEY0AbGe7ZUTvuplDwLdGLHUbHvd57rwNwwRceJEGFxLiJN8t
-   fRx3N01YuDgsR4mSA8kZPv2TZeRDwUNvhGIwAAz+69RNsawVZ6KiaVbC/
-   w==;
-X-CSE-ConnectionGUID: XN3GCBSCTMaKGCO9gshnRw==
-X-CSE-MsgGUID: u0a3H/PLRA+9vVi9WaBHUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11543"; a="59429296"
-X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; 
-   d="scan'208";a="59429296"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 11:21:13 -0700
-X-CSE-ConnectionGUID: RR7jI4NwTQqgA2P7PdZBBQ==
-X-CSE-MsgGUID: nQaesdJVQkuyyxPl7EfGpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; 
-   d="scan'208";a="171250240"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 11:21:11 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uuEa4-0000000BMzq-0YmQ;
-	Thu, 04 Sep 2025 21:21:08 +0300
-Date: Thu, 4 Sep 2025 21:21:07 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=RkIYsHGyWGqDauWJwQdeBy1szEu7C1HooWifexcYJc4UtqcFXNAJY4OP9YkczUHkLA7IZg5NF6j6NAUCsQaNKb6AmXTVMWiXPEYj9QIyx9WuNur5w/wQ9Z/2VicyA0aleF+Z9ohXMXZvjmU/qMcmIvzG/v9tcuiXWmLQpyvPOTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gp3+Ln+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D14C4CEF0;
+	Thu,  4 Sep 2025 19:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757013850;
+	bh=DcZBwbvCs/APcDLJmkpflaT6uT/JUTX4N2f8nqi57sg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gp3+Ln+hhB1+8+lkFXXSillDiYum+dAPdUfELaZ7FRDiOTzBpVrgbAwIhJ+3hXR1s
+	 dOn4PqmUueHjXKJUs635qGZN7SZRDdWsMXwiPlPWkYDXvLnR8QGou6xrYNB97GTIXE
+	 PbOMK2KV0EMEuszui0Rr+3gdzdcyUC3XFFgRw1qNt7Jarycl+lPLEq7BWZZWAuS7pO
+	 SpxTYO34dGmrwlyYX+yQTNkv3IentC7g/DdNwluX0DVdFU7WWzab0K57zoWo9IXl+E
+	 OVGDEjjhcfpPp6NAjNrqHvOxoSDwRDe09WSFwDba3EIevvWIpnxJAEsbyA48Y61ecz
+	 kz8xv94usKF6A==
+Date: Thu, 4 Sep 2025 20:24:02 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
 	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: ad7124: fix sample rate for multi-channel
- use
-Message-ID: <aLnYk6RPePeACmex@smile.fi.intel.com>
-References: <20250904-iio-adc-ad7124-fix-samp-freq-for-multi-channel-v2-1-bbf2f0d997ea@baylibre.com>
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Tobias Sperling <tobias.sperling@softing.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Esteban Blanc <eblanc@baylibre.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	Eason Yang <j2anfernee@gmail.com>,
+	Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] dt-bindings: iio: adc: ROHM BD79112 ADC/GPIO
+Message-ID: <20250904-suffering-napping-cfb886addf1e@spud>
+References: <cover.1756988028.git.mazziesaccount@gmail.com>
+ <af7292dea5cebe97553af67a8897e092bef3ec56.1756988028.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TYMVqA+xISrwz0kg"
+Content-Disposition: inline
+In-Reply-To: <af7292dea5cebe97553af67a8897e092bef3ec56.1756988028.git.mazziesaccount@gmail.com>
+
+
+--TYMVqA+xISrwz0kg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250904-iio-adc-ad7124-fix-samp-freq-for-multi-channel-v2-1-bbf2f0d997ea@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 04, 2025 at 11:19:56AM -0500, David Lechner wrote:
-> Change how the FS[10:0] field of the FILTER register is calculated to
-> get consistent sample rates when only one channel is enabled vs when
-> multiple channels are enabled in a buffered read.
-> 
-> By default, the AD7124 allows larger sampling frequencies when only one
-> channel is enabled. It assumes that you will discard the first sample or
-> so to allow for settling time and then no additional settling time is
-> needed between samples because there is no multiplexing due to only one
-> channel being enabled. The conversion formula to convert between the
-> sampling frequency and the FS[10:0] field is:
-> 
->     fADC = fCLK / (FS[10:0] x 32)
-> 
-> which is what the driver has been using.
-> 
-> On the other hand, when multiple channels are enabled, there is
-> additional settling time needed when switching between channels so the
-> calculation to convert between becomes:
-> 
->     fADC = fCLK / (FS[10:0] x 32 x (4 + AVG - 1))
-> 
-> where AVG depends on the filter type selected and the power mode.
-> 
-> The FILTER register has a SINGLE_CYCLE bit that can be set to force the
-> single channel case to use the same timing as the multi-channel case.
-> 
-> Before this change, the first formula was always used, so if all of the
-> in_voltageY_sampling_frequency attributes were set to 10 Hz, then doing
-> a buffered read with 1 channel enabled would result in the requested
-> sampling frequency of 10 Hz. But when more than one channel was
-> enabled, the actual sampling frequency would be 2.5 Hz per channel,
-> which is 1/4 of the requested frequency.
-> 
-> After this change, the SINGLE_CYCLE flag is now always enabled and the
-> multi-channel formula is now always used. This causes the sampling
-> frequency to be consistent regardless of the number of channels enabled.
-> 
-> Technically, the sincx+sinc1 filter modes can't currently be selected
-> so there is some temporarily dead code in ad7124_get_avg() until filter
-> support is added.
-> 
-> The AD7124_FILTER_FS define is moved while we are touching this to
-> keep the bit fields in descending order to be consistent with the rest
-> of the file.
+On Thu, Sep 04, 2025 at 03:36:30PM +0300, Matti Vaittinen wrote:
+> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
+> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
+>=20
+> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
+> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
+> daisy-chain configuration) and maximum sampling rate is 1MSPS.
+>=20
+> Add a device tree binding document for the ROHM BD79112.
+>=20
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
-...
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
->  	tmp = FIELD_PREP(AD7124_FILTER_FILTER, cfg->filter_type) |
-> +		AD7124_FILTER_SINGLE_CYCLE |
->  		FIELD_PREP(AD7124_FILTER_FS, cfg->odr_sel_bits);
+--TYMVqA+xISrwz0kg
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Seems to me that this is not indented correctly, with that in mind I would
+-----BEGIN PGP SIGNATURE-----
 
-	tmp = FIELD_PREP(AD7124_FILTER_FILTER, cfg->filter_type) |
-	      FIELD_PREP(AD7124_FILTER_FS, cfg->odr_sel_bits) |
-	      AD7124_FILTER_SINGLE_CYCLE;
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaLnnUgAKCRB4tDGHoIJi
+0hpgAQDEQSDG09i4H4ASWiQgAGYg6VSHoZz4ZF4QmHuzBaKuagD/ScVzBQXl5SZQ
+ctKeXmDU5aEZNzQzIDFHLgQG0q0O6w4=
+=YMPt
+-----END PGP SIGNATURE-----
 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--TYMVqA+xISrwz0kg--
 

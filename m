@@ -1,83 +1,81 @@
-Return-Path: <linux-iio+bounces-23783-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23784-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0754B45A95
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 16:32:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3BCB45C74
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 17:25:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E1C3B6458E
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 14:30:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6750118924FC
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 15:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74FB36CE04;
-	Fri,  5 Sep 2025 14:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D139823BF96;
+	Fri,  5 Sep 2025 15:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RUxHXctF"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ogLX0mUj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BAF218EA8;
-	Fri,  5 Sep 2025 14:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5078431B837
+	for <linux-iio@vger.kernel.org>; Fri,  5 Sep 2025 15:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757082700; cv=none; b=WPZUQps66j/6hqY8vX5K9pZ4fA+niUC5KI0vV2rO+bQwdoLPZhdu9OHkV4isM4Vzl4Qnb643dlY+To/8TyhdnOI/HTF/Uv2M8Nm1Hu/eS1sBnj55duNz1Ew5kY2z3F4gkhMtd0axacbzC9qMeSN+WgTsxAPuX0E6sIdX3wCR8vM=
+	t=1757085910; cv=none; b=CRE3KLphUm4BevF/PPCmroSm2IzasvLANdHV0G6mDn5k/gNqTmrNnVzfD+RdbCMQ4AsjCTpfTSH0ZE4Y0dHrfvs+2aRB8fST5RyYClM/zEH/AUOTA5VeGnu8C9eqlOzoYjztvYozrTGPd4mC8xVjrBtF4k40RRoqmBACbJ6L5a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757082700; c=relaxed/simple;
-	bh=+1nDfrVt0ppud9zgCkTbqp/0YBEdQzK1oYTnBYlqZPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=WTylSHIvkcUSXtVEjMZA4s0vdvsYLag/KX5H753RNd5e+vxI2W8aKQjKp61Al6tI+OWEhe1hGf6F1TjmS7gHKzFaTbKoeeRy+QmxpChwRayQZgmbzlbLDvfM24Z1/Evhd2W7nOvW3E0XyiH6jDBANejfH3oNaqaFjIFGZyqObdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RUxHXctF; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-323267b98a4so2044395a91.1;
-        Fri, 05 Sep 2025 07:31:37 -0700 (PDT)
+	s=arc-20240116; t=1757085910; c=relaxed/simple;
+	bh=pCssCAZOfH3pEc83kPgsxuJYzG6xdafoVP+lGf4sCEI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aEmKqXoIfzeogc+KItbvqQGM3IVGo5uZitAHQ9dKRQ7GMon1D+UCoJ53sXFtwSfH1nLrGArewFFzuAiNeY0mj4eHU8bVjMoPluliKjoJL9tWn1gMxWlKvWD7MMlKXwQLGLpUlq5lqAy7ii71X1Ypv55lsJmUtuDdoEY03cpQAfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ogLX0mUj; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-61bd4ba9fafso1106001eaf.0
+        for <linux-iio@vger.kernel.org>; Fri, 05 Sep 2025 08:25:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757082697; x=1757687497; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=3vIXH9G8eZJ7ix/XNHz4bvSACtWtZGWHKqaN5lng6nE=;
-        b=RUxHXctFV4BspeJlDvAkGloDoG8YrEX3YOsM83EtUOyc7Avizpl4eLVhDaDQlg7gch
-         JyQOajlleaVC8SdwhS2+g0n6k7PPozRlLaMb8rJHUs+wkHbNiJLMhh5D+t05Qes3YAM5
-         2p9ENG7Y7sdwENpNOyeVXuS/3MjWZzYls4LaXI+1mgY+TJGcyb3OV/FOcknmGcZaO348
-         dC/dRTA6HWVeG9qJZ1LlgGqg7S5bPFJPShwb0yAxVE2CIxAhVK+HGm7+h9D02af5HOph
-         3FhEHZrkaXs/NoC+TDHu4l5Lxw87cL+7AOkQRL1m+9Pgc0nsBHEuwk1AHRG7oz/qWObL
-         HW+A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757085907; x=1757690707; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pohUBiCn9QjRHZYLkhaWb0quU2GyqpyHJzVGv2GHYcA=;
+        b=ogLX0mUjwowMXrCzMi+WwIeF88F5mgEEtnHPqP/ioSCwpjBN1TEmwqFNmaOkymc8HI
+         gCmU8uQMwQujUOOFWOj6Ut/gv04cw/f4h8Z2Zczgo73LXBczMlbWiiqc6CQ4RzAYRLUg
+         QykGZYZgKr+PR8aBrWp2KUsaJ3wrY5ejJMksW4Pt3uHx1uf0NtoeOFZvVV0vh/N5cILw
+         eJVu+9N8XcTbIUgJ8fnS9v0eet+koV3vLapt2owGggM/T2/gSAVYDw5y/22jCA7UaNEH
+         gJI90q3a9qSJbiSXgdoA0xdYxfJImyEtLyrs3wAcKI8GpoQiCVhG7vDLzCTvMkRo4q7F
+         zhcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757082697; x=1757687497;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3vIXH9G8eZJ7ix/XNHz4bvSACtWtZGWHKqaN5lng6nE=;
-        b=djtzxTIGNvt8LqeCvpO77Hk/CJktGPdrj+U/Z4PEdNx3nY9mDSVR+lB8XvHFBC1R5W
-         opjgoGmMXxBtVp7lPMMkqBDgV7FIQl3EZ2mM3k3njf8jkM1FnEsFn1j6opoIoIfJAQsx
-         ZTL38RDU+EnndUiE1hXEt7njkAtjD9rz2tUUaigLoyPqa6VIX/reBJHelvSzYp8dwro0
-         NXlKTbCocaEqInGbgLgsgopEYaLz108wrhUhKeduOFdsK51nJABjuhte3yLEGp7vdKxn
-         sdkTUR4+LVWbzVeITALT+TCicb15DhB7fsTPLuB005ybKmZVD+RXMhpsmXkEyiUA15R2
-         Q1OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/xQ10Pxq///tn1Rv36Of1/u5K2K5B59mFX8ck6nb3VXXBG4Vm9XFbmzL7QO4i4R8AAeWjpHSN7n/GNR04z7qkdek=@vger.kernel.org, AJvYcCUsFcQZ3ZKBjV2f6XLwce7ucSyFn+x54qP9CYaFNL4chm2yQDwd/tBC5rl7c+CTwrJRnXnaaHYTkXVc3g==@vger.kernel.org, AJvYcCUz1AmetXsWVMxIJ8YjoAGgugdJs6SJonmiPevfZdDnMO3o2FdcNB37opXxdBPmTQixlIsx6Q7a+Lhu@vger.kernel.org, AJvYcCV0e6jGSi4kuq5FgAbBiylHX1Be8JHVPI6psjMOefP/teOEvgrNrm5kQZ8jNQhMGXvZGqKx/UuRgQbDk9hL@vger.kernel.org, AJvYcCVX+alDi237ppyy3qNOe1pYaMneZXqAE04VkPtd6wWqayElUmudCOafL6FS7B6dUxKQuUXoEYylIrDv75o=@vger.kernel.org, AJvYcCWSkZ+qFRElamlDBuQPVmpRLk+pQiAIUjfLaW83BmfnrlrW2HdwCRFk5T+do7ih3tbJS2KKx1RiEBsL0401jqEAIGA=@vger.kernel.org, AJvYcCWnvlEb3KpBZExtt9YpyMcylNcPEwTP394RYO1AHDrD51qu4jzz/7pwJ/lxl0G0cfydCkjJrLiCkUeFtlk=@vger.kernel.org, AJvYcCXOlf7fkBChQ1GYOzxCrFfLo8nCstJcpmoSk/eXlayFQIUhzrDfeGzClJS9WbkaQ0TXK0UXSL33ekw=@vger.kernel.org, AJvYcCXSYXCmUA8dltWvM/mcdId3oTG72V7rwrkSED3seUt0tqwNSPvvaj7proIt7tU9eYq1wphxl2kcgYvROnwR@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFendnPo+6Pnk9Pn0dBH4PxfTbpZFohw47L7cegPQrQXY0V+1K
-	wvCuG9uiH92zSNz7ZxdwenlSbEqBR54ZwjAfVRWclxhHhY7uyxSSAD2b
-X-Gm-Gg: ASbGncuEsjxata711uswiGAtun4l1XPQZ46yszjWwc0qd6/0AnkMAxtyPoxrJYLnDZF
-	SS930SQSxtfIJrHgLh3JZEVejdSXDn+nymoTVUzw78R7BpMZ4lNwAuJZhkI43agkuAGGfrdOrDS
-	b//S93OiJo3pUL2+VCWwPhGyjxDq2yANub+glXYYvDSffBw9RRLBBtvIapAhiNnmOk9uRb01awv
-	JBJ8Q/t8bzHfJvL+zFIP73tkUh6Lvcu90a8stxgyO+nQRHrdEHHne62QYApMnAvF1cP/W7mDv3N
-	PX5J9v14Y3N8g9Q5nom5m8FYGRfD84HoKJ2tTq3GkBph4Ldvu95ktkG5mqp6LgHYzd2UhbxjBOH
-	oaeAvLLP6a8glaQeBaxVVAAIzHPYik5kQ1ruPh1zB86AJFal0Gp/37k/GUTSZioC4ynVVmVfsGO
-	0YrAGmOw==
-X-Google-Smtp-Source: AGHT+IGsUGu45MQwt+NZPV5mLr8VYLLqfRHTzbjIcd42cuNIOrbj6li3sVxyZFvsqM7RMTuhEoyH4A==
-X-Received: by 2002:a17:90b:4c4b:b0:32b:94a2:b0d6 with SMTP id 98e67ed59e1d1-32b94a2b221mr8959418a91.3.1757082696826;
-        Fri, 05 Sep 2025 07:31:36 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77267a225e6sm12382015b3a.94.2025.09.05.07.31.32
+        d=1e100.net; s=20230601; t=1757085907; x=1757690707;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pohUBiCn9QjRHZYLkhaWb0quU2GyqpyHJzVGv2GHYcA=;
+        b=bqYZZgiX7LlmzQo5YVc9TjkRH4Hv7xHVA79jjAly3vkjDmnFymhGexqtk8rDy17Jvc
+         iY7P7UN48wJPMe9dOO3kvLIzty/jxenRIdOfhDBI+QSzyKQjubyYO7hA7XT4z+bLZzkt
+         ZlORCBgPo9HBmzn/junm3Bya60MBCjQk8z4eQ3yZwOImejb1WaAMoHevgsjE/Ic7wIx0
+         UCoqESANyWu8KeEdqf23f3p76DJIkY+JGK4JYULkyAqeSmIOQEYYT8TlAhryScpvFqIK
+         ZAnMBV+URfqJsK1GO7C32Vk53TEUMXpU8iyuLoZPkTsx9Heb53DK8nTOR24W2wVTs8GT
+         WITA==
+X-Gm-Message-State: AOJu0YwZXbdp7lCLqItXX06u1PXc/lb3Fv938iALWCw4bDDi7eXJqIor
+	N6JW2sCFWVXWmCKoLifNrWxzVNszYvQQUQPtCoGhv962m39T3y943p+JIhCh5X3J3JjaXHiOvEd
+	sTi1R
+X-Gm-Gg: ASbGncuI86XSdgrkfHO5uMoRmz6H4WHnzkUkdDZInPn3pUe7xVL/lo5ehImcoxvgp1T
+	RrtM+R8SajtB5VXPJTWNDvbzua0EIgJT7md4nYlB0Y5/n6fP20fF0EwHa2JWNU4la3VZJlmdE2k
+	nemR9M6WjMz3Wm8OeIujkCRA2iiNm7vwwG4E9F/clfU1rNwiqXipCBK4+GSsCNPN68VeeSismrY
+	Kn0jFi+OefZMxBAk502fOFdibEiuxh0W066KFo+0GNh3Z2ExZlLXnlNKl829f6RjTnwXH9Y4yAE
+	YqZNPk4p/TP/3ky45I/Pz6UjHj5I7DyzrrSb3FseqYSmQcXFntaODFuSGqPq2s72tTLFzkU55iQ
+	KWz36SeVUkuaLosSnIyBSo42BYpGsGFVvwNX2IrQLglPvgVMWH1KRDSdLOCDasvu72BLOokHbWY
+	90UNITcsM=
+X-Google-Smtp-Source: AGHT+IEECzwl36a34ODawpMXccaR6JC9vsf6ijMfXMcknrv5Cxp2H7YtBDDER3SuB4FaTQgxiA3cVw==
+X-Received: by 2002:a05:6820:1ad5:b0:621:72dc:3df7 with SMTP id 006d021491bc7-62172dc404cmr617151eaf.0.1757085907222;
+        Fri, 05 Sep 2025 08:25:07 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:52e:cda3:16cc:72bb? ([2600:8803:e7e4:1d00:52e:cda3:16cc:72bb])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61e723d320asm1178110eaf.18.2025.09.05.08.25.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 07:31:36 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <c00a3d00-d5d5-4f2b-8799-d1b8b22f85cb@roeck-us.net>
-Date: Fri, 5 Sep 2025 07:31:31 -0700
+        Fri, 05 Sep 2025 08:25:06 -0700 (PDT)
+Message-ID: <6b8cd005-b04c-4dd7-abf7-5a51319a5f0a@baylibre.com>
+Date: Fri, 5 Sep 2025 10:25:05 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,143 +83,139 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/12] hwmon: Remove redundant error log prints
-To: Xichao Zhao <zhao.xichao@vivo.com>, Jean Delvare <jdelvare@suse.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Guillaume La Roque
- <glaroque@baylibre.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>,
- Scott Branden <sbranden@broadcom.com>, Markus Mayer <mmayer@broadcom.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, zhanghongchen
- <zhanghongchen@loongson.cn>, Yinbo Zhu <zhuyinbo@loongson.cn>,
- Amit Kucheria <amitk@kernel.org>, Thara Gopinath <thara.gopinath@gmail.com>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>, Heiko Stuebner <heiko@sntech.de>,
- Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>, Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Talel Shenhar <talel@amazon.com>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- "open list:HARDWARE MONITORING" <linux-hwmon@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
- "moderated list:ARM/Allwinner sunXi SoC support"
- <linux-arm-kernel@lists.infradead.org>,
- "open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
- "open list:THERMAL" <linux-pm@vger.kernel.org>,
- "open list:THERMAL DRIVER FOR AMLOGIC SOCS"
- <linux-amlogic@lists.infradead.org>,
- "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE"
- <linux-rpi-kernel@lists.infradead.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "open list:QUALCOMM TSENS THERMAL DRIVER" <linux-arm-msm@vger.kernel.org>,
- "open list:RENESAS R-CAR THERMAL DRIVERS"
- <linux-renesas-soc@vger.kernel.org>,
- "open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
- "open list:SAMSUNG THERMAL DRIVER" <linux-samsung-soc@vger.kernel.org>,
- "moderated list:ARM/STM32 ARCHITECTURE"
- <linux-stm32@st-md-mailman.stormreply.com>,
- "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
- "open list:TI BANDGAP AND THERMAL DRIVER" <linux-omap@vger.kernel.org>
-References: <20250905072423.368123-1-zhao.xichao@vivo.com>
- <20250905072423.368123-3-zhao.xichao@vivo.com>
+Subject: Re: [PATCH v1 2/2] iio: adc: Add the NXP SAR ADC support for the
+ s32g2/3 platforms
+To: Daniel Lezcano <daniel.lezcano@linaro.org>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>, jic23@kernel.org,
+ nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, conor+dt@kernel.org,
+ krzk+dt@kernel.org
+Cc: linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
+ ghennadi.procopciuc@oss.nxp.com
+References: <20250903102756.1748596-1-daniel.lezcano@linaro.org>
+ <20250903102756.1748596-3-daniel.lezcano@linaro.org>
+ <eedbfbfd1ba625b6750eb3ae20a69301b8bc3ef9.camel@gmail.com>
+ <0bfce1eb-69f1-4dae-b461-234eb98ffce1@linaro.org>
+ <a3373804-08a4-4526-a432-c21a74ea3d6b@baylibre.com>
+ <edc8e024-e425-49de-bfa2-44218fe72e26@linaro.org>
+From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20250905072423.368123-3-zhao.xichao@vivo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <edc8e024-e425-49de-bfa2-44218fe72e26@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 9/5/25 00:23, Xichao Zhao wrote:
-> devm_thermal_of_zone_register() prints error log messages when
-> it fails, so there is no need to print error log messages again.
+On 9/5/25 4:44 AM, Daniel Lezcano wrote:
+> On 04/09/2025 19:49, David Lechner wrote:
+>> On 9/4/25 12:40 PM, Daniel Lezcano wrote:
+>>>
+>>> Hi Nuno,
+>>>
+>>> On 03/09/2025 13:20, Nuno Sá wrote:
+>>>> On Wed, 2025-09-03 at 12:27 +0200, Daniel Lezcano wrote:
+>>>>> From: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
+>>>>>
+>>>>> The NXP S32G2 and S32G3 platforms integrate a successive approximation
+>>>>> register (SAR) ADC. Two instances are available, each providing 8
+>>>>> multiplexed input channels with 12-bit resolution. The conversion rate
+>>>>> is up to 1 Msps depending on the configuration and sampling window.
+>>>>>
+>>>>> The SAR ADC supports raw, buffer, and trigger modes. It can operate
+>>>>> in both single-shot and continuous conversion modes, with optional
+>>>>> hardware triggering through the cross-trigger unit (CTU) or external
+>>>>> events. An internal prescaler allows adjusting the sampling clock,
+>>>>> while per-channel programmable sampling times provide fine-grained
+>>>>> trade-offs between accuracy and latency. Automatic calibration is
+>>>>> performed at probe time to minimize offset and gain errors.
+>>>>>
+>>>>> The driver is derived from the BSP implementation and has been partly
+>>>>> rewritten to comply with upstream requirements. For this reason, all
+>>>>> contributors are listed as co-developers, while the author refers to
+>>>>> the initial BSP driver file creator.
+>>>>>
+>>>>> All modes have been validated on the S32G274-RDB2 platform using an
+>>>>> externally generated square wave captured by the ADC. Tests covered
+>>>>> buffered streaming via IIO, trigger synchronization, and accuracy
+>>>>> verification against a precision laboratory signal source.
+>>>>>
+>>>>> Co-developed-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
+>>>>> Signed-off-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
+>>>>> Co-developed-by: Ciprian Costea <ciprianmarian.costea@nxp.com>
+>>>>> Signed-off-by: Ciprian Costea <ciprianmarian.costea@nxp.com>
+>>>>> Co-developed-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+>>>>> Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+>>>>> Signed-off-by: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
+>>>>> Co-developed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+>>>>> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+>>>>> ---
+>>>
+>>> [ ... ]
+>>>
+>>>> The above needs some discussion at the very least. Have you considered the IIO
+>>>> DMA buffer interface? It should be extendable to accommodate any particularity
+>>>> of your usecase (or we should at least discuss it).
+>>>>
+>>>> With it, you also gain a userspace interface where you can actually share DMA
+>>>> buffers in a zero copy fashion. You can also share these buffers with USB
+>>>> gadgets. For instance, with libiio, you would be able to fetch samples from your
+>>>> host machine (through USB) in a very fast way (zero copy between IIO and USB).
+>>>>
+>>>> Setting up DMA to then "having" to push it to a SW buffer and needing a syscall
+>>>> to retrieve the data seems counter-productive.
+>>>
+>>> I've read a bit about the DMA engine. It is unclear how to use it and there are very few examples in the different drivers to refer to.
+>>>
+>>> This proposed driver supports the RAW, BUFFER and TRIGGERED.
+>>>
+>>> Shall I create an IIO device with the modes:
+>>>
+>>> indio_dev->modes =
+>>>      INDIO_DIRECT_MODE |
+>>
+>> Only INDIO_DIRECT_MODE needs to be set here.
+>>
+>>>      INDIO_BUFFER_HARDWARE |
+>>>      INDIO_BUFFER_TRIGGERED
+>>>
+>>> And then use:
+>>>
+>>> devm_iio_triggered_buffer_setup()
+>>
+>> Yes, use this and it will add INDIO_BUFFER_TRIGGERED to the flags.
+>>
+>>>
+>>> and
+>>>
+>>> devm_iio_dmaengine_buffer_setup_with_handle
+>>
+>> Likewise, this will add INDIO_BUFFER_HARDWARE.
+>>
+>> And you likely only need to call devm_iio_dmaengine_buffer_setup() which will
+>> save some boilerplate code.
 > 
-> Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
-> ---
->   drivers/hwmon/hwmon.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
+> What is still unclear for me is the trigger and the dma modes.
 > 
-> diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-> index 1688c210888a..0514e4bc5e71 100644
-> --- a/drivers/hwmon/hwmon.c
-> +++ b/drivers/hwmon/hwmon.c
-> @@ -239,8 +239,7 @@ static int hwmon_thermal_add_sensor(struct device *dev, int index)
->   	if (IS_ERR(tzd)) {
->   		if (PTR_ERR(tzd) != -ENODEV)
->   			return PTR_ERR(tzd);
-> -		dev_info(dev, "temp%d_input not attached to any thermal zone\n",
-> -			 index + 1);
-> +
+> If the dma engine is supported, I should use devm_iio_dmaengine_buffer_setup_with_handle(), but will the trigger mode be supported also automatically (I don't see a clear answer in the documentation neither in the drivers) ?
+> 
+> If not, shall I call devm_iio_triggered_buffer_setup() and devm_iio_dmaengine_buffer_setup_with_handle() ?
+> 
 
-This series moves the message from an informational message here to an error message
-in the thermal core, even though it is (for hwmon) not an error. I personally
-think this is a bad idea. Can we get another API that lets me suppress that error
-message ?
+Taking a step back, what sort of real-world uses cases do you need to support?
+Or are you just trying to implement everything that the ADC can do? The latter
+can be a bit risky because you might end making something where you can't do
+a buffered read and a single channel read at the same time, but later find out
+you have a real-world application that needs to do this.
 
-Guenter
+It looks like it would be possible to implement buffered reads in lots of ways.
+IIO devices can have more than one buffer per device so we can add more in the
+future if we need to. So I would just drop the DMA part of the implementation
+for now and implement the basic triggered buffer using MCR[NSTART] and ECH
+(End of Chain) interrupt request and just reading data from the ICDR registers.
 
->   		devm_kfree(dev, tdata);
->   		return 0;
->   	}
+I would wait to have a real-world application that requires DMA to decide the
+best way to implement that. There are lots of possibilities, like does it need
+an external trigger or is continuous mode good enough? Does it need to be cyclic
+(something the IIO subsystem doesn't really support yet) or not. Is exact sample
+timing important or do we just need a big buffer? These questions we can't
+really answer without a specific application to use it.
 
 

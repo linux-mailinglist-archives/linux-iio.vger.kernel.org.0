@@ -1,50 +1,50 @@
-Return-Path: <linux-iio+bounces-23766-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23768-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F47B45584
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 13:01:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B00DB45589
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 13:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E33F81C822F6
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 11:01:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9CA7585A52
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 11:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EAA341643;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CBF342C94;
 	Fri,  5 Sep 2025 11:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="rdhKJR0Z"
+	dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b="EAn/xgvO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx.olsak.net (mx.olsak.net [37.205.8.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A12433CEB1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0B1286439;
 	Fri,  5 Sep 2025 11:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.8.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757070092; cv=none; b=aG/Vbvdit06Gr96mtMPRtn93AgNMg0qDC4ISbSPO0gAbzBSjwszF+9ZwdPW6vT02kU/0tV0qwZL2D7bAP1YamJQqrd2SQ6PSPWZPBj8Dv/n3LbFsbj9bJUYGns5SdIeNhkwzsQtYloIhCe2tG8TXrNMy9+ZwlmUrJV8ZLdOvuWA=
+	t=1757070093; cv=none; b=AHCG7+YjqfzlQI0XSDMHKfjM/Y03WuSjmysHE1aZ0d2Ir/ezlMXqissVh+ADJ3SaddoA6UL9TillaafC9F40+8eq4O55sahiINZdN75egkigvqzn5M0JhEJSfYW2YdMRSBikiO6SVdTMW79NumqXSIGAZIwXr8K321f91WfV/5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757070092; c=relaxed/simple;
-	bh=8lO4nr828tWQwLxmjjV752k5xLRe27/oDan4m5yXVVA=;
+	s=arc-20240116; t=1757070093; c=relaxed/simple;
+	bh=CinM1bhDqR4z6lWIYNkI0G8Oc6r9crHE4q5t4fT9GWA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KK0y7X770tz0vQPj03qf1tiq0+888m0z8dy/2QEovkCyW8Uw7oeYSpHuoXbGKRzUs9UEGysNV4MtJ+tPvpKQ323fiBVrEwxe0eBaskbMDGBdGxS3kQFZlnRblq5Aamc/c7KqCuOOqC9jNnrxEbDDUV//ed+6Q2LTkPI9Y/UDz+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=rdhKJR0Z; arc=none smtp.client-ip=37.205.8.231
+	 In-Reply-To:To:Cc; b=Csk8CSpBH24ffY+b8OlB0Ka3A82f/gxqkyYcDOk+w9d+QpxsErwGVKVNxa+GJhaYGOOtsUuqgWDIrfKLLwmUKurKlKBjRSUvUCJzEYJOy+RbeBtFOWLskplLPF+WN3tJT6vZyHIrfkVv0zSFEfNAc2Hg1T7+I8P/02YugS23lVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz; spf=pass smtp.mailfrom=dujemihanovic.xyz; dkim=pass (2048-bit key) header.d=dujemihanovic.xyz header.i=@dujemihanovic.xyz header.b=EAn/xgvO; arc=none smtp.client-ip=37.205.8.231
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dujemihanovic.xyz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dujemihanovic.xyz
-DKIM-Signature: a=rsa-sha256; bh=NNf4fuAZROXF/tF+4WNY4vZ8skBqcJAXIMX4FqXGMYk=;
+DKIM-Signature: a=rsa-sha256; bh=nqYJvOu7zfGw6g9P6nTUsPjtKfVIDQ0QO0EOKBGVfa4=;
  c=relaxed/relaxed; d=dujemihanovic.xyz;
  h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@dujemihanovic.xyz; s=default; t=1757070065; v=1; x=1757502065;
- b=rdhKJR0Zn09b5uxXZxfBfxlqaLmzyLEZl7fpK7rI7w7usJ38R4t8HBQ3Sd1vCtiaboTY/8LO
- W93jL/9Zp5lTuX9BSCxExTUL585UZUGE3Oxr8JU7yOVk928E8yHrVEhT8a5CGtvFsIqrfeWsdOp
- q/ZhGZBxBBLU5IrQ1lZL2UfMWFCdII6/0P7ardUh5RQqVvKG4s/baQliBlRRw7TEZXNnaJdDJTV
- OykD3mIGkXgBe2wb2+84yRaI5Gy88XabSzyL+9tnVFlSi5FlORahtBdyxJt1Rq6ihG/WqdQ4pYv
- oabcwFiDl0hNh/o2Mb/NEfDfx8n+hKVCrQbjdFvh07DKQ==
+ i=@dujemihanovic.xyz; s=default; t=1757070066; v=1; x=1757502066;
+ b=EAn/xgvOM/N4RizZbbttGw6mVSS2ZEAFn6JGwemq+AGxXzQSIMFfP+iWtD6GZ5vF5R2XEem/
+ 9HxIPtE9y04YZ8LCtCf5R2trlVv9TdPNlOg/XZawe8Ws/dpLvdcw7CsX/TK7VdFS+4IV821YeC5
+ cLZ07Yvfbd/hHTM53CfBiLIx/6GuisPTdhFBFji0xSmJqZaGyuv8banj7BTEQ5h4qHhdwAdninD
+ LeK++26QgG1iUoNYP8FtwG9ixXJoUvB03pV99KT6uQXBwxmu5BfIgI132YPvFP3cyMRY4RWr63A
+ sqx13DUTcmuy3Pk1AT0d5u5WhWjr545rBwiBhvYfJ1CTg==
 Received: by mx.olsak.net (envelope-sender <duje@dujemihanovic.xyz>) with
- ESMTPS id 610bc954; Fri, 05 Sep 2025 13:01:05 +0200
+ ESMTPS id 04edd079; Fri, 05 Sep 2025 13:01:06 +0200
 From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-Date: Fri, 05 Sep 2025 13:00:54 +0200
-Subject: [PATCH v3 1/3] dt-bindings: mfd: 88pm886: Add #io-channel-cells
+Date: Fri, 05 Sep 2025 13:00:55 +0200
+Subject: [PATCH v3 2/3] iio: adc: Add driver for Marvell 88PM886 PMIC ADC
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250905-88pm886-gpadc-v3-1-4601ad9ccb51@dujemihanovic.xyz>
+Message-Id: <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
 References: <20250905-88pm886-gpadc-v3-0-4601ad9ccb51@dujemihanovic.xyz>
 In-Reply-To: <20250905-88pm886-gpadc-v3-0-4601ad9ccb51@dujemihanovic.xyz>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -66,57 +66,580 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
  ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1291;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=17171;
  i=duje@dujemihanovic.xyz; s=20240706; h=from:subject:message-id;
- bh=8lO4nr828tWQwLxmjjV752k5xLRe27/oDan4m5yXVVA=;
- b=owGbwMvMwCW21nBykGv/WmbG02pJDBm7Dr2vuKGlEyV4iFspSqD90Lo5c9PztwoJGBe+vPp3y
- k1d30XJHaUsDGJcDLJiiiy5/x2v8X4W2bo9e5kBzBxWJpAhDFycAjCRq5MZ/oc8Ph7+dEFnU++E
- CSefv50T2nH3xYo6Bj5drsfqjdNNPk1g+B+2Rd5vV5AIZ/KkhCsad347TedeJ/r0AevWr7P/hj9
- MjmEDAA==
+ bh=CinM1bhDqR4z6lWIYNkI0G8Oc6r9crHE4q5t4fT9GWA=;
+ b=owGbwMvMwCW21nBykGv/WmbG02pJDBm7Dr2XPF92b39q+3GBurbCuYFPXaoY3B6fLn/z3ePW5
+ H3LEv/P6ShlYRDjYpAVU2TJ/e94jfezyNbt2csMYOawMoEMYeDiFICJFIozMmx5HHvq8BrO3COn
+ V51fxM170MFYuse7dK54qPZOI/+zRxYzMizlX9d+K2jmha1r7tleC/0ygXXFgpnnFWYU+LIlp6t
+ 4q3ECAA==
 X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
  fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
 
-Add an #io-channel-cells property to the Marvell 88PM886 PMIC binding to
-allow referencing the IO channels exposed by its GPADC.
+Marvell's 88PM886 PMIC has a so-called General Purpose ADC used for
+monitoring various system voltages and temperatures. Add the relevant
+register definitions to the MFD header and a driver for the ADC.
 
-Acked-by: Karel Balej <balejk@matfyz.cz> # for the PMIC
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
 ---
 v3:
-- Update trailers
+- Add indices to pm886_gpadc_regs[] table
+- Tidy up macro definitions
+- Define MAX_REGISTER
+- Drop some ternary operators
+- raw_u{v,a} -> raw_u{V,A}
+- Reorder gpadc_get_resistance_ohm()
+- Split pm886_gpadc_setup() into hw_{en,dis}able()
+- Set firmware node the right way
 
 v2:
-- New patch
+- default MFD_88PM886_PMIC
+- u8[2] -> __be16
+- Drop kernel.h include
+- Add pm886_gpadc struct
+- Reorder channel enum
+- Drop GPADC voltage channels
+- Drop unnecessary masking in gpadc_get_raw()
+- Extend gpadc_enable_bias() to allow disabling bias
+- usleep_range() -> fsleep()
+- PM wrapper for pm886_gpadc_read_raw()
+- Proper channel info: voltage is RAW | SCALE, temperature is RAW |
+  OFFSET | SCALE, resistance is PROCESSED
+- Explicitly define channels to en/disable in pm886_gpadc_setup()
+- Don't explicitly set iio->dev.parent
+- Miscellaneous style changes
 ---
- Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+ MAINTAINERS                     |   5 +
+ drivers/iio/adc/88pm886-gpadc.c | 388 ++++++++++++++++++++++++++++++++++++++++
+ drivers/iio/adc/Kconfig         |  13 ++
+ drivers/iio/adc/Makefile        |   1 +
+ include/linux/mfd/88pm886.h     |  58 ++++++
+ 5 files changed, 465 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml b/Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml
-index d6a71c912b76f7d24787d346d4b4cd51919b1cf6..92a72a99fd790805e775727e39d457608fa1795d 100644
---- a/Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml
-+++ b/Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml
-@@ -35,6 +35,9 @@ properties:
-         description: LDO or buck regulator.
-         unevaluatedProperties: false
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6dcfbd11efef87927041f5cf58d70633dbb4b18d..0f7b78865c77967683ffc92f4822e722a4f723b6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14710,6 +14710,11 @@ F:	drivers/regulator/88pm886-regulator.c
+ F:	drivers/rtc/rtc-88pm886.c
+ F:	include/linux/mfd/88pm886.h
  
-+  '#io-channel-cells':
-+    const: 1
++MARVELL 88PM886 PMIC GPADC DRIVER
++M:	Duje Mihanović <duje@dujemihanovic.xyz>
++S:	Maintained
++F:	drivers/iio/adc/88pm886-gpadc.c
 +
- required:
-   - compatible
-   - reg
-@@ -53,6 +56,7 @@ examples:
-         reg = <0x30>;
-         interrupts = <0 4 IRQ_TYPE_LEVEL_HIGH>;
-         interrupt-parent = <&gic>;
-+        #io-channel-cells = <1>;
-         wakeup-source;
+ MARVELL ARMADA 3700 PHY DRIVERS
+ M:	Miquel Raynal <miquel.raynal@bootlin.com>
+ S:	Maintained
+diff --git a/drivers/iio/adc/88pm886-gpadc.c b/drivers/iio/adc/88pm886-gpadc.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..8c1fa99b94415f5f193ec65d313fab5001f40d58
+--- /dev/null
++++ b/drivers/iio/adc/88pm886-gpadc.c
+@@ -0,0 +1,388 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright 2025, Duje Mihanović <duje@dujemihanovic.xyz>
++ */
++
++#include <linux/bits.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/i2c.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
++#include <linux/regmap.h>
++#include <linux/types.h>
++#include <linux/units.h>
++
++#include <linux/iio/iio.h>
++#include <linux/iio/types.h>
++
++#include <linux/mfd/88pm886.h>
++
++struct pm886_gpadc {
++	struct regmap *map;
++};
++
++enum pm886_gpadc_channel {
++	VSC_CHAN,
++	VCHG_PWR_CHAN,
++	VCF_OUT_CHAN,
++	VBAT_CHAN,
++	VBAT_SLP_CHAN,
++	VBUS_CHAN,
++
++	GPADC0_CHAN,
++	GPADC1_CHAN,
++	GPADC2_CHAN,
++	GPADC3_CHAN,
++
++	GND_DET1_CHAN,
++	GND_DET2_CHAN,
++	MIC_DET_CHAN,
++
++	TINT_CHAN,
++};
++
++static const int pm886_gpadc_regs[] = {
++	[VSC_CHAN] = PM886_REG_GPADC_VSC,
++	[VCHG_PWR_CHAN] = PM886_REG_GPADC_VCHG_PWR,
++	[VCF_OUT_CHAN] = PM886_REG_GPADC_VCF_OUT,
++	[VBAT_CHAN] = PM886_REG_GPADC_VBAT,
++	[VBAT_SLP_CHAN] = PM886_REG_GPADC_VBAT_SLP,
++	[VBUS_CHAN] = PM886_REG_GPADC_VBUS,
++
++	[GPADC0_CHAN] = PM886_REG_GPADC_GPADC0,
++	[GPADC1_CHAN] = PM886_REG_GPADC_GPADC1,
++	[GPADC2_CHAN] = PM886_REG_GPADC_GPADC2,
++	[GPADC3_CHAN] = PM886_REG_GPADC_GPADC3,
++
++	[GND_DET1_CHAN] = PM886_REG_GPADC_GND_DET1,
++	[GND_DET2_CHAN] = PM886_REG_GPADC_GND_DET2,
++	[MIC_DET_CHAN] = PM886_REG_GPADC_MIC_DET,
++
++	[TINT_CHAN] = PM886_REG_GPADC_TINT,
++};
++
++#define ADC_CHANNEL_VOLTAGE(index, lsb, name)		\
++{							\
++	.type = IIO_VOLTAGE,				\
++	.indexed = 1,					\
++	.channel = index,				\
++	.address = lsb,					\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
++			      BIT(IIO_CHAN_INFO_SCALE),	\
++	.datasheet_name = name,				\
++}
++
++#define ADC_CHANNEL_RESISTANCE(index, lsb, name)		\
++{								\
++	.type = IIO_RESISTANCE,					\
++	.indexed = 1,						\
++	.channel = index,					\
++	.address = lsb,						\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),	\
++	.datasheet_name = name,					\
++}
++
++#define ADC_CHANNEL_TEMPERATURE(index, lsb, name)		\
++{								\
++	.type = IIO_TEMP,					\
++	.indexed = 1,						\
++	.channel = index,					\
++	.address = lsb,						\
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
++			      BIT(IIO_CHAN_INFO_SCALE) |	\
++			      BIT(IIO_CHAN_INFO_OFFSET),	\
++	.datasheet_name = name,					\
++}
++
++static const struct iio_chan_spec pm886_gpadc_channels[] = {
++	ADC_CHANNEL_VOLTAGE(VSC_CHAN, 1367, "vsc"),
++	ADC_CHANNEL_VOLTAGE(VCHG_PWR_CHAN, 1709, "vchg_pwr"),
++	ADC_CHANNEL_VOLTAGE(VCF_OUT_CHAN, 1367, "vcf_out"),
++	ADC_CHANNEL_VOLTAGE(VBAT_CHAN, 1367, "vbat"),
++	ADC_CHANNEL_VOLTAGE(VBAT_SLP_CHAN, 1367, "vbat_slp"),
++	ADC_CHANNEL_VOLTAGE(VBUS_CHAN, 1709, "vbus"),
++
++	ADC_CHANNEL_RESISTANCE(GPADC0_CHAN, 342, "gpadc0"),
++	ADC_CHANNEL_RESISTANCE(GPADC1_CHAN, 342, "gpadc1"),
++	ADC_CHANNEL_RESISTANCE(GPADC2_CHAN, 342, "gpadc2"),
++	ADC_CHANNEL_RESISTANCE(GPADC3_CHAN, 342, "gpadc3"),
++
++	ADC_CHANNEL_VOLTAGE(GND_DET1_CHAN, 342, "gnddet1"),
++	ADC_CHANNEL_VOLTAGE(GND_DET2_CHAN, 342, "gnddet2"),
++	ADC_CHANNEL_VOLTAGE(MIC_DET_CHAN, 1367, "mic_det"),
++
++	ADC_CHANNEL_TEMPERATURE(TINT_CHAN, 104, "tint"),
++};
++
++static const struct regmap_config pm886_gpadc_regmap_config = {
++	.reg_bits = 8,
++	.val_bits = 8,
++	.max_register = PM886_GPADC_MAX_REGISTER,
++};
++
++static int gpadc_get_raw(struct iio_dev *iio, enum pm886_gpadc_channel chan)
++{
++	struct pm886_gpadc *gpadc = iio_priv(iio);
++	__be16 buf;
++	int ret;
++
++	ret = regmap_bulk_read(gpadc->map, pm886_gpadc_regs[chan], &buf, sizeof(buf));
++	if (ret)
++		return ret;
++
++	return be16_to_cpu(buf) >> 4;
++}
++
++static int
++gpadc_set_bias(struct pm886_gpadc *gpadc, enum pm886_gpadc_channel chan, bool on)
++{
++	unsigned int gpadc_num = chan - GPADC0_CHAN;
++	unsigned int bits = BIT(gpadc_num + 4) | BIT(gpadc_num);
++
++	return regmap_assign_bits(gpadc->map, PM886_REG_GPADC_CONFIG(0x14), bits, on);
++}
++
++static int
++gpadc_find_bias_current(struct iio_dev *iio, struct iio_chan_spec const *chan,
++			unsigned int *raw_uV, unsigned int *raw_uA)
++{
++	struct pm886_gpadc *gpadc = iio_priv(iio);
++	unsigned int gpadc_num = chan->channel - GPADC0_CHAN;
++	unsigned int reg = PM886_REG_GPADC_CONFIG(0xb + gpadc_num);
++	unsigned long lsb = chan->address;
++	int ret;
++
++	for (unsigned int i = 0; i < PM886_GPADC_BIAS_LEVELS; i++) {
++		ret = regmap_update_bits(gpadc->map, reg, GENMASK(3, 0), i);
++		if (ret)
++			return ret;
++
++		/* Wait for the new bias level to apply. */
++		fsleep(5 * USEC_PER_MSEC);
++
++		*raw_uA = PM886_GPADC_INDEX_TO_BIAS_uA(i);
++		*raw_uV = gpadc_get_raw(iio, chan->channel) * lsb;
++
++		/*
++		 * Vendor kernel errors out above 1.25V, but testing shows that
++		 * the resistance of the battery detection channel (GPADC2 on
++		 * coreprimevelte) reaches about 1.4Mohm when the battery is
++		 * removed, which can't be measured with such a low upper
++		 * limit. Therefore, to be able to detect the battery without
++		 * ugly externs as used in the vendor fuelgauge driver,
++		 * increase this limit a bit.
++		 */
++		if (WARN_ON(*raw_uV > 1500 * (MICRO / MILLI)))
++			return -EIO;
++
++		/*
++		 * Vendor kernel errors out under 300mV, but for the same
++		 * reason as above (except the channel hovers around 3.5kohm
++		 * with battery present) reduce this limit.
++		 */
++		if (*raw_uV < 200 * (MICRO / MILLI)) {
++			dev_dbg(&iio->dev, "bad bias for chan %d: %duA @ %duV\n", chan->channel,
++				*raw_uA, *raw_uV);
++			continue;
++		}
++
++		dev_dbg(&iio->dev, "good bias for chan %d: %duA @ %duV\n", chan->channel,
++			*raw_uA, *raw_uV);
++		return 0;
++	}
++
++	dev_err(&iio->dev, "failed to find good bias for chan %d\n", chan->channel);
++	return -EINVAL;
++}
++
++static int
++gpadc_get_resistance_ohm(struct iio_dev *iio, struct iio_chan_spec const *chan)
++{
++	struct pm886_gpadc *gpadc = iio_priv(iio);
++	unsigned int raw_uV, raw_uA;
++	int ret;
++
++	ret = gpadc_set_bias(gpadc, chan->channel, true);
++	if (ret)
++		goto out;
++
++	ret = gpadc_find_bias_current(iio, chan, &raw_uV, &raw_uA);
++	if (ret)
++		goto out;
++
++	ret = DIV_ROUND_CLOSEST(raw_uV, raw_uA);
++out:
++	gpadc_set_bias(gpadc, chan->channel, false);
++	return ret;
++}
++
++static int
++__pm886_gpadc_read_raw(struct iio_dev *iio, struct iio_chan_spec const *chan,
++		       int *val, int *val2, long mask)
++{
++	unsigned long lsb = chan->address;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		*val = gpadc_get_raw(iio, chan->channel);
++		if (*val < 0)
++			return *val;
++
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SCALE:
++		*val = lsb;
++
++		if (chan->type == IIO_VOLTAGE) {
++			*val2 = MILLI;
++			return IIO_VAL_FRACTIONAL;
++		} else {
++			return IIO_VAL_INT;
++		}
++	case IIO_CHAN_INFO_OFFSET:
++		/* Raw value is 104 millikelvin/LSB, convert it to 104 millicelsius/LSB */
++		*val = ABSOLUTE_ZERO_MILLICELSIUS;
++		*val2 = lsb;
++		return IIO_VAL_FRACTIONAL;
++	case IIO_CHAN_INFO_PROCESSED:
++		*val = gpadc_get_resistance_ohm(iio, chan);
++		if (*val < 0)
++			return *val;
++
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int pm886_gpadc_read_raw(struct iio_dev *iio, struct iio_chan_spec const *chan,
++				int *val, int *val2, long mask)
++{
++	struct device *dev = iio->dev.parent;
++	int ret;
++
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret)
++		return ret;
++
++	ret = __pm886_gpadc_read_raw(iio, chan, val, val2, mask);
++
++	pm_runtime_put_autosuspend(dev);
++	return ret;
++}
++
++static int pm886_gpadc_hw_enable(struct regmap *map)
++{
++	const u8 config[] = {
++		PM886_GPADC_CONFIG1_EN_ALL,
++		PM886_GPADC_CONFIG2_EN_ALL,
++		PM886_GPADC_GND_DET2_EN,
++	};
++	int ret;
++
++	/* Enable the ADC block. */
++	ret = regmap_set_bits(map, PM886_REG_GPADC_CONFIG(0x6), BIT(0));
++	if (ret)
++		return ret;
++
++	/* Enable all channels. */
++	return regmap_bulk_write(map, PM886_REG_GPADC_CONFIG(0x1), config, ARRAY_SIZE(config));
++}
++
++static int pm886_gpadc_hw_disable(struct regmap *map)
++{
++	return regmap_clear_bits(map, PM886_REG_GPADC_CONFIG(0x6), BIT(0));
++}
++
++static const struct iio_info pm886_gpadc_iio_info = {
++	.read_raw = pm886_gpadc_read_raw,
++};
++
++static int pm886_gpadc_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct pm886_chip *chip = dev_get_drvdata(dev->parent);
++	struct i2c_client *client = chip->client;
++	struct pm886_gpadc *gpadc;
++	struct i2c_client *page;
++	struct iio_dev *iio;
++	int ret;
++
++	iio = devm_iio_device_alloc(dev, sizeof(*gpadc));
++	if (!iio)
++		return -ENOMEM;
++
++	gpadc = iio_priv(iio);
++	dev_set_drvdata(dev, iio);
++
++	page = devm_i2c_new_dummy_device(dev, client->adapter,
++					 client->addr + PM886_PAGE_OFFSET_GPADC);
++	if (IS_ERR(page))
++		return dev_err_probe(dev, PTR_ERR(page), "Failed to initialize GPADC page\n");
++
++	gpadc->map = devm_regmap_init_i2c(page, &pm886_gpadc_regmap_config);
++	if (IS_ERR(gpadc->map))
++		return dev_err_probe(dev, PTR_ERR(gpadc->map),
++				     "Failed to initialize GPADC regmap\n");
++
++	iio->name = "88pm886-gpadc";
++	iio->modes = INDIO_DIRECT_MODE;
++	iio->info = &pm886_gpadc_iio_info;
++	iio->channels = pm886_gpadc_channels;
++	iio->num_channels = ARRAY_SIZE(pm886_gpadc_channels);
++	device_set_node(&iio->dev, dev_fwnode(dev->parent));
++
++	ret = devm_pm_runtime_enable(dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to enable runtime PM\n");
++
++	pm_runtime_set_autosuspend_delay(dev, 50);
++	pm_runtime_use_autosuspend(dev);
++	ret = devm_iio_device_register(dev, iio);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to register ADC\n");
++
++	return 0;
++}
++
++static int pm886_gpadc_runtime_resume(struct device *dev)
++{
++	struct iio_dev *iio = dev_get_drvdata(dev);
++	struct pm886_gpadc *gpadc = iio_priv(iio);
++
++	return pm886_gpadc_hw_enable(gpadc->map);
++}
++
++static int pm886_gpadc_runtime_suspend(struct device *dev)
++{
++	struct iio_dev *iio = dev_get_drvdata(dev);
++	struct pm886_gpadc *gpadc = iio_priv(iio);
++
++	return pm886_gpadc_hw_disable(gpadc->map);
++}
++
++static DEFINE_RUNTIME_DEV_PM_OPS(pm886_gpadc_pm_ops,
++				 pm886_gpadc_runtime_suspend,
++				 pm886_gpadc_runtime_resume, NULL);
++
++static const struct platform_device_id pm886_gpadc_id[] = {
++	{ "88pm886-gpadc" },
++	{ }
++};
++MODULE_DEVICE_TABLE(platform, pm886_gpadc_id);
++
++static struct platform_driver pm886_gpadc_driver = {
++	.driver = {
++		.name = "88pm886-gpadc",
++		.pm = pm_ptr(&pm886_gpadc_pm_ops),
++	},
++	.probe = pm886_gpadc_probe,
++	.id_table = pm886_gpadc_id,
++};
++module_platform_driver(pm886_gpadc_driver);
++
++MODULE_AUTHOR("Duje Mihanović <duje@dujemihanovic.xyz>");
++MODULE_DESCRIPTION("Marvell 88PM886 GPADC driver");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 24f2572c487ea3db2abec3283ebd93357c08baab..04c8478ff707dd16ec943674ac7f01f33249acf1 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -9,6 +9,19 @@ menu "Analog to digital converters"
+ config IIO_ADC_HELPER
+ 	tristate
  
-         regulators {
++config 88PM886_GPADC
++	tristate "Marvell 88PM886 GPADC driver"
++	depends on MFD_88PM886_PMIC
++	default MFD_88PM886_PMIC
++	help
++	  Say Y here to enable support for the GPADC (General Purpose ADC)
++	  found on the Marvell 88PM886 PMIC. The GPADC measures various
++	  internal voltages and temperatures, including (but not limited to)
++	  system, battery and USB Vbus.
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called 88pm886-gpadc.
++
+ config AB8500_GPADC
+ 	bool "ST-Ericsson AB8500 GPADC driver"
+ 	depends on AB8500_CORE && REGULATOR_AB8500
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index 1c6ca5fd4b6db8c4c40a351b231ba0892e8cd70e..64854907bf3bef7da39f95247e4e502d01232af3 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -6,6 +6,7 @@
+ obj-$(CONFIG_IIO_ADC_HELPER) += industrialio-adc.o
+ 
+ # When adding new entries keep the list in alphabetical order
++obj-$(CONFIG_88PM886_GPADC) += 88pm886-gpadc.o
+ obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
+ obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
+ obj-$(CONFIG_AD4000) += ad4000.o
+diff --git a/include/linux/mfd/88pm886.h b/include/linux/mfd/88pm886.h
+index 85eca44f39ab58ba4cb9ec4216118ee9604d021f..38892ba7b8a42bbecb53621a891a52a2fd70fd43 100644
+--- a/include/linux/mfd/88pm886.h
++++ b/include/linux/mfd/88pm886.h
+@@ -10,6 +10,7 @@
+ #define PM886_IRQ_ONKEY			0
+ 
+ #define PM886_PAGE_OFFSET_REGULATORS	1
++#define PM886_PAGE_OFFSET_GPADC		2
+ 
+ #define PM886_REG_ID			0x00
+ 
+@@ -70,6 +71,63 @@
+ #define PM886_LDO_VSEL_MASK		0x0f
+ #define PM886_BUCK_VSEL_MASK		0x7f
+ 
++/* GPADC enable/disable registers */
++#define PM886_REG_GPADC_CONFIG(n)	(n)
++
++#define PM886_GPADC_VSC_EN		BIT(0)
++#define PM886_GPADC_VBAT_EN		BIT(1)
++#define PM886_GPADC_GNDDET1_EN		BIT(3)
++#define PM886_GPADC_VBUS_EN		BIT(4)
++#define PM886_GPADC_VCHG_PWR_EN		BIT(5)
++#define PM886_GPADC_VCF_OUT_EN		BIT(6)
++#define PM886_GPADC_CONFIG1_EN_ALL	\
++	(PM886_GPADC_VSC_EN |		\
++	 PM886_GPADC_VBAT_EN |		\
++	 PM886_GPADC_GNDDET1_EN |	\
++	 PM886_GPADC_VBUS_EN |		\
++	 PM886_GPADC_VCHG_PWR_EN |	\
++	 PM886_GPADC_VCF_OUT_EN)
++
++#define PM886_GPADC_TINT_EN		BIT(0)
++#define PM886_GPADC_PMODE_EN		BIT(1)
++#define PM886_GPADC_GPADC0_EN		BIT(2)
++#define PM886_GPADC_GPADC1_EN		BIT(3)
++#define PM886_GPADC_GPADC2_EN		BIT(4)
++#define PM886_GPADC_GPADC3_EN		BIT(5)
++#define PM886_GPADC_MIC_DET_EN		BIT(6)
++#define PM886_GPADC_CONFIG2_EN_ALL	\
++	(PM886_GPADC_TINT_EN |		\
++	 PM886_GPADC_GPADC0_EN |	\
++	 PM886_GPADC_GPADC1_EN |	\
++	 PM886_GPADC_GPADC2_EN |	\
++	 PM886_GPADC_GPADC3_EN |	\
++	 PM886_GPADC_MIC_DET_EN)
++
++/* No CONFIG3_EN_ALL because this is the only bit there. */
++#define PM886_GPADC_GND_DET2_EN		BIT(0)
++
++/* GPADC channel registers */
++#define PM886_REG_GPADC_VSC		0x40
++#define PM886_REG_GPADC_VCHG_PWR	0x4c
++#define PM886_REG_GPADC_VCF_OUT		0x4e
++#define PM886_REG_GPADC_TINT		0x50
++#define PM886_REG_GPADC_GPADC0		0x54
++#define PM886_REG_GPADC_GPADC1		0x56
++#define PM886_REG_GPADC_GPADC2		0x58
++#define PM886_REG_GPADC_VBAT		0xa0
++#define PM886_REG_GPADC_GND_DET1	0xa4
++#define PM886_REG_GPADC_GND_DET2	0xa6
++#define PM886_REG_GPADC_VBUS		0xa8
++#define PM886_REG_GPADC_GPADC3		0xaa
++#define PM886_REG_GPADC_MIC_DET		0xac
++#define PM886_REG_GPADC_VBAT_SLP	0xb0
++
++/* VBAT_SLP is the last register and is 2 bytes wide like other channels. */
++#define PM886_GPADC_MAX_REGISTER	(PM886_REG_GPADC_VBAT_SLP + 1)
++
++#define PM886_GPADC_BIAS_LEVELS		16
++#define PM886_GPADC_INDEX_TO_BIAS_uA(i)	(1 + (i) * 5)
++
+ struct pm886_chip {
+ 	struct i2c_client *client;
+ 	unsigned int chip_id;
 
 -- 
 2.51.0

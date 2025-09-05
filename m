@@ -1,214 +1,272 @@
-Return-Path: <linux-iio+bounces-23739-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23740-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C6FB44EC8
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 09:11:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13408B44FBA
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 09:31:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D5774823E4
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 07:11:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0D15B612E7
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 07:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873192D47EF;
-	Fri,  5 Sep 2025 07:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E94A2DF718;
+	Fri,  5 Sep 2025 07:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DcBbmDl9"
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="jJUQ7rV/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11013042.outbound.protection.outlook.com [40.107.44.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FF332F76C;
-	Fri,  5 Sep 2025 07:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757056261; cv=none; b=J5WTCL7j2NqRDvOVV9HOiH7GiC3W1DkoYTx7dz6F5XWBdmyQIfaI7uzr2mtWbF7o0sc7FQDIDaIE9KnrsNNixVIjUf84KgQUsN/GJTD+9tIY6mPwSBw4Ux/aGlmnel/YRzXPMb6VsxvUgacMhulLXKU+xJiLB2LS3ewWfn3G6kQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757056261; c=relaxed/simple;
-	bh=GGfi3htzKuTZlupJ8A/9R0OP1UVodldjUfF8TFxYa4I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UGdMukF/YXn4Sgd9pgBx8ywwSx+zxqxdMjvr1mwGSOmo19c+4gUSgCz40+6QO3RfLnJJdpyiti4+CAGi1IInck6kU1Mvmcq7OG7Yxefg+xCKIUZUMtwYWMWUF420DBU/IBCDKzO5fcA2gBcNqUKt7lz2ZC6yMVI8KfHM+3LFlKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DcBbmDl9; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-55f7ad815ceso2056909e87.3;
-        Fri, 05 Sep 2025 00:10:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757056258; x=1757661058; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=O15oaFlbSecL0xPawdsbWSzPwlKRkU4sBoLNzXpmMYI=;
-        b=DcBbmDl93PNvhwaHmW/RAcMJ8T0rUOtVKq6SY00hvCWTXbyppqAqr4UrNfEGOB/2El
-         ZwtGCHF5zLUcx/5Kzsxz+Xdy0MGV2r+H7vU7DIJ3SLRAgUjfGXh/YO3c3uY0tfRzSsiZ
-         iwenXsPJ7pzusvGbvk/yh5lkvVJ8xfcdIACHS7xbNPo0uI6a4Ei0xWkypax6vqXcUQ2C
-         Usl1H6Uj6lC+B8RoudiSlkrdNOFt5cequ7+7duaqB50dvrUEc5CqvAnio2UaHuanlsJB
-         C8dDKgtzkDZiEmS2BceIU0Ke7C7aC8FR1+lBJWvrRz+CCftsNQ+t1fKOTcXBCbmRIiK0
-         ze/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757056258; x=1757661058;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O15oaFlbSecL0xPawdsbWSzPwlKRkU4sBoLNzXpmMYI=;
-        b=RKjQPlwCyL9PirGtAXZFNYhZKpLADSSqu+yh1RuSinA3ffQM8K19unJBrBafLL/ym8
-         bmurnjLeJr3zJDjeHwvyJ5av7FvGRbar1HnLToY9YcNi3NPkHUydZTy/qOOG5SpzGTRz
-         KxKTXHNaKnkdLxeqA3F1Wp6sAfT/tJD3qhM+3nXtrygwWAWlIyVkC+cRRSH5rHgQYOsO
-         juwMeGbnROwRy7HnkUSgQk/04x7g/NdJAkcPnYM0tUhKV4MR1IyKFQKjehhBX8jV5tYZ
-         c+QsQ5MxHcW5uDmvUAgwjGG/7sDPPOglcqJde8pzRHCQNV8oNmP2wO6zM6QRRDGTmiEr
-         x2Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCVVy8k4pY6/aBwM2cVwlbFVNQ7BIumFPkps6bUfj2f1jXQIMfdHeNd59SBZTs+FDeBl61mqG/oSeWsHaw==@vger.kernel.org, AJvYcCXj6gdFNcTiALD+zcZDAxNf3OlBUPjeKSD3+F7yFilr+H3ZxtuGYeR/m2JvQs6S0SnpmZ7zKCDpyeZp@vger.kernel.org, AJvYcCXmO1dD5lNZvsLtoQ72tnV7VQ9H4LXwVUrzEHRixZbUI982I3EkA+Td6uCOyidmEawCppvKosPd/8tm@vger.kernel.org, AJvYcCXuusYHzPGY+DPM0MWatXNh5f0S8yFhJzW5snZ0vgN9so77d41PCtSJw/1Hweig5chWpJFlzm73SdIDXOuM@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdXCvlFy4ZqjTWgGTiLuuU1sO2lWbhBQJhOmIQxozcPdDhErBe
-	ZGPtMGLUjfWSe07h9MipDL555DWO0sJWYU6djBTo3ChgxzgAWPCsUmwxkhra6But
-X-Gm-Gg: ASbGnctAY6jmVOcoLZ2OGXdoGzs2vi36033PWnySDPdT5y+QnxTVTJEO3qKGNCABlwm
-	tDM6Pnbnq55rGaMOOaIWgAXJvozyrQzMwNAsjKEeYKMl89Lic7QPdnZfvdz1eAfKNjL/9QClcN8
-	79R6UrSFsPJLHflP5o2Ojd7BwojjIJ/0HXtTwieyH/T+a86Y0pWT1MKmW440VTh7RJnfYGh60ki
-	YtqYo20PBj/8kuleOr0iBufDw63EwAbNGkuX9CiwnapEVrxiwjQ8PSI6/KLJ4Zo0EwS9u6O3Xwu
-	LA+l9t1sdT+VSAtPek0S9v3gTU4M9g4TmXtlD+4RM35+DSaDsClm9fvTC/X66TgHM4fUWXyEp21
-	c2I/uGoAooZsnv/qIXiVLvwjhvU/CX2gq3SUDVjPDU7SdthlO8LliwkPfgnJuWHmCihE/iZEgQO
-	0pt9B7KrArsr3QZ7U=
-X-Google-Smtp-Source: AGHT+IHhKnvRXd70Bi88Un4YmSlqHa0PlAAVn+v9tZUCAv87NgGNYHCHUoVeLs1lU1dQzasnAc9nJA==
-X-Received: by 2002:a05:651c:2344:20b0:336:c873:1b10 with SMTP id 38308e7fff4ca-336ca94901dmr41988781fa.15.1757056257406;
-        Fri, 05 Sep 2025 00:10:57 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-337f4cb9b5esm18215451fa.28.2025.09.05.00.10.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 00:10:56 -0700 (PDT)
-Message-ID: <2c36496c-68bb-4c06-8580-3efc694429ea@gmail.com>
-Date: Fri, 5 Sep 2025 10:10:55 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C9A2DCF6E;
+	Fri,  5 Sep 2025 07:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.44.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757057099; cv=fail; b=p7uwaPrxCzVU8Uc1zp95Rn4eghInpgSopTjd+1vD38hzHd18ISg48EDQVGUuAc4jHvUSXKVJxgTV5uIVDLBMAQqnjxjvzGCaZ2rDPNcL3ipgH20YdiSF22ByM3PwKM0PSImS08tE9mxpGFJRjgcDz2UNxSoA9swLAb1YElW/+UE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757057099; c=relaxed/simple;
+	bh=acvGn+RpRxj+AITe/razYVnfbZtaEGybwyK5b7Pd3IU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=HMYGQytzNJ43Bj7t6rh24SER6e+Lu1JyTfefnSqAhlXaNyTpeFQBQOnVAmdSgEsB+T8N34JP4giuQZo8X99n8k5l6wLgGeOqKpNEb7f6/qL+iZeGkoDMVO8kHc+JkUZj1Y1gkJaULCq2TNjSc6DPe8LMoPoZOTEBm775ZUYiAxY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=jJUQ7rV/; arc=fail smtp.client-ip=40.107.44.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gUEzKZJy130J3LZpRDi268EHykQ8Q7GvKsnmww08mX1T0Hyxk/qzi924V/ESj0ZyMjaEnbd6B62KpBbYpWTuOx+aO+dMQNWSIN0orKWj+KeFCIo9ppAsKl9C3o4pMFNRYiPUFkEGL+C3Ynjf4AUM0VFTNS84yq0IMzxPJCc2yPDwRo7bBUtUL1aggd3jd1oXdx4OzUCjL3PVNLB9dCy0KK4FHbsyAGff6uy3QcqiKz2Z+SBaI3hwOEQoKL/MgSeRmnF58SB4Y082ZdZ2gPU/83AXPSJKIkrxpvRYtDfR0xjvTv3Z2QbkyE4HG57cAJP63GzDiIARCF0esaWaep4kww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l00aG08W87I1prscd7L+aG/F3ovWpspEgEd6GQuSNBc=;
+ b=cl3YF129SNJOoulVpsnCMa2Da+zqV+mBnbEaQHMiAUNDYlkMO4prn/xHbZRbp12h6RcmuvYVSrMuYaN3m0t7oXr1b82wDUlR4A1djgOh+VqOG7pHQVmqYSbA+vjCt/1leFpqyj/N099yX9jRbIgQc227VpTx2xIrGyVu+D4hZMzpYa0VwYS+pBWjOzfRm1fsIaW2v9X1abp4jBIW7OnXleEYZK3yWDk3RVlmckh/a4PMsig7700R/Jmv3KqD8psmbc+RIwQ6gB/jIh8GYV/ir358/ophubCwSwcdiDbDBVDf/PTh0wmu7l4FSYtisn17LIbT5j8NmdpqQkWI9BhVEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l00aG08W87I1prscd7L+aG/F3ovWpspEgEd6GQuSNBc=;
+ b=jJUQ7rV/2tjm05PLvH5sxyJ2oo/pKnA5P/+MdTuiqfACAaKkmUzx5RtRDcRPSgKrATS4mH003mQfomci51Na0TmokQ6oZHkv1/9M+xB15eKC2roaH1TgXFcLmECBlJnIfGH44n49YrqqqOmqut+jyYmtuxLejfaqEGOnsgEcVcDHL8oseiG9+fwd4GpMYPKNGaXUeOGPRGWaufD+r/jlwhWQ8n1G1sB2fj5umJAVxKS4HZnRbDND24tT6PNmbsFPFohteAECEs4F4jwnpzNlLNjOF4TMcH1O7+fbgCEfgpj4a+Xbp9ill+vfQTii3bDkDDp/Vu3s3V81qt1V6kDH+Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from KL1PR06MB7330.apcprd06.prod.outlook.com (2603:1096:820:146::7)
+ by SEZPR06MB7185.apcprd06.prod.outlook.com (2603:1096:101:22a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.18; Fri, 5 Sep
+ 2025 07:24:51 +0000
+Received: from KL1PR06MB7330.apcprd06.prod.outlook.com
+ ([fe80::d1d3:916:af43:55f5]) by KL1PR06MB7330.apcprd06.prod.outlook.com
+ ([fe80::d1d3:916:af43:55f5%4]) with mapi id 15.20.9094.018; Fri, 5 Sep 2025
+ 07:24:50 +0000
+From: Xichao Zhao <zhao.xichao@vivo.com>
+To: Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Guillaume La Roque <glaroque@baylibre.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	zhanghongchen <zhanghongchen@loongson.cn>,
+	Yinbo Zhu <zhuyinbo@loongson.cn>,
+	Amit Kucheria <amitk@kernel.org>,
+	Thara Gopinath <thara.gopinath@gmail.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Talel Shenhar <talel@amazon.com>,
+	Eduardo Valentin <edubezval@gmail.com>,
+	Keerthy <j-keerthy@ti.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	linux-hwmon@vger.kernel.org (open list:HARDWARE MONITORING),
+	linux-kernel@vger.kernel.org (open list),
+	linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Allwinner sunXi SoC support),
+	linux-sunxi@lists.linux.dev (open list:ARM/Allwinner sunXi SoC support),
+	linux-pm@vger.kernel.org (open list:THERMAL),
+	linux-amlogic@lists.infradead.org (open list:THERMAL DRIVER FOR AMLOGIC SOCS),
+	linux-rpi-kernel@lists.infradead.org (moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-arm-msm@vger.kernel.org (open list:QUALCOMM TSENS THERMAL DRIVER),
+	linux-renesas-soc@vger.kernel.org (open list:RENESAS R-CAR THERMAL DRIVERS),
+	linux-rockchip@lists.infradead.org (open list:ARM/Rockchip SoC support),
+	linux-samsung-soc@vger.kernel.org (open list:SAMSUNG THERMAL DRIVER),
+	linux-stm32@st-md-mailman.stormreply.com (moderated list:ARM/STM32 ARCHITECTURE),
+	linux-tegra@vger.kernel.org (open list:TEGRA ARCHITECTURE SUPPORT),
+	linux-omap@vger.kernel.org (open list:TI BANDGAP AND THERMAL DRIVER)
+Cc: Xichao Zhao <zhao.xichao@vivo.com>
+Subject: [PATCH 00/12] drivers: Integrate log message printing into devm_thermal_*_register()
+Date: Fri,  5 Sep 2025 15:23:52 +0800
+Message-Id: <20250905072423.368123-1-zhao.xichao@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCP286CA0075.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:31a::16) To KL1PR06MB7330.apcprd06.prod.outlook.com
+ (2603:1096:820:146::7)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Tobias Sperling <tobias.sperling@softing.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Trevor Gamblin <tgamblin@baylibre.com>, Esteban Blanc <eblanc@baylibre.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- Hans de Goede <hansg@kernel.org>, Herve Codina <herve.codina@bootlin.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org
-References: <cover.1757053456.git.mazziesaccount@gmail.com>
- <3cc1faffcb4f71f0755b6192f193acecd36bea67.1757053456.git.mazziesaccount@gmail.com>
- <CAHp75VdaAH+1mh16KWoYtYFMV+_ec8x9YipeD3K8g6yQr-2VjA@mail.gmail.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <CAHp75VdaAH+1mh16KWoYtYFMV+_ec8x9YipeD3K8g6yQr-2VjA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: KL1PR06MB7330:EE_|SEZPR06MB7185:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ce90b0b-55b7-4cab-a0d2-08ddec4d4cd6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|7416014|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?RdPhrFtPD62QYRERKyMpXhYXceCHpOCdnsSISXPeCItz7fQ83GhkKaXQYJ4K?=
+ =?us-ascii?Q?h0e5qwTaJmwm78arHIgvmTHRVURhxCnVByEUnKNhbIQy4CpSVJrJL1RdYFrj?=
+ =?us-ascii?Q?Evb4bIV1aosKL/kQLNNN68qxVQ0a8QYTrJcWQItDJd5Dk21WN0XzU4pJiY/D?=
+ =?us-ascii?Q?YsqICFWFw5jotuRueYfalqRCNJfPaXckNG0v1s1dW2rqXhW7IdYmAJ2XznTZ?=
+ =?us-ascii?Q?PBg4JDvQ1SlNYFwIC3PqI4HLID4O2PBXJrz5ye0RlyNVJrHFGWF98VzPREQy?=
+ =?us-ascii?Q?FZ/FfDtFOPSab0tNGi+yZrX3pbW01P7G4m1+4mwiwmzXjg3ROR7Nst6gBwi9?=
+ =?us-ascii?Q?WPXoNixBIYUP4ssXJQ+vhSimVIOmnCh+g+vDGTtARET4Sh76oTtZbgkviwKz?=
+ =?us-ascii?Q?OckcvCriT2bZU1BCt4O+AbHmxGx7hoe/+4E7mqilLFPx/WyMGF7YNRt7BgvH?=
+ =?us-ascii?Q?Z5g09WxmHcvGBkLotB9/+XUsJC4zAFINIJ0dThZ6kuMKGSiorAskmE5en3BH?=
+ =?us-ascii?Q?y4PHHdyFVqgtcI7ElyDCJT5XSnKpuFY3JSp8LWt8wn3xOUjjgpJMrnVJIUF2?=
+ =?us-ascii?Q?4VouEI6UrOPAosUJPOrx0oZtxpNjAHZ9i53kmr2TOI1fy4ln1OWwxjsGmGhO?=
+ =?us-ascii?Q?tJJl77GA8871Wob074ZditN9RbZpNC0b9oiidyHzLqWSVMZ8R765g1YP+pBU?=
+ =?us-ascii?Q?H3XOc138OsYNPJZBRDvzhKViSrUr2eUvrevzWAvU+U38RQOeSovYLy/FXTZl?=
+ =?us-ascii?Q?VNtCpewA30+Un5G6h2dfUit09JTr+nu+AxnmTOSLJ6ER+KCS2L0rkTyk6ib8?=
+ =?us-ascii?Q?O+Z6h1hZyzNk5wclDxaJBb2BRP8U3N+9OAhqapnE7qYwwSF6mY7Gs4Y3veFu?=
+ =?us-ascii?Q?S2VNRYLMiM5zErn9MoU7Lq3iv3yP4CqBjvm3Ia9dBWvWf+jEuIzpOsNzgGHO?=
+ =?us-ascii?Q?wAjfHulo+/idyRqRpIHWHDsfSmviaGjPjrA1ljQPQYA/iriwF03NJJL08geJ?=
+ =?us-ascii?Q?fUc0A3yjBC0Wfz+cLVc4CXxPwAmxK26OLMnQsovC6+eWrYx5YCuvLalIeoCy?=
+ =?us-ascii?Q?Sk4RZLuhI0ZSZvt1VgNsEAl+sJbPDrwKnBkCU8Ya08DwcaMm8B+GXHCEHPjZ?=
+ =?us-ascii?Q?+6nM5tQ/58SRkHpbn5bcBn1McsHEJWiZGSMyrlDxi9shXLP6ms5CTfQNg//5?=
+ =?us-ascii?Q?zFuzP9Iom+NA/ktPpkJ9/yFK2vTSM4+zHr4UMB0uIwChFGyyWr88cANmltPx?=
+ =?us-ascii?Q?Aw4hgu0PI3XXIl2eXbHRbdWb6TCR2kwmdPByOA37gs1IG8WVoI1mbZlEsfOx?=
+ =?us-ascii?Q?U5e6Xutepl0DfuCtWWXGbQh/HKBoGf2kpxC5+YoSlpHjmqrN0oF6Ql2kBeAS?=
+ =?us-ascii?Q?0YkG7p443CmJY8fTlXtQf9CwM0jZch5wc8vP/5MnE4gZYlRluhJ7T84z0Ubz?=
+ =?us-ascii?Q?kFJmuPMKcxKiE0qh+uQWnSV4Mz0YR+Wz+MXOPRHDeSEITse5lei2VIDxKHby?=
+ =?us-ascii?Q?IwPn3cIVTOSV7ug=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR06MB7330.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(7416014)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?PaGM1vR8GM6pr87N6crztM4CFNPQ9dJRTcvDhsGmKGtZ+jpH5ToLNh9VFvOw?=
+ =?us-ascii?Q?V9ljzdUgy60O3/+ot7+hlVAvlt5Y3p5xqgzaQ0iffvEeKFUl3t4tGAfU0M0e?=
+ =?us-ascii?Q?6SXlqX27C8asMGtBpQ+vPreRpoaWp4nlBxbXiuPjvjDEUu6xROZDwEjaRGpi?=
+ =?us-ascii?Q?XSPpnw9obwoM87lv2dt0wL4/CuTPOro191ZhWs13cvNxM8eii2ELf66P0w15?=
+ =?us-ascii?Q?Gqznd6rhWHue24aePSFto0GvIjjPjaZrzc5cPMl8kBDq1A8gzVW3mR0AeUou?=
+ =?us-ascii?Q?tMRoGTnwOJ0oPCwBOjpMumFsThZQyle16u891W0Vqt4L9ievK5nU0anObDWm?=
+ =?us-ascii?Q?M26Ddetda5vbCZoEPEuxdbNhMCyMJzXfSdmur93IoMpxrCoaCxFaZ0h9pnqs?=
+ =?us-ascii?Q?20Be7WLVOzmrSux/HQJvAM0AUIDF+W9/mWwiaaCgS9/UcUVxoa7TOR/5L9je?=
+ =?us-ascii?Q?PpWXYWp0Gic6ZGaD95iSeuH2hmq7RADe/LSYaJj/nDv5HVYEx/OBeA7OdETz?=
+ =?us-ascii?Q?fqmyV5y2UluHwFGrMvQLvD6SPqGIrJVnfVTIog9/q59i33OSICHlHGjSaEqb?=
+ =?us-ascii?Q?STaqWuodjhJskEeFtO4ZX6Q4O36zWyfQos/Jkwkq+EhUXL5pAnYpb4jpCNYs?=
+ =?us-ascii?Q?e4haZsdTz7wyEkPxy7kqPfmwCwxDnZ/mwQZth7vt/AFWBveCp9sHoVfSAB2v?=
+ =?us-ascii?Q?RtlbpeOXZ+rsEUA9zbEkBe9hinurUDumzWm6XAn9IlobBF8XometisYLe1o9?=
+ =?us-ascii?Q?Vh+j2vCbFFUkv0l8e7Aj1aQ7HkNNVxxGqDKIYWpd99tfafn5AW7wX4jPp+wV?=
+ =?us-ascii?Q?7ApWCfj03V9etPsOWpLGA53jVEtp/tin/yin8b2jAFcnrKaX51aYxvAUAtuW?=
+ =?us-ascii?Q?45qIQrR9qAhRSdF5sKdAiFgjD31fOyYTX7ZtsrWLCHyWqJ0H9PSVIrbGxMNA?=
+ =?us-ascii?Q?f4Czz/5WbsvuCONlczfdE/f8MpYQA7rAG46upGUNZyGLUXJJd7AjtZsnpqgq?=
+ =?us-ascii?Q?xdfF4HxCTffd4LQouqxnw674tvpRYdoirSgCXBZJDriHgkFXrwyCKNOWJ6HX?=
+ =?us-ascii?Q?CqVPe8iG8ZX5JNqfIdIkYDhoWKGYoWoPEnByjbgyL6UadGcVVlnq4U1xg5+g?=
+ =?us-ascii?Q?FPmfItVqx9pD+0ecWBWfBrT50SldlwSXIQeazWi6rQzpaxCv6pVXvs7j1tYK?=
+ =?us-ascii?Q?vfmyjvw0Tf/+9ee93lD/TCJjYmnadb/JDCUHbnfbkDTvph54s8mDWcaQqjLo?=
+ =?us-ascii?Q?uGc4Vs5drmgqd+uu+/uZks6U3UEckmzBayK7q2ejxMdSmmeeoP6lk+wl1SYg?=
+ =?us-ascii?Q?IbvnzKQelKY5M8gOS6XDXSSiWwby5PkoYmB0KJKMXAI2I8biikyIJQRI0RaD?=
+ =?us-ascii?Q?coNRP28zmB2gIakTF5wzNck5N/hTXdfSsSF9+bYRTPdKQd4SZzlOmNikJhlL?=
+ =?us-ascii?Q?WL3CYQy6l9XkhyUHEOmUsCb9PEPvRELBpVCOaAhe/gvqPMspZIjBSDKOIjLE?=
+ =?us-ascii?Q?H4F88PQuy/wICLseyiYBT6lxgkRMOKQwWAcCJ39EnimjIpCJ5SjQ+6Ay9iqf?=
+ =?us-ascii?Q?zzSBuefklIZOXiv0961N5AXJosZMsOk6gqTL1PyW?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ce90b0b-55b7-4cab-a0d2-08ddec4d4cd6
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR06MB7330.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2025 07:24:50.6622
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3R4e/IRJQH3VXFbk/lRBhlzGkYiV1hW2lSfNsQ0JlobI3EhfdYw0N5q4fAIRxoPes0UKblB6s7wi+N7zmbCmJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB7185
 
-On 05/09/2025 09:54, Andy Shevchenko wrote:
-> On Fri, Sep 5, 2025 at 9:42 AM Matti Vaittinen <mazziesaccount@gmail.com> wrote:
->>
->> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
->> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
->>
->> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
->> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
->> daisy-chain configuration) and maximum sampling rate is 1MSPS.
->>
->> The IC does also support CRC but it is not implemented in the driver.
-> 
-> ...
-> 
->> +config ROHM_BD79112
->> +       tristate "Rohm BD79112 ADC driver"
->> +       depends on I2C && GPIOLIB
-> 
-> Still I2C?
+Add dev_err_probe() in devm_thermal_of_zone_register() to unify
+error reporting. Remove redundant error log prints in various driver codes.
 
-Thanks :) I didn't spot this @_@. I just switched the REGMAP_I2C to 
-REGMAP_SPI. Will fix.
+Xichao Zhao (12):
+  thermal: of: Add error handling in devm_thermal_*_register()
+  hwmon: Remove redundant error log prints
+  iio: adc: Remove redundant error log prints
+  regulator: max8973: Remove redundant error log prints
+  thermal: Remove redundant error log prints
+  thermal: broadcom: Remove redundant error log prints
+  thermal: qcom: Remove redundant error log prints
+  thermal: renesas: Remove redundant error log prints
+  thermal: samsung: Remove redundant error log prints
+  thermal: st: Remove redundant error log prints
+  thermal: tegra: Remove redundant error log prints
+  thermal: ti-soc-thermal: Remove redundant error log  prints
 
-> 
->> +       select REGMAP_SPI
->> +       select IIO_ADC_HELPER
->> +       help
->> +         Say yes here to build support for the ROHM BD79112 ADC. The
->> +         ROHM BD79112 is a 12-bit, 32-channel, SAR ADC, which analog
-> 
-> which --> where
+ drivers/hwmon/hwmon.c                              |  3 +--
+ drivers/iio/adc/sun4i-gpadc-iio.c                  |  6 +-----
+ drivers/regulator/max8973-regulator.c              |  8 ++------
+ drivers/thermal/airoha_thermal.c                   |  4 +---
+ drivers/thermal/amlogic_thermal.c                  |  7 ++-----
+ drivers/thermal/armada_thermal.c                   |  2 --
+ drivers/thermal/broadcom/bcm2711_thermal.c         |  7 ++-----
+ drivers/thermal/broadcom/bcm2835_thermal.c         |  2 +-
+ drivers/thermal/broadcom/brcmstb_thermal.c         |  3 +--
+ drivers/thermal/db8500_thermal.c                   |  5 ++---
+ drivers/thermal/hisi_thermal.c                     |  7 +------
+ drivers/thermal/imx8mm_thermal.c                   |  3 ---
+ drivers/thermal/imx_sc_thermal.c                   |  2 +-
+ drivers/thermal/k3_bandgap.c                       |  1 -
+ drivers/thermal/k3_j72xx_bandgap.c                 |  1 -
+ drivers/thermal/loongson2_thermal.c                |  2 +-
+ drivers/thermal/qcom/qcom-spmi-adc-tm5.c           |  7 +------
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c        |  3 +--
+ drivers/thermal/renesas/rcar_gen3_thermal.c        |  1 -
+ drivers/thermal/renesas/rcar_thermal.c             |  3 ++-
+ drivers/thermal/renesas/rzg2l_thermal.c            |  1 -
+ drivers/thermal/rockchip_thermal.c                 |  8 ++------
+ drivers/thermal/samsung/exynos_tmu.c               |  2 +-
+ drivers/thermal/sprd_thermal.c                     |  2 --
+ drivers/thermal/st/st_thermal.c                    |  1 -
+ drivers/thermal/st/stm_thermal.c                   |  8 ++------
+ drivers/thermal/tegra/soctherm.c                   |  2 --
+ drivers/thermal/tegra/tegra30-tsensor.c            |  3 +--
+ drivers/thermal/thermal-generic-adc.c              | 10 ++--------
+ drivers/thermal/thermal_mmio.c                     |  6 +-----
+ drivers/thermal/thermal_of.c                       |  6 +++++-
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c |  4 +---
+ drivers/thermal/uniphier_thermal.c                 |  4 +---
+ 33 files changed, 36 insertions(+), 98 deletions(-)
 
-I thought which (as a genetive case) would work here just fine?
-
-> 
->> +         inputs can also be used for GPIO.
-> 
-> ...
-> 
->> +/*
->> + * The data-sheet explains register I/O communication as follows:
->> + *
->> + * Read, two 16-bit sequences separated by CSB:
->> + * MOSI:
->> + * SCK:        | 1 | 2 | 3   | 4      | 5 .. 8 | 9 .. 16 |
->> + * data:| 0 | 0 |IOSET| RW (1) | ADDR   | 8'b0    |
->> + *
->> + * MISO:
->> + * SCK:        | 1 .. 8 | 9 .. 16 |
->> + * data:| 8'b0   | data    |
->> + *
->> + * Note, CSB is shown to be released between writing the address (MOSI) and
->> + * reading the register data (MISO).
->> + *
->> + * Write, single 16-bit sequence:
->> + * MOSI:
->> + * SCK:        | 1 | 2 | 3   | 4     | 5 .. 8 |
->> + * data:| 0 | 0 |IOSET| RW(0) | ADDR   |
->> + *
->> + * MISO:
->> + * SCK:        | 1 .. 8 |
->> + * data:| data   |
->> + */
-> 
-> What I meant in previous reviews is that the | are not aligned (in the
-> same columns). Is it on purpose? If so, I can't read that as I don't
-> understand the meaning of | in each case. For example, the data starts
-> with 0, followed by 0, and the latter one is when SCL is #1? Okay, but
-> how to read IOSET that overlaps 2 SCK cycles and is unaligned with
-> times... I'm really quite confused by these charts.
-
-Ah. I think I now know what you mean. Whitespaces are hard :)
-I see I have '\t' between the SCK: and first |.
- >> + * SCK: /* '\t' here */       | 1 | 2 | 3   | 4     | 5 .. 8 |
-
-It works perfectly on my editor, which has tab width 8. Thus, all the 
-'|' on SCK and data rows are perfectly aligned for me. My original 
-thought has been to align the first '|' on all rows by tab, but since 
-the " * data:" is already 8 chars I didn't add a tab for this row...
-
-I now realize this will not work if tabs behave different from my setup. 
-I will do replacing the '\t' with ' '. Does this make it better for your 
-editor or do you see some other problem besides that?
-
-Thanks for the patience explaining it.
-
-> ...
-> 
->> +        * Ouch. Seems the pin is ADC input - shouldn't happen as changing mux
->> +        * at runtime is not supported and non GPIO pins should be invalidated
->> +        * by the valid_mask at probe. Maybe someone wrote register bypassing
-> 
-> wrote a
-> 
->> +        * the driver?
-> 
-
-Yours,
-	-- Matti
+-- 
+2.34.1
 
 

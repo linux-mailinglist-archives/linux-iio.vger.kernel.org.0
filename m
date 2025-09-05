@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-23762-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23763-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66214B45339
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 11:34:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C80CDB45348
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 11:36:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B8DF7A5A3E
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 09:33:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA6C1168337
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 09:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F896263C91;
-	Fri,  5 Sep 2025 09:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A35270572;
+	Fri,  5 Sep 2025 09:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CrYRj6Ih"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="deDpXCv/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63B21E487;
-	Fri,  5 Sep 2025 09:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E7A1FE45A;
+	Fri,  5 Sep 2025 09:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757064873; cv=none; b=XUBNycb0EK8keuzKItQMTxS0XT064M8phz/IYtQfxm6CVFz/CDFUpyXLkvvXli3FEn9X8WOYymgDhR7ndmrpksRdlDQurN07nFlHggFZSvOVF0DA3HksMagJscV89IKyt39mRnSWYInC08tJggIg7YHKn2VDNhQJPBcR1h8OlyI=
+	t=1757064974; cv=none; b=aoeUL1J0+Y91v2uMqHZB6pVcKxkd/MBxTuJStnuP0xcNkTY28J6BTWpAWTCkstcs9bNHixUy3MjNtUJ4viPK07h7/Nga1kFl7n9QjrbGH+boBYMt8PdNyCLKQLkhwWOhMFSV86MxsyIrr7uBFh2GcyvlGf0A0Oz6MK5crmw1G7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757064873; c=relaxed/simple;
-	bh=fxW6po38fpa+VnoP8FiDQdHk6gPNDw4WKNm1oy92zAc=;
+	s=arc-20240116; t=1757064974; c=relaxed/simple;
+	bh=KmBSaHkbj+xeQP4PQxDtYAKPe6uOtfo1+bk6LyYR/PI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CBK0rMxCbzHnt5xIMXO92xWHVVkQ+pOS1wOdifkNeh/QaCEmYbEalc7MLUA0QudFh8Ci0/OZ1IOZluFOontlzXXJp6pIDhKfCBo9ddkEcriacxiAUQgyD2wREVsCJBHp4KwDmchq2lBGUw0F5TvS589UI7UhCCpZ57Wcjcw6caw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CrYRj6Ih; arc=none smtp.client-ip=209.85.218.51
+	 To:Cc:Content-Type; b=sr0kBUVJaRIDxyTbrl3b37o3ttocykwmlLe0iIsGnoimIvhGEebLWxba+wKOY7HWfrz3sxK0D3Tv5Q/CP7xxIp13lNO0NHb3QQGsiv1VhZcLc1Ru01hVr62qpc8F7xGtXZLSB5sczQhqgGB4wPn16PwZcQIDEH5mqn2ucSeqaeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=deDpXCv/; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b0415e03e25so280465466b.0;
-        Fri, 05 Sep 2025 02:34:31 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afebb6d4093so386123966b.1;
+        Fri, 05 Sep 2025 02:36:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757064870; x=1757669670; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757064970; x=1757669770; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5ZXKC69S7By8Ya1ZMREMZuen7JwS2/FHlmhonyDWpnQ=;
-        b=CrYRj6IhCe9KtIQdmHHYgkjdQYfG4uBemTw3/P4ae1kVl3KwoYvcoWQ6px/wJ4QD3W
-         Jwmqle5Ywhp/Sw/HW53nPA3RJQAkvnli6p3OuB95vreFxw1OspSfNRyuZTtc69ni6GUC
-         5XuklFMOjHF+AWS40y+R9rj8ZJy2hQxqQqFiFH6ljfKBSSdhYPvIJBvzf8Zawzx/w0t1
-         oJvw+w0WPDuflgpfYnlVNcJSz096kqGU/gMZo+YuOsiA7YYaRLrR7FoyGsqv+GoPdIRt
-         5lDWSeFwjlxTCLUAUpCRZi39bZIjFyNV0omyAo6IcvabaP6Wxb1ZILpQeiOC1kswhSFp
-         aLIA==
+        bh=nqf6D6Y//+lOVA7z+yQJwo2jJaSIwyijSnsvcGjMTK4=;
+        b=deDpXCv/FmFzzDxZXrtDrTVu1GpOCP3E5y87hhjLNO77b7d6rcOd5KJVz4IuR4Z1TJ
+         OasKITq4r0hBshR9I6YKf9yGjxO4LMbO2HRTPjjpXS2vYYSswEHKkzwIACBiFCZwGdgZ
+         +dADvcmb05ixyHvRWoGjr4gXJbAT7wYfGj45XnJkJZXTzf10xrJJ5oKnPo2hqJgDCXfg
+         FuKxYOrLUcV9/xNwdP1XAXbzHpjnvWTXzK7/27LtyTwXTP2iJE3i8wKO8ZOWMFlJ03J1
+         cieUqC2jMYWOR9bWMAUUkrwcOfDNss2+d3vqOlNudBL4NYkrh3FPy1QPhklOEenIcmF3
+         OJtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757064870; x=1757669670;
+        d=1e100.net; s=20230601; t=1757064970; x=1757669770;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5ZXKC69S7By8Ya1ZMREMZuen7JwS2/FHlmhonyDWpnQ=;
-        b=VXxKhhVe3ucTCgOwNX5WTE/425RIL3C/tJUvgjzBc+3q7OJkP/BN3f6LGCUSWj95yq
-         h6LBDjttVupwOSd+A2sAWsqNOnhOFesz3lyB4mC51tOZ2CZw4ji9agwDapYWUFLAsOoS
-         8dFqOUJ9FFI4mZKQjc8obQ8gOAYg0CrWM8U2oKFYuft0iNA+KI9KU6/T+ggHKi3YPRlp
-         iSfuDtujLHOwsFeB9XGZxzmp1joMaSUVG9C//8tqDqJLh2ZbB/ozRwDKnLpo/5zNlrnG
-         G727iiW67zZJrQmpnGZgvVSniou+zy7s8JszSaBhE08aqHQ/j+vwp5j1b41jRGOng/uG
-         S8vA==
-X-Forwarded-Encrypted: i=1; AJvYcCUasFWLteE+ZtgExUAlYUg0tSCCnz3272pLvNaco2Vf0UL+MZuQfIDnOeW7ySVxrGxFMBo33EHhkBWitA==@vger.kernel.org, AJvYcCUb5TGnJlyP9yHElYemQr+lbQHEKRgiQHC04aMvR5CoMD2M/H2soaoZJV7QnvRUXuABIL2KGn8guqq1BVx3jXzXcbs=@vger.kernel.org, AJvYcCUiYxI0kXVshUOVT4uyl8RZT99e0emtzH0TjlbxZsbwxI0YTDPn4QzSWlU3fThaCrxq6A/cHaifFSA=@vger.kernel.org, AJvYcCVPv6zv3oOAzkA8ezkkYYMQeM4oP71CFHyJU46ec3Lm+q8VnuP2MkQAcr3j755JIAGwIzQ7Rjojbf96OPc=@vger.kernel.org, AJvYcCW3x+HygORLmbFG3bUPDaa3Pj9Fm9FEuUAC19HniiBWUeG5VxJurE1Jt3JHCNhk9gHEKOEavl5K5iktPmM=@vger.kernel.org, AJvYcCWZ6tegJYq4VUj7IrzBIyQ2InSKcqR5mG6YVOQLI5V77WK2VYZYuN6fwemYVyPZvAkaH8KYIhpPXZtAo8uJnmdnvGs=@vger.kernel.org, AJvYcCXhckLESZaXDgJ3DwEo+rOY7PbPpMNb6/Shivvsznc3/09wxV9TULBqV9JyvmXeMK0TALSZ5l4IyJSokCoT@vger.kernel.org, AJvYcCXiDajjlA3H+CMZ20wvKwBGhOrSazCniOC988gBAVn2Cn39xQe/WrHjhH3UlboROjvz+FsbIwgTfuE57gSD@vger.kernel.org, AJvYcCXqyJSU6+pMhbyCcf1EreU3stmDacjvbVuVyr354WfUuCJfL/CsSWXGKPYcnbsqBbn6fbFSyrBCyd8w@vger.kernel.org
-X-Gm-Message-State: AOJu0YwINcKARE4xHg5qYdGCUGx2Ua+8M2XVmAv2YVBMJJxBv8iravMm
-	yPhoYLPamQM1OuCYMAHy4Kt3Frj21yIIjbrFqk+XpV/KR4QetqnFzta75lVw6Hs9vIUHqjOxG2s
-	G1IsVirGZSDlDGFluI/a9CIVj9KZ+XoE=
-X-Gm-Gg: ASbGncsuJy0d0Tp3t7B7B1hb6E7zSqoYWug6yVYIGEvisBHzyJ8RDztWChlOzmMhn1J
-	KMsgqRBier6QKiQUFIVfjG9c1zTNWVtoBW9aevICccA990adfPboNgOLDotO/EKoW2C58FDD0Fo
-	Cmi/ZRtNulcdWRPD9R6uzGOMZcmEJRQ1/XTeX3rPvbU5IJ/LG9iDhR+GYMl15S9T4JY05FZYCqI
-	AK/PYYUOSaWxCJbhJGi
-X-Google-Smtp-Source: AGHT+IFNrkynh+/Ymp/HCHyA5XGYRylr5jF6GjIL2qDKGYyZpbM+uW2yDfuf4gc8lpHjzkwCg5YwNrLoynQjYkyhMFI=
-X-Received: by 2002:a17:907:928a:b0:b04:5b3d:c31f with SMTP id
- a640c23a62f3a-b045b3dc692mr1195506366b.49.1757064869658; Fri, 05 Sep 2025
- 02:34:29 -0700 (PDT)
+        bh=nqf6D6Y//+lOVA7z+yQJwo2jJaSIwyijSnsvcGjMTK4=;
+        b=hgOVDyz1z0n+3Oh5Rjzm2jrZm5AyD9XE6l6E86VzS5Casgx2tgeXs7Aa31FDRy/fHX
+         m8LxG6b+CetpPiUyMXbIfktz/KQ4q1iuxuWFN3IdcezVOySKIcyEUd4lP3GACtz6KrKU
+         AFj9kNiWffqA/ahAQC4UdZtnz8XKE0nxA7VgJje8CT5c88eLeHuqbTxPJ5xQyOpaT2lW
+         wtbTFotR9htmOXC7IxDXl3W//wfHcApbb2cqP1JoJUCX19amM1dHnPlwy0YHVod0SeeL
+         g5UAM1tX2qoMisaxHIWlC2MbS0nRphYUjSGgBLjBUP/lcMnYX/ceg8hpM2MHwdcXFHaw
+         +7eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/NW7xderCxhCE/yBsBmyTqAcg0LWmCZ8ekEOg0CQnEKxw/SAK8Ztili1pwN7/TeRLsS1n0XB8pfOvOJU=@vger.kernel.org, AJvYcCUVtU9Spkc5nhqNgfVybjcSn1N/eRLUmFXkd9yeP3WRrJripn0u2uwSiZUqwRfaPx1RqBhRBjPNO2A=@vger.kernel.org, AJvYcCUdlaF9U2pCWdUc37nx14ix8FmdDHzdJC5MxNP7EmQmFk3zKDk2/IO+NVR2uuiyMQ7g4Qv/Q9tooPJAW2A=@vger.kernel.org, AJvYcCV5O1td6qzdFXHdOwzRatghSVeDY2ml5q1VznnSSfkigrHoa/Y6HhDg+0PX+cMhlNB/tDTxSFBa4UEnmRlC@vger.kernel.org, AJvYcCVB54KmCgVKdn/AMyBYk3l+3QgrzrYl14+bIIWPpt2VuB1ocn/ZojcL9e3JkxgTmCxrRuA542h5V9j90g==@vger.kernel.org, AJvYcCVuBMzp8EsOEaFWhAqKI9bnQ0CKrt8JdR42ydftrAu4Q9f031sM24RwgESLnjgouPmG8hhFRkdvc6wRpwFD@vger.kernel.org, AJvYcCW+hvEHAkOuwpCoG8Qw8ffdy5t0ttKVqRLOZLU8bc1RAYQNa5cJJgz454nlj4jSpM1s5Z9OYONB991K@vger.kernel.org, AJvYcCWCrY2NtPBhTpuoyAVQg9OWjkSXBSGr9LCh/RYcM42Fr86lr0MAhaQCoXLl7QitNNg4pfskAWvlMGPlZ7HlXSy6KVQ=@vger.kernel.org, AJvYcCWNIg4IW2DCvneP7miPXJFFaj5yAzlDQ4h2XEcEFFBk39OreugV7VjRW0fMPQwNVLQHbfMbw4poie8wJzfiBdYV/Co=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxwz5UwOoU8IU0RiuU72I6K5mEQlAqVUmTDj/tl8NSuJ5Gh2qUX
+	ltLHJbGtiW1PmYqcb4dbuhv0NIioHcnWX2Rr/uM3acQ3gpHBTBBN2/sj4wc+Oy3yu7x1dfoLsw0
+	zCDX7ToRZyVVEQT07YQLg9c2OFRQhBJw=
+X-Gm-Gg: ASbGncs4Pd0W3VcujU0dHy3s3nWZ36kLmidTPcdypyQkAbt+2JjsCmXjDgoEXBdhjTY
+	wmWkBRzHhTyC+4ESU8KAXW+7QdsI0EWuYGEIDX85SbAQrXHkImVC3AMVS3Xhb3ydlhnh6R4ipDC
+	4/fyIKXub5qMzzzHGNPed6Uf8dP7li1xpHzccPCzqpbvS7v9hZ+Q+0W5AxV70QU0rcGwy6gesGo
+	laVuF5J+PZV+33c6EGI
+X-Google-Smtp-Source: AGHT+IH7OMu1dd1ZlYosPz3SPqptVrWuN6c3SeVJCBYbCfoyYDh6z1nFqhk/368zJOb4WYqLr166BLEihh9LvFYDNYs=
+X-Received: by 2002:a17:906:48c9:b0:b04:10d9:48d4 with SMTP id
+ a640c23a62f3a-b0410d9523dmr1630508566b.35.1757064970102; Fri, 05 Sep 2025
+ 02:36:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,11 +76,12 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250905072423.368123-1-zhao.xichao@vivo.com> <20250905072423.368123-2-zhao.xichao@vivo.com>
-In-Reply-To: <20250905072423.368123-2-zhao.xichao@vivo.com>
+ <CAHp75VforxjsHWzxrxfD_YOshvg0Y=KwrpmAPWwhyarNm2wNjQ@mail.gmail.com>
+In-Reply-To: <CAHp75VforxjsHWzxrxfD_YOshvg0Y=KwrpmAPWwhyarNm2wNjQ@mail.gmail.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 5 Sep 2025 12:33:53 +0300
-X-Gm-Features: Ac12FXxbms9z4N7jI4jHPwNjVwlV8d4OiE5hmfmL25yynmREhxdRP_mz9jzg-_c
-Message-ID: <CAHp75VforxjsHWzxrxfD_YOshvg0Y=KwrpmAPWwhyarNm2wNjQ@mail.gmail.com>
+Date: Fri, 5 Sep 2025 12:35:33 +0300
+X-Gm-Features: Ac12FXxkIEGZA5-qHqK-CmbOa_oJh7A8t90OuTImqynr4N5GOyYLVDsnRsxsyg0
+Message-ID: <CAHp75VdRn1qnoiCr7aeZfHF9GEyQshOA5awTjiJ9oJiY6Q+Gsw@mail.gmail.com>
 Subject: Re: [PATCH 01/12] thermal: of: Add error handling in devm_thermal_*_register()
 To: Xichao Zhao <zhao.xichao@vivo.com>
 Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
@@ -127,60 +128,54 @@ Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 5, 2025 at 10:25=E2=80=AFAM Xichao Zhao <zhao.xichao@vivo.com> =
-wrote:
->
-> devm_thermal_of_zone_register() does not print any error message
-> when registering a thermal zone with a device node sensor fails
-> and allocating device resource data fails.
->
-> This forces each driver to implement redundant error logging.
-> Additionally, when upper-layer functions propagate these errors
-> without logging, critical debugging information is lost.
->
-> Add dev_err_probe() in devm_thermal_of_zone_register() to unify
-> error reporting.
+On Fri, Sep 5, 2025 at 12:33=E2=80=AFPM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Fri, Sep 5, 2025 at 10:25=E2=80=AFAM Xichao Zhao <zhao.xichao@vivo.com=
+> wrote:
 
 ...
 
->         ptr =3D devres_alloc(devm_thermal_of_zone_release, sizeof(*ptr),
->                            GFP_KERNEL);
-> -       if (!ptr)
-> +       if (!ptr) {
-
-> +               dev_err(dev, "Failed to allocate device resource data\n")=
-;
-
-We do not add error messages for ENOMEM.
-
->                 return ERR_PTR(-ENOMEM);
-
-Even if you want so eagerly to do that, it should be
-
-   return dev_err_probe();
-
-But, it will ignore the ENOMEM error code for printing.
-
-> +       }
-
-So, the bottom line, no need to add this message here.
+> >         ptr =3D devres_alloc(devm_thermal_of_zone_release, sizeof(*ptr)=
+,
+> >                            GFP_KERNEL);
+> > -       if (!ptr)
+> > +       if (!ptr) {
+>
+> > +               dev_err(dev, "Failed to allocate device resource data\n=
+");
+>
+> We do not add error messages for ENOMEM.
+>
+> >                 return ERR_PTR(-ENOMEM);
+>
+> Even if you want so eagerly to do that, it should be
+>
+>    return dev_err_probe();
+>
+> But, it will ignore the ENOMEM error code for printing.
+>
+> > +       }
+>
+> So, the bottom line, no need to add this message here.
 
 ...
 
->         tzd =3D thermal_of_zone_register(dev->of_node, sensor_id, data, o=
-ps);
->         if (IS_ERR(tzd)) {
-> +               dev_err_probe(dev, PTR_ERR(tzd),
-> +                             "Failed to register thermal zone sensor[%d]=
-\n", sensor_id);
->                 devres_free(ptr);
->                 return tzd;
+> >         tzd =3D thermal_of_zone_register(dev->of_node, sensor_id, data,=
+ ops);
+> >         if (IS_ERR(tzd)) {
+> > +               dev_err_probe(dev, PTR_ERR(tzd),
+> > +                             "Failed to register thermal zone sensor[%=
+d]\n", sensor_id);
+> >                 devres_free(ptr);
+> >                 return tzd;
+>
+> I don't see how ptr is related to the message. Can't we use
+>
+>   return dev_err_probe(dev, PTR_ERR(...), ...);
+>
+> instead?
 
-I don't see how ptr is related to the mesasge. Can't we use
-
-  return dev_err_probe(dev, PTR_ERR(...), ...);
-
-instead?
+On top of that can we actually use devm_add_action_or_reset()?
 
 --=20
 With Best Regards,

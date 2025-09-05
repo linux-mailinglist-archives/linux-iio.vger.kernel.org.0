@@ -1,167 +1,222 @@
-Return-Path: <linux-iio+bounces-23777-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23778-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35119B4589B
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 15:19:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68364B4594F
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 15:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 963797C4BEE
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 13:18:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0F001C81FB0
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 13:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101083451AE;
-	Fri,  5 Sep 2025 13:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD69A3570AA;
+	Fri,  5 Sep 2025 13:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xxBeQ60l"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZGT+3Pxa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3961D90C8
-	for <linux-iio@vger.kernel.org>; Fri,  5 Sep 2025 13:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB7335690A;
+	Fri,  5 Sep 2025 13:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757078323; cv=none; b=RG7EDuwkHLmNGPp9sA2HxBS6D0jXhn5IwpDzAN26EPGVklQRywsp5mIU2dKxp3fj4gbretncuUtDC3QJIVYTEMgYbydofHq504LRG23BztoIJERUjGqmEzS8A6cy0DSuWUKrSUxRlnZSHsBy22Xpnps6BVuqA3I6GMoLNz2MVek=
+	t=1757079586; cv=none; b=aUziD3ur6LRFX8xS7WVOTJmBnnPezUTrLENXvGGtSq3IxgcuECfOj6p5/n0a/4rq97jlPU222LLSRt+/8yZgrgPc8RyDuu9nqtJWBLMcTiK4nXpe67FXBde1OVC1+67bMJQOQddlbhe7pPfcV8GCygQ97NWukEu4JOzdxGYsnYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757078323; c=relaxed/simple;
-	bh=PIam7/m1K9PLm4L0jcQY+prj0AzYeP/tg8hGBiPIGRg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ieiaBIV9F0SVC8HMEKhsJmUz+fiAIg/7uwEOKuKpB2G6MYzNoIVLaVcUfhJ9xAW82hIGF/f/jIpBf6x4mYpXaJCh3Nd0mchrRMbxGaOhYUmSu1APMiz7YJFPrCLKr9JHPenGauwJdzlN9yqKJOaGEClmmNBLx3LNExape8/hmhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xxBeQ60l; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-30cce5be7d0so1104960fac.0
-        for <linux-iio@vger.kernel.org>; Fri, 05 Sep 2025 06:18:41 -0700 (PDT)
+	s=arc-20240116; t=1757079586; c=relaxed/simple;
+	bh=vx2kCaHAa3+46zkf1gF5gTvLik0KcTAA2xzJVsF3BLs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FdjtzMKiz+IhgW9hG9gWr5BtDo8isGlw4RaS/JEA9czPVpHk8t3VKpIY2PziB+jIttx2c1D/XHcTssoTM0GqUOsLqqLcN7B5Rsx7qpz7kl/VFWEpWiicRp7HCoojhGlIzd4N7orS6UWCyzECDP9Bd/ywYOv4EJH1ZRFYx/J6Ri0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZGT+3Pxa; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b042ec947e4so292003166b.0;
+        Fri, 05 Sep 2025 06:39:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757078320; x=1757683120; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=O9TLIpS6DZeFRvn5V0GqnS35zXXGwC7qVEOe9mwxEto=;
-        b=xxBeQ60lCSeI2HNOz6YxaTwWZlRmvmXvidMvvZ/FBt+ryvwxGxaWw+zfnVyBBdnK4o
-         nFBdFTqzVAbCENK3jJvmuZv7DQyhMUh5o08SzUHPGotT4dEVp+aY0LtIW8kaILeh7O/2
-         gWhTZoqq0Sfsyb1GolAjjpYIcrEd/tWHwCj6kWRkgDeQsfsX3FDCUF8LEplnEKCoWJ2u
-         sfgPEAuTStMIPfjptT7Gz8uIrwVLDatkjhZU/4Tvo28fazqfEPaSLfnoUBX5r1mc1Icp
-         FRkPruWLey4fgdQ23iMTWG5840m3qNOqB1BEUVKuXCesCP0f+9lZS5ThIb9rVLIdLQm+
-         bOdg==
+        d=gmail.com; s=20230601; t=1757079583; x=1757684383; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JcBwWlHZB5a2uZGoWcZFaGIFJ/aB0IZuklQOtG7SMIs=;
+        b=ZGT+3PxaSUZUpOWZ5JxrvW1bBRqN96tqo+ct81Rad+wkyvjCN6xpc20JvMcRU3apdD
+         kFPdlKxE2jiYNfGWlcCYkPD34FMZxwWpErNYW7ibQZOmxG9ck9bcgNmdMAh2+aaFEhfE
+         lGZ4wTifd6wHV71R4Bdxdn/BhcfvsMI9Q6QRVrmTaH3BCYc9DdR3D3elh7iivolviQlr
+         52dj3M8CDM/zyCWgCiokV4iKH94YhWainypxMxIESkPlS6phjBhILxOWfMhe9sVzy+tx
+         9CEIAzhijO/TGVmGJ9Gs5e0lE+J1uZS/o70azE4U7VyPCZqC3WnXru5pAlM/E0VU0DmD
+         xpvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757078320; x=1757683120;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O9TLIpS6DZeFRvn5V0GqnS35zXXGwC7qVEOe9mwxEto=;
-        b=Qy/cDbWZXshm3yzTJKJvddGQA5BknYG7Zz5urPIkh+L+kgbKM2Bbdwz0BuVcCHdD2t
-         OGZ6qyemB+lvxNsCAR96oK3OvsGgAVCbocrgUwxUcYiuqpT1Ic8BcCvNXnUkdAXgx1QL
-         4R03sqTafNykwA+CFbTk0h60UzpuM+VM2pnYJbDFDUNe8fc+7YE24RNehsOCYcsKUN82
-         jixj/iNMcRDbe8CA6sOshoVfMcRwu8Ukr7YD8k40tyJxuVB2GnU3BnOrlwYs5vF5hnqd
-         KxPk76eYIc2YTOh4bufuktI4gn0Y2CL3cYkIPJZ6LWRsKdqMNk4+UM4UBA8AcRQf03wo
-         CEjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVfFxNTtDtQXsOMoSyTNs0yVs+dTxzXBlbDoCAj70Ci63z/qK2FvvKFFXfhY1AtdkNnXzxhoJWQAk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmykztJPKvjwMQwQ1qYh0pI/ktsu18+IvfJBMUT+2g94PPeio7
-	a3G6VTDxUfDhQm/QEPKE3wshDxvhaet7u/2whX6yjG9HSvIzc2Vuwtl4TXHp1646Kj0=
-X-Gm-Gg: ASbGnctCSQoBJSe43+ZpCzmDiBw4MOi7bzYCDpCelueT27QgmCfIWHZEHWGqd0eCiX6
-	XUFiXNz+Qh7VPeBVBOfm5LumugRAnf57GtdFwd/DOqopHtloZu/h/9Yi+1uAt749xpiEon9LH7V
-	lyO190QqHyfueNZnHWpovt6zMfUPCDaaBOdxxY2GeNpkG0ZdSlSmO2awZbnfDRX0mMTstTTl+aZ
-	eeZ/SsZmRhjD1eMne2cNezi34nlBYXNtm5YMaFlq62oTArnnhult/OX3nXpuXzwfANgx4fhDsOz
-	gkGs2d6HWFNkT5Bst1QgfXjaDIqwFC0NQjjL2xv7KQ5OV+MPNrO6HjItOY0KGoEAeyxFUKkb4LV
-	d0Jwkgaf1S2AljZckKnJv0Dj1JZVETURXgahavK7V3UswPzPmrQWY0emKoRNvZPPqyaqJEhEq
-X-Google-Smtp-Source: AGHT+IHyoxG6K9p+b3Shk6yuqM1oSIsNJ35yj9FZbQDKHKWiZhaNJK5mV8FUrwQzu5hPKQ4b6+5Ivg==
-X-Received: by 2002:a05:6870:cb99:b0:315:c171:a0ae with SMTP id 586e51a60fabf-31963194753mr10066349fac.20.1757078320292;
-        Fri, 05 Sep 2025 06:18:40 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:52e:cda3:16cc:72bb? ([2600:8803:e7e4:1d00:52e:cda3:16cc:72bb])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-31d63f159fdsm2922413fac.14.2025.09.05.06.18.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 06:18:38 -0700 (PDT)
-Message-ID: <d9aa680f-0664-4caf-b885-92c3fce6c7a4@baylibre.com>
-Date: Fri, 5 Sep 2025 08:18:37 -0500
+        d=1e100.net; s=20230601; t=1757079583; x=1757684383;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JcBwWlHZB5a2uZGoWcZFaGIFJ/aB0IZuklQOtG7SMIs=;
+        b=Fe81wayuoLzidji4vYY6QZQ2NEOpVx0HxHOL4K2i6dT+6GmkVFsT/1Hm9IduTouFAO
+         PUvBmBSKKXvphWfvVIhWr1l8O4aXil8C1jJ0Kc7lCGeBK5q0rMGGNPWs3XCflEx8Mphm
+         Api91dzDNd+XIw7h3yGBKdf0dmxTC5XZ64b+37fuaCjgNgPOOQFUSYsBZU4AZc1PKqmn
+         +YfFih/fQRjCfw3jQlj8jKO4T6vc38rvp86ntWFMTJJRM7lO7uKRKilFdkwtY4iO+D7P
+         XX8Kt4dCgN6fijs7juQJ3e9TXTeNHmAlgaLL76f1kBF+XDYVCm/MxAIhPJE6NVaScuCo
+         gz4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUxsBWnApSTCLIENw+zhgKqDEOfZzV0y3YX3HeCRnXw/Ic/hK3Rejz9wrW9CF71BLNL+h4VyJR7otKwNJOu@vger.kernel.org, AJvYcCWfQKHlAVyEE/XqK/OBvUAS2jF9ZPEj+JqnOWrAgWm8dupAmpyTta/iOEM1ZpZygp5tGLzF5nRBnYpx@vger.kernel.org, AJvYcCXSJDCpsketTqWEOPLWPaz7FfSwjq90MgRNDzTMbaMDTJwg8vv/ccfUrVY6CdUkWlwp8JTd6IG8hNXQhCY=@vger.kernel.org, AJvYcCXtolWt9qxITBoea87ukGdIh61NdFiBKqiSG+DMfpD3ZIGmv+RwR262L37gOvBr1l5sMYvpfp205quL@vger.kernel.org
+X-Gm-Message-State: AOJu0YzodTwfVaJQh5c65+HT85DCAGCK3MO8W68LE2cumItN/1RxK7AN
+	AZT+jmcIuLCMtKGuMOGYVY+ktDvqeaCvX5FwNFVOPDT51uGXR7ljSzFZoQZlHsJgPWTAGNTp4oO
+	cMOGNe9OHfuh3LMx3ckD69Uu45cTpJXM=
+X-Gm-Gg: ASbGncsOwOddAjuldUeYjqY5PE0cWqKFUPN1+5KHCeYSdLLfm0KDzDKhF1tr2bcfJC+
+	gkMCguD3NufwEW11SI/LE1cBcFjCJ6kGOdCsG4uSoAehSWRag1xJIWm7h0oUlrPY+sJbhC54STU
+	s+zveiHRWgt5vZByzSPuhnQmqMhHtDFecLbrA/ygWuKvH4nGVM+FhW5GBsP0GjE541FVY5QSzWV
+	wgE/DYilhEaaAfwAFnp
+X-Google-Smtp-Source: AGHT+IE+5+0V34pgQChWQaQfEdYgH1kutkm+wEpWLjqg5Kc4kXcPbb7Glfuj8Fu2iyCt8sHQUcgaZkstmrrmQRzXtdE=
+X-Received: by 2002:a17:907:948a:b0:afe:b2be:6109 with SMTP id
+ a640c23a62f3a-b01f20cc03emr2012717966b.59.1757079582723; Fri, 05 Sep 2025
+ 06:39:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij
- <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Tobias Sperling <tobias.sperling@softing.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Trevor Gamblin <tgamblin@baylibre.com>, Esteban Blanc <eblanc@baylibre.com>,
- Herve Codina <herve.codina@bootlin.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- Eason Yang <j2anfernee@gmail.com>,
- Pop Ioan Daniel <pop.ioan-daniel@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org
-References: <cover.1756988028.git.mazziesaccount@gmail.com>
- <facc8b9255a754f767807b7e5c79c0eb20c680e4.1756988028.git.mazziesaccount@gmail.com>
- <aLmVzDB4bk-z5d16@smile.fi.intel.com>
- <796291b5-f61a-4d68-9cbb-ae099dbb93d8@gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <796291b5-f61a-4d68-9cbb-ae099dbb93d8@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250905-88pm886-gpadc-v3-0-4601ad9ccb51@dujemihanovic.xyz> <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
+In-Reply-To: <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 5 Sep 2025 16:39:05 +0300
+X-Gm-Features: Ac12FXxrKIZYXKtYgH3JI0EqCq4jorFjsWgU2LlwYrGTdm8tQwoMyi-wjVbijSY
+Message-ID: <CAHp75VewzAN+tcJ9GrWESY38Uq+qeA4QH=qeaEV8g35H67GcMg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] iio: adc: Add driver for Marvell 88PM886 PMIC ADC
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/5/25 12:41 AM, Matti Vaittinen wrote:
-> Hi dee Ho Andy!
-> 
-> Thanks again. I really appreciate the effort you put in these reviews! :)
-> 
-> On 04/09/2025 16:36, Andy Shevchenko wrote:
->> On Thu, Sep 04, 2025 at 03:36:46PM +0300, Matti Vaittinen wrote:
->>> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
->>> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
->>>
->>> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
->>> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
->>> daisy-chain configuration) and maximum sampling rate is 1MSPS.
->>>
->>> The IC does also support CRC but it is not implemented in the driver.
->>
->> ...
->>
->>> +/*
->>> + * The data-sheet explains register I/O communication as follows:
->>> + *
->>> + * Read, two 16-bit sequences separated by CSB:
->>> + * MOSI:
->>> + * SCK:    | 1 | 2 | 3   | 4      | 5 .. 8 | 9 .. 16 |
->>> + * data:| 0 | 0 |IOSET| RW (1) | ADDR   | 8'b0    |
->>> + *
->>> + * MISO:
->>> + * SCK:    | 1 .. 8 | 9 .. 16 |
->>> + * data:| 8'b0   | data    |
->>> + *
->>> + * Note, CSB is shown to be released between writing the address (MOSI) and
->>> + * reading the register data (MISO).
->>> + *
->>> + * Write, single 16-bit sequence:
->>> + * MOSI:
->>> + * SCK:    | 1 | 2 | 3   | 4     | 5 .. 8 |
->>> + * data:| 0 | 0 |IOSET| RW(0) | ADDR   |
->>> + *
->>> + * MISO:
->>> + * SCK:    | 1 .. 8 |
->>> + * data:| data   |
->>> + */
->>
->> I don't know how to read this comment. In the monospace font the whole block
->> looks like a mess.
-> 
-> What do you mean by a mess? Don't you have the '|' -characters aligned? That's very odd because they are aligned for me. Or, is this otherwise unclear?
+On Fri, Sep 5, 2025 at 2:01=E2=80=AFPM Duje Mihanovi=C4=87 <duje@dujemihano=
+vic.xyz> wrote:
+>
+> Marvell's 88PM886 PMIC has a so-called General Purpose ADC used for
+> monitoring various system voltages and temperatures. Add the relevant
+> register definitions to the MFD header and a driver for the ADC.
 
-I find these diagrams very hard to read as well. I would just drop this part
-and let people look it up in the datasheet. I don't think it adds anything
-essential to understanding how the driver works.
+Jonathan et al. The Q here is do we want to somehow make values
+spelling (in the comments and documentation) be unified with the
+Scientific Style [1]? Personally I find the article very useful and
+one style for the whole subsystem would be good to enforce (in my
+humble opinion). Thoughts?
 
+[1]: https://poynton.ca/notes/units/
+
+...
+
+> +static int gpadc_get_raw(struct iio_dev *iio, enum pm886_gpadc_channel c=
+han)
+> +{
+> +       struct pm886_gpadc *gpadc =3D iio_priv(iio);
+> +       __be16 buf;
+> +       int ret;
+> +
+> +       ret =3D regmap_bulk_read(gpadc->map, pm886_gpadc_regs[chan], &buf=
+, sizeof(buf));
+> +       if (ret)
+> +               return ret;
+> +
+> +       return be16_to_cpu(buf) >> 4;
+
++ asm/byteorder.h (after linux/* but before linux/iio/*)
+
+> +}
+
+...
+
+> +               /*
+> +                * Vendor kernel errors out above 1.25V, but testing show=
+s that
+
+1.25 V
+
+> +                * the resistance of the battery detection channel (GPADC=
+2 on
+> +                * coreprimevelte) reaches about 1.4Mohm when the battery=
+ is
+
+1.4 MOhm or even 1.4 M=CE=A9
+
+
+> +                * removed, which can't be measured with such a low upper
+> +                * limit. Therefore, to be able to detect the battery wit=
+hout
+> +                * ugly externs as used in the vendor fuelgauge driver,
+
+fuel gauge
+
+> +                * increase this limit a bit.
+> +                */
+> +               if (WARN_ON(*raw_uV > 1500 * (MICRO / MILLI)))
+
++ bug.h
+
+> +                       return -EIO;
+
+...
+
+> +               /*
+> +                * Vendor kernel errors out under 300mV, but for the same
+
+300 mV
+
+> +                * reason as above (except the channel hovers around 3.5k=
+ohm
+
+3.5 kOhm / 3.5 k=CE=A9
+
+> +                * with battery present) reduce this limit.
+> +                */
+> +               if (*raw_uV < 200 * (MICRO / MILLI)) {
+> +                       dev_dbg(&iio->dev, "bad bias for chan %d: %duA @ =
+%duV\n", chan->channel,
+
+Also add spaces before units.
+
+> +                               *raw_uA, *raw_uV);
+> +                       continue;
+> +               }
+> +
+> +               dev_dbg(&iio->dev, "good bias for chan %d: %duA @ %duV\n"=
+, chan->channel,
+> +                       *raw_uA, *raw_uV);
+
+Ditto.
+
+> +               return 0;
+> +       }
+> +
+> +       dev_err(&iio->dev, "failed to find good bias for chan %d\n", chan=
+->channel);
+> +       return -EINVAL;
+> +}
+
+...
+
+> +       ret =3D DIV_ROUND_CLOSEST(raw_uV, raw_uA);
+
++ math.h
+
+...
+
+> +       page =3D devm_i2c_new_dummy_device(dev, client->adapter,
+> +                                        client->addr + PM886_PAGE_OFFSET=
+_GPADC);
+> +       if (IS_ERR(page))
+
++ err.h
+
+> +               return dev_err_probe(dev, PTR_ERR(page), "Failed to initi=
+alize GPADC page\n");
+
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

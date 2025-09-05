@@ -1,82 +1,83 @@
-Return-Path: <linux-iio+bounces-23782-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23783-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90A4B45A85
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 16:30:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0754B45A95
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 16:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C33401885F07
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 14:30:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E1C3B6458E
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 14:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDC4371E85;
-	Fri,  5 Sep 2025 14:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74FB36CE04;
+	Fri,  5 Sep 2025 14:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NaVMF+9d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RUxHXctF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E9E36CE04;
-	Fri,  5 Sep 2025 14:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BAF218EA8;
+	Fri,  5 Sep 2025 14:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757082531; cv=none; b=QrfYV8toFYIJwXeqt/GvO3pLBn9h3+k/zmwr3UC0hLN/75cbiB55trzeoyS/CM4Y3gd1LVx2u+0pMzhtfgxPxD89GsPY+RgqLm+CGMQj45J2tMuxHJxK81Jjd79vH+G223TYFXAk6G6oF4OKqTjKOgVyehpllFFVUHZh1E5YeHQ=
+	t=1757082700; cv=none; b=WPZUQps66j/6hqY8vX5K9pZ4fA+niUC5KI0vV2rO+bQwdoLPZhdu9OHkV4isM4Vzl4Qnb643dlY+To/8TyhdnOI/HTF/Uv2M8Nm1Hu/eS1sBnj55duNz1Ew5kY2z3F4gkhMtd0axacbzC9qMeSN+WgTsxAPuX0E6sIdX3wCR8vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757082531; c=relaxed/simple;
-	bh=q2AtPXPP5FKD6p5LDCp3l3j25t98weinGynDhsjnmGg=;
+	s=arc-20240116; t=1757082700; c=relaxed/simple;
+	bh=+1nDfrVt0ppud9zgCkTbqp/0YBEdQzK1oYTnBYlqZPQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ZXBLqyanTs9a0iyQPEkARwMxAcXoxRYKVOIQLzppU3hVtAVV2XC+Y+hdFoK9I9kYUY6A6diKQTPk8tl/WIDBL18eFuS0x/hPi5WqtuwuqMiR8247drJSD9G1JCBfNXcSvBgKBUwZspQxGlPABBsu/PO80PFSVDfPFv0KWJiJvYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NaVMF+9d; arc=none smtp.client-ip=209.85.214.181
+	 In-Reply-To:Content-Type; b=WTylSHIvkcUSXtVEjMZA4s0vdvsYLag/KX5H753RNd5e+vxI2W8aKQjKp61Al6tI+OWEhe1hGf6F1TjmS7gHKzFaTbKoeeRy+QmxpChwRayQZgmbzlbLDvfM24Z1/Evhd2W7nOvW3E0XyiH6jDBANejfH3oNaqaFjIFGZyqObdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RUxHXctF; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-24458272c00so25798335ad.3;
-        Fri, 05 Sep 2025 07:28:49 -0700 (PDT)
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-323267b98a4so2044395a91.1;
+        Fri, 05 Sep 2025 07:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757082529; x=1757687329; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757082697; x=1757687497; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:to:subject:user-agent:mime-version:date
          :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=xIBk01NdBuwsWQnnNXVdcn6j5JKGkVjqtQzEraCQviA=;
-        b=NaVMF+9dZ+EkyQT0C0B8qEgRnWfxZL/ah+z4FMuiWJG6RC36fIlsfomamXhrFkHr0K
-         4oeXwUaTB0xzrXFYWXHvEq/xLrTfKjumqI0fQfqAltse4ULFVKnEe32yUokIHLUy35op
-         Cv1Rjhcth0tV+hT/AnkevYAy5K8NPfWnuu6Y9b+wiGN+n2DaLK+GSZcP0PYS9oyu7jD3
-         TVHvtIZbwV3EIKZ3ZFda+tCqt32rZj1lU/3k0wBXC2HB0nVBVesQyS8aZyHbD3xGozch
-         SbRDraBdo7UOb5gzzKgQ4aNWeqyqBfue9PPu1euH2vH4iJWetxyumRjcIe6n88JherX7
-         0CJg==
+        bh=3vIXH9G8eZJ7ix/XNHz4bvSACtWtZGWHKqaN5lng6nE=;
+        b=RUxHXctFV4BspeJlDvAkGloDoG8YrEX3YOsM83EtUOyc7Avizpl4eLVhDaDQlg7gch
+         JyQOajlleaVC8SdwhS2+g0n6k7PPozRlLaMb8rJHUs+wkHbNiJLMhh5D+t05Qes3YAM5
+         2p9ENG7Y7sdwENpNOyeVXuS/3MjWZzYls4LaXI+1mgY+TJGcyb3OV/FOcknmGcZaO348
+         dC/dRTA6HWVeG9qJZ1LlgGqg7S5bPFJPShwb0yAxVE2CIxAhVK+HGm7+h9D02af5HOph
+         3FhEHZrkaXs/NoC+TDHu4l5Lxw87cL+7AOkQRL1m+9Pgc0nsBHEuwk1AHRG7oz/qWObL
+         HW+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757082529; x=1757687329;
+        d=1e100.net; s=20230601; t=1757082697; x=1757687497;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:to:subject:user-agent:mime-version:date
          :message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xIBk01NdBuwsWQnnNXVdcn6j5JKGkVjqtQzEraCQviA=;
-        b=gO9GrYrK7AOUDsFAbPO91XYgp4bXj+O83QJW0ELu2mof+y+l9zVfWuT8oUbWOiv7v6
-         rkwXHHIaMhgriuJaB3Zb5iOrsNuv9rwF2jhctuIq+4tAYjk8MC+7bafMYA9TD2zfcu3u
-         vz/NpO6Hq3sk2qXvZlB6kFZFjoloBouWZx/XnkwlpggwMfV/BQOfWWoKMVJYV97tgKgn
-         9g5OcYLY9nQYafrJ6mfaVO8uEDHvm+7AmGdCe5ECX9GaoVrYf8IqKA4fnFfeL0IPZ/JO
-         a2AJeRi9Pi+LNvgE0UO5oz0htu14e+mBdOz4X1BLo8a2xLXPl5U40kxZQ8CEks4C16N9
-         TxHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWcN5gYObu8vPOVK47yHewn9OQfEnVJHVIzeDpt6vxRk9QanPn2qMUruPbmsawpVxKbT5RDn3aixcICiXCB2uua3s=@vger.kernel.org, AJvYcCUkceZFUrhvAEv+eh/0SjjV9DnqT0INaZDmWSpcRFkYwzi/66h8zimcMisRrLZO5nSZOSXOaX41U6YqYg==@vger.kernel.org, AJvYcCUuFjAX79lrxKmD/Gq5NLPFuXcg6y0zBXL7wt1KWmJoH/8jhwiFNhoxw64DI26H0MI98UX6ERoOUCAm@vger.kernel.org, AJvYcCVFgjbwYaaJ6TmfKqmiYJbW4cdQJ/i4m/YjDo/o3+rTLeU3wXjAL+JVtNeheYeO/AldpFx1aT/QzW3J07U=@vger.kernel.org, AJvYcCVTn68TnyJQwxxABYJFb0k/cNco1MoZ1KmEBitZi2chcFh0wcL9OErRDe/JShiB4R7ei/rbTQMIZdeElj/f@vger.kernel.org, AJvYcCW3NRARI0g230QLi6TRYNhY05JCOpAd1PiI+IdnyG9fW6B8FUtvPvJX1vz2qZ4XbgFlbJDbWBdSJtp0n+AN@vger.kernel.org, AJvYcCWr+RESn5cDcPhk4Box2x5Nj4Dhy4BwazIH/TubdMq7Y1sQtA0+daS+cKL5BZpL3PDmmlf/fP6I+1uQoec=@vger.kernel.org, AJvYcCWtwHRUYaaaJgLr6Q7kT92Qqyeyn3xYupvpgE/kTQEy3DuwX1XCovkzjPcxQ27kJ3iQDbjZek8+1k+Q4CMRWd/kS/4=@vger.kernel.org, AJvYcCXsUlOzc5i3FEOPYMW0aGa0IhI4yACsKiutGeMD29SlYirrLUS9F3JQgT9BdENVCG/OYNQCZ6K2z+I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkcQimpGpdLSOnqz96qPd403tZvY2MeflfhKYoyIY302YXR70b
-	A5uaxDk71F+xcRmBQJi8t4gcUZqa0xy472kgNOrjRmjJLP0tP6ZUii6n
-X-Gm-Gg: ASbGncuPj2AVoGXpfytFxnY07fuqCB0uXcw9RjPSWBYmSYwe98DvF0KvGcom6C5tp5H
-	eqyT/vnAHN4gWo+qrjjxur/WuZ7GX68nJ1QmKZOVv1wQupKaBmXWbVvFdAYx5v9xd6kirnGlUAZ
-	zgyXy+629t0QkOcrBzyyrHK/vuPFHF1XxFEhkpvlyBRXfMO9detHnQCxSCiP5aeJpr72EQoETNj
-	HhxVNy5W1YF6lwCTMqN4ESbNc6mZk+6TwNGm8EHY07e+nmeeC2L3r+aDVCiolxQV3K3N+3XT5o3
-	DzUjWxAumKx/NFi4s131bDlR4CgfMvYALEUPf22a239ZFgykioXkXYIl7bD7SLeVFy+xz6EiCTv
-	MFxmTYHHsvRSETGBu04v3YHe++7LEBCGSUvqBquD7zkARtRNhCSNfH3dESqdwKmO1t8vhaFE=
-X-Google-Smtp-Source: AGHT+IGmtjyZd11+KjNwJeufcA4YJgYYRhNDfsNkfD6VHk0PEhzxkDj8A/25DdwjoogzCAHLZqAmGA==
-X-Received: by 2002:a17:903:1ac6:b0:240:83af:e2e0 with SMTP id d9443c01a7336-24944ae7beemr297755715ad.47.1757082528461;
-        Fri, 05 Sep 2025 07:28:48 -0700 (PDT)
+        bh=3vIXH9G8eZJ7ix/XNHz4bvSACtWtZGWHKqaN5lng6nE=;
+        b=djtzxTIGNvt8LqeCvpO77Hk/CJktGPdrj+U/Z4PEdNx3nY9mDSVR+lB8XvHFBC1R5W
+         opjgoGmMXxBtVp7lPMMkqBDgV7FIQl3EZ2mM3k3njf8jkM1FnEsFn1j6opoIoIfJAQsx
+         ZTL38RDU+EnndUiE1hXEt7njkAtjD9rz2tUUaigLoyPqa6VIX/reBJHelvSzYp8dwro0
+         NXlKTbCocaEqInGbgLgsgopEYaLz108wrhUhKeduOFdsK51nJABjuhte3yLEGp7vdKxn
+         sdkTUR4+LVWbzVeITALT+TCicb15DhB7fsTPLuB005ybKmZVD+RXMhpsmXkEyiUA15R2
+         Q1OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/xQ10Pxq///tn1Rv36Of1/u5K2K5B59mFX8ck6nb3VXXBG4Vm9XFbmzL7QO4i4R8AAeWjpHSN7n/GNR04z7qkdek=@vger.kernel.org, AJvYcCUsFcQZ3ZKBjV2f6XLwce7ucSyFn+x54qP9CYaFNL4chm2yQDwd/tBC5rl7c+CTwrJRnXnaaHYTkXVc3g==@vger.kernel.org, AJvYcCUz1AmetXsWVMxIJ8YjoAGgugdJs6SJonmiPevfZdDnMO3o2FdcNB37opXxdBPmTQixlIsx6Q7a+Lhu@vger.kernel.org, AJvYcCV0e6jGSi4kuq5FgAbBiylHX1Be8JHVPI6psjMOefP/teOEvgrNrm5kQZ8jNQhMGXvZGqKx/UuRgQbDk9hL@vger.kernel.org, AJvYcCVX+alDi237ppyy3qNOe1pYaMneZXqAE04VkPtd6wWqayElUmudCOafL6FS7B6dUxKQuUXoEYylIrDv75o=@vger.kernel.org, AJvYcCWSkZ+qFRElamlDBuQPVmpRLk+pQiAIUjfLaW83BmfnrlrW2HdwCRFk5T+do7ih3tbJS2KKx1RiEBsL0401jqEAIGA=@vger.kernel.org, AJvYcCWnvlEb3KpBZExtt9YpyMcylNcPEwTP394RYO1AHDrD51qu4jzz/7pwJ/lxl0G0cfydCkjJrLiCkUeFtlk=@vger.kernel.org, AJvYcCXOlf7fkBChQ1GYOzxCrFfLo8nCstJcpmoSk/eXlayFQIUhzrDfeGzClJS9WbkaQ0TXK0UXSL33ekw=@vger.kernel.org, AJvYcCXSYXCmUA8dltWvM/mcdId3oTG72V7rwrkSED3seUt0tqwNSPvvaj7proIt7tU9eYq1wphxl2kcgYvROnwR@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFendnPo+6Pnk9Pn0dBH4PxfTbpZFohw47L7cegPQrQXY0V+1K
+	wvCuG9uiH92zSNz7ZxdwenlSbEqBR54ZwjAfVRWclxhHhY7uyxSSAD2b
+X-Gm-Gg: ASbGncuEsjxata711uswiGAtun4l1XPQZ46yszjWwc0qd6/0AnkMAxtyPoxrJYLnDZF
+	SS930SQSxtfIJrHgLh3JZEVejdSXDn+nymoTVUzw78R7BpMZ4lNwAuJZhkI43agkuAGGfrdOrDS
+	b//S93OiJo3pUL2+VCWwPhGyjxDq2yANub+glXYYvDSffBw9RRLBBtvIapAhiNnmOk9uRb01awv
+	JBJ8Q/t8bzHfJvL+zFIP73tkUh6Lvcu90a8stxgyO+nQRHrdEHHne62QYApMnAvF1cP/W7mDv3N
+	PX5J9v14Y3N8g9Q5nom5m8FYGRfD84HoKJ2tTq3GkBph4Ldvu95ktkG5mqp6LgHYzd2UhbxjBOH
+	oaeAvLLP6a8glaQeBaxVVAAIzHPYik5kQ1ruPh1zB86AJFal0Gp/37k/GUTSZioC4ynVVmVfsGO
+	0YrAGmOw==
+X-Google-Smtp-Source: AGHT+IGsUGu45MQwt+NZPV5mLr8VYLLqfRHTzbjIcd42cuNIOrbj6li3sVxyZFvsqM7RMTuhEoyH4A==
+X-Received: by 2002:a17:90b:4c4b:b0:32b:94a2:b0d6 with SMTP id 98e67ed59e1d1-32b94a2b221mr8959418a91.3.1757082696826;
+        Fri, 05 Sep 2025 07:31:36 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a4b99fasm22492373b3a.57.2025.09.05.07.28.43
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77267a225e6sm12382015b3a.94.2025.09.05.07.31.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 07:28:47 -0700 (PDT)
+        Fri, 05 Sep 2025 07:31:36 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <42b68c7f-8368-470b-a7b7-d1ff075973fa@roeck-us.net>
-Date: Fri, 5 Sep 2025 07:28:42 -0700
+Message-ID: <c00a3d00-d5d5-4f2b-8799-d1b8b22f85cb@roeck-us.net>
+Date: Fri, 5 Sep 2025 07:31:31 -0700
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,8 +85,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] thermal: of: Add error handling in
- devm_thermal_*_register()
+Subject: Re: [PATCH 02/12] hwmon: Remove redundant error log prints
 To: Xichao Zhao <zhao.xichao@vivo.com>, Jean Delvare <jdelvare@suse.com>,
  Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
  =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
@@ -142,7 +142,7 @@ To: Xichao Zhao <zhao.xichao@vivo.com>, Jean Delvare <jdelvare@suse.com>,
  "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
  "open list:TI BANDGAP AND THERMAL DRIVER" <linux-omap@vger.kernel.org>
 References: <20250905072423.368123-1-zhao.xichao@vivo.com>
- <20250905072423.368123-2-zhao.xichao@vivo.com>
+ <20250905072423.368123-3-zhao.xichao@vivo.com>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -188,49 +188,40 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  F0WaMvQMNrk9UAUziVcUkLU52NS9SXqpVg8vgrO0JKx97IXFPcNh0DWsSj/0Y8HO/RDkGXYn
  FDMj7fZSPKyPQPmEHg+W/KzxSSfdgWIHF2QaQ0b2q1wOSec4Rti52ohmNSY+KNIW/zODhugJ
  np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20250905072423.368123-2-zhao.xichao@vivo.com>
+In-Reply-To: <20250905072423.368123-3-zhao.xichao@vivo.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 9/5/25 00:23, Xichao Zhao wrote:
-> devm_thermal_of_zone_register() does not print any error message
-> when registering a thermal zone with a device node sensor fails
-> and allocating device resource data fails.
-> 
-> This forces each driver to implement redundant error logging.
-> Additionally, when upper-layer functions propagate these errors
-> without logging, critical debugging information is lost.
-> 
-> Add dev_err_probe() in devm_thermal_of_zone_register() to unify
-> error reporting.
+> devm_thermal_of_zone_register() prints error log messages when
+> it fails, so there is no need to print error log messages again.
 > 
 > Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
 > ---
->   drivers/thermal/thermal_of.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
+>   drivers/hwmon/hwmon.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-> index 1a51a4d240ff..8fe0ad402579 100644
-> --- a/drivers/thermal/thermal_of.c
-> +++ b/drivers/thermal/thermal_of.c
-> @@ -475,11 +475,15 @@ struct thermal_zone_device *devm_thermal_of_zone_register(struct device *dev, in
->   
->   	ptr = devres_alloc(devm_thermal_of_zone_release, sizeof(*ptr),
->   			   GFP_KERNEL);
-> -	if (!ptr)
-> +	if (!ptr) {
-> +		dev_err(dev, "Failed to allocate device resource data\n");
->   		return ERR_PTR(-ENOMEM);
-> +	}
->   
->   	tzd = thermal_of_zone_register(dev->of_node, sensor_id, data, ops);
+> diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
+> index 1688c210888a..0514e4bc5e71 100644
+> --- a/drivers/hwmon/hwmon.c
+> +++ b/drivers/hwmon/hwmon.c
+> @@ -239,8 +239,7 @@ static int hwmon_thermal_add_sensor(struct device *dev, int index)
 >   	if (IS_ERR(tzd)) {
-> +		dev_err_probe(dev, PTR_ERR(tzd),
-> +			      "Failed to register thermal zone sensor[%d]\n", sensor_id);
+>   		if (PTR_ERR(tzd) != -ENODEV)
+>   			return PTR_ERR(tzd);
+> -		dev_info(dev, "temp%d_input not attached to any thermal zone\n",
+> -			 index + 1);
+> +
 
-This will print an error message even if the problem is (for the calling code,
-such as hwmon) only informational.
+This series moves the message from an informational message here to an error message
+in the thermal core, even though it is (for hwmon) not an error. I personally
+think this is a bad idea. Can we get another API that lets me suppress that error
+message ?
 
 Guenter
+
+>   		devm_kfree(dev, tdata);
+>   		return 0;
+>   	}
 
 

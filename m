@@ -1,67 +1,71 @@
-Return-Path: <linux-iio+bounces-23796-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23785-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2D1B46032
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 19:33:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF50DB45D19
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 17:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F5F35C5CE9
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 17:33:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CE5218861AF
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 15:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E032F371E95;
-	Fri,  5 Sep 2025 17:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2290931D756;
+	Fri,  5 Sep 2025 15:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="QDUyiGVf"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="KG6T35Cm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9483570BB;
-	Fri,  5 Sep 2025 17:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B6031D745;
+	Fri,  5 Sep 2025 15:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757093572; cv=none; b=ox+Ag9I0LN250k873zknapgsWLTbBELRFbIi5NjjJO2Pcw7BC+oaxqO61LAYu3M6uhM0ziSMxZWlMAXKxzGoQlGwtofM8PMjLlbXLTpApLS0cA9LLzG6uXfnEfYx71l4loU07bAQnp1X2lD6K59khnTpYxJgFyZPzyPHFCkZmO8=
+	t=1757087622; cv=none; b=k7rn+Uc1YO+E/WDaIBz1z6CdE+YZZDTPNsEp+WYe0RVAU9081N4BGL8tNUDukbJn1O25FVZwjS4cCNOsf0dBylYnPbFu0qduRFZKwN8awXZP/BvAe+BiXm1O2UG2Rqkt74CF8PIqLTgmxEW2uW/XPrKoidCt0EQZNqPIa5R090c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757093572; c=relaxed/simple;
-	bh=mV4eTZc8oepfDI+CJWOMfSQdmOLvwHO5xmmggDr4zVE=;
+	s=arc-20240116; t=1757087622; c=relaxed/simple;
+	bh=TLKT09BjzvRCZufRPTQtZCqvV5dph92aNE6SkMjUpYo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FTbfabDQTBJbQRQmTte4BfGVMtdxfiYeYKsvPh0gWs/bJLAzujGUghhiVOZyxe2gG9QnYpZo3smiJqaWLXpoIV/qgl7xwXV1uLAiwxpXn3/SglPp6bbgRYNZg/CUYIqDRr4X6flIbhESH/vhVk9r972ehLregtva8K3654qpBZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=QDUyiGVf; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=Q+Xxm6NR6VklUewB3VLuF7NSAFSDFxwwSK4H2Tl98Qt2JvRaYOjGZMKyw9zIlyMK+3vTER+SgkGg/E1zeEfPQZimyuXEC5JjEpHr5Go0kK9+aG2z8/fxS4xAgpzq2FVqbaRmQPnUjsgiuuEEtKlBy/J+0V/jgNSgHlYK3kP6BW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=KG6T35Cm; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 585EsNYt031276;
-	Fri, 5 Sep 2025 11:53:16 -0400
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 585EFTmL031284;
+	Fri, 5 Sep 2025 11:53:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=hr4Xh
-	Ra3laBfxkfZWPivJf9gY+F0BJGTnBiw/aE3HT4=; b=QDUyiGVfEinbfyRaHg7UQ
-	K34l8DHPjpdhR6HnfT/2VW3OuozMQctGrmC1q2vpsXN23icQ1vw/wxeZ9Gt+zw5E
-	CnRso2q6a+o9W0+qP/fTtbhZI14t6RSrP3LWWcjoQbPQwIdyXhZatZ3zWAM1Q7RR
-	EFVRJrRUvG2j3AT8gmSMsRdSU/CFhbVSvm65u2YC35liAyj+8gy4J0MZXp/N/iOh
-	AQqO19T8uPZJJJQzMaEMv5yteiY04qKBzbCFaI3kYryA/TQGrZyP6fIWo9tE096z
-	d2vnQfDf0pQuSDcJ+l8h17RpyKBkHKMdTTikpnPS6ES+qdRN8QkWEc+EOijVlDO3
-	g==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 48ypq4up97-1
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=3h+nn
+	te5McwUB6UGC/KpMo1eWY5+TS6RUVTAz7oMKAo=; b=KG6T35CmSyvkFFiIvEf3h
+	PkIkTfMCvdq2UuaQajmh6HfIq8AZCj7NfR1ut6XucsM3k8FeDJxjwAgmv92UBpdv
+	4mxq5QGwHeGFGr7LCooHMShfYOryn3n3C5JJDuwhczULQgT229/Hvw/Q7XiaIBiu
+	avM4BWd5axKce7A/utpWN07oxJY+Wo+67aRSflx8yUB3l8tzxuXboRz1IT4ZyPUr
+	46nVdYgS1haaW4BvTAHWHh0Uc8BYwNjqC7Fsf3uO5LUJXJY+oJbaHfomawaPfr8O
+	WebDHsATZHyWSK9mkbcYwSMBVvA0wzxs4LJefGb6MUgIwXtICWOQTQJddZT6lrMs
+	A==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 48ypq4up9m-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Sep 2025 11:53:15 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 585FrEoa063282
+	Fri, 05 Sep 2025 11:53:25 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 585FrOj3053263
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 5 Sep 2025 11:53:14 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 5 Sep
- 2025 11:53:14 -0400
+	Fri, 5 Sep 2025 11:53:24 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 5 Sep 2025 11:53:24 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Fri, 5 Sep 2025 11:53:24 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Fri, 5 Sep 2025 11:53:14 -0400
+ Transport; Fri, 5 Sep 2025 11:53:24 -0400
 Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 585Fr1E9020477;
-	Fri, 5 Sep 2025 11:53:03 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 585FrA5D020484;
+	Fri, 5 Sep 2025 11:53:13 -0400
 From: Jonathan Santos <Jonathan.Santos@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
@@ -70,9 +74,9 @@ CC: Jonathan Santos <Jonathan.Santos@analog.com>, <lars@metafoo.de>,
         <andy@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <marcelo.schmitt1@gmail.com>,
         <jonath4nns@gmail.com>
-Subject: [PATCH v3 1/4] dt-bindings: iio: adc: ad7768-1: add new supported parts
-Date: Fri, 5 Sep 2025 06:49:11 -0300
-Message-ID: <46842d4cf2c1149bd64188f94c60ce5e4f3b2beb.1757001160.git.Jonathan.Santos@analog.com>
+Subject: [PATCH v3 2/4] iio: adc: ad7768-1: introduce chip info for future multidevice support
+Date: Fri, 5 Sep 2025 06:49:21 -0300
+Message-ID: <098a8b2556ea95fdce5f81cbac98983f91ca1a9d.1757001160.git.Jonathan.Santos@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1757001160.git.Jonathan.Santos@analog.com>
 References: <cover.1757001160.git.Jonathan.Santos@analog.com>
@@ -82,23 +86,21 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: oBoVmeeZ6BDZgRd8NbGd2qPnkT4jemLh
-X-Proofpoint-GUID: oBoVmeeZ6BDZgRd8NbGd2qPnkT4jemLh
-X-Authority-Analysis: v=2.4 cv=LrKSymdc c=1 sm=1 tr=0 ts=68bb076b cx=c_pps
- a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=gEfo2CItAAAA:8 a=gAnH3GRIAAAA:8
- a=xlXPN06Ycv5ZlR7zcHMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=sptkURWiP4Gy88Gu7hUp:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA1MDAxNiBTYWx0ZWRfXxelUjDlwVzQb
- ZpxtTfI5hT0d6JFRMPWcTgUyKP7xqAkSJtZGJ5kO1VLxY7xa03CZMu2l4XKJhkI1lcKDZsBx2xa
- PzHMEzOmhEUxlDZjiWYRF8HkY3awg4hsyRCe7HPJMGaVoa892xno43ZlADlknhJYWFUB4R5Pvdm
- 8CF9l2BuvGvheMgUjSjy54SZG/tHc2nj/lYuNoZBiERngdfSHn/UG+LsG20gy27S+jzDMqjaN/C
- U+7VtDMn08AajyFcIxk/2evaqEZmiILSD/buSsLWPi9MfUdt9Gch8LYYxZa9zYmN+oUOVO3BvYr
- j0CKCHBpZwlMeLdbuCbyfd7NqqHGH2F10apwyE7Wd/XPAJHDxrEUJKMSrOdbzF/MImyNnlh+PU0
- RiHYgQAY
+X-Proofpoint-ORIG-GUID: ZgnJVHFKKNt9ri1eskqsGkNg_7a3sNy0
+X-Proofpoint-GUID: ZgnJVHFKKNt9ri1eskqsGkNg_7a3sNy0
+X-Authority-Analysis: v=2.4 cv=LrKSymdc c=1 sm=1 tr=0 ts=68bb0775 cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=yJojWOMRYYMA:10 a=gAnH3GRIAAAA:8 a=sPhFOdlt40sM3mM_3ZMA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA1MDAxNiBTYWx0ZWRfX7F93Xh3NeXNz
+ NOYvvOs/wv4lswkDbSiGGyT9Qp4TBfWtltgHkubJJ45d1rlAiEk+Gd47DJMoWK7k70Z398Z/gQf
+ ljvyisR1iNUUlPgPH3cjly737Q3FEdWMqivO3YAzHguMVSdBvOVSWWCd3fGrHpxf87Y9b8KeiKP
+ J8em9w3PIy4Y2ZOBlpKOaMcMNUD5n+LlwoEf83OlsKkjuHj14TCZ2QLHnCkCnFz/M8uM1XgItCP
+ bIpHx3VxjszVuIEeLR2PA7I75XLWTB6G8S35+qn3IvjWTu479pAnjFcoO7TSx2jACv3o47e1AyZ
+ v+CencsMUqh6sagvrWEu1Qg1mCroW5VmpxufbFctlkhzb/TC0vPkfhhYslBcDitZ/VOVhFZvF6l
+ 9C7Xr34j
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-05_05,2025-09-04_01,2025-03-28_01
@@ -108,106 +110,151 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509050016
 
-Add compatibles for supported parts in the ad7768-1 family:
-	ADAQ7767-1, ADAQ7768-1 and ADAQ7769-1
-
-Add property and checks for AFF gain, supported by ADAQ7767-1
-and ADAQ7769-1 parts:
-	adi,aaf-gain-bp
+Add Chip info struct in SPI device to store channel information for
+each supported part.
 
 Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 ---
 v3 Changes:
-* Renamed adi,gain-milli to adi,aaf-gain-bp. Now it represents basis points
-  (one hundredth of a percent) as suggested by Krzysztof. Description was
-  adjusted.
-  Note: permille (1/1000) was also suggested as unit for this property.
+* ad7768_channel_masks removed along with available_masks element in
+  ad7768_chip_info struct. It does not add anything for single channels,
+  so not needed, at least for now.
+* fixed inconsistency in spaces before \ in AD7768_CHAN macro.
 
 v2 Changes:
-* adi,aaf-gain property renamed to adi,gain-milli. Description was 
-  simplified.
-* default value add to adi,gain-milli.
+* removed AD7768_CHAN_INFO_NONE macro.
+* reordered fields in ad7768_chip_info struct.
+* removed trailing comma.
 ---
- .../bindings/iio/adc/adi,ad7768-1.yaml        | 44 +++++++++++++++++--
- 1 file changed, 40 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ad7768-1.c | 67 +++++++++++++++++++++++++-------------
+1 1 file changed, 44 insertions(+), 23 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-index c06d0fc791d3..c2ad8e585586 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-@@ -4,18 +4,26 @@
- $id: http://devicetree.org/schemas/iio/adc/adi,ad7768-1.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index 872c88d0c86c..000d294c616c 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -213,6 +213,12 @@ static const struct iio_scan_type ad7768_scan_type[] = {
+ 	},
+ };
  
--title: Analog Devices AD7768-1 ADC device driver
-+title: Analog Devices AD7768-1 ADC family
- 
- maintainers:
-   - Michael Hennerich <michael.hennerich@analog.com>
- 
- description: |
--  Datasheet at:
--    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7768-1.pdf
-+  Analog Devices AD7768-1 24-Bit Single Channel Low Power sigma-delta ADC family
++struct ad7768_chip_info {
++	const char *name;
++	const struct iio_chan_spec *channel_spec;
++	int num_channels;
++};
 +
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7768-1.pdf
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7767-1.pdf
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7768-1.pdf
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/adaq7769-1.pdf
+ struct ad7768_state {
+ 	struct spi_device *spi;
+ 	struct regmap *regmap;
+@@ -234,6 +240,7 @@ struct ad7768_state {
+ 	struct gpio_desc *gpio_reset;
+ 	const char *labels[AD7768_MAX_CHANNELS];
+ 	struct gpio_chip gpiochip;
++	const struct ad7768_chip_info *chip;
+ 	bool en_spi_sync;
+ 	/*
+ 	 * DMA (thus cache coherency maintenance) may require the
+@@ -748,24 +755,27 @@ static const struct iio_chan_spec_ext_info ad7768_ext_info[] = {
+ 	{ }
+ };
  
- properties:
-   compatible:
--    const: adi,ad7768-1
-+    enum:
-+      - adi,ad7768-1
-+      - adi,adaq7767-1
-+      - adi,adaq7768-1
-+      - adi,adaq7769-1
- 
-   reg:
-     maxItems: 1
-@@ -58,6 +66,19 @@ properties:
-     description:
-       ADC reference voltage supply
- 
-+  adi,aaf-gain-bp:
-+    description: |
-+       Specifies the gain applied by the Analog Anti-Aliasing Filter (AAF)
-+       to the ADC input in basis points (one hundredth of a percent).
-+       The hardware gain is determined by which input pin(s) the signal goes
-+       through into the AAF. The possible connections are:
-+       * For the ADAQ7767-1: Input connected to IN1±, IN2± or IN3±.
-+       * For the ADAQ7769-1: OUT_PGA pin connected to IN1_AAF+, IN2_AAF+,
-+         or IN3_AAF+.
-+    $ref: /schemas/types.yaml#/definitions/uint16
-+    enum: [1430, 3640, 10000]
-+    default: 10000
++#define AD7768_CHAN(_idx, _msk_avail) { \
++	.type = IIO_VOLTAGE, \
++	.info_mask_separate_available = _msk_avail, \
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) | \
++			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) | \
++			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
++	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
++	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
++	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
++	.ext_info = ad7768_ext_info, \
++	.indexed = 1, \
++	.channel = _idx, \
++	.scan_index = _idx, \
++	.has_ext_scan_type = 1, \
++	.ext_scan_type = ad7768_scan_type, \
++	.num_ext_scan_type = ARRAY_SIZE(ad7768_scan_type), \
++}
 +
-   adi,sync-in-gpios:
-     maxItems: 1
-     description:
-@@ -147,6 +168,21 @@ patternProperties:
- allOf:
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#
+ static const struct iio_chan_spec ad7768_channels[] = {
+-	{
+-		.type = IIO_VOLTAGE,
+-		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+-		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |
+-					    BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) |
+-					    BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+-		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+-		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
+-		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
+-		.ext_info = ad7768_ext_info,
+-		.indexed = 1,
+-		.channel = 0,
+-		.scan_index = 0,
+-		.has_ext_scan_type = 1,
+-		.ext_scan_type = ad7768_scan_type,
+-		.num_ext_scan_type = ARRAY_SIZE(ad7768_scan_type),
+-	},
++	AD7768_CHAN(0, 0),
+ };
  
-+  # AAF Gain property only applies to ADAQ7767-1 and ADAQ7769-1 devices
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,adaq7767-1
-+              - adi,adaq7769-1
-+    then:
-+      required:
-+        - adi,aaf-gain-bp
-+    else:
-+      properties:
-+        adi,aaf-gain-bp: false
+ static int ad7768_read_raw(struct iio_dev *indio_dev,
+@@ -1321,6 +1331,12 @@ static int ad7768_register_regulators(struct device *dev, struct ad7768_state *s
+ 	return 0;
+ }
+ 
++static const struct ad7768_chip_info ad7768_chip_info = {
++	.name = "ad7768-1",
++	.channel_spec = ad7768_channels,
++	.num_channels = ARRAY_SIZE(ad7768_channels),
++};
 +
- unevaluatedProperties: false
+ static int ad7768_probe(struct spi_device *spi)
+ {
+ 	struct ad7768_state *st;
+@@ -1371,9 +1387,14 @@ static int ad7768_probe(struct spi_device *spi)
  
- examples:
+ 	st->mclk_freq = clk_get_rate(st->mclk);
+ 
+-	indio_dev->channels = ad7768_channels;
+-	indio_dev->num_channels = ARRAY_SIZE(ad7768_channels);
+-	indio_dev->name = spi_get_device_id(spi)->name;
++	st->chip = spi_get_device_match_data(spi);
++	if (!st->chip)
++		return dev_err_probe(&spi->dev, -ENODEV,
++				     "Could not find chip info data\n");
++
++	indio_dev->channels = st->chip->channel_spec;
++	indio_dev->num_channels = st->chip->num_channels;
++	indio_dev->name = st->chip->name;
+ 	indio_dev->info = &ad7768_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 
+@@ -1390,7 +1411,7 @@ static int ad7768_probe(struct spi_device *spi)
+ 
+ 	init_completion(&st->completion);
+ 
+-	ret = ad7768_set_channel_label(indio_dev, ARRAY_SIZE(ad7768_channels));
++	ret = ad7768_set_channel_label(indio_dev, st->chip->num_channels);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1409,13 +1430,13 @@ static int ad7768_probe(struct spi_device *spi)
+ }
+ 
+ static const struct spi_device_id ad7768_id_table[] = {
+-	{ "ad7768-1", 0 },
++	{ "ad7768-1", (kernel_ulong_t)&ad7768_chip_info },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(spi, ad7768_id_table);
+ 
+ static const struct of_device_id ad7768_of_match[] = {
+-	{ .compatible = "adi,ad7768-1" },
++	{ .compatible = "adi,ad7768-1", .data = &ad7768_chip_info },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, ad7768_of_match);
 -- 
 2.34.1
 

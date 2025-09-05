@@ -1,167 +1,167 @@
-Return-Path: <linux-iio+bounces-23776-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23777-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D26B4583B
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 14:54:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35119B4589B
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 15:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A98E7B8423
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 12:52:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 963797C4BEE
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 13:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2060E350827;
-	Fri,  5 Sep 2025 12:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101083451AE;
+	Fri,  5 Sep 2025 13:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YphyGiUh"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xxBeQ60l"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DDE38DDB;
-	Fri,  5 Sep 2025 12:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3961D90C8
+	for <linux-iio@vger.kernel.org>; Fri,  5 Sep 2025 13:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757076831; cv=none; b=qYq7jJxT857o4fA5ePp/lzJmqy1qGjpgxdk8w/00ZnjXcfzUWZqyv84DujG8NTUR/zrtiaPW40Pw2LgEudYTnqEpx5RMaKVJFtXgQvzbLulsO7+sFhO6KKrJIYFnkqHABu9BqxzVYehyqfN2ZXXeUcfPEorIinyO5I8zaArYebs=
+	t=1757078323; cv=none; b=RG7EDuwkHLmNGPp9sA2HxBS6D0jXhn5IwpDzAN26EPGVklQRywsp5mIU2dKxp3fj4gbretncuUtDC3QJIVYTEMgYbydofHq504LRG23BztoIJERUjGqmEzS8A6cy0DSuWUKrSUxRlnZSHsBy22Xpnps6BVuqA3I6GMoLNz2MVek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757076831; c=relaxed/simple;
-	bh=5ckxlBqChHNEt0/61pFY3yAoEfx3s3PCFryFHohgRR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pn9ITIVUVIh357xFPdsupq9EQYVvfeMX5bMqvSKbZBSzuZyAC2nATq1lskW8ODotXezEJIQoiT4V5/Q6KTZWb4cpKox6cSMIjT77I1FKyuF7UeZAyHF91T0oRz4qmlnLAUShSV28gPWtEQ6Rg4ncOo4WkuOuWcCn7hHLpxM/bc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YphyGiUh; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b0415e03e25so306875066b.0;
-        Fri, 05 Sep 2025 05:53:50 -0700 (PDT)
+	s=arc-20240116; t=1757078323; c=relaxed/simple;
+	bh=PIam7/m1K9PLm4L0jcQY+prj0AzYeP/tg8hGBiPIGRg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ieiaBIV9F0SVC8HMEKhsJmUz+fiAIg/7uwEOKuKpB2G6MYzNoIVLaVcUfhJ9xAW82hIGF/f/jIpBf6x4mYpXaJCh3Nd0mchrRMbxGaOhYUmSu1APMiz7YJFPrCLKr9JHPenGauwJdzlN9yqKJOaGEClmmNBLx3LNExape8/hmhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xxBeQ60l; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-30cce5be7d0so1104960fac.0
+        for <linux-iio@vger.kernel.org>; Fri, 05 Sep 2025 06:18:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757076829; x=1757681629; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T33stcPp6bK9hL8nH81dnT87IxHmxbJraeRaG/h8CM0=;
-        b=YphyGiUhgigsdRDm36BD5rWIC3hM4UwvtuKDz6/mYohYs6x7v2u1xBvOf4GZFDEb6X
-         7PJzgVyZ0Ix+4ID0BJO7iQ8+TIBst9uny2qCE2hrd6eYZFeJRDcVUHlR4EMOdN7TuyxF
-         FBMgw55fsdKnrD16ylUg4fZS5TvtLJt66Gv2HTftuiT7s6sgi63khvs9dFZ+QVHm8z8i
-         rDBBYxk5UfjeUkViDGzEw9q88bcLFVZKgVw2Qe3+WUafpFgHYUC+VGa9zrK4hHFPWkQ7
-         hzPq0AkueN6IoIjh/XNFczGPP/C24c9d4nSzmfAV84Mw5tV1Dd/dolWVyhPQYC+uaSS+
-         pgFA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757078320; x=1757683120; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=O9TLIpS6DZeFRvn5V0GqnS35zXXGwC7qVEOe9mwxEto=;
+        b=xxBeQ60lCSeI2HNOz6YxaTwWZlRmvmXvidMvvZ/FBt+ryvwxGxaWw+zfnVyBBdnK4o
+         nFBdFTqzVAbCENK3jJvmuZv7DQyhMUh5o08SzUHPGotT4dEVp+aY0LtIW8kaILeh7O/2
+         gWhTZoqq0Sfsyb1GolAjjpYIcrEd/tWHwCj6kWRkgDeQsfsX3FDCUF8LEplnEKCoWJ2u
+         sfgPEAuTStMIPfjptT7Gz8uIrwVLDatkjhZU/4Tvo28fazqfEPaSLfnoUBX5r1mc1Icp
+         FRkPruWLey4fgdQ23iMTWG5840m3qNOqB1BEUVKuXCesCP0f+9lZS5ThIb9rVLIdLQm+
+         bOdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757076829; x=1757681629;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T33stcPp6bK9hL8nH81dnT87IxHmxbJraeRaG/h8CM0=;
-        b=w2tjjAur0afurwYkdUk/LzaQ41D4ZhqDgTgNmweCeJHCzYF6iB/OlkXiX1Qw9ezB+m
-         yPWMj1ZIrMHqkdq2o9X2/YrlSKsZfZItFfRekOtIuKRC7wTjeadmGgH5DntcYbgNrN46
-         P081S1/ZsipfTLy8Kbyj1dMbSVHVZ022XwG2zu244DtjRILnW1zvv7vUM5rwhlbtQT57
-         GO3PgN5XKTkonVpDs0pxPLVrp0vrQ2sBG+g3qdOsX9W0+kG7DPPPXUw+YBCKxHBXqOUE
-         YvgroQc7CCZWrna3xk2snfKOuGXpDsNaXkmVUVSnV2mUU/kpJ798Yh+QRVb4ve2mZLAS
-         De6w==
-X-Forwarded-Encrypted: i=1; AJvYcCUTgjGbdHzk7WhRu3N2KhnKKboOHi3CjYEO7JXoOQkELL9ZhwoZtOQg6FR4sw1rG84wGiTKgY4ivwm/CA==@vger.kernel.org, AJvYcCVZbyaIfJM3t51LlEqYUHsys0SZF/wtpmf2bLQTiiWRRBiJq46B75pKTfAT/21cnLt4p5xLzDkgRpwQ@vger.kernel.org, AJvYcCWHqYVk33KmJB0JLE09NsqDU2elqsTwEIGTvzaANr7sws14x19MAuTBG1N4aH7K7+GHmCaL2OqRE7vz@vger.kernel.org, AJvYcCXkriMFs/GUD8TLxMUgmc/FUROTLZasu2SYTEJ3MLdXfdg1oB1ez1ehVFeP/rNQf2nvdMYSdiQ/6rnmnoyR@vger.kernel.org
-X-Gm-Message-State: AOJu0YytpHSxaWZ1ddIBLh8YhobCC/F/R1Pogui3mtD+ePozMEF9fjdF
-	ygzEbSqGi/GJgFkR4av5W32BpwNoI1N9cFTgmv2hdHqWM61WWTuNeMPPW0CDCcbF34bs1Cc+okL
-	+xWpjJkc5Jygu4iYg3TcCcN+I6E2GBKu/Tfzp
-X-Gm-Gg: ASbGncsjwT3vOS6mtnaqL1bh5S0SwGPGiY3lrODHZPm4hQs5ybaCs+IRMj4E0V8BPSk
-	bALRgSP9imnCxwTNRuGLrtbHVQ0WVGjlnl4axWK9KKIzhyCp66uVxgxebwofza1JBAuhANRuKG0
-	bGKRQ6PFErKfYb+ELEZryF3edGcY4uVMPCTMCZl47/LJ04waL1BI0yRqyr4cdEHSmjmgj6sHA8V
-	/qDNfpV4g==
-X-Google-Smtp-Source: AGHT+IEsfu4gvqMD8OwVlaIS7RK7dSX5WGQAcTtTRrhsReDH3Vd1wM+apHYJwSdx0NbhTNcmTuGwy1GUhGONE1k9GQM=
-X-Received: by 2002:a17:907:3d55:b0:afe:9e58:754d with SMTP id
- a640c23a62f3a-b01dda8645fmr2203141666b.64.1757076828364; Fri, 05 Sep 2025
- 05:53:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757078320; x=1757683120;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O9TLIpS6DZeFRvn5V0GqnS35zXXGwC7qVEOe9mwxEto=;
+        b=Qy/cDbWZXshm3yzTJKJvddGQA5BknYG7Zz5urPIkh+L+kgbKM2Bbdwz0BuVcCHdD2t
+         OGZ6qyemB+lvxNsCAR96oK3OvsGgAVCbocrgUwxUcYiuqpT1Ic8BcCvNXnUkdAXgx1QL
+         4R03sqTafNykwA+CFbTk0h60UzpuM+VM2pnYJbDFDUNe8fc+7YE24RNehsOCYcsKUN82
+         jixj/iNMcRDbe8CA6sOshoVfMcRwu8Ukr7YD8k40tyJxuVB2GnU3BnOrlwYs5vF5hnqd
+         KxPk76eYIc2YTOh4bufuktI4gn0Y2CL3cYkIPJZ6LWRsKdqMNk4+UM4UBA8AcRQf03wo
+         CEjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVfFxNTtDtQXsOMoSyTNs0yVs+dTxzXBlbDoCAj70Ci63z/qK2FvvKFFXfhY1AtdkNnXzxhoJWQAk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmykztJPKvjwMQwQ1qYh0pI/ktsu18+IvfJBMUT+2g94PPeio7
+	a3G6VTDxUfDhQm/QEPKE3wshDxvhaet7u/2whX6yjG9HSvIzc2Vuwtl4TXHp1646Kj0=
+X-Gm-Gg: ASbGnctCSQoBJSe43+ZpCzmDiBw4MOi7bzYCDpCelueT27QgmCfIWHZEHWGqd0eCiX6
+	XUFiXNz+Qh7VPeBVBOfm5LumugRAnf57GtdFwd/DOqopHtloZu/h/9Yi+1uAt749xpiEon9LH7V
+	lyO190QqHyfueNZnHWpovt6zMfUPCDaaBOdxxY2GeNpkG0ZdSlSmO2awZbnfDRX0mMTstTTl+aZ
+	eeZ/SsZmRhjD1eMne2cNezi34nlBYXNtm5YMaFlq62oTArnnhult/OX3nXpuXzwfANgx4fhDsOz
+	gkGs2d6HWFNkT5Bst1QgfXjaDIqwFC0NQjjL2xv7KQ5OV+MPNrO6HjItOY0KGoEAeyxFUKkb4LV
+	d0Jwkgaf1S2AljZckKnJv0Dj1JZVETURXgahavK7V3UswPzPmrQWY0emKoRNvZPPqyaqJEhEq
+X-Google-Smtp-Source: AGHT+IHyoxG6K9p+b3Shk6yuqM1oSIsNJ35yj9FZbQDKHKWiZhaNJK5mV8FUrwQzu5hPKQ4b6+5Ivg==
+X-Received: by 2002:a05:6870:cb99:b0:315:c171:a0ae with SMTP id 586e51a60fabf-31963194753mr10066349fac.20.1757078320292;
+        Fri, 05 Sep 2025 06:18:40 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:52e:cda3:16cc:72bb? ([2600:8803:e7e4:1d00:52e:cda3:16cc:72bb])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-31d63f159fdsm2922413fac.14.2025.09.05.06.18.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Sep 2025 06:18:38 -0700 (PDT)
+Message-ID: <d9aa680f-0664-4caf-b885-92c3fce6c7a4@baylibre.com>
+Date: Fri, 5 Sep 2025 08:18:37 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1757053456.git.mazziesaccount@gmail.com>
- <3cc1faffcb4f71f0755b6192f193acecd36bea67.1757053456.git.mazziesaccount@gmail.com>
- <CAHp75VdaAH+1mh16KWoYtYFMV+_ec8x9YipeD3K8g6yQr-2VjA@mail.gmail.com> <2c36496c-68bb-4c06-8580-3efc694429ea@gmail.com>
-In-Reply-To: <2c36496c-68bb-4c06-8580-3efc694429ea@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 5 Sep 2025 15:53:11 +0300
-X-Gm-Features: Ac12FXxynidtISOU6Dli41yMOcpy9qfjqFReTGh1U0WVTOgJVRzzEgetmIKArAE
-Message-ID: <CAHp75VcDJm9ZQwuHNDZf79LBAH=cEHLoNskT6On2v9zquLJESw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Marcelo Schmitt <marcelo.schmitt@analog.com>, 
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
-	Tobias Sperling <tobias.sperling@softing.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>, 
-	Trevor Gamblin <tgamblin@baylibre.com>, Esteban Blanc <eblanc@baylibre.com>, 
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>, Hans de Goede <hansg@kernel.org>, 
-	Herve Codina <herve.codina@bootlin.com>, Alisa-Dariana Roman <alisadariana@gmail.com>, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Linus Walleij
+ <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Tobias Sperling <tobias.sperling@softing.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>, Esteban Blanc <eblanc@baylibre.com>,
+ Herve Codina <herve.codina@bootlin.com>,
+ Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+ Eason Yang <j2anfernee@gmail.com>,
+ Pop Ioan Daniel <pop.ioan-daniel@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org
+References: <cover.1756988028.git.mazziesaccount@gmail.com>
+ <facc8b9255a754f767807b7e5c79c0eb20c680e4.1756988028.git.mazziesaccount@gmail.com>
+ <aLmVzDB4bk-z5d16@smile.fi.intel.com>
+ <796291b5-f61a-4d68-9cbb-ae099dbb93d8@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <796291b5-f61a-4d68-9cbb-ae099dbb93d8@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 5, 2025 at 10:10=E2=80=AFAM Matti Vaittinen
-<mazziesaccount@gmail.com> wrote:
-> On 05/09/2025 09:54, Andy Shevchenko wrote:
-> > On Fri, Sep 5, 2025 at 9:42=E2=80=AFAM Matti Vaittinen <mazziesaccount@=
-gmail.com> wrote:
+On 9/5/25 12:41 AM, Matti Vaittinen wrote:
+> Hi dee Ho Andy!
+> 
+> Thanks again. I really appreciate the effort you put in these reviews! :)
+> 
+> On 04/09/2025 16:36, Andy Shevchenko wrote:
+>> On Thu, Sep 04, 2025 at 03:36:46PM +0300, Matti Vaittinen wrote:
+>>> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
+>>> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
+>>>
+>>> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
+>>> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
+>>> daisy-chain configuration) and maximum sampling rate is 1MSPS.
+>>>
+>>> The IC does also support CRC but it is not implemented in the driver.
+>>
+>> ...
+>>
+>>> +/*
+>>> + * The data-sheet explains register I/O communication as follows:
+>>> + *
+>>> + * Read, two 16-bit sequences separated by CSB:
+>>> + * MOSI:
+>>> + * SCK:    | 1 | 2 | 3   | 4      | 5 .. 8 | 9 .. 16 |
+>>> + * data:| 0 | 0 |IOSET| RW (1) | ADDR   | 8'b0    |
+>>> + *
+>>> + * MISO:
+>>> + * SCK:    | 1 .. 8 | 9 .. 16 |
+>>> + * data:| 8'b0   | data    |
+>>> + *
+>>> + * Note, CSB is shown to be released between writing the address (MOSI) and
+>>> + * reading the register data (MISO).
+>>> + *
+>>> + * Write, single 16-bit sequence:
+>>> + * MOSI:
+>>> + * SCK:    | 1 | 2 | 3   | 4     | 5 .. 8 |
+>>> + * data:| 0 | 0 |IOSET| RW(0) | ADDR   |
+>>> + *
+>>> + * MISO:
+>>> + * SCK:    | 1 .. 8 |
+>>> + * data:| data   |
+>>> + */
+>>
+>> I don't know how to read this comment. In the monospace font the whole block
+>> looks like a mess.
+> 
+> What do you mean by a mess? Don't you have the '|' -characters aligned? That's very odd because they are aligned for me. Or, is this otherwise unclear?
 
-...
+I find these diagrams very hard to read as well. I would just drop this part
+and let people look it up in the datasheet. I don't think it adds anything
+essential to understanding how the driver works.
 
-> >> +/*
-> >> + * The data-sheet explains register I/O communication as follows:
-> >> + *
-> >> + * Read, two 16-bit sequences separated by CSB:
-> >> + * MOSI:
-> >> + * SCK:        | 1 | 2 | 3   | 4      | 5 .. 8 | 9 .. 16 |
-> >> + * data:| 0 | 0 |IOSET| RW (1) | ADDR   | 8'b0    |
-> >> + *
-> >> + * MISO:
-> >> + * SCK:        | 1 .. 8 | 9 .. 16 |
-> >> + * data:| 8'b0   | data    |
-> >> + *
-> >> + * Note, CSB is shown to be released between writing the address (MOS=
-I) and
-> >> + * reading the register data (MISO).
-> >> + *
-> >> + * Write, single 16-bit sequence:
-> >> + * MOSI:
-> >> + * SCK:        | 1 | 2 | 3   | 4     | 5 .. 8 |
-> >> + * data:| 0 | 0 |IOSET| RW(0) | ADDR   |
-> >> + *
-> >> + * MISO:
-> >> + * SCK:        | 1 .. 8 |
-> >> + * data:| data   |
-> >> + */
-> >
-> > What I meant in previous reviews is that the | are not aligned (in the
-> > same columns). Is it on purpose? If so, I can't read that as I don't
-> > understand the meaning of | in each case. For example, the data starts
-> > with 0, followed by 0, and the latter one is when SCL is #1? Okay, but
-> > how to read IOSET that overlaps 2 SCK cycles and is unaligned with
-> > times... I'm really quite confused by these charts.
->
-> Ah. I think I now know what you mean. Whitespaces are hard :)
-> I see I have '\t' between the SCK: and first |.
->  >> + * SCK: /* '\t' here */       | 1 | 2 | 3   | 4     | 5 .. 8 |
->
-> It works perfectly on my editor, which has tab width 8. Thus, all the
-> '|' on SCK and data rows are perfectly aligned for me. My original
-> thought has been to align the first '|' on all rows by tab, but since
-> the " * data:" is already 8 chars I didn't add a tab for this row...
->
-> I now realize this will not work if tabs behave different from my setup.
-> I will do replacing the '\t' with ' '. Does this make it better for your
-> editor or do you see some other problem besides that?
-
-I can't answer before seeing. Can you reply with what you mean?
-
-> Thanks for the patience explaining it.
-
-You're welcome!
-
---=20
-With Best Regards,
-Andy Shevchenko
 

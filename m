@@ -1,210 +1,167 @@
-Return-Path: <linux-iio+bounces-23826-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23827-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE18B46A57
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 11:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1187CB46CFA
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 14:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CEB95A0FA4
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 09:08:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C27AA582900
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 12:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDE5280A35;
-	Sat,  6 Sep 2025 09:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5162E9EDF;
+	Sat,  6 Sep 2025 12:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FcaS3Y+f"
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="PBOyjgc7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C1A2765C1;
-	Sat,  6 Sep 2025 09:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CDC288CB5;
+	Sat,  6 Sep 2025 12:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757149684; cv=none; b=t1XqzFYE9ydwpJkCMnK6SYQx8wjSQlD0Ga9vt7qk1i0yuMgxAFkm/4MhK4UiO/Ah3+S6qCFsweeN9ASO4otlBbbReqNj8Pz2my/LXi9gdGRyprhmHITPtUlgImZVu1hzrUHkR7nfC5mNxTRNODiByHaCys21DAyVcPirK+yP1XM=
+	t=1757162543; cv=none; b=k+wh2Dw0xGYt3BsXJDFAj9mGLHkHPMrScgvXHek0mKnCZderNLNySIhv+gIZIXf6RVzYjo5WbFb1svumoRXl0j6BuvLN4eFnX4zCLYxv6ow6fKdym4griacsiOXnH3VlYSZs13yX2RQzOFXtLXUXt9P+8qbLV1xWSUhLX874kW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757149684; c=relaxed/simple;
-	bh=/EogTmEp9ddcHlHd422rd2ELg91naaCOUhoWx/RDcOs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nIwYCMAc/iAehaPzMTMZm5jS2IReSxF4YB/4A9eVLRFtGvJPNTy5uK+xckyXkKoybDIPAaJkLkeFPk3ZZ25Kj5TDUkQU8AHUGNXEmRTu170H0UxuV7IyL5PSGBiWKDjGanO5FbzY6sWbjC1P2ZwcAspid0q6YnRPjYEznHvTjz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FcaS3Y+f; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-62598fcf41aso290335a12.3;
-        Sat, 06 Sep 2025 02:08:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757149680; x=1757754480; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=98sjn7qESsjfOKaFuLxICTp+8fa7kfm5T8aG47i40Ck=;
-        b=FcaS3Y+fYE9B6Jm51WdiJuP9tPMqO+beZBUMuhP0kWsX+1HbZllX6tm/BVxUBHBGCR
-         4pLRO9Xrkk6/UQgyd8yZhgCZ87OynIgwHwHj22GylEqtFkKqG55bCbbyj8aTg4kFNQ0P
-         ZRznACUGuZFdSVLS+Xhof4ZQCwc7umnLDD8qmhz5gbqlZ/e6pKlncW6sCeSWfhUItjBJ
-         lBWaqNaf8tGxtiP1wZHLLvCvIEbiROEAYShh4g0vwshMRS5ia2A4E4MbCbORnM9DqhzP
-         PZ97BCl7vlVd5LoCK4aJLmBsLK457sDXDOwa8RZ6LNtBSuZnaU/9jVzq+S9viyGxNg/t
-         Mccg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757149680; x=1757754480;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=98sjn7qESsjfOKaFuLxICTp+8fa7kfm5T8aG47i40Ck=;
-        b=K3V6e5W4WPpTG5QhvUmquekqjeurT9mngpVYdpKsPmeF/ES/G5HFi1WeNfqhkn0Uom
-         3WNuqr0x7gNt0NVNy+2WsGwOoGYWAXlad+hnyTPKb5OArqN+3Iy/jQEu/SvtFeukqyVd
-         1h447EkC6PYndAJPNLcIKsWf6D1L2p9KBOIUg85B2Qe24Na4BzKylBlhr7c4wcJoRDpR
-         cdaVwbhVh7uUbwc6RRP0tfDvksTzIof8Yi+S1QEcn1cQG7xwg5Qi76oZB5axVuqm/Vqq
-         wpYSG1UbVCHqDQZJsKPAJMRSRB6RvRboYKLuK+y5f/pX+clHTrA6Kv8yFpvuPY9ZA5sc
-         uclw==
-X-Forwarded-Encrypted: i=1; AJvYcCUk4Xji0Wp4caqc8MBZhpYflbiMJhasUpgAfu7EjOdGIizSExXNkIZp5zjtCcD63k2bS1RycrwM8hD5dOcz@vger.kernel.org, AJvYcCVD8jTnz00AsK+JckGZouukfioUv0PXeXTcp9Vx2IZZc8G4FErkv3uG/3cVml+BYehezSLxy47ID27W@vger.kernel.org, AJvYcCXMbDyaRygvMwOtGRiDbNYNTZuUqevg8v0lj2aDZg8Ez4Y+oZDdVJTTZPjD9kW+kq6lbsZiBTPqkRN2@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDsaOmQOqLK5drPhdLxFFMWGxqGprYyrsL1NxZRjS8OrVoZQCd
-	ANCV6r1DPQYuu4gP4svhoa+3591HFH5c0NJu1JuCIMEcLk+6WEb9oDQRfy70cFK+crY95pSx95e
-	uHXqasIPuPWvQUN2nIw500cMV1Ps2tA8=
-X-Gm-Gg: ASbGncvybt5XbpQZgrkCL1UFfaGNepsMN5sBZj0oWH638xAjlz/DbMO5KlJo4zlnPtO
-	eZ6m/FLstR4GZjZ1g2XfRLzUBTsvov52V/HzyhTxD7utt+YzEv9XDc5/upT95vmJxiiU9fnSJAa
-	4kLN6ZjePNf7yd6hPH9z+3hnpTG0aSbrYyrfjsdFNBnC0OZ+Hiv8p9sWs/o+exU/9pRfVMHLc0t
-	PvL9/90eW0oh2iF2A==
-X-Google-Smtp-Source: AGHT+IHEC6cqNMvUlVVHR7YYmKc5eePl4FbV9uoffdQtlLHwv+S/TriWZKfqz+qrbteibDLxRvs7Ft1QkpZBZgQgGnw=
-X-Received: by 2002:a17:907:3d06:b0:b04:4786:5e02 with SMTP id
- a640c23a62f3a-b04b16dc6e4mr134938666b.45.1757149679891; Sat, 06 Sep 2025
- 02:07:59 -0700 (PDT)
+	s=arc-20240116; t=1757162543; c=relaxed/simple;
+	bh=Hm+GKKIWpg7dScyTlBsTiigjsE8UtZG9+Pr/DPZd9D8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=qlVCS7DIXnEHsZx7/XweVeXwJOVFcnq/pnDVVi2cIXhhNX3XuvJeJ5PbYHrJZss6G8siHM7oq9QJyZzfvEk6kDxCoRDfn4erqa3m/Qiatl3t+j4pL5QBil34oF0BcEZsjs0uv0DJq9k6vFu2kThEhEMNhyntsP30CZACXRLI8UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=PBOyjgc7; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1757162486; x=1758462486;
+	bh=v5ScnZ66jzFrHMw7Qn6lJeXlTaGjvDkyhTW+naUdbVU=; h=From;
+	b=PBOyjgc7eBDCwad7MZRGBSbnX5lnoC5TWsEecCuJ9TT5sxH9IR7WvZjA31Z6opVzk
+	 EwgbZkYodj21gps4eF62vqAXLDNnac4dvVAHjuh85dE0any8k8uFWZBmSoeVuilojA
+	 3WucvzgNqewIG3xZhRDwxS4/902OTn2yUNOgrXURk75bAk39PTkEuPyLVpucmxUD2B
+	 9RsbZP7XtS54/WzNBbkvy8exntCo963iGDCJz4tj9Ukp3IJGWd2g+gVHhh4UaCpBUL
+	 sFFlhumE4mHhjQ3alSa0ZkXJAhrNHZh5xl1Jv4+mmonQi0+BEzX+heHtN0qfmVaiMG
+	 WEwPP/ZxyA14Q==
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 586CfHUQ082029
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Sat, 6 Sep 2025 14:41:26 +0200 (CEST)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250906-tlv493d-sensor-v6_16-rc5-v6-0-b1a62d968353@gmail.com> <20250906-tlv493d-sensor-v6_16-rc5-v6-2-b1a62d968353@gmail.com>
-In-Reply-To: <20250906-tlv493d-sensor-v6_16-rc5-v6-2-b1a62d968353@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 6 Sep 2025 12:07:23 +0300
-X-Gm-Features: Ac12FXzkOILECBI6_yeKunYdSyWhZAfj3H0XbwE76b9Qf7dVlsCE2Yq6b1VJYM0
-Message-ID: <CAHp75Vf0zHU3103xGeO4pt7LO7yWvd_WGssHAM87srQxHyFXvg@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] iio: magnetometer: add support for Infineon
- TLV493D 3D Magentic sensor
-To: Dixit Parmar <dixitparmar19@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 06 Sep 2025 14:41:17 +0200
+Message-Id: <DCLQ427JYUS9.3EKILJ8O80RU1@matfyz.cz>
+Cc: "David Wronek" <david@mainlining.org>, <phone-devel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v3 2/3] iio: adc: Add driver for Marvell 88PM886 PMIC
+ ADC
+To: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
+        "Jonathan
+ Cameron" <jic23@kernel.org>,
+        "David Lechner" <dlechner@baylibre.com>,
+        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+        "Andy Shevchenko"
+ <andy@kernel.org>, "Lee Jones" <lee@kernel.org>,
+        "Rob Herring"
+ <robh@kernel.org>,
+        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20250905-88pm886-gpadc-v3-0-4601ad9ccb51@dujemihanovic.xyz>
+ <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
+In-Reply-To: <20250905-88pm886-gpadc-v3-2-4601ad9ccb51@dujemihanovic.xyz>
 
-On Sat, Sep 6, 2025 at 11:38=E2=80=AFAM Dixit Parmar <dixitparmar19@gmail.c=
-om> wrote:
->
-> The Infineon TLV493D is a Low-Power 3D Magnetic Sensor. The Sensor
-> applications includes joysticks, control elements (white goods,
-> multifunction knops), or electric meters (anti tampering) and any
-> other application that requires accurate angular measurements at
-> low power consumptions.
->
-> The Sensor is configured over I2C, and as part of Sensor measurement
-> data it provides 3-Axis magnetic fields and temperature core measurement.
->
-> The driver supports raw value read and buffered input via external trigge=
-r
-> to allow streaming values with the same sensing timestamp.
->
-> While the sensor has an interrupt pin multiplexed with an I2C SCL pin.
-> But for bus configurations interrupt(INT) is not recommended, unless timi=
-ng
-> constraints between I2C data transfers and interrupt pulses are monitored
-> and aligned.
->
-> The Sensor's I2C register map and mode information is described in produc=
-t
-> User Manual [1].
-
-This version looks good enough to me.
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-
-...
-
-> +static int tlv493d_read_raw(struct iio_dev *indio_dev,
-> +                       const struct iio_chan_spec *chan, int *val,
-> +                       int *val2, long mask)
-> +{
-> +       struct tlv493d_data *data =3D iio_priv(indio_dev);
-> +       s16 x, y, z, t;
-> +       int ret;
+Duje Mihanovi=C4=87, 2025-09-05T13:00:55+02:00:
+> diff --git a/include/linux/mfd/88pm886.h b/include/linux/mfd/88pm886.h
+> index 85eca44f39ab58ba4cb9ec4216118ee9604d021f..38892ba7b8a42bbecb53621a8=
+91a52a2fd70fd43 100644
+> --- a/include/linux/mfd/88pm886.h
+> +++ b/include/linux/mfd/88pm886.h
+> @@ -10,6 +10,7 @@
+>  #define PM886_IRQ_ONKEY			0
+> =20
+>  #define PM886_PAGE_OFFSET_REGULATORS	1
+> +#define PM886_PAGE_OFFSET_GPADC		2
+> =20
+>  #define PM886_REG_ID			0x00
+> =20
+> @@ -70,6 +71,63 @@
+>  #define PM886_LDO_VSEL_MASK		0x0f
+>  #define PM886_BUCK_VSEL_MASK		0x7f
+> =20
+> +/* GPADC enable/disable registers */
+> +#define PM886_REG_GPADC_CONFIG(n)	(n)
 > +
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_RAW:
-> +               ret =3D tlv493d_get_measurements(data, &x, &y, &z, &t);
-> +               if (ret)
-> +                       return ret;
+> +#define PM886_GPADC_VSC_EN		BIT(0)
+> +#define PM886_GPADC_VBAT_EN		BIT(1)
+> +#define PM886_GPADC_GNDDET1_EN		BIT(3)
+> +#define PM886_GPADC_VBUS_EN		BIT(4)
+> +#define PM886_GPADC_VCHG_PWR_EN		BIT(5)
+> +#define PM886_GPADC_VCF_OUT_EN		BIT(6)
+> +#define PM886_GPADC_CONFIG1_EN_ALL	\
+> +	(PM886_GPADC_VSC_EN |		\
+> +	 PM886_GPADC_VBAT_EN |		\
+> +	 PM886_GPADC_GNDDET1_EN |	\
+> +	 PM886_GPADC_VBUS_EN |		\
+> +	 PM886_GPADC_VCHG_PWR_EN |	\
+> +	 PM886_GPADC_VCF_OUT_EN)
 > +
-> +               switch (chan->address) {
-> +               case TLV493D_AXIS_X:
-> +                       *val =3D x;
-> +                       return IIO_VAL_INT;
-> +               case TLV493D_AXIS_Y:
-> +                       *val =3D y;
-> +                       return IIO_VAL_INT;
-> +               case TLV493D_AXIS_Z:
-> +                       *val =3D z;
-> +                       return IIO_VAL_INT;
-> +               case TLV493D_TEMPERATURE:
-> +                       *val =3D t;
-> +                       return IIO_VAL_INT;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +       case IIO_CHAN_INFO_SCALE:
-> +               switch (chan->type) {
-> +               case IIO_MAGN:
-> +                       /*
-> +                        * Magnetic field scale: 0.0098 mTesla (i.e. 9.8 =
-=C2=B5T)
-> +                        * Magnetic field in Gauss: mT * 10 =3D 0.098.
-> +                        */
-> +                       *val =3D 98;
-> +                       *val2 =3D 1000;
-> +                       return IIO_VAL_FRACTIONAL;
-> +               case IIO_TEMP:
-> +                       /*
-> +                        * Temperature scale: 1.1 =C2=B0C per LSB, expres=
-sed as 1100 m=C2=B0C
-> +                        * Returned as integer for IIO core to apply:
-> +                        * temp =3D (raw + offset) * scale
-> +                        */
-> +                       *val =3D 1100;
-> +                       return IIO_VAL_INT;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-> +       case IIO_CHAN_INFO_OFFSET:
-> +               switch (chan->type) {
-> +               case IIO_TEMP:
-> +                       /*
-> +                        * Temperature offset includes sensor-specific ra=
-w offset
-> +                        * plus compensation for +25=C2=B0C bias in formu=
-la.
-> +                        * offset =3D -raw_offset + (25000 / 1100)
-> +                        * -340 + 22.72 =3D -317.28
-> +                        */
-> +                       *val =3D -31728;
-> +                       *val2 =3D 100;
-> +                       return IIO_VAL_FRACTIONAL;
-> +               default:
-> +                       return -EINVAL;
-> +               }
-
+> +#define PM886_GPADC_TINT_EN		BIT(0)
+> +#define PM886_GPADC_PMODE_EN		BIT(1)
+> +#define PM886_GPADC_GPADC0_EN		BIT(2)
+> +#define PM886_GPADC_GPADC1_EN		BIT(3)
+> +#define PM886_GPADC_GPADC2_EN		BIT(4)
+> +#define PM886_GPADC_GPADC3_EN		BIT(5)
+> +#define PM886_GPADC_MIC_DET_EN		BIT(6)
+> +#define PM886_GPADC_CONFIG2_EN_ALL	\
+> +	(PM886_GPADC_TINT_EN |		\
+> +	 PM886_GPADC_GPADC0_EN |	\
+> +	 PM886_GPADC_GPADC1_EN |	\
+> +	 PM886_GPADC_GPADC2_EN |	\
+> +	 PM886_GPADC_GPADC3_EN |	\
+> +	 PM886_GPADC_MIC_DET_EN)
 > +
+> +/* No CONFIG3_EN_ALL because this is the only bit there. */
+> +#define PM886_GPADC_GND_DET2_EN		BIT(0)
+> +
+> +/* GPADC channel registers */
+> +#define PM886_REG_GPADC_VSC		0x40
+> +#define PM886_REG_GPADC_VCHG_PWR	0x4c
+> +#define PM886_REG_GPADC_VCF_OUT		0x4e
+> +#define PM886_REG_GPADC_TINT		0x50
+> +#define PM886_REG_GPADC_GPADC0		0x54
+> +#define PM886_REG_GPADC_GPADC1		0x56
+> +#define PM886_REG_GPADC_GPADC2		0x58
+> +#define PM886_REG_GPADC_VBAT		0xa0
+> +#define PM886_REG_GPADC_GND_DET1	0xa4
+> +#define PM886_REG_GPADC_GND_DET2	0xa6
+> +#define PM886_REG_GPADC_VBUS		0xa8
+> +#define PM886_REG_GPADC_GPADC3		0xaa
+> +#define PM886_REG_GPADC_MIC_DET		0xac
+> +#define PM886_REG_GPADC_VBAT_SLP	0xb0
+> +
+> +/* VBAT_SLP is the last register and is 2 bytes wide like other channels=
+. */
+> +#define PM886_GPADC_MAX_REGISTER	(PM886_REG_GPADC_VBAT_SLP + 1)
+> +
+> +#define PM886_GPADC_BIAS_LEVELS		16
+> +#define PM886_GPADC_INDEX_TO_BIAS_uA(i)	(1 + (i) * 5)
+> +
+>  struct pm886_chip {
+>  	struct i2c_client *client;
+>  	unsigned int chip_id;
 
-Inconsistent (redundant) blank line.
-
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
-
-
---=20
-With Best Regards,
-Andy Shevchenko
+Acked-by: Karel Balej <balejk@matfyz.cz> # for the PMIC
 

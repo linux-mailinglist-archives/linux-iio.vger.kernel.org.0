@@ -1,201 +1,208 @@
-Return-Path: <linux-iio+bounces-23821-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23822-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70EB4B469F5
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 09:34:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21809B46A2E
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 10:38:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B3F53B4B94
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 07:34:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6904A08126
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 08:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4A92BE625;
-	Sat,  6 Sep 2025 07:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2164C27D77A;
+	Sat,  6 Sep 2025 08:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9QE71hT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="en1yONm9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDB81367;
-	Sat,  6 Sep 2025 07:34:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2C31EB9E1;
+	Sat,  6 Sep 2025 08:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757144057; cv=none; b=MR7itq4oqcZPBTcM5r61EPO2NiZm2rM8D/GqC5P9M9wJEjlbRz55JYFa1tfLanwoqU5kQ0ia6I9Yy7gERbPSkSaMvM460jHHV2KHRY+aEl+n/KnWkbFExyfUB/xF3xik8fzcjDu1OsrvMsQIz0oDHa6WVts6IIGPcKg3fdxiowI=
+	t=1757147885; cv=none; b=c6GH1V0rOV2bJ7G54yBBEgeiuykNTWgSSoAvy0SJgF+O9oGPsFXdsesKodt9bXG/GI1u2QpsHwev6fo7KaYsts3r4heKdJGB8xESMwOmyzOlR7eR9LplKYoRAO/wF4lFCNHxMLH5mpFHoo211csJCBvGqQQkJHdqW8FAa6kiZmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757144057; c=relaxed/simple;
-	bh=CzrINzb1gVzemPgQBp2NTYknWIGfYfK3mWOn6E7JOss=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JYDCkEnQE34Rt4g8+KBOccSvwEI2f+TDm2dd1R3rw2CICF+bPs1pQiPMulnz01Z6B0n+K/GuNgODN3axe+s0DGvhu+Or6TY5TJFqasGUZfg+I6Y4xRYJ6AtQLm9Ax+8VstUDt/4+rak1rZ7HvyRrNjF4w0AAVG7m+862DNaLB2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9QE71hT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FB3C4CEE7;
-	Sat,  6 Sep 2025 07:34:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757144056;
-	bh=CzrINzb1gVzemPgQBp2NTYknWIGfYfK3mWOn6E7JOss=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l9QE71hTXsPeIbt91YKvGQboXbWAIeQNHC/ElefCF2EhSVnx3ZxrB7cOvoZE5pfqt
-	 fOwDqO8hK9+TjfsNMF0PBKCJghdB4djMYNgfUvdVho+QeVauC1D28E8HAOueEh3r1t
-	 PPI9DZyguyldN3rvLKCL3ENWPdIlP82R72l9ojCcpdQh+VyUhev5KUvMOSr0tbj4+Z
-	 EHf3W2TI6uq2S8ErI+g54HO+F/0NEA/8tKDOJu5mPQSv7qleyyfORr5fmwLb/Xzkcx
-	 nm+mHneGurIV2nP0Aj4YDoWlp1i5mDmJEJRyJu2hiWK11mB0JQ299xiTeMZtZuyBt3
-	 1W6LBa56FO+1g==
-Message-ID: <6988c5d0-796a-4ab0-88d5-7051c80b5bba@kernel.org>
-Date: Sat, 6 Sep 2025 09:34:11 +0200
+	s=arc-20240116; t=1757147885; c=relaxed/simple;
+	bh=JraSxymtxrQ7rVKbYQEgzRtR5BKEvUbZ2v8Rl3tGfWM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OKKhmTXxIGLYMVS8/gXtGkvE4srN/ILZr6EYMiGRjHOHwzKL4iJ+hSJ666wJT5TM8HYpteJA9dtRjABg78GpovxLtziapYyv9sbHEeJ53UNLN/ZiPG2qTttjDfLujwcmZKnz4W5ScdVckkD6OufSB+Wkh5rd3uQP3Vk1lX+hzHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=en1yONm9; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-244582738b5so23734365ad.3;
+        Sat, 06 Sep 2025 01:38:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757147883; x=1757752683; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Em0A8Wyzxt8kNZyBnifQUAZnvXVnEcP6+pUCU/msrk=;
+        b=en1yONm9iQ0gbGgNw2vL1mciManYhp403ny+kuCWQKBpBCgGwpe/FCUOc09Uem2xKu
+         5ZycnkuWlt7KOiq9Z/lweHv7k27d7pPSXhoHcyHLxgk4dQR97wUV7skq1JSM275aoius
+         xQqctfFjZKa/wEy0vW9NaSx/1eTEbNXVvkOb4kACMR+ePqESjNVqdc6DmXfdU+CVrFvs
+         qYQt9Rz9kDBdYIMg3jRc92RHwUJ/ov6OJeepw3Xk4EgY4Vqjlgfnp7d3wst5S+PTazUB
+         R2PfL52QXSXAcKc+x5fpncdZEfwLB0VqudW/2T2XUNNX9rS9NInkGcspDBZFlBpszCmf
+         Cy0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757147883; x=1757752683;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2Em0A8Wyzxt8kNZyBnifQUAZnvXVnEcP6+pUCU/msrk=;
+        b=OYxsb3b6oAwUCnIV0xuoeTy4Xy0LAQgu9HytYiaIErs2JKd0KDzD6tSDIMsLQQ2q0S
+         YnH2tsq04Fi8thfmfAVhVYm2WzleCSb6YyYnRUTS2ZwGzlmvVkiD+YCduYbuzi57tUsV
+         7aMoO/7QyUiZeibf4wFZD6qzY5SIH+j9MFSUbKU4fUZpXaXMuVqDsgC6OqmZ8sVPr7+J
+         RvhV2EmAx/BSiNC5v+odta8mgNF0rwZX83PSQLpRB5nmxdubyONCvmfeWrPw/GTd8yeS
+         mzonYi83WHVRjEk5RHeaxWJici8UY+ovK3/ZWAwi1VjgZ5jZakRmkjqDzYT8fN9cFT4N
+         hUPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVy1t0SPqi1H29s50gLMqI/l3mqEEP6bKY8PmuSZNoXeo9q7eAqIfeLHic0C7eFQKOFusW3vxI8toF7@vger.kernel.org, AJvYcCWZ3eMIBB/YbrTFlZfh8pCU0pPBgpPi22aCUEMgtraJ37r0f+FUfaSDxEqipD+BVH9hJPERmb8EmoP3@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwVKJ1F0gkIe1fTELUWNvmK+Ib5myKG9b+JSoWxSNq4tOO6s2k
+	TWlu1Kbs0RrZ42YxJW6i06Xlo/hMMFELZH7d6ZSLVABLIBAKXdQ56OOS
+X-Gm-Gg: ASbGncuyDpUyDHTatsmMnssMXxmuF7gcgHTG7/L/rrAWeuqbrik9WCZuO5TqTBQ+Tr8
+	Cjxd/qF7RYFckP6S7zdlp+4XrV/MXWgnhpEfE3a+WrGNrd55EYxOE0DapWCqJLVaMpLStmOUJgx
+	R2mDRqjlt7HRWbPf/4KxYdlwFTULi1cdqAqKLipjqtZzOTrdyQKcaL/mf0uLie0jSQGz8Q1bNos
+	sqToG6W5XTS0B4Z17cRogkrLiAsHXSomfqIvzsYEFo5ynqOJMtvpitDb7O5l6tIXGp8fc112Cq8
+	dkHfVlSOVVteivqmbdfH0dT3GIQaBgNnj0HOdRX91xEyfEEMoTu5+zcjxIVUlgoU/y4zaHmEZaZ
+	hRLNRKzMp42rztlIHVtBzOrTA1GZhN22DsmXvqy3aXg==
+X-Google-Smtp-Source: AGHT+IFtjWsDYHe1VkjVTyT6R7VE9dCGUqdAugEsnIBccOXYANPwe/MI+qzPBv1E36t97qCyCMsGSg==
+X-Received: by 2002:a17:902:ef0c:b0:23f:fa79:15d0 with SMTP id d9443c01a7336-25174c1cd4fmr17870245ad.46.1757147883208;
+        Sat, 06 Sep 2025 01:38:03 -0700 (PDT)
+Received: from [127.0.1.1] ([2401:4900:1c44:6dc9:9ee4:9664:de3c:82ef])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24b1589e480sm116577765ad.130.2025.09.06.01.37.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Sep 2025 01:38:02 -0700 (PDT)
+From: Dixit Parmar <dixitparmar19@gmail.com>
+Subject: [PATCH v6 0/2] iio: magnetometer: add support for Infineon TLV493D
+ 3D Magnetic Sensor
+Date: Sat, 06 Sep 2025 14:07:55 +0530
+Message-Id: <20250906-tlv493d-sensor-v6_16-rc5-v6-0-b1a62d968353@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] iio: adc: Add the NXP SAR ADC support for the
- s32g2/3 platforms
-To: Daniel Lezcano <daniel.lezcano@linaro.org>, jic23@kernel.org,
- dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
- conor+dt@kernel.org, krzk+dt@kernel.org
-Cc: linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
- ghennadi.procopciuc@oss.nxp.com
-References: <20250903102756.1748596-1-daniel.lezcano@linaro.org>
- <20250903102756.1748596-3-daniel.lezcano@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250903102756.1748596-3-daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOPyu2gC/43OS2oDMQyA4asEr+tiyc/pqvcoofihSQzJTLGDS
+ Qlz9zrZdEhh6PIX6JNurFLJVNnb7sYKtVzzPPUwLzsWj346EM+pN0OBWlg0/HJqapCJV5rqXHg
+ zn2B4iZqDixZQDDKgZX39q9CYrw/6Y9/7mOtlLt+PSw3u03+gDbjgiXwUaMmMEt8PZ59Pr3E+s
+ zva8BdyAjcg7BA5Y9PojE+DfIbkGrIbkOxQcCJhDArw70dqBYHagFSHHASHTmjvSTxDegXhsAH
+ pDlllyMoQTQRYQ8uy/ACxJSmX5AEAAA==
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, Dixit Parmar <dixitparmar19@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757147878; l=4659;
+ i=dixitparmar19@gmail.com; s=20250726; h=from:subject:message-id;
+ bh=JraSxymtxrQ7rVKbYQEgzRtR5BKEvUbZ2v8Rl3tGfWM=;
+ b=299bzWg6I2Bvykcn6mIeosMNjuMt8zXZ5sa9lv8k3Yj/rrZVKJ0X2V4Qplbma1pp50ETrcfba
+ zb593469qpbBwpykFBkmCUMlsVX4bmjUFTghc7QnYkJVsB2Kh1L0PuU
+X-Developer-Key: i=dixitparmar19@gmail.com; a=ed25519;
+ pk=TI6k8pjTuLFcYiHazsate3W8rZGU2lbOrSJ4IWNoQhI=
 
-On 03/09/2025 12:27, Daniel Lezcano wrote:
-> +#include <linux/dmaengine.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/module.h>
-> +#include <linux/of_irq.h>
+The Infineon TLV493D is a Low-Power 3D Magnetic Sensor. The Sensor
+applications includes joysticks, control elements (white goods,
+multifunction knops), or electric meters (anti tampering) and any
+other application that requires accurate angular measurements at
+low power consumptions.
 
-Unused header
+The Sensor is configured over I2C, and as part of Sensor measurement
+data it provides 3-Axis magnetic fields and temperature core measurement.
 
-> +#include <linux/of_platform.h>
+The driver supports raw value read and buffered input via external trigger
+to allow streaming values with the same sensing timestamp.
 
-This as well. OTOH, you actually miss the header you use - of.h.
+While the sensor has an interrupt pin multiplexed with an I2C SCL pin.
+But for bus configurations interrupt(INT) is not recommended, unless timing
+constraints between I2C data transfers and interrupt pulses are monitored
+and aligned.
 
-> +#include <linux/platform_device.h>
-> +#include <linux/slab.h>
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +
-> +/* This will be the driver name the kernel reports */
-> +#define DRIVER_NAME "nxp-sar-adc"
-> +
-> +/* SAR ADC registers */
-> +#define REG_ADC_CDR(__base, __channel)	(((__base) + 0x100) + ((__channel) * 0x4))
-> +
-> +#define REG_ADC_CDR_CDATA_MASK		GENMASK(11, 0)
-> +#define REG_ADC_CDR_VALID		BIT(19)
-> +
-> +/* Main Configuration Register */
-> +#define REG_ADC_MCR(__base)		(__base)
-> +
+The Sensor's I2C register map and mode information is described in product
+User Manual [1].
 
-...
+Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
+Link: https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-UserManual-v01_03-EN.pdf [1]
+Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+---
+Changes in v6:
+- Reorder patches as recommended.
+- Reword patch subject for dt-bindings patch and discarded "Reviewed by" as it got modified.
+- Bifurcate MAINTAINERS file modifications in separate patches as applicable.
+- Style and indentations fixes.
+- Link to v5: https://lore.kernel.org/r/20250829-tlv493d-sensor-v6_16-rc5-v5-0-746e73bc6c11@gmail.com
 
-> +	indio_dev->name = dev_name(dev);
-> +	indio_dev->info = &nxp_sar_adc_iio_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
-> +	indio_dev->channels = nxp_sar_adc_iio_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(nxp_sar_adc_iio_channels);
-> +
-> +	nxp_sar_adc_set_default_values(info);
-> +
-> +	ret = nxp_sar_adc_calibration(info);
-> +	if (ret) {
-> +		dev_err(dev, "Calibration failed: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = nxp_sar_adc_dma_probe(dev, info);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to initialize the dma\n");
+Changes in v5:
+- Use USEC_PER_MSEC for 1000 multiplier.
+- Change if (ret < 0) -> if (ret).
+- Style and indentation fixes.
+- Added entry in MAINTAINERS file.
+- Link to v4: https://lore.kernel.org/r/20250814-tlv493d-sensor-v6_16-rc5-v4-0-81b82805aae0@gmail.com
 
-return dev_err_probe
+Changes in v4:
+- Include required headers.
+- Drop struct device *dev from the sensor data structure and use
+  i2c_client *client to derive it wherever needed.
+- Use FIELD_MODIFY instead of FIELD_PREP to keep other bits intacts.
+- Remove unused defines TLV493D_WR_REG_RES*.
+- Drop the pm_runtime_mark_last_busy(). As now always called in the
+  pm_runtime_put_autosuspend().
+- Change goto labels to make it more descriptive.
+- Fix style & typo errors.
+- Link to v3: https://lore.kernel.org/r/20250807-tlv493d-sensor-v6_16-rc5-v3-0-b80d2cb41232@gmail.com
 
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> +					      &iio_pollfunc_store_time,
-> +					      &nxp_sar_adc_trigger_handler,
-> +					      &iio_triggered_buffer_setup_ops);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Couldn't initialise the buffer\n");
-> +		return ret;
+Changes in v3:
+- dt-binding: rename to infineon,tlv493d-a1b6.yaml.
+- dt-binding: fix convention errors.
+- Switch to using enums for mode and channel where applicable.
+- Drop unnecesary input argument checks in functions.
+- Switch to u32 array for mode sample rate timing from single member struct.
+- Add note describing the I2C communication characteristics at the top.
+- Drop tlv493d_setup_ops and use NULL directly.
+- Fix typos in comments and commit messages.
+- Link to v2: https://lore.kernel.org/r/20250802-tlv493d-sensor-v6_16-rc5-v2-0-e867df86ad93@gmail.com
 
-return dev_err_probe. No need to print ENOMEM errors.
+Changes in v2:
+- Drop regmap implementation in favor of using direct i2c APIs to
+  have uniform communication APIs across the driver.
+- Remove custom device-tree properties as suggested and hardcode
+  setting operating mode in probe().
+- Derive and hardcode temperature offset from raw offset and compensation.
+- Add missing device name(tlv493_) prefix in global variables.
+- Change float operation with multiplier to fixed value(1100).
+- Change Magnetic field reporting to Guass SI unit.
+- User FIELD_PREP instead of direct bitwise ops.
+- Convert sensor channel parsing logic from Macro to function for
+  better readability.
+- Discard unused #define's.
+- Discard IIO_CHAN_INFO_PROCESSED.
+- Maintain alphabetical order of config options in Makefile and Kconfig.
+- Readability fixes.
+- Link to v1: https://lore.kernel.org/r/20250726-tlv493d-sensor-v6_16-rc5-v1-0-deac027e6f32@gmail.com
 
+---
+Dixit Parmar (2):
+      dt-bindings: iio: magnetometer: Infineon TLV493D 3D Magnetic sensor
+      iio: magnetometer: add support for Infineon TLV493D 3D Magentic sensor
 
-> +	}
-> +
-> +	ret = devm_iio_device_register(dev, indio_dev);
-> +	if (ret) {
-> +		dev_err(dev, "Couldn't register the device.\n");
-
-return dev_err_probe
-
-> +		return ret;
-> +	}
-> +
-> +	dev_info(dev, "Device initialized successfully.\n");
-
-Drivers should be silent on success and kernel already gives you
-information that device probed (or did not).
-
-Drop.
+ .../iio/magnetometer/infineon,tlv493d-a1b6.yaml    |  45 ++
+ .../devicetree/bindings/trivial-devices.yaml       |   2 -
+ MAINTAINERS                                        |   8 +
+ drivers/iio/magnetometer/Kconfig                   |  13 +
+ drivers/iio/magnetometer/Makefile                  |   2 +
+ drivers/iio/magnetometer/tlv493d.c                 | 531 +++++++++++++++++++++
+ 6 files changed, 599 insertions(+), 2 deletions(-)
+---
+base-commit: d7b8f8e20813f0179d8ef519541a3527e7661d3a
+change-id: 20250726-tlv493d-sensor-v6_16-rc5-18c712093b27
 
 Best regards,
-Krzysztof
+-- 
+Dixit Parmar <dixitparmar19@gmail.com>
+
 

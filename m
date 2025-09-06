@@ -1,165 +1,146 @@
-Return-Path: <linux-iio+bounces-23817-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23818-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C9EB46631
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 23:54:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B061DB46882
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 04:46:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8E93BE7B2
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Sep 2025 21:54:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF6EF7A94F8
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 02:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD365290DBB;
-	Fri,  5 Sep 2025 21:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C17176ADE;
+	Sat,  6 Sep 2025 02:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wGIX+wDD"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="CufvtUeI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DDD22129B
-	for <linux-iio@vger.kernel.org>; Fri,  5 Sep 2025 21:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC75F315D3D;
+	Sat,  6 Sep 2025 02:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757109249; cv=none; b=hW/JNWR1dYQAzChMFghlaFuyFqbo1z+xu/ZAHKRGXOuFftvXttzMJvNrzOLD/pAj2z3Dv9hX5wQmwpUBBwzzOg9RKqRwwxghEIPsxWp00JyWj/1utGDGXRpcX1gF4N8NR2+IqtcCQ9JAgbfjYnUHgszennRjGyjOaloAdXxTq+s=
+	t=1757126792; cv=none; b=f3pRIgZbBSudmZHIADQPOXUWqFCskyAglpeP5Su6u6lhtbQjSevJLha34lTBMIpNGkISCiLii94BKT9pYz5ivN0pJgyK6rdTPebrJzvu3ipYe1JwKxsK7Yf1L2jZZTDaI6+M6AXqhRK9ki/6CJhZRSK7HlFee9cBPTYKgHAj+RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757109249; c=relaxed/simple;
-	bh=j6tnYW71dNyHGysaY2hYHozv03AFzw5XgjK4LS781bE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kyfgc5807xgO335zHrpzPV35oQSxFvIFZv50n9tIdNdQsp0qRmD1B2gb1nlmc0R0myE55Q0zNQVm+5kbqZiegsoRK/cDQp+977D+jJXXylypQrRe2GiLbemGZIpnJ1eYXzIR7PZVxffAqTz/CHz9Fyt4tovEkSICQlMXfzArJfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wGIX+wDD; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-31d6e39817fso3286110fac.3
-        for <linux-iio@vger.kernel.org>; Fri, 05 Sep 2025 14:54:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757109246; x=1757714046; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=geUOZPIM1H0puFsovboYTPlTcH8IiFSVx5bKk2dh98U=;
-        b=wGIX+wDDzsdKFCHGb65u/lhrn0u1TNLsS1VY9/CQRAckXlYduc5Rs4tG1XPIxb1iDr
-         Efcx5FJD0KJ4piOY8j9vePaVcKVN4i9OTD7FZuYSjmR9X24VBJrj2xfZMER6IydpavjV
-         ZS4bVKMsemsjeE4zgNw7LC86QUgMMAh6iUbRm6x8NC/p2kAI5uJgYle/I67n6d9UIRjZ
-         iiAz5JAZaPuT+HV3KP5YhEQoS79Ez9pMQJL9mrVGZYoZCt2sisL3ryMVMN4YoaHi2Pb3
-         Tc5COqKIpAyPbguz45TiDQCTtBVX15y1bYhAMV2yAXbMYMzF43PWjLzeVqXn+vabebpt
-         SGFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757109246; x=1757714046;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=geUOZPIM1H0puFsovboYTPlTcH8IiFSVx5bKk2dh98U=;
-        b=Y06e4cm4iSRuscIxME0oqkRsh4e5TVRqGAJzBRYrYrLM0m99khAcOzECERrK/IVHJJ
-         D3yriz8QVMSW01vYzh5BUSkZG/ZbJrmyxSh5XHBLv7hCCDzVAVG6SKWEY214xO72SDb7
-         z+Qp8trdYqKMFolI/4YKwwex4XoEkIxryMt/fkwwGf/I/W5S58hjeRPaEwrgBptJBRle
-         Dj59Y0cwhmXRVmJyXRw1KV6KYt6du7dUstjuQXEj8ddRv//ONiF6rhqvV9B4Ay3FAiMh
-         dsYe8V2OxEF9MNh4WyZl8EY+nSFMs13RIh4m2sLw2Biopef/vVFfAAn8y4uW2zlp+VSV
-         zhww==
-X-Gm-Message-State: AOJu0YwJBQOiFJIbzbD0igGsgH4ZMRUXsDe2NScXF9wlYbkmqvUZl8gB
-	VQZ2xTEJtZSkLJlHp/x0YCgP0hGh0lo1WDBVXGYVrCSJdVaPGZTgrKQ/DFjcbNTWNa0=
-X-Gm-Gg: ASbGncviRUiGrx+ou02phMA8mxQ5vcMgmwAM3k7MYobtUnLYbiq2la10iFV4Bot099h
-	g3GVxnT1NWp++LbJh6cJblGdpJxKnJe/jrCsfTENUVkxeB6XIV3OcIPg/A+hYZUF3aF7degnb/K
-	n4xrmTT4evFccFczecr/TcILGbLt3/yeKWHtCVunNGlZxEdHwAiRiFhtnnZUvxpTOiMzRtK1I8D
-	l1BnSWYUEEDfXj+IQIamgRSZpTRqeSWl3Rvr2yfcA1iuVwT50HUCh56hYjr3if8kWxGLsTVlW2P
-	YecZ8eRDj80haGrskoRR5XVVghNpDK4b4NJuDr9b6qM+n3FwZ/LwoezEYZ7jxqdY4VcgQIXrnq6
-	mTds8gKI9TC+YHhoEfdHKCIQn0VZ0XfbXaB2lbaNjEvjs42pV0izc2+Url67Ou2/7YY/d/7dl
-X-Google-Smtp-Source: AGHT+IGfk5K+s35XPShmflVbwVdAHvuZ3nG91RGSV8iFUqGTJlmmKaTQGR4sWgOGsMuN+p485ER7/g==
-X-Received: by 2002:a05:6808:6c88:b0:437:decf:ab53 with SMTP id 5614622812f47-43b29ad3d9bmr183404b6e.30.1757109246626;
-        Fri, 05 Sep 2025 14:54:06 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:52e:cda3:16cc:72bb? ([2600:8803:e7e4:1d00:52e:cda3:16cc:72bb])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-43836abece4sm1977636b6e.28.2025.09.05.14.54.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Sep 2025 14:54:06 -0700 (PDT)
-Message-ID: <e5e76789-c8d9-463c-aa01-f2c6ae718f74@baylibre.com>
-Date: Fri, 5 Sep 2025 16:54:05 -0500
+	s=arc-20240116; t=1757126792; c=relaxed/simple;
+	bh=cuSltagikN408QYHgTooo1E013IEputmPRHwQWankWo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fXUPBw/0AzdSr9E1e9Gg62eOcvhAe2Y0OkgYxt00MGGbhxuoUbd77dd5zShRsaqNzOVMYouBdKggK1j/1/k7WKPf0YAVE0XEUP4cvxasZyl/OeFcMyXI3H9TSiXecnyaS2X/AxnyNXvV3wIenaZzw1AMD7itnQ9NSPpEHGFWckI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=CufvtUeI; arc=none smtp.client-ip=172.105.74.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from sunspire (unknown [IPv6:2a02:2f0e:3503:4a00:e2d5:5eff:fed9:f1c4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 717B1173BE2;
+	Sat, 06 Sep 2025 05:46:20 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
+	s=mail; t=1757126780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ir5fLotwZ2l/CmwU600U+FfTQJnBZC4n4ZqVBgoFiWE=;
+	b=CufvtUeIiv+3FiXH4jZQQDFHJO2syczrGAD5bkh8pB1/M/0ukulRih2Isj42BVwo1hwqOV
+	ocM6RS+TfnjvlCDELUpAw95H/d/phrUfSvfyNc+l195FLSsGD/U3hL2dWeuexYv+d+hfkg
+	zaVuGc5kTvGDILp8xo9xr+2tl6QNCvzAC8ILKS1tRWccCRDOmnhS2B7yniqQIQevdlAPVX
+	2SVrJgxWjqAyS40AAorkFnRaBCW2OtzchNMAeW4aAyqoGk3qxYu0hiMnJ8KyHtwIAKyMh6
+	u9QdF4n4NUzC2UAMeIVUMzOzoV7+teP7NyNii/XJCRJSt8F35g4gis3V6c4UJw==
+Date: Sat, 6 Sep 2025 05:46:17 +0300
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>, Nuno S?? <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>
+Subject: Re: [PATCH 01/10] dt-bindings: iio: accel: bosch,BMA220 improvements
+Message-ID: <aLugeZiJjJhTpwUO@sunspire>
+References: <20250901194742.11599-1-petre.rodan@subdimension.ro>
+ <20250901194742.11599-2-petre.rodan@subdimension.ro>
+ <210871b8-4967-40c9-bbaf-338d2d6d9c63@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] iio: adc: Add the NXP SAR ADC support for the
- s32g2/3 platforms
-To: Daniel Lezcano <daniel.lezcano@linaro.org>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>, jic23@kernel.org,
- nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, conor+dt@kernel.org,
- krzk+dt@kernel.org
-Cc: linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
- ghennadi.procopciuc@oss.nxp.com
-References: <20250903102756.1748596-1-daniel.lezcano@linaro.org>
- <20250903102756.1748596-3-daniel.lezcano@linaro.org>
- <eedbfbfd1ba625b6750eb3ae20a69301b8bc3ef9.camel@gmail.com>
- <0bfce1eb-69f1-4dae-b461-234eb98ffce1@linaro.org>
- <a3373804-08a4-4526-a432-c21a74ea3d6b@baylibre.com>
- <edc8e024-e425-49de-bfa2-44218fe72e26@linaro.org>
- <6b8cd005-b04c-4dd7-abf7-5a51319a5f0a@baylibre.com>
- <23b80d52-6149-483b-a159-276dd00d12cd@linaro.org>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <23b80d52-6149-483b-a159-276dd00d12cd@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <210871b8-4967-40c9-bbaf-338d2d6d9c63@baylibre.com>
 
-On 9/5/25 3:58 PM, Daniel Lezcano wrote:
-> On 05/09/2025 17:25, David Lechner wrote:
->> On 9/5/25 4:44 AM, Daniel Lezcano wrote:
->>> On 04/09/2025 19:49, David Lechner wrote:
->>>> On 9/4/25 12:40 PM, Daniel Lezcano wrote:
-> 
-> [ ... ]
-> 
->> Taking a step back, what sort of real-world uses cases do you need to support?
->> Or are you just trying to implement everything that the ADC can do? The latter
->> can be a bit risky because you might end making something where you can't do
->> a buffered read and a single channel read at the same time, but later find out
->> you have a real-world application that needs to do this.
->>
->> It looks like it would be possible to implement buffered reads in lots of ways.
->> IIO devices can have more than one buffer per device so we can add more in the
->> future if we need to. So I would just drop the DMA part of the implementation
->> for now and implement the basic triggered buffer using MCR[NSTART] and ECH
->> (End of Chain) interrupt request and just reading data from the ICDR registers.
->>
->> I would wait to have a real-world application that requires DMA to decide the
->> best way to implement that. There are lots of possibilities, like does it need
->> an external trigger or is continuous mode good enough? Does it need to be cyclic
->> (something the IIO subsystem doesn't really support yet) or not. Is exact sample
->> timing important or do we just need a big buffer? These questions we can't
->> really answer without a specific application to use it.
-> 
-> In the case of this IP, the use cases are in the automotive context. The system running on the APU is supposed to monitor at high rate (or not) the different channels which can be connected to any device the integrator choose to use.
-> 
-> For this reason, the driver should be able to support the different modes because the integrator of the car computer can decide to monitor the devices connected to the different channels differently.
-> 
-> Said differently, we need these modes because the capture depends on what the integrator decide to connect to the different channels.
-...
-> We just know all these use cases exist.
 
-Changing the order here a bit:
+Good morning.
 
-> or just read the value at a low rate.
+Thank you for your feedback.
 
-For this, I think reading _raw attributes/in-kernel APIs/INDIO_BUFFER_TRIGGERED
-(no DMA) covers these use cases.
+On Fri, Sep 05, 2025 at 03:15:55PM -0500, David Lechner wrote:
+> On 9/1/25 2:47 PM, Petre Rodan wrote:
+> > diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma220.y=
+aml b/Documentation/devicetree/bindings/iio/accel/bosch,bma220.yaml
 
-> That could be a real high rate sampling, 
+[..]
 
-For this, devm_iio_dmaengine_buffer_setup() should work with continuous mode
-to sample as fast as possible.
+> > +  bosch,watchdog:
+> > +    description:
+> > +      In order to prevent the built-in I2C slave to lock-up the I2C bu=
+s, a
+> > +      watchdog timer is introduced. The WDT observes internal I2C sign=
+als and
+> > +      resets the I2C interface if the bus is locked-up by the BMA220.
+> > +      0 - off
+> > +      1 - 1ms
+> > +      2 - 10ms
+> > +    enum: [0, 1, 2]
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+>=20
+> Why should this depend on how the chip is wired up? Normally, we don't ha=
+ve this
+> sort of control in devicetree.
 
-In both of the above a sampling_frequency attribute would control the prescalar
-of the ADC bus clock to give some control over the hardware sampling rate. There
-is no IIO trigger device in this case.
+I was also unsure on how it would be best to implement the feature, bellow =
+is my thought process.
 
-> or triggered with a dedicated global timer on the system 
+The feature itself is definitely required for the i2c implementation of thi=
+s chip. I have witnessed it pull sda low for no good reason twice over a 10=
+0h period and this would render not only the chip but the entire bus unusab=
+le until a power cycle.
 
-For this one, we would want a `trigger-sources = <&timer>;` property in the
-devicetree to connect the timer trigger to the ADC. This would probably trigger
-a DMA transfer if precise timing is important. In this case, it might make
-sense to have a buffer/sampling_frequency attribute to control the timer. There
-wouldn't need to be a separate IIO trigger device in this case either.
+I think from a driver perspective ideally WDT should be set very early - wi=
+thin bma220_common_probe() would be ideal.
+
+> E.g. if it is useful, why shouldn't drivers just always enable it?
+
+The registers holding the watchdog are all zeroed out after power on which =
+mean it's off. I think the driver should also default on this setting. In m=
+y first implementation I had it hard-wired to 1ms, but I felt this would im=
+pose my point of view on users and it would be nicer to give them control o=
+ver it.
+
+If you guys think that the devicetree is not the place where the WDT should=
+ be set that is fine by me, would you recommend something like module_param=
+() instead?
+
+> If we can make the case that it belongs in the devicetree, it should use
+> standard units, e.g. property should be watchdog-timeout-ms with enum: [1=
+, 10].
+> Maybe 0 for disabled is OK too - in that case should have default: 0.
+
+Oh yes I can see it in bq256xx.yaml, to me this sounds absolutely perfect.
+
+
+On a different note, from a reviewer's perspective would you prefer the nex=
+t revision of this patch series to cover less ground? I was thinking about =
+leaving everything event related for later since I might go past 15 separat=
+e patches if I split every modification into it's own separate entry.
+
+thank you again,
+peter
+
+--=20
+petre rodan
 

@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-23820-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23821-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC5CB469ED
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 09:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70EB4B469F5
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 09:34:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0B34A454E3
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 07:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B3F53B4B94
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 07:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE982C08D7;
-	Sat,  6 Sep 2025 07:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4A92BE625;
+	Sat,  6 Sep 2025 07:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dPtF5NVa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9QE71hT"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848291E1C36;
-	Sat,  6 Sep 2025 07:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDB81367;
+	Sat,  6 Sep 2025 07:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757143776; cv=none; b=oRr1Mq9Kj7mAzuSKce1zDYwmuMrpbQH6osdJf4ByO6Or7IeF5z8Jsde4q4xQwuPkiAa/+VhEvG4QRyhxf9U4UYVZ3WYjvlihSfSGPe+aouIA8o75rd5gdZivQp0nYcgEdZBxxwJGmxosZkizby6aufY5FhgSekDAFy0rourDOP4=
+	t=1757144057; cv=none; b=MR7itq4oqcZPBTcM5r61EPO2NiZm2rM8D/GqC5P9M9wJEjlbRz55JYFa1tfLanwoqU5kQ0ia6I9Yy7gERbPSkSaMvM460jHHV2KHRY+aEl+n/KnWkbFExyfUB/xF3xik8fzcjDu1OsrvMsQIz0oDHa6WVts6IIGPcKg3fdxiowI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757143776; c=relaxed/simple;
-	bh=czh64jB6XHUQ8fFac0kwfS34q6UgchjrBZa0/fTBu4c=;
+	s=arc-20240116; t=1757144057; c=relaxed/simple;
+	bh=CzrINzb1gVzemPgQBp2NTYknWIGfYfK3mWOn6E7JOss=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QBOYBn57OPWsY74rALPG6uHFx7PGl4OVBah5sZ8E0B9sw4V0dMI9rknAX1ZKsWgtbx1Lk//LFbJlBn5hQNFUmZwLhN6nxgMqu0RSb+KM5seZ8EA+RPJ4vbPzGQbn/arsbooSe57VQ4eLCvQcpp2e+JNr0Fkav/COKSq2XQH2v6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dPtF5NVa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8F6C4CEE7;
-	Sat,  6 Sep 2025 07:29:32 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=JYDCkEnQE34Rt4g8+KBOccSvwEI2f+TDm2dd1R3rw2CICF+bPs1pQiPMulnz01Z6B0n+K/GuNgODN3axe+s0DGvhu+Or6TY5TJFqasGUZfg+I6Y4xRYJ6AtQLm9Ax+8VstUDt/4+rak1rZ7HvyRrNjF4w0AAVG7m+862DNaLB2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9QE71hT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FB3C4CEE7;
+	Sat,  6 Sep 2025 07:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757143776;
-	bh=czh64jB6XHUQ8fFac0kwfS34q6UgchjrBZa0/fTBu4c=;
+	s=k20201202; t=1757144056;
+	bh=CzrINzb1gVzemPgQBp2NTYknWIGfYfK3mWOn6E7JOss=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dPtF5NVaY/X+76l3gxZp7lAHEJvHeHatNhXmA2ziNlwYWAJTavFZ6dKMjanW34EfS
-	 1icRiqU/+3rfQA8rFtYbXQeHZCuKcSCqTJH4IrerbK9rsR+bWND/PYIOEwucVcvGOz
-	 MVjuiDNRYMR4zXianBM8EosQZJF+syiMhHjt4gHY84NmoZzIqr+695A5XmAx8THvK8
-	 iySvEY6t6kvWBk9uR2U3FYboeyjcq14C6u7bCNnsBxUd02jy0T6ystozfIuDYwfwLe
-	 prTFe31IIoWtzkmyMHV22ECQMw7qmrC0s/DiG3r9M4Vt211H4i7ARUbc6SFiGSmNbI
-	 82FBrpE+3TCOw==
-Message-ID: <db84ac3a-9cd4-48ba-8da5-fb972262e044@kernel.org>
-Date: Sat, 6 Sep 2025 09:29:30 +0200
+	b=l9QE71hTXsPeIbt91YKvGQboXbWAIeQNHC/ElefCF2EhSVnx3ZxrB7cOvoZE5pfqt
+	 fOwDqO8hK9+TjfsNMF0PBKCJghdB4djMYNgfUvdVho+QeVauC1D28E8HAOueEh3r1t
+	 PPI9DZyguyldN3rvLKCL3ENWPdIlP82R72l9ojCcpdQh+VyUhev5KUvMOSr0tbj4+Z
+	 EHf3W2TI6uq2S8ErI+g54HO+F/0NEA/8tKDOJu5mPQSv7qleyyfORr5fmwLb/Xzkcx
+	 nm+mHneGurIV2nP0Aj4YDoWlp1i5mDmJEJRyJu2hiWK11mB0JQ299xiTeMZtZuyBt3
+	 1W6LBa56FO+1g==
+Message-ID: <6988c5d0-796a-4ab0-88d5-7051c80b5bba@kernel.org>
+Date: Sat, 6 Sep 2025 09:34:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: Add the NXP SAR ADC for
+Subject: Re: [PATCH v1 2/2] iio: adc: Add the NXP SAR ADC support for the
  s32g2/3 platforms
 To: Daniel Lezcano <daniel.lezcano@linaro.org>, jic23@kernel.org,
  dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
@@ -59,7 +59,7 @@ Cc: linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
  ghennadi.procopciuc@oss.nxp.com
 References: <20250903102756.1748596-1-daniel.lezcano@linaro.org>
- <20250903102756.1748596-2-daniel.lezcano@linaro.org>
+ <20250903102756.1748596-3-daniel.lezcano@linaro.org>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -105,57 +105,96 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250903102756.1748596-2-daniel.lezcano@linaro.org>
+In-Reply-To: <20250903102756.1748596-3-daniel.lezcano@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 03/09/2025 12:27, Daniel Lezcano wrote:
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - const: nxp,s32g2-sar-adc
-> +      - items:
-> +          - const: nxp,s32g3-sar-adc
-> +          - const: nxp,s32g2-sar-adc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    minItems: 1
+> +#include <linux/dmaengine.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/module.h>
+> +#include <linux/of_irq.h>
 
-Wrong constraint, look at other properties here. maxItems
+Unused header
 
+> +#include <linux/of_platform.h>
+
+This as well. OTOH, you actually miss the header you use - of.h.
+
+> +#include <linux/platform_device.h>
+> +#include <linux/slab.h>
 > +
-> +  clock-names:
-> +    minItems: 1
-
-Missing constraints, just drop entire clock-names.
-
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +#include <linux/iio/trigger_consumer.h>
 > +
-> +  dmas:
-> +    minItems: 1
-
-Also needs fixes.
-
+> +/* This will be the driver name the kernel reports */
+> +#define DRIVER_NAME "nxp-sar-adc"
 > +
-> +  dma-names:
-> +    const: rx
+> +/* SAR ADC registers */
+> +#define REG_ADC_CDR(__base, __channel)	(((__base) + 0x100) + ((__channel) * 0x4))
 > +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +  - clock-names
-> +  - dmas
-> +  - dma-names
+> +#define REG_ADC_CDR_CDATA_MASK		GENMASK(11, 0)
+> +#define REG_ADC_CDR_VALID		BIT(19)
+> +
+> +/* Main Configuration Register */
+> +#define REG_ADC_MCR(__base)		(__base)
+> +
+
+...
+
+> +	indio_dev->name = dev_name(dev);
+> +	indio_dev->info = &nxp_sar_adc_iio_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
+> +	indio_dev->channels = nxp_sar_adc_iio_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(nxp_sar_adc_iio_channels);
+> +
+> +	nxp_sar_adc_set_default_values(info);
+> +
+> +	ret = nxp_sar_adc_calibration(info);
+> +	if (ret) {
+> +		dev_err(dev, "Calibration failed: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = nxp_sar_adc_dma_probe(dev, info);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to initialize the dma\n");
+
+return dev_err_probe
+
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> +					      &iio_pollfunc_store_time,
+> +					      &nxp_sar_adc_trigger_handler,
+> +					      &iio_triggered_buffer_setup_ops);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Couldn't initialise the buffer\n");
+> +		return ret;
+
+return dev_err_probe. No need to print ENOMEM errors.
 
 
+> +	}
+> +
+> +	ret = devm_iio_device_register(dev, indio_dev);
+> +	if (ret) {
+> +		dev_err(dev, "Couldn't register the device.\n");
+
+return dev_err_probe
+
+> +		return ret;
+> +	}
+> +
+> +	dev_info(dev, "Device initialized successfully.\n");
+
+Drivers should be silent on success and kernel already gives you
+information that device probed (or did not).
+
+Drop.
 
 Best regards,
 Krzysztof

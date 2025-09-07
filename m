@@ -1,68 +1,57 @@
-Return-Path: <linux-iio+bounces-23849-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23850-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5C2B47AC7
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 13:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80899B47AEF
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 13:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 773E13AB525
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 11:19:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B81D3AB87D
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 11:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2DC25FA0F;
-	Sun,  7 Sep 2025 11:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E72261B60;
+	Sun,  7 Sep 2025 11:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BfD/CFLD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jNI3J4+e"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E31723C4E1;
-	Sun,  7 Sep 2025 11:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4968918FDAB;
+	Sun,  7 Sep 2025 11:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757243962; cv=none; b=kblzamoeW9YCn0FxnZDLxL3Udh9wYQc8dKH9Ri6jvv6d1tENCqwXgj490+Q+adB0cfQTazqwhxnHSkvHGbI+wF8r4r6hbZbvXvYxlRnFuRGeBHab9qto19VtP3yETAlQTVrR0BoHlIIbjRX6MvkD5dJCuHgG/lFSbi18ThcKri8=
+	t=1757244311; cv=none; b=n6CfAWWZqtsGaHb5QRG9C/MFD+5zzqr/U9PAJuR6Ob8lV5ed5iisBzZ5BRicQM6RaCSNx4WBnwl0pc4DqfqEFMFHtARg4RilEM+tIThDGNv28Ll+ksjtPR3i06PxEre3fQm1OkAp+ebkdbLbe9gKz2QZNVlOzxQi6nYW+G9sy9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757243962; c=relaxed/simple;
-	bh=fDoAKMJaeYEEYbOBCIEyDcPkC1/z8ZJGDMMAkBGmph8=;
+	s=arc-20240116; t=1757244311; c=relaxed/simple;
+	bh=ekVDRngXVS5ba6K8MKRdMT2eQXIh+YNQ4gYcLuGteZM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jIr6qNVOF7xrlUATY99w1xYFnt2OoB+3VbKDtAurj6E7FiQfpTaggWeYurknqK6UjoZeHQi0jTTcxSLZ3Lzs+yqEjGW96/7MrmRpNm3BiwFVJFUgOLtBSxJHMjc9WHxzADKwqGJqTRVN2R0nF+3gi5uRwTsdUlh6J9VkjYzejQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BfD/CFLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE41C4CEF0;
-	Sun,  7 Sep 2025 11:19:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O3daqoGQZKkNySCyjbgjw5ZoS+DMxm3cZ2CWOUdqBOIypDNN6asYueza2Dh8/DM7Rh/hNt1vnjZ4A8E2dYpO/bSzAyPawBEHXQWe8uSK4IxgcAGHh3eu0Sjba1jXrd5l2EzDPh3a4CLQAucmpqLQfDLDSnD8ZYlxr8ypQGfTYJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jNI3J4+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB819C4CEF0;
+	Sun,  7 Sep 2025 11:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757243962;
-	bh=fDoAKMJaeYEEYbOBCIEyDcPkC1/z8ZJGDMMAkBGmph8=;
+	s=k20201202; t=1757244310;
+	bh=ekVDRngXVS5ba6K8MKRdMT2eQXIh+YNQ4gYcLuGteZM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BfD/CFLDunYFmGPb8op/nsyheiwx8oYcZErBODNLcs8ed4gZInOOLEUlag9B6lFXQ
-	 InlR/1mX9GHgIz7FQk/XQ/XNFuYEivGWU/jJ1fjg5SIY4Ew8oRPlZOq0b981J+1PJZ
-	 CpqX4xjlBaogA/mpe9uW2O0mkXQfot1bzI2oAFGG95UFIEGMMIOnezuskWa9Eh+BW9
-	 S4ZA+uNPBDNE1yvAobUCsAz7HaatGT21eSg9jmQFFGJRbas/6cN0Y4AsdEpKewmjnp
-	 6v4Pi5HYKOoUfMJL//LYmTNMHnStrQKeVVA/9i5wIIpuxic/F99F7HG0IMeh/aX9N+
-	 UBxNLxpTzKrIw==
-Date: Sun, 7 Sep 2025 12:19:11 +0100
+	b=jNI3J4+e/NjKDQ5PcCUQnPjTQV693RwQto1TAaTLrSa9En0aK5m7xYnsHzrZ6y4Ft
+	 MsI8WylIFbKI225J9LLmv4zaNqcY/z7QT0EtapnoyGgCHvybKhDDRAPf8gq9jmM4uJ
+	 jq9BAtDQRHr0RlG/cTM3Q6JW8Z+rdyx2fpsNr0+jEY0JHdiJ4Myre/bEjJUauvdg70
+	 GXRFMufP/RwXzi+hca4Nfj7KmQ1AFA1OJqb5+bDL1FNE5uSREITsRWC49EJMvOyBI7
+	 vXld8GJ4s7VxFc6bg16/94EwYTsOWgJ2KvRViF7CHTdGO++EeWKg+nAhMS0SUw0lBg
+	 VrWTO52DwDEJg==
+Date: Sun, 7 Sep 2025 12:25:03 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, David Lechner
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Marius Cristea <marius.cristea@microchip.com>, David Lechner
  <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Linus
- Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Tobias Sperling
- <tobias.sperling@softing.com>, Antoniu Miclaus
- <antoniu.miclaus@analog.com>, Trevor Gamblin <tgamblin@baylibre.com>,
- Esteban Blanc <eblanc@baylibre.com>, Ramona Alexandra Nechita
- <ramona.nechita@analog.com>, Hans de Goede <hansg@kernel.org>, Herve Codina
- <herve.codina@bootlin.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: ROHM BD79112 ADC/GPIO
-Message-ID: <20250907121911.7c2fa1cb@jic23-huawei>
-In-Reply-To: <fc3cffa3b75d1fcd19df0ff794e6ad75c8c87373.1757053456.git.mazziesaccount@gmail.com>
-References: <cover.1757053456.git.mazziesaccount@gmail.com>
-	<fc3cffa3b75d1fcd19df0ff794e6ad75c8c87373.1757053456.git.mazziesaccount@gmail.com>
+ Shevchenko <andy@kernel.org>, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: PAC1934: Use devm_mutex_init()
+Message-ID: <20250907122503.226b622a@jic23-huawei>
+In-Reply-To: <f92033415f43aa02fe862cb952e62b6ded949056.1757239464.git.christophe.jaillet@wanadoo.fr>
+References: <f92033415f43aa02fe862cb952e62b6ded949056.1757239464.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -73,77 +62,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 5 Sep 2025 09:42:18 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Sun,  7 Sep 2025 12:04:48 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
-> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
+> Use devm_mutex_init() instead of hand-writing it.
 > 
-> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
-> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
-> daisy-chain configuration) and maximum sampling rate is 1MSPS.
+> This saves some LoC, improves readability and saves some space in the
+> generated .o file.
 > 
-> Add a device tree binding document for the ROHM BD79112.
+> Before:
+> ======
+>    text	   data	    bss	    dec	    hex	filename
+>   50985	  23992	    192	  75169	  125a1	drivers/iio/adc/pac1934.o
 > 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
-Trivial comment below.  If everything else is good on this version
-it isn't worth a respin.
-
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        adc: adc@0 {
-> +            compatible = "rohm,bd79112";
-> +            reg = <0x0>;
-> +
-> +            spi-cpha;
-> +            spi-cpol;
-> +
-> +            vdd-supply = <&dummyreg>;
-> +            iovdd-supply = <&dummyreg>;
-> +
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +
-> +            channel@0 {
-> +                reg = <0>;
-> +            };
-> +            channel@1 {
-> +                reg = <1>;
-> +            };
-> +            channel@2 {
-> +                reg = <2>;
-> +            };
-> +            channel@3 {
-> +                reg = <3>;
-Trivial point but I get bored scrolling.
-Would a smaller set of channels allow you to provide same level
-of testing / documentation?
-
-> +            };
-> +            channel@4 {
-> +                reg = <4>;
-> +            };
-> +            channel@5 {
-> +                reg = <5>;
-> +            };
-> +            channel@6 {
-> +                reg = <6>;
-> +            };
-> +            channel@16 {
-> +                reg = <16>;
-> +            };
-> +            channel@20 {
-> +                reg = <20>;
-> +            };
-> +        };
-> +    };
-
+> After:
+> =====
+>    text	   data	    bss	    dec	    hex	filename
+>   50654	  23920	    192	  74766	  1240e	drivers/iio/adc/pac1934.o
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Applied. Thanks,
 

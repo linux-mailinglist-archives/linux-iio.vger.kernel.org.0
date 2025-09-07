@@ -1,182 +1,430 @@
-Return-Path: <linux-iio+bounces-23857-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23858-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E67B47B62
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 14:42:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8BAB47B67
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 14:45:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BC66189FF22
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 12:42:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 663233B65BC
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 12:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0015A26F29F;
-	Sun,  7 Sep 2025 12:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8EF315D2B;
+	Sun,  7 Sep 2025 12:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="He3WXDuW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H64Ov2A3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B555C88;
-	Sun,  7 Sep 2025 12:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22653A926;
+	Sun,  7 Sep 2025 12:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757248917; cv=none; b=DO5k9DQ4THPrNBE7TyyC/nshDBQqJSjokMFZgrw1XlvGRNbyYf3yhkgVHokBIewc5j8pXoqp9vITGS1obLlZToVzHATxRWVsoSH/Za/1CaJrSvjtt21MFyVoQXUGj3vGUPJKheNkEl0R8Kwthc+lr475INWKVv/WX0EoLebyb0Y=
+	t=1757249114; cv=none; b=D2GCkVPf8u2IdVbwk55pQ1yW8RzVnvrm4XUamlgUE0hqLkJtoZq64mMOUw44f7i++twymTdW6ZZtuWxgZQSUqFs3wFLNLO5OOraUVHadsY9H4NWmzUh/kVkvBU/yPY+pbMo6TGVA4+hQl/H8yHOkr26h+WhR5IdV6MwW4ye/BKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757248917; c=relaxed/simple;
-	bh=SnHjhs2yApPbBCCwhqp/mqzVT1uN/mjFIYxuY+jSiZU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uS62QN/yVgSvkSRz38F8/IZzgjqxq33I+pSEAZb4s/rSEBaaKfbUt6POD3Kht9C1AUTmRK5TnFv0j2bcOjdRq78PnLsLPZpfEMhyTSSkbdkTZ1urPXl85PdLW66slD25BjWJbg4JLMJce2RlSkNy+Ezm/Hbwjd7YkJYegbtwG9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=He3WXDuW; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-337e1ce5dd1so26888811fa.3;
-        Sun, 07 Sep 2025 05:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757248913; x=1757853713; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=En4pEgo3HzN81VOXQC3uWh3DV4FBwtg/Su3ZTWTLHHg=;
-        b=He3WXDuWYIa19HQIiyPhx13O7m9oHdhduONRqMxEwKBfXLY6Sh95Ov2nT/GYA7YRHu
-         cba7enNe0hIWud35WNmAZkcLOa0rcrwBohTPplTx9TVWJLid+o5JAh5nHqTZU5eNgG1x
-         7q0Zg/kBV2xTFJgf8zL0VpOdnDEoR0TDhkNg3W5wDLRDpsllltxLsony0aFTx1sIymjO
-         teRmtgOJp3qpLqkzSLnyBe50/UPhAz5scPqxGHXntXQfkzgifozrR9HROGvr8MFu8f08
-         GWOzQEkWiuPNPJLrmQvD6ZnVIEgMgwbqBd5Hoph+vWCpMc392d/Xl7hXarC1k7W/MIky
-         R5ZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757248913; x=1757853713;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=En4pEgo3HzN81VOXQC3uWh3DV4FBwtg/Su3ZTWTLHHg=;
-        b=LWr69nYjdEiOjeaK36DKKxr4BmKL0t7g94bkoqAuRD5YZNzp+CIkhOx5RdbZym6JgX
-         GSHWkcdIMGmS71MHcjsRKyZKYeGX2WYYa1N6Qid0vPLwWCVtySKK+Oc42GIho3yDQJRO
-         kAV/8cz2JylSXfAWFJWOB8YsFAFD2km9AiVcrp5MrZ2BhmdBfZ2yhol4wFf6iiYzxa/Z
-         EuTbQAcVs2xKVJXRTXC5xcKjvkSQB61oicrnAY+AJELfTnUJl1KBT2ppF8SkNr136Q+R
-         yo5SNVrnVFRZcPDxLOmhREWqpLXWFolwlcUlg+GQbdnjh1gCVSoHNlJZy1qpd+kVki2D
-         x59Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU58SEgW9GJ9lf8rrGbhiC6oUmWRViUgrqQ9Ns+A3kiNxcm3Yhi+FYQJdUMMVsxKAnFddbCu4AL/k3Gug==@vger.kernel.org, AJvYcCUMBtm6w34lt2DGQBSCoenxfXWbrBX4O+dEsQOhhi2uTcNt6IhwGbNIBEcoMB8DLY98/yDuDwjeOBtP@vger.kernel.org, AJvYcCW0E33OaPDzlBNv86vwKtzHGl+qgyTZNTLoUGxngyRWjzOx+aJd9qpZCJu/gHAFCJ7c1xfmbjla21bGbCne@vger.kernel.org, AJvYcCXZ6yhTUDG9zS41hQT7nAQLP409UmO79GXotZZP+o2cwJWM4Bjlgw2G3+1lZnKfOIEQo9YGhKuJwTC3@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeGPiDcyEiTvPyDOwNYtWVcwdpq0YUNW1B8Q0QuQMxtIjRNtwx
-	RFi8JmvvZATlalk8lfoajSDktwIcgK2H1xQxPW8CuDVNyFbCORJ4mZep
-X-Gm-Gg: ASbGncuYMOtPjBkcR5SXVggOZVplcBN0qDoO80v5UWw82Nse2Qi9fzZ+30ArTzHoob6
-	6c5ukv5aS4kqxamWcP624Rm0OWGg8TuOI7Pp92rbXQKQGSZ3zjV/AXMmgAuE7cL0VJEsikjF2CC
-	aecLpWIpdfblGZ9GnBlU9gP/rnPfbBSWvRi6uwPhSbjjXUNrx1OlsRcpTuvOV02lzhCt8iqWi4L
-	TNeC8Sa2ufE+45KjLnO+j8lxyRf6+nCBIxQb/4q9XD40cpK8SEWPYbm1r4a9Nc4Z23oGFOKdE0V
-	hcY+ggzDCAbJHjUvlJ8D2+exF0yl+znc4kZrqX6lQWrrUr6cjkHhpP2j+lu786i/FzHnvFNn+ff
-	DaYWJW+3/3YGe7Io8E6KT5zn2bjpO+OdBn4sWAcmIeJttBtaSjlPymhQ2hVv3qvGDrSyYiXFoz/
-	Fwv3o1FvtVUJiJcmE=
-X-Google-Smtp-Source: AGHT+IGIVc7DdUcow7qdN0jKbRXTXIAiOaBlx1JI72g5IVucoKwojWQtzdcnKlAJrBM/N5ve3UFaYg==
-X-Received: by 2002:a2e:a54e:0:b0:339:1ceb:33db with SMTP id 38308e7fff4ca-33b608c5982mr12243511fa.38.1757248912796;
-        Sun, 07 Sep 2025 05:41:52 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-337f4c5030csm29410381fa.9.2025.09.07.05.41.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Sep 2025 05:41:50 -0700 (PDT)
-Message-ID: <ecd6cf45-0d60-4f88-a24a-14a5b84c4007@gmail.com>
-Date: Sun, 7 Sep 2025 15:41:49 +0300
+	s=arc-20240116; t=1757249114; c=relaxed/simple;
+	bh=F8uNtGNfOi/fhZtdHKn/ryhrWpq/lRAT/NMO3s8pGBk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mBI3vQU+Oty3gqO9miQbpW1dvNgoxO77/MbV+mYCT34SkytJyj79YOwtQVxpCYTtCQGnadDg4H5D2OgcfTfAPqIFSTRN8c7UrxdJbCcA+fhtNrhbx762ru2pMYTpaQN5ENk6eVybGAIk0I7oZb5UTt27wPlW0Oh0gRPl6Y8lLCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H64Ov2A3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7272FC4CEF0;
+	Sun,  7 Sep 2025 12:45:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757249113;
+	bh=F8uNtGNfOi/fhZtdHKn/ryhrWpq/lRAT/NMO3s8pGBk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=H64Ov2A3idHbxstsiDVDzm2VViOidutUhtdhZfBiq5h1QcdbgEoC3RN9owcPs5+8P
+	 pGzr1l3IjnWGgw0M3XQStGeeR2QsFtIwZ3k0ve7M401X+X8WT33fBXrlfq09bkRAve
+	 poz6T+Rxvkbobd+OLnnjkzNkUR4gGKLhJZmQo6nRDD2ohRcE3bTkapszNbp7f+WVHk
+	 8wULMpYVNtOAQ1ZpocRj+AvJdftJpESUaA0TY7mF9NbyG5e6Rxt0n42tVKBBpzmuRf
+	 zNRRqHpadK5SLMyk75PRqeXJjRabdYpvlP9+1q+ry4K9aF44D6l3HLgh8Mo2tiLMOB
+	 aCv1HrDMM5oEg==
+Date: Sun, 7 Sep 2025 13:45:06 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH 03/10] iio: accel: BMA220 migrate to regmap API
+Message-ID: <20250907134506.580de654@jic23-huawei>
+In-Reply-To: <20250901194742.11599-4-petre.rodan@subdimension.ro>
+References: <20250901194742.11599-1-petre.rodan@subdimension.ro>
+	<20250901194742.11599-4-petre.rodan@subdimension.ro>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-To: David Lechner <dlechner@baylibre.com>,
- Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij
- <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Tobias Sperling <tobias.sperling@softing.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Trevor Gamblin <tgamblin@baylibre.com>, Esteban Blanc <eblanc@baylibre.com>,
- Herve Codina <herve.codina@bootlin.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- Eason Yang <j2anfernee@gmail.com>,
- Pop Ioan Daniel <pop.ioan-daniel@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org
-References: <cover.1756988028.git.mazziesaccount@gmail.com>
- <facc8b9255a754f767807b7e5c79c0eb20c680e4.1756988028.git.mazziesaccount@gmail.com>
- <aLmVzDB4bk-z5d16@smile.fi.intel.com>
- <796291b5-f61a-4d68-9cbb-ae099dbb93d8@gmail.com>
- <d9aa680f-0664-4caf-b885-92c3fce6c7a4@baylibre.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <d9aa680f-0664-4caf-b885-92c3fce6c7a4@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 05/09/2025 16:18, David Lechner wrote:
-> On 9/5/25 12:41 AM, Matti Vaittinen wrote:
->> Hi dee Ho Andy!
->>
->> Thanks again. I really appreciate the effort you put in these reviews! :)
->>
->> On 04/09/2025 16:36, Andy Shevchenko wrote:
->>> On Thu, Sep 04, 2025 at 03:36:46PM +0300, Matti Vaittinen wrote:
->>>> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
->>>> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
->>>>
->>>> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
->>>> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
->>>> daisy-chain configuration) and maximum sampling rate is 1MSPS.
->>>>
->>>> The IC does also support CRC but it is not implemented in the driver.
->>>
->>> ...
->>>
->>>> +/*
->>>> + * The data-sheet explains register I/O communication as follows:
->>>> + *
->>>> + * Read, two 16-bit sequences separated by CSB:
->>>> + * MOSI:
->>>> + * SCK:    | 1 | 2 | 3   | 4      | 5 .. 8 | 9 .. 16 |
->>>> + * data:| 0 | 0 |IOSET| RW (1) | ADDR   | 8'b0    |
->>>> + *
->>>> + * MISO:
->>>> + * SCK:    | 1 .. 8 | 9 .. 16 |
->>>> + * data:| 8'b0   | data    |
->>>> + *
->>>> + * Note, CSB is shown to be released between writing the address (MOSI) and
->>>> + * reading the register data (MISO).
->>>> + *
->>>> + * Write, single 16-bit sequence:
->>>> + * MOSI:
->>>> + * SCK:    | 1 | 2 | 3   | 4     | 5 .. 8 |
->>>> + * data:| 0 | 0 |IOSET| RW(0) | ADDR   |
->>>> + *
->>>> + * MISO:
->>>> + * SCK:    | 1 .. 8 |
->>>> + * data:| data   |
->>>> + */
->>>
->>> I don't know how to read this comment. In the monospace font the whole block
->>> looks like a mess.
->>
->> What do you mean by a mess? Don't you have the '|' -characters aligned? That's very odd because they are aligned for me. Or, is this otherwise unclear?
+On Mon,  1 Sep 2025 22:47:29 +0300
+Petre Rodan <petre.rodan@subdimension.ro> wrote:
+
+> Switch to regmap API.
 > 
-> I find these diagrams very hard to read as well. I would just drop this part
-> and let people look it up in the datasheet. I don't think it adds anything
-> essential to understanding how the driver works.
+> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+Hi Petre,
+
+Various comments inline.  Biggest one is that the addition of the stuff
+for irqs doesn't belong in the patch adding regmap.
+
+
+> diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220_core.c
+> index 60fd35637d2d..e6dac2e1cf4d 100644
+> --- a/drivers/iio/accel/bma220_core.c
+> +++ b/drivers/iio/accel/bma220_core.c
+> @@ -3,31 +3,133 @@
+>   * BMA220 Digital triaxial acceleration sensor driver
+>   *
+>   * Copyright (c) 2016,2020 Intel Corporation.
+> + * Copyright (c) 2025 Petre Rodan  <petre.rodan@subdimension.ro>
+>   */
 > 
+>  #include <linux/bits.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/bitops.h>
+> +#include <linux/cleanup.h>
+> +#include <linux/device.h>
+>  #include <linux/kernel.h>
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
 
-I am a bit reluctant to drop this because I don't see public data-sheet 
-anywhere... :/ I think explaining the protocol is somewhat useful so 
-readers can understand why we have custom regmap read/write functions, 
-and hopefully also the I/O and RW bits.
+This feels like an unrelated change.
+Good to fix up the headers but for this patch I'd just
+expect to see regmap related ones.  Do a precursor patch
+just before this one to add the others.
 
-I am all for improving this documentation though! Starting by dropping 
-those tabs, and seeing if I can think of something else too :)
+>  #include <linux/types.h>
+> -#include <linux/spi/spi.h>
 
-Yours,
-	-- Matti
+Can't you drop that in previous patch?
 
+> 
+> -#include <linux/iio/buffer.h>
+
+Why move this?  We tend to keep these in alphabetical order.
+
+>  #include <linux/iio/iio.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/events.h>
+>  #include <linux/iio/sysfs.h>
+> +#include <linux/iio/trigger.h>
+
+This is related to the irq stuff that shouldn't be in this patch. 
+
+>  #include <linux/iio/trigger_consumer.h>
+>  #include <linux/iio/triggered_buffer.h>
+> 
+> +#include "bma220.h"
+> +
+> +/*
+> + * Read-Only Registers
+Here as well. Not seeing this as beneficial over the the look
+up in the regmap callback that already tells use which are in what
+state.
+
+> + */
+> +
+> +/* ID registers */
+>  #define BMA220_REG_ID				0x00
+> +#define BMA220_REG_REVISION_ID			0x01
+> +
+> +/* Acceleration registers */
+>  #define BMA220_REG_ACCEL_X			0x02
+>  #define BMA220_REG_ACCEL_Y			0x03
+>  #define BMA220_REG_ACCEL_Z			0x04
+> +
+> +/*
+> + * Read-write configuration registers
+I'm not sure we need the read-write part of these comments.
+That should be obvious once the regmap config is in place.
+
+> + */
+
+> +static bool bma220_is_volatile_reg(struct device *dev, unsigned int reg)
+> +{
+> +	/* Don't cache any registers. */
+
+I assume this changes in later patches as setting cache_type is a bit pointless
+otherwise!
+
+> +	return true;
+> +}
+> +
+> +const struct regmap_config bma220_spi_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.read_flag_mask = BIT(7),
+> +	.max_register = BMA220_REG_SOFTRESET,
+> +	.cache_type = REGCACHE_MAPLE,
+> +	.writeable_reg = bma220_is_writable_reg,
+> +	.volatile_reg = bma220_is_volatile_reg,
+> +};
+> +EXPORT_SYMBOL_NS(bma220_spi_regmap_config, "IIO_BOSCH_BMA220");
+
+Any reason not to go NS_GPL?  I'd prefer that ideally.
+
+> @@ -199,69 +356,150 @@ static const struct iio_info bma220_info = {
+>  	.read_avail		= bma220_read_avail,
+>  };
+> 
+> -static int bma220_init(struct spi_device *spi)
+> +static int bma220_reset(struct bma220_data *data, bool up)
+>  {
+> -	int ret;
+> +	int i, ret;
+> +	unsigned int val;
+> 
+> -	ret = bma220_read_reg(spi, BMA220_REG_ID);
+> -	if (ret != BMA220_CHIP_ID)
+> -		return -ENODEV;
+> +	guard(mutex)(&data->lock);
+> 
+> -	/* Make sure the chip is powered on */
+> -	ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
+> -	if (ret == BMA220_SUSPEND_WAKE)
+> -		ret = bma220_read_reg(spi, BMA220_REG_SUSPEND);
+> -	if (ret < 0)
+> -		return ret;
+> -	if (ret == BMA220_SUSPEND_WAKE)
+> -		return -EBUSY;
+> +	/**
+> +	 * The chip can be reset by a simple register read.
+> +	 * We need up to 2 register reads of the softreset register
+
+May need?  Given you return early if the first one succeeds. If you actually
+need two drop the loop and only check values on second read.
+
+> +	 * to make sure that the device is in the desired state.
+> +	 */
+> +	for (i = 0; i < 2; i++) {
+> +		ret = regmap_read(data->regmap, BMA220_REG_SOFTRESET, &val);
+> +		if (ret < 0)
+> +			return ret;
+> 
+> -	return 0;
+> +		if (up && (val == BMA220_SUSPEND_SLEEP))
+> +			return 0;
+> +
+> +		if (!up && (val == BMA220_SUSPEND_WAKE))
+> +			return 0;
+> +	}
+> +
+> +	return -EBUSY;
+>  }
+
+> 
+> -static void bma220_deinit(void *spi)
+> +static int bma220_init(struct bma220_data *data)
+> +{
+> +	int ret;
+> +	unsigned int val;
+> +	static const char * const regulator_names[] = { "vddd", "vddio", "vdda" };
+> +
+> +	ret = devm_regulator_bulk_get_enable(data->dev,
+> +					     ARRAY_SIZE(regulator_names),
+> +					     regulator_names);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret, "Failed to get regulators\n");
+I'd have a local struct device *dev = data->dev;
+just to shorten the various lines.
+> +
+> +	/* Try to read chip_id register. It must return 0xdd. */
+> +	ret = regmap_read(data->regmap, BMA220_REG_ID, &val);
+> +	if (ret) {
+> +		dev_err(data->dev, "Failed to read chip id register\n");
+
+Use return dev_err_probe().  For things that can't defer it just brings
+prettier prints and simpler code.  Still worth having!
+
+> +		return ret;
+> +	}
+> +
+> +	if (val != BMA220_CHIP_ID)
+> +		return -ENODEV;
+> +
+> +	ret = bma220_power(data, true);
+> +	if (ret) {
+> +		dev_err(data->dev, "Failed to power-on chip\n");
+> +		return ret;
+
+return dev_err_probe() here as well..
+
+> +	}
+> +
+> +	ret = bma220_reset(data, true);
+> +	if (ret) {
+> +		dev_err(data->dev, "Failed to soft reset chip\n");
+> +		return ret;
+and here.
+
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+
+> +static irqreturn_t bma220_irq_handler(int irq, void *private)
+> +{
+> +	struct iio_dev *indio_dev = private;
+> +	struct bma220_data *data = iio_priv(indio_dev);
+> +	int rv;
+> +	u8 bma220_reg_if[2];
+> +
+> +	guard(mutex)(&data->lock);
+> +	rv = regmap_bulk_read(data->regmap, BMA220_REG_IF0, bma220_reg_if,
+> +			      sizeof(bma220_reg_if));
+> +	if (rv)
+> +		return IRQ_NONE;
+> +
+> +	if (FIELD_GET(BMA220_IF_DRDY, bma220_reg_if[1])) {
+> +		iio_trigger_poll_nested(data->trig);
+> +		goto done;
+> +	}
+> +
+> +done:
+> +
+> +	return IRQ_HANDLED;
+>  }
+> 
+> -int bma220_common_probe(struct spi_device *spi)
+> +int bma220_common_probe(struct device *dev, struct regmap *regmap, int irq)
+>  {
+>  	int ret;
+>  	struct iio_dev *indio_dev;
+>  	struct bma220_data *data;
+> 
+> -	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*data));
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+>  	if (!indio_dev)
+>  		return -ENOMEM;
+> 
+>  	data = iio_priv(indio_dev);
+> -	data->spi_device = spi;
+> -	mutex_init(&data->lock);
+> +	data->regmap = regmap;
+> +	data->dev = dev;
+> +
+> +	ret = bma220_init(data);
+> +	if (ret)
+> +		return ret;
+> 
+> +	mutex_init(&data->lock);
+#Whilst you are here perhaps switch this to 
+	ret = devm_mutex_init(dev, 7data->lock);
+	if (ret)
+		return ret;
+
+It brings only a small benefit in lock debugging but doesn't cost much either
+so I'm encouraging it's use in new code or code we are touching anyway.
+Fine to just slip that in with this patch rather than spinning another one.
+
+>  	indio_dev->info = &bma220_info;
+>  	indio_dev->name = BMA220_DEVICE_NAME;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+> @@ -269,38 +507,59 @@ int bma220_common_probe(struct spi_device *spi)
+>  	indio_dev->num_channels = ARRAY_SIZE(bma220_channels);
+>  	indio_dev->available_scan_masks = bma220_accel_scan_masks;
+> 
+> -	ret = bma220_init(data->spi_device);
+> -	if (ret)
+> -		return ret;
+> +	if (irq > 0) {
+
+This next block doesn't seem to have much to do with regmap API conversion.
+Wrong patch?
+
+> +		data->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
+> +						    indio_dev->name,
+> +						    iio_device_id(indio_dev));
+> +		if (!data->trig)
+> +			return -ENOMEM;
+> +
+> +		data->trig->ops = &bma220_trigger_ops;
+> +		iio_trigger_set_drvdata(data->trig, indio_dev);
+> +
+> +		ret = devm_iio_trigger_register(data->dev, data->trig);
+> +		if (ret)
+> +			return dev_err_probe(data->dev, ret,
+> +					     "iio trigger register fail\n");
+> +		indio_dev->trig = iio_trigger_get(data->trig);
+> +		ret = devm_request_threaded_irq(dev, irq, NULL,
+> +						&bma220_irq_handler,
+> +						IRQF_TRIGGER_RISING | IRQF_ONESHOT,
+> +						indio_dev->name, indio_dev);
+> +		if (ret)
+> +			return dev_err_probe(data->dev, ret,
+> +					     "request irq %d failed\n", irq);
+> +	}
+> 
+> -	ret = devm_add_action_or_reset(&spi->dev, bma220_deinit, spi);
+> +	ret = devm_add_action_or_reset(data->dev, bma220_deinit, data);
+>  	if (ret)
+>  		return ret;
+> 
+> -	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
+> -					      iio_pollfunc_store_time,
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
+>  					      bma220_trigger_handler, NULL);
+>  	if (ret < 0) {
+> -		dev_err(&spi->dev, "iio triggered buffer setup failed\n");
+> +		dev_err(dev, "iio triggered buffer setup failed\n");
+>  		return ret;
+>  	}
+> 
+> -	return devm_iio_device_register(&spi->dev, indio_dev);
+> +	return devm_iio_device_register(dev, indio_dev);
+>  }
+>  EXPORT_SYMBOL_NS(bma220_common_probe, "IIO_BOSCH_BMA220");
+
+> diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
+> index be8348ad0a93..00e3fba9436d 100644
+> --- a/drivers/iio/accel/bma220_spi.c
+> +++ b/drivers/iio/accel/bma220_spi.c
+> @@ -9,17 +9,25 @@
+>  #include <linux/errno.h>
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> +#include <linux/regmap.h>
+>  #include <linux/types.h>
+>  #include <linux/spi/spi.h>
+> 
+> -#include <linux/iio/buffer.h>
+>  #include <linux/iio/iio.h>
+> 
+>  #include "bma220.h"
+> 
+>  static int bma220_spi_probe(struct spi_device *spi)
+>  {
+> -	return bma220_common_probe(spi);
+> +	struct regmap *regmap;
+> +
+> +	regmap = devm_regmap_init_spi(spi, &bma220_spi_regmap_config);
+> +	if (IS_ERR(regmap)) {
+> +		dev_err(&spi->dev, "failed to create regmap\n");
+
+		return dev_err_probe(&spi->dev, PTR_ERR(regmap), "failed to create regmap\n");
+
+If there are other similar cases in things only called from probe please
+switch them to this interface as well (in a separate patch if touching
+existing code)
+
+Thanks,
+
+Jonathan
+
+> +		return PTR_ERR(regmap);
+> +	}
+> +
+> +	return bma220_common_probe(&spi->dev, regmap, spi->irq);
+>  }
 

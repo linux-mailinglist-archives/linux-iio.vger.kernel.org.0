@@ -1,113 +1,105 @@
-Return-Path: <linux-iio+bounces-23830-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23831-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEC9B47852
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 01:42:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E5CB47A0F
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 11:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 166727C219F
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Sep 2025 23:42:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA52F17E37C
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 09:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C83280332;
-	Sat,  6 Sep 2025 23:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C871221DB6;
+	Sun,  7 Sep 2025 09:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4aJ10Gl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEHE/eQ7"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D302D279910
-	for <linux-iio@vger.kernel.org>; Sat,  6 Sep 2025 23:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE54621D5B0;
+	Sun,  7 Sep 2025 09:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757202137; cv=none; b=EdrUb5W7nITiVx4i+71DTUvM71TcOIbI7lwxIk0mABtWoP+qb/w1oAelSd2stLC5UUlpjYXYnxG989ZqPL4B5cohBkgqQcqOZVzS4W3ON548vMZEqaTR4GVLuHzUhr/O23xWJz6oksH2rHG7wf88FU/xyde/rcuUWiZNkZpVm1U=
+	t=1757237540; cv=none; b=iVt0Nw1Llx1ahl2+maxMlZndXlRk0aXQztv+XDGLg1mvkbB/DMRQGYnlwNo8wF7Q3dh5O/hTWFknhr65Y0kYpYBLxBVLP9fj53uvaALIHwTlVtEbjoDNfx2SoWFqinqaGodqt43iybgNjsViw+Tg9c+GEuVwem8D78NS/gHAn+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757202137; c=relaxed/simple;
-	bh=LxKDJYjxEHRwtAf+0ckocc8PU/qwK1aqu0lE/2eoWVw=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EDS2NEtLzb50biKjUA56XkoFtb14PMYCps1iIT6XMUSi4SZWFIzTXtSHtg3C7BhWA6XFYxFGgukdZEIOHzNyu5uyetzOFFEpWC5S3SAfJC2aRfBB/3Fo02LyGDsr7fWlqFjGr3R3MzKMbtbWJUHaJDXKMkLL7gGojv9njxI67CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4aJ10Gl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5319BC4CEE7
-	for <linux-iio@vger.kernel.org>; Sat,  6 Sep 2025 23:42:16 +0000 (UTC)
+	s=arc-20240116; t=1757237540; c=relaxed/simple;
+	bh=/NHf1vUbI+10bDKKbH/ivJk3l0Zj95OGpnSOOpjwd5c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ux/rWWxOt3arh3nf5aBZeJos4zoje6uLKhQZyTZ9ZDxU+1occQ4WE+XCJ5yowI0wWQTqe9OFSWHy4uSU5a3PqWqmp0PldbgUvvp3Mv7ZJVbrkxWA4sAkJuvr1NEQg9aylJm9vhxnScO7U0L5UxI3AEFXFTDVy92DXOm8LExDXB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEHE/eQ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3518BC4CEF0;
+	Sun,  7 Sep 2025 09:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757202136;
-	bh=LxKDJYjxEHRwtAf+0ckocc8PU/qwK1aqu0lE/2eoWVw=;
-	h=From:To:Subject:Date:From;
-	b=m4aJ10GlgyPOXAvtJl8PxtgNEGRqdSLCxoZX8RzgC9JAQi60XNtjd/sEi6lLSJ1st
-	 obsmo2+miLyKNyWNfrEldwALpWA180DU7UnZuPWqZG0pwTczTRqmFQmRZoewx8STS0
-	 oVTyXIkqnYHe1EGJCMoma7Wu8OBO0Ii6uQEMxGpc+rH3yd79D0I1d6mRfooY9ifMzV
-	 PfvpBPzakij3ZNyZihGxpjY9r7qmb+MPklwfT++6m9A7ajVlTs2P9HX7OLrh3b4trC
-	 drcx4OzWgdScQd0QOmn5D9ykW7KMAFjWYQQS9OFzmzDvUnUzmQLlLiYjKS3kOETOl3
-	 J/iA2NO05KXzQ==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 40A0DC3279F; Sat,  6 Sep 2025 23:42:16 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 220543] New: MCP3428 scaling values are incorrect, three orders
- of magnitude low
-Date: Sat, 06 Sep 2025 23:42:16 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: phil@munts.net
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version rep_platform
- op_sys bug_status bug_severity priority component assigned_to reporter
- cf_regression
-Message-ID: <bug-220543-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=k20201202; t=1757237540;
+	bh=/NHf1vUbI+10bDKKbH/ivJk3l0Zj95OGpnSOOpjwd5c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hEHE/eQ7DSPINeTR/ZNRluy/UBMS9OPDefwKgnz04oJKVedATK8DHF0jkAAb7qe0O
+	 AKM05nnygn9Qe/5RoV9B96Mn3mHFEDbn2+flQ0Xpoqz6IX5crwgrQ5LyEjVR8PQC1P
+	 zHJGpkbAd0etUxabggRJGbZYjMQiNg0C1wHXXdAdi/pWAz1zHybVojSyE/SruRE9V4
+	 JpXGsJzY8hxv1FbU79Dw1uEkGDrRTbqFGVKsWlMLsDEl9oEsYiduTCihTSdZIjmknR
+	 Gkqt9dddPz5sNyDqVrcKUQ+tGhuBzYlbKQflkz9hUWnwm2o7IWlkCiJ+cDl1YHrtvQ
+	 6k3lxl/GHAbBg==
+Date: Sun, 7 Sep 2025 10:32:11 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Martin Tuma <martin.tuma@digiteqautomotive.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, linux-iio@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] media: pci: mg4b: use aligned_s64
+Message-ID: <20250907103211.0b4b1ff6@jic23-huawei>
+In-Reply-To: <20250905-media-pci-mfb4-iio-trigger-improvements-v1-1-55996f077a02@baylibre.com>
+References: <20250905-media-pci-mfb4-iio-trigger-improvements-v1-0-55996f077a02@baylibre.com>
+	<20250905-media-pci-mfb4-iio-trigger-improvements-v1-1-55996f077a02@baylibre.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D220543
+On Fri, 05 Sep 2025 14:06:19 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-            Bug ID: 220543
-           Summary: MCP3428 scaling values are incorrect, three orders of
-                    magnitude low
-           Product: Drivers
-           Version: 2.5
-          Hardware: All
-                OS: Linux
-            Status: NEW
-          Severity: normal
-          Priority: P3
-         Component: IIO
-          Assignee: drivers_iio@kernel-bugs.kernel.org
-          Reporter: phil@munts.net
-        Regression: No
+> Use aligned_s64 for IIO timestamp field instead of explicit __align().
+> This is the convention used throughout the IIO subsystem. No functional
+> change.
+> 
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Closes: https://lore.kernel.org/linux-iio/20250724115610.011110fb@jic23-huawei/
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-The values for in_voltageY_scale that the 6.12 kernel generates for the MCP=
-3428
-ADC are too low by a factor of 1000.
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
-The ADS1115 and the MCP3204 get in_voltageY_scale values around 1.0 (implyi=
-ng
-millivolts per ADC step) while the MCP3428 gets values around 0.001 and low=
-er
-(implying microvolts per ADC step).
+> ---
+>  drivers/media/pci/mgb4/mgb4_trigger.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/pci/mgb4/mgb4_trigger.c b/drivers/media/pci/mgb4/mgb4_trigger.c
+> index d7dddc5c8728e81c6249b03a4cbf692da15a4ced..bed8bbd4bc595d1d131b9919c6f3b705e43ba3c4 100644
+> --- a/drivers/media/pci/mgb4/mgb4_trigger.c
+> +++ b/drivers/media/pci/mgb4/mgb4_trigger.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/pci.h>
+>  #include <linux/dma/amd_xdma.h>
+> +#include <linux/types.h>
+>  #include "mgb4_core.h"
+>  #include "mgb4_trigger.h"
+>  
+> @@ -90,7 +91,7 @@ static irqreturn_t trigger_handler(int irq, void *p)
+>  	struct trigger_data *st = iio_priv(indio_dev);
+>  	struct {
+>  		u32 data;
+> -		s64 ts __aligned(8);
+> +		aligned_s64 ts;
+>  	} scan = { };
+>  
+>  	scan.data = mgb4_read_reg(&st->mgbdev->video, 0xA0);
+> 
 
-See also: https://forums.raspberrypi.com/viewtopic.php?t=3D391674
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
 

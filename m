@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-23833-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23834-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12416B47A22
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 11:37:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A11B47A43
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 11:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8030520291E
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 09:37:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4CC83A6FAC
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 09:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418B9221FD4;
-	Sun,  7 Sep 2025 09:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568AA22256F;
+	Sun,  7 Sep 2025 09:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRyCbp/x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chVqrbqH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2AC221FB1;
-	Sun,  7 Sep 2025 09:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E64C1C8606;
+	Sun,  7 Sep 2025 09:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757237787; cv=none; b=eKCDhZhHPQalAn872Cl2BAeeb+ixf2pmAtxY5ujLpCP/qSJpYXjcimn+8Fxzs5Hgmu+pQQLWDJXmkegtM++XK8i1cJGro1xOE9lzw/s4RmxE35ZV9V9+U+xvn6ZVp7Rwa2YDJNWo1DleEQEoD5G7zuocYnKKjbhdkkyYPswLWhU=
+	t=1757238567; cv=none; b=tmYuya9xcrymVq3CcL4VBrtRj4fyG5IhxRigqkFlXa2eNX7uvpujFYqcjbwh4YOqc/iEgCRMrko2N+ZCodpsx3jke3RaMQmg/YCjLe2uIsm2dYcDJV5td/HBQRBQhjIGnCq2Lxs/cLZDTS6g8dch/AGC2XDOlebjF8JnXRdKjQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757237787; c=relaxed/simple;
-	bh=iLGBcFXDZOBbyHVcVJJlbKkvrBO0iFZ6GaMiwpV8uVI=;
+	s=arc-20240116; t=1757238567; c=relaxed/simple;
+	bh=09SsC9CPsdCrkg9Q1JH9HwH0XdU+TT5Sdeby0QyXHBE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zm+XYBwhe0C4P5olPAMQ0oyZEafnzkJKkpKUkXHS8QkQfWUKkDFvry4pfC2R869tGdABpk2hbUUl8j4Qd8wDVD1mSrdcGJlf1S88qlMY5SnRIm6wKrweEKYs+merdaX8VRPLOJ9APSWNXIEvh+IYUfEH1dL5D2s80gLAd3YTa78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRyCbp/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A25BC4CEF0;
-	Sun,  7 Sep 2025 09:36:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xs7QW0vIf0BlgR62dwbsXlBaQGtjG3DspO8DL+9APkzyr8WoDHKV2Z5bQcRL24dQOjP2ylMa2N2FX+hMkyuPmZQsm/MYMygYXd9YMHbvGMGJMZ1ITORWtTyEe1Uwg4kTWAJ5OGyunlEx2L8Lo40j91plgUugCSXspwJuHpumWMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chVqrbqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CCFC4CEF0;
+	Sun,  7 Sep 2025 09:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757237786;
-	bh=iLGBcFXDZOBbyHVcVJJlbKkvrBO0iFZ6GaMiwpV8uVI=;
+	s=k20201202; t=1757238566;
+	bh=09SsC9CPsdCrkg9Q1JH9HwH0XdU+TT5Sdeby0QyXHBE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iRyCbp/x00QIJfOHsl8x4t1yDVC5344JdJY6kBKjzLNGOLK/PboptE+FMxfcGxHsL
-	 +zD9uZ9GpUcO/WAGm0FnJdWgywu+Fkg3S7OeLfPc3sQXx6pwhZJa7C1KFhV49yRoN1
-	 z1l8T6/Sb7KtLK1FTeh6YKtUvGGO6W0k8iRI1xGL0rG1gu4kPh7Qz2Ygf1UHHNDQSc
-	 30NgBZerulmHou68w9nublm6v6taJeyPwLZVF+SOwhJyNROlAFOwMP5/57ozf8O2mc
-	 CE2cEUVjJ1s7MAZfvzhpInCH+5hI8fPI8icFWbdbunkhfFJM9RpU+jHUpZExzJMd2a
-	 F6ENY8oNlvIjA==
-Date: Sun, 7 Sep 2025 10:36:17 +0100
+	b=chVqrbqHlJp+wC3quYndhSuH97koNUw7ImMTvEwK+nidmKEJ89KwK1dkdZlaGk4BW
+	 sxBb/W/BuA6+ZgQvIawn66cECgmfaqLQ+VSVcKuNnxRZ1AYlrwvOFAPXog2QRB6tLn
+	 NSMCdVytDCIL+uX9edsKK94RWrl8SPYcRFmvtyiZo37YJ0RWmg+AeCsDg0mwsuN3y9
+	 5jiPKVfuDcZt75hDujaAIhQZ/c7BLcW2TDmpUxa6KwuH4faDbeLSHNOOlX1rOLoUfI
+	 ZYdLpBDSnivC/BUHfqYe4MDbkEa4qgkmUVSNRrgP06pNSf1BCZuozM4J15jgPrzmTu
+	 wDn/Rcire5xng==
+Date: Sun, 7 Sep 2025 10:49:17 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Dixit Parmar <dixitparmar19@gmail.com>
 Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
@@ -49,12 +49,12 @@ Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
  <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] dt-bindings: iio: magnetometer: Infineon TLV493D
- 3D Magnetic sensor
-Message-ID: <20250907103617.5400c1bb@jic23-huawei>
-In-Reply-To: <20250906-tlv493d-sensor-v6_16-rc5-v6-1-b1a62d968353@gmail.com>
+Subject: Re: [PATCH v6 2/2] iio: magnetometer: add support for Infineon
+ TLV493D 3D Magentic sensor
+Message-ID: <20250907104917.5d743db3@jic23-huawei>
+In-Reply-To: <20250906-tlv493d-sensor-v6_16-rc5-v6-2-b1a62d968353@gmail.com>
 References: <20250906-tlv493d-sensor-v6_16-rc5-v6-0-b1a62d968353@gmail.com>
-	<20250906-tlv493d-sensor-v6_16-rc5-v6-1-b1a62d968353@gmail.com>
+	<20250906-tlv493d-sensor-v6_16-rc5-v6-2-b1a62d968353@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,113 +65,121 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 06 Sep 2025 14:07:56 +0530
+On Sat, 06 Sep 2025 14:07:57 +0530
 Dixit Parmar <dixitparmar19@gmail.com> wrote:
 
-> Document the bindings for Infineon TLV493D Low-Power 3D Magnetic Sensor
-> controlled by I2C interface. Main applications includes joysticks, control
-> elements (white goods, multifunction knops), or electric meters (anti-
-> tampering).
-> Drop duplicate entry for infineon,tlv493d from trivial-devices.yaml as
-> its documented in this separate dt-binding file now.
+> The Infineon TLV493D is a Low-Power 3D Magnetic Sensor. The Sensor
+> applications includes joysticks, control elements (white goods,
+> multifunction knops), or electric meters (anti tampering) and any
+> other application that requires accurate angular measurements at
+> low power consumptions.
+> 
+> The Sensor is configured over I2C, and as part of Sensor measurement
+> data it provides 3-Axis magnetic fields and temperature core measurement.
+> 
+> The driver supports raw value read and buffered input via external trigger
+> to allow streaming values with the same sensing timestamp.
+> 
+> While the sensor has an interrupt pin multiplexed with an I2C SCL pin.
+> But for bus configurations interrupt(INT) is not recommended, unless timing
+> constraints between I2C data transfers and interrupt pulses are monitored
+> and aligned.
+> 
+> The Sensor's I2C register map and mode information is described in product
+> User Manual [1].
 > 
 > Datasheet: https://www.infineon.com/assets/row/public/documents/24/49/infineon-tlv493d-a1b6-datasheet-en.pdf
+> Link: https://www.mouser.com/pdfDocs/Infineon-TLV493D-A1B6_3DMagnetic-UserManual-v01_03-EN.pdf [1]
 > Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
 
-Krzysztof gave an RB on version 3.  Please make sure to pick up such tags.
+Only thing I spotted was trivial enough that I'll tidy that up (and Andy's comment)
+whilst applying.  Changes made follow.  Applied to the togreg branch of iio.git and
+pushed out as testing for 0-day to take a first look at it.
 
-This time I'll apply it by hand if nothing else comes up.
+diff --git a/drivers/iio/magnetometer/tlv493d.c b/drivers/iio/magnetometer/tlv493d.c
+index 6b9012889148..ec53fd40277b 100644
+--- a/drivers/iio/magnetometer/tlv493d.c
++++ b/drivers/iio/magnetometer/tlv493d.c
+@@ -250,10 +250,8 @@ static int tlv493d_init(struct tlv493d_data *data)
+         * 5. Write to all registers.
+         */
+        ret = i2c_master_recv(data->client, buff, ARRAY_SIZE(buff));
+-       if (ret < 0) {
+-               dev_err(dev, "i2c read failed, error %d\n", ret);
+-               return ret;
+-       }
++       if (ret < 0)
++               return dev_err_probe(dev, ret, "i2c read failed\n");
+ 
+        /* Write register 0x0 is reserved. Does not require to be updated.*/
+        data->wr_regs[0] = 0;
+@@ -262,10 +260,8 @@ static int tlv493d_init(struct tlv493d_data *data)
+        data->wr_regs[3] = buff[TLV493D_RD_REG_RES3] & TLV493D_RD_REG_RES3_WR_MASK;
+ 
+        ret = tlv493d_set_operating_mode(data, data->mode);
+-       if (ret < 0) {
+-               dev_err(dev, "failed to set operating mode\n");
+-               return ret;
+-       }
++       if (ret < 0)
++               return dev_err_probe(dev, ret, "failed to set operating mode\n");
+ 
+        return 0;
+ }
+@@ -336,7 +332,6 @@ static int tlv493d_read_raw(struct iio_dev *indio_dev,
+                default:
+                        return -EINVAL;
+                }
+-
+        default:
+                return -EINVAL;
+        }
 
-Jonathan
 
-> ---
->  .../iio/magnetometer/infineon,tlv493d-a1b6.yaml    | 45 ++++++++++++++++++++++
->  .../devicetree/bindings/trivial-devices.yaml       |  2 -
->  MAINTAINERS                                        |  7 ++++
->  3 files changed, 52 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d-a1b6.yaml b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d-a1b6.yaml
+> diff --git a/drivers/iio/magnetometer/tlv493d.c b/drivers/iio/magnetometer/tlv493d.c
 > new file mode 100644
-> index 000000000000..dd23a9370a71
+> index 000000000000..6b9012889148
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d-a1b6.yaml
-> @@ -0,0 +1,45 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/magnetometer/infineon,tlv493d-a1b6.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Infineon Technologies TLV493D Low-Power 3D Magnetic Sensor
-> +
-> +maintainers:
-> +  - Dixit Parmar <dixitparmar19@gmail.com>
-> +
-> +properties:
-> +  $nodename:
-> +    pattern: '^magnetometer@[0-9a-f]+$'
-> +
-> +  compatible:
-> +    const: infineon,tlv493d-a1b6
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: 2.8V to 3.5V VDD supply
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vdd-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +      magnetometer@5e {
-> +        compatible = "infineon,tlv493d-a1b6";
-> +        reg = <0x5e>;
-> +        vdd-supply = <&hall_vcc>;
-> +      };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index 27930708ccd5..9e0eb5c873d2 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -125,8 +125,6 @@ properties:
->            - infineon,ir36021
->              # Infineon IRPS5401 Voltage Regulator (PMIC)
->            - infineon,irps5401
-> -            # Infineon TLV493D-A1B6 I2C 3D Magnetic Sensor
-> -          - infineon,tlv493d-a1b6
->              # Infineon Hot-swap controller xdp710
->            - infineon,xdp710
->              # Infineon Multi-phase Digital VR Controller xdpe11280
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index fad6cb025a19..35990c2701f6 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11843,6 +11843,13 @@ S:	Maintained
->  F:	Documentation/devicetree/bindings/sound/infineon,peb2466.yaml
->  F:	sound/soc/codecs/peb2466.c
->  
-> +INFINEON TLV493D Driver
-> +M:	Dixit Parmar <dixitparmar19@gmail.com>
-> +L:	linux-iio@vger.kernel.org
-> +S:	Maintained
-> +W:	https://www.infineon.com/part/TLV493D-A1B6
-> +F:	Documentation/devicetree/bindings/iio/magnetometer/infineon,tlv493d-a1b6.yaml
-> +
->  INFINIBAND SUBSYSTEM
->  M:	Jason Gunthorpe <jgg@nvidia.com>
->  M:	Leon Romanovsky <leonro@nvidia.com>
-> 
+> +++ b/drivers/iio/magnetometer/tlv493d.c
 
+> +static int tlv493d_init(struct tlv493d_data *data)
+
+As this is only called from probe, ideally would just dev_err_probe() for
+all error message print.
+
+> +{
+> +	int ret;
+> +	u8 buff[TLV493D_RD_REG_MAX];
+> +	struct device *dev = &data->client->dev;
+> +
+> +	/*
+> +	 * The sensor initialization requires below steps to be followed,
+> +	 * 1. Power-up sensor.
+> +	 * 2. Read and store read-registers map (0x0-0x9).
+> +	 * 3. Copy values from read reserved registers to write reserved fields
+> +	 *    (0x0-0x3).
+> +	 * 4. Set operating mode.
+> +	 * 5. Write to all registers.
+> +	 */
+> +	ret = i2c_master_recv(data->client, buff, ARRAY_SIZE(buff));
+> +	if (ret < 0) {
+> +		dev_err(dev, "i2c read failed, error %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	/* Write register 0x0 is reserved. Does not require to be updated.*/
+> +	data->wr_regs[0] = 0;
+> +	data->wr_regs[1] = buff[TLV493D_RD_REG_RES1] & TLV493D_RD_REG_RES1_WR_MASK;
+> +	data->wr_regs[2] = buff[TLV493D_RD_REG_RES2] & TLV493D_RD_REG_RES2_WR_MASK;
+> +	data->wr_regs[3] = buff[TLV493D_RD_REG_RES3] & TLV493D_RD_REG_RES3_WR_MASK;
+> +
+> +	ret = tlv493d_set_operating_mode(data, data->mode);
+> +	if (ret < 0) {
+> +		dev_err(dev, "failed to set operating mode\n");
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+>
 

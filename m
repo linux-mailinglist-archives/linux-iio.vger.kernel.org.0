@@ -1,62 +1,57 @@
-Return-Path: <linux-iio+bounces-23854-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23855-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B82B47B19
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 13:50:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A79CAB47B52
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 14:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C44624E0F65
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 11:50:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78805189B803
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 12:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9AE258ED4;
-	Sun,  7 Sep 2025 11:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DB626C3BF;
+	Sun,  7 Sep 2025 12:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NRjdbtrV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OrBnPpY9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A560F1991C9;
-	Sun,  7 Sep 2025 11:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E5D10E3;
+	Sun,  7 Sep 2025 12:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757245802; cv=none; b=U2waL5PMIeeEMgvewdREC2N/lVB/Gr7a7LvwA7mEkfyPMl1QEa/bZnk79cpsbRZkNu+doBFzjbELaYOI7MrHmpDtnp2hpJwfwqq4E2iYs0TPtLiyG7GE0U2JKE9L3U7MEOyDR7fYVL64ySzQwIbD96hGndMFT4PqQ7cL+DwnSmY=
+	t=1757248150; cv=none; b=TPwNcRWBKrXbHP2V8FJZIicPQXcyZFxTAsM+CCDQkVpfpP4oEkg0qA3Xh8pqun7m2bpN4Y9DRFYC47xFLO95CFd1xx3Qb8SLaZpIKt4WAZPyHkPjJT8jHuMDd4XFUTDFG9BLXdCwkSRh9R9bNWp1CBJgiiIRfhXsMDbJ4oT7XY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757245802; c=relaxed/simple;
-	bh=37K9EA26vxYKMUmDOyg7DDd3NpY10jCWD01fK8IcmRY=;
+	s=arc-20240116; t=1757248150; c=relaxed/simple;
+	bh=lrOk0VA+R6ZwUntMvXNUuRMuI5E8D5LF46JNcQ9uRZs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CnBZwft+5kHj90TUxyUcyAaMJEvhroekfbvQwOkQqB6TB/eG+LSiREgmxFsRZDuqdcGOUUybmJnWBUkkF+EdMcnrPjajTV+2qjyD0qiyLHPAGk96coODRuS+LhQhYBPClXJA9S8+b6Cq4dANYmmG1uhPGvnQetbmTLdSniowMMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NRjdbtrV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454EBC4CEF0;
-	Sun,  7 Sep 2025 11:49:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TLTs5G2binfYg2Pack2VoiwYWK2z2KzaGBNhIVyIKsc3NYDP7X7OIz7PdmYRgzM9o4xqquCZLRGC4pqPfsF1IAOC1mudh9/FO34Yx+ebDTbIHsgDQ6NH0pSPZPsMqn3a3xSODVR0iwJOABkyElb2NSL4bwtHgnn3bi/ylIRmJEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OrBnPpY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC887C4CEF0;
+	Sun,  7 Sep 2025 12:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757245801;
-	bh=37K9EA26vxYKMUmDOyg7DDd3NpY10jCWD01fK8IcmRY=;
+	s=k20201202; t=1757248150;
+	bh=lrOk0VA+R6ZwUntMvXNUuRMuI5E8D5LF46JNcQ9uRZs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NRjdbtrVyyiGCitUteqHMSdGa15CjdSNofo9Fwt5dE0MESj87l279ceGZSJHzCAgJ
-	 rG2ovsOn2w3F03XlG7ySDm8Ot94SbrTF7IAIu55lIPzfQmgzKkT9cN0Rg9V22z41nq
-	 YrgqPL+g6FhC9OYDlDCTo4ZSwt3EXpbBJDxO2LEJRqwvU1AEd2fABMdNP1xiEQiWYk
-	 bHhbdrcnjxSK1CiP11AKhK7O4TVehhUnE5eswq837EUyoUVpMKG5AmXaCZ3TAMDBev
-	 8aRmjELEaQ/t8UlXq9dj2ywIsbI49V5v8lrT8ZDkjzG9sDeIFY0xNX7EaskFLgcYxh
-	 UQ9r1YOmmFpUQ==
-Date: Sun, 7 Sep 2025 12:49:52 +0100
+	b=OrBnPpY9uDuCCp/0d+JhZD1M20+sOsKJVKiogmHhlSxP+Smh2UciyoYTFRqdfFVZ6
+	 /LOFZAsKTd0MnAvsuogDi/c9PHDQPD8FI3hPIPrbrtXPPQOCwKQZlz2xzQavWj4dRE
+	 EtFNCsz+wQfliV4UMXxmnnv31G6aONxA1TM7BKJkF1l2hTjUAABxhE896IqRbm18EN
+	 irb3OxVzxmCDXCC1gzdPC2Su+aylUgBLn87ybmqkAkjguVAi6kRu/1gQ2gsopL+Yyy
+	 0g665dT/yV3EEYfHzWVXW3yL+ZyhZ+C3tV8MJeNE+yX3YFJXMFHIByU1MuPOKbRcol
+	 gBz2aCC+qUgRQ==
+Date: Sun, 7 Sep 2025 13:29:02 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dixit Parmar <dixitparmar19@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] dt-bindings: iio: magnetometer: Infineon TLV493D
- 3D Magnetic sensor
-Message-ID: <20250907124952.31809adc@jic23-huawei>
-In-Reply-To: <CAFmh=S0AP4_9H8CiSp3oAciNF=FGMGp4bFz6QEJNFGqwdvj65w@mail.gmail.com>
-References: <20250906-tlv493d-sensor-v6_16-rc5-v6-0-b1a62d968353@gmail.com>
-	<20250906-tlv493d-sensor-v6_16-rc5-v6-1-b1a62d968353@gmail.com>
-	<20250907103617.5400c1bb@jic23-huawei>
-	<CAFmh=S0AP4_9H8CiSp3oAciNF=FGMGp4bFz6QEJNFGqwdvj65w@mail.gmail.com>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH 02/10] iio: accel: BMA220 split original spi driver
+Message-ID: <20250907132902.0286cbe7@jic23-huawei>
+In-Reply-To: <20250901194742.11599-3-petre.rodan@subdimension.ro>
+References: <20250901194742.11599-1-petre.rodan@subdimension.ro>
+	<20250901194742.11599-3-petre.rodan@subdimension.ro>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,32 +62,118 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 7 Sep 2025 16:43:34 +0530
-Dixit Parmar <dixitparmar19@gmail.com> wrote:
+On Mon,  1 Sep 2025 22:47:28 +0300
+Petre Rodan <petre.rodan@subdimension.ro> wrote:
 
-> > Krzysztof gave an RB on version 3.  Please make sure to pick up such tags.
-> >  
-> Indeed, RB was given by Krzystof on the V3 patch but this patch got
-> modified for MAINTAINERS file changes which were not part of V3.
-> Considering that I thought it should be removed. I have added this in
-> the cover letter change logs as well. Is this correct understanding?
+> Split original driver from bma220_spi.c into bma220_core.c and bma220.h
+> with a minimal number of changes in preparation for the next patches.
+> 
+> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+Hi Petre,
 
-When making small changes like that, it's a judgement call you need to make
-on whether they are likely to affect the intent of the tag.
-
-To me that one wasn't something that Krzystof was going care about.
-
-Anyhow it's fine that you looked on it differently.  In cases like
-this I'd expect to see a comment under the --- in the patch that a tag
-was given but dropped because of xyz reasons.
-
-Keep that in future versions until the tag is given again or other
-comment invalidates it.
+A few comments inline.
 
 Jonathan
 
-> > This time I'll apply it by hand if nothing else comes up.  
-> Thanks,
-> Dixit
+> diff --git a/drivers/iio/accel/bma220.h b/drivers/iio/accel/bma220.h
+> new file mode 100644
+> index 000000000000..0606cf478f5f
+> --- /dev/null
+> +++ b/drivers/iio/accel/bma220.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Forward declarations needed by the bma220 sources.
+> + *
+> + * Copyright 2025 Petre Rodan <petre.rodan@subdimension.ro>
+> + */
+> +
+> +#ifndef _BMA220_H
+> +#define _BMA220_H
+> +
+> +#include <linux/iio/iio.h>
+Not used so far so don't include it in this header.
+> +
+> +extern const struct dev_pm_ops bma220_pm_ops;
+
+Probably want a header for that, though I'm not 100% sure if needed
+for an extern or not...
+
+> +
+
+struct spi_device;
+> +int bma220_common_probe(struct spi_device *dev);
+> +
+> +#endif
+> diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220_core.c
+> new file mode 100644
+> index 000000000000..60fd35637d2d
+> --- /dev/null
+> +++ b/drivers/iio/accel/bma220_core.c
+> @@ -0,0 +1,310 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * BMA220 Digital triaxial acceleration sensor driver
+> + *
+> + * Copyright (c) 2016,2020 Intel Corporation.
+> + */
+> +
+> +#include <linux/bits.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/types.h>
+> +#include <linux/spi/spi.h>
+> +
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+
+Would expect to see this including the new header.
+
+> +
+>  static const struct spi_device_id bma220_spi_id[] = {
+>  	{"bma220", 0},
+>  	{ }
+> @@ -314,17 +33,25 @@ static const struct acpi_device_id bma220_acpi_id[] = {
+>  };
+>  MODULE_DEVICE_TABLE(spi, bma220_spi_id);
+> 
+> -static struct spi_driver bma220_driver = {
+> +static const struct of_device_id bma220_of_spi_match[] = {
+
+This looks like an unrelated change. Do this in a separate patch.
+
+> +	{ .compatible = "bosch,bma220" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, bma220_of_spi_match);
+> +
+> +static struct spi_driver bma220_spi_driver = {
+>  	.driver = {
+>  		.name = "bma220_spi",
+>  		.pm = pm_sleep_ptr(&bma220_pm_ops),
+> +		.of_match_table = bma220_of_spi_match,
+>  		.acpi_match_table = bma220_acpi_id,
+>  	},
+> -	.probe =            bma220_probe,
+> +	.probe =            bma220_spi_probe,
+>  	.id_table =         bma220_spi_id,
+>  };
+> -module_spi_driver(bma220_driver);
+> +module_spi_driver(bma220_spi_driver);
+> 
+>  MODULE_AUTHOR("Tiberiu Breana <tiberiu.a.breana@intel.com>");
+> -MODULE_DESCRIPTION("BMA220 acceleration sensor driver");
+> -MODULE_LICENSE("GPL v2");
+> +MODULE_DESCRIPTION("BMA220 triaxial acceleration sensor spi driver");
+> +MODULE_LICENSE("GPL");
+> +MODULE_IMPORT_NS("IIO_BOSCH_BMA220");
+> --
+> 2.49.1
+> 
+> 
 
 

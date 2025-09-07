@@ -1,71 +1,61 @@
-Return-Path: <linux-iio+bounces-23844-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23845-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08066B47A87
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 12:51:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB011B47A8D
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 12:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB6C93C28C6
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 10:51:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FCB1172C47
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 10:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBAC259CA4;
-	Sun,  7 Sep 2025 10:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FF525A331;
+	Sun,  7 Sep 2025 10:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hYMwViw3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZEvy6vH9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34B21C3BFC;
-	Sun,  7 Sep 2025 10:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7182236EE;
+	Sun,  7 Sep 2025 10:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757242279; cv=none; b=D8w3BcSrd1fb5ws0/S8rm957AYmtu8dILZI8KtXr89MUI8uS69kBBukkRlm6NrAoZqtiweQ+IpeoOG3n9dCNLTvwOuieE4gckCe968ZF1vFjuU7JYTiLRP2a6mTPdjgh3HndsOnXDJHELBr69+XAffKQD2BoC1Li0sXLNMzPEuw=
+	t=1757242610; cv=none; b=jNpclLXYB/orjismA0vpHIeOubjjKKOUqDusOs2Te5W6QfWJn5YcRKuWrt9q/DYMfyU01BYaoWrmtOlFiItd5CgCjgDrWbJOVCnjh1kymOCBAWRrVltA+XJWONjMiGktyF7z52U6MJTxkjcVk1ZyRZgNX0eqKfduxOcCYHWDaNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757242279; c=relaxed/simple;
-	bh=o9+gEMBASfwEqE0eaUXisDtl/cNttKx6f66yZkkhXZQ=;
+	s=arc-20240116; t=1757242610; c=relaxed/simple;
+	bh=YEMCvkONpXNQwt8L2SY5goheIFQ2XpilgJ3VsHsKRM4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PCg4TsZBQ4og2bvWhRoa1f4BZcQEQIq/CNzw7spJcugb5moXJmcS6N7X00OIOfSZmuVKsiR83E3bgUQ5ouvRXk1I2sFOGZgd3EZbVP8CCl+XawZ4rTI//hlsIgfGcQtsyRuBtcW8b3yIXLn7BYvYOR+GJ2yjJt+9qxa/5Tw/g98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hYMwViw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574E6C4CEF8;
-	Sun,  7 Sep 2025 10:51:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rPbsY4KjG5+S1h+IUZQpdeiK0PjGW/jLtU7HoFn9NXNsHXfB4t00Xpb+2ygY9gqsbA2JGkyQ7T35Hebd9kDiAUzorviQzUBTFXXzQnYLbJGhTvol+ho2vPlJKNLtdzqOwcnxNP2NWTy6ecs3bDsk1FnDXbRXs8LHHdKyqesWPpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZEvy6vH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F890C4CEF0;
+	Sun,  7 Sep 2025 10:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757242278;
-	bh=o9+gEMBASfwEqE0eaUXisDtl/cNttKx6f66yZkkhXZQ=;
+	s=k20201202; t=1757242609;
+	bh=YEMCvkONpXNQwt8L2SY5goheIFQ2XpilgJ3VsHsKRM4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hYMwViw3t7//kFBTeGs/6vhLS0LE8CIkvXotb6fXTMCYlQkVNZdcAGU/YXbXoMCe+
-	 /WjtxAyg/ExTuqEY498RgUyq4PfxGA4NYFg8lUfdz/CGoc0WIsBAaRyRt7BRnwEwU5
-	 8/ljCWWIrB961LIe3mz/HxD4RyDgI/BI77qis34m6wORmHYfk2vI9Ewukf4UXVlLpy
-	 yJ9jB9DboegEisrnv80jmlf/GPN1t1B8DBJOmtHy7DJImaLh3Q/AGBc7AdJjPhR8n9
-	 iyLCkYuee3xhcSMFvhV+KpegYf33ZlX2e5Pwr+UN1YaOWXjSfFwQK1w2jmnLG9jbl8
-	 eng4w1WzQZMoQ==
-Date: Sun, 7 Sep 2025 11:51:07 +0100
+	b=ZEvy6vH9ciHb+GAQw9K9OFuug6LaBX5yGRoz/nivSMii1yBxlrZeJ4Hss2yVDUscg
+	 YNIK9Rz4tWS3jDpY/GfOD2SCOdm3DmI0dXtvVeGmQClfk8E1De+LhHXE34VLQEHzpg
+	 U11SWWk1xEnMfyrrt3vdqmdmCSaiG6AzvuCRdKQuRKu5wSUj/5HDifDPQGN3zfwRWW
+	 Hf5ylHYnbvKBMHlZ2CVaKJ4o/j8VMQZZFaQBXhbivgUMm30LyBnqbsofA+3w3jP7YP
+	 4Uja0WvXXOvFiWGn3EXIEvKORlhzrkPR9t3mzGt8zh5mqdUehj1hGI1Juk3PduCc9e
+	 5FbBochy7p6fA==
+Date: Sun, 7 Sep 2025 11:56:38 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: "Erim, Salih" <Salih.Erim@amd.com>, "Simek, Michal"
- <michal.simek@amd.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "monstr@monstr.eu" <monstr@monstr.eu>, "michal.simek@xilinx.com"
- <michal.simek@xilinx.com>, "git@xilinx.com" <git@xilinx.com>, Anand Ashok
- Dumbre <anand.ashok.dumbre@xilinx.com>, "Kadamathikuttiyil Karthikeyan
- Pillai, Anish" <anish.kadamathikuttiyil-karthikeyan-pillai@amd.com>, Andy
- Shevchenko <andy@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Rob Herring <robh@kernel.org>, "open list:OPEN FIRMWARE AND FLATTENED
- DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, "open list:IIO
- SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 1/6] dt-bindings: iio: xilinx: Add Documentation for
- Sysmon
-Message-ID: <20250907115107.03aeb8d0@jic23-huawei>
-In-Reply-To: <fec12cd9-4709-42ca-b0e5-38f67b63a41c@baylibre.com>
-References: <cover.1757061697.git.michal.simek@amd.com>
-	<610690b9cc4ab3854b56df550b688b4cc72a5653.1757061697.git.michal.simek@amd.com>
-	<20250905123006.000031a9@huawei.com>
-	<5f21169b-39b8-4fcd-b7d7-e5bcb1885549@amd.com>
-	<IA1PR12MB7736D056E505103AC246DC2E9F03A@IA1PR12MB7736.namprd12.prod.outlook.com>
-	<fec12cd9-4709-42ca-b0e5-38f67b63a41c@baylibre.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
+ dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ marcelo.schmitt1@gmail.com, jonath4nns@gmail.com
+Subject: Re: [PATCH v3 4/4] iio: adc: ad7768-1: add support for ADAQ776x-1
+ ADC Family
+Message-ID: <20250907115638.308729ef@jic23-huawei>
+In-Reply-To: <aLsclc2WHsbR1jfa@smile.fi.intel.com>
+References: <cover.1757001160.git.Jonathan.Santos@analog.com>
+	<6228c10d731b6946a68e1c3c95643065cc81329a.1757001160.git.Jonathan.Santos@analog.com>
+	<aLsclc2WHsbR1jfa@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -74,95 +64,31 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-
-On Fri, 5 Sep 2025 15:44:20 -0500
-David Lechner <dlechner@baylibre.com> wrote:
-
-> On 9/5/25 9:21 AM, Erim, Salih wrote:
-> 
-> ...
-> 
-> >>>  
-> >>>> +
-> >>>> +      xlnx,bipolar:
-> >>>> +        $ref: /schemas/types.yaml#/definitions/flag
-> >>>> +        description:
-> >>>> +          If the supply has a bipolar type and the output will be signed.  
-> >>>
-> >>> This is very generic.  We have it described for ADC channels already
-> >>> in bindings/iio/adc/adc.yaml.  Why can't we use that here?  
-> >>
-> >> no issue with it.
-> >> And likely
-> >> Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
-> >> should deprecated it and start to use new one.
-> >>
-> >>
-> >>  
-> >>> That binding does rely on matching against 'channel' for node names though.
-> >>> Where a 'type of channel' has been relevant IIRC we've always added a
-> >>> separate property rather than using the child node name.  
-> >>
-> >> Is this related to supply/temp channel name?
-> >>
-> >> I think one issue with the binding is that current schema allows to define
-> >> supply@1  and also temp@1
-> >> but both of them have reg = <1> which is not allowed (duplicate unit-address).
-> >>
-> >> Salih: What does this reg value means? Is it physical address where that sensor is
-> >> placed?  
-> > 
-> > Reg is offset index to offset base of the memory addresses for each. Supplies and temp values
-> > are located in different offsets.
-> >   
-> 
-> Sounds like the .dts should looks like:
-> 
-> 	adc@f1270000 {
-> 		compatible = "xlnx,versal-sysmon";
-> 		reg = <0xf1270000 0x4000>;
-> 		...
-> 
-> 		supply-channels {
-> 			#size-cells = <0>;
-> 			#address-cells = <1>;
-> 
-> 			channel@0 {
-> 				reg = <0>;
-> 				label = "vccint";
-> 			};
-> 
-> 			...
-> 		};
-> 
-> 		temperature-channels {
-> 			#size-cells = <0>;
-> 			#address-cells = <1>;
-> 
-> 			channel@0 {
-> 				reg = <0>;
-> 				label = "aie-temp-ch0";
-> 			};
-> 
-> 			...
-> 		};
-> 	};
-
-This works for me. Alternative would be something similar to what we did for
-dt-bindings: iio: adc: Add AD4170-4 
-Where there is an adi,sensor-type property in channels.
-There they two types of channels were the same underlying hardware, it just provided
-a way to constrain the other properties in the channel nodes.  That differs
-from here where, as I understand it (Salih?) they are different hardware blocks
-so 'reg' is an offset into a different set of registers. 
-
-DT maintainers, I think this discussion would benefit from your guidance!
-
-Thanks,
-
-Jonathan
+Content-Transfer-Encoding: quoted-printable
 
 
+> > +static void ad7768_fill_scale_tbl(struct iio_dev *dev)
+> > +{
+> > +	struct ad7768_state *st =3D iio_priv(dev);
+> > +	const struct iio_scan_type *scan_type;
+> > +	int val, val2, tmp0, tmp1, i;
+> > +	struct u64_fract fract;
+> > +	unsigned long n, d;
+> > +	u64 tmp2;
+> > +
+> > +	scan_type =3D iio_get_current_scan_type(dev, &dev->channels[0]); =20
+>=20
+> Is it usual patter in IIO? Otherwise it can be written as
+>=20
+> 	scan_type =3D iio_get_current_scan_type(dev, dev->channels);
 
+=46rom a semantic / readability point of view I'd keep it referencing
+the first element.  We are querying the scan type of one specific
+channel, rather than the array that is behind dev->channels.
+
+>=20
+> > +	if (scan_type->sign =3D=3D 's')
+> > +		val2 =3D scan_type->realbits - 1;
+> > +	else
+> > +		val2 =3D scan_type->realbits; =20
 

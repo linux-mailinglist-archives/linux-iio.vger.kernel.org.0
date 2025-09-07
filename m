@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-23860-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23861-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AA6B47B73
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 14:48:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7ABB47B75
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 14:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2392917F74C
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 12:48:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 630F917F575
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Sep 2025 12:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D3C2676F4;
-	Sun,  7 Sep 2025 12:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99DC26A1AC;
+	Sun,  7 Sep 2025 12:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvnpZCZT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2cBPQOD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E227723BD1F;
-	Sun,  7 Sep 2025 12:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7290B1F542E;
+	Sun,  7 Sep 2025 12:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757249308; cv=none; b=aaGecnNOsVlBO9ExgRWi4rrjwId5zUvXxx2EYZZ34SS+zl9qCzj0pRCpp3Q+gKG2HTIcg4qQu9URKDq6km0z2ElEkrcRY++hW4GBlffNfGKcOYdM34KuPgCu1DW4iZ480KCQHzbc4ilmCVyX7wuk7z+MEqSCkxxVDsWW2NAtCC4=
+	t=1757249412; cv=none; b=IG/QNKbpQGX8NIeNH5KpZ2VKAMIuO1Kf2J+Uvr5qEH8r/f875VODGWrVBLud+Sfad/cSiy5Nn40yc1VPPweLo4HrLv6RIO3K8YIZP5dY4SNY5uc3eKqWaCLL5HxfSuLAy481KMRzMVzxFb/jLK/ZGqXma421K/giUjP2xRKsFNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757249308; c=relaxed/simple;
-	bh=PpEf/FsZHJrtQa9NBBq5hzzIFGfzAZlSvyLWvozPJEA=;
+	s=arc-20240116; t=1757249412; c=relaxed/simple;
+	bh=QdoyrG0DgAKG/7NojdccPAxFBrdj0Gv/sxwFvImmM5E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n21snqqzaUSQRM/mtCnRpcouM8GIM6YtN7Uf0xF82tqXZASRtgTagBUuN2vC5DkXY5yZRVj+GXVx7v9zpxTuZ4MtxLYOHmZBnzsH3HX3ajyEgdq495fKfoPOiog624oDPj/6JnaM7z6Mv9NYMAIl1RsCp/5h14Tbz78e8JBujs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvnpZCZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0838CC4CEF0;
-	Sun,  7 Sep 2025 12:48:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MdUna8Drt800ztI4QMqj3hbge3C/QCOXKFy6AQ8BO3G0GX5x9F8ICcx8V+FBjqy8ujA0ZR5QfoeNpOkAwk8LLYlqTkmTkQHKyYkMLDc0RwxIgi49z3BAjsMMP+tWsG580pFSCKJ05NzLkUkVAFTORyR+0R7NrA272+MtLUb726M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2cBPQOD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F28C4CEF0;
+	Sun,  7 Sep 2025 12:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757249307;
-	bh=PpEf/FsZHJrtQa9NBBq5hzzIFGfzAZlSvyLWvozPJEA=;
+	s=k20201202; t=1757249412;
+	bh=QdoyrG0DgAKG/7NojdccPAxFBrdj0Gv/sxwFvImmM5E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jvnpZCZTwnLqpGBiXy/9H0dRf8kWZcXCCo1JqJbgxNiKIKaGsSWbCASqndd2uRDH5
-	 laNK1awMH5gdMWlHydLLdTTum8OU6U3fyllIRdGCfqu62F1Yk5uI0FrJDip5IcrO3r
-	 swSrhU/fGarbtn6gxJVLLvohXqTDWYvsT70qhPWxeOYgHjhqJhjmRsI57/KTSruorj
-	 ebx8FOT2blfkQaH2OCMigpnsvGsb9M7EbsivwKKhD+sn67SkbmkiIysOk35Vxg03Mo
-	 w3VPwbKcew+zZ0X8MggEZIqPsjYF2dmYcYYUu4alwOUeiPUx5PVI9pmRuhk0IqSNOq
-	 W2e++9Rjck23g==
-Date: Sun, 7 Sep 2025 13:48:19 +0100
+	b=A2cBPQODairAWSdOVFg0jqudoGlaj7oMicPe9GgaeYm5QwxCcS/BZ1iPUny+uXYvr
+	 64j4ToyCWNUACPsXFNZ6ze9qbSC3zNHfEKtcgOFpn9o1lG1f6cP5CyNt9nnd3/mOuo
+	 +GPugcjHZJP9w0Mh0edl4SvDwWPhMQDaOS0Xxg9UBuXQKYFeQ+a7zijN2yDOAvhIXb
+	 rjcAhcmmt2GElZX+X3rzBONjqcAxKGMMwxS6SE5BLjbcstL7obx29DFztnxpHOhss3
+	 OmVHprasC+xc4CXkv7Zfu7XhF1sC7dAkzMxtYwdR15SqOnCCX2dZXH+OCLqyrUJBH5
+	 cDSme6O+fi+3w==
+Date: Sun, 7 Sep 2025 13:50:04 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH 05/10] iio: accel: BMA220 make use of the watchdog
- functionality
-Message-ID: <20250907134819.5289f4fa@jic23-huawei>
-In-Reply-To: <20250901194742.11599-6-petre.rodan@subdimension.ro>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Petre Rodan <petre.rodan@subdimension.ro>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH 06/10] iio: accel: BMA220 add LPF cut-off frequency
+ mapping
+Message-ID: <20250907135004.6c7faba9@jic23-huawei>
+In-Reply-To: <cf18ede2-2077-41f4-a49c-adb3c13c4c44@baylibre.com>
 References: <20250901194742.11599-1-petre.rodan@subdimension.ro>
-	<20250901194742.11599-6-petre.rodan@subdimension.ro>
+	<20250901194742.11599-7-petre.rodan@subdimension.ro>
+	<cf18ede2-2077-41f4-a49c-adb3c13c4c44@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,91 +64,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  1 Sep 2025 22:47:31 +0300
-Petre Rodan <petre.rodan@subdimension.ro> wrote:
+On Fri, 5 Sep 2025 14:59:27 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> Sometimes the sensor gets stuck and enters a condition in which it pulls
-> SDA low, thus making the entire i2c bus unusable.
-> The optional bosch,watchdog property mitigates this problem by clearing
-> the condition after a period of 1 or 10ms.
+> On 9/1/25 2:47 PM, Petre Rodan wrote:
+> >  - add mapping for the low pass filter cut-off frequency.
+> >  - make valid values visible for both the cut-off frequency and the scale.
+> > 
+> > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 
-As I think was discussed with the binding, I'd turn this on by default
-and we can figure out if we want to change that if it causes anyone
-problems long run.
+> > +/*
+> > + * Available cut-off frequencies of the low pass filter in Hz.
+> > + */
+> > +static const int bma220_lpf_3db_freq_hz_table[][2] = {
+> > +	[BMA220_COF_1000HZ] = {1000, 0},
+> > +	[BMA220_COF_500HZ] = {500, 0},
+> > +	[BMA220_COF_250HZ] = {250, 0},
+> > +	[BMA220_COF_125HZ] = {125, 0},
+> > +	[BMA220_COF_64HZ] = {64, 0},
+> > +	[BMA220_COF_32HZ] = {32, 0},  
+> 
+> If all of these are integer values, why do we need 2-D table?
+Style wise, for IIO we are going for 
+{ 32, 0 }, 
 
-> 
-> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-> ---
->  drivers/iio/accel/bma220_core.c | 32 ++++++++++++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
-> 
-> diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220_core.c
-> index fae84823d52b..86347cf8ab1e 100644
-> --- a/drivers/iio/accel/bma220_core.c
-> +++ b/drivers/iio/accel/bma220_core.c
-> @@ -158,6 +158,12 @@ enum bma220_axis {
->  	AXIS_Z,
->  };
-> 
-> +enum bma220_prop_wdt {
-> +	BMA220_PROP_WDT_OFF,
-> +	BMA220_PROP_WDT_1MS,
-> +	BMA220_PROP_WDT_10MS,
-> +};
-> +
->  static const int bma220_scale_table[][2] = {
->  	{0, 623000}, {1, 248000}, {2, 491000}, {4, 983000},
->  };
-> @@ -428,10 +434,17 @@ static int bma220_power(struct bma220_data *data, bool up)
->  	return -EBUSY;
->  }
-> 
-> +static int bma220_wdt(struct bma220_data *data, const u8 val)
-> +{
-> +	return regmap_update_bits(data->regmap, BMA220_REG_WDT, BMA220_WDT_MASK,
-> +				  FIELD_PREP(BMA220_WDT_MASK, val));
-> +}
-> +
->  static int bma220_init(struct bma220_data *data)
->  {
->  	int ret;
->  	unsigned int val;
-> +	u32 watchdog;
->  	static const char * const regulator_names[] = { "vddd", "vddio", "vdda" };
-> 
->  	ret = devm_regulator_bulk_get_enable(data->dev,
-> @@ -462,6 +475,25 @@ static int bma220_init(struct bma220_data *data)
->  		return ret;
->  	}
-> 
-> +	ret = device_property_read_u32(data->dev, "bosch,watchdog", &watchdog);
-> +	if (!ret) {
-> +		switch (watchdog) {
-> +		case BMA220_PROP_WDT_1MS:
-> +			ret = bma220_wdt(data, BMA220_WDT_1MS);
-> +			break;
-> +		case BMA220_PROP_WDT_10MS:
-> +			ret = bma220_wdt(data, BMA220_WDT_10MS);
-> +			break;
-> +		default:
-> +			ret = bma220_wdt(data, BMA220_WDT_OFF);
-> +			break;
-> +		}
-> +		if (ret) {
-> +			dev_err(data->dev, "Failed to set watchdog\n");
+That is extra spaces.
 
-dev_err_probe()
-
-> +			return ret;
-> +		}
-> +	}
-> +
->  	return 0;
->  }
-> 
-> --
-> 2.49.1
-> 
-> 
-
+Mind you that's irrelevant if it's a 1D array ;)
 

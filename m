@@ -1,86 +1,84 @@
-Return-Path: <linux-iio+bounces-23887-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23888-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4872DB495BD
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Sep 2025 18:42:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4964B49849
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Sep 2025 20:27:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61DF117237B
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Sep 2025 16:41:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 742997B2885
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Sep 2025 18:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A10F30F924;
-	Mon,  8 Sep 2025 16:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBF431B10A;
+	Mon,  8 Sep 2025 18:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkbjJDGD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx.gpxsee.org (mx.gpxsee.org [37.205.14.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC58A30CDA9;
-	Mon,  8 Sep 2025 16:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.14.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF5A3164BE;
+	Mon,  8 Sep 2025 18:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757349488; cv=none; b=GZ3zHK757kpKPainQngxWlB8FKMZZbV/xjkgwr8ySDkO1WBJzCXdEI09ofn+vBG9aH96Zqitvl7p79hs8hA3eCZxkzvF7MP1Hl7WFAVYH9cej4hGTxT42W7gNLLq0WYkv+1XcLJibajysg4GbXODisquZPlAo3OYdtzuHiLcBuM=
+	t=1757356059; cv=none; b=HPulH4viNGa5yHBKgeH5dSeF4/TsP/0XxBj7eZNRyUUXJfVRvfI5jxdv1kC7sYR/kAhuFs1S3/ZlQdgJCBrEKCN35xp/FtMPe1BMFFPs8azgETlJpdHwxlbTDbsp6uxWf32kFrAMMQDF17bAvFCVJV0upqzRMHuFGmpZ3MtcfD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757349488; c=relaxed/simple;
-	bh=zZHPynoOaZGptn++iz8ruNlYNX3tfi3RSMpIeMy4EyI=;
-	h=Message-ID:Date:MIME-Version:From:Subject:References:To:
-	 In-Reply-To:Content-Type; b=As1ZwteE1KsHZLVtg69hMYeOu9mXajkZWlLrnR4BvvIbUhJd9v0da/Z4z3WbodswpB1vR1+WzdR6xIlWWfeh9s5uh4D4YPYZexIxOkE1nIc5iKnpDpZ2oIeHu9JhwlmUuUjNonN/QYq3+Ic84p0gNIIY3obDQIexW57A4iP0lEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gpxsee.org; spf=pass smtp.mailfrom=gpxsee.org; arc=none smtp.client-ip=37.205.14.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gpxsee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gpxsee.org
-Received: from [192.168.42.135] (85-193-34-16.rib.o2.cz [85.193.34.16])
-	by mx.gpxsee.org (Postfix) with ESMTPSA id 359173918D;
-	Mon, 08 Sep 2025 18:38:04 +0200 (CEST)
-Message-ID: <f4256d82-e13a-4a67-9e72-7e9454f4e879@gpxsee.org>
-Date: Mon, 8 Sep 2025 18:38:04 +0200
+	s=arc-20240116; t=1757356059; c=relaxed/simple;
+	bh=eHyvwJfyU389ryIw9y/fXvZZGhXTbqPRmEfdge7Hf/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lJtJPmIzTM7ZXfDHHj39n/wYxxpKIszbIOVvnAeisU9+pnFyQn8r+bAYjvx5Jx8H5n5m4ElrInubY8HZFekEDO59r/j+orpGqIcVyyN+fP1oK0BxGSUO6Lod8yaU9EMm2YPxbmHqJgrzij0UHM1RA3r5AyTZsyQ6GJ7ozfWM8rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkbjJDGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907EDC4CEF1;
+	Mon,  8 Sep 2025 18:27:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757356059;
+	bh=eHyvwJfyU389ryIw9y/fXvZZGhXTbqPRmEfdge7Hf/g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SkbjJDGDAOAwuIcxTiyeNcnMAibwJDmZDKdSAwoS6l0v4PlnvQRXLeFzqfmRZFPgq
+	 n5ZyVa1eYYCUYP9rtmUcIE5k+kyHRQVjBJ//KZpTd/m9y9rFpRoHEvbrpJ6GNY4jzo
+	 8NmGbh9jdHZty3P28rCvMtR6Dpuq9k7B8jPuWrI4t608Ilc0oISOHsjEtDwrviqNMj
+	 WGmbO/ONqt2L7LXskRlgkrQE0qKyzhZ+5aQqTFVq37g5NFm38QtuEdyIK7HRoADmjE
+	 HUGskPhWDPC7c8tIZTzF4BykhAQAttZJkkspBQhpIEaf7irdF2XGiRt8wLKrEyQwdA
+	 iv8lvdbx0B3ZA==
+Date: Mon, 8 Sep 2025 19:27:35 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: jic23@kernel.org, robh@kernel.org, conor+dt@kernel.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 3/6] dt-bindings: iio: adc: add ade9000
+Message-ID: <20250908-postcard-emerald-0f27e15d9c71@spud>
+References: <20250908073531.3639-1-antoniu.miclaus@analog.com>
+ <20250908073531.3639-4-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: =?UTF-8?Q?Martin_T=C5=AFma?= <tumic@gpxsee.org>
-Subject: [PATCH 2/2] media: pci: mg4b: use iio_push_to_buffers_with_ts()
-References: <f65be4fc-0ed2-4b7e-9955-7f64200a51bf@gpxsee.org>
-Content-Language: en-US
-To: jic23@kernel.org, mchehab@kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org
-In-Reply-To: <f65be4fc-0ed2-4b7e-9955-7f64200a51bf@gpxsee.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="q63LfRDEp4aXS8kd"
+Content-Disposition: inline
+In-Reply-To: <20250908073531.3639-4-antoniu.miclaus@analog.com>
 
 
-On 9/5/25 9:06 PM, David Lechner wrote:
-> Replace iio_push_to_buffers_with_timestamp() with
-> iio_push_to_buffers_with_ts(). This adds an extra argument with the
-> buffer size to ensure that we aren't writing past the end of the buffer.
-> No functional change.
-> 
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Closes: https://lore.kernel.org/linux-iio/20250724115610.011110fb@jic23-huawei/
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+--q63LfRDEp4aXS8kd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Reviewed-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-> ---
->   drivers/media/pci/mgb4/mgb4_trigger.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/pci/mgb4/mgb4_trigger.c b/drivers/media/pci/mgb4/mgb4_trigger.c
-> index bed8bbd4bc595d1d131b9919c6f3b705e43ba3c4..4f9a35904b4186618a554e3047d6b46ff7ed74be 100644
-> --- a/drivers/media/pci/mgb4/mgb4_trigger.c
-> +++ b/drivers/media/pci/mgb4/mgb4_trigger.c
-> @@ -97,7 +97,7 @@ static irqreturn_t trigger_handler(int irq, void *p)
->   	scan.data = mgb4_read_reg(&st->mgbdev->video, 0xA0);
->   	mgb4_write_reg(&st->mgbdev->video, 0xA0, scan.data);
->   
-> -	iio_push_to_buffers_with_timestamp(indio_dev, &scan, pf->timestamp);
-> +	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan), pf->timestamp);
->   	iio_trigger_notify_done(indio_dev->trig);
->   
->   	mgb4_write_reg(&st->mgbdev->video, 0xB4, 1U << 11);
-> 
+--q63LfRDEp4aXS8kd
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaL8gFwAKCRB4tDGHoIJi
+0hTSAP0YebM3AhQ/e14L/VcDm43KjoYrVD75tOv8wYIt7CyxUwD+MMel4xlGVahT
+y/bsB7qjppN3Jzqi8Dbau1NZ3RXCjwo=
+=8jxI
+-----END PGP SIGNATURE-----
+
+--q63LfRDEp4aXS8kd--
 

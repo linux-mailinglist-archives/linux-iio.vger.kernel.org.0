@@ -1,81 +1,39 @@
-Return-Path: <linux-iio+bounces-23885-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23886-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B00DB492D5
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Sep 2025 17:17:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5975B495AC
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Sep 2025 18:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2D0116B4F4
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Sep 2025 15:17:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C62041C20D4E
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Sep 2025 16:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C341830AD18;
-	Mon,  8 Sep 2025 15:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="imTi9JSl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19E231197C;
+	Mon,  8 Sep 2025 16:36:09 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.gpxsee.org (mx.gpxsee.org [37.205.14.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C7D30DEB6
-	for <linux-iio@vger.kernel.org>; Mon,  8 Sep 2025 15:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C98430F7EA;
+	Mon,  8 Sep 2025 16:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.14.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757344630; cv=none; b=k8ke4hMngAKl0neppn3A/xZs8vhug8+KZHgefgkEc8rpcIEWwCpQi8spghhzt0M/crCupLoMOJx+eNmW/w9qOiy9/2cX5Op4BHCi/vyQmS+RLuqHEJtirrZ49AFv6QSWdxyovrn/GlKsy3nY+ToH6z95XNXqbo6/pDU0CVHwy+g=
+	t=1757349369; cv=none; b=BIG7h8r/GX4Kj/IfWYjSxsECtJwO0nY/ctw1DkbXH+bFspkoaGoXI4bRcI6tEAg9Hkd3+XdSulEd+Ev3DsM9EqajuTbrO2Bs1nzX1E05DSTUmsqCOn4IsXNDWXn+8NMCf1FfPvDB+V5q8860qQQC/hAoMp1zFoVR+IP/JibeI+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757344630; c=relaxed/simple;
-	bh=Ey910SudTgpYwRJt3r93dbAhFoKHfLFcZseyC1yyMm4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HwrKilkzcTXDFt57XD4pWvvmBAlB2K+KUk/GqKu2JJf8k2vr021YdI01qQZzJl2Kf56kkEdQLStX/Ghk7zpbfxVQyXBn/cE0tpDs81mCnoBjphkWZHmceibqxNILbgru65M/nnYhKMqgXCEKDOSZEPQBlQD7HdLc1xiAKtGhObI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=imTi9JSl; arc=none smtp.client-ip=209.85.160.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-319c2a87a5aso1626667fac.1
-        for <linux-iio@vger.kernel.org>; Mon, 08 Sep 2025 08:17:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757344627; x=1757949427; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oChNwab4y0BvafrCmZfguVZuMlkh+/x8QHfxe4nJNqk=;
-        b=imTi9JSlPGUMxH0jZMHQeqwl5Bk/y+ZhY8YVXcCGtYZFfEVhUvexCPb9IUf4ANhjkM
-         thyz21agVhJYT7C8z1ioBwv50SKXAxkv9fz0hpbLR+dlR1G7pgxHbwSmPKdpY6BLjQcX
-         2+n6NUc39DhE5Eb/Y2bOh6N++1VaqpAgeeMuuKZGBuzR39RGQnUXV5O6ccPwcBer903K
-         R0qiYHOIEIBYPfUh1sZAc5KQ/LeF65emuNkXwe14KJ0CNBHqGM9gao3S6oOtLD3Al3H5
-         AkwOiBMUa73oWJHUyoln13hAVeLrweuNMvVZL+AmddhDEgUrrh/p+kE2PKlbFTai/qw/
-         pGug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757344627; x=1757949427;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oChNwab4y0BvafrCmZfguVZuMlkh+/x8QHfxe4nJNqk=;
-        b=d/rNZ/uYQw9+cnjYN9lBv4PqfANfTka8IaAxoGGGmlPGUgLTLvpDzZxPDPf1FvgZZj
-         Ri8wlFXmNgpiVagaoBoRND8n33zcNrOtsUu3Xb+woomWnWpFniij2r1owVfGMevG+p24
-         cuPwfMy6m1YMEyyKKMObQ943YBPG/jgYhdY0gOaBJghujfgpA4bFvGqXdwNkKnehN0Qb
-         GQMr2GqX+aTyKQlXjKETwSskm/5CTvmjRMdtu2pKypHvzjWxf7HWkbEJL+cdmbsJz4J4
-         zTKs0UN7C6uPlvfXJdwxyzHBVDc2rSAOiC09257Wot/z4gkH3d1YsL0zl5lL5MdiZ0sA
-         Wd3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWBul5UQ5a4KU85jMwnDJiD3gp11xau38Cuoi5l7UHG1OiVFupBOsPsX/m1eL8OI+kXFmqPD6q/xIs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0VEmLs1w/KWMhgkBWBXaRTOpV5Jan5kMU4q3KUvdh/hx9Vjy1
-	LaUNDM7OPDQ9Ydq/2CWIO+nYh7ZMoMY1UguDD15lB2De7N98ULY6rErJ16fRYvC5t5U=
-X-Gm-Gg: ASbGncu/EF4O4qslS8wnOsrom6l2iNKohMeNozE0Xqn2kRrfkf89q1NnfMCQU+mufRh
-	lW3sdEwG+iStLWO1hvxBjPBVDGDuflRGTGkMybtTseuOzdUlbMsIAk1I2D5xA/MBp81/8jBajud
-	4uL4WVeN4iyG8D+tw017QPR/jR9Ss88bTGEklO8qN+x6YeUVi59ISz6bmwmXyCg8INH+I3B0jqA
-	nokZoO+7Dmu6PZk0elJvubxRTV0IYiPpLtJK5AHynF1qYYyhJ8m0mwDSD7fA1z8FqothZISfuIX
-	fXoNPw+9oD2tGjIIDq24v1pHeUFx7E43xiL1ZPSc8zld0EcCyqrpH512hsIY9B5yMP5/J8E0BGN
-	3Npbe1/+Sbw/Fc4FmeB5Z3+1Gfh9IgacZaEDkKzuAO8nbJsk2UG2FopCXQ0ywuxAEy2NJYH0JDV
-	o=
-X-Google-Smtp-Source: AGHT+IEv3uU9WTJh/czvFIeBV7WL0z68MTpIl41dfDTZnQ82IX2066fCpwkGkeMuhMlUQi17voCSwg==
-X-Received: by 2002:a05:6870:5ba9:b0:319:ca39:4d24 with SMTP id 586e51a60fabf-32262d8be95mr3171559fac.13.1757344627511;
-        Mon, 08 Sep 2025 08:17:07 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:c856:f3d3:de1a:6f93? ([2600:8803:e7e4:1d00:c856:f3d3:de1a:6f93])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-31d7119337dsm5334049fac.5.2025.09.08.08.17.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 08:17:07 -0700 (PDT)
-Message-ID: <0505896b-02b5-465e-adc4-4404d8e657c1@baylibre.com>
-Date: Mon, 8 Sep 2025 10:17:06 -0500
+	s=arc-20240116; t=1757349369; c=relaxed/simple;
+	bh=AMyMyekIZqDNrCq7O70iFcw5iGCi1qxe8v4SS9r8Zqg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:References:To:
+	 In-Reply-To:Content-Type; b=PsF4djpje1jX5ZosFoVNK4dne28mZr9veHDfYIlf0CrdJXwJ8skZypubCqRIlQqNaZHFjdQVYTyAOko04hu7Mx0nWO+TA+Q/4VgMbUzzMmW5a9EmgG20JCqODZf7leVZ6qEhEQkA5qXrE7533bVhYSZbb/oca0LfiQEUuwpFyDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gpxsee.org; spf=pass smtp.mailfrom=gpxsee.org; arc=none smtp.client-ip=37.205.14.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gpxsee.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gpxsee.org
+Received: from [192.168.42.135] (85-193-34-16.rib.o2.cz [85.193.34.16])
+	by mx.gpxsee.org (Postfix) with ESMTPSA id 4143938F82;
+	Mon, 08 Sep 2025 18:36:00 +0200 (CEST)
+Message-ID: <6f59004b-5f0c-4686-96f2-8a386acf097d@gpxsee.org>
+Date: Mon, 8 Sep 2025 18:36:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,82 +41,53 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] iio: adc: ad7124: fix sample rate for multi-channel
- use
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250905-iio-adc-ad7124-fix-samp-freq-for-multi-channel-v3-1-702ff014ec61@baylibre.com>
- <20250907110013.266c2da2@jic23-huawei>
+From: =?UTF-8?Q?Martin_T=C5=AFma?= <tumic@gpxsee.org>
+Subject: [PATCH 1/2] media: pci: mg4b: use aligned_s64
+References: <4501714e-8433-404a-a526-fd6919031f39@gpxsee.org>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250907110013.266c2da2@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, jic23@kernel.org, mchehab@kernel.org
+In-Reply-To: <4501714e-8433-404a-a526-fd6919031f39@gpxsee.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 9/7/25 5:00 AM, Jonathan Cameron wrote:
-> On Fri, 05 Sep 2025 12:33:34 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
+
+On 9/5/25 9:06 PM, David Lechner wrote:
+> Use aligned_s64 for IIO timestamp field instead of explicit __align().
+> This is the convention used throughout the IIO subsystem. No functional
+> change.
+> 
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Closes: https://lore.kernel.org/linux-iio/20250724115610.011110fb@jic23-huawei/
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+
+Reviewed-by: Martin Tůma <martin.tuma@digiteqautomotive.com>
+
+> ---
+>   drivers/media/pci/mgb4/mgb4_trigger.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/pci/mgb4/mgb4_trigger.c b/drivers/media/pci/mgb4/mgb4_trigger.c
+> index d7dddc5c8728e81c6249b03a4cbf692da15a4ced..bed8bbd4bc595d1d131b9919c6f3b705e43ba3c4 100644
+> --- a/drivers/media/pci/mgb4/mgb4_trigger.c
+> +++ b/drivers/media/pci/mgb4/mgb4_trigger.c
+> @@ -17,6 +17,7 @@
+>   #include <linux/iio/triggered_buffer.h>
+>   #include <linux/pci.h>
+>   #include <linux/dma/amd_xdma.h>
+> +#include <linux/types.h>
+>   #include "mgb4_core.h"
+>   #include "mgb4_trigger.h"
+>   
+> @@ -90,7 +91,7 @@ static irqreturn_t trigger_handler(int irq, void *p)
+>   	struct trigger_data *st = iio_priv(indio_dev);
+>   	struct {
+>   		u32 data;
+> -		s64 ts __aligned(8);
+> +		aligned_s64 ts;
+>   	} scan = { };
+>   
+>   	scan.data = mgb4_read_reg(&st->mgbdev->video, 0xA0);
 > 
 
-...
-
-> Given you replied to Andy's indentation comment on v2 and that seemed
-> reasonable to me + the other change is a simplification for now I think
-> this is ready to go.
-> 
-> Given the whole ABI / fixes tag point I'm going to apply it to the
-> 'slow' path and taking via testing/togreg for the next merge windows.
-> 
-> Applied to togreg and pushed out as testing for 0-day to take a look.
-
-With fresh eyes, I spotted a few minor mistakes...
-
-
->> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
->> index c6435327d431e5f4ba28aa3332ec6eb90da7c83d..70f458e3ccc12db884dda9003abcffdf48989e5e 100644
->> --- a/drivers/iio/adc/ad7124.c
->> +++ b/drivers/iio/adc/ad7124.c
->> @@ -93,10 +93,13 @@
->>  #define AD7124_CONFIG_PGA		GENMASK(2, 0)
->>  
->>  /* AD7124_FILTER_X */
->> -#define AD7124_FILTER_FS		GENMASK(10, 0)
->>  #define AD7124_FILTER_FILTER		GENMASK(23, 21)
->>  #define AD7124_FILTER_FILTER_SINC4		0
->>  #define AD7124_FILTER_FILTER_SINC3		2
-
->> +#define AD7124_FILTER_FILTER_SINC4_SINC1	4
->> +#define AD7124_FILTER_FILTER_SINC3_SINC1	5
-
-Adding these two lines should be deferred to a later patch.
-
->> +#define AD7124_FILTER_SINGLE_CYCLE	BIT(16)
->> +#define AD7124_FILTER_FS		GENMASK(10, 0)
->>  
->>  #define AD7124_MAX_CONFIGS	8
->>  #define AD7124_MAX_CHANNELS	16
->> @@ -285,18 +288,20 @@ static u32 ad7124_get_fclk_hz(struct ad7124_state *st)
->>  
->>  static void ad7124_set_channel_odr(struct ad7124_state *st, unsigned int channel, unsigned int odr)
->>  {
->> -	unsigned int fclk, odr_sel_bits;
->> +	unsigned int fclk, factor, odr_sel_bits;
->>  
->>  	fclk = ad7124_get_fclk_hz(st);
->>  
->>  	/*
->> -	 * FS[10:0] = fCLK / (fADC x 32) where:
->> +	 * FS[10:0] = fCLK / (fADC x 32 * N) where:
->>  	 * fADC is the output data rate
->>  	 * fCLK is the master clock frequency
->> +	 * N is number of conversions per sample (depends of filter type)
-
-typo: s/depends of/depends on/
-
->>  	 * FS[10:0] are the bits in the filter register
->>  	 * FS[10:0] can have a value from 1 to 2047
->>  	 */
 

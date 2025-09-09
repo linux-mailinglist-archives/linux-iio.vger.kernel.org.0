@@ -1,138 +1,127 @@
-Return-Path: <linux-iio+bounces-23890-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23891-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C700B49A8F
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Sep 2025 22:02:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CED0B4A315
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Sep 2025 09:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB17B4E197E
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Sep 2025 20:02:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EC031792CE
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Sep 2025 07:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405FA2D77F5;
-	Mon,  8 Sep 2025 20:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FD6306D4D;
+	Tue,  9 Sep 2025 07:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lmoG4NDV"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="A3nNHWXo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE55219A86;
-	Mon,  8 Sep 2025 20:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175113064A8;
+	Tue,  9 Sep 2025 07:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757361771; cv=none; b=DGk6+rtB2tnNTUptQgqVqv/iCinvakaD/gFM7Ip3kaATA4DdrjvkEXjLMtoaFGTJDu8zp3P88t1JLd7kgVe6c2HzxCxTL7EXxefGw5TxTLQqhNeDxSqd3oJyxCvxu0XqxXcP5ia9UzsLilwGUulqDQK6S/WxLEF1IFaiEVmUQtQ=
+	t=1757401895; cv=none; b=Cvup72FMu3lFZSzi7fFsBAHroumESs2lesB0kN97qyd66eDSrqQS9a6rO/e3Hl4nuFmVEHel5w9sAZvyeTMSJy/HditZ+aCH4j5UEjEC0PfZQr5ZATSQ159+Fzo94kmge4ik5CdqAmNMs4duLmOjCr0v5VFLhJU/IkU39tsi3Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757361771; c=relaxed/simple;
-	bh=7DOP+7F2mn8xBOqn8zohU2fZyfjzOo/Gx5CGf4Zo840=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EtCdMbpa1WXufa36w+xGaDI1CsTRp3gd0clmci+/GYHzWgDw6twXS6HD+6syyAgUQ95GrrZAi+We8ou9NNHi5V04AFxywagouCnphAS6UczWQK6mUbJTevLJo+oMcnZWcJmN2C8uVuJ3ZpNc+f4YjqO7lCmOqDWLvu8FYOD9GOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lmoG4NDV; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757361770; x=1788897770;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7DOP+7F2mn8xBOqn8zohU2fZyfjzOo/Gx5CGf4Zo840=;
-  b=lmoG4NDVMASl9qE8zxnFNv6a1IJOwXy5NCznU6Z27oiu7b+jEoTsu9yj
-   uHMF9yV+ph+7eg6gvKUPxy6RBKrx2Mf4XVa/pC4N3DWCy98l8ZiL/Pd67
-   3ZJlSZfeL67ROiBTvFSoOjX2BAOnTohhnsnWLRXFg0w/rMsVn6/Uluo6I
-   3+XwgOUiOSyvVRylBMmtFv/yuI+IvnPa4rojfOFdnSjZE8UA/hQRuERGw
-   pE1ciglhqrkxO+/DNa566K5V/vlpXlTn8SuQgqBdsmAwBXntVd4T6vVSf
-   xcw+rqU8+7ti2Y7/2O1ugjVrBCi+VJPFe1GZLg25ZgIQFlnY+uYBWMSDW
-   w==;
-X-CSE-ConnectionGUID: R7Jl1lYcR4ueYfDElaDt8Q==
-X-CSE-MsgGUID: K6NgrqwTQWWj0XoDma5RFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="70732129"
-X-IronPort-AV: E=Sophos;i="6.18,249,1751266800"; 
-   d="scan'208";a="70732129"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 13:02:46 -0700
-X-CSE-ConnectionGUID: /Sl2FUhRQ4KOZTq0Jxxl6w==
-X-CSE-MsgGUID: gTr/fpAHT8e/neTJAB80kg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,249,1751266800"; 
-   d="scan'208";a="172759587"
-Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 08 Sep 2025 13:02:41 -0700
-Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uvi4U-00047f-0u;
-	Mon, 08 Sep 2025 20:02:38 +0000
-Date: Tue, 9 Sep 2025 04:01:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Tobias Sperling <tobias.sperling@softing.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Esteban Blanc <eblanc@baylibre.com>,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-Message-ID: <202509090302.DzgxdNbE-lkp@intel.com>
-References: <3cc1faffcb4f71f0755b6192f193acecd36bea67.1757053456.git.mazziesaccount@gmail.com>
+	s=arc-20240116; t=1757401895; c=relaxed/simple;
+	bh=OX+8nctLubxm85gtheRJLeHFla34FZZyCJ8GRdbIEug=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Gk9Q4icCnHgVy6qiHv6qw0Owrk6If3bmuLmNjaveA7Nu++aV1DD+w1w/iL9cIRnYEmV7Z2Nb/H5qgWXWH0eQfDdbIuMk59w0fsYElvH6l/RydFIit27e8QPhZxKqpnmeA4Vk7zyodGG5+1uXEgbh7E8QTbmoI3qprx5pTeqEVBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=A3nNHWXo; arc=none smtp.client-ip=185.70.43.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail2; t=1757401885; x=1757661085;
+	bh=k3RFqLUt7EBVe7ElX+OXbwZrnbLLAyRZG+pz1IndmLY=;
+	h=From:Subject:Date:Message-Id:To:Cc:From:To:Cc:Date:Subject:
+	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=A3nNHWXovN5o2Z8zSAKqJsGCKxV4m3Ul6CeJ+yTH+qjrJxkflfr3hjOvJjqph/Owa
+	 0Z+BVqRS34v2XY/+MDl0fSg0d1KIi4OfcliHXkNPjeFzOBTf4ObSRGcnxHxEcp2l/g
+	 PVpn6T6dYCZpJ7jEpgwXbS5tIDYR7rAb1dQdufGSG0fVLxJppCPYjPIdPTXq5JzPHd
+	 tuyc7usTY6ehXj07zziP12Nqd2EHDRBTWvwNL6m5D5wgsNDQuwv6yK2Tkm7lEywtYF
+	 jOEN5xvW0mN3VWw1opV8KlENrqGVjrjlFnfX3+LjsldorJFvdFtze7rJPd5cZY77Fl
+	 +jijG98iIuoyw==
+X-Pm-Submission-Id: 4cLZk36ZP8z1DDs1
+From: Sean Nyekjaer <sean@geanix.com>
+Subject: [PATCH v4 0/5] iio: imu: inv_icm42600: pm_runtime fixes + various
+ changes
+Date: Tue, 09 Sep 2025 09:11:06 +0200
+Message-Id: <20250909-icm42pmreg-v4-0-2bf763662c5c@geanix.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3cc1faffcb4f71f0755b6192f193acecd36bea67.1757053456.git.mazziesaccount@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAArTv2gC/2XOTQ6DIBCG4asY1qWBgQrTVe/RdGFxVBb+BBtiY
+ 7x70aSxpgsW3yTPG2Y2UvA0sms2s0DRj77v0tCnjLmm6GrivkybgYCLMMJy71oNQxuo5qBLmx4
+ a6zRLYAhU+WmL3R9pN3589eG9taNcr98M/mai5IKrUpBB5RCfcKup6Px0dn3L1k6E3drjFyIkW
+ 2grwCAZA/LPqt2ikAerkqVKKpWDzjEXB7ssyweKljpDHQEAAA==
+X-Change-ID: 20250708-icm42pmreg-24d824d978c4
+To: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
+ rafael@kernel.org, Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-pm@vger.kernel.org, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Sean Nyekjaer <sean@geanix.com>
+X-Mailer: b4 0.14.2
 
-Hi Matti,
+This series was triggered by "Runtime PM usage count underflow!" when
+unloading the module(s).
+By testing the driver in various use cases and reading code it was
+obvious that it could need some tiding up.
 
-kernel test robot noticed the following build errors:
+@Rafael:
+Is checking pm_runtime_status_suspended() is a viable option?
+To avoid calling regulator_disable 2x during remove()?
 
-[auto build test ERROR on d1487b0b78720b86ec2a2ac7acc683ec90627e5b]
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+---
+Changes in v4:
+- Corrected review comments from David in PATCH 5/5
+- Link to v3: https://lore.kernel.org/r/20250901-icm42pmreg-v3-0-ef1336246960@geanix.com
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Matti-Vaittinen/dt-bindings-iio-adc-ROHM-BD79112-ADC-GPIO/20250905-144454
-base:   d1487b0b78720b86ec2a2ac7acc683ec90627e5b
-patch link:    https://lore.kernel.org/r/3cc1faffcb4f71f0755b6192f193acecd36bea67.1757053456.git.mazziesaccount%40gmail.com
-patch subject: [PATCH v3 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-config: i386-randconfig-r133-20250908 (https://download.01.org/0day-ci/archive/20250909/202509090302.DzgxdNbE-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250909/202509090302.DzgxdNbE-lkp@intel.com/reproduce)
+Changes in v3:
+- Return early if pm_runtime_status_suspended() is set.
+- Fixed various comments from Andy in "use guard() to release mutexes" 
+- Link to v2: https://lore.kernel.org/r/20250808-icm42pmreg-v2-0-a480279e7721@geanix.com
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509090302.DzgxdNbE-lkp@intel.com/
+Changes in v2:
+- Removed patch iio: imu: inv_icm42600: Use inv_icm42600_disable_vddio_reg()
+- Moved changes from patch iio: imu: inv_icm42600: Remove redundant
+  error msg on regulator_disable() into iio: imu: inv_icm42600: Simplify
+  pm_runtime setup.
+- Move associated sleep close to enabling of vdd
+- Pass regulator as the parameter to inv_icm42600_disable_vddio_reg()
+- Use devm_pm_runtime_set_active_enabled() to simplify even more
+- Added a new commit that uses guard() to release mutexes
+- Link to v1: https://lore.kernel.org/r/20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+---
+Sean Nyekjaer (5):
+      iio: imu: inv_icm42600: Simplify pm_runtime setup
+      iio: imu: inv_icm42600: Drop redundant pm_runtime reinitialization in resume
+      iio: imu: inv_icm42600: Avoid configuring if already pm_runtime suspended
+      iio: imu: inv_icm42600: Use devm_regulator_get_enable() for vdd regulator
+      iio: imu: inv_icm42600: use guard() to release mutexes
 
->> ERROR: modpost: "spi_sync" [drivers/base/regmap/regmap-spi.ko] undefined!
->> ERROR: modpost: "spi_async" [drivers/base/regmap/regmap-spi.ko] undefined!
->> ERROR: modpost: "spi_write_then_read" [drivers/base/regmap/regmap-spi.ko] undefined!
->> ERROR: modpost: "__spi_register_driver" [drivers/iio/adc/rohm-bd79112.ko] undefined!
->> ERROR: modpost: "spi_sync" [drivers/iio/adc/rohm-bd79112.ko] undefined!
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h        |   1 -
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  |  24 ++---
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |  41 ++++----
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   | 117 +++++++--------------
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c   |  24 ++---
+ 5 files changed, 70 insertions(+), 137 deletions(-)
+---
+base-commit: dfbbee0907fb30a1dd31ff1a84e1bd34bd824369
+change-id: 20250708-icm42pmreg-24d824d978c4
 
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for REGMAP_SPI
-   Depends on [n]: SPI [=n]
-   Selected by [m]:
-   - ROHM_BD79112 [=m] && IIO [=m] && I2C [=y] && GPIOLIB [=y]
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sean Nyekjaer <sean@geanix.com>
+
 

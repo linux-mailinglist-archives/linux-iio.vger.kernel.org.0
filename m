@@ -1,141 +1,113 @@
-Return-Path: <linux-iio+bounces-23903-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23904-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E99BAB4FC29
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Sep 2025 15:15:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D032FB4FE9F
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Sep 2025 16:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DBDA16DDC3
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Sep 2025 13:15:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0F051B24842
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Sep 2025 14:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5885D2DFF04;
-	Tue,  9 Sep 2025 13:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8D233A038;
+	Tue,  9 Sep 2025 14:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yj27dGsb"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ElpAUPfg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B097233A038;
-	Tue,  9 Sep 2025 13:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8388334718
+	for <linux-iio@vger.kernel.org>; Tue,  9 Sep 2025 14:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757423713; cv=none; b=HmrC0eqJWXqmqYflrKkL9Mw3LhMJaxoL5ybz4qwIjy2C987cjgiA8e4ycRHEHEUeIVPKoRd0t+kqTKSlRUFbTjW1BpovokqKcW3yZydZTd9NeX68HktZHj6tNjXiYRi+ONGGvdUcimuyd+pT6MMYUhEJ0ll729tZAtj2jIke/YU=
+	t=1757426601; cv=none; b=rfPjYVJq25vG16D9pbkACfn58NtJhUv0ULdy/AxMRLNLPNzs0uuL1nUYajM3fXx21cr8kjAjw4GOygF45AXEU04SX98zdpDxwbM9fyRGjuyTPc6xM4+RRi3MbwaryUPd1kBryYBQ2Nw0jnI68xcglfIp0jFd5MUun8ITljAQOY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757423713; c=relaxed/simple;
-	bh=/ESSoS9CuhXSl+kOhQway3WlPy+udplWXPG3zRrJY7U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BN1yheJ8LKowEjWdb52ERnAA8Bt6YYYoHam18Fx2uT/E6v0uIehIMpetD4kvUV30yeE3WYgIef/d33d+gOcLfEIXXSrp1tReru5L+VWsjRnbhK4mQKVDjt9myA9WuQMBpMVPLwR+glPcF2Ld61NFQNdxq9ipv3VCTwBNHSLSVbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yj27dGsb; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757423712; x=1788959712;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/ESSoS9CuhXSl+kOhQway3WlPy+udplWXPG3zRrJY7U=;
-  b=Yj27dGsbrRc6NasKWUZaV1bETP6utKM6stjTUfgj61ng59XdN+Y+O0ut
-   /2sAko5fZIH7mRey019t0Lwfjny5HQTIWPquDa07pphncrasNv/gwzEkX
-   id8ZLwFAWcCvRUy33sqalQGddv1iyC4LBLgbpqubB97/UTbVAo/lMlf68
-   i+wEhRN8sxoqNqb13Rm8otebr7+xw6gqkdwQY33cw2Haa7Bi3KKZ2YD8R
-   yD/2KaecsHOlH+v+T7/yuCEQIWsN2+Yirj5l7BCMkHjJ1ds7RxREFmqQ6
-   lHPgWvulxbE5MzXR8VJVb1EA6/+asibPMNnnKKBBYULz/AUSV4lDq0pbT
-   g==;
-X-CSE-ConnectionGUID: 49mS2U9MQ2m+oRT2CRY95A==
-X-CSE-MsgGUID: NIrLgYa2Q2an49pBkp2TaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="63342496"
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="63342496"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 06:15:11 -0700
-X-CSE-ConnectionGUID: i8oS7dJjRymM8LlIf0uWzQ==
-X-CSE-MsgGUID: lDFgcWJUQ++PxXSBhO/Yog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="177376556"
-Received: from smile.fi.intel.com ([10.237.72.51])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 06:15:08 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uvyBd-00000001Rmp-0jQj;
-	Tue, 09 Sep 2025 16:15:05 +0300
-Date: Tue, 9 Sep 2025 16:15:04 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	rafael@kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v4 5/5] iio: imu: inv_icm42600: use guard() to release
- mutexes
-Message-ID: <aMAoWPAvOmOfgfaR@smile.fi.intel.com>
-References: <20250909-icm42pmreg-v4-0-2bf763662c5c@geanix.com>
- <20250909-icm42pmreg-v4-5-2bf763662c5c@geanix.com>
- <aMAR4Jx3pWQ1_rjX@smile.fi.intel.com>
- <wl4fvd76hjf66k6pmkoce5wg5luspxjjsclxg5pdh7rjycarko@ovddl55mn77l>
+	s=arc-20240116; t=1757426601; c=relaxed/simple;
+	bh=q45CxhQhD0f4Z1JjVjqiatYI0JZBd8Wv+yGFW41DUnI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jic6BKP/v99EbHbbuU50nP8JYgZx2SkMGmV3bRpoyLGjEupubGKxR2NzwMQVRfoZGSIz2feyZPCLnuI2C4NppcYL/tvdM0kVrg949gik4qqcCpSp5WdvP+91Isb+jUoJDFDSfSbmlzpDERUlgKmZNdSm7w02q8h4DJBMQduTAgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ElpAUPfg; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-74526ca7d64so4717658a34.2
+        for <linux-iio@vger.kernel.org>; Tue, 09 Sep 2025 07:03:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757426598; x=1758031398; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0+Ty4Uw7gGeDTrt6VENR+8GGLY9kK+eZiE7VvFqZl0w=;
+        b=ElpAUPfg8H0rQCQBhmOm4tawRQUVCZBM9kyOgQ6B/1AHs08XLLQBU3bb6RtYSou13S
+         oedr1SzopfT3Q62Gvfajj3gBwJyiuPUaYxW+AHaxh3qyn1ASM+LATePnkkPGiNIIIOpg
+         cFpXAg2amvj3nPI33GnJJIuxzTl0WeTJ6jBdgSB/t9UySgd4S1iTbjb0X0MjDjdPyEOS
+         N2dCvLqi/iowLxBu0v4x+PiwD8mkZyZJmtWaPVHyORTV6j9PLL83j2aUWllXpIkjUnqQ
+         gPMqlVdjn/OqQ9C6h+aRMVXLZQO9nJHP/SOUweouQEm0q/1gqL2ww6GpPD+UN/+DZZzt
+         AdwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757426598; x=1758031398;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0+Ty4Uw7gGeDTrt6VENR+8GGLY9kK+eZiE7VvFqZl0w=;
+        b=eWEXTglIs0D4gFyD4AU6oqaaZWdyd0cZnyKQRGJ1Yst960CA4TBgrgl9Xv5MKYE1Fv
+         sdQned7JFgelxB2gtl2p5cybmxcp/SGLrcSz12pbrCJrBOUZL+o3Wbd96cYbftS0JBPn
+         BtkODQsB88xA/WDx7tvXA5YVYmDEQHBxEAfdJPiiGDVYvYym+zg5RMLkycE9nhMxy70e
+         oAoQAzL63z0A1wN63eYOIllyW5qstECHF9kIMRE3LehVqwHIijB9SfB7Im1CkotSb3Z4
+         nHFHy92kp/vEFZ97F8+cskDD0mNun9IGlDiMBMUq2YVDZL8e74sgxQoQz5JHilowlVfz
+         LGZA==
+X-Gm-Message-State: AOJu0Yy45n3eVXzIHEx+0xGcvuez4vGGjU2H1ZP5p7+6jwpLi0uvXffv
+	x1TKi5TFJXbe86rbNSw5rw2EMBgL3SxdHzbv7BFbOdROMsusJSLYIx4uh29knPxhuhw=
+X-Gm-Gg: ASbGncuorft9PS553E6oIyfFhKobuXQZh8em9KdzB5INeULJ+tSmV8MtQId39Efu/CZ
+	Ewqr7Mv8puGFPlZnMYsLyxN05OyZ9NrA/Vtw4obBzCwKjxHz+faFywMF82a95Ttv1wdDVx4ik5/
+	/sG8hKpin0v37UOprDYn1wJTuiSOOvqwPYVNIk4XjpZKwF8BpFVhJ6PZ0NNUAAw1cuyskUixAWl
+	bGqe72WXYMBC+cJbGCdaN877rAE0TVoLznlXjy3HQVmsUhQJTSW0N8NH7jdNyexxxr6GFNr6hMN
+	gsh9U6/N2LoB/LK6UaYe6dfZ/SoZhf25s2KctSUpc9bjikCQoESbxlvcOjXlfmhiVfDHEfcXgVK
+	WhKNyezoRsVSFw5u547pjCagwQpOmSRH2jXkqw6IYsx6w+Nx9f25vyiZ2DYsrOuZfFmukzZNwB9
+	Cz6oQ6fTQ=
+X-Google-Smtp-Source: AGHT+IGBODO1pzDIKXSlNVnZ1VymhDBL90KIRXoVOSdBF5kuyeZU2GyRm2nEjTxrDqEYWt0BWjhcgQ==
+X-Received: by 2002:a05:6830:6ab4:b0:743:968b:3440 with SMTP id 46e09a7af769-74c75e4fe75mr5174495a34.20.1757426597538;
+        Tue, 09 Sep 2025 07:03:17 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:3bc0:a377:2a07:2a0? ([2600:8803:e7e4:1d00:3bc0:a377:2a07:2a0])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6218ac3645dsm1067679eaf.8.2025.09.09.07.03.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 07:03:16 -0700 (PDT)
+Message-ID: <0cdc56d2-091c-4d60-851e-788beec5e3d6@baylibre.com>
+Date: Tue, 9 Sep 2025 09:03:14 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <wl4fvd76hjf66k6pmkoce5wg5luspxjjsclxg5pdh7rjycarko@ovddl55mn77l>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 5/5] iio: imu: inv_icm42600: use guard() to release
+ mutexes
+To: Sean Nyekjaer <sean@geanix.com>,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, rafael@kernel.org,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250909-icm42pmreg-v4-0-2bf763662c5c@geanix.com>
+ <20250909-icm42pmreg-v4-5-2bf763662c5c@geanix.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250909-icm42pmreg-v4-5-2bf763662c5c@geanix.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 09, 2025 at 11:53:02AM +0000, Sean Nyekjaer wrote:
-> On Tue, Sep 09, 2025 at 02:39:12PM +0100, Andy Shevchenko wrote:
-> > On Tue, Sep 09, 2025 at 09:11:11AM +0200, Sean Nyekjaer wrote:
-
-...
-
-> > >  	/* exit if FIFO is already on */
-> > >  	if (st->fifo.on) {
-> > > -		ret = 0;
-> > > -		goto out_on;
-> > 
-> > Probably you wanted the same comment here
-> > 
-> > 	/* increase FIFO on counter */
-> > 
-> > > +		st->fifo.on++;
-> > > +		return 0;
-> > >  	}
-
-...
-
-> > >  	/* exit if there are several sensors using the FIFO */
-> > >  	if (st->fifo.on > 1) {
-> > > -		ret = 0;
-> > > -		goto out_off;
-> > 
-> > In the similar way
-> > 
+On 9/9/25 2:11 AM, Sean Nyekjaer wrote:
+> Replace explicit mutex_lock() and mutex_unlock() with the guard() macro
+> for cleaner and safer mutex handling.
 > 
-> Considered it. But isn't it obvious whats happening?
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> ---
 
-With the same equality existing ones may be killed. Some of consistency at least :-)
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
-> I will be happy to add them...
-
-> > 	/* decrease FIFO on counter */
-> > 
-> > > +		st->fifo.on--;
-> > > +		return 0;
-> > >  	}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+(I wouldn't mind seeing the "obvious" reference counting comments
+removed either).
 

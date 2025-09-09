@@ -1,267 +1,411 @@
-Return-Path: <linux-iio+bounces-23899-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23900-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C5FB4A815
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Sep 2025 11:34:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D666B4AACB
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Sep 2025 12:34:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DECA1738A0
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Sep 2025 09:34:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE6AE1C602C6
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Sep 2025 10:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD4829BD90;
-	Tue,  9 Sep 2025 09:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DEA31B825;
+	Tue,  9 Sep 2025 10:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aSvbfuuX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DzPTdm7m"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1AE29BD9B;
-	Tue,  9 Sep 2025 09:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B52F31B10E;
+	Tue,  9 Sep 2025 10:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757410142; cv=none; b=D8ZdJluBkcn5thmXsBk4Qi7QIpcZhmo9PbMMM+Y28MPJcOaUts9eB1T2BrhfADab0Ov5MY4Dop8A0JbV9KmsYMQ/PgdABhQ3Ez8TdLva7GnBcDDrDOBaRurhKQmugR882FZ7jERNHMAxOGAUscoKau2y3PVIyWia9nf57Lic7lg=
+	t=1757414068; cv=none; b=DmYsOYtlvR0CKfos7hGOCnkBorbGTpg50Km1jnp55mVW+Adf4huDeTWDUn08Z+m/inPJbmhk+jNCcQIvAlaLIBVtYmy1/wjqKuv8+IJCsb/8NO+Ga6sH51+ihGict92/0GFrvfjFlonS58sgM4Sp6dHIs9sijwW2RtDi3sZGhUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757410142; c=relaxed/simple;
-	bh=O2ib8gEHUxu7apw/BQPnJTenL3HamdgDD0ufDqWtBN0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sSNpu/G5uuE9pXWJZEXYdcm7kZIEaEGycCR10GW99S7L5rMaR2cqweHgIu7dszCM5h1U5hrmrFmPdKDPh/oWmB4Vtl9iOJZ4zMN/SrU8ywWE47ZxYdzOIs9jVNhTXWjCtqBOCXfwr7pWmJUhgwaOHz2Dxgkr+/2MKduvhe9dHl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aSvbfuuX; arc=none smtp.client-ip=209.85.208.44
+	s=arc-20240116; t=1757414068; c=relaxed/simple;
+	bh=JP0XNgNpP8hs5zSj922+ugM5c82GbYQvoCg74VDxh/s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QsJdaxFF8soDfuZkwjYb9SZfGT7Kzn9Cpz7AsAlMhua1B92/uTRTMCmUYMA6GzAktgikpxWxxLz/0UrgB/nnoKfmPyI8nL2Byp76bEU+bTji43vvz/1sEg0wF7leabiOJAaROW8XoW6TLHr56vvs5mXgsbpjYdZt88b/CpPjXZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DzPTdm7m; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-61cc281171cso9161286a12.0;
-        Tue, 09 Sep 2025 02:29:00 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b04ba58a84fso417718266b.2;
+        Tue, 09 Sep 2025 03:34:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757410139; x=1758014939; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=w83rncNEqDFPt9ulN4pgLStLD+df7eLviawv6mdeE5U=;
-        b=aSvbfuuXEmhq3ob7qxYOY350XzVJSrV5HTHz0+FIrQM0w74oSpyCBoDSiPbiMIoaLS
-         r6Mg0OZXcPP61I71zq53kXYlHwn9acHo6HRjmX7Se7UFR7WOJE3Jh0FQhGl+0H/GCuSY
-         8FcjqdubBYY9HlRlg+vEZOdkWIKvpQ7vEi/Lt5C0tXJcbdQQp70rfzupiYt0ISQgmeoH
-         FNg9mEbi2q0lzt1hhzV9f3MmJK2IgHgd+vnMF86AO1SAH0FeWpXSfA7lmc6xFxUL59zX
-         hcUL6OgcprySThcUtxsZYcj0rfCWlBtsSm0vX0fSUpv/b+yqGiv8TF4CdqL3J8SI4vsf
-         NaEg==
+        d=gmail.com; s=20230601; t=1757414064; x=1758018864; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RIdms+T9avOm/SSFFUzhJdDUjY0a4M6JmVeG2AGja5o=;
+        b=DzPTdm7mNwydy2U2iu0G/aWhCZ2dKq2arOcZ68r1iBB55eU3v6vju/+hpc7NTyyFa5
+         Gq6dPC6hy+qkKEuG2tNiw3ob2/lSCft918SHUPG9YvTqBe1g/ZQJUMiGolOvySYC+TuM
+         PTj6Bnr4PUFsv3h0WL+zG1IS+C6SfyB1XgbqD+MvrVNCTvTZ9LhIoiRIHaQwVd4Teb4r
+         gAV/e4Ico1x4ZgDUYK8mEDqFvq1yRWUUsezlpBv89FL6djN9FTqRkKSlUDUSACfWO4tZ
+         /jhklfVx4UYNO6Yl5/a+VYdtsTe8g0j52RvLVYPCUCYeMuW9rdfofppLZ7Z8xVpIerzP
+         vhzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757410139; x=1758014939;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w83rncNEqDFPt9ulN4pgLStLD+df7eLviawv6mdeE5U=;
-        b=n7An6joBP61YGUUlvx+MWgC3U3JqKKi4/lXuLN6EoR3qE4d6SjDxV4HeVInXVBVGgB
-         LhCmsb7KgEZvHlJf5dcQTYdE1hfUV1Vm7OmeEqcWeFXZWn8oYfQ2gV9TCf9j/77yoGfi
-         19PVcsDg+JRftlykJjMrNZubG1DTNPAEbVfoafAGEEijyCPHTfO9XqJ7ZtyR1C4K79pH
-         LhfZUx+aQtRfTs0VQpcOMfvNlZR1VyUvXh7hEZzgQwp2gdSFsRyRNuIEkLIpHzun8fDU
-         8jS1JDTLNNJ9JivGcGsiJ0g0KKeuPa4Fj0KzAeNLF9hRrBtKC59q+OcCodXjd3HJ7g0q
-         +VWg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWcmFNtf5beh+tU7B8aKmTtTGOkli0Lb95SNym19gM90XULG36Tagd/jc+DAe4GQkZHjWM3sF2lEAn@vger.kernel.org, AJvYcCXcNlVGI3dwac2xSt/YYjXBi7Dv0be6JCDrbeFRk9QmEFUFmOwto1WXwYxgjEvtF9JzO/HOIL0vgyEcbf2J@vger.kernel.org
-X-Gm-Message-State: AOJu0YyG3JEQlNS09a1VJVz8wV7Lj8bsRHJkvQmkN9pxIOPCkBRbrNC4
-	sD2V4HyblS8d93HWZ3c2mXEcZvTXSuZHGawsRytreIpi1Idm0GZlTkEAMlngZOtNNp4=
-X-Gm-Gg: ASbGnctd/jpWTyXXzDieZlNiIaV3O826sxzUpqpsfIyVykg6ZOw6Rp/xOUIxwKHmgv/
-	HU93OyQHc2yK5ycOlSoKC8FGysGYRD/yYsf69TRR5/11gLt13pFUYmhiAceh1qYfUpKBtmPgSco
-	VLFYRABV90ILyqOHh3vIb16c2p0ol73QmBqN0cOt+puatFA23Q6OnAIRYTevTrl/QDbir2VPKu0
-	IngouXFoGQyQ3C3qP300zzSABAyZVTvX5kcZyOkVDo+AzgIaCbyavicUnOveBG/LK1PYU1H1LJT
-	aZ7jzaDvvAoI2+XD5qG+oy25diyxRHKhsBagZe2cw7mdeIkASlGOrRsiQ/0SV0QgBqwCIZ6lJuo
-	/LoEEkstwDG5KpawDUekv0qo=
-X-Google-Smtp-Source: AGHT+IEoxHcy4qUWzMVLKfVYxjk5ZG5WfMXOSzVDwfIfNWMjdAigcLQqBwurEu+XHwtPNDn7Z9jRfw==
-X-Received: by 2002:a05:6402:520e:b0:617:9bff:be16 with SMTP id 4fb4d7f45d1cf-6237fa3d018mr9335751a12.22.1757410139093;
-        Tue, 09 Sep 2025 02:28:59 -0700 (PDT)
-Received: from [10.5.0.2] ([45.94.208.162])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62c6a264285sm414950a12.2.2025.09.09.02.28.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 02:28:58 -0700 (PDT)
-Message-ID: <c30bb4b6328d15a9c213c0fa64b909035dc7bf40.camel@gmail.com>
-Subject: Re: [PATCH v1 2/2] iio: adc: Add the NXP SAR ADC support for the
- s32g2/3 platforms
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Daniel Lezcano
-	 <daniel.lezcano@linaro.org>, jic23@kernel.org, nuno.sa@analog.com, 
-	andy@kernel.org, robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org
-Cc: linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com, 
-	ghennadi.procopciuc@oss.nxp.com
-Date: Tue, 09 Sep 2025 10:29:23 +0100
-In-Reply-To: <c23ed0cf-8188-49ac-b310-57bbfb54f337@baylibre.com>
-References: <20250903102756.1748596-1-daniel.lezcano@linaro.org>
-	 <20250903102756.1748596-3-daniel.lezcano@linaro.org>
-	 <eedbfbfd1ba625b6750eb3ae20a69301b8bc3ef9.camel@gmail.com>
-	 <0bfce1eb-69f1-4dae-b461-234eb98ffce1@linaro.org>
-	 <a3373804-08a4-4526-a432-c21a74ea3d6b@baylibre.com>
-	 <edc8e024-e425-49de-bfa2-44218fe72e26@linaro.org>
-	 <6b8cd005-b04c-4dd7-abf7-5a51319a5f0a@baylibre.com>
-	 <23b80d52-6149-483b-a159-276dd00d12cd@linaro.org>
-	 <e5e76789-c8d9-463c-aa01-f2c6ae718f74@baylibre.com>
-	 <fd4c81a5-3b99-448c-92d4-9465f0e76db3@linaro.org>
-	 <c23ed0cf-8188-49ac-b310-57bbfb54f337@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+        d=1e100.net; s=20230601; t=1757414064; x=1758018864;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RIdms+T9avOm/SSFFUzhJdDUjY0a4M6JmVeG2AGja5o=;
+        b=ZmhJ0Gv/MmtVyMIxAS1wLoGdkghxJCbYBlMCfnPADQx0Ce1VGYLosr77O+FJh6B+74
+         GsoylrFwkstt9g513cAHXAGDRhVpahXHgKOiGYTmPPvklofdABK/OcK3SA3l4rXDCsV3
+         X9NfbBpgeCzM9EgcvAN3/X74RyfeQduH9vEBG3TSD0SYTvk7a0unftZ73HOXZ6geyl+d
+         qNR51jyhKltdQdolvPf46m0XW1fLI91SICEmHpmnm7j35OJ8q1vuI/iDwv00NS60oiKq
+         CO0d2aHxpBK1FCkYZuTEW0HpMKFHz5D77XR5IqgqjgUmTnaAnj5FlL57T2EAJFYBmxht
+         LTXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFvAcTcngg9sa8ykb6x1tmzOE/bAURQRiskoihdPGo7YDrzYu3K5DOwIOlaXb7oeYmN4t46vl9GJc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFxjsPimLiDXejpYNbYBEK4hX/JjbVwD2T/0gw9YeUocm7D8q/
+	YZX1+WhBj1E4qAOPePj1WCzIqCk676m8VnevvxjJi+fqCGzdTC61xVm+e1m/JwSVrh7Ktq2Eq/M
+	iL3HZijMhbGGnyt+0dK89ImiyYihnnlc=
+X-Gm-Gg: ASbGncvMKFsRJP2rmF82RLJkCRtY3w+w/wpkI4PkGcII3yUxyY5FjAnyG70NOwBInpL
+	WMz8o8brYjHZOQW9JKQFw2e98YJewKRzsiepqFY4c0/X/MOW/lqUPh6ypy5MHBbzSzzWarWqt5A
+	/qQdIqzHxPcC2yYbajkmXHD7Ro5P+FT/rrlRmIMSO9vtRQBAosEMQ7os7XgQ7VVyAccb3h+i0i5
+	urcef1EGngt3R9jfi6vukqiI4vMrccvHstYGierKBOt
+X-Google-Smtp-Source: AGHT+IG0Inkh5tNcx6+4D5TIh70ivyhYMwMBin16AO8oli1i6S44fQI6KaMT/3f9JE/qxr/7rXj1/9Ybfa4BZcHTTQg=
+X-Received: by 2002:a17:907:2d1f:b0:b04:3fe2:23c4 with SMTP id
+ a640c23a62f3a-b04b1437f92mr1166081866b.19.1757414064106; Tue, 09 Sep 2025
+ 03:34:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <cover.1757061697.git.michal.simek@amd.com> <2780986977702f126416ec442c5336bd541f475b.1757061697.git.michal.simek@amd.com>
+In-Reply-To: <2780986977702f126416ec442c5336bd541f475b.1757061697.git.michal.simek@amd.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 9 Sep 2025 13:33:47 +0300
+X-Gm-Features: Ac12FXwKPRN_B8-TT82eURXpq587luV-gkx05Hh9QxN6ejEbtq4XJNNqktpNGrU
+Message-ID: <CAHp75Vc1hkf8jgP76+oHgKU_hFn2STPbgO550ZP2Z39KaCFb7A@mail.gmail.com>
+Subject: Re: [PATCH 2/6] iio: versal-sysmon: add driver for Versal Sysmon
+To: Michal Simek <michal.simek@amd.com>
+Cc: linux-kernel@vger.kernel.org, monstr@monstr.eu, michal.simek@xilinx.com, 
+	git@xilinx.com, Salih Erim <salih.erim@amd.com>, 
+	Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>, Andy Shevchenko <andy@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	"open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi *Daniel* (sorry for that :)),
+On Fri, Sep 5, 2025 at 11:42=E2=80=AFAM Michal Simek <michal.simek@amd.com>=
+ wrote:
+>
+> Sysmon Driver uses Linux IIO framework, which was used to abstract the
+> supply voltages and temperatures across the chip as Voltage and Temperatu=
+re
+> Channels in the framework. Since there are only 160 supply voltage
+> registers and 184 measurement points, there is no constant mapping of
+> supply voltage registers and the measurement points. User has to select
+> the voltages to monitor in design tool. Depending on the selection, a
 
-On Mon, 2025-09-08 at 08:58 -0500, David Lechner wrote:
-> On 9/8/25 7:16 AM, Daniel Lezcano wrote:
-> > On 05/09/2025 23:54, David Lechner wrote:
-> > > On 9/5/25 3:58 PM, Daniel Lezcano wrote:
-> > > > On 05/09/2025 17:25, David Lechner wrote:
-> > > > > On 9/5/25 4:44 AM, Daniel Lezcano wrote:
-> > > > > > On 04/09/2025 19:49, David Lechner wrote:
-> > > > > > > On 9/4/25 12:40 PM, Daniel Lezcano wrote:
-> > > >=20
-> > > > [ ... ]
-> > > >=20
-> > > > > Taking a step back, what sort of real-world uses cases do you nee=
-d to
-> > > > > support?
-> > > > > Or are you just trying to implement everything that the ADC can d=
-o?
-> > > > > The latter
-> > > > > can be a bit risky because you might end making something where y=
-ou
-> > > > > can't do
-> > > > > a buffered read and a single channel read at the same time, but l=
-ater
-> > > > > find out
-> > > > > you have a real-world application that needs to do this.
-> > > > >=20
-> > > > > It looks like it would be possible to implement buffered reads in=
- lots
-> > > > > of ways.
-> > > > > IIO devices can have more than one buffer per device so we can ad=
-d
-> > > > > more in the
-> > > > > future if we need to. So I would just drop the DMA part of the
-> > > > > implementation
-> > > > > for now and implement the basic triggered buffer using MCR[NSTART=
-] and
-> > > > > ECH
-> > > > > (End of Chain) interrupt request and just reading data from the I=
-CDR
-> > > > > registers.
-> > > > >=20
-> > > > > I would wait to have a real-world application that requires DMA t=
-o
-> > > > > decide the
-> > > > > best way to implement that. There are lots of possibilities, like=
- does
-> > > > > it need
-> > > > > an external trigger or is continuous mode good enough? Does it ne=
-ed to
-> > > > > be cyclic
-> > > > > (something the IIO subsystem doesn't really support yet) or not. =
-Is
-> > > > > exact sample
-> > > > > timing important or do we just need a big buffer? These questions=
- we
-> > > > > can't
-> > > > > really answer without a specific application to use it.
-> > > >=20
-> > > > In the case of this IP, the use cases are in the automotive context=
-. The
-> > > > system running on the APU is supposed to monitor at high rate (or n=
-ot)
-> > > > the different channels which can be connected to any device the
-> > > > integrator choose to use.
-> > > >=20
-> > > > For this reason, the driver should be able to support the different
-> > > > modes because the integrator of the car computer can decide to moni=
-tor
-> > > > the devices connected to the different channels differently.
-> > > >=20
-> > > > Said differently, we need these modes because the capture depends o=
-n
-> > > > what the integrator decide to connect to the different channels.
-> > > ...
-> > > > We just know all these use cases exist.
-> >=20
-> >=20
-> > The submitted driver supports the three modes.
-> >=20
-> > Nuno asked to use the IIO dma engine API.
-> >=20
-> > However there is few information and examples with the API and I failed=
- to
-> > use the devm_iio_dmaengine_buffer_setup_with_handle() function.
-> >=20
-> > AFAICT, devm_iio_dmaengine_buffer_setup_ext() can not be used because
-> > dma_slave_config() is not called, thus the src_addr is not set.
-> >=20
-> > Is there any example somewhere, documentation or guidance to use the AP=
-I?
-> >=20
-> > Thanks
-> >=20
-> > =C2=A0 -- Daniel
-> >=20
-> >=20
->=20
-> Unfortunately, not really. Until the last few years, there wasn't really
-> any users of these APIs. I added devm_iio_dmaengine_buffer_setup_with_han=
-dle()
-> for the SPI offloading work I did recently. The only reason it had to be
-> added is because we needed to get the DMA handle from a different devicet=
-ree
-> node from the ADC's node. Since this device has dmas and dma-names in
-> the devicetree, then if devm_iio_dmaengine_buffer_setup[_ext]() doesn't w=
-ork
-> with that, then it might have other problems (assumptions made for a spec=
-ific
-> use case) than just not calling dma_slave_config().
->=20
-> I think maybe Nuno and certainly I are guilty of trying to offer you advi=
-ce
-> without looking deeply enough into what you already submitted. :-/
->=20
+in the design
 
-Yes, I pretty much just asked for (at least) some discussion about this and=
- see
-if we could use what we already have in IIO.
+> voltage supply gets mapped to one of the supply registers. So, this mappi=
+ng
+> information is provided to the driver via a device tree. Depending on the
+> number of supplies enabled in the design, the device tree will contain th=
+e
+> information of name of the supply enabled and the supply register it maps
+> to.
 
-> I see now that what you are doing with the DMA looks more like other SoC =
-ADCs
-> (AT91/STM32/AM335x) which is quite different from how the iio_dmaengine_b=
-uffer
-> stuff works, e.g. cyclic vs. not. So unless you are interested in evolvin=
-g
+...
 
-Supporting cyclic should be fairly easy (Paul left it almost prepared for i=
-t)
-and do I have some patches already. I'm just waiting on having something
-accepted on the ADI DMA IP driver (dmaengine) before sending the IIO patche=
-s I
-already have.
+> +config VERSAL_SYSMON
+> +       tristate "Xilinx Sysmon driver for Versal"
+> +       depends on HAS_IOMEM
+> +       select VERSAL_SYSMON_CORE
+> +       help
+> +         Say yes here to have support for the Xilinx Sysmon.
+> +         The driver will enable users to monitor temperature and voltage=
+ on the
+> +         Xilinx Versal platform.
+> +
+> +         The driver can also be build as a module. If so, the module wil=
+l be called
 
-> the iio_dmaengine_buffer code to be more general to handle this case as w=
-ell,
-> it might not be the right tool for the job currently.
+built
 
-I think for the STM (IIRC) case they "open" coded it because the IIO DMA su=
-pport
-we had at the time (if any) was more "rudimentary" - (no real zero copy
-interface with userspace for example). But yeah, it seems there are some ga=
-ps
-for your usecase so as David said, you would need to be interested in evolv=
-ing
-the IIO DMA API to accommodate your needs. Again, if nicely integrated you =
-would
-gain some nice "improvements" in performance (not having to use the fileio
-interface for reading the buffers) for "free".   =20
+> +         versal-sysmon.
 
-As for dma_slave_config(), you're right and we have no usecase needing that
-setup and TBH, I did not looked or have any idea (atm) on how to do it. Tha=
-t
-said, I'll be here to help and contribute if you decide to try and follow t=
-he
-IIO DMA buffer API.
+...
 
-- Nuno S=C3=A1
+> +#include <linux/bits.h>
+
+Quite a few headers are absent...
+
++ export.h
++ types.h
+
+> +#include "versal-sysmon.h"
+
+...
+
+> +static u32 sysmon_temp_offset(int address)
+> +{
+> +       switch (address) {
+> +       case TEMP_MAX:
+> +               return SYSMON_TEMP_MAX;
+> +       case TEMP_MIN:
+> +               return SYSMON_TEMP_MIN;
+> +       case TEMP_MAX_MAX:
+> +               return SYSMON_TEMP_MAX_MAX;
+> +       case TEMP_MIN_MIN:
+> +               return SYSMON_TEMP_MIN_MIN;
+> +       case TEMP_HBM:
+> +               return SYSMON_TEMP_HBM;
+> +       default:
+> +               return -EINVAL;
+> +       }
+
+> +       return -EINVAL;
+
+Here and in many more, eliminate dead code.
+
+> +}
+
+...
+
+> +static u32 sysmon_supply_thresh_offset(int address,
+> +                                      enum iio_event_direction dir)
+> +{
+> +       if (dir =3D=3D IIO_EV_DIR_RISING)
+> +               return (address * 4) + SYSMON_SUPPLY_TH_UP;
+
+> +       else if (dir =3D=3D IIO_EV_DIR_FALLING)
+> +               return (address * 4) + SYSMON_SUPPLY_TH_LOW;
+
+Redundant 'else'.
+
+> +       return -EINVAL;
+> +}
+
+...
+
+> +static void sysmon_hbm_to_millicelsius(int raw_data, int *val, int *val2=
+)
+> +{
+> +       *val =3D ((raw_data >> SYSMON_HBM_TEMP_SHIFT) & SYSMON_HBM_TEMP_M=
+ASK) *
+> +               SYSMON_MILLI_SCALE;
+
+Can the whole driver be switched to FIELD_PREP()/FIELD_GET()/FIELD_MODIFY()=
+?
+
+> +       *val2 =3D 0;
+> +}
+
+...
+
+> +static void sysmon_millicelsius_to_q8p7(u32 *raw_data, int val, int val2=
+)
+> +{
+
+> +       (void)val2;
+
+Unneeded.
+
+> +       *raw_data =3D (val << SYSMON_FRACTIONAL_SHIFT) / SYSMON_MILLI_SCA=
+LE;
+> +}
+
+...
+
+> +static void sysmon_supply_processedtoraw(int val, int val2, u32 reg_val,
+> +                                        u32 *raw_data)
+> +{
+> +       int exponent =3D (reg_val & SYSMON_MODE_MASK) >> SYSMON_MODE_SHIF=
+T;
+> +       int format =3D (reg_val & SYSMON_FMT_MASK) >> SYSMON_FMT_SHIFT;
+> +       int scale =3D 1 << (16 - exponent);
+> +       int tmp;
+> +
+> +       tmp =3D (val * scale) / SYSMON_MILLI_SCALE;
+> +
+> +       /* Set out of bound values to saturation levels */
+> +       if (format) {
+> +               if (tmp > SYSMON_UPPER_SATURATION_SIGNED)
+> +                       tmp =3D 0x7fff;
+> +               else if (tmp < SYSMON_LOWER_SATURATION_SIGNED)
+> +                       tmp =3D 0x8000;
+
+This looks like s16 limits, can you use them?
+
+> +       } else {
+> +               if (tmp > SYSMON_UPPER_SATURATION)
+> +                       tmp =3D 0xffff;
+> +               else if (tmp < SYSMON_LOWER_SATURATION)
+> +                       tmp =3D 0x0000;
+
+u16 respectively.
+
+> +       }
+> +
+> +       *raw_data =3D tmp & 0xffff;
+> +}
+
+
+> +       u32 ret =3D -EINVAL;
+
+> +       mutex_lock(&sysmon->mutex);
+> +       switch (mask) {
+> +       case IIO_CHAN_INFO_RAW:
+> +               switch (chan->type) {
+> +               case IIO_TEMP:
+> +                       offset =3D sysmon_temp_offset(chan->address);
+> +                       *val =3D sysmon->temp_read(sysmon, offset);
+> +                       *val2 =3D 0;
+> +                       ret =3D IIO_VAL_INT;
+> +                       break;
+> +
+> +               case IIO_VOLTAGE:
+> +                       offset =3D sysmon_supply_offset(chan->address);
+> +                       sysmon_read_reg(sysmon, offset, &regval);
+> +                       *val =3D (int)regval;
+> +                       *val2 =3D 0;
+> +                       ret =3D IIO_VAL_INT;
+> +                       break;
+> +
+> +               default:
+> +                       break;
+> +               }> +
+> +       spin_unlock_irqrestore(&sysmon->lock, flags);
+> +       mutex_unlock(&sysmon->mutex);
+> +
+> +       return 0;
+> +}
+
+...
+
+> +#include <linux/bits.h>
+
++ io.h
+
+> +#include <linux/moduleparam.h>
+> +#include <linux/firmware/xlnx-zynqmp.h>
+> +#include "versal-sysmon.h"
+> +
+> +static LIST_HEAD(sysmon_list_head);
+
+list.h?
+
+> +static struct iio_map sysmon_therm_static_maps[] =3D {
+> +       IIO_MAP("temp", "versal-thermal", "sysmon-temp-channel"),
+
+Where are the IIO_MAP() and struct iio_map defined?
+
+> +       {}
+> +};
+> +
+> +static inline int sysmon_direct_read_reg(struct sysmon *sysmon, u32 offs=
+et, u32 *data)
+
++ types.h for uXX.
+
+> +{
+> +       *data =3D readl(sysmon->base + offset);
+> +
+> +       return 0;
+> +}
+
+...
+
+> +       mutex_init(&sysmon->mutex);
+
+devm?
+
+...
+
+> +       indio_dev->dev.parent =3D &pdev->dev;
+> +       indio_dev->dev.of_node =3D pdev->dev.of_node;
+
+Drop these, IIO core does the same and even better.
+
+...
+
+> +       mutex_lock(&sysmon->mutex);
+
+scoped_guard() from cleanup.h
+
+> +       if (list_empty(&sysmon_list_head)) {
+> +               sysmon->master_slr =3D true;
+
+No need, just make a sane default and !exist will work in the other
+branch the same way. I believe it's
+
+  bool exist =3D false;
+
+> +       } else {
+> +               list_for_each_entry(temp_sysmon, &sysmon_list_head, list)=
+ {
+> +                       if (temp_sysmon->master_slr)
+> +                               exist =3D true;
+
+Why to continue?
+
+> +               }
+> +               sysmon->master_slr =3D !exist;
+> +       }
+> +
+> +       mutex_unlock(&sysmon->mutex);
+
+...
+
+> +#include <linux/delay.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/io.h>
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/driver.h>
+> +#include <linux/iio/events.h>
+> +#include <linux/iio/machine.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/iio/adc/versal-sysmon-events.h>
+> +#include <linux/iopoll.h>
+
+> +#include <linux/kernel.h>
+
+Mustn't be used in new drivers.
+
+> +#include <linux/list.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/slab.h>
+> +#include <linux/of_address.h>
+
+Huh?! Please, make sure you are following IWYU principle, please
+*drop* all of the headers that are *not* being used (by this header),
+there are a LOT of them to be dropped.
+
+...
+
+> +/* Channel IDs for Temp Channels */
+> +/* TEMP_MAX gives the current temperature for Production
+> + * silicon.
+> + * TEMP_MAX gives the current maximum temperature for ES1
+> + * silicon.
+> + */
+> +#define TEMP_MAX       160
+
+Here and everywhere else, bad namings.
+
+...
+
+This is an unfinished review due to the following reasons (from more
+important to less):
+- AMD is not the first day contributor, the code is awful, it missed a
+lot of reviews and updates regarding the last several years of the
+kernel development (IIO subsystem in particular). Please, avoid
+letting reviewers do *your* job.
+- The patches are too long to review, it would be nicer to make them
+feature-by-feature, where each one is < 1000 LoCs.
+- I started this a few days ago, but I'm busy at the moment, that's
+another reason.
+
+--
+With Best Regards,
+Andy Shevchenko
 

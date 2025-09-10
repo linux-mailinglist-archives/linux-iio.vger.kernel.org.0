@@ -1,113 +1,132 @@
-Return-Path: <linux-iio+bounces-23965-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23966-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F428B5206F
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 20:52:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4F5B52075
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 20:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D8FB7A8704
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 18:50:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FECE3B2A31
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 18:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5042D23A5;
-	Wed, 10 Sep 2025 18:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7882D3EEB;
+	Wed, 10 Sep 2025 18:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="AlZKCx5w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUyZntpI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E572D130C;
-	Wed, 10 Sep 2025 18:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F0A2D3EC1;
+	Wed, 10 Sep 2025 18:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757530330; cv=none; b=Pzm9SO9kbcbt5fpPQBLmMFkETQ9NWdDgFBCnLILfeZqvAEY6vFQLrw7ggsW+i6W3QOyv8ES6cTz2lFrsGeHtyR4Amv9qQ0c4eUtxQmK8ekMZY4ee3LkaD5ukvCIziVPuJ2Pc8fXnRHfi733H5z4Dg94ueXt1/4ZIsoVRj7SKdRE=
+	t=1757530361; cv=none; b=HH2CGTRSDjZla3lGwjJ6Cr2LWXQGgCgvUrR+L7diKu7/4AjnMlZfbGbIXV12jYuwMwImZAuUidgA1kQt8MGeCaWEZlkP9kfEe7uGQAHXcapqCYKuimvXDsNTIusnSpF1Fw0Ng0kHvxYq9hx/tKphiHCO3fjegIsF1LSpGENVhM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757530330; c=relaxed/simple;
-	bh=e2HEGdY8HTT62VzkGjra9TT601j7gUIe3tNGN/jo964=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VMF+PbdB/X3h7luu32ECrTAG8CmTunYXNfBh6NLtGhFCrVfQoR2Rk+9f5XAKGGmY+cKkTBs8qsj8wK3yOy/YCFlzIQNt9ToRaAulZpGU1IsXZXgbelNceADmo+Sob2JkRoJHOBrDDGM8ktpO9B8NhfG6fR7xUM8/J84U+iRQOBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=AlZKCx5w; arc=none smtp.client-ip=172.105.74.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
-Received: from lipo (unknown [IPv6:2a02:2f0e:3e0c:5b00:f1e0:3f4b:286c:9ddb])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 52D83173BE2;
-	Wed, 10 Sep 2025 21:52:04 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
-	s=mail; t=1757530324;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RzYM3A6axo42RwWGBvA7uplSP/pVgQAc0gg+oED22Go=;
-	b=AlZKCx5wHPGfIp3d+rqGRqYDu0K2dnUK/WMsLABgsRTL8aME8eYTeKoaz2NLmUYP5C8wqK
-	jYLfJwv1O/DBr6P1muQd5dyCuTj459wPVLkl5ZG30kWZRKloi5HJleiLAPrvfbYsqCqmj+
-	t7H4UeegkLhsAzQTqLtgI1I6b+rqS5qUNHWU2nijSSorhACZJEqAHY3GNA38Op1MBGLCrK
-	s/LSKk2fVEsdMK9+OQA+o1sHvWAkpqE7VEBTJU/kAU1nf9xRCdWG18Hr03aMHFIGg8Wan9
-	kiKIe+25NPdtHzmkoIGGktMoghCgiu4nI7ori7KfdlhQ32JoxdmoauQzoD6jnA==
-Date: Wed, 10 Sep 2025 21:51:57 +0300
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 06/14] iio: accel: bma220: add get regulator check
-Message-ID: <aMHIzUuNx9LXQdag@lipo>
-References: <20250910-bma220_improvements-v2-0-e23f4f2b9745@subdimension.ro>
- <20250910-bma220_improvements-v2-6-e23f4f2b9745@subdimension.ro>
- <20250910185841.075594bb@jic23-huawei>
+	s=arc-20240116; t=1757530361; c=relaxed/simple;
+	bh=6kO8QRxpGi/RSQWLh7UK1nQbrkfxehJE8E0ugtQPzDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E6ibIS35QU8qV3YLGPO5XNcx7MWSojIdCBnOw49kNNSrNiHt6Y8aWTfDnz1HDF9+YDj9FO3dM989R1slF5lOWDQdcEfxyUJOZaDGpakLL11SQNHXADp8umfib/G052R765qrTZvO2RFTvDh1lssaSXBWHRL7jZb/WO4WsAxHk34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUyZntpI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239D3C4CEF7;
+	Wed, 10 Sep 2025 18:52:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757530361;
+	bh=6kO8QRxpGi/RSQWLh7UK1nQbrkfxehJE8E0ugtQPzDk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XUyZntpI/o+lmhruMPPkYLJyC48j7aAHrZ+JrD9iZFd0MekIZlBT8CxjCK1VdweNU
+	 +yMNdcwjnOgp3aBqXVrYa+VufX6M9MkrEDFZgFHw4cnEi9VNqkNJw2GVd7+v4DvmRV
+	 zFd4RHG1Ky1z3/a8z1e3ZQEWsMyT9lJbLLPHJn1uc6VrcTxlj8a5cdWHezSkbMDDbz
+	 3DaRR1Lm+RjOeTBSVH9GDjwrjMfDzU4qyER9pV1jocf3f47isIIeu+3HUHm/3ZBbME
+	 qKL4L30D++4NG0Gxb47otRq+m80JQoAJKNxcAzT7//J+u94moV1xxeXHLkOX+cEAol
+	 BK9mViXw0O9Yw==
+Date: Wed, 10 Sep 2025 19:52:32 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Akshay Jindal <akshayaj.lkd@gmail.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>, Andy Shevchenko
+ <andy.shevchenko@gmail.com>, anshulusr@gmail.com, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, shuah@kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7] iio: light: ltr390: Implement runtime PM support
+Message-ID: <20250910195232.173ff14f@jic23-huawei>
+In-Reply-To: <CAE3SzaQXOr6nh-MFAyLm_1J9kXisnzhak_VuVH4d2z6mXFe1NA@mail.gmail.com>
+References: <20250909194649.10512-1-akshayaj.lkd@gmail.com>
+	<CAHp75VfpQ9c4cptnNGzFYakQxY7JjtUEMDsysS9KJ60xrzaE4g@mail.gmail.com>
+	<20250910120245.000033e8@huawei.com>
+	<CAE3SzaQXOr6nh-MFAyLm_1J9kXisnzhak_VuVH4d2z6mXFe1NA@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910185841.075594bb@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, 10 Sep 2025 23:30:36 +0530
+Akshay Jindal <akshayaj.lkd@gmail.com> wrote:
 
-Hello Jonathan,
+> Hi Jonathan,
+> Seeking your approval. If there is a requirement for v8, I can send that =
+too.
 
-thank you for the blazing fast feedback!
+Wait a day or so just to see if Andy is fine with your reply to him.
 
-On Wed, Sep 10, 2025 at 06:58:41PM +0100, Jonathan Cameron wrote:
-> On Wed, 10 Sep 2025 10:57:11 +0300
-> Petre Rodan <petre.rodan@subdimension.ro> wrote:
-> 
-> I don't follow the 'add get regulator check' of the patch description.
-> This is ensuring they are powered up if necessary.  So I'd
-> just go with the vague: "turn power supplies on"
+Thanks,
 
-to be honest I added this just because I've seen the devm_regulator_bulk_get_enable() function used all over the place in iio code.
-but looking at the linux/regulator/consumers.h header I was more puzzled.
-just some forward declarations and then static functions doing exactly nothing.
-I'm afraid to ask what that is all about. placeholder for a future API?
+Jonathan
 
-best regards,
-peter
+>=20
+> Thanks,
+> Akshay
+>=20
+> On Wed, Sep 10, 2025 at 4:32=E2=80=AFPM Jonathan Cameron
+> <jonathan.cameron@huawei.com> wrote:
+> >
+> > On Wed, 10 Sep 2025 10:17:00 +0300
+> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > =20
+> > > On Tue, Sep 9, 2025 at 10:47=E2=80=AFPM Akshay Jindal <akshayaj.lkd@g=
+mail.com> wrote: =20
+> > > >
+> > > > Implement runtime power management for the LTR390 sensor. The device
+> > > > autosuspends after 1s of idle time, reducing current consumption fr=
+om
+> > > > 100 =C2=B5A in active mode to 1 =C2=B5A in standby mode as per the =
+datasheet.
+> > > >
+> > > > Ensure that interrupts continue to be delivered with runtime PM.
+> > > > Since the LTR390 cannot be used as a wakeup source during runtime
+> > > > suspend, therefore increment the runtime PM refcount when enabling
+> > > > events and decrement it when disabling events or powering down.
+> > > > This prevents event loss while still allowing power savings when IR=
+Qs
+> > > > are unused. =20
+> > >
+> > > ...
+> > > =20
+> > > > +static int ltr390_read_raw(struct iio_dev *iio_device,
+> > > > +                          struct iio_chan_spec const *chan, int *v=
+al,
+> > > > +                          int *val2, long mask) =20
+> > >
+> > > Isn't the mask unsigned long? Jonathan, do we get this fixed already?=
+ =20
+> >
+> > Whilst it could (and probably should) be unsigned, it's not actually a =
+mask.
+> > That naming is a historical mess up / evolution thing - long ago it was=
+ a bitmap.
+> > It is now the index of a bit in the mask.  So this is unrelated(ish) to=
+ the
+> > recent fixes around the actual bitmaps/bitmasks.
+> >
+> > Changing this one is a lot more painful than the recent fix to the info=
+mask
+> > as it means changing the signature in every driver.
+> > I'm doubtful on whether this one is worth the churn. =20
+>=20
 
-> > +#include <linux/regulator/consumer.h>
-> >  #include <linux/types.h>
-> >  #include <linux/spi/spi.h>
-> >  
-> > @@ -205,6 +206,13 @@ static const struct iio_info bma220_info = {
-> >  static int bma220_init(struct spi_device *spi)
-> >  {
-> >  	int ret;
-> > +	static const char * const regulator_names[] = { "vddd", "vddio", "vdda" };
-> > +
-> > +	ret = devm_regulator_bulk_get_enable(&spi->dev,
-> > +					     ARRAY_SIZE(regulator_names),
-> > +					     regulator_names);
-> > +	if (ret)
-> > +		return dev_err_probe(&spi->dev, ret, "Failed to get regulators\n");
 

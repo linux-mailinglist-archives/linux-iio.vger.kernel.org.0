@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-23938-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23939-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F03ABB51CAD
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 17:58:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E5EB51CB0
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 17:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30CC1188C69B
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 15:59:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603355659E9
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 15:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A0432ED23;
-	Wed, 10 Sep 2025 15:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5498A32BF46;
+	Wed, 10 Sep 2025 15:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wae7y6si"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vZQw9RW7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0981032BF40
-	for <linux-iio@vger.kernel.org>; Wed, 10 Sep 2025 15:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DF632BF44
+	for <linux-iio@vger.kernel.org>; Wed, 10 Sep 2025 15:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757519892; cv=none; b=cQ96R1Lrlyc+QDYMTgtaD0LSTZmd1TyJIbPplQtL4GZwzxYKpvupWfa+znozUlGj3RGMyR9I3x6Rf7HCfyRUPt39pS44KmOifg6d0VPOvBLo71N5lIo0RkdSMRsCSI8drMzMvQlJ75sXzpmxVXEe/rA9WIablS1xDv45KNZ94cs=
+	t=1757519894; cv=none; b=DsN52wLmLIK/2Hc+/tIJ8Go5fFN+LzVagCNZ6OItqT/kfnowhDISPzmUDkVu81y6XcaVXw6H3kS1z4D57NfYbK96kE+ntYH5ISL/smGVBh7KrwgM904MBIzJ0h7sn6UgUrAfmBpLA/M1BwCHKVRv9ReL5/2nkLbYolEmSADvOL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757519892; c=relaxed/simple;
-	bh=0OXy0pIlk1rrTtpMa3bUiDD9A6fnxy7GK4ztvEBXy6E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VyKs+qrPR4FRvi6yssn4ZVJULomEXdVKXpuJWMmRMHagjz7Lp/VseLdReJ7nbNsq8S2gJ2GhkMZMtJOoRIpElH2urM3DBQFJbJYFyMThI7ikOnzcse5IRxGps57TLB44f17UaZtKiWCjdTNXJsplZ/cnu0sEsNFjhS3+BdShhuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wae7y6si; arc=none smtp.client-ip=209.85.221.41
+	s=arc-20240116; t=1757519894; c=relaxed/simple;
+	bh=OhAPqaXLXCmsNIfo7/tILARHNy+GrLJldAAVbkxmaW8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ImT9g+LDK4jrc5Xe+ulLRWZpWMwi5rvj+i8wvduCaWtyGtC8TteUCD6KQtExuJ5q7hLrY34jtRZ2vvFewA5L2JHWH7/9xXpdw3vbbRS0fsOR+Ty+vSLoNAKyBIMVdOaRR7daM6/Q39WklMiBqol14yeo1uuSTBlkbOD4eJdm7rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vZQw9RW7; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3e7512c8669so1538398f8f.0
-        for <linux-iio@vger.kernel.org>; Wed, 10 Sep 2025 08:58:10 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45dde353b47so22207385e9.3
+        for <linux-iio@vger.kernel.org>; Wed, 10 Sep 2025 08:58:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757519889; x=1758124689; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aJ6CTb9QgukTBV6bS9gxx7JwKyJl+T8wYIdJWg2p/8g=;
-        b=wae7y6si1VBXkptU5+3lrvpOAFWKnRnsgnzI9bC7CTWms/wbYzebfs0OGaId6vbFM2
-         Genj9Nv5rFGhBfJqA9KPOWAgWDlHdl5YD7AY6YGpnVe817DqJlJ88u5YdtAnkQCJepQ7
-         dLDJqinLSS+tUBU8oL/kBomRV7caxRJ0H6QQSnZPpKK7lDZFHB9M3e3GY1TVs2je6PJn
-         a1SikCox5MKCnd6giCjcwFkyxCzqgVwksqH80/B8t2Jh+Lrnxcp9SgAKxx+48ycw062V
-         pUHEYRkiNwbE4mNIPoGnJS/jRxTGV+ysXKD9ym+GO9nrwtquYuOMxEsIDeW5QAGshyzy
-         PbEA==
+        d=linaro.org; s=google; t=1757519890; x=1758124690; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tZahglen05z3CRdzByKKHS/uCh35Ibd/55Vn0qmvXT0=;
+        b=vZQw9RW7Wx2wcFglNeFzlcfiaPY7k9dEwEOSt+I3qG4bx8VwpibkoEb6o3ljjInqH4
+         sTTJCCPpT4NbW37JE8/70REcub4WBe+qpTMqU2Akhc2TsgEsz2PiD3qLOSzRTsdIqISP
+         TAY1ta5goOa/8hAAarzVYi7ytoibfY6GCVRXKssnkhfzYDHoTXgKsoXzGGs5FIm4I4Py
+         HGTWS2B/ARif2DnBxaFqssv2Cxd1BAWC644tM0LrpfRzH9ybZhHMnBPrEK2xEFeFNSjW
+         oum4TbVCa/1BAFwTU/v+NcbiZA7ErUrNd4z3mgf+/xPXFn7967ASkjRnkBu9Ft4kORKz
+         DjzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757519889; x=1758124689;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aJ6CTb9QgukTBV6bS9gxx7JwKyJl+T8wYIdJWg2p/8g=;
-        b=OqoSNdkab6f+SuRay9Q01Lf+MRojo9PWxGt5IlmthHhPgF3lfQkFECvwySpN4ktiYA
-         UySrm+/gIXR472fcQp66DZJ0yAOHC2+4LLld+SarRgESzV8YYpum8GRbtmB0b+pEjvb7
-         6vMBFB20pzrlEZ2huqkHLdZAqAie851u4Uex93AlSivdSWG5wFv1sgiCpOalZk88aRWZ
-         eUKjJq1UjMaDqEbXGT4Ips2WdvrB8VXYsfn/+XzJ2kETXieTy2mFUQdU4q16iEhnrryn
-         bkfhhIUlNnCfK979xiGFlwDR2oJoXJ02YLl6sXfBOGtYmQiXWcBuG5IHr2rlcmT7IEzn
-         4QcQ==
-X-Gm-Message-State: AOJu0Ywd1FXYGZuQkqoo5wgTzwdFNxvp2CPgxaDDg56Hadma/qeela4S
-	eappfGdALlrw6sUD0079jXILH0qQjZyzqPFV7FKdfV62oge3q36z3eHuJcnm1p0WEaQ=
-X-Gm-Gg: ASbGncvS5bPrcGuPaNcDKtNZlZYW5f38mdgyAGjZO/Yy5n0k4Bn7XH1h81PUr+dG4ih
-	7jfFwy9Jzddz/J8VtDNuo0JTfhz9NCkymdAUxeF/dtk5jjK2uUxpwn1X40NcaHf09jXRXoRE7Pq
-	JsmkqqrMs5oPVd27uUGDcrXrQPUTlXOlQQv7M6z6qof6zUNzypQ0mjpGB7DNs/Zy+McrIdZJ7P9
-	aRqtiJlnyNCYS+wU7pRbLx/NQ+TgxTRmibpxFtUv855mh+Qw8BdnJg8xIBEPlDdTYc+Qu3b/MFj
-	LN3WmUAzRK5kRLx2iWaC3lu5pxpJhnWmA+1inW9IFLHWd7/G0QyJM/R4Sm+VglAF/oXlbFnRrpk
-	NF19Sw7J2mRYc3u6EaH/AdMK4uQDBYPhGd6pQQ+uTZ94=
-X-Google-Smtp-Source: AGHT+IGxtk8aUU60lUW/tWlArM0SdaxDZo6GGAqsTWAWeM6Yie0aGFijwOZEXm4dntS9JpH0TcFNHA==
-X-Received: by 2002:a05:6000:24c1:b0:3e2:ac0:8c55 with SMTP id ffacd0b85a97d-3e643c1a48cmr13871860f8f.55.1757519889267;
-        Wed, 10 Sep 2025 08:58:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757519890; x=1758124690;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tZahglen05z3CRdzByKKHS/uCh35Ibd/55Vn0qmvXT0=;
+        b=SlKYh0jKb2Uy+EGM9uLBK/GfFV2YhO+l65almTj5NfAKVLtIBJZcZSighlG6V40Nk0
+         BtR6MZ2LHSU6FBjh48Sf1XvNQKqh3LjDCQoN0epbrYqPqM8YtwpcPlJr8mxCwYrYzGoZ
+         MYB/RBKNNqH3l+JWkQNagNpYaT4Mb+VuDFafxu03ljbSJ7nUmZ/uwtslxOpmgO1q4K4f
+         aU1LDK4uAHZsLfd67d2dwomypJBYaYKon1/uy110B+JesltMM0M31KMlUxKuv1YoF4P6
+         3jZ47lSxjaUwdBQKuHyCEH4GwMWEj4aR3DpfhOUidgjz/DXT8PYrqing/JEOjK3qV4af
+         r26w==
+X-Gm-Message-State: AOJu0Yy6m2ICDlU68mKXRF/p5eY6QpBADlI49Wi5QTWA7SUGEU8OSCNa
+	zcD7rEZ626yzPh3Oux7BNvpt/hNxcDNiNRWfFBeNlTMxi+FIpatmDOM/c7Gr36Tl9G0=
+X-Gm-Gg: ASbGncvi86YCipG+z8iyziTfd6OCxW0SsRj//Hq5tUpkDhyeFBy5Cx+Gd8l7LlHvyUn
+	+F9euPQiTF0JfxqOali8vOZ3Fupv9k/Ib8B7wBEeSZ9GWOmPlVA3p5aJRs6zTANqRm4ZWUy73fA
+	UEY30uXz3vFrzE4Y4O4f/ushfJ73z0ot/uxnfwzr+VZSvsHJq9rA+D03sGC+oYT1MV64rBLAeea
+	XTrR1LrN6kECbBpdV45LyYeFxfauYDVMim0oZncq2gYecQeR0mfB7hejVyuJXCKYJtDimR0ssvH
+	d1SW3TN+lze8OIrMR/f7Jt5ELlDQmYICIk1p8kYPJopX4kobH35g3/knhgUIKDDaXTg3WAVymL/
+	hlYNx2lpZ9Ynuhx7U7FpyAw+TJ5EiZe+AE+vywgPvI8E7ywlc8Z5AJw==
+X-Google-Smtp-Source: AGHT+IFsk+Hu71XOSz/daET/PrPnso1lOD5hy+C5Qdl2oEm8FMUYFxcYdjpT+XpM/4cvgxam/mPtNQ==
+X-Received: by 2002:a5d:5889:0:b0:3e0:152a:87b4 with SMTP id ffacd0b85a97d-3e64392b7a6mr12159707f8f.35.1757519890339;
+        Wed, 10 Sep 2025 08:58:10 -0700 (PDT)
 Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:9717:723a:79cf:4f4a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e75223ea3csm7490325f8f.49.2025.09.10.08.58.08
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e75223ea3csm7490325f8f.49.2025.09.10.08.58.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 08:58:08 -0700 (PDT)
+        Wed, 10 Sep 2025 08:58:09 -0700 (PDT)
 From: Daniel Lezcano <daniel.lezcano@linaro.org>
 To: jic23@kernel.org,
 	dlechner@baylibre.com,
@@ -85,10 +87,12 @@ Cc: linux-iio@vger.kernel.org,
 	chester62515@gmail.com,
 	mbrugger@suse.com,
 	ghennadi.procopciuc@oss.nxp.com
-Subject: [PATCH v2 0/2] NXP SAR ADC IIO driver for s32g2/3 platforms
-Date: Wed, 10 Sep 2025 17:57:54 +0200
-Message-ID: <20250910155759.75380-1-daniel.lezcano@linaro.org>
+Subject: [PATCH v2 1/2] dt-bindings: iio: adc: Add the NXP SAR ADC for s32g2/3 platforms
+Date: Wed, 10 Sep 2025 17:57:55 +0200
+Message-ID: <20250910155759.75380-2-daniel.lezcano@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250910155759.75380-1-daniel.lezcano@linaro.org>
+References: <20250910155759.75380-1-daniel.lezcano@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -97,77 +101,86 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The S32G2 and S32G3 platforms have a couple of successive
-approximation register (SAR) ADCs with eight channels and 12-bit
-resolution. These changes provide the driver support for these ADCs
-and the bindings describing them.
+The s32g2 and s32g3 NXP platforms have two instances of a Successive
+Approximation Register ADC. It supports the raw, trigger and scan
+modes which involves the DMA. Add their descriptions.
 
-The driver is derived from the BSP driver version. It has been partly
-rewritten to conform to upstream criteria.
-
-https://github.com/nxp-auto-linux/linux/blob/release/bsp44.0-6.6.85-rt/drivers/iio/adc/s32cc_adc.c
-
-After the V1 posting there were some discussions around the DMA code
-to be converted to use the IIO DMA API [1]. Unfortunately this one is
-not yet fully implemented and merged in the framework to support the
-cyclic DMA. The current DMA code in the driver has been used in
-production since several years and even if I agree it can be improved
-with a dedicated IIO DMA API in the future, IMO, it sounds reasonable
-to keep it as is until the IIO DMA API supporting the cyclic DMA is
-merged. I'll be glad to convert the driver code if such an API exists
-and allows to remove code inside the driver.
-
-[1] https://lore.kernel.org/all/c30bb4b6328d15a9c213c0fa64b909035dc7bf40.camel@gmail.com/
-
-Changelog:
-	* V2:
-	  - Massaged the cover letter changelog to explain the DMA
-	  ** Andriy Shevchenko **
-	  - Added missing headers and use proper header for of.h
-	  - Changed macro offset zero to be consistent
-	  - Remove macros REG_ADC_MCR_NRSMPL_* as they are unused
-	  - Changed delays macro under the form 100000 => 100 * USEC_PER_MSEC
-	  - Replaced PAGE_SIZE by a NXP_PAGE_SIZE = SZ_4K macro
-	  - Replaced read_poll_timeout() by readl_poll_timeout()
-	  - Changed error pattern "error first"
-	  - Replaced variable type 'int' to 'unsigned int'
-	  - Fixed bug right instead of left shift, use BIT(channel)
-	  - Returned directly from switch-case
-	  - Used guard(spinlock_irqsave)()
-	  - One liner function call
-	  - Remove redundant {}
-	  - Write default values litterals instead of temporary variables
-	  - Changed variable name vref -> vref_mV
-	  - Removed unneeded error message
-	  - Used dev_err_probe() consistently
-	  - Removed successful driver probe message
-	  - Removed redundant blank line
-
-	  ** Nuno Sa **
-	  - Replaced of_device_get_match_data() by device_get_match_data()
-	  - Removed iio_device_unregister() because devm_iio_device_register() is used
-	  - Removed "/* sentinel */" comment
-	  - Removed CONFIG_PM_SLEEP defiries
-
-	  ** Krzysztof Kozlowski / David Lechner **
-	  - Removed clock-names in DT bindings
-	  - Fixed minItems by maxItems
-
-	* V1:
-	  - Initial post
-
-Daniel Lezcano (2):
-  dt-bindings: iio: adc: Add the NXP SAR ADC for s32g2/3 platforms
-  iio: adc: Add the NXP SAR ADC support for the s32g2/3 platforms
-
- .../bindings/iio/adc/nxp,s32g2-sar-adc.yaml   |   63 +
- drivers/iio/adc/Kconfig                       |   13 +
- drivers/iio/adc/Makefile                      |    1 +
- drivers/iio/adc/nxp-sar-adc.c                 | 1026 +++++++++++++++++
- 4 files changed, 1103 insertions(+)
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+---
+ .../bindings/iio/adc/nxp,s32g2-sar-adc.yaml   | 63 +++++++++++++++++++
+ 1 file changed, 63 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/adc/nxp,s32g2-sar-adc.yaml
- create mode 100644 drivers/iio/adc/nxp-sar-adc.c
 
+diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,s32g2-sar-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,s32g2-sar-adc.yaml
+new file mode 100644
+index 000000000000..ec258f224df8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/nxp,s32g2-sar-adc.yaml
+@@ -0,0 +1,63 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/nxp,s32g2-sar-adc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP Successive Approximation ADC
++
++description:
++  The NXP SAR ADC provides fast and accurate analog-to-digital
++  conversion using the Successive Approximation Register (SAR) method.
++  It has 12-bit resolution with 8 input channels. Conversions can be
++  launched in software or using hardware triggers. It supports
++  continuous and one-shot modes with separate registers.
++
++maintainers:
++  - Daniel Lezcano <daniel.lezcano@kernel.org>
++
++properties:
++  compatible:
++    oneOf:
++      - const: nxp,s32g2-sar-adc
++      - items:
++          - const: nxp,s32g3-sar-adc
++          - const: nxp,s32g2-sar-adc
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  dmas:
++    maxItems: 1
++
++  dma-names:
++    const: rx
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - dmas
++  - dma-names
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    adc@401f8000 {
++        compatible = "nxp,s32g2-sar-adc";
++        reg = <0x401f8000 0x1000>;
++        interrupts = <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
++        clocks = <&clks 0x41>;
++        dmas = <&edma0 0 32>;
++        dma-names = "rx";
++    };
 -- 
 2.43.0
 

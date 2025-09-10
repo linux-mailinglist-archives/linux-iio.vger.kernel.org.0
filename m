@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-23945-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23946-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0509BB51DA5
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 18:29:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91371B51DC3
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 18:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 434C21C82251
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 16:29:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0565C176C4E
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 16:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C90334383;
-	Wed, 10 Sep 2025 16:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDAF2441B8;
+	Wed, 10 Sep 2025 16:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSzw2hH1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rr5h2gXi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6233D3277B8;
-	Wed, 10 Sep 2025 16:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083DE329F38;
+	Wed, 10 Sep 2025 16:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757521753; cv=none; b=c7EKikVgE57yYYG0SwrGA9+mtYeQphSDHe9sSPKZHEucI3GZPDn2LAltc5FKFRpiTMdyZgvkrWY21O1VlgDHjy2andC0zK0jbgU+9WHEDZymoujY+klaYhiLsC4HSb1RKf53DcjcPgo7f9IIooWOAfAWgwgZwvA2u6a5I2B3tpo=
+	t=1757521945; cv=none; b=omRNLQHbP7R0Q9qA8EgSn2iUrhqvnik8dDQ0/UwZOUO9fDhnX12yRbMP5uCrgu6qeISNRPAmCJva2k4EegV6kUpA5UxXdqkoXDEkcmajKvvCNwcpVJXZH89nDRsc9h5c3a8kflc4ITa/bFzCp0Dh2kT5kOnk24jZ5CGBr5cKnNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757521753; c=relaxed/simple;
-	bh=Xe9fVm6ckw3sd+kWMHURtc8foU7vbzOBCzr9GkZ5t+0=;
+	s=arc-20240116; t=1757521945; c=relaxed/simple;
+	bh=WJ4WgkR/oVSTrlta7qBuOlEgKvSTav5ph5RoX1ymhRw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n3XX/kfxk2iSBFN9j6BZAEo4F09bpUrixeRfXo+rfFGRS/matQugZvD6uPSsBSnIx4loBbtieokKuOsSzr/CK9HWPC2dqjd4jlQTcDLI0gOB4EDJPKptSQVygWvazPqseotQOwSHjSEFHNUUNMJ/8ZBU+OOwNN33FUOYDdLfr0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSzw2hH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F57C4CEEB;
-	Wed, 10 Sep 2025 16:29:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cZC8frjR5QQB3RWte2I1Egud/xnfEbBRVMVqruNJx0cJ5er4fZ33VSErmgpWRILG95DQBTrHAhshwNqaxTJC8N34O4R073WboePA1ncMWSkz/DvuaY6+qBaHLEucw83GoG/SEcp0X1yrDAVW+yP/oT19iZZthZ2MdkgM11bq/jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rr5h2gXi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B136FC4CEEB;
+	Wed, 10 Sep 2025 16:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757521752;
-	bh=Xe9fVm6ckw3sd+kWMHURtc8foU7vbzOBCzr9GkZ5t+0=;
+	s=k20201202; t=1757521944;
+	bh=WJ4WgkR/oVSTrlta7qBuOlEgKvSTav5ph5RoX1ymhRw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DSzw2hH1nydvDnfQrdZP33WV2y0ufQR0Py1CicGNGJSXfsfcTy8lQ3KY8Mqrh0/ED
-	 KZJYO3drheecgud6/pPef669TVdEL6VB+kXt+ikwxU60Z6VEHoZjGs0jcH+wytn8B2
-	 Qovjk9d+H4kz/3/2dwEdku2v8HnsAsVuZQ8IvOcaiUP467DLwFUYgg30I3HtIESrE5
-	 +xq+z9dWDo1NEi9tf8gmVkrusnn+HjSJtTxfHplqzjGb/RGaoCE0mRtGgqi8lv3yDK
-	 XJckp0UQm7UXqvLF+JCJMVysZV9s9zG5lWXXH2KRXQCokdVTXMD6+zyK3kUJQBQpPC
-	 p4V+SqKut0rJQ==
-Date: Wed, 10 Sep 2025 17:29:07 +0100
+	b=rr5h2gXiF5tnw9s8QkH6j1V8V3O7Ac8k0aVyFGk7IHb1o8gzO/xElnXaPiYcPXl3k
+	 h6ZLwUCIt7FreRdMreZTRT0QlAPeRlW76m17KXoIS+Pz/R06DAvH3Fm/pC0rPbJi74
+	 xiSm2wvRJ12l2tQJobAMEBDdMKwYMhR52+To8A5Vab3B8llc8WM66Lkos54sXxHWf0
+	 7CsZr+SZPj7W6yc92+aZPGKQRJTnkyOsKjhqE1gFwrsOxe5q60+vNG5zAushhyGvdv
+	 NSB6m9ciIQ2SIA0/YbBZafdTFC9M/GzUs5NAxwXez6V/RSoSyF5sl3fJS9x3uBs8dc
+	 QZg8W3ovead3g==
+Date: Wed, 10 Sep 2025 17:32:19 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/6] iio: adc: ad7124: add filter support
-Message-ID: <20250910172907.5e6cbc6c@jic23-huawei>
-In-Reply-To: <20250907112214.36b8564a@jic23-huawei>
-References: <20250905-iio-adc-ad7124-add-filter-support-v1-0-aee3834be6a9@baylibre.com>
-	<20250905-iio-adc-ad7124-add-filter-support-v1-5-aee3834be6a9@baylibre.com>
-	<20250907112214.36b8564a@jic23-huawei>
+To: Dixit Parmar <dixitparmar19@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Gerald Loacker
+ <gerald.loacker@wolfvision.net>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] iio: magnetometer: cleanup unused
+ IIO_CHAN_INFO_PROCESSED handling
+Message-ID: <20250910173219.60fec37c@jic23-huawei>
+In-Reply-To: <20250910-iio_chan_617_rc5-v1-0-924091d374be@gmail.com>
+References: <20250910-iio_chan_617_rc5-v1-0-924091d374be@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,49 +63,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 7 Sep 2025 11:22:14 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Wed, 10 Sep 2025 19:36:48 +0530
+Dixit Parmar <dixitparmar19@gmail.com> wrote:
 
-> On Fri, 05 Sep 2025 13:12:00 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
+> This series cleans up dead code in the magnetometer drivers by
+> removing unused handling for IIO_CHAN_INFO_PROCESSED. None of these
+> drivers set this bit in info_mask_* fields, so the cases are never
+> reached.
+> These changes reduce code paths, improve readability, and make the
+> switch statements easier to maintain. No functional changes are
+> intended.
 > 
-> > Add support to the ad7124 driver for selecting the filter type.
-> > 
-> > The filter type has an influence on the effective sampling frequency of
-> > each channel. For sinc3+pf{1,2,3,4}, the sampling frequency is fixed.
-> > For sinc{3,4} (without post filter), there is a factor of 3 or 4
-> > depending on the filter type. For the extra +sinc1, there is an extra
-> > averaging factor that depends on the power mode.
-> > 
-> > In order to select the closest sampling frequency for each filter type,
-> > we keep a copy of the requested sampling frequency. This way, if the
-> > user sets the sampling frequency first and then selects the filter type,
-> > the sampling frequency will still be as close as possible to the
-> > requested value.
-> > 
-> > Since we always either have the SINGLE_CYCLE bit set or have more than
-> > one channel enabled, the sampling frequency is always using the
-> > "zero-latency" calculation from the data sheet. This is only documented
-> > for the basic sinc{3,4} filters, so the other filter types had to be
-> > inferred and confirmed through testing.
-> > 
-> > Since the flat filter type list consists of multiple register fields,
-> > the struct ad7124_channel_config::filter_type field is changed to the
-> > enum ad7124_filter_type type to avoid nested switch statements in a
-> > lot of places.
-> > 
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>  
+> Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+> ---
+> Dixit Parmar (2):
+>       iio: magnetometer: als31300: remove unused IIO_CHAN_INFO_PROCESSED handling
+>       iio: magnetometer: tmag5273: remove unused IIO_CHAN_INFO_PROCESSED handling
 > 
-> One really trivial comment inline.  Not worth a v2 for just that.
-> However, this is complex enough code I'd like to keep this on list anyway
-> for a little longer to see if anyone else has review comments.
+>  drivers/iio/magnetometer/als31300.c | 1 -
+>  drivers/iio/magnetometer/tmag5273.c | 1 -
+>  2 files changed, 2 deletions(-)
+> ---
+> base-commit: 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c
+> change-id: 20250910-iio_chan_617_rc5-59be964d7451
 > 
-> Jonathan
-Hi David,
+> Best regards,
 
-Given your self review of the fix, I am assuming you will do a new
-version of that and these.  Which mostly means I'll mark them as waiting
-for changes in patchwork and forget about them till I see the new version :)
+Good find. Applied to the togreg  branch of iio.git and pushed out as testing.
 
 Thanks,
 

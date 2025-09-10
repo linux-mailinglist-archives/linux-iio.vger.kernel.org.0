@@ -1,131 +1,172 @@
-Return-Path: <linux-iio+bounces-23937-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23938-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F63CB518F7
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 16:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F03ABB51CAD
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 17:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92C911893C08
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 14:08:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30CC1188C69B
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 15:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D20322531;
-	Wed, 10 Sep 2025 14:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A0432ED23;
+	Wed, 10 Sep 2025 15:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nPx0EOVz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wae7y6si"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5E8326D60;
-	Wed, 10 Sep 2025 14:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0981032BF40
+	for <linux-iio@vger.kernel.org>; Wed, 10 Sep 2025 15:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757513240; cv=none; b=j+foU0jGj4GnyrQXRPuR99FKobuvJPcKbmoNW3qaAx5lMUAv9qg2t3+MpB5Hbf3KtJrWdXkFslKpkufZOo9HqkriUfkKWYp1ED788nC0a7P5+sxRXztPZeb5uPqxDCam3RBxF+Lxc4rhWdckU9uXUKbjbcc6Q3kfPTdyMLui9SQ=
+	t=1757519892; cv=none; b=cQ96R1Lrlyc+QDYMTgtaD0LSTZmd1TyJIbPplQtL4GZwzxYKpvupWfa+znozUlGj3RGMyR9I3x6Rf7HCfyRUPt39pS44KmOifg6d0VPOvBLo71N5lIo0RkdSMRsCSI8drMzMvQlJ75sXzpmxVXEe/rA9WIablS1xDv45KNZ94cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757513240; c=relaxed/simple;
-	bh=ROrvoDuVDqbgFWhavgvfYlrq0NkOS051qjiusBT8Ua8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=C/mwh4P6aEUg7zEl6W4cij8na8PAY2kXXzIfA5VcpzyyIr1K2d0LbCtRcDZXFF7RITLLf5s8SEQ+tg6L8ZBb5a3sV4z1p5JBLLMJoEZgURD0oYJvIRC18ZmvZbVKyULprPsrHyT5Rh9d430ewLlrDHBQY6hRcgktlHbybdJF46Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nPx0EOVz; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-32d3e17d95dso3534640a91.3;
-        Wed, 10 Sep 2025 07:07:18 -0700 (PDT)
+	s=arc-20240116; t=1757519892; c=relaxed/simple;
+	bh=0OXy0pIlk1rrTtpMa3bUiDD9A6fnxy7GK4ztvEBXy6E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VyKs+qrPR4FRvi6yssn4ZVJULomEXdVKXpuJWMmRMHagjz7Lp/VseLdReJ7nbNsq8S2gJ2GhkMZMtJOoRIpElH2urM3DBQFJbJYFyMThI7ikOnzcse5IRxGps57TLB44f17UaZtKiWCjdTNXJsplZ/cnu0sEsNFjhS3+BdShhuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wae7y6si; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3e7512c8669so1538398f8f.0
+        for <linux-iio@vger.kernel.org>; Wed, 10 Sep 2025 08:58:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757513238; x=1758118038; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IXxoV54+FjMxXPbk6s6rmJoLKsFn4oY68NqK38GSsng=;
-        b=nPx0EOVzh57exIUNDZMEGhqrt9Py6YpYpdvys4jGBfO+y5H8t8W7nZiINvZoanoygp
-         8UFdGqCX6O7f5DRZSO/EPalFNsa68pTNpfK7Cvw2FPIh8nyDIJBpgS4DrIMj+P0rUwYc
-         400RjD3akKsIU2yhBfaCS5KwTFIFTwO9hKBM6GEp3pohZ89IDs+LnoYjF6BqRhiExvfP
-         Wtj3n5tQfDnLmcz+5ZU29tqlSYZYWLgbzM/FfaX8eitgUsG378rVE2VNdD77AbWE/One
-         j4oW0fatyBI13X2eezlty/WhCUs4xgQadgh7Mlmy8wNqp9E9dgWoR2p3/gaqa7VzX/kW
-         lGtA==
+        d=linaro.org; s=google; t=1757519889; x=1758124689; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aJ6CTb9QgukTBV6bS9gxx7JwKyJl+T8wYIdJWg2p/8g=;
+        b=wae7y6si1VBXkptU5+3lrvpOAFWKnRnsgnzI9bC7CTWms/wbYzebfs0OGaId6vbFM2
+         Genj9Nv5rFGhBfJqA9KPOWAgWDlHdl5YD7AY6YGpnVe817DqJlJ88u5YdtAnkQCJepQ7
+         dLDJqinLSS+tUBU8oL/kBomRV7caxRJ0H6QQSnZPpKK7lDZFHB9M3e3GY1TVs2je6PJn
+         a1SikCox5MKCnd6giCjcwFkyxCzqgVwksqH80/B8t2Jh+Lrnxcp9SgAKxx+48ycw062V
+         pUHEYRkiNwbE4mNIPoGnJS/jRxTGV+ysXKD9ym+GO9nrwtquYuOMxEsIDeW5QAGshyzy
+         PbEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757513238; x=1758118038;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IXxoV54+FjMxXPbk6s6rmJoLKsFn4oY68NqK38GSsng=;
-        b=Ik9et1qDlGyoObE0TIbklP69J7cfqnxEjMqMwtnvKKPGlVq9fjzFuYJF9cIDsJLld9
-         2SFP6Pu+skLQMVjEflQk/StB5Tco56A4bjcWqYvbz2wQb693h2yizgYyGHN5M5FLtvsD
-         y0UT9pKln4sEi/KutKvN96bvaE9LnAGo0pJ7mdNCjPury0C/jLgTwECRKWVPjgEVnEhX
-         b1GPnKK5CVfxW/1FEW7QZ0whuMjHGhVmVhJWddx8MmDsZbhq3XUFnVz4D8FXYQLSoggy
-         e15jCsIdU2ps8ZDeUh610uR8yZx4oJx+CbX22pJZ2us8jr+3xxJCYQAHJg2UUapEfqY8
-         I/XA==
-X-Forwarded-Encrypted: i=1; AJvYcCVgjwBvhfLCO2lGxu169wE/1D3CR8Gj6JTwyTjuaqB/P3WoYCxRm5YIB6U1msDAeY8M1hV4J/kY693cCsg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxth0n1nF+kLyxeDqZOaKPOsKlSLa/8ZXOGlmKVs+8MqJ4b0Oq4
-	d0Molu3aB/VG0XNVMU0mvFOpimZXyDsS9s8cMJSl3pmQBpezwEjrP06u
-X-Gm-Gg: ASbGncvhgcEJxQQbZUl/ulka3zowsXd400pki8Rp+pMTnE7Ywz6P7u7xonIlMHsqfoC
-	ea3esZU6p7NG/gXy0wm/SyVlNfxAJY4/zYV51A7Z52SBZrNX+Y4zml499KTnqVh+/Wr/b7Y7AsS
-	tZ5kRFNyvS+2VlWCgoQSOxiW+SsOOxoa9tQX7YakxtNfAMsCSyI6xK4b6xXhxUhtLizo9T/6q+5
-	nyd5AuaTBt+szdmFP1dYybrLwVWwEFS3hdZAeewShiWQUq/77nq5YtmxRp5/azB9h4X+iq28hl3
-	cAqdJqwC7XKlAy5VKtAGiupSIJT+ILb0RV/O9k8ssOdsXH4j+UUyx3fFUHnp0N5qcfjGPlim4J8
-	lHqyhEaGaX2mcBoFuieULhMv4/r9tH3I7q+1zpys=
-X-Google-Smtp-Source: AGHT+IGQeSP1uEIwB71Hv9FoOlsKj0OYLqwv3DuIX8jyhjWu2fwd+nhEAulKnGHLkre4mso7a66mpQ==
-X-Received: by 2002:a17:90b:55cc:b0:32d:9e71:513e with SMTP id 98e67ed59e1d1-32d9e715fd7mr9517653a91.34.1757513238232;
-        Wed, 10 Sep 2025 07:07:18 -0700 (PDT)
-Received: from [127.0.1.1] ([2401:4900:1c7e:73ce:c1b3:ae9:98ce:970])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32dbb2f54acsm2760204a91.2.2025.09.10.07.07.14
+        d=1e100.net; s=20230601; t=1757519889; x=1758124689;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aJ6CTb9QgukTBV6bS9gxx7JwKyJl+T8wYIdJWg2p/8g=;
+        b=OqoSNdkab6f+SuRay9Q01Lf+MRojo9PWxGt5IlmthHhPgF3lfQkFECvwySpN4ktiYA
+         UySrm+/gIXR472fcQp66DZJ0yAOHC2+4LLld+SarRgESzV8YYpum8GRbtmB0b+pEjvb7
+         6vMBFB20pzrlEZ2huqkHLdZAqAie851u4Uex93AlSivdSWG5wFv1sgiCpOalZk88aRWZ
+         eUKjJq1UjMaDqEbXGT4Ips2WdvrB8VXYsfn/+XzJ2kETXieTy2mFUQdU4q16iEhnrryn
+         bkfhhIUlNnCfK979xiGFlwDR2oJoXJ02YLl6sXfBOGtYmQiXWcBuG5IHr2rlcmT7IEzn
+         4QcQ==
+X-Gm-Message-State: AOJu0Ywd1FXYGZuQkqoo5wgTzwdFNxvp2CPgxaDDg56Hadma/qeela4S
+	eappfGdALlrw6sUD0079jXILH0qQjZyzqPFV7FKdfV62oge3q36z3eHuJcnm1p0WEaQ=
+X-Gm-Gg: ASbGncvS5bPrcGuPaNcDKtNZlZYW5f38mdgyAGjZO/Yy5n0k4Bn7XH1h81PUr+dG4ih
+	7jfFwy9Jzddz/J8VtDNuo0JTfhz9NCkymdAUxeF/dtk5jjK2uUxpwn1X40NcaHf09jXRXoRE7Pq
+	JsmkqqrMs5oPVd27uUGDcrXrQPUTlXOlQQv7M6z6qof6zUNzypQ0mjpGB7DNs/Zy+McrIdZJ7P9
+	aRqtiJlnyNCYS+wU7pRbLx/NQ+TgxTRmibpxFtUv855mh+Qw8BdnJg8xIBEPlDdTYc+Qu3b/MFj
+	LN3WmUAzRK5kRLx2iWaC3lu5pxpJhnWmA+1inW9IFLHWd7/G0QyJM/R4Sm+VglAF/oXlbFnRrpk
+	NF19Sw7J2mRYc3u6EaH/AdMK4uQDBYPhGd6pQQ+uTZ94=
+X-Google-Smtp-Source: AGHT+IGxtk8aUU60lUW/tWlArM0SdaxDZo6GGAqsTWAWeM6Yie0aGFijwOZEXm4dntS9JpH0TcFNHA==
+X-Received: by 2002:a05:6000:24c1:b0:3e2:ac0:8c55 with SMTP id ffacd0b85a97d-3e643c1a48cmr13871860f8f.55.1757519889267;
+        Wed, 10 Sep 2025 08:58:09 -0700 (PDT)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:9717:723a:79cf:4f4a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e75223ea3csm7490325f8f.49.2025.09.10.08.58.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 07:07:17 -0700 (PDT)
-From: Dixit Parmar <dixitparmar19@gmail.com>
-Date: Wed, 10 Sep 2025 19:36:50 +0530
-Subject: [PATCH 2/2] iio: magnetometer: tmag5273: remove unused
- IIO_CHAN_INFO_PROCESSED handling
+        Wed, 10 Sep 2025 08:58:08 -0700 (PDT)
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+To: jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	robh@kernel.org,
+	conor+dt@kernel.org,
+	krzk+dt@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	s32@nxp.com,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	chester62515@gmail.com,
+	mbrugger@suse.com,
+	ghennadi.procopciuc@oss.nxp.com
+Subject: [PATCH v2 0/2] NXP SAR ADC IIO driver for s32g2/3 platforms
+Date: Wed, 10 Sep 2025 17:57:54 +0200
+Message-ID: <20250910155759.75380-1-daniel.lezcano@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250910-iio_chan_617_rc5-v1-2-924091d374be@gmail.com>
-References: <20250910-iio_chan_617_rc5-v1-0-924091d374be@gmail.com>
-In-Reply-To: <20250910-iio_chan_617_rc5-v1-0-924091d374be@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, 
- Gerald Loacker <gerald.loacker@wolfvision.net>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dixit Parmar <dixitparmar19@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757513227; l=838;
- i=dixitparmar19@gmail.com; s=20250726; h=from:subject:message-id;
- bh=ROrvoDuVDqbgFWhavgvfYlrq0NkOS051qjiusBT8Ua8=;
- b=3/kRP1bQIpmqFoMfs0UHx68qVJfszT/mVyygRmjc6rUtiwQH52tXyogwjlOLGKwptdO5FUW3Q
- JSPH3OxomihDhpgDKtNqcmZCR4pNrIvSpLJWEmPuHGffjUhKGkXXyGQ
-X-Developer-Key: i=dixitparmar19@gmail.com; a=ed25519;
- pk=TI6k8pjTuLFcYiHazsate3W8rZGU2lbOrSJ4IWNoQhI=
+Content-Transfer-Encoding: 8bit
 
-The tmag5273 driver does not advertise IIO_CHAN_INFO_PROCESSED in its
-info_mask_* fields, so the corresponding case in read_raw()/write_raw()
-is never used.
-Drop the dead code to reduce unnecessary branches and improve clarity.
+The S32G2 and S32G3 platforms have a couple of successive
+approximation register (SAR) ADCs with eight channels and 12-bit
+resolution. These changes provide the driver support for these ADCs
+and the bindings describing them.
 
-Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
----
- drivers/iio/magnetometer/tmag5273.c | 1 -
- 1 file changed, 1 deletion(-)
+The driver is derived from the BSP driver version. It has been partly
+rewritten to conform to upstream criteria.
 
-diff --git a/drivers/iio/magnetometer/tmag5273.c b/drivers/iio/magnetometer/tmag5273.c
-index 2ca5c26f0091..ed023eae5e42 100644
---- a/drivers/iio/magnetometer/tmag5273.c
-+++ b/drivers/iio/magnetometer/tmag5273.c
-@@ -287,7 +287,6 @@ static int tmag5273_read_raw(struct iio_dev *indio_dev,
- 	int ret;
- 
- 	switch (mask) {
--	case IIO_CHAN_INFO_PROCESSED:
- 	case IIO_CHAN_INFO_RAW:
- 		ret = pm_runtime_resume_and_get(data->dev);
- 		if (ret < 0)
+https://github.com/nxp-auto-linux/linux/blob/release/bsp44.0-6.6.85-rt/drivers/iio/adc/s32cc_adc.c
+
+After the V1 posting there were some discussions around the DMA code
+to be converted to use the IIO DMA API [1]. Unfortunately this one is
+not yet fully implemented and merged in the framework to support the
+cyclic DMA. The current DMA code in the driver has been used in
+production since several years and even if I agree it can be improved
+with a dedicated IIO DMA API in the future, IMO, it sounds reasonable
+to keep it as is until the IIO DMA API supporting the cyclic DMA is
+merged. I'll be glad to convert the driver code if such an API exists
+and allows to remove code inside the driver.
+
+[1] https://lore.kernel.org/all/c30bb4b6328d15a9c213c0fa64b909035dc7bf40.camel@gmail.com/
+
+Changelog:
+	* V2:
+	  - Massaged the cover letter changelog to explain the DMA
+	  ** Andriy Shevchenko **
+	  - Added missing headers and use proper header for of.h
+	  - Changed macro offset zero to be consistent
+	  - Remove macros REG_ADC_MCR_NRSMPL_* as they are unused
+	  - Changed delays macro under the form 100000 => 100 * USEC_PER_MSEC
+	  - Replaced PAGE_SIZE by a NXP_PAGE_SIZE = SZ_4K macro
+	  - Replaced read_poll_timeout() by readl_poll_timeout()
+	  - Changed error pattern "error first"
+	  - Replaced variable type 'int' to 'unsigned int'
+	  - Fixed bug right instead of left shift, use BIT(channel)
+	  - Returned directly from switch-case
+	  - Used guard(spinlock_irqsave)()
+	  - One liner function call
+	  - Remove redundant {}
+	  - Write default values litterals instead of temporary variables
+	  - Changed variable name vref -> vref_mV
+	  - Removed unneeded error message
+	  - Used dev_err_probe() consistently
+	  - Removed successful driver probe message
+	  - Removed redundant blank line
+
+	  ** Nuno Sa **
+	  - Replaced of_device_get_match_data() by device_get_match_data()
+	  - Removed iio_device_unregister() because devm_iio_device_register() is used
+	  - Removed "/* sentinel */" comment
+	  - Removed CONFIG_PM_SLEEP defiries
+
+	  ** Krzysztof Kozlowski / David Lechner **
+	  - Removed clock-names in DT bindings
+	  - Fixed minItems by maxItems
+
+	* V1:
+	  - Initial post
+
+Daniel Lezcano (2):
+  dt-bindings: iio: adc: Add the NXP SAR ADC for s32g2/3 platforms
+  iio: adc: Add the NXP SAR ADC support for the s32g2/3 platforms
+
+ .../bindings/iio/adc/nxp,s32g2-sar-adc.yaml   |   63 +
+ drivers/iio/adc/Kconfig                       |   13 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/nxp-sar-adc.c                 | 1026 +++++++++++++++++
+ 4 files changed, 1103 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/nxp,s32g2-sar-adc.yaml
+ create mode 100644 drivers/iio/adc/nxp-sar-adc.c
 
 -- 
 2.43.0

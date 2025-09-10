@@ -1,179 +1,131 @@
-Return-Path: <linux-iio+bounces-23934-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23935-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121D4B5171D
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 14:38:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D63B518D9
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 16:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 384AE4E7883
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 12:37:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAA4A7AFC5E
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 14:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F2331D729;
-	Wed, 10 Sep 2025 12:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F854321434;
+	Wed, 10 Sep 2025 14:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DXwSE5kd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="He1uySlx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E9B31B105;
-	Wed, 10 Sep 2025 12:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8303A320A23;
+	Wed, 10 Sep 2025 14:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757507808; cv=none; b=Bhr6dHHAv7skB1NJ7NCpZExrIeYl5jPbIKmEB0O7wVyxvH8pTMM7AK41/ER1T8nsOAy4GfF6f0NHQOf7Pm8Xvts4CrFzke7QOAWTpbP2/JJrawki1DBhc/wA7Bq9Rw3r/Syu4h9S2YReXWGh4nAahrjh+0mvGnYhJRl4MQ70+5A=
+	t=1757513232; cv=none; b=W9r+uAaNTGE0l50sjgt+lJEo3amQJtkyEnPv6VlAyoXC2bfJObTNewpIVVxLktanzzXdnFcXRcKIIbK8xFR1ZRcJYGlocGobay0Q9XVKc1zsFDs8Cw9f+OZXauKUSNAeXzY0QvlooVDxuuyklzR5pHx/z34DqnBoUXbCHnHOMAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757507808; c=relaxed/simple;
-	bh=nYObKXqubG1o7WaB8kLrAOqXQfHhVbURHrbID/rZ9U0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ab2+BSkmyMyuNkhdgn70tpORqoPFiWt79NPHvGTmnJPbOsmAcpDiljQ3G9Lr/E2xEOFP1idVLrEY3bj1c1rnFQdIEMqxWJge/N8hGnQruYfg7dLlgao6Sl5Lv0pVlfxofG/42RR0Ht2+6Il7SWTQeN6DfsjpJtGWN4Ob3kPCVDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DXwSE5kd; arc=none smtp.client-ip=209.85.208.174
+	s=arc-20240116; t=1757513232; c=relaxed/simple;
+	bh=e1ghvNIVEDhDOpiSBJL+3J1+vjBTLBp51nImUjAA7s8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gPgsQIOkHXRTnYloJqHf3SDBH7zxUWTKNjKJ32XVmh3ikEmXwOLbfPyzqACvLVCZC/bzKQ/m8lMExEUkBA9aWVgcT3P8zGkpJ9fcSMVeKM0DBP//SwfO4rHv1CXGAXPu5n0a6EnON2RSTut8CI2eEtrPzw7ac6cpPTdEN4bfWQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=He1uySlx; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-336c79c89daso60896601fa.2;
-        Wed, 10 Sep 2025 05:36:46 -0700 (PDT)
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-32b959b4895so4777569a91.1;
+        Wed, 10 Sep 2025 07:07:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757507804; x=1758112604; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TKeVve1qQF013KWR2SZL4eaFR6YY0yjtRQqoC8mgkuw=;
-        b=DXwSE5kdeHoFe86bHQuZMsmvmnrVDAFxumHfrEM8zzrtHMx8yqYSJbSHRa0dvvfsM8
-         4Rw2+UUCJaXRRrJGJKjDCl7UIao89/UbOj5KBUW9rGrD5W6D6wGao50hwHQ12Q2ttJdF
-         DRvzMfb/ZWVruvcfHEm8hJy98G5CuFCLwGryePmYGVUiP5sDEE8YEc/yz4shR/MoFPij
-         gVa0DGfCUEOlAaBoS8oMQ3ZgqNct6An08jX6qN4/zjUb9cL65THLbZYRyS9c+g+Rddtv
-         vCWSVMZwBh4g1h93pWQTUnrbW0XiotSic25xuMk66RUNNJD2I3+L9gBESymllEvRyIvq
-         pXOA==
+        d=gmail.com; s=20230601; t=1757513231; x=1758118031; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U9a57p4h/5p2e5Uiw/EL0tS6w+eEl4IpqCuOC0vO87Q=;
+        b=He1uySlxgYkGvcSc4nHBzhAljJjanFqR4T8fF873xMSqWlZtKe5u4PDgeVLEXZKcqc
+         uE0ki8tzgDootZWo33eUAI8fAGC5l9iZsaaS56+kHlu4jFGdKyhNb99eH4k7ohbkbv8z
+         koYtEk70dH4OhWsMClAGITG6ZWKOxYOezlg28N5RSCwpGQ8KUu76a+Z9DmWvkrQYNxfY
+         k9poGc91OlUJtZzBb03ezCoiYd0cvp/99ZYRxq6gHSl5DkamfeOxrFCgpltFwfrgGySX
+         NXAFakwGi8D4l+NhfBEK5MLElYFAC60ExWHPaa/2+SxDI8O4XuZekTHnKFUHfs2bzGsl
+         nmcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757507804; x=1758112604;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TKeVve1qQF013KWR2SZL4eaFR6YY0yjtRQqoC8mgkuw=;
-        b=LD+ZCD7Ph5nlrEFlOFwNLJTBB9K6VaMDGMVuodXdocf65ZM9crmsVP8wZGW8YaSmrI
-         61V2wjva5PD87+oFFtOma3FK/9kMT5AJpubWPyJMn/6AocB2fweDdQuWmEGOeLRKlCDX
-         u0f3txQEcyHwbErYjBbbe/SvBWalYCnaiFh3TCm+zzzPK5+qU1/YZj+hMmYwFKWxXRyQ
-         cTDu2nSDUedFMZJ6+aZmavofTp7PTAlMJbHABJWzYzHdbNi4GK2j2XWZRc2RkaYv9js8
-         cDorYZP7Ya3zUpHnUfoXUMPlBvZiozsfyLONZKmDK/9NTS/kbO6vbfHYFpbTxFJXwoVq
-         z0qA==
-X-Forwarded-Encrypted: i=1; AJvYcCUIO/zwueJMAHUsVXkrMSv9n5M+rbCeVBeIv1xYWJZ05aDJc9bcjS9LO4pVDuw0Mk4ctiU5U+/RApE=@vger.kernel.org, AJvYcCX5shPRNAQoggjN+T6/Wgy+MQYqtNq3It4/bkzMWQrhIEtHhIZMKf3vrcbN5xigQ6TzH3yk2M1wvDvnQHnO@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTlYPVKR1IIrz+JkdKpGDaZdWH3+XY/nXjBl3/AckKFCkZoRKl
-	yo5pvU4jM0HW6l9OaYlCUWfNTTIkKABd3lShYF7KE3NFkPT0+WOVd0wxE1lCyxeKfIaRBzKlTZ9
-	k+g/gvl67lBE7mpwW17EbjdSZIS13oRE=
-X-Gm-Gg: ASbGncv9XzelL2fYJRvvTvfYjCf18kJheiaJ+pXyRtebLUSZRtI3wXZSp2dCQOtLVk5
-	Wa96LYkOl1flmXxG+Q+kdCSiFCf25ytI4diejrWLbHlhE1X6/T3NL35QPcpyZtGnokJnC1mIpN+
-	PVn7wQInDILENf7oHIhUMP7OSAFdNZhD2ABZq6KacpAzNLA59allqMK4rqPo2s6GD4GK1epUNd1
-	AI965ENIZNb3Xj0SPTDPA5CZre6c64S8S5bHpkRR2qmwjh6/A==
-X-Google-Smtp-Source: AGHT+IEwfn3j3xr2hwdm6er9BnDuuRo+yjJiLdV6kLnV+5fnmE3IurdHvAKdpHH3jrowbVkmyckbZ5Mkecbaaq5ZlkY=
-X-Received: by 2002:a05:651c:1a0c:b0:336:c0b7:9546 with SMTP id
- 38308e7fff4ca-33b5aac090dmr53414981fa.16.1757507804204; Wed, 10 Sep 2025
- 05:36:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757513231; x=1758118031;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U9a57p4h/5p2e5Uiw/EL0tS6w+eEl4IpqCuOC0vO87Q=;
+        b=X4G1oTHT15l+BCR7Tk0anwLrSPEIt4IZHNz4WmOvlrsNh+3Ygsk5G4xWEu22dK4LGD
+         sMhffMuiMxkBTWe+nyfvFw1dVtly3H4Q+I5LFxlaIfZ1uiGgcPdsOuPPfrkfLqYF222X
+         clymVe3kIxNAgWlNBHr6+awK7UWM61DbwoyS8UUYgLUUUy9W7MWbdwzJ6LNZOXUTXRTT
+         5KXZpyj8b42TSbCqt1nZPaiuUKA/yykr2VPFR3V1uDlhmkjnalhoh8Ottr0EySWe9Em3
+         6rC8htPwZIDp7qVDecJSAa8bc7P+vsQ4xSkVltGHqTeBsPfIsor7RanlHmmw8eA1Su+R
+         H6DA==
+X-Forwarded-Encrypted: i=1; AJvYcCVzipFnvOjJNaW2tRd60u9QX32vNXIOMiwSaCjUQrL7rrsR2UcUqV1nmhlhVInKx2f3vZTQgyf8IvHHx9w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI9uQDd1Gdo+ZEzAw+/J/VMjA+1Z7ewcmbk2ONwro+IxxEpVsL
+	P5UYTh4UEYBn8b7rjOVqhrIW0UJ8/OajdhQ32p0K5jeEhK+AgBe7BwrU
+X-Gm-Gg: ASbGncs/SYQbdXKRhWMF/tP19/2qK+NkNZbC7rjB8Lb5bVNeZzV72D2Wr7OVp8QLg73
+	SyU34Pyb7yZUJXNJBNtEw5jJ9UkCZAvymNWWKO58ek4lObzaU0BF12CDdgVTi2Vq5NSDy0ETxa1
+	eADaGeL1u9YzqQV0jSJNrMhK2KBC56YGbIDegMp4B9elMwWsZOlS7aBjuWDNA9KH/gZJJscr+Z3
+	iQj2SYRSZh5S33mexkXCV7JsialQR1S5wevNH9mOYA33sIDgO7E9g8yQJSSFZ2bXP6jXWsyef1s
+	D9fnlzS4k41BJGKGsXRouU09Frcdhv49/yd2aqCZCe41Q/xxfMA+p26UQ6PSewbKK18i94IMWAx
+	vRr1vnhunYwvBbEpOMkRyYvwYeOrt
+X-Google-Smtp-Source: AGHT+IH7i3rHW/35HWjyAxYyVURJ3m0CgZHufcD5q/iHAAUpeyd5wMB/QGMt1OJxzAeiwSZeKg77ZQ==
+X-Received: by 2002:a17:90b:5105:b0:32b:958a:51da with SMTP id 98e67ed59e1d1-32d43f13e9amr20895830a91.16.1757513230665;
+        Wed, 10 Sep 2025 07:07:10 -0700 (PDT)
+Received: from [127.0.1.1] ([2401:4900:1c7e:73ce:c1b3:ae9:98ce:970])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32dbb2f54acsm2760204a91.2.2025.09.10.07.07.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 07:07:10 -0700 (PDT)
+From: Dixit Parmar <dixitparmar19@gmail.com>
+Subject: [PATCH 0/2] iio: magnetometer: cleanup unused
+ IIO_CHAN_INFO_PROCESSED handling
+Date: Wed, 10 Sep 2025 19:36:48 +0530
+Message-Id: <20250910-iio_chan_617_rc5-v1-0-924091d374be@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250909194649.10512-1-akshayaj.lkd@gmail.com> <CAHp75VfpQ9c4cptnNGzFYakQxY7JjtUEMDsysS9KJ60xrzaE4g@mail.gmail.com>
-In-Reply-To: <CAHp75VfpQ9c4cptnNGzFYakQxY7JjtUEMDsysS9KJ60xrzaE4g@mail.gmail.com>
-From: Akshay Jindal <akshayaj.lkd@gmail.com>
-Date: Wed, 10 Sep 2025 18:06:32 +0530
-X-Gm-Features: Ac12FXwXn5dB9t5PJUHjD_S8k40gZTee9Apcl5X8ZWLU-V1zcWEwbYadNIjLB8Y
-Message-ID: <CAE3SzaTZ8PXM_B8FBetOTSfz2myGZ=WzPp8h2d79Q95zKLq5hw@mail.gmail.com>
-Subject: Re: [PATCH v7] iio: light: ltr390: Implement runtime PM support
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: anshulusr@gmail.com, jic23@kernel.org, dlechner@baylibre.com, 
-	nuno.sa@analog.com, andy@kernel.org, shuah@kernel.org, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPiFwWgC/x2MWwqAIBAArxL7neCGD+wqEVK21f5YKEQg3T3rc
+ xhmCmRKTBn6pkCiizMfsQK2DYR9ihsJXipDJzstHUrBfPjPeIPWp6CFdjM5oxarNELNzkQr3/9
+ yGJ/nBZV5WoBiAAAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, 
+ Gerald Loacker <gerald.loacker@wolfvision.net>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dixit Parmar <dixitparmar19@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757513226; l=899;
+ i=dixitparmar19@gmail.com; s=20250726; h=from:subject:message-id;
+ bh=e1ghvNIVEDhDOpiSBJL+3J1+vjBTLBp51nImUjAA7s8=;
+ b=YaTJg3d8TH8gupDDSqrSAQrYBwIag8ZbvYuVuiRIQ0wGeDphem0+cnAaPnbvWl7XLc9p4u2xr
+ C1D+M4UoRWRCQJlbs9C8ltVOQOr4ezx9GPRJh/29AcEkW6B2BAWoTB2
+X-Developer-Key: i=dixitparmar19@gmail.com; a=ed25519;
+ pk=TI6k8pjTuLFcYiHazsate3W8rZGU2lbOrSJ4IWNoQhI=
 
-Hi Andy,
-Thank you very much for your valuable feedback.
-I do have a small request regarding the review process. Over the past 3=E2=
-=80=934
-versions,most of the comments have been about fixing indentations and
-improving code readability. I would kindly request if it would be possible
-to consolidate such cosmetic comments into a single review round.
+This series cleans up dead code in the magnetometer drivers by
+removing unused handling for IIO_CHAN_INFO_PROCESSED. None of these
+drivers set this bit in info_mask_* fields, so the cases are never
+reached.
+These changes reduce code paths, improve readability, and make the
+switch statements easier to maintain. No functional changes are
+intended.
 
-I completely understand that incremental feedback makes sense when the code
-is actively changing, but if the changes are minimal, spreading out minor
-suggestions over multiple review cycles tends to unnecessarily increase the
-turnaround time.
+Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+---
+Dixit Parmar (2):
+      iio: magnetometer: als31300: remove unused IIO_CHAN_INFO_PROCESSED handling
+      iio: magnetometer: tmag5273: remove unused IIO_CHAN_INFO_PROCESSED handling
 
-Your support in this would help me address the comments more efficiently.
+ drivers/iio/magnetometer/als31300.c | 1 -
+ drivers/iio/magnetometer/tmag5273.c | 1 -
+ 2 files changed, 2 deletions(-)
+---
+base-commit: 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c
+change-id: 20250910-iio_chan_617_rc5-59be964d7451
 
-On Wed, Sep 10, 2025 at 12:47=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Tue, Sep 9, 2025 at 10:47=E2=80=AFPM Akshay Jindal <akshayaj.lkd@gmail=
-.com> wrote:
-> > +static int ltr390_read_raw(struct iio_dev *iio_device,
-> > +                          struct iio_chan_spec const *chan, int *val,
-> > +                          int *val2, long mask)
->
->
-> Also logical split might be better, i.e. putting val and val2 on the
-> same line. Then mask will be on the next one
-Ok, will fix.
+Best regards,
+-- 
+Dixit Parmar <dixitparmar19@gmail.com>
 
-> >  static void ltr390_powerdown(void *priv)
-> >  {
-> >         struct ltr390_data *data =3D priv;
-> > +       struct device *dev =3D &data->client->dev;
-> > +       int ret;
-> >
-> >         guard(mutex)(&data->lock);
-> >
-> >         /* Ensure that power off and interrupts are disabled */
-> > -       if (regmap_clear_bits(data->regmap, LTR390_INT_CFG,
-> > -                               LTR390_LS_INT_EN) < 0)
-> > -               dev_err(&data->client->dev, "failed to disable interrup=
-ts\n");
-> > +       if (data->irq_enabled) {
-> > +               ret =3D regmap_clear_bits(data->regmap, LTR390_INT_CFG,=
- LTR390_LS_INT_EN);
-> > +               if (ret < 0)
-> > +                       dev_err(dev, "failed to disable interrupts\n");
->
-> In event_config we assure that IRQ is enabled.
-What do you mean here?
->
-> > +               data->irq_enabled =3D false;
->
-> Here we may lie about the facts. What will the driver do, if the IRQ
-> is triggered just before this line?
-I don't see why the device will trigger an IRQ, when we are disabling
-the INT via
-regmap_clear_bits before this.
-
->
-> > +               pm_runtime_put_autosuspend(&data->client->dev);
->
-> You have dev, use it.
-Ok, will fix.
-
->
-> But where is the symmetrical pm_runtime_get*()?
-
-This is the fundamental approach of managing IRQ handling + runtime PM.
-suggested by Jonathan in preliminary rounds and employed by many drivers.
-"When enabling IRQ, increase the refcount, and decrease when disabling"
-This is done because ltr390 does not have a wakeup functionality.
-
-put_autosuspend is tied to disable which can happen in 2 places:
-1. event_config.
-2. powerdown (if irq enabled).
-
-pm_runtime_get* is tied to enable which can happen only at 1 place:
-1. event_config.
-
-If IRQ was enabled before power down, that means in event_config
-we had already called pm_runtime_get* and increased the refcount to 1.
-This will come down to 0 as a result of either of disabling event_config
-or powerdown.
-
-Thanks,
-Akshay.
 

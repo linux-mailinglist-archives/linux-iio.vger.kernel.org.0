@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-23959-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23960-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1984DB5201B
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 20:15:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C60B52024
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 20:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3E985444E9
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 18:15:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DBA4467F89
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 18:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5ED23D7E6;
-	Wed, 10 Sep 2025 18:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748EC25A63D;
+	Wed, 10 Sep 2025 18:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMSZDK4Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cECr3I+s"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FCB3C17;
-	Wed, 10 Sep 2025 18:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A2821254A;
+	Wed, 10 Sep 2025 18:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757528131; cv=none; b=WOkbY2XplGSIHu2/vKBP/28nT+Drr4iUrv0E3ox4oatdhJsKy8cT5PAsqYKb3Ji89OINCsmJ8jVTV7tulumH0urvjFBWGa2yZ66PWictmfm+JyogvJ9vp/rvSeSGb7hUKVZQ0gJZprj/ZbsEvU3JuT9h931YNuOm/J00tjx3Yf0=
+	t=1757528216; cv=none; b=dV9RwBkfLSK3RVbLAd19wUcCUy/ajiZmAQerFk2WZsPCGwF1GtdcmrsXSjmSfDO4ngBE+emYqSzIM1c2GuX0vMGXmPCgTBQL3zdaxJnOWc0AaImehiZiqrsyjKFCFS66qHW7s9yfDm2prVTT6IGa5i/cwbMXApqm23Y+QnvKU74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757528131; c=relaxed/simple;
-	bh=RaWXN2G0EWbsO+tbl19p9lPiGcIAv2XyHKhKHF1ECSM=;
+	s=arc-20240116; t=1757528216; c=relaxed/simple;
+	bh=VSANkXBvBsja1CxVgGJ2SrU3/V9mFAfauT3SVfIvl94=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NXWj1W9GIVGrupnmW5c3tGbW9DtP9Oxvgw5co7VqXj/vfcwKWCJaF+44ydZ/L+dV6ta8BHUB92PpG14uXlMqhQU7s94BVSW8nnOuMpGuS8ZBGT915Hwf5sfrVmkt9MWVDFmd2XucW7z0OorSQKl5yNgppa18uELemVAikTqkjkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMSZDK4Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E72C4CEFA;
-	Wed, 10 Sep 2025 18:15:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ORChIqmyP+moH4jfImJNjqSJaMnPT34uMEaokmoYT/C/+Qr5KdQKGhi3CqdkYZRkMCQjbiAmTJNDaJYRcgN45Mm+3t8HIn+zFXE1Tcrk2f02yqH7MrHhj2Gbu6lLZOFIzOGQz05vQei/Ei7Zh7rPizglle7BZVDMZQMtbE34tKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cECr3I+s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470B2C4CEEB;
+	Wed, 10 Sep 2025 18:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757528130;
-	bh=RaWXN2G0EWbsO+tbl19p9lPiGcIAv2XyHKhKHF1ECSM=;
+	s=k20201202; t=1757528214;
+	bh=VSANkXBvBsja1CxVgGJ2SrU3/V9mFAfauT3SVfIvl94=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EMSZDK4Y7MdCD/nxkqNbzZiTYFk64l4o2rGcVkUTyXExUvn5FvzmIy6J48B5N2NVD
-	 53g1XXbkgy+gBVTehdNb02bLByU93VSZjDsFA/d2feP8d6c4PvBkKOFZE8rcsW/okG
-	 xy5foDXoqOsXkZVdzK8EndlGKvMzu0MJ1/fZ+s/B3RBA7UlH0HQ98S8lgNenVBubqd
-	 mH8mBNSDWLLLNibLvhePuMpu6beOh8dAObJ64e6RlX6/bOlWsePsVO7sP7Ai6FzkGe
-	 xFwr0loUO8lnJxy6go3NWRCpGkYR/Hkp1MShqo12MvaQ7i8ZxrZ9qFBR6av6ulEESM
-	 Dl4iIowVjLWRg==
-Date: Wed, 10 Sep 2025 19:15:20 +0100
+	b=cECr3I+saLHEALRreECE8VuHKHWmje6SlAFNJJW6nik+7d0Cic66vxwL2IjVjO7NK
+	 Clj5vBH3QPdPG/fEfDY+lGBvDcubvw2ZkaQJauNV5EwiwYAY+RF409SFgQe1eMc5aP
+	 +9fww6Yqu+ZJcgTIfuO/GRJtdIl0Ydu/HYwFSoPMT96XVHQwl+ey7r+ro3MfswPpeA
+	 Ho6WqoElGcLuhhK9yJ8dfx7bYDpIAOoHdrh2huJY9u/IgEwi+KmKAfI6cBgIb02Rgq
+	 /3+Qlk9kCSNE7jyWmlKUiYavNojXfXOS0tOZjfgkGBCO87uy17TbvMyw13LFuGn2Rh
+	 1fmyUWLm/1xoA==
+Date: Wed, 10 Sep 2025 19:16:44 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Petre Rodan <petre.rodan@subdimension.ro>
 Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
@@ -50,11 +50,12 @@ Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
  <conor+dt@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 11/14] iio: accel: bma220: add interrupt trigger
-Message-ID: <20250910191520.69d2427e@jic23-huawei>
-In-Reply-To: <20250910-bma220_improvements-v2-11-e23f4f2b9745@subdimension.ro>
+Subject: Re: [PATCH v2 12/14] iio: accel: bma220: add LPF cut-off frequency
+ mapping
+Message-ID: <20250910191644.3327042c@jic23-huawei>
+In-Reply-To: <20250910-bma220_improvements-v2-12-e23f4f2b9745@subdimension.ro>
 References: <20250910-bma220_improvements-v2-0-e23f4f2b9745@subdimension.ro>
-	<20250910-bma220_improvements-v2-11-e23f4f2b9745@subdimension.ro>
+	<20250910-bma220_improvements-v2-12-e23f4f2b9745@subdimension.ro>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,51 +66,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 10 Sep 2025 10:57:16 +0300
+On Wed, 10 Sep 2025 10:57:17 +0300
 Petre Rodan <petre.rodan@subdimension.ro> wrote:
 
-> Add interrupt trigger.
+> Add mapping for the low pass filter cut-off frequency.
+> Make valid values visible for both the cut-off frequency and the scale.
 > 
 > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-
-One small thing inline,
-
-Thanks,
-
-Jonathan
-
-
->  static irqreturn_t bma220_trigger_handler(int irq, void *p)
->  {
->  	int ret;
-> @@ -418,6 +437,25 @@ static void bma220_deinit(void *data_ptr)
->  			 ERR_PTR(ret));
->  }
+> ---
+8 @@ static const struct iio_chan_spec bma220_channels[] = {
+>  	IIO_CHAN_SOFT_TIMESTAMP(3),
+>  };
 >  
-> +static irqreturn_t bma220_irq_handler(int irq, void *private)
-> +{
-> +	struct iio_dev *indio_dev = private;
-> +	struct bma220_data *data = iio_priv(indio_dev);
-> +	int rv;
-> +	u8 bma220_reg_if[2];
-> +
-> +	guard(mutex)(&data->lock);
-> +	rv = regmap_bulk_read(data->regmap, BMA220_REG_IF0, bma220_reg_if,
-> +			      sizeof(bma220_reg_if));
+> +/*
+> + * Available cut-off frequencies of the low pass filter in Hz.
+> + */
 
-Given SPI needs DMA safe buffers and theory at least regmap could
-have optimizations that don't bounce data in bulk accesses, please
-use a DMA safe buffer here.  Put one at the end of iio_priv().
-Can share a cacheline with the scan.
+Completely trivial, but stick to single line comments when it fits under 80 chars.
 
-> +	if (rv)
-> +		return IRQ_NONE;
-> +
-> +	if (FIELD_GET(BMA220_IF_DRDY, bma220_reg_if[1]))
-> +		iio_trigger_poll_nested(data->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
-
-
+> +static const int bma220_lpf_3dB_freq_Hz_table[] = {
+> +	[BMA220_COF_1000Hz] = 1000,
+> +	[BMA220_COF_500Hz] = 500,
+> +	[BMA220_COF_250Hz] = 250,
+> +	[BMA220_COF_125Hz] = 125,
+> +	[BMA220_COF_64Hz] = 64,
+> +	[BMA220_COF_32Hz] = 32,
+> +};
 

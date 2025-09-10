@@ -1,151 +1,214 @@
-Return-Path: <linux-iio+bounces-23928-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23929-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171B9B514B6
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 13:03:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917F3B51565
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 13:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3468A7A6641
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 11:01:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37F19563876
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 11:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F96270568;
-	Wed, 10 Sep 2025 11:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1545327E7EB;
+	Wed, 10 Sep 2025 11:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f9MshjF9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D2A18FC97;
-	Wed, 10 Sep 2025 11:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39AF274B23;
+	Wed, 10 Sep 2025 11:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757502172; cv=none; b=qRqOc+0uFdB1VfhOVov8ykvrMEMc1sb/FzgM2Nj9DyGVIxcFOUNo/CItLBcb4sanW/RozoZbhh1UnaJP9nnnbAxKnAUYVpL/piACmnGMuoXz4I5Vji7tsGjDThbXrb9ZjaTulKQ3iHust3WLeVZoyibgJwi1cOqdgFtGfWYBgR8=
+	t=1757503434; cv=none; b=PV1d3IwX1ewHn1jogVxlRE88IH/zGH760SdyXR3BsqyuH7UBPsMzDYEiWSZ6NO2JHp94NQEDDMGjpf3TNmsn+eXbXX1NO01fr4fTp5o+/m6NEfRLjdhO8Odziusgj+tDvbkUz9xcbo7msKT/cGC6rF1TNQZxxPd6UaCrKaMsgQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757502172; c=relaxed/simple;
-	bh=c7k/zFpzngO3aqcF545jov8y2kcnfuYLbJz9COdjuwk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dSyldC/UExIbcgn3iuHdJybKUenlzeywdGh5WnwcV7BcEW0FPplUSf7Th7K93LLHaqGXZiiH1vWiODuWs++GzImeQvH45QskOamdh6FAkGglJQcHpyinPTGOcdxHkljM0mEi4lnXSyuLoD6TQtg33GS5yYkpfIyGlzoFt3Nsg+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cMHnC3kDRz6L5V1;
-	Wed, 10 Sep 2025 19:01:35 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id C1C4F1400C8;
-	Wed, 10 Sep 2025 19:02:47 +0800 (CST)
-Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 10 Sep
- 2025 13:02:47 +0200
-Date: Wed, 10 Sep 2025 12:02:45 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-CC: Akshay Jindal <akshayaj.lkd@gmail.com>, <anshulusr@gmail.com>,
-	<jic23@kernel.org>, <dlechner@baylibre.com>, <nuno.sa@analog.com>,
-	<andy@kernel.org>, <shuah@kernel.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v7] iio: light: ltr390: Implement runtime PM support
-Message-ID: <20250910120245.000033e8@huawei.com>
-In-Reply-To: <CAHp75VfpQ9c4cptnNGzFYakQxY7JjtUEMDsysS9KJ60xrzaE4g@mail.gmail.com>
-References: <20250909194649.10512-1-akshayaj.lkd@gmail.com>
-	<CAHp75VfpQ9c4cptnNGzFYakQxY7JjtUEMDsysS9KJ60xrzaE4g@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1757503434; c=relaxed/simple;
+	bh=WdQaWEEj6zFIxUqvPggI0fiQew7wLJcex4Pwhghs7bA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=HBhzHcekxF3+T6aogVlbUQz7DGRUgfv3KN/QGKkz1d5cKU9N9ehghcaUz7/nPQV4ZI35u0ya/IWu46PLM+Zq03acrzaGFcTQTmDboqRv2v+Bl2QGgObwHwSLX+4syRmkMURnqKvuGK271ilWSNrFM0U9HpAZso9eF5BRkSvp0GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f9MshjF9; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55f6b0049fbso7514136e87.0;
+        Wed, 10 Sep 2025 04:23:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757503430; x=1758108230; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TCWlIKsn6VpyPvju2k855dDUq8CJXY07guBoClsf4qc=;
+        b=f9MshjF9WPVV4I+z8TY3+jVmtTko0xurbf5mrv4hxfzaOrVPHuaSqofwRjwfe7Grgo
+         h/7qQYf2ZDSjyiHcUw9o+a30UWLATOH26dn5Gt/OEqWFsUbEngWE3up7NG+PmXP1xdAK
+         Rli/kQcaFO5hxrJnd/EvpO8y18O8s3Oq7O58EHb7lcipxqcv7qIgGoJp2609ZvY4F9ZZ
+         r0wx8eN9RkNGuL2YnXxucEqZSqrU/Vkk9hdE3svM6pvcoe3BI6mNibri5OFQ+h/uUTgQ
+         igTB9Q0iAyp7vnh5m0Y9QAofzODXFbZp+amA39DsDieRNSgX2YxgxkLtqVwhUoTfp2Qa
+         ZbIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757503430; x=1758108230;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TCWlIKsn6VpyPvju2k855dDUq8CJXY07guBoClsf4qc=;
+        b=WX1wJPWW81g23/rKG3WGXvZs6AnYP/d7eJX6gleECZPVLuPYdRTb1URzErWafdCNGE
+         rhkJxmTB3w8fjPHFIgX6g66dm7XsNancrDmQ2Eil38pu2GXWxKOpnF8Tmd7gM5ZKf9XW
+         MTu4lan2brTd67f0Oe8C/1DBA+WDWPEBoMglq3HAxrLH9S0rXKqic1Fr0HEhQq90V20C
+         vm8GvQjw6oqoyq8z1IKPaUi3h2luWymJF4y3BhDyBJHoHlgS9m/KcGf3HqGmwSWfJHKm
+         7vDAX5QJwQe1Rh/uwpdJhfvBtznF84zT4pfNCX3p7AQ75uYoLcmEx/OCPZ/Q82PN/IFE
+         HdDw==
+X-Forwarded-Encrypted: i=1; AJvYcCV8YibiyvnZQVmSZUnyx0pMKr+4W7FSki70TUdTEnTfu2VQ8xy1PkIYZzclbznljarKs5AyxuyG9G9AgS5V@vger.kernel.org, AJvYcCVR9NQwFPWi5/SDiC1DxyaFu2reA17ZuOsg6e31Z2NinKpsB3aO7skwd1fM1sTcBQ4Jqkl+2/6Lg3o5@vger.kernel.org, AJvYcCX8S8A3WPrI+zN0Mcrrmbopp6p3xXmjgHwDr2gyylLQwkXI0ydD2mAzeDP03hheLyTlOV7W6i27xPLv7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YznGMjo7vgoYCc3YSAxm3CtZ4cZNKw7cDFkqECvhswxi1cGqKf7
+	oWsJCHv6l/7X842tBykuyab3eU1y+xuB83RtxNt7Weqp86ODdpM+Q43T
+X-Gm-Gg: ASbGnctiCHjjxCFjKo7coaIl/ftfTgkTmadk0yINNMLAzuXIWKsFwpAqbKA48iBuTaW
+	4r15z0uR/2TrmS/Gwh+zWZatBopHYT0iZ6l1JC+l3iUjf0fTgkw/bq0yNtbfOlalAcJf1uNw6dU
+	ezrq48p7O49Cog8pHu9CUYQFjCGBVZrhMCMirZtfN4b/kxvJCNVGCWKJRAyGPWV/oc9gZxuluT5
+	220RsJnod391jz3Yw275B7WWLKy94SSP8c8FKD0mt3b+irf8ZSdKfLb7E51XMMGzlSt93L4Yamc
+	QHT6HPjEWsIVRKqR/Fvm4GRSPj8ipiPRkNtPy9gcUXXWYlYYmaaSpunFyQJVsSQKsbRiOHKOCHO
+	khzOTSD+Qt0svcyLvKl/hVDaCYzJ/MQ==
+X-Google-Smtp-Source: AGHT+IGsXDCG4ZjN7pLx7lx8UFP/pMnqrU6SGROqMgXZekNuMXpdZ2YyX9RsZUMPTG7fRqTAPyeU/g==
+X-Received: by 2002:a05:6512:308b:b0:55f:43ba:93f2 with SMTP id 2adb3069b0e04-56260e41eb7mr5840133e87.18.1757503429842;
+        Wed, 10 Sep 2025 04:23:49 -0700 (PDT)
+Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5681795d5f9sm1164484e87.78.2025.09.10.04.23.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 04:23:48 -0700 (PDT)
+Date: Wed, 10 Sep 2025 14:23:34 +0300
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v4 0/3] Support ROHM BD79112 ADC
+Message-ID: <20250910-bd79112-v4-0-f82f43746a8c@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="naZTmkm+dDrSdzud"
+Content-Disposition: inline
+X-B4-Tracking: v=1; b=H4sIAAlfwWgC/x3NSw6DIBAG4KuYWRcCClK76j2aLqY46iRFGqSm0
+ Xj3Epdf8j92WCgxLXCrdki08sJxLjCXCvyE80iC+2KoVW1Vp5V49a7TuhamaVFdHVqlGyjpT6K
+ Bf+fS41k8pBhEnhLh2fdxpSS1s07ZxthWjpxlwG0r5+h9/M75Pgbkt/QxwHH8AcaTwKWZAAAA
+X-Change-ID: 20250910-bd79112-436a087a5013
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2933;
+ i=mazziesaccount@gmail.com; h=from:subject:message-id;
+ bh=K5kBEYwPCiL2VCpMX2TvfCPMM5mtV90zLtesxp2x3/o=;
+ b=owEBbQGS/pANAwAKAXhQN/9N2qHFAcsmYgBowV8JjLO9BCWd8Do9M/zrFw0sOa6CLWJH/rWgb
+ KZYwulDGs6JATMEAAEKAB0WIQQjH5/zBlvbx8soSFN4UDf/TdqhxQUCaMFfCQAKCRB4UDf/Tdqh
+ xXo7CAC2C6bXMFGxNrmg5LvbkrcbingPjFb06o19+x5YfDo95SZxSENGga2tCsN0EKYkrvP+XCa
+ AqPd3puFg7lNdxlPjTtvLU42VyTaMMDW7BkP5kH9NtTQD97YYxhZMIK+AwX7fQZDfv576GI3YNW
+ +/2R17jyJZqzWdRN32WTLAUL1EYQ6BevK9M6m42wFH8ahUBeBNNCnDExHk6rysLi8uB63UOCQLE
+ 1qzFAFJYWZPKMq5a1Xn3VxWGLlU9TqKk6JxbamJ1mIWMAj8zOhvbr3QBslQ+ZEOJ2hLlqxjyoZG
+ Bsrey/u+kVKTbk64pmgH+MJQUfrc/RIQh2B5+842qDIQRDW+
+X-Developer-Key: i=mazziesaccount@gmail.com; a=openpgp;
+ fpr=83351EE69759B11AF0A3107B40497F0C4693EF47
+
+
+--naZTmkm+dDrSdzud
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- frapeml500008.china.huawei.com (7.182.85.71)
 
-On Wed, 10 Sep 2025 10:17:00 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+Support ROHM BD79112 ADC/GPIO
 
-> On Tue, Sep 9, 2025 at 10:47=E2=80=AFPM Akshay Jindal <akshayaj.lkd@gmail=
-.com> wrote:
-> >
-> > Implement runtime power management for the LTR390 sensor. The device
-> > autosuspends after 1s of idle time, reducing current consumption from
-> > 100 =C2=B5A in active mode to 1 =C2=B5A in standby mode as per the data=
-sheet.
-> >
-> > Ensure that interrupts continue to be delivered with runtime PM.
-> > Since the LTR390 cannot be used as a wakeup source during runtime
-> > suspend, therefore increment the runtime PM refcount when enabling
-> > events and decrement it when disabling events or powering down.
-> > This prevents event loss while still allowing power savings when IRQs
-> > are unused. =20
->=20
-> ...
->=20
-> > +static int ltr390_read_raw(struct iio_dev *iio_device,
-> > +                          struct iio_chan_spec const *chan, int *val,
-> > +                          int *val2, long mask) =20
->=20
-> Isn't the mask unsigned long? Jonathan, do we get this fixed already?
+The ROHM BD79112 is a 12-bit, 32 channel SAR ADC / GPIO IC. Or, a "Signal
+Monitor Hub IC" as data-sheet describes it.
 
-Whilst it could (and probably should) be unsigned, it's not actually a mask.
-That naming is a historical mess up / evolution thing - long ago it was a b=
-itmap.
-It is now the index of a bit in the mask.  So this is unrelated(ish) to the
-recent fixes around the actual bitmaps/bitmasks.
+Data sheet states the maximum sampling rate to be 1 MSPS, but achieving
+this would probably require the SPI and samples to be processed by
+something else but the CPU running Linux. This could work with the "SPI
+offloading" which has recently landed upstream - but I have no HW to test
+this so nothing fancy is implemented here. It's still worth mentioning
+if someone needs the speed and wants to try implementing it :)
 
-Changing this one is a lot more painful than the recent fix to the infomask
-as it means changing the signature in every driver.
-I'm doubtful on whether this one is worth the churn.
+The SPI protocol is slightly peculiar. Accesses are done in 16-bit
+sequences, separated by releasing and re-aquiring the chip-select.
 
->=20
-> Also logical split might be better, i.e. putting val and val2 on the
-> same line. Then mask will be on the next one
->=20
-> ...
->=20
-> >  static void ltr390_powerdown(void *priv)
-> >  {
-> >         struct ltr390_data *data =3D priv;
-> > +       struct device *dev =3D &data->client->dev;
-> > +       int ret;
-> >
-> >         guard(mutex)(&data->lock);
-> >
-> >         /* Ensure that power off and interrupts are disabled */
-> > -       if (regmap_clear_bits(data->regmap, LTR390_INT_CFG,
-> > -                               LTR390_LS_INT_EN) < 0)
-> > -               dev_err(&data->client->dev, "failed to disable interrup=
-ts\n");
-> > +       if (data->irq_enabled) {
-> > +               ret =3D regmap_clear_bits(data->regmap, LTR390_INT_CFG,=
- LTR390_LS_INT_EN);
-> > +               if (ret < 0)
-> > +                       dev_err(dev, "failed to disable interrupts\n");=
- =20
->=20
-> In event_config we assure that IRQ is enabled.
->=20
-> > +               data->irq_enabled =3D false; =20
->=20
-> Here we may lie about the facts. What will the driver do, if the IRQ
-> is triggered just before this line?
->=20
-> > +               pm_runtime_put_autosuspend(&data->client->dev); =20
->=20
-> You have dev, use it.
->=20
-> But where is the symmetrical pm_runtime_get*()?
->=20
-> > +       }
-> > +
-> > +       ret =3D regmap_clear_bits(data->regmap, LTR390_MAIN_CTRL, LTR39=
-0_SENSOR_ENABLE);
-> > +       if (ret < 0)
-> > +               dev_err(dev, "failed to disable sensor\n");
-> > +} =20
->=20
->=20
+Register write takes 1 such sequence. The 8-bit register data to write,
+is stored in the last 8 bits. The high 8 bits contain register address
+and an I/O-bit which needs to be set for register accesses.
 
+Register read consists of two 16-bit sequences (separated by
+chip-select). First sequence has again the register address and an IO
+bit in the high byte. Additionally, reads must have a 'read bit' set.
+The last 8 bits must be zero. The register data will be carried in the
+last 8 bits of the next 16-bit sequence while high bits in reply are zero.
+
+ADC data reading is similar to register reading except:
+ - No R/W bit or I/O bit should be set.
+ - Register address is replaced by channel number (0 - 31).
+ - Reply data is carried in the 12 low bits (instead of 8 bits) of the
+   reply sequence.
+
+The protocol is implemented using custom regmap read() and write()
+operations.
+
+Other than that, pretty standard device and driver.
+
+Revision history:
+ v3 =3D> v4:
+ - Fix Kconfig dependency (I2C =3D> SPI)
+ - Styling as suggested by Andy and Jonathan
+ - Moved I/O documentation comment and read/write functions next to each
+   other and tried clarifying the comment
+
+ v2 =3D> v3:
+ - Mostly cosmetic changes to the driver
+ - dt-bindings and MAINTAINERS unchanged
+
+ v1 =3D> v2:
+ - Plenty of fixes to the driver (thanks to reviewers, Andy and David)
+ - Add gpio-controller information to the device-tree bindings
+
+See individual patches for more accurate changelog
+
+---
+Matti Vaittinen (3):
+      dt-bindings: iio: adc: ROHM BD79112 ADC/GPIO
+      iio: adc: Support ROHM BD79112 ADC/GPIO
+      MAINTAINERS: Support ROHM BD79112 ADC
+
+ .../devicetree/bindings/iio/adc/rohm,bd79112.yaml  | 104 ++++
+ MAINTAINERS                                        |   3 +-
+ drivers/iio/adc/Kconfig                            |  10 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/iio/adc/rohm-bd79112.c                     | 553 +++++++++++++++++=
+++++
+ 5 files changed, 670 insertions(+), 1 deletion(-)
+---
+base-commit: d1487b0b78720b86ec2a2ac7acc683ec90627e5b
+change-id: 20250910-bd79112-436a087a5013
+
+Best regards,
+--=20
+Matti Vaittinen <mazziesaccount@gmail.com>
+
+
+--naZTmkm+dDrSdzud
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmjBX7YACgkQeFA3/03a
+ocWuAQf9HFI2G8kA6QakaO+3gtVqg+TtZKvI8wAz1aozh/phdlDTlWCGK7MEZgaM
+O35uZ0bDW7GPsnX+jLBg//Zi/0YDB1VoR5bE19Cg6Q5QpsYE/wPk31G88cAOtXnz
+i5MBLLwa0IJnmAcceNzzeFZDh0T8FFe07rYpe6lLFU/3mC8AayLdSOdg7Nj0zSnn
+E5s4wEOrJFU+rdNsMD69pIWoS6Dln7aDu2AnjkgESffpulTd+yCmfwMJt8HXV8x/
+1xsOo499BWKsrpflJWvR3TuhBSOUN1WnVCw4jbPqjuheJdAk6Vo5YKyB6Q/dO9GG
+lPZYhJpTs0WuqelPvN30pWkxFsiocA==
+=ZPow
+-----END PGP SIGNATURE-----
+
+--naZTmkm+dDrSdzud--
 

@@ -1,895 +1,271 @@
-Return-Path: <linux-iio+bounces-23950-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23951-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309A5B51F01
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 19:32:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37873B51F07
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 19:34:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0964A00D24
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 17:32:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48C317A84FF
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Sep 2025 17:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533EF327A03;
-	Wed, 10 Sep 2025 17:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F089E31D738;
+	Wed, 10 Sep 2025 17:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONO7d7uE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="O1M5Dfoi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0692F32C8B;
-	Wed, 10 Sep 2025 17:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4429413774D
+	for <linux-iio@vger.kernel.org>; Wed, 10 Sep 2025 17:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757525544; cv=none; b=FAqX5L0aXBOE8sp+rkeoVsKHCWzFv7SqxCh4D5pvMgSIgQhKmjwRkqxgSz2o8ZnHYJA+IzvY5HhDlsJypIEEBHhWee8h/TE0ncK45QxK5Chs3qYrSxoLA15Qn3LJSwt2RXf0QFB+fC7nDPg1HOhOP2HOd8QPfS83D2cyKfhv8XU=
+	t=1757525634; cv=none; b=Rq3EyxE+LIMXMEtLDn9Gno4Pz+eMH9iUSYRj6N19SzAsdmf9XJhlR4/LdNuYHMz0RVruXFpwGrfS5jqMrRjMFYcCabDoY0zV66s5/1BPb4EHH6okrIFolu5H4OtaCo8G+aSpgmKzl1p2J4rklfs1ywehO1RVvP3yGeoVgv/RFwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757525544; c=relaxed/simple;
-	bh=9XkabxRTENCZclA4TOSDenM8JnZkN+VrWPTUmA4Vlp0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mu2IswW+8l6sx9XU1nDtbdGpc8tsbYPHqyqIvfUWrKrGNm4rC+6iRKf9josjd1Q/u5m1pwj8TfyUtV7E+gPLy+6QzGbhc4Gl2qGVrszfjaq0w0dUmfgRwUGEuK6yZb4D/PRG0Da5hGYIiAk2OpGWquuFRF/bZnhC6sKYq4NQYV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONO7d7uE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E379C4CEEB;
-	Wed, 10 Sep 2025 17:32:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757525542;
-	bh=9XkabxRTENCZclA4TOSDenM8JnZkN+VrWPTUmA4Vlp0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ONO7d7uEG03HpDLJ1lGUMGp+orrrL8g5XTSvu7j+SjrVZN3FKclDquFBeR7y1LXpa
-	 jDHBBLupglR+D4Tcw7lLInKTUfiRv8IUsJWnCkFbllG+L5FhdATzki/FK+f4OKJI7r
-	 6idy8fppb6xWEhnSTWt1Z5mjP29DKqoiH0HoJJyTVXSI3M3BTX0n8/cxSzjvW0VfMp
-	 GQ6P1dWZ8avD5IzEURWLnTmWxZBTvD1ATD3A7/ySJvo+sZq9nGwqNI0qzb9rrQL86H
-	 IgTphc5eYXGBg4Q5AUcypVwCc/5JnRRvnolr8fIXBw1BIWV/NChFhdf47s8Ba8o4f+
-	 hT5/QISnEl9ZA==
-Date: Wed, 10 Sep 2025 18:32:12 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
- linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
- ghennadi.procopciuc@oss.nxp.com
-Subject: Re: [PATCH v2 2/2] iio: adc: Add the NXP SAR ADC support for the
- s32g2/3 platforms
-Message-ID: <20250910183212.6640e662@jic23-huawei>
-In-Reply-To: <20250910155759.75380-3-daniel.lezcano@linaro.org>
-References: <20250910155759.75380-1-daniel.lezcano@linaro.org>
-	<20250910155759.75380-3-daniel.lezcano@linaro.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1757525634; c=relaxed/simple;
+	bh=J7gB9Z38NODsqaTbWLcs+XK+Ps9YUEGTomCZhU0fQzY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SglJlMHpbMhVwu3xPXCaH8gZD5QYWO3bzKiTps9u5Zq6NRrsgfLvAJdCHMLLG3tOJtvHMipuHgh0O3EvSwbrMfi9zDGlyh9Bhp5VGA1IDnsv1f06scTwXTIJaWfST1sRgAKDujshkyRlCTps9fW+hdFFNqHJubX1L4imONudxZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=O1M5Dfoi; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-74ed00220f6so1341343a34.2
+        for <linux-iio@vger.kernel.org>; Wed, 10 Sep 2025 10:33:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757525630; x=1758130430; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N2Xb0Z0taUQW7f25FPwYUA0qCuGXG5HY2O077HuGpHw=;
+        b=O1M5DfoiH4mWWsM1R7bHUE/6yKrICeoAFNGKikfxhdWD2oE3dR9KIZc+1sL/wibFkw
+         h1DVUOnLpMIKTrUE+EP8kdIdteD2bgC86JVe2mLigfKI5hJecLwg+RpqCjSHJ2nlVeRK
+         oTvAZrnGK4h2AZjpvcJe5lYvusLIyzO2QrBDlbOqud+8SmlVOIjQgOfpYr7MjcOPCpmy
+         cK8taW2EbCnvhgkO+Fph1VQlRE4VKj8MYrjZz3/Cvla9L6flHaxdobwMIbcen+qJg6rC
+         mlV1S8cE2bYD+lDqdo8U71uGw+6XuuVPi+GioUp1N1vSrUf8CcntKH2iOTna4mPzZ9Js
+         Jjhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757525630; x=1758130430;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N2Xb0Z0taUQW7f25FPwYUA0qCuGXG5HY2O077HuGpHw=;
+        b=VpVf0ElXFDyaOUlpbW57VhqB4BFkiMHig0pBukWx/cfnu/mnWeesUV/KaG0oOUpdk4
+         9zwpM4ltn9MvZOAptaC59noDlFjTRtCghiAZjo92yrHftOA6rtyRTRCRbuFA+Wjf1+SU
+         ysVLqgua8mvIu4q0UVy18gfyHniGL0snkD3c8Xa4v/g1gw7WIR8rgwuLFcYohvRBFVO6
+         CvMKWhHwVAH4e3ltzsZ6cnEmEcgP46G0aa263PhxFM8m1NqrEEV4y0kcDe9RKUXlUASj
+         riDyGZgYhsYodbNZQcInhVzKDSjQfW9UYJ5M3501J48jS0wSkzOBXFxm9hykGJ1Jz9p2
+         tLEA==
+X-Gm-Message-State: AOJu0YzXzKlk3OGMGa5Q6kHPTiqNm2PiorxFAlCzg7JWrAsHWA7ZkStu
+	NhzP+tVH53usNtJW4htsXt7SdqSKWUeXxULKOsI6InPnz/klQv/peQ38riAqBkhYMAl8/XhIGEx
+	uk/YW
+X-Gm-Gg: ASbGnctnppr2q8CRGtii8I729+wk2imTnCnYcnV3Jp5X4L533y/6fzK+mU7SGjmQQLx
+	ZbQC/IDFpEDSB+rZj84wvnjDlJX8MUuzPuCQA9jOas1bE3/YUwGYVCNas1pRMx9+VDlSlskZORi
+	GJw+Wgw5rH9MfV9WwktnH4QxDr1yG7NZUsdbXt/BvB8dq1/IhoAjhIx8wLLw0g5JvZK769mL6hs
+	aZfMCKo4L0iJsFgnNiAC2Ge4OU1T/Eg/0gHftugf79fTz2FOpBNWpn/Lra2UWVHtMs2SkWzIVfM
+	0RDx+8JuIOLfl+3f8nNVwdWnMb84U/ES2frl6zMVQmmTcNSdvmwjscKjPF/DeOQDw7Pz3vYA1gz
+	ehqzaQ53XXYbn+y29yfdypYrtXiM=
+X-Google-Smtp-Source: AGHT+IHwxhIvt5PLXpTXwHQhyJxRLqO+skdbWcLPjSCafGejX4kGmiQpDD5IwbTqDvgaXQzUCem4EQ==
+X-Received: by 2002:a05:6830:915:b0:746:d7f2:b735 with SMTP id 46e09a7af769-74c771b8c18mr7855259a34.27.1757525630221;
+        Wed, 10 Sep 2025 10:33:50 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:21f9:be5b:476:1ae3])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-746d6647459sm5540595a34.21.2025.09.10.10.33.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 10:33:48 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Wed, 10 Sep 2025 12:33:29 -0500
+Subject: [PATCH v4] iio: adc: ad7124: fix sample rate for multi-channel use
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-
-On Wed, 10 Sep 2025 17:57:56 +0200
-Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
-
-> From: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
-> 
-> The NXP S32G2 and S32G3 platforms integrate a successive approximation
-> register (SAR) ADC. Two instances are available, each providing 8
-> multiplexed input channels with 12-bit resolution. The conversion rate
-> is up to 1 Msps depending on the configuration and sampling window.
-> 
-> The SAR ADC supports raw, buffer, and trigger modes. It can operate
-> in both single-shot and continuous conversion modes, with optional
-> hardware triggering through the cross-trigger unit (CTU) or external
-> events. An internal prescaler allows adjusting the sampling clock,
-> while per-channel programmable sampling times provide fine-grained
-> trade-offs between accuracy and latency. Automatic calibration is
-> performed at probe time to minimize offset and gain errors.
-> 
-> The driver is derived from the BSP implementation and has been partly
-> rewritten to comply with upstream requirements. For this reason, all
-> contributors are listed as co-developers, while the author refers to
-> the initial BSP driver file creator.
-> 
-> All modes have been validated on the S32G274-RDB2 platform using an
-> externally generated square wave captured by the ADC. Tests covered
-> buffered streaming via IIO, trigger synchronization, and accuracy
-> verification against a precision laboratory signal source.
-> 
-> Co-developed-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
-> Signed-off-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
-> Co-developed-by: Ciprian Costea <ciprianmarian.costea@nxp.com>
-> Signed-off-by: Ciprian Costea <ciprianmarian.costea@nxp.com>
-> Co-developed-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
-> Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
-> Signed-off-by: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
-> Co-developed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-
-Hi Daniel,
-
-Various feedback inline.  I got a bit side tracked in the v1
-timescale by the dma buffer discussion so sorry this is only on v2.
-
-
-Jonathan
-
-> ---
->  drivers/iio/adc/Kconfig       |   13 +
->  drivers/iio/adc/Makefile      |    1 +
->  drivers/iio/adc/nxp-sar-adc.c | 1026 +++++++++++++++++++++++++++++++++
->  3 files changed, 1040 insertions(+)
->  create mode 100644 drivers/iio/adc/nxp-sar-adc.c
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 6de2abad0197..4c2473a1fa20 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -1168,6 +1168,19 @@ config NPCM_ADC
->  	  This driver can also be built as a module. If so, the module
->  	  will be called npcm_adc.
->  
-> +config NXP_SAR_ADC
-> +	tristate "NXP S32G SAR-ADC driver"
-> +	depends on ARCH_S32 || COMPILE_TEST
-> +	select IIO_BUFFER
-> +	select IIO_TRIGGERED_BUFFER
-> +	select IIO_SYSFS_TRIGGER
-
-Why?  Should work fine with the hrtimer trigger if someone preferred that
-or as a client of many device specific triggers.
-
-Shouldn't be any need to select a specific trigger.
-
-> +	help
-> +	  Say yes here to build support for S32G platforms
-> +	  analog-to-digital converter.
-> +
-> +	  This driver can also be built as a module. If so, the module will be
-> +	  called nxp_sar_adc.
-> +
-
-> diff --git a/drivers/iio/adc/nxp-sar-adc.c b/drivers/iio/adc/nxp-sar-adc.c
-> new file mode 100644
-> index 000000000000..421ce42ad9ec
-> --- /dev/null
-> +++ b/drivers/iio/adc/nxp-sar-adc.c
-> @@ -0,0 +1,1026 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * NXP SAR-ADC driver (adapted from Freescale Vybrid vf610 ADC driver
-> + * by Fugang Duan <B38611@freescale.com>)
-> + *
-> + * Copyright 2013 Freescale Semiconductor, Inc.
-> + * Copyright 2017, 2020-2025 NXP
-> + * Copyright 2025, Linaro Ltd
-> + */
-> +#include <linux/bitops.h>
-> +#include <linux/circ_buf.h>
-> +#include <linux/cleanup.h>
-> +#include <linux/clk.h>
-> +#include <linux/completion.h>
-> +#include <linux/delay.h>
-> +#include <linux/dma-mapping.h>
-> +#include <linux/dmaengine.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/math64.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-
-Why of.h?  Probably want mod_devicetable.h instead.
-Most of the time a modern driver shouldn't need to use
-of specific interfaces. Instead use property.h or subsystem
-specific firmware queries.
-
-> +#include <linux/platform_device.h>
-> +#include <linux/slab.h>
-> +#include <linux/spinlock.h>
-> +#include <linux/types.h>
-> +#include <linux/units.h>
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +
-> +/* This will be the driver name the kernel reports */
-> +#define DRIVER_NAME "nxp-sar-adc"
-> +
-> +/* SAR ADC registers */
-> +#define REG_ADC_CDR(__base, __channel)	(((__base) + 0x100) + ((__channel) * 0x4))
-Avoid generic names for defines by prefixing with something appropriate
-eg NXP_SADC_CDR_REG(__channel)
-
-> +
-> +#define REG_ADC_CDR_CDATA_MASK		GENMASK(11, 0)
-> +#define REG_ADC_CDR_VALID		BIT(19)
-> +
-> +/* Main Configuration Register */
-> +#define REG_ADC_MCR(__base)		((__base) + 0x00)
-
-I'm not really convinced these macros help over just having
-readl(info->regs + NXP_SADC_MCR_REG);
-
-
-> +
-> +#define REG_ADC_MCR_PWDN		BIT(0)
-> +#define REG_ADC_MCR_ACKO		BIT(5)
-> +#define REG_ADC_MCR_ADCLKSEL		BIT(8)
-> +#define REG_ADC_MCR_TSAMP_MASK		GENMASK(10, 9)
-> +#define REG_ADC_MCR_NRSMPL_MASK		GENMASK(12, 11)
-> +#define REG_ADC_MCR_AVGEN		BIT(13)
-> +#define REG_ADC_MCR_CALSTART		BIT(14)
-> +#define REG_ADC_MCR_NSTART		BIT(24)
-> +#define REG_ADC_MCR_MODE		BIT(29)
-> +#define REG_ADC_MCR_OWREN		BIT(31)
-> +
-> +/* Main Status Register */
-> +#define REG_ADC_MSR(__base)		((__base) + 0x04)
-> +
-> +#define REG_ADC_MSR_CALBUSY		BIT(29)
-> +#define REG_ADC_MSR_CALFAIL		BIT(30)
-> +
-> +/* Interrupt Status Register */
-> +#define REG_ADC_ISR(__base)		((__base) + 0x10)
-> +
-> +#define REG_ADC_ISR_ECH			BIT(0)
-> +
-> +/*  Channel Pending Register */
-> +#define REG_ADC_CEOCFR0(__base)		((__base) + 0x14)
-> +#define REG_ADC_CEOCFR1(__base)		((__base) + 0x18)
-> +
-> +#define REG_ADC_EOC_CH(c)		BIT((c) % 32)
-> +
-> +/* Interrupt Mask Register */
-> +#define REG_ADC_IMR(__base)		((__base) + 0x20)
-> +
-> +/* Channel Interrupt Mask Register */
-> +#define REG_ADC_CIMR0(__base)		((__base) + 0x24)
-> +#define REG_ADC_CIMR1(__base)		((__base) + 0x28)
-> +
-> +/* DMA Setting Register */
-> +#define REG_ADC_DMAE(__base)		((__base) + 0x40)
-> +
-> +#define REG_ADC_DMAE_DMAEN		BIT(0)
-> +#define REG_ADC_DMAE_DCLR		BIT(1)
-> +
-> +/* DMA Control register */
-> +#define REG_ADC_DMAR0(__base)		((__base) + 0x44)
-> +#define REG_ADC_DMAR1(__base)		((__base) + 0x48)
-> +
-> +/* Conversion Timing Register */
-> +#define REG_ADC_CTR0(__base)		((__base) + 0x94)
-> +#define REG_ADC_CTR1(__base)		((__base) + 0x98)
-> +
-> +#define REG_ADC_CTR_INPSAMP_MIN		8
-> +#define REG_ADC_CTR_INPSAMP_MAX		0xFF
-> +
-> +/* Normal Conversion Mask Register */
-> +#define REG_ADC_NCMR0(__base)		((__base) + 0xa4)
-> +#define REG_ADC_NCMR1(__base)		((__base) + 0xa8)
-> +
-> +/* Normal Conversion Mask Register field define */
-> +#define REG_ADC_CH_MASK			GENMASK(7, 0)
-> +
-> +/* Other field define */
-> +#define NXP_SAR_ADC_CONV_TIMEOUT_MS	100
-> +#define NXP_SAR_ADC_CAL_TIMEOUT_US	(100 * USEC_PER_MSEC)
-> +#define NXP_SAR_ADC_WAIT_US		(2 * USEC_PER_MSEC)
-> +#define NXP_SAR_ADC_RESOLUTION		12
-> +
-> +/* Duration of conversion phases */
-> +#define NXP_SAR_ADC_TPT			2
-> +#define NXP_SAR_ADC_DP			2
-> +#define NXP_SAR_ADC_CT			((NXP_SAR_ADC_RESOLUTION + 2) * 4)
-> +#define NXP_SAR_ADC_CONV_TIME		(NXP_SAR_ADC_TPT + NXP_SAR_ADC_CT + NXP_SAR_ADC_DP)
-> +
-> +#define NXP_SAR_ADC_NR_CHANNELS	8
-> +
-> +#define NXP_SAR_ADC_IIO_BUFF_SZ		(NXP_SAR_ADC_NR_CHANNELS + (sizeof(u64) / sizeof(u16)))
-
-IIO_DECLARE_BUFFER_WITH_TS() should handle this and is less reliant on
-everything being round numbers than this is.
-
-> +
-> +#define NXP_PAGE_SIZE			SZ_4K
-> +#define NXP_SAR_ADC_DMA_SAMPLE_SZ	DMA_SLAVE_BUSWIDTH_4_BYTES
-> +#define NXP_SAR_ADC_DMA_BUFF_SZ		(NXP_PAGE_SIZE * NXP_SAR_ADC_DMA_SAMPLE_SZ)
-> +#define NXP_SAR_ADC_DMA_SAMPLE_CNT	(NXP_SAR_ADC_DMA_BUFF_SZ / NXP_SAR_ADC_DMA_SAMPLE_SZ)
-> +
-> +struct nxp_sar_adc {
-> +	void __iomem *regs;
-> +	phys_addr_t regs_phys;
-> +	struct clk *clk;
-> +
-> +	u16 value;
-> +	u32 vref_mV;
-> +	u8 current_channel;
-> +	u8 channels_used;
-> +
-> +	struct completion completion;
-> +
-> +	u16 buffer[NXP_SAR_ADC_IIO_BUFF_SZ];
-> +	u16 buffered_chan[NXP_SAR_ADC_NR_CHANNELS];
-
-Perhaps documentation for these two as their relationship isn't entirely obvious from
-the names.
-
-> +
-> +	struct circ_buf dma_buf;
-> +	struct dma_chan	*dma_chan;
-> +	struct dma_slave_config dma_config;
-> +	dma_addr_t rx_dma_buf;
-> +	dma_cookie_t cookie;
-> +
-> +	/* Protect circular buffers access. */
-> +	spinlock_t lock;
-> +
-> +	/*
-> +	 * Save and restore context
-Single line comment format preferred.
-> +	 */
-> +	u32 inpsamp;
-> +	u32 pwdn;
-> +};
-
-> +
-> +static const struct iio_chan_spec nxp_sar_adc_iio_channels[] = {
-> +	ADC_CHAN(0, IIO_VOLTAGE),
-> +	ADC_CHAN(1, IIO_VOLTAGE),
-> +	ADC_CHAN(2, IIO_VOLTAGE),
-> +	ADC_CHAN(3, IIO_VOLTAGE),
-> +	ADC_CHAN(4, IIO_VOLTAGE),
-> +	ADC_CHAN(5, IIO_VOLTAGE),
-> +	ADC_CHAN(6, IIO_VOLTAGE),
-> +	ADC_CHAN(7, IIO_VOLTAGE),
-> +	IIO_CHAN_SOFT_TIMESTAMP(32),
-
-Whilst we only insist on monotonic numbering, putting it all the way down
-at 32 seems excessive. Why not 8?  Perhaps a comment if this is to avoid
-moving it for some future feature.
-
-> +};
-> +
-> +static void nxp_sar_adc_irq_cfg(struct nxp_sar_adc *info, bool enable)
-> +{
-> +	if (enable)
-> +		writel(REG_ADC_ISR_ECH, REG_ADC_IMR(info->regs));
-> +	else
-> +		writel(0, REG_ADC_IMR(info->regs));
-> +}
-> +
-> +static bool __nxp_sar_adc_enable(struct nxp_sar_adc *info, bool enable)
-Similar to comments below.  I'd avoid the __ prefix for helper functions.
-Often a bit of adjusting of the name is better.
-nxp_sar_adc_set_enabled() perhaps here?
-
-> +{
-> +	u32 mcr;
-> +	bool pwdn;
-> +
-> +	mcr = readl(REG_ADC_MCR(info->regs));
-> +
-> +	/*
-> +	 * Return the current state
-> +	 */
-> +	pwdn = mcr & REG_ADC_MCR_PWDN;
-> +
-> +	if (enable)
-> +		mcr &= ~REG_ADC_MCR_PWDN;
-> +	else
-> +		mcr |= REG_ADC_MCR_PWDN;
-> +
-> +	writel(mcr, REG_ADC_MCR(info->regs));
-> +
-> +	/*
-> +	 * Ensure there are at least three cycles between the
-> +	 * configuration of NCMR and the setting of NSTART
-> +	 */
-> +	if (enable)
-> +		ndelay(div64_u64(NSEC_PER_SEC, clk_get_rate(info->clk) * 3U));
-> +
-> +	return pwdn;
-> +}
-
-> +
-> +static int nxp_sar_adc_calibration(struct nxp_sar_adc *info)
-> +{
-> +	int ret;
-> +
-> +	/*
-> +	 * Calibration works only if the adc is powered up
-> +	 */
-
-Where they fit under 80 chars, stick to single line comments.
-
-> +	nxp_sar_adc_enable(info);
-> +
-> +	/*
-> +	 * The calibration operation starts
-> +	 */
-> +	nxp_sar_adc_calibration_start(info->regs);
-> +
-> +	ret = nxp_sar_adc_calibration_wait(info->regs);
-> +
-> +	/*
-> +	 * Calibration works only if the adc is powered up. However
-> +	 * the calibration is called from the probe function where the
-> +	 * iio is not enabled, so we disable after the calibration
-> +	 */
-> +	nxp_sar_adc_disable(info);
-> +
-> +	return ret;
-> +}
-
-> +
-> +static int sar_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-> +			int *val, int *val2, long mask)
-> +{
-> +	struct nxp_sar_adc *info = iio_priv(indio_dev);
-> +	u32 inpsamp;
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		if (!iio_device_claim_direct(indio_dev))
-> +			return -EBUSY;
-> +
-> +		info->current_channel = chan->channel;
-> +		nxp_sar_adc_channels_enable(info, BIT(chan->channel));
-> +		nxp_sar_adc_irq_cfg(info, true);
-> +		nxp_sar_adc_enable(info);
-> +
-> +		reinit_completion(&info->completion);
-> +		ret = nxp_sar_adc_start_conversion(info, true);
-> +		if (ret < 0)
-> +			goto out_iio_chan_info_raw;
-> +
-> +		ret = wait_for_completion_interruptible_timeout
-> +			(&info->completion,
-> +			msecs_to_jiffies(NXP_SAR_ADC_CONV_TIMEOUT_MS));
-> +
-> +		nxp_sar_adc_channels_disable(info, BIT(chan->channel));
-> +		nxp_sar_adc_irq_cfg(info, false);
-> +		nxp_sar_adc_stop_conversion(info);
-> +		nxp_sar_adc_disable(info);
-> +
-> +		if (ret == 0) {
-> +			ret = -ETIMEDOUT;
-> +			goto out_iio_chan_info_raw;
-
-I'm not a bit fan of gotos within case statements as I find them hard
-to read.  Please factor out the bit that does the work here so that
-we can do direct returns in a new function and just call
-iio_device_release_direct() before checking that return value.
-
-> +		}
-> +
-> +		if (ret < 0)
-> +			goto out_iio_chan_info_raw;
-> +
-> +		*val = info->value;
-> +		ret = IIO_VAL_INT;
-> +
-> +out_iio_chan_info_raw:
-> +		iio_device_release_direct(indio_dev);
-> +		return ret;
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = info->vref_mV;
-> +		*val2 = NXP_SAR_ADC_RESOLUTION;
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-> +
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		inpsamp = nxp_sar_adc_conversion_timing_get(info);
-> +		*val = clk_get_rate(info->clk) / (inpsamp + NXP_SAR_ADC_CONV_TIME);
-> +		return IIO_VAL_INT;
-> +
-> +	default:
-> +		break;
-
-return -EINVAL here. and avoid breaks.
-
-
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-
-> +static void nxp_sar_adc_dma_cb(void *data)
-> +{
-> +	struct nxp_sar_adc *info = iio_priv((struct iio_dev *)data);
-
-iio_priv(data)
-is fine. void * casts don't need to be explicit (see the C spec for
-more on that).
-
-> +	struct iio_dev *indio_dev = data;
-> +	struct dma_tx_state state;
-> +	struct circ_buf *dma_buf;
-> +	struct device *dev_dma;
-> +	u32 *dma_samples;
-> +	s64 timestamp;
-> +	int idx, ret;
-> +
-> +	guard(spinlock_irqsave)(&info->lock);
-> +
-> +	dma_buf = &info->dma_buf;
-> +	dma_samples = (u32 *)dma_buf->buf;
-> +	dev_dma = info->dma_chan->device->dev;
-> +
-> +	dmaengine_tx_status(info->dma_chan, info->cookie, &state);
-> +
-> +	dma_sync_single_for_cpu(dev_dma, info->rx_dma_buf,
-> +				NXP_SAR_ADC_DMA_BUFF_SZ, DMA_FROM_DEVICE);
-> +	/* Current head position */
-> +	dma_buf->head = (NXP_SAR_ADC_DMA_BUFF_SZ - state.residue) /
-> +			NXP_SAR_ADC_DMA_SAMPLE_SZ;
-> +
-> +	/* If everything transferred, avoid an off by one error. */
-> +	if (!state.residue)
-> +		dma_buf->head--;
-> +
-> +	/* Something went wrong and nothing transferred. */
-> +	if (state.residue == NXP_SAR_ADC_DMA_BUFF_SZ)
-> +		goto out;
-> +
-> +	/* Make sure that head is multiple of info->channels_used */
-> +	dma_buf->head -= dma_buf->head % info->channels_used;
-> +
-> +	/* dma_buf->tail != dma_buf->head condition will become false
-
-	/*
- 	 * dma_buf->tail ...
-
-for consistency with IIO driver comments in general.
-
-
-> +	 * because dma_buf->tail will be incremented with 1.
-> +	 */
-> +	while (dma_buf->tail != dma_buf->head) {
-> +		idx = dma_buf->tail % info->channels_used;
-> +		info->buffer[idx] = dma_samples[dma_buf->tail];
-> +		dma_buf->tail = (dma_buf->tail + 1) % NXP_SAR_ADC_DMA_SAMPLE_CNT;
-> +		if (idx != info->channels_used - 1)
-> +			continue;
-> +
-> +		/* iio_push_to_buffers_with_timestamp should not be called
-
-Same on multiline comment syntax.
-
-> +		 * with dma_samples as parameter. The samples will be smashed
-> +		 * if timestamp is enabled.
-
-So, whilst not entirely there for this reason we do have:
-iio_push_to_buffers_with_ts_unaligned()  which bounces the data on the
-way to the buffer to avoid fiddly issues.  Perhaps doesn't have the most
-helpful of names but the docs do refer to it not needing the extra space.
-
-> +		 */
-> +		timestamp = iio_get_time_ns(indio_dev);
-> +		ret = iio_push_to_buffers_with_timestamp(indio_dev,
-
-If possible use with_ts() variant.  It does some size santity checking.
-
-
-
-> +							 info->buffer,
-> +							 timestamp);
-> +		if (ret < 0 && ret != -EBUSY)
-> +			dev_err_ratelimited(&indio_dev->dev,
-> +					    "failed to push iio buffer: %d",
-> +					    ret);
-> +	}
-> +
-> +	dma_buf->tail = dma_buf->head;
-> +out:
-> +	dma_sync_single_for_device(dev_dma, info->rx_dma_buf,
-> +				   NXP_SAR_ADC_DMA_BUFF_SZ, DMA_FROM_DEVICE);
-> +}
-
->
-> +
-> +static void __nxp_sar_adc_buffer_trigger_predisable(struct iio_dev *indio_dev)
-Not sure the __ makes much sense here. Normally that indicates weird locking
-rules or similar.  Maybe nxp_sar_adc_buffer_trigger_do_predisable() or something like that?
-> +{
-> +	struct nxp_sar_adc *info = iio_priv(indio_dev);
-> +
-> +	nxp_sar_adc_irq_cfg(info, false);
-> +}
-> +
-> +static int __nxp_sar_adc_buffer_trigger_postenable(struct iio_dev *indio_dev)
-> +{
-> +	struct nxp_sar_adc *info = iio_priv(indio_dev);
-> +
-> +	nxp_sar_adc_irq_cfg(info, true);
-> +
-> +	return 0;
-> +}
-> +
-> +static int nxp_sar_adc_buffer_postenable(struct iio_dev *indio_dev)
-> +{
-> +	struct nxp_sar_adc *info = iio_priv(indio_dev);
-> +	int current_mode = iio_device_get_current_mode(indio_dev);
-> +	unsigned long channel;
-> +	int ret;
-> +
-> +	info->channels_used = 0;
-> +
-> +	/*
-> +	 * The SAR-ADC has two groups of channels.
-> +	 *
-> +	 *	- Group #0:
-> +	 *	* bit 0-7  : channel 0 -> channel 7
-> +	 *	* bit 8-31 : reserved
-> +	 *
-> +	 *	- Group #32:
-> +	 *	* bit 0-7  : Internal
-> +	 *	* bit 8-31 : reserved
-> +	 *
-> +	 * The 8 channels from group #0 are used in this driver for
-> +	 * ADC as described when declaring the IIO device and the
-> +	 * mapping is the same. That means the active_scan_mask can be
-> +	 * used directly to write the channel interrupt mask.
-> +	 */
-> +	nxp_sar_adc_channels_enable(info, *indio_dev->active_scan_mask);
-> +
-> +	for_each_set_bit(channel, indio_dev->active_scan_mask, NXP_SAR_ADC_NR_CHANNELS)
-> +		info->buffered_chan[info->channels_used++] = channel;
-> +
-> +	nxp_sar_adc_enable(info);
-> +
-> +	if (current_mode == INDIO_BUFFER_SOFTWARE)
-> +		ret = __nxp_sar_adc_buffer_software_postenable(indio_dev);
-> +	else
-> +		ret = __nxp_sar_adc_buffer_trigger_postenable(indio_dev);
-> +	if (ret)
-> +		goto out_postenable;
-> +
-> +	return 0;
-> +
-> +out_postenable:
-> +	nxp_sar_adc_stop_conversion(info);
-> +	nxp_sar_adc_disable(info);
-> +	nxp_sar_adc_channels_disable(info, *indio_dev->active_scan_mask);
-> +
-> +	return ret;
-> +}
-> +
-> +static int nxp_sar_adc_buffer_predisable(struct iio_dev *indio_dev)
-> +{
-> +	struct nxp_sar_adc *info = iio_priv(indio_dev);
-> +	int currentmode = iio_device_get_current_mode(indio_dev);
-> +
-> +	nxp_sar_adc_stop_conversion(info);
-There is an ordering difference here from what happens in the postenable
-callback.  I'd normally expect to see this as an exact mirror.
-If that is required, then please add some comments on why.  otherwise
-move this stop_conversion after the predisable() calls.
-> +
-> +	if (currentmode == INDIO_BUFFER_SOFTWARE)
-> +		__nxp_sar_adc_buffer_software_predisable(indio_dev);
-> +	else
-> +		__nxp_sar_adc_buffer_trigger_predisable(indio_dev);
-> +
-> +	nxp_sar_adc_channels_disable(info, *indio_dev->active_scan_mask);
-> +	nxp_sar_adc_disable(info);
-> +
-> +	return 0;
-> +}
-> +
-> +static irqreturn_t nxp_sar_adc_trigger_handler(int irq, void *p)
-> +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct nxp_sar_adc *info = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = nxp_sar_adc_start_conversion(info, true);
-> +	if (ret < 0)
-> +		return IRQ_NONE;
-
-Hmm. Fun corner.  If this hardware fails to respond to a trigger
-interrupt (which may be a software faked thing anyway) that doesn't
-mean there was no interrupt.  So I'd print a debug message and return
-IRQ_HANDLED even on error.
-
-> +
-> +	return IRQ_HANDLED;
-> +}
-
-> +
-> +static int nxp_sar_adc_dma_probe(struct device *dev, struct nxp_sar_adc *info)
-> +{
-> +	struct device *dev_dma;
-> +	int ret;
-> +	u8 *rx_buf;
-> +
-> +	info->dma_chan = devm_dma_request_chan(dev, "rx");
-> +	if (IS_ERR(info->dma_chan))
-> +		return PTR_ERR(info->dma_chan);
-> +
-> +	dev_dma = info->dma_chan->device->dev;
-> +	rx_buf = dma_alloc_coherent(dev_dma, NXP_SAR_ADC_DMA_BUFF_SZ,
-> +				    &info->rx_dma_buf, GFP_KERNEL);
-> +	if (!rx_buf)
-> +		return -ENOMEM;
-> +
-> +	info->dma_buf.buf = rx_buf;
-> +
-> +	info->dma_config.direction = DMA_DEV_TO_MEM;
-> +	info->dma_config.src_addr_width = NXP_SAR_ADC_DMA_SAMPLE_SZ;
-> +	info->dma_config.src_maxburst = 1;
-> +
-> +	ret = devm_add_action_or_reset(dev, nxp_sar_adc_dma_remove, info);
-> +	if (ret)
-> +		nxp_sar_adc_dma_remove(info);
-
-Look again at what devm_add_action_or_reset() does on failure.
-This has already been called. So 
-	return devm_add_action_or_reset(dev, nxp_sar_adc_dma_remove, info);
-should be fine.
-
-> +
-> +	return ret;
-> +}
-> +
-> +/*
-> + * The documentation describes the reset values for the
-wrap consistently to 80 chars. This first line has ended up short enough
-registers. fits.
-> + * registers. However some registers do not have these values after a
-> + * reset. It is a not desirable situation. In some other SoC family
-> + * documentation NXP recommend to not assume the default values are
-> + * set and to initialize the registers conforming to the documentation
-> + * reset information to prevent this situation. Assume the same rule
-> + * applies here as there is a discrepancy between what is read from
-> + * the registers at reset time and the documentation.
-> + */
-> +static void nxp_sar_adc_set_default_values(struct nxp_sar_adc *info)
-> +{
-> +	writel(0x00003901, REG_ADC_MCR(info->regs));
-> +	writel(0x00000001, REG_ADC_MSR(info->regs));
-> +	writel(0x00000014, REG_ADC_CTR0(info->regs));
-> +	writel(0x00000014, REG_ADC_CTR1(info->regs));
-> +	writel(0x00000000, REG_ADC_CIMR0(info->regs));
-> +	writel(0x00000000, REG_ADC_CIMR1(info->regs));
-> +	writel(0x00000000, REG_ADC_NCMR0(info->regs));
-> +	writel(0x00000000, REG_ADC_NCMR1(info->regs));
-> +}
-> +
-> +static int nxp_sar_adc_probe(struct platform_device *pdev)
-> +{
-> +	const struct nxp_sar_adc_data *data;
-> +	struct nxp_sar_adc *info;
-> +	struct iio_dev *indio_dev;
-> +	struct resource *mem;
-> +	struct device *dev = &pdev->dev;
-> +	int irq;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(struct nxp_sar_adc));
-
-sizeof(*info) preferred given you then get it back via iio_priv() so it
-is easier if a reader doesn't need to check the types match.
-
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	info = iio_priv(indio_dev);
-> +
-> +	data = device_get_match_data(dev);
-> +
-> +	info->vref_mV = data->vref_mV;
-> +
-> +	info->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &mem);
-> +	if (IS_ERR(info->regs))
-> +		return dev_err_probe(dev, PTR_ERR(info->regs),
-> +				     "failed to get and remap resource");
-> +
-> +	irq = platform_get_irq(pdev, 0);
-> +	if (irq < 0)
-> +		return irq;
-> +
-> +	ret = devm_request_irq(dev, irq, nxp_sar_adc_isr, 0,
-> +			       dev_name(dev), indio_dev);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "failed requesting irq, irq = %d\n", irq);
-> +
-> +	info->regs_phys = mem->start;
-> +	spin_lock_init(&info->lock);
-> +
-> +	info->clk = devm_clk_get_enabled(dev, "adc");
-> +	if (IS_ERR(info->clk))
-> +		return dev_err_probe(dev, PTR_ERR(info->clk),
-> +				     "failed to get the clock\n");
-> +
-> +	platform_set_drvdata(pdev, indio_dev);
-> +
-> +	init_completion(&info->completion);
-> +
-> +	indio_dev->name = dev_name(dev);
-
-This should be the 'part number'.  That is a little ill defined
-for a SoC integrated ADC, but generally not what we get from dev_name()
-on the platform_device.
-
-> +	indio_dev->info = &nxp_sar_adc_iio_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
-> +	indio_dev->channels = nxp_sar_adc_iio_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(nxp_sar_adc_iio_channels);
-> +
-> +	nxp_sar_adc_set_default_values(info);
-> +
-> +	ret = nxp_sar_adc_calibration(info);
-> +	if (ret) {
-> +		dev_err(dev, "Calibration failed: %d\n", ret);
-> +		return ret;
-		return dev_err_probe(dev, ret, "Calibration failed\n");
-
-Whilst we don't get the deferred probe debugging in this case the dev_err_probe()
-does some pretty printing and saves a few lines of code, so it is fine to
-use it everywhere in probe() or code just called from probe()
-
-> +	}
-> +
-> +	ret = nxp_sar_adc_dma_probe(dev, info);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to initialize the dma\n");
-> +
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> +					      &iio_pollfunc_store_time,
-> +					      &nxp_sar_adc_trigger_handler,
-> +					      &iio_triggered_buffer_setup_ops);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "Couldn't initialise the buffer\n");
-> +
-> +	ret = devm_iio_device_register(dev, indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Couldn't register the device\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static void nxp_sar_adc_remove(struct platform_device *pdev)
-> +{
-> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> +	struct nxp_sar_adc *info = iio_priv(indio_dev);
-> +
-> +	nxp_sar_adc_stop_conversion(info);
-> +	nxp_sar_adc_channels_disable(info, REG_ADC_CH_MASK);
-> +	nxp_sar_adc_dma_channels_disable(info, REG_ADC_CH_MASK);
-> +	nxp_sar_adc_dma_cfg(info, false);
-> +	nxp_sar_adc_disable(info);
-> +	dmaengine_terminate_sync(info->dma_chan);
-> +}
-
-> +
-> +static struct platform_driver nxp_sar_adc_driver = {
-> +	.probe          = nxp_sar_adc_probe,
-Completely trivial feedback.
-
-I'd not do this aligning as to my eyes having the nested = under
-the other ones is actively misleading.  A single space the = is
-to me easier to read and less likely to lead to churn in the long
-run.  I don't mind careful alignment for closely related values
-like lists of register addresses but don't see a strong advantage
-to doing it here.
-
-
-> +	.remove         = nxp_sar_adc_remove,
-> +	.driver         = {
-> +		.name   = DRIVER_NAME,
-
-This pattern is one of those things that is completely trivial but
-makes no sense to me. I'd rather see the string directly here.
-
-> +		.of_match_table = nxp_sar_adc_match,
-> +		.pm     = pm_ptr(&nxp_sar_adc_pm_ops),
-> +	},
-> +};
-> +module_platform_driver(nxp_sar_adc_driver);
-> +
-> +MODULE_AUTHOR("NXP");
-> +MODULE_DESCRIPTION("NXP SAR-ADC driver");
-> +MODULE_LICENSE("GPL");
+Message-Id: <20250910-iio-adc-ad7124-fix-samp-freq-for-multi-channel-v4-1-8ca624c6114c@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAGi2wWgC/53OQW7DIBAF0KtYrDs1EBKbrHqPqgvAQzKSbRJwr
+ EaR796Js2hVdZMuEBrg8/5NFMyEReyrm8g4U6E08mBeKhGObjwgUMez0FJvZatbIErgusCrUdp
+ ApE8objhBzHiGmDIMl34iuIdH7KH1WgfT+jYGKfjTU0aOrOD7x2Pm4IXd6XEovCsIIQ0DTfuKX
+ 5c645D4tma65n2i8SDu2SOVKeXr2n1Wa/i/NWcFCmLbmWC1dDtr37y79uQzvnKVVZv1t2CleVr
+ QLHgfdZSdtQ26P4TNT2H7tLBhoZE6RqkMhp36JSzL8gX/uvRu7wEAAA==
+X-Change-ID: 20250828-iio-adc-ad7124-fix-samp-freq-for-multi-channel-8b22c48b8fc0
+To: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6666; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=J7gB9Z38NODsqaTbWLcs+XK+Ps9YUEGTomCZhU0fQzY=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBowbZtkvd73eSOKh3OBWb5pmn1jnoYJXzTW9RFV
+ JRLoFI7A9iJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaMG2bQAKCRDCzCAB/wGP
+ wPIVB/462Rbel/ux9/NS+/FxKElSN5YgOSls+JEHcAdH4/Tn7eUsPgEoFnEyeyTYQma9bEYsuKy
+ ZAfuJybYvJqi2B/pr3G5FG91xEap0dvvM6+b0noJGTt5XihLGyHGaucUsQMEOA7QoqosaFNPMnW
+ 5g2R96+X7WQrwNKlqYu4F39aJNyav3/KPkRdeSquHk1PNt8bEpby25mruuBeMOp2dAtwe5uJ0dX
+ 2ul3swB5ZarulPctOHIXnEC/hR+ZtxjQtAWd/tpHD3Ktr6ZiKf8y5oTgnvAGFysDLZbN7QQWH5a
+ FoHvZYUY07X0TJcxHLfIaj9kPLYz37omFam03mmJn39P6j9k
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+
+Change how the FS[10:0] field of the FILTER register is calculated to
+get consistent sample rates when only one channel is enabled vs when
+multiple channels are enabled in a buffered read.
+
+By default, the AD7124 allows larger sampling frequencies when only one
+channel is enabled. It assumes that you will discard the first sample or
+so to allow for settling time and then no additional settling time is
+needed between samples because there is no multiplexing due to only one
+channel being enabled. The conversion formula to convert between the
+sampling frequency and the FS[10:0] field is:
+
+    fADC = fCLK / (FS[10:0] x 32)
+
+which is what the driver has been using.
+
+On the other hand, when multiple channels are enabled, there is
+additional settling time needed when switching between channels so the
+calculation to convert between becomes:
+
+    fADC = fCLK / (FS[10:0] x 32 x N)
+
+where N depends on if SINGLE_CYCLE is set, the selected filter type and,
+in some cases, the power mode.
+
+The FILTER register has a SINGLE_CYCLE bit that can be set to force the
+single channel case to use the same timing as the multi-channel case.
+
+Before this change, the first formula was always used, so if all of the
+in_voltageY_sampling_frequency attributes were set to 10 Hz, then doing
+a buffered read with 1 channel enabled would result in the requested
+sampling frequency of 10 Hz. But when more than one channel was
+enabled, the actual sampling frequency would be 2.5 Hz per channel,
+which is 1/4 of the requested frequency.
+
+After this change, the SINGLE_CYCLE flag is now always enabled and the
+multi-channel formula is now always used. This causes the sampling
+frequency to be consistent regardless of the number of channels enabled.
+
+For now, we are hard-coding N = 4 since the driver doesn't yet support
+other filter types other than the default sinc4 filter.
+
+The AD7124_FILTER_FS define is moved while we are touching this to
+keep the bit fields in descending order to be consistent with the rest
+of the file.
+
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+This is one of those unfortunate cases where we are fixing a bug but we
+risk breaking userspace that may be depending on the buggy behavior.
+
+I intentionally didn't include a Fixes: tag for this reason.
+
+Given some of the other shortcomings of this driver, like using an
+integer IIO_CHAN_INFO_SAMP_FREQ value when it really needs to allow a
+fractional values, it makes me hopeful that no one is caring too much
+about the exact value of the sampling frequency. So I'm more willing
+than I would normally be to take a risk on making this change.
+
+[1] https://lore.kernel.org/linux-iio/20250825-iio-adc-ad7124-proper-clock-support-v2-0-4dcff9db6b35@baylibre.com/
+---
+Changes in v4:
+- Removed unused macros.
+- Fixed typo in comment.
+- Link to v3: https://lore.kernel.org/r/20250905-iio-adc-ad7124-fix-samp-freq-for-multi-channel-v3-1-702ff014ec61@baylibre.com
+
+Changes in v3:
+- Removed the ad7124_get_avg() and harded-coded N = 4 for now.
+- Link to v2: https://lore.kernel.org/r/20250904-iio-adc-ad7124-fix-samp-freq-for-multi-channel-v2-1-bbf2f0d997ea@baylibre.com
+
+Changes in v2:
+- Improved comment explaining why the new factor always applies.
+- Fixed merge conflict with iio/testing branch.
+- Replaced avg parameter with ad7124_get_avg() function.
+- Link to v1: https://lore.kernel.org/r/20250828-iio-adc-ad7124-fix-samp-freq-for-multi-channel-v1-1-f8d4c920a699@baylibre.com
+---
+ drivers/iio/adc/ad7124.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index c6435327d431e5f4ba28aa3332ec6eb90da7c83d..15d98b78ec2709e14c354a64f14e7deefc3bcb56 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -93,10 +93,11 @@
+ #define AD7124_CONFIG_PGA		GENMASK(2, 0)
+ 
+ /* AD7124_FILTER_X */
+-#define AD7124_FILTER_FS		GENMASK(10, 0)
+ #define AD7124_FILTER_FILTER		GENMASK(23, 21)
+ #define AD7124_FILTER_FILTER_SINC4		0
+ #define AD7124_FILTER_FILTER_SINC3		2
++#define AD7124_FILTER_SINGLE_CYCLE	BIT(16)
++#define AD7124_FILTER_FS		GENMASK(10, 0)
+ 
+ #define AD7124_MAX_CONFIGS	8
+ #define AD7124_MAX_CHANNELS	16
+@@ -285,18 +286,20 @@ static u32 ad7124_get_fclk_hz(struct ad7124_state *st)
+ 
+ static void ad7124_set_channel_odr(struct ad7124_state *st, unsigned int channel, unsigned int odr)
+ {
+-	unsigned int fclk, odr_sel_bits;
++	unsigned int fclk, factor, odr_sel_bits;
+ 
+ 	fclk = ad7124_get_fclk_hz(st);
+ 
+ 	/*
+-	 * FS[10:0] = fCLK / (fADC x 32) where:
++	 * FS[10:0] = fCLK / (fADC x 32 * N) where:
+ 	 * fADC is the output data rate
+ 	 * fCLK is the master clock frequency
++	 * N is number of conversions per sample (depends on filter type)
+ 	 * FS[10:0] are the bits in the filter register
+ 	 * FS[10:0] can have a value from 1 to 2047
+ 	 */
+-	odr_sel_bits = DIV_ROUND_CLOSEST(fclk, odr * 32);
++	factor = 32 * 4; /* N = 4 for default sinc4 filter. */
++	odr_sel_bits = DIV_ROUND_CLOSEST(fclk, odr * factor);
+ 	if (odr_sel_bits < 1)
+ 		odr_sel_bits = 1;
+ 	else if (odr_sel_bits > 2047)
+@@ -306,7 +309,8 @@ static void ad7124_set_channel_odr(struct ad7124_state *st, unsigned int channel
+ 		st->channels[channel].cfg.live = false;
+ 
+ 	/* fADC = fCLK / (FS[10:0] x 32) */
+-	st->channels[channel].cfg.odr = DIV_ROUND_CLOSEST(fclk, odr_sel_bits * 32);
++	st->channels[channel].cfg.odr = DIV_ROUND_CLOSEST(fclk, odr_sel_bits *
++								factor);
+ 	st->channels[channel].cfg.odr_sel_bits = odr_sel_bits;
+ }
+ 
+@@ -439,10 +443,20 @@ static int ad7124_write_config(struct ad7124_state *st, struct ad7124_channel_co
+ 	if (ret < 0)
+ 		return ret;
+ 
++	/*
++	 * NB: AD7124_FILTER_SINGLE_CYCLE is always set so that we get the same
++	 * sampling frequency even when only one channel is enabled in a
++	 * buffered read. If it was not set, the N in ad7124_set_channel_odr()
++	 * would be 1 and we would get a faster sampling frequency than what
++	 * was requested.
++	 */
+ 	tmp = FIELD_PREP(AD7124_FILTER_FILTER, cfg->filter_type) |
++		AD7124_FILTER_SINGLE_CYCLE |
+ 		FIELD_PREP(AD7124_FILTER_FS, cfg->odr_sel_bits);
+ 	return ad7124_spi_write_mask(st, AD7124_FILTER(cfg->cfg_slot),
+-				     AD7124_FILTER_FILTER | AD7124_FILTER_FS,
++				     AD7124_FILTER_FILTER |
++				     AD7124_FILTER_SINGLE_CYCLE |
++				     AD7124_FILTER_FS,
+ 				     tmp, 3);
+ }
+ 
+
+---
+base-commit: b8902d55155cec7bd743dc1129e0b32e70b1751f
+change-id: 20250828-iio-adc-ad7124-fix-samp-freq-for-multi-channel-8b22c48b8fc0
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

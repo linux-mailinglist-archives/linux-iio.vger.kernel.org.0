@@ -1,54 +1,54 @@
-Return-Path: <linux-iio+bounces-23977-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23978-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 169E7B52DB4
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 11:53:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FAEB5326F
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 14:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5430C1C24C1D
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 09:53:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 409B43AFA51
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 12:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA9A2EAB72;
-	Thu, 11 Sep 2025 09:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6531B321F31;
+	Thu, 11 Sep 2025 12:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="cEaYDl2n"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="s1/ILfAQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980B4329F13;
-	Thu, 11 Sep 2025 09:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED1E23CEF9;
+	Thu, 11 Sep 2025 12:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757584411; cv=none; b=Fh+IXQojT3Tu4a4VWUk7bIZWK27LZPIqvb3ZPtilSAqLHACAY65UgoqxUaMcE/dsrGdYm0i5fXUgWwhRLQr3rU/fUAB1PZ7WQM9HoOPsX2x4N+HVdL+nW2vn9NX8BXlEDTx9tihe0h2bsM7MkaXtX2nqZR6gNJ949WrUnRjkyPU=
+	t=1757594209; cv=none; b=DbeprVBItCIKVbCMmNhbxzGFMOcPUBLthiefTZRPoEhKQTBKEX6Mcm4G4PnbAFMtRlLxTOjFDCyXWM1I+qd0s7kSa/7bjeJH1LBhbgOXlzjkl6Nrk7XOOgdxOjnJXxaeaw3IVkxzd7HVFDWvctUk/735nC/8l7bCD9v5fHW2tuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757584411; c=relaxed/simple;
-	bh=e8UEqQlddy9WhqEcv507M2baEDC0bJL/x14pz0r5Q30=;
+	s=arc-20240116; t=1757594209; c=relaxed/simple;
+	bh=QkQdBI8anUDvfOf9RgkkrxdhKfPTw8O5oRJZTgWZeG8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rzg7kcsJbX7WrdTwkZ5dDbdWzBNgPoaeCreIvKPU2wnEP25K+kIMr+Sm1xLOoqClxJPhHkYyV+dEtVVNOfBLhVeXf2ate2j4cQIWAT/qJk3VikwPlKo8UN9r3dbSDLLaxmdWSvQGKZPIu3C9ocwSW2I8GWIy3vBMoaj28LewAt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=cEaYDl2n; arc=none smtp.client-ip=172.105.74.154
+	 Content-Type:Content-Disposition:In-Reply-To; b=r1JIFhpc6Q8zlrE1Aw87rNiY9o0u9uzRJhekNSVj6W4JS43qK7EiBMY/Y3L8sOJMegbFfGAUsG5m8EQa79fkWCMpaSsyqx6d6QXpE0ZIMZee5PHgwCr7i8j52Pm172EL4AZ8fZj7m6AC4sJLOxf5CUCu1YS8r6VlM5GAjMgmg9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=s1/ILfAQ; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from sunspire (unknown [IPv6:2a02:2f0e:3e0c:5b00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 0E00F173BE2;
-	Thu, 11 Sep 2025 12:53:19 +0300 (EEST)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 18889173BE2;
+	Thu, 11 Sep 2025 15:36:43 +0300 (EEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
-	s=mail; t=1757584399;
+	s=mail; t=1757594203;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7sE/F5cI9yfwjkLBljXJg6o4uP2E9VZw3ZP4xh7waDU=;
-	b=cEaYDl2nh76qDkR+LycCGFXoU9UbPfslINVED+ZQs9ImJjkFv7zAVyrVty2Ud0MFD/Czdj
-	FEBMtzFF3MQZWeok3Hpa1urMOVozeL/vBRTB7ENBMRbp4pNcMkwmiLHft2aiFbShJCYfKK
-	EoVI5LQZMLxw726TgppQYlGuJ7gDM0Dje44LZjSypsn9Q9D6JUtbT/J7AFaUZUSsaAGAQK
-	/vI5gxI7Z1gRiKmCce+ZplQr/Bjpn915DYr3BU9E2TCoT/3juyMAb2fZtQaPgQ9vpHorST
-	kzXhQ2leuitG7WMLqkkYfLRwSK/LG5kZ9p9fgOSZmtm5NBFCDQhZy6F87ATl1A==
-Date: Thu, 11 Sep 2025 12:53:16 +0300
+	bh=6gEyFK0DSqrZL6C1lK+mBxeLuPQap3TA12mpV61nNXA=;
+	b=s1/ILfAQuLX1I6zZS9VzGx6qDFb0T2qEOhGnwDJb2nC14h6TafGjhBeXuOEq/lcjppdy3d
+	jpg2eWccIogbvJbu2ccUNa8ZVUCU/0RyhHzYknVV30q/sI2Vt8tvAEIPR8B+LJTnaKVPhz
+	9fZHJIml0QkKtp467TlxL3S5277cy0NX0ReYa55gVX1jp8/JbYaZiQe02sBtlpvU8VHFzo
+	Nsu7imStmQB32cd6JZA8gzs0WmJAri82OMDVXnzFQe0JfGvykXNLyIuvQGa+kVmV7cZ4HK
+	LYhgqBYzme5pE+6H7sTJgRQt46I13oaaaIqv9V/HB4GVcqIytqZGDLJr9EOiHQ==
+Date: Thu, 11 Sep 2025 15:36:40 +0300
 From: Petre Rodan <petre.rodan@subdimension.ro>
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -60,12 +60,12 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 03/14] dt-bindings: iio: accel: bosch,bma220 change
- irq type
-Message-ID: <aMKcDJ4n7X4YeWgo@sunspire>
+Subject: Re: [PATCH v2 07/14] iio: accel: bma220: reset registers during init
+ stage
+Message-ID: <aMLCWFatVkePTxCa@sunspire>
 References: <20250910-bma220_improvements-v2-0-e23f4f2b9745@subdimension.ro>
- <20250910-bma220_improvements-v2-3-e23f4f2b9745@subdimension.ro>
- <20250911-nostalgic-sturdy-markhor-57f87f@kuoka>
+ <20250910-bma220_improvements-v2-7-e23f4f2b9745@subdimension.ro>
+ <a10a2f6d-6cb7-4922-b505-dc6994f0415f@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -73,12 +73,12 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2cmfI1rv6oAUibTR"
+	protocol="application/pgp-signature"; boundary="NNBeZRJGrv3j1F1i"
 Content-Disposition: inline
-In-Reply-To: <20250911-nostalgic-sturdy-markhor-57f87f@kuoka>
+In-Reply-To: <a10a2f6d-6cb7-4922-b505-dc6994f0415f@kernel.org>
 
 
---2cmfI1rv6oAUibTR
+--NNBeZRJGrv3j1F1i
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -86,64 +86,88 @@ Content-Transfer-Encoding: quoted-printable
 
 Hi Krzysztof,
 
-On Thu, Sep 11, 2025 at 09:33:25AM +0200, Krzysztof Kozlowski wrote:
-> On Wed, Sep 10, 2025 at 10:57:08AM +0300, Petre Rodan wrote:
-> > Set the interrupt type to rising edge instead of high level.
+On Thu, Sep 11, 2025 at 09:35:52AM +0200, Krzysztof Kozlowski wrote:
+> On 10/09/2025 09:57, Petre Rodan wrote:
+> > Bring all configuration registers to default values during device probe=
+().
 > >=20
-> > Quoting from the datasheet:
+> > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+> > ---
+> >  drivers/iio/accel/bma220_core.c | 71 ++++++++++++++++++++++++++++-----=
+--------
+> >  1 file changed, 49 insertions(+), 22 deletions(-)
 > >=20
-> >  "If at least one of the configured conditions applies, an interrupt
-> >  (logic ???1???) is issued through the INT pin of the sensor."
+> > diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220=
+_core.c
+> > index b6f1374a9cca52966c1055113710061a7284cf5a..322df516c90a7c645eeca57=
+9cae9803eb31caad1 100644
+> > --- a/drivers/iio/accel/bma220_core.c
+> > -static int bma220_init(struct spi_device *spi)
+> > +static int bma220_reset(struct spi_device *spi, bool up)
+> >  {
+> > -	int ret;
+> > -	static const char * const regulator_names[] =3D { "vddd", "vddio", "v=
+dda" };
+> > +	int i, ret;
+> > =20
+> > -	ret =3D devm_regulator_bulk_get_enable(&spi->dev,
 >=20
-> I don't see how this explains/suggests raising edge.
+>=20
+> You just added this code in patch 6. Don't add code which immediately
+> you remove. I understand you re-add this later, so basically it is a
+> move, but such patch diff is still confusing.
 
-well, I want my driver to react directly at the transition from lo to hi
-(aka rising edge) of the INT signal.
+sorry, but this is an artefact of 'git diff' I don't think I have no contro=
+l of.
 
-why?
-1. by default the latch register is disabled, thus the master (my driver) i=
-s not
-expected to ack or clear any interrupt flag. the sensor controls when the I=
-NT line
-deasserts. for instance during a tap interrupt the bottom half handles the =
-rising
-edge condition after 250-300us and the irq gets deasserted by the sensor 15=
-0-300ms
-later without any other interaction from the driver.
+the bma220_reset() function was added to bma220_core.c with this patch and =
+the
+diff process merged lines from this new function with lines from bma220_ini=
+t()
+causing the apparent removal of the lines added in the previous patch.
+if you look a few lines below your cut, the bma220_init() function contains=
+ the
+code:
 
-which means that the time interval the trigger is asserted for can not be
-controlled by the master (without tweaking the latch register).
++static int bma220_init(struct spi_device *spi)
++{
++	int ret;
++	static const char * const regulator_names[] =3D { "vddd", "vddio", "vdda"=
+ };
++
++	ret =3D devm_regulator_bulk_get_enable(&spi->dev,
++					     ARRAY_SIZE(regulator_names),
++					     regulator_names);
++	if (ret)
++		return dev_err_probe(&spi->dev, ret, "Failed to get regulators\n");
+[..]
 
-2. there is no scenario in which an irq trigger that has been asserted befo=
-re probe()
-needs to be handled.
-
-3. there is zero reason to handle one event multiple times.
-
-these would be my reasons for gravitating toward edge triggering.
+Just for my curiosity, do reviewers apply the patches one by one to (a bran=
+ch of)
+the tree itself or do they provide feedback directly based on the diffs?
 
 best regards,
 peter
 
---2cmfI1rv6oAUibTR
+--NNBeZRJGrv3j1F1i
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmjCnAwACgkQzyaZmYRO
-fzCVNRAAmb7ecrz94S7Z36WmxRahEyaNxBdVHFuWFgatVkJUY6AyhP00nePzZqpv
-2LFOfqEoMVAj4NWewxK+ls7WoNT50I/xRfIzPcxJrkSCfBq9uwcrLFApMymSILfM
-Sr/NBf5/Z61Xzjerh3id63IBfuNXz8CyjbajlduCfjZoN00GQ5DXpKDh4i9rgWpc
-AeZ0AEOeTyMTRgb9TRLnJSccgMTIf3Y2z29r7HQ+d2uwVzeOxkJqWG5H00+SgH6T
-G5yOHJFhHSz6grlJC1tP1PYhITJtRTcxydly7D6SVAznpR4bTigT0wR9+c1MjbBf
-FuIldPd6WyxTqUDeGPUSTYADWq57P0E5zDiXHO4NGnL86cW1+ullOGmTC394O+ft
-y6Lqcuuh7OTw8ysFjwBJrLNGkiFwRHVloEBTuK7hd7G6m7x1DxyH18Fnec9J570n
-aZPuNNEZy0U70Z7AsP1nJG45pvyp1EsPf/3tVQWCGbfzbjfA9bSthCbKTgv7iz3R
-ridMpuEkQUug7JtQ72lLFpN9mbTbv+iWGg+u6NwkjlKQixSX2rl8W36hBmed2Ux8
-0mQX/QtvnZAnGnZovxsrMnjt9qRLqwtbYC1YeE1pPsLwAVLtCF4XdjLCghnaKaFv
-Pqh0OSUg3NKmBMP+eLBRAQq9ZdmRCPDWip2Q4C/DeL/dd7Ku4tU=
-=SUUJ
+iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmjCwlgACgkQzyaZmYRO
+fzBX3Q//bhgiqNrozUCco7QKapysnP4QMmkVJoHXuwQTjOCQlIbzO2yh3AV9RAJ+
+Fb23RjjRJcjVn5OpWnRY5pYiQAXwccNi0E6rZPozAJaGpX+I1sNqHxmfPJqh49GF
+YlZImOdM9rrYOdYyv2xUR3WfdxDCCCsfOu3R1Gj6X7oGm2X/JoA3wQ25+QUQ869X
+lCbW4I4qSWoXE7XlIUw6iVNGrllT8hmThKCZnqLCk/vshf46iBG8XfWGsjIjAuGb
+3T7tm0mqQjpoU+5VKf4rPMM7Pidze6kSYGNfJtNG2ASCY/3DL3N34L3Av7fpD2ce
+CtxWpHnpfYP4F5XmtOgYnZjj96UGI74QuaKNIFrfhBquvMtixkzxt2zVVgkesBvy
+8qH0AB/+a6CYb7S/aniZG8/BYtT22gpnKFPtAFq7zKM3JcFWygMr2HYRZCwniB2Q
+A4xJwf5444UOMPiO5U/hwGn+oqS+otR3YcFmSzYjmxz9TdTVaK4Ur+DAHhLnWa7/
+RWr5y5d05AcUJ9gy1Ardc0yItofdbFNSARIcxPjsWI9aZiT0HUQG805ilxiGf0Oz
+o8mXmMo+p8G0nEJauw0RhfkLepRQbQddWEKTynfw4EEL5kD102MMEqo+tKj5bDYz
+xImuNYWpK9RrQQPIb5XiuowtQBMwbSZ+eh2AllxnzbI+EBBll9A=
+=B4BN
 -----END PGP SIGNATURE-----
 
---2cmfI1rv6oAUibTR--
+--NNBeZRJGrv3j1F1i--
 

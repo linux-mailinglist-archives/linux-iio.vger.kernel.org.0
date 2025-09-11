@@ -1,48 +1,81 @@
-Return-Path: <linux-iio+bounces-23984-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23985-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D784B5332A
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 15:07:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CF1B533B5
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 15:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F1A75A4A87
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 13:07:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 980D8A820C6
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 13:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C8C324B0C;
-	Thu, 11 Sep 2025 13:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDD732ED23;
+	Thu, 11 Sep 2025 13:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pb1dCeLi"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hGfBaghF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9B561FFE;
-	Thu, 11 Sep 2025 13:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA74732CF6D
+	for <linux-iio@vger.kernel.org>; Thu, 11 Sep 2025 13:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757596030; cv=none; b=o5jjKQa2VkjibvV+KEk/xtUr3aIHJ7cxJm8rDCtmP+n88JsCQQgBI3KHHggjEPHGhabLuLJl7I3ektVRtWlxI7reYu/64OLbtuHSq4B21lFDZvUIDhqk+VMVlk0qpsHrJDw7usBPuOIMEgHtUaESfBaf2Sxxwgjk8NdIBNBQpk0=
+	t=1757597171; cv=none; b=PnfXDmXL1KTxBLYowmFIeXQ/6hXGz7sSQYem5TYXPcy9nIiPz1hYzxI9LmKSz14Am1Y6VFclnFgOJ45dQF5h07GjpofqDL9hiiJCOz9Gbx9EQGUzZSN1LccDoSR4OJxv0eQPrtobnh4Rt6U/JUTLYG+PIYal9LOfV6pCd5CJhFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757596030; c=relaxed/simple;
-	bh=RWKhIIzKw74Ldz2LKrbaS8ybBgR7LLoijT68vLLdbEw=;
+	s=arc-20240116; t=1757597171; c=relaxed/simple;
+	bh=M1LYunffuVeDHmWNDQ+oMBlOG3SDCCt4WC6SDVLqx2U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N2UZnypAev0kJDZdnkLXLcoFco9B7Fm/EV30qaCGohzPv81NC1BZZtLKc3HNz7AiSb7PipEGEVp4wGNu6zSpEEqBgwGUS9vr3HeiwpffGGKUhNX4qrEP78Y8X03XRYl6Ph2Bs39OVIIK4erlA0+cPTCWcAr2Fu856J/AGHo6GdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pb1dCeLi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65712C4CEF8;
-	Thu, 11 Sep 2025 13:07:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757596030;
-	bh=RWKhIIzKw74Ldz2LKrbaS8ybBgR7LLoijT68vLLdbEw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Pb1dCeLieglj3LY662S/zagkYDg6b+Reom8hm93YAod/fn+IlJZxmiPkr6DtVR5kR
-	 JZjILz0Q+viONNkBiBkq30jtzdGvM4EYUlM7ZhFI6/LLQMNNGZjRzSWCX+Nn99sdYJ
-	 jNVqI4miqoTC2S51iPBEn1jnEIB2YmxV00CaqrQ2pm7qdELNCC51z09GufEsMPLUsY
-	 Vaa6kNFKIM1McObmdnCWUrsVLxVSb++vJDOL/+NU0DC5ccsa8mtt+tOgLvGipICB/9
-	 9jh1I85BcXaqBkuknpf4VALTe5kjKd/92ZZFHrQ5fexims1n6iiSThurvJigJcibLZ
-	 qBNS0wL8R2Nbw==
-Message-ID: <391229ff-d85a-4707-8e7c-ea64e0e3d7cb@kernel.org>
-Date: Thu, 11 Sep 2025 15:07:05 +0200
+	 In-Reply-To:Content-Type; b=fp84jTeFb39AW7nXzjkr8D0wAO/3VNnTCrdySojFGlq/lyfFP32sOquA1b+ITG15I7EA1eU7U7tfRC0yjCPxwyfWo0jg8mgPOFpnEORY9XVZNoIa6p7dK4F3U6Ig5E0NRLtcH1MYBea6pynqPqEpsQkVZPdZD8IVhKQIIlB2ZdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hGfBaghF; arc=none smtp.client-ip=209.85.161.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-62189987b54so383767eaf.3
+        for <linux-iio@vger.kernel.org>; Thu, 11 Sep 2025 06:26:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757597168; x=1758201968; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=doXLtB9djik8VUwa0G7u1GLCJ7g4vB7KCBCvKf56es4=;
+        b=hGfBaghFgoo+BzaulqTETY1/N3Djlk4XatjZpzRlZXIvKjFAIhF2db2Ni5iMnyPSuN
+         Znb/sKWwuCl9nDGMLwnznlsMU5d+sb9FrZxSTzMt58DbIbAovP2ELqrKunyJLLl/tMrY
+         A+jKvNPEDZ2dGhnCNXUF1ohF1OuaJnrNAo9XPh3y97znXlqnf0Zf4KmEsS35hMUAmjTx
+         a2oz4lMe3FzkJe1sO6kHR8T3CY44VYPhFOpGcMLCg6bejWanKppXBtbLkKRV048UPZb6
+         F8/AOvyQ+FP2d+/DOd3JbLLTmVexWLJeLlwt8U/VsuZozb3rQTwS2ooXm6BP4spSIIRS
+         Cuyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757597168; x=1758201968;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=doXLtB9djik8VUwa0G7u1GLCJ7g4vB7KCBCvKf56es4=;
+        b=F+A8UgD23PylkglXnYSCd6gV6kBzrncne24aS3OuNfYURYDdWJrGgMovf5K4F8KzJp
+         KQ5b8yF4bckB1ZPt+gohFd8BfRD3ncp5tfkXv4u+TEqh+doCgHOkvgUev/NSWKv8fFqF
+         FRw6cFz2m1WyGRgHQJdxBty+OZKmxb4B2tnC2GfJkgifxrRiQLz6re7ffi4vtC5jbUw9
+         dUa7xZjU7WYTyROBSTm3wc4tSBj+HarLbCiJrMW/1ggj7QshpB74X0KzZPK7l8G8sOFW
+         UI3VOnVTF2xY1wAqb7Krb5fsAV6A2/csOBJxKLaG5eiuz5uZmFLqfAD87sXFSIDRTxYY
+         +mBg==
+X-Forwarded-Encrypted: i=1; AJvYcCWV4DU3wkff1AYiOXde/FMtLByubLo2I3RpBr3odY6+RWuq0gca2ePvTUistwx7SI70uAqlS+Nr6UI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyhYCIor2BMdKmeQdtVQJnmLLezA+4szab6YBCJoudQW3Uqvxs
+	8r4vHRpyTNJPEzFKSGai7tKM6rPfhX9QBpIM2ygzQObV+HY2XGjdtwjTvhUG77f10PU=
+X-Gm-Gg: ASbGncvI/vPykZXhzcBFbXKieu6Lus3BBgkEwnl+fm8+7ILLgrcgRJFmv7bXzhvY7vH
+	N4Gbf0dsdce3xk2BTs3DM6hVZPmu4pt9IetTKq80aaiIZPn4iDAV0ttgkD8Jvb73hio3XqBR30M
+	Epz2dY3ebNEBlo5SSfhGkthRsrshfs6gSGBcNg/nXqMzegKpgIyxoNmYu9G8qETMQyF8/kliXHk
+	4JaPQPwm1uc+fLV/MrucXbnAJZzxOtKwju4nmkoBrGD4uoTXI9/VwQacKJfZe4Ix3HV1Onjf7hO
+	q6YT2usUXrXvGIGPjx3nJBYpayjYklXdoYLLIGMd/Ubed4XQRLkf3SNv8o76ihd9G1V9k2TLykq
+	wO2Xaw5XYFvlRPhKmpxzFABuFj3ZbyzZ3GDUHn07DuLlltLsRJrT4JXWlFE41/QpN4QU903l1G/
+	P5o3nAk1lZnA==
+X-Google-Smtp-Source: AGHT+IGewbzhtIZHb9eUyQRJcGNAmv7FjLag6+AtUsiw9MhsNcbjBVwyMYuFzvaZWeOFJGfwdTLRbw==
+X-Received: by 2002:a05:6820:1ca6:b0:621:b76e:66b9 with SMTP id 006d021491bc7-621b76e6989mr660188eaf.3.1757597167898;
+        Thu, 11 Sep 2025 06:26:07 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:d684:59db:8b2a:5451? ([2600:8803:e7e4:1d00:d684:59db:8b2a:5451])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7524b8a3a8csm347330a34.21.2025.09.11.06.26.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 06:26:07 -0700 (PDT)
+Message-ID: <c746e72c-dbd9-4afb-9da4-5d13733fd561@baylibre.com>
+Date: Thu, 11 Sep 2025 08:26:06 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,133 +83,78 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/14] iio: accel: bma220: reset registers during init
- stage
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, Nuno S?? <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250910-bma220_improvements-v2-0-e23f4f2b9745@subdimension.ro>
- <20250910-bma220_improvements-v2-7-e23f4f2b9745@subdimension.ro>
- <a10a2f6d-6cb7-4922-b505-dc6994f0415f@kernel.org> <aMLCWFatVkePTxCa@sunspire>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v2 2/2] iio: adc: Add the NXP SAR ADC support for the
+ s32g2/3 platforms
+To: Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Jonathan Cameron <jic23@kernel.org>
+Cc: nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
+ conor+dt@kernel.org, krzk+dt@kernel.org, linux-iio@vger.kernel.org,
+ s32@nxp.com, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ chester62515@gmail.com, mbrugger@suse.com, ghennadi.procopciuc@oss.nxp.com
+References: <20250910155759.75380-1-daniel.lezcano@linaro.org>
+ <20250910155759.75380-3-daniel.lezcano@linaro.org>
+ <20250910183212.6640e662@jic23-huawei>
+ <b4d2ad54-54d5-4c26-be49-b6ac671683d2@linaro.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aMLCWFatVkePTxCa@sunspire>
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <b4d2ad54-54d5-4c26-be49-b6ac671683d2@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/09/2025 14:36, Petre Rodan wrote:
+On 9/11/25 7:55 AM, Daniel Lezcano wrote:
 > 
-> Hi Krzysztof,
+> Hi Jonathan,
 > 
-> On Thu, Sep 11, 2025 at 09:35:52AM +0200, Krzysztof Kozlowski wrote:
->> On 10/09/2025 09:57, Petre Rodan wrote:
->>> Bring all configuration registers to default values during device probe().
->>>
->>> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
->>> ---
->>>  drivers/iio/accel/bma220_core.c | 71 ++++++++++++++++++++++++++++-------------
->>>  1 file changed, 49 insertions(+), 22 deletions(-)
->>>
->>> diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220_core.c
->>> index b6f1374a9cca52966c1055113710061a7284cf5a..322df516c90a7c645eeca579cae9803eb31caad1 100644
->>> --- a/drivers/iio/accel/bma220_core.c
->>> -static int bma220_init(struct spi_device *spi)
->>> +static int bma220_reset(struct spi_device *spi, bool up)
->>>  {
->>> -	int ret;
->>> -	static const char * const regulator_names[] = { "vddd", "vddio", "vdda" };
->>> +	int i, ret;
->>>  
->>> -	ret = devm_regulator_bulk_get_enable(&spi->dev,
+> thanks for the review
+> 
+> On 10/09/2025 19:32, Jonathan Cameron wrote:
+>> On Wed, 10 Sep 2025 17:57:56 +0200
+>> Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+> 
+> [ ... ]
+> 
+
+...
+
+> 
+>>> +    indio_dev->name = dev_name(dev);
 >>
->>
->> You just added this code in patch 6. Don't add code which immediately
->> you remove. I understand you re-add this later, so basically it is a
->> move, but such patch diff is still confusing.
+>> This should be the 'part number'.  That is a little ill defined
+>> for a SoC integrated ADC, but generally not what we get from dev_name()
+>> on the platform_device.
 > 
-> sorry, but this is an artefact of 'git diff' I don't think I have no control of.
+> Sorry, I don't get the comment. If I refer to the different drivers there is not consistency with the iio_dev->name.
 
-
-Don't think so. Before bma220_init() was above bma220_power(). After
-your patch bma220_init() is BELOW bma220_power(), so that's a move.
-
-
+dev_name() will be something like adc@12345678 from the devicetree,
+so not the "part number".
 
 > 
-> the bma220_reset() function was added to bma220_core.c with this patch and the
-> diff process merged lines from this new function with lines from bma220_init()
-> causing the apparent removal of the lines added in the previous patch.
-> if you look a few lines below your cut, the bma220_init() function contains the
-> code:
+> rtq6056.c:      indio_dev->name = "rtq6056";
+
+This style is preferred if there is only one supported part.
+
+> rzg2l_adc.c:    indio_dev->name = DRIVER_NAME;
+
+We try to avoid using a macro for the driver name like this.
+
+> sc27xx_adc.c:   indio_dev->name = dev_name(dev);
+
+Looks like we missed catching this one in review.
+
+> mt6359-auxadc.c:  indio_dev->name = adc_dev->chip_info->model_name;
+
+This is preferred if there is more than one part supported in the driver.
+
+> mcp3911.c:      indio_dev->name = spi_get_device_id(spi)->name;
+
+This is fine too in cases where there isn't chip_info.
+
 > 
-> +static int bma220_init(struct spi_device *spi)
-> +{
-> +	int ret;
-> +	static const char * const regulator_names[] = { "vddd", "vddio", "vdda" };
-> +
-> +	ret = devm_regulator_bulk_get_enable(&spi->dev,
-> +					     ARRAY_SIZE(regulator_names),
-> +					     regulator_names);
-> +	if (ret)
-> +		return dev_err_probe(&spi->dev, ret, "Failed to get regulators\n");
-> [..]
+> Are you suggesting to use the compatible part number ?
 > 
-> Just for my curiosity, do reviewers apply the patches one by one to (a branch of)
-> the tree itself or do they provide feedback directly based on the diffs?
+>     indio->name = "s32g2-sar-adc";
+> 
 
+That works.
 
-Each commit must stand on its own, is reviewed independently and entire
-patchset must be 100% bisectable.
-
-
-Best regards,
-Krzysztof
 

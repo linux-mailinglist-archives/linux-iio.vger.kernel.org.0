@@ -1,261 +1,149 @@
-Return-Path: <linux-iio+bounces-23976-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23977-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D6DB52D63
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 11:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 169E7B52DB4
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 11:53:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B3A1189DF4D
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 09:37:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5430C1C24C1D
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 09:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7842EA46C;
-	Thu, 11 Sep 2025 09:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA9A2EAB72;
+	Thu, 11 Sep 2025 09:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b="g/hhHCvQ";
-	dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b="g/hhHCvQ"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="cEaYDl2n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from h3.cmg1.smtp.forpsi.com (h3.cmg1.smtp.forpsi.com [185.129.138.162])
+Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259FE1D5CFE
-	for <linux-iio@vger.kernel.org>; Thu, 11 Sep 2025 09:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.129.138.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980B4329F13;
+	Thu, 11 Sep 2025 09:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757583398; cv=none; b=onSdpVrCJVPyh9sjl6YXYGPH3VB79Z80HojCMGp7Z2uqnvayNIA6p7y3sSHNTkmRK17TsP38dBZ8w/mqRT7Zc5D+nexUc3TBH6aj08NX9qtK2QtlPP4/8ExWfg8T3GtbFEQPQdLiZYnkQ5+Lw4ikF8smwbF2k6w6ZpyOT+wgJcQ=
+	t=1757584411; cv=none; b=Fh+IXQojT3Tu4a4VWUk7bIZWK27LZPIqvb3ZPtilSAqLHACAY65UgoqxUaMcE/dsrGdYm0i5fXUgWwhRLQr3rU/fUAB1PZ7WQM9HoOPsX2x4N+HVdL+nW2vn9NX8BXlEDTx9tihe0h2bsM7MkaXtX2nqZR6gNJ949WrUnRjkyPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757583398; c=relaxed/simple;
-	bh=wJl2fp3LULcTIlZy/J298ItIDu8ZXgIFfuUQ3q16Y5U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GwnSOdtgVXcHlthPII8X0Fp2hqP+pbNS8kFHIAbBmECf/gbOypBcrHfTbQXmbONkH9gYAiS5V4nWuif8AKD/gpLib40Y4q5oDOeBDoX2N2cB6mpXNmajb1Wm+UONpAAhVeQc8SpIEleF9tBWlkHTgDNkwBt4MuatTQTxgb6Dol4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skyrain.eu; spf=none smtp.mailfrom=skyrain.eu; dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b=g/hhHCvQ; dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b=g/hhHCvQ; arc=none smtp.client-ip=185.129.138.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skyrain.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=skyrain.eu
-Received: from [172.25.231.43] ([85.248.43.180])
-	by cmgsmtp with ESMTPSA
-	id wdgbuDrU7x9qowdgbu3UfL; Thu, 11 Sep 2025 11:33:49 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=skyrain.eu; s=f2022;
-	t=1757583229; bh=htPGMbp54RGLqChokaYwQXCIaTLdDDgew0owpUjsg6U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=g/hhHCvQPm8nfelvmPWU4+BMEsNuNNy1uaKFUl8cY8ZLOoIjtCT2pY7fz8d7Oeig0
-	 qKYqUg1aD3VerKpLQIVjpE004ojPk8IU6lVxCinqa0JxBJrG1+hVeA4OquM/yxjJn0
-	 2+4Zlr7LKZm/J1VG2CtANKSfCv7efLO83dorreVrr3xhkOXdgkdyrYEuaDeyaeVE2w
-	 dTeaTxmVWvMuimRU+nc7js/zTIYECqnF3lQWRbhIFE8sB7nT1IDFzHtdECVOJUAPS3
-	 CGT6Tkzsia7nRGvGPpI6g4kBbaKb6WDIj+DeWfolWxsPNkcumAlpKsj/rStr+cYDJB
-	 PPGJLSj5LPiyA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=skyrain.eu; s=f2022;
-	t=1757583229; bh=htPGMbp54RGLqChokaYwQXCIaTLdDDgew0owpUjsg6U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=g/hhHCvQPm8nfelvmPWU4+BMEsNuNNy1uaKFUl8cY8ZLOoIjtCT2pY7fz8d7Oeig0
-	 qKYqUg1aD3VerKpLQIVjpE004ojPk8IU6lVxCinqa0JxBJrG1+hVeA4OquM/yxjJn0
-	 2+4Zlr7LKZm/J1VG2CtANKSfCv7efLO83dorreVrr3xhkOXdgkdyrYEuaDeyaeVE2w
-	 dTeaTxmVWvMuimRU+nc7js/zTIYECqnF3lQWRbhIFE8sB7nT1IDFzHtdECVOJUAPS3
-	 CGT6Tkzsia7nRGvGPpI6g4kBbaKb6WDIj+DeWfolWxsPNkcumAlpKsj/rStr+cYDJB
-	 PPGJLSj5LPiyA==
-Message-ID: <6ee57754-4fa0-4694-b997-5f4c627b567b@skyrain.eu>
-Date: Thu, 11 Sep 2025 11:33:49 +0200
+	s=arc-20240116; t=1757584411; c=relaxed/simple;
+	bh=e8UEqQlddy9WhqEcv507M2baEDC0bJL/x14pz0r5Q30=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rzg7kcsJbX7WrdTwkZ5dDbdWzBNgPoaeCreIvKPU2wnEP25K+kIMr+Sm1xLOoqClxJPhHkYyV+dEtVVNOfBLhVeXf2ate2j4cQIWAT/qJk3VikwPlKo8UN9r3dbSDLLaxmdWSvQGKZPIu3C9ocwSW2I8GWIy3vBMoaj28LewAt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=cEaYDl2n; arc=none smtp.client-ip=172.105.74.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from sunspire (unknown [IPv6:2a02:2f0e:3e0c:5b00:e2d5:5eff:fed9:f1c4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 0E00F173BE2;
+	Thu, 11 Sep 2025 12:53:19 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
+	s=mail; t=1757584399;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7sE/F5cI9yfwjkLBljXJg6o4uP2E9VZw3ZP4xh7waDU=;
+	b=cEaYDl2nh76qDkR+LycCGFXoU9UbPfslINVED+ZQs9ImJjkFv7zAVyrVty2Ud0MFD/Czdj
+	FEBMtzFF3MQZWeok3Hpa1urMOVozeL/vBRTB7ENBMRbp4pNcMkwmiLHft2aiFbShJCYfKK
+	EoVI5LQZMLxw726TgppQYlGuJ7gDM0Dje44LZjSypsn9Q9D6JUtbT/J7AFaUZUSsaAGAQK
+	/vI5gxI7Z1gRiKmCce+ZplQr/Bjpn915DYr3BU9E2TCoT/3juyMAb2fZtQaPgQ9vpHorST
+	kzXhQ2leuitG7WMLqkkYfLRwSK/LG5kZ9p9fgOSZmtm5NBFCDQhZy6F87ATl1A==
+Date: Thu, 11 Sep 2025 12:53:16 +0300
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno S?? <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 03/14] dt-bindings: iio: accel: bosch,bma220 change
+ irq type
+Message-ID: <aMKcDJ4n7X4YeWgo@sunspire>
+References: <20250910-bma220_improvements-v2-0-e23f4f2b9745@subdimension.ro>
+ <20250910-bma220_improvements-v2-3-e23f4f2b9745@subdimension.ro>
+ <20250911-nostalgic-sturdy-markhor-57f87f@kuoka>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drivers: iio: accel: fix ADX355 startup race condition
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Puranjay Mohan <puranjay@kernel.org>,
- Kessler Markus <markus.kessler@hilti.com>
-References: <20250909085528.68966-1-andrej.v@skyrain.eu>
- <20250910193049.145aa79e@jic23-huawei>
-Content-Language: en-US
-From: Andrej Valek <andrej.v@skyrain.eu>
-In-Reply-To: <20250910193049.145aa79e@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfGpHLoYt9nsW2lPHhTuWK2xJnpIewGhDpvqM4zRr1vRUE5TLbPaEscvZmaYn983+qpCPodaFzTlat9Xf0dCcNLfvvxIFLD66aTsmheIraZMcOSZews2Z
- dDMuFTmorTfGkl+94y6hdvSOgSC+aC3qseXBqKOTY8QLwePYwpWyUfZZNb0d9BBgoR/T2+pLn3145GMuHGYDIi1R7GQOwMadMLhL9M4OWjgEr3mRc47PPCbi
- T33fkOFFlAzAYqL9N7BYG84scv2ExTGhXHXtTLQGlWHP2TA3UOj/nczC3OcWFA3JxFOui9NNN4kryxcqRASkvOii7L8BnAinZHun5NRo8wU7EfKC/4+iq9mU
- V0LgQ2Xb
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="2cmfI1rv6oAUibTR"
+Content-Disposition: inline
+In-Reply-To: <20250911-nostalgic-sturdy-markhor-57f87f@kuoka>
 
-Hi Jonathan,
 
-First, I would like to thanks for your feedback.
+--2cmfI1rv6oAUibTR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 10.09.2025 20:30, Jonathan Cameron wrote:
-> On Tue,  9 Sep 2025 10:55:28 +0200
-> Andrej Valek <andrej.v@skyrain.eu> wrote:
->
->> From: Valek Andrej <andrej.v@skyrain.eu>
-> Hi Valek,
->
-> Thanks for the patch. Small thing on patch title, don't include drivers.
-> It's a pain but you need to look at other patches to a given subsystem
-> to find out the preferred style.
-Valek is my surname 🙂.
-Yes, I realized, that I missed "L" in title, will fix it in next rev, 
-same as removing "drivers".
->> There is an race-condition where device is not full working after SW reset.
->> Therefore it's necessary to wait some time after reset and verify shadow
->> registers values by reading and comparing the values before/after reset.
->> This mechanism is described in datasheet at least from revision D.
-> I'm curious about the retries. Does the datasheet given any explanation for
-> why a reset might fail a few times before succeeding?
-Yes, as I mentioned in the commit message. Revision "D" of DS 
-(https://www.analog.com/media/en/technical-documentation/data-sheets/adxl354_adxl355.pdf) 
-page 43:
 
-| In case of a software reset, an unlikely race condition may occur in 
-products with REVID = 0x01 or earlier. If the race condition occurs, 
-some factory settings in the NVM load incorrectly to shadow registers.
-| 1. Read the shadow registers, Register 0x50 to Register 0x54 (five 
-8-bit registers) after power-up, but before any software reset.
-| 2. Store these values in a host device (for example, a host 
-microprocessor).
-| 3. After each software reset, read the same five registers. If the 
-values differ, perform a software reset again until they match
-As I don't want to reset forever, I chose 5 as a max number and seems to 
-be working fine.
->> Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
->> Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
->> ---
->>   drivers/iio/accel/adxl355_core.c | 48 ++++++++++++++++++++++++++++----
->>   1 file changed, 43 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
->> index 2e00fd51b4d51..5386cd4766def 100644
->> --- a/drivers/iio/accel/adxl355_core.c
->> +++ b/drivers/iio/accel/adxl355_core.c
->> @@ -56,6 +56,8 @@
->>   #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
->>   #define ADXL355_SELF_TEST_REG		0x2E
->>   #define ADXL355_RESET_REG		0x2F
->> +#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
->> +#define ADXL355_SHADOW_REG_COUNT	5
->>   
->>   #define ADXL355_DEVID_AD_VAL		0xAD
->>   #define ADXL355_DEVID_MST_VAL		0x1D
->> @@ -294,6 +296,9 @@ static void adxl355_fill_3db_frequency_table(struct adxl355_data *data)
->>   static int adxl355_setup(struct adxl355_data *data)
->>   {
->>   	unsigned int regval;
->> +	u8 shadow_regs[ADXL355_SHADOW_REG_COUNT];
-> Needs to be a DMA safe buffer.  We can't assume that regmap will always
-> bounce the data through one before passing it to the SPI controllers
-> that do sometimes require DMA safe buffers.    Add a buffer to end of
-> struct adxl355_data where you can take advantage of the forcing of appropriate
-> padding that is already going on there.
-I see, but I don't like extending the adxl355_data just for one time 
-usage. The suggested approach is more similar to what is done with the 
-ID checking.
-| if (regval != ADXL355_DEVID_MST_VAL) {
-|  dev_err(data->dev, "Invalid MEMS ID 0x%02x\n", regval);
-|  return -ENODEV;
-| }
->> +	bool shadow_regs_valid = false;
->> +	int retries = 5; /* retries for reading shadow registers */
-> If this is an empirical number of retries say so. If it's on the datasheet
-> then mention that in the comment instead.
-Basically yes, as I said, I didn't want to loop forever. And yes, will 
-change the comment to: /* the number of retries is chosen based on 
-empirical reasons. */
->
->>   	int ret;
->>   
->>   	ret = regmap_read(data->regmap, ADXL355_DEVID_AD_REG, &regval);
->> @@ -321,14 +326,47 @@ static int adxl355_setup(struct adxl355_data *data)
->>   	if (regval != ADXL355_PARTID_VAL)
->>   		dev_warn(data->dev, "Invalid DEV ID 0x%02x\n", regval);
->>   
->> -	/*
->> -	 * Perform a software reset to make sure the device is in a consistent
->> -	 * state after start-up.
->> -	 */
->> -	ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
->> +	/* Read shadow registers to be compared after reset */
->> +	ret = regmap_bulk_read(data->regmap,
->> +			       ADXL355_BASE_ADDR_SHADOW_REG,
->> +			       shadow_regs, ADXL355_SHADOW_REG_COUNT);
->>   	if (ret)
->>   		return ret;
->>   
->> +	/* Do software reset and check validity of the shadow registers */
->> +	while (!shadow_regs_valid && (retries > 0)) {
-> I would use a do { } while here.
->
->> +		/*
->> +		 * Perform a software reset to make sure the device is in a consistent
->> +		 * state after start-up.
->> +		 */
->> +		ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
->> +		if (ret)
->> +			return ret;
->> +
->> +		/* Wait at least 5ms after software reset */
->> +		usleep_range(5000, 10000);
->> +
->> +		/* Read shadow registers for comparison */
->> +		ret = regmap_bulk_read(data->regmap,
->> +				       ADXL355_BASE_ADDR_SHADOW_REG,
->> +				       data->buffer.buf, ADXL355_SHADOW_REG_COUNT);
->> +		if (ret)
->> +			return ret;
->> +
->> +		/* Check if shadow registers have expected values */
->> +		shadow_regs_valid = !memcmp(shadow_regs, data->buffer.buf,
->> +					    ADXL355_SHADOW_REG_COUNT);
-> The reason for the do { } while () suggestion above is that then you can move
-> the memcpy into the while condition and just decrement retries unconditionally
-> at the top of the loop.   Then if retries is 0 in the loop exit directly.
-> That way we avoid need for the shadow_regs_valid variable and generally end up with
-> slightly shorter code.
->
-> So in all that is something like.
->
-> 	do {
-> 		retries--;
-> 		if (!retries)
-> 			return dev_err_probe();
->
-> 		ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
-> 		if (ret)
-> 			return ret;
->
-> 		/* Wait at least 5ms after software reset */
-> 		usleep_range(5000, 10000);
->
-> 		/* Read shadow registers for comparison */
-> 		ret = regmap_bulk_read(data->regmap,
-> 				       ADXL355_BASE_ADDR_SHADOW_REG,
-> 				       data->buffer.buf, ADXL355_SHADOW_REG_COUNT);
-> 		if (ret)
-> 			return ret;
-> 	} while(memcmp(shadow_regs, data->buffer.buf,
-> 		       ADXL355_SHADOW_REG_COUNT));
-Ok, will change this.
->> +		if (!shadow_regs_valid) {
->> +			retries--;
->> +			dev_warn(data->dev, "Shadow registers mismatch, retrying...\n");
-> I'd drop this as rather noisy. If the retry is a reasonable thing to do, we probably don't
-> want to bother userspace with it. If it indicates a hardware problem, just fail if
-> it doesn't work first time.
-Will change it as well. There is no need to log warnings to the user space.
->> +		}
->> +	}
->> +
->> +	if (!shadow_regs_valid) {
->> +		dev_err(data->dev, "Invalid shadow registers values\n");
->> +		return -EIO;
->> +	}
->> +
->>   	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
->>   				 ADXL355_POWER_CTL_DRDY_MSK,
->>   				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
->
-Will wait for the response and then send V2.
+Hi Krzysztof,
 
-BR,
-Andy
+On Thu, Sep 11, 2025 at 09:33:25AM +0200, Krzysztof Kozlowski wrote:
+> On Wed, Sep 10, 2025 at 10:57:08AM +0300, Petre Rodan wrote:
+> > Set the interrupt type to rising edge instead of high level.
+> >=20
+> > Quoting from the datasheet:
+> >=20
+> >  "If at least one of the configured conditions applies, an interrupt
+> >  (logic ???1???) is issued through the INT pin of the sensor."
+>=20
+> I don't see how this explains/suggests raising edge.
+
+well, I want my driver to react directly at the transition from lo to hi
+(aka rising edge) of the INT signal.
+
+why?
+1. by default the latch register is disabled, thus the master (my driver) i=
+s not
+expected to ack or clear any interrupt flag. the sensor controls when the I=
+NT line
+deasserts. for instance during a tap interrupt the bottom half handles the =
+rising
+edge condition after 250-300us and the irq gets deasserted by the sensor 15=
+0-300ms
+later without any other interaction from the driver.
+
+which means that the time interval the trigger is asserted for can not be
+controlled by the master (without tweaking the latch register).
+
+2. there is no scenario in which an irq trigger that has been asserted befo=
+re probe()
+needs to be handled.
+
+3. there is zero reason to handle one event multiple times.
+
+these would be my reasons for gravitating toward edge triggering.
+
+best regards,
+peter
+
+--2cmfI1rv6oAUibTR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE2Ap/wXYVGTXsPl+pzyaZmYROfzAFAmjCnAwACgkQzyaZmYRO
+fzCVNRAAmb7ecrz94S7Z36WmxRahEyaNxBdVHFuWFgatVkJUY6AyhP00nePzZqpv
+2LFOfqEoMVAj4NWewxK+ls7WoNT50I/xRfIzPcxJrkSCfBq9uwcrLFApMymSILfM
+Sr/NBf5/Z61Xzjerh3id63IBfuNXz8CyjbajlduCfjZoN00GQ5DXpKDh4i9rgWpc
+AeZ0AEOeTyMTRgb9TRLnJSccgMTIf3Y2z29r7HQ+d2uwVzeOxkJqWG5H00+SgH6T
+G5yOHJFhHSz6grlJC1tP1PYhITJtRTcxydly7D6SVAznpR4bTigT0wR9+c1MjbBf
+FuIldPd6WyxTqUDeGPUSTYADWq57P0E5zDiXHO4NGnL86cW1+ullOGmTC394O+ft
+y6Lqcuuh7OTw8ysFjwBJrLNGkiFwRHVloEBTuK7hd7G6m7x1DxyH18Fnec9J570n
+aZPuNNEZy0U70Z7AsP1nJG45pvyp1EsPf/3tVQWCGbfzbjfA9bSthCbKTgv7iz3R
+ridMpuEkQUug7JtQ72lLFpN9mbTbv+iWGg+u6NwkjlKQixSX2rl8W36hBmed2Ux8
+0mQX/QtvnZAnGnZovxsrMnjt9qRLqwtbYC1YeE1pPsLwAVLtCF4XdjLCghnaKaFv
+Pqh0OSUg3NKmBMP+eLBRAQq9ZdmRCPDWip2Q4C/DeL/dd7Ku4tU=
+=SUUJ
+-----END PGP SIGNATURE-----
+
+--2cmfI1rv6oAUibTR--
 

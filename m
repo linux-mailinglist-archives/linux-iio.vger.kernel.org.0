@@ -1,142 +1,181 @@
-Return-Path: <linux-iio+bounces-23982-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23983-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA810B532A2
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 14:44:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BA2B532D7
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 14:55:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8A9B7BAAB6
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 12:42:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AF361C885A7
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 12:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1830C324B1A;
-	Thu, 11 Sep 2025 12:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B556324B22;
+	Thu, 11 Sep 2025 12:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/ZfSOA4"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i0HYpqA9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B908322DB7;
-	Thu, 11 Sep 2025 12:43:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C767322DAA
+	for <linux-iio@vger.kernel.org>; Thu, 11 Sep 2025 12:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757594636; cv=none; b=RVEJdzBUUYvPSuQ8HXgfXTVriLtXR2CQUIwJZV09KxMjJ9HSs7PIKMo9V1LnftGxZ6th1hNA0lCvUd2te/2CzS0Pgv9jd4i4/hD/X2G0I6vc7CsriF9R992g1w7RKf7PJnBt8BENSHXk+g7C5UoiP0J589WyKzwR0fjl+Qail4k=
+	t=1757595306; cv=none; b=lgcLy+CjlVXAf9m/kSXm8JtN1ggC2Q6xSX/DdC0eLuVTpvKtf9QoCk7+G1Cf+mkm1Qg42F9J/wBlklQdXJjg+wnfxmYlVvCT6q2PUwaJ9tcRzEls/Me0ZejJBEloo3VtlV4uSz/fAMdSvQixixXpmHFKe36lrO1Zd5fel/W2zzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757594636; c=relaxed/simple;
-	bh=xe9Gywa0nrV57XMMQehx9rCXvTi1V7YVWIVSt+PJfi0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SXpRJbaE4N4Qd1LHhCRS418Cair9SceVmBlcFcwlAtrFuU8hUT2Qkwbb/CxPg+T0bTUF1p05KwKxC6WRP+SFF4B1Y+odz1KXewvAiQHW/3VrtB9Gf27VmuhAgn+IH20dvM1/OEM6Z/XU96VSdmDfAXQAUvEdmj9PyHjTVNe/PGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/ZfSOA4; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3df3be0e098so482732f8f.1;
-        Thu, 11 Sep 2025 05:43:54 -0700 (PDT)
+	s=arc-20240116; t=1757595306; c=relaxed/simple;
+	bh=2oSOqVZN2yEJdOr1yjJzjaX0EOiSKgZ7QouF6tLg8hI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PAh/cOgCJASGNN9Dw9Lb97XwLbh+LP7CNguc0fuAQgXI1031UdWBFVdsPYazGifF0Jsd/vrvgz11c1lkTcTog+r5kVhSIeX3oZtpBvcev4dwPts5BUy48jOsNyjFlHBlKywr0T1x1xK2uHStSC0ydYm4XWr2ZqbOroS7B6n/vo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i0HYpqA9; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3e7643b0ab4so6542f8f.2
+        for <linux-iio@vger.kernel.org>; Thu, 11 Sep 2025 05:55:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757594633; x=1758199433; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ffstATfAOIYcJlHHnicc/Ajw/zJxaIpci9UFmXyAMeo=;
-        b=m/ZfSOA4i6JwaZtVe0X8vsbmVMQCJklHAfVlEDSFYh/y2AActfVUX0FF47m5M1uV38
-         o1+k6YPxVle4sdrQDMV8ONfH+WJLXN3wmahZ6ic+jNlfGiaj9inlKFPgBRiEfHV3gBqU
-         IjpCeJxeVqDZ7d2//eILa+JA+cdGsCRU/GWbW6EE//0aOmDOoabmIG82npQ5drYSV2Wb
-         Ztr+SVjiXLmtNRDmjxDUbb7j7fINPrxBZBm5//wbsk3uPh1xrl75kG4Xod+DCftREeoG
-         BEyv423tUhGVi0K0EaZe5/ig2nyVgI0ojEOm+PXAwmri2ZHxg4oxL0BbCFyJKDBTeTb9
-         bNAA==
+        d=linaro.org; s=google; t=1757595302; x=1758200102; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lzHYWAUSXTU099HyzOJQWZd7CmwZnR6rVbbpZB00I6A=;
+        b=i0HYpqA9pIZnYpH66vlaiYOoUVo2UcmMd8R1bZO1Br3fDvHP+XPLOWDweEnV9BG28l
+         KMKIHIzqJVThkhBxjoonazAog5ojh8jILz2Ho5p9H+2irfGIsTAq0VF6jqSvTTlWl01g
+         daNCOngDBz+dKWsV76O8rk3udNhCD1QFVtAgU6K3NgDa5iwuwjL7rUAeKgeDyixhotbb
+         6/Zj08lQJtTUQJXRd2ABrbVpg/boX6pgUxdq32ovPgeZVfgE1iS/GGFX9vbhi6mks5Ae
+         cwksYUyX966LFxtasKaaA4ifA+3ZkJLpg8IGObzFFsaohT04aIjla/ZJP0AxSMcBUMxk
+         tDqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757594633; x=1758199433;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ffstATfAOIYcJlHHnicc/Ajw/zJxaIpci9UFmXyAMeo=;
-        b=I0to3CdtnwQ2mGpH/CzNL+OVUdNb+jFoj1RsOPgsB4lKIO8KnFkhmUHfUC2MOIwmfj
-         D3ef6vE+cUl8P4IQ7BIVeR2f0r7gx5JxFaSSwPuf/yduT4d1A2NRL5ElsG7AL7T+Gk7H
-         JDcJjobWIQbUuBBLBhxTNfkQu1SXKmiAEZ9fP5mXKC+hp8bA6BKrYz8YcLvX+arws6XC
-         rmIklx3+CG1+Guev9pWRnTV1+gmBCqfDIhqbvu/t+KuMQMwsivQOFDIbJhsQS0kteazl
-         xUdzjw52F/KhV3K3WoaaTcCGbrrgaq19J3L083wHPVXJ4b0Rrx4z7bWLtk4loi6ylRXv
-         USrA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdALz3eWSpYNPqigNUW2A7UjsqqopqngTfpjhbX/3XSed8kKJOl9jAo0acfMjRwYW+BCbXNLa9mr7jRb4b@vger.kernel.org, AJvYcCW/WeF58Ww5T+VNFXQzGgIlWVvTLYOQdFP72fHBAmYrrR5CGr0Afkx9UAZh79Hz6vGAXGIKplcC4fRb@vger.kernel.org, AJvYcCWYg5fLsU4CstDyL5jU9+pINYT+Qy+Q4GMee9o7M6UNMVZwWXqgUmdbHwka1lghU+dnxqUGDXsuWzej@vger.kernel.org, AJvYcCWyoSXcEg8/73Fsu/lVV2gjVb8d73DUvAVIZ7E+YNJHmLPGoPuu/EmHlStqIAJ9N2rMJDIJM5E3nF5IPe8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLsM/RrwheygXcjoJZTVXkGl6qdj8lLAd/wyWghkP6+J64YKWb
-	A+jDiQ/MQarfdfzaAcLRcMjFjaBFQvocMwB+3/9hwE/S3KYvytm/PP3m
-X-Gm-Gg: ASbGnct6m+gXJiga/7cwEi4/UdT8oWCOLinmFjFI53aFMIvAwI/7yO1EZBucjOJI8E7
-	Y6BQXGlOH+Re6ust18iS8VlFnvWsplM3HttD7mPxfIZ91hrlKHyFMo8B4eWsRVPHC+VYhI29OC1
-	cA/2tjmKcTtO2KNxuefXpLcZcymj/aVsgVBla+sR52BFhsCmaLUOELZGjnr1+v6hBoeNt51JG97
-	2lQ7Kld7oKSxL5C9i1dsP3TElVz5zEFZwULgtv6az0HJJoXuk0+ehqXRtpHZVmktexhMgnhWcz0
-	nF5831uOR3zB4E6tSQuUqVkDJU8uCjcwWy1LYZ3K9E1EuMODeCL3Ihe2wczGomZN10cDi1fdB4M
-	jcxiphIu0NLGP0KVeRLgNXH6xYUB+/ty0O1DhexEN5SJ36Iss2p9aCnuWa8ZruYJEIKMGix9qQd
-	ua
-X-Google-Smtp-Source: AGHT+IHMo/U3BdX8IVk6itPiCLbgeG+HLRPTKaSeSv6yYfTnMgD79N39xh4sXUrfzCHQln7ROZ0dMg==
-X-Received: by 2002:a5d:5f96:0:b0:3e0:43f0:b7ad with SMTP id ffacd0b85a97d-3e6425eb809mr13914249f8f.18.1757594633350;
-        Thu, 11 Sep 2025 05:43:53 -0700 (PDT)
-Received: from Radijator.localdomain (93-143-13-188.adsl.net.t-com.hr. [93.143.13.188])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e03729c76sm22591495e9.6.2025.09.11.05.43.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Sep 2025 05:43:52 -0700 (PDT)
-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <dujemihanovic32@gmail.com>
-Date: Thu, 11 Sep 2025 14:43:46 +0200
-Subject: [PATCH v4 3/3] mfd: 88pm886: Add GPADC cell
+        d=1e100.net; s=20230601; t=1757595302; x=1758200102;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lzHYWAUSXTU099HyzOJQWZd7CmwZnR6rVbbpZB00I6A=;
+        b=rECPz4vUr8Sq2Sr9xoqY5dBGQzCithUvOwQSm3/TT3IPihUDa+chTW9mPF/st3butH
+         fRNrk7QQD5YLNP5IlbKPsqnuuDTMq2xn9r6KCg7tdIl/ore4TqvR8DH6w4VRuiLoa5xD
+         CY3b7z/LT6WEP/FDFQ2VFxLPqYb8GxUWTR1QM+2KADAwQ8DCGXmJByh193e60/+ZV0kM
+         lHLvugeaEQOPQVxypI+K/ZPK6xoOpxLW5uqVUODm60r1XrLLlmSJoqBGucHkHhKRV7ft
+         2nuhceY9cI49xBx69oDYg24+SOrQ1+XM13c2roZD1FlrNr7wTkvZKaKdar1S19Qv+1aR
+         JorQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUtixBbmVsy22HNb+cA3e66Xc1h4gDrDmMzxEf2lSkIXX+a6tSAbuy1xQkqn8h0A1bfx4KRE/3L+Jo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywei+fBaYLcge4HVKHZwM49rnrLUVNRmPgt0and0l5MKdrQQcs2
+	RCi2ZAF9K+BlSuXA2J3tslMDbKLPdmLIGy+0GjMGgKCJCtQ5t56dZjnrAnVLmmriuAw=
+X-Gm-Gg: ASbGncvQFTWlrgAzKgcsE6Dr7zeZ3PJw81IouD120+xk/6HydJqVjYv/hrE0YweWGP2
+	MwJx+GvGwDfXYMyfMD51Ryh+AmFXMJew3nWAefhD6lULC7aiQZfT6Egj5/RDn/qirCwbEHiH28/
+	dnp5kJR4hf5Hj5r4e5JAa7zOjPt2d3XGYge4hNHiAGKVuYnsR2kDPCRuQvsHQY8wCgq3VMx3W/S
+	qe3o3FFLoxVAINqc6hq1ix3VbjxWMll0LF3HYCaye6C2+EegkkI2rBgYU0VNFCOFRY9v4ahGBUG
+	7aeT9HNA1my47HlE5WAHwL3XUHRoZlAOcR0S0NP1TXaQZmLodDomjSCBcTPwbGsucMjoKX1Bxej
+	J4xIGi+OSFaNUp9YGGGRbuTqcS8rEeDd5e4omJ/Ud9JSp1LP4J31Wykq7fwrLnwO3T5EAj/8ePc
+	nLsW5jdQFs7jKRdZnPX7iPykI=
+X-Google-Smtp-Source: AGHT+IEebi/zE5XDYf831iEgQZ391cMJunsa1tiSBIWMBmOGscKQgCSQqBnDSCMdT7jr02fwbzNWdQ==
+X-Received: by 2002:a05:6000:2003:b0:3e4:bb5f:ee6d with SMTP id ffacd0b85a97d-3e641a6015bmr16847418f8f.15.1757595301674;
+        Thu, 11 Sep 2025 05:55:01 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:d521:838e:7c69:f457? ([2a05:6e02:1041:c10:d521:838e:7c69:f457])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3e7607d7593sm2360205f8f.43.2025.09.11.05.55.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 05:55:01 -0700 (PDT)
+Message-ID: <b4d2ad54-54d5-4c26-be49-b6ac671683d2@linaro.org>
+Date: Thu, 11 Sep 2025 14:55:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] iio: adc: Add the NXP SAR ADC support for the
+ s32g2/3 platforms
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
+ linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
+ ghennadi.procopciuc@oss.nxp.com
+References: <20250910155759.75380-1-daniel.lezcano@linaro.org>
+ <20250910155759.75380-3-daniel.lezcano@linaro.org>
+ <20250910183212.6640e662@jic23-huawei>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20250910183212.6640e662@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250911-88pm886-gpadc-v4-3-60452710d3a0@dujemihanovic.xyz>
-References: <20250911-88pm886-gpadc-v4-0-60452710d3a0@dujemihanovic.xyz>
-In-Reply-To: <20250911-88pm886-gpadc-v4-0-60452710d3a0@dujemihanovic.xyz>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Karel Balej <balejk@matfyz.cz>, 
- Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: David Wronek <david@mainlining.org>, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje@dujemihanovic.xyz>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=797; i=duje@dujemihanovic.xyz;
- s=20240706; h=from:subject:message-id;
- bh=9JhG6l9aYXd0tr5rpMP/JH7+4zmVZlrSGb616SvhYjU=;
- b=owGbwMvMwCW21nBykGv/WmbG02pJDBmHjjDWzL4o6v6r5sgz0TdidX4tMufuzUvnuGqQwDVLX
- +t/e+GFjlIWBjEuBlkxRZbc/47XeD+LbN2evcwAZg4rE8gQBi5OAZhIbw0jwwZHC3/Hx2lHXuQ5
- c1qom1wreretz323vIxBVk+JsXbFVIa/Arfv1LXV3VFzepunHDJTqvhgd/fHrsMvPz+dyH6icIY
- qPwA=
-X-Developer-Key: i=duje@dujemihanovic.xyz; a=openpgp;
- fpr=6DFF41D60DF314B5B76BA630AD319352458FAD03
 
-From: Duje Mihanović <duje@dujemihanovic.xyz>
 
-Add a cell for the PMIC's onboard General Purpose ADC.
+Hi Jonathan,
 
-Acked-by: Karel Balej <balejk@matfyz.cz> # for the PMIC
-Signed-off-by: Duje Mihanović <duje@dujemihanovic.xyz>
----
-v2:
-- Sort cell names
----
- drivers/mfd/88pm886.c | 1 +
- 1 file changed, 1 insertion(+)
+thanks for the review
 
-diff --git a/drivers/mfd/88pm886.c b/drivers/mfd/88pm886.c
-index 39dd9a818b0f0e1e5839f76768ff54940f4cefa5..e411d8dee55420e10b6d7ad7069576c681360de1 100644
---- a/drivers/mfd/88pm886.c
-+++ b/drivers/mfd/88pm886.c
-@@ -35,6 +35,7 @@ static const struct resource pm886_onkey_resources[] = {
- };
- 
- static const struct mfd_cell pm886_devs[] = {
-+	MFD_CELL_NAME("88pm886-gpadc"),
- 	MFD_CELL_RES("88pm886-onkey", pm886_onkey_resources),
- 	MFD_CELL_NAME("88pm886-regulator"),
- 	MFD_CELL_NAME("88pm886-rtc"),
+On 10/09/2025 19:32, Jonathan Cameron wrote:
+> On Wed, 10 Sep 2025 17:57:56 +0200
+> Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+
+[ ... ]
+
+>> +/* Main Configuration Register */
+>> +#define REG_ADC_MCR(__base)		((__base) + 0x00)
+> 
+> I'm not really convinced these macros help over just having
+> readl(info->regs + NXP_SADC_MCR_REG);
+
+That is really a matter of taste :)
+
+I used to create this format in order to stick the macros with the 
+debugfs register code which is not part of these changes. There is a 
+similar format in drivers/clocksource/timer-nxp-stm.c or 
+driver/thermal/mediatek/lvts.c IMHO is less prone to error than base + 
+REG all around the code.
+
+Do you want me to convert all the macros to info->__base + MACRO ?
+
+[ ... ]
+
+>> +static const struct iio_chan_spec nxp_sar_adc_iio_channels[] = {
+>> +	ADC_CHAN(0, IIO_VOLTAGE),
+>> +	ADC_CHAN(1, IIO_VOLTAGE),
+>> +	ADC_CHAN(2, IIO_VOLTAGE),
+>> +	ADC_CHAN(3, IIO_VOLTAGE),
+>> +	ADC_CHAN(4, IIO_VOLTAGE),
+>> +	ADC_CHAN(5, IIO_VOLTAGE),
+>> +	ADC_CHAN(6, IIO_VOLTAGE),
+>> +	ADC_CHAN(7, IIO_VOLTAGE),
+>> +	IIO_CHAN_SOFT_TIMESTAMP(32),
+> 
+> Whilst we only insist on monotonic numbering, putting it all the way down
+> at 32 seems excessive. Why not 8?  Perhaps a comment if this is to avoid
+> moving it for some future feature.
+
+The ADC has 8 channels for external acquisition however others channels 
+8->31 are described as reserved. They may evolve in the future to more 
+channels. That is probably the reason why 32 is used here.
+
+[ ... ]
+
+>> +	indio_dev->name = dev_name(dev);
+> 
+> This should be the 'part number'.  That is a little ill defined
+> for a SoC integrated ADC, but generally not what we get from dev_name()
+> on the platform_device.
+
+Sorry, I don't get the comment. If I refer to the different drivers 
+there is not consistency with the iio_dev->name.
+
+rtq6056.c:      indio_dev->name = "rtq6056";
+rzg2l_adc.c:    indio_dev->name = DRIVER_NAME;
+sc27xx_adc.c:   indio_dev->name = dev_name(dev);
+mt6359-auxadc.c:  indio_dev->name = adc_dev->chip_info->model_name;
+mcp3911.c:      indio_dev->name = spi_get_device_id(spi)->name;
+
+Are you suggesting to use the compatible part number ?
+
+	indio->name = "s32g2-sar-adc";
+
+
+
 
 -- 
-2.51.0
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 

@@ -1,81 +1,48 @@
-Return-Path: <linux-iio+bounces-23983-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-23984-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24BA2B532D7
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 14:55:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D784B5332A
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 15:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AF361C885A7
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 12:55:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F1A75A4A87
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Sep 2025 13:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B556324B22;
-	Thu, 11 Sep 2025 12:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C8C324B0C;
+	Thu, 11 Sep 2025 13:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i0HYpqA9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pb1dCeLi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C767322DAA
-	for <linux-iio@vger.kernel.org>; Thu, 11 Sep 2025 12:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9B561FFE;
+	Thu, 11 Sep 2025 13:07:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757595306; cv=none; b=lgcLy+CjlVXAf9m/kSXm8JtN1ggC2Q6xSX/DdC0eLuVTpvKtf9QoCk7+G1Cf+mkm1Qg42F9J/wBlklQdXJjg+wnfxmYlVvCT6q2PUwaJ9tcRzEls/Me0ZejJBEloo3VtlV4uSz/fAMdSvQixixXpmHFKe36lrO1Zd5fel/W2zzE=
+	t=1757596030; cv=none; b=o5jjKQa2VkjibvV+KEk/xtUr3aIHJ7cxJm8rDCtmP+n88JsCQQgBI3KHHggjEPHGhabLuLJl7I3ektVRtWlxI7reYu/64OLbtuHSq4B21lFDZvUIDhqk+VMVlk0qpsHrJDw7usBPuOIMEgHtUaESfBaf2Sxxwgjk8NdIBNBQpk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757595306; c=relaxed/simple;
-	bh=2oSOqVZN2yEJdOr1yjJzjaX0EOiSKgZ7QouF6tLg8hI=;
+	s=arc-20240116; t=1757596030; c=relaxed/simple;
+	bh=RWKhIIzKw74Ldz2LKrbaS8ybBgR7LLoijT68vLLdbEw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PAh/cOgCJASGNN9Dw9Lb97XwLbh+LP7CNguc0fuAQgXI1031UdWBFVdsPYazGifF0Jsd/vrvgz11c1lkTcTog+r5kVhSIeX3oZtpBvcev4dwPts5BUy48jOsNyjFlHBlKywr0T1x1xK2uHStSC0ydYm4XWr2ZqbOroS7B6n/vo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i0HYpqA9; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3e7643b0ab4so6542f8f.2
-        for <linux-iio@vger.kernel.org>; Thu, 11 Sep 2025 05:55:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757595302; x=1758200102; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lzHYWAUSXTU099HyzOJQWZd7CmwZnR6rVbbpZB00I6A=;
-        b=i0HYpqA9pIZnYpH66vlaiYOoUVo2UcmMd8R1bZO1Br3fDvHP+XPLOWDweEnV9BG28l
-         KMKIHIzqJVThkhBxjoonazAog5ojh8jILz2Ho5p9H+2irfGIsTAq0VF6jqSvTTlWl01g
-         daNCOngDBz+dKWsV76O8rk3udNhCD1QFVtAgU6K3NgDa5iwuwjL7rUAeKgeDyixhotbb
-         6/Zj08lQJtTUQJXRd2ABrbVpg/boX6pgUxdq32ovPgeZVfgE1iS/GGFX9vbhi6mks5Ae
-         cwksYUyX966LFxtasKaaA4ifA+3ZkJLpg8IGObzFFsaohT04aIjla/ZJP0AxSMcBUMxk
-         tDqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757595302; x=1758200102;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lzHYWAUSXTU099HyzOJQWZd7CmwZnR6rVbbpZB00I6A=;
-        b=rECPz4vUr8Sq2Sr9xoqY5dBGQzCithUvOwQSm3/TT3IPihUDa+chTW9mPF/st3butH
-         fRNrk7QQD5YLNP5IlbKPsqnuuDTMq2xn9r6KCg7tdIl/ore4TqvR8DH6w4VRuiLoa5xD
-         CY3b7z/LT6WEP/FDFQ2VFxLPqYb8GxUWTR1QM+2KADAwQ8DCGXmJByh193e60/+ZV0kM
-         lHLvugeaEQOPQVxypI+K/ZPK6xoOpxLW5uqVUODm60r1XrLLlmSJoqBGucHkHhKRV7ft
-         2nuhceY9cI49xBx69oDYg24+SOrQ1+XM13c2roZD1FlrNr7wTkvZKaKdar1S19Qv+1aR
-         JorQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUtixBbmVsy22HNb+cA3e66Xc1h4gDrDmMzxEf2lSkIXX+a6tSAbuy1xQkqn8h0A1bfx4KRE/3L+Jo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywei+fBaYLcge4HVKHZwM49rnrLUVNRmPgt0and0l5MKdrQQcs2
-	RCi2ZAF9K+BlSuXA2J3tslMDbKLPdmLIGy+0GjMGgKCJCtQ5t56dZjnrAnVLmmriuAw=
-X-Gm-Gg: ASbGncvQFTWlrgAzKgcsE6Dr7zeZ3PJw81IouD120+xk/6HydJqVjYv/hrE0YweWGP2
-	MwJx+GvGwDfXYMyfMD51Ryh+AmFXMJew3nWAefhD6lULC7aiQZfT6Egj5/RDn/qirCwbEHiH28/
-	dnp5kJR4hf5Hj5r4e5JAa7zOjPt2d3XGYge4hNHiAGKVuYnsR2kDPCRuQvsHQY8wCgq3VMx3W/S
-	qe3o3FFLoxVAINqc6hq1ix3VbjxWMll0LF3HYCaye6C2+EegkkI2rBgYU0VNFCOFRY9v4ahGBUG
-	7aeT9HNA1my47HlE5WAHwL3XUHRoZlAOcR0S0NP1TXaQZmLodDomjSCBcTPwbGsucMjoKX1Bxej
-	J4xIGi+OSFaNUp9YGGGRbuTqcS8rEeDd5e4omJ/Ud9JSp1LP4J31Wykq7fwrLnwO3T5EAj/8ePc
-	nLsW5jdQFs7jKRdZnPX7iPykI=
-X-Google-Smtp-Source: AGHT+IEebi/zE5XDYf831iEgQZ391cMJunsa1tiSBIWMBmOGscKQgCSQqBnDSCMdT7jr02fwbzNWdQ==
-X-Received: by 2002:a05:6000:2003:b0:3e4:bb5f:ee6d with SMTP id ffacd0b85a97d-3e641a6015bmr16847418f8f.15.1757595301674;
-        Thu, 11 Sep 2025 05:55:01 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:d521:838e:7c69:f457? ([2a05:6e02:1041:c10:d521:838e:7c69:f457])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3e7607d7593sm2360205f8f.43.2025.09.11.05.55.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Sep 2025 05:55:01 -0700 (PDT)
-Message-ID: <b4d2ad54-54d5-4c26-be49-b6ac671683d2@linaro.org>
-Date: Thu, 11 Sep 2025 14:55:00 +0200
+	 In-Reply-To:Content-Type; b=N2UZnypAev0kJDZdnkLXLcoFco9B7Fm/EV30qaCGohzPv81NC1BZZtLKc3HNz7AiSb7PipEGEVp4wGNu6zSpEEqBgwGUS9vr3HeiwpffGGKUhNX4qrEP78Y8X03XRYl6Ph2Bs39OVIIK4erlA0+cPTCWcAr2Fu856J/AGHo6GdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pb1dCeLi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65712C4CEF8;
+	Thu, 11 Sep 2025 13:07:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757596030;
+	bh=RWKhIIzKw74Ldz2LKrbaS8ybBgR7LLoijT68vLLdbEw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Pb1dCeLieglj3LY662S/zagkYDg6b+Reom8hm93YAod/fn+IlJZxmiPkr6DtVR5kR
+	 JZjILz0Q+viONNkBiBkq30jtzdGvM4EYUlM7ZhFI6/LLQMNNGZjRzSWCX+Nn99sdYJ
+	 jNVqI4miqoTC2S51iPBEn1jnEIB2YmxV00CaqrQ2pm7qdELNCC51z09GufEsMPLUsY
+	 Vaa6kNFKIM1McObmdnCWUrsVLxVSb++vJDOL/+NU0DC5ccsa8mtt+tOgLvGipICB/9
+	 9jh1I85BcXaqBkuknpf4VALTe5kjKd/92ZZFHrQ5fexims1n6iiSThurvJigJcibLZ
+	 qBNS0wL8R2Nbw==
+Message-ID: <391229ff-d85a-4707-8e7c-ea64e0e3d7cb@kernel.org>
+Date: Thu, 11 Sep 2025 15:07:05 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,99 +50,133 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: adc: Add the NXP SAR ADC support for the
- s32g2/3 platforms
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
- linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
- ghennadi.procopciuc@oss.nxp.com
-References: <20250910155759.75380-1-daniel.lezcano@linaro.org>
- <20250910155759.75380-3-daniel.lezcano@linaro.org>
- <20250910183212.6640e662@jic23-huawei>
+Subject: Re: [PATCH v2 07/14] iio: accel: bma220: reset registers during init
+ stage
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno S?? <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250910-bma220_improvements-v2-0-e23f4f2b9745@subdimension.ro>
+ <20250910-bma220_improvements-v2-7-e23f4f2b9745@subdimension.ro>
+ <a10a2f6d-6cb7-4922-b505-dc6994f0415f@kernel.org> <aMLCWFatVkePTxCa@sunspire>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20250910183212.6640e662@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <aMLCWFatVkePTxCa@sunspire>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
-Hi Jonathan,
-
-thanks for the review
-
-On 10/09/2025 19:32, Jonathan Cameron wrote:
-> On Wed, 10 Sep 2025 17:57:56 +0200
-> Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
-
-[ ... ]
-
->> +/* Main Configuration Register */
->> +#define REG_ADC_MCR(__base)		((__base) + 0x00)
+On 11/09/2025 14:36, Petre Rodan wrote:
 > 
-> I'm not really convinced these macros help over just having
-> readl(info->regs + NXP_SADC_MCR_REG);
-
-That is really a matter of taste :)
-
-I used to create this format in order to stick the macros with the 
-debugfs register code which is not part of these changes. There is a 
-similar format in drivers/clocksource/timer-nxp-stm.c or 
-driver/thermal/mediatek/lvts.c IMHO is less prone to error than base + 
-REG all around the code.
-
-Do you want me to convert all the macros to info->__base + MACRO ?
-
-[ ... ]
-
->> +static const struct iio_chan_spec nxp_sar_adc_iio_channels[] = {
->> +	ADC_CHAN(0, IIO_VOLTAGE),
->> +	ADC_CHAN(1, IIO_VOLTAGE),
->> +	ADC_CHAN(2, IIO_VOLTAGE),
->> +	ADC_CHAN(3, IIO_VOLTAGE),
->> +	ADC_CHAN(4, IIO_VOLTAGE),
->> +	ADC_CHAN(5, IIO_VOLTAGE),
->> +	ADC_CHAN(6, IIO_VOLTAGE),
->> +	ADC_CHAN(7, IIO_VOLTAGE),
->> +	IIO_CHAN_SOFT_TIMESTAMP(32),
+> Hi Krzysztof,
 > 
-> Whilst we only insist on monotonic numbering, putting it all the way down
-> at 32 seems excessive. Why not 8?  Perhaps a comment if this is to avoid
-> moving it for some future feature.
-
-The ADC has 8 channels for external acquisition however others channels 
-8->31 are described as reserved. They may evolve in the future to more 
-channels. That is probably the reason why 32 is used here.
-
-[ ... ]
-
->> +	indio_dev->name = dev_name(dev);
+> On Thu, Sep 11, 2025 at 09:35:52AM +0200, Krzysztof Kozlowski wrote:
+>> On 10/09/2025 09:57, Petre Rodan wrote:
+>>> Bring all configuration registers to default values during device probe().
+>>>
+>>> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+>>> ---
+>>>  drivers/iio/accel/bma220_core.c | 71 ++++++++++++++++++++++++++++-------------
+>>>  1 file changed, 49 insertions(+), 22 deletions(-)
+>>>
+>>> diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220_core.c
+>>> index b6f1374a9cca52966c1055113710061a7284cf5a..322df516c90a7c645eeca579cae9803eb31caad1 100644
+>>> --- a/drivers/iio/accel/bma220_core.c
+>>> -static int bma220_init(struct spi_device *spi)
+>>> +static int bma220_reset(struct spi_device *spi, bool up)
+>>>  {
+>>> -	int ret;
+>>> -	static const char * const regulator_names[] = { "vddd", "vddio", "vdda" };
+>>> +	int i, ret;
+>>>  
+>>> -	ret = devm_regulator_bulk_get_enable(&spi->dev,
+>>
+>>
+>> You just added this code in patch 6. Don't add code which immediately
+>> you remove. I understand you re-add this later, so basically it is a
+>> move, but such patch diff is still confusing.
 > 
-> This should be the 'part number'.  That is a little ill defined
-> for a SoC integrated ADC, but generally not what we get from dev_name()
-> on the platform_device.
+> sorry, but this is an artefact of 'git diff' I don't think I have no control of.
 
-Sorry, I don't get the comment. If I refer to the different drivers 
-there is not consistency with the iio_dev->name.
 
-rtq6056.c:      indio_dev->name = "rtq6056";
-rzg2l_adc.c:    indio_dev->name = DRIVER_NAME;
-sc27xx_adc.c:   indio_dev->name = dev_name(dev);
-mt6359-auxadc.c:  indio_dev->name = adc_dev->chip_info->model_name;
-mcp3911.c:      indio_dev->name = spi_get_device_id(spi)->name;
-
-Are you suggesting to use the compatible part number ?
-
-	indio->name = "s32g2-sar-adc";
+Don't think so. Before bma220_init() was above bma220_power(). After
+your patch bma220_init() is BELOW bma220_power(), so that's a move.
 
 
 
+> 
+> the bma220_reset() function was added to bma220_core.c with this patch and the
+> diff process merged lines from this new function with lines from bma220_init()
+> causing the apparent removal of the lines added in the previous patch.
+> if you look a few lines below your cut, the bma220_init() function contains the
+> code:
+> 
+> +static int bma220_init(struct spi_device *spi)
+> +{
+> +	int ret;
+> +	static const char * const regulator_names[] = { "vddd", "vddio", "vdda" };
+> +
+> +	ret = devm_regulator_bulk_get_enable(&spi->dev,
+> +					     ARRAY_SIZE(regulator_names),
+> +					     regulator_names);
+> +	if (ret)
+> +		return dev_err_probe(&spi->dev, ret, "Failed to get regulators\n");
+> [..]
+> 
+> Just for my curiosity, do reviewers apply the patches one by one to (a branch of)
+> the tree itself or do they provide feedback directly based on the diffs?
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Each commit must stand on its own, is reviewed independently and entire
+patchset must be 100% bisectable.
+
+
+Best regards,
+Krzysztof
 

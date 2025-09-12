@@ -1,105 +1,132 @@
-Return-Path: <linux-iio+bounces-24034-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24035-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6048B555E9
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Sep 2025 20:13:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDA9B5567F
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Sep 2025 20:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C1E5C68AF
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Sep 2025 18:13:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4AB1CC49A2
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Sep 2025 18:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8C032A818;
-	Fri, 12 Sep 2025 18:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B963A32F76A;
+	Fri, 12 Sep 2025 18:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nbYkJxVM"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Xo2q4+PC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D068F302CB2;
-	Fri, 12 Sep 2025 18:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8B21DDC1E
+	for <linux-iio@vger.kernel.org>; Fri, 12 Sep 2025 18:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757700786; cv=none; b=lS+AgaWKaR3bCpZ9AwbxXFYn2M50VVTW2kpF1LXdFWgB36g55CcC6d8mezmPn6k6SOGqqaRLrfXxXzJ0HsJSQYXbE9feQxDVLMQLyF12rT+neKtvpBtWuyEI6mWtt6RH069GS1KqO7vEyqABQO7KRox/4cdK4MiEhx35jAy5My4=
+	t=1757702442; cv=none; b=aNI1/oFlsl+JKamqgKaHhiKABf88sPnYedNLglgLuRXrR85J8hMY2sHPcJwsQtPODeC6MD5PCgva9lAKIc+cT4LKyGeKrSNS7BWAU+YPza4J6k2FieQkAHbtQa5Xire5bbNdZWU8guSjyNO+BqhdCQsiXuD5YiR9SrWwqEllx5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757700786; c=relaxed/simple;
-	bh=KzBalHut2NdaXieLtPuChsiLMyNBMoYrgZaoPy/g4G0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bC9GrohqvvE2KB9M7MbX9eCI8XYTyVTGXFgLNqQ0BJ9tCGzynvzPKo8nzvIwkAVjSmEixTK/SaNT5zWe8+xYl5iguh/HrVP34fYslH/hBnM2bHo8UzAD1KAHrrTBs2FI68TYW5olLnuyUlEM5SrJlL46DG1ybmePufLZTLuTdtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nbYkJxVM; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757700785; x=1789236785;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KzBalHut2NdaXieLtPuChsiLMyNBMoYrgZaoPy/g4G0=;
-  b=nbYkJxVM7I7wj9lYF/jGDSg6SDCoqI3aUzylaoDkZg4zoDdRjacSCm+Y
-   RkrfVU7DF7TTrGwMfxkwLWLQvEKC17EeNGAvrddNm5K6dn0d1Ms+Z3vT7
-   NHs5VS1UXluKclR1Z+LS4BK7g8d4P5ZIZJIA3VG3smFPQyBD8RUxgCwCk
-   Ei/4BFGVrjLMYGZe1O1K25mHQshcMvntO8L60Yuo5ZmhB7ggTAOUjpiLl
-   g/sDqZOh/7qep44VIJVXwyTjs+m8Fih0dJeqsDM2nY23CTRhw8shK5lL4
-   h9e+n0e7imRQP3vQqlWLb+h9ZUZoER60w8D5YpREX9M9BnP0jlv1eKRSh
-   A==;
-X-CSE-ConnectionGUID: GQcl75fOTumi5xvmFotSRg==
-X-CSE-MsgGUID: FwWXtPvwQb6kJevoKHRnQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11551"; a="63872890"
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
-   d="scan'208";a="63872890"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 11:13:03 -0700
-X-CSE-ConnectionGUID: /SHynvcgRLCgtsFra/ALfg==
-X-CSE-MsgGUID: 1RKQ/UDbQ7mUs0pTA58JaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
-   d="scan'208";a="174805124"
-Received: from smile.fi.intel.com ([10.237.72.51])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 11:13:01 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1ux8GY-00000002T4E-2TOb;
-	Fri, 12 Sep 2025 21:12:58 +0300
-Date: Fri, 12 Sep 2025 21:12:58 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH 1/7] iio: buffer: document
- iio_push_to_buffers_with_ts_unaligned() may sleep
-Message-ID: <aMRiqu0pEqX5SBHc@smile.fi.intel.com>
-References: <20250912-iio-doc-push-to-buffers-context-v1-0-c4aad013d96e@baylibre.com>
- <20250912-iio-doc-push-to-buffers-context-v1-1-c4aad013d96e@baylibre.com>
+	s=arc-20240116; t=1757702442; c=relaxed/simple;
+	bh=k00K2WIE6Ewqt/eZ5d9m+rjyZ1/wA4exwontTQ1IGR4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pUiAevNhCCZ9wpv/pQU4wQubYHXLaO97MKVur8TO+SvK9k/B0byfpIXGs+mO8Qjf1c6/s+0yesN9cyBcjvtOdAhRZhuwldWSJJRtb8WqtC3Z0ox+qNhF5SufRFYw/Jz6mbcVFtigWwlMNj2Zm0U1qXI+Esx0d5YdrMS/08djWt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Xo2q4+PC; arc=none smtp.client-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-621cc387bb8so173103eaf.1
+        for <linux-iio@vger.kernel.org>; Fri, 12 Sep 2025 11:40:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757702439; x=1758307239; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fr6WpPJO26szNguY0sxPUuMJDw0v1LfC514tjVSDNIA=;
+        b=Xo2q4+PCeo9u4UTGCA/pyhbJ2Ss2d9msCPz/2nL2xbx41Yscvra8tzBC/hMA3bddBT
+         PmnR09Yg7aqut0dIWwmPN193Cv3KWu+uNaIxWqtQZwS2/wNXDyqRnAAil0SzV3PGp7Ml
+         pUsUTuzBeN5HPRUFXv06/quJcOZg2KJ73Xy6H5nbT6guCkUyFex7sRgQkQTXE77FvkRt
+         rsxd0ewM6kjN/8VaeuLsW3njBby6Dp5W/iieMo3Jz2GEE1YXhTWv+KrGWLO8XeQ0trV1
+         JEhj4HA2ckJRuKDxHY7SGz93uNCjBOw0PCJzEl+cGcEZfAtUvZlQamDBy11YuAZTTkIJ
+         mjLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757702439; x=1758307239;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fr6WpPJO26szNguY0sxPUuMJDw0v1LfC514tjVSDNIA=;
+        b=RBPVE/rDxY0GqbTXs65pSCJgM06wgMKdfAIgKhW4fe+LQwQrk0MH8CBsP3tGiKN+Cz
+         2C4j2H4LGp9bnpzvh1AsLEboZ90tygfdOP+/obMPtHCOjHJ07vkGfyaG7yXxq6A3NWyu
+         Hlt46STbOJO1st6sGpNAKxK9URk7kT4BKNxRZlA17KKVof/jZsM9uoMRtxAH4dGw2ika
+         RayqNuM5P7lNtmb801yC/sMnOl5qfi6L2DdxlPEVbvJnFPiTVQYxxW5NNqWQUv+YpFL1
+         Rzd24yAHE/zQSs5fLDeuWwUp2vtTPeShfGIOz3/+jv7HUlA4rHeqCKk8Amao2WrwCVrG
+         FyuA==
+X-Forwarded-Encrypted: i=1; AJvYcCW/Izeu+4aN39fYN7zNaiw2GvoHKpdqT1CYtismYyNjXFCW5WrySkWXRLzk5PmgtEwX8UBRQT8/g2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaC7zyQEfsVpYA4SS7nmRrebzh6yjMpBKcbFM2ykiCgOEMhFez
+	FqhJr9tbGhchV4N7y5H7ch6cNeHokRZS+TgCx9g2zzuVgMnPoTdaKiDCRIswSJfyvC8=
+X-Gm-Gg: ASbGncufmu63wlsyuyJ8JACxmVOF8Owl1sptsacO2CXh/eLRwLGpc30WeCAM6Is/hiF
+	NWvnejDRjDDBybvpb4PTPso1mpg8nDhzOwXYFg+OF27XNM7la1dOsxSJGVWogbdLLChQLRdt7K3
+	Nc7Hf8n+kVtU9D3+i7RNQkfWpGGcA0Q8bx298z9kfTsDhoy1+s+bUgYNCHY54gZsGrnN0wdCq9k
+	45W19GDV46OleTpB61EN7Jz+x3lNvtnXvTnQ0QdWjibiq1I2AZJW07bF5/Wa128XkImaNXc17gI
+	sjQYA0CGLGbKWP1BhQJHSu1hHMSzFmwJ12OMzf32GDGfSsPOw1SXVwKDLqPVdfa7pMlLlZknxqL
+	iEc4Rr8bDaiR+yz5GFcOTawp1oOxxArkCrP3RIffH310CyseG1BYUd4Dr1SV0hbAPVPsEc1tmcG
+	+AR07PWXL31A==
+X-Google-Smtp-Source: AGHT+IGYgWI504crkZYqNYG2WaIQBqGpslOWvuZ65zJIIsRR4sKsnCoCflMDuHLa29qJHSoMBvw4uw==
+X-Received: by 2002:a05:6808:2389:b0:43a:2e17:3b98 with SMTP id 5614622812f47-43b8d88e3b4mr2010278b6e.7.1757702439155;
+        Fri, 12 Sep 2025 11:40:39 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:fdf1:f11e:e330:d3c1? ([2600:8803:e7e4:1d00:fdf1:f11e:e330:d3c1])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-43b828d2eccsm916131b6e.6.2025.09.12.11.40.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Sep 2025 11:40:38 -0700 (PDT)
+Message-ID: <7f71c489-410b-4fdb-9d78-9f2835c32379@baylibre.com>
+Date: Fri, 12 Sep 2025 13:40:37 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250912-iio-doc-push-to-buffers-context-v1-1-c4aad013d96e@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] iio: buffer: iio_push_to_buffers_with_ts_unaligned()
+ might_sleep()
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>
+References: <20250912-iio-doc-push-to-buffers-context-v1-0-c4aad013d96e@baylibre.com>
+ <20250912-iio-doc-push-to-buffers-context-v1-2-c4aad013d96e@baylibre.com>
+ <aMRiCvmGt27JEYBz@smile.fi.intel.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <aMRiCvmGt27JEYBz@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 12, 2025 at 11:05:52AM -0500, David Lechner wrote:
-> Add Context: documentation comment that
-> iio_push_to_buffers_with_ts_unaligned() may sleep because it calls
-> devm_krealloc().
+On 9/12/25 1:10 PM, Andy Shevchenko wrote:
+> On Fri, Sep 12, 2025 at 11:05:53AM -0500, David Lechner wrote:
+>> Call might_sleep() in iio_push_to_buffers_with_ts_unaligned() since it
+>> can allocate memory, which may sleep.
 > 
-> Also document Return: value while here.
+> It can or does it always do?
+> If the first one is correct, better to use might_sleep_if().
+> 
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Just below this in the function is:
 
--- 
-With Best Regards,
-Andy Shevchenko
+	if (iio_dev_opaque->bounce_buffer_size !=  indio_dev->scan_bytes) {
+		void *bb;
 
+		bb = devm_krealloc(&indio_dev->dev,
+				   iio_dev_opaque->bounce_buffer,
+				   indio_dev->scan_bytes, GFP_KERNEL);
+		if (!bb)
+			return -ENOMEM;
+		iio_dev_opaque->bounce_buffer = bb;
+		iio_dev_opaque->bounce_buffer_size = indio_dev->scan_bytes;
+	}
+
+
+Would it make sense to move the might_sleep() inside of this
+if statement rather than repeat the condition in might_sleep_if()?
+
+devm_krealloc() is the only part of this function that might sleep.
 
 

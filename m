@@ -1,118 +1,135 @@
-Return-Path: <linux-iio+bounces-24006-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24007-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BBBB541C4
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Sep 2025 06:51:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5EAB5421D
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Sep 2025 07:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 649853BF249
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Sep 2025 04:51:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79235567C0F
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Sep 2025 05:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451B826D4DD;
-	Fri, 12 Sep 2025 04:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A18D274B44;
+	Fri, 12 Sep 2025 05:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iQJP+BT4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EUv/zMzU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E93425A321
-	for <linux-iio@vger.kernel.org>; Fri, 12 Sep 2025 04:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CB723BCEE
+	for <linux-iio@vger.kernel.org>; Fri, 12 Sep 2025 05:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757652679; cv=none; b=fOExHKVKzvRJRWbk+UWfI0U+PAjC2H0lKl3Teaj90hmSzUpdoZRwOkEq9nCs9hDGQzB9gxlxBMdtbzwgJ5nhsJwsLy7qL13Jb90aB8n5RJGbVRhYuCifpYxstcLlVwVtaYW8c3R9cBjPY803oR37JgTjDYMUJ+nvcm/DX4wTAJQ=
+	t=1757655559; cv=none; b=MoHLiVhPYiG0djWpDizCn9Tdv62vkVZE97TzdXTna45w5KUqR6Gdf0K9XSQQwu/7rnSYKkBL6mHeDJzPFKvqpK5WtqXgJtRrKt0C9woZdb2ebiKiD+Eei8ILtETes06TpG4dHIkc1Qt0WtUMfCcYjhgg4jDlogHfjUv/N0U+3GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757652679; c=relaxed/simple;
-	bh=rlC6PlUTqNti3QT38c9nCMwO/b/NfFkTbVXEp0LGsdE=;
+	s=arc-20240116; t=1757655559; c=relaxed/simple;
+	bh=Cw4butNgp+M8PS0EaOjYSmn26rCmVDJqa5vIVv/kH7g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dw5jIjVooxs5FMzOo4AbtZriXcVs8qjOil+REXoX1CIR1UEyUy8gllmGYKGTShrhklAg23uThuQQPjGnL/wQDr8MFIYP4iWV/SZfukCRTrrYi+z8jKfAgJZhsK8YHTaXrSmA9Of8bvVbFgSKGWGG/27EkaYh9a833fG68+CnDo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iQJP+BT4; arc=none smtp.client-ip=209.85.218.42
+	 To:Cc:Content-Type; b=umerCc5t9NCYf24jrvNTIZzWVKBq/kkDBzgdEAbc0Vely4rdpAWJJfiCO7KL01b3SiK2ILRTHDdWxv0XsSy1R8lOli+xSWP6/kQLkCl6UU4RwaZUhFm+1COO/k743cjjtOx4EWIRh7KJ9Ea2X08AiDEJUopGngofac7o5ClrMAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EUv/zMzU; arc=none smtp.client-ip=209.85.218.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b043a33b060so217963566b.1
-        for <linux-iio@vger.kernel.org>; Thu, 11 Sep 2025 21:51:17 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b07c38680b3so66288166b.1
+        for <linux-iio@vger.kernel.org>; Thu, 11 Sep 2025 22:39:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757652676; x=1758257476; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757655556; x=1758260356; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rlC6PlUTqNti3QT38c9nCMwO/b/NfFkTbVXEp0LGsdE=;
-        b=iQJP+BT4JDTuFYGLe2C9ETUww/mDWcDdm/dD6BU79s32+7wuapeSnekkT5A4Q5mMh2
-         9t017CRhFfYGAh50j3Bo5HGlI8mYlKe9l2d3LNgxVf7IkRYc4tX3HsplrAvAlqkPgON6
-         roveD03FAQuU9RKstXKNj9J8UwNz3dW9A6zjHAys61z+c6X2AbR83ceJKiQITSpawLUe
-         UoBC0aocKuGyz/kvmArKlVgwqFoTXyrmLnhimW0jKaT25YRRHcRWLHmKcubnMEnkbizv
-         aI0GcDZZI6vUHpaYyCr7spjL/a/i7BmGIhTMtKzI4v/AdXICXIetxnT675k5DqRnNq1p
-         eCKA==
+        bh=vH0Afa714fvtVfmdaqCtg2gFW/ZwCcELG2I0LrcyEII=;
+        b=EUv/zMzUSfGcPSrn7giBDe1JM9vRpoGUhhVCt0+PS+YrQYn11+OBZm0D2wnsDWQ8mr
+         O1h/Mgjmoy3INkzzqnOZ2rReTTpqb0SNJZdDY7TsR/M/BSmuIni6peoPkwP9wmxb0pKm
+         B54qpz5Fet0ETabtUToj50QKrkBanEfTwtgib3Q1Q409cGpHLa6HaTEb1n2P0m1ZgUOy
+         K5Uut1niV0ogyucUCg6BarmIMq6tGl5+sjzK/+zHXdQC7u9kmCF7wKph2BvnhmEMRbO2
+         g1KgL0SmK1VpYjkmtGDWidqiT61NHp6r2xp4fKuKE9TlhhTee3bs0mEy3ZJudGhc1OYJ
+         CTfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757652676; x=1758257476;
+        d=1e100.net; s=20230601; t=1757655556; x=1758260356;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rlC6PlUTqNti3QT38c9nCMwO/b/NfFkTbVXEp0LGsdE=;
-        b=AmaqMcIyEuvzirjX8edgFnW1Kd0SHvFXwRK71BUYOadt31wPL1ZHrggr/cYX9Q4hj3
-         IBoAvbHPGUheLCnogqz9ayzVRzB2xHEJ6dpYTv5MBXuyNqMamLwOBGepMcQziP+48mWd
-         8rqS1kKvGWM1nDnZPl+ma9Sk5JtvJU++l7F820ZChUiXExokANG7IUjMNKeCcW5Y6L0h
-         6eW/mX+5GNCFuS4ylB/DRh8+XXZlLBSJG2JL9dcOWojHIbn6bM5U0blyCsbrESNbpBd+
-         R2+c/FDH5whVZvTYgI04ZeNHGD2J7UMexekLI8JiBhoCiw1BZGMWJ68iW9izQrMpiUpe
-         Bl6A==
-X-Forwarded-Encrypted: i=1; AJvYcCX1P2ZyccrAoXiT34b/2MMa7c69GOfB7PrUdV/r3x3F9qU9xQZnPQYg6MJjFi4n2hrrMVVsH47olM4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZIn/fWnXNY72Yq6PDWjz57+EQxCVbGf0VXismndbDfD4y7oWv
-	C4ck6N9SyfULoJ4yXhn8VO7q/CWUJdtT12PA4BxbpBHkbYZeAZHGWbeOInApjOTN8F9RADGLczk
-	H0l3mLoMIjTyZc5QU0acvRmE/maLq02hojbAKKZY=
-X-Gm-Gg: ASbGncsLb5BuVrV0DRLJiU5H6tHrZXhJ/FTwGdyOx0ZaNKv8VrGZdKKQin/BydDt0Mh
-	E+mOq4b07hYDqepE9c+syJAi7HxgCuTM0vdhacdOxqfyRLKBllBuRof8MPjdxwV/8a6HE+wicEE
-	NOJCvdzOhSFg+8U9eDtnO72MOR8bTNOxBvj/4q5capW7mUnQ6z8Y4E0aeuHvjjy2/O40bGsWdb/
-	9DSTtQ=
-X-Google-Smtp-Source: AGHT+IEgUmSC5kaO6kuCJj+eNxyTqCvM9aMgvLzfRI2xIXUT0aF83rS4s8nOYOwFNdVSWxdA5AcO9dn+Ynq1WJm1iEA=
-X-Received: by 2002:a17:907:9693:b0:afe:c1bd:b6d6 with SMTP id
- a640c23a62f3a-b07c353e733mr137553566b.5.1757652675933; Thu, 11 Sep 2025
- 21:51:15 -0700 (PDT)
+        bh=vH0Afa714fvtVfmdaqCtg2gFW/ZwCcELG2I0LrcyEII=;
+        b=GysGTmjqxp/oG68HO/wI/ttJyprxqlEZ3wY3eOOpacLr96RdgwJBmb0f6RaJyXzcbh
+         kKmpo8nBSIvKePYu1kyr8g11ZBLwYySr9pqQDzdNiOZs6/vaA/0FSAyMbsS90KFPadOn
+         wOdK1+M7RtGttfM3bcbI4huLKqg083ufVUjNfBOh14eUnT2ooAKY2xIJE4dmGcuryRik
+         YZdgB9Cs62atndUx9xrgVZPxiRm1GGxz/J4luv4FcuY5mKfXzG8RSbBwkZ9MpZpK9yDH
+         8h4zh0+JvreRq2WoFE3Qf+ODwDwZGT2nyUDY2Espbq1ZJw3SG3stJCho83rLMLnfbGVh
+         TbqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUg1GVx3YCrU/Fjz65GJtv4S+ZOPnTkxuTb94iIrwHYXTa6IALOlrQ9YZa5a/z16tz3FLPuRX4GC2s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5GPMgD0Ev1g4m4967A5rkZCWDtTJ9tbLKtM3PIsF/1mUJwmp0
+	G8o7+VAEG1Q4VdT0lNYgo/qaS/lRE7jovz4GofS3YMMTAN+9+42mKprc2atlS4ygEKPLziw7IdH
+	IdXLX3vmS4hiIfu4i0UYxaRmMtDavqdU=
+X-Gm-Gg: ASbGnctH65NJhDQdUKZnhYIaO8RdSK920IQjNdaN4vrDlvjApxGNAefzlx+ij4boy2L
+	mjsFStEv72GfaZki9Ca1NI5enhex1Jf9Hchz29+TmuNagvmm7HAepT/nqtW1l0j3wViF0AuT/hn
+	RodRBgQxjvJPW5elW3k9PwpD38xzv3d56bW8WgV2xBLEGOJSdbohCvjKjIy5Nsbsqgt6+Jffr/x
+	wdRr14RyEto6vJL+E8ZBgyA7Yhk
+X-Google-Smtp-Source: AGHT+IG60HJ4b1fJ4dk8St0WhJ1SX1AxKjx2gKZnbNVTZ59Vw6b7ERyt7G4PUyCug0AMO75WHmZcgdfhh1sgd5jaOJU=
+X-Received: by 2002:a17:907:76a5:b0:b07:c90a:8ade with SMTP id
+ a640c23a62f3a-b07c90acd21mr54196266b.20.1757655556307; Thu, 11 Sep 2025
+ 22:39:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250911-iio-adc-ad7124-add-filter-support-v2-0-b09f492416c7@baylibre.com>
-In-Reply-To: <20250911-iio-adc-ad7124-add-filter-support-v2-0-b09f492416c7@baylibre.com>
+References: <20250910155759.75380-1-daniel.lezcano@linaro.org>
+ <20250910155759.75380-3-daniel.lezcano@linaro.org> <d53b22d1-35d6-4fb8-ae56-3ba4953b64af@baylibre.com>
+ <ea57a466-97b3-49d4-8d1c-142fd49a0da2@linaro.org>
+In-Reply-To: <ea57a466-97b3-49d4-8d1c-142fd49a0da2@linaro.org>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 12 Sep 2025 07:50:39 +0300
-X-Gm-Features: Ac12FXylwjz_ZI_utuE9R2j7ogLYGeMVukWRZhDy75FP68KNOm2EIVd88U_p4II
-Message-ID: <CAHp75VdtVPzVxSLH=i+Hpze=mkTBvW_PVnhy-OT6xX47pGZdSg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] iio: adc: ad7124: add filter support
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 12 Sep 2025 08:38:39 +0300
+X-Gm-Features: Ac12FXwz8S94TfU3YcaY1R7trfgV194Ut6I1vQdt1Jx09BV9gffwQdAifTPMIRw
+Message-ID: <CAHp75Vc8u2N2AHWtnPRmRXWKN3u8Qi=yvx5afbFh4NLNb8-y9A@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: Add the NXP SAR ADC support for the
+ s32g2/3 platforms
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: David Lechner <dlechner@baylibre.com>, jic23@kernel.org, nuno.sa@analog.com, 
+	andy@kernel.org, robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org, 
+	linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com, 
+	ghennadi.procopciuc@oss.nxp.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 12, 2025 at 12:42=E2=80=AFAM David Lechner <dlechner@baylibre.c=
-om> wrote:
->
-> The AD7124 family of chips supports a number of different filter modes.
-> This series eventually gets around to adding support for selecting the
-> filter mode at runtime after first doing some cleanups to the existing
-> code.
->
-> The first 3 patches are just updating things to use newer APIs.
->
-> The 4th patch is addressing a shortcoming in the driver where the
-> sampling_frequency attributes were being limited to an integer value.
->
-> The 5th patch is the one that finally adds support for filter_type
-> and filter_type_available attributes.
->
-> And the last patch documents one new filter_type that was used that we
-> haven't seen before.
->
-> This applies on top of "[PATCH v4] iio: adc: ad7124: fix sample rate for
-> multi-channel use"
+On Fri, Sep 12, 2025 at 2:03=E2=80=AFAM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+> On 11/09/2025 22:10, David Lechner wrote:
+> > On 9/10/25 10:57 AM, Daniel Lezcano wrote:
 
-For non-commented patches
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+[ ... ]
+
+> >> +            /* iio_push_to_buffers_with_timestamp should not be calle=
+d
+> >> +             * with dma_samples as parameter. The samples will be sma=
+shed
+> >> +             * if timestamp is enabled.
+> >> +             */
+
+/*
+ * Btw, comment style for multi-line
+ * comments is wrong for this subsystem.
+ * Use this as an example, Also, refer to
+ * the function as func(), i.e. mind the parentheses.
+ */
+
+> >> +            timestamp =3D iio_get_time_ns(indio_dev);
+> >> +            ret =3D iio_push_to_buffers_with_timestamp(indio_dev,
+> >> +                                                     info->buffer,
+> >> +                                                     timestamp);
+> >
+> > Is it OK to call this with spinlock held? It looks like it can call
+> > devm_krealloc() which may sleep.
+>
+> It should be ok, devm_krealloc is in the code path of
+> iio_push_to_buffers_with_ts_unaligned(), not in
+> iio_push_to_buffers_with_timestamp()
+
+This is a good observation, can we document this in the respective
+kernel-doc:s please? Also add might_sleep().might_sleep_if() in the
+appropriate functions.
 
 --=20
 With Best Regards,

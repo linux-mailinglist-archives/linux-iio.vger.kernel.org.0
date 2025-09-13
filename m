@@ -1,139 +1,137 @@
-Return-Path: <linux-iio+bounces-24040-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24041-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2543FB556CD
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Sep 2025 21:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDE0B5609A
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 14:17:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8C5A1CC53B4
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Sep 2025 19:11:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4B1D1B23C51
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 12:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B424309EEC;
-	Fri, 12 Sep 2025 19:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396622848A0;
+	Sat, 13 Sep 2025 12:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Fh9xv9Qh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tTbqaubF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA07335BC5
-	for <linux-iio@vger.kernel.org>; Fri, 12 Sep 2025 19:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E601BEAF9;
+	Sat, 13 Sep 2025 12:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757704217; cv=none; b=I+eRnOqeMmDYwUFj4kpxJxv5YKmpm1JWHxdM2/aGvebteSZoPuqcjZWB3hEEK/smlJOXN8O5j0vkkgVzY4YP1Nu5yeS6xqKrsXKsecoCukTpl0q6cCAsCxo+5r2Bv+JyR/K136D8gqNZDXUv/TitXgefFLMnWRaTwDVHfzrMFZg=
+	t=1757765853; cv=none; b=bbe6aUOU6p++L4CTLYScjJKtMMlk2BiC7dKcllDC5KTV6M+q2rwPq1abosNk6cfQ1bvXscfkITiKPwiETH4p4pLeKpGOXu2X3mnBb9trcOD+QAVKHDzGzbmcrjwjVFpYBzRnYCBMIVnkcU5i1anNlHQPdc3ZgT89QoP1oy8IqxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757704217; c=relaxed/simple;
-	bh=22rZRQwccdDXCdWucL0md8nKZ5xUlhtkQsl5aauAsOM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sjyaeToNtERnC4/n/uYQ3A4N/mfTqrUi+ZeRGJrFbYL6bf1KHqS0rkEsiBnJkstnDR+Eo8xDgWjc1eOsZAvxOpG69eXFepiwmM8Kum8UjtTiJVF2daSO/RFTFDZapzvDJM4qigiKjADx0xZnRt0ugNTI+zMw1tKzNeY78qduZXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Fh9xv9Qh; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-30cce50dfb4so1705397fac.0
-        for <linux-iio@vger.kernel.org>; Fri, 12 Sep 2025 12:10:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757704213; x=1758309013; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wdlmWREl3KGVca0VuH2Pgk1lTP5tsygacI/dk5FYqvU=;
-        b=Fh9xv9QhDUtcPb0v2qovXrMRPKHInIIEbWfThs0u6NVMgo//LKC2JM3gYeLq8HUVyD
-         roVGjQdN7xx9nQyZD4Dj1ACdrt0HsQ1KqMPSUHtv1wUwlxskrruEg6qBOVXO+5YJQYcU
-         LOq4uJfzHdn6DXJD7CSJrakY9G2nDWGRGqCasyXBYn9ez8dbh3gmOJotaGseOAFD9e6N
-         TV9aXINt8VOX4hh+R81gyI6UcyxgIFO6h/mX/gNuH9qUDoABRG9FF1fmCMO3bJsicuJV
-         RGI+cI6GZn6OF2J2swDUikPjRbYnB6E/vc474M2O8bSBjfjuhX15HvDTgcHIbnaREqWt
-         UDVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757704213; x=1758309013;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wdlmWREl3KGVca0VuH2Pgk1lTP5tsygacI/dk5FYqvU=;
-        b=dBVg8bkMxbO1HxI8Y+X0WeUpVus8sTqFVYSNTFuljNU9FSuYzZ9qEuRpPU8+WB35i5
-         MvSytLftEl3c95XHPqD+lwC3hpVH7NEAvFD+QpaTj62KjWSBDQFvXX0tpz6pcowDMEcT
-         IwLHisscP4xKMkO9tPfD6sQZK11PgtMBNow7oiwh0KZhf5u/tVnxoVCq2LbA21VWsUN7
-         P+EfSO7TDuzjvDLUx0YBU1T6co1u894KI1CgfkHvWGaZsHZGNTVkGH8UWt98f8LD2QuJ
-         FRhoyLl6SzGYF7wKoPKb/Bjb5JCz7xL2tUs2tbma+/uUS/w/et3denwK7W9hxaX59cCz
-         TbSg==
-X-Gm-Message-State: AOJu0Yw3jsSCBAtGFTmX2YXf/uA2jwiZ5J16mq6fxLR4Rv2Hxuj1GVmG
-	74fEmVI84RhA7PM09EThbI4wfs2zzH55iVRPGzeNnGqAV/ShjpOX4h4CVgOu1ODHkK2NR1FV1oM
-	+Kp9m+GY=
-X-Gm-Gg: ASbGncurWg1oXZoZ3uxFUzFvPhqGGPP7PUCQqcGESxGxasYSoX7lyzm3iPSfQmm0erZ
-	MGn5mp2uxUMGjYtJI7mBDL6unneQF2woN+UyktpHaJoZRRokCyrsVn/b8HCowwvkCIZhO+Psf3r
-	dYrUIpqnBMALKoNFS6tr8HgQ0vrBIMsLVTrLBrqql89/YN0TEyLRhvK69Pnc1RmpWXQ46suSrMq
-	VI4SKdI7ImyqWe05FR2cJDJVk0sPXhnRAvAebYd/3ds88qg31si5C76MTI1upASlaQjYZdr3Mif
-	KoQUQiG2/KISs2MiQYaVt6j5UZETNMdWe7b9ydjdttBHFUTgmCQSii62B+ECbyc0keOG7PXAbg0
-	mnDBdB8Ms3ntXHL6JJCqVyLoYdC0h
-X-Google-Smtp-Source: AGHT+IGfyzjSKeBPxKUtCFxXgNXOtuPFBWMr9b01M1myKuXzLh1KXZkhphCsxl5slJPnH3wGEAUdnA==
-X-Received: by 2002:a05:6870:c085:b0:30b:ba5e:3472 with SMTP id 586e51a60fabf-32e552aa8bfmr1913830fac.12.1757704213337;
-        Fri, 12 Sep 2025 12:10:13 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:fdf1:f11e:e330:d3c1])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7524986c872sm1172564a34.15.2025.09.12.12.10.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Sep 2025 12:10:13 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 12 Sep 2025 14:09:33 -0500
-Subject: [PATCH v2 4/4] iio: ABI: add filter types for ad7173
+	s=arc-20240116; t=1757765853; c=relaxed/simple;
+	bh=rCmkDHYJzLWNF0ynhzocfkMVyfZWxwjArSYM0rxU2xM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PQkzQmc+a6P7HEjf5btcSXzybXnPVH2kNWu7d7+ueiqszxP48N5YLWQGdi5bHISMd0uFOtNCUFqePSm9kXZF+HBCtrPgCbXJfhpQ5GeBLmcSJtfCi3IBCV5oYu9nowMd/xcdn6QIkId/GgSm3L9Al9pttMkiipk59pZBwgvIWcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tTbqaubF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F56AC4CEEB;
+	Sat, 13 Sep 2025 12:17:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757765852;
+	bh=rCmkDHYJzLWNF0ynhzocfkMVyfZWxwjArSYM0rxU2xM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tTbqaubFN+NGbGVtVMdBytlIsw952Yn1kOjlX/Nn5AUzai/mKF9qCh8dpoC5bPS6Y
+	 5nwBbLKdjs0EKzNSiWQkelbwZKmCVK4nQAVqXdWWxdZKoU2jNgi7/2AidWDt2i7TH9
+	 3D9Lv6rU0N7483fbKBHdTrrS62FmZA/YT+tZTpmp9sezRefjl4Q3CwodwNF9RSP89Q
+	 sLjo4NBjVmjjM83r2EZir+kluU4LHKZg9jwiCVwnx7Q5gK2sUzqBhodVldhuLvl1VM
+	 m7/gJvNHiJlybJyswuAbrvpgeGA3Btg8p1dUe2c1FGZ31fqj8EOOf3slZZLSVoKwhU
+	 0Q7VOFkZVWw3w==
+Date: Sat, 13 Sep 2025 13:17:24 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Akshay Jindal <akshayaj.lkd@gmail.com>, anshulusr@gmail.com,
+ dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ shuah@kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7] iio: light: ltr390: Implement runtime PM support
+Message-ID: <20250913131724.111fa939@jic23-huawei>
+In-Reply-To: <CAHp75Vf+9PJgR5Eev_Z+QB4cp+VMctFfqpTMWuE3VsnGpZ6dJQ@mail.gmail.com>
+References: <20250909194649.10512-1-akshayaj.lkd@gmail.com>
+	<CAHp75VfpQ9c4cptnNGzFYakQxY7JjtUEMDsysS9KJ60xrzaE4g@mail.gmail.com>
+	<CAE3SzaTZ8PXM_B8FBetOTSfz2myGZ=WzPp8h2d79Q95zKLq5hw@mail.gmail.com>
+	<20250910201212.5d9f57bc@jic23-huawei>
+	<CAHp75Vf+9PJgR5Eev_Z+QB4cp+VMctFfqpTMWuE3VsnGpZ6dJQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250912-iio-adc-ad7137-add-filter-support-v2-4-bd32dfa3d761@baylibre.com>
-References: <20250912-iio-adc-ad7137-add-filter-support-v2-0-bd32dfa3d761@baylibre.com>
-In-Reply-To: <20250912-iio-adc-ad7137-add-filter-support-v2-0-bd32dfa3d761@baylibre.com>
-To: Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1242; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=22rZRQwccdDXCdWucL0md8nKZ5xUlhtkQsl5aauAsOM=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoxHAKH1jnud58OUFIrZj3B2cZPTbYotYbHhZ9Y
- SFIDafYS8iJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaMRwCgAKCRDCzCAB/wGP
- wC5BB/0drW3DCMb2URgt3eb7DLU10MmceSqnl1yxf0jQJr9fVffggOZinYw2vuZeSWNSY5jRyHB
- vVq+rWfRDxLt5o952KzlF3V7f022WCVbpGxvm4AW9xBj4QRRJ2JQ1nEuI4TJzUB3r75YVNg9Mi4
- HzB4ac+qViJnsBaoxup+TGO8mKnMUpc8A4YzpYei4kqOsfkP/M7sGSsdj9/reNTfbPoGTF4E/Mr
- byq3aedZducLSI+cw0zb5kwcErC7SjJp+PqxTlVrPgbMoLPQuA1nCBsHYwaqdD6JXY+n0x00EGW
- 6YAfXMKt7sgPd4hYhUtQr+ns+cX19HV/4OlDYUA4I4dd2s+w
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Add new filter types used in the ad7173 driver to the IIO ABI
-documentation. These chips have a few filter types that haven't been
-seen before in other drivers.
+On Wed, 10 Sep 2025 23:24:22 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- Documentation/ABI/testing/sysfs-bus-iio | 5 +++++
- 1 file changed, 5 insertions(+)
+> On Wed, Sep 10, 2025 at 10:12=E2=80=AFPM Jonathan Cameron <jic23@kernel.o=
+rg> wrote:
+> > On Wed, 10 Sep 2025 18:06:32 +0530
+> > Akshay Jindal <akshayaj.lkd@gmail.com> wrote: =20
+>=20
+> > > Thank you very much for your valuable feedback.
+> > > I do have a small request regarding the review process. Over the past=
+ 3=E2=80=934
+> > > versions,most of the comments have been about fixing indentations and
+> > > improving code readability. I would kindly request if it would be pos=
+sible
+> > > to consolidate such cosmetic comments into a single review round.
+> > >
+> > > I completely understand that incremental feedback makes sense when th=
+e code
+> > > is actively changing, but if the changes are minimal, spreading out m=
+inor
+> > > suggestions over multiple review cycles tends to unnecessarily increa=
+se the
+> > > turnaround time.
+> > >
+> > > Your support in this would help me address the comments more efficien=
+tly. =20
+>=20
+> I can't always see _all_ problems at once, I am not a robot. I will
+> try my best, though.
+>=20
+> ...
+>=20
+> > Andy, if you are fine with the explanation I'll tidy up the minor stuff
+> > whilst applying. =20
+>=20
+> Yes, I am fine, go with it, thanks!
+>=20
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index 2fb2cea4b19249743398b1ff0b538b03ced0340b..845dd20aab78e5c7afbeb26ba04c295a28aaafa2 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -2296,6 +2296,11 @@ Description:
- 		  performance
- 		* "sinc5+avg" - Sinc5 + averaging by 4.
- 		* "sinc5+pf1" - Sinc5 + device specific Post Filter 1.
-+		* "sinc5+sinc1" - Sinc5 + Sinc1.
-+		* "sinc5+sinc1+pf1" - Sinc5 + Sinc1 + device specific Post Filter 1.
-+		* "sinc5+sinc1+pf2" - Sinc5 + Sinc1 + device specific Post Filter 2.
-+		* "sinc5+sinc1+pf3" - Sinc5 + Sinc1 + device specific Post Filter 3.
-+		* "sinc5+sinc1+pf4" - Sinc5 + Sinc1 + device specific Post Filter 4.
- 		* "wideband" - filter with wideband low ripple passband
- 		  and sharp transition band.
- 
+Applied with this diff;
+diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
+index 2d8449aeab18..a2b804e9089a 100644
+--- a/drivers/iio/light/ltr390.c
++++ b/drivers/iio/light/ltr390.c
+@@ -284,8 +284,8 @@ static int ltr390_do_read_raw(struct iio_dev *iio_devic=
+e,
+ }
+=20
+ static int ltr390_read_raw(struct iio_dev *iio_device,
+-                          struct iio_chan_spec const *chan, int *val,
+-                          int *val2, long mask)
++                          struct iio_chan_spec const *chan,
++                          int *val, int *val2, long mask)
+ {
+        int ret;
+        struct ltr390_data *data =3D iio_priv(iio_device);
+@@ -749,7 +749,7 @@ static void ltr390_powerdown(void *priv)
+                        dev_err(dev, "failed to disable interrupts\n");
+=20
+                data->irq_enabled =3D false;
+-               pm_runtime_put_autosuspend(&data->client->dev);
++               pm_runtime_put_autosuspend(dev);
+        }
+=20
+        ret =3D regmap_clear_bits(data->regmap, LTR390_MAIN_CTRL, LTR390_SE=
+NSOR_ENABLE);
 
--- 
-2.43.0
+Thanks,
 
+Jonathan
 

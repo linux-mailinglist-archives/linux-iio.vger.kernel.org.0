@@ -1,61 +1,57 @@
-Return-Path: <linux-iio+bounces-24055-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24056-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB16B56147
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 15:52:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5043EB5614B
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 15:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD6B91B27C1C
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 13:52:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EDA6583758
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 13:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C909B2EFD86;
-	Sat, 13 Sep 2025 13:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B552EFD86;
+	Sat, 13 Sep 2025 13:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOf0JO6+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SiFit0yF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F972EBB81;
-	Sat, 13 Sep 2025 13:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951363D81;
+	Sat, 13 Sep 2025 13:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757771547; cv=none; b=hXxy9NaYZGEz+MKwk54TRJN420JDse5a2KmGZTNKvDlnU7YTiHJNytTTL+nWJo67D/Z9hXmuGIGWVCkipLd1mvnxs1MIT3BrCsAGrdnAYzb5L/LSGD3ouCRYTKVMOW/Bzb4KMmyK0szqsgzprwwcqVu1+SNdP7JG41MTELgUAb8=
+	t=1757771651; cv=none; b=dcoJOtC1+taX9g4736P/Z0v4gvHKaXBuQLSzGrekkb2fbcVzXVpquenDpa2u39mqQPFfC0uCbEHuXwScR+IDK3/bbKb/ng+bxlo/dx1uN9QpbdSOzcdqaxrK2l0iin1X8z6R3fk5djjl/grHSA0J2SO5HrTtNhto9zeprdKuDCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757771547; c=relaxed/simple;
-	bh=JMpHgQCz20B3Y3hZWjjmgaUygxAetFE+uk1Dzrp1FjE=;
+	s=arc-20240116; t=1757771651; c=relaxed/simple;
+	bh=whKi2UMf5nIAfra3uI48bpwUgAp4ncR7cemem7miOeE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ihM+soeRnYptAFWL6VASEroB3IpgFPKWSneRPaZboaqIjXF225XYuKGiPbPgnD064LpZj754VBrVvzXlFz6xnUGTe/0lG6FJa8kshSgqLucxrCQqFJMy5THj9Va42i/QNivTrahvgc4QxZuKjEBVXwjVjNP2jC5outpRIj3ag18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOf0JO6+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E16C4CEEB;
-	Sat, 13 Sep 2025 13:52:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QWDoLqGVWL+cxKfwOZQ5vBT4FK1gz7cKzt/hDSFRZIHrpmzh5jgnTSfaZIFIjx6mkD9PzsdtE2q7dS2Q7Y2Aq8mfe2H0jLXDuGkKzpqe7KevzV/cAbnefgkZ1k0QgBri+XfV7I5BYRRRQ4NuHeqHaK+Q2e52oHX/5GdAU8Zit4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SiFit0yF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B123EC4CEEB;
+	Sat, 13 Sep 2025 13:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757771547;
-	bh=JMpHgQCz20B3Y3hZWjjmgaUygxAetFE+uk1Dzrp1FjE=;
+	s=k20201202; t=1757771651;
+	bh=whKi2UMf5nIAfra3uI48bpwUgAp4ncR7cemem7miOeE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bOf0JO6+bs4ShFdnrjGZP0aft+EgYdUSA+NFGJ3YntZnYkWoh2UumzlrQNNuFVMAB
-	 KZ1qYGROVgf1lFLohePvI51Gx3mmnJKj1jN/2yj+il0dwuW0zJZVzgxHsds6qswLrv
-	 xAcYZOjfBGLGgsBsdGmz3Gi9KwpQ9yHD0Y7lQdbJ8ewH3MgFrK0DKRd+PhEotw2GtV
-	 Ruq3gQM0GUhpq+kewg53HbkSNWy/bpwXOhfMAh/fHWI7mLx7yoTJtYNhqW3PmX95UY
-	 JdSyjWccXgFfJ0z0lv73lv3wjhwe7c7XWBqeccASvORR/GD433Fq0c+slg8Lhr84Ff
-	 akjDRGN5YmTCA==
-Date: Sat, 13 Sep 2025 14:52:18 +0100
+	b=SiFit0yFbAPqbEqg4sfTBfPV2CY/YiLKymj/8ThTyhwI1JL3r9sgUYQ4/W00e8PLD
+	 rnCzHTSJ3NoyHEwm/pR0w+mDaTBbr34KVs3KpNrYQWTwubpJoyOmcj/eUl10X2L6kA
+	 RCkF8l5HAGvLqsdncqCNoLGJP3EZV1+a/TzTXz1ylL1PqBZacAqpH4ZizAijMeaRJo
+	 DIAplYmPhU0qdE/Uujum2OzDLkb0MEgpd9U7GhAuBLRF2fLdpbr7gl+/m2/79y7FaL
+	 iykqbKwd0/CG2YbaDWdEi5lspLTQri28XwbaX/bFHKXika2zC9QrWuiNKUri1j0Rws
+	 SlDn/uVvgX4fw==
+Date: Sat, 13 Sep 2025 14:54:03 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Daniel Lezcano
- <daniel.lezcano@linaro.org>, Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH 2/7] iio: buffer:
- iio_push_to_buffers_with_ts_unaligned() might_sleep()
-Message-ID: <20250913145218.03d1be7d@jic23-huawei>
-In-Reply-To: <7f71c489-410b-4fdb-9d78-9f2835c32379@baylibre.com>
+Cc: Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
+ <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: Re: [PATCH 3/7] iio: buffer: document iio_push_to_buffers_with_ts()
+Message-ID: <20250913145403.6e07d7a9@jic23-huawei>
+In-Reply-To: <20250912-iio-doc-push-to-buffers-context-v1-3-c4aad013d96e@baylibre.com>
 References: <20250912-iio-doc-push-to-buffers-context-v1-0-c4aad013d96e@baylibre.com>
-	<20250912-iio-doc-push-to-buffers-context-v1-2-c4aad013d96e@baylibre.com>
-	<aMRiCvmGt27JEYBz@smile.fi.intel.com>
-	<7f71c489-410b-4fdb-9d78-9f2835c32379@baylibre.com>
+	<20250912-iio-doc-push-to-buffers-context-v1-3-c4aad013d96e@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,50 +62,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 12 Sep 2025 13:40:37 -0500
+On Fri, 12 Sep 2025 11:05:54 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On 9/12/25 1:10 PM, Andy Shevchenko wrote:
-> > On Fri, Sep 12, 2025 at 11:05:53AM -0500, David Lechner wrote:  
-> >> Call might_sleep() in iio_push_to_buffers_with_ts_unaligned() since it
-> >> can allocate memory, which may sleep.  
-> > 
-> > It can or does it always do?
-> > If the first one is correct, better to use might_sleep_if().
-> >   
+> Document the iio_push_to_buffers_with_ts() function.
 > 
-> Just below this in the function is:
+> This is copied and slightly cleaned up from
+> iio_push_to_buffers_with_timestamp().
 > 
-> 	if (iio_dev_opaque->bounce_buffer_size !=  indio_dev->scan_bytes) {
-> 		void *bb;
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>  include/linux/iio/buffer.h | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 > 
-> 		bb = devm_krealloc(&indio_dev->dev,
-> 				   iio_dev_opaque->bounce_buffer,
-> 				   indio_dev->scan_bytes, GFP_KERNEL);
-> 		if (!bb)
-> 			return -ENOMEM;
-> 		iio_dev_opaque->bounce_buffer = bb;
-> 		iio_dev_opaque->bounce_buffer_size = indio_dev->scan_bytes;
-> 	}
-> 
-> 
-> Would it make sense to move the might_sleep() inside of this
-> if statement rather than repeat the condition in might_sleep_if()?
-> 
-> devm_krealloc() is the only part of this function that might sleep.
-> 
-Whilst true that the sleep is only at this point, we always go into
-this path the first time (assuming I remember correctly how this works).
+> diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
+> index 5c84ec4a981001dfba3b369f811368bab70a3117..47f23bc0470eaf308fc3a739faaf9b56cac0ef67 100644
+> --- a/include/linux/iio/buffer.h
+> +++ b/include/linux/iio/buffer.h
+> @@ -45,6 +45,22 @@ static inline int iio_push_to_buffers_with_timestamp(struct iio_dev *indio_dev,
+>  	return iio_push_to_buffers(indio_dev, data);
+>  }
+>  
+> +/**
+> + * iio_push_to_buffers_with_ts() - push data and timestamp to buffers
+> + * @indio_dev:		iio_dev structure for device.
+> + * @data:		Pointer to sample data buffer.
+> + * @data_total_len:	The size of @data in bytes.
+> + * @timestamp:		Timestamp for the sample data.
+> + *
+> + * Pushes data to the IIO device's buffers. If timestamps are enabled for the
+> + * device the function will store the supplied timestamp as the last element in
+> + * the sample data buffer before pushing it to the device buffers. The sample
+> + * data buffer needs to be large enough to hold the additional timestamp
+> + * (usually the buffer should be indio->scan_bytes bytes large).
+usually the buffer should be at least indio->scan_bytes bytes large)
 
-So I'd argue a might_sleep() where you have it is appropriate
-as we will already have spat out the debug info if we get to the
-second case that doesn't sleep.
+It is really common for it to be bigger and don't want people thinking the
+need to dynamically resize it!
 
-If this ever matters to a driver, we could add a new function
-to allocate the bounce buffer earlier. 
-
-Jonathan
-
-
+> + *
+> + * Context: Any context.
+> + * Return: 0 on success, a negative error code otherwise.
+> + */
+>  static inline int iio_push_to_buffers_with_ts(struct iio_dev *indio_dev,
+>  					      void *data, size_t data_total_len,
+>  					      s64 timestamp)
+> 
 
 

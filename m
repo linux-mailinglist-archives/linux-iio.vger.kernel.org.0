@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-24065-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24064-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF51B561D9
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A037B561DA
 	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 17:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BE77189FE5D
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 15:40:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8DDE3A7338
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 15:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3E12F291B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460CB2F28FC;
 	Sat, 13 Sep 2025 15:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="Y629B77i"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="nNtz6+M/"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0D82F1FDD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C14C2F1FEF;
 	Sat, 13 Sep 2025 15:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757778014; cv=none; b=PUQPo80r4FSzhvK/TSod79Tx7MQZgEgLK+w1NUYzhgumxrQvGn3DTB84SwNUEggZJ05smjMfdHJa3mgDT1juQOhDeflMRt3CpJ5WPQx413NfOMnLsOdPv3C+YJFIS8FoBwliE/f92yqeICVp37tX4dmnBXC64/hB5/15A+EiLRM=
+	t=1757778014; cv=none; b=TBerhn6YvGEHm2MRczqjXfENWOwEsDCHLLLmDk+gqdR1eXgUbA5w/WN1Rzj/S/A7lT8u1p8h/TZ806Ra92+dRjEmhUG5Hewtpduw0W5QQZlrvJzENMOVJiwkxz57Se1+xHWjVnmA/1fHOf0BWLHOZBNeJ+NQhwrQQ7GpxWp3UZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757778014; c=relaxed/simple;
-	bh=UhXB8Jz4OnNtNjZZn8F2Vqb9CSRohbbH+vylsGTw560=;
+	bh=EBNhVOW8hBoqmeWeZW+H82GxsVcMw+E2abP5SetbUuE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PbwyZm7UI4BOAEusRMJNyhUsN2uya+OF/9A2d4e46NoYLidUAKREIA68GNeNSr7UiZa3c8PrRxT/9YE2liLzyDRqiXgLesNVxo+ZJNsHc9Bv/8d8XiJjaH1/fS4cS9t4w1cPcjQxrINaLysIdeE85IbWdc/0HrnJCVF6PebBcPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=Y629B77i; arc=none smtp.client-ip=172.105.74.154
+	 In-Reply-To:To:Cc; b=Gn7aObSuVpFNMEwkljFyfx7dHE3pvQuUMJCNtaA+kBtFwY07MbZgdWIb8TDvBE10qu70/ED2oCHEzF8U0+Unm4cKKxF/hEJVnpNjsnwN2NQNVqT+kwBB8RpxcD5k2BJ0wvtoAvHu5Iwhs/cvo8yI5Rb7wwK96AzKMlq2w8bfslU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=nNtz6+M/; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from [10.212.0.13] (unknown [IPv6:2a02:2f0e:3e0c:5b00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 961E0173BEA;
-	Sat, 13 Sep 2025 18:40:04 +0300 (EEST)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 1E962173BEB;
+	Sat, 13 Sep 2025 18:40:05 +0300 (EEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
 	s=mail; t=1757778005;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TpR2X75UpYNw0eK3Bd2fyFVQ9sIJPVgjllZR+VdDbDk=;
-	b=Y629B77iLrznPVZG1DKoraI6QFp0N9oNlk3mtUBPdhyI6hdNPsqyPsw/KgUe6bD7UtVEbj
-	1gcJ9vWunx0NZXaRMoi07emLu19F+aG3HOsQYQ4JyLcC3GJzCVH5MBAYwfN4zUlTAPhpHb
-	glQvL91/SqT3Wz7mp/sZF7WwW3MSXuJexqKUPxjAUr94jWGLuTFIHwklxkVHjOnbfIyi6U
-	ebPerUhNUiFDgDrPvXmJ8fqZLudbuAboGMF/Q1CotyV7SOWvuSSaWtiaOrs8b1d8HKh8IN
-	dD0EMRj/t1J2qY6+q+qxT+funOIXBXXyReTqp8pIbS8GB5Yq4Y5FvkWFRIbvmQ==
+	bh=HdRafdIBJZDMJaY2Ja0JkowRHXTp0cry90yvfDRdsX4=;
+	b=nNtz6+M/gA2wq4Z+VmheNknfPBKB4sIqTWTFjQYBYhhxc/SaUejSg3f9v+N9NdA3bSlbVg
+	WizwP2GnR5FY65aBq6JqFoYgYDhXAvxQ6kUp/apLtBIFxoAoA+t75+gC2YpmzQ4SOIklm/
+	JuIJ1lVSgwbEf8J4kpi8lWXgVETVtuX4dE30lGZDNj5LIXaMTyIlr6Ck4OuBpsVHDzmEms
+	w3KugByp06By4bbow5oGt7i0xgNh+vpMKo99YMcSN3Z062Wu8WsVwtgKAfRBydr7ayGCrX
+	Ib6VgL5j/9SbamWLaAqlGya4ie5UA7W5qICst9+dPgryj2y9mwhIKobXOTkQ4g==
 From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Sat, 13 Sep 2025 18:39:23 +0300
-Subject: [PATCH v3 02/18] dt-bindings: iio: accel: bosch,bma220 setup SPI
- clock mode
+Date: Sat, 13 Sep 2025 18:39:24 +0300
+Subject: [PATCH v3 03/18] dt-bindings: iio: accel: bosch,bma220 set irq
+ type in example block
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250913-b4-bma220_improvements-v3-2-0b97279b4e45@subdimension.ro>
+Message-Id: <20250913-b4-bma220_improvements-v3-3-0b97279b4e45@subdimension.ro>
 References: <20250913-b4-bma220_improvements-v3-0-0b97279b4e45@subdimension.ro>
 In-Reply-To: <20250913-b4-bma220_improvements-v3-0-0b97279b4e45@subdimension.ro>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -72,73 +72,54 @@ To: Jonathan Cameron <jic23@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Petre Rodan <petre.rodan@subdimension.ro>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ linux-kernel@vger.kernel.org, Petre Rodan <petre.rodan@subdimension.ro>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1648;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1094;
  i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=UhXB8Jz4OnNtNjZZn8F2Vqb9CSRohbbH+vylsGTw560=;
- b=owEBbQKS/ZANAwAIAc8mmZmETn8wAcsmYgBoxZBRwP1WJJq3J/J4s+IC43JTo3qi4uppdCMcg
- U9ThR9wHquJAjMEAAEIAB0WIQTYCn/BdhUZNew+X6nPJpmZhE5/MAUCaMWQUQAKCRDPJpmZhE5/
- MOvCD/9nZrxZE7ITilVyEE4x4YbjfnSZF9N6kC6hz2UoANATSdjNRtUsDMCQZSXzxMsNz/ddwPP
- WU6dcgIEVaa4WnJM93JgkMuPE9hKKl3QeLMuC+UmrmeuFsuIU4z0IKBZvexOMx/3K7ngu251kTK
- MKXl686NpFIz9c4mb/SOATc0Nt7H44LRjmzD+m7PbaRHDCvTlsBxEulushET8V5ItrozFDpOsU6
- lf8vMeLX+Bqq3THePhfMTJwaE992/gviG+yMYR8iOxkgBGrbIZQCTwLOT1aYPZ0stElkSKD5K4f
- /gUExlpYehCPrnd9TfwI6aXRW5bP3/5Ho6TCkho8Fy8ufN0R/APTm9rozhO+SdDQWeIggoU1aHs
- BNg/dzftSDuClwAqFt0MUOL8woa+zRFG0tCOlA7pK6gOFgXVBXKbR7CKxTDAaUbnWM4Kj7uZt9I
- 3V2/WxZGTorlDRcfCuxFXN6BSmuQyFZHBL6sQKeeeMd8gLfDnIVIMkNRfsUFxjG2boYaffNAfd3
- UyCNjyWFQwuf3HdAFp6/AxtXJXKgWNpGgJp2T+Zdr7kZTX+0DOrU+CzXmSpIxxocwN9+8t+A9Rf
- vyyKnZO+v4QMsh18pknzfh3lr578PKGKyDh7uskEDNMtHlH/uwMpgIwlwy9FsGRBoGjN+EeGRpZ
- TVJpaYS14SoiNGA==
+ bh=EBNhVOW8hBoqmeWeZW+H82GxsVcMw+E2abP5SetbUuE=;
+ b=owEBbQKS/ZANAwAIAc8mmZmETn8wAcsmYgBoxZBRtiIAzJv+T4Ow7l6Wu/0PLqOA4B4xOamB5
+ LSPnNpopUaJAjMEAAEIAB0WIQTYCn/BdhUZNew+X6nPJpmZhE5/MAUCaMWQUQAKCRDPJpmZhE5/
+ MBy0EADI9uDRc6yD5c6XyGoVrncIff7P+rNP4/klJN4P0/tmWSGOywWYZzrl98ZUHFIpbIO13RW
+ YcvzvIO+dZT8OX1ElRDGLwnC0lKjlo3z442BeBDGXd4H+2/MD5FgqUavt2v3DqEBPSE4LFHrVeW
+ b8g48P2i2B/usNhejdoZmi+RQOdONX4mqc9AuKfgLzomZJ3QJt8eUCD3yZQwZkxs+ecYoThWVM0
+ HpQEHDXRlTX8xhKfLEgCVIyfFbxYbcs1IPjkx1SiQ49Xgr/9fXlVdNTTuPU+KES/Wx4YNEzoosW
+ 6hSnMPBj8igE8e9TvbEz20BgiwFDsZDd6vcwpKK9lbO33REJ4QpEDJ9rXD+TxFmNJNQuvskCJUg
+ sdgjFNDIm6qtO/IA5/iGF5tEIycc+vFAXu/hQ9V5KZomZdc9BV49I7/vIvHUVk4qYgUU13ncRQC
+ AHQYMa2MfopKft9c+1iIcSial98B38QlPLvASp/PftumAGirkBy/BKbSizS6e1PON4WBIgnVk6T
+ 4b7n8BaPiurAYlq7kQrkHzM6ykZWkVZyhKHYwDr7tCTlrys5NCqYZGRdwbIVpgSYM1p2Vk72alN
+ GnwPvWoVsn++0dGSZMKaUVAvC8si/r8irJrnK/Mi2KIoNafrx9O0HeYD0iuQST8GkYweMUMKnx6
+ tzYR1HEHdZaLuAA==
 X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
  fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
-Assert CPOL for a high-idle clock signal and CPHA for sampling on the
-trailing (rising) edge.
+Set the interrupt type to rising edge within the example block in order
+to match the new driver.
 
-Quoting from the datasheet:
+The entry that got replaced was not in use by the original driver.
 
- "During the transitions on CSB, SCK must be high. SDI and SDO are driven
- at the falling edge of SCK and should be captured at the rising edge of
- SCK."
-
-The sensor does not function with the default SPI clock mode.
-
-Fixes: 7dbd479425d2 ("dt-bindings:iio:accel:bosch,bma220 device tree binding documentation")
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 ---
 v1->v2
-split out from a bigger patch file
+split out from a bigger patch file (Krzysztof)
 v2->v3
-add fixes tab, just in case (Jonathan)
+reword commit (Krzysztof)
 ---
- Documentation/devicetree/bindings/iio/accel/bosch,bma220.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+ Documentation/devicetree/bindings/iio/accel/bosch,bma220.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/iio/accel/bosch,bma220.yaml b/Documentation/devicetree/bindings/iio/accel/bosch,bma220.yaml
-index da047258aca3d84e8b2cbe92a9c98309236fe7ae..0e27ec74065acca611e63309d6ae889b8a3134ce 100644
+index 0e27ec74065acca611e63309d6ae889b8a3134ce..8c820c27f781e8001bc14b4ca6ab1f293bdb18ca 100644
 --- a/Documentation/devicetree/bindings/iio/accel/bosch,bma220.yaml
 +++ b/Documentation/devicetree/bindings/iio/accel/bosch,bma220.yaml
-@@ -20,6 +20,9 @@ properties:
-   interrupts:
-     maxItems: 1
- 
-+  spi-cpha: true
-+  spi-cpol: true
-+
-   vdda-supply: true
-   vddd-supply: true
-   vddio-supply: true
-@@ -44,6 +47,8 @@ examples:
-             compatible = "bosch,bma220";
-             reg = <0>;
-             spi-max-frequency = <2500000>;
-+            spi-cpol;
-+            spi-cpha;
+@@ -50,7 +50,7 @@ examples:
+             spi-cpol;
+             spi-cpha;
              interrupt-parent = <&gpio0>;
-             interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+-            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
++            interrupts = <0 IRQ_TYPE_EDGE_RISING>;
          };
+     };
+ ...
 
 -- 
 2.49.1

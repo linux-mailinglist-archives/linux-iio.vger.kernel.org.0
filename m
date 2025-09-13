@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-24047-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24048-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84765B560F8
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 15:00:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A1DB56114
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 15:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40DB63B3FE1
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 13:00:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 771757AB106
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 13:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2395F2ECD07;
-	Sat, 13 Sep 2025 13:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083612EDD4C;
+	Sat, 13 Sep 2025 13:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxDOg9UN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u47l62QA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDC12EBB81;
-	Sat, 13 Sep 2025 13:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2C7285C97;
+	Sat, 13 Sep 2025 13:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757768416; cv=none; b=C7/J46aLphOp0ZuMo0dDHeqDAm3SV0bh8+br+7Fh2xbwOdHVu1E95Kb/pkZIDltaxFJM7FxjYcrhcuPejYRGq1tASZ3juHw2y5w7dExj/xdEYcdYNAQQWJoNVg17HGjl11Sa2SoeZ3my1E3LiOmv4VlsCABdr3WChyXpT5qpjOc=
+	t=1757769667; cv=none; b=BWsulUQX8+OcVF345qHcvLfxuk333vPiyutl29WF1KFqGMuYEG7sytK1OREM8mL6WgeZZ1p19x4G49jWGGOaoEzmBMrF5BanW2f7Tmr6b3jkjgwY2kjT2Vf13R9dCEyoWrhZvf+LA8ueQJv7qmhAc2nnQtQfztr2uc831f/jF7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757768416; c=relaxed/simple;
-	bh=X3tVUZP55kWuMIOu1Vz3p03KRrrhWN+I6yX2nUWctE4=;
+	s=arc-20240116; t=1757769667; c=relaxed/simple;
+	bh=NFy5BFwgI1BaFJmQCa91idv5aurWAF94mAYy1EKJnjU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OTi9A6e0ZPFK77g1O4vp/GVsU6KKrq8BDmcSB3aHqO141MvjJTWh5izP4JPdKSCqkqlkQBn1ORljQdDtVaYTovSsO780VVWA35h3HBOinoXEy1exkxoWOI9cAhFwQ7pbvFsaJSnn1w1KbnW4raw1DJ1Hk5Sc0TRyW83b7gR787w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxDOg9UN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27A8C4CEEB;
-	Sat, 13 Sep 2025 13:00:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UI1+X6wiTuZvbPiYoDDkmSuXeoUAv5giaZIHHeW3+nBlqbKu7ABoudXy/mogU4U6INhImxerPiHC/26HDvlNvZT43uPrwvcxwPHf1ETJWIcnDhmrAFJQ/aXej+oTL842A/jvK5I6Ss3QbJOwbiCa+yh1N6cBwn1OIT9eHexaYAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u47l62QA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A12C4CEEB;
+	Sat, 13 Sep 2025 13:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757768416;
-	bh=X3tVUZP55kWuMIOu1Vz3p03KRrrhWN+I6yX2nUWctE4=;
+	s=k20201202; t=1757769667;
+	bh=NFy5BFwgI1BaFJmQCa91idv5aurWAF94mAYy1EKJnjU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PxDOg9UNhG8D7ekDepACM+vk2ViONC49BebZ/Eq8NQKIHG7V3/VdJI2YaTCmZIBFN
-	 fV2MuZ8WjEK9QxjTuN39reN6wYLifaea2yJYSXuvzqNB+vVRUL0hoQguYWcHcJ4mdp
-	 irmHZMJiBDx8P7BgTMjYHbWzxGC5OLgVofuVAaLdpjfZtlSARTjeqnQ4aajKhdYsUE
-	 1ymc4JI5zocMc3pOZQVlAoWk1oQEuwN4T/gjEXpissiS+yPQ8twLzl92xzPyw0SSY/
-	 RGMJjp336sIjijFt7Vn1Ol9T+jjk5seSZu48Zu5uvSAKMVaitO2qvw77CCfGkQa4XJ
-	 R66pb30nkDPnA==
-Date: Sat, 13 Sep 2025 14:00:08 +0100
+	b=u47l62QAK8E/EEWHs+xzlJyrw2tXSKhqF7OfvPobT3bkJj3a/yp5iLWXsAJ0rin/V
+	 Cb44yD3/qZbS7CabblwdTbsvlH5DIBGj+ayNFN/jE4Znsgh7owqGPsocMGpJ+URAmP
+	 oxpnEKAyuU5HDRtr2a+zcaojd8/ACk/nDo1G+Ls0RV87zqqdo9TNR+He7u4avdNcaw
+	 3Tyl65ncxv7vNjk5Fu2JA5yPhfO53Wzz4QlR3QHgf4fNyGbjSpCSCSPLiCIiJwiO5X
+	 WjIcD5dalpNBh27OFxY+1V2Ed7V6zavElpYURMYwSwBrdaY/C/P8HDFGztZMM3vaLy
+	 zQgeqClRDHkZA==
+Date: Sat, 13 Sep 2025 14:20:59 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v7 4/6] iio: adc: add ade9000 support
-Message-ID: <20250913140008.512a0168@jic23-huawei>
-In-Reply-To: <20250908073531.3639-5-antoniu.miclaus@analog.com>
+Subject: Re: [PATCH v7 5/6] docs: iio: add documentation for ade9000 driver
+Message-ID: <20250913142059.1122a622@jic23-huawei>
+In-Reply-To: <20250908073531.3639-6-antoniu.miclaus@analog.com>
 References: <20250908073531.3639-1-antoniu.miclaus@analog.com>
-	<20250908073531.3639-5-antoniu.miclaus@analog.com>
+	<20250908073531.3639-6-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,193 +61,167 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 8 Sep 2025 07:35:24 +0000
+On Mon, 8 Sep 2025 07:35:25 +0000
 Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> Add driver support for the ade9000. highly accurate,
-> fully integrated, multiphase energy and power quality
-> monitoring device.
+> Add documentation for ade9000 driver which describes the driver
+> device files and shows how the user may use the ABI for various
+> scenarios (configuration, measurement, etc.).
 > 
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-
-> +static int ade9000_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan,
-> +			    int *val,
-> +			    int *val2,
-> +			    long mask)
-> +{
-
-> +	case IIO_CHAN_INFO_RAW:
-> +		if (chan->type == IIO_ENERGY) {
-> +			u16 lo_reg = chan->address;
-> +
-> +			ret = regmap_bulk_read(st->regmap, lo_reg,
-> +					       st->bulk_read_buf, 2);
-> +			if (ret)
-> +				return ret;
-> +
-> +			*val = st->bulk_read_buf[0];  /* Lower 32 bits */
-> +			*val2 = st->bulk_read_buf[1]; /* Upper 32 bits */
-> +			return IIO_VAL_INT_64;
-> +		}
-> +
-> +		ret = iio_device_claim_direct(indio_dev);
-
-Sparse wins.  The sense of this is backwards.
-
-One other case of that an access to the private masklength element of iio_dev.
-Makes me thing you forwards ported this from an older kernel and didn't
-test it.
-
-Anyhow, I have the following diff - some long and short line tweaks in here
-along with the real code changes. Please check the result which I'll push
-out as testing shortly.
-
-diff --git a/drivers/iio/adc/ade9000.c b/drivers/iio/adc/ade9000.c
-index 9aea09180d62..94e05e11abd9 100644
---- a/drivers/iio/adc/ade9000.c
-+++ b/drivers/iio/adc/ade9000.c
-@@ -790,8 +790,7 @@ static int ade9000_iio_push_streaming(struct iio_dev *indio_dev)
-                        return IRQ_HANDLED;
-                }
- 
--               ade9000_configure_scan(indio_dev,
--                                      ADE9000_REG_WF_BUFF);
-+               ade9000_configure_scan(indio_dev, ADE9000_REG_WF_BUFF);
-        }
- 
-        return 0;
-@@ -807,7 +806,8 @@ static int ade9000_iio_push_buffer(struct iio_dev *indio_dev)
- 
-        ret = spi_sync(st->spi, &st->spi_msg);
-        if (ret) {
--               dev_err_ratelimited(&st->spi->dev, "SPI fail in trigger handler\n");
-+               dev_err_ratelimited(&st->spi->dev,
-+                                   "SPI fail in trigger handler\n");
-                return ret;
-        }
- 
-@@ -862,7 +862,8 @@ static irqreturn_t ade9000_irq0_thread(int irq, void *data)
-                if (iio_buffer_enabled(indio_dev)) {
-                        ret = ade9000_iio_push_buffer(indio_dev);
-                        if (ret) {
--                               dev_err_ratelimited(dev, "IRQ0 IIO push fail @ WFB TRIG\n");
-+                               dev_err_ratelimited(dev,
-+                                                   "IRQ0 IIO push fail @ WFB TRIG\n");
-                                return IRQ_HANDLED;
-                        }
-                }
-@@ -901,9 +902,11 @@ static irqreturn_t ade9000_irq1_thread(int irq, void *data)
-                        /* Clear the reset done status bit */
-                        ret = regmap_write(st->regmap, ADE9000_REG_STATUS1, ADE9000_ST1_RSTDONE_BIT);
-                        if (ret)
--                               dev_err_ratelimited(&st->spi->dev, "IRQ1 clear reset status fail\n");
-+                               dev_err_ratelimited(&st->spi->dev,
-+                                                   "IRQ1 clear reset status fail\n");
-                } else {
--                       dev_err_ratelimited(&st->spi->dev, "Error testing reset done\n");
-+                       dev_err_ratelimited(&st->spi->dev,
-+                                           "Error testing reset done\n");
-                }
- 
-                return IRQ_HANDLED;
-@@ -1026,9 +1029,8 @@ static int ade9000_read_raw(struct iio_dev *indio_dev,
-                        return IIO_VAL_INT_64;
-                }
- 
--               ret = iio_device_claim_direct(indio_dev);
--               if (ret)
--                       return ret;
-+               if (!iio_device_claim_direct(indio_dev))
-+                       return -EBUSY;
- 
-                ret = regmap_read(st->regmap, chan->address, &measured);
-                iio_device_release_direct(indio_dev);
-@@ -1040,9 +1042,8 @@ static int ade9000_read_raw(struct iio_dev *indio_dev,
-                return IIO_VAL_INT;
- 
-        case IIO_CHAN_INFO_POWERFACTOR:
--               ret = iio_device_claim_direct(indio_dev);
--               if (ret)
--                       return ret;
-+               if (!iio_device_claim_direct(indio_dev))
-+                       return -EBUSY;
- 
-                ret = regmap_read(st->regmap, chan->address, &measured);
-                iio_device_release_direct(indio_dev);
-@@ -1206,7 +1207,8 @@ static int ade9000_read_event_config(struct iio_dev *indio_dev,
-                        return !!(interrupts1 & ADE9000_ST1_SWELLA_BIT);
-                else if (chan->type == IIO_ALTVOLTAGE && dir == IIO_EV_DIR_FALLING)
-                        return !!(interrupts1 & ADE9000_ST1_DIPA_BIT);
--               dev_err_ratelimited(&indio_dev->dev, "Invalid channel type %d or direction %d for phase A\n", chan->type, dir);
-+               dev_err_ratelimited(&indio_dev->dev,
-+                                   "Invalid channel type %d or direction %d for phase A\n", chan->type, dir);
-                return -EINVAL;
-        case ADE9000_PHASE_B_NR:
-                if (chan->type == IIO_VOLTAGE && dir == IIO_EV_DIR_EITHER)
-@@ -1217,7 +1219,8 @@ static int ade9000_read_event_config(struct iio_dev *indio_dev,
-                        return !!(interrupts1 & ADE9000_ST1_SWELLB_BIT);
-                else if (chan->type == IIO_ALTVOLTAGE && dir == IIO_EV_DIR_FALLING)
-                        return !!(interrupts1 & ADE9000_ST1_DIPB_BIT);
--               dev_err_ratelimited(&indio_dev->dev, "Invalid channel type %d or direction %d for phase B\n", chan->type, dir);
-+               dev_err_ratelimited(&indio_dev->dev,
-+                                   "Invalid channel type %d or direction %d for phase B\n", chan->type, dir);
-                return -EINVAL;
-        case ADE9000_PHASE_C_NR:
-                if (chan->type == IIO_VOLTAGE && dir == IIO_EV_DIR_EITHER)
-@@ -1228,7 +1231,8 @@ static int ade9000_read_event_config(struct iio_dev *indio_dev,
-                        return !!(interrupts1 & ADE9000_ST1_SWELLC_BIT);
-                else if (chan->type == IIO_ALTVOLTAGE && dir == IIO_EV_DIR_FALLING)
-                        return !!(interrupts1 & ADE9000_ST1_DIPC_BIT);
--               dev_err_ratelimited(&indio_dev->dev, "Invalid channel type %d or direction %d for phase C\n", chan->type, dir);
-+               dev_err_ratelimited(&indio_dev->dev,
-+                                   "Invalid channel type %d or direction %d for phase C\n", chan->type, dir);
-                return -EINVAL;
-        default:
-                return -EINVAL;
-@@ -1309,7 +1313,8 @@ static int ade9000_write_event_config(struct iio_dev *indio_dev,
-                        else
-                                st->wfb_trg &= ~ADE9000_WFB_TRG_DIP_BIT;
-                } else {
--                       dev_err_ratelimited(&indio_dev->dev, "Invalid channel type %d or direction %d for phase B\n",
-+                       dev_err_ratelimited(&indio_dev->dev,
-+                                           "Invalid channel type %d or direction %d for phase B\n",
-                                            chan->type, dir);
-                        return -EINVAL;
-                }
-@@ -1340,7 +1345,8 @@ static int ade9000_write_event_config(struct iio_dev *indio_dev,
-                        else
-                                st->wfb_trg &= ~ADE9000_WFB_TRG_DIP_BIT;
-                } else {
--                       dev_err_ratelimited(&indio_dev->dev, "Invalid channel type %d or direction %d for phase C\n",
-+                       dev_err_ratelimited(&indio_dev->dev,
-+                                           "Invalid channel type %d or direction %d for phase C\n",
-                                            chan->type, dir);
-                        return -EINVAL;
-                }
-@@ -1418,7 +1424,7 @@ static int ade9000_waveform_buffer_config(struct iio_dev *indio_dev)
-        u32 active_scans;
- 
-        bitmap_to_arr32(&active_scans, indio_dev->active_scan_mask,
--                       indio_dev->masklength);
-+                       iio_get_masklength(indio_dev));
- 
-        switch (active_scans) {
-        case ADE9000_SCAN_POS_IA | ADE9000_SCAN_POS_VA:
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = regmap_read(st->regmap, chan->address, &measured);
-> +		iio_device_release_direct(indio_dev);
-> +		if (ret)
-> +			return ret;
-> +
-> +		*val = measured;
-> +
-> +		return IIO_VAL_INT;
-> +
+Please test your docs build and carefully look at the output.
+There were a few formatting errors in here that I have fixed up.
 
 Jonathan
 
+
+
+> +
+> ++---------------------------------------------------+----------------------------------------------------------+
+> +| IIO Event Attribute                               | ADE9000 Datasheet Equivalent                             |
+> ++---------------------------------------------------+----------------------------------------------------------+
+> +| in_voltage[0-2]_thresh_either_en                  | Zero crossing detection interrupt (ZXVx)                 |
+> ++---------------------------------------------------+----------------------------------------------------------+
+> +| in_altvoltage[0-2]_rms_thresh_rising_en           | RMS swell detection interrupt (SWELLx)                   |
+> ++---------------------------------------------------+----------------------------------------------------------+
+> +| in_altvoltage[0-2]_rms_thresh_rising_value        | RMS swell threshold (SWELL_LVL register)                 |
+> ++---------------------------------------------------+----------------------------------------------------------+
+> +| in_altvoltage[0-2]_rms_thresh_falling_en          | RMS sag/dip detection interrupt (DIPx)                   |
+> ++---------------------------------------------------+----------------------------------------------------------+
+> +| in_altvoltage[0-2]_rms_thresh_falling_value       | RMS sag/dip threshold (DIP_LVL register)                 |
+> ++---------------------------------------------------+----------------------------------------------------------+
+> +| in_current[0-2]_thresh_either_en                  | Current zero crossing detection interrupt (ZXIx)         |
+> ++---------------------------------------------------+----------------------------------------------------------+
+> +
+> +Event directions:
+
+blank line before bulleted list.
+
+> +- ``rising``: Upper threshold crossing (swell detection)
+> +- ``falling``: Lower threshold crossing (sag/dip detection)
+> +- ``either``: Any threshold crossing (zero crossing detection)
+> +- ``none``: Timeout or non-directional events
+> +
+> +**Note**: Event attributes are only available if the corresponding interrupts
+> +(irq0, irq1, dready) are specified in the device tree. The driver works without
+> +interrupts but with reduced functionality.
+> +
+> +5. Device buffers
+> +=================
+> +
+> +This driver supports IIO buffers for waveform capture. Buffer functionality
+> +requires the dready interrupt to be connected.
+> +
+> +The device supports capturing voltage and current waveforms for power quality
+> +analysis. The waveform buffer can be configured to capture data from different
+> +channel combinations.
+> +
+> +Supported channel combinations for buffered capture:
+
+blank line before bulleted list.
+
+> +- Phase A: voltage and current (IA + VA)
+> +- Phase B: voltage and current (IB + VB)
+> +- Phase C: voltage and current (IC + VC)
+> +- All phases: all voltage and current channels
+> +- Individual channels: IA, VA, IB, VB, IC, VC
+> +
+> +Usage examples
+> +--------------
+> +
+> +Enable waveform capture for Phase A:
+> +
+> +.. code-block:: bash
+> +
+> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_current0_en
+> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_voltage0_en
+> +
+> +Set buffer length and enable:
+> +
+> +.. code-block:: bash
+> +
+> +        root:/sys/bus/iio/devices/iio:device0> echo 100 > buffer/length
+> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > buffer/enable
+> +
+> +6. Clock output
+> +===============
+> +
+> +The ADE9000 can provide a clock output via the CLKOUT pin when using an external
+> +crystal/clock source. This feature is enabled by specifying ``#clock-cells = <0>``
+> +in the device tree. The output clock will be registered as "clkout" and can be
+> +referenced by other devices.
+> +
+> +7. Usage examples
+> +=================
+> +
+> +Show device name:
+> +
+> +.. code-block:: bash
+> +
+> +	root:/sys/bus/iio/devices/iio:device0> cat name
+> +        ade9000
+> +
+> +Read voltage measurements:
+> +
+> +.. code-block:: bash
+> +
+> +        root:/sys/bus/iio/devices/iio:device0> cat in_voltage0_raw
+> +        12345
+> +        root:/sys/bus/iio/devices/iio:device0> cat in_voltage0_scale
+> +        0.000030517
+> +
+> +- Phase A voltage = in_voltage0_raw * in_voltage0_scale = 0.3769 V
+> +
+> +Read power measurements:
+> +
+> +.. code-block:: bash
+> +
+> +        root:/sys/bus/iio/devices/iio:device0> cat in_power0_active_raw
+> +        5678
+> +        root:/sys/bus/iio/devices/iio:device0> cat in_power0_scale
+> +        0.000244140
+> +
+> +- Phase A active power = in_power0_active_raw * in_power0_scale = 1.386 W
+> +
+> +Configure calibration gains:
+> +
+> +.. code-block:: bash
+> +
+> +        # Set current channel 0 calibration gain
+> +        root:/sys/bus/iio/devices/iio:device0> echo 0x800000 > in_current0_calibscale
+> +        # Set voltage channel 0 calibration gain
+> +        root:/sys/bus/iio/devices/iio:device0> echo 0x7FFFFF > in_voltage0_calibscale
+> +
+> +Configure RMS voltage event thresholds (requires interrupts):
+> +
+> +.. code-block:: bash
+> +
+> +        # Set RMS sag detection threshold
+> +        root:/sys/bus/iio/devices/iio:device0> echo 180000 > events/in_altvoltage0_rms_thresh_falling_value
+> +        # Enable RMS sag detection
+> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > events/in_altvoltage0_rms_thresh_falling_en
+> +
+> +        # Set RMS swell detection threshold
+> +        root:/sys/bus/iio/devices/iio:device0> echo 260000 > events/in_altvoltage0_rms_thresh_rising_value
+> +        # Enable RMS swell detection
+> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > events/in_altvoltage0_rms_thresh_rising_en
+> +
+> +8. IIO Interfacing Tools
+> +========================
+> +
+> +See ``Documentation/iio/iio_tools.rst`` for the description of the available IIO
+> +interfacing tools.
+> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
+> index c106402a91f7..792c815286f4 100644
+> --- a/Documentation/iio/index.rst
+> +++ b/Documentation/iio/index.rst
+> @@ -28,6 +28,7 @@ Industrial I/O Kernel Drivers
+>     ad7606
+>     ad7625
+>     ad7944
+> +   ade9000
+>     adis16475
+>     adis16480
+>     adis16550
 
 

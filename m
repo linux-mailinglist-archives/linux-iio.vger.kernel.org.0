@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-24048-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24049-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A1DB56114
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 15:21:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8804B56116
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 15:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 771757AB106
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 13:19:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B4041B21A8C
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Sep 2025 13:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083612EDD4C;
-	Sat, 13 Sep 2025 13:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712352EE273;
+	Sat, 13 Sep 2025 13:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u47l62QA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nIKYfe9P"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2C7285C97;
-	Sat, 13 Sep 2025 13:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294262E8B6E;
+	Sat, 13 Sep 2025 13:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757769667; cv=none; b=BWsulUQX8+OcVF345qHcvLfxuk333vPiyutl29WF1KFqGMuYEG7sytK1OREM8mL6WgeZZ1p19x4G49jWGGOaoEzmBMrF5BanW2f7Tmr6b3jkjgwY2kjT2Vf13R9dCEyoWrhZvf+LA8ueQJv7qmhAc2nnQtQfztr2uc831f/jF7Y=
+	t=1757769741; cv=none; b=tUwlYi2TpKcJN/vmO+muECmYbjgDXXocs5aITdVrKDfnOhRwApCc6SFHw5y/cj6OOt/b5neK+nggUi8r+C7HLk3xAneLNLfYKbQ/wcdZnhrtyJsBRcYKlXWZenK5HFLb1d4lhpDlaKKSNuQQncihHie8MjmhjD3xFmxck6GZ9Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757769667; c=relaxed/simple;
-	bh=NFy5BFwgI1BaFJmQCa91idv5aurWAF94mAYy1EKJnjU=;
+	s=arc-20240116; t=1757769741; c=relaxed/simple;
+	bh=1yirclNQYQ9pvR5iT8CCm4GJcTNKlFCoefM4BLh5Ey8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UI1+X6wiTuZvbPiYoDDkmSuXeoUAv5giaZIHHeW3+nBlqbKu7ABoudXy/mogU4U6INhImxerPiHC/26HDvlNvZT43uPrwvcxwPHf1ETJWIcnDhmrAFJQ/aXej+oTL842A/jvK5I6Ss3QbJOwbiCa+yh1N6cBwn1OIT9eHexaYAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u47l62QA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A12C4CEEB;
-	Sat, 13 Sep 2025 13:21:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y/dUf6Z26qzK+4KeuzUP0VM6laqaUB7boh3Y+5WVIF3bqpomLzHOz3UAKMU6RRtjB3QtqMU4MF2Uo3xZhcOz8HYCfKBx8pFxmETvjKeS+GaE8xIl27Lb5y4WWEPRZBaXBCgYBDxHerDTYsNAyV4kACXOG0sQ5ECp6QRx0bO4xsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nIKYfe9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B7DC4CEEB;
+	Sat, 13 Sep 2025 13:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757769667;
-	bh=NFy5BFwgI1BaFJmQCa91idv5aurWAF94mAYy1EKJnjU=;
+	s=k20201202; t=1757769740;
+	bh=1yirclNQYQ9pvR5iT8CCm4GJcTNKlFCoefM4BLh5Ey8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=u47l62QAK8E/EEWHs+xzlJyrw2tXSKhqF7OfvPobT3bkJj3a/yp5iLWXsAJ0rin/V
-	 Cb44yD3/qZbS7CabblwdTbsvlH5DIBGj+ayNFN/jE4Znsgh7owqGPsocMGpJ+URAmP
-	 oxpnEKAyuU5HDRtr2a+zcaojd8/ACk/nDo1G+Ls0RV87zqqdo9TNR+He7u4avdNcaw
-	 3Tyl65ncxv7vNjk5Fu2JA5yPhfO53Wzz4QlR3QHgf4fNyGbjSpCSCSPLiCIiJwiO5X
-	 WjIcD5dalpNBh27OFxY+1V2Ed7V6zavElpYURMYwSwBrdaY/C/P8HDFGztZMM3vaLy
-	 zQgeqClRDHkZA==
-Date: Sat, 13 Sep 2025 14:20:59 +0100
+	b=nIKYfe9PPHPi/3k5qw5D4NTMg9JzZ9xSq8QBimrsvnkbQZql4E2ejAmJ3ZfqPVP7b
+	 lIEhe81+58wUYA3TWc6eoD6+/RvfvwAIddUdVH/VZQvphd0jUF7bfihOBNh9D8Fy38
+	 pfqG21kdQylK6zCyTrd9I7woyO9iQV+/dXgn4Q0QCqc6KryCqwgo/JVpJimSAV4htO
+	 5wQKqM07srdxZEajh6t5bxrV0EFMyHKZq6Cy2plNCos3OTSbhWMXLGrtswzQThBpe4
+	 19ugr36FZB4QJTbqI0pOEG+1ORMnfEr7KePo9pz03hkV8HPoHlVhzwlb+87i0O8WmL
+	 1dcQUHURO7kqA==
+Date: Sat, 13 Sep 2025 14:22:12 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v7 5/6] docs: iio: add documentation for ade9000 driver
-Message-ID: <20250913142059.1122a622@jic23-huawei>
-In-Reply-To: <20250908073531.3639-6-antoniu.miclaus@analog.com>
+Subject: Re: [PATCH v7 0/6] iio: adc: add support for ADE9000 Energy
+ Monitoring IC
+Message-ID: <20250913142212.1face3f5@jic23-huawei>
+In-Reply-To: <20250908073531.3639-1-antoniu.miclaus@analog.com>
 References: <20250908073531.3639-1-antoniu.miclaus@analog.com>
-	<20250908073531.3639-6-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,167 +61,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 8 Sep 2025 07:35:25 +0000
+On Mon, 8 Sep 2025 07:35:20 +0000
 Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> Add documentation for ade9000 driver which describes the driver
-> device files and shows how the user may use the ABI for various
-> scenarios (configuration, measurement, etc.).
+> This patch series adds support for the Analog Devices ADE9000, a highly
+> accurate, fully integrated, multiphase energy and power quality monitoring
+> device. The ADE9000 is capable of measuring energy consumption and power
+> quality parameters in industrial and commercial applications.
 > 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Please test your docs build and carefully look at the output.
-There were a few formatting errors in here that I have fixed up.
+> The series includes:
+> 
+> 1. New IIO modifiers for power and energy measurement devices, including
+>    support for active/reactive/apparent power, RMS masurements.
+> 
+> 2. Device tree bindings for the ADE9000, supporting waveform buffer
+>    configuration, phase configuration, and trigger settings.
+> 
+> 3. Complete driver implementation supporting:
+>    - Multi-phase energy measurement (3-phase support)
+>    - Power quality monitoring (voltage swell/dip detection)
+>    - Waveform buffer capture with configurable triggering
+>    - Energy accumulation with configurable time windows
+>    - IIO buffer interface for continuous data streaming
+>    - Event-based notifications for power quality events
+> 
+> The driver provides a comprehensive interface for energy monitoring
+> applications through the IIO framework, enabling userspace applications
+> to monitor power consumption, quality, and waveform data.
+> 
+> The driver will be extended in the future to support multiple parts such as
+> ade9039.
+
+Hi Antoniu,
+
+Applied with a few changes as described in replies to individual patches.
+I also called out one significant refactor that I'd like you to consider
+as a follow up patch. Given it was late feedback I decided not to ask
+for it before applying this.
 
 Jonathan
-
-
-
-> +
-> ++---------------------------------------------------+----------------------------------------------------------+
-> +| IIO Event Attribute                               | ADE9000 Datasheet Equivalent                             |
-> ++---------------------------------------------------+----------------------------------------------------------+
-> +| in_voltage[0-2]_thresh_either_en                  | Zero crossing detection interrupt (ZXVx)                 |
-> ++---------------------------------------------------+----------------------------------------------------------+
-> +| in_altvoltage[0-2]_rms_thresh_rising_en           | RMS swell detection interrupt (SWELLx)                   |
-> ++---------------------------------------------------+----------------------------------------------------------+
-> +| in_altvoltage[0-2]_rms_thresh_rising_value        | RMS swell threshold (SWELL_LVL register)                 |
-> ++---------------------------------------------------+----------------------------------------------------------+
-> +| in_altvoltage[0-2]_rms_thresh_falling_en          | RMS sag/dip detection interrupt (DIPx)                   |
-> ++---------------------------------------------------+----------------------------------------------------------+
-> +| in_altvoltage[0-2]_rms_thresh_falling_value       | RMS sag/dip threshold (DIP_LVL register)                 |
-> ++---------------------------------------------------+----------------------------------------------------------+
-> +| in_current[0-2]_thresh_either_en                  | Current zero crossing detection interrupt (ZXIx)         |
-> ++---------------------------------------------------+----------------------------------------------------------+
-> +
-> +Event directions:
-
-blank line before bulleted list.
-
-> +- ``rising``: Upper threshold crossing (swell detection)
-> +- ``falling``: Lower threshold crossing (sag/dip detection)
-> +- ``either``: Any threshold crossing (zero crossing detection)
-> +- ``none``: Timeout or non-directional events
-> +
-> +**Note**: Event attributes are only available if the corresponding interrupts
-> +(irq0, irq1, dready) are specified in the device tree. The driver works without
-> +interrupts but with reduced functionality.
-> +
-> +5. Device buffers
-> +=================
-> +
-> +This driver supports IIO buffers for waveform capture. Buffer functionality
-> +requires the dready interrupt to be connected.
-> +
-> +The device supports capturing voltage and current waveforms for power quality
-> +analysis. The waveform buffer can be configured to capture data from different
-> +channel combinations.
-> +
-> +Supported channel combinations for buffered capture:
-
-blank line before bulleted list.
-
-> +- Phase A: voltage and current (IA + VA)
-> +- Phase B: voltage and current (IB + VB)
-> +- Phase C: voltage and current (IC + VC)
-> +- All phases: all voltage and current channels
-> +- Individual channels: IA, VA, IB, VB, IC, VC
-> +
-> +Usage examples
-> +--------------
-> +
-> +Enable waveform capture for Phase A:
-> +
-> +.. code-block:: bash
-> +
-> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_current0_en
-> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_voltage0_en
-> +
-> +Set buffer length and enable:
-> +
-> +.. code-block:: bash
-> +
-> +        root:/sys/bus/iio/devices/iio:device0> echo 100 > buffer/length
-> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > buffer/enable
-> +
-> +6. Clock output
-> +===============
-> +
-> +The ADE9000 can provide a clock output via the CLKOUT pin when using an external
-> +crystal/clock source. This feature is enabled by specifying ``#clock-cells = <0>``
-> +in the device tree. The output clock will be registered as "clkout" and can be
-> +referenced by other devices.
-> +
-> +7. Usage examples
-> +=================
-> +
-> +Show device name:
-> +
-> +.. code-block:: bash
-> +
-> +	root:/sys/bus/iio/devices/iio:device0> cat name
-> +        ade9000
-> +
-> +Read voltage measurements:
-> +
-> +.. code-block:: bash
-> +
-> +        root:/sys/bus/iio/devices/iio:device0> cat in_voltage0_raw
-> +        12345
-> +        root:/sys/bus/iio/devices/iio:device0> cat in_voltage0_scale
-> +        0.000030517
-> +
-> +- Phase A voltage = in_voltage0_raw * in_voltage0_scale = 0.3769 V
-> +
-> +Read power measurements:
-> +
-> +.. code-block:: bash
-> +
-> +        root:/sys/bus/iio/devices/iio:device0> cat in_power0_active_raw
-> +        5678
-> +        root:/sys/bus/iio/devices/iio:device0> cat in_power0_scale
-> +        0.000244140
-> +
-> +- Phase A active power = in_power0_active_raw * in_power0_scale = 1.386 W
-> +
-> +Configure calibration gains:
-> +
-> +.. code-block:: bash
-> +
-> +        # Set current channel 0 calibration gain
-> +        root:/sys/bus/iio/devices/iio:device0> echo 0x800000 > in_current0_calibscale
-> +        # Set voltage channel 0 calibration gain
-> +        root:/sys/bus/iio/devices/iio:device0> echo 0x7FFFFF > in_voltage0_calibscale
-> +
-> +Configure RMS voltage event thresholds (requires interrupts):
-> +
-> +.. code-block:: bash
-> +
-> +        # Set RMS sag detection threshold
-> +        root:/sys/bus/iio/devices/iio:device0> echo 180000 > events/in_altvoltage0_rms_thresh_falling_value
-> +        # Enable RMS sag detection
-> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > events/in_altvoltage0_rms_thresh_falling_en
-> +
-> +        # Set RMS swell detection threshold
-> +        root:/sys/bus/iio/devices/iio:device0> echo 260000 > events/in_altvoltage0_rms_thresh_rising_value
-> +        # Enable RMS swell detection
-> +        root:/sys/bus/iio/devices/iio:device0> echo 1 > events/in_altvoltage0_rms_thresh_rising_en
-> +
-> +8. IIO Interfacing Tools
-> +========================
-> +
-> +See ``Documentation/iio/iio_tools.rst`` for the description of the available IIO
-> +interfacing tools.
-> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-> index c106402a91f7..792c815286f4 100644
-> --- a/Documentation/iio/index.rst
-> +++ b/Documentation/iio/index.rst
-> @@ -28,6 +28,7 @@ Industrial I/O Kernel Drivers
->     ad7606
->     ad7625
->     ad7944
-> +   ade9000
->     adis16475
->     adis16480
->     adis16550
-
 

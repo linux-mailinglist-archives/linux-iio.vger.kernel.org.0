@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-24120-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24121-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260DEB58745
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 00:16:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C94FB58749
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 00:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E23C12A360C
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 22:16:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96B287AECC2
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 22:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55F02C028C;
-	Mon, 15 Sep 2025 22:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E562C028E;
+	Mon, 15 Sep 2025 22:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="POPGjKy/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kymZGrUB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED9B269806
-	for <linux-iio@vger.kernel.org>; Mon, 15 Sep 2025 22:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D5A8462
+	for <linux-iio@vger.kernel.org>; Mon, 15 Sep 2025 22:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757974566; cv=none; b=rTqNAPwNF7n3rKe0cGRlo7Nfbcf4W3XPO0HQml5mPXUg2+Eu6eRsN5wZ3WU+VZ9Sc5ZE46LxIHNw+G0zK4rxvX6VJ9RQEClMDfUiK1+0G+btN5PiMBM2LfcWKUkGqZzJ53mc7g2o+KsiBPPf4sFTf5ZjmYyqVMUj440jgQDl2LE=
+	t=1757974585; cv=none; b=ryia4rK+gJSKZnAYwJlK4JrZhzALTFN51wEajE9QLKQvzJNbvm0Ag4Q3EcEGwdmw5LFDwPeu0BZ4AIrxjmdwInxq+ZOZodPdvRiPDD3RRcm4+y2BntM8PZbewcuqP8MebhCxWdgF3cK6RHCg9Ya42lgFkQdRNe84OCID2J0lNL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757974566; c=relaxed/simple;
-	bh=2TwRQ7Odl35bnTVmkNbaQpjTJrpwNpSaEORP0ZdqABY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=bvBi/37KV07QzcRupypekkEax+eawIVakqd93e12SFqqECfrYNEHBoqONxcgqHvyozJ8M6wxsoe6u95sP6xi5LXm82BZoP6tRQnPzkQm2X8le+E4nRPzlACSPbnvXEOv49h0gS8KsCytYXUC8ean0/xYsMDfyK0Os4qwIfO6rEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=POPGjKy/; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1757974585; c=relaxed/simple;
+	bh=hpX78XC++o0j+xWq2Jzr6EDMABh8C89eS5YXWJolgno=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aqDPfy7OV8quMV6aNEyQeAXYH/NPUxi2Sh/uWpvU7PYerUKnRdI3GkO7kolYJn1pleskogpbV+hJ42qqBuayyUGz7F6qnbwjf6jnmfAuqF1VIlZwJkcSCad2vZ6rVvJe+xbvEXzW3y2S2ouJKmpB3TnzBZLS8NTNlNGjh4nfH/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kymZGrUB; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7723cf6e4b6so3725094b3a.3
-        for <linux-iio@vger.kernel.org>; Mon, 15 Sep 2025 15:16:05 -0700 (PDT)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-263b1cf4d99so14123785ad.0
+        for <linux-iio@vger.kernel.org>; Mon, 15 Sep 2025 15:16:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757974564; x=1758579364; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0EANtiW8Fhtl5LLMmH+RNqU0cOM8cX8a+UX3kfhq2t0=;
-        b=POPGjKy/82FA8/nOaDwBMi/sWkxXVtUJMrxWz6tLgqLJXDMA35IJ9QJyd8yDAE6xV4
-         4d68AR88U/3cIdWaXWKBitcJKSh/P3scD1s9NA75wcLcn7nS2aGKXN9MBKvWcYMLXZs1
-         /A1Go8oZwgQxTS0E+y8nilHUB/xo/QHwlwMNJGD+7SviBHNvZj53nNMgrZYrEaSh5IlZ
-         THRerBG0hDqq/0PdkhSdkqHo/H2AvNgUY18hOyyrCxNg2pm+uLejMLI5aVWqukWcmGrk
-         7IKffJ0Zr3XZAUrQXKQf+m3cOiw0Mm08odYi/ObdwWH5HbCfU5SG1UdSFS/h1kvbKfgE
-         ut8A==
+        d=gmail.com; s=20230601; t=1757974583; x=1758579383; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iWTSvkymFDJ58PuKfmx25iF7qZBCs4qky+oxZ7HnyxA=;
+        b=kymZGrUByI/0gZAS1FAET2VtGy3zhs9348aSNfjmjHgtLM2LM9QpFrZ/ea/081jEu2
+         p2EG3YTym8tmNxhKv8KuiBtWpGQwZQTuzZIv0tdm8OjK+T971dD6LEv+9APea0CQtISG
+         c1dchvB+f3r7KtHx0a2iAf9Hu9HOVbjE4raSzGEK2pdB9U9pUW20e48eV99QNRsZ1Nvp
+         9H/Q4zrdxfst5CoznmKlLgTkkymDNWHl+nLQozHwBjgh23JFOzE55WYPF052k2GRaUm2
+         lSvaEv7x/u4xrNwh33TdsHcO9TJOC1oaIgM5QJHrbJ/nwYLhbyycimUNHXOssDjy8xa1
+         yjyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757974564; x=1758579364;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0EANtiW8Fhtl5LLMmH+RNqU0cOM8cX8a+UX3kfhq2t0=;
-        b=olFm0plouZ0ttdYw4/a3GJ8X51Z/8LykudVu9mAzGhfIrWhgLLrvDnd7+8PjqhuXKP
-         Ys/Fy5CjUq9HX12ntRlFiShj6f2XnJJTVniPdGX3Ck0FZT37ScOkjMMLs0YE+Kk1GZLQ
-         BOQ8L6vpht/Fi73WvivPb7LtsX6chwFYt69U8HsjEXSNAddvDd5/grnel6soNL41ekfd
-         Takf/R6HWedFZW3gv/YCf3uf0U9aWrXjQzGywnafutI/DRUFR/5EyXJgstDClHtS3Ich
-         LQMcuwkJjm+8azee8ZHPcvXrKNUBBLdd/jHMzffHT0jzlj0mxSCJ+UZyRhqeGL7LmOBB
-         h9EA==
-X-Gm-Message-State: AOJu0YwJ5vcHrACB3RL0SKDgIMcUhh3NeCEjZinRF7+HpSmkmkSPxq3Q
-	A2y/bRJ7G4NCf5wKGr1YkJg4vpQrLnY76WbCQkTIMoRIy2tfFev1QaQRXdfiQxEOcyc=
-X-Gm-Gg: ASbGncvFKw5KUyVoySdx5fh/pkXRziqSIuIKPibTTivUd9thpDq3vQe/wv0j3mGPflm
-	iuXtF2iwsKoSm0NS9dQCRiTzQNSJPIBikMnP1EQ/jcsPRGiqcmPMMNAKHeg0NAYcKiUE+joSm2S
-	M8KUy/BIIV8vlZmagETAy4v6lnIwx9TW1KXUgLTEnJhNF2lbCqLTLDhL/kfAy+Q7Y93mnd4FITb
-	6IxsddjJwTcooDVMFCgKARkK0LaIh/fVKbq8KI+2Bpp0uHfwaCHrv2gMY9YLvaWOIVpCppwHO5L
-	U4ifLbn3l5xcq8Y04tQnzrlVhLMyDDuKnQPS81kkQb6X23CAJub8wE4al+TC+q9Bdp+GPutxUgX
-	VNUfZfFtirUEImmL75eXg6rJNlI/9t9FJaFNjXBJ43gUqVA==
-X-Google-Smtp-Source: AGHT+IFh76HLO/YT0qIt7A0bFAgD4JcYWE6WuL5ntYDbwnY3Rk2Yc7swyytB/kjQnM8Lx4/O+5VEeA==
-X-Received: by 2002:a05:6a20:ea0:b0:262:66d2:825f with SMTP id adf61e73a8af0-26266d28b6emr9412871637.16.1757974564051;
-        Mon, 15 Sep 2025 15:16:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757974583; x=1758579383;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iWTSvkymFDJ58PuKfmx25iF7qZBCs4qky+oxZ7HnyxA=;
+        b=P2t1galqV5haePa3OE1HzW28yjJluLnQ94matm1nNNYuo1nlsAXXKMa3zLfa65bDjN
+         f5/9/7KFkmKYygWqelUN3d/VbVhPuELBfm7uAilhRnYaZSTbL16HV5c9knCyjKr5xMXJ
+         RG+U2hbKDjLpkYjXlvahwA4nADxruHreK0WD2nscxs9esULxHaqg2h57kVlZHsCAc1Jk
+         aVpUv4sNf9rQwYyxQe2cc4OncCXlGm/+vHRKZCT4Hqzb5Os0QAF+uedMv8FH8WpE2xn+
+         z2R2didap0H8TxtjdgFxFsZlM/zKkgmead11XUS8tnAKn1ufeRYDkyV6KwF/zrOTpEl6
+         annA==
+X-Gm-Message-State: AOJu0YxK1o2XR9ph2puv61wjOdwFu58qvQH1HoGNsSgDSWqJPKgbRY1f
+	HGhY3V8oqfQztQ8kxrQ7nZvl0dC4C+0VWYAJi1N0fD+IQph/ujpWHcqJPD19N9uIgYM=
+X-Gm-Gg: ASbGncvCvCL7HNuSh8T3QfqL2hNPiuiIGX9Noqza2loFUU+o+WPBPJMlHaUKls1Vkyv
+	8xBy1BhAMXymN4xF9AvXAEhenIAeuzwjqlxmJMQIM4JA6Qlwx3smpFAJfGloTRnh21lWS743RuA
+	KinfaEY7kct5H9Jw1PW8Uas3iXHsYqQKGMVyKDX1O7thioexHWCBLRvxlG4xk0Lo8rWgrbaaesO
+	zvWl75EPThxdjp0Z9SUGzTbnXRw6eVX65B0fSmTr/Id9fevfXebFXZ97ksiH9uPGHDFSlwo/9pS
+	tkb7q/MsQLhJpp7hMfrADts5KeCMvbNb6uZqyWglA4uA1SZpE/VAaZkZ/kVQ4Cy/0HpDQA+em39
+	Pblwj/e88/k3hT9XqjsZvm8LpGUjqd+TyoFdOMvfe1Zz70F7nfaUX92rA
+X-Google-Smtp-Source: AGHT+IEpPZDH3C5lkHQ4LKnSCWo3IzlU2aWyPsXl40hsAjZlmVjzAwFNuJzDMyNqCstC7XaR7jVJYg==
+X-Received: by 2002:a17:903:1cd:b0:267:cdc1:83e with SMTP id d9443c01a7336-267d1604ad8mr814085ad.15.1757974582720;
+        Mon, 15 Sep 2025 15:16:22 -0700 (PDT)
 Received: from localhost.localdomain ([2804:7f5:b08b:d43e:6485:d878:c0c4:abbd])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77607c472ccsm14573518b3a.98.2025.09.15.15.15.57
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32e4e8ece73sm4779330a91.24.2025.09.15.15.16.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 15:16:03 -0700 (PDT)
+        Mon, 15 Sep 2025 15:16:22 -0700 (PDT)
 From: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
 To: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -90,10 +92,12 @@ Cc: Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
 	Ceclan Dumitru <dumitru.ceclan@analog.com>,
 	Jonathan Santos <Jonathan.Santos@analog.com>,
 	Dragos Bogdan <dragos.bogdan@analog.com>
-Subject: [PATCH v11 0/3] Add MAX14001/MAX14002 support
-Date: Mon, 15 Sep 2025 19:14:39 -0300
-Message-Id: <cover.1757971454.git.marilene.agarcia@gmail.com>
+Subject: [PATCH v11 1/3] dt-bindings: iio: adc: add max14001
+Date: Mon, 15 Sep 2025 19:16:12 -0300
+Message-Id: <30f33a64da0339eccc1474406afb2b1d02a0cd6b.1757971454.git.marilene.agarcia@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1757971454.git.marilene.agarcia@gmail.com>
+References: <cover.1757971454.git.marilene.agarcia@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -103,62 +107,172 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hello maintainers,
+Add device-tree documentation for MAX14001/MAX14002 ADCs.
+The MAX14001/MAX14002 are isolated, single-channel analog-to-digital
+converters with programmable voltage comparators and inrush current
+control optimized for configurable binary input applications.
 
-Thank you for reviewing v10, for your suggestions, and for answering
-my questions.
+They share the same features, but in the MAX14001 the inrush trigger
+threshold, current magnitude, and current duration are all programmable,
+whereas in the MAX14002 these parameters are fixed.
 
-I believe I’ve addressed most of the requested code changes. There was only
-one that I haven’t fixed, I’ve included the reasons in the patch message.
+Co-developed-by: Kim Seer Paller <kimseer.paller@analog.com>
+Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+Signed-off-by: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
+---
 
-I’d also like to use this cover letter to address some of the remaining
-questions from previous cover letters.
+I have addressed almost all of the comments, thank you very much for the 
+review. I would like to highlight some of them:
 
-Regarding regmap: thank you, David, for your response. I’ve implemented it,
-and the code seems to be working fine. I tested it on the Raspberry Pi
-modified kernel version rpi-6.12 with Raspberry Pi 5 hardware, using the 
-MAX14001PMB evaluation board.
+Changes since v10:
+- Changed the name to refin-supply.
+- Added interrupt-names property.
+- Added minItems in the interrupt property and shortened the descriptions.
+- Added the fallback in the compatible property.
 
-As for in_Y_mean_raw, the issue is that I don’t have the file
-/sys/bus/iio/devices/iio:device0/in_0_mean_raw; instead, I have
-/sys/bus/iio/devices/iio:device0/in_voltage0_mean_raw. I was thinking of 
-adding in_voltageY_mean_raw to the documentation, so I am submitting a
-patch with this change in the current patch set.
+Change I was not able to do:
+- Add the spi-lsb-first required property, even though I totally agree that
+it needs to be used. However, the SPI controller that I am using does not
+support SPI_LSB_FIRST, and this was leading to errors. Therefore, I suggest
+keeping it without the property for now and using bitrev16 in the driver
+code. As soon as I finish working on this driver, I intend to submit
+patches to the SPI kernel code to handle bit reverse operation when the SPI
+controller does not support it. Once that is integrated into the kernel, I
+will update the driver code accordingly; I have left a TODO message in the
+ADC driver code about it.
 
-Thank you also for the explanations about the extra analog frontend
-circuitry. I plan to study this further and send a dedicated patch to cover
-it in the future.
+Notes:
+Since v10, I have not used exactly the same approach as Kim did in v9, nor 
+the same approach as in my v1. Instead, I merged both implementations, and 
+this v11 is quite different from both. Therefore, I have dropped the review 
+by Krzysztof Kozlowski. I am not very familiar with the kernel’s review 
+process, should I add it back? Should I list your names as Reviewed-by? 
+Thanks.
 
-Thank you Jonathan for the two possible solutions to set the number of ADC
-readings used in the mean calculation. I’ll study both approaches and send
-a dedicated patch to implement one of them in the next steps.
-
-I intend to continue sending patches to implement all the features of the
-MAX14001/MAX14002. Since I mostly work on weekends, I’ll be submitting
-patches at a low frequency, but consistently.
-
-Thank you for your time.
-Best regards,
-Marilene Andrade Garcia
+The MAX14001 and MAX14002 both have the COUT output pin and the FAULT
+output pin, and work the same. I have decided to declare them as interrupts
+because I think some action should be done when they are hit. However, the
+implementation of these features is not present in the v11 driver code, as
+it was not in v9. But I plan to submit it in the next steps.
 
 
-Marilene Andrade Garcia (3):
-  dt-bindings: iio: adc: add max14001
-  iio: adc: max14001: New driver
-  iio: ABI: Add voltage mean raw attribute
-
- Documentation/ABI/testing/sysfs-bus-iio       |   1 +
- .../bindings/iio/adc/adi,max14001.yaml        |  87 +++++
- MAINTAINERS                                   |   9 +
- drivers/iio/adc/Kconfig                       |  10 +
- drivers/iio/adc/Makefile                      |   1 +
- drivers/iio/adc/max14001.c                    | 356 ++++++++++++++++++
- 6 files changed, 464 insertions(+)
+ .../bindings/iio/adc/adi,max14001.yaml        | 87 +++++++++++++++++++
+ MAINTAINERS                                   |  8 ++
+ 2 files changed, 95 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
- create mode 100644 drivers/iio/adc/max14001.c
 
-
-base-commit: 671b9b6d7f4fe17a174c410397e72253877ca64e
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+new file mode 100644
+index 000000000000..c61119b16cf5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+@@ -0,0 +1,87 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2023-2025 Analog Devices Inc.
++# Copyright 2023 Kim Seer Paller
++# Copyright 2025 Marilene Andrade Garcia
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,max14001.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices MAX14001-MAX14002 ADC
++
++maintainers:
++  - Kim Seer Paller <kimseer.paller@analog.com>
++  - Marilene Andrade Garcia <marilene.agarcia@gmail.com>
++
++description: |
++    Single channel 10 bit ADC with SPI interface.
++    Datasheet can be found here
++      https://www.analog.com/media/en/technical-documentation/data-sheets/MAX14001-MAX14002.pdf
++
++$ref: /schemas/spi/spi-peripheral-props.yaml#
++
++properties:
++  compatible:
++    oneOf:
++      - const: adi,max14002
++      - items:
++          - const: adi,max14001
++          - const: adi,max14002
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 5000000
++
++  vdd-supply:
++    description:
++      Isolated DC-DC power supply input voltage.
++
++  vddl-supply:
++    description:
++      Logic power supply.
++
++  refin-supply:
++    description:
++      ADC voltage reference supply.
++
++  interrupts:
++    minItems: 1
++    items:
++      - description: |
++          Asserts high when ADC readings exceed the upper threshold and low
++          when below the lower threshold. Must be connected to the COUT pin.
++      - description: |
++          Alert output that asserts low during a number of different error
++          conditions. The interrupt source must be attached to FAULT pin.
++
++  interrupt-names:
++    minItems: 1
++    items:
++      - const: cout
++      - const: fault
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++  - vddl-supply
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      max14001: adc@0 {
++        compatible = "adi,max14001", "adi,max14002";
++        reg = <0>;
++        spi-max-frequency = <5000000>;
++        vdd-supply = <&vdd>;
++        vddl-supply = <&vddl>;
++      };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d53a536288ca..0bae420caa63 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14991,6 +14991,14 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/sound/max9860.txt
+ F:	sound/soc/codecs/max9860.*
+ 
++MAX14001/MAX14002 IIO ADC DRIVER
++M:	Kim Seer Paller <kimseer.paller@analog.com>
++M:	Marilene Andrade Garcia <marilene.agarcia@gmail.com>
++L:	linux-iio@vger.kernel.org
++S:	Maintained
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
++
+ MAXBOTIX ULTRASONIC RANGER IIO DRIVER
+ M:	Andreas Klinger <ak@it-klinger.de>
+ L:	linux-iio@vger.kernel.org
 -- 
 2.34.1
 

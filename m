@@ -1,123 +1,223 @@
-Return-Path: <linux-iio+bounces-24111-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24112-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8005B57A21
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 14:13:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4827CB57E79
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 16:12:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B02417431E
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 12:13:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48416204462
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 14:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DED8306B01;
-	Mon, 15 Sep 2025 12:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B1A31B821;
+	Mon, 15 Sep 2025 14:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jxhmbybD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ib744pOF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B341321CC47;
-	Mon, 15 Sep 2025 12:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB47D2D12E7;
+	Mon, 15 Sep 2025 14:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757938407; cv=none; b=bRne+Tb0BaCT6HlFRoFBbOSjODNQAEa8rwmfZ5ek3jhv2Vmh3Y1C8KKz5+M7Iy98FC7pDCzW94seaEZh6P6oQrVIGUGjMLPsk5rigMpXF4pCoXgoROLvJo4D1TSe+qSr8TanUY+EnjLoxFTw70EteEO6Eol8HRHf98boeI8BOSs=
+	t=1757945563; cv=none; b=Rf7pD8gjznhYWwzVaZncvPd401MqrjLAePI91iLtqw1yVIg5A2314JJLLmFSTmy6wmPcQWOkuedruKJObzDGYMPnm8qbNY2hw/Qx0AxLkTr41qOwilVjULJnrAyc0Vsi8miM/MXo9AVOPmNhHnuaQbcFkxdf9XZ+uLsx89hpp4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757938407; c=relaxed/simple;
-	bh=RnaQPEpAFGE+FmHs1ujCADBWdRDqnxSUnXW7zkovLnY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=dUjR6phRnEtimIMRB/g/Oi6IyIMr6b4D2CW2bov8L/fIt42N7piAw5RsNldS6COIamF3ChaGWQQ97oIrJE9ZFkz9yDKQm3VZmNW9r0PizerL4zaXXukP2hTXXtu5UFX/oiagKorxbSCIdpM510JHrjgZBFPrmP4FlvOqPJhaMM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jxhmbybD; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58FCDIrV1553311;
-	Mon, 15 Sep 2025 07:13:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1757938398;
-	bh=fOPm7DPa44haQ5Kh6Z0KE9NG3VWd3hMZ47EgCDyDjFA=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=jxhmbybDH1VCsp3EWS3EZnSqckVvrYM4dbg0iG1N9VbrLBG00j2pMJmSSS8ibGptO
-	 uedHLOpljz4XbDVZexkY8nct0O4toYGj8MmLSrrdbz8TqC4w9ZtjwP5ToIVRRxt8y/
-	 +HRoOrb/tjjtGL6M4JdhrkKkD48qwBTlE/OuBDJw=
-Received: from DLEE206.ent.ti.com (dlee206.ent.ti.com [157.170.170.90])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58FCDID73381010
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 15 Sep 2025 07:13:18 -0500
-Received: from DLEE210.ent.ti.com (157.170.170.112) by DLEE206.ent.ti.com
- (157.170.170.90) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 15 Sep
- 2025 07:13:18 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE210.ent.ti.com
- (157.170.170.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Mon, 15 Sep 2025 07:13:18 -0500
-Received: from [10.250.32.255] ([10.250.32.255])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58FCDIUI3747341;
-	Mon, 15 Sep 2025 07:13:18 -0500
-Message-ID: <4333d98d-3f6c-4c22-8dee-e4349a7b4046@ti.com>
-Date: Mon, 15 Sep 2025 07:13:18 -0500
+	s=arc-20240116; t=1757945563; c=relaxed/simple;
+	bh=KgVjLVJIEGxaahBivf2jposmH0k5F1mKeUGKFxC40rU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X7sg68+gcMdxdignmajnqTTW6bpkQYCb0zNpa9VFy5FxNYvevjmcPJROes8DPJwOnhQxzkIiXZmtSo4sSl0ibiWqz+ej1ayYDzVXjdl/iVlrY4wC0WPNiyl1Hq1ToMLIbLBEgje/se7rxyKkFGpYseJrgLqH6f4pTRRWwmN7ISc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ib744pOF; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757945562; x=1789481562;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KgVjLVJIEGxaahBivf2jposmH0k5F1mKeUGKFxC40rU=;
+  b=Ib744pOFSXOA4yk2Umv77oMD4dy7jZXXkSC6uAkMq3gvxo1Ejz1ljxNn
+   uniqacumbyKv3aw6rKOjjYn9eFXhHBR0yyGVwSnEqQ83lSe+UIDE0yJtT
+   zvaFFW2Wrx7ejy3+8foPrITFVpCuQnze5Kwky6pY9AR2AXMYSfVnP3Dji
+   videZ4QMQJEHwuXmmnTF7C2ZTvCL1dRqfL/4TUi22hDXfaWA7vMUGSuaY
+   44P7IclGqeqWKSUSX5Xd4nA2tVboBbQH0BD/e6tDS37YjsWeyxIkd8JdV
+   rB6BHgSzVFFt/mZgqfzAC7PU09H3bp5lBV7Y6JC5lttgOwxwOUFTRyL4w
+   g==;
+X-CSE-ConnectionGUID: 47WfFI+oT5y+jX+fb8MHyg==
+X-CSE-MsgGUID: GZVkfGJxQrafETJ604+l0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="71567912"
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
+   d="scan'208";a="71567912"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 07:12:41 -0700
+X-CSE-ConnectionGUID: 3inNKzA3TLKjz1f7vlblkg==
+X-CSE-MsgGUID: TtYywyn8Sx6i+0cfps0tpg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
+   d="scan'208";a="179807537"
+Received: from smile.fi.intel.com ([10.237.72.51])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 07:12:37 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uy9wY-00000003GfO-1jDn;
+	Mon, 15 Sep 2025 17:12:34 +0300
+Date: Mon, 15 Sep 2025 17:12:34 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
+Message-ID: <aMge0jYwYCiY72Yb@smile.fi.intel.com>
+References: <20250915-bd79112-v5-0-a74e011a0560@gmail.com>
+ <20250915-bd79112-v5-2-a74e011a0560@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] iio: health: afe4403: Use devm_regulator_get_enable()
- helper
-To: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>
-CC: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-        Andy Shevchenko
-	<andy@kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20250813225840.576305-1-afd@ti.com>
- <20250813225840.576305-2-afd@ti.com>
- <4e109905-347d-4830-aea6-a93d88252481@baylibre.com>
- <20250913152052.134a4059@jic23-huawei>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <20250913152052.134a4059@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250915-bd79112-v5-2-a74e011a0560@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 9/13/25 9:20 AM, Jonathan Cameron wrote:
-> On Wed, 13 Aug 2025 18:12:26 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
+On Mon, Sep 15, 2025 at 10:12:43AM +0300, Matti Vaittinen wrote:
+> The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
+> be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
 > 
->> On 8/13/25 5:58 PM, Andrew Davis wrote:
->>> This takes care of both getting and enabling the regulator in one
->>> function, it also handles the devm action, so remove that. Also
->>> do not disable the regulator on suspend, this will be handled for
->>
->> I didn't know that this worked automatically. What is the mechanism
->> that makes it work? I've seen lots of drivers doing the disable/
->> enable in suspend/resume, so I just always assumed that was how one
->> is supposed to do it.
->>
-> Hi Andrew
+> The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
+> voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
+> daisy-chain configuration) and maximum sampling rate is 1MSPS.
 > 
-> This question is still open, so I'll not pick the reset of the series
-> up until it's resolved.  I'm going to mark these in patchwork as
-> changes requested so will need a v2 now.
-> 
+> The IC does also support CRC but it is not implemented in the driver.
 
-Sounds good, I'm still working on tracking down the answer to the
-question. I think it involves the regulator suspend path but
-will sort it out fully for v2.
+...
 
-Thanks,
-Andrew
+> +static int bd79112_probe(struct spi_device *spi)
+> +{
+> +	struct bd79112_data *data;
+> +	struct iio_dev *iio_dev;
+> +	struct iio_chan_spec *cs;
+> +	struct device *dev = &spi->dev;
+> +	unsigned long gpio_pins, pin;
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	iio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +	if (!iio_dev)
+> +		return -ENOMEM;
+> +
+> +	data = iio_priv(iio_dev);
+> +	data->spi = spi;
+> +	data->dev = dev;
+> +	data->map = devm_regmap_init(dev, NULL, data, &bd79112_regmap);
+> +	if (IS_ERR(data->map))
+> +		return dev_err_probe(dev, PTR_ERR(data->map),
+> +				     "Failed to initialize Regmap\n");
+> +
+> +	ret = devm_regulator_get_enable_read_voltage(dev, "vdd");
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "Failed to get the Vdd\n");
 
-> 
-> Jonathan
-> 
->>> us. We now do not need to track the regulator at all, so drop it
->>> from the device struct.
->>>
->>> Signed-off-by: Andrew Davis <afd@ti.com>
-> 
+> +	data->vref_mv = ret / 1000;
+
+I still think moving to _mV is the right thing to do.
+There is no 'mv' in the physics for Volts.
+
+> +	ret = devm_regulator_get_enable(dev, "iovdd");
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "Failed to enable I/O voltage\n");
+> +
+> +	data->read_xfer[0].tx_buf = &data->read_tx[0];
+> +	data->read_xfer[0].len = sizeof(data->read_tx);
+> +	data->read_xfer[0].cs_change = 1;
+> +	data->read_xfer[1].rx_buf = &data->read_rx;
+> +	data->read_xfer[1].len = sizeof(data->read_rx);
+> +	spi_message_init_with_transfers(&data->read_msg, data->read_xfer, 2);
+
+> +	devm_spi_optimize_message(dev, spi, &data->read_msg);
+
+And if it fails?..
+
+> +	data->write_xfer.tx_buf = &data->reg_write_tx[0];
+> +	data->write_xfer.len = sizeof(data->reg_write_tx);
+> +	spi_message_init_with_transfers(&data->write_msg, &data->write_xfer, 1);
+> +	devm_spi_optimize_message(dev, spi, &data->write_msg);
+> +
+> +	ret = devm_iio_adc_device_alloc_chaninfo_se(dev, &bd79112_chan_template,
+> +						    BD79112_MAX_NUM_CHANNELS - 1,
+> +						    &cs);
+> +
+> +	/* Register all pins as GPIOs if there are no ADC channels */
+> +	if (ret == -ENOENT)
+> +		goto register_gpios;
+> +
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	iio_dev->num_channels = ret;
+> +	iio_dev->channels = cs;
+> +
+> +	for (i = 0; i < iio_dev->num_channels; i++)
+> +		cs[i].datasheet_name = bd79112_chan_names[cs[i].channel];
+> +
+> +	iio_dev->info = &bd79112_info;
+> +	iio_dev->name = "bd79112";
+> +	iio_dev->modes = INDIO_DIRECT_MODE;
+> +
+> +	/*
+> +	 * Ensure all channels are ADCs. This allows us to register the IIO
+> +	 * device early (before checking which pins are to be used for GPIO)
+> +	 * without having to worry about some pins being initially used for
+> +	 * GPIO.
+> +	 */
+> +	for (i = 0; i < BD79112_NUM_GPIO_EN_REGS; i++) {
+> +		ret = regmap_write(data->map, BD79112_FIRST_GPIO_EN_REG + i, 0);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					     "Failed to initialize channels\n");
+> +	}
+> +
+> +	ret = devm_iio_device_register(data->dev, iio_dev);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret, "Failed to register ADC\n");
+> +
+> +register_gpios:
+> +	gpio_pins = bd79112_get_gpio_pins(iio_dev->channels,
+> +					  iio_dev->num_channels);
+> +
+> +	/* If all channels are reserved for ADC, then we're done. */
+> +	if (!gpio_pins)
+> +		return 0;
+> +
+> +	/* Default all the GPIO pins to GPI */
+> +	for_each_set_bit(pin, &gpio_pins, BD79112_MAX_NUM_CHANNELS) {
+> +		ret = bd79112_gpio_dir_set(data, pin, GPIO_LINE_DIRECTION_IN);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					     "Failed to mark pin as GPI\n");
+> +	}
+> +
+> +	data->gpio_valid_mask = gpio_pins;
+> +	data->gc = bd79112_gpio_chip;
+> +	data->gc.parent = dev;
+> +
+> +	return devm_gpiochip_add_data(dev, &data->gc, data);
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

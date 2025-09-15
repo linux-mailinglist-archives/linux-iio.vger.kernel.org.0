@@ -1,131 +1,235 @@
-Return-Path: <linux-iio+bounces-24118-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24119-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656E9B58561
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 21:36:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712FFB585C0
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 22:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9326C7AECD0
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 19:34:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EB5B7A225A
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 20:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBBF280335;
-	Mon, 15 Sep 2025 19:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB21289802;
+	Mon, 15 Sep 2025 20:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tq5XpbLa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hUtK8wJx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BE7320F;
-	Mon, 15 Sep 2025 19:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7763F2747B;
+	Mon, 15 Sep 2025 20:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757964981; cv=none; b=TBoJDWqlR7A9p7nDdZtmfuigksJpoyThGK4gADYYGtt9p+JNgHhy86LVJLvw0UJSMbsXqylJVQ60+gRT3cuGykec/RV650WZE8Wq4P0r8B+6nX9gTOX/NvdGDEI3NNlqqsvd07NIjXRdMGlzrRKArZrloOch7TwfLhPUnITF/38=
+	t=1757967211; cv=none; b=hH8fui/SUslM7k4yrIAnGGUB8Ju4IhqDRFG74u0VDeNxUXA54NPqW174ab9FasLf2Zb8j23J23lHYYSn4doWvw/zYoENgqBGxNAybeGmPRnJXd7yfexcz8/zS3gP67jPaCapm/t+JyjsCwzCbGTkgAV4vpf2+MuHCF2Dw2DkquQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757964981; c=relaxed/simple;
-	bh=xIiCA6XEsrWkWIw6mHGpGZiKaHps/gNNAYLbHZYqqj8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j8Pt4ZhNw/J0KFO5I+xQjMbYTEMLWcCSCMCyUIn2m6aUTBBV7PiX0p1XHksoR661L7isg+KaH/9/3gXF6Ije7CGkSmxqlSGpHPDu4PYXT9I92Cyo6lht4CRob7PnXFcQPr8oy6noowrsoDiiwar4nJuDKRcmISpskWmxVpIEVok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tq5XpbLa; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757964979; x=1789500979;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xIiCA6XEsrWkWIw6mHGpGZiKaHps/gNNAYLbHZYqqj8=;
-  b=Tq5XpbLaNHBbKlScR4AuNz3HZvfHWQfNBqmF1fXKkaWy5cI1Xk06QK9j
-   BxoDNx6upziijcNr/AZ6skLcDml0tqsOxrogBM8K3K2vFqxx2+TMG/lR0
-   +ZMdCF+TCXFVyGzesPIyaWW5tRa+gs5Rfa2TOetqEKeT1GFkiciY6Xqfm
-   DqnZZHq6RYX640wB6ats7begSTBnf/1KIqXrR1AXrf9CUT9UXBrJTQ8wr
-   5P6J+E2czrl3JgcRZl3k60viVn07kHnhe/QPvR8dhKah4QO9MYcD40m8v
-   bbjlK71sbxSN5jK+L3ChWSZ9rS5oHYIsuQmTfvrcB7uyLPpos8gFYSCgD
-   Q==;
-X-CSE-ConnectionGUID: UxHDi4ccQQSeKZ1QAlywpw==
-X-CSE-MsgGUID: E86gYZ0ARMe8EWkEq2/b6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="82827217"
-X-IronPort-AV: E=Sophos;i="6.18,267,1751266800"; 
-   d="scan'208";a="82827217"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 12:36:18 -0700
-X-CSE-ConnectionGUID: Y8hQESkPS4qErw9rZtB5/g==
-X-CSE-MsgGUID: ite+/TU1Qyacu+j/+yt5kA==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 5b01dd97f97c) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 15 Sep 2025 12:36:15 -0700
-Received: from kbuild by 5b01dd97f97c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uyEzl-0000cl-0J;
-	Mon, 15 Sep 2025 19:36:13 +0000
-Date: Tue, 16 Sep 2025 03:36:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lakshay Piplani <lakshay.piplani@nxp.com>, wbg@kernel.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	devicetree@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, vikash.bansal@nxp.com,
-	priyanka.jain@nxp.com, shashank.rebbapragada@nxp.com,
-	Lakshay Piplani <lakshay.piplani@nxp.com>
-Subject: Re: [PATCH 2/2] counter: nxp-pcf85363-stopwatch: Add driver for NXP
- PCF85263/PCF85363 stopwatch
-Message-ID: <202509160317.ig0aBXeu-lkp@intel.com>
-References: <20250915071415.1956219-2-lakshay.piplani@nxp.com>
+	s=arc-20240116; t=1757967211; c=relaxed/simple;
+	bh=sCG6ETdfTXdU2pnnMtozox8YjbeWgsBQMnCaCblSvgk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CDPZlT6PL4Xsj64vicIFoGSEWEe/v9slMDZFrvsG213Z9Trfus9zNbnBwZKb4nXN2/YyUsxuWrOuaWZFHy8hZBQAuhWH673Ykqhkr7QQ830izU3Nwct/ZEe1exQCnDVGq838zn2KZNS5xWD1/Ob+Sy+AITwo92mKZZ2218DcrRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hUtK8wJx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2474C4CEF1;
+	Mon, 15 Sep 2025 20:13:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757967211;
+	bh=sCG6ETdfTXdU2pnnMtozox8YjbeWgsBQMnCaCblSvgk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hUtK8wJxUjCzDYLa5vedEHLvsx5Af0pWXUKHmFdth0E7Ds3tPKgFwXhFA2Dhw4YXP
+	 ga1bGxoH9FNInZ1/DbtTcIKMc2hLqL1Xa2jXs0fk52BlAA1IpcCqS1nbeYU5qzcyJ7
+	 G8z68f7IeRhPL2OTGyJC7cxWTxwyJ/gkV1ULq3YBv0tXx7J5Tv2C5ncBTXbVEAxACa
+	 YHMJ/IuoJKoE9ZWzsZhK6FEukKJZzMv8uQMlKfzvTsfp8G0KzSemAado53Uaa/LSHQ
+	 JnVJv9E7IiBlBffIwVI/b/owd/BaaKg2w5MvpgjmpIVoBnApXEJD7Pv0VbMTGCv14J
+	 rh23Z04Iet+wQ==
+Date: Mon, 15 Sep 2025 21:13:21 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Linus
+ Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
+Message-ID: <20250915211321.47865d3d@jic23-huawei>
+In-Reply-To: <aMge0jYwYCiY72Yb@smile.fi.intel.com>
+References: <20250915-bd79112-v5-0-a74e011a0560@gmail.com>
+	<20250915-bd79112-v5-2-a74e011a0560@gmail.com>
+	<aMge0jYwYCiY72Yb@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915071415.1956219-2-lakshay.piplani@nxp.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Lakshay,
+On Mon, 15 Sep 2025 17:12:34 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-kernel test robot noticed the following build warnings:
+> On Mon, Sep 15, 2025 at 10:12:43AM +0300, Matti Vaittinen wrote:
+> > The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
+> > be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
+> > 
+> > The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
+> > voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
+> > daisy-chain configuration) and maximum sampling rate is 1MSPS.
+> > 
+> > The IC does also support CRC but it is not implemented in the driver.  
+> 
+> ...
+> 
+> > +static int bd79112_probe(struct spi_device *spi)
+> > +{
+> > +	struct bd79112_data *data;
+> > +	struct iio_dev *iio_dev;
+> > +	struct iio_chan_spec *cs;
+> > +	struct device *dev = &spi->dev;
+> > +	unsigned long gpio_pins, pin;
+> > +	unsigned int i;
+> > +	int ret;
+> > +
+> > +	iio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> > +	if (!iio_dev)
+> > +		return -ENOMEM;
+> > +
+> > +	data = iio_priv(iio_dev);
+> > +	data->spi = spi;
+> > +	data->dev = dev;
+> > +	data->map = devm_regmap_init(dev, NULL, data, &bd79112_regmap);
+> > +	if (IS_ERR(data->map))
+> > +		return dev_err_probe(dev, PTR_ERR(data->map),
+> > +				     "Failed to initialize Regmap\n");
+> > +
+> > +	ret = devm_regulator_get_enable_read_voltage(dev, "vdd");
+> > +	if (ret < 0)
+> > +		return dev_err_probe(dev, ret, "Failed to get the Vdd\n");  
+> 
+> > +	data->vref_mv = ret / 1000;  
+> 
+> I still think moving to _mV is the right thing to do.
+> There is no 'mv' in the physics for Volts.
 
-[auto build test WARNING on robh/for-next]
-[also build test WARNING on linus/master v6.17-rc6 next-20250912]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I'm not disagreeing with this review but I'm also not going to hold a
+driver back for that given timing is pretty much such that I merge it
+today or it sits a cycle and this one is very near...
+I'll get fussier on this once we have written up some guidance and may
+well send a patch to modify existing recent cases like this one!
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lakshay-Piplani/counter-nxp-pcf85363-stopwatch-Add-driver-for-NXP-PCF85263-PCF85363-stopwatch/20250915-152227
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20250915071415.1956219-2-lakshay.piplani%40nxp.com
-patch subject: [PATCH 2/2] counter: nxp-pcf85363-stopwatch: Add driver for NXP PCF85263/PCF85363 stopwatch
-config: i386-randconfig-141-20250916 (https://download.01.org/0day-ci/archive/20250916/202509160317.ig0aBXeu-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250916/202509160317.ig0aBXeu-lkp@intel.com/reproduce)
+> 
+> > +	ret = devm_regulator_get_enable(dev, "iovdd");
+> > +	if (ret < 0)
+> > +		return dev_err_probe(dev, ret, "Failed to enable I/O voltage\n");
+> > +
+> > +	data->read_xfer[0].tx_buf = &data->read_tx[0];
+> > +	data->read_xfer[0].len = sizeof(data->read_tx);
+> > +	data->read_xfer[0].cs_change = 1;
+> > +	data->read_xfer[1].rx_buf = &data->read_rx;
+> > +	data->read_xfer[1].len = sizeof(data->read_rx);
+> > +	spi_message_init_with_transfers(&data->read_msg, data->read_xfer, 2);  
+> 
+> > +	devm_spi_optimize_message(dev, spi, &data->read_msg);  
+> 
+> And if it fails?..
+I've added the following and applied the series.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509160317.ig0aBXeu-lkp@intel.com/
+Note I'm cutting this fine so if we get any build issues or similar
+it might well get pushed back to next cycle yet!
 
-All warnings (new ones prefixed by >>):
+diff --git a/drivers/iio/adc/rohm-bd79112.c b/drivers/iio/adc/rohm-bd79112.c
+index b406d4ee5411..d15e06c8b94d 100644
+--- a/drivers/iio/adc/rohm-bd79112.c
++++ b/drivers/iio/adc/rohm-bd79112.c
+@@ -454,12 +454,18 @@ static int bd79112_probe(struct spi_device *spi)
+        data->read_xfer[1].rx_buf = &data->read_rx;
+        data->read_xfer[1].len = sizeof(data->read_rx);
+        spi_message_init_with_transfers(&data->read_msg, data->read_xfer, 2);
+-       devm_spi_optimize_message(dev, spi, &data->read_msg);
++       ret = devm_spi_optimize_message(dev, spi, &data->read_msg);
++       if (ret < 0)
++               return dev_err_probe(dev, ret,
++                                    "Failed to optimize SPI read message\n");
+ 
+        data->write_xfer.tx_buf = &data->reg_write_tx[0];
+        data->write_xfer.len = sizeof(data->reg_write_tx);
+        spi_message_init_with_transfers(&data->write_msg, &data->write_xfer, 1);
+-       devm_spi_optimize_message(dev, spi, &data->write_msg);
++       ret = devm_spi_optimize_message(dev, spi, &data->write_msg);
++       if (ret < 0)
++               return dev_err_probe(dev, ret,
++                                    "Failed to optimize SPI write message\n");
+ 
+        ret = devm_iio_adc_device_alloc_chaninfo_se(dev, &bd79112_chan_template,
+                                                    BD79112_MAX_NUM_CHANNELS - 1,
+> 
+> > +	data->write_xfer.tx_buf = &data->reg_write_tx[0];
+> > +	data->write_xfer.len = sizeof(data->reg_write_tx);
+> > +	spi_message_init_with_transfers(&data->write_msg, &data->write_xfer, 1);
+> > +	devm_spi_optimize_message(dev, spi, &data->write_msg);
+> > +
+> > +	ret = devm_iio_adc_device_alloc_chaninfo_se(dev, &bd79112_chan_template,
+> > +						    BD79112_MAX_NUM_CHANNELS - 1,
+> > +						    &cs);
+> > +
+> > +	/* Register all pins as GPIOs if there are no ADC channels */
+> > +	if (ret == -ENOENT)
+> > +		goto register_gpios;
+> > +
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	iio_dev->num_channels = ret;
+> > +	iio_dev->channels = cs;
+> > +
+> > +	for (i = 0; i < iio_dev->num_channels; i++)
+> > +		cs[i].datasheet_name = bd79112_chan_names[cs[i].channel];
+> > +
+> > +	iio_dev->info = &bd79112_info;
+> > +	iio_dev->name = "bd79112";
+> > +	iio_dev->modes = INDIO_DIRECT_MODE;
+> > +
+> > +	/*
+> > +	 * Ensure all channels are ADCs. This allows us to register the IIO
+> > +	 * device early (before checking which pins are to be used for GPIO)
+> > +	 * without having to worry about some pins being initially used for
+> > +	 * GPIO.
+> > +	 */
+> > +	for (i = 0; i < BD79112_NUM_GPIO_EN_REGS; i++) {
+> > +		ret = regmap_write(data->map, BD79112_FIRST_GPIO_EN_REG + i, 0);
+> > +		if (ret)
+> > +			return dev_err_probe(dev, ret,
+> > +					     "Failed to initialize channels\n");
+> > +	}
+> > +
+> > +	ret = devm_iio_device_register(data->dev, iio_dev);
+> > +	if (ret)
+> > +		return dev_err_probe(data->dev, ret, "Failed to register ADC\n");
+> > +
+> > +register_gpios:
+> > +	gpio_pins = bd79112_get_gpio_pins(iio_dev->channels,
+> > +					  iio_dev->num_channels);
+> > +
+> > +	/* If all channels are reserved for ADC, then we're done. */
+> > +	if (!gpio_pins)
+> > +		return 0;
+> > +
+> > +	/* Default all the GPIO pins to GPI */
+> > +	for_each_set_bit(pin, &gpio_pins, BD79112_MAX_NUM_CHANNELS) {
+> > +		ret = bd79112_gpio_dir_set(data, pin, GPIO_LINE_DIRECTION_IN);
+> > +		if (ret)
+> > +			return dev_err_probe(dev, ret,
+> > +					     "Failed to mark pin as GPI\n");
+> > +	}
+> > +
+> > +	data->gpio_valid_mask = gpio_pins;
+> > +	data->gc = bd79112_gpio_chip;
+> > +	data->gc.parent = dev;
+> > +
+> > +	return devm_gpiochip_add_data(dev, &data->gc, data);
+> > +}  
+> 
 
->> drivers/counter/nxp-pcf85363-stopwatch.c:375:34: warning: unused variable 'dev_ids' [-Wunused-const-variable]
-     375 | static const struct of_device_id dev_ids[] = {
-         |                                  ^~~~~~~
-   1 warning generated.
-
-
-vim +/dev_ids +375 drivers/counter/nxp-pcf85363-stopwatch.c
-
-   374	
- > 375	static const struct of_device_id dev_ids[] = {
-   376		{ .compatible = "nxp,pcf85263atl", .data = &pcf_85263_config },
-   377		{ .compatible = "nxp,pcf85363atl", .data = &pcf_85363_config },
-   378		{ }
-   379	};
-   380	MODULE_DEVICE_TABLE(of, dev_ids);
-   381	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

@@ -1,235 +1,165 @@
-Return-Path: <linux-iio+bounces-24119-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24120-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712FFB585C0
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 22:13:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260DEB58745
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 00:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EB5B7A225A
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 20:12:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E23C12A360C
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Sep 2025 22:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB21289802;
-	Mon, 15 Sep 2025 20:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55F02C028C;
+	Mon, 15 Sep 2025 22:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hUtK8wJx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="POPGjKy/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7763F2747B;
-	Mon, 15 Sep 2025 20:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED9B269806
+	for <linux-iio@vger.kernel.org>; Mon, 15 Sep 2025 22:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757967211; cv=none; b=hH8fui/SUslM7k4yrIAnGGUB8Ju4IhqDRFG74u0VDeNxUXA54NPqW174ab9FasLf2Zb8j23J23lHYYSn4doWvw/zYoENgqBGxNAybeGmPRnJXd7yfexcz8/zS3gP67jPaCapm/t+JyjsCwzCbGTkgAV4vpf2+MuHCF2Dw2DkquQ=
+	t=1757974566; cv=none; b=rTqNAPwNF7n3rKe0cGRlo7Nfbcf4W3XPO0HQml5mPXUg2+Eu6eRsN5wZ3WU+VZ9Sc5ZE46LxIHNw+G0zK4rxvX6VJ9RQEClMDfUiK1+0G+btN5PiMBM2LfcWKUkGqZzJ53mc7g2o+KsiBPPf4sFTf5ZjmYyqVMUj440jgQDl2LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757967211; c=relaxed/simple;
-	bh=sCG6ETdfTXdU2pnnMtozox8YjbeWgsBQMnCaCblSvgk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CDPZlT6PL4Xsj64vicIFoGSEWEe/v9slMDZFrvsG213Z9Trfus9zNbnBwZKb4nXN2/YyUsxuWrOuaWZFHy8hZBQAuhWH673Ykqhkr7QQ830izU3Nwct/ZEe1exQCnDVGq838zn2KZNS5xWD1/Ob+Sy+AITwo92mKZZ2218DcrRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hUtK8wJx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2474C4CEF1;
-	Mon, 15 Sep 2025 20:13:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757967211;
-	bh=sCG6ETdfTXdU2pnnMtozox8YjbeWgsBQMnCaCblSvgk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hUtK8wJxUjCzDYLa5vedEHLvsx5Af0pWXUKHmFdth0E7Ds3tPKgFwXhFA2Dhw4YXP
-	 ga1bGxoH9FNInZ1/DbtTcIKMc2hLqL1Xa2jXs0fk52BlAA1IpcCqS1nbeYU5qzcyJ7
-	 G8z68f7IeRhPL2OTGyJC7cxWTxwyJ/gkV1ULq3YBv0tXx7J5Tv2C5ncBTXbVEAxACa
-	 YHMJ/IuoJKoE9ZWzsZhK6FEukKJZzMv8uQMlKfzvTsfp8G0KzSemAado53Uaa/LSHQ
-	 JnVJv9E7IiBlBffIwVI/b/owd/BaaKg2w5MvpgjmpIVoBnApXEJD7Pv0VbMTGCv14J
-	 rh23Z04Iet+wQ==
-Date: Mon, 15 Sep 2025 21:13:21 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Linus
- Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-Message-ID: <20250915211321.47865d3d@jic23-huawei>
-In-Reply-To: <aMge0jYwYCiY72Yb@smile.fi.intel.com>
-References: <20250915-bd79112-v5-0-a74e011a0560@gmail.com>
-	<20250915-bd79112-v5-2-a74e011a0560@gmail.com>
-	<aMge0jYwYCiY72Yb@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1757974566; c=relaxed/simple;
+	bh=2TwRQ7Odl35bnTVmkNbaQpjTJrpwNpSaEORP0ZdqABY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=bvBi/37KV07QzcRupypekkEax+eawIVakqd93e12SFqqECfrYNEHBoqONxcgqHvyozJ8M6wxsoe6u95sP6xi5LXm82BZoP6tRQnPzkQm2X8le+E4nRPzlACSPbnvXEOv49h0gS8KsCytYXUC8ean0/xYsMDfyK0Os4qwIfO6rEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=POPGjKy/; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7723cf6e4b6so3725094b3a.3
+        for <linux-iio@vger.kernel.org>; Mon, 15 Sep 2025 15:16:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757974564; x=1758579364; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0EANtiW8Fhtl5LLMmH+RNqU0cOM8cX8a+UX3kfhq2t0=;
+        b=POPGjKy/82FA8/nOaDwBMi/sWkxXVtUJMrxWz6tLgqLJXDMA35IJ9QJyd8yDAE6xV4
+         4d68AR88U/3cIdWaXWKBitcJKSh/P3scD1s9NA75wcLcn7nS2aGKXN9MBKvWcYMLXZs1
+         /A1Go8oZwgQxTS0E+y8nilHUB/xo/QHwlwMNJGD+7SviBHNvZj53nNMgrZYrEaSh5IlZ
+         THRerBG0hDqq/0PdkhSdkqHo/H2AvNgUY18hOyyrCxNg2pm+uLejMLI5aVWqukWcmGrk
+         7IKffJ0Zr3XZAUrQXKQf+m3cOiw0Mm08odYi/ObdwWH5HbCfU5SG1UdSFS/h1kvbKfgE
+         ut8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757974564; x=1758579364;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0EANtiW8Fhtl5LLMmH+RNqU0cOM8cX8a+UX3kfhq2t0=;
+        b=olFm0plouZ0ttdYw4/a3GJ8X51Z/8LykudVu9mAzGhfIrWhgLLrvDnd7+8PjqhuXKP
+         Ys/Fy5CjUq9HX12ntRlFiShj6f2XnJJTVniPdGX3Ck0FZT37ScOkjMMLs0YE+Kk1GZLQ
+         BOQ8L6vpht/Fi73WvivPb7LtsX6chwFYt69U8HsjEXSNAddvDd5/grnel6soNL41ekfd
+         Takf/R6HWedFZW3gv/YCf3uf0U9aWrXjQzGywnafutI/DRUFR/5EyXJgstDClHtS3Ich
+         LQMcuwkJjm+8azee8ZHPcvXrKNUBBLdd/jHMzffHT0jzlj0mxSCJ+UZyRhqeGL7LmOBB
+         h9EA==
+X-Gm-Message-State: AOJu0YwJ5vcHrACB3RL0SKDgIMcUhh3NeCEjZinRF7+HpSmkmkSPxq3Q
+	A2y/bRJ7G4NCf5wKGr1YkJg4vpQrLnY76WbCQkTIMoRIy2tfFev1QaQRXdfiQxEOcyc=
+X-Gm-Gg: ASbGncvFKw5KUyVoySdx5fh/pkXRziqSIuIKPibTTivUd9thpDq3vQe/wv0j3mGPflm
+	iuXtF2iwsKoSm0NS9dQCRiTzQNSJPIBikMnP1EQ/jcsPRGiqcmPMMNAKHeg0NAYcKiUE+joSm2S
+	M8KUy/BIIV8vlZmagETAy4v6lnIwx9TW1KXUgLTEnJhNF2lbCqLTLDhL/kfAy+Q7Y93mnd4FITb
+	6IxsddjJwTcooDVMFCgKARkK0LaIh/fVKbq8KI+2Bpp0uHfwaCHrv2gMY9YLvaWOIVpCppwHO5L
+	U4ifLbn3l5xcq8Y04tQnzrlVhLMyDDuKnQPS81kkQb6X23CAJub8wE4al+TC+q9Bdp+GPutxUgX
+	VNUfZfFtirUEImmL75eXg6rJNlI/9t9FJaFNjXBJ43gUqVA==
+X-Google-Smtp-Source: AGHT+IFh76HLO/YT0qIt7A0bFAgD4JcYWE6WuL5ntYDbwnY3Rk2Yc7swyytB/kjQnM8Lx4/O+5VEeA==
+X-Received: by 2002:a05:6a20:ea0:b0:262:66d2:825f with SMTP id adf61e73a8af0-26266d28b6emr9412871637.16.1757974564051;
+        Mon, 15 Sep 2025 15:16:04 -0700 (PDT)
+Received: from localhost.localdomain ([2804:7f5:b08b:d43e:6485:d878:c0c4:abbd])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77607c472ccsm14573518b3a.98.2025.09.15.15.15.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 15:16:03 -0700 (PDT)
+From: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
+To: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
+	Kim Seer Paller <kimseer.paller@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Marcelo Schmitt <Marcelo.Schmitt@analog.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	Dragos Bogdan <dragos.bogdan@analog.com>
+Subject: [PATCH v11 0/3] Add MAX14001/MAX14002 support
+Date: Mon, 15 Sep 2025 19:14:39 -0300
+Message-Id: <cover.1757971454.git.marilene.agarcia@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 15 Sep 2025 17:12:34 +0300
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+Hello maintainers,
 
-> On Mon, Sep 15, 2025 at 10:12:43AM +0300, Matti Vaittinen wrote:
-> > The ROHM BD79112 is an ADC/GPIO with 32 channels. The channel inputs can
-> > be used as ADC or GPIO. Using the GPIOs as IRQ sources isn't supported.
-> > 
-> > The ADC is 12-bit, supporting input voltages up to 5.7V, and separate I/O
-> > voltage supply. Maximum SPI clock rate is 20 MHz (10 MHz with
-> > daisy-chain configuration) and maximum sampling rate is 1MSPS.
-> > 
-> > The IC does also support CRC but it is not implemented in the driver.  
-> 
-> ...
-> 
-> > +static int bd79112_probe(struct spi_device *spi)
-> > +{
-> > +	struct bd79112_data *data;
-> > +	struct iio_dev *iio_dev;
-> > +	struct iio_chan_spec *cs;
-> > +	struct device *dev = &spi->dev;
-> > +	unsigned long gpio_pins, pin;
-> > +	unsigned int i;
-> > +	int ret;
-> > +
-> > +	iio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> > +	if (!iio_dev)
-> > +		return -ENOMEM;
-> > +
-> > +	data = iio_priv(iio_dev);
-> > +	data->spi = spi;
-> > +	data->dev = dev;
-> > +	data->map = devm_regmap_init(dev, NULL, data, &bd79112_regmap);
-> > +	if (IS_ERR(data->map))
-> > +		return dev_err_probe(dev, PTR_ERR(data->map),
-> > +				     "Failed to initialize Regmap\n");
-> > +
-> > +	ret = devm_regulator_get_enable_read_voltage(dev, "vdd");
-> > +	if (ret < 0)
-> > +		return dev_err_probe(dev, ret, "Failed to get the Vdd\n");  
-> 
-> > +	data->vref_mv = ret / 1000;  
-> 
-> I still think moving to _mV is the right thing to do.
-> There is no 'mv' in the physics for Volts.
+Thank you for reviewing v10, for your suggestions, and for answering
+my questions.
 
-I'm not disagreeing with this review but I'm also not going to hold a
-driver back for that given timing is pretty much such that I merge it
-today or it sits a cycle and this one is very near...
-I'll get fussier on this once we have written up some guidance and may
-well send a patch to modify existing recent cases like this one!
+I believe I’ve addressed most of the requested code changes. There was only
+one that I haven’t fixed, I’ve included the reasons in the patch message.
 
-> 
-> > +	ret = devm_regulator_get_enable(dev, "iovdd");
-> > +	if (ret < 0)
-> > +		return dev_err_probe(dev, ret, "Failed to enable I/O voltage\n");
-> > +
-> > +	data->read_xfer[0].tx_buf = &data->read_tx[0];
-> > +	data->read_xfer[0].len = sizeof(data->read_tx);
-> > +	data->read_xfer[0].cs_change = 1;
-> > +	data->read_xfer[1].rx_buf = &data->read_rx;
-> > +	data->read_xfer[1].len = sizeof(data->read_rx);
-> > +	spi_message_init_with_transfers(&data->read_msg, data->read_xfer, 2);  
-> 
-> > +	devm_spi_optimize_message(dev, spi, &data->read_msg);  
-> 
-> And if it fails?..
-I've added the following and applied the series.
+I’d also like to use this cover letter to address some of the remaining
+questions from previous cover letters.
 
-Note I'm cutting this fine so if we get any build issues or similar
-it might well get pushed back to next cycle yet!
+Regarding regmap: thank you, David, for your response. I’ve implemented it,
+and the code seems to be working fine. I tested it on the Raspberry Pi
+modified kernel version rpi-6.12 with Raspberry Pi 5 hardware, using the 
+MAX14001PMB evaluation board.
 
-diff --git a/drivers/iio/adc/rohm-bd79112.c b/drivers/iio/adc/rohm-bd79112.c
-index b406d4ee5411..d15e06c8b94d 100644
---- a/drivers/iio/adc/rohm-bd79112.c
-+++ b/drivers/iio/adc/rohm-bd79112.c
-@@ -454,12 +454,18 @@ static int bd79112_probe(struct spi_device *spi)
-        data->read_xfer[1].rx_buf = &data->read_rx;
-        data->read_xfer[1].len = sizeof(data->read_rx);
-        spi_message_init_with_transfers(&data->read_msg, data->read_xfer, 2);
--       devm_spi_optimize_message(dev, spi, &data->read_msg);
-+       ret = devm_spi_optimize_message(dev, spi, &data->read_msg);
-+       if (ret < 0)
-+               return dev_err_probe(dev, ret,
-+                                    "Failed to optimize SPI read message\n");
- 
-        data->write_xfer.tx_buf = &data->reg_write_tx[0];
-        data->write_xfer.len = sizeof(data->reg_write_tx);
-        spi_message_init_with_transfers(&data->write_msg, &data->write_xfer, 1);
--       devm_spi_optimize_message(dev, spi, &data->write_msg);
-+       ret = devm_spi_optimize_message(dev, spi, &data->write_msg);
-+       if (ret < 0)
-+               return dev_err_probe(dev, ret,
-+                                    "Failed to optimize SPI write message\n");
- 
-        ret = devm_iio_adc_device_alloc_chaninfo_se(dev, &bd79112_chan_template,
-                                                    BD79112_MAX_NUM_CHANNELS - 1,
-> 
-> > +	data->write_xfer.tx_buf = &data->reg_write_tx[0];
-> > +	data->write_xfer.len = sizeof(data->reg_write_tx);
-> > +	spi_message_init_with_transfers(&data->write_msg, &data->write_xfer, 1);
-> > +	devm_spi_optimize_message(dev, spi, &data->write_msg);
-> > +
-> > +	ret = devm_iio_adc_device_alloc_chaninfo_se(dev, &bd79112_chan_template,
-> > +						    BD79112_MAX_NUM_CHANNELS - 1,
-> > +						    &cs);
-> > +
-> > +	/* Register all pins as GPIOs if there are no ADC channels */
-> > +	if (ret == -ENOENT)
-> > +		goto register_gpios;
-> > +
-> > +	if (ret < 0)
-> > +		return ret;
-> > +
-> > +	iio_dev->num_channels = ret;
-> > +	iio_dev->channels = cs;
-> > +
-> > +	for (i = 0; i < iio_dev->num_channels; i++)
-> > +		cs[i].datasheet_name = bd79112_chan_names[cs[i].channel];
-> > +
-> > +	iio_dev->info = &bd79112_info;
-> > +	iio_dev->name = "bd79112";
-> > +	iio_dev->modes = INDIO_DIRECT_MODE;
-> > +
-> > +	/*
-> > +	 * Ensure all channels are ADCs. This allows us to register the IIO
-> > +	 * device early (before checking which pins are to be used for GPIO)
-> > +	 * without having to worry about some pins being initially used for
-> > +	 * GPIO.
-> > +	 */
-> > +	for (i = 0; i < BD79112_NUM_GPIO_EN_REGS; i++) {
-> > +		ret = regmap_write(data->map, BD79112_FIRST_GPIO_EN_REG + i, 0);
-> > +		if (ret)
-> > +			return dev_err_probe(dev, ret,
-> > +					     "Failed to initialize channels\n");
-> > +	}
-> > +
-> > +	ret = devm_iio_device_register(data->dev, iio_dev);
-> > +	if (ret)
-> > +		return dev_err_probe(data->dev, ret, "Failed to register ADC\n");
-> > +
-> > +register_gpios:
-> > +	gpio_pins = bd79112_get_gpio_pins(iio_dev->channels,
-> > +					  iio_dev->num_channels);
-> > +
-> > +	/* If all channels are reserved for ADC, then we're done. */
-> > +	if (!gpio_pins)
-> > +		return 0;
-> > +
-> > +	/* Default all the GPIO pins to GPI */
-> > +	for_each_set_bit(pin, &gpio_pins, BD79112_MAX_NUM_CHANNELS) {
-> > +		ret = bd79112_gpio_dir_set(data, pin, GPIO_LINE_DIRECTION_IN);
-> > +		if (ret)
-> > +			return dev_err_probe(dev, ret,
-> > +					     "Failed to mark pin as GPI\n");
-> > +	}
-> > +
-> > +	data->gpio_valid_mask = gpio_pins;
-> > +	data->gc = bd79112_gpio_chip;
-> > +	data->gc.parent = dev;
-> > +
-> > +	return devm_gpiochip_add_data(dev, &data->gc, data);
-> > +}  
-> 
+As for in_Y_mean_raw, the issue is that I don’t have the file
+/sys/bus/iio/devices/iio:device0/in_0_mean_raw; instead, I have
+/sys/bus/iio/devices/iio:device0/in_voltage0_mean_raw. I was thinking of 
+adding in_voltageY_mean_raw to the documentation, so I am submitting a
+patch with this change in the current patch set.
+
+Thank you also for the explanations about the extra analog frontend
+circuitry. I plan to study this further and send a dedicated patch to cover
+it in the future.
+
+Thank you Jonathan for the two possible solutions to set the number of ADC
+readings used in the mean calculation. I’ll study both approaches and send
+a dedicated patch to implement one of them in the next steps.
+
+I intend to continue sending patches to implement all the features of the
+MAX14001/MAX14002. Since I mostly work on weekends, I’ll be submitting
+patches at a low frequency, but consistently.
+
+Thank you for your time.
+Best regards,
+Marilene Andrade Garcia
+
+
+Marilene Andrade Garcia (3):
+  dt-bindings: iio: adc: add max14001
+  iio: adc: max14001: New driver
+  iio: ABI: Add voltage mean raw attribute
+
+ Documentation/ABI/testing/sysfs-bus-iio       |   1 +
+ .../bindings/iio/adc/adi,max14001.yaml        |  87 +++++
+ MAINTAINERS                                   |   9 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/max14001.c                    | 356 ++++++++++++++++++
+ 6 files changed, 464 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+ create mode 100644 drivers/iio/adc/max14001.c
+
+
+base-commit: 671b9b6d7f4fe17a174c410397e72253877ca64e
+-- 
+2.34.1
 
 

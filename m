@@ -1,49 +1,49 @@
-Return-Path: <linux-iio+bounces-24163-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24164-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493F7B599CA
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 16:27:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA740B59A51
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 16:36:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1566E4848B2
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 14:22:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F6431B22500
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 14:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D73F3451AE;
-	Tue, 16 Sep 2025 14:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E450C324B1E;
+	Tue, 16 Sep 2025 14:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CoZRBpV1"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VMcZpzKY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B35C32BF49;
-	Tue, 16 Sep 2025 14:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93BC286890;
+	Tue, 16 Sep 2025 14:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758032293; cv=none; b=h5VpEIfTznLILgslURnra10OBcrFGbwugfrONAYwzKJj1inGSWakd+XhuNZL+ainYg91HvUDDfjB3QUhD2dXNZZFvHMahkMYFUu7ww264A6ggbkqkkepApHo0GrUff2X15pjY8BTBo8OVrfsBYPWg1kfI3+4p9LgKNb/Lip0Uwc=
+	t=1758032856; cv=none; b=LJZbui2mANKFouq6fBZhB8W7OoP6D8/nnGjiJ4POMLUJkauP4/rPTKMHwmDtFfZFXkmm2Bz8tWiL2+rc0Mkr/kisF9oLnfHS4lza3NVnxFlPWVMEJE9XPgM7hBv4EmWmXQfkIMq4B7y4FZP03DdHr1zZ6a60/No0yPgx9C2BOqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758032293; c=relaxed/simple;
-	bh=H8Rb98E2rtPtyhu6K4jBPQ4alyqMOlOQbUmmuOscUTw=;
+	s=arc-20240116; t=1758032856; c=relaxed/simple;
+	bh=f8t73w3AtLY7hnhFS/dR1I/Uz6Yqv3oI3PWml5zdfPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C8X6VDxGN6pGsTD/xjrN6NLE+SOrCNXKoEY+Zj4+BHUCtB/rqgC4Sf6cbf3EYHL6xBt0uuAof1cp2wdOqKpr7b1wTgtYJzgO/B4jIm9BqHn4Dfpj2a8R6ehhH97Nk4RDktAPC8K7TnWpz01hwiTikVK31juWnoq8brWyqHXd0uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CoZRBpV1; arc=none smtp.client-ip=217.70.183.193
+	 MIME-Version:Content-Type; b=LW+AaafmgsdNjPSPp1LU28ukcY2R28c5P5Ns+pwDIJ6WKVbrzd7wotADj6pffi8cy6Wb+v1+FaXkznCNfWZ5kQliWu1iKZE6kiGEaTHu7bxhVg83E4aY9olv/Rl+PDjPVNanDkCQReHG6VGoNJjOgMtkyIKRMndsVIp+deGMrw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VMcZpzKY; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DBE2A443A7;
-	Tue, 16 Sep 2025 14:18:01 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0112443B69;
+	Tue, 16 Sep 2025 14:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1758032282;
+	t=1758032846;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2j1hmxIGF4hO9/n/aWGAdFU9mRdFdKJE8K3RYi8PkRw=;
-	b=CoZRBpV1lE3fjDQ7wLif08cnDZ8bYy299JVw21zq2MqHR6aMV5RbDRFLiakgXh8QvJjsEy
-	1ajXmuoEECHgaLx3yDWBNX5r7rcVNdjMKqbQn6ODPUxaxsY43O89J+pOHBukUbfOkWLl0v
-	xJDvZNdj/k8rS7JxiKKVOCUfWR1jUBaU1UCVIzPgYshIyGbQgAj0VyhQzruACzMHj6KRRY
-	gzJLaJtvwRaMul1KUJfTvU7eNRDg+QaEGvARJfFl4McU3CCYUxBrvY6wUis3SV/SOcQHQy
-	AammSzjTyeHk1NC2O5XRwfX9awGuPPfMu/1T9Afz8ZxqOXRaUbW7NkIC5xPqCQ==
+	bh=ATSeLNX+owPZ3aCBXlyQeAZTuD9FLYcDCEAlmuoDnYg=;
+	b=VMcZpzKYgJxyHzS9TlLOGlGOWZAuukPoVdElAz/IsHnkD28ri0z6Dl26f6yEcm03LoIXmc
+	0zQC8uhQcQaI/cV7DPVFX/wurMAqa84y+MWubHU1UbGR1oB+/hT/cMQQjXkdvBLtqLC7kK
+	SSiaJdrmQpgtN7fUNoDNzUDZEXV/VaXPktqIgDUlRv4pK8DMqxLpeQ/Y8QuiBsI93dvvs2
+	ZUf05fY1fUQFq/egHXBWK/ZT7InJ8j4Xl3ahtL7wgr17rmFCulWfvB3ULz3FWNUNtWVEpF
+	3R3BK3IxOzRI4i+J06yX0dBF4HYjUWwDBnidKqAorSphdBrqwgy7tQo0AH80Ig==
 From: Romain Gantois <romain.gantois@bootlin.com>
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
@@ -55,278 +55,161 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
  linux-iio@vger.kernel.org
-Subject: Re: [PATCH 3/4] regulator: Support the LTM8054 voltage regulator
-Date: Tue, 16 Sep 2025 16:17:56 +0200
-Message-ID: <5205519.GXAFRqVoOG@fw-rgant>
-In-Reply-To: <aMliRTuUDNPkeM8C@smile.fi.intel.com>
+Subject:
+ Re: [PATCH 4/4] regulator: ltm8054: Support output current limit control
+Date: Tue, 16 Sep 2025 16:27:25 +0200
+Message-ID: <8772650.T7Z3S40VBb@fw-rgant>
+In-Reply-To: <aMlj1OcfH8r9Zz6x@smile.fi.intel.com>
 References:
  <20250916-ltm8054-driver-v1-0-fd4e781d33b9@bootlin.com>
- <20250916-ltm8054-driver-v1-3-fd4e781d33b9@bootlin.com>
- <aMliRTuUDNPkeM8C@smile.fi.intel.com>
+ <20250916-ltm8054-driver-v1-4-fd4e781d33b9@bootlin.com>
+ <aMlj1OcfH8r9Zz6x@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2126663.tdWV9SEqCh";
+Content-Type: multipart/signed; boundary="nextPart10916593.nUPlyArG6x";
  micalg="pgp-sha512"; protocol="application/pgp-signature"
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegtdejlecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfgggtsehgtderredttdejnecuhfhrohhmpeftohhmrghinhcuifgrnhhtohhishcuoehrohhmrghinhdrghgrnhhtohhishessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfdvleekvefgieejtdduieehfeffjefhleegudeuhfelteduiedukedtieehlefgnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehffidqrhhgrghnthdrlhhotggrlhhnvghtpdhmrghilhhfrhhomheprhhomhgrihhnrdhgrghnthhoihhssegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedugedprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhgihhrugifohhougesghhmrghilhdrtghomhdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhri
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegtdekudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfgggtsehgtderredttdejnecuhfhrohhmpeftohhmrghinhcuifgrnhhtohhishcuoehrohhmrghinhdrghgrnhhtohhishessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfdvleekvefgieejtdduieehfeffjefhleegudeuhfelteduiedukedtieehlefgnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehffidqrhhgrghnthdrlhhotggrlhhnvghtpdhmrghilhhfrhhomheprhhomhgrihhnrdhgrghnthhoihhssegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedugedprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehinhhtvghlrdgtohhmpdhrtghpthhtoheplhhgihhrugifohhougesghhmrghilhdrtghomhdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhri
  ihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjihgtvdefsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegulhgvtghhnhgvrhessggrhihlihgsrhgvrdgtohhm
 X-GND-Sasl: romain.gantois@bootlin.com
 
---nextPart2126663.tdWV9SEqCh
+--nextPart10916593.nUPlyArG6x
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
 From: Romain Gantois <romain.gantois@bootlin.com>
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Date: Tue, 16 Sep 2025 16:17:56 +0200
-Message-ID: <5205519.GXAFRqVoOG@fw-rgant>
-In-Reply-To: <aMliRTuUDNPkeM8C@smile.fi.intel.com>
+Date: Tue, 16 Sep 2025 16:27:25 +0200
+Message-ID: <8772650.T7Z3S40VBb@fw-rgant>
+In-Reply-To: <aMlj1OcfH8r9Zz6x@smile.fi.intel.com>
 MIME-Version: 1.0
 
-Hello Andy,
-
-On Tuesday, 16 September 2025 15:12:37 CEST Andy Shevchenko wrote:
-> On Tue, Sep 16, 2025 at 12:24:08PM +0200, Romain Gantois wrote:
-> > Add a stub driver for the  Linear Technology LTM8054 Buck-Boost voltage
-> > regulator. This version only supports enabling/disabling the regulator via
-> > a GPIO, and reporting the output voltage level from the resistor divider
-> > values given in the device tree.
+On Tuesday, 16 September 2025 15:19:16 CEST Andy Shevchenko wrote:
+> On Tue, Sep 16, 2025 at 12:24:09PM +0200, Romain Gantois wrote:
+> > The LTM8054 supports setting a fixed output current limit using a sense
+> > resistor connected to a dedicated pin. This limit can then be lowered
+> > dynamically by varying the voltage level of the CTL pin.
+> > 
+> > Support controlling the LTM8054's output current limit.
 > 
 > ...
 > 
-> > +#include <linux/module.h>
-> > +#include <linux/of.h>
+> > in microvolts
 > 
-> I think we have already something agnostic in regulator API to get a
-> regulator from a firmware node (rather than from specific OF/etc one).
-> 
-
-IIRC the "of_match" regulator descriptor property can be used for this, I'll 
-have a second look and see if I can use that instead.
-
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/regulator/driver.h>
-> > +#include <linux/regulator/of_regulator.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/gpio/consumer.h>
-> 
-> Can you keep it ordered? This way it's easy to maintain and avoid potential
-> duplication (note, there are also many headers are missing here, but Mark
-> usually not insisting in following IWYU principle [1])
-> 
-> ...
-
-I usually also try to follow IWYU for header inclusions so I'll look for those 
-that I missed.
-
-> 
-> > +/* The LTM8054 regulates its FB pin to 1.2V */
-> > +#define LTM8054_FB_V 1200000
-> 
-> It's actually _mV
-> 
-> #define LTM8054_FB_mV	1200000
+> Yeah, using _mV postfix will make it visible that those are in micro-Volts.
 > 
 > ...
 > 
-> > +static int ltm8054_scale(unsigned int uV, u32 r1, u32 r2)
-> > +{
-> > +	u64 tmp;
+> > +static int ltm8054_set_current_limit(struct regulator_dev *rdev, int
+> > min_uA, int max_uA) +{
+> > +	struct ltm8054_priv *priv = rdev_get_drvdata(rdev);
+> > +	u64 vdac_uV;
 > > +
-> > +	tmp = (u64)uV * r1;
-> > +	do_div(tmp, r2);
+> > +	min_uA = clamp_t(int, min_uA, priv->min_uA, priv->max_uA);
 > > +
-> > +	return uV + (unsigned int)tmp;
-> 
-> Why one needs a casting here?
+> > +	/* adjusted current limit = Rsense current limit * CTL pin voltage / 
+max
+> > CTL pin voltage */ +	vdac_uV = (u64)min_uA * LTM8054_MAX_CTL_V;
+> > +	do_div(vdac_uV, priv->max_uA);
+> > +
+> > +	dev_dbg(&rdev->dev,
+> > +		"Setting current limit to %duA, CTL pin to %duV\n", min_uA,
+> > (int)vdac_uV);
+> Why casting?
 > 
 
-Both of those are unsigned so the cast here is indeed unnecessary.
+This one is indeed unnecessary.
 
+> > +	/* Standard IIO voltage unit is mV, scale accordingly. */
+> > +	return iio_write_channel_processed_scale(priv->ctl_dac, vdac_uV, 
+1000);
 > > +}
 > 
 > ...
 > 
-> > +static const struct regulator_ops ltm8054_regulator_ops = {
-> > +};
+> > +	ret = of_property_read_u32(np, "lltc,iout-rsense-micro-ohms", 
+&rsense);
 > 
-> Why it can be simply as
+> device_property_read_u32()
 > 
-> static const struct regulator_ops ltm8054_regulator_ops;
+> > +	if (ret < 0) {
 > 
-
-Yeah, this was mostly to have a clean diff on patch 4/4, I'll see if I can drop 
-this struct and introduce it in patch 4/4. I wouldn't want to use it 
-uninitialized though.
-
-> ...
+> Be consistent with a style, in the previous patch it was 'if (ret)'.
 > 
-> > +static int ltm8054_of_parse(struct device *dev, struct ltm8054_priv
-> > *priv,
-> > +			    struct regulator_config *config)
-> > +{
-> > +	struct device_node *np = dev->of_node;
-> > +	u32 r[2];
-> > +	int ret;
-> > +
-> > +	config->of_node = np;
-> > +
-> > +	ret = of_property_read_u32_array(np, "lltc,fb-voltage-divider", r, 2);
-> 
-> device_property_read_u32_array() ?
-> 
-> ARRAY_SIZE() instead of 2
-> 
-
-Yes, indeed.
-
-> > +	if (ret) {
-> > +		dev_err(dev, "Failed to parse voltage divider\n");
+> > +		dev_err(dev, "failed to get sense resistor value\n");
 > > +		return ret;
 > > +	}
 > > +
-> > +	priv->rdesc.fixed_uV = ltm8054_scale(LTM8054_FB_V, r[0], r[1]);
-> > +	priv->rdesc.min_uV = priv->rdesc.fixed_uV;
-> > +	priv->rdesc.n_voltages = 1;
-> > +
-> > +	config->init_data = of_get_regulator_init_data(dev,
-> > +						       np,
-> > +						       &priv->rdesc);
-> > +	if (!config->init_data) {
-> > +		dev_err(dev, "failed to parse init data\n");
+> > +	if (rsense == 0) {
+> > +		dev_err(dev, "invalid value zero for sense resistor\n");
 > > +		return -EINVAL;
 > > +	}
 > > +
-> > +	config->ena_gpiod = devm_gpiod_get_optional(dev, "enable",
-> > GPIOD_OUT_LOW); +	if (IS_ERR(config->ena_gpiod)) {
-> > +		dev_err(dev, "unable to acquire enable gpio\n");
-> > +		return PTR_ERR(config->ena_gpiod);
+> > +	/* The maximum output current limit is the one set by the Rsense
+> > resistor */ +	tmp = 1000000 * (u64)LTM8054_VOUT_IOUT_MAX;
 > 
-> All messages in cases of EPROBE_DEFER are problematic (for sure with GPIO),
-> as it may well flood the logs.
-> Solution: Use
+> Yo may use MICRO and drop the casting.
 > 
-> 		return dev_err_probe(...);
+> > +	do_div(tmp, rsense);
+> > +	priv->max_uA = tmp;
+> > +
+> > +	/* Applying a voltage below LTM8054_MAX_CTL_V on the CTL pin reduces
+> > +	 * the output current limit. If this level drops below
+> > +	 * LTM8054_MIN_CTL_V the regulator stops switching
+> > +	 */
 > 
-> pattern instead,
+> /*
+>  * Besides missing period at the end this is not correct multi-line style of
+> * the comments. Use this example.
+>  */
 > 
+> > +	tmp = LTM8054_MIN_CTL_V * (u64)priv->max_uA;
 
-Yes, I used that in the caller function but it doesn't solve the flooding 
-issue, so I'll move dev_err_probe() to this function instead.
+This cast avoids an overflow of the multiplication, since the result may 
+easily exceed 32 bytes in size.
 
-> > +	}
-> > +
-> > +	return 0;
-> > +}
+> > +	do_div(tmp, (u32)LTM8054_MAX_CTL_V);
 > 
-> ...
-> 
-> > +static int ltm8054_probe(struct platform_device *pdev)
-> > +{
-> > +	struct regulator_config config = { 0 };
-> 
-> '0' is not required. The { } will have the same effect.
-> 
-> > +	struct regulator_dev *rdev;
-> > +	struct ltm8054_priv *priv;
-> > +	int ret;
-> > +
-> > +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-> > +	if (!priv)
-> > +		return -ENOMEM;
-> > +
-> > +	priv->rdesc.name = "ltm8054-regulator",
-> > +	priv->rdesc.ops = &ltm8054_regulator_ops,
-> > +	priv->rdesc.type = REGULATOR_VOLTAGE,
-> > +	priv->rdesc.owner = THIS_MODULE,
-> > +
-> > +	config.dev = &pdev->dev;
-> > +	config.driver_data = priv;
-> > +
-> > +	ret = ltm8054_of_parse(&pdev->dev, priv, &config);
-> > +	if (ret)
-> > +		return dev_err_probe(&pdev->dev, ret, "failed to parse device 
-tree\n");
-> > +
-> > +	rdev = devm_regulator_register(&pdev->dev, &priv->rdesc, &config);
-> > +	if (IS_ERR(rdev))
-> > +		return dev_err_probe(&pdev->dev, PTR_ERR(rdev), "failed to 
-register
-> > regulator\n");
-> Using
-> 
-> 	struct device *dev = &pdev->dev;
-> 
-> at the top will allow to make a few lines shorter.
-> 
-> > +	return 0;
-> > +}
-> > +
-> > +static const struct of_device_id __maybe_unused ltm8054_of_match[] = {
-> > +	{ .compatible = "lltc,ltm8054", },
-> 
-> Inner comma is not required.
-> 
-> > +	{},
-> 
-> Drop the trailing comma here as it's a terminator entry. The absence of it
-> will give a hint to the compiler as well.
-> 
-> > +};
-> 
-> ...
-> 
-> > +static struct platform_driver ltm8054_driver = {
-> > +	.probe = ltm8054_probe,
-> > +	.driver = {
-> > +		.name  = "ltm8054",
-> > +		.of_match_table = of_match_ptr(ltm8054_of_match),
-> 
-> Please, do not use of_match_ptr() and/or ACPI_PTR() in a new code.
-> 
-> > +	},
-> > +};
-> > 
-> > +
-> 
-> Unneeded blank line.
-> 
-> > +module_platform_driver(ltm8054_driver);
+> Why casting?
 
-Thanks for the review,
+Since do_div() is a macro, I casted the second argument just to be safe, but 
+it seems that do_div() already does this internally, so I'll just drop the 
+cast.
+
+Thanks,
 
 -- 
 Romain Gantois, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
 
---nextPart2126663.tdWV9SEqCh
+--nextPart10916593.nUPlyArG6x
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part.
 Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAmjJcZQACgkQKCYAIARz
-eA5Khw//c1k6fB3U502IZwnnjh78xj8uyZ1NRVUsbK+9HRE4tTIjvBb047bojlII
-frNF2+b4IBzZZqc5UiB2hT1rcwoyD9kn6K9O1MhyLj4XgL/IXdfpWS2D3H0vaLG0
-y1/33JkVf/zClnhQKOZ8et81MfnAhM0UCbDRDYXgS3TkwbBfvQaHWD/Ena+KzZRm
-WsNCRYGdRPRTIAheo2uJW8Ix1KzFcFcVxLoJY2gAIknT1JENZk9g8q503zQE9+og
-QU0t3wGFtggrG/pD4d9wYsE434dCSWxWfvDZw35590NSN4tCSZxwDeT1CmGnTNDU
-oIqPlefXvpTx3Y2oH3bg+fSVju6BFwsJ0jMo2AZR05YuEelPARUcp8EIStkxYKl4
-YS8B+hazn/FNb+GL1+CItBw/IHCB5ZHRu35O6315aZolC0kN2xG1w3pPUuGkXRR1
-vlHxvLe3dhLe8LoAkNzoBAVlUKyTb8VXeI0xMdCQsg2b+e2gQ/17w8jSjZhXAI9c
-tQrvSabh5flz/Rtth7RHxTDtdPvzu9S/+dzEYPzcoWAHpaKbrnF/oFjU5P6oVcxs
-OrGviRYz6TTr38lZFABJj25+X+ghsgqJdUThlRQwg7s7fndB2YrHSG2tpkwaYMBf
-8gz4F37Tw9ah1J/zELEhvTT+Xnrn3AUbTTjVKPx3MSGs1ZlUATM=
-=onhE
+iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAmjJc80ACgkQKCYAIARz
+eA61ExAAm6vav4r+FXBHUpKS9vLntfh3NIx00BPF8pPYQM4zEuaYCvc4VPq36Tja
+07CMt07iGbiwm1UwYvq2hh6CBsihK8ZhvmbfxPNx9ZnnFSPHFXOjctiYSIOg5uXK
+gStU0vgpTaxafCo6lL0fAJs0wy2655wECGHinA8wTRW5pfjv/JIy4DL8+8MVSjjF
+k4XLlJ37mlN9EF62UneaP9mifiwYS82nZa8odsz4H36nker8tUGWD+981hs0SvzV
+e/HKkETrnf7Zm+CPnNcQYMbxn9jRn0nAk+35IS0EBuIiS1ddqmp4EU9MFpBRCrQ5
+MPYX9ymanXy5TgoJxz0nA/f2V1vyd09+UPZ8nhGbrsWrkxwpc+5mhhrbPdBMoy6E
+YGMNnU1zdHnDCGYGQSb4ck+4Bv/isJxOfW07MrBGohlQNIF7JS6Nz4rlRQlF7LAi
+oBqZXHkoR4J46QTxguF2NEYe7BKiUyFaIzUjh6+LS2zw09ExCcHbCAhArrZ5FXx7
+XWXD9N18QFSB+67dl70HaLrjKQ4EYtL1iT5NYR2mrBal08g3ycFtVkn9o+TfvHjT
+gtIZzktI0gG1BK4+oyOFggIpXg3CgDgNvEgDDliyMnP1OLE5m7EMPs3Wyqknn1uQ
+Apw1euRSOig2b/kWCCaoBnIfDOrku1U9WjkNBHxy9nEhEJSziF8=
+=HfwT
 -----END PGP SIGNATURE-----
 
---nextPart2126663.tdWV9SEqCh--
+--nextPart10916593.nUPlyArG6x--
 
 
 

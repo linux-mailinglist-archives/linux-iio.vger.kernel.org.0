@@ -1,122 +1,119 @@
-Return-Path: <linux-iio+bounces-24160-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24162-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A4AB59789
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 15:25:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EFF8B597C2
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 15:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A238C3B2E94
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 13:25:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0109E4E68F8
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 13:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0384D30DEC0;
-	Tue, 16 Sep 2025 13:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2249630BBB6;
+	Tue, 16 Sep 2025 13:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GpPPiMz4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m+eq16zf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7FE1D7E41;
-	Tue, 16 Sep 2025 13:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F161228315A;
+	Tue, 16 Sep 2025 13:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758029116; cv=none; b=pW1ydw5MuNFEAAUugrs1DPZ0qrWTyKWXJkR9Sgcx6DL6vjjm++CSzt2Gmx/3EhgRz4zkW+KML+8oCOun41i5MvxZjjhh81HGVX+tmkG+mc0sH6tzBNevX5wyUeDElaPU/SfbFm3/bu0vziGxUnRpj+Zmi/2UR3pCpbd+yfdCcZY=
+	t=1758029749; cv=none; b=IccagmZZV9s+2LHNZXrppmI1eloupIOzmVR/XXrcetnlTEcl0u9HO9mRr9xfJT5wEAJdzaUW60rp+rQMnZDwP7KBLWEMarlHAC/Nq3jSlSQK/9XWT9TrIR1RC138xrtX0HxURFLo0UUcC7mdVLptQSj/421kx84AY9KQjOHBoTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758029116; c=relaxed/simple;
-	bh=Gwdtq3KT3Skby34FHqWvNTPDYodseuItYXyKgLbVyOk=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=t14qU/KLrxp0eUZ14Oe+xABQ+9IWcs4pE//qRfFcuuQPF4xrNXtpOvDFmbdHqXGsg23luWRl24A8dsnE8TDGcTo1OPQlgiPNdkEabrc5bKKr4aRl4QSRqZSnHVXcuI/DxhOE9IUiZOemrB8dOYPhlya9VyC01EcSSng1GXS7n2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GpPPiMz4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D87C4CEFA;
-	Tue, 16 Sep 2025 13:25:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758029116;
-	bh=Gwdtq3KT3Skby34FHqWvNTPDYodseuItYXyKgLbVyOk=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=GpPPiMz4wyZrApHDUFCob37XMpR/vuuYPGluQ2GKX0KCzW3AX9rthjNILfrQNmQ4k
-	 wFgaixJ2KbzbQKm5ZFFHavaGE4QrJDy6K40ZMslyB37OGdbxd9OuvJoTM2YMUJNwJq
-	 zstWZ2c890fwnk5bOjI2634zzNHR0HDcW9eyC8daUiCf73fGEQ0oH/2PMH/ypMSPp+
-	 r/7dWFXTPuPfxHADjukm5U7qRyK4O4x2HVGvUdPkM97o0Ziz9cszs1mw4dQQTnK0WN
-	 XzzjlgSp4OAtsCjuNmh1Z84arpLVuDHda6RsRteYteN1TAD/1HzyTUM3KEFY18Obd7
-	 uqpQGpeyRxCBw==
-Date: Tue, 16 Sep 2025 08:25:15 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1758029749; c=relaxed/simple;
+	bh=xNjcCrqL3Fvvxc/pvu1fHNLYA6h0GPV11qPf/HCmCrw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=plrKICyAbNjky8aQUsGYA5rTK6pH+glJ0TKCPoiEWm9JFBn/I56ziybKQ08YxFcGfN1UpyYpiP+HqvjJ/xer3n/urCq0RrbSCacljP3Tv//ltKMQZ+OE4hdZq90c6no8/t0i3Qx0WwqmtUKM3yivPHnv5AXx7rzA/Xb53rETFso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m+eq16zf; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758029748; x=1789565748;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=xNjcCrqL3Fvvxc/pvu1fHNLYA6h0GPV11qPf/HCmCrw=;
+  b=m+eq16zfU6moWDxJxMNbl4K/7EXM4q6fONd6EM6LDFAWN2QWzVl2BHz3
+   Nfxjy9FV8NKdSvJ4vq/Ca82axwJfLO1BS97yN+xxodHn6BeucvIqO9TqO
+   cbIEXbK3KVHV4NU21QpxPL0HxTyG7kVSm18ASBWthiqxpm4zaKduKGJ0s
+   eJwlE/NowA153FB5lmB4qsA8zRJpnJnihQxo/Z97WUixaEZ7MbMkDiBdy
+   iLID0WYR09DE4yq0oX3gY/UbNiL4bW0kR1aNi6M7Jt/KaiICG+8QaWzdK
+   SIwOcSpd/AbcZw2NBTZ2WahzqnMTGklMbnH4Z5uk2Lbe3sZ+itbnXqRfb
+   A==;
+X-CSE-ConnectionGUID: o7cQcBz/Qrq5awzfO6pOSw==
+X-CSE-MsgGUID: g2b37pKGQL+iUtg0L6zqRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="60237209"
+X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
+   d="scan'208";a="60237209"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 06:35:46 -0700
+X-CSE-ConnectionGUID: n5JHXARFTkK+1BMz1LMX7w==
+X-CSE-MsgGUID: fePhtN52T8GQra3atVYGLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
+   d="scan'208";a="175365031"
+Received: from smile.fi.intel.com ([10.237.72.51])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 06:35:38 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uyVqJ-00000003XU8-1c1D;
+	Tue, 16 Sep 2025 16:35:35 +0300
+Date: Tue, 16 Sep 2025 16:35:35 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	sboyd@kernel.org, jic23@kernel.org, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, arnd@arndb.de,
+	gregkh@linuxfoundation.org, srini@kernel.org, vkoul@kernel.org,
+	kishon@kernel.org, sre@kernel.org, krzysztof.kozlowski@linaro.org,
+	linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-pm@vger.kernel.org, kernel@collabora.com, wenst@chromium.org,
+	casey.connolly@linaro.org,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v4 2/7] nvmem: qcom-spmi-sdam: Migrate to
+ devm_spmi_subdevice_alloc_and_add()
+Message-ID: <aMlnp4x-1MUoModr@smile.fi.intel.com>
+References: <20250916084445.96621-1-angelogioacchino.delregno@collabora.com>
+ <20250916084445.96621-3-angelogioacchino.delregno@collabora.com>
+ <t3uk3k4h3l53yajoe3xog2njmdn3jhkmdphv3c4wnpvcqniz4n@opgigzazycot>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
- Jonathan Cameron <jic23@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
- Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- Andy Shevchenko <andy@kernel.org>, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Romain Gantois <romain.gantois@bootlin.com>
-In-Reply-To: <20250916-ltm8054-driver-v1-1-fd4e781d33b9@bootlin.com>
-References: <20250916-ltm8054-driver-v1-0-fd4e781d33b9@bootlin.com>
- <20250916-ltm8054-driver-v1-1-fd4e781d33b9@bootlin.com>
-Message-Id: <175802889806.3636334.5922063165326624339.robh@kernel.org>
-Subject: Re: [PATCH 1/4] regulator: dt-bindings: Add Linear Technology
- LTM8054 regulator
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <t3uk3k4h3l53yajoe3xog2njmdn3jhkmdphv3c4wnpvcqniz4n@opgigzazycot>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
+On Tue, Sep 16, 2025 at 03:24:56PM +0200, Uwe Kleine-König wrote:
+> On Tue, Sep 16, 2025 at 10:44:40AM +0200, AngeloGioacchino Del Regno wrote:
 
-On Tue, 16 Sep 2025 12:24:06 +0200, Romain Gantois wrote:
-> The Linear Technology LTM8054 is a Buck-Boost voltage regulator with an
-> input range of 5V to 36V and an output range of 1.2V to 36V.
+...
+
+> > +MODULE_IMPORT_NS("SPMI");
 > 
-> The LTM8054's output voltage level is typically set using a voltage divider
-> between the Vout and FB pins, the FB pin being constantly regulated to
-> 1.2V.
-> 
-> The output current limit of the LTM8054 may be statically set by placing a
-> sense resistor on a dedicated pin. This limit can then be lowered by
-> controlling the voltage level on the CTL pin.
-> 
-> Describe the LTM8054 voltage regulator.
-> 
-> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
-> ---
->  .../bindings/regulator/lltc,ltm8054.yaml           | 77 ++++++++++++++++++++++
->  MAINTAINERS                                        |  5 ++
->  2 files changed, 82 insertions(+)
-> 
+> If it's exactly the files that #include <linux/spmi.h> should have that
+> namespace import, you can put the MODULE_IMPORT_NS into that header.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Which makes anyone to import namespace even if they just want to use some types
+out of the header. This is not good solution generally speaking. Also this will
+diminish one of the purposes of _NS variants of MODULE*/EXPORT*, i.e. make it
+invisible that some of the code may become an abuser of the API just by someone
+include the header (for a reason or by a mistake).
 
-yamllint warnings/errors:
+-- 
+With Best Regards,
+Andy Shevchenko
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/regulator/lltc,ltm8054.example.dtb: /: 'compatible' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/regulator/lltc,ltm8054.example.dtb: /: 'model' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/regulator/lltc,ltm8054.example.dtb: /: '#address-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/regulator/lltc,ltm8054.example.dtb: /: '#size-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250916-ltm8054-driver-v1-1-fd4e781d33b9@bootlin.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
 
 

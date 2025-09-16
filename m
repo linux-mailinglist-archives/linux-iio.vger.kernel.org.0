@@ -1,161 +1,159 @@
-Return-Path: <linux-iio+bounces-24169-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24171-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFF4B59BBA
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 17:14:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B3DB59BC7
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 17:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0741C1BC2DBE
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 15:09:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97DF93BF667
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 15:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5731A315C;
-	Tue, 16 Sep 2025 15:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8654F313267;
+	Tue, 16 Sep 2025 15:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Uf9uWLSm"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="fARFydGW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF6023AB8F
-	for <linux-iio@vger.kernel.org>; Tue, 16 Sep 2025 15:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A63335BA6
+	for <linux-iio@vger.kernel.org>; Tue, 16 Sep 2025 15:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758035301; cv=none; b=SmW473RTET2mLT+eF8wXI5dUX3XXAbzTBQG6Fb10TszD3M09MB8pNN0w/cVhG58wBPJ8rfLtylGiRsPKC63pP0OVNv4zLOr4Uk8idPdDdrIFWuk8MnrCfQFGwToBTKf3yjf6wWkJZOoTZFHTOnlXmocsdUa/VhbjX9T28KwAMnY=
+	t=1758035474; cv=none; b=NNr9jc7OIf+5ArxYu8qrsag1HFzypIWTaVLlYBj2GLWdTwbSuh+0TpqCg5QK+g71c9uW+TN2tgcj7ZL2PYcu+Kh3umUhOw+RRT7WHEIHs/Eqf9JdY583Gy5AZz3HLc1npB2OP/Qk+V1FeJX3J9S2kWaC1MTXc3msQd703i6mLcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758035301; c=relaxed/simple;
-	bh=yMmIPhxzCHiujCLC93yUulSj03dbgF3K8hp313sB11s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fxFq4cnQiJwLVHh6z0NcHAA4o025H1TL8+GWnRmPDUpo/AYOQPcbT7h3myghbe2zqT9fHRrTRa4tH0rX5JH+wFNye+G2uluQr9ja9t2Ck/qHtIa2/Avs2NYMdWxWu19mDwLevmxYC9BOb7R8mlcWElfSnqtTUF0yjC5uy4nuz9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Uf9uWLSm; arc=none smtp.client-ip=209.85.161.41
+	s=arc-20240116; t=1758035474; c=relaxed/simple;
+	bh=rmOaDep9iDvIkVV5SOO3btdvNEg4fjn3ZIsqxvgs9l0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KTRPbHsS1xNn5HWdY9IXtGAyLDqyzCSydp93CQbWzLHvzGTlfjtjg/S0+lsHh3KJWRvlybRg+WqonwUxxpurof3HuJx063/V+wLb5f1ZxhoXrUNTmTndUOjkUVnW56xSV3Pl8f43dm9Lm8nkuy3o9Eb59pJ/EzKUpgzZe6YEgQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=fARFydGW; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-62189987b54so3117607eaf.3
-        for <linux-iio@vger.kernel.org>; Tue, 16 Sep 2025 08:08:17 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45df7dc1b98so38709315e9.1
+        for <linux-iio@vger.kernel.org>; Tue, 16 Sep 2025 08:11:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758035297; x=1758640097; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0VyxsRgwzT4WdBEZrPds7tFrERwbS24Tu8hrZOF5hOk=;
-        b=Uf9uWLSmKe5L7hqyoMxADwXupTmT/AA9LPc3Vp3GKVRw+vPO8lL6EEe735P06P9IiY
-         VfGffOEH9NGKytZZkPBFdeuZoWJzft+9VG93LeJ1QQWb8bsl0792YeMtQXpxRIVm98Ma
-         bxMYaXCHI3AGdxdnjWWcfFoD0g4L3A8HaylmGxvXDZCwBQ2RUpgcIqLJrmV99oH5fxAU
-         wN8QoGtZywGHpyyiArtDFUUcys6Df3dmmcSDUc160gr/CX2a7pyvV+9MiPOOReM1c8Tr
-         pLnWJ3L9tngf5rlah5XwyjOl42kw3hSjbhZYwlQ+gJwZkDGOtWH8eFgoPJQji+qQi1Rk
-         h2Wg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758035471; x=1758640271; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rmOaDep9iDvIkVV5SOO3btdvNEg4fjn3ZIsqxvgs9l0=;
+        b=fARFydGWUDs3Y1yIu9PeJvgd9JeExzEDi0HEQ3gzKF7bRe7OC5iIjm8aeOVBS1lJ73
+         k+stB81Cnwgt0KMjGGxj1F28HgeCc6wyYirwWIhI/CBqrGJevPQ9v5sMo6yCM4wyEhB7
+         xBzhqVMyCwgpc6Tm9Nz7dtOVPIKwq7IyRRQDYrq2uvoGtklHivAzYuD0zz1uOBtCtk7i
+         2uzEExAYgGUQTPx8LfDfjAUF6QxieX4CpS0Mrnt1ftjM+bb+mcfvRJaKFD/kCVD5yWcY
+         W/JnSUvYy2vIOACce4BTthGLdKKjt4Nsyp/20TM8aZ/doWkpdpY9dTNc3KxcZrFSwUSO
+         BW/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758035297; x=1758640097;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0VyxsRgwzT4WdBEZrPds7tFrERwbS24Tu8hrZOF5hOk=;
-        b=Z3Tm+Fe/3xIcygwgamHK4NsZ6gPEjL/MJsjrU2EhEIuNPdhBb1sXv64k1EOzslzwRs
-         ZKp1gITeiE7ibi91bZYdqO4d2X5Q2EboTzvagcjoRar5h8BHaaGRFz3cJ5X6bAyV39Dj
-         FdtV4ZGG+XQJQuZWBMCfYtINWMVUoKeMS55Cgv1cAhSARRFWenz3lG5Izh9o1cmQZDnl
-         0BaeSnDfJqsTPepBO046TORm/kwFqucBObKKJsC22k+DOcl1rLlT2FUxaCVBM9dhF1LN
-         Zmh5omCe29xUHPdUnuQEBEZY7Y0p1m0BoiIDC3amYa3YQILTa+2Tj7XYi0zBrkD1oxRo
-         MrAA==
-X-Forwarded-Encrypted: i=1; AJvYcCUde0sJd3sNNbrx3CxB8m6kWEpuiCKn3O69RnHgM3CB+fvhljk+Gd+G08ihmUJDfRn6aWNwdGCXOZ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpvTUMWKwDRnxwA1vsmkyHbAvw4Ehds2tl/a3L0GDEZobZP5S7
-	LgjxibDSiGlROKs5S1JYoFs8HyY4o/MdXPqeL09xIy9Jsfg/ncYPUvT9spe1wV5w0YU=
-X-Gm-Gg: ASbGncueGLy/W3bVUM1dJE/x68tEHE4SfWGXoYpRPJzz8sij7EbSDQaHmWrMrddQIJE
-	JbShKBj9xXDYNloLLamXmMy32bEcTBeqNYLAOn5PRq/SJmv7clnblAmUg+PFjpdcBPe8YYDd2eM
-	C1dKMYRxjtuL3bZvjDHaKVXhL1oP+WWJF3s7V3t6ROpaJfwH33UeB5UZQQE2SPk82x7FU5obmdB
-	GOygEWQD4a26wQfgo/NG5zgw6mGDDLzbHBErhDzcAe3XnrguEGUPfLj4t+xBUiS3882RKEqtFBF
-	ImKUKh9kBinEG43z7/LYpDeAr+4hJp5i0auYXXcKSeDmZ0R8JI4nefz0opzZObVekXOnksW6cWI
-	SLx26ToNZkTXDQI2c7Ua7m6Osb8jd8iroC1lQIZz3vu1VezrehCh/RvJ9dQ13mF7C2fm5aKO4dg
-	E=
-X-Google-Smtp-Source: AGHT+IFbaLaefbFuTwBnBZB5B64hmkV14poQrqqnj/+jrHHe5Qend6k64W8dMu0a3pnSETsE0eaV5w==
-X-Received: by 2002:a05:6808:159b:b0:439:adcd:9e83 with SMTP id 5614622812f47-43b8d8a279emr7619487b6e.21.1758035296903;
-        Tue, 16 Sep 2025 08:08:16 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:70a1:e065:6248:ef8b? ([2600:8803:e7e4:1d00:70a1:e065:6248:ef8b])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-43b828d31c0sm3270184b6e.1.2025.09.16.08.08.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Sep 2025 08:08:16 -0700 (PDT)
-Message-ID: <6a1b7294-25b4-4363-87d7-2e91c9c1b157@baylibre.com>
-Date: Tue, 16 Sep 2025 10:08:14 -0500
+        d=1e100.net; s=20230601; t=1758035471; x=1758640271;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rmOaDep9iDvIkVV5SOO3btdvNEg4fjn3ZIsqxvgs9l0=;
+        b=rmI9PnCUUPgtBKXM4VFUIpn5+OsSSN0XTxfaPpJAtVAyxkDgp51tCB36Aqe0LOMdHh
+         tRdzN4RzIGLHS9HX7+0Bb0kXx7x5zYLPkwG9tN1qkWns7wZb/f5eriTCIWOsE4lQp+V7
+         Z74kafva+VInFN1lR77ZdaP8ZWAHOPhoGaS0LCCGH1fSPBg0m6cCoXIfvHhxwo8ikYw1
+         dr2Q1tLrDBV4gI5rWXu3HuzrpXhKAbO6dGJDxQjGl7xhsYziKXL7w60DYksW7Y8N4lC/
+         wQzsGN91GmbzE1u2qiJeRIFHviS9zLz2zLPGeIDRAFcWB8JEdcSqOEg6ybDLW9jgIgsg
+         P5hg==
+X-Forwarded-Encrypted: i=1; AJvYcCVSb5rzlDrLZRaI5Tg6+BJJUWdK8A306sQqDlI4YGTT4L9ZksAQgxv8k+DSTDfuYXBD1l5dbDkv5kQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyepZYTdCOxBPyDiRoS6A/qKFi+cKvkDtyDFZt3G1c04jqS22Xv
+	GAPfz7ufmznfZq6cWP4mvbV5u42conCA1NWLX+j/fsKDlGZZ3bsDjrzF2B9m7mfkPng=
+X-Gm-Gg: ASbGncu1lEE0X6Q57Bt4Yd/RW5WFQ3/ogvZkOQhYyQh6DBTju59cgfe6/prA6xH+JfR
+	gvNfodz+pcbFekH95WTvRkM3HOYww1sq7k6SEtdxBMLq5hjkPEGe8Iaba+2Gr+/2qPIJ9NT391p
+	KCugNg5uBCGl4fWwwtji9P70R4yJGl34t8XToHzeXC1BxpWRWsOovHnvpw3s1vZF7B+DqalSfAW
+	24NAjGmQ7iOd4b6rm5yzEkUqYTWUhCkoHq8hn+N63WJJMxNIAio/oGOEPY5sm1CH+Rp4I5jE7ms
+	yTz1ZrHlq6rKo0FXyEqdR96LoTEsF4nOJPFBWfSzeqR+G0hq1KCdKg6qdoTs49aSdoFSRD2E0yt
+	7Qtc4COCWuRJJZh3WxrbfzyGRGhP0pfotiqc594W3DcLy3pI1XMGrrvbkaKp11/lu
+X-Google-Smtp-Source: AGHT+IFjwopgYVPo6VKMtYSKedXcVrli8pwqzXpfa37U2o4471Lcz0KQL5QMmQQhJ8xqhKe1X6WGiQ==
+X-Received: by 2002:a05:600c:1992:b0:456:fc1:c26d with SMTP id 5b1f17b1804b1-45f211c8437mr143544675e9.2.1758035470631;
+        Tue, 16 Sep 2025 08:11:10 -0700 (PDT)
+Received: from localhost (p200300f65f06ab0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f06:ab04::1b9])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45e01578272sm241914915e9.9.2025.09.16.08.11.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 08:11:09 -0700 (PDT)
+Date: Tue, 16 Sep 2025 17:11:08 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	sboyd@kernel.org, jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
+	andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org, srini@kernel.org, 
+	vkoul@kernel.org, kishon@kernel.org, sre@kernel.org, 
+	krzysztof.kozlowski@linaro.org, linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
+	kernel@collabora.com, wenst@chromium.org, casey.connolly@linaro.org, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v4 2/7] nvmem: qcom-spmi-sdam: Migrate to
+ devm_spmi_subdevice_alloc_and_add()
+Message-ID: <mknxgesog6aghc6cjzm63g63zqbqvysxf6ktmnbrbtafervveg@uoiohk3yclso>
+References: <20250916084445.96621-1-angelogioacchino.delregno@collabora.com>
+ <20250916084445.96621-3-angelogioacchino.delregno@collabora.com>
+ <t3uk3k4h3l53yajoe3xog2njmdn3jhkmdphv3c4wnpvcqniz4n@opgigzazycot>
+ <aMlnp4x-1MUoModr@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] iio: adc: Support ROHM BD79112 ADC/GPIO
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org
-References: <20250915-bd79112-v5-0-a74e011a0560@gmail.com>
- <20250915-bd79112-v5-2-a74e011a0560@gmail.com>
- <aMge0jYwYCiY72Yb@smile.fi.intel.com> <20250915211321.47865d3d@jic23-huawei>
- <c1d21e3c-b0a3-40a5-b693-a38673f8bf53@gmail.com>
- <20250916090206.02f601be@jic23-huawei>
- <14d3dc56-c6cf-464a-9a57-2a7a6afe8af9@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <14d3dc56-c6cf-464a-9a57-2a7a6afe8af9@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cy5a22gjj6esxnjr"
+Content-Disposition: inline
+In-Reply-To: <aMlnp4x-1MUoModr@smile.fi.intel.com>
 
-On 9/16/25 3:14 AM, Matti Vaittinen wrote:
-> On 16/09/2025 11:02, Jonathan Cameron wrote:
->> On Tue, 16 Sep 2025 07:52:07 +0300
->> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
->>
->>> On 15/09/2025 23:13, Jonathan Cameron wrote:
->>>> On Mon, 15 Sep 2025 17:12:34 +0300
->>>> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
->>>>   
->>>>> On Mon, Sep 15, 2025 at 10:12:43AM +0300, Matti Vaittinen wrote:
-> 
->>>> --- a/drivers/iio/adc/rohm-bd79112.c
->>>> +++ b/drivers/iio/adc/rohm-bd79112.c
->>>> @@ -454,12 +454,18 @@ static int bd79112_probe(struct spi_device *spi)
->>>>           data->read_xfer[1].rx_buf = &data->read_rx;
->>>>           data->read_xfer[1].len = sizeof(data->read_rx);
->>>>           spi_message_init_with_transfers(&data->read_msg, data->read_xfer, 2);
->>>> -       devm_spi_optimize_message(dev, spi, &data->read_msg);
->>>> +       ret = devm_spi_optimize_message(dev, spi, &data->read_msg);
->>>> +       if (ret < 0)
->>>> +               return dev_err_probe(dev, ret,
->>>> +                                    "Failed to optimize SPI read message\n");
->>>>      
->>>
->>> I am not really sure under what conditions the
->>> devm_spi_optimize_message() could fail. It might be enough to print a
->>> warning and proceed, but I don't think returning is a problem either.
->>
->> No. Don't proceed on an unexpected failure whatever it is.  That's
->> storing up problems that may surface in a weird way later that is much
->> harder to debug.
-> 
-> Just a generic note, not disagreeing in this case.
-> 
-> I have had similar discussions before - and I have been on the both sides of the table. Hence, I don't have as strong stance on this as you. On some situations it is better to just try proceeding as aborting the operation brings no sane corrective actions but just reduces a device unusable.
-> 
-> On the other hand, as you say, usually bailing out loud and early is the best way to pinpoint the problem and get things fixed.
-> 
-> I still think that logging a warning should be a decent hint for someone doing the debugging.
-> 
-> Well, as I said, returning here is Ok for me - thanks for taking care of it! :)
-> 
-> Yours,
->     -- Matti
 
-For devm_spi_optimize_message() specifically, there is no
-point to continue after an error. The call of this will
-just be deferred until the first SPI transfer and the same
-error will happen again. If there is an error, it means there
-is a programmer error and the SPI message is malformed
-(or could be memory allocation failure). So better to fail
-early anyway.
+--cy5a22gjj6esxnjr
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 2/7] nvmem: qcom-spmi-sdam: Migrate to
+ devm_spmi_subdevice_alloc_and_add()
+MIME-Version: 1.0
+
+On Tue, Sep 16, 2025 at 04:35:35PM +0300, Andy Shevchenko wrote:
+> On Tue, Sep 16, 2025 at 03:24:56PM +0200, Uwe Kleine-K=F6nig wrote:
+> > On Tue, Sep 16, 2025 at 10:44:40AM +0200, AngeloGioacchino Del Regno wr=
+ote:
+>=20
+> ...
+>=20
+> > > +MODULE_IMPORT_NS("SPMI");
+> >=20
+> > If it's exactly the files that #include <linux/spmi.h> should have that
+> > namespace import, you can put the MODULE_IMPORT_NS into that header.
+>=20
+> Which makes anyone to import namespace even if they just want to use some=
+ types
+> out of the header.
+
+Notice that I carefully formulated my suggestion to cope for this case.
+
+> This is not good solution generally speaking. Also this will
+> diminish one of the purposes of _NS variants of MODULE*/EXPORT*, i.e. mak=
+e it
+> invisible that some of the code may become an abuser of the API just by s=
+omeone
+> include the header (for a reason or by a mistake).
+
+Yeah, opinions differ. In my eyes it's quite elegant.
+
+Best regards
+Uwe
+
+--cy5a22gjj6esxnjr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmjJfgkACgkQj4D7WH0S
+/k5bVwgAg+5I7FGikPiLyM6nJF2xieob+ruwdkRFDohxfb7PQp4RA3i332VcbQXW
+uPoXcpVKI3rBmxcqdXznCt5nec30ko8fgwZAb31BtOXwOf+VPlXIz5wDU5CdFQs+
+35qgGyJnn48yhisyQx02GgDm/7esFho8zJOIaKvERuPGZ391HpLD4+z6Nxavy5JH
+ZgxR7eIMcsnuF9vidUZhFi25abs7LFmJ72MF4i2N41OEdA/SMG9rpkEFBk5moBvK
+qRRqVUDpCMxyDH6MddhP5CmgVUiW+3ucV17tdWKlnjjxMJx5rFb8BJD+jZx0Iuo+
+HRtugRPqfdauF5Que8FvEqOdkDDLIw==
+=R2qg
+-----END PGP SIGNATURE-----
+
+--cy5a22gjj6esxnjr--
 

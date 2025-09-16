@@ -1,111 +1,192 @@
-Return-Path: <linux-iio+bounces-24158-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24159-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E97B59760
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 15:20:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E07CDB59780
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 15:25:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 754123B85CB
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 13:20:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9237C484F77
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 13:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6CF307AD5;
-	Tue, 16 Sep 2025 13:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF0F307AF9;
+	Tue, 16 Sep 2025 13:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mtxF34Bt"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="jeIYMd/q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FC6625;
-	Tue, 16 Sep 2025 13:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95452641E3
+	for <linux-iio@vger.kernel.org>; Tue, 16 Sep 2025 13:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758028831; cv=none; b=gNAcfJzHQTSmzVPvj2FzLK0nMG1TMNQKiq43AUpSqtH2NW4wBw+ieTjfvW6Da0BLZ93RGJOMYyQ7FBteAQkLZJ92U4bWbnK8j1/VLXedHWKFxaw3BfM9pm40Jl7DT3n8IHNNNzJI+g47tBfGNOgCm2/F5UnX1A5XAn9qy1xk5hc=
+	t=1758029101; cv=none; b=F+j3ec4KYYl/eA/Fyr3M4RGbgvjA3jvg9sYSuJyN7r6DiqYpeZvNiLMhw+JlM98sNqXLZKTWFhNeF967JxlFVq4NhS7oQ71eQhXq75D+gn9AAdm3fExSskidCnhAEIoPgVd467tCVlkAZikWU/KmYavSieQLtAgN+ja+Uf364qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758028831; c=relaxed/simple;
-	bh=gSOzalppVW+Cs4aEMq5xGn/SpYraHmgemFo8kPlu0Dw=;
+	s=arc-20240116; t=1758029101; c=relaxed/simple;
+	bh=s8ThdCXM5O9yyBHIfDFZ9OEayAHX03FFFGLLjXjF7XY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ugxh3zKJCe4eqlzTpgW2HXStdDxoz/pJQQlbbANneU2KUPFQINW1KQvdPq3vqYb9TMDujTUwrjCOgrH4fSPSKu/WaDHWLpyiMbjz3/8de5kVwKTVcI5L6fevgB9ORkKZ5ECuZv9MIH37TjZeeSXaUvN80znyjIfpUuIQh6VqBow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mtxF34Bt; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758028830; x=1789564830;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gSOzalppVW+Cs4aEMq5xGn/SpYraHmgemFo8kPlu0Dw=;
-  b=mtxF34Btx8vYUBi8M5ImJEGYW58YCqPBEAW7r+UvUnZwvWQqE8MD+DPJ
-   fugDNC0mJYAUx8JfhO5nAXOX6aMvJ6x3FiIbHIG8ojGfUWOvB+1gQB1Jf
-   ogu5nTp3RTHqmuMlTq42ylJbwsXQ9k7C0aQjqYhTxoFNaBgrFnOQF6aJj
-   AQiEabNCrU1fTayoaBrkc9ypFYrdU9jNfkYEpWy8gXL81Lx16yXeUmK++
-   LrNs9UjSZq/4ZMA2p8FdTZ4aniWsWx3pIBxK96kLjw80okPv7hmN6ovSn
-   Af6abnepg2zxjhaMkxsvZ17yOex/T0hTVCv/x/etRDEbofaIU+O41VbFl
-   g==;
-X-CSE-ConnectionGUID: b/C0DjmLRquNnIJlEr3NuQ==
-X-CSE-MsgGUID: kvqIs9/WQUO3iQjA8yvpwA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60367007"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="60367007"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 06:20:29 -0700
-X-CSE-ConnectionGUID: 7te56LYIRSmrUXVyTGQj2Q==
-X-CSE-MsgGUID: Z/f947bGRZmbsf9xhKnqjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
-   d="scan'208";a="198629465"
-Received: from smile.fi.intel.com ([10.237.72.51])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 06:20:25 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uyVbb-00000003XEH-0HQG;
-	Tue, 16 Sep 2025 16:20:23 +0300
-Date: Tue, 16 Sep 2025 16:20:22 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH 3/4] regulator: Support the LTM8054 voltage regulator
-Message-ID: <aMlkFka1cm0qv9Bj@smile.fi.intel.com>
-References: <20250916-ltm8054-driver-v1-0-fd4e781d33b9@bootlin.com>
- <20250916-ltm8054-driver-v1-3-fd4e781d33b9@bootlin.com>
- <aMliRTuUDNPkeM8C@smile.fi.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=jGHvDDWSSrJvtmG1a6BbtfyMk3+jM+RZhp/sOnxu6rsr0V84jxJmaIFF6XwTvDpkBwtvZBF8pzVkQPGRxTJ62kKzkU7wsqG2wbnLC8+3e1peJ79MtyjrHaooh/pSIqRpCvRbXT3pfxBxK7ZKX/nMzaB2Y77h1rDHX8ypSZOMLc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=jeIYMd/q; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6228de280ccso10911927a12.3
+        for <linux-iio@vger.kernel.org>; Tue, 16 Sep 2025 06:24:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758029098; x=1758633898; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gwfKh8YcNEbswE2yYv8jHBhvIioj0iL2kRQaWZR7TS4=;
+        b=jeIYMd/qRHO+nPBNV5EseY3/4XkcyAp9gayRU5pCXHVJYBIhZMwzNpcKQEuDLXP+n0
+         hRv6WaRsqF6Ex0gQ0qpwcj64LW0uIrA8ciLh5U7qSFL8B1w/zkZnBTiXUCzyEZBjDurA
+         K6CR9IXZBnBFGym4LBqzhiLHAgJgfBnNoGae8Si//bWDUMWlcAY1EeHoQVodaONgiHa0
+         bxJO0hKeD1TWbAt5q6sAG5RvONO8mQGXGLAcjDAbl7uFwgx0MrTYOOuwmfJYj0dkOQxe
+         fpuXn0D4l7gsCNF31gjZFhGfIMV1dL6ARMSoTS295WLe/s0NQVrjR2TRHl7BFK0DKxUW
+         fbWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758029098; x=1758633898;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gwfKh8YcNEbswE2yYv8jHBhvIioj0iL2kRQaWZR7TS4=;
+        b=B/s1f61ET/l6Hh7toau2zcrYcE0O7gHtDWArVyZx+/6rsD6xEEBHZ/XPNIJgb8sFBq
+         KFfYTpabGuUWaoSosxPbR5rh3ArT/B8xxI4MkfT9Le2OiQutQmcXX9U5LCumhmB/wK6S
+         b29MjQeRIFTuDnw+NskhRYaOVDxMysEObHGA0AgC07OciajJk1nXDZWdcViJlxGGTjWx
+         iOvVFhFcr51qA/ysXHpN5rHnEpSPi/TltyP4+zEfTrbxfUJwlZutsOMfVJ0QjZrl0Mc+
+         4tHER89pN4S7MZheBxTJG+MB4Bx6PpDK7sERPZkt/nnMD6vS5kDdzfOhL/2D4kL9H+Xh
+         d8aA==
+X-Forwarded-Encrypted: i=1; AJvYcCWGQlqk4yTffF8qFVrXjQgCrl/vOG66TKQhEEs7iXr2sPSZvAZmJSw28cteqYzW/pAamqJyDK3IZo0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqrVBNIXCb62HIXSYSgZol9aA7kyKPlNhNjjSfGdgxW5Rp5Nib
+	/YUGt8estNwvRpbuILaX1qD1eu8UkzFA3by+8WKy8BeL/SSRHbZOuiCpEjqqnZAQAIM=
+X-Gm-Gg: ASbGnctvQvGr2Why4ptdq8J7akqT5+V8/FiS14b1HDDa/UEUbWcADgG2EKAzI4qXOd1
+	SHiT/gX3HliWdebc+yJX8rd54QvKSGmbA/WmOCUzWrUts3++sxbgAmUZ1XpA3skLPG2NgrN/7fz
+	NJlvrB7BbVQ02DCwP80AcVZcs59+EiunfFIh09zMKSV97eUhLUEzyJupTSb+AB3WT5vWAMp/JnX
+	sDNtfmb5mzVtIrvnHKqFULQLM7qyuzbg+XLb4IxcHqINNxUYfTZ16R2qTr2nZ+B5nIQwDLCjbbj
+	QXewtjerb7fm/JcwHVk8nLU5o0Qxk+TOnIlDGrEE45eKeOGeVa+qso1UBZ3cw86iw5ErSM4/ubk
+	jpbuA5XDznLPHxe1r07mwF9fypTfJpTQuFJ1bTH5T2roum36WTy8qRDyZTVSQxSwF
+X-Google-Smtp-Source: AGHT+IE9kjhldcCIBvjPr9jo7lRPPHVqNSYEJDmsT9jH1F0DRGqPEBku/9BloIv9jKtuTpavenfoLw==
+X-Received: by 2002:a17:907:d16:b0:afe:c6a0:d116 with SMTP id a640c23a62f3a-b07c3572d31mr1812203466b.18.1758029098143;
+        Tue, 16 Sep 2025 06:24:58 -0700 (PDT)
+Received: from localhost (p200300f65f06ab0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f06:ab04::1b9])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b32f202dsm1164355266b.84.2025.09.16.06.24.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 06:24:57 -0700 (PDT)
+Date: Tue, 16 Sep 2025 15:24:56 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: sboyd@kernel.org, jic23@kernel.org, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org, 
+	srini@kernel.org, vkoul@kernel.org, kishon@kernel.org, sre@kernel.org, 
+	krzysztof.kozlowski@linaro.org, linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
+	kernel@collabora.com, wenst@chromium.org, casey.connolly@linaro.org, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v4 2/7] nvmem: qcom-spmi-sdam: Migrate to
+ devm_spmi_subdevice_alloc_and_add()
+Message-ID: <t3uk3k4h3l53yajoe3xog2njmdn3jhkmdphv3c4wnpvcqniz4n@opgigzazycot>
+References: <20250916084445.96621-1-angelogioacchino.delregno@collabora.com>
+ <20250916084445.96621-3-angelogioacchino.delregno@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="36zni4ukkwfibixi"
 Content-Disposition: inline
-In-Reply-To: <aMliRTuUDNPkeM8C@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-
-On Tue, Sep 16, 2025 at 04:12:37PM +0300, Andy Shevchenko wrote:
-> On Tue, Sep 16, 2025 at 12:24:08PM +0200, Romain Gantois wrote:
-
-...
-
-> there are also many headers are missing here, but Mark
-> usually not insisting in following IWYU principle [1])
-
-Forgot to put a link: https://include-what-you-use.org/
-
--- 
-With Best Regards,
-Andy Shevchenko
+In-Reply-To: <20250916084445.96621-3-angelogioacchino.delregno@collabora.com>
 
 
+--36zni4ukkwfibixi
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 2/7] nvmem: qcom-spmi-sdam: Migrate to
+ devm_spmi_subdevice_alloc_and_add()
+MIME-Version: 1.0
+
+Hello,
+
+On Tue, Sep 16, 2025 at 10:44:40AM +0200, AngeloGioacchino Del Regno wrote:
+> @@ -119,19 +128,24 @@ static int sdam_probe(struct platform_device *pdev)
+>  	if (!sdam)
+>  		return -ENOMEM;
+> =20
+> -	sdam->regmap =3D dev_get_regmap(pdev->dev.parent, NULL);
+> -	if (!sdam->regmap) {
+> -		dev_err(&pdev->dev, "Failed to get regmap handle\n");
+> -		return -ENXIO;
+> -	}
+> +	sparent =3D to_spmi_device(dev->parent);
+> +	sub_sdev =3D devm_spmi_subdevice_alloc_and_add(dev, sparent);
+> +	if (IS_ERR(sub_sdev))
+> +		return PTR_ERR(sub_sdev);
+> =20
+> -	rc =3D of_property_read_u32(pdev->dev.of_node, "reg", &sdam->base);
+> +	rc =3D of_property_read_u32(dev->of_node, "reg", &sdam_regmap_config.re=
+g_base);
+
+It's a bit ugly that you pass the address of an unsigned int as u32*.
+But this isn't new, so fine for me. (Also for all Linux archs we have
+sizeof(unsigned int) =3D=3D 4, so AFAICT it's safe anyhow.)
+
+>  	if (rc < 0) {
+>  		dev_err(&pdev->dev, "Failed to get SDAM base, rc=3D%d\n", rc);
+>  		return -EINVAL;
+>  	}
+> =20
+> -	rc =3D regmap_read(sdam->regmap, sdam->base + SDAM_SIZE, &val);
+> +	sdam->regmap =3D devm_regmap_init_spmi_ext(&sub_sdev->sdev, &sdam_regma=
+p_config);
+> +	if (IS_ERR(sdam->regmap)) {
+> +		dev_err(&pdev->dev, "Failed to get regmap handle\n");
+
+dev_err_probe()
+
+> +		return PTR_ERR(sdam->regmap);
+> +	}
+> +
+> +	rc =3D regmap_read(sdam->regmap, SDAM_SIZE, &val);
+>  	if (rc < 0) {
+>  		dev_err(&pdev->dev, "Failed to read SDAM_SIZE rc=3D%d\n", rc);
+>  		return -EINVAL;
+> @@ -159,7 +173,7 @@ static int sdam_probe(struct platform_device *pdev)
+>  	}
+>  	dev_dbg(&pdev->dev,
+>  		"SDAM base=3D%#x size=3D%u registered successfully\n",
+> -		sdam->base, sdam->size);
+> +		sdam_regmap_config.reg_base, sdam->size);
+> =20
+>  	return 0;
+>  }
+> @@ -181,3 +195,4 @@ module_platform_driver(sdam_driver);
+> =20
+>  MODULE_DESCRIPTION("QCOM SPMI SDAM driver");
+>  MODULE_LICENSE("GPL v2");
+> +MODULE_IMPORT_NS("SPMI");
+
+If it's exactly the files that #include <linux/spmi.h> should have that
+namespace import, you can put the MODULE_IMPORT_NS into that header.
+
+Best regards
+Uwe
+
+--36zni4ukkwfibixi
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmjJZSUACgkQj4D7WH0S
+/k5X2gf8CPcy37sX+3TAvMselYC6a5KTw9qBUgRRRW2xU0jMLPVSugZd9i7RFBsX
+qcP6Xq/FcBLfEIdwT9uwud13CtVdV6qyNQaWgz+BnrTomiNrrr4wZTVrOOhNgSDi
+VElZSzvXwu+7EZQLmdGAwoXB3HnCHuShI5LiCUQ0zi4pYoMoAc4Tw6htJhjM7NJ2
+48eZomVZ2s+xwPA17EyHn9FaHiisgWV/tjxRtL9P5Kt79qZNel8MXHgWU4jFEUDm
+hqciH+VQhquuUhU/UfWhV0q4Q6aJ2acuI+AsHcWctTI1Whgdtm0Ddr8/iJmUjitw
+JNecAkD3czkJvfdQpE1uSbxMdDBrww==
+=Jcue
+-----END PGP SIGNATURE-----
+
+--36zni4ukkwfibixi--
 

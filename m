@@ -1,57 +1,56 @@
-Return-Path: <linux-iio+bounces-24148-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24149-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D459EB593A8
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 12:30:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB12FB593A0
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 12:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 510921BC7E05
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 10:29:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 831A3171807
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Sep 2025 10:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E89304BA0;
-	Tue, 16 Sep 2025 10:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6B8305E02;
+	Tue, 16 Sep 2025 10:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UncBYGta"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OqeqPqTB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732FE2EA17F
-	for <linux-iio@vger.kernel.org>; Tue, 16 Sep 2025 10:24:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393D52F83D3;
+	Tue, 16 Sep 2025 10:24:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758018260; cv=none; b=RugTUbI6DQAxUH08Cw7Hc5URHNYJlNK28rrqASvwGMXjeRvmQ+JK1Bdfpp1Rbs9j8FKiMVgsuoiLEMsGmA2T3NuKPh53CQX+1RCD4B6x3AliTfgnfxBvrQ2x41xqeG8RPJKK+Nixya5SrcUUCBxfIV+gpB7GzSsix+dprTdDDDY=
+	t=1758018263; cv=none; b=Gmb1d68rsSFZVu3jylXnz9MJRCzXOxKtphR7AidbS3puQ8VFrmMSCaNOM2BFf/Xel6w+WAFfwoLEK4wHYd5d5PXteG8jRGmH7r9NZJ4tm1607oqQY475+0H8YuXSXrAa9og2h/hKoZQQEv6+HP3ZdaIRmYo8C+S8OTKodUidxeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758018260; c=relaxed/simple;
-	bh=1HH2OEcu+cpc+I8pNMm7X8z4A5Dj+Gawx9fnsMB1wgs=;
+	s=arc-20240116; t=1758018263; c=relaxed/simple;
+	bh=JY0fFNmZkGmq+Wab0Bv84GX2dVej9Vw1GK950MMgu+k=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=g1KDNF0LD4b9Ig6WDdoYR90DtkOPgGVe39WSJ0hYbQDgGoDAvMEYBNcOdE0XBB7hmT3/6SMH7d4iUsOKhGe1qiSFuydya7tF7ActwMg8zwSc04Gh5PLdkbsu9rE5+6H29Mp9fQktEggoKaR/KhwwUAHfto8knLDc0Lv+dAxMeYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UncBYGta; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=R7YchVai0Z7RuMCKqbMK5BCDwTj5deXDn1kj2EMF57UKOdRV3l5HAbXnPg146dyQZmZLeydZA4h3TYVaAFuEAYbYoX09yJ4VQkdfQZawvrBUBXa5cqYLGU8Nfq2eY9c3xdhS24oZiwp8TNBq1wB+3qTCwKKf7FLVHDPB2HyWXb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OqeqPqTB; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 693B8C653F4;
-	Tue, 16 Sep 2025 10:24:00 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 950B24E40BE1;
+	Tue, 16 Sep 2025 10:24:18 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C86376061E;
-	Tue, 16 Sep 2025 10:24:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 65A7A102F16DF;
-	Tue, 16 Sep 2025 12:24:14 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6ABC46061E;
+	Tue, 16 Sep 2025 10:24:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5CD85102F16E3;
+	Tue, 16 Sep 2025 12:24:16 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758018255; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1758018257; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=QmgIZk8v+yaO4KbxgsVom5F3SapikDvNEzIqr0l6CME=;
-	b=UncBYGtaNWoFCZJ9ojRw9CNZFtnDWAray699C2BrLgpRlFfZTYSWOJTl7MF0hpUsbVrzYK
-	7mP1E9hb0kxyQGcM02lhgOMz9c3s9wxSEcQwMMkSCJItE7BFsHn0e2vlp6MgdPEJJ0o6pB
-	ZacmwpvfieXrR6eCnj/gZ9yIgYEPE9XPwsCdG84U3RjIPyOeTPbSV0Tjomo8IX4hmzEd31
-	A/Mih5Di3iAonrRaXQNsizoX/lJJnUyJbcF0yv2TiCMiousFV0lVA/2XVMPxHAlECoAKY1
-	KPfS5HwIE/1Empflk+Wk+LjQ+oSwt7A4S0xytUXb53A+tAkXl9X0LmJd01bBxA==
+	bh=+w4qyJOBPfboDMhAjnHDcdTXTS+iPutFVtkMdVT7DPE=;
+	b=OqeqPqTBJQmL7dz4Ya3Y4NvUZ2Qx3yawiot0xxwi5v33XjNj7OkUDfZvwDrB71ANLTHzz4
+	MsI1HCeK51gK6tDryCfoNlxi0ia/2oBZBEFa2Koc0evvx1bBWZtQ5Xr22ucW27hEcYgxB0
+	HHb1jJ9/4lKi6iPPKrB+TCajpzuxkyw/vbYmHJ4WZZtyH9RHwsfZ2RzAicjIYIvKAMrYxc
+	KOGYOOVGclAXVpjEgcMOZmWHhSTNLlOaMtrJNt7i1ZMWaRZDDg4H2FGdEQNzJ7tXDIRPPl
+	2JtPXYPX5PsLNZkzJoAmT1QEe7ZltKAmsLStQuJm6TWGACvWOHEHQ87UwkUR1A==
 From: Romain Gantois <romain.gantois@bootlin.com>
-Date: Tue, 16 Sep 2025 12:24:06 +0200
-Subject: [PATCH 1/4] regulator: dt-bindings: Add Linear Technology LTM8054
- regulator
+Date: Tue, 16 Sep 2025 12:24:07 +0200
+Subject: [PATCH 2/4] iio: add processed write API
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -60,7 +59,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250916-ltm8054-driver-v1-1-fd4e781d33b9@bootlin.com>
+Message-Id: <20250916-ltm8054-driver-v1-2-fd4e781d33b9@bootlin.com>
 References: <20250916-ltm8054-driver-v1-0-fd4e781d33b9@bootlin.com>
 In-Reply-To: <20250916-ltm8054-driver-v1-0-fd4e781d33b9@bootlin.com>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -75,124 +74,155 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-The Linear Technology LTM8054 is a Buck-Boost voltage regulator with an
-input range of 5V to 36V and an output range of 1.2V to 36V.
-
-The LTM8054's output voltage level is typically set using a voltage divider
-between the Vout and FB pins, the FB pin being constantly regulated to
-1.2V.
-
-The output current limit of the LTM8054 may be statically set by placing a
-sense resistor on a dedicated pin. This limit can then be lowered by
-controlling the voltage level on the CTL pin.
-
-Describe the LTM8054 voltage regulator.
+Add a function to allow IIO consumers to write a processed value to a
+channel.
 
 Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
 ---
- .../bindings/regulator/lltc,ltm8054.yaml           | 77 ++++++++++++++++++++++
- MAINTAINERS                                        |  5 ++
- 2 files changed, 82 insertions(+)
+ drivers/iio/inkern.c         | 99 ++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/iio/consumer.h | 17 ++++++++
+ 2 files changed, 116 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/regulator/lltc,ltm8054.yaml b/Documentation/devicetree/bindings/regulator/lltc,ltm8054.yaml
-new file mode 100644
-index 0000000000000000000000000000000000000000..4db11be178b0e662ec51f3d3d73202f8c32625d3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/regulator/lltc,ltm8054.yaml
-@@ -0,0 +1,77 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/regulator/lltc,ltm8054.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Linear Technology LTM8054 buck-boost regulator
-+
-+maintainers:
-+  - Romain Gantois <romain.gantois@bootlin.com>
-+
-+description:
-+  This regulator operates over an input voltage range of 5V to 36V, and can
-+  output from 1.2V to 36V. The output voltage level is typically set with a
-+  voltage divider between the Vout pin and the FB pin which is internally
-+  regulated to 1.2V.
-+
-+  The output current of the LTM8054 can be limited by tying the Iout pin to a
-+  current sense resistor. This limit can be further lowered by applying a
-+  voltage below 1.2V to the CTL pin.
-+
-+allOf:
-+  - $ref: /schemas/regulator/regulator.yaml#
-+
-+properties:
-+  compatible:
-+    const: lltc,ltm8054
-+
-+  enable-gpios:
-+    description: GPIO connected to the RUN pin.
-+    maxItems: 1
-+
-+  lltc,fb-voltage-divider:
-+    description:
-+      An array of two integers containing the resistor values
-+      R1 and R2 of the feedback voltage divider in Ohms.
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    minItems: 2
-+    maxItems: 2
-+
-+  lltc,iout-rsense-micro-ohms:
-+    description:
-+      Value of the output current sense resistor, in micro Ohms.
-+
-+  io-channels:
-+    items:
-+      - description: DAC controlling the voltage level of the CTL pin.
-+
-+  io-channel-names:
-+    items:
-+      - const: ctl
-+
-+required:
-+  - compatible
-+  - lltc,fb-voltage-divider
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    / {
-+
-+        regulator {
-+            compatible = "lltc,ltm8054";
-+
-+            enable-gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;
-+
-+            lltc,fb-voltage-divider = <1000000 68000>;
-+
-+            lltc,iout-rsense-micro-ohms = <20000>;
-+
-+            io-channels = <&dac 1>;
-+            io-channel-names = "ctl";
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fe168477caa45799dfe07de2f54de6d6a1ce0615..7160179e6bf9d45a241582c1b6df8c0ebf6c3641 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14517,6 +14517,11 @@ W:	https://ez.analog.com/linux-software-drivers
- F:	Documentation/devicetree/bindings/i2c/i2c-mux-ltc4306.txt
- F:	drivers/i2c/muxes/i2c-mux-ltc4306.c
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index c174ebb7d5e6d183674b7ffb15c4ce0f65fa3aed..6486fdb7c66a4c84312541f0f42cc24469972a9c 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -598,6 +598,85 @@ int iio_read_channel_average_raw(struct iio_channel *chan, int *val)
+ }
+ EXPORT_SYMBOL_GPL(iio_read_channel_average_raw);
  
-+LTM8054 REGULATOR DRIVER
-+M:	Romain Gantois <romain.gantois@bootlin.com>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/regulator/lltc,ltm8054.yaml
++static int iio_convert_processed_to_raw_unlocked(struct iio_channel *chan,
++						 int processed, int *raw,
++						 unsigned int scale)
++{
++	int scale_type, scale_val, scale_val2;
++	int offset_type, offset_val, offset_val2;
++	s64 tmp_num, tmp_den;
 +
- LTP (Linux Test Project)
- M:	Andrea Cervesato <andrea.cervesato@suse.com>
- M:	Cyril Hrubis <chrubis@suse.cz>
++	scale_type = iio_channel_read(chan, &scale_val, &scale_val2,
++				      IIO_CHAN_INFO_SCALE);
++	if (scale_type >= 0) {
++		switch (scale_type) {
++		case IIO_VAL_INT:
++			tmp_num = processed;
++			tmp_den = scale_val;
++			break;
++		case IIO_VAL_INT_PLUS_MICRO:
++			tmp_num = (s64)processed * 1000000LL;
++
++			if (scale_val2 < 0) {
++				tmp_den = (s64)scale_val * 1000000LL - (s64)scale_val2;
++				tmp_den *= -1;
++			} else {
++				tmp_den = (s64)scale_val * 1000000LL + (s64)scale_val2;
++			}
++
++			break;
++		case IIO_VAL_INT_PLUS_NANO:
++			tmp_num = (s64)processed * 1000000000LL;
++
++			if (scale_val2 < 0) {
++				tmp_den = (s64)scale_val * 1000000000LL - (s64)scale_val2;
++				tmp_den *= -1;
++			} else {
++				tmp_den = (s64)scale_val * 1000000000LL + (s64)scale_val2;
++			}
++
++			break;
++		case IIO_VAL_FRACTIONAL:
++			tmp_num = (s64)processed * (s64)scale_val2;
++			tmp_den = scale_val;
++			break;
++		case IIO_VAL_FRACTIONAL_LOG2:
++			tmp_num = (s64)processed << scale_val2;
++			tmp_den = scale_val;
++			break;
++		default:
++			return -EINVAL;
++		}
++
++		tmp_den *= scale;
++
++		*raw = div64_s64(tmp_num, tmp_den);
++	}
++
++	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
++				       IIO_CHAN_INFO_OFFSET);
++	if (offset_type >= 0) {
++		switch (offset_type) {
++		case IIO_VAL_INT:
++		case IIO_VAL_INT_PLUS_MICRO:
++		case IIO_VAL_INT_PLUS_NANO:
++			break;
++		case IIO_VAL_FRACTIONAL:
++			offset_val /= offset_val2;
++			break;
++		case IIO_VAL_FRACTIONAL_LOG2:
++			offset_val >>= offset_val2;
++			break;
++		default:
++			return -EINVAL;
++		}
++
++		*raw -= offset_val;
++	}
++
++	return 0;
++}
++
+ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+ 						 int raw, int *processed,
+ 						 unsigned int scale)
+@@ -1028,3 +1107,23 @@ ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf)
+ 	return do_iio_read_channel_label(chan->indio_dev, chan->channel, buf);
+ }
+ EXPORT_SYMBOL_GPL(iio_read_channel_label);
++
++int iio_write_channel_processed_scale(struct iio_channel *chan, int val,
++				      unsigned int scale)
++{
++	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
++	int ret, processed;
++
++	guard(mutex)(&iio_dev_opaque->info_exist_lock);
++
++	if (!chan->indio_dev->info)
++		return -ENODEV;
++
++	ret = iio_convert_processed_to_raw_unlocked(chan, val, &processed, scale);
++	if (ret)
++		return ret;
++
++	return iio_channel_write(chan, processed, 0, IIO_CHAN_INFO_RAW);
++}
++EXPORT_SYMBOL_GPL(iio_write_channel_processed_scale);
++
+diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
+index 6a44796164792b2dd930f8168b14de327a80a6f7..79c4804a73b0652d4c16ee5ad07c4543bccd6c92 100644
+--- a/include/linux/iio/consumer.h
++++ b/include/linux/iio/consumer.h
+@@ -451,4 +451,21 @@ ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
+  */
+ ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf);
+ 
++/**
++ * iio_write_channel_processed_scale() - scale and write processed value to a given channel
++ * @chan:		The channel being queried.
++ * @val:		Value to write.
++ * @scale:		Scale factor to apply during the conversion
++ *
++ * Returns an error code or 0.
++ *
++ * This function writes a processed value to a channel. A processed value means
++ * that this value will have the correct unit and not some device internal
++ * representation. If the device does not support writing a processed value, the
++ * function will query the channel's scale and offset and write an appropriately
++ * transformed raw value.
++ */
++int iio_write_channel_processed_scale(struct iio_channel *chan, int val,
++				      unsigned int scale);
++
+ #endif
 
 -- 
 2.51.0

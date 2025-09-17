@@ -1,81 +1,44 @@
-Return-Path: <linux-iio+bounces-24229-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24230-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F97B81CCE
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Sep 2025 22:40:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CD2B81D9B
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Sep 2025 23:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCFAB4A04DF
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Sep 2025 20:40:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BC2A1C24663
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Sep 2025 21:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3952F49E9;
-	Wed, 17 Sep 2025 20:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yayO0t9L"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B9621FF5B;
+	Wed, 17 Sep 2025 21:02:20 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64EE2E5B19
-	for <linux-iio@vger.kernel.org>; Wed, 17 Sep 2025 20:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E12F17A2E8;
+	Wed, 17 Sep 2025 21:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758141603; cv=none; b=a22qkNdbSNZnB9FBJ621R2mavNVTLb3tZlfmc/FJz0E5X2rxA0Wc4sinpKS607lT1pylG92NdXCNcQxac/MHvzkQsHM0JzEqPsLaCCVCwpu8QuqRmSN2jvgnlkPwMHa3r2ZbelnRuu887uixthCSQc+41FIFRSMNVudhhXus4cc=
+	t=1758142940; cv=none; b=rIuew8gstH2+L+8e4BCR2iDaMohK4ikiPQtYIAN7wzFD602ls7I0El3vN9gxacSb4DS3W4WB069MzPcK+ztr20HM2fLtyxElJR4+4I9H5Pj834u8FeJSNJOXcHH3PIsoBcxLJrfhct4nQffn/uAGR7PNZOpmBhQd7NlowC962KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758141603; c=relaxed/simple;
-	bh=HjK6xUpUrbM/x0TIyzdMRw0JP/vNXqUhT9pldXHvbvM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PaC67lLf3CsQxKTdLAUMFE0lxjDg6Bi5AacDtTOcWh+tBgmEcOIrq/JerMuzIoX0Nd6vMjHKndYJt+Z0nFQBqMB9Nm/zOl3en9q9E4lcaXv5Gd8IH+jEp8Nrw40cuHUuBHC+q/tTuDmw17PJ1x3tT5+g4K1Ayf6JkK7MQvo0I94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=yayO0t9L; arc=none smtp.client-ip=209.85.161.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6236479c8d6so159963eaf.3
-        for <linux-iio@vger.kernel.org>; Wed, 17 Sep 2025 13:40:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758141600; x=1758746400; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F1+Gj+S0d6SY5zdQCDjVAjkrnEsIPPrh8A/IsSIYkC8=;
-        b=yayO0t9LdNA+HrK71JZTxUAsIO4pxGOcJftVc8hyALOEuUhhkPm37Mq+M+oD+1OmkE
-         HqJuV4WIle3gGM0HTgtFipV1Hgjgp7SMatjClYqxI3n4YcHSbVVSk0ibB5SCd6XrIwqj
-         TjatEBS6dcK0Z+rIO6T/FXsNfotkMXZv+yt2uJv5c+fb73Etv5zL+90daGWflwQTotuK
-         X4wnEYbQn3XsDlURQOf48GtcxLZ2m08RC2bUSMVM5EgyJT8zG/i4J41yQhIvo9xx9jRm
-         jeMBiujanIC0F8EmvkXlTnGRlFJEIt3ToaSNPWS/74qfgxCPgEN82/P9c00Ac0EcEP0V
-         blog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758141600; x=1758746400;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F1+Gj+S0d6SY5zdQCDjVAjkrnEsIPPrh8A/IsSIYkC8=;
-        b=MpLn3X6v9z1hI+4Kwklq7I/yG6fZouLZNXch2pWNQLUI6t6JXD+wq66AvNtFk6AYEc
-         h9hZW2PZNRrjX9jBeeF2pJVJML2blH6+shfKq40O+rRRCh5eKUmChS8gJntXENQN+Epz
-         XlxINaNv41l3P40F9VUMT+2Ab8nhcpuTM5Khnuba/og9eXqLD/69ILsreKMFJ8N/K7B9
-         ZdgeZnAchOqS6+6+ilwjKMOnvklG71etZcmtNLRCuS12RnHwHjU2EerHt2uLwuXRtUDT
-         xW5dcmEDAevD7v/t0Xof11qVUUA4IFQ0UiK7l7Ko/4kjGCW/539/9ecEfYD9H2m7+Hbx
-         fPVA==
-X-Gm-Message-State: AOJu0YywdEqBVKcVGfyWPxoIbFT5BzHlLU6zI1jUPOxdM7CWzyrw5kcT
-	tBxY7qR4qwpHMq9nX7dZS04MvX3RcYQSdPPNjixM5JgaRpo2g2Po/Ysw2DxAJpTiCCWe4JAcmHg
-	3QBzpF+A=
-X-Gm-Gg: ASbGncss9H/XYp7EyaSvlCCMgFkQApqV6Z7ZQm2DUilo4F+Pc0xl07UEYagnH5tiPoq
-	OZmJMIunVBgs/HRcXOE/7jJtQE1LxvIOr2mp2LsX7UGfNw+Fjutu9O7KgcxPUhcI3x0SdtCN971
-	7lbH8jqs1k6HUq0IyDfsAYeV7Z6ouo7YoniHIjctYqCviuvYe5porPIwNE7TEMMs8upqCfGgJd0
-	bXlgZM+TOgtvZIXYXRiLK1WJYFMxS32JJf9EVkNH6D6cH9PS2HSiW2k6Q0XCNMrnlGW3/PcnQHi
-	iGEsKGX3MZfcvWjcmQ2kI8APD969YB8eT2Aiqu3rkO1U4IE4KBx0XzaBNfPNeWzbC1xzsMtaor7
-	mICzyeFCiy48TL5EB5Mr3mPhBLovjyX+MHCIT29KjKwmaRQ==
-X-Google-Smtp-Source: AGHT+IEvRN0WGfOGvp8ghfVc4RqR70y4AuOHnN18NtG8AtA9iZCtysm1F9Wzp3LB/eZnthqZaBatIA==
-X-Received: by 2002:a05:6820:1c87:b0:61e:78bb:ff16 with SMTP id 006d021491bc7-624a4ea2983mr1980403eaf.1.1758141599762;
-        Wed, 17 Sep 2025 13:39:59 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:72c:cb37:521d:46e2])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-625d8eec45csm124036eaf.10.2025.09.17.13.39.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 13:39:58 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 17 Sep 2025 15:39:23 -0500
-Subject: [PATCH 2/2] iio: adc: ad7124: remove unused `nr` field
+	s=arc-20240116; t=1758142940; c=relaxed/simple;
+	bh=sYlqoIyTzMEuSzyl+07qVwSB9yyJ6vJQDdgi8k64bc8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=L0JaH/JXnGos7LVWkIi9mw3dAY+GtidO81KBsKUATcvXYzm1GO8iJrgWBjo5RU6kgjOyT8VQxaT6PtFdJDzJHbddTcfv8mBN37uxmTPGH5YCCMmoSpFR+6zCQ1iw/vNRrlDJEjQA5JkROBxnBnkUR32Pbk2yb9DbeNkZnbN3XOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+Received: from [127.0.0.1] (unknown [180.158.240.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dlan)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id 5B694340EAF;
+	Wed, 17 Sep 2025 21:02:14 +0000 (UTC)
+From: Yixun Lan <dlan@gentoo.org>
+Date: Thu, 18 Sep 2025 05:02:01 +0800
+Subject: [PATCH] dt-bindings: iio: light: APDS9160: fix missing type
+ definition warning
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,67 +47,73 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250917-iio-adc-ad7124-drop-nr-field-v1-2-5ef5cdc387c6@baylibre.com>
-References: <20250917-iio-adc-ad7124-drop-nr-field-v1-0-5ef5cdc387c6@baylibre.com>
-In-Reply-To: <20250917-iio-adc-ad7124-drop-nr-field-v1-0-5ef5cdc387c6@baylibre.com>
-To: Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
+Message-Id: <20250918-60-dt-iio-apds9160-v1-1-0bd6bcbc547d@gentoo.org>
+X-B4-Tracking: v=1; b=H4sIAMghy2gC/x3MPQqAMAxA4atIZgNpof5dRRysiZqlSisiFO9uc
+ fyG9zIkiSoJhipDlFuTHqHA1BUs+xw2QeVisGQd9abDhpAvVD1wPjn1ptizb61jb4gYSnhGWfX
+ 5p+P0vh8Af3N/ZAAAAA==
+X-Change-ID: 20250918-60-dt-iio-apds9160-bdb725db100d
+To: Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Yixun Lan <dlan@gentoo.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1474; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=HjK6xUpUrbM/x0TIyzdMRw0JP/vNXqUhT9pldXHvbvM=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoyxyStTLuPMuQs5d4Ff8j5MtU3bpDK5q2CFrXk
- voXJ8vPEyGJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaMsckgAKCRDCzCAB/wGP
- wN29B/4mfJkpp1iONvSOEMmqRQMsIMxY+lWau0IOUUQEM9/2HWTWk4olp9P7+xL3fdscg3+JQCN
- oVUz8oBfqC6Bto0dhqK3sdbYWLgppqepfSNKuy4v7bf0zdI8+C95kypIGr+cVNUgsxMwe+U8WAB
- dxvXefD6khDjFFX8i4MJZ6jHdxwMh+hrtSnqUNzbd7rFWGs3BYtO59AGZVaamCIMhMFdKzcG+St
- ZQh+msW/H8aZTy6exHRzA218wU+KRbACOwtTwdF9hPncwN0z+wbgBsK0wKQ6gSxz6NqDaaMEQ3O
- nIqWIi3kzbCBUv965kwHEaVww8/ERWfQb2b/bX+wc6eCMByK
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1563; i=dlan@gentoo.org;
+ h=from:subject:message-id; bh=sYlqoIyTzMEuSzyl+07qVwSB9yyJ6vJQDdgi8k64bc8=;
+ b=owEBzQIy/ZANAwAKATGq6kdZTbvtAcsmYgBoyyHSeKum7Gav6n92XEDWDkSry0+fF7eUrY7qH
+ hceEMXqrrWJApMEAAEKAH0WIQS1urjJwxtxFWcCI9wxqupHWU277QUCaMsh0l8UgAAAAAAuAChp
+ c3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0QjVCQUI4QzlDMzF
+ CNzExNTY3MDIyM0RDMzFBQUVBNDc1OTREQkJFRAAKCRAxqupHWU277cqCD/9l6zHx84NN8qYx4I
+ kWm/gko41KHfSV04f9DPbVuWUoRU4rimok58e7YCEGnm/JDL3GeN62W1AohHUz3kA41ERZouw69
+ aLtKINbLMc772rsPG5UoN/AXkI9jgWjiN2vWQGYECxYAqTjHx7OQc1+hbL9E/lXmGTRh5qBxTzW
+ mMi/O5uR5XAzCG9tLc58IQpRIwWaO+squDbt9NuBvyboMtnUhIRIc85XGzrsw0ln7yH4thLGPx8
+ 8jkWYZVoWIZLUnvC/A0G/Zqk3s3wfnuKXmAJB8AqagBamCgWhv3htLivR7SxWkNt3WUH0DofcKm
+ dYJGaGP6JouUiFSXzRDJT7bgkwrmXo9CAsIdiOIP6J3N/SgxbEE7d7I3GFohUxaGTp7I/NldF2K
+ kLQWWDHeDi/d9RhcKy+tJFUsXSb5DRDQfBrLvc9dX1ih0rABaaAMmA+MKKTK0ntetw/Qb8nnVI7
+ F1yfUaD38c+kEZveeK6n/7CkJZXjeZTnzjIYlrz9juYgePTsNVLgY9b278av6Si6p/Y6Rge/sCi
+ LoGwAnze/nmWmkp/gR6+bUrWrHfEsh8QFqmn90Jd0JTvHWaNbBIMcKCK24joy37As02PEaB+Dlg
+ QOnWi7IfHA3+CdBf9CjCqMCvSWOiuSaNcY9PNuovke3ezGrPzp7bAEsMKH1v93VdUqew==
+X-Developer-Key: i=dlan@gentoo.org; a=openpgp;
+ fpr=50B03A1A5CBCD33576EF8CD7920C0DBCAABEFD55
 
-Remove the unused `nr` field from the `ad7124_channel` struct. There
-are no more users of this field (it is only assigned to but never read)
-so can be removed.
+DT validation will report missing type definition warning for the property of
+'ps-cancellation-current-picoamp', explicitly add type definition to fix it.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Yixun Lan <dlan@gentoo.org>
 ---
- drivers/iio/adc/ad7124.c | 3 ---
- 1 file changed, 3 deletions(-)
+I got following DT warning, when running dtbs_check
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index c61a95c5881a69e38c21ce4c340a0a61864de22b..1d93ab500a7b80bdcf18db645c3afdaea999cf48 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -199,7 +199,6 @@ struct ad7124_channel_config {
- };
- 
- struct ad7124_channel {
--	unsigned int nr;
- 	struct ad7124_channel_config cfg;
- 	unsigned int ain;
- 	unsigned int slot;
-@@ -1301,7 +1300,6 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
- 			return dev_err_probe(dev, -EINVAL,
- 					     "diff-channels property of %pfwP contains invalid data\n", child);
- 
--		st->channels[channel].nr = channel;
- 		st->channels[channel].ain = FIELD_PREP(AD7124_CHANNEL_AINP, ain[0]) |
- 			FIELD_PREP(AD7124_CHANNEL_AINM, ain[1]);
- 
-@@ -1328,7 +1326,6 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
- 
- 	if (num_channels < AD7124_MAX_CHANNELS) {
- 		st->channels[num_channels] = (struct ad7124_channel) {
--			.nr = num_channels,
- 			.ain = FIELD_PREP(AD7124_CHANNEL_AINP, AD7124_CHANNEL_AINx_TEMPSENSOR) |
- 				FIELD_PREP(AD7124_CHANNEL_AINM, AD7124_CHANNEL_AINx_AVSS),
- 			.cfg = {
+$ make ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- dtbs_check W=1
+generic check all files
+  UPD     include/config/kernel.release
+  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+/home/work/linux-6.y/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml: ps-cancellation-current-picoamp: missing type definition
+---
+ Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+index bb1cc4404a55760d3f2ef3818d8f5c14782dc5b8..f9c35c29fe04c3623349b636a0dd7ffa4ea24a14 100644
+--- a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
++++ b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+@@ -37,6 +37,7 @@ properties:
+     maximum: 63
+ 
+   ps-cancellation-current-picoamp:
++    $ref: /schemas/types.yaml#/definitions/uint32
+     description:
+       Proximity sensor crosstalk cancellation current in picoampere.
+       This parameter adjusts the current in steps of 2400 pA up to 276000 pA.
+
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250918-60-dt-iio-apds9160-bdb725db100d
+
+Best regards,
 -- 
-2.43.0
+Yixun Lan
 
 

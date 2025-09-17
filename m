@@ -1,164 +1,202 @@
-Return-Path: <linux-iio+bounces-24199-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24200-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF83B7F0E1
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Sep 2025 15:13:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78332B7F180
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Sep 2025 15:15:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B15ED58063A
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Sep 2025 07:06:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A41D189E3BB
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Sep 2025 08:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860EC2D191E;
-	Wed, 17 Sep 2025 07:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E530305E05;
+	Wed, 17 Sep 2025 08:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ndf2w8Mr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="StGD3ARx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978242C21C2
-	for <linux-iio@vger.kernel.org>; Wed, 17 Sep 2025 07:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146A722A4EA;
+	Wed, 17 Sep 2025 08:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758092735; cv=none; b=q/8Hf+GayqvfoqOtnDgxmPwqxIEAPSR+jAEdYNNG7/jzBIOo0fbmAFVqE1K3SzHbLXP6AQchaoR62fNozCQ7ujo+LeJlyr38pNSTu+Fd3mCSnlCoLN/EfyUdwmL5v22UAnSqqx4etboDBmXQ/PKP04519WT3VDmatvjCY9UaZrs=
+	t=1758096654; cv=none; b=gQO2K+EK9o57CVVFn73W2YIRSGONv4hnY+cD4dhyAeONYoiEn+IZnW/BABargy2znNZfixzraG6iZwaLF4m91J7HgrA7FOXp9KlDQCUyngHlhKcSq4//vwImAwtao0ABAulIZ2P9Q+EbUrSJT3FfdEqlpTOwcjOCNEMDxS+lGoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758092735; c=relaxed/simple;
-	bh=qel+sB8eI+vw5fI+IXJcuamEgWVr7FnrIkhWQFmMCoo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BzUvcfVtLCg5NtrxzGUjA9cV9NMGyylknnuPY2vFdQIxTHSJ2s1rFXX90ayF0ELiYkVpcQoYYq3zZOJC4OgXiyuopw0Nj1Sd4YCpf/ibrJVq5qWixhOczappWoyrwuehecs+SB0XPbeZ++xE9D5jppsNMHngHHkKFg42BY35jEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ndf2w8Mr; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45f2fa8a1adso4187515e9.1
-        for <linux-iio@vger.kernel.org>; Wed, 17 Sep 2025 00:05:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758092732; x=1758697532; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1lELm1XWpGTgxI5pP/LWBGwSZ4uAGIlOCNe7xRYuVz0=;
-        b=Ndf2w8MrDvJ09zTwEX2ML8CNBujrVNHGYSU/PnDx6U8Aoru2ujsMEzmJtcDe8nVIz1
-         tlfK/o0UtBRVX4r+3hFEsD8Oi08bCJLMy6labEwqR+xGxzVjs9oaM8IAJzbz3gtl0auF
-         jGFa+u72GOadt93x7GkZFe/645O48ZApieVvkgreOOU6FVjJv2xPLEcqhyAUpHgyznPD
-         cZl/zndOsKelCUQhuLBx6K8LMwZrHy3yw+CmnApk2D9s/gARlZAMOp5Hhek07E8CH/5d
-         LxqlA3NwhoXbzSCC4Qm2m5OyL9nh6+tI4wHKhD7l4/ileTz+5h2ovp3JUEO8W99n8pc7
-         0XOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758092732; x=1758697532;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1lELm1XWpGTgxI5pP/LWBGwSZ4uAGIlOCNe7xRYuVz0=;
-        b=NGa916sAUc6uIj2SsUwfk9CF9rlYXSElr4wwlVlf9vhUi3nSEAe7DSRKvm39QlNI3W
-         7k6OWmcIivOzh4gAGSpYBGCAbTKwASt7fWT2xUy9/RR7lMCx2sIPldWN+1ZnVStHlIOt
-         SAYb2Ev1g0FJ2abuw7GQafsiSy9TTKNclGz+PjSYt61BTM5E3+UoEDUhKsCkvlrX3MYC
-         ZmI1QIznPgVQhI/6G9gegYym8w1uNQL2BXv6iWgYbAyaefkiV9bpgHDn+UhuHeGnnFHy
-         NgVfNPxW3F7MsA+K7Gg6eoS634nsE5bs2YNbqI0glBzQ50RZ1A9JXN0ThPjryBpGYKvf
-         juuw==
-X-Gm-Message-State: AOJu0YxENeYHLOsAmlhdt2Hk0gYJ5RRKYd3IyRryHaRzV+8kUW8/Uxfi
-	rtRSBwwdI+zyxzKNRWtpRBnFQx5UuglHuCB2tYWdNne0XkF+t8NrjWRgODSgcMwkEdc=
-X-Gm-Gg: ASbGncv1BGkzOaw9wOIQh93t4bkOGVmJBmesSaQv2rysrMxHvFE3huPiifeCsbSSklq
-	eZ7vPO3/GEFxlgTpC6sLKJX+78tdoIr/TYnKm/VtRClpSf5pOPp7BeGi8cm8rCf9PA04Dtx4Ern
-	Zbb6t9dQNaqabZrlAUWFtjRSgfAcKfC7EacLYRhomEKLpegDEqDGbNS1zqmaM1Eol4mUt17LAlv
-	GH3z8raghXg8j/6jk+rT43Iq7dywkjvxJr6iYQoHjlkNHP5ra52qvg44ePloGwt0iHnOrs3aSE9
-	NhR01X1VBlQpcP21cuXdioztU3mRow67zoP0kI7EVWXgO2/x0wM22qpFcsn5TyaJj2Rw1rsGP61
-	F7Ahr2BLV6PMkgCXx/rr6lQ==
-X-Google-Smtp-Source: AGHT+IFlPuJM7gO5ArkZaq21I+GH1aAzibNklb9hk65tHGxbHIZmR7Qv5O6d6pSrCpHsc9ccC0z1IQ==
-X-Received: by 2002:a05:600c:4f54:b0:45f:2d7b:7953 with SMTP id 5b1f17b1804b1-461fa02bc5emr9192095e9.18.1758092731465;
-        Wed, 17 Sep 2025 00:05:31 -0700 (PDT)
-Received: from [10.5.0.2] ([45.94.208.90])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4613dccb4fesm23735855e9.16.2025.09.17.00.05.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 00:05:31 -0700 (PDT)
-Message-ID: <ce724693ffd6bc8f3f10cb8d753fd69191a19d8d.camel@gmail.com>
-Subject: Re: [PATCH] drivers: iio: adc: ad7124: remove __ad7124_set_channel()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Michael Hennerich
-	 <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Nuno
- =?ISO-8859-1?Q?S=E1?=
-	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 17 Sep 2025 08:05:57 +0100
-In-Reply-To: <20250916-iio-adc-ad7124-remove-__ad7124_set_channel-v1-1-aa7a2cbec8a0@baylibre.com>
-References: 
-	<20250916-iio-adc-ad7124-remove-__ad7124_set_channel-v1-1-aa7a2cbec8a0@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	s=arc-20240116; t=1758096654; c=relaxed/simple;
+	bh=a2NGnZXyMk2WBG9QLMhqEkm3HJ2+sNYSVMHdCrgUh0E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OYUBQ33ciBOSy1dkPTNT1fLTwR9g2zTbMEW8FfNVo7oGs73rBcseY0aecw472JCkPLUjFONIQ0r++YzSSFlpUwHLuPCpixUzAxPK2XluohvyAI7xPxA6yWlNRUxY2dvwaliF+G7hh45NUTGRiqGilvcaiChxLkPf9rc9ikk6M5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=StGD3ARx; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758096653; x=1789632653;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a2NGnZXyMk2WBG9QLMhqEkm3HJ2+sNYSVMHdCrgUh0E=;
+  b=StGD3ARxQ0t3B+MfdE2ZejedWUYhkBlgLlWFrUW2XDQGt2phSeCWYLYC
+   bceogOscj2XauQ1WRbA0YpLBFduFhIKJ1wW2CEHDxGpadOcC0JG9DA13f
+   BjCvEibR5YTJo9YGqwAThiztcpEg0T0y+gYJGqJVCqq5E9O4ADuucPzDy
+   QomfWdpD9MRXYZAho3pUO81pWIAGnzMnKXCapgObQQFIKi03VcfTjKkyZ
+   Q7+VzAWnM2eX7ctD5/+Ygz2Yl78lp2Fs5uk4+HJL/ePliZ3vsiPrId7cx
+   iSdY8FWLUIydeu4bMGMpriwRykWyYpkAUKtYw1AutnsTKqXksDqE2RWjr
+   g==;
+X-CSE-ConnectionGUID: rSzAGjOUS7qqrSI8EzwlNQ==
+X-CSE-MsgGUID: Xkey+w6XT5SjGA4TvBFxRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="60452767"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="60452767"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 01:10:50 -0700
+X-CSE-ConnectionGUID: /JvmjEfbQ1SQOf+a5IYzwA==
+X-CSE-MsgGUID: dTtc8jMtQhWeBa63wngxgA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
+   d="scan'208";a="180320252"
+Received: from smile.fi.intel.com ([10.237.72.51])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 01:10:45 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1uynFS-00000003kRu-0aYO;
+	Wed, 17 Sep 2025 11:10:42 +0300
+Date: Wed, 17 Sep 2025 11:10:41 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Marilene Andrade Garcia <marilene.agarcia@gmail.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Kim Seer Paller <kimseer.paller@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Marcelo Schmitt <Marcelo.Schmitt@analog.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	Dragos Bogdan <dragos.bogdan@analog.com>
+Subject: Re: [PATCH v11 2/3] iio: adc: max14001: New driver
+Message-ID: <aMptAUsQaUIYpVNG@smile.fi.intel.com>
+References: <cover.1757971454.git.marilene.agarcia@gmail.com>
+ <c257f7feb92dcf33bf7a55810fe69d13890374d5.1757971454.git.marilene.agarcia@gmail.com>
+ <2d5ef36b-ae37-453d-a19b-76fc97b7f14f@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2d5ef36b-ae37-453d-a19b-76fc97b7f14f@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, 2025-09-16 at 16:39 -0500, David Lechner wrote:
-> Remove __ad7124_set_channel() wrapper function. This just added an
-> unnecessary layer of indirection with an extra call to container_of().
->=20
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-> Just a small cleanup while I continue to work on this driver.
-> ---
+On Tue, Sep 16, 2025 at 01:04:41PM -0500, David Lechner wrote:
+> On 9/15/25 5:16 PM, Marilene Andrade Garcia wrote:
 
-Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+...
 
-> =C2=A0drivers/iio/adc/ad7124.c | 11 ++---------
-> =C2=A01 file changed, 2 insertions(+), 9 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> index
-> 910b40393f77de84afc77d406c17c6e5051a02cd..c24f3d5127cb83eeab0cf37882446fc=
-99417
-> 3274 100644
-> --- a/drivers/iio/adc/ad7124.c
-> +++ b/drivers/iio/adc/ad7124.c
-> @@ -657,20 +657,13 @@ static int ad7124_prepare_read(struct ad7124_state =
-*st,
-> int address)
-> =C2=A0	return ad7124_enable_channel(st, &st->channels[address]);
-> =C2=A0}
-> =C2=A0
-> -static int __ad7124_set_channel(struct ad_sigma_delta *sd, unsigned int
-> channel)
-> -{
-> -	struct ad7124_state *st =3D container_of(sd, struct ad7124_state, sd);
-> -
-> -	return ad7124_prepare_read(st, channel);
-> -}
-> -
-> =C2=A0static int ad7124_set_channel(struct ad_sigma_delta *sd, unsigned i=
-nt
-> channel)
-> =C2=A0{
-> =C2=A0	struct ad7124_state *st =3D container_of(sd, struct ad7124_state, =
-sd);
-> =C2=A0	int ret;
-> =C2=A0
-> =C2=A0	mutex_lock(&st->cfgs_lock);
-> -	ret =3D __ad7124_set_channel(sd, channel);
-> +	ret =3D ad7124_prepare_read(st, channel);
-> =C2=A0	mutex_unlock(&st->cfgs_lock);
-> =C2=A0
-> =C2=A0	return ret;
-> @@ -965,7 +958,7 @@ static int ad7124_update_scan_mode(struct iio_dev
-> *indio_dev,
-> =C2=A0	for (i =3D 0; i < st->num_channels; i++) {
-> =C2=A0		bit_set =3D test_bit(i, scan_mask);
-> =C2=A0		if (bit_set)
-> -			ret =3D __ad7124_set_channel(&st->sd, i);
-> +			ret =3D ad7124_prepare_read(st, i);
-> =C2=A0		else
-> =C2=A0			ret =3D ad7124_spi_write_mask(st, AD7124_CHANNEL(i),
-> AD7124_CHANNEL_ENABLE,
-> =C2=A0						=C2=A0=C2=A0=C2=A0 0, 2);
->=20
-> ---
-> base-commit: df76e03e8127f756f314418d683bad24b460c61f
-> change-id: 20250916-iio-adc-ad7124-remove-__ad7124_set_channel-d8e5c30ec7=
-c6
->=20
-> Best regards,
+> > Change I was not able to do:
+> > - I could not remove bitrev16 because I am using an SPI controller that
+> > does not support SPI_LSB_FIRST. So I suggest keeping bitrev16 and not using
+> > the spi-lsb-first devicetree property for now, since this driver currently
+> > works for both types of controllers: those that support it and those that
+> > do not. I left a TODO comment to address this issue as soon as the SPI
+> > kernel code starts handling the bit-reverse operation for controllers that
+> > do not have this support. Once I finish my work on this driver, if the SPI
+> > code still does not include this handling, I can submit patches to add it.
+> 
+> I looked more at what it would take to implement this in the SPI core code
+> and found that it would actually be quite difficult to do in a generic way
+> because there are so many edge/corner/n-dim cases. We can't change tx_buf
+> data in-place because it might be const data that is in some memory area
+> that can't be modified. And things would get complicated if different
+> transfers pointed to the same buffer memory addresses anyway. So we would
+> basically have to allocate new memory for all buffers, copy all tx data to
+> that new memory, reverse all of the tx bits, and update all the pointers in
+> the transfer structs. Then when the message was finished, we would have to
+> reverse all of the rx bits, copy all of the rx buffers back to the original
+> buffers and put all the buffer pointers back the way they were. But this
+> could write over some of the original tx data if tx_buf and rx_buf point to
+> the same original buffer, which would break things if a peripheral driver
+> expected the tx data to persist.
+
+And what's the problem here? We do the same with bounce-buffers in case
+of DMA/IOMMU (okay, without actual data modification, but it's possible
+on-the-fly).
+
+> And we can't do this during the SPI optimize
+> step because that currently allows the tx_buf data values to be modified after
+> optimization.
+
+This I don't know, so perhaps it's indeed a showstopper.
+
+> So perhaps it is best to just handle it in the peripheral driver. It will
+> be much more efficent that way anyway.
+> 
+> However, we still do want to handle SPI_LSB_FIRST now so that people with
+> hardware support can be more efficient and we don't want things to break
+> if someone puts spi-lsb-first in the devicetree.
+
+...
+
+> > +	if (ret < 0)
+> > +		ret = 1250000;
+> > +	else
+> > +		ext_vrefin = 1;
+> > +	st->vref_mV = ret / (MICRO / MILLI);
+> 
+> Just a style choice here, but in other drivers with similar handling
+> we wrote it like this to avoid the extra if statement:
+
+I didn't get this. You move from clear if to not-so-clear ternary. How is
+the proposed code better?
+
+> 	if (ret < 0 && ret != -ENODEV)
+> 		return dev_err_probe(dev, ret, "Failed to get REFIN voltage\n");
+> 
+> 	ext_vrefin = ret != -ENODEV;
+> 	st->vref_mV = ext_vrefin ? ret / 1000 : 1250;
+> 
+> Keeping (MICRO / MILLI) instead of 1000 is fine too. There are varying opinions
+> on this.
+
+> Or we could drop ext_vrefin and have:
+
+It goes back and force. Can we keep the code as it's in this version?
+
+> 	if (ret < 0 && ret != -ENODEV)
+> 		return dev_err_probe(dev, ret, "Failed to get REFIN voltage\n");
+> 
+> 	if (ret != -ENODEV) {
+> 		st->vref_mV = ret / 1000;
+> 
+> 		/* regmap set bits goes here. */
+> 		... 
+> 	} else {
+> 		st->vref_mV = 1250;
+> 	}
+
+...
+
+> > +			return dev_err_probe(dev, ret, "Failed to set External REFIN in Configuration Register\n");
+> These lines are getting very long. We try to wrap to 80 characters
+> as much as we can in the IIO subsystem.
+
+Side note: checkpatch.pl almost never complained (okay, something like 15y+
+ago) on long string literals at the end of statements. For the code lines
+I fully support the wrapping.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

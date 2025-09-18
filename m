@@ -1,134 +1,106 @@
-Return-Path: <linux-iio+bounces-24240-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24241-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3193B82B52
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Sep 2025 05:08:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9C7B82B63
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Sep 2025 05:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9C9C7B8E78
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Sep 2025 03:06:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 082AF46423A
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Sep 2025 03:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C5C2248B0;
-	Thu, 18 Sep 2025 03:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2009F23507E;
+	Thu, 18 Sep 2025 03:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jrlcIVRP"
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="cp0oyt0Q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4D32253F2;
-	Thu, 18 Sep 2025 03:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090382248B0;
+	Thu, 18 Sep 2025 03:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.130.44.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758164878; cv=none; b=eh2A1CSkc3ekJ3HYF4JKM6KP/drrEKSbiYhMD+++2kcPPDlfPIVRslp+VTQfLG0kK8amaKQ14Fz6YuYhQSL0i7qwwax/xgEtdVAxBS/8SmI4qPrwMtWbpZQN8PdUtLEmzM4tsl8izf4603UiBD9vJ9cWOLuiPIgp3vs+u7fkgxQ=
+	t=1758165025; cv=none; b=GCGLFCjWpMBB6ypjPGn2VHd4cdJX3en7Am7Zvcyahk3x3B1Y4+7KSNRaELja6koHfKBymMZ8rcGJVWqVNYFLdcbhGIfWaaFmhTOexsizwcrT0EGf4WLhA5+kP5G/iVQU/kI1Pu97Oxp/FmsYI6HRhncfheoi3oVgXuxL+Uqu2zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758164878; c=relaxed/simple;
-	bh=vxmzojAbDASA52i3gEMLP/8kjtkaX8qnfVm04vkuXBQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b/3ktJ2mghsmjU39NLTyNW/uc1jqpecsMszWs21IxvoeZOyuqMMfsJbJzFMU3TV+L5xEWEOxO/EP56N1pK6vPo3v2GhUJ8qPbuHySP11lyHry4k37G1cbAmKW/e0dLcedHTZxyVPzOiygdo0T0aHV8rTGigoO9q7cVlkEQ31Fms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jrlcIVRP; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758164876; x=1789700876;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vxmzojAbDASA52i3gEMLP/8kjtkaX8qnfVm04vkuXBQ=;
-  b=jrlcIVRPsOvUJQnLWfX/xJKr7UY3wbL7FcjJbE0zSTLXxBAtQJot0u5D
-   HyD7ePXPg4/zvgJP2XEzClcdnwTKczDO9uJy+Q4/zfscItoemgf98Dnmp
-   vXz/0sWoGWZojbipNHpPmGxlYtlmgJR0hpohQjerFhp4a+jCRpNb/uqcu
-   m6oNLePshJuvwrvP/Z1pq0YfFLRnPS06NF8MHy5rIaGpZA5hkuNcNB6Ge
-   qIFFpc/aM1mXn+qz3Yty2Q/QWzV5WxEAqvZ8R5h2wor5VIg//sYjdbIAq
-   erlTo8qzLRb7jsgjEqUkkAL59Fzv+AygSfRxhKns0JO/KbZWXP3X7/xkX
-   g==;
-X-CSE-ConnectionGUID: 1oDRMn3kTjG3oFsZWpPhuw==
-X-CSE-MsgGUID: On2Ad8UMTka7VrDcqinpFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="60372005"
-X-IronPort-AV: E=Sophos;i="6.18,273,1751266800"; 
-   d="scan'208";a="60372005"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 20:07:56 -0700
-X-CSE-ConnectionGUID: o+VnVdjrRbOrf5S9IyL/6Q==
-X-CSE-MsgGUID: mv2o59GIT6OgGr8WTEhazA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,273,1751266800"; 
-   d="scan'208";a="212567329"
-Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 17 Sep 2025 20:07:53 -0700
-Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uz4zu-0002gR-36;
-	Thu, 18 Sep 2025 03:07:50 +0000
-Date: Thu, 18 Sep 2025 11:07:15 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marius Cristea <marius.cristea@microchip.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Marius Cristea <marius.cristea@microchip.com>
-Subject: Re: [PATCH 2/2] iio: temperature: add support for EMC1812
-Message-ID: <202509181058.dx3hT9N3-lkp@intel.com>
-References: <20250917-iio-emc1812-v1-2-0b1f74cea7ab@microchip.com>
+	s=arc-20240116; t=1758165025; c=relaxed/simple;
+	bh=szu3+YFCReXMzfUcogffIPXAAfsFvglxCgZKmD2ePkk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fiGoRHkVOGAmseDv7Wp1PR7UZxD3Y5E+WfcWOL+GahcoTtYzDEpI6//Kp/vKBgNfoit9Eao1ki1K0VWRow4hlqkg+VGYvx4wUVy9q64ukJ/rtm86dtRMLrDM3gVqmIu9e76PiHp3TTey7qUjIRaDjVtYjxhN7SGaacCBZm5AMmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com; spf=pass smtp.mailfrom=richtek.com; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=cp0oyt0Q; arc=none smtp.client-ip=220.130.44.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
+X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1758165014;
+	bh=9gCOxxj8HcLtdDa0RY4gvkXPIDFZMu0DoSBNmq/f28k=; l=946;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=cp0oyt0QkoNqdIXN8kQUZmDeXQgwClLMwds76AqQMIEvslQB8OXjkCaO25bS7zPHc
+	 FYe23gOtMwqz6VZ6w2f7CcT0W5Rll24229cQ7sSF+acXqOLyk5xbVlqsNQszBggOP7
+	 IwRPbweCCWeW0+QRctll13DJeqLN9BAlH9b1joUvNFJHQuGw974LPNYTIAnYCzLdYS
+	 Rb0P8xZYQhNziHfr/uIGc4pQPLLcj4Y0j/oOQSEXqRcjhKYXHc1eAlu+A7LVdo5Ftf
+	 XU9S+CyKMWiyVLZnbmDJk9XedKIyY6RN8CldYZY0zTrbBUe3GrllMmZgvxzf4d4oXT
+	 KUHoyBibZT+Dg==
+Received: from 192.168.10.47
+	by mg.richtek.com with MailGates ESMTPS Server V6.0(2461096:0:AUTH_RELAY)
+	(envelope-from <cy_huang@richtek.com>)
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Thu, 18 Sep 2025 11:09:54 +0800 (CST)
+Received: from ex4.rt.l (192.168.10.47) by ex4.rt.l (192.168.10.47) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Thu, 18 Sep
+ 2025 11:09:54 +0800
+Received: from git-send.richtek.com (192.168.10.154) by ex4.rt.l
+ (192.168.10.45) with Microsoft SMTP Server id 15.2.1748.26 via Frontend
+ Transport; Thu, 18 Sep 2025 11:09:54 +0800
+From: <cy_huang@richtek.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: David Lechner <dlechner@baylibre.com>, =?UTF-8?q?Nuno=20S=C3=A1?=
+	<nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, ChiYuan Huang
+	<cy_huang@richtek.com>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Andy Hsu <andy_ya_hsu@wiwynn.com>
+Subject: [PATCH] iio: adc: rtq6056: Correct the sign bit index
+Date: Thu, 18 Sep 2025 11:10:59 +0800
+Message-ID: <7e43ad09f814d63b570ab6b2b9fe3fe17775d22d.1758164614.git.cy_huang@richtek.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917-iio-emc1812-v1-2-0b1f74cea7ab@microchip.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi Marius,
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-kernel test robot noticed the following build warnings:
+The vshunt/current reported register is a signed 16bit integer. The
+sign bit index should be '15', not '16'.
 
-[auto build test WARNING on 19272b37aa4f83ca52bdf9c16d5d81bdd1354494]
+Fixes: 4396f45d211b ("iio: adc: Add rtq6056 support")
+Reported-by: Andy Hsu <andy_ya_hsu@wiwynn.com>
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+---
+Hi, Andy:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marius-Cristea/dt-bindings-iio-temperature-add-support-for-EMC1812/20250917-202833
-base:   19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-patch link:    https://lore.kernel.org/r/20250917-iio-emc1812-v1-2-0b1f74cea7ab%40microchip.com
-patch subject: [PATCH 2/2] iio: temperature: add support for EMC1812
-config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20250918/202509181058.dx3hT9N3-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 7c861bcedf61607b6c087380ac711eb7ff918ca6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250918/202509181058.dx3hT9N3-lkp@intel.com/reproduce)
+Thanks for reporting the value convert issue.
+---
+ drivers/iio/adc/rtq6056.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509181058.dx3hT9N3-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from <built-in>:3:
-   In file included from include/linux/compiler_types.h:171:
-   include/linux/compiler-clang.h:28:9: warning: '__SANITIZE_ADDRESS__' macro redefined [-Wmacro-redefined]
-      28 | #define __SANITIZE_ADDRESS__
-         |         ^
-   <built-in>:371:9: note: previous definition is here
-     371 | #define __SANITIZE_ADDRESS__ 1
-         |         ^
->> drivers/iio/temperature/emc1812.c:259:27: warning: unused variable 'emc1812_window_size' [-Wunused-const-variable]
-     259 | static const unsigned int emc1812_window_size[3] = { 1, 4, 8 };
-         |                           ^~~~~~~~~~~~~~~~~~~
-   2 warnings generated.
-
-
-vim +/emc1812_window_size +259 drivers/iio/temperature/emc1812.c
-
-   258	
- > 259	static const unsigned int emc1812_window_size[3] = { 1, 4, 8 };
-   260	
-
+diff --git a/drivers/iio/adc/rtq6056.c b/drivers/iio/adc/rtq6056.c
+index ad9738228b7f..2bf3a09ac6b0 100644
+--- a/drivers/iio/adc/rtq6056.c
++++ b/drivers/iio/adc/rtq6056.c
+@@ -300,7 +300,7 @@ static int rtq6056_adc_read_channel(struct rtq6056_priv *priv,
+ 		return IIO_VAL_INT;
+ 	case RTQ6056_REG_SHUNTVOLT:
+ 	case RTQ6056_REG_CURRENT:
+-		*val = sign_extend32(regval, 16);
++		*val = sign_extend32(regval, 15);
+ 		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 

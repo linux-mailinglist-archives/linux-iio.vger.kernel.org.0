@@ -1,125 +1,140 @@
-Return-Path: <linux-iio+bounces-24272-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24273-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE28B86A71
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Sep 2025 21:18:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C264B86A80
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Sep 2025 21:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C45011C8784F
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Sep 2025 19:18:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 648B15660F3
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Sep 2025 19:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B082C17B3;
-	Thu, 18 Sep 2025 19:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AF62D24B2;
+	Thu, 18 Sep 2025 19:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MkL8S7Cb"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zQtHLl7I"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BF92571BE;
-	Thu, 18 Sep 2025 19:18:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF90221F29
+	for <linux-iio@vger.kernel.org>; Thu, 18 Sep 2025 19:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758223089; cv=none; b=K/VgUBOyRqKDo8TRmyykQJxuwoQymAvcvPsfopjNch9cV8qR8rQ/MgER7hYs5r4U2/w0irrkNZTUcQiUlP6mkhvrCA3hcIjd39zJ47t537e5pR9P9AI6hbeb2gJdr3t3CMWysYKaLmjpv2yJVSALuFuN2U8WG6hkkWrrl0+P7Y4=
+	t=1758223182; cv=none; b=hStXxEbV0GF18kXugVr/McDID19YJQWNHFLN45qY7FbKa3GFXq2IqntAsrkpcD066hqZwqSlZbW5Wg17qVdvvU0CyR2RUmyyw9pqSuyEvWSdvhasTeYOD4+Pzkk5NM57lSeaoDKe7DFr2Jm0rTmJTV3u89fSK3thbjawPkWhIBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758223089; c=relaxed/simple;
-	bh=3kT4c/sD9alTJ2vJ5tBL3nY9kiB30T9WSIAU8ap2IFo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S1mjk+d28622WP8eu5faMpDod02RaR2N9dy01bXsXxK7W4ROm7e9Clr9Pug0+IunBL40q6IgKEFKbmzB5G/S7AFWRTOgVxzSsGKlGy4r8/nUtLTjNb3B3D/Ta89H8tZvSVJnCgwajw2wERsRDVs3+iVIdSU9tDQgI9zi6qxiqV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MkL8S7Cb; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758223087; x=1789759087;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3kT4c/sD9alTJ2vJ5tBL3nY9kiB30T9WSIAU8ap2IFo=;
-  b=MkL8S7CbFnfDCFu2JHC4beCT+25BkrbRrDuN2pCs3vv7s6WxuLEYxNyV
-   S2epHLfzQPLYFqX8PoHHlXYa9CmILiliNVWRpc4sSEIHDF0bBPaglHOob
-   DSkEf6AMpQNaMmALabqfRgfrKzFCq/50YiwdPBTWhhY9QddKIvB8O/wVO
-   aVDANMqhothpdbYF/wioZgHPDscJa8JPmT13VXR0IafN5/M8ASpsC4snz
-   MDu/tfEtFYZmxJDqNgJzjGYtnC3Ha9o/m3/v6oCbJajPj29aON7eNkeuP
-   4K0bhHYPGBQ47gHtTEllF597+XAGhWDCaHRjZ8wwMrS7RzQDIXumEnoZA
-   A==;
-X-CSE-ConnectionGUID: dzpmsl+LQLmUYGrHkSPoew==
-X-CSE-MsgGUID: ttU/52y8Qw+FevLXlJGMOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="71677837"
-X-IronPort-AV: E=Sophos;i="6.18,275,1751266800"; 
-   d="scan'208";a="71677837"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 12:18:06 -0700
-X-CSE-ConnectionGUID: z4IH6bzYQ021h4VgeDsBXg==
-X-CSE-MsgGUID: ugXNOmAoQoajv0xQg7xISw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,275,1751266800"; 
-   d="scan'208";a="176037873"
-Received: from smile.fi.intel.com ([10.237.72.51])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 12:18:02 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uzK8l-00000004Ass-3q1E;
-	Thu, 18 Sep 2025 22:17:59 +0300
-Date: Thu, 18 Sep 2025 22:17:59 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH 3/4] regulator: Support the LTM8054 voltage regulator
-Message-ID: <aMxa5_LG3ADCjeHj@smile.fi.intel.com>
-References: <20250916-ltm8054-driver-v1-0-fd4e781d33b9@bootlin.com>
- <aMliRTuUDNPkeM8C@smile.fi.intel.com>
- <5205519.GXAFRqVoOG@fw-rgant>
- <12775482.O9o76ZdvQC@fw-rgant>
+	s=arc-20240116; t=1758223182; c=relaxed/simple;
+	bh=VAds+2wzYTdgT84lPSyZuzQ1VykRr5iVJf9THaSbedk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hMMRewpJzgH3vsV+e32e93dOlfmVZ80e2qDAlemyq6tJHgC20PgtnjVeY2KaVKI/uHyDODSPyH35VnYXUBgdIfDwp30Wo4Rluohyo+IBPOcT6gJrLgHWjL6Awaxpd6zxE2n6oW6oyt55+q9cHKlpSkufHsEpLtHQ9Jn7xw62AJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zQtHLl7I; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-74c1251df00so745486a34.0
+        for <linux-iio@vger.kernel.org>; Thu, 18 Sep 2025 12:19:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758223179; x=1758827979; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=r74pu9DjNLXnTw+Oetk6FMAjK2ne5DYjMQsYnuscUPo=;
+        b=zQtHLl7Iorfc9SfkZwEg/3fvbJiHAoF7kl3AnRY47ZIFEX6ytjMBBas/bT/S+U7a4M
+         1DIMbb4aC4eaWscTqm6W7FevPXiKw+9b0WVdSR9P5PNeTblxszszWONnjXOldqAOobIf
+         d4hpK692wbFMJiLK9JMG+N0uqzgJwJVnZv+wjf5QDDfTqXHbr0/Nqeqh+hCNZ6V63zK5
+         UMaKPv5QkbWKTyeoowY41KZWsvfcVGut+/iCoQ9EfluvhXagxqHBVkwI1hFUrd3FLdDB
+         YG1Rw2PfTnBZGSNZuDy8bad/yYxe3nKyEAlEe7S3iOY2ibT+dQtds4bKBmr1ZlCFQUov
+         SiQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758223179; x=1758827979;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r74pu9DjNLXnTw+Oetk6FMAjK2ne5DYjMQsYnuscUPo=;
+        b=pDOz6XlPfcmY/pOcVi/Qnfpo3ST+r7oHWgRlOGgo5XHBv5vXvgQc+F0DRbOsQ1rIKt
+         4E5434QPUKCfEo9BEgHJRHL8LFxXTB+ubiWCvJfnVKjJSfrpciavkgDPJmxCRWGiDJSP
+         d1RaVks/+vJP1pIuvSSqs35Ga0fOvk2KdjK8zWBPKatmrylu7aP4LRWhg3HSEMub9M/3
+         A++v975c4MQ4QgDiW3ibYIudlF36/8sOy4Qfw6b1+gPvbjvPObwXoj8A5Y4QFgUyXLRi
+         DQgx6k6wl+4G2sgvQQGtHnkA6m9CXTJ0KuDdFd/cugO4l+zaU4BhLiwGsOZls7nZVBV5
+         b82Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWVRNUmkikwEEyP3Ab0svdQrwlNE9oxWY9MPNwW1AaYw7HcpYg4/MfMY4wKLM68SZWFYviqKSxkHkM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIj1d/yKL4IIg9Robk7WTuFSc7mWwJMIkU/OvObZQfgKWpCc5m
+	qR5/3Ff3Z+m3pvNb0vJB6uyLgaSbctDBBvEpXurwsJzg+opUZ9fuzeg7sceqVWsAtvg=
+X-Gm-Gg: ASbGnctLfNfLzieioGq3SKBOawm+Cuhx1y6W39VQT/D8HNXxU4ayJPBfkd01SC07P7S
+	B3iGEX1cqWotaiIIRiMexALOPh6X6LxfFZ0wVspZRlwbLE2DfmGNqAxZQF4iZV7hfVAbPXbkDPJ
+	bgpVTIRjfdUpGedkUYtBnzPESIFfpc99+Y4abxPEUZou00Kupdwruv09ysdTOJ1qyptYkOc2iZ5
+	ohG/JDOUmoTcEdUur/nSd3lxYJI4/0+nG1DVcWSRTk1l7y/4aKk6KOwI0oqoPf7fCNAKUYPZ2fQ
+	+nUNlabi0BcQJGkNq6xHFEVcQKvdWPQSjx+sTQ4rdeasNDqXa/RsEPDzhFEcwuKyW9xXpex/K1R
+	y6XVpkoqo4faUIdgqU2XkOySXz+KPMPzHlHqeDeVVi1f06Vua88yhgIQHTgfRZEXm8z7Ta/KFA7
+	EjDOnc/rLT/9hJJnxMmg==
+X-Google-Smtp-Source: AGHT+IFYizUXzzXfO+m4EDIZA0JMmJrXu4MhcrJu81pFbRnpj6sLHpXHOc03v96Ezh1XqVDz3IUWwA==
+X-Received: by 2002:a05:6808:1b26:b0:43d:24a5:e9ce with SMTP id 5614622812f47-43d6c2d02e5mr324464b6e.45.1758223178893;
+        Thu, 18 Sep 2025 12:19:38 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:55b7:b662:4c5b:a28e? ([2600:8803:e7e4:1d00:55b7:b662:4c5b:a28e])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-336e5a2ab2esm1751557fac.17.2025.09.18.12.19.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Sep 2025 12:19:38 -0700 (PDT)
+Message-ID: <813ddecb-efde-4c11-be45-e894fc52f752@baylibre.com>
+Date: Thu, 18 Sep 2025 14:19:37 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <12775482.O9o76ZdvQC@fw-rgant>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] spi: spi-offload-trigger-pwm: Use duty offset
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-spi@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Axel Haslam <ahaslam@baylibre.com>, broonie@kernel.org, jic23@kernel.org,
+ nuno.sa@analog.com, andy@kernel.org, marcelo.schmitt1@gmail.com
+References: <cover.1758206554.git.marcelo.schmitt@analog.com>
+ <181f64a4e9f0d6788f325a200b24b0166cb8c346.1758206554.git.marcelo.schmitt@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <181f64a4e9f0d6788f325a200b24b0166cb8c346.1758206554.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 18, 2025 at 11:31:50AM +0200, Romain Gantois wrote:
-> On Tuesday, 16 September 2025 16:17:56 CEST Romain Gantois wrote:
-> > On Tuesday, 16 September 2025 15:12:37 CEST Andy Shevchenko wrote:
-> > > On Tue, Sep 16, 2025 at 12:24:08PM +0200, Romain Gantois wrote:
-
-...
-
-> > > > +#include <linux/of.h>
-> > > 
-> > > I think we have already something agnostic in regulator API to get a
-> > > regulator from a firmware node (rather than from specific OF/etc one).
-> > 
-> > IIRC the "of_match" regulator descriptor property can be used for this, I'll
-> > have a second look and see if I can use that instead.
+On 9/18/25 12:34 PM, Marcelo Schmitt wrote:
+> From: Axel Haslam <ahaslam@baylibre.com>
 > 
-> Looks like I misread your comment sorry, the "of_match" property is pretty 
-> much irrelevant to using fwnode_* wrappers, and I didn't find any of those in 
-> the regulator subsystem. I'm missing a Kconfig dependency on "OF" though, I'll 
-> have to add that.
+> Pass the duty offset to the waveform pwm.
+> 
+> Signed-off-by: Axel Haslam <ahaslam@baylibre.com>
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+>  drivers/spi/spi-offload-trigger-pwm.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-offload-trigger-pwm.c b/drivers/spi/spi-offload-trigger-pwm.c
+> index 805ed41560df..3e8c19227edb 100644
+> --- a/drivers/spi/spi-offload-trigger-pwm.c
+> +++ b/drivers/spi/spi-offload-trigger-pwm.c
+> @@ -51,12 +51,14 @@ static int spi_offload_trigger_pwm_validate(struct spi_offload_trigger *trigger,
+>  	wf.period_length_ns = DIV_ROUND_UP_ULL(NSEC_PER_SEC, periodic->frequency_hz);
+>  	/* REVISIT: 50% duty-cycle for now - may add config parameter later */
+>  	wf.duty_length_ns = wf.period_length_ns / 2;
+> +	wf.duty_offset_ns = periodic->offset_ns;
+>  
+>  	ret = pwm_round_waveform_might_sleep(st->pwm, &wf);
+>  	if (ret < 0)
+>  		return ret;
+>  
+>  	periodic->frequency_hz = DIV_ROUND_UP_ULL(NSEC_PER_SEC, wf.period_length_ns);
+> +	periodic->offset_ns = wf.duty_offset_ns;
+>  
+>  	return 0;
+>  }
+> @@ -77,6 +79,7 @@ static int spi_offload_trigger_pwm_enable(struct spi_offload_trigger *trigger,
+>  	wf.period_length_ns = DIV_ROUND_UP_ULL(NSEC_PER_SEC, periodic->frequency_hz);
+>  	/* REVISIT: 50% duty-cycle for now - may add config parameter later */
+>  	wf.duty_length_ns = wf.period_length_ns / 2;
+> +	wf.duty_offset_ns = periodic->offset_ns;
+>  
+>  	return pwm_set_waveform_might_sleep(st->pwm, &wf, false);
+>  }
 
-Why do we need to add that dependency? Yes, probably it won't function,
-but then it will decrease test coverage at compile time.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Does this really need to be a separate patch from the one
+that adds the field?
 

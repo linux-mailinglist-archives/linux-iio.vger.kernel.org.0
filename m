@@ -1,1011 +1,474 @@
-Return-Path: <linux-iio+bounces-24281-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24282-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5245B88633
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Sep 2025 10:21:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C3FB88897
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Sep 2025 11:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A81177A4DBA
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Sep 2025 08:19:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C2F1568142
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Sep 2025 09:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9512ECE9E;
-	Fri, 19 Sep 2025 08:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948C72E3B00;
+	Fri, 19 Sep 2025 09:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R5avNr0n"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="feNg21w2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010068.outbound.protection.outlook.com [52.101.201.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1542A2ECD23
-	for <linux-iio@vger.kernel.org>; Fri, 19 Sep 2025 08:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758270051; cv=none; b=gfDvUTfWBl571RdHLTwWBj5GzIvWyIPrZLzzeWqj8hoKhd0/XqgbuqhVzhvFUBs3RoiiBng3LQZr4HoRDKNR/zq2+uvNWkR8WMW1ixqeq1gER5ztoXpRhb63T8CqreeyJZTcGzvkyPtDxXhRDIND3Sda2eujm9nh2SIFf/CMPE8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758270051; c=relaxed/simple;
-	bh=GaAEOJUBSs7/R8jcmLMB5on3qoKNx/P1PDDgM+sP5d4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O9RchwJkrTX6QD5chOk6Xlu+CItRLgLGXEB0+xpIyRKu3pVhU8RspjzqwlOwCDw8MR3P3arXu2yjDNb2Lm/ZrsoMC1MvloMi4vUbaWeOOw6bap1U72EH8+uZ6Un4noN4MnmZf0ba7NTLJbtps2/t/EfNR0HbsV5AJApHd5aFlG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R5avNr0n; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3c6abcfd142so888842f8f.2
-        for <linux-iio@vger.kernel.org>; Fri, 19 Sep 2025 01:20:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758270047; x=1758874847; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wb94D18hSsXWJ7F2TXnNYlId72SDQ/7eblVagEPMzbQ=;
-        b=R5avNr0ndzNBt1DdvsqepmYcLG3c7f3OXE9D6MqVfbMTsADxD/GvcIFt8T7dDqS4UY
-         uMsHyRgq8Dj4d1J3165IOxx6/QVODFEPJZnZFfrRaXnKQxFENMj5JtQTHnzpT2Y6HpuY
-         f9Vg1g97ctSCqRXWSqHekQAWMmRmsD78a9CKyh7Y5iGTtHdynclCa1rak+URIwslQX56
-         XEbn6P0+VZPMERMbKLhQ6GDExQIdB2ki3RIrnd0ND6/p2iXLWsdDE6NRCS4CXrTZwiv5
-         VATErNv3FA8qct7/wn1BcNov/fPZWJN2R1YO1P1+6iJrKgJK03AW/zH5FDOYDzJSkoJs
-         e8+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758270047; x=1758874847;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wb94D18hSsXWJ7F2TXnNYlId72SDQ/7eblVagEPMzbQ=;
-        b=aO3UfilElRSz2Q2m8Q7KlSrlnqMjrdOuqBNOUuyPBlbrG9yPx+Zy+bQ8D3fsNM9Krs
-         IRDBy9rfPZ1JRX5k50dtDT07FYTEjdlG576Bo/nls3SZUy8AwjoG+fZpT6lQaJ7qUKYW
-         xJinSpPu8d2qUy4ViIW51+X4JNa4PdIUku3ML+qnzO1hx1S8uq7Dp/dW8CN1idIAFGKM
-         1mkMQDS2j4nZmeGsyXPgx2/Th0iqv3aoAysp7hEZkFQ1TgDR9KUQC1D8wpA76/lprv68
-         Bz79wh6vLi14QSiZp5145yglrQgFhseVQwfjUgPLyBQIxLJpsP3D4NyQ8PaKpOXiCrcm
-         SdeA==
-X-Forwarded-Encrypted: i=1; AJvYcCUA6PrqPrPZPdvOpkSPAStCK12Wq9e5c1YNdSBPyQG4Shc9480lRCSDV5bNtnPeb0amokV9+Alnpv4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6FK8Xa9MZfBrSQciDPM6RNP+2p95O8Xpc7e6gXnfXeN3jmkwO
-	16Z22L1UK6MRowiEiVCvBwZYjDDbkCvv09oUFdYbf/Nr/SGpFhlqxviO
-X-Gm-Gg: ASbGncvo91lFqX+UnEIc5rSJfyjO9vP3AGY4nPAvPGitFNNc5JJx+mqvO2c3l9VqshQ
-	P14wBXiKKKYu4b5kbDu8llTSUWnW3mTCzIbkby+hs+MF6FEsEnHNnxf6PC3ZRw2mXbW03cJjM/b
-	oVF2T3xKIDmg2sQAxrOkP1wGOiRYdVD0CqomD1gRXFdkL6P6sMU4Axlu6suJw2DYc+ihQQavRXp
-	AnxHknO3NOBfcyE5dPv+42VXJTAbavtxwUs7lLhw2bAwU01kL+MhMo+9LPdnjU3ZrOO6fB1ybyy
-	7FWeJR140DF5js+SBYLjEVtbaL9RSGHq7CClSTGiVp+oaqOuIYXX+9oLlLQW6LgeTHKvEkR3tf9
-	BCpD8ec6UTiyR+r1RFMKbtKc=
-X-Google-Smtp-Source: AGHT+IFyOExK87AfAvjWDGvDSoq+NT8om6uxBRxxbDCUibZztPO9r9SlmPqF1EGal1nDLuftywehTw==
-X-Received: by 2002:a05:6000:4210:b0:3da:e7d7:f1e0 with SMTP id ffacd0b85a97d-3ee7e6c0f4dmr1795731f8f.27.1758270047008;
-        Fri, 19 Sep 2025 01:20:47 -0700 (PDT)
-Received: from [10.5.0.2] ([45.94.208.147])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f0aac271sm73431205e9.3.2025.09.19.01.20.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Sep 2025 01:20:46 -0700 (PDT)
-Message-ID: <caefbbe3c01883acec34499877bf6e3d13d56c16.camel@gmail.com>
-Subject: Re: [PATCH v2 6/8] iio: adc: ad4030: Add SPI offload support
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- 	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-spi@vger.kernel.org, 	linux-kernel@vger.kernel.org
-Cc: jic23@kernel.org, michael.hennerich@analog.com, nuno.sa@analog.com, 
-	eblanc@baylibre.com, dlechner@baylibre.com, andy@kernel.org,
- robh@kernel.org, 	krzk+dt@kernel.org, conor+dt@kernel.org, corbet@lwn.net, 
-	marcelo.schmitt1@gmail.com, Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
-  Trevor Gamblin <tgamblin@baylibre.com>, Axel Haslam <ahaslam@baylibre.com>
-Date: Fri, 19 Sep 2025 09:21:12 +0100
-In-Reply-To: <da55c0ed6fe895dc84e79c8b64e5923a4851e58f.1758214628.git.marcelo.schmitt@analog.com>
-References: <cover.1758214628.git.marcelo.schmitt@analog.com>
-	 <da55c0ed6fe895dc84e79c8b64e5923a4851e58f.1758214628.git.marcelo.schmitt@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F482C0F81;
+	Fri, 19 Sep 2025 09:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758273759; cv=fail; b=UD4RWjbV0ku/N+sqBZEf/Wjb1rIJEW4aKSHCgoGUyZalmOiVOwx8c6644HfsMI4ZExdhTSKmzm4vQ24NUkB2TqjNQEM3/YZRwrZe6vLFnDvoWvSbgE1PUF1VbTnr/XYSLqVSzD+Mvx3Ln9DpVtWlEPpGXS1YWrkcNGH6RNz4GYM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758273759; c=relaxed/simple;
+	bh=/+aNw0j7VROPAZN2BHju16u+90hz+ikVggLaWWPpPkQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=pk0UrcLNEAswmgRGzmOyqeA/iNDlbMS0XqcjJRIHUxrPD4Vlh/l6L5E16advwWIvLGDIYaRINAzIlwujtI6Cua+rJR+Irn1/P2WXEv10IvL//FBeK0Au9P3R9Kyux6frjtSBJGG2s2g4PCjDD+W75jueq57H2bL3Sg3iuygKLx8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=feNg21w2; arc=fail smtp.client-ip=52.101.201.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eq7/TCcKABz3u5EyeVI84p8mwX3sQvKXesKXgwrJhsg3E2lAluRj+jbbo23WYiXmeFTHuR3TtLk3FU+r0Dvijoj2JAHNLKQIpizD4nbBDHSAhLuN7RIf09vw+0N9dMv7gorXWWr3/AIaZ12cs5KEOtGuZv/+EAqLv9EtEWaKSWcjKJtrTkFKnAFmfLQ1mSvva+dPt5X/+gtL6QEhMRZxY9pic9hiyaChoajyB1KR9Pg43k9o3jBIRx8hMqJLIaxMohRRkKQJgOEUtFb9ZSmBlVdcCsT/CfNwMRHqK/EtrXgIIlbxSFp6L7GHEy303JSwAnQYU21xxlF28uLhC+iYjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P3pCVUCiJr0kvWFSNLPTmLjZ7aUo+32iynLpERRZE7M=;
+ b=kGZoJ6IAZnsjbvM+7kxDqE1eNOj2vL4gxiw2hX63dZOf4Gg5QNW9Rhqfq1H9/9atfjkFoYoZ3M0/SWAwjW62/kRy03lyRnalFxQr/ArbV6SNTqK98GPY/zi2xBUrpTAo5lhIrFKQmrKos/AZmV9qEZQZ3OuwwCOJtY8UPbqCBsCg7CoW5424msK2x8zKALgtWnQ5oXd6fqQbPpB8o+NW586ImtsiMIVUhCc/pBWH3w09nmR54c+Ke1IpKbx+VCv6Bv4gRZceYu8wti3qnf6H99xjj/ILmht4cI6uVfriDeM/lP812aCpS/KPnEyNCoz5nkwDUL0v7v3DD1H4+CD8wA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P3pCVUCiJr0kvWFSNLPTmLjZ7aUo+32iynLpERRZE7M=;
+ b=feNg21w2CqkaWv5cCA/6+h8vIwLeDxaVtXwTXKlJQbr/atq43asuHDZG86joBj2aKDGSuTkRsm7JhOtcwE1lDQn7OZuFx6Vmbc4OkAjnNh0GpwRvC4RNpnPELwPszJS2uRBorKDnI58BZMPcHw/yv5u1j5RyrJy9YljOot8pohw=
+Received: from IA1PR12MB6092.namprd12.prod.outlook.com (2603:10b6:208:3ec::13)
+ by PH7PR12MB7988.namprd12.prod.outlook.com (2603:10b6:510:26a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.14; Fri, 19 Sep
+ 2025 09:22:32 +0000
+Received: from IA1PR12MB6092.namprd12.prod.outlook.com
+ ([fe80::6501:100:1d7:8136]) by IA1PR12MB6092.namprd12.prod.outlook.com
+ ([fe80::6501:100:1d7:8136%3]) with mapi id 15.20.9094.021; Fri, 19 Sep 2025
+ 09:22:32 +0000
+From: "Guntupalli, Manikanta" <manikanta.guntupalli@amd.com>
+To: Mario TESI <mario.tesi@st.com>, Jorge Marques <gastmaier@gmail.com>
+CC: David Lechner <dlechner@baylibre.com>, Andy Shevchenko
+	<andriy.shevchenko@intel.com>, "git (AMD-Xilinx)" <git@amd.com>, "Simek,
+ Michal" <michal.simek@amd.com>, "lorenzo@kernel.org" <lorenzo@kernel.org>,
+	"jic23@kernel.org" <jic23@kernel.org>, "nuno.sa@analog.com"
+	<nuno.sa@analog.com>, "andy@kernel.org" <andy@kernel.org>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Pandey,
+ Radhey Shyam" <radhey.shyam.pandey@amd.com>, "Goud, Srinivas"
+	<srinivas.goud@amd.com>, "manion05gk@gmail.com" <manion05gk@gmail.com>
+Subject: RE: [PATCH] iio: imu: lsm6dsx: Add shutdown callback support for I3C
+ interface
+Thread-Topic: [PATCH] iio: imu: lsm6dsx: Add shutdown callback support for I3C
+ interface
+Thread-Index:
+ AQHb+i+8xK2s1GBMXUK4mOoG9AwzB7Q8c6QAgACdMwCAAK9QQIAAB8qAgAmwZzCAAaGzgIABJMYggDoMRICAFJpPooABr7+A
+Date: Fri, 19 Sep 2025 09:22:32 +0000
+Message-ID:
+ <IA1PR12MB60927419E6B5D17332EBFAC08C11A@IA1PR12MB6092.namprd12.prod.outlook.com>
+References: <20250721110741.2380963-1-manikanta.guntupalli@amd.com>
+ <aH4mwkh80TUTNXtS@smile.fi.intel.com>
+ <83798680-8e3f-4899-8c58-d7da5587653e@baylibre.com>
+ <DM4PR12MB61095749195041654F6D560D8C5CA@DM4PR12MB6109.namprd12.prod.outlook.com>
+ <3d7w3rczrdics77nt7lig5rsj2bmfubpwzhffarzlxmo5w2g4a@baewpltdovhk>
+ <DM4PR12MB610930805348D91ACAE876A18C25A@DM4PR12MB6109.namprd12.prod.outlook.com>
+ <5pmqumpue7h4us265co6pya37434t4jvf3b655gtjcohlyhash@3ggx7e2maud6>
+ <DM4PR12MB6109B8CCEBF5D334662E6CEE8C24A@DM4PR12MB6109.namprd12.prod.outlook.com>,<IA1PR12MB6092EC3ADBEC4032CF52000E8C03A@IA1PR12MB6092.namprd12.prod.outlook.com>
+ <2fb3ffd8fbf54a6c960e25bce4613e5a@st.com>
+In-Reply-To: <2fb3ffd8fbf54a6c960e25bce4613e5a@st.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-Mentions: mario.tesi@st.com
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=True;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2025-09-19T09:07:34.0000000Z;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
+ Source;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=3;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR12MB6092:EE_|PH7PR12MB7988:EE_
+x-ms-office365-filtering-correlation-id: 4e49ee41-8719-4dcb-fb3d-08ddf75e0ff1
+x-ld-processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700021;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?Ssb8ZN5tqYvYD/K+fHiGxNcZormKVoNBhMkbkEQQZ3nfx2y4B+RXsiYIO3?=
+ =?iso-8859-1?Q?wEDRoGQQ/yJAMWqZA3BXOSEkGmnn/mrihTmDbutev+ADVJICYMFuRXN5XK?=
+ =?iso-8859-1?Q?wlHLR08eA8Mo9CS914YeBGCca8r9kuCzQ6zclxFq2wmxppn4uLz04aeh+5?=
+ =?iso-8859-1?Q?R9mJrPyMHlrNlt/NZcAecKFvf2hk+4hZKARdYwySkzxvZAZBSKrs0LNZLZ?=
+ =?iso-8859-1?Q?mdpjn7S83+Ym8LE0QDNDExLGCq8798kYJ+Eq21hOdsI8PzetGrhK+nzsbF?=
+ =?iso-8859-1?Q?ULjDoW+EXbB61QvGSy4fbTGaaodEIX4zR52qlrTESUZI89WCMsItahwvVO?=
+ =?iso-8859-1?Q?r9rej79lcPwQl+osKdgAYTzGNBCka5SJurdjYiHjmj0+lLdjs0ccKfZEH2?=
+ =?iso-8859-1?Q?FHulET6SpB7sTEsdJfNO3w+yS0+NksZHRP/ckjYF94HIKSBWMvDqAouitp?=
+ =?iso-8859-1?Q?2U67f0b0NaoYZmeO3STx0eHqAs6bEtNGS2Yq7nskJIUCdrP8AokmgapWk/?=
+ =?iso-8859-1?Q?pNlSQzNeEl0dC0I3g4aK/40f54hpR34rKKFcs/y5+ekVvb/JJnd87G2rX5?=
+ =?iso-8859-1?Q?H6s26yGxHaf7FeeR9e+GvX7Z44sHNFFDcT7+xVIG03amDYWUAuGku/FhFm?=
+ =?iso-8859-1?Q?E/8WKqbZuTiQc9engccORslKif8Ij3pF98n9M0A0wK8etXGBZPbRNPvbl+?=
+ =?iso-8859-1?Q?9W8ti09bNXIqQQKL3i5EgzlkzLQO9h1Yjbb9qf76befUsrEiQiAw0jnFSQ?=
+ =?iso-8859-1?Q?EfzmTYN5ataL+TYWj410vj18jNPMgjPepTPNlC1AagPX74v61LUHIdNKsA?=
+ =?iso-8859-1?Q?ZOao7d1ImEQeo0W7S/Vqzz6+jq/MzpPJTNRkIAcIV+vn0l/ae0pcDLtsSR?=
+ =?iso-8859-1?Q?qWUrgKyQWb7RIeEqy2odl8MqQSO2FRK0FZ8axXQ49dNE37yONEWa+dYXvF?=
+ =?iso-8859-1?Q?IjmTK0qA4GwT6qWsibJOob+xnw3MlQKZmRt4zBzfVdECGcKyefCjN0az7W?=
+ =?iso-8859-1?Q?b2+WdmPWfSf948l/9LTTo9zy6q2HKF/Mmd78NJbNiK5azB0aBRT/UyVhx7?=
+ =?iso-8859-1?Q?FWa75bD5eZhKlalOVvkU9yvaxLTaRuublKlDxxbIfe0n+0dzfupZljEoqS?=
+ =?iso-8859-1?Q?e1Vh7fO5Pni7dgYriB0t0NZRscPowHPxBg4BmU+vSdqYrmZqD+Sx9dHVSL?=
+ =?iso-8859-1?Q?lcJiSJxxj3+IXoZ8A42ecP6NKliTGbazCf4LNb6sp8wnAH21WDCr3w3AKU?=
+ =?iso-8859-1?Q?KWscPFJ5sSR+Kgj1De1jg8yOpxkv6eZPUffTtvvFGoHoyc6pSV0sRdPnTq?=
+ =?iso-8859-1?Q?LR8VqxygzJV3pH+uwTnS0O2Mj2UTzYNMHFVIqewyY5X0yeo5PwwmzTbRla?=
+ =?iso-8859-1?Q?JaixauEw277heKTEaPsoM9t0eBjIc2M2qkKEAIk3N51Gcu+NVGi4sHaVJt?=
+ =?iso-8859-1?Q?tT14y2korKQs2eCu+nG6a+o/WO7TnqyWRsMyPUGE5j3Dsh8pebhNlUaAkO?=
+ =?iso-8859-1?Q?xsrrLbMYUHS/sxypoS3WL86urSMXEiacEe0oj3d7GTeg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6092.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?nDqY90x6nz1LmYeTlosSvgMrXjVouVCrSnthdIoyrSKpfMFEBtx/CqkUdK?=
+ =?iso-8859-1?Q?1nAZZe5a4imJ0hd3lkwHXQb6rItHqu5Lj1k0PnE/ObD0rZdSazOFKYhSdf?=
+ =?iso-8859-1?Q?+pwzPUVPOd8mHK4AzcxkEgS3BK69o7H0luh6zE5VPmI4DOS3NQJfabF7m6?=
+ =?iso-8859-1?Q?pE9PW2+JO1IK/QeHi8MTycQth8ZHPWraXeewrWJ5tkyC0ZIrQdsheC9vSh?=
+ =?iso-8859-1?Q?ccwoZAGS4IEs4uTxCBrgINZ/XT7mJn8WV+xLG0ajcTYwffMHObXUEsgAqL?=
+ =?iso-8859-1?Q?5+1+vYHOUkbMAvmDyy/CynfkW9IKGzgV8DEHSpUlG1a+R+v2tAycXHWbpy?=
+ =?iso-8859-1?Q?jydR2rU8rYup7IR82khACfX1qFmO17mxZCEyT8yvxi9x0T+xj9uctq3Ewl?=
+ =?iso-8859-1?Q?Vn59hHY+n/ka4TEIDH8unOxRZebb46JUBEM+rAA2EfwLK9u0jnd/W9jfzh?=
+ =?iso-8859-1?Q?6bpvEHYWu9k14nKUU2DpzF4NglG6Q5kIZgFe1mhrGPrlBzh/8TGPPgfwFA?=
+ =?iso-8859-1?Q?XYudycTuv8idYyerP3ft6yRRPNCck4eZkTb7tzn6yGUBswwJQaho8X52Mv?=
+ =?iso-8859-1?Q?SQK7ug6pLl4XsFPILc4Rk7TqdovzGRkz7cr8GnvgQ+8wq9dzNMLd6N/Q/l?=
+ =?iso-8859-1?Q?5NzKvw57sI9Q8JTMd2gfFqQrTfBUuYATj9Q7Tt9FZIk4Hadmaxxu8U5iwD?=
+ =?iso-8859-1?Q?pvB8jM+jfwf9uBufxmKFss0vefuTPSvbHg8WY0pB2uoA+KncPkGR3wqli2?=
+ =?iso-8859-1?Q?doIqH9FIXojzQ2+qcnyZaUuVBbcFqsZ0T9SeLOK32Ug/iXTSFsb7/a/Hxp?=
+ =?iso-8859-1?Q?DWSH7Y0qrg2j1QjWV11LHSSApfv0e61SC2pccGgdXqOtdN29rSxdBenTja?=
+ =?iso-8859-1?Q?BIenyZUdAYDPnAj+u9s24t2nzoDU2xnPzSm4oJIfghCXp0SsJCG7vGvM79?=
+ =?iso-8859-1?Q?M4+D+OzTzFs6mSI7+8KW2kMc3N0eNtQknQgnJhPSyd48acirqzA70gUrBS?=
+ =?iso-8859-1?Q?o7/6YKmaer+gAwPeykwy7A+KsMqIUg/U0oSUxhviXQIxj5gMnJS3SNv10A?=
+ =?iso-8859-1?Q?bMVD6wIompHheuIpWGRsSDgFvF3rSqwIhPR19tDvda6YXr/p9zHruW6JDF?=
+ =?iso-8859-1?Q?QsuiPVpaXh4IkQddPA/zaE+rxmLKYcDCkjaCya34UODRRXPl116BJS3I2l?=
+ =?iso-8859-1?Q?np5RoDvXEsvOxJw/x2MaQqAgiITJl5UYBFEYfIpzoa3v44RgmeGnqUpMNl?=
+ =?iso-8859-1?Q?3DSxYr3nMMg/qTtuQ7Fx+wNutF2sij+sJYtLBcK2opgNaFhb0JjSjk7nOa?=
+ =?iso-8859-1?Q?cCBukZB1D5lRUykQkVUsg2YrQhwTyDv+8XHzIlaYwICmKHQYlBc9sInsSB?=
+ =?iso-8859-1?Q?rnBrYDLoqbe5ZPQUdmsDwWS6omAsgkWjbMOk6uFfgNHrKvKuvsThxBRIFo?=
+ =?iso-8859-1?Q?tH2FbdvxJByraKhvZb52Wscq54mgKXdIwcwHELBqR5CsWEr8yTzDWVqsqV?=
+ =?iso-8859-1?Q?W17fXd99gzQbZk3/SU2rehiK3nnkbmegkpwIhStkQZH6TPab2U80iC4i73?=
+ =?iso-8859-1?Q?C3royG7BJFwJ8PVLywbZpcnAgDvGyXDHR0qtcVQmMqn2Q5sfBD57LnFKcU?=
+ =?iso-8859-1?Q?r2M1cdZUh13ro=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6092.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e49ee41-8719-4dcb-fb3d-08ddf75e0ff1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Sep 2025 09:22:32.2707
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DddxwGN2dZKtyN7GiO3MScK1C1wK3Db7VmJRmCe8kS5A8plwflIwE0u9k5e+FjBi7A3LqN0skfBHmR9DPw00YA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7988
 
-On Thu, 2025-09-18 at 14:39 -0300, Marcelo Schmitt wrote:
-> AD4030 and similar ADCs can capture data at sample rates up to 2 mega
-> samples per second (MSPS). Not all SPI controllers are able to achieve su=
-ch
-> high throughputs and even when the controller is fast enough to run
-> transfers at the required speed, it may be costly to the CPU to handle
-> transfer data at such high sample rates. Add SPI offload support for AD40=
-30
-> and similar ADCs to enable data capture at maximum sample rates.
->=20
-> Co-developed-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Co-developed-by: Nuno Sa <nuno.sa@analog.com>
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> Co-developed-by: Trevor Gamblin <tgamblin@baylibre.com>
-> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
-> Co-developed-by: Axel Haslam <ahaslam@baylibre.com>
-> Signed-off-by: Axel Haslam <ahaslam@baylibre.com>
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
-> Most of the code for SPI offload support is based on work from Sergiu
-> Cuciurean,
-> Nuno Sa, Axel Haslam, and Trevor Gamblin. Thus, this patch comes with man=
-y
-> co-developed-by tags. I also draw inspiration from other drivers supporti=
-ng
-> SPI
-> offload, many of them written by David Lechner.
+[Public]
 
-As far as I'm concerned, you can drop me (and I guess Sergiu) of the list. =
-The
-support I added was for the legacy offload support we had in ADI tree which=
- was
-very different from what we have today. Ditto for the PWM waveform API. So =
-I
-don't think it makes sense for me to take credit for this one :)
+Hi @Mario TESI,
+Thanks for the response.
 
-- Nuno S=C3=A1
->=20
-> Change log v1 -> v2
-> - Dropped all clock-modes and DDR related stuff for now as those will req=
-uire
-> =C2=A0 further changes to the SPI subsystem or to SPI controller drivers.
-> - Update the modes register with proper output data mode bits when sample
-> =C2=A0 averaging (oversampling_ratio) is set.
-> - Lock on device state mutex before updating oversampling and sampling
-> frequency.
-> - Made sampling_frequency shared by all channels.
-> - Better checking the requested sampling frequency is valid.
-> - Adjusted to SPI offload data capture preparation and stop procedures.
-> - Error out if try to get/set sampling frequency without offload trigger.
-> - Depend on PWM so build always succeed.
-> - Drop unmatched/unbalanced call to iio_device_release_direct().
-> - No longer shadowing error codes.
->=20
-> Suggestions to v1 that I did not comply to:
-> [SPI]
-> > I would be tempted to put the loop check here [in drivers/spi/spi-offlo=
-ad-
-> > trigger-pwm.c]:
-> >=20
-> > 	offload_offset_ns =3D periodic->offset_ns;
-> >=20
-> > 	do {
-> > 		wf.offset_ns =3D offload_offset_ns;
-> > 		ret =3D pwm_round_waveform_might_sleep(st->pwm, &wf);
-> > 		if (ret)
-> > 			return ret;
-> > 		offload_offset_ns +=3D 10;
-> >=20
-> > 	} while (wf.offset_ns < periodic->offset_ns);
-> >=20
-> > 	wf.duty_offset_ns =3D periodic->offset_ns;
-> >=20
-> > instead of in the ADC driver so that all future callers don't have to
-> > repeat this.
->=20
-> Not sure implementing the PWM trigger phase approximation/rounding/setup
-> within
-> spi-offload-trigger-pwm is actually desirable. The PWM phase
-> approximation/rounding/setup done in AD4030 iterates over the configurati=
-on of
-> a
-> second PWM (the PWM connected to the CNV pin). I haven't seen any other d=
-evice
-> that would use such double PWM setup schema so pushing an additional argu=
-ment
-> to
-> spi_offload_trigger_pwm_validate() doesn't seem worth it.
->=20
-> [IIO]
-> > Why using slower speed for offload?
-> Looks like it's the same max speed for both register access and data samp=
-le.
-> So, just reusing the existing define for the max transfer speed.
->=20
-> =C2=A0drivers/iio/adc/Kconfig=C2=A0 |=C2=A0=C2=A0 3 +
-> =C2=A0drivers/iio/adc/ad4030.c | 485 +++++++++++++++++++++++++++++++++++-=
----
-> =C2=A02 files changed, 445 insertions(+), 43 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 58a14e6833f6..2a44fcaccf54 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -60,8 +60,11 @@ config AD4030
-> =C2=A0	tristate "Analog Devices AD4030 ADC Driver"
-> =C2=A0	depends on SPI
-> =C2=A0	depends on GPIOLIB
-> +	depends on PWM
-> =C2=A0	select REGMAP
-> =C2=A0	select IIO_BUFFER
-> +	select IIO_BUFFER_DMA
-> +	select IIO_BUFFER_DMAENGINE
-> =C2=A0	select IIO_TRIGGERED_BUFFER
-> =C2=A0	help
-> =C2=A0	=C2=A0 Say yes here to build support for Analog Devices AD4030 and=
- AD4630
-> high speed
-> diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
-> index aa0e27321869..52805c779934 100644
-> --- a/drivers/iio/adc/ad4030.c
-> +++ b/drivers/iio/adc/ad4030.c
-> @@ -14,15 +14,25 @@
-> =C2=A0 */
-> =C2=A0
-> =C2=A0#include <linux/bitfield.h>
-> +#include <linux/cleanup.h>
-> =C2=A0#include <linux/clk.h>
-> +#include <linux/dmaengine.h>
-> +#include <linux/iio/buffer-dmaengine.h>
-> =C2=A0#include <linux/iio/iio.h>
-> =C2=A0#include <linux/iio/trigger_consumer.h>
-> =C2=A0#include <linux/iio/triggered_buffer.h>
-> +#include <linux/limits.h>
-> +#include <linux/log2.h>
-> +#include <linux/math64.h>
-> +#include <linux/minmax.h>
-> +#include <linux/pwm.h>
-> =C2=A0#include <linux/regmap.h>
-> =C2=A0#include <linux/regulator/consumer.h>
-> +#include <linux/spi/offload/consumer.h>
-> =C2=A0#include <linux/spi/spi.h>
-> =C2=A0#include <linux/unaligned.h>
-> =C2=A0#include <linux/units.h>
-> +#include <linux/types.h>
-> =C2=A0
-> =C2=A0#define AD4030_REG_INTERFACE_CONFIG_A			0x00
-> =C2=A0#define=C2=A0=C2=A0=C2=A0=C2=A0 AD4030_REG_INTERFACE_CONFIG_A_SW_RE=
-SET	(BIT(0) | BIT(7))
-> @@ -111,6 +121,8 @@
-> =C2=A0#define AD4632_TCYC_NS			2000
-> =C2=A0#define AD4632_TCYC_ADJUSTED_NS		(AD4632_TCYC_NS -
-> AD4030_TCNVL_NS)
-> =C2=A0#define AD4030_TRESET_COM_DELAY_MS	750
-> +/* Datasheet says 9.8ns, so use the closest integer value */
-> +#define AD4030_TQUIET_CNV_DELAY_NS	10
-> =C2=A0
-> =C2=A0enum ad4030_out_mode {
-> =C2=A0	AD4030_OUT_DATA_MD_DIFF,
-> @@ -136,11 +148,13 @@ struct ad4030_chip_info {
-> =C2=A0	const char *name;
-> =C2=A0	const unsigned long *available_masks;
-> =C2=A0	const struct iio_chan_spec channels[AD4030_MAX_IIO_CHANNEL_NB];
-> +	const struct iio_chan_spec
-> offload_channels[AD4030_MAX_IIO_CHANNEL_NB];
-> =C2=A0	u8 grade;
-> =C2=A0	u8 precision_bits;
-> =C2=A0	/* Number of hardware channels */
-> =C2=A0	int num_voltage_inputs;
-> =C2=A0	unsigned int tcyc_ns;
-> +	unsigned int max_sample_rate_hz;
-> =C2=A0};
-> =C2=A0
-> =C2=A0struct ad4030_state {
-> @@ -153,6 +167,15 @@ struct ad4030_state {
-> =C2=A0	int offset_avail[3];
-> =C2=A0	unsigned int avg_log2;
-> =C2=A0	enum ad4030_out_mode mode;
-> +	struct mutex lock; /* Protect read-modify-write and multi write
-> sequences */
-> +	/* Offload sampling */
-> +	struct spi_transfer offload_xfer;
-> +	struct spi_message offload_msg;
-> +	struct spi_offload *offload;
-> +	struct spi_offload_trigger *offload_trigger;
-> +	struct spi_offload_trigger_config offload_trigger_config;
-> +	struct pwm_device *cnv_trigger;
-> +	struct pwm_waveform cnv_wf;
-> =C2=A0
-> =C2=A0	/*
-> =C2=A0	 * DMA (thus cache coherency maintenance) requires the transfer
-> buffers
-> @@ -209,8 +232,9 @@ struct ad4030_state {
-> =C2=A0 * - voltage0-voltage1
-> =C2=A0 * - voltage2-voltage3
-> =C2=A0 */
-> -#define AD4030_CHAN_DIFF(_idx, _scan_type) {				\
-> +#define __AD4030_CHAN_DIFF(_idx, _scan_type, _offload) {		\
-> =C2=A0	.info_mask_shared_by_all =3D					\
-> +		(_offload ? BIT(IIO_CHAN_INFO_SAMP_FREQ) : 0)
-> |		\
-> =C2=A0		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),			\
-> =C2=A0	.info_mask_shared_by_all_available =3D				\
-> =C2=A0		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),			\
-> @@ -232,6 +256,12 @@ struct ad4030_state {
-> =C2=A0	.num_ext_scan_type =3D ARRAY_SIZE(_scan_type),			\
-> =C2=A0}
-> =C2=A0
-> +#define AD4030_CHAN_DIFF(_idx, _scan_type)				\
-> +	__AD4030_CHAN_DIFF(_idx, _scan_type, 0)
-> +
-> +#define AD4030_OFFLOAD_CHAN_DIFF(_idx, _scan_type)			\
-> +	__AD4030_CHAN_DIFF(_idx, _scan_type, 1)
-> +
-> =C2=A0static const int ad4030_average_modes[] =3D {
-> =C2=A0	BIT(0),					/* No
-> averaging/oversampling */
-> =C2=A0	BIT(1), BIT(2), BIT(3), BIT(4),		/* 2 to 16 */
-> @@ -240,6 +270,11 @@ static const int ad4030_average_modes[] =3D {
-> =C2=A0	BIT(13), BIT(14), BIT(15), BIT(16),	/* 8192 to 65536 */
-> =C2=A0};
-> =C2=A0
-> +static const struct spi_offload_config ad4030_offload_config =3D {
-> +	.capability_flags =3D SPI_OFFLOAD_CAP_TRIGGER |
-> +			=C2=A0=C2=A0=C2=A0 SPI_OFFLOAD_CAP_RX_STREAM_DMA,
-> +};
-> +
-> =C2=A0static int ad4030_enter_config_mode(struct ad4030_state *st)
-> =C2=A0{
-> =C2=A0	st->tx_data[0] =3D AD4030_REG_ACCESS;
-> @@ -453,6 +488,106 @@ static int ad4030_get_chan_calibbias(struct iio_dev
-> *indio_dev,
-> =C2=A0	}
-> =C2=A0}
-> =C2=A0
-> +static void ad4030_get_sampling_freq(struct ad4030_state *st, int *freq)
-> +{
-> +	struct spi_offload_trigger_config *config =3D &st-
-> >offload_trigger_config;
-> +
-> +	/*
-> +	 * Conversion data is fetched from the device when the offload
-> transfer
-> +	 * is triggered. Thus, provide the SPI offload trigger frequency as
-> the
-> +	 * sampling frequency.
-> +	 */
-> +	*freq =3D config->periodic.frequency_hz;
-> +}
-> +
-> +static int __ad4030_set_sampling_freq(struct ad4030_state *st,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int freq, unsigned int
-> avg_log2)
-> +{
-> +	struct spi_offload_trigger_config *config =3D &st-
-> >offload_trigger_config;
-> +	struct pwm_waveform cnv_wf =3D { };
-> +	u64 target =3D AD4030_TCNVH_NS;
-> +	u64 offload_period_ns;
-> +	u64 offload_offset_ns;
-> +	int ret;
-> +
-> +	/*
-> +	 * When averaging/oversampling over N samples, we fire the offload
-> +	 * trigger once at every N pulses of the CNV signal. Conversely, the
-> CNV
-> +	 * signal needs to be N times faster than the offload trigger. Take
-> that
-> +	 * into account to correctly re-evaluate both the PWM waveform
-> connected
-> +	 * to CNV and the SPI offload trigger.
-> +	 */
-> +	if (st->mode =3D=3D AD4030_OUT_DATA_MD_30_AVERAGED_DIFF)
-> +		freq <<=3D avg_log2;
-> +
-> +	cnv_wf.period_length_ns =3D DIV_ROUND_CLOSEST(NSEC_PER_SEC, freq);
-> +	/*
-> +	 * The datasheet lists a minimum time of 9.8 ns, but no maximum. If
-> the
-> +	 * rounded PWM's value is less than 10, increase the target value by
-> 10
-> +	 * and attempt to round the waveform again, until the value is at
-> least
-> +	 * 10 ns. Use a separate variable to represent the target in case the
-> +	 * rounding is severe enough to keep putting the first few results
-> under
-> +	 * the minimum 10ns condition checked by the while loop.
-> +	 */
-> +	do {
-> +		cnv_wf.duty_length_ns =3D target;
-> +		ret =3D pwm_round_waveform_might_sleep(st->cnv_trigger,
-> &cnv_wf);
-> +		if (ret)
-> +			return ret;
-> +		target +=3D AD4030_TCNVH_NS;
-> +	} while (cnv_wf.duty_length_ns < AD4030_TCNVH_NS);
-> +
-> +	if (!in_range(cnv_wf.period_length_ns, AD4030_TCYC_NS, INT_MAX))
-> +		return -EINVAL;
-> +
-> +	offload_period_ns =3D cnv_wf.period_length_ns;
-> +	if (st->mode =3D=3D AD4030_OUT_DATA_MD_30_AVERAGED_DIFF)
-> +		offload_period_ns <<=3D avg_log2;
-> +
-> +	config->periodic.frequency_hz =3D=C2=A0 DIV_ROUND_UP_ULL(NSEC_PER_SEC,
-> +							=C2=A0 offload_period_ns);
-> +
-> +	/*
-> +	 * The hardware does the capture on zone 2 (when SPI trigger PWM
-> +	 * is used). This means that the SPI trigger signal should happen at
-> +	 * tsync + tquiet_con_delay being tsync the conversion signal period
-> +	 * and tquiet_con_delay 9.8ns. Hence set the PWM phase accordingly.
-> +	 *
-> +	 * The PWM waveform API only supports nanosecond resolution right
-> now,
-> +	 * so round this setting to the closest available value.
-> +	 */
-> +	offload_offset_ns =3D AD4030_TQUIET_CNV_DELAY_NS;
-> +	do {
-> +		config->periodic.offset_ns =3D offload_offset_ns;
-> +		ret =3D spi_offload_trigger_validate(st->offload_trigger,
-> config);
-> +		if (ret)
-> +			return ret;
-> +		offload_offset_ns +=3D AD4030_TQUIET_CNV_DELAY_NS;
-> +	} while (config->periodic.offset_ns < AD4030_TQUIET_CNV_DELAY_NS);
-> +
-> +	st->cnv_wf =3D cnv_wf;
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad4030_set_sampling_freq(struct iio_dev *indio_dev, int freq)
-> +{
-> +	struct ad4030_state *st =3D iio_priv(indio_dev);
-> +
-> +	/*
-> +	 * We have no control over the sampling frequency without SPI offload
-> +	 * triggering.
-> +	 */
-> +	if (!st->offload_trigger)
-> +		return -ENODEV;
-> +
-> +	if (!in_range(freq, 1, st->chip->max_sample_rate_hz))
-> +		return -EINVAL;
-> +
-> +	guard(mutex)(&st->lock);
-> +	return __ad4030_set_sampling_freq(st, freq, st->avg_log2);
-> +}
-> +
-> =C2=A0static int ad4030_set_chan_calibscale(struct iio_dev *indio_dev,
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan=
-,
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int gain_int,
-> @@ -507,27 +642,6 @@ static int ad4030_set_chan_calibbias(struct iio_dev
-> *indio_dev,
-> =C2=A0				 st->tx_data, AD4030_REG_OFFSET_BYTES_NB);
-> =C2=A0}
-> =C2=A0
-> -static int ad4030_set_avg_frame_len(struct iio_dev *dev, int avg_val)
-> -{
-> -	struct ad4030_state *st =3D iio_priv(dev);
-> -	unsigned int avg_log2 =3D ilog2(avg_val);
-> -	unsigned int last_avg_idx =3D ARRAY_SIZE(ad4030_average_modes) - 1;
-> -	int ret;
-> -
-> -	if (avg_val < 0 || avg_val > ad4030_average_modes[last_avg_idx])
-> -		return -EINVAL;
-> -
-> -	ret =3D regmap_write(st->regmap, AD4030_REG_AVG,
-> -			=C2=A0=C2=A0 AD4030_REG_AVG_MASK_AVG_SYNC |
-> -			=C2=A0=C2=A0 FIELD_PREP(AD4030_REG_AVG_MASK_AVG_VAL,
-> avg_log2));
-> -	if (ret)
-> -		return ret;
-> -
-> -	st->avg_log2 =3D avg_log2;
-> -
-> -	return 0;
-> -}
-> -
-> =C2=A0static bool ad4030_is_common_byte_asked(struct ad4030_state *st,
-> =C2=A0					unsigned int mask)
-> =C2=A0{
-> @@ -536,11 +650,10 @@ static bool ad4030_is_common_byte_asked(struct
-> ad4030_state *st,
-> =C2=A0		AD4030_DUAL_COMMON_BYTE_CHANNELS_MASK);
-> =C2=A0}
-> =C2=A0
-> -static int ad4030_set_mode(struct iio_dev *indio_dev, unsigned long mask=
-)
-> +static int ad4030_set_mode(struct ad4030_state *st, unsigned long mask,
-> +			=C2=A0=C2=A0 unsigned int avg_log2)
-> =C2=A0{
-> -	struct ad4030_state *st =3D iio_priv(indio_dev);
-> -
-> -	if (st->avg_log2 > 0) {
-> +	if (avg_log2 > 0) {
-> =C2=A0		st->mode =3D AD4030_OUT_DATA_MD_30_AVERAGED_DIFF;
-> =C2=A0	} else if (ad4030_is_common_byte_asked(st, mask)) {
-> =C2=A0		switch (st->chip->precision_bits) {
-> @@ -564,6 +677,50 @@ static int ad4030_set_mode(struct iio_dev *indio_dev=
-,
-> unsigned long mask)
-> =C2=A0				=C2=A0 st->mode);
-> =C2=A0}
-> =C2=A0
-> +static int ad4030_set_avg_frame_len(struct iio_dev *dev, unsigned long m=
-ask,
-> int avg_val)
-> +{
-> +	struct ad4030_state *st =3D iio_priv(dev);
-> +	unsigned int avg_log2 =3D ilog2(avg_val);
-> +	unsigned int last_avg_idx =3D ARRAY_SIZE(ad4030_average_modes) - 1;
-> +	int freq;
-> +	int ret;
-> +
-> +	if (avg_val < 0 || avg_val > ad4030_average_modes[last_avg_idx])
-> +		return -EINVAL;
-> +
-> +	guard(mutex)(&st->lock);
-> +	ret =3D ad4030_set_mode(st, mask, avg_log2);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (st->offload_trigger) {
-> +		/*
-> +		 * The sample averaging and sampling frequency configurations
-> +		 * are mutually dependent one from another. That's because
-> the
-> +		 * effective data sample rate is fCNV / 2^N, where N is the
-> +		 * number of samples being averaged.
-> +		 *
-> +		 * When SPI offload is supported and we have control over the
-> +		 * sample rate, the conversion start signal (CNV) and the SPI
-> +		 * offload trigger frequencies must be re-evaluated so data
-> is
-> +		 * fetched only after 'avg_val' conversions.
-> +		 */
-> +		ad4030_get_sampling_freq(st, &freq);
-> +		ret =3D __ad4030_set_sampling_freq(st, freq, avg_log2);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	ret =3D regmap_write(st->regmap, AD4030_REG_AVG,
-> +			=C2=A0=C2=A0 AD4030_REG_AVG_MASK_AVG_SYNC |
-> +			=C2=A0=C2=A0 FIELD_PREP(AD4030_REG_AVG_MASK_AVG_VAL,
-> avg_log2));
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->avg_log2 =3D avg_log2;
-> +	return 0;
-> +}
-> +
-> =C2=A0/*
-> =C2=A0 * Descramble 2 32bits numbers out of a 64bits. The bits are interl=
-eaved:
-> =C2=A0 * 1 bit for first number, 1 bit for the second, and so on...
-> @@ -672,7 +829,7 @@ static int ad4030_single_conversion(struct iio_dev
-> *indio_dev,
-> =C2=A0	struct ad4030_state *st =3D iio_priv(indio_dev);
-> =C2=A0	int ret;
-> =C2=A0
-> -	ret =3D ad4030_set_mode(indio_dev, BIT(chan->scan_index));
-> +	ret =3D ad4030_set_mode(st, BIT(chan->scan_index), st->avg_log2);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> @@ -769,6 +926,13 @@ static int ad4030_read_raw_dispatch(struct iio_dev
-> *indio_dev,
-> =C2=A0		*val =3D BIT(st->avg_log2);
-> =C2=A0		return IIO_VAL_INT;
-> =C2=A0
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		if (!st->offload_trigger)
-> +			return -ENODEV;
-> +
-> +		ad4030_get_sampling_freq(st, val);
-> +		return IIO_VAL_INT;
-> +
-> =C2=A0	default:
-> =C2=A0		return -EINVAL;
-> =C2=A0	}
-> @@ -807,7 +971,10 @@ static int ad4030_write_raw_dispatch(struct iio_dev
-> *indio_dev,
-> =C2=A0		return ad4030_set_chan_calibbias(indio_dev, chan, val);
-> =C2=A0
-> =C2=A0	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> -		return ad4030_set_avg_frame_len(indio_dev, val);
-> +		return ad4030_set_avg_frame_len(indio_dev, BIT(chan-
-> >scan_index), val);
-> +
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		return ad4030_set_sampling_freq(indio_dev, val);
-> =C2=A0
-> =C2=A0	default:
-> =C2=A0		return -EINVAL;
-> @@ -869,7 +1036,9 @@ static int ad4030_get_current_scan_type(const struct
-> iio_dev *indio_dev,
-> =C2=A0static int ad4030_update_scan_mode(struct iio_dev *indio_dev,
-> =C2=A0				=C2=A0=C2=A0 const unsigned long *scan_mask)
-> =C2=A0{
-> -	return ad4030_set_mode(indio_dev, *scan_mask);
-> +	struct ad4030_state *st =3D iio_priv(indio_dev);
-> +
-> +	return ad4030_set_mode(st, *scan_mask, st->avg_log2);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static const struct iio_info ad4030_iio_info =3D {
-> @@ -898,6 +1067,88 @@ static const struct iio_buffer_setup_ops
-> ad4030_buffer_setup_ops =3D {
-> =C2=A0	.validate_scan_mask =3D ad4030_validate_scan_mask,
-> =C2=A0};
-> =C2=A0
-> +static void ad4030_prepare_offload_msg(struct iio_dev *indio_dev)
-> +{
-> +	struct ad4030_state *st =3D iio_priv(indio_dev);
-> +	u8 offload_bpw;
-> +
-> +	if (st->mode =3D=3D AD4030_OUT_DATA_MD_30_AVERAGED_DIFF)
-> +		offload_bpw =3D 32;
-> +	else
-> +		offload_bpw =3D st->chip->precision_bits;
-> +
-> +	st->offload_xfer.speed_hz =3D AD4030_SPI_MAX_REG_XFER_SPEED;
-> +	st->offload_xfer.bits_per_word =3D roundup_pow_of_two(offload_bpw);
-> +	st->offload_xfer.len =3D spi_bpw_to_bytes(offload_bpw);
-> +	st->offload_xfer.offload_flags =3D SPI_OFFLOAD_XFER_RX_STREAM;
-> +	spi_message_init_with_transfers(&st->offload_msg, &st->offload_xfer,
-> 1);
-> +}
-> +
-> +static int ad4030_offload_buffer_postenable(struct iio_dev *indio_dev)
-> +{
-> +	struct ad4030_state *st =3D iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret =3D regmap_write(st->regmap, AD4030_REG_EXIT_CFG_MODE, BIT(0));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ad4030_prepare_offload_msg(indio_dev);
-> +	st->offload_msg.offload =3D st->offload;
-> +	ret =3D spi_optimize_message(st->spi, &st->offload_msg);
-> +	if (ret)
-> +		goto out_reset_mode;
-> +
-> +	ret =3D pwm_set_waveform_might_sleep(st->cnv_trigger, &st->cnv_wf,
-> false);
-> +	if (ret)
-> +		goto out_unoptimize;
-> +
-> +	ret =3D spi_offload_trigger_enable(st->offload, st->offload_trigger,
-> +					 &st->offload_trigger_config);
-> +	if (ret)
-> +		goto out_pwm_disable;
-> +
-> +	return 0;
-> +
-> +out_pwm_disable:
-> +	pwm_disable(st->cnv_trigger);
-> +out_unoptimize:
-> +	spi_unoptimize_message(&st->offload_msg);
-> +out_reset_mode:
-> +	/* reenter register configuration mode */
-> +	ret =3D ad4030_enter_config_mode(st);
-> +	if (ret)
-> +		dev_err(&st->spi->dev,
-> +			"couldn't reenter register configuration mode\n");
-> +	return ret;
-> +}
-> +
-> +static int ad4030_offload_buffer_predisable(struct iio_dev *indio_dev)
-> +{
-> +	struct ad4030_state *st =3D iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	spi_offload_trigger_disable(st->offload, st->offload_trigger);
-> +
-> +	pwm_disable(st->cnv_trigger);
-> +
-> +	spi_unoptimize_message(&st->offload_msg);
-> +
-> +	/* reenter register configuration mode */
-> +	ret =3D ad4030_enter_config_mode(st);
-> +	if (ret)
-> +		dev_err(&st->spi->dev,
-> +			"couldn't reenter register configuration mode\n");
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct iio_buffer_setup_ops ad4030_offload_buffer_setup_ops=
- =3D {
-> +	.postenable =3D &ad4030_offload_buffer_postenable,
-> +	.predisable =3D &ad4030_offload_buffer_predisable,
-> +	.validate_scan_mask =3D ad4030_validate_scan_mask,
-> +};
-> +
-> =C2=A0static int ad4030_regulators_get(struct ad4030_state *st)
-> =C2=A0{
-> =C2=A0	struct device *dev =3D &st->spi->dev;
-> @@ -967,6 +1218,24 @@ static int ad4030_detect_chip_info(const struct
-> ad4030_state *st)
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
-> +static int ad4030_pwm_get(struct ad4030_state *st)
-> +{
-> +	struct device *dev =3D &st->spi->dev;
-> +
-> +	st->cnv_trigger =3D devm_pwm_get(dev, NULL);
-> +	if (IS_ERR(st->cnv_trigger))
-> +		return dev_err_probe(dev, PTR_ERR(st->cnv_trigger),
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to get CNV PWM\n");
-> +
-> +	/*
-> +	 * Preemptively disable the PWM, since we only want to enable it with
-> +	 * the buffer.
-> +	 */
-> +	pwm_disable(st->cnv_trigger);
-> +
-> +	return 0;
-> +}
-> +
-> =C2=A0static int ad4030_config(struct ad4030_state *st)
-> =C2=A0{
-> =C2=A0	int ret;
-> @@ -994,6 +1263,31 @@ static int ad4030_config(struct ad4030_state *st)
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
-> +static int ad4030_spi_offload_setup(struct iio_dev *indio_dev,
-> +				=C2=A0=C2=A0=C2=A0 struct ad4030_state *st)
-> +{
-> +	struct device *dev =3D &st->spi->dev;
-> +	struct dma_chan *rx_dma;
-> +
-> +	indio_dev->setup_ops =3D &ad4030_offload_buffer_setup_ops;
-> +
-> +	st->offload_trigger =3D devm_spi_offload_trigger_get(dev, st->offload,
-> +							=C2=A0=C2=A0
-> SPI_OFFLOAD_TRIGGER_PERIODIC);
-> +	if (IS_ERR(st->offload_trigger))
-> +		return dev_err_probe(dev, PTR_ERR(st->offload_trigger),
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 "failed to get offload trigger\n");
-> +
-> +	st->offload_trigger_config.type =3D SPI_OFFLOAD_TRIGGER_PERIODIC;
-> +
-> +	rx_dma =3D devm_spi_offload_rx_stream_request_dma_chan(dev, st-
-> >offload);
-> +	if (IS_ERR(rx_dma))
-> +		return dev_err_probe(dev, PTR_ERR(rx_dma),
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 "failed to get offload RX DMA\n");
-> +
-> +	return devm_iio_dmaengine_buffer_setup_with_handle(dev, indio_dev,
-> rx_dma,
-> +							=C2=A0=C2=A0
-> IIO_BUFFER_DIRECTION_IN);
-> +}
-> +
-> =C2=A0static int ad4030_probe(struct spi_device *spi)
-> =C2=A0{
-> =C2=A0	struct device *dev =3D &spi->dev;
-> @@ -1018,6 +1312,10 @@ static int ad4030_probe(struct spi_device *spi)
-> =C2=A0	if (!st->chip)
-> =C2=A0		return -EINVAL;
-> =C2=A0
-> +	ret =3D devm_mutex_init(dev, &st->lock);
-> +	if (ret)
-> +		return ret;
-> +
-> =C2=A0	ret =3D ad4030_regulators_get(st);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> @@ -1045,24 +1343,57 @@ static int ad4030_probe(struct spi_device *spi)
-> =C2=A0		return dev_err_probe(dev, PTR_ERR(st->cnv_gpio),
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to get cnv gpio\n");
-> =C2=A0
-> -	/*
-> -	 * One hardware channel is split in two software channels when using
-> -	 * common byte mode. Add one more channel for the timestamp.
-> -	 */
-> -	indio_dev->num_channels =3D 2 * st->chip->num_voltage_inputs + 1;
-> =C2=A0	indio_dev->name =3D st->chip->name;
-> =C2=A0	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> =C2=A0	indio_dev->info =3D &ad4030_iio_info;
-> -	indio_dev->channels =3D st->chip->channels;
-> -	indio_dev->available_scan_masks =3D st->chip->available_masks;
-> =C2=A0
-> -	ret =3D devm_iio_triggered_buffer_setup(dev, indio_dev,
-> -					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio_pollfunc_store_time,
-> -					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ad4030_trigger_handler,
-> -					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &ad4030_buffer_setup_ops);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret,
-> -				=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to setup triggered buffer\n");
-> +	st->offload =3D devm_spi_offload_get(dev, spi, &ad4030_offload_config);
-> +	ret =3D PTR_ERR_OR_ZERO(st->offload);
-> +	if (ret && ret !=3D -ENODEV)
-> +		return dev_err_probe(dev, ret, "failed to get offload\n");
-> +
-> +	/* Fall back to low speed usage when no SPI offload is available. */
-> +	if (ret =3D=3D -ENODEV) {
-> +		/*
-> +		 * One hardware channel is split in two software channels
-> when
-> +		 * using common byte mode. Add one more channel for the
-> timestamp.
-> +		 */
-> +		indio_dev->num_channels =3D 2 * st->chip->num_voltage_inputs +
-> 1;
-> +		indio_dev->channels =3D st->chip->channels;
-> +		indio_dev->available_scan_masks =3D st->chip->available_masks;
-> +
-> +		ret =3D devm_iio_triggered_buffer_setup(dev, indio_dev,
-> +						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> iio_pollfunc_store_time,
-> +						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ad4030_trigger_handler,
-> +						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> &ad4030_buffer_setup_ops);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to setup triggered
-> buffer\n");
-> +	} else {
-> +		/*
-> +		 * One hardware channel is split in two software channels
-> when
-> +		 * using common byte mode. Offloaded SPI transfers can't
-> support
-> +		 * software timestamp so no additional timestamp channel is
-> added.
-> +		 */
-> +		indio_dev->num_channels =3D 2 * st->chip->num_voltage_inputs;
-> +		indio_dev->channels =3D st->chip->offload_channels;
-> +		indio_dev->available_scan_masks =3D st->chip->available_masks;
-> +		ret =3D ad4030_spi_offload_setup(indio_dev, st);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to setup SPI
-> offload\n");
-> +
-> +		ret =3D ad4030_pwm_get(st);
-> +		if (ret)
-> +			return dev_err_probe(&spi->dev, ret,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to get PWM: %d\n", ret);
-> +
-> +		ret =3D __ad4030_set_sampling_freq(st, st->chip-
-> >max_sample_rate_hz,
-> +						 st->avg_log2);
-> +		if (ret)
-> +			return dev_err_probe(&spi->dev, ret,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to set offload samp
-> freq\n");
-> +	}
-> =C2=A0
-> =C2=A0	return devm_iio_device_register(dev, indio_dev);
-> =C2=A0}
-> @@ -1100,6 +1431,23 @@ static const struct iio_scan_type
-> ad4030_24_scan_types[] =3D {
-> =C2=A0	},
-> =C2=A0};
-> =C2=A0
-> +static const struct iio_scan_type ad4030_24_offload_scan_types[] =3D {
-> +	[AD4030_SCAN_TYPE_NORMAL] =3D {
-> +		.sign =3D 's',
-> +		.storagebits =3D 32,
-> +		.realbits =3D 24,
-> +		.shift =3D 0,
-> +		.endianness =3D IIO_CPU,
-> +	},
-> +	[AD4030_SCAN_TYPE_AVG] =3D {
-> +		.sign =3D 's',
-> +		.storagebits =3D 32,
-> +		.realbits =3D 30,
-> +		.shift =3D 2,
-> +		.endianness =3D IIO_CPU,
-> +	},
-> +};
-> +
-> =C2=A0static const struct iio_scan_type ad4030_16_scan_types[] =3D {
-> =C2=A0	[AD4030_SCAN_TYPE_NORMAL] =3D {
-> =C2=A0		.sign =3D 's',
-> @@ -1117,6 +1465,23 @@ static const struct iio_scan_type
-> ad4030_16_scan_types[] =3D {
-> =C2=A0	}
-> =C2=A0};
-> =C2=A0
-> +static const struct iio_scan_type ad4030_16_offload_scan_types[] =3D {
-> +	[AD4030_SCAN_TYPE_NORMAL] =3D {
-> +		.sign =3D 's',
-> +		.storagebits =3D 32,
-> +		.realbits =3D 16,
-> +		.shift =3D 0,
-> +		.endianness =3D IIO_CPU,
-> +	},
-> +	[AD4030_SCAN_TYPE_AVG] =3D {
-> +		.sign =3D 's',
-> +		.storagebits =3D 32,
-> +		.realbits =3D 30,
-> +		.shift =3D 2,
-> +		.endianness =3D IIO_CPU,
-> +	},
-> +};
-> +
-> =C2=A0static const struct ad4030_chip_info ad4030_24_chip_info =3D {
-> =C2=A0	.name =3D "ad4030-24",
-> =C2=A0	.available_masks =3D ad4030_channel_masks,
-> @@ -1125,10 +1490,15 @@ static const struct ad4030_chip_info
-> ad4030_24_chip_info =3D {
-> =C2=A0		AD4030_CHAN_CMO(1, 0),
-> =C2=A0		IIO_CHAN_SOFT_TIMESTAMP(2),
-> =C2=A0	},
-> +	.offload_channels =3D {
-> +		AD4030_OFFLOAD_CHAN_DIFF(0, ad4030_24_offload_scan_types),
-> +		AD4030_CHAN_CMO(1, 0),
-> +	},
-> =C2=A0	.grade =3D AD4030_REG_CHIP_GRADE_AD4030_24_GRADE,
-> =C2=A0	.precision_bits =3D 24,
-> =C2=A0	.num_voltage_inputs =3D 1,
-> =C2=A0	.tcyc_ns =3D AD4030_TCYC_ADJUSTED_NS,
-> +	.max_sample_rate_hz =3D 2 * HZ_PER_MHZ,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct ad4030_chip_info ad4630_16_chip_info =3D {
-> @@ -1141,10 +1511,17 @@ static const struct ad4030_chip_info
-> ad4630_16_chip_info =3D {
-> =C2=A0		AD4030_CHAN_CMO(3, 1),
-> =C2=A0		IIO_CHAN_SOFT_TIMESTAMP(4),
-> =C2=A0	},
-> +	.offload_channels =3D {
-> +		AD4030_OFFLOAD_CHAN_DIFF(0, ad4030_16_offload_scan_types),
-> +		AD4030_OFFLOAD_CHAN_DIFF(1, ad4030_16_offload_scan_types),
-> +		AD4030_CHAN_CMO(2, 0),
-> +		AD4030_CHAN_CMO(3, 1),
-> +	},
-> =C2=A0	.grade =3D AD4030_REG_CHIP_GRADE_AD4630_16_GRADE,
-> =C2=A0	.precision_bits =3D 16,
-> =C2=A0	.num_voltage_inputs =3D 2,
-> =C2=A0	.tcyc_ns =3D AD4030_TCYC_ADJUSTED_NS,
-> +	.max_sample_rate_hz =3D 2 * HZ_PER_MHZ,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct ad4030_chip_info ad4630_24_chip_info =3D {
-> @@ -1157,10 +1534,17 @@ static const struct ad4030_chip_info
-> ad4630_24_chip_info =3D {
-> =C2=A0		AD4030_CHAN_CMO(3, 1),
-> =C2=A0		IIO_CHAN_SOFT_TIMESTAMP(4),
-> =C2=A0	},
-> +	.offload_channels =3D {
-> +		AD4030_OFFLOAD_CHAN_DIFF(0, ad4030_24_offload_scan_types),
-> +		AD4030_OFFLOAD_CHAN_DIFF(1, ad4030_24_offload_scan_types),
-> +		AD4030_CHAN_CMO(2, 0),
-> +		AD4030_CHAN_CMO(3, 1),
-> +	},
-> =C2=A0	.grade =3D AD4030_REG_CHIP_GRADE_AD4630_24_GRADE,
-> =C2=A0	.precision_bits =3D 24,
-> =C2=A0	.num_voltage_inputs =3D 2,
-> =C2=A0	.tcyc_ns =3D AD4030_TCYC_ADJUSTED_NS,
-> +	.max_sample_rate_hz =3D 2 * HZ_PER_MHZ,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct ad4030_chip_info ad4632_16_chip_info =3D {
-> @@ -1173,10 +1557,17 @@ static const struct ad4030_chip_info
-> ad4632_16_chip_info =3D {
-> =C2=A0		AD4030_CHAN_CMO(3, 1),
-> =C2=A0		IIO_CHAN_SOFT_TIMESTAMP(4),
-> =C2=A0	},
-> +	.offload_channels =3D {
-> +		AD4030_OFFLOAD_CHAN_DIFF(0, ad4030_16_offload_scan_types),
-> +		AD4030_OFFLOAD_CHAN_DIFF(1, ad4030_16_offload_scan_types),
-> +		AD4030_CHAN_CMO(2, 0),
-> +		AD4030_CHAN_CMO(3, 1),
-> +	},
-> =C2=A0	.grade =3D AD4030_REG_CHIP_GRADE_AD4632_16_GRADE,
-> =C2=A0	.precision_bits =3D 16,
-> =C2=A0	.num_voltage_inputs =3D 2,
-> =C2=A0	.tcyc_ns =3D AD4632_TCYC_ADJUSTED_NS,
-> +	.max_sample_rate_hz =3D 500 * HZ_PER_KHZ,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct ad4030_chip_info ad4632_24_chip_info =3D {
-> @@ -1189,10 +1580,17 @@ static const struct ad4030_chip_info
-> ad4632_24_chip_info =3D {
-> =C2=A0		AD4030_CHAN_CMO(3, 1),
-> =C2=A0		IIO_CHAN_SOFT_TIMESTAMP(4),
-> =C2=A0	},
-> +	.offload_channels =3D {
-> +		AD4030_OFFLOAD_CHAN_DIFF(0, ad4030_24_offload_scan_types),
-> +		AD4030_OFFLOAD_CHAN_DIFF(1, ad4030_24_offload_scan_types),
-> +		AD4030_CHAN_CMO(2, 0),
-> +		AD4030_CHAN_CMO(3, 1),
-> +	},
-> =C2=A0	.grade =3D AD4030_REG_CHIP_GRADE_AD4632_24_GRADE,
-> =C2=A0	.precision_bits =3D 24,
-> =C2=A0	.num_voltage_inputs =3D 2,
-> =C2=A0	.tcyc_ns =3D AD4632_TCYC_ADJUSTED_NS,
-> +	.max_sample_rate_hz =3D 500 * HZ_PER_KHZ,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct spi_device_id ad4030_id_table[] =3D {
-> @@ -1228,3 +1626,4 @@ module_spi_driver(ad4030_driver);
-> =C2=A0MODULE_AUTHOR("Esteban Blanc <eblanc@baylibre.com>");
-> =C2=A0MODULE_DESCRIPTION("Analog Devices AD4630 ADC family driver");
-> =C2=A0MODULE_LICENSE("GPL");
-> +MODULE_IMPORT_NS("IIO_DMAENGINE_BUFFER");
+We don't have the flexibility to provide traces or register dumps. However,=
+ the issue is straightforward to reproduce with a kexec reboot.
+
+On the first boot, everything works fine: the sensor responds to the full e=
+numeration sequence, including RSTDAA to reset the dynamic address and ENTD=
+AA for assigning a new dynamic address. At this point, the sensor driver pr=
+obe is called successfully.
+
+On the subsequent boot via kexec reboot, the sensor driver probe is not cal=
+led because the sensor does not respond to the enumeration process (RSTDAA =
+and ENTDAA).
+
+When we add a software reset in the shutdown handler of the sensor driver, =
+the sensor once again responds correctly to RSTDAA and ENTDAA, and the driv=
+er probe is called as expected during kexec reboot.
+
+Note: We don't observe this behavior with other I3C devices, which helps is=
+olate the issue to this specific sensor.
+
+I hope this provides better clarity.
+
+Thanks,
+Manikanta.
+
+> -----Original Message-----
+> From: Mario TESI <mario.tesi@st.com>
+> Sent: Thursday, September 18, 2025 12:53 PM
+> To: Guntupalli, Manikanta <manikanta.guntupalli@amd.com>; Jorge Marques
+> <gastmaier@gmail.com>
+> Cc: David Lechner <dlechner@baylibre.com>; Andy Shevchenko
+> <andriy.shevchenko@intel.com>; git (AMD-Xilinx) <git@amd.com>; Simek, Mic=
+hal
+> <michal.simek@amd.com>; lorenzo@kernel.org; jic23@kernel.org;
+> nuno.sa@analog.com; andy@kernel.org; linux-iio@vger.kernel.org; linux-
+> kernel@vger.kernel.org; Pandey, Radhey Shyam
+> <radhey.shyam.pandey@amd.com>; Goud, Srinivas <srinivas.goud@amd.com>;
+> manion05gk@gmail.com
+> Subject: Re: [PATCH] iio: imu: lsm6dsx: Add shutdown callback support for=
+ I3C
+> interface
+>
+> Hi Manikanta,
+>
+> The mainline lsm6dsx driver supports several IMUs, but on the I3C bus, it=
+ supports
+> two: lam6dso and lam6dsr.
+> This is very strange because the software reset doesn't reset the dynamic=
+ address
+> on such devices; only an RSTDAA or a power cycle can reset it. Looking at=
+ how the
+> I3C master works, the first thing it requests during the probe phase is a=
+n RSTDAA,
+> which is sufficient to reset the I3C address. Therefore, the IMU sensors =
+should then
+> participate in the new assignment with the ENTDAA or SETDASA command (in =
+case
+> of assigned address). The software reset you perform during shutdown like=
+ly
+> deactivates the sensor, which solves any issues that may exist with the v=
+arious I3C
+> drivers (many of which are under development or debugging). It would be i=
+nteresting
+> to evaluate the I3C trace when the issue occurs and also a register dump =
+to better
+> understand where to focus.
+>
+> Best Regards,
+> Mario
+>
+> ________________________________________
+> Da: Guntupalli, Manikanta <manikanta.guntupalli@amd.com>
+> Inviato: venerd=EC 5 settembre 2025 07:29:18
+> A: Jorge Marques; Mario TESI
+> Cc: David Lechner; Andy Shevchenko; git (AMD-Xilinx); Simek, Michal;
+> lorenzo@kernel.org; jic23@kernel.org; nuno.sa@analog.com; andy@kernel.org=
+;
+> linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org; Pandey, Radhey S=
+hyam;
+> Goud, Srinivas; manion05gk@gmail.com
+> Oggetto: RE: [PATCH] iio: imu: lsm6dsx: Add shutdown callback support for=
+ I3C
+> interface
+>
+> [Public]
+>
+> + @mario.tesi@st.com
+>
+> Hi @mario.tesi,
+> We are observing an enumeration issue with the LSM6DSX sensor on I3C, sin=
+ce
+> enumeration occurs only there. During a kexec reboot, the LSM6DSX does no=
+t
+> respond to CCC commands during enumeration.
+> Adding a software reset in shutdown() resolves this and allows enumeratio=
+n to
+> succeed.
+>
+> Could you please confirm this behavior of the LSM6DSX on I3C from your si=
+de ?
+> Your confirmation will help us decide whether to proceed with just the so=
+ftware reset
+> in the driver or consider additional steps.
+>
+> > -----Original Message-----
+> > From: Guntupalli, Manikanta <manikanta.guntupalli@amd.com>
+> > Sent: Wednesday, July 30, 2025 11:58 AM
+> > To: Jorge Marques <gastmaier@gmail.com>
+> > Cc: David Lechner <dlechner@baylibre.com>; Andy Shevchenko
+> > <andriy.shevchenko@intel.com>; git (AMD-Xilinx) <git@amd.com>; Simek,
+> > Michal <michal.simek@amd.com>; lorenzo@kernel.org; jic23@kernel.org;
+> > nuno.sa@analog.com; andy@kernel.org; linux-iio@vger.kernel.org; linux-
+> > kernel@vger.kernel.org; Pandey, Radhey Shyam
+> > <radhey.shyam.pandey@amd.com>; Goud, Srinivas <srinivas.goud@amd.com>;
+> > manion05gk@gmail.com
+> > Subject: RE: [PATCH] iio: imu: lsm6dsx: Add shutdown callback support
+> > for I3C interface
+> >
+> >
+> > Hi,
+> >
+> > > -----Original Message-----
+> > > From: Jorge Marques <gastmaier@gmail.com>
+> > > Sent: Tuesday, July 29, 2025 6:19 PM
+> > > To: Guntupalli, Manikanta <manikanta.guntupalli@amd.com>
+> > > Cc: David Lechner <dlechner@baylibre.com>; Andy Shevchenko
+> > > <andriy.shevchenko@intel.com>; git (AMD-Xilinx) <git@amd.com>;
+> > > Simek, Michal <michal.simek@amd.com>; lorenzo@kernel.org;
+> > > jic23@kernel.org; nuno.sa@analog.com; andy@kernel.org;
+> > > linux-iio@vger.kernel.org; linux- kernel@vger.kernel.org; Pandey,
+> > > Radhey Shyam <radhey.shyam.pandey@amd.com>; Goud, Srinivas
+> > > <srinivas.goud@amd.com>; manion05gk@gmail.com
+> > > Subject: Re: [PATCH] iio: imu: lsm6dsx: Add shutdown callback
+> > > support for I3C interface
+> > >
+> > > On Tue, Jul 29, 2025 at 12:02:56PM +0000, Guntupalli, Manikanta wrote=
+:
+> > > > [AMD Official Use Only - AMD Internal Distribution Only]
+> > > >
+> > > > Hi @Jorge Marques,
+> > > >
+> > > > > -----Original Message-----
+> > > > > From: Jorge Marques <gastmaier@gmail.com>
+> > > > > Sent: Tuesday, July 22, 2025 1:27 PM
+> > > > > To: Guntupalli, Manikanta <manikanta.guntupalli@amd.com>
+> > > > > Cc: David Lechner <dlechner@baylibre.com>; Andy Shevchenko
+> > > > > <andriy.shevchenko@intel.com>; git (AMD-Xilinx) <git@amd.com>;
+> > > > > Simek, Michal <michal.simek@amd.com>; lorenzo@kernel.org;
+> > > > > jic23@kernel.org; nuno.sa@analog.com; andy@kernel.org;
+> > > > > linux-iio@vger.kernel.org; linux- kernel@vger.kernel.org;
+> > > > > Pandey, Radhey Shyam <radhey.shyam.pandey@amd.com>; Goud,
+> > > > > Srinivas <srinivas.goud@amd.com>; manion05gk@gmail.com
+> > > > > Subject: Re: [PATCH] iio: imu: lsm6dsx: Add shutdown callback
+> > > > > support for I3C interface
+> > > > >
+> > > > > On Tue, Jul 22, 2025 at 07:32:54AM +0000, Guntupalli, Manikanta w=
+rote:
+> > > > > > [AMD Official Use Only - AMD Internal Distribution Only]
+> > > > > >
+> > > > > > Hi @David Lechner,
+> > > > > >
+> > > > > > > -----Original Message-----
+> > > > > > > From: David Lechner <dlechner@baylibre.com>
+> > > > > > > Sent: Tuesday, July 22, 2025 2:31 AM
+> > > > > > > To: Andy Shevchenko <andriy.shevchenko@intel.com>;
+> > > > > > > Guntupalli, Manikanta <manikanta.guntupalli@amd.com>
+> > > > > > > Cc: git (AMD-Xilinx) <git@amd.com>; Simek, Michal
+> > > > > > > <michal.simek@amd.com>; lorenzo@kernel.org;
+> > > > > > > jic23@kernel.org; nuno.sa@analog.com; andy@kernel.org;
+> > > > > > > linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > > > > > > Pandey, Radhey Shyam <radhey.shyam.pandey@amd.com>; Goud,
+> > > > > > > Srinivas <srinivas.goud@amd.com>; manion05gk@gmail.com
+> > > > > > > Subject: Re: [PATCH] iio: imu: lsm6dsx: Add shutdown
+> > > > > > > callback support for I3C interface
+> > > > > > >
+> > > > > > > On 7/21/25 6:38 AM, Andy Shevchenko wrote:
+> > > > > > > > On Mon, Jul 21, 2025 at 04:37:41PM +0530, Manikanta
+> > > > > > > > Guntupalli
+> > wrote:
+> > > > > > > >> Add a shutdown handler for the ST LSM6DSx I3C driver to
+> > > > > > > >> perform a hardware reset during system shutdown. This
+> > > > > > > >> ensures the sensor is placed in a well-defined reset
+> > > > > > > >> state, preventing issues during subsequent reboots, such
+> > > > > > > >> as kexec, where the device may fail to respond correctly d=
+uring
+> enumeration.
+> > > > > > > >
+> > > > > > > > Do you imply that tons of device drivers missing this? I
+> > > > > > > > don't think we have even 5% of the drivers implementing the=
+ feature.
+> > > > > > > >
+> > > > > > > In the IIO drivers I've worked on, we always do reset in the
+> > > > > > > probe() function. The
+> > > > > > > shutdown() function might not run, e.g. if the board loses
+> > > > > > > power, so it doesn't fix 100% of the cases.
+> > > > > >
+> > > > > > Thank you for the input.
+> > > > > >
+> > > > > > You're absolutely right - shutdown() may not cover all cases
+> > > > > > like power
+> > loss.
+> > > > > However, in scenarios such as a warm reboot (kexec), the situatio=
+n is
+> different.
+> > > > > >
+> > > > > > Before the probe is called in the next boot, device
+> > > > > > enumeration takes place. During
+> > > > > this process, the I3C framework compares the device's PID, BCR,
+> > > > > and DCR values against the ones registered in the driver:
+> > > > > >
+> > > > > > static const struct i3c_device_id st_lsm6dsx_i3c_ids[] =3D {
+> > > > > >         I3C_DEVICE(0x0104, 0x006C, (void *)ST_LSM6DSO_ID),
+> > > > > >         I3C_DEVICE(0x0104, 0x006B, (void *)ST_LSM6DSR_ID),
+> > > > > >         { }
+> > > > > > };
+> > > > > >
+> > > > > > Only if this matching succeeds, the probe will be invoked.
+> > > > > >
+> > > > > > Since the sensor reset logic is placed inside the probe, the
+> > > > > > device must be in a
+> > > > > responsive state during enumeration. In the case of kexec, we
+> > > > > observed that the sensor does not respond correctly unless it is
+> > > > > explicitly reset
+> > > during shutdown().
+> > > > > Hence, adding the reset in shutdown() addresses this specific
+> > > > > case where the probe isn't reached due to failed enumeration.
+> > > > > >
+> > > > > Hi Manikanta,
+> > > > >
+> > > > > During i3c bus init, the CCC RSTDAA is emitted to reset all DAs
+> > > > > of all devices in the bus
+> > > > > (drivers/i3c/master.c@i3c_master_bus_init
+> > > > > -> i3c_master_rstdaa_locked). Is the LSM6DSX not compliant with t=
+hat?
+> > > > LSM6DSX is compliant with RSTDAA CCC.
+> > > >
+> > > > >
+> > > > > I get your solution but find odd to use the same method as in the=
+ probe.
+> > > > > In the probe, you would, in general, reset the device logic, but
+> > > > > leave the i3c peripheral logic intact, because you don't want to
+> > > > > undo whatever the controller has set-up for the current bus
+> > > > > attached devices (ibi config, da, max devices speed, all the good=
+ i3c stuff).
+> > > > > For this device, the st_lsm6dsx_reset_device seems to flush a
+> > > > > FIFO, do a software reset, and reload a trimming parameter;
+> > > > > which are necessary to solve the bug you are observed?
+> > > > Only software reset necessary to solve the bug.
+> > > >
+> > > > >
+> > > > > If possible, please explain better why the device won't
+> > > > > enumerate correctly after a reboot without the reset. If it is a
+> > > > > device bug, explicitly state that and that it is not compliant.
+> > > > > Also, take a look at fig.100 of the
+> > > i3c spec basic 1.1.1.
+> > > > >
+> > > > > Thank you for looking into this, this type of corner case is usua=
+lly overlooked.
+> > > > It appears that the sensor device is entering a deep sleep or
+> > > > low-power state and
+> > > is not responding to CCC commands. However, after a software reset,
+> > > the sensor starts responding to CCCs as expected.
+> > > It should, from the silicon pov, definitely respond to CCCs, even on
+> > > low-power
+> > states.
+> > > Could you confirm with stm32 the behaviour you are observing?
+> > > Inform them if it occurs under under i2c/i3c dual support, only i3c, =
+or both.
+> > > It sounds a little the messages are being filtered by the spike
+> > > filter when it
+> > shouldn't?
+> > > >
+> > > > Shall we proceed with only the software reset changes along with
+> > > > an improved
+> > > description, or do you recommend any additional modifications?
+> > > Confirm if this is a silicon issue first, if so, a note from st shoul=
+d be issued also.
+> > We are unable to verify the behavior on any silicon other than ours.
+> > It would be helpful if someone with access to a different silicon could=
+ confirm this
+> behavior.
+> >
+>
+> Thanks,
+> Manikanta.
+
 

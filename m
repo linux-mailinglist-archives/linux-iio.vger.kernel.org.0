@@ -1,59 +1,57 @@
-Return-Path: <linux-iio+bounces-24319-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24320-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A33EB8C6C3
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Sep 2025 13:33:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A31B8C6EF
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Sep 2025 13:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13D907E0449
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Sep 2025 11:33:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41E3B7C8342
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Sep 2025 11:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8258A2FB091;
-	Sat, 20 Sep 2025 11:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE262FC88A;
+	Sat, 20 Sep 2025 11:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5MTR39o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LjSk6N/P"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9321E5213;
-	Sat, 20 Sep 2025 11:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DC81FC104;
+	Sat, 20 Sep 2025 11:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758368032; cv=none; b=pPBl51Ge3FpCIjjorxVdPd5V7KQ5YXV6cg7VXHs/kloqLYxYMh6UdaddSl2MedxIdFLtf3W/mCg+yKgfPk0MPvc03QvLh+9LwaVW0sZbOmFtjKph2y0b+wNcfzptVs+cQuH5MDecZdix6yhw9o0ticx+qLT040C/lCcPVudLH0M=
+	t=1758368575; cv=none; b=ZOovzokHVT9g/CLYMGvLgpqyW6RAAUD0e69agVvRKuetCHcEDKxO9g+xwXdonxDcQqZuWfFtEPxgmY//Zjc8sDv69NRue4yLNKWPsHUjClm1u5zMvtRsE7fwsr2OlW2j/2Mx2WG8M886xFwFVvsaOzKzxxpnaECxPallV+6fQpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758368032; c=relaxed/simple;
-	bh=5oKaAyIfDbfN4oIwDxNdn4sdEmPGeHjHCUSfIsQsjCE=;
+	s=arc-20240116; t=1758368575; c=relaxed/simple;
+	bh=pheYgxbGuW3hPbYr9qKgTN42vcHYbrDzK7Zbs3DzBz0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V2nDU7zPYLWR3Wtp59clDkhz2iFTUxzpaKcmUXnYfi1qtamQsFyYd4ZfsIRpIKyvQOyvVuVyDtpuP9wqbFfUV5YanyoWFcR+Yun86EQsvkZ3iH4jAhwfU+dyUtZo6Ez7YlgkROJFILb3JgzUk0RYoUDsrnjxY8cx7tfbDHHpYEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5MTR39o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C0FC4CEEB;
-	Sat, 20 Sep 2025 11:33:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jbjn6+BCvRfn5lxSWNRylndb3Qq/xCfhcEME5VLyBTgtAdESz44of3yvficA3crv4tQcT6cqAc2dh8Moon1b9pGadPrBfjZyQmRkgbWH7UVcUfhm5mnwLNJrkemDrYMSEwpDEiOYV9CMsHTGEvibaYNlzzd8MxOrnQQQXMrHp94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LjSk6N/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A69C4CEEB;
+	Sat, 20 Sep 2025 11:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758368031;
-	bh=5oKaAyIfDbfN4oIwDxNdn4sdEmPGeHjHCUSfIsQsjCE=;
+	s=k20201202; t=1758368573;
+	bh=pheYgxbGuW3hPbYr9qKgTN42vcHYbrDzK7Zbs3DzBz0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p5MTR39oi36TPPP+ihRxqinyXWMj9xhV5AyizMmf2uNSTULMsJogoM1lcieBL8TuQ
-	 DrM7mxskvn8DOZ72bw/Dhd4xbNCRhPivl5jdzOu1VYKSQiW46wajMyYG4zuAJzx8r0
-	 ojsvYHhI5K3SU6XNligZxEO3qwbSj/Pmf1uQnZq0nFzG8Pf1lvBR5Jv9MsPVKz10Io
-	 /KdQ80l8V6KlaaomtECJSo9jrjR+UlFLifsMHG7R/IwjYqgELV9udMrmzqdUchDu0k
-	 9AVGl+9ng6svzm891NaPzUdb0W1DiJcgKF4MuLxt7qhAqiq5P6V9PNy98DW/mPAUmW
-	 2afzVgtM87/XQ==
-Date: Sat, 20 Sep 2025 12:33:40 +0100
+	b=LjSk6N/Pxq2V5RnISBNcJm1DZcNtbPeTkDkseIF3QVgEOgBdErT8wwXsHXcBLoyeK
+	 lFEJTt1x9hk+stZIMLs4l0c1DJYJ1975cmUwFBcvMt8IKCA3ez9MBIYtq6mYy5sxXA
+	 24MLdJG4agqo+AK3S18uYhCbLcOxpf9AjRCe415OBmHsQrw7Jjcr9L0K/soJd/UZkC
+	 zqYoyy8wJViw4NNry52ltrp0k7MfAibJOMyFQ0fDLFfKYpesNerPf4qikEdkBo6KCf
+	 P8TEZe3g+pjfWyo0bQMqAYHbmV04baKhBy21RCPbsD+MwAQaQRX2RA97nrlhUfFKdY
+	 eXIP0QhiFNRQw==
+Date: Sat, 20 Sep 2025 12:42:44 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marius Cristea <marius.cristea@microchip.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org
-Subject: Re: [PATCH 0/2] Add support for Microchip EMC1812
-Message-ID: <20250920123340.1b1d03be@jic23-huawei>
-In-Reply-To: <20250917-iio-emc1812-v1-0-0b1f74cea7ab@microchip.com>
-References: <20250917-iio-emc1812-v1-0-0b1f74cea7ab@microchip.com>
+To: <victor.duicu@microchip.com>
+Cc: <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+ <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <marius.cristea@microchip.com>
+Subject: Re: [PATCH v5 0/2] add support for MCP998X
+Message-ID: <20250920124244.1c263df0@jic23-huawei>
+In-Reply-To: <20250918111937.5150-1-victor.duicu@microchip.com>
+References: <20250918111937.5150-1-victor.duicu@microchip.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,57 +62,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 17 Sep 2025 15:21:56 +0300
-Marius Cristea <marius.cristea@microchip.com> wrote:
+On Thu, 18 Sep 2025 14:19:35 +0300
+<victor.duicu@microchip.com> wrote:
 
-> This is the iio driver for EMC1812/13/14/15/33 multichannel Low-Voltage
-> Remote Diode Sensor Family. The chips in the family have one internal
-> and different numbers of external channels, ranging from 1 (EMC1812) to
-> 4 channels (EMC1815).
-> Reading diodes in anti-parallel connection is supported by EMC1814, EMC1815
-> and EMC1833.
+> From: Victor Duicu <victor.duicu@microchip.com>
 > 
-> Current version of driver does not support interrupts, events and data
-> buffering.
-Hi Marius,
-
-For a temperature monitoring device like this, the opening question is
-always why not HWMON?
-
-There are various reasons we have temp sensors in IIO but mostly they are not
-described as being monitors and this one is.
-
-IIO may well be the right choice for this part, but good to lay out your
-reasoning and +CC the hwmon list and maintainers.  There is an emc1403
-driver already in hwmon, so perhaps compare and contrast with that.
-
-I've +CC Jean, Guenter and list to save sending a v2 just to do that.
-
-Jonathan
-
-
+> Add support for Microchip MCP998X/33 and MCP998XD/33D Multichannel Automotive Temperature Monitor Family.
 > 
-> Differences related to previous patch:
+> The chips in the family have different numbers of external channels, ranging from 1 (MCP9982) to 4 channels (MCP9985).
+> Reading diodes in anti-parallel connection is supported by MCP9984/85/33 and MCP9984D/85D/33D.
+> Dedicated hardware shutdown circuitry is present only in MCP998XD and MCP9933D.
 > 
-> v1:
-> - initial version.
-> 
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
-> ---
-> Marius Cristea (2):
->       dt-bindings: iio: temperature: add support for EMC1812
->       iio: temperature: add support for EMC1812
-> 
->  .../iio/temperature/microchip,emc1812.yaml         | 223 ++++++
->  MAINTAINERS                                        |   7 +
->  drivers/iio/temperature/Kconfig                    |  10 +
->  drivers/iio/temperature/Makefile                   |   1 +
->  drivers/iio/temperature/emc1812.c                  | 792 +++++++++++++++++++++
->  5 files changed, 1033 insertions(+)
-> ---
-> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-> change-id: 20250805-iio-emc1812-e666183b07b5
-> 
-> Best regards,
+> Current version of driver does not support interrupts, events and data buffering.
+
+Similar to the emc1812, this probably wants a short statement of why IIO rather than hwmon.
+Given it is called out as an automotive sensor I'm more confident this one is suitable
+for IIO, but still good to state that in the cover letter.
 
 

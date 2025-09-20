@@ -1,58 +1,56 @@
-Return-Path: <linux-iio+bounces-24315-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24316-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F24B8C679
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Sep 2025 13:05:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CB1B8C682
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Sep 2025 13:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 219F358231A
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Sep 2025 11:05:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FE0817BD33
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Sep 2025 11:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80902F90E0;
-	Sat, 20 Sep 2025 11:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECEB2F9982;
+	Sat, 20 Sep 2025 11:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7WNCgAG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7r0zvnN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AF12E0B5F;
-	Sat, 20 Sep 2025 11:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCCA2F7AA1;
+	Sat, 20 Sep 2025 11:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758366305; cv=none; b=uQd6thAJ36UVDG0LkxgbTL4hNdXOVTkwFkD9VVm0KiaJGnXsf7Np+IdwLcDcNy8/aWd9R0FxQGck4acoQgPQvNm6Q8Kr3kvznH6rbtzLvatN/Axqric8/Nh+x6gJUKyXfwHG7tk2bKQNoYkHgNo/oIvz7jX34qWG+vN5YXQpZgM=
+	t=1758366396; cv=none; b=g3jZxjcMJIKA0N++bljbWAS938lV2FzitM+ZUbqwh/hQp6saoWurH/77judtKv9Scp7sNzbTXhT9N0y89OwfdAot1LPQalZCEXCDStQBKDElmHLAzho4YLuexv0fMA5MWNrKz4TdC1jyADpKbgFlQqURsYsOtmZtXDwDfaUXo74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758366305; c=relaxed/simple;
-	bh=v7Urrw2ChHfOXNdRWXlMWV8mOAUl4ug1LvTNOQ0/cOg=;
+	s=arc-20240116; t=1758366396; c=relaxed/simple;
+	bh=IHYF4fNI1oCnSq4pPg7KO014w0tMqzNW/+gAbGAx5jk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WTgLq0iKHsNwbMBECIDwOEYqFryBCkTWA1TFSyUwC1RUd4FT9ZmkoZXdGYnOKdSh3Z2jv5GtJQE4nUWJRyx7c0KUEdCj8X5Hs77RcwobcCSQLY0VGMcokptCJFjcUm6hzp4rgieiHeaZrM7f093QTEptBNoeiU1vjbuedk0xrxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7WNCgAG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58207C4CEEB;
-	Sat, 20 Sep 2025 11:05:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZdwMzb3qiVW8mxBEy2J/rkkQijOL8iSoZMM6tJ79OHB42r3ebhL9K6v8zVAcFi5QGY9IjKNdol3PZQfAd9JxrfRtRhiVXwnOs0C95uHG/Wd/FTLA1kTfgRoDqYoQvg73ljhZwM7S88AETiKU7yI78y/w4hdPK1j5FP3sVuVpyHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7r0zvnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D39C4CEEB;
+	Sat, 20 Sep 2025 11:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758366304;
-	bh=v7Urrw2ChHfOXNdRWXlMWV8mOAUl4ug1LvTNOQ0/cOg=;
+	s=k20201202; t=1758366396;
+	bh=IHYF4fNI1oCnSq4pPg7KO014w0tMqzNW/+gAbGAx5jk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=H7WNCgAGO25/hLEfdOOGJBaMmC3eKYbx168ykMERAYjYbf2BcbgGOzzB81A9fj51U
-	 VKW2gezi5Bb7iNZxuc51ac0ZtaGq0Q6yW01st0zJt+9+H3Ll76/A8TAQtdWd8GRtkO
-	 9fo1Bhi5womLse0jzcyxyHOYMG1CbhjTVwqEDTGkX6M0ihVhH+lN14V1uxFtYCbVFO
-	 uadSnyV+MkgdKM2AMBV4ml5PVcEUZZ01c+U0H/yrI6Df2HLivey934M5mwtrWQGy/6
-	 7IglFKopcWSGjCYKunZBgVPMuV3kHMnWGzVAmfF0EJMRU7xhrbtoZ3M4/AMeeVmHpz
-	 gluisoAmsTHBg==
-Date: Sat, 20 Sep 2025 12:04:57 +0100
+	b=O7r0zvnNZb1vwinp3SBO7mS8ko9Xhkr/Q4HQdSXsiYrurJ6vjAdRPsBfyFShyydcW
+	 chq/uZa9UbI+CD+8l1aBUsGcmXeuG5bmyEIHFiJuSKZ8sHtjM6SPQMQcQbrZLkXtHf
+	 PGyXG/9sflpJhBywjKsiNvLll+mRXuMaqK01j0OD7tmARCDr0IIvRpYQRS4zeND9dx
+	 hxISftz9NSQLIn2u0dhP/sqX33vflFJ+Hph5P8n7eOdK2ucnCklS3abJhqnxqDDwgW
+	 K0bPl3VUSmJh+mdqXGFiQdahCA9rZT+uNy+qNKyFXNf7z6ZKbmRig68N+lKcQ4m85E
+	 +ts/FeQnA4S/Q==
+Date: Sat, 20 Sep 2025 12:06:27 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Michael Hennerich 
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= 
+To: David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
  <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7124: use AD7124_MAX_CHANNELS
-Message-ID: <20250920120457.0022d1f2@jic23-huawei>
-In-Reply-To: <add0b8de5452d9cb293c175c60cbb71b5ccac2d0.camel@gmail.com>
-References: <20250917-iio-adc-ad7124-use-ad7124_max_channels-v1-1-70913256a8f8@baylibre.com>
-	<add0b8de5452d9cb293c175c60cbb71b5ccac2d0.camel@gmail.com>
+Subject: Re: [PATCH] iio: adc: ad7124: use devm_mutex_init()
+Message-ID: <20250920120627.307a8bdd@jic23-huawei>
+In-Reply-To: <20250917-iio-adc-ad7124-use-devm_mutex_init-v1-1-ff23fe3ad954@baylibre.com>
+References: <20250917-iio-adc-ad7124-use-devm_mutex_init-v1-1-ff23fe3ad954@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,23 +58,48 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 17 Sep 2025 16:17:56 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Wed, 17 Sep 2025 10:22:30 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On Wed, 2025-09-17 at 09:17 -0500, David Lechner wrote:
-> > Use AD7124_MAX_CHANNELS macro instead of hardcoding 16 in
-> > ad7124_disable_all(). We already have the macro, so we should use it.
-> >=20
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > --- =20
->=20
-> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> Use devm_mutex_init() to initialize the mutex to handle automatically
+> freeing in debug builds.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Normally I'd say this isn't worth the churn but fine this time given
+all the other patches for this driver.
+
 Applied to iio.git/testing
 
-Thanks,
-
 Jonathan
+
+> ---
+>  drivers/iio/adc/ad7124.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> index 9ace3e0914f5acab695c0382df758f56f333ae72..9d9250274b9a02e2982e6ceda27009a84413dc2f 100644
+> --- a/drivers/iio/adc/ad7124.c
+> +++ b/drivers/iio/adc/ad7124.c
+> @@ -1482,7 +1482,10 @@ static int ad7124_setup(struct ad7124_state *st)
+>  	st->adc_control &= ~AD7124_ADC_CONTROL_MODE;
+>  	st->adc_control |= FIELD_PREP(AD7124_ADC_CONTROL_MODE, AD_SD_MODE_IDLE);
+>  
+> -	mutex_init(&st->cfgs_lock);
+> +	ret = devm_mutex_init(dev, &st->cfgs_lock);
+> +	if (ret)
+> +		return ret;
+> +
+>  	INIT_KFIFO(st->live_cfgs_fifo);
+>  	for (i = 0; i < st->num_channels; i++) {
+>  		struct ad7124_channel_config *cfg = &st->channels[i].cfg;
+> 
+> ---
+> base-commit: 561285d048053fec8a3d6d1e3ddc60df11c393a0
+> change-id: 20250917-iio-adc-ad7124-use-devm_mutex_init-45a297b1ff8f
+> 
+> Best regards,
+
 

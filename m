@@ -1,39 +1,39 @@
-Return-Path: <linux-iio+bounces-24377-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24378-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA45B96BE9
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 18:08:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2033B96BE0
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 18:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D07ED16FDA7
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 16:07:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75A713B986F
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 16:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97352F7ABE;
-	Tue, 23 Sep 2025 16:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEAE3191C8;
+	Tue, 23 Sep 2025 16:06:41 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F73255F31;
-	Tue, 23 Sep 2025 16:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A6F255F31;
+	Tue, 23 Sep 2025 16:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758643594; cv=none; b=hyAZNI8CNbXC69u8bfO7mYWZPvdGNFSTguvjpw7IeK3uix6f17CFFhtA1Jhr7XBW7c83bwIN72FZvg2OpeK9S0W6AhrVbhqBcAK1/Tx6iAEVKWLp6QgAeKyhuG8LqAXHYSEqtUYQZumrbCpGan/3W+NGTcCn2izwraOk+Xd45zE=
+	t=1758643600; cv=none; b=GJqZsRb8TyZUijE3J3jhpz5KTPeF6PnvPOXsa7MVtgZGwd8Q7CGcuzSzNa3+LH73FRu6QTIKH+DOpCR9JQp/3t22FrLSpYQa2nL2pdQEIBVCkHJ3Q9VgHul8EB4Irkk+1lJ6DZZsQFOtrkEBaJ/Z+2Ft+H9MJqV/20HKjhe+cFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758643594; c=relaxed/simple;
-	bh=x1yOWnf7BlpJEG8EWYAT2jSSVwYz8D6FZmHjS8CE+Gg=;
+	s=arc-20240116; t=1758643600; c=relaxed/simple;
+	bh=XQ3XKuMVVnlhB58MduVr+0rxBWpHh/TwGzeY/ypNSww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCNpQd5kvMiSiXaasaolmSbtgdEZz47sy03UfC+4cbnDggQqFcnPPVL8mlmkbn3mq5hIkzeE2aTNc5zRrDMHeI/jqbIqPQ2YXe/Kn4qZaZosuqTcWgznGI0+ZBW7r0+/AIQWy04RXR7nneuUVBuegKcgzXYbLdjDYGL10/mK0k4=
+	 MIME-Version; b=HFKwc46TUInG3aqesWbWPfrdoVGMoPK9TBLvMF1nuqxu0U1ObM1lL1AflAo7YPIkbr8+w9VV12sat+X4L3/Nq3KnlXWKOkO7N7cEwpQRki5BnlX1MKRDTF5t2HbtgLCOTAMx0Vq9DVb39Z7++FFFpW8oruckU8kToarMznADafk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: g+WV/4OcS0mIeK8LcGHjUg==
-X-CSE-MsgGUID: 9N/xtJKaSUy+b3nLRtg+bQ==
+X-CSE-ConnectionGUID: N4UvnteMQ+S8MeSLsrrAvA==
+X-CSE-MsgGUID: UJ/s2eGKTxSiRuTyRZA/9g==
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 24 Sep 2025 01:06:31 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 24 Sep 2025 01:06:38 +0900
 Received: from demon-pc.localdomain (unknown [10.226.93.64])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 745BA400C752;
-	Wed, 24 Sep 2025 01:06:26 +0900 (JST)
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 049D94008A2F;
+	Wed, 24 Sep 2025 01:06:32 +0900 (JST)
 From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 To: 
 Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
@@ -54,9 +54,9 @@ Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-clk@vger.kernel.org
-Subject: [PATCH 5/7] arm64: dts: renesas: r9a09g087: Add ADCs support
-Date: Tue, 23 Sep 2025 19:05:19 +0300
-Message-ID: <20250923160524.1096720-6-cosmin-gabriel.tanislav.xa@renesas.com>
+Subject: [PATCH 6/7] arm64: dts: renesas: rzt2h/rzn2h-evk: enable ADCs
+Date: Tue, 23 Sep 2025 19:05:20 +0300
+Message-ID: <20250923160524.1096720-7-cosmin-gabriel.tanislav.xa@renesas.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250923160524.1096720-1-cosmin-gabriel.tanislav.xa@renesas.com>
 References: <20250923160524.1096720-1-cosmin-gabriel.tanislav.xa@renesas.com>
@@ -68,97 +68,212 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Renesas RZ/T2H (R9A09G087) includes three 12-Bit successive
-approximation A/D converters, two 4-channel ADCs, and one 15-channel
-ADC.
+The ADCs on RZ/T2H and RZ/N2H are exposed on the evaluation kit boards.
 
-Add support for all of them.
+Enable them.
 
 Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 ---
- arch/arm64/boot/dts/renesas/r9a09g087.dtsi | 69 ++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+ .../dts/renesas/r9a09g077m44-rzt2h-evk.dts    | 28 +++++++
+ .../dts/renesas/r9a09g087m44-rzn2h-evk.dts    | 64 +++++++++++++++
+ .../dts/renesas/rzt2h-n2h-evk-common.dtsi     | 79 +++++++++++++++++++
+ 3 files changed, 171 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a09g087.dtsi b/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
-index 88669868f0ee..faca2fd47257 100644
---- a/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
-@@ -666,6 +666,75 @@ gic: interrupt-controller@83000000 {
- 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
- 		};
- 
-+		adc0: adc@90014000 {
-+			compatible = "renesas,r9a09g087-adc";
-+			reg = <0 0x90014000 0 0x400>;
-+			interrupts = <GIC_SPI 698 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 699 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 700 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 701 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 702 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 851 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 852 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "adi", "gbadi", "gcadi",
-+					  "cmpai", "cmpbi", "wcmpm", "wcmpum";
-+			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKL>,
-+				 <&cpg CPG_MOD 206>;
-+			clock-names = "adclk", "pclk";
-+			power-domains = <&cpg>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#io-channel-cells = <1>;
-+			renesas,max-channels = <4>;
-+			status = "disabled";
-+		};
+diff --git a/arch/arm64/boot/dts/renesas/r9a09g077m44-rzt2h-evk.dts b/arch/arm64/boot/dts/renesas/r9a09g077m44-rzt2h-evk.dts
+index 9170c563208a..e94b84393bd9 100644
+--- a/arch/arm64/boot/dts/renesas/r9a09g077m44-rzt2h-evk.dts
++++ b/arch/arm64/boot/dts/renesas/r9a09g077m44-rzt2h-evk.dts
+@@ -252,3 +252,31 @@ usb_pins: usb-pins {
+ 			 <RZT2H_PORT_PINMUX(0, 1, 0x13)>; /* OVRCUR */
+ 	};
+ };
 +
-+		adc1: adc@90014400 {
-+			compatible = "renesas,r9a09g087-adc";
-+			reg = <0 0x90014400 0 0x400>;
-+			interrupts = <GIC_SPI 703 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 704 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 705 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 706 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 707 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 853 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 854 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "adi", "gbadi", "gcadi",
-+					  "cmpai", "cmpbi", "wcmpm", "wcmpum";
-+			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKL>,
-+				 <&cpg CPG_MOD 207>;
-+			clock-names = "adclk", "pclk";
-+			power-domains = <&cpg>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#io-channel-cells = <1>;
-+			renesas,max-channels = <4>;
-+			status = "disabled";
-+		};
++&adc2 {
++	status = "okay";
 +
-+		adc2: adc@80008000 {
-+			compatible = "renesas,r9a09g087-adc";
-+			reg = <0 0x80008000 0 0x400>;
-+			interrupts = <GIC_SPI 708 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 709 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 710 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 711 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 712 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 855 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 856 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "adi", "gbadi", "gcadi",
-+					  "cmpai", "cmpbi", "wcmpm", "wcmpum";
-+			clocks = <&cpg CPG_CORE R9A09G087_CLK_PCLKL>,
-+				 <&cpg CPG_MOD 225>;
-+			clock-names = "adclk", "pclk";
-+			power-domains = <&cpg>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#io-channel-cells = <1>;
-+			renesas,max-channels = <15>;
-+			status = "disabled";
-+		};
++	channel@0 {
++		reg = <0x0>;
++	};
 +
- 		ohci: usb@92040000 {
- 			compatible = "generic-ohci";
- 			reg = <0 0x92040000 0 0x100>;
++	channel@1 {
++		reg = <0x1>;
++	};
++
++	channel@2 {
++		reg = <0x2>;
++	};
++
++	channel@3 {
++		reg = <0x3>;
++	};
++
++	channel@4 {
++		reg = <0x4>;
++	};
++
++	channel@5 {
++		reg = <0x5>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/renesas/r9a09g087m44-rzn2h-evk.dts b/arch/arm64/boot/dts/renesas/r9a09g087m44-rzn2h-evk.dts
+index 279f2510044b..d27da157c6d6 100644
+--- a/arch/arm64/boot/dts/renesas/r9a09g087m44-rzn2h-evk.dts
++++ b/arch/arm64/boot/dts/renesas/r9a09g087m44-rzn2h-evk.dts
+@@ -305,3 +305,67 @@ usb_pins: usb-pins {
+ 			 <RZT2H_PORT_PINMUX(2, 3, 0x13)>; /* OVRCUR */
+ 	};
+ };
++
++&adc2 {
++	status = "okay";
++
++	channel@0 {
++		reg = <0x0>;
++	};
++
++	channel@1 {
++		reg = <0x1>;
++	};
++
++	channel@2 {
++		reg = <0x2>;
++	};
++
++	channel@3 {
++		reg = <0x3>;
++	};
++
++	channel@4 {
++		reg = <0x4>;
++	};
++
++	channel@5 {
++		reg = <0x5>;
++	};
++
++	channel@6 {
++		reg = <0x6>;
++	};
++
++	channel@7 {
++		reg = <0x7>;
++	};
++
++	channel@8 {
++		reg = <0x8>;
++	};
++
++	channel@9 {
++		reg = <0x9>;
++	};
++
++	channel@a {
++		reg = <0xa>;
++	};
++
++	channel@b {
++		reg = <0xb>;
++	};
++
++	channel@c {
++		reg = <0xc>;
++	};
++
++	channel@d {
++		reg = <0xd>;
++	};
++
++	channel@e {
++		reg = <0xe>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi b/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi
+index 9ca26725a3e9..a7123a9ec684 100644
+--- a/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi
++++ b/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi
+@@ -338,3 +338,82 @@ &wdt2 {
+ 	status = "okay";
+ 	timeout-sec = <60>;
+ };
++
++/*
++ * ADC0 AN000 can be connected to a potentiometer on the board or
++ * exposed on ADC header.
++ *
++ * T2H:
++ * SW17[1] = ON, SW17[2] = OFF - Potentiometer
++ * SW17[1] = OFF, SW17[2] = ON  - CN41 header
++ * N2H:
++ * DSW6[1] = OFF, DSW6[2] = ON - Potentiometer
++ * DSW6[1] = ON, DSW6[2] = OFF - CN3 header
++ */
++&adc0 {
++	status = "okay";
++
++	channel@0 {
++		reg = <0x0>;
++	};
++
++	channel@1 {
++		reg = <0x1>;
++	};
++
++	channel@2 {
++		reg = <0x2>;
++	};
++
++	channel@3 {
++		reg = <0x3>;
++	};
++};
++
++/*
++ * ADC1 AN100 can be exposed on ADC header or on mikroBUS connector.
++ *
++ * T2H:
++ * SW18[1] = ON, SW18[2] = OFF - CN42 header
++ * SW18[1] = OFF, SW18[2] = ON - mikroBUS
++ * N2H:
++ * DSW6[3] = ON, DSW6[4] = OFF - CN4 header
++ * DSW6[3] = OFF, DSW6[4] = ON - mikroBUS
++ *
++ * ADC1 AN101 can be exposed on ADC header or on Grove2 connector.
++ *
++ * T2H:
++ * SW18[3] = ON, SW18[4] = OFF - CN42 header
++ * SW18[3] = OFF, SW18[4] = ON - Grove2
++ * N2H:
++ * DSW6[5] = ON, DSW6[6] = OFF - CN4 header
++ * DSW6[5] = OFF, DSW6[6] = ON - Grove2
++ *
++ * ADC1 AN102 can be exposed on ADC header or on Grove2 connector.
++ *
++ * T2H:
++ * SW18[5] = ON, SW18[6] = OFF - CN42 header
++ * SW18[5] = OFF, SW18[6] = ON - Grove2
++ * N2H:
++ * DSW6[7] = ON, DSW6[8] = OFF - CN4 header
++ * DSW6[7] = OFF, DSW6[8] = ON - Grove2
++ */
++&adc1 {
++	status = "okay";
++
++	channel@0 {
++		reg = <0x0>;
++	};
++
++	channel@1 {
++		reg = <0x1>;
++	};
++
++	channel@2 {
++		reg = <0x2>;
++	};
++
++	channel@3 {
++		reg = <0x3>;
++	};
++};
 -- 
 2.51.0
 

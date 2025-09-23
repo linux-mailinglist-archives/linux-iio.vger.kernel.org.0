@@ -1,38 +1,39 @@
-Return-Path: <linux-iio+bounces-24372-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24373-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C00B96B7F
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 18:06:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09BEAB96B8C
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 18:06:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96850165345
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 16:06:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDD143AFDBB
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 16:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D7D26F291;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB7127EFFB;
 	Tue, 23 Sep 2025 16:06:08 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B083E14EC46;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5098B2356C7;
 	Tue, 23 Sep 2025 16:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758643568; cv=none; b=JMWsxWtQmjmfITDhIo5KqM5FTnVRiNMQlF5QtnHJZ76CpeYhV2NxCuncYgkyZkr9pV9Q49KX3vlSCUYuHECxQqMDKEaNyhpH+D0DbWmfbbCeF7rkvoTAh0Hwz9BM5nf0Gja7/XSEjrqyL3MMGY2apFcbgWLfJ/NqIPzth381lGE=
+	t=1758643568; cv=none; b=BTqh+dQbnXzoZ4dHooSx46VsJuF8W8cRlJf6rso2EmltFLxZHxnJHbTrijfOB3UrHEnMBmGTFuzeWSRcFHGuXSNZ3HC9Lx/10da6F6AQDSIaTtSLcx6EEaFLQ7ppCaZjRFLUUooaXz6/PCoLZXzO8ZoQAz8YEdauvoKtujKmg4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758643568; c=relaxed/simple;
-	bh=0GTh+0WJIPd40cypVxXRfCEqOpvywQK+YUOaM9yZ4W0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nB1nMNy1fV/L1Yw/9ZcVGayPjMJ8u/ZN94ZISoxLH5F4kwT+PVcxcDxqbEU7bWFuT62m5FE/77/FVYbENwLnBL09IX+cKCX1iSCAuPclJ2rhIxsOa8G7fZw0js7kfHZqLbKcyslghBr4qjooch0n2Re0PoSAX79D80rAFy8Yngk=
+	bh=WkkC0kT5N1Q9IYtxl+k06yYtAGzKSUAMrKpNLaxFa6s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CsXwuGxuPDlcktKspPedbcXQuWuzp3FEb9laHC51rCPajBUqXfmLPG0OOkbOw72DwuRIYKjSpCX/wvyAsTHtiKsBOX1Ho3daJITbbvK0l3hhfWN0SpRvC+K7HUzjGIO1ynRzOtUqV4e21OtwIJVMPutq0btWQFy2Kz0NyhylHGo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: YGSbaGE+SJCKN1N7nn0uLw==
-X-CSE-MsgGUID: EzCQqDIPQu+ubIvfaqd+YA==
+X-CSE-ConnectionGUID: gyGMm+LbS6a0rEVG2hINUg==
+X-CSE-MsgGUID: bs7SgK8uRsmkXt1mLdYZdA==
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 24 Sep 2025 01:05:58 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 24 Sep 2025 01:06:05 +0900
 Received: from demon-pc.localdomain (unknown [10.226.93.64])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id A932D400C752;
-	Wed, 24 Sep 2025 01:05:52 +0900 (JST)
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id E6D064008A2F;
+	Wed, 24 Sep 2025 01:05:59 +0900 (JST)
 From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 To: 
 Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
@@ -53,10 +54,12 @@ Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-clk@vger.kernel.org
-Subject: [PATCH 0/7] Add ADCs support for RZ/T2H and RZ/N2H
-Date: Tue, 23 Sep 2025 19:05:14 +0300
-Message-ID: <20250923160524.1096720-1-cosmin-gabriel.tanislav.xa@renesas.com>
+Subject: [PATCH 1/7] clk: renesas: r9a09g077: Add ADC modules clock
+Date: Tue, 23 Sep 2025 19:05:15 +0300
+Message-ID: <20250923160524.1096720-2-cosmin-gabriel.tanislav.xa@renesas.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250923160524.1096720-1-cosmin-gabriel.tanislav.xa@renesas.com>
+References: <20250923160524.1096720-1-cosmin-gabriel.tanislav.xa@renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,39 +68,32 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs include three
-12-Bit successive approximation A/D converters.
+Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs have three 12bit
+ADC peripherals, each with its own peripheral clock.
 
-RZ/T2H has two ADCs with 4 channels and one with 6.
-RZ/N2H has two ADCs with 4 channels and one with 15.
+For conversion, they use the PCLKL clock.
 
-Add support for them.
+Add their clocks to the list of module clocks.
 
-Cosmin Tanislav (7):
-  clk: renesas: r9a09g077: Add ADC modules clock
-  dt-bindings: iio: adc: document RZ/T2H and RZ/N2H ADC
-  iio: adc: add RZ/T2H / RZ/N2H ADC driver
-  arm64: dts: renesas: r9a09g077: Add ADCs support
-  arm64: dts: renesas: r9a09g087: Add ADCs support
-  arm64: dts: renesas: rzt2h/rzn2h-evk: enable ADCs
-  arm64: defconfig: enable RZ/T2H / RZ/N2H ADC driver
+Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+---
+ drivers/clk/renesas/r9a09g077-cpg.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- .../iio/adc/renesas,r9a09g077-adc.yaml        | 170 +++++++++
- MAINTAINERS                                   |   8 +
- arch/arm64/boot/dts/renesas/r9a09g077.dtsi    |  69 ++++
- .../dts/renesas/r9a09g077m44-rzt2h-evk.dts    |  28 ++
- arch/arm64/boot/dts/renesas/r9a09g087.dtsi    |  69 ++++
- .../dts/renesas/r9a09g087m44-rzn2h-evk.dts    |  64 ++++
- .../dts/renesas/rzt2h-n2h-evk-common.dtsi     |  79 +++++
- arch/arm64/configs/defconfig                  |   1 +
- drivers/clk/renesas/r9a09g077-cpg.c           |   3 +
- drivers/iio/adc/Kconfig                       |  10 +
- drivers/iio/adc/Makefile                      |   1 +
- drivers/iio/adc/rzt2h_adc.c                   | 328 ++++++++++++++++++
- 12 files changed, 830 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
- create mode 100644 drivers/iio/adc/rzt2h_adc.c
-
+diff --git a/drivers/clk/renesas/r9a09g077-cpg.c b/drivers/clk/renesas/r9a09g077-cpg.c
+index 3aaa154102d5..5dca5c44043e 100644
+--- a/drivers/clk/renesas/r9a09g077-cpg.c
++++ b/drivers/clk/renesas/r9a09g077-cpg.c
+@@ -192,6 +192,9 @@ static const struct mssr_mod_clk r9a09g077_mod_clks[] __initconst = {
+ 	DEF_MOD("sci4fck", 12, CLK_SCI4ASYNC),
+ 	DEF_MOD("iic0", 100, R9A09G077_CLK_PCLKL),
+ 	DEF_MOD("iic1", 101, R9A09G077_CLK_PCLKL),
++	DEF_MOD("adc0", 206, R9A09G077_CLK_PCLKH),
++	DEF_MOD("adc1", 207, R9A09G077_CLK_PCLKH),
++	DEF_MOD("adc2", 225, R9A09G077_CLK_PCLKM),
+ 	DEF_MOD("gmac0", 400, R9A09G077_CLK_PCLKM),
+ 	DEF_MOD("ethsw", 401, R9A09G077_CLK_PCLKM),
+ 	DEF_MOD("ethss", 403, R9A09G077_CLK_PCLKM),
 -- 
 2.51.0
 

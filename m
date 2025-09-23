@@ -1,177 +1,157 @@
-Return-Path: <linux-iio+bounces-24363-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24364-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45716B946A2
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 07:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08D21B94F78
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 10:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE442440C83
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 05:31:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CF9248639E
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Sep 2025 08:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DA030EF98;
-	Tue, 23 Sep 2025 05:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753ED2E92BC;
+	Tue, 23 Sep 2025 08:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="agPiiTZl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kUgkHBd0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2D130EF69
-	for <linux-iio@vger.kernel.org>; Tue, 23 Sep 2025 05:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA6F31A04E
+	for <linux-iio@vger.kernel.org>; Tue, 23 Sep 2025 08:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758605470; cv=none; b=di2fXq7BKI/R79Ikn0g1HmtajzCGhxzVf/z5DIP85SuRiNiaALdFX8eKgFq68GJKivwthi3KVJ5M61mzjX3NkJJ/McXMBTA6wG1O1QEJExBDrsiTcMYLzz2RrKfmWVSYm6QXXRYvwXCQ9eoo+vmDb4K4IVE39gxjLsuVVQMht8A=
+	t=1758615667; cv=none; b=mcvPx03HC4esFO2NYgS6AHJTxXj2L7R5A2PwRen+pwt+nRrpuqQYKDnfelGbUF45RLVBUOMs+i1d9TDAw3iXBxUlvox2MpPDYrsPuHwCvlWoQ6PE9j3iMlqtYXlzxsgOj/v92BBpM+iwKdahl96Vc3pUbyd514r++KCu5mxef/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758605470; c=relaxed/simple;
-	bh=UlEmTEBxCQKvli5sclXOy+aXQ3rK6Vt3k+Kr6iD12k0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Avwe9N9n7r5sZkHjG94Z1CCoCuhxV/45+UvWomSjxFZzx00sKY8uc2hPQ2WqGbn9nc08JGcSWJjP6wtvtxCbJLabhfxM1c0TkjcRbRpNBhQDRQ1eu0+0wwf4xuzAfYUEDGU/mHzeCuMS16S3ByCO31qMFzgzMSjeMExPKcnQqRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=agPiiTZl; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3ee12332f3dso5197938f8f.2
-        for <linux-iio@vger.kernel.org>; Mon, 22 Sep 2025 22:31:06 -0700 (PDT)
+	s=arc-20240116; t=1758615667; c=relaxed/simple;
+	bh=f7re57QCz3hpnfyc8Rk+bIVfVD27d6HuiXpGIteeQ8g=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dOus59rc6gkw3WUcZYQyJn3ledcP2uzYUEYomk4dN6fXsHgoAqjbz1ICLKz/YD0wjwxk0KvQ2i+8wmkuPrn7+4uTBPa+2gBNxX4GR4qBwbFk8qe+XrwyPtucdKVSjoq8aLqEceXCCcyQMT51EMeTje8n1Htom91ku7fKmJHayug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kUgkHBd0; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-628f29d68ecso9090763a12.3
+        for <linux-iio@vger.kernel.org>; Tue, 23 Sep 2025 01:21:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1758605465; x=1759210265; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uWNVfdZNe2vnmg1ugAUULGSoetsURECd1is6oN3vOGo=;
-        b=agPiiTZljefaKJCHVrwlFl36Bmf2sj35Jeq9CaZnNWYELSYzTryqiZbjtsO3NwvF9D
-         HjsVG1a5b353eWUQPvYjYttNq+sne5QU+UZhDPdzVmiByqLCHdibvWmx/7Xcx4n/u9hN
-         RiufV2Q5Z6muGR0Exl7Sdh6zsch+s8g3yFmItQUZOBb7gqI0G29y+d72MX9rhpsART40
-         +cUslNJpFTqcd2seThBVUG2NcHkI1KYrqhEHO+09h4eRc/yeqVa+1fdl9atq7C+3uQJF
-         5pZjrNq528sASlTaf18med7dwzP7AfY3gLDHzwfHqSHWAD512BGP1g/Ii3hWtOyOL0tN
-         hPww==
+        d=gmail.com; s=20230601; t=1758615664; x=1759220464; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AhmhfqnvAeJncIKaG+WP0RlASLHv+hRZUaH7TN0Eo0g=;
+        b=kUgkHBd0AY+fJQiPpOEzXj2x2J+obg+iLvnYEPBE5npRKj+Hnsyco+iuangYe77heA
+         ksnpfZTD4aBfiMI0M14jksUh1CTLqWrLP54QUnQXddKEU2d1m1q6OEN5iSl57GAQEkdJ
+         MWQaf+JbUr+H+NAkwV9ryr+H1fbS6jGQbw6ZKJaNhRU+8AlU2cuqcdNCIYOGgNJyroFi
+         MbcpoBm4XguiugFcp8n0QDvbIPzuE9tXqyqLeeihW5hwBjfC0gpIkBxKRbk6FtJziJGV
+         mydFdb//4I0bDBq4LWcFaSKm5GDkGM7QQiAX3xiyMoie8gMsYWI7QaTM5RZxiZx3ftHB
+         +6IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758605465; x=1759210265;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uWNVfdZNe2vnmg1ugAUULGSoetsURECd1is6oN3vOGo=;
-        b=wd0lq+dwPFoINNGT0VVVGFJwokCce4IckaSQGO7WbDDzP8z9FtckXeuB9c+hMRE84w
-         XGFj81ZAC5O9u8UVWpCrMqjcgkvivy8xqw8UFja6GU6wK+BI79s3cE15JPE2fUtEqhgK
-         +/0skOse/ca468Cuowh7ZOQ2lNd8YFxyv04vvbP9+xlL/gKgjqfhkulkiwc/JfWyzHbU
-         6qYrrjqc69fAiy4P71qynRv7xAw+5wxsqHeFvm1wttHIGizIaZfqUvgClFVoSk2yPUnV
-         KVuxtREnkgqU8yX+GHT898JL4Ohlj0+JO2Zrjsdy6J2Oaj8/mFA2eCmxX3Ww2X9h0M3f
-         dZgA==
-X-Forwarded-Encrypted: i=1; AJvYcCUV2Qtt0z1DTX/Fzw2zoVzivugQeuoj8uFnhRNPWnmqEU6nm9ZbbOW67I2Ujwt2nTpRXLOiVW7/RjU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTmwuI2UEbgu21FlpUGb0CBrPvS4MoSGgDxvXdaMBy9152ENDi
-	zYsPG6YM8JK1gbmtiz5x6t2RE81RE3fGd/HmAXihTUwmFEbnnHwDuOaDuMsOF3xnuro=
-X-Gm-Gg: ASbGncsrLDtVtgnXwKQRnDDksMVJD5X/rGZSskVsyeDyPwvOKrJ6tnKBXycEx6wEBhZ
-	nUKyv0OuqTr7NoeWie7Rs45ejo0YE9JJo/K6TDVwJ9b0RGiOz14ph52suSGAT3KgwhJMQohmrZ8
-	yq49K2bs9TZjdTkfDkHTE+kK+GFNbtPNAafRAbYk9HYINdvqhFvRyetfNAFAZkGWH2rNGTQgu9R
-	4JoH0PiOu1W+CO6T74bY4kj2F1OULo1CeWHesCgAg1dcqytvhDZ9TkAx3Zp21V8pyiN0100XbPG
-	pOkXn4bT9ZKvDXfr5p9Nz3iJBQ+eGQ9byMlDlpVjWP/5K+MLOEZRvWj0oZAR1nF3uWiPCjobJEX
-	rafpM/gUN6hMnzJhFx7Qm601ICYL5
-X-Google-Smtp-Source: AGHT+IH9N4ZKtf2QZGrRBXmYOhVuZlTRd+48ApBr4A1D93zo1NkZQS0UX41zNNwFEY5f/LBcpzC0tw==
-X-Received: by 2002:a05:6000:2282:b0:3ec:6259:5095 with SMTP id ffacd0b85a97d-405c49a2556mr826539f8f.12.1758605464888;
-        Mon, 22 Sep 2025 22:31:04 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3ee0fbfedd6sm22741022f8f.60.2025.09.22.22.31.04
+        d=1e100.net; s=20230601; t=1758615664; x=1759220464;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AhmhfqnvAeJncIKaG+WP0RlASLHv+hRZUaH7TN0Eo0g=;
+        b=VznAJOm3NcdFLR++jldZrW5iqM4hGecQWBhu1l4DCb/yT/q2gJl9WIQpVY1imNNsoN
+         c4oIFIShSpBvOUhtD9o13ADX+Bqf0XjGnl/swnIMxd6NNBRGbmd0W7/KYrRlgIPsIY8n
+         XtZks8XPmqb3j6DGibXbHD5KVvwuy8MQMULmVHf4Cp5HJ2SC/I0OI52MwiPml5X48/kW
+         dWz6kAcL5ne3eY30L0aVDBADsqu7brLWMaLncJNOqtBuPOi8Gdf36IllOkX9e294pWx4
+         T5ZpxkC+IQ4+ddL3dEURapT1xBHfVmdU9NLPaZDi5LIZG1m6TYXLPagiT8S7skYZXZuo
+         P/dw==
+X-Gm-Message-State: AOJu0YxWakFqLUbc7ZyhxZ5Pq7sodkdPd3XH4CumGqcDmdZ8RARZp9Hw
+	JgU++Ubaf0gaMgM4kNxbMSP0aYp3e4AP9sF6qQxmd77giEKLO5CpTtl2
+X-Gm-Gg: ASbGncvrbN2j1eBgApAl5NtNCCNEv+X1R2AhBXMAHhRULTek76kQlN9udrwd1ShiL1v
+	6ePF/mX974H35YpzIOmR+5lOOWHpdBreY02IO4eRReCEW6RyUrtvU8tKNsjh7BuxyGurSroiYpi
+	z5rHmomP4BZrCdJEYr25Ehv7GTOZZLETYaac04j1o16GAWFrMsP5PxQPLZvfuADNBtw55FbepRS
+	YorwEfjf1aMaUv9puHPxOG7aNON637Wvubuhl64PXwUxE6Ujorb5XU+iZh4f7npkwep7X+NNJhO
+	l3UsVPOKTfyp2+ufIaH3JJ1Wrw/HElyTQLkMagbMn4it/NWu0i6qaaIL8plQvp/Y8wLvnC/jSuT
+	XlPgz3l5keQNzl4ZUhveLPRt8
+X-Google-Smtp-Source: AGHT+IGFMtMk1tU3B4zQBbIphTLmZaVJ9Ckxo/UCmlJ6T8uLNCcZMLmNfiD71dDZglBrDEV65/suyg==
+X-Received: by 2002:a17:907:7611:b0:b30:2f6b:448f with SMTP id a640c23a62f3a-b302f6b47f2mr152382266b.25.1758615663347;
+        Tue, 23 Sep 2025 01:21:03 -0700 (PDT)
+Received: from [10.5.0.2] ([91.205.230.222])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b29961979e5sm676840966b.0.2025.09.23.01.21.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 22:31:04 -0700 (PDT)
-Date: Tue, 23 Sep 2025 08:31:00 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Marius Cristea <marius.cristea@microchip.com>
-Subject: Re: [PATCH 2/2] iio: temperature: add support for EMC1812
-Message-ID: <202509231015.K3B5TN1Q-lkp@intel.com>
+        Tue, 23 Sep 2025 01:21:03 -0700 (PDT)
+Message-ID: <02c26151da7af1e05aecadf0e2ce20552c2908e0.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: dac: adding support for Microchip MCP47FEB02
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Ariana Lazar
+	 <ariana.lazar@microchip.com>, Jonathan Cameron <jic23@kernel.org>, Nuno
+ =?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+	 <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	 <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Tue, 23 Sep 2025 09:21:30 +0100
+In-Reply-To: <3457c119-2f49-43a3-b96b-736b8f5de99b@baylibre.com>
+References: <20250922-mcp47feb02-v1-0-06cb4acaa347@microchip.com>
+	 <20250922-mcp47feb02-v1-2-06cb4acaa347@microchip.com>
+	 <859d8472a8f9e8d28b890ad565f9d3ce11e162d5.camel@gmail.com>
+	 <3457c119-2f49-43a3-b96b-736b8f5de99b@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917-iio-emc1812-v1-2-0b1f74cea7ab@microchip.com>
 
-Hi Marius,
+On Mon, 2025-09-22 at 17:15 -0500, David Lechner wrote:
+> On 9/22/25 3:10 PM, Nuno S=C3=A1 wrote:
+> > Hi Ariana,
+> >=20
+> > Thanks for your patches. Some initial comments from me...
+> >=20
+> > On Mon, 2025-09-22 at 14:30 +0300, Ariana Lazar wrote:
+>=20
+> ...
+>=20
+> > > +static IIO_DEVICE_ATTR(store_eeprom, 0200, NULL, mcp47feb02_store_ee=
+prom,
+> > > 0);
+> > > +static struct attribute *mcp47feb02_attributes[] =3D {
+> > > +	&iio_dev_attr_store_eeprom.dev_attr.attr,
+> > > +	NULL,
+> > > +};
+> > > +
+> >=20
+> > Not going to argue about the ABI for now but I don't think this is a
+> > standard one? So
+> > if acceptable you need an ABI doc.
+> >=20
+> Here's a random idea. (I would wait for Jonathan to weigh in first before
+> assuming it is an acceptable idea though :-p)
+>=20
+> The config registers are pretty much going to be a one-time deal. So thos=
+e
+> could be written to only if they need it during probe.
+>=20
+> For the voltage output registers, we could add extra out_voltageY channel=
+s
+> that are the power-on output state channels. So writing to out_voltageY_r=
+aw
+> wouldn't change any real output but would just be written to EEPROM. This
+> way these voltages could be controlled independently from the real output=
+s
+> and it uses existing ABI.
+>=20
+> In any case, it would be interesting to hear more about how this chips ar=
+e
+> actually used to better understand this EEPROM feature.
 
-kernel test robot noticed the following build warnings:
+I didn't really looked at the datasheet so this can be totally wrong. But w=
+e
+have some LTC parts (mainly hwmon stuff) that are also packed with an EEPRO=
+N.
+AFAIU, the usecase in there is to have some defaults you can program in the
+chips (and there's a feature we can enable so the chip can save things into=
+ the
+eeprom automatically). Now, in those drivers we don't really support doing
+anything with the eeprom at runtime so I'm curious to see how this unfolds =
+:)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marius-Cristea/dt-bindings-iio-temperature-add-support-for-EMC1812/20250917-202833
-base:   19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-patch link:    https://lore.kernel.org/r/20250917-iio-emc1812-v1-2-0b1f74cea7ab%40microchip.com
-patch subject: [PATCH 2/2] iio: temperature: add support for EMC1812
-config: powerpc64-randconfig-r071-20250922 (https://download.01.org/0day-ci/archive/20250923/202509231015.K3B5TN1Q-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project cafc064fc7a96b3979a023ddae1da2b499d6c954)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202509231015.K3B5TN1Q-lkp@intel.com/
-
-smatch warnings:
-drivers/iio/temperature/emc1812.c:645 emc1812_parse_fw_config() warn: passing zero to 'dev_err_probe'
-
-vim +/dev_err_probe +645 drivers/iio/temperature/emc1812.c
-
-56c661fffa897b2 Marius Cristea 2025-09-17  611  static int emc1812_parse_fw_config(struct emc1812_priv *priv, struct device *dev,
-56c661fffa897b2 Marius Cristea 2025-09-17  612  				   int device_nr_channels)
-56c661fffa897b2 Marius Cristea 2025-09-17  613  {
-56c661fffa897b2 Marius Cristea 2025-09-17  614  	unsigned int reg_nr, iio_idx, tmp;
-56c661fffa897b2 Marius Cristea 2025-09-17  615  	int ret;
-56c661fffa897b2 Marius Cristea 2025-09-17  616  
-56c661fffa897b2 Marius Cristea 2025-09-17  617  	priv->apdd_en = device_property_read_bool(dev, "microchip,enable-anti-parallel");
-56c661fffa897b2 Marius Cristea 2025-09-17  618  	priv->recd12_en = device_property_read_bool(dev, "microchip,parasitic-res-on-channel1-2");
-56c661fffa897b2 Marius Cristea 2025-09-17  619  	priv->recd34_en = device_property_read_bool(dev, "microchip,parasitic-res-on-channel3-4");
-56c661fffa897b2 Marius Cristea 2025-09-17  620  
-56c661fffa897b2 Marius Cristea 2025-09-17  621  	memset32(priv->beta_values, 16, ARRAY_SIZE(priv->beta_values));
-56c661fffa897b2 Marius Cristea 2025-09-17  622  	device_property_read_u32(dev, "microchip,beta1", &priv->beta_values[0]);
-56c661fffa897b2 Marius Cristea 2025-09-17  623  	device_property_read_u32(dev, "microchip,beta2", &priv->beta_values[1]);
-56c661fffa897b2 Marius Cristea 2025-09-17  624  	if (priv->beta_values[0] > 16 || priv->beta_values[1] > 16)
-56c661fffa897b2 Marius Cristea 2025-09-17  625  		return dev_err_probe(dev, -EINVAL, "Invalid beta value\n");
-56c661fffa897b2 Marius Cristea 2025-09-17  626  
-56c661fffa897b2 Marius Cristea 2025-09-17  627  	priv->num_channels = device_get_child_node_count(dev) + 1;
-56c661fffa897b2 Marius Cristea 2025-09-17  628  
-56c661fffa897b2 Marius Cristea 2025-09-17  629  	if (priv->num_channels > priv->chip->phys_channels)
-56c661fffa897b2 Marius Cristea 2025-09-17  630  		return dev_err_probe(dev, -E2BIG, "More channels than the chip supports\n");
-56c661fffa897b2 Marius Cristea 2025-09-17  631  
-56c661fffa897b2 Marius Cristea 2025-09-17  632  	priv->iio_chan[0] = EMC1812_CHAN(0, 0, EMC1812_CH_ADDR(0));
-56c661fffa897b2 Marius Cristea 2025-09-17  633  
-56c661fffa897b2 Marius Cristea 2025-09-17  634  	priv->labels[0] = "internal_diode";
-56c661fffa897b2 Marius Cristea 2025-09-17  635  	iio_idx = 1;
-56c661fffa897b2 Marius Cristea 2025-09-17  636  	device_for_each_child_node_scoped(dev, child) {
-56c661fffa897b2 Marius Cristea 2025-09-17  637  		ret = fwnode_property_read_u32(child, "reg", &reg_nr);
-56c661fffa897b2 Marius Cristea 2025-09-17  638  		if (ret || reg_nr >= priv->chip->phys_channels)
-56c661fffa897b2 Marius Cristea 2025-09-17  639  			return dev_err_probe(dev, -EINVAL,
-56c661fffa897b2 Marius Cristea 2025-09-17  640  				     "The index of the channels does not match the chip\n");
-56c661fffa897b2 Marius Cristea 2025-09-17  641  
-56c661fffa897b2 Marius Cristea 2025-09-17  642  		ret = fwnode_property_read_u32(child, "microchip,ideality-factor", &tmp);
-56c661fffa897b2 Marius Cristea 2025-09-17  643  		if (ret == 0) {
-56c661fffa897b2 Marius Cristea 2025-09-17  644  			if (tmp < 8  || tmp > 63)
-56c661fffa897b2 Marius Cristea 2025-09-17 @645  				return dev_err_probe(dev, ret, "Invalid ideality value\n");
-
-Change ret to -EINVAL.
-
-56c661fffa897b2 Marius Cristea 2025-09-17  646  			priv->ideality_value[reg_nr - 1] = tmp;
-56c661fffa897b2 Marius Cristea 2025-09-17  647  		} else {
-56c661fffa897b2 Marius Cristea 2025-09-17  648  			priv->ideality_value[reg_nr - 1] = 18;
-56c661fffa897b2 Marius Cristea 2025-09-17  649  		}
-56c661fffa897b2 Marius Cristea 2025-09-17  650  
-56c661fffa897b2 Marius Cristea 2025-09-17  651  		fwnode_property_read_string(child, "label", &priv->labels[reg_nr]);
-56c661fffa897b2 Marius Cristea 2025-09-17  652  
-56c661fffa897b2 Marius Cristea 2025-09-17  653  		priv->iio_chan[iio_idx++] = EMC1812_CHAN(reg_nr, reg_nr, EMC1812_CH_ADDR(reg_nr));
-56c661fffa897b2 Marius Cristea 2025-09-17  654  	}
-56c661fffa897b2 Marius Cristea 2025-09-17  655  
-56c661fffa897b2 Marius Cristea 2025-09-17  656  	return 0;
-56c661fffa897b2 Marius Cristea 2025-09-17  657  }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+- Nuno S=C3=A1
 

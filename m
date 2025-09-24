@@ -1,184 +1,446 @@
-Return-Path: <linux-iio+bounces-24400-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24401-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EABBAB99862
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 13:04:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFB1B9997D
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 13:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E272A19C7711
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 11:04:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C782320E1E
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 11:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F1F2E62BF;
-	Wed, 24 Sep 2025 11:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8191C2FDC4B;
+	Wed, 24 Sep 2025 11:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="I/UYiK1N"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="jeHpkvGl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010018.outbound.protection.outlook.com [52.101.228.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6196D2E5B32
-	for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 11:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758711835; cv=none; b=rxObVCdhvz35HFnzVuI/NfdlFDf98yBOiDsnYTZBE1Cc5HmWTA2TY0SNXqlmPMz3u1wplq3ipAWY2nqZK5BffOT+56qRfSoy1L+T8G4gH3gygM910FRC2StAR3cfv0tUaZvGli+w8HAAPXzVHvEcNXkd8TQzzsVV3pdBNoZ6PDg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758711835; c=relaxed/simple;
-	bh=vRaOT9Q3YvJQNWFbw0Fz0aeIvu9zB6I2v+SoiGqfWwg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mz/Mr7cgnn/Iry4yBcVrzqVB/vLaVnZysH0uPszp/r+m1103WezjhTn4Z49panbx+6DCmCGHZpmcoMAPMNhTm8egiryGKT5zVhvtIsfyz9ad3MzGycZlSPa/VuSWPbTxkKCl7+1iIaJXL7rRL6WMNqdOZ3fdn8hVJrUFLNAoyjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=I/UYiK1N; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b30f8d14b9cso244052466b.3
-        for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 04:03:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758711827; x=1759316627; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=f++NaNuyR4eX62VVTKpDJcYw+NpFttUC6PgqiII/fcw=;
-        b=I/UYiK1NiAwsOZ45z3vC7BsSBZrwAnZhqs7wYLM+jzBarnE1vEiy25oGhPWLq71Ukq
-         E4czQjBttMqeJuUWQ2hxTCvhHegoKepzq1z2Ip1wPFjb9zdw5tFk4vo5xXQvtZqZpH+s
-         CikWzYOqCpUq+nII9l/JElw8u8p8fSCXMLNKEjFDdKsb7POGYtYYi0sEHlxewBy4+MuJ
-         8xYl3dXgg5m+O03N98T/SkkWJoUItdDrn5oh0kRPbTNtwc+ic1GJQTeU/ShWWd3EwPtb
-         MTYKLFtwBd2aat7OLDHDrCzkg+1gU1gmNbgVNLcQvFxpXcQ39ansq8uGTysf+kN/P1/z
-         vEWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758711827; x=1759316627;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f++NaNuyR4eX62VVTKpDJcYw+NpFttUC6PgqiII/fcw=;
-        b=dGb6uztHGmLqqWHUWKPGChzR/oiPQrlu2jpPSAPjA6RgM1sIPl4XzIIdYwTIeikmtY
-         THoUKiGNkHubjQoeugRUeo37zDZPIYO6ZqNJ0og4ouCPs1Id8Gs+sJ+Iw6rk4ny9ARvM
-         Get/YRg1umDsYHVuU+HfrAi6U0I0HkLZCdCNLJM/qGxhjbC6n5PtiqhQRAtpTtI3k2IE
-         WFSGPTEoPzuJ8CBh5fhpLAn5yjxloBBbmzxO1C6dupRu0lIBMN7sgW+YURVNqIuHpwbx
-         zLdqJETSFixG2Z2+6E9HC2QTL5hGxpJqdb1N40fFb2eM85cuXsQdWi4Bp+hHtNwRk/+s
-         W2pA==
-X-Forwarded-Encrypted: i=1; AJvYcCUEKprec6f2CkzSzXUQA8NJshYoNrXOwWu6yCpnkXGx+H3YMXxUBCvONsg9j0jpzPHS/wcMV11UXx4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZUeDWlTmEslH+PLrSr1aYRxhW12tlnePuKUccrcNSz9O2itjb
-	cHW/YVoPCIGma4iRgHb2aT8QAmjXd62YdxASxWylXrulnNX3RFwDs5kupb/UqJSlJirvw3WvKaJ
-	8MNTg
-X-Gm-Gg: ASbGncuplOZ/Thb6bBBoy5RrPVByawDSNxh1lqQZhFZLT8fnZJOAy10p/yBc62qxdGJ
-	sXYIZYEgblCfyq0OFjn/a40OzASmLQvuxXhjT32c/0vju1nH1shxIBEoXzyOt52hoYb/MNVbmvz
-	lre879Kp11FwjsbyhBNbrmafpC4yp/+Ia+v9Ty7bxjjJ/Qu3KzPLS1fHrzPMYG3FxvEW2ePawyv
-	V6PlwIOzkHYn0YdBn81oGPAzeaohkCiPTYyG3Srd8DfZhZVy6o/bJtEwCZJ3cMhXDpj021Ndau5
-	qA7gTqukCWMSJpU16zOSdV7/Ji73Vex4O915q2N5j6HBMW1I3Wwwd/JaxEVgXwlyJQlCQ9VRlk6
-	zOEanMGep3gHmbNRkGye8V10OV5WeRhvZ61MLVA==
-X-Google-Smtp-Source: AGHT+IFBwMGZ4wBRteHoxqPVvsjT3lf+VIufpVIMyZrC/No4MyrhUd4ysW+E9ZygAk5RcfGCQiGU2A==
-X-Received: by 2002:a17:907:3d02:b0:af9:6bfb:58b7 with SMTP id a640c23a62f3a-b302679e8d7mr570930666b.5.1758711826582;
-        Wed, 24 Sep 2025 04:03:46 -0700 (PDT)
-Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b2d4309ab9asm611622266b.74.2025.09.24.04.03.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 04:03:45 -0700 (PDT)
-Date: Wed, 24 Sep 2025 13:03:43 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7124: fix temperature channel
-Message-ID: <h2rof27omrhv4l6pjisdsnvkpb35ovy7e6m4soeltfun5rafk5@oriv7e3egh3p>
-References: <20250923-iio-adc-ad7124-fix-temperature-channel-v1-1-e421c98c0d72@baylibre.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981592FDC49;
+	Wed, 24 Sep 2025 11:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758713627; cv=fail; b=exZDkKR6047mUcdPOH3tcGdBqRDdtGaY0AL0koHwtB/MdNWR5H0MO/r0XeGF6u0d2MSHRaD3wiQeQpc5qCKbgh/kCKFGDE3IYmd7IrsD2a0FlbdQ6E17YPVstOdNgAzKoNfBHyw/mmi8knH6Mo656b859oBwD94JxHcSeSWvTnA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758713627; c=relaxed/simple;
+	bh=9XuSkl7YHra9+nwRWSs8PjfbKkKNbahIrcKrx8WC4rQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tlpixl0DDyPJJUxLsyrwtACmGfWJUnP7cXR+JosGdIlv2aL5taJ/dAJMbbSLsLhapoWIrr39qhyIRn2eNczJ0jEsHOrm5VW7NtDHVtYT/AxB4ZmeziHSSgNvvjB+qHYwqDNCCzpB0TkO+i1gAOhqe4YQ9xKPOWAybGehkVdvYI8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=jeHpkvGl; arc=fail smtp.client-ip=52.101.228.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P/QlMOKNuCodQlrT2Dlj7EX2BFqoA9SB6nlw9sN57APAukBtn+lg8X3uMduux/k+76dDDaoJl3K+kyrAYQiPDf0vCNgPc3y6WpwLKqFVbnuWxxOwzOgCUmZNWSFyIc2hN4TdunEVeb1k3ClxyxOonqvvVpbhPm7AHWpJgg7yO5JptNv/uJecTzhXpzt4waJJY7RBaqDGKXW2DgC4OK7PMgGd/iQQ/ZpLdUK7Ld8CoqubXt+p7q73xZ+FNAnpW4hrikk7mNwwR9TxQOAZBCBGoKpTph4BDEYf0aExP62eJX9W4P7VdTEQe8ygjeckzsqb4Ce2n2JIKAza+CGi9+a5vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J0GEbAikADw/iIvnk9GfRaSwCP5DCxRat2xpJAixwzw=;
+ b=vRu7THb24IwvSq75IRgRHHmrSDv3B/sAzWAP1rxpYXEUlkkiy5nGySMOyAAnL5bL+LHxwjzFYOsbia50H5TRjgKWb52DNAWBKhnvMmL6PknaFbemqRUqFQZ5zwDKfmHTtspdEVqtFa9AXEk2QvhBTivjNlPr5M0fhwMHMoXdHgPlyTwB0j7F9Bck8MmjNk6k6EefFMa9Z5v7tt5oZtRzqIWg3SXw3OLRe/BsuprbamWzK/KxPnAmtiHPYwn/lChN9WgrwYx/hMTbwP+Nl9sPeVT1Bzv6vHpcl952eRUElxROly4BDVPc0jZi+Q8jdZy3EbAUMXPBI2f/UpplnBRSNA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J0GEbAikADw/iIvnk9GfRaSwCP5DCxRat2xpJAixwzw=;
+ b=jeHpkvGl6ZzbebQPdPn+PM7CnF98UN0wUzJT40Wip0REeofe6ngA2fjXKRdhVNCSzF2XfIFwKQ4kpImaa3JJ106nTrfCTq/SGsmaxwRFY3le4+iB1p5rf0JrnxEmY++jYKDoYTC+VFwJw578WK99KfC0EAqEn42hxhNSdX6ktZY=
+Received: from TYWPR01MB8805.jpnprd01.prod.outlook.com (2603:1096:400:16b::10)
+ by TYVPR01MB10893.jpnprd01.prod.outlook.com (2603:1096:400:2ab::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.9; Wed, 24 Sep
+ 2025 11:33:35 +0000
+Received: from TYWPR01MB8805.jpnprd01.prod.outlook.com
+ ([fe80::6f4b:7755:832e:177b]) by TYWPR01MB8805.jpnprd01.prod.outlook.com
+ ([fe80::6f4b:7755:832e:177b%3]) with mapi id 15.20.9160.008; Wed, 24 Sep 2025
+ 11:33:35 +0000
+From: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+To: geert <geert@linux-m68k.org>
+CC: Jonathan Cameron <jic23@kernel.org>, David Lechner
+	<dlechner@baylibre.com>, =?iso-8859-1?Q?Nuno_S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, magnus.damm <magnus.damm@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>
+Subject: RE: [PATCH 2/7] dt-bindings: iio: adc: document RZ/T2H and RZ/N2H ADC
+Thread-Topic: [PATCH 2/7] dt-bindings: iio: adc: document RZ/T2H and RZ/N2H
+ ADC
+Thread-Index: AQHcLKP9NsNhN/CVKUaGUfMNrBDa6rSh9ryAgAA1ukA=
+Date: Wed, 24 Sep 2025 11:33:34 +0000
+Message-ID:
+ <TYWPR01MB88052A16F01666B693EE28E3851CA@TYWPR01MB8805.jpnprd01.prod.outlook.com>
+References: <20250923160524.1096720-1-cosmin-gabriel.tanislav.xa@renesas.com>
+ <20250923160524.1096720-3-cosmin-gabriel.tanislav.xa@renesas.com>
+ <CAMuHMdVEDJZ6wdGZs_CDs=jLPV1u382o6=cZ1HfKQOffGf7jGw@mail.gmail.com>
+In-Reply-To:
+ <CAMuHMdVEDJZ6wdGZs_CDs=jLPV1u382o6=cZ1HfKQOffGf7jGw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYWPR01MB8805:EE_|TYVPR01MB10893:EE_
+x-ms-office365-filtering-correlation-id: 42bbb16b-558a-4b49-eb22-08ddfb5e3271
+x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?6YXFi8aayvFo70bXLSqdPidWMONoAQNAV/JCHgT2xUvL4ugIwB//iWkY21?=
+ =?iso-8859-1?Q?5HXVREtdx0osR02W6vzvgDci50xLowP8Y9HOze25AIoTJUOuNm3D5wh/65?=
+ =?iso-8859-1?Q?0K79n6rgrj8WQd78qRa3kRYgnwa0tip0hMGEDTMLAShU9r+PRRE4bLHGxl?=
+ =?iso-8859-1?Q?QADUMEZbHZh7r9T4AM9Z7AbWRHJrjRMN+2nx8ryd7C3ELcHp2uRM9RIRgL?=
+ =?iso-8859-1?Q?1zMUteTlok1yAxbGLG72UMGU+Sn1nbQjW9BExeFSUlKk1+GuH8Px8KKOP3?=
+ =?iso-8859-1?Q?4bgMJMI2k/5ktkDIoggUWAn5slWe/eIOfFMc51TquoTr+89ZXPsJP6cpo8?=
+ =?iso-8859-1?Q?1VQJnAAI22GefzZ0qgxOt9g95DHGbBKvLYOmKjsa3CX4813SUZaRPJZ8g6?=
+ =?iso-8859-1?Q?LTadf6LQr1EyPeK5Cw+ifipyWAaRqT64ULwmr3YkcxuVaTWrfSqjTNDJCK?=
+ =?iso-8859-1?Q?452XAEkBj5WHPNYNoefvuDsM1mq2NFls2cL9yMH4qa/3/RXKyIXIFTfXly?=
+ =?iso-8859-1?Q?z1AECN9ai3PZnI6+cQTz+8RdJ8ayAtAoUdaXsez+13f7bvUl7JpGa44ucZ?=
+ =?iso-8859-1?Q?OOZPkp/TIxwm5YUrcY6MDHs8uM4Zh2eUlNTDAjghDZeGRPBK47ylfuR/2b?=
+ =?iso-8859-1?Q?UZkO4adhT3IY+VR8JeNVkGjI1tByzVG5wyFK1kAjmM862PtJT3jOtDPpgC?=
+ =?iso-8859-1?Q?TlrWjCelyMCKufrICQnpLVDyME7itiNt+yKDtGCVYnJy4HjrJfw/WjmdOi?=
+ =?iso-8859-1?Q?hFXVu6oGAHuVy7YSkaQZffD8DvCdM9k60gs+HS4Sklk2LplQiNU4WcaxJq?=
+ =?iso-8859-1?Q?G2ey3fHvVDT1sWgoUpUNn/7whWRCT5ydtHCknUqYovRYdDu0R14hhqrNSZ?=
+ =?iso-8859-1?Q?8y1WRP92vKF5h0sMDzDoHNk2hB1KEDAbFGkIzPuzVA5d8DVlAjjH/SdcKn?=
+ =?iso-8859-1?Q?t/gp1IcnR6M/8A/Q3N2zgsG6sN0B129iJLdsl82Y9zIAucbGp9TzsqIbjo?=
+ =?iso-8859-1?Q?S03xwaz8NMpOUp/EX2OLzej5HSjE696JfdL4eiIzjdcVvszIsCw7enMUlc?=
+ =?iso-8859-1?Q?/QP9PQrB5Q3xHCvY+yKGl5imN1WEPm5B3jBXk8/BqT+juW7Yd8KW6Go46F?=
+ =?iso-8859-1?Q?TjQoEk3+9ssKpKxv5FXnrWdxycT+/Op6rLg/zKvZK9RcyreeNsWi+4f9ry?=
+ =?iso-8859-1?Q?BGc8/oIRvUlKxE93OuiEVcHiQdmKb2DddVyGM6lOlGRypT5A8Z5o6Gt3CH?=
+ =?iso-8859-1?Q?FoH14kJi1fwhh1q5AbiX+KnTJr9/kcFsJa3zsyJRUhgkhPzFv4iHDr72SY?=
+ =?iso-8859-1?Q?t3IFcEudSw4JugC6cdg7/jsqF0aipgjcD4l9e0DvUGBqX40Va1HSiSkqbe?=
+ =?iso-8859-1?Q?AnaSG1xnIPRBTVL0KepKw5f8KEx3PE7y6fK81uLnkEAPG8dNntPEX185R7?=
+ =?iso-8859-1?Q?UaDOu2zhjp2SaksPc/tCBmds+nsDWBWsF07GnL5ShvnZarQHZmP1TvkMef?=
+ =?iso-8859-1?Q?E=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYWPR01MB8805.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?BgGmZCP6mlXbJd2LjPiDgGmG9hMtixoSed32hcOiVQmOEIVdz9k0p8gLYO?=
+ =?iso-8859-1?Q?Z5762rI4uSFc7w27nioSut/phgn+kkek62PyD8XkV37/fnkpBwYjd1xA+H?=
+ =?iso-8859-1?Q?k7oVayDqYMEfeDx1VvMJ4uLqnfp2Bv9HbYrARHii/T6ZofWQGge07a3RJd?=
+ =?iso-8859-1?Q?3bFhmwyN4zFFLbvmCMBwZTPJGn/sMw+8qPqB4KcOfSfR32QiWqHoQzWKNw?=
+ =?iso-8859-1?Q?IgWzYMnLdG/O5IhfmHDH31dr8Vj9FBYMbYYbIHHuCXFjX/RlZz0fgKGkOF?=
+ =?iso-8859-1?Q?Rudkq7A1r84PEesfZaH/goJ4lpR+g7MF1ZNb3n38U31dzfE/sOexMKo7s5?=
+ =?iso-8859-1?Q?H2JZqGoJj67yrcVAUuIrZsL2K64f0uimqWWDyBRFZylYrHJ/BwiwL7rAKR?=
+ =?iso-8859-1?Q?mFHgDzuCd9oANVmscbJ/hpmp4OjnznOaSarycLXXKzsACG67vpBf4RiWlM?=
+ =?iso-8859-1?Q?rWOM/BQrZk+jRhQHfTeLSyPAVStSbkWqdcMJt0wlrTz9msT+tyNSmnd9J4?=
+ =?iso-8859-1?Q?9txLn3BgZ1FsbYpnW2HpRrbLrhjhui6svjEndIUPPk1+yGhRLtrRa2rAic?=
+ =?iso-8859-1?Q?Ll7t0ljneLvVKIsLH8thYWfXtOFkMbBzxzICBJXATWdmkWuKY42W+67sPx?=
+ =?iso-8859-1?Q?OzSYaheycunTOhGh2TTqXM39a3vuLoA2AaoerBKgBYgoLgGwHrowUC+Z9B?=
+ =?iso-8859-1?Q?41u0bxC+b/j/GavC4KcJhtSSZsN8Pr1QWlvAKGpAlzjD1MX7MHAL/Z02RF?=
+ =?iso-8859-1?Q?qEJHmcBzESS6mYGfHKumOXRPft4Rqpd97WyJBjzDT+oUjnib8LhWWUMqb5?=
+ =?iso-8859-1?Q?ofFBOcHYdOiLJW/5jzL8yTKQXqUjEBsQ2nSYOvOhCFv2EMjo1mcT3CkEj8?=
+ =?iso-8859-1?Q?gXGkKRLukUbjlUtsO+yTkeZLPxr9+6wZsXkOEhwr0XkPsMkCJYZHFGiPVH?=
+ =?iso-8859-1?Q?A08BUpgOTlsR+TK/QcQ5x/r1OgHYnk+UrcuYEfGk0SkWlwQ3dvCSQtmuhO?=
+ =?iso-8859-1?Q?m3ghMkczIldj32qz7l2VQHatR9zec1eGkH1GsIPYcxOLKMQ3YxttI4y+GS?=
+ =?iso-8859-1?Q?kITmv6QmpGaBdRkkLNbe9tSKHbPNQJRr0c99XnYcE73RO/EAuKtVmxLNvL?=
+ =?iso-8859-1?Q?+UvNDJIS/ftwXBeUpgPlVPm/f6Ph+FD0tNJc8svUbpfpUdzBt+w9NOoWlG?=
+ =?iso-8859-1?Q?qQN5WlepCgU4RcBloXO9/OaiHVYndbJxbdqGVRTa8PRdezRR5nrm6199w0?=
+ =?iso-8859-1?Q?sMC5tXqtaMYa6L6U4TNLfkSBk3ZBLYjhoC3GaXKHtj16UDZg8YzpB5kgQS?=
+ =?iso-8859-1?Q?NUDxRbLt/ZYsX+j2L5kJEHrje/N9iIXx12FWUSTp5aCndCuv9asAFKB+fX?=
+ =?iso-8859-1?Q?s97LppvqpDO9+xJugnST3Z++LrmfyYWiagUEUNRCYhbR5/aqoBAMQV4AaB?=
+ =?iso-8859-1?Q?2ACUcBaNkPnGRIx4Pqqo3ERP7qK6MOMzl21U4EwHiOhZR4Nju+LU34RQsH?=
+ =?iso-8859-1?Q?kotg55hwy+3dXKR7V0ROm1UcA4u638Hr2q7eG+Wm6aDBPJn/9YR8FgKRn/?=
+ =?iso-8859-1?Q?pra6nLnnDfVcZIY1SeFPofO4aySP65uAZFub5ozR9TJvWHF7leJS1xq37y?=
+ =?iso-8859-1?Q?t/UxRvKFoN8YM6CtjyxcGdkjRkCPYszgWL1ds6NxsjP3SlP//1SbSgejz1?=
+ =?iso-8859-1?Q?gGJlWgeAjFAX84iV51M=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="diar7b3iid3lrt6r"
-Content-Disposition: inline
-In-Reply-To: <20250923-iio-adc-ad7124-fix-temperature-channel-v1-1-e421c98c0d72@baylibre.com>
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYWPR01MB8805.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42bbb16b-558a-4b49-eb22-08ddfb5e3271
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Sep 2025 11:33:34.7948
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Zff12XXF/agNcez0AishFNNZ8O4XC8baP3EutsIxelWkqjZlWhvUT4A2USCubof1toLedhnB/FkeUIVhgxZGlCdUcEKxiR8nPzvVVrxI51bOORdz1WmbhLEOs5hykW61
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYVPR01MB10893
 
 
---diar7b3iid3lrt6r
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] iio: adc: ad7124: fix temperature channel
-MIME-Version: 1.0
 
-Hello David,
+> -----Original Message-----
+> From: Geert Uytterhoeven <geert@linux-m68k.org>
+> Sent: Wednesday, September 24, 2025 10:51 AM
+> To: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>; David Lechner <dlechner@baylibre=
+.com>; Nuno S=E1
+> <nuno.sa@analog.com>; Andy Shevchenko <andy@kernel.org>; Rob Herring <rob=
+h@kernel.org>; Krzysztof
+> Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Geert=
+ Uytterhoeven
+> <geert+renesas@glider.be>; magnus.damm <magnus.damm@gmail.com>; Michael T=
+urquette
+> <mturquette@baylibre.com>; Stephen Boyd <sboyd@kernel.org>; Prabhakar Mah=
+adev Lad <prabhakar.mahadev-
+> lad.rj@bp.renesas.com>; linux-iio@vger.kernel.org; linux-renesas-soc@vger=
+.kernel.org;
+> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; linux-clk@vger.=
+kernel.org
+> Subject: Re: [PATCH 2/7] dt-bindings: iio: adc: document RZ/T2H and RZ/N2=
+H ADC
+>
+> Hi Cosmin,
+>
+> On Tue, 23 Sept 2025 at 18:06, Cosmin Tanislav
+> <cosmin-gabriel.tanislav.xa@renesas.com> wrote:
+> > Document the A/D 12-Bit successive approximation converters found in th=
+e
+> > Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs.
+> >
+> > RZ/T2H has two ADCs with 4 channels and one with 6.
+> > RZ/N2H has two ADCs with 4 channels and one with 15.
+> >
+> > Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+>
+> Thanks for your patch!
+>
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.y=
+aml
+> > @@ -0,0 +1,170 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id:
+> http://devicetree.org/schemas/iio/adc%252
+> Frenesas%2Cr9a09g077-adc.yaml%23&data=3D05%7C02%7Ccosmin-
+> gabriel.tanislav.xa%40renesas.com%7C8c536bc422b9440a018708ddfb401335%7C53=
+d82571da1947e49cb4625a166a4a2a
+> %7C0%7C0%7C638942974801495945%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnR=
+ydWUsIlYiOiIwLjAuMDAwMCIsIlAiO
+> iJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3D0zAY5VAR=
+xHP%2FN0wV7Gv1%2B9DZi%2Bg8JzBbi%
+> 2BkzCDdN59M%3D&reserved=3D0
+> > +$schema: http://devicetree.org/meta-
+> schemas%2Fcore.yaml%23&data=3D05%7C02%7Ccosmin-
+> gabriel.tanislav.xa%40renesas.com%7C8c536bc422b9440a018708ddfb401335%7C53=
+d82571da1947e49cb4625a166a4a2a
+> %7C0%7C0%7C638942974801538982%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnR=
+ydWUsIlYiOiIwLjAuMDAwMCIsIlAiO
+> iJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DVlYwNJVc=
+7W%2BnLFKHf%2FG2Gk0HfWSsQ58cR0a8
+> fQpckwE%3D&reserved=3D0
+> > +
+> > +title: Renesas RZ/T2H / RZ/N2H ADC12
+> > +
+> > +maintainers:
+> > +  - Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+> > +
+> > +description: |
+> > +  A/D Converter block is a successive approximation analog-to-digital =
+converter
+> > +  with a 12-bit accuracy. Up to 15 analog input channels can be select=
+ed.
+>
+> The documentation for several registers talks about bitmasks for ch0-ch15=
+,
+> so the actual hardware block supports up to 16 channels.
+>
 
-On Tue, Sep 23, 2025 at 03:18:02PM -0500, David Lechner wrote:
-> Fix temperature channel not working due to gain and offset not being
-> initialized. This was causing the raw temperature readings to be always
-> 8388608 (0x800000).
->=20
-> To fix it, we just make sure the gain and offset values are set to the
-> default values and still return early without doing an internal
-> calibration.
->=20
-> While here, add a comment explaining why we don't bother calibrating
-> the temperature channel.
->=20
-> Fixes: 47036a03a303 ("iio: adc: ad7124: Implement internal calibration at=
- probe time")
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->  drivers/iio/adc/ad7124.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> index 374e39736584f55c1290db3e257dff2c60f884d2..94d90a63987c0f9886586db0c=
-4bc1690855be2c1 100644
-> --- a/drivers/iio/adc/ad7124.c
-> +++ b/drivers/iio/adc/ad7124.c
-> @@ -1518,10 +1518,6 @@ static int __ad7124_calibrate_all(struct ad7124_st=
-ate *st, struct iio_dev *indio
->  	int ret, i;
-> =20
->  	for (i =3D 0; i < st->num_channels; i++) {
-> -
-> -		if (indio_dev->channels[i].type !=3D IIO_VOLTAGE)
-> -			continue;
-> -
->  		/*
->  		 * For calibration the OFFSET register should hold its reset default
->  		 * value. For the GAIN register there is no such requirement but
-> @@ -1531,6 +1527,13 @@ static int __ad7124_calibrate_all(struct ad7124_st=
-ate *st, struct iio_dev *indio
->  		st->channels[i].cfg.calibration_offset =3D 0x800000;
->  		st->channels[i].cfg.calibration_gain =3D st->gain_default;
-> =20
-> +		/*
-> +		 * Only the main voltage input channels are important enough
-> +		 * to be automatically calibrated here.
-> +		 */
-> +		if (indio_dev->channels[i].type !=3D IIO_VOLTAGE)
-> +			continue;
-> +
+Maybe the hardware block can support up to 16 channels, but on T2H,
+which uses a 729-pin FCBGA pacakge, ADC2 only exposes 6 channels,
+and on N2H, which uses a 576-pin FCBGA package, ADC2 only exposes 15
+channels. On both of them, only 4 channels are exposed for ADC0 and
+ADC1. As of this moment, this binding describes the ADC hardware blocks
+of T2H and N2H, why would we use 16 here?
 
-I don't understand a detail of the problem. The commit log suggests that
-there is a general problem, but looking at the patch I suspect there is
-only a problem if at probe time the OFFSET and GAIN register for the
-temperature channel are different from their reset default setting.
+> > +  Conversions can be performed in single or continuous mode. Result of=
+ the ADC
+> > +  is stored in a 16-bit data register corresponding to each channel.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - renesas,r9a09g077-adc # RZ/T2H
+> > +      - renesas,r9a09g087-adc # RZ/N2H
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    items:
+> > +      - description: A/D scan end interrupt
+> > +      - description: A/D scan end interrupt for Group B
+> > +      - description: A/D scan end interrupt for Group C
+> > +      - description: Window A compare match
+> > +      - description: Window B compare match
+> > +      - description: Compare match
+> > +      - description: Compare mismatch
+> > +
+> > +  interrupt-names:
+> > +    items:
+> > +      - const: adi
+> > +      - const: gbadi
+> > +      - const: gcadi
+> > +      - const: cmpai
+> > +      - const: cmpbi
+> > +      - const: wcmpm
+> > +      - const: wcmpum
+> > +
+> > +  clocks:
+> > +    items:
+> > +      - description: converter clock
+>
+> Converter
+>
 
-I think the patch is fine, but if my understanding is right the commit
-log is more dramatic than the issue really is, as it needs some fiddling
-with the ADC's registers between poweron and driver loading to trigger.
+Ack.
 
-Best regards
-Uwe
+> > +      - description: peripheral clock
+>
+> Peripheral
+>
 
---diar7b3iid3lrt6r
-Content-Type: application/pgp-signature; name="signature.asc"
+Ack.
 
------BEGIN PGP SIGNATURE-----
+> > +
+> > +  clock-names:
+> > +    items:
+> > +      - const: adclk
+> > +      - const: pclk
+> > +
+> > +  power-domains:
+> > +    maxItems: 1
+> > +
+> > +  renesas,max-channels:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > +    description: |
+> > +      Maximum number of channels supported by the ADC.
+> > +      RZ/T2H has two ADCs with 4 channels and one with 6 channels.
+> > +      RZ/N2H has two ADCs with 4 channels and one with 15 channels.
+>
+> According to the documentation, both SoCs have three instances?
+>
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmjT0A0ACgkQj4D7WH0S
-/k629gf9EEyMob63w45sy8E1Tl2I0vbiHhfCGjC0RuxdvWZZ94q7yARaASpMhL0L
-+6NNeLxgzvoVEQ/I680dnAoDBysDPbIY2jT4V4AiwU+8faJMbapw3FMq89ojV1x0
-vaTqrmUHtU/aNqalhl953zpWgSo4YH5ZIkiqgj5yJUTMz23XRmJblV99y97NTjOE
-GbW8kI/Qn1Y57Rhe90rwKM5GYJUs+Il/R61u2o8oSp135MDCGJeD8Q8n17JzH87B
-WXORKMd787hcPOlIJ3KVTYXBBg3YB9fwBT/MC5u8mFr3ZDQJnlf4kdPpm56Er/d/
-zId8hbNmZtRPi0pMVy9PXnn1ehuTYw==
-=1vmw
------END PGP SIGNATURE-----
+Yes, both SoCs have three instances and (obviously) we've tested all
+of them, as they're exposed on the evaluation board, as defined in
+the dts patches in this series.
 
---diar7b3iid3lrt6r--
+T2H: ADC0 - 4, ADC1 - 4, ADC2 - 6
+N2H: ADC0 - 4, ADC1 - 4, ADC2 - 15
+
+> I agree with Connor that this should be dropped: the same information
+> is available from the channel@N subnodes, and future SoCs could have
+> gaps in the numbering.
+>
+
+Ack.
+
+> FTR, from a quick glance, it looks like this module is very similar
+> to the ADC on RZ/A2M, so I hope we can reuse the driver for that SoC.
+>
+> > +patternProperties:
+> > +  "^channel@[0-9a-e]$":
+>
+> 0-9a-f
+>
+
+15 channels max for N2H, which is where 0-9a-e comes from. f is not valid.
+Do you want to document 16 channels on the presumption that the hardware
+block has 16 channels, even though only up to 15 are ever exposed out of
+any SoC currently supported? This can be amended when/if we add support
+for an SoC with 16 channels using the same ADC IP.
+
+> > +    $ref: adc.yaml
+> > +    type: object
+> > +    description: The external channels which are connected to the ADC.
+> > +
+> > +    properties:
+> > +      reg:
+> > +        description: The channel number.
+> > +        maximum: 14
+>
+> 15
+> But I don't think it is needed, as the dtc check for non-matching unit
+> addresses and reg properties should already enforce this.
+>
+
+Other bindings have it like this. Is it not worth matching the address?
+
+Can't ever have enough checks.
+
+> > +
+> > +    required:
+> > +      - reg
+> > +
+> > +    additionalProperties: false
+> > +
+> > +allOf:
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            const: renesas,r9a09g077-adc
+> > +    then:
+> > +      properties:
+> > +        renesas,max-channels:
+> > +          enum: [4, 6]
+> > +
+> > +      patternProperties:
+> > +        "^channel@[6-9a-e]$": false
+>
+> 6-9a-f
+>
+
+Same as above.
+
+> > +        "^channel@[0-5]$":
+> > +          properties:
+> > +            reg:
+> > +              maximum: 5
+>
+> Not needed as per above.
+>
+
+Same as above.
+
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m6=
+8k.org
+>
+> In personal conversations with technical people, I call myself a hacker. =
+But
+> when I'm talking to journalists I just say "programmer" or something like=
+ that.
+>                                 -- Linus Torvalds
+________________________________
+
+Renesas Electronics Europe GmbH
+Registered Office: Arcadiastrasse 10
+DE-40472 Duesseldorf
+Commercial Registry: Duesseldorf, HRB 3708
+Managing Director: Carsten Jauch
+VAT-No.: DE 14978647
+Tax-ID-No: 105/5839/1793
+
+Legal Disclaimer: This e-mail communication (and any attachment/s) is confi=
+dential and contains proprietary information, some or all of which may be l=
+egally privileged. It is intended solely for the use of the individual or e=
+ntity to which it is addressed. Access to this email by anyone else is unau=
+thorized. If you are not the intended recipient, any disclosure, copying, d=
+istribution or any action taken or omitted to be taken in reliance on it, i=
+s prohibited and may be unlawful.
 

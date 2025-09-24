@@ -1,119 +1,168 @@
-Return-Path: <linux-iio+bounces-24403-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24404-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AD6B99B1B
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 13:57:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2381B99DB2
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 14:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 317217A19F6
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 11:55:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E3D13A6EAC
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 12:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4992FF158;
-	Wed, 24 Sep 2025 11:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DBAF2FC874;
+	Wed, 24 Sep 2025 12:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULRDCf0q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2FA2FD7C3
-	for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 11:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185464C6C;
+	Wed, 24 Sep 2025 12:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758715037; cv=none; b=aKvojCx4h2xQqyZUTJDoK83X/R5Wek6/OA3NZEnverlKpZ7bbWQW+dE5q5pLdPbLmcKmR47Qie1AqWuOR2XJ67o9D+CTJZdETajZShUUTH4JKC0FQGexfBghhkg4fgERmsAet7VaH7VQsMziJu2weXs2jxF44nVYJprVlzsAxGI=
+	t=1758717174; cv=none; b=VK0q65GxcKbdAk+yX3i5bKKEo5QqBYHV3K4EDup8rTzI6xqWRugpLrkQ0sB6vTzvZziEJfrenntZAe38nPxGePvrhwaxNj8QzVFj6HYUqYbDwWnhcvw5upjXtvdeQ4gE3/rqWq2x0BNPjwUXUQ/60GYq7J+U1+xFpIaQBVNJFI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758715037; c=relaxed/simple;
-	bh=9tehMRz08WQLUJ/smHN3UjG/IZMKp1SRULcKii4ippo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=okadjRjJC0qFWD/4QuzLLStnUn9/LLdvEMajr+IViLrP/5r3ue1hrwvr0tSC3QRLxxF5qahFK07mZ/JpasKw+GHeT+kSXtiWL+YCNHVEawU8S1q5NrK9nnZLZo1k3J3pqHX9Y5hIfUlbo5V7Eq3eDglyeAalTQ3HpWQgtW5fLck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-79f79e37c04so3848a34.3
-        for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 04:57:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758715031; x=1759319831;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2UvM+/QBcNnuTK2u1snMXMO5HJEe0Z5rWe+7sqxETZ0=;
-        b=BUMHxfYWikUrtrvdxrWP/mobkLa42R60ZyEFlRiyAFDcH56w6R3M1Hgx8tGWGqaW3S
-         Kz40Miozx6bWXOqVLRNGrWh3KeDiBrHcqPJhkTHdpSDVxe7rygwh1gPuE5oh6XfBzNqm
-         G/6rSbL6RIe2hTcsTj6DrS8E5T2pk7F1k/+heYUmJA2IoPW4JvdXCQ5OwOFSmN1AArzP
-         nhQT0rb5zXLHX5qBEO0eIEXw5bi+M2m366rS5AVOea00mU6VNGAR9X3kTvpKdlfHoQ6u
-         gSEHak9y8y4GF5ea8xoatljM0H+dPc0YQ+Bj1+103F1FejYyeyN9CEfN/m/bANeLs6Re
-         cVKg==
-X-Forwarded-Encrypted: i=1; AJvYcCXaG6ygX2Bvc00cNNf3nzu+SCiqBVSBG9nHmEk6hpa3cOqkhOqTCLSEDF8KseoGjEqxntbB9q0q5zk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yya3xe+nzufJKWkSyFg6li1RYW67KfUKBzsmLDPfcBobl/6UfhL
-	KzpoCuHGr6eZMLmd/d20yI5MTMeovAPNSjbFAbEiIpLyjoXvtnxxsBMeSolQxfxq
-X-Gm-Gg: ASbGncvwWJipS1I/WlsPy8l9LmDRe+NsZQLCAqTkjA0fS6RkaXP7zzUvRB6WnG94K5j
-	PT5rbfLADXhb2kJq4Oi5RgEE3wYI0R/cnHkEE/CYYVEvgBm3Sa4yViu5VTuhgfg0j5cTUNd6hHN
-	uLvXdshCSb+ZoHejCsCAAMRhTgMUx5CfKba1pj1ZsMUM869VFWf7J7muVw2+n0Qng3AnFyqxJAl
-	F9hccyEl+DzI1r42zPhEFHz6PyeUVpWcMzEVfFsZoj9whlk82OhHmqjcllFLB+mgTxq76S+eUku
-	869GoXW2bpD3zk/Pi+fZSTG9f7boAu57Vc4bG3QMm+viRbvyk0zm2E2N/9NAvbSYNiTLkj7okuR
-	YN9U9iIHF4Ql1vPaOOa36Jp0X61wG3IbN5u3NHu4paE6enwiVZWN3adl/NyrV
-X-Google-Smtp-Source: AGHT+IE95lWmcLRb1SXoPkHiBhtYl575r6baMpWTQqqGHpdE/Dd8Cw+pDunOSSqRPlZ3nGW5t0lVIw==
-X-Received: by 2002:a05:6808:1388:b0:437:eb1d:cdde with SMTP id 5614622812f47-43f2d3f600bmr3061282b6e.33.1758715031024;
-        Wed, 24 Sep 2025 04:57:11 -0700 (PDT)
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com. [209.85.210.48])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-43d5c88501dsm6545295b6e.31.2025.09.24.04.57.10
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Sep 2025 04:57:10 -0700 (PDT)
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-74526ca7d64so6876379a34.2
-        for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 04:57:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWtrDWB9+E2M2HBJk1Bswa1IIVF6Gy/UFWbI1dDn5Pe5PPuue4j4854Sfnd0l6n6aOo9TECtX6KOvs=@vger.kernel.org
-X-Received: by 2002:a05:6102:1610:b0:533:ff66:698c with SMTP id
- ada2fe7eead31-5a57e77391fmr2023739137.2.1758714597528; Wed, 24 Sep 2025
- 04:49:57 -0700 (PDT)
+	s=arc-20240116; t=1758717174; c=relaxed/simple;
+	bh=z64hXPjSDDrR9mWwhXNbJvORU06KaAiEuX3IuDczyoU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JC8gXC1pvXjGW9KmJpsh/EYKYdU9EJS9z9dOgY0onFJJt0bJ0899rK59hR2JloKE08/o/5PfKmBOt+gZcqhlqJJrxkvCILteqRRQRw+r/KRO1sFf/X7dxV73R4qi+vfGczYmVB66qWw+tXZL0MZm4+s/r8Dm5AQxQkETwgMgsfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULRDCf0q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0214CC4CEE7;
+	Wed, 24 Sep 2025 12:32:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1758717173;
+	bh=z64hXPjSDDrR9mWwhXNbJvORU06KaAiEuX3IuDczyoU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ULRDCf0qblHajIl5tMOCqW2QlrTPNPQxs85zLgzDM0altTMvFrpfJiVKa3scmEJ6F
+	 rCALDgzahIaRlrKPRDQnFYEuBFYEmZIeu6WvcCI2UepX2/oBj7xUfZrTV4I8bLuMlR
+	 tV65w8AVQ1QduJfuEeknS96zdO4DY0YoNMPRa1Cg=
+Date: Wed, 24 Sep 2025 14:32:47 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	sboyd@kernel.org, jic23@kernel.org, nuno.sa@analog.com,
+	andy@kernel.org, arnd@arndb.de, srini@kernel.org, vkoul@kernel.org,
+	kishon@kernel.org, sre@kernel.org, krzysztof.kozlowski@linaro.org,
+	linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-pm@vger.kernel.org, kernel@collabora.com, wenst@chromium.org,
+	casey.connolly@linaro.org,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v4 2/7] nvmem: qcom-spmi-sdam: Migrate to
+ devm_spmi_subdevice_alloc_and_add()
+Message-ID: <2025092451-immortal-synopsis-51fa@gregkh>
+References: <mknxgesog6aghc6cjzm63g63zqbqvysxf6ktmnbrbtafervveg@uoiohk3yclso>
+ <CAHp75Vf7KrsN7Ec9zOvJoRuKvkbrJ5sMv7pVv6+88tPX-j_9ZA@mail.gmail.com>
+ <er7dkmzutsu3ooegeihjzngi6l3hol5iaohecr3n5bolfse3tj@xeedlx2utwym>
+ <aMxWzTxvMLsVWbDB@smile.fi.intel.com>
+ <2025091925-thirsting-underuse-14ab@gregkh>
+ <f16ea5eb-cbda-4788-956b-d41c2af51745@baylibre.com>
+ <2025091918-glancing-uptown-7d63@gregkh>
+ <8702fd35-945a-4d20-bc37-410c74c70da6@baylibre.com>
+ <2025091902-dwelled-calculate-c755@gregkh>
+ <x5ot622jqzz67imvswtdacqeeclqaw7my3pj6ne7tureec6ufg@fuzltifrkcae>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250923160524.1096720-1-cosmin-gabriel.tanislav.xa@renesas.com> <20250923160524.1096720-2-cosmin-gabriel.tanislav.xa@renesas.com>
-In-Reply-To: <20250923160524.1096720-2-cosmin-gabriel.tanislav.xa@renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 24 Sep 2025 13:49:46 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdULfR3PZVdh4=2QQv5N3-J8kH=3--mPS5ckkd44Xf8miA@mail.gmail.com>
-X-Gm-Features: AS18NWAd607zcV9Nbln-a-J8dRoED1AjG1taSvoUWP2QDMqIsRBLiGt34BtVpEo
-Message-ID: <CAMuHMdULfR3PZVdh4=2QQv5N3-J8kH=3--mPS5ckkd44Xf8miA@mail.gmail.com>
-Subject: Re: [PATCH 1/7] clk: renesas: r9a09g077: Add ADC modules clock
-To: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Magnus Damm <magnus.damm@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <x5ot622jqzz67imvswtdacqeeclqaw7my3pj6ne7tureec6ufg@fuzltifrkcae>
 
-On Tue, 23 Sept 2025 at 18:06, Cosmin Tanislav
-<cosmin-gabriel.tanislav.xa@renesas.com> wrote:
-> Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs have three 12bit
-> ADC peripherals, each with its own peripheral clock.
->
-> For conversion, they use the PCLKL clock.
->
-> Add their clocks to the list of module clocks.
->
-> Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+On Sat, Sep 20, 2025 at 06:41:57PM +0200, Uwe Kleine-König wrote:
+> On Fri, Sep 19, 2025 at 05:37:03PM +0200, Greg KH wrote:
+> > On Fri, Sep 19, 2025 at 10:20:29AM -0500, David Lechner wrote:
+> > > Up to now, my (naive) understanding was that the point module namespaces
+> > > is to reduce the number of symbols in the global namespace because having
+> > > too many symbols there was starting to cause problems. So moving symbols
+> > > to another namespace was a "good thing".
+> > 
+> > Yes, it is a "good thing" overall, but by just making all of your
+> > symbols in a namespace, and then including it in the .h file, that does
+> > the same exact thing as before (i.e. anyone that includes that .h file
+> > puts the symbols into the global namespace with that prefix.)
+> 
+> I fail to parse the part in parenthesis. The symbols of the pwm
+> subsystem are defined in the "PWM" namespace (using `#define
+> DEFAULT_SYMBOL_NAMESPACE "PWM"` in drivers/pwm/core.c). In <linux/pwm.h>
+> there is a `MODULE_IMPORT_NS("PWM");`, so a consumer (say
+> `drivers/regulator/pwm-regulator.c`) only needs
+> 
+> 	#include <linux/pwm.h>
+> 
+> to import the "PWM" namespace. So pwm-regulator.c puts the symbols
+> into the global namespace with that prefix. What symbols? What prefix?
+> 
+> The thing that is different is that the pwm functions are in the "PWM"
+> namespace, so a module without an import for "PWM" has a smaller pool of
+> global symbols and so loading that module is a tad more effective,
+> right?
+> 
+> I agree that for the consumer source it doesn't make a difference if pwm
+> is using a namespace or not. I'd count that as an advantage of the
+> "import in a header" approach.
+> 
+> > Ideally, the goal was to be able to easily see in a module, what symbol
+> > namespaces they depend on, which requires them to put MODULE_IMPORT_NS()
+> > in the module to get access to those symbols.  dmabuf has done this very
+> > well, making it obvious to the maintainers of that subsystem that they
+> > should be paying attention to those users.
+> 
+> For me as pwm maintainer it doesn't matter much if I pay attention to
+> `MODULE_IMPORT_NS("PWM");` or `#include <linux/pwm.h>`.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in renesas-clk for v6.19.
+I think this is the primary thing here.  It's easier for some
+maintainers and reviewers to notice the MODULE_IMPORT_NS() thing than a
+simple include line.  Especially as includes are often hidden in other
+include files.
 
-Gr{oetje,eeting}s,
+So sure, as a maintainer, you are free to do things this way, it's just
+not really what we thought about when namespaces were first created.  We
+assumed that an explict MODULE_INPORT_NS() was what would be used, not
+worked around :)
 
-                        Geert
+> > For other "tiny" subsystems, it just slots away their symbols so that no
+> > one else should ever be using them, and it makes it blindingly obvious
+> > if they do.  For example, the usb-storage symbols, anyone that does:
+> > 	MODULE_IMPORT_NS("USB_STORAGE");
+> > had better be living in drivers/usb/storage/ otherwise I need to have a
+> > word with those offenders :)
+> 
+> All symbols in the "USB_STORAGE" namespace (apart from
+> `fill_inquiry_response`) start with `usb_stor_`. If you grep for that
+> string you find all the (probably illegitimate) users of the usb-storage
+> symbols, but also those that define their own symbols with that prefix.
+> 
+> Do you actually look out for such offenders, i.e. have a lei mailbox
+> with `MODULE_IMPORT_NS("USB_STORAGE")` as search string or a cron job
+> grepping your tree for that?
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Some maintainers do just this, yes.  I think the dmabuf maintainers do
+as an example.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> > So it's a way of "tidying" up things, and to make things more explicit
+> > than just having to rely on searching a tree and looking for .h include
+> > usage. 
+> 
+> For some reason in your eyes grepping for MODULE_IMPORT_NS is superior
+> to grepping for an #include. Can you explain that?
+
+#include files are often included in other include files, and can easily
+be "hidden" in the chain of what is needed by what .c file.
+
+That's it, nothing major here, if you want to use namespaces this way,
+that's fine, just feels kind of counter-productive :)
+
+thanks,
+
+greg k-h
 

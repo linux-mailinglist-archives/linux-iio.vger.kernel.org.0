@@ -1,254 +1,228 @@
-Return-Path: <linux-iio+bounces-24389-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24390-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C38B98B57
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 09:57:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807CBB9917C
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 11:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BE223B550D
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 07:57:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB9774C1C32
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 09:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4F327E060;
-	Wed, 24 Sep 2025 07:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC0F2D7DD2;
+	Wed, 24 Sep 2025 09:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YjDd1RSB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7FD16132A
-	for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 07:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55601990D9;
+	Wed, 24 Sep 2025 09:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758700646; cv=none; b=H7Jx9lf7hn0e8KjAq5JCL8NzewJn3bQOuB+nKg/NUtwWbOj4Y7ETkG51B2omfli37EZknUaxfoZi793xKWLGUlYUxq6ybc5yBpxJr1MUdEn8mMFWWa5rRRkLgV0PynMjNXb+BMpPB/piEUcy+U+X3489xONqzNsjRMCU3rsaEnM=
+	t=1758705847; cv=none; b=lLy3nEitzqpEnXc4NklLfMJBGDGPDUE67j/rKW4hPBHIM0vwudyzuu3pqJy93fbpegioQ60c8OgcncUXU3LS6liExceCmiKUm42X10YPs769Hauv3sqfEOKcfTv4VIjhxcFXecRC72Fu3Y1cx9gczxUPf78XYa5p3dVpS53O7/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758700646; c=relaxed/simple;
-	bh=aWLfvJIhJGUp5ivux4F05IzZUz29wUscuHa27oPNgME=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZeN3HhjwjqlRfgY5XBrsJ+Dffxv2JI7E0H96FYGmBnPw5GDi/vriqt7ngBGDS/78N2hnJ4SBl/yHDpS1rbTaaxgGYowPqxo+GIck6B0ihEhEHJtL56N6epnoy2Rv9CHdsisUNSVHObGC+DoBTxwX6v1z8dRL97c+v9auZuvQpTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-746d3b0f7e5so6073737a34.2
-        for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 00:57:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758700644; x=1759305444;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hh+Khf6unZqbzxNHEU+Ts8bq4BIxlEWA7Rzthe6aDww=;
-        b=MR2ViCko2gl1rzsiteX2PdsfLw5kkUZq7Q0tvhg32xrUbFNH8mxYwkqLxOddjPVMY3
-         6+4KAze8RtbC8jjKpGOdLyAyheJpZPjvOZQk76bM0QQVc67yn2dYUPbMyWfjP/MA2/MW
-         ZdfDsvm1sn+IxzNz+LM0K4Accthml+D4kjzDCpJ1hh3vRKp9kLCcb8cdLX/38zeILclD
-         C30JCkaVw+DDarO+xKI4VjMRtvs7/8YY0Hycca9ZRRqbRGVtW+ypbF1PvqdpW7zDkRtk
-         1AroRCSNfX4GlNC7vw7FXznCNLpFW65TCijPWbn4U5iamazp51wiQO2qXer0wwwEul5u
-         wUnw==
-X-Forwarded-Encrypted: i=1; AJvYcCWxWtf4ohc///bdJ8ud5nzw9XePZiZZ+c/2h//vjkHg7Nlq3ZQV/WjbjwuDmNbsIVcBEWHjBSltbpE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR97Skdl+/eDIue/odFlOkkptfUvjHibS0ea7DFuIswuuUVzLj
-	fa2Bm6Ky+6YoQEjYEt9IXTHexqOwH7luOIWp+OdcECPZR0P72Mv195NpvJJBgrbi
-X-Gm-Gg: ASbGncuDun1DCcr7f6A5coIXfjjMd+k0vTSR53KRgHNqZxIasqmlU+j8jGat5NNFy81
-	PSmMiZvgbmORXwsXl2/PcX11iYV5+k69DrIarTpiEy+L/E64HtnhGk4RmouUVE6m3BAcwrGKfLa
-	nz1QGNt/PrMhuzOTW7Mopyeul4EmkskA6S2z2kvfWLSnhh5vrE5dFxiitkz88FAlE9UxHPQ/WPn
-	EqE8HINGZfzjAE/SVBgiT0GeWJ4lqNaOgfW7KQJRzxYgrZQC8PFgJ/SrNuH/nHMlV4jnnUY6LSC
-	f4ifHWwTO+9gcwEFWrvQdcjhJ5pvSn+tTPy/zPmzEBUaLe5NG+7XCkcYJtTs0YxxBq7oOGDYDV8
-	k1H9LDq/S49nb2Y4YiL0wnCCaM1avMpTpQH5NqhBB0q8tqFimJ4ecZBgY2KMe
-X-Google-Smtp-Source: AGHT+IFc+QnWNZmucv7Z4g3d3e97svNV5aof7GpX9rVyRi1PhAyIlN/L8BEo+k1N/kZZVL7XBLWvhw==
-X-Received: by 2002:a05:6808:190e:b0:43d:1eec:aea7 with SMTP id 5614622812f47-43f2d4c73a1mr3820392b6e.45.1758700643692;
-        Wed, 24 Sep 2025 00:57:23 -0700 (PDT)
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com. [209.85.160.50])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-43d5c67a1b1sm6492304b6e.6.2025.09.24.00.57.23
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Sep 2025 00:57:23 -0700 (PDT)
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-35ba7c71bfdso66258fac.3
-        for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 00:57:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU9ECM6Dq2tzrmUFDEuhw62ZT22V+MCU/u/HyMDMqzcP51Or8HG3HraGv0vgmET0Is7TujSD+MaM6w=@vger.kernel.org
-X-Received: by 2002:a05:6102:6884:b0:569:93c9:b572 with SMTP id
- ada2fe7eead31-5a57695d27dmr1659602137.9.1758700290135; Wed, 24 Sep 2025
- 00:51:30 -0700 (PDT)
+	s=arc-20240116; t=1758705847; c=relaxed/simple;
+	bh=AmVomRMWOKA07HoZeGaejlDATFCNyFNvT6ODgLF3w8U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=u25Ubps2mbfFayq8adUhkxdpxErONpFI5OEqaVQKI/uJgeZaO+z4Fs4Aa4rBntd233g941vzFDfuIR/qKyrnxMnDc30lbWJPma9esT+EKwB/lsHR7ujKSh7kI9TE+WJvFt2KfleeiJij4nJmTY7THSoyfgBDxhPxEar173NF2jA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YjDd1RSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5B13DC2BC87;
+	Wed, 24 Sep 2025 09:24:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758705847;
+	bh=AmVomRMWOKA07HoZeGaejlDATFCNyFNvT6ODgLF3w8U=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=YjDd1RSBeej1vgm0HIpLlqOPWC5mo4mHcvk9Nlu1Y0V1QC/zPV+9T38cS8jI8FjC9
+	 CR0rdA0qpuR2aULs/7ELEb2jxyKTeJkiU1tgIr+GsRJfYaFU8U92uqnFU24qFXGuBG
+	 gjfgDtrqe/lFM+Mp39OtzNGbbJqIPdASwjdTjAl9L6jbVBviWUns8hN1JNB6nigRHH
+	 CdnrRkrk5UUsawrUP1FUREH0sT4RVdi0iUvzuDBWRtIMkpK1oA6Tmfqdrm7eWQeFYC
+	 uFI3C9TOxgMgVHuqd8vq6Qz6XntkFcKPUhlUERMK1FimjwqqYFIk0HXDAJ5YV7ZSnB
+	 /tixm9z124COw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 47D28CAC5B0;
+	Wed, 24 Sep 2025 09:24:07 +0000 (UTC)
+From: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
+Subject: [PATCH v6 0/9] iio: imu: new inv_icm45600 driver
+Date: Wed, 24 Sep 2025 09:23:53 +0000
+Message-Id: <20250924-add_newport_driver-v6-0-76687b9d8a6e@tdk.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250923160524.1096720-1-cosmin-gabriel.tanislav.xa@renesas.com> <20250923160524.1096720-3-cosmin-gabriel.tanislav.xa@renesas.com>
-In-Reply-To: <20250923160524.1096720-3-cosmin-gabriel.tanislav.xa@renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 24 Sep 2025 09:51:17 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVEDJZ6wdGZs_CDs=jLPV1u382o6=cZ1HfKQOffGf7jGw@mail.gmail.com>
-X-Gm-Features: AS18NWCUnOtI9sni6QIPbp0MqkmfhYYAKBnwNUuJbeyYXQXVL2FCMeoJiSjFxRk
-Message-ID: <CAMuHMdVEDJZ6wdGZs_CDs=jLPV1u382o6=cZ1HfKQOffGf7jGw@mail.gmail.com>
-Subject: Re: [PATCH 2/7] dt-bindings: iio: adc: document RZ/T2H and RZ/N2H ADC
-To: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-iio@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKm402gC/33PTWrDMBAF4KsErasyM9aPlVXvUUKwpVEjSu0gG
+ 6Ul+O5VsnEaTJfvwXyPuYqJc+JJ7HdXkbmkKY1DDeZlJ/ypGz5YplCzICANClF2IRwHvpzHPB9
+ DToWz1OR81L1F7lpRD8+ZY/q+o++Hmk9pmsf8c98oeGv/5QpKkKihJTTQA7q3OXy++vFL3LBCK
+ 2ARNgGqQB+tCS0q4kh/geYRsJtAUwFvwDkG8to8AWoF6sAmoCqglFG9MQDOPgH6AaDtF3QFKHo
+ XsQkhMK/Asiy//yTmY7YBAAA=
+X-Change-ID: 20250411-add_newport_driver-529cf5b71ea8
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, Remi Buisson <remi.buisson@tdk.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758705845; l=7060;
+ i=remi.buisson@tdk.com; s=20250411; h=from:subject:message-id;
+ bh=AmVomRMWOKA07HoZeGaejlDATFCNyFNvT6ODgLF3w8U=;
+ b=86P2nFjgQCl+1daKHRPCbB2Uoz+PiVQx0Sb5/6cCm0OO+aPJfwJ2Lsk39zGalF8FCCyjLKX5k
+ kmS67pJMJjvCICRwL3bt/Aopd8450eM7NdkF1WvkTsPrHlIp8AvmLLm
+X-Developer-Key: i=remi.buisson@tdk.com; a=ed25519;
+ pk=yDVMi4C7RpXN4dififo42A7fDDt3THYzoZoNq9lUZuo=
+X-Endpoint-Received: by B4 Relay for remi.buisson@tdk.com/20250411 with
+ auth_id=372
+X-Original-From: Remi Buisson <remi.buisson@tdk.com>
+Reply-To: remi.buisson@tdk.com
 
-Hi Cosmin,
+This series add a new driver for managing InvenSense ICM-456xx 6-axis IMUs.
+This next generation of chips includes new generations of 3-axis gyroscope
+and 3-axis accelerometer, support of I3C in addition to I2C and SPI, and
+intelligent MotionTracking features like pedometer, tilt detection, and
+tap detection.
 
-On Tue, 23 Sept 2025 at 18:06, Cosmin Tanislav
-<cosmin-gabriel.tanislav.xa@renesas.com> wrote:
-> Document the A/D 12-Bit successive approximation converters found in the
-> Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs.
->
-> RZ/T2H has two ADCs with 4 channels and one with 6.
-> RZ/N2H has two ADCs with 4 channels and one with 15.
->
-> Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+This series is delivering a driver supporting gyroscope, accelerometer and
+temperature data, with polling and buffering using hwfifo and watermark,
+on I2C, SPI and I3C busses.
 
-Thanks for your patch!
+Gyroscope and accelerometer sensors are completely independent and can have
+different ODRs. Since there is only a single FIFO a specific value is used
+to mark invalid data. To keep the device standard we are de-multiplexing
+data from the FIFO to 2 IIO devices with 2 buffers, 1 for the accelerometer
+and 1 for the gyroscope. This architecture also enables to easily turn each
+sensor on/off without impacting the other. The device interrupt is used to
+read the FIFO and launch parsing of accelerometer and gyroscope data.
+This driver relies on the common Invensense timestamping mechanism to
+handle correctly FIFO watermark and dynamic changes of settings.
 
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
-> @@ -0,0 +1,170 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/renesas,r9a09g077-adc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Renesas RZ/T2H / RZ/N2H ADC12
-> +
-> +maintainers:
-> +  - Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-> +
-> +description: |
-> +  A/D Converter block is a successive approximation analog-to-digital converter
-> +  with a 12-bit accuracy. Up to 15 analog input channels can be selected.
+The structure of the driver is quite similar to the inv_icm42600 driver,
+however there are significant reasons for adding a different driver for
+inv_icm45600, such as:
+- A completely different register map.
+- Different FIFO management, based on number of samples instead of bytes.
+- Different indirect register access mechanism.
 
-The documentation for several registers talks about bitmasks for ch0-ch15,
-so the actual hardware block supports up to 16 channels.
+Note that regmap cache will be added in a dedicated patch set, to avoid
+increasing too much this one.
 
-> +  Conversions can be performed in single or continuous mode. Result of the ADC
-> +  is stored in a 16-bit data register corresponding to each channel.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - renesas,r9a09g077-adc # RZ/T2H
-> +      - renesas,r9a09g087-adc # RZ/N2H
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    items:
-> +      - description: A/D scan end interrupt
-> +      - description: A/D scan end interrupt for Group B
-> +      - description: A/D scan end interrupt for Group C
-> +      - description: Window A compare match
-> +      - description: Window B compare match
-> +      - description: Compare match
-> +      - description: Compare mismatch
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: adi
-> +      - const: gbadi
-> +      - const: gcadi
-> +      - const: cmpai
-> +      - const: cmpbi
-> +      - const: wcmpm
-> +      - const: wcmpum
-> +
-> +  clocks:
-> +    items:
-> +      - description: converter clock
+Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
+---
+Changes in v6:
+- Reviewed headers inclusion
+- Formatting (line too short, ...)
+- moving code to patch it belongs
+- kernel doc fixes
+- Comments reviewed and simplified
+- removed dev_error_probe with ENOMEM
+- fixed useless ssize_t to size_t
+- removed useless pack attribute
+- Fixed unclear or malformed if
+- Removed useless fifo_is_data_valid wrapper
+- Use available macros instead of hardcoded values
+- Link to v5: https://lore.kernel.org/r/20250820-add_newport_driver-v5-0-2fc9f13dddee@tdk.com
 
-Converter
+Changes in v5:
+- Simplified device tree, removed interrupts from mandatory param list
+- Allocated regmap_bulk_read/write buffers to dma-capable memory (for indirect reg accesses)
+- Use min/max to simplify code
+- Reordered some code/include/prototypes to the patch they belong
+- Updated to latest iio_push_to_buffers_with_ts API
+- Fix build warning with clang 18.1.8
+- Fixed some alignements
+- Avoiding irq_type silly assignation
+- Simplified fwnode_irq_get_byname error management
+- Re-ordered suspend/resume process to match + comments
+- Reverted VDDIO init to make it work without PM
+- Avoid PM underflow on VDDIO when removing inv_icm456000 module, by checking suspend state
+- Link to v4: https://lore.kernel.org/r/20250814-add_newport_driver-v4-0-4464b6600972@tdk.com
 
-> +      - description: peripheral clock
+Changes in v4:
+- Introduce gyro and accel in different patches.
+- Move IRQ probe to next patch.
+- Allocate fifo memory instead of static definition.
+- Rework VDDIO management to avoid underflow.
+- Rework suspend/resume using force suspend/resume API.
+- Use helper min, clamp and sizeof instead of custom implementation.
+- Re-scoping some variables, using reverse xmas tree for declarations.
+- Fix formatting: end of list, end of file, spaces, alignments.
+- Use dev_err_probe for I3C errors.
+- Factorizing default config code.
+- Link to v3: https://lore.kernel.org/r/20250717-add_newport_driver-v3-0-c6099e02c562@tdk.com
 
-Peripheral
+Changes in v3:
+- Macros renamed and added to the patch using it.
+- Using unsigned for sensor configuration parameters.
+- Using sizeof instead of raw values.
+- Using fsleep instead of usleep.
+- Simplified dt-bindings examples, setting supplies as mandatory
+- Fix bad or useless casts.
+- Partially aligned power management following 20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com
+- Fix "uninitialized symbols" warnings.
+- Link to v2: https://lore.kernel.org/r/20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com
 
-> +
-> +  clock-names:
-> +    items:
-> +      - const: adclk
-> +      - const: pclk
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  renesas,max-channels:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Maximum number of channels supported by the ADC.
-> +      RZ/T2H has two ADCs with 4 channels and one with 6 channels.
-> +      RZ/N2H has two ADCs with 4 channels and one with 15 channels.
+Changes in v2:
+- Reworked patches order and content to ease review and make sure everything compiles
+- Reworked gyro and accel FSR as 2D arrays
+- Moved temperature processed sensor to core module
+- Use latest API to claim/release device
+- Implemented chip_info structure instead of relying on an enum
+- Removed power-mode ABI, only relying on ODR to switch power_mode
+- Reworked regulator control to use devm_ API where relevant
+- Reworked inv_icm45600_state.buffer as a union to avoid casts, using getter/setter instead of memcpy
+- Fixed dt-binding error and moved patch at the beginning of the patch-set
+- Reworked macros to use FIELD_PREP inline instead of inside the header
+- Fixed comment's grammar
+- Removed extra blank lines
+- Reordered part numbers alphanumerically
+- Removed useless default/error fallbacks
+- Typed accel, gyro and timestamp data when parsing FIFO
+- Fixed I2C module return code
+- Use Linux types instead of C standard
+- Reviewed headers inclusion to remove useless #include and to add missing ones
+- Link to v1: https://lore.kernel.org/r/20250411-add_newport_driver-v1-0-15082160b019@tdk.com
 
-According to the documentation, both SoCs have three instances?
+---
+Remi Buisson (9):
+      dt-bindings: iio: imu: Add inv_icm45600
+      iio: imu: inv_icm45600: add new inv_icm45600 driver
+      iio: imu: inv_icm45600: add buffer support in iio devices
+      iio: imu: inv_icm45600: add IMU IIO gyroscope device
+      iio: imu: inv_icm45600: add IMU IIO accelerometer device
+      iio: imu: inv_icm45600: add I2C driver for inv_icm45600 driver
+      iio: imu: inv_icm45600: add SPI driver for inv_icm45600 driver
+      iio: imu: inv_icm45600: add I3C driver for inv_icm45600 driver
+      MAINTAINERS: add entry for inv_icm45600 6-axis imu sensor
 
-I agree with Connor that this should be dropped: the same information
-is available from the channel@N subnodes, and future SoCs could have
-gaps in the numbering.
+ .../bindings/iio/imu/invensense,icm45600.yaml      |  90 ++
+ MAINTAINERS                                        |   8 +
+ drivers/iio/imu/Kconfig                            |   1 +
+ drivers/iio/imu/Makefile                           |   1 +
+ drivers/iio/imu/inv_icm45600/Kconfig               |  70 ++
+ drivers/iio/imu/inv_icm45600/Makefile              |  16 +
+ drivers/iio/imu/inv_icm45600/inv_icm45600.h        | 385 ++++++++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_accel.c  | 782 ++++++++++++++++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 560 ++++++++++++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h |  97 ++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_core.c   | 990 +++++++++++++++++++++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_gyro.c   | 791 ++++++++++++++++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_i2c.c    |  98 ++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c    |  78 ++
+ drivers/iio/imu/inv_icm45600/inv_icm45600_spi.c    | 107 +++
+ 15 files changed, 4074 insertions(+)
+---
+base-commit: 411e8b72c181e4f49352c12ced0fd8426eb683aa
+change-id: 20250411-add_newport_driver-529cf5b71ea8
 
-FTR, from a quick glance, it looks like this module is very similar
-to the ADC on RZ/A2M, so I hope we can reuse the driver for that SoC.
+Best regards,
+-- 
+Remi Buisson <remi.buisson@tdk.com>
 
-> +patternProperties:
-> +  "^channel@[0-9a-e]$":
 
-0-9a-f
-
-> +    $ref: adc.yaml
-> +    type: object
-> +    description: The external channels which are connected to the ADC.
-> +
-> +    properties:
-> +      reg:
-> +        description: The channel number.
-> +        maximum: 14
-
-15
-But I don't think it is needed, as the dtc check for non-matching unit
-addresses and reg properties should already enforce this.
-
-> +
-> +    required:
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: renesas,r9a09g077-adc
-> +    then:
-> +      properties:
-> +        renesas,max-channels:
-> +          enum: [4, 6]
-> +
-> +      patternProperties:
-> +        "^channel@[6-9a-e]$": false
-
-6-9a-f
-
-> +        "^channel@[0-5]$":
-> +          properties:
-> +            reg:
-> +              maximum: 5
-
-Not needed as per above.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 

@@ -1,82 +1,81 @@
-Return-Path: <linux-iio+bounces-24386-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24387-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA42BB980EE
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 04:11:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F46B9815F
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 04:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98D9219C7EA6
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 02:11:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CE0F7A8C46
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 02:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A517F21B9F1;
-	Wed, 24 Sep 2025 02:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FD9221723;
+	Wed, 24 Sep 2025 02:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c/0F5IW2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C979Wyey"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001C0219A71
-	for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 02:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE3921E087
+	for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 02:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758679870; cv=none; b=MqKjSMK7SwPupv8VmnnYUv57f7bPMCqXYsTYqa3Fc8CCiFJz0rAkAu6VKkBpWzz+EiXbM6/2dHNCvpQRGMLSylmJVnthSXZRsc40CmIs9nwSuwcJoexpDml4ixr9Jpd/ycelXSmgrVYOgfkojsBxw588+/SDWqpcpt8xOU33hgI=
+	t=1758681665; cv=none; b=lG8Y6o3Qq8TZGOs9I7Dy0FXNRWhzttBd2KkUnySWxjuw9gc00+49rXUPOwwxm7wvTMOylYoqBeNy3pdpLQZOtCaFjEoYwLJ+JfI9smIeVQVdGKe2zoUo4uV16buFSmJpY0S7bbEeGC8fJJ3HrGd9lccq6CDb/5ox5YbFlvihFHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758679870; c=relaxed/simple;
-	bh=OYiasxquy8Ze2zIJBLJFSCiZmNRsfanuS7kvIdTNk3Q=;
+	s=arc-20240116; t=1758681665; c=relaxed/simple;
+	bh=Uha/InzQTMU2XSWRXEyQ5VSO3HoUfrMeKudmNEUQGUc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UxbzUPRKPyEg7wXtRK7bhOS+QDPZdlebmj9f6+hNv8HZ/nmhiB/csxEUWZTuLoFAF4B73sCQnl2SgFar1I3YE614udpav3tWx1YKFGftBRzMZLoqAfcrVYwLx/xob5PIZYN2qtKa0qi/EelkBTWrs0AbYZz0ZC+DZmHvX8bQVNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c/0F5IW2; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	 In-Reply-To:Content-Type; b=mfu+IDb3vDQhUudZOgf4NcMjeR1PkTd3WgGtBGT8pb4TNMHR5w3vhgd2wv++n2gtQIhTo1mktSaiAjpzMIhWDfcs/ZJKDOus+zP40ekV9mCfbdMFOgO0js8+OkYQZQncIV81/ZXt9304aBDqfFPSkcTdK5Dt5YcatNe/q38i258=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C979Wyey; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-77f3405c38aso2633147b3a.0
-        for <linux-iio@vger.kernel.org>; Tue, 23 Sep 2025 19:11:08 -0700 (PDT)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-77f605f22easo962737b3a.2
+        for <linux-iio@vger.kernel.org>; Tue, 23 Sep 2025 19:41:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758679868; x=1759284668; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=jp4tyt8gueRX0+NdIoVvSA3V+6xnYgJd59pm1XSI/N4=;
-        b=c/0F5IW29tYvc1Su84TjDWmLCHdK2cYqtVfsrKDA09RkwIfEjUTJY4/95hQGxUiOI5
-         7XA4+EKQ0ymhDN7WsfrfunZrg0OCNpmoQpOg7MEq9AI52+CAhQSXFkpVPc0d3BBfyS7b
-         LZZRj54xIGZ7u5v2KU1C3QaorYrajPAvgGDgW2+zAm6r2a+o+7BiMhda/TiYJGfEDABY
-         2k0GX+hQNG/t+ibDNGUxfdRxgz++e4EjaxrUv/jAJna918PDXWFSwGpO7dKckv0BgpDR
-         9llcpk8EyZWgmZbe1c1WBjZH+U71ZAveiqKMPJFO5d/7zPOuZkjMi3RNgL5rwXPu5CXL
-         lCog==
+        d=gmail.com; s=20230601; t=1758681663; x=1759286463; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uoZZYfcg1eDQ+SJZ5L9LQV2KxrPo1OhoDjYQOppmFGk=;
+        b=C979WyeyIk49+gDTxmmpWDTS2Chki33BatjBnjIRgwsng9LbXjDe4jBnTn1mKj1nLE
+         V8VL+smAD1U05tEQWzWwKruf9nzRjjvcqMYxbtm7z+rTaosd8oYuergBsMN7jVe8c8vT
+         fl1lbbCGYvlPFG4a/ifqIZp65tz5c14AKEHIGR7Z3jryi1jYqIH+FWYbUAw+MH/ZTjxt
+         nc6VNHIg0gi20VYPmVubyq5Ei2QamOt5gM9ptR0x65Akfnl1pyeO/4sj2+qVNABo0ru8
+         PzWaPTPp1YxI7lrFfFSH0KVxoGYN+HBqpT+JF3lXrXCOmmsHmDhjB/nsQYRIYqcp7jF8
+         P3QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758679868; x=1759284668;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jp4tyt8gueRX0+NdIoVvSA3V+6xnYgJd59pm1XSI/N4=;
-        b=NxoLS+4FT9gkRh9NmbRGzph4D+S/rIyNMumgHBI7Rl8Mdj00PxZKPBW80hie2ZIo1Q
-         uzKqOKzOFfxKbAB+qpDjZSCe6m1HSPlyyOZUF8JzesnDnquXKHpnf/vrH4Y+603dNQBF
-         Fybuh64BmOE2NwNTzaZ9+2kPQHGbxA+lcrw8DPv31dw+Z3DNjgFy7OhDCKO008caZrOZ
-         xJmzAZ5jLoOyj3w1S+f9aI62M3Yd4iAbxkybtFFko/9lvRRgcmxt00DvtU8bg8VKT4Ry
-         imhZBLZmINmLxjFbIYsxEmpgyYsSyHnG60gQxa9KpFAnsX0POanIsfy/w0w9WlKfdTnk
-         GI9w==
-X-Forwarded-Encrypted: i=1; AJvYcCV5i1It7gBrAR3wQ/USd5JfU/7uvN9BRF0M2DoNAh/WsK1eDyOsmg5IpajL6pkTBGVNHB+YRL58V4E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQaEMjM97/jlGt8SXYP0fVy3YyZg4PRFHpBrHGVhQvCkRsUxMx
-	vNWmQK3X9jrWouhJvR0EyfYlJBmhEBXREa3aT25hWhwZ0Fij3TAgV5Lx
-X-Gm-Gg: ASbGncvbDCvxrHqJElKMbPeBiu+AqKkYCceSAEol5rAurNGtoobegS0E4+2TQ1ub4/1
-	0Dbvu2G33zaffeqo1jEQS6zUkDXXSYOlqHNf7tRggymHcrCdY/Me1l6khJ7jtDDUId7ztshbAyz
-	LRTdMuxQ+Kk9NVpVki3ol3LmLzYZ3lhyBQkjRkq3PTTEmoV15lwnpznR2fxc2Wp808eeoCDMRWM
-	FC+orqNWD6RbZlRRMkAJ5IDMpNquy3f23GVZUnZX+z1Ij0JPpND72AH/F1EioFzmryPAe1+uhGG
-	WA+lMAvBZsjsfrqDvpO9uYcMDLnJSl6Mo5wX0Pgb5MRH1RLPICbAoTzmuSBYC3mR2EWiR3M3S5V
-	pcdP9S1yOD0X+NuH/2HfNhW5EPBscMGvyxHOTBqmBIlKUpjAmpqJvd2rLKgWU33BYpsoj1fE=
-X-Google-Smtp-Source: AGHT+IEdFXMgXTqkh1Xek0/P5pNvl6O05dXWKTzDiYECiFGYEuAs7Qzt3hnDwDnBc6w/OXNClh2Gug==
-X-Received: by 2002:a05:6a20:e291:b0:24d:6501:b49c with SMTP id adf61e73a8af0-2cff367b751mr6975746637.29.1758679868125;
-        Tue, 23 Sep 2025 19:11:08 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b554aa612e7sm7168822a12.8.2025.09.23.19.11.06
+        d=1e100.net; s=20230601; t=1758681663; x=1759286463;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uoZZYfcg1eDQ+SJZ5L9LQV2KxrPo1OhoDjYQOppmFGk=;
+        b=xVKTCoMnL+iSRCWfLy9JISnu7qXT8oJrdX22rQmFZm/g8VpjqXBhO1CISLq3O7TImI
+         c5+2Hvf0CJgktSB2NRfcAon8CuRJELnxW5iE+zDpXYgVHYV4chrdCtQ2f6FfROh/abVy
+         ELVVDMAIergDC9o6tO8tZXGUrBR9X6X1tg6Xsp2BpcvpoJu743F9cTZKE9oucQx920Cn
+         CBt/JzkShyR31w83QmX7rsjocN3p9ZEfd1MnY9hf3v8Dr24HaL3IvEZ2u+3BUROCC/oF
+         tJ1as3V15fMUiktgjJOBx2rwPc8QgZSwqmboKT8ZDCOC/73Cc381oC/+eouCA2n3/osH
+         QhsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXgX729n5a2Pqy/jG3tiuFi/WBsnTrbRfxjJXVLZqAkcg7AinjV4N7q0rxA4Rd0P1xhekRWv7AVQsA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/aGYz9PDWHX4xBkVd02qML2QyBp5/W3BnNo6WnjR62/HXtGUA
+	M3ENMYZojpq9wBs3xNBdI4n+7PG20ws4KFDKEMpAianFvIx9xaPGho84
+X-Gm-Gg: ASbGnctBmj2pQE0NkmRIvRun4w5mM4imee8N2wKaE5E/InCv3YwuskSyH828CirXNzs
+	suXriArh3wOtMFnwVPGGtZVhK4eE59o+mDa9nbbP2sz3jySwaOG+67d4rl/TwPsU4KWlEdf+DaP
+	+His6PHCsUIQ+l/r8BNPVPsbPfHdu9YF72e8AgN1qWFg804a0oDIU1d0R3w/T+xhPzgxZ8yUaUy
+	Ma2UmAmtdN2+kLvQwdM6kW0mjoAZPiXM2O6LT49PDcqMqvCnsXftic4Zs20RPT1FbCEUgPxpfgq
+	Eb/Onbmvkuc4JeoOYvciriOXwcZ4ZkUCR4/Si7Wq3HfmGn/J84i6aRu87YDnaMl87Il+zWz9y6t
+	z9IQ7ULVJ9dwg8f+ArweE3hRnDOoLrn8NvjnU+FkC8lqjqHWN/s4PREhqIrFBHV56gCVRPcXdGa
+	V6sNgCdGlpjggx
+X-Google-Smtp-Source: AGHT+IGQhBGrCzcmK6hv9moOx8ggT0aDNbcu/Pe0LQUZCBDVl4Fibpr1kyaVHD04dtyoEjoOsTg6CA==
+X-Received: by 2002:a05:6a20:b90f:b0:2dc:40f5:3c6c with SMTP id adf61e73a8af0-2dc40f57e34mr1601675637.54.1758681662762;
+        Tue, 23 Sep 2025 19:41:02 -0700 (PDT)
+Received: from ?IPV6:2804:7f5:b08b:e4a8:158e:d41f:a482:c1c9? ([2804:7f5:b08b:e4a8:158e:d41f:a482:c1c9])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b55199e08f1sm12736678a12.24.2025.09.23.19.40.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Sep 2025 19:11:07 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <a97486df-9f15-4280-8cb3-d77f4cf223df@roeck-us.net>
-Date: Tue, 23 Sep 2025 19:11:05 -0700
+        Tue, 23 Sep 2025 19:41:01 -0700 (PDT)
+Message-ID: <1b269e4f-5a2d-4de9-8757-cd4218d36bac@gmail.com>
+Date: Tue, 23 Sep 2025 23:40:55 -0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,98 +83,108 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Add support for Microchip EMC1812
-To: Jonathan Cameron <jic23@kernel.org>,
- Marius Cristea <marius.cristea@microchip.com>
-Cc: David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+Subject: Re: [PATCH v11 2/3] iio: adc: max14001: New driver
+To: David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Kim Seer Paller <kimseer.paller@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
  <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, jdelvare@suse.com,
- linux-hwmon@vger.kernel.org
-References: <20250917-iio-emc1812-v1-0-0b1f74cea7ab@microchip.com>
- <20250920123340.1b1d03be@jic23-huawei>
+ Conor Dooley <conor+dt@kernel.org>,
+ Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+ Marcelo Schmitt <Marcelo.Schmitt@analog.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>,
+ Jonathan Santos <Jonathan.Santos@analog.com>,
+ Dragos Bogdan <dragos.bogdan@analog.com>
+References: <cover.1757971454.git.marilene.agarcia@gmail.com>
+ <c257f7feb92dcf33bf7a55810fe69d13890374d5.1757971454.git.marilene.agarcia@gmail.com>
+ <2d5ef36b-ae37-453d-a19b-76fc97b7f14f@baylibre.com>
+ <83018b80-b939-4e2f-a9ee-7fbf07648181@gmail.com>
+ <c19fdb3a-e537-4f32-9b69-db819c04f447@baylibre.com>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20250920123340.1b1d03be@jic23-huawei>
+From: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
+In-Reply-To: <c19fdb3a-e537-4f32-9b69-db819c04f447@baylibre.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/20/25 04:33, Jonathan Cameron wrote:
-> On Wed, 17 Sep 2025 15:21:56 +0300
-> Marius Cristea <marius.cristea@microchip.com> wrote:
+On 23/09/2025 11:27, David Lechner wrote:
+> On 9/22/25 7:56 PM, Marilene Andrade Garcia wrote:
+>> On 16/09/2025 15:04, David Lechner wrote:
+>>> On 9/15/25 5:16 PM, Marilene Andrade Garcia wrote:
 > 
->> This is the iio driver for EMC1812/13/14/15/33 multichannel Low-Voltage
->> Remote Diode Sensor Family. The chips in the family have one internal
->> and different numbers of external channels, ranging from 1 (EMC1812) to
->> 4 channels (EMC1815).
->> Reading diodes in anti-parallel connection is supported by EMC1814, EMC1815
->> and EMC1833.
+> ...
+> 
+> 
+> In general, please trim out extra stuff like I've done here when you
+> reply. It makes it easier to find the important parts. I hope I didn't
+> miss any of your questions.
+> 
+>>>> +    /*
+>>>> +     * The following buffers will be bit-reversed during device
+>>>> +     * communication, because the device transmits and receives data
+>>>> +     * LSB-first.
+>>>> +     * DMA (thus cache coherency maintenance) requires the transfer
+>>>> +     * buffers to live in their own cache lines.
+>>>> +     */
+>>>> +    __be16 spi_tx_buffer __aligned(IIO_DMA_MINALIGN);
+>>>> +    __be16 spi_rx_buffer;
+>>>
+>>> These would no longer be strictly big-endian, so we could
+>>> just make them u16 with a note in the comments.
 >>
->> Current version of driver does not support interrupts, events and data
->> buffering.
-> Hi Marius,
+>> Hello David, I have some doubts that I would like to clarify before sending v12. Since I am not able to test the case using SPI_LSB_FIRST, I noticed that you suggest saving the data as __le in this case. Just out of curiosity, if I use SPI_LSB_FIRST, would saving the data as __be lead to errors?
 > 
-> For a temperature monitoring device like this, the opening question is
-> always why not HWMON?
+> My thinking is that since we are sending things out 1 byte at a time, in order
+> for the least significant bit of 16 bits to be sent first, the least significant
+> byte has to be sent first. So will little-endian, the byte containing the least
+> significant bit of the 16 bits will be first in memory.
 > 
-> There are various reasons we have temp sensors in IIO but mostly they are not
-> described as being monitors and this one is.
+> __be is just a naming convention and doesn't actually cause any bytes to
+> be swapped in memory. It just lets readers of the code know that the
+> value stored there has to be handled carefully because it may not be
+> cpu-endian. It would be confusing to readers to store a little-endian
+> value in a __be16 variable, but technically, no, it would not cause any
+> errors.
 > 
-> IIO may well be the right choice for this part, but good to lay out your
-> reasoning and +CC the hwmon list and maintainers.  There is an emc1403
-> driver already in hwmon, so perhaps compare and contrast with that.
+> This is why I suggested to make it u16. It is still wrong but it is
+> equally wrong in both cases. If you still want to use __be16 though,
+> you could make a union instead.
 > 
-> I've +CC Jean, Guenter and list to save sending a v2 just to do that.
+> union {
+> 	__be16 be;
+> 	__le16 le;
+> } spi_tx_buffer;
+> union {
+> 	__be16 be;
+> 	__le16 le;
+> } spi_rx_buffer;
 > 
+>>>
+>>> The scoped_guard() looks a bit odd with the extra indent. I would write
+>>> it like this instead:
+>>>
+>>>
+>>>
+>>>      case IIO_CHAN_INFO_RAW: {
+>>>          guard(mutex)(&st->lock);
+>>>
+>>>          ret = regmap_read(st->regmap, MAX14001_REG_ADC, val);
+>>>          if (ret)
+>>>              return ret;
+>>>
+>>>          return IIO_VAL_INT;
+>>>      }
+>>>
+>>
+>> Ok, thank you. But since I removed the mutex, as it was mentioned in the first comments, I should not use the guard, right? At least not for now.
+>>
+> 
+> Correct. The regmap_read() has something similar internally already.
+> 
+Ok, Thank you for the answers.
 
-At first glance it looks like the series is (mostly ?) register compatible
-to the chips supported by the emc1403 driver, so it should be straightforward
-to add support for the emc180x series to that driver.
-
-Guenter
-
+Best Regards,
+Marilene
 

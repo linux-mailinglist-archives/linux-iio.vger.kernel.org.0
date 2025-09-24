@@ -1,183 +1,169 @@
-Return-Path: <linux-iio+bounces-24406-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24407-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3136AB99F49
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 15:00:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E25B1B99FFA
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 15:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4B59328556
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 13:00:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E3B2A0204
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Sep 2025 13:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E9A1B4138;
-	Wed, 24 Sep 2025 13:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5732E11A6;
+	Wed, 24 Sep 2025 13:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eq6Ho5u8"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xF6sm1Vj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60C0288D2
-	for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 13:00:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136DC20110B
+	for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 13:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758718825; cv=none; b=BvEvJiZRjl158iapbOPVZKcgQ7JGeLgutddWzwo0Q9T+cQG5UBE9Nzu86cptiNlfB/ECq1QQEEgXgmyEDx2lqq+H7vvgMiMha9oe0aW8nMajIzcqMzm5YDe4daNfQGnLAMpCKQAIGef51mcs9afogZINBF3s2ceDkJYWSJ5jZ8E=
+	t=1758719848; cv=none; b=CUUO+5kof2HXg6FlZGLYylw2gaLGKetx1B9mGZVqakqbo34qosugXC2lNUIq8nQWV3RbYMB5JCZWNtIlJg/dfDGB/Oxl15FQWagor4qO/wN6jSHZ79Kge7PvH6WkZCPn1BVnMODTozbar5Ol7+v0v/xUqF/Q2kHudzPph9rk3Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758718825; c=relaxed/simple;
-	bh=7eCaqspkeWI4vNVpqbFq/9go1dzDlks7hS30C3QwfMA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XwyHnRdLqGoTynxzsWLrbs3DJD7abfGWkU2gdpEbZGIkZe1zPwm9OMjLjlqaMGq4QPH5XXMzvIBS5FuOm/fIxfSSqjmfjeGJbhRo0WTfI7gNa3LlvTAdlFdBfuP6XK0oOABkVUBAiD9BQquVba6njbPJdHVpm8Sohrr5MjTzAls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eq6Ho5u8; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-279e2554c8fso34802985ad.2
-        for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 06:00:22 -0700 (PDT)
+	s=arc-20240116; t=1758719848; c=relaxed/simple;
+	bh=nNlhZ3ky71IFd+n9wOyeaZgybeewKfw/SvYwsc4rOOM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mTsYU7YSa6DPaaaPbotid8gYIaycLP3NhJx9FAiLzMyedxPpliqJ/x9atFygPPd+6JkKmNreKN3ngXPyp1CSIhEqtDuuvKM+Y8OA1Jw1/XDveIKm7qveXXrbk6mOKfZJ4suuRTLeJVpqhlWnQlhY8qntsSPmSmigziCCw3US9o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xF6sm1Vj; arc=none smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-63136d0958bso752040eaf.3
+        for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 06:17:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758718822; x=1759323622; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kOAtSuySMHUL7Eirjuaudouhdhjdq1cQExPV8WIdTNU=;
-        b=Eq6Ho5u876bbjMb8q3Xdwoenoe9IkuY3NP+V9ZEMJszrsHT5VS6WQu7JxYkU5B6KCC
-         7KXdAKxL5gjoR25g30REhfMv3eYztlZyFt9EuBnsqk+koKK3RrwTSLRJPUUVnkBhz5lI
-         cWiYgdfZllE95u3OEfgU6ejNu37OWAiaCmcVml4Rd/WTQcVfNR5yerCA9/DipCKGZ/dG
-         +MMboyRKviDABhVoxv39cEhr3JlHgMATcWlhbzukNpRp/sWf+VZUUjaPmbJbetiJW9eS
-         kEXHozpX6JdIlsPor9vkJOMnJ/XEIcUcucOPVmc0mcA/qO+ebc2ndU1Ds4OQ6meBI8wA
-         5JEw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758719844; x=1759324644; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TfzpwQgTHBHYqzRqbLUeQn97RlK5vix1IohjUgnZb8Q=;
+        b=xF6sm1VjFVBtynlSmllYUAtJqUECS0e+rseikvsdgU2AgGLBUqlyjYn09J432Iwo5Y
+         7fKfZguYR9lJ44G5TP9pew8fHVtORer6osKsKz0BXC6uUWb4O4EqNxnc4Se1tQRwxPJ/
+         ClY9aK3PNYcLeg3sQqX+65jdkeSho+d/oAUp9ISRTxOo0UZxeckFym7dCcNTGCycZqdC
+         qkqzp2j9xihzqbDgqPANdDJ28Kisa2UPJ1MXL3p0mxPGp0RF2OgIhyNakqRYpkiwUlRq
+         B1//4aTTq3B3afAGyvCG1tmLTTqKs0RUpJtomFBWHH5l4pcaAT5kmxwUsNoEE690l55R
+         mISg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758718822; x=1759323622;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kOAtSuySMHUL7Eirjuaudouhdhjdq1cQExPV8WIdTNU=;
-        b=t2+9XOwhO7Vo3W7bmS//lvGFSTaWMO7Jyv0T18Ut4riDndnFF22l3pUOGFqsGMvu4X
-         /RjSQ0abRJUD90BATaY3UvBuZsVSAYiO0tY5cmOK99eHaIebJR3/W3bKrjtgn/zm0nHn
-         2S44INzmfH1g+cnx+gI9J1zsJ5dL+DV8oBqkOPoA+RtCpf9hFMS2eEonAHbkJZvHAiHr
-         G8Br0BlvKxdNBUwoXjUQUC7OgsWu2CS2CqwafzndaLMvsWYaZASW8LDRqJ7VKmFS+Fkt
-         lg1GIOSXT9ecsBQJ+r+dutHPRitB1Tr3j1QIVuNad65EoOGbI3P+h3AavwpOncsFBFr2
-         T1Rg==
-X-Forwarded-Encrypted: i=1; AJvYcCUo1CCFIrjuDuIofKEtrz0fYGrFC7NWQVlwVyg/h0gcYyftxPrXAQdQgoVr/mk3PBjcXBw0axDTAeY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/VygKlsa2g60GDcmYoxjeiaE4/HUUy+nchatde9EGg67PpI5f
-	K5P2L9crrtd/oX64N1d4yVU0cmN+hUuEPLmOY95a208pGeVSu3FJsxjh
-X-Gm-Gg: ASbGncv/XedhbO/OOWZh7M7nqtWy7lyZkDoWMKBEC6pGCJu17TsmUg5Oo4LSoplEXUs
-	qCSL4Njc2ulYi7y1Ogl3l0J4qjtc7LHnmVsWms1OVLPDEdzN86w7773mE2l66y33GCujEXvmGEz
-	+F5NVWBcUUks6bJ4JE4p/zb+w6UrH4liih2qvQzndD8+fN53o6bFZIt6AY6RKDnZEILtxscSmjO
-	1EmC1ZMWZ6ad8VovtH9gHvODxNJ26C4y4bUjDnGMpqahewib8jzOLVW9x6E37p5RmgdB3HpJJAP
-	SHi0h23iKr8I0Hr6w3aI7TmaKe+dnFYSiddQQoWaFD18fG9fMJ/j2PwL19gAwGm7ihOPCTl4ibj
-	LxNOrcw3Z4Z46pQvYvDnz+ZtkCXQ5pqk=
-X-Google-Smtp-Source: AGHT+IEz/eHDv8jJIje+aHMRfCzivvT3GIspIPDR9CA9OdPXfD3ArbyXDsN3eyUmiOe/qYSeJv+Ycg==
-X-Received: by 2002:a17:903:1212:b0:269:8d16:42d1 with SMTP id d9443c01a7336-27cc91e1fafmr67773455ad.50.1758718821220;
-        Wed, 24 Sep 2025 06:00:21 -0700 (PDT)
-Received: from localhost ([2804:30c:b65:6a00:ceaa:2ed0:e81e:8f51])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3341bdb4cc8sm2383392a91.15.2025.09.24.06.00.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 06:00:20 -0700 (PDT)
-Date: Wed, 24 Sep 2025 10:01:08 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7124: fix temperature channel
-Message-ID: <aNPrlIYGrB8oSsfL@debian-BULLSEYE-live-builder-AMD64>
-References: <20250923-iio-adc-ad7124-fix-temperature-channel-v1-1-e421c98c0d72@baylibre.com>
+        d=1e100.net; s=20230601; t=1758719844; x=1759324644;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TfzpwQgTHBHYqzRqbLUeQn97RlK5vix1IohjUgnZb8Q=;
+        b=o5jxtOjmh8yc7JekVuaiDvoyDr0BOGqeHxEjkcYqiVFSVnmpjJqUaE72U6dvLHXiUM
+         G4hm6BKUjaeceHf0JFrPfn8QGEs2KcYim8aOG1+1dD0AQp+K+1YHiitfPhRXdYZGkUU6
+         FCTEVcUAdUrTKxFxTm8F1reEMXXVR61xyRbb8XX8ZeT9TWNq9JOq/EmRhAikHLtst1xG
+         fCnFPh9rQLSoV7XeUs3N2llTBG7q3XRUsF9UK9aCVlYMeT8DmVkpw4jGo+5po7OG6K6J
+         hqbMa06Sko8UVF8zpK8H34nMalR5waSpezLfosZ/mF/1ShCjniIVWLdhA6k0pBQTlnAg
+         CdiA==
+X-Forwarded-Encrypted: i=1; AJvYcCWpMSuiRDuepeIPhLKqD/xBkrxo3Ra9xGdqqkBWV+mrW72ijH9jCnjCZaT7xNKZzvy8PxfKJuJktzk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxptax88CCp+MNf1TExQAGYnl+69GQikHpic63hma8p023N8GqC
+	P8B/x9AmRH8IB3OSE8a+beYrADgzoluhgRlt4siljV7xj+IaVlMooHfpdyXRyPKepoA=
+X-Gm-Gg: ASbGncsMle0dZVMHAhPXELLX6evzKDA2dReJp6Lcy8bFQKtUdePLWnnPN7WfStGP1DA
+	qyXzdTjKsMy6b3Wt41J9dO4DarX077G4sAiWRn6QJlnhKfLOVuDtKXI216MT1XbPgc0f2wDGOBR
+	h84NamwAeUuLhk0f8bAq2pifk5VwwKR+ewK5FWwK94N486D4vgMa1pzMlBSiaJ1gvH/pLMY9Q4Q
+	hQmwCJlbCJO2LB3xPpVy/IBn81DvfQtmc4l8AmFQLPEkotWIXtoFmO880Of1A1SuSZTz9DOgUxF
+	uA/B7LCU9iufv1tyjob/XSqLt9xXJQPh+8+PWv469ViFIINPdgbJqqDGI+QcJyJn0jnY7OgbY5X
+	JtiSJA8KTiVskr7+MGhHssqOtatpAeL34YhLypIrTPT1mLq+6ce+pPNv6rJ9r5wHClf6Ho/r5
+X-Google-Smtp-Source: AGHT+IHOZBg2Ew5oG8YZerk3MsMqJ2CIE1Jt5C4KrJR+KD/B3ZokyeWrlgJ+mwKYC9r19TWwcYEPcg==
+X-Received: by 2002:a05:6808:444c:b0:43f:163b:88d with SMTP id 5614622812f47-43f2d2dbd80mr3060029b6e.18.1758719844018;
+        Wed, 24 Sep 2025 06:17:24 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:5b03:6cc2:9ec:21f2? ([2600:8803:e7e4:1d00:5b03:6cc2:9ec:21f2])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-344ccf031c7sm3446523fac.24.2025.09.24.06.17.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Sep 2025 06:17:23 -0700 (PDT)
+Message-ID: <9e20ce95-a401-46ca-94aa-bd4488b45025@baylibre.com>
+Date: Wed, 24 Sep 2025 08:17:21 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250923-iio-adc-ad7124-fix-temperature-channel-v1-1-e421c98c0d72@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: adc: ad7124: fix temperature channel
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250923-iio-adc-ad7124-fix-temperature-channel-v1-1-e421c98c0d72@baylibre.com>
+ <h2rof27omrhv4l6pjisdsnvkpb35ovy7e6m4soeltfun5rafk5@oriv7e3egh3p>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <h2rof27omrhv4l6pjisdsnvkpb35ovy7e6m4soeltfun5rafk5@oriv7e3egh3p>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+On 9/24/25 6:03 AM, Uwe Kleine-König wrote:
+> Hello David,
+> 
+> On Tue, Sep 23, 2025 at 03:18:02PM -0500, David Lechner wrote:
+>> Fix temperature channel not working due to gain and offset not being
+>> initialized. This was causing the raw temperature readings to be always
+>> 8388608 (0x800000).
+>>
+>> To fix it, we just make sure the gain and offset values are set to the
+>> default values and still return early without doing an internal
+>> calibration.
+>>
+>> While here, add a comment explaining why we don't bother calibrating
+>> the temperature channel.
+>>
+>> Fixes: 47036a03a303 ("iio: adc: ad7124: Implement internal calibration at probe time")
+>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+>> ---
+>>  drivers/iio/adc/ad7124.c | 11 +++++++----
+>>  1 file changed, 7 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+>> index 374e39736584f55c1290db3e257dff2c60f884d2..94d90a63987c0f9886586db0c4bc1690855be2c1 100644
+>> --- a/drivers/iio/adc/ad7124.c
+>> +++ b/drivers/iio/adc/ad7124.c
+>> @@ -1518,10 +1518,6 @@ static int __ad7124_calibrate_all(struct ad7124_state *st, struct iio_dev *indio
+>>  	int ret, i;
+>>  
+>>  	for (i = 0; i < st->num_channels; i++) {
+>> -
+>> -		if (indio_dev->channels[i].type != IIO_VOLTAGE)
+>> -			continue;
+>> -
+>>  		/*
+>>  		 * For calibration the OFFSET register should hold its reset default
+>>  		 * value. For the GAIN register there is no such requirement but
+>> @@ -1531,6 +1527,13 @@ static int __ad7124_calibrate_all(struct ad7124_state *st, struct iio_dev *indio
+>>  		st->channels[i].cfg.calibration_offset = 0x800000;
+>>  		st->channels[i].cfg.calibration_gain = st->gain_default;
+>>  
+>> +		/*
+>> +		 * Only the main voltage input channels are important enough
+>> +		 * to be automatically calibrated here.
+>> +		 */
+>> +		if (indio_dev->channels[i].type != IIO_VOLTAGE)
+>> +			continue;
+>> +
+> 
+> I don't understand a detail of the problem. The commit log suggests that
+> there is a general problem, but looking at the patch I suspect there is
+> only a problem if at probe time the OFFSET and GAIN register for the
+> temperature channel are different from their reset default setting.
 
-On 09/23, David Lechner wrote:
-> Fix temperature channel not working due to gain and offset not being
-> initialized. This was causing the raw temperature readings to be always
-> 8388608 (0x800000).
+What I failed to mention is that st->channels[i].cfg.calibration_offset
+and st->channels[i].cfg.calibration_gain are zero-initialized. And that
+these values are later programmed into the ADC. Programming these to
+zero is what caused reading the raw value value to always return a fixed
+value because the real value got multiplied by 0 in the ADC.
 
-Would
-'Fix temperature channel not working due to gain and offset not being
-initialized to their default values.'
-be a more accurate description?
-
+Is that enough to clear it up?
 
 > 
-> To fix it, we just make sure the gain and offset values are set to the
-> default values and still return early without doing an internal
-> calibration.
+> I think the patch is fine, but if my understanding is right the commit
+> log is more dramatic than the issue really is, as it needs some fiddling
+> with the ADC's registers between poweron and driver loading to trigger.
 > 
-> While here, add a comment explaining why we don't bother calibrating
-> the temperature channel.
-> 
-> Fixes: 47036a03a303 ("iio: adc: ad7124: Implement internal calibration at probe time")
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-...
->  	for (i = 0; i < st->num_channels; i++) {
-> -
-> -		if (indio_dev->channels[i].type != IIO_VOLTAGE)
-> -			continue;
-> -
->  		/*
->  		 * For calibration the OFFSET register should hold its reset default
->  		 * value. For the GAIN register there is no such requirement but
-> @@ -1531,6 +1527,13 @@ static int __ad7124_calibrate_all(struct ad7124_state *st, struct iio_dev *indio
->  		st->channels[i].cfg.calibration_offset = 0x800000;
->  		st->channels[i].cfg.calibration_gain = st->gain_default;
->  
-> +		/*
-> +		 * Only the main voltage input channels are important enough
-> +		 * to be automatically calibrated here.
-I think it would be more accurate to just say the offset and callibscale
-for temperature channel need to be at default values for the data sheet's
-equation for the temperature sensor to be accurate.
+> Best regards
+> Uwe
 
-
-> +		 */
-> +		if (indio_dev->channels[i].type != IIO_VOLTAGE)
-> +			continue;
-> +
->  		/*
->  		 * Full-scale calibration isn't supported at gain 1, so skip in
->  		 * that case. Note that untypically full-scale calibration has
-
-Maybe, instead of moving the 'if(... IIO_VOLTAGE)' check, this could alternatively
-be set when initializing the temperature channel at ad7124_parse_channel_config().
-
- 	if (num_channels < AD7124_MAX_CHANNELS) {
- 		st->channels[num_channels] = (struct ad7124_channel) {
- 			.nr = num_channels,
- 			.ain = FIELD_PREP(AD7124_CHANNEL_AINP, AD7124_CHANNEL_AINx_TEMPSENSOR) |
- 				FIELD_PREP(AD7124_CHANNEL_AINM, AD7124_CHANNEL_AINx_AVSS),
- 			.cfg = {
- 				.bipolar = true,
-+				.calibration_offset = 0x800000,
-+				.calibration_gain = st->gain_default,
- 			},
- 		};
- 
- 		chan[num_channels] = (struct iio_chan_spec) {
- 			.type = IIO_TEMP,
-
-
-Nevertheless, the current fix looks good to me as it is, so
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-
-> 
-> ---
-> base-commit: 411e8b72c181e4f49352c12ced0fd8426eb683aa
-> change-id: 20250923-iio-adc-ad7124-fix-temperature-channel-5900f7302886
-> 
-> Best regards,
-> -- 
-> David Lechner <dlechner@baylibre.com>
-> 
-> 
 

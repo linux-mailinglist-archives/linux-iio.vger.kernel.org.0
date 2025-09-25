@@ -1,39 +1,39 @@
-Return-Path: <linux-iio+bounces-24448-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24449-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE8BBA1DC9
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 00:42:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DD0BA1DCF
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 00:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48B2A7B41A6
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 22:40:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F8C5188EF28
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 22:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC90323F51;
-	Thu, 25 Sep 2025 22:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44F1321F46;
+	Thu, 25 Sep 2025 22:41:11 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F446323411;
-	Thu, 25 Sep 2025 22:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243BB323F56;
+	Thu, 25 Sep 2025 22:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758840068; cv=none; b=Mxg95t4+n7xDgr6Mdq+K/fDHKFBHP7phiSfyLNDVZ/yjT0Tj5R20Fxz5LS8vLUwWOGPWzjAorLPh38fpyPF73021TWHGBveTChVDXlilPJNm56VAaJFXMa4aGsyOjG0sZyaXYk8lZiIAuyeNdgY4Dye9pPCjlBVs63+irF/a6cQ=
+	t=1758840071; cv=none; b=So4AonmhH4Nmnr07NZgsHXFJ+2vYtmP+nruokF2mzHb8Wsb8RCg9naiy3dyvWJNUaqTVpqGb79kGunQg1GTLSFnlNMNbUXdYFcbvH6KDvk9hYMAf85a+rvzqyoNnslzHaqQV5LhTDGhq7Q80sI782MUn32gekQlgykXTTIhbddY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758840068; c=relaxed/simple;
-	bh=8TWr9RD0TUrQ8MwqIHh5GRhNotpswyD2ik3KR2+gCP0=;
+	s=arc-20240116; t=1758840071; c=relaxed/simple;
+	bh=qXJ6dfnOdpvKxMjXbHFJ8xSKraJVMhyod8JtKQmNr74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSi+ivVIA11vXzyWe506UGXnCSo0qSBPkxaTftSp/oj8ENKjLXNwI7TYOCFNQAq2+D81fnus/yEUDblqPH+1ZJY9JBIChJIhABQdGUDIfUzVk2X06e355qDELb32Vt8Ur5v1o6jjPZ9oWjDQBvkf3OtICpRkagLxWPcCzxFY62c=
+	 MIME-Version:Content-Type; b=Uyx+BOYh+gXCdsDydS4laAitM42999Jk4P6UY9ZqUnsAsc7R4Lk0QIeStxWOcSu94keR2OTZ/seJ5J4NFBpBVvWLFpCGm1hGqxT7RY6e2X1nQTSVSHzMC5rwkiNJr6mtgSNXZgGEIUM69CdYP+xHYI/+2ePnYZr95e/lG9YBzpg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: 4vFw5SFNQDCqS3xnZhMPjg==
-X-CSE-MsgGUID: r/7ZcWPdR/iAS4r4fp7ghA==
+X-CSE-ConnectionGUID: L7ZtKhWARqS4wu3vUpf2BQ==
+X-CSE-MsgGUID: rIgWp4J0RwmOiIq3uERFeQ==
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 26 Sep 2025 07:41:00 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 26 Sep 2025 07:41:06 +0900
 Received: from demon-pc.localdomain (unknown [10.226.92.2])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 48B37400CF0A;
-	Fri, 26 Sep 2025 07:40:55 +0900 (JST)
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id F2A39400CF0A;
+	Fri, 26 Sep 2025 07:41:01 +0900 (JST)
 From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 To: 
 Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
@@ -50,9 +50,9 @@ Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
 	linux-renesas-soc@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/7] dt-bindings: iio: adc: document RZ/T2H and RZ/N2H ADC
-Date: Fri, 26 Sep 2025 01:40:04 +0300
-Message-ID: <20250925224013.2146983-3-cosmin-gabriel.tanislav.xa@renesas.com>
+Subject: [PATCH v2 3/7] iio: adc: add RZ/T2H / RZ/N2H ADC driver
+Date: Fri, 26 Sep 2025 01:40:05 +0300
+Message-ID: <20250925224013.2146983-4-cosmin-gabriel.tanislav.xa@renesas.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925224013.2146983-1-cosmin-gabriel.tanislav.xa@renesas.com>
 References: <20250925224013.2146983-1-cosmin-gabriel.tanislav.xa@renesas.com>
@@ -62,205 +62,391 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Document the A/D 12-Bit successive approximation converters found in the
-Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs.
+Add support for the A/D 12-Bit successive approximation converters found
+in the Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs.
 
 RZ/T2H has two ADCs with 4 channels and one with 6.
 RZ/N2H has two ADCs with 4 channels and one with 15.
 
+Conversions can be performed in single or continuous mode. Result of the
+conversion is stored in a 16-bit data register corresponding to each
+channel.
+
+The conversions can be started by a software trigger, a synchronous
+trigger (from MTU or from ELC) or an asynchronous external trigger (from
+ADTRGn# pin).
+
+Only single mode with software trigger is supported for now.
+
 Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 ---
- .../iio/adc/renesas,r9a09g077-adc.yaml        | 160 ++++++++++++++++++
- MAINTAINERS                                   |   7 +
- 2 files changed, 167 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
+ MAINTAINERS                 |   1 +
+ drivers/iio/adc/Kconfig     |  10 ++
+ drivers/iio/adc/Makefile    |   1 +
+ drivers/iio/adc/rzt2h_adc.c | 306 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 318 insertions(+)
+ create mode 100644 drivers/iio/adc/rzt2h_adc.c
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
-new file mode 100644
-index 000000000000..04397ff494c3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
-@@ -0,0 +1,160 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/renesas,r9a09g077-adc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Renesas RZ/T2H / RZ/N2H ADC12
-+
-+maintainers:
-+  - Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-+
-+description: |
-+  A/D Converter block is a successive approximation analog-to-digital converter
-+  with a 12-bit accuracy. Up to 16 analog input channels can be selected.
-+  Conversions can be performed in single or continuous mode. Result of the ADC
-+  is stored in a 16-bit data register corresponding to each channel.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - renesas,r9a09g077-adc # RZ/T2H
-+      - renesas,r9a09g087-adc # RZ/N2H
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    items:
-+      - description: A/D scan end interrupt
-+      - description: A/D scan end interrupt for Group B
-+      - description: A/D scan end interrupt for Group C
-+      - description: Window A compare match
-+      - description: Window B compare match
-+      - description: Compare match
-+      - description: Compare mismatch
-+
-+  interrupt-names:
-+    items:
-+      - const: adi
-+      - const: gbadi
-+      - const: gcadi
-+      - const: cmpai
-+      - const: cmpbi
-+      - const: wcmpm
-+      - const: wcmpum
-+
-+  clocks:
-+    items:
-+      - description: Converter clock
-+      - description: Peripheral clock
-+
-+  clock-names:
-+    items:
-+      - const: adclk
-+      - const: pclk
-+
-+  power-domains:
-+    maxItems: 1
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  "#io-channel-cells":
-+    const: 1
-+
-+patternProperties:
-+  "^channel@[0-9a-f]$":
-+    $ref: adc.yaml
-+    type: object
-+    description: The external channels which are connected to the ADC.
-+
-+    properties:
-+      reg:
-+        description: The channel number.
-+        maximum: 15
-+
-+    required:
-+      - reg
-+
-+    additionalProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - power-domains
-+
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: renesas,r9a09g077-adc
-+    then:
-+      patternProperties:
-+        "^channel@[6-9a-f]$": false
-+        "^channel@[0-5]$":
-+          properties:
-+            reg:
-+              maximum: 5
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - renesas,r9a09g087-adc
-+    then:
-+      patternProperties:
-+        "^channel@[f]$": false
-+        "^channel@[0-9a-e]$":
-+          properties:
-+            reg:
-+              maximum: 14
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/renesas,r9a09g077-cpg-mssr.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+
-+    adc@80008000 {
-+      compatible = "renesas,r9a09g077-adc";
-+      reg = <0x80008000 0x400>;
-+      interrupts = <GIC_SPI 708 IRQ_TYPE_EDGE_RISING>,
-+                   <GIC_SPI 709 IRQ_TYPE_EDGE_RISING>,
-+                   <GIC_SPI 710 IRQ_TYPE_EDGE_RISING>,
-+                   <GIC_SPI 711 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 712 IRQ_TYPE_LEVEL_HIGH>,
-+                   <GIC_SPI 855 IRQ_TYPE_EDGE_RISING>,
-+                   <GIC_SPI 856 IRQ_TYPE_EDGE_RISING>;
-+      interrupt-names = "adi", "gbadi", "gcadi",
-+                        "cmpai", "cmpbi", "wcmpm", "wcmpum";
-+      clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKL>,
-+               <&cpg CPG_MOD 225>;
-+      clock-names = "adclk", "pclk";
-+      power-domains = <&cpg>;
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      #io-channel-cells = <1>;
-+
-+      channel@0 {
-+        reg = <0x0>;
-+      };
-+      channel@1 {
-+        reg = <0x1>;
-+      };
-+      channel@2 {
-+        reg = <0x2>;
-+      };
-+      channel@3 {
-+        reg = <0x3>;
-+      };
-+    };
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 8892135bae7b..eed08d25cb7a 100644
+index eed08d25cb7a..220d17039084 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -21831,6 +21831,13 @@ S:	Supported
- F:	Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
- F:	drivers/counter/rz-mtu3-cnt.c
+@@ -21837,6 +21837,7 @@ L:	linux-iio@vger.kernel.org
+ L:	linux-renesas-soc@vger.kernel.org
+ S:	Supported
+ F:	Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
++F:	drivers/iio/adc/rzt2h_adc.c
  
-+RENESAS RZ/T2H / RZ/N2H A/D DRIVER
-+M:	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-+L:	linux-iio@vger.kernel.org
-+L:	linux-renesas-soc@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
-+
  RENESAS RTCA-3 RTC DRIVER
  M:	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
- L:	linux-rtc@vger.kernel.org
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 58a14e6833f6..cab5eeba48fe 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1403,6 +1403,16 @@ config RZG2L_ADC
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called rzg2l_adc.
+ 
++config RZT2H_ADC
++	tristate "Renesas RZ/T2H / RZ/N2H ADC driver"
++	select IIO_ADC_HELPER
++	help
++	  Say yes here to build support for the ADC found in Renesas
++	  RZ/T2H / RZ/N2H SoCs.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called rzt2h_adc.
++
+ config SC27XX_ADC
+ 	tristate "Spreadtrum SC27xx series PMICs ADC"
+ 	depends on MFD_SC27XX_PMIC || COMPILE_TEST
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index d008f78dc010..ed647a734c51 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -123,6 +123,7 @@ obj-$(CONFIG_ROHM_BD79112) += rohm-bd79112.o
+ obj-$(CONFIG_ROHM_BD79124) += rohm-bd79124.o
+ obj-$(CONFIG_ROCKCHIP_SARADC) += rockchip_saradc.o
+ obj-$(CONFIG_RZG2L_ADC) += rzg2l_adc.o
++obj-$(CONFIG_RZT2H_ADC) += rzt2h_adc.o
+ obj-$(CONFIG_SC27XX_ADC) += sc27xx_adc.o
+ obj-$(CONFIG_SD_ADC_MODULATOR) += sd_adc_modulator.o
+ obj-$(CONFIG_SOPHGO_CV1800B_ADC) += sophgo-cv1800b-adc.o
+diff --git a/drivers/iio/adc/rzt2h_adc.c b/drivers/iio/adc/rzt2h_adc.c
+new file mode 100644
+index 000000000000..6a49788a5c67
+--- /dev/null
++++ b/drivers/iio/adc/rzt2h_adc.c
+@@ -0,0 +1,306 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/bitfield.h>
++#include <linux/cleanup.h>
++#include <linux/completion.h>
++#include <linux/delay.h>
++#include <linux/iio/adc-helpers.h>
++#include <linux/iio/iio.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/iopoll.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
++#include <linux/property.h>
++
++#define RZT2H_NAME			"rzt2h-adc"
++
++#define RZT2H_ADCSR_REG			0x00
++#define RZT2H_ADCSR_ADIE_MASK		BIT(12)
++#define RZT2H_ADCSR_ADCS_MASK		GENMASK(14, 13)
++#define RZT2H_ADCSR_ADCS_SINGLE		0b00
++#define RZT2H_ADCSR_ADST_MASK		BIT(15)
++
++#define RZT2H_ADANSA0_REG		0x04
++#define RZT2H_ADANSA0_CH_MASK(x)	BIT(x)
++
++#define RZT2H_ADDR_REG(x)		(0x20 + 0x2 * (x))
++
++#define RZT2H_ADCALCTL_REG		0x1f0
++#define RZT2H_ADCALCTL_CAL_MASK		BIT(0)
++#define RZT2H_ADCALCTL_CAL_RDY_MASK	BIT(1)
++#define RZT2H_ADCALCTL_CAL_ERR_MASK	BIT(2)
++
++#define RZT2H_ADC_MAX_CHANNELS		16
++#define RZT2H_ADC_VREF_MV		1800
++#define RZT2H_ADC_RESOLUTION		12
++
++struct rzt2h_adc {
++	void __iomem *base;
++	struct device *dev;
++
++	struct completion completion;
++	/* lock to protect against multiple access to the device */
++	struct mutex lock;
++
++	const struct iio_chan_spec *channels;
++	unsigned int num_channels;
++	unsigned int max_channels;
++};
++
++static void rzt2h_adc_start_stop(struct rzt2h_adc *adc, bool start,
++				 unsigned int conversion_type)
++{
++	u16 mask;
++	u16 reg;
++
++	reg = readw(adc->base + RZT2H_ADCSR_REG);
++
++	if (start) {
++		/* Set conversion type */
++		reg &= ~RZT2H_ADCSR_ADCS_MASK;
++		reg |= FIELD_PREP(RZT2H_ADCSR_ADCS_MASK, conversion_type);
++	}
++
++	/* Toggle end of conversion interrupt and start bit. */
++	mask = RZT2H_ADCSR_ADIE_MASK | RZT2H_ADCSR_ADST_MASK;
++	if (start)
++		reg |= mask;
++	else
++		reg &= ~mask;
++
++	writew(reg, adc->base + RZT2H_ADCSR_REG);
++}
++
++static int rzt2h_adc_read_single(struct rzt2h_adc *adc, unsigned int ch, int *val)
++{
++	int ret;
++
++	ret = pm_runtime_resume_and_get(adc->dev);
++	if (ret)
++		return ret;
++
++	guard(mutex)(&adc->lock);
++
++	reinit_completion(&adc->completion);
++
++	/* Enable a single channel */
++	writew(RZT2H_ADANSA0_CH_MASK(ch), adc->base + RZT2H_ADANSA0_REG);
++
++	rzt2h_adc_start_stop(adc, true, RZT2H_ADCSR_ADCS_SINGLE);
++
++	/*
++	 * Datasheet Page 2770, Table 41.1:
++	 * 0.32us per channel when sample-and-hold circuits are not in use.
++	 */
++	ret = wait_for_completion_timeout(&adc->completion, usecs_to_jiffies(1));
++	if (!ret) {
++		ret = -ETIMEDOUT;
++		goto disable;
++	}
++
++	*val = readw(adc->base + RZT2H_ADDR_REG(ch));
++	ret = IIO_VAL_INT;
++
++disable:
++	rzt2h_adc_start_stop(adc, false, 0);
++
++	pm_runtime_put_autosuspend(adc->dev);
++
++	return ret;
++}
++
++static void rzt2h_adc_set_cal(struct rzt2h_adc *adc, bool cal)
++{
++	u16 val;
++
++	val = readw(adc->base + RZT2H_ADCALCTL_REG);
++	if (cal)
++		val |= RZT2H_ADCALCTL_CAL_MASK;
++	else
++		val &= ~RZT2H_ADCALCTL_CAL_MASK;
++
++	writew(val, adc->base + RZT2H_ADCALCTL_REG);
++}
++
++static int rzt2h_adc_calibrate(struct rzt2h_adc *adc)
++{
++	u16 val;
++	int ret;
++
++	rzt2h_adc_set_cal(adc, true);
++
++	ret = read_poll_timeout(readw, val, val & RZT2H_ADCALCTL_CAL_RDY_MASK,
++				200, 1000, true, adc->base + RZT2H_ADCALCTL_REG);
++	if (ret) {
++		dev_err(adc->dev, "Calibration timed out: %d\n", ret);
++		return ret;
++	}
++
++	rzt2h_adc_set_cal(adc, false);
++
++	if (val & RZT2H_ADCALCTL_CAL_ERR_MASK) {
++		dev_err(adc->dev, "Calibration failed\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int rzt2h_adc_read_raw(struct iio_dev *indio_dev,
++			      struct iio_chan_spec const *chan,
++			      int *val, int *val2, long mask)
++{
++	struct rzt2h_adc *adc = iio_priv(indio_dev);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		return rzt2h_adc_read_single(adc, chan->channel, val);
++	case IIO_CHAN_INFO_SCALE:
++		*val = RZT2H_ADC_VREF_MV;
++		*val2 = RZT2H_ADC_RESOLUTION;
++		return IIO_VAL_FRACTIONAL_LOG2;
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct iio_info rzt2h_adc_iio_info = {
++	.read_raw = rzt2h_adc_read_raw,
++};
++
++static irqreturn_t rzt2h_adc_isr(int irq, void *private)
++{
++	struct rzt2h_adc *adc = private;
++
++	complete(&adc->completion);
++
++	return IRQ_HANDLED;
++}
++
++static const struct iio_chan_spec rzt2h_adc_chan_template = {
++	.indexed = 1,
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++			      BIT(IIO_CHAN_INFO_SCALE),
++	.type = IIO_VOLTAGE,
++};
++
++static int rzt2h_adc_parse_properties(struct rzt2h_adc *adc)
++{
++	struct iio_chan_spec *chan_array;
++	unsigned int i;
++	int ret;
++
++	ret = devm_iio_adc_device_alloc_chaninfo_se(adc->dev,
++						    &rzt2h_adc_chan_template,
++						    RZT2H_ADC_MAX_CHANNELS - 1,
++						    &chan_array);
++	if (ret < 0)
++		return dev_err_probe(adc->dev, ret, "Failed to read channel info");
++
++	adc->num_channels = ret;
++	adc->channels = chan_array;
++
++	for (i = 0; i < adc->num_channels; i++)
++		if (chan_array[i].channel + 1 > adc->max_channels)
++			adc->max_channels = chan_array[i].channel + 1;
++
++	return 0;
++}
++
++static int rzt2h_adc_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct iio_dev *indio_dev;
++	struct rzt2h_adc *adc;
++	int ret;
++	int irq;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	adc = iio_priv(indio_dev);
++	adc->dev = dev;
++	init_completion(&adc->completion);
++
++	ret = devm_mutex_init(dev, &adc->lock);
++	if (ret)
++		return ret;
++
++	platform_set_drvdata(pdev, indio_dev);
++
++	ret = rzt2h_adc_parse_properties(adc);
++	if (ret)
++		return ret;
++
++	adc->base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(adc->base))
++		return PTR_ERR(adc->base);
++
++	pm_runtime_set_autosuspend_delay(dev, 300);
++	pm_runtime_use_autosuspend(dev);
++	ret = devm_pm_runtime_enable(dev);
++	if (ret)
++		return ret;
++
++	irq = platform_get_irq_byname(pdev, "adi");
++	if (irq < 0)
++		return irq;
++
++	ret = devm_request_irq(dev, irq, rzt2h_adc_isr, 0, dev_name(dev), adc);
++	if (ret)
++		return ret;
++
++	indio_dev->name = RZT2H_NAME;
++	indio_dev->info = &rzt2h_adc_iio_info;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->channels = adc->channels;
++	indio_dev->num_channels = adc->num_channels;
++
++	return devm_iio_device_register(dev, indio_dev);
++}
++
++static const struct of_device_id rzt2h_adc_match[] = {
++	{ .compatible = "renesas,r9a09g077-adc" },
++	{ .compatible = "renesas,r9a09g087-adc" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, rzt2h_adc_match);
++
++static int rzt2h_adc_pm_runtime_resume(struct device *dev)
++{
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct rzt2h_adc *adc = iio_priv(indio_dev);
++
++	/*
++	 * Datasheet Page 2810, Section 41.5.6:
++	 * After release from the module-stop state, wait for at least
++	 * 0.5 µs before starting A/D conversion.
++	 */
++	fsleep(1);
++
++	return rzt2h_adc_calibrate(adc);
++}
++
++static const struct dev_pm_ops rzt2h_adc_pm_ops = {
++	RUNTIME_PM_OPS(NULL, rzt2h_adc_pm_runtime_resume, NULL)
++};
++
++static struct platform_driver rzt2h_adc_driver = {
++	.probe		= rzt2h_adc_probe,
++	.driver		= {
++		.name		= RZT2H_NAME,
++		.of_match_table = rzt2h_adc_match,
++		.pm		= pm_ptr(&rzt2h_adc_pm_ops),
++	},
++};
++
++module_platform_driver(rzt2h_adc_driver);
++
++MODULE_AUTHOR("Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>");
++MODULE_DESCRIPTION("Renesas RZ/T2H / RZ/N2H ADC driver");
++MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS("IIO_DRIVER");
 -- 
 2.51.0
 

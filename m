@@ -1,83 +1,91 @@
-Return-Path: <linux-iio+bounces-24424-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24425-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3511B9CE88
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 02:35:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA47B9D528
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 05:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2D0B422BBD
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 00:35:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 785B61895E22
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 03:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144062D24A9;
-	Thu, 25 Sep 2025 00:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6762DECA7;
+	Thu, 25 Sep 2025 03:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Svpr2iTN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="avZiLHJm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CFB287269;
-	Thu, 25 Sep 2025 00:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F842C9D
+	for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 03:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758760551; cv=none; b=uwsLdMABAymaKn404ZygL5HDhbEPsEyD/CtNag+oHJl6BoKRHwgX3hH4mlJFr4pjPAh9VVp0fl/BkkcOxiR1Tgd28MpHyuYhXrCeyGspRdVUgt61YfwMA/7IMb1d1xU3hrR6iEt8hokhdDtCYZ/VOps+ADme61r1h4CLfwbdrGk=
+	t=1758771559; cv=none; b=pWupi+HskPTRYRqYn4mDcPmFn9l9vMpqx0jmPsqaeQPztfmCZ0/YAKC5FTcPrNuN4ext35yyT/9lWkNzza/Yu3O/cEfqCndD2uCQkZu696sfLhMqKVTlXjxDsdK3ioOcCXDAssYV+9AibLfXeoWQvpz0rgHFPd5hV5nuez2sK4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758760551; c=relaxed/simple;
-	bh=xA0CjVUfg2LtglRI54aHrjcq9fO/yGSBYFN8nfqQdb0=;
+	s=arc-20240116; t=1758771559; c=relaxed/simple;
+	bh=gBPWkNFjdMQE8rx2St2Cxhve3tgGKE50NAP2JhU7zkQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l1ztoB3QP11gAdU0yHaLKIk4ogmMtgEc7y+RS4yzJ4BLlKR1V7OsmggTPiJwcWrL/PzvM/PiJyMRSTTdeuTYUpxwQ+RWRe33PWZ5Cfr8oIYOmyfJ52MrNG+dO7dgVgzHssf1zAGA4AX+h37WwO7Nu+dhSBgyrbpo9XmeqWZ4fA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Svpr2iTN; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758760550; x=1790296550;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xA0CjVUfg2LtglRI54aHrjcq9fO/yGSBYFN8nfqQdb0=;
-  b=Svpr2iTN3+iyhCkPtAQG6klaf583hQC0KWfhx8ge3n5v7ihuA5P/KH+0
-   xeEr5Y/6jVhzOHmJMpc6G77BYOK3UWnmExFYGJzNv8sxpNV+pXobfVPZ5
-   9iQ+mGmxQrio9c8/p7dQVAbTUxw4GH38D3QY+2IJOACAX1T44UGQcUlEQ
-   tdRGvOvcOh+CzmP54L4LjRQxNyX1kUbL/Lf4AkR7PPs7nPTdIU0J6X8bR
-   VVTygMuQtfOuJ+qKS6rrS1xzu/WQju/QaksxUVbGxIyhZBpcZtvWXksFV
-   BdpB6oJn2eeC6iOrWf7Ae8U0jUrstXBDcqOmqwrl+oVWKM25CEwMrlnyP
-   w==;
-X-CSE-ConnectionGUID: LClpkTrSQRGTIcRlaKr20A==
-X-CSE-MsgGUID: tHoemWhCSGiiPNxNbEyzrw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="63696448"
-X-IronPort-AV: E=Sophos;i="6.18,291,1751266800"; 
-   d="scan'208";a="63696448"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 17:35:50 -0700
-X-CSE-ConnectionGUID: CPiw2J5+SfWjKZOP9fSuow==
-X-CSE-MsgGUID: +hr0XRqiSPu0wGNcEZmXxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,291,1751266800"; 
-   d="scan'208";a="176311003"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by orviesa006.jf.intel.com with ESMTP; 24 Sep 2025 17:35:46 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v1ZxX-0004kT-1V;
-	Thu, 25 Sep 2025 00:35:43 +0000
-Date: Thu, 25 Sep 2025 08:34:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, Remi Buisson <remi.buisson@tdk.com>
-Subject: Re: [PATCH v6 7/9] iio: imu: inv_icm45600: add SPI driver for
- inv_icm45600 driver
-Message-ID: <202509250829.OYI9IbAs-lkp@intel.com>
-References: <20250924-add_newport_driver-v6-7-76687b9d8a6e@tdk.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=kc/kLPvgIEt+p3jo8x+I4z4vSsBWCyDNx6BPpXIYAXIi9eKT4Un2LNC3Dhowjk4X9tHhMx+jO8pIN38fHPQd9JlVv7ubwjI2Ie7MQd4ruRIKNVgL4ifJDoI4znAYoepc0Q6rUlRC/f/6gI9OrHDfjvQVfVIUrN2YX4oKz8EZOU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=avZiLHJm; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-78100be28easo327050b3a.1
+        for <linux-iio@vger.kernel.org>; Wed, 24 Sep 2025 20:39:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758771557; x=1759376357; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kQlHV/LeA8zP8BB0iU6hiP/ahF2MMcZ9HvPXMFvYOqo=;
+        b=avZiLHJm79MbudNol9kHinWx3c+L/msP1MrGBZGtf2WjWwvrXgUEuvabYFAbZjPSj4
+         MVlAIMzYdPJH3om999VmM74brZy7LTmDmx/Ma5J6dclCs11ByNmxqGvxRTSyzdeFqfek
+         ejk8oJHbyJkWCWmEKHqEVK7k/qnOC4gy8f2Scct3PkRuBcmOrC9ZPoa5ygEs6VeeQpfs
+         JF2NiK7sLzhRk6KR25JruGgOfDQtAVYGerjO9+de7KD4plfL7dfTvPNaftzPMv5+hRVH
+         91HgxBBMEnw/mU0L3v/G3pt7nDlAjz2bUu449UJ5Bk1jKdY4hiKDDdMwzcq5XJPZR5Ad
+         5Tqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758771557; x=1759376357;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kQlHV/LeA8zP8BB0iU6hiP/ahF2MMcZ9HvPXMFvYOqo=;
+        b=dBPCqPb3O4igkooONTXGipzP+2Nn1ugKJ7842m6LOP+UmwzNB+FPdknA6UmZqdSo8H
+         DgZ9sr0r8S6TsIlgLsyCv/2nmearq48lnmXOLtZnCroLzrb5gQHN5f+eKtNjadfkHPs6
+         ZQAfJKa+LRqJ6Hvms9v5dilVUcLok5Ung5gPkT8nbpr9ybkZI+q+oMJCJYNDkTvO7ZFL
+         CGG/jUSuE/uC20Vi/3iWZhI10s3nbmqJS4xPl5HP4ivAVqqAZZ+SnC2Wa98glsStwrhr
+         TIlt94B8/LxFud8ji2biz/gK3UsKIQX5e6ZCnDBHXjjuHAJ6n3a91Dre/rvTz31j96yW
+         gf/g==
+X-Forwarded-Encrypted: i=1; AJvYcCVE0YuFYXyYcTkueg7WgVw5Ham83XTJoiakCeAPUnNQshL3y+jDl6dxjzmWjrCeruyqRwGckm0gzpQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzv8HZMv3UDfswifOcoBt+4c0afnK5QUETTBKt/uljs99HOv4RL
+	e+zsGmXDRNBmlIyMieTTlpTTk5qfrp1jeNKRxOLPemXtQPm0U+gHBVXZ
+X-Gm-Gg: ASbGnctEhxB+68YGaeyWcMhMK5tQzPsxW3THquXctjjLKkXRRII9LOC0ejx+tDq1QpY
+	jgL46Wtsz6ZN1SG5nXUfJGT8GUkyN+vnTO8+/ZapBRLtSh6bpbXF8YOBXAzOw5aK7jMYoP2Q/Xb
+	/77dCnSOT1uXvyilRZzrkTHy4HixnNNCUTmhiM96m2j4oDj0raYpjOUbuuLOEmyn/D/DgXfELYV
+	ctEDxMwJa+0CU1QmXdW1CBmaldymUC3Mox6BcaRd/mtDZuerBpZlklBwkIkUZRpPmmLcGtlU9YG
+	KaXUjhQNIiEauaX3pc8RYX1F6oIXdQ82aVeq8IPKiN+4hytRWLg/sMuutRp93eCt2mnwrUpzVpw
+	oL+dbL79YBc2OnR660FiHH4CvXQw8TTrOqwI1YobOXQ==
+X-Google-Smtp-Source: AGHT+IEdkFvVbxoA7GFliYOsJ4pCAsy6bdrcfcexouLuoLDLtxCPYRQvWRRpt1KbJ7IscFaYe+dvwg==
+X-Received: by 2002:a05:6a21:99aa:b0:2b7:949d:63e9 with SMTP id adf61e73a8af0-2e7be809954mr2350343637.7.1758771557487;
+        Wed, 24 Sep 2025 20:39:17 -0700 (PDT)
+Received: from localhost ([2804:30c:b65:6a00:ceaa:2ed0:e81e:8f51])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3341bda12eesm3952578a91.7.2025.09.24.20.39.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 20:39:16 -0700 (PDT)
+Date: Thu, 25 Sep 2025 00:40:04 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Antoni Pokusinski <apokusinski01@gmail.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux@roeck-us.net, rodrigo.gobbi.7@gmail.com,
+	naresh.solanki@9elements.com, michal.simek@amd.com,
+	grantpeltier93@gmail.com, farouk.bouabid@cherry.de
+Subject: Re: [PATCH 1/3] dt-bindings: iio: pressure: add binding for mpl3115
+Message-ID: <aNS5lGpv6ezZ8HpZ@debian-BULLSEYE-live-builder-AMD64>
+References: <20250921133327.123726-1-apokusinski01@gmail.com>
+ <20250921133327.123726-2-apokusinski01@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -86,49 +94,86 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250924-add_newport_driver-v6-7-76687b9d8a6e@tdk.com>
+In-Reply-To: <20250921133327.123726-2-apokusinski01@gmail.com>
 
-Hi Remi,
+Hi Antoni,
 
-kernel test robot noticed the following build errors:
+Some inline suggestions for making this binding better comply with the
+'attempt to make bindings complete' guideline.
 
-[auto build test ERROR on 411e8b72c181e4f49352c12ced0fd8426eb683aa]
+On 09/21, Antoni Pokusinski wrote:
+> MPL3115 is an I2C pressure and temperature sensor. It features 2
+> interrupt lines which can be configured to indicate events such as data
+> ready or pressure/temperature threshold reached.
+> 
+> Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
+> ---
+...
+> +description: |
+> +  MPL3115 is a pressure/altitude and temperature sensor with I2C interface.
+> +  It features two programmable interrupt lines which indicate events such as
+> +  data ready or pressure/temperature threshold reached.
+> +  https://www.nxp.com/docs/en/data-sheet/MPL3115A2.pdf
+> +
+> +properties:
+> +  compatible:
+> +    const: fsl,mpl3115
+> +
+> +  reg:
+> +    maxItems: 1
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Remi-Buisson-via-B4-Relay/dt-bindings-iio-imu-Add-inv_icm45600/20250924-172614
-base:   411e8b72c181e4f49352c12ced0fd8426eb683aa
-patch link:    https://lore.kernel.org/r/20250924-add_newport_driver-v6-7-76687b9d8a6e%40tdk.com
-patch subject: [PATCH v6 7/9] iio: imu: inv_icm45600: add SPI driver for inv_icm45600 driver
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20250925/202509250829.OYI9IbAs-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250925/202509250829.OYI9IbAs-lkp@intel.com/reproduce)
+For completeness, could also add the power supplies.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509250829.OYI9IbAs-lkp@intel.com/
+  vdd-supply: true
 
-All errors (new ones prefixed by >>):
+  vddio-supply: true
 
->> drivers/iio/imu/inv_icm45600/inv_icm45600_spi.c:24:5: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-      24 |                                 FIELD_PREP(INV_ICM45600_DRIVE_CONFIG0_SPI_MASK,
-         |                                 ^
-   1 error generated.
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  interrupt-names:
+> +    minItems: 1
+> +    maxItems: 2
+> +    items:
+> +      enum:
+> +        - INT1
+> +        - INT2
+> +
+> +  drive-open-drain:
+> +    type: boolean
+> +    description:
+> +      set if the specified interrupt pins should be configured as
+> +      open drain. If not set, defaults to push-pull.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+  - vdd-supply
+  - vddio-supply
 
+and also add the supplies to the example below.
 
-vim +/FIELD_PREP +24 drivers/iio/imu/inv_icm45600/inv_icm45600_spi.c
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        pressure@60 {
+> +            compatible = "fsl,mpl3115";
+> +            reg = <0x60>;
+> +            interrupt-parent = <&gpio1>;
+> +            interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
+> +            interrupt-names = "INT2";
+> +        };
+> +    };
 
-    18	
-    19	static int inv_icm45600_spi_bus_setup(struct inv_icm45600_state *st)
-    20	{
-    21		/* Set slew rates for SPI. */
-    22		return regmap_update_bits(st->map, INV_ICM45600_REG_DRIVE_CONFIG0,
-    23					INV_ICM45600_DRIVE_CONFIG0_SPI_MASK,
-  > 24					FIELD_PREP(INV_ICM45600_DRIVE_CONFIG0_SPI_MASK,
-    25						INV_ICM45600_SPI_SLEW_RATE_5NS));
-    26	}
-    27	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best regards,
+Marcelo
 

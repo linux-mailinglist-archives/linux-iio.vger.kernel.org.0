@@ -1,223 +1,150 @@
-Return-Path: <linux-iio+bounces-24439-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24440-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC57FBA159A
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 22:26:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4298BA1681
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 22:46:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 780BA16CE00
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 20:26:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7FDE1C0284B
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 20:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D779303A14;
-	Thu, 25 Sep 2025 20:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4FC320A22;
+	Thu, 25 Sep 2025 20:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wj5nX/GA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDot24T6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD7326A0B3
-	for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 20:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA7323B63E
+	for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 20:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758832003; cv=none; b=ueicuZc29DFDnMcQ1YObYTZCRL51PzAWhUzdOI+ePwmZRdfv2LcV8254u6Bs9duzM33QeWeCnniMLYAWYRKQBDkOW0kiZyk014i9L8Se9a72SF/8dZ+A7etVTwu7XlSv7xv7SfEECiTbLW6rzDsB14qQBJvR/EstOZXAxbP+p5Q=
+	t=1758833155; cv=none; b=Fs4yOpdnvtzexKbl6d8xf4Du+H1Qh79MuVloSzZxNtgk4wPWs8s9pJxbEv+CEkgcchi/Q2TBLbfW6/gBZI30g7o4IPcJA7/RTwDAHf9j7UNL1IlsPZVcgBHdqXHJD5wapwKmjbqFjC22Hog42rN04z4k8l/I7kWFmUz/Tl26UNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758832003; c=relaxed/simple;
-	bh=NIugp2fbJWeDznKGvAEJerKZJQxZbeRNgyq7Txs6LEY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bQYwszcZrprDGDQmMgDCzh9aO9cD8UMVwXumWJ4ahyzr1cc6zZR+UrkpAngiOn4ALknFfoehHCbsp3xMHYE/tAzPV16SZsIxHeOe8gXMg5IiBojCGfFZaDNGFgqTOL8QDteXFHY9dw8TV01NDi0CKvuTmnHuJX+FfNJ39M4piNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wj5nX/GA; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-79f79e37c04so978988a34.3
-        for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 13:26:40 -0700 (PDT)
+	s=arc-20240116; t=1758833155; c=relaxed/simple;
+	bh=6/fVemqx0boFHVf8BglV+KY7l1wA+KVgHJ6A3PVERVE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J1myI82Gk23OHDtvnwLoZDLyoJri4ayP7SA0aCfY/bQsbDzYfeQCsdeHUazfGwzLGgl3lfomjn8qUdQMFL7SrwFaiAVMKp4XvxHyf7SepLcIwUZ+3wkC+jpW0pHdc7Oudn0/l/oD1tk+iGmB9LKg2cxrgMAy4H2htdp6uq5x624=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDot24T6; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45ddc7d5731so11766035e9.1
+        for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 13:45:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758832000; x=1759436800; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mxfegnmNEJxxDs3mqI/l4EZdUjsV9AajOSMpQHLr4h4=;
-        b=wj5nX/GAe1db5/2yCHZHlQtS98ijNq+MXB8sdoth43a1XzgVzKLCtiw+NvmlqgJJYc
-         qqyj0ofiV6nxUFOHVvWbMAr4rtKTvOHhouHaJwJ5RreeCZEX4a5d3SmANjBUBKkDTfzk
-         JTvLLSu/4IPP4cGO8MI9CT9ct4BK1SknMPYOXCXiUEyof8hWEjesyn3hH1TloCtLeO78
-         LQ1PgptMhv4UjtCe/VUSJUvTQoa81RGcAGg5DKRQpJet8ZD3XZLyQ9w+DGy5NMokWO2e
-         GTzkC0F4PbPiS4LKaX/6V6PgMKuylj1oWfl7Pk0Y1Bvx+XI6X004FHpeQLj0bkbT4+9e
-         CzQQ==
+        d=gmail.com; s=20230601; t=1758833152; x=1759437952; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FawQ9LId3cga0DodGg9MhmIp2lk7tl7dCQ1MCM1JQxI=;
+        b=jDot24T6cXDlqEuqT9WlAfFM8crSHKQQqdowlonaStGaiWGulPDsnostmO5y1ZaB6O
+         WcO8uaF6hoCSj6PCSwrBGANE16c2wcePGspSZCFfQjiW39pVwpJ01kj61vs6mSfIvSRa
+         5J35tFQQiROItEFLHPooSEiOswI7FyO2JypbXRLYU7StnMBOdrwjZXgYg6RqW8kyoxO/
+         e0TEtcQfAbI1WqWXzDUePM8QiCwOsWCAoATJIQQbLY5ELbM/zumIHKI9VI9M4J9kgROY
+         EbYpr8B63mbfy0dVTrWIfmUxjGLJkaQucI1m2H/Lqcuf81dBZUGWSXFtePDWk8cip3H9
+         9+sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758832000; x=1759436800;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxfegnmNEJxxDs3mqI/l4EZdUjsV9AajOSMpQHLr4h4=;
-        b=KqrbgHqloDpC5flZaX9r8GfzvIBPobcA+Kdx45DFSiweJIB+FfHBAs/fJobg3RSWBD
-         /9DcBITyNbETgzmyRXwEw7YB9IiZxJxZaNqNj9zV8WntvGX2MyORiXfHFOe+HVK/BUE5
-         27+xPbTVDc0bYbeUmr/8oxOx4vlRxEsMijzHSK57ZZY57BaJx6nUxnISm8jBAFsL/ksC
-         EQmlRMZoejuerXBbO/tYJpnhIpur6Gwg8ngsOzQ2SdZltsqcGINniWn4rm+JNIPctT0P
-         dyH7d3EkesYqFTm9lQQ4WU76fXVYTibmFnHt7JgI3z+7VF/y9eXoAsFN6G/FlYD9SWD5
-         5jpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVsXTMwhJybTBAJLKdQUBfAq+o5x3ytEf6frDfynJHZQdjGFFbyPUuDcorVNSWm6i7S1yDWpgXYCSk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9XxNkCpjCmsWOpMmKdsD/pR3SFlhe+u/CLMRcKVz6Drlxdf/K
-	q4dcNZ4NSGlMZaMBmnZFqIVetLlxvovZu8y8lxAlfPgKjY0AFSJ/PqdHsozCoXNssvbjL+g58MF
-	SBz6fhc0=
-X-Gm-Gg: ASbGncuJFQW45xVexVAPcN8VSKbPIloyQc5/nm8BbEOd/ONYt9yMprP4sqT+c3k5eOg
-	Jyui2idggucCj2LaXpQkb8MT8BWA6h2bF7BTAVtjTyp8Xs5ZUNKC6DJ1yf7HIjOJAp/TTW1kZcw
-	E1st+GMGXk4QfvciNnpdjhCvwj9FnJsTEcfbwLm2aEzlayPEVEC2D2y8ob8BGxkYqNxC4oNA/s5
-	h0m8lzDoYcFVwhhrzg32KHneeYHlymTi97+kdd/WR06Wzd14ZmPoJLtGNOwLV2fzuQh1453bywi
-	Z74p2Zp5jGxuiK0NnzUwveAnAUS6+bqxXIsxhTOgWCp02wuyWrpZd0rB4WZWDA30SA3VQT1z/eh
-	DOs9Z6GgzIDGtOV8UqwmOgUuSXArgrushJty0bs1KkakuynAt5//fweMYQiyp1qlc5bklSXta
-X-Google-Smtp-Source: AGHT+IGR2wlvFPurlbBB+p/mOH+8U3zcrAxgD5zjtS2zL1ZgQH1ws/3KfE6l31vd4RAjlNXmRm6aWQ==
-X-Received: by 2002:a05:6830:2b0b:b0:758:6251:2e5c with SMTP id 46e09a7af769-7a04ee87769mr253143a34.31.1758831999994;
-        Thu, 25 Sep 2025 13:26:39 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:68ee:c62f:fd8:aec9? ([2600:8803:e7e4:1d00:68ee:c62f:fd8:aec9])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7a6dc805845sm230444a34.6.2025.09.25.13.26.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Sep 2025 13:26:39 -0700 (PDT)
-Message-ID: <49b24a0d-a2ac-4620-9a1e-a94e5a2db075@baylibre.com>
-Date: Thu, 25 Sep 2025 15:26:38 -0500
+        d=1e100.net; s=20230601; t=1758833152; x=1759437952;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FawQ9LId3cga0DodGg9MhmIp2lk7tl7dCQ1MCM1JQxI=;
+        b=ptgwNxMGB/HsXhgHFgBiC6Xg6yW/YaMD9UHMGZ94zLmMB2fDT0MJK+Rw0li0/3ij2J
+         zxo5D6lh8fwsdzLqYLQ9ohTh8DvqCU8GggbacZYJz1mnfVs20vt28J2qpwTvP+O9smjo
+         b3+R/KYf3Fo4PAiPN7TKUcNpV+wt6P8/eUtDfsooGFA3DVtL1LueBKKLvkRamL5j998K
+         DrdtBKP+KWgIlBCzprxT6HvhHxxUObgg00ne27zVSnyug5SwZXdY62bYE7H/flmoezzt
+         xenItyduiBdE3Yv8NX+OGu1VGrwah8B2YTZWLnfBJzomT5QpsGY5MMM19tIZirbZ/kTh
+         yxfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMxBc7/NkKm3DcKwlGLOyc7YKe2VEv32tWFViJhk06r7qX45T5skqKN8pjOZQtSSVrKkAYBvtL9UQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4xedPXJXOD4m8ps6/n/jcl7o0adDPLgQ78zChVxVrjUTNpkjL
+	e1T1KXgOD/s4JdsRiYBRcWhRwF5wZ0tfFPDCn0P+DafrnZL6mMQG65kz
+X-Gm-Gg: ASbGncuMDDr9ZyhhCTU61l2CC/CRhVRvJMo9t4gZFWJQ3A2MxAO3BNztCAIqbGxYwjj
+	+XKxDGz7csx7uko3TZWESUM8bW+660UHwpFPyZU3E5A8ZSHi6yjXlOKMqr0NUV2YfNm00IKl9og
+	jcIW1/EAksdWL6oMw3axb5/JyMzXzqBJebiW8WGx+I+EbQaeL/z0TvGQoEUyhOBTWACCft1GIf5
+	OSQz0fPzCulJec4ep5XgkaIps9vkA57Ps+/miTFi8tQaT3pp6a4S56e3XkmG9EfiTYyoJAKr9iQ
+	R1B7ggkcPjw0WgILqmlLWk96HFegHtpIL347ujpgZA42UVPBu+HyIr/snXGWUd3SHNRGoBkRufr
+	ItnBPNVxoA0fxHu0xdLNx3k2t7cKrBIPhU/9zxTc=
+X-Google-Smtp-Source: AGHT+IEHiCxXo80MoGqRQ4HgceWd3FnDtzRwnXBD2L0CdoGsZPj/nAU+IAdeObX5HfW52mzD3aiY1g==
+X-Received: by 2002:a05:600c:c83:b0:46e:1c2d:bc84 with SMTP id 5b1f17b1804b1-46e329eb10emr51861395e9.17.1758833151386;
+        Thu, 25 Sep 2025 13:45:51 -0700 (PDT)
+Received: from localhost.localdomain ([78.209.201.53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2a996bf1sm91201395e9.1.2025.09.25.13.45.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Sep 2025 13:45:50 -0700 (PDT)
+From: Antoni Pokusinski <apokusinski01@gmail.com>
+To: jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux@roeck-us.net,
+	rodrigo.gobbi.7@gmail.com,
+	naresh.solanki@9elements.com,
+	michal.simek@amd.com,
+	grantpeltier93@gmail.com,
+	farouk.bouabid@cherry.de,
+	marcelo.schmitt1@gmail.com,
+	Antoni Pokusinski <apokusinski01@gmail.com>
+Subject: [PATCH v2 0/4] iio: mpl3115: add support for DRDY interrupt
+Date: Thu, 25 Sep 2025 22:45:34 +0200
+Message-Id: <20250925204538.63723-1-apokusinski01@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] Add kunit tests for iio_divide_by_value()
-To: Romain Gantois <romain.gantois@bootlin.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>
-Cc: Hans de Goede <hansg@kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
- <20250925-ltm8054-driver-v2-3-bb61a401a0dc@bootlin.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250925-ltm8054-driver-v2-3-bb61a401a0dc@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/25/25 7:37 AM, Romain Gantois wrote:
+Hello,
+This set of patches adds support for the DRDY interrupt in the MPL3115
+pressure sensor. The device has 2 interrupt lines, hence the new
+binding. I also added support for the sampling frequency which
+determines the time interval between subsequent measurements (in the
+continuous measurements mode) so it's obiously tied to the DRDY
+interrupt feature.
 
-...
+Kind regards,
+Antoni Pokusinski
 
-> +static void __iio_test_iio_divide_by_integer(struct kunit *test, s64 numerator)
-> +{
-> +	int ret, result, val;
-> +
-> +	val = 42;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT, val, 0);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator, val));
-> +
-> +	val = -23;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT, val, 0);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator, val));
-> +
-> +	val = 0;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT, val, 0);
-> +	KUNIT_EXPECT_EQ(test, ret, -ERANGE);
+---
+Changes since v1:
+* P1: add `vdd-supply` and `vddio-supply`
 
-I would expect EDOM for divide by 0 rather than ERANGE. The function is
-undefined at that point.
+* P2: new patch: use guards from cleanup.h   
 
-> +}
-> +
-> +static void iio_test_iio_divide_by_integer(struct kunit *test)
-> +{
-> +	__iio_test_iio_divide_by_integer(test, 2000);
-> +	__iio_test_iio_divide_by_integer(test, -2000);
-> +}
-> +
-> +static void __iio_test_iio_divide_by_fixedpoint(struct kunit *test, s64 numerator)
-> +{
-> +	int ret, result, val, val2;
-> +
-> +	/* positive >= 1 (1.5) */
-> +	val = 1;
-> +	val2 = 500000;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 15));
-> +
-> +	val = 1;
-> +	val2 = 500000000;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 15));
-> +
-> +	/* positive < 1 (0.5) */
-> +	val = 0;
-> +	val2 = 500000;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 5));
-> +
-> +	val = 0;
-> +	val2 = 500000000;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 5));
-> +
-> +	/* negative <= -1 (-1.5) */
-> +	val = -1;
-> +	val2 = 500000;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 15));
-> +
-> +	val = -1;
-> +	val2 = 500000000;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 15));
-> +
-> +	/* negative > -1 (-0.5) */
-> +	val = 0;
-> +	val2 = -500000;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 5));
-> +
-> +	val = 0;
-> +	val2 = -500000000;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 5));
-> +
-> +	/* Zero */
-> +	val = 0;
+* P3: change macros of control register bits to convention
+      MPL3115_CTRLX_NAME
+* P3: MPL3115_PT_DATA_EVENT_ALL: use GENMASK
+* P3: trigger_probe: do not fail if dev_fwnode() returns NULL
+* P3: trigger_probe: use devm_iio_trigger_register()
+* P3: trigger_probe: introduced enum mpl3115_irq_type and 
+      changed IRQ setup logic accordingly
 
-Odd to break the pattern an not have `val2 = 0;` here.
+* P4: MPL3115_CTRL2_ST: use GENMASK
+* P4: read_raw: samp_freq: use FIELD_GET
+* P4: write_raw: samp_freq: use FIELD_PREP
+---
 
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL_LOG2, val, 0);
-> +	KUNIT_EXPECT_EQ(test, ret, -ERANGE);
-> +}
+Antoni Pokusinski (4):
+  dt-bindings: iio: pressure: add binding for mpl3115
+  iio: mpl3115: use guards from cleanup.h
+  iio: mpl3115: add support for DRDY interrupt
+  iio: mpl3115: add support for sampling frequency
 
-...
+ .../bindings/iio/pressure/fsl,mpl3115.yaml    |  71 ++++
+ .../devicetree/bindings/trivial-devices.yaml  |   2 -
+ drivers/iio/pressure/mpl3115.c                | 314 ++++++++++++++++--
+ 3 files changed, 352 insertions(+), 35 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/fsl,mpl3115.yaml
 
-> +static void __iio_test_iio_divide_by_fractional_log2(struct kunit *test, s64 numerator)
-> +{
-> +	int ret, result, val, val2;
-> +
-> +	/* positive < 1 (123/1024) */
-> +	val = 123;
-> +	val2 = 10;
-> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL_LOG2, val, val2);
-> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
-> +	KUNIT_EXPECT_EQ(test, result, div_s64((numerator << val2), val));
-
-My instinct would be to write it like this:
-
-	div_s64((numerator * 1024), 123)
-
-This follows how it was done in __iio_test_iio_divide_by_fixedpoint() and
-makes it easier to see that it matchs exactly the value in the comment.
+-- 
+2.25.1
 
 

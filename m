@@ -1,261 +1,331 @@
-Return-Path: <linux-iio+bounces-24444-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24445-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9907BA169F
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 22:46:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CBFBA176E
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 23:10:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5FC91C029A1
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 20:47:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F007D3BF86C
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 21:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2674320CC1;
-	Thu, 25 Sep 2025 20:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2091827703C;
+	Thu, 25 Sep 2025 21:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jrRY3ZQY"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="W2ffxQAp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C44A321F4C
-	for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 20:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD402741A0
+	for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 21:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758833175; cv=none; b=kB0NZgVmAo/ChkbmyEAHxUovWavGS0lAgh+3SLrWYksEOJ/LTZxGBMvAweLa10SBnOGkxKTjAsHdqAUUn21MShQcJNQRsFwozfh1K0iWW61dvVk6/aqIG53g3MJK2qzeMqhVm1iW98qKmCkBpfsUzbAM7r16E3k4qBQ4GIzYiNg=
+	t=1758834620; cv=none; b=o4VerDPUEDIJ+UKFhCB4LF8vKuI5KOKIwU73h7krIGRDNJefVI6tIZrIlzKHJwcJ38iMgRJt6nx2MT+7HPArG5uQCk2QKOllThor8RHs5e+11vlohsGz1sGOnIEGPQwzO7Dn37jY9W1dwsZ3gg+A6kgKXGTxBJEC2hepb79Z8Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758833175; c=relaxed/simple;
-	bh=u/GRHoI6+QMWuN6Vgjvw8SAJW8N3epdnzemgpwb+gz0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QyaW5N8/bWzqTNDi/QzB5aqSPJI/SO+7dlO0JnrWAFuyMjmD7ntC7TZDYrsI9IZOjsFWdLqbuKC5PMsR3/MMZLpOA8tecMG1A1WjvBUEWKXJVh1bXS3tFj4RByMUU/57YtMiSzvd4G5Dd2Rm86TzNz4rmPr4i6JeKc6EijfjCmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jrRY3ZQY; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-46de78b595dso7765035e9.1
-        for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 13:46:13 -0700 (PDT)
+	s=arc-20240116; t=1758834620; c=relaxed/simple;
+	bh=n3ephFjtm3KomQZdYKzYZfiy6XEphg37kSPwmipmUdM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=orD7Lcd6rUtxwCc92pGfXRo211GouB4E/LiQqJPnHBU41rpl7jaOTe29AYvBvYaMXOSO0wuwWXlH+4z83soimwc6e4LhGypIvu9WoyGdmnayebMY0h7qtpbz+ZYDKOlq2OfcTucJGUVDWdCu8Yv8leE9RqL4NV3m0AfmnYfpi7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=W2ffxQAp; arc=none smtp.client-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-62355a687e6so705308eaf.1
+        for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 14:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758833172; x=1759437972; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3zPbj99Jd6vk35LiQNF3EC6C/GileQTOnsmS8pZJrbM=;
-        b=jrRY3ZQY3qs8MLajl0Iqw4igMD+QvppIhL69WcrMFDm7FYFhHy1h7slJdoAnraov06
-         JhGWey76NxBG09129F3u7MQxieq56gdUj+UL39CapLY3SlkMv/TVYUMVndHcxTT4ljyh
-         ySyjUKxk2kyWSrTPlq9CUDzmF89pknZ56UiUGhwHYYyMXwhIMFkCIGhyig4OSAJGLaOf
-         N0652Akznx5NO1nKcofTkp8UuDxNGDeVmFjRvpL32zTlAZA+vRhlxw6UL+3yOnmf4REh
-         iDHp6K2pxLJJuBRpx2OKGdPeOESrY8jbKb1CzcbobRE2h89TZ1VjcP+Brpl9NjtIwrP+
-         /baA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758834617; x=1759439417; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aY+e1kBZ45llB4r50CypVH53r6BPQrX3V+QDI/SvX0A=;
+        b=W2ffxQApBPv4MQWzzKr+rEqY6sii3eiFpNrq0nzLgrJN3hfkdlgT8sdiloRBOP19MP
+         e+VeVtE+qAsMfDSHl/F9AMHThlxvJKUot4XSBZI2d7u60ikVNyFRZEvDhJu0cGov7gwu
+         I8onzDYT4Sg5OXrVTwqp5wC4TlIQ7RDEVRyTuecB3TiDvvWAnFbtikCA+sSQ1yIrvEnW
+         xOJjM7jDv/ZjivkF9VYmaseJLIu+qfuNnPdZm1C0Usfyx3h/OQV9C8vuUhi8V+B/xMSQ
+         X1fBKpQ9hoB5jt5ZETK11LMlvM476snLwlnVx/pd8Dtqa1PZAUkpw5is8M0IlfHFnEuf
+         xIow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758833172; x=1759437972;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3zPbj99Jd6vk35LiQNF3EC6C/GileQTOnsmS8pZJrbM=;
-        b=OKb1QG8MgGRd4RCrWEDizP5FmXfpochTK/l9hHV8ARenAU9G5Y0S6AVbBZDhsSiNdP
-         h/0aw+xLubrJPYgfnxuaUi0+BXeAgalGbhTR+Y/qkqMUKUQVAfwkOVregyBPFyy4w4Ng
-         NMotXuH8g4BT7i4lbvmh92wvhUMpbrNrWhOXIUNDPBUFQRkHC1Jz3qaw0ZwQ8xoM8Ytu
-         KfxmO4T0mufCTZTupe69GH6avhcE83+D6bph3ScSIqsUC0+Y+ZS0ulGnpmEIp/hmyCaD
-         dWAwQuKz2JO+Qc4wQO+sd07APp2Ier9/XXaQzcELxH5JvegJ0k/NACnfUy5iifi99aRh
-         aBEg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGzSOAY12+J9xWFC1eag8fFf0sTQz1EiDYfN7WU+Vx/1/JZYiBDruQnSLKRrZONr1fDjbAdHfZVdY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPzzUJDs4UAN7pEfrcedT3glH47Ok4HgNYpEfaaRJdOEdOc2Dy
-	HaLSNWJapWQOLTvUpz/RPZIXwyYpRoCgpJrHGLWPTCQJzB7mqhXIM2T9BvMMtyfl
-X-Gm-Gg: ASbGncukZfWuu4XQK/pamGahEbRRd4BSyqbiACGASscEMwHbDcuLrwCGThtrpaRSeCl
-	P6qGow6vugO3fPdI4vJofvk+d//w6B/NLPpBG3g6AaTHwD0Z4BaqdI8R7rv428+5hyBDbYiIwpZ
-	w4OZA8ybeRy1ZjNj6aFo9T/zqvVyxti5rP51Bhhkk/AGMBtMzqCVUFiBMdIxIdkkrQ2TLnpHIYF
-	BTry+v0blN4PIWjavcY6j6ahDjMJ478tKcwKp1brOKq5ozR25NKqhAv8R4/YkpxcHVJMVjE82mM
-	zDPLCg7Ezy//9xdJcuhcRnVd+NcbFNeXiJI1nCLgpC9HVcxnkeNiFBkXlI7dwPeMf/kcWD59JMX
-	rT0AGq8riP98yC0umBTTcmTGFxsJKh5TeVt5q7YE=
-X-Google-Smtp-Source: AGHT+IEinpr7xThxxJ2V3S9ikl6fajqbnDTdglwGkk2yO6nzp2tfjtosXm54Fu/kSna8xTkM9qOt/A==
-X-Received: by 2002:a5d:5d10:0:b0:401:c52f:62de with SMTP id ffacd0b85a97d-40e4486c1a4mr4024325f8f.12.1758833171707;
-        Thu, 25 Sep 2025 13:46:11 -0700 (PDT)
-Received: from localhost.localdomain ([78.209.201.53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2a996bf1sm91201395e9.1.2025.09.25.13.46.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 13:46:11 -0700 (PDT)
-From: Antoni Pokusinski <apokusinski01@gmail.com>
-To: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux@roeck-us.net,
-	rodrigo.gobbi.7@gmail.com,
-	naresh.solanki@9elements.com,
-	michal.simek@amd.com,
-	grantpeltier93@gmail.com,
-	farouk.bouabid@cherry.de,
-	marcelo.schmitt1@gmail.com,
-	Antoni Pokusinski <apokusinski01@gmail.com>
-Subject: [PATCH v2 4/4] iio: mpl3115: add support for sampling frequency
-Date: Thu, 25 Sep 2025 22:45:38 +0200
-Message-Id: <20250925204538.63723-5-apokusinski01@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250925204538.63723-1-apokusinski01@gmail.com>
-References: <20250925204538.63723-1-apokusinski01@gmail.com>
+        d=1e100.net; s=20230601; t=1758834617; x=1759439417;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aY+e1kBZ45llB4r50CypVH53r6BPQrX3V+QDI/SvX0A=;
+        b=ER2Dx64cqrf1ZlXLTrlql/J7VQ7r25hZej1+GF1PuqYzqtGh6wJVRo3PiTxN0Q03rR
+         ZslIeEpnluU4y1Ye1mZ17soBu8uNma9hHNjkISpczyOvPO0NkkNSyZw9kZeC5qahx/r1
+         niNeRcwCz9IQyvlVLdFpYgTUeBuDYxfyFHOkodM9UXpjqjer1U1fWQAGwlyLG4GR92WR
+         58EsjbRBeUBBnOBYKeYWyMkb/eVStLIrFwmDuKpSfGb5iP5Ni82AgRpyzc8ZPBfu/Qos
+         eVtqUeEegdiSd4830Vft2N9Fmk/bYc13eK0s4E03C3o5vXJWOKHNJACk7V+EhgO218he
+         UNtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaSSAtlCoA9ApDdFqfd7Je1W9xqzTJwWG2oJtXvEH0B7rgqznZTG4NvYYY+PNJNaZrKRIVRMkVHIo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtjGN2/ljk/Vi8UaLQCYh37S6cuWpLVJWhodyjw02glVqf+Qzg
+	5NysA04HcrGfCJx32aOY/6GlSBTgZ+JRxbLYbn2WnH0D8aDnF0HQQ7Ib/WRvNpWg3rDIoRV4xi1
+	zZd9wkMg=
+X-Gm-Gg: ASbGncvjHfvnim0NIKBYZbk21d1rEnckXGiZ52xMlEEToka2ri3aizeVmuddd+POOcN
+	Scb1VLEs8I3IzZs3pQFedycM4c4IZ8NczKZKW0us0lhMAFhnJm54+YPqtes6QtbuUiXIXEsdWLU
+	UMyd1SZKaJl7Sp5/DppDNybRxIK2+eKGrx8X3aB6uh1ruEJ1Zj/W85ow6WAHuXA5bPfwrxcbzR6
+	MAYyDC493j/p6/FUEEGH2+79bRsOdFjq/A9OutqwfiZ1uXx7Mvixe3yHYaJI1Y85JYRiHK3Yyov
+	LOdgq0N/ZloD8DjPz4NE8/jQR5lyc2lSGjVDQBrFoI48xZZGy0gBADC8qpHB7tj0y64ZzrBhx5M
+	flD5XDpv+J0591fpxtH/3lvwO0S5P9eaZ3atlbtsWV2Xc9i+k4bPMxAHBK+47MKO+OtTo22H+kn
+	Q=
+X-Google-Smtp-Source: AGHT+IH3Xtu0sQM1LN9CiB1yGBe1M2pqUpRj0JdGC5I5tIERbTxkLrAHLtx3WMO78jlzDKd9XqXXww==
+X-Received: by 2002:a05:6808:1920:b0:43f:2c27:b720 with SMTP id 5614622812f47-43f4cdb13damr2775767b6e.20.1758834617422;
+        Thu, 25 Sep 2025 14:10:17 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:4d99:814b:57f9:f83b? ([2600:8803:e7e4:1d00:4d99:814b:57f9:f83b])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-43f51258ce4sm549871b6e.30.2025.09.25.14.10.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Sep 2025 14:10:15 -0700 (PDT)
+Message-ID: <2a503edb-fe9f-4d61-92c0-c1083a028e19@baylibre.com>
+Date: Thu, 25 Sep 2025 16:10:14 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] iio: add processed write API
+To: Romain Gantois <romain.gantois@bootlin.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>
+Cc: Hans de Goede <hansg@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
+ <20250925-ltm8054-driver-v2-2-bb61a401a0dc@bootlin.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250925-ltm8054-driver-v2-2-bb61a401a0dc@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-When the device is in ACTIVE mode the temperature and pressure measurements
-are collected with a frequency determined by the ST[3:0] bits of CTRL_REG2
-register.
+On 9/25/25 7:37 AM, Romain Gantois wrote:
+> Add a function to allow IIO consumers to write a processed value to a
+> channel.
+> 
+> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
+> ---
+>  drivers/iio/inkern.c         | 120 +++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/iio/consumer.h |  36 +++++++++++++
+>  2 files changed, 156 insertions(+)
+> 
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index 2a1ecef2b82007f5ee8e8d0f8b35846bc4d2f94a..a6ec724b7c1fb197e6261c1162f8315deda20fd7 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -631,6 +631,57 @@ int iio_multiply_value(int *result, s64 multiplier,
+>  }
+>  EXPORT_SYMBOL_GPL(iio_multiply_value);
+>  
+> +int iio_divide_by_value(int *result, s64 numerator,
+> +			unsigned int type, int val, int val2)
+> +{
+> +	s64 tmp_num, tmp_den;
+> +
+> +	switch (type) {
+> +	case IIO_VAL_INT:
+> +		tmp_num = numerator;
+> +		tmp_den = val;
+> +		break;
+> +	case IIO_VAL_INT_PLUS_MICRO:
+> +	case IIO_VAL_INT_PLUS_NANO:
+> +		switch (type) {
+> +		case IIO_VAL_INT_PLUS_MICRO:
+> +			tmp_num = MICRO;
+> +			tmp_den = MICRO;
+> +			break;
+> +
+> +		case IIO_VAL_INT_PLUS_NANO:
+> +			tmp_num = NANO;
+> +			tmp_den = NANO;
+> +			break;
+> +		}
+> +
+> +		tmp_num *= (s64)numerator;
+> +		tmp_den = (s64)abs(val) * tmp_den + (s64)abs(val2);
+> +
+> +		if (val < 0 || val2 < 0)
+> +			tmp_num *= -1;
+> +
+> +		break;
+> +	case IIO_VAL_FRACTIONAL:
+> +		tmp_num = (s64)numerator * (s64)val2;
+> +		tmp_den = val;
+> +		break;
+> +	case IIO_VAL_FRACTIONAL_LOG2:
+> +		tmp_num = (s64)numerator << val2;
+> +		tmp_den = val;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (!tmp_den)
+> +		return -ERANGE;
+> +
+> +	*result = div64_s64(tmp_num, tmp_den);
+> +
+> +	return IIO_VAL_INT;
+> +}
+> +
+>  static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
+>  						 int raw, int *processed,
+>  						 unsigned int scale)
+> @@ -699,6 +750,53 @@ int iio_convert_raw_to_processed(struct iio_channel *chan, int raw,
+>  }
+>  EXPORT_SYMBOL_GPL(iio_convert_raw_to_processed);
+>  
+> +static int iio_convert_processed_to_raw_unlocked(struct iio_channel *chan,
+> +						 int processed, int *raw,
+> +						 unsigned int scale)
+> +{
+> +	int scale_type, scale_val, scale_val2;
+> +	int offset_type, offset_val, offset_val2;
+> +	int ret;
+> +
+> +	scale_type = iio_channel_read(chan, &scale_val, &scale_val2,
+> +				      IIO_CHAN_INFO_SCALE);
+> +	if (scale_type >= 0) {
+> +		ret = iio_divide_by_value(raw, processed, scale_type, scale_val, scale_val2);
+> +		if (ret < 0)
+> +			return ret;
+> +	} else {
+> +		*raw = processed;
+> +	}
+> +
+> +	if (!scale)
+> +		return -ERANGE;
+> +
+> +	*raw = div_s64(*raw, scale);
+> +
+> +	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
+> +				       IIO_CHAN_INFO_OFFSET);
+> +	if (offset_type >= 0) {
+> +		switch (offset_type) {
+> +		case IIO_VAL_INT:
+> +		case IIO_VAL_INT_PLUS_MICRO:
+> +		case IIO_VAL_INT_PLUS_NANO:
+> +			break;
+> +		case IIO_VAL_FRACTIONAL:
+> +			offset_val /= offset_val2;
+> +			break;
+> +		case IIO_VAL_FRACTIONAL_LOG2:
+> +			offset_val >>= offset_val2;
+> +			break;
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +
+> +		*raw -= offset_val;
+> +	}
 
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
----
- drivers/iio/pressure/mpl3115.c | 81 ++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+There are some rounding biases in this function, but I'm not sure if
+it is worth trying to make a perfectly fair function.
 
-diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c
-index 13c8b338a15e..b854732e61cb 100644
---- a/drivers/iio/pressure/mpl3115.c
-+++ b/drivers/iio/pressure/mpl3115.c
-@@ -30,6 +30,7 @@
- #define MPL3115_INT_SOURCE 0x12
- #define MPL3115_PT_DATA_CFG 0x13
- #define MPL3115_CTRL_REG1 0x26
-+#define MPL3115_CTRL_REG2 0x27
- #define MPL3115_CTRL_REG3 0x28
- #define MPL3115_CTRL_REG4 0x29
- #define MPL3115_CTRL_REG5 0x2a
-@@ -48,6 +49,8 @@
- #define MPL3115_CTRL1_ACTIVE BIT(0) /* continuous measurement */
- #define MPL3115_CTRL1_OS_258MS GENMASK(5, 4) /* 64x oversampling */
- 
-+#define MPL3115_CTRL2_ST GENMASK(3, 0)
-+
- #define MPL3115_CTRL3_IPOL1 BIT(5)
- #define MPL3115_CTRL3_IPOL2 BIT(1)
- 
-@@ -57,6 +60,25 @@
- 
- #define MPL3115_INT2 BIT(2) /* flag that indicates INT2 in use */
- 
-+static const unsigned int mpl3115_samp_freq_table[][2] = {
-+	{ 1,      0},
-+	{ 0, 500000},
-+	{ 0, 250000},
-+	{ 0, 125000},
-+	{ 0,  62500},
-+	{ 0,  31250},
-+	{ 0,  15625},
-+	{ 0,   7812},
-+	{ 0,   3906},
-+	{ 0,   1953},
-+	{ 0,    976},
-+	{ 0,    488},
-+	{ 0,    244},
-+	{ 0,    122},
-+	{ 0,     61},
-+	{ 0,     30},
-+};
-+
- struct mpl3115_data {
- 	struct i2c_client *client;
- 	struct iio_trigger *drdy_trig;
-@@ -174,10 +196,61 @@ static int mpl3115_read_raw(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		ret = i2c_smbus_read_byte_data(data->client, MPL3115_CTRL_REG2);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = FIELD_GET(MPL3115_CTRL2_ST, ret);
-+
-+		*val = mpl3115_samp_freq_table[ret][0];
-+		*val2 = mpl3115_samp_freq_table[ret][1];
-+		return IIO_VAL_INT_PLUS_MICRO;
- 	}
- 	return -EINVAL;
- }
- 
-+static int mpl3115_read_avail(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      const int **vals, int *type, int *length,
-+			      long mask)
-+{
-+	if (mask != IIO_CHAN_INFO_SAMP_FREQ)
-+		return -EINVAL;
-+
-+	*type = IIO_VAL_INT_PLUS_MICRO;
-+	*length = ARRAY_SIZE(mpl3115_samp_freq_table) * 2;
-+	*vals = (int *)mpl3115_samp_freq_table;
-+	return IIO_AVAIL_LIST;
-+}
-+
-+static int mpl3115_write_raw(struct iio_dev *indio_dev,
-+			     const struct iio_chan_spec *chan,
-+			     int val, int val2, long mask)
-+{
-+	struct mpl3115_data *data = iio_priv(indio_dev);
-+	int i, ret;
-+
-+	if (mask != IIO_CHAN_INFO_SAMP_FREQ)
-+		return -EINVAL;
-+
-+	for (i = 0; i < ARRAY_SIZE(mpl3115_samp_freq_table); i++)
-+		if (val == mpl3115_samp_freq_table[i][0] &&
-+		    val2 == mpl3115_samp_freq_table[i][1])
-+			break;
-+
-+	if (i == ARRAY_SIZE(mpl3115_samp_freq_table))
-+		return -EINVAL;
-+
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
-+
-+	ret = i2c_smbus_write_byte_data(data->client, MPL3115_CTRL_REG2,
-+					FIELD_PREP(MPL3115_CTRL2_ST, i));
-+	iio_device_release_direct(indio_dev);
-+	return ret;
-+}
-+
- static irqreturn_t mpl3115_trigger_handler(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
-@@ -229,6 +302,9 @@ static const struct iio_chan_spec mpl3115_channels[] = {
- 		.type = IIO_PRESSURE,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_all_available =
-+			BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 		.scan_index = 0,
- 		.scan_type = {
- 			.sign = 'u',
-@@ -242,6 +318,9 @@ static const struct iio_chan_spec mpl3115_channels[] = {
- 		.type = IIO_TEMP,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_all_available =
-+			BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 		.scan_index = 1,
- 		.scan_type = {
- 			.sign = 's',
-@@ -312,6 +391,8 @@ static const struct iio_trigger_ops mpl3115_trigger_ops = {
- 
- static const struct iio_info mpl3115_info = {
- 	.read_raw = &mpl3115_read_raw,
-+	.read_avail = &mpl3115_read_avail,
-+	.write_raw = &mpl3115_write_raw,
- };
- 
- static int mpl3115_trigger_probe(struct mpl3115_data *data,
--- 
-2.25.1
+> +
+> +	return 0;
+> +}
+> +
+>  int iio_read_channel_attribute(struct iio_channel *chan, int *val, int *val2,
+>  			       enum iio_chan_info_enum attribute)
+>  {
+> @@ -1035,3 +1133,25 @@ ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf)
+>  	return do_iio_read_channel_label(chan->indio_dev, chan->channel, buf);
+>  }
+>  EXPORT_SYMBOL_GPL(iio_read_channel_label);
+> +
+> +int iio_write_channel_processed_scale(struct iio_channel *chan, int val,
+> +				      unsigned int scale)
+> +{
+> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
+> +	int ret, processed;
+> +
+> +	scoped_guard(mutex, &iio_dev_opaque->info_exist_lock) {
+
+Can just use regular guard(mutex)() here and save some indent.
+
+> +		if (!chan->indio_dev->info)
+> +			return -ENODEV;
+> +
+> +		ret = iio_convert_processed_to_raw_unlocked(chan, val, &processed, scale);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = iio_channel_write(chan, processed, 0, IIO_CHAN_INFO_RAW);
+
+And this can return directly.
+
+> +	}
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(iio_write_channel_processed_scale);
+> +
+> diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
+> index c8c6261c81f934480e16854412e269207be60adc..dc84b8b4c61911d1a58427f1a9c798cae3954ac1 100644
+> --- a/include/linux/iio/consumer.h
+> +++ b/include/linux/iio/consumer.h
+> @@ -399,6 +399,24 @@ int iio_read_channel_scale(struct iio_channel *chan, int *val,
+>  int iio_multiply_value(int *result, s64 multiplier,
+>  		       unsigned int type, int val, int val2);
+>  
+> +/**
+> + * iio_divide_by_value() - Divide by an IIO value
+> + * @result:	Destination pointer for the division result
+> + * @numerator:	Numerator.
+> + * @type:	One of the IIO_VAL_* constants. This decides how the @val
+> + *		and @val2 parameters are interpreted.
+> + * @val:	Denominator.
+> + * @val2:	Denominator. @val2 use depends on type.
+> + *
+> + * Divide an s64 number by an IIO value, storing the result as
+> + * IIO_VAL_INT. This is typically used for scaling.
+> + *
+> + * Returns:
+> + * IIO_VAL_INT on success or a negative error-number on failure.
+> + */
+> +int iio_divide_by_value(int *result, s64 numerator,
+> +			unsigned int type, int val, int val2);
+> +
+>  /**
+>   * iio_convert_raw_to_processed() - Converts a raw value to a processed value
+>   * @chan:		The channel being queried
+> @@ -469,4 +487,22 @@ ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
+>   */
+>  ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf);
+>  
+> +/**
+> + * iio_write_channel_processed_scale() - scale and write processed value to a given channel
+> + * @chan:		The channel being queried.
+> + * @val:		Value to write.
+> + * @scale:		Scale factor to apply during the conversion
+
+This could be more explicit about what sort of scaling this is.
+The function divides by this factor rather than multiplies by it.
+
+> + *
+> + * This function writes a processed value to a channel. A processed value means
+> + * that this value will have the correct unit and not some device internal
+> + * representation. If the device does not support writing a processed value, the
+> + * function will query the channel's scale and offset and write an appropriately
+> + * transformed raw value.
+> + *
+
+Could be helpful even if obvious to most people...
+
+	Context: May sleep.
+
+> + * Return: an error code or 0.
+> + *
+> + */
+> +int iio_write_channel_processed_scale(struct iio_channel *chan, int val,
+> +				      unsigned int scale);
+> +
+>  #endif
+> 
 
 

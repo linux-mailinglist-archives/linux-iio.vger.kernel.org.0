@@ -1,39 +1,39 @@
-Return-Path: <linux-iio+bounces-24452-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24453-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CB11BA1E05
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 00:43:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF70BA1DF9
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 00:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 816FF2A6CAC
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 22:42:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6079F3ACBE5
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 22:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B8D322DC3;
-	Thu, 25 Sep 2025 22:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C3D322DA8;
+	Thu, 25 Sep 2025 22:41:31 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8136432255F;
-	Thu, 25 Sep 2025 22:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7061330C365;
+	Thu, 25 Sep 2025 22:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758840086; cv=none; b=E5sXHLySKJ+TD8u0KVePh+L52G9HxCYLfx/PwQe6siAKHUoJeT/jId+yS42h4qSC0QsERErA5K3uGXmFh8pNnZssktWyKbKNqwwPG90GdZ5l+ZDg4A8/hiwWniEXfZEmOvBHAbDD+JkBLhIdSPSBh38G6mi57tUI/5n1U1666qE=
+	t=1758840091; cv=none; b=OiVy9CA0c1r5EmFkJntojWg0hFZD3oShdoL/xGN0C9fYiq/rcB5zocjnq3EeWnT+XQUwYiSS5uqgvXNOkrwi1ZJeIowLVXvW3xUpFmAbCptdBL8yixDMZYRo1ZsE4NQgRh3tn9AP9XXpIsB4D0ON3fUZdm3ROzq3nAL1LwiYgkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758840086; c=relaxed/simple;
-	bh=XQ3XKuMVVnlhB58MduVr+0rxBWpHh/TwGzeY/ypNSww=;
+	s=arc-20240116; t=1758840091; c=relaxed/simple;
+	bh=tnTqUW1CCfg20bZn8bGpLx7RaTcWjSs1bsmxkTRlM+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TuLqRRS7UUhWD+bFVQabwGLUcnw8tZ05cOduZTZVZdAbUxxnGHVmqPFfmJd1lEarIDuc1fmpxljycn0idgvWTpKkrNUp6vEOyOH2aEcgw8KlAj29DpSRMuISwa+AO28XLLwtn7uVvqm0o5mt7IciR7WDBOxdR37zKAydQn9+BtE=
+	 MIME-Version; b=TPjamMMCHM7GRiJaa9cpwnMwkMz3cPihsdGvKXtwBtmYvF5n0oBPqQl2b4PlHtHpN9mScJKvW6z4g6RiSOYAXfHeME2QODuDVPhDxBlMQv6GPVXz9Y1EHwYxi3qw24i1kv1K42w7D7pzwq2xWg6GQixeA7dj0RZqe/I2kzZg9uo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: UbvgbOxuQkevSeE/LpEPiQ==
-X-CSE-MsgGUID: dKA9uqVaTFaETcRXlICIlg==
+X-CSE-ConnectionGUID: 4xaMivemSoq7cQoB77rhHQ==
+X-CSE-MsgGUID: PbchRpaIQXuONCu94vyYIA==
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 26 Sep 2025 07:41:23 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 26 Sep 2025 07:41:29 +0900
 Received: from demon-pc.localdomain (unknown [10.226.92.2])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 0AB3D400CF0A;
-	Fri, 26 Sep 2025 07:41:18 +0900 (JST)
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id A221C400CF0A;
+	Fri, 26 Sep 2025 07:41:24 +0900 (JST)
 From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 To: 
 Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
@@ -50,9 +50,9 @@ Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
 	linux-renesas-soc@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 6/7] arm64: dts: renesas: rzt2h/rzn2h-evk: enable ADCs
-Date: Fri, 26 Sep 2025 01:40:08 +0300
-Message-ID: <20250925224013.2146983-7-cosmin-gabriel.tanislav.xa@renesas.com>
+Subject: [PATCH v2 7/7] arm64: defconfig: enable RZ/T2H / RZ/N2H ADC driver
+Date: Fri, 26 Sep 2025 01:40:09 +0300
+Message-ID: <20250925224013.2146983-8-cosmin-gabriel.tanislav.xa@renesas.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925224013.2146983-1-cosmin-gabriel.tanislav.xa@renesas.com>
 References: <20250925224013.2146983-1-cosmin-gabriel.tanislav.xa@renesas.com>
@@ -64,212 +64,31 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ADCs on RZ/T2H and RZ/N2H are exposed on the evaluation kit boards.
+Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs include three
+12-Bit successive approximation A/D converters.
 
-Enable them.
+RZ/T2H has two ADCs with 4 channels and one with 6.
+RZ/N2H has two ADCs with 4 channels and one with 15.
+
+Enable the driver for them.
 
 Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 ---
- .../dts/renesas/r9a09g077m44-rzt2h-evk.dts    | 28 +++++++
- .../dts/renesas/r9a09g087m44-rzn2h-evk.dts    | 64 +++++++++++++++
- .../dts/renesas/rzt2h-n2h-evk-common.dtsi     | 79 +++++++++++++++++++
- 3 files changed, 171 insertions(+)
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a09g077m44-rzt2h-evk.dts b/arch/arm64/boot/dts/renesas/r9a09g077m44-rzt2h-evk.dts
-index 9170c563208a..e94b84393bd9 100644
---- a/arch/arm64/boot/dts/renesas/r9a09g077m44-rzt2h-evk.dts
-+++ b/arch/arm64/boot/dts/renesas/r9a09g077m44-rzt2h-evk.dts
-@@ -252,3 +252,31 @@ usb_pins: usb-pins {
- 			 <RZT2H_PORT_PINMUX(0, 1, 0x13)>; /* OVRCUR */
- 	};
- };
-+
-+&adc2 {
-+	status = "okay";
-+
-+	channel@0 {
-+		reg = <0x0>;
-+	};
-+
-+	channel@1 {
-+		reg = <0x1>;
-+	};
-+
-+	channel@2 {
-+		reg = <0x2>;
-+	};
-+
-+	channel@3 {
-+		reg = <0x3>;
-+	};
-+
-+	channel@4 {
-+		reg = <0x4>;
-+	};
-+
-+	channel@5 {
-+		reg = <0x5>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/renesas/r9a09g087m44-rzn2h-evk.dts b/arch/arm64/boot/dts/renesas/r9a09g087m44-rzn2h-evk.dts
-index 279f2510044b..d27da157c6d6 100644
---- a/arch/arm64/boot/dts/renesas/r9a09g087m44-rzn2h-evk.dts
-+++ b/arch/arm64/boot/dts/renesas/r9a09g087m44-rzn2h-evk.dts
-@@ -305,3 +305,67 @@ usb_pins: usb-pins {
- 			 <RZT2H_PORT_PINMUX(2, 3, 0x13)>; /* OVRCUR */
- 	};
- };
-+
-+&adc2 {
-+	status = "okay";
-+
-+	channel@0 {
-+		reg = <0x0>;
-+	};
-+
-+	channel@1 {
-+		reg = <0x1>;
-+	};
-+
-+	channel@2 {
-+		reg = <0x2>;
-+	};
-+
-+	channel@3 {
-+		reg = <0x3>;
-+	};
-+
-+	channel@4 {
-+		reg = <0x4>;
-+	};
-+
-+	channel@5 {
-+		reg = <0x5>;
-+	};
-+
-+	channel@6 {
-+		reg = <0x6>;
-+	};
-+
-+	channel@7 {
-+		reg = <0x7>;
-+	};
-+
-+	channel@8 {
-+		reg = <0x8>;
-+	};
-+
-+	channel@9 {
-+		reg = <0x9>;
-+	};
-+
-+	channel@a {
-+		reg = <0xa>;
-+	};
-+
-+	channel@b {
-+		reg = <0xb>;
-+	};
-+
-+	channel@c {
-+		reg = <0xc>;
-+	};
-+
-+	channel@d {
-+		reg = <0xd>;
-+	};
-+
-+	channel@e {
-+		reg = <0xe>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi b/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi
-index 9ca26725a3e9..a7123a9ec684 100644
---- a/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi
-+++ b/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi
-@@ -338,3 +338,82 @@ &wdt2 {
- 	status = "okay";
- 	timeout-sec = <60>;
- };
-+
-+/*
-+ * ADC0 AN000 can be connected to a potentiometer on the board or
-+ * exposed on ADC header.
-+ *
-+ * T2H:
-+ * SW17[1] = ON, SW17[2] = OFF - Potentiometer
-+ * SW17[1] = OFF, SW17[2] = ON  - CN41 header
-+ * N2H:
-+ * DSW6[1] = OFF, DSW6[2] = ON - Potentiometer
-+ * DSW6[1] = ON, DSW6[2] = OFF - CN3 header
-+ */
-+&adc0 {
-+	status = "okay";
-+
-+	channel@0 {
-+		reg = <0x0>;
-+	};
-+
-+	channel@1 {
-+		reg = <0x1>;
-+	};
-+
-+	channel@2 {
-+		reg = <0x2>;
-+	};
-+
-+	channel@3 {
-+		reg = <0x3>;
-+	};
-+};
-+
-+/*
-+ * ADC1 AN100 can be exposed on ADC header or on mikroBUS connector.
-+ *
-+ * T2H:
-+ * SW18[1] = ON, SW18[2] = OFF - CN42 header
-+ * SW18[1] = OFF, SW18[2] = ON - mikroBUS
-+ * N2H:
-+ * DSW6[3] = ON, DSW6[4] = OFF - CN4 header
-+ * DSW6[3] = OFF, DSW6[4] = ON - mikroBUS
-+ *
-+ * ADC1 AN101 can be exposed on ADC header or on Grove2 connector.
-+ *
-+ * T2H:
-+ * SW18[3] = ON, SW18[4] = OFF - CN42 header
-+ * SW18[3] = OFF, SW18[4] = ON - Grove2
-+ * N2H:
-+ * DSW6[5] = ON, DSW6[6] = OFF - CN4 header
-+ * DSW6[5] = OFF, DSW6[6] = ON - Grove2
-+ *
-+ * ADC1 AN102 can be exposed on ADC header or on Grove2 connector.
-+ *
-+ * T2H:
-+ * SW18[5] = ON, SW18[6] = OFF - CN42 header
-+ * SW18[5] = OFF, SW18[6] = ON - Grove2
-+ * N2H:
-+ * DSW6[7] = ON, DSW6[8] = OFF - CN4 header
-+ * DSW6[7] = OFF, DSW6[8] = ON - Grove2
-+ */
-+&adc1 {
-+	status = "okay";
-+
-+	channel@0 {
-+		reg = <0x0>;
-+	};
-+
-+	channel@1 {
-+		reg = <0x1>;
-+	};
-+
-+	channel@2 {
-+		reg = <0x2>;
-+	};
-+
-+	channel@3 {
-+		reg = <0x3>;
-+	};
-+};
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 8fd1bf869942..3a1326652d47 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1581,6 +1581,7 @@ CONFIG_QCOM_SPMI_VADC=m
+ CONFIG_QCOM_SPMI_ADC5=m
+ CONFIG_ROCKCHIP_SARADC=m
+ CONFIG_RZG2L_ADC=m
++CONFIG_RZT2H_ADC=m
+ CONFIG_SOPHGO_CV1800B_ADC=m
+ CONFIG_TI_ADS1015=m
+ CONFIG_TI_AM335X_ADC=m
 -- 
 2.51.0
 

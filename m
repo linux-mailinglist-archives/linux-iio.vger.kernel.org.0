@@ -1,224 +1,223 @@
-Return-Path: <linux-iio+bounces-24438-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24439-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD18BA12CE
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 21:27:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC57FBA159A
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 22:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26BC7188A946
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 19:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 780BA16CE00
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 20:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E88331D37A;
-	Thu, 25 Sep 2025 19:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D779303A14;
+	Thu, 25 Sep 2025 20:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k26gTBOX"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wj5nX/GA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B1531CA7B;
-	Thu, 25 Sep 2025 19:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD7326A0B3
+	for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 20:26:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758828431; cv=none; b=QFxidmFrvsnMkDcujrxCyIvtXhQE9hoO6PAIYbIiEBVd91ffCN7QguVM2oTxu78mfrxmm4Vwc17oxH0V25T+DeT5nl4NCkLq4VQ5bR24LeWR94bbxecabzpUwrzHYPii35fwvK2Pw1ROOrrmUSU4qm9i86KeoqfVzONmtvbO7zk=
+	t=1758832003; cv=none; b=ueicuZc29DFDnMcQ1YObYTZCRL51PzAWhUzdOI+ePwmZRdfv2LcV8254u6Bs9duzM33QeWeCnniMLYAWYRKQBDkOW0kiZyk014i9L8Se9a72SF/8dZ+A7etVTwu7XlSv7xv7SfEECiTbLW6rzDsB14qQBJvR/EstOZXAxbP+p5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758828431; c=relaxed/simple;
-	bh=8vm6F+0OMAOJtiNGO0yQnoDSWYInV+uyaO2RGW6fnWA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=olcP+WDDzpPpQuP112rGmnXQP2RfMprj3LRHS+pCFKMQoVTMZe0TlQKKFc/u6AfTt+ADDB84/7u4Jgg/eJDTmd1zi9vOtgw7ewi+enNYJqiaaaRXxvf3DHMxeDv/aV+397TnGa1R74AOjy9w4MipiEYP0gpx7GjaGCB8I5jmTXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k26gTBOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7BDC4CEF7;
-	Thu, 25 Sep 2025 19:27:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758828431;
-	bh=8vm6F+0OMAOJtiNGO0yQnoDSWYInV+uyaO2RGW6fnWA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k26gTBOXzb9SWd5o56WWrXTAoQjbKIpkMqqM+zjosIr/+KjhuIMpKZLf/eKGzEkQl
-	 BGDt0AEXN/PARtvW3W7bM+35qnvcn3PUtwUA/ZoPMnsczyJeY8arvOtMSMtcCIAHgO
-	 8BSNaE5tISv5Kurwy+ImUFxj7uoOZ2cm/NQieLLLl9Ukk++LiagfZkRefIFjq6Izqv
-	 aFOE/RqX5RT59h13/MV+BFhPvWuViyFoh6bVOFDIUNWY9BR1BIbBh0kZkN7nlRyHsT
-	 wcEQT8Sy16XrLSY5RhWf1hhdiOEIfzS2WXF2hgn8no9YTYxYjvQVS1pN6qQX3LkE9W
-	 tkpJr4adaJdtA==
-Date: Thu, 25 Sep 2025 20:27:06 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] regulator: dt-bindings: Add Linear Technology
- LTM8054 regulator
-Message-ID: <20250925-pushchair-charity-9ccee20d8a6e@spud>
-References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
- <20250925-ltm8054-driver-v2-1-bb61a401a0dc@bootlin.com>
+	s=arc-20240116; t=1758832003; c=relaxed/simple;
+	bh=NIugp2fbJWeDznKGvAEJerKZJQxZbeRNgyq7Txs6LEY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bQYwszcZrprDGDQmMgDCzh9aO9cD8UMVwXumWJ4ahyzr1cc6zZR+UrkpAngiOn4ALknFfoehHCbsp3xMHYE/tAzPV16SZsIxHeOe8gXMg5IiBojCGfFZaDNGFgqTOL8QDteXFHY9dw8TV01NDi0CKvuTmnHuJX+FfNJ39M4piNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wj5nX/GA; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-79f79e37c04so978988a34.3
+        for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 13:26:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1758832000; x=1759436800; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mxfegnmNEJxxDs3mqI/l4EZdUjsV9AajOSMpQHLr4h4=;
+        b=wj5nX/GAe1db5/2yCHZHlQtS98ijNq+MXB8sdoth43a1XzgVzKLCtiw+NvmlqgJJYc
+         qqyj0ofiV6nxUFOHVvWbMAr4rtKTvOHhouHaJwJ5RreeCZEX4a5d3SmANjBUBKkDTfzk
+         JTvLLSu/4IPP4cGO8MI9CT9ct4BK1SknMPYOXCXiUEyof8hWEjesyn3hH1TloCtLeO78
+         LQ1PgptMhv4UjtCe/VUSJUvTQoa81RGcAGg5DKRQpJet8ZD3XZLyQ9w+DGy5NMokWO2e
+         GTzkC0F4PbPiS4LKaX/6V6PgMKuylj1oWfl7Pk0Y1Bvx+XI6X004FHpeQLj0bkbT4+9e
+         CzQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758832000; x=1759436800;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mxfegnmNEJxxDs3mqI/l4EZdUjsV9AajOSMpQHLr4h4=;
+        b=KqrbgHqloDpC5flZaX9r8GfzvIBPobcA+Kdx45DFSiweJIB+FfHBAs/fJobg3RSWBD
+         /9DcBITyNbETgzmyRXwEw7YB9IiZxJxZaNqNj9zV8WntvGX2MyORiXfHFOe+HVK/BUE5
+         27+xPbTVDc0bYbeUmr/8oxOx4vlRxEsMijzHSK57ZZY57BaJx6nUxnISm8jBAFsL/ksC
+         EQmlRMZoejuerXBbO/tYJpnhIpur6Gwg8ngsOzQ2SdZltsqcGINniWn4rm+JNIPctT0P
+         dyH7d3EkesYqFTm9lQQ4WU76fXVYTibmFnHt7JgI3z+7VF/y9eXoAsFN6G/FlYD9SWD5
+         5jpA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsXTMwhJybTBAJLKdQUBfAq+o5x3ytEf6frDfynJHZQdjGFFbyPUuDcorVNSWm6i7S1yDWpgXYCSk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9XxNkCpjCmsWOpMmKdsD/pR3SFlhe+u/CLMRcKVz6Drlxdf/K
+	q4dcNZ4NSGlMZaMBmnZFqIVetLlxvovZu8y8lxAlfPgKjY0AFSJ/PqdHsozCoXNssvbjL+g58MF
+	SBz6fhc0=
+X-Gm-Gg: ASbGncuJFQW45xVexVAPcN8VSKbPIloyQc5/nm8BbEOd/ONYt9yMprP4sqT+c3k5eOg
+	Jyui2idggucCj2LaXpQkb8MT8BWA6h2bF7BTAVtjTyp8Xs5ZUNKC6DJ1yf7HIjOJAp/TTW1kZcw
+	E1st+GMGXk4QfvciNnpdjhCvwj9FnJsTEcfbwLm2aEzlayPEVEC2D2y8ob8BGxkYqNxC4oNA/s5
+	h0m8lzDoYcFVwhhrzg32KHneeYHlymTi97+kdd/WR06Wzd14ZmPoJLtGNOwLV2fzuQh1453bywi
+	Z74p2Zp5jGxuiK0NnzUwveAnAUS6+bqxXIsxhTOgWCp02wuyWrpZd0rB4WZWDA30SA3VQT1z/eh
+	DOs9Z6GgzIDGtOV8UqwmOgUuSXArgrushJty0bs1KkakuynAt5//fweMYQiyp1qlc5bklSXta
+X-Google-Smtp-Source: AGHT+IGR2wlvFPurlbBB+p/mOH+8U3zcrAxgD5zjtS2zL1ZgQH1ws/3KfE6l31vd4RAjlNXmRm6aWQ==
+X-Received: by 2002:a05:6830:2b0b:b0:758:6251:2e5c with SMTP id 46e09a7af769-7a04ee87769mr253143a34.31.1758831999994;
+        Thu, 25 Sep 2025 13:26:39 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:68ee:c62f:fd8:aec9? ([2600:8803:e7e4:1d00:68ee:c62f:fd8:aec9])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7a6dc805845sm230444a34.6.2025.09.25.13.26.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Sep 2025 13:26:39 -0700 (PDT)
+Message-ID: <49b24a0d-a2ac-4620-9a1e-a94e5a2db075@baylibre.com>
+Date: Thu, 25 Sep 2025 15:26:38 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NOfbYS7pJJYrvl13"
-Content-Disposition: inline
-In-Reply-To: <20250925-ltm8054-driver-v2-1-bb61a401a0dc@bootlin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] Add kunit tests for iio_divide_by_value()
+To: Romain Gantois <romain.gantois@bootlin.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>
+Cc: Hans de Goede <hansg@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
+ <20250925-ltm8054-driver-v2-3-bb61a401a0dc@bootlin.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250925-ltm8054-driver-v2-3-bb61a401a0dc@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 9/25/25 7:37 AM, Romain Gantois wrote:
 
---NOfbYS7pJJYrvl13
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-On Thu, Sep 25, 2025 at 02:37:33PM +0200, Romain Gantois wrote:
-> The Linear Technology LTM8054 is a Buck-Boost voltage regulator with an
-> input range of 5V to 36V and an output range of 1.2V to 36V.
->=20
-> The LTM8054's output voltage level is typically set using a voltage divid=
-er
-> between the Vout and FB pins, the FB pin being constantly regulated to
-> 1.2V.
->=20
-> The output current limit of the LTM8054 may be statically set by placing a
-> sense resistor on a dedicated pin. This limit can then be lowered by
-> controlling the voltage level on the CTL pin.
->=20
-> Describe the LTM8054 voltage regulator.
->=20
-> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
-> ---
->  .../devicetree/bindings/regulator/adi,ltm8054.yaml | 73 ++++++++++++++++=
-++++++
->  MAINTAINERS                                        |  5 ++
->  2 files changed, 78 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/regulator/adi,ltm8054.yaml=
- b/Documentation/devicetree/bindings/regulator/adi,ltm8054.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..8ca8fc4e80b5722f58b4cbe9d=
-e22c16d4fd91670
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/regulator/adi,ltm8054.yaml
-> @@ -0,0 +1,73 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/regulator/adi,ltm8054.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +static void __iio_test_iio_divide_by_integer(struct kunit *test, s64 numerator)
+> +{
+> +	int ret, result, val;
 > +
-> +title: Analog Devices LTM8054 buck-boost regulator
+> +	val = 42;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT, val, 0);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator, val));
 > +
-> +maintainers:
-> +  - Romain Gantois <romain.gantois@bootlin.com>
+> +	val = -23;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT, val, 0);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator, val));
 > +
-> +description:
-> +  This regulator operates over an input voltage range of 5V to 36V, and =
-can
-> +  output from 1.2V to 36V. The output voltage level is typically set wit=
-h a
-> +  voltage divider between the Vout pin and the FB pin which is internally
-> +  regulated to 1.2V.
-> +
-> +  The output current of the LTM8054 can be limited by tying the Iout pin=
- to a
-> +  current sense resistor. This limit can be further lowered by applying a
-> +  voltage below 1.2V to the CTL pin.
-> +
-> +allOf:
-> +  - $ref: /schemas/regulator/regulator.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    const: adi,ltm8054
-> +
-> +  enable-gpios:
-> +    description: GPIO connected to the RUN pin.
-> +    maxItems: 1
-> +
-> +  lltc,fb-voltage-divider:
+> +	val = 0;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT, val, 0);
+> +	KUNIT_EXPECT_EQ(test, ret, -ERANGE);
 
-Why does this property have a ?linear? vendor prefix?
-Shouldn't it be adi to match the other property and compatible?
+I would expect EDOM for divide by 0 rather than ERANGE. The function is
+undefined at that point.
 
-> +    description:
-> +      An array of two integers containing the resistor values
-> +      R1 and R2 of the feedback voltage divider in Ohms.
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    minItems: 2
-> +    maxItems: 2
+> +}
 > +
-> +  adi,iout-rsense-micro-ohms:
-> +    description:
-> +      Value of the output current sense resistor, in micro Ohms.
+> +static void iio_test_iio_divide_by_integer(struct kunit *test)
+> +{
+> +	__iio_test_iio_divide_by_integer(test, 2000);
+> +	__iio_test_iio_divide_by_integer(test, -2000);
+> +}
 > +
-> +  io-channels:
-> +    items:
-> +      - description: DAC controlling the voltage level of the CTL pin.
+> +static void __iio_test_iio_divide_by_fixedpoint(struct kunit *test, s64 numerator)
+> +{
+> +	int ret, result, val, val2;
 > +
-> +  io-channel-names:
-> +    items:
-> +      - const: ctl
+> +	/* positive >= 1 (1.5) */
+> +	val = 1;
+> +	val2 = 500000;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 15));
 > +
-> +required:
-> +  - compatible
-> +  - lltc,fb-voltage-divider
+> +	val = 1;
+> +	val2 = 500000000;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 15));
 > +
-> +additionalProperties: false
+> +	/* positive < 1 (0.5) */
+> +	val = 0;
+> +	val2 = 500000;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 5));
 > +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    regulator {
-> +        compatible =3D "adi,ltm8054";
+> +	val = 0;
+> +	val2 = 500000000;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 5));
 > +
-> +        enable-gpios =3D <&gpio0 1 GPIO_ACTIVE_HIGH>;
+> +	/* negative <= -1 (-1.5) */
+> +	val = -1;
+> +	val2 = 500000;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 15));
 > +
-> +        lltc,fb-voltage-divider =3D <1000000 68000>;
+> +	val = -1;
+> +	val2 = 500000000;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 15));
 > +
-> +        adi,iout-rsense-micro-ohms =3D <20000>;
+> +	/* negative > -1 (-0.5) */
+> +	val = 0;
+> +	val2 = -500000;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 5));
 > +
-> +        io-channels =3D <&dac 1>;
-> +        io-channel-names =3D "ctl";
-> +    };
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3763f9fc9e4ed62bc8b273756a25f9c921570bee..69bcba82808bb815af436232f=
-ab50f70713fd533 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14534,6 +14534,11 @@ W:	https://ez.analog.com/linux-software-drivers
->  F:	Documentation/devicetree/bindings/i2c/i2c-mux-ltc4306.txt
->  F:	drivers/i2c/muxes/i2c-mux-ltc4306.c
-> =20
-> +LTM8054 REGULATOR DRIVER
-> +M:	Romain Gantois <romain.gantois@bootlin.com>
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/regulator/adi,ltm8054.yaml
+> +	val = 0;
+> +	val2 = -500000000;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 5));
 > +
->  LTP (Linux Test Project)
->  M:	Andrea Cervesato <andrea.cervesato@suse.com>
->  M:	Cyril Hrubis <chrubis@suse.cz>
->=20
-> --=20
-> 2.51.0
->=20
+> +	/* Zero */
+> +	val = 0;
 
---NOfbYS7pJJYrvl13
-Content-Type: application/pgp-signature; name="signature.asc"
+Odd to break the pattern an not have `val2 = 0;` here.
 
------BEGIN PGP SIGNATURE-----
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL_LOG2, val, 0);
+> +	KUNIT_EXPECT_EQ(test, ret, -ERANGE);
+> +}
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaNWXigAKCRB4tDGHoIJi
-0qjBAQCK0FwCo4J6VNYKXGN7DAklkUROwwlUJ2XruMTbIzpCpgEA5B0VduNMH7Bc
-XQGuXdfkq3ChPsYaFdszHuMhSFNrLwE=
-=F7gn
------END PGP SIGNATURE-----
+...
 
---NOfbYS7pJJYrvl13--
+> +static void __iio_test_iio_divide_by_fractional_log2(struct kunit *test, s64 numerator)
+> +{
+> +	int ret, result, val, val2;
+> +
+> +	/* positive < 1 (123/1024) */
+> +	val = 123;
+> +	val2 = 10;
+> +	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL_LOG2, val, val2);
+> +	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
+> +	KUNIT_EXPECT_EQ(test, result, div_s64((numerator << val2), val));
+
+My instinct would be to write it like this:
+
+	div_s64((numerator * 1024), 123)
+
+This follows how it was done in __iio_test_iio_divide_by_fixedpoint() and
+makes it easier to see that it matchs exactly the value in the comment.
+
 

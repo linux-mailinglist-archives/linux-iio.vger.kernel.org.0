@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-24431-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24432-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02447B9F49E
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 14:38:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95914B9F4AA
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 14:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F2AD173683
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 12:38:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C4254C2FE8
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 12:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35222494F0;
-	Thu, 25 Sep 2025 12:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E230A27703E;
+	Thu, 25 Sep 2025 12:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ki/0x7oT"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vC9Ze1R9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CE218C02E;
-	Thu, 25 Sep 2025 12:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C201C3BE0
+	for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 12:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758803879; cv=none; b=tF7oMFamjGocNLI4O/JbC2uM8hYG9QYzZa25t5/dy05ty4WsZzDS2iexoxl7UUY5tvoEygqyn819XirukKIQhuWRfhMCv1toZ0vduohu3RVhO74MK6WP9LQtRN3EzHALFTFbjLt1rPRLoeXu9aE8ATuXY4ciaJW3dfhHQvox1qE=
+	t=1758803881; cv=none; b=q5Ee/kbeFEui0DryGGi95PPu/mXLkoHlpbds7waiIGS/3HHJut/SbehpXtyi7AB+zqemNK+ztiirhel7VYUJIzFwcHHcaomUCkNU91RDQpOQqucBDGGp5tSp3mFFbEkxR3lDlvs2yYEjYhNJfDHaMFkmmVD0Ldn7Le8na5JHf8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758803879; c=relaxed/simple;
-	bh=nq8yvrCq4BHSVH81mDwXPtdNyjSh2WWWKD7668zP+PM=;
+	s=arc-20240116; t=1758803881; c=relaxed/simple;
+	bh=AcCFw4xOZWaL2Vloup40NocEpyxl3c95QlY3hp+pNs8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TC531ifUUE86atME0mKJgY8xAkzwYpuK8iDF5l/sv6xEt5Xu+oMe0qlk30GrDd06KOlRpD00OfGKFAXRoyQXSYSevdJ0AWSF/wVawjEzE9+kQxR9bkkuX92Kzh8j6iQlY8+3QKFn9E3jTG0B0YYDLYDlcHGTXkiLR0j298CizGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ki/0x7oT; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=RfjdNreEFAByO6D8nJ9+C7tYfAAxuZUfOftDOrWiKO0Ix3Zcszkfs0RXT1TpxnjM9prcJMAbRwf5m1Y8v71EMMHWPl+XHWVSyBoW7LoHhwPebSWxkHoOTMLeFAsG3oQDjIYG8O1412jWqoAE1PFWWC3DVW8qRUnH1ywbWi0BeXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vC9Ze1R9; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 3E53EC011E6;
-	Thu, 25 Sep 2025 12:37:38 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id CB9EEC011DF;
+	Thu, 25 Sep 2025 12:37:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 823096062C;
-	Thu, 25 Sep 2025 12:37:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 97A1C102F1895;
-	Thu, 25 Sep 2025 14:37:53 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1A8B16062C;
+	Thu, 25 Sep 2025 12:37:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F2D41102F17E6;
+	Thu, 25 Sep 2025 14:37:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758803874; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1758803876; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=30C/Rm/y1QtLYOy3aNA1T8D9WKuvuDfHijiy4zbDhrA=;
-	b=ki/0x7oT+OUAv0qV4C8vI3Wa5SToC8StIAusWr/Wsd9DNtJ1yZ1xipi2wMbZFEq01Uus29
-	QjVFay6ujMqP8Z4SOoFdIMdixvei+n74bX3/eCU7B4r+j5wCOrZiGSI3oNHyXAu0U1ZE3X
-	8G01lP5WbDPZw93RSE3FgTAVUc2uZKXl8Hu+w79/hP5YKfYVpfZ2Cn/BxFIhrIQFisQzEG
-	D8DuG/LdQQCPO5dnQZxjEKYEc54KkCz7CsXJHt/z10cAp4St4se88MXS6eKuj5ia+DfrDu
-	h6e6YIdEGmnkEPMuq6O+u3YjVg3J+NevWJsIMpFj8kuaFW9SbWOnVj5v+KGxoA==
+	bh=k7o/HfxDrKJe5p4M+ISv4mlYo5xYjk8Am9y+75H1iHk=;
+	b=vC9Ze1R9g34l4uP2D5GiUidy255ekno2l8GpyvFwTuMOaRT91EAPmhn/ddt9NlcdKlC0cZ
+	17mpk31MrdrBgroVzwUr2oXgPC4MO7YRQy4z1nqdYwwD4h+z60v5RBhmqJNsvQ4cEOr3FY
+	XfTZolyXqB1MnEHn9ercWjR3NNwg5GeqU/xuEVkKK+X1UP2demaO/Nu4G9JrdDVyYRUNcx
+	6k7mRF/odhAn8cQFPC9pPtwDXbUsjk/xC1dssvmNVuDoMp5wQ9qtQUU0B1r/pI42fmOe0M
+	UzDBubfC2TynA2xinRd+l5VscGc7RC4QnT5EILJ5NkyoT1B8FPIEoCL8GKnAkA==
 From: Romain Gantois <romain.gantois@bootlin.com>
-Date: Thu, 25 Sep 2025 14:37:34 +0200
-Subject: [PATCH v2 2/5] iio: add processed write API
+Date: Thu, 25 Sep 2025 14:37:35 +0200
+Subject: [PATCH v2 3/5] Add kunit tests for iio_divide_by_value()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -59,7 +59,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250925-ltm8054-driver-v2-2-bb61a401a0dc@bootlin.com>
+Message-Id: <20250925-ltm8054-driver-v2-3-bb61a401a0dc@bootlin.com>
 References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
 In-Reply-To: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -75,209 +75,270 @@ Cc: Hans de Goede <hansg@kernel.org>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-Add a function to allow IIO consumers to write a processed value to a
-channel.
+Add kunit tests for iio_divide_by_value(), these are similar to the
+existing tests for iio_multiply_value(), but the operand values used differ
+slightly.
 
 Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
 ---
- drivers/iio/inkern.c         | 120 +++++++++++++++++++++++++++++++++++++++++++
- include/linux/iio/consumer.h |  36 +++++++++++++
- 2 files changed, 156 insertions(+)
+ drivers/iio/test/Kconfig           |  12 +++
+ drivers/iio/test/Makefile          |   1 +
+ drivers/iio/test/iio-test-divide.c | 212 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 225 insertions(+)
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 2a1ecef2b82007f5ee8e8d0f8b35846bc4d2f94a..a6ec724b7c1fb197e6261c1162f8315deda20fd7 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -631,6 +631,57 @@ int iio_multiply_value(int *result, s64 multiplier,
- }
- EXPORT_SYMBOL_GPL(iio_multiply_value);
+diff --git a/drivers/iio/test/Kconfig b/drivers/iio/test/Kconfig
+index 6e65e929791ca247df9ac993fddbb4da557d5dfa..3aa1fc78966cf72554e069db75de1c6eff532850 100644
+--- a/drivers/iio/test/Kconfig
++++ b/drivers/iio/test/Kconfig
+@@ -4,6 +4,18 @@
+ #
  
-+int iio_divide_by_value(int *result, s64 numerator,
-+			unsigned int type, int val, int val2)
-+{
-+	s64 tmp_num, tmp_den;
+ # Keep in alphabetical order
++config IIO_DIVIDE_KUNIT_TEST
++	tristate "Test IIO division functions" if !KUNIT_ALL_TESTS
++	depends on KUNIT
++	default KUNIT_ALL_TESTS
++	help
++	  build unit tests for the IIO division functions.
 +
-+	switch (type) {
-+	case IIO_VAL_INT:
-+		tmp_num = numerator;
-+		tmp_den = val;
-+		break;
-+	case IIO_VAL_INT_PLUS_MICRO:
-+	case IIO_VAL_INT_PLUS_NANO:
-+		switch (type) {
-+		case IIO_VAL_INT_PLUS_MICRO:
-+			tmp_num = MICRO;
-+			tmp_den = MICRO;
-+			break;
++	  For more information on KUnit and unit tests in general, please refer
++	  to the KUnit documentation in Documentation/dev-tools/kunit/.
 +
-+		case IIO_VAL_INT_PLUS_NANO:
-+			tmp_num = NANO;
-+			tmp_den = NANO;
-+			break;
-+		}
++	  If unsure, say N.
 +
-+		tmp_num *= (s64)numerator;
-+		tmp_den = (s64)abs(val) * tmp_den + (s64)abs(val2);
-+
-+		if (val < 0 || val2 < 0)
-+			tmp_num *= -1;
-+
-+		break;
-+	case IIO_VAL_FRACTIONAL:
-+		tmp_num = (s64)numerator * (s64)val2;
-+		tmp_den = val;
-+		break;
-+	case IIO_VAL_FRACTIONAL_LOG2:
-+		tmp_num = (s64)numerator << val2;
-+		tmp_den = val;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (!tmp_den)
-+		return -ERANGE;
-+
-+	*result = div64_s64(tmp_num, tmp_den);
-+
-+	return IIO_VAL_INT;
-+}
-+
- static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
- 						 int raw, int *processed,
- 						 unsigned int scale)
-@@ -699,6 +750,53 @@ int iio_convert_raw_to_processed(struct iio_channel *chan, int raw,
- }
- EXPORT_SYMBOL_GPL(iio_convert_raw_to_processed);
+ config IIO_GTS_KUNIT_TEST
+ 	tristate "Test IIO gain-time-scale helpers" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+diff --git a/drivers/iio/test/Makefile b/drivers/iio/test/Makefile
+index 0c846bc21acda5a487b3a6977a8e9feaef20159a..16344eedc46a5ebb4d57468b3e549d8f65b85432 100644
+--- a/drivers/iio/test/Makefile
++++ b/drivers/iio/test/Makefile
+@@ -5,6 +5,7 @@
  
-+static int iio_convert_processed_to_raw_unlocked(struct iio_channel *chan,
-+						 int processed, int *raw,
-+						 unsigned int scale)
-+{
-+	int scale_type, scale_val, scale_val2;
-+	int offset_type, offset_val, offset_val2;
-+	int ret;
-+
-+	scale_type = iio_channel_read(chan, &scale_val, &scale_val2,
-+				      IIO_CHAN_INFO_SCALE);
-+	if (scale_type >= 0) {
-+		ret = iio_divide_by_value(raw, processed, scale_type, scale_val, scale_val2);
-+		if (ret < 0)
-+			return ret;
-+	} else {
-+		*raw = processed;
-+	}
-+
-+	if (!scale)
-+		return -ERANGE;
-+
-+	*raw = div_s64(*raw, scale);
-+
-+	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
-+				       IIO_CHAN_INFO_OFFSET);
-+	if (offset_type >= 0) {
-+		switch (offset_type) {
-+		case IIO_VAL_INT:
-+		case IIO_VAL_INT_PLUS_MICRO:
-+		case IIO_VAL_INT_PLUS_NANO:
-+			break;
-+		case IIO_VAL_FRACTIONAL:
-+			offset_val /= offset_val2;
-+			break;
-+		case IIO_VAL_FRACTIONAL_LOG2:
-+			offset_val >>= offset_val2;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+
-+		*raw -= offset_val;
-+	}
-+
-+	return 0;
-+}
-+
- int iio_read_channel_attribute(struct iio_channel *chan, int *val, int *val2,
- 			       enum iio_chan_info_enum attribute)
- {
-@@ -1035,3 +1133,25 @@ ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf)
- 	return do_iio_read_channel_label(chan->indio_dev, chan->channel, buf);
- }
- EXPORT_SYMBOL_GPL(iio_read_channel_label);
-+
-+int iio_write_channel_processed_scale(struct iio_channel *chan, int val,
-+				      unsigned int scale)
-+{
-+	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
-+	int ret, processed;
-+
-+	scoped_guard(mutex, &iio_dev_opaque->info_exist_lock) {
-+		if (!chan->indio_dev->info)
-+			return -ENODEV;
-+
-+		ret = iio_convert_processed_to_raw_unlocked(chan, val, &processed, scale);
-+		if (ret)
-+			return ret;
-+
-+		ret = iio_channel_write(chan, processed, 0, IIO_CHAN_INFO_RAW);
-+	}
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(iio_write_channel_processed_scale);
-+
-diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
-index c8c6261c81f934480e16854412e269207be60adc..dc84b8b4c61911d1a58427f1a9c798cae3954ac1 100644
---- a/include/linux/iio/consumer.h
-+++ b/include/linux/iio/consumer.h
-@@ -399,6 +399,24 @@ int iio_read_channel_scale(struct iio_channel *chan, int *val,
- int iio_multiply_value(int *result, s64 multiplier,
- 		       unsigned int type, int val, int val2);
- 
-+/**
-+ * iio_divide_by_value() - Divide by an IIO value
-+ * @result:	Destination pointer for the division result
-+ * @numerator:	Numerator.
-+ * @type:	One of the IIO_VAL_* constants. This decides how the @val
-+ *		and @val2 parameters are interpreted.
-+ * @val:	Denominator.
-+ * @val2:	Denominator. @val2 use depends on type.
+ # Keep in alphabetical order
+ obj-$(CONFIG_IIO_RESCALE_KUNIT_TEST) += iio-test-rescale.o
++obj-$(CONFIG_IIO_DIVIDE_KUNIT_TEST) += iio-test-divide.o
+ obj-$(CONFIG_IIO_FORMAT_KUNIT_TEST) += iio-test-format.o
+ obj-$(CONFIG_IIO_GTS_KUNIT_TEST) += iio-test-gts.o
+ obj-$(CONFIG_IIO_MULTIPLY_KUNIT_TEST) += iio-test-multiply.o
+diff --git a/drivers/iio/test/iio-test-divide.c b/drivers/iio/test/iio-test-divide.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..dd4f53bf7223750e2ac583b6e2392abb42fb045b
+--- /dev/null
++++ b/drivers/iio/test/iio-test-divide.c
+@@ -0,0 +1,212 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Unit tests for IIO division functions
 + *
-+ * Divide an s64 number by an IIO value, storing the result as
-+ * IIO_VAL_INT. This is typically used for scaling.
-+ *
-+ * Returns:
-+ * IIO_VAL_INT on success or a negative error-number on failure.
++ * Copyright (c) 2025 Bootlin
++ * Based on iio-test-multiply.c which is:
++ * Copyright (c) 2025 Hans de Goede <hans@hansg.org>
++ * Based on iio-test-format.c which is:
++ * Copyright (c) 2020 Lars-Peter Clausen <lars@metafoo.de>
 + */
-+int iio_divide_by_value(int *result, s64 numerator,
-+			unsigned int type, int val, int val2);
 +
- /**
-  * iio_convert_raw_to_processed() - Converts a raw value to a processed value
-  * @chan:		The channel being queried
-@@ -469,4 +487,22 @@ ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
-  */
- ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf);
- 
-+/**
-+ * iio_write_channel_processed_scale() - scale and write processed value to a given channel
-+ * @chan:		The channel being queried.
-+ * @val:		Value to write.
-+ * @scale:		Scale factor to apply during the conversion
-+ *
-+ * This function writes a processed value to a channel. A processed value means
-+ * that this value will have the correct unit and not some device internal
-+ * representation. If the device does not support writing a processed value, the
-+ * function will query the channel's scale and offset and write an appropriately
-+ * transformed raw value.
-+ *
-+ * Return: an error code or 0.
-+ *
-+ */
-+int iio_write_channel_processed_scale(struct iio_channel *chan, int val,
-+				      unsigned int scale);
++#include <kunit/test.h>
++#include <linux/iio/consumer.h>
 +
- #endif
++static void __iio_test_iio_divide_by_integer(struct kunit *test, s64 numerator)
++{
++	int ret, result, val;
++
++	val = 42;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT, val, 0);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator, val));
++
++	val = -23;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT, val, 0);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator, val));
++
++	val = 0;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT, val, 0);
++	KUNIT_EXPECT_EQ(test, ret, -ERANGE);
++}
++
++static void iio_test_iio_divide_by_integer(struct kunit *test)
++{
++	__iio_test_iio_divide_by_integer(test, 2000);
++	__iio_test_iio_divide_by_integer(test, -2000);
++}
++
++static void __iio_test_iio_divide_by_fixedpoint(struct kunit *test, s64 numerator)
++{
++	int ret, result, val, val2;
++
++	/* positive >= 1 (1.5) */
++	val = 1;
++	val2 = 500000;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 15));
++
++	val = 1;
++	val2 = 500000000;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 15));
++
++	/* positive < 1 (0.5) */
++	val = 0;
++	val2 = 500000;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 5));
++
++	val = 0;
++	val2 = 500000000;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * 10, 5));
++
++	/* negative <= -1 (-1.5) */
++	val = -1;
++	val2 = 500000;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 15));
++
++	val = -1;
++	val2 = 500000000;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 15));
++
++	/* negative > -1 (-0.5) */
++	val = 0;
++	val2 = -500000;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_MICRO, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 5));
++
++	val = 0;
++	val2 = -500000000;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_INT_PLUS_NANO, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * -10, 5));
++
++	/* Zero */
++	val = 0;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL_LOG2, val, 0);
++	KUNIT_EXPECT_EQ(test, ret, -ERANGE);
++}
++
++static void iio_test_iio_divide_by_fixedpoint(struct kunit *test)
++{
++	__iio_test_iio_divide_by_fixedpoint(test, 2000);
++	__iio_test_iio_divide_by_fixedpoint(test, -2000);
++}
++
++static void __iio_test_iio_divide_by_fractional(struct kunit *test, s64 numerator)
++{
++	int ret, result, val, val2;
++
++	/* positive < 1 (1/10)*/
++	val = 1;
++	val2 = 10;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * val2, val));
++
++	/* positive >= 1 (100/3)*/
++	val = 100;
++	val2 = 3;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * val2, val));
++
++	/* negative > -1 (-1/10) */
++	val = -1;
++	val2 = 10;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * val2, val));
++
++	/* negative <= -1 (-200/3)*/
++	val = -200;
++	val2 = 3;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64(numerator * val2, val));
++
++	/* Zero */
++	val = 0;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL, val, 0);
++	KUNIT_EXPECT_EQ(test, ret, -ERANGE);
++}
++
++static void iio_test_iio_divide_by_fractional(struct kunit *test)
++{
++	__iio_test_iio_divide_by_fractional(test, 2000);
++	__iio_test_iio_divide_by_fractional(test, -2000);
++}
++
++static void __iio_test_iio_divide_by_fractional_log2(struct kunit *test, s64 numerator)
++{
++	int ret, result, val, val2;
++
++	/* positive < 1 (123/1024) */
++	val = 123;
++	val2 = 10;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL_LOG2, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64((numerator << val2), val));
++
++	/* positive >= 1 (1234567/1024) */
++	val = 1234567;
++	val2 = 10;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL_LOG2, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64((numerator << val2), val));
++
++	/* negative > -1 (-123/1024) */
++	val = -123;
++	val2 = 10;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL_LOG2, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64((numerator << val2), val));
++
++	/* negative <= -1 (-1234567/1024) */
++	val = -1234567;
++	val2 = 10;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL_LOG2, val, val2);
++	KUNIT_EXPECT_EQ(test, ret, IIO_VAL_INT);
++	KUNIT_EXPECT_EQ(test, result, div_s64((numerator << val2), val));
++
++	/* Zero */
++	val = 0;
++	ret = iio_divide_by_value(&result, numerator, IIO_VAL_FRACTIONAL_LOG2, val, 0);
++	KUNIT_EXPECT_EQ(test, ret, -ERANGE);
++}
++
++static void iio_test_iio_divide_by_fractional_log2(struct kunit *test)
++{
++	__iio_test_iio_divide_by_fractional_log2(test, 2000);
++	__iio_test_iio_divide_by_fractional_log2(test, -2000);
++}
++
++static struct kunit_case iio_divide_test_cases[] = {
++		KUNIT_CASE(iio_test_iio_divide_by_integer),
++		KUNIT_CASE(iio_test_iio_divide_by_fixedpoint),
++		KUNIT_CASE(iio_test_iio_divide_by_fractional),
++		KUNIT_CASE(iio_test_iio_divide_by_fractional_log2),
++		{ }
++};
++
++static struct kunit_suite iio_divide_test_suite = {
++	.name = "iio-divide",
++	.test_cases = iio_divide_test_cases,
++};
++
++kunit_test_suite(iio_divide_test_suite);
++
++MODULE_AUTHOR("Romain Gantois <romain.gantois@bootlin.com>");
++MODULE_DESCRIPTION("Test IIO division functions");
++MODULE_LICENSE("GPL");
 
 -- 
 2.51.0

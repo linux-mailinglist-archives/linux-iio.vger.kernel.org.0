@@ -1,39 +1,39 @@
-Return-Path: <linux-iio+bounces-24447-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24448-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BA8BA1DBA
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 00:42:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE8BBA1DC9
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 00:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4967188FF2A
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 22:42:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48B2A7B41A6
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 22:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411053233EF;
-	Thu, 25 Sep 2025 22:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC90323F51;
+	Thu, 25 Sep 2025 22:41:08 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBEE232252A;
-	Thu, 25 Sep 2025 22:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F446323411;
+	Thu, 25 Sep 2025 22:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758840066; cv=none; b=GK8W4mg0sfGWD+HAUICcdO8CWmeQtzNghUePMGG+qWDqZvbMjmrafSGu1AePqGGmXP8xsjXkX4nWmyRGUSHBl6/OaYoMDVKTGNyLVKHAgde3ebN/RU6VjMDW4xyicQycpJB8IY1zdim7iW6EPMm+TxIePUePfFxSmb6WDBELWvM=
+	t=1758840068; cv=none; b=Mxg95t4+n7xDgr6Mdq+K/fDHKFBHP7phiSfyLNDVZ/yjT0Tj5R20Fxz5LS8vLUwWOGPWzjAorLPh38fpyPF73021TWHGBveTChVDXlilPJNm56VAaJFXMa4aGsyOjG0sZyaXYk8lZiIAuyeNdgY4Dye9pPCjlBVs63+irF/a6cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758840066; c=relaxed/simple;
-	bh=k34C/W2IXwDBHyNllf0jyBB4tq4BgdGxE9GvTphqkJk=;
+	s=arc-20240116; t=1758840068; c=relaxed/simple;
+	bh=8TWr9RD0TUrQ8MwqIHh5GRhNotpswyD2ik3KR2+gCP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkJmAipf/q9IMvXKUwbrYAUbT8HSewAVY1wA4zg6reZTJ/lRnHjQvpEBaDI3FVu2wjDo4D2KUzPyqRMK/P6lIGra8iJamvi4RdPEiROO0+n51Ga6cb5G3fVkRRWMQ+gBFjVVyKSfG4ZtGM6+kaIJKThDU8fO7ZmAcf9j/tmzl2o=
+	 MIME-Version; b=kSi+ivVIA11vXzyWe506UGXnCSo0qSBPkxaTftSp/oj8ENKjLXNwI7TYOCFNQAq2+D81fnus/yEUDblqPH+1ZJY9JBIChJIhABQdGUDIfUzVk2X06e355qDELb32Vt8Ur5v1o6jjPZ9oWjDQBvkf3OtICpRkagLxWPcCzxFY62c=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: dGYGCEUrSuGdS3RnCm5gVg==
-X-CSE-MsgGUID: OCcbb9uET8quZKSBHBnIgg==
+X-CSE-ConnectionGUID: 4vFw5SFNQDCqS3xnZhMPjg==
+X-CSE-MsgGUID: r/7ZcWPdR/iAS4r4fp7ghA==
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 26 Sep 2025 07:40:55 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 26 Sep 2025 07:41:00 +0900
 Received: from demon-pc.localdomain (unknown [10.226.92.2])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 989FF400CF0A;
-	Fri, 26 Sep 2025 07:40:50 +0900 (JST)
+	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 48B37400CF0A;
+	Fri, 26 Sep 2025 07:40:55 +0900 (JST)
 From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 To: 
 Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
@@ -50,9 +50,9 @@ Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
 	linux-renesas-soc@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/7] clk: renesas: r9a09g077: Add ADC modules clock
-Date: Fri, 26 Sep 2025 01:40:03 +0300
-Message-ID: <20250925224013.2146983-2-cosmin-gabriel.tanislav.xa@renesas.com>
+Subject: [PATCH v2 2/7] dt-bindings: iio: adc: document RZ/T2H and RZ/N2H ADC
+Date: Fri, 26 Sep 2025 01:40:04 +0300
+Message-ID: <20250925224013.2146983-3-cosmin-gabriel.tanislav.xa@renesas.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925224013.2146983-1-cosmin-gabriel.tanislav.xa@renesas.com>
 References: <20250925224013.2146983-1-cosmin-gabriel.tanislav.xa@renesas.com>
@@ -64,33 +64,203 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs have three 12bit
-ADC peripherals, each with its own peripheral clock.
+Document the A/D 12-Bit successive approximation converters found in the
+Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs.
 
-For conversion, they use the PCLKL clock.
-
-Add their clocks to the list of module clocks.
+RZ/T2H has two ADCs with 4 channels and one with 6.
+RZ/N2H has two ADCs with 4 channels and one with 15.
 
 Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/clk/renesas/r9a09g077-cpg.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../iio/adc/renesas,r9a09g077-adc.yaml        | 160 ++++++++++++++++++
+ MAINTAINERS                                   |   7 +
+ 2 files changed, 167 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
 
-diff --git a/drivers/clk/renesas/r9a09g077-cpg.c b/drivers/clk/renesas/r9a09g077-cpg.c
-index 3aaa154102d5..5dca5c44043e 100644
---- a/drivers/clk/renesas/r9a09g077-cpg.c
-+++ b/drivers/clk/renesas/r9a09g077-cpg.c
-@@ -192,6 +192,9 @@ static const struct mssr_mod_clk r9a09g077_mod_clks[] __initconst = {
- 	DEF_MOD("sci4fck", 12, CLK_SCI4ASYNC),
- 	DEF_MOD("iic0", 100, R9A09G077_CLK_PCLKL),
- 	DEF_MOD("iic1", 101, R9A09G077_CLK_PCLKL),
-+	DEF_MOD("adc0", 206, R9A09G077_CLK_PCLKH),
-+	DEF_MOD("adc1", 207, R9A09G077_CLK_PCLKH),
-+	DEF_MOD("adc2", 225, R9A09G077_CLK_PCLKM),
- 	DEF_MOD("gmac0", 400, R9A09G077_CLK_PCLKM),
- 	DEF_MOD("ethsw", 401, R9A09G077_CLK_PCLKM),
- 	DEF_MOD("ethss", 403, R9A09G077_CLK_PCLKM),
+diff --git a/Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml b/Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
+new file mode 100644
+index 000000000000..04397ff494c3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
+@@ -0,0 +1,160 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/renesas,r9a09g077-adc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Renesas RZ/T2H / RZ/N2H ADC12
++
++maintainers:
++  - Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
++
++description: |
++  A/D Converter block is a successive approximation analog-to-digital converter
++  with a 12-bit accuracy. Up to 16 analog input channels can be selected.
++  Conversions can be performed in single or continuous mode. Result of the ADC
++  is stored in a 16-bit data register corresponding to each channel.
++
++properties:
++  compatible:
++    enum:
++      - renesas,r9a09g077-adc # RZ/T2H
++      - renesas,r9a09g087-adc # RZ/N2H
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    items:
++      - description: A/D scan end interrupt
++      - description: A/D scan end interrupt for Group B
++      - description: A/D scan end interrupt for Group C
++      - description: Window A compare match
++      - description: Window B compare match
++      - description: Compare match
++      - description: Compare mismatch
++
++  interrupt-names:
++    items:
++      - const: adi
++      - const: gbadi
++      - const: gcadi
++      - const: cmpai
++      - const: cmpbi
++      - const: wcmpm
++      - const: wcmpum
++
++  clocks:
++    items:
++      - description: Converter clock
++      - description: Peripheral clock
++
++  clock-names:
++    items:
++      - const: adclk
++      - const: pclk
++
++  power-domains:
++    maxItems: 1
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  "#io-channel-cells":
++    const: 1
++
++patternProperties:
++  "^channel@[0-9a-f]$":
++    $ref: adc.yaml
++    type: object
++    description: The external channels which are connected to the ADC.
++
++    properties:
++      reg:
++        description: The channel number.
++        maximum: 15
++
++    required:
++      - reg
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++  - power-domains
++
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: renesas,r9a09g077-adc
++    then:
++      patternProperties:
++        "^channel@[6-9a-f]$": false
++        "^channel@[0-5]$":
++          properties:
++            reg:
++              maximum: 5
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - renesas,r9a09g087-adc
++    then:
++      patternProperties:
++        "^channel@[f]$": false
++        "^channel@[0-9a-e]$":
++          properties:
++            reg:
++              maximum: 14
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/renesas,r9a09g077-cpg-mssr.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    adc@80008000 {
++      compatible = "renesas,r9a09g077-adc";
++      reg = <0x80008000 0x400>;
++      interrupts = <GIC_SPI 708 IRQ_TYPE_EDGE_RISING>,
++                   <GIC_SPI 709 IRQ_TYPE_EDGE_RISING>,
++                   <GIC_SPI 710 IRQ_TYPE_EDGE_RISING>,
++                   <GIC_SPI 711 IRQ_TYPE_LEVEL_HIGH>,
++                   <GIC_SPI 712 IRQ_TYPE_LEVEL_HIGH>,
++                   <GIC_SPI 855 IRQ_TYPE_EDGE_RISING>,
++                   <GIC_SPI 856 IRQ_TYPE_EDGE_RISING>;
++      interrupt-names = "adi", "gbadi", "gcadi",
++                        "cmpai", "cmpbi", "wcmpm", "wcmpum";
++      clocks = <&cpg CPG_CORE R9A09G077_CLK_PCLKL>,
++               <&cpg CPG_MOD 225>;
++      clock-names = "adclk", "pclk";
++      power-domains = <&cpg>;
++      #address-cells = <1>;
++      #size-cells = <0>;
++      #io-channel-cells = <1>;
++
++      channel@0 {
++        reg = <0x0>;
++      };
++      channel@1 {
++        reg = <0x1>;
++      };
++      channel@2 {
++        reg = <0x2>;
++      };
++      channel@3 {
++        reg = <0x3>;
++      };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8892135bae7b..eed08d25cb7a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -21831,6 +21831,13 @@ S:	Supported
+ F:	Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
+ F:	drivers/counter/rz-mtu3-cnt.c
+ 
++RENESAS RZ/T2H / RZ/N2H A/D DRIVER
++M:	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
++L:	linux-iio@vger.kernel.org
++L:	linux-renesas-soc@vger.kernel.org
++S:	Supported
++F:	Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-adc.yaml
++
+ RENESAS RTCA-3 RTC DRIVER
+ M:	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+ L:	linux-rtc@vger.kernel.org
 -- 
 2.51.0
 

@@ -1,55 +1,57 @@
-Return-Path: <linux-iio+bounces-24429-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24430-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9B2B9F48F
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 14:38:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 869EEB9F492
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 14:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E171B2710F
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 12:38:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 425F43B1192
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Sep 2025 12:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088301A23B9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355B51A9FA1;
 	Thu, 25 Sep 2025 12:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="gwbPt65L"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cOJTMFFC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C20282F1;
-	Thu, 25 Sep 2025 12:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99D5146593
+	for <linux-iio@vger.kernel.org>; Thu, 25 Sep 2025 12:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758803877; cv=none; b=Iyz4CXqu91rwNrtucNuAbFjuhdDcXESV/alv2sW6qqQDsc0ymbu+77LHZjuYJIKJkczlcRemIKqa8zVkGNqqcgZnlLAgLZTiax73asIHA24zmvNeEtPMErRKeaRmLxAIhaLjM2Wjh35WupU4W55k+WhhFYLYVCr7A4N1OAw4Gjc=
+	t=1758803878; cv=none; b=XBYLecB1WX2G7vj4VIR9T2vHURz94YN/CM8rF6JtBHNk3WwO4Xb15Y94F8xBJoGnu2lTWkPNdsvE6IZKmctLk0wcFUIFVw7uKT7mDVeUvqzO1oRSd0LvcFrTySKv/7uwUz84sCXU+g6HU9TniyQztS8sDwimHhyyWPhYXsAQg0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758803877; c=relaxed/simple;
-	bh=uJpTwfQeoXhfqX5HGJ5UH/C36Ak30a35D0FJrYV9/VQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pRowJJiTF2W0PiubN2SGCU8CcOd9m498ER7CRilgyleMhu0uq5Gg43xI89GMTRb37I0FlcSuDievBPHf//lveyKdMWeaWcuJ7LmEF0YZLw/wcRW/7M3Oj+xPravaeZM9kPS0/+7JE+GzXBb5MpMimoH8/jAbIu+ckk7X5zCL1Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=gwbPt65L; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1758803878; c=relaxed/simple;
+	bh=ARaI6sAn1ScO5elgBBI9/4QuQ8iaswhaC7shsZDwj/8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Hqrzj85OL5MMxSlzrR3v3wguZAN924e64y0uyaEFmjeg1nFlaauzBwHlziYpjV6j8as6UpZ41PYIY7FbJY1VlFnsuyh2X2EQ0lsY5nVQzYNIctGMvHQwvQcusnsCe1z6P7G4foi7kSnsu6vWpJZI4yfp69ZIHSLAXVTL4fOv1iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cOJTMFFC; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9C9231A0FCF;
-	Thu, 25 Sep 2025 12:37:52 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 379414E40DD6;
+	Thu, 25 Sep 2025 12:37:54 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 70D366062C;
-	Thu, 25 Sep 2025 12:37:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 74EED102F17E6;
-	Thu, 25 Sep 2025 14:37:39 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0DE2D6062C;
+	Thu, 25 Sep 2025 12:37:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 077E8102F189D;
+	Thu, 25 Sep 2025 14:37:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758803871; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=sOL16npzmbnhBXpX6q4u5OmdL1g7hGCfAy2JMJ9t0DA=;
-	b=gwbPt65LpuytZkyBCZRGXliUd8I37qWjorY264kpH4VcowgPHXxJBIPeqFgJeZhCj929Of
-	MMe0Gw3Wzb7tbyZVek/S145hBq3fp6Pw1pP36PfZzNqOTgdweTPb12h2EoeYlrBoOVN5F1
-	NHLGbwCnUQPZPYmjE2jryswFpSVNmTd8L+/eoI3ObPrlSMtApk35wq+VUY75CSrMsxf2Es
-	g1lna+XmwVglBDUELbfgBPEapRw0pFoh/lVgQYrQDrtaYdY7pMWPd7mfWH6hfG71JDJD0k
-	7EqXUzg05OcyS6WMtvJ851xZTX6QQOmRL0cu7C5eLNpzaDon4uV2i6Xj+1Y2JA==
+	t=1758803873; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ezJpNoVstQDrmQSBUVTTKViwRkcKwZkbTFCSfYyOfLo=;
+	b=cOJTMFFCKWKEFQmNFlW3MfN9N5SRo2gPqNd2lCAGbQeabZgTxz1w+7IUHFksTHnoVn7Ryy
+	77bpakGtGVZS3mzxBlZnamf8eFsxVDDBUm+5dpnqeiGwk4UJMOTYDXLBGhxQot3npcPDrh
+	ZdmWMBfxk8FaKHdKcwzjn8G/uJQt8Jm8pPMeqFxfcSvo6YlQgS087Tv2gD05MsNoOXt4LP
+	7QQRcWKd5w9uRuKonJxmCpL+lzXGSIWvkSEhk/SaNLPh8oMC+c+ISnCppsDE0uvLMksYja
+	61wpxgyQzci6SSjg2bCwlQbU1CXHGfFYCn9gJgGxAMNViCMPW872T9EAh8JM8g==
 From: Romain Gantois <romain.gantois@bootlin.com>
-Subject: [PATCH v2 0/5] Add support for the LTM8054 voltage regulator
-Date: Thu, 25 Sep 2025 14:37:32 +0200
-Message-Id: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
+Date: Thu, 25 Sep 2025 14:37:33 +0200
+Subject: [PATCH v2 1/5] regulator: dt-bindings: Add Linear Technology
+ LTM8054 regulator
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -58,11 +60,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAI031WgC/13MywqDMBCF4VeRWTclE+Otq75HcaFmrANqJAmhR
- Xz3pnbX5X/gfDt4ckwebtkOjiJ7tmsKdclgmLr1SYJNalBSFbJStZjDUstCC+M4khOIw9jpSqM
- sC0inzdHIrxN8tKkn9sG69+lH/K4/qsHyn4oopBiNpqpGk+d9c++tDTOv18Eu0B7H8QHrAdjyr
- gAAAA==
-X-Change-ID: 20250728-ltm8054-driver-11cfa4741065
+Message-Id: <20250925-ltm8054-driver-v2-1-bb61a401a0dc@bootlin.com>
+References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
+In-Reply-To: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
@@ -76,67 +76,122 @@ Cc: Hans de Goede <hansg@kernel.org>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hello everyone,
+The Linear Technology LTM8054 is a Buck-Boost voltage regulator with an
+input range of 5V to 36V and an output range of 1.2V to 36V.
 
-These patches depend on the following series from Hans de Goede:
+The LTM8054's output voltage level is typically set using a voltage divider
+between the Vout and FB pins, the FB pin being constantly regulated to
+1.2V.
 
-iio: processed channel handling fixes + Intel Dollar Cove TI PMIC ADC driver
-(v4) https://lore.kernel.org/all/20250811155453.31525-1-hansg@kernel.org/
+The output current limit of the LTM8054 may be statically set by placing a
+sense resistor on a dedicated pin. This limit can then be lowered by
+controlling the voltage level on the CTL pin.
 
-This is version two of my series which adds initial support of the Linear
-Technology LTM8054 voltage regulator. The driver supports a fixed voltage and a
-tunable output current limit using a DAC-controlled pin.
-
-I'd say that the only unusual part of this series is the usage of the IIO
-consumer API in a regulator driver. I think this makes sense here, since
-the regulator driver has to access a DAC to read/set the output current
-limit.
-
-Since the regulator driver writes microvolts and the IIO consumer API takes
-millivolts, the reads and writes to the CTL DAC have to be scaled by a
-factor of 1000. Scaled reads are already supported in IIO, but scaled
-writes are not, which is why I've implemented them in patch 2/4.
-
-Please let me know what you think.
-
-Thanks,
-
-Romain
+Describe the LTM8054 voltage regulator.
 
 Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
 ---
-Changes in v2:
-- Refactored iio_convert_processed_to_raw() to match what was done in Hans'
-  series.
-- Added unit tests for IIO division.
-- Fixed coding style issues and removed unnecessary casts.
-- Link to v1: https://lore.kernel.org/r/20250916-ltm8054-driver-v1-0-fd4e781d33b9@bootlin.com
+ .../devicetree/bindings/regulator/adi,ltm8054.yaml | 73 ++++++++++++++++++++++
+ MAINTAINERS                                        |  5 ++
+ 2 files changed, 78 insertions(+)
 
----
-Romain Gantois (5):
-      regulator: dt-bindings: Add Linear Technology LTM8054 regulator
-      iio: add processed write API
-      Add kunit tests for iio_divide_by_value()
-      regulator: Support the LTM8054 voltage regulator
-      regulator: ltm8054: Support output current limit control
+diff --git a/Documentation/devicetree/bindings/regulator/adi,ltm8054.yaml b/Documentation/devicetree/bindings/regulator/adi,ltm8054.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..8ca8fc4e80b5722f58b4cbe9de22c16d4fd91670
+--- /dev/null
++++ b/Documentation/devicetree/bindings/regulator/adi,ltm8054.yaml
+@@ -0,0 +1,73 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/regulator/adi,ltm8054.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices LTM8054 buck-boost regulator
++
++maintainers:
++  - Romain Gantois <romain.gantois@bootlin.com>
++
++description:
++  This regulator operates over an input voltage range of 5V to 36V, and can
++  output from 1.2V to 36V. The output voltage level is typically set with a
++  voltage divider between the Vout pin and the FB pin which is internally
++  regulated to 1.2V.
++
++  The output current of the LTM8054 can be limited by tying the Iout pin to a
++  current sense resistor. This limit can be further lowered by applying a
++  voltage below 1.2V to the CTL pin.
++
++allOf:
++  - $ref: /schemas/regulator/regulator.yaml#
++
++properties:
++  compatible:
++    const: adi,ltm8054
++
++  enable-gpios:
++    description: GPIO connected to the RUN pin.
++    maxItems: 1
++
++  lltc,fb-voltage-divider:
++    description:
++      An array of two integers containing the resistor values
++      R1 and R2 of the feedback voltage divider in Ohms.
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    minItems: 2
++    maxItems: 2
++
++  adi,iout-rsense-micro-ohms:
++    description:
++      Value of the output current sense resistor, in micro Ohms.
++
++  io-channels:
++    items:
++      - description: DAC controlling the voltage level of the CTL pin.
++
++  io-channel-names:
++    items:
++      - const: ctl
++
++required:
++  - compatible
++  - lltc,fb-voltage-divider
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    regulator {
++        compatible = "adi,ltm8054";
++
++        enable-gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;
++
++        lltc,fb-voltage-divider = <1000000 68000>;
++
++        adi,iout-rsense-micro-ohms = <20000>;
++
++        io-channels = <&dac 1>;
++        io-channel-names = "ctl";
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3763f9fc9e4ed62bc8b273756a25f9c921570bee..69bcba82808bb815af436232fab50f70713fd533 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14534,6 +14534,11 @@ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/i2c/i2c-mux-ltc4306.txt
+ F:	drivers/i2c/muxes/i2c-mux-ltc4306.c
+ 
++LTM8054 REGULATOR DRIVER
++M:	Romain Gantois <romain.gantois@bootlin.com>
++S:	Maintained
++F:	Documentation/devicetree/bindings/regulator/adi,ltm8054.yaml
++
+ LTP (Linux Test Project)
+ M:	Andrea Cervesato <andrea.cervesato@suse.com>
+ M:	Cyril Hrubis <chrubis@suse.cz>
 
- .../devicetree/bindings/regulator/adi,ltm8054.yaml |  73 +++++++
- MAINTAINERS                                        |   6 +
- drivers/iio/inkern.c                               | 120 +++++++++++
- drivers/iio/test/Kconfig                           |  12 ++
- drivers/iio/test/Makefile                          |   1 +
- drivers/iio/test/iio-test-divide.c                 | 212 +++++++++++++++++++
- drivers/regulator/Kconfig                          |   9 +
- drivers/regulator/Makefile                         |   1 +
- drivers/regulator/ltm8054-regulator.c              | 235 +++++++++++++++++++++
- include/linux/iio/consumer.h                       |  36 ++++
- 10 files changed, 705 insertions(+)
----
-base-commit: bd89f4b281945a63659687ef5c70c4442d7e4940
-change-id: 20250728-ltm8054-driver-11cfa4741065
-
-Best regards,
 -- 
-Romain Gantois <romain.gantois@bootlin.com>
+2.51.0
 
 

@@ -1,65 +1,67 @@
-Return-Path: <linux-iio+bounces-24465-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24469-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294DDBA5139
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 22:38:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC64BA5199
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 22:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4265E1C00D79
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 20:38:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7EF3327642
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 20:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39F427FB34;
-	Fri, 26 Sep 2025 20:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C49430C63C;
+	Fri, 26 Sep 2025 20:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Qp0nRuG0"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="1LgQBPv4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B69213BC3F;
-	Fri, 26 Sep 2025 20:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C07A2DC78E;
+	Fri, 26 Sep 2025 20:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758919091; cv=none; b=hbHEOD4vJDxVKqbil3pUo1LvDE+9KuGKII2meubIzcv06eHtf0YC6lPhFAfSd47fqXlCvrWRmt1sv5RasSpTtY+BeYsnpwFSeWpiNbNfjbB7F7a6+l+waKtvJJ5VfIRYG++jPzQS+SUc3Eptm4p+sCbyWNULSRSIy9vIsanIc2Q=
+	t=1758919260; cv=none; b=MgLJVVupk1qiF2e/Ee+LgE9UPsTcL0XKYtvGBH9A35nJMFvs48Wl8pl/fIM3w6OHcH9nfUWFw5a36sm/dJtrTQWM2l2AN7Q/xOzcYX9G+UCmSG+CnkD+moRALUiTyJbrTPxjvDnORw2tbocZt3wgMIL4L1INkF0fpZ8GC/0/8Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758919091; c=relaxed/simple;
-	bh=rAWVXUrM4gu0fdZfprKWIcm5gOU7QGFOOJJsvWgYLrU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PGyDrN9iermx60gC+AiiQV+bv7yj4djn4Du1ubJfsaxGw6L8WWD0sBbCTgBP0ThTbWu9isijlP+W1OFWPXdLVcGwS8zuXRqp/my+lWv1n9TwjXzRJ4BpzYx/uiPRWYJtmtBhMBYyUEm6XZHj2zgBihLL2LzIWrG0ECXSUHUZygI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Qp0nRuG0; arc=none smtp.client-ip=148.163.135.77
+	s=arc-20240116; t=1758919260; c=relaxed/simple;
+	bh=WZ9Dsob8217rQMVY/2ETpmcz51DbclJK5tiSEfVxA3E=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jEQ/aPEj8K3NB/o83bXds1LOjXK+QtHyBIlga4mPN0ledlf8CoyBgBr6ufRoC2w831oR6VGfttSbSYkjiK+y8GYRMujZDKksx9HZD7U9ySvpR99uTve38AOgk0ju633huytaSKh+Kv5cs2b5B2+NLFu4ZPB9a5D0RzrxGa61qh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=1LgQBPv4; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58QHOSIV017131;
-	Fri, 26 Sep 2025 16:38:04 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58QFsBXj019533;
+	Fri, 26 Sep 2025 16:40:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=DKIM; bh=DFpXpOXND+SHYxJy5pNTPCnqtEC
-	ZN8QLLgErVFxlTMw=; b=Qp0nRuG0IXTnsxGIGmbT6a+iL1KEReIO0ge/IPc1bST
-	a1/j2HZf4/pyDruTYga9qERVFb58c/9XJIdHNradTqjNDEQj7kKP8slcSVS9NTtX
-	RwBVBnZOQR78u7lzaA900ledB8oBzem5Alo8Req1g3XsL58O/DxP3E8AD751RtNm
-	A3EOEhVxjQ0cg2nqXGO+FG3wMhhV6sNRdtFhKzOCE7DwVSDVw+q+j3hhdeCgJdnH
-	OeWER6j7olfp9p7yvK6OcrAmxr7KZ6hereRZjnGN+vwpHXa9LKTgQ3Ob6mSX9vbk
-	J7jRHzeZAUYLtZ7s3d2MeVHW3Iq96NrHDJ23FaEilIg==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 49db1hq541-1
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=S14ln
+	y/Kcps9xDIlvxH1tzTzOuHDv/EVueka5mwTaCY=; b=1LgQBPv42VDgggcH134Ry
+	cADrQHJb07EmkTlCBPGpu81NB8Fajte+QKAWNRY2I/fi15m/T2lw7Zfpc6isx4iY
+	l07QJxP93iSRQ8GLyjQLXGpWuS9pjWT1qW/Hhmu6Rg/u8oPKfVR3RE8dFzUCq7ZJ
+	GV4mzVrlu9NgCf9v+8jz5Yy7TMxLPVReZbl8Sc+VWvWToVEgzup59Ru9KtDQPiH0
+	o8w9rypwxU74dZnf9i6eDunx0aB6Lh/b+34TSBMh3RiITshhXMQmf/ldvibClsAi
+	TcHycQEBy50Q/Gz9M1pL15RrKBGST/m0HMQZiOQ7tHbgwD3FhPeSQU7HcrijnhOL
+	g==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 49db1ef957-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Sep 2025 16:38:04 -0400 (EDT)
+	Fri, 26 Sep 2025 16:40:55 -0400 (EDT)
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 58QKc3C1026812
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 58QKesfo006502
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 26 Sep 2025 16:38:03 -0400
+	Fri, 26 Sep 2025 16:40:54 -0400
 Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 26 Sep
- 2025 16:38:03 -0400
+ 2025 16:40:54 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Fri, 26 Sep 2025 16:38:03 -0400
+ Transport; Fri, 26 Sep 2025 16:40:52 -0400
 Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 58QKbmXW010144;
-	Fri, 26 Sep 2025 16:37:51 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 58QKcStR010296;
+	Fri, 26 Sep 2025 16:38:30 -0400
 From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-doc@vger.kernel.org>, <linux-spi@vger.kernel.org>,
@@ -67,11 +69,15 @@ To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
 CC: <jic23@kernel.org>, <michael.hennerich@analog.com>, <nuno.sa@analog.com>,
         <eblanc@baylibre.com>, <dlechner@baylibre.com>, <andy@kernel.org>,
         <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-        <corbet@lwn.net>, <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v3 0/8] Add SPI offload support to AD4030
-Date: Fri, 26 Sep 2025 17:37:48 -0300
-Message-ID: <cover.1758916484.git.marcelo.schmitt@analog.com>
+        <corbet@lwn.net>, <marcelo.schmitt1@gmail.com>,
+        Conor Dooley
+	<conor.dooley@microchip.com>
+Subject: [PATCH v3 1/8] dt-bindings: iio: adc: adi,ad4030: Reference spi-peripheral-props
+Date: Fri, 26 Sep 2025 17:38:28 -0300
+Message-ID: <6008c574fa60e73576984e4ba153816324f9558a.1758916484.git.marcelo.schmitt@analog.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <cover.1758916484.git.marcelo.schmitt@analog.com>
+References: <cover.1758916484.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,91 +87,51 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=fd2gCkQF c=1 sm=1 tr=0 ts=68d6f9ac cx=c_pps
- a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=LDzTrm_DnJI8KpCx88EA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22 a=HhbK4dLum7pmb74im6QT:22 a=pHzHmUro8NiASowvMSCR:22
- a=Ew2E2A-JSTLzCXPT_086:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDE3MSBTYWx0ZWRfX+JKecNzP0dDU
- 5DmFwktf5adr0qrqcCKgHJ9PnfSFmvLhPsuDqzULDrb/5Gtn8rqO7b2jlLRzt1Oj8C2wyAksqbw
- WH8sCp20TpbllTpPMc4M/5rYmRpbJMPBw0NO8MgNlfpYjeFcxeXoBZtDDE4wl1TOZtMupvTR/XD
- G/1t0zqMkzARvIkBZxCsZk5l0wFn+AxgJkfpCbtDuOirjwDZ4sx47D74TP1BGd01Vp5XVUSA60P
- mGmzKPJsRPMF4JHZABOTlSFsfcx9MPIKuWDS3JhEfk0P78u4/t+ZLPy7Pl3lyRZX6RLDVUZk3oi
- fo1bdE0BuI0/lXh3AC7sA3vu6m8fC9N2/pEG9TEjyvtkxughzvHyqP2VL2f/piKY118viPtJvSY
- VQdZY8RXdMSL2c92EJdu7G4pEt2jwA==
-X-Proofpoint-ORIG-GUID: T3tYFgyKbNiTCutFeMVjo_zN1ilJ7Hgf
-X-Proofpoint-GUID: T3tYFgyKbNiTCutFeMVjo_zN1ilJ7Hgf
+X-Proofpoint-ORIG-GUID: 3nSZv5yfz0QCvHvsNmr4epVfVtWpo_8U
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI1MDE3MSBTYWx0ZWRfXw9KQplw4t7br
+ epL+Zu4Hqn9mcUBovLFsRuARD475TwXnL5Mj0cOsabi4ohNLnyf7UX1iiXesGfjyLN2f2x3WM3+
+ O1ISCFyVGeHU9N81WUXRAFSiAJrTc/56wjxkBahVptZdBdjhgRm1eZhlyz15olDDT6r9JNJg5Mq
+ +HcyGEFa9vJq1rgkQZ7k+O7Zr9M/HYPAlfxZ9akdzavkr8HhnS3t9UscEtI2FDCgoTP1Psk5/pW
+ 71a6OE7h0xX7YryO4qbfTHMkPMCifFvDowfg6jMKL92fIOLJHLsVRLr5Rj6dkZpDLb8zT/B5tKT
+ 0xh7Lk/vSGsR40URWIYe7GiuLOX2sMuWrFRJTOlkjsMkR7NMdpHczA8aDX8AwRZDn00jJKKRNlf
+ vmFLtbhBV8ZWTbn9SDJkU9uWDFcVdg==
+X-Authority-Analysis: v=2.4 cv=YaGwJgRf c=1 sm=1 tr=0 ts=68d6fa57 cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=yJojWOMRYYMA:10 a=gAnH3GRIAAAA:8 a=XYAwZIGsAAAA:8 a=EfQ9L3lKGMo9VN_2EekA:9
+ a=E8ToXWR_bxluHZ7gmE-Z:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: 3nSZv5yfz0QCvHvsNmr4epVfVtWpo_8U
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-26_07,2025-09-26_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 bulkscore=0 priorityscore=1501
- malwarescore=0 adultscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ bulkscore=0 clxscore=1011 impostorscore=0 malwarescore=0 priorityscore=1501
+ spamscore=0 suspectscore=0 adultscore=0 phishscore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509250171
 
-Hi,
+AD4030 and similar devices all connect to the system as SPI peripherals.
+Reference spi-peripheral-props so common SPI peripheral can be used from
+ad4030 dt-binding.
 
-This patch series add support for high sample rate data acquisition with AD4030
-and similar devices. The last couple patches in the series add support for
-ADAQ4216 and ADAQ4224 which are similar to AD4030, but have a PGA in front of
-the ADC input.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+---
+ Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-The patches to the SPI subsystem were submitted in a separate patch series
-titled 'Add SPI offload trigger offset'.
-Link: https://lore.kernel.org/linux-spi/d73804d605d494c6420adb7c0b67f6707628832d.1758913065.git.marcelo.schmitt@analog.com/
-
-Change log v2 -> v3
-[device tree]
-- Picked up reviewed-by tags.
-- PGA gain now described in decibels.
-[IIO Docs]
-- Picked up reviewed-by tags
-- Updated AD4030 documentation with link to a working project that supports
-  double PWM setup.
-[IIO]
-- Dropped "Fix _scale value for common-mode channels" patch accepted in v2.
-- Dropped Nuno's and Sergiu's co-developed-by tags as suggested by Nuno.
-- No longer shadowing original error on ad4030_offload_buffer_postenable().
-- Reduced transfer speed for register access. (new patch)
-- Select SPI_OFFLOAD_TRIGGER_PWM instead of depending on PWM.
-- Renamed __ad4030_set_sampling_freq() to ad4030_update_conversion_rate().
-- Dropped st->mode check in ad4030_update_conversion_rate().
-- Dropped ad4030_state mutex lock.
-- Let SPI offload transfers run at the max speed specified in device tree.
-- Don't round offload transfer bits_per_word to power of two.
-- Take common-mode data size into account for offload xfer bits_per_word.
-- Disallowed SPI offload for 2 channel interleaved mode.
-- ADAQ patch updated to handle PGA specified in decibels.
-
-The code was tested on a remote setup with ADAQ4216 connected to a ZedBoard
-running Linux kernel 6.17.0-rc7 built from SPI tree for-next branch.
-
-Link to v1: https://lore.kernel.org/linux-iio/cover.1756511030.git.marcelo.schmitt@analog.com/
-Link to v2: https://lore.kernel.org/linux-iio/cover.1758214628.git.marcelo.schmitt@analog.com/
-
-Best regards,
-Marcelo
-
-
-Marcelo Schmitt (8):
-  dt-bindings: iio: adc: adi,ad4030: Reference spi-peripheral-props
-  Docs: iio: ad4030: Add double PWM SPI offload doc
-  dt-bindings: iio: adc: adi,ad4030: Add PWM
-  iio: adc: ad4030: Reduce register access transfer speed
-  iio: adc: ad4030: Use BIT macro to improve code readability
-  iio: adc: ad4030: Add SPI offload support
-  dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216 and ADAQ4224
-  iio: adc: ad4030: Add support for ADAQ4216 and ADAQ4224
-
- .../bindings/iio/adc/adi,ad4030.yaml          |  90 ++-
- Documentation/iio/ad4030.rst                  |  39 +
- drivers/iio/adc/Kconfig                       |   3 +
- drivers/iio/adc/ad4030.c                      | 750 ++++++++++++++++--
- 4 files changed, 826 insertions(+), 56 deletions(-)
-
-
-base-commit: 561285d048053fec8a3d6d1e3ddc60df11c393a0
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+index 54e7349317b7..a8fee4062d0e 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+@@ -20,6 +20,8 @@ description: |
+   * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4630-24_ad4632-24.pdf
+   * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4630-16-4632-16.pdf
+ 
++$ref: /schemas/spi/spi-peripheral-props.yaml#
++
+ properties:
+   compatible:
+     enum:
 -- 
 2.39.2
 

@@ -1,215 +1,329 @@
-Return-Path: <linux-iio+bounces-24457-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24458-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF53BA3A97
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 14:44:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5DABA4446
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 16:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 695043BE325
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 12:44:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2A7F189E8AB
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Sep 2025 14:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3F32EBDF2;
-	Fri, 26 Sep 2025 12:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4B1199E94;
+	Fri, 26 Sep 2025 14:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kpLbGLiB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QB2g4DE6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94846283CB5;
-	Fri, 26 Sep 2025 12:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C85072605
+	for <linux-iio@vger.kernel.org>; Fri, 26 Sep 2025 14:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758890669; cv=none; b=gptkAgggd+cGizmahCwhtY8rCLwCK79kFnzP6ZLkqkAURrpOnvDfSrbeqMjNOGmtt5mBWFbxJAm2XU4ufayQ2Z6FIRzu72JfXC37n9qwWn6pdkz5giIOx2bx8XSOJ0aLZGeJFgpuWXFe+yhvKL7P5UIA9uf0+jluBO9tGsuh9BA=
+	t=1758897652; cv=none; b=d+Szar3Es6i91uISIJi/ftAKiHd4Wt7bQ7AjvesWCXa3jD/wwBxc6voatXCXEIsXLvkadoXgUp5Zr4+Fc9cW6B+1ja7NSAfmV/5LyDTaA1EaWYXjWusArkDUMuviaz6aJHwGL2s7/CLR5gfYUVaahrThfyp3JsJpVX8rhpNKa7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758890669; c=relaxed/simple;
-	bh=YOV8kARbSyHERIV3BOJ0NkrVjbQ35l4jpMmPcR4lpwI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JrJiBqI7IjXCzR4ilr3RcpTAipLydcdiMBKO5u2BXoKq4xttNY+s0iLnaPf0A4RoQAKe95lrUikqu7oEMwl9NSan66NEYOFgx7z5um77GVOUnmPdbbc582Ohz+sLNAOziHwOkRNYIvSZYWiEXL+d5+bAEPDU7Tj6SGdvlCeANEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kpLbGLiB; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758890668; x=1790426668;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YOV8kARbSyHERIV3BOJ0NkrVjbQ35l4jpMmPcR4lpwI=;
-  b=kpLbGLiBOvuTNJTHJCclm9PtfrwHJUhLcN7JJ+EcDkwF416JHLFGMFoi
-   x7MStDgi3mNYw95X+JB23DhzHiiEmpfuPc5ASMrUMXkIWucfgMI3EpRaz
-   ZSfQMD7IgbFEfajrlhSIP5hw5bkrg+7cW33uB4AKXB6Mkm+oOetZk36lS
-   gN09Y2vim6zRlF/KAOeLWYHtmkcsehe7QtDKn5NjzWesdE/VELhO5mFpS
-   hidO8lS3UAMefFlN/Nl0DKTDyEgxvfcSSwxebOX7qWE+ECy91p5MgKMzC
-   Ov9eS1v4JDJ7dd/WLuZXdC2JDIpAqflgZDVDnuWeYP9A71/+GhE8gQgkU
-   A==;
-X-CSE-ConnectionGUID: 9etnI7StTSmW7zVNaHEglw==
-X-CSE-MsgGUID: xiTYTtjVTDKbmf0F8fKDIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="61331494"
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; 
-   d="scan'208";a="61331494"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 05:44:27 -0700
-X-CSE-ConnectionGUID: Okz+aTvERQW9YtuQA0189g==
-X-CSE-MsgGUID: ElUcopUYT82x8T5Me6b3lQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; 
-   d="scan'208";a="181910463"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 26 Sep 2025 05:44:22 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v27oB-0006Dp-0l;
-	Fri, 26 Sep 2025 12:44:19 +0000
-Date: Fri, 26 Sep 2025 20:43:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Antoni Pokusinski <apokusinski01@gmail.com>, jic23@kernel.org,
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux@roeck-us.net,
-	rodrigo.gobbi.7@gmail.com, naresh.solanki@9elements.com,
-	michal.simek@amd.com, grantpeltier93@gmail.com,
-	farouk.bouabid@cherry.de, marcelo.schmitt1@gmail.com,
-	Antoni Pokusinski <apokusinski01@gmail.com>
-Subject: Re: [PATCH v2 4/4] iio: mpl3115: add support for sampling frequency
-Message-ID: <202509262005.y59poUS9-lkp@intel.com>
-References: <20250925204538.63723-5-apokusinski01@gmail.com>
+	s=arc-20240116; t=1758897652; c=relaxed/simple;
+	bh=90tchflxcF4gE+p6ymbvvXCUFZ3J0tFjBD1ra+hcs/Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sv3sPTGE2VgZHWICsTHn5ZLM0BVwJYMtRNaTelpvoLUDS1UIc9/AT2xAfLuGpag/WGnt5g+LolMj44O2XmHiJw8tcq8WTqzdgh1Esr6xY4WFbWDfz/tvmAkQD53B0njxCgwcn73wwe6v/VNfwhXjVuqThFaC++IjpM2DqyWDdxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QB2g4DE6; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-46e2e363118so22258325e9.0
+        for <linux-iio@vger.kernel.org>; Fri, 26 Sep 2025 07:40:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758897648; x=1759502448; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=90tchflxcF4gE+p6ymbvvXCUFZ3J0tFjBD1ra+hcs/Q=;
+        b=QB2g4DE6gY0BvVOrMTkdZ8ajAMb+ZtxwQi9HUQjnsouSPM94tn8zi9mudMH5POeN0g
+         EZFu3Ajgaz7jspiMUCKIVQ+u/Jdw2oLves8iZeZrK8j3PrdVCU9TVi6zeUPzF5VktsZE
+         h0x04M97oQkXa874xdVkYwqAV/cRlRzOx5fvohiR9VImkcCuShXAOwAnIUqZZ5x8mdbF
+         TOR1Gwmhua8hH9OeEE2NJHmyYF6Km0UKKuVfL5sajLIVyJjjRlODG9Lf0LeAZuQFJbvk
+         pW4/X0en16a2jXxHcH9KtIPgr5AvM4l/+TL0EdV4sj/W5KHQNk034re0hBepSlDZKoDg
+         C5wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758897648; x=1759502448;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=90tchflxcF4gE+p6ymbvvXCUFZ3J0tFjBD1ra+hcs/Q=;
+        b=iT5P6GdA/ayrdAUgGMHPPXofsaDr6BRKelEQ7Sht5UKc3jzKlZv+Lw1Bjhr+lDXUIi
+         3DmOiD9ITnn8YZ9iffdXwYdy5NWxTB1St1rQt6s+tkj7Ia9UeQQyWnxLfVBDotUtJhAZ
+         jhuQEZK4umrSeCP97Rwx0PLnoDiNZLlmCsO7zRgJ8n86JFIBKEGwLgdOTD4DNuckGA0r
+         po7wQMamGO7hDXnxOh9X5PzWljRkJ98q9uyb9MRRBOj+a0G3lQmeMK1eGtqQD8PBhRvf
+         7d7QVGXRn5kbTN4sozrv1F8kDncU9105MJ+1ByZbJZkfij933h4n9D+GoaM6IXB5ZfP+
+         3y4g==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ/OsHrGvC7mU0Kz0jkVvsIHUrLtgBw5X99N8qVlLfmYFqPqKzccb/NBQEl+JU3AlFt5ZDzpBkyEI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyn7RVuFfshzanVAU9iSVBMf+HMXKlgkaFc/gnlOzy9t60sS2N8
+	v9ocNXy+hRw28cshI3m+f2/3B1wnwFKed9Bv41eaS44ksCjKFp62W+Ac
+X-Gm-Gg: ASbGncteibMba0dIJ0VEOkEcwVnTrnrNNxhCZW0XHStEg9r4wn7+6VZzxxNz1fYcvJ9
+	X48H9aruN1+VR0KQirOENP9/1bunkSaOukG7waZv9l/VyZ2540TMlQnpGaySkipqrnay2d0qGgo
+	hF8dh9T2K7h2N6+c+u1LgHxSvAFvgmn1q/I+NVtvtgj0P9UCRVuT0yaq/qzJt5ag3iaEdXbX9Jp
+	ONH0oM3KS5wBf87AUCtvPuQeLNlVlt5vN9lTjNOyOHSsw8XT25u+yrD2MwsGXIARxoxBl0sOGd1
+	m6amr1nA/JTpzNOgyzz6O1RAN82TcsnFL+WsP3Q7Y57x1FyetFxgVSEGEQ1jBfhjMEhtM1Jbu73
+	HBgl5vuhssDHZOg53GYR/lajS+4n54l8=
+X-Google-Smtp-Source: AGHT+IF+GdI92TLRs9rHsVNgrebtIVMQHD15AS5sbB5Iv4MThr0TRQnHyapfTIMvahMIkANVWZB75Q==
+X-Received: by 2002:a05:6000:2dc8:b0:3ec:42ad:591 with SMTP id ffacd0b85a97d-40e4a05c535mr7276947f8f.36.1758897648024;
+        Fri, 26 Sep 2025 07:40:48 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb9e1b665sm7247453f8f.27.2025.09.26.07.40.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Sep 2025 07:40:47 -0700 (PDT)
+Message-ID: <3f93a0dad6ba5dea8db84973ae1518bbb98d3aed.camel@gmail.com>
+Subject: Re: [PATCH v2 3/7] iio: adc: add RZ/T2H / RZ/N2H ADC driver
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>,  Nuno =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring	 <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley	
+ <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+ "magnus.damm" <magnus.damm@gmail.com>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>,  "linux-renesas-soc@vger.kernel.org"	
+ <linux-renesas-soc@vger.kernel.org>, "devicetree@vger.kernel.org"	
+ <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"	
+ <linux-kernel@vger.kernel.org>
+Date: Fri, 26 Sep 2025 15:41:14 +0100
+In-Reply-To: <OSZPR01MB87987A7D3F418A6E7A24FC41851EA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
+References: 
+	<20250925224013.2146983-1-cosmin-gabriel.tanislav.xa@renesas.com>
+		 <20250925224013.2146983-4-cosmin-gabriel.tanislav.xa@renesas.com>
+	 <3550caed57f460a3d28ed585eda2d955bd846930.camel@gmail.com>
+	 <OSZPR01MB87987A7D3F418A6E7A24FC41851EA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250925204538.63723-5-apokusinski01@gmail.com>
 
-Hi Antoni,
+On Fri, 2025-09-26 at 12:41 +0000, Cosmin-Gabriel Tanislav wrote:
+>=20
+>=20
+> > -----Original Message-----
+> > From: Nuno S=C3=A1 <noname.nuno@gmail.com>
+> > Sent: Friday, September 26, 2025 3:11 PM
+> > To: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+> > Cc: Jonathan Cameron <jic23@kernel.org>; David Lechner
+> > <dlechner@baylibre.com>; Nuno S=C3=A1
+> > <nuno.sa@analog.com>; Andy Shevchenko <andy@kernel.org>; Rob Herring
+> > <robh@kernel.org>; Krzysztof
+> > Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Gee=
+rt
+> > Uytterhoeven
+> > <geert+renesas@glider.be>; magnus.damm <magnus.damm@gmail.com>;
+> > linux-iio@vger.kernel.org; linux-
+> > renesas-soc@vger.kernel.org; devicetree@vger.kernel.org;
+> > linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH v2 3/7] iio: adc: add RZ/T2H / RZ/N2H ADC driver
+> >=20
+> > On Fri, 2025-09-26 at 01:40 +0300, Cosmin Tanislav wrote:
+> > > Add support for the A/D 12-Bit successive approximation converters fo=
+und
+> > > in the Renesas RZ/T2H (R9A09G077) and RZ/N2H (R9A09G087) SoCs.
+> > >=20
+> > > RZ/T2H has two ADCs with 4 channels and one with 6.
+> > > RZ/N2H has two ADCs with 4 channels and one with 15.
+> > >=20
+> > > Conversions can be performed in single or continuous mode. Result of =
+the
+> > > conversion is stored in a 16-bit data register corresponding to each
+> > > channel.
+> > >=20
+> > > The conversions can be started by a software trigger, a synchronous
+> > > trigger (from MTU or from ELC) or an asynchronous external trigger (f=
+rom
+> > > ADTRGn# pin).
+> > >=20
+> > > Only single mode with software trigger is supported for now.
+> > >=20
+> > > Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.co=
+m>
+> > > ---
+> >=20
+> > Just one small nit from me. With it:
+> >=20
+> > Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> >=20
+> > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
+> > > =C2=A0drivers/iio/adc/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 10 ++
+> > > =C2=A0drivers/iio/adc/Makefile=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
+> > > =C2=A0drivers/iio/adc/rzt2h_adc.c | 306 +++++++++++++++++++++++++++++=
++++++++
+> > > =C2=A04 files changed, 318 insertions(+)
+> > > =C2=A0create mode 100644 drivers/iio/adc/rzt2h_adc.c
+> > >=20
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > index eed08d25cb7a..220d17039084 100644
+> > > --- a/MAINTAINERS
+> > > +++ b/MAINTAINERS
+> > > @@ -21837,6 +21837,7 @@ L:=C2=A0 linux-iio@vger.kernel.org
+> > > =C2=A0L: linux-renesas-soc@vger.kernel.org
+> > > =C2=A0S: Supported
+> > > =C2=A0F: Documentation/devicetree/bindings/iio/adc/renesas,r9a09g077-=
+adc.yaml
+> > > +F: drivers/iio/adc/rzt2h_adc.c
+> > >=20
+> > > =C2=A0RENESAS RTCA-3 RTC DRIVER
+> > > =C2=A0M: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> > > index 58a14e6833f6..cab5eeba48fe 100644
+> > > --- a/drivers/iio/adc/Kconfig
+> > > +++ b/drivers/iio/adc/Kconfig
+> > > @@ -1403,6 +1403,16 @@ config RZG2L_ADC
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 To compile this driver as a module, ch=
+oose M here: the
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 module will be called rzg2l_adc.
+> > >=20
+> > > +config RZT2H_ADC
+> > > +=C2=A0=C2=A0 tristate "Renesas RZ/T2H / RZ/N2H ADC driver"
+> > > +=C2=A0=C2=A0 select IIO_ADC_HELPER
+> > > +=C2=A0=C2=A0 help
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 Say yes here to build support for the ADC f=
+ound in Renesas
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 RZ/T2H / RZ/N2H SoCs.
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 To compile this driver as a module, choose =
+M here: the
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0 module will be called rzt2h_adc.
+> > > +
+> > > =C2=A0config SC27XX_ADC
+> > > =C2=A0=C2=A0=C2=A0 tristate "Spreadtrum SC27xx series PMICs ADC"
+> > > =C2=A0=C2=A0=C2=A0 depends on MFD_SC27XX_PMIC || COMPILE_TEST
+> > > diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> > > index d008f78dc010..ed647a734c51 100644
+> > > --- a/drivers/iio/adc/Makefile
+> > > +++ b/drivers/iio/adc/Makefile
+> > > @@ -123,6 +123,7 @@ obj-$(CONFIG_ROHM_BD79112) +=3D rohm-bd79112.o
+> > > =C2=A0obj-$(CONFIG_ROHM_BD79124) +=3D rohm-bd79124.o
+> > > =C2=A0obj-$(CONFIG_ROCKCHIP_SARADC) +=3D rockchip_saradc.o
+> > > =C2=A0obj-$(CONFIG_RZG2L_ADC) +=3D rzg2l_adc.o
+> > > +obj-$(CONFIG_RZT2H_ADC) +=3D rzt2h_adc.o
+> > > =C2=A0obj-$(CONFIG_SC27XX_ADC) +=3D sc27xx_adc.o
+> > > =C2=A0obj-$(CONFIG_SD_ADC_MODULATOR) +=3D sd_adc_modulator.o
+> > > =C2=A0obj-$(CONFIG_SOPHGO_CV1800B_ADC) +=3D sophgo-cv1800b-adc.o
+> > > diff --git a/drivers/iio/adc/rzt2h_adc.c b/drivers/iio/adc/rzt2h_adc.=
+c
+> > > new file mode 100644
+> > > index 000000000000..6a49788a5c67
+> > > --- /dev/null
+> > > +++ b/drivers/iio/adc/rzt2h_adc.c
+> > > @@ -0,0 +1,306 @@
+> > > +// SPDX-License-Identifier: GPL-2.0
+> > > +
+> > > +#include <linux/bitfield.h>
+> > > +#include <linux/cleanup.h>
+> > > +#include <linux/completion.h>
+> > > +#include <linux/delay.h>
+> > > +#include <linux/iio/adc-helpers.h>
+> > > +#include <linux/iio/iio.h>
+> > > +#include <linux/interrupt.h>
+> > > +#include <linux/io.h>
+> > > +#include <linux/iopoll.h>
+> > > +#include <linux/mod_devicetable.h>
+> > > +#include <linux/module.h>
+> > > +#include <linux/platform_device.h>
+> > > +#include <linux/pm_runtime.h>
+> > > +#include <linux/property.h>
+> > > +
+> >=20
+> > ...
+> >=20
+> > >=20
+> > > +
+> > > +static int rzt2h_adc_pm_runtime_resume(struct device *dev)
+> > > +{
+> > > +=C2=A0=C2=A0 struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
+> > > +=C2=A0=C2=A0 struct rzt2h_adc *adc =3D iio_priv(indio_dev);
+> >=20
+> > Not seeing the point of the pointer arithmetic. You can pass your devic=
+e
+> > pointer
+> > (adc) directly in platform_set_drvdata()
+> >=20
+>=20
+> Thanks Nuno, I'll do that. I also have another change to make to the driv=
+er so
+> I will have to send a new version and you'll have to give your Reviewed-b=
+y
+> again.
+>=20
+> Here's the change I'm planning to make, maybe I could keep the Reviewed-b=
+y
+> if you agree.
+>=20
+> Without this change, pm_runtime_resume_and_get() is inside the mutex,
+> while pm_runtime_put_autosuspend() is outside of it. This is mostly for
 
-kernel test robot noticed the following build errors:
+I guess you meant the other way around.
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on robh/for-next linus/master v6.17-rc7 next-20250925]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> symmetry, although it's not excluded for some subtle bugs to be able to
+> occur without it.
+>=20
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Antoni-Pokusinski/dt-bindings-iio-pressure-add-binding-for-mpl3115/20250926-044905
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20250925204538.63723-5-apokusinski01%40gmail.com
-patch subject: [PATCH v2 4/4] iio: mpl3115: add support for sampling frequency
-config: i386-buildonly-randconfig-001-20250926 (https://download.01.org/0day-ci/archive/20250926/202509262005.y59poUS9-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250926/202509262005.y59poUS9-lkp@intel.com/reproduce)
+Fell free to keep my tag.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509262005.y59poUS9-lkp@intel.com/
+- Nuno S=C3=A1
 
-All errors (new ones prefixed by >>):
-
->> drivers/iio/pressure/mpl3115.c:204:9: error: call to undeclared function 'FIELD_GET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     204 |                 ret = FIELD_GET(MPL3115_CTRL2_ST, ret);
-         |                       ^
->> drivers/iio/pressure/mpl3115.c:249:6: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     249 |                                         FIELD_PREP(MPL3115_CTRL2_ST, i));
-         |                                         ^
-   2 errors generated.
-
-
-vim +/FIELD_GET +204 drivers/iio/pressure/mpl3115.c
-
-   169	
-   170	static int mpl3115_read_raw(struct iio_dev *indio_dev,
-   171				    struct iio_chan_spec const *chan,
-   172				    int *val, int *val2, long mask)
-   173	{
-   174		struct mpl3115_data *data = iio_priv(indio_dev);
-   175		int ret;
-   176	
-   177		switch (mask) {
-   178		case IIO_CHAN_INFO_RAW:
-   179			if (!iio_device_claim_direct(indio_dev))
-   180				return -EBUSY;
-   181	
-   182			ret = mpl3115_read_info_raw(data, chan, val);
-   183			iio_device_release_direct(indio_dev);
-   184			return ret;
-   185	
-   186		case IIO_CHAN_INFO_SCALE:
-   187			switch (chan->type) {
-   188			case IIO_PRESSURE:
-   189				*val = 0;
-   190				*val2 = 250; /* want kilopascal */
-   191				return IIO_VAL_INT_PLUS_MICRO;
-   192			case IIO_TEMP:
-   193				*val = 0;
-   194				*val2 = 62500;
-   195				return IIO_VAL_INT_PLUS_MICRO;
-   196			default:
-   197				return -EINVAL;
-   198			}
-   199		case IIO_CHAN_INFO_SAMP_FREQ:
-   200			ret = i2c_smbus_read_byte_data(data->client, MPL3115_CTRL_REG2);
-   201			if (ret < 0)
-   202				return ret;
-   203	
- > 204			ret = FIELD_GET(MPL3115_CTRL2_ST, ret);
-   205	
-   206			*val = mpl3115_samp_freq_table[ret][0];
-   207			*val2 = mpl3115_samp_freq_table[ret][1];
-   208			return IIO_VAL_INT_PLUS_MICRO;
-   209		}
-   210		return -EINVAL;
-   211	}
-   212	
-   213	static int mpl3115_read_avail(struct iio_dev *indio_dev,
-   214				      struct iio_chan_spec const *chan,
-   215				      const int **vals, int *type, int *length,
-   216				      long mask)
-   217	{
-   218		if (mask != IIO_CHAN_INFO_SAMP_FREQ)
-   219			return -EINVAL;
-   220	
-   221		*type = IIO_VAL_INT_PLUS_MICRO;
-   222		*length = ARRAY_SIZE(mpl3115_samp_freq_table) * 2;
-   223		*vals = (int *)mpl3115_samp_freq_table;
-   224		return IIO_AVAIL_LIST;
-   225	}
-   226	
-   227	static int mpl3115_write_raw(struct iio_dev *indio_dev,
-   228				     const struct iio_chan_spec *chan,
-   229				     int val, int val2, long mask)
-   230	{
-   231		struct mpl3115_data *data = iio_priv(indio_dev);
-   232		int i, ret;
-   233	
-   234		if (mask != IIO_CHAN_INFO_SAMP_FREQ)
-   235			return -EINVAL;
-   236	
-   237		for (i = 0; i < ARRAY_SIZE(mpl3115_samp_freq_table); i++)
-   238			if (val == mpl3115_samp_freq_table[i][0] &&
-   239			    val2 == mpl3115_samp_freq_table[i][1])
-   240				break;
-   241	
-   242		if (i == ARRAY_SIZE(mpl3115_samp_freq_table))
-   243			return -EINVAL;
-   244	
-   245		if (!iio_device_claim_direct(indio_dev))
-   246			return -EBUSY;
-   247	
-   248		ret = i2c_smbus_write_byte_data(data->client, MPL3115_CTRL_REG2,
- > 249						FIELD_PREP(MPL3115_CTRL2_ST, i));
-   250		iio_device_release_direct(indio_dev);
-   251		return ret;
-   252	}
-   253	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> diff --git a/drivers/iio/adc/rzt2h_adc.c b/drivers/iio/adc/rzt2h_adc.c
+> index 708029dc8949..79053bbc71c9 100644
+> --- a/drivers/iio/adc/rzt2h_adc.c
+> +++ b/drivers/iio/adc/rzt2h_adc.c
+> @@ -81,9 +81,9 @@ static int rzt2h_adc_read_single(struct rzt2h_adc *adc,
+> unsigned int ch, int *va
+> =C2=A0=C2=A0=C2=A0=C2=A0 ret =3D pm_runtime_resume_and_get(adc->dev);
+> =C2=A0=C2=A0=C2=A0=C2=A0 if (ret)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
+>=20
+> -=C2=A0=C2=A0=C2=A0 guard(mutex)(&adc->lock);
+> +=C2=A0=C2=A0=C2=A0 mutex_lock(&adc->lock);
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0 reinit_completion(&adc->completion);
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0 /* Enable a single channel */
+> @@ -106,8 +106,10 @@ static int rzt2h_adc_read_single(struct rzt2h_adc *a=
+dc,
+> unsigned int ch, int *va
+>=20
+> =C2=A0disable:
+> =C2=A0=C2=A0=C2=A0=C2=A0 rzt2h_adc_start_stop(adc, false, 0);
+>=20
+> +=C2=A0=C2=A0=C2=A0 mutex_unlock(&adc->lock);
+> +
+> =C2=A0=C2=A0=C2=A0=C2=A0 pm_runtime_put_autosuspend(adc->dev);
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0 return ret;
+> =C2=A0}
+>=20
+> > - Nuno S=C3=A1
+>=20
+> ________________________________
+>=20
+> Renesas Electronics Europe GmbH
+> Registered Office: Arcadiastrasse 10
+> DE-40472 Duesseldorf
+> Commercial Registry: Duesseldorf, HRB 3708
+> Managing Director: Carsten Jauch
+> VAT-No.: DE 14978647
+> Tax-ID-No: 105/5839/1793
+>=20
+> Legal Disclaimer: This e-mail communication (and any attachment/s) is
+> confidential and contains proprietary information, some or all of which m=
+ay be
+> legally privileged. It is intended solely for the use of the individual o=
+r
+> entity to which it is addressed. Access to this email by anyone else is
+> unauthorized. If you are not the intended recipient, any disclosure, copy=
+ing,
+> distribution or any action taken or omitted to be taken in reliance on it=
+, is
+> prohibited and may be unlawful.
 

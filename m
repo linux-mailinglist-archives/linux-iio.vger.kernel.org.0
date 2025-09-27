@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-24494-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24495-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0930DBA613E
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 17:55:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A86BA6144
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 17:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A783F3BB393
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 15:55:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB8C1189679C
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 15:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1C32E1F00;
-	Sat, 27 Sep 2025 15:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBC62E2DCD;
+	Sat, 27 Sep 2025 15:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+h28he7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WYWfI5a4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3582D4816;
-	Sat, 27 Sep 2025 15:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB49238C08;
+	Sat, 27 Sep 2025 15:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758988504; cv=none; b=I+YuuyE34R5SS346GFyQXfxd6yeVkGUkE0BDPa1Yde0caZ/iAjOahCDr4/5ucee3c12z5lzoDz/sEw3cC0W0brTuJ7OoNYYqBZ3Uaex12dob4KdzxB3RAras7d4gWPXsXiTqMpG/MF1+mO02xtEPh1V2PhPp4TqX6S0JHCg+cDk=
+	t=1758988721; cv=none; b=YSRDfHtc7AT9v5904doCJSxpC0kvO/TLmhlVXuUoi830r4yV1gX1deTT6TLZz7sCDjIA5aPx6U7vlbI08G6CsnhUrphZ97uacxjES54hI9rVj1Q2mbf6LPCBKiwHhvP6HM5rhCfizjnswP6w/G5DUeOp+kuIVVZbkDU4oRDDwaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758988504; c=relaxed/simple;
-	bh=tRYU9gXBqMmI1zon6Xla2H7/hd9DYtM8/t6hN3x9NVE=;
+	s=arc-20240116; t=1758988721; c=relaxed/simple;
+	bh=hZbYs7BmFN6YKKB9p+S2nDQWqzQ+3d3PKXsOx7QAtUY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qLno2OyUTvg010X4Q3k+RZsukdoDCM3UMnUrv8JG9EtinEjHe5hPxgi/TLmCMpAfs5jcWkgHEFe4SN1I2pc0rir2ayhm1XX9z5AT5tMMO7NHqu2vk1afKHj9egJFLLDO8emiIDv3gUtOdD0e6BO8fI5OqV9YnftJl9isDpzrfUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+h28he7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3912C4CEE7;
-	Sat, 27 Sep 2025 15:55:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wq9bna1VheM4QU/Ng3YC2UFRCj71Q1pkwtnrJWJHaRSME4Ys25ydtw5iVd1LAQ2cjcpB/g3e1B9eqhfllJkJmWIZrhIb1HG2MQ0k1lxPwuH45/nY24NmamPeOEBc9dKrpBEWZGOwB7bcTUtvFKrPcl6eBwJF05qXVMYePOMCbgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WYWfI5a4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1003C4CEE7;
+	Sat, 27 Sep 2025 15:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758988504;
-	bh=tRYU9gXBqMmI1zon6Xla2H7/hd9DYtM8/t6hN3x9NVE=;
+	s=k20201202; t=1758988720;
+	bh=hZbYs7BmFN6YKKB9p+S2nDQWqzQ+3d3PKXsOx7QAtUY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=X+h28he71P5Quv2/v38iVz7pPJXl/hNMpb2u8KAbHzzKXXkak/DgDMe+MWvOH1p1P
-	 cRFvxexxX1fJl6v2oZvxxvUDhzITQj38G83bIySl3S3Qi7lXaZVMuLKqSVP7i9+U9Z
-	 h16o/6yTdNBRqgazn37OT3vwVeGaXklp/1KN4csj/HvgMykwfolNIttB/l35f7qoHu
-	 ukWhYABzrr2qr8jROmjZgLWnT7rVC6rX+L/SIL7M5OOUqAMjKGTS9twiHJf8Xa21CT
-	 m9WLNuhH1hhZoLTP/yt/j3+xemw6rFHtA09IfzYak3yjuYy4TGjYC1cAmeynfr3T08
-	 BcMPEqJqEvyWA==
-Date: Sat, 27 Sep 2025 16:54:55 +0100
+	b=WYWfI5a40m98HC/YM8T6LfQN9VjqfMN0Y223oeig9UU5UwmUkqN9YbuKCvQoYhjK+
+	 pMlMfhWdkvYCKUWSIe59kBqtuiZOWQuDJNZu2DRQotE3SZNn7tDsicZwpvc9C0TdGk
+	 Vxt8rm3ek55CXe2dr4BljXUiQpkp1+3uZYpobmND2+8duteH0k25JhE6oADa6I36Vn
+	 lM3/QS80syUNOwEEqGA7vAW8B5cWArO0YXkCmX5P7y7P2aLnIm5poYFCwVrgqtCXYx
+	 FedegtQrGmyxevqc0fS3uSeZrcHetp5EntpnqOAyQUuZn5wqYPpHpbZgfp3+l0IKTG
+	 vO17g1CpcdQ6w==
+Date: Sat, 27 Sep 2025 16:58:32 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Angelo Dureghello
- <adureghello@baylibre.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7380: fix SPI offload trigger rate
-Message-ID: <20250927165455.19ebefd5@jic23-huawei>
-In-Reply-To: <20250919-iio-adc-ad7380-fix-sampling-frequency-for-single-ended-chips-v1-1-7b2d761766cf@baylibre.com>
-References: <20250919-iio-adc-ad7380-fix-sampling-frequency-for-single-ended-chips-v1-1-7b2d761766cf@baylibre.com>
+Subject: Re: [PATCH] iio: adc: at91-sama5d2_adc: explain why indio_dev->name
+ = dev_name() is wrong
+Message-ID: <20250927165832.5ad37428@jic23-huawei>
+In-Reply-To: <CAHp75VfkS_geLqSjMz95yb8smNqKTQTfyCA3KeeUGMSg1=EfOw@mail.gmail.com>
+References: <20250920-iio-indio_dev-name-wrong-v1-1-d376436abbb6@baylibre.com>
+	<CAHp75VfkS_geLqSjMz95yb8smNqKTQTfyCA3KeeUGMSg1=EfOw@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,60 +60,54 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 19 Sep 2025 15:50:34 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Sun, 21 Sep 2025 21:33:02 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Add a special case to double the SPI offload trigger rate when all
-> channels of a single-ended chip are enabled in a buffered read.
-> 
-> The single-ended chips in the AD738x family can only do simultaneous
-> sampling of half their channels and have a multiplexer to allow reading
-> the other half. To comply with the IIO definition of sampling_frequency,
-> we need to trigger twice as often when the sequencer is enabled to so
-> that both banks can be read in a single sample period.
-> 
-> Fixes: bbeaec81a03e ("iio: ad7380: add support for SPI offload")
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-Applied to my temporary fixes branch (always fun at this point in cycle).
-It'll become the normal fixes branch after rc1.
+> On Sat, Sep 20, 2025 at 7:44=E2=80=AFPM David Lechner <dlechner@baylibre.=
+com> wrote:
+> >
+> > Add an explanatory comment on why indio_dev->name =3D dev_name(dev) is
+> > wrong, and that we can't fix it without breaking userspace.
+> >
+> > The idea is to prevent future drivers from making the same mistake by
+> > copying this code. And if this driver is ever modified again, we can
+> > at least make sure any new compatible IDs use the correct name. =20
+>=20
+> ...
+>=20
+> > +       /*
+> > +        * The device name is supposed to be the "part number", not the=
+ kobject
+> > +        * name. Do not copy this code for new drivers. We can't "fix" =
+this
+> > +        * without breaking userspace, so we have to live with it. Howe=
+ver, if
+> > +        * any new compatible IDs are added, please do something simila=
+r to
+> > +        * adc/ltc2497-core.c so that at least the new part numbers are=
+ correct. =20
+>=20
+> Please, use the full path from the root of the source tree, i.e.
+> drivers/iio/adc/ltc2497-core.c. IIRC the Sphynx might even render the
+> links properly (if it ever goes to this deep comment, which is not
+> marked as kernel-doc).
 
-J
-> ---
-> There was some unresolved discussion about this when we were adding
-> SPI offload support to the ad7380 driver, but it turns out that handling
-> the sampling frequency correctly for single-ended chips is actually
-> quite simple.
-> ---
->  drivers/iio/adc/ad7380.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-> index fa251dc1aae6ab0a0d36792fa37b2cc22b99dfe6..bfd908deefc0f40b42bd8a44bfce7a2510b2fdf1 100644
-> --- a/drivers/iio/adc/ad7380.c
-> +++ b/drivers/iio/adc/ad7380.c
-> @@ -1227,6 +1227,14 @@ static int ad7380_offload_buffer_postenable(struct iio_dev *indio_dev)
->  	if (ret)
->  		return ret;
->  
-> +	/*
-> +	 * When the sequencer is required to read all channels, we need to
-> +	 * trigger twice per sample period in order to read one complete set
-> +	 * of samples.
-> +	 */
-> +	if (st->seq)
-> +		config.periodic.frequency_hz *= 2;
-> +
->  	ret = spi_offload_trigger_enable(st->offload, st->offload_trigger, &config);
->  	if (ret)
->  		spi_unoptimize_message(&st->offload_msg);
-> 
-> ---
-> base-commit: 561285d048053fec8a3d6d1e3ddc60df11c393a0
-> change-id: 20250919-iio-adc-ad7380-fix-sampling-frequency-for-single-ended-chips-05bbfea8891c
-> 
-> Best regards,
+Other than that this looks like a good approach to me.
+I was thinking maybe a reference to central doc, but that might be a bit fr=
+agile
+so I think I prefer this approach of stating it fully at each place it matt=
+ers.
+
+Thanks,
+
+Jonathan
+
+>=20
+> > +        */
+> >         indio_dev->name =3D dev_name(&pdev->dev); =20
+>=20
 
 

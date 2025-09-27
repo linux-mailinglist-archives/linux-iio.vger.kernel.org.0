@@ -1,601 +1,407 @@
-Return-Path: <linux-iio+bounces-24511-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24512-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78444BA62AA
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 20:44:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB4FBA62B3
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 20:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 282644A2DD7
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 18:44:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC57D4A46E7
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 18:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A222288D5;
-	Sat, 27 Sep 2025 18:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AED22F389;
+	Sat, 27 Sep 2025 18:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZcwN0ppe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1Qugc1n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F34438DE1
-	for <linux-iio@vger.kernel.org>; Sat, 27 Sep 2025 18:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA251632C8;
+	Sat, 27 Sep 2025 18:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758998642; cv=none; b=QAIixa/4K8vHaXyD8pQVr7nprpKVsGOk6z4IOMwQh1hUj2XutXQYxB39lKuD0EAxpfLsFyddV4tjbo3kXxncTVjsZiDzSUCdTa1zFfAyjwNK+jd7OmENmlw8DLB0s4Z/ExeSXYr3dSvsQBlYBgkM5cV+FuUXSn3JREZZLQB6UUQ=
+	t=1758999549; cv=none; b=X9cq8BdxP1IpTT12dXJVp3iXGVwfLB9qYf2d5brQbl2CrmYN+dQyM9DbLLMEreWh1yMZASNQJvEoz4gD6GmkQ4faZThZdKYRoTnw/Jd8JGZPb30LX69ApmWE1QwZn434kYM05++QgedvajUX2c2xdkVqjGQ/0kBo/wByLm7posw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758998642; c=relaxed/simple;
-	bh=IhBKQD+ec1TxejDrHgOgmL6Q6Ndh6ROqZ90IhFJAEs4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QIgnh0HPPvqFToJvWqjhZO1sDsJsfT/dyNXW3wkZgPqSJ+SVyoenz0Wt3rsl7rGeOlh/3BdsN6J87imXd+lRI3WAgqkM21W1xSkoFEke9/5WgU2nqoZ231rXw3Woqo7k0eeSlExZAwMcH2DqhgmqS3J0LDzlEsyE/DZ8ChUapCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZcwN0ppe; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-363cb0cd8a1so38840861fa.2
-        for <linux-iio@vger.kernel.org>; Sat, 27 Sep 2025 11:44:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758998638; x=1759603438; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lpbpO3uaLa7SATTKzH/Q1+Sh9Y16VeZC5lWHZiw7e6E=;
-        b=ZcwN0ppey5vn77HAt6UNjve/aMb0aBNBHoP+ZeXaxT6ZTzNBKJHW1JWfldi7piQ4rg
-         gV0O3eUIpOQW0fmf0SvJUPprum/faW4OENQm/AvkkOU8qKbZmj3iQ4LEbVfF0Y1RcsiV
-         woKJPZGCSLtQnXXcXZZO4cwH959a8R7y5A6j4uSeQnCzZkZ7R7jx92NmDdAYZZef797D
-         YsQx8TSLe3KatsQ8nfnrf9mjIOjaoDH+JDhXMo79kkahg3uf714PbN03CZywCa03FgCF
-         JU3aKkCMlLwTUwiVlvSfAeMPg/PZ7AL12Fh8gVDkiG9/ELoDPgCJwDLxTkdEvcPaEbnx
-         SawA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758998638; x=1759603438;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lpbpO3uaLa7SATTKzH/Q1+Sh9Y16VeZC5lWHZiw7e6E=;
-        b=klVxS/3Zs7Xegj2zo4j738LlsjgUKXG8pDxVu4ESGW6EUkCtdbCFjZDJ3i8Mt70lws
-         /gvkuftxk/jfb5CNdcmVXCVOTRKIN7gPntOSf1sK5+5GgAdYpan+BKPfCkw8iQfl8BzL
-         G4M8AAPbXucbubHy1yeSvMClps9z0qJruDHI7pn3zRhy4H+hOaTtPhPt22qs+wExrXT0
-         j2gw6q4BNo/bPOKKrbJbaJaBZ61DFVAoHCKdtpdkmJt8TzlTNN81iFzMjWRiIP24W++j
-         uAg2RVLAhtZq+CzwDIBk293ic+hgWYa46XQ2EMjBsF0rZkR9A7QTdFH72mMgUwGu0AkT
-         EKqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUtqkk1i2psQay4ZNAdnSHVoKJE3+tDJbCOxDVNlOPoaGGrEAhKT2Og4KZinE7OfyukZjqvFE453Eo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyS2hxSY4Nv2Ju/4szF6DX2SYlRyEHmhtc3g5mY5/nobTVMAP9Z
-	LI87T4z0Z1NZntk3M7Cg76T9ayFfLnHYCOwK8LeEEwa5NLxoaj2DCq9DQTG/j9QHz5lIw6SBcCs
-	hxxDat8M7iuBKbXyhhA2Le7Tv0m6zYLU=
-X-Gm-Gg: ASbGncuAy3TlESWVPKPpDWYzKMiy7sVuOqhpfhNid7hPQsmGb1LxmXQMzER42/+6ElZ
-	rY+s4hPob7NHQq3R/fGvG4oGnDn3NH6lDCJJgM67gm5Fk+VQFdRbFwpeI4Xlt3t4HqlD4kmYf3+
-	ToSpXUVSoa3IjOsnrJa8nkrI40CC6BOTojZPP+sMZiEDlXsGajuHzeQaiUJn0W6neIHu8tU8TTi
-	ogqR2Xgyn+wQFVTlA==
-X-Google-Smtp-Source: AGHT+IHuH8QgTCNhgau9kvdOt+4QV9wGi73pSK+IyObadraAxIMbCfRdNYbCJ0YZWNuZzMG39NHcsZpB8I6STo3aXLM=
-X-Received: by 2002:a05:651c:19a6:b0:352:b6c0:d33e with SMTP id
- 38308e7fff4ca-36f7ccdf2a8mr35099631fa.11.1758998637878; Sat, 27 Sep 2025
- 11:43:57 -0700 (PDT)
+	s=arc-20240116; t=1758999549; c=relaxed/simple;
+	bh=1OSBLp+ttR8asbRvrYHxL+vC8NOwayV1Z9SDsTwxsds=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rjecOvSuKc+AJqFYZPoI/MELxkdPpKIjsSCTj+PXA89codq5KUvTjBLgOpriEaaE+esz92iVZocRag1Qzc2Mjk0sqeqShU9ZxX8gTwoAOzvuc0oYXfs4Zh0tp6WBY07FJF+KACNNW2FuiqE780fTn7/9ARyp2km00ylvFar/M+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1Qugc1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3E6C4CEE7;
+	Sat, 27 Sep 2025 18:59:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758999548;
+	bh=1OSBLp+ttR8asbRvrYHxL+vC8NOwayV1Z9SDsTwxsds=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=n1Qugc1n/7qqhn6TamTuS738XeJlrTckf1cUScCmq7GIX27zuh5Euk8VTTbhSiRFd
+	 n46Avvw0lBz/09SA/+gNV30ChokxznBIE+ASVU4nci40ODmvYphyY1fax9ptgAU6NU
+	 Wcoq/GwG6QUUNYE9bXFzd3d0qM1O1bsfnhf0NpJ8V8/TQLNvGzGcMtYFGiC5mF5wDg
+	 arZ+IbA+8zNJo5CM0RqcyKpFKnu+qTg3+1wFOZAPnpp9da8a1j1ndTDN5VimErMxhe
+	 +vXQ5B2JWNbKuDx16YHkXFMXOH1K9YNTvndQG4SypuY9JaDeqp8W1WWNYk0WLEZOa+
+	 FdEeReYeLdeSQ==
+Date: Sat, 27 Sep 2025 19:58:59 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-iio@vger.kernel.org, Carlos Song
+ <carlos.song@nxp.com>
+Subject: Re: [PATCH v2 4/4] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <20250927195859.28a6069e@jic23-huawei>
+In-Reply-To: <20250924-i3c_ddr-v2-4-682a0eb32572@nxp.com>
+References: <20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com>
+	<20250924-i3c_ddr-v2-4-682a0eb32572@nxp.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250925170942.259314-1-akshayaj.lkd@gmail.com>
-In-Reply-To: <20250925170942.259314-1-akshayaj.lkd@gmail.com>
-From: Akshay Jindal <akshayaj.lkd@gmail.com>
-Date: Sun, 28 Sep 2025 00:13:46 +0530
-X-Gm-Features: AS18NWAlzQ1cKyuu0h-gSYt1u5cj296hVWTaNUahd5-gupQQFT_AlagkI_7MUBo
-Message-ID: <CAE3SzaRfeU9E78YNCofjgRZf76pDFEGxDdA9XwTF2_WAb8zj4Q@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: accel: bma400: Refactor generic interrupt configuration
-To: dan@dlrobertson.com, jic23@kernel.org, dlechner@baylibre.com, 
-	nuno.sa@analog.com, andy@kernel.org
-Cc: shuah@kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 25, 2025 at 10:39=E2=80=AFPM Akshay Jindal <akshayaj.lkd@gmail.=
-com> wrote:
->
-> Refactor generic interrupt configuration to replace hard-coded
-> register values with logical macros and enums, thereby making the
-> configuration understandable and in-style with common kernel
-> patterns.
->
-> Introduce a const struct with a helper to map event direction to the
-> corresponding generic interrupt and sanitize the input before use.
->
-> Rename activity_event_en() to generic_event_en() to better describe
-> its role in activity and inactivity detection.
->
-> No functional changes done.
->
-> Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
+On Wed, 24 Sep 2025 10:30:05 -0400
+Frank Li <Frank.Li@nxp.com> wrote:
+
+> Add mmc5633 sensor basic support.
+> - Support read 20 bits X/Y/Z magnetic.
+> - Support I3C HDR mode to send start measurememt command.
+> - Support I3C HDR mode to read all sensors data by one command.
+> 
+> Co-developed-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->
-> Changes since v1:
-> - Address Nuno's feedback of using a helper function to sanitize dir.
-> - Fixed a bug introduced in v1 changes (incorrect bit set in GENINT_CONFI=
-G0 register).
-> - Rename bma400_activity_event_en() to bma400_generic_event_en(), since
->   bma400 offers 3 variety of events related to activity. Renaming to gene=
-ric
->   makes it more relatable to the functionality.
-> - Added Testing summary.
-> - Edited minor comment.
->
-> Testing Summary:
-> - Tested on raspberrypi 4b and 7-semi bma400 sensor breakout board.
-> - Since no functional impact is there, so before functionality is
->   expected to be equal to after change functionality.
-> - Tested mapping of GEN1 and GEN2 both on INT1 pin as before.
-> - Tested both activity and inactivity detection by setting attributes
->   events/in_accel_mag_falling_en as well as events/in_accel_mag_rising_en=
-.
-> - Did read and writes on various attributes such that write_event_config(=
-),
->   write_event_value() and read_event_value() callbacks are triggered.
->
->  drivers/iio/accel/bma400.h      |  71 ++++++++++++--
->  drivers/iio/accel/bma400_core.c | 163 ++++++++++++++++++++------------
->  2 files changed, 161 insertions(+), 73 deletions(-)
->
-> diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
-> index 932358b45f17..ab7d1d139b66 100644
-> --- a/drivers/iio/accel/bma400.h
-> +++ b/drivers/iio/accel/bma400.h
-> @@ -68,7 +68,19 @@
->  #define BMA400_CMD_REG              0x7e
->
->  /* Interrupt registers */
-> -#define BMA400_INT_CONFIG0_REG     0x1f
-> +#define BMA400_INT_CONFIG0_REG                 0x1f
-> +#define BMA400_INT_CONFIG0_ORTN_CHG_MASK       BIT(1)
-> +#define BMA400_INT_CONFIG0_GEN1_MASK           BIT(2)
-> +#define BMA400_INT_CONFIG0_GEN2_MASK           BIT(3)
-> +#define BMA400_INT_CONFIG0_FIFO_FULL_MASK      BIT(5)
-> +#define BMA400_INT_CONFIG0_FIFO_WTRMRK_MASK    BIT(6)
-> +#define BMA400_INT_CONFIG0_DRDY_MASK           BIT(7)
-> +
-> +enum generic_intr {
-> +       GEN1_INTR,
-> +       GEN2_INTR
-> +};
-> +
->  #define BMA400_INT_CONFIG1_REG     0x20
->  #define BMA400_INT1_MAP_REG        0x21
->  #define BMA400_INT_IO_CTRL_REG     0x24
-> @@ -96,15 +108,53 @@
->  #define BMA400_ACC_ODR_MIN_HZ       12
->
->  /* Generic interrupts register */
-> -#define BMA400_GEN1INT_CONFIG0      0x3f
-> -#define BMA400_GEN2INT_CONFIG0      0x4A
-> -#define BMA400_GEN_CONFIG1_OFF      0x01
-> -#define BMA400_GEN_CONFIG2_OFF      0x02
-> -#define BMA400_GEN_CONFIG3_OFF      0x03
-> -#define BMA400_GEN_CONFIG31_OFF     0x04
-> -#define BMA400_INT_GEN1_MSK         BIT(2)
-> -#define BMA400_INT_GEN2_MSK         BIT(3)
-> -#define BMA400_GEN_HYST_MSK         GENMASK(1, 0)
-> +#define BMA400_GENINT_CONFIG_REG_BASE  0x3f
-> +#define BMA400_NUM_GENINT_CONFIG_REGS  11
-> +#define BMA400_GENINT_CONFIG_REG(gen_intr, config_idx) \
-> +       (BMA400_GENINT_CONFIG_REG_BASE +                \
-> +       (gen_intr) * BMA400_NUM_GENINT_CONFIG_REGS +    \
-> +       (config_idx))
-> +
-> +/* Generic Interrupt Config0 register */
-> +#define BMA400_GENINT_CONFIG0_HYST_MASK                        GENMASK(1=
-, 0)
-> +#define BMA400_GENINT_CONFIG0_REF_UPD_MODE_MASK                GENMASK(3=
-, 2)
-> +#define BMA400_GENINT_CONFIG0_DATA_SRC_MASK            BIT(4)
-> +#define BMA400_GENINT_CONFIG0_X_EN_MASK                        BIT(5)
-> +#define BMA400_GENINT_CONFIG0_Y_EN_MASK                        BIT(6)
-> +#define BMA400_GENINT_CONFIG0_Z_EN_MASK                        BIT(7)
-> +
-> +enum bma400_hysteresis_config {
-> +       NO_HYSTERESIS,
-> +       HYSTERESIS_24MG,
-> +       HYSTERESIS_48MG,
-> +       HYSTERESIS_96MG
-> +};
-> +
-> +enum bma400_accel_data_src {
-> +       ACCEL_FILT1,
-> +       ACCEL_FILT2
-> +};
-> +
-> +enum bma400_ref_updt_mode {
-> +       BMA400_REF_MANUAL_UPDT_MODE,
-> +       BMA400_REF_ONETIME_UPDT_MODE,
-> +       BMA400_REF_EVERYTIME_UPDT_MODE,
-> +       BMA400_REF_EVERYTIME_LP_UPDT_MODE
-> +};
-> +
-> +/* Generic Interrupt Config1 register */
-> +#define BMA400_GENINT_CONFIG1_AXES_COMB_MASK           BIT(0)
-> +#define BMA400_GENINT_CONFIG1_DETCT_CRIT_MASK          BIT(1)
-> +
-> +enum bma400_genintr_acceleval_axescomb {
-> +       BMA400_EVAL_X_OR_Y_OR_Z,
-> +       BMA400_EVAL_X_AND_Y_AND_Z,
-> +};
-> +
-> +enum bma400_detect_criterion {
-> +       BMA400_DETECT_INACTIVITY,
-> +       BMA400_DETECT_ACTIVITY,
-> +};
->
->  /* TAP config registers */
->  #define BMA400_TAP_CONFIG           0x57
-> @@ -119,6 +169,7 @@
->  #define BMA400_TAP_QUIETDT_MSK      GENMASK(5, 4)
->  #define BMA400_TAP_TIM_LIST_LEN     4
->
-> +
->  /*
->   * BMA400_SCALE_MIN macro value represents m/s^2 for 1 LSB before
->   * converting to micro values for +-2g range.
-> diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_c=
-ore.c
-> index 85e23badf733..aabbe74e1db7 100644
-> --- a/drivers/iio/accel/bma400_core.c
-> +++ b/drivers/iio/accel/bma400_core.c
-> @@ -121,6 +121,29 @@ struct bma400_data {
->         __be16 duration;
->  };
->
-> +struct bma400_genintr_info {
-> +       u8 genintr;
-> +       unsigned int intrmask;
-> +       enum iio_event_direction dir;
-> +       enum bma400_detect_criterion detect_mode;
-> +};
-> +
-> +/* Lookup struct for determining GEN1/GEN2 based on dir */
-> +static const struct bma400_genintr_info bma400_genintrs[] =3D {
-> +       [IIO_EV_DIR_RISING] =3D {
-> +               .genintr =3D GEN1_INTR,   /* 0 for GEN1 */
-> +               .intrmask =3D BMA400_INT_CONFIG0_GEN1_MASK,
-> +               .dir =3D IIO_EV_DIR_RISING,
-> +               .detect_mode =3D BMA400_DETECT_ACTIVITY,
-> +       },
-> +       [IIO_EV_DIR_FALLING] =3D {
-> +               .genintr =3D GEN2_INTR,   /* 1 for GEN2 */
-> +               .intrmask =3D BMA400_INT_CONFIG0_GEN2_MASK,
-> +               .dir =3D IIO_EV_DIR_FALLING,
-> +               .detect_mode =3D BMA400_DETECT_INACTIVITY,
-> +       }
-> +};
-> +
->  static bool bma400_is_writable_reg(struct device *dev, unsigned int reg)
->  {
->         switch (reg) {
-> @@ -1114,10 +1137,10 @@ static int bma400_read_event_config(struct iio_de=
-v *indio_dev,
->         case IIO_ACCEL:
->                 switch (dir) {
->                 case IIO_EV_DIR_RISING:
-> -                       return FIELD_GET(BMA400_INT_GEN1_MSK,
-> +                       return FIELD_GET(BMA400_INT_CONFIG0_GEN1_MASK,
->                                          data->generic_event_en);
->                 case IIO_EV_DIR_FALLING:
-> -                       return FIELD_GET(BMA400_INT_GEN2_MSK,
-> +                       return FIELD_GET(BMA400_INT_CONFIG0_GEN2_MASK,
->                                          data->generic_event_en);
->                 case IIO_EV_DIR_SINGLETAP:
->                         return FIELD_GET(BMA400_S_TAP_MSK,
-> @@ -1155,63 +1178,83 @@ static int bma400_steps_event_enable(struct bma40=
-0_data *data, int state)
->         return 0;
->  }
->
-> -static int bma400_activity_event_en(struct bma400_data *data,
-> -                                   enum iio_event_direction dir,
-> -                                   int state)
-> +static inline const struct bma400_genintr_info *
-> +get_bma400_genintr_info(enum iio_event_direction dir)
->  {
-> -       int ret, reg, msk, value;
-> -       int field_value =3D 0;
-> -
->         switch (dir) {
->         case IIO_EV_DIR_RISING:
-> -               reg =3D BMA400_GEN1INT_CONFIG0;
-> -               msk =3D BMA400_INT_GEN1_MSK;
-> -               value =3D 2;
-> -               set_mask_bits(&field_value, BMA400_INT_GEN1_MSK,
-> -                             FIELD_PREP(BMA400_INT_GEN1_MSK, state));
-> -               break;
->         case IIO_EV_DIR_FALLING:
-> -               reg =3D BMA400_GEN2INT_CONFIG0;
-> -               msk =3D BMA400_INT_GEN2_MSK;
-> -               value =3D 0;
-> -               set_mask_bits(&field_value, BMA400_INT_GEN2_MSK,
-> -                             FIELD_PREP(BMA400_INT_GEN2_MSK, state));
-> -               break;
-> +               return &bma400_genintrs[dir];
->         default:
-> +               return NULL;
-> +
-> +       };
-> +}
-> +
-> +static int bma400_generic_event_en(struct bma400_data *data,
-> +                                  enum iio_event_direction dir,
-> +                                  int state)
-> +{
-> +       int ret, regval;
-> +       u8 genintr, detect_criterion;
-> +       unsigned int intrmask;
-> +       const struct bma400_genintr_info *bma400_genintr;
-> +
-> +       bma400_genintr =3D get_bma400_genintr_info(dir);
-> +       if (!bma400_genintr)
->                 return -EINVAL;
-> -       }
->
-> -       /* Enabling all axis for interrupt evaluation */
-> -       ret =3D regmap_write(data->regmap, reg, 0xF8);
-> +       genintr =3D bma400_genintr->genintr;
-> +       detect_criterion =3D bma400_genintr->detect_mode;
-> +       intrmask =3D bma400_genintr->intrmask;
-> +
-> +       /*
-> +        * Enabling all axis for interrupt evaluation.
-> +        * Acc_filt2 is recommended as data source in datasheet (Section =
-4.7).
-> +        */
-> +       ret =3D regmap_write(data->regmap, BMA400_GENINT_CONFIG_REG(genin=
-tr, 0),
-> +                          BMA400_GENINT_CONFIG0_X_EN_MASK |
-> +                          BMA400_GENINT_CONFIG0_Y_EN_MASK |
-> +                          BMA400_GENINT_CONFIG0_Z_EN_MASK|
-> +                          FIELD_PREP(BMA400_GENINT_CONFIG0_DATA_SRC_MASK=
-, ACCEL_FILT2)|
-> +                          FIELD_PREP(BMA400_GENINT_CONFIG0_REF_UPD_MODE_=
-MASK,
-> +                                     BMA400_REF_EVERYTIME_UPDT_MODE));
->         if (ret)
->                 return ret;
->
->         /* OR combination of all axis for interrupt evaluation */
-> -       ret =3D regmap_write(data->regmap, reg + BMA400_GEN_CONFIG1_OFF, =
-value);
-> +       regval =3D FIELD_PREP(BMA400_GENINT_CONFIG1_AXES_COMB_MASK, BMA40=
-0_EVAL_X_OR_Y_OR_Z) |
-> +                FIELD_PREP(BMA400_GENINT_CONFIG1_DETCT_CRIT_MASK, detect=
-_criterion);
-> +       ret =3D regmap_write(data->regmap, BMA400_GENINT_CONFIG_REG(genin=
-tr, 1), regval);
->         if (ret)
->                 return ret;
->
-> -       /* Initial value to avoid interrupts while enabling*/
-> -       ret =3D regmap_write(data->regmap, reg + BMA400_GEN_CONFIG2_OFF, =
-0x0A);
-> +       /*
-> +        * Initial value to avoid (activity) interrupts while enabling
-> +        * Value is in units of 8mg/lsb, i.e. effective val is val * 8mg/=
-lsb
-> +        */
-> +       ret =3D regmap_write(data->regmap, BMA400_GENINT_CONFIG_REG(genin=
-tr, 2), 0x0A);
->         if (ret)
->                 return ret;
->
->         /* Initial duration value to avoid interrupts while enabling*/
-> -       ret =3D regmap_write(data->regmap, reg + BMA400_GEN_CONFIG31_OFF,=
- 0x0F);
-> +       ret =3D regmap_write(data->regmap, BMA400_GENINT_CONFIG_REG(genin=
-tr, 4), 0x0F);
->         if (ret)
->                 return ret;
->
-> -       ret =3D regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG, msk=
-,
-> -                                field_value);
-> +       regval =3D FIELD_PREP(BMA400_INT_CONFIG0_GEN1_MASK, state);
-> +       if (genintr)
-> +               regval =3D FIELD_PREP(BMA400_INT_CONFIG0_GEN2_MASK, state=
-);
-> +
-> +       ret =3D regmap_update_bits(data->regmap, BMA400_INT1_MAP_REG, int=
-rmask, regval);
->         if (ret)
->                 return ret;
->
-> -       ret =3D regmap_update_bits(data->regmap, BMA400_INT_CONFIG0_REG, =
-msk,
-> -                                field_value);
-> +       ret =3D regmap_update_bits(data->regmap, BMA400_INT_CONFIG0_REG, =
-intrmask, regval);
->         if (ret)
->                 return ret;
->
-> -       set_mask_bits(&data->generic_event_en, msk, field_value);
-> +       set_mask_bits(&data->generic_event_en, intrmask, regval);
->         return 0;
->  }
->
-> @@ -1303,7 +1346,7 @@ static int bma400_write_event_config(struct iio_dev=
- *indio_dev,
->                 switch (type) {
->                 case IIO_EV_TYPE_MAG:
->                         mutex_lock(&data->mutex);
-> -                       ret =3D bma400_activity_event_en(data, dir, state=
-);
-> +                       ret =3D bma400_generic_event_en(data, dir, state)=
-;
->                         mutex_unlock(&data->mutex);
->                         return ret;
->                 case IIO_EV_TYPE_GESTURE:
-> @@ -1336,18 +1379,6 @@ static int bma400_write_event_config(struct iio_de=
-v *indio_dev,
->         }
->  }
->
-> -static int get_gen_config_reg(enum iio_event_direction dir)
-> -{
-> -       switch (dir) {
-> -       case IIO_EV_DIR_FALLING:
-> -               return BMA400_GEN2INT_CONFIG0;
-> -       case IIO_EV_DIR_RISING:
-> -               return BMA400_GEN1INT_CONFIG0;
-> -       default:
-> -               return -EINVAL;
-> -       }
-> -}
-> -
->  static int bma400_read_event_value(struct iio_dev *indio_dev,
->                                    const struct iio_chan_spec *chan,
->                                    enum iio_event_type type,
-> @@ -1356,22 +1387,24 @@ static int bma400_read_event_value(struct iio_dev=
- *indio_dev,
->                                    int *val, int *val2)
->  {
->         struct bma400_data *data =3D iio_priv(indio_dev);
-> -       int ret, reg, reg_val, raw;
-> +       int ret, genintr, reg_val, raw;
-> +       const struct bma400_genintr_info *bma400_genintr;
->
->         if (chan->type !=3D IIO_ACCEL)
->                 return -EINVAL;
->
->         switch (type) {
->         case IIO_EV_TYPE_MAG:
-> -               reg =3D get_gen_config_reg(dir);
-> -               if (reg < 0)
-> +               bma400_genintr =3D get_bma400_genintr_info(dir);
-> +               if (!bma400_genintr)
->                         return -EINVAL;
-> +               genintr =3D bma400_genintr->genintr;
->
->                 *val2 =3D 0;
->                 switch (info) {
->                 case IIO_EV_INFO_VALUE:
->                         ret =3D regmap_read(data->regmap,
-> -                                         reg + BMA400_GEN_CONFIG2_OFF,
-> +                                         BMA400_GENINT_CONFIG_REG(genint=
-r, 2),
->                                           val);
->                         if (ret)
->                                 return ret;
-> @@ -1379,7 +1412,7 @@ static int bma400_read_event_value(struct iio_dev *=
-indio_dev,
->                 case IIO_EV_INFO_PERIOD:
->                         mutex_lock(&data->mutex);
->                         ret =3D regmap_bulk_read(data->regmap,
-> -                                              reg + BMA400_GEN_CONFIG3_O=
-FF,
-> +                                              BMA400_GENINT_CONFIG_REG(g=
-enintr, 3),
->                                                &data->duration,
->                                                sizeof(data->duration));
->                         if (ret) {
-> @@ -1390,10 +1423,12 @@ static int bma400_read_event_value(struct iio_dev=
- *indio_dev,
->                         mutex_unlock(&data->mutex);
->                         return IIO_VAL_INT;
->                 case IIO_EV_INFO_HYSTERESIS:
-> -                       ret =3D regmap_read(data->regmap, reg, val);
-> +                       ret =3D regmap_read(data->regmap,
-> +                                         BMA400_GENINT_CONFIG_REG(genint=
-r, 0),
-> +                                         val);
->                         if (ret)
->                                 return ret;
-> -                       *val =3D FIELD_GET(BMA400_GEN_HYST_MSK, *val);
-> +                       *val =3D FIELD_GET(BMA400_GENINT_CONFIG0_HYST_MAS=
-K, *val);
->                         return IIO_VAL_INT;
->                 default:
->                         return -EINVAL;
-> @@ -1444,16 +1479,18 @@ static int bma400_write_event_value(struct iio_de=
-v *indio_dev,
->                                     int val, int val2)
->  {
->         struct bma400_data *data =3D iio_priv(indio_dev);
-> -       int reg, ret, raw;
-> +       int genintr, ret, raw;
-> +       const struct bma400_genintr_info *bma400_genintr;
->
->         if (chan->type !=3D IIO_ACCEL)
->                 return -EINVAL;
->
->         switch (type) {
->         case IIO_EV_TYPE_MAG:
-> -               reg =3D get_gen_config_reg(dir);
-> -               if (reg < 0)
-> +               bma400_genintr =3D get_bma400_genintr_info(dir);
-> +               if (!bma400_genintr)
->                         return -EINVAL;
-> +               genintr =3D bma400_genintr->genintr;
->
->                 switch (info) {
->                 case IIO_EV_INFO_VALUE:
-> @@ -1461,7 +1498,7 @@ static int bma400_write_event_value(struct iio_dev =
-*indio_dev,
->                                 return -EINVAL;
->
->                         return regmap_write(data->regmap,
-> -                                           reg + BMA400_GEN_CONFIG2_OFF,
-> +                                           BMA400_GENINT_CONFIG_REG(geni=
-ntr, 2),
->                                             val);
->                 case IIO_EV_INFO_PERIOD:
->                         if (val < 1 || val > 65535)
-> @@ -1470,7 +1507,7 @@ static int bma400_write_event_value(struct iio_dev =
-*indio_dev,
->                         mutex_lock(&data->mutex);
->                         put_unaligned_be16(val, &data->duration);
->                         ret =3D regmap_bulk_write(data->regmap,
-> -                                               reg + BMA400_GEN_CONFIG3_=
-OFF,
-> +                                               BMA400_GENINT_CONFIG_REG(=
-genintr, 3),
->                                                 &data->duration,
->                                                 sizeof(data->duration));
->                         mutex_unlock(&data->mutex);
-> @@ -1479,10 +1516,10 @@ static int bma400_write_event_value(struct iio_de=
-v *indio_dev,
->                         if (val < 0 || val > 3)
->                                 return -EINVAL;
->
-> -                       return regmap_update_bits(data->regmap, reg,
-> -                                                 BMA400_GEN_HYST_MSK,
-> -                                                 FIELD_PREP(BMA400_GEN_H=
-YST_MSK,
-> -                                                            val));
-> +                       return regmap_update_bits(data->regmap,
-> +                                                 BMA400_GENINT_CONFIG_RE=
-G(genintr, 0),
-> +                                                 BMA400_GENINT_CONFIG0_H=
-YST_MASK,
-> +                                                 FIELD_PREP(BMA400_GENIN=
-T_CONFIG0_HYST_MASK, val));
->                 default:
->                         return -EINVAL;
->                 }
-> @@ -1650,10 +1687,10 @@ static irqreturn_t bma400_interrupt(int irq, void=
- *private)
->                                                   IIO_EV_DIR_DOUBLETAP),
->                                timestamp);
->
-> -       if (FIELD_GET(BMA400_INT_GEN1_MSK, le16_to_cpu(data->status)))
-> +       if (FIELD_GET(BMA400_INT_CONFIG0_GEN1_MASK, le16_to_cpu(data->sta=
-tus)))
->                 ev_dir =3D IIO_EV_DIR_RISING;
->
-> -       if (FIELD_GET(BMA400_INT_GEN2_MSK, le16_to_cpu(data->status)))
-> +       if (FIELD_GET(BMA400_INT_CONFIG0_GEN2_MASK, le16_to_cpu(data->sta=
-tus)))
->                 ev_dir =3D IIO_EV_DIR_FALLING;
->
->         if (ev_dir !=3D IIO_EV_DIR_NONE) {
-> --
-> 2.43.0
->
-Hello Reviewers,
-After waiting for a week, I have sent v2.
-Requesting your valuable feedback on this.
+> change in v2
+> - new patch
+> ---
+HI Frank,
+
+Some minor comments inline,
 
 Thanks,
-Akshay.
+
+Jonathan
+
+>  drivers/iio/magnetometer/Kconfig   |  12 +
+>  drivers/iio/magnetometer/Makefile  |   1 +
+>  drivers/iio/magnetometer/mmc5633.c | 543 +++++++++++++++++++++++++++++++++++++
+>  3 files changed, 556 insertions(+)
+> 
+> diff --git a/drivers/iio/magnetometer/Kconfig b/drivers/iio/magnetometer/Kconfig
+> index 81b812a29044e2b0b9ff84889c21aa3ebc20be35..cfb74a4a083630678a1db1132a14264de451a31a 100644
+> --- a/drivers/iio/magnetometer/Kconfig
+> +++ b/drivers/iio/magnetometer/Kconfig
+
+> diff --git a/drivers/iio/magnetometer/mmc5633.c b/drivers/iio/magnetometer/mmc5633.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..b1a6973ea175634bbc2247ff84488ea5393eba0e
+> --- /dev/null
+> +++ b/drivers/iio/magnetometer/mmc5633.c
+> @@ -0,0 +1,543 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * MMC5633 - MEMSIC 3-axis Magnetic Sensor
+> + *
+> + * Copyright (c) 2015, Intel Corporation.
+> + * Copyright (c) 2025, NXP
+> + *
+> + * IIO driver for MMC5633, base on mmc35240.c
+> + *
+Trivial but this blank line doesn't add anything, so drop it.
+
+> + */
+
+> +static const struct {
+> +	int val;
+> +	int val2;
+> +} mmc5633_samp_freq[] = { {1, 200000},
+> +			  {2, 0},
+> +			  {3, 500000},
+> +			  {6, 600000},
+> +			};
+
+Generally prefer { 1, 20000 } 
+style for IIO and here I'd format this as:
+
+static const struct {
+	int val;
+	int val2;
+} mmc5633_samp_freq[] = {
+	{ 1, 200000 },
+	{ 2, 0 },
+	{ 3, 500000 },
+	{ 6, 600000 },
+};
+
+> +
+> +static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("1.2 2.0 3.5 6.6");
+
+> +
+> +static struct attribute *mmc5633_attributes[] = {
+> +	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
+Please use the read_avail() callback and the associated masks.
+
+That makes it available for in kernel users and generally is preferred
+for new drivers.  One day I'll get rid of the defines you are using here
+but it will take a while yet!
+
+> +	NULL
+> +};
+> +
+> +static const struct attribute_group mmc5633_attribute_group = {
+> +	.attrs = mmc5633_attributes,
+> +};
+
+> +
+> +static int mmc5633_hw_set(struct mmc5633_data *data, bool set)
+> +{
+> +	u8 coil_bit;
+> +
+> +	if (set)
+> +		coil_bit = MMC5633_CTRL0_SET;
+> +	else
+> +		coil_bit = MMC5633_CTRL0_RESET;
+> +
+> +	return regmap_write(data->regmap, MMC5633_REG_CTRL0, coil_bit);
+
+This helper doesn't provide all that much value. Maybe just
+call the regmap_write() inline and let the value written make
+it obvious which is set and reset?
+
+> +}
+> +
+> +static int mmc5633_init(struct mmc5633_data *data)
+> +{
+> +	unsigned int reg_id, ret;
+> +
+> +	ret = regmap_read(data->regmap, MMC5633_REG_ID, &reg_id);
+> +	if (ret < 0)
+> +		return dev_err_probe(data->dev, ret,
+> +				     "Error reading product id\n");
+> +
+> +	/*
+> +	 * make sure we restore sensor characteristics, by doing
+
+Make
+
+> +	 * a SET/RESET sequence, the axis polarity being naturally
+> +	 * aligned after RESET
+
+RESET.
+
+> +	 */
+> +	ret = mmc5633_hw_set(data, true);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	usleep_range(MMC5633_WAIT_SET_RESET, MMC5633_WAIT_SET_RESET + 1);
+> +
+> +	ret = mmc5633_hw_set(data, false);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* set default sampling frequency */
+> +	ret = regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
+> +				 MMC5633_CTRL1_BW_MASK,
+> +				 FIELD_PREP(MMC5633_CTRL1_BW_MASK, 0));
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
+
+	return regmap_upate_bits()
+
+Given regmap always returns negative for errors of 0 for success it
+would be better to check if (ret) which then makes this sort of final
+call look more obviously correct.
+
+
+> +}
+> +
+> +static int mmc5633_take_measurement(struct mmc5633_data *data)
+> +{
+> +	unsigned int reg_status;
+> +	int ret;
+> +
+> +	ret = regmap_write(data->regmap, MMC5633_REG_CTRL0, MMC5633_CTRL0_MEAS_M);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = regmap_read_poll_timeout(data->regmap, MMC5633_REG_STATUS1, reg_status,
+> +				       reg_status & MMC5633_STATUS1_MEAS_M_DONE_BIT,
+> +				       10000, 10000 * 100);
+> +
+Drop the blank line here to keep the error check associated with the call
+> +	if (ret) {
+> +		dev_err(data->dev, "data not ready\n");
+> +		return -EIO;
+Why not return ret
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int mmc5633_read_measurement(struct mmc5633_data *data, void *buf, size_t sz)
+> +{
+> +	__le16 data_word;
+> +	__le16 status;
+Might as well combine on one line.
+
+> +	int ret, val;
+> +
+> +	if (data->i3cdev &&
+> +	    (i3c_device_get_supported_xfer_mode(data->i3cdev) & BIT(I3C_HDR_DDR))) {
+
+I'd factor this lot out as a helper function to improve readability a little.
+
+> +		struct i3c_xfer xfers_wr_cmd[] = {
+> +			{
+> +				.cmd = 0x3b,
+> +				.len = 2,
+> +				.data.out = &data_word,
+> +			}
+> +		};
+> +
+> +		struct i3c_xfer xfers_rd_sta_cmd[] = {
+> +			{
+> +				.cmd = 0x23 | BIT(7), /* RDSTA CMD */
+> +				.len = 2,
+> +				.data.in = &status,
+> +			},
+> +		};
+> +
+> +		struct i3c_xfer xfers_rd_data_cmd[] = {
+> +			{
+> +				.cmd = 0x22 | BIT(7), /* RDLONG CMD */
+> +				.len = sz,
+> +				.data.in = buf,
+> +			},
+> +		};
+> +
+> +		data_word = cpu_to_le16(MMC5633_HDR_CTRL0_MEAS_M << 8);
+
+if you are shifting it by 8 bits and it's an 16 bit value, feels like it's actually not
+and it's a pair of bytes. Perhaps just set the relevant byte in a u8 [2] would be clearer?
+If this is how it's described on the datasheet I guess I don't mind that much.
+
+> +
+> +		ret = i3c_device_do_xfers(data->i3cdev, xfers_wr_cmd, 1, I3C_HDR_DDR);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret = read_poll_timeout(i3c_device_do_xfers, val,
+> +					val ||
+> +					(le16_to_cpu(status) & MMC5633_STATUS1_MEAS_M_DONE_BIT),
+> +					10000, 10000 * 100, 0,
+> +					data->i3cdev, xfers_rd_sta_cmd, 1, I3C_HDR_DDR);
+> +
+> +		if (ret || val) {
+> +			dev_err(data->dev, "data not ready\n");
+> +			return -EIO;
+Nice to return ret if it is set.  
+
+> +		}
+> +
+> +		return i3c_device_do_xfers(data->i3cdev, xfers_rd_data_cmd, 1, I3C_HDR_DDR);
+> +	}
+> +
+> +	/* Fallback to use SDR/I2C mode */
+> +	ret = mmc5633_take_measurement(data);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return regmap_bulk_read(data->regmap, MMC5633_REG_XOUT_L, buf, sz);
+> +}
+> +
+> +static int mmc5633_get_raw(struct mmc5633_data *data, int index, unsigned char *buf, int *val)
+> +{
+> +	/*
+> +	 * X[19..12] X[11..4] Y[19..12] Y[11..4] Z[19..12] Z[11..4] X[3..0] Y[3..0] Z[3..0]
+> +	 */
+> +	*val = buf[2 * index];
+> +	*val <<= 8;
+> +
+> +	*val |= buf[2 * index + 1];
+> +	*val <<= 8;
+
+First bit could be a get_unaligned_be16() << 8 or something like that.
+
+> +
+> +	*val |= buf[index + 6];
+> +
+> +	*val >>= 4;
+> +
+> +	return 0;
+> +}
+> +
+> +#define MMC5633_ALL_SIZE (3 * 3 + 1) /* each channel have 3 byte and TEMP */
+> +
+> +static int mmc5633_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan, int *val,
+> +			    int *val2, long mask)
+> +{
+> +	struct mmc5633_data *data = iio_priv(indio_dev);
+> +	char buf[MMC5633_ALL_SIZE];
+> +	unsigned int reg;
+> +	int ret, i;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		scoped_guard(mutex, &data->mutex) {
+> +			ret = mmc5633_read_measurement(data, buf, MMC5633_ALL_SIZE);
+> +			if (ret < 0)
+> +				return ret;
+> +		}
+> +
+> +		ret = mmc5633_get_raw(data, chan->address, buf, val);
+> +		if (ret < 0)
+> +			return ret;
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*val = 0;
+> +		*val2 = 62500;
+> +		return IIO_VAL_INT_PLUS_NANO;
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		scoped_guard(mutex, &data->mutex) {
+> +			ret = regmap_read(data->regmap, MMC5633_REG_CTRL1, &reg);
+> +			if (ret < 0)
+> +				return ret;
+> +		}
+> +
+> +		i = FIELD_GET(MMC5633_CTRL1_BW_MASK, reg);
+> +		if (i < 0 || i >= ARRAY_SIZE(mmc5633_samp_freq))
+
+How does a FIELD_GET() give a negative?
+
+> +			return -EINVAL;
+> +
+> +		*val = mmc5633_samp_freq[i].val;
+> +		*val2 = mmc5633_samp_freq[i].val2;
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+
+>
+> +static const struct of_device_id mmc5633_of_match[] = {
+> +	{ .compatible = "memsic,mmc5633", },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, mmc5633_of_match);
+> +
+> +static const struct i2c_device_id mmc5633_i2c_id[] = {
+> +	{ "mmc5633" },
+> +	{}
+be consistent. I'd prefer
+	{ }
+
+> +};
+> +MODULE_DEVICE_TABLE(i2c, mmc5633_i2c_id);
 

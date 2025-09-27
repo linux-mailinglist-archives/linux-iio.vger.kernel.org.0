@@ -1,60 +1,65 @@
-Return-Path: <linux-iio+bounces-24491-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24492-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1435EBA60EC
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 17:25:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F13CBA60FB
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 17:33:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF2EB4C13B1
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 15:25:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C5E4383DD1
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 15:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633DE20101D;
-	Sat, 27 Sep 2025 15:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35C22E1F00;
+	Sat, 27 Sep 2025 15:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QK5q8k+k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uKvGRzND"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA8C1E835D;
-	Sat, 27 Sep 2025 15:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D984C9D;
+	Sat, 27 Sep 2025 15:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758986743; cv=none; b=lqqRd5Tgi116j9BEhDZ/1Pjw3uLVGy87rwzgR5p3+Qkxmu/fJLrOfGlVLYagnV+sKYkQuqyn8ORRv6sfODnihKy9Ts/8pzTganwpPQX81xUobYogsoPQtd2Ru4hfagv27ME2fnY2XTod8/1Ewp5gDUtA860f/PjPXwdpl2jIWlY=
+	t=1758987225; cv=none; b=XsgaAnIz6rhVnfme9Fge9Sr7VxJiaUmYPuNF/ouG0iIWybcW+4hWSppyAcqELwCG50GGGtI9onJuz5DpISa8Hv1ysrDa6fcqp9kdBHr1DMgqYCKlkeUVgXdJS2D28AiRrJCyZUx5JPreIuIh8S/wHEKkgxDZhZ91zO13rO9Kv2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758986743; c=relaxed/simple;
-	bh=YgITrmNg/NjGeSSEMK4ZzE7tujHAoNfv0EzP1qrhx2g=;
+	s=arc-20240116; t=1758987225; c=relaxed/simple;
+	bh=YP9XMHyMUiFPIIDHrpJNhaTLyQxop7Ve8HoR8OOr+xM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dxpjtowYhlGo9GFK9xHC+jaNPVIqyKF7N6uhPvhqGtXtfpWvtcpu7tKCKqSI9MKBZ/M6lKB9aR3ki+Hughf7wuPB39cM2ehaGpjBBaHFkHnoNY5nMAfdUdatVXaODwqNNmFdNNiFR5plUdyFirK9GSjtqxTQm7eDPjfAVWKGS9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QK5q8k+k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B0CC4CEE7;
-	Sat, 27 Sep 2025 15:25:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gqzNtZflNEw9uMKZsZtIBlmcnFqWD9NYnPPTxquLvnPkJ2TKnEXBTUjOkyCqmbOQvFK1gLz2Dau8kI6FBj3FRcbcR2scCvT0MsykpblhIzNaHLPWU0DRkpFXbmU/PyId0wHzM5IKjefTt9JTybwYV51HnpelG5MHKQqko47YHqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uKvGRzND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89A2C4CEE7;
+	Sat, 27 Sep 2025 15:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758986742;
-	bh=YgITrmNg/NjGeSSEMK4ZzE7tujHAoNfv0EzP1qrhx2g=;
+	s=k20201202; t=1758987225;
+	bh=YP9XMHyMUiFPIIDHrpJNhaTLyQxop7Ve8HoR8OOr+xM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QK5q8k+k9LF1yBMTr6RX0dMw6bSZW9FYsqKqk3ScSYAHhygUwfXdZtfrQPVvsuRMU
-	 PAgSrZWkoSPk1ZGJSi7DRJR3ylSbXlDsvtlChASu8OatxZ1k9uKjw3vVyclcv+p40+
-	 y7fCxdjY6BlcFwZ6cOahgGexhaq+bmAo3tIY7ARRZJPZFCNfVL/Oaq2Pin2grwlZeq
-	 nj8DPJ5nE4yN5YroeTar+eYDQrI8c3hfU+gjriL3+h7AsJWcutNW2y5BWbbnrDRNlo
-	 ig4Q+zbk7SsHYc5Mvspm8avAYjRARRztbqPRsUPw4Ka9fwxk8X6DTR/rhfp0aOr4Dz
-	 RixF6WTz38ftw==
-Date: Sat, 27 Sep 2025 16:25:33 +0100
+	b=uKvGRzNDS9jYjMcVd+pc5wMr3QM22v44//bBx7gOLY6rWWAKjqlbZM8jnaKyloz1I
+	 IQpmtkWHO+mBtjCXCp6Ra/uph6kCwtx4rFrIsBH3OYOygl6WALBYHXLW4uAZLcf+V/
+	 t6+kjfJtUqEr3S/DuG7ZEQhI0Nd+WBoxC6X2KtY+oFyTbSY15MUfyMEW8xVJUqpMwm
+	 teoeMigCDa7TGKw0OpGZzX4xKoIVUu41Xr8omfZDoBo6Pj6LzXObcnHMhxPQBWtFW3
+	 uGUuPSTZBiI9Sgm8ej45bYy6aEjAUa9R9GEhN3/rbBcbQD/85oS95fQdeMgtn1ckoZ
+	 mwIf+VC/k8wCA==
+Date: Sat, 27 Sep 2025 16:33:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: <Victor.Duicu@microchip.com>
-Cc: <dlechner@baylibre.com>, <nuno.sa@analog.com>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <robh@kernel.org>, <linux-kernel@vger.kernel.org>, <andy@kernel.org>,
- <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <Marius.Cristea@microchip.com>
-Subject: Re: [PATCH v5 2/2] iio: temperature: add support for MCP998X
-Message-ID: <20250927162533.14f3c475@jic23-huawei>
-In-Reply-To: <42a376a9451ed340e0aa7f1c01a16554298c0693.camel@microchip.com>
-References: <20250918111937.5150-1-victor.duicu@microchip.com>
-	<20250918111937.5150-3-victor.duicu@microchip.com>
-	<20250920115554.36dc4de1@jic23-huawei>
-	<42a376a9451ed340e0aa7f1c01a16554298c0693.camel@microchip.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ michael.hennerich@analog.com, nuno.sa@analog.com, eblanc@baylibre.com,
+ dlechner@baylibre.com, andy@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, corbet@lwn.net
+Subject: Re: [PATCH v2 7/8] dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216
+ and ADAQ4224
+Message-ID: <20250927163333.55d94113@jic23-huawei>
+In-Reply-To: <20250921-unadvised-uninjured-cdd7a6e6f326@spud>
+References: <cover.1758214628.git.marcelo.schmitt@analog.com>
+	<2d6bca62056e1254f91b45f70f4ba4614e659c1c.1758214628.git.marcelo.schmitt@analog.com>
+	<20250919-unsure-mounted-0fc49ce72216@spud>
+	<aM3HJY0GWJmP8-do@debian-BULLSEYE-live-builder-AMD64>
+	<20250921-unadvised-uninjured-cdd7a6e6f326@spud>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,137 +67,122 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 24 Sep 2025 12:47:31 +0000
-<Victor.Duicu@microchip.com> wrote:
+On Sun, 21 Sep 2025 23:20:01 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-> On Sat, 2025-09-20 at 11:55 +0100, Jonathan Cameron wrote:
-> > EXTERNAL EMAIL: Do not click links or open attachments unless you
-> > know the content is safe
-> >  =20
->=20
-> Hi Jonathan,
->=20
-> > On Thu, 18 Sep 2025 14:19:37 +0300
-> > <victor.duicu@microchip.com> wrote:
-> >  =20
-> > > From: Victor Duicu <victor.duicu@microchip.com>
-> > >=20
-> > > This is the driver for Microchip MCP998X/33 and MCP998XD/33D
-> > > Multichannel
-> > > Automotive Temperature Monitor Family.
-> > >=20
-> > > Signed-off-by: Victor Duicu <victor.duicu@microchip.com> =20
-> > Hi Victor,
-> >=20
-> > Various minor comments inline.
-> > Given the build warnings I didn't elect to just tidy these up whilst
-> > applying.
-> > Seemed like there was slightly too high a risk of me messing it up!
-> > Also we have lots of time as IIO is closed for this cycle now.
-> >=20
-> > Jonathan
-> >  =20
-> ...
->=20
-> >=20
-> >  =20
-> > > +/**
-> > > + * Bit flags and their meaning =20
-> >=20
-> > As below. I don't think it is worth encoding these in a bitmap. Just
-> > use
-> > 5 bools to represent the state.
-> >  =20
-> > > + * @RECD34_ENABLE:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 state of Resistance Error
-> > > Correction(REC) on channels 3 and 4
-> > > + * @RECD12_ENABLE:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 state of Resistance Error
-> > > Correction(REC) on channels 1 and 2
-> > > + * @APDD_ENABLE:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 state of anti-parallel diode mode
-> > > + * @RUN_STATE:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 chip is in run state,
-> > > otherwise is in standby state
-> > > + * @WAIT_BEFORE_READ:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 whether we need to wait a
-> > > delay before reading a new value
-> > > + */
-> > > +#define RECD34_ENABLE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0
-> > > +#define RECD12_ENABLE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1
-> > > +#define APDD_ENABLE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 2
-> > > +#define RUN_STATE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 3
-> > > +#define WAIT_BEFORE_READ=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 4
-> > > +#define USE_PREVIOUS_FREQ=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 5
-> > > + =20
->=20
-> Considering that I am planning to add new features to this driver,
-> I think that it would be useful to keep the flags.
+> On Fri, Sep 19, 2025 at 06:12:05PM -0300, Marcelo Schmitt wrote:
+> > On 09/19, Conor Dooley wrote:  
+> > > On Thu, Sep 18, 2025 at 02:39:29PM -0300, Marcelo Schmitt wrote:  
+> > > > ADAQ4216 and ADAQ4224 are similar to AD4030 except that ADAQ devices have a
+> > > > PGA (programmable gain amplifier) that scales the input signal prior to it
+> > > > reaching the ADC inputs. The PGA is controlled through a couple of pins (A0
+> > > > and A1) that set one of four possible signal gain configurations.
+> > > > 
+> > > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > > > ---
+> > > > Change log v1 -> v2
+> > > > - Use pattern to specify devices that require gain related properties.
+> > > > - Disallow gain related properties for devices that don't come with embedded PGA.
+> > > > - Documented VDDH and VDD_FDA supplies for ADAQ4216 and ADAQ4224.
+> > > > - Updated PGA gain constants.
+> > > > 
+> > > >  .../bindings/iio/adc/adi,ad4030.yaml          | 65 +++++++++++++++++--
+> > > >  1 file changed, 60 insertions(+), 5 deletions(-)
+> > > >   
+> > ...  
+> > > >  
+> > > > +  pga-gpios:
+> > > > +    description:
+> > > > +      A0 and A1 pins for gain selection. For devices that have PGA configuration
+> > > > +      input pins, pga-gpios should be defined if adi,gain-milli is absent.
+> > > > +    minItems: 2
+> > > > +    maxItems: 2
+> > > > +
+> > > > +  adi,pga-value:
+> > > > +    $ref: /schemas/types.yaml#/definitions/uint32  
+> > > 
+> > > How come this is "value" rather than "gain"?  
+> > 
+> > Because, for this one, I drew inspiration from ad7191 bindings [1] in the hopes
+> > of avoiding creating new properties or using discontinued/deprecated
+> > nomenclature [2].
+> > 
+> > The thing is, we now have ADC chips coming with PGA circuitry in front of ADC
+> > inputs. Those PGAs are usually set/configured through hardware connections
+> > (e.g. dedicated GPIOs or pin-strapped) and have been described in dt-bindings.
+> > Though, since these added PGAs don't follow a pattern with respect to the
+> > provided gain, different properties began to appear. ad7380 and ad4000 use
+> > adi,gain-milli to describe PGA gain [3, 4], ad7191 uses adi,pga-value and,
+> > more recently, adaq7768-1 has been proposed with adi,aaf-gain-bp [5].
+> > adaq7768-1 is arguably a slightly different case since the signal gain stems
+> > from an anti-aliasing filter, but it nevertheless results in signal attenuation
+> > much like some PGAs.
+> > 
+> > I personally like the -milli (or even -permille) nomenclature because 4 digits
+> > have been more than enough to describe the gains (at least so far). Though, I
+> > acknowledge the base points suffix (-bp) which is documented in
+> > property-units.yaml [6]. The only thing I don't like much about -bp for
+> > describing PGA gain is that PGA gains are often described in terms of unitless
+> > scale factors, while bp implies the value to be described as a percent.
+> > 
+> > Anyways, whatever property name is chosen, it will probably be better settle to
+> > something rather than arguing about property names each time a new ADC comes
+> > with an integrated PGA.  
+> 
+> If PGA gains are common, then ye it would make sense to have a standard
+> property. I guess one of the problems with doing so is that there isn't
+> a standard/common binding for adcs themselves, so without making one
+> it'd involve reviewers pushing people to the standard one. I suppose the
+> current adc.yaml could be made into adc-channel.yaml and adc.yaml
+> repurposed. I bet there are more properties than just PGA gain that
+> could go there.
+> 
+> My personal objection to "pga-value" is that it doesn't communicate by
+> itself what aspect of the pga it actually controls. I don't really care
+> what "unit" qualifier is used that much or if one is used at all. That's
+> more of a thing for yourself and other IIO developers to handle.
+> 
+> Part of me is bothered though that all these gains are not in dB! But
+> I'd imagine there are not really any ADCs where the registers don't
+> deal in unitless gain and using dB would be nothing more than an
+> additional headache for software developers.
 
-Unless there are many of these I think the loss of readability vs
-the likely limited extra space used by bools still makes flags a
-less than ideal approach.  For reasons of DMA safe buffer allocations
-on many architectures there is a lot of padding in the iio_dev / iio_priv
-allocation, so you can always check if it makes any difference at all
-on the allocated data
+To me this problem isn't really about PGAs at all.  What it is really
+about is cases where a pin on a chip is either tied to a gpio or pin strapped.
+Can we provide a solution at that layer?
 
->=20
-> > > +#define MCP9982_CHAN(index, si, __address)
-> > > (=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 \ =20
-> > Why the outer set of ()? =20
->=20
-> Without the outer () compiler returns error "Macros with complex values
-> should be enclosed in parentheses."
+i.e. A way to say this GPIO input is tied high so you can't control it
+but you can still read what it's current value is. Maybe there is already
+a clean way to do this.
 
-Hmm. I'd ignore that as an unhelpful warning in this case.
+Jonathan
 
->=20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0 (struct iio_chan_spec)
-> > > {=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 .type =3D
-> > > IIO_TEMP,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 .info_mask_separate =3D
-> > > BIT(IIO_CHAN_INFO_RAW),=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 .info_mask_shared_by_all_available =3D
-> > > BIT(IIO_CHAN_INFO_SAMP_FREQ) |=C2=A0=C2=A0=C2=A0=C2=A0 \
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0
-> > > BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 =20
->=20
-> Kind Regards,
-> Victor
+> 
+> > [1] Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
+> > [2] https://lore.kernel.org/linux-iio/510f6efb-ada3-4848-ac8e-16fa5d1b5284@kernel.org/
+> > [3] Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> > [4] Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+> > [5] https://lore.kernel.org/linux-iio/46842d4cf2c1149bd64188f94c60ce5e4f3b2beb.1757001160.git.Jonathan.Santos@analog.com/
+> > [6] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/property-units.yaml
+> >   
+> > >   
+> > > > +    description: |
+> > > > +      Should be present if PGA control inputs are pin-strapped. The values
+> > > > +      specify the gain per mille. For example, 333 means the input signal is
+> > > > +      scaled by a 0.333 factor (i.e. attenuated to one third of it's original
+> > > > +      magnitude). Possible values:
+> > > > +      Gain 333 (A1=0, A0=0)
+> > > > +      Gain 555 (A1=0, A0=1)
+> > > > +      Gain 2222 (A1=1, A0=0)
+> > > > +      Gain 6666 (A1=1, A0=1)
+> > > > +      If defined, pga-gpios must be absent.
+> > > > +    enum: [333, 555, 2222, 6666]
+> > > > +  
+> > 
+> > Thanks,
+> > Marcelo  
 
 

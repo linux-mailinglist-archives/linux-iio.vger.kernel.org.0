@@ -1,63 +1,57 @@
-Return-Path: <linux-iio+bounces-24483-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24484-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207FBBA5FF0
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 15:52:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AF7BA5FF9
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 15:55:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB55C4C1124
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 13:52:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 788AF3802EC
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 13:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C894E2D949F;
-	Sat, 27 Sep 2025 13:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB1E2E0B68;
+	Sat, 27 Sep 2025 13:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ogjD8m0e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cFZjtiKc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840361DB127
-	for <linux-iio@vger.kernel.org>; Sat, 27 Sep 2025 13:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9512D949F
+	for <linux-iio@vger.kernel.org>; Sat, 27 Sep 2025 13:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758981122; cv=none; b=o/YMf9ttlmlrsp1EzqiyENHV8ZzW5H0RisfKsP8Xfgqv6nJGpPTdWJeEFNdGCFW+Hpe4Wq2dUFnBMj2XXfHBlh7mUoEFj/Ner2qSTPBRVvwZaBG6vol+UJg37MKqwGR7hsoYShVksB6C3fwIE9t9haPR5oJPWNi2N2toum/XjGk=
+	t=1758981323; cv=none; b=TNepdx1+bB0PspnnU2cikFKLHNXPUxTNF3hJkd2KNshbvLJstgzCIVPaM85A/nDS3OQVA77P4wKO4pZfl8YHVgX+f2rMshFoVFTmWrWCkMTV87VHS9bbUkm/hoW64zqwc3PpiVSNceOCdWg36eXKoWEo8cxs2/qwMwOhAW1u0X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758981122; c=relaxed/simple;
-	bh=Kq62syv+BVdCWbxNkz8T4gUKNI2B3eSz6nonthhXmLc=;
+	s=arc-20240116; t=1758981323; c=relaxed/simple;
+	bh=4ZPRX6Avpyb9sskbB7hnDLbjW1kKpRJvK3j5Men1Vt4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jtgV6w1R3eqohdJ1qeOn7aykfBmb9meoRv16LBjFe/3WfvC1wLB/6Mn5oxlzMQyYML7O7CnnMhItroOkC2WTw2gSn2N6N6RGxAjkIyJB2ZyebJgsUx0gOgQaHbRg7k5KRnVqeMfdYEedhHSKivcrziZWQGe6TsPrMcXd1T9FW/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ogjD8m0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B17C4CEE7;
-	Sat, 27 Sep 2025 13:51:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YYsTkmKljsDO1LwVtMLQNGBifIgoFrQ4h7JTiuPbtc1Os2N0Z726nFf2+5ak2PhZTG0KQ0xHEAZGZnX/ZYpe39G4tdbvRKginbV58AAXw8pRW2R0hjDIWZ9oGSOcL8P1pe+VpmvXyWsEuaItvZTl82vCV04SslsSoQsGTZyRqwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cFZjtiKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D0FC4CEE7;
+	Sat, 27 Sep 2025 13:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758981121;
-	bh=Kq62syv+BVdCWbxNkz8T4gUKNI2B3eSz6nonthhXmLc=;
+	s=k20201202; t=1758981323;
+	bh=4ZPRX6Avpyb9sskbB7hnDLbjW1kKpRJvK3j5Men1Vt4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ogjD8m0e4Fyn7U1/Z/MQBAA/bUbihSu8+xJtsZneVVBWTAzMXPjUsFFQ6QpR/It7g
-	 EbWC1VXapVQy5I4fojgd2c7zAnbSKkBwImHItek0Hs+xEONN/YhbSMdZwXnW7vVEzK
-	 kSXPEthoab4ngcOMebppio7sBiCYa1sXy+8UIhZhxiT/pHfYwjj2O6sNYWFVZrBOpT
-	 PUYVcXvZ7EijVgZ7DM1e3dnDc4LcqizQXD9hTW+ZxmctLh4CYqmmxA1kQjKL9Myir3
-	 FNn8esrHexfqRqNbVrk8ZuXDjflEIMwHz52X2fRZmUMmEt0N8ZBSCX+DFwTLJsUT1y
-	 RNDUy1/8fXAdg==
-Date: Sat, 27 Sep 2025 14:51:52 +0100
+	b=cFZjtiKcv8QRomofww1ocs6yPQD+dR1NNefyrppzEheoUknb9O+sMjoL7qE3sRY/q
+	 LbL/Jlwn4iyTVxzDs9P0Z2E3XH7T9d9FOleciL16/o/4BbIVhrUPaam9XEsKwSbisL
+	 xPWbK4jaeQ6NatOGYR9IvYmcBcHafnNzoBaXVl2YEEIz0UUldZIVZfCnbSe7u9vsXh
+	 HX0zcB0GFbjBnvvSx8AFlwBlN1RMjjrUHR6EmMPHZpRjD9RJY7B5mJX4+sJKNKqdL+
+	 eoZVtiQ2LDavRlqMr1zIbcf1zRXzHF/tmyw3lbrVYZ7XYtezUgsKKcLnR+J7HFMIWj
+	 xllmk0sgMNRmg==
+Date: Sat, 27 Sep 2025 14:55:15 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Andrej Valek <andrej.v@skyrain.eu>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
- linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
  Hennerich <Michael.Hennerich@analog.com>, Puranjay Mohan
  <puranjay@kernel.org>, Kessler Markus <markus.kessler@hilti.com>
-Subject: Re: [PATCH] drivers: iio: accel: fix ADX355 startup race condition
-Message-ID: <20250927145152.61c41a4f@jic23-huawei>
-In-Reply-To: <722b91bc-fce7-4e1f-811f-aea30e130f15@skyrain.eu>
+Subject: Re: [PATCH v2] iio: accel: fix ADXL355 startup race condition
+Message-ID: <20250927145515.26692e60@jic23-huawei>
+In-Reply-To: <20250915115818.14164-1-andrej.v@skyrain.eu>
 References: <20250909085528.68966-1-andrej.v@skyrain.eu>
-	<20250910193049.145aa79e@jic23-huawei>
-	<6ee57754-4fa0-4694-b997-5f4c627b567b@skyrain.eu>
-	<20250912151259.00006fd5@huawei.com>
-	<b709ac66-d0f2-4eb9-a66b-be557b4fe2be@skyrain.eu>
-	<20250915165313.000041fa@huawei.com>
-	<722b91bc-fce7-4e1f-811f-aea30e130f15@skyrain.eu>
+	<20250915115818.14164-1-andrej.v@skyrain.eu>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,134 +59,107 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 16 Sep 2025 09:07:18 +0200
+On Mon, 15 Sep 2025 13:58:18 +0200
 Andrej Valek <andrej.v@skyrain.eu> wrote:
 
-> On 15.09.2025 17:53, Jonathan Cameron wrote:
-> > On Mon, 15 Sep 2025 14:03:47 +0200
-> > Andrej Valek <andrej.v@skyrain.eu> wrote:
-> > =20
-> >> Hi Jonathan,
-> >>
-> >> I submitted the version 2 with applied your suggestions.
-> >>
-> >> On 12.09.2025 16:12, Jonathan Cameron wrote: =20
-> >>> On Thu, 11 Sep 2025 11:33:49 +0200
-> >>> Andrej Valek <andrej.v@skyrain.eu> wrote:
-> >>>    =20
-> >>>> Hi Jonathan,
-> >>>>
-> >>>> First, I would like to thanks for your feedback.
-> >>>>
-> >>>> On 10.09.2025 20:30, Jonathan Cameron wrote: =20
-> >>>>> On Tue,  9 Sep 2025 10:55:28 +0200
-> >>>>> Andrej Valek <andrej.v@skyrain.eu> wrote:
-> >>>>>       =20
-> >>>>>> From: Valek Andrej <andrej.v@skyrain.eu> =20
-> >>>>> Hi Valek,
-> >>>>>
-> >>>>> Thanks for the patch. Small thing on patch title, don't include dri=
-vers.
-> >>>>> It's a pain but you need to look at other patches to a given subsys=
-tem
-> >>>>> to find out the preferred style. =20
-> >>>> Valek is my surname =F0=9F=99=82. =20
-> >>> Oops. Sorry!
-> >>>
-> >>> Hi Andrej,
-> >>>    =20
-> >>>>>> Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
-> >>>>>> Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
-> >>>>>> ---
-> >>>>>>     drivers/iio/accel/adxl355_core.c | 48 ++++++++++++++++++++++++=
-++++----
-> >>>>>>     1 file changed, 43 insertions(+), 5 deletions(-)
-> >>>>>>
-> >>>>>> diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/=
-adxl355_core.c
-> >>>>>> index 2e00fd51b4d51..5386cd4766def 100644
-> >>>>>> --- a/drivers/iio/accel/adxl355_core.c
-> >>>>>> +++ b/drivers/iio/accel/adxl355_core.c
-> >>>>>> @@ -56,6 +56,8 @@
-> >>>>>>     #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
-> >>>>>>     #define ADXL355_SELF_TEST_REG		0x2E
-> >>>>>>     #define ADXL355_RESET_REG		0x2F
-> >>>>>> +#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
-> >>>>>> +#define ADXL355_SHADOW_REG_COUNT	5
-> >>>>>>    =20
-> >>>>>>     #define ADXL355_DEVID_AD_VAL		0xAD
-> >>>>>>     #define ADXL355_DEVID_MST_VAL		0x1D
-> >>>>>> @@ -294,6 +296,9 @@ static void adxl355_fill_3db_frequency_table(s=
-truct adxl355_data *data)
-> >>>>>>     static int adxl355_setup(struct adxl355_data *data)
-> >>>>>>     {
-> >>>>>>     	unsigned int regval;
-> >>>>>> +	u8 shadow_regs[ADXL355_SHADOW_REG_COUNT]; =20
-> >>>>> Needs to be a DMA safe buffer.  We can't assume that regmap will al=
-ways
-> >>>>> bounce the data through one before passing it to the SPI controllers
-> >>>>> that do sometimes require DMA safe buffers.    Add a buffer to end =
-of
-> >>>>> struct adxl355_data where you can take advantage of the forcing of =
-appropriate
-> >>>>> padding that is already going on there. =20
-> >>>> I see, but I don't like extending the adxl355_data just for one time
-> >>>> usage. The suggested approach is more similar to what is done with t=
-he
-> >>>> ID checking.
-> >>>> | if (regval !=3D ADXL355_DEVID_MST_VAL) {
-> >>>> |=C2=A0 dev_err(data->dev, "Invalid MEMS ID 0x%02x\n", regval);
-> >>>> |=C2=A0 return -ENODEV;
-> >>>> | } =20
-> >>> That's a single read.  Regmap always bounces those so a local variabl=
-e should
-> >>> be fine. Not so for a bulk read (or at least no one guarantees it)
-> >>>
-> >>> https://events19.linuxfoundation.org/wp-content/uploads/2017/12/20181=
-023-Wolfram-Sang-ELCE18-safe_dma_buffers.pdf
-> >>> Slide 11 (in general this slide deck is a good introduction to the fu=
-n of DMA safety).
-> >>>
-> >>> The path for a single read goes through:
-> >>> https://elixir.bootlin.com/linux/v6.16.7/source/drivers/base/regmap/r=
-egmap.c#L2779
-> >>> _regmap_bus_read() which uses map->work_buf which is DMA safe. =20
-> >> regmap_bulk_read is using the same _regmap_read
-> >> https://elixir.bootlin.com/linux/v6.16.7/source/drivers/base/regmap/re=
-gmap.c#L3137
-> >> so it should be safe, too I guess. =20
-> > Whilst true, the repeated statement from the regmap maintainer that
-> > is mentioned in the talk is that there is no guarantee that will contin=
-ue
-> > to be the case :(  Whereas the single reads are fine and will remain so.
-> > I guess one reason for that is that regmap_read() take an unsigned int =
-*val
-> > so the type is almost always going to be wrong and a copy necessary.
-> >
-> > Anyhow, the whole thing is a bit silly but upshot is dma safe buffers o=
-nly to bulk
-> > accessors unless the ABI is ever documented as not needing them.
-> >
-> > Jonathan =20
-> Ok, I see. So can we live with the variant I did?
-> >>> Jonathan
-> >>>
-> >>>    =20
-> >> Andy
-> >> =20
-> > =20
-> In other words, is there anything pending from my side?
+> From: Valek Andrej <andrej.v@skyrain.eu>
+> 
+> There is an race-condition where device is not full working after SW reset.
+> Therefore it's necessary to wait some time after reset and verify shadow
+> registers values by reading and comparing the values before/after reset.
+> This mechanism is described in datasheet at least from revision D.
+> 
+> Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
+> Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
+> ---
+There should be a change lot here.
 
-Use a dma safe buffer for the bulk read. It's not a bug today
-but it is relying on undocumented behaviour of the regmap
-implementation that may change.
+As per the reply I just sent, even though today regmap doesn't need a dma
+safe buffer for bulk reads that is undocumented detail and may not remain
+true in the long run.  Hence use a dma safe buffer.
 
-Jonathan
+>  drivers/iio/accel/adxl355_core.c | 41 ++++++++++++++++++++++++++++----
+>  1 file changed, 36 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
+> index 2e00fd51b4d51..d688841f374da 100644
+> --- a/drivers/iio/accel/adxl355_core.c
+> +++ b/drivers/iio/accel/adxl355_core.c
+> @@ -56,6 +56,8 @@
+>  #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
+>  #define ADXL355_SELF_TEST_REG		0x2E
+>  #define ADXL355_RESET_REG		0x2F
+> +#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
+> +#define ADXL355_SHADOW_REG_COUNT	5
+>  
+>  #define ADXL355_DEVID_AD_VAL		0xAD
+>  #define ADXL355_DEVID_MST_VAL		0x1D
+> @@ -294,6 +296,8 @@ static void adxl355_fill_3db_frequency_table(struct adxl355_data *data)
+>  static int adxl355_setup(struct adxl355_data *data)
+>  {
+>  	unsigned int regval;
+> +	u8 shadow_regs[ADXL355_SHADOW_REG_COUNT];
+As above. This needs to be DMA safe. If you want to keep it local use
+	u8 *shadow_regs __free(kfree) = kzalloc(ADXL355_SHADOW_REG_COUNT, GFP_KERNEL);
+or kcalloc if you prefer.  
 
->=20
-> Andy
+
+> +	int retries = 5; /* the number is chosen based on empirical reasons */
+>  	int ret;
+>  
+>  	ret = regmap_read(data->regmap, ADXL355_DEVID_AD_REG, &regval);
+> @@ -321,14 +325,41 @@ static int adxl355_setup(struct adxl355_data *data)
+>  	if (regval != ADXL355_PARTID_VAL)
+>  		dev_warn(data->dev, "Invalid DEV ID 0x%02x\n", regval);
+>  
+> -	/*
+> -	 * Perform a software reset to make sure the device is in a consistent
+> -	 * state after start-up.
+> -	 */
+> -	ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
+> +	/* Read shadow registers to be compared after reset */
+> +	ret = regmap_bulk_read(data->regmap,
+> +			       ADXL355_BASE_ADDR_SHADOW_REG,
+> +			       shadow_regs, ADXL355_SHADOW_REG_COUNT);
+
+Here is the non dma safe buffer usage.
+
+>  	if (ret)
+>  		return ret;
+>  
+> +	do {
+> +		if (--retries == 0) {
+> +			dev_err(data->dev, "Shadow registers mismatch\n");
+> +			return -EIO;
+> +		}
+> +
+> +		/*
+> +		 * Perform a software reset to make sure the device is in a consistent
+> +		 * state after start-up.
+> +		 */
+> +		ret = regmap_write(data->regmap, ADXL355_RESET_REG,
+> +				   ADXL355_RESET_CODE);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* Wait at least 5ms after software reset */
+> +		usleep_range(5000, 10000);
+> +
+> +		/* Read shadow registers for comparison */
+> +		ret = regmap_bulk_read(data->regmap,
+> +				       ADXL355_BASE_ADDR_SHADOW_REG,
+> +				       data->buffer.buf,
+> +				       ADXL355_SHADOW_REG_COUNT);
+> +		if (ret)
+> +			return ret;
+> +	} while (memcmp(shadow_regs, data->buffer.buf,
+> +			ADXL355_SHADOW_REG_COUNT));
+> +
+>  	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
+>  				 ADXL355_POWER_CTL_DRDY_MSK,
+>  				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
 
 

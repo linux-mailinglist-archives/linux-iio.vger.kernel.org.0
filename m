@@ -1,61 +1,61 @@
-Return-Path: <linux-iio+bounces-24486-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24487-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE90ABA6057
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 16:05:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E4DBA6060
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 16:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFC837AA53F
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 14:03:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D584C188AAC6
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 14:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCE42E1C56;
-	Sat, 27 Sep 2025 14:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EB62E0B42;
+	Sat, 27 Sep 2025 14:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mPG+/srC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dLG+54S8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF841E32D3;
-	Sat, 27 Sep 2025 14:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B96E18DF89;
+	Sat, 27 Sep 2025 14:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758981885; cv=none; b=SFm0nWjexp+66dZ9w+uRljJpWpNE3IoymttaybU0odTMbSkfUk8Iv8o0vDiJc0p/HJ6cMv6OumTeo5OLWWeRNhgUCB+QrcqJYoEagJhPoW10Gjumy28TlnvnE+j/wdny1wr0rjMiwQQp+ghdNWVHhLiWh1EHcu0Mj1ntpDcKCu0=
+	t=1758982059; cv=none; b=K0SFbHcepgwOhhsGhqHCcH4/dIDePhp4p0rEUQCsKCwNplYPpiuOdiJW3ZRIV1JTRs0PKdw8tF69oLTZDpUs1yyVOHrFeUvLf7ZgSmlai72+J1URUHxR09Her0vTqhIaLybRD0YklYFS3DZOSbow9D3b5cr4DIL3bQRwJ82nfGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758981885; c=relaxed/simple;
-	bh=5xdEua8X8l/TAMdd3xOutBOvPgdsHiI9AwIPUbLnkgk=;
+	s=arc-20240116; t=1758982059; c=relaxed/simple;
+	bh=Gs38SQ/LKyYJc4ic+XsILfLJqbN6NUj+cn7yw53dsVs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CQQ2sLpkMiNQlxxojNSCLSuOu0EtdFOwiOc2dy47tTt2PrlQKAZIeP1e8SfoYPtMwyuxxQeG6gGI/BMoVm1hRNZ7JjdN+BgdMhHv5NAIFTcQenRz2CdujVRXx+3Iyo+6JqRfxATGsuFsMKPnHb86EzUG8iFxukujNJwwslYF4M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mPG+/srC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412F5C4CEE7;
-	Sat, 27 Sep 2025 14:04:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BOZnYhWqvb9WQm2IhZWowHVFMbbnt4jOdAszhP85N8UtbPMv57Bhh6FjV8ocyDe1rgnFJzErzz9HNm5JLBDWtYSsyEUTrp833MoWj1PQcl0QrsuF3JlN9f/HN+Rd+U4IrluG0oCKqc7qo5YcDg8WL1OJqIOixS7KYw0rn08qPgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dLG+54S8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68F5C4CEE7;
+	Sat, 27 Sep 2025 14:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758981885;
-	bh=5xdEua8X8l/TAMdd3xOutBOvPgdsHiI9AwIPUbLnkgk=;
+	s=k20201202; t=1758982059;
+	bh=Gs38SQ/LKyYJc4ic+XsILfLJqbN6NUj+cn7yw53dsVs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mPG+/srCImPh5QR9bZ9ZXp2LsaNb1zictrvurQ+3Or6t7dHS33eOFK0zdJ9XDWKhO
-	 R/siSuyDQXkMoqOwJK3M6ltqAc/sitkxoCKszvLgpd5GuO7IQqGZ6Wnvyjw72Jvty2
-	 mbZFXiUxxBrRaR16zslzrMC1D8y9qrvmMh9Ojj04mgy+9TIUDPH1qu9hnnVAyvFm2T
-	 XHWkrB8h/Xehq1PO5bH/lVDFUVqDX77Pr7DN4EsLQQI4GqEHS0v0ib2q/FssC5icRX
-	 28cBXYvZTnrWs+9kFfADDFOKO3w2VgEyUpD6igUGVZFrTSsqyr3QxT7SOztQWkolTP
-	 vTi6bFVlw7iUg==
-Date: Sat, 27 Sep 2025 15:04:39 +0100
+	b=dLG+54S8zEm2xjBHGehUSA+e2tCY7gr/4PX2TbavdUviKTOJBUpTNz9aeUxsKWdIS
+	 BqamkUiiR3hi7+1i9kxtHoLYoRMmPuZpOSBUpRp29p/s9C5w++diw1QylE1yw0D8RQ
+	 8ubX0+uei2zMUw/qbXJjwxPCjU2s2wbrCAPWyPbPGWIOUpnckvt0pibCOWoVaNCo2h
+	 OLwtVHxv+WyJzl2Ir3Mswz9H8FRrKcWDTN/uU0Qn5oPRqXHhcp+/MRTcJXFuq/ObrK
+	 OTLEy163+GC2u7q1aJ2/BO8d0MiP4I44TY11cKhKzSsD5wBsmiOiWMkDMeUdzh3dOX
+	 3gAtrDRtDYVQw==
+Date: Sat, 27 Sep 2025 15:07:29 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Petre Rodan <petre.rodan@subdimension.ro>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 07/18] iio: accel: bma220: move bma220_power() fct
-Message-ID: <20250927150439.34906075@jic23-huawei>
-In-Reply-To: <CAHp75Vc4TUu497JMuU0-bU0aqew9vUXLTDqDoqLMLkAC43Qv9g@mail.gmail.com>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 11/18] iio: accel: bma220: populate buffer ts in
+ trigger handler
+Message-ID: <20250927150729.786e29d8@jic23-huawei>
+In-Reply-To: <20250913-b4-bma220_improvements-v3-11-0b97279b4e45@subdimension.ro>
 References: <20250913-b4-bma220_improvements-v3-0-0b97279b4e45@subdimension.ro>
-	<20250913-b4-bma220_improvements-v3-7-0b97279b4e45@subdimension.ro>
-	<CAHp75Vc4TUu497JMuU0-bU0aqew9vUXLTDqDoqLMLkAC43Qv9g@mail.gmail.com>
+	<20250913-b4-bma220_improvements-v3-11-0b97279b4e45@subdimension.ro>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,56 +63,49 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 14 Sep 2025 15:05:47 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Sat, 13 Sep 2025 18:39:32 +0300
+Petre Rodan <petre.rodan@subdimension.ro> wrote:
 
-> On Sat, Sep 13, 2025 at 6:40=E2=80=AFPM Petre Rodan <petre.rodan@subdimen=
-sion.ro> wrote:
-> >
-> > Move bma220_power() fct before bma220_init() since it will make the
-> > next patch cleaner. =20
->=20
-> ...
->=20
-> > +static int bma220_power(struct spi_device *spi, bool up)
-> > +{
-> > +       int i, ret;
-> > +
-> > +       /** =20
->=20
-> It's not a kernel doc, do not inherit the mistakes from the past.
-Agreed.  To keep the series clean I'd do a cleanup of all incorrect instanc=
-es
-of this as a precursor patch.  Then these moves become cleaner.
-Otherwise we have a whole load of patch descriptions with little
-notes saying 'and fix incorrect kernel-doc markings' and that just
-muddies the water!
+> Populate buffer timestamps in trigger handler instead of in the
+> top half. Otherwise all timestamps read zero.
+Say why.   Key here is that not all triggers can run the top half handler
+that provides pf->timestamp.  Use an example of which ever one you are
+testing this with.
 
-Jonathan
-
->=20
-> > +        * The chip can be suspended/woken up by a simple register read.
-> > +        * So, we need up to 2 register reads of the suspend register
-> > +        * to make sure that the device is in the desired state.
-> > +        */
-> > +       for (i =3D 0; i < 2; i++) {
-> > +               ret =3D bma220_read_reg(spi, BMA220_REG_SUSPEND);
-> > +               if (ret < 0)
-> > +                       return ret;
-> > +
-> > +               if (up && ret =3D=3D BMA220_SUSPEND_SLEEP)
-> > +                       return 0;
-> > +
-> > +               if (!up && ret =3D=3D BMA220_SUSPEND_WAKE)
-> > +                       return 0;
-> > +       }
-> > +
-> > +       return -EBUSY;
-> > +} =20
->=20
->=20
+> 
+> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+> ---
+> v2->v3 split out from bigger patch (Jonathan)
+> ---
+>  drivers/iio/accel/bma220_core.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220_core.c
+> index 73ce9a9511734961c2c6dadc99c21418070dce00..728bf08c2cfb250266be56e69b11af4b6c4a1347 100644
+> --- a/drivers/iio/accel/bma220_core.c
+> +++ b/drivers/iio/accel/bma220_core.c
+> @@ -188,7 +188,7 @@ static irqreturn_t bma220_trigger_handler(int irq, void *p)
+>  		return IRQ_NONE;
+>  
+>  	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
+> -				    pf->timestamp);
+> +				    iio_get_time_ns(indio_dev));
+>  	iio_trigger_notify_done(indio_dev->trig);
+>  
+>  	return IRQ_HANDLED;
+> @@ -409,8 +409,7 @@ int bma220_common_probe(struct device *dev, struct regmap *regmap, int irq)
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> -					      iio_pollfunc_store_time,
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
+>  					      bma220_trigger_handler, NULL);
+>  	if (ret < 0)
+>  		dev_err_probe(dev, ret, "iio triggered buffer setup failed\n");
+> 
 
 

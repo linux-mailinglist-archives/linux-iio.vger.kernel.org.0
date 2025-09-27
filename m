@@ -1,65 +1,60 @@
-Return-Path: <linux-iio+bounces-24492-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24493-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F13CBA60FB
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 17:33:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64197BA6133
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 17:51:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C5E4383DD1
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 15:33:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50AD8189D48C
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Sep 2025 15:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35C22E1F00;
-	Sat, 27 Sep 2025 15:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3492E11AA;
+	Sat, 27 Sep 2025 15:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uKvGRzND"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uZrWwscm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D984C9D;
-	Sat, 27 Sep 2025 15:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946431AA7BF;
+	Sat, 27 Sep 2025 15:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758987225; cv=none; b=XsgaAnIz6rhVnfme9Fge9Sr7VxJiaUmYPuNF/ouG0iIWybcW+4hWSppyAcqELwCG50GGGtI9onJuz5DpISa8Hv1ysrDa6fcqp9kdBHr1DMgqYCKlkeUVgXdJS2D28AiRrJCyZUx5JPreIuIh8S/wHEKkgxDZhZ91zO13rO9Kv2c=
+	t=1758988270; cv=none; b=fuU7V6QTODGr4qYRbh6674yY+jZ2KzLicagQ+yC40K757I+tQ/aHyYpjmEzYkcl09G+5iLiPtQZ2wW0lB+V3UKQE5hwZOth1MgRXw1jkeyhrsuYsihCV3l8CPQi6S/9ie8blaS1ZbuJ2R3VnpbquJpXU5XNuPUbJQagyLPXmpzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758987225; c=relaxed/simple;
-	bh=YP9XMHyMUiFPIIDHrpJNhaTLyQxop7Ve8HoR8OOr+xM=;
+	s=arc-20240116; t=1758988270; c=relaxed/simple;
+	bh=vlv6Xny4puXywF5XCwuhzRxSaXYWcukdI7CtpNpRw2Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gqzNtZflNEw9uMKZsZtIBlmcnFqWD9NYnPPTxquLvnPkJ2TKnEXBTUjOkyCqmbOQvFK1gLz2Dau8kI6FBj3FRcbcR2scCvT0MsykpblhIzNaHLPWU0DRkpFXbmU/PyId0wHzM5IKjefTt9JTybwYV51HnpelG5MHKQqko47YHqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uKvGRzND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89A2C4CEE7;
-	Sat, 27 Sep 2025 15:33:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aSaFcWwGcjrUVSsYByLD5iIgJpY904dj13Lw5Py7gpj94Aco5ZqiAObqEG5ccG7JIpNR5FP0ZJNXKe8w/BT/hZot+k5ArriwwDEx8LwclJO3laNx5F4A2tM+1S/xb8qXl3s2qdHDix+sJdXIe5SQP6Db0lwr1pHOeoCT64lpseY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uZrWwscm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7775DC4CEE7;
+	Sat, 27 Sep 2025 15:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758987225;
-	bh=YP9XMHyMUiFPIIDHrpJNhaTLyQxop7Ve8HoR8OOr+xM=;
+	s=k20201202; t=1758988270;
+	bh=vlv6Xny4puXywF5XCwuhzRxSaXYWcukdI7CtpNpRw2Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uKvGRzNDS9jYjMcVd+pc5wMr3QM22v44//bBx7gOLY6rWWAKjqlbZM8jnaKyloz1I
-	 IQpmtkWHO+mBtjCXCp6Ra/uph6kCwtx4rFrIsBH3OYOygl6WALBYHXLW4uAZLcf+V/
-	 t6+kjfJtUqEr3S/DuG7ZEQhI0Nd+WBoxC6X2KtY+oFyTbSY15MUfyMEW8xVJUqpMwm
-	 teoeMigCDa7TGKw0OpGZzX4xKoIVUu41Xr8omfZDoBo6Pj6LzXObcnHMhxPQBWtFW3
-	 uGUuPSTZBiI9Sgm8ej45bYy6aEjAUa9R9GEhN3/rbBcbQD/85oS95fQdeMgtn1ckoZ
-	 mwIf+VC/k8wCA==
-Date: Sat, 27 Sep 2025 16:33:33 +0100
+	b=uZrWwscmNV/flIDnwZ5kf4pxW4cdQfQ38nsohe7iCzNOqllHgjNb8UH8nh/NVXrK+
+	 huuI2DUEJA5TvAJMIvblR7JMVatkKmLdniruX9n2i+tzJIA7DwnjPfbJkNusB13BKb
+	 APvXSOtoIO8zDoPrvBdgMQB9Yzs+aC6gWlcm/3S3BP6/t2iDOQtxvNKSaLelMkdyBz
+	 QYtdbT8CjsSWX9TGFsfbkR1CKisroUHcfnHUxwfnclp22Sf5YPb+Tj+HzRcuhtKqwM
+	 ZXyl5mpFqmsxzH0xz5h7YFdFC23RyyMu4f7d+CeU+An0xzAcxGm3xyjN/8gQOp8Fh+
+	 Oa8BPgeN+cNJA==
+Date: Sat, 27 Sep 2025 16:51:00 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
- michael.hennerich@analog.com, nuno.sa@analog.com, eblanc@baylibre.com,
- dlechner@baylibre.com, andy@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, corbet@lwn.net
-Subject: Re: [PATCH v2 7/8] dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216
- and ADAQ4224
-Message-ID: <20250927163333.55d94113@jic23-huawei>
-In-Reply-To: <20250921-unadvised-uninjured-cdd7a6e6f326@spud>
-References: <cover.1758214628.git.marcelo.schmitt@analog.com>
-	<2d6bca62056e1254f91b45f70f4ba4614e659c1c.1758214628.git.marcelo.schmitt@analog.com>
-	<20250919-unsure-mounted-0fc49ce72216@spud>
-	<aM3HJY0GWJmP8-do@debian-BULLSEYE-live-builder-AMD64>
-	<20250921-unadvised-uninjured-cdd7a6e6f326@spud>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Gustavo Silva <gustavograzs@gmail.com>, Alex Lanzano
+ <lanzano.alex@gmail.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] iio: ABI: document accelerometer event
+ attributes
+Message-ID: <20250927165100.5a9d3136@jic23-huawei>
+In-Reply-To: <aMp1orvA-SSSZeN2@smile.fi.intel.com>
+References: <20250916-bmi270-v6-0-6acd8d26a862@gmail.com>
+	<20250916-bmi270-v6-2-6acd8d26a862@gmail.com>
+	<aMp1orvA-SSSZeN2@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,119 +65,123 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 21 Sep 2025 23:20:01 +0100
-Conor Dooley <conor@kernel.org> wrote:
+On Wed, 17 Sep 2025 11:47:30 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> On Fri, Sep 19, 2025 at 06:12:05PM -0300, Marcelo Schmitt wrote:
-> > On 09/19, Conor Dooley wrote:  
-> > > On Thu, Sep 18, 2025 at 02:39:29PM -0300, Marcelo Schmitt wrote:  
-> > > > ADAQ4216 and ADAQ4224 are similar to AD4030 except that ADAQ devices have a
-> > > > PGA (programmable gain amplifier) that scales the input signal prior to it
-> > > > reaching the ADC inputs. The PGA is controlled through a couple of pins (A0
-> > > > and A1) that set one of four possible signal gain configurations.
-> > > > 
-> > > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > > > ---
-> > > > Change log v1 -> v2
-> > > > - Use pattern to specify devices that require gain related properties.
-> > > > - Disallow gain related properties for devices that don't come with embedded PGA.
-> > > > - Documented VDDH and VDD_FDA supplies for ADAQ4216 and ADAQ4224.
-> > > > - Updated PGA gain constants.
-> > > > 
-> > > >  .../bindings/iio/adc/adi,ad4030.yaml          | 65 +++++++++++++++++--
-> > > >  1 file changed, 60 insertions(+), 5 deletions(-)
-> > > >   
-> > ...  
-> > > >  
-> > > > +  pga-gpios:
-> > > > +    description:
-> > > > +      A0 and A1 pins for gain selection. For devices that have PGA configuration
-> > > > +      input pins, pga-gpios should be defined if adi,gain-milli is absent.
-> > > > +    minItems: 2
-> > > > +    maxItems: 2
-> > > > +
-> > > > +  adi,pga-value:
-> > > > +    $ref: /schemas/types.yaml#/definitions/uint32  
-> > > 
-> > > How come this is "value" rather than "gain"?  
-> > 
-> > Because, for this one, I drew inspiration from ad7191 bindings [1] in the hopes
-> > of avoiding creating new properties or using discontinued/deprecated
-> > nomenclature [2].
-> > 
-> > The thing is, we now have ADC chips coming with PGA circuitry in front of ADC
-> > inputs. Those PGAs are usually set/configured through hardware connections
-> > (e.g. dedicated GPIOs or pin-strapped) and have been described in dt-bindings.
-> > Though, since these added PGAs don't follow a pattern with respect to the
-> > provided gain, different properties began to appear. ad7380 and ad4000 use
-> > adi,gain-milli to describe PGA gain [3, 4], ad7191 uses adi,pga-value and,
-> > more recently, adaq7768-1 has been proposed with adi,aaf-gain-bp [5].
-> > adaq7768-1 is arguably a slightly different case since the signal gain stems
-> > from an anti-aliasing filter, but it nevertheless results in signal attenuation
-> > much like some PGAs.
-> > 
-> > I personally like the -milli (or even -permille) nomenclature because 4 digits
-> > have been more than enough to describe the gains (at least so far). Though, I
-> > acknowledge the base points suffix (-bp) which is documented in
-> > property-units.yaml [6]. The only thing I don't like much about -bp for
-> > describing PGA gain is that PGA gains are often described in terms of unitless
-> > scale factors, while bp implies the value to be described as a percent.
-> > 
-> > Anyways, whatever property name is chosen, it will probably be better settle to
-> > something rather than arguing about property names each time a new ADC comes
-> > with an integrated PGA.  
+> On Tue, Sep 16, 2025 at 08:38:24PM -0300, Gustavo Silva wrote:
+> > Add ABI documentation for accelerometer event-related sysfs attributes
+> > exposed by the bmi270 driver. These include threshold, period, and
+> > enable controls for adaptive magnitude (any-motion) and rate of change
+> > (no-motion) event detection.  
 > 
-> If PGA gains are common, then ye it would make sense to have a standard
-> property. I guess one of the problems with doing so is that there isn't
-> a standard/common binding for adcs themselves, so without making one
-> it'd involve reviewers pushing people to the standard one. I suppose the
-> current adc.yaml could be made into adc-channel.yaml and adc.yaml
-> repurposed. I bet there are more properties than just PGA gain that
-> could go there.
+> ...
 > 
-> My personal objection to "pga-value" is that it doesn't communicate by
-> itself what aspect of the pga it actually controls. I don't really care
-> what "unit" qualifier is used that much or if one is used at all. That's
-> more of a thing for yourself and other IIO developers to handle.
+> > What:		/sys/.../iio:deviceX/events/in_accel_y_roc_rising_en  
 > 
-> Part of me is bothered though that all these gains are not in dB! But
-> I'd imagine there are not really any ADCs where the registers don't
-> deal in unitless gain and using dB would be nothing more than an
-> additional headache for software developers.
+> >  What:		/sys/.../iio:deviceX/events/in_accel_y_roc_falling_en
+> >  What:		/sys/.../iio:deviceX/events/in_accel_z_roc_rising_en
+> >  What:		/sys/.../iio:deviceX/events/in_accel_z_roc_falling_en
+> > +What:		/sys/.../iio:deviceX/events/in_accel_x&y&z_roc_rising_en
+> >  What:		/sys/.../iio:deviceX/events/in_anglvel_x_roc_rising_en
+> >  What:		/sys/.../iio:deviceX/events/in_anglvel_x_roc_falling_en
+> >  What:		/sys/.../iio:deviceX/events/in_anglvel_y_roc_rising_en  
+> 
+> > What:		/sys/.../events/in_accel_y_raw_thresh_rising_value  
+> 
+> >  What:		/sys/.../events/in_accel_y_raw_thresh_falling_value
+> >  What:		/sys/.../events/in_accel_z_raw_thresh_rising_value
+> >  What:		/sys/.../events/in_accel_z_raw_thresh_falling_value
+> > +What:		/sys/.../events/in_accel_mag_adaptive_rising_value
+> >  What:		/sys/.../events/in_anglvel_x_raw_thresh_rising_value
+> >  What:		/sys/.../events/in_anglvel_x_raw_thresh_falling_value
+> >  What:		/sys/.../events/in_anglvel_y_raw_thresh_rising_value  
+> 
+> > +What:		/sys/.../events/in_accel_roc_rising_value
+> >  What:		/sys/.../events/in_accel_x_raw_roc_rising_value
+> >  What:		/sys/.../events/in_accel_x_raw_roc_falling_value
+> >  What:		/sys/.../events/in_accel_y_raw_roc_rising_value  
+> 
+> >  What:		/sys/.../events/in_accel_x_thresh_rising_period
+> >  What:		/sys/.../events/in_accel_x_thresh_falling_period
+> > +What:		/sys/.../events/in_accel_roc_rising_period
+> >  What:		/sys/.../events/in_accel_x_roc_rising_period
+> >  What:		/sys/.../events/in_accel_x_roc_falling_period
+> >  What:		/sys/.../events/in_accel_y_thresh_rising_period  
+> 
+> With the given context (above and below) I'm not sure this is the best place of
+> putting an attribute in the list. Perhaps something below will not disrupt the
+> xyz structure (like mag cases)?
 
-To me this problem isn't really about PGAs at all.  What it is really
-about is cases where a pin on a chip is either tied to a gpio or pin strapped.
-Can we provide a solution at that layer?
+I took a look at the broader context and it was a bit tricky but I think this
+is the best we can do to maintain current ordering (which is fuzzily defined at best).
 
-i.e. A way to say this GPIO input is tied high so you can't control it
-but you can still read what it's current value is. Maybe there is already
-a clean way to do this.
+At some point that whole doc needs a rethink wrt to how we break the different blocks
+up and order the elements within them.
+
+With this change, series applied to the testing branch of iio.git.
+That will be rebased on rc1 once available and then become the togreg branch.
+
+thanks,
 
 Jonathan
 
+
+
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+index 89b4740dcfa1..352ab7b8476c 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio
++++ b/Documentation/ABI/testing/sysfs-bus-iio
+@@ -926,6 +926,7 @@ What:               /sys/.../iio:deviceX/events/in_accel_y_roc_rising_en
+ What:          /sys/.../iio:deviceX/events/in_accel_y_roc_falling_en
+ What:          /sys/.../iio:deviceX/events/in_accel_z_roc_rising_en
+ What:          /sys/.../iio:deviceX/events/in_accel_z_roc_falling_en
++What:          /sys/.../iio:deviceX/events/in_accel_x&y&z_roc_rising_en
+ What:          /sys/.../iio:deviceX/events/in_anglvel_x_roc_rising_en
+ What:          /sys/.../iio:deviceX/events/in_anglvel_x_roc_falling_en
+ What:          /sys/.../iio:deviceX/events/in_anglvel_y_roc_rising_en
+@@ -1001,6 +1002,7 @@ Description:
+                to the raw signal, allowing slow tracking to resume and the
+                adaptive threshold event detection to function as expected.
+ 
++What:          /sys/.../events/in_accel_mag_adaptive_rising_value
+ What:          /sys/.../events/in_accel_thresh_rising_value
+ What:          /sys/.../events/in_accel_thresh_falling_value
+ What:          /sys/.../events/in_accel_x_raw_thresh_rising_value
+@@ -1147,6 +1149,7 @@ Description:
+                will get activated once in_voltage0_raw goes above 1200 and will become
+                deactivated again once the value falls below 1150.
+ 
++What:          /sys/.../events/in_accel_roc_rising_value
+ What:          /sys/.../events/in_accel_x_raw_roc_rising_value
+ What:          /sys/.../events/in_accel_x_raw_roc_falling_value
+ What:          /sys/.../events/in_accel_y_raw_roc_rising_value
+@@ -1193,6 +1196,8 @@ Description:
+                value is in raw device units or in processed units (as _raw
+                and _input do on sysfs direct channel read attributes).
+ 
++What:          /sys/.../events/in_accel_mag_adaptive_rising_period
++What:          /sys/.../events/in_accel_roc_rising_period
+ What:          /sys/.../events/in_accel_x_thresh_rising_period
+ What:          /sys/.../events/in_accel_x_thresh_falling_period
+ What:          /sys/.../events/in_accel_x_roc_rising_period
+@@ -1362,6 +1367,15 @@ Description:
+                number or direction is not specified, applies to all channels of
+                this type.
+ 
++What:          /sys/.../iio:deviceX/events/in_accel_x_mag_adaptive_rising_en
+
+t
+
 > 
-> > [1] Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
-> > [2] https://lore.kernel.org/linux-iio/510f6efb-ada3-4848-ac8e-16fa5d1b5284@kernel.org/
-> > [3] Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> > [4] Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
-> > [5] https://lore.kernel.org/linux-iio/46842d4cf2c1149bd64188f94c60ce5e4f3b2beb.1757001160.git.Jonathan.Santos@analog.com/
-> > [6] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/property-units.yaml
-> >   
-> > >   
-> > > > +    description: |
-> > > > +      Should be present if PGA control inputs are pin-strapped. The values
-> > > > +      specify the gain per mille. For example, 333 means the input signal is
-> > > > +      scaled by a 0.333 factor (i.e. attenuated to one third of it's original
-> > > > +      magnitude). Possible values:
-> > > > +      Gain 333 (A1=0, A0=0)
-> > > > +      Gain 555 (A1=0, A0=1)
-> > > > +      Gain 2222 (A1=1, A0=0)
-> > > > +      Gain 6666 (A1=1, A0=1)
-> > > > +      If defined, pga-gpios must be absent.
-> > > > +    enum: [333, 555, 2222, 6666]
-> > > > +  
-> > 
-> > Thanks,
-> > Marcelo  
+> > What:		/sys/.../events/in_accel_z_thresh_rising_period  
+> 
+> >  What:		/sys/.../events/in_accel_z_thresh_falling_period
+> >  What:		/sys/.../events/in_accel_z_roc_rising_period
+> >  What:		/sys/.../events/in_accel_z_roc_falling_period
+> > +What:		/sys/.../events/in_accel_mag_adaptive_rising_period
+> >  What:		/sys/.../events/in_anglvel_x_thresh_rising_period
+> >  What:		/sys/.../events/in_anglvel_x_thresh_falling_period
+> >  What:		/sys/.../events/in_anglvel_x_roc_rising_period  
+> 
 
 

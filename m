@@ -1,140 +1,204 @@
-Return-Path: <linux-iio+bounces-24533-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24542-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1660CBA717A
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 16:16:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF65BA7579
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 19:35:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58E221897513
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 14:17:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A5E116ABAF
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 17:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D72219A7E;
-	Sun, 28 Sep 2025 14:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673A4239E76;
+	Sun, 28 Sep 2025 17:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i5pMhPcv"
+	dkim=pass (2048-bit key) header.d=stromeko.de header.i=@stromeko.de header.b="OImYJ04S"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp4.goneo.de (smtp4.goneo.de [85.220.129.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBD8185B67
-	for <linux-iio@vger.kernel.org>; Sun, 28 Sep 2025 14:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2575D2222A9
+	for <linux-iio@vger.kernel.org>; Sun, 28 Sep 2025 17:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.129.59
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759069003; cv=none; b=eW1CIbiZAMlpJCP56nLxTgbfj6sSLR+saBcdc+oxB8yk2pjcgdzK4OtWUHTmbFQdcA7ZyFjPPXx9r4nJ2oRZM4rgo56jaVHgoJpso1gj5YWXvdvdZ/0C0Uy6hpY0c43qGSLAZW/MaN5CtLB/G/rgULuElWS0umtZx5m6hgsorRY=
+	t=1759080940; cv=none; b=Zf/l7eCrCnmRcjIBj2585UPUShVHNQJ6GE0zDG5rq9R1O/flKkxd1+IMbljQZ74T6BQVWmoUiFFIwOgbEqxMcgR8LFfN5MbYo9DfFYwFjRm1X719LcTxHpSbOy7EEwhs/jBvs9ui0lP/tPPglzt7LOAZe6PYR22B+aeo8kOWb0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759069003; c=relaxed/simple;
-	bh=FmwvbHDppjU9CvYc2ySBEPJJrA8QuBJrnaeLbvaNeq4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KAcqd3VLVplB1OmQcCF7U9DscBaz/kmuSsqR8nsbz9jsGdLgHhkXVjjS7gvoyuxS10h7JQOj4ULF4zlSDvjxjNu+2qqZEA/nEed8u6sQocfLe0QIm3yy4C3w2RkaGVFZx5N91twXhtr05DCFBdfBQnDoyj6UnVIAglBmEtNcijU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i5pMhPcv; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b5515eaefceso3608178a12.2
-        for <linux-iio@vger.kernel.org>; Sun, 28 Sep 2025 07:16:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759069001; x=1759673801; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qS561fu3xGPohq7c2b6s9Kqxn1syIAU/WENOzQp7H2A=;
-        b=i5pMhPcv2txHGkH1YtzaqUjxI6TKbfbfQaM+KOuZiwsetEjjnW5EfpJ6ly+tJaWx6F
-         Z9kl+Isk82Ajz+rI3D3D1gveiFFbaSgVm/ZwvaMdMzT1k+kXZZMNaExt8IhhrUmm8M9X
-         v8vCv81+Njd3cSpNgvAOk94SRWr45YBIPVrNRl+ScVjlLjcc1+jsaYuvOfSVM+E8sydO
-         I520epSXPTuWD/Zi96mrxzlxqlyukGF2A+FF/ut2ZHfE3ct8Am5LoMRFcnpOVCkX8nYB
-         9xbW3nT4dLTFxGtgfhZSTtgNdZPNRP8GWLNVQADu4gK2A0KWoYHhaWngGxAqVjtaW48+
-         7JaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759069001; x=1759673801;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qS561fu3xGPohq7c2b6s9Kqxn1syIAU/WENOzQp7H2A=;
-        b=cIBwdIyGom72ECqi0u2ByvqQ+Jo0vs+UzqYZhWUoNommwPOOD3wqf4IKVrzb3Kz25U
-         xuKTzjU+yyNTpR8Xj8vJReugYCgSkp99csYEJe/rjevrcfiaNxOnmN8LjROAzotishlf
-         jF3ocil+9rOCLqwevJEhJGKoPBu1VUYwoO2bz2WDwzbrROXcGuJo3JOHSSsaaLKpF9mz
-         u6R4i2w9YEd/TRKvTcqmYvg/XgvRmIUh5GIk0cExW6XbxJDUiGEMNfdYXqPXQ191bXjS
-         F5bNSNwkofRvZF02dHgZoBKndw2AnLmgT5BCWxpZLjMg2n54b7+QZmWhIr33yOibFH6A
-         LIOg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+oxLJtv0ve0pJyrEEnVGWcaEILB/xep8mLm9C3VcMnryVlxBdm9FhdzdKtTpVa4ruJNtLrQe4yaw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxD2S4Bec0OrlktWyLBKRZAmJ+NEAPz83yF1xUjm1wyloW+kSIb
-	0pFrRIOIiKW388RBUBUI//+0Kqug1rwmFpzbkBzQkS8NvY2+OhGLDRgJ
-X-Gm-Gg: ASbGncsRnFuJkUm4PRPcZu2/iMucdNOP6YvesMDTrOjjOPOvUi3i++ZwD2RR8gIIv1B
-	NYWsxkdxya33/7bZTzkdb6W5AmyEGJdjhArHJKvDf1Y6ct5Ec7chkch2dW2Wi4es63vacMs4T+B
-	o9gS01ACe76d2b+qQm7G9473Hm+rj5jlh3HWPkwRR9Yccyqt33aPUd6Bie/0rOIPwtxSfO7X+xc
-	8JgRPSOIIdyeb6OCh/LwVTn3twT3m8HIqfAD138Q0f/6k5XdVEXXZ69voB5YtJDyf7f9OOJqh9w
-	MrpfzNfI2JdPH/6O7yNJQljmi21ht4if4OXOB3RVOkUmvtfwLixatzg3uIzNi4YvxHg59j6NYkH
-	Wu3r21gAhJpVG5J7ajT+L29NjOXJTFa8RRK8N5mcScg==
-X-Google-Smtp-Source: AGHT+IGylC8pdXw7Cs1te5retyIezZV7wuMBKjmnFoV675Y5zYlzg5VisBqeLGQ9FgxZdW/sAWmpqQ==
-X-Received: by 2002:a17:903:946:b0:271:49f:eaf5 with SMTP id d9443c01a7336-27ed4a30d16mr151724525ad.30.1759069001499;
-        Sun, 28 Sep 2025 07:16:41 -0700 (PDT)
-Received: from localhost ([2804:30c:b65:6a00:ceaa:2ed0:e81e:8f51])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-27ed6ae5742sm103357305ad.150.2025.09.28.07.16.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Sep 2025 07:16:40 -0700 (PDT)
-Date: Sun, 28 Sep 2025 11:17:32 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	michael.hennerich@analog.com, nuno.sa@analog.com,
-	eblanc@baylibre.com, dlechner@baylibre.com, andy@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	corbet@lwn.net
-Subject: Re: [PATCH v3 4/8] iio: adc: ad4030: Reduce register access transfer
- speed
-Message-ID: <aNlDfJvyXjnfINy3@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1758916484.git.marcelo.schmitt@analog.com>
- <fd505d37aceaafd6b20626bfd3f25c47db1fb004.1758916484.git.marcelo.schmitt@analog.com>
- <20250928105316.782d076e@jic23-huawei>
+	s=arc-20240116; t=1759080940; c=relaxed/simple;
+	bh=a/WYmFGkC122+N0OjRYiGtYsXsYOHP4w5vKB2tgVQv4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z/6JxizYtLkOwogwiMz3xGdWeuToTxScnqr11kmGXLgqIBd/e9UKwksqiNPlhu7cU2IplwPLUV9vd5058PSNE3SDdwHiZL7VrfizTN85ThVluF5H8eslpJ9pTf27dirW0Y1NwPtinOTW3w12qX+RB4Ss6PG124ZqVTPY1KDGaLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Stromeko.DE; spf=pass smtp.mailfrom=Stromeko.DE; dkim=pass (2048-bit key) header.d=stromeko.de header.i=@stromeko.de header.b=OImYJ04S; arc=none smtp.client-ip=85.220.129.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Stromeko.DE
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Stromeko.DE
+Received: from hub1.goneo.de (hub1.goneo.de [85.220.129.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	by smtp4.goneo.de (Postfix) with ESMTPS id 622EA240707;
+	Sun, 28 Sep 2025 19:27:20 +0200 (CEST)
+Received: from hub1.goneo.de (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	by hub1.goneo.de (Postfix) with ESMTPS id C3AFC240165;
+	Sun, 28 Sep 2025 19:27:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stromeko.de; s=DKIM001;
+	t=1759080438;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rpx0PDdi2DKCjXoPe9Zhi6rxoVyuARp8l5VPb/ZES30=;
+	b=OImYJ04SSNKj1xY9+oxm5lFGHZEkTAEtRksXxnwvDMa50RCES08EDF9uv8ADOhlvwsApfr
+	KnndQtequRdvmZvcy7dfoIwKzO+XZ/0hhA7ENmuh82nXg/cQT/RhDP3k++EYaqlTefxYoT
+	0upXnGj1fwRltPZOnKhnlqSRPB/QGFAoIRSwmxIhCPrA1yJTG/7n3FfWlz71j9j5TV75ms
+	RU3Ho7k6hfQFMo+J1wHpDLMysF0fbrMyl4E15Cu2iJ0vhvWt8kxgyeWDBLbbTCNPKLVkaE
+	IlQV76iA+7iw+i71Nuy3K1mtKoIpgqRLi9h9GfJS0rBSvq0s9rV14qCzr+FegA==
+Received: from Gerda.fritz.box (p5b2f36f7.dip0.t-ipconnect.de [91.47.54.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by hub1.goneo.de (Postfix) with ESMTPSA id 7851B2400FE;
+	Sun, 28 Sep 2025 19:27:18 +0200 (CEST)
+From: Achim Gratz <Achim.Gratz@Stromeko.DE>
+To: linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Achim Gratz <Achim.Gratz@Stromeko.DE>
+Subject: [RFC PATCH v3 0/9] Fixes and enhancements for the bmp280 driver
+Date: Sun, 28 Sep 2025 19:26:27 +0200
+Message-ID: <20250928172637.37138-1-Achim.Gratz@Stromeko.DE>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250928105316.782d076e@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-UID: 009ef4
+X-Rspamd-UID: 00556f
 
-On 09/28, Jonathan Cameron wrote:
-> On Fri, 26 Sep 2025 17:39:42 -0300
-> Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
-> 
-> > Configuration register accesses are not considered a critical path in terms
-> > of time to complete. Even though register access transfers can run at high
-> > speeds, nanosecond completion times are not required as device
-> > configuration is usually done step by step from user space. Also, high
-> > frequency transfers hinder debug with external tools since they require
-> > faster clocked equipment. Reduce register access transfer speed.
-> 
-> So making debug with external tools easier isn't usually a justification we'd
-> make to slow things down by default.
-> 
-> Is there another reason for this being useful as opposed to not a problem
-> to do?   If it had been done this way in the first place I wouldn't have
-> minded, but to make a change I'd like either some others to jump in and
-> say, yes please do this, or a reason beyond you are using tooling that can't
-> cope with 80 MHz and don't want to hack the driver when you need
-> to slow it down (my tools can't cope with that rate either!)
+Revision History:
+=================
 
-Main motivation for this was a suggestion from David.
-https://lore.kernel.org/linux-iio/30659b16-290d-4ae5-a644-214c106bbe87@baylibre.com/
-By the way, if he agrees with, I'll add a suggested-by tag (if we decide to keep
-this patch).
+v1:
+	- initial proposal, incorrectly prefixed "bmp280" instead of "RFC PATCH"
+	- patch series presented in the order it was created
 
-Reasoning a bit more about this, lowering reg access speed may help debug with
-external tools, but it won't help debug transfers ran by SPI offload hw because
-those transfers will be fast anyway. Maybe a more relevant potential benefit of
-lowering transfer speeds would be to make it more "friendly" to slower
-controllers. E.g. raspberry pi controller reaches 32 MHz maximum so, unless SPI
-core can adapt transfers in those cases, it wouldn't work on a rpi (if anyone
-ever connects this to a rpi).
+v1 -> v2:
+	- prefix as "RFC PATCH"
+	- drop channel switching
+	- rewrite to present patches in smaller units and in logical steps
 
-Me, I only have remote access to a setup with adaq4216 connected to a zedboard
-so I won't be connecting any external tool for debugging. 
+v2 -> v3:
+	- incorporate comments/suggestions on v2
+	- clean up
 
-Another thing that came to mind now is we could just not set speed_hz of
-spi_transfers. AFAIC, those are not required.
+With v6.13 a change was made to the bmp280 drivers to use MODE_FORCED
+instead of MODE_NORMAL.  This broke userspace functionality: reading
+from sysfs interfaces no longer worked and an error was thrown
+"Measurement cycle didn't complete".  This series fixes the underlying
+bugs affecting the measurement time calculation (patches 0001 through
+005) and implements additional functionality (patches 0006 through
+009) not available for the BMx280 devices previously to allow the use
+of the sysfs interface in MODE_NORMAL again and control the
+corresponding parameters.  The implementation follows the already
+existing facilities for the BMx[35]80 devices even though the actual
+functionality of the BMx280 hardware is slightly different.
+
+Achim Gratz (9):
+  iio: pressure: bmp280: correct meas_time_us calculation
+  iio: pressure: bmp280: implement adaptive wait for BMx280 devices
+  iio: pressure: bmp280: implement adaptive wait for BMP380 devices
+  iio: pressure: bmp280: rename wait_conv() to conv(), factor out
+    measurement time calculation
+  iio: pressure: bmp280: remove code duplication
+  iio: pressure: bmp280: enable filter settings for BMx280
+  iio: pressure: bmp280: implement sampling_frequency for BMx280
+  iio: pressure: bmp280: implement sampling_frequency calculation for
+    BMx280
+  iio: pressure: bmp280: test longer autosuspend (WIP)
+
+ drivers/iio/pressure/bmp280-core.c | 504 +++++++++++++++++++++--------
+ drivers/iio/pressure/bmp280.h      |  26 +-
+ 2 files changed, 387 insertions(+), 143 deletions(-)
+
+-- 
+
+Comments:
+
+Thanks for all suggestions and comments on my v1 and v2 patch series.
+
+I've not had time to work on the suggested further changes to the
+implementation, to recap that would entail implementing the
+*_available attributes and completely reworking the handling of the
+ODR and filter settings to better conform to the API:
+
+	1. A list of available values for each setting should be
+          associated via the *_available attribute (since these are a
+          fixed number for each parameter due to the register
+          mapping);
+
+	2. Available output data rate settings would be variable
+          depending on the OSR (at the moment the setting is fixed,
+          but the reading is variable);
+
+	3. Filter settings would be done by 3dB corner (either real or
+          normalized frequency) instead of the divisor (bitshift)
+          applied to produce the decay value of the underlying
+          recursive IIR.
+
+Anything from 2. on would break userspace (again), but make the
+implementation more conformant with the API.  I think there needs to
+be more discission of how to re-structure the code to support this:
+the current static tables would become really large, however setting
+dynamic calculations up so that the small number of valid register
+values can get extracted would be rather complex and error-prone.  So
+it is likely there should be some combination of both approaches used.
+
+
+The remaining sticky point is the control of the autosuspend delay
+(patch 0099).  If the sensor is suspended between measurements, then
+even when it is operating in MODE_NORMAL, an additional latency of
+12…15ms is incured when the interval between measurements is long
+enough to trigger autosuspend.  I have set the hardcoded value to 2s
+as a test (see the last patch in the series) and this additional
+latency vanishes, interestingly also the tailing to long measurement
+times I have observed otherwise is also much reduced.  However so far
+I've not come up with an idea of how to control the autosuspend delay
+from userspace, to wit:
+
+ /sys/bus/iio/devices/iio:device0/power/async: disabled
+ /sys/bus/iio/devices/iio:device0/power/autosuspend_delay_ms:
+ '/sys/bus/iio/devices/iio:device0/power/autosuspend_delay_ms': Input/output error
+ /sys/bus/iio/devices/iio:device0/power/control: auto
+ /sys/bus/iio/devices/iio:device0/power/runtime_active_kids: 0
+ /sys/bus/iio/devices/iio:device0/power/runtime_active_time: 0
+ /sys/bus/iio/devices/iio:device0/power/runtime_enabled: disabled
+ /sys/bus/iio/devices/iio:device0/power/runtime_status: unsupported
+ /sys/bus/iio/devices/iio:device0/power/runtime_suspended_time: 0
+ /sys/bus/iio/devices/iio:device0/power/runtime_usage: 0
+ -rw-r--r-- 1 root root 4096 Aug 10 18:41 async
+ -rw-r--r-- 1 root root 4096 Aug 10 18:41 autosuspend_delay_ms
+ -rw-r--r-- 1 root root 4096 Aug 10 18:41 control
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_active_kids
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_active_time
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_enabled
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_status
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_suspended_time
+ -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_usage
+
+…which according to the kernel documentation is due to a lack of
+unspecified support from the driver.  Now, it appears I should be able
+to switch off autosuspend altogether by changing control from "auto"
+to "on", but that doesn't seem to take effect; also I'd rather
+configure a sensible value in accordance to my measurement settings.
+The other handful of IIO drivers I've looked at that set this
+parameter don't do things differently, so I don't know if there's
+anything that can be done about it from within the driver
+implementation.
+
 

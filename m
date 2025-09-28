@@ -1,63 +1,65 @@
-Return-Path: <linux-iio+bounces-24542-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24538-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF65BA7579
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 19:35:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A95DBA7572
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 19:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A5E116ABAF
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 17:35:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B631C4E13E1
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 17:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673A4239E76;
-	Sun, 28 Sep 2025 17:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3AA82367D2;
+	Sun, 28 Sep 2025 17:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=stromeko.de header.i=@stromeko.de header.b="OImYJ04S"
+	dkim=pass (2048-bit key) header.d=stromeko.de header.i=@stromeko.de header.b="lhuQaFou"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp4.goneo.de (smtp4.goneo.de [85.220.129.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2575D2222A9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257C0222594
 	for <linux-iio@vger.kernel.org>; Sun, 28 Sep 2025 17:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.129.59
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759080940; cv=none; b=Zf/l7eCrCnmRcjIBj2585UPUShVHNQJ6GE0zDG5rq9R1O/flKkxd1+IMbljQZ74T6BQVWmoUiFFIwOgbEqxMcgR8LFfN5MbYo9DfFYwFjRm1X719LcTxHpSbOy7EEwhs/jBvs9ui0lP/tPPglzt7LOAZe6PYR22B+aeo8kOWb0E=
+	t=1759080939; cv=none; b=L7j7Nb3GuY7RmrhOreESij88mSNRrAh72eQYhSOA3sHuoF2M6iPutxKStgnLAI+TRC0Q73+7iskHvov379jC7+bxmeR3X2FOIjSf3qzsaZa/cgvIbKHGDOO6qrPt3lLolrrAKgC5YpG9IM/eDMwEjENyR35l1+rK1A0ylWHZ7dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759080940; c=relaxed/simple;
-	bh=a/WYmFGkC122+N0OjRYiGtYsXsYOHP4w5vKB2tgVQv4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z/6JxizYtLkOwogwiMz3xGdWeuToTxScnqr11kmGXLgqIBd/e9UKwksqiNPlhu7cU2IplwPLUV9vd5058PSNE3SDdwHiZL7VrfizTN85ThVluF5H8eslpJ9pTf27dirW0Y1NwPtinOTW3w12qX+RB4Ss6PG124ZqVTPY1KDGaLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Stromeko.DE; spf=pass smtp.mailfrom=Stromeko.DE; dkim=pass (2048-bit key) header.d=stromeko.de header.i=@stromeko.de header.b=OImYJ04S; arc=none smtp.client-ip=85.220.129.59
+	s=arc-20240116; t=1759080939; c=relaxed/simple;
+	bh=xJ2VdLzVtTjVsOPji2hDrlGeM7nU3G9qhGCSbC7BGfo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f9VTVkHJI97/0aSpQN/pnGvQRj8Oo0kqJDGbhf66lIc+9zwLvJoXWUPdzrkGroeymTROSaU/SIiLIWx+9XuaDYPyevd2VqTle9+C/Bx8FIB5FNcEU3MSTCgJX1gX2Njtk4Qdez+ul/6BipeTn2+o/m8CZqEZvqtakEZmNBOotyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Stromeko.DE; spf=pass smtp.mailfrom=Stromeko.DE; dkim=pass (2048-bit key) header.d=stromeko.de header.i=@stromeko.de header.b=lhuQaFou; arc=none smtp.client-ip=85.220.129.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Stromeko.DE
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Stromeko.DE
 Received: from hub1.goneo.de (hub1.goneo.de [85.220.129.52])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(No client certificate requested)
-	by smtp4.goneo.de (Postfix) with ESMTPS id 622EA240707;
+	by smtp4.goneo.de (Postfix) with ESMTPS id E1E2F240BE1;
 	Sun, 28 Sep 2025 19:27:20 +0200 (CEST)
 Received: from hub1.goneo.de (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(No client certificate requested)
-	by hub1.goneo.de (Postfix) with ESMTPS id C3AFC240165;
-	Sun, 28 Sep 2025 19:27:18 +0200 (CEST)
+	by hub1.goneo.de (Postfix) with ESMTPS id 0F5D5240477;
+	Sun, 28 Sep 2025 19:27:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stromeko.de; s=DKIM001;
-	t=1759080438;
+	t=1759080439;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rpx0PDdi2DKCjXoPe9Zhi6rxoVyuARp8l5VPb/ZES30=;
-	b=OImYJ04SSNKj1xY9+oxm5lFGHZEkTAEtRksXxnwvDMa50RCES08EDF9uv8ADOhlvwsApfr
-	KnndQtequRdvmZvcy7dfoIwKzO+XZ/0hhA7ENmuh82nXg/cQT/RhDP3k++EYaqlTefxYoT
-	0upXnGj1fwRltPZOnKhnlqSRPB/QGFAoIRSwmxIhCPrA1yJTG/7n3FfWlz71j9j5TV75ms
-	RU3Ho7k6hfQFMo+J1wHpDLMysF0fbrMyl4E15Cu2iJ0vhvWt8kxgyeWDBLbbTCNPKLVkaE
-	IlQV76iA+7iw+i71Nuy3K1mtKoIpgqRLi9h9GfJS0rBSvq0s9rV14qCzr+FegA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0y1EFLz63EJgM6zdAzrk9eZKIvkQ379uqi+QLpEQ11Y=;
+	b=lhuQaFou6GW9J8bkGiOf6ED1R0kVSxg8opqX3bJ5TBZ7ZDybzRDe8c1jr+FerLz3uhs0t+
+	fZBl4CgFs/fEN7X5RjKa6/egKfL8H4YxBIdb6rMb41D8mHdbIpCqqJTy4Dz4TyoBvY4gSO
+	pJLQOzwRBiIKnV7OHH5PNIxnoEhSJeT+5efCXqrVsZVbBvk4vAOFVSAYNOfqOcKWa63+s4
+	yBFtZlwY17KozA2JCwP5zRo/WJE69iEOYRlpwFBJcnSXw2d8XYihVgy9/XjKtXWePY8ByA
+	SUvorA2HyP1mFJF4nbyMLL4PnD95DtP3afnObZz8yW4GkZaYozrPqppeMpAVIA==
 Received: from Gerda.fritz.box (p5b2f36f7.dip0.t-ipconnect.de [91.47.54.247])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by hub1.goneo.de (Postfix) with ESMTPSA id 7851B2400FE;
+	by hub1.goneo.de (Postfix) with ESMTPSA id C106924012F;
 	Sun, 28 Sep 2025 19:27:18 +0200 (CEST)
 From: Achim Gratz <Achim.Gratz@Stromeko.DE>
 To: linux-iio@vger.kernel.org
@@ -66,10 +68,12 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Andy Shevchenko <andy@kernel.org>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Achim Gratz <Achim.Gratz@Stromeko.DE>
-Subject: [RFC PATCH v3 0/9] Fixes and enhancements for the bmp280 driver
-Date: Sun, 28 Sep 2025 19:26:27 +0200
-Message-ID: <20250928172637.37138-1-Achim.Gratz@Stromeko.DE>
+Subject: [RFC PATCH v3 1/9] iio: pressure: bmp280: correct meas_time_us calculation
+Date: Sun, 28 Sep 2025 19:26:28 +0200
+Message-ID: <20250928172637.37138-2-Achim.Gratz@Stromeko.DE>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250928172637.37138-1-Achim.Gratz@Stromeko.DE>
+References: <20250928172637.37138-1-Achim.Gratz@Stromeko.DE>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,127 +82,99 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-UID: 009ef4
-X-Rspamd-UID: 00556f
+X-Rspamd-UID: a2259b
+X-Rspamd-UID: 18bd11
 
-Revision History:
-=================
+Correction of meas_time_us initialization based on an observation and
+partial patch by David Lechner.
 
-v1:
-	- initial proposal, incorrectly prefixed "bmp280" instead of "RFC PATCH"
-	- patch series presented in the order it was created
+The constant part of the measurement time (as described in the
+datasheet and implemented in the BM(P/E)2 Sensor API) was apparently
+forgotten (it was already correctly applied for the BMP380) and is now
+used.
 
-v1 -> v2:
-	- prefix as "RFC PATCH"
-	- drop channel switching
-	- rewrite to present patches in smaller units and in logical steps
+There was also another thinko in bmp280_wait_conv:
+data->oversampling_humid can actually have a value of 0 (for an
+oversampling_ratio of 1), so it can not be used to detect the presence
+of the humidity measurement capability.  Use
+data->chip_info->oversampling_humid_avail instead, which is NULL for
+chips that cannot measure humidity and therefore must skip that part
+of the calculation.
 
-v2 -> v3:
-	- incorporate comments/suggestions on v2
-	- clean up
+Closes: https://lore.kernel.org/linux-iio/875xgfg0wz.fsf@Gerda.invalid/
+Fixes: 26ccfaa9ddaa ("iio: pressure: bmp280: Use sleep and forced mode for oneshot captures")
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Tested-by: Achim Gratz <Achim.Gratz@Stromeko.DE>
+Signed-off-by: Achim Gratz <Achim.Gratz@Stromeko.DE>
 
-With v6.13 a change was made to the bmp280 drivers to use MODE_FORCED
-instead of MODE_NORMAL.  This broke userspace functionality: reading
-from sysfs interfaces no longer worked and an error was thrown
-"Measurement cycle didn't complete".  This series fixes the underlying
-bugs affecting the measurement time calculation (patches 0001 through
-005) and implements additional functionality (patches 0006 through
-009) not available for the BMx280 devices previously to allow the use
-of the sysfs interface in MODE_NORMAL again and control the
-corresponding parameters.  The implementation follows the already
-existing facilities for the BMx[35]80 devices even though the actual
-functionality of the BMx280 hardware is slightly different.
+---
 
-Achim Gratz (9):
-  iio: pressure: bmp280: correct meas_time_us calculation
-  iio: pressure: bmp280: implement adaptive wait for BMx280 devices
-  iio: pressure: bmp280: implement adaptive wait for BMP380 devices
-  iio: pressure: bmp280: rename wait_conv() to conv(), factor out
-    measurement time calculation
-  iio: pressure: bmp280: remove code duplication
-  iio: pressure: bmp280: enable filter settings for BMx280
-  iio: pressure: bmp280: implement sampling_frequency for BMx280
-  iio: pressure: bmp280: implement sampling_frequency calculation for
-    BMx280
-  iio: pressure: bmp280: test longer autosuspend (WIP)
+Notes
+=====
 
- drivers/iio/pressure/bmp280-core.c | 504 +++++++++++++++++++++--------
- drivers/iio/pressure/bmp280.h      |  26 +-
- 2 files changed, 387 insertions(+), 143 deletions(-)
+Since the BMx280 device support was added, oversampling=0 actually is
+a valid register setting (meaning that measurement channel is off),
+but actually allowing that setting to be used by changing the data
+structure to hold the actual value instead of its ilog2 would require
+more extensive changes elsewhere in the code.
 
+Further changes would be necesary to avoid the awkward use of -1 as
+the value that would currently be necessary to achieve a setting of 0
+in the register.
+
+Datasheet values and median actual measurement times through sysfs for
+a single reading with my BME280 connected to a 400kHz I²C bus provided
+by the i915 IGP VGA port:
+
+|--------------+---------+---------+----------+----------|
+| Oversampling | Typical | Maximum | Measured | Overhead |
+|        Ratio |    [ms] |    [ms] |     [ms] |     [ms] |
+|--------------+---------+---------+----------+----------|
+|           16 |    98.0 |   112.8 |    122.1 |      9.3 |
+|            8 |    50.0 |    57.6 |     63.6 |      6.0 |
+|            4 |    26.0 |    30.0 |     34.6 |      4.6 |
+|            2 |    14.0 |    16.2 |     21.7 |      5.5 |
+|            1 |     8.0 |     9.3 |     14.8 |      5.5 |
+|--------------+---------+---------+----------+----------|
+
+Reading all three channels via sysfs triples those times, including
+the overhead of course as each read triggers a new measurement on all
+enabled channels.  It is therefore also impossible to obtain all
+channel values from the same measurement cycle with MODE_FORCED, which
+is in a way a limitation of the sysfs interface and can only be
+obtained by using buffered reads.
+---
+ drivers/iio/pressure/bmp280-core.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 6cdc8ed53520..2078b810745b 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -1042,13 +1042,16 @@ static int bmp280_wait_conv(struct bmp280_data *data)
+ 	unsigned int reg, meas_time_us;
+ 	int ret;
+ 
+-	/* Check if we are using a BME280 device */
+-	if (data->oversampling_humid)
+-		meas_time_us = BMP280_PRESS_HUMID_MEAS_OFFSET +
+-				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
++	/* Constant part of the measurement time */
++	meas_time_us = BMP280_MEAS_OFFSET;
+ 
+-	else
+-		meas_time_us = 0;
++	/*
++	 * Check if we are using a BME280 device,
++	 * Humidity measurement time
++	 */
++	if (data->chip_info->oversampling_humid_avail)
++		meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
++				BIT(data->oversampling_humid) * BMP280_MEAS_DUR;
+ 
+ 	/* Pressure measurement time */
+ 	meas_time_us += BMP280_PRESS_HUMID_MEAS_OFFSET +
 -- 
-
-Comments:
-
-Thanks for all suggestions and comments on my v1 and v2 patch series.
-
-I've not had time to work on the suggested further changes to the
-implementation, to recap that would entail implementing the
-*_available attributes and completely reworking the handling of the
-ODR and filter settings to better conform to the API:
-
-	1. A list of available values for each setting should be
-          associated via the *_available attribute (since these are a
-          fixed number for each parameter due to the register
-          mapping);
-
-	2. Available output data rate settings would be variable
-          depending on the OSR (at the moment the setting is fixed,
-          but the reading is variable);
-
-	3. Filter settings would be done by 3dB corner (either real or
-          normalized frequency) instead of the divisor (bitshift)
-          applied to produce the decay value of the underlying
-          recursive IIR.
-
-Anything from 2. on would break userspace (again), but make the
-implementation more conformant with the API.  I think there needs to
-be more discission of how to re-structure the code to support this:
-the current static tables would become really large, however setting
-dynamic calculations up so that the small number of valid register
-values can get extracted would be rather complex and error-prone.  So
-it is likely there should be some combination of both approaches used.
-
-
-The remaining sticky point is the control of the autosuspend delay
-(patch 0099).  If the sensor is suspended between measurements, then
-even when it is operating in MODE_NORMAL, an additional latency of
-12…15ms is incured when the interval between measurements is long
-enough to trigger autosuspend.  I have set the hardcoded value to 2s
-as a test (see the last patch in the series) and this additional
-latency vanishes, interestingly also the tailing to long measurement
-times I have observed otherwise is also much reduced.  However so far
-I've not come up with an idea of how to control the autosuspend delay
-from userspace, to wit:
-
- /sys/bus/iio/devices/iio:device0/power/async: disabled
- /sys/bus/iio/devices/iio:device0/power/autosuspend_delay_ms:
- '/sys/bus/iio/devices/iio:device0/power/autosuspend_delay_ms': Input/output error
- /sys/bus/iio/devices/iio:device0/power/control: auto
- /sys/bus/iio/devices/iio:device0/power/runtime_active_kids: 0
- /sys/bus/iio/devices/iio:device0/power/runtime_active_time: 0
- /sys/bus/iio/devices/iio:device0/power/runtime_enabled: disabled
- /sys/bus/iio/devices/iio:device0/power/runtime_status: unsupported
- /sys/bus/iio/devices/iio:device0/power/runtime_suspended_time: 0
- /sys/bus/iio/devices/iio:device0/power/runtime_usage: 0
- -rw-r--r-- 1 root root 4096 Aug 10 18:41 async
- -rw-r--r-- 1 root root 4096 Aug 10 18:41 autosuspend_delay_ms
- -rw-r--r-- 1 root root 4096 Aug 10 18:41 control
- -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_active_kids
- -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_active_time
- -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_enabled
- -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_status
- -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_suspended_time
- -r--r--r-- 1 root root 4096 Aug 10 18:41 runtime_usage
-
-…which according to the kernel documentation is due to a lack of
-unspecified support from the driver.  Now, it appears I should be able
-to switch off autosuspend altogether by changing control from "auto"
-to "on", but that doesn't seem to take effect; also I'd rather
-configure a sensible value in accordance to my measurement settings.
-The other handful of IIO drivers I've looked at that set this
-parameter don't do things differently, so I don't know if there's
-anything that can be done about it from within the driver
-implementation.
+2.51.0
 
 

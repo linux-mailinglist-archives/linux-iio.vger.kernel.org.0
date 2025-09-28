@@ -1,163 +1,129 @@
-Return-Path: <linux-iio+bounces-24531-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24532-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B9CBA6F7A
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 12:59:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 782E2BA712F
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 15:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5865D189927C
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 11:00:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15DFB175ACC
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 13:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F192D8375;
-	Sun, 28 Sep 2025 10:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AE71C5D7D;
+	Sun, 28 Sep 2025 13:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ac+/bukR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DEzQj+cH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564E619C560
-	for <linux-iio@vger.kernel.org>; Sun, 28 Sep 2025 10:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663021946AA
+	for <linux-iio@vger.kernel.org>; Sun, 28 Sep 2025 13:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759057183; cv=none; b=qLTqvuHC7ajH+fAnMp8Zj6Dep7pSa/T9P/JjaRD+s4Reqt/cLl71eCKqVqdEMWwhFLeqcw0y5elzHY34tCmfWWsJomgK5LNNBKRkhEzarooeDFKdSd5nL6RyabHojY2tGM7GxWh/Y6NiGrTzeg35zySBB2latG4HMpxdj9SMnjs=
+	t=1759067311; cv=none; b=DwcZkY776LwcRXGXfBupUpx6KRBw8BZrPdJYNpBHINvfQSdrGHcCy0kXJmNxCcpnMlmq1fwnqvMUrycyJFdPza4ZC82mBIb1VHjjTWkm6BxJqOmnAyGnLl7GnVzmRre4MvkQnQsHqOvpfTNyzOgAOtJUYbeIPxTmUPUWE6YwitE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759057183; c=relaxed/simple;
-	bh=GDKFsybwD+pZ6FN+TSqOEdVfNWcD36CPhAp+I2giqqI=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B93j5TlwvCx+6IkRwbG/SN/kl/S4vodCAESqHyXcCiCtaJYPhxWyp3z6/AP+7c6e2Dxy0oCYBepPezuxBLtsn6afdIl/p5brKgobM4eAEB9G0S2p4hdlt7zmTnCFX0vsT+x8ko6brTfOjxksj2KXI9KE93pfceVdNBF7UX5w7hA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ac+/bukR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DAB30C4CEF0
-	for <linux-iio@vger.kernel.org>; Sun, 28 Sep 2025 10:59:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759057182;
-	bh=GDKFsybwD+pZ6FN+TSqOEdVfNWcD36CPhAp+I2giqqI=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=ac+/bukR1W0C+MR//Qkc8xsVWgEa1EK3z1HLtRJ3LCe8CJjnXQdl8hBLH7tp214/O
-	 PG43nYtLeObAJIIcbfKFxRAbnV1Np7640TOmjn1GQog2LCOCGHHHtzyxJFO/dF0ogy
-	 GrzDEIVjwmABgglnWJFYk3g6vCAaJdVK16LXyLAeOCIe+HluCSc45sCudXRtBCfPM/
-	 90Chg6pDC5nFYZdQTGXzZE6h4OW6Yl86VipaqF2F/3SeTjL0EfAtrF4wG0pv6ZfJCw
-	 r9iHkH8VirR7oryqbztcHpZg2mIwizBjPLfgFozfL79SyT+C1I+DUfLr6LoQ05FspI
-	 fQgHkiT5GUzZg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id CDA5EC4160E; Sun, 28 Sep 2025 10:59:42 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 220543] MCP3428 scaling values are incorrect, three orders of
- magnitude low
-Date: Sun, 28 Sep 2025 10:59:42 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: jic23@kernel.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-220543-217253-oOEqOx899T@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-220543-217253@https.bugzilla.kernel.org/>
-References: <bug-220543-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=arc-20240116; t=1759067311; c=relaxed/simple;
+	bh=FmVHxgqG382cC69d8rXWZwYyOOy1DF+PiCiPPNQ66pU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cf23bX0qYzPcoymHph8QFuoP1VjS2oquNLnCY/Iy29p3QbzNyYv26dr+qrlVHEWm0O/eXWHPcmvZv2QY16ubBqYWaqphMygAmfMzApOYQOnxo8c9Ln+H2ToNcY3ze0y//Maa6+4oHwOlyi4qHATT++TC68mz1CPYcmcB38yC8Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DEzQj+cH; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b5516ee0b0bso2663144a12.1
+        for <linux-iio@vger.kernel.org>; Sun, 28 Sep 2025 06:48:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759067309; x=1759672109; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=My/qHt+y2PHKSiLvEMroRzC1fUumz88ynNlnDjtDWgY=;
+        b=DEzQj+cHX+g/RZAa0Cy0TWWfpiP+fpqNL5Zd6z/ZvRNSi5CxqFYUwXEANblazCkSif
+         AaaN+Gu5dYqpBiPNCDSdBL6TSPpxhErdWFI1sT6RBJRgVv0KSjkalZETzeUIR9zqGaCE
+         5cug8wMPN7uiYJe9COvDu3riVPZAUc6Wx4V4HeKwV0R8cgK5HL7K7OqD5fowt8iDZivf
+         qExNjZ8zJqg94jccfsBn0rrrC7C7t3Asd1koK8Qe+Zep+KdmSDpQv8Ek2UE3gPGnHTBa
+         xCTm/WhMd0R5orGBdCqidE5Jt3f8NI1GuAj9sxkJwVfX52Lcggd9G/NyaGIgL0BOJrNR
+         dwVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759067309; x=1759672109;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=My/qHt+y2PHKSiLvEMroRzC1fUumz88ynNlnDjtDWgY=;
+        b=fxOt4iZ4PvbUiXEFGIUkIif2k8If7zAx1CrdAbQCg+AG9gWJ3E8xul/Bljdsy0Nbie
+         trsi28gwUyPEUT4MPOQiDRS7e3AtT4cWwkzWEWFqSF72LCP3fMP21Yb+NydxzFXP38Yl
+         DdjD05ZYl2WnKK+SNuwtYyoKJtcXz8oIxD2+8uhGvJvcHjWF2+L7C/cOsdmQeSSuiEJW
+         iyEkwbOLzZ03+D+xNGg2l4qLYHgWiz0y8j2w/Wxh/UCStj1TTevy72w3LsG22zZ56V3F
+         WurkT03wsLwvYJEGS/+RiWr/bC2vNU/+RqsGq//4mmVvGE3ifvbcTH4Q1gLNpNyeoFi5
+         Dp+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWOPXT/g5M4UoYfQVBT3udZZveJlo2sKLr74z+gbG1AI7ythRBfzbVZurQiEIC+V57AZqeMy83sz+Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0RhNlDUdCqUFwTRz5UqACxf6iCwyFC4xsPr0k4GS4Dy55FkK5
+	MZOOo8C17pQ2TvnXa7cgKDioWrASXTTy2R+HXFgagfdaRvbdi22POXRN
+X-Gm-Gg: ASbGncsUiVYA2SmdDzcA0bVC22TzMD5aux0ZmBjq/j7Rb9BSDO5cimeGSa4VwyWzmqb
+	fM4E32fxLMKxggIdarV8hv9C3eSq4BNPOo5jihicvglpvg408E7VwnOCIjHtAxCpuzKh8exEGls
+	rsRlZe9mO8bfeaHjAX0YVfSWeMcZ7hc2LjewlpU7u+o/KvxcaSSQJMbwxH8nwHF2npm9poPfE5X
+	dUR5PHFghSVgnWESiap/JUu38N8B6EMPKgKLcVTvyLEkTdVsRrH13HCfL3yBS2KuZEGSQeziUg5
+	cO3U1i5YACDXMlWWF127JZDVbNAAyB57CFTRFOIa2G21VOaqY+BLUz7TmCFuidWOWd72dTUNVNY
+	/O2TN03QoMw96VEOx8OCmHjUXEO1oJT8=
+X-Google-Smtp-Source: AGHT+IGXO/qWicj44HJrAinURMObPmlszOlNOo7L+z4Z78O/CaGZYYN86nJQ0OUnlCNPwKAtiNM4Hw==
+X-Received: by 2002:a17:902:f9c6:b0:275:2aac:fef8 with SMTP id d9443c01a7336-27ed4a78d81mr101059275ad.38.1759067309482;
+        Sun, 28 Sep 2025 06:48:29 -0700 (PDT)
+Received: from localhost ([2804:30c:b65:6a00:ceaa:2ed0:e81e:8f51])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-27edcbd455asm97105605ad.122.2025.09.28.06.48.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Sep 2025 06:48:22 -0700 (PDT)
+Date: Sun, 28 Sep 2025 10:49:15 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-spi@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Axel Haslam <ahaslam@baylibre.com>, broonie@kernel.org,
+	nuno.sa@analog.com, dlechner@baylibre.com, andy@kernel.org
+Subject: Re: [PATCH v3 1/1] spi: offload: Add offset parameter
+Message-ID: <aNk82_gHPDCNDqjV@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1758913065.git.marcelo.schmitt@analog.com>
+ <d73804d605d494c6420adb7c0b67f6707628832d.1758913065.git.marcelo.schmitt@analog.com>
+ <20250928110052.6fefd6a1@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250928110052.6fefd6a1@jic23-huawei>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D220543
+Hi Jonathan,
 
---- Comment #1 from Jonathan Cameron (jic23@kernel.org) ---
-On Sat, 06 Sep 2025 23:42:16 +0000
-bugzilla-daemon@kernel.org wrote:
+Yes, current ad4030 series depends on this.
+Though, since this updates the SPI subsystem, I separated it from ad4030 set.
+I missed that aspect of the devel process. If we need an immutable branch to
+make this split series for ad4030 work, then yes, please, I'd like an 
+immutable branch with this patch.
 
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D220543
->=20
->             Bug ID: 220543
->            Summary: MCP3428 scaling values are incorrect, three orders of
->                     magnitude low
->            Product: Drivers
->            Version: 2.5
->           Hardware: All
->                 OS: Linux
->             Status: NEW
->           Severity: normal
->           Priority: P3
->          Component: IIO
->           Assignee: drivers_iio@kernel-bugs.kernel.org
->           Reporter: phil@munts.net
->         Regression: No
->=20
-> The values for in_voltageY_scale that the 6.12 kernel generates for the
-> MCP3428
-> ADC are too low by a factor of 1000.
->=20
-> The ADS1115 and the MCP3204 get in_voltageY_scale values around 1.0 (impl=
-ying
-> millivolts per ADC step) while the MCP3428 gets values around 0.001 and l=
-ower
-> (implying microvolts per ADC step).
->=20
-> See also: https://forums.raspberrypi.com/viewtopic.php?t=3D391674
->=20
-Optimistic +CC of Angelo (it's been a few years!)
-
-As a sanity check, if you can rebuild your driver, could you try;
-diff --git a/drivers/iio/adc/mcp3422.c b/drivers/iio/adc/mcp3422.c
-index 50834fdcf738..2bdf14f337ec 100644
---- a/drivers/iio/adc/mcp3422.c
-+++ b/drivers/iio/adc/mcp3422.c
-@@ -178,7 +178,7 @@ static int mcp3422_read_raw(struct iio_dev *iio,
-
-                *val1 =3D 0;
-                *val2 =3D mcp3422_scales[sample_rate][pga];
--               return IIO_VAL_INT_PLUS_NANO;
-+               return IIO_VAL_INT_PLUS_MICRO;
-
-        case IIO_CHAN_INFO_SAMP_FREQ:
-                *val1 =3D mcp3422_sample_rates[MCP3422_SAMPLE_RATE(adc->con=
-fig)];
-
-It's a bit of a hack for the largest scale as we should really represent th=
-at
-as *val1 =3D 1, *val2 =3D 0 rather than *val2 =3D 1000000 but meh - I'll sp=
-in a nicer
-fix if this works.
-
-Working through the scaling. It's a mix of resolution, 12->18, vref =3D +-2=
-.048V,
-and PGA, 1->8x
-
-The docs rather confusingly give LSB values for 12 bits of 1mV etc but those
-are post PGA.   PGA increasing is equivalent of reducing the vref, so resul=
-ts
-in lower values.
-
-So agreed with your discovery - this seems to be out by a factor of 1000.
-
-Thanks for the report.  Hopefully Angelo can take a look, but if not I'll t=
-ry
-and spin a fix. If you can test the above that would be a great start.
-
-Thanks,
-
-Jonathan
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+On 09/28, Jonathan Cameron wrote:
+> On Fri, 26 Sep 2025 16:01:05 -0300
+> Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+> 
+> > From: Axel Haslam <ahaslam@baylibre.com>
+> > 
+> > Add an offset parameter that can be passed in the periodic trigger.
+> > This is useful for example when ADC drivers implement a separate periodic
+> > signal to trigger conversion and need offload to read the result with
+> > some delay. While at it, add some documentation to offload periodic trigger
+> > parameters.
+> > 
+> > Signed-off-by: Axel Haslam <ahaslam@baylibre.com>
+> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> 
+> Hi Axel, Marcelo,
+> 
+> Is there a build time dependency on this for the ad4030 series?
+> I'm assuming this will go via Mark's SPI tree, so this is really a question
+> of do we need to ask him for an immutable branch or not.
+> 
+> I don't think there is such a dependency but just wanted to check!
+> 
+> Jonathan
 

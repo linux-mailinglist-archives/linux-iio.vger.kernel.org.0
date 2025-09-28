@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-24514-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24515-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F0EBA6B6A
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 10:30:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F332BA6BC6
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 10:45:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BC3F3AD12E
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 08:30:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD0D617CA06
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 08:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C4A1D7984;
-	Sun, 28 Sep 2025 08:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7CF2BE035;
+	Sun, 28 Sep 2025 08:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PRth4uvt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1aC0e7S"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998F8233136;
-	Sun, 28 Sep 2025 08:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E882248AF;
+	Sun, 28 Sep 2025 08:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759048235; cv=none; b=n6g4BSCo+IV7ILOhx/W+rVhzB30eeP1X3A76Xt0zEeKrF12KH68Rg11kXWWrWZrDYUmqh53GFI3dZnvo2JaW+om5GxDvN0Bv9/63GoF38GKjv42TzscZWWH8SEwe3uDUYijibQgfQ7DUiETmJ5QDVZMQWztJO2F5Bw7iQZ/9daM=
+	t=1759049134; cv=none; b=cQIOr/Lr1A1pEyXWpnQzAA3LJy1a9jLPBYCQUv07FRK2ol10iAiC+mN/QCXu8t5XFazCc33d5BirzVndG3tDO/pDfmz1QCRNVvERhMpIGP/oO2qGr1kCAip1Pfvp2mXOr5GtOkrSFtess61966guvIIe1TpfuEDkg/o0GyudfMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759048235; c=relaxed/simple;
-	bh=GMKC96tBhh8BbSxjp97CncZ4AG2zr2v2pDiVFBNdiXU=;
+	s=arc-20240116; t=1759049134; c=relaxed/simple;
+	bh=6+lWkXIDs83yxVt9205UmMQwnhaToNASPxoh0v8cq1o=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MhRU7wVLvhLkGSpKTEEKXKli1+Sy3ZN59Wra4aJnO939IFWnWOKNWquJpm0DVvhata7p4RkYgs8IP1UjlUKYc6CQ+7wIA24L0a93K9IHwivz0ljnZUwU8yk0UikuqF1fbMYiE5M893+Fwx9p77zx8M2k2Oo+0F5tOsnYsdRfT1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PRth4uvt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6FFC4CEF0;
-	Sun, 28 Sep 2025 08:30:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IZIke//UhFF1sTDB5L8uNU0XatgOngfhR8KWB593zvDQk82AqauLvKpeXuybXPpRwuWDV9imjYGAPS29MWz2pfLdxF9zbT6D4Y8kRP1d1mVxd7WJ7GV863c+uNf8+SIS3x3RcRK1Ge/YUYYo7B1uEOXsvfyV73uJ0oG5YqvVfIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1aC0e7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17156C4CEF0;
+	Sun, 28 Sep 2025 08:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759048235;
-	bh=GMKC96tBhh8BbSxjp97CncZ4AG2zr2v2pDiVFBNdiXU=;
+	s=k20201202; t=1759049134;
+	bh=6+lWkXIDs83yxVt9205UmMQwnhaToNASPxoh0v8cq1o=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PRth4uvtTfYhFnlOwi2b4sWyak1UL8Gs9PC+43Khq+mki1d43bVRwzINtK+wB20qx
-	 xOasy5sRa/PD49CTXisBzz7V4zBKzb/gDrhWy3+11pXDXB0MpKdp2OJGm0y/qCyBeX
-	 pRUSWRZwttaTy9orVPXY1sAZ2CfQQFZQSMqDx4f1K0ROytwnSJ0vWRKPhffxhqIWVS
-	 mjW9ETRVwu42/vXcOaPLz/nqnHKweYNaDkzKJWJ0jz16Dqq6J/F2yCdG3NASQXQagk
-	 M4bjO3KNM+31ydN9shIvOL4RxzMdepEJcZU6NRWgcL6Bc2iDbFcfPsKije7qu3wh6B
-	 SGJp0B4pEoANA==
-Date: Sun, 28 Sep 2025 09:30:26 +0100
+	b=U1aC0e7Si4iOf2qZrbsLw1sSiN2EOikX9267mqstsPDAgDHsvmn66hSCrJMc4eCuF
+	 DgyGrcjDD6LUe5Pg4MhV+kIVHcyppYRYFYoo2Vtr83xwc6xMPvZzWH9K+LMRjwhNDz
+	 pQJhCozQNKna5MveUKSzxhmwK1lGIbPKZXaz/xqoVmRVA+9o8wzj6VkIKgO0KSb+hA
+	 Hi9OLN9gqZ/65Y3lTDAAeB45jOYoVhpILUZXfjRDXuFsUYjvYpQHHx/uYBw63Hp+lw
+	 mQ8rRKJ/ESHW4prPnYd75rDvx4ZjVS8hbv5pK8McfsIIVxuzkWHekUK1CjmDPb3D37
+	 +L5J2OtuJynyw==
+Date: Sun, 28 Sep 2025 09:45:24 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
 Cc: remi.buisson@tdk.com, David Lechner <dlechner@baylibre.com>, Nuno
@@ -49,12 +49,12 @@ Cc: remi.buisson@tdk.com, David Lechner <dlechner@baylibre.com>, Nuno
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v6 2/9] iio: imu: inv_icm45600: add new inv_icm45600
- driver
-Message-ID: <20250928093000.6753d920@jic23-huawei>
-In-Reply-To: <20250924-add_newport_driver-v6-2-76687b9d8a6e@tdk.com>
+Subject: Re: [PATCH v6 3/9] iio: imu: inv_icm45600: add buffer support in
+ iio devices
+Message-ID: <20250928094524.52d492a9@jic23-huawei>
+In-Reply-To: <20250924-add_newport_driver-v6-3-76687b9d8a6e@tdk.com>
 References: <20250924-add_newport_driver-v6-0-76687b9d8a6e@tdk.com>
-	<20250924-add_newport_driver-v6-2-76687b9d8a6e@tdk.com>
+	<20250924-add_newport_driver-v6-3-76687b9d8a6e@tdk.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,200 +65,221 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 24 Sep 2025 09:23:55 +0000
+On Wed, 24 Sep 2025 09:23:56 +0000
 Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org> wrote:
 
 > From: Remi Buisson <remi.buisson@tdk.com>
 > 
-> Core component of a new driver for InvenSense ICM-45600 devices.
-> It includes registers definition, main probe/setup, and device
-> utility functions.
-> 
-> ICM-456xx devices are latest generation of 6-axis IMU,
-> gyroscope+accelerometer and temperature sensor. This device
-> includes a 8K FIFO, supports I2C/I3C/SPI, and provides
-> intelligent motion features like pedometer, tilt detection,
-> and tap detection.
+> Add FIFO control functions.
+> Support hwfifo watermark by multiplexing gyro and accel settings.
+> Support hwfifo flush.
 > 
 > Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
 Hi Remi,
 
-Just a few really minor things from a fresh read through.
-Given the request for a commit message change on the DT that is slightly
-beyond what I'd normally just tweak whilst applying I think we'll have
-a v7 anyway, so if you could tidy these up that would be great.
-We are very early in this cycle anyway, so I'm not inclined to rush!
+A few trivial things in here as well.
 
 Jonathan
 
-> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600.h b/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+> index 5f637e2f2ec8f1537459459dbb7e8a796d0ef7a6..aac8cd852c12cfba5331f2b7c1ffbbb2ed23d1c7 100644
+> --- a/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600.h
+> @@ -5,6 +5,7 @@
+>  #define INV_ICM45600_H_
+>  
+>  #include <linux/bits.h>
+> +#include <linux/limits.h>
+
+Why this in the header?  Should be only needed in some of the c files I think
+so push the include down there.
+
+>  #include <linux/mutex.h>
+>  #include <linux/regmap.h>
+>  #include <linux/regulator/consumer.h>
+> @@ -14,6 +15,8 @@
+>  #include <linux/iio/common/inv_sensors_timestamp.h>
+>  #include <linux/iio/iio.h>
+>  
+> +#include "inv_icm45600_buffer.h"
+> +
+>  #define INV_ICM45600_REG_BANK_MASK	GENMASK(15, 8)
+>  #define INV_ICM45600_REG_ADDR_MASK	GENMASK(7, 0)
+>  
+> @@ -94,6 +97,8 @@ struct inv_icm45600_sensor_conf {
+>  	u8 filter;
+>  };
+>  
+> +#define INV_ICM45600_SENSOR_CONF_KEEP_VALUES { U8_MAX, U8_MAX, U8_MAX, U8_MAX }
+> +
+>  struct inv_icm45600_conf {
+>  	struct inv_icm45600_sensor_conf gyro;
+>  	struct inv_icm45600_sensor_conf accel;
+> @@ -122,6 +127,7 @@ struct inv_icm45600_chip_info {
+>   *  @indio_accel:	accelerometer IIO device.
+>   *  @chip_info:		chip driver data.
+>   *  @timestamp:		interrupt timestamps.
+> + *  @fifo:		FIFO management structure.
+>   *  @buffer:		data transfer buffer aligned for DMA.
+>   */
+>  struct inv_icm45600_state {
+> @@ -138,6 +144,7 @@ struct inv_icm45600_state {
+>  		s64 gyro;
+>  		s64 accel;
+>  	} timestamp;
+> +	struct inv_icm45600_fifo fifo;
+>  	union {
+>  		u8 buff[2];
+>  		__le16 u16;
+> @@ -190,6 +197,7 @@ struct inv_icm45600_sensor_state {
+>  #define INV_ICM45600_FIFO_CONFIG0_MODE_BYPASS		0
+>  #define INV_ICM45600_FIFO_CONFIG0_MODE_STREAM		1
+>  #define INV_ICM45600_FIFO_CONFIG0_MODE_STOP_ON_FULL	2
+> +#define INV_ICM45600_FIFO_CONFIG0_FIFO_DEPTH_MASK	GENMASK(5, 0)
+>  #define INV_ICM45600_FIFO_CONFIG0_FIFO_DEPTH_MAX	0x1F
+>  
+>  #define INV_ICM45600_REG_FIFO_CONFIG2			0x0020
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..04f04c72e1710efde0ab8e83f9ce26d28e102c9b
+> index 0000000000000000000000000000000000000000..f81a85c5c77a0b0bc729734a1256af0c896c8fbd
 > --- /dev/null
-> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
-> @@ -0,0 +1,623 @@
-
-
-
-> +u32 inv_icm45600_odr_to_period(enum inv_icm45600_odr odr)
-> +{
-> +	static const u32 odr_periods[INV_ICM45600_ODR_MAX] = {
-> +		0,		/* reserved value */
-> +		0,		/* reserved value */
-> +		0,		/* reserved value */
-
-I'd preferred this done with the enum values.
-	[INV_ICM45600_ODR_6400HZ_LN] = 156250,
-etc and just a comment to say there are some reserved initial values.
-that way we don't have to compare the comments with the enum values to be sure
-there isn't one missing etc.
-
-
-> +		156250,		/* 6.4kHz */
-> +		312500,		/* 3.2kHz */
-> +		625000,		/* 1.6kHz */
-> +		1250000,	/* 800kHz */
-> +		2500000,	/* 400Hz */
-> +		5000000,	/* 200Hz */
-> +		10000000,	/* 100Hz */
-> +		20000000,	/* 50Hz */
-> +		40000000,	/* 25Hz */
-> +		80000000,	/* 12.5Hz */
-> +		160000000,	/* 6.25Hz */
-> +		320000000,	/* 3.125Hz */
-> +		640000000,	/* 1.5625Hz */
-> +	};
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
+> @@ -0,0 +1,486 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/* Copyright (C) 2025 Invensense, Inc. */
 > +
-> +	return odr_periods[odr];
-> +}
+> +#include <linux/bitfield.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/minmax.h>
+> +#include <linux/mutex.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/regmap.h>
+> +#include <linux/time.h>
+> +#include <linux/types.h>
+> +
+> +#include <asm/byteorder.h>
+> +
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/common/inv_sensors_timestamp.h>
+> +#include <linux/iio/iio.h>
+> +
+> +#include "inv_icm45600_buffer.h"
+> +#include "inv_icm45600.h"
+> +
+> +/* FIFO header: 1 byte */
+> +#define INV_ICM45600_FIFO_EXT_HEADER		BIT(7)
+> +#define INV_ICM45600_FIFO_HEADER_ACCEL		BIT(6)
+> +#define INV_ICM45600_FIFO_HEADER_GYRO		BIT(5)
+> +#define INV_ICM45600_FIFO_HEADER_HIGH_RES	BIT(4)
+> +#define INV_ICM45600_FIFO_HEADER_TMST_FSYNC	GENMASK(3, 2)
+> +#define INV_ICM45600_FIFO_HEADER_ODR_ACCEL	BIT(1)
+> +#define INV_ICM45600_FIFO_HEADER_ODR_GYRO	BIT(0)
+> +
+> +struct inv_icm45600_fifo_1sensor_packet {
+> +	u8 header;
+> +	struct inv_icm45600_fifo_sensor_data data;
+> +	s8 temp;
+> +} __packed;
+> +
+> +struct inv_icm45600_fifo_2sensors_packet {
+> +	u8 header;
+> +	struct inv_icm45600_fifo_sensor_data accel;
+> +	struct inv_icm45600_fifo_sensor_data gyro;
+> +	s8 temp;
+> +	__le16 timestamp;
+> +} __packed;
+
 
 > +
-> +/**
-> + *  inv_icm45600_setup() - check and setup chip
-> + *  @st:	driver internal state
-> + *  @chip_info:	detected chip description
-> + *  @reset:	define whether a reset is required or not
-> + *  @bus_setup:	callback for setting up bus specific registers
-> + *
-> + *  Returns: 0 on success, a negative error code otherwise.
-> + */
-> +static int inv_icm45600_setup(struct inv_icm45600_state *st,
-> +				const struct inv_icm45600_chip_info *chip_info,
-> +				bool reset, inv_icm45600_bus_setup bus_setup)
+> +int inv_icm45600_buffer_set_fifo_en(struct inv_icm45600_state *st,
+> +				    unsigned int fifo_en)
 > +{
-> +	const struct device *dev = regmap_get_device(st->map);
-> +	unsigned int val;
+> +	unsigned int mask, val;
 > +	int ret;
 > +
-> +	/* Set chip bus configuration if specified. */
-> +	if (bus_setup) {
-> +		ret = bus_setup(st);
-> +		if (ret)
-> +			return ret;
-> +	}
+> +	mask = INV_ICM45600_FIFO_CONFIG3_GYRO_EN |
+> +	       INV_ICM45600_FIFO_CONFIG3_ACCEL_EN;
 > +
-> +	/* Check chip self-identification value. */
-> +	ret = regmap_read(st->map, INV_ICM45600_REG_WHOAMI, &val);
-> +	if (ret)
-> +		return ret;
-> +	if (val != chip_info->whoami) {
-> +		/*
-> +		 * SPI interface has no ack mechanism.
-> +		 * 0xFF or 0x00 wwhoami means no response from the device.
-whoami?
+> +	if ((fifo_en & INV_ICM45600_SENSOR_GYRO) || (fifo_en & INV_ICM45600_SENSOR_ACCEL))
+> +		val = (INV_ICM45600_FIFO_CONFIG3_GYRO_EN | INV_ICM45600_FIFO_CONFIG3_ACCEL_EN);
+maybe val = mask;?
+> +	else
+> +		val = 0;
+> +
+> +	ret = regmap_update_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG3, mask, val);
+Could use
+	ret = regmap_assign_bits(st->map, INV_ICM45600_REG_FIFO_CONFIG3, mask,
+				 (fifo_en & INV_ICM45600_SENSOR_GYRO) ||
+				 (fifo_en & INV_ICM45600_SENSOR_ACCEL));
 
-> +		 */
-> +		if (val == U8_MAX || val == 0)
-> +			return dev_err_probe(dev, -ENODEV,
-> +					     "Invalid whoami %#02x expected %#02x (%s)\n",
-> +					     val, chip_info->whoami, chip_info->name);
-> +
-> +		dev_warn(dev, "Unexpected whoami %#02x expected %#02x (%s)\n",
-> +			 val, chip_info->whoami, chip_info->name);
-> +	}
-> +
-> +	st->chip_info = chip_info;
-> +
-> +	if (reset) {
-> +		/* Reset previous state. */
-> +		ret = regmap_write(st->map, INV_ICM45600_REG_MISC2,
-> +				   INV_ICM45600_MISC2_SOFT_RESET);
-> +		if (ret)
-> +			return ret;
-> +		/*
-> +		 * IMU reset time.
-> +		 * Datasheet: 16.84 REG_MISC2
-> +		 */
-> +		fsleep(USEC_PER_MSEC);
-> +
-> +		if (bus_setup) {
-> +			ret = bus_setup(st);
-> +			if (ret)
-> +				return ret;
-> +		}
-> +
-> +		ret = regmap_read(st->map, INV_ICM45600_REG_INT_STATUS, &val);
-> +		if (ret)
-> +			return ret;
-> +		if (!(val & INV_ICM45600_INT_STATUS_RESET_DONE)) {
-> +			dev_err(dev, "reset error, reset done bit not set\n");
-> +			return -ENODEV;
-> +		}
-> +	}
-> +
-> +	return inv_icm45600_set_conf(st, chip_info->conf);
-> +}
+or something like.
+	if ((fifo_en & INV_ICM45600_SENSOR_GYRO) || (fifo_en & INV_ICM45600_SENSOR_ACCEL))
+		ret = regmap_set_bits(st->map, INV_IC..., mask);
+	else
+		ret = regmap_clear_bits();
 
+Anyhow, up to you onthis one as none of the options look perfect to me.
 
-
-> +
-> +/* Runtime suspend will turn off sensors that are enabled by iio devices. */
-> +static int inv_icm45600_runtime_suspend(struct device *dev)
-> +{
-> +	struct inv_icm45600_state *st = dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +	guard(mutex)(&st->lock);
-> +
-> +	/* disable all sensors */
-> +	ret = inv_icm45600_set_pwr_mgmt0(st, INV_ICM45600_SENSOR_MODE_OFF,
-> +					 INV_ICM45600_SENSOR_MODE_OFF, NULL);
 > +	if (ret)
 > +		return ret;
 > +
-> +	regulator_disable(st->vddio_supply);
+> +	st->fifo.en = fifo_en;
+> +	inv_icm45600_buffer_update_fifo_period(st);
 > +
 > +	return 0;
 > +}
-> +
-> +/* Sensors are enabled by iio devices, no need to turn them back on here. */
-> +static int inv_icm45600_runtime_resume(struct device *dev)
-> +{
-> +	struct inv_icm45600_state *st = dev_get_drvdata(dev);
-> +
-> +	guard(mutex)(&st->lock);
 
-Trivial but why is the lock needed?  I'm fairly sure nothing can race
-with this regulator getting reenabled.
 
-I guess, given you are holding the lock in the suspend path across regulator
-disable this is reasonable for balance if not strictly needed.
-So leave this if you like.
+
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..0c8caa8287dd4373cf11bb6c7b913a6c49e9eee5
+> --- /dev/null
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h
 
 > +
-> +	return inv_icm45600_enable_regulator_vddio(st);
-> +}
+> +/**
+> + * struct inv_icm45600_fifo - FIFO state variables
+> + * @on:		reference counter for FIFO on.
+> + * @en:		bits field of INV_ICM45600_SENSOR_* for FIFO EN bits.
+> + * @period:	FIFO internal period.
+> + * @watermark:	watermark configuration values for accel and gyro.
+Given the contents of this to me look like things to also document.e
+ * @watermark.gyro:	....
+etc as well would be good to add
+
+> + * @count:	number of bytes in the FIFO data buffer.
+> + * @nb:		gyro, accel and total samples in the FIFO data buffer.
+
+This is more obvious.  Check if the kernel-doc script minds these subfields not
+being defined.  If it does, add a the trivial documentation just to squash warnings
+and make it easier to spot real issues.
+
+> + * @data:	FIFO data buffer aligned for DMA (8kB)
+> + */
+> +struct inv_icm45600_fifo {
+> +	unsigned int on;
+> +	unsigned int en;
+> +	u32 period;
+> +	struct {
+> +		unsigned int gyro;
+> +		unsigned int accel;
+> +		unsigned int eff_gyro;
+> +		unsigned int eff_accel;
+> +	} watermark;
+> +	size_t count;
+> +	struct {
+> +		size_t gyro;
+> +		size_t accel;
+> +		size_t total;
+> +	} nb;
+> +	u8 *data;
+
+> +				     unsigned int count);
 > +
-> +EXPORT_NS_GPL_DEV_PM_OPS(inv_icm45600_pm_ops, IIO_ICM45600) = {
-> +	SYSTEM_SLEEP_PM_OPS(inv_icm45600_suspend, inv_icm45600_resume)
-> +	RUNTIME_PM_OPS(inv_icm45600_runtime_suspend,
-> +			   inv_icm45600_runtime_resume, NULL)
-> +};
-> +
-> +MODULE_AUTHOR("InvenSense, Inc.");
-> +MODULE_DESCRIPTION("InvenSense ICM-456xx device driver");
-> +MODULE_LICENSE("GPL");
-> +MODULE_IMPORT_NS("IIO_INV_SENSORS_TIMESTAMP");
-> 
+> +#endif
+
 
 

@@ -1,63 +1,56 @@
-Return-Path: <linux-iio+bounces-24529-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24530-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A63EBA6F2C
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 12:32:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A5DBA6F77
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 12:59:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEE3C7A213E
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 10:31:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 655053B93D0
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Sep 2025 10:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161212DC339;
-	Sun, 28 Sep 2025 10:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE0A2D594A;
+	Sun, 28 Sep 2025 10:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F81ZZNL/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ws5lw7Cc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4A41DC9B5;
-	Sun, 28 Sep 2025 10:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE4519C560
+	for <linux-iio@vger.kernel.org>; Sun, 28 Sep 2025 10:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759055569; cv=none; b=mhYDjt90Yt3bwFQAJPYOPwK4+uoR/SNQX7ZPQsDF/15NIJjQRXieKdN9Vvxq3t9/UB4Ze+Xnef9oTxt9/FpVHEnYwYt8s2/THcwOUNnkYKMW1B5qUITgGWfiZxPZ1juualehvWTl/+MROzxh9DlerSGaOTU6TqWAo6isZW+3pSQ=
+	t=1759057182; cv=none; b=m5G0xDFrjvH8ZCoAtUe2lSZUHVMIn8Mg2SnXvwqlk+hKXCOpxzCAuaN8iIqxLjMa7EPv1dpFm9UL6LbnZY6QrE00LP7+KlKJP48haPrHe5PYPrnCqsXbCPRqowsaAIRp9QHnSCLT0jrpJhFK/GWCxept8jGSUjsyKuv/UCew3Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759055569; c=relaxed/simple;
-	bh=iW5PZ047R8tg5QXPTMoCd640qW4nDqm5nKOSscw1Q0I=;
+	s=arc-20240116; t=1759057182; c=relaxed/simple;
+	bh=KCUKwNYi0asIfDjq82o+hBhIZN4sIPx1woQH0TqLgwE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kIz+dOPD32E2cc/gNHYP/MG1+Y8SgKj3P2v26U5FvHq15QjDn4fp5C9SBO4A7tKWgGbnk5s9dRR7sOSGA7PPX8uQU6wd7/Hc/lDM105/sFF4oKkpucTqNMwMn1km2iM6dCBguBEa8X1YhKawO/K2NUZVg6SmsxJ5+jYZjnPEARo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F81ZZNL/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75C5C4CEF0;
-	Sun, 28 Sep 2025 10:32:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qqqqOiv2zv/E1rcuyCowO8QANWrqLS8r9bQ9/yAuieEmyLxBYL1rWOPFegBXL6YJjXOG+1QsLXCxyrTLxiar1gX24CDJMU+mdxki0YX7xLWK1mmkAMj7djTUCmYQ9aXlVDoeI2Y/Adlc8AV7U3sO4EnH099YfoLVlQF/7Ax1bQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ws5lw7Cc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2710AC4CEF0;
+	Sun, 28 Sep 2025 10:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759055566;
-	bh=iW5PZ047R8tg5QXPTMoCd640qW4nDqm5nKOSscw1Q0I=;
+	s=k20201202; t=1759057181;
+	bh=KCUKwNYi0asIfDjq82o+hBhIZN4sIPx1woQH0TqLgwE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=F81ZZNL/z5yVabIVXXsY82B25C8qIIiCngWBgCs5vsgoFOuZBapnROoVIRr1X+Jbm
-	 VJ7ckGwZrXEO3I+JyyMkoH9x97PKhUfnRvWgybs4eDENye39X2QEXfKIhhfL5Ng+J6
-	 YZLXmqtTDD5nb6/oH45RikBabhDQgkS5tVVikLVQ6BhXyyg8CjRcrA845JVhFdj+pX
-	 j5novLJmDT10LXDzPvbFYNof8k+OBzWHFHYtEqfX9Gbk0kQJ1lmRLdrXynrdJlJ7nt
-	 rfBu4bZGzid79nP1hHgWvJx4rEOnFfCJ8um4MLTPlSO0Aeh9NIapu64MBl1pO25tih
-	 HYc6qnxOGHadA==
-Date: Sun, 28 Sep 2025 11:32:34 +0100
+	b=Ws5lw7Cc+n5PT4rpqx+JbBJsijA6CCZAfqGPLMAhXb/REFOU/ghmI5iYg6AZznOJN
+	 Oq3rGyA4PxS1lg8fhOilQcmhfY7v3xpxKJNuZ1IQKEL54uKtWiXOZXeBTsfq5ZChxd
+	 K1eY+z6xVgD5E/KxdqmNWGZ4nHpUjPm7GVw90xDg8YPnAfTBaxYduBo2yAoJyM/3u1
+	 +vlkK/oLZbNDSEF4kmuYa6UmQq1JlqA1T59KKDY96GIw/QBYsC1kw0IVmMeAZ26zyP
+	 Qzsqy+QDtCpXpOadbRpkxkDFKGCEdB92qAknxxJgVOVRrwdSIlG0hGezbSJGZtO2g+
+	 1CpdnHsL/ngkg==
+Date: Sun, 28 Sep 2025 11:59:33 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoni Pokusinski <apokusinski01@gmail.com>
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org, linux@roeck-us.net, rodrigo.gobbi.7@gmail.com,
- naresh.solanki@9elements.com, michal.simek@amd.com,
- grantpeltier93@gmail.com, farouk.bouabid@cherry.de,
- marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v3 3/4] iio: mpl3115: add support for DRDY interrupt
-Message-ID: <20250928113234.3ba70df8@jic23-huawei>
-In-Reply-To: <20250928100232.tafcimfsoljdq6nt@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
-References: <20250926220150.22560-1-apokusinski01@gmail.com>
-	<20250926220150.22560-4-apokusinski01@gmail.com>
-	<20250927175125.66bcc18c@jic23-huawei>
-	<20250928100232.tafcimfsoljdq6nt@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
+To: bugzilla-daemon@kernel.org
+Cc: linux-iio@vger.kernel.org, Angelo Compagnucci
+ <angelo.compagnucci@gmail.com>
+Subject: Re: [Bug 220543] New: MCP3428 scaling values are incorrect, three
+ orders of magnitude low
+Message-ID: <20250928115933.0a83b1bb@jic23-huawei>
+In-Reply-To: <bug-220543-217253@https.bugzilla.kernel.org/>
+References: <bug-220543-217253@https.bugzilla.kernel.org/>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,86 +61,71 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-> > > +static int mpl3115_trigger_probe(struct mpl3115_data *data,
-> > > +				 struct iio_dev *indio_dev)
-> > > +{
-> > > +	struct fwnode_handle *fwnode = dev_fwnode(&data->client->dev);
-> > > +	int ret, irq, irq_type, irq_cfg_flags = 0;
-> > > +
-> > > +	irq = fwnode_irq_get_byname(fwnode, "INT1");
-> > > +	if (irq < 0) {
-> > > +		irq = fwnode_irq_get_byname(fwnode, "INT2");
-> > > +		if (irq < 0)
-> > > +			return 0;
-> > > +
-> > > +		irq_cfg_flags |= MPL3115_INT2;
-> > > +	}
-> > > +
-> > > +	irq_type = irq_get_trigger_type(irq);
-> > > +	if (irq_type != IRQF_TRIGGER_RISING && irq_type != IRQF_TRIGGER_FALLING)
-> > > +		return -EINVAL;
-> > > +
-> > > +	irq_cfg_flags |= irq_type;  
-> > Commented on this before, but mixing flags that are local to this driver
-> > with those that are global provides not guarantees against future changes
-> > of the global ones to overlap with your local values.
-> > 
-> > So just track these as two separate values rather than combining them.
-> >  
+On Sat, 06 Sep 2025 23:42:16 +0000
+bugzilla-daemon@kernel.org wrote:
+
+> https://bugzilla.kernel.org/show_bug.cgi?id=220543
 > 
-> So you mean 2 separate variables, one for INT1/INT2 and one for the
-> trigger RISING/FALLING, am I right?
-
-Yes.
-
-> This was the approach in v1, but the code for writing the regs CTRL3 and
-> CTRL5 should be improved, I was thinking something like:
+>             Bug ID: 220543
+>            Summary: MCP3428 scaling values are incorrect, three orders of
+>                     magnitude low
+>            Product: Drivers
+>            Version: 2.5
+>           Hardware: All
+>                 OS: Linux
+>             Status: NEW
+>           Severity: normal
+>           Priority: P3
+>          Component: IIO
+>           Assignee: drivers_iio@kernel-bugs.kernel.org
+>           Reporter: phil@munts.net
+>         Regression: No
 > 
-> if (irq_pin == MPL3115_IRQ_INT1) {
->     write_byte_data(REG5, INT_CFG_DRDY);
->     if (irq_type == IRQF_TRIGGER_RISING)
->         write_byte_data(REG3, IPOL1);
-> } else if (irq_type == IRQF_TRIGGER_RISING) {
->     write_byte_data(REG3, IPOL2);
-> }
+> The values for in_voltageY_scale that the 6.12 kernel generates for the MCP3428
+> ADC are too low by a factor of 1000.
 > 
-> This is perhaps a bit less readable than the switch(int_cfg_flags) with 4
-> cases... but IMO it's still quite ok and it's less verbose since we do not
-> duplicate the write_byte_data(REG5, INT_CFG_DRDY).
+> The ADS1115 and the MCP3204 get in_voltageY_scale values around 1.0 (implying
+> millivolts per ADC step) while the MCP3428 gets values around 0.001 and lower
+> (implying microvolts per ADC step).
+> 
+> See also: https://forums.raspberrypi.com/viewtopic.php?t=391674
+> 
+Optimistic +CC of Angelo (it's been a few years!)
 
-That looks ok to me.
+As a sanity check, if you can rebuild your driver, could you try;
+diff --git a/drivers/iio/adc/mcp3422.c b/drivers/iio/adc/mcp3422.c
+index 50834fdcf738..2bdf14f337ec 100644
+--- a/drivers/iio/adc/mcp3422.c
++++ b/drivers/iio/adc/mcp3422.c
+@@ -178,7 +178,7 @@ static int mcp3422_read_raw(struct iio_dev *iio,
+ 
+                *val1 = 0;
+                *val2 = mcp3422_scales[sample_rate][pga];
+-               return IIO_VAL_INT_PLUS_NANO;
++               return IIO_VAL_INT_PLUS_MICRO;
+ 
+        case IIO_CHAN_INFO_SAMP_FREQ:
+                *val1 = mcp3422_sample_rates[MCP3422_SAMPLE_RATE(adc->config)];
 
-...
+It's a bit of a hack for the largest scale as we should really represent that
+as *val1 = 1, *val2 = 0 rather than *val2 = 1000000 but meh - I'll spin a nicer
+fix if this works.
 
-				 indio_dev->name,
-> > > +						 iio_device_id(indio_dev));
-> > > +	if (!data->drdy_trig)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	data->drdy_trig->ops = &mpl3115_trigger_ops;
-> > > +	iio_trigger_set_drvdata(data->drdy_trig, indio_dev);
-> > > +	ret = devm_iio_trigger_register(&data->client->dev, data->drdy_trig);  
-> > 
-> > Whilst unlikely the race matters. It is this call that creates the infrastructure
-> > that might allow the interrupt generation to be triggered via userspace controls.
-> > So the handler should probably be in place firsts.  I.e. do the devm_request_threaded_irq
-> > before this.
-> >  
-> Will fix in v4
+Working through the scaling. It's a mix of resolution, 12->18, vref = +-2.048V,
+and PGA, 1->8x
 
-Side process related note: If you agree with something, just crop it out!  That means
-we get to focus in quickly on the bits where there is more discussion to be done.
+The docs rather confusingly give LSB values for 12 bits of 1mV etc but those
+are post PGA.   PGA increasing is equivalent of reducing the vref, so results
+in lower values.
 
-Your change log in v4 is where I'll see you made these changes.
+So agreed with your discovery - this seems to be out by a factor of 1000.
 
-When there is nothing to continue the discussion around in a thread, don't reply at all.
-Thanks etc can come alongside the change log.
+Thanks for the report.  Hopefully Angelo can take a look, but if not I'll try
+and spin a fix. If you can test the above that would be a great start.
 
 Thanks,
 
 Jonathan
 
-p.s. I have periodic sessions of mailing people about the process stuff once the
-overall list traffic is larger than it should be for stuff like this. You just happened
-to be an 'unlucky' recipient today!
+
 

@@ -1,183 +1,334 @@
-Return-Path: <linux-iio+bounces-24562-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24563-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A3EBA9BD9
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Sep 2025 17:00:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7FABA9D0C
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Sep 2025 17:38:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5369A1892876
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Sep 2025 15:00:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 338C716C47D
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Sep 2025 15:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FB230C11E;
-	Mon, 29 Sep 2025 14:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B9A30B511;
+	Mon, 29 Sep 2025 15:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="tlZ6lMN4"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ef1LdPO5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5635D30BF58;
-	Mon, 29 Sep 2025 14:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17914214A6A
+	for <linux-iio@vger.kernel.org>; Mon, 29 Sep 2025 15:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759157978; cv=none; b=BMAcNJIAy+/1JZS9JtjCF6XT7MdaY3CmCJjfvHSdUfiq+jxKrAHpVWQ1HamI4j+etlWbyYdxFAkEcwV3wUDaHi+r1joTbJineqxaUzq1lcMTsdBCRamdgf3j/q9+FRAriDC/G9c7zBa0F30dKXXgF4ZwzSMi/JAZhzWvtdqa7Qc=
+	t=1759160303; cv=none; b=jXL/45RX+RaBFk/l/7jtcHveGkyUs56oSRKJhG7ym1bELA4VwrxCiMP2MDTJjPitbIpwUKfOQQeok2BL3XceKA3sQ/voT1yaUHSBsdbTlfWbBChk3ZsqXKUX8+bSB33ADe4yIZ9+vQNF+gutgZpZCoqoh+GfulxQ1f0u2LMI64M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759157978; c=relaxed/simple;
-	bh=zTvJ7/WCuV8mAD2zCQJhyZcWzUkozsxRKWRU/BLYNjM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qBa8jRQjCaN/hS2CUcW+S+zzWtiIt6sjFF8UWsqUPR8Kki+SSnTVQcUiXiwTobPhr/xbb68rXuFOES2U0gGfeBMxtI05/plJ5+B5RDP+CzBkY3V6ttnPRiGos+txM+QW1uQiw0+MPjuW03HPZMKxEgvfgZ3z+8effE7mZhSVenw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=tlZ6lMN4; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58TCSMmK026923;
-	Mon, 29 Sep 2025 10:59:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=FxjuK
-	HNfnki7+CQPI9GOC4AdypcedbdK4rgBZFfqZUY=; b=tlZ6lMN4iH/Y025u2H1El
-	vvt5cf5538oOfhJBTgWLWeLv/gc47IJbalsIMN27QsvbF//TH26+vp9E/QxOLs02
-	d255IGAd3I9M+WHJvMS2zyUoPjxBsLdqIsoW7/NOuIXYODA3gVH/zAeh4ws30kUF
-	AxsgPvm1p1wqZYpdgq4xpAfr+kn+dUtfd/V9qOnGRbs+VDM4FSKRtjsb5jOmvsY/
-	Qw7JxvD18OGeJPnKB015DQTQE0lch/QYz090RBqXmJl0hAg8T252+aePQPTZ3id+
-	23nZ32ZXi8mQkajpn1DBk8rDmgAvoafuvqeLvDrUV+Ws3uZfv5RkovAfrWn9ZyKG
-	A==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 49fpd3ssp3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Sep 2025 10:59:29 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 58TExStd013589
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 29 Sep 2025 10:59:28 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Mon, 29 Sep 2025 10:59:28 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Mon, 29 Sep 2025 10:59:28 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Mon, 29 Sep 2025 10:59:28 -0400
-Received: from Ubuntu.ad.analog.com (AMICLAUS-L01.ad.analog.com [10.48.65.188])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 58TExDGB023559;
-	Mon, 29 Sep 2025 10:59:22 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH 5/5] iio: adc: ad4080: add support for AD4081
-Date: Mon, 29 Sep 2025 14:59:09 +0000
-Message-ID: <20250929145909.111243-5-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250929145909.111243-1-antoniu.miclaus@analog.com>
-References: <20250929145909.111243-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1759160303; c=relaxed/simple;
+	bh=FBv5ZdGu2UjBYj7Q0c2JIqzYKMrQD4uTKs0ZYPb9IWA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=UY4EvQI8E8JLA+slywhv8ZVMGtbWH5bgjYM8lY6qKOl2IMpLa7DY/WBXqIzNiQGrXb+QeYop59VqytMyr2hPulFjMSsAz7O8rwSe0X0sXp7v1cdrW0+RShq9/MWqEeuiJSEq4Qij101WJt/s75tQhM4Fsu6WlvhSLNLo50B7/mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ef1LdPO5; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 472C44E40CEF;
+	Mon, 29 Sep 2025 15:38:18 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0B6A7606AE;
+	Mon, 29 Sep 2025 15:38:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DD8A9102F19E7;
+	Mon, 29 Sep 2025 17:38:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1759160297; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=yTJdS3woupRsBMy0Zf0m8reGQJmYQlgaKoJKrrMf0C0=;
+	b=Ef1LdPO5kTe3B1y6nxaFN3UWDawERCWgFi7K5qEKq82v5D1zSgdLnr/JJYY4ZIFSxzccBx
+	TREMKJnfOKsaCeyqcZlpqb1ubQyUKBBJiNLADLvUe7GpRiOYTJ6xIQF6lK/As1j3jAhP8u
+	0pured7HzXTjmNA01Yy85ctp9wpIG+De4Kvwnv89dwEnDVyo+NgGUOjTx4q2MYEFvO1EPX
+	W6yVrfOiyM+bEpBhhpAupkbqGa9C+QkOFEYPAD06C230daO2yAw4rD0dfuHDs+KJq6B5xT
+	s4jIvwsRNgayPNoPabyujGOTZcTtNhqFxv3B+mEW0yu0i7+K7znfOFx+CSwVIQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,  Jonathan Cameron
+ <jic23@kernel.org>,  David Lechner <dlechner@baylibre.com>,  Nuno
+ =?utf-8?Q?S=C3=A1?=
+ <nuno.sa@analog.com>,  Andy Shevchenko <andy@kernel.org>,
+  linux-i3c@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  imx@lists.linux.dev,  linux-iio@vger.kernel.org,  Carlos Song
+ <carlos.song@nxp.com>
+Subject: Re: [PATCH v2 2/4] i3c: master: svc: Add basic HDR mode support
+In-Reply-To: <20250924-i3c_ddr-v2-2-682a0eb32572@nxp.com> (Frank Li's message
+	of "Wed, 24 Sep 2025 10:30:03 -0400")
+References: <20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com>
+	<20250924-i3c_ddr-v2-2-682a0eb32572@nxp.com>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Mon, 29 Sep 2025 17:38:03 +0200
+Message-ID: <87seg5i810.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=RZqdyltv c=1 sm=1 tr=0 ts=68da9ed1 cx=c_pps
- a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=yJojWOMRYYMA:10 a=gAnH3GRIAAAA:8 a=kT8vE1fiKq0M1JW6GToA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: UCkqL80mVCGlPp2xfhjVDSNLoiFQVMfT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI5MDA3OCBTYWx0ZWRfX5B3ZoH87EUWx
- wWE+q5n4ufWzkCBfcpNgCQ9LinJT2ooogtRRREnTaYGjNlqxYtzEhndbbe3gJvj+M7d06SoQX5L
- y9KWybNLQzI9m/OwJ4jnlqrw64xAF1Bm7X72Pk1hMI9X3l37wt0gpdQ4cXsO51iugX4v92ptwDp
- PQY6rpCuoHrbCgQ6y5bu/2IML3YrPL5sZRK4LVeiCOJP6aP6BfByTCjmO2pRsF7kvOR4gHM8Fnx
- i/toF0Fb4ADpkjat4gaSNnkYrSSm1Hbj+8FjACZfxE3e037QvOSRsQWBSy1EQOcP8U6J6MfEBFr
- 363zE66IqDeyStxSHapObKkMIWR6ZmzCjMILnawWYJKWjByPQz60M7u3BbSKcLJiAiEUzNmf55b
- RKP9QZowjVqsU3oxqRiHKfyU+tc73w==
-X-Proofpoint-GUID: UCkqL80mVCGlPp2xfhjVDSNLoiFQVMfT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-29_05,2025-09-29_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 impostorscore=0 priorityscore=1501 spamscore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509290078
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add support for AD4081 20-bit SAR ADC. The AD4081 has the same
-resolution as AD4080 (20-bit) but differs in LVDS CNV clock count
-maximum (2 vs 7).
+Hi Frank,
 
-Changes:
-- Add AD4081_CHIP_ID definition (0x51)
-- Create ad4081_channel with 20-bit resolution and 32-bit storage
-- Add ad4081_chip_info with lvds_cnv_clk_cnt_max = 2
-- Register AD4081 in device ID and OF match tables
+>  struct svc_i3c_cmd {
+>  	u8 addr;
+> -	bool rnw;
+> +	u8 rnw;
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- drivers/iio/adc/ad4080.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+You used a union in the core, which makes sense I believe. I guess you
+should do it here as well?
 
-diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
-index cf3460a1eee4..dab8933f573d 100644
---- a/drivers/iio/adc/ad4080.c
-+++ b/drivers/iio/adc/ad4080.c
-@@ -126,6 +126,7 @@
- /* Miscellaneous Definitions */
- #define AD4080_SPI_READ						BIT(7)
- #define AD4080_CHIP_ID						0x50
-+#define AD4081_CHIP_ID						0x51
- #define AD4084_CHIP_ID						0x54
- 
- #define AD4080_LVDS_CNV_CLK_CNT_MAX				7
-@@ -436,6 +437,8 @@ static struct iio_chan_spec_ext_info ad4080_ext_info[] = {
- 
- static const struct iio_chan_spec ad4080_channel = AD4080_CHANNEL_DEFINE(20, 32);
- 
-+static const struct iio_chan_spec ad4081_channel = AD4080_CHANNEL_DEFINE(20, 32);
-+
- static const struct iio_chan_spec ad4084_channel = AD4080_CHANNEL_DEFINE(16, 16);
- 
- static const struct ad4080_chip_info ad4080_chip_info = {
-@@ -448,6 +451,16 @@ static const struct ad4080_chip_info ad4080_chip_info = {
- 	.lvds_cnv_clk_cnt_max = AD4080_LVDS_CNV_CLK_CNT_MAX,
- };
- 
-+static const struct ad4080_chip_info ad4081_chip_info = {
-+	.name = "ad4081",
-+	.product_id = AD4081_CHIP_ID,
-+	.scale_table = ad4080_scale_table,
-+	.num_scales = ARRAY_SIZE(ad4080_scale_table),
-+	.num_channels = 1,
-+	.channels = &ad4081_channel,
-+	.lvds_cnv_clk_cnt_max = 2,
-+};
-+
- static const struct ad4080_chip_info ad4084_chip_info = {
- 	.name = "ad4084",
- 	.product_id = AD4084_CHIP_ID,
-@@ -610,6 +623,7 @@ static int ad4080_probe(struct spi_device *spi)
- 
- static const struct spi_device_id ad4080_id[] = {
- 	{ "ad4080", (kernel_ulong_t)&ad4080_chip_info },
-+	{ "ad4081", (kernel_ulong_t)&ad4081_chip_info },
- 	{ "ad4084", (kernel_ulong_t)&ad4084_chip_info },
- 	{ }
- };
-@@ -617,6 +631,7 @@ MODULE_DEVICE_TABLE(spi, ad4080_id);
- 
- static const struct of_device_id ad4080_of_match[] = {
- 	{ .compatible = "adi,ad4080", &ad4080_chip_info },
-+	{ .compatible = "adi,ad4081", &ad4081_chip_info },
- 	{ .compatible = "adi,ad4084", &ad4084_chip_info },
- 	{ }
- };
--- 
-2.43.0
 
+>  	u8 *in;
+>  	const void *out;
+>  	unsigned int len;
+> @@ -383,6 +386,21 @@ svc_i3c_master_dev_from_addr(struct svc_i3c_master *=
+master,
+>  	return master->descs[i];
+>  }
+
+Maybe we should:
+- First change the type of the command and make use of the helper to
+derive the fact that it is a read
+then
+- Introduce HDR support.
+
+Because there seems to be a lot of changes which are induced by this
+internal API change and not related to HDR introduction at all.
+
+>=20=20
+> +static bool svc_is_read(u8 rnw_cmd, u32 type)
+
+Can we name this helper svc_cmd_is_read() ?
+
+> +{
+> +	return (type =3D=3D SVC_I3C_MCTRL_TYPE_DDR) ? !!(rnw_cmd & 0x80) : rnw_=
+cmd;
+> +}
+> +
+> +static void svc_i3c_master_emit_force_exit(struct svc_i3c_master *master)
+> +{
+> +	u32 reg =3D 0;
+> +
+> +	writel(SVC_I3C_MCTRL_REQUEST_FORCE_EXIT, master->regs + SVC_I3C_MCTRL);
+> +	readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
+> +			   SVC_I3C_MSTATUS_MCTRLDONE(reg), 0, 1000);
+> +	udelay(1);
+> +}
+> +
+>  static void svc_i3c_master_emit_stop(struct svc_i3c_master *master)
+>  {
+>  	writel(SVC_I3C_MCTRL_REQUEST_STOP, master->regs + SVC_I3C_MCTRL);
+> @@ -1272,7 +1290,7 @@ static int svc_i3c_master_write(struct svc_i3c_mast=
+er *master,
+>  }
+>=20=20
+>  static int svc_i3c_master_xfer(struct svc_i3c_master *master,
+> -			       bool rnw, unsigned int xfer_type, u8 addr,
+> +			       u8 rnw, unsigned int xfer_type, u8 addr,
+>  			       u8 *in, const u8 *out, unsigned int xfer_len,
+>  			       unsigned int *actual_len, bool continued, bool repeat_start)
+>  {
+> @@ -1283,12 +1301,22 @@ static int svc_i3c_master_xfer(struct svc_i3c_mas=
+ter *master,
+>  	/* clean SVC_I3C_MINT_IBIWON w1c bits */
+>  	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
+>=20=20
+> +	if (xfer_type =3D=3D SVC_I3C_MCTRL_TYPE_DDR) {
+> +		/* DDR command need prefill into FIFO */
+> +		writel(rnw, master->regs + SVC_I3C_MWDATAB);
+> +		if (!svc_is_read(rnw, xfer_type)) {
+> +			/* write data also need prefill into FIFO */
+> +			ret =3D svc_i3c_master_write(master, out, xfer_len);
+> +		if (ret)
+> +			goto emit_stop;
+> +		}
+> +	}
+>=20=20
+>  	while (retry--) {
+>  		writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
+>  		       xfer_type |
+>  		       SVC_I3C_MCTRL_IBIRESP_NACK |
+> -		       SVC_I3C_MCTRL_DIR(rnw) |
+> +		       SVC_I3C_MCTRL_DIR(svc_is_read(rnw, xfer_type)) |
+>  		       SVC_I3C_MCTRL_ADDR(addr) |
+>  		       SVC_I3C_MCTRL_RDTERM(*actual_len),
+>  		       master->regs + SVC_I3C_MCTRL);
+> @@ -1373,15 +1401,14 @@ static int svc_i3c_master_xfer(struct svc_i3c_mas=
+ter *master,
+>  			break;
+>  		}
+>  	}
+> -
+> -	if (rnw)
+> +	if (svc_is_read(rnw, xfer_type))
+>  		ret =3D svc_i3c_master_read(master, in, xfer_len);
+> -	else
+> +	else if (xfer_type !=3D SVC_I3C_MCTRL_TYPE_DDR)
+>  		ret =3D svc_i3c_master_write(master, out, xfer_len);
+>  	if (ret < 0)
+>  		goto emit_stop;
+>=20=20
+> -	if (rnw)
+> +	if (svc_is_read(rnw, xfer_type))
+>  		*actual_len =3D ret;
+>=20=20
+>  	ret =3D readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
+> @@ -1389,10 +1416,19 @@ static int svc_i3c_master_xfer(struct svc_i3c_mas=
+ter *master,
+>  	if (ret)
+>  		goto emit_stop;
+>=20=20
+> +	if (xfer_type =3D=3D SVC_I3C_MCTRL_TYPE_DDR &&
+> +	    (readl(master->regs + SVC_I3C_MERRWARN) & SVC_I3C_MERRWARN_CRC)) {
+> +		ret =3D -ENXIO;
+> +		goto emit_stop;
+> +	}
+> +
+>  	writel(SVC_I3C_MINT_COMPLETE, master->regs + SVC_I3C_MSTATUS);
+>=20=20
+>  	if (!continued) {
+> -		svc_i3c_master_emit_stop(master);
+> +		if (xfer_type !=3D SVC_I3C_MCTRL_TYPE_DDR)
+> +			svc_i3c_master_emit_stop(master);
+> +		else
+> +			svc_i3c_master_emit_force_exit(master);
+>=20=20
+>  		/* Wait idle if stop is sent. */
+>  		readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
+> @@ -1402,7 +1438,11 @@ static int svc_i3c_master_xfer(struct svc_i3c_mast=
+er *master,
+>  	return 0;
+>=20=20
+>  emit_stop:
+> -	svc_i3c_master_emit_stop(master);
+> +	if (xfer_type !=3D SVC_I3C_MCTRL_TYPE_DDR)
+> +		svc_i3c_master_emit_stop(master);
+> +	else
+> +		svc_i3c_master_emit_force_exit(master);
+> +
+>  	svc_i3c_master_clear_merrwarn(master);
+>  	svc_i3c_master_flush_fifo(master);
+>=20=20
+> @@ -1449,6 +1489,11 @@ static void svc_i3c_master_dequeue_xfer(struct svc=
+_i3c_master *master,
+>  	spin_unlock_irqrestore(&master->xferqueue.lock, flags);
+>  }
+>=20=20
+> +static int mode_to_type(enum i3c_hdr_mode mode)
+
+Maybe "i3c_mode_to_svc_type()"?
+> +{
+> +	return (mode =3D=3D I3C_SDR) ? SVC_I3C_MCTRL_TYPE_I3C : SVC_I3C_MCTRL_T=
+YPE_DDR;
+> +}
+> +
+>  static void svc_i3c_master_start_xfer_locked(struct svc_i3c_master *mast=
+er)
+>  {
+>  	struct svc_i3c_xfer *xfer =3D master->xferqueue.cur;
+> @@ -1638,9 +1683,8 @@ static int svc_i3c_master_send_ccc_cmd(struct i3c_m=
+aster_controller *m,
+>  	return ret;
+>  }
+>=20=20
+> -static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+> -				     struct i3c_priv_xfer *xfers,
+> -				     int nxfers)
+> +static int svc_i3c_master_i3c_xfers(struct i3c_dev_desc *dev, struct i3c=
+_priv_xfer *xfers,
+> +				    int nxfers, enum i3c_hdr_mode mode)
+>  {
+>  	struct i3c_master_controller *m =3D i3c_dev_get_master(dev);
+>  	struct svc_i3c_master *master =3D to_svc_i3c_master(m);
+> @@ -1648,22 +1692,33 @@ static int svc_i3c_master_priv_xfers(struct i3c_d=
+ev_desc *dev,
+>  	struct svc_i3c_xfer *xfer;
+>  	int ret, i;
+>=20=20
+> +	if (mode !=3D I3C_SDR) {
+> +		/*
+> +		 * Only support data size less than FIFO SIZE when use
+> DDR mode.
+
+when using DDR mode.
+
+> +		 * First entry is cmd in FIFO, so actual available FIFO for data
+> +		 * is SVC_I3C_FIFO_SIZE - 2 since DDR only support even
+> length.
+
+supports
+
+> +		 */
+> +		for (i =3D 0; i < nxfers; i++)
+> +			if (xfers[i].len > SVC_I3C_FIFO_SIZE - 2)
+> +				return -EINVAL;
+> +	}
+> +
+>  	xfer =3D svc_i3c_master_alloc_xfer(master, nxfers);
+>  	if (!xfer)
+>  		return -ENOMEM;
+>=20=20
+> -	xfer->type =3D SVC_I3C_MCTRL_TYPE_I3C;
+> +	xfer->type =3D mode_to_type(mode);
+>=20=20
+>  	for (i =3D 0; i < nxfers; i++) {
+> +		u8 rnw_cmd =3D (mode =3D=3D I3C_SDR) ? xfers[i].rnw : xfers[i].cmd;
+>  		struct svc_i3c_cmd *cmd =3D &xfer->cmds[i];
+> -
+
+Spurious change?
+
+>  		cmd->xfer =3D &xfers[i];
+>  		cmd->addr =3D master->addrs[data->index];
+> -		cmd->rnw =3D xfers[i].rnw;
+> -		cmd->in =3D xfers[i].rnw ? xfers[i].data.in : NULL;
+> -		cmd->out =3D xfers[i].rnw ? NULL : xfers[i].data.out;
+> +		cmd->rnw =3D rnw_cmd;
+> +		cmd->in =3D svc_is_read(rnw_cmd, mode_to_type(mode)) ? xfers[i].data.i=
+n : NULL;
+> +		cmd->out =3D svc_is_read(rnw_cmd, mode_to_type(mode)) ? NULL : xfers[i=
+].data.out;
+>  		cmd->len =3D xfers[i].len;
+> -		cmd->actual_len =3D xfers[i].rnw ? xfers[i].len : 0;
+> +		cmd->actual_len =3D svc_is_read(rnw_cmd, mode_to_type(mode)) ? xfers[i=
+].len : 0;
+>  		cmd->continued =3D (i + 1) < nxfers;
+>  	}
+>=20=20
+> @@ -1858,7 +1913,7 @@ static const struct i3c_master_controller_ops svc_i=
+3c_master_ops =3D {
+>  	.do_daa =3D svc_i3c_master_do_daa,
+>  	.supports_ccc_cmd =3D svc_i3c_master_supports_ccc_cmd,
+>  	.send_ccc_cmd =3D svc_i3c_master_send_ccc_cmd,
+> -	.priv_xfers =3D svc_i3c_master_priv_xfers,
+> +	.i3c_xfers =3D svc_i3c_master_i3c_xfers,
+
+Didn't you change this name in patch 1? If you kept both naming, it's
+fine, otherwise you must do the switch in patch 1 as well to make sure
+you don't break the build in the middle of the series.
+
+>  	.i2c_xfers =3D svc_i3c_master_i2c_xfers,
+>  	.request_ibi =3D svc_i3c_master_request_ibi,
+>  	.free_ibi =3D svc_i3c_master_free_ibi,
+> @@ -1947,6 +2002,8 @@ static int svc_i3c_master_probe(struct platform_dev=
+ice *pdev)
+>=20=20
+>  	svc_i3c_master_reset(master);
+>=20=20
+> +	master->base.mode_mask =3D BIT(I3C_SDR) | BIT(I3C_HDR_DDR);
+> +
+>  	/* Register the master */
+>  	ret =3D i3c_master_register(&master->base, &pdev->dev,
+>  				  &svc_i3c_master_ops, false);
+
+Thanks,
+Miqu=C3=A8l
 

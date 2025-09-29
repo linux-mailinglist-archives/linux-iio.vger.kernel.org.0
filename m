@@ -1,191 +1,123 @@
-Return-Path: <linux-iio+bounces-24557-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24556-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90948BA998F
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Sep 2025 16:34:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F24B5BA995F
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Sep 2025 16:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C60D3AC4CD
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Sep 2025 14:34:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FF6D7A2A3F
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Sep 2025 14:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E573093B5;
-	Mon, 29 Sep 2025 14:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5AA309DB1;
+	Mon, 29 Sep 2025 14:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ATAvBb7a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ybofpbcx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604392AD16
-	for <linux-iio@vger.kernel.org>; Mon, 29 Sep 2025 14:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9A91DD543;
+	Mon, 29 Sep 2025 14:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759156480; cv=none; b=jUjL42mXR+RB2+dodTXCMP8s5UPn0sEhhSo3LzBPBrgbnNNt2ybWhDJbjeLSnUtmndCfiVGMUs+Zmzuu1h2Gc/ibQrbxsTbXFnqUnDWSMXo6VZfkIry4+ggLTvo82I+5cpf5YesXJz684C7mgNq/HIISU6jEshK56qodAjmm+PA=
+	t=1759156294; cv=none; b=C3TwVRyJgwxMlFHzahc3NO3DPE1DBCH9zhO/whpeSw0XxKEzE/1bitNigQpBgukinygeevNvaPm+OtToXO7EJSAn0ALRvE5XNVMUH5nMiKFO8N8mS5bRBNaKOX38ge2z2oDghZ/g+zWgkh6Yp/kUwO1QzLwDgjN4nApZSq6XWC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759156480; c=relaxed/simple;
-	bh=1vXn1dEvBjJn2JjAGCl3H1teAGq8WEgk9d0TbeZ20uI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ucw0hKaIzjFSkFnc37Y0WDDntQJH0KY4TSLLFkSPM9C7CaAquimYdWw7ZSLhynKr9bQRhWpCW0wPaKBsBlw1SPUPiUwBW0qO7TzJe1JdZCWxgRDIS8EvqHUpqJAbOagl1QSHqWNtZBn/LDe1U9qma+m7lRpjDnyXoaom6NzlWG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ATAvBb7a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D64AAC4CEF4;
-	Mon, 29 Sep 2025 14:34:39 +0000 (UTC)
+	s=arc-20240116; t=1759156294; c=relaxed/simple;
+	bh=sKuqKNpE5dhMtZf1zaC2ZqjURpyd3C7l8Ef/qH3un8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y/WpLQQAY2VhIgq05GZw/Y5gWPTcD50VG9tKgVWCj9VSMe47LRQ4pPcHW7qa+Ymgbzt0AeqeqnysAAevuinVnpYfLSO5ovUaLudG3N+dsCkGTdx4yLYa4b58I73iZgL6lduSgbMgnROmvHM62Am3hddILF/UFsJMpIwp4REagP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ybofpbcx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AE4C4CEF4;
+	Mon, 29 Sep 2025 14:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759156479;
-	bh=1vXn1dEvBjJn2JjAGCl3H1teAGq8WEgk9d0TbeZ20uI=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=ATAvBb7aF+1fBvvs96btgZQl/CtVIVpXvwnwub9jJ4ZjaZ6mbz5v0y4QsFlPMv2ib
-	 UPTdlVS7N8AWdUVZd3EnrpSrJ6IYACqUo5d5oWhrmCg/A3bnICoOFrfpM/zzAhY3nB
-	 jCTU8vyPCnOQ/dxktDFXiyD/Rge3fEoMg6eIasYSqYQPUxZUUXWNbzr6fkISCAB6zM
-	 mG12JfhWfyHsi1b1noxFij9E66ajG3w+QX+U9u+Qk1mFFZVfVXmzuIvNKgkT/uTjHo
-	 TzTsh2XYnPP6ytlfE5ZhAhZMX6WGf8BUUexgzoUdN5is/DJ2rkajFw3AvzZKQIIgK3
-	 0i4AY0kUuvBHQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C8871CAC5B9;
-	Mon, 29 Sep 2025 14:34:39 +0000 (UTC)
-From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Mon, 29 Sep 2025 14:35:32 +0100
-Subject: [PATCH v2] iio: dac: ltc2688: use the auto lock API
+	s=k20201202; t=1759156293;
+	bh=sKuqKNpE5dhMtZf1zaC2ZqjURpyd3C7l8Ef/qH3un8E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ybofpbcx+ejkNvAv75607kTZIE8CUsY9qhrXc/yrJ9X2bu9eV4OnGXQ3TNrOD/y2P
+	 ZTx2iK+hamBmIKKHDaVWhoOTCftImvcznOCK+7AEffOegIkND9rMYBhjXJdQX1r1ZL
+	 0JZPrZuBsBi3OkjiTPDsLn7YSdXtt3i13qbb2sqBLpmyWZ+oVdhkzjg1wkMuDpihUy
+	 6H4hKACxj53QRJs6VTVZG6utz4nyFWuKrwYhNjvjyPwNTkosbGPUWq/6n6pcvlANgh
+	 fQ2kDFeXinDxHted7Q2+zz5VDaq8aUMue0z6xZZqc8r3t6Teq5PIR23t0f4AHQZWzI
+	 MmqWDPc+OcTRw==
+Date: Mon, 29 Sep 2025 09:31:32 -0500
+From: Rob Herring <robh@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	michael.hennerich@analog.com, nuno.sa@analog.com,
+	eblanc@baylibre.com, dlechner@baylibre.com, andy@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, corbet@lwn.net,
+	marcelo.schmitt1@gmail.com,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v3 7/8] dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216
+ and ADAQ4224
+Message-ID: <20250929143132.GA4099970-robh@kernel.org>
+References: <cover.1758916484.git.marcelo.schmitt@analog.com>
+ <5dc08b622dac1db561f26034c93910ccff75e965.1758916484.git.marcelo.schmitt@analog.com>
+ <20250928111955.175680cb@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250929-dev-ltc2688-minor-v2-1-47f9508ca4cc@analog.com>
-X-B4-Tracking: v=1; b=H4sIACOL2mgC/x3MTQqAIBBA4avErBuQCUW7SrToZ6qBstCQQLp70
- vJbvJchchCO0FYZAieJcvoCqiuYtsGvjDIXAynSylGDMyfc74mMtXiIPwOqwVh22ozKWSjdFXi
- R5392/ft+t+3r9WMAAAA=
-X-Change-ID: 20250923-dev-ltc2688-minor-0a68e956b098
-To: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1759152933; l=3254;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=+06WQn+0U+kCXC/irDjEh0uloonpQaNhwKn4KabVt4E=;
- b=j/eTxj2w7RDiFG9F6OjxD7eMgsunK6sn8eZ0oUNpEA4ujNUluTAJNnKSLe2xzRZ85nFKcZEr8
- Pfym8c0eSkPDTEtLqlA0Jqx/ZUkxedf0qbbQw6QRsdUgOPGU85u+WHT
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250928111955.175680cb@jic23-huawei>
 
-From: Nuno Sá <nuno.sa@analog.com>
+On Sun, Sep 28, 2025 at 11:19:55AM +0100, Jonathan Cameron wrote:
+> On Fri, 26 Sep 2025 17:40:47 -0300
+> Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+> 
+> > ADAQ4216 and ADAQ4224 are similar to AD4030 except that ADAQ devices have a
+> > PGA (programmable gain amplifier) that scales the input signal prior to it
+> > reaching the ADC inputs. The PGA is controlled through a couple of pins (A0
+> > and A1) that set one of four possible signal gain configurations.
+> > 
+> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > ---
+> > Change log v2 -> v3
+> > - PGA gain now described in decibels.
+> > 
+> > The PGA gain is not going to fit well as a channel property because it may
+> > affect more than one channel as in AD7191.
+> > https://www.analog.com/media/en/technical-documentation/data-sheets/AD7191.pdf
+> > 
+> > I consulted a very trustworthy source [1, 2] and learned that describing signal
+> > gains in decibels is a common practice. I now think it would be ideal to describe
+> > these PGA and PGA-like gains with properties in decibel units and this patch
+> > is an attempt of doing so. The only problem with this approach is that we end up
+> > with negative values when the gain is lower than 1 (the signal is attenuated)
+> > and device tree specification doesn't support signed integer types. As the
+> > docs being proposed fail dt_binding_check, I guess I have to nack the patch myself.
+> > Any chance of dt specification eventually support signed integers?
+> > Any suggestions appreciated.
+> > 
+> > [1] https://en.wikipedia.org/wiki/Decibel
+> > [2] https://en.wikipedia.org/wiki/Gain_(electronics)
+> 
+> I still wonder if the better way to describe this is to ignore that it
+> has anything to do with PGA as such and instead describe the pin strapping.
+> 
+> DT folk, is there an existing way to do that? My grep skills are failing to
+> spot one.
+> 
+> We've papered over this for a long time in various IIO drivers by controlling
+> directly what the pin strap controls with weird and wonderful device specific
+> bindings. I wonder if we can't have a gpio driver + binding that rejects all
+> config and just lets us check the current state of an output pin.  Kind of a
+> fixed mode regulator equivalent for gpios.
 
-Make use of the cleanup API so that we can simplify some code paths.
+If these are connected to GPIOs, isn't it possible that someone will 
+want to change their value?
 
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
-Here it goes v2 with the remaining patch.
+Other than some generic 'pinstrap-gpios' property, I don't see what we'd 
+do here? I don't feel like pin strapping GPIOs is something that we see 
+all that often.
 
-Link to v1:
- - https://lore.kernel.org/linux-iio/20250923-dev-ltc2688-minor-v1-0-ef92c441dc42@analog.com/T/#mccd0040948b14f05ad7411e170701129fd2bea90
-
-Changes in v2:
- * Simplify to 'return 0' and 'return len' as suggested.
----
- drivers/iio/dac/ltc2688.c | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/iio/dac/ltc2688.c b/drivers/iio/dac/ltc2688.c
-index 7a2ee26a7d68730fe90d9cc91ea764f05eb61791..ca0ec131abad0203823db2589bccd407fba3c83a 100644
---- a/drivers/iio/dac/ltc2688.c
-+++ b/drivers/iio/dac/ltc2688.c
-@@ -6,6 +6,7 @@
-  */
- #include <linux/bitfield.h>
- #include <linux/bits.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/device.h>
- #include <linux/gpio/consumer.h>
-@@ -208,12 +209,12 @@ static int ltc2688_dac_code_write(struct ltc2688_state *st, u32 chan, u32 input,
- 		code = FIELD_PREP(LTC2688_DITHER_RAW_MASK, code);
- 	}
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	/* select the correct input register to read from */
- 	ret = regmap_update_bits(st->regmap, LTC2688_CMD_A_B_SELECT, BIT(chan),
- 				 input << chan);
- 	if (ret)
--		goto out_unlock;
-+		return ret;
- 
- 	/*
- 	 * If in dither/toggle mode the dac should be updated by an
-@@ -224,10 +225,7 @@ static int ltc2688_dac_code_write(struct ltc2688_state *st, u32 chan, u32 input,
- 	else
- 		reg = LTC2688_CMD_CH_CODE(chan);
- 
--	ret = regmap_write(st->regmap, reg, code);
--out_unlock:
--	mutex_unlock(&st->lock);
--	return ret;
-+	return regmap_write(st->regmap, reg, code);
- }
- 
- static int ltc2688_dac_code_read(struct ltc2688_state *st, u32 chan, u32 input,
-@@ -236,20 +234,20 @@ static int ltc2688_dac_code_read(struct ltc2688_state *st, u32 chan, u32 input,
- 	struct ltc2688_chan *c = &st->channels[chan];
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = regmap_update_bits(st->regmap, LTC2688_CMD_A_B_SELECT, BIT(chan),
- 				 input << chan);
- 	if (ret)
--		goto out_unlock;
-+		return ret;
- 
- 	ret = regmap_read(st->regmap, LTC2688_CMD_CH_CODE(chan), code);
--out_unlock:
--	mutex_unlock(&st->lock);
-+	if (ret)
-+		return ret;
- 
- 	if (!c->toggle_chan && input == LTC2688_INPUT_B)
- 		*code = FIELD_GET(LTC2688_DITHER_RAW_MASK, *code);
- 
--	return ret;
-+	return 0;
- }
- 
- static const int ltc2688_raw_range[] = {0, 1, U16_MAX};
-@@ -359,17 +357,15 @@ static ssize_t ltc2688_dither_toggle_set(struct iio_dev *indio_dev,
- 	if (ret)
- 		return ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 	ret = regmap_update_bits(st->regmap, LTC2688_CMD_TOGGLE_DITHER_EN,
- 				 BIT(chan->channel), en << chan->channel);
- 	if (ret)
--		goto out_unlock;
-+		return ret;
- 
- 	c->mode = en ? LTC2688_MODE_DITHER_TOGGLE : LTC2688_MODE_DEFAULT;
--out_unlock:
--	mutex_unlock(&st->lock);
- 
--	return ret ?: len;
-+	return len;
- }
- 
- static ssize_t ltc2688_reg_bool_get(struct iio_dev *indio_dev,
-
----
-base-commit: 411e8b72c181e4f49352c12ced0fd8426eb683aa
-change-id: 20250923-dev-ltc2688-minor-0a68e956b098
---
-
-Thanks!
-- Nuno Sá
-
-
+Rob
 

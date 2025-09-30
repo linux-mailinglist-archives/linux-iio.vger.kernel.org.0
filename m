@@ -1,110 +1,150 @@
-Return-Path: <linux-iio+bounces-24571-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24573-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2ABBAA32F
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Sep 2025 19:40:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F69BAC84A
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Sep 2025 12:36:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB9087A317C
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Sep 2025 17:38:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2BD1188C46C
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Sep 2025 10:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF06A21D590;
-	Mon, 29 Sep 2025 17:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917E62FB0BE;
+	Tue, 30 Sep 2025 10:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKBlXwRH"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="F3j030sb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E8B19F13F;
-	Mon, 29 Sep 2025 17:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B282F5473;
+	Tue, 30 Sep 2025 10:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759167606; cv=none; b=ZSaDCU4lAX1nBtrgQ6EbartAra1C48eWCo8o8KZf19/E56RODIvfUw4ST+z1evl951BzK3TwCU72xpWDcYVfn7YVjN/EbqRFFr/l7Ub8pa3EqKNXKUyx4jsRSLXnguB/TgBnI0AgdLSa+tj6q7ecqG901IjeGZk3aJB9Dr19m4U=
+	t=1759228380; cv=none; b=W+AQiD1/kqTEIpCzigjm3BhBheAVg7XNEdJSphLlGHQahS/Iq06z0n4+Dd4Rj6zjETzEXrZ2T0PR9TMeWQgzmgBwJEH1cBFwUcXkENNs/qoFXlRr/d9t+LafiBHmOlzR2s+W/pdwta3nvu207XdlIBy04QMSpV7MmocozNoBGXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759167606; c=relaxed/simple;
-	bh=DussbqhLKrswcxrIlWjLtHAqSuuJZjymit0SUpL4FjA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X3jpZsnRr00ANmQf9LNzfTjkZ9wWxPuC0la2P6KykkyHxhRW9p2pmMhOXJ2ztX0f4tjXL4acOVSiRWeS2hJRdN1PDCjFY2tZ+0XytgTF0LzKTmu8XtCE6yaqcue3pvickh7n4GU/s+kjB3PbQ/TlQkISm42tammwZ1R88HZBuHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKBlXwRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C351FC4CEF4;
-	Mon, 29 Sep 2025 17:40:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759167606;
-	bh=DussbqhLKrswcxrIlWjLtHAqSuuJZjymit0SUpL4FjA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PKBlXwRHxX9p5/+ULGrEMOM8CkrEdINMCx6xgdOn2UhBXwXAeN5Re/9YVqOMNuqTY
-	 Rq28+iqdC0QRwx3Z7u4jGOfb45OfKjWACZNU9OPK3IKG+PwQhAvckObF9u8T6r3Yda
-	 rNeqoPkJu7gikJaErM1ZhNXImj2yHNYivsCQRgGa+wMyIAUA8YjhKmgd8+c8vbwqQW
-	 g1a2taJr9eOjIm8Pgrmh647vpGa3mElah2NgcwmsJQNe/e4EMHJRg3azCaViWc+ni7
-	 +Rds/lobxzob/YtaIha36y+8mc8zsP8UdnJgP8YJSMj992lFs1LeWHnt/bALwpiJgs
-	 WehbT7xkINHmQ==
-Date: Mon, 29 Sep 2025 18:40:00 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Kim Seer Paller <kimseer.paller@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Marcelo Schmitt <Marcelo.Schmitt@analog.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	Dragos Bogdan <dragos.bogdan@analog.com>
-Subject: Re: [PATCH v12 1/3] dt-bindings: iio: adc: add max14001
-Message-ID: <20250929-hatchery-borrower-82dbd352103f@spud>
-References: <961e5351afa408e69541b60ec75852fbbd1ddd24.1759121938.git.marilene.agarcia@gmail.com>
+	s=arc-20240116; t=1759228380; c=relaxed/simple;
+	bh=9duiM8gswFJie7vpR8z51ToeGkTtCOicnlTUgffqUmw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nD9nybRA+WvYj20hrCB+KofwNoBkyNqfV/VAA4MqBsfhWXmK1EfLGmg8pccTR+dd2sJnwhlYiu541pD7VmyLP53Emz1+nlkF1caXe8Ppr6J464mRqrMgQkN/CmzG5+anf7sO0YgcIKg2OYO//A/jeGbMeV4D1pJbFHjkpjgzd+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=F3j030sb; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58U8FgKH026774;
+	Tue, 30 Sep 2025 06:32:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=zVyXd3AeZtulnXimJJjnFYDldqM
+	Ss0yb0u4/1hoikqE=; b=F3j030sbfoJgfpKbh7/62M9fBnKL8AKWKt+AP9K8TxS
+	O7+//2oWXs7Of4cqd0bamZRCrwtiLMX3sE16KW27PokAaF8peIqEGCCDq6rU4kxw
+	c8kTlhUKPLCKB4RBkOwAEJvL2+Nc+q2TSAZ1H+wpIKjmpDFgi2sBWoCctu3lhg1p
+	7V6/2N3N2LX6INQwK+Nb6ee7hRirWLebIyceT2AWhduwND3VMteivMm1hwjdl9bV
+	Mh70GwGRNRxaZAP9amK5LKLcyUfKvaD4g5zImN6k7Ge/jAKZIp9zP/LlCvMpW/3p
+	Dkz7/niIHbqJsHXePigTyQt8QSSIUVdiEotRC9Own/Q==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 49g7sjhwnf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Sep 2025 06:32:55 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 58UAWsQE027466
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 30 Sep 2025 06:32:54 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.37; Tue, 30 Sep
+ 2025 06:32:54 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Tue, 30 Sep 2025 06:32:54 -0400
+Received: from Ubuntu.ad.analog.com (AMICLAUS-L01.ad.analog.com [10.48.65.188])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 58UAWipT025133;
+	Tue, 30 Sep 2025 06:32:46 -0400
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v2 1/6] iio: adc: ad4080: fix chip identification
+Date: Tue, 30 Sep 2025 10:32:24 +0000
+Message-ID: <20250930103229.28696-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1Wy073bv8O9ZEW09"
-Content-Disposition: inline
-In-Reply-To: <961e5351afa408e69541b60ec75852fbbd1ddd24.1759121938.git.marilene.agarcia@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: oXu39g-Pz72QFBUy43-6nGGp71bT3E6d
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTMwMDAzMyBTYWx0ZWRfX/9a3FwFz+Nbs
+ ev+3cHwCqqT9WH6KQd5deQcrdjdDdonOtfGjRqTREyVVH4oRGcSSovTmH4tnwCdfBwe19Xp9cD6
+ N/bHIDiAHtDG5Ng60MavKXovL6nRoRrkSG4GF+ThOUKN84o0UQytU3Bgieyq8oxnfVvBD4brNu+
+ 4CM55kJuN1LNByssiC9UiC2Sk4CaUT51Dk5t/YPbXFLPVV7GobzSIXbH0ONpwnDCpVqu3LIhC9g
+ GUmm3g/jH4VyQr6e4n6JySTzScdZP3cBsCdpJvN5o+sjG3pp7gvenYpRTkyqxKyHB0BI71/qClv
+ 20jQVoIBlQrCnaTZd2TNVfuPU9v2lh5h6SGlwvAeWNcqMMA3B0bvKIO6cjJJGUp0tqmohigD1h8
+ +/vNJz1Usmo9kyHC9l0lxn1z+m+ZJA==
+X-Proofpoint-GUID: oXu39g-Pz72QFBUy43-6nGGp71bT3E6d
+X-Authority-Analysis: v=2.4 cv=U/CfzOru c=1 sm=1 tr=0 ts=68dbb1d7 cx=c_pps
+ a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
+ a=yJojWOMRYYMA:10 a=gAnH3GRIAAAA:8 a=zeqpHnekm0If4bNfZloA:9
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-30_01,2025-09-29_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 bulkscore=0 adultscore=0 spamscore=0
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
+ definitions=main-2509300033
 
+Fix AD4080 chip identification by using the correct 16-bit product ID
+(0x0050) instead of GENMASK(2, 0). Update the chip reading logic to
+use regmap_bulk_read to read both PRODUCT_ID_L and PRODUCT_ID_H
+registers and combine them into a 16-bit value.
 
---1Wy073bv8O9ZEW09
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The original implementation was incorrectly reading only 3 bits,
+which would not correctly identify the AD4080 chip.
 
-On Mon, Sep 29, 2025 at 02:58:38AM -0300, Marilene Andrade Garcia wrote:
+Fixes: 6b31ba1811b6 ("iio: adc: ad4080: add driver support")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+changes in v2:
+ - add the chip id handling into a separate commit.
+ - use regmap_bulk_read.
+ drivers/iio/adc/ad4080.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
->  .../bindings/iio/adc/adi,max14001.yaml        | 89 +++++++++++++++++++
->  MAINTAINERS                                   |  8 ++
->  2 files changed, 97 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max14001.yaml
+diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
+index 6e61787ed321..b80560aebe2d 100644
+--- a/drivers/iio/adc/ad4080.c
++++ b/drivers/iio/adc/ad4080.c
+@@ -125,7 +125,7 @@
+ 
+ /* Miscellaneous Definitions */
+ #define AD4080_SPI_READ						BIT(7)
+-#define AD4080_CHIP_ID						GENMASK(2, 0)
++#define AD4080_CHIP_ID						0x0050
+ 
+ #define AD4080_LVDS_CNV_CLK_CNT_MAX				7
+ 
+@@ -458,10 +458,11 @@ static int ad4080_setup(struct iio_dev *indio_dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = regmap_read(st->regmap, AD4080_REG_CHIP_TYPE, &id);
++	ret = regmap_bulk_read(st->regmap, AD4080_REG_PRODUCT_ID_L, &id, 2);
+ 	if (ret)
+ 		return ret;
+ 
++	id = get_unaligned_le16(&id);
+ 	if (id != AD4080_CHIP_ID)
+ 		dev_info(dev, "Unrecognized CHIP_ID 0x%X\n", id);
+ 
+-- 
+2.43.0
 
-FWIW, odd to call the file 14001 when 14002 is the compatible that is
-permitted standalone.
-
-> +      max14001: adc@0 {
-
-Drop the label, it's not used.
-With those,
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-
---1Wy073bv8O9ZEW09
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaNrEcAAKCRB4tDGHoIJi
-0sAAAP9emijiH0IpSfrw1oFnZmP08veEuPOMeVlJHqKY/B5OgAEAlTg23hE5zmue
-Ai74VhXlN/rGflo4BjDIsmNK1qASfAY=
-=9M5D
------END PGP SIGNATURE-----
-
---1Wy073bv8O9ZEW09--
 

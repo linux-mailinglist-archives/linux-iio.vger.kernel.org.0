@@ -1,53 +1,52 @@
-Return-Path: <linux-iio+bounces-24589-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24591-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5025BADEA3
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Sep 2025 17:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EE6BADEA7
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Sep 2025 17:33:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 651177AC41B
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Sep 2025 15:31:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 503707ACD7A
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Sep 2025 15:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C599F308F24;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3193308F32;
 	Tue, 30 Sep 2025 15:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YEN1pGRY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tTqg8AQX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825D23081AE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA8D3081C2
 	for <linux-iio@vger.kernel.org>; Tue, 30 Sep 2025 15:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759246363; cv=none; b=NeDskJA9D1YwnE9h6citS0w42vPtQpTjkryeAbkQqeWOORLzuK956B1ummz+Cc3F8pVUYPBK20IGDJFEscT+y1CCd5l8uMi3377Cm1RPB8GiseV3SKYms7CQ2YuWJX+BLwXi//fdN8ObH5x9SW3YUYKEa+2wEXCp8vYtjYsXiIU=
+	t=1759246363; cv=none; b=Y/kYAP9KLWS0EjtHMBkMnltUuQOKeEtEGgjBHZrRVNd3L/WC145A4SxcgZWXEiOymidzBIWd4zVEVcx27V3seokTu9XBYh52+C10Xwx2XqfUr39tWyli7xuWSBhryV1gA85arax2RQpk24pHKQJVUARLiLVbag6iMBY925NvaXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759246363; c=relaxed/simple;
-	bh=2R8ct2CIzDNl/WBKNmSNMtlvamsOPTT7vnMG3Fdcvg8=;
+	bh=0taRmwjryYQarmdKG9R8MrepDyz2CA7phI7kKJgjPHo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Bo8PPFRnr6kWyPZ6eAkp9XNfefWm2TfmLBss7SE5gGtSM/AQSmsTXJYOpt71Cm/Kk27DCdgF3PN6dhrkO7RZYuYToXaXdAEu7BJbolzoTr3EX04GwsbHaOb0Ue95gxkckLW5Oi8dzf5ef+isOO8euxbOuPCjhB+bSeZWOd3IkP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YEN1pGRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 55BB7C19423;
+	 In-Reply-To:To:Cc; b=SGAZuU3rMdnpGE2O/KCejPEJfDvrPLK8ALMq1SlXoEHctZeQZx/95SHZHfb9HYW6PDCchuRnZ5ONx6FU+R7s6d+YOCUy2kOtGTrJmtETp2VnSQnwZxF3tjfd69r5Y/bAjvMQf3PEei0e0pyv/yc4THvBFg/d9KWJVhT/NGQfQWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tTqg8AQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 653F3C4CEF0;
 	Tue, 30 Sep 2025 15:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1759246363;
-	bh=2R8ct2CIzDNl/WBKNmSNMtlvamsOPTT7vnMG3Fdcvg8=;
+	bh=0taRmwjryYQarmdKG9R8MrepDyz2CA7phI7kKJgjPHo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=YEN1pGRYxsEXii3Jke/tUX7aPpf/oCD8CckZXHCdWTVR99D5E+6O056XC92G3GPlU
-	 UVR27SBsJEO1BWdwIXROxab2FHZcLVqDPZGTSM7b4SyA7T0u6LpmcUCVlJZ2MzwDhy
-	 ZoFs9Xk5Tq3W7pKxQrEvfAGB4BzThAzFu1xxjiSfe2L622m4LwrzvY6AemUiBe4sF0
-	 Il3Q3CxcC4G09Thh4buNf8zinGpEkaQzDgOQtg6CcUNmx9E0Aty98yht74+OzYQB1S
-	 DTQjknHdxUm2azqFuhj714mctuwj5vxBNjBryJtUsc7oFnYrWz5CL8nx/dGlDeiipb
-	 HTOy27z5kbkrA==
+	b=tTqg8AQXSr1fex8CgYkVDtkE/QTZWP5by4ju1AAAp+YbNep5GEaihOeynH7HMhBgD
+	 LK8UNtMaOMKQjyhWJ0XcJMxEt0RZVJn7RrHAGMU4/JFyOARgVSdYdNsiPOAPFr/gM6
+	 5AMAQYmRV55zjXQKKrHd+ut17tNKCe5IKuYNElc3AGfS7OzaGPdeUJVAJTEEFJhD3q
+	 6EzYcvSWLy+Ottk/ydZEd2sn0A62b+waIgG1CN2qF2jJiRP5BaeCsAp7tAZIxup0qu
+	 ajPbDH2eJuBXA5PpjB7X9iWlk9Q0VkeRIlw12W70xmPjuZB3leAA55CWLbSoTzC04T
+	 ix9KeQIqZnunw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D93FCAC5B8;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CE57CCA475;
 	Tue, 30 Sep 2025 15:32:43 +0000 (UTC)
 From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Tue, 30 Sep 2025 16:33:14 +0100
-Subject: [PATCH 5/9] iio: adc: mt6360-adc: replace snprintf() with
- sysfs_emit()
+Date: Tue, 30 Sep 2025 16:33:15 +0100
+Subject: [PATCH 6/9] iio: adc: pac1921: replace sprintf() with sysfs_emit()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250930-dev-sprintf-cleanup-v1-5-5d65d096a952@analog.com>
+Message-Id: <20250930-dev-sprintf-cleanup-v1-6-5d65d096a952@analog.com>
 References: <20250930-dev-sprintf-cleanup-v1-0-5d65d096a952@analog.com>
 In-Reply-To: <20250930-dev-sprintf-cleanup-v1-0-5d65d096a952@analog.com>
 To: linux-iio@vger.kernel.org
@@ -72,11 +71,11 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  Matteo Martelli <matteomartelli3@gmail.com>, Jiri Kosina <jikos@kernel.org>, 
  Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1759246391; l=910;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759246391; l=1061;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=3f+W95hXwHL+jJYIyyCbGXqeeocZadZ1pyBxrDdqaHo=;
- b=8aP4W/p5srujnnNMnnPeKKFdtx8Tg/Gk/cxjEf0uazyj+bbAs5UmxKbFFfZk4rRfpY6eWLdrT
- bmfWmx7C/kBDiNSBA04XAST79B4jYbQzprH4UoB4Sp+0iH1a47lrOsH
+ bh=466V0/0B47csEqruRL0ob9WL3H9t/OmaPrXaNfsTut4=;
+ b=aC8PK+hT8/opOKbqTScLPZGn7FfUBiDJH5hEDNdfTS0WHI3CsiB0NI8Gfe++DZySSebxuKkkf
+ hal60izx0NtBw+F1QY3qptKS1pc2sm97DaoNVAix7GtMp8PR4jizhE0
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -86,27 +85,36 @@ Reply-To: nuno.sa@analog.com
 
 From: Nuno Sá <nuno.sa@analog.com>
 
-Update the mt6360_adc_read_label() function to use sysfs_emit() for
+Update the pac1921_read_label() function to use sysfs_emit() for
 generating labels.
 
 Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/adc/mt6360-adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/pac1921.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/mt6360-adc.c b/drivers/iio/adc/mt6360-adc.c
-index 69b3569c90e5b665e1d2c59621df00d6142fbe9c..e0e4df418612469bb11a88bdbeb77aeb7cb833eb 100644
---- a/drivers/iio/adc/mt6360-adc.c
-+++ b/drivers/iio/adc/mt6360-adc.c
-@@ -216,7 +216,7 @@ static const char *mt6360_channel_labels[MT6360_CHAN_MAX] = {
- static int mt6360_adc_read_label(struct iio_dev *iio_dev, const struct iio_chan_spec *chan,
- 				 char *label)
+diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
+index 35433250b00872edfc9214c632917a8b8ae6e281..a0227b57f23883034f84ac2ada3d4f9319e5047d 100644
+--- a/drivers/iio/adc/pac1921.c
++++ b/drivers/iio/adc/pac1921.c
+@@ -672,13 +672,13 @@ static int pac1921_read_label(struct iio_dev *indio_dev,
  {
--	return snprintf(label, PAGE_SIZE, "%s\n", mt6360_channel_labels[chan->channel]);
-+	return sysfs_emit(label, "%s\n", mt6360_channel_labels[chan->channel]);
- }
- 
- static const struct iio_info mt6360_adc_iio_info = {
+ 	switch (chan->channel) {
+ 	case PAC1921_CHAN_VBUS:
+-		return sprintf(label, "vbus\n");
++		return sysfs_emit(label, "vbus\n");
+ 	case PAC1921_CHAN_VSENSE:
+-		return sprintf(label, "vsense\n");
++		return sysfs_emit(label, "vsense\n");
+ 	case PAC1921_CHAN_CURRENT:
+-		return sprintf(label, "current\n");
++		return sysfs_emit(label, "current\n");
+ 	case PAC1921_CHAN_POWER:
+-		return sprintf(label, "power\n");
++		return sysfs_emit(label, "power\n");
+ 	default:
+ 		return -EINVAL;
+ 	}
 
 -- 
 2.51.0

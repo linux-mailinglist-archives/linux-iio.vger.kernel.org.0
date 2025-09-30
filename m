@@ -1,121 +1,148 @@
-Return-Path: <linux-iio+bounces-24597-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24598-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D56BAE01C
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Sep 2025 18:07:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D27BFBAE1D0
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Sep 2025 19:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67BE21941AF1
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Sep 2025 16:08:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8511D32575D
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Sep 2025 17:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0598F2343B6;
-	Tue, 30 Sep 2025 16:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D2230AABF;
+	Tue, 30 Sep 2025 17:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PA6hDWj5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bDOOVdKu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F149F13EFE3
-	for <linux-iio@vger.kernel.org>; Tue, 30 Sep 2025 16:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0FB26981E
+	for <linux-iio@vger.kernel.org>; Tue, 30 Sep 2025 17:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759248462; cv=none; b=mbv6AIBHiCeCu0tDBGDXRWgxYM9gRleOCJIzD0UA61042JEyOuJgqTwV3G86xU+ehxDuE00SCZuvAFhFst+YJ0UuXgX9EcgLR/DTmXsmYu2IrEYq//pc9LhHtG1xEWwGMxdYSI/44bQ3qLvIvAoh4GC6R9QXvki+598diC5U9pg=
+	t=1759251679; cv=none; b=He+/OguAJZMjMTAhrphAAfOBgISj62S0sDNRWsKM9OtpTo64N1nS9IyFIEy6zJqWY2xkO2/R3WIawYXKGbqyTFFrOLKohvJ3Qe1onJJhibK8hMo9tbjqgqlqwu6eoCrIxU1kD23heOL0OlN53B/EGFLxVfIdOqP4m0oFgW1GfDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759248462; c=relaxed/simple;
-	bh=hfls3aigay6G7X9HZ/ny0MXW8pPDvqYfJKINpvOwK+Y=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IvARV9v9ZwKB8hKhXk4savHIn5iGJTBh7Mq51XtABc5AhqIQHbT/Zk95X1SoA5L/7/wUcoIpUUxnCoU5Oc/UxTGi5T+CfzzpT3sOiN1ca7DwCM4LqFcpfz8laOrmRP9rclUryHzWTBpwAc46Enq9Lfce15kqBMV1coWxOgMut90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PA6hDWj5; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759248461; x=1790784461;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=hfls3aigay6G7X9HZ/ny0MXW8pPDvqYfJKINpvOwK+Y=;
-  b=PA6hDWj5ImGE4nLGI4xw+wSamfOVHB5WG4N8YngkZ/vXmi46OVHtpySg
-   s6avnH3XWxsXDxTRsWFCAZB125+N1dvLwppj2WI7K7hTVfD+d/bxiDISW
-   NZyIwiMwvlkxCRve7kl/hLvmcaO//QpPLVQ3uSMD2lDphJLCE5lUG8p0n
-   pPhuL3l6L15WHXrE2+z3XJ+c/wJ7SaHEqys7BmFKPKNHgt4JIz4Ydrtju
-   eV3Ip9FiZZHTAQr3U3iAnDtmuhSIbbDnmznxgIi1SMPXPriWJKF8+IQCq
-   FjB57Oa7O4JyQATNA3QZyx8JwzLylGSDScZ9GShyx77uh3b3BHAPyrC6f
-   A==;
-X-CSE-ConnectionGUID: zLQ/rtBsR76iCH87ARWWBw==
-X-CSE-MsgGUID: A/xKdnD0Sg68WeNTZVaNeA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61677735"
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; 
-   d="scan'208";a="61677735"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 09:07:40 -0700
-X-CSE-ConnectionGUID: EKT7o2+UQh+5GwgDrKuE2g==
-X-CSE-MsgGUID: B94gmG4UQAy5cQ8Rw1QUGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; 
-   d="scan'208";a="182580534"
-Received: from spandruv-desk2.jf.intel.com ([10.88.27.176])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 09:07:40 -0700
-Message-ID: <a968fd1b90e31d211d03e18f6fcf560f0d009f62.camel@linux.intel.com>
-Subject: Re: [PATCH 8/9] iio: position: hid-sensor-custom-intel-hinge:
- replace sprintf() with sysfs_emit()
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: nuno.sa@analog.com, linux-iio@vger.kernel.org
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Esteban Blanc	
- <eblanc@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, David Lechner	
- <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, Marius Cristea	
- <marius.cristea@microchip.com>, Neil Armstrong <neil.armstrong@linaro.org>,
-  Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl	 <martin.blumenstingl@googlemail.com>, Matthias Brugger
- <matthias.bgg@gmail.com>,  AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Matteo Martelli
- <matteomartelli3@gmail.com>, Jiri Kosina	 <jikos@kernel.org>
-Date: Tue, 30 Sep 2025 09:07:39 -0700
-In-Reply-To: <20250930-dev-sprintf-cleanup-v1-8-5d65d096a952@analog.com>
-References: <20250930-dev-sprintf-cleanup-v1-0-5d65d096a952@analog.com>
-	 <20250930-dev-sprintf-cleanup-v1-8-5d65d096a952@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1759251679; c=relaxed/simple;
+	bh=AmHuuzpem5111casgiRIX7q6S2eHy1ZsEGaomvXBWBc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F85zE0/U11F7279flQO0i+jsWj49n0EdBQzU2J39LTkLtSUwz2ux9JltshoQZdrvyNi3tQXK/gyQrjf7b4qnhJVFxUvgMWAQvYc4D7BQJrzS0FAAsWm+QNGxt5sjXgoSxr89eTLm9vghO8Zp1c3V3VF5BlO1XWppMc6mF67EnnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bDOOVdKu; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b57d93ae3b0so3139456a12.1
+        for <linux-iio@vger.kernel.org>; Tue, 30 Sep 2025 10:01:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759251677; x=1759856477; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7Qn5VqRWJrpHDhx/xNpBlaLWgEArGVytxgRrr8Ys9no=;
+        b=bDOOVdKukdiUsInRLL7W1Mr6ucwZPG0GVJ9putQ/fM8dB38/e4znvgFd8TqWdPOWv7
+         BkASLLEnQeFq+XOOQdBnVo9SiMm3cq4HzJ76ZdqA2O/vA32XeO03ELa0lNFJO53IQ/yX
+         YZM2YnBIUmufFZ0YLh1lphgiEQtMMcMW3NJO50GhlAxvWXQ9O417oWxylwiivmiBQ+uM
+         xm5QOfpmFwMsfD0hSlU9O4ytHgUQOFB/KIFUkhR7dNVoFFg5YfdZUiGx2MPuhozQWSjd
+         sJk4b+/kPzLR+ZIW6iJwSdjI+5oBC6lhIFYZylIynEqutbXMFgtwNpLlh7P6e7WbVeaR
+         Og/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759251677; x=1759856477;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7Qn5VqRWJrpHDhx/xNpBlaLWgEArGVytxgRrr8Ys9no=;
+        b=r9FwRabrm3KZ5JdxxgHZlq0sIiuHJ/HMHMSMqEhdMDGWqJSIclOETPPTfmm7H9+6zf
+         V7/bk2xtgOfbWs+OK5AXGXqmDoqnln1Jj7kYmPnPszXB8jvIu6BVYkVgZJ2YheTQOylv
+         PgfW/rL06pGdsQ+c/lZSRZng9yThaJdVhbopGJbQ9Tzq2/PAMbaNjrGwfKcyj+3Cb/Si
+         6Hz89A79C36Tg3gkcj2MUdk0aaIGs6BomP6DLaRnILZb19/Oqc1IOMZGETDmx2JoaOXw
+         0I2bSmznVwz8PuswwEziGKr5SlPoh5NewClnkAcDMXXr48/imwOs+E1gwbbd9HqKpKZK
+         RhvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXjeuZv1ilW483qkPiMiD/xOAu8ET4WvCFfc7B2bGKpayDFGjR3sXYasQHFmX4YgwmmA4jfkq0bbYg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5ZyutiwyotrqADTBeuqGVPF3iprKQwDeXt+IA+wo2PI5glFpK
+	XFN9UNy/IjhZRRw5qbinW1VvkpQuKQcgVrFb/PpmBZcrTgJQvEe5Qhe+
+X-Gm-Gg: ASbGnctA4/C8J2nD/OL3DD+xtPfapluIBreq8GqZIbnVLTNHYOiwIV2SWJAgLyGpG9P
+	aerTAxLsO+BEjTU57H673d2i9UWOTMcOJEFyn3AV2mhW8q0WSITKnj402GayOfObCbjc6BZmRaL
+	TuFfMSou1cMsJXtSl/kjDPaJiU8k+3cUjpuckDQ5DS8PTZp92/52hap3S2HloWg3ZpB1Kkcu/02
+	cu8RKoDmErlnVGAdhi9gBPBP+b9hH0dPq3ENeqA27xYjfST9QD6R1fBN1foJ833ZTuB8WzYYNUV
+	0K5ZFB8Qn1cFZpW6DRa7L8fZjju/tbV/1zMI/0+BGNjCavElOGQbZzREiudOf0p56uVyC0/LV93
+	yXxf01eJK2f9iRYIG8V4pG2x00PohRdqa8ZM6dd87KYsnw6YoP5WNT0ASRpqreDo+FA==
+X-Google-Smtp-Source: AGHT+IGy446EO1dFvrwF+hn4zw2/euRdjV/W41f6FxDTzzbhNgbS5i0TkYtI/qkAdJxguBsSMF5Bfg==
+X-Received: by 2002:a17:90b:4ad1:b0:334:18f9:8008 with SMTP id 98e67ed59e1d1-339a6e28289mr264935a91.8.1759251677221;
+        Tue, 30 Sep 2025 10:01:17 -0700 (PDT)
+Received: from localhost ([2804:30c:b65:6a00:ceaa:2ed0:e81e:8f51])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-3399ce47d7csm974066a91.10.2025.09.30.10.01.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Sep 2025 10:01:16 -0700 (PDT)
+Date: Tue, 30 Sep 2025 14:02:08 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Rob Herring <robh@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, michael.hennerich@analog.com,
+	nuno.sa@analog.com, eblanc@baylibre.com, andy@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, corbet@lwn.net,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v3 7/8] dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216
+ and ADAQ4224
+Message-ID: <aNwNEHHZ4RXyz92r@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1758916484.git.marcelo.schmitt@analog.com>
+ <5dc08b622dac1db561f26034c93910ccff75e965.1758916484.git.marcelo.schmitt@analog.com>
+ <20250928111955.175680cb@jic23-huawei>
+ <20250929143132.GA4099970-robh@kernel.org>
+ <CAMknhBHzXLjkbKAjkgRwEps=0YrOgUcdvRpuPRrcPkwfwWo88w@mail.gmail.com>
+ <aNvtfPh2JLdLarE5@debian-BULLSEYE-live-builder-AMD64>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aNvtfPh2JLdLarE5@debian-BULLSEYE-live-builder-AMD64>
 
-On Tue, 2025-09-30 at 16:33 +0100, Nuno S=C3=A1 via B4 Relay wrote:
-> From: Nuno S=C3=A1 <nuno.sa@analog.com>
->=20
-> Update the hinge_read_label() function to use sysfs_emit() for
-> generating
-> labels.
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-
-    Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-
-> ---
-> =C2=A0drivers/iio/position/hid-sensor-custom-intel-hinge.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/position/hid-sensor-custom-intel-hinge.c
-> b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
-> index
-> bff7039690ac33bcc9747add8055023dd5a1f3ab..a26d391661fdb64cc34c8c0e163
-> 333c01c1f069b 100644
-> --- a/drivers/iio/position/hid-sensor-custom-intel-hinge.c
-> +++ b/drivers/iio/position/hid-sensor-custom-intel-hinge.c
-> @@ -176,7 +176,7 @@ static int hinge_read_label(struct iio_dev
-> *indio_dev,
-> =C2=A0{
-> =C2=A0	struct hinge_state *st =3D iio_priv(indio_dev);
-> =C2=A0
-> -	return sprintf(label, "%s\n", st->labels[chan->channel]);
-> +	return sysfs_emit(label, "%s\n", st->labels[chan->channel]);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static const struct iio_info hinge_info =3D {
+...
+> > > > > ADAQ4216 and ADAQ4224 are similar to AD4030 except that ADAQ devices have a
+> > > > > PGA (programmable gain amplifier) that scales the input signal prior to it
+> > > > > reaching the ADC inputs. The PGA is controlled through a couple of pins (A0
+> > > > > and A1) that set one of four possible signal gain configurations.
+> > > > >
+> > > > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > > > > ---
+> > > > > Change log v2 -> v3
+> > > > > - PGA gain now described in decibels.
+> > > > >
+> > > > > The PGA gain is not going to fit well as a channel property because it may
+> > > > > affect more than one channel as in AD7191.
+> > > > > https://www.analog.com/media/en/technical-documentation/data-sheets/AD7191.pdf
+> > > > >
+> > > > > I consulted a very trustworthy source [1, 2] and learned that describing signal
+> > > > > gains in decibels is a common practice. I now think it would be ideal to describe
+> > > > > these PGA and PGA-like gains with properties in decibel units and this patch
+> > > > > is an attempt of doing so. The only problem with this approach is that we end up
+> > > > > with negative values when the gain is lower than 1 (the signal is attenuated)
+> > > > > and device tree specification doesn't support signed integer types. As the
+> > > > > docs being proposed fail dt_binding_check, I guess I have to nack the patch myself.
+> > > > > Any chance of dt specification eventually support signed integers?
+> > > > > Any suggestions appreciated.
+> > > > >
+> > > > > [1] https://en.wikipedia.org/wiki/Decibel
+> > > > > [2] https://en.wikipedia.org/wiki/Gain_(electronics)
+> > > >
+...
+> 
+> Though, the above is still relying on GPIOs which is not a requirement from
+> ADC peripheral perspective. Also, if GPIOs are available, one can just provide
+> them through pga-gpios and have full control over the signal gain with the IIO
+> driver. It boils down to just telling software what are the logical levels at
+> two pins on the ADC chip when GPIOs are not provided.
+> 
+Though, as mentioned, the state of A0 and A1 pins defines a certain gain applied
+to ADC input signal. Because signal gains seem to be usually described in decibels,
+the proposed dt-binding allows to provide the gain value in decibels and then
+software figures out what A0 and A1 logical levels are from the provided decibels.
+The actual levels of A0 and A1 then have to be set according to the provided
+decibel gain.
 

@@ -1,283 +1,159 @@
-Return-Path: <linux-iio+bounces-24636-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24639-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967A2BB0CB6
-	for <lists+linux-iio@lfdr.de>; Wed, 01 Oct 2025 16:47:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D356ABB0E95
+	for <lists+linux-iio@lfdr.de>; Wed, 01 Oct 2025 17:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE4E3AE366
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Oct 2025 14:47:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C54C19C0DAF
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Oct 2025 15:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDF030507F;
-	Wed,  1 Oct 2025 14:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202E73043C8;
+	Wed,  1 Oct 2025 14:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YNM7Kiid"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kqtFc5/R"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDCB3043BE;
-	Wed,  1 Oct 2025 14:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234DD3043B3
+	for <linux-iio@vger.kernel.org>; Wed,  1 Oct 2025 14:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759329929; cv=none; b=g+JVN1klaVASc7z/QBDVOoohDz76s/ZuR+gHOp/xX5ci7fnnCoFAq1VBDFAQ4kf/PgfsTG6BEctgkpC4F4NgAZZ4Gi34XU/aARJvF1kGlYrY9CIFGWR5E56KcqlTBs9+4dQYzf3TnGSvQuxp+OcVEfW/ksuOnL5h+GGwVCu/Jq4=
+	t=1759330586; cv=none; b=Q41RgkBZjI+J5QpBc7fF5UMtbMEnroIxs/lujtaJt3JK/zCoe6RvlF+/cPTvuGgBgnPDsOfyktWx5Agc0UJQdzFMvUeBWqd+DDnHTdAyH5OiIB+Q9a/eEK+iygTuKgrYKYvu6GtS+x3ermV0IHqubrFz1TTHC5H57JjsLG4gy7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759329929; c=relaxed/simple;
-	bh=5954l7LU6fPIBRtOlT4gDpqEUKsuwLeScmgiPh7owZo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8qPrquVCzo/F5vsJdqOmDdqdoLhHGBID2UeOIci9K2nD2Lk9tMHrUXFKByFXexqisjp6Bhfi+AlhwdNb5ukHkXoSFiIQ441zUyNg6Jsr8WngrY/eWdu/AAEW3fkKxMVyL6wip50Nniz4+MPkgrKo8wXaqayfnkMwGLTXyfuDTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YNM7Kiid; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 591DAuWw031961;
-	Wed, 1 Oct 2025 14:44:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=xU/mKPOxpYgMlnUyj
-	4Zgu1OyckkeAGsJNFbd59wLYNk=; b=YNM7Kiid6hTMxPYmygWz8i7YgbsXhle3Y
-	Nyryn6ju7bTt0ZsFEzDkE+PgoLVZn/RajhGg25cptQgXo7WAid3zX5JB8dFFX9Ec
-	70Elln8gaxR9Y4dWBh3pqIJZlec+xI3DVMEp1PVxC/Vt8KDuWFgyw0yASAlH35dR
-	shVlndvEsiK1TbdIw/rC6CyXFGk3LXM1UldEFJ3w2/4L90ZaB6IJifbnH97Aa1IP
-	dPE6Z28yi6ystOG64oOA8DY7EsNcoLODeb+FZhRK5InlIiNFfIcp1GI6ZGWPpKNn
-	0VGBoXQg/qfVHAT1WY6pO5JBSasIuLZ/C0FDO9ckJnVhrFwUpJUIw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49e7jwq4k1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Oct 2025 14:44:51 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 591Dt8qk001543;
-	Wed, 1 Oct 2025 14:44:51 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49evfj91hk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Oct 2025 14:44:51 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 591EiouE6357688
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Oct 2025 14:44:50 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9103758043;
-	Wed,  1 Oct 2025 14:44:50 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3DED35805F;
-	Wed,  1 Oct 2025 14:44:50 +0000 (GMT)
-Received: from slate16 (unknown [9.61.71.223])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Oct 2025 14:44:50 +0000 (GMT)
-From: Eddie James <eajames@linux.ibm.com>
-To: linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-aspeed@lists.ozlabs.org, robh@kernel.org, krzk+dt@kernel.org,
-        conor+dt@kernel.org, andrew@codeconstruct.com.au, joel@jms.id.au,
-        linux@roeck-us.net, chanh@os.amperecomputing.com, jic23@kernel.org,
-        dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
-        eajames@linux.ibm.com
-Subject: [PATCH v7 RESEND 7/7] ARM: dts: aspeed: Fix max31785 fan properties
-Date: Wed,  1 Oct 2025 09:44:41 -0500
-Message-ID: <20251001144441.310950-8-eajames@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251001144441.310950-1-eajames@linux.ibm.com>
-References: <20251001144441.310950-1-eajames@linux.ibm.com>
+	s=arc-20240116; t=1759330586; c=relaxed/simple;
+	bh=TRyHs9IEHWxtIGR/sLNg5b2MfBrNlCsFmJrDYwg376Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r3ftYs8VylOf6nG3J9NxuSU/68LRcJuhDruVo/cqXDzDhjUix8DhwxBWDtEC5b+PP6TuMO3w3DMEo/f/nwQFJZON32XJb0qJTxh3OVwX6acVJ5PB7ADkTORK6QHk7duHGgxO5fB7Su+SCN9CxzuHbDZT43ihBh6ud7GKhbE1gPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kqtFc5/R; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-77f343231fcso4306296b3a.3
+        for <linux-iio@vger.kernel.org>; Wed, 01 Oct 2025 07:56:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759330584; x=1759935384; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=vMaRMjae5qhJ6T8LZr9SwTJXOKHeU5QOS0jWZvlSGc0=;
+        b=kqtFc5/RzIf1TYfNGW+xOrXTjfq2CpqDVvTunN6cg5r0OD6y7Yog72C2D1PcEeTTYi
+         Cxzx4xTUSmf6L0u6KWNew8SJpbdaxA3celSkacP1B616zNY0TNpuWJMoS991qw28Wp+p
+         VahG4ARxRiezCOttWKjPRat2YRuJx2ji0CxZDsc5vIMWnou5yyd9rRxLy92y0xIyDojn
+         yDygSIkDVAso1LUxojWk6f3pKoNwRk8cjbCO0Gv2tp8+DMth+GSBjocI/dw00V+66EkE
+         V1WzPoug3PoKRwVL0Cgpd704r8M/e0Qh8P8Zsw18iXpXfdgT8S5lI0H7bfWDn3w7CbKR
+         o1Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759330584; x=1759935384;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vMaRMjae5qhJ6T8LZr9SwTJXOKHeU5QOS0jWZvlSGc0=;
+        b=PO2hjie6yQEztKyCZnSkH19wF+VWk0+DXXhM3z8dHfOy+XU3aIGrtRwvfvPx0j/FX1
+         JJAL0BJH5ydZ4mHFAMS34XVfdP3xPmWBAtLrGNOk1on0EPQxdeKIMoMQ1OvdX6faUlv+
+         Agu0tqHXgpglSYmziAvKX1KeZv6MM3fh/DIAwjeBPykDVe//hdIFlGpL9xF9uh1mjNPk
+         yXaPhOvD8nGzhpYo9S1ophvjX8nGgV1xPBT0R8m5o2NhkBKb8BnildzbdlmeznU1u0YI
+         uqaTNmSwIfQBsnikM/xYSIJn31eJZRa9mrdVDR2MuEmIwSSejRljyTZ9wi91K60nMn8J
+         77ww==
+X-Forwarded-Encrypted: i=1; AJvYcCWP+YzFT7tGKkP9TbVJdWgjRZbidMKTVcmGuNs5nIqX0LDjGCK/tXiQXkdlNj2XAOpPl7WuvJX65lk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDVLc0Ax+zjhHNaveQj4FIuVGa305LWoub+W4hOQaa0WYYv3mV
+	7NlybvBJUGBWM4n8i/W5NqA0UStPxJnXr7rM737b6wGDDex8A1gaBr2S
+X-Gm-Gg: ASbGncvOfDtqvY835HLveJnvZGrXIuVFMxa6xN06WsPFqsA3QxQ1rIM1TwTKyQQcvXV
+	LgEOKEeGHuiKwHK9P4LJlkpGrF9ToQUNgsmA+EQG6SR/rj55beQv918fneaVqo+wRi+L9JEdkf1
+	dCwbfY0zf+k2WpVRQ70J/vHIMYl+Mr6wnnWVieuTgCVdg+TFiAQqDH9Dk+A4olQ34pOQTJC5VdP
+	bI10Xao3osAFC8TtcnQ4rsXY+EQNy0lmS4oJlGIaYAmkzKqlZxKYBB7Y4iTWFJWCBa39DxJ2FwU
+	b4F147dcTngWAmav6FuKj4Rp5ktZPhqBjaYMClwSvOoQmEV2us//fN902G9EM2nupKi2gthnvbh
+	kkG5J8BhlSrrFdLjPv3yEY7oO64Ixwez/1qQB77IC4QT8YNfCHqsB6KC5iVKKBHSzxFwP5nO/Rg
+	ga7+JRicHgcWqUKXqv3us=
+X-Google-Smtp-Source: AGHT+IHNGQLvotx2qaUZNh8cndj8yxi/+YPCSljuENQkge2S0/2QPiWneDeKuPJFHif4je6sXsDnzA==
+X-Received: by 2002:a17:90b:3511:b0:32e:51dd:46dd with SMTP id 98e67ed59e1d1-339a6e97a92mr5001609a91.16.1759330584328;
+        Wed, 01 Oct 2025 07:56:24 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3399cd8013dsm2418350a91.4.2025.10.01.07.56.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Oct 2025 07:56:23 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <b0632c19-1b98-46fe-add8-d2926fd296ea@roeck-us.net>
+Date: Wed, 1 Oct 2025 07:56:20 -0700
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDAyNSBTYWx0ZWRfXwcxK+Lz/Qj/B
- 70f8eatWzwBnFqINdGQGfe6CYGD8q2GP5hdkWHfiNdE1aOOfCm7Jj0gVCLXNldptp/OTWk3aVPf
- VlR6N31HSgtLw/WR0bWzo9hMgfzqV3eJT6A1JXaX7mGpvzXE+ldY+3E78nYmI5BXmHqjbB/MpD0
- AIl3JqirCdYxGWAWDRymThC7nj1AWUaGXK20NMxEDPEg+nZw+R4wpl+VPPEck+PYp4soC+C990I
- f7hBChQoj0TBr7VWAJLPhKKIqys+bnR3eQEmbd1i99+diG16ZwePzx0UjM/ssaO22MOr3fUtR7X
- nkjm2Hl52Wqh5dPKsWy0Gv2aDSNNKvFX5NobVLtjBtPH6s6Tr9AU4GZfwni1L3WRheEIRTXcUt1
- 7kWw13J6ssWvbNFLlBt1WcE3GiqJVg==
-X-Proofpoint-ORIG-GUID: 8q2E8dPlqfZ3S2V1g3I4VKTNAUSimI6E
-X-Proofpoint-GUID: 8q2E8dPlqfZ3S2V1g3I4VKTNAUSimI6E
-X-Authority-Analysis: v=2.4 cv=GdUaXAXL c=1 sm=1 tr=0 ts=68dd3e64 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=x6icFKpwvdMA:10 a=VnNF1IyMAAAA:8 a=Kt26cSGSbpyySZw-S6oA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-01_04,2025-09-29_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 phishscore=0 adultscore=0 priorityscore=1501
- malwarescore=0 spamscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2509270025
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 RESEND 4/7] dt-bindings: hwmon: Move max31785
+ compatibles to max31790 document
+To: Eddie James <eajames@linux.ibm.com>, linux-hwmon@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-aspeed@lists.ozlabs.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andrew@codeconstruct.com.au, joel@jms.id.au,
+ chanh@os.amperecomputing.com, jic23@kernel.org, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org
+References: <20251001144441.310950-1-eajames@linux.ibm.com>
+ <20251001144441.310950-5-eajames@linux.ibm.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20251001144441.310950-5-eajames@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Remove non-existant fan properties from max31785 nodes.
+On 10/1/25 07:44, Eddie James wrote:
+> The binding for the max31785 is the same as the max31790, so just add
+> some compatible strings for the max31785 chip.
+> 
+> Signed-off-by: Eddie James <eajames@linux.ibm.com>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
----
- .../dts/aspeed/aspeed-bmc-ibm-bonnell.dts     |  4 ---
- .../dts/aspeed/aspeed-bmc-ibm-everest.dts     |  8 -----
- .../dts/aspeed/aspeed-bmc-ibm-rainier.dts     | 12 -------
- .../boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts | 36 -------------------
- 4 files changed, 60 deletions(-)
+I'll pick this and the next patch of the series after the commit window closes.
 
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-bonnell.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-bonnell.dts
-index 2f5d4075a64ad..a37399ff3cea2 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-bonnell.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-bonnell.dts
-@@ -277,15 +277,11 @@ max31785@52 {
- 		#size-cells = <0>;
- 
- 		fan0: fan@0 {
--			compatible = "pmbus-fan";
- 			reg = <0>;
--			tach-pulses = <2>;
- 		};
- 
- 		fan1: fan@1 {
--			compatible = "pmbus-fan";
- 			reg = <1>;
--			tach-pulses = <2>;
- 		};
- 	};
- 
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-everest.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-everest.dts
-index 9f144f527f03b..5a0975d52492c 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-everest.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-everest.dts
-@@ -2066,27 +2066,19 @@ max31785@52 {
- 				reg = <0x52>;
- 
- 				fan@0 {
--					compatible = "pmbus-fan";
- 					reg = <0>;
--					tach-pulses = <2>;
- 				};
- 
- 				fan@1 {
--					compatible = "pmbus-fan";
- 					reg = <1>;
--					tach-pulses = <2>;
- 				};
- 
- 				fan@2 {
--					compatible = "pmbus-fan";
- 					reg = <2>;
--					tach-pulses = <2>;
- 				};
- 
- 				fan@3 {
--					compatible = "pmbus-fan";
- 					reg = <3>;
--					tach-pulses = <2>;
- 				};
- 			};
- 
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-rainier.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-rainier.dts
-index c5fb5d410001b..e90421bf7e3af 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-rainier.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-ibm-rainier.dts
-@@ -1080,39 +1080,27 @@ max: max31785@52 {
- 		#size-cells = <0>;
- 
- 		fan0: fan@0 {
--			compatible = "pmbus-fan";
- 			reg = <0>;
--			tach-pulses = <2>;
- 		};
- 
- 		fan1: fan@1 {
--			compatible = "pmbus-fan";
- 			reg = <1>;
--			tach-pulses = <2>;
- 		};
- 
- 		fan2: fan@2 {
--			compatible = "pmbus-fan";
- 			reg = <2>;
--			tach-pulses = <2>;
- 		};
- 
- 		fan3: fan@3 {
--			compatible = "pmbus-fan";
- 			reg = <3>;
--			tach-pulses = <2>;
- 		};
- 
- 		fan4: fan@4 {
--			compatible = "pmbus-fan";
- 			reg = <4>;
--			tach-pulses = <2>;
- 		};
- 
- 		fan5: fan@5 {
--			compatible = "pmbus-fan";
- 			reg = <5>;
--			tach-pulses = <2>;
- 		};
- 	};
- 
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts
-index b31eb8e58c6b4..6fe7023599e88 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-opp-tacoma.dts
-@@ -481,55 +481,19 @@ max31785@52 {
- 		#size-cells = <0>;
- 
- 		fan@0 {
--			compatible = "pmbus-fan";
- 			reg = <0>;
--			tach-pulses = <2>;
--			maxim,fan-rotor-input = "tach";
--			maxim,fan-pwm-freq = <25000>;
--			maxim,fan-dual-tach;
--			maxim,fan-no-watchdog;
--			maxim,fan-no-fault-ramp;
--			maxim,fan-ramp = <2>;
--			maxim,fan-fault-pin-mon;
- 		};
- 
- 		fan@1 {
--			compatible = "pmbus-fan";
- 			reg = <1>;
--			tach-pulses = <2>;
--			maxim,fan-rotor-input = "tach";
--			maxim,fan-pwm-freq = <25000>;
--			maxim,fan-dual-tach;
--			maxim,fan-no-watchdog;
--			maxim,fan-no-fault-ramp;
--			maxim,fan-ramp = <2>;
--			maxim,fan-fault-pin-mon;
- 		};
- 
- 		fan@2 {
--			compatible = "pmbus-fan";
- 			reg = <2>;
--			tach-pulses = <2>;
--			maxim,fan-rotor-input = "tach";
--			maxim,fan-pwm-freq = <25000>;
--			maxim,fan-dual-tach;
--			maxim,fan-no-watchdog;
--			maxim,fan-no-fault-ramp;
--			maxim,fan-ramp = <2>;
--			maxim,fan-fault-pin-mon;
- 		};
- 
- 		fan@3 {
--			compatible = "pmbus-fan";
- 			reg = <3>;
--			tach-pulses = <2>;
--			maxim,fan-rotor-input = "tach";
--			maxim,fan-pwm-freq = <25000>;
--			maxim,fan-dual-tach;
--			maxim,fan-no-watchdog;
--			maxim,fan-no-fault-ramp;
--			maxim,fan-ramp = <2>;
--			maxim,fan-fault-pin-mon;
- 		};
- 	};
- 
--- 
-2.51.0
+Guenter
 
 

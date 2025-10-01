@@ -1,142 +1,173 @@
-Return-Path: <linux-iio+bounces-24640-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24641-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDBFBB17C1
-	for <lists+linux-iio@lfdr.de>; Wed, 01 Oct 2025 20:26:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C486BB1851
+	for <lists+linux-iio@lfdr.de>; Wed, 01 Oct 2025 20:40:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDA7C3C0A4C
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Oct 2025 18:26:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D3233B327E
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Oct 2025 18:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FEB2D3EDB;
-	Wed,  1 Oct 2025 18:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547A32D5A01;
+	Wed,  1 Oct 2025 18:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a4eNu9nu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKaR9bBz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B9E29E0E6
-	for <linux-iio@vger.kernel.org>; Wed,  1 Oct 2025 18:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A235253F03;
+	Wed,  1 Oct 2025 18:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759343157; cv=none; b=Dj5coL5o/fyLzEIwYXhF7HF2zfZr/iA4tbI4h9mPJRuBcarT76pOebZaOPp0qIUhS5YPIRHVcpr0dugFC0dKvrjwBiyEs1IiBYVQh2nwFYK9+u24XWpOjw68CdX6ton6+Xyp45vFrJNW6IaDj8mssEnwKgM+OOf5ukq8Sl2RbUg=
+	t=1759344027; cv=none; b=QnCQDNEvMplZOVsYUaG0AFHHZiX9LC5FMyOKdg+cltpOGEqZQbAxnKA1GqmhZdTCpEAsJAGVIRTG8vgmlGMOG6kx+GeMM2huEtmwRprpjDOSx6qj5D4Glfh4atjoAJjZOnIjsCnahad2IhxY8agrAGLz48yoN3UfjBrs9cONgII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759343157; c=relaxed/simple;
-	bh=ymIIKugm8dSELizjkSSCIK6f4FNGs2xxjhEosg+XKAA=;
+	s=arc-20240116; t=1759344027; c=relaxed/simple;
+	bh=Zvia04J9o7jWgxHG1OQx00r4MlbA4yAGZGqEcbUw7mE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sLjTCKwusPG6gDXD8ST7fXfdGjGpWthYTwZTTcaaRlPpnaBuRJi/lkEUE6BFqofn6+2BA6UA1bWoND2dII3ncFA9C7Mfjp+nKlX+cdckqNRx0GUwnZ+JjvmdSochO1Q0QpDsntpeL6Hecsqvb11/0iHB3Ac/WwHxYYG3qE+nQ2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a4eNu9nu; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-63667e8069aso434642a12.1
-        for <linux-iio@vger.kernel.org>; Wed, 01 Oct 2025 11:25:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759343154; x=1759947954; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Gy2/5v+aVMufW/rwxUs7mjSazEFFKsyqBqWXuO9kk7M=;
-        b=a4eNu9nudOssKQXhRzYn9FahWWOo6CHJiqrnr992AkNgcFeMsEp4t1pkQaTe+S53/3
-         Rso/jdBasvIcxllwcII1oX5DgEvLyo3hyVkXS2g4mlHdYTfDUp7+tw9DNxXDkS8EuuDk
-         tGKE3b30BoenzGbzEAeNgIawmyFEW3EgAnBko+ZPmMFzTQtcDDKKANuYmQ5VbeCUoRWR
-         zpOlOUDXSXw+yv5haEiAf5JjyQQ5Qd3qeqPny9d75JjyU+a+HhgOJjndtXD1I5MlKcSL
-         0UEP6KDHOeHhxgdGODRgFzq/CED2qzLkkoaqxLNCEW9NB7THbcg0qOsG5h28vZUUDVeY
-         LOFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759343154; x=1759947954;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gy2/5v+aVMufW/rwxUs7mjSazEFFKsyqBqWXuO9kk7M=;
-        b=ZGslAm4ejvlOuftytihRW9rKrJNj5vnThKcs61PO8BeleIx7yRMQqsWpyL/q0pm/4g
-         h/XKHBt++6N7IH6CX+BSX+HZzuc9UkW2CfWlvr5eMqjP0RxlvhbTTOPl9/LLkx2Apwkq
-         /ipd6uFrkNhpP8kYpDGiAPbZTdu9IHFAjlCcPil7Fgf2FjXVE0iXyAGZvZ/CRvg2PWRm
-         lGysTSmgaIOKOLGpwgLfGZX5SZqwJWHCKHzhaG+hFwNL24j7oCruxOlm7GIyktJo/J8t
-         ODx+pI1fpACdDJp1bXHbaHRYwGRM9XbFKncxofgRD2Pbs1LeuECFlDfBzjtp8Ud8o1qX
-         rlXg==
-X-Forwarded-Encrypted: i=1; AJvYcCUX+NPJzJUDTFBFBj/AtLkfg9psFWy01IW4k/griCQm6rqxrwyP584bB79orRY4t+6Y4TSNp8APcUk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwA+dyepvIYe4nDX/+5Aau8NtYpNJpDfI/jTgKWuyQrQoxg7TE3
-	9sTcXytNoUNSHrF9w2aHgz3ZnrBbuRJQENE1/Esmxmf3PZYx6I9rLLbI
-X-Gm-Gg: ASbGncsJxED6kRBYkRjVuyb/GMy+XJc+vJHZpnCNJBfxIw7qWaqy0v4ySSdmRk2LT2Y
-	qsWyo6LZNLXXg0NPb01ivqxz1VVIhFbijWoe//7+tXZOamsIN+jd+8atf5uT7xQY/bvvfLHu6QH
-	4MGMgTTm/hsbAfvDhwCHxsh8YO08uX7z7hWJuL4Mi08/8pxDr3AgeY3upz1yALUIqVKs1NE4rm+
-	4VV7L7ew7SP6PDfOQwBP4ZAQSYDMLTC3l1yQzEyl8LteBDe0XVEPvwQv2ZwaCQfjR4EKjSNhsps
-	RCySTFNYCFF+09l7qYon4M6D8cWbuijWorkNuD1YkiTLZnfAt7zOecCiOiGRiOJERm7T/MMwgdB
-	jAV40riqJCmhKNqvz7a+37o+YWPLhv9siOkQCpBGY62Jo65eREveqmqsZFooEufGFIbqgNd36zv
-	43KxGR
-X-Google-Smtp-Source: AGHT+IFYS1wpjnOHA/UgM1tYK8yjpc9MxEefzrC47WYXYDv2qa+LqLdGjB8G0GOUqesJP0bsWnW/XQ==
-X-Received: by 2002:a17:907:6ea0:b0:b46:bd57:140e with SMTP id a640c23a62f3a-b46ea228a9emr408417066b.61.1759343154059;
-        Wed, 01 Oct 2025 11:25:54 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4865a7c660sm20827466b.22.2025.10.01.11.25.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 11:25:53 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 49143BE2DE0; Wed, 01 Oct 2025 20:25:52 +0200 (CEST)
-Date: Wed, 1 Oct 2025 20:25:52 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Marek Vasut <marek.vasut@mailbox.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Marek Vasut <marek.vasut+bmc150@mailbox.org>,
-	linux-iio@vger.kernel.org,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=HqynXcZE4C0WqWpmrxzPzC+cg40hQGMmHA+/T17IX3uBmA+Ihw2DobruI2OA3V6gPadQIK3c6nyO2FKc/zk9z81Y3Tl0PGSVAyatQZT+Xx40jvF9j67PmqPVUqn0VSHNbjUH6Qw0Dh32I3kCWMFU5vJI2Us5whV5tJfLwbeO124=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKaR9bBz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFAAC4CEF1;
+	Wed,  1 Oct 2025 18:40:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759344026;
+	bh=Zvia04J9o7jWgxHG1OQx00r4MlbA4yAGZGqEcbUw7mE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PKaR9bBzMerwiLC0K1jOIDU1nypit4mR2Jiso5nk7bcAlUfRJoZvfUKC3yqyW8ZS+
+	 HiSFGR2A2SXiohlwbSuAeuuquzVXBhBVxl77AXt+UN4bsJuVL1dCXs6cmUE2n2txBH
+	 XwZvTORr+66vmwprYD2lmzYT1x/xRMArAHzXj7gaEHUH49XCCZCWdHtXUTCrH1RjmP
+	 VmedGQiJXbPVCnPOLVbuU/QLKAQX1IgJjZE2bEymJVzHTk7h5xRIOOA8uGW6jrlq5W
+	 F8XAaWpMgA63Ni8iKBTheBIv6AsNACVxf67w2PPIfkaekH6xFhc3cSmxTvBck7PeZR
+	 pqUg6ial7WtcQ==
+Date: Wed, 1 Oct 2025 19:40:21 +0100
+From: Conor Dooley <conor@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Romain Gantois <romain.gantois@bootlin.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Julien Stephan <jstephan@baylibre.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH] iio: accel: bmc150: Do not configure IRQ registers if no
- IRQ connected
-Message-ID: <aN1yMAeB6oDIp6k2@eldamar.lan>
-References: <20250613124648.14141-1-marek.vasut+bmc150@mailbox.org>
- <79946c40-e2ce-4fbc-a6b2-b37f6fd69d1d@kernel.org>
- <6oyvsvp2erynwu3evulbg6gtdryabeuoo46qzku2grxg3jxptf@jszhnvmj2ffc>
- <30fb5c19-d4e5-4740-afc4-c15b256a99e0@mailbox.org>
- <aID9byW4WOsUExHR@smile.fi.intel.com>
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] regulator: dt-bindings: Add Linear Technology
+ LTM8054 regulator
+Message-ID: <20251001-glacial-synthetic-6faa84d6d047@spud>
+References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
+ <5331035.LvFx2qVVIh@fw-rgant>
+ <20250927-spoon-yearning-c1a8df796173@spud>
+ <5926760.DvuYhMxLoT@fw-rgant>
+ <CAMknhBGOpODxmzU9J9nqGDKGzn6KKFV5Ed3okLvecKtHhNRB9A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="awo5i5GvxHVK+9Fg"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aID9byW4WOsUExHR@smile.fi.intel.com>
+In-Reply-To: <CAMknhBGOpODxmzU9J9nqGDKGzn6KKFV5Ed3okLvecKtHhNRB9A@mail.gmail.com>
 
-Hi,
 
-On Wed, Jul 23, 2025 at 06:19:11PM +0300, Andy Shevchenko wrote:
-> On Tue, Jul 22, 2025 at 04:48:45PM +0200, Marek Vasut wrote:
-> > On 7/22/25 10:55 AM, Uwe Kleine-König wrote:
-> > > On Mon, Jun 16, 2025 at 02:42:54PM +0200, Hans de Goede wrote:
-> 
-> ...
-> 
-> > > I don't have a system that triggers the problem, but there is
-> > > https://bugs.debian.org/1106411 which I guess is the same problem.
-> > 
-> > I think the debian person is on CC here already.
-> 
-> You can even Cc that bug report, messages will be added to it.
+--awo5i5GvxHVK+9Fg
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I have bit lost the overview: Was there any conclusion on the right
-patch to address this issue?
+On Wed, Oct 01, 2025 at 01:18:51PM +0200, David Lechner wrote:
+> On Wed, Oct 1, 2025 at 9:12=E2=80=AFAM Romain Gantois
+> <romain.gantois@bootlin.com> wrote:
+> >
+> > On Sunday, 28 September 2025 00:31:05 CEST Conor Dooley wrote:
+> > ...
+> > > > >
+> > > > > > +  lltc,fb-voltage-divider:
+> > > > > Why does this property have a ?linear? vendor prefix?
+> > > > > Shouldn't it be adi to match the other property and compatible?
+> > > >
+> > > > This component was originally from Linear Technology, before it was
+> > > > acquired by Analog Devices. The new properties and compatibles have=
+ the
+> > > > Analog Devices prefix, but the "fb-voltage-divider" property is alr=
+eady
+> > > > used by the LTC3676 and LTC3589 regulators, so I left the Linear
+> > > > Technology prefix for this one to avoid introducing a new property =
+just
+> > > > to specify a vendor prefix change.
+> > > >
+> > > > I don't have a strong opinion about this though.
+> > >
+> > > Do they share the same driver?
+> >
+> > They do not. However, they use it in the exact same way, and I would've
+> > liked to factor out the handling of this property in a future patch. Th=
+is
+> > would also make it easier to handle other types of feedback pin circuits
+> > and have a generic binding for "regulators using a feedback pin connect=
+ed
+> > to some kind of analog circuit".
+> >
+> > For example:
+> >
+> > Vout----+
+> >         |
+> >         |
+> >        +++
+> >        | |
+> >        | | Rtop
+> >        | |
+> >        +++
+> >         |
+> >         |
+> >  FB ----+
+> >         |
+> >      +--+--+
+> >      |  |  |
+> >      |  |  |CCS
+> >      +--v--+
+> >         |
+> >         |
+> >        -+-
+> >         -
+> >
+> > This is all speculation at this point though, so I don't mind changing =
+the
+> > property to "adi,fb-voltage-divider" and handling the different compati=
+bles
+> > when it comes to it.
+> >
+>=20
+> Could we just make it `fb-voltage-divider-ohms`? The -ohms suffix
+> makes it match the standard property-units suffix which already has
+> the uint32-array type. There are a couple of bindings that have
+> `vout-voltage-divider` without a vendor prefix, so it sounds like this
+> pattern is considered somewhat of a standard property already. But I
+> think it would be better with the -ohms suffix. For example, there is
+> already `gw,voltage-divider-ohms` as well. But there are so many
+> similar properties without the suffix, it is kind of the defacto
+> standard already, so might be better to stick with that rather than
+> making it even more different variants than there already are.
 
-For context: In Debian we got a couple of reports more to the original
-one above, https://bugs.debian.org/1102522 and
-https://bugs.debian.org/1112643 , so we defintively would be
-interested to se the issue addressed.
+Ye, by all means standardise it. I suppose that means insertion into
+regulator.yaml, which usually also means a regulator- prefix - unless
+you're eyeing something wider than that?
 
-Happy as well to help affected user to test a proposed patch if
-needed, just let me know.
+--awo5i5GvxHVK+9Fg
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Regards,
-Salvatore
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaN11lQAKCRB4tDGHoIJi
+0tYpAP9FY+HpyoPKgEW68hevYOBRqe7TxW8twZPmPJyCHwP9wwEAoZTLPs9Tbt7J
+dAt9TII1TqGXkk23tg08ARjPQaCVIQU=
+=Wv5y
+-----END PGP SIGNATURE-----
+
+--awo5i5GvxHVK+9Fg--
 

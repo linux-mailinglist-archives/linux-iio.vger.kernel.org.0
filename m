@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-24612-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24613-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21597BB00CA
-	for <lists+linux-iio@lfdr.de>; Wed, 01 Oct 2025 12:44:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 382A4BB01EC
+	for <lists+linux-iio@lfdr.de>; Wed, 01 Oct 2025 13:19:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74B4917BAFF
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Oct 2025 10:44:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E00F23A8965
+	for <lists+linux-iio@lfdr.de>; Wed,  1 Oct 2025 11:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800662C029E;
-	Wed,  1 Oct 2025 10:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453FA2C21C3;
+	Wed,  1 Oct 2025 11:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NUqiz9th"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Pz8/tY2W"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EBB2AD3E
-	for <linux-iio@vger.kernel.org>; Wed,  1 Oct 2025 10:43:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D672B2C3254
+	for <linux-iio@vger.kernel.org>; Wed,  1 Oct 2025 11:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759315442; cv=none; b=g9Soc42nUg8+3OTDe/M+Qtcy6dYfePpZDkN7OJ74poJBUpWyv3l+pTDPRjV/Ng2FupRjGrQPzzRuhQSbRJCrwi3bmwS7Ccw02dN9jRVkiyCxQ4/VB/jB7wEsqwq7M2L9zarIe9Y1TAiyuJG98N4JDK9D61pt9BPSE0fSnioLdS8=
+	t=1759317547; cv=none; b=iV5mAyuD4n8X5oF4CnUPrLcKCAmiiHaW0cIuHT4krFBISAyZKiDocuE8XfrPt9+EQgHBOa6kFDMUToSmC4LD4Yp3/n+7Q0zggXTAnO1XTW/9mV2m0xmtJai24dFukA+MU0AuZLPNKrG0GFT7/m/eDsOEnoDK/UjtgNmJ1EERF0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759315442; c=relaxed/simple;
-	bh=AgSkwJRd80VStmQzpr0QeOrgu20AtVP1C0KmVgylgnY=;
+	s=arc-20240116; t=1759317547; c=relaxed/simple;
+	bh=1HFBdPH4nuIY6H6y/ZojnkMEpQ1m1rGMA+QhLTxwZMs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GEsCYi38ZmwtiA67PkJuM921qu35OfnpmywPu3KhdIfB29UH/Wg4YXGQWVnw23gw94mWuu5c4gxdOq+KEcFKAu/eFveSDeVTHwjIUKk4vQZNKP1dAB3mD/2M6pHO6XeUez5cM1d+JUafYpCa8bHP3GKxPvAfynD2k+Qjh/xMAOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NUqiz9th; arc=none smtp.client-ip=209.85.208.173
+	 To:Cc:Content-Type; b=mGB9uX15jUOhn4SGn3vM/vk06omx2Jff/zTtBqBkrhqYJHxleCKoE4c/GW1UCdI1ORuUS8yQ+/TasZaFWIj8vugYUAfyZGOIFmqCYTEvoo73wSt3MyRwdaRgs1vmGcc9yg7kASOws7BiraItE9MwVtx2fosL8RWUwV5qE0OOl2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Pz8/tY2W; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-36a6a39752bso66245981fa.0
-        for <linux-iio@vger.kernel.org>; Wed, 01 Oct 2025 03:43:59 -0700 (PDT)
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-33ca74c62acso67483101fa.1
+        for <linux-iio@vger.kernel.org>; Wed, 01 Oct 2025 04:19:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1759315438; x=1759920238; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1759317543; x=1759922343; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2lZRH7mvLyxN+MzFG95XhIKVBdnkVtDrMCoccREIXhU=;
-        b=NUqiz9thhTn9L+LZFuSJm5i0/sR/WoX8qQz92Yq/r+y1FaCIYRoF7pz5LFVD1XwTZ4
-         NLzEW78S7zm9A6FFeOi6Qk/pwB4TvAYdL3fhf5yrzKMTJL7WLTZHsdPjkhISF6gb7Ttx
-         t37NEVY/BKOie4XiDNkTnBBcjuKMBPcffdwFd4Nipmtqm8aurh7HOjg1iYrSAs64mp37
-         rCSLBWUnp7X3QY6xKGo1946D1lcfsK3EqUdsbesB1dxPyZwQKAb0wZs15owZU1xKbj4/
-         PregIOyLdFgDCSdKGdkShD9W1QC/vHFGQ5N/xGf8ozeNwI58cspGu8fb8U+B7wLBeKWJ
-         JAhQ==
+        bh=LzALmU9leCk7b6gYpUMB7NSJN6+Tl6di9Bbt+pXEhZg=;
+        b=Pz8/tY2WHeO3OFRM/UQGLGE7Ilxule3+QElQwLZQR0zfOx3uo4jw4ogCA9oOQ1Iggp
+         GMCon4idiaqvEu2nXW71zOTkVYFCyBff+W33OovwPlR4tUYwc2X7R0GLI15lBV+r/n3E
+         8+JC23Xc1cuDdF2y8olns7eJvGjG4uyGCC03MZXvt3zULG346ic9PzTBZgwE05OEvD5o
+         tV9Ed7FYneS8cvexWhyvXGgf0Obd9bE6yvxD+Ba72dv163ktRMMUCDkUBZBp0b0sdWlY
+         1EmEr4trX53xFV5Q5hGQVib+85Q0BFBERK4Xk4LVPf/YAZGCJAjuGn/fBYbmIKJiAmVG
+         N70Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759315438; x=1759920238;
+        d=1e100.net; s=20230601; t=1759317543; x=1759922343;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2lZRH7mvLyxN+MzFG95XhIKVBdnkVtDrMCoccREIXhU=;
-        b=Qra3UWX9FLntq+KN/KPU4BspdBRn9dm/QnUIMgqfPYkW4nMIfAt1TLTFgShr1PAnpu
-         tpF/A8AXYVH5vBt/rzFoALVoA1FH+RLodbtZ2ZdKVQIYVbuqWhjrxRYmJhJdpCzqXPhy
-         Dq6Md2lmCJu14UDEdY/XlDj1PGhhRcsPfVR9+zkYf0cuW/1SYYMtWKzq/ct6HIgDTAlu
-         EnM/uQW9sMpdyDPVFlUfvLsQplHPjBNw59BOrxXHxBgKYuz2N+42h0Ae67T3aTFCUPr7
-         setQlv7wT6jjmDNowF3e9OLzgMaJdDlCo6EU9AmbKNsZPpEoAxJK7LFIWHCmm3pd8Nmn
-         H/Tg==
-X-Forwarded-Encrypted: i=1; AJvYcCXG9ZADv+vVzWM20ECcRULbLNXg/j+KmpgxcBZzR0zlL0dJZFXFuEukQdkW4rnCR8ktihAhgsd7NJA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXn5iKewHwSdBBpFIiUkg3cMjwQ9p/+HBYLbXsp55dNWramgmO
-	n6JV1v4J1C0+qMImEoQJJ8EL6qoV7tEXkCI6jQlIdc1RiaC/1sjCyvBsnViiXOPR4mKelkRAnDc
-	C0b9TcQHRmDkwl2Y/mgdK34xkEDEbSQKnMCkkPb3BOQ==
-X-Gm-Gg: ASbGncune+1+SAv82Pld4gyWBdxdhhFtdEs23mSFLTG0IpaHs1CxbcIcgj8YLjG3f2a
-	OzJ3D4jaMDhWK3SdCqkOkEEDj5Ztw+RljL1SFo1PCZ4xFcodj+ZdIn9a0E24S4piJRPufyzqwt0
-	oibnEGeSSTz2FQ3lClLfwcNGKPlNWfreMcZkJvlyGM6CQQPKA972qu3VWtMS6hxbEGMUUGFmTF1
-	yuSW+2htueMAWfw7XS1Xz8w8oOg5Qo=
-X-Google-Smtp-Source: AGHT+IGJ9OoCSt69qSz0S+IZPQ24WcgNAq7AL1kC005K8SJV8OJKe3mHbmPlw9uuhNpvC5T8Eyr0LjgcKU1Qm7+Wghs=
-X-Received: by 2002:a05:651c:1553:b0:36f:4c94:b55e with SMTP id
- 38308e7fff4ca-373a7487662mr6999571fa.39.1759315438106; Wed, 01 Oct 2025
- 03:43:58 -0700 (PDT)
+        bh=LzALmU9leCk7b6gYpUMB7NSJN6+Tl6di9Bbt+pXEhZg=;
+        b=GRl4/mYcGYa16VbSP+T8zpjNNH+4b9WJuksuwuzfTnqvZJOG/dvPb8dm0alhYSVHOk
+         +Vc6KJIgnKaAtHMkBAs/N5KUHTXZW5CizIzp8aTG4bMIsYaJBXuMohP8DLNORmNrPX+q
+         QCdRxUdzrrClYeGoM3QEI60UhnuUUjyQO988XNd90TAkI8kmCvEGlRmsc8ZuWk1msdQj
+         W3ByrBporL4/EYJIUmp5FfVwd5WnbcPQfuGLwOb2zBlyC10BxIOIfJB0lp342qD5tJ8Z
+         Eu6AhnOVfu0a3pb4twQbbU2pGArNtA7wHUhmw0Ab3kImcMNB6pF1abuVZLYEfdHBgGAC
+         cpcg==
+X-Forwarded-Encrypted: i=1; AJvYcCWBvt+aRtjYNYX5hl+0iACeBCzgyO/v6ri8ochVfYAXBjO6F38qGJzxYDUnIY7BcbrsrWrlCU6cMkA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhZ0xO0qRynbLqYz4k49BCinlgOLaOnl4AXf06KLndf4P/rUDU
+	hLNPaSFgwjChq5zE/mHl8mvT9stAcIDKp8LXu4UgYh8k5FianYzLX82+Q+IvrSyhwcxt67s9i88
+	v/1TbZ2omZfhTccKxUAfRAG5BHcHQbFHbRRxPhAlvNA==
+X-Gm-Gg: ASbGnct4sq16nXCxJmS9tkx3MMQsklDBaOjLY9SBpWtFnO+l/HSHGUadFf93rrDYa0A
+	IB0BDYtWc+HLI31cJCA00dhIb4q56ykqbZDliLDeI2e929Y3BScXZDuHBLUfaTUVSF75faBsLHT
+	QhbjvEC2cvjAHsgEvyU/hha7dn2vk08jctjz22/3hEpUp9dUM1Bd1BPpiZH8cYPtX1BVFpESeGk
+	5T4kwv1dKE4jlgnHzVJhA1h97IYOjI=
+X-Google-Smtp-Source: AGHT+IEjhWzPMlj17Uy7qd2LicirAASApXwhCe4VbKO72/os2UztLtK5uJY9uTbzBv/l7QF9CdPnWL/3cGWP9kZX9p4=
+X-Received: by 2002:a05:651c:1988:b0:373:a537:69f6 with SMTP id
+ 38308e7fff4ca-373a74c163dmr11755181fa.33.1759317542967; Wed, 01 Oct 2025
+ 04:19:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,17 +76,18 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
- <20250925-ltm8054-driver-v2-2-bb61a401a0dc@bootlin.com> <2a503edb-fe9f-4d61-92c0-c1083a028e19@baylibre.com>
- <5015441.GXAFRqVoOG@fw-rgant>
-In-Reply-To: <5015441.GXAFRqVoOG@fw-rgant>
+ <5331035.LvFx2qVVIh@fw-rgant> <20250927-spoon-yearning-c1a8df796173@spud> <5926760.DvuYhMxLoT@fw-rgant>
+In-Reply-To: <5926760.DvuYhMxLoT@fw-rgant>
 From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 1 Oct 2025 12:43:47 +0200
-X-Gm-Features: AS18NWByDMtr1hcTFcPp3qerygswAkBQ0L9YHlvelZDEmKOElWDCvIdZewkZNO0
-Message-ID: <CAMknhBHJ8Je2Tcz6yBi1g5tBswoVFXr78tKeZRrfi_9TjLdMuA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] iio: add processed write API
+Date: Wed, 1 Oct 2025 13:18:51 +0200
+X-Gm-Features: AS18NWBS8-yzFEbPE539-aBIzutpc2mebsewYlTX4Q1OfyH7iUd46IqQowJM_Kg
+Message-ID: <CAMknhBGOpODxmzU9J9nqGDKGzn6KKFV5Ed3okLvecKtHhNRB9A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] regulator: dt-bindings: Add Linear Technology
+ LTM8054 regulator
 To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+Cc: Conor Dooley <conor@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
 	Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>, 
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org, 
@@ -94,97 +95,74 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Apologies if you are receiving the same message twice. Re-sending as
-text email so that the mailing lists will pick up the reply.
-
-On Wed, Oct 1, 2025 at 9:19=E2=80=AFAM Romain Gantois
+On Wed, Oct 1, 2025 at 9:12=E2=80=AFAM Romain Gantois
 <romain.gantois@bootlin.com> wrote:
 >
-> Hello David,
->
-> On Thursday, 25 September 2025 23:10:14 CEST David Lechner wrote:
-> > On 9/25/25 7:37 AM, Romain Gantois wrote:
-> > > Add a function to allow IIO consumers to write a processed value to a
+> On Sunday, 28 September 2025 00:31:05 CEST Conor Dooley wrote:
 > ...
-> > > +static int iio_convert_processed_to_raw_unlocked(struct iio_channel
-> > > *chan,
-> > > +                                            int processed, int *raw,
-> > > +                                            unsigned int scale)
-> > > +{
-> > > +   int scale_type, scale_val, scale_val2;
-> > > +   int offset_type, offset_val, offset_val2;
-> > > +   int ret;
-> > > +
-> > > +   scale_type =3D iio_channel_read(chan, &scale_val, &scale_val2,
-> > > +                                 IIO_CHAN_INFO_SCALE);
-> > > +   if (scale_type >=3D 0) {
-> > > +           ret =3D iio_divide_by_value(raw, processed, scale_type,
-> scale_val,
-> > > scale_val2); +              if (ret < 0)
-> > > +                   return ret;
-> > > +   } else {
-> > > +           *raw =3D processed;
-> > > +   }
-> > > +
-> > > +   if (!scale)
-> > > +           return -ERANGE;
-> > > +
-> > > +   *raw =3D div_s64(*raw, scale);
-> > > +
-> > > +   offset_type =3D iio_channel_read(chan, &offset_val, &offset_val2,
-> > > +                                  IIO_CHAN_INFO_OFFSET);
-> > > +   if (offset_type >=3D 0) {
-> > > +           switch (offset_type) {
-> > > +           case IIO_VAL_INT:
-> > > +           case IIO_VAL_INT_PLUS_MICRO:
-> > > +           case IIO_VAL_INT_PLUS_NANO:
-> > > +                   break;
-> > > +           case IIO_VAL_FRACTIONAL:
-> > > +                   offset_val /=3D offset_val2;
-> > > +                   break;
-> > > +           case IIO_VAL_FRACTIONAL_LOG2:
-> > > +                   offset_val >>=3D offset_val2;
-> > > +                   break;
-> > > +           default:
-> > > +                   return -EINVAL;
-> > > +           }
-> > > +
-> > > +           *raw -=3D offset_val;
-> > > +   }
+> > > >
+> > > > > +  lltc,fb-voltage-divider:
+> > > > Why does this property have a ?linear? vendor prefix?
+> > > > Shouldn't it be adi to match the other property and compatible?
+> > >
+> > > This component was originally from Linear Technology, before it was
+> > > acquired by Analog Devices. The new properties and compatibles have t=
+he
+> > > Analog Devices prefix, but the "fb-voltage-divider" property is alrea=
+dy
+> > > used by the LTC3676 and LTC3589 regulators, so I left the Linear
+> > > Technology prefix for this one to avoid introducing a new property ju=
+st
+> > > to specify a vendor prefix change.
+> > >
+> > > I don't have a strong opinion about this though.
 > >
-> > There are some rounding biases in this function, but I'm not sure if
-> > it is worth trying to make a perfectly fair function.
+> > Do they share the same driver?
 >
-> I'm unfamiliar with the notion of rounding bias, does it mean that nested
-> calls of this function would tend to amplify rounding errors? In this cas=
-e,
-> would rounding to the nearest integer instead of whatever is being done b=
-y the
-> integer division here be a good solution?
-
-In this case, the issue is when you are taking multiple samples. When you
-look at the average of all of the samples, you will be able to see the
-bias. For example, in one of the drivers I was looking at there is an
-offset of xxxx.6. Since the IIO_VAL_INT_PLUS_MICRO case is just dropping
-any fractional part, the raw value will be on average 0.6 lsb lower that
-the requested value. This could be a problem in an application where high
-precision is required. But probably not noticeable in cases where 1 lsb is
-less than the noise level.
-
-The floor division for IIO_VAL_FRACTIONAL creates a similar bias.
-DIV_ROUND_CLOSEST can help there, but even that has a small bias because
-values of exactly 0.5 always get rounded in the same direction. That kind
-of bias is much smaller though, so easier to ignore.
-
-
+> They do not. However, they use it in the exact same way, and I would've
+> liked to factor out the handling of this property in a future patch. This
+> would also make it easier to handle other types of feedback pin circuits
+> and have a generic binding for "regulators using a feedback pin connected
+> to some kind of analog circuit".
 >
-> Maybe I'm misunderstanding what you mean, in that case please let me know=
-.
+> For example:
 >
-> Thanks,
+> Vout----+
+>         |
+>         |
+>        +++
+>        | |
+>        | | Rtop
+>        | |
+>        +++
+>         |
+>         |
+>  FB ----+
+>         |
+>      +--+--+
+>      |  |  |
+>      |  |  |CCS
+>      +--v--+
+>         |
+>         |
+>        -+-
+>         -
 >
-> --
-> Romain Gantois, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
+> This is all speculation at this point though, so I don't mind changing th=
+e
+> property to "adi,fb-voltage-divider" and handling the different compatibl=
+es
+> when it comes to it.
+>
+
+Could we just make it `fb-voltage-divider-ohms`? The -ohms suffix
+makes it match the standard property-units suffix which already has
+the uint32-array type. There are a couple of bindings that have
+`vout-voltage-divider` without a vendor prefix, so it sounds like this
+pattern is considered somewhat of a standard property already. But I
+think it would be better with the -ohms suffix. For example, there is
+already `gw,voltage-divider-ohms` as well. But there are so many
+similar properties without the suffix, it is kind of the defacto
+standard already, so might be better to stick with that rather than
+making it even more different variants than there already are.
 

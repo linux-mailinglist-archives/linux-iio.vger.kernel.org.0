@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-24681-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24682-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41C3BB57D8
-	for <lists+linux-iio@lfdr.de>; Thu, 02 Oct 2025 23:38:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F75BB57DB
+	for <lists+linux-iio@lfdr.de>; Thu, 02 Oct 2025 23:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B56819E7556
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Oct 2025 21:38:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8FE23BCEC9
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Oct 2025 21:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B55727A127;
-	Thu,  2 Oct 2025 21:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948B62737EE;
+	Thu,  2 Oct 2025 21:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CqbNY72q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AkmelcSG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C5D1B4153
-	for <linux-iio@vger.kernel.org>; Thu,  2 Oct 2025 21:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF73E3BB44
+	for <linux-iio@vger.kernel.org>; Thu,  2 Oct 2025 21:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759441084; cv=none; b=LPoD7WvQgtgwadiekrDktlAN3snPiEHH3GDWSB6bIG3kWN/5FtYRIJtQrapT6AvR83nprBhHlgUt+mKbfcGAwBo1RPEvz9rF2/kJ2EKZtl2sDw9/b2Xlw9JcKQFSQxMMB+jAd0LHrywJiefkUUUif/NH1T6xxaW+bi8JSc4mCLk=
+	t=1759441109; cv=none; b=o7x0T1SkOgQTtIzZvRyHZqa+JPIrg1MrViO5UReUGAt7LDyGtlc5qyHFvfygcNGDnPtcn4wOaXGJoFODIdrTNiN348/45CscUFrhzdnMKVSAh6dZsJG1EbFGJh9y5eqo90ubBkllOYnEzBKx75YJDczK9DmwFlqTzAuhtjftCUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759441084; c=relaxed/simple;
-	bh=Wa3MaIt2OTfDMAacePpuDpp+xPuK/PWuzyclDSFj+t0=;
+	s=arc-20240116; t=1759441109; c=relaxed/simple;
+	bh=9dF0uJ3ISA22smG2brOHKcN/I7pK9c344S34aWAoh5g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QSU3jHjBmQqzjJIoiSZ5AyUKab7+dsNBCT8BvGfWl/X+t1T3vIgvbbp/d3QyFxOiCguGdsa9fft7SKJ03rNFeBViKtHh7G47sk9liTyKORhnoOdYGuN4l6iZQYTdYKOqEv2jies2xUizm87biR73n2OV99JeRWzSjAlWdEoLAWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CqbNY72q; arc=none smtp.client-ip=209.85.215.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=reR+JwoCiYyY9h9nF2qLflDIdqiSIzgEGtkWN/Ub7sX9OsQe+9TOYrNx6GBNE5KvVn2cTKvgRN3xkiF8xuc1ejh0k6740Uk+4vVDcENuqgy4D9GvGh571k5kDPEmYlWZuTPaJ/8VKFdgRanwj5xGGEghWJg7b5yesEyr3tQtORc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AkmelcSG; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b593def09e3so1113490a12.2
-        for <linux-iio@vger.kernel.org>; Thu, 02 Oct 2025 14:38:00 -0700 (PDT)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-781001e3846so1528557b3a.2
+        for <linux-iio@vger.kernel.org>; Thu, 02 Oct 2025 14:38:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759441080; x=1760045880; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1759441107; x=1760045907; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3UYjs/DjWtPFJ9SkgiQewKjh9UT4jabvAen7EJXFzrU=;
-        b=CqbNY72qE2w3zNKipvYfu4gbH+WsSVU0jPrnZ7lPyqJ5sEUbMA+S93FfUSPW/wGrgv
-         yHd/PvzWVwexTYq+yTJCcZLyufzOK/3LpjIu3HluIhs9HVn2wLZkleBCIQXsNveaSfhK
-         QV9497y9rCsWmZMK3VBIxytH6DnHYYsMq0BHxDl9PIbRCKbuhBI5VJZAXv8BpYh3n705
-         LzgYyJp6FQWB3xCehIly9OycrMpd5U+68M0jIn8bJeEG+5HP7sgvdipBem1PLxFf97U4
-         LAqCY+mHuUQEoK7dajhok0XHX0882CogkILYiDb6gXlAhkgWeBmqQNcfYGvZv0udvi0t
-         +yCw==
+        bh=DIgw2TUDYPujfob1ItVYazOFg+arl5pUESpq99Cor8Y=;
+        b=AkmelcSGRu3932uTOYGDJEADP0HTBJOxNAfPgccn2+o6RdZ8YtVXo0CDAzlZ14Xvc2
+         XZRbfX1YLFNG48memWUdjuYGcp/m2hKt5GytLNmIE+6OWaYfNcFLNHYPNsbWCCrHkX1q
+         7criSdxCPrOUEp7L+0htUYmfrPb12WwUa9VBwMNXYCvfZDOUCaHI+PC5DTVgl4A0tap+
+         jsqTkFS+UlSVvD9QVgyoHlbVKTvKrP5u4xlqqJ+DoGjrgvRZPrkwtTfgrTjOa/WTpVv7
+         MIO2+lX9rwFJR9N1iNveYowQDWut6JvP9PUIOcxvCzkKtqEstcQrKk8PXjDm0/Jhokrc
+         2sxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759441080; x=1760045880;
+        d=1e100.net; s=20230601; t=1759441107; x=1760045907;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3UYjs/DjWtPFJ9SkgiQewKjh9UT4jabvAen7EJXFzrU=;
-        b=TE2NnMWxTZ9+Aj3iR+klalZhFUU5wkwh2zbe4IRpQygmOKZ+IXsed3UfneJPb3PzAE
-         iTPDViOyj53OwRfoXVKOd/QkSzgQkMKT1EFqhen5Fx0nQHYtJSvtqUGbltU74AU+8NRO
-         M3jIYL7TFGZWUlzKvsWaEk3RAt9x5PjBWn8kgmTeFsbX3g49JUHJiNDCPiyOoBImOVFH
-         OrcpKlJhBp5GRDETaCsWuQXL6JJ3ULv+mZcgwNNq4lSglPGxTbsySIRWkuNJICsLvkBq
-         iAV/LyEGlWIyqY8nEfZwBrZ8TFlSxjZn3Uq0If/q6/8fwUmX0+8TEVAHkiRmEAd0QV+r
-         8BgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKLbI7q4nsattX7WrePVGpy+gkbLzBUYFspfKo1yM9I1SNDU1LckwpMz0gRAbE+WL+2DIfnEiPteo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWZdU9oG5HyDj9nhYGzSoLpZHC59gys7hIQh3+35wLH+BO2qCb
-	HbOgrAhmYY/9348Ue0KqKTwJzNzYPcF21xRU2e/58B1zLLN+RyVk9znw
-X-Gm-Gg: ASbGnctduyOqgVn7mnjTEM3x+j02+jLvJRq8HMNcaJ1FJTk2vs+KcMC6VUQClW5M+CF
-	FQpa1VA9p/szqN5tP7FrH4REYMEVlsnbcgwo1zl7TZhr1C82iyWnzYsVnggOQhcjYW0W0Uov2Hj
-	AYyMPjVhA5TqltpDp7HV9RkpFN82up++YV0GsHwY7CAzRxS3gDCkjK7ZNxuvKx6C6A8vfrDjaEN
-	BnaF0acXNQU01GXdk2nEl+K9wJAi5/2zs1TmaxIlNpUKDiHL/6DsiyQ57AtttZVwNgjRrp1HmMT
-	4icC2z1dLf9lprxbVDaSE9VwJC7h3t4rCY37nh7mIqgKMOMlLEwbgehzd/gD1ECbJXAkaUaqjl0
-	BPQMg+Hw0ovxNk4xJ8k6ZIUuUYWZVHmC4KVqswtSf9V4vibqZdIWMh/tSC/Q=
-X-Google-Smtp-Source: AGHT+IGfpeSt72PLiRG8302u7jW0eS5cM/tPuBTjoCfYGBR7WBrL3m9GghHnqqRwzstji5FK0/L81g==
-X-Received: by 2002:a17:903:2ad0:b0:264:70e9:dcb1 with SMTP id d9443c01a7336-28e9a6fdf1bmr8314995ad.56.1759441080436;
-        Thu, 02 Oct 2025 14:38:00 -0700 (PDT)
+        bh=DIgw2TUDYPujfob1ItVYazOFg+arl5pUESpq99Cor8Y=;
+        b=NJ25dosLv4H8/tyUoUNygl94drPqagBKjNugfdZ3PyaUdMOxhmkn3oOlj0dl13h4De
+         /At+7guvWTJTiKBKUlN3d/xqNddRLaUNd97Cqf/UgZ44eyEwLM46hdKBJRD+SELni6FP
+         YS+Z9ONu/hp4I9G7FzUyNHWTISx8mm/2zwXn/zfwpT93ZSkDImJOF4f/FB8gcIJiezE9
+         /am/RFxtmC+6t7uW0xar6A8x2C4634OUD/XaEWgLWcZ8WmFQNPM9VeJH9S4BDrJDNYUf
+         u50ItZAfZ2zBaAMkwRsGXYIqBpgadYne1QSmXzVjmDDh5ovz+zrXXSkp/HBV5UlllMGv
+         qTWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvQIYAnSnLH3ooSpvY0r8VWJDEq7IcK3xoVMWGK0pfAwusXFhFphflRn0yYU7DweosZZjI2h+gF8U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzm4IOkhBaXFAh4l4n5chOuvTDdC6nK9jj4dQB232zxQysgP3xW
+	HgZVJI4ghxMTxm15/4CC5JUobh2Ho6oPLNIZBzNumK8K/CCVfFJkAZEk
+X-Gm-Gg: ASbGnct3DHunHzOSlXr5/FV7UwBaNHUbwv/yQIV2ScA8fPOPG6Cn4+xMqhsMbslALPs
+	c/JjZxri2QW9cXRwtSvpv1j4xDzzjywBw/+u63b0O+x0htRQHkeT9cpz6Msz2PT6/aJqNuuRVj4
+	Iu0cSRTECol5EW8QjFqihMVd58eAWUSEmxRdRhK1abAtfAbzb3UCNC8GJY7ghWS3ISsFLeRH677
+	QVj32HyXcinhGj2hVmWyTBfbc2UmjUtcwybbcbTbKIXiVR5A00C7rBujURvyw0BgRuu90VUNUEw
+	AJuIinONf/9HxS6GtK5ba+zD85NZGUQrbYlvyrRnf/VfxY8sfWFfVnM4MZN318EPm6MT3hIsv9y
+	rXxgaCrk8Z61VdXcyrEth4TuxhXOo4xvmz4a19x56slpW2QUa3PHbci7R+7U=
+X-Google-Smtp-Source: AGHT+IHKI+feEMtSNCRgXeWWSvyIHg/eMcVz9KANAAoF8cg8/wBIuazCOx9v2nwjg3cKvHoW9MEgFg==
+X-Received: by 2002:a05:6a20:12c9:b0:263:1c48:912f with SMTP id adf61e73a8af0-32b61dfb34emr1222197637.12.1759441107306;
+        Thu, 02 Oct 2025 14:38:27 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d122d96sm30394595ad.32.2025.10.02.14.37.59
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78b02074549sm3020231b3a.76.2025.10.02.14.38.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 14:37:59 -0700 (PDT)
+        Thu, 02 Oct 2025 14:38:26 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 2 Oct 2025 14:37:57 -0700
+Date: Thu, 2 Oct 2025 14:38:26 -0700
 From: Guenter Roeck <linux@roeck-us.net>
 To: Eddie James <eajames@linux.ibm.com>
 Cc: linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
@@ -83,11 +83,11 @@ Cc: linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
 	conor+dt@kernel.org, andrew@codeconstruct.com.au, joel@jms.id.au,
 	chanh@os.amperecomputing.com, jic23@kernel.org,
 	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org
-Subject: Re: [PATCH v7 RESEND 4/7] dt-bindings: hwmon: Move max31785
- compatibles to max31790 document
-Message-ID: <4b617318-f76e-47b0-9744-6a79803a149c@roeck-us.net>
+Subject: Re: [PATCH v7 RESEND 5/7] dt-bindings: hwmon: max31790: Use
+ addressed fan nodes
+Message-ID: <c7c23305-d53a-40e1-a783-9ea8598c96d0@roeck-us.net>
 References: <20251001144441.310950-1-eajames@linux.ibm.com>
- <20251001144441.310950-5-eajames@linux.ibm.com>
+ <20251001144441.310950-6-eajames@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -96,16 +96,17 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251001144441.310950-5-eajames@linux.ibm.com>
+In-Reply-To: <20251001144441.310950-6-eajames@linux.ibm.com>
 
-On Wed, Oct 01, 2025 at 09:44:38AM -0500, Eddie James wrote:
-> The binding for the max31785 is the same as the max31790, so just add
-> some compatible strings for the max31785 chip.
+On Wed, Oct 01, 2025 at 09:44:39AM -0500, Eddie James wrote:
+> Since fan properties can include reg, the fan controller should be
+> able to specify address-cells and size-cells properties and use
+> an addressed fan child node.
 > 
 > Signed-off-by: Eddie James <eajames@linux.ibm.com>
 > Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-Applied to hwmon-next.
+Applied.
 
 Thanks,
 Guenter

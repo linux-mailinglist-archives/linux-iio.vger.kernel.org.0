@@ -1,139 +1,124 @@
-Return-Path: <linux-iio+bounces-24673-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24674-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BEDBB4EA3
-	for <lists+linux-iio@lfdr.de>; Thu, 02 Oct 2025 20:42:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC74BB4F40
+	for <lists+linux-iio@lfdr.de>; Thu, 02 Oct 2025 21:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE96B422DB7
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Oct 2025 18:42:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FEFF19E2F16
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Oct 2025 19:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0EB280305;
-	Thu,  2 Oct 2025 18:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9F320C037;
+	Thu,  2 Oct 2025 19:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P+thbIqr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fHS37qy1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5510327B33E
-	for <linux-iio@vger.kernel.org>; Thu,  2 Oct 2025 18:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399B934BA40
+	for <linux-iio@vger.kernel.org>; Thu,  2 Oct 2025 19:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759430543; cv=none; b=uPQzsNozfbVm5WEVge9efXX52B2vMTDLX3eZCjYkJutBIIBrCESfGPOfFDB4YQArQavzT6IongEDAfjhaePJ9JX1DGXzEIsQPgb9c23oU6VeiT3rWrXsKjgsR9W+18ji9WVZLKUKa/Rp7kzYEXUbJAXCqlIXmBJP7zT96WiIpQY=
+	t=1759431627; cv=none; b=Z6aCFlm14/EDWSPlAz7Dq7Pl7s6nAYx2Fe3IbX1UUGnPgbr6Pm7WH0DyF4rnHiuzj6E7eLQVfOXw4sknO3WR4z47TaLz95A+IEDeS1osD66xUUYdfho3iHg73dWvuiaGdu13HXjGeSLnfWZ5JxzvT8okCpOteGbX5TrrDnCeuVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759430543; c=relaxed/simple;
-	bh=HhCHFa0EFtA8AuRvrj8xtXesClEos9CJZT5NVSJ5C8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kCf6CUhbEZWoZOGf/oN1H9WhijObfvWfmIZ/VBcdQz8eYh+2bjVUhoDjZKcXxVsEUbnaxT9EKu1N7ZCubuVi5bT1gqBbT3k+NIajEn6KQgOstkIbYvJs/zz3Q0/3lKuTuEnIqiWGF238UurNPyyn89tY4rIhrJB73CRX5pB8jyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P+thbIqr; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1759431627; c=relaxed/simple;
+	bh=UCBfoH033dkExzACQj33bCiDcdj2i6mdytlYwbQ2tO8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RwcEHPUngcWkw2WsQ5Zg30rWEip6FqEjTO/QdTPSmTynNJustSLXeliFHb/siEl+BDVoJNkJCBRlIg+ZLEbbAQRghu6NxSisvgsp2NRInBm2RY5ABdQv60p8mAkT8vweeYg3l1/3Xi7h60pUa0H8Pv6Ff2XdHcFHutUDTSJyr14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fHS37qy1; arc=none smtp.client-ip=209.85.208.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7835321bc98so1487214b3a.2
-        for <linux-iio@vger.kernel.org>; Thu, 02 Oct 2025 11:42:21 -0700 (PDT)
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-36527ac0750so13096771fa.3
+        for <linux-iio@vger.kernel.org>; Thu, 02 Oct 2025 12:00:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759430541; x=1760035341; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1759431624; x=1760036424; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7qPjlv1lJ8MR6fVmoY/AaU1ujSOHO/r4FwpJCh/Gigc=;
-        b=P+thbIqr9MS/sGnKeKRgJJgjqpy75emZGNeRU97cH/xtMH55/m9veurh/SfDTjnlEp
-         mUD25J6wBpPw1hc4AA/fqD9SO8s9i/uEq5bB+2zJrNgO40DPdT6zRgpax0SP9fyTKEND
-         q/qiuh/5BsuvsXuLkLhYen3tODNKaQapsCu6RSSTq2PQRGYAC4UaQ/Sv2cTOT2XJQGt9
-         ifGks+HxLUHy2oJetbyPpTsBtyQY1N3011am5vO+3MdwJkyew/JjgqemEwqR3d6B8tCD
-         jf+F0Ck+IrYEklYTlUCSTot+HqvELTu6TpyYVc3ZMAx6PKd+en/UUk2RcPwkkc2VZvyB
-         o6cg==
+        bh=UCBfoH033dkExzACQj33bCiDcdj2i6mdytlYwbQ2tO8=;
+        b=fHS37qy1xu9GPt2QWUzjcHCw8QRL7y0iKHuis69FAxoMJwDWrT5OjuLY0bqAkHgzaJ
+         /CVUr28sHNDI5l1CxK3LRTiRCqkO2DgBfblCKpzZ5H543HPcNH4LZnpexMHaD+1QYvCY
+         nnpNnY0of3PGpeh1bEjotzbq4F48uGTdmOzKOvBNaFMxNW7cBrh/iQK9LH0bPqjnl9bM
+         gSFTvY3Fgn1dgGxBN+veY1fJtqr3nHMy+s4aa6obpXCLrhlN3gDwcHpIezm5gcHyvjUn
+         Na8DheWVBeC3/2svy8PVIWwuu20sPAmdvfHdwbinmTlTcYhfSOYOFwthrajQ1hgdlShI
+         aObQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759430541; x=1760035341;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1759431624; x=1760036424;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7qPjlv1lJ8MR6fVmoY/AaU1ujSOHO/r4FwpJCh/Gigc=;
-        b=Z331oayDxY1acaFqzVOl2gsojW+u3xmrcH5vxUYvdyk/vcDx5gKeWmSSMQ6jbzbt9y
-         MKEQVhRo7KQBinDLVvpLWInYve1e3l8/SX5z/UyPj6OMYjz6D9kIGK9gulVZG3MZKaMd
-         OAnHTuqJJ54FTmKP35hmDylGQ9qOfT8SYE9ZPj0k00iyESpqdL429d5UMZR2/dB0MkI1
-         qiu1JiqgbO6F7V0BiQcPibGrMIJGDqF3vzRV82pNcmn18tkma6u+HC+cfEo3mSyXgXM4
-         x4y+GKAPntEAX0PspZkkJlFMPqLRjIMwahEugbuhFd/X4YHa41S8/q+DLSVrXI4PpzYG
-         RGsg==
-X-Forwarded-Encrypted: i=1; AJvYcCW34NIvKzXxFmXU5M67LlloAFdIoyc+lxInXVaNO2SZoZYtvDSKstmliNndn+F3FGWVjPHDCvVlhBk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvgUM2VtE4NJQ5GUDX1+9WuKfFGb2DVg29ghirDlKyqa9e/2FA
-	9+CZh/XlxoOx+ygnOHhdcLA0dd6UVbNLxV0BOWju7gCPj6HBhWH+7du7
-X-Gm-Gg: ASbGncvXvcsC6RgOkJg6Z5X+Jl00hGlzk/o37ZLLaldM4fs4h/GIyLoEdmMhtBfMGip
-	a8YMyKM6uhxQBXF7pS/ISfm3kpk+WSZ4DtSlfghnUoFlh6YxLyuo7VNdEz3S/bNMlSg40YLgpa3
-	6T1ZlZii2beW5URMUWZhdmsjT8/UXoBqTZkSVQk62Z86qU1TLDcdjcHxkBH45eIZXthBNTaholV
-	DBiYQS7Uh60h5mNM5r5Cy2wGEY1KVXq3g1msHNrF6zF9i3vrZF6nQieUtMuaYSE+P/MTUuOGp3S
-	Wyu2SGZ2noQIoLnzVd/39/cWKptKo849PebDqe2k/esL7xy3d4qP2EN3q0ohdBpDReEplbPA+QP
-	Tl8EgVYNr4dLkLzbVVee+LKRpRnmPmDFdbmc+pa96Zktqf6UtEU7gsW+Y
-X-Google-Smtp-Source: AGHT+IE158JkUSIaEaS3oXYZ4vFl7nu8N6VKeXlcYX2Ca7DdlwgbiaYwME8zie6eNvnBRdAOll7WXQ==
-X-Received: by 2002:a05:6a21:3396:b0:2f6:9592:9065 with SMTP id adf61e73a8af0-32b6209567cmr471844637.30.1759430540647;
-        Thu, 02 Oct 2025 11:42:20 -0700 (PDT)
-Received: from akshayaj-lenovo.. ([223.233.78.22])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b62ce55205csm162917a12.18.2025.10.02.11.42.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 11:42:20 -0700 (PDT)
-From: Akshay Jindal <akshayaj.lkd@gmail.com>
-To: dan@dlrobertson.com,
-	jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org
-Cc: Akshay Jindal <akshayaj.lkd@gmail.com>,
-	shuah@kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 5/5] iio: accel: bma400: Add detail to comments in GEN INTR configuration
-Date: Fri,  3 Oct 2025 00:11:06 +0530
-Message-ID: <20251002184120.495193-6-akshayaj.lkd@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251002184120.495193-1-akshayaj.lkd@gmail.com>
-References: <20251002184120.495193-1-akshayaj.lkd@gmail.com>
+        bh=UCBfoH033dkExzACQj33bCiDcdj2i6mdytlYwbQ2tO8=;
+        b=a/iqOOVUDKdrUVfyY3TzkTtmzElrG1Ll0PLal3UAM3mqSfqaSwq9d6Jgivei5gEjh+
+         WYPdxHT5wi0wHX0aexzX3os84tt0zcNqiM7XoLZo/Nkqeh6ob33TQ34wKHspDv8XLIxG
+         /1IMxF7c/ygQEZDNQvjExYSYg3tbxra909yoVJeJ480pNj85Bps8369CNms33KL/QYN/
+         ahH50bmFcByOi3XUoJBnEcEFCj9pKDDC+pJ/NBI/wtBK6I1vRJSlmTH0AnrW4ScqN5Ip
+         JCbz1LrbgsblhKfhzl0ejoEH5fmRPfsaK+OVEoCtWHIGGFmXCTD+FP+C/ObIquYQC1US
+         PFJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpULrbM0dpHZuJIUqa8De+blHkDGu5nUb4jS/f8en05VBHteKCydWI1hQmkPX+LhvCbnt8RfRV69k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+XnaVCbCH9GGR28PrHvUQMq9WtBI+dWA+j/0+zunlz18RPGvu
+	zmDjVH1sHZbePrWZ5eEjxOd8nJOUglWxhDRGcSeeTmX9vU9Fub6PgWbMsNMn5IEjw5iGbMH9bjb
+	OzbZAOUwridmLBr0SBcoztjRsoscD0C+eOw==
+X-Gm-Gg: ASbGncsCPNVj2Obo03B8HA+/hXEzF90tD/2jEuLq5MzHyjkY4/gHq3HD7YvCVn7FJwZ
+	qx3XqzB6a2Py7pcyyKWwldPlvuZuBqabYK/HwMDqt9YMZRSLJza9pvqW05RlNVmZtZKN4xIjtEh
+	Q96sewDe2/RErjWsLHYBYxnHEfGBieL4j4pWNe4wTw5imnwYDKwpWdbh/I+9+ebBsvqQ/GvB9ZM
+	Uc5/zoJGyPO1IG+nCBKRtUTqas/QwI=
+X-Google-Smtp-Source: AGHT+IEFy3spR+Xmh0KAYNSf79zP8xGVDJIcPWOBgSoq7g0trRMmfKJ4pLF1+fnRfVG2Q7DM3gCOItzEvPFdIfJTjA0=
+X-Received: by 2002:a2e:b887:0:b0:372:9ae0:ff11 with SMTP id
+ 38308e7fff4ca-374c38be094mr619931fa.41.1759431624066; Thu, 02 Oct 2025
+ 12:00:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250925170942.259314-1-akshayaj.lkd@gmail.com> <20250928104420.72e1978a@jic23-huawei>
+In-Reply-To: <20250928104420.72e1978a@jic23-huawei>
+From: Akshay Jindal <akshayaj.lkd@gmail.com>
+Date: Fri, 3 Oct 2025 00:30:12 +0530
+X-Gm-Features: AS18NWCli2B5kkf-OWtioaz1FA_F3BJvy9qr6R_0vAdyjeB5ABfqYwyGa-zrFeY
+Message-ID: <CAE3SzaSAowNnKKeitkEh7s0ZkZtTLwmth9g6=9wSh+HSgUFvyg@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: accel: bma400: Refactor generic interrupt configuration
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: dan@dlrobertson.com, dlechner@baylibre.com, nuno.sa@analog.com, 
+	andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Append additional information to existing comments in the generic
-interrupt configuration code to provide more context.
+On Sun, Sep 28, 2025 at 3:14=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> Hi Akshay,
+> I appreciate I replied probably after you sent this, but the request
+> to split the renames out as a precursor that Nuno made is still valid.
+> They add noise to the patch and make it harder to review.
+>
+> In general I'd like to see this broken into several steps/patches.
+>
+> I've mentioned some things to break out inline but it'll be something lik=
+e
+> * Field renames.
+> * Documentation and explicit field definitions for initial values.
+> * activity_event_en() rename
+> * Change in how register addresses are obtained.
+> * White space changes if you want to make them.
+> Ordering is largely up to you to figure out.
+>
+> So I think at least 4 separate patches doing much smaller things.
+> That should make it much easier to see what is going on in each.
+>
+> Various specific comments inline.
 
-Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
----
- drivers/iio/accel/bma400_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Hi Jonathan,
+Thank you for your valuable feedback on the patch.
+Have floated a v3. As you suggested above, it is a patch series consisting
+of 5 logically separable changes. Also addressed your comments mentioned
+inline.
 
-diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-index 41e95291b36b..c42cdf0a1645 100644
---- a/drivers/iio/accel/bma400_core.c
-+++ b/drivers/iio/accel/bma400_core.c
-@@ -1208,7 +1208,10 @@ static int bma400_generic_event_en(struct bma400_data *data,
- 	detect_criterion = bma400_genintr->detect_mode;
- 	intrmask = bma400_genintr->intrmask;
- 
--	/* Enabling all axis for interrupt evaluation */
-+	/*
-+	 * Enabling all axis for interrupt evaluation
-+	 * Acc_filt2 is recommended as data source in datasheet (Section 4.7)
-+	 */
- 	ret = regmap_write(data->regmap, BMA400_GENINT_CONFIG_REG(genintr, 0),
- 			   BMA400_GENINT_CONFIG0_X_EN_MASK |
- 			   BMA400_GENINT_CONFIG0_Y_EN_MASK |
-@@ -1226,7 +1229,10 @@ static int bma400_generic_event_en(struct bma400_data *data,
- 	if (ret)
- 		return ret;
- 
--	/* Initial value to avoid interrupts while enabling*/
-+	/*
-+	 * Initial value to avoid interrupts while enabling
-+	 * Value is in units of 8mg/lsb, i.e. effective val is val * 8mg/lsb
-+	 */
- 	ret = regmap_write(data->regmap, BMA400_GENINT_CONFIG_REG(genintr, 2), 0x0A);
- 	if (ret)
- 		return ret;
--- 
-2.43.0
-
+Thanks,
+Akshay.
 

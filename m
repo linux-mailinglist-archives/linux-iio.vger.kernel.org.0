@@ -1,173 +1,198 @@
-Return-Path: <linux-iio+bounces-24641-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24642-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C486BB1851
-	for <lists+linux-iio@lfdr.de>; Wed, 01 Oct 2025 20:40:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74269BB21D4
+	for <lists+linux-iio@lfdr.de>; Thu, 02 Oct 2025 02:14:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D3233B327E
-	for <lists+linux-iio@lfdr.de>; Wed,  1 Oct 2025 18:40:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2707517C4EE
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Oct 2025 00:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547A32D5A01;
-	Wed,  1 Oct 2025 18:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F5D4C92;
+	Thu,  2 Oct 2025 00:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKaR9bBz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eKVf8hHR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A235253F03;
-	Wed,  1 Oct 2025 18:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC1234BA2B;
+	Thu,  2 Oct 2025 00:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759344027; cv=none; b=QnCQDNEvMplZOVsYUaG0AFHHZiX9LC5FMyOKdg+cltpOGEqZQbAxnKA1GqmhZdTCpEAsJAGVIRTG8vgmlGMOG6kx+GeMM2huEtmwRprpjDOSx6qj5D4Glfh4atjoAJjZOnIjsCnahad2IhxY8agrAGLz48yoN3UfjBrs9cONgII=
+	t=1759364048; cv=none; b=ZcUrQVuQAXcIyjMlk4spNLpsRiqujBUN2hHzGfXn423d5/OyI0Y7jRZNNjiGcsm3Prx7Ub7jNazUOI7TdS+1QdKOOW2LzzBl5v18li74q5BTEDQC65e0rWx3ciXzl/XZSBrOW428jmBZGqY0p94yEc8cweVIVhuYNIP28tQJCuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759344027; c=relaxed/simple;
-	bh=Zvia04J9o7jWgxHG1OQx00r4MlbA4yAGZGqEcbUw7mE=;
+	s=arc-20240116; t=1759364048; c=relaxed/simple;
+	bh=vgWIWdCzpsu1OacLiuXWyM5m8s3gHqWeC+dd/lMOdy0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HqynXcZE4C0WqWpmrxzPzC+cg40hQGMmHA+/T17IX3uBmA+Ihw2DobruI2OA3V6gPadQIK3c6nyO2FKc/zk9z81Y3Tl0PGSVAyatQZT+Xx40jvF9j67PmqPVUqn0VSHNbjUH6Qw0Dh32I3kCWMFU5vJI2Us5whV5tJfLwbeO124=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKaR9bBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFAAC4CEF1;
-	Wed,  1 Oct 2025 18:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759344026;
-	bh=Zvia04J9o7jWgxHG1OQx00r4MlbA4yAGZGqEcbUw7mE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PKaR9bBzMerwiLC0K1jOIDU1nypit4mR2Jiso5nk7bcAlUfRJoZvfUKC3yqyW8ZS+
-	 HiSFGR2A2SXiohlwbSuAeuuquzVXBhBVxl77AXt+UN4bsJuVL1dCXs6cmUE2n2txBH
-	 XwZvTORr+66vmwprYD2lmzYT1x/xRMArAHzXj7gaEHUH49XCCZCWdHtXUTCrH1RjmP
-	 VmedGQiJXbPVCnPOLVbuU/QLKAQX1IgJjZE2bEymJVzHTk7h5xRIOOA8uGW6jrlq5W
-	 F8XAaWpMgA63Ni8iKBTheBIv6AsNACVxf67w2PPIfkaekH6xFhc3cSmxTvBck7PeZR
-	 pqUg6ial7WtcQ==
-Date: Wed, 1 Oct 2025 19:40:21 +0100
-From: Conor Dooley <conor@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Romain Gantois <romain.gantois@bootlin.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] regulator: dt-bindings: Add Linear Technology
- LTM8054 regulator
-Message-ID: <20251001-glacial-synthetic-6faa84d6d047@spud>
-References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
- <5331035.LvFx2qVVIh@fw-rgant>
- <20250927-spoon-yearning-c1a8df796173@spud>
- <5926760.DvuYhMxLoT@fw-rgant>
- <CAMknhBGOpODxmzU9J9nqGDKGzn6KKFV5Ed3okLvecKtHhNRB9A@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=X0MTzfi5i3g08bXmhMPAt+zbRvM2EycJoQv0IFrdXBk1CNUVbsgfmSa4wP04j4kDmJ7ftalakLha0nbIaa2+lxbe4N8IJe0+DRoLMLm8j4KMZQ+QDu61hGAi/+TEweS84G2QibZDvAmzsiHb13LhzNpv9x/dEYTpYkJaSnm/r38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eKVf8hHR; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759364046; x=1790900046;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vgWIWdCzpsu1OacLiuXWyM5m8s3gHqWeC+dd/lMOdy0=;
+  b=eKVf8hHRYbQbl2zCElGSncRCfO83PMMg9b9TiFWIzj/zSTJADz6JDIXp
+   ZTZ3qyB4JywU7y5iUv5OzLwIp5esFiUcQl5oiGNExuUkKom8uhGWHLtWR
+   hKE99bFHDZAznAEndbXUBkARe9waGTob2fsP9ro7yuAlCfzxIY9HFN1b1
+   RqBlkXYvsMl39nqnM+5/cy4xCsbOS7GnmiKsfPluhv1NjYFwqzoapVB+M
+   ksZoHoKqaC/DizE8p0DMo8bXh12bmpIu5P1GSpKw1ETUNCtG/Li98jhhC
+   L3JYf+GBcpjDjNFfTETMMJ/aCetxmemDV9sdqR6nOQJEDgAJXpCV06J/e
+   A==;
+X-CSE-ConnectionGUID: o7HeK5v3QYqt41TBuWE+EQ==
+X-CSE-MsgGUID: XPYR+QHdSU+XRYyb7/17KQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="60863845"
+X-IronPort-AV: E=Sophos;i="6.18,308,1751266800"; 
+   d="scan'208";a="60863845"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 17:14:06 -0700
+X-CSE-ConnectionGUID: 43wHW9ffRLWI24eD0r22Zg==
+X-CSE-MsgGUID: N40iFHvQQp+sfTGZ1Njipw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,308,1751266800"; 
+   d="scan'208";a="178867208"
+Received: from lkp-server01.sh.intel.com (HELO 2f2a1232a4e4) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 01 Oct 2025 17:14:03 -0700
+Received: from kbuild by 2f2a1232a4e4 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v46xM-0003TT-2L;
+	Thu, 02 Oct 2025 00:14:00 +0000
+Date: Thu, 2 Oct 2025 08:13:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: victor.duicu@microchip.com, jic23@kernel.org, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, marius.cristea@microchip.com,
+	victor.duicu@microchip.com, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 2/2] iio: temperature: add support for MCP998X
+Message-ID: <202510020803.3pQv1jeZ-lkp@intel.com>
+References: <20250930133131.13797-3-victor.duicu@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="awo5i5GvxHVK+9Fg"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMknhBGOpODxmzU9J9nqGDKGzn6KKFV5Ed3okLvecKtHhNRB9A@mail.gmail.com>
+In-Reply-To: <20250930133131.13797-3-victor.duicu@microchip.com>
+
+Hi,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on 561285d048053fec8a3d6d1e3ddc60df11c393a0]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/victor-duicu-microchip-com/dt-bindings-iio-temperature-add-support-for-MCP998X/20250930-213443
+base:   561285d048053fec8a3d6d1e3ddc60df11c393a0
+patch link:    https://lore.kernel.org/r/20250930133131.13797-3-victor.duicu%40microchip.com
+patch subject: [PATCH v6 2/2] iio: temperature: add support for MCP998X
+config: i386-randconfig-013-20251002 (https://download.01.org/0day-ci/archive/20251002/202510020803.3pQv1jeZ-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.4.0-5) 12.4.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251002/202510020803.3pQv1jeZ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510020803.3pQv1jeZ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/iio/temperature/mcp9982.c: In function 'mcp9982_read_raw':
+>> drivers/iio/temperature/mcp9982.c:467:24: error: implicit declaration of function 'get_unaligned_be16' [-Werror=implicit-function-declaration]
+     467 |                 *val = get_unaligned_be16(bulk_read + 1);
+         |                        ^~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
 
---awo5i5GvxHVK+9Fg
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+vim +/get_unaligned_be16 +467 drivers/iio/temperature/mcp9982.c
 
-On Wed, Oct 01, 2025 at 01:18:51PM +0200, David Lechner wrote:
-> On Wed, Oct 1, 2025 at 9:12=E2=80=AFAM Romain Gantois
-> <romain.gantois@bootlin.com> wrote:
-> >
-> > On Sunday, 28 September 2025 00:31:05 CEST Conor Dooley wrote:
-> > ...
-> > > > >
-> > > > > > +  lltc,fb-voltage-divider:
-> > > > > Why does this property have a ?linear? vendor prefix?
-> > > > > Shouldn't it be adi to match the other property and compatible?
-> > > >
-> > > > This component was originally from Linear Technology, before it was
-> > > > acquired by Analog Devices. The new properties and compatibles have=
- the
-> > > > Analog Devices prefix, but the "fb-voltage-divider" property is alr=
-eady
-> > > > used by the LTC3676 and LTC3589 regulators, so I left the Linear
-> > > > Technology prefix for this one to avoid introducing a new property =
-just
-> > > > to specify a vendor prefix change.
-> > > >
-> > > > I don't have a strong opinion about this though.
-> > >
-> > > Do they share the same driver?
-> >
-> > They do not. However, they use it in the exact same way, and I would've
-> > liked to factor out the handling of this property in a future patch. Th=
-is
-> > would also make it easier to handle other types of feedback pin circuits
-> > and have a generic binding for "regulators using a feedback pin connect=
-ed
-> > to some kind of analog circuit".
-> >
-> > For example:
-> >
-> > Vout----+
-> >         |
-> >         |
-> >        +++
-> >        | |
-> >        | | Rtop
-> >        | |
-> >        +++
-> >         |
-> >         |
-> >  FB ----+
-> >         |
-> >      +--+--+
-> >      |  |  |
-> >      |  |  |CCS
-> >      +--v--+
-> >         |
-> >         |
-> >        -+-
-> >         -
-> >
-> > This is all speculation at this point though, so I don't mind changing =
-the
-> > property to "adi,fb-voltage-divider" and handling the different compati=
-bles
-> > when it comes to it.
-> >
->=20
-> Could we just make it `fb-voltage-divider-ohms`? The -ohms suffix
-> makes it match the standard property-units suffix which already has
-> the uint32-array type. There are a couple of bindings that have
-> `vout-voltage-divider` without a vendor prefix, so it sounds like this
-> pattern is considered somewhat of a standard property already. But I
-> think it would be better with the -ohms suffix. For example, there is
-> already `gw,voltage-divider-ohms` as well. But there are so many
-> similar properties without the suffix, it is kind of the defacto
-> standard already, so might be better to stick with that rather than
-> making it even more different variants than there already are.
+   416	
+   417	static int mcp9982_read_raw(struct iio_dev *indio_dev,
+   418				    struct iio_chan_spec const *chan, int *val,
+   419				    int *val2, long mask)
+   420	{
+   421		unsigned int tmp_reg, reg_status;
+   422		struct mcp9982_priv *priv = iio_priv(indio_dev);
+   423		unsigned long *src;
+   424		int ret;
+   425		u8 bulk_read[3];
+   426	
+   427		if (priv->run_state) {
+   428			/*
+   429			 * When working in Run mode, after modifying a parameter (like sampling
+   430			 * frequency) we have to wait a delay before reading the new values.
+   431			 * We can't determine when the conversion is done based on the BUSY bit.
+   432			 */
+   433			if (priv->wait_before_read) {
+   434				if (!time_after(jiffies, priv->time_limit))
+   435					mdelay(jiffies_to_msecs(priv->time_limit - jiffies));
+   436				priv->wait_before_read = false;
+   437			}
+   438		} else {
+   439			ret = regmap_write(priv->regmap, MCP9982_ONE_SHOT_ADDR, 1);
+   440			if (ret)
+   441				return ret;
+   442			/*
+   443			 * In Standby state after writing in OneShot register wait for
+   444			 * the start of conversion and then poll the BUSY bit.
+   445			 */
+   446			mdelay(125);
+   447			ret = regmap_read_poll_timeout(priv->regmap, MCP9982_STATUS_ADDR,
+   448						       reg_status, !(reg_status & MCP9982_STATUS_BUSY),
+   449						       mcp9982_delay_ms[priv->sampl_idx] * USEC_PER_MSEC,
+   450						       0);
+   451			if (ret)
+   452				return ret;
+   453		}
+   454		guard(mutex)(&priv->lock);
+   455	
+   456		switch (mask) {
+   457		case IIO_CHAN_INFO_RAW:
+   458			/*
+   459			 * The Block Read Protocol first returns the number of user readable
+   460			 * bytes, held in bulk_read[0], followed by the data.
+   461			 */
+   462			ret = regmap_bulk_read(priv->regmap, MCP9982_TEMP_MEM_BLOCK_ADDR(chan->channel),
+   463					       &bulk_read, sizeof(bulk_read));
+   464			if (ret)
+   465				return ret;
+   466	
+ > 467			*val = get_unaligned_be16(bulk_read + 1);
+   468	
+   469			return IIO_VAL_INT;
+   470		case IIO_CHAN_INFO_SCALE:
+   471			*val = 0;
+   472			*val2 = MCP9982_SCALE;
+   473			return IIO_VAL_INT_PLUS_NANO;
+   474		case IIO_CHAN_INFO_SAMP_FREQ:
+   475			*val = mcp9982_conv_rate[priv->sampl_idx][0];
+   476			*val2 = mcp9982_conv_rate[priv->sampl_idx][1];
+   477			return IIO_VAL_INT_PLUS_MICRO;
+   478		case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+   479			ret = regmap_read(priv->regmap, MCP9982_RUNNING_AVG_ADDR, &tmp_reg);
+   480			if (ret)
+   481				return ret;
+   482			*src = tmp_reg;
+   483			*val = mcp9982_3db_values_map_tbl[priv->sampl_idx][bitmap_weight(src, 2)][0];
+   484			*val2 = mcp9982_3db_values_map_tbl[priv->sampl_idx][bitmap_weight(src, 2)][1];
+   485			return IIO_VAL_INT_PLUS_MICRO;
+   486		case IIO_CHAN_INFO_OFFSET:
+   487			*val = MCP9982_OFFSET;
+   488			return IIO_VAL_INT;
+   489		default:
+   490			return -EINVAL;
+   491		}
+   492	}
+   493	
 
-Ye, by all means standardise it. I suppose that means insertion into
-regulator.yaml, which usually also means a regulator- prefix - unless
-you're eyeing something wider than that?
-
---awo5i5GvxHVK+9Fg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaN11lQAKCRB4tDGHoIJi
-0tYpAP9FY+HpyoPKgEW68hevYOBRqe7TxW8twZPmPJyCHwP9wwEAoZTLPs9Tbt7J
-dAt9TII1TqGXkk23tg08ARjPQaCVIQU=
-=Wv5y
------END PGP SIGNATURE-----
-
---awo5i5GvxHVK+9Fg--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

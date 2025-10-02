@@ -1,52 +1,53 @@
-Return-Path: <linux-iio+bounces-24645-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24646-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C306EBB3785
-	for <lists+linux-iio@lfdr.de>; Thu, 02 Oct 2025 11:37:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB69BBB379A
+	for <lists+linux-iio@lfdr.de>; Thu, 02 Oct 2025 11:37:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79CF83805EF
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Oct 2025 09:37:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BB8D38056B
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Oct 2025 09:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5392FB61B;
-	Thu,  2 Oct 2025 09:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7C6301495;
+	Thu,  2 Oct 2025 09:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="KQHAAV3c"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="fjo4w8jK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789F412CD8B;
-	Thu,  2 Oct 2025 09:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47962F3C1D;
+	Thu,  2 Oct 2025 09:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759397829; cv=none; b=obbiQmmMN1jHvN5B+Yp2+9U8iiha6WlIaGCyWI6QPERr0GJeiviHdaHRFr14XzcwM/UDYH7RIsttZdj2QWcFZGCDyvEToZ2hzTKI697T3xZyUaBgNtwUqdei6GDfAGC2DWG5iQs06HZDjK+JkMYN0AgeKRUp1BkE48UFm00+SMk=
+	t=1759397830; cv=none; b=bGCLLahXB5PTyNUvYBKw2V3B/yGoGbs78qH5sIrL5WBYftUEUQatWixPjLXHXdyrvYXogmuDXjzXqKDehNZbmvd8vBKamExn8N2gUiiAOI8/Vl9IXI4LCx3wILXnzYXyJ3wbfAkZ034Gxn5j6Mq4qoG6NeXPrRCZLr1XK0IbrQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759397829; c=relaxed/simple;
-	bh=pvPudess2AabFQ8lphtvYYh8pAOCEVIGlOU+P+KJ0tE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dmcXHYsKcUbauS5PvY1bkVFZdexfZPoktbEiJz12D4Y3Ux5Ih8S32ExEWX6bk+TgRtiBx9haOEjdSsaLYaLCvObJg249AKqskTqgRN+NWsbmA/lm/pgQ8a7k81//ZENWwQdoXS7uFlNWCIKijJvdDOgMvzWA75Mba54sO4ZPC8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=KQHAAV3c; arc=none smtp.client-ip=148.251.105.195
+	s=arc-20240116; t=1759397830; c=relaxed/simple;
+	bh=CEEEhsJhcu+/6Nq5DU1tCBHsOojnqsBbKoG0SXBIZi0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=r6Taurk+M1ESb6pr1CoVzq0FJLCA0oJy/jwSVPyQixD/yY4c5DrTwliHJuURm9+DBqg7O5cxSkseZMVWW3pXNysoRRwQvZJ0VFEio1VQ2pfPQyq/zCS5dNW/6l9OJe/zkx5APojaTZjysEZ+SBveuKrLYmlBSNTRiTPUaywEFK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=fjo4w8jK; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1759397825;
-	bh=pvPudess2AabFQ8lphtvYYh8pAOCEVIGlOU+P+KJ0tE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KQHAAV3cCUvVT5an/RpuE5eXUsWrLxOoFT5HjwPeVN+2nWQij5ZKgdfy29kD8jwoD
-	 119Q6ydah+IcnJOoJEQjzGw+HsIhMA7L0hv06wa3k2cDmTmOenfWvJ79vDR2NVQxUB
-	 7ekuF8ze39Ysbf6a7J5jPepv1LXMOQBCPDasoXJoHQu1fsRl6jE8i8ttzfIIaUlj/G
-	 SNtmXd24mUsSsjKnMkVm1wmS56xS18TqU+EUCcpmEo2WKCDDioAIB0m71TQKoNJ66k
-	 3s/PTTkPYs+TAoT/J9x+PEcEIYbSoSmw9ZhVa4BSON5GgL9FU9+v5XqTd17TuZTWaY
-	 LI/1hFAMMdC8A==
+	s=mail; t=1759397826;
+	bh=CEEEhsJhcu+/6Nq5DU1tCBHsOojnqsBbKoG0SXBIZi0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fjo4w8jKxmsRJMc5H+rPE3RMB6kuZIsn+KfDFoFhvoSciia6KaHs5Qw2ClhDKoitm
+	 C0QwOz/W7+4yjCeRUKt8SskCIAflZTT5SKCWb9UKF49B8vsuF2qm5AN1pTlGc6FGwa
+	 iBdIjoTrVXAOozloG4YoK+GwyBtrj3EGNY9gAmZ/066tQmflCEr9le7PolYd8j/VP+
+	 VQl0hMbZ2rMCXzGEiujjN+7YA6aydyUl/wX7tVE1JW47X7AkvX3PI5Bp1RwpTZTBWq
+	 IzWsfXBtmc5QIBGKE3ZGoDOifucKFf/k9mPcNLFlHWpwGS5H1WDtQXb4gmZOgJK6fK
+	 aPWUuaQjHLutg==
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id CAB2117E129E;
-	Thu,  2 Oct 2025 11:37:04 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id CEB7217E12BB;
+	Thu,  2 Oct 2025 11:37:05 +0200 (CEST)
 From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 To: sboyd@kernel.org
 Cc: jic23@kernel.org,
@@ -69,11 +70,15 @@ Cc: jic23@kernel.org,
 	linux-pm@vger.kernel.org,
 	kernel@collabora.com,
 	wenst@chromium.org,
-	casey.connolly@linaro.org
-Subject: [PATCH v5 0/7] SPMI: Implement sub-devices and migrate drivers
-Date: Thu,  2 Oct 2025 11:36:50 +0200
-Message-ID: <20251002093657.2055332-1-angelogioacchino.delregno@collabora.com>
+	casey.connolly@linaro.org,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH v5 1/7] spmi: Implement spmi_subdevice_alloc_and_add() and devm variant
+Date: Thu,  2 Oct 2025 11:36:51 +0200
+Message-ID: <20251002093657.2055332-2-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251002093657.2055332-1-angelogioacchino.delregno@collabora.com>
+References: <20251002093657.2055332-1-angelogioacchino.delregno@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,130 +87,210 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Changes in v5:
- - Changed dev_err to dev_err_probe in qcom-spmi-sdam (and done
-   that even though I disagree - because I wanted this series to
-   *exclusively* introduce the minimum required changes to
-   migrate to the new API, but okay, whatever....!);
- - Added missing REGMAP dependency in Kconfig for qcom-spmi-sdam,
-   phy-qcom-eusb2-repeater and qcom-coincell to resolve build
-   issues when the already allowed COMPILE_TEST is enabled
-   as pointed out by the test robot's randconfig builds.
+Some devices connected over the SPMI bus may be big, in the sense
+that those may be a complex of devices managed by a single chip
+over the SPMI bus, reachable through a single SID.
 
-Changes in v4:
- - Added selection of REGMAP_SPMI in Kconfig for qcom-coincell and
-   for phy-qcom-eusb2-repeater to resolve undefined references when
-   compiled with some randconfig
+Add new functions aimed at managing sub-devices of a SPMI device
+spmi_subdevice_alloc_and_add() and a spmi_subdevice_put_and_remove()
+for adding a new subdevice and removing it respectively, and also
+add their devm_* variants.
 
-Changes in v3:
- - Fixed importing "SPMI" namespace in spmi-devres.c
- - Removed all instances of defensive programming, as pointed out by
-   jic23 and Sebastian
- - Removed explicit casting as pointed out by jic23
- - Moved ida_free call to spmi_subdev_release() and simplified error
-   handling in spmi_subdevice_alloc_and_add() as pointed out by jic23
+The need for such functions comes from the existence of	those
+complex Power Management ICs (PMICs), which feature one or many
+sub-devices, in some cases with these being even addressable on
+the chip in form of SPMI register ranges.
 
-Changes in v2:
- - Fixed missing `sparent` initialization in phy-qcom-eusb2-repeater
- - Changed val_bits to 8 in all Qualcomm drivers to ensure
-   compatibility as suggested by Casey
- - Added struct device pointer in all conversion commits as suggested
-   by Andy
- - Exported newly introduced functions with a new "SPMI" namespace
-   and imported the same in all converted drivers as suggested by Andy
- - Added missing error checking for dev_set_name() call in spmi.c
-   as suggested by Andy
- - Added comma to last entry of regmap_config as suggested by Andy
+Examples of those devices can be found in both Qualcomm platforms
+with their PMICs having PON, RTC, SDAM, GPIO controller, and other
+sub-devices, and in newer MediaTek platforms showing similar HW
+features and a similar layout with those also having many subdevs.
 
-While adding support for newer MediaTek platforms, featuring complex
-SPMI PMICs, I've seen that those SPMI-connected chips are internally
-divided in various IP blocks, reachable in specific contiguous address
-ranges... more or less like a MMIO, but over a slow SPMI bus instead.
+Also, instead of generally exporting symbols, export them with a
+new "SPMI" namespace: all users will have to import this namespace
+to make use of the newly introduced exports.
 
-I recalled that Qualcomm had something similar... and upon checking a
-couple of devicetrees, yeah - indeed it's the same over there.
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+---
+ drivers/spmi/spmi-devres.c | 24 ++++++++++++
+ drivers/spmi/spmi.c        | 79 ++++++++++++++++++++++++++++++++++++++
+ include/linux/spmi.h       | 16 ++++++++
+ 3 files changed, 119 insertions(+)
 
-What I've seen then is a common pattern of reading the "reg" property
-from devicetree in a struct member and then either
- A. Wrapping regmap_{read/write/etc}() calls in a function that adds
-    the register base with "base + ..register", like it's done with
-    writel()/readl() calls; or
- B. Doing the same as A. but without wrapper functions.
-
-Even though that works just fine, in my opinion it's wrong.
-
-The regmap API is way more complex than MMIO-only readl()/writel()
-functions for multiple reasons (including supporting multiple busses
-like SPMI, of course) - but everyone seemed to forget that regmap
-can manage register base offsets transparently and automatically in
-its API functions by simply adding a `reg_base` to the regmap_config
-structure, which is used for initializing a `struct regmap`.
-
-So, here we go: this series implements the software concept of an SPMI
-Sub-Device (which, well, also reflects how Qualcomm and MediaTek's
-actual hardware is laid out anyway).
-
-               SPMI Controller
-                     |                ______
-                     |               /       Sub-Device 1
-                     V              /
-              SPMI Device (PMIC) ----------- Sub-Device 2
-                                    \
-                                     \______ Sub-Device 3
-
-As per this implementation, an SPMI Sub-Device can be allocated/created
-and added in any driver that implements a... well.. subdevice (!) with
-an SPMI "main" device as its parent: this allows to create and finally
-to correctly configure a regmap that is specific to the sub-device,
-operating on its specific address range and reading, and writing, to
-its registers with the regmap API taking care of adding the base address
-of a sub-device's registers as per regmap API design.
-
-All of the SPMI Sub-Devices are therefore added as children of the SPMI
-Device (usually a PMIC), as communication depends on the PMIC's SPMI bus
-to be available (and the PMIC to be up and running, of course).
-
-Summarizing the dependency chain (which is obvious to whoever knows what
-is going on with Qualcomm and/or MediaTek SPMI PMICs):
-    "SPMI Sub-Device x...N" are children "SPMI Device"
-    "SPMI Device" is a child of "SPMI Controller"
-
-(that was just another way to say the same thing as the graph above anyway).
-
-Along with the new SPMI Sub-Device registration functions, I have also
-performed a conversion of some Qualcomm SPMI drivers and only where the
-actual conversion was trivial.
-
-I haven't included any conversion of more complex Qualcomm SPMI drivers
-because I don't have the required bandwidth to do so (and besides, I think,
-but haven't exactly verified, that some of those require SoCs that I don't
-have for testing anyway).
-
-
-AngeloGioacchino Del Regno (7):
-  spmi: Implement spmi_subdevice_alloc_and_add() and devm variant
-  nvmem: qcom-spmi-sdam: Migrate to devm_spmi_subdevice_alloc_and_add()
-  power: reset: qcom-pon: Migrate to devm_spmi_subdevice_alloc_and_add()
-  phy: qualcomm: eusb2-repeater: Migrate to
-    devm_spmi_subdevice_alloc_and_add()
-  misc: qcom-coincell: Migrate to devm_spmi_subdevice_alloc_and_add()
-  iio: adc: qcom-spmi-iadc: Migrate to
-    devm_spmi_subdevice_alloc_and_add()
-  iio: adc: qcom-spmi-iadc: Remove regmap R/W wrapper functions
-
- drivers/iio/adc/qcom-spmi-iadc.c              | 109 ++++++++----------
- drivers/misc/Kconfig                          |   2 +
- drivers/misc/qcom-coincell.c                  |  38 ++++--
- drivers/nvmem/Kconfig                         |   1 +
- drivers/nvmem/qcom-spmi-sdam.c                |  36 ++++--
- drivers/phy/qualcomm/Kconfig                  |   2 +
- .../phy/qualcomm/phy-qcom-eusb2-repeater.c    |  53 ++++++---
- drivers/power/reset/qcom-pon.c                |  34 ++++--
- drivers/spmi/spmi-devres.c                    |  24 ++++
- drivers/spmi/spmi.c                           |  79 +++++++++++++
- include/linux/spmi.h                          |  16 +++
- 11 files changed, 283 insertions(+), 111 deletions(-)
-
+diff --git a/drivers/spmi/spmi-devres.c b/drivers/spmi/spmi-devres.c
+index 62c4b3f24d06..8feebab0365b 100644
+--- a/drivers/spmi/spmi-devres.c
++++ b/drivers/spmi/spmi-devres.c
+@@ -60,5 +60,29 @@ int devm_spmi_controller_add(struct device *parent, struct spmi_controller *ctrl
+ }
+ EXPORT_SYMBOL_GPL(devm_spmi_controller_add);
+ 
++static void devm_spmi_subdevice_remove(void *res)
++{
++	spmi_subdevice_remove(res);
++}
++
++struct spmi_subdevice *devm_spmi_subdevice_alloc_and_add(struct device *dev,
++							 struct spmi_device *sparent)
++{
++	struct spmi_subdevice *sub_sdev;
++	int ret;
++
++	sub_sdev = spmi_subdevice_alloc_and_add(sparent);
++	if (IS_ERR(sub_sdev))
++		return sub_sdev;
++
++	ret = devm_add_action_or_reset(dev, devm_spmi_subdevice_remove, sub_sdev);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return sub_sdev;
++}
++EXPORT_SYMBOL_NS_GPL(devm_spmi_subdevice_alloc_and_add, "SPMI");
++
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("SPMI devres helpers");
++MODULE_IMPORT_NS("SPMI");
+diff --git a/drivers/spmi/spmi.c b/drivers/spmi/spmi.c
+index 3cf8d9bd4566..e011876c3187 100644
+--- a/drivers/spmi/spmi.c
++++ b/drivers/spmi/spmi.c
+@@ -19,6 +19,7 @@
+ 
+ static bool is_registered;
+ static DEFINE_IDA(ctrl_ida);
++static DEFINE_IDA(spmi_subdevice_ida);
+ 
+ static void spmi_dev_release(struct device *dev)
+ {
+@@ -31,6 +32,19 @@ static const struct device_type spmi_dev_type = {
+ 	.release	= spmi_dev_release,
+ };
+ 
++static void spmi_subdev_release(struct device *dev)
++{
++	struct spmi_device *sdev = to_spmi_device(dev);
++	struct spmi_subdevice *sub_sdev = container_of(sdev, struct spmi_subdevice, sdev);
++
++	ida_free(&spmi_subdevice_ida, sub_sdev->devid);
++	kfree(sub_sdev);
++}
++
++static const struct device_type spmi_subdev_type = {
++	.release	= spmi_subdev_release,
++};
++
+ static void spmi_ctrl_release(struct device *dev)
+ {
+ 	struct spmi_controller *ctrl = to_spmi_controller(dev);
+@@ -90,6 +104,18 @@ void spmi_device_remove(struct spmi_device *sdev)
+ }
+ EXPORT_SYMBOL_GPL(spmi_device_remove);
+ 
++/**
++ * spmi_subdevice_remove() - Remove an SPMI subdevice
++ * @sub_sdev:	spmi_device to be removed
++ */
++void spmi_subdevice_remove(struct spmi_subdevice *sub_sdev)
++{
++	struct spmi_device *sdev = &sub_sdev->sdev;
++
++	device_unregister(&sdev->dev);
++}
++EXPORT_SYMBOL_NS_GPL(spmi_subdevice_remove, "SPMI");
++
+ static inline int
+ spmi_cmd(struct spmi_controller *ctrl, u8 opcode, u8 sid)
+ {
+@@ -431,6 +457,59 @@ struct spmi_device *spmi_device_alloc(struct spmi_controller *ctrl)
+ }
+ EXPORT_SYMBOL_GPL(spmi_device_alloc);
+ 
++/**
++ * spmi_subdevice_alloc_and_add(): Allocate and add a new SPMI sub-device
++ * @sparent:	SPMI parent device with previously registered SPMI controller
++ *
++ * Returns:
++ * Pointer to newly allocated SPMI sub-device for success or negative ERR_PTR.
++ */
++struct spmi_subdevice *spmi_subdevice_alloc_and_add(struct spmi_device *sparent)
++{
++	struct spmi_subdevice *sub_sdev;
++	struct spmi_device *sdev;
++	int ret;
++
++	sub_sdev = kzalloc(sizeof(*sub_sdev), GFP_KERNEL);
++	if (!sub_sdev)
++		return ERR_PTR(-ENOMEM);
++
++	ret = ida_alloc(&spmi_subdevice_ida, GFP_KERNEL);
++	if (ret < 0) {
++		kfree(sub_sdev);
++		return ERR_PTR(ret);
++	}
++
++	sdev = &sub_sdev->sdev;
++	sdev->ctrl = sparent->ctrl;
++	device_initialize(&sdev->dev);
++	sdev->dev.parent = &sparent->dev;
++	sdev->dev.bus = &spmi_bus_type;
++	sdev->dev.type = &spmi_subdev_type;
++
++	sub_sdev->devid = ret;
++	sdev->usid = sparent->usid;
++
++	ret = dev_set_name(&sdev->dev, "%d-%02x.%d.auto",
++			   sdev->ctrl->nr, sdev->usid, sub_sdev->devid);
++	if (ret)
++		goto err_put_dev;
++
++	ret = device_add(&sdev->dev);
++	if (ret) {
++		dev_err(&sdev->dev, "Can't add %s, status %d\n",
++			dev_name(&sdev->dev), ret);
++		goto err_put_dev;
++	}
++
++	return sub_sdev;
++
++err_put_dev:
++	put_device(&sdev->dev);
++	return ERR_PTR(ret);
++}
++EXPORT_SYMBOL_NS_GPL(spmi_subdevice_alloc_and_add, "SPMI");
++
+ /**
+  * spmi_controller_alloc() - Allocate a new SPMI controller
+  * @parent:	parent device
+diff --git a/include/linux/spmi.h b/include/linux/spmi.h
+index 28e8c8bd3944..7cea0a5b034b 100644
+--- a/include/linux/spmi.h
++++ b/include/linux/spmi.h
+@@ -69,6 +69,22 @@ int spmi_device_add(struct spmi_device *sdev);
+ 
+ void spmi_device_remove(struct spmi_device *sdev);
+ 
++/**
++ * struct spmi_subdevice - Basic representation of an SPMI sub-device
++ * @sdev:	Sub-device representation of an SPMI device
++ * @devid:	Platform Device ID of an SPMI sub-device
++ */
++struct spmi_subdevice {
++	struct spmi_device	sdev;
++	unsigned int		devid;
++};
++
++struct spmi_subdevice *spmi_subdevice_alloc_and_add(struct spmi_device *sparent);
++void spmi_subdevice_remove(struct spmi_subdevice *sdev);
++
++struct spmi_subdevice *devm_spmi_subdevice_alloc_and_add(struct device *dev,
++							 struct spmi_device *sparent);
++
+ /**
+  * struct spmi_controller - interface to the SPMI master controller
+  * @dev:	Driver model representation of the device.
 -- 
 2.51.0
 

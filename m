@@ -1,189 +1,212 @@
-Return-Path: <linux-iio+bounces-24644-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24645-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993BABB2A9E
-	for <lists+linux-iio@lfdr.de>; Thu, 02 Oct 2025 09:11:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C306EBB3785
+	for <lists+linux-iio@lfdr.de>; Thu, 02 Oct 2025 11:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F94F3203C1
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Oct 2025 07:11:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79CF83805EF
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Oct 2025 09:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557DF2882A6;
-	Thu,  2 Oct 2025 07:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5392FB61B;
+	Thu,  2 Oct 2025 09:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Bby2P5dN"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="KQHAAV3c"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF7827A454
-	for <linux-iio@vger.kernel.org>; Thu,  2 Oct 2025 07:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789F412CD8B;
+	Thu,  2 Oct 2025 09:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759389106; cv=none; b=OdW2m9WYRF4C7bz6CHnF5Ct13zlX0k1XE/PcCwH/CFyVaqtzbXdMWkmxicyNYqIbPsbQGzvJiZVi2nUyzMlXJwEPa7+VtmkPPo5BxBqf+QsFCHRgjp73ec5ih4+6hAPZgCh0+90JLXAXAr+RmTn8Esb4rI+RfZTd2u+cA9idnDQ=
+	t=1759397829; cv=none; b=obbiQmmMN1jHvN5B+Yp2+9U8iiha6WlIaGCyWI6QPERr0GJeiviHdaHRFr14XzcwM/UDYH7RIsttZdj2QWcFZGCDyvEToZ2hzTKI697T3xZyUaBgNtwUqdei6GDfAGC2DWG5iQs06HZDjK+JkMYN0AgeKRUp1BkE48UFm00+SMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759389106; c=relaxed/simple;
-	bh=3SkLR+BabbPxgGGt7fReCFr2RJCPvXAQFeGpsqrLBOs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Gs4oeB5iajSZl0PhJoEZjAnD15mRwfPmaSLV0ng1M2uNzDNZmXczz2I8g7xB9vndx1WoL3NogOyuT45a5TbiWjIPq82d0XBsPKKLoQcLJKDgpCCVVl50Rjz5XmCzQ55QRe9C6COj8hR+npTYlVL4gaB3nmPhOUEzjUe7BoOVd9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Bby2P5dN; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3717780ea70so6936801fa.1
-        for <linux-iio@vger.kernel.org>; Thu, 02 Oct 2025 00:11:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1759389101; x=1759993901; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S7+F3MJCw1zdRhN/EFswQNuWdlErwjej/UIxS2S/iC4=;
-        b=Bby2P5dN38iizUhpsAwFl1fQKJqTNIoEluueiB19mNePFCGcZetOpTc3nTeQnYqEx2
-         flKdF+ETG+eo54AhS7JWvF3szbM+8t0z7n+aegP7bOEET8SfRe7iRWp+8YUENJ2KrpaW
-         h/2wPzpNgOdTDpuVRQxYZz4fz+HO0KiGLNjKOY4yNCRIfN1PB8h7hyXgWgTDwYWDBQy6
-         DkXQVkYOfNUbtutBO8+lBVQP2otbMIM2r5qPd3xZ5p4Q6rkK1ufhpEnuc36r7rPG/Bti
-         A5tWMAglWD/lXQJyKX61ijjJSjKLB5f7e0GUUQGpvt86qZYWUhD0qbGnu57yvXDxL3Wz
-         Xh7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759389101; x=1759993901;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S7+F3MJCw1zdRhN/EFswQNuWdlErwjej/UIxS2S/iC4=;
-        b=skBEvmTg6aWjKaj87TLQrsAxJoDSd10vDIcHgDzvQMb6/2w2gP9FKVX6eUCEAV9vx+
-         edPWh6iEZWFhN7JBJIbbA66cqaUIC2Cus6IstKRK2vmUK45C+qOMFacd++iRJ9xZr+bf
-         Noa+PXOEVJ3ClE36PDsYIIP9jQQq8PiYdR4lGSQ8Q32WNhz57XL8S1mQjrK2x1y9tkkh
-         i0I9uuLyCCSLUVArPjhbxMF0lbzWIBiLRmAXgchTh1s/Mc4+iO5lUWapBGk24h0n+pO1
-         nvfXaIP8AgMbM8Qa3LiIqyyWxVp+4498sU62pTnBqyVG4+RC/WzfLq06uzTqVF9YZUxU
-         BD3A==
-X-Forwarded-Encrypted: i=1; AJvYcCWNLpbcKJnEdMSpuq2eAxsl+sZ6UdFJB0R2XfNimsGIm+C86Zkumo2DIqLuX+2uZN9ZTK0tVXoY3Fo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnUQfNStXNjWJnPL7So5zagJdzj/kiA5iCCdlp9iXYM5kxRm06
-	E3EXhbi2SibuPeHuvM/VmTnJGoRieZtDM6v8otoPGuV4XJihhsyjEYgFFtF0cuxh+7cTqLtcGRR
-	1pz1d2XzIzbppazjoFB53tKYpf8hJE3m9WUDQ5HLsuw==
-X-Gm-Gg: ASbGnctY9X5en4tXg8b9LJX0z7J1IjKaj134werAb8aECo6IMbUIluDmVfMX4xpalXC
-	LUp9ljiB6ZI+1vtapDebC8mtIONV5EqavLPltf1SoSzy/ek/mCB5PZ6KKW2BRx6zKIX2KvCbwfE
-	C1QP7AiifUtBbuRm2fHsaSYFPoC1LCO30HWGNjbhdKvinksIAbhA3ZVG4tSXzJmyVsA6sCq+wpK
-	xyiWcyBEeBqcXrJ+JIblxc1glVPSio=
-X-Google-Smtp-Source: AGHT+IFW5Sqq0j8hZYcbkmjNo7v5KP/6QB1gYXNk+QdN7ywZJZD8XGGfmVVaw52M4XwrBItOqUnHQNR3kXoyhMFZ4LA=
-X-Received: by 2002:a05:651c:1142:b0:372:9f0c:2154 with SMTP id
- 38308e7fff4ca-373a748a7e6mr16649951fa.42.1759389101230; Thu, 02 Oct 2025
- 00:11:41 -0700 (PDT)
+	s=arc-20240116; t=1759397829; c=relaxed/simple;
+	bh=pvPudess2AabFQ8lphtvYYh8pAOCEVIGlOU+P+KJ0tE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dmcXHYsKcUbauS5PvY1bkVFZdexfZPoktbEiJz12D4Y3Ux5Ih8S32ExEWX6bk+TgRtiBx9haOEjdSsaLYaLCvObJg249AKqskTqgRN+NWsbmA/lm/pgQ8a7k81//ZENWwQdoXS7uFlNWCIKijJvdDOgMvzWA75Mba54sO4ZPC8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=KQHAAV3c; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1759397825;
+	bh=pvPudess2AabFQ8lphtvYYh8pAOCEVIGlOU+P+KJ0tE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KQHAAV3cCUvVT5an/RpuE5eXUsWrLxOoFT5HjwPeVN+2nWQij5ZKgdfy29kD8jwoD
+	 119Q6ydah+IcnJOoJEQjzGw+HsIhMA7L0hv06wa3k2cDmTmOenfWvJ79vDR2NVQxUB
+	 7ekuF8ze39Ysbf6a7J5jPepv1LXMOQBCPDasoXJoHQu1fsRl6jE8i8ttzfIIaUlj/G
+	 SNtmXd24mUsSsjKnMkVm1wmS56xS18TqU+EUCcpmEo2WKCDDioAIB0m71TQKoNJ66k
+	 3s/PTTkPYs+TAoT/J9x+PEcEIYbSoSmw9ZhVa4BSON5GgL9FU9+v5XqTd17TuZTWaY
+	 LI/1hFAMMdC8A==
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id CAB2117E129E;
+	Thu,  2 Oct 2025 11:37:04 +0200 (CEST)
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+To: sboyd@kernel.org
+Cc: jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	srini@kernel.org,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	sre@kernel.org,
+	krzysztof.kozlowski@linaro.org,
+	u.kleine-koenig@baylibre.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-arm-msm@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-pm@vger.kernel.org,
+	kernel@collabora.com,
+	wenst@chromium.org,
+	casey.connolly@linaro.org
+Subject: [PATCH v5 0/7] SPMI: Implement sub-devices and migrate drivers
+Date: Thu,  2 Oct 2025 11:36:50 +0200
+Message-ID: <20251002093657.2055332-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
- <5331035.LvFx2qVVIh@fw-rgant> <20250927-spoon-yearning-c1a8df796173@spud>
- <5926760.DvuYhMxLoT@fw-rgant> <CAMknhBGOpODxmzU9J9nqGDKGzn6KKFV5Ed3okLvecKtHhNRB9A@mail.gmail.com>
- <20251001-glacial-synthetic-6faa84d6d047@spud>
-In-Reply-To: <20251001-glacial-synthetic-6faa84d6d047@spud>
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 2 Oct 2025 09:11:30 +0200
-X-Gm-Features: AS18NWC22naFCVhN0qxOVgBX0jh3xnNC_HJV963X-Rb8nhwdrLQRrxDqp9KRg3U
-Message-ID: <CAMknhBG1W47iiqanQ+GQbETBy_A4zbn9U7ZeXV4dCCkJYqJ97w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] regulator: dt-bindings: Add Linear Technology
- LTM8054 regulator
-To: Conor Dooley <conor@kernel.org>
-Cc: Romain Gantois <romain.gantois@bootlin.com>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Cameron <jic23@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 1, 2025 at 8:40=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
-e:
->
-> On Wed, Oct 01, 2025 at 01:18:51PM +0200, David Lechner wrote:
-> > On Wed, Oct 1, 2025 at 9:12=E2=80=AFAM Romain Gantois
-> > <romain.gantois@bootlin.com> wrote:
-> > >
-> > > On Sunday, 28 September 2025 00:31:05 CEST Conor Dooley wrote:
-> > > ...
-> > > > > >
-> > > > > > > +  lltc,fb-voltage-divider:
-> > > > > > Why does this property have a ?linear? vendor prefix?
-> > > > > > Shouldn't it be adi to match the other property and compatible?
-> > > > >
-> > > > > This component was originally from Linear Technology, before it w=
-as
-> > > > > acquired by Analog Devices. The new properties and compatibles ha=
-ve the
-> > > > > Analog Devices prefix, but the "fb-voltage-divider" property is a=
-lready
-> > > > > used by the LTC3676 and LTC3589 regulators, so I left the Linear
-> > > > > Technology prefix for this one to avoid introducing a new propert=
-y just
-> > > > > to specify a vendor prefix change.
-> > > > >
-> > > > > I don't have a strong opinion about this though.
-> > > >
-> > > > Do they share the same driver?
-> > >
-> > > They do not. However, they use it in the exact same way, and I would'=
-ve
-> > > liked to factor out the handling of this property in a future patch. =
-This
-> > > would also make it easier to handle other types of feedback pin circu=
-its
-> > > and have a generic binding for "regulators using a feedback pin conne=
-cted
-> > > to some kind of analog circuit".
-> > >
-> > > For example:
-> > >
-> > > Vout----+
-> > >         |
-> > >         |
-> > >        +++
-> > >        | |
-> > >        | | Rtop
-> > >        | |
-> > >        +++
-> > >         |
-> > >         |
-> > >  FB ----+
-> > >         |
-> > >      +--+--+
-> > >      |  |  |
-> > >      |  |  |CCS
-> > >      +--v--+
-> > >         |
-> > >         |
-> > >        -+-
-> > >         -
-> > >
-> > > This is all speculation at this point though, so I don't mind changin=
-g the
-> > > property to "adi,fb-voltage-divider" and handling the different compa=
-tibles
-> > > when it comes to it.
-> > >
-> >
-> > Could we just make it `fb-voltage-divider-ohms`? The -ohms suffix
-> > makes it match the standard property-units suffix which already has
-> > the uint32-array type. There are a couple of bindings that have
-> > `vout-voltage-divider` without a vendor prefix, so it sounds like this
-> > pattern is considered somewhat of a standard property already. But I
-> > think it would be better with the -ohms suffix. For example, there is
-> > already `gw,voltage-divider-ohms` as well. But there are so many
-> > similar properties without the suffix, it is kind of the defacto
-> > standard already, so might be better to stick with that rather than
-> > making it even more different variants than there already are.
->
-> Ye, by all means standardise it. I suppose that means insertion into
-> regulator.yaml, which usually also means a regulator- prefix - unless
-> you're eyeing something wider than that?
+Changes in v5:
+ - Changed dev_err to dev_err_probe in qcom-spmi-sdam (and done
+   that even though I disagree - because I wanted this series to
+   *exclusively* introduce the minimum required changes to
+   migrate to the new API, but okay, whatever....!);
+ - Added missing REGMAP dependency in Kconfig for qcom-spmi-sdam,
+   phy-qcom-eusb2-repeater and qcom-coincell to resolve build
+   issues when the already allowed COMPILE_TEST is enabled
+   as pointed out by the test robot's randconfig builds.
 
-Yes, there are also hwmon and iio bindings that are already already
-using variations of ([a-z]+,)?(([a-x]+-)voltage-divider(-ohms)?.
-Although `fb-voltage-divider` specifically seems to only be common for
-regulators, so could make sense to just have
-`regulator-fb-voltage-divider-ohms`.
+Changes in v4:
+ - Added selection of REGMAP_SPMI in Kconfig for qcom-coincell and
+   for phy-qcom-eusb2-repeater to resolve undefined references when
+   compiled with some randconfig
+
+Changes in v3:
+ - Fixed importing "SPMI" namespace in spmi-devres.c
+ - Removed all instances of defensive programming, as pointed out by
+   jic23 and Sebastian
+ - Removed explicit casting as pointed out by jic23
+ - Moved ida_free call to spmi_subdev_release() and simplified error
+   handling in spmi_subdevice_alloc_and_add() as pointed out by jic23
+
+Changes in v2:
+ - Fixed missing `sparent` initialization in phy-qcom-eusb2-repeater
+ - Changed val_bits to 8 in all Qualcomm drivers to ensure
+   compatibility as suggested by Casey
+ - Added struct device pointer in all conversion commits as suggested
+   by Andy
+ - Exported newly introduced functions with a new "SPMI" namespace
+   and imported the same in all converted drivers as suggested by Andy
+ - Added missing error checking for dev_set_name() call in spmi.c
+   as suggested by Andy
+ - Added comma to last entry of regmap_config as suggested by Andy
+
+While adding support for newer MediaTek platforms, featuring complex
+SPMI PMICs, I've seen that those SPMI-connected chips are internally
+divided in various IP blocks, reachable in specific contiguous address
+ranges... more or less like a MMIO, but over a slow SPMI bus instead.
+
+I recalled that Qualcomm had something similar... and upon checking a
+couple of devicetrees, yeah - indeed it's the same over there.
+
+What I've seen then is a common pattern of reading the "reg" property
+from devicetree in a struct member and then either
+ A. Wrapping regmap_{read/write/etc}() calls in a function that adds
+    the register base with "base + ..register", like it's done with
+    writel()/readl() calls; or
+ B. Doing the same as A. but without wrapper functions.
+
+Even though that works just fine, in my opinion it's wrong.
+
+The regmap API is way more complex than MMIO-only readl()/writel()
+functions for multiple reasons (including supporting multiple busses
+like SPMI, of course) - but everyone seemed to forget that regmap
+can manage register base offsets transparently and automatically in
+its API functions by simply adding a `reg_base` to the regmap_config
+structure, which is used for initializing a `struct regmap`.
+
+So, here we go: this series implements the software concept of an SPMI
+Sub-Device (which, well, also reflects how Qualcomm and MediaTek's
+actual hardware is laid out anyway).
+
+               SPMI Controller
+                     |                ______
+                     |               /       Sub-Device 1
+                     V              /
+              SPMI Device (PMIC) ----------- Sub-Device 2
+                                    \
+                                     \______ Sub-Device 3
+
+As per this implementation, an SPMI Sub-Device can be allocated/created
+and added in any driver that implements a... well.. subdevice (!) with
+an SPMI "main" device as its parent: this allows to create and finally
+to correctly configure a regmap that is specific to the sub-device,
+operating on its specific address range and reading, and writing, to
+its registers with the regmap API taking care of adding the base address
+of a sub-device's registers as per regmap API design.
+
+All of the SPMI Sub-Devices are therefore added as children of the SPMI
+Device (usually a PMIC), as communication depends on the PMIC's SPMI bus
+to be available (and the PMIC to be up and running, of course).
+
+Summarizing the dependency chain (which is obvious to whoever knows what
+is going on with Qualcomm and/or MediaTek SPMI PMICs):
+    "SPMI Sub-Device x...N" are children "SPMI Device"
+    "SPMI Device" is a child of "SPMI Controller"
+
+(that was just another way to say the same thing as the graph above anyway).
+
+Along with the new SPMI Sub-Device registration functions, I have also
+performed a conversion of some Qualcomm SPMI drivers and only where the
+actual conversion was trivial.
+
+I haven't included any conversion of more complex Qualcomm SPMI drivers
+because I don't have the required bandwidth to do so (and besides, I think,
+but haven't exactly verified, that some of those require SoCs that I don't
+have for testing anyway).
+
+
+AngeloGioacchino Del Regno (7):
+  spmi: Implement spmi_subdevice_alloc_and_add() and devm variant
+  nvmem: qcom-spmi-sdam: Migrate to devm_spmi_subdevice_alloc_and_add()
+  power: reset: qcom-pon: Migrate to devm_spmi_subdevice_alloc_and_add()
+  phy: qualcomm: eusb2-repeater: Migrate to
+    devm_spmi_subdevice_alloc_and_add()
+  misc: qcom-coincell: Migrate to devm_spmi_subdevice_alloc_and_add()
+  iio: adc: qcom-spmi-iadc: Migrate to
+    devm_spmi_subdevice_alloc_and_add()
+  iio: adc: qcom-spmi-iadc: Remove regmap R/W wrapper functions
+
+ drivers/iio/adc/qcom-spmi-iadc.c              | 109 ++++++++----------
+ drivers/misc/Kconfig                          |   2 +
+ drivers/misc/qcom-coincell.c                  |  38 ++++--
+ drivers/nvmem/Kconfig                         |   1 +
+ drivers/nvmem/qcom-spmi-sdam.c                |  36 ++++--
+ drivers/phy/qualcomm/Kconfig                  |   2 +
+ .../phy/qualcomm/phy-qcom-eusb2-repeater.c    |  53 ++++++---
+ drivers/power/reset/qcom-pon.c                |  34 ++++--
+ drivers/spmi/spmi-devres.c                    |  24 ++++
+ drivers/spmi/spmi.c                           |  79 +++++++++++++
+ include/linux/spmi.h                          |  16 +++
+ 11 files changed, 283 insertions(+), 111 deletions(-)
+
+-- 
+2.51.0
+
 

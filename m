@@ -1,148 +1,132 @@
-Return-Path: <linux-iio+bounces-24692-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24693-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F145FBB79BC
-	for <lists+linux-iio@lfdr.de>; Fri, 03 Oct 2025 18:49:09 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838ACBB7E13
+	for <lists+linux-iio@lfdr.de>; Fri, 03 Oct 2025 20:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8B3D94EE2CF
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Oct 2025 16:48:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2AD9A4ED5C2
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Oct 2025 18:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4842D23B8;
-	Fri,  3 Oct 2025 16:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33601BCA0E;
+	Fri,  3 Oct 2025 18:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOnIl0/l"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="byHNo2cj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C822F2D;
-	Fri,  3 Oct 2025 16:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536D62D8791
+	for <linux-iio@vger.kernel.org>; Fri,  3 Oct 2025 18:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759510118; cv=none; b=dACG4yr3cIKIyl8FVOTJqP++/kwXYyGITb4eNANCZ/jXArFRWP6ntUMqz2zH+8O9OsucR9w6TUcaDhWrHkTjGUIq9UCSzlo9buZjieX0kdKFXcB3ArLlqHnsNBL9fKFkmB9ALCwcuBGw2OPMjsuJ23cu6NAdH872JJjWXtPEDho=
+	t=1759515879; cv=none; b=jf6yZY8JRXVDE4S8+n+FoNQMmKtFudhLSbrlfd2vwFmsjyWuQyQrzrCUajU5miUJSEzwXr6AKPT5oZxhVvRMueEFAqj5zIyNKmzXhUIQp+ObSNg7Fe4k2eTm6QzurrGdMHycgVcCe0XtFd/yt1DNtG6MOUEoWU9sFl1yCHZ94hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759510118; c=relaxed/simple;
-	bh=GzkAbzTVOzOhByob1QiGdkYmNyK/bd9JnxzPtnpywjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ooDsNY/uyp4jL25Lb1zuG8GjfQvlfAxPXYWIn3hlcWvReTcQCWRDSTk5JjLH7R4mz0MsdsHmDYk9m79f5/yWDCrv2Qc9RyUZTglQ+nm86qbNzpEmgXgO0iP/bC7FzdiUO+FRiRe3AdlbY2diSoQvoa7bht6QG7lrR7jmyr7z/T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOnIl0/l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BA9C4CEF5;
-	Fri,  3 Oct 2025 16:48:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759510117;
-	bh=GzkAbzTVOzOhByob1QiGdkYmNyK/bd9JnxzPtnpywjI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TOnIl0/lNPQNNunLn84iM1jHyKKnJJNx031w8gglGWfO/YdaJLkYKhs+FeOyHbiIR
-	 IhBAsk5ooCXr3Y2hHJTplkKD4JIPlQieMHMNx3Rsg513mwd+gcSTvORf3393MJFcDf
-	 WqouIp+vklehRqDV2gRzjTiwpm9l2tkv0W84bJSFGYIhWlbrDTLJlhLZnD0l5k7Wz1
-	 His0lEPkHJjTAtH2WxlSWY8AoQ6boEwmoRKaTdl5QzRXzEhVR5ITKKBRkNRZuM1jCO
-	 3v55Nj5y9/v/xaH10vhTPWYH9u0XjHfTUuGFNiSWotK0o2gML5gPmGc3EKGWGiMHPd
-	 QdjCxKVqjKKsQ==
-Date: Fri, 3 Oct 2025 17:48:28 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Antoni Pokusinski <apokusinski01@gmail.com>
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org, linux@roeck-us.net, rodrigo.gobbi.7@gmail.com,
- naresh.solanki@9elements.com, michal.simek@amd.com,
- grantpeltier93@gmail.com, farouk.bouabid@cherry.de,
- marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v4 0/5] iio: mpl3115: add support for DRDY interrupt
-Message-ID: <20251003174828.6feb3070@jic23-huawei>
-In-Reply-To: <20251002200206.59824-1-apokusinski01@gmail.com>
-References: <20251002200206.59824-1-apokusinski01@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1759515879; c=relaxed/simple;
+	bh=JWi1dPRv3vJCqMXY79ZyUqMo2r9f6XEgGFQSh0PF4Bc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PobhjGcP+sWztPKvxHXBEGgAm8VmSdZmejIXgrp7/+vmaDq/3I4hnq5Ke5G8zntEsWq/ZpCrvfY9yBvVNwMjVbROPcMN9h7LNmwgQ39j9y31GF4vwYTo6NtieQrUV5yMJPnCAJEchKmvJgaw2K3tIfzAiOIm45eMAOYatDB949U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=byHNo2cj; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-27eceb38eb1so25637855ad.3
+        for <linux-iio@vger.kernel.org>; Fri, 03 Oct 2025 11:24:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759515877; x=1760120677; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kU7VZ7vV5hwPE7SqFGuxKZUDC3/bfG6HT22JnaO2Ak4=;
+        b=byHNo2cjEA3tYigtlp8Da67WikbVD9sxluPWW5uGwqXzNWb/UP2vWCm4rOiZ8leDhE
+         y98aUQwFXwu/Oa/o6H3gQuHgIzcQtiR3XHv0BTKem+glpUbGhTkjNuor/tVRvGBKSX3z
+         x242aaNf41AzwW5u+Cyt6guQDGrzBDaBRRGS88gIYNVmFTQeZyXUY2NhZdPEt0W8WjMF
+         er9DCApnOLOkCIqd+42pt4Z4dz+3P71bhyCsXvkh8wQMYP6MF515PSQFC1TFKYgSbM6Y
+         /JgOeHeBW38hPj8YUzVPA8t+9DT5T+3szQJp5gjTf2r4vVIh16x8mRsoL+PJmACXdq3w
+         EmUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759515877; x=1760120677;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kU7VZ7vV5hwPE7SqFGuxKZUDC3/bfG6HT22JnaO2Ak4=;
+        b=j/gXn/P4xwrlgUAVLpkRNFNkdXknaG7Th3TsBeIKvmS9F9ACxX2ahwYJNPGLN9NQRU
+         APry2BBWwmv2piIsSdO+jz0cx7/Jspuqnkjli+LHnC/EolD2sPg0QB3Ucne+enDy20vX
+         Wh6QINrjhC+umUXLwrCaKdH25KIkERonzuBbZSXK1iTazYE8pYO6Tr7GTb1b4KkyYKfl
+         jo3TM46aP6inHFLVG1oK0wXoQYhbBMpKVcyOvDfA5mhev/iiANszib/85jlTuucL+vjE
+         lCIo22dzk5nyq8Uwkn0TWcMJ8B/DkSggP+E43G3UuTZQHFXzems0o6SKlz/7hMX05kDc
+         3HpA==
+X-Forwarded-Encrypted: i=1; AJvYcCVF/tsYv/2BZrhet9QIivoQC3uAUF3b0pahRHL2FOvH/NeV+n/3MEehgMmgZphLnW4CGLKkpm2+m7M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9BLiRuO5jnTQp8AGyIfeg7WlWDwVPfIWw/a3FCw15o+JHosJS
+	FFIUAOP+L8SFCrxnXOpptJW7enInSPUvsccueFmzAaRCBiyytbogGsc=
+X-Gm-Gg: ASbGncvp4vYzUOnOPkj/R9juqD9E6S/ROpiNY8fYAMzi+xp4Bjy8iQiNzfEYQrGAzNi
+	TGM+QH7j9fMOtYEFXzPnQWbwijPnobxKxuPSRUrvg7ju1Rx+gdkNHYnDedTAQ81vPRlDUSW4xAo
+	DHO+G71DhYorUPEj4TcUh0oO7Et1cY/A1Lh700RhhguQDmR2HeBKtf5KqbOSDD3pVWZsVpA6rp8
+	RxwF3A9JqIF8FyH3wfbRqPdOvAhDK0AJiINy8dC+o/pqJKHjuozFoN6mBNVoy+lOv8H6wByvuBA
+	l4BIbfxuxjJ2j+Q4CTZmhpUAfFDu6x9trnZ+RAOp3PxQjjh3vT9jsfRt4JftCAyBSJe/7ZVJ/nV
+	jlpbiyK/oIszHqWB1LQGCF7OqWefle5w2NhF/R4MaBWggAaNXCZyCdCbZYnfHyCRqukZ8o2jpj4
+	pEDtPgmSZ9
+X-Google-Smtp-Source: AGHT+IH5QhP47DXSnOQBBU7jylbK5b8cnwHLes24+MrTlxFkvQFuCftLsMOaQ91gvww1HCvpIhSTsw==
+X-Received: by 2002:a17:903:1b25:b0:28e:756c:7082 with SMTP id d9443c01a7336-28e9a546d94mr46300255ad.15.1759515876493;
+        Fri, 03 Oct 2025 11:24:36 -0700 (PDT)
+Received: from samee-VMware-Virtual-Platform.. ([2409:40c0:106a:c9b2:3d7a:7a89:eeb4:6f87])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d1233c1sm56773155ad.47.2025.10.03.11.24.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Oct 2025 11:24:36 -0700 (PDT)
+From: Sameeksha Sankpal <sameekshasankpal@gmail.com>
+To: anshulusr@gmail.com,
+	jic23@kernel.org
+Cc: lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sameeksha Sankpal <sameekshasankpal@gmail.com>
+Subject: [PATCH] iio: light: Fix typo in variable name
+Date: Fri,  3 Oct 2025 23:14:25 +0530
+Message-ID: <20251003174425.9135-1-sameekshasankpal@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu,  2 Oct 2025 22:02:01 +0200
-Antoni Pokusinski <apokusinski01@gmail.com> wrote:
+Corrected a spelling mistake in the ltr390 driver:
+'recieve_buffer' was renamed to 'receive_buffer'.
 
-> Hello,
-> This set of patches adds support for the DRDY interrupt in the MPL3115
-> pressure sensor. The device has 2 interrupt lines, hence the new
-> binding. I also added support for the sampling frequency which
-> determines the time interval between subsequent measurements (in the
-> continuous measurements mode) so it's obiously tied to the DRDY
-> interrupt feature.
+This improves code readibility without changing functionality.
 
-Hi Antoni,
+Signed-off-by: Sameeksha Sankpal <sameekshasankpal@gmail.com>
+---
+ drivers/iio/light/ltr390.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-LGTM. Applied to the testing branch of iio.git. I'll rebase that on rc1 once
-available and then push it out as the togreg branch which linux-next
-picks up.
-
-thanks,
-
-Jonathan
-
-> 
-> Kind regards,
-> Antoni Pokusinski
-> 
-> ---
-> Changes since v3:
-> * P2: created mpl3115_fill_trig_buffer
-> * P2: trigger_handler: replaced scoped_guard with mutex_lock
-> * P2: includes: removed linux/cleanup.h
-> 
-> * P3: new patch: renamed MPL3115_CTRL_* macros to MPL3115_CTRL1_*
-> 
-> * P4: extracted the MPL3115_CTRL_* renames into a separate patch (P3 now)
-> * P4: trigger_probe: placed devm_request_threaded_irq() call before
->                      devm_iio_trigger_register()
-> * P4: trigger_probe: removed switch(irq_cfg_flags) together with the
->                      enum mpl3115_irq_type and added 2 separate
->                      variables to handle interrupt setup logic 
-> * P4: set_trigger_state: factored out the CTRL_REG1 and CTRL_REG4 writes 
->                          into a separate function mpl3115_config_interrupt
-> 
-> * P5: samp_freq_table: added spaces before "},"
-> 
-> Changes since v2:
-> * P4: included linux/bitfield.h
-> 
-> Changes since v1:
-> * P1: add `vdd-supply` and `vddio-supply`
-> 
-> * P2: new patch: use guards from cleanup.h   
-> 
-> * P3: change macros of control register bits to convention
->       MPL3115_CTRLX_NAME
-> * P3: MPL3115_PT_DATA_EVENT_ALL: use GENMASK
-> * P3: trigger_probe: do not fail if dev_fwnode() returns NULL
-> * P3: trigger_probe: use devm_iio_trigger_register()
-> * P3: trigger_probe: introduced enum mpl3115_irq_type and 
->       changed IRQ setup logic accordingly
-> 
-> * P4: MPL3115_CTRL2_ST: use GENMASK
-> * P4: read_raw: samp_freq: use FIELD_GET
-> * P4: write_raw: samp_freq: use FIELD_PREP
-> ---
-> 
-> Antoni Pokusinski (5):
->   dt-bindings: iio: pressure: add binding for mpl3115
->   iio: mpl3115: add separate function for triggered buffer data
->     collection
->   iio: mpl3115: rename CTRL_REG1 field macros
->   iio: mpl3115: add support for DRDY interrupt
->   iio: mpl3115: add support for sampling frequency
-> 
->  .../bindings/iio/pressure/fsl,mpl3115.yaml    |  71 ++++
->  .../devicetree/bindings/trivial-devices.yaml  |   2 -
->  drivers/iio/pressure/mpl3115.c                | 331 ++++++++++++++++--
->  3 files changed, 364 insertions(+), 40 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/pressure/fsl,mpl3115.yaml
-> 
+diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
+index df664f360903..277f40879932 100644
+--- a/drivers/iio/light/ltr390.c
++++ b/drivers/iio/light/ltr390.c
+@@ -121,16 +121,16 @@ static int ltr390_register_read(struct ltr390_data *data, u8 register_address)
+ {
+ 	struct device *dev = &data->client->dev;
+ 	int ret;
+-	u8 recieve_buffer[3];
++	u8 receive_buffer[3];
+ 
+-	ret = regmap_bulk_read(data->regmap, register_address, recieve_buffer,
+-			       sizeof(recieve_buffer));
++	ret = regmap_bulk_read(data->regmap, register_address, receive_buffer,
++			       sizeof(receive_buffer));
+ 	if (ret) {
+ 		dev_err(dev, "failed to read measurement data");
+ 		return ret;
+ 	}
+ 
+-	return get_unaligned_le24(recieve_buffer);
++	return get_unaligned_le24(receive_buffer);
+ }
+ 
+ static int ltr390_set_mode(struct ltr390_data *data, enum ltr390_mode mode)
+-- 
+2.43.0
 
 

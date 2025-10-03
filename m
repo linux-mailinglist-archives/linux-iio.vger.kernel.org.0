@@ -1,175 +1,185 @@
-Return-Path: <linux-iio+bounces-24687-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24688-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01477BB719F
-	for <lists+linux-iio@lfdr.de>; Fri, 03 Oct 2025 16:01:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831F3BB7323
+	for <lists+linux-iio@lfdr.de>; Fri, 03 Oct 2025 16:36:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C3FB3BC5FB
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Oct 2025 14:01:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 532951896C5A
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Oct 2025 14:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF76C1EA7CB;
-	Fri,  3 Oct 2025 14:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE14420F08D;
+	Fri,  3 Oct 2025 14:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eMQTxe5P"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B656134BD;
-	Fri,  3 Oct 2025 14:01:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CE31F582B
+	for <linux-iio@vger.kernel.org>; Fri,  3 Oct 2025 14:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759500070; cv=none; b=oU83JaZrgCbTMoo4ojOe58I9EMUjdOGbzLG/ipRlP/7rj07RrN/sEjRLY7knJ7NuWEfYb1N+R4NDJc7L0VtuWLQL8T4dqiBDRbAuACY38dmpAibf6miohezbZNdVk3r/jXs/oPQ1YMFNJmyvFOiqlihrVlavDja98itH5012VWQ=
+	t=1759502172; cv=none; b=RSPQ2jHlpiQk5dIioiNVArMnaWSq0m2flpdwGXPleKuAH2k1AqgYWxQHikGOdNY4OrnGAQ0Mui2CxyBQ9WiZeOvuTT7Oq1wcZZ11TiLseh4XxXYQxJFp6UpXVeqIM6wK+v80zSh0hIuQ0WfIy1Z0UKxn5JcP4CxtNceSdpN143Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759500070; c=relaxed/simple;
-	bh=RNm8+bIzCty7wKMJsfmMxSNvFNgStXeHIk3/eWA2BCo=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X9yMfphFH8pOdvHk5PDBvtZPvZ/+AU2n3p3IcnXWVB+zMlvWjmyULhKx4D2On/KB972aNkzyo0fzfrIMIS3CNWAXE+mdqgWuZ3gLD+vFpTZ3SLHCUyBLw2j4bcNntiku2rAzgU19ZeGqr+Ww6gUc8evVcmMagYeHcRN0mR+dU7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cdVgF2bRxz6L4tn;
-	Fri,  3 Oct 2025 22:00:41 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1AF2114044F;
-	Fri,  3 Oct 2025 22:01:05 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 3 Oct
- 2025 15:01:03 +0100
-Date: Fri, 3 Oct 2025 15:01:02 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Eddie James <eajames@linux.ibm.com>
-CC: <linux-hwmon@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-aspeed@lists.ozlabs.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <andrew@codeconstruct.com.au>, <joel@jms.id.au>,
-	<linux@roeck-us.net>, <chanh@os.amperecomputing.com>, <jic23@kernel.org>,
-	<dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>
-Subject: Re: [PATCH v7 RESEND 3/7] dt-bindings: iio: Add Infineon DPS310
- sensor documentation
-Message-ID: <20251003150102.00007dae@huawei.com>
-In-Reply-To: <20251001144441.310950-4-eajames@linux.ibm.com>
-References: <20251001144441.310950-1-eajames@linux.ibm.com>
-	<20251001144441.310950-4-eajames@linux.ibm.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1759502172; c=relaxed/simple;
+	bh=VyohuO4CZGUcGR62GS+0n04Mx5bz3VjGW5hDt2YqbmY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l7bEjSIhP3tJY6vIv8pQ4wukKPFE2fcplQAufRJ+p6kPsGVB2SKolxpNtfYlb5QPooh0l9xlQElaXziGDZLD/8ldGWs4zwr3GHx70jK/XCoFrTj4+hOmNXJwtd8wwtFD4SomomsHgFEjYej9WVgYM6MfhC/4+sOqHisaJb4OnCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eMQTxe5P; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id AEE611A10D5;
+	Fri,  3 Oct 2025 14:36:08 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7DFAB60683;
+	Fri,  3 Oct 2025 14:36:08 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E4BD6102F1B8A;
+	Fri,  3 Oct 2025 16:36:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1759502167; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=7ENhq4LPUBj+5tdkC5VWGQKUjz+S/mLq1l/k1oBmWF4=;
+	b=eMQTxe5PK2DpR3qfK4LbwutTQbIoLivxguVmJQIcLxBA/1R9sPXFDdP0/mR54JIBSTgyJX
+	14uqxisQdKpT4CyiYu3bKsPCGIBDIQOnAnBwyRPHBiRLNHy1kuEu3ojPlUTszjSVOMDiIy
+	D5xexCWCMgtcNbe/5xV9HCLi9b2sEOoWkTgXI4v6nZtN1AEzGepP8Ojf7q3wwrRi+HHosl
+	qggAuElvSY6POoHkzshV3vmTKJW7tKSUjWDXcL0uYOgM2nwJPRnZO4auwKVtsccPP4dR1s
+	KpFQeUiWsH2vVLB+kMepRDLkQyQUSTddOpDBpX0eRp8C4BmFPOUNx0tIs3VGiQ==
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] iio: add processed write API
+Date: Fri, 03 Oct 2025 16:35:59 +0200
+Message-ID: <2406495.tdWV9SEqCh@fw-rgant>
+In-Reply-To:
+ <CAMknhBG_o=jTKtHHDyK=bq7wcHMnDM1ZHaYAfX0K2hjHfkX3Bg@mail.gmail.com>
+References:
+ <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
+ <5015441.GXAFRqVoOG@fw-rgant>
+ <CAMknhBG_o=jTKtHHDyK=bq7wcHMnDM1ZHaYAfX0K2hjHfkX3Bg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: multipart/signed; boundary="nextPart2710806.irdbgypaU6";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed,  1 Oct 2025 09:44:37 -0500
-Eddie James <eajames@linux.ibm.com> wrote:
+--nextPart2710806.irdbgypaU6
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: David Lechner <dlechner@baylibre.com>
+Subject: Re: [PATCH v2 2/5] iio: add processed write API
+Date: Fri, 03 Oct 2025 16:35:59 +0200
+Message-ID: <2406495.tdWV9SEqCh@fw-rgant>
+MIME-Version: 1.0
 
-> The DPS310 is a barometric pressure and temperature sensor with
-> an I2C interface. Remove it from trivial-devices.yaml and add its
-> own documentation.
+On Wednesday, 1 October 2025 12:03:21 CEST David Lechner wrote:
+> On Wed, Oct 1, 2025 at 9:19=E2=80=AFAM Romain Gantois <romain.gantois@boo=
+tlin.com>
+>=20
+=2E..
+> > > > +           case IIO_VAL_INT_PLUS_MICRO:
+> > > > +           case IIO_VAL_INT_PLUS_NANO:
+> > > > +                   break;
+> > > > +           case IIO_VAL_FRACTIONAL:
+> > > > +                   offset_val /=3D offset_val2;
+> > > > +                   break;
+> > > > +           case IIO_VAL_FRACTIONAL_LOG2:
+> > > > +                   offset_val >>=3D offset_val2;
+> > > > +                   break;
+> > > > +           default:
+> > > > +                   return -EINVAL;
+> > > > +           }
+> > > > +
+> > > > +           *raw -=3D offset_val;
+> > > > +   }
+> > >=20
+> > > There are some rounding biases in this function, but I'm not sure if
+> > > it is worth trying to make a perfectly fair function.
+> >=20
+> > I'm unfamiliar with the notion of rounding bias, does it mean that nest=
+ed
+> > calls of this function would tend to amplify rounding errors? In this
+> > case,
+> > would rounding to the nearest integer instead of whatever is being done=
+ by
+> > the
+> > integer division here be a good solution?
+>=20
+> In this case, the issue is when you are taking multiple samples. When you
+> look at the average of all of the samples, you will be able to see the
+> bias. For example, in one of the drivers I was looking at there is an
+> offset of xxxx.6. Since the IIO_VAL_INT_PLUS_MICRO case is just dropping
+> any fractional part, the raw value will be on average 0.6 lsb lower that
+> the requested value. This could be a problem in an application where high
+> precision is required. But probably not noticeable in cases where 1 lsb is
+> less than the noise level.
+>=20
 
-Hi Eddie,
+Thanks a lot for the detailed explanation. For the IIO_VAL_INT_PLUS_MICRO/N=
+ANO=20
+cases, I think that scaling by MICRO/NANO, then subtracting the offset, the=
+n=20
+dividing and rounding to the closest would give a small precision improveme=
+nt=20
+in some cases. It would be a bit slower though, but for low sample-rate=20
+devices like the ones in IIO I don't think it would be noticeable. I'll giv=
+e=20
+it a try.
 
-Why?  I guess you need the #io-channel-cells which trivial devices
-doesn't allow because you have a consumer driver?
+> The floor division for IIO_VAL_FRACTIONAL creates a similar bias.
+> DIV_ROUND_CLOSEST can help there, but even that has a small bias because
+> values of exactly 0.5 always get rounded in the same direction. That kind
+> of bias is much smaller though, so easier to ignore.
+>=20
 
-Obviously the binding patch shouldn't mention that, but it could call
-out that there can be such consumers.
+DIV_ROUND_CLOSEST would indeed reduce the bias at no substantial cost,=20
+so I think I'll go with that.
 
-I'd also expect to see some supplies even if the driver doesn't yet
-explicitly handle them.
+Thanks,
 
-Jonathan
+=2D-=20
+Romain Gantois, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-> 
-> Signed-off-by: Eddie James <eajames@linux.ibm.com>
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  .../iio/pressure/infineon,dps310.yaml         | 44 +++++++++++++++++++
->  .../devicetree/bindings/trivial-devices.yaml  |  2 -
->  MAINTAINERS                                   |  1 +
->  3 files changed, 45 insertions(+), 2 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/iio/pressure/infineon,dps310.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/infineon,dps310.yaml b/Documentation/devicetree/bindings/iio/pressure/infineon,dps310.yaml
-> new file mode 100644
-> index 0000000000000..7c0782e2a821b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/pressure/infineon,dps310.yaml
-> @@ -0,0 +1,44 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/pressure/infineon,dps310.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Infineon DPS310 barometric pressure and temperature sensor
-> +
-> +maintainers:
-> +  - Eddie James <eajames@linux.ibm.com>
-> +
-> +description:
-> +  The DPS310 is a barometric pressure and temperature sensor with an I2C
-> +  interface.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - infineon,dps310
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#io-channel-cells":
-> +    const: 0
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        pressure-sensor@76 {
-> +          compatible = "infineon,dps310";
-> +          reg = <0x76>;
-> +          #io-channel-cells = <0>;
-> +        };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index 7609acaa752d5..a72b7fabc7034 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -127,8 +127,6 @@ properties:
->            - ibm,cffps2
->              # IBM On-Chip Controller hwmon device
->            - ibm,p8-occ-hwmon
-> -            # Infineon barometric pressure and temperature sensor
-> -          - infineon,dps310
->              # Infineon IR36021 digital POL buck controller
->            - infineon,ir36021
->              # Infineon IRPS5401 Voltage Regulator (PMIC)
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 0c8281ea4cc64..92b9854a0e07d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12191,6 +12191,7 @@ INFINEON DPS310 Driver
->  M:	Eddie James <eajames@linux.ibm.com>
->  L:	linux-iio@vger.kernel.org
->  S:	Maintained
-> +F:	Documentation/devicetree/bindings/iio/pressure/infineon,dps310.yaml
->  F:	drivers/iio/pressure/dps310.c
->  
->  INFINEON PEB2466 ASoC CODEC
+--nextPart2710806.irdbgypaU6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAmjf308ACgkQKCYAIARz
+eA4YERAAm4m2/w4+jcoswY51aGJZqKrSPOzOpO8q6r9YFkh7HwV1oCP/ChhhdBXF
+fY0mg8b9JgN/9kk2tSSjnhf8yhxNQu9U/j3W+pnFV5LNZPhqxJgdjQDmg4NnVaEm
+yUA+cf7/RAVlJz8RTPZJi5NlTdZbTQUiPDV2GBGjFwejtlg1Nf1LArXfQmVB8kS4
+ZWvyTc3HaWHHcrjlz6EV534ewUTURMT1hH5uUVbdv7OKva7LRkbskHBMDvwTs+UF
+DLztHWy4h2CFmPMN0/qlF6hIUrNVPkR0FoMtFRYbwpREDfWLsGdSsz5Jo/0Rc3Kf
+E8zzwb7ghaC8JD0evSLoSJ9ie8S5hMhqvCXc66ZSagoE9xA0V0ZWEc9a0UbcVh2m
++e/q2N9xsDSjrAPJZLlU0E3AHelhRjMQOEq4iESPld2rM5IJb3HDEBjQzCNWz86k
+ZBprOos/x8XXHaWg31s1cSdU0owOfzZ2I1wptwIer6k18hvwYzBuyCXZcfcSyWjY
+RDU40EibBcglu0imyRhwW5rkRhsfulUkkM7D2s8PDh0fblNBf12wRBtQraRoEmCp
+/XHxZ0T206JkI3jjgq7MkxHEzcMcCrcCYiv3h26beu3WmTC1FGdVeHMnBC0A7E6d
+farq3q/R3hZas94F3irQJjakRXyGV8/+C1embayiuxBM81qLE/A=
+=gBYg
+-----END PGP SIGNATURE-----
+
+--nextPart2710806.irdbgypaU6--
+
+
 
 

@@ -1,55 +1,56 @@
-Return-Path: <linux-iio+bounces-24706-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24707-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78ADCBB8DD6
-	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 15:18:22 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B83BB8DE5
+	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 15:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A95519C07FC
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 13:18:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 256724E5F89
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 13:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6B4272E6D;
-	Sat,  4 Oct 2025 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFADA27381F;
+	Sat,  4 Oct 2025 13:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aEN/svc+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QLsZD0k0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F5B25A642;
-	Sat,  4 Oct 2025 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8FDCA4E
+	for <linux-iio@vger.kernel.org>; Sat,  4 Oct 2025 13:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759583896; cv=none; b=MtMVlQ6Bpq4YIpSUGYXYx/1iJoPUlWc0QZ/NY/QlexU6Np32XBxMzqf9rJGwDFBRG/qyGN4HrFXrgHPeDGBpkd/qn6EZVkgSHmAu6VXzClikm5sed+6wh8TWacLps+S8qIHqXHWfRkwW1cQ51oV0zvunW3UhO2wWHN4JU+rGp6Y=
+	t=1759584105; cv=none; b=rJ+GW4Rvs52AtSQgiSURZEgyc4Yn4fW8YwPiJQUCT8UfK+Yo3cDelRmp99Y5eoqHDoxdJ35X7F5DNDQAMz1JR2a589yn8fGyqILh5hk7ild/9WwNyHIjG8CFnW8z+YvXM3qPX4MFSECLVrxbQrETpRfxR9BsgjP5r+hK3/U55NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759583896; c=relaxed/simple;
-	bh=JC9Inc0aBqr5Q+O3ERojfxV/0Wn2FD3fVhL7NKr+cxU=;
+	s=arc-20240116; t=1759584105; c=relaxed/simple;
+	bh=bSoTV5zZe0G7k7LL5Mdl7OAIOgw/nT/zydKYKt//xiU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jydGxf14/24SnM6tGvzoS1Gwc4eZbLMW6lk+EBodwJc4Hezqi77L6zaPoA+DCaP1sISMB7UyWlz2uLop3nTXchVvELvn/cPyee/SpPLh7eGmqpUG3MChmhdX1gAg+oZnKqVcjeNN5y3lynpmGvFRgS6RfuyvGbRcimZN3zybOvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aEN/svc+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC7AC4CEF1;
-	Sat,  4 Oct 2025 13:18:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TsVePFdbRboiDJQ27li5AfbZ+NMym0Mt8/QGErUeOVfkcGdK7LTohRLk/2xdKs+nHdVDWO8vpwa4bu05/GKbAMZ0Znu2PY2iAZMTbTnNCqElaZoPGCvqXdbWoQ2XnQd9p0S7YkQmxLdY1Bqg/7hFfIpXsl/wfIOZBZzjIJkl1iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QLsZD0k0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BF0C4CEF1;
+	Sat,  4 Oct 2025 13:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759583896;
-	bh=JC9Inc0aBqr5Q+O3ERojfxV/0Wn2FD3fVhL7NKr+cxU=;
+	s=k20201202; t=1759584105;
+	bh=bSoTV5zZe0G7k7LL5Mdl7OAIOgw/nT/zydKYKt//xiU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aEN/svc+tC3ycK6uVXWK61T2S7TsR3YRcZwW/7VJVIQME+YaMev4AT1+Mfm2+ZKSa
-	 4WsZ8DJ3T1SvO+YZ7pYB1mp4CikJzg+BoNIMw243GWGqiVIJyK9oT0WiBglEiA9xBI
-	 sPik7jhewWw2YsjeAjrtMQHUSBGiIzQuCZL8MOORDvLJdRftvnxJKHUnYUyoo+b3IK
-	 lbODviW71WFqro6vWo/CBlDruEd7PVLyzEZsZlWlzYze/qdzLHJKxhQSvboomd3RvX
-	 fonRDQOL2XNy/cy2pAActnJ/WoI0SHT2bgLbNPuRS0wE+xzH9/yXmR8QYG18t7CMKi
-	 9bqezu3YCMGZQ==
-Date: Sat, 4 Oct 2025 14:18:08 +0100
+	b=QLsZD0k0sldVR2fqLg74Wa8VUauBPU+X+HQr3SjX9F4PYIRQXviultYeDuVTvWpjs
+	 VKW5Jkj/lyi0/sytiOaW5FhDW93MNCwjyQasqOFuM29U+e5h+Tzuih9BfsTno6AB7C
+	 DBYjPDk5UqWV3fQDKaFTsodGS7CSEIrIl/zJLPSjiU/dOudaYWChpDqUGIxWm4E2Al
+	 cUggB5ZqxVPHtHv4xs3hkYMGrdHH6sgUE+/1/yw4bUJC1HMNzKPjNjXO831VnmSEMI
+	 slkseLfFPDgW7LD3eZaBcniDEYK0jFfZVb/Ur3txB3UNwKN+tm+9CGtTKpdoCCViOX
+	 GbujXEX6+CgDQ==
+Date: Sat, 4 Oct 2025 14:21:37 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sameeksha Sankpal <sameekshasankpal@gmail.com>
-Cc: anshulusr@gmail.com, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: Fix typo in variable name
-Message-ID: <20251004141808.0a531d1e@jic23-huawei>
-In-Reply-To: <20251003174425.9135-1-sameekshasankpal@gmail.com>
-References: <20251003174425.9135-1-sameekshasankpal@gmail.com>
+To: Nuno =?UTF-8?B?U8Oh?= via B4 Relay
+ <devnull+nuno.sa.analog.com@kernel.org>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, David Lechner
+ <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH 0/3] iio: buffer: Fix DMABUF mapping in some systems
+Message-ID: <20251004142137.5a4b8240@jic23-huawei>
+In-Reply-To: <20251002-fix-iio-dmabuf-get-dma-device-v1-0-c1c9945029d0@analog.com>
+References: <20251002-fix-iio-dmabuf-get-dma-device-v1-0-c1c9945029d0@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,54 +58,80 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri,  3 Oct 2025 23:14:25 +0530
-Sameeksha Sankpal <sameekshasankpal@gmail.com> wrote:
+On Thu, 02 Oct 2025 16:06:27 +0100
+Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-> Corrected a spelling mistake in the ltr390 driver:
-> 'recieve_buffer' was renamed to 'receive_buffer'.
-> 
-> This improves code readibility without changing functionality.
-> 
-> Signed-off-by: Sameeksha Sankpal <sameekshasankpal@gmail.com>
+> This series fixes an issue with DMABUF support in the IIO subsystem where
+> the wrong DMA device could be used for buffer mapping operations. This
+> becomes critical on systems like Xilinx/AMD ZynqMP Ultrascale where memory
+> can be mapped above the 32-bit address range.
+>=20
+> Problem:
+> --------
+> The current IIO DMABUF implementation assumes it can use the parent device
+> of the IIO device for DMA operations. However, this device may not have
+> the appropriate DMA mask configuration for accessing high memory addresse=
+s.
+> On systems where memory is mapped above 32-bits, this leads to the use of
+> bounce buffers through swiotlb, significantly impacting performance.
+>=20
+> Solution:
+> ---------
+> This series introduces a new .get_dma_dev() callback in the buffer access
+> functions that allows buffer implementations to specify the correct DMA
+> device that should be used for DMABUF operations. The DMA buffer
+> infrastructure implements this callback to return the device that actually
+> owns the DMA channel, ensuring proper memory mapping without bounce buffe=
+rs.
+>=20
+> Changes:
+> --------
+> 1. Add .get_dma_dev() callback to iio_buffer_access_funcs and update core
+>    DMABUF code to use it when available
+> 2. Implement the callback in the DMA buffer infrastructure
+> 3. Wire up the callback in the dmaengine buffer implementation
+>=20
+> This ensures that DMABUF operations use the device with the correct DMA
+> configuration, eliminating unnecessary bounce buffer usage and improving
+> performance on high-memory systems.
+>=20
+> (AI generated cover. I would not be this formal but I guess is not
+> that bad :))
 
-Applied with patch title amended to include the driver name.
+Not too bad indeed.
+
+Series looks fine to me in general. Just those suggestions from David
+to enact in v2.
 
 Thanks,
 
 Jonathan
 
-
+>=20
 > ---
->  drivers/iio/light/ltr390.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/light/ltr390.c b/drivers/iio/light/ltr390.c
-> index df664f360903..277f40879932 100644
-> --- a/drivers/iio/light/ltr390.c
-> +++ b/drivers/iio/light/ltr390.c
-> @@ -121,16 +121,16 @@ static int ltr390_register_read(struct ltr390_data *data, u8 register_address)
->  {
->  	struct device *dev = &data->client->dev;
->  	int ret;
-> -	u8 recieve_buffer[3];
-> +	u8 receive_buffer[3];
->  
-> -	ret = regmap_bulk_read(data->regmap, register_address, recieve_buffer,
-> -			       sizeof(recieve_buffer));
-> +	ret = regmap_bulk_read(data->regmap, register_address, receive_buffer,
-> +			       sizeof(receive_buffer));
->  	if (ret) {
->  		dev_err(dev, "failed to read measurement data");
->  		return ret;
->  	}
->  
-> -	return get_unaligned_le24(recieve_buffer);
-> +	return get_unaligned_le24(receive_buffer);
->  }
->  
->  static int ltr390_set_mode(struct ltr390_data *data, enum ltr390_mode mode)
+> Nuno S=C3=A1 (3):
+>       iio: buffer: support getting dma channel from the buffer
+>       iio: buffer-dma: support getting the DMA channel
+>       iio: buffer-dmaengine: enable .get_dma_dev()
+>=20
+>  drivers/iio/buffer/industrialio-buffer-dma.c       |  6 +++++
+>  drivers/iio/buffer/industrialio-buffer-dmaengine.c |  2 ++
+>  drivers/iio/industrialio-buffer.c                  | 28 ++++++++++++++++=
++-----
+>  include/linux/iio/buffer-dma.h                     |  1 +
+>  include/linux/iio/buffer_impl.h                    |  2 ++
+>  5 files changed, 33 insertions(+), 6 deletions(-)
+> ---
+> base-commit: b9700f87939f0f477e5c00db817f54ab8a97702b
+> change-id: 20250930-fix-iio-dmabuf-get-dma-device-339ac70543db
+> --
+>=20
+> Thanks!
+> - Nuno S=C3=A1
+>=20
+>=20
 
 

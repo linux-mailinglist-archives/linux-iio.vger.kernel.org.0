@@ -1,62 +1,62 @@
-Return-Path: <linux-iio+bounces-24708-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24709-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AA6BB8DEB
-	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 15:25:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AADEBB8DFD
+	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 15:30:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B407C189F5A4
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 13:25:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 52CE94E60D5
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 13:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C5E274646;
-	Sat,  4 Oct 2025 13:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3005740855;
+	Sat,  4 Oct 2025 13:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isrBaMWf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qnB62fHz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10A729405;
-	Sat,  4 Oct 2025 13:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AA3A932;
+	Sat,  4 Oct 2025 13:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759584327; cv=none; b=PNasrZSYvGP+N7oD8JBrr8wmZ+JnxI7XpJKkpAh8SXHtXgMWHteP5NsVcb/mjthQpTZCwcGadvj8+IVDoSWg72LZALQwfhWsMoa3d78dn10tbPEl2BVduqVDEBdmFEl/VUUnHqnkWjbG0r6tHrEHxRZFiFcHAtzsKPpxu6JFza0=
+	t=1759584640; cv=none; b=HJZCvaUN65hh/ctYgPdhgEuHzFfkhmo0x32xnOOxhpwvh8T4X5xFII63KNhyk+i5dFzQ7aGs0w6GpbSsEwdQpFgA9JT1zOyagC9IBaOufglbRrmQ17W4B4q2ZiKGrHqiJi80Q5rwHa0xZ5Fxr7MmYu4JbuX98UohXwf4mfrN7Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759584327; c=relaxed/simple;
-	bh=bc5bP7EqrX/7tverHK4ahEMxMXdfuaRoCJxs+IXR4UI=;
+	s=arc-20240116; t=1759584640; c=relaxed/simple;
+	bh=CArLsWXqcWM2/vGAYix/smoQl6kT2P4qKZXNV+IgUSk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aQ/y9gBmfuoslU5yOFcZUfjKwMxRce8d+Y33vMNUztqhI6WCVRJwBaOVsAAGUO6Mv7FQ2qJ9M2ZtFppIaHG/r6kAKDNWijU+RyZeBJBRf2JRlDCSpq3hrek8hWjSK1bxR0GjHCwOv/oa5Wq3limq39bh6T/bvQVziWgDrXl59lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isrBaMWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C60C4CEF1;
-	Sat,  4 Oct 2025 13:25:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k3O4matsbPQUBaLgPhmGtS9oibHHAY4f/VQWEkwrKE28VN/uLLd+h2zgH7M+apVn87liXZM8B1NrDtOyrt9bX8sOlf0iYf5u4GKmInS64mDkclMg58uKUwotY5QWUl2EnRTzfW9P8nN61sCubwnrmLiK937IiZmEhB9ggeQGh6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qnB62fHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B39C4CEF1;
+	Sat,  4 Oct 2025 13:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759584326;
-	bh=bc5bP7EqrX/7tverHK4ahEMxMXdfuaRoCJxs+IXR4UI=;
+	s=k20201202; t=1759584639;
+	bh=CArLsWXqcWM2/vGAYix/smoQl6kT2P4qKZXNV+IgUSk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=isrBaMWfApwQ1NDz1qxYerr3ggmdcFTR9LgDdgHJYQ39uEppFCwRZbzDkDTYqIZO8
-	 BtOqmkcx73Hww6vj5nUDaAK5msqyyJqgg9lGfSngFsus5mReiwGCb4TIzeDMlSKyxM
-	 S39iQ9sSMoUSCQYj82BBrXcE/ZfosunC3Xuk2z9JEDJ+Zc5x3pQRwTCAMD/kRn6OUt
-	 tYN6hcLHKcPxTOrcjOTjWdzGTocQp/+z5/AlZlMcWZZcV9n08/CT2hsiF5iOM2/QfM
-	 mCEyOYo8cWREIDsLjD7+CLWL0tbQD1Qtt+a0o5WlqGonWbx4jZRB3ZbpLJ5Z6ht4/I
-	 IAWGofaVST+GQ==
-Date: Sat, 4 Oct 2025 14:25:17 +0100
+	b=qnB62fHz3IROPsk8TypNaVCfhXdzCGSafFbRT3MWgiB8OrEqrPZYKAO42NvcJoj9G
+	 wTF/oWTgc36C0R04ks9G+ZiIp2dmka8H1DZXmyMt4Ctc4jJ7MiW8gG8Pr7nCBVoAz0
+	 i+8DsdR9Llta3cvDWwXYTZbGBGkQyJbPczGBhi/7DWmpzgdjgX6xtsD2i4vTM2lm/3
+	 1WZOkTiLK0PqJSLRytc2ABZ5QqOOL8YGEQL6J7pacYyiKxTedJEDBE99WH3DclC/x+
+	 KGWhXgC72ApYjupWhy5TsfBHyFlMZtackczAMjW9gMlFAlB9b73WZ+Rf4xYGSOTrUS
+	 p6ILY87PgSyjQ==
+Date: Sat, 4 Oct 2025 14:30:29 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Olivier Moysan <olivier.moysan@foss.st.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=	 <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Maxime Coquelin	 <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: stm32-dfsdm: fix st,adc-alt-channel property
- handling
-Message-ID: <20251004142517.0cf3e7a2@jic23-huawei>
-In-Reply-To: <5243c2c5a8f3dd24f40e30a695e2a3d4f948f388.camel@gmail.com>
-References: <20251002112250.2270144-1-olivier.moysan@foss.st.com>
-	<5243c2c5a8f3dd24f40e30a695e2a3d4f948f388.camel@gmail.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Magnus
+ Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/7] iio: adc: add RZ/T2H / RZ/N2H ADC driver
+Message-ID: <20251004143029.02f026a2@jic23-huawei>
+In-Reply-To: <CAMuHMdXPEZJ11sfLDk=O1oZq_OKz22G9wz3Sw5acMr1QVYG_Qg@mail.gmail.com>
+References: <20251001122326.4024391-1-cosmin-gabriel.tanislav.xa@renesas.com>
+	<20251001122326.4024391-4-cosmin-gabriel.tanislav.xa@renesas.com>
+	<CAMuHMdXPEZJ11sfLDk=O1oZq_OKz22G9wz3Sw5acMr1QVYG_Qg@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,59 +64,59 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 03 Oct 2025 07:15:56 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On Thu, 2025-10-02 at 13:22 +0200, Olivier Moysan wrote:
-> > Initially st,adc-alt-channel property was defined as an enum in the DFS=
-DM
-> > binding. The DFSDM binding has been changed to use the new IIO backend
-> > framework, along with the adoption of IIO generic channels.
-> > In this new binding st,adc-alt-channel is defined as a boolean property,
-> > but it is still handled has an enum in DFSDM driver.
-> > Fix st,adc-alt-channel property handling in DFSDM driver.
-> >=20
-> > Fixes: 3208fa0cd919 ("iio: adc: stm32-dfsdm: adopt generic channels bin=
-dings")
-> > Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-> > --- =20
->=20
-> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-Applied to my temporary fixes branch that I'll rebase on rc1 once available.
-Also marked for stable.
+> > --- /dev/null
+> > +++ b/drivers/iio/adc/rzt2h_adc.c
+> > @@ -0,0 +1,309 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <linux/bitfield.h>
+> > +#include <linux/cleanup.h>
+> > +#include <linux/completion.h>
+> > +#include <linux/delay.h>
+> > +#include <linux/iio/adc-helpers.h>
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/interrupt.h>
+> > +#include <linux/io.h>
+> > +#include <linux/iopoll.h>
+> > +#include <linux/mod_devicetable.h>
+> > +#include <linux/module.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/pm_runtime.h>
+> > +#include <linux/property.h>
+> > +
+> > +#define RZT2H_NAME                     "rzt2h-adc"
+> > +
+> > +#define RZT2H_ADCSR_REG                        0x00  
+> 
+> I would drop the "_REG"-suffix from register definitions...
+> 
+> > +#define RZT2H_ADCSR_ADIE_MASK          BIT(12)  
+> 
+> ... and the "_MASK"-suffix from single-bit definitions.  But this is
+> my personal preference/taste.  Perhaps IIO uses a different convention?
 
-thanks,
+Problem with dropping _REG is we regularly see registers with complex
+multi part names and it can be come confusing at point of use wrt to
+whether a given define is a register address, or field.  
+
+I don't mind dropping MASK for single bits though as there inherently can't
+be confusion between those and field values as the 'mask' defines the value
+as well.
 
 Jonathan
 
->=20
-> > =C2=A0drivers/iio/adc/stm32-dfsdm-adc.c | 5 ++---
-> > =C2=A01 file changed, 2 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-=
-dfsdm-adc.c
-> > index 74b1b4dc6e81..9664b9bd75d4 100644
-> > --- a/drivers/iio/adc/stm32-dfsdm-adc.c
-> > +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-> > @@ -725,9 +725,8 @@ static int stm32_dfsdm_generic_channel_parse_of(str=
-uct
-> > stm32_dfsdm *dfsdm,
-> > =C2=A0	}
-> > =C2=A0	df_ch->src =3D val;
-> > =C2=A0
-> > -	ret =3D fwnode_property_read_u32(node, "st,adc-alt-channel", &df_ch- =
-=20
-> > >alt_si); =20
-> > -	if (ret !=3D -EINVAL)
-> > -		df_ch->alt_si =3D 0;
-> > +	if (fwnode_property_present(node, "st,adc-alt-channel"))
-> > +		df_ch->alt_si =3D 1;
-> > =C2=A0
-> > =C2=A0	if (adc->dev_data->type =3D=3D DFSDM_IIO) {
-> > =C2=A0		backend =3D devm_iio_backend_fwnode_get(&indio_dev->dev, NULL,
-> > node); =20
+> 
+> > +#define RZT2H_ADCSR_ADCS_MASK          GENMASK(14, 13)
+> > +#define RZT2H_ADCSR_ADCS_SINGLE                0b00
+> > +#define RZT2H_ADCSR_ADST_MASK          BIT(15)  
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
 
 

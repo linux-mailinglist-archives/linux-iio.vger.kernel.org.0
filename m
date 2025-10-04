@@ -1,64 +1,55 @@
-Return-Path: <linux-iio+bounces-24720-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24721-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0D8BB8F43
-	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 17:04:44 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC5BBB8F49
+	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 17:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ED303B5778
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 15:04:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ACE6F346BEA
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 15:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12DA26463A;
-	Sat,  4 Oct 2025 15:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF69F21FF29;
+	Sat,  4 Oct 2025 15:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Simk+xBl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WcVItWMc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A289A219A7D;
-	Sat,  4 Oct 2025 15:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C43F8C11
+	for <linux-iio@vger.kernel.org>; Sat,  4 Oct 2025 15:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759590278; cv=none; b=T8Gz5qH1nwdbftBPNpxB7JCKgVYgH05ahW6MbV5Vq1CpcFofSOxGWFwfbUMqAnZJeyzu2tpkXQ+hOmPlpSKLYBejjMoy+XxT9+rH9p5wEx1UZcKZa8GvP+D9RCC6SaHD8McMQfFN6IjNNBl+lIt0Cr1ADlcP+2dSs8k/HJF0zHQ=
+	t=1759590449; cv=none; b=KvLEg/NsJ/1CPArxI5/URkb1vOimcfwbG7xKXW42llJGRI0665bfbEwjp27KFSneHovO4iRufbXlQgc5VtmYUUyksqFaDukvEaVDcrQk522AOYHXYWsDn2OXTINALN3WSQktZjfk3SAwjnImJP5mcUMhBq13fCu7AXWkyy2W35E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759590278; c=relaxed/simple;
-	bh=bf3OC0hTB6fwqL92PcIlHCfEcVUddtNpNJA4+tkepfA=;
+	s=arc-20240116; t=1759590449; c=relaxed/simple;
+	bh=ZmTx07p6PRHLn8q+RS+MpQ/c1IY7A6owx6FEPMqpl+Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XtY9ONmMb7Ryrt0Cu2L5Ny5bQtsuesQKTHMpcEgQ3Sj3aXm9NbB0Kml1E4a0OhbM+DI/o4WuXpiH58XdADb8Ix1rk/kWUk8wPw+XGCdRJQ5hcWSKyy5gd6is+2irOhSCLCicoW07jZWol3UMSFmZU8UcZb8+1esjIjAkPnCFIrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Simk+xBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAF2C4CEF1;
-	Sat,  4 Oct 2025 15:04:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NYEG68SXULuBBBCoqXuKs+XyFaOzgIGm4pZ14jQ5Xb1z2XELhpB0bYmMVNrLv5b4D+n6Wo8qSjFzE5XDiKDabo9/6+P1+d3R7m0U8vzyhckcqfcTIcpC8NgtRO8v/iRmbd8gHgTJgKqi78Fju8h3yM7jKfmFx4x+iPCAOcO8GKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WcVItWMc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D87C4CEF1;
+	Sat,  4 Oct 2025 15:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759590278;
-	bh=bf3OC0hTB6fwqL92PcIlHCfEcVUddtNpNJA4+tkepfA=;
+	s=k20201202; t=1759590449;
+	bh=ZmTx07p6PRHLn8q+RS+MpQ/c1IY7A6owx6FEPMqpl+Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Simk+xBlAhQ3YFxT+NFeZlE6Ip52kTAdzkzcS4FUOoGJ3l1QUudnurybyXERSUyhc
-	 KLYq6u17fdA1hrnvlDunEwOkrpapOR0lS+vglKHpTKTcmowDW0tkiqgv13d2EnISq7
-	 x9YjN4BTIFgqQWC7djMYDRQMXAAV1Hgf3YPDXicbqZWocQ9adRiWt7f7vdxoT3mQHI
-	 L6psNzix2CsDhCPF1nJ6QSRGvl+alywkLgUhL9KVGhTpaUyUV/SD6h6GkNOw1N4fBz
-	 +UkFQhqWCanF02Coz6Q3fjpgYPJlgaCKDaaWKG7CujIFWa8CtxsiaVVrKW7GDx70U6
-	 TFpnVEfIyN0Pw==
-Date: Sat, 4 Oct 2025 16:04:26 +0100
+	b=WcVItWMcO7oanygiD9SC0p3f+5HWchp7e5wyXBybnyc2Y9yZrnVnA2zN9WNxGcXlh
+	 BPi/HI4ghakg7nRLwipLX8NLvvkk2B7v7Ts76oa2Wurpn/mLVuC1HCE7+Z6S1z1d14
+	 NQWeBcMz42syYS10uyuyNQKATT733AO37LvvcRusB/AArR8DMcWHVH1sj9fwL2NyCe
+	 WcO+SJervMp/gGRcprIGTR8WapNVmBlFxgCnmPYun8GvKVJBNtrk+fdSi36uCJZ3UO
+	 ar0VLBfvCNUOqO1eIdvBVfKD5suUlK/rHOwouO+DfJ5M0gqif6pVvdc0LmHKoc2Iwd
+	 YxpPUFaML8u+g==
+Date: Sat, 4 Oct 2025 16:07:21 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, Kim Seer Paller <kimseer.paller@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Marcelo Schmitt
- <marcelo.schmitt1@gmail.com>, Marcelo Schmitt <Marcelo.Schmitt@analog.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, Jonathan Santos
- <Jonathan.Santos@analog.com>, Dragos Bogdan <dragos.bogdan@analog.com>
-Subject: Re: [PATCH v12 2/3] iio: adc: max14001: New driver
-Message-ID: <20251004160426.7876286b@jic23-huawei>
-In-Reply-To: <476b75cff0c3e5ff23ba7c642924511f3ba09a3f.1759121938.git.marilene.agarcia@gmail.com>
-References: <961e5351afa408e69541b60ec75852fbbd1ddd24.1759121938.git.marilene.agarcia@gmail.com>
-	<476b75cff0c3e5ff23ba7c642924511f3ba09a3f.1759121938.git.marilene.agarcia@gmail.com>
+To: Achim Gratz <Achim.Gratz@Stromeko.DE>
+Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>, Andy
+ Shevchenko <andy@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Subject: Re: [RFC PATCH v3 0/9] Fixes and enhancements for the bmp280 driver
+Message-ID: <20251004160721.4c6485cb@jic23-huawei>
+In-Reply-To: <20250928172637.37138-1-Achim.Gratz@Stromeko.DE>
+References: <20250928172637.37138-1-Achim.Gratz@Stromeko.DE>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,106 +57,65 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 29 Sep 2025 02:59:37 -0300
-Marilene Andrade Garcia <marilene.agarcia@gmail.com> wrote:
+On Sun, 28 Sep 2025 19:26:27 +0200
+Achim Gratz <Achim.Gratz@Stromeko.DE> wrote:
 
-> The MAX14001/MAX14002 is configurable, isolated 10-bit ADCs for multi-ran=
-ge
-> binary inputs. In addition to ADC readings, the MAX14001/MAX14002 offers
-> more features, like a binary comparator, a filtered reading that can
-> provide the average of the last 2, 4, or 8 ADC readings, and an inrush
-> comparator that triggers the inrush current. There is also a fault feature
-> that can diagnose seven possible fault conditions. And an option to select
-> an external or internal ADC voltage reference.
->=20
-> MAX14001/MAX14002 features implemented so far:
-> - Raw ADC reading.
-> - Filtered ADC average reading with the default configuration.
-> - MV fault disable.
-> - Selection of external or internal ADC voltage reference, depending on
-> whether it is declared in the device tree.
->=20
-> Co-developed-by: Kim Seer Paller <kimseer.paller@analog.com>
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> Signed-off-by: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
-> ---
->=20
-> Hello maintainers,
-> Thank you for reviewing v11 and for your suggestions.
-> I believe I have addressed most of the requested code changes in this v12.
-> There were some discussions about a few of them, and I tried to follow the
-> path that you seemed to agree with.
->=20
-> I have one remaining question related to the max_register attribute of the
-> regmap. The register regions that can be accessed are 0x00=E2=80=930x0c a=
-nd
-> 0x13=E2=80=930x1a. As suggested, I used max_register to set the upper lim=
-it of the
-> register region that can be accessed (0x1a). Beyond this address, there is
-> a reserved region that should not be used (0x1b=E2=80=930x1f). However, t=
-here is=20
-> also a reserved region that should not be used between addresses 0x0d=E2=
-=80=930x12.
-> Should I use something to mark this region in the regmap?
-regmap allows specification of which registers readable and which writeable.
-If this is a concern then you could do that.  I'd not worry too much though
-as those regions are only accessed by the debugfs interface and that provid=
-es
-many other foot guns!
+> Revision History:
+> =================
+> 
+> v1:
+> 	- initial proposal, incorrectly prefixed "bmp280" instead of "RFC PATCH"
+> 	- patch series presented in the order it was created
+> 
+> v1 -> v2:
+> 	- prefix as "RFC PATCH"
+> 	- drop channel switching
+> 	- rewrite to present patches in smaller units and in logical steps
+> 
+> v2 -> v3:
+> 	- incorporate comments/suggestions on v2
+> 	- clean up
+> 
+> With v6.13 a change was made to the bmp280 drivers to use MODE_FORCED
+> instead of MODE_NORMAL.  This broke userspace functionality: reading
+> from sysfs interfaces no longer worked and an error was thrown
+> "Measurement cycle didn't complete".  This series fixes the underlying
+> bugs affecting the measurement time calculation (patches 0001 through
+> 005) and implements additional functionality (patches 0006 through
+> 009) not available for the BMx280 devices previously to allow the use
+> of the sysfs interface in MODE_NORMAL again and control the
+> corresponding parameters.  The implementation follows the already
+> existing facilities for the BMx[35]80 devices even though the actual
+> functionality of the BMx280 hardware is slightly different.
+> 
+Hi Achim,
+A small process related question.  Why is this an RFC?
 
-Just one trivial comment to add to David's more detailed review and questio=
-ns.
+I'd typically expect an RFC to have a cover letter with some open questions
+or another statement of why the author wants comments rather than the
+code to be merged.
 
->=20
-> Notes:
-> As suggested by Andy, I have chosen to use the code "if (ret =3D=3D -ENOD=
-EV)"=20
-> rather than "if (ret < 0)" on line 312, because it produces a slightly sm=
-aller
-> max14001.o file compared to the other approach (10640 bytes vs. 10648 byt=
-es).
-> Additionally, as mentioned, it is more explicit check.
->=20
-> As suggested by David, I added support for SPI_LSB_FIRST, and I also used=
- a
-> union to avoid clang compiler warnings related to casts between __le16,
-> __be16, and u16. Thank you for the code examples.
->=20
-> I tested it on the Raspberry Pi modified kernel version rpi-6.12 with
-> Raspberry Pi 5 hardware, using the MAX14001PMB evaluation board, and it
-> seems to work fine.
->=20
-> Main changes since v11:
-> - I think I fixed the alphabetical order in the files pointed.
-> - Fixed small issues in the include files.
-> - Removed the mutex since regmap has a lock mechanism (also removed the=20
-> mutex include).
-> - Added support for SPI_LSB_FIRST in case it is used in a device tree fil=
-e.
+Jonathan
 
-
-> diff --git a/drivers/iio/adc/max14001.c b/drivers/iio/adc/max14001.c
-> new file mode 100644
-> index 000000000000..52584c24fb08
-> --- /dev/null
-> +++ b/drivers/iio/adc/max14001.c
-
-...
-
-
-> +static int max14001_probe(struct spi_device *spi)
-> +{
-> +	struct device *dev =3D &spi->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct max14001_state *st;
-> +	int ret =3D 0;
-
-Set before use I think in all paths below. So can drop init here.
-
-> +	bool use_ext_vrefin =3D false;
-
+> Achim Gratz (9):
+>   iio: pressure: bmp280: correct meas_time_us calculation
+>   iio: pressure: bmp280: implement adaptive wait for BMx280 devices
+>   iio: pressure: bmp280: implement adaptive wait for BMP380 devices
+>   iio: pressure: bmp280: rename wait_conv() to conv(), factor out
+>     measurement time calculation
+>   iio: pressure: bmp280: remove code duplication
+>   iio: pressure: bmp280: enable filter settings for BMx280
+>   iio: pressure: bmp280: implement sampling_frequency for BMx280
+>   iio: pressure: bmp280: implement sampling_frequency calculation for
+>     BMx280
+>   iio: pressure: bmp280: test longer autosuspend (WIP)
+> 
+>  drivers/iio/pressure/bmp280-core.c | 504 +++++++++++++++++++++--------
+>  drivers/iio/pressure/bmp280.h      |  26 +-
+>  2 files changed, 387 insertions(+), 143 deletions(-)
+> 
 
 

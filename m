@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-24724-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24725-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C2DBB8F56
-	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 17:22:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 211D3BB8F5F
+	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 17:33:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E91F3C0C37
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 15:22:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BED6F3BDB81
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 15:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AA4272E6D;
-	Sat,  4 Oct 2025 15:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763632264CE;
+	Sat,  4 Oct 2025 15:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f/pGnUdi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LE9zWMpz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4882192B7D
-	for <linux-iio@vger.kernel.org>; Sat,  4 Oct 2025 15:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5471DA23
+	for <linux-iio@vger.kernel.org>; Sat,  4 Oct 2025 15:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759591325; cv=none; b=u3bco6HeMlQ1QoG3hDYiswxCiywLmq/nWjCrNrmgBBbW/8VhowRoR8rFEh1ArHiIBoF9nNC3gIQ2++B/pcRPPyE85SY5nNC9Rbor6iuaEnaaWwxLIydGHPla4qjBwHG17Nq6t+/CpPg6APNyGbHUrtz12hpJvcsfDuOExcMxs6w=
+	t=1759591978; cv=none; b=slRFGxYNTivjZSEPGUv5OO+G91Elmde6OCFcU/einRuFZkRzgKw3K8+0xo58JwHzqokVrjledjNjGlIB4+BmNaNaMvr+hVbD4K5wWx3702NZd/OijqL09r4V7mcLUDyNbjv2YIr61WD43Tqv1VvgNlOSvqI5DwCZs27Odv/i4wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759591325; c=relaxed/simple;
-	bh=raDeFcXjndVfq4rlV50Vx3ULZb+7W3p0CoHmCvZZTYA=;
+	s=arc-20240116; t=1759591978; c=relaxed/simple;
+	bh=tYoS9neZO/B8VmKlSJlRgKjvubBg2eRCbd+gxKDfYLk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XXk/cCgpgSIsZ8MQzlqmWr4TY+bWINJBGVlzOqXw9YjGNlXJ0UgdE8Tej4j32rwz44izLUV193biYUrTim4FBj62jfHWIpf6Nceyaf/7Oiw4MMcgHen9Vsa48zZa3lDC9aoirVwP68LM5+DreNIMbmASoa2oxTczdCGLNUM0OO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f/pGnUdi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0910DC4CEF1;
-	Sat,  4 Oct 2025 15:22:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fk3o0MxWtgwt166INZQ2dUIthA2Je4t9RjOOzUq9s9QktbiqXnUZUExgUrPCGaWZMf+I+nfa+efvgI2bz9Y3dlBFX3uOc4J8a6hZgy6AMl8wIy3ASubAEgH1TZI1V++PyVyXwkFEfiGPNeF6DTVnOgIeL6x7tn8PgKyGoE9HQNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LE9zWMpz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56537C4CEF1;
+	Sat,  4 Oct 2025 15:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759591325;
-	bh=raDeFcXjndVfq4rlV50Vx3ULZb+7W3p0CoHmCvZZTYA=;
+	s=k20201202; t=1759591977;
+	bh=tYoS9neZO/B8VmKlSJlRgKjvubBg2eRCbd+gxKDfYLk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f/pGnUdiCSjpKerQ+dTpLtLT29TZgC/vcXuhPZmH5vSqfVBajoMjjKDPLD6yh9Uca
-	 nXi83YNEXJ2ICRoxmJlD3gJDr+YLy/h8M8x9pkfpsFwIV6oJECr4ILKJdaYWrrS3cB
-	 GUXhkLnC1fwEIPDYOG3cuwRc9l35ynevVbMavSFDoGN9/Druh04x8bhk7nDffpe6XU
-	 9mjMmQDvZvSsHsCl3XTbUp+9v7TQiE4EPyCJqEb0evlkavIwicGYv6qSwe5UxnjHu/
-	 axP9/+G0NpBslZxo8M4evulKRs3mdnTMMCuSWUy/e9ZzljvOKSl4sugoTkbpi9i/3K
-	 MMVnUP3yURU5w==
-Date: Sat, 4 Oct 2025 16:21:58 +0100
+	b=LE9zWMpzfrx6sQ8u4pR2a2Nr1jJV+y6t7iO+4a55TGY7l8DDK8YrvYZxj5wiXP5Bj
+	 pimv2gwJIyc2F5JSMKRTajEzObJskVkWRLcQJY8YapNKQepBtyqKuh6dUnLD6qsYc7
+	 LMyFsyTgIkNMhG88u4+OL+Zr0EtXjbIAOqNpl4bI5ol+se1ckPHH14UXqtUTHruGQJ
+	 wkxFeDR1tKYTldGv4VstWJqoJ7gytazaYVDtYt0g+w3oUWg/W5V5ZxSt2QwDLecUu6
+	 s4sizC951uaylYK7iDsfArc9xZc2YktbsBn4biMrsaU8Xm2YXZy8msvWw+g6CCUT4m
+	 rIe6bAWZLI4Bw==
+Date: Sat, 4 Oct 2025 16:32:52 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Achim Gratz <Achim.Gratz@Stromeko.DE>
 Cc: linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>, Andy
  Shevchenko <andy@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Subject: Re: [RFC PATCH v3 6/9] iio: pressure: bmp280: enable filter
- settings for BMx280
-Message-ID: <20251004162158.087e2c81@jic23-huawei>
-In-Reply-To: <20250928172637.37138-8-Achim.Gratz@Stromeko.DE>
+Subject: Re: [RFC PATCH v3 7/9] iio: pressure: bmp280: implement
+ sampling_frequency for BMx280
+Message-ID: <20251004163252.5ec4e594@jic23-huawei>
+In-Reply-To: <20250928172637.37138-9-Achim.Gratz@Stromeko.DE>
 References: <20250928172637.37138-1-Achim.Gratz@Stromeko.DE>
-	<20250928172637.37138-8-Achim.Gratz@Stromeko.DE>
+	<20250928172637.37138-9-Achim.Gratz@Stromeko.DE>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,193 +62,333 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 28 Sep 2025 19:26:34 +0200
+On Sun, 28 Sep 2025 19:26:35 +0200
 Achim Gratz <Achim.Gratz@Stromeko.DE> wrote:
 
-> Follow the existing implementation for the BMx380 and BMx580 devices
-> even though it doesn't conform to the API: The BMx280 devices were
-> using a hardcoded value of 4, corresponding to the lowest corner
-> frequency.  Enable filter_low_pass_3db_frequency settings to control
-> the filter settings of the device.  The actual 3dB corner freqquency
-> has an inverse relation to the value, which represents approximately
-> the tau of the filter (for which the iio framework does not seem to
-> have a suitable parameter). 
+> As was already commented in bm280.h:468, sampling_frequency can be
+> emulated on BMx280 devices indirectly via t_standby configuration.
+> Actually implement it to enable this useful feature.  This allows to
+> switch between MODE_FORCED and MODE_NORMAL operation and use the same
+> sysfs read implementations for both modes.  As MODE_FORCED is a driver
+> feature, the corresponding entry in the ODR table has to be added
+> after the actual register settings.  The resulting register setting is
+> either masked by the driver or clamped to a permissible value on
+> device, so does not disturb the device operation.  MODE_FORCE is
+> triggered by setting a sampling frequency of 0Hz, following the
+> precedent of stm32_timer_trigger.
 > 
-> Remove a superfluous offset of -1 from
-> the internal handling of the available values and use the table
-> entries directly.  Keep the default value at the previous hardcoded
-> value to ensure identical device behaviour after module load.
+> The bmp[235]_conv() functions check if the sensor already operates in
+> NORMAL_MODE and skip waiting for measurement completion to save the
+> overhead of the superfluous mode seting.
 > 
-> A change of the implementation to actually follow the API (breaking
-> existing userspace) requires further discussion and more extensive
-> changes elsewhere in the code and are left for later.
-
-I'm not keen to introduce additional cases of the non compliant ABI
-even if it is just more parts in the same driver.
-
-So patch looks fine in so far as what it does, but that issue is a blocker.
-
-J
+> The actual sampling frequency depends on the oversampling_ratio
+> settings. In order to keep the constant ODR tables, the available
+> sampling frequency values are fixed and have been calculated for
+> oversampling_ratio=1 on all available channels assuming maximum
+> measurement duration per the data sheet truncated to three significant
+> digits; corresponding to the minimum achievable sampling frequency for
+> the highest measurement speed configuration.
 > 
-> ---
+> The ODR tables for the BM[35]80 devices have been extended to allow
+> for MODE_FORCED operation also and the handling of the table values in
+> chip_config is adapted accordingly.
 > 
-> Filter coefficient settings in hardware: off, 2, 4, 8, 16, mapped to
-> register values 0, 1, 2, 3, 4 (that's i and 2**i below), per the
-> datasheet, the actual filter is:
-> 
->   y(t) = ( (y(t-1) << i) - y(t-1) + x(t) ) >> i
->        = 2**-i * x(t) (2**i-1)*2**-i * y(t-1) )
-> 
-> That's the simplest filter that can be implemented in hardware,
-> really; the canonical recursive single-pole LP with no gain has two
-> coefficients, which should be 1-d and d (d because it's the sample
-> decay).
-> 
->    2**-i + (2**i-1)*2**-i = 2**-1 * ( 1 + 2**i - 1 ) = 1
-> 
-> so check that.  The time constant (rise time to 63%) is then
-> 
->   tau = -1/ln(d)
-> 
-> Oddly enough the data sheet gives time to >75%, but that is just a
-> scaling factor of ln(0.25) on the tau.  The nomalized corner frequency then is:
-> 
->   fc/fs = -ln(d)/(2pi)
-> 
-> So lets check that:
-> 
-> |---+------+--------+--------+--------+--------+-----------+----------|
-> | i | 2**i |    1-d |      d |    tau |  t>75% | datasheet |    fc/fs |
-> |---+------+--------+--------+--------+--------+-----------+----------|
-> | 0 |    1 |      1 |      0 |    --- |    --- |         1 |        1 |
-> | 1 |    2 |    0.5 |    0.5 |  1.443 |  2.000 |         2 | 0.110318 |
-> | 2 |    4 |   0.25 |   0.75 |  3.476 |  4.819 |         5 | 0.045786 |
-> | 3 |    8 |  0.125 |  0.875 |  7.489 | 10.382 |        11 | 0.021252 |
-> | 4 |   16 | 0.0625 | 0.9375 | 15.495 | 21.481 |        22 | 0.010272 |
-> |---+------+--------+--------+--------+--------+-----------+----------|
+> Report of the actual sampling frequency via sysfs is possible, but not
+> yet implemented.  In preparation for that implementation the
+> calculation of measurement time has previously been factored out from
+> bmp280_conv into bmp280_calc_meas_time_us.
 > 
 > Signed-off-by: Achim Gratz <Achim.Gratz@Stromeko.DE>
+> 
+A few unrelated changes have slipped in here that should be broken out
+so that this patch is clearly doing just one thing rather than several.
+
 > ---
->  drivers/iio/pressure/bmp280-core.c | 23 +++++++++++++++++++----
->  1 file changed, 19 insertions(+), 4 deletions(-)
+> 
+> BME280 redefines the last two ODR register settings vs. BMP280, which
+> are therefore out of order w.r.t. the other values.
+> 
+> Calculated ODR values:
+> |--------+---------+---------|
+> |   t_sb | min ODR | min ODR |
+> |   [ms] |  BMP280 |  BME280 |
+> |--------+---------+---------|
+> |      0 | 155.642 | 107.527 |
+> |    0.5 | 144.404 | 102.041 |
+> |   62.5 |  14.509 |  13.928 |
+> |  125.0 |   7.609 |   7.446 |
+> |  250.0 |   3.900 |   3.857 |
+> |  500.0 |   1.975 |   1.963 |
+> | 1000.0 |   0.994 |   0.991 |
+> | 2000.0 |   0.498 |     --- |
+> | 4000.0 |   0.250 |     --- |
+> |   10.0 |     --- |  51.813 |
+> |   20.0 |     --- |  34.130 |
+> |--------+---------+---------|
+> 
+> Proper consideration of the OSR when setting sampling_frequency could
+> be introduced in a later patch after discussion of how to handle the
+> combinatorial explosion of the table size or alternatively a
+> complicated on-the-fly computation that also depends on the device
+> type.  Note in particular that there are combinations of OSR and ODR
+> settings for the BMP580 at least that are illegal and hence replaced
+> by the device with a default setting, something this driver also
+> currently does not check for or handle.
+I'm a little confused. Is calculating this on demand what the next patch
+is doing?
+
+> 
+> This driver currently also lacks the the *_available attributes and
+> all associated implementation for all supported devices.  This should
+> be introduced in conjunction with the previously mentioned patch, so
+> that the available settings for the current configuration can be
+> obtained from user space.
+> ---
+>  drivers/iio/pressure/bmp280-core.c | 297 ++++++++++++++++++++---------
+>  drivers/iio/pressure/bmp280.h      |  22 ++-
+>  2 files changed, 228 insertions(+), 91 deletions(-)
 > 
 > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 4f5c4bd89067..e72cfd4c10b9 100644
+> index e72cfd4c10b9..9ade6d9e047b 100644
 > --- a/drivers/iio/pressure/bmp280-core.c
 > +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -159,6 +159,7 @@ static const struct iio_chan_spec bmp280_channels[] = {
->  				      BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
->  		.scan_index = 0,
->  		.scan_type = {
->  			.sign = 'u',
-> @@ -174,6 +175,7 @@ static const struct iio_chan_spec bmp280_channels[] = {
->  				      BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
->  		.scan_index = 1,
->  		.scan_type = {
->  			.sign = 's',
-> @@ -193,6 +195,7 @@ static const struct iio_chan_spec bme280_channels[] = {
->  				      BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
->  		.scan_index = 0,
->  		.scan_type = {
->  			.sign = 'u',
-> @@ -208,6 +211,7 @@ static const struct iio_chan_spec bme280_channels[] = {
->  				      BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
->  		.scan_index = 1,
->  		.scan_type = {
->  			.sign = 's',
-> @@ -223,6 +227,7 @@ static const struct iio_chan_spec bme280_channels[] = {
->  				      BIT(IIO_CHAN_INFO_RAW) |
->  				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
->  		.scan_index = 2,
->  		.scan_type = {
->  			.sign = 'u',
-> @@ -714,7 +719,7 @@ static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
->  		if (!data->chip_info->iir_filter_coeffs_avail)
->  			return -EINVAL;
+
+> @@ -816,7 +869,7 @@ static int bmp280_write_oversampling_ratio_press(struct bmp280_data *data,
+>  	return -EINVAL;
+>  }
 >  
-> -		*val = (1 << data->iir_filter_coeff) - 1;
-> +		*val = data->chip_info->iir_filter_coeffs_avail[data->iir_filter_coeff];
->  		return IIO_VAL_INT;
->  	default:
->  		return -EINVAL;
-> @@ -844,7 +849,7 @@ static int bmp280_write_iir_filter_coeffs(struct bmp280_data *data, int val)
->  	int i;
->  
->  	for (i = 0; i < n; i++) {
-> -		if (avail[i] - 1  == val) {
-> +		if (avail[i] == val) {
->  			prev = data->iir_filter_coeff;
->  			data->iir_filter_coeff = i;
->  
-> @@ -1095,6 +1100,7 @@ static int bmp280_chip_config(struct bmp280_data *data)
+> -static int bmp280_write_sampling_frequency(struct bmp280_data *data,
+> +static int bmp280_write_sampling_freq(struct bmp280_data *data,
+>  					   int val, int val2)
 >  {
->  	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
->  		  FIELD_PREP(BMP280_OSRS_PRESS_MASK, data->oversampling_press + 1);
-> +	u8 filter = FIELD_PREP(BMP280_FILTER_MASK, data->iir_filter_coeff;
+>  	const int (*avail)[2] = data->chip_info->sampling_freq_avail;
+> @@ -893,7 +946,7 @@ static int bmp280_write_raw_impl(struct iio_dev *indio_dev,
+>  			return -EINVAL;
+>  		}
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+> -		return bmp280_write_sampling_frequency(data, val, val2);
+> +		return bmp280_write_sampling_freq(data, val, val2);
+
+Rename is fine, but not in a patch doing anything more substantial.
+
+>  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+>  		return bmp280_write_iir_filter_coeffs(data, val);
+>  	default:
+> @@ -971,6 +1024,34 @@ static const unsigned long bme280_avail_scan_masks[] = {
+>  	0
+>  };
+
+> @@ -1098,24 +1185,28 @@ static int bmp280_conv(struct bmp280_data *data)
+>  
+>  static int bmp280_chip_config(struct bmp280_data *data)
+>  {
+> -	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
+> -		  FIELD_PREP(BMP280_OSRS_PRESS_MASK, data->oversampling_press + 1);
+> -	u8 filter = FIELD_PREP(BMP280_FILTER_MASK, data->iir_filter_coeff;
+> +	u8 osr_temp  = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1);
+> +	u8 osr_press = FIELD_PREP(BMP280_OSRS_PRESS_MASK, data->oversampling_press + 1);
+> +	u8 filter    = FIELD_PREP(BMP280_FILTER_MASK, data->iir_filter_coeff);
+> +	u8 tstby     = FIELD_PREP(BMP280_TSTBY_MASK, (data->sampling_freq ?: 1) - 1);
+> +	u8 mode      = FIELD_PREP(BMP280_MODE_MASK, data->sampling_freq ? BMP280_NORMAL : BMP280_SLEEP);
 >  	int ret;
 >  
 >  	ret = regmap_write_bits(data->regmap, BMP280_REG_CTRL_MEAS,
-> @@ -1109,7 +1115,7 @@ static int bmp280_chip_config(struct bmp280_data *data)
->  
->  	ret = regmap_update_bits(data->regmap, BMP280_REG_CONFIG,
->  				 BMP280_FILTER_MASK,
-> -				 BMP280_FILTER_4X);
-> +				 filter);
+>  				BMP280_OSRS_TEMP_MASK |
+>  				BMP280_OSRS_PRESS_MASK |
+>  				BMP280_MODE_MASK,
+> -				osrs | BMP280_MODE_SLEEP);
+> +				osr_temp | osr_press | mode);
+> +	if (ret)
+> +		return ret;
 >  	if (ret) {
->  		dev_err(data->dev, "failed to write config register\n");
+
+Some rebase issue?  Can't get here for obvious reasons! :)
+
+>  		dev_err(data->dev, "failed to write ctrl_meas register\n");
 >  		return ret;
-> @@ -1174,6 +1180,7 @@ static const int bmp280_oversampling_avail[] = { 1, 2, 4, 8, 16 };
->  static const u8 bmp280_chip_ids[] = { BMP280_CHIP_ID };
->  static const int bmp280_temp_coeffs[] = { 10, 1 };
->  static const int bmp280_press_coeffs[] = { 1, 256000 };
-> +static const int bmp280_iir_filter_coeffs_avail[] = { 0, 2, 4, 8, 16 };
->  
->  const struct bmp280_chip_info bmp280_chip_info = {
->  	.id_reg = BMP280_REG_ID,
-> @@ -1203,6 +1210,10 @@ const struct bmp280_chip_info bmp280_chip_info = {
->  	.num_oversampling_press_avail = ARRAY_SIZE(bmp280_oversampling_avail),
->  	.oversampling_press_default = BMP280_OSRS_PRESS_16X - 1,
->  
-> +	.iir_filter_coeffs_avail = bmp280_iir_filter_coeffs_avail,
-> +	.num_iir_filter_coeffs_avail = ARRAY_SIZE(bmp280_iir_filter_coeffs_avail),
-> +	.iir_filter_coeff_default = 2,
-> +
->  	.temp_coeffs = bmp280_temp_coeffs,
->  	.temp_coeffs_type = IIO_VAL_FRACTIONAL,
->  	.press_coeffs = bmp280_press_coeffs,
-> @@ -1385,6 +1396,10 @@ const struct bmp280_chip_info bme280_chip_info = {
->  	.num_oversampling_humid_avail = ARRAY_SIZE(bmp280_oversampling_avail),
->  	.oversampling_humid_default = BME280_OSRS_HUMIDITY_16X - 1,
->  
-> +	.iir_filter_coeffs_avail = bmp280_iir_filter_coeffs_avail,
-> +	.num_iir_filter_coeffs_avail = ARRAY_SIZE(bmp280_iir_filter_coeffs_avail),
-> +	.iir_filter_coeff_default = 2,
-> +
->  	.temp_coeffs = bmp280_temp_coeffs,
->  	.temp_coeffs_type = IIO_VAL_FRACTIONAL,
->  	.press_coeffs = bmp280_press_coeffs,
-> @@ -1982,7 +1997,7 @@ static irqreturn_t bmp380_trigger_handler(int irq, void *p)
+>  	}
+
+> @@ -1675,24 +1774,26 @@ static int bmp380_read_calib(struct bmp280_data *data)
 >  }
 >  
->  static const int bmp380_oversampling_avail[] = { 1, 2, 4, 8, 16, 32 };
-> -static const int bmp380_iir_filter_coeffs_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128};
-> +static const int bmp380_iir_filter_coeffs_avail[] = { 0, 1, 3, 7, 15, 31, 63, 127 };
->  static const u8 bmp380_chip_ids[] = { BMP380_CHIP_ID, BMP390_CHIP_ID };
->  static const int bmp380_temp_coeffs[] = { 10, 1 };
->  static const int bmp380_press_coeffs[] = { 1, 100000 };
+>  static const int bmp380_odr_table[][2] = {
+> -	[BMP380_ODR_200HZ]	= {200, 0},
+> -	[BMP380_ODR_100HZ]	= {100, 0},
+> -	[BMP380_ODR_50HZ]	= {50, 0},
+> -	[BMP380_ODR_25HZ]	= {25, 0},
+> -	[BMP380_ODR_12_5HZ]	= {12, 500000},
+> -	[BMP380_ODR_6_25HZ]	= {6, 250000},
+> -	[BMP380_ODR_3_125HZ]	= {3, 125000},
+> -	[BMP380_ODR_1_5625HZ]	= {1, 562500},
+> -	[BMP380_ODR_0_78HZ]	= {0, 781250},
+> -	[BMP380_ODR_0_39HZ]	= {0, 390625},
+> -	[BMP380_ODR_0_2HZ]	= {0, 195313},
+> -	[BMP380_ODR_0_1HZ]	= {0, 97656},
+> -	[BMP380_ODR_0_05HZ]	= {0, 48828},
+> -	[BMP380_ODR_0_02HZ]	= {0, 24414},
+> -	[BMP380_ODR_0_01HZ]	= {0, 12207},
+> -	[BMP380_ODR_0_006HZ]	= {0, 6104},
+> -	[BMP380_ODR_0_003HZ]	= {0, 3052},
+> -	[BMP380_ODR_0_0015HZ]	= {0, 1526},
+> +	/* BMP380_ODR_FORCED is a driver feature, not a register setting */
+> +	[BMP380_ODR_FORCED]	= {   0,      0 },
 
+Similar to below. The reformat is unrelated cause of noise in this patch
+(but nice to have in a precursor!)
+
+> +	[BMP380_ODR_200HZ]	= { 200,      0 },
+> +	[BMP380_ODR_100HZ]	= { 100,      0 },
+> +	[BMP380_ODR_50HZ]	= {  50,      0 },
+> +	[BMP380_ODR_25HZ]	= {  25,      0 },
+> +	[BMP380_ODR_12_5HZ]	= {  12, 500000 },
+> +	[BMP380_ODR_6_25HZ]	= {   6, 250000 },
+> +	[BMP380_ODR_3_125HZ]	= {   3, 125000 },
+> +	[BMP380_ODR_1_5625HZ]	= {   1, 562500 },
+> +	[BMP380_ODR_0_78HZ]	= {   0, 781250 },
+> +	[BMP380_ODR_0_39HZ]	= {   0, 390625 },
+> +	[BMP380_ODR_0_2HZ]	= {   0, 195313 },
+> +	[BMP380_ODR_0_1HZ]	= {   0,  97656 },
+> +	[BMP380_ODR_0_05HZ]	= {   0,  48828 },
+> +	[BMP380_ODR_0_02HZ]	= {   0,  24414 },
+> +	[BMP380_ODR_0_01HZ]	= {   0,  12207 },
+> +	[BMP380_ODR_0_006HZ]	= {   0,   6104 },
+> +	[BMP380_ODR_0_003HZ]	= {   0,   3052 },
+> +	[BMP380_ODR_0_0015HZ]	= {   0,   1526 },
+>  };
+
+> @@ -2061,7 +2169,7 @@ static int bmp580_soft_reset(struct bmp280_data *data)
+>  	fsleep(2000);
+>  
+>  	/* Dummy read of chip_id */
+> -	ret = regmap_read(data->regmap, BMP580_REG_CHIP_ID, &reg);
+> +	ret = regmap_read(data->regmap, BMP580_REG_ID, &reg);
+
+Unrelated change.
+
+>  	if (ret) {
+>  		dev_err(data->dev, "failed to reestablish comms after reset\n");
+>  		return ret;
+> @@ -2205,38 +2313,40 @@ static int bmp580_read_press(struct bmp280_data *data, u32 *raw_press)
+>  }
+>  
+>  static const int bmp580_odr_table[][2] = {
+> -	[BMP580_ODR_240HZ] =	{240, 0},
+
+whilst I do prefer your new formatting. That's mostly an unrelated change
+that should be in a different patch.  This one should just
+introduce the new entrees.
+
+> -	[BMP580_ODR_218HZ] =	{218, 0},
+> -	[BMP580_ODR_199HZ] =	{199, 0},
+> -	[BMP580_ODR_179HZ] =	{179, 0},
+> -	[BMP580_ODR_160HZ] =	{160, 0},
+> -	[BMP580_ODR_149HZ] =	{149, 0},
+> -	[BMP580_ODR_140HZ] =	{140, 0},
+> -	[BMP580_ODR_129HZ] =	{129, 0},
+> -	[BMP580_ODR_120HZ] =	{120, 0},
+> -	[BMP580_ODR_110HZ] =	{110, 0},
+> -	[BMP580_ODR_100HZ] =	{100, 0},
+> -	[BMP580_ODR_89HZ] =	{89, 0},
+> -	[BMP580_ODR_80HZ] =	{80, 0},
+> -	[BMP580_ODR_70HZ] =	{70, 0},
+> -	[BMP580_ODR_60HZ] =	{60, 0},
+> -	[BMP580_ODR_50HZ] =	{50, 0},
+> -	[BMP580_ODR_45HZ] =	{45, 0},
+> -	[BMP580_ODR_40HZ] =	{40, 0},
+> -	[BMP580_ODR_35HZ] =	{35, 0},
+> -	[BMP580_ODR_30HZ] =	{30, 0},
+> -	[BMP580_ODR_25HZ] =	{25, 0},
+> -	[BMP580_ODR_20HZ] =	{20, 0},
+> -	[BMP580_ODR_15HZ] =	{15, 0},
+> -	[BMP580_ODR_10HZ] =	{10, 0},
+> -	[BMP580_ODR_5HZ] =	{5, 0},
+> -	[BMP580_ODR_4HZ] =	{4, 0},
+> -	[BMP580_ODR_3HZ] =	{3, 0},
+> -	[BMP580_ODR_2HZ] =	{2, 0},
+> -	[BMP580_ODR_1HZ] =	{1, 0},
+> -	[BMP580_ODR_0_5HZ] =	{0, 500000},
+> -	[BMP580_ODR_0_25HZ] =	{0, 250000},
+> -	[BMP580_ODR_0_125HZ] =	{0, 125000},
+> +	/* BMP580_ODR_FORCED is a driver feature, not a register setting */
+> +	[BMP580_ODR_FORCED] =	{   0,      0 },
+> +	[BMP580_ODR_240HZ] =	{ 240,	    0 },
+> +	[BMP580_ODR_218HZ] =	{ 218,	    0 },
+> +	[BMP580_ODR_199HZ] =	{ 199,	    0 },
+> +	[BMP580_ODR_179HZ] =	{ 179,	    0 },
+> +	[BMP580_ODR_160HZ] =	{ 160,	    0 },
+> +	[BMP580_ODR_149HZ] =	{ 149,	    0 },
+> +	[BMP580_ODR_140HZ] =	{ 140,	    0 },
+> +	[BMP580_ODR_129HZ] =	{ 129,	    0 },
+> +	[BMP580_ODR_120HZ] =	{ 120,	    0 },
+> +	[BMP580_ODR_110HZ] =	{ 110,	    0 },
+> +	[BMP580_ODR_100HZ] =	{ 100,	    0 },
+> +	[BMP580_ODR_89HZ] =	{  89,	    0 },
+> +	[BMP580_ODR_80HZ] =	{  80,	    0 },
+> +	[BMP580_ODR_70HZ] =	{  70,	    0 },
+> +	[BMP580_ODR_60HZ] =	{  60,	    0 },
+> +	[BMP580_ODR_50HZ] =	{  50,	    0 },
+> +	[BMP580_ODR_45HZ] =	{  45,	    0 },
+> +	[BMP580_ODR_40HZ] =	{  40,	    0 },
+> +	[BMP580_ODR_35HZ] =	{  35,	    0 },
+> +	[BMP580_ODR_30HZ] =	{  30,	    0 },
+> +	[BMP580_ODR_25HZ] =	{  25,	    0 },
+> +	[BMP580_ODR_20HZ] =	{  20,	    0 },
+> +	[BMP580_ODR_15HZ] =	{  15,	    0 },
+> +	[BMP580_ODR_10HZ] =	{  10,	    0 },
+> +	[BMP580_ODR_5HZ] =	{   5,	    0 },
+> +	[BMP580_ODR_4HZ] =	{   4,	    0 },
+> +	[BMP580_ODR_3HZ] =	{   3,	    0 },
+> +	[BMP580_ODR_2HZ] =	{   2,	    0 },
+> +	[BMP580_ODR_1HZ] =	{   1,	    0 },
+> +	[BMP580_ODR_0_5HZ] =	{   0, 500000 },
+> +	[BMP580_ODR_0_25HZ] =	{   0, 250000 },
+> +	[BMP580_ODR_0_125HZ] =	{   0, 125000 },
+>  };
+>  
+
+> @@ -2707,7 +2821,7 @@ static const int bmp580_temp_coeffs[] = { 125, 13 };
+>  static const int bmp580_press_coeffs[] = { 1, 64000};
+>  
+>  const struct bmp280_chip_info bmp580_chip_info = {
+> -	.id_reg = BMP580_REG_CHIP_ID,
+> +	.id_reg = BMP580_REG_ID,
+
+As below. Unrelated change. Separate patch with clear reasoning for why.
+
+>  	.chip_id = bmp580_chip_ids,
+>  	.num_chip_id = ARRAY_SIZE(bmp580_chip_ids),
+>  	.regmap_config = &bmp580_regmap_config,
+> @@ -3367,10 +3481,13 @@ static int bmp280_runtime_suspend(struct device *dev)
+>  {
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>  	struct bmp280_data *data = iio_priv(indio_dev);
+> -
+> -	data->chip_info->set_mode(data, BMP280_SLEEP);
+> +	int ret;
+>  
+>  	fsleep(data->start_up_time_us);
+
+Add a comment on why we need a sleep before setting the mode.
+It's unusual to need resume to sleep before doing anything at all.
+
+
+> +	ret = data->chip_info->set_mode(data, data->sampling_freq ? BMP280_NORMAL : BMP280_SLEEP);
+> +	if (ret)
+> +		return ret;
+> +
+>  	return regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
+>  }
+>  
+> diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+> index df90ed720bc6..8e05cdf869e7 100644
+> --- a/drivers/iio/pressure/bmp280.h
+> +++ b/drivers/iio/pressure/bmp280.h
+> @@ -13,7 +13,7 @@
+>  #define BMP580_REG_OSR_CONFIG		0x36
+>  #define BMP580_REG_IF_CONFIG		0x13
+>  #define BMP580_REG_REV_ID		0x02
+> -#define BMP580_REG_CHIP_ID		0x01
+> +#define BMP580_REG_ID			0x01
+
+That looks like an unrelated change.
 

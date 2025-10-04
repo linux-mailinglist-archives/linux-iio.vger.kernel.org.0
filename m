@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-24701-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24702-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B660EBB8D5A
-	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 14:53:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA13EBB8D60
+	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 14:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 810F24E1011
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 12:53:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A7AB189896E
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 12:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4D8274B26;
-	Sat,  4 Oct 2025 12:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7422A274B59;
+	Sat,  4 Oct 2025 12:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="agQN1jYO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBrJ8Jqx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2142560B8A;
-	Sat,  4 Oct 2025 12:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D07FEEAB;
+	Sat,  4 Oct 2025 12:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759582402; cv=none; b=BxvKq0d+pTHkfQLvS9PrEn0xEEzG0fepV9Bb2d/XcGzISEpmLftTkZyJGFm4/Wvmghx8sOYq36ZMwBhkxhTo4q19jrWawGYC+mUipa7C6pJqiWdOPCvQnVig0z9/t0+P9+klVO6R29EDU4TZ8LsuPTjSWu/m68lBbjfkV55HEQ4=
+	t=1759582718; cv=none; b=LisGMCcyGp+xg7lJ2aKn5+Sd7qW6M43dxFZdpc7y0axlLvKNybOjRNEAfkw8GjayIgUeJMQ+cmHO2NaoUpgtvAsw2z1hPcH9a0a/TY+G7GiclrWrvsjMwFApqkFyKxzBFZOpeIB7Hrd5YkJHHxPTDezvdFREE5sv1dok8rXqGxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759582402; c=relaxed/simple;
-	bh=5cTSDfuOM8FTBJ6ekVoinzo5GXCEGY64aElhQgmgD08=;
+	s=arc-20240116; t=1759582718; c=relaxed/simple;
+	bh=KBqW3QSnz85eXoRODyagydgAvgGnhYdaKO/Oy9W6IkA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J7e6wVmoGRsAceLZW0NjGU7Ms6pAvZssN4jYtPxHQNLGlECxhZTWcF9GIW9Ri9+BhZDN9STlBlNI6UMv/Qe7hqeeGeafCavb6KCP3VriPcV6/4EZTMxdl1OOdEzSOMf5JZCDfq3b+GKznHUWaxkPbUOiN433m2AoebouCpeSEZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=agQN1jYO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E364C4CEF1;
-	Sat,  4 Oct 2025 12:53:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OvHbXrADi3CiZgKi1TjBxAGl8cLine40BIWbIySzp2mbVSeQGu3jEORWTjwN0JqJpL0ULifmZq8CUBqN8c/ki30mtY8rYWohJC3svIFHqjmmVSZ0l+T9R9dtKxZOo/7K4mrOhFj4OC09/Fkxrn8QfYdY4LUADD1bCC2+zQcNNWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBrJ8Jqx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B7AC4CEF1;
+	Sat,  4 Oct 2025 12:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759582401;
-	bh=5cTSDfuOM8FTBJ6ekVoinzo5GXCEGY64aElhQgmgD08=;
+	s=k20201202; t=1759582717;
+	bh=KBqW3QSnz85eXoRODyagydgAvgGnhYdaKO/Oy9W6IkA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=agQN1jYOrZvKiXBvKr0tLrgeZeMfyBfTMg++UYH4Vf6D7pguj39gjFuAXGtLn8GVC
-	 sQUkpFs2/lMtNax/eF36k+bK+aMSw7Uv2NOVrQbBDm9LSlyrYEUzHrY8EC5D1J0QyI
-	 omjOziUxj/SLsBE0+J0A3IGtIPejIuUc6Y0gn0roQadkumwzC1CpU5Z+BP35nnViLC
-	 cH7GGVXrnURfw47NTdaZGfQf+OtlrGmM5wPhHixCdoXSPSzNq3E1I6gmQg61Cpmc/O
-	 3hF4bUfPl83nX+voaXA5O4n6cem9wO0Yt2b243ovyXaMNB0j/xS3oLbF6Dd9NZL4s6
-	 2D+bLQMIaBDGQ==
-Date: Sat, 4 Oct 2025 13:53:12 +0100
+	b=oBrJ8JqxLmigtzroaDf6in74sXMIVAbcyxki+Jxyt4Ejt9PTmWEn2x84qHO1BXWhr
+	 rMbQHVjbfiEpTu8M2xfSaBYaAXk0QHA9F7bl51ozu3U59FY6iMjswaqyhTnhr0sAVs
+	 o2VyMMPc4dKxGZ3tmiEa/fGh9hdtBM0rw5kd+e+Pztham1gqTqcLuckDoPaP+WZNdf
+	 Ooxw/VwXlBfz1YDMK9OUS8yUjL01wWCQCqRBxuAjx5smFPx3CP9FhWEQtXrpIpnOZv
+	 rwP1DgSuIh5MYYHJX4BtwsEN0sDrT2/NQ7iFlNbBfEiNaPdpyeAGZvn+7wF1Xahbh8
+	 BibNdU3HGcD0Q==
+Date: Sat, 4 Oct 2025 13:58:29 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Akshay Jindal <akshayaj.lkd@gmail.com>
 Cc: dan@dlrobertson.com, dlechner@baylibre.com, nuno.sa@analog.com,
  andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] iio: accel: bma400: Reorganize and rename
- register and field macros
-Message-ID: <20251004135312.41858380@jic23-huawei>
-In-Reply-To: <20251002184120.495193-2-akshayaj.lkd@gmail.com>
+Subject: Re: [PATCH v3 2/5] iio: accel: bma400: Use macros for generic event
+ configuration values
+Message-ID: <20251004135829.531a03e1@jic23-huawei>
+In-Reply-To: <20251002184120.495193-3-akshayaj.lkd@gmail.com>
 References: <20251002184120.495193-1-akshayaj.lkd@gmail.com>
-	<20251002184120.495193-2-akshayaj.lkd@gmail.com>
+	<20251002184120.495193-3-akshayaj.lkd@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,166 +63,113 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  3 Oct 2025 00:11:02 +0530
+On Fri,  3 Oct 2025 00:11:03 +0530
 Akshay Jindal <akshayaj.lkd@gmail.com> wrote:
 
-> Reorganize register and field macros to improve consistency with the
-> datasheet and naming style:
-> 
-> - Move field macros next to their corresponding register macros
-> - Reorder register macros to follow address order from the datasheet
-> - Rename field macros to include the register name in the macro name
-> - Add a _REG suffix to register macros where missing
+> Add macros and enums for configuration values used in generic event
+> handling for activity and inactivity detection. Replace hard-coded
+> values in activity_event_en() with the new definitions to make the
+> configuration explicit.
 > 
 > No functional changes are intended.
 > 
 > Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
-
-This is much easier to review. Thanks for breaking it all up.
-
 > ---
->  drivers/iio/accel/bma400.h      | 110 +++++++++--------
->  drivers/iio/accel/bma400_core.c | 212 ++++++++++++++++----------------
->  2 files changed, 163 insertions(+), 159 deletions(-)
+>  drivers/iio/accel/bma400.h      | 30 ++++++++++++++++++++++++++++++
+>  drivers/iio/accel/bma400_core.c | 14 +++++++++++---
+>  2 files changed, 41 insertions(+), 3 deletions(-)
 > 
 > diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
-> index 932358b45f17..ae3411c090c9 100644
+> index ae3411c090c9..13fe2e5a3175 100644
 > --- a/drivers/iio/accel/bma400.h
 > +++ b/drivers/iio/accel/bma400.h
-> @@ -16,31 +16,37 @@
-
->  /* Event and interrupt registers */
->  #define BMA400_EVENT_REG            0x0d
+> @@ -106,8 +106,38 @@
+>  #define BMA400_GEN1INT_CONFIG0_REG      0x3f
+>  #define BMA400_GEN2INT_CONFIG0_REG      0x4A
+>  #define BMA400_GENINT_CONFIG0_HYST_MASK		GENMASK(1, 0)
+> +#define BMA400_GENINT_CONFIG0_REF_UPD_MODE_MASK	GENMASK(3, 2)
+> +#define BMA400_GENINT_CONFIG0_DATA_SRC_MASK	BIT(4)
+> +#define BMA400_GENINT_CONFIG0_X_EN_MASK		BIT(5)
+> +#define BMA400_GENINT_CONFIG0_Y_EN_MASK		BIT(6)
+> +#define BMA400_GENINT_CONFIG0_Z_EN_MASK		BIT(7)
 > +
->  #define BMA400_INT_STAT0_REG        0x0e
->  #define BMA400_INT_STAT1_REG        0x0f
->  #define BMA400_INT_STAT2_REG        0x10
-> -#define BMA400_INT12_MAP_REG        0x23
-> -#define BMA400_INT_ENG_OVRUN_MSK    BIT(4)
-> +#define BMA400_ENG_OVRUN_INT_STAT_MASK		BIT(4)
-
-This is an odd field as it applies to all the INT_STATX registers
-However  I would still try to make that connection with a name
-such as BMA500_INT_STAT_OVRUN_MASK
-
-> +#define BMA400_STEP_INT_STAT_MASK		GENMASK(9, 8)
-
-This bit is a little odd.  We are treating INT_STAT0 and INT_STAT1
-(but not 2) as a single 16 bit register. That makes it hard to
-associate the field with the register name. I wonder if we shouldn't
-break that and just handle it as a pair of u8 instead.
-
-> +#define BMA400_S_TAP_INT_STAT_MASK		BIT(10)
-> +#define BMA400_D_TAP_INT_STAT_MASK		BIT(11)
->  
->  /* Temperature register */
->  #define BMA400_TEMP_DATA_REG        0x11
-> @@ -55,70 +61,68 @@
->  #define BMA400_STEP_CNT1_REG        0x16
->  #define BMA400_STEP_CNT3_REG        0x17
->  #define BMA400_STEP_STAT_REG        0x18
-> -#define BMA400_STEP_INT_MSK         BIT(0)
->  #define BMA400_STEP_RAW_LEN         0x03
-> -#define BMA400_STEP_STAT_MASK       GENMASK(9, 8)
->  
->  /*
->   * Read-write configuration registers
->   */
-> -#define BMA400_ACC_CONFIG0_REG      0x19
-> -#define BMA400_ACC_CONFIG1_REG      0x1a
-> +#define BMA400_ACC_CONFIG0_REG		0x19
-> +#define BMA400_ACC_CONFIG0_LP_OSR_MASK		GENMASK(6, 5)
-> +#define BMA400_LP_OSR_SHIFT		5
-#
-Should never need a explicit shift. Use FIELD_PREP() and FIELD_GET() to
-allow the MASK to be used in all cases.
-
+> +enum bma400_accel_data_src {
+> +	ACCEL_FILT1,
+> +	ACCEL_FILT2,
+> +};
 > +
-> +#define BMA400_ACC_CONFIG1_REG		0x1a
-> +#define BMA400_ACC_CONFIG1_ODR_MASK		GENMASK(3, 0)
-> +#define BMA400_ACC_CONFIG1_ODR_MIN_RAW		0x05
-> +#define BMA400_ACC_CONFIG1_ODR_LP_RAW		0x06
-> +#define BMA400_ACC_CONFIG1_ODR_MAX_RAW		0x0b
-> +#define BMA400_ACC_CONFIG1_ODR_MAX_HZ		800
-> +#define BMA400_ACC_CONFIG1_ODR_MIN_WHOLE_HZ	25
-> +#define BMA400_ACC_CONFIG1_ODR_MIN_HZ		12
-> +#define BMA400_ACC_CONFIG1_NP_OSR_MASK		GENMASK(5, 4)
-
-> +#define BMA400_NP_OSR_SHIFT		4
-Similarly on this shift.
-
-> +#define BMA400_ACC_CONFIG1_ACC_RANGE_MASK	GENMASK(7, 6)
-> +#define BMA400_ACC_RANGE_SHIFT		6
-
-and this one.  Might be a good idea to switch away from using the shifts
-as a precursor patch as it's really a different sort of change from
-the rest of this.
-
+> +enum bma400_ref_updt_mode {
+> +	BMA400_REF_MANUAL_UPDT_MODE,
+> +	BMA400_REF_ONETIME_UPDT_MODE,
+> +	BMA400_REF_EVERYTIME_UPDT_MODE,
+> +	BMA400_REF_EVERYTIME_LP_UPDT_MODE,
+> +};
+>  
+>  #define BMA400_GEN_CONFIG1_OFF      0x01
+> +#define BMA400_GENINT_CONFIG1_AXES_COMB_MASK	BIT(0)
+> +#define BMA400_GENINT_CONFIG1_DETCT_CRIT_MASK	BIT(1)
 > +
->  #define BMA400_ACC_CONFIG2_REG      0x1b
-> -#define BMA400_CMD_REG              0x7e
->
+> +enum bma400_genintr_acceleval_axescomb {
+> +	BMA400_EVAL_X_OR_Y_OR_Z,
+> +	BMA400_EVAL_X_AND_Y_AND_Z,
 
-...
-  
-> -		osr = (val & BMA400_LP_OSR_MASK) >> BMA400_LP_OSR_SHIFT;
-> +		osr = (val & BMA400_ACC_CONFIG0_LP_OSR_MASK) >> BMA400_LP_OSR_SHIFT;
+An enum for potential field values only makes sense if you are going to
+use it as a type somewhere.  If not it is simpler to just
+use a define next to the mask for the field.  Also these should be named
+with prefixes that align with that mask.
+If you do use it as a type in future patches that's fine but the naming
+point still remains and you should specify values = 0, = 1 etc
+as they matter whereas implication of using an enum is that the actual
+values assigned doesn't matter.
 
-Here is one of those cases with the shift that could just be
-		osr = FIELD_GET(BMA400_ACC_CONFIG0_LP_OSR_MASK, val);
-
+Same applies to the other enums introduced in here.
+> +};
+> +
+> +enum bma400_detect_criterion {
+> +	BMA400_DETECT_INACTIVITY,
+> +	BMA400_DETECT_ACTIVITY,
+> +};
+> +
+>  #define BMA400_GEN_CONFIG2_OFF      0x02
+>  #define BMA400_GEN_CONFIG3_OFF      0x03
+>  #define BMA400_GEN_CONFIG31_OFF     0x04
+> diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+> index 35d2b90425f8..58c378ba9931 100644
+> --- a/drivers/iio/accel/bma400_core.c
+> +++ b/drivers/iio/accel/bma400_core.c
+> @@ -1166,14 +1166,16 @@ static int bma400_activity_event_en(struct bma400_data *data,
+>  	case IIO_EV_DIR_RISING:
+>  		reg = BMA400_GEN1INT_CONFIG0_REG;
+>  		msk = BMA400_INT_CONFIG0_GEN1_MASK;
+> -		value = 2;
+> +		value = FIELD_PREP(BMA400_GENINT_CONFIG1_AXES_COMB_MASK, BMA400_EVAL_X_OR_Y_OR_Z) |
+> +			FIELD_PREP(BMA400_GENINT_CONFIG1_DETCT_CRIT_MASK, BMA400_DETECT_ACTIVITY);
+>  		set_mask_bits(&field_value, BMA400_INT_CONFIG0_GEN1_MASK,
+>  			      FIELD_PREP(BMA400_INT_CONFIG0_GEN1_MASK, state));
+>  		break;
+>  	case IIO_EV_DIR_FALLING:
+>  		reg = BMA400_GEN2INT_CONFIG0_REG;
+>  		msk = BMA400_INT_CONFIG0_GEN2_MASK;
+> -		value = 0;
+> +		value = FIELD_PREP(BMA400_GENINT_CONFIG1_AXES_COMB_MASK, BMA400_EVAL_X_OR_Y_OR_Z) |
+> +			FIELD_PREP(BMA400_GENINT_CONFIG1_DETCT_CRIT_MASK, BMA400_DETECT_INACTIVITY);
+>  		set_mask_bits(&field_value, BMA400_INT_CONFIG0_GEN2_MASK,
+>  			      FIELD_PREP(BMA400_INT_CONFIG0_GEN2_MASK, state));
+>  		break;
+> @@ -1182,7 +1184,13 @@ static int bma400_activity_event_en(struct bma400_data *data,
+>  	}
 >  
->  		data->oversampling_ratio = osr;
->  		return 0;
-> @@ -603,7 +603,7 @@ static int bma400_get_accel_oversampling_ratio(struct bma400_data *data)
->  			return ret;
->  		}
->  
-> -		osr = (val & BMA400_NP_OSR_MASK) >> BMA400_NP_OSR_SHIFT;
-> +		osr = (val & BMA400_ACC_CONFIG1_NP_OSR_MASK) >> BMA400_NP_OSR_SHIFT;
-her as well.
->  
->  		data->oversampling_ratio = osr;
->  		return 0;
-> @@ -637,7 +637,7 @@ static int bma400_set_accel_oversampling_ratio(struct bma400_data *data,
->  			return ret;
->  
->  		ret = regmap_write(data->regmap, BMA400_ACC_CONFIG0_REG,
-> -				   (acc_config & ~BMA400_LP_OSR_MASK) |
-> +				   (acc_config & ~BMA400_ACC_CONFIG0_LP_OSR_MASK) |
->  				   (val << BMA400_LP_OSR_SHIFT));
-FIELD_PREP for this one.  
->  		if (ret) {
->  			dev_err(data->dev, "Failed to write out OSR\n");
-> @@ -653,7 +653,7 @@ static int bma400_set_accel_oversampling_ratio(struct bma400_data *data,
->  			return ret;
->  
->  		ret = regmap_write(data->regmap, BMA400_ACC_CONFIG1_REG,
-> -				   (acc_config & ~BMA400_NP_OSR_MASK) |
-> +				   (acc_config & ~BMA400_ACC_CONFIG1_NP_OSR_MASK) |
->  				   (val << BMA400_NP_OSR_SHIFT));
-here as well.  Anyhow, from a quick look it appears that getting rid of the _SHIFT defines
-should be easy.
-
-
->  		if (ret) {
->  			dev_err(data->dev, "Failed to write out OSR\n");
->
-
->  
-> @@ -786,8 +786,8 @@ static int bma400_enable_steps(struct bma400_data *data, int val)
->  		return 0;
->  
->  	ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG1_REG,
-> -				 BMA400_STEP_INT_MSK,
-> -				 FIELD_PREP(BMA400_STEP_INT_MSK, val ? 1 : 0));
-> +				 BMA400_INT_CONFIG1_STEP_INT_MASK,
-> +				 FIELD_PREP(BMA400_INT_CONFIG1_STEP_INT_MASK, val ? 1 : 0));
-
-Could use regmap_assign_bits() to simplify this a bit - but separate change
-so different patch.
-
+>  	/* Enabling all axis for interrupt evaluation */
+> -	ret = regmap_write(data->regmap, reg, 0xF8);
+> +	ret = regmap_write(data->regmap, reg,
+> +			   BMA400_GENINT_CONFIG0_X_EN_MASK |
+> +			   BMA400_GENINT_CONFIG0_Y_EN_MASK |
+> +			   BMA400_GENINT_CONFIG0_Z_EN_MASK|
+> +			   FIELD_PREP(BMA400_GENINT_CONFIG0_DATA_SRC_MASK, ACCEL_FILT2)|
+> +			   FIELD_PREP(BMA400_GENINT_CONFIG0_REF_UPD_MODE_MASK,
+> +				      BMA400_REF_EVERYTIME_UPDT_MODE));
 >  	if (ret)
 >  		return ret;
+>  
 
 

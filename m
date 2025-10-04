@@ -1,203 +1,249 @@
-Return-Path: <linux-iio+bounces-24696-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24697-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4305BBB8808
-	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 03:57:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0503BB8894
+	for <lists+linux-iio@lfdr.de>; Sat, 04 Oct 2025 04:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8013C4E6119
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 01:57:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 700EF4F0A28
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Oct 2025 02:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4218220F38;
-	Sat,  4 Oct 2025 01:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECC721A459;
+	Sat,  4 Oct 2025 02:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ironIDZ4"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ft3a855I"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BF321A447
-	for <linux-iio@vger.kernel.org>; Sat,  4 Oct 2025 01:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7D121C9F9
+	for <linux-iio@vger.kernel.org>; Sat,  4 Oct 2025 02:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759543016; cv=none; b=p4bPmidqGMiqJG0nGjxFqnxvEcehcSPD4VWxLjQq3TeiS+47myW3/ky1gDKToxaNb5i25ySFaIXDEocZGR+1u/o0X9flrqtavcTmrZFxITARCvxuPFVI8jjeS/JTtcCQ4N0X4X7RGFSJvjFEaUOBzuk1ngQaMFH1su703oeUKi4=
+	t=1759545724; cv=none; b=Fqg4/3u6FLVb2MmLGHexbcIywle376lHEjao8Jp1ktH0aqEBRv8lcnTjhlgc49VdPjx0o680XnKqorxTj5kSMSPZtBloliT7o+I+PuAoVETBTen01lBW4gjqF964FRBKUZ+8ROs9GtcYnF855PcePxWCkeJgZYjgLcX0CW/YEjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759543016; c=relaxed/simple;
-	bh=60sFE8dH95IQRhjstRyY7EVNnqU2lIgts0o7HyQejn8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Quh2wSVr/eL9y7sunibk9WuvSCiRvYFDGf/5X9RWOl2GfxcuJJC762Cm3NgOF5qFUh8CnrKG8GxqeeDUdJ0cI3+x3Tlim68w9ZHmJ9jmao2rgwkkAjEokHMaLYKIg+A7rIkQvZpEriXKN57vUAuyQT/Os2kyHvQ9s3DIi12sOpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ironIDZ4; arc=none smtp.client-ip=209.85.216.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-32ec291a325so2332027a91.1
-        for <linux-iio@vger.kernel.org>; Fri, 03 Oct 2025 18:56:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759543014; x=1760147814; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bXs1QSVIqrmDB/CsKZ6PEf+V8gETdC9cB2i9VQlHTvA=;
-        b=ironIDZ4udqKpjhSZpwBgM5dXqqf6gjHm26vva9HCngT685JrolL9UNhibj0dBlwSx
-         l+AKJP2jbVFRSCUtOHvzGDcQ8s5ujWJxPduox8/VF4ydymvgS6SU7/QGtKqC3bTLz5L/
-         nK1XtYtyMpw5F8efTW6rxPOniakQxBIcq5Lyr898t4N3FBjorBk0p2qvZr02LkVK4mZj
-         9acOYCcHfHoxsQGAnfJc7lTS+vl7IdAuUEEJzl2dQVgmzW1qfEQBzEzReoHc1rXCc2rr
-         l/oWm+YAW+0KdQofSBE3HOQGYxIXAKT8wir7eXCwqpZyoMCrhB2urOm3eMxYxT1KJRmU
-         DBBQ==
+	s=arc-20240116; t=1759545724; c=relaxed/simple;
+	bh=GrG+sZoFKRUNsfWBm/ynu78GdpzwzH9S+BPs1TW4kbo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JkWujZ9KvRhzm4Z5t8aOZg/pRLZucWdHOHK0R4h+BZ2K+W2e8k3xrFB0ltph77/i0Qj2n7Lpbw6u5R+V5pp8gv333zluL5VviqkrQ9D5xlOP33znkx3/uSGAN6/2RpALbzGOzkkeEmg5mZDnc/9lp4aqaltRHBqa4ykW79qEVUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ft3a855I; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 593Ag8Td024967
+	for <linux-iio@vger.kernel.org>; Sat, 4 Oct 2025 02:42:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	8LKTW72ANVRWqbBbs1orSLC8F5L2PbgtH5ZHTOYbBuc=; b=ft3a855IBg2OWRMS
+	nbEgEinUC+Q4mu3cLXd85jjLj7n8OO+Ucb94YSBzV9M5iSWwKetL3Jsq4a017sm3
+	cUwHRP5HjLnh0yHLysMi0QaZz40BiJsG+tY4MKyYaSkGLwsw1bDzdS/CGipJqsiY
+	7L2gTQb0941neWt3rAVYORT29ZMYfGyPGsjyNAQdgDcOkbEVECBxvw8eeUiRALnq
+	ei11ZUNXHGrhrTpevLeGySZ6xGBdvFGGSt/+RjFwqSjvI+U2NTgOodJBAHW9HoQe
+	hFrKTcGbHL+aukMz9E71YIsi5Bo7uj2gsJ6GVc9qFoi8h6MsRCr0B67/lsDkNLi1
+	WxBtvg==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49e97848cc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-iio@vger.kernel.org>; Sat, 04 Oct 2025 02:42:01 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-780d26fb6b4so2098184b3a.0
+        for <linux-iio@vger.kernel.org>; Fri, 03 Oct 2025 19:42:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759543014; x=1760147814;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bXs1QSVIqrmDB/CsKZ6PEf+V8gETdC9cB2i9VQlHTvA=;
-        b=lz8XqF5yjM/amUvZPbtyWnilhLGVDPru82/jW9FdmPZn+v9QGfjljbmVbvMAqhqTqC
-         zRLmbeWYb5H9RMF66wIL8ccFAWath+pPfsN2Edd7VrDZ0UqyHf4vRWEZ0+JwtmOO/9gZ
-         Pz/Y/oTAWGIRVMHnLp6eaYmwP44EvLlxkqPz+1IE7Y5ROMJVDhpKlc7NimL5vci48kyQ
-         eyIwYpAOgz87mTRqlButgete7BAST4hIQjSCYFHc1szMuvlYAakRf+1M8BMRqR9YEqcy
-         3RBn77wD0Ueb/gfWepOXlk5s7wwkyBso+p+N0iqBRSe7KQU1wfGA6bEIVgo0qiZNBMF5
-         WDwA==
-X-Forwarded-Encrypted: i=1; AJvYcCW9PItBWAx7y4x5J3nyIt2wcrqfKimJTGdKmb0yA6Y/GSw8HCgzYoQZ/Gh5FwjLZ1BjssJhQBUNvcg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxi1e/o6St1NJzOuXGz6w/mDS2sG6iwZNyouV/8vk1HeZsfriuG
-	HSAtPZT/M2C76JkbWMMNgXJZtyOlW5/6y3O9MEi7lLrpuhXhi8O0AoUslmfPrW3t
-X-Gm-Gg: ASbGncsoIJ0IMb/y07Yq82jx5MIlZ+EPPzHeqiku0q6u1h3Bm9yRYrF9EgGPbpD5g43
-	Vb7zG5JnfuGg9jvWyKE7UiREWcNEzmoZglWqjKpgPqATiOoFbUnf0wAhu8WgbRSsk4Ju33J4zbR
-	No/UJ1iyg3YYjXzYAoobFjiFNgEr/21jc2vlLqRzDEZ2ELOKRTWTDb/X0gqMhjBc+jPmAIoL4KP
-	IgcY7FFLGX7VvODavQI+G5Woh/ZxiIWtb+2XQho+DAiOqkZM9m9TKvNKHded32tPrLM9pMGlnVT
-	VXmJ3uVWlCfPIS2kcWaudl+3PoGYo8cWLvFhRU6N2UxV2/GU7H+udswPvqoyH3ndpyxWhwtLTlL
-	LpDI0K6MxjH/94RsJQyIpbmJBWfwYGttyIMwQspRU3laCk4KDVuVf1zQ=
-X-Google-Smtp-Source: AGHT+IFkvcg76qipc69NuQnIWNLwlZfZsq2gWo9bV8jdBE0nvip+ixi0boun0gdtaOb85HXiysRS2w==
-X-Received: by 2002:a17:903:40d1:b0:27e:f16f:618b with SMTP id d9443c01a7336-28e9a55c07fmr62108745ad.24.1759543014242;
-        Fri, 03 Oct 2025 18:56:54 -0700 (PDT)
-Received: from Ubuntu24.. ([157.33.197.131])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d134859sm63197485ad.57.2025.10.03.18.56.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Oct 2025 18:56:53 -0700 (PDT)
-From: Shrikant Raskar <raskar.shree97@gmail.com>
-To: jic23@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	matt@ranostay.sg,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	Shrikant Raskar <raskar.shree97@gmail.com>
-Subject: [PATCH 2/2] iio: health: max30100: Add pulse-width configuration via DT
-Date: Sat,  4 Oct 2025 07:26:23 +0530
-Message-ID: <20251004015623.7019-3-raskar.shree97@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251004015623.7019-1-raskar.shree97@gmail.com>
-References: <20251004015623.7019-1-raskar.shree97@gmail.com>
+        d=1e100.net; s=20230601; t=1759545720; x=1760150520;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8LKTW72ANVRWqbBbs1orSLC8F5L2PbgtH5ZHTOYbBuc=;
+        b=FPGogC/IOWu96qo286JbTudmheoURg3zS73OTUlSB/2uJCQ/NM4byVNRIrAOLQomLb
+         E/5KkuekF+WeOiwVnGpnBNZtcm9G0K5tj1UqUMpRRXBXOJ9uGr3hfZ/jiVF9CstLi7pG
+         UNPSD/NmSDCoMzk+ZlmnpzJDlCUHrVAIJrHr/b9xZwHhz9mB1cOjG7qVdNpgPLSQcFOn
+         q8fL5DHbqjRrNNOz+cVJhtpT9x6EPSheNJvbpzdJbfVS3ywvbXJAgowBC+A6O36k6yvK
+         8iYMWB/Td/fWCPn/heZvI+kq0xAjYfsLRDmvRrDS/uN86DU8uOzyQnVttmlwaG7VzpCu
+         SgPw==
+X-Forwarded-Encrypted: i=1; AJvYcCW0+FkF5qAkhWjiqO5BIXv8ianZ6RF46H6LndIj04/6hjnOzzxJkZS78k4h9HdeqlgkGdCp7KuIAmQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyk+MjZmkIEDtPUgKXqwXI7TXK1uKzoDwUys7q7q/cCdr8BnSY4
+	ohsMGZ7p8QGKOO9PgNyYUjSJiV8f2iKxATP/EEtSOEK+Xz8Bf2BeFaZu9G4ttt15k+EYZHYc74N
+	HKbEomtMZgtMxojRanL7mGpRDF9mtUuFO4JkN4OmATNQR4uiE0JM8PTqJgGfsJ6w=
+X-Gm-Gg: ASbGncsDQ6XfDxQWeZl6VAXIJGpLWp1ZFhxPeGLGYD6QlODIZZBPn8zzPAuS7lwDRp6
+	c49JyphT4oV1LtoobYX8Iv37hzZprp11uG/f3bLBhBvgVTNgq2EQErz52ga0r79KMRr/IxDZX1N
+	XK+jX972arsXrneB5T79zmN7KJ3Z2+YgT//34go/PJhjK5HRnxanj9D0yeo2+RKs21cLY+glulX
+	kZp7hoRamzlZ4UYWjbnVWdZOcUWbE5u7/sVUXDyfU8aVSk3Z0dBzvDQK41ZcA1fq/vCxiNe7SV6
+	U5n0O/qNtf6UzI4d31DQkSoAl6Jo86qTFHwftuaaq8zXABY/xbZrypcWP2e0MWPd+g3SwHe90ZC
+	rgw==
+X-Received: by 2002:a05:6a00:8c6:b0:781:2538:bfb4 with SMTP id d2e1a72fcca58-78c98d5cb4cmr5364067b3a.10.1759545720386;
+        Fri, 03 Oct 2025 19:42:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHoqhjBr0QjJZhFy4pINP5TXEFjwtPrvEKpTZgZJvp0XgVHp0FpeliOUWBrj6cq1uLbRLNrvA==
+X-Received: by 2002:a05:6a00:8c6:b0:781:2538:bfb4 with SMTP id d2e1a72fcca58-78c98d5cb4cmr5364023b3a.10.1759545719824;
+        Fri, 03 Oct 2025 19:41:59 -0700 (PDT)
+Received: from [10.216.33.177] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78b01f9a2b9sm6189511b3a.19.2025.10.03.19.41.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Oct 2025 19:41:59 -0700 (PDT)
+Message-ID: <a3158843-dfac-4adc-838a-35bb4b0cbea4@oss.qualcomm.com>
+Date: Sat, 4 Oct 2025 08:11:48 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V7 3/5] dt-bindings: iio: adc: Add support for QCOM PMIC5
+ Gen3 ADC
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>, robh@kernel.org,
+        krzk+dt@kernel.org, conor+dt@kernel.org, agross@kernel.org,
+        andersson@kernel.org, lumag@kernel.org,
+        dmitry.baryshkov@oss.qualcomm.com, konradybcio@kernel.org,
+        daniel.lezcano@linaro.org, sboyd@kernel.org, amitk@kernel.org,
+        thara.gopinath@gmail.com, lee@kernel.org, rafael@kernel.org,
+        subbaraman.narayanamurthy@oss.qualcomm.com,
+        david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
+        kamal.wadhwa@oss.qualcomm.com, rui.zhang@intel.com,
+        lukasz.luba@arm.com, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        cros-qcom-dts-watchers@chromium.org, quic_kotarake@quicinc.com,
+        neil.armstrong@linaro.org, stephan.gerhold@linaro.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250826083657.4005727-1-jishnu.prakash@oss.qualcomm.com>
+ <20250826083657.4005727-4-jishnu.prakash@oss.qualcomm.com>
+ <20250829-classic-dynamic-clam-addbd8@kuoka>
+ <5d662148-408f-49e1-a769-2a5d61371cae@oss.qualcomm.com>
+ <4e974e77-adfc-49e5-90c8-cf8996ded513@kernel.org>
+ <a0e885be-e87d-411a-884e-3e38a0d761e5@oss.qualcomm.com>
+ <8c90cc3f-115e-4362-9293-05d9bee24214@linaro.org>
+ <5d4edecf-51f3-4d4a-861f-fce419e3a314@oss.qualcomm.com>
+ <20250927144757.4d36d5c8@jic23-huawei>
+Content-Language: en-US
+From: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
+In-Reply-To: <20250927144757.4d36d5c8@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 9uwbRzH9PzQBUdBYrZWpmssKK3z_8Wq8
+X-Proofpoint-ORIG-GUID: 9uwbRzH9PzQBUdBYrZWpmssKK3z_8Wq8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTI3MDA0MyBTYWx0ZWRfXyPy2V+IBSk97
+ HlzRUYc5psjB869ZsNGmD7ThgMEVL9BwsB/oHhGuIcmSnvdFbUmZ/RW5SC69rixjZy38iCf6yiH
+ eGHoUXyBMaCI/G7Xhs8WAmVHSDKzHv3UIimBz8BMZGS3Cw+n+LfKoTH4XyCkuSVut23jq3cTzvo
+ jl1LhtEGJFfnQmvotfoFzIpKPIxlqhKR05fi5RZJO2AlhgohTtT4KOReE72tmRdcZr0XJ+PiDi0
+ pDOKEafUVzSVkFJtmD5QqCpx/5H5wPymtEzjscfvQ/bR8vZv/yC81Xn8ZTxPD794ynW5+yYXbj6
+ cgSI+mlpGlBrmLZ70UFt90t0AU6/lOQD8kbbNTfDUMD49Ndvhi/srp6sSvqZbKZHfOzdZLtQEs5
+ 4YIg5U28bP1D9EA38B3qrq3rtaEe+w==
+X-Authority-Analysis: v=2.4 cv=Sf36t/Ru c=1 sm=1 tr=0 ts=68e08979 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=EUspDBNiAAAA:8 a=u19HPSzwk6W4tZ9FH_gA:9
+ a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-03_07,2025-10-02_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 suspectscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 lowpriorityscore=0 phishscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
+ definitions=main-2509270043
 
-The MAX30100 driver previously hardcoded the SPO2 pulse width to
-1600us. This patch adds support for reading the pulse width from
-device tree (`maxim,pulse-width`) and programming it into the SPO2
-configuration register.
+Hi Jonathan,
 
-If no property is provided, the driver falls back to 1600us to
-preserve existing behavior.
+On 9/27/2025 7:17 PM, Jonathan Cameron wrote:
+> On Fri, 19 Sep 2025 20:17:43 +0530
+> Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
+> 
+>> Hi Krzysztof,
+>>
+>> On 9/18/2025 5:45 AM, Krzysztof Kozlowski wrote:
+>>> On 18/09/2025 04:47, Jishnu Prakash wrote:  
+>>>> Hi Krzysztof,
+>>>>
+>>>> On 9/17/2025 5:59 AM, Krzysztof Kozlowski wrote:  
+>>>>> On 16/09/2025 16:28, Jishnu Prakash wrote:  
+>>>>>>> You cannot have empty spaces in ID constants. These are abstract
+>>>>>>> numbers.
+>>>>>>>
+>>>>>>> Otherwise please point me to driver using this constant.  
+>>>>>>
+>>>>>> These constants are for ADC channel numbers, which are fixed in HW.
+>>>>>>
+>>>>>> They are used in this driver: drivers/iio/adc/qcom-spmi-adc5-gen3.c,
+>>>>>> which is added in patch 4 of this series.
+>>>>>>
+>>>>>> They can be found in the array named adc5_gen3_chans_pmic[].  
+>>>>>
+>>>>> Really? So point me to the line there using ADC5_GEN3_VREF_BAT_THERM.
+>>>>>  
+>>>>
+>>>> We may not be using all of these channels right now - we can add them
+>>>> later based on requirements coming up. For now, I'll remove the channels
+>>>> not used in adc5_gen3_chans_pmic[].  
+>>>
+>>> You are not implementing the feedback then. Please read it carefully.
+>>>   
+>>
+>> Sorry, I misunderstood - so you actually meant I should remove the
+>> empty spaces in the definitions, like this?
+>>
+>> -#define ADC5_GEN3_VREF_BAT_THERM               0x15
+>> +#define ADC5_GEN3_VREF_BAT_THERM 0x15
+>>
+>> I thought this at first, but I somehow doubted this later, as I saw some
+>> other recently added files with empty spaces in #define lines, like:
+>>
+>> include/dt-bindings/iio/adc/mediatek,mt6373-auxadc.h
+>> include/dt-bindings/regulator/st,stm32mp15-regulator.h
+>>
+>> I can make this change, if you prefer this. Please let me know
+>> if I'm still missing something.
+>>
+>> Also please let me know if you want me to remove the unused
+>> channels - I would prefer to keep them if there's no issue,
+>> as we might need them later.
+>>
+> He is referring to 0x14 and below not being defined values.  So what
+> do they mean if they turn up in the DT?
+> 
 
-Testing:
-Hardware: Raspberry Pi 3B + MAX30100 breakout
-Verified DT property read in probe()
-Confirmed SPO2_CONFIG register written correctly using regmap_read()
+Thanks for your clarification. To address your first point above, the macros
+added here only represent the ADC channel numbers which are supported for
+ADC5 Gen3 devices. If there are numbers missing in between (like 0x14),
+that is because there exist no valid ADC channels in HW matching those
+channel numbers.
 
-Signed-off-by: Shrikant Raskar <raskar.shree97@gmail.com>
----
- drivers/iio/health/max30100.c | 39 +++++++++++++++++++++++++++++++++--
- 1 file changed, 37 insertions(+), 2 deletions(-)
+For your question above, if any of the undefined channels are used in the DT,
+they should ideally be treated as invalid when parsed in the driver probe and
+lead to an error. When I checked the code again, I saw we do not have such an
+explicit check right now, so I will add that in the next patch series.
 
-diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
-index 814f521e47ae..2b3348c75beb 100644
---- a/drivers/iio/health/max30100.c
-+++ b/drivers/iio/health/max30100.c
-@@ -5,7 +5,6 @@
-  * Copyright (C) 2015, 2018
-  * Author: Matt Ranostay <matt.ranostay@konsulko.com>
-  *
-- * TODO: enable pulse length controls via device tree properties
-  */
- 
- #include <linux/module.h>
-@@ -54,6 +53,9 @@
- #define MAX30100_REG_SPO2_CONFIG		0x07
- #define MAX30100_REG_SPO2_CONFIG_100HZ		BIT(2)
- #define MAX30100_REG_SPO2_CONFIG_HI_RES_EN	BIT(6)
-+#define MAX30100_REG_SPO2_CONFIG_200US		0x0
-+#define MAX30100_REG_SPO2_CONFIG_400US		0x1
-+#define MAX30100_REG_SPO2_CONFIG_800US		0x2
- #define MAX30100_REG_SPO2_CONFIG_1600US		0x3
- 
- #define MAX30100_REG_LED_CONFIG			0x09
-@@ -306,19 +308,52 @@ static int max30100_led_init(struct max30100_data *data)
- 		MAX30100_REG_LED_CONFIG_LED_MASK, reg);
- }
- 
-+static int max30100_get_pulse_width(unsigned int pwidth_us)
-+{
-+	switch (pwidth_us) {
-+	case 200:
-+		return MAX30100_REG_SPO2_CONFIG_200US;
-+	case 400:
-+		return MAX30100_REG_SPO2_CONFIG_400US;
-+	case 800:
-+		return MAX30100_REG_SPO2_CONFIG_800US;
-+	case 1600:
-+		return MAX30100_REG_SPO2_CONFIG_1600US;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int max30100_chip_init(struct max30100_data *data)
- {
- 	int ret;
-+	unsigned int pulse_us;
-+	unsigned int pulse_width;
-+	struct device *dev = &data->client->dev;
- 
- 	/* setup LED current settings */
- 	ret = max30100_led_init(data);
- 	if (ret)
- 		return ret;
- 
-+	/* Get pulse width from DT, default = 1600us */
-+	ret = device_property_read_u32(dev, "maxim,pulse-width", &pulse_us);
-+	if (ret) {
-+		dev_warn(dev, "no pulse-width defined, defaulting to 1600us\n");
-+		pulse_width = MAX30100_REG_SPO2_CONFIG_1600US;
-+	} else {
-+		pulse_width = max30100_get_pulse_width(pulse_us);
-+		if (pulse_width < 0) {
-+			dev_err(dev, "invalid pulse-width %u\n", pulse_us);
-+			return pulse_width;
-+		}
-+	}
-+
- 	/* enable hi-res SPO2 readings at 100Hz */
- 	ret = regmap_write(data->regmap, MAX30100_REG_SPO2_CONFIG,
- 				 MAX30100_REG_SPO2_CONFIG_HI_RES_EN |
--				 MAX30100_REG_SPO2_CONFIG_100HZ);
-+				 MAX30100_REG_SPO2_CONFIG_100HZ |
-+				 pulse_width);
- 	if (ret)
- 		return ret;
- 
--- 
-2.43.0
+And to be clear on which channel numbers are supported, I think it may be
+best if, for now, we only add support for the channel numbers referenced in
+the array adc5_gen3_chans_pmic[] in drivers/iio/adc/qcom-spmi-adc5-gen3.c.
+
+There are only 18 channel numbers used in this array and I would remove
+all channels except for these from the binding files. During parsing, we
+would use this array to confirm if an ADC channel added in DT is supported.
+
+In case we need to add support for any more channels later, we could add
+their macros in the binding file and update the array correspondingly at
+that time.
+
+Does all this sound fine? Please let me know if you have any more concerns
+or queries.
+
+Thanks,
+Jishnu
+
+> Hence the request for context on how this define is being used so that
+> you can get some feedback on how it should be done.
+> 
+> J
+>> Thanks,
+>> Jishnu
+>>
+>>> Best regards,
+>>> Krzysztof  
+>>
+> 
 
 

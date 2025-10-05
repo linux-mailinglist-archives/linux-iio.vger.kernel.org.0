@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-24753-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24754-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9323CBB96F7
-	for <lists+linux-iio@lfdr.de>; Sun, 05 Oct 2025 15:15:09 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 136D3BB96EE
+	for <lists+linux-iio@lfdr.de>; Sun, 05 Oct 2025 15:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 149FA3BB922
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Oct 2025 13:14:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E9DD84E4204
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Oct 2025 13:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8F9287518;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749BA299AAA;
 	Sun,  5 Oct 2025 13:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="LVI2kd9w"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="Dw8Naqmq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AB128AAF9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B8E28AB0B;
 	Sun,  5 Oct 2025 13:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759669997; cv=none; b=OFFZRuYPC2wAQOOAgz5emKGTfbvoz1iPo+8WrDBtFDhGDn1tehHhi65snmzG46Kv88PNpy8oeo16ULj+Xh6rHXvlFHevSXgiH21vynW7OenS1zgoiLtvXUHS1Jbbxvd6AHnP+90ZfNbTR8fq15KnRBunvoeuyIAxc6ZzRgC+D7w=
+	t=1759669997; cv=none; b=kKE2RDULLWs85yx4OSl8JQ1/Bhuokd6asE3kvqTaJ6IU+Qe9NoOXR1W0CufgcplG7PWbTT5pNeNpCl2kQWvCWUX6/eZYfKVCWk4YnSK4dNDai1cFYEVUd2fyek3I2Ts4X91nP+sasx+GVlaGdWfYzz8g+dQiqyuVkvgLF2tp07I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759669997; c=relaxed/simple;
-	bh=1PNswrNq1+RwvS/M7dRpzM5A+EzBOkH3teLiLfbT8C8=;
+	bh=Hji0AFsKY2VMUvZORR8uShWfZuQyHGjgdcQlOTjd/X0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SoZ92lmmokIEvrKBqAL3dB+MHvB8Fth4MyRUq3SjDWr+ITB3mY2VXayANBCl+xP7NON9y80ewtGtDkS2WpzjXszWJsbzrOQSriE5NWDJvPPaNf0W7yIno8eGjNKxzgvtqL+4j3y7EkDInv7KGnxghqktizpKHc1q081A8Brdp8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=LVI2kd9w; arc=none smtp.client-ip=172.105.74.154
+	 In-Reply-To:To:Cc; b=EX34Syf6m3ocV/dDCurNkebsy7RL07PXE9g1yEAjRCDo9zLw2TRo1aaKNFnO1XyjBHZKOASt0+XY9CscX5v4N3z+tuSvy5lp4QY8RkcGGzbE3t5gr5eAKUwhvwXmD9FCQdoqB3tPY6v28p/GAK1/STn9LE4+AG4kAHJBMv2N38c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=Dw8Naqmq; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from [10.212.0.13] (unknown [IPv6:2a02:2f0e:3e0c:5b00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id C0121173BF7;
-	Sun, 05 Oct 2025 16:13:05 +0300 (EEST)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 268DC173BF8;
+	Sun, 05 Oct 2025 16:13:06 +0300 (EEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
 	s=mail; t=1759669986;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DDEOtfTru/Ogw9pyS3SwcWFlvIzmPM6wcAxTmLyFrWM=;
-	b=LVI2kd9wWQOq5UwQsQ27LdUd59lBSQr6ph1dZVYwfzRTQSyO0ADfWetQCJJxowG1J53Cj8
-	PpKJU4qHBMTTtJUF3xgiumJH772hXQy7wHaSdWrLX49Xi24+opxTWIEFNevGlQcrl8ftSA
-	Tvxbw2e1N4j9aGBgfilIZKfaQGeAzgBHykd96DHEc1m4LkVtba/0pSg2+tVT5/tUhVIMOm
-	a1v8H0VAgRBf9nK+bMpo+cHeSJETDZ2QA4tHKkHdjp6mH/klM4OppmT9n8lHbUrYOKEYoS
-	4U1bShK5zx0wrS4AJicmwWO0/FC6ZIh/O3mrDZ9C0QetvYDExRIkmvoiYyHpRQ==
+	bh=RZCd1LuoKLbW/Yf0spyzgrKJD68T+psOsCJqcg637YA=;
+	b=Dw8NaqmqYjpvbQqFesznwq1jEcTiGtFEYM1AWwmuJ37SC7eA9ryvwIGKkrmB/i28O5cAn7
+	xEOrGLgGYobKaVlBCbXPuFxqKjwoQSMHACjjChGA9cSyaeUXzHdNlxmlOuEORcpBojcLTx
+	wkL+BL0+6l/tDhAbdWuDj+9I6iFqyVamBUeQWxAEncQzMtDw5PS7vP7C5P3cdmlfPIBLKA
+	KmCTU4pQgxvTmXFgN2V8tDvQqDpXmrYOD3uewdrEivvaDJGZaUvP4+rO9nSXuJTJ+WJtbu
+	n4bB/KwG5iKfULIBFG5sVutwSq+W/jWzbuVwuPAbeNHSt89RNDuGZx1C2VvVyQ==
 From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Sun, 05 Oct 2025 16:12:24 +0300
-Subject: [PATCH v4 15/19] iio: accel: bma220: add i2c watchdog feature
+Date: Sun, 05 Oct 2025 16:12:25 +0300
+Subject: [PATCH v4 16/19] iio: accel: bma220: add interrupt trigger
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251005-b4-bma220_improvements-v4-15-0f449ba31585@subdimension.ro>
+Message-Id: <20251005-b4-bma220_improvements-v4-16-0f449ba31585@subdimension.ro>
 References: <20251005-b4-bma220_improvements-v4-0-0f449ba31585@subdimension.ro>
 In-Reply-To: <20251005-b4-bma220_improvements-v4-0-0f449ba31585@subdimension.ro>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -73,84 +73,139 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1800;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3564;
  i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=1PNswrNq1+RwvS/M7dRpzM5A+EzBOkH3teLiLfbT8C8=;
+ bh=Hji0AFsKY2VMUvZORR8uShWfZuQyHGjgdcQlOTjd/X0=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQmRDc25wM
- k02U1dNQnl5WmlBR2ppYnRLODF5dkQ1L1NBSGdna3lRd240SGNJCk9jUUNVdDE1Q1RzdWNQQkUr
- OWZPS1lrQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKbzRtN1N
- BQW9KRUhRcko2ZGpPa2xqVCtnUC8xV1NwTlpkbTdxVExMTDgzMS9HL1VZSlhpZThqL3ZGVDV0Zg
- pJNERsOE04cFFmSXpRWjlWc0ZGcmh5dU9LaTRvMktvb0tJQlZiYi9tZGhBd2piUkpKdkhEWkprc
- XdmaTFmSGZRClRESWZmdGRLWm1lZi95Z1R2NzFiRjZSaHVWeHlaUFdnazBJZmozZG1UUHNhMndH
- Z0tLcHNjY0FHRkJWM212WlYKRDRIajE2SldWZDQwL0EvbDQ4MmRrY1ZLcjJJdEtta0hsNFNzN0x
- tQm5CSlB2WFNzUVBER3dUZ2FJOHlxemtONgpWckhPbkZJRVBuNFNROXd2NWZNWXZJRityVjVLK1
- RzWWZmWDNOSFJlVnM2Z0E5YXBFbkhQYTVKUEdKNUw2RUNqClZoQWN4Wk1JQ2p1Q0hzRWZMeHJYM
- nZpTzF5U3FMTGI1UjJqeGFkZGJScGMzOHhjYnpXcFEwZ3hpdk8za3h0ZmMKQitmSDNrN0gxY1FD
- QWtxUXc5N1A5Vy9GNFprVkpRTzk1UjNkV3hRR2dOSDRqVW1oL2xJVHVMMU1sbC9BOTJkVgpmWWU
- xMEI2eTlxSTRMajBraVBOZmVSRCtIN3VjcVVuRERxaDd6anVCMnFPRkhiTmpqcXJ5N3VRSG1BUl
- JoUEhmCjI2NGlYcWV6bGNXaE0xTzlEVzNnWGpRRkpWZ3c4U05iY25hTnZrWUF4UElCS3hPT0VoQ
- XZjUE5DbERGcU5Hc2IKUG5ka0s3d0RmZ091dmRTMGhrRnRDdmNodEJja2JFSy8rSEtWQUFPTWNm
- UGEvVDdUR1k3MmtRUTFjb0l2Qm95bQpPWVE1UUw2SHArOVl5bWlWMWdBRjZYMDNLZUQySCtPcEV
- YcTdET1JDQ2o1RVBRbzR5aFRXWWVJY3pBU1NOWnpKCjVZY2N1aVFVY3VFZlFRPT0KPTdvS1UKLS
+ k02U1dNQnl5WmlBR2ppYnRXMUNKTURKSmQzejMvVG9QcXJ6RW1vCmhlSFI0WGdTOE14THVaalQy
+ azMzRklrQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKbzRtN1Z
+ BQW9KRUhRcko2ZGpPa2xqU2lvUC8xVVoxYyttUUREM3prMENnODlkdi9kTEtDQmFBYWdCZm9QMQ
+ pQd1NUeHk5akJXVUllVURlaVd6Y2RqNHpTSGtKL2dFa2dBMTF0MDh1M0RrYjlUaTlLUkhCVGF4S
+ nlidkdQUWYzCkpocEJnYTlQM2JGbFM3d2U3ZDBVRFhYajREY2dGSldoZk95UkxXWE5iN2VQcmVY
+ ek9lR0FaVklMU1BqRXc2MGEKZVI4OERsbkVDcmpTL2h4bGhsUkRYck5RdE1jclRFYWNkeWMrcHB
+ iSzVrbHFaQVduYlpnVUFyaTBuc1ozRHIycgpNdGx0ODhBa3lVMmJtTSt4VDc5ckE1bkJ6M3ZHWT
+ JiRTB4aEtybk9WSmVYVWp5Vkx4WVZwTmJsRStlcVZ1OThiCkVhM1RsS1ZaWTQvMmdnVTNvNzE5c
+ ExURGx2NHMzRDUwRk45dTJWRVUwM1hFR2x6K0pobGd3VUhLR2J2N2dmcUkKblR5V0NNV3VpR2cx
+ NU95YU8yWmpzakQ3V2Y2bHhWVFQrNGhPUytpUkJJZGx0aFQ4Nno2aHlYNVhuQXFsKzFYUgpOMDg
+ vN1dsMjlhS3RmMXFYSzdRVEppM09qN0lSZHBSY1lVNGt4MzdLdjlmOTJmcEZqd3B3ZVg2RUZMMX
+ BVUDJuCjdObXREMjBHcXFmU2xheXVrejladUtHQ2p5Mzl6cnpnZ0VGMXZWeHBwcndiNk9DNWNXS
+ VBDemJuZFlKQkhzMnkKYnJnS1JlY0tSWjBvZTJvcWxQZG9YMUd1NUt3UW1pRUdwSXRWZ1Z1WVFn
+ WVRGck9lcjVxL05BcElBSWVjalBFaApacnAxN3VtSDBpaVk1MUVMY1ZjbWxkMmVxQkFNb2cxOTR
+ lSXFseFAydDFPVDRSRllSaFBFTTdEaUVvRjBsOWg0CmIxT09rbVQ5WUhRbkRBPT0KPVh5S3EKLS
  0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
 X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
  fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
-Sometimes the sensor gets stuck and enters a condition in which it pulls
-SDA low, thus making the entire i2c bus unusable.
-This problem is mitigated by activating a 1ms watchdog implemented in
-the sensor.
+Add interrupt trigger.
 
 Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 ---
-v1->v2
-- hardcode 1ms timer watchdog to any i2c-based sensor instead of
-  configuring a dt-based property
-- rename bma220_wdt() to bma220_set_wdt()
-v2->v4 no change
+v1->v2 no change, just patch split
+v2->v3 replace regmap_bulk_read with regmap_read (Jonathan)
+ (I just realized BMA220_REG_IF0 is never used, even by future
+ event patches)
+v4 fix compilation err
 ---
- drivers/iio/accel/bma220_core.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/iio/accel/bma220_core.c | 58 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
 diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220_core.c
-index a3faf1f5ec6d79f2c6105697b404d6eb1f4501db..a957751be40c63c25963283be813db97f73bf004 100644
+index a957751be40c63c25963283be813db97f73bf004..8f0cbd0aacb92a21afc57aaa350547d0c767d4b6 100644
 --- a/drivers/iio/accel/bma220_core.c
 +++ b/drivers/iio/accel/bma220_core.c
-@@ -10,6 +10,7 @@
- #include <linux/bitfield.h>
- #include <linux/cleanup.h>
- #include <linux/device.h>
-+#include <linux/i2c.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
-@@ -355,6 +356,12 @@ static int bma220_power(struct bma220_data *data, bool up)
- 	return -EBUSY;
- }
+@@ -22,6 +22,7 @@
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
++#include <linux/iio/trigger.h>
+ #include <linux/iio/trigger_consumer.h>
+ #include <linux/iio/triggered_buffer.h>
  
-+static int bma220_set_wdt(struct bma220_data *data, const u8 val)
+@@ -123,6 +124,7 @@ struct bma220_data {
+ 	struct regmap *regmap;
+ 	struct mutex lock;
+ 	u8 range_idx;
++	struct iio_trigger *trig;
+ 	struct {
+ 		s8 chans[3];
+ 		/* Ensure timestamp is naturally aligned. */
+@@ -191,6 +193,22 @@ const struct regmap_config bma220_i2c_regmap_config = {
+ };
+ EXPORT_SYMBOL_NS_GPL(bma220_i2c_regmap_config, "IIO_BOSCH_BMA220");
+ 
++static int bma220_data_rdy_trigger_set_state(struct iio_trigger *trig,
++					     bool state)
 +{
-+	return regmap_update_bits(data->regmap, BMA220_REG_WDT, BMA220_WDT_MASK,
-+				  FIELD_PREP(BMA220_WDT_MASK, val));
++	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
++	struct bma220_data *data = iio_priv(indio_dev);
++
++	return regmap_update_bits(data->regmap, BMA220_REG_IE0,
++				  BMA220_INT_EN_DRDY_MSK,
++				  FIELD_PREP(BMA220_INT_EN_DRDY_MSK, state));
 +}
 +
- static int bma220_init(struct device *dev, struct bma220_data *data)
++static const struct iio_trigger_ops bma220_trigger_ops = {
++	.set_trigger_state = &bma220_data_rdy_trigger_set_state,
++	.validate_device = &iio_trigger_validate_own_device,
++};
++
+ static irqreturn_t bma220_trigger_handler(int irq, void *p)
  {
  	int ret;
-@@ -383,6 +390,13 @@ static int bma220_init(struct device *dev, struct bma220_data *data)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to soft reset chip\n");
- 
-+	if (i2c_verify_client(dev)) {
-+		ret = bma220_set_wdt(data, BMA220_WDT_1MS);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "Failed to set i2c watchdog\n");
-+	}
-+
- 	return 0;
+@@ -413,6 +431,23 @@ static void bma220_deinit(void *data_ptr)
+ 			 ERR_PTR(ret));
  }
  
++static irqreturn_t bma220_irq_handler(int irq, void *private)
++{
++	struct iio_dev *indio_dev = private;
++	struct bma220_data *data = iio_priv(indio_dev);
++	int ret;
++	unsigned int bma220_reg_if1;
++
++	ret = regmap_read(data->regmap, BMA220_REG_IF1, &bma220_reg_if1);
++	if (ret)
++		return IRQ_NONE;
++
++	if (FIELD_GET(BMA220_IF_DRDY, bma220_reg_if1))
++		iio_trigger_poll_nested(data->trig);
++
++	return IRQ_HANDLED;
++}
++
+ int bma220_common_probe(struct device *dev, struct regmap *regmap, int irq)
+ {
+ 	int ret;
+@@ -441,6 +476,29 @@ int bma220_common_probe(struct device *dev, struct regmap *regmap, int irq)
+ 	indio_dev->num_channels = ARRAY_SIZE(bma220_channels);
+ 	indio_dev->available_scan_masks = bma220_accel_scan_masks;
+ 
++	if (irq > 0) {
++		data->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
++						    indio_dev->name,
++						    iio_device_id(indio_dev));
++		if (!data->trig)
++			return -ENOMEM;
++
++		data->trig->ops = &bma220_trigger_ops;
++		iio_trigger_set_drvdata(data->trig, indio_dev);
++
++		ret = devm_iio_trigger_register(dev, data->trig);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "iio trigger register fail\n");
++		indio_dev->trig = iio_trigger_get(data->trig);
++		ret = devm_request_threaded_irq(dev, irq, NULL,
++						&bma220_irq_handler, IRQF_ONESHOT,
++						indio_dev->name, indio_dev);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "request irq %d failed\n", irq);
++	}
++
+ 	ret = devm_add_action_or_reset(dev, bma220_deinit, data);
+ 	if (ret)
+ 		return ret;
 
 -- 
 2.49.1

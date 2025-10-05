@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-24751-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24750-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEEB0BB96E2
-	for <lists+linux-iio@lfdr.de>; Sun, 05 Oct 2025 15:14:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB8BBB96D9
+	for <lists+linux-iio@lfdr.de>; Sun, 05 Oct 2025 15:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BCFB18979FA
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Oct 2025 13:14:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A27CD189747B
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Oct 2025 13:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB3E296BAA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43788291C3F;
 	Sun,  5 Oct 2025 13:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="JMeH+6Cd"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="Kk0cSCzu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259D52882CC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CBE28AB16;
 	Sun,  5 Oct 2025 13:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759669996; cv=none; b=GyPg5KXodtQcV4CJ8GSK1gpGQjDy6AHJEpBQtzI/3mjruT7y4tS+roBRXEhYyL/FnsXdrqbjTdQQCwhk3S/t4A0rZrzQEe9djALDnnkV8f0Pwv+zCB9JoMxKhK/QPVB8/PR+oeTZaBX/SEOJbXBuJAhAiJvAH//XtqXP6OKPxKM=
+	t=1759669996; cv=none; b=bLMiKgR0EEjH7FVvoPXBI/B1hDdvbZW5t50vKyy2MZ9Bjh7GRh8lezbzQOCBn/XwCKk+nc/BYMzrgMP4joAK5fhinuPKJVQ0Sh60UYrv+UV9sH1f5+tidp/PPO8wJt4Z0d9PgS73mbV5Zb09TW9YPluuzYqVOj6/fRuYXpX9Zhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759669996; c=relaxed/simple;
-	bh=Cr5yCqlqwxcx8TbSWAbTEX7W4rNpVRq41ROaWboQjtM=;
+	bh=d1J2MNB/TSp8FJmqC3xqo6geozDAbsIUbv2aGaGqnDE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HyOIy9YXPwd9PKcqyB1Opo7+ntZAdNyNXH/4CMSx3shGtFUNTfMROGVbt95utP1jHwUhfbyfz/tVdI/RqnSGV4+wk/hcumCxapnQIAO4c6u9YAKeYnZv/YvPblarnMuTQN3czUu991OXao7CJC51YVht4upTwXCZvB2xDzFAo9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=JMeH+6Cd; arc=none smtp.client-ip=172.105.74.154
+	 In-Reply-To:To:Cc; b=nRvx0OiouEP07gq3pzQVJsC9dFEL9K+wCErN84is/dsokVtqFRcR66wTiC/acbxhcqpQtXSi40lthbF8RxhQ3amT9PWcFYPoBkFp+ixbMDxSH5QmWufR4dR6PinTxIRj2ktXZ5VqKNV/o3EKSYZnHVJRmj+IUtGzCtkNukWt9ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=Kk0cSCzu; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from [10.212.0.13] (unknown [IPv6:2a02:2f0e:3e0c:5b00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 7E576173BF9;
+	by mail.subdimension.ro (Postfix) with ESMTPSA id DB0AF173BFA;
 	Sun, 05 Oct 2025 16:13:06 +0300 (EEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
-	s=mail; t=1759669986;
+	s=mail; t=1759669987;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y29vDzVout/ALq4vqu39VhS/cwV3LKAo3f/aaUbkGGc=;
-	b=JMeH+6CdvHcg2O5LuLb8gXdp6L/Plj3syLkL6GmEtLuiAMNRAxO9uSperDED44JTp8nP51
-	SpILXfquIt/Nn4ZPKFqqKBiFng4nBpRyMYtoYaLI9Qez48oufp7gC5pvzTPsC+Ygo6pKmA
-	s84WxvI57bQahk0FZx9cxE6fplYpx7qY0JuBVYkbrsIshaFtq7OU6pvf7hhx9o+MWV37fR
-	t1BNllHlT8PXocnaz+DCdF/MRnVBMezuN2Qj/2Euo38fiDElh4gZGXGUvUYbrzv7t1LzVx
-	8Ceo4MHmYqBrJ5MlJcw/d+Ixw24Qr3nRJ6Nogr37w3bMwNIwnjy7QTqkFA2k7Q==
+	bh=Vfj7hLAQv6FGVYQz9sUHDZRVmbR0mVyLAK+ZlMSvlxA=;
+	b=Kk0cSCzumsjr94CMFaWFIRjOQK0W+xLsew6U3d76apbLEDJjGdcSLUHJWdID28n+/QT33M
+	DW+ess2uAYVdOs3MpmuDMWST6q/wlxdgC6IgDZMkGz5qBLwhkijXTIc5dxkHfapDGLSX1Y
+	CwBnoOK9CUcbJ4Hhi+WFYxZLCr1dUHh4GrQIQhyM7BQeeHp2W1QmQaqPBZEGBO76twwbVi
+	1FbVrUe9/iiSRub76sV6tjrICWdz+7oJylJPhuxuBl4UHTwsdDKqFF3sN1cpHMmchRFI9O
+	P06bXVJVfLYHtt3juyxFCAwr9T0Lkcz5GI/AEfc+HcruL1BakbJalMJ5a7OqzQ==
 From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Sun, 05 Oct 2025 16:12:26 +0300
-Subject: [PATCH v4 17/19] iio: accel: bma220: add LPF cut-off frequency
- mapping
+Date: Sun, 05 Oct 2025 16:12:27 +0300
+Subject: [PATCH v4 18/19] iio: accel: bma220: add debugfs reg access
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -61,7 +60,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251005-b4-bma220_improvements-v4-17-0f449ba31585@subdimension.ro>
+Message-Id: <20251005-b4-bma220_improvements-v4-18-0f449ba31585@subdimension.ro>
 References: <20251005-b4-bma220_improvements-v4-0-0f449ba31585@subdimension.ro>
 In-Reply-To: <20251005-b4-bma220_improvements-v4-0-0f449ba31585@subdimension.ro>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -74,159 +73,64 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4224;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1189;
  i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=Cr5yCqlqwxcx8TbSWAbTEX7W4rNpVRq41ROaWboQjtM=;
+ bh=d1J2MNB/TSp8FJmqC3xqo6geozDAbsIUbv2aGaGqnDE=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQmRDc25wM
- k02U1dNQnl5WmlBR2ppYnRiVFpFWUdibEZuT0pHWGExa09LVDY0ClZiZ2hCTWY0QWFZQWR5VkNv
- QVlWNm9rQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKbzRtN1d
- BQW9KRUhRcko2ZGpPa2xqcU5FUUFKMzNOMkxNbUljUmJwRzFoeVhzQ2R4Wms1Rm85RkZUeGtRRQ
- plTWZlQzJQKzdXdDFJdS9lUTc5YUJ5K3FlQ0Z4aXVUK0h3MEZ2eUphaSs5SFZDVlc0RzkxK3VCM
- 08rUlVXbWJaClhJZGQ4UGluc05CVVNDODBtSERraXJ4QUp0R2FHK2JRakNuNUR2NnNZazIwcmJl
- OXVmYmZjNWpIOE8yZ0dHaWkKazd2eGVVTlpQK2ZNUHVsWTFhYU91cnlDNURxb3N2Z2M1WU1HU2E
- 1SzRabkFneG1KRXU0bXU4cWkxcjJzVmVWUApRRFErWkNobUhtUjAvdEg5aXdjb1gwbVJneTNZaU
- hUNC91allMQ0xGMVRmeVFmcHlVSUozZFdYdHdVeVVqb1d6ClNTS3BOOTJQb2l5dHZtQndxRnd3d
- jRzRDR4TFU5SDlORnNrZmRLVkNyNDI3TDlEOVZDSDg3Zk0vS1doa1RsNFIKbnFGa1k2MWxRNnF5
- b2lVWmlaemF2Y3h1dUNyaFd2dXViUFpnZ3FMVzVOSk1OdmNQREpBSzQ1SzNwMVdmaTNMZAoxZG1
- ENks3cHM4S3J3d3pEUWlMeUxkU3FaaTdrWWljNldsY2l4YkJoOGs3VmxESGg4clZVbk0wbno5Yy
- s4dXlkCnJLWkZVNTFnVituQkU5QlRNNnM3MnIyS0x5djlGNExVVmZjc1BySGtqNlNkOTFoOFBIT
- FBsUk8xYlJ6QWZXdzQKZTRLangrSnB5d005bFU3Nlo3OWRwUE4wZmpQZzEyVHdncDF1OXVRQm0x
- SmhkT1p5L0taVzY3Y291VGlWTmVoRwpGZVYycWE0OEZ6RDVSNThrNU16MGY1dEpkcXdCcmcwbTN
- kT2x4TzJjVUxpUUZ1Q2VmUGg3b2VEVDBFZjEzOGVNClJTNzZVcjN4eFhzNEVBPT0KPThMSWMKLS
+ k02U1dNQnl5WmlBR2ppYnRldVdVRUdOK3l4RnByWXFiUzVPMmVXCis0MWJzZ0FqT2FMM01MeXZN
+ SmdvTElrQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKbzRtN1h
+ BQW9KRUhRcko2ZGpPa2xqRUg4UUFLSW1OeXN1bGxNamt4eFZ2Nm9VcWNOelAwb2JnWjZkN2E3Vw
+ ovRmhFdnRBQk4zNXdWZm5welFIVEJwWjQ1NXozNzBiOE1McDBHRlovZDAxZTRVRUpLb1dXcEkyQ
+ nBTeHIyTDJECldaRDNqTElaWHNDQTVBN1hBSjhCeVVjamgxTnVFRUlnQVdNbGF1QklnMndBV01j
+ V3I0VTBxbVRKSXF3YTduTlYKSGNkZWphbWtheE41NVUzNUU2QVdhZUhrOHZnK0hCUFlTWWxLYjV
+ GMmZJNTQ4Y2RhcUZ5UlJ6RXBJQmFnYTQ2awpTRU93NTNYV215cjBqL1E5L0NrQnN5WHhYTm9GRz
+ ZGaGJZaDI1TXlSZ0piTzJqT0dhekVScHh1RzJnL1RHakllCk5qYkpZcEJnQnM1azl4T1BVbjNBS
+ mNWbGRTSlVQRkdudk1WVFhDZGVBRFlWL0lvVUQ5ckhwdjRrZU9kTEtULysKS2FJTEVjc3hvQ2Vr
+ MjhXQTBLZkFGeHFSMzIvdFlvWEYzQWxkU081Uk5JMWY3RHZ3eVErZ1NFT2gydHd2SlNPVApkYnh
+ KYVY0bVJIR2FaQmNQbXFza1NwYWl0WkpuaFRPRUdqUGdhTy9iRzR6NnlFL052dWVaK3MwaTQ3NW
+ xJdTJUCkQ1RFloK3VEcDdEOW9RaGEyZTRhK3ZEeFFIak0zcDhtVlErc1FWM2RsNElNMDlQeGRwT
+ GhTNUVLRVNUWGdOZU8KUEtoZWtyakhOYVg3NTNiVnFEdS9HQUhCOTlQMXprNC9aUjZhbUdpdjFh
+ Z2dmejNUeFYwYjZmUENwRFNFSWladAo4akpFcDF1R2N2aHc3dTBWeTFXVGJGQ2VUc0UzWnB5d25
+ IVVRTem9BTzRHOXJ5NHhOTkRRN002UHArT0pMa05sCk9jZUQ2emhicXNzaGNBPT0KPXdxRlMKLS
  0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
 X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
  fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
-Add mapping for the low pass filter cut-off frequency.
-Make valid values visible for both the cut-off frequency and the scale.
+Allow read/write access to sensor registers for use in unit-tests.
 
 Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 ---
-v1->v2 rename variables to include unit capitalization (dB, Hz)
-v2->v3 make comment one-liner (Jonathan)
-v4 no change
+v1->v4 no change
 ---
- drivers/iio/accel/bma220_core.c | 59 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 58 insertions(+), 1 deletion(-)
+ drivers/iio/accel/bma220_core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220_core.c
-index 8f0cbd0aacb92a21afc57aaa350547d0c767d4b6..7109759e28397d2660f17707124a8803a254cb14 100644
+index 7109759e28397d2660f17707124a8803a254cb14..0d6c301b1c47a04cfca5bae157f8ce6144f0b854 100644
 --- a/drivers/iio/accel/bma220_core.c
 +++ b/drivers/iio/accel/bma220_core.c
-@@ -93,13 +93,23 @@
- 
- #define BMA220_DEVICE_NAME			"bma220"
- 
-+#define BMA220_COF_1000Hz			0x0
-+#define BMA220_COF_500Hz			0x1
-+#define BMA220_COF_250Hz			0x2
-+#define BMA220_COF_125Hz			0x3
-+#define BMA220_COF_64Hz				0x4
-+#define BMA220_COF_32Hz				0x5
-+
- #define BMA220_ACCEL_CHANNEL(index, reg, axis) {			\
- 	.type = IIO_ACCEL,						\
- 	.address = reg,							\
- 	.modified = 1,							\
- 	.channel2 = IIO_MOD_##axis,					\
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),			\
--	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),		\
-+	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
-+	    BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),		\
-+	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE) |\
-+	    BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),		\
- 	.scan_index = index,						\
- 	.scan_type = {							\
- 		.sign = 's',						\
-@@ -123,6 +133,7 @@ static const int bma220_scale_table[][2] = {
- struct bma220_data {
- 	struct regmap *regmap;
- 	struct mutex lock;
-+	u8 lpf_3dB_freq_idx;
- 	u8 range_idx;
- 	struct iio_trigger *trig;
- 	struct {
-@@ -139,6 +150,16 @@ static const struct iio_chan_spec bma220_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(3),
- };
- 
-+/* Available cut-off frequencies of the low pass filter in Hz. */
-+static const int bma220_lpf_3dB_freq_Hz_table[] = {
-+	[BMA220_COF_1000Hz] = 1000,
-+	[BMA220_COF_500Hz] = 500,
-+	[BMA220_COF_250Hz] = 250,
-+	[BMA220_COF_125Hz] = 125,
-+	[BMA220_COF_64Hz] = 64,
-+	[BMA220_COF_32Hz] = 32,
-+};
-+
- static const unsigned long bma220_accel_scan_masks[] = {
- 	BIT(AXIS_X) | BIT(AXIS_Y) | BIT(AXIS_Z),
- 	0
-@@ -253,6 +274,10 @@ static int bma220_read_raw(struct iio_dev *indio_dev,
- 		*val = bma220_scale_table[index][0];
- 		*val2 = bma220_scale_table[index][1];
- 		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		index = data->lpf_3dB_freq_idx;
-+		*val = bma220_lpf_3dB_freq_Hz_table[index];
-+		return IIO_VAL_INT;
+@@ -375,10 +375,21 @@ static int bma220_read_avail(struct iio_dev *indio_dev,
  	}
- 
- 	return -EINVAL;
-@@ -271,6 +296,18 @@ static int bma220_find_match_2dt(const int (*tbl)[2], const int n,
- 	return -EINVAL;
  }
  
-+static int bma220_find_match(const int *arr, const int n, const int val)
++static int bma220_reg_access(struct iio_dev *indio_dev, unsigned int reg,
++			     unsigned int writeval, unsigned int *readval)
 +{
-+	int i;
++	struct bma220_data *data = iio_priv(indio_dev);
 +
-+	for (i = 0; i < n; i++) {
-+		if (arr[i] == val)
-+			return i;
-+	}
-+
-+	return -EINVAL;
++	if (readval)
++		return regmap_read(data->regmap, reg, readval);
++	return regmap_write(data->regmap, reg, writeval);
 +}
 +
- static int bma220_write_raw(struct iio_dev *indio_dev,
- 			    struct iio_chan_spec const *chan,
- 			    int val, int val2, long mask)
-@@ -296,6 +333,21 @@ static int bma220_write_raw(struct iio_dev *indio_dev,
- 			return ret;
- 		data->range_idx = index;
+ static const struct iio_info bma220_info = {
+ 	.read_raw		= bma220_read_raw,
+ 	.write_raw		= bma220_write_raw,
+ 	.read_avail		= bma220_read_avail,
++	.debugfs_reg_access	= &bma220_reg_access,
+ };
  
-+		return 0;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		index = bma220_find_match(bma220_lpf_3dB_freq_Hz_table,
-+					  ARRAY_SIZE(bma220_lpf_3dB_freq_Hz_table),
-+					  val);
-+		if (index < 0)
-+			return -EINVAL;
-+
-+		ret = regmap_update_bits(data->regmap, BMA220_REG_FILTER,
-+					 BMA220_FILTER_MASK,
-+					 FIELD_PREP(BMA220_FILTER_MASK, index));
-+		if (ret < 0)
-+			return ret;
-+		data->lpf_3dB_freq_idx = index;
-+
- 		return 0;
- 	}
- 
-@@ -313,6 +365,11 @@ static int bma220_read_avail(struct iio_dev *indio_dev,
- 		*type = IIO_VAL_INT_PLUS_MICRO;
- 		*length = ARRAY_SIZE(bma220_scale_table) * 2;
- 		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		*vals = (const int *)bma220_lpf_3dB_freq_Hz_table;
-+		*type = IIO_VAL_INT;
-+		*length = ARRAY_SIZE(bma220_lpf_3dB_freq_Hz_table);
-+		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
- 	}
+ static int bma220_reset(struct bma220_data *data, bool up)
 
 -- 
 2.49.1

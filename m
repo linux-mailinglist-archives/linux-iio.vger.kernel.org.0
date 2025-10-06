@@ -1,48 +1,80 @@
-Return-Path: <linux-iio+bounces-24776-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24777-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A5ABBE601
-	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 16:40:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBD4BBE8A6
+	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 17:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3E7C2348646
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 14:40:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAE823BF13B
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 15:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372352D5C8E;
-	Mon,  6 Oct 2025 14:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39682D662D;
+	Mon,  6 Oct 2025 15:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="roLEddi7"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2zo+Zien"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0B02D594F;
-	Mon,  6 Oct 2025 14:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4E42D8799
+	for <linux-iio@vger.kernel.org>; Mon,  6 Oct 2025 15:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759761635; cv=none; b=XqgS8XUlViP6NkI3pLP/Iz40g0x4fJ6lU+6xvYCInT+Cf/3NUqhspQ6YgqfkjC578hIm0bT/rkD9Vhx71hpH/PqgCVDGXAqyeNf/ps8Btv5FiipwuCf2VOQ9RkO0qUHQ7SkioFFildyiKB6fUygJRs9PPlUAfmVAKBh7iPs+0t0=
+	t=1759765737; cv=none; b=quczFHcTIwrFDKKGL1ONaa0dVR9ggCXegkEVBgcu9V9NczZuufn0tPbOmV9n3CBLKwM0rfo+Kz/qsdkMsf5XdUPqlukbJkoUVChu432UtiIwcZ64crSgijMLePVFwG7n+4Hwb/p+PB1HMVIglSHkElOnhuxWoFmKaFeeQOYsIgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759761635; c=relaxed/simple;
-	bh=c0PWoYolg5duBcovpTIj3Rwkun3O8HUZHZZKlsp7TXg=;
+	s=arc-20240116; t=1759765737; c=relaxed/simple;
+	bh=7cCqsIleQbTCE8nJ/cqNLb6Xh7ymZFZDoUIkZvvwW5c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qJJr2KIKELZx6qsSk5ty6HeLPSWtZEMWWV+CchpWXTGuXOBlifr6WuwEMi+6upwvkKb+dRL0bno4Jg1Pd8tBMNlunN8H7XF8V2WY3134fTDPEnkrwf7CUEXEUKKifFQ7BLU62epPkKWLsnTi5fu54nu9N6mF+5mnTnP4LKzS2MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=roLEddi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97ED0C116B1;
-	Mon,  6 Oct 2025 14:40:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759761635;
-	bh=c0PWoYolg5duBcovpTIj3Rwkun3O8HUZHZZKlsp7TXg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=roLEddi7kbZUvYT0EfTVHH4CaTWHiadXLp9mcyRYAlyCB8w9FM9OSoab5MHqdmMcV
-	 bQACnekAZxfEeEYlY3oEkyAf4mhQS5coXZ5uJTcr5TK2nNyZcIoAqmJao3Qg90dixy
-	 XPYDCpg5fz9nddLENL1HSuHI5u3ClCg30gciTA17/fu6DId9gFbjQI+eawtL1eHl2Y
-	 jAkqZIhDu2ZaLVQy0PTdD0+bFBPt9XI+rZcJqdNbdAjdUvVPA7MBfEEeSLbtbG61RF
-	 WfcUHrWrc7dNskbf5kc+3VBDupz7J948LlMM9QoW6KrxsJfQXGNFhR66nbwwSVeDY3
-	 0Blx93ZjJhFrA==
-Message-ID: <a72b4f39-6ebf-4598-b0fa-ae5b9754de58@kernel.org>
-Date: Mon, 6 Oct 2025 23:40:26 +0900
+	 In-Reply-To:Content-Type; b=Im8/s4jXoXmZL9TiCg+h/Hag6tq2kl5e1hw225oy7xi/jVc1VPYpCmW6gwyRySnEhgy/bSYgJBoM2SPUpYPJhOuh+tfI7erBwvLx0b8jOuxW31TMrvu3DJlZJZWh2aVyueNlhxWClsr8R69pGviampQC74BXtSQwX9p1HlxCmy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2zo+Zien; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7bc626c5467so3671199a34.2
+        for <linux-iio@vger.kernel.org>; Mon, 06 Oct 2025 08:48:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1759765734; x=1760370534; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T869gDVevA9LpG7p7hXPgb7SP5eHhcw4WWhaTQBkq5A=;
+        b=2zo+ZienJvyGr8v4PFCMg777UXY9YbInkEZSYVHaJh1LkrIiNQ5HSe30lkob5edkt5
+         gcX38kXd54+hdz1yB+LZchELWJwKFEYW6WPTMhoDU2sZJV9RMloSAwWUqZ30V8Lnx+uc
+         PY/8SPITCvzJqOCIRj+gVJDSKdycdYsh6BimWJeM4zC+xWQvYFDAWTaZ4m5iS/d0p01y
+         hkgQo2wu9L+mIVevhyMuhUgNS2SGZslZyXHWJhw9wI/cOl8vTr+GfP/IIkvlCHeBX7wx
+         uzYomOekrrB/vn4cgha4lqO2Iw/ryKlaHS7hjIrj06Wl2Zbe+nTh1//C9yR+dyrsEnkv
+         XTGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759765734; x=1760370534;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T869gDVevA9LpG7p7hXPgb7SP5eHhcw4WWhaTQBkq5A=;
+        b=Fwzxv5SdI4OIpq8DB9GiqhxM67XDT3Ct7yBUUI6gRouBmQMiGJzhw3ns/0W2kIvSG4
+         hyg1PJoQAgiwKpc/IPmJRDsxZ/sqj1VIr4rKHxMWKmoXZZtA/3ypyrzvohyEvd/eF//T
+         KHY+Zq1HB4RZX9sxOH/4IanQh92YhaPqsRM6lFwQlrmEImeglDvEBiWbwy7cMNrbjPUY
+         SPpiGVFrtRM8kxtLXBS10cchl38OmIPPkohm5uGV55CjtRPfWzbN7SnMjwAw9bylRDh6
+         vvy+S9yvIXe2z8fpiLNal331Bw51wEoeodV6qZDZKcXcF6BsA0d6fvKlwPTVYOuiCqDe
+         whTw==
+X-Gm-Message-State: AOJu0YyGxbKCURDVOapQJBdnrI426JlJ2PawWr+VFk2PX5SN+ytftaez
+	j+huzlEPZ0N/1TaZ5hfkmmo18hyXFLstjavZ2dS8JraexyK72esVe2C/IqMtiIsbIvQ=
+X-Gm-Gg: ASbGncup83PLkOKrW0vXqqEnPuowdLmiOY86EqSWFg7m/NZYt6MYgw+KaxoveDO8ZiN
+	/Rx7SSobSVjWzJEJDziOT88gLlSFeuDjGfNG3EE+z60o5UpckQ6FTGxHgtrwF1CLCkY6eUHLUWt
+	/g1gMO2C+Ko+QX6FPJXsm+b9cuqd4J8aorVUALKhNNMykOMV4wi+ffwRhbcDzrSCYlkDS394tbG
+	SF3yFnWiMJqXI8aBcoW510K4dIqaR7ap+2nnS4kmP1cw5BDL6McFLq2jUTChMVGpOY7QqHCRP0C
+	yfMh+CmRx/dQbtlXHk8Z7Y+AsrXDyCENf+k+aa50ywUXWl8BBPwVd4U8jYVsE7xUWyDL1H0AuC1
+	ghovws+0Hew8Fw7ljFo6nIahttsidyDrj1BKK4GiAQwqtT4Q9MMAWjy5N0dxusztKrPxOMreSQQ
+	B/exyY4vd31bHlDoAfAAw1SJr3UbLszxv01A==
+X-Google-Smtp-Source: AGHT+IH6njM+4Hb3ORuQPgRlqgDWQXTIapYtLEi8wuRV94ziPpiWcaXvJxfwgPJWYXWshy0ytCVboA==
+X-Received: by 2002:a05:6830:374c:b0:7bb:79ad:6604 with SMTP id 46e09a7af769-7bf77538cccmr7827018a34.22.1759765733844;
+        Mon, 06 Oct 2025 08:48:53 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:a1fd:4fbd:e7a6:9246? ([2600:8803:e7e4:1d00:a1fd:4fbd:e7a6:9246])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7bf3fdcfb69sm3892248a34.13.2025.10.06.08.48.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Oct 2025 08:48:53 -0700 (PDT)
+Message-ID: <da087553-c6d6-4e51-ac57-1be95a3c04b7@baylibre.com>
+Date: Mon, 6 Oct 2025 10:48:51 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,107 +82,76 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: max30100: Add pulse-width property
-To: Shrikant Raskar <raskar.shree97@gmail.com>, jic23@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- matt@ranostay.sg, skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev
-References: <20251004015623.7019-1-raskar.shree97@gmail.com>
- <20251004015623.7019-2-raskar.shree97@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v12 2/3] iio: adc: max14001: New driver
+To: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, Kim Seer Paller <kimseer.paller@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+ Marcelo Schmitt <Marcelo.Schmitt@analog.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>,
+ Jonathan Santos <Jonathan.Santos@analog.com>,
+ Dragos Bogdan <dragos.bogdan@analog.com>
+References: <961e5351afa408e69541b60ec75852fbbd1ddd24.1759121938.git.marilene.agarcia@gmail.com>
+ <476b75cff0c3e5ff23ba7c642924511f3ba09a3f.1759121938.git.marilene.agarcia@gmail.com>
+ <CAMknhBHt9JVkaf1Kq76BKFM-Ff38-7ws6gaq+5fwy=pAih-fww@mail.gmail.com>
+ <9ee20209-efba-44b1-9902-5885bacfb290@gmail.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251004015623.7019-2-raskar.shree97@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <9ee20209-efba-44b1-9902-5885bacfb290@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 04/10/2025 10:56, Shrikant Raskar wrote:
-> The MAX30100 sensor supports multiple LED pulse widths (200us, 400us,
-> 800us, 1600us). These settings affect measurement resolution and power
-> consumption. Until now, the driver always defaulted to 1600us.
+On 10/5/25 6:25 PM, Marilene Andrade Garcia wrote:
+> On 01/10/2025 11:03, David Lechner wrote:
+>> On Mon, Sep 29, 2025 at 7:59 AM Marilene Andrade Garcia
+>> <marilene.agarcia@gmail.com> wrote:
+>>>
+>>
+> ...
+>>> +static int max14001_read_raw(struct iio_dev *indio_dev,
+>>> +                            struct iio_chan_spec const *chan,
+>>> +                            int *val, int *val2, long mask)
+>>> +{
+>>> +       struct max14001_state *st = iio_priv(indio_dev);
+>>> +       int ret;
+>>> +
+>>> +       switch (mask) {
+>>> +       case IIO_CHAN_INFO_RAW:
+>>> +               ret = regmap_read(st->regmap, MAX14001_REG_ADC, val);
+>>> +               if (ret)
+>>> +                       return ret;
+>>> +
+>>> +               return IIO_VAL_INT;
+>>> +       case IIO_CHAN_INFO_AVERAGE_RAW:
+>>> +               ret = regmap_read(st->regmap, MAX14001_REG_FADC, val);
+>>
+>> I don't remember... did you give a reason why this should not be a
+>> separate channel? Or just use REG_FADC as the raw value and forget
+>> about REG_ADC? In any case we would want another attribute to control
+>> the filter window size.
+> ...
 > 
-> Introduce a new device tree property `maxim,pulse-width` that allows
-> users to select the desired pulse width in microseconds from device
-> tree.
+> Hello David,
 > 
-> Valid values are: 200, 400, 800, 1600.
-
-Don't describe the contents of patch. We see the contents from the diff.
-Above two paragraphs are completely redundant, drop.
-
+> Thank you for the review and suggestions.
+> Sorry for not adding any comments about that in v12. From what I understood from our previous conversation, for now the code could have one channel to keep things simple, since we’re not sure if anyone will actually need to read both the filtered and unfiltered data at the same time.
 > 
-> This prepares for driver changes that read this property and configure
-> the SPO2 register accordingly.
-
-Drop, redundant. Not really relevant.
-
+> I was thinking of sending a separate set of commits to address that after this one gets merged, as it will involve new code changes related to adding a function to configure how many ADC readings are included in the mean calculation, and adding a new attribute to sysfs.
 > 
-> Signed-off-by: Shrikant Raskar <raskar.shree97@gmail.com>
-> ---
->  .../devicetree/bindings/iio/health/maxim,max30100.yaml      | 6 ++++++
->  1 file changed, 6 insertions(+)
+> Since both IIO_CHAN_INFO_RAW and IIO_CHAN_INFO_AVERAGE_RAW are currently returning the same value, I could drop IIO_CHAN_INFO_AVERAGE_RAW in v13 and add it back in the next series of commits to implement the related feature.
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml b/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
-> index 967778fb0ce8..55aaf2ff919b 100644
-> --- a/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
-> +++ b/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
-> @@ -27,6 +27,11 @@ properties:
->        LED current whilst the engine is running. First indexed value is
->        the configuration for the RED LED, and second value is for the IR LED.
->  
-> +  maxim,pulse-width:
+> I would like to know your thoughts about it, because if you prefer, I could change my plans and implement it in v13.
+> 
+> Best Regards,
+> Marilene
+> 
 
-You miss unit suffix and testing, most likely.
-
-> +    maxItems: 1
-> +    description: Pulse width in microseconds
-> +    enum: [200, 400, 800, 1600]x
-
-
-Best regards,
-Krzysztof
+Since everything else looks good, I think Marcelo's suggestion to drop
+averaging from this series and add it in a later series is the best advice.
 

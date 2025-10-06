@@ -1,52 +1,53 @@
-Return-Path: <linux-iio+bounces-24778-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24779-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AAE8BBE94C
-	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 18:06:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69F0BBE949
+	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 18:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 29E134E638D
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 16:06:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75FD23B4732
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 16:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9322D94BA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8BC2D94B7;
 	Mon,  6 Oct 2025 16:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kr3ZI0gy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PgCUwDKm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD2C171C9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDA527A91D;
 	Mon,  6 Oct 2025 16:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759766764; cv=none; b=Os3jBkuCU5qrOOR2gQu6ITW1Yo8So8lfvEGDfWpEGs8PT89DVCJcGon2fbqkgCGZ589LTZtdwPvbaH+elyEs+JWr8kiF7GhCQJq7JQO5v8+zIx0fUoWvASsgRy2pwofCsF1Cynhlhw5Wk6HaSR+t4nvKsf9YPOYi2HtcR2AOW10=
+	t=1759766764; cv=none; b=hUSRPrBgAJjEGznzN9HRds6A0uudTkE9uO/MCZuzWhiiCxH8GoednT9TjUHsNK9jAIH+EQNACDOKQuGpa3dvBxvdvutD51uulHGO6ZYtRwGgQ6SKv2qayE93D1gi7regh42C9zuEfqBrCM+q9Awmv4bSLEq4aNbxFfJftUZccxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759766764; c=relaxed/simple;
-	bh=2HriaveKNvlAzz3g9JtDTugyDiYrNXDtfRXTc0G9D3Q=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ba9LCi3T9nGxp0nDSOW37Vukk6HpKaHuuCGbNG7e+bKlBJyYi5okhtqg+ySMZ4/u0dS0O5ZBsnAlKCYW4Z3ibIhAMCKa+TcYC2Y9uZsrxmQIZkio5pRzH3QuvQqstvfSwtztSpv9UNe4pIIgnkbc02P/DSztikqnfJWb6qJUhIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kr3ZI0gy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B07DDC4CEF5;
+	bh=hMu7giAbdbvn5ePahu1iYygDLe3S2U36psm6y+brqik=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=c66Hwdvy2VW9QHJ6r3K8oxP4MKgTDUstS0CCXCT38nPw9LBAJ5koeinv9D8QeUKFEbdBBhlfPTFAm/GGKD7SjCv3axyjGqB265ZbCfBghXWPp25bQV5gSRHISbtV4WjOEzSck+sFCq9BSg99EtRzm98RjqhGwt+qePrBtV9K7u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PgCUwDKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BC66BC4CEFF;
 	Mon,  6 Oct 2025 16:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1759766763;
-	bh=2HriaveKNvlAzz3g9JtDTugyDiYrNXDtfRXTc0G9D3Q=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=Kr3ZI0gy4f/7muVsePPhDiBb8b62TEO4LLHpztLZZVh7HT79ZUdvK+iM2w+Vv1zjC
-	 oRyVddc0PW7NdUGRNzE/w4XE9RN10zsErnkpuVN1lFvwPQDfabpWyns9gpsPQZFfb4
-	 fDl9hQyT7vUGSiWZtsRzChaIbuU+4BBkA6/bNch7bW16hBsuDWbtPHeBWHkMOum2Lh
-	 i/gebmtL0m1kBh4OLbt9RSi5qEX91HfBR/yEROcb4IQ8GPPguxqpyKLZAvJ7Oy9A8y
-	 sg6KtdqpSQT/6pr5qJA4oCg84E9//9S4YUDR1dIyFQtWBtgy2Jl5ukbf9HIj3NhzpX
-	 S6sZGpUfbnGcw==
+	bh=hMu7giAbdbvn5ePahu1iYygDLe3S2U36psm6y+brqik=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=PgCUwDKmGX+i/qM9SEoy2mTwQuHAnj4CLUef0JSxaISFHlGcFaK9E/vjqK5jE+AM1
+	 a61djJpQWf5hUYvSX48m+eNcZLKTDpfi+K0P/haH84adsqA9oxmjvnw14OD0pULngE
+	 B3pdNuspkTL3Ub1Q3b+7XNsHZtTgk0/1P76URWfyjhv0mIK6maSqMc3lOJqoi+5EXf
+	 9urCkxcUceuEiScjTLl+LpPRH6Ve06iDo5CcYEjPjgHioRu09sSDANHxSyNA1vaiAI
+	 9wRhdnMUo5IC3rG+0LHnjY2/NOJf9HYwls4CVcxBeEkjBPYjTZ83w8UVVVXi2wTpWq
+	 9qq6SR7SdLLwA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A81CBCCA470;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5835CAC5B8;
 	Mon,  6 Oct 2025 16:06:03 +0000 (UTC)
 From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Subject: [PATCH v2 0/3] iio: buffer: Fix DMABUF mapping in some systems
-Date: Mon, 06 Oct 2025 17:06:31 +0100
-Message-Id: <20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
+Date: Mon, 06 Oct 2025 17:06:32 +0100
+Subject: [PATCH v2 1/3] iio: buffer: support getting dma channel from the
+ buffer
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,21 +56,19 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAfp42gC/4WNQQ6CMBBFr2Jm7ZhpCzF15T0Mi9IOMIlQ0yLRE
- O5u4QLu/vvJf3+FzEk4w+20QuJFssSpgD6fwA9u6hklFAZNuiZrCDv5oEjEMLr23WHP8x4xlK1
- nNMY6f6W6MqGF4nglLoPD/2gKD5LnmL7H3aL29jArIv3HvCgk9MpbW9WkbaC7m9wz9hcfR2i2b
- fsBRStkD8sAAAA=
-X-Change-ID: 20250930-fix-iio-dmabuf-get-dma-device-339ac70543db
+Message-Id: <20251006-fix-iio-dmabuf-get-dma-device-v2-1-d960bc9084da@analog.com>
+References: <20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
+In-Reply-To: <20251006-fix-iio-dmabuf-get-dma-device-v2-0-d960bc9084da@analog.com>
 To: linux-iio@vger.kernel.org
 Cc: Jonathan Cameron <jic23@kernel.org>, 
  David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1759766793; l=2563;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759766793; l=5038;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=2HriaveKNvlAzz3g9JtDTugyDiYrNXDtfRXTc0G9D3Q=;
- b=N2ZYoKriYdqN0yWcMcoNXHfWYxYeXBT5vn5REZAoZzOctVbo3a8+ikEEI/CA78oWX0ljOgLoX
- YZvKMQ6gHPDAIjZhUJSRYRMASaYP+tRGcFJXw0xwyYRXvD1zbfIKSSG
+ bh=Eok3Bx4CN1Rhtb1fOuQlhdDCIni3+z1WDGwIF0dt+ls=;
+ b=W1oVUaNgHp6n9uQAssMF98nPZYuYb2cVuzRt8K5y4fmOs0gUqF2Cr2jXBciveuh6VmpGrcDbX
+ WL2kPKVzBu3BVVNir3Z0ngR3rFb0s2yj7FgT9HxVLQS8purSfDMRnmO
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -77,66 +76,131 @@ X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
 X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
 Reply-To: nuno.sa@analog.com
 
-This series fixes an issue with DMABUF support in the IIO subsystem where
-the wrong DMA device could be used for buffer mapping operations. This
-becomes critical on systems like Xilinx/AMD ZynqMP Ultrascale where memory
-can be mapped above the 32-bit address range.
+From: Nuno Sá <nuno.sa@analog.com>
 
-Problem:
---------
-The current IIO DMABUF implementation assumes it can use the parent device
-of the IIO device for DMA operations. However, this device may not have
-the appropriate DMA mask configuration for accessing high memory addresses.
-On systems where memory is mapped above 32-bits, this leads to the use of
-bounce buffers through swiotlb, significantly impacting performance.
+Add a new buffer accessor .get_dma_dev() in order to get the
+struct device responsible for actually providing the dma channel. We
+cannot assume that we can use the parent of the IIO device for mapping
+the DMA buffer. This becomes important on systems (like the Xilinx/AMD
+zynqMP Ultrascale) where memory (or part of it) is mapped above the
+32 bit range. On such systems and given that a device by default has
+a dma mask of 32 bits we would then need to rely on bounce buffers (to
+swiotlb) for mapping memory above the dma mask limit.
 
-Solution:
----------
-This series introduces a new .get_dma_dev() callback in the buffer access
-functions that allows buffer implementations to specify the correct DMA
-device that should be used for DMABUF operations. The DMA buffer
-infrastructure implements this callback to return the device that actually
-owns the DMA channel, ensuring proper memory mapping without bounce buffers.
-
-Changes:
---------
-1. Add .get_dma_dev() callback to iio_buffer_access_funcs and update core
-   DMABUF code to use it when available
-2. Implement the callback in the DMA buffer infrastructure
-3. Wire up the callback in the dmaengine buffer implementation
-
-This ensures that DMABUF operations use the device with the correct DMA
-configuration, eliminating unnecessary bounce buffer usage and improving
-performance on high-memory systems.
-
-(AI generated cover. I would not be this formal but I guess is not
-that bad :))
-
+Cc: stable@vger.kernel.org
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
-Changes in v2:
-- Dropped Fixes tags on the first two patches and Cc stable them instead
-  (as prerequisites for the third patch). 
-- Link to v1: https://lore.kernel.org/r/20251002-fix-iio-dmabuf-get-dma-device-v1-0-c1c9945029d0@analog.com
+ drivers/iio/industrialio-buffer.c | 28 ++++++++++++++++++++++------
+ include/linux/iio/buffer_impl.h   |  2 ++
+ 2 files changed, 24 insertions(+), 6 deletions(-)
 
----
-Nuno Sá (3):
-      iio: buffer: support getting dma channel from the buffer
-      iio: buffer-dma: support getting the DMA channel
-      iio: buffer-dmaengine: enable .get_dma_dev()
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index f1448ae1b843fc577599fc1b9cf6d859bba226f1..279c7d716bf5d467d40b5c290789fcbd1f949660 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -1627,15 +1627,20 @@ static struct dma_buf_attachment *
+ iio_buffer_find_attachment(struct iio_dev_buffer_pair *ib,
+ 			   struct dma_buf *dmabuf, bool nonblock)
+ {
+-	struct device *dev = ib->indio_dev->dev.parent;
++	struct device *dma_dev;
+ 	struct iio_buffer *buffer = ib->buffer;
+ 	struct dma_buf_attachment *attach = NULL;
+ 	struct iio_dmabuf_priv *priv;
+ 
++	if (buffer->access->get_dma_dev)
++		dma_dev = buffer->access->get_dma_dev(buffer);
++	else
++		dma_dev = ib->indio_dev->dev.parent;
++
+ 	guard(mutex)(&buffer->dmabufs_mutex);
+ 
+ 	list_for_each_entry(priv, &buffer->dmabufs, entry) {
+-		if (priv->attach->dev == dev
++		if (priv->attach->dev == dma_dev
+ 		    && priv->attach->dmabuf == dmabuf) {
+ 			attach = priv->attach;
+ 			break;
+@@ -1655,6 +1660,7 @@ static int iio_buffer_attach_dmabuf(struct iio_dev_buffer_pair *ib,
+ 	struct iio_buffer *buffer = ib->buffer;
+ 	struct dma_buf_attachment *attach;
+ 	struct iio_dmabuf_priv *priv, *each;
++	struct device *dma_dev;
+ 	struct dma_buf *dmabuf;
+ 	int err, fd;
+ 
+@@ -1679,7 +1685,12 @@ static int iio_buffer_attach_dmabuf(struct iio_dev_buffer_pair *ib,
+ 		goto err_free_priv;
+ 	}
+ 
+-	attach = dma_buf_attach(dmabuf, indio_dev->dev.parent);
++	if (buffer->access->get_dma_dev)
++		dma_dev = buffer->access->get_dma_dev(buffer);
++	else
++		dma_dev = indio_dev->dev.parent;
++
++	attach = dma_buf_attach(dmabuf, dma_dev);
+ 	if (IS_ERR(attach)) {
+ 		err = PTR_ERR(attach);
+ 		goto err_dmabuf_put;
+@@ -1719,7 +1730,7 @@ static int iio_buffer_attach_dmabuf(struct iio_dev_buffer_pair *ib,
+ 	 * combo. If we do, refuse to attach.
+ 	 */
+ 	list_for_each_entry(each, &buffer->dmabufs, entry) {
+-		if (each->attach->dev == indio_dev->dev.parent
++		if (each->attach->dev == dma_dev
+ 		    && each->attach->dmabuf == dmabuf) {
+ 			/*
+ 			 * We unlocked the reservation object, so going through
+@@ -1759,6 +1770,7 @@ static int iio_buffer_detach_dmabuf(struct iio_dev_buffer_pair *ib,
+ 	struct iio_buffer *buffer = ib->buffer;
+ 	struct iio_dev *indio_dev = ib->indio_dev;
+ 	struct iio_dmabuf_priv *priv;
++	struct device *dma_dev;
+ 	struct dma_buf *dmabuf;
+ 	int dmabuf_fd, ret = -EPERM;
+ 
+@@ -1769,11 +1781,15 @@ static int iio_buffer_detach_dmabuf(struct iio_dev_buffer_pair *ib,
+ 	if (IS_ERR(dmabuf))
+ 		return PTR_ERR(dmabuf);
+ 
++	if (buffer->access->get_dma_dev)
++		dma_dev = buffer->access->get_dma_dev(buffer);
++	else
++		dma_dev = indio_dev->dev.parent;
++
+ 	guard(mutex)(&buffer->dmabufs_mutex);
+ 
+ 	list_for_each_entry(priv, &buffer->dmabufs, entry) {
+-		if (priv->attach->dev == indio_dev->dev.parent
+-		    && priv->attach->dmabuf == dmabuf) {
++		if (priv->attach->dev == dma_dev && priv->attach->dmabuf == dmabuf) {
+ 			list_del(&priv->entry);
+ 
+ 			/* Unref the reference from iio_buffer_attach_dmabuf() */
+diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_impl.h
+index 0daff9ff20ce49de67fa0f2ac6191882de2f4a67..c0b0e0992a85b2813a126c1a61f13f1ed0b498dd 100644
+--- a/include/linux/iio/buffer_impl.h
++++ b/include/linux/iio/buffer_impl.h
+@@ -51,6 +51,7 @@ struct sg_table;
+  * @enqueue_dmabuf:	called from userspace via ioctl to queue this DMABUF
+  *			object to this buffer. Requires a valid DMABUF fd, that
+  *			was previouly attached to this buffer.
++ * @get_dma_dev:	called to get the DMA channel associated with this buffer.
+  * @lock_queue:		called when the core needs to lock the buffer queue;
+  *                      it is used when enqueueing DMABUF objects.
+  * @unlock_queue:       used to unlock a previously locked buffer queue
+@@ -91,6 +92,7 @@ struct iio_buffer_access_funcs {
+ 			      struct iio_dma_buffer_block *block,
+ 			      struct dma_fence *fence, struct sg_table *sgt,
+ 			      size_t size, bool cyclic);
++	struct device * (*get_dma_dev)(struct iio_buffer *buffer);
+ 	void (*lock_queue)(struct iio_buffer *buffer);
+ 	void (*unlock_queue)(struct iio_buffer *buffer);
+ 
 
- drivers/iio/buffer/industrialio-buffer-dma.c       |  6 +++++
- drivers/iio/buffer/industrialio-buffer-dmaengine.c |  2 ++
- drivers/iio/industrialio-buffer.c                  | 28 +++++++++++++++++-----
- include/linux/iio/buffer-dma.h                     |  1 +
- include/linux/iio/buffer_impl.h                    |  2 ++
- 5 files changed, 33 insertions(+), 6 deletions(-)
----
-base-commit: b9700f87939f0f477e5c00db817f54ab8a97702b
-change-id: 20250930-fix-iio-dmabuf-get-dma-device-339ac70543db
---
-
-Thanks!
-- Nuno Sá
+-- 
+2.51.0
 
 
 

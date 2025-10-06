@@ -1,86 +1,86 @@
-Return-Path: <linux-iio+bounces-24768-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24769-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7398ABBD78D
-	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 11:41:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E4ABBD790
+	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 11:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8F83B3772
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 09:41:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D71E5188591B
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 09:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B7834BA22;
-	Mon,  6 Oct 2025 09:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C6434BA22;
+	Mon,  6 Oct 2025 09:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KUxaBNwZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UccO/Fqu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667471F3BA9
-	for <linux-iio@vger.kernel.org>; Mon,  6 Oct 2025 09:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E82A168BD
+	for <linux-iio@vger.kernel.org>; Mon,  6 Oct 2025 09:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759743680; cv=none; b=pusL//UEq5uyqrzztyZDZeXHxw9pihMTCNte+FkAr7zvL1EyS9WQ1zeZveFy0hvIxIzeyIpVMhczy8MyTEm0uicSSkEL3oMdiP2qG7L8r4iKfd3LzF1KGnP6RD0hlyd24sFd5U38y1aFLznxzS+LgMDZAJjzkyV4oFb8yAGwstA=
+	t=1759743692; cv=none; b=CL9gu11ujjTvA8acnVLcPD8vbktGEl61I/BGWBd/VwvZA1lX1Zc3F2AO2XsrN3ZB0ghc4TBUjpVzRk4+ghh+ZpnPXiub/HpPrcrRQpP8KZNpwq1GPQP7LyOBDhoPlyJuwHEfG97o6UM9Uh7UCtlJoUJnzm2nXHWL2gU4ihVjj00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759743680; c=relaxed/simple;
-	bh=24sZmUViPfdoTKlBu2+lcVKxGUTmmLWmXX2XY780LyM=;
+	s=arc-20240116; t=1759743692; c=relaxed/simple;
+	bh=RWpmJwgLuM2FIonYsAJTiC7gB8HKm6Y3f9332Ma3b94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9X3ev9wpZfrUSzJ7PqmkheoF8wsDdmM5l7QUWP3brgdHggON5J7O0yhdZqXjm4xKeiUOPKwfrCECs1EzoaE1f+FfAjA5dM9eWIrpNQmAwOAJVrKSp/iUWcYQNQbqSULLIoDWnbjUhFOt5A4xnuYLu7azhzRFxRnzyf8PB3ejOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KUxaBNwZ; arc=none smtp.client-ip=209.85.210.169
+	 MIME-Version; b=e7mp3GCRxg+ct/mRePHiMuHAP5MQj2YqqQuyOroyhWlufypXd5AaIO+Eaecto20ydYGIGqOYS/D07nkqc2eGsyshp4lW7eYAYcaYuI5Bz/TN7ouaQUKDD9PW8b318KmaO6WGoiGRHpch4yUMlWl0aHiPKZleFMDzb+YTfd14XBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UccO/Fqu; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-781db5068b8so3806551b3a.0
-        for <linux-iio@vger.kernel.org>; Mon, 06 Oct 2025 02:41:19 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-27ee41e0798so71110375ad.1
+        for <linux-iio@vger.kernel.org>; Mon, 06 Oct 2025 02:41:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759743678; x=1760348478; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1759743691; x=1760348491; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E4g2Dt/TcqCZ9Q+bj74Qh0XyQkDPrwX2+n2zSBd62o0=;
-        b=KUxaBNwZvGcwamRZJX0e7RLMwx/zkU6oGe2ZN/QWOMKfcMorIKjKHdFyexwBSrSfxI
-         Teh9/XcIpweC+YxHPynKHU9uhE5lX1R8ZhaX9RkvLJqoDSyRG6LvOc3IDrIjYinhKi8y
-         IT+WxWaNdOjBRMDpMZPOmFi/dtoOyq6OHmwFxEhVU5+sAtc5KE4W1AMyTBoR0SF+yTqE
-         TZM1WjSRZbCRWgrfBfCpHY0DOpwcMP0IR945LAsi1A4hRlRQVz/fQfNM5X1mIaLzD5XC
-         xFbh2WvZucvOl/coP6Y1qLdgkQAmcRbsbWDUIaeF6oVUw5uiglYpvq08ZD52uoPv7k26
-         jWnA==
+        bh=tDWMO78/Sngggr60GZi/HLcWQ6AuAiwa+2vlLjX9o2g=;
+        b=UccO/FqufmFv3Wvd7yrrz2x2wVNs1nsmN/3RprrZXG/bSQ8DPvXK/iNBQAP5QEYj43
+         LpV7WPOIIizUbSZ70QLC9lhEE/qHKeXnbbYdRsSe4Vi7ReJjTT58Arac5vjvslzlVYa2
+         9pMsd3QL+/NQxVwUKMQStW8WsGB3WSO7NVudjFRMJ1xhoZdjQo0vjCAY88KGs7QahVT1
+         szBMs5mM3QE4ilPrfHZNVcTgc3FlZOsNpOQc/n7q5fLwXMcAgWNrNUAZlVMw7OWzUhVm
+         Xplh+bmzf87g5kisEEKHHHeH2PLPiOdDYlB2aqZqWt+9VAhcJlM7hIEyal1oxdSyLv/2
+         o/RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759743678; x=1760348478;
+        d=1e100.net; s=20230601; t=1759743691; x=1760348491;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=E4g2Dt/TcqCZ9Q+bj74Qh0XyQkDPrwX2+n2zSBd62o0=;
-        b=jDwjXwfOlJbYP3yklA6hNKu4LOQbbd93NHdT8cDYXl9iCi4FZUAgcu7hA4Xgs8sk8E
-         pH87XzAM8fTFvvXtEYhVqpOggaAecTRcIyeqBfr13T1wlE4EBtuntFPeYUbG/QJjYuNg
-         7f0eIGjedxsODH+E31SIaL7W4qYdP2z3CbBSPR5e8V1ai3cnnIrRMvk6+oFpPEQSGjp2
-         Ms7LNOF3uLuBs3c/USSYCUxc4i5ovKeK+5frnrYuRbqp5C9QIfhyxcXlVx/TGOUqsSxV
-         8W/84O7uaG9bG+WjrDtasYU1diQDtUsxNCgy8xxVYsqt8p8PFcnsoC/scLk+mI8kMiJl
-         TQxQ==
-X-Gm-Message-State: AOJu0Yxo7zJExY4o+yA//8TTpE52FAVB1I+wDpkvdWAgIQhrZbDWM9EO
-	fmt775z9tfCyFcQFPLDmKYR+g9s6+VKW8pPZBZvb/dZ8nJHXSTK9FRrr
-X-Gm-Gg: ASbGncu8pHpmQaELvkSWhtuuVPl7QKTet+V9uuND4WtpimKANWHlKlWIKx728M5Bu5e
-	JHjlTSWtoI4NEMHFHpfb2aa8f76M2Eb3bveXRma1jI0hBKOkcF/9I8Vmqo81AAAo2Qj690bCmIl
-	lDT06DB3zAMteJIMRwaRELaPk/5JbDp8JJTmXiQl7Bj6PXO3FYLb6PR+W1X6gka2BxXM4E+hHyb
-	SHBG5SofAnRw4bU0U7QYdV4hun7WWqeYd9mDzNtV+Bv9LPBoOgQcDZFoqgANL2W3/PzB5vJJyCi
-	yL3lqNpJxw7tiQKIBaQpInuUrhdDLP9mnInRDOinueGyynqHFq/IBjYuS/qH6DGjVgqbiOQXOxP
-	0bAp3PBSf4EalDlNtue2uhxjlgu+tEJPr6+197w==
-X-Google-Smtp-Source: AGHT+IHgfM9EDZrwpjiaW1k4I95OIZfCiOHLduIpkcRPiYnJMWY4Fkb+eSQxUHRYkT1ib759moqT4g==
-X-Received: by 2002:a05:6300:218e:b0:2d9:4afc:e1cf with SMTP id adf61e73a8af0-32b620ea86dmr14590976637.47.1759743678561;
-        Mon, 06 Oct 2025 02:41:18 -0700 (PDT)
+        bh=tDWMO78/Sngggr60GZi/HLcWQ6AuAiwa+2vlLjX9o2g=;
+        b=HPt9KlXmBzk9lg9WJFeubXP3+kb3SoJWJpurHYZlDW141L+VBDNez2fxkQJsDr5LAn
+         ZuU7/ptvQL/EAn7vX5seIhXn0AIYXvjEc4s/wykXO+cw9r0GtzITrbC1ilstIfnluMb+
+         2iKtAO9D8Z3HAurRnIyH/tS23rDVkGHMr0B9cQJ8ChunGUlkKZXCrcXgRJQt0rHcjHSW
+         ts0GCSS4FC1ddFkSSiY0oYh99+DcfRgTMR1R4A1FPAD3+YQ7xuiu3kJaawkLO7iMmdJG
+         CgSQxKCwB+K18F8T5XkBxez+7YAExqMNqWHnq4rYstjsmGq6ukpnsEbES097cTDvWn4f
+         WaNA==
+X-Gm-Message-State: AOJu0YxcDc/9Adx1J2ztTmxxcXnOiIZ4uH4I8YRcRYkizRSVw6uScPDi
+	bt5EBv+loW81gHfVZJfUTSm0LeKczNImuYeKaorFqfTKioh1q3kVyc4L
+X-Gm-Gg: ASbGnctq/b+n2dHyME84bddOjMuabXIwOuESrr27LF5nytAZttiPrLF9qGPow7TrSZ/
+	5ibk2QTVyym6FakytzZ0s2MASbqxkIQ3gZsm+tQM+AIMaTUEFBT+aOUZZYriWOOyig9p4juA6Ew
+	v896lQ/xRrUJIOi5FSFoNZmyGJiLbDNYgWCmUgwwIKCNKUNlgdqUnibw2965aBjBu8OXXVBDUBu
+	0+O2ZZ1AC76zzg44pGvvNz3SVDeVHT65dZdmcWjFS8m/AvOboGWl5mOplXgycAEiRHIVLrLGAd4
+	eL2xvxsjbkW2h4Wno1f86Wbwynt7QbGiz3YzwPeclud0NSTX/ysNhjGyF5xQ4BVMBD4i58pPNVX
+	I677GGeapoM/G9hRVM+JVfMtwrG6RTsRVMJ6xSPJ7skvmgwxI
+X-Google-Smtp-Source: AGHT+IGVuyWx946HsYOHhKNOFxC/pycX88y2x4j3++pl8lUJfoEyLqORuWilWGcjs9C38G+O9ca/Uw==
+X-Received: by 2002:a17:903:1a86:b0:268:b8a:5a26 with SMTP id d9443c01a7336-28e9a6b19e2mr157755655ad.54.1759743690647;
+        Mon, 06 Oct 2025 02:41:30 -0700 (PDT)
 Received: from ASUS ([119.63.139.7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b609be239c5sm11325778a12.19.2025.10.06.02.41.13
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b609be239c5sm11325778a12.19.2025.10.06.02.41.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Oct 2025 02:41:17 -0700 (PDT)
+        Mon, 06 Oct 2025 02:41:29 -0700 (PDT)
 From: Taimoor Zaeem <taimoorzaeem@gmail.com>
 To: jic23@kernel.org,
 	gregkh@linuxfoundation.org
 Cc: linux-iio@vger.kernel.org,
 	linux-staging@lists.linux.dev,
 	Taimoor Zaeem <taimoorzaeem@gmail.com>
-Subject: [PATCH 1/2] staging: iio: ad9834: remove empty ad9834.h file
-Date: Mon,  6 Oct 2025 14:40:24 +0500
-Message-ID: <20251006094025.259440-2-taimoorzaeem@gmail.com>
+Subject: [PATCH 2/2] staging: iio: ad9832: move struct ad9832_platform_data to ad9832.c
+Date: Mon,  6 Oct 2025 14:40:25 +0500
+Message-ID: <20251006094025.259440-3-taimoorzaeem@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251006094025.259440-1-taimoorzaeem@gmail.com>
 References: <20251006094025.259440-1-taimoorzaeem@gmail.com>
@@ -92,47 +92,95 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove drivers/staging/iio/frequency/ad9834.h header file
-because it contains nothing except the include guards.
+The struct ad9832_platform_data is only used in ad9832.c
+so it moved there instead. With this change, the ad9832.h
+file becomes empty, so we can remove it.
 
 Signed-off-by: Taimoor Zaeem <taimoorzaeem@gmail.com>
 ---
- drivers/staging/iio/frequency/ad9834.c |  3 +--
- drivers/staging/iio/frequency/ad9834.h | 10 ----------
- 2 files changed, 1 insertion(+), 12 deletions(-)
- delete mode 100644 drivers/staging/iio/frequency/ad9834.h
+ drivers/staging/iio/frequency/ad9832.c | 21 ++++++++++++++--
+ drivers/staging/iio/frequency/ad9832.h | 33 --------------------------
+ 2 files changed, 19 insertions(+), 35 deletions(-)
+ delete mode 100644 drivers/staging/iio/frequency/ad9832.h
 
-diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
-index 0038eb234d40..d339d5e8e043 100644
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -21,9 +21,8 @@
- 
+diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+index 49388da5a684..0517858bc5da 100644
+--- a/drivers/staging/iio/frequency/ad9832.c
++++ b/drivers/staging/iio/frequency/ad9832.c
+@@ -23,8 +23,6 @@
  #include <linux/iio/iio.h>
  #include <linux/iio/sysfs.h>
--#include "dds.h"
  
--#include "ad9834.h"
-+#include "dds.h"
+-#include "ad9832.h"
+-
+ #include "dds.h"
  
  /* Registers */
+@@ -117,6 +115,25 @@ struct ad9832_state {
+ 	} __aligned(IIO_DMA_MINALIGN);
+ };
  
-diff --git a/drivers/staging/iio/frequency/ad9834.h b/drivers/staging/iio/frequency/ad9834.h
++/**
++ * struct ad9832_platform_data - platform specific information
++ * @freq0:		power up freq0 tuning word in Hz
++ * @freq1:		power up freq1 tuning word in Hz
++ * @phase0:		power up phase0 value [0..4095] correlates with 0..2PI
++ * @phase1:		power up phase1 value [0..4095] correlates with 0..2PI
++ * @phase2:		power up phase2 value [0..4095] correlates with 0..2PI
++ * @phase3:		power up phase3 value [0..4095] correlates with 0..2PI
++ */
++
++struct ad9832_platform_data {
++	unsigned long		freq0;
++	unsigned long		freq1;
++	unsigned short		phase0;
++	unsigned short		phase1;
++	unsigned short		phase2;
++	unsigned short		phase3;
++};
++
+ static unsigned long ad9832_calc_freqreg(unsigned long mclk, unsigned long fout)
+ {
+ 	unsigned long long freqreg = (u64)fout *
+diff --git a/drivers/staging/iio/frequency/ad9832.h b/drivers/staging/iio/frequency/ad9832.h
 deleted file mode 100644
-index 521943aa0e61..000000000000
---- a/drivers/staging/iio/frequency/ad9834.h
+index d0d840edb8d2..000000000000
+--- a/drivers/staging/iio/frequency/ad9832.h
 +++ /dev/null
-@@ -1,10 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
+@@ -1,33 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0+ */
 -/*
-- * AD9833/AD9834/AD9837/AD9838 SPI DDS driver
+- * AD9832 SPI DDS driver
 - *
-- * Copyright 2010-2011 Analog Devices Inc.
+- * Copyright 2011 Analog Devices Inc.
 - */
--#ifndef IIO_DDS_AD9834_H_
--#define IIO_DDS_AD9834_H_
+-#ifndef IIO_DDS_AD9832_H_
+-#define IIO_DDS_AD9832_H_
 -
--#endif /* IIO_DDS_AD9834_H_ */
+-/*
+- * TODO: struct ad9832_platform_data needs to go into include/linux/iio
+- */
+-
+-/**
+- * struct ad9832_platform_data - platform specific information
+- * @freq0:		power up freq0 tuning word in Hz
+- * @freq1:		power up freq1 tuning word in Hz
+- * @phase0:		power up phase0 value [0..4095] correlates with 0..2PI
+- * @phase1:		power up phase1 value [0..4095] correlates with 0..2PI
+- * @phase2:		power up phase2 value [0..4095] correlates with 0..2PI
+- * @phase3:		power up phase3 value [0..4095] correlates with 0..2PI
+- */
+-
+-struct ad9832_platform_data {
+-	unsigned long		freq0;
+-	unsigned long		freq1;
+-	unsigned short		phase0;
+-	unsigned short		phase1;
+-	unsigned short		phase2;
+-	unsigned short		phase3;
+-};
+-
+-#endif /* IIO_DDS_AD9832_H_ */
 -- 
 2.51.0
 

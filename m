@@ -1,89 +1,71 @@
-Return-Path: <linux-iio+bounces-24769-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24770-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E4ABBD790
-	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 11:41:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15246BBD8DC
+	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 11:59:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D71E5188591B
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 09:42:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37F073B9F70
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 09:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C6434BA22;
-	Mon,  6 Oct 2025 09:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBEE215F7D;
+	Mon,  6 Oct 2025 09:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UccO/Fqu"
+	dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b="YEXIdq61";
+	dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b="YEXIdq61"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from h4.cmg1.smtp.forpsi.com (h4.cmg1.smtp.forpsi.com [185.129.138.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E82A168BD
-	for <linux-iio@vger.kernel.org>; Mon,  6 Oct 2025 09:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCEE218AD1
+	for <linux-iio@vger.kernel.org>; Mon,  6 Oct 2025 09:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.129.138.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759743692; cv=none; b=CL9gu11ujjTvA8acnVLcPD8vbktGEl61I/BGWBd/VwvZA1lX1Zc3F2AO2XsrN3ZB0ghc4TBUjpVzRk4+ghh+ZpnPXiub/HpPrcrRQpP8KZNpwq1GPQP7LyOBDhoPlyJuwHEfG97o6UM9Uh7UCtlJoUJnzm2nXHWL2gU4ihVjj00=
+	t=1759744752; cv=none; b=g6vn4lGTigHGXSP4ZUul7NucGhEvllmAj6SEWbcIZq/TO4cUaTVbMH1SpHin6t5udLqIY70gFx7UcRuuOxec2TRO0eq/xe8s2++6yVxs8vnaD1fLOCCtP9ucPLMQtIw/FCGSt/25M+QWxZfsn0ow9w48NL/FytFFVciF1jOiiQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759743692; c=relaxed/simple;
-	bh=RWpmJwgLuM2FIonYsAJTiC7gB8HKm6Y3f9332Ma3b94=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7mp3GCRxg+ct/mRePHiMuHAP5MQj2YqqQuyOroyhWlufypXd5AaIO+Eaecto20ydYGIGqOYS/D07nkqc2eGsyshp4lW7eYAYcaYuI5Bz/TN7ouaQUKDD9PW8b318KmaO6WGoiGRHpch4yUMlWl0aHiPKZleFMDzb+YTfd14XBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UccO/Fqu; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-27ee41e0798so71110375ad.1
-        for <linux-iio@vger.kernel.org>; Mon, 06 Oct 2025 02:41:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759743691; x=1760348491; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tDWMO78/Sngggr60GZi/HLcWQ6AuAiwa+2vlLjX9o2g=;
-        b=UccO/FqufmFv3Wvd7yrrz2x2wVNs1nsmN/3RprrZXG/bSQ8DPvXK/iNBQAP5QEYj43
-         LpV7WPOIIizUbSZ70QLC9lhEE/qHKeXnbbYdRsSe4Vi7ReJjTT58Arac5vjvslzlVYa2
-         9pMsd3QL+/NQxVwUKMQStW8WsGB3WSO7NVudjFRMJ1xhoZdjQo0vjCAY88KGs7QahVT1
-         szBMs5mM3QE4ilPrfHZNVcTgc3FlZOsNpOQc/n7q5fLwXMcAgWNrNUAZlVMw7OWzUhVm
-         Xplh+bmzf87g5kisEEKHHHeH2PLPiOdDYlB2aqZqWt+9VAhcJlM7hIEyal1oxdSyLv/2
-         o/RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759743691; x=1760348491;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tDWMO78/Sngggr60GZi/HLcWQ6AuAiwa+2vlLjX9o2g=;
-        b=HPt9KlXmBzk9lg9WJFeubXP3+kb3SoJWJpurHYZlDW141L+VBDNez2fxkQJsDr5LAn
-         ZuU7/ptvQL/EAn7vX5seIhXn0AIYXvjEc4s/wykXO+cw9r0GtzITrbC1ilstIfnluMb+
-         2iKtAO9D8Z3HAurRnIyH/tS23rDVkGHMr0B9cQJ8ChunGUlkKZXCrcXgRJQt0rHcjHSW
-         ts0GCSS4FC1ddFkSSiY0oYh99+DcfRgTMR1R4A1FPAD3+YQ7xuiu3kJaawkLO7iMmdJG
-         CgSQxKCwB+K18F8T5XkBxez+7YAExqMNqWHnq4rYstjsmGq6ukpnsEbES097cTDvWn4f
-         WaNA==
-X-Gm-Message-State: AOJu0YxcDc/9Adx1J2ztTmxxcXnOiIZ4uH4I8YRcRYkizRSVw6uScPDi
-	bt5EBv+loW81gHfVZJfUTSm0LeKczNImuYeKaorFqfTKioh1q3kVyc4L
-X-Gm-Gg: ASbGnctq/b+n2dHyME84bddOjMuabXIwOuESrr27LF5nytAZttiPrLF9qGPow7TrSZ/
-	5ibk2QTVyym6FakytzZ0s2MASbqxkIQ3gZsm+tQM+AIMaTUEFBT+aOUZZYriWOOyig9p4juA6Ew
-	v896lQ/xRrUJIOi5FSFoNZmyGJiLbDNYgWCmUgwwIKCNKUNlgdqUnibw2965aBjBu8OXXVBDUBu
-	0+O2ZZ1AC76zzg44pGvvNz3SVDeVHT65dZdmcWjFS8m/AvOboGWl5mOplXgycAEiRHIVLrLGAd4
-	eL2xvxsjbkW2h4Wno1f86Wbwynt7QbGiz3YzwPeclud0NSTX/ysNhjGyF5xQ4BVMBD4i58pPNVX
-	I677GGeapoM/G9hRVM+JVfMtwrG6RTsRVMJ6xSPJ7skvmgwxI
-X-Google-Smtp-Source: AGHT+IGVuyWx946HsYOHhKNOFxC/pycX88y2x4j3++pl8lUJfoEyLqORuWilWGcjs9C38G+O9ca/Uw==
-X-Received: by 2002:a17:903:1a86:b0:268:b8a:5a26 with SMTP id d9443c01a7336-28e9a6b19e2mr157755655ad.54.1759743690647;
-        Mon, 06 Oct 2025 02:41:30 -0700 (PDT)
-Received: from ASUS ([119.63.139.7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b609be239c5sm11325778a12.19.2025.10.06.02.41.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Oct 2025 02:41:29 -0700 (PDT)
-From: Taimoor Zaeem <taimoorzaeem@gmail.com>
-To: jic23@kernel.org,
-	gregkh@linuxfoundation.org
-Cc: linux-iio@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Taimoor Zaeem <taimoorzaeem@gmail.com>
-Subject: [PATCH 2/2] staging: iio: ad9832: move struct ad9832_platform_data to ad9832.c
-Date: Mon,  6 Oct 2025 14:40:25 +0500
-Message-ID: <20251006094025.259440-3-taimoorzaeem@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251006094025.259440-1-taimoorzaeem@gmail.com>
-References: <20251006094025.259440-1-taimoorzaeem@gmail.com>
+	s=arc-20240116; t=1759744752; c=relaxed/simple;
+	bh=a3PlZMY1AzAKa+LRBqlFv5iOn3dnylk0FlvKYR3G244=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sG1/g5IJi+6U0s7xIBysXZmTOs5qIoqQDVI4mMNp7HS5LScSVYPbL/HKLnGLc4tqEYUA42ykaKGbnPuljBJamt/O8ALqcIgKp3mv4VuG/ImFYYjmCyB0jy7EURvVZ57/m4Ft3pdOLPflQrG9K4OGJXPvkTwvTsjmdGYrv73rG+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skyrain.eu; spf=none smtp.mailfrom=skyrain.eu; dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b=YEXIdq61; dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b=YEXIdq61; arc=none smtp.client-ip=185.129.138.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skyrain.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=skyrain.eu
+Received: from localhost.localdomain ([92.180.235.211])
+	by cmgsmtp with ESMTPSA
+	id 5hzNvh7iYx9qo5hzcvCp9b; Mon, 06 Oct 2025 11:58:57 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=skyrain.eu; s=f2022;
+	t=1759744738; bh=T51TqDA17DuQhZo3twwv/fLsWv/0imwFufzExD2QAGM=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=YEXIdq61fof1vAbW9xbk+Hzg9bF9rDOy2YNEJVys5Kl3Z1NzSfwx4XRsRm1IdY33J
+	 qayGnfNenmUioNclbWfhis+R9VwitrGbQLtxBujB6e40Di+uV8oOtT7bfPIQ7VVx4r
+	 0LTHeUocX6ccKXMU08CJk0F9vLFitdO/X8txZjAN0PePKaZF/22QdooPGd4fw1Lsy1
+	 sqcPq56wK8duupbenxFk1XE6dpOnfjOA18jI8oRH0ApkXxwOQpoyoSJ/7tXWq7r8FQ
+	 dx7s77UjQIb40W2Z07ZsV3Ihc162TTQ2pweLtstCa7U7EwQ1g0IAPs+CEFF8ynDwh+
+	 CjtbEgG+ZNQMA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=skyrain.eu; s=f2022;
+	t=1759744738; bh=T51TqDA17DuQhZo3twwv/fLsWv/0imwFufzExD2QAGM=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=YEXIdq61fof1vAbW9xbk+Hzg9bF9rDOy2YNEJVys5Kl3Z1NzSfwx4XRsRm1IdY33J
+	 qayGnfNenmUioNclbWfhis+R9VwitrGbQLtxBujB6e40Di+uV8oOtT7bfPIQ7VVx4r
+	 0LTHeUocX6ccKXMU08CJk0F9vLFitdO/X8txZjAN0PePKaZF/22QdooPGd4fw1Lsy1
+	 sqcPq56wK8duupbenxFk1XE6dpOnfjOA18jI8oRH0ApkXxwOQpoyoSJ/7tXWq7r8FQ
+	 dx7s77UjQIb40W2Z07ZsV3Ihc162TTQ2pweLtstCa7U7EwQ1g0IAPs+CEFF8ynDwh+
+	 CjtbEgG+ZNQMA==
+From: Andrej Valek <andrej.v@skyrain.eu>
+To: linux-iio@vger.kernel.org
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Valek Andrej <andrej.v@skyrain.eu>,
+	Kessler Markus <markus.kessler@hilti.com>
+Subject: [PATCH v4] iio: accel: fix ADXL355 startup race condition
+Date: Mon,  6 Oct 2025 11:58:12 +0200
+Message-Id: <20251006095812.102230-1-andrej.v@skyrain.eu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,97 +73,99 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfJrr1r/V0ZK3hB5OtI4OB4+R6F8DuYHSnrD1PQgZgqmj+UWOZaGpCV5ccMjw7r5NlXd9frliiUbPFZYGNSkiiQncPZlQR/0JmQwRCoj7OP/e/DJ4KwGt
+ EIEIJZlxcExaMi0pGyVeOyBEP+lMzGMZKcetQR4phW+QnJI4nsNyKmS3ewaE6OC5WZaxOrftaosC+/Ri/GDsV/T+EcKg8HKIAurzfZAC4GwSOBpyVsxekf5i
+ zxIAttIGgbbeEwTQs3/Bp5h0m0D8fGsFXGqHeFPXMQ/QqzQxvgASk7V1ENK8YKjnoFPtFITBO6zAR7y7O8/fiMVmaLiJKXYSmWAEoQbG7B4wke7DLfAaIGTx
+ v/B8x3LH77RsEZFvvD4KdwjRdnmrfkzYIDgnNVJ2xbACLdHSTE4NeyZw1Wn8C5fidaEiAzP2BN60GCcpWjFF1y3btoPgUOnzaHu0EeT374EJlTZC1Egc4vUH
+ ftkYzoa79LfIpWT3
 
-The struct ad9832_platform_data is only used in ad9832.c
-so it moved there instead. With this change, the ad9832.h
-file becomes empty, so we can remove it.
+From: Valek Andrej <andrej.v@skyrain.eu>
 
-Signed-off-by: Taimoor Zaeem <taimoorzaeem@gmail.com>
+There is an race-condition where device is not full working after SW reset.
+Therefore it's necessary to wait some time after reset and verify shadow
+registers values by reading and comparing the values before/after reset.
+This mechanism is described in datasheet at least from revision D.
+
+Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
+Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
 ---
- drivers/staging/iio/frequency/ad9832.c | 21 ++++++++++++++--
- drivers/staging/iio/frequency/ad9832.h | 33 --------------------------
- 2 files changed, 19 insertions(+), 35 deletions(-)
- delete mode 100644 drivers/staging/iio/frequency/ad9832.h
+ drivers/iio/accel/adxl355_core.c | 44 ++++++++++++++++++++++++++++----
+ 1 file changed, 39 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-index 49388da5a684..0517858bc5da 100644
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -23,8 +23,6 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
+diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
+index 2e00fd51b4d5..5fc7f814b907 100644
+--- a/drivers/iio/accel/adxl355_core.c
++++ b/drivers/iio/accel/adxl355_core.c
+@@ -56,6 +56,8 @@
+ #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
+ #define ADXL355_SELF_TEST_REG		0x2E
+ #define ADXL355_RESET_REG		0x2F
++#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
++#define ADXL355_SHADOW_REG_COUNT	5
  
--#include "ad9832.h"
--
- #include "dds.h"
- 
- /* Registers */
-@@ -117,6 +115,25 @@ struct ad9832_state {
- 	} __aligned(IIO_DMA_MINALIGN);
- };
- 
-+/**
-+ * struct ad9832_platform_data - platform specific information
-+ * @freq0:		power up freq0 tuning word in Hz
-+ * @freq1:		power up freq1 tuning word in Hz
-+ * @phase0:		power up phase0 value [0..4095] correlates with 0..2PI
-+ * @phase1:		power up phase1 value [0..4095] correlates with 0..2PI
-+ * @phase2:		power up phase2 value [0..4095] correlates with 0..2PI
-+ * @phase3:		power up phase3 value [0..4095] correlates with 0..2PI
-+ */
-+
-+struct ad9832_platform_data {
-+	unsigned long		freq0;
-+	unsigned long		freq1;
-+	unsigned short		phase0;
-+	unsigned short		phase1;
-+	unsigned short		phase2;
-+	unsigned short		phase3;
-+};
-+
- static unsigned long ad9832_calc_freqreg(unsigned long mclk, unsigned long fout)
+ #define ADXL355_DEVID_AD_VAL		0xAD
+ #define ADXL355_DEVID_MST_VAL		0x1D
+@@ -294,7 +296,12 @@ static void adxl355_fill_3db_frequency_table(struct adxl355_data *data)
+ static int adxl355_setup(struct adxl355_data *data)
  {
- 	unsigned long long freqreg = (u64)fout *
-diff --git a/drivers/staging/iio/frequency/ad9832.h b/drivers/staging/iio/frequency/ad9832.h
-deleted file mode 100644
-index d0d840edb8d2..000000000000
---- a/drivers/staging/iio/frequency/ad9832.h
-+++ /dev/null
-@@ -1,33 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0+ */
--/*
-- * AD9832 SPI DDS driver
-- *
-- * Copyright 2011 Analog Devices Inc.
-- */
--#ifndef IIO_DDS_AD9832_H_
--#define IIO_DDS_AD9832_H_
--
--/*
-- * TODO: struct ad9832_platform_data needs to go into include/linux/iio
-- */
--
--/**
-- * struct ad9832_platform_data - platform specific information
-- * @freq0:		power up freq0 tuning word in Hz
-- * @freq1:		power up freq1 tuning word in Hz
-- * @phase0:		power up phase0 value [0..4095] correlates with 0..2PI
-- * @phase1:		power up phase1 value [0..4095] correlates with 0..2PI
-- * @phase2:		power up phase2 value [0..4095] correlates with 0..2PI
-- * @phase3:		power up phase3 value [0..4095] correlates with 0..2PI
-- */
--
--struct ad9832_platform_data {
--	unsigned long		freq0;
--	unsigned long		freq1;
--	unsigned short		phase0;
--	unsigned short		phase1;
--	unsigned short		phase2;
--	unsigned short		phase3;
--};
--
--#endif /* IIO_DDS_AD9832_H_ */
+ 	unsigned int regval;
++	int retries = 5; /* the number is chosen based on empirical reasons */
+ 	int ret;
++	u8 *shadow_regs __free(kfree) = kzalloc(ADXL355_SHADOW_REG_COUNT, GFP_KERNEL);
++
++	if (!shadow_regs)
++		return -ENOMEM;
+ 
+ 	ret = regmap_read(data->regmap, ADXL355_DEVID_AD_REG, &regval);
+ 	if (ret)
+@@ -321,14 +328,41 @@ static int adxl355_setup(struct adxl355_data *data)
+ 	if (regval != ADXL355_PARTID_VAL)
+ 		dev_warn(data->dev, "Invalid DEV ID 0x%02x\n", regval);
+ 
+-	/*
+-	 * Perform a software reset to make sure the device is in a consistent
+-	 * state after start-up.
+-	 */
+-	ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
++	/* Read shadow registers to be compared after reset */
++	ret = regmap_bulk_read(data->regmap,
++			       ADXL355_BASE_ADDR_SHADOW_REG,
++			       shadow_regs, ADXL355_SHADOW_REG_COUNT);
+ 	if (ret)
+ 		return ret;
+ 
++	do {
++		if (--retries == 0) {
++			dev_err(data->dev, "Shadow registers mismatch\n");
++			return -EIO;
++		}
++
++		/*
++		 * Perform a software reset to make sure the device is in a consistent
++		 * state after start-up.
++		 */
++		ret = regmap_write(data->regmap, ADXL355_RESET_REG,
++				   ADXL355_RESET_CODE);
++		if (ret)
++			return ret;
++
++		/* Wait at least 5ms after software reset */
++		usleep_range(5000, 10000);
++
++		/* Read shadow registers for comparison */
++		ret = regmap_bulk_read(data->regmap,
++				       ADXL355_BASE_ADDR_SHADOW_REG,
++				       data->buffer.buf,
++				       ADXL355_SHADOW_REG_COUNT);
++		if (ret)
++			return ret;
++	} while (memcmp(shadow_regs, data->buffer.buf,
++			ADXL355_SHADOW_REG_COUNT));
++
+ 	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
+ 				 ADXL355_POWER_CTL_DRDY_MSK,
+ 				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
 -- 
-2.51.0
+2.34.1
 
 

@@ -1,204 +1,127 @@
-Return-Path: <linux-iio+bounces-24771-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24772-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29ABDBBD948
-	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 12:04:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F252BBDCC5
+	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 12:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C4733B9E63
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 10:04:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FED61884D7C
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 10:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B1821FF44;
-	Mon,  6 Oct 2025 10:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5704F259C83;
+	Mon,  6 Oct 2025 10:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b="q2QPr9zv";
-	dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b="q2QPr9zv"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="tqHeN/RB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from h2.cmg1.smtp.forpsi.com (h2.cmg1.smtp.forpsi.com [81.2.195.163])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE3A21CA00
-	for <linux-iio@vger.kernel.org>; Mon,  6 Oct 2025 10:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.2.195.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F9C2135D7;
+	Mon,  6 Oct 2025 10:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759745034; cv=none; b=n57nxB9S+hvuL4cO4AONLKywOz50FKLad+q+ZrKT3UK2LhxcR9SQrFVO0NBKXpbZcevo2N671ztdkSoLfxFvirW0trTsv/jaCwnETqA2BfRsPAFLJklh03f1K9wnedLjwUlpXjKaBEdvAFVrV0eq6UK6YuOrU3CNJBAgVbajY1E=
+	t=1759747942; cv=none; b=YHdqGtbJoYYJf3byQIx7sXl0IXbV/gVnTRFUV5hFBQCVP7/BFIYP/5mZMS3qFo4baEydZPLVQrcWthDkkKaS4Ejx0QuD2d1NgPZ6w/G5sBlnRPZ3jEhz85hM07XMvvVAbIAK2aXXCzQc9LAI9DtOhpqAzm+B252VraEBwBG+1Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759745034; c=relaxed/simple;
-	bh=D+h+GfPBBTeXmE4aj8R7jjAc5w+AO/ix3gaSoNvTwXc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T7IUh7L4WPZIAJMFz45IK3/wsRv+Az1Qy44FW9PftdrHj4Az54X7WJJ4OBoyEyJjEFJWa3pnZrXy5gBwqVlGUOoQx/2M8ZnC7CUEgb4mnH+8SgaWExohd/DG63e1jbSPQCflhc5nxu5XOML6NKyaXIhqdEc0EwNWOMp3KNslyUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skyrain.eu; spf=none smtp.mailfrom=skyrain.eu; dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b=q2QPr9zv; dkim=pass (2048-bit key) header.d=skyrain.eu header.i=@skyrain.eu header.b=q2QPr9zv; arc=none smtp.client-ip=81.2.195.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skyrain.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=skyrain.eu
-Received: from [192.168.10.89] ([92.180.235.211])
-	by cmgsmtp with ESMTPSA
-	id 5i4EvhBNwx9qo5i4EvCqiJ; Mon, 06 Oct 2025 12:03:42 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=skyrain.eu; s=f2022;
-	t=1759745022; bh=A2JZctlLRHMkF9I76HZLZPOnZ+YBqrBrIomsoeA5sms=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=q2QPr9zvisk4bt2YNLUeC72QpImy01U4sRono8rt/p8l6hSnV/2j35JJY7VX04CP1
-	 IBqXa3PVT+H0scDesXQ3ASi4VCp+6LGlgurOzQovk/LSJWiJiw5N0z8AsQh3dVskQ5
-	 01lg/0cLyAIYlUwxuhTgsdBrmCF/aQftIfbns6fU0YWuBlsdExCIUjuJ/9gskzIsWG
-	 +T6tBxMOYmb4gsGmk6KUfb/TzomU4afFZaJy/1N6JMGLovKnbB14VHOLJ4zrYisTbB
-	 9PH0J/Apn661jbs0Qwq6odcsrjUfV+vASyrFRe12N2VjlggYwlIcoXG9Q54gEV8IWo
-	 0DwGXIVIlKBtg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=skyrain.eu; s=f2022;
-	t=1759745022; bh=A2JZctlLRHMkF9I76HZLZPOnZ+YBqrBrIomsoeA5sms=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=q2QPr9zvisk4bt2YNLUeC72QpImy01U4sRono8rt/p8l6hSnV/2j35JJY7VX04CP1
-	 IBqXa3PVT+H0scDesXQ3ASi4VCp+6LGlgurOzQovk/LSJWiJiw5N0z8AsQh3dVskQ5
-	 01lg/0cLyAIYlUwxuhTgsdBrmCF/aQftIfbns6fU0YWuBlsdExCIUjuJ/9gskzIsWG
-	 +T6tBxMOYmb4gsGmk6KUfb/TzomU4afFZaJy/1N6JMGLovKnbB14VHOLJ4zrYisTbB
-	 9PH0J/Apn661jbs0Qwq6odcsrjUfV+vASyrFRe12N2VjlggYwlIcoXG9Q54gEV8IWo
-	 0DwGXIVIlKBtg==
-Message-ID: <d18192cf-6a6d-499a-baa9-6ad4823ec149@skyrain.eu>
-Date: Mon, 6 Oct 2025 12:03:42 +0200
+	s=arc-20240116; t=1759747942; c=relaxed/simple;
+	bh=gm/Cvg544MWI29JKrzAG4mwd8sooFCbAMI/8/oJiB6M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=Jx6kD1eaJ5hKvuCNv188X0RnaS3XY2LTn20AAAnmaq4Y5QURB8IEm2o9hA4nTa+1gsWF+2PHNSunVQvbbrt/xEf72Xw7ByxxmgcmwrhFHQzlNmGknRABtI0o8pz9fleJOhEZp0VOweR0Ehep9EntnPVADFsgNAtao9Hv5Wt3pIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=tqHeN/RB; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1759747940; x=1791283940;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=gm/Cvg544MWI29JKrzAG4mwd8sooFCbAMI/8/oJiB6M=;
+  b=tqHeN/RBcxU3z6v7QdTs06OwIAcqyQyZ1xhXmYN1ctCgAo2cIa5I+9US
+   k3eqxupUTG/BmCfW+HEDN95SChi4GO+UEI9Gpve9GrSklQvNEOwbp0Wtf
+   bYQv5lG77/sETUUSA/kn8Q84698+53uNEtBJGmkg/dBZdD70qQLRkWpfT
+   cZsfk9FfwcZF8sLhKD7RXsu1zakVn4VSMp+E2mU4e4bot+0OyCDfB9/zs
+   +pfJ7bB/Q5TeecfTb2WS225HZ1bHEXMWEQTkoNS8NTLs/9ht8rjBfKgPv
+   wFDBBMM6ZrEH8v0li3AJh8BMmPMQ/NEmsF8GlOdmA36pVx4JbOm8Zxi11
+   Q==;
+X-CSE-ConnectionGUID: Kr+Q+dDzSjW7mslzFvIb1w==
+X-CSE-MsgGUID: nADP52EgTE2cUcdQ/J8xqg==
+X-IronPort-AV: E=Sophos;i="6.18,319,1751266800"; 
+   d="scan'208";a="53412948"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Oct 2025 03:52:13 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 6 Oct 2025 03:51:53 -0700
+Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 6 Oct 2025 03:51:50 -0700
+From: Dharma Balasubiramani <dharma.b@microchip.com>
+Date: Mon, 6 Oct 2025 16:21:50 +0530
+Subject: [PATCH] counter: microchip-tcb-capture: Allow shared IRQ for
+ multi-channel TCBs
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] iio: accel: fix ADXL355 startup race condition
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Puranjay Mohan <puranjay@kernel.org>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- David Lechner <dlechner@baylibre.com>,
- Kessler Markus <markus.kessler@hilti.com>
-References: <20250909085528.68966-1-andrej.v@skyrain.eu>
- <20251001143702.587073-1-andrej.v@skyrain.eu>
- <20251004164732.3d70091c@jic23-huawei>
-Content-Language: en-US
-From: Andrej Valek <andrej.v@skyrain.eu>
-In-Reply-To: <20251004164732.3d70091c@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4xfKQzblwYuWCqFm+xRc3T/jqFVi0orXAVZ4wt9B62ABPuaVTJLIrXJDD//k28dFi0PiZzarAzDy7teJi5ky1BXTa5UyIZkwdsOdDsy/ACwaREEsGzeL/g
- oy5R2xQGtDZFaf+lFvhLo+nsWPn+8nrHhVLpjmMqxCkMjtjy1lmxMEGcjpuQQKGJRklx1tvnnkn9uvitZHuDs+5E+MZrkiHiOyKaXXeohJo6/MLQdNJBRFZ1
- NMRo97Mk+KcY/hrQ3cqfYvImP8aP+PqJ9vnGk9K5HbamlpZ5SvcykHOlboLqXEbvzDwa9ywq6bUmvC5Yv0mYQ5xqHW2KdLKnXCTX0dU8I8nptrhvABzmabCE
- UoDMbczfUEtQ4i4/ala4GeevriZP5gxoT2d4hkij2qbE6n4PVQvKtjbc+B4S6ExG9qi00cYVvikJnnjhn1KFFKdpwo9nkQ==
+Message-ID: <20251006-microchip-tcb-v1-1-09c19181bb4a@microchip.com>
+X-B4-Tracking: v=1; b=H4sIAEWf42gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDAwMz3dzM5KL85IzMAt2S5CTd1JQUi8TUxFRjs2QTJaCegqLUtMwKsHn
+ RsbW1AELilytfAAAA
+To: Kamel Bouhara <kamel.bouhara@bootlin.com>, William Breathitt Gray
+	<wbg@kernel.org>, =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <bence98@sch.bme.hu>
+CC: <linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Dharma Balasubiramani
+	<dharma.b@microchip.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759747911; l=1486;
+ i=dharma.b@microchip.com; s=20240209; h=from:subject:message-id;
+ bh=gm/Cvg544MWI29JKrzAG4mwd8sooFCbAMI/8/oJiB6M=;
+ b=bOTY3HZhE7E09lIqJ/OSyYN9TUABG4lzTG4EqLahS4+YGLDcy4zbM0JK+JTdp2Lp0rQEkFtWE
+ OfPw2NWn9OnBO/7/RQqhs6jifYZwI4NhbGgK2zd1Drh6xX7gvP3A2SR
+X-Developer-Key: i=dharma.b@microchip.com; a=ed25519;
+ pk=kCq31LcpLAe9HDfIz9ZJ1U7T+osjOi7OZSbe0gqtyQ4=
 
-Hello Jonathan,
+Mark the interrupt as IRQF_SHARED to permit multiple counter channels to
+share the same TCB IRQ line.
 
-sorry, I didn't want to make something misleading.
+Each Timer/Counter Block (TCB) instance shares a single IRQ line among its
+three internal channels. When multiple counter channels (e.g., counter@0
+and counter@1) within the same TCB are enabled, the second call to
+devm_request_irq() fails because the IRQ line is already requested by the
+first channel.
 
-On 04.10.2025 17:47, Jonathan Cameron wrote:
-> On Wed,  1 Oct 2025 16:37:02 +0200
-> Andrej Valek <andrej.v@skyrain.eu> wrote:
->
->> From: Valek Andrej <andrej.v@skyrain.eu>
->>
->> There is an race-condition where device is not full working after SW reset.
->> Therefore it's necessary to wait some time after reset and verify shadow
->> registers values by reading and comparing the values before/after reset.
->> This mechanism is described in datasheet at least from revision D.
->>
->> Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
->> Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
-> Hi Valek,
->
-> One process thing is to not reply to an existing thread with a new version.
-> Whilst it seems nice and tidy when we only have one patch in a series, it can
-> get very complex to read if we have deep threads with many versions being commented
-> on at the same time.  Also tends to end up way off the top of the screen in
-> threaded email clients.  Hence this is about the last patch I'm replying to today
-> just because for once I've more or less caught up with all my IIO related emails.
->
-> So just send a fresh series that isn't in reply to anything.
->
-> Mostly good, but can you reply with a fixes tag and are you fine with me
-> adding the error check I call out below?
-I tried to follow the thread and always use the first message as 
-reference, but it failed somehow. Anyhow I send a new patch without 
-following the previous stuff as requested: 
-https://lore.kernel.org/linux-iio/20251006095812.102230-1-andrej.v@skyrain.eu/T/#u
->
->> ---
->>   drivers/iio/accel/adxl355_core.c | 41 ++++++++++++++++++++++++++++----
->>   1 file changed, 36 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
->> index 2e00fd51b4d5..782085d74ab8 100644
->> --- a/drivers/iio/accel/adxl355_core.c
->> +++ b/drivers/iio/accel/adxl355_core.c
->> @@ -56,6 +56,8 @@
->>   #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
->>   #define ADXL355_SELF_TEST_REG		0x2E
->>   #define ADXL355_RESET_REG		0x2F
->> +#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
->> +#define ADXL355_SHADOW_REG_COUNT	5
->>   
->>   #define ADXL355_DEVID_AD_VAL		0xAD
->>   #define ADXL355_DEVID_MST_VAL		0x1D
->> @@ -294,6 +296,8 @@ static void adxl355_fill_3db_frequency_table(struct adxl355_data *data)
->>   static int adxl355_setup(struct adxl355_data *data)
->>   {
->>   	unsigned int regval;
->> +	u8 *shadow_regs __free(kfree) = kzalloc(ADXL355_SHADOW_REG_COUNT, GFP_KERNEL);
->> +	int retries = 5; /* the number is chosen based on empirical reasons */
->>   	int ret;
-> 	if (!shadow_regs)
-> 		return -ENOMEM;
->
-> Whilst very unlikely to happen we still need to handle memory allocation failure.
-Sure, added.
->>   
->>   	ret = regmap_read(data->regmap, ADXL355_DEVID_AD_REG, &regval);
->> @@ -321,14 +325,41 @@ static int adxl355_setup(struct adxl355_data *data)
->>   	if (regval != ADXL355_PARTID_VAL)
->>   		dev_warn(data->dev, "Invalid DEV ID 0x%02x\n", regval);
->>   
->> -	/*
->> -	 * Perform a software reset to make sure the device is in a consistent
->> -	 * state after start-up.
->> -	 */
->> -	ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
->> +	/* Read shadow registers to be compared after reset */
->> +	ret = regmap_bulk_read(data->regmap,
->> +			       ADXL355_BASE_ADDR_SHADOW_REG,
->> +			       shadow_regs, ADXL355_SHADOW_REG_COUNT);
->>   	if (ret)
->>   		return ret;
->>   
->> +	do {
->> +		if (--retries == 0) {
->> +			dev_err(data->dev, "Shadow registers mismatch\n");
->> +			return -EIO;
->> +		}
->> +
->> +		/*
->> +		 * Perform a software reset to make sure the device is in a consistent
->> +		 * state after start-up.
->> +		 */
->> +		ret = regmap_write(data->regmap, ADXL355_RESET_REG,
->> +				   ADXL355_RESET_CODE);
->> +		if (ret)
->> +			return ret;
->> +
->> +		/* Wait at least 5ms after software reset */
->> +		usleep_range(5000, 10000);
->> +
->> +		/* Read shadow registers for comparison */
->> +		ret = regmap_bulk_read(data->regmap,
->> +				       ADXL355_BASE_ADDR_SHADOW_REG,
->> +				       data->buffer.buf,
->> +				       ADXL355_SHADOW_REG_COUNT);
->> +		if (ret)
->> +			return ret;
->> +	} while (memcmp(shadow_regs, data->buffer.buf,
->> +			ADXL355_SHADOW_REG_COUNT));
->> +
->>   	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
->>   				 ADXL355_POWER_CTL_DRDY_MSK,
->>   				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
->
-Now should be everything fixed, hopefully... .
+Fixes: e5d581396821 ("counter: microchip-tcb-capture: Add IRQ handling")
+Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
+---
+ drivers/counter/microchip-tcb-capture.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-BR,
-Andy
+diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+index 1a299d1f350b..19d457ae4c3b 100644
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -451,7 +451,7 @@ static void mchp_tc_irq_remove(void *ptr)
+ static int mchp_tc_irq_enable(struct counter_device *const counter, int irq)
+ {
+ 	struct mchp_tc_data *const priv = counter_priv(counter);
+-	int ret = devm_request_irq(counter->parent, irq, mchp_tc_isr, 0,
++	int ret = devm_request_irq(counter->parent, irq, mchp_tc_isr, IRQF_SHARED,
+ 				   dev_name(counter->parent), counter);
+ 
+ 	if (ret < 0)
+
+---
+base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
+change-id: 20251006-microchip-tcb-edd8aeae36c4
+
+Best regards,
+-- 
+Dharma Balasubiramani <dharma.b@microchip.com>
+
 

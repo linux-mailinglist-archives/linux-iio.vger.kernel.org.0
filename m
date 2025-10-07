@@ -1,171 +1,161 @@
-Return-Path: <linux-iio+bounces-24822-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24823-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AADBC1682
-	for <lists+linux-iio@lfdr.de>; Tue, 07 Oct 2025 14:49:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 371ECBC1C64
+	for <lists+linux-iio@lfdr.de>; Tue, 07 Oct 2025 16:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E7454F607D
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Oct 2025 12:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02E9319A30A5
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Oct 2025 14:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56802DBF6E;
-	Tue,  7 Oct 2025 12:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9402E0B6A;
+	Tue,  7 Oct 2025 14:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P7UhM/7x"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746A02E0410
-	for <linux-iio@vger.kernel.org>; Tue,  7 Oct 2025 12:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E845434BA35
+	for <linux-iio@vger.kernel.org>; Tue,  7 Oct 2025 14:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759841336; cv=none; b=oZK6HxUz8jfWPsIPxD+tgTNmvk0CY8zfvv65Tp56J39XRtWJ5f2na4XubtksQcCKNehMRDK9kEDDsdEExeGoDHDbPiU4qvFJfTfhNGppwlTcpqJQ+QhrD2gk0cwpjeZDHPHZut/kGgkpz4o3FHwL4WiD20BHLaqKziYI8IaTGKk=
+	t=1759848035; cv=none; b=Zl710nCN24gAC3+x/T6VKcXn2c4NsiCU/3gBVA4jeOkvEKNzvB/rlbdXCAZxFzFNB2NQiQx+m81TQkvdbvbe1UDc3oj74amB7T1h1sX8z3NWUBKHiguacWdytcTh6aWHY9gH1ErYHBgyzqSnG1lQ94dctKbOhxZ6mANyglooFa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759841336; c=relaxed/simple;
-	bh=UHumerp+A0bu+PJmhmb3hVWNWDM7ak4KKxSbxW8Jdak=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DKfQ/D5Q7HIawVvK5Vu6GOHG0J+13jZ6q6oaOsW2ZpTJ6iCg307Ity0Z1qL6Bjn7+8nquCNh9TDTjYHl0XSZmaaBXbMqsd34ihFu+CjMdAR+yOYEnDZsqnWT/ibrtrTVl4H0zdfor7iOWIWeFb6GboWT69JE/B4YEYqeyoO8oq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cgwsr1rYBz6L4yD;
-	Tue,  7 Oct 2025 20:48:16 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 730741402CB;
-	Tue,  7 Oct 2025 20:48:52 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 7 Oct
- 2025 13:48:51 +0100
-Date: Tue, 7 Oct 2025 13:48:50 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Taimoor Zaeem <taimoorzaeem@gmail.com>
-CC: <jic23@kernel.org>, <gregkh@linuxfoundation.org>,
-	<linux-iio@vger.kernel.org>, <linux-staging@lists.linux.dev>
-Subject: Re: [PATCH 2/2] staging: iio: ad9832: move struct
- ad9832_platform_data to ad9832.c
-Message-ID: <20251007134850.00005f9f@huawei.com>
-In-Reply-To: <20251006094025.259440-3-taimoorzaeem@gmail.com>
-References: <20251006094025.259440-1-taimoorzaeem@gmail.com>
-	<20251006094025.259440-3-taimoorzaeem@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1759848035; c=relaxed/simple;
+	bh=B2OUx2sfHgzN2CS0iQzkheQkEWVCuNBoUZhIh5+IVkw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YhwEAsRFiCoAfCs/Pub38XfHNqpwwp8/DxYohZmc1jHkcqhRFhsOs58tTy6UFv+TBHBAJ8GDYQx4y/myNDYmFJs8Mjo7AZRUjfHs8q0q6Casm4gHOoyFyfIpLGGVuhMQwTPZy1KkbEIrLaNQtFMdfj+l6e29r6/UXOcaH9omFMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P7UhM/7x; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-46e2e363118so58205445e9.0
+        for <linux-iio@vger.kernel.org>; Tue, 07 Oct 2025 07:40:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759848032; x=1760452832; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l8GdmpbvP1MhVUerSbA0JGFH2sH85K9L2vfKUXIpVfI=;
+        b=P7UhM/7xJ1ScRif92wpbmiRoKKlA1z4fEDBXJsVTRNaSNCv3L5dn4zw6MLZ5GnOoNm
+         HBpkWb4f5yrvQQ2RmeG0klHZsSycheuJx6eRnCXrrx41QZdfXxbPDvBkgm0ZOwyfiyGo
+         ifbZZns/DYoB2+ES/Z6Lpixk3R4oW0xg/ZY3Y6pYyJuFahaz9FLKJ9sMhqdUdTLift0e
+         Xdc6K9OS0Mlu+bzInJwd3eNZ/7gr+017SmLXr8b9MKMgN071ULSqYULIFWsWJPYXrq/V
+         /kzIqEqWek2ODqa1t7QBycOHA3hwjIc3I4758KJP6R1IbRsJmpIklIhS7HMYRckuUdUr
+         MVNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759848032; x=1760452832;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=l8GdmpbvP1MhVUerSbA0JGFH2sH85K9L2vfKUXIpVfI=;
+        b=d6vkbGeDild4DYT/8zcAMcbWGgT51ZZCFheDu21wrfsGiJTsKhzKoCmJyNlJKw0Yam
+         QxX74AYKXDWTP/qC/9GopftgfQ/9pJswJ1uSSJZLxEYcPcV0YLTyP+DWHn7bBgKi8xpm
+         +QXGqyUWsKhCQiAuiKnYNdmIOOOtCBLN/f9grMgwnQZ3uGjgWsZDCWGSBpeLvU0GgvvB
+         WbSnLFrNixSeDnEEz3ZaM3wAOz4SDncHAkVI3A1qok1u8F1A356Qy97v5MhZR0Z0ca1f
+         jQfJJN5hfkMtaGfLcWbmNy2VT6a6dQqh2rBhirmVWHG0gnZcwEw0LrJNybH+B6HiBF0w
+         JGpA==
+X-Forwarded-Encrypted: i=1; AJvYcCVijzOkbmO9EpBnQYaLj8FIB2dmQO0wiywRdvmocmitWRNZnGTiYsjIOVFoyXl5BZWkv3mHBucMGpQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcwdeA9DgJJF+1pKhNYKFwNizKpM/QUY0gvTgmU6oavzhoJLDX
+	RHy0pWrpgi8TAaJNOB2u13DTvUPMFhDauaddGO6hFPRFyJIZGkcR1RzE
+X-Gm-Gg: ASbGnctw38efpkx7V7BuSEaRPAbgOH+fFzWrzrX2l9LoYiqawASoZ4232+aZfjQf3ZE
+	eO6xMlTQqPs6DfBLMLSDER3UTckpQ1P/mQd2NJQEw1ShX/W2xnkYce5hG6P6PXGuUh2eiLt23RE
+	623H2qI6Px+J/ObGJrNzUPWZ5M74ZtgSVIO9NcpR5WaphI0tJEs+vsmEV2KxdYWgDlpA/02B5LX
+	CIBvcj4uoZP6HC1yYUzzX0FobJ+DFhoizTF/SoVpCtcsmivqfqw0PmxLo2hKZTPt8xqHNX/1yKb
+	YdKjlAO/iN0TIB3u5RulIVkOxKMt1T4SBc1E0TfwBbvxjz0ORACNm+tQhUB6XZ/l/X003biTX2i
+	7H5ygu8UY/9eVO14D10KLuq+F1U67D/2dOTB+7K8kAAub1o9tJxZfIiY=
+X-Google-Smtp-Source: AGHT+IGtQbtZIKWaF78VmDZ+vdI7XKAwSNPKSmE7sO1oNtpdiRZFYTkgS4jotFOn1ND7BATYei37hg==
+X-Received: by 2002:a05:600c:6092:b0:46e:48fd:a1a9 with SMTP id 5b1f17b1804b1-46e7117258cmr118051405e9.33.1759848031966;
+        Tue, 07 Oct 2025 07:40:31 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fa3a234d5sm18420825e9.5.2025.10.07.07.40.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Oct 2025 07:40:31 -0700 (PDT)
+Message-ID: <ba68afe4fbe5c895de8a2ce506a69e0c0884eb4e.camel@gmail.com>
+Subject: Re: [PATCH v3 1/6] iio: adc: ad4080: fix chip identification
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org, 
+	robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Date: Tue, 07 Oct 2025 15:41:02 +0100
+In-Reply-To: <20251007111525.25711-2-antoniu.miclaus@analog.com>
+References: <20251007111525.25711-1-antoniu.miclaus@analog.com>
+	 <20251007111525.25711-2-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Mon,  6 Oct 2025 14:40:25 +0500
-Taimoor Zaeem <taimoorzaeem@gmail.com> wrote:
-
-> The struct ad9832_platform_data is only used in ad9832.c
-> so it moved there instead. With this change, the ad9832.h
-> file becomes empty, so we can remove it.
-> 
-> Signed-off-by: Taimoor Zaeem <taimoorzaeem@gmail.com>
-
-Hi.
-
-See my reply to earlier thread for why this makes no sense and what
-needs doing to actually get rid of the platform data in general
-(and hence the header).
-
-Thanks,
-
-Jonathan
-
-
-
+On Tue, 2025-10-07 at 11:15 +0000, Antoniu Miclaus wrote:
+> Fix AD4080 chip identification by using the correct 16-bit product ID
+> (0x0050) instead of GENMASK(2, 0). Update the chip reading logic to
+> use regmap_bulk_read to read both PRODUCT_ID_L and PRODUCT_ID_H
+> registers and combine them into a 16-bit value.
+>=20
+> The original implementation was incorrectly reading only 3 bits,
+> which would not correctly identify the AD4080 chip.
+>=20
+> Fixes: 6b31ba1811b6 ("iio: adc: ad4080: add driver support")
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
->  drivers/staging/iio/frequency/ad9832.c | 21 ++++++++++++++--
->  drivers/staging/iio/frequency/ad9832.h | 33 --------------------------
->  2 files changed, 19 insertions(+), 35 deletions(-)
->  delete mode 100644 drivers/staging/iio/frequency/ad9832.h
-> 
-> diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-> index 49388da5a684..0517858bc5da 100644
-> --- a/drivers/staging/iio/frequency/ad9832.c
-> +++ b/drivers/staging/iio/frequency/ad9832.c
-> @@ -23,8 +23,6 @@
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
->  
-> -#include "ad9832.h"
-> -
->  #include "dds.h"
->  
->  /* Registers */
-> @@ -117,6 +115,25 @@ struct ad9832_state {
->  	} __aligned(IIO_DMA_MINALIGN);
->  };
->  
-> +/**
-> + * struct ad9832_platform_data - platform specific information
-> + * @freq0:		power up freq0 tuning word in Hz
-> + * @freq1:		power up freq1 tuning word in Hz
-> + * @phase0:		power up phase0 value [0..4095] correlates with 0..2PI
-> + * @phase1:		power up phase1 value [0..4095] correlates with 0..2PI
-> + * @phase2:		power up phase2 value [0..4095] correlates with 0..2PI
-> + * @phase3:		power up phase3 value [0..4095] correlates with 0..2PI
-> + */
-> +
-> +struct ad9832_platform_data {
-> +	unsigned long		freq0;
-> +	unsigned long		freq1;
-> +	unsigned short		phase0;
-> +	unsigned short		phase1;
-> +	unsigned short		phase2;
-> +	unsigned short		phase3;
-> +};
-> +
->  static unsigned long ad9832_calc_freqreg(unsigned long mclk, unsigned long fout)
->  {
->  	unsigned long long freqreg = (u64)fout *
-> diff --git a/drivers/staging/iio/frequency/ad9832.h b/drivers/staging/iio/frequency/ad9832.h
-> deleted file mode 100644
-> index d0d840edb8d2..000000000000
-> --- a/drivers/staging/iio/frequency/ad9832.h
-> +++ /dev/null
-> @@ -1,33 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0+ */
-> -/*
-> - * AD9832 SPI DDS driver
-> - *
-> - * Copyright 2011 Analog Devices Inc.
-> - */
-> -#ifndef IIO_DDS_AD9832_H_
-> -#define IIO_DDS_AD9832_H_
-> -
-> -/*
-> - * TODO: struct ad9832_platform_data needs to go into include/linux/iio
-> - */
-> -
-> -/**
-> - * struct ad9832_platform_data - platform specific information
-> - * @freq0:		power up freq0 tuning word in Hz
-> - * @freq1:		power up freq1 tuning word in Hz
-> - * @phase0:		power up phase0 value [0..4095] correlates with 0..2PI
-> - * @phase1:		power up phase1 value [0..4095] correlates with 0..2PI
-> - * @phase2:		power up phase2 value [0..4095] correlates with 0..2PI
-> - * @phase3:		power up phase3 value [0..4095] correlates with 0..2PI
-> - */
-> -
-> -struct ad9832_platform_data {
-> -	unsigned long		freq0;
-> -	unsigned long		freq1;
-> -	unsigned short		phase0;
-> -	unsigned short		phase1;
-> -	unsigned short		phase2;
-> -	unsigned short		phase3;
-> -};
-> -
-> -#endif /* IIO_DDS_AD9832_H_ */
 
+Small nitpick below that Jonathan might tweak if he thinks it's worth it.
+Anyways,
+
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+
+> changes in v3:
+> =C2=A0- use le16_to_cpu to convert the read little-endian value to CPU en=
+dianness
+> =C2=A0drivers/iio/adc/ad4080.c | 8 +++++---
+> =C2=A01 file changed, 5 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
+> index 6e61787ed321..ae5a975a47a5 100644
+> --- a/drivers/iio/adc/ad4080.c
+> +++ b/drivers/iio/adc/ad4080.c
+> @@ -125,7 +125,7 @@
+> =C2=A0
+> =C2=A0/* Miscellaneous Definitions */
+> =C2=A0#define
+> AD4080_SPI_READ						BIT(7)
+> -#define AD4080_CHIP_ID						GENMASK(2, 0)
+> +#define AD4080_CHIP_ID						0x0050
+> =C2=A0
+> =C2=A0#define AD4080_LVDS_CNV_CLK_CNT_MAX				7
+> =C2=A0
+> @@ -445,7 +445,8 @@ static int ad4080_setup(struct iio_dev *indio_dev)
+> =C2=A0{
+> =C2=A0	struct ad4080_state *st =3D iio_priv(indio_dev);
+> =C2=A0	struct device *dev =3D regmap_get_device(st->regmap);
+> -	unsigned int id;
+> +	__le16 id_le;
+> +	u16 id;
+> =C2=A0	int ret;
+> =C2=A0
+> =C2=A0	ret =3D regmap_write(st->regmap, AD4080_REG_INTERFACE_CONFIG_A,
+> @@ -458,10 +459,11 @@ static int ad4080_setup(struct iio_dev *indio_dev)
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> -	ret =3D regmap_read(st->regmap, AD4080_REG_CHIP_TYPE, &id);
+> +	ret =3D regmap_bulk_read(st->regmap, AD4080_REG_PRODUCT_ID_L, &id_le,
+> 2);
+
+sizeof(id_le)
+
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> +	id =3D le16_to_cpu(id_le);
+> =C2=A0	if (id !=3D AD4080_CHIP_ID)
+> =C2=A0		dev_info(dev, "Unrecognized CHIP_ID 0x%X\n", id);
+> =C2=A0
 

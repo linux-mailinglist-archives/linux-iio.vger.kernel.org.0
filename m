@@ -1,116 +1,141 @@
-Return-Path: <linux-iio+bounces-24808-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24809-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7CEBC07C1
-	for <lists+linux-iio@lfdr.de>; Tue, 07 Oct 2025 09:20:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F05BC07E2
+	for <lists+linux-iio@lfdr.de>; Tue, 07 Oct 2025 09:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B17CA3AC4FF
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Oct 2025 07:20:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 749453BD20E
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Oct 2025 07:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B204123C38C;
-	Tue,  7 Oct 2025 07:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DDC235050;
+	Tue,  7 Oct 2025 07:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kRDcznWr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANzUILg9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BA6239573;
-	Tue,  7 Oct 2025 07:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE0422759B;
+	Tue,  7 Oct 2025 07:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759821610; cv=none; b=Gy6rUd5RualvgC18/O/kL8r4RUIj2bXyC23iP7c0HWn8VEw12E/Aem8vxtD+FC+nCWUL0umtas21UG7/pU2+TyExihZiJJ8ZLK5VjEfP4vUnSxgM2LHtElMSnRcoTk1ZrGE3mh9oS2OkeDJc3pdQQzGY6txlB0qUe6yd1tYMHWM=
+	t=1759821740; cv=none; b=U8Aysgfz4MNrC3i6y8iIj+Ng7Cvh6N3h7RxntxlqqHeuOaMHk7rohYV70la1d6cW1l2N+cUAidLIT3yPN+Sr3REcjh9xaV2sLadeG0vxQn3BMZJIGFsM+LLDwM7zbaoD1PBRqVudr5/yDsTWZ55Dh9QPFB/ZmEmRgNNKGORwuho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759821610; c=relaxed/simple;
-	bh=FbH2PxM9Sa714CpGO8aSH1L22ExqG/uqX8DLAEhiDTw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MupaGlQjkuYS9F1RAmA+dKxLmh75x1hTAZdRxK6L6QEaJNEwsDuVF7aleWHwq7UN30frzuMoD0U6Adho31CL/NPi/LTkfbTA32Z2aO0V5z+Za0ilDchIR640t7+E+M4C/r4W1UT5Au0aTHCGy06KBO3iMNp0GQEQscoqnnRbYjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kRDcznWr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E3C46C4AF0E;
-	Tue,  7 Oct 2025 07:20:09 +0000 (UTC)
+	s=arc-20240116; t=1759821740; c=relaxed/simple;
+	bh=8TwQCHdXx3ebIi4c7VhydDxQtQ4JudCox+CGRFyrQN4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=StDXAzhMdkm6BsRwiBH2N2Ub9gmJ9sZZiaWztExiBUygN805ZaarBDGUFyBWUX19WUe6ULq0ZCBDmZywxeDQgEPn6idLYoJYm79+o1I3u3kEklQQHd+ykfhedD6ILfvQS+sAAcz6OGhuEERF14+QOrD+FzUzhkwcfsRik8Q8yoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANzUILg9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4CEC4CEF1;
+	Tue,  7 Oct 2025 07:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759821609;
-	bh=FbH2PxM9Sa714CpGO8aSH1L22ExqG/uqX8DLAEhiDTw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=kRDcznWrqA7HYQ3MmA2TilTWoQYsAsPjtQjs/Se9XqY+YCgJCuu/UHPehHSJ3jTA/
-	 fH9nj2YXRUqEV4s5IOjKvonFFrk6SL6iVjVdcEKBVOeKPqr/UbigNAKKE2Dx2r73ZJ
-	 +gIZfSztFhwmAEqgP18JwH7WEdU/eW0In63yNacbQCd4WZoMrZVY51RUteu/keZgnX
-	 b8JogDI13g+jFNmDlXmrC6PrkeX9LsuJDtj6YOCWAuGarnDSiHSh0H+sorV1ZIV1l4
-	 LOoKySqE/IS1knWDHXAA2kueHZ7+VCl/W3/2wAnTWW2NLNiD8lqOKBPfW900eJDuNX
-	 E89ZBf7mX3+SA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DDF82CCD186;
-	Tue,  7 Oct 2025 07:20:09 +0000 (UTC)
-From: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
-Date: Tue, 07 Oct 2025 07:20:10 +0000
-Subject: [PATCH v7 9/9] MAINTAINERS: add entry for inv_icm45600 6-axis imu
- sensor
+	s=k20201202; t=1759821739;
+	bh=8TwQCHdXx3ebIi4c7VhydDxQtQ4JudCox+CGRFyrQN4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ANzUILg94XZ6GBPPp6IHRWga820t+SOBCDiNnI+hMw/67smTjOzmkIA0YMKhBO+It
+	 71ItVk7Hz331/t3/4wv2Y2ZHlUVZmzKVVkKQez1l3V+sRYk7JKmrEzBWwDsISbCwPo
+	 EQ8gMTTY9h56CZPVXLFzR9ti1RwZWz+INXgLSu939hUVpnmwNmRrN/fJLqvqAdhGVi
+	 4LePOFAvfbgXjaK0+C86cZX4P/7GL2MaIXUKQFfs3SYU2/iq3XGtJz/vDx+o8Mzgwt
+	 P62Bbd617L8WK4azOj0omje6wqjxSPqPXpXa83My0LEg0zFv9z6Miw4/kQ7j3o9Gmd
+	 irbjwWiWTTUWA==
+Message-ID: <cc5f7e49-5df2-4f1d-93db-4a5b045ddfad@kernel.org>
+Date: Tue, 7 Oct 2025 16:22:12 +0900
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251007-add_newport_driver-v7-9-137223a1f79e@tdk.com>
-References: <20251007-add_newport_driver-v7-0-137223a1f79e@tdk.com>
-In-Reply-To: <20251007-add_newport_driver-v7-0-137223a1f79e@tdk.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/9] dt-bindings: iio: imu: Add inv_icm45600
+To: remi.buisson@tdk.com, Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, Remi Buisson <remi.buisson@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1759821607; l=945;
- i=remi.buisson@tdk.com; s=20250411; h=from:subject:message-id;
- bh=d1EOGq7hV4R8ODh9Pkno9yFBZYn1snN6feaEcuqfxYw=;
- b=tKrTxuseMaAskCaKxAZPF8nMN0Z5k6k74/sZWArRLHJ27luTecHTDRrRn1P3eMZT8RdKsk0NM
- 0pyETsL6HUZB8yE9lFbOsWrOpuwjdYm2mz5CQITKoG7ZXzem+klS6Q+
-X-Developer-Key: i=remi.buisson@tdk.com; a=ed25519;
- pk=yDVMi4C7RpXN4dififo42A7fDDt3THYzoZoNq9lUZuo=
-X-Endpoint-Received: by B4 Relay for remi.buisson@tdk.com/20250411 with
- auth_id=372
-X-Original-From: Remi Buisson <remi.buisson@tdk.com>
-Reply-To: remi.buisson@tdk.com
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20251007-add_newport_driver-v7-0-137223a1f79e@tdk.com>
+ <20251007-add_newport_driver-v7-1-137223a1f79e@tdk.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251007-add_newport_driver-v7-1-137223a1f79e@tdk.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Remi Buisson <remi.buisson@tdk.com>
+On 07/10/2025 16:20, Remi Buisson via B4 Relay wrote:
+> From: Remi Buisson <remi.buisson@tdk.com>
+> 
+> Document the ICM-45600 devices devicetree bindings.
+> Specific variants of the device are defined because of their
+> differences in terms of FSR or advanced features like eDMP.
 
-Add MAINTAINERS entry for InvenSense ICM-45600 IMU device.
+<form letter>
+This is a friendly reminder during the review process.
 
-Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+It looks like you received a tag and forgot to add it.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f090c2f6e63a0d255a025885cc4573f5802ef159..02d8787ab768a2d0b8b72a2c909e56a0f2010c04 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12815,6 +12815,14 @@ F:	Documentation/ABI/testing/sysfs-bus-iio-inv_icm42600
- F:	Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
- F:	drivers/iio/imu/inv_icm42600/
- 
-+INVENSENSE ICM-456xx IMU DRIVER
-+M:	Remi Buisson <remi.buisson@tdk.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+W:	https://invensense.tdk.com/
-+F:	Documentation/devicetree/bindings/iio/imu/invensense,icm45600.yaml
-+F:	drivers/iio/imu/inv_icm45600/
-+
- INVENSENSE MPU-3050 GYROSCOPE DRIVER
- M:	Linus Walleij <linus.walleij@linaro.org>
- L:	linux-iio@vger.kernel.org
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
+of patchset, under or above your Signed-off-by tag, unless patch changed
+significantly (e.g. new properties added to the DT bindings). Tag is
+"received", when provided in a message replied to you on the mailing
+list. Tools like b4 can help here. However, there's no need to repost
+patches *only* to add the tags. The upstream maintainer will do that for
+tags received on the version they apply.
 
--- 
-2.34.1
+Please read:
+https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
 
+If a tag was not added on purpose, please state why and what changed.
+</form letter>
 
+Best regards,
+Krzysztof
 

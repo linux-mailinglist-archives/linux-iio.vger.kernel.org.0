@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-24799-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24800-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB07DBC0785
-	for <lists+linux-iio@lfdr.de>; Tue, 07 Oct 2025 09:20:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA54BC0794
+	for <lists+linux-iio@lfdr.de>; Tue, 07 Oct 2025 09:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7769A34BFCA
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Oct 2025 07:20:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC363BF945
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Oct 2025 07:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A0223237B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368C9237172;
 	Tue,  7 Oct 2025 07:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrS2eX3m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rk8tE1mn"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C65A945;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B6B221FBB;
 	Tue,  7 Oct 2025 07:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759821609; cv=none; b=uz6K/sXaWHt2Qnf8pMOjUSk1akhPvn7C3AKo+0saFPMHO804eR+uOEs6np8jXpGuuOvuz/PYx75VZk6RaMTWhTxKMie4cy53uIEV5qi3xRsQyoM9HtmwJxAOtkLKynqMBouhM1yVhyVnr4KjqXqjQy736k5S9qp97B2ZZLloPqE=
+	t=1759821609; cv=none; b=mEMazsIbJIwqNdWxKPQHVZs5CXa6HNz5OOAU3GoOw1YFLUy1Wk8GbfsX0GL4+imHNizn4t2dUtEVgvouWRpM8xqifujZ5EURbC5J2qsbB23QFLe1ddiF8l2hJ/Q8PYXBu4TVRJXGWl+Fe2FHNitdKZeuLfkZiOrj9RDSNARD4UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759821609; c=relaxed/simple;
-	bh=ER0SU+1zzs8K7dMqFtnkyg7P9Ccr/vG5+GixVT2p8CQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=a+ISie0onHfgOyA5TPmAJrDJJtYSDPsVDw2Raj4KcAr5tIj6WYeks2na3Co/XPDqckvKAHJcejcAUG3mGhCnUq+njBZqDwAx5BlEHAo6LaRHUMd8Y13snq3A6qRzwTyXiG9yii0tl483WPwt3Ks/pGAE2jEBpEc3ypw1Ev5pN9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrS2eX3m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 50E83C4CEF1;
+	bh=JGM9cSZXo8+TvBmcJjJaKpVNMxrTNOCsRZaM5qoFaMs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=CvyC6YOEy6oEXAy/T3T7j9gJ1PHJHYPjcXhBkAoiBZ7TECtnXi9MkG5bbCz03bb7RmeMEdxf5UZeKSF5Fm9cOZL0uxJxk3iwzKmT26xSyM2fyy/gxx3DTe29wigeMQZtykO0jvbKuGLc1DHtNdJJB54g+OzPSh0Q39cvLW2OX0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rk8tE1mn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 67762C4CEF9;
 	Tue,  7 Oct 2025 07:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1759821609;
-	bh=ER0SU+1zzs8K7dMqFtnkyg7P9Ccr/vG5+GixVT2p8CQ=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=KrS2eX3mDhjLAY4QWMHnNJRRmnGbzOmD2i0MG3i2ZgxvHT+LxeGhX7KfGSgf/WdFa
-	 KmJeIUg8wN0Np9bYIt4ovqCP5ZjaBWfLrrTBqMGf9Vg2CKJ03VxH15B4j+6+daYf2v
-	 v3pP/xafXKiM28lj0KISVszDWlFDWbgO+P+zAPOIpdc4AR97TGeZL8WAtgj98DYjye
-	 lzz7qhweQtf1QCvH9ux0s+v3PyuR8FRKNde+WrMHfnr3Qk6FBHNV8sB752gZY7GJW1
-	 8f+Zu1p500yVpL/Ufa4oVraCwj1GUspH2AQ6uic4kaz2nRgIrOEljqui67C4CIhGBV
-	 cFI1GD4NREIgg==
+	bh=JGM9cSZXo8+TvBmcJjJaKpVNMxrTNOCsRZaM5qoFaMs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Rk8tE1mn844beRoki+1Si/vhLt3hrnVmhONJ/33iCpDmcn+70mhl2PV9HCNwYdk6m
+	 tF5YqW2kYI4QlRniHEOyBY/oq7tlMlo9P5CzMv5pBPxMqZGEvPIpy5hZMGb4p/eS2F
+	 bdy0G3+74lkEUodETPIFWdbskm1YI1iZgks1uSKt1KKfyjJNQv0UXrB4Sf2p4D0nIA
+	 jK2os2vsxQ2prFHEH7gMD+uetD56MVLbWDbPuOtimkunGFY3oHxGs4TodCX2EkXw+g
+	 gdaaIaeZ+/60ZBNlr2OdmNfYl0omLitrRvAbMf3ggoxWj2mwYcjr+AFsqZdeMZAMH/
+	 rbSxxd9WBGRlA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45CE4CCA476;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 557BDCCD184;
 	Tue,  7 Oct 2025 07:20:09 +0000 (UTC)
 From: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
-Subject: [PATCH v7 0/9] iio: imu: new inv_icm45600 driver
-Date: Tue, 07 Oct 2025 07:20:01 +0000
-Message-Id: <20251007-add_newport_driver-v7-0-137223a1f79e@tdk.com>
+Date: Tue, 07 Oct 2025 07:20:02 +0000
+Subject: [PATCH v7 1/9] dt-bindings: iio: imu: Add inv_icm45600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,12 +55,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACG/5GgC/33PwWrDMAwG4FcpPi9DUmw53mnvMUZJbHk1Y0lxQ
- rZR8u5ze0lawo6/QN8vXdQoOcmoXg4XlWVOYxr6EuzTQflT239IlULJioAMaMSqDeHYy/d5yNM
- x5DRLrgw5H01nUdpGlcVzlph+bujbe8mnNE5D/r11zHid/svNWEGFBhpChg7QvU7h89kPX+qKz
- bQCFmEXoAJ00XJoUJNEugfqLWB3gboAnsE5AfKGHwC9AqVgF9AF0Jp1xwzg7ANgNgDtv2AKQNG
- 7iHUIQeQe4BVwtH8BF8AyN7ZzoWl5AyzL8ge98B7Y9wEAAA==
-X-Change-ID: 20250411-add_newport_driver-529cf5b71ea8
+Message-Id: <20251007-add_newport_driver-v7-1-137223a1f79e@tdk.com>
+References: <20251007-add_newport_driver-v7-0-137223a1f79e@tdk.com>
+In-Reply-To: <20251007-add_newport_driver-v7-0-137223a1f79e@tdk.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  David Lechner <dlechner@baylibre.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
@@ -70,11 +67,11 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
  devicetree@vger.kernel.org, Remi Buisson <remi.buisson@tdk.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1759821607; l=7448;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1759821607; l=3206;
  i=remi.buisson@tdk.com; s=20250411; h=from:subject:message-id;
- bh=ER0SU+1zzs8K7dMqFtnkyg7P9Ccr/vG5+GixVT2p8CQ=;
- b=23gMtBlJJOp5U+AN9RX7DH4anSUEpZg2zRihm/nXIir2ulLyP68nPsd81H/TZi6XUNbdTmXTY
- 7xZAJa2Ib34CN2TvjJ2ecqJnjusyZvPcILCQKmJvcB8ytbqEbNJnqBr
+ bh=WdBxUHROTINcNpQrUbA+QjKp5ULEuA9Tfo00ubU35nk=;
+ b=Brt3d+cA9+sFWMkxGnTDsQEGfr87u6PdYNBkC3tK9goXnlPxoI3s7lGsYbEkM83+8kL8W7ov/
+ TQuZyAMJtKhDxYRd4FQRICEesxEeikpZqVDRPyiQYpGwdK+n7dlaiDe
 X-Developer-Key: i=remi.buisson@tdk.com; a=ed25519;
  pk=yDVMi4C7RpXN4dififo42A7fDDt3THYzoZoNq9lUZuo=
 X-Endpoint-Received: by B4 Relay for remi.buisson@tdk.com/20250411 with
@@ -82,156 +79,116 @@ X-Endpoint-Received: by B4 Relay for remi.buisson@tdk.com/20250411 with
 X-Original-From: Remi Buisson <remi.buisson@tdk.com>
 Reply-To: remi.buisson@tdk.com
 
-This series add a new driver for managing InvenSense ICM-456xx 6-axis IMUs.
-This next generation of chips includes new generations of 3-axis gyroscope
-and 3-axis accelerometer, support of I3C in addition to I2C and SPI, and
-intelligent MotionTracking features like pedometer, tilt detection, and
-tap detection.
+From: Remi Buisson <remi.buisson@tdk.com>
 
-This series is delivering a driver supporting gyroscope, accelerometer and
-temperature data, with polling and buffering using hwfifo and watermark,
-on I2C, SPI and I3C busses.
-
-Gyroscope and accelerometer sensors are completely independent and can have
-different ODRs. Since there is only a single FIFO a specific value is used
-to mark invalid data. To keep the device standard we are de-multiplexing
-data from the FIFO to 2 IIO devices with 2 buffers, 1 for the accelerometer
-and 1 for the gyroscope. This architecture also enables to easily turn each
-sensor on/off without impacting the other. The device interrupt is used to
-read the FIFO and launch parsing of accelerometer and gyroscope data.
-This driver relies on the common Invensense timestamping mechanism to
-handle correctly FIFO watermark and dynamic changes of settings.
-
-The structure of the driver is quite similar to the inv_icm42600 driver,
-however there are significant reasons for adding a different driver for
-inv_icm45600, such as:
-- A completely different register map.
-- Different FIFO management, based on number of samples instead of bytes.
-- Different indirect register access mechanism.
-
-Note that regmap cache will be added in a dedicated patch set, to avoid
-increasing too much this one.
+Document the ICM-45600 devices devicetree bindings.
+Specific variants of the device are defined because of their
+differences in terms of FSR or advanced features like eDMP.
 
 Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
 ---
-Changes in v7:
-- Fix SPI module missing header.
-- Add comments on sub-field for fifo structure.
-- Use designated initializers in odr_to_period table.
-- Fix typo.
-- Rework regmap usage in inv_icm45600_buffer_set_fifo_en.
-- Added a comment to explain why we dont use fallbacks in DT.
-- Link to v6: https://lore.kernel.org/r/20250924-add_newport_driver-v6-0-76687b9d8a6e@tdk.com
+ .../bindings/iio/imu/invensense,icm45600.yaml      | 90 ++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
 
-Changes in v6:
-- Reviewed headers inclusion
-- Formatting (line too short, ...)
-- moving code to patch it belongs
-- kernel doc fixes
-- Comments reviewed and simplified
-- removed dev_error_probe with ENOMEM
-- fixed useless ssize_t to size_t
-- removed useless pack attribute
-- Fixed unclear or malformed if
-- Removed useless fifo_is_data_valid wrapper
-- Use available macros instead of hardcoded values
-- Link to v5: https://lore.kernel.org/r/20250820-add_newport_driver-v5-0-2fc9f13dddee@tdk.com
+diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,icm45600.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,icm45600.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..e0b78d14420febee405750ef5cb6ce14bfa07447
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/imu/invensense,icm45600.yaml
+@@ -0,0 +1,90 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/imu/invensense,icm45600.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: InvenSense ICM-45600 Inertial Measurement Unit
++
++maintainers:
++  - Remi Buisson <remi.buisson@tdk.com>
++
++description: |
++  6-axis MotionTracking device that combines a 3-axis gyroscope and a 3-axis
++  accelerometer.
++
++  It has a configurable host interface that supports I3C, I2C and SPI serial
++  communication, features up to 8kB FIFO and 2 programmable interrupts with
++  ultra-low-power wake-on-motion support to minimize system power consumption.
++
++  Other industry-leading features include InvenSense on-chip APEX Motion
++  Processing engine for gesture recognition, activity classification, and
++  pedometer, along with programmable digital filters, and an embedded
++  temperature sensor.
++
++  https://invensense.tdk.com/wp-content/uploads/documentation/DS-000576_ICM-45605.pdf
++
++properties:
++  compatible:
++    enum:
++      - invensense,icm45605
++      - invensense,icm45606
++      - invensense,icm45608
++      - invensense,icm45634
++      - invensense,icm45686
++      - invensense,icm45687
++      - invensense,icm45688p
++      - invensense,icm45689
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    minItems: 1
++    maxItems: 2
++
++  interrupt-names:
++    minItems: 1
++    items:
++      - enum: [int1, int2]
++      - const: int2
++    description: Choose chip interrupt pin to be used as interrupt input.
++
++  drive-open-drain:
++    type: boolean
++
++  vdd-supply: true
++
++  vddio-supply: true
++
++  mount-matrix: true
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++  - vddio-supply
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        imu@68 {
++            compatible = "invensense,icm45605";
++            reg = <0x68>;
++            interrupt-parent = <&gpio2>;
++            interrupt-names = "int1";
++            interrupts = <7 IRQ_TYPE_EDGE_RISING>;
++            vdd-supply = <&vdd>;
++            vddio-supply = <&vddio>;
++            mount-matrix = "0", "-1", "0",
++                           "1", "0", "0",
++                           "0", "0", "1";
++        };
++    };
 
-Changes in v5:
-- Simplified device tree, removed interrupts from mandatory param list
-- Allocated regmap_bulk_read/write buffers to dma-capable memory (for indirect reg accesses)
-- Use min/max to simplify code
-- Reordered some code/include/prototypes to the patch they belong
-- Updated to latest iio_push_to_buffers_with_ts API
-- Fix build warning with clang 18.1.8
-- Fixed some alignements
-- Avoiding irq_type silly assignation
-- Simplified fwnode_irq_get_byname error management
-- Re-ordered suspend/resume process to match + comments
-- Reverted VDDIO init to make it work without PM
-- Avoid PM underflow on VDDIO when removing inv_icm456000 module, by checking suspend state
-- Link to v4: https://lore.kernel.org/r/20250814-add_newport_driver-v4-0-4464b6600972@tdk.com
-
-Changes in v4:
-- Introduce gyro and accel in different patches.
-- Move IRQ probe to next patch.
-- Allocate fifo memory instead of static definition.
-- Rework VDDIO management to avoid underflow.
-- Rework suspend/resume using force suspend/resume API.
-- Use helper min, clamp and sizeof instead of custom implementation.
-- Re-scoping some variables, using reverse xmas tree for declarations.
-- Fix formatting: end of list, end of file, spaces, alignments.
-- Use dev_err_probe for I3C errors.
-- Factorizing default config code.
-- Link to v3: https://lore.kernel.org/r/20250717-add_newport_driver-v3-0-c6099e02c562@tdk.com
-
-Changes in v3:
-- Macros renamed and added to the patch using it.
-- Using unsigned for sensor configuration parameters.
-- Using sizeof instead of raw values.
-- Using fsleep instead of usleep.
-- Simplified dt-bindings examples, setting supplies as mandatory
-- Fix bad or useless casts.
-- Partially aligned power management following 20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com
-- Fix "uninitialized symbols" warnings.
-- Link to v2: https://lore.kernel.org/r/20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com
-
-Changes in v2:
-- Reworked patches order and content to ease review and make sure everything compiles
-- Reworked gyro and accel FSR as 2D arrays
-- Moved temperature processed sensor to core module
-- Use latest API to claim/release device
-- Implemented chip_info structure instead of relying on an enum
-- Removed power-mode ABI, only relying on ODR to switch power_mode
-- Reworked regulator control to use devm_ API where relevant
-- Reworked inv_icm45600_state.buffer as a union to avoid casts, using getter/setter instead of memcpy
-- Fixed dt-binding error and moved patch at the beginning of the patch-set
-- Reworked macros to use FIELD_PREP inline instead of inside the header
-- Fixed comment's grammar
-- Removed extra blank lines
-- Reordered part numbers alphanumerically
-- Removed useless default/error fallbacks
-- Typed accel, gyro and timestamp data when parsing FIFO
-- Fixed I2C module return code
-- Use Linux types instead of C standard
-- Reviewed headers inclusion to remove useless #include and to add missing ones
-- Link to v1: https://lore.kernel.org/r/20250411-add_newport_driver-v1-0-15082160b019@tdk.com
-
----
-Remi Buisson (9):
-      dt-bindings: iio: imu: Add inv_icm45600
-      iio: imu: inv_icm45600: add new inv_icm45600 driver
-      iio: imu: inv_icm45600: add buffer support in iio devices
-      iio: imu: inv_icm45600: add IMU IIO gyroscope device
-      iio: imu: inv_icm45600: add IMU IIO accelerometer device
-      iio: imu: inv_icm45600: add I2C driver for inv_icm45600 driver
-      iio: imu: inv_icm45600: add SPI driver for inv_icm45600 driver
-      iio: imu: inv_icm45600: add I3C driver for inv_icm45600 driver
-      MAINTAINERS: add entry for inv_icm45600 6-axis imu sensor
-
- .../bindings/iio/imu/invensense,icm45600.yaml      |  90 ++
- MAINTAINERS                                        |   8 +
- drivers/iio/imu/Kconfig                            |   1 +
- drivers/iio/imu/Makefile                           |   1 +
- drivers/iio/imu/inv_icm45600/Kconfig               |  70 ++
- drivers/iio/imu/inv_icm45600/Makefile              |  16 +
- drivers/iio/imu/inv_icm45600/inv_icm45600.h        | 385 ++++++++
- drivers/iio/imu/inv_icm45600/inv_icm45600_accel.c  | 782 ++++++++++++++++
- drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 557 ++++++++++++
- drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h | 101 +++
- drivers/iio/imu/inv_icm45600/inv_icm45600_core.c   | 988 +++++++++++++++++++++
- drivers/iio/imu/inv_icm45600/inv_icm45600_gyro.c   | 791 +++++++++++++++++
- drivers/iio/imu/inv_icm45600/inv_icm45600_i2c.c    |  98 ++
- drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c    |  78 ++
- drivers/iio/imu/inv_icm45600/inv_icm45600_spi.c    | 108 +++
- 15 files changed, 4074 insertions(+)
----
-base-commit: 411e8b72c181e4f49352c12ced0fd8426eb683aa
-change-id: 20250411-add_newport_driver-529cf5b71ea8
-
-Best regards,
 -- 
-Remi Buisson <remi.buisson@tdk.com>
+2.34.1
 
 
 

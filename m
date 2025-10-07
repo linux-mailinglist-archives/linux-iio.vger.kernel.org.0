@@ -1,81 +1,90 @@
-Return-Path: <linux-iio+bounces-24788-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24789-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A345BBEE43
-	for <lists+linux-iio@lfdr.de>; Mon, 06 Oct 2025 20:11:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C6BBC0436
+	for <lists+linux-iio@lfdr.de>; Tue, 07 Oct 2025 07:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB9673A05EE
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Oct 2025 18:11:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E93A53A3B9D
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Oct 2025 05:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39522765D2;
-	Mon,  6 Oct 2025 18:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764E721A94F;
+	Tue,  7 Oct 2025 05:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="H47PG8JT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nElzAMXN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1185E17DFE7;
-	Mon,  6 Oct 2025 18:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB53C1D554
+	for <linux-iio@vger.kernel.org>; Tue,  7 Oct 2025 05:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759774257; cv=none; b=gza9QD2yR4ce7EMkmKzuxkUJ0Mn1FqJo3VyCnVgI2P68gzgGVIJz8Izrg9m66VdRcS5iEfE/YbqCSh3aqqOAby79i0HODF7Iy5yHF5qhVEoZQu/p4jbnll8CEPRsJQgbG5goFugGN0/2c1yVej/WHsKPWh7qQH6Yre/Q8od8O1U=
+	t=1759816522; cv=none; b=g9sg49yvokp2elKmxx/kyK1rX78rD+qehsveGM0nM5It7hGWnMlJxPmW6iYNdQk2LFer/wFOSiue7cdLoGLoFD67QCYQRQ8Kg51mLipZGlPdnK4omF0lgXz5RvAb83GBrRll8dLpYyQiFDKH/aFNb0lcQswPfsgjDXS61wwkrXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759774257; c=relaxed/simple;
-	bh=bFlVusYledbzV6kZzMCqdHFUerESt+ciTv2aOWN2M9s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rX9A1oQ+ewA5Ie7kJb9OzATh3hhHG3OKfl9HlhP1f+64CBoWwyrKm5JOaz0tpMEIFNH8w5q2OnJnkOMLbRiQr+f06qY5ecVCTMPSpQmSt0ZAJT71K0Efa6FrvvjM0O5hnAAucd7ctJyBaiH8EJ5t9u5+HCTRzdV0h7urXlblD6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=H47PG8JT; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 596DS4kT006249;
-	Mon, 6 Oct 2025 18:10:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=rbzSosSP831aQq0DTGiJxDg+xxTE0zSTAmTTY47AE
-	kA=; b=H47PG8JTpegbfS/Tf0m7VwVRYD0kyqKVre46BXKFWWTaiXhmBux5K240+
-	vgQ+BWX+lWVNGSwgS8Smv63c1k5iaNW0M4vz1mu8KayqHj8TnO83MKXyAqsLctxd
-	4pb44tuWe4aEOMtX7xkzAplxx9ViIrRwILGtFoH43mLQbfcjABI7dhmfXTF7VXrq
-	noaRXN+iDw7IFO/tcWpOFy+4VzFAlGY2q1Q3SZM/J/Bzs9C48ilzzA0sVYMum4d7
-	5b46dzHKn7oM5myDi8fyWk5yCoowqAfKz/d596tkEmO7tnBqG8slXRTIizr0aPQ5
-	KZCHDliDsQJvA+aIlEFHczWRzLUag==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49ju3gu0va-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Oct 2025 18:10:49 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 596GXi9i028410;
-	Mon, 6 Oct 2025 18:10:48 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49kewmydu0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Oct 2025 18:10:48 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 596IAlkZ25821800
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Oct 2025 18:10:47 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7FD5558061;
-	Mon,  6 Oct 2025 18:10:47 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD55F58059;
-	Mon,  6 Oct 2025 18:10:46 +0000 (GMT)
-Received: from slate16 (unknown [9.61.74.248])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 Oct 2025 18:10:46 +0000 (GMT)
-From: Eddie James <eajames@linux.ibm.com>
-To: linux-iio@vger.kernel.org
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org,
-        andy@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
-        jic23@kernel.org, eajames@linux.ibm.com
-Subject: [PATCH v8] dt-bindings: iio: Add Infineon DPS310 sensor documentation
-Date: Mon,  6 Oct 2025 13:10:40 -0500
-Message-ID: <20251006181040.25845-1-eajames@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1759816522; c=relaxed/simple;
+	bh=168NfD/ecb5wgu5xNFlCaKmte6hBtMqFpQKOiKMR9bg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l7RBP/5ow5dPPUKvpvm276Eh+lbWIUy5SvGt2QMGHUJNNJ5lVIJN1RIgdXz0BfzIAh8gnyP9ddhU5wbnrIyhMZMW9MaechAQSn8wm9kfTfoEKyQdHW+LPUmpjtNcvsE7YVau3i1WWHWFNw79OK/T4BLuaZ3h5aaw19zSDjdo0lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nElzAMXN; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-33082c95fd0so6353564a91.1
+        for <linux-iio@vger.kernel.org>; Mon, 06 Oct 2025 22:55:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759816520; x=1760421320; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LZghIXdaSi6t4gvdCfT5o16EuMxkJyf71bvQeFQdK0A=;
+        b=nElzAMXNwLAIuqsktVYxSH7O0Rd5U5lEOggjTm7nc4IF9ofS+G/FPiLYjn4MLocpIX
+         qe+h/ZpcI5r524rkMVo1mzsuqxYc/yQ6rG34o1M+5XNBlaNiMIJy2S4SohUw99UUYllK
+         C9RDfH5wtf3zVUfHV9sYRO2HhEFnRD2hKb/tuLKms46qaCM3XMB0ec4CLYmw79S2llYo
+         9AEzaoKspOPmC73ScvVQiARYaQDkMLwCPKkvfznPS0wLUXhLTQ6YUXORc7mPmjGMdr2t
+         bT7OfVl1OG6hXhVCV15VwkP6szjDym4xFn/DyKpwbJmTJL0U1sZNccMeMyHlyEvT83FR
+         nsLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759816520; x=1760421320;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LZghIXdaSi6t4gvdCfT5o16EuMxkJyf71bvQeFQdK0A=;
+        b=MbTDhvdobLsDC4k8PSKrRCZUJTafnpOZwi/VAHbb06X5wZttLZu/jhhO7K1+qwBqOg
+         dzV/84p1H1VXLRwOss9fJuXIwUas8AEAASi+jDOw1sgg8Y+UqwTo5TI8fyayWezDA2a5
+         fmGDBUQJN1uQI84ML33iimm9LsGvEDB99NXpmWEs/EMX5rWJ0QfGyQdHe/4uzTT3pNDA
+         n5mBWtT1R0oqPWK8S3l4NAHTMpuYsPrq7o08fHGcHvoK/uktIcP5DubokzB4bv/q7a7O
+         I88r0AxzsSnLX5grZipbZ6DJldchQG0OUM/tQugWDUUrIpRlX1gr27NEQRYBhywUlIdG
+         42sg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUaT7Z5WH5pqBmxJTbL6Nu1KmaYvs/RY5M8kyOBvSIIk7owjLy1zWhIBFMuToYyz4lyJ0HQu04do0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy52C4DQWCzgyXjaYoDjc5r1GHXDjp9UWCfUOvpA8rYVCb9EmFf
+	AjGimI3KRTgfU/1WyS1WMzoyKZQ7EdyxL2r/np4z3ZyruJUBL2xH7TBg
+X-Gm-Gg: ASbGncscYNQCEdIW2LW0D2O+jchDI3Cw45Zz6l7pqe1/rTIsuVex2ppXegqpdNbL/4w
+	ez4qfGPqgoPgPp+bF/B5UQ87xIuR4D+mQ6UcimeRNIHHC7KTptdE/HQGbRvGHRs8vEfnF5l/sTp
+	QrV3vnBhi7qHWV3fXeY0vgezU+fMNz/ytkin/U/nbdFlstb24RkP/HJ0MqiHD8MZCxW3YXFN1do
+	zWkkbe1t3MY/k2uEFeJUmKLgnUER8D7i/nvwq5/FP6AA7wxIacnRincbUC4bAATpBLCSsBEs1Qo
+	kmqWtFiA4DxQoZaH31j4sXuQ9PAL9/i/pcRWZJptgZ/b/MrQpuZVlSXPXW0lZk+JwOh8GcqiB/i
+	Q1+TFrLtLz/cbDmYjcFD91CVVfpkIqqgBLKEAfq62V3wibl4JXq4trxpw
+X-Google-Smtp-Source: AGHT+IH3yHUpHO8MPfqkfmLVrGO6eAOQw4CzhIMeoYO6hXLvDJrn7+BIDzWj0TidI6q1e0vocpVVwA==
+X-Received: by 2002:a17:90b:17cc:b0:32e:5cba:ae11 with SMTP id 98e67ed59e1d1-339c27859aamr18418727a91.28.1759816519760;
+        Mon, 06 Oct 2025 22:55:19 -0700 (PDT)
+Received: from akshayaj-lenovo.. ([223.233.78.22])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339c4a1a9e8sm12983829a91.11.2025.10.06.22.55.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Oct 2025 22:55:19 -0700 (PDT)
+From: Akshay Jindal <akshayaj.lkd@gmail.com>
+To: dan@dlrobertson.com,
+	jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org
+Cc: Akshay Jindal <akshayaj.lkd@gmail.com>,
+	shuah@kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/6] iio: accel: bma400: Refactor GENINTR config and register macros
+Date: Tue,  7 Oct 2025 11:25:00 +0530
+Message-ID: <20251007055511.108984-1-akshayaj.lkd@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,125 +92,54 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA0MDAxOCBTYWx0ZWRfX7HJyPlMaCDMV
- vjP7FT8O2l82BIqU3Mtpl62P8y1J1oYHncM1xYEavU/KUxsRelUd3Ynu4dhae1+QsAbUtDPP4xe
- iszzKy1/Std3c4LUU8/xNZgONUqOb/R6FywlXjDol4A/gVAMBct9QWEMNrRMNwO3SOg67q+N0go
- L9sDCDV0F3caI8QPN7SD5E8bQLXJVtT1gXt3iYiZrxrCdQ/ZjHkpgJk7gU9+1VHH55sm7Y9egq+
- 20QEdn+1gB1IDaK7byso8GXhoHRAfbDIWsgdxkBC/1nV7oSW3DciXUPNisNLHK/PueQ+k1Loxey
- m5VymkZq5b0qFUizxr3HHmub47QQDPCBcjGktSQr4iCSbfytWmvuXo15v7LwGSWdEEhIrYUkX3q
- KKLkbqLNutyLSc5PNdQ9sPD7eYC+Pw==
-X-Authority-Analysis: v=2.4 cv=I4dohdgg c=1 sm=1 tr=0 ts=68e40629 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=x6icFKpwvdMA:10 a=gEfo2CItAAAA:8 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=lG3Z5ILtqDq3c0xvBIoA:9 a=sptkURWiP4Gy88Gu7hUp:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: 6I9M5AfC7YbFFug4Vi_X7qBdwjj81TkN
-X-Proofpoint-ORIG-GUID: 6I9M5AfC7YbFFug4Vi_X7qBdwjj81TkN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-06_05,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 spamscore=0
- bulkscore=0 suspectscore=0 clxscore=1015 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510040018
 
-The DPS310 is a barometric pressure and temperature sensor with
-an I2C interface. Remove it from trivial-devices.yaml and add its
-own documentation, with a hwmon iio channel consumer example.
+This series refactors the BMA400 driver with a focus on generic interrupt
+configuration and related register usage. The main changes reduce
+usage of hard-coded values by introducing macros and formula-based
+register addressing, and add a centralized lookup indexed on iio event
+direction.
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
----
-Changes since v7:
- - Add consumer example and update commit message slightly
+Alongside these updates, the series also reorganizes and renames register
+and field macros for consistency with the datasheet, and extends comments
+for additional clarity.
 
- .../iio/pressure/infineon,dps310.yaml         | 48 +++++++++++++++++++
- .../devicetree/bindings/trivial-devices.yaml  |  2 -
- MAINTAINERS                                   |  1 +
- 3 files changed, 49 insertions(+), 2 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/iio/pressure/infineon,dps310.yaml
+All patches are pure refactoring. No functional changes are intended.
 
-diff --git a/Documentation/devicetree/bindings/iio/pressure/infineon,dps310.yaml b/Documentation/devicetree/bindings/iio/pressure/infineon,dps310.yaml
-new file mode 100644
-index 0000000000000..f35ef2ce74d6f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/pressure/infineon,dps310.yaml
-@@ -0,0 +1,48 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/pressure/infineon,dps310.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Infineon DPS310 barometric pressure and temperature sensor
-+
-+maintainers:
-+  - Eddie James <eajames@linux.ibm.com>
-+
-+description:
-+  The DPS310 is a barometric pressure and temperature sensor with an I2C
-+  interface.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - infineon,dps310
-+
-+  reg:
-+    maxItems: 1
-+
-+  "#io-channel-cells":
-+    const: 0
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    iio-hwmon {
-+      compatible = "iio-hwmon";
-+      io-channels = <&dps 0>;
-+    };
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        dps: pressure-sensor@76 {
-+          compatible = "infineon,dps310";
-+          reg = <0x76>;
-+          #io-channel-cells = <0>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index 58ff948d93c96..a76c58f3b1de4 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -127,8 +127,6 @@ properties:
-           - ibm,cffps2
-             # IBM On-Chip Controller hwmon device
-           - ibm,p8-occ-hwmon
--            # Infineon barometric pressure and temperature sensor
--          - infineon,dps310
-             # Infineon IR36021 digital POL buck controller
-           - infineon,ir36021
-             # Infineon IRPS5401 Voltage Regulator (PMIC)
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3773c74b31d6d..bde80ddb99e9d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12217,6 +12217,7 @@ INFINEON DPS310 Driver
- M:	Eddie James <eajames@linux.ibm.com>
- L:	linux-iio@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/pressure/infineon,dps310.yaml
- F:	drivers/iio/pressure/dps310.c
- 
- INFINEON PEB2466 ASoC CODEC
+Akshay Jindal (6):
+  iio: accel: bma400: Reorganize and rename register and field macros
+  iio: accel: bma400: Use macros for generic event configuration values
+  iio: accel: bma400: Use index-based register addressing and lookup
+  iio: accel: bma400: Replace bit shifts with FIELD_PREP and FIELD_GET
+  iio: accel: bma400: Rename activity_event_en() to generic_event_en()
+  iio: accel: bma400: Add detail to comments in GEN INTR configuration
+
+Changes since v3:
+- Insert a new patch into the patch series for replacing explicit bit
+  shifts with FIELD_GET and FIELD_PREP macros
+- Assigned explicit values to reg field enums introduced.
+
+Changes since v2:
+- Split single patch into five smaller patches as suggested
+- Addressed review comments related to trailing comma [Patch 2/5]
+- Extended renaming of macros to TAP_CONFIG registers [Patch 1/5]
+- Addressed review comment received regarding write then replace in
+  activity_event_en() [Patch 3/5]
+
+Testing Summary:
+- Tested on raspberrypi 4b and 7-semi bma400 sensor breakout board.
+- Since no functional impact is there, so before functionality is
+  expected to be equal to after change functionality.
+- Tested mapping of GEN1 and GEN2 both on INT1 pin as before.
+- Tested both activity and inactivity detection by setting attributes
+  events/in_accel_mag_falling_en as well as events/in_accel_mag_rising_en.
+- Did read and writes on various attributes such that write_event_config(),
+  write_event_value() and read_event_value() callbacks are triggered.
+
+ drivers/iio/accel/bma400.h      | 148 +++++++++-----
+ drivers/iio/accel/bma400_core.c | 349 ++++++++++++++++++--------------
+ 2 files changed, 285 insertions(+), 212 deletions(-)
+
 -- 
-2.51.0
+2.43.0
 
 

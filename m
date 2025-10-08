@@ -1,126 +1,167 @@
-Return-Path: <linux-iio+bounces-24848-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24849-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92AA5BC5085
-	for <lists+linux-iio@lfdr.de>; Wed, 08 Oct 2025 14:57:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9EBBC5443
+	for <lists+linux-iio@lfdr.de>; Wed, 08 Oct 2025 15:50:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EF6FC4F2E2E
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Oct 2025 12:56:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77661189DDBD
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Oct 2025 13:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BE1261B70;
-	Wed,  8 Oct 2025 12:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBF8287253;
+	Wed,  8 Oct 2025 13:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rWPnkPHQ"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="FumtB8YB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52542255F24;
-	Wed,  8 Oct 2025 12:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432AF82866;
+	Wed,  8 Oct 2025 13:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759928152; cv=none; b=GX7jj3gWKmZxL1kEtdiRorLgIKlYBTkGPv7AhVdm/fYYwcksVBVIoSWDHPsWBJC6S5q++kSo3wrWsRZFqPpamaU9nGykOoUcH4sO5KEDG6WkUM0pEnKBORZ+CriLYKWqUEdRmrFK2Vhtpzz/YvwE4CKGerytcRGYTzpQSB543GQ=
+	t=1759931397; cv=none; b=LfpqZ/7hHmEvc/vdDBMvNERxsPyEAA+f23zoA3XANsOrMWFsIRvVpmGMV2xYA2wptPFxXETLG9GyB8R0tegtFAn1dJKQcj3XZhMyjm/VlLub7+MGw1xW7cvnE8V65wbRfFw4UltzDPI+PGka4nCAC5FAUFzm3rhDFYVk9zBOAKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759928152; c=relaxed/simple;
-	bh=DMgCM8Rc0kLgkamSZaom9HUWXV9UAxoJPBdKB7RHH7c=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=h5XIhIkP5gW/NQHoVbchlScy4HjP3JqE6yxkaHRommw5vbAnWL38H1l769/OtJtR+CmqjPRL0vnELknhYpo7jzXTTcUHpAjjvy4yC0QQFCWFXdxsdjk5NZIz4vxwK5ydmBkTRfRu2+d1K8nvU3Vy95mqs3bFgKMv1se+bvw9Fgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rWPnkPHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C8AC4CEF4;
-	Wed,  8 Oct 2025 12:55:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759928151;
-	bh=DMgCM8Rc0kLgkamSZaom9HUWXV9UAxoJPBdKB7RHH7c=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=rWPnkPHQV206SdcqMZFz1M4eR5sCKi1C97lbi02WtRxGi2zU2PPvFUlvZMY8slS7x
-	 3Sg3ut8GsOZ/txVaCUngXdp63QDJscf/aZ39cJBkTunbowzP+uvuzdJZJGJGMmGm50
-	 M7yvSBaKoHvEVdUhu3LRMO6EtWJda4dC2kKzwoOYqxZLhgAGEQiwlkOxE/erwyqYmc
-	 v/w7hBWTWqKaA4NIXILd0QGnSN0YR5jofh0bgvXRyi216iA+0rMYlcP1XJT3Nb8ekc
-	 qH0YylMsUNW3Nbz4pDvcfvYpxkqlUu6qWQ4YUzhH0K1sEK19aLrJrwd9slB2pR8z4H
-	 gbEC/yuzme5RA==
-Date: Wed, 08 Oct 2025 07:55:50 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1759931397; c=relaxed/simple;
+	bh=7rSRe61Wa0T9YOEvz3vnpEQTBXKJjVpcBFVpx4GhmGw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IpP1TThc0Z0Z6Yi+Vh2PaAwz0xsSZY2BikRucZg3tgcqNcEbWeTTHintZy17xOVxzunr9+v456K0Ksn4y1P5iKjGUYmmf3/1sGag9cfyt+iByZwgcaV3qKpVavZETDm6c99fashNobGnLZ1nzpF2R8JfoZhhUkTOgZBc1V8CmAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=FumtB8YB; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 598Brr9V001000;
+	Wed, 8 Oct 2025 09:49:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=fBzwTjMljqQMEzjKGuFbR3I5Bkw
+	pXZgmBh2JeayMB/c=; b=FumtB8YBJG2T3lxlXgUJzDTPeYbwJw8ogVLsQshBgQr
+	a1JhVZWb0cysLwMDuw6US03npgyoM6jLeA8Pd77KwMyRAM7+h8Bf8VzsgLPHm1S4
+	wQIXrquwexnM8Z9ielz6jqsFADN/F4feQfKSBAzRkkb+2vB6X27mQo7PNlsu0baN
+	t9OTne5xi5FnXoga5TVsdSSCrl5ScApMPw4xRKyWAOBBxUScANc16BiT+RWh6h2F
+	v8cfghDxjqoHG6J8msHikh0xOfhTgIWcXYCNnwTGuCLQXHEH1n+onlB54GpdS0mp
+	dvEE4aINBSCQK2DKsy4rRbc9IhNRRmISVOUEeCbE69Q==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 49nkc6sr56-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Oct 2025 09:49:45 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 598DniHh034428
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 8 Oct 2025 09:49:44 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Wed, 8 Oct 2025 09:49:44 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Wed, 8 Oct 2025 09:49:44 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Wed, 8 Oct 2025 09:49:44 -0400
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 598DnOlh023094;
+	Wed, 8 Oct 2025 09:49:26 -0400
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <jic23@kernel.org>, <ukleinek@kernel.org>, <michael.hennerich@analog.com>,
+        <nuno.sa@analog.com>, <eblanc@baylibre.com>, <dlechner@baylibre.com>,
+        <andy@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <corbet@lwn.net>, <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v4 0/8] Add SPI offload support to AD4030
+Date: Wed, 8 Oct 2025 10:49:23 -0300
+Message-ID: <cover.1759929814.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: nuno.sa@analog.com, dlechner@baylibre.com, linux-kernel@vger.kernel.org, 
- andy@kernel.org, linux-iio@vger.kernel.org, matt@ranostay.sg, 
- linux-kernel-mentees@lists.linux.dev, krzk+dt@kernel.org, 
- devicetree@vger.kernel.org, skhan@linuxfoundation.org, jic23@kernel.org, 
- conor+dt@kernel.org, david.hunter.linux@gmail.com
-To: Shrikant Raskar <raskar.shree97@gmail.com>
-In-Reply-To: <20251008031737.7321-2-raskar.shree97@gmail.com>
-References: <20251008031737.7321-1-raskar.shree97@gmail.com>
- <20251008031737.7321-2-raskar.shree97@gmail.com>
-Message-Id: <175992812188.3371104.5716471946724146308.robh@kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: max30100: Add pulse-width
- property
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: MEiCC6AdgHinUQyrmFBmuO4VryC1m-LO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDA0NyBTYWx0ZWRfXxWifh1cBkCkL
+ ZfORDTIxSryw9LGlXC5ov88SS4LN9dZGoyS6FYVJoZd0WCtNthZ1PR2Sn6suVLLOnwDyJOyPOXA
+ 4gBeaZcOvD0FMAE1mHZ54TqLRJK6T5xov719IP5iOCOpBFMsM5vcpAID9lCNfyB6NYAemR9OOLb
+ TGPjqTErRBwUmqZuS4HY7hSitjrdIJkuk1WECuKbWyhVz7rCOJv5+OzNw4YjDvnxBJajpQFlYHH
+ qnPS/zo4BLahGqY2FOY327LRhsZzZh2uvHhxQu0uRSDNCW/oWCcP+04GSt+o/dUq4dTs/m8X7kT
+ SVkfyZfZl/jIIEnOqZiqmG7tXmRxMQaQ6WGUQVBgdSQCmI+mAOpHuOrsKWI+hW8qXutgQsqUp0A
+ d+tOeqaVFOl+miFKaE28HHHrwWcB1Q==
+X-Proofpoint-ORIG-GUID: MEiCC6AdgHinUQyrmFBmuO4VryC1m-LO
+X-Authority-Analysis: v=2.4 cv=CMInnBrD c=1 sm=1 tr=0 ts=68e66bf9 cx=c_pps
+ a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
+ a=x6icFKpwvdMA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=gAnH3GRIAAAA:8
+ a=1NR5gd90Ntnl4w2qU1EA:9 a=cPQSjfK2_nFv0Q5t_7PE:22 a=HhbK4dLum7pmb74im6QT:22
+ a=pHzHmUro8NiASowvMSCR:22 a=Ew2E2A-JSTLzCXPT_086:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-08_04,2025-10-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 adultscore=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 spamscore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2509150000
+ definitions=main-2510080047
+
+Hi,
+
+Thanks for all reviews and suggestions to v3.
+
+Main change in v4 is that ADAQ devices (those with PGA pins) are now only
+supported with PGA pins connected to GPIOs. The pin strapped support code was
+removed. Pin strapped/hardwired connections to PGA pins may benefit from a
+"fixed-gpios" driver which may (or may not?) use the shared GPIO abstraction
+layer [1]. I may propose support for pin-strapped/hardwired connections when I
+get a working fixed-gpios implementation.
+
+[1]: https://lore.kernel.org/linux-gpio/CAMRc=Mdb_cUG+hKq8GyfUP1SYBh0p19J+4dFG7G3JSuZTr4n8Q@mail.gmail.com/T/#t
+
+Change log v3 -> v4
+[PWM]
+- Fixed build failure due to the lack of pwm_round_waveform_might_sleep().
+[DT]
+- Now only documenting GPIO setup to control ADAQ PGA pins.
+[IIO]
+- Dropped "Reduce register access transfer speed" patch.
+- Applied code adjustments suggested to SPI offload patch.
+- Only select SPI_OFFLOAD_TRIGGER_PWM if (SPI_OFFLOAD && PWM).
+- ADAQ support patch updated to handle the GPIO setup case only.
+
+Note there is also a patch to the SPI subsystem [2] that contains a feature
+required by AD4030 offload support.
+
+[2]: https://lore.kernel.org/linux-spi/cd315e95c0bd8523f00e91c400abcd6a418e5924.1759760519.git.marcelo.schmitt@analog.com/
+
+Thanks,
+Marcelo
 
 
-On Wed, 08 Oct 2025 08:47:36 +0530, Shrikant Raskar wrote:
-> The appropriate LED pulse width for the MAX30100 depends on
-> board-specific optical and mechanical design (lens, enclosure,
-> LED-to-sensor distance) and the trade-off between measurement
-> resolution and power consumption. Encoding it in Device Tree
-> documents these platform choices and ensures consistent behavior.
-> 
-> Tested on: Raspberry Pi 3B + MAX30100 breakout board.
-> 
-> Signed-off-by: Shrikant Raskar <raskar.shree97@gmail.com>
-> 
-> Changes since v1:
-> Add unit suffix.
-> Drop redundant description.
-> 
-> Link to v1:
-> https://lore.kernel.org/all/20251004015623.7019-2-raskar.shree97@gmail.com/
-> ---
->  .../devicetree/bindings/iio/health/maxim,max30100.yaml      | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
+Marcelo Schmitt (8):
+  pwm: Declare waveform stubs for when PWM is not reachable
+  dt-bindings: iio: adc: adi,ad4030: Reference spi-peripheral-props
+  Docs: iio: ad4030: Add double PWM SPI offload doc
+  dt-bindings: iio: adc: adi,ad4030: Add PWM
+  iio: adc: ad4030: Use BIT macro to improve code readability
+  iio: adc: ad4030: Add SPI offload support
+  dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216 and ADAQ4224
+  iio: adc: ad4030: Add support for ADAQ4216 and ADAQ4224
 
-My bot found errors running 'make dt_binding_check' on your patch:
+ .../bindings/iio/adc/adi,ad4030.yaml          |  77 +-
+ Documentation/iio/ad4030.rst                  |  39 +
+ drivers/iio/adc/Kconfig                       |   3 +
+ drivers/iio/adc/ad4030.c                      | 717 ++++++++++++++++--
+ include/linux/pwm.h                           |  19 +
+ 5 files changed, 804 insertions(+), 51 deletions(-)
 
-yamllint warnings/errors:
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml: properties:maxim,pulse-width-us: 'enum' should not be valid under {'enum': ['const', 'enum', 'exclusiveMaximum', 'exclusiveMinimum', 'minimum', 'maximum', 'multipleOf', 'pattern']}
-	hint: Scalar and array keywords cannot be mixed
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml: properties:maxim,pulse-width-us: 'anyOf' conditional failed, one must be fixed:
-	'enum' is not one of ['maxItems', 'description', 'deprecated']
-		hint: Only "maxItems" is required for a single entry if there are no constraints defined for the values.
-	Additional properties are not allowed ('enum' was unexpected)
-		hint: Arrays must be described with a combination of minItems/maxItems/items
-	'maxItems' is not one of ['description', 'deprecated', 'const', 'enum', 'minimum', 'maximum', 'multipleOf', 'default', '$ref', 'oneOf']
-	1 is less than the minimum of 2
-		hint: Arrays must be described with a combination of minItems/maxItems/items
-	hint: cell array properties must define how many entries and what the entries are when there is more than one entry.
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20251008031737.7321-2-raskar.shree97@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+base-commit: a9682f53c2d1678b93a123cdaa260e955430bc5c
+-- 
+2.39.2
 
 

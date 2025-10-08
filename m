@@ -1,114 +1,130 @@
-Return-Path: <linux-iio+bounces-24844-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24846-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC78BC431F
-	for <lists+linux-iio@lfdr.de>; Wed, 08 Oct 2025 11:51:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BEF3BC4464
+	for <lists+linux-iio@lfdr.de>; Wed, 08 Oct 2025 12:17:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8230818940C0
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Oct 2025 09:51:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1032040143E
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Oct 2025 10:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD9A29B778;
-	Wed,  8 Oct 2025 09:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B882F5A1E;
+	Wed,  8 Oct 2025 10:17:03 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053B62475F7
-	for <linux-iio@vger.kernel.org>; Wed,  8 Oct 2025 09:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7412F549E;
+	Wed,  8 Oct 2025 10:17:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759917078; cv=none; b=lC7bYXSRWT5qgC57RSy/tFUbLlwDQYIjIKEkbdUrTYR+emF4RkeB4wQl4XQd7IcRCmhxI5K8C8y7eNa4HW+q6mQ5cMzNUqy6tQpGp0orM0vrCZweR2dqlNEKWtZQmIq3mgX+VEcqCjw5W3BxUpeEWUI/7PkJ4Y4M45009kleG14=
+	t=1759918622; cv=none; b=gOZE99uTTk2ZCzdffO30PRFLiyhj+FuBiQgw5cwGpssqgQFC7y02qEU/2KmoWk+a+Qy+vt0BW0PaqXybpoRNuk0U9QOfsPL+8sQjf44x+qN40lwIxldurIzfiwoHXjCIEJMCRnQTYLwG7y6swyTd3Gn2NpHgAJOQKmMXZ0IDh2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759917078; c=relaxed/simple;
-	bh=r+ToGzTI6uxWEPYumm60pPHWI41nkxsIjrp4Zp1EsqY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UxoGpLFXdG5m/FOeFbkBlWo471Y2D904vNYH5zqmQma21zk9Q3EBWa5azrm29DgTJm4qnkakVO6um3eu9KoaJWXSPhhvt0mtnK4QfXMQOc2/hFiHO+Kxj5/lGgvtlrna/gpbFiBW6Z+ehavDDJJIF3NYLpe4HA4FpBsun/Cxc2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-5c72dce3201so3041600137.3
-        for <linux-iio@vger.kernel.org>; Wed, 08 Oct 2025 02:51:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759917076; x=1760521876;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G09dlK4ttSR1bBxdlZNpESQsXtEQhLpmRygu9mDDuZI=;
-        b=ezMCOXFgDn7C7yzaeoB09ZSwia0naV54UZ6vlJNQQ2FV6XLZY2GO3btpW55hyA9roe
-         s5i7wNJLqw8pYsoZFz8Smf0CAvLJaj76RnI7/J/VPMf7g3SQ6tpMqr8xYQstGNXnUl5L
-         rxrtlk+4Sjph6i481Heo2yMZCH9snv5HBTcN7bihEOqcTwWgen6FlGVHR+TUYcR7aBu5
-         xm80v0k3hkAXh1tH7NII0mposutUoymOVbxO/pZjz3YuFo7BgbLCJdza8m5VAwQy4o0M
-         9yMLDOh6xQiYClW9K6s5Lp1XSOrW9LRkE1/qMoKPUNPaPM3nFAJxs3agFLhD8CFvTRdF
-         wRqA==
-X-Forwarded-Encrypted: i=1; AJvYcCV2R2XqGZolJ2AZFYcac+IrXjB9QwpgRc7DXjw/FucgkFAi7Rkd9jugd/gi44DuS/JtMHYKrzDtJXU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQhlztG14dkqwUvkkOktdu6/WVhs14Ths9OWEA++w28ubM8YGu
-	Whbra43qmkmCoUtGRCUdmzGBVG0eCgvv43tLzzfVWi9aU7EM/kvbJUJotBB/Nz24
-X-Gm-Gg: ASbGncuNEF8e0FEYTLJNoCm9V6qoq9QJAcI3hbT2XD7EbyqxMmGXHGyVBlIganpMQwv
-	/Mpe0RqAdfZjl6gVB0SZ47/LarvsQroqAyn98QbxExC+Wi1UmlhEmHcjEORmrMqxpeLXXxBMbHx
-	mQqkkhLVXoF9XAriT210zFWyYJtxkm99KQlFaJ36lfD7xP+/pnmmDOG+PwwswDS88gSjlvYE+/9
-	m2nfmEJzAVKKA1CGGBEz90DCY2ECtt3ALi5maDxQfQ9LutXam/rBb32Y7FA+SjG/cGaYwTCpFq/
-	UkE/cmuGLzCKhyWZ79Bj20FMLEgMiXl0VdF2GYLvsETn8a55fDox/xi58KvC9KShzJE0WitGjVE
-	r4AR7mzU4p6qvFi96hRSaIRgrdxUIeZO1EZp4rGWJy04Opg+waTO6svLuEUiuzjJxYCYVjCTB9i
-	cgSk1C7fa/
-X-Google-Smtp-Source: AGHT+IGrtPXqVslXMhvC5f2aabSuhxFO/phiJJQNKYxIlaU4MONf1zMSOn9O0PMCejuvm3N9sJJCbg==
-X-Received: by 2002:a05:6102:e12:b0:528:d2ad:1f54 with SMTP id ada2fe7eead31-5d5e223768amr954798137.8.1759917075624;
-        Wed, 08 Oct 2025 02:51:15 -0700 (PDT)
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com. [209.85.217.47])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5d5d39f1a2dsm1516577137.15.2025.10.08.02.51.14
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Oct 2025 02:51:15 -0700 (PDT)
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-5c72dce3201so3041587137.3
-        for <linux-iio@vger.kernel.org>; Wed, 08 Oct 2025 02:51:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX1oFmjZ4Br/zaGtZYuq+atvnsuSI1rRrZT5ITaCog+0nwtj33zRUUSWaFz2f/Q8mO6Frikd9WBMWA=@vger.kernel.org
-X-Received: by 2002:a05:6102:512a:b0:519:534a:6c20 with SMTP id
- ada2fe7eead31-5d5e23afcd1mr853215137.30.1759917074311; Wed, 08 Oct 2025
- 02:51:14 -0700 (PDT)
+	s=arc-20240116; t=1759918622; c=relaxed/simple;
+	bh=9XS1pNKDtAD2Onci5vX1bjLV+rfp87Vv4zAq3FciJTc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ts5mrdicLm9vfUxuviqLAEOBRahDmee9728185HooZL4hzxN2PSQ60xnQ2Yovnd9Qq0eO8tXMGaNM4xxzR/Zxfbgi6vJBUCjNjQXSkiHcDJLiGhOmUO9NkWaVR3gK7g933heO6BgNnwyG/lSY8QnlAGzUTsXiJOQ94HOvcpAnFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5B09620166B;
+	Wed,  8 Oct 2025 12:07:19 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id E5305201671;
+	Wed,  8 Oct 2025 12:07:18 +0200 (CEST)
+Received: from lsv03900.swis.in-blr01.nxp.com (lsv03900.swis.in-blr01.nxp.com [10.12.177.15])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 54A6A180218D;
+	Wed,  8 Oct 2025 18:07:17 +0800 (+08)
+From: Lakshay Piplani <lakshay.piplani@nxp.com>
+To: linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	marcelo.schmitt1@gmail.com,
+	gregkh@linuxfoundation.org,
+	viro@zeniv.linux.org.uk,
+	peterz@infradead.org,
+	jstephan@baylibre.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Cc: jdelvare@suse.com,
+	linux@roeck-us.net,
+	vikash.bansal@nxp.com,
+	priyanka.jain@nxp.com,
+	shashank.rebbapragada@nxp.com,
+	Lakshay Piplani <lakshay.piplani@nxp.com>
+Subject: [PATCH v4 0/2] iio: temperature: Add support for NXP P3T175x temperature sensors
+Date: Wed,  8 Oct 2025 15:37:11 +0530
+Message-Id: <20251008100713.1198461-1-lakshay.piplani@nxp.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251006172119.2888-1-wsa+renesas@sang-engineering.com> <20251006172119.2888-2-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20251006172119.2888-2-wsa+renesas@sang-engineering.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 8 Oct 2025 11:51:03 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUb105BF1pNtqMpq2N2Yrh0Rp2hAxuzaZZWXfQfou=k4A@mail.gmail.com>
-X-Gm-Features: AS18NWDRVT_iGSvxNuYXIG-QZwF9FHymRVnJQTzRE7VPezsiv6NxhZyhisJFrAc
-Message-ID: <CAMuHMdUb105BF1pNtqMpq2N2Yrh0Rp2hAxuzaZZWXfQfou=k4A@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] dt-bindings: iio: accel: adxl345: document second interrupt
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-renesas-soc@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Tue, 7 Oct 2025 at 01:20, Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
-> The pinout of all the supported chips in this binding have two interrupt
-> pins. Document the second one, too, even though the Linux driver
-> currently does not support the second interrupt. Boards may have it
-> wired nonetheless.
->
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+This patch adds support for the P3T1750/P3T1755 temperature sensors under the IIO subsystem.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+P3T1750/P3T1755 support two operational modes:
+1. Comparator Mode
+2. Interrupt (Latched) Mode
 
-Gr{oetje,eeting}s,
+The HWMON subsystem is more suitable for implementing drivers for comparator mode operations.
+Reason:
+  - Temperature thresholds can be polled and exposed via sysfs.
+  - Register reads do not clear status, allowing safe alarm state derivation.
+  - Matches existing drivers under hwmon.
 
-                        Geert
+The IIO subsystem is more suitable for implementing drivers for interrupt (latched) mode operations.
+Reason:
+  - Interrupt mode uses edge-triggered ALERT/IBI signal interrupts, which can be pushed to user space using iio_push_event.
+  - IIO’s event API (IIO_EV_TYPE_THRESH) supports timestamped rising/falling edge events.
+  - I3C IBI integration maps naturally to IIO’s event push model.
+  - No persistent alarm bits are available; so polling in HWMON may result in  missing events.
+
+This patch adds interrupt mode support under IIO while leaving comparator mode support in hwmon untouched.
+The split reflects the sensor’s dual behavior and aligns with subsystem semantics.
+
+Changes since v3:
+  - Added cover letter for the first time.
+  - Updated commit message to clarify P3T1750 vs P3T1755 difference.
+  - Minor cleanups and style fixes.
+
+Thanks for your time and review.
+-------------------------------------------------
+
+Lakshay Piplani (2):
+  dt-bindings: iio: temperature: Add NXP P3T175x support
+  iio: temperature: Add driver for NXP P3T175x temperature sensor
+
+ .../bindings/iio/temperature/nxp,p3t1755.yaml |  62 +++
+ drivers/iio/temperature/Kconfig               |   2 +
+ drivers/iio/temperature/p3t/Kconfig           |  28 ++
+ drivers/iio/temperature/p3t/Makefile          |   5 +
+ drivers/iio/temperature/p3t/p3t1755.h         |  45 +++
+ drivers/iio/temperature/p3t/p3t1755_core.c    | 363 ++++++++++++++++++
+ drivers/iio/temperature/p3t/p3t1755_i2c.c     |  67 ++++
+ drivers/iio/temperature/p3t/p3t1755_i3c.c     | 108 ++++++
+ 8 files changed, 680 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/temperature/nxp,p3t1755.yaml
+ create mode 100644 drivers/iio/temperature/p3t/Kconfig
+ create mode 100644 drivers/iio/temperature/p3t/Makefile
+ create mode 100644 drivers/iio/temperature/p3t/p3t1755.h
+ create mode 100644 drivers/iio/temperature/p3t/p3t1755_core.c
+ create mode 100644 drivers/iio/temperature/p3t/p3t1755_i2c.c
+ create mode 100644 drivers/iio/temperature/p3t/p3t1755_i3c.c
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.25.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 

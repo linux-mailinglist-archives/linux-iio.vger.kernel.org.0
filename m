@@ -1,110 +1,134 @@
-Return-Path: <linux-iio+bounces-24861-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24862-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576F2BC61B1
-	for <lists+linux-iio@lfdr.de>; Wed, 08 Oct 2025 18:59:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E94BC68E1
+	for <lists+linux-iio@lfdr.de>; Wed, 08 Oct 2025 22:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 619074F63FD
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Oct 2025 16:58:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5114A403BE3
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Oct 2025 20:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5244E2EC560;
-	Wed,  8 Oct 2025 16:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B46279917;
+	Wed,  8 Oct 2025 20:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bVQtLPPH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWEuV7Nd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776F02BDC14
-	for <linux-iio@vger.kernel.org>; Wed,  8 Oct 2025 16:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82B727B347;
+	Wed,  8 Oct 2025 20:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759942709; cv=none; b=eNMXPGDFpMG2zPooDGbc8DLkcQ+cYo/Ezy/A8fXSzmuO7j3fzh9fla/272K6k6wYzue+u/sbNYuvsdnURJQul7AKbEsaCB3RN5AZZSj3yNBPOyeHgQQzgjCaN00egkilmW59T+EFPGtXjSbeCpBXCzLBB3B+ssdgN0SGMKbxvF8=
+	t=1759954719; cv=none; b=qZthjgjKaPG68e/jV14r++le9aW2Ay4qpSbqRcPL50DkU7mUdaKmCqVJekVzz1LU302FubAwiiL13XWxGnxI6pndmJVpAbnQ48/I113DzdEzgz8YFcXWgdrIS0pXN3il1/qkTPQdP9KP8pn8EI2L37ShdHzjqZOPsRyx0cyWLKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759942709; c=relaxed/simple;
-	bh=IjbFp+AAJ0GPQMOTx6ZjwxXhALOLADjgQf3T5Jpj/T4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tc/2m9JqaaUOFgbNVaFdU6b9IUOyeOMAbB/yBTaJmTTA4uqQl8dH1saMlZrBjHkf3M3xelcbKy+X6XNdJl8OAqBX9Emhx3bTnHu2Y6eLNMtxvte0jk4INBXw2+LUDrFRUGEPRAWJIuCouW3x24m4rsGx+shcxcYDwPOzGHLK5Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bVQtLPPH; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b3d196b7eeeso7134366b.0
-        for <linux-iio@vger.kernel.org>; Wed, 08 Oct 2025 09:58:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759942705; x=1760547505; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IjbFp+AAJ0GPQMOTx6ZjwxXhALOLADjgQf3T5Jpj/T4=;
-        b=bVQtLPPHCH4EnjIJ6KAsJGxVNok63vYB3A4A/pOedPuvVuQz6E8ecaZpaOdgxwuY2Z
-         k6IMYeiVhk6Y3y+Wjp+lW2Y0GCAUidl9IW4cWg5uUi2fSQAX7cnCHW35lwl2oyQ3afWc
-         sD/h/ZMbgJo6e+5NQvac5fP0PHuBZNNyJQHXyldRvf1NkWXleINdRhy2j4qh1U2qIISc
-         GDVTt+wWy1t5tD5Yw8waMhAssvhRKYUIp3SSDg8YxwWMJ/VRulC4GvBqyc+powQB+fHr
-         Xh0m+MCKwmh9DkWk5d7XUwZ4/K6iYzEuEeWk9wAgh0faoUF7C4AWLL8aJkaVEcyCbLPO
-         vJuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759942705; x=1760547505;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IjbFp+AAJ0GPQMOTx6ZjwxXhALOLADjgQf3T5Jpj/T4=;
-        b=PBh6AiNx2siewIwo+z42RKGZTgeQZheagxiOm5WiHkXhuNidKjZTuO+ccNMj2u7uMb
-         hFRQf8OvRO8fvKkHdTUEBcBJF38GzJLQgSXJMBHPZAvdxjQYzdmIbtHLMsTWdki5HX40
-         +66NNIa9cIbR4D1ItqfH/ftBOinCOgz4EOWp34/ABlEWyJDeSLVR/J85PLsc8rYgtG2J
-         g5L6PCUG2Z4YusRkp632Aj2EMm7DnE1fz/PouI7PiWyaTjRCU6Mt3XOXV9GT0+JsMaOI
-         ZhjcV5BhSJ9us2AIx3sUhryWGCaF4ZEJ4KGLTF0/xaeb6DJpXtV1w1Ia6K3CBBvU4CkY
-         Ax8A==
-X-Forwarded-Encrypted: i=1; AJvYcCX5SDScSKPdfJnecKmFtbHlzBmujJswPFsCRvckTKVM2z29sryDz7c5BbTPQD6dbLoqOC+OVLUYKB0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNyM7qwu9qFv8iEn0TvECxAbelwijuhR0D5HqN3BAKmfdel3WO
-	YpcGnLxGSImSIdRcnv5FSFVRB5oPlX/Vpy1RtmS520wgHeesVR1wPaaepMVKWqy7ju9QAnuTIei
-	njXCfHC2A/Imgbe5gP+kEYSZu2WT0yKo=
-X-Gm-Gg: ASbGncvhgjx/qKh5L0vY7pa6stC1r5e0QT5reXgsMSkZFgth4MAJy1ysXyYDtKD3K+x
-	30mOZgv7LC/XJpj13aV8TVhFJduZKGftYCwLqfixL5FKBnR4jqYAW3dtiz8DAAhJSeYdLdQ8at+
-	B/B3U/OJ1nXMgZn8GGZOn4PMeZ/TYdFSmZ3Gf0PAKBIATSnJk99QIdSN+OqaFrGQf1G9dAY7w+e
-	TPHEbuqV3PJ3x+K70G6ztmW2OM5uYA=
-X-Google-Smtp-Source: AGHT+IFM8B+yRjNiQWgGuDgYf4XUl4H+hx1IOIfC8pC6J7gmFamfZw32Vs0iDE5FnPT00Hq1ICxP2bzhEgGRBLspIeY=
-X-Received: by 2002:a17:907:7213:b0:b47:c1d9:51c9 with SMTP id
- a640c23a62f3a-b50ac4d3a5fmr452540666b.62.1759942705378; Wed, 08 Oct 2025
- 09:58:25 -0700 (PDT)
+	s=arc-20240116; t=1759954719; c=relaxed/simple;
+	bh=NPfFVoW/LsVVuz6xy4asuQtfUdYNXIh1K0Bl95lxHK0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K7cHN5gIrC3B0Oap6S/R+GFVEuHea0q47V4O0NNo765elBwB3FJTAQqCwh1eaSRAx1dEO4gp6KDfAFslr/5e3GY34ieStalMFAjHuopPBRuxgsBRIbEjFA2ehc1KvilA3/ThjyXD9Uz/X3nheZrBDy1fuv3vzJ6fE9vwMyXnfGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWEuV7Nd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51887C4CEE7;
+	Wed,  8 Oct 2025 20:18:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759954719;
+	bh=NPfFVoW/LsVVuz6xy4asuQtfUdYNXIh1K0Bl95lxHK0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eWEuV7Nd5F7lsXWr/UkCGuvskUUzW9C9N2qKdcElDqx/deuTzBTWJueKZCqT5MWC/
+	 kE9/oj3IagxHP2hfMgU4vzc/Njx/JocASOAc5uKkczRX+NIlOw6Mqyp/fQefLpzg8G
+	 wdZ0PE/DJ3aqz4hxPAy53TqIx2L5wSKfK5n3GRFbuiq6XWwlUvSyo5gBcH5hYoqXPG
+	 MjuNTh9Zt8dK2y/pJsA6K5jRLX+DyJVYc+XBwb5npwxFnU6Tg5tJW+37C8v8Bly8tm
+	 xAGkxk47sVjIiMklhP2bNpjIUHz4ummV0re5RGFKkE0hpc6l4oMmX042tikLqLgpwE
+	 JgOoQ+b6LPL7g==
+Date: Wed, 8 Oct 2025 21:18:34 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 4/5] dt-bindings: trivial-devices: add MEMSIC 3-axis
+ magnetometer
+Message-ID: <20251008-subtitle-estranged-b35dfcd2d3a7@spud>
+References: <20251007-i3c_ddr-v5-0-444184f7725e@nxp.com>
+ <20251007-i3c_ddr-v5-4-444184f7725e@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aOaWpVGZSCY6kN-6@homelab>
-In-Reply-To: <aOaWpVGZSCY6kN-6@homelab>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 8 Oct 2025 19:57:47 +0300
-X-Gm-Features: AS18NWCT0X_F7IZWKb87X-14WoCCTqsfTJlR0tHQft1sveRDBANcDJ27fz9ygt4
-Message-ID: <CAHp75VdKLoCyYHZsEpkmXNJQ5QSpA_crrWR+MS4-=xmn=g9azw@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: Fix pm runtime clean-up in sun4i_gpadc_probe
-To: Shuhao Fu <sfual@cse.ust.hk>
-Cc: Jonathan Cameron <jic23@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sqGdDHF1UKLk1vs2"
+Content-Disposition: inline
+In-Reply-To: <20251007-i3c_ddr-v5-4-444184f7725e@nxp.com>
+
+
+--sqGdDHF1UKLk1vs2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 8, 2025 at 7:52=E2=80=AFPM Shuhao Fu <sfual@cse.ust.hk> wrote:
->
-> In `sun4i_gpadc_probe`, in case of thermal register failure, the runtime
-> PM usage counter would not be decreased, resulting in a possible
-> inconsistency of runtime PM state.
->
-> Fixes: b0a242894f11 ("iio: adc: sun4i-gpadc-iio: register in the thermal =
-after registering in pm")
+On Tue, Oct 07, 2025 at 04:06:16PM -0400, Frank Li wrote:
+> Add compatible string 'memsic,mmc5603' and 'memsic,mmc5633' for
+> MEMSIC 3-axis magnetometer.
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-This might fix this problem, but it doesn't fix the whole mess in the
-probe with devm/non-devm ordering.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+--
+pw-bot: handled-elsewhere
 
---=20
-With Best Regards,
-Andy Shevchenko
+> ---
+> Changes in v4
+> - add memsic,mmc5603
+>=20
+> Changes from v1 .. v3
+> - None
+> ---
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Doc=
+umentation/devicetree/bindings/trivial-devices.yaml
+> index 7609acaa752d5c1c89a26bb007fa38357dee1a28..72786eebfbd63beffd2a09fc2=
+0c7aedbe9e96a8e 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -225,6 +225,10 @@ properties:
+>            - meas,tsys01
+>              # MEMSIC magnetometer
+>            - memsic,mmc35240
+> +            # MEMSIC 3-axis magnetometer
+> +          - memsic,mmc5603
+> +            # MEMSIC 3-axis magnetometer (Support I3C HDR)
+> +          - memsic,mmc5633
+>              # MEMSIC 3-axis accelerometer
+>            - memsic,mxc4005
+>              # MEMSIC 2-axis 8-bit digital accelerometer
+>=20
+> --=20
+> 2.34.1
+>=20
+
+--sqGdDHF1UKLk1vs2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaObHGQAKCRB4tDGHoIJi
+0kYFAQDlJRBo3V6un4TdXGebaBOYpaei0g/okMdZdefOo2s6WAEA7JKupNoV9yYg
+TZOT/iUlzA563LqVO58o6aXWJEQGyQk=
+=vzKo
+-----END PGP SIGNATURE-----
+
+--sqGdDHF1UKLk1vs2--
 

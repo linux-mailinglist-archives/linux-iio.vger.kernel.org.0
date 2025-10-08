@@ -1,484 +1,174 @@
-Return-Path: <linux-iio+bounces-24857-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24858-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C472BC54EE
-	for <lists+linux-iio@lfdr.de>; Wed, 08 Oct 2025 15:52:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB471BC5650
+	for <lists+linux-iio@lfdr.de>; Wed, 08 Oct 2025 16:10:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 206EC4EB1F1
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Oct 2025 13:52:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EF023B42AB
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Oct 2025 14:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58F52882D0;
-	Wed,  8 Oct 2025 13:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8048F28FA91;
+	Wed,  8 Oct 2025 14:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="1by5kwqO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AnfLECuv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF392877DB;
-	Wed,  8 Oct 2025 13:52:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8824528DB46
+	for <linux-iio@vger.kernel.org>; Wed,  8 Oct 2025 14:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759931542; cv=none; b=DiUi4p12tnQA0+a21aR/itD9j8Y9Fxugf2E934lP0/brKNkUTFlvtYUb2gAWTAuHdDL37du6sNPDM4GVqKeJeG62qlyp9LVwAkPuFnd+B+ZPK81f/bdJhhNrTgSLCsQAezlXnQdv8ZnDuIRJHCiGfAlpLOD195GKLfF95Y8wVXs=
+	t=1759932643; cv=none; b=Bh3vy7DEr46uYRPPLysHGbXrRmUfCEiieVTDGoF6zuxGnXvbOkK/c2k3QqQskaQN7LjGKih9hz2H63zx32jdLzpaeb/msKQB4jtTRzgFZ3HnpTC7MZ0dgfz9TpnD9eBFn35vNJjmHDAFlBuDb/hrC2dh1KqTkhl+rPThN24+XTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759931542; c=relaxed/simple;
-	bh=S8h6UBo5UqsmO8IBEe4FMZ46jZFBj4w5kRvorF9gz2E=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rcmjNhvHWrND7tSCyJG8jIJvEw5p4rxun6CCBdx2MzAJrt6VqcKHq3TDONMzCEFwLRHuajf3wPBStL6vz+VvXX0Jn7fkhMnm/YlFevk/jDbvZJNazVA0rfomdXsfjpXtd2Ns1JTng7FVsnfOoiUDy0dgY9INhjFO16LarUls7Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=1by5kwqO; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 598DhLUe027014;
-	Wed, 8 Oct 2025 09:52:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=f19x1
-	TlkuEYqJn2t0qmHArc6hpfc97QSLjIg39uYhME=; b=1by5kwqO/TtvMmf3hnd84
-	CGSjfR0tEFtDnxCLxtLmltftMrqyafkQawgbofIu111AocwJmLfuM0F0vsMEHMfd
-	vEb4Yk1GNdcsRE5kd9++p0Tdfdte/rF4ExlSA7lMNe91E7npAiOaljGoPnRKtsX5
-	0ibD6uZvzmdivE/0MfhLeEkYLUPxY5Uu//QnaWtok61uVX2jH39QUfcFpGhjHPUL
-	gFn25gBGcGUyy/jvBUDiMjgW8E1+P5Wv6yZc1CooIQM8jqCFYpX3OG4vLKdiaHM+
-	YOOXfObbiwzS8pVaG5tIRo/nPM8yOuNzm2ITAB11uliIld+wSAAh5YO7gINHMLi3
-	w==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 49ndssugsw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Oct 2025 09:52:15 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 598DqE6O034890
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 8 Oct 2025 09:52:14 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Wed, 8 Oct 2025 09:52:14 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Wed, 8 Oct 2025 09:52:14 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Wed, 8 Oct 2025 09:52:14 -0400
-Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 598DpxWc023325;
-	Wed, 8 Oct 2025 09:52:02 -0400
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
-To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <jic23@kernel.org>, <ukleinek@kernel.org>, <michael.hennerich@analog.com>,
-        <nuno.sa@analog.com>, <eblanc@baylibre.com>, <dlechner@baylibre.com>,
-        <andy@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <corbet@lwn.net>, <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v4 8/8] iio: adc: ad4030: Add support for ADAQ4216 and ADAQ4224
-Date: Wed, 8 Oct 2025 10:51:59 -0300
-Message-ID: <7f8a65deb597d2d26e1d1d373d70851c7cb3d3e3.1759929814.git.marcelo.schmitt@analog.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1759929814.git.marcelo.schmitt@analog.com>
-References: <cover.1759929814.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1759932643; c=relaxed/simple;
+	bh=IrnD2O8X5hB5MwrlfqWITqkYfIyt6OZiSNUedEcDcF8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D+kZbR0WNOe8BDpTujmZhouUd4h0nt3N8Mt7W6hbUqcy27oWBB7+hPo9zO0Jg/ChiU9ZFL1/Rwex7u0dnvhLVLklYM8sAT3wGgacBXzE0sfNvhK5aWW/te/GOWXxeHIyqzQuyqa5VUD8h1N75KRLKdi+y7YyzNx1HBU0jHdt56s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AnfLECuv; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-78118e163e5so781187b3a.0
+        for <linux-iio@vger.kernel.org>; Wed, 08 Oct 2025 07:10:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759932641; x=1760537441; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=2S2XrHAuOcCepyqws2PwWFNO5GZ8yv1xZPuvvSFngn8=;
+        b=AnfLECuvT+yWVI6AbqSe4Dss9iGBdYqsZRJuKfhK1b/788ZgsOLUro46ACuWveq8EA
+         8hkuOre1PN6jhAEQZT6Y9fWVgFJwmtvLq+TlnpJtXhMB3CqpGMDzQ8AA1mT1RmyHUV0a
+         uaH/jCfSJkdRSUsEj6UZKIhgtctwLGm8DhSD4EdltEpdCsw/qVCaBaKLRkXnO8RY96G+
+         xOw6avcrFn4hooau8guHNjQ1CKxsEAMcyCTvm0tCGRiNg7jMvGibUNbKwtGyhKnVKHuT
+         bmVpBxz7rLXVBSlhzihmpDawiSc/MNBbBtnAtyNPohXSfgDhXBixQnj+Tb3AYrA1kgFa
+         saTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759932641; x=1760537441;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2S2XrHAuOcCepyqws2PwWFNO5GZ8yv1xZPuvvSFngn8=;
+        b=rT6Amt0IB+jgAyi1eSE4cz161TXvgoNT7j/j7jj91tgyTZXvGDC3ZkPYej4oBz7BCn
+         jKmlt6ud8oFrayBKFGDuyC2+J2qYv1pYRBukD1Shrmc98QSSaf4h2xlTKpNbPLXx9GYb
+         jtHmR2rj2IxLmfzROLTbLccjXwr2YDCX/x8Gt3kfBZINMlhpa8RF5rNxYQV2bSRD/jkV
+         WC9DdkVrFZUED8rSEGLvamalHoIrLggYGGfinrVDq4TF3GI/T0W7ZvOVcv2gcTAfOEnz
+         nT7Lf+UOyvcR6L6CptW7zo/ozsodhWXvI4PHQShpYCB2kyZlX8e97PxavpFK9IJoVgTF
+         550w==
+X-Forwarded-Encrypted: i=1; AJvYcCVo6ADnh83+E7odbxNRPc3nSj7jmGUf/gbNEkCWLwDt0AHOobmOimUiogh5zwHHhOTt/O5vI7h0u6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzebbgFmAkFe53vuo9fAqBw9blVsO8gU5HIhjvwxo0P3n2+ByRA
+	RU1M/2kcQmgAjrKlyIbNEzWOdChOZch8/5gha6ET8tFzLtBB3X/opmNa
+X-Gm-Gg: ASbGncv+2CvrjCMGbJzfS7xblQD4N56/JGXSBe1GmubO2GS9L/dc9ZGcQ+2A2psHh76
+	KEF8xekb4BM0h37YMfjxEKOnrZIavb37SkD9rY74HGcSHRRhzslwA5cKv2YPVQn5B+4M/zPCiv3
+	HGN+PaOF1DHcWTWd66efZ2waFA2k6L2oI+wtQu4aJNrfAlc8FrB3QKjMoIK8PQHRfZbqoDu85R6
+	hKt7+zK5jeFSNDJwbrBDSsiZ4NguULbcwcwgS+D1ni3RXuevLBUOKuupHEc8tPh8fIYtO0fbEyg
+	E95lfcNA2tYqcQUGCITjEoe4ZM3cFSKq10nz1sxmQA1NwOULM4ojekC8pah4TTc6nKC/b2Ibvze
+	iuiRnnO9milUU5awA353wKPF9aKwQryC5daUuRKghX9npB6f0pGU+zHVU+p6pVuOKYPeB4JTHjT
+	AHAnWXb3W8C+BtYRXP4iM=
+X-Google-Smtp-Source: AGHT+IHyX5D/x1kAgnyjYEICDRw+TCkp9jPNdAwsxvT++V1jJP2L7aAzg7L5pRnzV72nWvHalFzB7w==
+X-Received: by 2002:a05:6a21:6d90:b0:243:fe1e:2f95 with SMTP id adf61e73a8af0-32d96d8d186mr12375975637.6.1759932640578;
+        Wed, 08 Oct 2025 07:10:40 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6311462b24sm7698861a12.37.2025.10.08.07.10.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Oct 2025 07:10:39 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <96f5443f-5b40-4d05-b350-78d55a1d841d@roeck-us.net>
+Date: Wed, 8 Oct 2025 07:10:34 -0700
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/2] iio: temperature: Add support for NXP P3T175x
+ temperature sensors
+To: Lakshay Piplani <lakshay.piplani@nxp.com>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, jic23@kernel.org, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, marcelo.schmitt1@gmail.com,
+ gregkh@linuxfoundation.org, viro@zeniv.linux.org.uk, peterz@infradead.org,
+ jstephan@baylibre.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, devicetree@vger.kernel.org
+Cc: jdelvare@suse.com, vikash.bansal@nxp.com, priyanka.jain@nxp.com,
+ shashank.rebbapragada@nxp.com
+References: <20251008100713.1198461-1-lakshay.piplani@nxp.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20251008100713.1198461-1-lakshay.piplani@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDAwNCBTYWx0ZWRfX9/cSN0g/7sY5
- JqFnZMYO0f5cvO7dv/qhr5AmS833egmMnhqkLO5XlyyJG8eFsDpJYa23rxGDyXXpQpGbSr+1EsV
- a+YFFLHpg4qEkS3md2Vx0vmYdWNqIPxZs9fDz+KVYJ2yMTDXw4PRRjCLS2VY7tYDWolCwRDlfwk
- TFWCkGiCDBl8cBIwpD+Ly13AjOfna7nQFwwIbWwaSdUnQAyrudX3n/iScFwJLGpoXiiSd3s1qDF
- uEFk1PzOV8GSlPevq34nItRsDtToUi5CkJ9Zk+gXJm3ytFuzCDG/QBfS0BZ3QB93GJaIzCVuudY
- E0Novn0Rp/vUruzdvQgba04hEF1BDLYUMpr4lIJTh+mbAL/eAsQZaBndH1/WDvfFA1QpYqtTjxA
- kzIkGsVpUnlnzEJPBAcayxgYhWs9fA==
-X-Proofpoint-ORIG-GUID: A_uqP3zFNjF0I-PKWtiE30zSo-T2rSli
-X-Proofpoint-GUID: A_uqP3zFNjF0I-PKWtiE30zSo-T2rSli
-X-Authority-Analysis: v=2.4 cv=e4ELiKp/ c=1 sm=1 tr=0 ts=68e66c8f cx=c_pps
- a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=gAnH3GRIAAAA:8 a=vBz0w1DY-RU6HqRekHsA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-08_04,2025-10-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0 adultscore=0
- priorityscore=1501 clxscore=1015 phishscore=0 bulkscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2509150000 definitions=main-2510080004
 
-ADAQ4216 and ADAQ4224 are similar to AD4030, but feature a PGA circuitry
-that scales the analog input signal prior to it reaching the ADC. The PGA
-is controlled through a pair of pins (A0 and A1) whose state define the
-gain that is applied to the input signal.
+On 10/8/25 03:07, Lakshay Piplani wrote:
+> This patch adds support for the P3T1750/P3T1755 temperature sensors under the IIO subsystem.
+> 
+> P3T1750/P3T1755 support two operational modes:
+> 1. Comparator Mode
+> 2. Interrupt (Latched) Mode
+> 
+> The HWMON subsystem is more suitable for implementing drivers for comparator mode operations.
+> Reason:
+>    - Temperature thresholds can be polled and exposed via sysfs.
+>    - Register reads do not clear status, allowing safe alarm state derivation.
+>    - Matches existing drivers under hwmon.
+> 
+> The IIO subsystem is more suitable for implementing drivers for interrupt (latched) mode operations.
+> Reason:
+>    - Interrupt mode uses edge-triggered ALERT/IBI signal interrupts, which can be pushed to user space using iio_push_event.
+>    - IIO’s event API (IIO_EV_TYPE_THRESH) supports timestamped rising/falling edge events.
+>    - I3C IBI integration maps naturally to IIO’s event push model.
+>    - No persistent alarm bits are available; so polling in HWMON may result in  missing events.
+> 
 
-Add support for ADAQ4216 and ADAQ4224. Provide a list of PGA options
-through the IIO device channel scale available interface and enable control
-of the PGA through the channel scale interface.
+This is just wrong. Interrupt support can just as well be implemented
+in a hwmon driver.
 
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
----
-Change log v3 -> v4:
-- ADAQ support patch updated to handle the GPIO setup case only.
-
- drivers/iio/adc/ad4030.c | 211 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 207 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
-index bbadcda8df77..b371d954918f 100644
---- a/drivers/iio/adc/ad4030.c
-+++ b/drivers/iio/adc/ad4030.c
-@@ -47,6 +47,8 @@
- #define     AD4030_REG_CHIP_GRADE_AD4630_24_GRADE	0x00
- #define     AD4030_REG_CHIP_GRADE_AD4632_16_GRADE	0x05
- #define     AD4030_REG_CHIP_GRADE_AD4632_24_GRADE	0x02
-+#define     AD4030_REG_CHIP_GRADE_ADAQ4216_GRADE	0x1E
-+#define     AD4030_REG_CHIP_GRADE_ADAQ4224_GRADE	0x1C
- #define     AD4030_REG_CHIP_GRADE_MASK_CHIP_GRADE	GENMASK(7, 3)
- #define AD4030_REG_SCRATCH_PAD			0x0A
- #define AD4030_REG_SPI_REVISION			0x0B
-@@ -124,6 +126,10 @@
- /* Datasheet says 9.8ns, so use the closest integer value */
- #define AD4030_TQUIET_CNV_DELAY_NS	10
- 
-+/* HARDWARE_GAIN */
-+#define ADAQ4616_PGA_PINS		2
-+#define ADAQ4616_PGA_GAIN_MAX_NANO	(NANO * 2 / 3)
-+
- enum ad4030_out_mode {
- 	AD4030_OUT_DATA_MD_DIFF,
- 	AD4030_OUT_DATA_MD_16_DIFF_8_COM,
-@@ -144,6 +150,30 @@ enum {
- 	AD4030_SCAN_TYPE_AVG,
- };
- 
-+static const int adaq4216_hw_gains_db[] = {
-+	-10,	/* 1/3 V/V gain */
-+	-5,	/* 5/9 V/V gain */
-+	7,	/* 20/9 V/V gain */
-+	16,	/* 20/3 V/V gain */
-+};
-+
-+/*
-+ * Gains computed as fractions of 1000 so they can be expressed by integers.
-+ */
-+static const int adaq4216_hw_gains_vpv[] = {
-+	MILLI / 3,		/* 333 */
-+	(5 * MILLI / 9),	/* 555 */
-+	(20 * MILLI / 9),	/* 2222 */
-+	(20 * MILLI / 3),	/* 6666 */
-+};
-+
-+static const int adaq4216_hw_gains_frac[][2] = {
-+	{ 1, 3 },  /* 1/3 V/V gain */
-+	{ 5, 9 },  /* 5/9 V/V gain */
-+	{ 20, 9 }, /* 20/9 V/V gain */
-+	{ 20, 3 }, /* 20/3 V/V gain */
-+};
-+
- struct ad4030_chip_info {
- 	const char *name;
- 	const unsigned long *available_masks;
-@@ -151,6 +181,7 @@ struct ad4030_chip_info {
- 	const struct iio_chan_spec offload_channels[AD4030_MAX_IIO_CHANNEL_NB];
- 	u8 grade;
- 	u8 precision_bits;
-+	bool has_pga;
- 	/* Number of hardware channels */
- 	int num_voltage_inputs;
- 	unsigned int tcyc_ns;
-@@ -174,7 +205,11 @@ struct ad4030_state {
- 	struct spi_offload_trigger *offload_trigger;
- 	struct spi_offload_trigger_config offload_trigger_config;
- 	struct pwm_device *cnv_trigger;
-+	size_t scale_avail_size;
- 	struct pwm_waveform cnv_wf;
-+	unsigned int scale_avail[ARRAY_SIZE(adaq4216_hw_gains_db)][2];
-+	struct gpio_descs *pga_gpios;
-+	unsigned int pga_index;
- 
- 	/*
- 	 * DMA (thus cache coherency maintenance) requires the transfer buffers
-@@ -231,7 +266,7 @@ struct ad4030_state {
-  * - voltage0-voltage1
-  * - voltage2-voltage3
-  */
--#define __AD4030_CHAN_DIFF(_idx, _scan_type, _offload) {		\
-+#define __AD4030_CHAN_DIFF(_idx, _scan_type, _offload, _pga) {		\
- 	.info_mask_shared_by_all =					\
- 		(_offload ? BIT(IIO_CHAN_INFO_SAMP_FREQ) : 0) |		\
- 		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),			\
-@@ -242,6 +277,7 @@ struct ad4030_state {
- 		BIT(IIO_CHAN_INFO_CALIBBIAS) |				\
- 		BIT(IIO_CHAN_INFO_RAW),					\
- 	.info_mask_separate_available = BIT(IIO_CHAN_INFO_CALIBBIAS) |	\
-+		(_pga ? BIT(IIO_CHAN_INFO_SCALE) : 0) |			\
- 		BIT(IIO_CHAN_INFO_CALIBSCALE),				\
- 	.type = IIO_VOLTAGE,						\
- 	.indexed = 1,							\
-@@ -256,10 +292,16 @@ struct ad4030_state {
- }
- 
- #define AD4030_CHAN_DIFF(_idx, _scan_type)				\
--	__AD4030_CHAN_DIFF(_idx, _scan_type, 0)
-+	__AD4030_CHAN_DIFF(_idx, _scan_type, 0, 0)
- 
- #define AD4030_OFFLOAD_CHAN_DIFF(_idx, _scan_type)			\
--	__AD4030_CHAN_DIFF(_idx, _scan_type, 1)
-+	__AD4030_CHAN_DIFF(_idx, _scan_type, 1, 0)
-+
-+#define ADAQ4216_CHAN_DIFF(_idx, _scan_type)				\
-+	__AD4030_CHAN_DIFF(_idx, _scan_type, 0, 1)
-+
-+#define ADAQ4216_OFFLOAD_CHAN_DIFF(_idx, _scan_type)			\
-+	__AD4030_CHAN_DIFF(_idx, _scan_type, 1, 1)
- 
- static const int ad4030_average_modes[] = {
- 	BIT(0),					/* No averaging/oversampling */
-@@ -413,6 +455,65 @@ static const struct regmap_config ad4030_regmap_config = {
- 	.max_register = AD4030_REG_DIG_ERR,
- };
- 
-+static void ad4030_fill_scale_avail(struct ad4030_state *st)
-+{
-+	unsigned int mag_bits, int_part, fract_part, i;
-+	u64 range;
-+
-+	/*
-+	 * The maximum precision of differential channels is retrieved from the
-+	 * chip properties. The output code of differential channels is in two's
-+	 * complement format (i.e. signed), so the MSB is the sign bit and only
-+	 * (precision_bits - 1) bits express voltage magnitude.
-+	 */
-+	mag_bits = st->chip->precision_bits - 1;
-+
-+	for (i = 0; i < ARRAY_SIZE(adaq4216_hw_gains_frac); i++) {
-+		range = mult_frac(st->vref_uv, adaq4216_hw_gains_frac[i][1],
-+				  adaq4216_hw_gains_frac[i][0]);
-+		/*
-+		 * If range were in mV, we would multiply it by NANO below.
-+		 * Though, range is in µV so multiply it by MICRO only so the
-+		 * result after right shift and division scales output codes to
-+		 * millivolts.
-+		 */
-+		int_part = div_u64_rem(((u64)range * MICRO) >> mag_bits, NANO, &fract_part);
-+		st->scale_avail[i][0] = int_part;
-+		st->scale_avail[i][1] = fract_part;
-+	}
-+}
-+
-+static int ad4030_set_pga_gain(struct ad4030_state *st)
-+{
-+	DECLARE_BITMAP(bitmap, ADAQ4616_PGA_PINS) = { };
-+
-+	bitmap_write(bitmap, st->pga_index, 0, ADAQ4616_PGA_PINS);
-+
-+	return gpiod_multi_set_value_cansleep(st->pga_gpios, bitmap);
-+}
-+
-+static int ad4030_set_pga(struct iio_dev *indio_dev, int gain_int, int gain_fract)
-+{
-+	struct ad4030_state *st = iio_priv(indio_dev);
-+	unsigned int mag_bits = st->chip->precision_bits - 1;
-+	u64 gain_nano, tmp;
-+
-+	if (!st->pga_gpios)
-+		return -EINVAL;
-+
-+	gain_nano = gain_int * NANO + gain_fract;
-+
-+	if (!in_range(gain_nano, 1, ADAQ4616_PGA_GAIN_MAX_NANO))
-+		return -EINVAL;
-+
-+	tmp = DIV_ROUND_CLOSEST_ULL(gain_nano << mag_bits, NANO);
-+	gain_nano = DIV_ROUND_CLOSEST_ULL(st->vref_uv, tmp);
-+	st->pga_index = find_closest(gain_nano, adaq4216_hw_gains_vpv,
-+				     ARRAY_SIZE(adaq4216_hw_gains_vpv));
-+
-+	return ad4030_set_pga_gain(st);
-+}
-+
- static int ad4030_get_chan_scale(struct iio_dev *indio_dev,
- 				 struct iio_chan_spec const *chan,
- 				 int *val,
-@@ -432,7 +533,14 @@ static int ad4030_get_chan_scale(struct iio_dev *indio_dev,
- 
- 	*val2 = scan_type->realbits;
- 
--	return IIO_VAL_FRACTIONAL_LOG2;
-+	/* The LSB of the 8-bit common-mode data is always vref/256. */
-+	if (scan_type->realbits == 8 || !st->chip->has_pga)
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+
-+	*val = st->scale_avail[st->pga_index][0];
-+	*val2 = st->scale_avail[st->pga_index][1];
-+
-+	return IIO_VAL_INT_PLUS_NANO;
- }
- 
- static int ad4030_get_chan_calibscale(struct iio_dev *indio_dev,
-@@ -900,6 +1008,15 @@ static int ad4030_read_avail(struct iio_dev *indio_dev,
- 		*length = ARRAY_SIZE(ad4030_average_modes);
- 		return IIO_AVAIL_LIST;
- 
-+	case IIO_CHAN_INFO_SCALE:
-+		if (st->scale_avail_size == 1)
-+			*vals = (int *)st->scale_avail[st->pga_index];
-+		else
-+			*vals = (int *)st->scale_avail;
-+		*length = st->scale_avail_size * 2; /* print int and nano part */
-+		*type = IIO_VAL_INT_PLUS_NANO;
-+		return IIO_AVAIL_LIST;
-+
- 	default:
- 		return -EINVAL;
- 	}
-@@ -975,6 +1092,9 @@ static int ad4030_write_raw_dispatch(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		return ad4030_set_sampling_freq(indio_dev, val);
- 
-+	case IIO_CHAN_INFO_SCALE:
-+		return ad4030_set_pga(indio_dev, val, val2);
-+
- 	default:
- 		return -EINVAL;
- 	}
-@@ -996,6 +1116,17 @@ static int ad4030_write_raw(struct iio_dev *indio_dev,
- 	return ret;
- }
- 
-+static int ad4030_write_raw_get_fmt(struct iio_dev *indio_dev,
-+				    struct iio_chan_spec const *chan, long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		return IIO_VAL_INT_PLUS_NANO;
-+	default:
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	}
-+}
-+
- static int ad4030_reg_access(struct iio_dev *indio_dev, unsigned int reg,
- 			     unsigned int writeval, unsigned int *readval)
- {
-@@ -1046,6 +1177,7 @@ static const struct iio_info ad4030_iio_info = {
- 	.read_avail = ad4030_read_avail,
- 	.read_raw = ad4030_read_raw,
- 	.write_raw = ad4030_write_raw,
-+	.write_raw_get_fmt = &ad4030_write_raw_get_fmt,
- 	.debugfs_reg_access = ad4030_reg_access,
- 	.read_label = ad4030_read_label,
- 	.get_current_scan_type = ad4030_get_current_scan_type,
-@@ -1309,6 +1441,25 @@ static int ad4030_spi_offload_setup(struct iio_dev *indio_dev,
- 							   IIO_BUFFER_DIRECTION_IN);
- }
- 
-+static int ad4030_setup_pga(struct device *dev, struct iio_dev *indio_dev,
-+			    struct ad4030_state *st)
-+{
-+	/* Setup GPIOs for PGA control */
-+	st->pga_gpios = devm_gpiod_get_array(dev, "pga", GPIOD_OUT_LOW);
-+	if (IS_ERR(st->pga_gpios))
-+		return dev_err_probe(dev, PTR_ERR(st->pga_gpios),
-+				     "Failed to get PGA gpios.\n");
-+
-+	if (st->pga_gpios->ndescs != ADAQ4616_PGA_PINS)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "Expected 2 GPIOs for PGA control.\n");
-+
-+	st->scale_avail_size = ARRAY_SIZE(adaq4216_hw_gains_db);
-+	st->pga_index = 0;
-+
-+	return 0;
-+}
-+
- static int ad4030_probe(struct spi_device *spi)
- {
- 	struct device *dev = &spi->dev;
-@@ -1351,6 +1502,14 @@ static int ad4030_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
-+	if (st->chip->has_pga) {
-+		ret = ad4030_setup_pga(dev, indio_dev, st);
-+		if (ret)
-+			return ret;
-+
-+		ad4030_fill_scale_avail(st);
-+	}
-+
- 	ret = ad4030_config(st);
- 	if (ret)
- 		return ret;
-@@ -1614,12 +1773,54 @@ static const struct ad4030_chip_info ad4632_24_chip_info = {
- 	.max_sample_rate_hz = 500 * HZ_PER_KHZ,
- };
- 
-+static const struct ad4030_chip_info adaq4216_chip_info = {
-+	.name = "adaq4216",
-+	.available_masks = ad4030_channel_masks,
-+	.channels = {
-+		ADAQ4216_CHAN_DIFF(0, ad4030_16_scan_types),
-+		AD4030_CHAN_CMO(1, 0),
-+		IIO_CHAN_SOFT_TIMESTAMP(2),
-+	},
-+	.offload_channels = {
-+		ADAQ4216_OFFLOAD_CHAN_DIFF(0, ad4030_16_offload_scan_types),
-+		AD4030_CHAN_CMO(1, 0),
-+	},
-+	.grade = AD4030_REG_CHIP_GRADE_ADAQ4216_GRADE,
-+	.precision_bits = 16,
-+	.has_pga = true,
-+	.num_voltage_inputs = 1,
-+	.tcyc_ns = AD4030_TCYC_ADJUSTED_NS,
-+	.max_sample_rate_hz = 2 * HZ_PER_MHZ,
-+};
-+
-+static const struct ad4030_chip_info adaq4224_chip_info = {
-+	.name = "adaq4224",
-+	.available_masks = ad4030_channel_masks,
-+	.channels = {
-+		ADAQ4216_CHAN_DIFF(0, ad4030_24_scan_types),
-+		AD4030_CHAN_CMO(1, 0),
-+		IIO_CHAN_SOFT_TIMESTAMP(2),
-+	},
-+	.offload_channels = {
-+		ADAQ4216_OFFLOAD_CHAN_DIFF(0, ad4030_24_offload_scan_types),
-+		AD4030_CHAN_CMO(1, 0),
-+	},
-+	.grade = AD4030_REG_CHIP_GRADE_ADAQ4224_GRADE,
-+	.precision_bits = 24,
-+	.has_pga = true,
-+	.num_voltage_inputs = 1,
-+	.tcyc_ns = AD4030_TCYC_ADJUSTED_NS,
-+	.max_sample_rate_hz = 2 * HZ_PER_MHZ,
-+};
-+
- static const struct spi_device_id ad4030_id_table[] = {
- 	{ "ad4030-24", (kernel_ulong_t)&ad4030_24_chip_info },
- 	{ "ad4630-16", (kernel_ulong_t)&ad4630_16_chip_info },
- 	{ "ad4630-24", (kernel_ulong_t)&ad4630_24_chip_info },
- 	{ "ad4632-16", (kernel_ulong_t)&ad4632_16_chip_info },
- 	{ "ad4632-24", (kernel_ulong_t)&ad4632_24_chip_info },
-+	{ "adaq4216", (kernel_ulong_t)&adaq4216_chip_info },
-+	{ "adaq4224", (kernel_ulong_t)&adaq4224_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(spi, ad4030_id_table);
-@@ -1630,6 +1831,8 @@ static const struct of_device_id ad4030_of_match[] = {
- 	{ .compatible = "adi,ad4630-24", .data = &ad4630_24_chip_info },
- 	{ .compatible = "adi,ad4632-16", .data = &ad4632_16_chip_info },
- 	{ .compatible = "adi,ad4632-24", .data = &ad4632_24_chip_info },
-+	{ .compatible = "adi,adaq4216", .data = &adaq4216_chip_info },
-+	{ .compatible = "adi,adaq4224", .data = &adaq4224_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, ad4030_of_match);
--- 
-2.39.2
+Guenter
 
 

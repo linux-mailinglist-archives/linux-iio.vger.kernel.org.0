@@ -1,251 +1,253 @@
-Return-Path: <linux-iio+bounces-24866-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24867-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCA9BC6A41
-	for <lists+linux-iio@lfdr.de>; Wed, 08 Oct 2025 23:07:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE767BC6F48
+	for <lists+linux-iio@lfdr.de>; Thu, 09 Oct 2025 01:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 92FB44EF14B
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Oct 2025 21:07:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08D32401E1E
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Oct 2025 23:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B6E29E0F7;
-	Wed,  8 Oct 2025 21:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22502C3769;
+	Wed,  8 Oct 2025 23:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6M/6/Fj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sH3L1Cyk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F64226657B;
-	Wed,  8 Oct 2025 21:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B52A4A06;
+	Wed,  8 Oct 2025 23:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759957638; cv=none; b=DhNKU2+OEP/Fots/wbMHCTuQiCEwwFJ7F4V2DTpuwOzZE8VTJeYeiKv5gSPUpc/pN5fAGSXmZbagkaCxdIjb7SjybeZBoaXTjmIYI2Z2pD5AcuRAvO1a5aC+Z79Ty1yqclUW4CmAh7QCSxojgEzcfb8Kd4KhD9NdwZUx+RrIMYo=
+	t=1759967560; cv=none; b=gjEl3gcWvSwFNfMR219M9wmlS0RznalpqpKSY13SlmpLIP9MwZC7j+fh3go97h9hI5nnEr+NsxdzUsBDfnsDOZuB7Id7GRXx2uMSzhvHufKXIztbxLNFAthabJhJpAMxf0To5edJVP7g7TB8BTfI3WsaoUY3h3J3Ik2Va9xBLdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759957638; c=relaxed/simple;
-	bh=LL0RamBUFR6PAe5GMWukxqVeDNw7wqwAhfyL2dF64hc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RQyVc/2PWmiBZfGq82cCYK2HfsSlbLvwPXFEnHm1tTIV73oiLCd8yu3j0+JwX7adT5Wam1kaRQk/vbKu1QnzKz8tMW9ulPqeeAVeS7V0x/2bMTsQHwzHx7uiFXcM8OKFaog0zlOO3XOW06zuSfmtiP96lAR4q3x3fLkLOfyLxbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6M/6/Fj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFE7C4CEE7;
-	Wed,  8 Oct 2025 21:07:13 +0000 (UTC)
+	s=arc-20240116; t=1759967560; c=relaxed/simple;
+	bh=OJ+hwh1sqGOf99NdhUVXQqjYuq37xpta7BF0DZ7PRno=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FvFhNSoHJcdoz7DwGOriVqUqN+5E+lST4yvCCPZmWS+CVII9hotUb+/q3/jq8yV2Thn7ent+58WlbqCL1Mu8tbUmRnSa2eE2R47jtQ7zYjpAoGnOySYnR4bC/0b6LqTXrDNnX045ykOJ6mG+aRJmUwbmf9C/ZgEFnPbhLeMKJFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sH3L1Cyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F417C4CEE7;
+	Wed,  8 Oct 2025 23:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759957637;
-	bh=LL0RamBUFR6PAe5GMWukxqVeDNw7wqwAhfyL2dF64hc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z6M/6/Fj7ZD78LRctQ7ZlY+xTd9UrxG7l5pdUcND8ftAhZ6QmIWCyedWPkJZ/ygIJ
-	 TMhUZUZjlEyekemtUFw05lM+1GEPBc8JjKsguYrsrI/2hBDpgAiNHdaUJt/aoh8MTt
-	 LTrSxa3gYa6eElTKy2fSdT5JfjpdLdXJtmwF6CZaRCegYkuSbxcx06bop9yy5vziI9
-	 zWPFOpO2HqNhQca42YFMgh5X1BW3WCaWJGc9CV9+HhQerxJY16Ow5Naxwu+SREXkJL
-	 fvitdkW+gEkKLeRw9pNKKufZxCw8+8EECfM3ODN/7n4I+UgjGi+kccmG/tX/gDRoa1
-	 5KyCbNVLqVxRA==
-Date: Wed, 8 Oct 2025 22:07:12 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jic23@kernel.org, ukleinek@kernel.org, michael.hennerich@analog.com,
-	nuno.sa@analog.com, eblanc@baylibre.com, dlechner@baylibre.com,
-	andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, corbet@lwn.net, marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v4 7/8] dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216
- and ADAQ4224
-Message-ID: <20251008-swooned-closable-fbc8b71601c0@spud>
-References: <cover.1759929814.git.marcelo.schmitt@analog.com>
- <7e51e036ba930284c74cf42afd53b17d49093654.1759929814.git.marcelo.schmitt@analog.com>
+	s=k20201202; t=1759967560;
+	bh=OJ+hwh1sqGOf99NdhUVXQqjYuq37xpta7BF0DZ7PRno=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sH3L1CykXXKsnu5TF6elR7SZ5qdLe3dpScWlT9makIzIxtzFuzgU2LeLGmFJEy7kd
+	 wnlWXmXAHmExTP8RQB2VR3tGwt7R2iYRxWzvPO65dxQACPqsBaOUKapw9BKfsNcwP7
+	 N5XXGC5GL7ERUJNkorVuMbmF2NCijIi7tYnDSo7TyrF2mF8hwkxo+AwGHi9J4CpxTv
+	 KXGRiMTgG52641Arfo9fyu/ZQCliGUHC4uZ30PEtzhkcZzaR8gy7Q9GvWTUelLakd0
+	 wjZ7b7U07kVMQDnBvi1b2hEQcZ2t9IV/AA4tx9Yo+x6aP8OIiAn4gCkBDzS19WYoxX
+	 x0ycTdvZ6PhhA==
+Message-ID: <08eb477f-ea34-4a31-b181-bfc629aef4c8@kernel.org>
+Date: Thu, 9 Oct 2025 08:52:25 +0900
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="hM/C8yvENSUKZA1u"
-Content-Disposition: inline
-In-Reply-To: <7e51e036ba930284c74cf42afd53b17d49093654.1759929814.git.marcelo.schmitt@analog.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V7 3/5] dt-bindings: iio: adc: Add support for QCOM PMIC5
+ Gen3 ADC
+To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
+ lumag@kernel.org, dmitry.baryshkov@oss.qualcomm.com, konradybcio@kernel.org,
+ daniel.lezcano@linaro.org, sboyd@kernel.org, amitk@kernel.org,
+ thara.gopinath@gmail.com, lee@kernel.org, rafael@kernel.org,
+ subbaraman.narayanamurthy@oss.qualcomm.com, david.collins@oss.qualcomm.com,
+ anjelique.melendez@oss.qualcomm.com, kamal.wadhwa@oss.qualcomm.com,
+ rui.zhang@intel.com, lukasz.luba@arm.com, devicetree@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ cros-qcom-dts-watchers@chromium.org, quic_kotarake@quicinc.com,
+ neil.armstrong@linaro.org, stephan.gerhold@linaro.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250826083657.4005727-1-jishnu.prakash@oss.qualcomm.com>
+ <20250826083657.4005727-4-jishnu.prakash@oss.qualcomm.com>
+ <20250829-classic-dynamic-clam-addbd8@kuoka>
+ <5d662148-408f-49e1-a769-2a5d61371cae@oss.qualcomm.com>
+ <4e974e77-adfc-49e5-90c8-cf8996ded513@kernel.org>
+ <a0e885be-e87d-411a-884e-3e38a0d761e5@oss.qualcomm.com>
+ <8c90cc3f-115e-4362-9293-05d9bee24214@linaro.org>
+ <5d4edecf-51f3-4d4a-861f-fce419e3a314@oss.qualcomm.com>
+ <20250927144757.4d36d5c8@jic23-huawei>
+ <a3158843-dfac-4adc-838a-35bb4b0cbea4@oss.qualcomm.com>
+ <CAGE=qrrCvq28pr9Y7it-CGMW=szKUnU+XBj1TmpoUwuASM05ig@mail.gmail.com>
+ <31bd08ce-823a-4a71-baca-a9d1e02fcb6a@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <31bd08ce-823a-4a71-baca-a9d1e02fcb6a@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
---hM/C8yvENSUKZA1u
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Oct 08, 2025 at 10:51:37AM -0300, Marcelo Schmitt wrote:
-> ADAQ4216 and ADAQ4224 are similar to AD4030 except that ADAQ devices have=
- a
-> PGA (programmable gain amplifier) that scales the input signal prior to it
-> reaching the ADC inputs. The PGA is controlled through a couple of pins (=
-A0
-> and A1) that set one of four possible signal gain configurations.
->=20
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
-> Change log v3 -> v4
-> - Now only documenting GPIO setup to control ADAQ PGA pins.
->=20
-> Pin strapped/hardwired connections to PGA pins may benefit from a "fixed-=
-gpios"
-> driver which may (or may not?) use the shared GPIO abstraction layer [1].=
- I may
-> propose support for pin-strapped/hardwired connections when I get a worki=
-ng
-> fixed-gpios implementation.
-
-What is a "fixed-gpio" as compared to a hog, from a dt point of view?
-Is it purely a software change?
-
-This looks fine other than the potential oversight I pointed out in the
-other mail.
-
-Cheers,
-COnor
-
->=20
-> [1]: https://lore.kernel.org/linux-gpio/CAMRc=3DMdb_cUG+hKq8GyfUP1SYBh0p1=
-9J+4dFG7G3JSuZTr4n8Q@mail.gmail.com/T/#t
->=20
->  .../bindings/iio/adc/adi,ad4030.yaml          | 71 +++++++++++++++++--
->  1 file changed, 66 insertions(+), 5 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
-> index 564b6f67a96e..d0e8452598d4 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
-> @@ -19,6 +19,8 @@ description: |
->    * https://www.analog.com/media/en/technical-documentation/data-sheets/=
-ad4030-24-4032-24.pdf
->    * https://www.analog.com/media/en/technical-documentation/data-sheets/=
-ad4630-24_ad4632-24.pdf
->    * https://www.analog.com/media/en/technical-documentation/data-sheets/=
-ad4630-16-4632-16.pdf
-> +  * https://www.analog.com/media/en/technical-documentation/data-sheets/=
-adaq4216.pdf
-> +  * https://www.analog.com/media/en/technical-documentation/data-sheets/=
-adaq4224.pdf
-> =20
->  $ref: /schemas/spi/spi-peripheral-props.yaml#
-> =20
-> @@ -31,6 +33,8 @@ properties:
->        - adi,ad4630-24
->        - adi,ad4632-16
->        - adi,ad4632-24
-> +      - adi,adaq4216
-> +      - adi,adaq4224
-> =20
->    reg:
->      maxItems: 1
-> @@ -54,6 +58,14 @@ properties:
->      description:
->        Internal buffered Reference. Used when ref-supply is not connected.
-> =20
-> +  vddh-supply:
-> +    description:
-> +      PGIA Positive Power Supply.
-> +
-> +  vdd-fda-supply:
-> +    description:
-> +      FDA Positive Power Supply.
-> +
->    cnv-gpios:
->      description:
->        The Convert Input (CNV). It initiates the sampling conversions.
-> @@ -64,6 +76,13 @@ properties:
->        The Reset Input (/RST). Used for asynchronous device reset.
->      maxItems: 1
-> =20
-> +  pga-gpios:
-> +    description:
-> +      A0 and A1 pins for gain selection. For devices that have PGA confi=
-guration
-> +      input pins, pga-gpios should be defined.
-> +    minItems: 2
-> +    maxItems: 2
-> +
->    pwms:
->      description: PWM signal connected to the CNV pin.
->      maxItems: 1
-> @@ -86,11 +105,30 @@ required:
->    - vio-supply
->    - cnv-gpios
-> =20
-> -oneOf:
-> -  - required:
-> -      - ref-supply
-> -  - required:
-> -      - refin-supply
-> +allOf:
-> +  - oneOf:
-> +      - required:
-> +          - ref-supply
-> +      - required:
-> +          - refin-supply
-> +  # ADAQ devices require a gain property to indicate how hardware PGA is=
- set
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            pattern: ^adi,adaq
-> +    then:
-> +      required:
-> +        - vddh-supply
-> +        - vdd-fda-supply
-> +        - pga-gpios
-> +      properties:
-> +        ref-supply: false
-> +    else:
-> +      properties:
-> +        adi,pga-value: false
-> +        pga-gpios: false
-> +
-> =20
->  unevaluatedProperties: false
-> =20
-> @@ -114,3 +152,26 @@ examples:
->              reset-gpios =3D <&gpio0 1 GPIO_ACTIVE_LOW>;
->          };
->      };
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    spi {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        adc@0 {
-> +            compatible =3D "adi,adaq4216";
-> +            reg =3D <0>;
-> +            spi-max-frequency =3D <80000000>;
-> +            vdd-5v-supply =3D <&supply_5V>;
-> +            vdd-1v8-supply =3D <&supply_1_8V>;
-> +            vio-supply =3D <&supply_1_8V>;
-> +            refin-supply =3D <&refin_sup>;
-> +            vddh-supply =3D <&vddh>;
-> +            vdd-fda-supply =3D <&vdd_fda>;
-> +            cnv-gpios =3D <&gpio0 0 GPIO_ACTIVE_HIGH>;
-> +            reset-gpios =3D <&gpio0 1 GPIO_ACTIVE_LOW>;
-> +            pga-gpios =3D <&gpio0 2 GPIO_ACTIVE_HIGH>,
-> +                        <&gpio0 3 GPIO_ACTIVE_HIGH>;
+On 08/10/2025 23:20, Jishnu Prakash wrote:
+> Hi Krzysztof,
+> 
+> On 10/4/2025 12:22 PM, Krzysztof Kozlowski wrote:
+>> On Sat, 4 Oct 2025 at 11:42, Jishnu Prakash
+>> <jishnu.prakash@oss.qualcomm.com> wrote:
+>>>
+>>> Hi Jonathan,
+>>>
+>>> On 9/27/2025 7:17 PM, Jonathan Cameron wrote:
+>>>> On Fri, 19 Sep 2025 20:17:43 +0530
+>>>> Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
+>>>>
+>>>>> Hi Krzysztof,
+>>>>>
+>>>>> On 9/18/2025 5:45 AM, Krzysztof Kozlowski wrote:
+>>>>>> On 18/09/2025 04:47, Jishnu Prakash wrote:
+>>>>>>> Hi Krzysztof,
+>>>>>>>
+>>>>>>> On 9/17/2025 5:59 AM, Krzysztof Kozlowski wrote:
+>>>>>>>> On 16/09/2025 16:28, Jishnu Prakash wrote:
+>>>>>>>>>> You cannot have empty spaces in ID constants. These are abstract
+>>>>>>>>>> numbers.
+>>>>>>>>>>
+>>>>>>>>>> Otherwise please point me to driver using this constant.
+>>>>>>>>>
+>>>>>>>>> These constants are for ADC channel numbers, which are fixed in HW.
+>>>>>>>>>
+>>>>>>>>> They are used in this driver: drivers/iio/adc/qcom-spmi-adc5-gen3.c,
+>>>>>>>>> which is added in patch 4 of this series.
+>>>>>>>>>
+>>>>>>>>> They can be found in the array named adc5_gen3_chans_pmic[].
+>>>>>>>>
+>>>>>>>> Really? So point me to the line there using ADC5_GEN3_VREF_BAT_THERM.
+>>>>>>>>
+>>>>>>>
+>>>>>>> We may not be using all of these channels right now - we can add them
+>>>>>>> later based on requirements coming up. For now, I'll remove the channels
+>>>>>>> not used in adc5_gen3_chans_pmic[].
+>>>>>>
+>>>>>> You are not implementing the feedback then. Please read it carefully.
+>>>>>>
+>>>>>
+>>>>> Sorry, I misunderstood - so you actually meant I should remove the
+>>>>> empty spaces in the definitions, like this?
+>>>>>
+>>>>> -#define ADC5_GEN3_VREF_BAT_THERM               0x15
+>>>>> +#define ADC5_GEN3_VREF_BAT_THERM 0x15
+>>>>>
+>>>>> I thought this at first, but I somehow doubted this later, as I saw some
+>>>>> other recently added files with empty spaces in #define lines, like:
+>>>>>
+>>>>> include/dt-bindings/iio/adc/mediatek,mt6373-auxadc.h
+>>>>> include/dt-bindings/regulator/st,stm32mp15-regulator.h
+>>>>>
+>>>>> I can make this change, if you prefer this. Please let me know
+>>>>> if I'm still missing something.
+>>>>>
+>>>>> Also please let me know if you want me to remove the unused
+>>>>> channels - I would prefer to keep them if there's no issue,
+>>>>> as we might need them later.
+>>>>>
+>>>> He is referring to 0x14 and below not being defined values.  So what
+>>>> do they mean if they turn up in the DT?
+>>>>
+>>>
+>>> Thanks for your clarification. To address your first point above, the macros
+>>> added here only represent the ADC channel numbers which are supported for
+>>> ADC5 Gen3 devices. If there are numbers missing in between (like 0x14),
+>>> that is because there exist no valid ADC channels in HW matching those
+>>> channel numbers.
+>>>
+>>> For your question above, if any of the undefined channels are used in the DT,
+>>> they should ideally be treated as invalid when parsed in the driver probe and
+>>> lead to an error. When I checked the code again, I saw we do not have such an
+>>> explicit check right now, so I will add that in the next patch series.
+>>>
+>>> And to be clear on which channel numbers are supported, I think it may be
+>>> best if, for now, we only add support for the channel numbers referenced in
+>>> the array adc5_gen3_chans_pmic[] in drivers/iio/adc/qcom-spmi-adc5-gen3.c.
+>>>
+>>> There are only 18 channel numbers used in this array and I would remove
+>>> all channels except for these from the binding files. During parsing, we
+>>> would use this array to confirm if an ADC channel added in DT is supported.
+>>>
+>>> In case we need to add support for any more channels later, we could add
+>>> their macros in the binding file and update the array correspondingly at
+>>> that time.
+>>>
+>>> Does all this sound fine? Please let me know if you have any more concerns
+>>> or queries.
+>>
+>> No, it doesn't.  You keep ignoring my arguments and responding to
+>> something else. I prefer not to store hardware values as bindings,
+>> because these are not bindings (and you failed to prove which SW
+>> interface they bind) and it's really not necessary.
+> 
+> In my previous replies in this thread, I missed mentioning that the macros
+> defined in include/dt-bindings/iio/adc/qcom,spmi-vadc.h are also used in
+> other places than the driver file - they are also used in the PMIC-specific
+> binding files added in this patch, for channel definitions. Considering
+> one channel for example:
+>  
+> We have this in include/dt-bindings/iio/adc/qcom,spmi-vadc.h:
+> +#define ADC5_GEN3_DIE_TEMP			0x03
+>  
+> The above is used in include/dt-bindings/iio/adc/qcom,pm8550vx-adc5-gen3.h:
+> +#define PM8550VS_ADC5_GEN3_DIE_TEMP(sid)			((sid) << 8 | ADC5_GEN3_DIE_TEMP)
+>  
+> And the above definition may be used in device tree, like in the example added
+> in Documentation/devicetree/bindings/iio/adc/qcom,spmi-adc5-gen3.yaml:
+>  
+> +        channel@203 {
+> +          reg = <PM8550VS_ADC5_GEN3_DIE_TEMP(2)>;
+> +          label = "pm8550vs_c_die_temp";
+> +          qcom,pre-scaling = <1 1>;
 > +        };
-> +    };
-> +...
-> --=20
-> 2.39.2
->=20
 
---hM/C8yvENSUKZA1u
-Content-Type: application/pgp-signature; name="signature.asc"
+This is not a driver. I do not understand your argumentation at all.
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaObSfwAKCRB4tDGHoIJi
-0lY/AP42s28WKlj6/TAIKE6lAwmWLAu1DcM4p1Bryw3PGPhnJgD6ApdUoeyu5DO7
-1uw1V7gwEEBZrvdT7xrics1a+2bZ1QQ=
-=dpHV
------END PGP SIGNATURE-----
-
---hM/C8yvENSUKZA1u--
+Best regards,
+Krzysztof
 

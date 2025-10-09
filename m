@@ -1,59 +1,60 @@
-Return-Path: <linux-iio+bounces-24876-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24877-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D51BBCA3C3
-	for <lists+linux-iio@lfdr.de>; Thu, 09 Oct 2025 18:48:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52323BCA461
+	for <lists+linux-iio@lfdr.de>; Thu, 09 Oct 2025 18:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED9433C4759
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Oct 2025 16:48:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 16A9D4E3E67
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Oct 2025 16:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D26E225416;
-	Thu,  9 Oct 2025 16:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32F9231830;
+	Thu,  9 Oct 2025 16:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikK7YUwk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qDeiGwaM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F92D21CC79;
-	Thu,  9 Oct 2025 16:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750FA226D1E;
+	Thu,  9 Oct 2025 16:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760028525; cv=none; b=T+GEvwD7/UNa5ur9WWWHe3KCHMgyYAFY5Kh61r4HvxAoW2R8FHpBNcSIVQ9kEbgDagKiNohQakLK0IQruNlhasiM///JIS0Rgxpaqhl2cahmpQkY6VhVyUI4fk+HIsE1ZrBg9s1eZvdpL+NzfUoK6ZFfEOzwV1JsOXIS2SBvqf8=
+	t=1760029114; cv=none; b=kD1zHVErJDeYAK1wkwOMO9yFMCTIHMexBRALT+6WIfLHxNXnz8OCK9Aw4L8E8rq0bJq4t5GOR7EI7rBG7k8smIEqKXVaX3bXzQhC16gVAtkQtLtiV4o4pTGsCj0fEz7Ub1LWnJfJrfbULYNeDncetR2p0nIKn+EncS4ywXtNUE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760028525; c=relaxed/simple;
-	bh=1YqLlKixVNW6t8A6z6DdqayoYTseCKmtsXME3qIeraQ=;
+	s=arc-20240116; t=1760029114; c=relaxed/simple;
+	bh=ouGPV7oXLO0nXJOGjQeFcq4BgOQGJoUl/Z0W43w/T/M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KD2cjasxeIgXedGps7vBRWJGpCt8gB+mdYZ/3FjrOp+PoSozhpsPokGPolwXxYkyAeZCHsPxNB9JCQclW1LHS32MuwBXp5SsZKshG/pNfLb2b1NPDK+Zbnzil6i/c2i/DKp21Rjucf2pxH14QEHD74hy/Bi4TJ9BVEn6kmj9aLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikK7YUwk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDE9C4CEE7;
-	Thu,  9 Oct 2025 16:48:41 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=VGywaCISVzyBBUmwm4gKDJpBAUXv6SjYo4cvyEtNehylfggRF8hL5lAxaeL7yTMncdyMnFWlIotoxlGw+XHYJiFTPh//BAFw35X7EuWPbJH1UDpnTRGkojCP5/FdUk7TLETplAS1X2s4EbUs9el+jem2cv9Tc5UouGFwMYpNrb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qDeiGwaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FABCC4CEE7;
+	Thu,  9 Oct 2025 16:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760028524;
-	bh=1YqLlKixVNW6t8A6z6DdqayoYTseCKmtsXME3qIeraQ=;
+	s=k20201202; t=1760029113;
+	bh=ouGPV7oXLO0nXJOGjQeFcq4BgOQGJoUl/Z0W43w/T/M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ikK7YUwkH3NNRg1jDP8ti2XVZ25rmGCB6DQtqaNiQsOSyLc+4nax+SsLZA71pFxYu
-	 Ld2cy+qLlrEUYTEMPNINui/yGSZa+yPgHV/dBoaprD7g2vjQvX6PYE/ertYiTHg+Jz
-	 6E1GIuVbcqnoTGaG6KvnaBN+PZbfp2eh3SN07JePyhDw1VsuzQUeNYy1a5Thh00at5
-	 dCdV0AG9r01qw8a2S8OVTSFscFyQG/1Q+taDzQTN7Un2+J1gn2zWkRRszMOEt8SNSM
-	 DzP9Por67HVSToDyWz1xofE5VJndwWtyElzjICrawgwOLGGpyUzhO1rt6Nhzrwoszk
-	 /CB2tj4GEKX4g==
-Date: Thu, 9 Oct 2025 17:48:39 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Jianping.Shen@de.bosch.com
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, dima.fedrau@gmail.com,
-	marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Christian.Lorenz3@de.bosch.com, Ulrike.Frauendorf@de.bosch.com,
-	Kai.Dolde@de.bosch.com
-Subject: Re: [PATCH v5 1/2] dt-bindings: iio: imu: smi330: Add binding
-Message-ID: <20251009-squishy-poem-ddb0fdd9583d@spud>
-References: <20251009153149.5162-1-Jianping.Shen@de.bosch.com>
- <20251009153149.5162-2-Jianping.Shen@de.bosch.com>
+	b=qDeiGwaMBznqqiv2IJw492Qxj6TZBLlPZqEJ+urDxl5HvclEpTnt9Q9uOOlesnw35
+	 xVEmPn+KnsIlTnU+5Jn0zq7CaoRfFnjsNqLP7xhdVwKHcztoE4O0iGTR706FLO2GmC
+	 vsr306KtmweaLHjBaifUvRrr8YXMJM97RVbmax3F0wsmUrWqzoNwPyFEVdGy7G/ute
+	 aaEf+1fYs6gJoZiSl7M466NxXHJ/gYWrNKmUYJkJC9Fl8Pj/Gd/ibyH35P3s3Yi5lK
+	 wUWdaTQiH5Fgfp7dy0L5vCVfgyRxlsasyJfPbM3QV1ygSpTmcb7oh5WRem0s9MZ/o0
+	 UYKF2sol7iBnw==
+Date: Thu, 9 Oct 2025 18:58:31 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, jic23@kernel.org, michael.hennerich@analog.com, 
+	nuno.sa@analog.com, eblanc@baylibre.com, dlechner@baylibre.com, andy@kernel.org, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, corbet@lwn.net, 
+	marcelo.schmitt1@gmail.com, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v4 1/8] pwm: Declare waveform stubs for when PWM is not
+ reachable
+Message-ID: <cuq6eh3vcrkgr7tj3xpo7ax4ruiy4ra6fjxgu45a3eqs2jbtah@ualgnhdwxnih>
+References: <cover.1759929814.git.marcelo.schmitt@analog.com>
+ <129ff5c5b7f7be4f4f3f9cf8aa3e1957d713acb7.1759929814.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -61,152 +62,71 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ifzSNsRgI1TNdLUQ"
+	protocol="application/pgp-signature"; boundary="4les542qp6fpfvza"
 Content-Disposition: inline
-In-Reply-To: <20251009153149.5162-2-Jianping.Shen@de.bosch.com>
+In-Reply-To: <129ff5c5b7f7be4f4f3f9cf8aa3e1957d713acb7.1759929814.git.marcelo.schmitt@analog.com>
 
 
---ifzSNsRgI1TNdLUQ
-Content-Type: text/plain; charset=us-ascii
+--4les542qp6fpfvza
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v4 1/8] pwm: Declare waveform stubs for when PWM is not
+ reachable
+MIME-Version: 1.0
 
-On Thu, Oct 09, 2025 at 05:31:48PM +0200, Jianping.Shen@de.bosch.com wrote:
-> From: Jianping Shen <Jianping.Shen@de.bosch.com>
+Hello,
+
+On Wed, Oct 08, 2025 at 10:49:44AM -0300, Marcelo Schmitt wrote:
+> Previously, the PWM waveform consumer API would not be declared if
+> CONFIG_PWM was not reachable. That caused kernel builds to fail if a
+> consumer driver was enabled but PWM disabled. Add stubs for PWM waveform
+> functions so client drivers that use, but don't depend on PWM, can build =
+if
+> PWM is disabled.
 >=20
-> Add devicetree binding for Bosch imu smi330.
-> The smi330 is a combined three axis angular rate and
-> three axis acceleration sensor module.
->=20
-> Signed-off-by: Jianping Shen <Jianping.Shen@de.bosch.com>
-
-https://lore.kernel.org/all/20250916-henna-rinsing-32a18a4d30b9@spud/
-
-Why did you ignore my ack?
-Didn't Jonathan already apply v4 of this two weeks ago, why is there
-even a v5 to begin with?
-
-Conor.
-
+> Fixes: 6c5126c6406d ("pwm: Provide new consumer API functions for wavefor=
+ms")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202509272028.0zLNiR5w-lkp@i=
+ntel.com/
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 > ---
->  .../bindings/iio/imu/bosch,smi330.yaml        | 90 +++++++++++++++++++
->  1 file changed, 90 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/imu/bosch,smi33=
-0.yaml
+> I've included this patch in this series because it should save us from be=
+ing
+> notified by 0-day about the build failure this patch fixes. From contribu=
+tor's
+> perspective, it's easier to have this patch together with the rest of ad4=
+030
+> series. Though, no objection if kernel maintainers decide to pick it [1] =
+through
+> the PWM tree.
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,smi330.yaml =
-b/Documentation/devicetree/bindings/iio/imu/bosch,smi330.yaml
-> new file mode 100644
-> index 00000000000..0270ca456d2
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/imu/bosch,smi330.yaml
-> @@ -0,0 +1,90 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/imu/bosch,smi330.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Bosch SMI330 6-Axis IMU
-> +
-> +maintainers:
-> +  - Stefan Gutmann <stefam.gutmann@de.bosch.com>
-> +
-> +description:
-> +  SMI330 is a 6-axis inertial measurement unit that supports acceleratio=
-n and
-> +  gyroscopic measurements with hardware fifo buffering. Sensor also prov=
-ides
-> +  events information such as motion, no-motion and tilt detection.
-> +
-> +properties:
-> +  compatible:
-> +    const: bosch,smi330
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: provide VDD power to the sensor.
-> +
-> +  vddio-supply:
-> +    description: provide VDD IO power to the sensor.
-> +
-> +  interrupts:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  interrupt-names:
-> +    minItems: 1
-> +    maxItems: 2
-> +    items:
-> +      enum:
-> +        - INT1
-> +        - INT2
-> +
-> +  drive-open-drain:
-> +    type: boolean
-> +    description:
-> +      set if the interrupt pin(s) should be configured as
-> +      open drain. If not set, defaults to push-pull.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    // Example for I2C
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        imu@68 {
-> +            compatible =3D "bosch,smi330";
-> +            reg =3D <0x68>;
-> +            vddio-supply =3D <&vddio>;
-> +            vdd-supply =3D <&vdd>;
-> +            interrupt-parent =3D <&gpio>;
-> +            interrupts =3D <26 IRQ_TYPE_EDGE_RISING>;
-> +            interrupt-names =3D "INT1";
-> +        };
-> +    };
-> +
-> +    // Example for SPI
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        imu@0 {
-> +            compatible =3D "bosch,smi330";
-> +            reg =3D <0>;
-> +            spi-max-frequency =3D <10000000>;
-> +            interrupt-parent =3D <&gpio>;
-> +            interrupts =3D <26 IRQ_TYPE_EDGE_RISING>;
-> +            interrupt-names =3D "INT1";
-> +        };
-> +    };
-> --=20
-> 2.34.1
->=20
+> [1]: https://lore.kernel.org/linux-pwm/1ac0fc529e02744aacfcb9140ed597ff60=
+886f39.1759873890.git.marcelo.schmitt@analog.com/
 
---ifzSNsRgI1TNdLUQ
+TL;DR: nack
+
+I replied to the original submission about why this patch is wrong. See
+there for the details.
+
+Best regards
+Uwe
+
+--4les542qp6fpfvza
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaOfnZwAKCRB4tDGHoIJi
-0tQ7AQCndhP3ffMWKNUtK7fPczCtGHHnlJf0UP2mPQbOTQSUswD/b6rVZCLTcGTI
-mjEhuwQ8rg9geOuGSVi17hV/tmh0Zgg=
-=7oxX
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmjn6bQACgkQj4D7WH0S
+/k5meQf/ZUbpWgJbz2gIbDh0ItNlTparKj2Q4WVhgedGfKCY8chMHQTmFuUhtvQV
+iuFLynz2QJ4XDGg7SQ6zo2WMvE+DG+aSvELz4adu+8KV1M7FtoWfFP9uACVK2iZV
+Ls6lMV4ZyrCM+2me6/oa+uuKSrr+2/tUXTXz/GZzouBjuAYnsYEoYHjLuCbbjL7/
+XadRRmCRLPBMyDUlLk+b5MAXtLPXVhP9pMby8FAB4i2nQmq6JgdV0VzgpslhMV9b
+F3ekcy9YOJZifaAkQIORUsj9ChFkj86jy/H3uz5YVEGxSAyy5oLvqOgf9RZGZyiE
+2DbWbyB6lqRcjlBEyqWKxo8MGDj/lQ==
+=ZygH
 -----END PGP SIGNATURE-----
 
---ifzSNsRgI1TNdLUQ--
+--4les542qp6fpfvza--
 

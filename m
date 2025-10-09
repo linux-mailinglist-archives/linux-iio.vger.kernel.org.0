@@ -1,247 +1,355 @@
-Return-Path: <linux-iio+bounces-24888-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24889-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7ABBCB012
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 00:01:41 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71338BCB17C
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 00:30:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F46E425746
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Oct 2025 22:01:40 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2DF9C4E5999
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Oct 2025 22:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65B7283FD4;
-	Thu,  9 Oct 2025 22:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B2B285061;
+	Thu,  9 Oct 2025 22:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jj5cjvUP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUbmYNhK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7AB225791
-	for <linux-iio@vger.kernel.org>; Thu,  9 Oct 2025 22:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A355663CB;
+	Thu,  9 Oct 2025 22:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760047295; cv=none; b=RJoHbPk+laMCA3IlJeDFMEhSnBiuI8OQP3z1o5MvPnMv46YDhEW8mQPnGACIcVaJOUXakJdSwknxADSHYisYLh95p0KVovDe1/xNjSX1AcahpFgxkybr8dRWNhEp/BjTNnekgS/R6GBU8nSj2fSjZuLMNM9SMREsbW7YyKa4AvQ=
+	t=1760049016; cv=none; b=l2UpZElhSlT6zMNM0ORnjA53D4l63bHSplW9CDm6f+Grm0YzlcDEq9t1UQfnHwgrmWO2x+PBncHGIagbTwg0gtp+c9d2Tiwdrr37EZZIa2zF3st3RK2ijdvaeUqelKKisFnrfg+HNcpHAc7oXjUCVOw+amQ2V0ajTXn/ck7GKmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760047295; c=relaxed/simple;
-	bh=MvovQ2CZf7lZ5aK0Hw+3F1huuAcGmwy9QQE0CmWBCP4=;
+	s=arc-20240116; t=1760049016; c=relaxed/simple;
+	bh=immcT5NCY31PjUseNWXytM+DbAd3mPnEzy59RGO2S3g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UlZEmxjagUkikH4gQyKKGjrkS0sb+zAv1dIGsjwqQT85NLuLYwTntUGxbo1GJnoBLxGuuUUGc3mUkUbCtO4Un5PQqVXL+Q0/SQPuNPrKGD/5PFtW8mgpu2pCuoomI/LA3t31eRoDk2eXfWolc4qfxDlUo77f9slBIrRtAkQ9qAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jj5cjvUP; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-28832ad6f64so16487545ad.1
-        for <linux-iio@vger.kernel.org>; Thu, 09 Oct 2025 15:01:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760047293; x=1760652093; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ubabA3xLcERhUMalMqnUfMw3y+TLyOaAiUf3iO6bq8Y=;
-        b=Jj5cjvUPyfAoNL3J8Js7Ik3znJz5K1AtIIREP6dCabCmGXVEfw7bTw2/fElmG9H5l/
-         lFKH45HTsJAN5qxeMorrJttxdyDKeowJxfh6ysvkXXNEbcZJFWzcEx3lu+gT2Un6KR8o
-         u1WWvcCgd3Ef9lE2bySDhAWq/bnYfXM654AZKoNSNKLLB1WHtepVDYGnG1qdpx4KBoNj
-         jkSoAowRCnAZif0MhLYtP/9SIluj76u0uVn0UK1AQsIDuVzD71c5kzLTBNQTcjY70B9r
-         TUDS/AueCN+z1o7lMpYAiP3qM5PyHmO6bqeS2z+df7arA7eMwxTgBJvJczbS6kYNOoFA
-         Nikg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760047293; x=1760652093;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ubabA3xLcERhUMalMqnUfMw3y+TLyOaAiUf3iO6bq8Y=;
-        b=oBDghXr4+1kKbFdUPe+GKrTrOkEDkFMUAHd+cP0AUTPdpRXYoWQg6cL4OeL9hCVn8m
-         rmB76LmwaxI/9wX0YzRx6fPQa86j7LPLu2nBehOfQVmOqvAJV/33L8eMCe5MD/bkZAYP
-         jyFnsBF/nT3OdSU7ReL5SL37FkOzVLHkTueDd7351B43o/J8tJBtzZQs3vTsEgH2Lx5c
-         XAw8GzHR5yfMnlPlbXzEq1EzfwJwLbnDQyJDqpU4kHdhpBamHA2J+egMX0C2eUrOAnba
-         AftrD4bTFGvdo/V1CXs5DDDMmLFicecNqxxxNmwO5sWd+3aOen1wXuax3+CLFVVnJ1Nn
-         72xw==
-X-Forwarded-Encrypted: i=1; AJvYcCWUV3nE5eBQCdw6v26ixeS4jg4Aox+IK7GrPD8LQX5L2HiqO5/sHt9BpFbSwlGWGqQz3Bz7KmYKQN8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGyheCfYSxSit8imZ0iXDd1cywMrKYtELmTg3o9buDuXZrWuqp
-	D7ycNKg7U6+sUIrIoLKmz5yLz6cvKrkMwAco1SEZnlaMuFgOtWInjaCe
-X-Gm-Gg: ASbGncs3kRptZN1P3NliLskZrRxr0Vodf07Wie2FNYHmEjUAWOT+cgD7Y2OxgzfxXYf
-	a8oNDOqTchxi/WqNPl8/iOJfBCtCVCb7VuKfMAnAx/UW+3Espx9YGs6XlohgINEntUDmTtrhu13
-	WGkE40AIaG9E6XMh/iwEqGoJOaFddqLo+48IpyIPfMVunUrFtl85n8BsncXnWGJW3JdFbGO4qpD
-	LNaOBZdITsz6PhznKUu1e20pP8lYPWT8Dm7sUCXW03X75izZh91telFcbFvklkbtT+KFmO4ti+L
-	oubJDs9gvtTxDQo+xYblx8/aJHOyUu67QQlNwGek2/jLqazoyXok3nqOPC0e45rmLQ+ny9oXfa4
-	41qMmXsjMB0bSe6XWGyatD9OPnajpXWkUxWCGTPVP28QywVqmZJ8gQzeD6aX8/xxqHw==
-X-Google-Smtp-Source: AGHT+IFiwrkXymykwZ3hVNOaThAi1ayt2BMjy61kTS/daz3gz7dkmJAAWVsfMj9rSf6GmAkBMMmekQ==
-X-Received: by 2002:a17:902:ce02:b0:25c:d4b6:f111 with SMTP id d9443c01a7336-290272e4666mr119076335ad.47.1760047292794;
-        Thu, 09 Oct 2025 15:01:32 -0700 (PDT)
-Received: from localhost ([2804:30c:b65:6a00:ceaa:2ed0:e81e:8f51])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-33b61a1d3dbsm937614a91.4.2025.10.09.15.01.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 15:01:31 -0700 (PDT)
-Date: Thu, 9 Oct 2025 19:02:31 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jic23@kernel.org, ukleinek@kernel.org,
-	michael.hennerich@analog.com, nuno.sa@analog.com,
-	eblanc@baylibre.com, dlechner@baylibre.com, andy@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	corbet@lwn.net
-Subject: Re: [PATCH v4 7/8] dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216
- and ADAQ4224
-Message-ID: <aOgw95ebGWWhahUx@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1759929814.git.marcelo.schmitt@analog.com>
- <7e51e036ba930284c74cf42afd53b17d49093654.1759929814.git.marcelo.schmitt@analog.com>
- <20251008-swooned-closable-fbc8b71601c0@spud>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JkqKnuEsQetRMahBBJrWVn2Mz4HKxpZ+aIcE79xmnuMfp9YPnGaTaAXgONFlCnYrYPdwBDVgXtRgofsHEq6jj2L9r/HiT7X1dL7ST58yyGBFdpfI8i0PUDyassST3iHLuY0m8+1rPiwzuDhZUjo0DQLwTawX3u4NLNA48sMOI2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUbmYNhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2252DC4CEE7;
+	Thu,  9 Oct 2025 22:30:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760049016;
+	bh=immcT5NCY31PjUseNWXytM+DbAd3mPnEzy59RGO2S3g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TUbmYNhKMUfYFn4/E1ECl9v6f5QcBuuSDo1YXOhm1j19IH2L/zBkGdKhvLvftbEe6
+	 JSHOGL2RlNtvAlmgstirQd2pLnFa7Wov+kz/oHXj9R+zZZSamE9uQd3osghBZ9Wn8l
+	 5L9X4IDa9pt0wRSLYtqx1YOyE/Sl4Ta9q7aq/mu8tORM01nP1HSr0VFnNR/Ar87ngT
+	 Z5RxqLUL8lCRUCsKGS/kT9wVmP56BF9U1zcjW/S4AIAm1mGLu0qYn6hbQg7NgUQ89E
+	 A0MR0mzmGcQK2FOtJtssHFR7Mof29ZmuRkiN2j9uTc2c2JQoVhA83kdPgfuqy5gb1T
+	 /f7L9cevbLzhg==
+Date: Fri, 10 Oct 2025 00:30:14 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: imu: st_lsm6dsx: Decouple sensor ODR from FIFO
+ batch data rate
+Message-ID: <aOg3dg21aWNTF47x@lore-desk>
+References: <20251009173609.992452-1-flavra@baylibre.com>
+ <20251009173609.992452-3-flavra@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="PZTB0aTF+sLXKEc+"
+Content-Disposition: inline
+In-Reply-To: <20251009173609.992452-3-flavra@baylibre.com>
+
+
+--PZTB0aTF+sLXKEc+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251008-swooned-closable-fbc8b71601c0@spud>
+Content-Transfer-Encoding: quoted-printable
 
-On 10/08, Conor Dooley wrote:
-> On Wed, Oct 08, 2025 at 10:51:37AM -0300, Marcelo Schmitt wrote:
-> > ADAQ4216 and ADAQ4224 are similar to AD4030 except that ADAQ devices have a
-> > PGA (programmable gain amplifier) that scales the input signal prior to it
-> > reaching the ADC inputs. The PGA is controlled through a couple of pins (A0
-> > and A1) that set one of four possible signal gain configurations.
-> > 
-> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > ---
-> > Change log v3 -> v4
-> > - Now only documenting GPIO setup to control ADAQ PGA pins.
-> > 
-> > Pin strapped/hardwired connections to PGA pins may benefit from a "fixed-gpios"
-> > driver which may (or may not?) use the shared GPIO abstraction layer [1]. I may
-> > propose support for pin-strapped/hardwired connections when I get a working
-> > fixed-gpios implementation.
-> 
-> What is a "fixed-gpio" as compared to a hog, from a dt point of view?
-> Is it purely a software change?
+> The rate at which accelerometer or gyroscope sensor samples are fed
+> to the hardware FIFO (batch data rate, or BDR) does not have to
+> coincide with the sensor sampling frequency (output data rate, or
+> ODR); the only requirement is for the BDR to not be greater than
+> the ODR. Having a BDR lower than the ODR is useful in cases where
+> an application requires a high sampling rate for accurate detection
+> of motion events (e.g. wakeup events), but wants to read sensor
+> sample values from the device buffer at a lower data rate.
 
+can you please provide more details here? Are you using the hw fifo to read
+data? If we configure the hw fifo according to the BDR (even assuming the
+watermark is set 1) the hw will generate interrupts according to the BDR
+(bdr < odr).
 
-Short answer:
+> To support the above use case, add a sampling_frequency sysfs
+> attribute to the buffer directory of st_lsm6dsx IIO devices, which
+> controls the BDR for a given sensor independently from the "main"
+> sampling_frequency attribute (which controls the ODR); introduce a
+> new `bdr` field in struct st_lsm6dsx_sensor to keep track of the
+> current BDR value, and use this field instead of the `odr` field in
+> the code that deals with the FIFO data rate. In the sensor hub
+> driver, make the bdr value always mirror the odr value, since there
+> is no separate configuration setting to control the BDR for data
+> produced by the sensor hub functionality.
+>=20
+> Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  2 +
+>  .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 64 ++++++++++++++++---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  |  9 ++-
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c  |  4 +-
+>  4 files changed, 66 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st=
+_lsm6dsx/st_lsm6dsx.h
+> index bd366c6e282a..dc4aeea3a3b8 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> @@ -366,6 +366,7 @@ enum st_lsm6dsx_fifo_mode {
+>   * @hw: Pointer to instance of struct st_lsm6dsx_hw.
+>   * @gain: Configured sensor sensitivity.
+>   * @odr: Output data rate of the sensor [mHz].
+> + * @bdr: Batch data rate [mHz]
+>   * @samples_to_discard: Number of samples to discard for filters settlin=
+g time.
+>   * @watermark: Sensor watermark level.
+>   * @decimator: Sensor decimation factor.
+> @@ -380,6 +381,7 @@ struct st_lsm6dsx_sensor {
+> =20
+>  	u32 gain;
+>  	u32 odr;
+> +	u32 bdr;
+> =20
+>  	u16 samples_to_discard;
+>  	u16 watermark;
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio=
+/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> index 8a9d2593576a..5912ea76d493 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+> @@ -56,6 +56,7 @@
+>  #include <linux/iio/kfifo_buf.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/buffer.h>
+> +#include <linux/iio/sysfs.h>
+>  #include <linux/regmap.h>
+>  #include <linux/bitfield.h>
+> =20
+> @@ -105,7 +106,7 @@ static int
+>  st_lsm6dsx_get_decimator_val(struct st_lsm6dsx_sensor *sensor, u32 max_o=
+dr)
+>  {
+>  	const int max_size =3D ARRAY_SIZE(st_lsm6dsx_decimator_table);
+> -	u32 decimator =3D  max_odr / sensor->odr;
+> +	u32 decimator =3D  max_odr / sensor->bdr;
+>  	int i;
+> =20
+>  	if (decimator > 1)
+> @@ -136,14 +137,14 @@ static void st_lsm6dsx_get_max_min_odr(struct st_ls=
+m6dsx_hw *hw,
+>  		if (!(hw->enable_mask & BIT(sensor->id)))
+>  			continue;
+> =20
+> -		*max_odr =3D max_t(u32, *max_odr, sensor->odr);
+> -		*min_odr =3D min_t(u32, *min_odr, sensor->odr);
+> +		*max_odr =3D max_t(u32, *max_odr, sensor->bdr);
+> +		*min_odr =3D min_t(u32, *min_odr, sensor->bdr);
+>  	}
+>  }
+> =20
+>  static u8 st_lsm6dsx_get_sip(struct st_lsm6dsx_sensor *sensor, u32 min_o=
+dr)
+>  {
+> -	u8 sip =3D sensor->odr / min_odr;
+> +	u8 sip =3D sensor->bdr / min_odr;
+> =20
+>  	return sip > 1 ? round_down(sip, 2) : sip;
+>  }
+> @@ -231,7 +232,7 @@ static int st_lsm6dsx_set_fifo_odr(struct st_lsm6dsx_=
+sensor *sensor,
+>  		if (enable) {
+>  			int err;
+> =20
+> -			err =3D st_lsm6dsx_check_odr(sensor, sensor->odr,
+> +			err =3D st_lsm6dsx_check_odr(sensor, sensor->bdr,
+>  						   &data);
+>  			if (err < 0)
+>  				return err;
+> @@ -713,7 +714,7 @@ st_lsm6dsx_update_samples_to_discard(struct st_lsm6ds=
+x_sensor *sensor)
+> =20
+>  	data =3D &hw->settings->samples_to_discard[sensor->id];
+>  	for (i =3D 0; i < ST_LSM6DSX_ODR_LIST_SIZE; i++) {
+> -		if (data->val[i].milli_hz =3D=3D sensor->odr) {
+> +		if (data->val[i].milli_hz =3D=3D sensor->bdr) {
+>  			sensor->samples_to_discard =3D data->val[i].samples;
+>  			return;
+>  		}
+> @@ -799,6 +800,52 @@ static const struct iio_buffer_setup_ops st_lsm6dsx_=
+buffer_ops =3D {
+>  	.postdisable =3D st_lsm6dsx_buffer_postdisable,
+>  };
+> =20
+> +static ssize_t st_lsm6dsx_bdr_show(struct device *dev,
+> +				   struct device_attribute *attr, char *buf)
+> +{
+> +	struct st_lsm6dsx_sensor *sensor =3D iio_priv(dev_to_iio_dev(dev));
+> +	u32 bdr =3D sensor->bdr;
+> +
+> +	return sysfs_emit(buf, "%d.%03d\n", bdr / 1000, bdr % 1000);
+> +}
+> +
+> +static ssize_t st_lsm6dsx_bdr_store(struct device *dev,
+> +				    struct device_attribute *attr,
+> +				    const char *buf, size_t len)
+> +{
+> +	struct iio_dev *iio_dev =3D dev_to_iio_dev(dev);
+> +	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
+> +	int integer, fract;
+> +	int ret;
+> +	u32 bdr;
+> +	u8 data;
+> +
+> +	ret =3D iio_str_to_fixpoint(buf, 100, &integer, &fract);
+> +	if (ret)
+> +		return ret;
+nit: new line here.
 
-I think "fixed-gpio" and gpio-hog would mean the same from dt point of view.
-Yes, it's mainly related to software.
+> +	bdr =3D integer * 1000 + fract;
+> +	ret =3D st_lsm6dsx_check_odr(sensor, bdr, &data);
+> +	if (ret < 0)
+> +		return ret;
 
+nit: new line here.
 
-Long answer:
+> +	bdr =3D ret;
+> +	if (!iio_device_claim_direct(iio_dev))
+> +		return -EBUSY;
 
-We would like to read the state of a pin from the GPIO client driver. Maybe we
-are already able to read gpio-hog states from client drivers and just didn't
-find out how.
+I guess you can check it at the beginning of the routine.
 
-The idea is to standardize and simplify the dt bindings when peripheral pins can
-either be connected GPIOs or hard-wired to some logic level.
+> +	/* the batch data rate must not exceed the sensor output data rate */
+> +	if (bdr <=3D sensor->odr)
+> +		sensor->bdr =3D bdr;
+> +	else
+> +		ret =3D -EINVAL;
 
-For the particular example of ADAQ4216, it can have PGA control pins connected
-to GPIOs.
+nit: new line here.
 
-    +-------------+         +-------------+
-    |     ADC     |         |     HOST    |
-    |             |         |             |
-    |   SPI lines |<=======>| SPI lines   |
-    |             |         |             |
-    |          A0 |<--------| GPIO_A      |
-    |          A1 |<--------| GPIO_B      |
-    +-------------+         +-------------+
+> +	iio_device_release_direct(iio_dev);
 
-But the pins might instead be hard-wired, like
+nit: new line here.
 
-    +-------------+         +-------------+
-    |     ADC     |         |     HOST    |
-    |             |         |             |
-    |   SPI lines |<=======>| SPI lines   |
-    |             |         +-------------+
-    |          A0 |<-----+
-    |          A1 |<-----+
-    +-------------+      |
-                        VIO
+> +	return (ret < 0) ? ret : len;
 
-or
+nit: we do not need brackets here.
 
-    +-------------+         +-------------+
-    |     ADC     |         |     HOST    |
-    |             |         |             |
-    |   SPI lines |<=======>| SPI lines   |
-    |             |         +-------------+
-    |          A0 |<--------- VIO
-    |          A1 |<-----+
-    +-------------+      |
-                        GND
+> +}
+> +
+> +static IIO_DEV_ATTR_SAMP_FREQ(0664, st_lsm6dsx_bdr_show, st_lsm6dsx_bdr_=
+store);
+> +
+> +static const struct iio_dev_attr *st_lsm6dsx_buffer_attrs[] =3D {
+> +	&iio_dev_attr_sampling_frequency,
+> +	NULL
+> +};
+> +
+>  int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw)
+>  {
+>  	int i, ret;
+> @@ -807,8 +854,9 @@ int st_lsm6dsx_fifo_setup(struct st_lsm6dsx_hw *hw)
+>  		if (!hw->iio_devs[i])
+>  			continue;
+> =20
+> -		ret =3D devm_iio_kfifo_buffer_setup(hw->dev, hw->iio_devs[i],
+> -						  &st_lsm6dsx_buffer_ops);
+> +		ret =3D devm_iio_kfifo_buffer_setup_ext(hw->dev, hw->iio_devs[i],
+> +						      &st_lsm6dsx_buffer_ops,
+> +						      st_lsm6dsx_buffer_attrs);
+>  		if (ret)
+>  			return ret;
+>  	}
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_core.c
+> index c65ad49829e7..e4922578329e 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -1847,10 +1847,13 @@ static int st_lsm6dsx_write_raw(struct iio_dev *i=
+io_dev,
+> =20
+>  		val =3D val * 1000 + val2 / 1000;
+>  		val =3D st_lsm6dsx_check_odr(sensor, val, &data);
+> -		if (val < 0)
+> +		if (val < 0) {
+>  			err =3D val;
+> -		else
+> +		} else {
+>  			sensor->odr =3D val;
+> +			/* the batch data rate must not exceed the sensor ODR */
+> +			sensor->bdr =3D min_t(u32, sensor->bdr, sensor->odr);
+> +		}
+>  		break;
+>  	}
+>  	default:
+> @@ -2383,7 +2386,7 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(stru=
+ct st_lsm6dsx_hw *hw,
+>  	sensor =3D iio_priv(iio_dev);
+>  	sensor->id =3D id;
+>  	sensor->hw =3D hw;
+> -	sensor->odr =3D hw->settings->odr_table[id].odr_avl[0].milli_hz;
+> +	sensor->odr =3D sensor->bdr =3D hw->settings->odr_table[id].odr_avl[0].=
+milli_hz;
 
-Or even, possibly, a mix of GPIO and hard-wired.
+please add a new line to set sensor->bdr here.
 
-    +-------------+         +-------------+
-    |     ADC     |         |     HOST    |
-    |             |         |             |
-    |   SPI lines |<=======>| SPI lines   |
-    |             |         |             |
-    |          A0 |<--------| GPIO_A      |
-    |             |         +-------------+
-    |          A1 |<-----+
-    +-------------+      |
-                        GND
+>  	sensor->gain =3D hw->settings->fs_table[id].fs_avl[0].gain;
+>  	sensor->watermark =3D 1;
+> =20
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_shub.c
+> index 3c5e65dc0f97..01d73002e888 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_shub.c
+> @@ -639,7 +639,7 @@ __st_lsm6dsx_shub_write_raw(struct iio_dev *iio_dev,
+>  			return odr;
+> =20
+>  		sensor->ext_info.slv_odr =3D val;
+> -		sensor->odr =3D odr;
+> +		sensor->odr =3D sensor->bdr =3D odr;
+>  		return 0;
+>  	}
+>  	case IIO_CHAN_INFO_SCALE:
+> @@ -745,7 +745,7 @@ st_lsm6dsx_shub_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+>  	sensor =3D iio_priv(iio_dev);
+>  	sensor->id =3D id;
+>  	sensor->hw =3D hw;
+> -	sensor->odr =3D hw->settings->odr_table[ref_id].odr_avl[0].milli_hz;
+> +	sensor->odr =3D sensor->bdr =3D hw->settings->odr_table[ref_id].odr_avl=
+[0].milli_hz;
 
-We have bindings (like adi,ad7191.yaml [1]) describing the hard-wired setups
-with function specific properties. E.g.
-  adi,pga-value:
-    $ref: /schemas/types.yaml#/definitions/uint32
-    description: |
-      Should be present if PGA pins are pin-strapped. Possible values:
-      Gain 1 (PGA1=0, PGA2=0)
-      Gain 8 (PGA1=0, PGA2=1)
-      Gain 64 (PGA1=1, PGA2=0)
-      Gain 128 (PGA1=1, PGA2=1)
-      If defined, pga-gpios must be absent.
-    enum: [1, 8, 64, 128]
+please add a new line to set sensor->bdr here.
 
-This approach works fine, but it requires documenting device-specific values
-(e.g. gain 1, gain 8, ..., gain X) for each new series of ADCs because each
-each series has different hardware properties.
+>  	sensor->ext_info.slv_odr =3D info->odr_table.odr_avl[0].milli_hz;
+>  	sensor->gain =3D info->fs_table.fs_avl[0].gain;
+>  	sensor->ext_info.settings =3D info;
+> --=20
+> 2.39.5
+>=20
 
-Sometimes peripherals have pins with different functions that are also either
-hard-wired or connected to GPIOs (like adi,ad7606.yaml [2] and adi,ad7625.yaml [3]).
-Software wants to know about the state of those pins. When they are connected
-to GPIOs, we can just read the GPIO value. But when the pins are hard-wired,
-we have to set additional dt properties (e.g. adi,pga-value) and then software
-figures out the state of the pins from the value read from dt.
-What we wonder is whether it would be possible to have both the GPIO and
-hard-wired cases described by gpio properties.
+--PZTB0aTF+sLXKEc+
+Content-Type: application/pgp-signature; name=signature.asc
 
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml#n77
-[2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml#n127
-[3]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml#n70
+-----BEGIN PGP SIGNATURE-----
 
-For example, instead of having
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaOg3dQAKCRA6cBh0uS2t
+rGGLAP0Qeyu28ZGU5aO8JUksXcrWeoIwL5c1BmPWw8Jmufk7xwEA5iWbjGgmKhSK
+giI13aHeE8LEl1tiUpawGoQ3Cs8B2A4=
+=G2P/
+-----END PGP SIGNATURE-----
 
-/* All GPIOs case */
-pga-gpios = <&gpio 23 GPIO_ACTIVE_HIGH>, <&gpio 24 GPIO_ACTIVE_HIGH>;
-
-and
-
-/* All hard-wired (pin-strapped) case */
-adi,pga-value = <1>;
-
-maybe we could have something like
-
-/* All gpios */
-pga-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>,
-            <&gpio0 1 GPIO_ACTIVE_HIGH>;
-/* or all hard-wired */
-pga-gpios = <&fixed_gpio GPIO_FIXED_LOW>,
-            <&fixed_gpio GPIO_FIXED_LOW>;
-
-as suggested by David [4].
-
-Though, I'm also a bit worried about such way of describing the hard-wired
-connections being potentially confusing as those "fixed-gpios" would not
-necessarily mean any actual GPIO.
-
-[4]: https://lore.kernel.org/linux-iio/CAMknhBHzXLjkbKAjkgRwEps=0YrOgUcdvRpuPRrcPkwfwWo88w@mail.gmail.com/
-
-
-With best regards,
-Marcelo
+--PZTB0aTF+sLXKEc+--
 

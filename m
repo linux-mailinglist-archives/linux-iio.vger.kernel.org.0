@@ -1,126 +1,178 @@
-Return-Path: <linux-iio+bounces-24928-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24932-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A64BBCE55E
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 21:11:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67C7BCE7C1
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 22:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15388407FFE
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 19:11:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97A5319A7DC2
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 20:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A66F24676C;
-	Fri, 10 Oct 2025 19:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CBB302161;
+	Fri, 10 Oct 2025 20:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FV+7V9eB"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vUg9Y+UM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E559921FF4A
-	for <linux-iio@vger.kernel.org>; Fri, 10 Oct 2025 19:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC0326F297
+	for <linux-iio@vger.kernel.org>; Fri, 10 Oct 2025 20:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760123465; cv=none; b=l84uCQ2v0Gk4MxT2sdE0+WVAqgI/kW5GcDoMYOMLxZKlMa5A+pboGwLEeU2VxDwIuHGZKeE111lnwBLPOrAFOKJ8Fg873HkCX8hpqFYxDXr5XZIMMlcaOB1aZ9ALCqJSUps7dSpJeg6l6nmqRo6uTlPR3a1fUi3dPoZ9fiu/Bco=
+	t=1760127884; cv=none; b=UycHE164yMLBuiXcHEQE39oIYXp9TcqtglaLFxbQ/CdoGTYvVyOY0RBeOHVkPXQ/c4xNmi51jOvbQ8JXi5YgGu6DIv8ovly/zLsbtc8CVmHVH8a94Bi+/VFgoNPBTyoWAvwrC7Cfb+QQyPadjSg+67WiJZiwPic2xFgd0IoMuto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760123465; c=relaxed/simple;
-	bh=D46Tb12nmUmndhtqFCfahDJvapdpQA7Xdz9pjuL8Y7o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DDJJm4ngyhWjVaUBkLARq2v+M222vXP6zjXLpxTGSai/0jzz/oL7b0Yo9ATiVF9T7pQSK89Qq3aDQLygewNTrq9qFlr4u+2tFw/oMMPOG4dViV/ukYyoTMJMYQ4mI2jTo0h4JAH/AikG4bmDLEVKoujU8lXEPZ/l99kfP30izak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FV+7V9eB; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-78af3fe5b17so2088979b3a.2
-        for <linux-iio@vger.kernel.org>; Fri, 10 Oct 2025 12:11:03 -0700 (PDT)
+	s=arc-20240116; t=1760127884; c=relaxed/simple;
+	bh=NgmV/wTZZURejsJ+2VBaInl7u9CRnnkDWyHMfWsbVLA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=l1A+B8vGveW9x+R7PHdFWl7NzQBuJiFXpVgTOknFOYaCjAv1nHkvqSi4hPgvcDZj516oNx82lK83TurlQBUAXmgA6ynSdS7Z0/svMAXEIdc9o3hYgoEQqB3wLrkCTUxpSU4pI4g0pbTagOBJbsjtUPcSn+z4NwAM/GNpCpd/Vgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vUg9Y+UM; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-36c9859b036so1616012fac.0
+        for <linux-iio@vger.kernel.org>; Fri, 10 Oct 2025 13:24:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760123463; x=1760728263; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+U0Y94PCfWWUoXrVPKAH49E0+Bg479gJuRHep4at91M=;
-        b=FV+7V9eBqH0IGz/F9Py+kc2hZ3mtdjgY9dhYxUu7k73zCxYz3X3Wyj6LHD8qewNCzx
-         qFP5kwQbbBzGrcJ2lliBt71ifTbYMEL2odmjD6TekICJUMUymrP23tDbv3FhkVGU+W0Q
-         UvhrKcGyJjuZlf3ATKkVgWXbYm3y2tHplUog8DenDA7fPFnwjlFbgznBCTAvxFcBH6p3
-         gTocgWAXkLQhPuxQJLrrnAL3A7c1Jg+vMFBD+Om+kAx1TLLngzoYYIC3jZE1jN/kWZ9K
-         JPFm/8hT/0mzIOla1/dJBzELBQcfJuFTi2JHm7KdRPoMZ6ootlgKOpL6qmz75ENBBFm6
-         V36A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760127881; x=1760732681; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ohCA47n/0QQWux/zB9KYmPHe4Ax+701jzx0dvdsVvk=;
+        b=vUg9Y+UM4NymYfP7nzHknYwLTjpj6gpO4MUmxt3MYg7PdLXdZan9ynkTg18V+hOviR
+         Gppo9XFkzQLT8GuQmSw3gfM2NwFDrFv4srlV3LX1xVZj1Ry24LaKfleajay0TS2+6YrH
+         /caDLypQPu0Ph06CGSvB9ScXyRjvHmN60lnmd5mB7CnPbfkpqJq/+G0/fSs3j0Y7uudq
+         S7eCAXg0ZnVdglOpnPoDXBOejBMOBPJtUIM73QPhSsJQwZnrnaRTCTLymBxo45eBMr/2
+         enyVQNQSA8AuTkb2Zk/6WSEaht/p4b+DV2tQFHDWYA6Wq+Hd22eZwY1ZN/OrEvU4/Vl9
+         /puw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760123463; x=1760728263;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1760127881; x=1760732681;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+U0Y94PCfWWUoXrVPKAH49E0+Bg479gJuRHep4at91M=;
-        b=iTKhrbml3HKX/YVMyC1D01xQUuiypvW1mYx5srrLK/s1DhrdXxG9/dVj/D36bCnl85
-         s8IE36RsCdWxZ/pT8z10Tr9Gzn1t9x863em9H3nm6rA/7L1iYq5XrRJndcZ/j7VN59yh
-         l5ja2t232PzOBjeatos3xch8J3ZCwBkWnJBF7QTIZHfTutSL3h2MkDEB8yv55UNJfk15
-         fbQ8I0k/j5+lcxHZ00wHOhQ6+yDLrEUxrpSCAki3vtIni4Cgv8G9D6kvxFxxCKDpy/DQ
-         17rToLpY/0RSr3COikckg/bmit7rRg+tLQO1lVo1IwrgKRloeda6e/2rwfns9u+JyF/E
-         I0bw==
-X-Forwarded-Encrypted: i=1; AJvYcCWsbyD6eCikyry31QzTBR6IC3pYKohXOGIrIiE+NJkJUflqPj03fVf+IZGNUTURdZtTKaX+wVgt5cc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzznoEZ7B/RPz3vwFlLXtsWoI6we9Yfv0IpS/5uofKVTa1NRxZG
-	sOuEMYA4NGTKAZsZbSLdsqQ/asDkuKuryZe1GmPdvPWoWpw93sXsHjDY
-X-Gm-Gg: ASbGncvA8LKP6B8VcDjR7hLMqx/vuCKbqmjkDfBa7kQU0Oq7y7zDlrser8j3GI9hHbi
-	t7kIw0zd42COJefiy5QamroVDhuUpmBGWPeAKmZrXWtfoJoIMVyxtfM5OyAxs5r5xirIPdEeZ8O
-	OPPHYObuRbz3dUsCwtM02xw/UbWpt6R2Ip99KS8vr8Fc1HqxSw+LAMzwQOfHvxZzK0km/kW4cKO
-	TdPdJC6pviaguPzLbHEMvOXewHX2WdIpQDErG7YhCbpcSALow12g9A9Elp72xvzd+BQyjz2p7we
-	IpjEsfGHHSn9qnObE4M/QritiSqHLXzkIMpJt0yqpudMxwHhOGF5Z+Tv/sbTHwUzfqKS/2hte0e
-	l1OyA1L1RoAomdDlhohagB/HiUTdXnW1n2QMQuUc23mm5PS5nkI1oxV5x9qpbZTxJ
-X-Google-Smtp-Source: AGHT+IFN5WjIYZZRb/4TngbfzeAJu9kbhU7Ke04fdJ3b0HKiaP9SE5AjXmpdtHtn0LFsJ06yZYxEiQ==
-X-Received: by 2002:a05:6a00:1146:b0:77f:472b:bc73 with SMTP id d2e1a72fcca58-793859f31cemr16464830b3a.6.1760123462963;
-        Fri, 10 Oct 2025 12:11:02 -0700 (PDT)
-Received: from localhost.localdomain ([2804:14d:4c64:860f:5abf:20b2:7217:3f90])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992d5b8672sm3717462b3a.69.2025.10.10.12.10.59
+        bh=5ohCA47n/0QQWux/zB9KYmPHe4Ax+701jzx0dvdsVvk=;
+        b=adSVPkXQC6Y38Ch8ABLzvnG+LIu3yY1QkNZt1/b4pY2yXKesVrct5R2nE7Sr4zwZ3a
+         BJ8CBogX6VlNH8bigz9IKkwpTGhe8vLRqe+eYBzlmWJuzC636Q0vL8pkwPHTv3MkMavi
+         bJ3rzxR8KxGIoS2DnqTP7rDwdVm4dM7IqtsHEaRfbyNPRInxp+sPDRrtfkidWl1XcMv1
+         pkGdlL5cQ4s8gsX/BhdSA3W6WrChy8rYcj69mDYngcBR7yPcuiCE51Rsm/kE5IJ53WvU
+         /y1uLVTOMWUgBPp7hsP050Yv/D+vRGvgM3Gp1VyLrcDodVeMC53DuZkF+A0nmE9BLjEZ
+         0ywg==
+X-Forwarded-Encrypted: i=1; AJvYcCUIU7tvGeSQBBTE+zESFJsIaINTTtnN/pZ8Da5KLr8Yg2j3QpD4Bw0jQagza/gip2VJcXCJLsJjDXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwulJVqk3aO1KciRBDNkQkH7olppfJv2kgzR0fH6Rz7Pf1FNXTU
+	X11mYVTVhVSbYkvJsYTnNrHZ3FK3R8IgHEe5qAe727RZ61z4WvhxWo+G7VO/PyyugHo=
+X-Gm-Gg: ASbGncugvNIUqYN+5HCOUTwOLMAaB7KoZJAlWQhsTYGWsEG1yayUm8cema6siW7HP3S
+	T0OGZlSf3lDos4hkwxqcoktbG2F84vt9r0HevniHc87UWjhjSfPWUPMiKhs5uHXlpe7/4V8UrY+
+	mlr2e1Oxlq/AOuuFOs6fCv5nL9hA9C1JwbGsUJ8uLBySD1LFXEtjlFqCukW01pCgZMhMoTaILXk
+	Ha2UOqPTNRQJce0HO1NclAV4OMJ9IMXACC9K90zgEd/4MX5QgAXfBV69P1XKEa+FkN17P5sZoJB
+	S9xnmswmIAV/Xup5z3dDjlf2bIf4IMDxCaCUhVlZI1UYUob4820QrEhBkJkFKQnpHjSxypv7BwX
+	QJK/tBPxfJUDLnyvgGlfbe5JUiSyb5wjSHUBB3HMuYhuU0A==
+X-Google-Smtp-Source: AGHT+IHA/Bb6A+Qw4x9EcHFnmRKfEZ1mJPteh91sY6GeuPQrrgCAwSA67yrgm073hiMHCMtpyNKZXQ==
+X-Received: by 2002:a05:6870:f607:b0:318:70e5:3ce with SMTP id 586e51a60fabf-3c11a250cf6mr6484649fac.21.1760127880776;
+        Fri, 10 Oct 2025 13:24:40 -0700 (PDT)
+Received: from [127.0.1.1] ([2600:8803:e7e4:500:8a0c:c02d:81d3:2e7f])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3c8c8e8343csm1182109fac.17.2025.10.10.13.24.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 12:11:02 -0700 (PDT)
-From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-To: lanzano.alex@gmail.com,
-	jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org
-Cc: ~lkcamp/patches@lists.sr.ht,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: imu: bmi270: fix dev_err_probe error msg
-Date: Fri, 10 Oct 2025 16:06:46 -0300
-Message-ID: <20251010191055.28708-1-rodrigo.gobbi.7@gmail.com>
-X-Mailer: git-send-email 2.48.1
+        Fri, 10 Oct 2025 13:24:40 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+Date: Fri, 10 Oct 2025 15:24:31 -0500
+Subject: [PATCH v2] iio: adc: ad7124: fix temperature channel
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251010-iio-adc-ad7124-fix-temperature-channel-v2-1-b51b411faf36@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAH5r6WgC/5WNQQ6DMAwEv4JyrqvEQIGe+o+KQwimWKIEORQVI
+ f7ewA968GGs3Z1NBRKmoO7JpoQWDuzHCHhJlOvt+CLgNrJCjbmuMAVmD7Z18QqDGXT8hZneE4m
+ dP0JwlEYaIK+07opUY1neVBybhGL0FD3ryD2H2ct6ehdzfP9WLAYMUIbGVaXTbYGPxq4DN0JX5
+ 9+q3vf9B9w9W0TfAAAA
+X-Change-ID: 20250923-iio-adc-ad7124-fix-temperature-channel-5900f7302886
+To: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Marcelo Schmitt <marcelo.schmitt@analog.com>, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2609; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=NgmV/wTZZURejsJ+2VBaInl7u9CRnnkDWyHMfWsbVLA=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBo6WuBN+838DasTJ4Uo/uLWutAyoA9Osc6PiPjJ
+ MXA7pDizUGJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaOlrgQAKCRDCzCAB/wGP
+ wK55B/4ql2pWuD4Nbrdi0m5/tm0jLpTnTK91WZXWCQvD2EywRvnuw97mYdi6EU6OOQDydfFU6Cu
+ fF4HljsPVx6AfG7f+jJAYRQ4VLh3dNaBfp6DBNHZnMy7h3TMgYnCrJ+4fqtgIlhfAER8AQ1kpk4
+ nGsFyFAsL9igYcOjhYv3d/vHpJHfxknIqVzzcLrg2/au0A3Qh5nSKV8yn0ecLJSQW8TG3EsbGT3
+ 7Qp3ZNJf7o9NUXu+JtYbdoEzbqWYa0zFWb3uJIHL0VZKaH+ScWY2bTMFXAPosFGrfHWgb1IiFEP
+ cLPZWEjL/O8CFjF77xd8vNqiTOj0HUCpmcpZIZjjUeOvuSgy
+X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
+ fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-The bmi270 can be connected to I2C or a SPI interface. If it is a SPI,
-during probe, if devm_regmap_init() fails, it should print the "spi"
-term rather "i2c".
+Fix temperature channel not working due to gain and offset not being
+initialized.  For channels other than the voltage ones calibration is
+skipped (which is OK).  However that results in the calibration register
+values tracked in st->channels[i].cfg all being zero.  These zeros are
+later written to hardware before a measurement is made which caused the
+raw temperature readings to be always 8388608 (0x800000).
 
-Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+To fix it, we just make sure the gain and offset values are set to the
+default values and still return early without doing an internal
+calibration.
+
+While here, add a comment explaining why we don't bother calibrating
+the temperature channel.
+
+Fixes: 47036a03a303 ("iio: adc: ad7124: Implement internal calibration at probe time")
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-Just fixing this little "typo", definitely it was copied from the bmi270_i2c.c [1],
-which has the same dev_err_probe logic.
-Tks and regards.
-
-[1] https://github.com/torvalds/linux/blob/master/drivers/iio/imu/bmi270/bmi270_i2c.c#L30
+Changes in v2:
+- Improved commit message.
+- Expanded code comment.
+- Link to v1: https://lore.kernel.org/r/20250923-iio-adc-ad7124-fix-temperature-channel-v1-1-e421c98c0d72@baylibre.com
 ---
- drivers/iio/imu/bmi270/bmi270_spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7124.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/imu/bmi270/bmi270_spi.c b/drivers/iio/imu/bmi270/bmi270_spi.c
-index 19dd7734f9d0..5e625586681d 100644
---- a/drivers/iio/imu/bmi270/bmi270_spi.c
-+++ b/drivers/iio/imu/bmi270/bmi270_spi.c
-@@ -60,7 +60,7 @@ static int bmi270_spi_probe(struct spi_device *spi)
- 				  &bmi270_spi_regmap_config);
- 	if (IS_ERR(regmap))
- 		return dev_err_probe(dev, PTR_ERR(regmap),
--				     "Failed to init i2c regmap");
-+				     "Failed to init spi regmap");
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index 9d58ced7371d0af7004a81153888714e9795d4f4..2a449baf5b5645c8dbcc6af671aaafb86db96011 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -1482,10 +1482,6 @@ static int __ad7124_calibrate_all(struct ad7124_state *st, struct iio_dev *indio
+ 	int ret, i;
  
- 	return bmi270_core_probe(dev, regmap, chip_info);
- }
+ 	for (i = 0; i < st->num_channels; i++) {
+-
+-		if (indio_dev->channels[i].type != IIO_VOLTAGE)
+-			continue;
+-
+ 		/*
+ 		 * For calibration the OFFSET register should hold its reset default
+ 		 * value. For the GAIN register there is no such requirement but
+@@ -1495,6 +1491,14 @@ static int __ad7124_calibrate_all(struct ad7124_state *st, struct iio_dev *indio
+ 		st->channels[i].cfg.calibration_offset = 0x800000;
+ 		st->channels[i].cfg.calibration_gain = st->gain_default;
+ 
++		/*
++		 * Only the main voltage input channels are important enough
++		 * to be automatically calibrated here. For everything else,
++		 * just use the default values set above.
++		 */
++		if (indio_dev->channels[i].type != IIO_VOLTAGE)
++			continue;
++
+ 		/*
+ 		 * Full-scale calibration isn't supported at gain 1, so skip in
+ 		 * that case. Note that untypically full-scale calibration has
+
+---
+base-commit: a9682f53c2d1678b93a123cdaa260e955430bc5c
+change-id: 20250923-iio-adc-ad7124-fix-temperature-channel-5900f7302886
+
+Best regards,
 -- 
-2.48.1
+David Lechner <dlechner@baylibre.com>
 
 

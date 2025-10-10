@@ -1,173 +1,162 @@
-Return-Path: <linux-iio+bounces-24920-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24921-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E8ABCE231
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 19:45:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34645BCE255
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 19:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C047E4F0929
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 17:45:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD6CE3AE6F5
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 17:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACA0234984;
-	Fri, 10 Oct 2025 17:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02977223702;
+	Fri, 10 Oct 2025 17:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ssqrLHYn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E87A22157F;
-	Fri, 10 Oct 2025 17:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BB1221578
+	for <linux-iio@vger.kernel.org>; Fri, 10 Oct 2025 17:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760118285; cv=none; b=NC0L3LmR0s6X04oR3pnFZO3IgczuEN7zU9qYV/T+izRKtpqnChfUy9LDGLvKpUq24Gzb5TmQuv0v27he9IXSOrSe08Aa3yRRGVYlgpERsIJi8dYOT4sS/fUwYNNqNfnwLjTvN91spdHyipEDWjjfAPX0HTb9qNTa+Jgn4lHDlBc=
+	t=1760118575; cv=none; b=bw2pMaAiHzkWo6Nuw5wKdgLC36eUSQM6OqQVEPH9toZxwUuC2QbEBzAgNNQVzvx9NAVftA7FdFKOaYyj+Ttxkc5EEx7w0kVoCS98ixCoqUJJQRQXDL1BKzZMqwD4hRp82sUSz/RtQFw5lIokMxyT4Q9H2xYYr7hmS3o/mS3WvQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760118285; c=relaxed/simple;
-	bh=xa/LDCE1IR+Wes0Wpil4GLi0GhmjvATifvtOD9qRiuM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WeOHSzW5FsiIZ29pqKVme/gRQ90+RPZ4bBxRB+dxWTFtWrs2YbatgJNDLWfr+mIJsmZvfV3zxMc6UBqCmEdqnwodYczyrg2Zo3/Xk6zLEzE5y1kcRK7ZHq7foI2rQAieQjDRkK4nRjujz3p3U87+Uk8oLpZsHRL26Zkt0ff9Zto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cjvDZ0qVdz6M4PW;
-	Sat, 11 Oct 2025 01:41:18 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1424A1402F0;
-	Sat, 11 Oct 2025 01:44:40 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 10 Oct
- 2025 18:44:39 +0100
-Date: Fri, 10 Oct 2025 18:44:37 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Francesco Lavra <flavra@baylibre.com>
-CC: Lorenzo Bianconi <lorenzo@kernel.org>, Jonathan Cameron
-	<jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy Shevchenko
-	<andy@kernel.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: imu: st_lsm6dsx: Decouple sensor ODR from FIFO
- batch data rate
-Message-ID: <20251010184437.00004428@huawei.com>
-In-Reply-To: <20251009173609.992452-3-flavra@baylibre.com>
-References: <20251009173609.992452-1-flavra@baylibre.com>
-	<20251009173609.992452-3-flavra@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1760118575; c=relaxed/simple;
+	bh=SydbU5kjGr/3xovWC/nOqIpKErTuWjsdiYfkq7oCez4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JWgI9EBQrgb34Gg/fNA+k8iEHvw0rIwk5LRxGJgvbFTTiksbS0T4jaikCytJwxBCv3KFJIuPAofruE9G+m+xPNIyx5MpyUQClV+Qs6/QtdLZhAHUAXg+CuHFbAK+HHZ0qMjsnPD0WAYVr7EcGrlCnpmt8i94wUWXZ1wZIyz+qhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ssqrLHYn; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7bd8909c682so1497613a34.3
+        for <linux-iio@vger.kernel.org>; Fri, 10 Oct 2025 10:49:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760118573; x=1760723373; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YMaVmGxlRalQkaTOQI033Tgz8Btw2Xvfuv/0peF4wpw=;
+        b=ssqrLHYnuuvLGSpgWS86+c6ov4l3etjXuVOpyUd8Siq5HHJH+dx3t6uN2GWIoB71VB
+         esh+r7GNzRl76ObTVGR4ZO0jBzb+dYTt2Y42d0gSKVQ7owCRWlYucFLxgSR1JT7fSWKI
+         fAv7/OPwL478PVke5I9k0vHyMRcR0ErZkPT8LSk8uXKqXGdUiZtyY/dHfjw2RHv6be9Q
+         CHhiQJqj7PBsdJxXUNBTVli/trPM4ErA1vOHPNBlOlRRqQiHVYGOTPgluieByzDR814L
+         lp+LudV9LqfESbP/eCK4OOYe/FPD2FqGptaSkp2jRlArJFbAnx+aC61D6HYJoygYE3Mh
+         8WEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760118573; x=1760723373;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YMaVmGxlRalQkaTOQI033Tgz8Btw2Xvfuv/0peF4wpw=;
+        b=RtiUbNMdTKUk9Gfuj+TBTMWjnVvCCqQ6TIykAcTKaOcmac8a9Y2TeXhuCE//KPYjic
+         l91rh3YfgwLIMv/CHzIFCu8Yryp0KDa2fVmG+mGrfJUgY6/4meFY7PNvW5WMGwOE5eJK
+         7hIeV6BU8rrVkKxDDm+nWOiUUQUvPBOtIyJrcDHu/CSNgqYKX4lyDRZKJalnERWrmM/f
+         6Qf5kmbw/xZm7zZSv/afEnKdCgnaxF7ur5UPc719cXqA8Mbv9tgK+hbTuo1ZTOQ/XNIm
+         4GpoLYf8Tla2fEDnisHcMIqpId20Gmcd5cUjcX+Y0BzoGcuQb2CDdopOHPz7uW3jFzOn
+         YilA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMFfb+TNDCY75cZRm5Z2OgavmgXZJGimhmv3mizamOoiqpNhRe9g7KLbk4k7Q9zdjSKKM29v66Mng=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcDAZZbD8lmrfojcWJ9ITbICSyWqoLQEoYcf1r3prTFw8fbaCL
+	uSr9DP+73vWIBqesZ1HxaJayaF7m671DSkn4603i0dj40Jnivvd/igZwsmrTFrRyLY4=
+X-Gm-Gg: ASbGncvDR5I1keQx/iXqslo3RcKyRnIjamtENkGXknhmdH1W2sRyKQLsxDCcvZeYAP2
+	mwrksT5mOJIJ3o7gBsp+1IaSQTxvAUDkSSF/o0Hvq7wqOTHsKVZSinQUYI/k/C16Ubdkt5Mrqsq
+	INeWng+4grbPalH9iOjwtHY9HHA+ZZHgp6nq4E6xGywVS6OokiTNj+a7YnejIDvbw07NZ1qxMS2
+	LxfBZWPML4MfdbfIOtWUi3+mimwCyCfd8Am3cQ6C6uH80N4qbhWUOkhV9R37QB/s2+FZC24HGj6
+	8Q9oZu4kgDLMkjEUOkkq3fy8yipuklkr4tlkdiRoiU+9SnCl1y4vZz2lKYJeZtkkmWaF4621MUM
+	34TVfqHL+ABfwWhS7ZKut/wx0nzxILFKchLxilb88jhaUUS8I9Ue/wu+vTZek7JJSN2vasZli5h
+	ROsbmYQX84SWYFUO4=
+X-Google-Smtp-Source: AGHT+IGFvMx8K8r1w2LJGI0aj1BdaxgMV07DhEGKjg2wLJeOFKBXNf333S18rFWDt7E0konUyv4QMg==
+X-Received: by 2002:a05:6830:620d:b0:79e:f086:3aca with SMTP id 46e09a7af769-7c0df62378fmr7546589a34.10.1760118572753;
+        Fri, 10 Oct 2025 10:49:32 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:500:6d3b:e3bd:4210:32e2? ([2600:8803:e7e4:500:6d3b:e3bd:4210:32e2])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c0f9067887sm1027295a34.9.2025.10.10.10.49.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Oct 2025 10:49:32 -0700 (PDT)
+Message-ID: <fce1c905-1c64-47b5-91b1-0017809ec12c@baylibre.com>
+Date: Fri, 10 Oct 2025 12:49:31 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: max30100: Add pulse-width
+ property
+To: Shrikant Raskar <raskar.shree97@gmail.com>, jic23@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: nuno.sa@analog.com, andy@kernel.org, matt@ranostay.sg,
+ skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev
+References: <20251008031737.7321-1-raskar.shree97@gmail.com>
+ <20251008031737.7321-2-raskar.shree97@gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20251008031737.7321-2-raskar.shree97@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Thu,  9 Oct 2025 19:36:09 +0200
-Francesco Lavra <flavra@baylibre.com> wrote:
-
-> The rate at which accelerometer or gyroscope sensor samples are fed
-> to the hardware FIFO (batch data rate, or BDR) does not have to
-> coincide with the sensor sampling frequency (output data rate, or
-> ODR); the only requirement is for the BDR to not be greater than
-> the ODR. Having a BDR lower than the ODR is useful in cases where
-> an application requires a high sampling rate for accurate detection
-> of motion events (e.g. wakeup events), but wants to read sensor
-> sample values from the device buffer at a lower data rate.
-> To support the above use case, add a sampling_frequency sysfs
-> attribute to the buffer directory of st_lsm6dsx IIO devices, which
-> controls the BDR for a given sensor independently from the "main"
-> sampling_frequency attribute (which controls the ODR); introduce a
-> new `bdr` field in struct st_lsm6dsx_sensor to keep track of the
-> current BDR value, and use this field instead of the `odr` field in
-> the code that deals with the FIFO data rate. In the sensor hub
-> driver, make the bdr value always mirror the odr value, since there
-> is no separate configuration setting to control the BDR for data
-> produced by the sensor hub functionality.
+On 10/7/25 10:17 PM, Shrikant Raskar wrote:
+> The appropriate LED pulse width for the MAX30100 depends on
+> board-specific optical and mechanical design (lens, enclosure,
+> LED-to-sensor distance) and the trade-off between measurement
+> resolution and power consumption. Encoding it in Device Tree
+> documents these platform choices and ensures consistent behavior.
 > 
-> Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-
-A few additional trivial things from me.  In general this looks fine.
-Whilst that buffer/sampling_frequency isn't common it's been part
-of the ABI for a while for this sort of thing.
-
-My only slight concern is backwards compatibility. 
-Perhaps you can add something on what happens if main sampling_frequency
-is modified by a user who doesn't know anything about buffer/sampling_frequency?
-
-Given that's a new interface and the ABI always allows a write to one
-value to change any other maybe we have to say the main sampling frequency
-write updates the buffer one and a write to the buffer one after that is needed
-to set it to a different value?
-
-That is a bit ugly but it is backwards compatible I think.
-
-
-
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> index 8a9d2593576a..5912ea76d493 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> @@ -56,6 +56,7 @@
->  #include <linux/iio/kfifo_buf.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/buffer.h>
-> +#include <linux/iio/sysfs.h>
->  #include <linux/regmap.h>
->  #include <linux/bitfield.h>
+> Tested on: Raspberry Pi 3B + MAX30100 breakout board.
+> 
+> Signed-off-by: Shrikant Raskar <raskar.shree97@gmail.com>
+> 
+> Changes since v1:
+> Add unit suffix.
+> Drop redundant description.
+> 
+> Link to v1:
+> https://lore.kernel.org/all/20251004015623.7019-2-raskar.shree97@gmail.com/
+> ---
+>  .../devicetree/bindings/iio/health/maxim,max30100.yaml      | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml b/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
+> index 967778fb0ce8..5c651a0151cc 100644
+> --- a/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
+> +++ b/Documentation/devicetree/bindings/iio/health/maxim,max30100.yaml
+> @@ -27,6 +27,11 @@ properties:
+>        LED current whilst the engine is running. First indexed value is
+>        the configuration for the RED LED, and second value is for the IR LED.
 >  
-> @@ -105,7 +106,7 @@ static int
->  st_lsm6dsx_get_decimator_val(struct st_lsm6dsx_sensor *sensor, u32 max_odr)
->  {
->  	const int max_size = ARRAY_SIZE(st_lsm6dsx_decimator_table);
-> -	u32 decimator =  max_odr / sensor->odr;
-> +	u32 decimator =  max_odr / sensor->bdr;
+> +  maxim,pulse-width-us:
+> +    maxItems: 1
+> +    description: Pulse width in microseconds
 
-No idea why there is a bonus space after = but good to cleanup whilst you are
-here.
+Would be nice to add to the description which pulse width this is referring to.
 
->  	int i;
+> +    enum: [200, 400, 800, 1600]
 
-> +static ssize_t st_lsm6dsx_bdr_store(struct device *dev,
-> +				    struct device_attribute *attr,
-> +				    const char *buf, size_t len)
-> +{
-> +	struct iio_dev *iio_dev = dev_to_iio_dev(dev);
-> +	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
-> +	int integer, fract;
-> +	int ret;
-> +	u32 bdr;
-> +	u8 data;
+Properties with standard unit suffixes are u32 arrays, so I think this
+would fix the error and also make maxItems not necessary.
+
+       items:
+         - enum: [200, 400, 800, 1600]
+
+And we want to know what the default is if this property is omitted.
+
+        default: 1600
+
 > +
-> +	ret = iio_str_to_fixpoint(buf, 100, &integer, &fract);
-> +	if (ret)
-> +		return ret;
-
-Add blank line after this sort of error handling return.  Slightly helps
-with readability.
-
-> +	bdr = integer * 1000 + fract;
-> +	ret = st_lsm6dsx_check_odr(sensor, bdr, &data);
-> +	if (ret < 0)
-> +		return ret;
-Here as well.
-> +	bdr = ret;
-
-Probably here as well.
-
-> +	if (!iio_device_claim_direct(iio_dev))
-> +		return -EBUSY;
-> +	/* the batch data rate must not exceed the sensor output data rate */
-> +	if (bdr <= sensor->odr)
-> +		sensor->bdr = bdr;
-> +	else
-> +		ret = -EINVAL;
-> +	iio_device_release_direct(iio_dev);
-Add one before the final return.
-> +	return (ret < 0) ? ret : len;
-> +}
-
+>  additionalProperties: false
+>  
+>  required:
+> @@ -44,6 +49,7 @@ examples:
+>              compatible = "maxim,max30100";
+>              reg = <0x57>;
+>              maxim,led-current-microamp = <24000 50000>;
+> +            maxim,pulse-width-us = <1600>;
+>              interrupt-parent = <&gpio1>;
+>              interrupts = <16 2>;
+>          };
 
 

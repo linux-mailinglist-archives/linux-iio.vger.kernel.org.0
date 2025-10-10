@@ -1,227 +1,141 @@
-Return-Path: <linux-iio+bounces-24905-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24906-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF1BBCCC40
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 13:25:46 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E8EBCD129
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 15:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C3D634FDABB
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 11:25:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 77D954EB327
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 13:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4D72F49EC;
-	Fri, 10 Oct 2025 11:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C6621579F;
+	Fri, 10 Oct 2025 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="ACNaYjPr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HjDcJxSR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30732F0C7E
-	for <linux-iio@vger.kernel.org>; Fri, 10 Oct 2025 11:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D2934BA46;
+	Fri, 10 Oct 2025 13:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760095441; cv=none; b=mvHxjRKW9HQUkNeyGuLwyyRkn2ITwCsRDfejQp3F491cZ8/NW3RZN35DHOq5IAI5Jzj0AhBt94A+E6KKHLCK68/UOFmXzGtg3r0qF15kUqgJegnzYM80FavL0UeogMVVkI8eWNrByv/Ej/6VlaLDOqs1w6xIUt0lMCAuVDyzPbI=
+	t=1760102141; cv=none; b=ISXWWWZNghdwkwMYlL96LMzrhxCMUvc5c0goOA0LM/8RQaczzq9BXr37ao5e2Yl7hbLy+HFWLla0lwxB0q98dW4msAsNkHtMS2v3TN/6r6VGs3O1FijTkHhxYzjho9s0c/hXYRBJSpgO5gKh2y5IWo85SzjLuCUh3y0arcJOF8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760095441; c=relaxed/simple;
-	bh=aBMTPtPDt4M1GRWOyqpCZ1qdlJgnotQej/fUpg30pyI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Sn+tqpiSYzQp5wZZwbJHF4L+UzOxAsTdBYu8c18FnQIShhoMr2N51EtHGqxEFuNmP1NCysupCAZfYAZOo7bahaS6fZrYvJK99UdJ4uVZ3KvyJbFLKk6f/Sy2Kvwo/Nsnc3EL3eSk2dZ2izpdWMtZhQ8ZM0ZiVVp6dCcoxKPRE10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=ACNaYjPr; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-636de696e18so3999748a12.3
-        for <linux-iio@vger.kernel.org>; Fri, 10 Oct 2025 04:23:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1760095436; x=1760700236; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DCAG8MFE1hhKxgzGizvbP32Gb84eEFJPKvZVLfU2qZI=;
-        b=ACNaYjPrzkywZAgQXs1JxRb+ETCWKhV6hSmZVLeqdh0AcLZs5rxOwiFgwACWB4rltk
-         CDhOjKYtSG9kOBdKJTsYTyzHTukaKKTNOJTqo+818xxYtja/MrdMp/gxI/n1EoCx/iNv
-         cV8pcNzhEVAWrEtg3G/oezIlNoM7hc6O6TnypZ2LbWT+Ulpd+HRL0TnAjF7Yz7OWUBY6
-         iHrva5Z+on3L8gAClGfvqIiOI4J+ef6hxBQNa3CgczjVyR7e/31OZpvfbT5kJuEy5ArX
-         ButIBM6t0vVXjhj2fgT5WaQdwYlUJvv3Nve7tvIFfZXjXDgotpuY1Q+BAVg6amSbYryd
-         dBvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760095436; x=1760700236;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DCAG8MFE1hhKxgzGizvbP32Gb84eEFJPKvZVLfU2qZI=;
-        b=C3HbGIYVYedX7qVebSKOC26f8S+la6q3PjbG3yiEjSWx9brgUucEasntFVh996TFAy
-         eNE3A2ZGN2kaQ2gjjjk+aHqSoGV86CIY3uVQhvjI9+ZHZr1CS9xpIuF0xNuXST7G7iNJ
-         n2wONokvFbvW4UrIu6DcSzFK2an+N/5xLtUYciZizYK0n8+HvcoK88tYCWFDjHuXKBXy
-         JsIObtmtSlsB2VQ0vNoIR497aZyQ1eA3m9GPkHNJLQ/JIwK42Q5JR8eaqvKENIsF6xdR
-         v6EFE82hqtw5kfXLTUOaJdUqLTQ04tI8a+eAEYYjq07tO39hNxIsx3w+QXLH3ewsaLQy
-         LeBA==
-X-Forwarded-Encrypted: i=1; AJvYcCVcpFzWndqqHj3OJtuJEwotytpBWNheuJ6L5X0GoVrxwP/ydJLjPyCe1jA9wfVsCIU7jGljSf2PsS0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yysm/CvVi3KttVePkvvsRbDVatXGKVsGWLsa2LJ3VgeEqzkKiGi
-	VKt69x4xWNGkpIjV5qNHYkDkPmka+AagEW/CK3ZvrSUSHY5rnXv8w3i8JqpcPcTsD+g=
-X-Gm-Gg: ASbGncuJrP2EYrkZid5RoMZyhlGR8XTA2aB6LN9qz1bNz3/aMKnFFZ01dK1M114yk2N
-	o8i2Tq/DEQHxMEBhidVtUA6gNzyht1UX1GW9qZu8uFVUj0ttgzyJsHBdKVkxk+mJ67Pwm4G3CWK
-	FfA4iMHf7486ljjmvbncnkJlB8UekyYX1J7EjZIV4uFhWvPFab4XGjigssO8SHV4YbNASUAxbvs
-	ZAMhJDiaMXjqRe8TU3iI5apKbD982PBAKKR7FKz5DEH0LSTSDfuVBHxZ8u1XHURMdWjcu497Hkx
-	YY1o5bZRbwuG10jrNBR5FA4smzMptmvZbcLtughQ6mtOHFFRTOm3FZ9mfa8WNIEDWpM2l/e6U78
-	dSvoD9nY0naR4YqB8rcIP/km/n6m/Z/hLTqHL2cf/NVc8A1y3srwyZFCpxA0GmhOI+K3wDGA+BM
-	UgDw2E6emrUugSkuE3T74=
-X-Google-Smtp-Source: AGHT+IGsAakh/8g2j83SKx9fw/+oQlSgc9qI6tjYbD9FJ2KHiIAG+QpeQGgMy8xOFcppj58CQxNe8A==
-X-Received: by 2002:a17:907:961b:b0:b3a:ecc1:7769 with SMTP id a640c23a62f3a-b50ac0cb195mr1154612866b.52.1760095435795;
-        Fri, 10 Oct 2025 04:23:55 -0700 (PDT)
-Received: from [172.16.240.99] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d900bf8csm209905766b.59.2025.10.10.04.23.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 04:23:55 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 10 Oct 2025 13:22:04 +0200
-Subject: [PATCH RFC 6/6] arm64: dts: qcom: sm7225-fairphone-fp4: Add
- battery temperature node
+	s=arc-20240116; t=1760102141; c=relaxed/simple;
+	bh=O8r1zDNV/ies1XRo8c9X1EYti/ggkfRs1ACGmDvFl38=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fPdyrtSbeHIDoAItsXhmwCXKnSoN98RWor1YceFwbq83VzEMrimBl9isVrZVEU37uUm+LGeiRwQXEnaN2dO06xVb7f0ZtqN1XmX6l2BB2h3lBWDpJQpnAyBmORYFc9gSPxWclzPbWzP16DJemKsnGrtPJgDOkY2Hmk25uRwLLhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HjDcJxSR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BB8C4CEF1;
+	Fri, 10 Oct 2025 13:15:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760102141;
+	bh=O8r1zDNV/ies1XRo8c9X1EYti/ggkfRs1ACGmDvFl38=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HjDcJxSR0hQ09NB7ldl0ncgXbArBd7W3/aipJ7JWIBd0IVJZFQUxq91KNtX588cP5
+	 tUqU9nFMF/hTOKIBDIFlrEbrMCYcio/+/LdjJvxJWqh3hqNuo8nyFTrU8fw/grlr1F
+	 51/MxZVpQER9pjo+mzUfTbnVBMv4Oobfirt55L7OTi2YeyAMPS1TD/eVJu044PFz8S
+	 wMFseFHULY58amwtA1wtRKVzbMRqL52BpWwnfw1V8IDXMpKIINudKi3MB84QJTEAD+
+	 1R9I4fq3tU1a4crLuMERSdGYBCGsyljURp3FMxZW73+yzlQbcTGzq26QPMTPm9SscT
+	 fNR0cB7xZ2yag==
+Date: Fri, 10 Oct 2025 15:15:38 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: imu: st_lsm6dsx: Decouple sensor ODR from FIFO
+ batch data rate
+Message-ID: <aOkG-jBOYXxWy1z3@lore-desk>
+References: <20251009173609.992452-1-flavra@baylibre.com>
+ <20251009173609.992452-3-flavra@baylibre.com>
+ <aOg3dg21aWNTF47x@lore-desk>
+ <160b32c14df3daa06304fef430534561cabcfaea.camel@baylibre.com>
+ <aOjAK9LRMCcBspkb@lore-desk>
+ <9dbd2ae7883ec8dba65706603a29f3144076840e.camel@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251010-bat-temp-adc-v1-6-d51ec895dac6@fairphone.com>
-References: <20251010-bat-temp-adc-v1-0-d51ec895dac6@fairphone.com>
-In-Reply-To: <20251010-bat-temp-adc-v1-0-d51ec895dac6@fairphone.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Laxman Dewangan <ldewangan@nvidia.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Hans de Goede <hansg@kernel.org>, 
- Jens Reidel <adrian@mainlining.org>, 
- Casey Connolly <casey.connolly@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
- devicetree@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760095429; l=2583;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=aBMTPtPDt4M1GRWOyqpCZ1qdlJgnotQej/fUpg30pyI=;
- b=DG6raoy42scFWp8jMx4GHyDTeTHosn+ep/uPea5mNpCWeWqjD8FtINPdQuqqrvkBh+hTj9hB9
- b2JrnMH1voTC9ep4hy/q8gBtWKN+XacHVXEgdX0i+73ImCPhJE5J0Yz
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Q9L2gUSXS00tM16I"
+Content-Disposition: inline
+In-Reply-To: <9dbd2ae7883ec8dba65706603a29f3144076840e.camel@baylibre.com>
 
-Add a generic-adc-thermal node to convert the voltage read by the
-battery temperature ADC into degree Celsius using the provided lookup
-table.
 
-This will later be used as input for the fuel gauge node (QGauge on the
-PM7250B).
+--Q9L2gUSXS00tM16I
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 83 +++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+On Oct 10, Francesco Lavra wrote:
+> On Fri, 2025-10-10 at 10:13 +0200, Lorenzo Bianconi wrote:
+> > > On Fri, 2025-10-10 at 00:30 +0200, Lorenzo Bianconi wrote:
+> > > > > The rate at which accelerometer or gyroscope sensor samples are f=
+ed
+> > > > > to the hardware FIFO (batch data rate, or BDR) does not have to
+> > > > > coincide with the sensor sampling frequency (output data rate, or
+> > > > > ODR); the only requirement is for the BDR to not be greater than
+> > > > > the ODR. Having a BDR lower than the ODR is useful in cases where
+> > > > > an application requires a high sampling rate for accurate detecti=
+on
+> > > > > of motion events (e.g. wakeup events), but wants to read sensor
+> > > > > sample values from the device buffer at a lower data rate.
+> > > >=20
+> > > > can you please provide more details here? Are you using the hw fifo
+> > > > to
+> > > > read
+> > > > data? If we configure the hw fifo according to the BDR (even assumi=
+ng
+> > > > the
+> > > > watermark is set 1) the hw will generate interrupts according to the
+> > > > BDR
+> > > > (bdr < odr).
+> > >=20
+> > > Yes, I'm using the hw fifo to read data. The use case is to enable
+> > > event
+> > > detection (which works best at high sampling rates) and sensor data
+> > > streaming at the same time, without requiring the data stream to be at
+> > > the
+> > > same rate as the sensor sampling rate. So the amount of I2C (or SPI)
+> > > traffic (as well as the rate of periodic interrupts) required by the
+> > > data
+> > > stream is kept to a minimum without sacrificing the accuracy of event
+> > > detection.
+> >=20
+> > I guess you can get the same result (reduce sensor data interrupt rate
+> > keeping high odr value) configuring the hw fifo watermark.
+> > Does it work for you?
+>=20
+> Setting the hw fifo watermark to a high value reduces the rate of
+> interrupts, but doesn't do much to reduce the amount of I2C traffic, so t=
+he
+> issue would still be there.
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-index 71e87ab92955..24855cec7880 100644
---- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-@@ -107,6 +107,89 @@ rear_cam_sensor: thermal-sensor-rear-cam {
- 		io-channel-names = "sensor-channel";
- 	};
- 
-+	bat_therm_sensor: thermal-sensor-bat-therm {
-+		compatible = "generic-adc-thermal";
-+		#thermal-sensor-cells = <0>;
-+		#io-channel-cells = <0>;
-+		io-channels = <&pm7250b_adc ADC5_BAT_THERM_30K_PU>;
-+		io-channel-names = "sensor-channel";
-+		/*
-+		 * Voltage to temperature table for 10kΩ (B=3435K) NTC with a
-+		 * 1.875V reference and 30kΩ pull-up.
-+		 */
-+		temperature-lookup-table = <
-+			(-40000) 1673
-+			(-38000) 1649
-+			(-36000) 1623
-+			(-34000) 1596
-+			(-32000) 1566
-+			(-30000) 1535
-+			(-28000) 1502
-+			(-26000) 1467
-+			(-24000) 1430
-+			(-22000) 1392
-+			(-20000) 1352
-+			(-18000) 1311
-+			(-16000) 1269
-+			(-14000) 1226
-+			(-12000) 1182
-+			(-10000) 1138
-+			 (-8000) 1093
-+			 (-6000) 1049
-+			 (-4000) 1004
-+			 (-2000) 960
-+			       0 917
-+			    2000 874
-+			    4000 832
-+			    6000 791
-+			    8000 752
-+			   10000 713
-+			   12000 676
-+			   14000 640
-+			   16000 606
-+			   18000 573
-+			   20000 541
-+			   22000 511
-+			   24000 483
-+			   26000 455
-+			   28000 430
-+			   30000 405
-+			   32000 382
-+			   34000 360
-+			   36000 340
-+			   38000 320
-+			   40000 302
-+			   42000 285
-+			   44000 269
-+			   46000 253
-+			   48000 239
-+			   50000 225
-+			   52000 213
-+			   54000 201
-+			   56000 190
-+			   58000 179
-+			   60000 169
-+			   62000 160
-+			   64000 152
-+			   66000 143
-+			   68000 136
-+			   70000 128
-+			   72000 122
-+			   74000 115
-+			   76000 109
-+			   78000 104
-+			   80000 98
-+			   82000 93
-+			   84000 89
-+			   86000 84
-+			   88000 80
-+			   90000 76
-+			   92000 73
-+			   94000 69
-+			   96000 66
-+			   98000 63>;
-+	};
-+
- 	thermal-zones {
- 		chg-skin-thermal {
- 			thermal-sensors = <&pm7250b_adc_tm 0>;
+ack, now I got the goal of the series. I think the series is mostly fine.
+I guess hwfifo_odr instead of bdr is more meaningful, what do you think?
+Naming is always hard.
 
--- 
-2.51.0
+Regards,
+Lorenzo
 
+--Q9L2gUSXS00tM16I
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaOkG+gAKCRA6cBh0uS2t
+rHLRAQCQLWQ0sOMo9fZdnLqw2UQ/r+BFlsyeejmJSC6ZZltjCQEAmQBL+WP6q8p0
+gJfXdcR2Y602paeKhLq8US/aby3zLwc=
+=yC/a
+-----END PGP SIGNATURE-----
+
+--Q9L2gUSXS00tM16I--
 

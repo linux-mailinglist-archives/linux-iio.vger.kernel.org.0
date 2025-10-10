@@ -1,270 +1,233 @@
-Return-Path: <linux-iio+bounces-24908-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24909-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FB8BCD901
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 16:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8741BCD919
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 16:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 90A9C4FE95C
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 14:39:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1F6C34FEBDB
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Oct 2025 14:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9AE2F6167;
-	Fri, 10 Oct 2025 14:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336CF2F6182;
+	Fri, 10 Oct 2025 14:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YuIf6N+N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eml6+LRK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3005A2F5327;
-	Fri, 10 Oct 2025 14:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13F22F5A33
+	for <linux-iio@vger.kernel.org>; Fri, 10 Oct 2025 14:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760107175; cv=none; b=Nty2yWOfpLeuiBLCrYU1XRMpndf+hL28e1tXWfgVKIlEHoFv7SceMQR9iltpgydRTUuC9WQy9xOJAML/5H7a6f5uCiNmtGs2zW10ejgbOD2JerVCBajJc69epNsOzlIIkkoK6iULcD0BIP6ZBN8zr08kYoBtqGPDLVyjg+eN+Bw=
+	t=1760107211; cv=none; b=njHeAPOP8Gv03FOrfAONaCWUVWUWRpL/O+hw0O7Kk7NoawZPvwBAby7PBva2SukvCg30cyfUWaLUr38ILh9WoJoDiko14MRKzg2aNsfASZ5lvusL0/zJYAoATBouemT+FBLpknVVgJFkXl6rxML9SFvqICMMYSnPjMx5PZry2VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760107175; c=relaxed/simple;
-	bh=dtoD4l4VS0bu/I/Y3O30jdEDHBxBK5tOgphUcrs2Nio=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UrmV8cCsBLen6kYwgr+7FwM6OmKGDyy7pZCtfQrz0dJvNt5i6eVv+gHxVzAhs65Ey2k4ZBq9cXF1w7v7hhm1h9f1knxBHW1jwq8Y3/++JDKfxDTsGWf6tT36Hx7T0vG6Fk7tSR7vcJ05H0iOq/P0efRrXfaPg2d1PV7g75TjC90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YuIf6N+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34115C4CEF1;
-	Fri, 10 Oct 2025 14:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760107174;
-	bh=dtoD4l4VS0bu/I/Y3O30jdEDHBxBK5tOgphUcrs2Nio=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YuIf6N+NB8MgQ/hhsc/v7fzNeI+29dUxEpyGe2NwFbp84dBg4vpgI0KvLawceBxiA
-	 i+GvS65+oReVOilqCqyFwqXioloUKg/9CUUsshon+wOpJ4PmnGb8qktsEtkk9D83xY
-	 MMxif79UAqIFsyN6BYBKYMzTFdDi9roKVxf+xYi8n3McYNuMIsXj7VPZm4lghiTTie
-	 jx4zYG0bA6lVEeEuwkP8AjupZa9dSLypdtk/QY8hW/3XiLn6Ek154kE1n+XUanKVLf
-	 335xMyVJbZyXeSmZ5CFM5eeOX5JNWgqEK5CpxCwxg9AIzIsBV0c+TzNVg4SLWsm41n
-	 /g3jEMUwXULUg==
-Date: Fri, 10 Oct 2025 15:39:28 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jic23@kernel.org, ukleinek@kernel.org,
-	michael.hennerich@analog.com, nuno.sa@analog.com,
-	eblanc@baylibre.com, dlechner@baylibre.com, andy@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	corbet@lwn.net
-Subject: Re: [PATCH v4 7/8] dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216
- and ADAQ4224
-Message-ID: <20251010-donut-agreeable-07f3367416d5@spud>
-References: <cover.1759929814.git.marcelo.schmitt@analog.com>
- <7e51e036ba930284c74cf42afd53b17d49093654.1759929814.git.marcelo.schmitt@analog.com>
- <20251008-swooned-closable-fbc8b71601c0@spud>
- <aOgw95ebGWWhahUx@debian-BULLSEYE-live-builder-AMD64>
+	s=arc-20240116; t=1760107211; c=relaxed/simple;
+	bh=WbeLzUgEV22dDeik0xafOaSUdi9R9dEvpfqnpGFwEAw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=agh6gQIQbo1Vk+MWi/I9eMsLe8vOlt6nnN4vhDG+UalyfVseJ3/5PBF0bq5pnTUjQCfL6ab+gVIvlpCtZ2cya3HdopZ+hfuX9jWNDepWixBS3dLVr/eoPdltqdCZAAiZalsPQyClbn2o1Seh9Tl7Bbsm8YTCMZ70NqOoPHxQC/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eml6+LRK; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3ee12a63af1so1334932f8f.1
+        for <linux-iio@vger.kernel.org>; Fri, 10 Oct 2025 07:40:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760107207; x=1760712007; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WbeLzUgEV22dDeik0xafOaSUdi9R9dEvpfqnpGFwEAw=;
+        b=Eml6+LRK6dXTs8wDanPMG4/UBwafDNcsex+TU4XIv8H+YPlSSbdpmI6aQRtt9FS3MO
+         XXiYJgUJDhugYOwVhPzBTa+Aj45j1dc0dtJhbRZGn9zcD3Wt7fjUsl9dkBVwihjUgMRH
+         yXE9oxfYIlEu+13IwkAPfCIvtMRGCTsD1UHAgPB6eAeymExTGiViv2mER4eLHzO1oUnG
+         roBlOJAHl9ZD/unr8xJ/5O2Z3aXbb+sysPP3ilMQDWsJTevMfEEpV1ZYnoWPKybXJ+RG
+         Z32bDHCnjZrEw2xVdpt8/REaov7l7TSi2zD7od+92UAr04ChvEpep5yO79DrvOVb26aI
+         fs0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760107207; x=1760712007;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WbeLzUgEV22dDeik0xafOaSUdi9R9dEvpfqnpGFwEAw=;
+        b=hh3E2d8N5AByw8HuRsrzYWz9mW+QnL70tqN+HsTbC7xv9VwLUuy5Kn2Kp8xfovXdyp
+         MT2gFQPSp2bax+5W1D1tz4L2o6jW2IhWKHfoBr0xXVUOWOIc9jluPx7bqhrpZSNVF4UR
+         RCl59NmYl31XiDTkzPNWRsxRllN6b2Yg/tsJP9dVXedyNRB/EzWurm/OyR5b/WIy687J
+         JxYtXXNkDq0PEU0xbnxbF2DICc2rOFqHCKl9nv8d2iaNFLNiIbtxWjbpZhe/4Yehlpgd
+         vccHN7I1LVRqTpac7E1gQdkFM54LspYbUuZo4CmpbK5NgG/gJt4TRUHc59sday69hbmS
+         qh8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUFrUpalckMjVxEtfMrpQRMzGdhb5XUzmYTpWymxuLJinJ75NRBk7rqcjor1DWE35Z8NfJOCsu4wAM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHYmUxGYw1X3RscEZVczqPJp1L1TvO47eIvIOTzHEobl+sHQJY
+	uRe8BZoTj/a4lJ3Cq/WT4HvOHu7cZqnLWfO61pYE34CGUealzAk+7MpM
+X-Gm-Gg: ASbGncvCLQr831BKtDJfd7RjSQdVOMbNa589EZPgrkYrAQXYNQLwvZmzVhqNQdtbmPJ
+	o6Uctl289XETkcNd1v1gxmIAO4YPVLTM8Z5NgPRMJ4xLkbZlSBP8I+Md8q0M8pB1iu8hWZSx8zC
+	hu1r1JLHNnW363BKRy3JaueERkZ+EvkB+hSr/nIcXFQGnlVRywvlYKyt8OoQAvGO7ma8hdW1Aug
+	/XObJudMVSv2QoSzoe0ky0+Fhq5K6+VsIJjxhnxTaFelpmz5qExw9DoIv1aZg0f00/vX6diNSHD
+	2AFNJ7qWn/vXb3ga51jExL2PAsM032sK87BS2csuVyJDYUX3clABNy9i+5pJ852T3BDm7yIHGNF
+	orLn3KYLV6YrUWcLZ+TRRM4lGi9EFqCAWR5v4Cpe9pzaOk3UlZCKWwEuzuM+0
+X-Google-Smtp-Source: AGHT+IFnMF+6qNtBAMw+CyoQv3jiuQo/QSyCG7rCO6D+8KNfzJwrWSPS9T8beikQzgBhf5GvDE9Ang==
+X-Received: by 2002:a05:6000:1867:b0:3eb:b80c:cea0 with SMTP id ffacd0b85a97d-42666abbbabmr6495344f8f.4.1760107206730;
+        Fri, 10 Oct 2025 07:40:06 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5833dcsm4580320f8f.19.2025.10.10.07.40.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Oct 2025 07:40:06 -0700 (PDT)
+Message-ID: <61b5a5f43d97f700ec7fc52110a1784ef699eeaa.camel@gmail.com>
+Subject: Re: [PATCH RFC 0/6] Battery temperature ADC plumbing on Qualcomm
+ platforms
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Luca Weiss <luca.weiss@fairphone.com>, Jonathan Cameron
+ <jic23@kernel.org>,  David Lechner <dlechner@baylibre.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy Shevchenko	
+ <andy@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano	
+ <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, Lukasz Luba	
+ <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski	
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Laxman Dewangan	
+ <ldewangan@nvidia.com>, Bjorn Andersson <andersson@kernel.org>, Konrad
+ Dybcio	 <konradybcio@kernel.org>, Hans de Goede <hansg@kernel.org>, Jens
+ Reidel	 <adrian@mainlining.org>, Casey Connolly <casey.connolly@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Date: Fri, 10 Oct 2025 15:40:36 +0100
+In-Reply-To: <20251010-bat-temp-adc-v1-0-d51ec895dac6@fairphone.com>
+References: <20251010-bat-temp-adc-v1-0-d51ec895dac6@fairphone.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IJk9hVtxLgVTxZJO"
-Content-Disposition: inline
-In-Reply-To: <aOgw95ebGWWhahUx@debian-BULLSEYE-live-builder-AMD64>
+
+On Fri, 2025-10-10 at 13:21 +0200, Luca Weiss wrote:
+> This is an RFC which implements a potential solution to get battery
+> temperature readings working on for example smartphones with Qualcomm
+> SoCs.
+>=20
+> The solution chosen in downstream Qualcomm kernels is exposing
+> ADC_BAT_THERM_PU* in the ADC driver as temperature channels with the
+> lookup table ("struct vadc_map_pt") for the specific NTC found in a
+> device's battery patched to adjust the lookup table.
+>=20
+> The high level solution proposed here:
+> * ADC driver provides temperature channel in (milli)volt as IIO channel
+> * generic-adc-thermal driver converts voltage to temperature based on
+> =C2=A0 provided lookup table from DT (driver has one IIO channel input, o=
+ne
+> =C2=A0 IIO channel output)
+> * The fuel gauge driver can use that temperature IIO channel to expose
+> =C2=A0 battery temperature via the power supply device
+>=20
+> Variants/alternatives considered:
+>=20
+> 1. Do not implement IIO device in generic-adc-thermal
+>=20
+> Without an IIO channel and using thermal zone directly it becomes more
+> difficult. You cannot get thermal zone by reference (e.g.
+> thermal-sensors =3D <&foo>;). The function thermal_zone_get_zone_by_name(=
+)
+> exists but lookup by name is kinda clunky. Adding by-phandle support
+> might be possible but is lots of work. It also doesn't really look like
+> thermal-sensor is really meant to be used by other drivers. E.g.
+> there's also no "thermal-sensor-names" property to designate passing
+> multiple thermal sensors. So I believe IIO is a better fitting API for
+> this.
+
+The only thing that I dislike is that using IIO just feels like hacking aro=
+und
+the lack of an inkernel interface (as you pointed out and which IIO provide=
+s)
+for thermal devices. My main question is, what makes this device an IIO dev=
+ice
+despite the fact that we (you) want to use the IIO inkernel API (IIUC)? AFA=
+IU,
+the sensor is already being implemented as the ADC driver and this is just
+convenience.
+
+Anyways, that said, there's precedent (at least in 2 places) about register=
+ing
+IIO devices outside of the subsystem.
+
+Maybe we need the concept of an IIO proxy for the IIO inkernel interface. L=
+ike
+consumers of IIO devices that can use some the measurements (channels), do
+something with them and then be IIO providers. I guess I'm already rambling=
+ :)
+=20
+>=20
+> 2. Expose IIO channel as temperature in ADC driver
+>=20
+> This would require passing in the temperature lookup table somehow to
+> the ADC driver via DT. I think this passes too many details about the
+> hardware that's connected into the ADC driver. While possible, at least
+> for Qcom ADC there's no precedent yet.
+
+Not really familiar with the HW setup but (just for my understanding) why i=
+t
+would not make sense to pass that info to the IIO driver? I guess that tabl=
+e is
+just not part of the ADC?
+
+>=20
+> 3. Add temperature-lookup-table as property to simple-battery
+>=20
+> Since the NTC is a part of the battery pack, adding a
+> temperature-lookup-table property to simple-battery would make sense
+> instead of having this lookup table be standalone in the
+> generic-adc-thermal node. However being able to re-use the existing code
+> in generic-adc-thermal lead me to the current proposal.
+
+What about turning it into a small lib module? No idea where to put it thou=
+gh.
+But while I was thinking about this, your option 3 looks the one that makes=
+ more
+sense to me.
+
+My 2 cents!
+- Nuno S=C3=A1
 
 
---IJk9hVtxLgVTxZJO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Oct 09, 2025 at 07:02:31PM -0300, Marcelo Schmitt wrote:
-> On 10/08, Conor Dooley wrote:
-> > On Wed, Oct 08, 2025 at 10:51:37AM -0300, Marcelo Schmitt wrote:
-> > > ADAQ4216 and ADAQ4224 are similar to AD4030 except that ADAQ devices =
-have a
-> > > PGA (programmable gain amplifier) that scales the input signal prior =
-to it
-> > > reaching the ADC inputs. The PGA is controlled through a couple of pi=
-ns (A0
-> > > and A1) that set one of four possible signal gain configurations.
-> > >=20
-> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > > ---
-> > > Change log v3 -> v4
-> > > - Now only documenting GPIO setup to control ADAQ PGA pins.
-> > >=20
-> > > Pin strapped/hardwired connections to PGA pins may benefit from a "fi=
-xed-gpios"
-> > > driver which may (or may not?) use the shared GPIO abstraction layer =
-[1]. I may
-> > > propose support for pin-strapped/hardwired connections when I get a w=
-orking
-> > > fixed-gpios implementation.
-> >=20
-> > What is a "fixed-gpio" as compared to a hog, from a dt point of view?
-> > Is it purely a software change?
 >=20
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+> Luca Weiss (6):
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 iio: adc: qcom-spmi-adc5: Add battery ther=
+mal channels
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dt-bindings: thermal: generic-adc: Documen=
+t #io-channel-cells
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 thermal/drivers/generic-adc: Register as I=
+IO device
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 thermal/drivers/generic-adc: Allow probe w=
+ithout TZ registration
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 arm64: dts: qcom: pm7250b: Define battery =
+temperature ADC channels
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 arm64: dts: qcom: sm7225-fairphone-fp4: Ad=
+d battery temperature node
 >=20
-> Short answer:
+> =C2=A0.../bindings/thermal/generic-adc-thermal.yaml=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 |=C2=A0 4 ++
+> =C2=A0arch/arm64/boot/dts/qcom/pm7250b.dtsi=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 24 +++++++
+> =C2=A0arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts=C2=A0 | 83
+> ++++++++++++++++++++++
+> =C2=A0drivers/iio/adc/qcom-spmi-adc5.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ |=C2=A0 6 ++
+> =C2=A0drivers/iio/adc/qcom-vadc-common.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 16 +++++
+> =C2=A0drivers/thermal/thermal-generic-adc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 68 ++++++++++++++++--
+> =C2=A0include/linux/iio/adc/qcom-vadc-common.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 +
+> =C2=A07 files changed, 198 insertions(+), 6 deletions(-)
+> ---
+> base-commit: 6063257da111c7639d020c5f15bfb37fb839d8b6
+> change-id: 20251010-bat-temp-adc-8539bf0b85bc
 >=20
-> I think "fixed-gpio" and gpio-hog would mean the same from dt point of vi=
-ew.
-> Yes, it's mainly related to software.
-
-Long answer is wasted on me, what you I just wanted to know if you were
-proposing something new on the dt side or just able to use hogs :)
-Well, wasted in an official capacity, obviously new features in the
-kernel are also interesting to learn about.
-
-Cheers,
-Conor.
-
->=20
->=20
-> Long answer:
->=20
-> We would like to read the state of a pin from the GPIO client driver. May=
-be we
-> are already able to read gpio-hog states from client drivers and just did=
-n't
-> find out how.
->=20
-> The idea is to standardize and simplify the dt bindings when peripheral p=
-ins can
-> either be connected GPIOs or hard-wired to some logic level.
->=20
-> For the particular example of ADAQ4216, it can have PGA control pins conn=
-ected
-> to GPIOs.
->=20
->     +-------------+         +-------------+
->     |     ADC     |         |     HOST    |
->     |             |         |             |
->     |   SPI lines |<=3D=3D=3D=3D=3D=3D=3D>| SPI lines   |
->     |             |         |             |
->     |          A0 |<--------| GPIO_A      |
->     |          A1 |<--------| GPIO_B      |
->     +-------------+         +-------------+
->=20
-> But the pins might instead be hard-wired, like
->=20
->     +-------------+         +-------------+
->     |     ADC     |         |     HOST    |
->     |             |         |             |
->     |   SPI lines |<=3D=3D=3D=3D=3D=3D=3D>| SPI lines   |
->     |             |         +-------------+
->     |          A0 |<-----+
->     |          A1 |<-----+
->     +-------------+      |
->                         VIO
->=20
-> or
->=20
->     +-------------+         +-------------+
->     |     ADC     |         |     HOST    |
->     |             |         |             |
->     |   SPI lines |<=3D=3D=3D=3D=3D=3D=3D>| SPI lines   |
->     |             |         +-------------+
->     |          A0 |<--------- VIO
->     |          A1 |<-----+
->     +-------------+      |
->                         GND
->=20
-> Or even, possibly, a mix of GPIO and hard-wired.
->=20
->     +-------------+         +-------------+
->     |     ADC     |         |     HOST    |
->     |             |         |             |
->     |   SPI lines |<=3D=3D=3D=3D=3D=3D=3D>| SPI lines   |
->     |             |         |             |
->     |          A0 |<--------| GPIO_A      |
->     |             |         +-------------+
->     |          A1 |<-----+
->     +-------------+      |
->                         GND
->=20
-> We have bindings (like adi,ad7191.yaml [1]) describing the hard-wired set=
-ups
-> with function specific properties. E.g.
->   adi,pga-value:
->     $ref: /schemas/types.yaml#/definitions/uint32
->     description: |
->       Should be present if PGA pins are pin-strapped. Possible values:
->       Gain 1 (PGA1=3D0, PGA2=3D0)
->       Gain 8 (PGA1=3D0, PGA2=3D1)
->       Gain 64 (PGA1=3D1, PGA2=3D0)
->       Gain 128 (PGA1=3D1, PGA2=3D1)
->       If defined, pga-gpios must be absent.
->     enum: [1, 8, 64, 128]
->=20
-> This approach works fine, but it requires documenting device-specific val=
-ues
-> (e.g. gain 1, gain 8, ..., gain X) for each new series of ADCs because ea=
-ch
-> each series has different hardware properties.
->=20
-> Sometimes peripherals have pins with different functions that are also ei=
-ther
-> hard-wired or connected to GPIOs (like adi,ad7606.yaml [2] and adi,ad7625=
-=2Eyaml [3]).
-> Software wants to know about the state of those pins. When they are conne=
-cted
-> to GPIOs, we can just read the GPIO value. But when the pins are hard-wir=
-ed,
-> we have to set additional dt properties (e.g. adi,pga-value) and then sof=
-tware
-> figures out the state of the pins from the value read from dt.
-> What we wonder is whether it would be possible to have both the GPIO and
-> hard-wired cases described by gpio properties.
->=20
-> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/t=
-ree/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml#n77
-> [2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/t=
-ree/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml#n127
-> [3]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/t=
-ree/Documentation/devicetree/bindings/iio/adc/adi,ad7625.yaml#n70
->=20
-> For example, instead of having
->=20
-> /* All GPIOs case */
-> pga-gpios =3D <&gpio 23 GPIO_ACTIVE_HIGH>, <&gpio 24 GPIO_ACTIVE_HIGH>;
->=20
-> and
->=20
-> /* All hard-wired (pin-strapped) case */
-> adi,pga-value =3D <1>;
->=20
-> maybe we could have something like
->=20
-> /* All gpios */
-> pga-gpios =3D <&gpio0 0 GPIO_ACTIVE_HIGH>,
->             <&gpio0 1 GPIO_ACTIVE_HIGH>;
-> /* or all hard-wired */
-> pga-gpios =3D <&fixed_gpio GPIO_FIXED_LOW>,
->             <&fixed_gpio GPIO_FIXED_LOW>;
->=20
-> as suggested by David [4].
->=20
-> Though, I'm also a bit worried about such way of describing the hard-wired
-> connections being potentially confusing as those "fixed-gpios" would not
-> necessarily mean any actual GPIO.
->=20
-> [4]: https://lore.kernel.org/linux-iio/CAMknhBHzXLjkbKAjkgRwEps=3D0YrOgUc=
-dvRpuPRrcPkwfwWo88w@mail.gmail.com/
->=20
->=20
-> With best regards,
-> Marcelo
-
---IJk9hVtxLgVTxZJO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaOkaoAAKCRB4tDGHoIJi
-0utgAP0Wwi0LDpomF8Ynt66f2B6WdGT5A/zQxj/GwL4f+WhADAD9H7yoIwchi7/V
-T/w8Zuk/BBHdUbCDgnUYeNZEpay/uQM=
-=Ukxv
------END PGP SIGNATURE-----
-
---IJk9hVtxLgVTxZJO--
+> Best regards,
 

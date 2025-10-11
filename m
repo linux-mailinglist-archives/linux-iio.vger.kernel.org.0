@@ -1,74 +1,73 @@
-Return-Path: <linux-iio+bounces-24937-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24938-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DA3BCF3B6
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Oct 2025 12:38:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 106CBBCF3E1
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Oct 2025 12:52:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FEF14015DE
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Oct 2025 10:38:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E96234E5F28
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Oct 2025 10:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E8725C816;
-	Sat, 11 Oct 2025 10:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CA225BEE5;
+	Sat, 11 Oct 2025 10:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YiMyerF+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LNbkR+2+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
+Received: from mail-ed1-f65.google.com (mail-ed1-f65.google.com [209.85.208.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86204254848
-	for <linux-iio@vger.kernel.org>; Sat, 11 Oct 2025 10:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EA21E0DFE
+	for <linux-iio@vger.kernel.org>; Sat, 11 Oct 2025 10:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760179113; cv=none; b=TLoffD0AN5JG/kq6iZvsfMgrx3pTQ+kwtZuUZR5C3t0YHSRE4xuZsWQyVKKyEOpsrIcxn4kHbf8V7GEcDRJSrXRxdByTdNKN3SeIM9vQrShrx5HlOQLx7U2WecPjJYXx1PbBScwORvvxqj2uEMo9xiZyfkmqDf1UrwWjLJNdKJE=
+	t=1760179968; cv=none; b=Mtzka8KB/GKecRNlYOZe5+pHjbNedUGHkST6YHTHaNPrmTLh3b4gdvXacXW2S/WQUUUQAe2DJuoj+nXbgcFi9tSAfFAgsv/tN9pbkwM06gvazpETCUFrQMhxP7DHjYzjQaqY9DMGymyi82Q/McawRAwPJONQXpKoYhLyJQDz8vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760179113; c=relaxed/simple;
-	bh=ZM6gK8/ptNL07x+/PAG3f+iZfMJySGfBm2OlXDFCx6k=;
+	s=arc-20240116; t=1760179968; c=relaxed/simple;
+	bh=8OWEI2Ve7zxoRahlmtY7dTeIvWnJ28oqpstjc7JIgvI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CdlQBIDdCfqk20TBjkVm2T5r4pBpA9punRNe+vFIWKcbBl6/CSk51pfXljWs3JN4kBrB81b5GhagJiUJQVxN3l2ldVhzMmd7CPjgmlezQ423Xb6HOfHaRalGjlPhrBSC8/7r7LKCIn2CZ1Vx0dsL9JoIuEp3i2GgMr+q8J3/4Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YiMyerF+; arc=none smtp.client-ip=209.85.218.68
+	 To:Cc:Content-Type; b=tQGyd9vgLk7oLl7cl76ekstCa8lHdV7v3LREPGRWWt81542VHk8S4iQ59CO/W073u0MtZWry15+PIt6VkzxVArkspDUFWDCagdxL8D3ml7aVYK5oJyOJD8fZSHlR4qz7jvIwoAKClGOLY3f8JPUhC2DDnSOmtOevi8LKWjTgU3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LNbkR+2+; arc=none smtp.client-ip=209.85.208.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-afcb7ae6ed0so474184066b.3
-        for <linux-iio@vger.kernel.org>; Sat, 11 Oct 2025 03:38:25 -0700 (PDT)
+Received: by mail-ed1-f65.google.com with SMTP id 4fb4d7f45d1cf-639fe77bb29so4255370a12.1
+        for <linux-iio@vger.kernel.org>; Sat, 11 Oct 2025 03:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760179104; x=1760783904; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xny2m3uhM/SxXH2HjS7Fl5XTjSKvXRs2Du0+aNtpjtY=;
-        b=YiMyerF+Ci5i4X30bpQRx6Ef7bP9jro3kTE1spZMla6EroksOqX2stYaQKh95Dj1pH
-         TPkEvDNiCP9uJoMxsDStJuCa3KDg29cogpL80yYZtBwRQ3cpxnKpfJgwQQ0kDuWLjoxn
-         NcRCxSSGodwQpoyKu1Zopi/gtpHSouaUUAfTbE8AhRwMjAMzRx6NROWU1zY0/7kLjXJk
-         TxB4Bw4dawK6lO5XVzDAEBbCP6hjt0XNv7znZxDic94Jg5eMWOHq/eF6j9JCj8JTpbJk
-         iAcAog+GhRzpn08Nv0MaLXvDP614G256LtpWWKHP67hWGk2mf9ML/iCrRhsEJ0W1h8er
-         daGQ==
+        d=gmail.com; s=20230601; t=1760179961; x=1760784761; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8OWEI2Ve7zxoRahlmtY7dTeIvWnJ28oqpstjc7JIgvI=;
+        b=LNbkR+2+EOwh+dWGVtLKonqwwWU35Q1VNDtkY8THOFaW2Cb8OiSrqaaVhXQmIAgNoo
+         GlWyk5qwq2VM7tjWJwWNuotmIAkFUfwN4YKIbVJTiQQUgtHIVIXXIQWpuur4n+LSymjg
+         LZ+bg3fZxKUyIt9EcvByg9d1PlKLYQ2+X54woo5idX6zxGO8MnHC108n2rRbaomzVcBr
+         IyLhHM7zutKcAmlZYldGah6Vj6UojasFV8/ji+myUIyyENQ+z501lfsh5FS474usuEbD
+         Fh+bSwMtvmNlkcR9R/VtvJPYHKUHh0iR8Xu3H0j9l586rZ/zIJ4TJn/mlXySHbdJhTKX
+         1GZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760179104; x=1760783904;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xny2m3uhM/SxXH2HjS7Fl5XTjSKvXRs2Du0+aNtpjtY=;
-        b=Z2YQSIRRaEJ8mOlvaU2305kn1Zv9I4ar9s9wtOxOfgSTGGVQHsIOAuDxZpd/LfRFrC
-         m6hZKfLdq0KmP0T2ax8+Rbl6AtI6/CjmoM4MYP6P9w7ibLlQFgqoBGqiSOb9ezydDFuK
-         mzv7ohDXfjnGnbb4G7yucCIDGHegZE4zppxkuH/We2WwLcK3rJj/zahMve1B8Kozxk/q
-         OeqNOXAwEGEp9akgiVHvB6DvTKmcmFYCIQ/L3DD4OrMBDPyi0UPjWfyRCiC+4uR66gO5
-         Abpcpy7CNJfut8UO5A+c7/vEovNgZlBr2G38XtQkatomie2wvcvCaXRqabc1b1hXLcWg
-         JuMA==
-X-Forwarded-Encrypted: i=1; AJvYcCX6p8wVSAniHN97Z0ASpU3oBlvARjqJQU11kMo7zxnaYzPRkMoTzGRM7aolFF08JvmJ2CLu/0fzthk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBi2lYstYAkXbMVj2tLfP5B51/PRFwFOpNhhU8rOWcbErr3etV
-	2oXFLMEcRoxK1sddLq3VIR8u6c9RWgQwI6LtSiC3EmJuWKkhsc+q2VYvAUOA1eGWIyqrjDfqhsg
-	urUXALSMYzLtO/qPjvv/r7oF5Z6cu0Cw=
-X-Gm-Gg: ASbGncsEPKWpqAtDz2lO+FYG0E5sYguJSA88lYWDPQkh6Bxgg3WiqQVJNWkK+pjuySt
-	tVWSGX5cdiAxsbw8Pu/IVTmpLUR9XvT1H/1C043wLw4KIdveH9LovLo13XLZD5TB/ynxAwOx2XP
-	dO9p988mLlE4Enx8IahHevv05Vj6Wc45HtcskDT9MndA8PxyaL4H1szRmTOmY2Yx26pUW34v7NH
-	eusTOMXdNDoeVKG8CVpRznU6A==
-X-Google-Smtp-Source: AGHT+IE7l5xvIFgT9i4m7mh7Oy/v5NjT9bqTFYELpGCEXyYpZaEcHvHT3oTtVXEc7bXN+PyntmQrK0WQUm7ynfY+S08=
-X-Received: by 2002:a17:907:3e13:b0:b40:a71b:152e with SMTP id
- a640c23a62f3a-b50ac1cc39emr1445899966b.40.1760179103638; Sat, 11 Oct 2025
- 03:38:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760179961; x=1760784761;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8OWEI2Ve7zxoRahlmtY7dTeIvWnJ28oqpstjc7JIgvI=;
+        b=cqrg60pr6P62HmeVrP9+wz+jAdCdGg6hMuf2gBsfVsJidxDzBxELjtsxQn9KvyyLEG
+         c33VZQWHTGDWt95Y+7FPiiLv4iYzavvpTQtSFqUc0u+cVFqgVDMY0jxxeLaexbjq8ADf
+         9kGTWnYnpeyqg3pCrkXA8yZYLDwD0hzbn0Kqu6Yg95NIWGRdlh/2KL4xPVFddXfdsflY
+         gJ0SOqE26EkkKMepnOl+Q7xmaYD9DhNeMPg+KxX6tD2iiUb9rxujfc7keOK6iGofSIu9
+         8at2rwNV9oZnIp+XnsYwtCcT6IMJ/T36JWBDzFWBI5jeBWwZEXLfTPiJSA7eUnwPJQMI
+         Qopw==
+X-Forwarded-Encrypted: i=1; AJvYcCVDvx5yNuFcwP45QCC9mrilrr7e8xxhoDkolTLw7Z8/3H3UVuAFQ24Gla+fujL5l0w0aAtE4QvDvN8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3aIeC+XBvjrYZibjYL926FI3WNKtKucs2Qlxg7yHZFUoNi9mI
+	2jDVDxRLrAWEj3tEns/i91nzvtuM/XtGE177Mo0YEmvm3l70ktlLQGp+RLXOiR7T4/xQo8yLTLM
+	tH7UltXPoL+ixRGq18jmvLZ3gu8JHgAE=
+X-Gm-Gg: ASbGncv3wzx8befrPcZ8cQA/72pNcAEy43JK4krI0XSyaGtxablMxR4w7tIqzQ6g4hi
+	Vs9MPsUbjTy6uP3ySCWuPkeEdJCGx8ud3mW/KCb1/Gzhg+loH9RBy0X0FEf645oNZ2K5yPNGWaK
+	dRzkCMMomGKBylV6X2ZFSfYLfzFHTFFu8aXE3nFVri6EKhygiyCf8zt1H77PhyYjazkg3uKYrzz
+	lNhvdUV7YVxUIBFcx5iE5Z38lgGLOCsQ5WCsjxBqJfBFRE=
+X-Google-Smtp-Source: AGHT+IF6QH0ZvGGeu7syJtGwnYam98YA7aQ4YBC4SL91FthZsg1FL7JABmIcldVJaVFWBD3dXjjVorqgK2JB9+CSoXA=
+X-Received: by 2002:a17:906:6a1f:b0:b41:660:13b8 with SMTP id
+ a640c23a62f3a-b50aba9ebf7mr1660189466b.31.1760179960946; Sat, 11 Oct 2025
+ 03:52:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,83 +75,42 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20251008031737.7321-1-raskar.shree97@gmail.com>
- <20251008031737.7321-2-raskar.shree97@gmail.com> <175992812188.3371104.5716471946724146308.robh@kernel.org>
-In-Reply-To: <175992812188.3371104.5716471946724146308.robh@kernel.org>
+ <20251008031737.7321-2-raskar.shree97@gmail.com> <9970e8f6-8b8c-4d9d-97ce-f89b948d6c97@kernel.org>
+In-Reply-To: <9970e8f6-8b8c-4d9d-97ce-f89b948d6c97@kernel.org>
 From: Shrikant <raskar.shree97@gmail.com>
-Date: Sat, 11 Oct 2025 16:08:12 +0530
-X-Gm-Features: AS18NWAnttKcW-sKW8_JBGa9qUMRxmLzTjvvzFAZDNvf13qm3vN4yW9SF_3ub_k
-Message-ID: <CAHc1_P6xDS1kec8mScCGHfPiVYbBBK8Hr8rgve5xSsLk=2Keyg@mail.gmail.com>
+Date: Sat, 11 Oct 2025 16:22:29 +0530
+X-Gm-Features: AS18NWCeqmbWUT9hRBS5hR7tp38w-hhCaezVQ74ixvOjKVU1p9A72eXYN3wOTVU
+Message-ID: <CAHc1_P7PDOMqrBxvXx-fO3GkncapOsqkxVs9HyZdwReCQFn9jw@mail.gmail.com>
 Subject: Re: [PATCH v2 1/2] dt-bindings: iio: max30100: Add pulse-width property
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: nuno.sa@analog.com, dlechner@baylibre.com, linux-kernel@vger.kernel.org, 
-	andy@kernel.org, linux-iio@vger.kernel.org, matt@ranostay.sg, 
-	linux-kernel-mentees@lists.linux.dev, krzk+dt@kernel.org, 
-	devicetree@vger.kernel.org, skhan@linuxfoundation.org, jic23@kernel.org, 
-	conor+dt@kernel.org, david.hunter.linux@gmail.com
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, matt@ranostay.sg, 
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-> My bot found errors running 'make dt_binding_check' on your patch:
+> > Signed-off-by: Shrikant Raskar <raskar.shree97@gmail.com>
+> >
+> > Changes since v1:
+> > Add unit suffix.
+> > Drop redundant description.
+> >
+> > Link to v1:
+> > https://lore.kernel.org/all/20251004015623.7019-2-raskar.shree97@gmail.com/
 >
-> yamllint warnings/errors:
+> This does not belong to commit msg but to changelog under ---.
 >
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/i=
-io/health/maxim,max30100.yaml: properties:maxim,pulse-width-us: 'enum' shou=
-ld not be valid under {'enum': ['const', 'enum', 'exclusiveMaximum', 'exclu=
-siveMinimum', 'minimum', 'maximum', 'multipleOf', 'pattern']}
->         hint: Scalar and array keywords cannot be mixed
->         from schema $id: http://devicetree.org/meta-schemas/keywords.yaml=
-#
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/i=
-io/health/maxim,max30100.yaml: properties:maxim,pulse-width-us: 'anyOf' con=
-ditional failed, one must be fixed:
->         'enum' is not one of ['maxItems', 'description', 'deprecated']
->                 hint: Only "maxItems" is required for a single entry if t=
-here are no constraints defined for the values.
->         Additional properties are not allowed ('enum' was unexpected)
->                 hint: Arrays must be described with a combination of minI=
-tems/maxItems/items
->         'maxItems' is not one of ['description', 'deprecated', 'const', '=
-enum', 'minimum', 'maximum', 'multipleOf', 'default', '$ref', 'oneOf']
->         1 is less than the minimum of 2
->                 hint: Arrays must be described with a combination of minI=
-tems/maxItems/items
->         hint: cell array properties must define how many entries and what=
- the entries are when there is more than one entry.
->         from schema $id: http://devicetree.org/meta-schemas/core.yaml#
+> See submitting patches.
 >
-> doc reference errors (make refcheckdocs):
+> You need to also start testing your patches BEFORE you send them.
 >
-> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/202510=
-08031737.7321-2-raskar.shree97@gmail.com
->
-> The base for the series is generally the latest rc1. A different dependen=
-cy
-> should be noted in *this* patch.
->
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
->
-> pip3 install dtschema --upgrade
->
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your sch=
-ema.
->
-Hi Rob,
-Thank you for reviewing my patch and pointing out the dt-binding schema iss=
-ues.
-I=E2=80=99ve updated the YAML to fix the reported warnings. I=E2=80=99ll ve=
-rify with
-yamllint and dtschema
-to confirm there are no remaining errors and submit a corrected v3
-patch shortly.
+Hello Krzysztof ,
+Thanks for reviewing the patch and sharing your feedback.
+I have removed the changelog from the commit message and added under ---.
+I will test and will share the updated version of the patch shortly.
 
 Thanks for your guidance.
-
 Regards,
 Shrikant
 

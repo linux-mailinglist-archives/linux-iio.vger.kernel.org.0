@@ -1,62 +1,72 @@
-Return-Path: <linux-iio+bounces-24986-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24987-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF3D3BD0850
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 19:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3501ABD0859
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 19:15:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF0213AE0A5
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 17:11:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D96643B2905
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 17:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681DB2ECD26;
-	Sun, 12 Oct 2025 17:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB9E2EC097;
+	Sun, 12 Oct 2025 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YD//PR7z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YU+8x89S"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E5C2772D;
-	Sun, 12 Oct 2025 17:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8191CEAA3;
+	Sun, 12 Oct 2025 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760289057; cv=none; b=JERnWFUNCC5r3WFHN/ZrhkUnsmn+NrgEDDCFRz6+ha5DNfd8P3GV+oeYsJ2nJbBfHxbGgF2F1yMbZs7j9kNc/CWTQ17G2I14FA3M1TKu/lfeL9aCv1Zm7erZw0xZZkq15/IIc1W/3Me+CvdUdGsa6ZD+1yOOyP+GtCJFlPg0Bno=
+	t=1760289350; cv=none; b=Hjk/cVws0RK3kVvxr3j2BTqYrH5yVPc13sQRGljKcDj7pe13mJ8EbHeHHnXTeTDW2o3XAHc+H8oMe4F0MRE9lMyv6BE5xvyepvnkt3db18CGEtHhDQ5JKQOQiW0ZT0XavqYcD7W2VjeT6sid+W/1zP25ef5MhcaVDJutAkyo2Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760289057; c=relaxed/simple;
-	bh=utBef4wbtBn4WomwxLfDwTowUkRZAmTSDksWDhDip/o=;
+	s=arc-20240116; t=1760289350; c=relaxed/simple;
+	bh=wtS+qAeKr0CCO+Mhq6PZSEwGQeMzWeyVS/24iTfdb2g=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gW2GDrXxlZdgLzpyGhhnYAU8A9AGo6MhJHCOD5gGvbPji9c+dqepcFwb/HRGFsZESBEmIHbZ7TwB3LiLNiNT0KL1aJVZOLzfOfIvB/G3KhXObItMRoMCeBYHOEw4DxtGPMsmsih5eKZc4Ypd67SzCSjT6ewVkhWxsQrru+6SxKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YD//PR7z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6F1C4CEE7;
-	Sun, 12 Oct 2025 17:10:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JCW+Q+oTGt1smXdxFKq7za4Tmwz/5pIVY98ZJmtZVBtosh0whiZpkQhuzSGgSog5xcqtPFsxY/tKljr/RXRtWOkFNjPEbXKBIHgJcYX0yh731SXUnUm0Pr2i2zACSkj1y7HprKAoFJEWbbOaPZxakx9CjP+kuMqSZBvJSVG4RCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YU+8x89S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72871C4CEE7;
+	Sun, 12 Oct 2025 17:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760289056;
-	bh=utBef4wbtBn4WomwxLfDwTowUkRZAmTSDksWDhDip/o=;
+	s=k20201202; t=1760289350;
+	bh=wtS+qAeKr0CCO+Mhq6PZSEwGQeMzWeyVS/24iTfdb2g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YD//PR7zObHa3TwUZrfBX9IeNrJDFWZGjMcSwo8n8LNYwBMZZ7oWPQyM7jIPRif31
-	 qrreEOLLIafoLuujojamo+q4alGVkstEvkTQQGp3MjB0K0DwbHPUrap6+v9OrFBP77
-	 rRQxZp9oZlf9x5/8uC0RVhc3L/QGSRSxP/9fxJuAawgsm6b3fIg3I/1tnKXcGkF0Cc
-	 FXG+K2J2aRnQeWCN6RsU7iUnbqdRJQErOptiN4J/nT1KyZGYSInUA9loMAIeTWdiVo
-	 BjetEDda15/wv3USgH5QG9pXKnysLYGcmLnEGwafQJOYthTpLgmpTl62C76rvJyIBS
-	 bHDPo7Wgq83Vw==
-Date: Sun, 12 Oct 2025 18:10:43 +0100
+	b=YU+8x89S/34gVqEOIO7AB/9pVI6iVqXApr9fs1f2O7qWCPZkGFozvbBW/E+9qjZsp
+	 q3i1IVjyPrhngQOdfoLeOwCnl8oX2Bw126GSN/7nDgLMnic9XE6xPrC/Jm4DIHcua6
+	 INySSw17YL7GCbnG1WzCUS9iphm10lI63yC0iOv8oPFekogN0GzEiOjsY2wv/3Avau
+	 Xo/8Cpqj1I2Z5M4FejKgyFiI3cPsgcgQTtA2wTvxuTDPZ41GUFecFf5jW1QaHB4Pwi
+	 JU0ezrYa/A9RXsIB0UtSY3sgo3zosW7H62PMOZScBfD3oS0PefV8C6FmgjndWia5S8
+	 JU4pmgA9d2ewQ==
+Date: Sun, 12 Oct 2025 18:15:37 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Lakshay Piplani <lakshay.piplani@nxp.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- marcelo.schmitt1@gmail.com, gregkh@linuxfoundation.org,
- viro@zeniv.linux.org.uk, peterz@infradead.org, jstephan@baylibre.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- devicetree@vger.kernel.org, jdelvare@suse.com, linux@roeck-us.net,
- vikash.bansal@nxp.com, priyanka.jain@nxp.com, shashank.rebbapragada@nxp.com
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: temperature: Add NXP P3T175x
- support
-Message-ID: <20251012181043.510976c8@jic23-huawei>
-In-Reply-To: <20251008100713.1198461-2-lakshay.piplani@nxp.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Lakshay Piplani <lakshay.piplani@nxp.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "dlechner@baylibre.com" <dlechner@baylibre.com>, "nuno.sa@analog.com"
+ <nuno.sa@analog.com>, "andy@kernel.org" <andy@kernel.org>,
+ "marcelo.schmitt1@gmail.com" <marcelo.schmitt1@gmail.com>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "peterz@infradead.org"
+ <peterz@infradead.org>, "jstephan@baylibre.com" <jstephan@baylibre.com>,
+ "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+ <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "jdelvare@suse.com" <jdelvare@suse.com>, Vikash Bansal
+ <vikash.bansal@nxp.com>, Priyanka Jain <priyanka.jain@nxp.com>, Shashank
+ Rebbapragada <shashank.rebbapragada@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v4 0/2] iio: temperature: Add support for NXP
+ P3T175x temperature sensors
+Message-ID: <20251012181537.6600e6b8@jic23-huawei>
+In-Reply-To: <b4fd595a-8507-43b7-9390-d819867d7cef@roeck-us.net>
 References: <20251008100713.1198461-1-lakshay.piplani@nxp.com>
-	<20251008100713.1198461-2-lakshay.piplani@nxp.com>
+	<96f5443f-5b40-4d05-b350-78d55a1d841d@roeck-us.net>
+	<AS4PR04MB9362FDA1FE35AD06C99B85E3FBEEA@AS4PR04MB9362.eurprd04.prod.outlook.com>
+	<b4fd595a-8507-43b7-9390-d819867d7cef@roeck-us.net>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,123 +74,99 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed,  8 Oct 2025 15:37:12 +0530
-Lakshay Piplani <lakshay.piplani@nxp.com> wrote:
+On Thu, 9 Oct 2025 15:37:42 -0700
+Guenter Roeck <linux@roeck-us.net> wrote:
 
-> Add bindings for the NXP P3T175x (P3T1750/P3T1755) temperature
-> sensor, supporting both I2C & I3C interfaces.
->=20
-> The P3T1750 and P3T1755 are functionally equivalent temperature
-> sensors with identical interfaces and features. The P3T1755 offers
-> improved accuracy(=C2=B10.5=C2=B0C) in the =E2=80=9320=C2=B0C to +85=C2=
-=B0C range, while both
-> maintain =C2=B11=C2=B0C accuracy across =E2=80=9340=C2=B0C to +125=C2=B0C.
->=20
-> Signed-off-by: Lakshay Piplani <lakshay.piplani@nxp.com>
-> ---
-> V3 -> V4: Changes since V3:
-> 	  - Updated commit message to clarify the difference between P3T1750 and=
- P3T1755.
-> V2 -> V3: Changes since V2:
->           - Removed nxp,interrupt-mode and nxp,fault-queue properties fro=
-m DT binding
->           - Updated compatible strings:
->             - nxp,p3t1750-iio =E2=86=92 nxp,p3t1750dp
->             - nxp,p3t1755-iio =E2=86=92 nxp,p3t1755dp
-> V1 -> V2: Changes since V1:
->           - Dropped nxp,alert-active-high
->           - Fixed YAML formatting, line wrapping, and examples
->=20
->  .../bindings/iio/temperature/nxp,p3t1755.yaml | 62 +++++++++++++++++++
->  1 file changed, 62 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/temperature/nxp=
-,p3t1755.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/nxp,p3t175=
-5.yaml b/Documentation/devicetree/bindings/iio/temperature/nxp,p3t1755.yaml
-> new file mode 100644
-> index 000000000000..16a01fa81251
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/temperature/nxp,p3t1755.yaml
-> @@ -0,0 +1,62 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/temperature/nxp,p3t1755.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP P3T175xDP Temperature Sensor
-> +
-> +maintainers:
-> +  - Lakshay Piplani <lakshay.piplani@nxp.com>
-> +
-> +description: |
-> +  Datasheet: https://www.nxp.com/docs/en/data-sheet/P3T1755.pdf
-> +
-> +  P3T175xDP (P3T1750/P3T1755) is a digital temperature sensor with a ran=
-ge of
-> +  -40=C2=B0C to +125=C2=B0C and a 12-bit resolution. It supports communi=
-cation over both
-> +  I2C and I3C interfaces.
-> +
-> +  The I2C interface supports up to 32 static addresses and provides an A=
-LERT
-> +  output to signal when temperature thresholds are crossed.
-> +
-> +  The I3C interface supports In-Band interrupts (IBI) in interrupt mode,
-> +  allowing the device to notify the controller of threshold events witho=
-ut
-> +  dedicated alert pin.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nxp,p3t1750dp
-> +      - nxp,p3t1755dp
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reg:
-> +    maxItems: 1
-> +    description: |
-> +      In I2C mode, the device supports up to 32 static addresses.
-> +      In I3C mode, the 'reg' property encodes a triplet of
-> +      <static-address BCR PID> used for device matching.
-> +      Static address is optional if matching is done via PID.
-> +
-Aim for completeness of description.  This sensor needs power so
-there should be a regulator.  As power must be connected convention
-is to make that required as well.  That doesn't necessarily mean
-specific dts can't rely on fallback 'fake' regulators that get created
-by Linux when one is requested that we haven't provided in DT though.
+> On 10/8/25 22:56, Lakshay Piplani wrote:
+> >   
+> >> -----Original Message-----
+> >> From: Guenter Roeck <groeck7@gmail.com> On Behalf Of Guenter Roeck
+> >> Sent: Wednesday, October 8, 2025 7:41 PM
+> >> To: Lakshay Piplani <lakshay.piplani@nxp.com>; linux-kernel@vger.kernel.org;
+> >> linux-iio@vger.kernel.org; jic23@kernel.org; dlechner@baylibre.com;
+> >> nuno.sa@analog.com; andy@kernel.org; marcelo.schmitt1@gmail.com;
+> >> gregkh@linuxfoundation.org; viro@zeniv.linux.org.uk; peterz@infradead.org;
+> >> jstephan@baylibre.com; robh@kernel.org; krzk+dt@kernel.org;
+> >> conor+dt@kernel.org; devicetree@vger.kernel.org
+> >> Cc: jdelvare@suse.com; Vikash Bansal <vikash.bansal@nxp.com>; Priyanka
+> >> Jain <priyanka.jain@nxp.com>; Shashank Rebbapragada
+> >> <shashank.rebbapragada@nxp.com>
+> >> Subject: [EXT] Re: [PATCH v4 0/2] iio: temperature: Add support for NXP
+> >> P3T175x temperature sensors
+> >>
+> >> [You don't often get email from linux@roeck-us.net. Learn why this is
+> >> important at https://aka.ms/LearnAboutSenderIdentification ]
+> >>
+> >> Caution: This is an external email. Please take care when clicking links or
+> >> opening attachments. When in doubt, report the message using the 'Report
+> >> this email' button
+> >>
+> >>
+> >> On 10/8/25 03:07, Lakshay Piplani wrote:  
+> >>> This patch adds support for the P3T1750/P3T1755 temperature sensors  
+> >> under the IIO subsystem.  
+> >>>
+> >>> P3T1750/P3T1755 support two operational modes:
+> >>> 1. Comparator Mode
+> >>> 2. Interrupt (Latched) Mode
+> >>>
+> >>> The HWMON subsystem is more suitable for implementing drivers for  
+> >> comparator mode operations.  
+> >>> Reason:
+> >>>     - Temperature thresholds can be polled and exposed via sysfs.
+> >>>     - Register reads do not clear status, allowing safe alarm state derivation.
+> >>>     - Matches existing drivers under hwmon.
+> >>>
+> >>> The IIO subsystem is more suitable for implementing drivers for interrupt  
+> >> (latched) mode operations.  
+> >>> Reason:
+> >>>     - Interrupt mode uses edge-triggered ALERT/IBI signal interrupts, which  
+> >> can be pushed to user space using iio_push_event.  
+> >>>     - IIO's event API (IIO_EV_TYPE_THRESH) supports timestamped  
+> >> rising/falling edge events.  
+> >>>     - I3C IBI integration maps naturally to IIO's event push model.
+> >>>     - No persistent alarm bits are available; so polling in HWMON may result in  
+> >> missing events.  
+> >>>  
+> >>
+> >> This is just wrong. Interrupt support can just as well be implemented in a
+> >> hwmon driver.
+> >>
+> >> Guenter  
+> > 
+> > Hi Guenter,
+> > 
+> > Thanks - agreed, hwmon drivers can support interrupts.
+> > The distinction I meant to highlight is about semantic alignment.
+> > Both P3T1750 and P3T1755 does not provide alarm/status bits. In TM=1 (interrupt mode), the alert is latched
+> > but cleared on register read, with no way to query alarm state afterward.
+> > 
+> > HWMON typically polls alarm flags via IRQs, expecting them to remain asserted during threshold violations.
+> > Without persistent bits, supporting interrupts in hwmon would require emulating state in software, which diverges  
+> 
+> So ? Various drivers already do that. It is not even necessary to "emulate
+> the state in software". Just store the state in the interrupt handler, and
+> report (and clear) the state when the alarm file(s) are read.
+> 
+> > from its ABI and could mislead userspace expecting stable *_alarm files.  
+> 
+> This is just incorrect.
+> 
+> > IIO's event API, being edge-triggered and timestamped, aligns more naturally with
+> > this transient behavior and with I3C IBI signaling.
+> > 
+> > I'll reword the cover letter to clarify that this is a design choice based on ABI semantics, not a limitation of hwmon.  
+> 
+> Again, that design choice is not a reason to have two drivers for the same chip.
+> 
+> Guenter
 
-For driver side just use devm_regulator_get_enabled() and forget about it
-after that.
++1.  I'm not seeing anything yet that rules out a straight forward hwmon driver for this
+and as it is a simple temperature sensor hwmon is preferred home.
 
-
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        temp-sensor@48 {
-> +            compatible =3D "nxp,p3t1755dp";
-> +            reg =3D <0x48>;
-> +            interrupt-parent =3D <&gpio2>;
-> +            interrupts =3D <3 IRQ_TYPE_EDGE_FALLING>;
-> +        };
-> +    };
+Jonathan
 
 

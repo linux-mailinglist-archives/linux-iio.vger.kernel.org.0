@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-24945-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24946-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A824BCFF37
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 05:12:41 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 268A5BCFF43
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 05:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0D2164E4BF1
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 03:12:40 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A14743489FA
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 03:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF401E5206;
-	Sun, 12 Oct 2025 03:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A81E1E521A;
+	Sun, 12 Oct 2025 03:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ma5yDd3v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uqg7uJpF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BDC2B2D7;
-	Sun, 12 Oct 2025 03:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C652B2D7;
+	Sun, 12 Oct 2025 03:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760238755; cv=none; b=YdZ/zHInxC2vu0YU4lajcc43Lq6QhWqaG9n7lDaiKcY/qxeDaNKRjy3OmdAbOV/6dwvLzZ8/r4v0ioTIyG4uY0guzzQm9v/F8sgYUlQotTtq6PS3FgH1TvviQCAN1h8Na2vQuUhxMYR4QyhMDe6yt6d4Thr5tMeWxVFOz2IW0o4=
+	t=1760238841; cv=none; b=aGGy7M63YysNegXZwmoYBcW7yl5tfVtkYbtctM5tZfXihsDy8+oM+GAGDsSzD47Btj/O0xQwQIf0YYuG8qOPj2U3VjzH6exzZda7NOJjh2Taek1I9XXp8dJ02wfRJu9FpFOY4LsjJ7e0+ksNFzcbjgYrMCUtP6bBzYXP+3z0wjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760238755; c=relaxed/simple;
-	bh=G3ttQDwiif6cBy6srwzXOVCv3ZJBYGMYbElRaJ0/qb0=;
+	s=arc-20240116; t=1760238841; c=relaxed/simple;
+	bh=AqIIbQlxKbU2WQho2l73lLQz55TApllCEK2yK6AOY6k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ehqi36yYsJXzH7AkmoZBSjesNw8wiMF2/w72/kMQnbw4YexI3hV/UWhMus4W14RoiKWD2wai2yL2xY/IRX1REDvcWfJtfoh1yZP1DLil907x3EXF7MbbXxvF9HVrYqEergQ2KIQr65ZPOFq3ckWGW1skbq4wXkTxkd1Se0ltMqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ma5yDd3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799F3C4CEE7;
-	Sun, 12 Oct 2025 03:12:28 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=CC0gYW5DyJc1jM1VuGU5Voxvj0hNy/dhzJJoUeR37j9SwgMT4ii7DP+MikMhxTCy7fuiC6u4Vl7kdatVq55Dmih/g1G7ut+levpJOwF8YnuUyECV+VNMbmpXt1KO76Oog8KaGwWWUxdTaXi2dPuDr896XucnR0xyY/7TFXGwVFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uqg7uJpF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7013C4CEE7;
+	Sun, 12 Oct 2025 03:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760238755;
-	bh=G3ttQDwiif6cBy6srwzXOVCv3ZJBYGMYbElRaJ0/qb0=;
+	s=k20201202; t=1760238841;
+	bh=AqIIbQlxKbU2WQho2l73lLQz55TApllCEK2yK6AOY6k=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ma5yDd3vIIlk+WiZQaU4K328Se91Kc8O5bvo5s25DgQCxGak78JSph9cxdCyN8h8e
-	 eSnbv7Dp9bELAr5OI2nVIYIkAKIs3LMX63AjhtW2T7mOi8w8zdLFZFGtcSd/0tx0Vs
-	 Y+7wRvh4cZortjEN8D1KLIOZyARpW/B1OTkTmH7GZggHmzOP7L2VQtuCvzjbDUWVDb
-	 dxZCngz5KQSx/BJ9Uq9gybkpM2yjvHXIZGfj1Mki8goHCRg1fod3A/NvtwQI/J8yQx
-	 zuTbKxf/deQ878EoNvazEuH3SstyDeGNPlQoLfwz4TmOIZTPClpOllp8Fxsjif59d+
-	 K1/ZhowgQ15XA==
-Message-ID: <95c1ba99-510b-4efb-9b6d-4c1103fc43a5@kernel.org>
-Date: Sun, 12 Oct 2025 05:12:26 +0200
+	b=uqg7uJpFRhWdH0Vie31JMI6soO+mZIeEukoAIY9tsx3aeTeHMjYT/ol6Kk8KzdTGk
+	 sQO0ZZ8bovMM9hRnTOkkpGKHxYBxxONK02Lz81RvzXFbW0G5CPPMKPLGph9ZVZ7nYI
+	 1gsJJG3eX/w333r1qkmThub76tpkBYZCHK1PrDViSyBTKDubx3uK+kd/ICBHP7+r4J
+	 vesM4+v4c77RILKgfKm6oT/dwfhzDZkW+irV2kzm0Yj9afPJFiMuLwWZ0wogcABq3P
+	 3lTyTuImL0v/eE/wBJL/HCaB2RtuHXJJHsidP3tymC4kctxkgYS8og4zo5INWe2z8u
+	 ofgo/oAO3KExw==
+Message-ID: <aa5d7fb2-2143-43b1-8780-87b69479a17b@kernel.org>
+Date: Sun, 12 Oct 2025 05:13:53 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,18 +50,16 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: pressure: adp810: Add driver for adp810 sensor
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
- Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-Cc: jic23@kernel.org, dlechner@baylibre.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, nuno.sa@analog.com,
- andy@kernel.org, marcelo.schmitt1@gmail.com, vassilisamir@gmail.com,
- salah.triki@gmail.com, skhan@linuxfoundation.org, linux-iio@vger.kernel.org,
+Subject: Re: [PATCH 1/2] dt-bindings: iio: pressure: Add Aosong adp810
+To: Akhilesh Patil <akhilesh@ee.iitb.ac.in>, jic23@kernel.org,
+ dlechner@baylibre.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, nuno.sa@analog.com, andy@kernel.org,
+ marcelo.schmitt1@gmail.com, vassilisamir@gmail.com, salah.triki@gmail.com
+Cc: skhan@linuxfoundation.org, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
  akhileshpatilvnit@gmail.com
 References: <cover.1760184859.git.akhilesh@ee.iitb.ac.in>
- <8c202e7ccd332b26217d529a7a73b7a3ef0726ea.1760184859.git.akhilesh@ee.iitb.ac.in>
- <CAHp75VdGJfMALGOFvkOW=JZ0yHE2QbRSzNs2Xd42-Weec1GmQw@mail.gmail.com>
+ <5ddfc7d318a7d3a42cfce4a33ad62f3d2be91a11.1760184859.git.akhilesh@ee.iitb.ac.in>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -107,24 +105,52 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <CAHp75VdGJfMALGOFvkOW=JZ0yHE2QbRSzNs2Xd42-Weec1GmQw@mail.gmail.com>
+In-Reply-To: <5ddfc7d318a7d3a42cfce4a33ad62f3d2be91a11.1760184859.git.akhilesh@ee.iitb.ac.in>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 11/10/2025 16:10, Andy Shevchenko wrote:
-> On Sat, Oct 11, 2025 at 3:25 PM Akhilesh Patil <akhilesh@ee.iitb.ac.in> wrote:
->> +AOSONG ADP810 DIFFERENTIAL PRESSURE SENSOR DRIVER
->> +M:     Akhilesh Patil <akhilesh@ee.iitb.ac.in>
->> +L:     linux-iio@vger.kernel.org
->> +S:     Maintained
->> +F:     Documentation/devicetree/bindings/iio/pressure/aosong,adp810.yaml
->> +F:     drivers/iio/pressure/adp810.c
-> 
-> Some tools will report an orphaned yaml file if you apply patch 1
-> without patch 2.
+On 11/10/2025 14:25, Akhilesh Patil wrote:
+> +---
+> +$id: http://devicetree.org/schemas/iio/pressure/aosong,adp810.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: aosong adp810 differential pressure sensor
+> +
+> +maintainers:
+> +  - Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+> +
+> +description: |
 
-You mean checkpatch? That warning is not really relevant. Adding
-maintainers entry here for both files is perfectly fine and correct.
+If there is going to be any new version, drop |.
+
+
+> +  ADP810 is differential pressure and temperature sensor. It has I2C bus interface
+
+Wrap at 80 (see coding style).
+
+
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+<form letter>
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you know the process, just skip it entirely
+(please do not feel offended by me posting it here - no bad intentions
+intended, no patronizing, I just want to avoid wasted efforts). If you
+do not know the process, here is a short explanation:
+
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
+of patchset, under or above your Signed-off-by tag, unless patch changed
+significantly (e.g. new properties added to the DT bindings). Tag is
+"received", when provided in a message replied to you on the mailing
+list. Tools like b4 can help here ('b4 trailers -u ...'). However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for tags received on the version they apply.
+
+Full context and explanation:
+https://elixir.bootlin.com/linux/v6.15/source/Documentation/process/submitting-patches.rst#L591
+</form letter>
+
 
 Best regards,
 Krzysztof

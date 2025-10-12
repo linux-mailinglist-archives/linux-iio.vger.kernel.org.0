@@ -1,172 +1,134 @@
-Return-Path: <linux-iio+bounces-24987-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24988-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3501ABD0859
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 19:15:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8EFBD0881
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 19:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D96643B2905
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 17:15:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19D533BF94C
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 17:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB9E2EC097;
-	Sun, 12 Oct 2025 17:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9538B2EDD6B;
+	Sun, 12 Oct 2025 17:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YU+8x89S"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HYJDlZOP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f68.google.com (mail-pj1-f68.google.com [209.85.216.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8191CEAA3;
-	Sun, 12 Oct 2025 17:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4061E7C19
+	for <linux-iio@vger.kernel.org>; Sun, 12 Oct 2025 17:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760289350; cv=none; b=Hjk/cVws0RK3kVvxr3j2BTqYrH5yVPc13sQRGljKcDj7pe13mJ8EbHeHHnXTeTDW2o3XAHc+H8oMe4F0MRE9lMyv6BE5xvyepvnkt3db18CGEtHhDQ5JKQOQiW0ZT0XavqYcD7W2VjeT6sid+W/1zP25ef5MhcaVDJutAkyo2Ds=
+	t=1760290253; cv=none; b=QfDjNohA95RUY5uy/NNHAf1ABDMYNtz+cW+nkmzUZJURd8VRwZDJjVy4z/IdNMprndwwkXY0Echg2U0wTyMV3hY5y5g5BIcI1mV82NhkmRbBGEoq7nF6Z9kBNwZ/vx+NKXEzA8ML1UkF0ykq7K3Q/iK7mtvlov6k+rHhSMxD2LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760289350; c=relaxed/simple;
-	bh=wtS+qAeKr0CCO+Mhq6PZSEwGQeMzWeyVS/24iTfdb2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JCW+Q+oTGt1smXdxFKq7za4Tmwz/5pIVY98ZJmtZVBtosh0whiZpkQhuzSGgSog5xcqtPFsxY/tKljr/RXRtWOkFNjPEbXKBIHgJcYX0yh731SXUnUm0Pr2i2zACSkj1y7HprKAoFJEWbbOaPZxakx9CjP+kuMqSZBvJSVG4RCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YU+8x89S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72871C4CEE7;
-	Sun, 12 Oct 2025 17:15:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760289350;
-	bh=wtS+qAeKr0CCO+Mhq6PZSEwGQeMzWeyVS/24iTfdb2g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YU+8x89S/34gVqEOIO7AB/9pVI6iVqXApr9fs1f2O7qWCPZkGFozvbBW/E+9qjZsp
-	 q3i1IVjyPrhngQOdfoLeOwCnl8oX2Bw126GSN/7nDgLMnic9XE6xPrC/Jm4DIHcua6
-	 INySSw17YL7GCbnG1WzCUS9iphm10lI63yC0iOv8oPFekogN0GzEiOjsY2wv/3Avau
-	 Xo/8Cpqj1I2Z5M4FejKgyFiI3cPsgcgQTtA2wTvxuTDPZ41GUFecFf5jW1QaHB4Pwi
-	 JU0ezrYa/A9RXsIB0UtSY3sgo3zosW7H62PMOZScBfD3oS0PefV8C6FmgjndWia5S8
-	 JU4pmgA9d2ewQ==
-Date: Sun, 12 Oct 2025 18:15:37 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Lakshay Piplani <lakshay.piplani@nxp.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "dlechner@baylibre.com" <dlechner@baylibre.com>, "nuno.sa@analog.com"
- <nuno.sa@analog.com>, "andy@kernel.org" <andy@kernel.org>,
- "marcelo.schmitt1@gmail.com" <marcelo.schmitt1@gmail.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "peterz@infradead.org"
- <peterz@infradead.org>, "jstephan@baylibre.com" <jstephan@baylibre.com>,
- "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
- <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "jdelvare@suse.com" <jdelvare@suse.com>, Vikash Bansal
- <vikash.bansal@nxp.com>, Priyanka Jain <priyanka.jain@nxp.com>, Shashank
- Rebbapragada <shashank.rebbapragada@nxp.com>
-Subject: Re: [EXT] Re: [PATCH v4 0/2] iio: temperature: Add support for NXP
- P3T175x temperature sensors
-Message-ID: <20251012181537.6600e6b8@jic23-huawei>
-In-Reply-To: <b4fd595a-8507-43b7-9390-d819867d7cef@roeck-us.net>
-References: <20251008100713.1198461-1-lakshay.piplani@nxp.com>
-	<96f5443f-5b40-4d05-b350-78d55a1d841d@roeck-us.net>
-	<AS4PR04MB9362FDA1FE35AD06C99B85E3FBEEA@AS4PR04MB9362.eurprd04.prod.outlook.com>
-	<b4fd595a-8507-43b7-9390-d819867d7cef@roeck-us.net>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1760290253; c=relaxed/simple;
+	bh=gzP73eKDgJq0OXCIKtEvkLfNMbdAuUvkBODtFN2PhFM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fe12t8HtgT16JBKtsjccYJTqWfa9OxwEVNip2DtVIDbZ5pY+T+qMq1y5iUZmS0FGOhjYWdXKW0WBDxgsvTYHL9FjQsOItJaQwEgIOwuDcsHS+jLlMQXHeRho8gYBpc1F68HfedKMVK5/doG/9TUVuX60IRFF7SIyxiviv+3eswM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HYJDlZOP; arc=none smtp.client-ip=209.85.216.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f68.google.com with SMTP id 98e67ed59e1d1-32eb76b9039so4606930a91.1
+        for <linux-iio@vger.kernel.org>; Sun, 12 Oct 2025 10:30:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760290251; x=1760895051; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=a66RlRrFvTTKMeb9fHGsG8vzY8MvLsI+lGOp/Fg2CSg=;
+        b=HYJDlZOPN4QdWiAOpXErzJP9jSIL2IbDBb5UozjrECl19/1i8DsD8EjKXs1w0P2gfU
+         cUrXtZ9iCHs14s04IaVBn10yWE92tmPffTLSbjiTykq2Fczf6UGZW67qx/dusxtevTpA
+         wU+gaAwGaDVr9QcJ0YrqGEmm1jI5BUasuykJkgGll7Ihc6NPchx4w4UzTxhxB1ffONbN
+         fckwQrZynkLhf7CfdqJzIt5Tlba5l52oY32H5K15BEpix9qGEpCK0WC5S4vTFV0zSDoV
+         LX20bg3uF3xRTKgXjPIbVwnrqlrkGMhuk5tN6CSMFd5nnG8OOrAdIlq80TqARU95FxQq
+         2PtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760290251; x=1760895051;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a66RlRrFvTTKMeb9fHGsG8vzY8MvLsI+lGOp/Fg2CSg=;
+        b=Mm62mOXWx7a5JPt/3s5t/jfzoIu0BnCR8chtE/w5tER4mkAWX7w+Sh1BWeSIav2O7y
+         rKlY26ZVdlKkolqkIaJvP2c0DITnZD0c1cwhbR19pcgyDy3dzqmD+ZYFQx26FVMSCXx7
+         fM/z5rsgHqFIP/e1kIo1tkmhbesO6ZyyugLzPoLj13V46eT5bSSvm6y90FpQ2f5843ZX
+         fP+R//dTQBJhoWBP1c1XwNSwmxHervJZD8oRWsw8hjubD+zhyQC4Y/AGIGtUYwqZGpaf
+         FhRX0ZyKjb6YOlaXcLa/wVix+ksr1n8DL1yz/gs9LWY/oHQQgZpKI/MJ/7HJieqdpIOv
+         m5Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCULojJxoy3YDQCqQGkAnQ1NETKfB+o0iJhl/znQ7OYRKanj3GwiUAmmkg7qjG4Iw0hd3B19pEQzbHE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyO97VhiUssdiD8bmuRr/bQ/HwTzGHKC8ddMF6wXbyHV76tqwzH
+	7AjYRjINpxTEKNnBFGHTUS80Gln0LUpuaQLhgmYwkLvh2uw6bqo0tgM4
+X-Gm-Gg: ASbGncv7f3LizB1O16fS1APROklVMrzi7RPgIokxt7g0Ts4LKOdbcNxBCs8GqQ9iPbZ
+	79cqYrjDSeaDmmlKgYMvaLqpxARtRs4+KwtXK+7ymFywYn3jj7V40CHfEtG79K4qaAuzDglSeR1
+	9R9bv6W77DHCM2DOrGs7wd6PA2VX+m/D34S8gWgPxME+nztZU8sAkQYucfojNwvFUZyEg/2R/Ec
+	DuioU++V82jTOIXFpvuyxrUffSj/xhoesjKVATE08WuBxENC5eCa6JB2Ql1iUMqpCxrOdnxbdAv
+	LGBGMfVg1uhuWj/vKJAFTnlXCU1GY3RyF8v0ZRbA9K06XYpIRq0qlu+8lKdjlcjSCSPKgJaTomI
+	AQF8fHY8xxqjDbartLqEURlnE5ocwGAuenB2RV4uMeW6x
+X-Google-Smtp-Source: AGHT+IFWBRH6VbicjAATB63VVFZLQLGTV6p9y+k3koTCoCdtyT6rF2oBp0hHGijhX3XmV73xokjn1w==
+X-Received: by 2002:a17:90b:3d87:b0:32e:d011:ea1c with SMTP id 98e67ed59e1d1-33b51112272mr28805345a91.15.1760290250919;
+        Sun, 12 Oct 2025 10:30:50 -0700 (PDT)
+Received: from Ubuntu24.. ([103.187.64.31])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992d09ace5sm9030616b3a.53.2025.10.12.10.30.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Oct 2025 10:30:50 -0700 (PDT)
+From: Shrikant Raskar <raskar.shree97@gmail.com>
+To: jic23@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	matt@ranostay.sg,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	Shrikant Raskar <raskar.shree97@gmail.com>
+Subject: [PATCH v3 0/2] iio: health: max30100: Add DT LED pulse-width support
+Date: Sun, 12 Oct 2025 23:00:33 +0530
+Message-ID: <20251012173035.12536-1-raskar.shree97@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 9 Oct 2025 15:37:42 -0700
-Guenter Roeck <linux@roeck-us.net> wrote:
+Add Device Tree support for configuring the LED pulse-width of the MAX30100
+sensor, and updates the driver to read and apply this property. 
 
-> On 10/8/25 22:56, Lakshay Piplani wrote:
-> >   
-> >> -----Original Message-----
-> >> From: Guenter Roeck <groeck7@gmail.com> On Behalf Of Guenter Roeck
-> >> Sent: Wednesday, October 8, 2025 7:41 PM
-> >> To: Lakshay Piplani <lakshay.piplani@nxp.com>; linux-kernel@vger.kernel.org;
-> >> linux-iio@vger.kernel.org; jic23@kernel.org; dlechner@baylibre.com;
-> >> nuno.sa@analog.com; andy@kernel.org; marcelo.schmitt1@gmail.com;
-> >> gregkh@linuxfoundation.org; viro@zeniv.linux.org.uk; peterz@infradead.org;
-> >> jstephan@baylibre.com; robh@kernel.org; krzk+dt@kernel.org;
-> >> conor+dt@kernel.org; devicetree@vger.kernel.org
-> >> Cc: jdelvare@suse.com; Vikash Bansal <vikash.bansal@nxp.com>; Priyanka
-> >> Jain <priyanka.jain@nxp.com>; Shashank Rebbapragada
-> >> <shashank.rebbapragada@nxp.com>
-> >> Subject: [EXT] Re: [PATCH v4 0/2] iio: temperature: Add support for NXP
-> >> P3T175x temperature sensors
-> >>
-> >> [You don't often get email from linux@roeck-us.net. Learn why this is
-> >> important at https://aka.ms/LearnAboutSenderIdentification ]
-> >>
-> >> Caution: This is an external email. Please take care when clicking links or
-> >> opening attachments. When in doubt, report the message using the 'Report
-> >> this email' button
-> >>
-> >>
-> >> On 10/8/25 03:07, Lakshay Piplani wrote:  
-> >>> This patch adds support for the P3T1750/P3T1755 temperature sensors  
-> >> under the IIO subsystem.  
-> >>>
-> >>> P3T1750/P3T1755 support two operational modes:
-> >>> 1. Comparator Mode
-> >>> 2. Interrupt (Latched) Mode
-> >>>
-> >>> The HWMON subsystem is more suitable for implementing drivers for  
-> >> comparator mode operations.  
-> >>> Reason:
-> >>>     - Temperature thresholds can be polled and exposed via sysfs.
-> >>>     - Register reads do not clear status, allowing safe alarm state derivation.
-> >>>     - Matches existing drivers under hwmon.
-> >>>
-> >>> The IIO subsystem is more suitable for implementing drivers for interrupt  
-> >> (latched) mode operations.  
-> >>> Reason:
-> >>>     - Interrupt mode uses edge-triggered ALERT/IBI signal interrupts, which  
-> >> can be pushed to user space using iio_push_event.  
-> >>>     - IIO's event API (IIO_EV_TYPE_THRESH) supports timestamped  
-> >> rising/falling edge events.  
-> >>>     - I3C IBI integration maps naturally to IIO's event push model.
-> >>>     - No persistent alarm bits are available; so polling in HWMON may result in  
-> >> missing events.  
-> >>>  
-> >>
-> >> This is just wrong. Interrupt support can just as well be implemented in a
-> >> hwmon driver.
-> >>
-> >> Guenter  
-> > 
-> > Hi Guenter,
-> > 
-> > Thanks - agreed, hwmon drivers can support interrupts.
-> > The distinction I meant to highlight is about semantic alignment.
-> > Both P3T1750 and P3T1755 does not provide alarm/status bits. In TM=1 (interrupt mode), the alert is latched
-> > but cleared on register read, with no way to query alarm state afterward.
-> > 
-> > HWMON typically polls alarm flags via IRQs, expecting them to remain asserted during threshold violations.
-> > Without persistent bits, supporting interrupts in hwmon would require emulating state in software, which diverges  
-> 
-> So ? Various drivers already do that. It is not even necessary to "emulate
-> the state in software". Just store the state in the interrupt handler, and
-> report (and clear) the state when the alarm file(s) are read.
-> 
-> > from its ABI and could mislead userspace expecting stable *_alarm files.  
-> 
-> This is just incorrect.
-> 
-> > IIO's event API, being edge-triggered and timestamped, aligns more naturally with
-> > this transient behavior and with I3C IBI signaling.
-> > 
-> > I'll reword the cover letter to clarify that this is a design choice based on ABI semantics, not a limitation of hwmon.  
-> 
-> Again, that design choice is not a reason to have two drivers for the same chip.
-> 
-> Guenter
+Testing:
+- Verify DT property read successfully in probe().
+- Verify default fallback to 1600 us when DT property is omitted.
+- Confirm SPO2_CONFIG register programmed correctly using regmap_read().
+- Validate different DT pulse-width values (200, 400, 800, 1600 us)
+  are applied correctly.
+- Validate probe() failure for invalid LED pulse-width
+- Tested-on: Raspberry Pi 3B + MAX30100 breakout board
 
-+1.  I'm not seeing anything yet that rules out a straight forward hwmon driver for this
-and as it is a simple temperature sensor hwmon is preferred home.
+Changelog:
+Changes from v2:
+- Fix DT binding schema errors
+- Add default value
+- Remove changelog from commit message
+- Add missing header file
 
-Jonathan
+Shrikant Raskar (2):
+  dt-bindings: iio: health: max30100: Add LED pulse-width property
+  iio: health: max30100: Make LED pulse-width configurable via DT
+
+ .../bindings/iio/health/maxim,max30100.yaml   |  8 ++++
+ drivers/iio/health/max30100.c                 | 38 +++++++++++++++++--
+ 2 files changed, 43 insertions(+), 3 deletions(-)
+
+
+base-commit: 8bd9238e511d02831022ff0270865c54ccc482d6
+-- 
+2.43.0
 
 

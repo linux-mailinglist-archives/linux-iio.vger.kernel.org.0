@@ -1,56 +1,61 @@
-Return-Path: <linux-iio+bounces-24952-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24953-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302CDBD0343
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 16:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C40EBD035B
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 16:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3781894BED
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 14:18:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A04F1894727
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 14:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5423E1A9F8F;
-	Sun, 12 Oct 2025 14:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4D6284688;
+	Sun, 12 Oct 2025 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gANNQYle"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rWhe122P"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B45280004;
-	Sun, 12 Oct 2025 14:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32378283FF0;
+	Sun, 12 Oct 2025 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760278683; cv=none; b=lyOVx/QFZAxGnoSyC8o9AccVouQru/i+pu9htcNomqWnbBvYA4tMOOVQtdKhfgev2Iiahgamh4az5AybhZFcS/nR0vG3RWcvLY+vEMJisnfmeYwM4ZkeFVhZNg6LVJSbAUStwqpk33GnInpVNKVHAUyIaPz18UH7K57/VShb1hU=
+	t=1760278873; cv=none; b=frsDypQNh1uqQ30HVT9xyk3XU3dt9bo0cXsPSKiT0m7BjpXUM9sAnD4H1+KhToINR0aST1AKFlQju982pXrRi6xJpD94rwidkXRmi9WfWIVQjgT7m+wzcxdMld6ij84TfzZ5xibGuAc1npXRc61gWsQqF0lstHA/QXQLi/L4zbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760278683; c=relaxed/simple;
-	bh=lTPc8GO3wB6QyCOvObtK7gyvDMugmgilzvtPy9ig7Jg=;
+	s=arc-20240116; t=1760278873; c=relaxed/simple;
+	bh=XExy5QelfgLgYyiwtAQ2Cv9cu6aIqLKW8004SlSBVnM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ijT7oj2G+PyEgN93CgREU+Rie7z97Enz90d/WpFdDciRu5TOvPju7onqB+h1IJtf9BEMrbDxFgdqElQeEBiMHpymQ7/QGp46OgZlBOxlrUgPVM/Yljb8P4VIiGnH67LCu0ANlY7ngg2nMa3II3FbFHC3T72KJFij6SUGZsMve0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gANNQYle; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D53C4CEFE;
-	Sun, 12 Oct 2025 14:18:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XI2m04V5c+577XrgO6Axue5wz/oFpt0uUWeHsu8RA+BvyzVUhhn6iBLjQTUoF8h+36669R8Y5kM0P64GMI4lY8y0Be7R1/x75qqk5IDtC+SRWyNLcCp9cslf2jk165k/indhk0x4UupmR22xSfpAtKldKKWpXPxtjmNLVoQtzVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rWhe122P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFA4C4CEE7;
+	Sun, 12 Oct 2025 14:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760278682;
-	bh=lTPc8GO3wB6QyCOvObtK7gyvDMugmgilzvtPy9ig7Jg=;
+	s=k20201202; t=1760278873;
+	bh=XExy5QelfgLgYyiwtAQ2Cv9cu6aIqLKW8004SlSBVnM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gANNQYleH9+m072pA7KzYGtHfJOR1bnZbsJGErKwNjjR+fDruuw2/IvlZuncYOIi/
-	 ipNnryl8Ls8pY1920yS1nAQOIXk9yxpmUnEbBTANVDOJm47dz8+4SEhH3ZkIrwx/6m
-	 Uu2sz7cWL4UE/1Bg85NvPmSOUO3ckcOEA0rBELURuHC8lIQb7CGQNAgp2k4Md2NbkM
-	 di3F0K9RUqD2SB3JAr89Ej03hej5Mn94BW1yOWO1Ao+1WfHRsiJo0xqBPfDfBet2sY
-	 BVlMNhZriIJCtX0i8PzSsx45HqPgWHQM1OsqirCDlEQEqmzqbLdsnry2O4Flr1M2GK
-	 joUyaEG8U71hg==
-Date: Sun, 12 Oct 2025 15:17:55 +0100
+	b=rWhe122PVNC25hKVlxZfuUV4jejEe6oHLEw+0qhlV07I9gTQ5I4hyeWMPwFeLcpS9
+	 JzCsExrfO46VwVJ9faLY3FkjZCZMKnqYebcBk6bCvNjuR4glitIeuKNiDO1h3AQMjg
+	 ZFWym3xv6+DuefTbYBpspwyJbr2lnnoWHV0f4i5lKgVRyYW/ZVtl8queq0J/P/nssz
+	 36mtfTxwn0Umshy1UJePpLAZniPFNqw4L0NRTIN5m6uK1krxCli7Sa+LpHrEvIiCzq
+	 zTDq9e+YBuKMKzW6PXJekmir9HEFLmv102fTTA9K0N9te8hIT/lBB9Ap/NdLlpvp6C
+	 tkwMOanaAoshQ==
+Date: Sun, 12 Oct 2025 15:21:03 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Taimoor Zaeem <taimoorzaeem@gmail.com>
-Cc: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
- linux-staging@lists.linux.dev
-Subject: Re: [PATCH 1/2] staging: iio: ad9834: remove empty ad9834.h file
-Message-ID: <20251012151755.24db56ea@jic23-huawei>
-In-Reply-To: <20251006094025.259440-2-taimoorzaeem@gmail.com>
-References: <20251006094025.259440-1-taimoorzaeem@gmail.com>
-	<20251006094025.259440-2-taimoorzaeem@gmail.com>
+To: Petre Rodan <petre.rodan@subdimension.ro>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 01/19] iio: accel: bma220: remove incorrect
+ kernel-doc marking
+Message-ID: <20251012152103.6b1ca4e9@jic23-huawei>
+In-Reply-To: <20251005-b4-bma220_improvements-v4-1-0f449ba31585@subdimension.ro>
+References: <20251005-b4-bma220_improvements-v4-0-0f449ba31585@subdimension.ro>
+	<20251005-b4-bma220_improvements-v4-1-0f449ba31585@subdimension.ro>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,57 +66,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  6 Oct 2025 14:40:24 +0500
-Taimoor Zaeem <taimoorzaeem@gmail.com> wrote:
+On Sun, 05 Oct 2025 16:12:10 +0300
+Petre Rodan <petre.rodan@subdimension.ro> wrote:
 
-> Remove drivers/staging/iio/frequency/ad9834.h header file
-> because it contains nothing except the include guards.
+> Remove incorrect use of kernel-doc marking.
 > 
-Odd!  I guess left over after some other cleanup at somepoint.
+> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 
-Applied.
+hi Petre,
 
-Thanks for cleaning this up.
+I'm going to pick these up as I read through them (if they are good to go!)
+
+Applied this one,
+
+Thanks,
 
 Jonathan
 
-> Signed-off-by: Taimoor Zaeem <taimoorzaeem@gmail.com>
 > ---
->  drivers/staging/iio/frequency/ad9834.c |  3 +--
->  drivers/staging/iio/frequency/ad9834.h | 10 ----------
->  2 files changed, 1 insertion(+), 12 deletions(-)
->  delete mode 100644 drivers/staging/iio/frequency/ad9834.h
+> v4 - split from bigger patch (Andy)
+> ---
+>  drivers/iio/accel/bma220_spi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
-> index 0038eb234d40..d339d5e8e043 100644
-> --- a/drivers/staging/iio/frequency/ad9834.c
-> +++ b/drivers/staging/iio/frequency/ad9834.c
-> @@ -21,9 +21,8 @@
+> diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
+> index 01592eebf05bb6b002d44c41cca1d2dd5f28350c..505ad70912571ba629f91e56a92898d8320e976f 100644
+> --- a/drivers/iio/accel/bma220_spi.c
+> +++ b/drivers/iio/accel/bma220_spi.c
+> @@ -223,7 +223,7 @@ static int bma220_power(struct spi_device *spi, bool up)
+>  {
+>  	int i, ret;
 >  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> -#include "dds.h"
->  
-> -#include "ad9834.h"
-> +#include "dds.h"
->  
->  /* Registers */
->  
-> diff --git a/drivers/staging/iio/frequency/ad9834.h b/drivers/staging/iio/frequency/ad9834.h
-> deleted file mode 100644
-> index 521943aa0e61..000000000000
-> --- a/drivers/staging/iio/frequency/ad9834.h
-> +++ /dev/null
-> @@ -1,10 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0 */
-> -/*
-> - * AD9833/AD9834/AD9837/AD9838 SPI DDS driver
-> - *
-> - * Copyright 2010-2011 Analog Devices Inc.
-> - */
-> -#ifndef IIO_DDS_AD9834_H_
-> -#define IIO_DDS_AD9834_H_
-> -
-> -#endif /* IIO_DDS_AD9834_H_ */
+> -	/**
+> +	/*
+>  	 * The chip can be suspended/woken up by a simple register read.
+>  	 * So, we need up to 2 register reads of the suspend register
+>  	 * to make sure that the device is in the desired state.
+> 
 
 

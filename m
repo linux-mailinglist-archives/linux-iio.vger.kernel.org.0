@@ -1,234 +1,166 @@
-Return-Path: <linux-iio+bounces-24980-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24981-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6F8BD07D0
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 18:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E48BD07E2
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 18:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C1E3B4E3F12
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 16:42:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 626F14E8FE5
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 16:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F089E1D5CC6;
-	Sun, 12 Oct 2025 16:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E4D2EC541;
+	Sun, 12 Oct 2025 16:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="egD7CSrT"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="dI1N8wLT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C3A2D6E78;
-	Sun, 12 Oct 2025 16:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6702EC0B4;
+	Sun, 12 Oct 2025 16:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760287371; cv=none; b=T0CpnbdUCvK26cCKRmF5Tat+3s5q+hLAFvAs1BiKFdVhmLH3xBpYtW0qoVOycckoN1w4ZrL7QIW5N4pZKBouJ5BHg+f62MTiDclouvKyQdSIPGK7Eerub6pz4jCPF2TmMA4oqPRPu8a1kIz9ewdvWAuG5Nuo5ZSPAN0B/yKKX4M=
+	t=1760287500; cv=none; b=lwq/9vZdJ128rmnEOy8u8Xq/1PC043rUlDbNHi5XMcDRolwNTz8Nv9zreHHNi+lqH/53M7NNChqLJzHLk9LHSXd2oT+lKmP0USGn5Vkj4TVziKb1JKH62RSQ+4N0m3kAZilkBk1INmIvGNxVWRVUIlA9htgLnGuVCOUcoEcS2GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760287371; c=relaxed/simple;
-	bh=KH1K6ed429b0tgcVstjVozYrLhXWSiiDpvnYePJS+qI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eDU679qtu4PI1xW1X691o3Ov71vG42iOmKCLMeXyv8w2CYk31S2ZIAAjBiWnEFOZKubuBlXkrqmBleAc2HOon4Ja2TlZ5QoMzr5MeY0KIM8uUFwlwLp1y0c8aTD/2iS33HFIk5RVFAa3LkXrH/WfcTei82l3tAvulfjMzKNq7oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=egD7CSrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AEAC4CEE7;
-	Sun, 12 Oct 2025 16:42:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760287370;
-	bh=KH1K6ed429b0tgcVstjVozYrLhXWSiiDpvnYePJS+qI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=egD7CSrTFrc+EwKLx9PSMYud/pjrIQqbs4uWHjwNgMTqEa9M+PTPOg1VRzFyuoC5u
-	 /7+80LVkxl5pWKyRGMOwg90b30f2stlE2eeue0vQHwt6j6PBiocWVgd+h4/hLVmbnz
-	 0UUTl3/OLyJMfB2mDBww/KCZGq4hxa3UzXTWCYQswZVB3rbMOzWIMql7qvrN8+IjPa
-	 +GRCpPGQ88Dxo9MqEqQt8cRVEgouWHMY6OZ2gCAoQSoKs6/IS9t9bQ7QnxihAAnkhQ
-	 /NEoLtdr7aMD2pmyo1G0yhZ8ECQrwBEP9kxTogK62zAHdOFxRgneLei4qhoFaFgoVr
-	 G4dvKwbe9kHbg==
-Date: Sun, 12 Oct 2025 17:42:40 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
-Cc: remi.buisson@tdk.com, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v7 0/9] iio: imu: new inv_icm45600 driver
-Message-ID: <20251012174240.24ad54df@jic23-huawei>
-In-Reply-To: <20251007-add_newport_driver-v7-0-137223a1f79e@tdk.com>
-References: <20251007-add_newport_driver-v7-0-137223a1f79e@tdk.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1760287500; c=relaxed/simple;
+	bh=OxRT3WKebBtTMrhNXcmJa0A6Q1I4uF8JpELlwhqm9rk=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=NhWh0khJsyW9ExG8JaSYYUrXW6l1l/Pg/uWLzvmVw3zMXZOKZJeRBUuqDe21bvvjGvSVwlFK+Va5I3sjqBXtLgeqTfO+khi5NRhl1EsKKq9krxTC9UcF1dO4FQUTj74prwz15WdlPPTxoO4Q8reFjrUUaSVLPJqg/unxgywdp2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=dI1N8wLT; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1760287491; x=1760892291; i=markus.elfring@web.de;
+	bh=OxRT3WKebBtTMrhNXcmJa0A6Q1I4uF8JpELlwhqm9rk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=dI1N8wLTcIAz/+spOltjLZzWIvGWmEOfzImh1MKWW0uaodwHxDe5eSj050GW17pg
+	 IV7SIGzhdHqWmm5tqmoQiMUe1ddAIW28QBDVX7An8nQAutTvGqRBTENx4vMdpAVdt
+	 iN0z4aHdhxjULL48OixDrrSHQ4LWU5J2MN5LgtLIJEoXXVo/h//j+I5YFbaoy6jWa
+	 Yw9VQlKIp27+c4P831EzsJ4l5BWuwM7JZ3n9rhcSbJXND7e9XzCRLTiN588a4Z6ZW
+	 3WY4kspzrUZHlcKup4GkOCzKO1aTvkkXYf0hzeltFQruQ4oTJAvS6LrVQbRFFkdSD
+	 tD7Uz+BExQdY21toiA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.235]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N6K1b-1uA7Jr3BKD-00z1iY; Sun, 12
+ Oct 2025 18:44:50 +0200
+Message-ID: <984fddea-2085-4820-871b-40d69feb11c8@web.de>
+Date: Sun, 12 Oct 2025 18:44:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+To: Dixit Parmar <dixitparmar19@gmail.com>, linux-iio@vger.kernel.org,
+ Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>
+Cc: LKML <linux-kernel@vger.kernel.org>
+References: <20251011-ret_val-v1-1-8e968b38790a@gmail.com>
+Subject: Re: [PATCH] iio: adc: ti-ads131e08: return correct error code
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251011-ret_val-v1-1-8e968b38790a@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:wzB5nGOI2BMA83rpBI20I9mzf8F/RKXy73d/ykCLhwOQYIUzx0f
+ z0JtV3um00M3GBHo3rSZiD1o3S5oX0j6gJqLCqZvcsZ0HKGA4p6Y3yeXJyMovc53T6j5E/t
+ 6IzWCeDYcPyAK/6okeSXRwk5HsB5OovGRWbuCK/ZiIKX5Qz15LzMWlDlC4TUoLNrEl7zLOX
+ C/RevI7hdpkO804KyTfOA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:TTROtXJblFA=;ldiIGHEEBB09NtnU8ohqcQNMjwi
+ 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
+ /3MWbeivyjgkyw==
 
-On Tue, 07 Oct 2025 07:20:01 +0000
-Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org> wrote:
+=E2=80=A6
+> This change makes =E2=80=A6
 
-> This series add a new driver for managing InvenSense ICM-456xx 6-axis IMUs.
-> This next generation of chips includes new generations of 3-axis gyroscope
-> and 3-axis accelerometer, support of I3C in addition to I2C and SPI, and
-> intelligent MotionTracking features like pedometer, tilt detection, and
-> tap detection.
-> 
-> This series is delivering a driver supporting gyroscope, accelerometer and
-> temperature data, with polling and buffering using hwfifo and watermark,
-> on I2C, SPI and I3C busses.
-> 
-> Gyroscope and accelerometer sensors are completely independent and can have
-> different ODRs. Since there is only a single FIFO a specific value is used
-> to mark invalid data. To keep the device standard we are de-multiplexing
-> data from the FIFO to 2 IIO devices with 2 buffers, 1 for the accelerometer
-> and 1 for the gyroscope. This architecture also enables to easily turn each
-> sensor on/off without impacting the other. The device interrupt is used to
-> read the FIFO and launch parsing of accelerometer and gyroscope data.
-> This driver relies on the common Invensense timestamping mechanism to
-> handle correctly FIFO watermark and dynamic changes of settings.
-> 
-> The structure of the driver is quite similar to the inv_icm42600 driver,
-> however there are significant reasons for adding a different driver for
-> inv_icm45600, such as:
-> - A completely different register map.
-> - Different FIFO management, based on number of samples instead of bytes.
-> - Different indirect register access mechanism.
-> 
-> Note that regmap cache will be added in a dedicated patch set, to avoid
-> increasing too much this one.
-> 
-> Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
-I fixed up the patch 1 tags thing. b4 did it for me - though it
-found both an Ack and a RB from Conor. I dropped the RB as that
-combination makes no sense and didn't come from the same reply from Conor.
+Will another imperative wording approach become more helpful for an improv=
+ed
+change description?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.17#n94
 
-Please be careful about picking up such tags for future series.
 
-Series applied to the testing branch of iio.git. That will get some brief
-testing by 0-day. I'll rebase that on rc1 once available and then push it
-out as the togreg branch which gets picked up by linux-next.
+How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and =
+=E2=80=9CCc=E2=80=9D) accordingly?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.17#n145
 
-Nice work.
-
-Thanks,
-
-Jonathan
-
-> ---
-> Changes in v7:
-> - Fix SPI module missing header.
-> - Add comments on sub-field for fifo structure.
-> - Use designated initializers in odr_to_period table.
-> - Fix typo.
-> - Rework regmap usage in inv_icm45600_buffer_set_fifo_en.
-> - Added a comment to explain why we dont use fallbacks in DT.
-> - Link to v6: https://lore.kernel.org/r/20250924-add_newport_driver-v6-0-76687b9d8a6e@tdk.com
-> 
-> Changes in v6:
-> - Reviewed headers inclusion
-> - Formatting (line too short, ...)
-> - moving code to patch it belongs
-> - kernel doc fixes
-> - Comments reviewed and simplified
-> - removed dev_error_probe with ENOMEM
-> - fixed useless ssize_t to size_t
-> - removed useless pack attribute
-> - Fixed unclear or malformed if
-> - Removed useless fifo_is_data_valid wrapper
-> - Use available macros instead of hardcoded values
-> - Link to v5: https://lore.kernel.org/r/20250820-add_newport_driver-v5-0-2fc9f13dddee@tdk.com
-> 
-> Changes in v5:
-> - Simplified device tree, removed interrupts from mandatory param list
-> - Allocated regmap_bulk_read/write buffers to dma-capable memory (for indirect reg accesses)
-> - Use min/max to simplify code
-> - Reordered some code/include/prototypes to the patch they belong
-> - Updated to latest iio_push_to_buffers_with_ts API
-> - Fix build warning with clang 18.1.8
-> - Fixed some alignements
-> - Avoiding irq_type silly assignation
-> - Simplified fwnode_irq_get_byname error management
-> - Re-ordered suspend/resume process to match + comments
-> - Reverted VDDIO init to make it work without PM
-> - Avoid PM underflow on VDDIO when removing inv_icm456000 module, by checking suspend state
-> - Link to v4: https://lore.kernel.org/r/20250814-add_newport_driver-v4-0-4464b6600972@tdk.com
-> 
-> Changes in v4:
-> - Introduce gyro and accel in different patches.
-> - Move IRQ probe to next patch.
-> - Allocate fifo memory instead of static definition.
-> - Rework VDDIO management to avoid underflow.
-> - Rework suspend/resume using force suspend/resume API.
-> - Use helper min, clamp and sizeof instead of custom implementation.
-> - Re-scoping some variables, using reverse xmas tree for declarations.
-> - Fix formatting: end of list, end of file, spaces, alignments.
-> - Use dev_err_probe for I3C errors.
-> - Factorizing default config code.
-> - Link to v3: https://lore.kernel.org/r/20250717-add_newport_driver-v3-0-c6099e02c562@tdk.com
-> 
-> Changes in v3:
-> - Macros renamed and added to the patch using it.
-> - Using unsigned for sensor configuration parameters.
-> - Using sizeof instead of raw values.
-> - Using fsleep instead of usleep.
-> - Simplified dt-bindings examples, setting supplies as mandatory
-> - Fix bad or useless casts.
-> - Partially aligned power management following 20250709-icm42pmreg-v1-0-3d0e793c99b2@geanix.com
-> - Fix "uninitialized symbols" warnings.
-> - Link to v2: https://lore.kernel.org/r/20250710-add_newport_driver-v2-0-bf76d8142ef2@tdk.com
-> 
-> Changes in v2:
-> - Reworked patches order and content to ease review and make sure everything compiles
-> - Reworked gyro and accel FSR as 2D arrays
-> - Moved temperature processed sensor to core module
-> - Use latest API to claim/release device
-> - Implemented chip_info structure instead of relying on an enum
-> - Removed power-mode ABI, only relying on ODR to switch power_mode
-> - Reworked regulator control to use devm_ API where relevant
-> - Reworked inv_icm45600_state.buffer as a union to avoid casts, using getter/setter instead of memcpy
-> - Fixed dt-binding error and moved patch at the beginning of the patch-set
-> - Reworked macros to use FIELD_PREP inline instead of inside the header
-> - Fixed comment's grammar
-> - Removed extra blank lines
-> - Reordered part numbers alphanumerically
-> - Removed useless default/error fallbacks
-> - Typed accel, gyro and timestamp data when parsing FIFO
-> - Fixed I2C module return code
-> - Use Linux types instead of C standard
-> - Reviewed headers inclusion to remove useless #include and to add missing ones
-> - Link to v1: https://lore.kernel.org/r/20250411-add_newport_driver-v1-0-15082160b019@tdk.com
-> 
-> ---
-> Remi Buisson (9):
->       dt-bindings: iio: imu: Add inv_icm45600
->       iio: imu: inv_icm45600: add new inv_icm45600 driver
->       iio: imu: inv_icm45600: add buffer support in iio devices
->       iio: imu: inv_icm45600: add IMU IIO gyroscope device
->       iio: imu: inv_icm45600: add IMU IIO accelerometer device
->       iio: imu: inv_icm45600: add I2C driver for inv_icm45600 driver
->       iio: imu: inv_icm45600: add SPI driver for inv_icm45600 driver
->       iio: imu: inv_icm45600: add I3C driver for inv_icm45600 driver
->       MAINTAINERS: add entry for inv_icm45600 6-axis imu sensor
-> 
->  .../bindings/iio/imu/invensense,icm45600.yaml      |  90 ++
->  MAINTAINERS                                        |   8 +
->  drivers/iio/imu/Kconfig                            |   1 +
->  drivers/iio/imu/Makefile                           |   1 +
->  drivers/iio/imu/inv_icm45600/Kconfig               |  70 ++
->  drivers/iio/imu/inv_icm45600/Makefile              |  16 +
->  drivers/iio/imu/inv_icm45600/inv_icm45600.h        | 385 ++++++++
->  drivers/iio/imu/inv_icm45600/inv_icm45600_accel.c  | 782 ++++++++++++++++
->  drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 557 ++++++++++++
->  drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.h | 101 +++
->  drivers/iio/imu/inv_icm45600/inv_icm45600_core.c   | 988 +++++++++++++++++++++
->  drivers/iio/imu/inv_icm45600/inv_icm45600_gyro.c   | 791 +++++++++++++++++
->  drivers/iio/imu/inv_icm45600/inv_icm45600_i2c.c    |  98 ++
->  drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c    |  78 ++
->  drivers/iio/imu/inv_icm45600/inv_icm45600_spi.c    | 108 +++
->  15 files changed, 4074 insertions(+)
-> ---
-> base-commit: 411e8b72c181e4f49352c12ced0fd8426eb683aa
-> change-id: 20250411-add_newport_driver-529cf5b71ea8
-> 
-> Best regards,
-
+Regards,
+Markus
 

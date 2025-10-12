@@ -1,139 +1,150 @@
-Return-Path: <linux-iio+bounces-25003-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25004-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D46BD0957
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 20:08:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2F8BD096F
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 20:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 570BD1897D70
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 18:08:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F1CEE4EA66B
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 18:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230202F2918;
-	Sun, 12 Oct 2025 18:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36732F25EC;
+	Sun, 12 Oct 2025 18:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mwIyc7OO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZ80QzYW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759772F28FB
-	for <linux-iio@vger.kernel.org>; Sun, 12 Oct 2025 18:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F642EE5FC;
+	Sun, 12 Oct 2025 18:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760292450; cv=none; b=tVYsQvpHfrl1MQQwdBrDxKRoyhI/8Cd9vJcqtyYf2PW49yNJU5kal4thq99Yx2lmSmGRUMGSS9fkDritK3mu09+wjcNMi8Nd8gzA8qscLkVnmD1ErmE1Hf08GMZjzLq4KdEOS4tfdCbkfU/MCNYAxmy2n4XuTFVGQLUmAzwW9Jk=
+	t=1760292627; cv=none; b=so205h6/nLnfifAKluCuo5ViERYZ9hdyYZfePVV48I/3D+hzwPtMLesfIugrL+aIBuLK/j8vYa6khtI6tPcGs34teZhdOvSYmkkoi2j0VlNY5OOV7SWkkKjWwlK2iySdYp99OBenrUGn88geOF+SvhWGlhYiMLUVikVyzgwUm9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760292450; c=relaxed/simple;
-	bh=jg2NE16emE6/A9nnGAISOkOaG4gb4wO16wIq6mM5VFU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iIIITQYaGAmFREo8q+vt91DcQgz0zMXdaystDv1ms6RN/wqS6fqyr+S1Z31s2KbVTw1k/Jwjwy78WxHYMTA6Bwrseme1LDyigAXM7VjewSznb9l0h+wpqNMIgEezafQW5Hz1PSofheFW3Tx83R5ekq2XkqKaYZ7K7NorrFLxkcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mwIyc7OO; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-794e300e20dso2696292b3a.1
-        for <linux-iio@vger.kernel.org>; Sun, 12 Oct 2025 11:07:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760292449; x=1760897249; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h4ud3JfniFPXrvZXNPpGJmhJ0NKwQUht98YQCdsaH54=;
-        b=mwIyc7OO6NJwbovsJbrCto84mwQrRL5O5ADuPoTWKtl98q4mJThs327Uo+nZyGWaBj
-         n0UcjQjl8QvtwiBBsPWHZuXpgU6QIbdLZiwv+GEl3hNc67qkb7AbqJZHUYywoPMln/g7
-         2QAgSj/AKLtQRwWgUkPf3yC9qqFbSDz2okU+vrJKwSCB0nptbuA1s2ec1EnYtDNdHgxP
-         ecBAJwlqE4ITgMO4NYXgxu9xtI0yzEvsqIsFHthyb3s+sJS4YWNnKBci9M4QMNiwvY7l
-         K5gH5hrVbGjtFhUUkMav2YqMVR1QPDKuvL7BPeglsl4OvfUalYCEdV3Bs8qdZjR59V9f
-         S9ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760292449; x=1760897249;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h4ud3JfniFPXrvZXNPpGJmhJ0NKwQUht98YQCdsaH54=;
-        b=pJlx5LOfxY1szv8I5cnVUicnLXCkBd7zgA4RmYm/8UEmFj8pJcZVKnZgr3MCU5VlRX
-         u3OJgLl9WnIAG3qHiSxujm8QauLK9ToyxYcbY1pL44Px59fxiqAl3MtQGQ8K5ns9/GZD
-         akAXycX8l7/ndy5/sXSX50uiBfArAc0NTOcw6cSggfAax5jqAz1Q2t1rcO1BSm6X7H69
-         fkAQgkhg26wahnTT1G76U+K1L2cIw0EYmS0zsglQNXi4XXNp+GShHQD58VnrYg0wo8Z6
-         WUIrsQKcIyOHev8CwFg+hHAPp51ahIvUihukm809ffiEWjUhBh1Qun7B79GaIjTkDXCl
-         i/Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCW1+ja3X4WmkvQsWvxMrNJfB172UNWD5XnO0XfHA7pPNMo5Ma3P8lQ8alM/uWhfLFK8Cg/AKPBP4hc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygaRPZuaO08aVjjCo6zaqAV4Ix5MwJlyEctOTj194wLDBQaauR
-	dPqF3Jm3OsnPLt3Z5csy/k80wOuRahI98J7C6pxRkBESU3apc/r1tTOY
-X-Gm-Gg: ASbGncshzciXfruR8OnY8HGT/3nBG//5NYfWsAGVNym6s4/8b8JVTNumfRxH0MC3CZj
-	zGpxP90Zn8JZBykxZ5uIRh3Jump1pH8sW68BDy4BMbSSpv436Tp+pOD5XSiip/9CzvDn/7ihyzl
-	bffltXb7tt+jg1INFhZC/TXuQZO7+iBXsL2kWRDkcNoNl7ZDvSpRaLBM/hqfrUfLqbguinFOLmz
-	hn07LYAsr8cTF852w1la2qK1+DQ57YRbfIn1cA09te9mHtDS9vJi3hI5V0znzWX7gs3QxWs4IUl
-	/005BtOyC0fX2dTo15A3sv0oaoB0e6qdpCthtgxYQw6nJ84sBjL6jX+C3GOE5jDaP5GH9YXI1n3
-	zzxnznJP7BSfUS+PYjwGzvDiSX07myZa0OJzdWd8r8OfTLZRRNP6sfzyRdQty1w==
-X-Google-Smtp-Source: AGHT+IFQrrOSKTP+v5RJLdPE2qomGexJJnmalRps8ECs1c2T3X8NS+ECJAuU0t4ycD7nqvokir+lIg==
-X-Received: by 2002:a17:903:38c7:b0:269:aba9:ffd7 with SMTP id d9443c01a7336-28ec9cafcc7mr251834875ad.25.1760292448673;
-        Sun, 12 Oct 2025 11:07:28 -0700 (PDT)
-Received: from akshayaj-lenovo.. ([223.233.65.54])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034f56c0fsm111734345ad.104.2025.10.12.11.07.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Oct 2025 11:07:28 -0700 (PDT)
-From: Akshay Jindal <akshayaj.lkd@gmail.com>
-To: dan@dlrobertson.com,
-	jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org
-Cc: Akshay Jindal <akshayaj.lkd@gmail.com>,
-	shuah@kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 6/6] iio: accel: bma400: Add detail to comments in GEN INTR configuration
-Date: Sun, 12 Oct 2025 23:36:13 +0530
-Message-ID: <20251012180619.195244-7-akshayaj.lkd@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251012180619.195244-1-akshayaj.lkd@gmail.com>
-References: <20251012180619.195244-1-akshayaj.lkd@gmail.com>
+	s=arc-20240116; t=1760292627; c=relaxed/simple;
+	bh=VsTOYU7FMvsZmwm9o6Boz5jv/T7U+40AtnR6DJQCb9w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W3udsWo6TnJXT+F6XcY4NyPnNrGkPjySv8RbTzN8U+nzmQ1QhINyRH7e8rGft4LE5xSjqWa/sQxQaTZDrf4JiTHU9641c9MUmEtXdrEzOkH9fpA616mKWPdI+p1vjNqX4F78HLFWzTqh48YW32m8cMgGdyDlf88MhR7+eBPDPzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZ80QzYW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9CDC4CEE7;
+	Sun, 12 Oct 2025 18:10:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760292626;
+	bh=VsTOYU7FMvsZmwm9o6Boz5jv/T7U+40AtnR6DJQCb9w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gZ80QzYWAJUbiyTSCFHzHf9vn/Q7JQQ2uv0ouIAkJCAmef3l6S5jxau8Da5iyoFGf
+	 BkrmfKixqyA1Afq7CQvfqq0iRofq2B0rfyGvZz3a8IPLvRxdxkcxBCnabHLuhjNuhj
+	 G/sXQr0w3el0nVzObdMIDAu76tBJqWuWMG15+bb46YEJbUq6P+XOi6zn9chs205jN7
+	 b6I1TrV4bCqWv0LunjFfXFu8kQ5NtTsMvccLr79sbMdxLjxvnZUEAOs+GS5l+PEYuo
+	 qDHpraX47gP1Y3iqxhO82ZJ0WTO30rwd2DSY+mpPSkptJavQnlIlE1yLFcPDDUYgvk
+	 prMIaaRuypTAg==
+Date: Sun, 12 Oct 2025 19:10:17 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>, robh@kernel.org,
+ conor+dt@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 1/6] iio: adc: ad4080: fix chip identification
+Message-ID: <20251012191017.1ad05768@jic23-huawei>
+In-Reply-To: <ba68afe4fbe5c895de8a2ce506a69e0c0884eb4e.camel@gmail.com>
+References: <20251007111525.25711-1-antoniu.miclaus@analog.com>
+	<20251007111525.25711-2-antoniu.miclaus@analog.com>
+	<ba68afe4fbe5c895de8a2ce506a69e0c0884eb4e.camel@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Append additional information to existing comments in the generic
-interrupt configuration code to provide more context.
+On Tue, 07 Oct 2025 15:41:02 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
----
- drivers/iio/accel/bma400_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+> On Tue, 2025-10-07 at 11:15 +0000, Antoniu Miclaus wrote:
+> > Fix AD4080 chip identification by using the correct 16-bit product ID
+> > (0x0050) instead of GENMASK(2, 0). Update the chip reading logic to
+> > use regmap_bulk_read to read both PRODUCT_ID_L and PRODUCT_ID_H
+> > registers and combine them into a 16-bit value.
+> >=20
+> > The original implementation was incorrectly reading only 3 bits,
+> > which would not correctly identify the AD4080 chip.
+> >=20
+> > Fixes: 6b31ba1811b6 ("iio: adc: ad4080: add driver support")
+> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > --- =20
+>=20
+> Small nitpick below that Jonathan might tweak if he thinks it's worth it.
+> Anyways,
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-index 840c4156ba60..05f72707f830 100644
---- a/drivers/iio/accel/bma400_core.c
-+++ b/drivers/iio/accel/bma400_core.c
-@@ -1208,7 +1208,10 @@ static int bma400_generic_event_en(struct bma400_data *data,
- 	detect_criterion = bma400_genintr->detect_mode;
- 	intrmask = bma400_genintr->intrmask;
- 
--	/* Enabling all axis for interrupt evaluation */
-+	/*
-+	 * Enabling all axis for interrupt evaluation
-+	 * Acc_filt2 is recommended as data source in datasheet (Section 4.7)
-+	 */
- 	ret = regmap_write(data->regmap, BMA400_GENINT_CONFIG_REG(genintr, 0),
- 			   BMA400_GENINT_CONFIG0_X_EN_MASK |
- 			   BMA400_GENINT_CONFIG0_Y_EN_MASK |
-@@ -1226,7 +1229,10 @@ static int bma400_generic_event_en(struct bma400_data *data,
- 	if (ret)
- 		return ret;
- 
--	/* Initial value to avoid interrupts while enabling*/
-+	/*
-+	 * Initial value to avoid interrupts while enabling
-+	 * Value is in units of 8mg/lsb, i.e. effective val is val * 8mg/lsb
-+	 */
- 	ret = regmap_write(data->regmap, BMA400_GENINT_CONFIG_REG(genintr, 2), 0x0A);
- 	if (ret)
- 		return ret;
--- 
-2.43.0
+I'll tidy that up.
+
+I'm currently taking a possibly controversial route with this patch.
+
+Given I think we just get a false warning message without it, I'm going
+to assume this isn't critical and queue it up for next merge window.
+The advantage is I don't have to deal with tracking this patch going upstre=
+am
+before I can apply the others in the series...
+
+Shout if you'd prefer the harder route that gets this upstream faster.
+
+Jonathan
+
+>=20
+> > changes in v3:
+> > =C2=A0- use le16_to_cpu to convert the read little-endian value to CPU =
+endianness
+> > =C2=A0drivers/iio/adc/ad4080.c | 8 +++++---
+> > =C2=A01 file changed, 5 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
+> > index 6e61787ed321..ae5a975a47a5 100644
+> > --- a/drivers/iio/adc/ad4080.c
+> > +++ b/drivers/iio/adc/ad4080.c
+> > @@ -125,7 +125,7 @@
+> > =C2=A0
+> > =C2=A0/* Miscellaneous Definitions */
+> > =C2=A0#define
+> > AD4080_SPI_READ						BIT(7)
+> > -#define AD4080_CHIP_ID						GENMASK(2, 0)
+> > +#define AD4080_CHIP_ID						0x0050
+> > =C2=A0
+> > =C2=A0#define AD4080_LVDS_CNV_CLK_CNT_MAX				7
+> > =C2=A0
+> > @@ -445,7 +445,8 @@ static int ad4080_setup(struct iio_dev *indio_dev)
+> > =C2=A0{
+> > =C2=A0	struct ad4080_state *st =3D iio_priv(indio_dev);
+> > =C2=A0	struct device *dev =3D regmap_get_device(st->regmap);
+> > -	unsigned int id;
+> > +	__le16 id_le;
+> > +	u16 id;
+> > =C2=A0	int ret;
+> > =C2=A0
+> > =C2=A0	ret =3D regmap_write(st->regmap, AD4080_REG_INTERFACE_CONFIG_A,
+> > @@ -458,10 +459,11 @@ static int ad4080_setup(struct iio_dev *indio_dev)
+> > =C2=A0	if (ret)
+> > =C2=A0		return ret;
+> > =C2=A0
+> > -	ret =3D regmap_read(st->regmap, AD4080_REG_CHIP_TYPE, &id);
+> > +	ret =3D regmap_bulk_read(st->regmap, AD4080_REG_PRODUCT_ID_L, &id_le,
+> > 2); =20
+>=20
+> sizeof(id_le)
+>=20
+> > =C2=A0	if (ret)
+> > =C2=A0		return ret;
+> > =C2=A0
+> > +	id =3D le16_to_cpu(id_le);
+> > =C2=A0	if (id !=3D AD4080_CHIP_ID)
+> > =C2=A0		dev_info(dev, "Unrecognized CHIP_ID 0x%X\n", id);
+> > =C2=A0 =20
 
 

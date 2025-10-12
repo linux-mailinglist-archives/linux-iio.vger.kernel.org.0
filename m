@@ -1,60 +1,58 @@
-Return-Path: <linux-iio+bounces-24972-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24973-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A16BD05ED
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 17:26:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94BDCBD063B
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 17:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 044171890AF5
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 15:26:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A73774F028C
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 15:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0482F25E5;
-	Sun, 12 Oct 2025 15:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4B82ECE8A;
+	Sun, 12 Oct 2025 15:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XaZXVfB/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guMPckn2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61092ECE83;
-	Sun, 12 Oct 2025 15:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3D32EBBB8
+	for <linux-iio@vger.kernel.org>; Sun, 12 Oct 2025 15:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760282681; cv=none; b=K0Bj2I1Dbkg9fA2Sw1o3UdLYS98VSA1nWuQEyCzhVIilHva1t0S8vUf89sZvRXZC3czKqhEIkDSsccaFxK6VYSwW7n/0X5nokeshpvTmqt5YXc73puh7TgQllZgQf2W7DNLeAGcXtNsM/zmto0M4f+6fqhc3B4PEe5A5YA9e53E=
+	t=1760282822; cv=none; b=ltigidvr7bij5fUG49VtN1yXr8UdCktoc0djjFbS7VoWKTonxaaPQJato9OrXbuEPe7URsAjceu0ebHF1HBR6uqoNx5267v1aZhL7T917ocX5yRLDT6PMkMELcfJoSaeSnGXthw+H9IG6hPz8deGl2DiQIoK8wgBf2A+qRoyy50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760282681; c=relaxed/simple;
-	bh=g2SFX0qPxTVarJxY/3TZfIJCCltx2hbCOXAn1Im6VrU=;
+	s=arc-20240116; t=1760282822; c=relaxed/simple;
+	bh=LG3JPApVnDYHNEdBFWOxO8l3zO7UTgrJUeTi9USqmWs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MErAGv99B1hJElzxgTdXMRF7TDQAklYnUEWiDkpORzvO1dYDj60BxUUk3lcL0IKa8JM77ySatrROKyzQGyo9RLBTLCgmvovU29XHitVey+VXefaKHs+wl/4rw4KCkhDlPXb0scESqz37Fo3ik+JebJborCeG3ABzh/Pp2aeP/yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XaZXVfB/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6440C4CEE7;
-	Sun, 12 Oct 2025 15:24:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ufnEFM7ucDGxIoHOHNYzVxpahZ4fShEO3UMu+pc5I0oKyip+HiNkBv0DFynDUlYW20g9AhPlqnb8z3esdApp1c3h90RUPxou7LHQ/Rod4v2hYwxDPk2Bb03wfc0vQcz1dFQAnH1v8faNv3mEjX/OsXTYHCky9QsqT6x4KPrfqj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=guMPckn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2E5C4CEE7;
+	Sun, 12 Oct 2025 15:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760282678;
-	bh=g2SFX0qPxTVarJxY/3TZfIJCCltx2hbCOXAn1Im6VrU=;
+	s=k20201202; t=1760282819;
+	bh=LG3JPApVnDYHNEdBFWOxO8l3zO7UTgrJUeTi9USqmWs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XaZXVfB/Gc5GeRmmPeaK58oiWeIscQ1U4heLvUqE7IjbYkUCHU1DRDDL1ZsXWN3tp
-	 JaPYd5+miWYmz/4fEG3e667GZY1i+10AKzJiMybvElZIoK+/SaU2HzbQAjAii/DUMY
-	 WA+R3UmbjqiaNw8+CxxaFZUPSgJPD1tt5c9B7Fz4ffzOGyNN9YIAsa3cGAiEIStsV4
-	 QXbRGYcI0m76knAdaWzMRdAxqEb0gCYUWI3UStqpUe55kXE0hwiE4K7/5Wknbyt6bp
-	 il3WGYxpXOCOko0R4FEKCzMn6P+8xmQb6Y5u7pMHfsgzcOHU7RLYjEpcS8Cny1/U8c
-	 xmCn6qzVXDWEA==
-Date: Sun, 12 Oct 2025 16:24:29 +0100
+	b=guMPckn2p/iU4QosYtSC0qrVhMEW80t3TlJXMUJhEB4m1KWDb8ZQY9NX83VEVj8xi
+	 Ht67Us2UxYIf/hUdVxta3aUUUApPnTgZKXChe9R8ieEikLrXlJRZkK9VfaY5zMW3W8
+	 AB6LYZqKh0RnZM4/BIbgrEKE48wCSrTS7pCIJzdMn4TV4e+yYdSruF6BfYiA45hd6C
+	 +IQx+rtEWamH4d8Bdc4zkookXUb1vX2SdSY8x+yNsQYMFnMbBjbgVxo98rrNGcRyV/
+	 Ep5ks0Cbhxab1KBx0m03sqwBnnKZ9JQxejG/zeHOOzzx/GCa5ZuthTjRygDjEccvhG
+	 eJRfstv5itdhw==
+Date: Sun, 12 Oct 2025 16:26:52 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 19/19] iio: accel: bma220: add maintainer
-Message-ID: <20251012162429.47d24cad@jic23-huawei>
-In-Reply-To: <20251005-b4-bma220_improvements-v4-19-0f449ba31585@subdimension.ro>
-References: <20251005-b4-bma220_improvements-v4-0-0f449ba31585@subdimension.ro>
-	<20251005-b4-bma220_improvements-v4-19-0f449ba31585@subdimension.ro>
+To: Andrej Valek <andrej.v@skyrain.eu>
+Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Puranjay Mohan
+ <puranjay@kernel.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ David Lechner <dlechner@baylibre.com>, Kessler Markus
+ <markus.kessler@hilti.com>
+Subject: Re: [PATCH v4] iio: accel: fix ADXL355 startup race condition
+Message-ID: <20251012162652.65619962@jic23-huawei>
+In-Reply-To: <20251006095812.102230-1-andrej.v@skyrain.eu>
+References: <20251006095812.102230-1-andrej.v@skyrain.eu>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,40 +63,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 05 Oct 2025 16:12:28 +0300
-Petre Rodan <petre.rodan@subdimension.ro> wrote:
+On Mon,  6 Oct 2025 11:58:12 +0200
+Andrej Valek <andrej.v@skyrain.eu> wrote:
 
-> Add maintainer for this driver.
+> From: Valek Andrej <andrej.v@skyrain.eu>
 > 
-> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-Applied. Thanks for stepping up to maintain this going forwards
+> There is an race-condition where device is not full working after SW reset.
+> Therefore it's necessary to wait some time after reset and verify shadow
+> registers values by reading and comparing the values before/after reset.
+> This mechanism is described in datasheet at least from revision D.
+> 
+> Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
+> Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
+See submitting-patches.rst in documentation for how to format it, but as
+requested on previous version please reply to this thread with
+fixes tag.  No need to send a new version.
+
+
+> ---
+Change log missing
+
+Otherwise looks good to me.
 
 Jonathan
-
-> ---
-> v1->v4 no change
-> ---
->  MAINTAINERS | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index f090c2f6e63a0d255a025885cc4573f5802ef159..aaeb4ae6fd2282264da7e61b6fc32c00fc90a5ae 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4402,6 +4402,13 @@ F:	include/net/bond*
->  F:	include/uapi/linux/if_bonding.h
->  F:	tools/testing/selftests/drivers/net/bonding/
->  
-> +BOSCH SENSORTEC BMA220 ACCELEROMETER IIO DRIVER
-> +M:	Petre Rodan <petre.rodan@subdimension.ro>
-> +L:	linux-iio@vger.kernel.org
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/iio/accel/bosch,bma220.yaml
-> +F:	drivers/iio/accel/bma220*
-> +
->  BOSCH SENSORTEC BMA400 ACCELEROMETER IIO DRIVER
->  M:	Dan Robertson <dan@dlrobertson.com>
->  L:	linux-iio@vger.kernel.org
-> 
 
 

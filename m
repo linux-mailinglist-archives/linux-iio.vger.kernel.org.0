@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-24976-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24977-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033A4BD065B
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 17:46:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 217B5BD067F
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 17:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BDD118935AA
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 15:47:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D56163B9EF2
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 15:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9441F5842;
-	Sun, 12 Oct 2025 15:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283E22EC08E;
+	Sun, 12 Oct 2025 15:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ckUrBuOP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rs2PpTpO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA831F4621;
-	Sun, 12 Oct 2025 15:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738252EB5C6;
+	Sun, 12 Oct 2025 15:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760284006; cv=none; b=BfLbeMfzxM6Id27tUSO/94alS6vNs8QZdsBGHLNhYYPIzJg8gcJIpieOYp5ckCe/RSeUPxxcLxGNzWhMiRJoCDarfpUYCyAt4xruI6mOLjuMglZlmbQmhocWi/FCNQPqYn2gnwih0GpNsnAD+lMLrQ34xSsM9BnGpgHSvcZJs20=
+	t=1760284359; cv=none; b=IfA6/WbBDe36tNqzR17VJxblnwGyrtwazqZsEz0uFPsLm8p5mBprEgXw072QIPwsnwC1ayGZM03r/SBMyDfSxK1vxMF7O9P+GJJfeews/9uOWQVzQxE7tPS8vn+jh+OQJ7Qxf3LDwu5a/sq65Wnw8a2JQo2BkLuy3msGgxD3bSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760284006; c=relaxed/simple;
-	bh=IALbjy/pZA+eJCMxjut7dLRzd9yv5SaJ4twlV7U9dho=;
+	s=arc-20240116; t=1760284359; c=relaxed/simple;
+	bh=0OjvtPzr4odnhuW2mbs1eFCcYsdyUH/T3ETnP6gn/3w=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kcXxSn5j8QZ7W/pTMDkGWxZ0FaFqQ+vTBoj0FgGXOnpS/k5LdB7Lh1/1nzoAEq3AZG7jmFHsNXu+miS6qlgmqrgXwYXwLzmmjVumQV4lMDRxYgYOt/ikFrjTpmSCbOMO4ZjoO7aM26QaPxiM07LK0hqr8DD89poIRm97fQc9yw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ckUrBuOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51B2C4CEE7;
-	Sun, 12 Oct 2025 15:46:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a1hQoglY2mj+bpE1p3jMHHHABC5CB/BeyPSCjvi0L7Y1tzwKzu/rzwJn6UyPYUk6rT1RfjLd1l1AK93w/R0nBaFhYkGweo9e8weHnvjm8n+OlEL3DNWTQ9esIBHpc21udXslpW8sXZY95ewlT4AEcgXMuqSFcyWhH09LZTsnKxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rs2PpTpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE0BC4CEE7;
+	Sun, 12 Oct 2025 15:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760284006;
-	bh=IALbjy/pZA+eJCMxjut7dLRzd9yv5SaJ4twlV7U9dho=;
+	s=k20201202; t=1760284357;
+	bh=0OjvtPzr4odnhuW2mbs1eFCcYsdyUH/T3ETnP6gn/3w=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ckUrBuOP1iv8HEayAy0Q0SKGSBC5k2Vs9k9+iO91PkqxDLGwcqE3T5nK+u3MgdThC
-	 8AfaYirKVqFUlxZhR6Q0DYpGOeBzJ/9m3izAtImOLpOaMicE60Mic/gbFJ12SHuCjG
-	 D0aBQS6WdJ6FBIsuImnWx3YJJFkm53RUQzAwli4hnp5oMK8Fe25kWgTeY4MNqrbapR
-	 K6moOupc1uTB1f2K9tLXh9zY6A0Gm4SMORf172HBvLYAp7m/Uc7HZLMcnPF6gZnWSU
-	 2fkrRVlJKWxo20bbiVwF0zZgSXEdd7moBGW9cj7t19tTEl3n3t/Ldphe8rnypkY2EN
-	 +Hyxr0JP/pwTA==
-Date: Sun, 12 Oct 2025 16:46:40 +0100
+	b=rs2PpTpOhtqyHkZvUkPYNQm0n5YnSpXb9YyV57E5eYWC+Ehg4nhn41+bYQM0mMiZX
+	 mbFK/9W5CAcRmQrT/OitaLpUhCll8xqOyXwyxTOSgmBlwe8tCOKsrA5reqqLwjdIiQ
+	 cZhVR/p0lnNzcyU+/zjXdoNNXcdixjozBsJHQ6RhprI5/oiTNvlJ2xUdVbTv15jMqJ
+	 jdGunTo9Ka6rVsG2qi25p/+HFzKc0mJi4Dju9d3wqMCmmZmhh7vn4yCkCnKMtaFE8I
+	 pj/WHtoX28mRvmyDw1mWfDLoXzHFVS3SW5xow4RHhViwBn5IS+zIS0nfY0dUyOKNGW
+	 ySDXbtIkH5/EA==
+Date: Sun, 12 Oct 2025 16:52:28 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= via B4 Relay
- <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, David Lechner
- <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
- stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] iio: buffer: Fix DMABUF mapping in some systems
-Message-ID: <20251012164640.40d29b87@jic23-huawei>
-In-Reply-To: <20251007-fix-iio-dmabuf-get-dma-device-v3-0-0c73e2c0653b@analog.com>
-References: <20251007-fix-iio-dmabuf-get-dma-device-v3-0-0c73e2c0653b@analog.com>
+To: Akshay Jindal <akshayaj.lkd@gmail.com>
+Cc: dan@dlrobertson.com, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, shuah@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/6] iio: accel: bma400: Reorganize and rename
+ register and field macros
+Message-ID: <20251012165228.4650cdac@jic23-huawei>
+In-Reply-To: <20251007055511.108984-2-akshayaj.lkd@gmail.com>
+References: <20251007055511.108984-1-akshayaj.lkd@gmail.com>
+	<20251007055511.108984-2-akshayaj.lkd@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,86 +60,98 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 07 Oct 2025 10:15:20 +0100
-Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Tue,  7 Oct 2025 11:25:01 +0530
+Akshay Jindal <akshayaj.lkd@gmail.com> wrote:
 
-> This series fixes an issue with DMABUF support in the IIO subsystem where
-> the wrong DMA device could be used for buffer mapping operations. This
-> becomes critical on systems like Xilinx/AMD ZynqMP Ultrascale where memory
-> can be mapped above the 32-bit address range.
->=20
-> Problem:
-> --------
-> The current IIO DMABUF implementation assumes it can use the parent device
-> of the IIO device for DMA operations. However, this device may not have
-> the appropriate DMA mask configuration for accessing high memory addresse=
-s.
-> On systems where memory is mapped above 32-bits, this leads to the use of
-> bounce buffers through swiotlb, significantly impacting performance.
->=20
-> Solution:
-> ---------
-> This series introduces a new .get_dma_dev() callback in the buffer access
-> functions that allows buffer implementations to specify the correct DMA
-> device that should be used for DMABUF operations. The DMA buffer
-> infrastructure implements this callback to return the device that actually
-> owns the DMA channel, ensuring proper memory mapping without bounce buffe=
-rs.
->=20
-> Changes:
-> --------
-> 1. Add .get_dma_dev() callback to iio_buffer_access_funcs and update core
->    DMABUF code to use it when available
-> 2. Implement the callback in the DMA buffer infrastructure
-> 3. Wire up the callback in the dmaengine buffer implementation
->=20
-> This ensures that DMABUF operations use the device with the correct DMA
-> configuration, eliminating unnecessary bounce buffer usage and improving
-> performance on high-memory systems.
->=20
-> (AI generated cover. I would not be this formal but I guess is not
-> that bad :))
->=20
+> Reorganize register and field macros to improve consistency with the
+> datasheet and naming style:
+> 
+> - Move field macros next to their corresponding register macros
+> - Reorder register macros to follow address order from the datasheet
+> - Rename field macros to include the register name in the macro name
+> - Add a _REG suffix to register macros where missing
+> 
+> No functional changes are intended.
+> 
+> Signed-off-by: Akshay Jindal <akshayaj.lkd@gmail.com>
 > ---
-> Changes in v3:
-> - Patch 1
->   * Add a new iio_buffer_get_dma_dev() helper to get the DMA dev.
-> - Link to v2: https://lore.kernel.org/r/20251006-fix-iio-dmabuf-get-dma-d=
-evice-v2-0-d960bc9084da@analog.com
+>  drivers/iio/accel/bma400.h      | 110 +++++++++--------
+>  drivers/iio/accel/bma400_core.c | 212 ++++++++++++++++----------------
+>  2 files changed, 163 insertions(+), 159 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
+> index 932358b45f17..ae3411c090c9 100644
+> --- a/drivers/iio/accel/bma400.h
+> +++ b/drivers/iio/accel/bma400.h
+> @@ -16,31 +16,37 @@
+>   * Read-Only Registers
+>   */
+>  
+> +/* Chip ID of BMA 400 devices found in the chip ID register. */
+> +#define BMA400_ID_REG_VAL           0x90
+> +
+>  /* Status and ID registers */
+>  #define BMA400_CHIP_ID_REG          0x00
+>  #define BMA400_ERR_REG              0x02
+>  #define BMA400_STATUS_REG           0x03
+>  
+>  /* Acceleration registers */
+> -#define BMA400_X_AXIS_LSB_REG       0x04
+> -#define BMA400_X_AXIS_MSB_REG       0x05
+> -#define BMA400_Y_AXIS_LSB_REG       0x06
+> -#define BMA400_Y_AXIS_MSB_REG       0x07
+> -#define BMA400_Z_AXIS_LSB_REG       0x08
+> -#define BMA400_Z_AXIS_MSB_REG       0x09
+> +#define BMA400_ACC_X_LSB_REG		0x04
+> +#define BMA400_ACC_X_MSB_REG		0x05
+> +#define BMA400_ACC_Y_LSB_REG		0x06
+> +#define BMA400_ACC_Y_MSB_REG		0x07
+> +#define BMA400_ACC_Z_LSB_REG		0x08
+> +#define BMA400_ACC_Z_MSB_REG		0x09
+>  
+>  /* Sensor time registers */
+> -#define BMA400_SENSOR_TIME0         0x0a
+> -#define BMA400_SENSOR_TIME1         0x0b
+> -#define BMA400_SENSOR_TIME2         0x0c
+> +#define BMA400_SENSOR_TIME0_REG         0x0a
+> +#define BMA400_SENSOR_TIME1_REG         0x0b
+> +#define BMA400_SENSOR_TIME2_REG         0x0c
+>  
+>  /* Event and interrupt registers */
+>  #define BMA400_EVENT_REG            0x0d
+> +
+>  #define BMA400_INT_STAT0_REG        0x0e
+>  #define BMA400_INT_STAT1_REG        0x0f
+>  #define BMA400_INT_STAT2_REG        0x10
+> -#define BMA400_INT12_MAP_REG        0x23
+> -#define BMA400_INT_ENG_OVRUN_MSK    BIT(4)
+> +#define BMA400_ENG_OVRUN_INT_STAT_MASK		BIT(4)
+> +#define BMA400_STEP_INT_STAT_MASK		GENMASK(9, 8)
+> +#define BMA400_S_TAP_INT_STAT_MASK		BIT(10)
+> +#define BMA400_D_TAP_INT_STAT_MASK		BIT(11)
 
-Looks like I misinterpreted outcome of v2 thread.  Anyhow dropped that and =
-picked
-this up.
+Discussion on naming format and association with registers continues on v3
+(busy week so I only just got back to reviewing!)
 
-Thanks
+Also a bit on the weird 2 registers as one thing going on here.
 
-J
->=20
-> ---
-> Nuno S=C3=A1 (3):
->       iio: buffer: support getting dma channel from the buffer
->       iio: buffer-dma: support getting the DMA channel
->       iio: buffer-dmaengine: enable .get_dma_dev()
->=20
->  drivers/iio/buffer/industrialio-buffer-dma.c       |  6 ++++++
->  drivers/iio/buffer/industrialio-buffer-dmaengine.c |  2 ++
->  drivers/iio/industrialio-buffer.c                  | 21 ++++++++++++++++=
------
->  include/linux/iio/buffer-dma.h                     |  1 +
->  include/linux/iio/buffer_impl.h                    |  2 ++
->  5 files changed, 27 insertions(+), 5 deletions(-)
-> ---
-> base-commit: b9700f87939f0f477e5c00db817f54ab8a97702b
-> change-id: 20250930-fix-iio-dmabuf-get-dma-device-339ac70543db
-> --
->=20
-> Thanks!
-> - Nuno S=C3=A1
->=20
->=20
->=20
+>  
+>  /* Temperature register */
+>  #define BMA400_TEMP_DATA_REG        0x11
+> @@ -55,70 +61,68 @@
+>  #define BMA400_STEP_CNT1_REG        0x16
+>  #define BMA400_STEP_CNT3_REG        0x17
+>  #define BMA400_STEP_STAT_REG        0x18
+> -#define BMA400_STEP_INT_MSK         BIT(0)
+>  #define BMA400_STEP_RAW_LEN         0x03
+> -#define BMA400_STEP_STAT_MASK       GENMASK(9, 8)
+
+Other than those outstanding bits this looks fine (though I'll take one more close
+read once we have those questions resolved).
+
+Jonathan
 
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-24955-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24956-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5E2BD0386
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 16:23:35 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648E4BD038E
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 16:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C0AF1895764
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 14:23:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 334674E8438
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 14:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7422857E6;
-	Sun, 12 Oct 2025 14:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7689D190664;
+	Sun, 12 Oct 2025 14:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iniuhQkW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qQoUkHJH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2587285412;
-	Sun, 12 Oct 2025 14:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E4F285053;
+	Sun, 12 Oct 2025 14:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760278978; cv=none; b=BHhgm6xbMX7c92y9+PavOEk1yKwQb+FM7pehHYe0sqvpVsIZB8Fcl+CkA1VMmHBvwlaMAMwYvdfhLwMnveLYZUSFU7JX7sadFtL4YUnXjJB7Q81PNMfIRnve6WhowkN9v434jV6LVgxdO4h499zylA/D84at/bzkMKGoRLV8bXk=
+	t=1760279016; cv=none; b=DLUyooUurKH5giZo6QhfN9dIOryu8MosgSSQnT7/zWbMNEz5mOltJMTsO68K5rK0ec+2swdCo0dT7bz89SuClVQEKkN/UENMft788tPqqQxm8PxlKa4Wr67w9McCtWTGDIrDMOjXtCP9A/HjTFTN0LLE6NCrD47Jf2il7X+yGjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760278978; c=relaxed/simple;
-	bh=KuVT83t66k5V6mf1HN1UC7DkR4RMze4mx/one+NIRzs=;
+	s=arc-20240116; t=1760279016; c=relaxed/simple;
+	bh=LyBDNc5VI8NuhLRMfMr1lC5kpHYdDF+yvdrqL5yjqVg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VSEJppJHOGJqaSu1LHUwUR7SwSwYZf5V79IZJUkB5nKGhy6fDOqD6QVjKP55HBZiY4cZVQ2ppvUOOyrI8txtC/oaT4tci1+NMb2gikz9c0z6GQqJF3uXq5+noBRB0UNnO9x5D2kUOoEexKA3pv5IUytfRdkL2/+V04BzPwlB84w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iniuhQkW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9190C4CEFE;
-	Sun, 12 Oct 2025 14:22:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FWRKrge+FnnhEqGLJEYDxf05s5zoQ2ILIAXKA1QeddkzmDMV8e+2ES3p9HnkbWx7HWHM0fBQ1WM26tuO8Q+b7zDzRg5Rq5CsvXLT7j8Jt6lQ/ywvmGTPDgBm5NCkfL8qnJIM+swsb9QHOQfTCV3uVka+VEsmR9OM1EkBBUP8+RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qQoUkHJH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C7FC116C6;
+	Sun, 12 Oct 2025 14:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760278977;
-	bh=KuVT83t66k5V6mf1HN1UC7DkR4RMze4mx/one+NIRzs=;
+	s=k20201202; t=1760279016;
+	bh=LyBDNc5VI8NuhLRMfMr1lC5kpHYdDF+yvdrqL5yjqVg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iniuhQkWcKHKkVXvwrVV39LvQ1GdUjkTLQ6NcKAYGamxz0TZhcIr47D9gZsUfjPrE
-	 JTRuMkxUPza4+xvkfmINLXdA1nRm9wtXI7OS/V2jMSlTEEEew9kjE3hGmVXJc7BomQ
-	 ae0vmKlzKY3g5+3O/dWesV+/xr921BAnBS5M055/rD7w4bf5DRTe06U+ziUY56OlbE
-	 2x4eFALflu8PyMyd06UGp8GelB9ZaHnmNMR1i+mKoRu1KvaoItceQCCRFG5e4Q0d78
-	 EJE4BrY8DyYFX2piTSFHxepIjhuFAuNembw7HY3+PY22+d+lRKjlOHPzi+HnxQKmP0
-	 y50xYGHsuiN3Q==
-Date: Sun, 12 Oct 2025 15:22:48 +0100
+	b=qQoUkHJH3YAJZMKjv2d53f9kR7jQc6kPVYhs30bp6mahLpmTlWvJ4BdVey/0yBroK
+	 sbaQnQQ4Z+rFWyNNE2LFFXQ4KDPd0jKTd+fvWUbB4dRXfaPLE0ZUEIlJTx4RvTJviq
+	 L7FlGnim2a3IpzLOF0r0R4/aQc7YfFBrSKDFkQPf+7R2krobwSRIhDAlOZyRXN3ic6
+	 +fm0yCEf8Hvt1PIABuMUp7b0dPfgLXpnePjGv0R3n0C1PVsMiTIONIuJrbxj9X00Lh
+	 GHa7Lmx2VDQoW7rgH9T4YYgfEG1FLcwHPd0A4ADS9JDf2GollL9HcTcqshyvjUXMUz
+	 uFENw9uMclRvQ==
+Date: Sun, 12 Oct 2025 15:23:26 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Petre Rodan <petre.rodan@subdimension.ro>
 Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
@@ -50,11 +50,11 @@ Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
  <conor+dt@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 03/19] iio: accel: bma220: cleanup license string
-Message-ID: <20251012152248.0831079a@jic23-huawei>
-In-Reply-To: <20251005-b4-bma220_improvements-v4-3-0f449ba31585@subdimension.ro>
+Subject: Re: [PATCH v4 04/19] iio: accel: bma220: shorten spi->dev calls
+Message-ID: <20251012152326.3f3526dc@jic23-huawei>
+In-Reply-To: <20251005-b4-bma220_improvements-v4-4-0f449ba31585@subdimension.ro>
 References: <20251005-b4-bma220_improvements-v4-0-0f449ba31585@subdimension.ro>
-	<20251005-b4-bma220_improvements-v4-3-0f449ba31585@subdimension.ro>
+	<20251005-b4-bma220_improvements-v4-4-0f449ba31585@subdimension.ro>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,32 +65,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 05 Oct 2025 16:12:12 +0300
+On Sun, 05 Oct 2025 16:12:13 +0300
 Petre Rodan <petre.rodan@subdimension.ro> wrote:
 
-> Fix checkpatch warning about use of "GPL v2" license:
-> 
-> Prefer "GPL" over "GPL v2" - see commit bf7fbeeae6db
-> ("module: Cure the MODULE_LICENSE "GPL" vs. "GPL v2" bogosity")
+> Provide functions easier access to device struct.
 > 
 > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 Applied.
-> ---
-> v4 - split from bigger patch (Andy)
-> ---
->  drivers/iio/accel/bma220_spi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
-> index 02ee6b4d51c0816a88ac258f0e5107111ec2a2bc..8c313debc1dff7f4bae7c165bc555ee190996291 100644
-> --- a/drivers/iio/accel/bma220_spi.c
-> +++ b/drivers/iio/accel/bma220_spi.c
-> @@ -332,4 +332,4 @@ module_spi_driver(bma220_driver);
->  
->  MODULE_AUTHOR("Tiberiu Breana <tiberiu.a.breana@intel.com>");
->  MODULE_DESCRIPTION("BMA220 acceleration sensor driver");
-> -MODULE_LICENSE("GPL v2");
-> +MODULE_LICENSE("GPL");
-> 
-
 

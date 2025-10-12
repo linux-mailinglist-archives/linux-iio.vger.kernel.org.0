@@ -1,126 +1,152 @@
-Return-Path: <linux-iio+bounces-24996-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-24997-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458B5BD090E
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 19:58:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D169ABD0924
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 20:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04E973B8E67
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 17:58:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AC7618927A6
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Oct 2025 18:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FBE2EE274;
-	Sun, 12 Oct 2025 17:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168E52EDD4D;
+	Sun, 12 Oct 2025 18:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lbPLiupN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fTUvlY9E"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD162ECE87;
-	Sun, 12 Oct 2025 17:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E2E13C3F2
+	for <linux-iio@vger.kernel.org>; Sun, 12 Oct 2025 18:06:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760291918; cv=none; b=UUhSwgjML9oETolz79BOkBVVmii+KKWJhevYq/e9NCqlIlHk4en1GPnDfJXXsQd6nrirsvg+WpCTAg6AXwMYFr8ptJlAIZG9WiHkHxybvYDO2VrY0lmSUM9sjhRd87vyhKXkHduPUp1LJJo/pdR+A0P+eecxeAXcKtToq4JpheA=
+	t=1760292392; cv=none; b=t0pd3AAozVLzPwrQ1PTEV03qYnNzZua1NcHd2RFnogljhVCb9GraK/5SAeuiiVuPD11IBKcOu0d1LwGtgrovj9w3LhAXyL7vfafTM9A2Lf3Wgv89QxT9kPtIdSS0XqfLSz7DDsi1lH5q5fgTlJkoJikUOm1sN8XS0gKikGuaG/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760291918; c=relaxed/simple;
-	bh=RPG0WyII0YAY55w44Mz2+LSbIkTmztwPaxqTUd1Ef+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YAQdq1GOi1xg/wrqnJCVN9qwg43ZnPgGWmBvFrg39sUfbcosRmIzYIeSgc03F8U18N3g2Uab5BJbKuXabbFW2skc7+FXp78snlVFGrO82145Z7MhHGnThg1pXZehqchoqf/Rof0PoSLy4hGDwz5uWzxASri1LjH1UgHw1d4bD6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lbPLiupN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FE7C4CEE7;
-	Sun, 12 Oct 2025 17:58:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760291917;
-	bh=RPG0WyII0YAY55w44Mz2+LSbIkTmztwPaxqTUd1Ef+c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lbPLiupNbVVV2+F4kC1btPfSig4ChLSIw4FgEJF9rFC218LuoMarljOj5I6yaR+xH
-	 AyZAxY3oyuHXpfPxra55KDV+JtN+s+sYdEcveC14Oew4Llri4aK1WhpHFwD1Mc+/rc
-	 RfWgaRQfpdkwPVUPStquP//cYrHhGzYvK5Wv2Ljhy1NC1opIbhklv0PxxkT24WE5Wf
-	 OQP6J3DI0b/9Sb/gD4M7RoKGhcc+N4YEvJnd3IOU/1h+tF8qbIIeMvnMo1ipdXIBOV
-	 ov8Ii6qCuRTJLXjhGt9H/8+6i7jvB51mnaiGqGoLYOmD0Q76zfrcwsJVVn865vg+2d
-	 H/yY7vOr+SYzw==
-Date: Sun, 12 Oct 2025 18:58:26 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: <Jianping.Shen@de.bosch.com>
-Cc: <lars@metafoo.de>, <robh@kernel.org>, <krzk+dt@kernel.org>,
- <conor+dt@kernel.org>, <dima.fedrau@gmail.com>,
- <marcelo.schmitt1@gmail.com>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <Christian.Lorenz3@de.bosch.com>, <Ulrike.Frauendorf@de.bosch.com>,
- <Kai.Dolde@de.bosch.com>
-Subject: Re: [PATCH v5 0/2] iio: imu: smi330: add bosch smi330 driver
-Message-ID: <20251012185826.13abef25@jic23-huawei>
-In-Reply-To: <20251009153149.5162-1-Jianping.Shen@de.bosch.com>
-References: <20251009153149.5162-1-Jianping.Shen@de.bosch.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1760292392; c=relaxed/simple;
+	bh=AhJj9IOMJeJTvwqvszPfrlnQUsLrStlttldkdSZULDU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VU7tRsW1JF9mDhHLp21PyWJcDBuCQ8ck2kgpe6EajZow59RbtTn4KJAkLo7xAhVqERf/dTmSUYKdjXwIu58Hmy2DgZKz4UkB2zeuEw+GXGSkSTsW3leB75Bnn44W8zHriFOOmo4E+oYV5ICx2oiLQHEKt9qchlTj6JBwT9Yr8zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fTUvlY9E; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-28832ad6f64so39280605ad.1
+        for <linux-iio@vger.kernel.org>; Sun, 12 Oct 2025 11:06:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760292391; x=1760897191; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MKnvs8CIxUPKhz7oYwulrB+BjUViG59C+RwVWWt6TkA=;
+        b=fTUvlY9Er8V2O6kgtYIGN19ZnjJkwB9SR5otXbr6P8bUK0XAbm+ncIyjIAoV9OuzG9
+         EfjIlAe9tt/UJfXmoZ+sYCAL5V9LlXK0KJAYD/lkf6VaGdbMYJFCRGHQb7hec2V3E/bM
+         7wuD+zgdE4NX+qJzwggtRF+yEbhiewXZid7VVnYVviXFs+3owMRZiNlNbWPkCSko9ruG
+         Nc2gkV3Wus8SuVUYA/nxKSNVH0pPWfZNEC56JmHa4YPyjQ3JG9WuwTUrycO7UJ1PBrLG
+         KioMwewF7V9GsJ7CeHXZKObnth2e7PGaYjw4OaBrxD9lfOjKx2p8yJ24aIigjSY9qlw6
+         5BJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760292391; x=1760897191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MKnvs8CIxUPKhz7oYwulrB+BjUViG59C+RwVWWt6TkA=;
+        b=wGU+2j8Th8uQaJGUk4EUyiB/2FiYWD5PtRyLC4SEha3NSNru9j6KGUjy6Ob14ODj7p
+         GX+KeOv0Yr0gd3xUwFEYRGIR8Hoi2uQBq6agszez8Ppq2mHk5BX9AtOGkr1qj+MYVHh1
+         FtLvF/5nDJYsxoDF7IUJ/+5dlbTblYK31EzEK5FOBlrs4+ObzFFEmvUJLF+hQ6JEQ/Gi
+         3nhqCWsy1pZwqPIKtnpkTzheGr+QdV8vOcR+put8WvoO+x0PNFNOURsKFMXClrnEKMdD
+         xlnle3+b1e7XgJd1UGoZr78Q8m9GN1GGAjh/cJwiqHv1J8bjD/xlwlvTWFUxNkqKzczK
+         5UtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX73txSjpABL4vy/wjfQP9WCrhXk5rQTynXKtiog9K8EPz3YqW0nICB4sU1VjlWBWjnYkKeDkXNqRE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOl3S9/yAf1JY4UAjrQfOmyG6x66uvVTSjhvLbF85pnyj21qyf
+	arzV/7nokyFJwiJSHyOXg7M6gPySSoQLxQYRW+CBFBZRXGl+6AMaUTa3
+X-Gm-Gg: ASbGnctH6Kztm2rm6QvIi8M5mh9QvE6iv9Jqy66rOM30xnULRioodl9uf3Pt9/92OEl
+	YUZGmBeLSgoogIxiTVkX/3UdaX2wFjyT2oYN0im3GK1M9JiGDCQmQF36DodyeAkvzTlj17ADiuo
+	xKJ0YcyE3nB6b3mmJWqwIuIGvYePRwD5mi5IDi3oSr9zHePQdwH+7f2jqwrZfGv3fpDZ79Jb9Tt
+	QyygSwLVdtpuoGVmgeyVGIjZMIoX77JEqU9+a1ymzLh85k1DkknQVlPlMJ1HcYEAiwuvLagilLG
+	+BWm4cZRROkKrBwbLqD8xRNdQatjDCT/jj+44ucR1qXlowQvQb1CBXxEdKbOnQOtHB/VEvbpISZ
+	fqNpOmp4sebt1y/or7mO1s4jqQNyS511G/BOOuT5hvUkLSGNKVDQ=
+X-Google-Smtp-Source: AGHT+IFmhUIDI5YazfRri8S6Ev/488WoKLYdvCvSR4xvF4/ODpw6sSz7qfzRIKyIqHTq65Xm/DzsGw==
+X-Received: by 2002:a17:903:19e8:b0:28e:ccd7:dd61 with SMTP id d9443c01a7336-29027305380mr229717425ad.57.1760292390563;
+        Sun, 12 Oct 2025 11:06:30 -0700 (PDT)
+Received: from akshayaj-lenovo.. ([223.233.65.54])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034f56c0fsm111734345ad.104.2025.10.12.11.06.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Oct 2025 11:06:30 -0700 (PDT)
+From: Akshay Jindal <akshayaj.lkd@gmail.com>
+To: dan@dlrobertson.com,
+	jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org
+Cc: Akshay Jindal <akshayaj.lkd@gmail.com>,
+	shuah@kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/6] iio: accel: bma400: Refactor GENINTR config and register macros
+Date: Sun, 12 Oct 2025 23:36:07 +0530
+Message-ID: <20251012180619.195244-1-akshayaj.lkd@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 9 Oct 2025 17:31:47 +0200
-<Jianping.Shen@de.bosch.com> wrote:
+This series refactors the BMA400 driver with a focus on generic interrupt
+configuration and related register usage. The main changes reduce
+usage of hard-coded values by introducing macros and formula-based
+register addressing, and add a centralized lookup indexed on iio event
+direction.
 
-> From: Jianping Shen <Jianping.Shen@de.bosch.com>
-> 
-> Add the iio driver for bosch imu smi330. The smi330 is a combined
-> three axis angular rate and three axis acceleration sensor module.
-> This driver provides raw data access for each axis through sysfs, 
-> and tiggered buffer for continuous sampling.
-> 
-> dt-bindings:
-> v1 -> v2
->     - Add missing type to drive-open-drain
->     - Adapt description of drive-open-drain
-> 
-> v2 -> v3
->     - No Changes
-> 
-> v3 -> v4
->     - No Changes
-> 
-> v4 -> v5
->     - No Changes
-> 
-> imu driver:
-> v1 -> v2
->     - Strip back to a more minimal initial driver
-> 
-> v2 -> v3
->     - reorganize the driver as 1 core module, 1 I2C module, and 1 SPI module.
->     - remove build time INT pin choice
->     - change temperature channel definition
->     - improved reading data from sensor
->     - simplified timestamp acquisition
->     - some other minor finding fixes
-> 
-> v3 -> v4
->     - move #define from header to c file
->     - add sanity check to i2c message size
->     - use available_scan_masks to simplfy the copying data to buffer (dependent on [PATCH RFT] iio: Fix core buffer demux failure to account for unwanted channels at tail)
->     - allow setting output data rate for acc and gyro separately
->     - some other minor finding fixes
-> 
-> v3 -> v5
->     - fix kernel test robot finding
->     - some other minor finding fixes
-Fixes on top once a patch is applied. I 'might' merge them down or I might
-decide to keep them separate. That normally depends on the state of my tree and
-what else is going on.
+Alongside these updates, the series also reorganizes and renames register
+and field macros for consistency with the datasheet, and extends comments
+for additional clarity.
 
-This change log is also not informative enough.  Should say what the robot
-reported and what you did to fix it.  Also give a lot more detail on those
-other minor fixes.
+All patches are pure refactoring. No functional changes are intended.
 
-Anyhow, I'll wait for the fixes as separate patches.
+Akshay Jindal (6):
+  iio: accel: bma400: Reorganize and rename register and field macros
+  iio: accel: bma400: Use macros for generic event configuration values
+  iio: accel: bma400: Use index-based register addressing and lookup
+  iio: accel: bma400: Replace bit shifts with FIELD_PREP() and FIELD_GET()
+  iio: accel: bma400: Rename activity_event_en() to generic_event_en()
+  iio: accel: bma400: Add detail to comments in GEN INTR configuration
 
-Thanks,
+Changes since v4:
+- Add INT_STATx field macros corresponding to used INT_CONFIGx fields.
+- Make INT_STATx field macro names consistent with others.
+- Tied the INT_STATx field to correct INT_STAT register.
+- Modified changelog of PATCH 1/6 due to addition of INT_STATx fields.
+- Modified changelog of PATCH 4/6.
 
-Jonathan
+Changes since v3:
+- Insert a new patch into the patch series for replacing explicit bit
+  shifts with FIELD_GET and FIELD_PREP macros
+- Assigned explicit values to reg field enums introduced.
+
+Changes since v2:
+- Split single patch into five smaller patches as suggested
+- Addressed review comments related to trailing comma [Patch 2/5]
+- Extended renaming of macros to TAP_CONFIG registers [Patch 1/5]
+- Addressed review comment received regarding write then replace in
+  activity_event_en() [Patch 3/5]
+
+Testing Summary:
+- Tested on raspberrypi 4b and 7-semi bma400 sensor breakout board.
+- Since no functional impact is there, so before functionality is
+  expected to be equal to after change functionality.
+- Tested mapping of GEN1 and GEN2 both on INT1 pin as before.
+- Tested both activity and inactivity detection by setting attributes
+  events/in_accel_mag_falling_en as well as events/in_accel_mag_rising_en.
+- Did read and writes on various attributes such that write_event_config(),
+  write_event_value() and read_event_value() callbacks are triggered.
+
+ drivers/iio/accel/bma400.h      | 155 +++++++++-----
+ drivers/iio/accel/bma400_core.c | 349 ++++++++++++++++++--------------
+ 2 files changed, 292 insertions(+), 212 deletions(-)
+
+-- 
+2.43.0
+
 

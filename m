@@ -1,161 +1,124 @@
-Return-Path: <linux-iio+bounces-25032-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25033-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7E5BD4039
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Oct 2025 17:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC40BD48A7
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Oct 2025 17:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ADF63E627F
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Oct 2025 14:59:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66F5F4C004E
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Oct 2025 15:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D19309EF3;
-	Mon, 13 Oct 2025 14:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA173081B9;
+	Mon, 13 Oct 2025 15:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="adaQomyY"
+	dkim=pass (1024-bit key) header.d=iitb.ac.in header.i=@iitb.ac.in header.b="cGmoK95N"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp1.iitb.ac.in (smtpd9.iitb.ac.in [103.21.126.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4694B2EC08B
-	for <linux-iio@vger.kernel.org>; Mon, 13 Oct 2025 14:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD123081B2
+	for <linux-iio@vger.kernel.org>; Mon, 13 Oct 2025 15:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.21.126.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760367123; cv=none; b=jYSx+krnF1j36uemjPPTDK+YNLmdmIuwW4SvKgt82OHAG/S9Rf/prSp8nmc63z2eDgJT3ZZ5LvutOFZnxioNH+pj7ZQetaIoWDIYgXi22wE1YHb4ErZFWXN+Sxs83QGP6s9mWnnTiJKGgYvmQWeucTtV8J4X8K1WCRiETwfYGeo=
+	t=1760369139; cv=none; b=WbY7b/UB38IeORQwtXu46jdgLcXXyIr8KfqJsFY9KVDiFKk0UG2NTs7rw+lfKqkUch+QNuLHjBXan01WNQ4+832ONBEZvmoX+jYD9wy2u1E77iyVLf1w/6JO2hmTSuOi64HbRpp5B0G/ADl1kt+56nL1i53F9KKs7A4xgP3Rb5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760367123; c=relaxed/simple;
-	bh=nXVVLzT4Nhn0Q/A4tv0nslm5cvTeZA35dLDIUC173GE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pKj9sFTyqQrbsIeKnvPSxqdds/ofwA+TplyZ9J4KZqYpHpkLdKdsc6Ku885tbXiCA4YKCO5QLZoVPA8Wpeyhj20OaQvh36KyVB4Hc24/SPtlrLm+wbmj8cT4kzGWWnExPKaShk7aRtOpMMBi0Uti7GXzM+yDEdUNSQYuRCUw+uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=adaQomyY; arc=none smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-43f554ed252so2406874b6e.0
-        for <linux-iio@vger.kernel.org>; Mon, 13 Oct 2025 07:51:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760367119; x=1760971919; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4aRBgJpQr8jK9TQ7APmSoZVUZardfbkU5RGx9vJNeN4=;
-        b=adaQomyYD8K27MhPD0vJ+ANdKN8325AXYbm2wtk6brSQzRrUAK9K+uh3aOjI1l/rY4
-         caJ6lcJOQ+TgWuyQ4PNbW/x+quFjTqZ4EUnd1DBsd0LSSpRB/22WWAY+fpTiJY94jOH3
-         BUaBOOrbV3y+axzlmICZpCf7oiRPGsJaMdzLrAZrBgaM2FJtE50acInorbDKNe+y/S9Y
-         C/+HjinqvmcgKr3m94e4670NcRvYf/elXlNxu9eEtMQMrdnR/C/GBTdmcQXeMocjpSUx
-         APAG23dE4KLbA4Ufkwhk9OHDiMGM7iO5nMO83HWr6t/10zAJ7rrjQ0N7wd1Zwhluvb82
-         2CRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760367119; x=1760971919;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4aRBgJpQr8jK9TQ7APmSoZVUZardfbkU5RGx9vJNeN4=;
-        b=LXXGkIZRklCCMUHgFYSBkXDAeD1Dtf2OBurtnBLXv0sK+wOVwaY5I4MAxGu1TrWiUf
-         QdtywEG7lLQgIemWZKHgRYtnZwwd9TRHzmpnv4fitCatPagFscK3emzDwc9Y6OCUv3fJ
-         cwXZtZAuvVkWcj8vlmOZS8h4FDL2cZ3pV8DXTcGFP9ch8m9GeFqXS/5yTdRIG2vk6s/v
-         bW22mg+7W9V7fwyFqfbWERF5kfiO1p1gG2v8NgsZ2RJBwYeh16A6v5tmGIW8ZY4wSko8
-         d1OPKj3Ar3C8rSEK1h/4KyGrdLqAS0kZOaxH3oLR9f5GiORbD/fy5fPKHim/V6wBcOZ7
-         zSfQ==
-X-Gm-Message-State: AOJu0YxB5GNmXkk8nLpRFs5gGGtmsluAgUB7Gn6658NIgnBPy4CIKi7/
-	K/geYgkn1askCaHyHAwttziBdPgYItsfLJmwDURRjBXxJ5Hv0qERcsKEjjmLYxVV29MkLsxnidN
-	9j4cZ
-X-Gm-Gg: ASbGncvfLL9J2OmK7UHmBOCklKG8kC0rrY5Wgg/ozedKuzsni4wuqtGiFxTVeNvZJLM
-	s51li8e/HRHZ8vbFWhpnDnwnGRAUUgVv/F3BouQ9A62c4vk4DNqfHv6HApsHoxDA2cjxK+8tGy8
-	9lxSsq4tiRsNA4PQQUs57TBLiGYNb7PcsFX9mrlBuzuEB8rfE8wuIfGhv6fxZRabo/1hnUJ/GHz
-	UCB+VoNxIxQNMieJZipqzNe4jcXBhAs2ZQJ2IrmO97Dd5FlPWQT1xrjLCnXBhrG/7gDRuGc3muO
-	Js7LU7FLqLnljHGlJMiFm3Qukm5l2mpwp/0PwRK/Q8mGc7MRcU02EpBJ7LgjSmgNYj4B7Bu9IQl
-	sa8eXe954SBm6Yz+UeFQggrFu1KNQSPv3vHX0AaIU2WYk0RaNsS/OGuypKNqCgisgc0AZ1St+DF
-	o/qjYCQC53o3CexpBi9i9MZUKlgg==
-X-Google-Smtp-Source: AGHT+IE7iMaPnJ50HxSkD1yLY7r5ZjIzoU4QH1L3ONVMMFfr9TT94SF+fUpUrrZKw2ofHxc9OlciiQ==
-X-Received: by 2002:a05:6808:1484:b0:441:8f74:f12 with SMTP id 5614622812f47-4418f742030mr6323843b6e.60.1760367119185;
-        Mon, 13 Oct 2025 07:51:59 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:dc0c:4910:f362:c012? ([2600:8803:e7e4:500:dc0c:4910:f362:c012])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65018130f87sm2630468eaf.3.2025.10.13.07.51.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Oct 2025 07:51:58 -0700 (PDT)
-Message-ID: <ab4228f6-dba5-461a-92c8-47dd4987fe23@baylibre.com>
-Date: Mon, 13 Oct 2025 09:51:57 -0500
+	s=arc-20240116; t=1760369139; c=relaxed/simple;
+	bh=VH/jjwDLkiSGiAr4JG89l4anPAc3ygJofrUXtkBMnrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WvHmWqljoPF7UNuOWAuwEdAL8P7+DEAVPyTUNBOS3yzz+QXtvRdfa30+xthU6AMyMSBBO7FrHbgrjlIKHfd0wlD5QLqZW5eZp3t0g/0xc5R8ayz7c0sSfJHuyf9JdTftyJDtU2NH4RUz9JFWu/cm8JYv9tZ5CASDCO0inozqhus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in; spf=pass smtp.mailfrom=ee.iitb.ac.in; dkim=pass (1024-bit key) header.d=iitb.ac.in header.i=@iitb.ac.in header.b=cGmoK95N; arc=none smtp.client-ip=103.21.126.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ee.iitb.ac.in
+Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
+	by smtp1.iitb.ac.in (Postfix) with SMTP id A8A24103847E
+	for <linux-iio@vger.kernel.org>; Mon, 13 Oct 2025 20:55:30 +0530 (IST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.iitb.ac.in A8A24103847E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=iitb.ac.in; s=mail;
+	t=1760369130; bh=VH/jjwDLkiSGiAr4JG89l4anPAc3ygJofrUXtkBMnrI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cGmoK95NAv8CM1VB0uMl3a2sfWTHQGZGw0gqZtp1vXMgyLaqVXz3l8kr5IDoekCQW
+	 Ed+msU3LxHDMDydJm1VmBQ56oLJ8zbviPnJzxsa86iqMv4ImrXL723N3U5u4/paXm7
+	 9FmNBKYblzlvU6d0Ro6CUcdg/vATJG5DETvCyXW0=
+Received: (qmail 23344 invoked by uid 510); 13 Oct 2025 20:55:30 +0530
+X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <akhilesh@ee.iitb.ac.in>, uid 501) with qmail-scanner-2.11
+ spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/26337} 
+ Clear:RC:1(10.200.1.25):SA:0(0.0/7.0):. Processed in 4.394388 secs; 13 Oct 2025 20:55:30 +0530
+X-Spam-Level: 
+X-Spam-Pyzor: Reported 0 times.
+X-Envelope-From: akhilesh@ee.iitb.ac.in
+X-Qmail-Scanner-Mime-Attachments: |
+X-Qmail-Scanner-Zip-Files: |
+Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
+  by ldns2.iitb.ac.in with SMTP; 13 Oct 2025 20:55:26 +0530
+Received: from bhairav.ee.iitb.ac.in (bhairav.ee.iitb.ac.in [10.107.1.1])
+	by ldns2.iitb.ac.in (Postfix) with ESMTP id 3F13A341504;
+	Mon, 13 Oct 2025 20:55:25 +0530 (IST)
+Received: from bhairav-test.ee.iitb.ac.in (bhairav.ee.iitb.ac.in [10.107.1.1])
+	(Authenticated sender: akhilesh)
+	by bhairav.ee.iitb.ac.in (Postfix) with ESMTPSA id F0F151E81581;
+	Mon, 13 Oct 2025 20:55:24 +0530 (IST)
+Date: Mon, 13 Oct 2025 20:55:20 +0530
+From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: jic23@kernel.org, dlechner@baylibre.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, nuno.sa@analog.com,
+	andy@kernel.org, marcelo.schmitt1@gmail.com, vassilisamir@gmail.com,
+	salah.triki@gmail.com, skhan@linuxfoundation.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, akhileshpatilvnit@gmail.com
+Subject: Re: [PATCH 1/2] dt-bindings: iio: pressure: Add Aosong adp810
+Message-ID: <20251013-152520-1561165@bhairav-test.ee.iitb.ac.in>
+References: <cover.1760184859.git.akhilesh@ee.iitb.ac.in>
+ <5ddfc7d318a7d3a42cfce4a33ad62f3d2be91a11.1760184859.git.akhilesh@ee.iitb.ac.in>
+ <aa5d7fb2-2143-43b1-8780-87b69479a17b@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] iio: accel: fix ADXL355 startup race condition
-To: Andrej Valek <andrej.v@skyrain.eu>, Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Puranjay Mohan <puranjay@kernel.org>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Kessler Markus <markus.kessler@hilti.com>
-References: <20251006095812.102230-1-andrej.v@skyrain.eu>
- <20251012162652.65619962@jic23-huawei>
- <6b4889b6-a806-4ecb-b6d3-ed164b821645@skyrain.eu>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <6b4889b6-a806-4ecb-b6d3-ed164b821645@skyrain.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa5d7fb2-2143-43b1-8780-87b69479a17b@kernel.org>
 
-On 10/13/25 2:07 AM, Andrej Valek wrote:
-> Hello Jonathan,
+On Sun, Oct 12, 2025 at 05:13:53AM +0200, Krzysztof Kozlowski wrote:
+> On 11/10/2025 14:25, Akhilesh Patil wrote:
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/pressure/aosong,adp810.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: aosong adp810 differential pressure sensor
+> > +
+> > +maintainers:
+> > +  - Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+> > +
+> > +description: |
+> 
+> If there is going to be any new version, drop |.
+
+Sure. Fixed in v2.
+
+> 
+> 
+> > +  ADP810 is differential pressure and temperature sensor. It has I2C bus interface
+> 
+> Wrap at 80 (see coding style).
+
+Fixed.
+
 > 
 > 
 > 
-> On 12.10.2025 17:26, Jonathan Cameron wrote:
->> On Mon,  6 Oct 2025 11:58:12 +0200
->> Andrej Valek <andrej.v@skyrain.eu> wrote:
->>
->>> From: Valek Andrej <andrej.v@skyrain.eu>
->>>
->>> There is an race-condition where device is not full working after SW reset.
->>> Therefore it's necessary to wait some time after reset and verify shadow
->>> registers values by reading and comparing the values before/after reset.
->>> This mechanism is described in datasheet at least from revision D.
->>>
->>> Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
->>> Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
->> See submitting-patches.rst in documentation for how to format it, but as
->> requested on previous version please reply to this thread with
->> fixes tag.  No need to send a new version.
-> I looked into this document, and to be honest didn't find any "issues" in my patch. I used checkpatch and get_maintainer scripts and passed without errors. So what's missing then?
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> Best regards,
+> Krzysztof
 
-This patch fixes a bug, so it needs a Fixes: tag that describes
-the commit that introduced the bug. This information is used to
-automatically select the patch for backports to stable kernels
-that have the same bug.
+Hi Krzysztof, Thanks for the review.
 
-So Jonathan was just asking you to reply with the following line...
-
-Fixes: 12ed27863ea3 ("iio: accel: Add driver support for ADXL355")
-
-See: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
-
-
-
->>
->>
->>> ---
->> Change log missing
-> What do you mean by this? I didn't find any special document for this. Or do you mean the commit message, if yes, what's missing?
-
-
-Each time you submit a new revision of a patch/series it should include
-a changelog of what was change compared to the previous revisions that
-were submitted. And preferably a link to the previous submission as well.
-Tools like b4 can automate parts of this for you.
-
-See: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#commentary
-
->>
->> Otherwise looks good to me.
->>
->> Jonathan
->>
->>
-> BR,
-> Andy
+Regards,
+Akhilesh
 
 

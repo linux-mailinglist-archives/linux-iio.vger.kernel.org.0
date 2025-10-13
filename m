@@ -1,78 +1,75 @@
-Return-Path: <linux-iio+bounces-25034-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25035-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B992BD4E6A
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Oct 2025 18:18:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFEDBBD5777
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Oct 2025 19:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6148C18A6786
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Oct 2025 16:19:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71F79402C13
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Oct 2025 17:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581892949E0;
-	Mon, 13 Oct 2025 16:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD6D2BEFF0;
+	Mon, 13 Oct 2025 17:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iitb.ac.in header.i=@iitb.ac.in header.b="neASAnre"
+	dkim=pass (1024-bit key) header.d=iitb.ac.in header.i=@iitb.ac.in header.b="iBXdMhYq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp1.iitb.ac.in (smtpd9.iitb.ac.in [103.21.126.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728EA3090D0
-	for <linux-iio@vger.kernel.org>; Mon, 13 Oct 2025 16:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AA6273D83
+	for <linux-iio@vger.kernel.org>; Mon, 13 Oct 2025 17:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.21.126.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760371621; cv=none; b=jpjpJsfsKN7Fw3ACkZ+UHRHGO+npYPwBZHpVMV4QdLJktQ91o6H1501l706Gs1CXFQ/d7IbBjpTEoyLUWcTUx7Z7yUwU6PeESosK1rnkfmYdvDQIo2DYkZaMlFKzhrhY++tWjPY8Oqw90jWQD2+O1sdc1craU5v0412GW10NGwQ=
+	t=1760374915; cv=none; b=TlIzvlRa21fRFMFPDejBWrbZ9yJdqhVsTZ7Z48K/xS5+Pn1gcczJKDltRSi3fvJBRROgKU9k0rKWa847B4qMaGL0ehfXwq/SDLunolUtR4KhcpZZLmTCq5WDwcrrfCdKLeknguz2g/GfU8WVieHK81W3bMs2JEjZOdDBBcDQw3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760371621; c=relaxed/simple;
-	bh=lWg9ZBhqyOPthQ75n8I93YLiXjllq4HChSc1fq/PwWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GJty/kamDnBy90lrdrje6wWqRmhZgyAIZLNSnoI9R5LKr/hy1mgawg/z5lDeIMNNERi97OJLLwNsLPbF1CHwj4ygofw2WwH0hhKR07rsJWrs1O90M0qwx4Qt01NRKeeu1TvgAme+PXqAE/LpQDIA+ksklUT1azCS1S6kiGBolJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in; spf=pass smtp.mailfrom=ee.iitb.ac.in; dkim=pass (1024-bit key) header.d=iitb.ac.in header.i=@iitb.ac.in header.b=neASAnre; arc=none smtp.client-ip=103.21.126.64
+	s=arc-20240116; t=1760374915; c=relaxed/simple;
+	bh=yI5gthnF0tLE1kh41LiwdsRsimRp2mZa0vEaG2gzQjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=q3gYv8PrzOrpd264tgi+g8Ee7Qfj1d+H5fMHJjMdNROIx0lisWcaojh4K79s1eYIk8PUSTO0ClmG9BubtoIm/kwAL/vGhfX3un0W9j5Hor3YYFdtPiPzmOl12Y+T55pR0stQuu6XnsS5uPDH1Qg69E2dBKkJF2CL27aOV8S9E2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in; spf=pass smtp.mailfrom=ee.iitb.ac.in; dkim=pass (1024-bit key) header.d=iitb.ac.in header.i=@iitb.ac.in header.b=iBXdMhYq; arc=none smtp.client-ip=103.21.126.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ee.iitb.ac.in
-Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
-	by smtp1.iitb.ac.in (Postfix) with SMTP id 1DC13104CBCA
-	for <linux-iio@vger.kernel.org>; Mon, 13 Oct 2025 21:36:52 +0530 (IST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.iitb.ac.in 1DC13104CBCA
+Received: from ldns1.iitb.ac.in (ldns1.iitb.ac.in [10.200.12.1])
+	by smtp1.iitb.ac.in (Postfix) with SMTP id CFB4E104CBC9
+	for <linux-iio@vger.kernel.org>; Mon, 13 Oct 2025 22:31:46 +0530 (IST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.iitb.ac.in CFB4E104CBC9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=iitb.ac.in; s=mail;
-	t=1760371612; bh=lWg9ZBhqyOPthQ75n8I93YLiXjllq4HChSc1fq/PwWw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=neASAnreaEY9vsTtKzfd4YABFgykxjxC1NNz6fjwZ9dEcc5NcQpFpDaDAtlJ50jKR
-	 psUvCzzctvZvzx7cEgO7gO+riLEIYQBl0qj+FPcSyT0BMNoNYK4krIHgBYcNg8lJoX
-	 UHD+IHfhPLx6Ny6Zpf2G89Kybd+CBK1tTAM1Bfhc=
-Received: (qmail 30567 invoked by uid 510); 13 Oct 2025 21:36:52 +0530
-X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <akhilesh@ee.iitb.ac.in>, uid 501) with qmail-scanner-2.11
- spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/26337} 
- Clear:RC:1(10.200.1.25):SA:0(0.0/7.0):. Processed in 3.533514 secs; 13 Oct 2025 21:36:52 +0530
+	t=1760374906; bh=yI5gthnF0tLE1kh41LiwdsRsimRp2mZa0vEaG2gzQjg=;
+	h=Date:From:To:Cc:Subject:From;
+	b=iBXdMhYqtCL4al+LLO2EvNaxNqc2m6qzGzhjNQaRMO3dIz68IFqvpW68V6mOc2MPv
+	 o/4LTkPfvkEvOJWdnEuWFHVUsJlY3KSrD2SCgS5K7/QsQ7JIlMvFu7n5lWiTI0pnhw
+	 pUMAhaXjJPsFf6AYNyc1wJF15NEQrA+3SCbdLZSg=
+Received: (qmail 28716 invoked by uid 510); 13 Oct 2025 22:31:46 +0530
+X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns1 (envelope-from <akhilesh@ee.iitb.ac.in>, uid 501) with qmail-scanner-2.11
+ spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.101.4/26439} 
+ Clear:RC:1(10.200.1.25):SA:0(0.0/7.0):. Processed in 3.471035 secs; 13 Oct 2025 22:31:46 +0530
 X-Spam-Level: 
 X-Spam-Pyzor: Reported 0 times.
 X-Envelope-From: akhilesh@ee.iitb.ac.in
 X-Qmail-Scanner-Mime-Attachments: |
 X-Qmail-Scanner-Zip-Files: |
-Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
-  by ldns2.iitb.ac.in with SMTP; 13 Oct 2025 21:36:48 +0530
+Received: from unknown (HELO ldns1.iitb.ac.in) (10.200.1.25)
+  by ldns1.iitb.ac.in with SMTP; 13 Oct 2025 22:31:43 +0530
 Received: from bhairav.ee.iitb.ac.in (bhairav.ee.iitb.ac.in [10.107.1.1])
-	by ldns2.iitb.ac.in (Postfix) with ESMTP id AA1B6341504;
-	Mon, 13 Oct 2025 21:36:47 +0530 (IST)
+	by ldns1.iitb.ac.in (Postfix) with ESMTP id 73F61360077;
+	Mon, 13 Oct 2025 22:31:42 +0530 (IST)
 Received: from bhairav-test.ee.iitb.ac.in (bhairav.ee.iitb.ac.in [10.107.1.1])
 	(Authenticated sender: akhilesh)
-	by bhairav.ee.iitb.ac.in (Postfix) with ESMTPSA id 6BCD71E8155F;
-	Mon, 13 Oct 2025 21:36:47 +0530 (IST)
-Date: Mon, 13 Oct 2025 21:36:42 +0530
+	by bhairav.ee.iitb.ac.in (Postfix) with ESMTPSA id 5739E1E8152E;
+	Mon, 13 Oct 2025 22:31:41 +0530 (IST)
+Date: Mon, 13 Oct 2025 22:31:35 +0530
 From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: dlechner@baylibre.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, nuno.sa@analog.com, andy@kernel.org,
-	marcelo.schmitt1@gmail.com, vassilisamir@gmail.com,
-	salah.triki@gmail.com, skhan@linuxfoundation.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, akhileshpatilvnit@gmail.com
-Subject: Re: [PATCH 2/2] iio: pressure: adp810: Add driver for adp810 sensor
-Message-ID: <20251013-16642-1563944@bhairav-test.ee.iitb.ac.in>
-References: <cover.1760184859.git.akhilesh@ee.iitb.ac.in>
- <8c202e7ccd332b26217d529a7a73b7a3ef0726ea.1760184859.git.akhilesh@ee.iitb.ac.in>
- <20251012203658.167f3362@jic23-huawei>
+To: jic23@kernel.org, dlechner@baylibre.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, nuno.sa@analog.com,
+	andy@kernel.org, marcelo.schmitt1@gmail.com, vassilisamir@gmail.com,
+	salah.triki@gmail.com
+Cc: skhan@linuxfoundation.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	akhileshpatilvnit@gmail.com
+Subject: [PATCH v2 0/2] iio: pressure: add driver and bindings for adp810
+Message-ID: <cover.1760374257.git.akhilesh@ee.iitb.ac.in>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,227 +78,74 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251012203658.167f3362@jic23-huawei>
 
-On Sun, Oct 12, 2025 at 08:36:58PM +0100, Jonathan Cameron wrote:
-> On Sat, 11 Oct 2025 17:55:28 +0530
-> Akhilesh Patil <akhilesh@ee.iitb.ac.in> wrote:
-> 
-> Hi Akhilesh, 
-> 
-> Thanks for sending this and a late welcome to IIO.
+This patch series adds support for aosong adp810 differential pressure and
+temperature sensor driver in the IIO subsystem.
 
-Hi Jonathan, Thanks for the review.
-Addressing the comments and suggestions in v2.
+Patch 1: Adds bindings for this hardware.
+Patch 2: Adds driver code with device tree support.
 
-> 
-> > Add driver for Aosong adp810 differential pressure and
-> > temperature sensor. This sensor provides I2C interface for
-> > reading data. Calculate CRC of the data received using standard
-> > crc8 library to verify data integrity.
-> > 
-> Wrap commit messages to 75 chars.
+Overview of adp810:
+This is digital differential pressure and temperature sensor from aosong under
+the brand name of ASAIR. This sensor can measure pressure from -500 to +500Pa
+and temperature from -40 to +85 degree. It provides simple protocol to measure
+readings over I2C bus interface.
 
-I think it is already wrapped to 75. 
-Still, I will recheck and fix if required.
+How to read from sensor (Protocol)?
+To read from sensor, i2c master needs to send measure command 0x372d to
+start the data acquisition. Then host/master should wait for minimum 10ms for data
+to be ready before reading. Post this delay i2c master can read 9 bytes of
+measurement data which includes - pressure(u16): crc(u8): temperature(u16): crc(u8)
+scale factor (u16): crc(8).
+Host/master can optionally verify crc for data integrity. Read sequence can be
+terminated anytime by sending NAK.
 
-> 
-> > Tested on TI am62x sk board with sensor connected at i2c-2
-> > 
-> > Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-> 
-> Where I've remembered Andy commenting on something I've not duplicated
-> (assuming I even noticed the same thing!)
-> 
-> A few things may contradict or provide alternative suggestions though!
-> 
-> Jonathan
+Datasheet: https://aosong.com/userfiles/files/media/Datasheet%20ADP810-Digital.pdf
 
-Okay.
+Testing:
+Driver is tested on Texas Instruments am62x sk board by connecting sensor at i2c-2.
+Data communication is validated with i2c bus at 100KHz and 400KHz using logic analyzer.
+Sensor values are read using iio subsystem's sysfs interface.
 
-> 
-> 
-> > diff --git a/drivers/iio/pressure/adp810.c b/drivers/iio/pressure/adp810.c
-> > new file mode 100644
-> > index 000000000000..ff73330b34fc
-> > --- /dev/null
-> > +++ b/drivers/iio/pressure/adp810.c
-> > @@ -0,0 +1,205 @@
-> > +/* Trigger command to send to start measurement by the sensor */
-> > +#define ADP810_TRIGGER_COMMAND		0x2d37
-> > +#define ADP810_CRC8_POLYNOMIAL		0x31
-> > +
-> > +DECLARE_CRC8_TABLE(crc_table);
-> > +
-> > +struct adp810_read_buf {
-> > +	u8 dp_msb;
-> > +	u8 dp_lsb;
-> 
-> __be16 dp;
-> or u8 dp[2]; 
-> 
-> > +	u8 dp_crc;
-> > +	u8 tmp_msb;
-> > +	u8 tmp_lsb;
-> 
-> __be16_tmp;
-> 
-> > +	u8 tmp_crc;
-> > +	u8 sf_msb;
-> > +	u8 sf_lsb;
-> 
-> __be16 sf;
-> 
-> > +	u8 sf_crc;
-> > +} __packed;
-> With packed (which you didn't need previously).
-> (more below)
+Changes in v2:
+- Wrapped yaml binding description to 80 lines.
+- Dropped block scalar ' | ' from binding description.
+- Carry forward Reviewed-by tag from Krzysztof on device tree binding.
+- Grammar and spelling fixes at multiple places.
+- Ordered makefile alphabetically.
+- Ordered include files alphabetically and used IWYU principle
+- Explicitly mentioned unit of measure latency macro in MS (milliseconds)
+- Added inline comments for explaining CRC8 polynomial for CRC calculation 
+- Used scoped_guard() for mutex for safe and clean lock handling.
+- Used resource managed mutex_init() -> devm_mutex_init()
+- Removed dead code in _probe() function.
+- Used __be16 and related helpers to handle big endian data processing.
+- Apply reverse xmas tree guideline while declaring local variables if possible.
+- Used parent device pointer in dev_err() calls.
+- Hardcode device name string in _probe() function for simplicity.
+- Made default return value of _probe() function to 0.
+- Rebased and retested driver on top of 6.18-rc1
+- Link to v1: https://lore.kernel.org/lkml/cover.1760184859.git.akhilesh@ee.iitb.ac.in/
 
-Yes. Used __be16 to indicate big endian.
-
-> 
-> > +
-> > +struct adp810_data {
-> > +	struct i2c_client *client;
-> > +	/* Use lock to synchronize access to device during read sequence */
-> > +	struct mutex lock;
-> > +};
-> > +
-> > +static int adp810_measure(struct adp810_data *data, struct adp810_read_buf *buf)
-> > +{
-> > +	struct i2c_client *client = data->client;
-> > +	int ret;
-> Not sure what ordering you are using for declarations but this looks a bit
-> odd.  If nothing else makes more sense go with reverse xmas tree.
-
-okay. I will use "reverse xmas tree" wherever applicable.
-
-> > +	if (buf->tmp_crc != crc8(crc_table, &buf->tmp_msb, 0x2, CRC8_INIT_VALUE)) {
-> > +		dev_err(&client->dev, "CRC error for temperature\n");
-> > +		return -EIO;
-> > +	}
-> > +
-> > +	if (buf->sf_crc != crc8(crc_table, &buf->sf_msb, 0x2, CRC8_INIT_VALUE)) {
-> > +		dev_err(&client->dev, "CRC error for scale\n");
-> > +		return -EIO;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int adp810_read_raw(struct iio_dev *indio_dev,
-> > +			   struct iio_chan_spec const *chan,
-> > +			   int *val, int *val2, long mask)
-> > +{
-> > +	struct adp810_data *data = iio_priv(indio_dev);
-> > +	struct adp810_read_buf buf = {0};
-> > +	int ret;
-> > +
-> > +	mutex_lock(&data->lock);
-> > +	ret = adp810_measure(data, &buf);
-> > +	mutex_unlock(&data->lock);
-> > +
-> > +	if (ret) {
-> > +		dev_err(&indio_dev->dev, "Failed to read from device\n");
-> It's normally more informative to use the parent dev for error messages.
-> data->client->dev here.
-> Probably add a local variable struct device *dev, to avoid making the dev_err() lines
-> even longer.
-
-Agree. Will use parent dev in all dev_err() calls.
-
-> 
-> > +		return ret;
-> > +	}
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_RAW:
-> > +		switch (chan->type) {
-> > +		case IIO_PRESSURE:
-> > +			*val = buf.dp_msb << 8 | buf.dp_lsb;
-> 
-> They are next to each other so either treating them as a small array or
-> I think you can even make the be16 you can use
-> 			*val = get_unaligned_be16(buf.dp);
-> for all 3 similar cases.  1st and 3rd are actually aligned but
-> lets not rely on that.
-
-ACK. Used __be16 along with helpers get_unalinged_be16() to handle
-endianess in clean and portable way.
-
-> 
-> > +			return IIO_VAL_INT;
-> > +		case IIO_TEMP:
-> > +			*val = buf.tmp_msb << 8 | buf.tmp_lsb;
-> > +			return IIO_VAL_INT;
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> > +	case IIO_CHAN_INFO_SCALE:
-> > +		switch (chan->type) {
-> > +		case IIO_PRESSURE:
-> > +			*val = buf.sf_msb << 8 | buf.sf_lsb;
-> > +			return IIO_VAL_INT;
-> > +		case IIO_TEMP:
-> 
-> > +static int adp810_probe(struct i2c_client *client)
-> > +{
-> > +	const struct i2c_device_id *dev_id = i2c_client_get_device_id(client);
-> > +	struct device *dev = &client->dev;
-> > +	struct iio_dev *indio_dev;
-> > +	struct adp810_data *data;
-> > +	int ret;
-> > +
-> > +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> > +	if (!indio_dev)
-> > +		return -ENOMEM;
-> > +
-> > +	data = iio_priv(indio_dev);
-> > +	data->client = client;
-> > +	mutex_init(&data->lock);
-> Andy mentioned this.  I used not to care about mutex debugging in IIO drivers
-> as in most cases lifetimes of the containing structure are so closely aligned
-> to the mutex it wasn't worth the extra debugging provided by mutex_destroy().
-> 
-> Now we can do
-> 	ret = devm_mutex_init(&data->lock);
-> 	if (ret)
-> 		return ret;
-> 
-> It's so easy I would like to see it used in all new code even when the
-> gain is very small.
-
-Okay. Using resource managed mutex_init : devm_mutex_init()
-
-> 
-> > +
-> > +	indio_dev->name = dev_id->name;
-> 
-> Just set it to "adp810" here.  We can add more complex handling when the driver
-> supports additional parts.  The advantage of an explicit string for now is
-> we don't have to think about what it can be.
-> 
-
-Sure. Directly using string : indio_dev->name = "adp810";
-
-> > +	indio_dev->channels = adp810_channels;
-> > +	indio_dev->num_channels = ARRAY_SIZE(adp810_channels);
-> > +	indio_dev->info = &adp810_info;
-> > +	indio_dev->modes = INDIO_DIRECT_MODE;
-> > +
-> > +	ret = devm_iio_device_register(dev, indio_dev);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "Failed to register IIO device\n");
-> > +
-> > +	return ret;
-> return 0; 
-> 
-> As that clearly indicates to the reader that you can't get here in an error case.
-
-Yes. Fixed.
+Looking forward for feedback and suggestions.
 
 Regards,
 Akhilesh
 
+Akhilesh Patil (2):
+  dt-bindings: iio: pressure: Add Aosong adp810
+  iio: pressure: adp810: Add driver for adp810 sensor
+
+ .../bindings/iio/pressure/aosong,adp810.yaml  |  46 ++++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/pressure/Kconfig                  |  12 +
+ drivers/iio/pressure/Makefile                 |   8 +-
+ drivers/iio/pressure/adp810.c                 | 212 ++++++++++++++++++
+ 5 files changed, 281 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/pressure/aosong,adp810.yaml
+ create mode 100644 drivers/iio/pressure/adp810.c
+
+-- 
+2.34.1
 
 

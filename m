@@ -1,80 +1,81 @@
-Return-Path: <linux-iio+bounces-25064-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25065-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF488BDB892
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 00:03:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E701BDB89E
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 00:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94A294216C8
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Oct 2025 22:03:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 249A84E11ED
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Oct 2025 22:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3230A2EA47F;
-	Tue, 14 Oct 2025 22:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C530430CDAE;
+	Tue, 14 Oct 2025 22:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Nq+wqQur"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Ots73aZh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153112E92D4
-	for <linux-iio@vger.kernel.org>; Tue, 14 Oct 2025 22:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2803043CA
+	for <linux-iio@vger.kernel.org>; Tue, 14 Oct 2025 22:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760479386; cv=none; b=kOSomJBhkFQ6WbTp4HvTnNlZKji4esaFK8IZ9wLNIfP/ikqz88I0EaEzTkDSMuNGXfmIPlgj332qar1EAV+328aHAQ07Ik8o36eVobv2QBoZaXEO44mlVtopuJDbYZxrcMnNBewWnliyYIimb0Ohy22jV/mRBX4EuUDaodLR2Gs=
+	t=1760479387; cv=none; b=Jx66kmu1D0VR6r0AVyNzNariEt+26K/paJwzsYooObKFsrcn7kuHYtiy70sDySL20v0J0w9vFszpvkeAx5ZyLUH+gT/TFfJ1RjFSGYfxOMuioLppYiNOrr8L/o35tGd+Hn2UxqJ/4phjKdpf/fRLK2Gz15tKLRTHW9j0icQmkXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760479386; c=relaxed/simple;
-	bh=vYt5j/TlrATD/NQ86XcdaWp5A87BK8f5MKugqBE/r1Y=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZasHvG2ta1Ut8fQmZ/euvw44uZ68yrWWMt7cad5mrbpGnPB8ROsAtz+TbG1vaIKHjSubTH2haMdWmlgBwy2b2Az1FUASbXBRj1GNw/CRXzhz1bVts73hOcS712EfxHff8S3RuaMULFFTxkIQebcjFtUjPkAkOugN7aTWO2huN0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Nq+wqQur; arc=none smtp.client-ip=209.85.167.174
+	s=arc-20240116; t=1760479387; c=relaxed/simple;
+	bh=9mpUaLXzASSnQg9/UXJGW1+ZX9vnSr/ezEu7DYjOikk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ZdmyoueTto3h6VSKDdUHsRtq2EJQeQ+rd9JUI8oqp1RKPMX/3lCvoVZr0XsfUaubYWVGdBIve+/3Qq3iog21JEWe8M8CJSv1sMDLXHYVsQfXUy9pvPUAUrRoQJdH1kshYUCvULV80fu06hxQ3O+0X59Xv9NKP0yllcBp8JsqgIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Ots73aZh; arc=none smtp.client-ip=209.85.167.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-43f9cc65f66so2961909b6e.2
-        for <linux-iio@vger.kernel.org>; Tue, 14 Oct 2025 15:03:02 -0700 (PDT)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-43f5ec02724so1271849b6e.2
+        for <linux-iio@vger.kernel.org>; Tue, 14 Oct 2025 15:03:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760479382; x=1761084182; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=w5Unn+1ZYz7vvp7AnQvc4v91fgV41lOz1ySt2oX0dZY=;
-        b=Nq+wqQursYufxYfscZhuWbsBQVHLBIxwlYYQmeJhNxz9u35+8f1KzaZOVhhGE12J42
-         Iu9BF5MX3WcSMowab5hD1CjywuaPQ4L6K9ZmmIDUc9n36XPDBihDDPmq5flVVQTjaUlN
-         JVWOoF7rGn0085JNXpNJeWobZR0FWt81pQ/Pa2ErAeP21belZYkZZ642pI73amwwNsoP
-         PA+YDY0vBaxiswW3GO0fieBTRYDGlm2pQMVybLH0KKfgKWwp4K0DlpJrNLGAiCzDz7Pl
-         8oQsOXKQsksOAlaHVySyWxN1H0GrIaVCaDJtud+CGph+tiVOSzMsVbc2V9VoAs/Lwndv
-         Bg7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760479382; x=1761084182;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760479384; x=1761084184; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=w5Unn+1ZYz7vvp7AnQvc4v91fgV41lOz1ySt2oX0dZY=;
-        b=JvoR88SB7ktzsXp9+WKdULSYx0ueUWcAwplzMvkanQDv5OSP8VTuAIjJKzN+DKlCQ4
-         kxH1ppnIxlR/GUzyVzfQHRWz29Fv/a8/LhA2PfpLPUDnZZoB4aDn/+l3L9/2ww3h7OKM
-         RCHi/g3DhJqkAhCv0wKXbPKHOQW5/bxZpsxSprWg7Gkpmce/bWrF1die865uJpOUFScu
-         ht8aWqnhAw0ROweJRmG6s1Ljh+AoWb5rszAyWnGUDnZtIhopuCnARfbLNS+WS7CfCsCr
-         SuqVouQl9tovMxh3qiZYVmztElcewzFwFCcnElZd7wbG9BbRli9ujtaSAicctMxpMcz+
-         iwGw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZbmnr71i9eNMupGTEeH86slFg+pAJlSA1JQC9217E2WwKUygzcxb2isPckT3TgitkYjZMcWLhYIw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUkC9bjZnpQ/LgpeqycFZRJf71ZHLkK+06CUwCFTxourIkcdlG
-	IxreDErIAJ1nyJAjQLMdbYI7rQ7dZX9N3EdhMt6+bGoZUIJqhvddBkGGvY2NPAG1poY=
-X-Gm-Gg: ASbGncsYyc3898bDIxsn7YC2qFFLXfjdV3P1VQDOlFQ9METsBsZFjmZT3hzz4bIAZ2D
-	FlW1MEKBUJ1E4rqrkI2Hgz5trLRgTADMusZrci0/CqwNJJtYk10FEuDLrEgKwgQW9dTCHZrK8Hr
-	8pvVeLo5MjP3LzujWSzP9PB/QspH5YE8ohgBjhh65MTfY5o4DRNZ1IPW+DSf9fnx0devkPTcpWt
-	yR06LS3+/pMJ6ryaP7KiH0cWomQ/Gn1nzX8Ue/oy4Al6BRFUQ/khZ7eKWP6OeqZ4B9UMkPAp9Uo
-	DaNKiyUb1QCf4r9M6xHnnllGg/8f4zFFsCavnY4DbaoYfZ0bqRibxee50Ji4WOBzUXu93dW3G5/
-	qNihQ2NvMf2KbSAVX+ISM5+mAVUBwhSnF/xK1k9xAcuntyg==
-X-Google-Smtp-Source: AGHT+IE+CBP0iv12dN4nWZ7tB3t9Nd6SFbCgUncDxvpjJou1Nlvao0Jn/IzjdN0UJ9Z8zy7lLZya9g==
-X-Received: by 2002:a05:6808:1987:b0:43d:6b7b:2469 with SMTP id 5614622812f47-4417b345606mr12410216b6e.4.1760479382072;
-        Tue, 14 Oct 2025 15:03:02 -0700 (PDT)
+        bh=IFRbGHMmuFj9fckSEOxE8K2KKY0A8HOY4cZLAf2EWJo=;
+        b=Ots73aZhZg53j5ae4hXXNmh4IAqFbM8/0mCLPn+hA4yRO9E2j5QdH6tYvSWooJzsSb
+         kmJnxm41Hl79eV8T+j5uZcI83l42BRgv6YIsDGUI0iMiX/5pFV2MxMpVzJe2qa8rXl16
+         yMySLGEAAXteBCFQ48wKj+Lx0Cs2VG6V7ohl27VODybnrlu4Wbf65+LnSg2KpOUvGBW1
+         SEcjWEAKjKPwyN7CfqRzIHYvo0KFEKRGfUoxq70YDOU3sFTRBQJegqryLoyVzmfWwtz4
+         wYoQ/d2vEyTWev6mixwoyufYFyQUVjOBhmVceOMe6oA1nGfrv8W6GcETW1ripqdk7yLH
+         iTfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760479384; x=1761084184;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IFRbGHMmuFj9fckSEOxE8K2KKY0A8HOY4cZLAf2EWJo=;
+        b=QfLW0UdJ2j5dQjloxFv1iZSOtWdZks3FKRqyLLG9h+P1CqoXvINfNka0XeAvzkRzi/
+         njXmmHMlIYXUTqGdn0onUBJgEnjbu1afYxTse3+nmNrKg0oMfPUmVjR8zxVgLNCyl4ME
+         8kpytVZzBpCAI/CAR2oawQ0EzTXm6JAgIrrUGkXhP3qJA1NNq+vD2lcbwLdXTFS2XFts
+         fAFEQl38SvhY/cwMQ/gWoGV7RYV8Ibd/jJR/CA26KznyVzr2goJObtLiVvZEJEEFk4ka
+         zGsxXnCt6qAr4Jmx2KlLQLPHmV5XW0+bulSLNbh/qdiRPAsxUK5jX8VU+bLZakL+Lv3J
+         /n6w==
+X-Forwarded-Encrypted: i=1; AJvYcCWLtZ+G38weNIqFO7LrnM9ffllWX2kMqbo9VDryrj8jXx61vG3Fy/4HTf9FgKTVns2Il/Ru0yKSPuw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywwiu+XUxpcrgzY/SUkEcCL0VV2iLcvI1blEfTPMxG6uzkMkckE
+	DpzEEFmUVB5ZpVMuEBOKhymGNmgTgWJxKyu/aKRNlErAofX4NqXInVBeph8faB9230s=
+X-Gm-Gg: ASbGnctHbU0bg/CCscROy9uG23vryrAqehC7/R1crrZXLtswfrqiZ/Mb7/Dl6L8e8Pv
+	2hoiP7elS/SlTcgKRtu3iu74/+MAq0Y1npO7cB2XB/2MN9DQv9XO1KPj7EayuUSx3Ob5p+aPUWa
+	krEeMkUdQsPFMn/come+ghitiBhf/RCuz2XsZ9pMU17+gwr8Hf0CphebvUDd7BWDDA4wHKbvwt6
+	GdZis47qOqZP2mtK90b4l6+p7Dx+bgOk3OK9rpUuqPX/sHXpGPb0c9Uwgcfw1cBv/r2Qxv91a37
+	YOmquaN1RJTQF8ytmsubvQyYgBKUcoAfGP+7ksMpYEkCJhijJ135yZCRdbGnOtURou0jOxwkXHG
+	zvdCMo/fes95FG21nouWndkKeLF8u0cdslTkBroKm7dHs2w==
+X-Google-Smtp-Source: AGHT+IFFz8OOxzRl/gmMqTa8+mYz1vaHsgTDN8MTZ4sbaNr/p0kWoGILPZjS87R373EPVFDDcBSDEQ==
+X-Received: by 2002:a05:6808:e83:b0:441:8f74:e85 with SMTP id 5614622812f47-4418f74275fmr9076599b6e.63.1760479383897;
+        Tue, 14 Oct 2025 15:03:03 -0700 (PDT)
 Received: from [127.0.1.1] ([2600:8803:e7e4:500:c482:1912:c2de:367e])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4419895119bsm3593732b6e.21.2025.10.14.15.03.00
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4419895119bsm3593732b6e.21.2025.10.14.15.03.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Oct 2025 15:03:00 -0700 (PDT)
+        Tue, 14 Oct 2025 15:03:03 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Subject: [PATCH 0/6] spi: add multi-bus support
-Date: Tue, 14 Oct 2025 17:02:10 -0500
-Message-Id: <20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
+Date: Tue, 14 Oct 2025 17:02:11 -0500
+Subject: [PATCH 1/6] dt-bindings: spi: Add spi-buses property
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,10 +84,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGLI7mgC/y3NwQqDQAwE0F+RnBvY1UZKf6X0oG6sgVa3ya4I4
- r93aXt8AzOzg7EKG1yrHZRXMVnmAn+qYJi6+cEooRhqV5O7eEKLgl0I+MrPJNhnQ8sxLprQ9w0
- FRwOdxxZKPyqPsn23b/efld+5XKR/eBwf2ZLh6oAAAAA=
-X-Change-ID: 20250815-spi-add-multi-bus-support-1b35d05c54f6
+Message-Id: <20251014-spi-add-multi-bus-support-v1-1-2098c12d6f5f@baylibre.com>
+References: <20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
+In-Reply-To: <20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
@@ -98,91 +98,61 @@ Cc: Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3365; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=vYt5j/TlrATD/NQ86XcdaWp5A87BK8f5MKugqBE/r1Y=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBo7shlOFDubLGnSukbfE3OlGb/pY8YoyhJLgw/R
- mMoykxBEM6JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaO7IZQAKCRDCzCAB/wGP
- wOpZB/wNynUwGKOtXcET2BIJeukjC/PRR7cZhkHzspPFnUfUcr23lmQmjvgPvG4DzEntWSObWmh
- /75q5dHDZu1vTbxc07k9RbeeQwVpfZ9RC50orUwupgSSV+Iz29aWouyq7/jhwd0DcgeLh9hHnC2
- a8yy74/daBzQ1BSL1iMetX5U1U+c09OUJOxHae1HmsxRe3+SKvFVFrYBYSaE1ZRJgeGdXoz4k4E
- laQKZxzEagqxse61waRNceAoZeIO8mn7CoM5zLqtEqk72pzRmLhtx3ZF02M/AWfbhl0GYAz/LuX
- 5+x7IKhX+Q8SJI/1g4UEvmRH9fGZZfgy967tBIWjAFJJ3WI4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1791; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=9mpUaLXzASSnQg9/UXJGW1+ZX9vnSr/ezEu7DYjOikk=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBo7shszLrvSwDbyfBRm0xmRcRlQ7K3DVHcCsRnM
+ m6LZBNvxvOJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaO7IbAAKCRDCzCAB/wGP
+ wFbhB/wKCLlYsfPLWnZDyZXPVvh59Xtik6VCFqlcNi0EEfOnFjkf9jJXsF0X3dmRSLs8TmHX907
+ HWiYYyJqLs2aFroWt73J+GIUyxBz4aGuYPrjnEf5/NwCKrX3LONCVLi7JWD9Gpc3Lcp/OH87dGU
+ Rc3V4mdaVbqSq8trlA4tnNQaWVf11dI0OgsbYiKvC3VnByTTIYKlBGybdgGY1x6op7xWWxyegLK
+ lEP/yMJ+UzxT0AYGGDHrAmUa1s9EpR3GY8y4ktZhf9Lo5knZfXndA6zf/rE/OgxfI1rJ41g2nfX
+ krUXo5O/ic8bqeOi+jLwyKytH2or0e58X+b7obQ8iOlvMSIX
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-This series is adding support for SPI controllers and peripherals that
-have multiple SPI data buses.
-
-This series covers this specific use case:
-
-+--------------+    +---------+
-| SPI          |    | SPI     |
-| Controller   |    | ADC     |
-|              |    |         |
-|          CS0 |--->| CS      |
-|         SCLK |--->| SCLK    |
-|          SDO |--->| SDI     |
-|         SDI0 |<---| SDOA    |
-|         SDI1 |<---| SDOB    |
-|         SDI2 |<---| SDOC    |
-|         SDI3 |<---| SDOD    |
-+--------------+     +--------+
-
-The ADC is a simultaneous sampling ADC that can convert 4 samples at the
-same time. It has 4 data output lines (SDOA-D) that each contain the
-data of one of the 4 channels. So it requires a SPI controller with 4
-separate deserializers in order to receive all of the information at the
-same time.
-
-This should also work for the use case in [1] as well. (Some of the
-patches in this series were already submitted there). In that case the
-SPI controller is used kind of like it is two separate SPI controllers,
-each with its own chip select, clock, and data lines.
-
-[1]: https://lore.kernel.org/linux-spi/20250616220054.3968946-1-sean.anderson@linux.dev/
-
-The DT bindings are a fairly straight-forward mapping of which pins on
-the peripheral are connected to which pins on the controller. The SPI
-core code parses this and makes the information available to drivers.
-When a peripheral driver sees that multiple data buses are wired up, it
-can chose to use them when sending messages.
-
-The SPI message API is a bit higher-level than just specifying the
-number of data lines for a SPI transfer though. I did some research on
-other SPI controllers that have this feature. They tend to be the kind
-meant for connecting to two flash memory chips at the same time but can
-be used more generically as well. They generally have the option to
-either use one bus at a time (Sean's use case), or can mirror the same
-data on multiple buses (no users of this yet) or can perform striping
-of a single data FIFO/DMA stream to/from the two buses (our use case).
-
-For now, the API assumes that if you want to do mirror/striping, then
-you want to use all available data buses. Otherwise, it just uses the
-first data bus for "normal" SPI transfers.
+Add a spi-buses property to the spi-peripheral-props binding to allow
+specifying the SPI data bus or buses that a peripheral is connected to
+in cases where the SPI controller has more than one physical SPI data
+bus.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-David Lechner (6):
-      dt-bindings: spi: Add spi-buses property
-      spi: Support multi-bus controllers
-      spi: add multi_bus_mode field to struct spi_transfer
-      spi: axi-spi-engine: support SPI_MULTI_BUS_MODE_STRIPE
-      dt-bindings: iio: adc: adi,ad7380: add spi-buses property
-      iio: adc: ad7380: Add support for multiple SPI buses
 
- .../devicetree/bindings/iio/adc/adi,ad7380.yaml    |  22 ++++
- .../bindings/spi/spi-peripheral-props.yaml         |  11 ++
- drivers/iio/adc/ad7380.c                           |  41 ++++---
- drivers/spi/spi-axi-spi-engine.c                   | 128 ++++++++++++++++++++-
- drivers/spi/spi.c                                  |  28 ++++-
- include/linux/spi/spi.h                            |  23 ++++
- 6 files changed, 235 insertions(+), 18 deletions(-)
+This patch has been seen before in a different series from Sean [1].
+
+[1]: https://lore.kernel.org/linux-spi/20250616220054.3968946-2-sean.anderson@linux.dev/
+
+Changes:
+* Added maxItems. (8 is the most I've seen so far on an ADC)
+* Tweaked the description a bit.
 ---
-base-commit: 40d3910fa7980ad3c211837f1a0ded5dfa36779a
-change-id: 20250815-spi-add-multi-bus-support-1b35d05c54f6
+ .../devicetree/bindings/spi/spi-peripheral-props.yaml         | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Best regards,
+diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+index 8b6e8fc009dbdc80978f3afef84ddc688ade4348..91c9de3ae10bbad76cd4f57d0789b1161ebc7a18 100644
+--- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+@@ -89,6 +89,17 @@ properties:
+     description:
+       Delay, in microseconds, after a write transfer.
+ 
++  spi-buses:
++    description:
++      Array of bus numbers that describes which SPI buses of the controller are
++      connected to the peripheral. This only applies to peripherals connected
++      to specialized SPI controllers that have multiple SPI buses (each with
++      its own serializer) on a single controller.
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    minItems: 1
++    maxItems: 8
++    default: [0]
++
+   stacked-memories:
+     description: Several SPI memories can be wired in stacked mode.
+       This basically means that either a device features several chip
+
 -- 
-David Lechner <dlechner@baylibre.com>
+2.43.0
 
 

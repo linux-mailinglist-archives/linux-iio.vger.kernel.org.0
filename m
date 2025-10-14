@@ -1,285 +1,135 @@
-Return-Path: <linux-iio+bounces-25060-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25062-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4033DBDAAD1
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Oct 2025 18:44:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D6CBDAB5F
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Oct 2025 18:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B6754FC5F9
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Oct 2025 16:43:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7421188641E
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Oct 2025 16:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59256305061;
-	Tue, 14 Oct 2025 16:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2143043C7;
+	Tue, 14 Oct 2025 16:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="AmheMPa2"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="yjIwtdsw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFF1303A2F;
-	Tue, 14 Oct 2025 16:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1E3303CA3;
+	Tue, 14 Oct 2025 16:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760460209; cv=none; b=uEMEjRkOzk30Rf3TJq7n472YMlqW8EPVwOZn1NA6kEQA8UQ1XeiRHytN7lYEIxmdah+KGQL3YaUflT6iluRE1nSQ3in8HorlCBhA2WvHYRuK871w7ipQV5eozUduCrWQCRp294Uil05jv/nxkK/6eG8LvF2DOqACodit2a7GDCw=
+	t=1760460777; cv=none; b=AGqikO1D+6+ISvXKyUH2XIV1ebgM0tFPkFVGz9xDMO/lFmAvq1qxOSQOvraLzVAT1lZjSb0xWoh/BWNe8Z0hw88sb9UiLFNajOMQ0RMEBScSpVBd4ryERBR9rq4m7hnFC0o4km2xIRSvYhN0/9BlXjOHXNKdINVQfFrl0rgUJhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760460209; c=relaxed/simple;
-	bh=+qzvf2SUrf6G6/lZgkL2owRNfuo8+LwSwVi+jGVDeiU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=B9k2UGh1K5dYN74ZxCYF6JJaD1pvT+wmTjr6RoUWCowBMcUU4aPj5bELSdW+DhA+R8pBnNtxKYoM/gl708qqSXQWOkHXSZmtV4x6PKvINc2fiOBX7tYvgCDYu1aBIJy8Ho7TUND+SRGmqUenFtPOHpBwV0AQzqx1yC4GyNBiAxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=AmheMPa2; arc=none smtp.client-ip=172.105.74.154
+	s=arc-20240116; t=1760460777; c=relaxed/simple;
+	bh=GKy3CsgeVEziiA5cIc4W4QjNm8fGJ8NYQLZqkXShyDw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ELoLjuGGIAjTP4UcJgQo6a61RiCwKFBXUOsXFMWjk/ngvaCoXXlabeZEtZcXvTyXiFDosDm991pQ1Uwk1kQMEnkXVetDt2T4PmliGQl06jkxjTvNry8MzE44SpYtLfZKrK+Lw3qFjr/vN+wj0r1V2lNhFxh+4uFMvv1ZaUneeks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=yjIwtdsw; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
-Received: from [10.212.0.13] (unknown [IPv6:2a02:2f0e:3e0c:5b00:e2d5:5eff:fed9:f1c4])
+Received: from sunspire (unknown [IPv6:2a02:2f0e:3e0c:5b00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 2A1DD173BEE;
-	Tue, 14 Oct 2025 19:43:17 +0300 (EEST)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id A9007173BE2;
+	Tue, 14 Oct 2025 19:52:52 +0300 (EEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
-	s=mail; t=1760460197;
+	s=mail; t=1760460773;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0eAAhdLuwXraHXXsOTtTA8hVvW90BoSNfLBGXUUAsdo=;
-	b=AmheMPa2wkzoLyZLlgPZmBiFrfdBNpNswJLJbC/RqbMQDtsMA5qGEhXC/AKXBytqVJ4qeI
-	fU+FtrTY6behU46LTSKy+KHkm7TLnVR67xNVj7skWi2v/nJaS4mIkdRZ1eg0hAgg6RR5kH
-	aA7C6A7ZmzXFMjvXwSPEUoyJoiShaSKJ2J2njbvJ0ljLYyrQAg0SbbVyAxl567P9h+rezN
-	vrAPb4Is+fc49JKtF87vw7aIa/ake8sptILooBFLvA9/tpvWlJUgVa9Xm+3dUY0j/Eo7si
-	JlmOBt98Wecrx9XR+yfm6lwRQWHdGeN5NOS0CcVS95sxxNwe5dDqrmX1sypyeg==
+	bh=GKy3CsgeVEziiA5cIc4W4QjNm8fGJ8NYQLZqkXShyDw=;
+	b=yjIwtdswtZckUEClrroV9KVdsBJVYVuDBNpJKQM150BCjDDj0HGiXzbqbd2MKnBgBsWUBJ
+	2etxvuds5SYbXCoBLEjVsp9FmWrVCSBxK0XooZR/hklBYfcV1tDoR8QeGEChSBYyRFGP1D
+	pyvSJurL5yur27AzzIF84bC9lad9hkx5n8yLrpH1pZbARaveNh9G+GhJzvZdEKYhsL/ld6
+	zJNoFyE2N9sjNWInLspfMU8Hv195TPFLV1lFfAGmo5w/VHpUeLc0kbp4cuKJkaSoHXyG/S
+	Vsdtn+OYoBvR++Yldq3GWYsg9pfTIRPvK8PKtzz+7BHbRhz930wtTI8jhgwWIg==
+Date: Tue, 14 Oct 2025 19:52:49 +0300
 From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Tue, 14 Oct 2025 19:43:02 +0300
-Subject: [PATCH 6/6] iio: accel: bma220: add any-motion detection
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno S?? <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 07/19] iio: accel: bma220: split original driver
+Message-ID: <aO5_4Z7l_25Xhwrg@sunspire>
+References: <20251005-b4-bma220_improvements-v4-0-0f449ba31585@subdimension.ro>
+ <20251005-b4-bma220_improvements-v4-7-0f449ba31585@subdimension.ro>
+ <20251012155201.137d330b@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251014-bma220_events-v1-6-153424d7ea08@subdimension.ro>
-References: <20251014-bma220_events-v1-0-153424d7ea08@subdimension.ro>
-In-Reply-To: <20251014-bma220_events-v1-0-153424d7ea08@subdimension.ro>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5410;
- i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=+qzvf2SUrf6G6/lZgkL2owRNfuo8+LwSwVi+jGVDeiU=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQmRDc25wM
- k02U1dNQnl5WmlBR2p1ZmFBZ0NuVDdqaHpTa2tlQUplazY4V0czCjhscnhWczdFMitPQTdScDdr
- aXViMklrQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKbzduMmd
- BQW9KRUhRcko2ZGpPa2xqYkRrUUFLZUJGSVR3QlJYalBhcFhaMnA0V1BFa0laRENuRW1mcTdpRg
- pYM1JCSzBtdkpSYW9PQzl5VktkbGd0WHlheVcySkdqdHJQbzNaK01IQ0dmRUNFNy8wV2xFNXZWW
- XUyUEtZRExHCnNaRHpzeThVUENXREJIcTFyamNMWE9qWlE1NFVZWHE5cHFFL0tUbzFLcXBQa2lj
- QkVjTVEzaGJ6RnlLUU5lUUUKYzl0OERpMFdORmN5b25IY3pYWXpocTFHTE5nbVVvMTJBQWZuaHd
- 3eE1sLzRXbTh5dWZtdEx4NER1YTFFNGMrRAovcTlFVFBVYnVkR0JtU1FGN0ZmMFZSSlRzT0xQOF
- ZETUk2QlUra00wSDRhcWt5SXA1TXI1SnlhMlNJVTIwcXorCllVa0pMMG9JcmE4MllreDM2UTNRN
- zJ2aUlvWTJqVDJTUk1zNUl0WlRKdjc5NVdxbS9wdVR0UlhuZEhmaUkzeUsKRS95b3hRb3Vwb1lE
- VFF0Q1prN3h4K2VCWDRuNzlGK1h5cWJSbzlWUElTSVRHZjZqdXhiUmcxS01nMEp2R2diSQp6di9
- oUWFHb2x2NGdNWTREVEdUczJ4RDZQbHpuMWpod1Y5elRpdnBZdnh0RUVaTVozOWw4UkQ3ZHVCV2
- 94MUp6CnFzNmhBSFlpWUk5YmEyZmhVVTdnTHhYVVM5Und4NFU1cVl0Zk5rSS9rOVB0NTdvRGFhV
- kFhN0F3N095Z1ZkVjkKdEhrU2NwelFGWThxZVowbjBlbWIvQngvZklDUFRFZksrbmNFQVJtRlZK
- S3dWUTl3U1Q0VHErSDVFdElkYzlaVQo0ZE4xbmdjYzdjc212SkRlaVVyVnJtOVFCWUpKMzNOSEp
- janhSWHZUeTNWNitkQjdkVmgwdnNPbENsaDlPczBQCk5hV3ViMnBicjlZZmp3PT0KPTA2akEKLS
- 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
-X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
- fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cSLGsdkGlZvXJscF"
+Content-Disposition: inline
+In-Reply-To: <20251012155201.137d330b@jic23-huawei>
 
-Add support for what Bosch calls "any-motion (slope)" detection.
 
-Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
----
-I think Jonathan remarked that this might be improper use of the iio API?
-please advise.
----
- drivers/iio/accel/bma220_core.c | 116 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 116 insertions(+)
+--cSLGsdkGlZvXJscF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220_core.c
-index f1d4646b495d..f79901ae8786 100644
---- a/drivers/iio/accel/bma220_core.c
-+++ b/drivers/iio/accel/bma220_core.c
-@@ -135,6 +135,13 @@ static const struct iio_event_spec bma220_events[] = {
- 				       BIT(IIO_EV_INFO_PERIOD) |
- 				       BIT(IIO_EV_INFO_HYSTERESIS),
- 	},
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_EITHER,
-+		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-+				       BIT(IIO_EV_INFO_PERIOD),
-+	},
- };
- 
- #define BMA220_ACCEL_CHANNEL(index, reg, axis) {			\
-@@ -500,6 +507,34 @@ static int bma220_is_high_en(struct bma220_data *data,
- 	return 0;
- }
- 
-+static int bma220_is_slope_en(struct bma220_data *data,
-+			      enum iio_modifier axis,
-+			      bool *en)
-+{
-+	unsigned int reg_val;
-+	int ret;
-+
-+	ret = regmap_read(data->regmap, BMA220_REG_IE0, &reg_val);
-+	if (ret)
-+		return ret;
-+
-+	switch (axis) {
-+	case IIO_MOD_X:
-+		*en = FIELD_GET(BMA220_INT_EN_SLOPE_X_MSK, reg_val);
-+		break;
-+	case IIO_MOD_Y:
-+		*en = FIELD_GET(BMA220_INT_EN_SLOPE_Y_MSK, reg_val);
-+		break;
-+	case IIO_MOD_Z:
-+		*en = FIELD_GET(BMA220_INT_EN_SLOPE_Z_MSK, reg_val);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static int bma220_set_tap_en(struct bma220_data *data,
- 			     enum iio_modifier axis,
- 			     int type,
-@@ -574,6 +609,34 @@ static int bma220_set_high_en(struct bma220_data *data,
- 	return ret;
- }
- 
-+static int bma220_set_slope_en(struct bma220_data *data, enum iio_modifier axis,
-+			       bool en)
-+{
-+	int ret;
-+
-+	switch (axis) {
-+	case IIO_MOD_X:
-+		ret = regmap_update_bits(data->regmap, BMA220_REG_IE0,
-+					 BMA220_INT_EN_SLOPE_X_MSK,
-+					 FIELD_PREP(BMA220_INT_EN_SLOPE_X_MSK, en));
-+		break;
-+	case IIO_MOD_Y:
-+		ret = regmap_update_bits(data->regmap, BMA220_REG_IE0,
-+					 BMA220_INT_EN_SLOPE_Y_MSK,
-+					 FIELD_PREP(BMA220_INT_EN_SLOPE_Y_MSK, en));
-+		break;
-+	case IIO_MOD_Z:
-+		ret = regmap_update_bits(data->regmap, BMA220_REG_IE0,
-+					 BMA220_INT_EN_SLOPE_Z_MSK,
-+					 FIELD_PREP(BMA220_INT_EN_SLOPE_Z_MSK, en));
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return ret;
-+}
-+
- static int bma220_read_event_config(struct iio_dev *indio_dev,
- 				    const struct iio_chan_spec *chan,
- 				    enum iio_event_type type,
-@@ -618,6 +681,11 @@ static int bma220_read_event_config(struct iio_dev *indio_dev,
- 			if (ret)
- 				return ret;
- 			return int_en;
-+		case IIO_EV_DIR_EITHER:
-+			ret = bma220_is_slope_en(data, chan->channel2, &int_en);
-+			if (ret)
-+				return ret;
-+			return int_en;
- 		default:
- 			return -EINVAL;
- 		}
-@@ -662,6 +730,9 @@ static int bma220_write_event_config(struct iio_dev *indio_dev,
- 		case IIO_EV_DIR_RISING:
- 			ret = bma220_set_high_en(data, chan->channel2, state);
- 			break;
-+		case IIO_EV_DIR_EITHER:
-+			ret = bma220_set_slope_en(data, chan->channel2, state);
-+			break;
- 		default:
- 			return -EINVAL;
- 		}
-@@ -761,6 +832,25 @@ static int bma220_read_event_value(struct iio_dev *indio_dev,
- 			default:
- 				return -EINVAL;
- 			}
-+		case IIO_EV_DIR_EITHER:
-+			switch (info) {
-+			case IIO_EV_INFO_VALUE:
-+				ret = regmap_read(data->regmap, BMA220_REG_CONF4,
-+						  &reg_val);
-+				if (ret)
-+					return ret;
-+				*val = FIELD_GET(BMA220_SLOPE_TH_MSK, reg_val);
-+				return IIO_VAL_INT;
-+			case IIO_EV_INFO_PERIOD:
-+				ret = regmap_read(data->regmap, BMA220_REG_CONF4,
-+						  &reg_val);
-+				if (ret)
-+					return ret;
-+				*val = FIELD_GET(BMA220_SLOPE_DUR_MSK, reg_val);
-+				return IIO_VAL_INT;
-+			default:
-+				return -EINVAL;
-+			}
- 		default:
- 			return -EINVAL;
- 		}
-@@ -852,6 +942,25 @@ static int bma220_write_event_value(struct iio_dev *indio_dev,
- 			default:
- 				return -EINVAL;
- 			}
-+		case IIO_EV_DIR_EITHER:
-+			switch (info) {
-+			case IIO_EV_INFO_VALUE:
-+				if (!FIELD_FIT(BMA220_SLOPE_TH_MSK, val))
-+					return -EINVAL;
-+				return regmap_update_bits(data->regmap,
-+							  BMA220_REG_CONF4,
-+							  BMA220_SLOPE_TH_MSK,
-+							  FIELD_PREP(BMA220_SLOPE_TH_MSK, val));
-+			case IIO_EV_INFO_PERIOD:
-+				if (!FIELD_FIT(BMA220_SLOPE_DUR_MSK, val))
-+					return -EINVAL;
-+				return regmap_update_bits(data->regmap,
-+							  BMA220_REG_CONF4,
-+							  BMA220_SLOPE_DUR_MSK,
-+							  FIELD_PREP(BMA220_SLOPE_DUR_MSK, val));
-+			default:
-+				return -EINVAL;
-+			}
- 		default:
- 			return -EINVAL;
- 		}
-@@ -1023,6 +1132,13 @@ static irqreturn_t bma220_irq_handler(int irq, void *private)
- 						  IIO_EV_TYPE_THRESH,
- 						  IIO_EV_DIR_RISING),
- 			       timestamp);
-+	if (FIELD_GET(BMA220_IF_SLOPE, bma220_reg_if1))
-+		iio_push_event(indio_dev,
-+			       IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-+						  IIO_MOD_X_OR_Y_OR_Z,
-+						  IIO_EV_TYPE_THRESH,
-+						  IIO_EV_DIR_EITHER),
-+			       timestamp);
- 	if (FIELD_GET(BMA220_IF_TT, bma220_reg_if1)) {
- 
- 		if (data->tap_type == BMA220_TAP_TYPE_SINGLE)
 
--- 
-2.49.1
+Hi Jonathan,
 
+On Sun, Oct 12, 2025 at 03:52:01PM +0100, Jonathan Cameron wrote:
+> On Sun, 05 Oct 2025 16:12:16 +0300
+> Petre Rodan <petre.rodan@subdimension.ro> wrote:
+>=20
+> > In preparation for the i2c module, move the original code into multiple
+> > source files without any other functional change.
+> >=20
+> > Create the additional bma220_core module which currently is not
+> > providing an abstracted bus type (this will change with the regmap
+> > patch).
+> > Fix a few includes in the context of this patch.
+> >=20
+> > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+>=20
+> It required a bit of hand tweaking after the include tweak I made in the =
+previous patch.
+> Also due to comments in here I tweaked a bit more:
+>=20
+> Please check the result on the iio.git / testing branch.
+
+I included two trivial patches in the new series 'bma220 events' that do a
+pre-cleanup of this driver.
+
+Thank you everyone for the feedback.
+
+best regards,
+peter
+
+--cSLGsdkGlZvXJscF
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEGiKYHD4NvFCkTqJ3dCsnp2M6SWMFAmjuf98ACgkQdCsnp2M6
+SWPkkQ//SGUwmkD/fdR1PcYoNe3Hvh6N/wbE126MNIw1N9syvZJhu4S/uRfwnIIQ
+f5tcX8/4QhE7972CdeSC5fLuWE0O7IzeiV4HrfwUapgE5+lhCPAZV773LOqBj8QH
+ObtXMVgQ/uwWL92XR5XwZez8nPp/sy+CN7YGM93UyXIiLrjuLcgmkNn26Mwfvghx
+ZijjdfbSBU3JPx89rpOiY2RCLhM+UKoAcopPKVvo5wszrzgO3g8ajyACnSlGN0Ez
+Uhm4ObSwDoYr/UWdqgHDq4yJlBxT8SDlMeg7tOZb3lNpMNbBGhmgWcruJ2x7ereh
+ww/QMwDxb3wqrljiWthZx2+v0mvP9v18EnKyufz8CkiWgBsRhmAsJ8gLcmelXja3
+EvSHEVzToCrmbmg5MMIcou9AfzPqV5HIedh+OzYIneXX35h7hnZ9aEefRYyhRgK4
+ZWfHsil/d0W8Rmv6uWdT6zzbi9kF3TUUm32/6d6oJZOXEJ25Rs/t1Gar3/+UDlcP
+UpTEwGBj4plklAgl4iNKZErsq0fI4NFLchA13ckzTX9CUwhq9ngP6XukZIpBDjF5
+fSA2HYYVOzXtTdC+0GY9ANc1oNBWJ/8mmL+FEZ3mhSSOU7zYqEqEGnwCQ4ZYDZ3g
+sN6exKzpODmo+OTm9zeJ5+/tHEPu+f6vU3ETrbRzeBhxU5ITj9I=
+=vuEw
+-----END PGP SIGNATURE-----
+
+--cSLGsdkGlZvXJscF--
 

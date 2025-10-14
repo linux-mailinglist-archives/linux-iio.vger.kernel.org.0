@@ -1,111 +1,114 @@
-Return-Path: <linux-iio+bounces-25047-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25048-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5FDEBDA303
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Oct 2025 16:59:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1983BDA93C
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Oct 2025 18:12:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB91718A378A
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Oct 2025 15:00:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03722188271C
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Oct 2025 16:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807A93002A9;
-	Tue, 14 Oct 2025 14:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959D3302154;
+	Tue, 14 Oct 2025 16:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cuwboClK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5FftEwV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F38D2FFFB9;
-	Tue, 14 Oct 2025 14:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C00E2FF646
+	for <linux-iio@vger.kernel.org>; Tue, 14 Oct 2025 16:11:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760453957; cv=none; b=nSHFsuV7gX6DsvY/FGdtBgH3OHR7FT+V4cPsH8mI+FFtd5xSe/vheDcgnVR3AzI4+Q1whPSuKPXc80Jk5uMWtm4Z1TGvmP7gjmaM4iXdeSBK4Ro2Rz5hWMufd++ESuU+uHpkv2I3bHgaDbJh6wIJbj0R9h6G9RO8U948VVMqTTA=
+	t=1760458271; cv=none; b=g/R6l63k0iCH4H0WKP1b7Fluc3ft/hmdYre3Nbpf4BBaOVAGo5PK1z2Ntn15qhA6smnyK3twjyUlVihIEXbmB0Qkk0lcBh+kXXjb5Uh+wn3COosCJpRehsRsI2cXPGWLy88RuOfXKWKn2xUQ6k23iZ4GC2HmrYQP981CsUMqoXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760453957; c=relaxed/simple;
-	bh=vUTHM+SWkI/RV5I02QaaIF2/tUM7KgdwTICyd2lXCaI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=qEdfqUBT/akwgt+68SEay+nUTWcla/Y32+nHMBqepc6lqj0Sd+6aOXfLpeqq4PTb0aCk70n3U17mh+Ntb3YT3z5Ylp86d39RB/3XyjJs2Z6Aa/ZKvQXDHxGqU6hvhp/c505pqIvrSX6eTk+7x4vs/0Upc6euVncE//fy6CYxI/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cuwboClK; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760453955; x=1791989955;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vUTHM+SWkI/RV5I02QaaIF2/tUM7KgdwTICyd2lXCaI=;
-  b=cuwboClKzOvf06beVeeg42gXXLyZ39jjO0RGaDUf1PmF730MIeJ4lVuq
-   q8VkNEGHYudYEpJH22+9xhXq3KBzxJJF072H2qxzoVTk+dFbzU/i7R93x
-   HwgIEm5TQfB+VW7rzrbadEq9j3jA8ZzUXLLwmEAg6CziSGhrLx+8SHf9N
-   AprvP1IESwApNn++6pjtdX2HYCZauScRPqaNNoyG1ghwQT10NmzLmPrgI
-   E40AAC+LNtrDQkGbilCEy07mFgkTVLAsHtvXJzIjjEwgWFvP1rCfaZMYf
-   EWS6uYaL/w2OBwrrrFB9aGyws0ZRlnquyQLsiJpf8wkch11ElVCNTM9x3
-   w==;
-X-CSE-ConnectionGUID: ZdyG4dAsTdegMZstqUV9qA==
-X-CSE-MsgGUID: tRVP7JR1TKGmzWhiz7T6JA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="66473195"
-X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
-   d="scan'208";a="66473195"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 07:59:14 -0700
-X-CSE-ConnectionGUID: gCXVd/D9QH6QXFLAtnwRYg==
-X-CSE-MsgGUID: 9ZKEbwLcR5GDfuCSuWUNOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,228,1754982000"; 
-   d="scan'208";a="182344421"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.195])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 07:59:12 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: linux-iio@vger.kernel.org,
-	William Breathitt Gray <wbg@kernel.org>,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: [PATCH v2 1/1] MAINTAINERS: Update Intel Quadrature Encoder Peripheral maintainer
-Date: Tue, 14 Oct 2025 17:59:05 +0300
-Message-Id: <20251014145905.4862-1-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1760458271; c=relaxed/simple;
+	bh=cgGGWkNLi5kUkZ5XtXPyN02ZnWo0wYfVpJDHqBiZlT4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=n/HcvLqY7Tzgjn9yk3s5S2yFz/l3picDOgqVirjckHKaC6yHM3W9LMnqrIgsLsLc5P8qv73VXedK8Zwsg6kSt4B/2hD9Cv6VjjdFjC1EvORwHei4sIbUK6jgKZqEe7BAxce7THPRMa9+ayqTEgyKUh8aOU/ewBCk19+FqvUcUYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5FftEwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9C9A4C4CEE7;
+	Tue, 14 Oct 2025 16:11:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760458270;
+	bh=cgGGWkNLi5kUkZ5XtXPyN02ZnWo0wYfVpJDHqBiZlT4=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=B5FftEwVihlU4FOukWcSUeMWEvaU/KF3+wpjpV8OucMJy9YBsE+7bFkP6+KfBlg1O
+	 zUuTK/bDEyEHLfwaP5Tw6DpjMyU5AP+Tkg1l1vTnTayxkm7ucJ18LA3UWcs986kQWX
+	 pirYG6iOb4w1D3+Vpp+yJwubSV0F0iDvLmOJKrG/9uez8xmRa0MdQm/OaZ5ZCEkovH
+	 Z2RSeXiO/beHA0vjv5KhGGZ/hm1u4/lhVU89RCPZxn2jbBDQoB/EL2zIB+bFc1hnos
+	 JWGMv0y7Avm3oPgXVkFv0rK/qsSPK41tr+NuakRC0TqeBl0FH4vVVoo0kHiucZLqu/
+	 cspSsprKWVhuQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92C74CCD193;
+	Tue, 14 Oct 2025 16:11:10 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Date: Tue, 14 Oct 2025 17:11:41 +0100
+Subject: [PATCH] iio: dac: ad5446: Add AD5542 to the spi id table
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20251014-dev-add-ad5542-v1-1-cfd197db03a0@analog.com>
+X-B4-Tracking: v=1; b=H4sIADx27mgC/x2MQQqAIBQFrxJ/naCmYF0lWoj/VX9joRBBdPekx
+ SxmMfNQRRFUmrqHCi6pcuQmpu8o7TFvUMLNyWrrjTZOMS4VmRveO6tCCuPgGEED1KKzYJX7H87
+ L+356bfBzYAAAAA==
+X-Change-ID: 20251014-dev-add-ad5542-8c8934de80ee
+To: linux-iio@vger.kernel.org
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ Andy Shevchenko <andy@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1760458303; l=1036;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=zjLKzS1W0/5HBFY1YTVVWSk3p4EDX/9So7On4WYstjk=;
+ b=E1C/CYMOFW2iu4rNfmmBcdVfvqnYKSbiuMTO2Kfp7Hlp7me3gNPymAl0zp6cxMayDHQTASval
+ sHV/BReLDxPCJurJxSXBtcTTDwHfdbMtuAJixwwySr3H1n+uIJUx9zt
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-Jarkko's address is going to bounce soon and I agreed to be the new
-maintainer.
+From: Michael Hennerich <michael.hennerich@analog.com>
 
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This adds support for the AD5542 single channel Current Source and
+Voltage Output DACs.
+
+It is similar to the AD5542A model so just use the same id.
+
+Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
+ drivers/iio/dac/ad5446.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-v2: Add S: Supported
+diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
+index ad304b0fec08..6e4103f4afcb 100644
+--- a/drivers/iio/dac/ad5446.c
++++ b/drivers/iio/dac/ad5446.c
+@@ -422,6 +422,7 @@ static const struct spi_device_id ad5446_spi_ids[] = {
+ 	{"ad5512a", ID_AD5512A},
+ 	{"ad5541a", ID_AD5541A},
+ 	{"ad5542a", ID_AD5541A}, /* ad5541a and ad5542a are compatible */
++	{"ad5542", ID_AD5541A}, /* ad5541a and ad5542a are compatible */
+ 	{"ad5543", ID_AD5541A}, /* ad5541a and ad5543 are compatible */
+ 	{"ad5553", ID_AD5553},
+ 	{"ad5600", ID_AD5600},
 
- MAINTAINERS | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+---
+base-commit: 4b17a60d1e1c2d9d2ccbd58642f6f4ac2fa364ba
+change-id: 20251014-dev-add-ad5542-8c8934de80ee
+--
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 46126ce2f968..393a475fbd1e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12822,8 +12822,9 @@ S:	Orphan
- F:	drivers/ptp/ptp_dfl_tod.c
- 
- INTEL QUADRATURE ENCODER PERIPHERAL DRIVER
--M:	Jarkko Nikula <jarkko.nikula@linux.intel.com>
-+M:	Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
- L:	linux-iio@vger.kernel.org
-+S:	Supported
- F:	drivers/counter/intel-qep.c
- 
- INTEL SCU DRIVERS
+Thanks!
+- Nuno Sá
 
-base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
--- 
-2.39.5
 
 

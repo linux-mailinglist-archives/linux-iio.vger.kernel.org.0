@@ -1,205 +1,150 @@
-Return-Path: <linux-iio+bounces-25083-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25084-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36928BDCF0B
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 09:24:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51713BDD4FA
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 10:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 40B544FF0E5
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 07:22:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47C56420C3B
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 08:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F6C31AF18;
-	Wed, 15 Oct 2025 07:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905932C237E;
+	Wed, 15 Oct 2025 08:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z8L8wees"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cZzzjpW3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC18E315D47
-	for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 07:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7B4204F93
+	for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 08:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760512666; cv=none; b=S55PbrX62nf8sYLSZSerWgeLCEKhokTKth37Rq/2d6PCJIPk3crd87/QOuDI+Gw6DuHt1VtD/OKnWvZV4yKuCR7RUyohYbzDJW9mtAD74xfzjcwWYXkpbnFYqA/2i9AeqHXKG24rB0qjvF5XiVn8p2TR9uRpuJ9pPXzltwX+MyA=
+	t=1760515687; cv=none; b=NTpw9TlHbTpBTH0jIFUdH7CIs+fpbrtbhRIb7M+WsX3017VBWQyMgaF22E83bJvYgWqFpelDpnsc8+SJjEqB2mE9K1b0HI7BIaOwr4wH4F/zbI5i1i60SCZUrSF7GLqysjCEccFu3M2FjCW+UdOaH+AibdK6kdl24xqLMzovP94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760512666; c=relaxed/simple;
-	bh=yHzIyTTaSUhvz7vpIa6YFDpCxxpaGXHwLqlXWSiOLTU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o0gp8Quam2lmqUyiz+iWNCe+Ksp6GdRQ/qQ00YGq7bv9KXxKJYdPM7z4GzToosHY7Z8xSEimo+d0BxsyPvJYFCjphWnc4Q+Mqo2Th5ehpDQ8F11n1kX2sW+XTilxeRKykTO3VJCgJLXYeKTfilh1f39W/sOW0MxJFOf1h1l7zJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Z8L8wees; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-63bc12a5608so3816822a12.0
-        for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 00:17:44 -0700 (PDT)
+	s=arc-20240116; t=1760515687; c=relaxed/simple;
+	bh=82lMN3PHx84x65T7bxBEjnc+PP69vV3I+4c9g6/+BJ4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XuevtW6VgevGoI1X2yZMHdSvOic/DHmRbIN8OYmsiTcaokbFr1uauCdxtrBs5XHGmHeL/9M9Ye24Hf7iuwt96h63NqV6M0GU0cY6Nk1y0hJLSBOQxFoe0hPmmheqKsXJfgX6iAeO4yAjrAQnHZCgZFH6wrguLWtW81S3tZqq51s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cZzzjpW3; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-46e491a5b96so35670785e9.2
+        for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 01:08:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1760512663; x=1761117463; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ePYaFzONl4e/LY7q9Fhjo1RMb7nGfXYeEd5O3pWTTdc=;
-        b=Z8L8weesbvGvhOJGAKh1zce+VQAjgIFJIL/T7pTGljd4FviIqZ4Eyr0y+sRcoz+XdL
-         faiDIbf5JsRtdQiJNM9e7LpCUYq0m52gDWCOByJjc/xB/g4uLhiBZTXo+6QB9FiXXyY5
-         +f4MM0kQqGdCG8hYofHngBicfpjTbj+3DgLCgfTPrWE4+TikKK6RMZ4KnJci5DpaPsPb
-         1LsQo9XLnBsBuZc5A/fEu7axnBbVlCYrqxjt0cicurKNeFkOlINBvBoAlk91zQI/1DX6
-         1NNYHf69Xly4cV41X+oDX5oSPipkHiDvghthKWE+6n/UgW6p/CLGar0up65GcecMp3Ph
-         kDIg==
+        d=gmail.com; s=20230601; t=1760515684; x=1761120484; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qIKUsHWr4EfW1osCBnZfPucjiZ7QQGt9ogy8NGoGeu0=;
+        b=cZzzjpW33vJKxJZfkWy6OOLBkRpzRY+j8Wi6NfttEqT+jjSCmSJS/lxRV35Je/PVYs
+         OrhmUg+cE6HfLjS07yG/537+R95fGBGLwwiU5SNJGIq/9yfASqmno/bSoIKOz/rsuzLb
+         xY9gK6K9Nc2SG9nHMHiq7umUcnJzaNrHVESHGsGHBcCtxaUWAz9IGTRBQsvR3zBwdihZ
+         s3M6U548JPNFH52yPStE/9VBmcE5vqCDSrDAOMcAfIuB1ZsAa64+GRBWYdy+zyYa2bby
+         ppLSMgvIA51Qe94cqv585jJvbWkKM3YaSPqjS5+RXvJIP9aUNKam3d+RYh/5bOf5MdDn
+         c30Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760512663; x=1761117463;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ePYaFzONl4e/LY7q9Fhjo1RMb7nGfXYeEd5O3pWTTdc=;
-        b=HlChXngm7Hunmd1g/ckmNpecpJXMQgoj/qbKaB23xhBV/E39BfWqga9b/TEugudVKB
-         NoWYGzJ7MCSdOU2wap1yEqM1H7budwf+U8IS6/mviE6FGDlSFQsKDrY4+lh5X4bFJ8ce
-         fWSnJCs+TguT1i6C6ainfLG8w3zpWwcE2MkowK/mjj7N61C1+KNzSMwCU62XuDmM5RGY
-         U5dsKL4v6XqDF4LkUHqU+t3PLIy8wxW69vKIxXU//63cy++U8IhBrw/kDR10jFSbH9c6
-         mlhKHq/cyvKfuBy+NZeMbZZ3k2vMS46L1WPI5djo0OT/PhjLWNPxcx/qNRPghbdkSqfS
-         OEWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVHhYx8zyPlluTikVRL0bH6Xh5SjvnytGt+gYV/G01r3grut0G3euDkQ4vJm4LYFO3inpoMl47xKao=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznaF93s6OuF2gbIhLaCL7OZPn29QrQg/hghqwy5VbmsmOvD+1Z
-	LzTNwYTt8Cvg4JkRK4ZB0MMPTPoQ5rBgKJ0IjI+86Tst/PGVmAue+k8LwZdu9qcmuM0=
-X-Gm-Gg: ASbGncv/jr26zFha6Lo9FefUlLQVhX4as3aaYKx5DVCe0Nr/Shied+VfQuJ0AxRP2X/
-	hZDIB2ITSaVxBPROaI0zTcg4p5k7p9A8khz+hDrUee43VoLHX4CSHezSXZcxwzdfuo1jP+1IWbT
-	1NNeiWHtQxpybcCytiK9IW5ZWNDApYDKnVNjwxhs8ePj/XD4OoA7brLjTDUgZ38NesbZKUdjZI2
-	Q5LdSGoGHsA1W0zdjqXA5vVxDjkj+0wn6xg4vfW3sQrEQ/HvtBE3esKCLutJGDDHxu7h4nRc2P0
-	A1PDnyolqM68RW7JcjGdUnzpU5MJ1gAF9rAHE9h+Kr0iNUtk2GVJmwd1aZsYLlj79z/sOtlQ4T1
-	0xp1Cw7ziRc9nPannrpfEz6NmyAZcDxgY/KXrP0FuabcSc3vb6uBGtAkh/nC+GMxWHe1V6Y3rnn
-	/o5dgXp7+FmF4LkIScfcjT4BUkscoEoBXc+5qtkHIvUZY=
-X-Google-Smtp-Source: AGHT+IFmYqZtjBQqWMLY6jQsULT/KG9GV1bM+5qtfWP5Tt64i73SBNyEd6pZNj/0MqfoPh6C/V9WhQ==
-X-Received: by 2002:a05:6402:2791:b0:63b:ec17:70da with SMTP id 4fb4d7f45d1cf-63bec1774f4mr1814946a12.8.1760512662522;
-        Wed, 15 Oct 2025 00:17:42 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:ab0f:5130:68a8:f38? ([2a05:6e02:1041:c10:ab0f:5130:68a8:f38])
-        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-63a52b0f860sm12650070a12.15.2025.10.15.00.17.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Oct 2025 00:17:41 -0700 (PDT)
-Message-ID: <0ac22118-fd0f-49c0-9aa8-5739925587d2@linaro.org>
-Date: Wed, 15 Oct 2025 09:17:40 +0200
+        d=1e100.net; s=20230601; t=1760515684; x=1761120484;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qIKUsHWr4EfW1osCBnZfPucjiZ7QQGt9ogy8NGoGeu0=;
+        b=RiBzcTZOJ1ZBhiADgkNxJ0lXBJ4RjCfIStwnqms0A24be0iUGkB0WHRSbpTUv669jY
+         2rq0OFBB3Jmk57r9vyR3/b9VmMHK3Dul/YulfU2GXLDhvhLcu8E8wLxnlgWv+hdhuSmy
+         kk9+/MwM+PQCHOThWfLmVdF+q4BOmsBeiNxW+dGebZAp+ytrWVjUjOxaZUt/uTOnBwV8
+         FQG1BxksYQ4q/YZasKeBuMMAZtCRbDjfuxgiTBZe7VhU/aibjL5sXJJgqVoqvVv2lTb0
+         Pv7UFdQpRTU/ARNN2MWO1frOvwjTVHhleFzN5Q7rNmSn1UkJVAP0UP7CvubawJyFQrlY
+         lsww==
+X-Forwarded-Encrypted: i=1; AJvYcCWfImnZJi0V2Dbpqi10ndRP2DakZ/hBxzYXqjulIHZC1064giYAOZjFsVOOmjT7iKOZcd7S24+HRIE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0DINqrq27Vobr4X9Lprh5E2httbRVmuO6tUO+peQU1KmTPfP4
+	CFCaZIysRM5uIhZYCZPx5kN5JARm5md0FYZ10jyjjO91r+q9u6X4U/LC
+X-Gm-Gg: ASbGnctLuW41LLRS8Cwk0unqLjWgfEKBcEQbmK9/IE9JsNMplGPW9mtVYCxdaVt7T06
+	xAgcdkhDt+65JIfjfM4mMEjo/ndL63F88QdBlvP3yJm6U2nBm+2e3omm7+PGFI6998EgB58n3Wt
+	m+PUTYFMd/2PNYbkbCCkqUXEts7TwdT8J/8jqTIn8ppREq354V8ybJD2Gt0/83TZTwdvZudxKfs
+	CgqHTKcWy5kCEojPJSaQmmE8drYmOIJjLWKcLmZSJoov+tQkAolMkHECdwt1cPXJRfLADSUeDeG
+	TciyNUYIY8tYFaFA2uKLqo8CDwhsMWCwQ1JufY1yfRxf09+OaYPqv3ViGiO2NapZUUTXXTV06gD
+	ZRpvaAwokpqcFf05WuWeV5Pm0K4anzJoJyHxUjvk9+j+4fIVXeg==
+X-Google-Smtp-Source: AGHT+IHP8N+3px7skvkLMWNcnItWcn1+rGFvMFcI3+FoelwYasutqN3qkfYTHrtQ97up2D/uCItX7Q==
+X-Received: by 2002:a05:600c:6304:b0:46f:b42e:e39c with SMTP id 5b1f17b1804b1-46fb42ee509mr132021525e9.41.1760515683625;
+        Wed, 15 Oct 2025 01:08:03 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47106fc96bbsm2575855e9.3.2025.10.15.01.08.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Oct 2025 01:08:03 -0700 (PDT)
+Message-ID: <ed298de2b13040534bb25bd186111f4761d574df.camel@gmail.com>
+Subject: Re: [PATCH] iio: dac: ad5446: Add AD5542 to the spi id table
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com, 
+	linux-iio@vger.kernel.org
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron
+	 <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
+Date: Wed, 15 Oct 2025 09:08:36 +0100
+In-Reply-To: <03b3c597-0576-4468-a23e-cf6a4b7daf86@baylibre.com>
+References: <20251014-dev-add-ad5542-v1-1-cfd197db03a0@analog.com>
+	 <03b3c597-0576-4468-a23e-cf6a4b7daf86@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] iio: adc: Add the NXP SAR ADC support for the
- s32g2/3 platforms
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
- linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
- ghennadi.procopciuc@oss.nxp.com
-References: <20250919135618.3065608-1-daniel.lezcano@linaro.org>
- <20250919135618.3065608-3-daniel.lezcano@linaro.org>
- <20250920102742.4cadb734@jic23-huawei>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20250920102742.4cadb734@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Hi Jonathan,
+On Tue, 2025-10-14 at 12:15 -0500, David Lechner wrote:
+> On 10/14/25 11:11 AM, Nuno S=C3=A1 via B4 Relay wrote:
+> > From: Michael Hennerich <michael.hennerich@analog.com>
+> >=20
+> > This adds support for the AD5542 single channel Current Source and
+> > Voltage Output DACs.
+> >=20
+> > It is similar to the AD5542A model so just use the same id.
+> >=20
+> > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> > ---
+> > =C2=A0drivers/iio/dac/ad5446.c | 1 +
+> > =C2=A01 file changed, 1 insertion(+)
+> >=20
+> > diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
+> > index ad304b0fec08..6e4103f4afcb 100644
+> > --- a/drivers/iio/dac/ad5446.c
+> > +++ b/drivers/iio/dac/ad5446.c
+> > @@ -422,6 +422,7 @@ static const struct spi_device_id ad5446_spi_ids[] =
+=3D {
+> > =C2=A0	{"ad5512a", ID_AD5512A},
+> > =C2=A0	{"ad5541a", ID_AD5541A},
+> > =C2=A0	{"ad5542a", ID_AD5541A}, /* ad5541a and ad5542a are compatible *=
+/
+> > +	{"ad5542", ID_AD5541A}, /* ad5541a and ad5542a are compatible */
+>=20
+> Should the comment say ad5542 instead of ad5542a?
 
-back to this driver after the merge window ...
+Yes.
 
-On 9/20/25 11:27, Jonathan Cameron wrote:
-> On Fri, 19 Sep 2025 15:56:18 +0200
-> Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+>=20
+> > =C2=A0	{"ad5543", ID_AD5541A}, /* ad5541a and ad5543 are compatible */
+> > =C2=A0	{"ad5553", ID_AD5553},
+> > =C2=A0	{"ad5600", ID_AD5600},
+> >=20
+> > ---
+> > base-commit: 4b17a60d1e1c2d9d2ccbd58642f6f4ac2fa364ba
+> > change-id: 20251014-dev-add-ad5542-8c8934de80ee
+> > --
+> >=20
+> > Thanks!
+> > - Nuno S=C3=A1
+> >=20
+> >=20
+>=20
+> Interesting... no devicetree bindings for these chips?
 
-[ ... ]
+This driver is old enough where things were less strict (I guess) and it se=
+ems
+no one added bindings for this.
 
->> +static int nxp_sar_adc_start_conversion(struct nxp_sar_adc *info, bool raw)
->> +{
->> +	u32 mcr;
->> +
->> +	mcr = readl(NXP_SAR_ADC_MCR(info->regs));
->> +	mcr |= NXP_SAR_ADC_MCR_NSTART;
->> +
->> +	if (raw)
->> +		mcr &= ~NXP_SAR_ADC_MCR_MODE;
->> +	else
->> +		mcr |= NXP_SAR_ADC_MCR_MODE;
-> 
-> Could use FIELD_MODIFY() for this though saving is minor.
-> Same applies in various other places in this driver (and
-> many others!)
-
-[ ... ]
-
-I gave a try to use the macro FIELD_MODIFY(). Logically, FIELD_GET() 
-should be used too for consistency. From my POV, the result looks less 
-readable than the usual annotation but may be I not used to the FIELD_ 
-usage. Here is a snippet of the changes, do you really want to convert 
-all the driver ?
-
-         mcr = readl(NXP_SAR_ADC_MCR(info->regs));
-
-         /* Return the current state. */
--       pwdn = mcr & NXP_SAR_ADC_MCR_PWDN;
-+       pwdn = FIELD_GET(NXP_SAR_ADC_MCR_PWDN, mcr);
-
--       if (enable)
--               mcr &= ~NXP_SAR_ADC_MCR_PWDN;
--       else
--               mcr |= NXP_SAR_ADC_MCR_PWDN;
-+       /* When the enabled flag is not set, we set the power down bit */
-+       FIELD_MODIFY(NXP_SAR_ADC_MCR_PWDN, &mcr, !enable);
-
-         writel(mcr, NXP_SAR_ADC_MCR(info->regs));
-
-This looks ok but then:
-
-  {
-         u32 msr, ret;
-
--       ret = readl_poll_timeout(NXP_SAR_ADC_MSR(base), msr, !(msr & 
-NXP_SAR_ADC_MSR_CALBUSY),
-+       ret = readl_poll_timeout(NXP_SAR_ADC_MSR(base), msr,
-+                                !FIELD_GET(NXP_SAR_ADC_MSR_CALBUSY, msr)),
-                                  NXP_SAR_ADC_WAIT_US,
-                                  NXP_SAR_ADC_CAL_TIMEOUT_US);
-         if (ret)
-                 return ret;
-
--       if (msr & NXP_SAR_ADC_MSR_CALFAIL) {
-+       if (FIELD_GET(NXP_SAR_ADC_MSR_CALFAIL, msr)) {
-                 /*
-                  * If the calibration fails, the status register bit
-                  * must be cleared.
-                  */
--               msr &= ~NXP_SAR_ADC_MSR_CALFAIL;
-+               FIELD_MODIFY(NXP_SAR_ADC_MSR_CALFAIL, &msr, 0x0);
-                 writel(msr, NXP_SAR_ADC_MSR(base));
-
-                 return -EAGAIN;
-
-[ ... ]
-
-         ceocfr = readl(NXP_SAR_ADC_CEOCFR0(info->regs));
--       if (!(ceocfr & NXP_SAR_ADC_EOC_CH(chan)))
-+
-+       /* FIELD_GET() can not be used here because EOC_CH is not 
-constant */
-+       if (!(NXP_SAR_ADC_EOC_CH(chan) & ceocfr))
-                 return -EIO;
-
-         cdr = readl(NXP_SAR_ADC_CDR(info->regs, chan));
--       if (!(cdr & NXP_SAR_ADC_CDR_VALID))
-+       if (!(FIELD_GET(NXP_SAR_ADC_CDR_VALID, cdr)))
-                 return -EIO;
-
--       return cdr & NXP_SAR_ADC_CDR_CDATA_MASK;
-+       return FIELD_GET(NXP_SAR_ADC_CDR_CDATA_MASK, cdr);
-  }
-
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+- Nuno S=C3=A1
 

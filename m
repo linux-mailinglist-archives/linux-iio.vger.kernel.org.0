@@ -1,189 +1,797 @@
-Return-Path: <linux-iio+bounces-25117-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25118-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9275BE0E37
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 00:01:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90203BE104F
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 01:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 555FE4E9E4C
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 22:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43ED03AA0D0
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 23:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6419B27055E;
-	Wed, 15 Oct 2025 22:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BB03168E8;
+	Wed, 15 Oct 2025 23:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AR+b1EI/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQv0NUEI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29053254B4
-	for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 22:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BBA2D0275;
+	Wed, 15 Oct 2025 23:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760565688; cv=none; b=QC8aCNaXcR6RaVT60f6xJRWIjoTTf/6fSzXYUdKdQY1UeTAYAv513/EcH+PA09cBV5LK123jFEGg52go09+BeQ8wR1l/2WMERJHw22brCOMfMeYDf9+qCo3LkJXv+nSqDCySX6f/fvQuXXWNTiaX0T+yiP2WBgg9r8rMyHKeZAQ=
+	t=1760570437; cv=none; b=Is66dCzh0D61RwgHT8FOYgbvYOMMidkPhMhNeZGc46JHkQrdC6fMOMzYIyl5g+JzLTMtq37FGo2FDomTZHxqnlBczmlX7c3qRriygFmQAG4ifMUdfEd4rHIvRMStorDPjHFrxHq1WbwLkoTnNauUURy6pm4hwxgedp3IaYe6H+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760565688; c=relaxed/simple;
-	bh=ivYFnPwosDasLCf4bTnC4t7wbWohepcJZp85u+LWQj4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TDSzVyr1imVRSNpHM80Fdy9JaKRqiBLl87bwXEXyiQhfp6X+7YDMk7rAJlU+K80mx1GwbCnKOctfyEAgZ72jGbeQy0iyfJvy4Dm2CQuMSMIvN0m3DVjsOxVtmmrET1o6XEidH677UlFb1ZRfr35J9FvDe2W/6OrsSsZrpTrEXu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AR+b1EI/; arc=none smtp.client-ip=209.85.210.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-79f79e37c04so49863a34.3
-        for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 15:01:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760565685; x=1761170485; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1L+yEKnDVHKCFi/+mzMQJngjwB10FbzOmuHQmkZoHW8=;
-        b=AR+b1EI/s47rfYdA+kRADE0Ww1nHbX7vEgxPLhP+uUqpKJ0KESYuTS+KDd2kgJ8GgY
-         qAtW4353wVvSeTqfa4yOqhmrOWf9Do93HTyNa1tokZvXn+43n44F/C5tWGnSEdosH/ek
-         n+atlXSNqKRr0L5KXIlE5bMuLTT3V8NmQISh9vi0EJ0vukKWl8MXyyoKp5dQPYObDW0q
-         e77hZROJzMq9DcXXJOWCuFmgQ30h7V3M1XGUOLzQrzIWXTO3lJ7sbkxSIzjXKGRXFc73
-         PZth5/6pCfvkhVazAiVgkQUgTkJcFjX1rO7Tgg0TszhwK5wrlhcGzzPImTqAZgq/svzu
-         pTtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760565685; x=1761170485;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1L+yEKnDVHKCFi/+mzMQJngjwB10FbzOmuHQmkZoHW8=;
-        b=Ozcxur7rnMgteg5pPVy5o5DRXCB224Ci0PE6VGHCUZFOadtrsAbc3+pGQ3bZOei3fX
-         lFFZH6H4Nzb9XUR3HwEhYN119SiwilRPf70FI4/kqfTYq/7P0BJW9Rkp/JCjFrBu9qC0
-         UQmPcQcG0yLAAhQu4vYQLP+nXjVQrqrVljX1DkRyXeZpUPdrcXRLLGL5WSwOVVqscPBO
-         2EF8iFv260c9CnVY2HlgmTlxjHHBGJ752r0YqzCqjD08nXJiKgHZcCsbOQ9VogAh1JTk
-         Bf0zKpwsi7GbUmGFmnJkKFjDHN1Fubm7ZDRybzzGr/WxeD8pQW/TF09hfsQtwL4ini1q
-         QlRw==
-X-Forwarded-Encrypted: i=1; AJvYcCV787pl1AZ6rxCWEBxYHx1ks703Xqb9talE0IdrgH5lrF43LkuBT8o9sAcTA4zXkTumNCbEqMALgXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJHQS6Kj44cwebJBNNovYw1rOgCmpsvZt22sowvSAAvTuizA5q
-	oSO6IZGJ9Yw7WHPZ1ErQXMqnXlZVftNRh4s0sG2nPVF1XKaMCUhuPdz8qrNF4LHTYrg=
-X-Gm-Gg: ASbGncvbAiM3cGbVWNjOlViFzIsyL76NvKWG2Gm/hE4mM97E69wipURFqmkHxRg+Cy1
-	1N+CNuCPtK8ev/7OWvV5G55B9o1HCM15/2IHnGI5XehGjW50iB8WjWfTSQzccLM4QkLcNdUW4QN
-	oByDXmX/07Ry3GuIAEVQZaVfhqFcv9C3cBk5ij+0U5zXe1Pv0+eOSsWPiN/pOgiFzUZMf85NeMi
-	Phkth5gUk4uwgKSi1JglGL/AKtyWuK7q2oUHHgPnjQOus0COaP4PCLn+CvgSk2MNaMrpFkU0/rh
-	W/Ys0ZNb0OTs9vTkVVnTcFNtXJ6Eo05KhHx3FmCpXDXJR5TYdCrWMTXe8Bv+/lS7bRwwT13698V
-	uT0w9kbgaAwENfm5PoZpDKx5MvYiGBphMakvAPBgLnKbnGm/HREPwLZJlHNAZUH8Tvb/A1bXPzG
-	M5gK+lU1F0CPSYq9mRAXkmc/+jXvjE41Wq6FDwIxRLEXD6pR8=
-X-Google-Smtp-Source: AGHT+IEX5hvXmn9UjZsBKQ0Hsx3hl8uxgDAS79OfkLE+xLuN78czXcOVDV7GvX8Pk5iqXK+4MsMs6A==
-X-Received: by 2002:a05:6830:d10:b0:743:968b:3440 with SMTP id 46e09a7af769-7c0df79ad52mr18475439a34.20.1760565684799;
-        Wed, 15 Oct 2025 15:01:24 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:86b5:623:b364:9913? ([2600:8803:e7e4:500:86b5:623:b364:9913])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c0f90fb491sm5770115a34.20.2025.10.15.15.01.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Oct 2025 15:01:24 -0700 (PDT)
-Message-ID: <39794baf-0a9f-465e-916d-6d5340e508de@baylibre.com>
-Date: Wed, 15 Oct 2025 17:01:22 -0500
+	s=arc-20240116; t=1760570437; c=relaxed/simple;
+	bh=wUAFBOW8IXbdwk0K9YsjD/7Dr5tNv62XPJ/pUj8ycoM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AjS2IA2SAGqnXjo+2JIdRuZe1RBZLQBPnuEK7tvQCct3TuuPnl7TAOcemaxBe3xBElquVUggAiO5qVl0X6m4yETibMkVUmbeSeiD7ajrTi0k34BW9X1UHvlubGcpwrge9g/FNiap/fowcsNgcbMYd1gSayncw0nsqxwjzLM5vbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQv0NUEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F227C4CEF8;
+	Wed, 15 Oct 2025 23:20:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760570437;
+	bh=wUAFBOW8IXbdwk0K9YsjD/7Dr5tNv62XPJ/pUj8ycoM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PQv0NUEIzWp9sCry1ho3owbBWN9hwPuIsuUSENMERX6kCfFPoMYQvm4yZziF2cMis
+	 oD3oteGQePDkMi6ZeV8pE970ahnc/fM9Bi5Tc4IC3a1iy7+d9wNHQU+hQ3vIAyIubt
+	 lO8qivfyfdEtj6+HmEbW6GDvTfnDAMaly2QCHR1UTNaIH0HmfEMJxFC7WaqHIfZs1x
+	 G38JnX1+WgtsTaGnizU8Pvo1ElPa8ALFl8iv3oEMfugGXPOAUi+GqAZjW1u73BslYF
+	 hzHYQ3YjJIj7SQpiCwXJr6PdZ0tv7WAanSNisEwM6VoVxHFCuPwThfaQ3QVdR7HlL5
+	 Y6oJu/p7SwySg==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Tony Lindgren <tony@atomide.com>
+Cc: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-iio@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-phy@lists.infradead.org
+Subject: [PATCH] dt-bindings: Fix inconsistent quoting
+Date: Wed, 15 Oct 2025 18:16:24 -0500
+Message-ID: <20251015232015.846282-1-robh@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] spi: axi-spi-engine: support
- SPI_MULTI_BUS_MODE_STRIPE
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
- <20251014-spi-add-multi-bus-support-v1-4-2098c12d6f5f@baylibre.com>
- <aPAJwqdFY7ldtt-F@debian-BULLSEYE-live-builder-AMD64>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aPAJwqdFY7ldtt-F@debian-BULLSEYE-live-builder-AMD64>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/15/25 3:53 PM, Marcelo Schmitt wrote:
-> On 10/14, David Lechner wrote:
->> Add support for SPI_MULTI_BUS_MODE_STRIPE to the AXI SPI engine driver.
->>
->> The v2.0.0 version of the AXI SPI Engine IP core supports multiple
->> buses. This can be used with SPI_MULTI_BUS_MODE_STRIPE to support
->> reading from simultaneous sampling ADCs that have a separate SDO line
->> for each analog channel. This allows reading all channels at the same
->> time to increase throughput.
->>
->> Signed-off-by: David Lechner <dlechner@baylibre.com>
->> ---
->>  drivers/spi/spi-axi-spi-engine.c | 128 +++++++++++++++++++++++++++++++++++++--
->>  1 file changed, 124 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
->> index e06f412190fd243161a0b3df992f26157531f6a1..707e5108efec41f7eff608a09fcebd9d28fa2d70 100644
->> --- a/drivers/spi/spi-axi-spi-engine.c
->> +++ b/drivers/spi/spi-axi-spi-engine.c
->> @@ -23,6 +23,9 @@
->>  #include <linux/spi/spi.h>
->>  #include <trace/events/spi.h>
->>  
->> +#define SPI_ENGINE_REG_DATA_WIDTH		0x0C
->> +#define   SPI_ENGINE_REG_DATA_WIDTH_NUM_OF_SDIO_MASK	GENMASK(24, 16)
-> would it be 8-bit mask?
-> #define   SPI_ENGINE_REG_DATA_WIDTH_NUM_OF_SDIO_MASK   GENMASK(23, 16)
+yamllint has gained a new check which checks for inconsistent quoting
+(mixed " and ' quotes within a file). Fix all the cases yamllint found
+so we can enable the check (once the check is in a release). Use
+whichever quoting is dominate in the file.
 
-Ah, good catch.
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+ .../arm/altera/socfpga-clk-manager.yaml       |  4 ++--
+ .../bindings/clock/nvidia,tegra124-car.yaml   |  8 ++++----
+ .../bindings/clock/nvidia,tegra20-car.yaml    |  6 +++---
+ .../devicetree/bindings/gpio/gpio-mxs.yaml    |  9 +++++----
+ .../bindings/gpio/snps,dw-apb-gpio.yaml       |  4 ++--
+ .../bindings/iio/temperature/adi,ltc2983.yaml | 20 +++++++++----------
+ .../mailbox/qcom,apcs-kpss-global.yaml        | 16 +++++++--------
+ .../mailbox/xlnx,zynqmp-ipi-mailbox.yaml      |  2 +-
+ .../bindings/media/fsl,imx6q-vdoa.yaml        |  2 +-
+ .../devicetree/bindings/mfd/aspeed-lpc.yaml   |  4 ++--
+ .../devicetree/bindings/mfd/ti,twl.yaml       |  4 ++--
+ .../bindings/net/ethernet-switch.yaml         |  2 +-
+ .../pci/plda,xpressrich3-axi-common.yaml      |  2 +-
+ .../bindings/phy/motorola,cpcap-usb-phy.yaml  |  4 ++--
+ .../pinctrl/microchip,sparx5-sgpio.yaml       | 12 +++++------
+ .../bindings/pinctrl/qcom,pmic-gpio.yaml      | 10 +++++-----
+ .../bindings/pinctrl/qcom,pmic-mpp.yaml       |  6 +++---
+ .../bindings/pinctrl/renesas,pfc.yaml         |  4 ++--
+ .../bindings/pinctrl/renesas,rza1-ports.yaml  |  2 +-
+ .../pinctrl/renesas,rzg2l-pinctrl.yaml        |  2 +-
+ .../pinctrl/renesas,rzv2m-pinctrl.yaml        |  2 +-
+ .../bindings/power/renesas,sysc-rmobile.yaml  |  4 ++--
+ .../soc/microchip/atmel,at91rm9200-tcb.yaml   |  8 ++++----
+ .../soc/tegra/nvidia,tegra20-pmc.yaml         | 12 +++++------
+ 24 files changed, 75 insertions(+), 74 deletions(-)
 
-> 
->> +#define   SPI_ENGINE_REG_DATA_WIDTH_MASK		GENMASK(15, 0)
->>  #define SPI_ENGINE_REG_OFFLOAD_MEM_ADDR_WIDTH	0x10
->>  #define SPI_ENGINE_REG_RESET			0x40
->>  
-> ...
->>  
->> +	data_width_reg_val = readl(spi_engine->base + SPI_ENGINE_REG_DATA_WIDTH);
->> +
->>  	if (adi_axi_pcore_ver_gteq(version, 1, 1)) {
->>  		unsigned int sizes = readl(spi_engine->base +
->>  				SPI_ENGINE_REG_OFFLOAD_MEM_ADDR_WIDTH);
->> @@ -1097,6 +1214,9 @@ static int spi_engine_probe(struct platform_device *pdev)
->>  	}
->>  	if (adi_axi_pcore_ver_gteq(version, 1, 3))
->>  		host->mode_bits |= SPI_MOSI_IDLE_LOW | SPI_MOSI_IDLE_HIGH;
->> +	if (adi_axi_pcore_ver_gteq(version, 2, 0))
->> +		host->num_data_bus = FIELD_GET(SPI_ENGINE_REG_DATA_WIDTH_NUM_OF_SDIO_MASK,
->> +					       data_width_reg_val);
->>  
-> Not sure I'm following the use of DATA_WIDTH and NUM_OF_SDIO.
-> HDL doc [1] states NUM_OF_SDIO 'is equal with the maximum supported SDI lines in
-> bits'. And the code sets that to be the number of buses. That should work for
-> AD7380 because each AD7380 SDO bus has only one line. But, it won't support
-> AD4630 (or even AD4030) because each AD4630 rx bus has 4 data lines. I can't
-> find it in HDL, but I'd expect to also have something like NUM_OF_SDIO_PER_BUS.
-> Or DATA_WIDTH is the number of lines per bus and HDL doc is unclear to me?
+diff --git a/Documentation/devicetree/bindings/arm/altera/socfpga-clk-manager.yaml b/Documentation/devicetree/bindings/arm/altera/socfpga-clk-manager.yaml
+index a758f4bb2bb3..275554bfedce 100644
+--- a/Documentation/devicetree/bindings/arm/altera/socfpga-clk-manager.yaml
++++ b/Documentation/devicetree/bindings/arm/altera/socfpga-clk-manager.yaml
+@@ -39,7 +39,7 @@ properties:
+ 
+       "^[a-z0-9,_]+(clk|pll|clk_gate|clk_divided)(@[a-f0-9]+)?$":
+         type: object
+-        $ref: '#/$defs/clock-props'
++        $ref: "#/$defs/clock-props"
+         unevaluatedProperties: false
+ 
+         properties:
+@@ -67,7 +67,7 @@ properties:
+         patternProperties:
+           "^[a-z0-9,_]+(clk|pll)(@[a-f0-9]+)?$":
+             type: object
+-            $ref: '#/$defs/clock-props'
++            $ref: "#/$defs/clock-props"
+             unevaluatedProperties: false
+ 
+             properties:
+diff --git a/Documentation/devicetree/bindings/clock/nvidia,tegra124-car.yaml b/Documentation/devicetree/bindings/clock/nvidia,tegra124-car.yaml
+index a9ba21144a56..13bb616249a1 100644
+--- a/Documentation/devicetree/bindings/clock/nvidia,tegra124-car.yaml
++++ b/Documentation/devicetree/bindings/clock/nvidia,tegra124-car.yaml
+@@ -37,7 +37,7 @@ properties:
+   '#clock-cells':
+     const: 1
+ 
+-  "#reset-cells":
++  '#reset-cells':
+     const: 1
+ 
+   nvidia,external-memory-controller:
+@@ -46,7 +46,7 @@ properties:
+       phandle of the external memory controller node
+ 
+ patternProperties:
+-  "^emc-timings-[0-9]+$":
++  '^emc-timings-[0-9]+$':
+     type: object
+     properties:
+       nvidia,ram-code:
+@@ -56,7 +56,7 @@ patternProperties:
+           this timing set is used for
+ 
+     patternProperties:
+-      "^timing-[0-9]+$":
++      '^timing-[0-9]+$':
+         type: object
+         properties:
+           clock-frequency:
+@@ -94,7 +94,7 @@ required:
+   - compatible
+   - reg
+   - '#clock-cells'
+-  - "#reset-cells"
++  - '#reset-cells'
+ 
+ additionalProperties: false
+ 
+diff --git a/Documentation/devicetree/bindings/clock/nvidia,tegra20-car.yaml b/Documentation/devicetree/bindings/clock/nvidia,tegra20-car.yaml
+index bee2dd4b29bf..73cccc0df424 100644
+--- a/Documentation/devicetree/bindings/clock/nvidia,tegra20-car.yaml
++++ b/Documentation/devicetree/bindings/clock/nvidia,tegra20-car.yaml
+@@ -39,11 +39,11 @@ properties:
+   '#clock-cells':
+     const: 1
+ 
+-  "#reset-cells":
++  '#reset-cells':
+     const: 1
+ 
+ patternProperties:
+-  "^(sclk)|(pll-[cem])$":
++  '^(sclk)|(pll-[cem])$':
+     type: object
+     properties:
+       compatible:
+@@ -76,7 +76,7 @@ required:
+   - compatible
+   - reg
+   - '#clock-cells'
+-  - "#reset-cells"
++  - '#reset-cells'
+ 
+ additionalProperties: false
+ 
+diff --git a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+index aaf97124803f..4b5b8e794613 100644
+--- a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
++++ b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+@@ -26,9 +26,10 @@ properties:
+       # Devices. Keep it as it to be compatible existed dts files.
+       - const: simple-bus
+ 
+-  '#address-cells':
++  "#address-cells":
+     const: 1
+-  '#size-cells':
++
++  "#size-cells":
+     const: 0
+ 
+   reg:
+@@ -132,8 +133,8 @@ patternProperties:
+ required:
+   - compatible
+   - reg
+-  - '#address-cells'
+-  - '#size-cells'
++  - "#address-cells"
++  - "#size-cells"
+ 
+ additionalProperties: false
+ 
+diff --git a/Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml b/Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
+index ab2afc0e4153..bba6f5b6606f 100644
+--- a/Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
++++ b/Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
+@@ -111,8 +111,8 @@ additionalProperties: false
+ required:
+   - compatible
+   - reg
+-  - "#address-cells"
+-  - "#size-cells"
++  - '#address-cells'
++  - '#size-cells'
+ 
+ examples:
+   - |
+diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+index 312febeeb3bb..ee0b558bb866 100644
+--- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
++++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+@@ -88,7 +88,7 @@ properties:
+     const: 0
+ 
+ patternProperties:
+-  "^thermocouple@":
++  '^thermocouple@':
+     $ref: '#/$defs/sensor-node'
+     unevaluatedProperties: false
+ 
+@@ -146,7 +146,7 @@ patternProperties:
+           required:
+             - adi,custom-thermocouple
+ 
+-  "^diode@":
++  '^diode@':
+     $ref: '#/$defs/sensor-node'
+     unevaluatedProperties: false
+ 
+@@ -191,7 +191,7 @@ patternProperties:
+         $ref: /schemas/types.yaml#/definitions/uint32
+         default: 0
+ 
+-  "^rtd@":
++  '^rtd@':
+     $ref: '#/$defs/sensor-node'
+     unevaluatedProperties: false
+     description: RTD sensor.
+@@ -280,7 +280,7 @@ patternProperties:
+               type: boolean
+ 
+           dependencies:
+-            adi,current-rotate: [ "adi,rsense-share" ]
++            adi,current-rotate: [ 'adi,rsense-share' ]
+ 
+       - if:
+           properties:
+@@ -290,7 +290,7 @@ patternProperties:
+           required:
+             - adi,custom-rtd
+ 
+-  "^thermistor@":
++  '^thermistor@':
+     $ref: '#/$defs/sensor-node'
+     unevaluatedProperties: false
+     description: Thermistor sensor.
+@@ -364,7 +364,7 @@ patternProperties:
+       - adi,rsense-handle
+ 
+     dependencies:
+-      adi,current-rotate: [ "adi,rsense-share" ]
++      adi,current-rotate: [ 'adi,rsense-share' ]
+ 
+     allOf:
+       - if:
+@@ -392,7 +392,7 @@ patternProperties:
+           required:
+             - adi,custom-thermistor
+ 
+-  "^adc@":
++  '^adc@':
+     $ref: '#/$defs/sensor-node'
+     unevaluatedProperties: false
+     description: Direct ADC sensor.
+@@ -407,7 +407,7 @@ patternProperties:
+         description: Whether the sensor is single-ended.
+         type: boolean
+ 
+-  "^temp@":
++  '^temp@':
+     $ref: '#/$defs/sensor-node'
+     unevaluatedProperties: false
+     description: Active analog temperature sensor.
+@@ -437,7 +437,7 @@ patternProperties:
+     required:
+       - adi,custom-temp
+ 
+-  "^rsense@":
++  '^rsense@':
+     $ref: '#/$defs/sensor-node'
+     unevaluatedProperties: false
+     description: Sense resistor sensor.
+@@ -476,7 +476,7 @@ allOf:
+               - adi,ltc2984
+     then:
+       patternProperties:
+-        "^temp@": false
++        '^temp@': false
+ 
+ examples:
+   - |
+diff --git a/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml b/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml
+index 615ed103b7e6..f40dc9048327 100644
+--- a/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml
++++ b/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml
+@@ -187,10 +187,10 @@ allOf:
+             enum:
+               - qcom,msm8916-apcs-kpss-global
+     then:
+-      $ref: "#/$defs/msm8916-apcs-clock-controller"
++      $ref: '#/$defs/msm8916-apcs-clock-controller'
+       properties:
+         clock-controller:
+-          $ref: "#/$defs/msm8916-apcs-clock-controller"
++          $ref: '#/$defs/msm8916-apcs-clock-controller'
+ 
+   - if:
+       properties:
+@@ -199,10 +199,10 @@ allOf:
+             enum:
+               - qcom,msm8939-apcs-kpss-global
+     then:
+-      $ref: "#/$defs/msm8939-apcs-clock-controller"
++      $ref: '#/$defs/msm8939-apcs-clock-controller'
+       properties:
+         clock-controller:
+-          $ref: "#/$defs/msm8939-apcs-clock-controller"
++          $ref: '#/$defs/msm8939-apcs-clock-controller'
+ 
+   - if:
+       properties:
+@@ -211,10 +211,10 @@ allOf:
+             enum:
+               - qcom,sdx55-apcs-gcc
+     then:
+-      $ref: "#/$defs/sdx55-apcs-clock-controller"
++      $ref: '#/$defs/sdx55-apcs-clock-controller'
+       properties:
+         clock-controller:
+-          $ref: "#/$defs/sdx55-apcs-clock-controller"
++          $ref: '#/$defs/sdx55-apcs-clock-controller'
+ 
+   - if:
+       properties:
+@@ -223,10 +223,10 @@ allOf:
+             enum:
+               - qcom,ipq6018-apcs-apps-global
+     then:
+-      $ref: "#/$defs/ipq6018-apcs-clock-controller"
++      $ref: '#/$defs/ipq6018-apcs-clock-controller'
+       properties:
+         clock-controller:
+-          $ref: "#/$defs/ipq6018-apcs-clock-controller"
++          $ref: '#/$defs/ipq6018-apcs-clock-controller'
+ 
+   - if:
+       properties:
+diff --git a/Documentation/devicetree/bindings/mailbox/xlnx,zynqmp-ipi-mailbox.yaml b/Documentation/devicetree/bindings/mailbox/xlnx,zynqmp-ipi-mailbox.yaml
+index fe83b5cb1278..04d6473d666f 100644
+--- a/Documentation/devicetree/bindings/mailbox/xlnx,zynqmp-ipi-mailbox.yaml
++++ b/Documentation/devicetree/bindings/mailbox/xlnx,zynqmp-ipi-mailbox.yaml
+@@ -142,7 +142,7 @@ patternProperties:
+       - compatible
+       - reg
+       - reg-names
+-      - "#mbox-cells"
++      - '#mbox-cells'
+       - xlnx,ipi-id
+ 
+ required:
+diff --git a/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml b/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
+index 511ac0d67a7f..988a5b3a62bd 100644
+--- a/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
++++ b/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
+@@ -16,7 +16,7 @@ maintainers:
+ 
+ properties:
+   compatible:
+-    const: "fsl,imx6q-vdoa"
++    const: fsl,imx6q-vdoa
+ 
+   reg:
+     maxItems: 1
+diff --git a/Documentation/devicetree/bindings/mfd/aspeed-lpc.yaml b/Documentation/devicetree/bindings/mfd/aspeed-lpc.yaml
+index f329223cec07..0adfeef149e7 100644
+--- a/Documentation/devicetree/bindings/mfd/aspeed-lpc.yaml
++++ b/Documentation/devicetree/bindings/mfd/aspeed-lpc.yaml
+@@ -111,12 +111,12 @@ patternProperties:
+       reg:
+         maxItems: 1
+ 
+-      '#reset-cells':
++      "#reset-cells":
+         const: 1
+ 
+     required:
+       - compatible
+-      - '#reset-cells'
++      - "#reset-cells"
+ 
+   "^lpc-snoop@[0-9a-f]+$":
+     type: object
+diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+index 776b04e182cb..1611b1581a8e 100644
+--- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
++++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+@@ -400,7 +400,7 @@ properties:
+       - '#pwm-cells'
+ 
+ patternProperties:
+-  "^regulator-":
++  '^regulator-':
+     type: object
+     unevaluatedProperties: false
+     $ref: /schemas/regulator/regulator.yaml
+@@ -429,7 +429,7 @@ required:
+   - reg
+   - interrupts
+   - interrupt-controller
+-  - "#interrupt-cells"
++  - '#interrupt-cells'
+ 
+ examples:
+   - |
+diff --git a/Documentation/devicetree/bindings/net/ethernet-switch.yaml b/Documentation/devicetree/bindings/net/ethernet-switch.yaml
+index b3b7e1a1b127..03001ba40e0f 100644
+--- a/Documentation/devicetree/bindings/net/ethernet-switch.yaml
++++ b/Documentation/devicetree/bindings/net/ethernet-switch.yaml
+@@ -72,7 +72,7 @@ additionalProperties: true
+ $defs:
+   ethernet-ports:
+     description: An ethernet switch without any extra port properties
+-    $ref: '#'
++    $ref: "#"
+ 
+     patternProperties:
+       "^(ethernet-)?ports$":
+diff --git a/Documentation/devicetree/bindings/pci/plda,xpressrich3-axi-common.yaml b/Documentation/devicetree/bindings/pci/plda,xpressrich3-axi-common.yaml
+index 039eecdbd6aa..fe2e8beb5bab 100644
+--- a/Documentation/devicetree/bindings/pci/plda,xpressrich3-axi-common.yaml
++++ b/Documentation/devicetree/bindings/pci/plda,xpressrich3-axi-common.yaml
+@@ -72,7 +72,7 @@ required:
+   - reg-names
+   - interrupts
+   - msi-controller
+-  - "#interrupt-cells"
++  - '#interrupt-cells'
+   - interrupt-map-mask
+   - interrupt-map
+ 
+diff --git a/Documentation/devicetree/bindings/phy/motorola,cpcap-usb-phy.yaml b/Documentation/devicetree/bindings/phy/motorola,cpcap-usb-phy.yaml
+index 0febd04a61f4..dd345cbd0a0b 100644
+--- a/Documentation/devicetree/bindings/phy/motorola,cpcap-usb-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/motorola,cpcap-usb-phy.yaml
+@@ -67,8 +67,8 @@ properties:
+   mode-gpios:
+     description: Optional GPIOs for configuring alternate modes
+     items:
+-      - description: "mode selection GPIO #0"
+-      - description: "mode selection GPIO #1"
++      - description: mode selection GPIO#0
++      - description: mode selection GPIO#1
+ 
+ required:
+   - compatible
+diff --git a/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpio.yaml b/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpio.yaml
+index 0df4e114fdd6..fa47732d7cef 100644
+--- a/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpio.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpio.yaml
+@@ -18,7 +18,7 @@ description: |
+ 
+ properties:
+   $nodename:
+-    pattern: "^gpio@[0-9a-f]+$"
++    pattern: '^gpio@[0-9a-f]+$'
+ 
+   compatible:
+     enum:
+@@ -26,10 +26,10 @@ properties:
+       - mscc,ocelot-sgpio
+       - mscc,luton-sgpio
+ 
+-  "#address-cells":
++  '#address-cells':
+     const: 1
+ 
+-  "#size-cells":
++  '#size-cells':
+     const: 0
+ 
+   reg:
+@@ -76,7 +76,7 @@ properties:
+       - const: switch
+ 
+ patternProperties:
+-  "^gpio@[0-1]$":
++  '^gpio@[0-1]$':
+     type: object
+     properties:
+       compatible:
+@@ -132,8 +132,8 @@ required:
+   - reg
+   - clocks
+   - microchip,sgpio-port-ranges
+-  - "#address-cells"
+-  - "#size-cells"
++  - '#address-cells'
++  - '#size-cells'
+ 
+ examples:
+   - |
+diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
+index 5e6dfcc3fe9b..6632bcd037ba 100644
+--- a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
+@@ -424,13 +424,13 @@ allOf:
+ patternProperties:
+   '-state$':
+     oneOf:
+-      - $ref: "#/$defs/qcom-pmic-gpio-state"
++      - $ref: '#/$defs/qcom-pmic-gpio-state'
+       - patternProperties:
+-          "(pinconf|-pins)$":
+-            $ref: "#/$defs/qcom-pmic-gpio-state"
++          '(pinconf|-pins)$':
++            $ref: '#/$defs/qcom-pmic-gpio-state'
+         additionalProperties: false
+ 
+-  "-hog(-[0-9]+)?$":
++  '-hog(-[0-9]+)?$':
+     type: object
+     required:
+       - gpio-hog
+@@ -503,7 +503,7 @@ $defs:
+                  - gpio1-gpio12 for pmxr2230
+ 
+         items:
+-          pattern: "^gpio([0-9]+)$"
++          pattern: '^gpio([0-9]+)$'
+ 
+       function:
+         items:
+diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml
+index 9364ae05f3e6..daf4c1c03712 100644
+--- a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml
+@@ -74,10 +74,10 @@ required:
+ patternProperties:
+   '-state$':
+     oneOf:
+-      - $ref: "#/$defs/qcom-pmic-mpp-state"
++      - $ref: '#/$defs/qcom-pmic-mpp-state'
+       - patternProperties:
+           '-pins$':
+-            $ref: "#/$defs/qcom-pmic-mpp-state"
++            $ref: '#/$defs/qcom-pmic-mpp-state'
+         additionalProperties: false
+ 
+ $defs:
+@@ -100,7 +100,7 @@ $defs:
+                  - mpp1-mpp4 for pma8084
+ 
+         items:
+-          pattern: "^mpp([0-9]+)$"
++          pattern: '^mpp([0-9]+)$'
+ 
+       function:
+         items:
+diff --git a/Documentation/devicetree/bindings/pinctrl/renesas,pfc.yaml b/Documentation/devicetree/bindings/pinctrl/renesas,pfc.yaml
+index cfe004573366..ab1cfe9dcde5 100644
+--- a/Documentation/devicetree/bindings/pinctrl/renesas,pfc.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/renesas,pfc.yaml
+@@ -129,7 +129,7 @@ additionalProperties:
+ 
+     - type: object
+       additionalProperties:
+-        $ref: "#/additionalProperties/anyOf/0"
++        $ref: '#/additionalProperties/anyOf/0'
+ 
+ examples:
+   - |
+@@ -190,7 +190,7 @@ examples:
+ 
+             sdhi0_pins: sd0 {
+                     groups = "sdhi0_data4", "sdhi0_ctrl";
+-                    function = "sdhi0";
++                    function = "sdhi0';
+                     power-source = <3300>;
+             };
+     };
+diff --git a/Documentation/devicetree/bindings/pinctrl/renesas,rza1-ports.yaml b/Documentation/devicetree/bindings/pinctrl/renesas,rza1-ports.yaml
+index 2bd7d47d0fdb..737eb4e14090 100644
+--- a/Documentation/devicetree/bindings/pinctrl/renesas,rza1-ports.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/renesas,rza1-ports.yaml
+@@ -118,7 +118,7 @@ additionalProperties:
+ 
+     - type: object
+       additionalProperties:
+-        $ref: "#/additionalProperties/anyOf/0"
++        $ref: '#/additionalProperties/anyOf/0'
+ 
+ examples:
+   - |
+diff --git a/Documentation/devicetree/bindings/pinctrl/renesas,rzg2l-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/renesas,rzg2l-pinctrl.yaml
+index 5156d54b240b..00c05243b9a4 100644
+--- a/Documentation/devicetree/bindings/pinctrl/renesas,rzg2l-pinctrl.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/renesas,rzg2l-pinctrl.yaml
+@@ -135,7 +135,7 @@ additionalProperties:
+ 
+     - type: object
+       additionalProperties:
+-        $ref: "#/additionalProperties/anyOf/0"
++        $ref: '#/additionalProperties/anyOf/0'
+ 
+ allOf:
+   - $ref: pinctrl.yaml#
+diff --git a/Documentation/devicetree/bindings/pinctrl/renesas,rzv2m-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/renesas,rzv2m-pinctrl.yaml
+index 5fa5d31f8866..88b2fa5e684d 100644
+--- a/Documentation/devicetree/bindings/pinctrl/renesas,rzv2m-pinctrl.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/renesas,rzv2m-pinctrl.yaml
+@@ -88,7 +88,7 @@ additionalProperties:
+ 
+     - type: object
+       additionalProperties:
+-        $ref: "#/additionalProperties/anyOf/0"
++        $ref: '#/additionalProperties/anyOf/0'
+ 
+ allOf:
+   - $ref: pinctrl.yaml#
+diff --git a/Documentation/devicetree/bindings/power/renesas,sysc-rmobile.yaml b/Documentation/devicetree/bindings/power/renesas,sysc-rmobile.yaml
+index fba6914ec40d..948a9da111df 100644
+--- a/Documentation/devicetree/bindings/power/renesas,sysc-rmobile.yaml
++++ b/Documentation/devicetree/bindings/power/renesas,sysc-rmobile.yaml
+@@ -45,7 +45,7 @@ properties:
+         const: 0
+ 
+     additionalProperties:
+-      $ref: "#/$defs/pd-node"
++      $ref: '#/$defs/pd-node'
+ 
+ required:
+   - compatible
+@@ -83,7 +83,7 @@ $defs:
+       - '#power-domain-cells'
+ 
+     additionalProperties:
+-      $ref: "#/$defs/pd-node"
++      $ref: '#/$defs/pd-node'
+ 
+ examples:
+   - |
+diff --git a/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml b/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
+index 2c7275c4503b..abf1adca0773 100644
+--- a/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
++++ b/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
+@@ -57,7 +57,7 @@ properties:
+     const: 0
+ 
+ patternProperties:
+-  "^timer@[0-2]$":
++  '^timer@[0-2]$':
+     description: The timer block channels that are used as timers or counters.
+     type: object
+     additionalProperties: false
+@@ -80,7 +80,7 @@ patternProperties:
+       - compatible
+       - reg
+ 
+-  "^pwm@[0-2]$":
++  '^pwm@[0-2]$':
+     description: The timer block channels that are used as PWMs.
+     $ref: /schemas/pwm/pwm.yaml#
+     type: object
+@@ -92,7 +92,7 @@ patternProperties:
+           TCB channel to use for this PWM.
+         enum: [ 0, 1, 2 ]
+ 
+-      "#pwm-cells":
++      '#pwm-cells':
+         description:
+           The only third cell flag supported by this binding is
+           PWM_POLARITY_INVERTED.
+@@ -101,7 +101,7 @@ patternProperties:
+     required:
+       - compatible
+       - reg
+-      - "#pwm-cells"
++      - '#pwm-cells'
+ 
+     additionalProperties: false
+ 
+diff --git a/Documentation/devicetree/bindings/soc/tegra/nvidia,tegra20-pmc.yaml b/Documentation/devicetree/bindings/soc/tegra/nvidia,tegra20-pmc.yaml
+index 7140c312d898..f516960dbbef 100644
+--- a/Documentation/devicetree/bindings/soc/tegra/nvidia,tegra20-pmc.yaml
++++ b/Documentation/devicetree/bindings/soc/tegra/nvidia,tegra20-pmc.yaml
+@@ -133,12 +133,12 @@ properties:
+           property. The supported-hw is a bitfield indicating SoC speedo or
+           process ID mask.
+ 
+-      "#power-domain-cells":
++      '#power-domain-cells':
+         const: 0
+ 
+     required:
+       - operating-points-v2
+-      - "#power-domain-cells"
++      - '#power-domain-cells'
+ 
+   i2c-thermtrip:
+     type: object
+@@ -220,7 +220,7 @@ properties:
+         xusbc    USB Partition C               Tegra114/124/210
+ 
+     patternProperties:
+-      "^[a-z0-9]+$":
++      '^[a-z0-9]+$':
+         type: object
+         additionalProperties: false
+         properties:
+@@ -365,9 +365,9 @@ allOf:
+ additionalProperties: false
+ 
+ dependencies:
+-  nvidia,suspend-mode: ["nvidia,core-pwr-off-time", "nvidia,cpu-pwr-off-time"]
+-  nvidia,core-pwr-off-time: ["nvidia,core-pwr-good-time"]
+-  nvidia,cpu-pwr-off-time: ["nvidia,cpu-pwr-good-time"]
++  nvidia,suspend-mode: ['nvidia,core-pwr-off-time', 'nvidia,cpu-pwr-off-time']
++  nvidia,core-pwr-off-time: ['nvidia,core-pwr-good-time']
++  nvidia,cpu-pwr-off-time: ['nvidia,cpu-pwr-good-time']
+ 
+ examples:
+   - |
+-- 
+2.51.0
 
-Right now, the HDL doesn't distinguish between the two, so we only have the
-case where each "SDIO" is a separate bus. The AD4630 project has extra IP
-blocks to unscramble things to simulate having 4 lines on each bus rather than
-8 buses.
-
-DATA_WIDTH has to do with how wide the bus between the SPI Engine and DMA
-is, so it has nothing to do with the wiring to the peripheral.
-
-> Well, it would be nice if we can have host->num_data_bus set in a way that
-> minimizes diff when multiple lines per bus gets implemented (if that's not
-> currently supported).
-
-I agree it would be nice. However, the register name and meaning already exists
-even in older versions of the IP block (as NUM_OF_SDI), so I think it would be
-best to stick with the existing name. Ideally, when support for multiple wires
-per bus is added, then we would compile like this: NUM_OF_SDIO=2 SDIO_BUS_WIDTH=4
-rather than NUM_OF_SDIO=8 NUM_OF_SDIO_PER_BUS=4.
-
-> 
-> [1]: https://github.com/analogdevicesinc/hdl/pull/1808/files#diff-d1274cfe2e206aa66a0ecd3da04b3e62fc5fad9e12029b34b226c6f91454d34dR77
-
-Well, the linked PR isn't merged yet, so I guess we could ask there to rename
-NUM_OF_SDIO to NUM_OF_SDIO_BUS there if you think that is a better name since
-it is being renamed anyway.
 

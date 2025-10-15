@@ -1,80 +1,81 @@
-Return-Path: <linux-iio+bounces-25088-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25089-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A20BDDEF2
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 12:15:36 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B89BDE036
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 12:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83B284E9496
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 10:15:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9E6FE356390
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 10:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26AF2E2DCB;
-	Wed, 15 Oct 2025 10:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2042EB5BF;
+	Wed, 15 Oct 2025 10:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nrfuj0MS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CHdkrAIm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F0A18C933
-	for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 10:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF822EA166
+	for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 10:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760523332; cv=none; b=mksm92Asz16YVESifct4K88U+OhVyh8NGRce54d9EHBOdjBOh23EZQTkJhrmQIXqm2ySYBJK2I1LRJ8bZ7x/CTRSShEU2geQm7gGym+fpam8DOyg6gEHp6oTuBuSNhEeqzuatrlUCNKvuY6dw5pZjuEWlZSBvu5IxWHG58AJbFA=
+	t=1760524211; cv=none; b=N1jXCANSnFFncjK5Vsxii/TbgRVFqgpONuH8CFOzOFtDncodomdJgkXq4jb8a769mAXsIkJ2u5SCnJBeXc5vy+jyEuUKPF/zuiCe6sSIo4kJm7ByW5m1qMRrYU5ov2LlnmMpUSMuWQnx4HTrcMMD/6i5Yi1CqObLRIH/shLr7ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760523332; c=relaxed/simple;
-	bh=m/wcwtb8FLbmT7nb2hxNG0FTRwvyqk4uZgc1P7N8kjw=;
+	s=arc-20240116; t=1760524211; c=relaxed/simple;
+	bh=Bg+Z1n2wXb8uVIji48r8xGjYlXJK8zyqzDDHBMHeaik=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uQoY8oU5ZqjDc8o9f507dV2ko64p0k12Ob0czNrncvJj8kC3VCB5JmsdbirdaRpRrm9cuDH6M3R8Qlahy8+Du8oCHISJylxz/xmqQbX/i3k68OrBifTM1wnAcQSMM1nXWEygouwULdMEpxU7s/wF2k12Cud7x0tQO33HDWzQpxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nrfuj0MS; arc=none smtp.client-ip=209.85.128.44
+	 Content-Type:MIME-Version; b=UEyLidLgz2qHo/oH6NpMzKR5LW9WVkFCK09jpxk6m5oGJQpSxwozO3k9mobMPA+xvDg4ncZAriEtTeyXCcJJq8juIrUpDMBTL6ufpV9uDCWX3dccWupDRsk606GwVS+yoZQsNOJima9fXMlG+Rl5KpyYaRviqDsUy1++Pmq9FyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CHdkrAIm; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4710022571cso3862175e9.3
-        for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 03:15:30 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-46e47cca387so62789795e9.3
+        for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 03:30:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760523329; x=1761128129; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760524207; x=1761129007; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=m/wcwtb8FLbmT7nb2hxNG0FTRwvyqk4uZgc1P7N8kjw=;
-        b=Nrfuj0MS8UCv2jMsfkxWP4Z8JhnH5EYwX3946phjl+W27Szrd9TkfjvATaYOnwvQuL
-         pb8nX2QDaMsGiLyvt37iEalkAoVORSh74YENU7Dl58r26Pgk+rde1OymVIu8A7lhXZEu
-         7pre5CF/fXORxyJr+AMVB/reWsnCIdgqSphsJd+BUL2n7HSOKZjWyZH+zPc3PU3+Hr9o
-         CQKK29DDVtHynNjzHb4pewIcvGRS4ujnNAtbMlC9mJBDozvNDRhYpnTqabQDAgSmMblA
-         j5gESLNPB/Uz0y0n7yfJyHgRncdx+Y5c7MV/66wg+ehX/ARtu6X4yFiUhV9w7nQNeWZD
-         xweg==
+        bh=YQME+sn3dWO68d8oui4leQRfjhZnFNWObqexC6XKq9M=;
+        b=CHdkrAImt+9RuVewZ3GqqOIULDQ+Dt1fQ/LRorVeJZRaJSB7nV7/gk2bHBAif+ZfTk
+         myL2nfm7RSssQz/0EEV7GTY916GgibMJNRS1WYYy9PXcaHjqcQS1FSka2wpApV9tKGns
+         aNg8KEStjtAQeH4r1NPQG3kBMkZnsBxOvSOlfft+apf7cjHAs3hBsfriVnNiBhFKWgDF
+         vgTS/0Ag8ySD25Qiop16QhqGw4lh0FIY+ANwd+86x9WLvu7zT+o40bPKxIMwZpA46t0t
+         U4LIraOXjwi9XPMLPk7mcn9Wz4lgdkXjIFpnq1fZR+9cbmpreSpPGbId3L6W4g19bf5U
+         ysQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760523329; x=1761128129;
+        d=1e100.net; s=20230601; t=1760524207; x=1761129007;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=m/wcwtb8FLbmT7nb2hxNG0FTRwvyqk4uZgc1P7N8kjw=;
-        b=Jdw4apsFF6uhkpxXyUXl2EN44XwAVS0QbsqJ1PemoIcvz870iZ6805q9VICx36bb0/
-         Fe51hmsf245JFPYCt8TMcdJAXgabImsB/y3w1djVC73DsVUGR7hWRbM+WGm53OF1TJxe
-         xuCXgwXw4ADgZOrOzgSjylR/ZpFLB385kDKUiaVtwYr3GDSK8oN8j10Z5FE7IY+qsP0/
-         95vGi7CogqaiUUqPwzrN5++B+1JTvnePhtTndjGFphdPbeRP3RE4DSJsVoVQO3Tk9sDL
-         lSK3emcsJTBda8Ot6sfnRTSBRe3ye3/zz4GHgKZvPagYlEO866Lqqsny8oelaGoPF8p+
-         uy0A==
-X-Forwarded-Encrypted: i=1; AJvYcCWU+hm1VR5fdP7SqY6Uj4ljIHP3h9GxMvI75YCBOu9rYrR6oJXMB1duKcTKg7az4EYKy5ebSxQhQXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSDrjOjIStlGq9Kdnwzpyq9CkIMAdnUDyhKzBakWccKAhbJxMJ
-	bcvp6CcDNPJAQP0xFEXn9FTreavwnzCvQt/EZK6X3bOn18ez/7j0Fn/t
-X-Gm-Gg: ASbGncuA4ZHECz3MqJsSoE1taM4UFjYRaVOgpzBvbqybftEqCgEbH2A8n1+puc82rOb
-	D8lMc+HLNmCsZXxiPAcWQ9/V6iS/BBnJLxFIqR/s8Ud70Tg/K34LSTu7HMMGykNqhJMg20pqJCg
-	oJ50NUMOchJTqCOCU+uErdTga415W7vPTXGat2HxGerNDe6ZHZd7uoDPhFfPidaF07jsnE1Zqd6
-	IhzuRyt2O/xxTuVtWcZWS6VXCoTA9g9fgBRM4SpSZc162d+0SpklRY7/sGdQDouxo7D8HifkqR/
-	PakRn6i/fM4VsvhdyV8kCA0bnIXlF8WNEhS4/wrwNkRjSOOHtHdGIVrL3gFof6XynF5pLSrglqT
-	atLP4qteZe2yeJjZyqGEa9263QA9/h/cDjQSr+4f3gojj1ycSgg==
-X-Google-Smtp-Source: AGHT+IGlbr6rnLZhnuFfgtsP9rjL+H5wzb0gqjtGnO3gCF1NLUUhKtDH+KPfBCySuv+/43Z7NZFylw==
-X-Received: by 2002:a05:600c:4ec8:b0:46d:27b7:e7e5 with SMTP id 5b1f17b1804b1-46fa9b08d79mr222596995e9.32.1760523328748;
-        Wed, 15 Oct 2025 03:15:28 -0700 (PDT)
+        bh=YQME+sn3dWO68d8oui4leQRfjhZnFNWObqexC6XKq9M=;
+        b=BfoxgrRKdbO/TGfFywZjnwW/liVXteZVPqAKHoQnFNrFng4G5CinFwcq0r/1gHJcOa
+         7CcSwwbyT5Q45BzYluEVV9it5Cp2c/0gREEGwSpxBocLYatSMSbneBaEoz4aSV0ZSZ0M
+         8ORi+BBsdqASe1fcw9sOsHGIxPzwhlJaC7Ye+dMNPLTaj8p15ebMa/4AI5zLjMyi5iWa
+         tJM1SjonzKIQ2y58tOL8GoawiomVum9YnHbSWDhpCp0e+q9rSdOgyqdUrmR7gfzO1yw3
+         KNjJIeiz5ZkcFn3P+6PgJ+xCU7b5hM9MS1yE2xOXAB9UbpdyA3CulOzCRfPSSZqHfOYd
+         Vqpg==
+X-Forwarded-Encrypted: i=1; AJvYcCUCOuHU+FCQVzRU/6IyPBaTU0DcmTAPpwsdbzR8eWZmJbbEP3Tjmp3AqRt2X1dia0lwnnkA6qZYx5g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDBIf7Ae54NZO1UpZitqCgo4q3+jhIhOnYHZP5DDu144f2RzUl
+	APgTKekFDa4p6qdw5sEFurMElIVzNLqVFLs9z7xt/nKhL1ElPf0loHn/
+X-Gm-Gg: ASbGncutIql0Jv9MmIttn0WCyQ7jgMXtobcM/uZf6XPjNXgyxAdPf9Kgn0FhRfmm7jc
+	6mRrRAANNmJyrfZcZNZBA2+u/NWYZp3OQqfp4yuZE7W7h7yBl5VzMpBcXBVXivYd7+HjcJ1xBcn
+	CsvFcDiRU+nSx6ymGUHpIBql8mBtyrLRmir2KfL9+Tx0tVQYE+Ra/UWjJ7vPNGX4ySVD1TJB780
+	zHxc9WeYUdjATLvtrLWqtd5KzFXyhpvbLqUBrccD/L7V4kfetjQeZEl4L0GxPoWmp3OUHZMZAzL
+	0OEuc1t+Iyg9VXVDFEXpnVUW6KPzbi71LZhrTHVc3NKFAOdoBZNIJ85pw7+izOcpsqeuc9a4XAs
+	M9RNAhb94iF6iUD3RV3XQyG/8RCZUyVY0F8s3aJThl3TQ7mb9rT7xH5JbinXE
+X-Google-Smtp-Source: AGHT+IG59U3gqkC6eeKyzFw5fLLTNIH8yW3/ovkw5HgRRTRqvgP4g98uKIUkAFMPY1Ss14l8BFe+jw==
+X-Received: by 2002:a05:600c:1c23:b0:45b:6b57:5308 with SMTP id 5b1f17b1804b1-46fa9a892a0mr204503275e9.7.1760524206980;
+        Wed, 15 Oct 2025 03:30:06 -0700 (PDT)
 Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47101c03644sm22553675e9.8.2025.10.15.03.15.27
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-470ff15ef28sm31596615e9.5.2025.10.15.03.30.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 03:15:28 -0700 (PDT)
-Message-ID: <9269eadc1ea593e5bc8f5cad8061b48220f4d2b2.camel@gmail.com>
-Subject: Re: [PATCH 3/6] spi: add multi_bus_mode field to struct spi_transfer
+        Wed, 15 Oct 2025 03:30:06 -0700 (PDT)
+Message-ID: <3180475bd51e1e057d6aa7e1b62f564cb57a117e.camel@gmail.com>
+Subject: Re: [PATCH 4/6] spi: axi-spi-engine: support
+ SPI_MULTI_BUS_MODE_STRIPE
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -86,13 +87,13 @@ To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>,
 Cc: Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-iio@vger.kernel.org
-Date: Wed, 15 Oct 2025 11:16:01 +0100
-In-Reply-To: <20251014-spi-add-multi-bus-support-v1-3-2098c12d6f5f@baylibre.com>
+Date: Wed, 15 Oct 2025 11:30:39 +0100
+In-Reply-To: <20251014-spi-add-multi-bus-support-v1-4-2098c12d6f5f@baylibre.com>
 References: 
 	<20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
-	 <20251014-spi-add-multi-bus-support-v1-3-2098c12d6f5f@baylibre.com>
+	 <20251014-spi-add-multi-bus-support-v1-4-2098c12d6f5f@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -101,86 +102,158 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-T24gVHVlLCAyMDI1LTEwLTE0IGF0IDE3OjAyIC0wNTAwLCBEYXZpZCBMZWNobmVyIHdyb3RlOgo+
-IEFkZCBhIG5ldyBtdWx0aV9idXNfbW9kZSBmaWVsZCB0byBzdHJ1Y3Qgc3BpX3RyYW5zZmVyIHRv
-IGFsbG93Cj4gcGVyaXBoZXJhbHMgdGhhdCBzdXBwb3J0IG11bHRpcGxlIFNQSSBidXNlcyB0byBi
-ZSB1c2VkIHdpdGggYSBzaW5nbGUKPiBTUEkgY29udHJvbGxlci4KPiAKPiBUaGlzIHJlcXVpcmVz
-IGJvdGggdGhlIHBlcmlwaGVyYWwgYW5kIHRoZSBjb250cm9sbGVyIHRvIGhhdmUgbXVsdGlwbGUK
-PiBzZXJpYWxpemVycyBjb25uZWN0ZWQgdG8gc2VwYXJhdGUgZGF0YSBidXNlcy4gSXQgY291bGQg
-YWxzbyBiZSB1c2VkIHdpdGgKPiBhIHNpbmdsZSBjb250cm9sbGVyIGFuZCBtdWx0aXBsZSBwZXJp
-cGhlcmFscyB0aGF0IGFyZSBmdW5jdGlvbmluZyBhcyBhCj4gc2luZ2xlIGxvZ2ljYWwgZGV2aWNl
-IChzaW1pbGFyIHRvIHBhcmFsbGVsIG1lbW9yaWVzKS4KPiAKPiBUaGUgcG9zc2libGUgdmFsdWVz
-IGZvciB0aGlzIGZpZWxkIGhhdmUgdGhlIGZvbGxvd2luZyBzZW1hbnRpY3M6Cj4gCj4gLSBTUElf
-TVVMVElfQlVTX01PREVfU0lOR0xFOiBPbmx5IHVzZSB0aGUgZmlyc3QgYnVzLiBUaGlzIG1lYW5z
-IHRoYXQgaXQKPiDCoMKgwqAgaXQgaXMgb3BlcmF0aW5nIGp1c3QgbGlrZSBhIGNvbnZlbnRpb25h
-bCBTUEkgYnVzLiBJdCBpcyB0aGUgZGVmYXVsdAo+IMKgwqDCoCB2YWx1ZSBzbyB0aGF0IGV4aXN0
-aW5nIGRyaXZlcnMgZG8gbm90IG5lZWQgdG8gYmUgbW9kaWZpZWQuCj4gCj4gwqDCoMKgIEV4YW1w
-bGU6Cj4gwqDCoMKgwqDCoMKgwqAgdHhfYnVmWzBdID0gMHg4ODsKPiAKPiDCoMKgwqDCoMKgwqDC
-oCBzdHJ1Y3Qgc3BpX3RyYW5zZmVyIHhmZXIgPSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAu
-dHhfYnVmID0gdHhfYnVmLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLmxlbiA9IDEsCj4gwqDC
-oMKgwqDCoMKgwqAgfTsKPiAKPiDCoMKgwqDCoMKgwqDCoCBzcGlfc3luY190cmFuc2ZlcihzcGks
-ICZ4ZmVyLCAxKTsKPiAKPiDCoMKgwqDCoMKgwqDCoCBjb250cm9sbGVywqDCoMKgID4gZGF0YSBi
-aXRzID7CoMKgwqDCoCBwZXJpcGhlcmFsCj4gwqDCoMKgwqDCoMKgwqAgLS0tLS0tLS0tLcKgwqAg
-LS0tLS0tLS0tLS0tLS0tLcKgwqAgLS0tLS0tLS0tLQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-U0RPIDDCoMKgwqAgMC0wLTAtMS0wLTAtMC0xwqDCoMKgIFNESSAwCj4gCj4gLSBTUElfTVVMVElf
-QlVTX01PREVfTUlSUk9SOiBTZW5kIGEgc2luZ2xlIGRhdGEgd29yZCBvdmVyIGFsbCBvZiB0aGUK
-PiDCoMKgwqAgYnVzZXMgYXQgdGhlIHNhbWUgdGltZS4gVGhpcyBvbmx5IG1ha2VzIHNlbnNlIGZv
-ciB3cml0ZXMgYW5kIG5vdAo+IMKgwqDCoCBmb3IgcmVhZHMuCj4gCj4gwqDCoMKgIEV4YW1wbGU6
-Cj4gwqDCoMKgwqDCoMKgwqAgdHhfYnVmWzBdID0gMHg4ODsKPiAKPiDCoMKgwqDCoMKgwqDCoCBz
-dHJ1Y3Qgc3BpX3RyYW5zZmVyIHhmZXIgPSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAudHhf
-YnVmID0gdHhfYnVmLAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLmxlbiA9IDEsCj4gwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCAubXVsdGlfYnVzX21vZGUgPSBTUElfTVVMVElfQlVTX01PREVfTUlS
-Uk9SLAo+IMKgwqDCoMKgwqDCoMKgIH07Cj4gCj4gwqDCoMKgwqDCoMKgwqAgc3BpX3N5bmNfdHJh
-bnNmZXIoc3BpLCAmeGZlciwgMSk7Cj4gCj4gwqDCoMKgwqDCoMKgwqAgY29udHJvbGxlcsKgwqDC
-oCA+IGRhdGEgYml0cyA+wqDCoMKgwqAgcGVyaXBoZXJhbAo+IMKgwqDCoMKgwqDCoMKgIC0tLS0t
-LS0tLS3CoMKgIC0tLS0tLS0tLS0tLS0tLS3CoMKgIC0tLS0tLS0tLS0KPiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIFNETyAwwqDCoMKgIDAtMC0wLTEtMC0wLTAtMcKgwqDCoCBTREkgMAo+IMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgU0RPIDHCoMKgwqAgMC0wLTAtMS0wLTAtMC0xwqDCoMKgIFNESSAx
-Cj4gCj4gLSBTUElfTVVMVElfQlVTX01PREVfU1RSSVBFOiBTZW5kIG9yIHJlY2VpdmUgdHdvIGRp
-ZmZlcmVudCBkYXRhIHdvcmRzIGF0Cj4gwqDCoMKgIHRoZSBzYW1lIHRpbWUsIG9uZSBvbiBlYWNo
-IGJ1cy4KPiAKPiDCoMKgwqAgRXhhbXBsZToKPiDCoMKgwqDCoMKgwqDCoCBzdHJ1Y3Qgc3BpX3Ry
-YW5zZmVyIHhmZXIgPSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAucnhfYnVmID0gcnhfYnVm
-LAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLmxlbiA9IDIsIC8qIG11c3QgYmUgbXVsdGlwbGUg
-b2YgbnVtYmVyIG9mIGJ1c2VzICovCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAubXVsdGlfYnVz
-X21vZGUgPSBTUElfTVVMVElfQlVTX01PREVfU1RSSVBFLAo+IMKgwqDCoMKgwqDCoMKgIH07Cj4g
-Cj4gwqDCoMKgwqDCoMKgwqAgc3BpX3N5bmNfdHJhbnNmZXIoc3BpLCAmeGZlciwgMSk7Cj4gCj4g
-wqDCoMKgwqDCoMKgwqAgY29udHJvbGxlcsKgwqDCoCA8IGRhdGEgYml0cyA8wqDCoMKgwqAgcGVy
-aXBoZXJhbAo+IMKgwqDCoMKgwqDCoMKgIC0tLS0tLS0tLS3CoMKgIC0tLS0tLS0tLS0tLS0tLS3C
-oMKgIC0tLS0tLS0tLS0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFNESSAwwqDCoMKgIDAtMC0w
-LTEtMC0wLTAtMcKgwqDCoCBTRE8gMAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgU0RJIDHCoMKg
-wqAgMS0wLTAtMC0xLTAtMC0wwqDCoMKgIFNETyAxCgpPdXQgb2YgY3VyaW9zaXR5LCBob3cgZG9l
-cyB0aGlzIHdvcmsgZm9yIGRldmljZXMgbGlrZSBBRDQwMzAgd2hlcmUgdGhlIHNhbWUgd29yZApp
-cyBraW5kIG9mIGludGVybGVhdmVkIGJldHdlZW4gU0RPIGxpbmVzPyBJIGd1ZXNzIGl0IHdvcmtz
-IHRoZSBzYW1lIChpbiB0ZXJtcyBvZgpTVykgYW5kIGlzIHVwIHRvIHNvbWUgSVAgY29yZSAodHlw
-aWNhbGx5IGluIHRoZSBGUEdBKSB0byAicmUtYXNzZW1ibGUiIHRoZSB3b3JkPwoKPiAKPiDCoMKg
-wqDCoMKgwqDCoCBBZnRlciB0aGUgdHJhbnNmZXIsIHJ4X2J1ZlswXSA9PSAweDExICh3b3JkIGZy
-b20gU0RPIDApIGFuZAo+IMKgwqDCoMKgwqDCoMKgIHJ4X2J1ZlsxXSA9PSAweDg4ICh3b3JkIGZy
-b20gU0RPIDEpLiBJZiB0aGUgdHJhbnNmZXIgd2FzIGxvbmdlciwKPiDCoMKgwqDCoMKgwqDCoCB0
-aGUgZGF0YSB3b3VsZCBjb250aW51ZSBpbiBhbiBhbHRlcm5hdGluZyBmYXNoaW9uLgo+IAo+IFNp
-Z25lZC1vZmYtYnk6IERhdmlkIExlY2huZXIgPGRsZWNobmVyQGJheWxpYnJlLmNvbT4KPiAtLS0K
-Ckxvb2tzIGdvb2QgYW55d2F5cywKCkFja2VkLWJ5OiBOdW5vIFPDoSA8bnVuby5zYUBhbmFsb2cu
-Y29tPgoKPiDCoGluY2x1ZGUvbGludXgvc3BpL3NwaS5oIHwgNiArKysrKysKPiDCoDEgZmlsZSBj
-aGFuZ2VkLCA2IGluc2VydGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9z
-cGkvc3BpLmggYi9pbmNsdWRlL2xpbnV4L3NwaS9zcGkuaAo+IGluZGV4Cj4gYzMxNDE5NGQ0ZTdl
-MmIzOTY3OTVlY2UxMGUxNDIxMThjYTA1ZjRlYi4uN2QyMmVmNTA3N2QxMjI5Y2FjMjU3NDgzMWY4
-MDA5MmM1OTFiCj4gOTcyZiAxMDA2NDQKPiAtLS0gYS9pbmNsdWRlL2xpbnV4L3NwaS9zcGkuaAo+
-ICsrKyBiL2luY2x1ZGUvbGludXgvc3BpL3NwaS5oCj4gQEAgLTk3Niw2ICs5NzYsOCBAQCBzdHJ1
-Y3Qgc3BpX3JlcyB7Cj4gwqAgKsKgwqDCoMKgwqAgKFNQSV9OQklUU19TSU5HTEUpIGlzIHVzZWQu
-Cj4gwqAgKiBAcnhfbmJpdHM6IG51bWJlciBvZiBiaXRzIHVzZWQgZm9yIHJlYWRpbmcuIElmIDAg
-dGhlIGRlZmF1bHQKPiDCoCAqwqDCoMKgwqDCoCAoU1BJX05CSVRTX1NJTkdMRSkgaXMgdXNlZC4K
-PiArICogQG11bHRpX2J1c19tb2RlOiBIb3cgdG8gc2VyaWFsaXplIGRhdGEgb24gbXVsdGlwbGUg
-YnVzZXMuIE9uZSBvZiB0aGUKPiArICrCoMKgwqDCoMKgIFNQSV9NVUxUSV9CVVNfTU9ERV8qIHZh
-bHVlcy4KPiDCoCAqIEBsZW46IHNpemUgb2YgcnggYW5kIHR4IGJ1ZmZlcnMgKGluIGJ5dGVzKQo+
-IMKgICogQHNwZWVkX2h6OiBTZWxlY3QgYSBzcGVlZCBvdGhlciB0aGFuIHRoZSBkZXZpY2UgZGVm
-YXVsdCBmb3IgdGhpcwo+IMKgICrCoMKgwqDCoMKgIHRyYW5zZmVyLiBJZiAwIHRoZSBkZWZhdWx0
-IChmcm9tIEBzcGlfZGV2aWNlKSBpcyB1c2VkLgo+IEBAIC0xMTEyLDYgKzExMTQsMTAgQEAgc3Ry
-dWN0IHNwaV90cmFuc2ZlciB7Cj4gwqAJdW5zaWduZWQJY3NfY2hhbmdlOjE7Cj4gwqAJdW5zaWdu
-ZWQJdHhfbmJpdHM6NDsKPiDCoAl1bnNpZ25lZAlyeF9uYml0czo0Owo+ICsJdW5zaWduZWQJbXVs
-dGlfYnVzX21vZGU6IDI7Cj4gKyNkZWZpbmUgU1BJX01VTFRJX0JVU19NT0RFX1NJTkdMRQkwIC8q
-IG9ubHkgdXNlIHNpbmdsZSBidXMgKi8KPiArI2RlZmluZSBTUElfTVVMVElfQlVTX01PREVfU1RS
-SVBFCTEgLyogb25lIGRhdGEgd29yZCBwZXIgYnVzICovCj4gKyNkZWZpbmUgU1BJX01VTFRJX0JV
-U19NT0RFX01JUlJPUgkyIC8qIHNhbWUgd29yZCBzZW50IG9uIGFsbCBidXNlcyAqLwo+IMKgCXVu
-c2lnbmVkCXRpbWVzdGFtcGVkOjE7Cj4gwqAJYm9vbAkJZHRyX21vZGU7Cj4gwqAjZGVmaW5lCVNQ
-SV9OQklUU19TSU5HTEUJMHgwMSAvKiAxLWJpdCB0cmFuc2ZlciAqLwo=
+On Tue, 2025-10-14 at 17:02 -0500, David Lechner wrote:
+> Add support for SPI_MULTI_BUS_MODE_STRIPE to the AXI SPI engine driver.
+>=20
+> The v2.0.0 version of the AXI SPI Engine IP core supports multiple
+> buses. This can be used with SPI_MULTI_BUS_MODE_STRIPE to support
+> reading from simultaneous sampling ADCs that have a separate SDO line
+> for each analog channel. This allows reading all channels at the same
+> time to increase throughput.
+>=20
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+> =C2=A0drivers/spi/spi-axi-spi-engine.c | 128 ++++++++++++++++++++++++++++=
++++++++++-
+> -
+> =C2=A01 file changed, 124 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-
+> engine.c
+> index
+> e06f412190fd243161a0b3df992f26157531f6a1..707e5108efec41f7eff608a09fcebd9=
+d28fa
+> 2d70 100644
+> --- a/drivers/spi/spi-axi-spi-engine.c
+> +++ b/drivers/spi/spi-axi-spi-engine.c
+> @@ -23,6 +23,9 @@
+> =C2=A0#include <linux/spi/spi.h>
+> =C2=A0#include <trace/events/spi.h>
+> =C2=A0
+> +#define SPI_ENGINE_REG_DATA_WIDTH		0x0C
+> +#define=C2=A0=C2=A0 SPI_ENGINE_REG_DATA_WIDTH_NUM_OF_SDIO_MASK	GENMASK(2=
+4, 16)
+> +#define=C2=A0=C2=A0 SPI_ENGINE_REG_DATA_WIDTH_MASK		GENMASK(15, 0)
+> =C2=A0#define SPI_ENGINE_REG_OFFLOAD_MEM_ADDR_WIDTH	0x10
+> =C2=A0#define SPI_ENGINE_REG_RESET			0x40
+> =C2=A0
+> @@ -75,6 +78,8 @@
+> =C2=A0#define SPI_ENGINE_CMD_REG_CLK_DIV		0x0
+> =C2=A0#define SPI_ENGINE_CMD_REG_CONFIG		0x1
+> =C2=A0#define SPI_ENGINE_CMD_REG_XFER_BITS		0x2
+> +#define SPI_ENGINE_CMD_REG_SDI_MASK		0x3
+> +#define SPI_ENGINE_CMD_REG_SDO_MASK		0x4
+> =C2=A0
+> =C2=A0#define SPI_ENGINE_MISC_SYNC			0x0
+> =C2=A0#define SPI_ENGINE_MISC_SLEEP			0x1
+> @@ -105,6 +110,10 @@
+> =C2=A0#define SPI_ENGINE_OFFLOAD_CMD_FIFO_SIZE	16
+> =C2=A0#define SPI_ENGINE_OFFLOAD_SDO_FIFO_SIZE	16
+> =C2=A0
+> +/* Extending SPI_MULTI_BUS_MODE values for optimizing messages. */
+> +#define SPI_ENGINE_MULTI_BUS_MODE_UNKNOWN	-1
+> +#define SPI_ENGINE_MULTI_BUS_MODE_CONFLICTING	-2
+> +
+> =C2=A0struct spi_engine_program {
+> =C2=A0	unsigned int length;
+> =C2=A0	uint16_t instructions[] __counted_by(length);
+> @@ -142,6 +151,9 @@ struct spi_engine_offload {
+> =C2=A0	unsigned long flags;
+> =C2=A0	unsigned int offload_num;
+> =C2=A0	unsigned int spi_mode_config;
+> +	unsigned int multi_bus_mode;
+> +	u8 primary_bus_mask;
+> +	u8 all_bus_mask;
+> =C2=A0	u8 bits_per_word;
+> =C2=A0};
+> =C2=A0
+> @@ -165,6 +177,22 @@ struct spi_engine {
+> =C2=A0	bool offload_requires_sync;
+> =C2=A0};
+> =C2=A0
+> +static u8 spi_engine_primary_bus_flag(struct spi_device *spi)
+> +{
+> +	return BIT(spi->data_bus[0]);
+> +}
+> +
+> +static u8 spi_engine_all_bus_flags(struct spi_device *spi)
+> +{
+> +	u8 flags =3D 0;
+> +	int i;
+> +
+> +	for (i =3D 0; i < spi->num_data_bus; i++)
+> +		flags |=3D BIT(spi->data_bus[i]);
+> +
+> +	return flags;
+> +}
+> +
+> =C2=A0static void spi_engine_program_add_cmd(struct spi_engine_program *p=
+,
+> =C2=A0	bool dry, uint16_t cmd)
+> =C2=A0{
+> @@ -193,7 +221,7 @@ static unsigned int spi_engine_get_config(struct
+> spi_device *spi)
+> =C2=A0}
+> =C2=A0
+> =C2=A0static void spi_engine_gen_xfer(struct spi_engine_program *p, bool =
+dry,
+> -	struct spi_transfer *xfer)
+> +				struct spi_transfer *xfer, u32 num_lanes)
+> =C2=A0{
+> =C2=A0	unsigned int len;
+> =C2=A0
+> @@ -204,6 +232,9 @@ static void spi_engine_gen_xfer(struct spi_engine_pro=
+gram
+> *p, bool dry,
+> =C2=A0	else
+> =C2=A0		len =3D xfer->len / 4;
+> =C2=A0
+> +	if (xfer->multi_bus_mode =3D=3D SPI_MULTI_BUS_MODE_STRIPE)
+> +		len /=3D num_lanes;
+> +
+> =C2=A0	while (len) {
+> =C2=A0		unsigned int n =3D min(len, 256U);
+> =C2=A0		unsigned int flags =3D 0;
+> @@ -269,6 +300,7 @@ static int spi_engine_precompile_message(struct
+> spi_message *msg)
+> =C2=A0{
+> =C2=A0	unsigned int clk_div, max_hz =3D msg->spi->controller->max_speed_h=
+z;
+> =C2=A0	struct spi_transfer *xfer;
+> +	int multi_bus_mode =3D SPI_ENGINE_MULTI_BUS_MODE_UNKNOWN;
+> =C2=A0	u8 min_bits_per_word =3D U8_MAX;
+> =C2=A0	u8 max_bits_per_word =3D 0;
+> =C2=A0
+> @@ -284,6 +316,24 @@ static int spi_engine_precompile_message(struct
+> spi_message *msg)
+> =C2=A0			min_bits_per_word =3D min(min_bits_per_word, xfer-
+> >bits_per_word);
+> =C2=A0			max_bits_per_word =3D max(max_bits_per_word, xfer-
+> >bits_per_word);
+> =C2=A0		}
+> +
+> +		if (xfer->rx_buf || xfer->offload_flags &
+> SPI_OFFLOAD_XFER_RX_STREAM ||
+> +		=C2=A0=C2=A0=C2=A0 xfer->tx_buf || xfer->offload_flags &
+> SPI_OFFLOAD_XFER_TX_STREAM) {
+
+I'm a bit confused by this condition. It looks like setting priv->multi_bus=
+_mode
+(and the other fields) only matters for msg->offload but the above will be =
+true
+for regular rx/tx messages, right? Or am i missing something?
+
+If so, I wonder why doing this for all transfers if we only care about
+multi_bus_mode for offload messages. I guess you want to validate
+xfer->multi_bus_mode? I would then just take the switch() out of the condit=
+ion
+(I mean trying to setup a no data xfer with an invalid bus_mode should also=
+ be
+seen as invalid IMO) and then use the offload conditions (or maybe simply m=
+sg-
+>offload?) for the multi_bus_mode handling. To me, it makes the intent more
+clear.
+=20
+- Nuno S=C3=A1
 
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-25091-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25092-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86BBEBDE5EC
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 14:01:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D33BDE60A
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 14:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 496E2480E7D
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 12:01:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676FF19A7D06
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 12:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BACF3233F5;
-	Wed, 15 Oct 2025 12:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF913324B38;
+	Wed, 15 Oct 2025 12:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pnenWbwb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mdwgvO/t"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBEB21323C;
-	Wed, 15 Oct 2025 12:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93291221FCB;
+	Wed, 15 Oct 2025 12:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760529694; cv=none; b=EXiI3C/qxwFpk0w2bRu6XeGQxeDS+r15steHDJVIbTKG7G0P/7z0YetJ9R6s2ZpU/oMl209A3zrLyJ2tWVkJ4ZR+sjDa/PlVJG/EqjQbH+Z08G42VFkerCPziNz6t8cNOlo5lrOwa1BCcbFNsbojFnoe8JCZxgzyUjx9rc3Ocyk=
+	t=1760529802; cv=none; b=BJFWyBpBj7Nun+p8rNf0BorDPIqjQcfP4XZPomgacBrh8UHT5aZ1k5Yn4vBonkD2150Jrrpl8oDeLTQ89nLr4MFEmVEIIe+JGxNhYAfAEKYukWTBE3PkYY50JzOp+Mje7oVrwXgzRZV/dzjYQ13nenRlAO4M5R0upi9lXNB1Mr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760529694; c=relaxed/simple;
-	bh=8s7fvMHxfTzM3EvYSwYFuo1FYbApecy9Axtad/xbwF0=;
+	s=arc-20240116; t=1760529802; c=relaxed/simple;
+	bh=rBcEcp5gh4WzW4q8kM8GvUQXZjf1NbSSnFncWi8p32w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k0ktPTY63627rWyGY3DzCOgvZIRNxMJ34GzeO/2DJRKjKGM5/sIizmWC/cbX/XkL0nsA4hSbVie41rtZx49Tgg3VJ1v9b7ONb2YBEcfY15Pe9hcVBj1o8nAAL1+B2f2rnQ4cWXT+L1mkVb0a0Jm2tao0thorRmNhEBEc6JQV9hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pnenWbwb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A904C4CEF8;
-	Wed, 15 Oct 2025 12:01:30 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=EmTHilTgh4xsgwgssIMIZzZqSSFfV/jnELQQ4jPWX6KtI9oBPvbtta+ExiE10tizwA/0PeVbk/F3v0Z/VMVIWpCK5kIiSVb+5DMh1CZhajDjOkQl5Bp0SJ1O7TXzs774C/vl35g33a0vz6/Kteh0YFT0JkGIBBJCh4dDSYfowlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mdwgvO/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B68C4CEF8;
+	Wed, 15 Oct 2025 12:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760529693;
-	bh=8s7fvMHxfTzM3EvYSwYFuo1FYbApecy9Axtad/xbwF0=;
+	s=k20201202; t=1760529802;
+	bh=rBcEcp5gh4WzW4q8kM8GvUQXZjf1NbSSnFncWi8p32w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pnenWbwbRYAwQnGlnDiEWfsP5P1Y0vu7dJcIutQilEDGqNQiTjIOiA2isbC6SO+ne
-	 AFW/Ntp0NL+PkJLkoAT/vmw+scXjLjUZJfxbNcctuf3BD8lji3tOsnOdtF4HzOXBvq
-	 IOkLK0ADuQexcABtAxOWCqJdZ7sWqtYzHcny9HE3Z79bW0Aq1ialA8DnoHQX4ZlZam
-	 n4C0cMl0SDDVcI3QBGggJXvPjgTmbuTE8f9cdCwh84H9tV5bbCGpGMdxvXdOLtD5ru
-	 i+s60/aHGEa0CaGHIvTxOVyuIp/Cq60blCDCyVUSaxTqxwv4hRN5DGny4/oIg2nkRs
-	 ocaTioFYt6OBg==
-Date: Wed, 15 Oct 2025 13:01:23 +0100
+	b=mdwgvO/tyYbo8EVGxVwnluWaIVdIFPMRY3siss0igYKWQXpTBiIFOLYfedvO6Lzcs
+	 A5shPbJenQPB2nvm+/8D4WSUZoDCDgtT33B1WrjWdPFKIBcZHj1OXI+NJCDNTyt6or
+	 zm33Q9KpAuOSEBSDdS1jHTCKHegjHp/bnFXK5mANs6n6A0txd8u4hA7Q2zEErtoi/F
+	 iGBCGWvDVYJrtQBELOQHHUICOvbWUbsOIbvM7ywLJTNLn/DFc64udAXnIXWt1h+pKe
+	 rkcBy0GpsPysBSvZK45dznXg6RoBvXdEzYn8MmTjxPpxzq+87BcSQM5fds67AYGRc2
+	 CxXmC36Ebn9Ug==
+Date: Wed, 15 Oct 2025 13:03:16 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 Cc: David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>,
@@ -55,11 +55,12 @@ Cc: David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>,
 	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org
-Subject: Re: [PATCH 3/6] spi: add multi_bus_mode field to struct spi_transfer
-Message-ID: <409ad505-8846-443e-8d71-baca3c9aef21@sirena.org.uk>
+Subject: Re: [PATCH 4/6] spi: axi-spi-engine: support
+ SPI_MULTI_BUS_MODE_STRIPE
+Message-ID: <90407135-f9fc-4b83-a2b2-393bb20aef87@sirena.org.uk>
 References: <20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
- <20251014-spi-add-multi-bus-support-v1-3-2098c12d6f5f@baylibre.com>
- <9269eadc1ea593e5bc8f5cad8061b48220f4d2b2.camel@gmail.com>
+ <20251014-spi-add-multi-bus-support-v1-4-2098c12d6f5f@baylibre.com>
+ <3180475bd51e1e057d6aa7e1b62f564cb57a117e.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,51 +68,46 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ujXhcrR05EXINnYo"
+	protocol="application/pgp-signature"; boundary="8a16MxYkGAbfehvy"
 Content-Disposition: inline
-In-Reply-To: <9269eadc1ea593e5bc8f5cad8061b48220f4d2b2.camel@gmail.com>
+In-Reply-To: <3180475bd51e1e057d6aa7e1b62f564cb57a117e.camel@gmail.com>
 X-Cookie: Long life is in store for you.
 
 
---ujXhcrR05EXINnYo
+--8a16MxYkGAbfehvy
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 15, 2025 at 11:16:01AM +0100, Nuno S=E1 wrote:
+On Wed, Oct 15, 2025 at 11:30:39AM +0100, Nuno S=E1 wrote:
 > On Tue, 2025-10-14 at 17:02 -0500, David Lechner wrote:
+> > Add support for SPI_MULTI_BUS_MODE_STRIPE to the AXI SPI engine driver.
+> >=20
+> > The v2.0.0 version of the AXI SPI Engine IP core supports multiple
+> > buses. This can be used with SPI_MULTI_BUS_MODE_STRIPE to support
+> > reading from simultaneous sampling ADCs that have a separate SDO line
+> > for each analog channel. This allows reading all channels at the same
+> > time to increase throughput.
 
-> > =A0=A0=A0=A0=A0=A0=A0 controller=A0=A0=A0 < data bits <=A0=A0=A0=A0 per=
-ipheral
-> > =A0=A0=A0=A0=A0=A0=A0 ----------=A0=A0 ----------------=A0=A0 ----------
-> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 SDI 0=A0=A0=A0 0-0-0-1-0-0-0-1=A0=A0=
-=A0 SDO 0
-> > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 SDI 1=A0=A0=A0 1-0-0-0-1-0-0-0=A0=A0=
-=A0 SDO 1
+Please delete unneeded context from mails when replying.  Doing this
+makes it much easier to find your reply in the message, helping ensure
+it won't be missed by people scrolling through the irrelevant quoted
+material.
 
-> Out of curiosity, how does this work for devices like AD4030 where the sa=
-me word
-> is kind of interleaved between SDO lines? I guess it works the same (in t=
-erms of
-> SW) and is up to some IP core (typically in the FPGA) to "re-assemble" th=
-e word?
-
-So combined with the existing parallel SPI support?
-
---ujXhcrR05EXINnYo
+--8a16MxYkGAbfehvy
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjvjRIACgkQJNaLcl1U
-h9CF1wf/dUWV9762+d8pAi8WCNY/L16hRGTQEWpyX0h5rV275wGLwBXjSQ+yyTAz
-pgmyxhAnLdiNaIL39xa+Ri2xEYBxIGMrwk7KdPBDbioZRAP+niC8yTjPdK2wm5Ex
-wVTP6376LsvDGLD50I0k+MHAYNiCOYlWXqiwBMIwMrwhWeEY3wzKC1hvdWyEkSA9
-m1Ecl+TmfJaT5UvO/lxMU8WRttC5kOZysC/yBPffrWE325P7negBBypwTuP5vIXZ
-eii0rnPykREF4clc3d1R79kZPjyytBywvD4lmQQcDWd1jGNCqjHDgdBqFBeJpKC4
-Qo48A0C8QxFmE0E3LICNJcau0QtZHA==
-=P/qz
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjvjYMACgkQJNaLcl1U
+h9CKWQf/fiOSGY9C8sjgxx1MNemuLhL+GY5hU8hErhOnmiBuVX/BrfM5BhZBX3Ie
+DtHQs30ExfmeTtdXlnE0we1o4FnLMu8cnZ0KRDkgbX13ysFuPlYnPLGhOy/OhN2y
+DrtJVl7q/+orQsQeFK7fN5vnZMv0Q3fmwBCJcEc+iqkcBjuOy5pTEmdRHKRKcsAP
+QmbolaIdR/By1dvRRtYxAtEPcvOLjit5C2aoop4GOdkd+5YIED8EFq7ipI8cZAuS
+h/t04+iHN7IdNwiYtq04GhfnT2M9Iyb7Jmq/ZpcsOLDOVeF77yBrwu59H5YV4808
+UFnutk6J4vqii8+N/TfsS5YcYgfmnw==
+=9TaG
 -----END PGP SIGNATURE-----
 
---ujXhcrR05EXINnYo--
+--8a16MxYkGAbfehvy--
 

@@ -1,148 +1,165 @@
-Return-Path: <linux-iio+bounces-25108-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25109-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5F5BDFA7C
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 18:29:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8048EBDFEAE
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 19:42:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 41D754E88CB
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 16:29:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EF874055BC
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 17:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728013376AD;
-	Wed, 15 Oct 2025 16:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66B929C323;
+	Wed, 15 Oct 2025 17:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FHruKKaT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BYo223ge"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2666933768D
-	for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 16:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B9C2F9DA1
+	for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 17:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760545771; cv=none; b=XsKuq/AQYblJ8lwRAVJwWnKrlMwxUutqeFNILY5KJYOMoYTNCha30luHMAvdQp6sNCR9W499l3G3EWrqIZedamaX6WE++pRuMWs6x7ikYIUHJw+Y534MjJrBtr6u7NEfG9rLMwSH5deq5opAaYr2XDHgqFGZ1s9cuaVqoTL5EPk=
+	t=1760550150; cv=none; b=JGb2GDj5iXBkmzWLeypRSYFPmNsFWbWTIUee7BkLuOkmc4C47TXBraZuONhAoLZjRiUoDpAbCYFBbGfqTcskpPuyN4Dc397e0ayNg6doEfZF4ydGkj/ns71L2xW6hrDHUrBO78r81GTE0hTi7vB9IYK0jEHRkr1Tkc9UPi2y2LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760545771; c=relaxed/simple;
-	bh=c9DRtgxqBjR6FiucDGOUiESyKrgNeSaMO5VAfOIoETQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qDGHiJpaQ8q4bcup7fIwqlBuMBnIrDh1tXUoFED5T5oB77irlwMEKIKPdTghZ7xfyYoW50Hj9o9xFehBRDG7pXjhS5j7rCVjXLLtS96Sy1YGcJ0ZzvubtzTHVOE8uISUHkpK3UHcreoUa14fzzaK9KRKdda6CltOG3asGspsC5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FHruKKaT; arc=none smtp.client-ip=209.85.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7afbcf24c83so2066677a34.3
-        for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 09:29:28 -0700 (PDT)
+	s=arc-20240116; t=1760550150; c=relaxed/simple;
+	bh=3+itAC0ygGD72LAGTTk7iU8ATNurfAWGwrb2f3cn7NE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gbPFNa4hFHb40dGqpZRwbmGBmSzYT5OdboBPxN9AbWpkWQBxH5cJWeZ22uyC9QurGZXkfpqHRrJDCXxCazklNKLUJlnHhNDk/LRPMgCvp0+dbL3i2+l12cmmkCO3mUMX/Oegoykux9W/DTXVjQFltcqswfAZcTMVSI0yz6O8jZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BYo223ge; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-46e33b260b9so55611645e9.2
+        for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 10:42:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760545768; x=1761150568; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0IEFETDXO+bjt4XRF9cGd360VMY2ffLoA1X5D7REdqI=;
-        b=FHruKKaTe52nmQ4G4l2uekHbzSAu7GrvHbxeuiVOMqqu89gEJBxz+EmLF1580OOrS6
-         6JXbLlsdBpqxhvpQbeNz8ylCyEItkACEzkBEXeAIGmc6Ra7MNWNtOiBxekFi+2xfYCf4
-         dr7QyH9GxXE9vY6P+3VJ+k6tFhVJ3KIX7Oa69CQb6Pz18lCB+J2K86XN+Q3ttVaYNHyp
-         lc+F60ZrhSW3UXCR4TzWkt9caIOUoqA0SMwGD2OW6d61b6N8hLFiW4JLySkM5TBNDuOZ
-         gPCBkNw1xdqa4+Vrj3VALh0hQ2bLpscLep18CE8XZD67YF8eGFDgq6uZYnzkDtQZj19D
-         OSPw==
+        d=gmail.com; s=20230601; t=1760550146; x=1761154946; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3+itAC0ygGD72LAGTTk7iU8ATNurfAWGwrb2f3cn7NE=;
+        b=BYo223geAauqK3E1+dYo5vT1M0nxArwCW8KLQQeX1e7FaJtHORsKr6xJb0CNOtJZxg
+         OnrEECsyLeoUmhD9NcEWRTV17G1FjKsstwmQLZ5jMeP+Apdqo6Bpei/Pk2DqWU5jgOte
+         HThhZDyM+xDiM0j1Db2IpyzzLp9qtjdeu2Ll5nKaXLALAZ6HSJxF4ITZchSQ7IS++v53
+         4JUzu9MHkI9yh5JbZXH5JdL3MDEZbbck19C0m4FG/FG2xMDauul7m7ZJIblUfj5HMbwS
+         B+fyA6AAaZmdec/nH+wnCuEiEMQETRBCLL5WveTyqL6uG73aF+dMhVTWHP+6Bvxssq0h
+         CQ+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760545768; x=1761150568;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0IEFETDXO+bjt4XRF9cGd360VMY2ffLoA1X5D7REdqI=;
-        b=QaucUqc1b9giYYaZwLeiSZY4u6j2GEYZAmJDeOb7LWTU+Hzos23sHRndTUpFQdl1Yo
-         DWMeelhn/uiSibaVCnbYf+ezHHBU1vlHczNyGPSoai0GoqzZgDh6QbUk10EmKsCTLiZt
-         0KAEyCHtkSpou0av9uVlK15j9HxnTSMdYnVN3jSbZO5TPOEc0qIRPsWC2XW3cds8GwED
-         qsr6xlp3J7AdLgqsW6mgX1etSWMtbMhuKzmpTG4iX8/ksQBDYzXnPTjV2+ZSUBnoQfLi
-         Bl4AH0maz1LH+9MNbeeOhXXTnTGwCsOmKDoinrGh3m1YvQvmpjrRrLENSXU7mXKZZ6M/
-         zaiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmlnecxH/BKKfsCsMmN+Q5J4vGL8u4Ct8Q1GU2NEX/Ex98c8OXFcuCClkKqT06GX7KNL9SYPc5iUs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzAKSY/p9Q0KBbS8BEvVBgW+nDPnOHdHMn/Gy8msZuPzf+wrez
-	hpYmutYobRuOePtL+ieOFSmam8PV/n66tfcchMO7g4vKPLVGu0sjpqLdCXC+MY4tJRw=
-X-Gm-Gg: ASbGncteSkKZ76bvHTQfZpEAJec6EftQg0aErDgbVzB8L10eKZKuKUUh8lP76UiIDcP
-	jXFVq2aQ1rs9iF3AKarZ/Y4LDwQ2cnoM0hMK/lXyav/e6JCXdX+/jsGspJKFaDSRfWMvhLuGepY
-	xe8ku83C7G3gODIZ+ApffcJxRV2e0KUC3E0mLREa8OtVyxj0cDuX0quP68G6ZD/1tjALCsTs8bK
-	6DoS8/R0EU3nV9HHuLHcIVD1XuauxwOhYXjiuAF0UmT7v2jnE7TUKMaDudBlsChcR/Vk57TZd0n
-	zVW15pG9UHEC8nmP8Dge03Ti78UhYKKXGzwjCBFRGqeba7KCXjA0u4ZxSLxGtdq2oM7uTxt2ch/
-	F+47N82AmclaN6zV90GmJiqQjVqGwNIw0ZioZymArXtvxRxIbs84tPCD9b2biU72vP66WhQYJfX
-	F6RbVxjj8ZsXjYW/BSIfT749xKraMWOtdsGTEj
-X-Google-Smtp-Source: AGHT+IF+cLJe80ed4cj3kfbQheauCbstntwHjsgvv5HQx7cBnV+AHE/HMRPi8SW58d1ZXb7hcVX00w==
-X-Received: by 2002:a05:6808:14c1:b0:439:ad1e:8485 with SMTP id 5614622812f47-4417b38c9e3mr13965693b6e.24.1760545768107;
-        Wed, 15 Oct 2025 09:29:28 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:c482:1912:c2de:367e? ([2600:8803:e7e4:500:c482:1912:c2de:367e])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-650181ff660sm4189888eaf.17.2025.10.15.09.29.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Oct 2025 09:29:27 -0700 (PDT)
-Message-ID: <348b0d94-4b3a-454d-be67-47563808ec76@baylibre.com>
-Date: Wed, 15 Oct 2025 11:29:25 -0500
+        d=1e100.net; s=20230601; t=1760550146; x=1761154946;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3+itAC0ygGD72LAGTTk7iU8ATNurfAWGwrb2f3cn7NE=;
+        b=Rh8Pt34v0LD49pUm06KHPLiyeOcqiYGw0xyFXyrROgaZt/TZRLe/39/MMSDGLzjeeG
+         mNWEGC4EygN+1ynpr9HbFMMxNjnsD+baHVlA1IakbeiC2fgkscUCFNUZIioLNJFj/OTJ
+         DKWtXkTvXko12674LfaFSo0eJJe5AYIJiAeB0vWtzDp7X2gfbk9ZR3A3WoKIulcOlA92
+         0pr5dNSw/MzPa5LzugYGPaCKxMU04CM9MonGS2jAgKPVh7WYnaKmJJeEGfqbMyBWGmTk
+         7eAkVQWm8j91ziyYNy/GW5ml/6XXWfPfuETxm3DNBP57scV/EJVlpu6sd6yUZ/O3KWmp
+         2X2g==
+X-Forwarded-Encrypted: i=1; AJvYcCX+QftH0u4btd7u5oeO+IBhcck+KRRM6SQwGew++KIltzGqPHi/DYAMC8NGxmVb0dtqv4yHB4kyDVQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzPMfI682TK4Q4PHTLKjwvXwhe4hQzysAMoC1Z3SS7hT3U7MhJ
+	7CptyKQQ3J/vlVMNCArN0slIQn3pD/Wq8X/OeL0gH5/cyx9lguVIWDlM
+X-Gm-Gg: ASbGncv/ICG6SqG6wZCsUGxnptt8adQBDmBT7MNliSCCgMW6L9dZHKZVCnwq6Xbk27h
+	qFnjR6FCCWEcAqZht7BP4pRLDbhvJtoybnSKY/zVKR3FsPLl5NhDfx2QrUx4l5N7rroYvu/hLie
+	cqnc5wmOSdCxxQjr8Nk4GduJ46cO9fl7ou6eKteNcN2rKJwzarTKVHcCchMHC/igxU0x4gNn5FA
+	5rYOm9r2jYInXkxYCLnR0LpTVTyVvZ/ZJNTq8wkJpu7/cFhgRah4opsnh78p3FUk7Gvqrj+8WXF
+	fOTmifgl1mdwYeXgPJLJ9km8ohFpSSPhQLwjXQgoTR8zfFM2mbGyGmmoBmbnqPlT1P+eVX8hDoU
+	FewYdl55rUzpCXVrfOWi2CN5wEkdLOsPQ+zDgW6DO9hdwclLHZLN2yviU+LyMwj3mdQd5t5eM8x
+	HZiDVL4HO7obiP1mBwIbmzOAvb
+X-Google-Smtp-Source: AGHT+IFgW4ioV30CaVR3MUPobKOQBTrlVgHHJX7mniQYbGNt/6t4FH7ErC+FnEf2jcNfSIVwBiGr0w==
+X-Received: by 2002:a05:6000:1a87:b0:3ee:b126:6b6 with SMTP id ffacd0b85a97d-4266e7dfee2mr17701996f8f.34.1760550146266;
+        Wed, 15 Oct 2025 10:42:26 -0700 (PDT)
+Received: from ?IPv6:2001:818:ea56:d000:94c4:fb0e:28f:2a8d? ([2001:818:ea56:d000:94c4:fb0e:28f:2a8d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426fb279857sm1628868f8f.20.2025.10.15.10.42.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Oct 2025 10:42:25 -0700 (PDT)
+Message-ID: <9024f05854dcc3cc59345c0a3de900f57c4730d9.camel@gmail.com>
+Subject: Re: [PATCH 3/6] spi: add multi_bus_mode field to struct spi_transfer
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, Michael Hennerich	
+ <michael.hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+ <nuno.sa@analog.com>,  Jonathan Cameron	 <jic23@kernel.org>, Andy
+ Shevchenko <andy@kernel.org>, Sean Anderson	 <sean.anderson@linux.dev>,
+ linux-spi@vger.kernel.org, 	devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-iio@vger.kernel.org
+Date: Wed, 15 Oct 2025 17:43:22 +0100
+In-Reply-To: <d9455d90-31ca-4be7-b17c-2b339e92f8a0@baylibre.com>
+References: 
+	<20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
+	 <20251014-spi-add-multi-bus-support-v1-3-2098c12d6f5f@baylibre.com>
+	 <9269eadc1ea593e5bc8f5cad8061b48220f4d2b2.camel@gmail.com>
+	 <409ad505-8846-443e-8d71-baca3c9aef21@sirena.org.uk>
+	 <12db0930458ceb596010655736b0a67a0ad0ae53.camel@gmail.com>
+	 <8c7bf62a-c5dc-4e4d-8059-8abea15ba94e@sirena.org.uk>
+	 <d9455d90-31ca-4be7-b17c-2b339e92f8a0@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] spi: axi-spi-engine: support
- SPI_MULTI_BUS_MODE_STRIPE
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
-Cc: Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
- <20251014-spi-add-multi-bus-support-v1-4-2098c12d6f5f@baylibre.com>
- <3180475bd51e1e057d6aa7e1b62f564cb57a117e.camel@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <3180475bd51e1e057d6aa7e1b62f564cb57a117e.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 10/15/25 5:30 AM, Nuno Sá wrote:
-> On Tue, 2025-10-14 at 17:02 -0500, David Lechner wrote:
->> Add support for SPI_MULTI_BUS_MODE_STRIPE to the AXI SPI engine driver.
->>
+On Wed, 2025-10-15 at 11:15 -0500, David Lechner wrote:
+> On 10/15/25 10:18 AM, Mark Brown wrote:
+> > On Wed, Oct 15, 2025 at 03:43:09PM +0100, Nuno S=C3=A1 wrote:
+> > > On Wed, 2025-10-15 at 13:01 +0100, Mark Brown wrote:
+> > > > On Wed, Oct 15, 2025 at 11:16:01AM +0100, Nuno S=C3=A1 wrote:
+> > > > > On Tue, 2025-10-14 at 17:02 -0500, David Lechner wrote:
+> >=20
+> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 controller=C2=A0=C2=
+=A0=C2=A0 < data bits <=C2=A0=C2=A0=C2=A0=C2=A0 peripheral
+> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ----------=C2=A0=C2=
+=A0 ----------------=C2=A0=C2=A0 ----------
+> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 SDI 0=C2=A0=C2=A0=C2=A0 0-0-0-1-0-0-0-1=C2=A0=C2=A0=C2=A0 SDO 0
+> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 SDI 1=C2=A0=C2=A0=C2=A0 1-0-0-0-1-0-0-0=C2=A0=C2=A0=C2=A0 SDO 1
+> >=20
+> > > > > Out of curiosity, how does this work for devices like AD4030 wher=
+e the same
+> > > > > word
+>=20
+> The AD4030 is just one channel, so doesn't do interleaving. But you proba=
+bly
+> meant AD4630 when it is wired up with only 1 SDO line. That line has to b=
+e shared
+> by both of the simultaneous converters so it alternates between sending o=
+ne bit
+> from each word. This patch series doesn't address that case. But this ser=
+ies will
+> work for the AD4630 when it has 2 SDO lines wired up.
+>=20
 
-...
+Hmm I didn't even remembered that one. But what I meant with interleaved wa=
+s having
+the same data word spread through multiple SDO lines (one bit per line) whi=
+ch is what
+(also) happens with the devices I mentioned. And since you mentioned "...tw=
+o
+different data words at the same time, one on each bus...", I raised the qu=
+estion.
 
->> +
->> +		if (xfer->rx_buf || xfer->offload_flags &
->> SPI_OFFLOAD_XFER_RX_STREAM ||
->> +		    xfer->tx_buf || xfer->offload_flags &
->> SPI_OFFLOAD_XFER_TX_STREAM) {
-> 
-> I'm a bit confused by this condition. It looks like setting priv->multi_bus_mode
-> (and the other fields) only matters for msg->offload but the above will be true
-> for regular rx/tx messages, right? Or am i missing something?
+So I guess I kind of misused what interleaved typically means (even though =
+I guess
+it's not completely off :)) and was thinking more on the parallel concept M=
+ark spoke
+about.
 
-You are correct.
+Anyways, from your reply I see the intent is to also use the stripe mode fo=
+r this and
+have some kind of external IP deal with data re-order. I gave a look into t=
+he ad4630
+IP core and indeed there's a data reorder IP block after the offload engine=
+.
 
-> 
-> If so, I wonder why doing this for all transfers if we only care about
-> multi_bus_mode for offload messages. I guess you want to validate
-> xfer->multi_bus_mode?
+- Nuno S=C3=A1
 
-Yes, this is important to validate it since we don't support all possible modes.
-The mode still applies to the individual xfer even when not using SPI offloading.
-
-> I would then just take the switch() out of the condition
-> (I mean trying to setup a no data xfer with an invalid bus_mode should also be
-> seen as invalid IMO) and then use the offload conditions (or maybe simply msg-
->> offload?) for the multi_bus_mode handling. To me, it makes the intent more
-> clear.
-
-It the validation only matters for xfers that send or receive data. I guess
-it doesn't hurt to check the mode in non-data xfers (e.g. ones with just a delay)
-but since we needed the condition anyway for the accumulator, it made sense to
-me to put it inside the conditional.
-
-I might have put an additional if (msg->offload) around the accumulator part
-since it only matters when using SPI offloading, but the indent was already
-getting quite deep.
+> > > >=20
 

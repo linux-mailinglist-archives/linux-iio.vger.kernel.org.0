@@ -1,150 +1,169 @@
-Return-Path: <linux-iio+bounces-25084-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25085-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51713BDD4FA
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 10:08:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D86BDD6C5
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 10:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47C56420C3B
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 08:08:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F4B519A6A0D
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Oct 2025 08:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905932C237E;
-	Wed, 15 Oct 2025 08:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A432D301702;
+	Wed, 15 Oct 2025 08:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cZzzjpW3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QOMkfwOq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7B4204F93
-	for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 08:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237D13016EA
+	for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 08:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760515687; cv=none; b=NTpw9TlHbTpBTH0jIFUdH7CIs+fpbrtbhRIb7M+WsX3017VBWQyMgaF22E83bJvYgWqFpelDpnsc8+SJjEqB2mE9K1b0HI7BIaOwr4wH4F/zbI5i1i60SCZUrSF7GLqysjCEccFu3M2FjCW+UdOaH+AibdK6kdl24xqLMzovP94=
+	t=1760517001; cv=none; b=Pf6T7Fw9LGDDi9GHWsxYz9c62hxFb/oiYFy/6KnG4zusY5uNYX8P0zZ2fOTAV475ChllpH+F143moDChid5lJaqYRcznumPGQK6+QLoaoNIJANkn89goY0j8cEPoeNsTUp3lvgOtYeKdzsdmhG2twtmURHB7xjYg5WX0+qAfTAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760515687; c=relaxed/simple;
-	bh=82lMN3PHx84x65T7bxBEjnc+PP69vV3I+4c9g6/+BJ4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XuevtW6VgevGoI1X2yZMHdSvOic/DHmRbIN8OYmsiTcaokbFr1uauCdxtrBs5XHGmHeL/9M9Ye24Hf7iuwt96h63NqV6M0GU0cY6Nk1y0hJLSBOQxFoe0hPmmheqKsXJfgX6iAeO4yAjrAQnHZCgZFH6wrguLWtW81S3tZqq51s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cZzzjpW3; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1760517001; c=relaxed/simple;
+	bh=+yqUrodFRa2b7YQBwGpfRslfhPNG5SM2SgweyWev2Rw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=q12AqtxZVjlNYeocLud3aNhttXlf/mxKe8B+DmGkIa60Ntj89Sjd00Yod6pjjG3zvKE2N9QqNjgGBhUuphrk3Lkxq9MM7pE6rPJPaZBrQNK0HFUQUMyj8g6petVK3/hebuXRpzb7D3WMrf89nF75MyjcLVWIFvIC4YLsOgA+Upw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QOMkfwOq; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-46e491a5b96so35670785e9.2
-        for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 01:08:05 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so739528b3a.1
+        for <linux-iio@vger.kernel.org>; Wed, 15 Oct 2025 01:29:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760515684; x=1761120484; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qIKUsHWr4EfW1osCBnZfPucjiZ7QQGt9ogy8NGoGeu0=;
-        b=cZzzjpW33vJKxJZfkWy6OOLBkRpzRY+j8Wi6NfttEqT+jjSCmSJS/lxRV35Je/PVYs
-         OrhmUg+cE6HfLjS07yG/537+R95fGBGLwwiU5SNJGIq/9yfASqmno/bSoIKOz/rsuzLb
-         xY9gK6K9Nc2SG9nHMHiq7umUcnJzaNrHVESHGsGHBcCtxaUWAz9IGTRBQsvR3zBwdihZ
-         s3M6U548JPNFH52yPStE/9VBmcE5vqCDSrDAOMcAfIuB1ZsAa64+GRBWYdy+zyYa2bby
-         ppLSMgvIA51Qe94cqv585jJvbWkKM3YaSPqjS5+RXvJIP9aUNKam3d+RYh/5bOf5MdDn
-         c30Q==
+        d=gmail.com; s=20230601; t=1760516998; x=1761121798; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZfoMcfD/PnjYiytAB/unpKapxhVytLhTH7sRTEu1OF4=;
+        b=QOMkfwOqxYGUpBwZ+pZ94b3F6A5WINiWqeDOuieImcf09ogS/Bzd+FjRyeLcJEzKyv
+         sRAZ79rUMWCe+dz/5d4+rfIckv8RbDVO5PCPg0WcS588LM6XZQ+zMjEZBWguxH2aDgqO
+         dqQ/Yj0l5w3a9P7TIjQ3lCTclk1Dj+4si1DWafNmMgBHSGGMb9YwUeJfDO1QOcOlyZRm
+         Xv4on4dE3Ygbom9J+o4yVVb4G82SQ6561VECkIIezH5sYhbHAxbk/Dju5risPY0aPfWS
+         DeOKue8l8T3caJaxffOX80le7bQT9sYaGupA19jq7zTOhFK6Vvii9/ypN9oKP2/LB+Jq
+         PtVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760515684; x=1761120484;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qIKUsHWr4EfW1osCBnZfPucjiZ7QQGt9ogy8NGoGeu0=;
-        b=RiBzcTZOJ1ZBhiADgkNxJ0lXBJ4RjCfIStwnqms0A24be0iUGkB0WHRSbpTUv669jY
-         2rq0OFBB3Jmk57r9vyR3/b9VmMHK3Dul/YulfU2GXLDhvhLcu8E8wLxnlgWv+hdhuSmy
-         kk9+/MwM+PQCHOThWfLmVdF+q4BOmsBeiNxW+dGebZAp+ytrWVjUjOxaZUt/uTOnBwV8
-         FQG1BxksYQ4q/YZasKeBuMMAZtCRbDjfuxgiTBZe7VhU/aibjL5sXJJgqVoqvVv2lTb0
-         Pv7UFdQpRTU/ARNN2MWO1frOvwjTVHhleFzN5Q7rNmSn1UkJVAP0UP7CvubawJyFQrlY
-         lsww==
-X-Forwarded-Encrypted: i=1; AJvYcCWfImnZJi0V2Dbpqi10ndRP2DakZ/hBxzYXqjulIHZC1064giYAOZjFsVOOmjT7iKOZcd7S24+HRIE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0DINqrq27Vobr4X9Lprh5E2httbRVmuO6tUO+peQU1KmTPfP4
-	CFCaZIysRM5uIhZYCZPx5kN5JARm5md0FYZ10jyjjO91r+q9u6X4U/LC
-X-Gm-Gg: ASbGnctLuW41LLRS8Cwk0unqLjWgfEKBcEQbmK9/IE9JsNMplGPW9mtVYCxdaVt7T06
-	xAgcdkhDt+65JIfjfM4mMEjo/ndL63F88QdBlvP3yJm6U2nBm+2e3omm7+PGFI6998EgB58n3Wt
-	m+PUTYFMd/2PNYbkbCCkqUXEts7TwdT8J/8jqTIn8ppREq354V8ybJD2Gt0/83TZTwdvZudxKfs
-	CgqHTKcWy5kCEojPJSaQmmE8drYmOIJjLWKcLmZSJoov+tQkAolMkHECdwt1cPXJRfLADSUeDeG
-	TciyNUYIY8tYFaFA2uKLqo8CDwhsMWCwQ1JufY1yfRxf09+OaYPqv3ViGiO2NapZUUTXXTV06gD
-	ZRpvaAwokpqcFf05WuWeV5Pm0K4anzJoJyHxUjvk9+j+4fIVXeg==
-X-Google-Smtp-Source: AGHT+IHP8N+3px7skvkLMWNcnItWcn1+rGFvMFcI3+FoelwYasutqN3qkfYTHrtQ97up2D/uCItX7Q==
-X-Received: by 2002:a05:600c:6304:b0:46f:b42e:e39c with SMTP id 5b1f17b1804b1-46fb42ee509mr132021525e9.41.1760515683625;
-        Wed, 15 Oct 2025 01:08:03 -0700 (PDT)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47106fc96bbsm2575855e9.3.2025.10.15.01.08.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Oct 2025 01:08:03 -0700 (PDT)
-Message-ID: <ed298de2b13040534bb25bd186111f4761d574df.camel@gmail.com>
-Subject: Re: [PATCH] iio: dac: ad5446: Add AD5542 to the spi id table
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com, 
-	linux-iio@vger.kernel.org
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron
-	 <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
-Date: Wed, 15 Oct 2025 09:08:36 +0100
-In-Reply-To: <03b3c597-0576-4468-a23e-cf6a4b7daf86@baylibre.com>
-References: <20251014-dev-add-ad5542-v1-1-cfd197db03a0@analog.com>
-	 <03b3c597-0576-4468-a23e-cf6a4b7daf86@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.0 
+        d=1e100.net; s=20230601; t=1760516998; x=1761121798;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZfoMcfD/PnjYiytAB/unpKapxhVytLhTH7sRTEu1OF4=;
+        b=HjXw6FouG5yptAziUxDuLzsk8NyFB0L54DWz8q4pRJBvkK8Dxbn5tERoM70YgVc5AN
+         sYi2b2ueIki76UcFDRUf3iK354p6sVaALDUzrv+OdwhZuR2kTV7A88F54PGfwz+p53Nk
+         APIZBVAwvDZnQnRpp57oNP1IJ7Jjd4oasop2fJva34W0eQSE6ed1vLi1ZVbqs4XKu2Tl
+         0tEyXj6wxK5c0BexIaoNnjUg6EFc4xjfbzDXsDianiAoRpUILvN5b7M4B3VwGmCyl44g
+         l3zUCAZtczcNRC+MEoQzSzblomLEiCFaYmZcwBqZLwKJLF5p9DIfpGi1SM1MdS3XHiCw
+         w5Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCWAiIKHpzTM2oAmbXC4WPsZyKMmqQkxh/plCl0Ht1+92EDUQC6FzlgDJQ3DFlQ93JTVmRVkI/uBXlI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3uBNKGv3KpKohR3mL7qursPo4dp8ef3B7c/7kZdq7nsMINSO5
+	toJ1PnUB3IHniRwvOfDVI16umMdm7qAnfuPm/Y0oyHKH72fZrM24CPM9
+X-Gm-Gg: ASbGnctyDPgjLet7z8xs/TqolU7O0xHwSNJK3EHIMD1za/x73L7pVFJ4DgPDHrh6Dho
+	YQYQI7akRiv1bouIT7V0V8SNImkmciA/pKWJcBm1WIAAjgITbrSeZeevBFwZSm7iv2CLylL9kDY
+	yA8Lu7SRvANKAVnIzj29rd5+WdFktUMLitCruJepqjsjIM4dU4w10ZH/TXCYE9BNcoBGv9yzlGE
+	3RhtTLcSAtDRfClRYCpeAW03/6clsd8P/jzpvoBGRTTzxBFeSouxZxcpHV5y7YPBpADRh58eSQf
+	5c/54iRqG+7TML/+qm90Kd+D7exlgyakei9k0jOjh7CTx4xe/RPot7ZR4kMrRxJSIlvREk5FbHC
+	FCY9vY40yqzDrmyvCcSBhqYA14Lg5Sj6wuUtnJ4Y5wxKQVY9qRfY=
+X-Google-Smtp-Source: AGHT+IGQ19ISwFZr70VQbxykwZJbmjViTX/pcHJHj5+1grEzkpXedUcScZHyl+DUM1XHWZHCDBY4tg==
+X-Received: by 2002:a05:6a00:3e25:b0:77f:2b7d:ee01 with SMTP id d2e1a72fcca58-79396e6902emr34412247b3a.1.1760516998287;
+        Wed, 15 Oct 2025 01:29:58 -0700 (PDT)
+Received: from localhost ([116.177.27.17])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992d0e198bsm17797054b3a.60.2025.10.15.01.29.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Oct 2025 01:29:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 15 Oct 2025 16:29:49 +0800
+Message-Id: <DDIR6RWVMIRK.2DQB98BRS180Z@gmail.com>
+Subject: Re: [PATCH v3 2/2] iio: humditiy: hdc3020: fix units for thresholds
+ and hysteresis
+Cc: "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+ <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Chris Lesiak"
+ <chris.lesiak@licorbio.com>
+To: <dimitri.fedrau@liebherr.com>, "Li peiyu" <579lpy@gmail.com>, "Jonathan
+ Cameron" <jic23@kernel.org>, "David Lechner" <dlechner@baylibre.com>,
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
+ <andy@kernel.org>, "Dimitri Fedrau" <dima.fedrau@gmail.com>
+From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
+X-Mailer: aerc 0.20.1-4-g02324e9d9cab
+References: <20251013-hdc3020-units-fix-v3-0-b21fab32b882@liebherr.com>
+ <20251013-hdc3020-units-fix-v3-2-b21fab32b882@liebherr.com>
+In-Reply-To: <20251013-hdc3020-units-fix-v3-2-b21fab32b882@liebherr.com>
 
-On Tue, 2025-10-14 at 12:15 -0500, David Lechner wrote:
-> On 10/14/25 11:11 AM, Nuno S=C3=A1 via B4 Relay wrote:
-> > From: Michael Hennerich <michael.hennerich@analog.com>
-> >=20
-> > This adds support for the AD5542 single channel Current Source and
-> > Voltage Output DACs.
-> >=20
-> > It is similar to the AD5542A model so just use the same id.
-> >=20
-> > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > ---
-> > =C2=A0drivers/iio/dac/ad5446.c | 1 +
-> > =C2=A01 file changed, 1 insertion(+)
-> >=20
-> > diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
-> > index ad304b0fec08..6e4103f4afcb 100644
-> > --- a/drivers/iio/dac/ad5446.c
-> > +++ b/drivers/iio/dac/ad5446.c
-> > @@ -422,6 +422,7 @@ static const struct spi_device_id ad5446_spi_ids[] =
-=3D {
-> > =C2=A0	{"ad5512a", ID_AD5512A},
-> > =C2=A0	{"ad5541a", ID_AD5541A},
-> > =C2=A0	{"ad5542a", ID_AD5541A}, /* ad5541a and ad5542a are compatible *=
-/
-> > +	{"ad5542", ID_AD5541A}, /* ad5541a and ad5542a are compatible */
->=20
-> Should the comment say ad5542 instead of ad5542a?
+On Mon Oct 13, 2025 at 4:12 PM CST, Dimitri Fedrau via B4 Relay wrote:
+> From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+>
+> According to the ABI the units after application of scale and offset are
+> milli degree celsius for temperature thresholds and milli percent for
+> relative humidity thresholds. Currently the resulting units are degree
+> celsius for temperature thresholds and hysteresis and percent for relativ=
+e
+> humidity thresholds and hysteresis. Change scale factor to fix this issue=
+.
+>
+> Fixes: 3ad0e7e5f0cb ("iio: humidity: hdc3020: add threshold events suppor=
+t")
+> Reported-by: Chris Lesiak <chris.lesiak@licorbio.com>
+> Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+> ---
+>  drivers/iio/humidity/hdc3020.c | 67 ++++++++++++++++++++++++------------=
+------
+>  1 file changed, 39 insertions(+), 28 deletions(-)
+>
+> diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc302=
+0.c
+> index 8aa567d9aded9cab461f1f905b6b5ada721ba2f0..5a978801fb09ca49c449028d0=
+46a91e0e67c38ea 100644
+> --- a/drivers/iio/humidity/hdc3020.c
+> +++ b/drivers/iio/humidity/hdc3020.c
+> @@ -72,6 +72,9 @@
+>  #define HDC3020_MAX_TEMP_HYST_MICRO	164748607
+>  #define HDC3020_MAX_HUM_MICRO		99220264
+> =20
+> +/* Divide 65535 from the datasheet by 5 to avoid overflows */
+> +#define HDC3020_THRESH_FRACTION		(65535 / 5)
+> +
+>  struct hdc3020_data {
+>  	struct i2c_client *client;
+>  	struct gpio_desc *reset_gpio;
+> @@ -376,15 +379,17 @@ static int hdc3020_thresh_get_temp(u16 thresh)
+>  	int temp;
+> =20
+>  	/*
+> -	 * Get the temperature threshold from 9 LSBs, shift them to get
+> -	 * the truncated temperature threshold representation and
+> -	 * calculate the threshold according to the formula in the
+> -	 * datasheet. Result is degree celsius scaled by 65535.
+> +	 * Get the temperature threshold from 9 LSBs, shift them to get the
+> +	 * truncated temperature threshold representation and calculate the
+> +	 * threshold according to the explicit formula in the datasheet and
+> +	 * additionally scale by HDC3020_THRESH_FRACTION to avoid precision los=
+s
+> +	 * when calculating threshold and hysteresis values. Result is degree
+> +	 * celsius scaled by HDC3020_THRESH_FRACTION.
 
-Yes.
+I see that Andy asked you to include the formula, and you accepted that
+suggestion, but the formula is still missing. I also think it should be
+added to the comment because that would clarify where this kind of
+magic numbers in the return value come from.
 
->=20
-> > =C2=A0	{"ad5543", ID_AD5541A}, /* ad5541a and ad5543 are compatible */
-> > =C2=A0	{"ad5553", ID_AD5553},
-> > =C2=A0	{"ad5600", ID_AD5600},
-> >=20
-> > ---
-> > base-commit: 4b17a60d1e1c2d9d2ccbd58642f6f4ac2fa364ba
-> > change-id: 20251014-dev-add-ad5542-8c8934de80ee
-> > --
-> >=20
-> > Thanks!
-> > - Nuno S=C3=A1
-> >=20
-> >=20
->=20
-> Interesting... no devicetree bindings for these chips?
+>  	 */
+>  	temp =3D FIELD_GET(HDC3020_THRESH_TEMP_MASK, thresh) <<
+>  	       HDC3020_THRESH_TEMP_TRUNC_SHIFT;
+> =20
+> -	return -2949075 + (175 * temp);
+> +	return -589815 + (35 * temp);
+>  }
 
-This driver is old enough where things were less strict (I guess) and it se=
-ems
-no one added bindings for this.
+With that modification,
 
-- Nuno S=C3=A1
+Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 

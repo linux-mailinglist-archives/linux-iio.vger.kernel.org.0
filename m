@@ -1,156 +1,128 @@
-Return-Path: <linux-iio+bounces-25119-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25120-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F78FBE1195
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 02:26:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD69BE17FF
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 07:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C78F4E17E1
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 00:26:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE3683A7EB8
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 05:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012C9146585;
-	Thu, 16 Oct 2025 00:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A02229B12;
+	Thu, 16 Oct 2025 05:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dj94XWJV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p1to4AVv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A73F1114;
-	Thu, 16 Oct 2025 00:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5642264CF;
+	Thu, 16 Oct 2025 05:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760574400; cv=none; b=HA9Da0UFZIzhK00IisNprU+BAMOJs+mtH58YOHBlU3wG6w8pj7qPVfBjxhv3ucPUGgGWhuCma/MlZvwguXs3qD9hZtOzOXjdzxxOyCmkMxmA6YmT6bbW9aie1ndMFYYb33seXJirmuR3AYlM9AyWaUyuUAnHCQBJrRKR/6O7pMU=
+	t=1760592045; cv=none; b=ANh2d2E9+tSbdUlYW0zWiRQL+dt97Ce368pn2Er6bfv6hUjwy5ump1M+7tPM041SpQ3CYuju9visQ2d97A3215M8W5Lprzix86jCQcEOVilzGwDxHqrv5dmkXnLH+2lum1H1sY32hFQcj8qbEiTZ6AC2l8/YVp7VlfYh1TIfTfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760574400; c=relaxed/simple;
-	bh=U28sDA1Foqogqj0EpzymayQ1wgUPbptp/B4nVYhh2VQ=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=aDchgbxM+vX/lDpblCXYah+pDzopWQHmXEeCFprmuifDL31i6PVC4668GOdaHfA2p6QqihqxCfn2xS0yR3NTI7kryxmCPfVSCKXPhBcS7MTyvMcQJZXaJ7CM0ypIP0AWriUkoOBuBF+vOY3FMh5CQarqR22juTtbEqPW5pPOUUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dj94XWJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F7CC4CEF8;
-	Thu, 16 Oct 2025 00:26:38 +0000 (UTC)
+	s=arc-20240116; t=1760592045; c=relaxed/simple;
+	bh=ITUgx3N03EK9CFNyirfZfXh7cU+zPoME+aIpuLj0Acs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UsA5bNMxiONqEcn1xW1CmBYaPIIT2F0bJVKUBv7zkjh+fszEqc1xWm/ekOA64nk5ssGdZpJj1iqA1BCetjqvs2MuqhGV54Y4FjyWFo0ZYa4nKpgBEEbLv0SaXJBjgzOYVsMwx9NHskhM9+m8Pr409wjDrDrZ0YIwdok14fYLewo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p1to4AVv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9BCBDC4CEFB;
+	Thu, 16 Oct 2025 05:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760574399;
-	bh=U28sDA1Foqogqj0EpzymayQ1wgUPbptp/B4nVYhh2VQ=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=Dj94XWJV8URBCP7eHQRkGso8jdIVf4yq32iKR936m+qK40hXECoK27b6FucGkMto0
-	 xKqWpYkuWx4UHz/896XaCHoBe6Q1JiK0Kxc00rN7K8h+LuhdBPw9dxd2mNpLuJ/PYx
-	 tzubS/ZUMVIURtzvMmnHMgnXnGMfdlqmgRAfFKecvQdGrHV4o08O4AeT2FvZxs8MR3
-	 S2oBcLETPjUKZ1Z7T+ECLUUDZZ7/de+DlhSPpNl+CJxTWzsD31NPwc+R9Fx7aH5B6+
-	 JSbYHle1X/IxBGUx/oiSimthNjSWELBTTa2mpPBZ3gOWs/hRRYtOhh7vtqt1X+IZ/X
-	 O62U8DSbcPnEw==
-Date: Wed, 15 Oct 2025 19:26:36 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1760592044;
+	bh=ITUgx3N03EK9CFNyirfZfXh7cU+zPoME+aIpuLj0Acs=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=p1to4AVvn5kgrCtwkt9LP5viD9K8enlwfzzTnbEdFgujpGENa+wlvhy9otW9zkvSj
+	 cSmZU1fL+zuK9hDNimoAxEQzaDeAC1VNPEpdk/n6+Nmyf0ksHwQayg8FfUNZmdPTRG
+	 W10EOFpj4glKRCq80hT4SD/jH/y/aCfmLt2/FBUJ1/4lbFpya5eEBqkeXKAfObi/tc
+	 uNyXh5LbViYIJIdc8Q+LTMV8fRF9Ug7FpotdiuOPyGF/a/vv/kDbsJy0hmIF6gdU4H
+	 d/UDGslPJ/EGMwUN6fbrhLqISb9txqEoTGHsPohw3lNFVqwl/sH/7FKBZl8zQSF9zp
+	 kaWLd//xx/2ag==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8FD7ACCD194;
+	Thu, 16 Oct 2025 05:20:44 +0000 (UTC)
+From: Dimitri Fedrau via B4 Relay <devnull+dimitri.fedrau.liebherr.com@kernel.org>
+Subject: [PATCH v4 0/2] iio: humditiy: hdc3020: fix units
+Date: Thu, 16 Oct 2025 07:20:37 +0200
+Message-Id: <20251016-hdc3020-units-fix-v4-0-2d9e9f33c7b1@liebherr.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Vladimir Oltean <olteanv@gmail.com>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, devicetree@vger.kernel.org, 
- Jakub Kicinski <kuba@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
- Joel Stanley <joel@jms.id.au>, Bjorn Helgaas <bhelgaas@google.com>, 
- Andrew Jeffery <andrew@codeconstruct.com.au>, Lee Jones <lee@kernel.org>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Eric Dumazet <edumazet@google.com>, linux-iio@vger.kernel.org, 
- Manivannan Sadhasivam <mani@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
- Jonathan Cameron <jic23@kernel.org>, linux-phy@lists.infradead.org, 
- Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org, 
- Paolo Abeni <pabeni@redhat.com>, Kishon Vijay Abraham I <kishon@kernel.org>, 
- Stephen Boyd <sboyd@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>, 
- linux-gpio@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>, 
- linux-media@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- linux-clk@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
- linux-pci@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-kernel@vger.kernel.org, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org, 
- Linus Walleij <linus.walleij@linaro.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKWA8GgC/23OwQrCMAwG4FcZPVtJWuc6T76HeFjbzBZ0k3YWZ
+ ezd7QYqyE7h/yFfMrJIwVNkh2JkgZKPvu9y2G0KZlzTXYh7mzMTIEpQArizRkKej84Pkbf+yWs
+ kq7UyxkLF8t49UK4X83TO2fk49OG1nEg4tx8NV7SEHPi+0aCNLKUp6Xj1pB2FsDX9jc1gEj+kh
+ lVEZGR+V6oGyxqrFUR+EQSUa4jMiBbYNloKrZT4Q6ZpegNV9LjfPwEAAA==
+X-Change-ID: 20250820-hdc3020-units-fix-91edbb8ccd07
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
+ Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Tony Lindgren <tony@atomide.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-In-Reply-To: <20251015232015.846282-1-robh@kernel.org>
-References: <20251015232015.846282-1-robh@kernel.org>
-Message-Id: <176057439666.933167.2958808777480882513.robh@kernel.org>
-Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
+ Andy Shevchenko <andy@kernel.org>, Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dimitri Fedrau <dimitri.fedrau@liebherr.com>, 
+ Chris Lesiak <chris.lesiak@licorbio.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1760592043; l=1749;
+ i=dimitri.fedrau@liebherr.com; s=20241202; h=from:subject:message-id;
+ bh=ITUgx3N03EK9CFNyirfZfXh7cU+zPoME+aIpuLj0Acs=;
+ b=N09qwM+v+PNKWl7FPdJLocOTs2GKdT2AnWfWVq7ZXDUesAjWmHCUBD49XCLz9D0mbegssSRKw
+ 07ubwFeDLEwCcuMDwWTcJK109d0CQko9JBCPprFcexngdn4EXnnQN0L
+X-Developer-Key: i=dimitri.fedrau@liebherr.com; a=ed25519;
+ pk=rT653x09JSQvotxIqQl4/XiI4AOiBZrdOGvxDUbb5m8=
+X-Endpoint-Received: by B4 Relay for dimitri.fedrau@liebherr.com/20241202
+ with auth_id=290
+X-Original-From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Reply-To: dimitri.fedrau@liebherr.com
 
+Fix units to milli degree celsius and milli percent for temperature
+respectively relative humidity measurements and thresholds.
 
-On Wed, 15 Oct 2025 18:16:24 -0500, Rob Herring (Arm) wrote:
-> yamllint has gained a new check which checks for inconsistent quoting
-> (mixed " and ' quotes within a file). Fix all the cases yamllint found
-> so we can enable the check (once the check is in a release). Use
-> whichever quoting is dominate in the file.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  .../arm/altera/socfpga-clk-manager.yaml       |  4 ++--
->  .../bindings/clock/nvidia,tegra124-car.yaml   |  8 ++++----
->  .../bindings/clock/nvidia,tegra20-car.yaml    |  6 +++---
->  .../devicetree/bindings/gpio/gpio-mxs.yaml    |  9 +++++----
->  .../bindings/gpio/snps,dw-apb-gpio.yaml       |  4 ++--
->  .../bindings/iio/temperature/adi,ltc2983.yaml | 20 +++++++++----------
->  .../mailbox/qcom,apcs-kpss-global.yaml        | 16 +++++++--------
->  .../mailbox/xlnx,zynqmp-ipi-mailbox.yaml      |  2 +-
->  .../bindings/media/fsl,imx6q-vdoa.yaml        |  2 +-
->  .../devicetree/bindings/mfd/aspeed-lpc.yaml   |  4 ++--
->  .../devicetree/bindings/mfd/ti,twl.yaml       |  4 ++--
->  .../bindings/net/ethernet-switch.yaml         |  2 +-
->  .../pci/plda,xpressrich3-axi-common.yaml      |  2 +-
->  .../bindings/phy/motorola,cpcap-usb-phy.yaml  |  4 ++--
->  .../pinctrl/microchip,sparx5-sgpio.yaml       | 12 +++++------
->  .../bindings/pinctrl/qcom,pmic-gpio.yaml      | 10 +++++-----
->  .../bindings/pinctrl/qcom,pmic-mpp.yaml       |  6 +++---
->  .../bindings/pinctrl/renesas,pfc.yaml         |  4 ++--
->  .../bindings/pinctrl/renesas,rza1-ports.yaml  |  2 +-
->  .../pinctrl/renesas,rzg2l-pinctrl.yaml        |  2 +-
->  .../pinctrl/renesas,rzv2m-pinctrl.yaml        |  2 +-
->  .../bindings/power/renesas,sysc-rmobile.yaml  |  4 ++--
->  .../soc/microchip/atmel,at91rm9200-tcb.yaml   |  8 ++++----
->  .../soc/tegra/nvidia,tegra20-pmc.yaml         | 12 +++++------
->  24 files changed, 75 insertions(+), 74 deletions(-)
-> 
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+---
+Changes in v4:
+- Add explicit formula into comments of hdc3020_thresh_get_temp and
+  hdc3020_thresh_get_hum
+- Add explicit division by 5 into calculations in hdc3020_thresh_get_temp
+  and hdc3020_thresh_get_hum
+- Link to v3: https://lore.kernel.org/r/20251013-hdc3020-units-fix-v3-0-b21fab32b882@liebherr.com
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Changes in v3:
+- Fix verbose comment for define HDC3020_THRESH_FRACTION (Javier)
+- Embed prescale into define HDC3020_THRESH_FRACTION to make the division
+  by 5 calculation in threshold calculations explicit. (Andy)
+- Add resulting units into comments again in hdc3020_thresh_get_temp and
+  hdc3020_thresh_get_hum (Andy)
+- Link to v2: https://lore.kernel.org/r/20250901-hdc3020-units-fix-v2-0-082038a15917@liebherr.com
 
-yamllint warnings/errors:
+Changes in v2:
+- Added explanation what is wrong at the moment into commit msg
+- Added define HDC3020_THRESH_FRACTION and comment at the beginning of the
+  code.
+- Use MILLI for instead of hardcoded 1000.
+- Link to v1: https://lore.kernel.org/r/20250821-hdc3020-units-fix-v1-0-6ab0bc353c5e@liebherr.com
 
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/pinctrl/renesas,pfc.example.dts:90.36-37 syntax error
-FATAL ERROR: Unable to parse input tree
-make[2]: *** [scripts/Makefile.dtbs:132: Documentation/devicetree/bindings/pinctrl/renesas,pfc.example.dtb] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1525: dt_binding_check] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
+---
+Dimitri Fedrau (2):
+      iio: humditiy: hdc3020: fix units for temperature and humidity measurement
+      iio: humditiy: hdc3020: fix units for thresholds and hysteresis
 
-doc reference errors (make refcheckdocs):
+ drivers/iio/humidity/hdc3020.c | 73 +++++++++++++++++++++++++-----------------
+ 1 file changed, 43 insertions(+), 30 deletions(-)
+---
+base-commit: 875e7d357a7f2e77a7f3fc4759d0aa0872c33027
+change-id: 20250820-hdc3020-units-fix-91edbb8ccd07
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20251015232015.846282-1-robh@kernel.org
+Best regards,
+-- 
+Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
 
 

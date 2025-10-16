@@ -1,158 +1,171 @@
-Return-Path: <linux-iio+bounces-25142-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25143-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61D3BE3468
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 14:13:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3605ABE3A0E
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 15:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9C1415005EA
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 12:12:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EB441A63F68
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 13:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2CF32D434;
-	Thu, 16 Oct 2025 12:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617603376BD;
+	Thu, 16 Oct 2025 13:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WlRlFvw9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8D632D7C8
-	for <linux-iio@vger.kernel.org>; Thu, 16 Oct 2025 12:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E86A338F5F;
+	Thu, 16 Oct 2025 13:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760616718; cv=none; b=m7DrqfyvUIjS3nfZ5HA/GqUL8nH1j4xUJtJmnt/5S3OwRlekBBCaQTonLEuV/5qmMYrlhEw/q+Y6mhdZu0aAGXbLfD6qoYdpbqG83KWo9mQPNfjCZVl/r7M8GzA7PkEGPp48SS10uRKY45XIpQydxTJs4no+lukMV1T7GiWggEI=
+	t=1760620444; cv=none; b=fSKYf5qsQMRUwVk9h11wNKgKasAg080JtVzg9I7l75sEZ0anJsxaseLD8Hj5SZlHloSa5Ilq7gtgUaMjh7JfR/bAhiUbn1MfaW3rfPmkDJWCDtTXJDnSipTzLHWpJHd3ZRLG4YpqRMF0/UHLTMqqVyM+2RhbSvFU4S3gaV0FghE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760616718; c=relaxed/simple;
-	bh=Qljm2z2l5uF20OnzQWwo+pu0aWLXVl3TFALx6BWruW4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lP9jZM5bDNkcr2wIy3NCXCude+OnTdbGteLKhiP/S/pSi7iNmlVL70NSpUzDdyz3QvqJJArmYKqwYYflc1j2pk6adqJ/zCtBfk341geRQyMBkb0ODN5ijCAhI4mLO01eIj7M0bnh2qZ1WMKmf/aDhczSxgRBqB8v2WGZbVMPoms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-88e68c0a7bfso136151785a.0
-        for <linux-iio@vger.kernel.org>; Thu, 16 Oct 2025 05:11:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760616716; x=1761221516;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e3GThzLUFjGbl3VuQITKYi7/BLSw+ups+ZHEY60Y/84=;
-        b=RMZWVtYTLryK4KXYAslrk90C8kH9YFGJqZd4IMjiaLEReiqkDWL48889eIjtLbFJO1
-         WWPPqo7k/nCEBvE7Z9Lt5T9ZsZkjCxvKPQK8U5fnH0ZMzQ529/9NkwBHSy1HDcFmPWC3
-         SoRglWf9vEYa2edZZyeNFGIgV1SJVG6Vy+W7F/bN6HklMcXbH8XVrUe2ZlwExxDShEGM
-         dWs/ZLUwyxR/D8EtexUiQfK+EBlYdID7rKjOCDI3H1VBWMQwiXD4Eqhw6ormU4lOyPEY
-         TggBlPmh1P2k+ZScGL67EBVLZm6QStAYMKWYiWOR1+l7rvB08QQm0OldWJaLYOU4jK5y
-         yYQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzPvQTkzd4dkeIQhXwW1/dDWj6K6qehJGWLttVHYsTF6LvAF7ZwYgZiz7IHE8nbCrI9NNJVsAC7W0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfZ5GTyqf74hE3ddzUSfy/FIwPCuciG7Fp3pNMGxzYGwomcayc
-	53QGBXWIBkDaM8vK1Y/jh0QvylP9/W8/7Cx3h0k8S7Bqr/RAoVp+gs88G26RMmC1
-X-Gm-Gg: ASbGnctSYI0/gyngjLrSrbvXMWtRd36dz3GBMDoN5A2OS33fC9YJJ1mOP5YLgj+VyFx
-	t5kT9lyE7C9xuhL+VzrlGjnXQxym1K3OgdPLVddMXT0FC2RDC6rKF6zHbD9a1vEr2O/bZHNpk7T
-	NF8Z+OTFI92QSxMQaZNZlbXiffRow5Doo6otCPtLlkVSWksKOIp8qsaIujpGygn671fagKlUdQ5
-	zOL2xXdnx3CNvsbGjzlOhuDAhY+rnOOulQ+WERU6hKRd2zaxl9YWnf79+7CkFQqCwiEpYwkuagD
-	eavEx8l8YYLMlNiFQDbG1eS9C2+yPc/LVVORxlmArLM9vrX/OBRyUqHccU6VHDeWgN2TlH4DyXq
-	Z45yVVXPn2uLxFVXRtQGR6KJEe54hfZhhQnP1GI7sprSRITBOLReTSm7J/XPY+aLhEWkFUF/Oty
-	KcS6jC66MO1PMF9b7ltiPFCZcMb5Bj4JtBFjuExG83WtiIyR9QNCK9oJ1HeU4=
-X-Google-Smtp-Source: AGHT+IErBuGEyCFYe06loOdRpQCuHOk9RXjnH4WhnLeeceGKanhTabgQTxX2q4reqG9ho0iwV6KtOA==
-X-Received: by 2002:a05:620a:480a:b0:849:7f36:bbc with SMTP id af79cd13be357-8835410ea30mr4261777285a.63.1760616715798;
-        Thu, 16 Oct 2025 05:11:55 -0700 (PDT)
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com. [209.85.219.49])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-88f35c65276sm188889585a.20.2025.10.16.05.11.55
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Oct 2025 05:11:55 -0700 (PDT)
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-791fd6bffbaso11356386d6.3
-        for <linux-iio@vger.kernel.org>; Thu, 16 Oct 2025 05:11:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW3DZdAQwukkMTN/eP/NWOH14+gjIK+18UyWNjVpQ/BPrBRc2QIxemhJxqEYoywvNFU/6GKeCWd2YE=@vger.kernel.org
-X-Received: by 2002:a05:6102:6c2:b0:4fb:ebe1:7db1 with SMTP id
- ada2fe7eead31-5d5e220448dmr12281536137.12.1760616407229; Thu, 16 Oct 2025
- 05:06:47 -0700 (PDT)
+	s=arc-20240116; t=1760620444; c=relaxed/simple;
+	bh=f1jSt7aAO6g1KOQbj+5i+zz2EOi4pLeJVv7XCY2lQYo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pn7tVv9EZ/tleWiaLyt2982ixsHL28165P8v26t/w0Ot6/wJ3w32evpKehsYA4ES/qaz+n4jTUY+35QhRJJL5tXienDmuD+SzGfkob4y5xpIwE+RogsSzNgPtpbd4dBnH4Ml5M3XeRMPMYjKRha72Jkp4otEyQ3nd85A211JOOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WlRlFvw9; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760620443; x=1792156443;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=f1jSt7aAO6g1KOQbj+5i+zz2EOi4pLeJVv7XCY2lQYo=;
+  b=WlRlFvw9pvxMnnh7MyR4Y3lJ36+5aFqLUoc+FlFL1YAE4ZHsps51aHQ4
+   VraRvSp6RRU5F2+doZRxNY6Ndl+WcHZ8YNP07Apc51P0ToEuVd/w9RBqd
+   ccEbyRK93jnc1HC31DlxWZ+zjPzE04FPOJTYPkuxGaDh9/+H/hM63C7T2
+   yuSTmFNvelveaCa7XxrhdV0tPqO4t8HYw6G+PZN5HQ7r+hUaaY1/k870h
+   outWt7a2+FSxCJC9Gi1jK/F5L3Wqg3697R1BthmtlxOwgJv+mMCCAttaA
+   KzllvlOsDFyELdJ6jLhBpyqH+K7tiU/BsSZmUHigCQ7p8WkeJamOw3jto
+   Q==;
+X-CSE-ConnectionGUID: KqadeojlSWO2qW4TmVqR5g==
+X-CSE-MsgGUID: Stc3Oa1+RXabCGxHPlr+jg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="62710896"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="62710896"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 06:14:02 -0700
+X-CSE-ConnectionGUID: L7Wy79iRQ22E6MwZ53EzBw==
+X-CSE-MsgGUID: B4saKIrCTcq1Lu/FOO4KgA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="182431750"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 16 Oct 2025 06:13:57 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v9Nnm-0004q3-1L;
+	Thu, 16 Oct 2025 13:13:54 +0000
+Date: Thu, 16 Oct 2025 21:13:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Herve Codina (Schneider Electric)" <herve.codina@bootlin.com>,
+	Wolfram Sang <wsa-dev@sang-engineering.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Pascal Eberhard <pascal.eberhard@se.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
+Message-ID: <202510162035.gngVSgxu-lkp@intel.com>
+References: <20251015142816.1274605-3-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251015232015.846282-1-robh@kernel.org> <CAMuHMdVBDN8-gWVs1f=1E2NgD6Dp4=ZFUnyzqHaQj9JWPpZepw@mail.gmail.com>
- <CAL_JsqL1KL4CvnxF5eQG2kN2VOxJ2Fh1yBx9=tqJEWOeg0DdzQ@mail.gmail.com>
-In-Reply-To: <CAL_JsqL1KL4CvnxF5eQG2kN2VOxJ2Fh1yBx9=tqJEWOeg0DdzQ@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 16 Oct 2025 14:06:36 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUUZaL6qyuTZPoRc11WSuqcoRUFNksXZNJoijTeL+vfKQ@mail.gmail.com>
-X-Gm-Features: AS18NWBH0cbPp0cJrT4sY267e4E8JBEuMEr4tkAtjK9DVXEqfelKr3ZBbd1AYGI
-Message-ID: <CAMuHMdUUZaL6qyuTZPoRc11WSuqcoRUFNksXZNJoijTeL+vfKQ@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
-To: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Stephen Boyd <sboyd@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
-	Jassi Brar <jassisinghbrar@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Lee Jones <lee@kernel.org>, Joel Stanley <joel@jms.id.au>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Daire McNamara <daire.mcnamara@microchip.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Florian Fainelli <f.fainelli@gmail.com>, Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-iio@vger.kernel.org, linux-media@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-phy@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015142816.1274605-3-herve.codina@bootlin.com>
 
-Hi Rob,
+Hi Herve,
 
-On Thu, 16 Oct 2025 at 13:46, Rob Herring <robh@kernel.org> wrote:
-> On Thu, Oct 16, 2025 at 2:57=E2=80=AFAM Geert Uytterhoeven <geert@linux-m=
-68k.org> wrote:
-> > On Thu, 16 Oct 2025 at 01:20, Rob Herring (Arm) <robh@kernel.org> wrote=
-:
-> > > yamllint has gained a new check which checks for inconsistent quoting
-> > > (mixed " and ' quotes within a file). Fix all the cases yamllint foun=
-d
-> > > so we can enable the check (once the check is in a release). Use
-> > > whichever quoting is dominate in the file.
-> > >
-> > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> >
-> > Thanks for your patch!
-> >
-> > Since you are mentioning mixed quotes, is one or the other preferred?
->
-> I have a slight preference for single quotes.
+kernel test robot noticed the following build warnings:
 
-OK, so outside human-readable descriptions, there should only be double
-quotes in property values, i.e. on lines ending with a comma or a
-semicolon.  Sounds like that can be scripted, or validated by scripting.
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on geert-renesas-devel/next linus/master v6.18-rc1 next-20251015]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> > Shouldn't we try to be consistent across all files?
->
-> I don't particularly care to change 915 files. And if the tools don't
-> enforce it, I'm not going to do so in reviews.
+url:    https://github.com/intel-lab-lkp/linux/commits/Herve-Codina-Schneider-Electric/dt-bindings-iio-adc-Add-the-Renesas-RZ-N1-ADC/20251015-223254
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20251015142816.1274605-3-herve.codina%40bootlin.com
+patch subject: [PATCH 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20251016/202510162035.gngVSgxu-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251016/202510162035.gngVSgxu-lkp@intel.com/reproduce)
 
-Fair enough.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510162035.gngVSgxu-lkp@intel.com/
 
-Gr{oetje,eeting}s,
+All warnings (new ones prefixed by >>):
 
-                        Geert
+   drivers/iio/adc/rzn1-adc.c: In function 'rzn1_adc_vc_setup_conversion':
+   drivers/iio/adc/rzn1-adc.c:53:49: error: implicit declaration of function 'FIELD_PREP' [-Wimplicit-function-declaration]
+      53 | #define RZN1_ADC_VC_ADC1_CHANNEL_SEL(_c)        FIELD_PREP(RZN1_ADC_VC_ADC1_CHANNEL_SEL_MASK, _c)
+         |                                                 ^~~~~~~~~~
+   drivers/iio/adc/rzn1-adc.c:243:49: note: in expansion of macro 'RZN1_ADC_VC_ADC1_CHANNEL_SEL'
+     243 |                 vc |= RZN1_ADC_VC_ADC1_ENABLE | RZN1_ADC_VC_ADC1_CHANNEL_SEL(adc1_ch);
+         |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/adc/rzn1-adc.c: In function 'rzn1_adc_vc_wait_conversion':
+   drivers/iio/adc/rzn1-adc.c:58:41: error: implicit declaration of function 'FIELD_GET' [-Wimplicit-function-declaration]
+      58 | #define RZN1_ADC_ADCX_GET_DATA(_reg)    FIELD_GET(RZN1_ADC_ADCX_DATA_DATA_MASK, _reg)
+         |                                         ^~~~~~~~~
+   drivers/iio/adc/rzn1-adc.c:304:30: note: in expansion of macro 'RZN1_ADC_ADCX_GET_DATA'
+     304 |                 *adc1_data = RZN1_ADC_ADCX_GET_DATA(data_reg);
+         |                              ^~~~~~~~~~~~~~~~~~~~~~
+   drivers/iio/adc/rzn1-adc.c: At top level:
+>> drivers/iio/adc/rzn1-adc.c:592:12: warning: 'rzn1_adc_pm_runtime_resume' defined but not used [-Wunused-function]
+     592 | static int rzn1_adc_pm_runtime_resume(struct device *dev)
+         |            ^~~~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/iio/adc/rzn1-adc.c:582:12: warning: 'rzn1_adc_pm_runtime_suspend' defined but not used [-Wunused-function]
+     582 | static int rzn1_adc_pm_runtime_suspend(struct device *dev)
+         |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+vim +/rzn1_adc_pm_runtime_resume +592 drivers/iio/adc/rzn1-adc.c
+
+   581	
+ > 582	static int rzn1_adc_pm_runtime_suspend(struct device *dev)
+   583	{
+   584		struct iio_dev *indio_dev = dev_get_drvdata(dev);
+   585		struct rzn1_adc *rzn1_adc = iio_priv(indio_dev);
+   586	
+   587		rzn1_adc_disable(rzn1_adc);
+   588	
+   589		return 0;
+   590	}
+   591	
+ > 592	static int rzn1_adc_pm_runtime_resume(struct device *dev)
+   593	{
+   594		struct iio_dev *indio_dev = dev_get_drvdata(dev);
+   595		struct rzn1_adc *rzn1_adc = iio_priv(indio_dev);
+   596	
+   597		return rzn1_adc_enable(rzn1_adc);
+   598	}
+   599	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

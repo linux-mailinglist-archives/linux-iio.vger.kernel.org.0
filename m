@@ -1,504 +1,893 @@
-Return-Path: <linux-iio+bounces-25150-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25151-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D3FBE4360
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 17:26:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C130BE447E
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 17:38:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 749A73597D0
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 15:26:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BD92C4F7C8C
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 15:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6706C346A0B;
-	Thu, 16 Oct 2025 15:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B754E34DCD2;
+	Thu, 16 Oct 2025 15:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gDRi6ofF"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Kk0oQLSS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013020.outbound.protection.outlook.com [52.101.72.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A563469E9
-	for <linux-iio@vger.kernel.org>; Thu, 16 Oct 2025 15:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760628364; cv=none; b=dZKHu+qM5XDqjh/JXPH3R3FDQoIKvRdq+OxFlDIX4fUbcWx+PUqOLVxpoBuyWnJ86kD9kS0K/YhI3MWeg4JewZwdWywH6ofYDSQ3b2/S4SAocFW2+8kPOCit4RyL9l9TVKhvK4SFRPzqbH9h/GQgYVpk2a4ECRumwRM2Ms8fKHg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760628364; c=relaxed/simple;
-	bh=wM3DzxHSzsdJPxpS1qHX9kLtKFDt/p/Ag27wAKJy6z0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mj8uCnelc6Lmos1ZFTT9upwESvSqU3CsVkHJWa5drzcmGBYjR2D1bYxCN6OtRVNxCNrLBFbiO06//RDs+7hudU4uFN2IMLlEyuuwDiH102F8H5KLYaHOxDH3HQVPljHVlqvnuYlDFQmVX+EfTmnAUaHrVnr0lRWExt2H6RSgdlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gDRi6ofF; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-46e6ba26c50so6732535e9.2
-        for <linux-iio@vger.kernel.org>; Thu, 16 Oct 2025 08:26:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760628360; x=1761233160; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8Liia8RsaOD9yQrd+3tJSK0OG/Nub4+LqqPt4624COE=;
-        b=gDRi6ofF/WCdroRBEnqV66pkNSLWH8KGBw8vtboEDQU47+wyeq72f3ysEoMgXeV1tv
-         5+DLMyrjEQYx+o3z/lBn4DoQQ9HCH/eDaU8ai+nO7M45LD7sLRXJTSvZ26Z4MPM1931D
-         vOjr89DbJmwXloz2mo30Z60ENA9eKGWyLHeUCG9VUTSpvc4ZA2X+cZkB120G1LkCJPep
-         Ziw7dKGMT+23ZX8P4VkDLOFxx/uaIs93X4iJokiumkck2/LDQdwNvUZxINWs0YF7c25V
-         1IgDNwipz1UNz/6DfHf0cInngAvIN/U2hQenT03RrUWMzjPCKaesRInuLauPCinw98vi
-         JXmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760628360; x=1761233160;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8Liia8RsaOD9yQrd+3tJSK0OG/Nub4+LqqPt4624COE=;
-        b=JJmOQdD9bRRwavRhHWKa8EZa5UXne+BFrgJvOY0GvghR1Th+uc5x9yFrrrkXlHERdX
-         fR1Ui8XYDC/ryXi45rXwCiym/v1TJy8Hznjop/I58HM72NUtW38cVpD1Z2VBJfwSr2Sr
-         eNFZo38maQRHb+wvn4WuiPI8x5iK00TOk3A4ATpqyRdrkJ0k8NtQMKvoVsL1KwEKtSTf
-         gbTi/SO8IhUnJw2hCeTM7aZxpQiVePZUa24Z6+s1Z2wpEyn6UL/gOPoZ/Ostt6MWvMDQ
-         2bGAVJANX6OwcZ+TGV89Tvl4ffnUg/kUeAcoSTpuRqJTP+EMPM2vEK7B4Ysjo+NYisVA
-         Qy9g==
-X-Forwarded-Encrypted: i=1; AJvYcCU4vwX9/yw6SBwhhrHto9F3fbGTgD8FIHzoruoPi6uxGgQ698WFGcRQT35QcaCo5t6B+cIwwDZCgXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw34kpeQedASfkQ8NzCUg8iYHKF+Xj01d3qQnmdXBt/XhO4hDvp
-	PytuaDzL5i6kQKo3z6+bQyRs2ZUjBlcxwYqipLjdw1kefI1dXkc2UNT+KDpbg7FM
-X-Gm-Gg: ASbGncuhGdtnptYyKzzGXOLSf3WHhNWQOpNVRhWU3PLI1mid8lYF7j5gA5pwaTFQTGp
-	G91xnchD+KBOeUIqGu8nsu3MkR3mZkfxjYeVq/clQn+IW0blIik+0Y2HPlh/Qt0XjihhwcSEF+G
-	19/jOuHw3e44oawDqKXfVcF7xoKp7nE55XIMdKmiSuHBa5KgZTKb/7PD7AxzA9e+bBLsS2nAi2Y
-	+GwJ6MbWMFihhLW8hW5tsw1fp7gjwfTieCHNA3XgiYEN0AZ/qAfbYESJjTrfW/d7WtBq5H3TRGf
-	y0HOmDMrrsZFAn99L2z/Rus4CK9MuP6EAdoNqnvoYQGZMnTwvPAAQZJqeRFWBWWN3s0r2PKX32Z
-	ZMtEhdShEfiMseYFfiKNdz41hmjlBl1HX7jOeg5rQcICFYyuZenDkFKETcxyO4HrqUB7LlrVtqq
-	7Eo2wNo6u1
-X-Google-Smtp-Source: AGHT+IGTg5CjF8+LxlH7KHK7krh6vjgKUIW8blkrBwnz+QKj01kT0jC/CqAAbFsClWPGaKXE1epkCQ==
-X-Received: by 2002:a05:600c:444d:b0:46e:1f86:aeba with SMTP id 5b1f17b1804b1-471178ad982mr3015155e9.17.1760628356645;
-        Thu, 16 Oct 2025 08:25:56 -0700 (PDT)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5e10e8sm35438907f8f.39.2025.10.16.08.25.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 08:25:56 -0700 (PDT)
-Message-ID: <d7576a0bb9a8d5326d77ae434131540b4359bd2a.camel@gmail.com>
-Subject: Re: [PATCH 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, Jonathan Cameron	
- <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, Rob Herring	 <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley	 <conor+dt@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
- <magnus.damm@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown	
- <broonie@kernel.org>, linux-iio@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Pascal Eberhard <pascal.eberhard@se.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Date: Thu, 16 Oct 2025 16:26:28 +0100
-In-Reply-To: <20251016160202.3d4d0a5e@bootlin.com>
-References: <20251015142816.1274605-1-herve.codina@bootlin.com>
-		<20251015142816.1274605-3-herve.codina@bootlin.com>
-		<1e8d7c96cdfaa93bcc0f581103dc0e13dfee17b7.camel@gmail.com>
-		<20251015211420.031c61fa@bootlin.com>
-		<de57f5274b2fe0aac3621dc10cb6d4d0d98d3063.camel@gmail.com>
-	 <20251016160202.3d4d0a5e@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7122FD7DD;
+	Thu, 16 Oct 2025 15:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760629117; cv=fail; b=A7eLKUP6W+Xxxgb2728D/K2DqI29OjxJVVot1RRmIozuwN7yeGNRNrY1isMpH1xVnBTEim7TlXS7VkbjnWKK6wP/l5ETq6zyHoX63n36zJHo6n1XKlDeURnFHbrRDpAgUxDPmS/Al6biE6R/s/ZzgZ+CtLKW1B6mt8ifFzte+D0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760629117; c=relaxed/simple;
+	bh=MSbPW8Gisa7Rt6i99+INkr860HPQvoOK3Id/lKzrN0U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=YF3a3djuKilGiswXSHgrDxsY96efXaDXjyMa4VN24FX4hAigF1+3EI3ZysJJ5nQZG/LHyCEp5d735YuwymVX2GALJ5inb6RZ05USt2j/ohcWPwAS8QkKm3Ufv1ollb3mqojxmQCXaMkrM61zTxVNUR86GRrVxZNvP3AbtFyOMBc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Kk0oQLSS; arc=fail smtp.client-ip=52.101.72.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xV4Ou8AGvt0Aa4jNIKTg+xtPY9Dx4vM4IieLrZP13LfVdrNMOY9UdWiJFtlQZ0sgKBiLpkqktvKTHsdow2ZTBemDO9fWqP4HtO23fR4tmhOEvXtfBFB/v6s0w5AB5BWN2XaqTB3TcG2lol5e5SgdzOHQS4QcfemX250P7xQEHMEuhCE7GCHGaUo90lve/iMPBvOYIFvqB8aIH6UawzTpEjW4kDiz3gEbhU7LI3HuTVREQMdd8TvIyljpmuWwiKnxxw4/bRR5IozlsVz8ylMolSrce/QPFvgcCforrvzrR5KiHpKdJN+ujvIiNTv3D73Y2KeqEXNpTfT8RhZYwP7JTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S/EtoZRiU7PM2AIDtJXkuOoHF38AwPT2UzapsdhtRKo=;
+ b=bBfeYubUXmbYeUO3STNu5T2KdWxekXMFApnqTuavnBVF2H97L/1dlIySRCOIflqKPy2jtPkSEzYK8fmT1sdOxU7/qLHQBtNSsoq00IgN6OLrT2J+fmQp85LD+HVFgPhfMRTPkvY5U8lXMBChvOi0fAi+fOstX/HJhJ/OTZjDaViYGx58G/fimHxIx/95qSojaVlVtvec0oYw6bKdpMO5nID1bG2d4w8PLCNByk55ATJC1qKxDZC4pwku5qqM14i6IWZo1eYCc46KZMinAq0yV4U+6M07JVb3K0fMa2W33E6k4QgtpRP37PROqqtcPpmCBbiMtbjBgwdM/L9DZefNJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=S/EtoZRiU7PM2AIDtJXkuOoHF38AwPT2UzapsdhtRKo=;
+ b=Kk0oQLSSCEGSfq82SXm6BUbRa6YOsEpejQCUifwKWvHJ2zz4Byv4wleFrCUmNdbOOf3BYvycRgkqcVjwi0xwiy6FZkJK4WCF7Yi76Q9qKdM9vURvFbH6cJEXIbia3awFbBUVQijs5S+Tcqa6FWk22bEYNmfmxMbu9HDgLHVP1znGHdDdtQZ/obUCExoPOcaStoJyBlslk86qMNvvkzvTkktWinLRlWr2VJELJ5zuwciQQ8vuoIMDYNEb36OZThS61aPRW2sXnLEvIAQdCPdD5xEK71eA1Fh+2/zcE/HwLwdz6EqHNbIQC9Q/X6UJ0YO7g92fd/7Kpbzn4UpR3FsQPw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by AS5PR04MB11467.eurprd04.prod.outlook.com (2603:10a6:20b:6c3::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.12; Thu, 16 Oct
+ 2025 15:38:29 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9228.010; Thu, 16 Oct 2025
+ 15:38:29 +0000
+Date: Thu, 16 Oct 2025 11:38:15 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Lee Jones <lee@kernel.org>, Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-phy@lists.infradead.org
+Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
+Message-ID: <aPERZ/IpjAhD2sen@lizhi-Precision-Tower-5810>
+References: <20251015232015.846282-1-robh@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015232015.846282-1-robh@kernel.org>
+X-ClientProxiedBy: PH0P220CA0010.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:d3::20) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS5PR04MB11467:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8a12a7f8-7aaa-4c75-02b6-08de0cca0df6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|52116014|7416014|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?HbGBelW3YZSW2ud8dNHnqK8aOB0aMkt3j6xlpN4degQBkwVjIjDbbvXVXCSs?=
+ =?us-ascii?Q?7mXGUUUEfHifoNtnfLjR4w0kaDHqV6oIi8lAWvzuQibABj3Jom6ic1cIPPkK?=
+ =?us-ascii?Q?t7SEc94BcYF/SPlGQ6MHGfV6KgduOIae5SlgwWKf1ttDVsCMfRJUP3jbmNJh?=
+ =?us-ascii?Q?7DdtUy89sIQZVl/zy6zmihcFXgp6gpCpfCXELd2yULiz2VjMdkheQnL9Gnnu?=
+ =?us-ascii?Q?sIg1JNesw+qKUFz8ZlWW3VzLBTd4c23wQO6AJo4tEXZ5BF4mNdnJ1ku9tg4V?=
+ =?us-ascii?Q?hgus1Z3GrSVrF5aE7TanVcR+rsAzH98f062ld8FZ1M/GPwavntXUtAsTqvpa?=
+ =?us-ascii?Q?L7Qsx06/adG0PDrOqgcEI+fmDKFjFynhmAoCsdq79Iny7pEZH8rX20IrIz2B?=
+ =?us-ascii?Q?22PqZbtdusboYRko45OGziMrtq2lUj/PbtA4Kiuigmii+9rYYtzhgu0ZwTKu?=
+ =?us-ascii?Q?rZ/SSbG6hBKVh847pPBC/ZxsnCB3VbgnkYugl4abP0wZjCZAC6rdb8b1S5AG?=
+ =?us-ascii?Q?UeSqllLOWS6C2C75OzOD3UT4gn12XGUVQ7AWBsUGklM7CHeenyQukyF5EdKS?=
+ =?us-ascii?Q?15xejD1tsjlbKxrmz1OIAplU+cb26Q3cRU17DXGbRxK6LY9kbLgNT/4BCBZD?=
+ =?us-ascii?Q?g2VmZilBb1UieE0UOBs+UQjUPXpZhbG8r1lhwHnquYAsPmKXHzNRMSUZTeRe?=
+ =?us-ascii?Q?jx8DHwGBRM54g0AxSmjhd4xiHyDzcJ3aNczFJVUSDPsfVUPnvY+lmRboaDfg?=
+ =?us-ascii?Q?Q1DwUHW0NNHh7nPLIJKYtA83kk7NMar0oCunnBEbVRQf4o3W8Y220VfdY4bx?=
+ =?us-ascii?Q?hhNtWnqUkR77N42ao2XBFMsAJc/1tiC3GFeH+MPu0wDQrmxvfTB/ciR0gOen?=
+ =?us-ascii?Q?n0zjZzLpFP/8bOpu0UsLJyxDwQMYW25Kib+uMqNMZtGEkcvtSdyfOYEn91Jb?=
+ =?us-ascii?Q?DM4gGP17LDl8SkSCm4XOZb4/mIG6R4jFiZd3vMIDRMd5h/Yj4uOJBtUaQUgS?=
+ =?us-ascii?Q?Vr7T5rXmbIDxBbSGbTAN6wuh4vP/+PsaJuyOBORu4hOEs0T5MoTafP/0jJ3r?=
+ =?us-ascii?Q?JSEBJe51pB4xUvp4oTs1fTIK8eWmb2oYLUpJtDaPCgUH+Cdi9Nf8pVNdhwF4?=
+ =?us-ascii?Q?WCXx0fOfK9OXMU6/j+kTD/izUau7njvgz0nDDsJbzSQGn+YKaxSlUV8tcI7x?=
+ =?us-ascii?Q?Gdl+DfFLAk1FnweBidBfz+7cBJUza6enUcJLTrT7ehWhxxLSSkOTCFgvo1/w?=
+ =?us-ascii?Q?1clHAemg/Ytv7U6cxguL0eody9XoyLpmBaD06uiQFlAZVDUoi9dY7ev+jGy7?=
+ =?us-ascii?Q?0rshVUJL8gSdNeTHTWxmPbeafPOU3DhWpOF9qKSBWECiqa0STMytf9ahiMnN?=
+ =?us-ascii?Q?ywyDq1OGHH1BrqTps8zUIpV1Ds016WV/658T7+ms1ctfGY7wtUsGDznI69Qu?=
+ =?us-ascii?Q?HTZW2//5yghoshJ/clyaQHm0btElulWnwNSKRmu7Pi8/gfcQ6IsO9R0ZJmgz?=
+ =?us-ascii?Q?XVmYznuen2ZrxWZ+xNZWCu0Ax2NBDyZru088?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(52116014)(7416014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?h1FBt7H+TYtBI+GjkCdNmYUKluFT/7DjHUlDVf6CFyuv2CXBNxrr65f9/ALq?=
+ =?us-ascii?Q?a5v/iaKaSNOLEnX7He6Y4fhXkmHARqN06d5zGjroiT+qwsnnK03K33eHb7Ep?=
+ =?us-ascii?Q?L7rv5UOqIeQ50ND1H+uC93DKIdfDhzsGWtBmkxmzRICaixFOCuwOC+Uf0iTr?=
+ =?us-ascii?Q?FQM1hzEHVN0cMBWjLgmj56qchYBA3HyUSEEJo4adiU1DfTvhFxHcRL2Ot0IS?=
+ =?us-ascii?Q?l/+nKs/WS0TGhB6fo7dKP+98cFSaASl8/H3hnc4nSzatmWHIv13ybaM0UDhh?=
+ =?us-ascii?Q?zQyZUNkTx1d6zWWh5Qxu/Dsgm5z/3O/Go/XzZOIiqlQ1GX+WW0pzPOO34pQM?=
+ =?us-ascii?Q?3S+clpSYdflJRiqJ7376SV2jppsoS7mhNrBT0/9OT81yCW5wGju/4dP7wzri?=
+ =?us-ascii?Q?RDDfGSP/CBLXtc6OhQO0rsOXD/yCmLTbNsuTaVAu2BAOdBBFV6pY++5JrHUl?=
+ =?us-ascii?Q?nSKhQrVCu1K9iwQshS5/WH4XCz9RZOGkTzo9zwmQB5H9KCj4fRRKxNo93DCA?=
+ =?us-ascii?Q?d+bTP6X6jlNUu2yYUJRlB2LdLVpfUQ/FGtK3pD3SDI0TczkOxY238JZmqQiK?=
+ =?us-ascii?Q?UlESPiKxm1EdIxgu4uBTbFEAR+VGNwfZx9eHtdAODtyUEe2mGKg3mEfr3VmY?=
+ =?us-ascii?Q?z5KXww52PXDfpaMhzjPrWuw+XqG0g1d6VD9KfkIpr6keb9+AhyfPjVdHLxri?=
+ =?us-ascii?Q?x9dLZ9FM8cJr/Zy5+/V3NjzucMdGM4ZOuH9XPnL/OQHXLWKMiKej79bIQFeC?=
+ =?us-ascii?Q?w1xLJ3nTUc969SEbK9ZV0v3YRhVrvFSuXL3OvyanZdBSMdmJOcacr87VypEa?=
+ =?us-ascii?Q?F0P5Y0Tb9/o/sKs2y/5qO+xFzq6mk6LgxCiPEer8wXi76nMNVbzi0JHvNUF0?=
+ =?us-ascii?Q?eq0V27WFB+1cn/TkVM5adlsBVMlNrzLzBZpu3jsSugr8e+u3PcuFD8HlWhI5?=
+ =?us-ascii?Q?KDCCl1puvoHDbyMIaFbl7E1+apWAUCDTG0+DbFvdxltAIwZpxIIh8HVzYV43?=
+ =?us-ascii?Q?IBUaaP9j8yoOBla+AjtvjWR91VV1rcXayU1c8MJIoMdSUmo7ZgmTKfA6dOqb?=
+ =?us-ascii?Q?BCmIhKhP8H7+AYYh4KK7/LIE7SaPhUagPzrGrnI2oESGWFz3wTMDAtlYkAXC?=
+ =?us-ascii?Q?YsXrOAZQc6QwuXh/nIgPhdD+ovhp1yfuOqEZC3PR+FCq4ROic+s6k6TlYciD?=
+ =?us-ascii?Q?RX8uAelJZq2ilRlZBj1Kehkdu38qyy+Ioz2qCLfsvBVKkQKIpHsAL8rjmIle?=
+ =?us-ascii?Q?iU90j4enKT+Vi7BGvaSp5D4QviR7Sc9jTmjpTCXJfPemSPVnEIrWcPw0DEfY?=
+ =?us-ascii?Q?vQ+tQ4+k+BQzJ1LbJc0CqL7G6KE9HYArzAEqa7mMHSQXbj29Ierp6UUlm8Ia?=
+ =?us-ascii?Q?CYsqUOvQ3ra94kqkiSslJlpKmNzwvHiby2xVHChMHLcT79RmJAeHC6nSjh+x?=
+ =?us-ascii?Q?6104WiTzhQekODNOS3m66ldGWU/ln3U+uEe+aRzfY6WEy0SeXLX7yg4DyF5T?=
+ =?us-ascii?Q?hd8w9SYMspz6GRRxytBwOheyDXWupT1MOU9OJklOw2PIHvranz6i4960Rtt4?=
+ =?us-ascii?Q?0dlSJtkUOpp+LpyzC5cdI8aMKdpvy8aWWxE0TujN?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a12a7f8-7aaa-4c75-02b6-08de0cca0df6
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 15:38:29.5354
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QSgT6dj6DrH+vFPoaYfZTtR9gM4NrcorJrfd6VUnYAEwrlII4buZO5k8hhdtuFTurv+L6ugIPQ6zhWbDI1fcZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB11467
 
-On Thu, 2025-10-16 at 16:02 +0200, Herve Codina wrote:
-> Hi Nuno,
->=20
-> On Thu, 16 Oct 2025 10:24:36 +0100
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> > On Wed, 2025-10-15 at 21:14 +0200, Herve Codina wrote:
-> > > Hi Nuno,
-> > >=20
-> > > On Wed, 15 Oct 2025 16:21:09 +0100
-> > > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> > >=20
-> > > ...=C2=A0=20
-> > > > =C2=A0=20
-> > > > > +static int rzn1_adc_enable(struct rzn1_adc *rzn1_adc)
-> > > > > +{
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	ret =3D rzn1_adc_core_power_on(&rzn1_adc->adc_core[0]);
-> > > > > +	if (ret)
-> > > > > +		return ret;
-> > > > > +
-> > > > > +	ret =3D rzn1_adc_core_power_on(&rzn1_adc->adc_core[1]);
-> > > > > +	if (ret)
-> > > > > +		goto poweroff_adc_core0;
-> > > > > +
-> > > > > +	ret =3D clk_prepare_enable(rzn1_adc->pclk);
-> > > > > +	if (ret)
-> > > > > +		goto poweroff_adc_core1;
-> > > > > +
-> > > > > +	ret =3D clk_prepare_enable(rzn1_adc->adc_clk);
-> > > > > +	if (ret)
-> > > > > +		goto disable_pclk;
-> > > > > +
-> > > > > +	ret =3D rzn1_adc_power(rzn1_adc, true);
-> > > > > +	if (ret)
-> > > > > +		goto disable_adc_clk;=C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > Can we use devm_actions() on the above to avoid the complex error p=
-ath
-> > > > plus
-> > > > the
-> > > > .remove() callback?=C2=A0=20
-> > >=20
-> > > rzn1_adc_enable() is used by the driver pm_runtime_resume() function.
-> > >=20
-> > > I don't think that devm_add_actions_or_reset() will help here.
-> > >=20
-> > > In my understanding, devm_* functions are use to perform some operati=
-ons
-> > > automatically on device removal.
-> > >=20
-> > > The purpose of the error path here is to restore a correct state if
-> > > rzn1_adc_enable() failed when it is called from pm_runtime_resume().
-> > >=20
-> > > In that case no device removal is involved to trig any action set by
-> > > devm_add_actions_or_reset().
-> > >=20
-> > > Maybe I am wrong. Did I miss something?=C2=A0=20
-> >=20
-> > Nope, I see now what's your intent.
->=20
-> Ok, no change planned for the next iteration related to this error path.
->=20
-> >=20
-> > > =C2=A0=20
-> > > > =C2=A0=20
-> > > > > +
-> > > > > +	return 0;
-> > > > > +
-> > > > > +disable_adc_clk:
-> > > > > +	clk_disable_unprepare(rzn1_adc->adc_clk);
-> > > > > +disable_pclk:
-> > > > > +	clk_disable_unprepare(rzn1_adc->pclk);
-> > > > > +poweroff_adc_core1:
-> > > > > +	rzn1_adc_core_power_off(&rzn1_adc->adc_core[1]);
-> > > > > +poweroff_adc_core0:
-> > > > > +	rzn1_adc_core_power_off(&rzn1_adc->adc_core[0]);
-> > > > > +	return ret;
-> > > > > +}
-> > > > > +=C2=A0=20
-> > >=20
-> > > ...
-> > > =C2=A0=20
-> > > > > +static int rzn1_adc_set_iio_dev_channels(struct rzn1_adc *rzn1_a=
-dc,
-> > > > > +					 struct iio_dev *indio_dev)
-> > > > > +{
-> > > > > +	int adc_used;
-> > > > > +
-> > > > > +	adc_used =3D rzn1_adc->adc_core[0].is_used ? 0x01 : 0x00;
-> > > > > +	adc_used |=3D rzn1_adc->adc_core[1].is_used ? 0x02 : 0x00;
-> > > > > +
-> > > > > +	switch (adc_used) {
-> > > > > +	case 0x01:
-> > > > > +		indio_dev->channels =3D rzn1_adc1_channels;
-> > > > > +		indio_dev->num_channels =3D
-> > > > > ARRAY_SIZE(rzn1_adc1_channels);
-> > > > > +		return 0;
-> > > > > +	case 0x02:
-> > > > > +		indio_dev->channels =3D rzn1_adc2_channels;
-> > > > > +		indio_dev->num_channels =3D
-> > > > > ARRAY_SIZE(rzn1_adc2_channels);
-> > > > > +		return 0;
-> > > > > +	case 0x03:
-> > > > > +		indio_dev->channels =3D rzn1_adc1_adc2_channels;
-> > > > > +		indio_dev->num_channels =3D
-> > > > > ARRAY_SIZE(rzn1_adc1_adc2_channels);
-> > > > > +		return 0;
-> > > > > +	default:
-> > > > > +		break;
-> > > > > +	}
-> > > > > +
-> > > > > +	dev_err(rzn1_adc->dev, "Failed to set IIO channels, no ADC
-> > > > > core
-> > > > > used\n");
-> > > > > +	return -ENODEV;=C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > dev_err_probe()?=C2=A0=20
-> > >=20
-> > > Why? the error returned is a well known value: -ENODEV.
-> > >=20
-> > > dev_err_probe() should be involved when -EPROBE_DEFER is a potential =
-error
-> > > code.
-> > >=20
-> > > IMHO, dev_err() here is correct.=C2=A0=20
-> >=20
-> > If I'm not missing nothing this function is called during probe so I do
-> > think
-> > dev_err_probe() should be used. Not only unifies logging style during p=
-robe
-> > it
-> > also has the small benefit of doing:
-> >=20
-> > return dev_err_probe(...) saving a line of code.
-> >=20
-> > You can see that, at least in IIO, we even have some patches just conve=
-rting
-> > drivers probe() to use dev_err_probe().
->=20
-> Right, I will use dev_err_probe() in the next iteration.
->=20
-> >=20
-> > > =C2=A0=20
-> > > > =C2=A0=20
-> > > > > +}
-> > > > > +
-> > > > > +static int rzn1_adc_probe(struct platform_device *pdev)
-> > > > > +{
-> > > > > +	struct device *dev =3D &pdev->dev;
-> > > > > +	struct iio_dev *indio_dev;
-> > > > > +	struct rzn1_adc *rzn1_adc;
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*rzn1_adc));
-> > > > > +	if (!indio_dev)
-> > > > > +		return -ENOMEM;
-> > > > > +
-> > > > > +	rzn1_adc =3D iio_priv(indio_dev);
-> > > > > +	rzn1_adc->dev =3D dev;
-> > > > > +	mutex_init(&rzn1_adc->lock);=C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > devm_mutex_init()=C2=A0=20
-> > >=20
-> > > Yes, I will update in the next iteration.
-> > > =C2=A0=20
-> > > > =C2=A0=20
-> > > > > +
-> > > > > +	rzn1_adc->regs =3D devm_platform_ioremap_resource(pdev, 0);
-> > > > > +	if (IS_ERR(rzn1_adc->regs))
-> > > > > +		return PTR_ERR(rzn1_adc->regs);
-> > > > > +
-> > > > > +	rzn1_adc->pclk =3D devm_clk_get(dev, "pclk");
-> > > > > +	if (IS_ERR(rzn1_adc->pclk))
-> > > > > +		return dev_err_probe(dev, PTR_ERR(rzn1_adc->pclk),
-> > > > > "Failed to
-> > > > > get pclk\n");
-> > > > > +
-> > > > > +	rzn1_adc->adc_clk =3D devm_clk_get(dev, "adc-clk");
-> > > > > +	if (IS_ERR(rzn1_adc->pclk))
-> > > > > +		return dev_err_probe(dev, PTR_ERR(rzn1_adc->pclk),
-> > > > > "Failed to
-> > > > > get adc-clk\n");
-> > > > > +
-> > > > > +	ret =3D rzn1_adc_core_get_regulators(rzn1_adc, &rzn1_adc-=C2=A0=
-=20
-> > > > > > adc_core[0],=C2=A0=20
-> > > > > +					=C2=A0=C2=A0 "adc1-avdd", "adc1-vref");
-> > > > > +	if (ret)
-> > > > > +		return ret;
-> > > > > +
-> > > > > +	ret =3D rzn1_adc_core_get_regulators(rzn1_adc, &rzn1_adc-=C2=A0=
-=20
-> > > > > > adc_core[1],=C2=A0=20
-> > > > > +					=C2=A0=C2=A0 "adc2-avdd", "adc2-vref");
-> > > > > +	if (ret)
-> > > > > +		return ret;=C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > Hmm, is avdd really an optional regulator? I mean can the ADC power=
- up
-> > > > at
-> > > > all
-> > > > without a supply in AVDD? Even vref seems to be mandatory as we can=
-'t
-> > > > properly
-> > > > scale the sample without it.=C2=A0=20
-> > >=20
-> > > Where do you see that avdd is an optional regulator?=C2=A0=20
-> >=20
-> > You are using devm_regulator_get_optional(). That's for optional regula=
-tors.
-> >=20
->=20
-> Indeed I use devm_regulator_get_optional().
->=20
-> We have two similar function to get regulators:
-> - devm_regulator_get() and
-> - devm_regulator_get_optional().
->=20
-> devm_regulator_get() returns a dummy regulator if the regulator is not
-> described in the device-tree. The calling code has no way to known if
-> the regulator was present or not.
+On Wed, Oct 15, 2025 at 06:16:24PM -0500, Rob Herring (Arm) wrote:
+> yamllint has gained a new check which checks for inconsistent quoting
+> (mixed " and ' quotes within a file). Fix all the cases yamllint found
+> so we can enable the check (once the check is in a release). Use
+> whichever quoting is dominate in the file.
 
-Yeah because it's mandatory and the part cannot work without power :). So w=
-e
-should not be allowed to operate without a regulator.
+Can we simple require only use one of " or ' to let everyone follow easily?
+support both " or ' is unneccessary options.
 
->=20
-> On the other hand, devm_regulator_get_optional() returns -ENODEV when the
-> regulator is not described.
->=20
-> That's pretty confusing but it is the reality.
->=20
-> I use devm_regulator_get_optional() but check for -ENODEV to see if the
-> regulator is provided or not.
->=20
-> In order to use the ADC core (is_used flag), I need both the AVDD and the
-> VREF regulator available.
+like hexvalue in dts should be lowcase.
 
-And that is why I don't get why are we allowed to proceed if there's no
-regulators? That seems wrong to me.=C2=A0
+Frank
 
-So I think the regulators should be mandatory in the bindings and a dummy
-regulator should also not be allowed in this case because that should get y=
-ou=C2=A0
--EINVAL when calling regulator_get_voltage().
-
->=20
-> > > =C2=A0=20
-> > > >=20
-> > > > Also, can't we have getting and enabling the regulator together? Th=
-en,
-> > > > we
-> > > > could
-> > > > use some of the modern helpers to simplify the code (ok I see you u=
-se
-> > > > them
-> > > > in
-> > > > the PM callbacks).=C2=A0=20
-> > >=20
-> > > Yes, I rely on PM callbacks to handle those regulators.
-> > > =C2=A0=20
-> > > > =C2=A0=20
-> > > > > +
-> > > > > +	platform_set_drvdata(pdev, indio_dev);
-> > > > > +
-> > > > > +	indio_dev->name =3D dev_name(dev);=C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > dev_name() should not be used for the above. It's typically the par=
-t
-> > > > name so
-> > > > I
-> > > > guess in here "rzn1-adc" would be the appropriate one.=C2=A0=20
-> > >=20
-> > > I thought it was more related to the instance and so having a differe=
-nt
-> > > name
-> > > for each instance was better.
-> > >=20
-> > > Some other IIO drivers use dev_name() here.
-> > >=20
-> > > But well, if you confirm that a fixed string should be used and so al=
-l
-> > > instances have the same string, no problem, I will update my indio_de=
-v-
-> > > >name.=C2=A0=20
-> >=20
-> > It is a fixed string, typically the part name. David Lechner not that l=
-ong
-> > ago
-> > actually sent some patch or documented somewhere why not to use dev_nam=
-e().
-> > To
-> > identify different instances we have a 'label' property.
->=20
-> Right, I will set indio_dev->name to the "rzn1-adc" fixed string.
->=20
-> >=20
-> > > =C2=A0=20
-> > > > =C2=A0=20
-> > > > > +	indio_dev->info =3D &rzn1_adc_info;
-> > > > > +	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > > > > +	ret =3D rzn1_adc_set_iio_dev_channels(rzn1_adc, indio_dev);
-> > > > > +	if (ret)
-> > > > > +		return ret;
-> > > > > +
-> > > > > +	ret =3D rzn1_adc_enable(rzn1_adc);
-> > > > > +	if (ret)
-> > > > > +		return ret;
-> > > > > +
-> > > > > +	pm_runtime_set_autosuspend_delay(dev, 500);
-> > > > > +	pm_runtime_use_autosuspend(dev);
-> > > > > +	pm_runtime_get_noresume(dev);
-> > > > > +	pm_runtime_set_active(dev);
-> > > > > +	pm_runtime_enable(dev);=C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > There's a devm_pm_runtime_enable() API now.=C2=A0=20
-> > >=20
-> > > Will look to use it in the next iteration.
-> > > =C2=A0=20
-> > > > =C2=A0=20
-> > > > > +
-> > > > > +	ret =3D devm_iio_device_register(dev, indio_dev);
-> > > > > +	if (ret)
-> > > > > +		goto disable;
-> > > > > +
-> > > > > +	pm_runtime_mark_last_busy(dev);
-> > > > > +	pm_runtime_put_autosuspend(dev);
-> > > > > +
-> > > > > +	return 0;
-> > > > > +
-> > > > > +disable:
-> > > > > +	pm_runtime_disable(dev);
-> > > > > +	pm_runtime_put_noidle(dev);
-> > > > > +	pm_runtime_set_suspended(dev);
-> > > > > +	pm_runtime_dont_use_autosuspend(dev);
-> > > > > +
-> > > > > +	rzn1_adc_disable(rzn1_adc);
-> > > > > +	return ret;
-> > > > > +}
-> > > > > +
-> > > > > +static void rzn1_adc_remove(struct platform_device *pdev)
-> > > > > +{
-> > > > > +	struct iio_dev *indio_dev =3D platform_get_drvdata(pdev);
-> > > > > +	struct rzn1_adc *rzn1_adc =3D iio_priv(indio_dev);
-> > > > > +
-> > > > > +	pm_runtime_disable(rzn1_adc->dev);
-> > > > > +	pm_runtime_set_suspended(rzn1_adc->dev);
-> > > > > +	pm_runtime_dont_use_autosuspend(rzn1_adc->dev);
-> > > > > +
-> > > > > +	rzn1_adc_disable(rzn1_adc);
-> > > > > +}=C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > I'm fairly confident we can sanely go without .remove().=C2=A0=20
-> > >=20
-> > > Will see what I can be do for the next iteration.
-> > >=20
-> > > Maybe I will ask some questions if I need some clarification around
-> > > pm_runtime but let me first try to go further in that direction.=C2=
-=A0=20
-> >=20
-> > Yeah, maybe you can come up with something but given how you use pm to
-> > enable/disable stuff I'm also not sure the above is easily doable.
-> >=20
->=20
-> Hum, do you think it's worth a try?
-
-Not sure. But it got me thinking about all this handling in the pm runtime
-routines. So if in the resume() call you fail at some point and then disabl=
-e
-stuff in your return path and then we get an unbind won't things (clocks an=
-d
-regulators) be unbalanced leading to splats? In fact by just looking at the
-unbind path [1] I can see:
-
-1. We call pm_runtime_get_sync(dev) which can fail;
-2. Later on we call pm_runtime_put_sync(dev).
-
-Not really sure if there's special handling in the pm core to be aware that
-resuming failed (the refcount seems to be incremented [2] before resuming s=
-o...)
-
-Maybe I would keep it simple and get and enable clocks/regulators during pr=
-obe
-and only care of rzn1_adc_power() in the runtime routines. My 2 cents.
-
-[1]: https://elixir.bootlin.com/linux/v6.17.1/source/drivers/base/dd.c#L124=
-9
-[2]: https://elixir.bootlin.com/linux/v6.17.1/source/drivers/base/power/run=
-time.c#L1189
-
-- Nuno S=C3=A1
+>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  .../arm/altera/socfpga-clk-manager.yaml       |  4 ++--
+>  .../bindings/clock/nvidia,tegra124-car.yaml   |  8 ++++----
+>  .../bindings/clock/nvidia,tegra20-car.yaml    |  6 +++---
+>  .../devicetree/bindings/gpio/gpio-mxs.yaml    |  9 +++++----
+>  .../bindings/gpio/snps,dw-apb-gpio.yaml       |  4 ++--
+>  .../bindings/iio/temperature/adi,ltc2983.yaml | 20 +++++++++----------
+>  .../mailbox/qcom,apcs-kpss-global.yaml        | 16 +++++++--------
+>  .../mailbox/xlnx,zynqmp-ipi-mailbox.yaml      |  2 +-
+>  .../bindings/media/fsl,imx6q-vdoa.yaml        |  2 +-
+>  .../devicetree/bindings/mfd/aspeed-lpc.yaml   |  4 ++--
+>  .../devicetree/bindings/mfd/ti,twl.yaml       |  4 ++--
+>  .../bindings/net/ethernet-switch.yaml         |  2 +-
+>  .../pci/plda,xpressrich3-axi-common.yaml      |  2 +-
+>  .../bindings/phy/motorola,cpcap-usb-phy.yaml  |  4 ++--
+>  .../pinctrl/microchip,sparx5-sgpio.yaml       | 12 +++++------
+>  .../bindings/pinctrl/qcom,pmic-gpio.yaml      | 10 +++++-----
+>  .../bindings/pinctrl/qcom,pmic-mpp.yaml       |  6 +++---
+>  .../bindings/pinctrl/renesas,pfc.yaml         |  4 ++--
+>  .../bindings/pinctrl/renesas,rza1-ports.yaml  |  2 +-
+>  .../pinctrl/renesas,rzg2l-pinctrl.yaml        |  2 +-
+>  .../pinctrl/renesas,rzv2m-pinctrl.yaml        |  2 +-
+>  .../bindings/power/renesas,sysc-rmobile.yaml  |  4 ++--
+>  .../soc/microchip/atmel,at91rm9200-tcb.yaml   |  8 ++++----
+>  .../soc/tegra/nvidia,tegra20-pmc.yaml         | 12 +++++------
+>  24 files changed, 75 insertions(+), 74 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/arm/altera/socfpga-clk-manager.yaml b/Documentation/devicetree/bindings/arm/altera/socfpga-clk-manager.yaml
+> index a758f4bb2bb3..275554bfedce 100644
+> --- a/Documentation/devicetree/bindings/arm/altera/socfpga-clk-manager.yaml
+> +++ b/Documentation/devicetree/bindings/arm/altera/socfpga-clk-manager.yaml
+> @@ -39,7 +39,7 @@ properties:
+>
+>        "^[a-z0-9,_]+(clk|pll|clk_gate|clk_divided)(@[a-f0-9]+)?$":
+>          type: object
+> -        $ref: '#/$defs/clock-props'
+> +        $ref: "#/$defs/clock-props"
+>          unevaluatedProperties: false
+>
+>          properties:
+> @@ -67,7 +67,7 @@ properties:
+>          patternProperties:
+>            "^[a-z0-9,_]+(clk|pll)(@[a-f0-9]+)?$":
+>              type: object
+> -            $ref: '#/$defs/clock-props'
+> +            $ref: "#/$defs/clock-props"
+>              unevaluatedProperties: false
+>
+>              properties:
+> diff --git a/Documentation/devicetree/bindings/clock/nvidia,tegra124-car.yaml b/Documentation/devicetree/bindings/clock/nvidia,tegra124-car.yaml
+> index a9ba21144a56..13bb616249a1 100644
+> --- a/Documentation/devicetree/bindings/clock/nvidia,tegra124-car.yaml
+> +++ b/Documentation/devicetree/bindings/clock/nvidia,tegra124-car.yaml
+> @@ -37,7 +37,7 @@ properties:
+>    '#clock-cells':
+>      const: 1
+>
+> -  "#reset-cells":
+> +  '#reset-cells':
+>      const: 1
+>
+>    nvidia,external-memory-controller:
+> @@ -46,7 +46,7 @@ properties:
+>        phandle of the external memory controller node
+>
+>  patternProperties:
+> -  "^emc-timings-[0-9]+$":
+> +  '^emc-timings-[0-9]+$':
+>      type: object
+>      properties:
+>        nvidia,ram-code:
+> @@ -56,7 +56,7 @@ patternProperties:
+>            this timing set is used for
+>
+>      patternProperties:
+> -      "^timing-[0-9]+$":
+> +      '^timing-[0-9]+$':
+>          type: object
+>          properties:
+>            clock-frequency:
+> @@ -94,7 +94,7 @@ required:
+>    - compatible
+>    - reg
+>    - '#clock-cells'
+> -  - "#reset-cells"
+> +  - '#reset-cells'
+>
+>  additionalProperties: false
+>
+> diff --git a/Documentation/devicetree/bindings/clock/nvidia,tegra20-car.yaml b/Documentation/devicetree/bindings/clock/nvidia,tegra20-car.yaml
+> index bee2dd4b29bf..73cccc0df424 100644
+> --- a/Documentation/devicetree/bindings/clock/nvidia,tegra20-car.yaml
+> +++ b/Documentation/devicetree/bindings/clock/nvidia,tegra20-car.yaml
+> @@ -39,11 +39,11 @@ properties:
+>    '#clock-cells':
+>      const: 1
+>
+> -  "#reset-cells":
+> +  '#reset-cells':
+>      const: 1
+>
+>  patternProperties:
+> -  "^(sclk)|(pll-[cem])$":
+> +  '^(sclk)|(pll-[cem])$':
+>      type: object
+>      properties:
+>        compatible:
+> @@ -76,7 +76,7 @@ required:
+>    - compatible
+>    - reg
+>    - '#clock-cells'
+> -  - "#reset-cells"
+> +  - '#reset-cells'
+>
+>  additionalProperties: false
+>
+> diff --git a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+> index aaf97124803f..4b5b8e794613 100644
+> --- a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+> +++ b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
+> @@ -26,9 +26,10 @@ properties:
+>        # Devices. Keep it as it to be compatible existed dts files.
+>        - const: simple-bus
+>
+> -  '#address-cells':
+> +  "#address-cells":
+>      const: 1
+> -  '#size-cells':
+> +
+> +  "#size-cells":
+>      const: 0
+>
+>    reg:
+> @@ -132,8 +133,8 @@ patternProperties:
+>  required:
+>    - compatible
+>    - reg
+> -  - '#address-cells'
+> -  - '#size-cells'
+> +  - "#address-cells"
+> +  - "#size-cells"
+>
+>  additionalProperties: false
+>
+> diff --git a/Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml b/Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
+> index ab2afc0e4153..bba6f5b6606f 100644
+> --- a/Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
+> +++ b/Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
+> @@ -111,8 +111,8 @@ additionalProperties: false
+>  required:
+>    - compatible
+>    - reg
+> -  - "#address-cells"
+> -  - "#size-cells"
+> +  - '#address-cells'
+> +  - '#size-cells'
+>
+>  examples:
+>    - |
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> index 312febeeb3bb..ee0b558bb866 100644
+> --- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> +++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> @@ -88,7 +88,7 @@ properties:
+>      const: 0
+>
+>  patternProperties:
+> -  "^thermocouple@":
+> +  '^thermocouple@':
+>      $ref: '#/$defs/sensor-node'
+>      unevaluatedProperties: false
+>
+> @@ -146,7 +146,7 @@ patternProperties:
+>            required:
+>              - adi,custom-thermocouple
+>
+> -  "^diode@":
+> +  '^diode@':
+>      $ref: '#/$defs/sensor-node'
+>      unevaluatedProperties: false
+>
+> @@ -191,7 +191,7 @@ patternProperties:
+>          $ref: /schemas/types.yaml#/definitions/uint32
+>          default: 0
+>
+> -  "^rtd@":
+> +  '^rtd@':
+>      $ref: '#/$defs/sensor-node'
+>      unevaluatedProperties: false
+>      description: RTD sensor.
+> @@ -280,7 +280,7 @@ patternProperties:
+>                type: boolean
+>
+>            dependencies:
+> -            adi,current-rotate: [ "adi,rsense-share" ]
+> +            adi,current-rotate: [ 'adi,rsense-share' ]
+>
+>        - if:
+>            properties:
+> @@ -290,7 +290,7 @@ patternProperties:
+>            required:
+>              - adi,custom-rtd
+>
+> -  "^thermistor@":
+> +  '^thermistor@':
+>      $ref: '#/$defs/sensor-node'
+>      unevaluatedProperties: false
+>      description: Thermistor sensor.
+> @@ -364,7 +364,7 @@ patternProperties:
+>        - adi,rsense-handle
+>
+>      dependencies:
+> -      adi,current-rotate: [ "adi,rsense-share" ]
+> +      adi,current-rotate: [ 'adi,rsense-share' ]
+>
+>      allOf:
+>        - if:
+> @@ -392,7 +392,7 @@ patternProperties:
+>            required:
+>              - adi,custom-thermistor
+>
+> -  "^adc@":
+> +  '^adc@':
+>      $ref: '#/$defs/sensor-node'
+>      unevaluatedProperties: false
+>      description: Direct ADC sensor.
+> @@ -407,7 +407,7 @@ patternProperties:
+>          description: Whether the sensor is single-ended.
+>          type: boolean
+>
+> -  "^temp@":
+> +  '^temp@':
+>      $ref: '#/$defs/sensor-node'
+>      unevaluatedProperties: false
+>      description: Active analog temperature sensor.
+> @@ -437,7 +437,7 @@ patternProperties:
+>      required:
+>        - adi,custom-temp
+>
+> -  "^rsense@":
+> +  '^rsense@':
+>      $ref: '#/$defs/sensor-node'
+>      unevaluatedProperties: false
+>      description: Sense resistor sensor.
+> @@ -476,7 +476,7 @@ allOf:
+>                - adi,ltc2984
+>      then:
+>        patternProperties:
+> -        "^temp@": false
+> +        '^temp@': false
+>
+>  examples:
+>    - |
+> diff --git a/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml b/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml
+> index 615ed103b7e6..f40dc9048327 100644
+> --- a/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml
+> +++ b/Documentation/devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml
+> @@ -187,10 +187,10 @@ allOf:
+>              enum:
+>                - qcom,msm8916-apcs-kpss-global
+>      then:
+> -      $ref: "#/$defs/msm8916-apcs-clock-controller"
+> +      $ref: '#/$defs/msm8916-apcs-clock-controller'
+>        properties:
+>          clock-controller:
+> -          $ref: "#/$defs/msm8916-apcs-clock-controller"
+> +          $ref: '#/$defs/msm8916-apcs-clock-controller'
+>
+>    - if:
+>        properties:
+> @@ -199,10 +199,10 @@ allOf:
+>              enum:
+>                - qcom,msm8939-apcs-kpss-global
+>      then:
+> -      $ref: "#/$defs/msm8939-apcs-clock-controller"
+> +      $ref: '#/$defs/msm8939-apcs-clock-controller'
+>        properties:
+>          clock-controller:
+> -          $ref: "#/$defs/msm8939-apcs-clock-controller"
+> +          $ref: '#/$defs/msm8939-apcs-clock-controller'
+>
+>    - if:
+>        properties:
+> @@ -211,10 +211,10 @@ allOf:
+>              enum:
+>                - qcom,sdx55-apcs-gcc
+>      then:
+> -      $ref: "#/$defs/sdx55-apcs-clock-controller"
+> +      $ref: '#/$defs/sdx55-apcs-clock-controller'
+>        properties:
+>          clock-controller:
+> -          $ref: "#/$defs/sdx55-apcs-clock-controller"
+> +          $ref: '#/$defs/sdx55-apcs-clock-controller'
+>
+>    - if:
+>        properties:
+> @@ -223,10 +223,10 @@ allOf:
+>              enum:
+>                - qcom,ipq6018-apcs-apps-global
+>      then:
+> -      $ref: "#/$defs/ipq6018-apcs-clock-controller"
+> +      $ref: '#/$defs/ipq6018-apcs-clock-controller'
+>        properties:
+>          clock-controller:
+> -          $ref: "#/$defs/ipq6018-apcs-clock-controller"
+> +          $ref: '#/$defs/ipq6018-apcs-clock-controller'
+>
+>    - if:
+>        properties:
+> diff --git a/Documentation/devicetree/bindings/mailbox/xlnx,zynqmp-ipi-mailbox.yaml b/Documentation/devicetree/bindings/mailbox/xlnx,zynqmp-ipi-mailbox.yaml
+> index fe83b5cb1278..04d6473d666f 100644
+> --- a/Documentation/devicetree/bindings/mailbox/xlnx,zynqmp-ipi-mailbox.yaml
+> +++ b/Documentation/devicetree/bindings/mailbox/xlnx,zynqmp-ipi-mailbox.yaml
+> @@ -142,7 +142,7 @@ patternProperties:
+>        - compatible
+>        - reg
+>        - reg-names
+> -      - "#mbox-cells"
+> +      - '#mbox-cells'
+>        - xlnx,ipi-id
+>
+>  required:
+> diff --git a/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml b/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
+> index 511ac0d67a7f..988a5b3a62bd 100644
+> --- a/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
+> +++ b/Documentation/devicetree/bindings/media/fsl,imx6q-vdoa.yaml
+> @@ -16,7 +16,7 @@ maintainers:
+>
+>  properties:
+>    compatible:
+> -    const: "fsl,imx6q-vdoa"
+> +    const: fsl,imx6q-vdoa
+>
+>    reg:
+>      maxItems: 1
+> diff --git a/Documentation/devicetree/bindings/mfd/aspeed-lpc.yaml b/Documentation/devicetree/bindings/mfd/aspeed-lpc.yaml
+> index f329223cec07..0adfeef149e7 100644
+> --- a/Documentation/devicetree/bindings/mfd/aspeed-lpc.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/aspeed-lpc.yaml
+> @@ -111,12 +111,12 @@ patternProperties:
+>        reg:
+>          maxItems: 1
+>
+> -      '#reset-cells':
+> +      "#reset-cells":
+>          const: 1
+>
+>      required:
+>        - compatible
+> -      - '#reset-cells'
+> +      - "#reset-cells"
+>
+>    "^lpc-snoop@[0-9a-f]+$":
+>      type: object
+> diff --git a/Documentation/devicetree/bindings/mfd/ti,twl.yaml b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> index 776b04e182cb..1611b1581a8e 100644
+> --- a/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/ti,twl.yaml
+> @@ -400,7 +400,7 @@ properties:
+>        - '#pwm-cells'
+>
+>  patternProperties:
+> -  "^regulator-":
+> +  '^regulator-':
+>      type: object
+>      unevaluatedProperties: false
+>      $ref: /schemas/regulator/regulator.yaml
+> @@ -429,7 +429,7 @@ required:
+>    - reg
+>    - interrupts
+>    - interrupt-controller
+> -  - "#interrupt-cells"
+> +  - '#interrupt-cells'
+>
+>  examples:
+>    - |
+> diff --git a/Documentation/devicetree/bindings/net/ethernet-switch.yaml b/Documentation/devicetree/bindings/net/ethernet-switch.yaml
+> index b3b7e1a1b127..03001ba40e0f 100644
+> --- a/Documentation/devicetree/bindings/net/ethernet-switch.yaml
+> +++ b/Documentation/devicetree/bindings/net/ethernet-switch.yaml
+> @@ -72,7 +72,7 @@ additionalProperties: true
+>  $defs:
+>    ethernet-ports:
+>      description: An ethernet switch without any extra port properties
+> -    $ref: '#'
+> +    $ref: "#"
+>
+>      patternProperties:
+>        "^(ethernet-)?ports$":
+> diff --git a/Documentation/devicetree/bindings/pci/plda,xpressrich3-axi-common.yaml b/Documentation/devicetree/bindings/pci/plda,xpressrich3-axi-common.yaml
+> index 039eecdbd6aa..fe2e8beb5bab 100644
+> --- a/Documentation/devicetree/bindings/pci/plda,xpressrich3-axi-common.yaml
+> +++ b/Documentation/devicetree/bindings/pci/plda,xpressrich3-axi-common.yaml
+> @@ -72,7 +72,7 @@ required:
+>    - reg-names
+>    - interrupts
+>    - msi-controller
+> -  - "#interrupt-cells"
+> +  - '#interrupt-cells'
+>    - interrupt-map-mask
+>    - interrupt-map
+>
+> diff --git a/Documentation/devicetree/bindings/phy/motorola,cpcap-usb-phy.yaml b/Documentation/devicetree/bindings/phy/motorola,cpcap-usb-phy.yaml
+> index 0febd04a61f4..dd345cbd0a0b 100644
+> --- a/Documentation/devicetree/bindings/phy/motorola,cpcap-usb-phy.yaml
+> +++ b/Documentation/devicetree/bindings/phy/motorola,cpcap-usb-phy.yaml
+> @@ -67,8 +67,8 @@ properties:
+>    mode-gpios:
+>      description: Optional GPIOs for configuring alternate modes
+>      items:
+> -      - description: "mode selection GPIO #0"
+> -      - description: "mode selection GPIO #1"
+> +      - description: mode selection GPIO#0
+> +      - description: mode selection GPIO#1
+>
+>  required:
+>    - compatible
+> diff --git a/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpio.yaml b/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpio.yaml
+> index 0df4e114fdd6..fa47732d7cef 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpio.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/microchip,sparx5-sgpio.yaml
+> @@ -18,7 +18,7 @@ description: |
+>
+>  properties:
+>    $nodename:
+> -    pattern: "^gpio@[0-9a-f]+$"
+> +    pattern: '^gpio@[0-9a-f]+$'
+>
+>    compatible:
+>      enum:
+> @@ -26,10 +26,10 @@ properties:
+>        - mscc,ocelot-sgpio
+>        - mscc,luton-sgpio
+>
+> -  "#address-cells":
+> +  '#address-cells':
+>      const: 1
+>
+> -  "#size-cells":
+> +  '#size-cells':
+>      const: 0
+>
+>    reg:
+> @@ -76,7 +76,7 @@ properties:
+>        - const: switch
+>
+>  patternProperties:
+> -  "^gpio@[0-1]$":
+> +  '^gpio@[0-1]$':
+>      type: object
+>      properties:
+>        compatible:
+> @@ -132,8 +132,8 @@ required:
+>    - reg
+>    - clocks
+>    - microchip,sgpio-port-ranges
+> -  - "#address-cells"
+> -  - "#size-cells"
+> +  - '#address-cells'
+> +  - '#size-cells'
+>
+>  examples:
+>    - |
+> diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
+> index 5e6dfcc3fe9b..6632bcd037ba 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
+> @@ -424,13 +424,13 @@ allOf:
+>  patternProperties:
+>    '-state$':
+>      oneOf:
+> -      - $ref: "#/$defs/qcom-pmic-gpio-state"
+> +      - $ref: '#/$defs/qcom-pmic-gpio-state'
+>        - patternProperties:
+> -          "(pinconf|-pins)$":
+> -            $ref: "#/$defs/qcom-pmic-gpio-state"
+> +          '(pinconf|-pins)$':
+> +            $ref: '#/$defs/qcom-pmic-gpio-state'
+>          additionalProperties: false
+>
+> -  "-hog(-[0-9]+)?$":
+> +  '-hog(-[0-9]+)?$':
+>      type: object
+>      required:
+>        - gpio-hog
+> @@ -503,7 +503,7 @@ $defs:
+>                   - gpio1-gpio12 for pmxr2230
+>
+>          items:
+> -          pattern: "^gpio([0-9]+)$"
+> +          pattern: '^gpio([0-9]+)$'
+>
+>        function:
+>          items:
+> diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml
+> index 9364ae05f3e6..daf4c1c03712 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-mpp.yaml
+> @@ -74,10 +74,10 @@ required:
+>  patternProperties:
+>    '-state$':
+>      oneOf:
+> -      - $ref: "#/$defs/qcom-pmic-mpp-state"
+> +      - $ref: '#/$defs/qcom-pmic-mpp-state'
+>        - patternProperties:
+>            '-pins$':
+> -            $ref: "#/$defs/qcom-pmic-mpp-state"
+> +            $ref: '#/$defs/qcom-pmic-mpp-state'
+>          additionalProperties: false
+>
+>  $defs:
+> @@ -100,7 +100,7 @@ $defs:
+>                   - mpp1-mpp4 for pma8084
+>
+>          items:
+> -          pattern: "^mpp([0-9]+)$"
+> +          pattern: '^mpp([0-9]+)$'
+>
+>        function:
+>          items:
+> diff --git a/Documentation/devicetree/bindings/pinctrl/renesas,pfc.yaml b/Documentation/devicetree/bindings/pinctrl/renesas,pfc.yaml
+> index cfe004573366..ab1cfe9dcde5 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/renesas,pfc.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/renesas,pfc.yaml
+> @@ -129,7 +129,7 @@ additionalProperties:
+>
+>      - type: object
+>        additionalProperties:
+> -        $ref: "#/additionalProperties/anyOf/0"
+> +        $ref: '#/additionalProperties/anyOf/0'
+>
+>  examples:
+>    - |
+> @@ -190,7 +190,7 @@ examples:
+>
+>              sdhi0_pins: sd0 {
+>                      groups = "sdhi0_data4", "sdhi0_ctrl";
+> -                    function = "sdhi0";
+> +                    function = "sdhi0';
+>                      power-source = <3300>;
+>              };
+>      };
+> diff --git a/Documentation/devicetree/bindings/pinctrl/renesas,rza1-ports.yaml b/Documentation/devicetree/bindings/pinctrl/renesas,rza1-ports.yaml
+> index 2bd7d47d0fdb..737eb4e14090 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/renesas,rza1-ports.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/renesas,rza1-ports.yaml
+> @@ -118,7 +118,7 @@ additionalProperties:
+>
+>      - type: object
+>        additionalProperties:
+> -        $ref: "#/additionalProperties/anyOf/0"
+> +        $ref: '#/additionalProperties/anyOf/0'
+>
+>  examples:
+>    - |
+> diff --git a/Documentation/devicetree/bindings/pinctrl/renesas,rzg2l-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/renesas,rzg2l-pinctrl.yaml
+> index 5156d54b240b..00c05243b9a4 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/renesas,rzg2l-pinctrl.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/renesas,rzg2l-pinctrl.yaml
+> @@ -135,7 +135,7 @@ additionalProperties:
+>
+>      - type: object
+>        additionalProperties:
+> -        $ref: "#/additionalProperties/anyOf/0"
+> +        $ref: '#/additionalProperties/anyOf/0'
+>
+>  allOf:
+>    - $ref: pinctrl.yaml#
+> diff --git a/Documentation/devicetree/bindings/pinctrl/renesas,rzv2m-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/renesas,rzv2m-pinctrl.yaml
+> index 5fa5d31f8866..88b2fa5e684d 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/renesas,rzv2m-pinctrl.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/renesas,rzv2m-pinctrl.yaml
+> @@ -88,7 +88,7 @@ additionalProperties:
+>
+>      - type: object
+>        additionalProperties:
+> -        $ref: "#/additionalProperties/anyOf/0"
+> +        $ref: '#/additionalProperties/anyOf/0'
+>
+>  allOf:
+>    - $ref: pinctrl.yaml#
+> diff --git a/Documentation/devicetree/bindings/power/renesas,sysc-rmobile.yaml b/Documentation/devicetree/bindings/power/renesas,sysc-rmobile.yaml
+> index fba6914ec40d..948a9da111df 100644
+> --- a/Documentation/devicetree/bindings/power/renesas,sysc-rmobile.yaml
+> +++ b/Documentation/devicetree/bindings/power/renesas,sysc-rmobile.yaml
+> @@ -45,7 +45,7 @@ properties:
+>          const: 0
+>
+>      additionalProperties:
+> -      $ref: "#/$defs/pd-node"
+> +      $ref: '#/$defs/pd-node'
+>
+>  required:
+>    - compatible
+> @@ -83,7 +83,7 @@ $defs:
+>        - '#power-domain-cells'
+>
+>      additionalProperties:
+> -      $ref: "#/$defs/pd-node"
+> +      $ref: '#/$defs/pd-node'
+>
+>  examples:
+>    - |
+> diff --git a/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml b/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
+> index 2c7275c4503b..abf1adca0773 100644
+> --- a/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
+> +++ b/Documentation/devicetree/bindings/soc/microchip/atmel,at91rm9200-tcb.yaml
+> @@ -57,7 +57,7 @@ properties:
+>      const: 0
+>
+>  patternProperties:
+> -  "^timer@[0-2]$":
+> +  '^timer@[0-2]$':
+>      description: The timer block channels that are used as timers or counters.
+>      type: object
+>      additionalProperties: false
+> @@ -80,7 +80,7 @@ patternProperties:
+>        - compatible
+>        - reg
+>
+> -  "^pwm@[0-2]$":
+> +  '^pwm@[0-2]$':
+>      description: The timer block channels that are used as PWMs.
+>      $ref: /schemas/pwm/pwm.yaml#
+>      type: object
+> @@ -92,7 +92,7 @@ patternProperties:
+>            TCB channel to use for this PWM.
+>          enum: [ 0, 1, 2 ]
+>
+> -      "#pwm-cells":
+> +      '#pwm-cells':
+>          description:
+>            The only third cell flag supported by this binding is
+>            PWM_POLARITY_INVERTED.
+> @@ -101,7 +101,7 @@ patternProperties:
+>      required:
+>        - compatible
+>        - reg
+> -      - "#pwm-cells"
+> +      - '#pwm-cells'
+>
+>      additionalProperties: false
+>
+> diff --git a/Documentation/devicetree/bindings/soc/tegra/nvidia,tegra20-pmc.yaml b/Documentation/devicetree/bindings/soc/tegra/nvidia,tegra20-pmc.yaml
+> index 7140c312d898..f516960dbbef 100644
+> --- a/Documentation/devicetree/bindings/soc/tegra/nvidia,tegra20-pmc.yaml
+> +++ b/Documentation/devicetree/bindings/soc/tegra/nvidia,tegra20-pmc.yaml
+> @@ -133,12 +133,12 @@ properties:
+>            property. The supported-hw is a bitfield indicating SoC speedo or
+>            process ID mask.
+>
+> -      "#power-domain-cells":
+> +      '#power-domain-cells':
+>          const: 0
+>
+>      required:
+>        - operating-points-v2
+> -      - "#power-domain-cells"
+> +      - '#power-domain-cells'
+>
+>    i2c-thermtrip:
+>      type: object
+> @@ -220,7 +220,7 @@ properties:
+>          xusbc    USB Partition C               Tegra114/124/210
+>
+>      patternProperties:
+> -      "^[a-z0-9]+$":
+> +      '^[a-z0-9]+$':
+>          type: object
+>          additionalProperties: false
+>          properties:
+> @@ -365,9 +365,9 @@ allOf:
+>  additionalProperties: false
+>
+>  dependencies:
+> -  nvidia,suspend-mode: ["nvidia,core-pwr-off-time", "nvidia,cpu-pwr-off-time"]
+> -  nvidia,core-pwr-off-time: ["nvidia,core-pwr-good-time"]
+> -  nvidia,cpu-pwr-off-time: ["nvidia,cpu-pwr-good-time"]
+> +  nvidia,suspend-mode: ['nvidia,core-pwr-off-time', 'nvidia,cpu-pwr-off-time']
+> +  nvidia,core-pwr-off-time: ['nvidia,core-pwr-good-time']
+> +  nvidia,cpu-pwr-off-time: ['nvidia,cpu-pwr-good-time']
+>
+>  examples:
+>    - |
+> --
+> 2.51.0
+>
 

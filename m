@@ -1,107 +1,82 @@
-Return-Path: <linux-iio+bounces-25139-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25140-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FE2BE2F4A
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 12:54:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9EACBE305D
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 13:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E984188D95C
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 10:54:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 71CFB500515
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 11:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C13D2E540D;
-	Thu, 16 Oct 2025 10:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8AF30C34B;
+	Thu, 16 Oct 2025 11:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QUjlV0Ol"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F72328613;
-	Thu, 16 Oct 2025 10:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587E33064AF;
+	Thu, 16 Oct 2025 11:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760612033; cv=none; b=heUKVMsXD0bFI8+aTzm+Hh89JjDbL0Nd0AIXFSkNE/euIpW11hNUm4773iPAZayKMeq9LY9ZZe+7Kq9L5MMq6ElyHj4DUSm3Oa0gAasvRY/Shyrd8vWALwvum7dnI5cpQxgOue8Np8uUXR+JW1k9HOGgM76zX8CMIh0XbpR76Z4=
+	t=1760613151; cv=none; b=mO+TSXAweBRJtU+WmjD76Jt0KeSz084DDR5e4DHckoR6YnE4s7lZURxqDhx1vNr3PJiaynZuiuYUYfuUcKWDRB3Q7T6FuTgJ9jaj6EL8CjS9Q/X395dHUAb43gJaUho+sq30YtNEC+E6OT7ydAO8qOuZ/w0kAUSFqGgXd5RKrfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760612033; c=relaxed/simple;
-	bh=tvLe7oqK/Vj/59PdAQQug6bKhT8NZJUWW0AetLUgCqs=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lGtwgs2QSkFEWse1Gb6LcLVk//8sauyFROQjbrPfUAh7MgAW7zSDkuJvhdfDaElW+CGv8spsTFZvlw/KoOsrFjHnWAJmTsZtjir1RlvUlhI+cdIcUir/wpzos81CNn1Nf/vSL7LV6rGIoAKHDQF8CKGlqambyDweU7pkECVMzkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cnPtG3GQNz6L4xg;
-	Thu, 16 Oct 2025 18:52:38 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0C2D81402A5;
-	Thu, 16 Oct 2025 18:53:43 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 16 Oct
- 2025 11:53:40 +0100
-Date: Thu, 16 Oct 2025 11:53:39 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-CC: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Thierry Reding
-	<thierry.reding@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>, Shawn Guo <shawnguo@kernel.org>, "Fabio Estevam"
-	<festevam@gmail.com>, Nuno =?UTF-8?Q?S=C3=A1?= <nuno.sa@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>, "Michael Hennerich"
-	<Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Andy
- Shevchenko <andy@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>, Mauro
- Carvalho Chehab <mchehab@kernel.org>, "Lee Jones" <lee@kernel.org>, Joel
- Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Andrew Lunn <andrew@lunn.ch>, "Vladimir Oltean" <olteanv@gmail.com>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, Daire McNamara
-	<daire.mcnamara@microchip.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?UTF-8?Q?Wilczy?= =?UTF-8?Q?=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
-	"Bjorn Andersson" <andersson@kernel.org>, Geert Uytterhoeven
-	<geert+renesas@glider.be>, Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
-	<claudiu.beznea@tuxon.dev>, Florian Fainelli <f.fainelli@gmail.com>, "Tony
- Lindgren" <tony@atomide.com>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-	<linux-gpio@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-phy@lists.infradead.org>
-Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
-Message-ID: <20251016115339.000047f7@huawei.com>
-In-Reply-To: <20251015232015.846282-1-robh@kernel.org>
-References: <20251015232015.846282-1-robh@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1760613151; c=relaxed/simple;
+	bh=qWN5jRJyu+ZfS0Mz8q6YyNusK6HtE9esHiV2Q5N3IP8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VMaMo6UMbouMZUceK7cCTkfq8BXbMADrftqrLE32TLOupbYgG4P7MlQcZeOaepgWLG1B59HxDVoKFWc/E6fCZzfjjK/g3qKq6ygjd30DbJtdnMfb04rPK5sYSI3yKE98p61HxFwjLthDXz/1W4UEtOMvvWGd/J0NxHDTdqlJYDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QUjlV0Ol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FE7C4CEF9;
+	Thu, 16 Oct 2025 11:12:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760613150;
+	bh=qWN5jRJyu+ZfS0Mz8q6YyNusK6HtE9esHiV2Q5N3IP8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QUjlV0OlifcMFLBZMW1oR2N63lZhedrxldkjDhwxZ4zRPkVgLLR8tx+no/WpXJrFy
+	 NetRxqKtgSplF5tAbjn+PiAQ4mNefzam7iHz6lGy9D3bXh+afCYs5mObf3Q7aphVSx
+	 FSkM6Dr9dF0j9cfWO/tQorUxgxuUGiqS97BLnHf6mTKs0pWcKXpi5Y3XzdzBng2Zno
+	 m41+gk6UMNdyiuNJrmFTfy9jx/Spuz7PRXXsu+nugGvHoAPynHAuT31K+XwAUJ7PWA
+	 TVpAaDcQ5G5/RRECXWyr487iLgB3bPf7T3Vkm56WYNGNrnrgz3wwqDi5HCBBCzDhlb
+	 y/zaFZPmFyQZw==
+From: William Breathitt Gray <wbg@kernel.org>
+To: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: William Breathitt Gray <wbg@kernel.org>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH v2 1/1] MAINTAINERS: Update Intel Quadrature Encoder Peripheral maintainer
+Date: Thu, 16 Oct 2025 20:12:19 +0900
+Message-ID: <176061309838.174790.14380642459338947302.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251014145905.4862-1-ilpo.jarvinen@linux.intel.com>
+References: <20251014145905.4862-1-ilpo.jarvinen@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=368; i=wbg@kernel.org; h=from:subject:message-id; bh=9nxdi0icLV2/6ycaKJr/4F7sVcSCO09YFZnRpoQS+/Q=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDBkfLn2a5leQ2nRVP8p3/5WtUiFO6im77loluS/+KrTWc oIuq7VlRykLgxgXg6yYIkuv+dm7Dy6pavx4MX8bzBxWJpAhDFycAjCRrwcY/oebHbl/yczpmuaB RiOTdYssjwTmrAtg1P0inPrhTop5/lJGhoOKgVoHvrVFXbh979B1xlQJzpux+extxRrX1sx0YWJ LZAYA
+X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
+Content-Transfer-Encoding: 8bit
 
-On Wed, 15 Oct 2025 18:16:24 -0500
-"Rob Herring (Arm)" <robh@kernel.org> wrote:
 
-> yamllint has gained a new check which checks for inconsistent quoting
-> (mixed " and ' quotes within a file). Fix all the cases yamllint found
-> so we can enable the check (once the check is in a release). Use
-> whichever quoting is dominate in the file.
+On Tue, 14 Oct 2025 17:59:05 +0300, Ilpo Järvinen wrote:
+> Jarkko's address is going to bounce soon and I agreed to be the new
+> maintainer.
 > 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  .../arm/altera/socfpga-clk-manager.yaml       |  4 ++--
->  .../bindings/clock/nvidia,tegra124-car.yaml   |  8 ++++----
->  .../bindings/clock/nvidia,tegra20-car.yaml    |  6 +++---
->  .../devicetree/bindings/gpio/gpio-mxs.yaml    |  9 +++++----
->  .../bindings/gpio/snps,dw-apb-gpio.yaml       |  4 ++--
->  .../bindings/iio/temperature/adi,ltc2983.yaml | 20 +++++++++----------
-For this one
-Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> 
 
+Applied, thanks!
+
+[1/1] MAINTAINERS: Update Intel Quadrature Encoder Peripheral maintainer
+      commit: b462fcd08dd589d9cf9eb7f9d8fc7777b5c5521d
+
+Best regards,
+-- 
+William Breathitt Gray <wbg@kernel.org>
 

@@ -1,82 +1,143 @@
-Return-Path: <linux-iio+bounces-25140-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25141-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EACBE305D
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 13:13:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0873BE325D
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 13:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 71CFB500515
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 11:13:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E982C189799D
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 11:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8AF30C34B;
-	Thu, 16 Oct 2025 11:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A596A31CA5E;
+	Thu, 16 Oct 2025 11:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QUjlV0Ol"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PcNzu12O"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587E33064AF;
-	Thu, 16 Oct 2025 11:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FEE3164C5
+	for <linux-iio@vger.kernel.org>; Thu, 16 Oct 2025 11:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760613151; cv=none; b=mO+TSXAweBRJtU+WmjD76Jt0KeSz084DDR5e4DHckoR6YnE4s7lZURxqDhx1vNr3PJiaynZuiuYUYfuUcKWDRB3Q7T6FuTgJ9jaj6EL8CjS9Q/X395dHUAb43gJaUho+sq30YtNEC+E6OT7ydAO8qOuZ/w0kAUSFqGgXd5RKrfk=
+	t=1760615177; cv=none; b=UAaK+k9Gzkjoc7IoHmW6z/4VsNeyN41oW8Dh8g5kS3z3o//bVignvmIpP0oe/wJmcQHaL5120xdwpXHeObHfVkUxjbbdtZ0PsHYZDcIDgYPV2AZevVvMAZOWSLPTd0CLOYz8e5e5k3D7nwuzxECWKMq6btLkPCEDsoNtJLpPIVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760613151; c=relaxed/simple;
-	bh=qWN5jRJyu+ZfS0Mz8q6YyNusK6HtE9esHiV2Q5N3IP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VMaMo6UMbouMZUceK7cCTkfq8BXbMADrftqrLE32TLOupbYgG4P7MlQcZeOaepgWLG1B59HxDVoKFWc/E6fCZzfjjK/g3qKq6ygjd30DbJtdnMfb04rPK5sYSI3yKE98p61HxFwjLthDXz/1W4UEtOMvvWGd/J0NxHDTdqlJYDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QUjlV0Ol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FE7C4CEF9;
-	Thu, 16 Oct 2025 11:12:29 +0000 (UTC)
+	s=arc-20240116; t=1760615177; c=relaxed/simple;
+	bh=PZizulifq2HVUabPYk3xuoVBwllBTb+3Td/PKhrD1JE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ioj2mpk/CYgjomRiMXbRtUToRv5LMaIOI0XG2TrRpuNI2plOqWXl+jKTT9H5nG216kZmODGNsM1Vbgqo8T4PDtBLUwYy7Ym4MvZexua7lu5u/j/tikBGLBVrq0wudxeR2qHU/2V1qakueKKQh4+uMEJqalZG5Hg7b6CQpxLAGAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PcNzu12O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31CCC19421
+	for <linux-iio@vger.kernel.org>; Thu, 16 Oct 2025 11:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760613150;
-	bh=qWN5jRJyu+ZfS0Mz8q6YyNusK6HtE9esHiV2Q5N3IP8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUjlV0OlifcMFLBZMW1oR2N63lZhedrxldkjDhwxZ4zRPkVgLLR8tx+no/WpXJrFy
-	 NetRxqKtgSplF5tAbjn+PiAQ4mNefzam7iHz6lGy9D3bXh+afCYs5mObf3Q7aphVSx
-	 FSkM6Dr9dF0j9cfWO/tQorUxgxuUGiqS97BLnHf6mTKs0pWcKXpi5Y3XzdzBng2Zno
-	 m41+gk6UMNdyiuNJrmFTfy9jx/Spuz7PRXXsu+nugGvHoAPynHAuT31K+XwAUJ7PWA
-	 TVpAaDcQ5G5/RRECXWyr487iLgB3bPf7T3Vkm56WYNGNrnrgz3wwqDi5HCBBCzDhlb
-	 y/zaFZPmFyQZw==
-From: William Breathitt Gray <wbg@kernel.org>
-To: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: William Breathitt Gray <wbg@kernel.org>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: Re: [PATCH v2 1/1] MAINTAINERS: Update Intel Quadrature Encoder Peripheral maintainer
-Date: Thu, 16 Oct 2025 20:12:19 +0900
-Message-ID: <176061309838.174790.14380642459338947302.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251014145905.4862-1-ilpo.jarvinen@linux.intel.com>
-References: <20251014145905.4862-1-ilpo.jarvinen@linux.intel.com>
+	s=k20201202; t=1760615177;
+	bh=PZizulifq2HVUabPYk3xuoVBwllBTb+3Td/PKhrD1JE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PcNzu12ObRZcpna9g12fDshV2MGmXlk/nlZt9J4Gmm043u2IUfqaTpUe0NLoqIKXo
+	 ZlOKwamdwLQcC5ORXKB8Kbz9mW/Hct4sNahJjIhD2GdahXO9nYqNgAIJfR14rdXCMH
+	 lsXZR9vtIdbNSvtgHlbwubvbcL0NHyYAsJ7PFHhCITmFYDrI6WrIr6e0ocfKJBJGJN
+	 3oaa0V192M4SNay3eMc1xqzXIh/HbyOrp4+L20JAFAjy4iuV70bP1B6iETxSb5AgiO
+	 RMncC0YTj5H9ZvUET8qpbQn5gk2t5usy9+o82XELbU/+otfNr6E7Zz3riSI5j9wfUA
+	 ivumbrsVbUZGQ==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b3e7cc84b82so116883366b.0
+        for <linux-iio@vger.kernel.org>; Thu, 16 Oct 2025 04:46:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXAOF4P0AoFneTJNe7vTEtoBrphRXHfuZyVGB9gwZbSkBc/7By0tmFVk2enc41q4Wtu+pbIL0M/bnU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymlIThmHLaaKEL5RVq5Vlb41piGQgyLr1Ya5NoVGm8sDZjj2qR
+	kIKi0Wj3uB6q9/55EeYSgo1ohb2BseAqtJ3D2ky0SW2KiwykQieLZZD09qmeZDvbKJ08PQLXt4L
+	mSOGi2I/lEUZFvblGjvQynJ9f4q0/gg==
+X-Google-Smtp-Source: AGHT+IG/cukXQVGNzPUMXsg5+RoCAkU44f3RdQmcvQZOd/ZrFBQ7UEz32fqOhzDQMAOYnE1PB3ZCi0DPIcgQtV+P3zk=
+X-Received: by 2002:a17:907:7e96:b0:b3d:d6be:4cbe with SMTP id
+ a640c23a62f3a-b50aa8a9063mr3962097166b.18.1760615174961; Thu, 16 Oct 2025
+ 04:46:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=368; i=wbg@kernel.org; h=from:subject:message-id; bh=9nxdi0icLV2/6ycaKJr/4F7sVcSCO09YFZnRpoQS+/Q=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDBkfLn2a5leQ2nRVP8p3/5WtUiFO6im77loluS/+KrTWc oIuq7VlRykLgxgXg6yYIkuv+dm7Dy6pavx4MX8bzBxWJpAhDFycAjCRrwcY/oebHbl/yczpmuaB RiOTdYssjwTmrAtg1P0inPrhTop5/lJGhoOKgVoHvrVFXbh979B1xlQJzpux+extxRrX1sx0YWJ LZAYA
-X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
-Content-Transfer-Encoding: 8bit
+References: <20251015232015.846282-1-robh@kernel.org> <CAMuHMdVBDN8-gWVs1f=1E2NgD6Dp4=ZFUnyzqHaQj9JWPpZepw@mail.gmail.com>
+In-Reply-To: <CAMuHMdVBDN8-gWVs1f=1E2NgD6Dp4=ZFUnyzqHaQj9JWPpZepw@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 16 Oct 2025 06:46:02 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqL1KL4CvnxF5eQG2kN2VOxJ2Fh1yBx9=tqJEWOeg0DdzQ@mail.gmail.com>
+X-Gm-Features: AS18NWBW0tx10CGZVgmCxHc_hmn_UbUIH_yG162ZfRbVO05hKCLDAYOsOpbWm_A
+Message-ID: <CAL_JsqL1KL4CvnxF5eQG2kN2VOxJ2Fh1yBx9=tqJEWOeg0DdzQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
+	Jassi Brar <jassisinghbrar@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Lee Jones <lee@kernel.org>, Joel Stanley <joel@jms.id.au>, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Daire McNamara <daire.mcnamara@microchip.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Florian Fainelli <f.fainelli@gmail.com>, Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-iio@vger.kernel.org, linux-media@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-phy@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Oct 16, 2025 at 2:57=E2=80=AFAM Geert Uytterhoeven <geert@linux-m68=
+k.org> wrote:
+>
+> Hi Rob,
+>
+> On Thu, 16 Oct 2025 at 01:20, Rob Herring (Arm) <robh@kernel.org> wrote:
+> > yamllint has gained a new check which checks for inconsistent quoting
+> > (mixed " and ' quotes within a file). Fix all the cases yamllint found
+> > so we can enable the check (once the check is in a release). Use
+> > whichever quoting is dominate in the file.
+> >
+> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+>
+> Thanks for your patch!
+>
+> Since you are mentioning mixed quotes, is one or the other preferred?
 
-On Tue, 14 Oct 2025 17:59:05 +0300, Ilpo Järvinen wrote:
-> Jarkko's address is going to bounce soon and I agreed to be the new
-> maintainer.
-> 
-> 
+I have a slight preference for single quotes.
 
-Applied, thanks!
+> Shouldn't we try to be consistent across all files?
 
-[1/1] MAINTAINERS: Update Intel Quadrature Encoder Peripheral maintainer
-      commit: b462fcd08dd589d9cf9eb7f9d8fc7777b5c5521d
+I don't particularly care to change 915 files. And if the tools don't
+enforce it, I'm not going to do so in reviews.
 
-Best regards,
--- 
-William Breathitt Gray <wbg@kernel.org>
+> > --- a/Documentation/devicetree/bindings/pinctrl/renesas,pfc.yaml
+> > +++ b/Documentation/devicetree/bindings/pinctrl/renesas,pfc.yaml
+> > @@ -129,7 +129,7 @@ additionalProperties:
+> >
+> >      - type: object
+> >        additionalProperties:
+> > -        $ref: "#/additionalProperties/anyOf/0"
+> > +        $ref: '#/additionalProperties/anyOf/0'
+> >
+> >  examples:
+> >    - |
+> > @@ -190,7 +190,7 @@ examples:
+> >
+> >              sdhi0_pins: sd0 {
+> >                      groups =3D "sdhi0_data4", "sdhi0_ctrl";
+> > -                    function =3D "sdhi0";
+> > +                    function =3D "sdhi0';
+>
+> Huh?
+
+One too many search and replace. Fixed.
+
+Rob
 

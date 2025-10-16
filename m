@@ -1,339 +1,107 @@
-Return-Path: <linux-iio+bounces-25138-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25139-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC7EBE2EF0
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 12:51:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7FE2BE2F4A
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 12:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C90224F5363
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 10:49:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E984188D95C
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Oct 2025 10:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09308338F5D;
-	Thu, 16 Oct 2025 10:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="agDNwt51"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C13D2E540D;
+	Thu, 16 Oct 2025 10:53:53 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EAA31E115;
-	Thu, 16 Oct 2025 10:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F72328613;
+	Thu, 16 Oct 2025 10:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760611469; cv=none; b=mRgA62M3e4elZX/eMAX78Wa4e3NjAw/oLkM1ZOx2L1T3tWq/hSIjDLUxCTMHYOspP/aqTLXaGruBBA0SyTYwP+zOqNZw2nYh/XQg4uAsFQ9nqEocVepVcTkjlbCVNLJhAR2zdHnfk8/FreMaxTVKm1LKJucQltofXZdCdW7Cj00=
+	t=1760612033; cv=none; b=heUKVMsXD0bFI8+aTzm+Hh89JjDbL0Nd0AIXFSkNE/euIpW11hNUm4773iPAZayKMeq9LY9ZZe+7Kq9L5MMq6ElyHj4DUSm3Oa0gAasvRY/Shyrd8vWALwvum7dnI5cpQxgOue8Np8uUXR+JW1k9HOGgM76zX8CMIh0XbpR76Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760611469; c=relaxed/simple;
-	bh=Pd64nNB5Ez9IHOMoFPksTepGl56Y6v+xlVxwhALiKto=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPrRU+JKEcON3hKvDNk1ESFVNXCRLRlDXbZtPfZo6XpUW2OppdPxqkK/sd97qiLJG5Hb6E5PI3F6KoT9H6GvTCSjgfIm+mfgEMG/pe5vtM5fV9T7hsn+QAms14tvSJMY/MU1h/+/wX+6jMVck/SRns/wF2SUdg9eq1Hw9p5UyEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=agDNwt51; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1760611464;
-	bh=Pd64nNB5Ez9IHOMoFPksTepGl56Y6v+xlVxwhALiKto=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agDNwt51rlZUH+1SNzSNg5jsGcVy6Tqsvbmh2nsLeMY1cDkGhkBdaiFTux0GgSIzO
-	 3xS9c+DDf7QJul50tjSR2aE+0WOTNrhb/bRimJ7yLlerx/2z7vFVq5uIcjjONEoJfH
-	 ELpwLmMdo2llJncLZzLlrNt1+fRSuWCOfWrG1/c9kCewgl6FdEwn+Cy/lf80Soi6E9
-	 jMcMTCIEvUG3vM4QrK/ODhb5Rdqp/su7aPv4JgHp463viFMvj41i2J/IfAjgsDknFU
-	 we78cuje4ZMjovqrkOArUqgdaEfqPAkimuxmD+izhI7CND4cTNwNE+cuW17Eya/hDS
-	 mrBCWbKkOn6HA==
-Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 5EAD017E1060;
-	Thu, 16 Oct 2025 12:44:23 +0200 (CEST)
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-To: sboyd@kernel.org
-Cc: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org,
-	srini@kernel.org,
-	vkoul@kernel.org,
-	kishon@kernel.org,
-	sre@kernel.org,
-	krzysztof.kozlowski@linaro.org,
-	u.kleine-koenig@baylibre.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-arm-msm@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-pm@vger.kernel.org,
-	kernel@collabora.com,
-	wenst@chromium.org,
-	casey.connolly@linaro.org,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH v6 8/8] iio: adc: qcom-spmi-iadc: Remove regmap R/W wrapper functions
-Date: Thu, 16 Oct 2025 12:44:02 +0200
-Message-ID: <20251016104402.338246-9-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251016104402.338246-1-angelogioacchino.delregno@collabora.com>
-References: <20251016104402.338246-1-angelogioacchino.delregno@collabora.com>
+	s=arc-20240116; t=1760612033; c=relaxed/simple;
+	bh=tvLe7oqK/Vj/59PdAQQug6bKhT8NZJUWW0AetLUgCqs=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lGtwgs2QSkFEWse1Gb6LcLVk//8sauyFROQjbrPfUAh7MgAW7zSDkuJvhdfDaElW+CGv8spsTFZvlw/KoOsrFjHnWAJmTsZtjir1RlvUlhI+cdIcUir/wpzos81CNn1Nf/vSL7LV6rGIoAKHDQF8CKGlqambyDweU7pkECVMzkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cnPtG3GQNz6L4xg;
+	Thu, 16 Oct 2025 18:52:38 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0C2D81402A5;
+	Thu, 16 Oct 2025 18:53:43 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 16 Oct
+ 2025 11:53:40 +0100
+Date: Thu, 16 Oct 2025 11:53:39 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+CC: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Thierry Reding
+	<thierry.reding@gmail.com>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
+ Golaszewski <brgl@bgdev.pl>, Shawn Guo <shawnguo@kernel.org>, "Fabio Estevam"
+	<festevam@gmail.com>, Nuno =?UTF-8?Q?S=C3=A1?= <nuno.sa@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>, "Michael Hennerich"
+	<Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Andy
+ Shevchenko <andy@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>, Mauro
+ Carvalho Chehab <mchehab@kernel.org>, "Lee Jones" <lee@kernel.org>, Joel
+ Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Andrew Lunn <andrew@lunn.ch>, "Vladimir Oltean" <olteanv@gmail.com>, "David
+ S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, Daire McNamara
+	<daire.mcnamara@microchip.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?UTF-8?Q?Wilczy?= =?UTF-8?Q?=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
+	"Bjorn Andersson" <andersson@kernel.org>, Geert Uytterhoeven
+	<geert+renesas@glider.be>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+	<claudiu.beznea@tuxon.dev>, Florian Fainelli <f.fainelli@gmail.com>, "Tony
+ Lindgren" <tony@atomide.com>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+	<linux-gpio@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-phy@lists.infradead.org>
+Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
+Message-ID: <20251016115339.000047f7@huawei.com>
+In-Reply-To: <20251015232015.846282-1-robh@kernel.org>
+References: <20251015232015.846282-1-robh@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-This driver doesn't need to add any register base address to any
-regmap call anymore since it was migrated to register as a SPMI
-subdevice with its own regmap reg_base, which makes the regmap
-API to automatically add such base address internally.
+On Wed, 15 Oct 2025 18:16:24 -0500
+"Rob Herring (Arm)" <robh@kernel.org> wrote:
 
-Since the iadc_{read,write,read_result}() functions now only do
-call regmap_{read,write,bulk_read}() and nothing else, simplify
-the driver by removing them and by calling regmap APIs directly.
-
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/iio/adc/qcom-spmi-iadc.c | 83 ++++++++++++--------------------
- 1 file changed, 30 insertions(+), 53 deletions(-)
-
-diff --git a/drivers/iio/adc/qcom-spmi-iadc.c b/drivers/iio/adc/qcom-spmi-iadc.c
-index 67096952b229..7d46ec2d1a30 100644
---- a/drivers/iio/adc/qcom-spmi-iadc.c
-+++ b/drivers/iio/adc/qcom-spmi-iadc.c
-@@ -113,77 +113,59 @@ struct iadc_chip {
- 	struct completion complete;
- };
- 
--static int iadc_read(struct iadc_chip *iadc, u16 offset, u8 *data)
--{
--	unsigned int val;
--	int ret;
--
--	ret = regmap_read(iadc->regmap, offset, &val);
--	if (ret < 0)
--		return ret;
--
--	*data = val;
--	return 0;
--}
--
--static int iadc_write(struct iadc_chip *iadc, u16 offset, u8 data)
--{
--	return regmap_write(iadc->regmap, offset, data);
--}
--
- static int iadc_reset(struct iadc_chip *iadc)
- {
--	u8 data;
-+	u32 data;
- 	int ret;
- 
--	ret = iadc_write(iadc, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
-+	ret = regmap_write(iadc->regmap, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = iadc_read(iadc, IADC_PERH_RESET_CTL3, &data);
-+	ret = regmap_read(iadc->regmap, IADC_PERH_RESET_CTL3, &data);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = iadc_write(iadc, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
-+	ret = regmap_write(iadc->regmap, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
- 	if (ret < 0)
- 		return ret;
- 
- 	data |= IADC_FOLLOW_WARM_RB;
- 
--	return iadc_write(iadc, IADC_PERH_RESET_CTL3, data);
-+	return regmap_write(iadc->regmap, IADC_PERH_RESET_CTL3, data);
- }
- 
- static int iadc_set_state(struct iadc_chip *iadc, bool state)
- {
--	return iadc_write(iadc, IADC_EN_CTL1, state ? IADC_EN_CTL1_SET : 0);
-+	return regmap_write(iadc->regmap, IADC_EN_CTL1, state ? IADC_EN_CTL1_SET : 0);
- }
- 
- static void iadc_status_show(struct iadc_chip *iadc)
- {
--	u8 mode, sta1, chan, dig, en, req;
-+	u32 mode, sta1, chan, dig, en, req;
- 	int ret;
- 
--	ret = iadc_read(iadc, IADC_MODE_CTL, &mode);
-+	ret = regmap_read(iadc->regmap, IADC_MODE_CTL, &mode);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_DIG_PARAM, &dig);
-+	ret = regmap_read(iadc->regmap, IADC_DIG_PARAM, &dig);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_CH_SEL_CTL, &chan);
-+	ret = regmap_read(iadc->regmap, IADC_CH_SEL_CTL, &chan);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_CONV_REQ, &req);
-+	ret = regmap_read(iadc->regmap, IADC_CONV_REQ, &req);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_STATUS1, &sta1);
-+	ret = regmap_read(iadc->regmap, IADC_STATUS1, &sta1);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_EN_CTL1, &en);
-+	ret = regmap_read(iadc->regmap, IADC_EN_CTL1, &en);
- 	if (ret < 0)
- 		return;
- 
-@@ -199,34 +181,34 @@ static int iadc_configure(struct iadc_chip *iadc, int channel)
- 
- 	/* Mode selection */
- 	mode = (IADC_OP_MODE_NORMAL << IADC_OP_MODE_SHIFT) | IADC_TRIM_EN;
--	ret = iadc_write(iadc, IADC_MODE_CTL, mode);
-+	ret = regmap_write(iadc->regmap, IADC_MODE_CTL, mode);
- 	if (ret < 0)
- 		return ret;
- 
- 	/* Channel selection */
--	ret = iadc_write(iadc, IADC_CH_SEL_CTL, channel);
-+	ret = regmap_write(iadc->regmap, IADC_CH_SEL_CTL, channel);
- 	if (ret < 0)
- 		return ret;
- 
- 	/* Digital parameter setup */
- 	decim = IADC_DEF_DECIMATION << IADC_DIG_DEC_RATIO_SEL_SHIFT;
--	ret = iadc_write(iadc, IADC_DIG_PARAM, decim);
-+	ret = regmap_write(iadc->regmap, IADC_DIG_PARAM, decim);
- 	if (ret < 0)
- 		return ret;
- 
- 	/* HW settle time delay */
--	ret = iadc_write(iadc, IADC_HW_SETTLE_DELAY, IADC_DEF_HW_SETTLE_TIME);
-+	ret = regmap_write(iadc->regmap, IADC_HW_SETTLE_DELAY, IADC_DEF_HW_SETTLE_TIME);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = iadc_write(iadc, IADC_FAST_AVG_CTL, IADC_DEF_AVG_SAMPLES);
-+	ret = regmap_write(iadc->regmap, IADC_FAST_AVG_CTL, IADC_DEF_AVG_SAMPLES);
- 	if (ret < 0)
- 		return ret;
- 
- 	if (IADC_DEF_AVG_SAMPLES)
--		ret = iadc_write(iadc, IADC_FAST_AVG_EN, IADC_FAST_AVG_EN_SET);
-+		ret = regmap_write(iadc->regmap, IADC_FAST_AVG_EN, IADC_FAST_AVG_EN_SET);
- 	else
--		ret = iadc_write(iadc, IADC_FAST_AVG_EN, 0);
-+		ret = regmap_write(iadc->regmap, IADC_FAST_AVG_EN, 0);
- 
- 	if (ret < 0)
- 		return ret;
-@@ -239,19 +221,19 @@ static int iadc_configure(struct iadc_chip *iadc, int channel)
- 		return ret;
- 
- 	/* Request conversion */
--	return iadc_write(iadc, IADC_CONV_REQ, IADC_CONV_REQ_SET);
-+	return regmap_write(iadc->regmap, IADC_CONV_REQ, IADC_CONV_REQ_SET);
- }
- 
- static int iadc_poll_wait_eoc(struct iadc_chip *iadc, unsigned int interval_us)
- {
- 	unsigned int count, retry;
- 	int ret;
--	u8 sta1;
-+	u32 sta1;
- 
- 	retry = interval_us / IADC_CONV_TIME_MIN_US;
- 
- 	for (count = 0; count < retry; count++) {
--		ret = iadc_read(iadc, IADC_STATUS1, &sta1);
-+		ret = regmap_read(iadc->regmap, IADC_STATUS1, &sta1);
- 		if (ret < 0)
- 			return ret;
- 
-@@ -267,11 +249,6 @@ static int iadc_poll_wait_eoc(struct iadc_chip *iadc, unsigned int interval_us)
- 	return -ETIMEDOUT;
- }
- 
--static int iadc_read_result(struct iadc_chip *iadc, u16 *data)
--{
--	return regmap_bulk_read(iadc->regmap, IADC_DATA, data, 2);
--}
--
- static int iadc_do_conversion(struct iadc_chip *iadc, int chan, u16 *data)
- {
- 	unsigned int wait;
-@@ -296,7 +273,7 @@ static int iadc_do_conversion(struct iadc_chip *iadc, int chan, u16 *data)
- 	}
- 
- 	if (!ret)
--		ret = iadc_read_result(iadc, data);
-+		ret = regmap_bulk_read(iadc->regmap, IADC_DATA, data, sizeof(*data));
- exit:
- 	iadc_set_state(iadc, false);
- 	if (ret < 0)
-@@ -392,10 +369,10 @@ static int iadc_update_offset(struct iadc_chip *iadc)
- 
- static int iadc_version_check(struct iadc_chip *iadc)
- {
--	u8 val;
-+	u32 val;
- 	int ret;
- 
--	ret = iadc_read(iadc, IADC_PERPH_TYPE, &val);
-+	ret = regmap_read(iadc->regmap, IADC_PERPH_TYPE, &val);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -404,7 +381,7 @@ static int iadc_version_check(struct iadc_chip *iadc)
- 		return -EINVAL;
- 	}
- 
--	ret = iadc_read(iadc, IADC_PERPH_SUBTYPE, &val);
-+	ret = regmap_read(iadc->regmap, IADC_PERPH_SUBTYPE, &val);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -413,7 +390,7 @@ static int iadc_version_check(struct iadc_chip *iadc)
- 		return -EINVAL;
- 	}
- 
--	ret = iadc_read(iadc, IADC_REVISION2, &val);
-+	ret = regmap_read(iadc->regmap, IADC_REVISION2, &val);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -428,7 +405,7 @@ static int iadc_version_check(struct iadc_chip *iadc)
- static int iadc_rsense_read(struct iadc_chip *iadc, struct device_node *node)
- {
- 	int ret, sign, int_sense;
--	u8 deviation;
-+	u32 deviation;
- 
- 	ret = of_property_read_u32(node, "qcom,external-resistor-micro-ohms",
- 				   &iadc->rsense[IADC_EXT_RSENSE]);
-@@ -440,7 +417,7 @@ static int iadc_rsense_read(struct iadc_chip *iadc, struct device_node *node)
- 		return -EINVAL;
- 	}
- 
--	ret = iadc_read(iadc, IADC_NOMINAL_RSENSE, &deviation);
-+	ret = regmap_read(iadc->regmap, IADC_NOMINAL_RSENSE, &deviation);
- 	if (ret < 0)
- 		return ret;
- 
--- 
-2.51.0
+> yamllint has gained a new check which checks for inconsistent quoting
+> (mixed " and ' quotes within a file). Fix all the cases yamllint found
+> so we can enable the check (once the check is in a release). Use
+> whichever quoting is dominate in the file.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  .../arm/altera/socfpga-clk-manager.yaml       |  4 ++--
+>  .../bindings/clock/nvidia,tegra124-car.yaml   |  8 ++++----
+>  .../bindings/clock/nvidia,tegra20-car.yaml    |  6 +++---
+>  .../devicetree/bindings/gpio/gpio-mxs.yaml    |  9 +++++----
+>  .../bindings/gpio/snps,dw-apb-gpio.yaml       |  4 ++--
+>  .../bindings/iio/temperature/adi,ltc2983.yaml | 20 +++++++++----------
+For this one
+Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
 

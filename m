@@ -1,311 +1,201 @@
-Return-Path: <linux-iio+bounces-25203-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25204-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55609BEADBE
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 18:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8951BEAD43
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 18:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B89365A7E11
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 16:30:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 996D8587C40
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 16:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2DF29D28A;
-	Fri, 17 Oct 2025 16:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4EB2BF3DB;
+	Fri, 17 Oct 2025 16:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IcrtRK6w"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gBrR57zW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1D429AAEA
-	for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 16:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461B02BEFEB
+	for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 16:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760718547; cv=none; b=dtkB+K4rtbrRXa14lvT/eqW6ewa8oWl5/j6XAYMy91/rukCAq4AJX11woYqbU0S5yUgjmAc5cPWNENuY19uFVfmNUvKAmLf6yc4wvfhKz9lWlSBSjILycZ47vhvlEDodkpASvWCfHSI4UI2zpSivGicioSEXniUgnhQ4XmXKcxI=
+	t=1760719035; cv=none; b=caqecDaa3Y98jQ5pnA1DBJbOBi1955F2PUaFmsmq7N4dyrKeXloyMYILbspUedn2jLxUgAFBeBDOgy7Dv2U3PiQlKD3I/WV4LLKxaQsbIw2o45Oh+ywKk+kzdhKVUwjN68/MsA5uILKBO1YGEsILT89JExI7ie3uhgje7ZUbgns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760718547; c=relaxed/simple;
-	bh=yEacwEfMwbmHYq38jVAByL/81V0BvkN0d9vmDB2lRfc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rieJJGaZNqlqHLfe04+UYKwoJUmnDr1rVBNTr7cmEYCAIOyPyHvFsUBiajgV4jpJYwsZlqDCdWk3WwfUWr7/O3DpJRJeSuHqgy9k2z+gL8obaTIzGlag+EOhlq9oxKJBG8H0qiZj75EZE0fiVAmphU9W8pZvy4G1hQg4XjIGu50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IcrtRK6w; arc=none smtp.client-ip=209.85.221.48
+	s=arc-20240116; t=1760719035; c=relaxed/simple;
+	bh=K5dh/21yz367t5636zz5BS+SRG5wCokC8YohqZIkQhQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y53yz5ejN7gPoZ2w0JOCiBLwpJXZwktPj4bG83qDAPpkXCUM6EWrKRru49ZvtMn2IZ0GRcOqyuH+xowLJ7Bwd6ayFTr92JS+MRwdw+mUwDAZ3MrWccpPQOL3cYbYO1Z38gOu3fADkKdB3UxMmpmzoyXFX0BHhLTnF2CuNvt3mQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gBrR57zW; arc=none smtp.client-ip=209.85.219.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3ed20bdfdffso1977368f8f.2
-        for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 09:29:04 -0700 (PDT)
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-78e4056623fso27552536d6.2
+        for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 09:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760718542; x=1761323342; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=e+3TGUDzD/qAyFWP9lnrWAHSPYDqqbyBteI4cDb1byY=;
-        b=IcrtRK6wU8V3tHklKg8BVdjCQddjC0gmpo0XJoIx4Y+pbNYh4gat2lgjsxeE0yvq2H
-         Ul2htKaNWBYwemv1Eygp3q/DxcDsE4T+v0fBOSDMDL4/wAHGZla5rTR7WeFu7ZpABg+j
-         6C9bu/uvlCo5rhxFHjoqAuZNI7TtolVgajz7wQNANKBJQv0uPKXTClcguy6SjY/N9PJi
-         cqDVpw9q46Ftd4SiOKFnySM6VnZQ4gspv9PScfZScGMysB4VPCkSYHML5UvH4KKxOK2A
-         WXhemg1pu+iscJIu0ozi5uEB8FliQcse+Gqqi5ey0nv4WThli0UJxYFJHWVQBdp73/wo
-         PooA==
+        d=gmail.com; s=20230601; t=1760719032; x=1761323832; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lZqTIsgME323ZkO31yyQWUQxJPAMGciP0ot1SYinmXM=;
+        b=gBrR57zWpXm2w/7blqiasX6rmV7vMOXlvxZj17ty4WRF2XnRnvCdJtbZv+TCRnKfEx
+         dJRlYjhECXVkQ9Q1HIXqpT24ZGQzQyQsiU9ADp3KCRFJ3G7mv1AiaubTgOpTRR3QJiZ3
+         nL5TZx6sR9W1Vxti398bZwYcjYqIqFXg7IwscFtEsLL6pqzhaQpJbypNsFnFKem58Lnt
+         vDxezsCzssRFdXkEHo2TWlwIp5pluD9Qrl4KdwvuiuR/eE1k/nRL5SkfuLiqgxJrKVTe
+         CXGLcSwa1vOVG6qTZzmTOJQt6xSCdBQTV/aXP+AmQChG2FjRoFtd4Y80fXd9rDh0uUM7
+         a6Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760718542; x=1761323342;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e+3TGUDzD/qAyFWP9lnrWAHSPYDqqbyBteI4cDb1byY=;
-        b=pXNNsIUzATTMry+5TwBPOgZv6jZU1W/rpkGqx89gb9tse1My9Z6mU1tn7XhMKZQvBc
-         Lpm0dpBRy79InM0/oPLAgXPb9NcKFDlmSvgKQ9QSBgUlFaZsqpphposuzJ01zrDs0Jm0
-         Zpj7beDln18NvV5CBHRIxPkpEkZ1eAE0Su697OSjckFUWTMe31EA7RpV3ph0/Is3K1K8
-         pDulWlnM39CAg2hfpZge0uanpAcN5Hx+loi4aYmhFxYOjShVHmUlZ+ZX3/u01tRyrM0w
-         KBp70XPrM8ieVAtnmAWCOuIUYGfIbz97B109K1pbvmt+SSely4tNfRh6N/Wd5jmOzEs5
-         8Sdg==
-X-Forwarded-Encrypted: i=1; AJvYcCWIwKP3Z6bxuD1eQQU5O5hQC7Ews95CWh7D38rCRttdmrHUQM4FVPfm7O8wiq+gs1dTslo4jQAnkBo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfQSE1p2Fc0fNkYXGM5a1URSY97yBec4FNTFnDL7/5D3+xObdv
-	65tUe6nAIfAI/5k9IFCf1g8lbQ4yNh/MJfbt1ZQYlSC4iQZYFdT7dqD9
-X-Gm-Gg: ASbGncv1Pd3H5k6X1lA2keSk7TcsowOTPQQrmKYSCEDpKmSDukpNVfuGqSdE5g0jnTF
-	sE3oIMbvbKE1jvNlp0f0tuDjk6Xp04MkZBjkOjNNHmAB9UFq+mxbJr1lcSE2sycsnOLDyAHTnRQ
-	kiy/zGsgAgTKQEPh43xG76K4SYHUfwECuj+ttLpuLxxUABtjhDBELnrxScJafNpfNcwn2mdPlzN
-	wmjurUxGciFO04nPD0Qlft9naP9wD6DscDQ0Ps5HQiQ0anbpzTabp4p5PfWBKNqi5SkapV0ziyf
-	xmB629hjp+lLqZmRBSrZykezf7WS9L6p2d9ZdmfhC2V2FymF55/L1aoRbBau1hdAf/6QjY9oTp8
-	WT/gH03r0B/sShCGK/ZtswSDkTUXexrxph6oKCKx/qhbjH+YOs18eJa82Z0SfSZn4sykD7KLvHs
-	WfS8NO+iSV
-X-Google-Smtp-Source: AGHT+IG5OKG+QrsjrH3z6FdMIuRoh2OBw5hKsfK6m8d77lQkl/Z16nX3GNAwzHu4tF5ikt9sqtVHiA==
-X-Received: by 2002:a05:6000:2584:b0:3e7:63dc:1ff6 with SMTP id ffacd0b85a97d-42704d7eb9emr2630461f8f.8.1760718542320;
-        Fri, 17 Oct 2025 09:29:02 -0700 (PDT)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427ea5b3d4csm89738f8f.19.2025.10.17.09.29.01
+        d=1e100.net; s=20230601; t=1760719032; x=1761323832;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lZqTIsgME323ZkO31yyQWUQxJPAMGciP0ot1SYinmXM=;
+        b=C1duqvZMD9MziiRDf/ga2gwvV0g1XZRezBLuc+74DandPtKybHFbhRNAeJrbUwfrgv
+         yIzi5l884fxqCws6NirESZkJRn0MjsOb7IuvRedjd+jZ2Vmzg/QZssikMIruY8qQ1PGJ
+         d0JtnrpTGQYxKFrczqjL6MhyuZ+O0pmsDxKTu+aROP1+rRhGp+Fc4uKt4Bg87kI64FPf
+         GPbBAnR6g4t9TRL8peoUVlvtzOFzGIlVjW8tjztN0UQHcTvN+DJUo7wVKIWoX02m6dMp
+         EVmUZ/wd2Mz6I1JgLEWX6AhP7iWHnMg+x6mCgTBLCWUw14k2DMhu6+KrYAsFQ0EvuIwS
+         wofA==
+X-Forwarded-Encrypted: i=1; AJvYcCVugd4H4KxkOFYtyySgxzvWQibc8SdssGiSIiA0ND7I8kupzqpi8lhnJW6cIci8Ll0LYTiYhkseUQw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOTOyMpXpSaeBTnUe67HWRNFuxnQZQlJcNSoIvyfg9LWh8uepR
+	2NDdSN6SW1DQAk0mGSOwIpTpR0QrLQggjXCWxqSwOPRblxSk9zDcKlKk
+X-Gm-Gg: ASbGncva3R9Zqchiz81Lvhv7AAZKvwAG5BvZDXINT2momyBmId4klarxbVb7TEGSvqh
+	a1HozbXVzSe0CUhKHb79dMq8hnQjTnq3wDfN1ewn+61F8CZznuj7jp4FyfxtTvYvKhWB5uLs5V8
+	o+IMAFFRWgnSd6ZU6YQA2w4fp1gn8ot//fdKc4/CvC+zp8LCK4ypCkpczYS07dNCm0ejJvWMdmS
+	a24RzQyrHIEZrhDA+EddEmi2kxlRl3KjUWNaMRXCPgaSbPiXo0QeyzA2zOh1KhlclYJsdjIWx0Q
+	gLY6+/7YqDLwkWPF4Qk9vF84JXJMeZHCPQtYDCBeB6yClDAtiXU97QidpHbkGg8bw2lxkhDIsZ6
+	MA2e39OR/kdvpBmPveE/XBHoOvPCHDt66YxHWUXZEfuuW3oTzcRhovh9U50MjhMHGIcr2f0/HQ2
+	DKijYIy7Q=
+X-Google-Smtp-Source: AGHT+IEBLNSjsT2f6SbTw5aTPGakjHLdlQrL5hue+DxfPG8mzc3zrpMssrggDkT+31HrLygOdkrpIg==
+X-Received: by 2002:ad4:594b:0:b0:87c:2920:5730 with SMTP id 6a1803df08f44-87c29205b08mr24398926d6.40.1760719031704;
+        Fri, 17 Oct 2025 09:37:11 -0700 (PDT)
+Received: from localhost ([12.22.141.131])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87d02d91324sm1575686d6.65.2025.10.17.09.37.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Oct 2025 09:29:01 -0700 (PDT)
-Message-ID: <f73f73e6b2aae53fa6bdae7c9d2970ba1caed7e5.camel@gmail.com>
-Subject: Re: [PATCH 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, Jonathan Cameron	
- <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, Rob Herring	 <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley	 <conor+dt@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
- <magnus.damm@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown	
- <broonie@kernel.org>, linux-iio@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Pascal Eberhard <pascal.eberhard@se.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Date: Fri, 17 Oct 2025 17:29:34 +0100
-In-Reply-To: <20251017174322.07997789@bootlin.com>
-References: <20251015142816.1274605-1-herve.codina@bootlin.com>
-		<20251015142816.1274605-3-herve.codina@bootlin.com>
-		<1e8d7c96cdfaa93bcc0f581103dc0e13dfee17b7.camel@gmail.com>
-		<20251015211420.031c61fa@bootlin.com>
-		<de57f5274b2fe0aac3621dc10cb6d4d0d98d3063.camel@gmail.com>
-		<20251016160202.3d4d0a5e@bootlin.com>
-		<d7576a0bb9a8d5326d77ae434131540b4359bd2a.camel@gmail.com>
-		<20251017085904.07e40e37@bootlin.com>
-		<10e119ee5a76f1c47d7eb6a15989c8ffc00ffc5f.camel@gmail.com>
-	 <20251017174322.07997789@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+        Fri, 17 Oct 2025 09:37:11 -0700 (PDT)
+Date: Fri, 17 Oct 2025 12:37:09 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	David Miller <davem@davemloft.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Crt Mori <cmo@melexis.com>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Kim Seer Paller <kimseer.paller@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Jianping Shen <Jianping.Shen@de.bosch.com>,
+	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-edac@vger.kernel.org, qat-linux@intel.com,
+	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+	linux-iio@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] bitfield: Drop underscores from macro parameters
+Message-ID: <aPJwtZSMgZLDzxH8@yury>
+References: <cover.1760696560.git.geert+renesas@glider.be>
+ <792d176149bc4ffde2a7b78062388dc2466c23ca.1760696560.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <792d176149bc4ffde2a7b78062388dc2466c23ca.1760696560.git.geert+renesas@glider.be>
 
-On Fri, 2025-10-17 at 17:43 +0200, Herve Codina wrote:
-> I Nuno,
->=20
-> On Fri, 17 Oct 2025 09:26:26 +0100
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> > On Fri, 2025-10-17 at 08:59 +0200, Herve Codina wrote:
-> > > Hi Nuno,
-> > >=20
-> > > On Thu, 16 Oct 2025 16:26:28 +0100
-> > > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> > >=20
-> > > ...
-> > >=20
-> > > ...=C2=A0=20
-> > > > > > > > > +
-> > > > > > > > > +	ret =3D rzn1_adc_core_get_regulators(rzn1_adc,
-> > > > > > > > > &rzn1_adc-
-> > > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=20
-> > > > > > > > > > adc_core[0],=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=20
-> > > > > > > > > +					=C2=A0=C2=A0 "adc1-avdd",
-> > > > > > > > > "adc1-
-> > > > > > > > > vref");
-> > > > > > > > > +	if (ret)
-> > > > > > > > > +		return ret;
-> > > > > > > > > +
-> > > > > > > > > +	ret =3D rzn1_adc_core_get_regulators(rzn1_adc,
-> > > > > > > > > &rzn1_adc-
-> > > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=20
-> > > > > > > > > > adc_core[1],=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=20
-> > > > > > > > > +					=C2=A0=C2=A0 "adc2-avdd",
-> > > > > > > > > "adc2-
-> > > > > > > > > vref");
-> > > > > > > > > +	if (ret)
-> > > > > > > > > +		return ret;=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=20
-> > > > > > > >=20
-> > > > > > > > Hmm, is avdd really an optional regulator? I mean can the A=
-DC
-> > > > > > > > power
-> > > > > > > > up
-> > > > > > > > at
-> > > > > > > > all
-> > > > > > > > without a supply in AVDD? Even vref seems to be mandatory a=
-s we
-> > > > > > > > can't
-> > > > > > > > properly
-> > > > > > > > scale the sample without it.=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=20
-> > > > > > >=20
-> > > > > > > Where do you see that avdd is an optional regulator?=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=20
-> > > > > >=20
-> > > > > > You are using devm_regulator_get_optional(). That's for optiona=
-l
-> > > > > > regulators.
-> > > > > > =C2=A0=C2=A0=C2=A0=20
-> > > > >=20
-> > > > > Indeed I use devm_regulator_get_optional().
-> > > > >=20
-> > > > > We have two similar function to get regulators:
-> > > > > - devm_regulator_get() and
-> > > > > - devm_regulator_get_optional().
-> > > > >=20
-> > > > > devm_regulator_get() returns a dummy regulator if the regulator i=
-s not
-> > > > > described in the device-tree. The calling code has no way to know=
-n if
-> > > > > the regulator was present or not.=C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > Yeah because it's mandatory and the part cannot work without power =
-:).
-> > > > So we
-> > > > should not be allowed to operate without a regulator.
-> > > > =C2=A0=20
-> > > > >=20
-> > > > > On the other hand, devm_regulator_get_optional() returns -ENODEV =
-when
-> > > > > the
-> > > > > regulator is not described.
-> > > > >=20
-> > > > > That's pretty confusing but it is the reality.
-> > > > >=20
-> > > > > I use devm_regulator_get_optional() but check for -ENODEV to see =
-if
-> > > > > the
-> > > > > regulator is provided or not.
-> > > > >=20
-> > > > > In order to use the ADC core (is_used flag), I need both the AVDD=
- and
-> > > > > the
-> > > > > VREF regulator available.=C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > And that is why I don't get why are we allowed to proceed if there'=
-s no
-> > > > regulators? That seems wrong to me.=C2=A0
-> > > >=20
-> > > > So I think the regulators should be mandatory in the bindings and a
-> > > > dummy
-> > > > regulator should also not be allowed in this case because that shou=
-ld
-> > > > get
-> > > > you=C2=A0
-> > > > -EINVAL when calling regulator_get_voltage().
-> > > > =C2=A0=20
-> > >=20
-> > > I have 4 regulators: avdd1, vref1, avvd2, vref2.
-> > >=20
-> > > The ADC controller can work with 2 internal ADC core (adc_core[0] and
-> > > adc_core[1])
-> > > in the driver. Those internal core are not directly accessed by the
-> > > driver.
-> > > Only
-> > > the ADC controller is accesses.
-> > >=20
-> > > Those cores have an AVDD and a VREF power supply.
-> > >=20
-> > > We can use either adc_core[0] only, adc_core[1] only or both adc core=
-s.
-> > >=20
-> > > Depending on regulator described, the driver uses one or two adc core=
-s.
-> > >=20
-> > > This choice is done by:
-> > > --- 8< ---
-> > > static int rzn1_adc_set_iio_dev_channels(struct rzn1_adc *rzn1_adc,
-> > > 					 struct iio_dev *indio_dev)
-> > > {
-> > > 	int adc_used;
-> > >=20
-> > > 	adc_used =3D rzn1_adc->adc_core[0].is_used ? 0x01 : 0x00;
-> > > 	adc_used |=3D rzn1_adc->adc_core[1].is_used ? 0x02 : 0x00;
-> > >=20
-> > > 	switch (adc_used) {
-> > > 	case 0x01:
-> > > 		indio_dev->channels =3D rzn1_adc1_channels;
-> > > 		indio_dev->num_channels =3D ARRAY_SIZE(rzn1_adc1_channels);
-> > > 		return 0;
-> > > 	case 0x02:
-> > > 		indio_dev->channels =3D rzn1_adc2_channels;
-> > > 		indio_dev->num_channels =3D ARRAY_SIZE(rzn1_adc2_channels);
-> > > 		return 0;
-> > > 	case 0x03:
-> > > 		indio_dev->channels =3D rzn1_adc1_adc2_channels;
-> > > 		indio_dev->num_channels =3D
-> > > ARRAY_SIZE(rzn1_adc1_adc2_channels);
-> > > 		return 0;
-> > > 	default:
-> > > 		break;
-> > > 	}
-> > > --- 8< ---
-> > >=20
-> > > In rzn1_adc_core_get_regulators(), looking at one core I do the
-> > > following:
-> > > =C2=A0- Try to get AVDD (using get_optional)
-> > > =C2=A0- Try to get VREF (using get_optional)
-> > > =C2=A0- Core is used only if both regulators are present.
-> > >=20
-> > > For one core to be used, both regulators have to be present.
-> > >=20
-> > > Regulators are mandatory but adc core usage is optional.
-> > >=20
-> > > This optional usage depends on related regulator presence.
-> > > =C2=A0=20
-> >=20
-> > Ok, then we could flip the logic and have boolean properties for the ad=
-c
-> > core
-> > usage and depending on that, requesting the regulators. To me, the inte=
-nt
-> > would
-> > be more clear (at the expense of more FW properties).
->=20
-> This introduces a new property and duplicates the information:
-> - flag to tell if adc core is used
-> - regulators described only if used
->=20
-> And so, the possible flag set to "adc core used" but regulators not
-> described. This is error prone.
->=20
->=20
-> I have chosen to rely only on regulators description to avoid the
-> information redundancy.
-> =C2=A0 - regulators described -> adc core used
-> =C2=A0 - regulators not described -> adc core not used
+On Fri, Oct 17, 2025 at 12:54:09PM +0200, Geert Uytterhoeven wrote:
+> There is no need to prefix macro parameters with underscores.
+> Remove the underscores.
+> 
+> Suggested-by: David Laight <david.laight.linux@gmail.com>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> v4:
+>   - Update recently introduced FIELD_MODIFY() macro,
+> 
+> v3:
+>   - New.
+> ---
+>  include/linux/bitfield.h | 106 +++++++++++++++++++--------------------
+>  1 file changed, 53 insertions(+), 53 deletions(-)
+> 
+> diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
+> index 5355f8f806a97974..7ff817bdae19b468 100644
+> --- a/include/linux/bitfield.h
+> +++ b/include/linux/bitfield.h
+> @@ -60,68 +60,68 @@
+>  
+>  #define __bf_cast_unsigned(type, x)	((__unsigned_scalar_typeof(type))(x))
+>  
+> -#define __BF_FIELD_CHECK(_mask, _reg, _val, _pfx)			\
+> +#define __BF_FIELD_CHECK(mask, reg, val, pfx)				\
+>  	({								\
+> -		BUILD_BUG_ON_MSG(!__builtin_constant_p(_mask),		\
+> -				 _pfx "mask is not constant");		\
+> -		BUILD_BUG_ON_MSG((_mask) == 0, _pfx "mask is zero");	\
+> -		BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?		\
+> -				 ~((_mask) >> __bf_shf(_mask)) &	\
+> -					(0 + (_val)) : 0,		\
+> -				 _pfx "value too large for the field"); \
+> -		BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >	\
+> -				 __bf_cast_unsigned(_reg, ~0ull),	\
+> -				 _pfx "type of reg too small for mask"); \
+> -		__BUILD_BUG_ON_NOT_POWER_OF_2((_mask) +			\
+> -					      (1ULL << __bf_shf(_mask))); \
+> +		BUILD_BUG_ON_MSG(!__builtin_constant_p(mask),		\
+> +				 pfx "mask is not constant");		\
+> +		BUILD_BUG_ON_MSG((mask) == 0, pfx "mask is zero");	\
+> +		BUILD_BUG_ON_MSG(__builtin_constant_p(val) ?		\
+> +				 ~((mask) >> __bf_shf(mask)) &	\
+> +					(0 + (val)) : 0,		\
+> +				 pfx "value too large for the field"); \
+> +		BUILD_BUG_ON_MSG(__bf_cast_unsigned(mask, mask) >	\
+> +				 __bf_cast_unsigned(reg, ~0ull),	\
+> +				 pfx "type of reg too small for mask"); \
+> +		__BUILD_BUG_ON_NOT_POWER_OF_2((mask) +			\
+> +					      (1ULL << __bf_shf(mask))); \
+>  	})
 
-I'll leave it up to you but while I know it introduces new properties, you =
-could
-still do it in a way that minimizes errors:
+Hi Geert,
 
- - In the bindings, if the property is set, then the regulators are a
-__required__;
- - In the driver, if the boolean is true, then use devm_regulator_get()
+Thanks for the series!
 
-- Nuno S=C3=A1
+I agree that underscored parameters are excessive. But fixing them has
+a side effect of wiping the history, which is a bad thing.
 
+I would prefer to save a history over following a rule that seemingly
+is not written down. Let's keep this untouched for now, and if there
+will be a need to move the code, we can drop underscores as well.
+
+Meanwhile you (and David) can propose a corresponding rule in
+coding-style.rst and a checkpatch warning. That way we at least will
+stop merging a new code of that style.
+
+Thanks,
+Yury
 

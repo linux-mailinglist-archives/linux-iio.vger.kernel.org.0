@@ -1,147 +1,124 @@
-Return-Path: <linux-iio+bounces-25198-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25199-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B031DBE975E
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 17:05:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB968BE9EA9
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 17:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6AD51A66EE0
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 15:05:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D903746327
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 15:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C6C335061;
-	Fri, 17 Oct 2025 15:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8971F3328EA;
+	Fri, 17 Oct 2025 15:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SwJzMIJV"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="aeEPF5Zg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6471E32E15B
-	for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 15:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CC8337109
+	for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 15:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713394; cv=none; b=A04kQcgdfgFqmgTLgq01zAwSHT+7tDnhh8LhZ+kO4McZejcJ8XcNbq0k7C3V2w6jacB940MRMEeuVb9tNQjz+CVVZae9FKu5kf2gCZ22Smk69WOSGK/vH/1tL7KdSEmQzFYmXziV/p5zKQbMh3d7a2HBjpcX5jEcTkTE3RkhsDM=
+	t=1760714083; cv=none; b=Ayiqxx/fGXeYwfolvQeCGA6VJphgAg2fnLCPi+cq9wGtAoqLVa3haUqvN8ZP+dTPsoXi0aKpRnp2Grfh17LqG4YtZ8WZvZ3LDCvPbNozDbxqLRImTfHEyIkEOLNV4qUzGuEHUdmq8EQ/Gio/4MBJjLz2EH8XhQt8ciSIMWP+5Fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713394; c=relaxed/simple;
-	bh=DepML/g+us2sXe9XTL0BD4vVQGz+k9RHd20BL/60JyQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CPcEJ3LhS+oBT0FW4ZIYalXDDO38FWy53oZ0DZgq6j2QS+6QlZDway5mXfCYBKpjNzCg4R/XwaUqNu6+QO+ku0gIYkPogoXO/pgVSDbClvFIiB9IVB+uBPEsw/ELmZcfzpJHFQV9aqjWGaXsMuob5JXyKH3TS8h0ul4L1x8Bd10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SwJzMIJV; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-47112edf9f7so11894815e9.0
-        for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 08:03:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760713391; x=1761318191; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DepML/g+us2sXe9XTL0BD4vVQGz+k9RHd20BL/60JyQ=;
-        b=SwJzMIJVJNWXP2Nw28DNaPYoN+kr+z75YehipFT0qO0fWm6VyAUlfLY+kZKxcYZgmp
-         sMQLw6cPqWLLtN2XcWTH5EFMpGGUkb4yTIRmS2SVjDS4iwZecZzkHdLjW+V9a2NUBgYa
-         hkFmkUIPfDOmrL7poci3rdrqoJs9VjY0s19cvNcGA3DnSSx0/LqrBujveHhx/xfCZnsh
-         RXi5mSUcoSsH94iQMMdWtIcbTodbeYPbIjxZtaZLZSLbR+gku8jcd0s0fN7B1CCUc2xn
-         j7X+oE5JENi1kOD3J6wRMOWgQMUpo26n0VZ7iRSZb0vac+z8aBsSHGc/q84bsbZ0OSet
-         NGrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760713391; x=1761318191;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DepML/g+us2sXe9XTL0BD4vVQGz+k9RHd20BL/60JyQ=;
-        b=UH1Z+oHeGN0jWtKNIlWfVr1kUd5rzLAnPQS7Njg+jYW5hzLX44egm5hCyIozeGRzYQ
-         7n+DaYSGn+S/GLCZMS5A4q55dlRWpHaaBRZX4+YD4w7WqzxKSv3Djg7TPclihsa4UX7g
-         lMjRSSpWJ68GwikmOcZR+kE/pfeolIFzNLKfocziS0Jt09W0jaHkAh03cI9IDskhIEX9
-         FraWEpkE78l4e5ZdBKmEPrVdME/Ui1YamKG+ODCrxBZIxjVUknK9pmNg//Krqh6TPfUX
-         9qamtkZil2rumuNfdqIObpkOPSyeGg3SKxooZYu2Z4x28lr4SwLEmJjawRwi3IcQqyig
-         fDIw==
-X-Forwarded-Encrypted: i=1; AJvYcCXV0MponXL3K8k5A4Xgx6uxtEg83wfhmoO8KyG+NlmNCZDiOgEBJ8Dn2XT3+q3VXXcYnE8YfT5bzDs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzn/di9qT057nf1mHbicrpYLD9IjhQY6l1HvVc86neHAPmZbFxb
-	azBjcG+PMXLbBS9Mw0U6aUXsfwCeiIN5QFHHyzqoDlt9bB55TEpl1WzA
-X-Gm-Gg: ASbGncs3AMsdo9NeLlULHEcBHmH7n/sgxuBRdELDZt+FRb2Vf8jSIywQ5rVj6lm99bh
-	GoNcKOhSUSUrMIRt7rq9Cx6tPGp6H1n9iSFlIc38QxmZCLEuIoeCha2I9pEHGSnd5qwjCDlXRIS
-	OWWwBUNS2dKJeHV0v1C7AaD0eyiC3SUCgXJ/LNtxLKH5elFTuSFdZHEbtWP0u9RcLm2F6RBRL92
-	qKPw/6FQ4rkgHmz0kcdl8iG0puSdZAKQ8R08LhhHUI94m4jLqlkeIDs+p5H3Rgp5PfFKFdvxehr
-	3WZ2XErykB1dAYZvGwalpoXJWyCfR7tPSzl3XuQG+fr25wLXvWQ2rEBspeXUr0RGcX+GKRFx4ak
-	5jOGT4tiplyFUyrDt9gd52rCRa8sLbAzvf5WBJXYunegH8K/3VHU3/PvXu+2pqOZcTqxISWnpeL
-	qZsaCIpkct
-X-Google-Smtp-Source: AGHT+IFV+Ku+oz8pC4XsMoHhutoyVvOyd/uH27Kd+20XJX5VgjNw5pkgK986EJBySxY2sA+BVs8iUA==
-X-Received: by 2002:a05:600c:8b30:b0:45d:f88f:9304 with SMTP id 5b1f17b1804b1-4711791cbcbmr30598905e9.30.1760713390600;
-        Fri, 17 Oct 2025 08:03:10 -0700 (PDT)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426f2f72e18sm19966547f8f.0.2025.10.17.08.03.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Oct 2025 08:03:10 -0700 (PDT)
-Message-ID: <d56b48901843a7a3f7e6543e46eadb3901f58bfe.camel@gmail.com>
-Subject: Re: [PATCH v5 5/7] iio: adc: ad4030: Add SPI offload support
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, David Lechner
-	 <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- 	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, jic23@kernel.org,
- michael.hennerich@analog.com, 	nuno.sa@analog.com, eblanc@baylibre.com,
- andy@kernel.org, robh@kernel.org, 	krzk+dt@kernel.org, conor+dt@kernel.org,
- corbet@lwn.net, Trevor Gamblin	 <tgamblin@baylibre.com>, Axel Haslam
- <ahaslam@baylibre.com>
-Date: Fri, 17 Oct 2025 16:03:42 +0100
-In-Reply-To: <aPIqCrvaPQZg7Lo8@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1760479760.git.marcelo.schmitt@analog.com>
-	 <c12569f251962ad6034395e53cd6d998ce78a63f.1760479760.git.marcelo.schmitt@analog.com>
-	 <e677f27a-787a-433c-8516-99ff1d33f2c6@baylibre.com>
-	 <aPIqCrvaPQZg7Lo8@debian-BULLSEYE-live-builder-AMD64>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+	s=arc-20240116; t=1760714083; c=relaxed/simple;
+	bh=p7IYtu7Nv3p1Va76BbrP2fjM79zbzZp0jh60+HNRPDg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QSO3ts7gAgLiquC8sfdOnozfb3/FJCf+Y7EC2e8c3rc02jodrtQwn/9r+ZkyaUAvH74gFrwlYW288wANdPT0t5iUylBKNGujUTmISEwXGUntaFwPAU9AR7u3pJMp/gbWU/ZTk3dpMLjtIbRehYTEIlz8GVmwb2eoSER5ioJ/xoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=aeEPF5Zg; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=p7IY
+	tu7Nv3p1Va76BbrP2fjM79zbzZp0jh60+HNRPDg=; b=aeEPF5ZgjRxf5ivMgEP6
+	a96riYOhKW+hG5UdPLqdTcfe5FTjmV3OHJf/2Ai2VKwYSbJR0wC1/D/r8xB5FKy1
+	GFimrI814BL0MTkU/q5p8zRzfWMG6Fh/yESpyCgDfhMxlF/mSz/Ds6P/J4yWCMPU
+	C8BsAzABRdLNnWBwUNATSxNK7QV1NUB3MoVqJCJqA/+jshpLIV4ExS7o2LGkzWWC
+	rCepcfyhftSIouKjY3EEfHbBetJ0pbMGdjvkFgrOMTXjpe0sUGCFCa12GpnpDxYV
+	4xWw2HIu1NJLb35qNr9bhseQdJasRiHRPSgoKT4f7btxD0vJSxw1zciG1ENQqpL+
+	fw==
+Received: (qmail 79180 invoked from network); 17 Oct 2025 17:14:33 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 17 Oct 2025 17:14:33 +0200
+X-UD-Smtp-Session: l3s3148p1@AS3dMFxBjs4gAwDPXwQHAL/S9V79e5yL
+Date: Fri, 17 Oct 2025 17:14:32 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Pascal Eberhard <pascal.eberhard@se.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
+Message-ID: <aPJdWHjjwYW5VECZ@shikoro>
+References: <20251015142816.1274605-1-herve.codina@bootlin.com>
+ <20251015142816.1274605-3-herve.codina@bootlin.com>
+ <aPIIVUlHnvi0BXtN@shikoro>
+ <20251017170054.7a7a6d5f@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="eU16krwebNarsjsY"
+Content-Disposition: inline
+In-Reply-To: <20251017170054.7a7a6d5f@bootlin.com>
 
-On Fri, 2025-10-17 at 08:35 -0300, Marcelo Schmitt wrote:
-> On 10/16, David Lechner wrote:
-> > On 10/14/25 5:22 PM, Marcelo Schmitt wrote:
-> > > AD4030 and similar ADCs can capture data at sample rates up to 2 mega
-> > > samples per second (MSPS). Not all SPI controllers are able to achiev=
-e
-> > > such
-> > > high throughputs and even when the controller is fast enough to run
-> > > transfers at the required speed, it may be costly to the CPU to handl=
-e
-> > > transfer data at such high sample rates. Add SPI offload support for
-> > > AD4030
-> > > and similar ADCs to enable data capture at maximum sample rates.
-> > >=20
-> > > Co-developed-by: Trevor Gamblin <tgamblin@baylibre.com>
-> > > Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
-> > > Co-developed-by: Axel Haslam <ahaslam@baylibre.com>
-> > > Signed-off-by: Axel Haslam <ahaslam@baylibre.com>
-> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > > ---
-> > > Change log v4 -> v5
-> > > - Made Kconfig entry depend on PWM and select other features.
-> > > - Reused ad4030_exit_config_mode() in ad4030_offload_buffer_postenabl=
-e().
-> > > - Dropped common-mode voltage support on SPI offload setup.
-> >=20
-> > Curious why you chose this. I guess it will be fine to add it later
-> > if anyone ever actually needs it.
-> >=20
-> I had coded that in a way I think would work for the dual channel devices=
-, but
-> it didn't really work for single-channel adaq4216. And yes, if anyone ask=
-s
-> for offload with common-mode data, we shall probably be able to it that l=
-ater.
 
-I guess that if someone really wants it, the data will still be available i=
-n the
-sample. But yes, it would be nice to properly support it at some point.
+--eU16krwebNarsjsY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-- Nuno S=C3=A1
 
+> IMHO, I think the solution you proposed is similar in term of complexity
+> to the RZN1_ADC_NO_CHANNEL approach. On my side, I would prefer the
+> RZN1_ADC_NO_CHANNEL approach to keep the decoupling between IIO chan and
+> ADC core chans.
+>=20
+> That's said, I am still open to move in your direction if you still think
+> it is more relevant than the RZN1_ADC_NO_CHANNEL approach. Just tell me.
+
+Well, in deed, I like "my" approach a tad better, but I am not demanding
+it. It is your driver and you have reasons to do it like you implemented
+it - you chose the way, I am fine with both. But maybe add a comment
+(mention the decoupling) why it was decided this way.
+
+
+--eU16krwebNarsjsY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmjyXVUACgkQFA3kzBSg
+KbYeug/+MzLs0kUyOuNPsQ7uDp6nj5Vb9AevnkxgNb/eAHHlOb8lEDyatQmbZExt
+i2W1xVVBsqr10n7IpC7ygrrEpaM3PiV4i0a37ppAxoac6wFH01OlewpRS1L61t7W
+c/kPt/7xkdy/emhe5/mGTW4CH3lYK8IkzQtSkxLEdHW4Ku6BGsh/KTjrL05FV1VG
+M2UG20Wp42YyflxdG/U9NAjYpA2g+8zgDI7txX52GNwkoekEX4/cIk1Z0da/fKTo
+jGdeSNu1U4VupTEDap5TGafGledZQZPKuOAdSCu2JHhqXhhxkBWUJZRORbX2ztqR
+VM0o5kCgejDDLhPWijtT2UNTLKf4K36IBQDhjBju7pmfHMypXDCQ+hI6pm46v9+c
+UhraHkPsBG1z8Qez4MVgtXUPUmCjUjCq3pbIMub/ZY18EzadptQmjvGZfZ+D5Iot
+xfTMwGhbpzQNqJ1yQyC1djszbaBWp4t9U6eUE2CLyluu9Vgpw/jvPifCnzLOue0T
+Qi3RES0lAWHw8ttqY8fr04vdAh77Di/z2NNK1cYerlO1E243uPoqru8NWLWkm/OL
+H+lgDLQUFTrO4T+FiJNsp29p8nMACv6S1XAPx3NZc5i+WrulcLaGbPqOgm+Miny5
+qHybCE5xUm+c5tkKc+5jzG6akgft5TEHDkgmRCaVtcE/CpbgV0g=
+=eQ6v
+-----END PGP SIGNATURE-----
+
+--eU16krwebNarsjsY--
 

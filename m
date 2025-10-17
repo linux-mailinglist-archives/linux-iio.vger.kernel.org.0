@@ -1,141 +1,228 @@
-Return-Path: <linux-iio+bounces-25181-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25182-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEDDBE7E50
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 11:52:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A84BE83A5
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 13:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C43319C2CCB
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 09:53:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 665B66E5D64
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 10:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA5E2DAFB0;
-	Fri, 17 Oct 2025 09:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HUsSOCou"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2657B327787;
+	Fri, 17 Oct 2025 10:54:38 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0303A27E1D5
-	for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 09:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51BF3203AB;
+	Fri, 17 Oct 2025 10:54:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760694769; cv=none; b=h5cHfKNMA3nNftk+d4JbMgbSu7TLLF+PZCdWhQZRjtwW7GhIf+v0yrq4asvSYqszARkt9unJp7pp2oHP/4acF8IBy3w/RuFSnHzn1IeXURCyzK/za/4GocDlYgwL0xbnXRc29aZXQHe7nj8FWH0iPiBXIGQrv/JmMWS0Qa0nYKo=
+	t=1760698477; cv=none; b=Hl9/kpjQK/YztkBhDJKj2Z3f1yrd1PhH3FuSPiQkeAbh8giWO34GwiI8tDYTD/5Fq/xPJGO+XH1QyYpTeTzJCli2E0wrRtS5lqyHJhl1+zf/qY6TamdrFJWTeN7vnDKKyd1YBdUpZZsxEzipNvqWwmSOfB3BSN6OVQ+oqSMCE38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760694769; c=relaxed/simple;
-	bh=krtfbaJmrdnEIUPH92y+4wruHrJQ5/sEYpo+V6iCrH8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WJEmQUuLPYdaLIzcSCQV5Ve3K5qzdkvr2ByAUKb2hB7S0ZiY4fvT8/OxsSWJItZJLEBfohVGinph8D1gA7ApfGZl28McbGBDs+AgHV5t2ZCvvwQSXYWhYXkVK6kPjkm4MEfsIa7Wu2XqEpOWz+7O7bXDg/yyAOOZPRdEwcVevsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HUsSOCou; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-636de696e18so3461776a12.3
-        for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 02:52:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760694765; x=1761299565; darn=vger.kernel.org;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=krtfbaJmrdnEIUPH92y+4wruHrJQ5/sEYpo+V6iCrH8=;
-        b=HUsSOCouK5CEJwUOb8FzR6YPWH64PDiogdjXinD0WLmAHMM90Um/ZyVp89eri59uIM
-         28Z/vT/SZiA8kulezgwOlZBhjsGkEONH7btpN25gHPeWxIFIrT2j9AnY6BlbBHg/ymns
-         VYoX2yfMPStFvUi6VsZI3kBeI3++23Ky28FYoMjTkdBI8wsutQ8mWyQZtYW2YLycbl2A
-         c+0KnLRxgDiYrvzw5YOKyfbUGcfb5IGwpGAbxgcDFzBPyF8XEXapZtIM3+9QWUI7KDAO
-         SG0r3HxZ6SZ8kQg7SGeAniStddDzl7lwfaF1SIR9p1d4Uxc/e1zZ7WRQnS2ohhYgXyMQ
-         vJPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760694765; x=1761299565;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=krtfbaJmrdnEIUPH92y+4wruHrJQ5/sEYpo+V6iCrH8=;
-        b=NZhCA0ZOJ7uScUSYGG1PG6BtQtdVxYClrU5VxtkwH/XX6zMsgOEs2xLYsaRf8UBhmT
-         bCPSLaR6FLgkZc1nuoHzSRLuKrrwX0mh5BQsGQ6z3tRTZZhLOhzEA9WYvZ86jkgkcjlc
-         Ua2n3Ls43AKjtxx+BHrYDu5s6W7Tysp/go/ze7YAb19y0/10IMB5rJn2wE+VANxnsVsz
-         mUEJAYeghNaIR8yj7KsEByJtdJBKhVJ9oDOkNnpXEZbEDPAY+jlsY32MMtcxtbIyAwe6
-         I0CbhEbKjFuijbmDJUm+qsniLG21p5Lt0w/b+x81SMJUq1l3SVOqLZEa1N4ngu5hK0Yy
-         6a4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV/50TSWC2HGVJR6bbOVQkduH75aoJvqOpjox7MRyJAAgCjdHMkSfjQYA5Y5OY/xmBJRfOoqApAW1k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+y0zrP5XeemAJVfYLXM7aT1O8dDTp0k5HTDw/o6U4CqRN7Lzf
-	o+RGhkX8TIziZVr8a//aB/DkLE/EZ0jAya+PWg8dwLXxsiP5AaBUr5r4sS6NTPJHPMY=
-X-Gm-Gg: ASbGncsMc9Zu5NYsWCBlx02GsOd0vQuBtPB050ZsWdxECDLp9yNZrWreFdtLwqo/CIb
-	c84wTOZxv3mcGyaAwCiXrGssAC1ZNO1a0pSDjlwX1EVeG0OjatypFX5z30X5/JNNRujvgazldgs
-	VPQCU/DvVVw65toGRdO5D8qnuTt1cViGt14S8IH88PXhIPhO/YLxXG0m8SkY7Gvdu+JDnfX1Qo5
-	zr9u6ITo7IH0KsYiyfsGTihUoGgSatBbRLMTKijY/6kmSwAsfdHFnVoKneN4QgYTfxFW42uA1Dr
-	3Bp6t2t0nYPEzeTwC8X+fiYSYSUfeaoPAMS3RHgwSzvWAi438fXiBdB0Kad5FFuVODhBiOjmOIw
-	NmEUHQNwWc9a3Yz3+ZQ4Y/vmqzVT8RUv+4Tt53qfCwDXTESJH2hFQ+ruEUJHHpnT3YGWDeUcLGa
-	qHmD6TiRcmIVwXLC7B+AsqWcFB3ljWVkFMIpZRvXQPWOAkzmsO4GsQ
-X-Google-Smtp-Source: AGHT+IGWZep8ffF+F1GgQnRzfhXT0oTDdMxpNqX0rCxoli2ly79a6bIfyF/nMfUOmRjBANPF1e7aSg==
-X-Received: by 2002:a05:6402:3485:b0:639:f548:686e with SMTP id 4fb4d7f45d1cf-63c1f580d94mr3023847a12.0.1760694765206;
-        Fri, 17 Oct 2025 02:52:45 -0700 (PDT)
-Received: from [10.203.83.121] (mob-176-247-25-234.net.vodafone.it. [176.247.25.234])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63c25273f36sm1728474a12.25.2025.10.17.02.52.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Oct 2025 02:52:44 -0700 (PDT)
-Message-ID: <2bfbf4f61119e3f4f52bf591a49a565314ae03e7.camel@baylibre.com>
-Subject: Re: [PATCH 1/2] iio: imu: st_lsm6dsx: Fix measurement unit for odr
- struct member
-From: Francesco Lavra <flavra@baylibre.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>,  Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>,  linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Fri, 17 Oct 2025 11:52:37 +0200
-In-Reply-To: <aPFR7r-aHtURsWtD@lore-desk>
-References: <20251016172122.1220332-1-flavra@baylibre.com>
-	 <20251016172122.1220332-2-flavra@baylibre.com> <aPFR7r-aHtURsWtD@lore-desk>
-Organization: BayLibre
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-+iXbUeoPTGzOPOYfkFqi"
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1760698477; c=relaxed/simple;
+	bh=2iTRCBSgAgEc6VVwBZSn9Q6Vk0BEoRmGDB+2rvmH2AY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=upXyHCRsWU2jI/eDAW4LwyndsLd5pxe3Dhfb0pEIxr4HyU2PT6QWooUVfAXVkP7IZMzhH/+qqeckBVaZZJ6devWTkgmtaKFbsHK3DqIhyOSY1FAqWSyzgMh5S9f1TzsLRQ4XrNG1ULXbD5jgOD35IELQ2piphL6AciojK1kjJqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4B6C4CEE7;
+	Fri, 17 Oct 2025 10:54:28 +0000 (UTC)
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	David Miller <davem@davemloft.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Crt Mori <cmo@melexis.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alex Elder <elder@ieee.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Jason Baron <jbaron@akamai.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Kim Seer Paller <kimseer.paller@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Jianping Shen <Jianping.Shen@de.bosch.com>
+Cc: linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-edac@vger.kernel.org,
+	qat-linux@intel.com,
+	linux-gpio@vger.kernel.org,
+	linux-aspeed@lists.ozlabs.org,
+	linux-iio@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v4 0/4] Non-const bitfield helpers
+Date: Fri, 17 Oct 2025 12:54:08 +0200
+Message-ID: <cover.1760696560.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+	Hi all,
 
---=-+iXbUeoPTGzOPOYfkFqi
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+<linux/bitfield.h> contains various helpers for accessing bitfields, as
+typically used in hardware registers for memory-mapped I/O blocks.
+These helpers ensure type safety, and deduce automatically shift values
+from mask values, avoiding mistakes due to inconsistent shifts and
+masks, and leading to a reduction in source code size.
 
-On Thu, 2025-10-16 at 22:13 +0200, Lorenzo Bianconi wrote:
-> > The `odr` field in struct st_lsm6dsx_sensor contains a data rate
-> > value expressed in mHz, not in Hz.
-> >=20
-> > Fixes: 290a6ce11d938 ("iio: imu: add support to lsm6dsx driver")
+The existing FIELD_{GET,PREP}() macros are limited to compile-time
+constants.  However, it is very common to prepare or extract bitfield
+elements where the bitfield mask is not a compile-time constant (e.g. it
+comes from a table, or is created by shifting a compile-time constant).
+To avoid this limitation, the AT91 clock driver introduced its own
+field_{prep,get}() macros.  During the past four years, these have been
+copied to multiple drivers, and more copies are on their way[1], leading
+to the obvious review comment "please move this to <linux/bitfield.h>".
 
-I just learned that odr values used to be expressed in Hz in past versions
-of the driver, so the right commit for the Fixes: tag is f8710f0357bc3
-("iio: imu: st_lsm6dsx: express odr in mHZ"). Will correct this in v3.
+Hence this series makes field_{prep,get}() available for general use
+(first two patches), and converts a few Renesas drivers to the existing
+FIELD_{GET,PREP}() and the new field_{get,prep}() helpers (last two
+patches).
 
-> > Signed-off-by: Francesco Lavra <flavra@baylibre.com>
->=20
-> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Alternatives would be to use the typed {u*,be*,le*,...}_{get,encode}_bits()
+macros instead (which currently do not work with non-constant masks
+either, and the first attempt to change that generates much worse code),
+or to store the low bit and width of the mask instead (which would
+require changing all code that passes masks directly, and also generates
+worse code).
 
+Changes compared to v3[2]:
+  - Update recently introduced FIELD_MODIFY() macro,
+  - Add Acked-by,
+  - Rebase on top of commit 7c68005a46108ffa ("crypto: qat - relocate
+    power management debugfs helper APIs") in v6.17-rc1,
+  - Convert more recently introduced upstream copies:
+      - drivers/edac/ie31200_edac.c
+      - drivers/iio/dac/ad3530r.c
 
---=-+iXbUeoPTGzOPOYfkFqi
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Changes compared to v2[3]:
+  - New patch "[PATCH v3 1/4] bitfield: Drop underscores from macro
+    parameters",
+  - Add Acked-by,
+  - Drop underscores from macro parameters,
+  - Use __auto_type where possible,
+  - Correctly cast reg to the mask type,
+  - Introduces __val and __reg intermediates to simplify the actual
+    operation,
+  - Drop unneeded parentheses,
+  - Clarify having both FIELD_{GET,PREP}() and field_{get,prep}(),
 
------BEGIN PGP SIGNATURE-----
+Changes compared to v1[4]:
+  - Cast val resp. reg to the mask type,
+  - Fix 64-bit use on 32-bit architectures,
+  - Convert new upstream users:
+      - drivers/crypto/intel/qat/qat_common/adf_gen4_pm_debugfs.c
+      - drivers/gpio/gpio-aspeed.c
+      - drivers/iio/temperature/mlx90614.c
+      - drivers/pinctrl/nuvoton/pinctrl-ma35.c
+      - sound/usb/mixer_quirks.c
+  - Convert new user queued in renesas-devel for v6.15:
+      - drivers/soc/renesas/rz-sysc.c
+  - Drop the last 14 RFC patches.
+    They can be updated/resubmitted/applied later.
 
-iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmjyEeUACgkQ7fE7c86U
-Nl8V+Av/ZXdMSbKRnicFYABf1qs538aQeaxDMJqplKf0znbJk8e/kGEpVHGEUoal
-jHPORWlP9xA1t2VkYqvI1O1XYYjNR6EjLlHX69eytqSvl1mKD1ZbGmQPcs4ZoO3y
-S1xG2weO4AdheIbjV2kDYKzHA6oBYHJZhoM8WqFIASLA1q99nd8eAbqtCFAv/mQA
-A5uZCzNVrm6JIB/8pJG73URHMoLCkQzcPNcow2Ijo2GfvgAS1UBIk8Q61E54EbO7
-jMTRH9kZn7x26Ddr2CgupoARic6YPt+qp8G00RG5XPR6Vf4kAG1Gel5fzr2YZtJw
-Al3ceuFX2XMIisBWm59LaQPuelwgLTnqcmYfCwZgL+CDAy65lqgQ8j83koo4aAhG
-rTKoQREYyrnZE62PDguK9KE7iXlv2WeygRXCDiN4HvWO1YxJ4a8qFOQFhrB0bEeu
-w851JSiEqBNu2SMNN8iJKt7HwZDMrdy1mHek+lp6KbL/fFZRk/2CnfT+DO9K0Qad
-rfmIqduW
-=PYbM
------END PGP SIGNATURE-----
+I plan to take all four patches through the Renesas tree, and provide an
+immutable branch + tag with the first two patches, so subsystem
+maintainers that want to queue patches that depend on this can easily do
+so.  Once that tag has been merged in subsystem trees or upstream, I
+plan to update and resend actual conversions (see patches 4-17 in
+v1[4]).
 
---=-+iXbUeoPTGzOPOYfkFqi--
+Thanks for your comments!
+
+[1] Work-in-progress new copies posted during the last few months (there
+    may be more):
+      - "[PATCH 10/24] mtd: rawnand: sunxi: cosmetic: move ECC_PAT_FOUND register in SoC caps"
+	https://lore.kernel.org/20251016142752.2627710-11-richard.genoud@bootlin.com
+      - "[PATCH 12/24] mtd: rawnand: sunxi: cosmetic: move NFC_ECC_MODE offset in SoC caps"
+	https://lore.kernel.org/20251016142752.2627710-13-richard.genoud@bootlin.com
+      - "[PATCH v2 05/15] mtd: rawnand: sunxi: rework pattern found registers"
+	https://lore.kernel.org/20251013152645.1119308-6-richard.genoud@bootlin.com
+      - "[PATCH v2 07/15] mtd: rawnand: sunxi: introduce ecc_mode_mask in sunxi_nfc_caps"
+	https://lore.kernel.org/20251013152645.1119308-8-richard.genoud@bootlin.com
+      - "[PATCH v5 2/2] iio: imu: smi330: Add driver"
+	https://lore.kernel.org/20251009153149.5162-3-Jianping.Shen@de.bosch.com
+      - "[PATCH v3 2/8] pwm: rzg2l-gpt: Add info variable to struct rzg2l_gpt_chip"
+	https://lore.kernel.org/20250923144524.191892-3-biju.das.jz@bp.renesas.com
+      - "[PATCH v2 3/3] gpio: gpio-ltc4283: Add support for the LTC4283 Swap Controller"
+	https://lore.kernel.org/20250903-ltc4283-support-v2-3-6bce091510bf@analog.com
+      - "[PATCH v7 15/24] media: i2c: add Maxim GMSL2/3 serializer and deserializer framework"
+	https://lore.kernel.org/20250718152500.2656391-16-demonsingur@gmail.com
+[2] "[PATCH v3 0/4] Non-const bitfield helpers"
+    https://lore.kernel.org/all/cover.1739540679.git.geert+renesas@glider.be/
+[3] "[PATCH v2 0/3] Non-const bitfield helpers"
+    https://lore.kernel.org/all/cover.1738329458.git.geert+renesas@glider.be
+[4] "[PATCH 00/17] Non-const bitfield helper conversions"
+    https://lore.kernel.org/all/cover.1637592133.git.geert+renesas@glider.be
+
+Geert Uytterhoeven (4):
+  bitfield: Drop underscores from macro parameters
+  bitfield: Add non-constant field_{prep,get}() helpers
+  clk: renesas: Use bitfield helpers
+  soc: renesas: Use bitfield helpers
+
+ drivers/clk/at91/clk-peripheral.c             |   1 +
+ drivers/clk/at91/pmc.h                        |   3 -
+ drivers/clk/renesas/clk-div6.c                |   6 +-
+ drivers/clk/renesas/rcar-gen3-cpg.c           |  15 +-
+ drivers/clk/renesas/rcar-gen4-cpg.c           |   9 +-
+ .../intel/qat/qat_common/adf_pm_dbgfs_utils.c |   8 +-
+ drivers/edac/ie31200_edac.c                   |   4 +-
+ drivers/gpio/gpio-aspeed.c                    |   5 +-
+ drivers/iio/dac/ad3530r.c                     |   3 -
+ drivers/iio/temperature/mlx90614.c            |   5 +-
+ drivers/pinctrl/nuvoton/pinctrl-ma35.c        |   4 -
+ drivers/soc/renesas/renesas-soc.c             |   4 +-
+ drivers/soc/renesas/rz-sysc.c                 |   3 +-
+ include/linux/bitfield.h                      | 142 +++++++++++-------
+ sound/usb/mixer_quirks.c                      |   4 -
+ 15 files changed, 108 insertions(+), 108 deletions(-)
+
+-- 
+2.43.0
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
 

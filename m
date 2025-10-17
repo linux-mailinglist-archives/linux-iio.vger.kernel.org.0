@@ -1,186 +1,433 @@
-Return-Path: <linux-iio+bounces-25192-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25193-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B4BBE89AE
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 14:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800A4BE8A14
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 14:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2643C620B5D
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 12:35:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE0755E0F75
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 12:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9172E5B2A;
-	Fri, 17 Oct 2025 12:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAFA32ABFE;
+	Fri, 17 Oct 2025 12:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KcDifW+C"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1OrQ3YIQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB05D19DF66
-	for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 12:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEB332ABF0;
+	Fri, 17 Oct 2025 12:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760704549; cv=none; b=Vv41CL3t5hnXyIH2+tbnkOxpsJCiop+fwJMt3SQ+T6MKu9aWQgSmFdhqpRtluFoRUTWIMsAVrW1zeQPWLGf6Qoj+QL2v+FTUju/YcPIV8f43N8iPohavvshtTCXfnlE7f23pF1Kxoc5H+nKMEmWhTrvlPqQL5Zv9ft8CUOXqEVE=
+	t=1760705057; cv=none; b=de89S8fW1j8CJLEPErbvbM+4Efbc7EN/xicmfQb7WntuQMhIZNbVx6RLAY3SR5udfW44BLdzUHuCyBzqFOgdQvSFP5aKkx4A4F907980KVjndsVb+vF0V/qphdx55dvJDau+u7y+djb6MVPpiHc9OB0cGBK1QeuhrUIUrIxfdKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760704549; c=relaxed/simple;
-	bh=5ScMlkpNB3bO9rP0r5PtsUCVGh6+veBjgyd9l3hbzUk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tJJ6waxdxer2vmV5ir2W4BMBMcFHm+JfDrAniwvpe55n5g/EPJvpCZlLlnwOFHvSF543JuHaffqyHCKzGHlTTtjNIBMrXQ1IvVv1oQ8nepJlbwGqTZzcDTd/MKNdleg408mg3FOl7Br5fEnJ120mUkKEdUJHEDcDS+CfUk9MnT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KcDifW+C; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3f0308469a4so1254448f8f.0
-        for <linux-iio@vger.kernel.org>; Fri, 17 Oct 2025 05:35:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760704546; x=1761309346; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Z3ErgCZMqEpbnKuL5giuJkbnaVmFhSFBsDzPMv4Y24k=;
-        b=KcDifW+C4xv4mVIbrV2VtgtdfylQyjozqrobE9GfVnihZAbmhUDcXtKg5fndcIq6Zy
-         4MIm5biZyDAk38IwnkdmOOwaDYXmIinVU5Zxfe6CVDHA3Vhb7z8aKsJqXg0XtdNmsHvl
-         FkqFC535a0eEZM2LBpJxBCry/Yw3Rs4zksBsDiUmca+a0WypGb1J7TtL59sWYIPYuSKf
-         FcQ7077+KdH2A9mTa+YWD+s7WWSUxBX8+SVWGtAokb5nA2ufuHyxT1YCz9pXkUrHw7Pj
-         MyMxlO28rfdEzo/4zsFRwvFoBGLBCrRY4o0GbDt8zUHrsE/PM0J72n6BLsev23YW9tjW
-         ISVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760704546; x=1761309346;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z3ErgCZMqEpbnKuL5giuJkbnaVmFhSFBsDzPMv4Y24k=;
-        b=pTm6nrFzIesfk7CM8/kteRQWJZr6rcQVwnzbNss5MAS5zUiHjzrqCygnhQW+mPqn7G
-         or8j4ICPsub+pCKdd00kc6IqeZTlihTobwlz6mZOSadr5NlPSlq88VnGnztQPLPc9On5
-         wT2OWGIN8HXLHvrQ7EZyEb78D0UX7vUTLFIfDStrvmxDVDjUALS9gTjrusR7v7CMQ608
-         a3Sh7f2X8SEM/XmP75l6gr48YjHVGKXn0GPdkVANpBdX+NvNFZU1MO5YR9paff9Vq0VF
-         jNl07K0QeB5OdpDbForZ2jsdY+0fG+/jVW1CcJNQO5ossyexkMYbdZ9M3eaACkvvmit0
-         R8dg==
-X-Forwarded-Encrypted: i=1; AJvYcCVY4ysHD6YJvVmKNJTYzgi/v21JwRVWfrWjZhLgae+sfTlY16P1ESz16ec0WkCisHI1gpLbqU22wLc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvHn4Bs5v56UR0dAAIYil1vXaJQixt7AfjzUmijAGeZX8HAjad
-	aAlKtVZUauTTVFvtOLdu09hhKfUQ03bsPsrlkDEHPs0v0OT5K4Uk3oi+
-X-Gm-Gg: ASbGncs7iSeHdBfE4VXBMpht83O4VBmPyP6V6n+KkpQMBf7tcW+9BFXb9gHIKskWJEV
-	91hbGjiK+LtWA68ZNXeBOzC9z6z49lidWmEcJSEysBouWrtDb6o4UJ20f4cM02FNomUBMUQ2FdM
-	6lEQF+xzJlM3jRmM1EoGW77NV3WUxQ0I00+ESUfiWuJdMCgVnnSq8VVHMY7vYgjNTjScdB7ZLtg
-	hW13neqO167RZFdNUhhz0jnPBpvQszF91sjVLnBGOUmvLqLyv7XS0qTrMy/RJVtjzknn1OKCXCa
-	JL6xG/S/hqwuag52s+mLoA1xvMGc1IqU2x/VbrfTlpXX6Jn9ZnbOUsklvMpbRJI7PZX7AIk5bsA
-	M6/4DBC2p8VaR7sHuR4E1ChgbahIHtksDQZTCHx/qWMtafcQFjNDE2wDM1yQaVsGOTd8huOMAJ1
-	x91M0UPuNX4cVELg==
-X-Google-Smtp-Source: AGHT+IGtc3rElmlZjUCj5LU626fWOPul39pomQ3PRsSjDGqzZiz5b3XHgZGsVeR0STAL9AUxbbUF5w==
-X-Received: by 2002:a05:6000:2008:b0:3df:c5e3:55fe with SMTP id ffacd0b85a97d-42704d9895amr2580238f8f.29.1760704546153;
-        Fri, 17 Oct 2025 05:35:46 -0700 (PDT)
-Received: from [10.5.0.2] ([195.158.248.102])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ce5cfe74sm39639352f8f.35.2025.10.17.05.35.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Oct 2025 05:35:45 -0700 (PDT)
-Message-ID: <ccd58e8103e912d0609fbc625f19ec18e605ad4a.camel@gmail.com>
-Subject: Re: [PATCH 3/6] spi: add multi_bus_mode field to struct spi_transfer
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, Michael Hennerich	
- <michael.hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
- <nuno.sa@analog.com>,  Jonathan Cameron	 <jic23@kernel.org>, Andy
- Shevchenko <andy@kernel.org>, Sean Anderson	 <sean.anderson@linux.dev>,
- linux-spi@vger.kernel.org, 	devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-iio@vger.kernel.org
-Date: Fri, 17 Oct 2025 13:36:18 +0100
-In-Reply-To: <66f94eb6-15a9-457f-a7b8-47710652a34b@baylibre.com>
-References: 
-	<20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
-	 <20251014-spi-add-multi-bus-support-v1-3-2098c12d6f5f@baylibre.com>
-	 <9269eadc1ea593e5bc8f5cad8061b48220f4d2b2.camel@gmail.com>
-	 <409ad505-8846-443e-8d71-baca3c9aef21@sirena.org.uk>
-	 <12db0930458ceb596010655736b0a67a0ad0ae53.camel@gmail.com>
-	 <8c7bf62a-c5dc-4e4d-8059-8abea15ba94e@sirena.org.uk>
-	 <d9455d90-31ca-4be7-b17c-2b339e92f8a0@baylibre.com>
-	 <9024f05854dcc3cc59345c0a3de900f57c4730d9.camel@gmail.com>
-	 <ad929fe5-be03-4628-b95a-5c3523bae0c8@baylibre.com>
-	 <c4b5a42f5f1d3f577cb986946b642b4edc1300e9.camel@gmail.com>
-	 <66f94eb6-15a9-457f-a7b8-47710652a34b@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+	s=arc-20240116; t=1760705057; c=relaxed/simple;
+	bh=BP2tLcRODLLTGYUQN3ZH9uxeI36susbN9rWaT61n7mw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q72ZQPS6G0MiEZDdvjZ0GgNKxORkjA/hPwW28D1ANEIOxiUGNSWGuwrEMmoN9O0wWYM8JMULUmIRJN0gtTIGTBSvzza4Y9ApBjtXBV3WJcGYYAjs5Saa69u4dd+XKGYhnTP1xI8rDxmXLSBCfCY8B+JeSVjS3+vB9UTAy1EDshM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1OrQ3YIQ; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 893244E41141;
+	Fri, 17 Oct 2025 12:44:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5A865606DB;
+	Fri, 17 Oct 2025 12:44:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9F85E102F2354;
+	Fri, 17 Oct 2025 14:43:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760705048; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=/PLeJE9KR8p3lxXJm49K9+lE+MUQWAG1Y2Q1wp2iOt0=;
+	b=1OrQ3YIQQiPnuSNXZtkh4wYwdSdAx5UueEbM2yNm13HKZwXyw1ihYGUrNQYUdxkCpAGMVy
+	YkkbIcpe0CR3qCP0wbMwh0zB1hOC7TqWWodn2WW8KY4xNUI/O+AOQw8TbYSSBrfGghbWHY
+	8Gc/3LSoCg3bXhOMFn0hCZL3djPCGi05rhcyYi2XzvAHIj8BH3d3SHGs+YBu9weyvWUJj1
+	4x9y5ZrJ27Kz0QSzL86mHytkuRU1hWZsMm0cuM7FT149jkBeSq2OjLIdD2HeCYXV3oJQhQ
+	bghkZIB7Jr0R4y2M9IPMwRAhI867zJp19eaGdl5+XtIq6kavcMynCp7fukKm4Q==
+Message-ID: <c3549740-f01c-4a98-8a3e-5af70326f0eb@bootlin.com>
+Date: Fri, 17 Oct 2025 14:43:17 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/4] bitfield: Add non-constant field_{prep,get}()
+ helpers
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, David Miller
+ <davem@davemloft.net>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
+ Yury Norov <yury.norov@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, Jaroslav Kysela
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Johannes Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>,
+ Alex Elder <elder@ieee.org>, David Laight <david.laight.linux@gmail.com>,
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Jason Baron
+ <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
+ Tony Luck <tony.luck@intel.com>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Kim Seer Paller <kimseer.paller@analog.com>,
+ David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Cosmin Tanislav <demonsingur@gmail.com>,
+ Biju Das <biju.das.jz@bp.renesas.com>,
+ Jianping Shen <Jianping.Shen@de.bosch.com>
+Cc: linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-edac@vger.kernel.org, qat-linux@intel.com, linux-gpio@vger.kernel.org,
+ linux-aspeed@lists.ozlabs.org, linux-iio@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <cover.1760696560.git.geert+renesas@glider.be>
+ <67c1998f144b3a21399672c8e4d58d3884ae2b3c.1760696560.git.geert+renesas@glider.be>
+ <f2b879d3e8120c7aeb0e6c9a5fd45b15a2b8e5a0.camel@gmail.com>
+From: Richard GENOUD <richard.genoud@bootlin.com>
+Content-Language: en-US, fr
+Organization: Bootlin
+In-Reply-To: <f2b879d3e8120c7aeb0e6c9a5fd45b15a2b8e5a0.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 2025-10-16 at 10:25 -0500, David Lechner wrote:
-> On 10/16/25 4:08 AM, Nuno S=C3=A1 wrote:
-> > On Wed, 2025-10-15 at 13:38 -0500, David Lechner wrote:
-> > > On 10/15/25 11:43 AM, Nuno S=C3=A1 wrote:
-> > > > On Wed, 2025-10-15 at 11:15 -0500, David Lechner wrote:
-> > > > > On 10/15/25 10:18 AM, Mark Brown wrote:
-> > > > > > On Wed, Oct 15, 2025 at 03:43:09PM +0100, Nuno S=C3=A1 wrote:
-> > > > > > > On Wed, 2025-10-15 at 13:01 +0100, Mark Brown wrote:
-> > > > > > > > On Wed, Oct 15, 2025 at 11:16:01AM +0100, Nuno S=C3=A1 wrot=
-e:
-> > > > > > > > > On Tue, 2025-10-14 at 17:02 -0500, David Lechner wrote:
->=20
-> ...
->=20
-> > >=20
-> > > The AXI SPI Engine doesn't know how to do the quad SPI part yet thoug=
-h, so
-> > > it isn't something we could implement right now.
-> > >=20
-> > > If we tried to do it with spi-buses =3D <8>; then we would end up wit=
-h the
-> > > "interleaved" bits (or nibbles depending on the wiring) that requires=
- the
-> > > extra IP block to sort out when using SPI offloading. Technically, we
-> > > could
-> >=20
-> > I think that extra block already exists today. I was thinking the idea =
-was
-> > just:
-> >=20
-> > // the case where we just have one channel with eg: 32 bits words (eg: =
-test
-> > patterns)=20
-> > struct spi_transfer example =3D {
-> > 	rx_buf =3D rx_buf;
-> > 	len =3D 1; /* 1 32bit words */
->=20
-> This would still need to be len =3D 4; since there are 4 bytes in a
-> 32-bit word. (If this was tx with SPI_MULTI_BUS_MODE_MIRROR, then
-> len =3D 1 would be correct, but for striping, it is still the length
-> of all data combined).
+Le 17/10/2025 à 14:33, Nuno Sá a écrit :
+> On Fri, 2025-10-17 at 12:54 +0200, Geert Uytterhoeven wrote:
+>> The existing FIELD_{GET,PREP}() macros are limited to compile-time
+>> constants.  However, it is very common to prepare or extract bitfield
+>> elements where the bitfield mask is not a compile-time constant.
+>>
+>> To avoid this limitation, the AT91 clock driver and several other
+>> drivers already have their own non-const field_{prep,get}() macros.
+>> Make them available for general use by consolidating them in
+>> <linux/bitfield.h>, and improve them slightly:
+>>    1. Avoid evaluating macro parameters more than once,
+>>    2. Replace "ffs() - 1" by "__ffs()",
+>>    3. Support 64-bit use on 32-bit architectures.
+>>
+>> This is deliberately not merged into the existing FIELD_{GET,PREP}()
+>> macros, as people expressed the desire to keep stricter variants for
+>> increased safety, or for performance critical paths.
+>>
+>> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+>> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+>> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> Acked-by: Crt Mori <cmo@melexis.com>
+>> ---
+> 
+> Hopefully this gets merged soon. About time to have these variants (I do have a
+> driver submitted - in review - which is adding yet another variant of this)
+>   
+> Acked-by: Nuno Sá <nuno.sa@analog.com>
 
-Right, I was still thinking in the old stuff where the spi engine would alw=
-ays
-have len =3D 1 (which is nok)
+Same here, I would happily drop field_{get,set} from my series under 
+review to include bitfield.h
+Thanks Geert!
 
->=20
-> > 	/* 4 lanes which is actually quadspi */
-> > 	multi_bus_mode =3D SPI_MULTI_BUS_MODE_STRIPE;=20
-> > };
->=20
-> This will work with the caveat that for non-offload case, the software=
-=20
-> will need to rearrange the bits in rx_buf into the correct order after
-> the spi_sync().
->=20
-> For example, u8 *rx_buf will contain bits of the 32-bit word in the
-> following order:
->=20
-> rx_buf[0] =3D b28 b24 b20 b16 b12 b8 b4 b0
-> rx_buf[1] =3D b29 b25 b21 b17 b13 b9 b5 b1
-> rx_buf[2] =3D b30 b26 b22 b18 b14 b10 b6 b2
-> rx_buf[3] =3D b31 b27 b23 b19 b15 b11 b7 b3
->=20
-> The correct order of course would be (assuming little endian):
->=20
->=20
-> rx_buf[0] =3D b7 b6 b5 b4 b3 b2 b1 b0
+Acked-by: Richard Genoud <richard.genoud@bootlin.com>
 
-I know, that's what the ad4030 driver has to do.
+> 
+>> v4:
+>>    - Add Acked-by,
+>>    - Rebase on top of commit 7c68005a46108ffa ("crypto: qat - relocate
+>>      power management debugfs helper APIs") in v6.17-rc1,
+>>    - Convert more recently introduced upstream copies:
+>>        - drivers/edac/ie31200_edac.c
+>>        - drivers/iio/dac/ad3530r.c
+>>
+>> v3:
+>>    - Add Acked-by,
+>>    - Drop underscores from macro parameters,
+>>    - Use __auto_type where possible,
+>>    - Correctly cast reg to the mask type,
+>>    - Introduces __val and __reg intermediates to simplify the actual
+>>      operation,
+>>    - Drop unneeded parentheses,
+>>    - Clarify having both FIELD_{GET,PREP}() and field_{get,prep}(),
+>>
+>> v2:
+>>    - Cast val resp. reg to the mask type,
+>>    - Fix 64-bit use on 32-bit architectures,
+>>    - Convert new upstream users:
+>>        - drivers/crypto/intel/qat/qat_common/adf_gen4_pm_debugfs.c
+>>        - drivers/gpio/gpio-aspeed.c
+>>        - drivers/iio/temperature/mlx90614.c
+>>        - drivers/pinctrl/nuvoton/pinctrl-ma35.c
+>>        - sound/usb/mixer_quirks.c
+>>    - Convert new user queued in renesas-devel for v6.15:
+>>        - drivers/soc/renesas/rz-sysc.c
+>> ---
+>>   drivers/clk/at91/clk-peripheral.c             |  1 +
+>>   drivers/clk/at91/pmc.h                        |  3 --
+>>   .../intel/qat/qat_common/adf_pm_dbgfs_utils.c |  8 +----
+>>   drivers/edac/ie31200_edac.c                   |  4 +--
+>>   drivers/gpio/gpio-aspeed.c                    |  5 +--
+>>   drivers/iio/dac/ad3530r.c                     |  3 --
+>>   drivers/iio/temperature/mlx90614.c            |  5 +--
+>>   drivers/pinctrl/nuvoton/pinctrl-ma35.c        |  4 ---
+>>   drivers/soc/renesas/rz-sysc.c                 |  3 +-
+>>   include/linux/bitfield.h                      | 36 +++++++++++++++++++
+>>   sound/usb/mixer_quirks.c                      |  4 ---
+>>   11 files changed, 42 insertions(+), 34 deletions(-)
+>>
+>> diff --git a/drivers/clk/at91/clk-peripheral.c b/drivers/clk/at91/clk-
+>> peripheral.c
+>> index e700f40fd87f9327..e7208c47268b6397 100644
+>> --- a/drivers/clk/at91/clk-peripheral.c
+>> +++ b/drivers/clk/at91/clk-peripheral.c
+>> @@ -3,6 +3,7 @@
+>>    *  Copyright (C) 2013 Boris BREZILLON <b.brezillon@overkiz.com>
+>>    */
+>>   
+>> +#include <linux/bitfield.h>
+>>   #include <linux/bitops.h>
+>>   #include <linux/clk-provider.h>
+>>   #include <linux/clkdev.h>
+>> diff --git a/drivers/clk/at91/pmc.h b/drivers/clk/at91/pmc.h
+>> index 5daa32c4cf2540d7..543d7aee8d248cdb 100644
+>> --- a/drivers/clk/at91/pmc.h
+>> +++ b/drivers/clk/at91/pmc.h
+>> @@ -117,9 +117,6 @@ struct at91_clk_pms {
+>>   	unsigned int parent;
+>>   };
+>>   
+>> -#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
+>> -#define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
+>> -
+>>   #define ndck(a, s) (a[s - 1].id + 1)
+>>   #define nck(a) (a[ARRAY_SIZE(a) - 1].id + 1)
+>>   
+>> diff --git a/drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c
+>> b/drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c
+>> index 69295a9ddf0ac92f..4ccc94ed9493a64c 100644
+>> --- a/drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c
+>> +++ b/drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c
+>> @@ -1,18 +1,12 @@
+>>   // SPDX-License-Identifier: GPL-2.0-only
+>>   /* Copyright(c) 2025 Intel Corporation */
+>> +#include <linux/bitfield.h>
+>>   #include <linux/bitops.h>
+>>   #include <linux/sprintf.h>
+>>   #include <linux/string_helpers.h>
+>>   
+>>   #include "adf_pm_dbgfs_utils.h"
+>>   
+>> -/*
+>> - * This is needed because a variable is used to index the mask at
+>> - * pm_scnprint_table(), making it not compile time constant, so the compile
+>> - * asserts from FIELD_GET() or u32_get_bits() won't be fulfilled.
+>> - */
+>> -#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
+>> -
+>>   #define PM_INFO_MAX_KEY_LEN	21
+>>   
+>>   static int pm_scnprint_table(char *buff, const struct pm_status_row *table,
+>> diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+>> index 5a080ab65476dacf..dfc9a9cecd74207d 100644
+>> --- a/drivers/edac/ie31200_edac.c
+>> +++ b/drivers/edac/ie31200_edac.c
+>> @@ -44,6 +44,7 @@
+>>    * but lo_hi_readq() ensures that we are safe across all e3-1200 processors.
+>>    */
+>>   
+>> +#include <linux/bitfield.h>
+>>   #include <linux/module.h>
+>>   #include <linux/init.h>
+>>   #include <linux/pci.h>
+>> @@ -139,9 +140,6 @@
+>>   #define IE31200_CAPID0_DDPCD		BIT(6)
+>>   #define IE31200_CAPID0_ECC		BIT(1)
+>>   
+>> -/* Non-constant mask variant of FIELD_GET() */
+>> -#define field_get(_mask, _reg)  (((_reg) & (_mask)) >> (ffs(_mask) - 1))
+>> -
+>>   static int nr_channels;
+>>   static struct pci_dev *mci_pdev;
+>>   static int ie31200_registered = 1;
+>> diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
+>> index 7953a9c4e36d7550..3da999334971d501 100644
+>> --- a/drivers/gpio/gpio-aspeed.c
+>> +++ b/drivers/gpio/gpio-aspeed.c
+>> @@ -5,6 +5,7 @@
+>>    * Joel Stanley <joel@jms.id.au>
+>>    */
+>>   
+>> +#include <linux/bitfield.h>
+>>   #include <linux/cleanup.h>
+>>   #include <linux/clk.h>
+>>   #include <linux/gpio/aspeed.h>
+>> @@ -31,10 +32,6 @@
+>>   #include <linux/gpio/consumer.h>
+>>   #include "gpiolib.h"
+>>   
+>> -/* Non-constant mask variant of FIELD_GET() and FIELD_PREP() */
+>> -#define field_get(_mask, _reg)	(((_reg) & (_mask)) >> (ffs(_mask) - 1))
+>> -#define field_prep(_mask, _val)	(((_val) << (ffs(_mask) - 1)) &
+>> (_mask))
+>> -
+>>   #define GPIO_G7_IRQ_STS_BASE 0x100
+>>   #define GPIO_G7_IRQ_STS_OFFSET(x) (GPIO_G7_IRQ_STS_BASE + (x) * 0x4)
+>>   #define GPIO_G7_CTRL_REG_BASE 0x180
+>> diff --git a/drivers/iio/dac/ad3530r.c b/drivers/iio/dac/ad3530r.c
+>> index 6134613777b8e1d4..b97b46090d808ee7 100644
+>> --- a/drivers/iio/dac/ad3530r.c
+>> +++ b/drivers/iio/dac/ad3530r.c
+>> @@ -53,9 +53,6 @@
+>>   #define AD3530R_MAX_CHANNELS			8
+>>   #define AD3531R_MAX_CHANNELS			4
+>>   
+>> -/* Non-constant mask variant of FIELD_PREP() */
+>> -#define field_prep(_mask, _val)	(((_val) << (ffs(_mask) - 1)) &
+>> (_mask))
+>> -
+>>   enum ad3530r_mode {
+>>   	AD3530R_NORMAL_OP,
+>>   	AD3530R_POWERDOWN_1K,
+>> diff --git a/drivers/iio/temperature/mlx90614.c
+>> b/drivers/iio/temperature/mlx90614.c
+>> index 8a44a00bfd5ece38..1ad21b73e1b44cb0 100644
+>> --- a/drivers/iio/temperature/mlx90614.c
+>> +++ b/drivers/iio/temperature/mlx90614.c
+>> @@ -22,6 +22,7 @@
+>>    * the "wakeup" GPIO is not given, power management will be disabled.
+>>    */
+>>   
+>> +#include <linux/bitfield.h>
+>>   #include <linux/delay.h>
+>>   #include <linux/err.h>
+>>   #include <linux/gpio/consumer.h>
+>> @@ -68,10 +69,6 @@
+>>   #define MLX90614_CONST_SCALE 20 /* Scale in milliKelvin (0.02 * 1000) */
+>>   #define MLX90614_CONST_FIR 0x7 /* Fixed value for FIR part of low pass filter
+>> */
+>>   
+>> -/* Non-constant mask variant of FIELD_GET() and FIELD_PREP() */
+>> -#define field_get(_mask, _reg)	(((_reg) & (_mask)) >> (ffs(_mask) - 1))
+>> -#define field_prep(_mask, _val)	(((_val) << (ffs(_mask) - 1)) &
+>> (_mask))
+>> -
+>>   struct mlx_chip_info {
+>>   	/* EEPROM offsets with 16-bit data, MSB first */
+>>   	/* emissivity correction coefficient */
+>> diff --git a/drivers/pinctrl/nuvoton/pinctrl-ma35.c
+>> b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
+>> index cdad01d68a37e365..8d71dc53cc1de1f8 100644
+>> --- a/drivers/pinctrl/nuvoton/pinctrl-ma35.c
+>> +++ b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
+>> @@ -81,10 +81,6 @@
+>>   #define MVOLT_1800			0
+>>   #define MVOLT_3300			1
+>>   
+>> -/* Non-constant mask variant of FIELD_GET() and FIELD_PREP() */
+>> -#define field_get(_mask, _reg)	(((_reg) & (_mask)) >> (ffs(_mask) - 1))
+>> -#define field_prep(_mask, _val)	(((_val) << (ffs(_mask) - 1)) &
+>> (_mask))
+>> -
+>>   static const char * const gpio_group_name[] = {
+>>   	"gpioa", "gpiob", "gpioc", "gpiod", "gpioe", "gpiof", "gpiog",
+>>   	"gpioh", "gpioi", "gpioj", "gpiok", "gpiol", "gpiom", "gpion",
+>> diff --git a/drivers/soc/renesas/rz-sysc.c b/drivers/soc/renesas/rz-sysc.c
+>> index 9f79e299e6f41641..73eaf8b9d69f7208 100644
+>> --- a/drivers/soc/renesas/rz-sysc.c
+>> +++ b/drivers/soc/renesas/rz-sysc.c
+>> @@ -5,6 +5,7 @@
+>>    * Copyright (C) 2024 Renesas Electronics Corp.
+>>    */
+>>   
+>> +#include <linux/bitfield.h>
+>>   #include <linux/cleanup.h>
+>>   #include <linux/io.h>
+>>   #include <linux/mfd/syscon.h>
+>> @@ -16,8 +17,6 @@
+>>   
+>>   #include "rz-sysc.h"
+>>   
+>> -#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
+>> -
+>>   /**
+>>    * struct rz_sysc - RZ SYSC private data structure
+>>    * @base: SYSC base address
+>> diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
+>> index 7ff817bdae19b468..c999fe70076f6684 100644
+>> --- a/include/linux/bitfield.h
+>> +++ b/include/linux/bitfield.h
+>> @@ -220,4 +220,40 @@ __MAKE_OP(64)
+>>   #undef __MAKE_OP
+>>   #undef ____MAKE_OP
+>>   
+>> +/**
+>> + * field_prep() - prepare a bitfield element
+>> + * @mask: shifted mask defining the field's length and position
+>> + * @val:  value to put in the field
+>> + *
+>> + * field_prep() masks and shifts up the value.  The result should be
+>> + * combined with other fields of the bitfield using logical OR.
+>> + * Unlike FIELD_PREP(), @mask is not limited to a compile-time constant.
+>> + */
+>> +#define field_prep(mask, val)						\
+>> +	({								\
+>> +		__auto_type __mask = (mask);				\
+>> +		typeof(mask) __val = (val);				\
+>> +		unsigned int __shift = sizeof(mask) <= 4 ?		\
+>> +				       __ffs(__mask) :
+>> __ffs64(__mask);	\
+>> +		(__val << __shift) & __mask;	\
+>> +	})
+>> +
+>> +/**
+>> + * field_get() - extract a bitfield element
+>> + * @mask: shifted mask defining the field's length and position
+>> + * @reg:  value of entire bitfield
+>> + *
+>> + * field_get() extracts the field specified by @mask from the
+>> + * bitfield passed in as @reg by masking and shifting it down.
+>> + * Unlike FIELD_GET(), @mask is not limited to a compile-time constant.
+>> + */
+>> +#define field_get(mask, reg)						\
+>> +	({								\
+>> +		__auto_type __mask = (mask);				\
+>> +		typeof(mask) __reg =  (reg);				\
+>> +		unsigned int __shift = sizeof(mask) <= 4 ?		\
+>> +				       __ffs(__mask) :
+>> __ffs64(__mask);	\
+>> +		(__reg & __mask) >> __shift;	\
+>> +	})
+>> +
+>>   #endif
+>> diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+>> index 828af3095b86ee0a..6eee89cbc0867f2b 100644
+>> --- a/sound/usb/mixer_quirks.c
+>> +++ b/sound/usb/mixer_quirks.c
+>> @@ -3311,10 +3311,6 @@ static int snd_bbfpro_controls_create(struct
+>> usb_mixer_interface *mixer)
+>>   #define RME_DIGIFACE_REGISTER(reg, mask) (((reg) << 16) | (mask))
+>>   #define RME_DIGIFACE_INVERT BIT(31)
+>>   
+>> -/* Nonconst helpers */
+>> -#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
+>> -#define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
+>> -
+>>   static int snd_rme_digiface_write_reg(struct snd_kcontrol *kcontrol, int
+>> item, u16 mask, u16 val)
+>>   {
+>>   	struct usb_mixer_elem_list *list = snd_kcontrol_chip(kcontrol);
 
 
-- Nuno S=C3=A1
+-- 
+Richard Genoud, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 

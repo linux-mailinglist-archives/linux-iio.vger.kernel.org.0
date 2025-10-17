@@ -1,55 +1,48 @@
-Return-Path: <linux-iio+bounces-25193-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25194-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800A4BE8A14
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 14:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A547BE8F58
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 15:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE0755E0F75
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 12:44:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA9323B6569
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Oct 2025 13:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAFA32ABFE;
-	Fri, 17 Oct 2025 12:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48C42F691D;
+	Fri, 17 Oct 2025 13:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1OrQ3YIQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jDTH5z6Q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEB332ABF0;
-	Fri, 17 Oct 2025 12:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BA32F6903;
+	Fri, 17 Oct 2025 13:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760705057; cv=none; b=de89S8fW1j8CJLEPErbvbM+4Efbc7EN/xicmfQb7WntuQMhIZNbVx6RLAY3SR5udfW44BLdzUHuCyBzqFOgdQvSFP5aKkx4A4F907980KVjndsVb+vF0V/qphdx55dvJDau+u7y+djb6MVPpiHc9OB0cGBK1QeuhrUIUrIxfdKY=
+	t=1760708413; cv=none; b=h/4KyqMakFfkmznleCylONYGkt6agwv7o/WlGMqJ0co6i2on3PYaev8ulScMcIQ9NfJvoCatSgauWJx6PztuaTrqKfedLNs7o60RS+sZFrWxgRUODYU/ujleZaDmLYsbTj4oWMuVWzJoiSRdnZQalhy7MBl4ntLA7WA/yGEGw/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760705057; c=relaxed/simple;
-	bh=BP2tLcRODLLTGYUQN3ZH9uxeI36susbN9rWaT61n7mw=;
+	s=arc-20240116; t=1760708413; c=relaxed/simple;
+	bh=X8SCmld5sXx4ricWkl9PJ7pW6tb6c1+ScVBZg/V93ag=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q72ZQPS6G0MiEZDdvjZ0GgNKxORkjA/hPwW28D1ANEIOxiUGNSWGuwrEMmoN9O0wWYM8JMULUmIRJN0gtTIGTBSvzza4Y9ApBjtXBV3WJcGYYAjs5Saa69u4dd+XKGYhnTP1xI8rDxmXLSBCfCY8B+JeSVjS3+vB9UTAy1EDshM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1OrQ3YIQ; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 893244E41141;
-	Fri, 17 Oct 2025 12:44:10 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5A865606DB;
-	Fri, 17 Oct 2025 12:44:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9F85E102F2354;
-	Fri, 17 Oct 2025 14:43:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760705048; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=/PLeJE9KR8p3lxXJm49K9+lE+MUQWAG1Y2Q1wp2iOt0=;
-	b=1OrQ3YIQQiPnuSNXZtkh4wYwdSdAx5UueEbM2yNm13HKZwXyw1ihYGUrNQYUdxkCpAGMVy
-	YkkbIcpe0CR3qCP0wbMwh0zB1hOC7TqWWodn2WW8KY4xNUI/O+AOQw8TbYSSBrfGghbWHY
-	8Gc/3LSoCg3bXhOMFn0hCZL3djPCGi05rhcyYi2XzvAHIj8BH3d3SHGs+YBu9weyvWUJj1
-	4x9y5ZrJ27Kz0QSzL86mHytkuRU1hWZsMm0cuM7FT149jkBeSq2OjLIdD2HeCYXV3oJQhQ
-	bghkZIB7Jr0R4y2M9IPMwRAhI867zJp19eaGdl5+XtIq6kavcMynCp7fukKm4Q==
-Message-ID: <c3549740-f01c-4a98-8a3e-5af70326f0eb@bootlin.com>
-Date: Fri, 17 Oct 2025 14:43:17 +0200
+	 In-Reply-To:Content-Type; b=asWlSfbSQzHTVD+8vORYT0fkSTRj8+ZBb3jKRmvOM8MDVhUDpLX9P7iVAjwnpUzWLPMwLAjhRbBXf5Ld6OHBHDMBQatjVkv4o61nb+2pxT+xVIB5B5YtiolYVwvodrd8UTTpVUw56nuA5qdbptQKnaWqpOVb/iUqm4/xYjKNboY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jDTH5z6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3A6C4CEE7;
+	Fri, 17 Oct 2025 13:40:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760708409;
+	bh=X8SCmld5sXx4ricWkl9PJ7pW6tb6c1+ScVBZg/V93ag=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jDTH5z6QJhJU+7m9ezxCXn64ywZmOGeLZmaJ8S+ttQNGXoXd1YNoF24GOfTSUCyuj
+	 A657tHYBDsX0urWgWMt+2rvB+HLGyo5/6OGLgYwXAIwXOM5K6ub/qVmNyAVSYDvymq
+	 VJZ+6LPtvzGbPeKBV2D8z5VR6JYzudMj5cj1Na0rYmKbKc8UYdHVPSEZ5RPqoET1Bf
+	 M8NglehC1zaGCAygv5NgSuucwLWjU3qu+wFojZXivPgqgPH3TrxOABs+50hk7s7uS1
+	 BHxiir8DmbXlDfSA83RSdsMjaxAT/b3/gkRyHbIIKPRcquQJ/4/fakqeQUNZc1Xfae
+	 TmQUeAf20bx6A==
+Message-ID: <d8a78b7c-e3a9-44b5-986d-8ac32f328eb6@kernel.org>
+Date: Fri, 17 Oct 2025 15:40:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -57,377 +50,252 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] bitfield: Add non-constant field_{prep,get}()
- helpers
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, David Miller
- <davem@davemloft.net>, Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
- Yury Norov <yury.norov@gmail.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, Jaroslav Kysela
- <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Johannes Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>,
- Alex Elder <elder@ieee.org>, David Laight <david.laight.linux@gmail.com>,
- Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Jason Baron
- <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
- Tony Luck <tony.luck@intel.com>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Kim Seer Paller <kimseer.paller@analog.com>,
- David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Cosmin Tanislav <demonsingur@gmail.com>,
- Biju Das <biju.das.jz@bp.renesas.com>,
- Jianping Shen <Jianping.Shen@de.bosch.com>
-Cc: linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org,
- linux-edac@vger.kernel.org, qat-linux@intel.com, linux-gpio@vger.kernel.org,
- linux-aspeed@lists.ozlabs.org, linux-iio@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+Subject: Re: [PATCH V7 3/5] dt-bindings: iio: adc: Add support for QCOM PMIC5
+ Gen3 ADC
+To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
+ lumag@kernel.org, dmitry.baryshkov@oss.qualcomm.com, konradybcio@kernel.org,
+ daniel.lezcano@linaro.org, sboyd@kernel.org, amitk@kernel.org,
+ thara.gopinath@gmail.com, lee@kernel.org, rafael@kernel.org,
+ subbaraman.narayanamurthy@oss.qualcomm.com, david.collins@oss.qualcomm.com,
+ anjelique.melendez@oss.qualcomm.com, kamal.wadhwa@oss.qualcomm.com,
+ rui.zhang@intel.com, lukasz.luba@arm.com, devicetree@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ cros-qcom-dts-watchers@chromium.org, quic_kotarake@quicinc.com,
+ neil.armstrong@linaro.org, stephan.gerhold@linaro.org,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <cover.1760696560.git.geert+renesas@glider.be>
- <67c1998f144b3a21399672c8e4d58d3884ae2b3c.1760696560.git.geert+renesas@glider.be>
- <f2b879d3e8120c7aeb0e6c9a5fd45b15a2b8e5a0.camel@gmail.com>
-From: Richard GENOUD <richard.genoud@bootlin.com>
-Content-Language: en-US, fr
-Organization: Bootlin
-In-Reply-To: <f2b879d3e8120c7aeb0e6c9a5fd45b15a2b8e5a0.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20250826083657.4005727-1-jishnu.prakash@oss.qualcomm.com>
+ <20250826083657.4005727-4-jishnu.prakash@oss.qualcomm.com>
+ <20250829-classic-dynamic-clam-addbd8@kuoka>
+ <5d662148-408f-49e1-a769-2a5d61371cae@oss.qualcomm.com>
+ <4e974e77-adfc-49e5-90c8-cf8996ded513@kernel.org>
+ <a0e885be-e87d-411a-884e-3e38a0d761e5@oss.qualcomm.com>
+ <8c90cc3f-115e-4362-9293-05d9bee24214@linaro.org>
+ <5d4edecf-51f3-4d4a-861f-fce419e3a314@oss.qualcomm.com>
+ <20250927144757.4d36d5c8@jic23-huawei>
+ <a3158843-dfac-4adc-838a-35bb4b0cbea4@oss.qualcomm.com>
+ <CAGE=qrrCvq28pr9Y7it-CGMW=szKUnU+XBj1TmpoUwuASM05ig@mail.gmail.com>
+ <31bd08ce-823a-4a71-baca-a9d1e02fcb6a@oss.qualcomm.com>
+ <08eb477f-ea34-4a31-b181-bfc629aef4c8@kernel.org>
+ <68a9b8e8-bdf4-430f-baef-6a293ccea78d@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <68a9b8e8-bdf4-430f-baef-6a293ccea78d@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Le 17/10/2025 à 14:33, Nuno Sá a écrit :
-> On Fri, 2025-10-17 at 12:54 +0200, Geert Uytterhoeven wrote:
->> The existing FIELD_{GET,PREP}() macros are limited to compile-time
->> constants.  However, it is very common to prepare or extract bitfield
->> elements where the bitfield mask is not a compile-time constant.
->>
->> To avoid this limitation, the AT91 clock driver and several other
->> drivers already have their own non-const field_{prep,get}() macros.
->> Make them available for general use by consolidating them in
->> <linux/bitfield.h>, and improve them slightly:
->>    1. Avoid evaluating macro parameters more than once,
->>    2. Replace "ffs() - 1" by "__ffs()",
->>    3. Support 64-bit use on 32-bit architectures.
->>
->> This is deliberately not merged into the existing FIELD_{GET,PREP}()
->> macros, as people expressed the desire to keep stricter variants for
->> increased safety, or for performance critical paths.
->>
->> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
->> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
->> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Acked-by: Crt Mori <cmo@melexis.com>
->> ---
+On 17/10/2025 13:18, Jishnu Prakash wrote:
+> Hi Krzysztof,
 > 
-> Hopefully this gets merged soon. About time to have these variants (I do have a
-> driver submitted - in review - which is adding yet another variant of this)
->   
-> Acked-by: Nuno Sá <nuno.sa@analog.com>
+> On 10/9/2025 5:22 AM, Krzysztof Kozlowski wrote:
+>> On 08/10/2025 23:20, Jishnu Prakash wrote:
+>>> Hi Krzysztof,
+>>>
+>>> On 10/4/2025 12:22 PM, Krzysztof Kozlowski wrote:
+>>>> On Sat, 4 Oct 2025 at 11:42, Jishnu Prakash
+>>>> <jishnu.prakash@oss.qualcomm.com> wrote:
+>>>>>
+>>>>> Hi Jonathan,
+>>>>>
+>>>>> On 9/27/2025 7:17 PM, Jonathan Cameron wrote:
+>>>>>> On Fri, 19 Sep 2025 20:17:43 +0530
+>>>>>> Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
+>>>>>>
+>>>>>>> Hi Krzysztof,
+>>>>>>>
+>>>>>>> On 9/18/2025 5:45 AM, Krzysztof Kozlowski wrote:
+>>>>>>>> On 18/09/2025 04:47, Jishnu Prakash wrote:
+>>>>>>>>> Hi Krzysztof,
+>>>>>>>>>
+>>>>>>>>> On 9/17/2025 5:59 AM, Krzysztof Kozlowski wrote:
+>>>>>>>>>> On 16/09/2025 16:28, Jishnu Prakash wrote:
+>>>>>>>>>>>> You cannot have empty spaces in ID constants. These are abstract
+>>>>>>>>>>>> numbers.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Otherwise please point me to driver using this constant.
+>>>>>>>>>>>
+>>>>>>>>>>> These constants are for ADC channel numbers, which are fixed in HW.
+>>>>>>>>>>>
+>>>>>>>>>>> They are used in this driver: drivers/iio/adc/qcom-spmi-adc5-gen3.c,
+>>>>>>>>>>> which is added in patch 4 of this series.
+>>>>>>>>>>>
+>>>>>>>>>>> They can be found in the array named adc5_gen3_chans_pmic[].
+>>>>>>>>>>
+>>>>>>>>>> Really? So point me to the line there using ADC5_GEN3_VREF_BAT_THERM.
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> We may not be using all of these channels right now - we can add them
+>>>>>>>>> later based on requirements coming up. For now, I'll remove the channels
+>>>>>>>>> not used in adc5_gen3_chans_pmic[].
+>>>>>>>>
+>>>>>>>> You are not implementing the feedback then. Please read it carefully.
+>>>>>>>>
+>>>>>>>
+>>>>>>> Sorry, I misunderstood - so you actually meant I should remove the
+>>>>>>> empty spaces in the definitions, like this?
+>>>>>>>
+>>>>>>> -#define ADC5_GEN3_VREF_BAT_THERM               0x15
+>>>>>>> +#define ADC5_GEN3_VREF_BAT_THERM 0x15
+>>>>>>>
+>>>>>>> I thought this at first, but I somehow doubted this later, as I saw some
+>>>>>>> other recently added files with empty spaces in #define lines, like:
+>>>>>>>
+>>>>>>> include/dt-bindings/iio/adc/mediatek,mt6373-auxadc.h
+>>>>>>> include/dt-bindings/regulator/st,stm32mp15-regulator.h
+>>>>>>>
+>>>>>>> I can make this change, if you prefer this. Please let me know
+>>>>>>> if I'm still missing something.
+>>>>>>>
+>>>>>>> Also please let me know if you want me to remove the unused
+>>>>>>> channels - I would prefer to keep them if there's no issue,
+>>>>>>> as we might need them later.
+>>>>>>>
+>>>>>> He is referring to 0x14 and below not being defined values.  So what
+>>>>>> do they mean if they turn up in the DT?
+>>>>>>
+>>>>>
+>>>>> Thanks for your clarification. To address your first point above, the macros
+>>>>> added here only represent the ADC channel numbers which are supported for
+>>>>> ADC5 Gen3 devices. If there are numbers missing in between (like 0x14),
+>>>>> that is because there exist no valid ADC channels in HW matching those
+>>>>> channel numbers.
+>>>>>
+>>>>> For your question above, if any of the undefined channels are used in the DT,
+>>>>> they should ideally be treated as invalid when parsed in the driver probe and
+>>>>> lead to an error. When I checked the code again, I saw we do not have such an
+>>>>> explicit check right now, so I will add that in the next patch series.
+>>>>>
+>>>>> And to be clear on which channel numbers are supported, I think it may be
+>>>>> best if, for now, we only add support for the channel numbers referenced in
+>>>>> the array adc5_gen3_chans_pmic[] in drivers/iio/adc/qcom-spmi-adc5-gen3.c.
+>>>>>
+>>>>> There are only 18 channel numbers used in this array and I would remove
+>>>>> all channels except for these from the binding files. During parsing, we
+>>>>> would use this array to confirm if an ADC channel added in DT is supported.
+>>>>>
+>>>>> In case we need to add support for any more channels later, we could add
+>>>>> their macros in the binding file and update the array correspondingly at
+>>>>> that time.
+>>>>>
+>>>>> Does all this sound fine? Please let me know if you have any more concerns
+>>>>> or queries.
+>>>>
+>>>> No, it doesn't.  You keep ignoring my arguments and responding to
+>>>> something else. I prefer not to store hardware values as bindings,
+>>>> because these are not bindings (and you failed to prove which SW
+>>>> interface they bind) and it's really not necessary.
+> 
+> Sorry about the delay in replying. Let me go step by step
+> over the use of the macros and how they are used by clients
+> SW.
+> 
+> 1. In ADC Gen3, this is the superset of channels supported on all
+> PMICs (with ADC):
+> 
+> Ref: include/dt-bindings/iio/adc/qcom,spmi-vadc.h
 
-Same here, I would happily drop field_{get,set} from my series under 
-review to include bitfield.h
-Thanks Geert!
-
-Acked-by: Richard Genoud <richard.genoud@bootlin.com>
+That's not a driver. Not SW.
 
 > 
->> v4:
->>    - Add Acked-by,
->>    - Rebase on top of commit 7c68005a46108ffa ("crypto: qat - relocate
->>      power management debugfs helper APIs") in v6.17-rc1,
->>    - Convert more recently introduced upstream copies:
->>        - drivers/edac/ie31200_edac.c
->>        - drivers/iio/dac/ad3530r.c
->>
->> v3:
->>    - Add Acked-by,
->>    - Drop underscores from macro parameters,
->>    - Use __auto_type where possible,
->>    - Correctly cast reg to the mask type,
->>    - Introduces __val and __reg intermediates to simplify the actual
->>      operation,
->>    - Drop unneeded parentheses,
->>    - Clarify having both FIELD_{GET,PREP}() and field_{get,prep}(),
->>
->> v2:
->>    - Cast val resp. reg to the mask type,
->>    - Fix 64-bit use on 32-bit architectures,
->>    - Convert new upstream users:
->>        - drivers/crypto/intel/qat/qat_common/adf_gen4_pm_debugfs.c
->>        - drivers/gpio/gpio-aspeed.c
->>        - drivers/iio/temperature/mlx90614.c
->>        - drivers/pinctrl/nuvoton/pinctrl-ma35.c
->>        - sound/usb/mixer_quirks.c
->>    - Convert new user queued in renesas-devel for v6.15:
->>        - drivers/soc/renesas/rz-sysc.c
->> ---
->>   drivers/clk/at91/clk-peripheral.c             |  1 +
->>   drivers/clk/at91/pmc.h                        |  3 --
->>   .../intel/qat/qat_common/adf_pm_dbgfs_utils.c |  8 +----
->>   drivers/edac/ie31200_edac.c                   |  4 +--
->>   drivers/gpio/gpio-aspeed.c                    |  5 +--
->>   drivers/iio/dac/ad3530r.c                     |  3 --
->>   drivers/iio/temperature/mlx90614.c            |  5 +--
->>   drivers/pinctrl/nuvoton/pinctrl-ma35.c        |  4 ---
->>   drivers/soc/renesas/rz-sysc.c                 |  3 +-
->>   include/linux/bitfield.h                      | 36 +++++++++++++++++++
->>   sound/usb/mixer_quirks.c                      |  4 ---
->>   11 files changed, 42 insertions(+), 34 deletions(-)
->>
->> diff --git a/drivers/clk/at91/clk-peripheral.c b/drivers/clk/at91/clk-
->> peripheral.c
->> index e700f40fd87f9327..e7208c47268b6397 100644
->> --- a/drivers/clk/at91/clk-peripheral.c
->> +++ b/drivers/clk/at91/clk-peripheral.c
->> @@ -3,6 +3,7 @@
->>    *  Copyright (C) 2013 Boris BREZILLON <b.brezillon@overkiz.com>
->>    */
->>   
->> +#include <linux/bitfield.h>
->>   #include <linux/bitops.h>
->>   #include <linux/clk-provider.h>
->>   #include <linux/clkdev.h>
->> diff --git a/drivers/clk/at91/pmc.h b/drivers/clk/at91/pmc.h
->> index 5daa32c4cf2540d7..543d7aee8d248cdb 100644
->> --- a/drivers/clk/at91/pmc.h
->> +++ b/drivers/clk/at91/pmc.h
->> @@ -117,9 +117,6 @@ struct at91_clk_pms {
->>   	unsigned int parent;
->>   };
->>   
->> -#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
->> -#define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
->> -
->>   #define ndck(a, s) (a[s - 1].id + 1)
->>   #define nck(a) (a[ARRAY_SIZE(a) - 1].id + 1)
->>   
->> diff --git a/drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c
->> b/drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c
->> index 69295a9ddf0ac92f..4ccc94ed9493a64c 100644
->> --- a/drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c
->> +++ b/drivers/crypto/intel/qat/qat_common/adf_pm_dbgfs_utils.c
->> @@ -1,18 +1,12 @@
->>   // SPDX-License-Identifier: GPL-2.0-only
->>   /* Copyright(c) 2025 Intel Corporation */
->> +#include <linux/bitfield.h>
->>   #include <linux/bitops.h>
->>   #include <linux/sprintf.h>
->>   #include <linux/string_helpers.h>
->>   
->>   #include "adf_pm_dbgfs_utils.h"
->>   
->> -/*
->> - * This is needed because a variable is used to index the mask at
->> - * pm_scnprint_table(), making it not compile time constant, so the compile
->> - * asserts from FIELD_GET() or u32_get_bits() won't be fulfilled.
->> - */
->> -#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
->> -
->>   #define PM_INFO_MAX_KEY_LEN	21
->>   
->>   static int pm_scnprint_table(char *buff, const struct pm_status_row *table,
->> diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
->> index 5a080ab65476dacf..dfc9a9cecd74207d 100644
->> --- a/drivers/edac/ie31200_edac.c
->> +++ b/drivers/edac/ie31200_edac.c
->> @@ -44,6 +44,7 @@
->>    * but lo_hi_readq() ensures that we are safe across all e3-1200 processors.
->>    */
->>   
->> +#include <linux/bitfield.h>
->>   #include <linux/module.h>
->>   #include <linux/init.h>
->>   #include <linux/pci.h>
->> @@ -139,9 +140,6 @@
->>   #define IE31200_CAPID0_DDPCD		BIT(6)
->>   #define IE31200_CAPID0_ECC		BIT(1)
->>   
->> -/* Non-constant mask variant of FIELD_GET() */
->> -#define field_get(_mask, _reg)  (((_reg) & (_mask)) >> (ffs(_mask) - 1))
->> -
->>   static int nr_channels;
->>   static struct pci_dev *mci_pdev;
->>   static int ie31200_registered = 1;
->> diff --git a/drivers/gpio/gpio-aspeed.c b/drivers/gpio/gpio-aspeed.c
->> index 7953a9c4e36d7550..3da999334971d501 100644
->> --- a/drivers/gpio/gpio-aspeed.c
->> +++ b/drivers/gpio/gpio-aspeed.c
->> @@ -5,6 +5,7 @@
->>    * Joel Stanley <joel@jms.id.au>
->>    */
->>   
->> +#include <linux/bitfield.h>
->>   #include <linux/cleanup.h>
->>   #include <linux/clk.h>
->>   #include <linux/gpio/aspeed.h>
->> @@ -31,10 +32,6 @@
->>   #include <linux/gpio/consumer.h>
->>   #include "gpiolib.h"
->>   
->> -/* Non-constant mask variant of FIELD_GET() and FIELD_PREP() */
->> -#define field_get(_mask, _reg)	(((_reg) & (_mask)) >> (ffs(_mask) - 1))
->> -#define field_prep(_mask, _val)	(((_val) << (ffs(_mask) - 1)) &
->> (_mask))
->> -
->>   #define GPIO_G7_IRQ_STS_BASE 0x100
->>   #define GPIO_G7_IRQ_STS_OFFSET(x) (GPIO_G7_IRQ_STS_BASE + (x) * 0x4)
->>   #define GPIO_G7_CTRL_REG_BASE 0x180
->> diff --git a/drivers/iio/dac/ad3530r.c b/drivers/iio/dac/ad3530r.c
->> index 6134613777b8e1d4..b97b46090d808ee7 100644
->> --- a/drivers/iio/dac/ad3530r.c
->> +++ b/drivers/iio/dac/ad3530r.c
->> @@ -53,9 +53,6 @@
->>   #define AD3530R_MAX_CHANNELS			8
->>   #define AD3531R_MAX_CHANNELS			4
->>   
->> -/* Non-constant mask variant of FIELD_PREP() */
->> -#define field_prep(_mask, _val)	(((_val) << (ffs(_mask) - 1)) &
->> (_mask))
->> -
->>   enum ad3530r_mode {
->>   	AD3530R_NORMAL_OP,
->>   	AD3530R_POWERDOWN_1K,
->> diff --git a/drivers/iio/temperature/mlx90614.c
->> b/drivers/iio/temperature/mlx90614.c
->> index 8a44a00bfd5ece38..1ad21b73e1b44cb0 100644
->> --- a/drivers/iio/temperature/mlx90614.c
->> +++ b/drivers/iio/temperature/mlx90614.c
->> @@ -22,6 +22,7 @@
->>    * the "wakeup" GPIO is not given, power management will be disabled.
->>    */
->>   
->> +#include <linux/bitfield.h>
->>   #include <linux/delay.h>
->>   #include <linux/err.h>
->>   #include <linux/gpio/consumer.h>
->> @@ -68,10 +69,6 @@
->>   #define MLX90614_CONST_SCALE 20 /* Scale in milliKelvin (0.02 * 1000) */
->>   #define MLX90614_CONST_FIR 0x7 /* Fixed value for FIR part of low pass filter
->> */
->>   
->> -/* Non-constant mask variant of FIELD_GET() and FIELD_PREP() */
->> -#define field_get(_mask, _reg)	(((_reg) & (_mask)) >> (ffs(_mask) - 1))
->> -#define field_prep(_mask, _val)	(((_val) << (ffs(_mask) - 1)) &
->> (_mask))
->> -
->>   struct mlx_chip_info {
->>   	/* EEPROM offsets with 16-bit data, MSB first */
->>   	/* emissivity correction coefficient */
->> diff --git a/drivers/pinctrl/nuvoton/pinctrl-ma35.c
->> b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
->> index cdad01d68a37e365..8d71dc53cc1de1f8 100644
->> --- a/drivers/pinctrl/nuvoton/pinctrl-ma35.c
->> +++ b/drivers/pinctrl/nuvoton/pinctrl-ma35.c
->> @@ -81,10 +81,6 @@
->>   #define MVOLT_1800			0
->>   #define MVOLT_3300			1
->>   
->> -/* Non-constant mask variant of FIELD_GET() and FIELD_PREP() */
->> -#define field_get(_mask, _reg)	(((_reg) & (_mask)) >> (ffs(_mask) - 1))
->> -#define field_prep(_mask, _val)	(((_val) << (ffs(_mask) - 1)) &
->> (_mask))
->> -
->>   static const char * const gpio_group_name[] = {
->>   	"gpioa", "gpiob", "gpioc", "gpiod", "gpioe", "gpiof", "gpiog",
->>   	"gpioh", "gpioi", "gpioj", "gpiok", "gpiol", "gpiom", "gpion",
->> diff --git a/drivers/soc/renesas/rz-sysc.c b/drivers/soc/renesas/rz-sysc.c
->> index 9f79e299e6f41641..73eaf8b9d69f7208 100644
->> --- a/drivers/soc/renesas/rz-sysc.c
->> +++ b/drivers/soc/renesas/rz-sysc.c
->> @@ -5,6 +5,7 @@
->>    * Copyright (C) 2024 Renesas Electronics Corp.
->>    */
->>   
->> +#include <linux/bitfield.h>
->>   #include <linux/cleanup.h>
->>   #include <linux/io.h>
->>   #include <linux/mfd/syscon.h>
->> @@ -16,8 +17,6 @@
->>   
->>   #include "rz-sysc.h"
->>   
->> -#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
->> -
->>   /**
->>    * struct rz_sysc - RZ SYSC private data structure
->>    * @base: SYSC base address
->> diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
->> index 7ff817bdae19b468..c999fe70076f6684 100644
->> --- a/include/linux/bitfield.h
->> +++ b/include/linux/bitfield.h
->> @@ -220,4 +220,40 @@ __MAKE_OP(64)
->>   #undef __MAKE_OP
->>   #undef ____MAKE_OP
->>   
->> +/**
->> + * field_prep() - prepare a bitfield element
->> + * @mask: shifted mask defining the field's length and position
->> + * @val:  value to put in the field
->> + *
->> + * field_prep() masks and shifts up the value.  The result should be
->> + * combined with other fields of the bitfield using logical OR.
->> + * Unlike FIELD_PREP(), @mask is not limited to a compile-time constant.
->> + */
->> +#define field_prep(mask, val)						\
->> +	({								\
->> +		__auto_type __mask = (mask);				\
->> +		typeof(mask) __val = (val);				\
->> +		unsigned int __shift = sizeof(mask) <= 4 ?		\
->> +				       __ffs(__mask) :
->> __ffs64(__mask);	\
->> +		(__val << __shift) & __mask;	\
->> +	})
->> +
->> +/**
->> + * field_get() - extract a bitfield element
->> + * @mask: shifted mask defining the field's length and position
->> + * @reg:  value of entire bitfield
->> + *
->> + * field_get() extracts the field specified by @mask from the
->> + * bitfield passed in as @reg by masking and shifting it down.
->> + * Unlike FIELD_GET(), @mask is not limited to a compile-time constant.
->> + */
->> +#define field_get(mask, reg)						\
->> +	({								\
->> +		__auto_type __mask = (mask);				\
->> +		typeof(mask) __reg =  (reg);				\
->> +		unsigned int __shift = sizeof(mask) <= 4 ?		\
->> +				       __ffs(__mask) :
->> __ffs64(__mask);	\
->> +		(__reg & __mask) >> __shift;	\
->> +	})
->> +
->>   #endif
->> diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
->> index 828af3095b86ee0a..6eee89cbc0867f2b 100644
->> --- a/sound/usb/mixer_quirks.c
->> +++ b/sound/usb/mixer_quirks.c
->> @@ -3311,10 +3311,6 @@ static int snd_bbfpro_controls_create(struct
->> usb_mixer_interface *mixer)
->>   #define RME_DIGIFACE_REGISTER(reg, mask) (((reg) << 16) | (mask))
->>   #define RME_DIGIFACE_INVERT BIT(31)
->>   
->> -/* Nonconst helpers */
->> -#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
->> -#define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
->> -
->>   static int snd_rme_digiface_write_reg(struct snd_kcontrol *kcontrol, int
->> item, u16 mask, u16 val)
->>   {
->>   	struct usb_mixer_elem_list *list = snd_kcontrol_chip(kcontrol);
+> /* ADC channels for PMIC5 Gen3 */
+> 
+> #define ADC5_GEN3_REF_GND		0x00
+> #define ADC5_GEN3_1P25VREF		0x01
+> #define ADC5_GEN3_VREF_VADC		0x02
+> #define ADC5_GEN3_DIE_TEMP		0x03
+> ....
+> 
+> 
+> 2. Since some PMICs may not have all of these channels supported in
+> HW, we have the PMIC-specific channel definitions (starting with PMIC
+> name like PM8550_..) made referencing the above definitions.
+> 
+> Ref: include/dt-bindings/iio/adc/qcom,pm8550-adc5-gen3.h:
+
+That's not a driver. Not SW.
 
 
--- 
-Richard Genoud, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> ...
+>     #define PM8550_ADC5_GEN3_DIE_TEMP(sid)	((sid) << 8 | ADC5_GEN3_DIE_TEMP)
+> ...
+> 
+> side note: This is also used for the "reg" property in the ADC channel
+> definition DT nodes.
+> 
+> Here `sid` is needed as there can be different instances of same PMIC
+> using different `sid`s on a single SoC, and also on different SoCs, the
+> same PMIC may have different `sid`s.
+> 
+> 
+> 3. This PMIC-specific definition will be used by clients like below
+> (in io-channels) to get the ADC channel they need to read.
+> 
+>     pmic@1 {
+>         temp-alarm@a00 {
+>             compatible = "qcom,spmi-temp-alarm";
+> 	    ...
+>             io-channels = <&pmk8550_adc PM8550_ADC5_GEN3_DIE_TEMP(1)>;
+>             io-channel-names = "thermal";
+>         };
+>     };
+
+That's not a driver. Not SW.
+
+> 
+> 
+> Can you please provide your suggestions on changes we can make
+> in the above points ?
+
+You just pasted DT. I asked about SW, software. Please read carefully
+previous comments.
+
+
+Best regards,
+Krzysztof
 

@@ -1,75 +1,83 @@
-Return-Path: <linux-iio+bounces-25259-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25260-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A3FBEDA4D
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 21:26:31 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 249E0BEDA77
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 21:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E061A3B2F50
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 19:25:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BFA224EDE79
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 19:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B490C256C89;
-	Sat, 18 Oct 2025 19:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D1225CC79;
+	Sat, 18 Oct 2025 19:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ljdkS0UI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GmjSKpoH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D8E27FB1E;
-	Sat, 18 Oct 2025 19:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D571EA7D2;
+	Sat, 18 Oct 2025 19:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760815497; cv=none; b=LJN+Y6CydFMXRJalb8lB2FaRfjkhnRznljR43Bl6KT6Yx7AFzvl2KbryBWNukp0czt0k276RhaCrxwK4+bFQyPSRZLwaxav+/5lucuew1CLVnmbt+UaozAhNOsE+6DLRzSaY+iBHHI7OI5B+CXzMJcBNC+77+7gEKWX2T7sSz3A=
+	t=1760815822; cv=none; b=NA+E7MgqJyqMu1mKFEAbQ7HkhMQI3PnltMid2wIhCN9n1NbiYg18Kn+wJl+I40euiyqpFtcyp3t7iJ4IKk0+v8jRyCsPhGz3Pg7BnYh0YgibkfQhR8d+kYf/Oqtm2fXhYjjygS6p+kbSdW4zqnaTTO/DR7rlzul9oQUQH2jnK6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760815497; c=relaxed/simple;
-	bh=9bSfGES7Gw7ogivfHR6C9Hea5CliMZxATD6hFb1jHbM=;
+	s=arc-20240116; t=1760815822; c=relaxed/simple;
+	bh=Te2nZ0oEObsS/v6p5DTbuHeyiExqTwAbCG9MPQyDdjA=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=j3z2OMI/FGsGJAtVB+g2xAglo2aG6RMSEf87lyHek8zvN24MoovwgZg/EE0bLutVkoVhdaoPsJX678f4hrFT/PTJAXhH/EeJ0rD+JJlMvZUyFpev9C2i9hpaUbinSO66+Rub7290YLuMgrA9VCuOKnGG0mvQxGv/94yUAMJdRdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ljdkS0UI; arc=none smtp.client-ip=198.175.65.21
+	 Content-Disposition; b=kiZEsrpN3pgRFgCt5t5ZiszmxJKISCiwl934wNwqUyZrjVegHWw/rKdmcWlDigXYLuLNMBXRfuXLJL6Sjmz9Zt/o9WHTUAKJqEzpJeKKCCA2Z//ijtFTkwVrcVoj3vGpo17Y6nIY2MPxl2/YlODSEkzuZdHdNZ0zPlS95dpwZ40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GmjSKpoH; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760815496; x=1792351496;
+  t=1760815821; x=1792351821;
   h=date:from:to:cc:subject:message-id:mime-version;
-  bh=9bSfGES7Gw7ogivfHR6C9Hea5CliMZxATD6hFb1jHbM=;
-  b=ljdkS0UIRq661INCr8DBpdF3pAvX5viqFZrRTBoCTdWy4RK0RYG1Fl6y
-   TpZGE6Z9f/HIllv15aLuVT/0KtkxTxmCc83+qnoG9iMnC8n2ijAlakoAj
-   GwjuvLpyAXQigdiZMKhwQ5cxT6UZDUwSrJe3xjo0GtCriXeOHnYnv7guQ
-   X4QFb2wLRxl5ftYnRP5rwZcraHDZCubSO4FdtDEI3SUFmLWFfT/zt1ONB
-   86lPWyVrN1SZJvPbzqUNfrIUjwwdaxYSI0uZYyKEN/YgjiIvW50dN21ua
-   kRMO4KD41CkzPz9012GsFH7ZaLVrFJ0X43r/TdzOZ3lhIlDYIePgm/UwW
+  bh=Te2nZ0oEObsS/v6p5DTbuHeyiExqTwAbCG9MPQyDdjA=;
+  b=GmjSKpoH/a5s5LaqCegBx9pKukA9vV2lQLq1MW4umZKb+XJYM2rhCziP
+   roVWKiFlnejkamdw3rRGkmZ0zNkrx2BTtreVn0WKbVfyAAYqjxaGe/n1p
+   GN36cTrCM7nY5McOKAWgEUpuuiV6PajDIXptxSzm+/E4ZB1T9nI1XJ+5o
+   luqKjGWAdxnaN8R6dxL3Pvu1l1XeKsBsdXZX+drE4+CdODoscEU9eExL4
+   SLAtvC0TmqhXqx1MZ8mDp3i8TzW1ycr0QWm2316TxYNgkWDnr3uK2EcBx
+   eO8mmQVPfok7GmON1hYghpVdfTtImaPjJBfOJbVj4bRt7wfoc379fLo02
    A==;
-X-CSE-ConnectionGUID: TpUHD50iTWqXB3kQshY/Aw==
-X-CSE-MsgGUID: YHqazwxDS7qStBcht+6tag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62904312"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62904312"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 12:24:56 -0700
-X-CSE-ConnectionGUID: vE+QGANHQC6+xeZM7vJy0w==
-X-CSE-MsgGUID: 6gid/VJoQmma1OBvyB5wOA==
+X-CSE-ConnectionGUID: nm+QFIY4SF+qBaDCMhl8uw==
+X-CSE-MsgGUID: jk2b2IqBQxWLC7XdVItiCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62209271"
+X-IronPort-AV: E=Sophos;i="6.19,239,1754982000"; 
+   d="scan'208";a="62209271"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 12:30:20 -0700
+X-CSE-ConnectionGUID: q7ZRlu7UTJqqA1DbsYmARg==
+X-CSE-MsgGUID: Vu5vx8+1RHu2OgbewwJIQg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,239,1754982000"; 
-   d="scan'208";a="182545573"
+   d="scan'208";a="188087098"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.194])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 12:24:54 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 12:30:17 -0700
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vACXr-00000000xUU-1s8s;
-	Sat, 18 Oct 2025 22:24:51 +0300
-Date: Sat, 18 Oct 2025 22:24:51 +0300
+	id 1vACd4-00000000xYO-1p2c;
+	Sat, 18 Oct 2025 22:30:14 +0300
+Date: Sat, 18 Oct 2025 22:30:14 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
+To: Romain Gantois <romain.gantois@bootlin.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-kernel@vger.kernel.org,
+	Andy Shevchenko <andy@kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: test: fixed-point: new kunit test
-Message-ID: <aPPpg9lb-UQ02m-0@ashevche-desk.local>
+Subject: Re: [PATCH 4/4] regulator: ltm8054: Support output current limit
+ control
+Message-ID: <aPPqxsU43npNC_v0@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,42 +89,26 @@ Content-Disposition: inline
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-
-On Mon, Oct 13, 2025 at 04:33:43PM -0500, David Lechner wrote:
-> Add a kunit test for iio_str_to_fixpoint(). This function has an
-> unintuitive API so this is helpful to see how to use it and shows the
-> various edge cases.
-
+On Thu, Sep 25, 2025 at 09:54:19AM +0200, Romain Gantois wrote:
+> On Tuesday, 16 September 2025 16:27:25 CEST Romain Gantois wrote:
+> > On Tuesday, 16 September 2025 15:19:16 CEST Andy Shevchenko wrote:
+> > > On Tue, Sep 16, 2025 at 12:24:09PM +0200, Romain Gantois wrote:
 ...
-
-> Discussion unrelated to the patch:
+> > > > CTL pin voltage */ +	vdac_uV = (u64)min_uA * LTM8054_MAX_CTL_V;
+> > > > +	do_div(vdac_uV, priv->max_uA);
+> > > > +
+> > > > +	dev_dbg(&rdev->dev,
+> > > > +		"Setting current limit to %duA, CTL pin to %duV\n", min_uA,
+> > > > (int)vdac_uV);
+> > > 
+> > > Why casting?
+> > 
+> > This one is indeed unnecessary.
 > 
-> I'm also a little tempted to introduce a new function that is a bit
-> easier to use. Many callers of iio_str_to_fixpoint_s64() are doing
-> something like int_part * 1000 + fract_part and ignoring the possibility
-> of negative values which require special handling.
-> 
-> static int iio_str_to_fixpoint_s64(const char *str, u32 decimal_places, s64 *value)
-> {
-> 	int int_part, fract_part;
-> 	int ret;
-> 
-> 	ret = iio_str_to_fixpoint(str, int_pow(10, decimal_places - 1),
-> 				  &int_part, &fract_part);
-> 	if (ret)
-> 		return ret;
-> 
-> 	*value = (s64)int_part * int_pow(10, decimal_places) +
-> 		 (int_part < 0 ? -1 : 1) * fract_part;
+> My mistake, this cast is required to avoid a compiler warning;
 
-
-Obviously if you go this path, the int_pow() can be called only once
-(yes, we would need a multiplication or division for the other case).
-The question is how we treat the decimal_places == 0 case.
-
-> 	return 0;
-> }
-
+THen provide a proper specifier instead. Casting in printf() is in 99.9% cases
+just a pure mistake.
 
 -- 
 With Best Regards,

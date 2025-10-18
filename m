@@ -1,160 +1,150 @@
-Return-Path: <linux-iio+bounces-25252-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25253-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DFCBED7F7
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 20:55:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D3DBED839
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 21:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E5F519C1773
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 18:56:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE9513A52C4
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 19:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6945225A328;
-	Sat, 18 Oct 2025 18:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F36E279908;
+	Sat, 18 Oct 2025 19:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="LcfooaHr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AutLg8/Y"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED23134CB
-	for <linux-iio@vger.kernel.org>; Sat, 18 Oct 2025 18:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE8225F99F
+	for <linux-iio@vger.kernel.org>; Sat, 18 Oct 2025 19:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760813751; cv=none; b=ZUgsa+FqHva93eGcGDEbckoAHDBc3+myPfPA7t22gODK2RvSOKJKuCrSympg2dmF06lj7lUuwLDWM1b3z44w5iB1l7CvqQZk9JXxU2TuDtrpmYaRvsWJbKxU2aRG3H9WwXDcgQesKA/WYK2WSe3uV2N+Xqgk+nVx7wEWdBNBnDo=
+	t=1760814323; cv=none; b=NMJbgoMuM21hqaMZ6r9JAhuDypuENkJfc9NBMOv+ZQoboaZUengZ5nsBiOI6owEPts4psAtasWOaNNYrSjjdAtHyOpBZrf4IH/BBFkuk8gbum0eqFJmhT2xc3TlD0I54FPq7hhXYt7+sYOe1bq2ZqOZS7D7hXtVDAmfGulFnWwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760813751; c=relaxed/simple;
-	bh=KnqOHVF7mxydtC1tf2E/ukwvy4QzPm/w1bnmxxXfVq0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Qq2tsHN2HQ+kWeHm5JfSYFc1Rzb2u03lC3vSUNIyWR0mMJ7CRSeHDSrGmQ8KSX++bLeejDEgu5rdSKhI/eROwE8ZbPQ7w5XdWwytZqyriozSTzE2af6nuhmIYec9bDBoxCHEP0oIBvKOd7tHv3P/SPeJhzx4GVMVRa0a7g3SNzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=LcfooaHr; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-61feb87fe26so4912076a12.1
-        for <linux-iio@vger.kernel.org>; Sat, 18 Oct 2025 11:55:47 -0700 (PDT)
+	s=arc-20240116; t=1760814323; c=relaxed/simple;
+	bh=GlkRPCPhPzOU9mLCQrN+RQspS//dfiZHnMCrJx2XjUE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fL8isprnySwSMg5UllIr4B9ly85eUwD4SW6cZw3qiKYi5+09r2MIoW/oC8LUblgWhurAJc+6sI4YmukivdRcspu/B1OXdf0GKqXrVjkFqDUF6VjcAHEcGgPBLLD85sPkcV8ciNgFRhK88gseYt2eVzPKU0bLTax7CDEwBkWhKKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AutLg8/Y; arc=none smtp.client-ip=209.85.161.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-650304a822aso634680eaf.3
+        for <linux-iio@vger.kernel.org>; Sat, 18 Oct 2025 12:05:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760813746; x=1761418546; darn=vger.kernel.org;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KnqOHVF7mxydtC1tf2E/ukwvy4QzPm/w1bnmxxXfVq0=;
-        b=LcfooaHr6vgoKGNrJyM3ioJ8lZETXYSK//m1J6tFXJ8KdeTS+BF8JGtPOTuELNSCuv
-         YEj+NcVMTZIIQPLZW8s8SaDSkEV6EboTw2NepXCBhVQGtcGdnzodLcuv8/9LHem1NzOu
-         XcaJD8zkGykLKo/MIeuyDCCMdtojlxedMje8OrCD61v8tCXHeU+x+Fgyw8KX2CGbqxp7
-         NfPpL95ecTAdRoDFfmoj5IBPzfpMjtVvvNW9tZ2De+968Z2I2LxgZ+c6VxSjPE/PrkCQ
-         izW9rP4K/P4jFQEf2i7gtncZ+N9KzZkNy3860evs4zcwkUNKylxnTrhiSiYyMRc9h7nP
-         xV9A==
+        d=gmail.com; s=20230601; t=1760814320; x=1761419120; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=npvxteVAfIEKzMeytJ2WmNF7D4AAPzWxw0qzjoJdKTI=;
+        b=AutLg8/YD91s2Pa5W48hZ3OrDxy/xKimxKdqmnQ9L9+1JudCP6yV0yTaPsTHLj9Ng6
+         ayu5A1t4VTvR2u4O4BNdk4UZQdTgAQm38dyU9qLzekSonv6ChcNGevrmv735Owp1ibgJ
+         b3qopqYRQMmPrWfBrDz9c6VcFRTp7gg0RafKw5fx+C6GTJ98hkRuPXE6qL0Nj9ThxvBx
+         M55Dr/GnPxZ6AJ/IGHa49FGKcK5TM3g7w7fRQG7jygaIWPB06Omtdh+ZoQfK6TqmfGpc
+         X1KelEdVtXe0T6BYZEMayKWX7AYx/89PpMW5VWQhEv2I2GVGBehpXaE2rr4/KaeTKGjB
+         ZbVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760813746; x=1761418546;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=KnqOHVF7mxydtC1tf2E/ukwvy4QzPm/w1bnmxxXfVq0=;
-        b=DGvfQ4RDKJFwcPACyulNBGKdL2FHHDXljsU9UR0PuFDqeAEMt+ZAev6tCTlCUV2kde
-         rXtZCVYvzh6/QxzKQtukw8zzkn9rKnZ4x7CVgCEXx45f1+G0ulFHTVv1+BvUmExbTtta
-         PdTnZN/uotZ7d7i9r/v3QOQZmq5kyXzygXB1IOBvBn83cPV9k25H+L+unJGt8AbschLi
-         9nU9W2t986SiLiAOBhfRlcZw2Ep64EigORThF59EcZbK3+WMsx+kwdZ3KDqSBTyB0pAI
-         i0Qwug31p9zVsvSp6tV9e9nNXYwH6dJGhuNIX7rlV9hjHDtARsnoF1jZjx6NmBFbBGSP
-         Ps7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXZxTqCW0Dra9KyqaVBGJ8JX1GasHvl/67OBmYWxlNe+IJtAfPdRuFGagOvSfZNcmvMkASpNodxFsY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzouDUdSDGW/iX2+ZjtobKgDlxj+NMnRfbwpY1zbriK7yIGYJJ/
-	AWq0jRyqap8m23Mv0pjDlpSYUNsSevC6R7j/gK/zEvBruOaBtjiwIPWE7/Y5oIJdZzGZj1G+dWZ
-	RvW0U
-X-Gm-Gg: ASbGncvVoOS0VXTf3W1ifBf8Yh/lt+sig7shDjM128mpeQIH+myfAYklHlLujZuZIte
-	SjxLALxpzGB0Pk+zk/wtIqrgn0b4Xa6gd/V/jmVzwVtK/IK/HUEgrwce9wkROyg1AHHagPaQJ4B
-	fWZmK4lvI4kg0JcF34+nibHC0Oye3ILPE3TCKkvdOoNEkyLsOuzYnWdgH03ilcp1e+QwYnxJFow
-	QBHykVJtT9WKS9aKOrmije826MnisYAHI0k/7Ejyj0A+X0bOKewcriIwcCmEVigJNDGqMUt0Yx1
-	LR2XRM0Yuj3z5tt09P01ZPoji7ZEFXSbqys1A/aMlUFHaQQsT+VCm2gUUOYo7hpiM/UmYL8RPtP
-	8c4eiWH1DTlCHx2XjmqpiXgjRNJDIlrhI5K7eTRyzGnR6AUuUWQbC9fN8cqHMx1P4ii9i8zw8Db
-	p0iae7KT6EOPGdoQuNdbxr4sn6TkzBK+02V8V/izkIWLUGrjeRZocy
-X-Google-Smtp-Source: AGHT+IFq3EZn9lNvjOiy5AW8Eyzrqv6jxyoa+a9idWvwFRf2zmWDAQd+B8XvHOKyUYsr6SZa2QCzrQ==
-X-Received: by 2002:a05:6402:278a:b0:628:7716:357c with SMTP id 4fb4d7f45d1cf-63c1f6e513fmr6997724a12.25.1760813746464;
-        Sat, 18 Oct 2025 11:55:46 -0700 (PDT)
-Received: from [10.203.83.237] (mob-176-247-37-226.net.vodafone.it. [176.247.37.226])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63c58320842sm1444915a12.22.2025.10.18.11.55.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Oct 2025 11:55:45 -0700 (PDT)
-Message-ID: <41f72463394e5e9110f5c889049e9592d3a8efa8.camel@baylibre.com>
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: fix array size for
- st_lsm6dsx_settings fields
-From: Francesco Lavra <flavra@baylibre.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Jonathan Cameron
- <jic23@kernel.org>,  David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sat, 18 Oct 2025 20:55:40 +0200
-In-Reply-To: <aPPOu431u8MPUN0p@smile.fi.intel.com>
-References: <20251017173208.1261990-1-flavra@baylibre.com>
-	 <aPPOu431u8MPUN0p@smile.fi.intel.com>
-Organization: BayLibre
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-a6v3PjjMJW06K0heS6lu"
-User-Agent: Evolution 3.46.4-2 
+        d=1e100.net; s=20230601; t=1760814320; x=1761419120;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=npvxteVAfIEKzMeytJ2WmNF7D4AAPzWxw0qzjoJdKTI=;
+        b=Q2+p0uKCu6+I/h3TS/JC0oXYuSJZ4TFRkeKTgp713yXghC/HelEnXbr/fXj6MsTnnQ
+         9EA9YH39FoDQAdj0ru+0edTS9+PLBzbyv8b0ekUmSCMF97ixgATP6PclPd5Oq50+zWGA
+         5y6dyC2OL1L21ePFPRYEal4vxg2Nk8WuAJhwFB6A81oKOAVG+Xj3+Uop5dm3lSzzYqe9
+         6huQjOdzCBoT6ErRu4BHb93uMzTCFvkW3uNohi71B45wfJvTqXgLDQrjqhy+JjuNuEaU
+         R/M5wMXiNe0048AOVVELVgB7GuSIv7C4bAFto+GYjJIzOGFLY4S7ats3y8WwFoSsOXg9
+         mc1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVOz/JP4eqeIhoT+7mhoWVCxjGMLarncZ87mEw5zO626HVsoyKZsU7SOaYvbJEr15KtEDOL5To19gE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8URkpK6xU9hneVS40D1CTmnY1ezO2allZdJbmhWikzPhNsU9Y
+	EX/x9qmM1vv7z+6YVBi1tbjx9Maj9ZpolIgcoTyqzI4K+uFJHdBbw59TfR4tjZCFb+dSmyPGbiY
+	6VmKZ9l5Sg4Yi/5pogxinCQUe9qAL0Zo=
+X-Gm-Gg: ASbGncuanrSLRM4E4IJZSqUsK21G6oOtGZNXkcCCLvImIs7Wx/m2B+UvARoLER81in5
+	SYFkBj6yHRqUiqoQ1qrpgMO+s2vvDJ66QqfWvsjKDrFUmslADvItC/pcibdgSNfsy1b8ILqdwxU
+	6+9GeCuxX/oWvM6ka01WtMV8IEPkV1lsQa9zdFWLoTdsMAB4IKrptJj7SKuTI0gTKSTOqjAOlW0
+	f8mWMYc+YfKwAFTeD6ATZ5iFOw9wVYiXd658bEMJAPMR/+KIN31Pfjt1tyhDnG4n7jjo+H8
+X-Google-Smtp-Source: AGHT+IHn6bYHsxvnnBm5dSpuXWjNC+PBXDBTRxFzgYuC3xttEpimkJMntVWJZ0cZXwANZryVuMF0nNeTd369Q5XITzY=
+X-Received: by 2002:a05:6871:6907:b0:349:de3c:bfc8 with SMTP id
+ 586e51a60fabf-3c98d0c7686mr2520732fac.31.1760814319754; Sat, 18 Oct 2025
+ 12:05:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-
---=-a6v3PjjMJW06K0heS6lu
+References: <20251015232015.846282-1-robh@kernel.org>
+In-Reply-To: <20251015232015.846282-1-robh@kernel.org>
+From: Jassi Brar <jassisinghbrar@gmail.com>
+Date: Sat, 18 Oct 2025 14:05:08 -0500
+X-Gm-Features: AS18NWBGMwSlAmXgBiXSGQWXCd5xrZTGccuKfzZwiw4wGpClNDZImruw46Wm-dA
+Message-ID: <CABb+yY2u=XZFdoDrjjYFhARLoaxH4uTnT=GyFmsnV_U1aWn=UQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Lee Jones <lee@kernel.org>, Joel Stanley <joel@jms.id.au>, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Daire McNamara <daire.mcnamara@microchip.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Florian Fainelli <f.fainelli@gmail.com>, Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-iio@vger.kernel.org, linux-media@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-phy@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 2025-10-18 at 20:30 +0300, Andy Shevchenko wrote:
-> On Fri, Oct 17, 2025 at 07:32:08PM +0200, Francesco Lavra wrote:
-> > The `decimator` and `batch` fields of struct st_lsm6dsx_settings
-> > are arrays indexed by sensor type, not by sensor hardware
-> > identifier; moreover, the `batch` field is only used for the
-> > accelerometer and gyroscope.
-> > Change the array size for `decimator` from ST_LSM6DSX_MAX_ID to
-> > ST_LSM6DSX_ID_MAX, and change the array size for `batch` from
-> > ST_LSM6DSX_MAX_ID to 2; move the enum st_lsm6dsx_sensor_id
-> > definition so that the ST_LSM6DSX_ID_MAX value is usable within
-> > the struct st_lsm6dsx_settings definition.
->=20
-> ...
->=20
-> > +enum st_lsm6dsx_sensor_id {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ST_LSM6DSX_ID_GYRO,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ST_LSM6DSX_ID_ACC,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ST_LSM6DSX_ID_EXT0,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ST_LSM6DSX_ID_EXT1,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ST_LSM6DSX_ID_EXT2,
->=20
->=20
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ST_LSM6DSX_ID_MAX,
->=20
-> Is it a termination entry? (Looks like that to me) Can we drop trailing
-> comma
-> while at it?
-
-Yes, it's a termination entry, I will drop the trailing comma.
-
-> > +};
-
---=-a6v3PjjMJW06K0heS6lu
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmjz4qwACgkQ7fE7c86U
-Nl9mSgv+NJB88dUdy9TmKxhAapf8e+6vde+0VNX2XFNvWqi62if1oagntf1sRFUg
-7Ynwb7vvH1y/B4/I/Ef/irknoq4rg5ZwWf7q+SWu7ZtSQ0uaZWJXivibn0154Xhe
-wAsrpitQDFoYh//P47sq5ANBdrKIGXYGpXxm3TjXJkva0dnl6uG0Mfs3J6bDbf0P
-ycvEtGtF41RmF5v6diBkEDImt4Je0YYw8eLRWxlqPZDqs9BiYhcn8C78ReZuQ9WS
-YBLK+3nFWQk5Yi/E/Ol8iD4nGcAgvKlU4JnU/CAoKjSzhmgi3/59g+smIkFfthSe
-/eofoMUPY+rlQUK/HPBuHQpR08ItZYn+Nl7pJRc93y6xGVUTjIpJvihDAGZHZTTu
-prpQnxhfStDC25NxEb+0I/856DJnsJb/hR/lZaRBSA7Oa7nHBzwKHM9oHGGeAYEs
-07dbrQvG1KcvCDXq17Q5Ut0fpSHr/V3vbRuXu2HqXan0aFyr4zfr8v/xpo2oZqud
-zf9bO42B
-=+zej
------END PGP SIGNATURE-----
-
---=-a6v3PjjMJW06K0heS6lu--
+On Wed, Oct 15, 2025 at 6:20=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org>=
+ wrote:
+>
+> yamllint has gained a new check which checks for inconsistent quoting
+> (mixed " and ' quotes within a file). Fix all the cases yamllint found
+> so we can enable the check (once the check is in a release). Use
+> whichever quoting is dominate in the file.
+>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  .../arm/altera/socfpga-clk-manager.yaml       |  4 ++--
+>  .../bindings/clock/nvidia,tegra124-car.yaml   |  8 ++++----
+>  .../bindings/clock/nvidia,tegra20-car.yaml    |  6 +++---
+>  .../devicetree/bindings/gpio/gpio-mxs.yaml    |  9 +++++----
+>  .../bindings/gpio/snps,dw-apb-gpio.yaml       |  4 ++--
+>  .../bindings/iio/temperature/adi,ltc2983.yaml | 20 +++++++++----------
+>  .../mailbox/qcom,apcs-kpss-global.yaml        | 16 +++++++--------
+>  .../mailbox/xlnx,zynqmp-ipi-mailbox.yaml      |  2 +-
+>  .../bindings/media/fsl,imx6q-vdoa.yaml        |  2 +-
+>  .../devicetree/bindings/mfd/aspeed-lpc.yaml   |  4 ++--
+>  .../devicetree/bindings/mfd/ti,twl.yaml       |  4 ++--
+>  .../bindings/net/ethernet-switch.yaml         |  2 +-
+>  .../pci/plda,xpressrich3-axi-common.yaml      |  2 +-
+>  .../bindings/phy/motorola,cpcap-usb-phy.yaml  |  4 ++--
+>  .../pinctrl/microchip,sparx5-sgpio.yaml       | 12 +++++------
+>  .../bindings/pinctrl/qcom,pmic-gpio.yaml      | 10 +++++-----
+>  .../bindings/pinctrl/qcom,pmic-mpp.yaml       |  6 +++---
+>  .../bindings/pinctrl/renesas,pfc.yaml         |  4 ++--
+>  .../bindings/pinctrl/renesas,rza1-ports.yaml  |  2 +-
+>  .../pinctrl/renesas,rzg2l-pinctrl.yaml        |  2 +-
+>  .../pinctrl/renesas,rzv2m-pinctrl.yaml        |  2 +-
+>  .../bindings/power/renesas,sysc-rmobile.yaml  |  4 ++--
+>  .../soc/microchip/atmel,at91rm9200-tcb.yaml   |  8 ++++----
+>  .../soc/tegra/nvidia,tegra20-pmc.yaml         | 12 +++++------
+>  24 files changed, 75 insertions(+), 74 deletions(-)
+>
+For the mailbox changes
+  Acked-by: Jassi Brar <jassisinghbrar@gmail.com>
 

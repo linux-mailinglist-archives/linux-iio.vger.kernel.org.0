@@ -1,59 +1,58 @@
-Return-Path: <linux-iio+bounces-25220-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25221-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5118DBED027
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 15:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49353BED03F
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 15:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0398A407411
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 13:08:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11C523B6FD8
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 13:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1596F27EFE3;
-	Sat, 18 Oct 2025 13:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4902D5C6C;
+	Sat, 18 Oct 2025 13:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPNL8aM/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pyvs9XEU"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C620CEEBB
-	for <linux-iio@vger.kernel.org>; Sat, 18 Oct 2025 13:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81146192B75;
+	Sat, 18 Oct 2025 13:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760792911; cv=none; b=Novvz324P3gtP9fDtIAv5Ksj58pKpa/u5AgrBiGzLod0OjLHEloleI2uaZk7NmlkKByv4grXdfXjSdU1QIwWcgCMgc5gbwWo47fKHOrK8+dWiil42ZgMml7RuWSLry4ILTISHnItC1C0BuyOVtijq6kpCM2deEHiOOugRPTFUao=
+	t=1760793228; cv=none; b=Kxz7HZPADkaPRXupbnowShL09zmkp7YwSx9WQ/a6sDHzr4WfShDdiQEVA+/YLncgWMshJ5Kr/7b2p5s0IFY/fxJ0zyUQGOINUFVsavrV5ST+2qUnaqm83kMJs7WC/9weOiHevWJ7Oo1AGr0tsAXPRppc5uxhJeO9irnZKlRdQas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760792911; c=relaxed/simple;
-	bh=RE3lDdw1cFUt8GxhwI1+2SHPCKJQlB4wv9YI+pgUXT0=;
+	s=arc-20240116; t=1760793228; c=relaxed/simple;
+	bh=JuFZRG8iOfSOpAc7xPmG9DiEYgTsPAwgyHt1Z8cbJ5E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rZAIBmGXhtjFgUp+8j0qONHh0FVRJsjLYnv7PaVEuLPX9m2X0c9Hd3O8oxp0hreE1U1E+yVGlKjW/Uy0QWdi46x/BHZG8fBJSsAuCJilN9h1T7lwmLiRf8b1wi1+j7mDd6c5k23ndYhnFoSkjwm0TRVFAsbRLtJ3vOx9CwU8oHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPNL8aM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A735C4CEF8;
-	Sat, 18 Oct 2025 13:08:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k/qBPWSSQVg9TaiJJHUvr6RxtXq+KpEcW+0prE2TFidJPT99vvxxUK9nQbguHACluyd9IZaDK4BkC8kI5m9dt+BFVU9ddbFNzQcQAf8cmLyK9rv5b6KednfMG4voBUw5gBPvcAeGJGdlLUYAO9WM/BCzZZpA60/XY7pA8KX7IRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pyvs9XEU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC37C4CEF8;
+	Sat, 18 Oct 2025 13:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760792911;
-	bh=RE3lDdw1cFUt8GxhwI1+2SHPCKJQlB4wv9YI+pgUXT0=;
+	s=k20201202; t=1760793228;
+	bh=JuFZRG8iOfSOpAc7xPmG9DiEYgTsPAwgyHt1Z8cbJ5E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UPNL8aM/h5mfuffpV0u1so6vL/K/NTimMp37AOolZtiZu76ZIFNK48oVgv/SZdnRU
-	 0XRIXM0ncXtx26yYheFRPDfSFM8PO3k8kbGHP3oPvh/G5YvF7Pul/4dFraLFcKPp6Q
-	 jNll5d02saescDxeGG6IzpD6gIkshD6tLteRq+Ghz65NibhjJFuE5QBpVReMJUht1y
-	 SmfHDAB8gK0dg8XQfZSP49LbBJLMJKAfZViS0Fuuqm/0CzBxT9uDHgHVgZJ6LJ3dwM
-	 eEEXO4yMx9HWpV1+nvm129t4eeLmuf02RlK+RgBXStTcnxwczdCyk3/IAL/cXEa41h
-	 Fl0/jJfL3194A==
-Date: Sat, 18 Oct 2025 14:08:25 +0100
+	b=pyvs9XEU2tZo3/kTQMxCuxKH+2HGYD56fZFH41YzPUM6FpGqWiLOtU4KrUSXBC2QR
+	 VLo0+XN24lw/qVr1sQCw8TeuZfubfE97wqJX0ZE5HKHY3oWcjny6hAvv1SBTC13euL
+	 T8uIsXC5XrDmAdW6t4TncjZB50C4zGOuTReG4MKZCoA7xbq2KzBvU2kb9B7opqLycP
+	 0EvWpXjlRqlKPb2fY3D500a6EeQuvE1s/Yj+S7yEJ/Wo4o+n6UIS6jsEirVB0FKK2q
+	 F1AOuoCKMMi3+Z3VitCmBBQCFsx8RKtBEsbpxZH/1KAfpUNZoV7xIVMyC692pJ/9Se
+	 lAzObkV3KILXg==
+Date: Sat, 18 Oct 2025 14:13:41 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andrej Valek <andrej.v@skyrain.eu>
-Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Puranjay Mohan
- <puranjay@kernel.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- David Lechner <dlechner@baylibre.com>, Kessler Markus
- <markus.kessler@hilti.com>
-Subject: Re: [PATCH v4] iio: accel: fix ADXL355 startup race condition
-Message-ID: <20251018140825.006fcb7b@jic23-huawei>
-In-Reply-To: <20251014071344.151914-1-andrej.v@skyrain.eu>
-References: <20251006095812.102230-1-andrej.v@skyrain.eu>
-	<20251014071344.151914-1-andrej.v@skyrain.eu>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Axel Haslam <ahaslam@baylibre.com>, nuno.sa@analog.com,
+ dlechner@baylibre.com, andy@kernel.org, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v4 1/1] spi: offload: Add offset parameter
+Message-ID: <20251018141341.3ef2f6b7@jic23-huawei>
+In-Reply-To: <176053044658.105519.915414342804429574.b4-ty@kernel.org>
+References: <cd315e95c0bd8523f00e91c400abcd6a418e5924.1759760519.git.marcelo.schmitt@analog.com>
+	<176053044658.105519.915414342804429574.b4-ty@kernel.org>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,31 +63,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 14 Oct 2025 09:13:44 +0200
-Andrej Valek <andrej.v@skyrain.eu> wrote:
+On Wed, 15 Oct 2025 13:14:06 +0100
+Mark Brown <broonie@kernel.org> wrote:
 
-> From: Valek Andrej <andrej.v@skyrain.eu>
+> On Mon, 06 Oct 2025 11:25:41 -0300, Marcelo Schmitt wrote:
+> > Add an offset parameter that can be passed in the periodic trigger.
+> > This is useful for example when ADC drivers implement a separate periodic
+> > signal to trigger conversion and need offload to read the result with
+> > some delay. While at it, add some documentation to offload periodic trigger
+> > parameters.
+> > 
+> > 
+> > [...]  
 > 
-> There is an race-condition where device is not full working after SW reset.
-> Therefore it's necessary to wait some time after reset and verify shadow
-> registers values by reading and comparing the values before/after reset.
-> This mechanism is described in datasheet at least from revision D.
+> Applied to
 > 
-> Fixes: 12ed27863ea3 ("iio: accel: Add driver support for ADXL355")
-> Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
-> Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
-It doesn't hugely matter but I was only asking for a reply with the single
-line David sent. Not a new posting of the driver.
+>    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+> 
+> Thanks!
+> 
+> [1/1] spi: offload: Add offset parameter
+>       commit: b83fb1b14c06bdd765903ac852ba20a14e24f227
+> 
+Hi Mark,
 
-Definitely don't ever send two v4 with any changes at all as that makes
-it uncertain what automation will pick up.  Standard b4 string to grab this
-patch grabs me two patches with two patches as it can't figure out they are
-the same.
+The patch called out that we are after an immutable branch or similar for this one.
 
-Anyhow, applied carefully by hand to get just this one and marked for
-stable inclusion.
+"
+Hello,
+
+This patch adds a small feature that is required for a series improving ad4030
+in the IIO subsystem [1]. Can we have an immutable branch with this patch so
+that it can be used as base for the IIO driver changes?
+
+[1]: https://lore.kernel.org/linux-iio/cover.1758916484.git.marcelo.schmitt@analog.com/
+"
+
+If you can still set that up, much appreciated.
 
 Thanks,
 
 Jonathan
+
+> All being well this means that it will be integrated into the linux-next
+> tree (usually sometime in the next 24 hours) and sent to Linus during
+> the next merge window (or sooner if it is a bug fix), however if
+> problems are discovered then the patch may be dropped or reverted.
+> 
+> You may get further e-mails resulting from automated or manual testing
+> and review of the tree, please engage with people reporting problems and
+> send followup patches addressing any issues that are reported if needed.
+> 
+> If any updates are required or you are submitting further changes they
+> should be sent as incremental updates against current git, existing
+> patches will not be replaced.
+> 
+> Please add any relevant lists and maintainers to the CCs when replying
+> to this mail.
+> 
+> Thanks,
+> Mark
+> 
+
 

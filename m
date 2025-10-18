@@ -1,56 +1,63 @@
-Return-Path: <linux-iio+bounces-25235-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25236-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DE9BED40E
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 18:50:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F10BBED420
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 18:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1716319A696F
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 16:50:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1526D4E4CCD
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 16:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BB8246BB2;
-	Sat, 18 Oct 2025 16:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B6F2522B6;
+	Sat, 18 Oct 2025 16:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cYtZSTuo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3SQRmZj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4166E22F772;
-	Sat, 18 Oct 2025 16:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43D62441A6;
+	Sat, 18 Oct 2025 16:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760806196; cv=none; b=sK4O8EIpC/4a14nSrDg/vBOLdjlt9G0OVkIQYzkdpUka6VwxR7ZrA2TkxbHMXCORDx/DrRJwoBGQwSfhPtBfKqsxeLJItTxgmFGUDYbHfBuGfzyQgL/Wprl4vfL4h7gOFq2DNnW8Q2g4v6IAGv6kRSK/tADemT1f1gGr9HTerhw=
+	t=1760806361; cv=none; b=F3utDzQNYukOWKoZHvTTcofk2MHTY/cIXDz4I3ZRUD4V9ox/FOR7XrTN8mawhE5jq8mkMh73R/P5LTjqaiTkHblxCbhvleA6AXU3+Ib73Wp9yJsw3DghbGnE3TGTW1RG3JK0j5KjhJ6X9gMteAc9N2QpLOm9mLIwSoCkNJiGWzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760806196; c=relaxed/simple;
-	bh=f8gC70FCc5N3kSFrstUNj4iCHhGav7+nLwm07B2ZIKE=;
+	s=arc-20240116; t=1760806361; c=relaxed/simple;
+	bh=3AQR1+KFQiELiXUBQu7oglYF6TJ85eITEGgQwbzI1yY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NrF35+6P9gTHYjDSMJNNQpCMKyhzv4tG2BlqIV1SZ2lPcondfn7mkhBWAyWiurr06szbbRCEopcFePUwt0Xd9pAyDf1JJmD/zAGCY7mmMvoJq5ygWSDIDX+P4YV7SXyPm78JebyI3/7LOuroXDssKt+9p79/4FEdKi7nvRzaIqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYtZSTuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743FFC4CEF8;
-	Sat, 18 Oct 2025 16:49:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k1humhcgCByNK8nQxNjTboMQOkvUnj1aL31f8ew5PzFCLJR8FEkZkRHtzP+wuxUu7/b7Cd8Y5MUIeHuWgllsc9oM3n/mVYUp/mpdrsWPUynxQ873wugf2H+AFR3zSugUHih6X4P7QsSzcjVy27qrp77XDjL24ndGcuuUlrge6qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3SQRmZj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA17DC4CEF8;
+	Sat, 18 Oct 2025 16:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760806195;
-	bh=f8gC70FCc5N3kSFrstUNj4iCHhGav7+nLwm07B2ZIKE=;
+	s=k20201202; t=1760806361;
+	bh=3AQR1+KFQiELiXUBQu7oglYF6TJ85eITEGgQwbzI1yY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cYtZSTuoITaYKdjbYKGiySiEWUMvyOUpd/TShUe+ihBLavej7snj0KL2XoA4uT8Z7
-	 Jxuov4r5G360nzymB+6OPLVE6KsauahOIHbEiUU9v81aOvXUW79ENGxyuq5lU30y9N
-	 BSYBTq3xBtsscwunUuP4GQfHA+qlgH4dijpuK0qCyE/R2G3QfsExLtavouBSEG+dY+
-	 E1CnO+A0Yh2YOEiBqpNyIuWBVVkHA+pv5JoJL6jdyDp/LcvNntuFb12WHG7B9wn3xj
-	 B217zuaalBt9mAzDPWNj/rL3Be6/UPRPNeoVVlri3kGZWvo/Ptj2eWlpWs6EoH1rQb
-	 bh/+Crsjpau3Q==
-Date: Sat, 18 Oct 2025 17:49:49 +0100
+	b=F3SQRmZj95mgUG2hXYdlgpHzPIbgwK0cQfpSVMVrbv8pAAkpGOQEqZOLAH0ITEZ+m
+	 cyK6blLmOfrLywNaUY89AHcMarte6dL/SLqlFeZ+WaMGAxGvdamXmMWMTA6lfJIA/u
+	 z8oGyMeHMKZlt93e9EADqwcNvU6mHL/scPg/0iSk6enwWyNMnRmZ5O3p44w/1U09rR
+	 YtNqvj8l8z5T9tKurksQHfg1aEIlQ0jm3/CGYo92FkctGZMU+z7+bO88fmj76jrLJs
+	 OlUO6S8lu7O6trq+CerP1TG9pMvY3f7OdSBBMFvWSqMLAXoJoIK+G4d6YKqssUcFyF
+	 oo3UbFjKPnO7Q==
+Date: Sat, 18 Oct 2025 17:52:32 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Pei Xiao <xiaopei01@kylinos.cn>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, kernel test
- robot <lkp@intel.com>
-Subject: Re: [PATCH v2] iio: adc: ti_am335x_adc: Limit step_avg to valid
- range for gcc complains
-Message-ID: <20251018174949.36946cd9@jic23-huawei>
-In-Reply-To: <d5e5e8cbbc9354ca1dd4745253df6cde07822325.1760433015.git.xiaopei01@kylinos.cn>
-References: <d5e5e8cbbc9354ca1dd4745253df6cde07822325.1760433015.git.xiaopei01@kylinos.cn>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+ devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>, Adrian
+ Fluturel <fluturel.adrian@gmail.com>
+Subject: Re: [PATCH v6 5/5] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <20251018175232.064a8aee@jic23-huawei>
+In-Reply-To: <20251014-i3c_ddr-v6-5-3afe49773107@nxp.com>
+References: <20251014-i3c_ddr-v6-0-3afe49773107@nxp.com>
+	<20251014-i3c_ddr-v6-5-3afe49773107@nxp.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,55 +68,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 14 Oct 2025 17:12:50 +0800
-Pei Xiao <xiaopei01@kylinos.cn> wrote:
+On Tue, 14 Oct 2025 12:40:04 -0400
+Frank Li <Frank.Li@nxp.com> wrote:
 
-> FIELD_PREP() checks that a value fits into the available bitfield, add a
-> check for step_avg to fix gcc complains.
+> Add mmc5633 sensor basic support.
+> - Support read 20 bits X/Y/Z magnetic.
+> - Support I3C HDR mode to send start measurememt command.
+> - Support I3C HDR mode to read all sensors data by one command.
 > 
-> which gcc complains about:
->   drivers/iio/adc/ti_am335x_adc.c: In function 'tiadc_step_config':
->   include/linux/compiler_types.h:572:38: error: call to
-> '__compiletime_assert_491' declared with attribute error: FIELD_PREP: value
-> too large for the field include/linux/mfd/ti_am335x_tscadc.h:58:29: note:
-> in expansion of macro 'FIELD_PREP'
->     #define STEPCONFIG_AVG(val) FIELD_PREP(GENMASK(4, 2), (val))
->                                 ^~~~~~~~~~
-> drivers/iio/adc/ti_am335x_adc.c:127:17: note: in expansion of macro 'STEPCONFIG_AVG'
-> 	stepconfig = STEPCONFIG_AVG(ffs(adc_dev->step_avg[i]) - 1)
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202510102117.Jqxrw1vF-lkp@intel.com/
-> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Given it is a false positive warning I've not queued this up as a fix, but
-rather for the next merge window.  If people think it is more urgent that that
-then reply to let me know.
+> Co-developed-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Co-developed-by: Adrian Fluturel <fluturel.adrian@gmail.com>
+> Signed-off-by: Adrian Fluturel <fluturel.adrian@gmail.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+LGTM.
 
-Applied to the togreg branch of iio.git and pushed out as testing to see if
-we get an autobuilder warnings.
+So my ideal case (assuming i3c parts are good to go) is an immutable
+branch in an appropriate tree that gets merged into both i3c and IIO trees
+and has first 4 patches.  I'll then put the driver on top in the IIO tree.
+
+I can spin one if that is useful.
 
 Thanks,
 
 Jonathan
-
-> ---
-> changes in v2: use '<=',adc_dev->step_avg[i]'s max value is STEPCONFIG_AVG_16
-> ---
->  drivers/iio/adc/ti_am335x_adc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-> index 99f274adc870..a1a28584de93 100644
-> --- a/drivers/iio/adc/ti_am335x_adc.c
-> +++ b/drivers/iio/adc/ti_am335x_adc.c
-> @@ -123,7 +123,7 @@ static void tiadc_step_config(struct iio_dev *indio_dev)
->  
->  		chan = adc_dev->channel_line[i];
->  
-> -		if (adc_dev->step_avg[i])
-> +		if (adc_dev->step_avg[i] && adc_dev->step_avg[i] <= STEPCONFIG_AVG_16)
->  			stepconfig = STEPCONFIG_AVG(ffs(adc_dev->step_avg[i]) - 1) |
->  				     STEPCONFIG_FIFO1;
->  		else
-
 

@@ -1,91 +1,126 @@
-Return-Path: <linux-iio+bounces-25258-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25259-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA08BEDA1D
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 21:23:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A3FBEDA4D
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 21:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B171419C2C57
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 19:23:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E061A3B2F50
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Oct 2025 19:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FEF28D8DF;
-	Sat, 18 Oct 2025 19:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B490C256C89;
+	Sat, 18 Oct 2025 19:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jxbAsI5k"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ljdkS0UI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E827A28B7EA;
-	Sat, 18 Oct 2025 19:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D8E27FB1E;
+	Sat, 18 Oct 2025 19:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760815387; cv=none; b=JFOjydrRZW4qrMS9217ryxSgsAe/jOslgaMsDwbcCXbVKS+GoLLNrt2A1taUtiro0zcCjaDQK3npe+BmNojkjmSv/awMjetmsj1XQohghx51GhnAfpLN21jFgjqtJlYXgtRw6UZfkvRsOibH+2vZqkdCFnVR8fxzH37L1U/6xJU=
+	t=1760815497; cv=none; b=LJN+Y6CydFMXRJalb8lB2FaRfjkhnRznljR43Bl6KT6Yx7AFzvl2KbryBWNukp0czt0k276RhaCrxwK4+bFQyPSRZLwaxav+/5lucuew1CLVnmbt+UaozAhNOsE+6DLRzSaY+iBHHI7OI5B+CXzMJcBNC+77+7gEKWX2T7sSz3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760815387; c=relaxed/simple;
-	bh=G527dw1m66MJz6fBeaP4BUpuixzJbfu3vAmnIWlkGpw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JOs+YGvVCmtRO1qAU/kF8GK0dSi1lYFpHZ45Q5795+ZCl4lGmC4hd8h18vvjXaNNpjW7MiFpsDtKo8bibdUKRm/v4dp6Qm9zR21NdJSQI5VFet/dEOvI960u84mnRIVRGNhs52wMNWgB2AnAcyYtRwCLcnwMWExDh2lbEGZIT3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jxbAsI5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC423C116B1;
-	Sat, 18 Oct 2025 19:23:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760815386;
-	bh=G527dw1m66MJz6fBeaP4BUpuixzJbfu3vAmnIWlkGpw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jxbAsI5kstGoKKLkKoSDIk+ax5Vt54jAJWR3A6wp1itxmOXsmOInPs8TMYZCNhZDS
-	 YukThIrJoViSS3IFD3PT2pi+k1oI9Jmwd7R666OgEOOx2sxk3+fHhNy7KwOWm2Nyav
-	 tF0gizEqClIw3WX0Gx3u+mrpimHfoyKQ0DcFbvlFdgl7NIxRN9K1Z/OV89l/7NSLiY
-	 xEXvJoVekGKVXdvgvJmcl1BVjKGLwS5gFUnOgOcVOhG0kIlNnx4oatmpxeLQWsQddB
-	 hvdgVSJuEKu50zgbIe3Fc6ETMAS4ivDPZWX+H2ZAabRa0blRyJyiJ2bsAdbxnNlGnN
-	 5iyA1n8mxOgtg==
-Date: Sat, 18 Oct 2025 20:23:01 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Mario Tesi <martepisa@gmail.com>, linux-iio@vger.kernel.org,
- dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: st_lsm6dsx: Fixed calibrated timestamp calculation
-Message-ID: <20251018202301.2680cc79@jic23-huawei>
-In-Reply-To: <aO_e2DEGsO-kJQFx@lore-desk>
-References: <20251015161619.GA87736@ctocxl9700.cto.st.com>
-	<aO_e2DEGsO-kJQFx@lore-desk>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1760815497; c=relaxed/simple;
+	bh=9bSfGES7Gw7ogivfHR6C9Hea5CliMZxATD6hFb1jHbM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=j3z2OMI/FGsGJAtVB+g2xAglo2aG6RMSEf87lyHek8zvN24MoovwgZg/EE0bLutVkoVhdaoPsJX678f4hrFT/PTJAXhH/EeJ0rD+JJlMvZUyFpev9C2i9hpaUbinSO66+Rub7290YLuMgrA9VCuOKnGG0mvQxGv/94yUAMJdRdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ljdkS0UI; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760815496; x=1792351496;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=9bSfGES7Gw7ogivfHR6C9Hea5CliMZxATD6hFb1jHbM=;
+  b=ljdkS0UIRq661INCr8DBpdF3pAvX5viqFZrRTBoCTdWy4RK0RYG1Fl6y
+   TpZGE6Z9f/HIllv15aLuVT/0KtkxTxmCc83+qnoG9iMnC8n2ijAlakoAj
+   GwjuvLpyAXQigdiZMKhwQ5cxT6UZDUwSrJe3xjo0GtCriXeOHnYnv7guQ
+   X4QFb2wLRxl5ftYnRP5rwZcraHDZCubSO4FdtDEI3SUFmLWFfT/zt1ONB
+   86lPWyVrN1SZJvPbzqUNfrIUjwwdaxYSI0uZYyKEN/YgjiIvW50dN21ua
+   kRMO4KD41CkzPz9012GsFH7ZaLVrFJ0X43r/TdzOZ3lhIlDYIePgm/UwW
+   A==;
+X-CSE-ConnectionGUID: TpUHD50iTWqXB3kQshY/Aw==
+X-CSE-MsgGUID: YHqazwxDS7qStBcht+6tag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62904312"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="62904312"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 12:24:56 -0700
+X-CSE-ConnectionGUID: vE+QGANHQC6+xeZM7vJy0w==
+X-CSE-MsgGUID: 6gid/VJoQmma1OBvyB5wOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,239,1754982000"; 
+   d="scan'208";a="182545573"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.194])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 12:24:54 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vACXr-00000000xUU-1s8s;
+	Sat, 18 Oct 2025 22:24:51 +0300
+Date: Sat, 18 Oct 2025 22:24:51 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: test: fixed-point: new kunit test
+Message-ID: <aPPpg9lb-UQ02m-0@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, 15 Oct 2025 19:50:16 +0200
-Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> > The calibrated timestamp is calculated from the nominal value using the
-> > formula:
-> >   ts_gain[ns] =E2=89=88 ts_sensitivity - (ts_trim_coeff * val) / 1000.
-> >=20
-> > The values of ts_sensitivity and ts_trim_coeff are not the same for all
-> > devices, so it is necessary to differentiate them based on the part nam=
-e.
-> > For the correct values please consult the relevant AN.
-> >=20
-> > Signed-off-by: Mario Tesi <mario.tesi@st.com> =20
->=20
-> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+On Mon, Oct 13, 2025 at 04:33:43PM -0500, David Lechner wrote:
+> Add a kunit test for iio_str_to_fixpoint(). This function has an
+> unintuitive API so this is helpful to see how to use it and shows the
+> various edge cases.
 
-Fixes tag?  Just reply to this thread with one and I'll pick it up from her=
-e.
-No need for a new version.
+...
 
-Otherwise seems fine to me.
+> Discussion unrelated to the patch:
+> 
+> I'm also a little tempted to introduce a new function that is a bit
+> easier to use. Many callers of iio_str_to_fixpoint_s64() are doing
+> something like int_part * 1000 + fract_part and ignoring the possibility
+> of negative values which require special handling.
+> 
+> static int iio_str_to_fixpoint_s64(const char *str, u32 decimal_places, s64 *value)
+> {
+> 	int int_part, fract_part;
+> 	int ret;
+> 
+> 	ret = iio_str_to_fixpoint(str, int_pow(10, decimal_places - 1),
+> 				  &int_part, &fract_part);
+> 	if (ret)
+> 		return ret;
+> 
+> 	*value = (s64)int_part * int_pow(10, decimal_places) +
+> 		 (int_part < 0 ? -1 : 1) * fract_part;
 
-Thanks,
 
-Jonathan
+Obviously if you go this path, the int_pow() can be called only once
+(yes, we would need a multiplication or division for the other case).
+The question is how we treat the decimal_places == 0 case.
+
+> 	return 0;
+> }
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

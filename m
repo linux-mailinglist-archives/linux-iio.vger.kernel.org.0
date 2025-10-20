@@ -1,127 +1,160 @@
-Return-Path: <linux-iio+bounces-25283-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25284-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014C9BF2D92
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 20:01:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCDDBF3216
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 21:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 645623AF40C
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 18:01:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CB9118C05C1
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 19:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFC32C0F89;
-	Mon, 20 Oct 2025 18:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048DD2D6E42;
+	Mon, 20 Oct 2025 19:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BB+ENQ/p"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="PsYNGtOh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD052BF3F4
-	for <linux-iio@vger.kernel.org>; Mon, 20 Oct 2025 18:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2EB2C0F89;
+	Mon, 20 Oct 2025 19:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760983257; cv=none; b=hwprlb9MCawIrZ06rL1vk0LW4jGXZSBJpsRfxjMQazjZUfmA2pDmwk10zG0UWVUXqVlNa1SydXr9S9izbuwzNAlIX42ueHp00/cFBuKzHWDbEjazDqSGsutGTTOP3O8EnV6Din2rm9L75OhKPOstTkyXbM9Ptb/YegIuleu+IB4=
+	t=1760987628; cv=none; b=CmN069zTBYI4QfXM/BDdm7ib9tfsNU9MdS561pC/1XlWkB5xgZi1C5ThSbEhoIbYfq3Viq2QNn6apTIZw9iFmOK1IL84E2jOIApcMl2S90Bnxg5N00YU9EUJzTh9nBw+xq9AFSeGD2jFxH06HHtnVFMmrwSkm70PvtsO2NV0bzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760983257; c=relaxed/simple;
-	bh=eCEYB0ZDEuXHNw9kMvML7dJuEd+/Xpd/60R6LLqtBow=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rW3iUyDZR4VJUis1YMxo/KgptXp0IIk3nRp+ufSUG8KQjbV24BrXqVhTwCcwLfBqlIVSceXW2Z4vOjoisitpayNidtco5CB8IfjDwakF9oi8J6jKpt4yDvE3zUw81UMHvKwqsJKeKT6gIZXY+zji90JTeIQjc7Ou/rt6ZALmnbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BB+ENQ/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63330C4CEF9;
-	Mon, 20 Oct 2025 18:00:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760983257;
-	bh=eCEYB0ZDEuXHNw9kMvML7dJuEd+/Xpd/60R6LLqtBow=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BB+ENQ/pa8wtrEaCDMhsEexQ+lrAeOrLFEYOw+zKmP21IkWHzZiWwvJM82Rk6O0Nx
-	 688lDIDuCZuD7cUakHn99KciDogVWek7rLDmypdKEFZhZ9jEf7DB5keqiFBVkf8u1U
-	 aMQJFDv6CnQRyv+TJa2ZBgyWm703EWhMBvTOwype+jZnOp+P/0Cx1mna8ZibqleNdU
-	 +09t+jSoxvmQXlWe1b6jeN/Ir+X9xDDITtjBwqdkc6SsQc5H7ACzwc8TmyvrjIv48p
-	 YXlNbQTDmXhOq3CVrro7gKjGT7O1EKNIlN+u5qOvBYLWiCv2o0R1zZfC9X9b9om8TV
-	 to/xddnI6aV5A==
-Date: Mon, 20 Oct 2025 19:00:32 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andrej Valek <andrej.v@skyrain.eu>
-Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Puranjay Mohan
- <puranjay@kernel.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- David Lechner <dlechner@baylibre.com>, Kessler Markus
- <markus.kessler@hilti.com>
-Subject: Re: [PATCH v4] iio: accel: fix ADXL355 startup race condition
-Message-ID: <20251020190032.0deb54a4@jic23-huawei>
-In-Reply-To: <6ced29c5-bca2-4c29-beb4-b566f4d9bf17@skyrain.eu>
-References: <20251006095812.102230-1-andrej.v@skyrain.eu>
-	<20251014071344.151914-1-andrej.v@skyrain.eu>
-	<20251018140825.006fcb7b@jic23-huawei>
-	<6ced29c5-bca2-4c29-beb4-b566f4d9bf17@skyrain.eu>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1760987628; c=relaxed/simple;
+	bh=mQ4xmNeD7YorO6/RxmRgf0EhxY9gTZ6kF3baNx5GUpg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U376QXYUFjH09DZ3jQEb1cMI0SuJfQ13joS56vrrZkrke6SHhpb5ZTV0T1a0c5z9zgVZABPL1fNch71hikFqYQ2w5e++y8DQFmMNM4oy9qO21VB+WEtfkx+dtvf6+cgOp7kxZQUl7vt3eTRW9vPOTm/IFV0R3pqdkyXWs5U93lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=PsYNGtOh; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59KIwdZC012280;
+	Mon, 20 Oct 2025 15:13:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=2T9+C2/M5XpWLtNSmdShPk1Uu7U
+	8XckpqfMc06KYx78=; b=PsYNGtOh0hLDhyE1j7zNptfScgH5NQiIEzSo9qiOUrT
+	hKdhkqqxVnESEYlgJZ7VX+uuTsdBp4fqORvlcREeJ4nWFNlndWHtRIHNuwW5klic
+	yhNtvCuVrwfqP5ES74/bgdoXdASf9ZhJ2u68TFppf8v2zNthXIAL5vKu909cNxwT
+	xcD9BcfojrVAr9WvZuTb1D8m0GcRMiFb7aQgZocWAIW/wJr047UY8ceWY6IkP+v/
+	PSqUtoLCYpHtVQ8alPrZ1SV6RZkPLdKUbPfHvpeE1XrpR2+Qg83LiC9UUGcJJm8z
+	4cVJzn6shmR4RL6feiiKrPVgQmCc//56qY5NWHteBFw==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 49v7t3b4fw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Oct 2025 15:13:29 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 59KJDSmL026414
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 20 Oct 2025 15:13:28 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.37; Mon, 20 Oct
+ 2025 15:13:28 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Mon, 20 Oct 2025 15:13:28 -0400
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 59KJDEd1013249;
+	Mon, 20 Oct 2025 15:13:17 -0400
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <jic23@kernel.org>, <michael.hennerich@analog.com>, <nuno.sa@analog.com>,
+        <eblanc@baylibre.com>, <dlechner@baylibre.com>, <andy@kernel.org>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <corbet@lwn.net>, <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v6 0/8] Add SPI offload support to AD4030
+Date: Mon, 20 Oct 2025 16:13:12 -0300
+Message-ID: <cover.1760984107.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDA2MiBTYWx0ZWRfX90za4SV46K4c
+ NoxXPluWvXxDYZoEBIGlcmYB4OGZ1EuNojcxk4sdJE3s7Oo7Wad6oz2ACzoqf3uOfcqT7YuijIq
+ cGscQD9qIuGpZ6+LKGDHHT7GQp4G4Im/BzJVDbkGfhNJHKgKfdzfpbJmrgcGaNN8T9UQ106ISMv
+ 4wyII6aBs7IZw4R8oG3DaS12DTnu1fcbpqF+oX72/Ly+aWrnDqVscRLALg0NftzB7xZLcUqN5z4
+ J15wlinJRtx5dhzRzDxOqdvOc76MefL9OCIGEoUI2b5u5KGfhvAMI218FIGpVv/MscTWE2Y5q1j
+ LEavqF3yrVaQ8rfPsnofiyrkVSv67qHge1Ru8p5VEtbD56S4Nfe2DqW55fAW84lnv6BGvbc+Kt1
+ AoxmKiIVNtiYxco1MHe+3ovTygezFg==
+X-Authority-Analysis: v=2.4 cv=UPPQ3Sfy c=1 sm=1 tr=0 ts=68f689d9 cx=c_pps
+ a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=te3JqoWVX6TxUQVAJjQA:9 a=QEXdDO2ut3YA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22 a=HhbK4dLum7pmb74im6QT:22 a=pHzHmUro8NiASowvMSCR:22
+ a=Ew2E2A-JSTLzCXPT_086:22
+X-Proofpoint-ORIG-GUID: jR3xD3oatN1Rg3gMhXcM7b4w5mvwzMd0
+X-Proofpoint-GUID: jR3xD3oatN1Rg3gMhXcM7b4w5mvwzMd0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-20_05,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 spamscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 clxscore=1015 phishscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180062
 
-On Sun, 19 Oct 2025 12:45:27 +0200
-Andrej Valek <andrej.v@skyrain.eu> wrote:
+Hi,
 
-> Hello Jonathan,
-> 
-> On 18.10.2025 15:08, Jonathan Cameron wrote:
-> > On Tue, 14 Oct 2025 09:13:44 +0200
-> > Andrej Valek <andrej.v@skyrain.eu> wrote:
-> >  
-> >> From: Valek Andrej <andrej.v@skyrain.eu>
-> >>
-> >> There is an race-condition where device is not full working after SW reset.
-> >> Therefore it's necessary to wait some time after reset and verify shadow
-> >> registers values by reading and comparing the values before/after reset.
-> >> This mechanism is described in datasheet at least from revision D.
-> >>
-> >> Fixes: 12ed27863ea3 ("iio: accel: Add driver support for ADXL355")
-> >> Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
-> >> Signed-off-by: Kessler Markus <markus.kessler@hilti.com>  
-> > It doesn't hugely matter but I was only asking for a reply with the single
-> > line David sent. Not a new posting of the driver.  
-> Ah ok, I misunderstood it then.
-> >
-> > Definitely don't ever send two v4 with any changes at all as that makes
-> > it uncertain what automation will pick up.  Standard b4 string to grab this
-> > patch grabs me two patches with two patches as it can't figure out they are
-> > the same.  
-> Sorry about that.
-> >
-> > Anyhow, applied carefully by hand to get just this one and marked for
-> > stable inclusion.
-> >
-> > Thanks,
-> >
-> > Jonathan
-> >  
-> Ok, good to know and thanks for the guiding. Will try to do it better in 
-> the future.
-> 
-> Btw, you swapped my name and surname again, at least in the commit 
-> (author) :).
+Thanks for all reviews and suggestions to v5.
+I believe to have addressed them all and here comes v6.
 
-I'm confused.  Your
-From: Valek Andrej <andrej.v@skyrain.eu>
-line is at at the top of the patch.
+Change log v5 -> v6
+[DT]
+- Picked up Conor's review tag.
+[IIO]
+- Adjusted comment on list of average modes.
+- Dropped link associated with Suggested-by tag.
+- Fixed IIO device number of channels in base offload support patch for AD4030.
+- Dropped st->offload_trigger check in paths only reachable with offload support.
+- Adjusted comment about sample averaging and sampling frequency configurations.
+- Dropped redundant parentheses on declaration of ADAQ hw gain table.
+- Dropped unneeded cast to u64.
+- Use constant for number of ADAQ PGA pins in error message.
+- Picked up review tags.
+- Re-added common-mode channel for offload setups in a separate patch.
 
-If you have one of those it will ignore whatever email address the mail came from.
-https://lore.kernel.org/all/20251014071344.151914-1-andrej.v@skyrain.eu/
+There is a patch to the SPI subsystem [1] that contains a feature required by
+AD4030 offload support.
 
-So I think this is a git config issue your end if you'd prefer it listed as
-Andrej Valek.
+[1]: https://lore.kernel.org/linux-spi/cd315e95c0bd8523f00e91c400abcd6a418e5924.1759760519.git.marcelo.schmitt@analog.com/
 
-Jonathan
+When that patch become available in an immutable branch or similar, I'll gladly
+rebase this series on top of that.
 
-> 
-> BR,
-> Andy
+Thanks,
+Marcelo
+
+
+Marcelo Schmitt (8):
+  dt-bindings: iio: adc: adi,ad4030: Reference spi-peripheral-props
+  Docs: iio: ad4030: Add double PWM SPI offload doc
+  dt-bindings: iio: adc: adi,ad4030: Add PWM
+  iio: adc: ad4030: Use BIT macro to improve code readability
+  iio: adc: ad4030: Add SPI offload support
+  dt-bindings: iio: adc: adi,ad4030: Add ADAQ4216 and ADAQ4224
+  iio: adc: ad4030: Add support for ADAQ4216 and ADAQ4224
+  iio: adc: ad4030: Support common-mode channels with SPI offloading
+
+ .../bindings/iio/adc/adi,ad4030.yaml          |  76 +-
+ Documentation/iio/ad4030.rst                  |  39 ++
+ drivers/iio/adc/Kconfig                       |   5 +
+ drivers/iio/adc/ad4030.c                      | 658 +++++++++++++++++-
+ 4 files changed, 753 insertions(+), 25 deletions(-)
+
+
+base-commit: 4b17a60d1e1c2d9d2ccbd58642f6f4ac2fa364ba
+-- 
+2.39.2
 
 

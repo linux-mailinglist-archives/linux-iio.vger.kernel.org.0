@@ -1,126 +1,123 @@
-Return-Path: <linux-iio+bounces-25296-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25297-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0362BBF3C4D
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 23:35:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1830DBF419B
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Oct 2025 02:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE75018C49A2
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 21:36:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEADC42057F
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Oct 2025 00:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C6B2ED86F;
-	Mon, 20 Oct 2025 21:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861234369A;
+	Tue, 21 Oct 2025 00:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PE7buZHj"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=zago.net header.i=@zago.net header.b="kCpm4ybj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cp4.obambu.com (cp4.obambu.com [88.99.29.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4532E093C
-	for <linux-iio@vger.kernel.org>; Mon, 20 Oct 2025 21:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00EB273F9;
+	Tue, 21 Oct 2025 00:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=88.99.29.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760996126; cv=none; b=Sg1O6Y69KYeuTd3uTtyWtDVJGo/YUWmJYX7T0T+oTMp2BeTBcOveboiMTgGtSF8Yo/eK/+b0Lm1ZF3LWmhyERwfw5OMBHTzTeztfsOEfttYzbHo1Dw8Ve6CXi5xxXfzmN5xCbyUd+B702+TG5pYNEX/qzLh/JPwrvXjDGcoWO8A=
+	t=1761005115; cv=none; b=TgKQ5hYkmUK+jdnA6OFrdjYHm9LsFVCYs9sCBI1OsdCOGzAmdmkzgigTjjh/4KNJ2XY1ahiv/0sWl2SMXVVcctpu+YBkE0LxOMUUjfhzEnV/ysciJguyyPs457IEIQyQ06lSipLxWZzJiZSsh7IwPstSuVeq3I4RdAgYDmvh3Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760996126; c=relaxed/simple;
-	bh=p+3sYnwm/zVmUqqbZ6Lan1Fe/EeeP/Xr5dbG7CHwG7Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XFrchrl/qfe2wBNl9ZiqtIa+FKN0QrDOv1Z0c9vP0rqxdgnl4qVVhVMwdYeVZ/Lo8NzOvWI/F/Mbe0/CqzFC3aIOzw/RYuWpI+gcAfWrDJQtMSBdBG93akyVC1KBSew5qfElG4qQ7WbcN5WiyYfzp1YhZgbrAPtoPL4CK/sxUDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PE7buZHj; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-71d60157747so49732317b3.0
-        for <linux-iio@vger.kernel.org>; Mon, 20 Oct 2025 14:35:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1760996123; x=1761600923; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p+3sYnwm/zVmUqqbZ6Lan1Fe/EeeP/Xr5dbG7CHwG7Y=;
-        b=PE7buZHjoYUMImtbfQNuaX+nnmlXX0XVVE4OhOMIKupSEDMANMsRMetsBK08uqy9At
-         1ukTlNhpTEXQrM8BahxXobWCEbiHW7aWVf1NWaIFS3gablTeWO93iMG4LU1l9+cCvhYH
-         7tPLZf8TCIvYEugcAzJA5ee8dZgQLC2ZY6qu12KFYAw022n6+w2D/bEPPh8qiOB6GmHy
-         nGo9fDaU0220t0tuLMv4f2WWl0fLIrDUMy5DWw2lnePBzMljbpA7pzYa5Ni8uDXxb7Yb
-         +Yn+cMf8PyBX6KFf1okxtiAiwDvRW9AVz1yHmzxK4J9XtSee1T7ifpwWG2hxFnDKzp2Y
-         EPPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760996123; x=1761600923;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p+3sYnwm/zVmUqqbZ6Lan1Fe/EeeP/Xr5dbG7CHwG7Y=;
-        b=ZkxCq5eWM2Sbt8dsURqe3LuIDRjoadm5dfW2rVSnIm8B65PugGXW9pjOqfmkHPnIZm
-         s0Fm3xAlCtIcyjMOHSqjaTGy8gPeZJrjIZB+sCGk+5/Ja/Pu0eSVjipPQR2zNRa+l1tB
-         FAaIbkpDtUJ+mMaiVjV6QU8dl/fW5G8fOXvxLB8Kr3ELYVzjO1GZ/kgncp9MZMUOXnHq
-         HYnBN+QrI91Wn1cQTEUoFiGMjAoihzVUPe8RszkFx2df5+//+0l0lIHvSV77GH8fIuSw
-         nzNon7qIHMoH4vz8RgkgUMngO++w294eQkrSoBvTYu9BZUIYWt5dl0yp1cYUy8uCvMta
-         iCZg==
-X-Forwarded-Encrypted: i=1; AJvYcCUnwmK/xmvEH18APTrA/EcpJA1XkOODT/ZjDVgKMGOrzPpw4Attz/MbNt3PgmPd9lJG+NpFqEKhE0Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxP4kTO0kOWRY/A3kLS9z4PklIqqdA/D8Y0fV9vAdBOZOk7edS
-	1bOzlUoGV4Qf8TM79fYdthO3ZVR5bDWeyNPrvuh+uy/brYHrDOe5/KdQC0/QbKOi2ndmxn9v8ta
-	qisx2CBwOjH8uOgLSIC6KYg8NVn64bqvUkGsjOIUs9g==
-X-Gm-Gg: ASbGncvGRDulATcqQQ/QJ4BVl1q76sAPVvJuPkzdzMMjUZ5imsxOToyvyhys5Gwp0wj
-	NkE3OweTG0gc6oIqLnqfoobCX9NTDODi5MHKl2ZTuAV67MzKxV76jlAsTxR/sN00ovdG3Ks/QO+
-	Fno4Tfzfy6ESdt+EPdnkeRK1T4WFSoPifMXq96VjAq5jHlB+y/PD2A6LPeD9+yM3KtUIaVl3hzU
-	uu3XkfwinL1YKTgt+cQA/n6mlWeAf2I5ayoKLsVypGuMptsew1O4dqkuN2+ma+H2RJ/9bI=
-X-Google-Smtp-Source: AGHT+IHcbLV8sjcTUSW/kYKLFIDfgxSVgbG/hCotLfs+E1Yurw11PQwO89zUraRAtmdIvysGYrHzIqa+Gk+I+qbLfMk=
-X-Received: by 2002:a05:690e:408b:b0:63e:221e:bd38 with SMTP id
- 956f58d0204a3-63e221ebe30mr9755360d50.64.1760996123201; Mon, 20 Oct 2025
- 14:35:23 -0700 (PDT)
+	s=arc-20240116; t=1761005115; c=relaxed/simple;
+	bh=F1yV94Y1btTEz9XP1+4UrFoaP4Ef+rr/pPWNdyJQklI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n5UW1GfZIJQrXqadMgK2LNgUN6bt/HQYnkEc90tsCIPyTpAdUt+sTpSqD2ECBMPFu5daYuQM9hfXt4tpLPYzX4wGximYjHq9QwAifMluG32eQwWh0ipCinFs1Kth+N+XJFk1l1ZwdfFvgb0tsTiL5URo0zMaUattD4udb+2dIww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zago.net; spf=pass smtp.mailfrom=zago.net; dkim=pass (2048-bit key) header.d=zago.net header.i=@zago.net header.b=kCpm4ybj; arc=none smtp.client-ip=88.99.29.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zago.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zago.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=zago.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=0DrXsX05Grva4tWU6XxJfz/A2NsaAczVNPLro4r7jRM=; b=kCpm4ybjA9C+5MwdBHDiI3WAzU
+	EghG2TGslavBB9P/wFgBzldimwl+3i4PVnxTrjlXgCyiz4gW/PdXzXLOtT7RAMgx3SB84Yz6CT/mF
+	hXzhDIUs6cIO/b9bnVqAZQUfLS+XV9TPoWkOpjemQ/ntplYjEOdgxsfGkT4vF+njOj3rBPKr/JJwn
+	zi+7Wq1FEW8SJSv80lpwJ9NmnWvT6g/249KNgC0LJrrIUMxp85opbqjQf53DyunsKvCFKYqXkHxFr
+	J5h4Q437dzDXra+TEm+NQvnDgnZZFnJgrX/pLVLAL96FH+gP3V9cXuRZuUhLh7DfO6vAFyiwJ9bKO
+	WgdWVBkA==;
+Received: from [68.203.21.78] (port=46264 helo=[192.168.1.205])
+	by cp4.obambu.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <frank@zago.net>)
+	id 1vAzZ2-00000004D5u-0fRx;
+	Tue, 21 Oct 2025 01:45:19 +0200
+Message-ID: <5f2f9957-52e1-43a6-b3f0-bd3f4e434ff6@zago.net>
+Date: Mon, 20 Oct 2025 18:45:14 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251015232015.846282-1-robh@kernel.org>
-In-Reply-To: <20251015232015.846282-1-robh@kernel.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 20 Oct 2025 23:35:10 +0200
-X-Gm-Features: AS18NWBAzh5HU2QEiT3WGw7lWd7_MVL73oGUD23tlLIja0Rs_422Nhq3kpTmHsU
-Message-ID: <CACRpkdZFXxBY2AopX2bgFGE_nhXmV3YirfRwuo4L6qWzzAC4rg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Stephen Boyd <sboyd@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
-	Jassi Brar <jassisinghbrar@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Lee Jones <lee@kernel.org>, Joel Stanley <joel@jms.id.au>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Daire McNamara <daire.mcnamara@microchip.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Florian Fainelli <f.fainelli@gmail.com>, Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-iio@vger.kernel.org, linux-media@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-phy@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: position: Add support for ams AS5600 angle
+ sensor
+To: Aditya Dutt <duttaditya18@gmail.com>, Jonathan Cameron
+ <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20251020201653.86181-1-duttaditya18@gmail.com>
+ <20251020201653.86181-3-duttaditya18@gmail.com>
+Content-Language: en-US
+From: Frank Zago <frank@zago.net>
+In-Reply-To: <20251020201653.86181-3-duttaditya18@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp4.obambu.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - zago.net
+X-Get-Message-Sender-Via: cp4.obambu.com: authenticated_id: frank@zago.net
+X-Authenticated-Sender: cp4.obambu.com: frank@zago.net
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Thu, Oct 16, 2025 at 1:20=E2=80=AFAM Rob Herring (Arm) <robh@kernel.org>=
- wrote:
+Hello,
 
-> yamllint has gained a new check which checks for inconsistent quoting
-> (mixed " and ' quotes within a file). Fix all the cases yamllint found
-> so we can enable the check (once the check is in a release). Use
-> whichever quoting is dominate in the file.
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Thanks for updating that driver and making the required changes. I tried to go back to it a few times but motivation was lost. 
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+The commit message should say "position sensor", not "angle sensor", for consistency.
 
-Yours,
-Linus Walleij
+
+> diff --git a/drivers/iio/position/as5600.c b/drivers/iio/position/as5600.c
+> new file mode 100644
+> index 000000000000..fe716d521548
+> --- /dev/null
+> +++ b/drivers/iio/position/as5600.c
+...
+> +	case AS5600_REG_RAW_ANGLE_L:
+> +	case AS5600_REG_ANGLE_L:
+> +	case AS5600_REG_AGC:
+> +	case AS5600_REG_MAGN_L:
+> +		mask = 0xFF;
+> +		break;
+> +	default:
+> +		/* Not a readable register */
+> +		return -EINVAL;
+> +	}
+> +
+> +
+
+extra empty line
+
+
+I believe you could add this to the second patch:
+Acked-by: Frank Zago <frank@zago.net>
+
+Best regards,
+  Frank.
 

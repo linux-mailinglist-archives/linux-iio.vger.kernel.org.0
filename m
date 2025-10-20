@@ -1,180 +1,189 @@
-Return-Path: <linux-iio+bounces-25277-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25278-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C45BF124E
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 14:25:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908CABF156B
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 14:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE8A0424301
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 12:20:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9373B3E0330
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 12:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFA4313278;
-	Mon, 20 Oct 2025 12:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAEA3043B2;
+	Mon, 20 Oct 2025 12:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ORspb8Ty"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D0C313537
-	for <linux-iio@vger.kernel.org>; Mon, 20 Oct 2025 12:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980E42F6933
+	for <linux-iio@vger.kernel.org>; Mon, 20 Oct 2025 12:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760962818; cv=none; b=AKsNouMxs3Cd7dlfuHoPL9UBqfbVG/KivB6/zVnaYqgRileiQ3MUsYE1zzYRiHyvuJloDHySgvQoPa51vfZJc3VuMIwA6aW7exqdvgV64mAUMwOqXeeCgkxruiecVB8ECW5E1CBg8xbwNbSO7rGEZ4ks9WKuhpofyC0redw18eU=
+	t=1760964681; cv=none; b=ermTFCOhNNh2CFUIK63vabtz4hdkTpnOyqQao+jZDZFP3EqSEb7r0Ib1Ph8g/oiASNQzQNGpTTmqYPvQbEUjoUsx/7MeLxLEvF3B7n3jIaEVBZuJG1VF/ebX6iCUAGf9/Iq4eEkqp07fQVl6EqbiYAitYkHwJj/VUmg2tZQ5lx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760962818; c=relaxed/simple;
-	bh=zQJyABbFIFRgraIjRfB4Kv0edNHngRx2HTU3PnrqMSo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fz/1vSofyqDesEUp35GDv9Uxu6sIRC9CTurVei328wrGrjxc0qJ/tIjSUsr//SzK+Qkc4MJU8MSURI5qnPGNEK9pMztUty20O+XL/o02lAO8CMmbegTM7TegokBVLuDROt5FKIwi1VjrkYt4FzI7U5s3DHpQRKwGBMLmQtQAoOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.166.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-430d06546d3so22114635ab.3
-        for <linux-iio@vger.kernel.org>; Mon, 20 Oct 2025 05:20:17 -0700 (PDT)
+	s=arc-20240116; t=1760964681; c=relaxed/simple;
+	bh=ln3N0eD1mHN/qzZ6VCul8UydO8Sg3MW1W9k+bSGA9Aw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vmpcj/1Hwl4R8xDtb1rEy8/+JUsW9za028sl/4157iWM0umUXOtNP3Q/mKjqdxBAgTyuagDoh/N4R4VcyORB+X2UxNGmthxXdqXSTRwAksg1jrOHNWimyAGk5W/XQetvfvjtMVI76eXEHD6GdEKNnwNSNGsO+xZXPsuu0QCoDTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ORspb8Ty; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59KC9G68012204
+	for <linux-iio@vger.kernel.org>; Mon, 20 Oct 2025 12:51:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	PJ+61rwdER9gcUCreUuCjRpUgCHO6zkOMnqhcWd789Y=; b=ORspb8TymTeopoK7
+	i5VSDWZN/dKtL7ct2iPIJ4Gpx97/6P6wRkg9R421WVa8R/ZLuki6xfyOPANIKCsB
+	yQTW/StjyMRFC442Q7BLxFuu8+pfOhOlF/EOiOsYVnOj/INSRyoqiBM+lvgQhJ+1
+	my31sREFRcr3VqFHggeQUQM7TqHq4cQ3UBmijsedmYzJ81ZnSRVMCmlVL5sb+Lj0
+	/pXWgbHNZEuR30oastX5iucD/Sh5yfNox2LJwCXlZDx4z/Bsi1omDpafw3emeDoF
+	RXVM9Bkg1h3lNlswEn+hV9cMwVmX0a6tOFOi4WJSeg637Ckr2kSjnQNmxxIeXSWp
+	Qi+uTA==
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 49v27hvubb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-iio@vger.kernel.org>; Mon, 20 Oct 2025 12:51:18 +0000 (GMT)
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-87c1d388a94so15040536d6.1
+        for <linux-iio@vger.kernel.org>; Mon, 20 Oct 2025 05:51:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760962816; x=1761567616;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Pomt2ITXhIHlFit8dq3w5svz3PMdwi8h98cx9ZzxHC0=;
-        b=UVkK+aT6J7B4278H8tC6nfmvIUSUduxNvBIuZMXl0d603/WCFzuefIfpI8TWSMpb7p
-         WiU1WP16jTer7MVIV3je9SGgpJum6QhcH7RxGuN4OJ5u6z1IugYrRPvMFnQPRPqo7ft0
-         9z2NJSQS6z4KxSaza2jGuG43ZHbHlObD/2N96GOSZJpbJgDEINdcURRDdDl8fz6oqRRB
-         aUm+pU4Vh3WcfKw8K7w2n8YsTbdWL4fwEFlUnxLtWclYkOCdZIU//xi3ngiRxb6Q94AR
-         KaUG+PVJ/tjvfZMEd0CkhB0fjGRsbJrE0GgWYoWXLgTix3yOxInPTe9rkf5sKsg+x2tI
-         50yg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqw/VtbMYSzKeC64pGeIlgNNKgpxhyvyAl1PX5EFZDSYyawopP1rSEMis95ZWHxDn5CtOKMNnLJ0g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZgV3rHizhLQfVKIwRlFueIiY82Epv4VnHOw9JDZn67APtkTeU
-	HT6sU9poNtlT11uEixafgBSktXJBPWgeISgwQSlncOEo0lPtHRoDHezyuS2M7wdX
-X-Gm-Gg: ASbGncvP/ilqYw/chwx5AwO2bbj5uvqaqzr38JtSnj+fF2AS0imXXiiJPFl6GaYY0+N
-	nAXRgZK8KoxuYtHh9b30pvJMr6Swsbxyb6NYCgP86OpqLSm+v6L6BpJgBOXIWkAjPDpf3BwfQ6k
-	5TXg+OrMY6JZIk4oekJCZ5QsYtHClFwcuhkcsODJEmI5Av6dd+cvymmICYJBSGqp/Zqr6pBKZJf
-	jIo2NzxY98SMJAxhhtH5meYWJZNKJLMLz/sN4Tdzpt/VxKFGSzFWuouBYZ4dcFLrW5NLGv3JXE0
-	ohGOF+N8PGwc4WK9zpak+dLvZb25hsE7RxVzHQn6EZL1ahzg6W/Nfg3PInSoSKyp2Wj2kS+TWCB
-	5+4ySdey3V31qJNgHiHAAK+XSt7JPhOzi2SmxkhIReYgQbEpDf7CiTDTYdMjXXEETMVezSl/amE
-	N2x2fPtnyJDh/ekQegFLdJs3o0LksHHjXC8QE7fQuGWYyd7fjM
-X-Google-Smtp-Source: AGHT+IFZ3jR++ayWHKMiY5UO+taarBFyC60Sod+OBuRDJGBcjKE2i3CtceE2kOX+D5jA3yvPnCWVIA==
-X-Received: by 2002:a05:6e02:148e:b0:42d:8c07:70d2 with SMTP id e9e14a558f8ab-430c5263edemr202488675ab.11.1760962815890;
-        Mon, 20 Oct 2025 05:20:15 -0700 (PDT)
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com. [209.85.166.50])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-430d07b3eccsm31335285ab.28.2025.10.20.05.20.15
-        for <linux-iio@vger.kernel.org>
+        d=1e100.net; s=20230601; t=1760964678; x=1761569478;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PJ+61rwdER9gcUCreUuCjRpUgCHO6zkOMnqhcWd789Y=;
+        b=BFZ1DpSIXHEE8dQFdkjDShixMlYMPk0cDnOJzW6CaJjjG6J2GLG/8tH4snlod5Bi23
+         dTtKDfxhyiQCofqntCfYvdmkrtPxNzMaWTuNFsE0/s1IAvCeqL/5EsQ0mQ1mC10/ma/N
+         xGNqa1TvpkQ5JJxrM/dKtymz4aqhTZwF8PmUttvwEU1De7VmJ77U/iTnst/NeZjELP19
+         ZB0s6hDTx48X1wrFX65l3aw7DsZHR+f7/ZD2VmwLZ/OpFOWX2JI5/QFCeLFobEhUjC7z
+         a0grdklMRyUI0uCSGHoswFlYsUUD8Ju0o6ltf6bNor/zaDsej2dQ85anIDjJwy6IDtuC
+         ofvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXURngujCh3ZkGl+iM49f2oORKiaxWJj7H38suLV1TGeXBjqRekJeSZ644w+i0RHHeedMl16+EfPlI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypmnoY9Vd+3aE/iF3mILiPPuEGPBKK8A+hib685Zsrr1Fxmevz
+	Tv0xxAK+7jS44mVCGutm+pyxfQ3h9iHOpSG9J6W8Wb8REbEYSibORDPoTLW0qDAiIhDiNxHMaX9
+	sAlp2V0UopCBXBoMmDO9eJ7BOOgM5nvMWhJ0/K1nRXOd3OqJjSU1ksgVSbN3Ubls=
+X-Gm-Gg: ASbGncuVI+vVaYMRHOiNYuG9kBQAp0bqJ1BGyObi61Xf1veNdY2ezLxq5my8uZsqVfX
+	mV03UaJElnooRFhp6b9lfkd+WlErHPgVEKUGJIm26eIfUT2Fd5uLBm+kvQnlN+AqqVoP3GVquz1
+	sGYdzXF0xyltKIeLO/lkCP/0EkLxrAHb5jkQ+m9II9OYDDIp7Md1lPP+45kYZOFZ0g6IIjwVJxy
+	EzhN2aUoTbhH5h/Jvj/VcDgB1m35xQL7SQ6h8F/i+pa9NJ4g+9svJ0l4umR0JXN+Bb0GlMdlHBt
+	pq/pjpsBw06eOg1SBdfAvbiC7fbCjYHeLfn65WV7UU5uq02CFoGSPFnNHB3+iFm1Yxvl4lOWfFe
+	GQOJwbUtkvATUfOOecZBvDf+/sJZnrCM0JbzsNlnfBnTynlkkqIGmf13w
+X-Received: by 2002:ac8:464e:0:b0:4e8:9e21:4ca with SMTP id d75a77b69052e-4e89e210cecmr83044971cf.9.1760964677713;
+        Mon, 20 Oct 2025 05:51:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvM+g0CMV8MpZIMjGVAhYclAyO4aaFAi6pIps6GwKxBRdXkhzeODilTIsQNa+3DVgXnvy0Eg==
+X-Received: by 2002:ac8:464e:0:b0:4e8:9e21:4ca with SMTP id d75a77b69052e-4e89e210cecmr83044651cf.9.1760964677300;
+        Mon, 20 Oct 2025 05:51:17 -0700 (PDT)
+Received: from [192.168.119.202] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b65e83914d0sm779690266b.21.2025.10.20.05.51.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Oct 2025 05:20:15 -0700 (PDT)
-Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-93e7ff97d9fso289054139f.1
-        for <linux-iio@vger.kernel.org>; Mon, 20 Oct 2025 05:20:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX3/Td4jin2n7DjrP6aRZDqooG4O6lKy7F2/8WljDNBFs7vKpzAUKlaOFyrnZCOp9priRVIL0rCRv4=@vger.kernel.org
-X-Received: by 2002:a05:6102:50a2:b0:5d5:f6ae:38ca with SMTP id
- ada2fe7eead31-5d7dd6f4c27mr3609494137.41.1760962417639; Mon, 20 Oct 2025
- 05:13:37 -0700 (PDT)
+        Mon, 20 Oct 2025 05:51:16 -0700 (PDT)
+Message-ID: <3a32746a-5b0e-4c0a-8322-00cd3a84394a@oss.qualcomm.com>
+Date: Mon, 20 Oct 2025 14:51:12 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1760696560.git.geert+renesas@glider.be> <792d176149bc4ffde2a7b78062388dc2466c23ca.1760696560.git.geert+renesas@glider.be>
- <aPJwtZSMgZLDzxH8@yury>
-In-Reply-To: <aPJwtZSMgZLDzxH8@yury>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 20 Oct 2025 14:13:26 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXCoqZmSqRAfujib=2fk0Ob1FiPYWBj8vMXfuXNoKhfVg@mail.gmail.com>
-X-Gm-Features: AS18NWDS1vbUG4-z_--VlQ3gjSspwjijy0fs8EPqX7O88cWCZQUNQKHTmAYei1k
-Message-ID: <CAMuHMdXCoqZmSqRAfujib=2fk0Ob1FiPYWBj8vMXfuXNoKhfVg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] bitfield: Drop underscores from macro parameters
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	David Miller <davem@davemloft.net>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Jacky Huang <ychuang3@nuvoton.com>, 
-	Shan-Chun Hung <schung@nuvoton.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>, 
-	David Laight <david.laight.linux@gmail.com>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Kim Seer Paller <kimseer.paller@analog.com>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Richard Genoud <richard.genoud@bootlin.com>, 
-	Cosmin Tanislav <demonsingur@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Jianping Shen <Jianping.Shen@de.bosch.com>, linux-clk@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org, qat-linux@intel.com, 
-	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org, 
-	linux-iio@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V7 3/5] dt-bindings: iio: adc: Add support for QCOM PMIC5
+ Gen3 ADC
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+        Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, robh@kernel.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
+        lumag@kernel.org, dmitry.baryshkov@oss.qualcomm.com,
+        konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
+        amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
+        rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
+        david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
+        kamal.wadhwa@oss.qualcomm.com, rui.zhang@intel.com,
+        lukasz.luba@arm.com, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        cros-qcom-dts-watchers@chromium.org, quic_kotarake@quicinc.com,
+        neil.armstrong@linaro.org, stephan.gerhold@linaro.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250826083657.4005727-1-jishnu.prakash@oss.qualcomm.com>
+ <20250826083657.4005727-4-jishnu.prakash@oss.qualcomm.com>
+ <20250829-classic-dynamic-clam-addbd8@kuoka>
+ <5d662148-408f-49e1-a769-2a5d61371cae@oss.qualcomm.com>
+ <4e974e77-adfc-49e5-90c8-cf8996ded513@kernel.org>
+ <a0e885be-e87d-411a-884e-3e38a0d761e5@oss.qualcomm.com>
+ <8c90cc3f-115e-4362-9293-05d9bee24214@linaro.org>
+ <5d4edecf-51f3-4d4a-861f-fce419e3a314@oss.qualcomm.com>
+ <20250927144757.4d36d5c8@jic23-huawei>
+ <a3158843-dfac-4adc-838a-35bb4b0cbea4@oss.qualcomm.com>
+ <CAGE=qrrCvq28pr9Y7it-CGMW=szKUnU+XBj1TmpoUwuASM05ig@mail.gmail.com>
+ <31bd08ce-823a-4a71-baca-a9d1e02fcb6a@oss.qualcomm.com>
+ <08eb477f-ea34-4a31-b181-bfc629aef4c8@kernel.org>
+ <68a9b8e8-bdf4-430f-baef-6a293ccea78d@oss.qualcomm.com>
+ <d8a78b7c-e3a9-44b5-986d-8ac32f328eb6@kernel.org>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <d8a78b7c-e3a9-44b5-986d-8ac32f328eb6@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAxOCBTYWx0ZWRfX/WHNiPzvJfz0
+ /3tG9R1egUv1jOUE5ST2Qgkfgv76+FylPq5Xg48qcydymB/Z6VByN0tbBaZHPPfGj8wE6IZ6dJt
+ G64qyzY+64xojBSKhpHFOOYCDcciMyiqdu3eBmS7UAuYhLiW0566ere2OFueUuGChqhxt7AyIk/
+ lJhGy/j0gtZye6IGoEEUxaz8ba7J0U+hYbG/wAtyKAnlm0J5YirgOyZSoIvce2YhbQzoWw0YqdQ
+ BHhDxdslHCV7nDYImeq0/3knDQIKM54MkjYx7gP7EGAsBQ75/u3Mdrd3wtHfvRIX8NUj0hvSGWF
+ wzHuF+FfdVVhwv0x9Jn/gzpCdZAYZAc863S3HwjjsyPLNuatSimJapmV+IVCDq2tuE+5NGBoD9b
+ QeeZ/rdLuW9hvK8bYi9Qqka438wI3A==
+X-Authority-Analysis: v=2.4 cv=G4UR0tk5 c=1 sm=1 tr=0 ts=68f63046 cx=c_pps
+ a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=EUspDBNiAAAA:8 a=4QpUlTompLYQ2UVP18oA:9 a=QEXdDO2ut3YA:10
+ a=OIgjcC2v60KrkQgK7BGD:22
+X-Proofpoint-GUID: IfanTjA57EkvlTCk42PdKAaKJ5r7nGDb
+X-Proofpoint-ORIG-GUID: IfanTjA57EkvlTCk42PdKAaKJ5r7nGDb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-20_04,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ priorityscore=1501 spamscore=0 suspectscore=0 adultscore=0 clxscore=1011
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510020000
+ definitions=main-2510180018
 
-Hi Yury,
+On 10/17/25 3:40 PM, Krzysztof Kozlowski wrote:
+> On 17/10/2025 13:18, Jishnu Prakash wrote:
+>> Hi Krzysztof,
+>>
+>> On 10/9/2025 5:22 AM, Krzysztof Kozlowski wrote:
+>>> On 08/10/2025 23:20, Jishnu Prakash wrote:
+>>>> Hi Krzysztof,
+>>>>
+>>>> On 10/4/2025 12:22 PM, Krzysztof Kozlowski wrote:
+>>>>> On Sat, 4 Oct 2025 at 11:42, Jishnu Prakash
+>>>>> <jishnu.prakash@oss.qualcomm.com> wrote:
+>>>>>>
+>>>>>> Hi Jonathan,
+>>>>>>
+>>>>>> On 9/27/2025 7:17 PM, Jonathan Cameron wrote:
+>>>>>>> On Fri, 19 Sep 2025 20:17:43 +0530
+>>>>>>> Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
 
-On Fri, 17 Oct 2025 at 18:37, Yury Norov <yury.norov@gmail.com> wrote:
-> On Fri, Oct 17, 2025 at 12:54:09PM +0200, Geert Uytterhoeven wrote:
-> > There is no need to prefix macro parameters with underscores.
-> > Remove the underscores.
-> >
-> > Suggested-by: David Laight <david.laight.linux@gmail.com>
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > ---
-> > v4:
-> >   - Update recently introduced FIELD_MODIFY() macro,
+[...]
 
-> > --- a/include/linux/bitfield.h
-> > +++ b/include/linux/bitfield.h
-> > @@ -60,68 +60,68 @@
-> >
-> >  #define __bf_cast_unsigned(type, x)  ((__unsigned_scalar_typeof(type))(x))
-> >
-> > -#define __BF_FIELD_CHECK(_mask, _reg, _val, _pfx)                    \
-> > +#define __BF_FIELD_CHECK(mask, reg, val, pfx)                                \
-> >       ({                                                              \
-> > -             BUILD_BUG_ON_MSG(!__builtin_constant_p(_mask),          \
-> > -                              _pfx "mask is not constant");          \
-> > -             BUILD_BUG_ON_MSG((_mask) == 0, _pfx "mask is zero");    \
-> > -             BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?           \
-> > -                              ~((_mask) >> __bf_shf(_mask)) &        \
-> > -                                     (0 + (_val)) : 0,               \
-> > -                              _pfx "value too large for the field"); \
-> > -             BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
-> > -                              __bf_cast_unsigned(_reg, ~0ull),       \
-> > -                              _pfx "type of reg too small for mask"); \
-> > -             __BUILD_BUG_ON_NOT_POWER_OF_2((_mask) +                 \
-> > -                                           (1ULL << __bf_shf(_mask))); \
-> > +             BUILD_BUG_ON_MSG(!__builtin_constant_p(mask),           \
-> > +                              pfx "mask is not constant");           \
-> > +             BUILD_BUG_ON_MSG((mask) == 0, pfx "mask is zero");      \
-> > +             BUILD_BUG_ON_MSG(__builtin_constant_p(val) ?            \
-> > +                              ~((mask) >> __bf_shf(mask)) &  \
-> > +                                     (0 + (val)) : 0,                \
-> > +                              pfx "value too large for the field"); \
-> > +             BUILD_BUG_ON_MSG(__bf_cast_unsigned(mask, mask) >       \
-> > +                              __bf_cast_unsigned(reg, ~0ull),        \
-> > +                              pfx "type of reg too small for mask"); \
-> > +             __BUILD_BUG_ON_NOT_POWER_OF_2((mask) +                  \
-> > +                                           (1ULL << __bf_shf(mask))); \
-> >       })
->
-> I agree that underscored parameters are excessive. But fixing them has
-> a side effect of wiping the history, which is a bad thing.
->
-> I would prefer to save a history over following a rule that seemingly
-> is not written down. Let's keep this untouched for now, and if there
-> will be a need to move the code, we can drop underscores as well.
+>> Can you please provide your suggestions on changes we can make
+>> in the above points ?
+> 
+> You just pasted DT. I asked about SW, software. Please read carefully
+> previous comments.
 
-Fair enough.
-So I assume you are fine with not having underscored parameters in
-new code, like in [PATCH v4 2/4]?
+Is the problem that Jishnu included some indices in dt-bindings without
+also adding them in the driver's adc5_gen3_chans_pmic[] array?
 
-Gr{oetje,eeting}s,
+As in, would the resolution to this thread be simply handling all of
+them in the driver correctly?
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Konrad
 

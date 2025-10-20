@@ -1,143 +1,116 @@
-Return-Path: <linux-iio+bounces-25274-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25275-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862ECBEEB17
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Oct 2025 20:03:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594C8BEFBCC
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 09:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58853E00AA
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Oct 2025 18:03:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08C3A18983DB
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Oct 2025 07:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BF3223DD4;
-	Sun, 19 Oct 2025 18:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BUknOd7X"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395602E1C54;
+	Mon, 20 Oct 2025 07:49:47 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0289CA6F
-	for <linux-iio@vger.kernel.org>; Sun, 19 Oct 2025 18:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E61620E334;
+	Mon, 20 Oct 2025 07:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760896979; cv=none; b=GqcLRWZGaU/3UJjfAQDYM5Rmjgn/lC0iregZvsdd9YPV/I3wi2cYnyXe1BR1lp7AtaGPA5NLa8fpFKMlm0GyO6/hs7TDedIKm4nAs0DNjquNNvI94nDIczaYdQmglYg9FsAuVUGJomcU9VM4bwEgkYFH60gjn0iFBOU12PGGQ/w=
+	t=1760946587; cv=none; b=Tu5U/x9RmSTKl9Mx0YcJqQXhb0dane76L/JHjSLrL78QUhhB5TRMnlEVos2pom+GBWITK5Ex3FAK2j2oJ+rbpU1Ogh4K1gqw0XYkTQWUyi87AywWUzNIh4mAntLQlkdEMxUYSeazdn8Yo8WSH5AEtsHOAanfyUO1h1zdJgc4q3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760896979; c=relaxed/simple;
-	bh=ozSDolhQJbmAO0s86Z0yWay1zEiXGX3RFZK3utoLfb0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=jFGTMOxYQhxwGt7rT0EawK+FLpNRE/hCaretjCGHxL/py66qP0eOrGAmGo0qeBMRuJ41QUXqM+rp2UORJcipEE8sWMwhoNTpp85fMvz++LSASsVksvlWJxNsXppIQ9Jo00dRUnbXk11dJaomUvM/brEgQXc7bDtFhU/HHlDdLEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BUknOd7X; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-279e2554c8fso33838565ad.2
-        for <linux-iio@vger.kernel.org>; Sun, 19 Oct 2025 11:02:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760896977; x=1761501777; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1jrt0Ie8BNhXfzYDP08LLmDw/YXiUEA5EJwaGmcebmY=;
-        b=BUknOd7XTxdZaeRCWEKWYNUGsP5lsprz/Zw5NWhEjR5AwOuSkPRFnn9ILeZKXypdbM
-         BhW7lk/nPo/p+/xiOmq6l2ZPH2x8VV79qI8s6JdnwCZzpFRswnycX2MTi3w2cq0VhqO0
-         x/QmU18cBHAwN9ksP5tcEQgJ/HBI+FIDS/tplCdAOFxM4JHcMNIHeyZzkJ2DSiylg5UD
-         l+6C7bincyvBfDrCjkadt/a6BqI6+AQhXEWDFSz8NsO4SHU/UAvLzW2kP8xaOWluGSG8
-         zjznJXXCF2qn2+5jy4TcHegUGbyM7ZdEqr2GBFVwz0SH+j4NiV4T25xkcmvFyqt8OcwV
-         7XWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760896977; x=1761501777;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1jrt0Ie8BNhXfzYDP08LLmDw/YXiUEA5EJwaGmcebmY=;
-        b=VaJGeN9e0L+5RynRxNJs4IyRWkDL02sBDWGqBMSA/5Zs3xPn/dhpc0IXJYaBXGLVsd
-         ucjC0A1cz3WviEFs0i8koW7UMASuvSP47Zso1hU2fp+FjmCZ8U33BALzM8HUkjmqbKsH
-         3rOsGiKOIbMesRwIEINI98EVqcYAkCsy1OD4cr7Q6dWKkqwdawH5JFY0FbdjleYZ0NTc
-         uKOjcFgnblbcEhOOUHujLxrrzOB1/dTBgrnLsjnwDyIxahPoFNmQ7weWq1d/eDbQoHF1
-         UlL5w50VCeuXAYEXLyKwQ8qNGuaW4/H7LJB/LEaJLukUwRuzR2ZPweNmXZvHGb/RsHxH
-         yOnA==
-X-Gm-Message-State: AOJu0Yy9N9RA8OFhLDlNz0JR3PEly7wK6rmuqOP+OqyplvNXif4G11aG
-	e8Se9UEfFkiyg+wbYh6RU6M1SQSQMNADeXF916JgAbkTRM9oAweA0TQD
-X-Gm-Gg: ASbGncuLDP1p6ii0dRKqq1bBYUKXJ1kwHKDI9XCN+lorTgtIHGYhQIQXNj4rKwSqiwg
-	VXA8xqZUm1awZdEcTfTiriMQRzgtWiHfofT6zOphgGWXoSdSVL/mvpgS7Vpj8R2hPPIgZDMFX1R
-	V/WUTsS8vsBNTV9X8QU+TXairIhLdysDveeAHLvoBQx9mjckxYsL3skI3juhuJREc921gTgdchN
-	IesJAjAGakxTFC82ug+ReelDdbJ2/PDl4UjrF++1n9pRlY9RY7rNv1blfDKp/psddR/pb9wykwt
-	CJsen3Sx2fzadaTijWvSSig9ns/yKgLeliUT0Ax9xKzHQc2RGfsYUy62TFHTR5sNdz5MA6A8eBd
-	2zHKJgk2/JuMAgLmHHzAAq7J4lgH3BGKJfGmysuWSxiBg0rHV/Nnn47QLa2hJ9iEX7qgQDpVxkR
-	Ils83YNZ4h+Fvl961pK0mXcRRh5Vxkv2r0iZU=
-X-Google-Smtp-Source: AGHT+IFFVOrJIsToyN6vZFiYBBVpU1/9unKfzO//ZkozLWMRDFrgw63b2i56h1Yz6kWx6og3vSaNSQ==
-X-Received: by 2002:a17:902:cf0b:b0:246:7a43:3f66 with SMTP id d9443c01a7336-290c9c89336mr146423865ad.7.1760896976935;
-        Sun, 19 Oct 2025 11:02:56 -0700 (PDT)
-Received: from [192.168.21.161] ([50.236.66.130])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292a8c8e231sm4099675ad.36.2025.10.19.11.02.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Oct 2025 11:02:56 -0700 (PDT)
-Message-ID: <eb655eb8-4f24-409d-9560-be980637ca66@gmail.com>
-Date: Sun, 19 Oct 2025 15:02:54 -0300
+	s=arc-20240116; t=1760946587; c=relaxed/simple;
+	bh=rqF2+4aZsZgXwI99r/vp0x9hXEbZsi9gPenHK717Rp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=p9oaAsbmdY0XZi+LjIiD5BkQ7V24I50eiYJ8A0HUtTqRp09Xd4Kb8ZheWeN2vFZ20pT3258AbVyLwEaGy0zaz6PNx2CnLcH9QILHbvf1DGA1K6xLGfQ+YTGV2dlRsCPtutTtXHE9G//WNfgFV61k5HFRZy+3NeeQBbqEA9MiuqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 4f4e1ddaad8911f0a38c85956e01ac42-20251020
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:077d9843-85d1-45bd-9f42-d164766ef793,IP:0,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:25
+X-CID-META: VersionHash:a9d874c,CLOUDID:cb42775910660d13e7362869089db852,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:5,
+	IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:
+	0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 4f4e1ddaad8911f0a38c85956e01ac42-20251020
+X-User: xiaopei01@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <xiaopei01@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 571335398; Mon, 20 Oct 2025 15:49:30 +0800
+From: Pei Xiao <xiaopei01@kylinos.cn>
+To: eugen.hristev@linaro.org
+Cc: alexandre.belloni@bootlin.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-arm-kernel@lists.infradead.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nicolas.ferre@microchip.com,
+	xiaopei01@kylinos.cn
+Subject: [PATCH v2] iio: adc: at91-sama5d2_adc: Fix potential use-after-free in sama5d2_adc driver
+Date: Mon, 20 Oct 2025 15:49:25 +0800
+Message-Id: <268cbf0a5d9b931fcf6c025c53cc698ce78e4689.1760946527.git.xiaopei01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <e9d6831a-d0ef-440c-b235-fec18048deed@linaro.org>
+References: <e9d6831a-d0ef-440c-b235-fec18048deed@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 1/2] dt-bindings: iio: adc: add max14001
-From: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, Kim Seer Paller <kimseer.paller@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Marcelo Schmitt <Marcelo.Schmitt@analog.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>,
- Jonathan Santos <Jonathan.Santos@analog.com>,
- Dragos Bogdan <dragos.bogdan@analog.com>,
- Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-References: <830368e5bc303faf04f542268acb95e99d0d1cde.1760502331.git.marilene.agarcia@gmail.com>
- <aPGeCMiLSB9-A7t_@debian-BULLSEYE-live-builder-AMD64>
- <8c1a533a-2c39-41a9-a007-f64cefe30e35@gmail.com>
-Content-Language: en-US
-In-Reply-To: <8c1a533a-2c39-41a9-a007-f64cefe30e35@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
->>> Co-developed-by: Kim Seer Paller <kimseer.paller@analog.com>
->>> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
->>> Signed-off-by: Marilene Andrade Garcia <marilene.agarcia@gmail.com>
->>> ---
->> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
->>
->> Since you've dropped the ADC node label, I think you could have picked up
->> Conor's review tag from v12.
->>
->> If nothing else comes up, you won't need to send a v14 as Jonathan 
->> will probably
->> pick the latest tags when applying the patches.
->>
->> Cheers,
->> Marcelo
-> 
-> I agree, I forgot to pick up Conor's review tag. Sorry about that.
-> Okay, thank you.
-> 
-> Best regards,
-> Marilene
+at91_adc_interrupt can call at91_adc_touch_data_handler function
+to start the work by schedule_work(&st->touch_st.workq).
 
+If we remove the module which will call at91_adc_remove to
+make cleanup, it will free indio_dev through iio_device_unregister
+while the work mentioned above will be used. The sequence of operations
+that may lead to a UAF bug is as follows:
 
-Hello maintainers,
+CPU0                                      CPU1
 
-Just checking, is there any other action I should take on my end
-regarding this patch series?
-Jonathan, I forgot to add the following tag in v13, so I was wondering
-if you could please include it when applying the patch.
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+                                     | at91_adc_workq_handler
+at91_adc_remove                      |
+iio_device_unregister(indio_dev)     |
+//free indio_dev                     |
+                                     | iio_push_to_buffers(indio_dev)
+                                     | //use indio_dev
 
-Thank you so much for all your assistance.
-Best regards,
-Marilene
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in at91_adc_remove.
+
+Fixes: 3ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+---
+ drivers/iio/adc/at91-sama5d2_adc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+index b4c36e6a7490..1cd6ce61cf17 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -2480,6 +2480,7 @@ static void at91_adc_remove(struct platform_device *pdev)
+ 	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+ 	struct at91_adc_state *st = iio_priv(indio_dev);
+ 
++	cancel_work_sync(&st->touch_st.workq);
+ 	iio_device_unregister(indio_dev);
+ 
+ 	at91_adc_dma_disable(st);
+-- 
+2.25.1
+
 

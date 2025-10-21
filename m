@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-25314-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25317-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3675ABF5424
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Oct 2025 10:33:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 269C0BF543F
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Oct 2025 10:33:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C16A74F5478
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Oct 2025 08:33:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4778118C02B5
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Oct 2025 08:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD233128AC;
-	Tue, 21 Oct 2025 08:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B4931AF1F;
+	Tue, 21 Oct 2025 08:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="cK/2QFkQ"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="pJt0DiV+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7DF3074A7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714A826A0BD;
 	Tue, 21 Oct 2025 08:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761035556; cv=none; b=BVSaXxQFaaa66CAlbD8rfI2iFw2ZOpWzSFs5litHp5SZdoPVfGZ56sQZeLfyBdoU1W+emLUQOOsj/8SN3cHFhYF+J/AdF+oJ/8aYqNjCB4M2yq2Tslbb22GWskeu/BhSIor0pd7iiWd6a6lNHcSIeoJAYcbXBhkv9H65OR+OkVU=
+	t=1761035558; cv=none; b=TQqi8SAX/0ZOWaIfMmbFMVwKm4yScDXoTFYRwxvJMpRJoao6L6Mhz2/wa7FZjrTlRBM3jW9j2n3b10pXy0IW12F6TjsONbCzI6AM5DoEXyk2tERQZphkMxxbzg24iCDWVLMSHXuI2ZWIjfbNtRXy1r2lK/VufCOxtiX+UqGOjqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761035556; c=relaxed/simple;
-	bh=pWVE1aetWCjbxUtekG5N3/7XA6kbi9V+NuMr8xUFisI=;
+	s=arc-20240116; t=1761035558; c=relaxed/simple;
+	bh=bVoZIljLGzrePBHsUH7Goxw0iMef1st5lPRcnxXWA1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TosQqdYgyaB4pRk9lxkN9NlMFIVsLBU7iTRqQiJ6vuVF+CS9gv6YJQrTUpiI568P5mhGa5VOowrH4kq9cq33kavfEUUv1mwjqtTIKAlpY8OMo171Yrhg1pUomT1u47qj9z2k8SvqNyhdPajC8VyP4afESExlXXKs30NdsnGlp00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=cK/2QFkQ; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version; b=k+YTgnjPuAja2HJz/AXGqhBC0hgblwqVjfCnkZD6pVks4krmlgGcKSKCwbAGFM2SrryPX2MYrtRMfsCZ3fOey/TmkyRkPUYWvNv5PYOC2/FSnCMVFdDWVEEg9g34fgiP6cKItYZfSK+wRyOJxC7DljYidpFZJYZVmGYxWyafMv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=pJt0DiV+; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1761035549;
-	bh=pWVE1aetWCjbxUtekG5N3/7XA6kbi9V+NuMr8xUFisI=;
+	s=mail; t=1761035550;
+	bh=bVoZIljLGzrePBHsUH7Goxw0iMef1st5lPRcnxXWA1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cK/2QFkQiE6XExDEcIcLEjvtsQ4bmNO8JR58UEZCHjZTSv00xhm+i0w21QqOuT9IL
-	 GpjfWpgVIqi5FAjSg4NIX0T0eoZWic5kvzS1AqtrJO8a78p/jpvl+UhIEhZ/Ac/SlS
-	 HeVV1fzHOA1mqVWLJ4GuRMw1izuFSbgqIVTK0Mn4hq5gVqyShrjJIXUKCPZI+tKibF
-	 w/nxdaP6G8buSUkOFRJ4IQdsF13WQ6x0KYhlg66d8Y+d3cUKW6AD/rmMN7sL5HY5+S
-	 jJkLuC7oYRhqh8uAMD1F+vTbgpqpzkaxzkKa0KOTOwlerp8sut5kpevwDBpqzqoY3/
-	 4Ilxf89Bu2wag==
+	b=pJt0DiV++wOiEunGyvoloKjU7Mb3TG93mcIWDHUS9vdPrxdu7cqHcGOlq+XqCIIcg
+	 c5NIMMQH42fd8IQpXPZkpfAsEdww9UNtLlpgwhc1yQarExjvRpeEUEHOUpGLOkK+gf
+	 N8OdPjygglFEav6TUJtWInBaIhweEBkx0m0Ebvl4nmfrmBJvH2ruNbTLND/BwEb5JY
+	 70XHnLHRyH5GqFD+WR+txJ5QfmgNYrO00g5ho3A6KW74LJY/fIIzeGW7LnuALDUw1+
+	 S5+zArhBFW6W6zAQ26gWF3tinilHDT6Aw7xPF7ouhjOpAinj12E1PO1lr9oz+QpQ+F
+	 shljzTjmBwBWQ==
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 344A517E013C;
-	Tue, 21 Oct 2025 10:32:29 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1ADA917E0456;
+	Tue, 21 Oct 2025 10:32:30 +0200 (CEST)
 From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 To: sboyd@kernel.org
 Cc: jic23@kernel.org,
@@ -71,10 +71,11 @@ Cc: jic23@kernel.org,
 	kernel@collabora.com,
 	wenst@chromium.org,
 	casey.connolly@linaro.org,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH v7 08/10] misc: qcom-coincell: Migrate to devm_spmi_subdevice_alloc_and_add()
-Date: Tue, 21 Oct 2025 10:32:17 +0200
-Message-ID: <20251021083219.17382-9-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v7 09/10] iio: adc: qcom-spmi-iadc: Migrate to devm_spmi_subdevice_alloc_and_add()
+Date: Tue, 21 Oct 2025 10:32:18 +0200
+Message-ID: <20251021083219.17382-10-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251021083219.17382-1-angelogioacchino.delregno@collabora.com>
 References: <20251021083219.17382-1-angelogioacchino.delregno@collabora.com>
@@ -86,8 +87,8 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some Qualcomm PMICs integrate a charger for coincells, usually
-powering an RTC when external (or main battery) power is missing.
+Some Qualcomm PMICs integrate an Current ADC device, reachable
+in a specific address range over SPMI.
 
 Instead of using the parent SPMI device (the main PMIC) as a kind
 of syscon in this driver, register a new SPMI sub-device and
@@ -98,126 +99,120 @@ This allows to stop manually adding the register base address to
 every R/W call in this driver, as this can be, and is now, handled
 by the regmap API instead.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- drivers/misc/Kconfig         |  2 ++
- drivers/misc/qcom-coincell.c | 38 +++++++++++++++++++++++++-----------
- 2 files changed, 29 insertions(+), 11 deletions(-)
+ drivers/iio/adc/qcom-spmi-iadc.c | 32 +++++++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index b9c11f67315f..f4c5e67192fb 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -291,6 +291,8 @@ config HP_ILO
- config QCOM_COINCELL
- 	tristate "Qualcomm coincell charger support"
- 	depends on MFD_SPMI_PMIC || COMPILE_TEST
-+	depends on SPMI
-+	select REGMAP_SPMI
- 	help
- 	  This driver supports the coincell block found inside of
- 	  Qualcomm PMICs.  The coincell charger provides a means to
-diff --git a/drivers/misc/qcom-coincell.c b/drivers/misc/qcom-coincell.c
-index 3c57f7429147..49e38442b289 100644
---- a/drivers/misc/qcom-coincell.c
-+++ b/drivers/misc/qcom-coincell.c
-@@ -9,11 +9,11 @@
- #include <linux/of.h>
- #include <linux/regmap.h>
+diff --git a/drivers/iio/adc/qcom-spmi-iadc.c b/drivers/iio/adc/qcom-spmi-iadc.c
+index b64a8a407168..67096952b229 100644
+--- a/drivers/iio/adc/qcom-spmi-iadc.c
++++ b/drivers/iio/adc/qcom-spmi-iadc.c
+@@ -16,6 +16,7 @@
  #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
 +#include <linux/spmi.h>
  
- struct qcom_coincell {
- 	struct device	*dev;
+ /* IADC register and bit definition */
+ #define IADC_REVISION2				0x1
+@@ -94,7 +95,6 @@
+  * struct iadc_chip - IADC Current ADC device structure.
+  * @regmap: regmap for register read/write.
+  * @dev: This device pointer.
+- * @base: base offset for the ADC peripheral.
+  * @rsense: Values of the internal and external sense resister in micro Ohms.
+  * @poll_eoc: Poll for end of conversion instead of waiting for IRQ.
+  * @offset: Raw offset values for the internal and external channels.
+@@ -105,7 +105,6 @@
+ struct iadc_chip {
  	struct regmap	*regmap;
--	u32		base_addr;
- };
+ 	struct device	*dev;
+-	u16		base;
+ 	bool		poll_eoc;
+ 	u32		rsense[2];
+ 	u16		offset[2];
+@@ -119,7 +118,7 @@ static int iadc_read(struct iadc_chip *iadc, u16 offset, u8 *data)
+ 	unsigned int val;
+ 	int ret;
  
- #define QCOM_COINCELL_REG_RSET		0x44
-@@ -35,7 +35,7 @@ static int qcom_coincell_chgr_config(struct qcom_coincell *chgr, int rset,
- 	/* if disabling, just do that and skip other operations */
- 	if (!enable)
- 		return regmap_write(chgr->regmap,
--			  chgr->base_addr + QCOM_COINCELL_REG_ENABLE, 0);
-+			  QCOM_COINCELL_REG_ENABLE, 0);
+-	ret = regmap_read(iadc->regmap, iadc->base + offset, &val);
++	ret = regmap_read(iadc->regmap, offset, &val);
+ 	if (ret < 0)
+ 		return ret;
  
- 	/* find index for current-limiting resistor */
- 	for (i = 0; i < ARRAY_SIZE(qcom_rset_map); i++)
-@@ -58,7 +58,7 @@ static int qcom_coincell_chgr_config(struct qcom_coincell *chgr, int rset,
- 	}
+@@ -129,7 +128,7 @@ static int iadc_read(struct iadc_chip *iadc, u16 offset, u8 *data)
  
- 	rc = regmap_write(chgr->regmap,
--			  chgr->base_addr + QCOM_COINCELL_REG_RSET, i);
-+			  QCOM_COINCELL_REG_RSET, i);
- 	if (rc) {
- 		/*
- 		 * This is mainly to flag a bad base_addr (reg) from dts.
-@@ -71,19 +71,28 @@ static int qcom_coincell_chgr_config(struct qcom_coincell *chgr, int rset,
- 	}
- 
- 	rc = regmap_write(chgr->regmap,
--		chgr->base_addr + QCOM_COINCELL_REG_VSET, j);
-+		QCOM_COINCELL_REG_VSET, j);
- 	if (rc)
- 		return rc;
- 
- 	/* set 'enable' register */
- 	return regmap_write(chgr->regmap,
--			    chgr->base_addr + QCOM_COINCELL_REG_ENABLE,
-+			    QCOM_COINCELL_REG_ENABLE,
- 			    QCOM_COINCELL_ENABLE);
+ static int iadc_write(struct iadc_chip *iadc, u16 offset, u8 data)
+ {
+-	return regmap_write(iadc->regmap, iadc->base + offset, data);
++	return regmap_write(iadc->regmap, offset, data);
  }
  
- static int qcom_coincell_probe(struct platform_device *pdev)
+ static int iadc_reset(struct iadc_chip *iadc)
+@@ -270,7 +269,7 @@ static int iadc_poll_wait_eoc(struct iadc_chip *iadc, unsigned int interval_us)
+ 
+ static int iadc_read_result(struct iadc_chip *iadc, u16 *data)
  {
--	struct device_node *node = pdev->dev.of_node;
-+	struct regmap_config qcom_coincell_regmap_config = {
+-	return regmap_bulk_read(iadc->regmap, iadc->base + IADC_DATA, data, 2);
++	return regmap_bulk_read(iadc->regmap, IADC_DATA, data, 2);
+ }
+ 
+ static int iadc_do_conversion(struct iadc_chip *iadc, int chan, u16 *data)
+@@ -483,12 +482,19 @@ static const struct iio_chan_spec iadc_channels[] = {
+ 
+ static int iadc_probe(struct platform_device *pdev)
+ {
++	struct regmap_config iadc_regmap_config = {
 +		.reg_bits = 16,
 +		.val_bits = 8,
 +		.max_register = 0x100,
 +		.fast_io = true,
 +	};
-+	struct device *dev = &pdev->dev;
-+	struct device_node *node = dev->of_node;
+ 	struct device_node *node = pdev->dev.of_node;
+ 	struct device *dev = &pdev->dev;
 +	struct spmi_subdevice *sub_sdev;
 +	struct spmi_device *sparent;
- 	struct qcom_coincell chgr;
- 	u32 rset = 0;
- 	u32 vset = 0;
-@@ -92,16 +101,22 @@ static int qcom_coincell_probe(struct platform_device *pdev)
+ 	struct iio_dev *indio_dev;
+ 	struct iadc_chip *iadc;
+ 	int ret, irq_eoc;
+-	u32 res;
  
- 	chgr.dev = &pdev->dev;
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*iadc));
+ 	if (!indio_dev)
+@@ -497,18 +503,21 @@ static int iadc_probe(struct platform_device *pdev)
+ 	iadc = iio_priv(indio_dev);
+ 	iadc->dev = dev;
  
--	chgr.regmap = dev_get_regmap(pdev->dev.parent, NULL);
-+	rc = of_property_read_u32(node, "reg", &qcom_coincell_regmap_config.reg_base);
-+	if (rc)
-+		return rc;
-+
+-	iadc->regmap = dev_get_regmap(dev->parent, NULL);
+-	if (!iadc->regmap)
+-		return -ENODEV;
 +	sparent = to_spmi_device(dev->parent);
 +	sub_sdev = devm_spmi_subdevice_alloc_and_add(dev, sparent);
 +	if (IS_ERR(sub_sdev))
 +		return PTR_ERR(sub_sdev);
-+
-+	chgr.regmap = devm_regmap_init_spmi_ext(&sub_sdev->sdev,
-+						&qcom_coincell_regmap_config);
- 	if (!chgr.regmap) {
- 		dev_err(chgr.dev, "Unable to get regmap\n");
- 		return -EINVAL;
- 	}
  
--	rc = of_property_read_u32(node, "reg", &chgr.base_addr);
--	if (rc)
--		return rc;
--
- 	enable = !of_property_read_bool(node, "qcom,charger-disable");
+ 	init_completion(&iadc->complete);
+ 	mutex_init(&iadc->lock);
  
- 	if (enable) {
-@@ -142,3 +157,4 @@ module_platform_driver(qcom_coincell_driver);
+-	ret = of_property_read_u32(node, "reg", &res);
++	ret = of_property_read_u32(node, "reg", &iadc_regmap_config.reg_base);
+ 	if (ret < 0)
+ 		return -ENODEV;
  
- MODULE_DESCRIPTION("Qualcomm PMIC coincell charger driver");
+-	iadc->base = res;
++	iadc->regmap = devm_regmap_init_spmi_ext(&sub_sdev->sdev, &iadc_regmap_config);
++	if (IS_ERR(iadc->regmap))
++		return PTR_ERR(iadc->regmap);
+ 
+ 	ret = iadc_version_check(iadc);
+ 	if (ret < 0)
+@@ -584,3 +593,4 @@ MODULE_ALIAS("platform:qcom-spmi-iadc");
+ MODULE_DESCRIPTION("Qualcomm SPMI PMIC current ADC driver");
  MODULE_LICENSE("GPL v2");
+ MODULE_AUTHOR("Ivan T. Ivanov <iivanov@mm-sol.com>");
 +MODULE_IMPORT_NS("SPMI");
 -- 
 2.51.1

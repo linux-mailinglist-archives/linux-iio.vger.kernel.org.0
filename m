@@ -1,339 +1,250 @@
-Return-Path: <linux-iio+bounces-25318-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25319-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B74BBF5445
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Oct 2025 10:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A92DBF5C99
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Oct 2025 12:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9A9164F68E1
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Oct 2025 08:33:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1A4FA4EDAF2
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Oct 2025 10:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DED6313E00;
-	Tue, 21 Oct 2025 08:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8622EC54B;
+	Tue, 21 Oct 2025 10:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Iaxq4PRT"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="aKxoUAsO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C8B306495;
-	Tue, 21 Oct 2025 08:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FD42D8DA8;
+	Tue, 21 Oct 2025 10:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761035559; cv=none; b=Pw113+070Kvn6u6w49L+ocak6LFdqngYayhmNOT/HPm3eAvZE3zpZLvI8TPlEnsMy99AT0p6Coe++0Cm/Thej8Q3/4MHkNeN2m+OosGSBypRmzxozdah6qIqwLusu1NtbCW3JdmclgzmV20q29dYffha767H3nKxUWXUuo+gSrY=
+	t=1761042747; cv=none; b=gseiA7548ojoDdQMFaUbBsz3k1KQby7Sy21GBmlMwcDycp08Qd4dGdArrz3/8esZtnzlrHKVtHGZyt7hUcQwSNNCZ4Q5HIIFABDOFAPjrwSt2Ouis/pSdFy2TPnERNchsuvAahUK34gjSq47AR+w7KCFeE93MIbBsJsKvXQIyZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761035559; c=relaxed/simple;
-	bh=xPjuPvMuBs/dTwTRMKPWsPhe1oH9dEsXoBgprJB6V/c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXUL3rUi4Op8PcA7pjCaC/mbX9qi2BYZ9hSG3xfvfRPdIQtmkPzuKhwnjexqi5lk5ZJj0rV6ELXcWF2ugfuy9vOyCRVJK7CeWqR8Mdx7yPJ9CDwZFJ+u/+OST9n1SZrbCyOaTWvuhPRBpRw2kmqxtdfs1X4rjcFT8h79RC/7CmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Iaxq4PRT; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1761035551;
-	bh=xPjuPvMuBs/dTwTRMKPWsPhe1oH9dEsXoBgprJB6V/c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iaxq4PRTjSGBGhAOJjIntP+bdE5gWdK5Rntx2ISDQkFmgTeq2aaMKb/UQ1lklTq58
-	 I4oPCk5f14MfAqtyN7szoEu9nzLtRjv9GO99G4X+6Dn+BD9spiZ8oWDfmlN4nnsHMs
-	 rharWbRE8iGrGsvLTcinJ9rSfD6lLCU42wAgrrJRBO0JIHRanYREEQOlhtkNvWxjiR
-	 r8feBKxIez6cnavfphnRbxkIYFshSkBOOh4EKLU6jjZqTNpaxpzcffmwwN1sQOhCL5
-	 6ufQQgRyB/F3sxLbBtmxN2exKotmoCh5l9byVKHqjbjHJ5zSGmJOb6e7tFptYyoqsi
-	 Y/45OF7fnz6zA==
-Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	s=arc-20240116; t=1761042747; c=relaxed/simple;
+	bh=x0+M2VBbyWHomw39G87rAcn3LPaa0F+XajfBshSRNb0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VDOzSHNxCzassRWLy8JBxjsQGC7EaWDYIfImy5RGl0toPtcNugWPVnGd2aOh1sw2rTr2tRGTWGzH1xvo3YD4O3pYH38egtKEKwVOTyzhTbVMzlR3DiRHbmOTWCqL5V5mC7jEPsCMqkhdU3XmkV8o2VS8Rv0eEcwH4xxldTvUBOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=aKxoUAsO; arc=none smtp.client-ip=172.105.74.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from [10.212.0.13] (unknown [IPv6:2a02:2f0e:3e0c:5b00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0B86717E1305;
-	Tue, 21 Oct 2025 10:32:31 +0200 (CEST)
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-To: sboyd@kernel.org
-Cc: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org,
-	srini@kernel.org,
-	vkoul@kernel.org,
-	kishon@kernel.org,
-	sre@kernel.org,
-	krzysztof.kozlowski@linaro.org,
-	u.kleine-koenig@baylibre.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-arm-msm@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-pm@vger.kernel.org,
-	kernel@collabora.com,
-	wenst@chromium.org,
-	casey.connolly@linaro.org,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH v7 10/10] iio: adc: qcom-spmi-iadc: Remove regmap R/W wrapper functions
-Date: Tue, 21 Oct 2025 10:32:19 +0200
-Message-ID: <20251021083219.17382-11-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251021083219.17382-1-angelogioacchino.delregno@collabora.com>
-References: <20251021083219.17382-1-angelogioacchino.delregno@collabora.com>
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id D7B8B160209;
+	Tue, 21 Oct 2025 13:32:14 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
+	s=mail; t=1761042735;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=C69VDEnlJ993i84MSUP5xOSxw8IPxfTpITkaE/qkMso=;
+	b=aKxoUAsOhPFRZPWtC5nbONXg/JSoF0KHrJa75CiO0FHPOSpE0tZtR0H84SGDITnbxGKIND
+	S0xmXVu37KvaeKjRqjrQrla6SnyXcUYnZbRgnD/qWADQ9zR+rz7OugxXzp9/8Muz1W6Gy6
+	U6AhXB3TaG3ns7D5q7Nsx/kygOXeQhOaC8cM05mkCD5k0Z5Km81DsaYAW5L3GCWdRG8/T8
+	2w8lZFzMNLn7OC61QzHOILXp6kYsm0QPHIEPT8mBv5WyS+GPrf4bu5w3RgGAEMyubOWJAx
+	fEnDS8zKneR4Vfv7W1JefgiFh4OP9ufxvkUg5rwn+G7NroidCaQIwp4ZKoWAYA==
+From: Petre Rodan <petre.rodan@subdimension.ro>
+Date: Tue, 21 Oct 2025 13:31:49 +0300
+Subject: [PATCH] iio: accel: bma220: move set_wdt() out of bma220_core
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251021-bma220_set_wdt_move-v1-1-6c99f6fd951c@subdimension.ro>
+X-B4-Tracking: v=1; b=H4sIABRh92gC/x3MQQqAIBBA0avErBN0QImuEiGWY83CCo0KwrsnL
+ d/i/xcyJaYMffNCoosz71uFahuYV7ctJNhXA0rUSqISU3SI0mY67e1PG/eLhDRam6CNcnMHtTw
+ SBX7+6zCW8gEyXmq0ZQAAAA==
+X-Change-ID: 20251021-bma220_set_wdt_move-06556f561ac8
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel test robot <lkp@intel.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5325;
+ i=petre.rodan@subdimension.ro; h=from:subject:message-id;
+ bh=x0+M2VBbyWHomw39G87rAcn3LPaa0F+XajfBshSRNb0=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQmRDc25wM
+ k02U1dNQnl5WmlBR2ozWVMxeVQxeDRqSi8vSE9IdkVBUFRUaUY4CnVXYk8yZGhqL1dNUWFXUHhq
+ UnZkdUlrQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKbzkyRXR
+ BQW9KRUhRcko2ZGpPa2xqMStvUC8wMGp1d3M1YkxOY3ByTklyekZhWVpybGE0dkhMb0Vsak9hMg
+ pCYmdrd3habG9pV1VoWjN6L0pUTnYwQVRXWC9PL0lkN2J0QzZqbkM0OVpvcWwwWWJMRE11aFgyc
+ 2dKY2VNNllxCitjeHJIajNLWit5TDVUenlVaytFYVlKRmg1dGZxNEVyN1oxZTBkMnZUVU0wQnUr
+ SkU4OGNhV1l2WVZDVEF2dFkKZDJ6U2lkT0ZlTnlGOHkwSHhRcTNibjBwOGN6MGNaZ0RMa3FvdFQ
+ xb05GczJFL2Rxb1JtSUJORVFRVUxWTWlBOApFQ0F3OVIvQ21QTTg4a0xKcGh4TWJ1eHVkemJTM2
+ NtWUJMZFV4N01VOStaSElqWjV6d01lMmJjcFcxajRaN1RGCmlIS3VqRjBFdWY4R25QSi9ieTBqQ
+ TlkK1JPdjR4ZFhNU29EbW1UcWwxTVhkTkwrM2tSTEVnVkdWVjRKUWJMY0QKdmZ5dkMrelJsRzdC
+ a0N2Y1htTzdDZEM4Vklyem5qQ3Z0ZllTWjZ5dXk3aUY2MS8zTHBsbzU1WFNwR00yR1VvcwpiZ0F
+ hZlVDVEhXcG1VZlZPWE1ZKzE3STJSTFpHbjhkcnFSRnlyb1lNeTVweWlsNGxzYi84aTVlRUZBbT
+ hWOW55Ck92SzBmYW12SGtBYzFaeG5XRVFjYXlvRjEwcDNpdlovMWJzcTdFMDRJZHByY2dWY3owN
+ Td4NnpmNUhKdklJZjcKNWMwWEVEOVlhV3VraitQdlpVdTJFazNybmcyK2p3enNURmZwbHZnVWN2
+ bTZXWUFuK0w1OUtMUm9jc09tRnVsRQpzdi9aRTJDTjFiUFdlam50YVV1YWVXdyt5Wis0Ykg2RzM
+ rQWIrU0JqaEYzd2MyWk5YZG5DRkZYWGJnWktxUWd6CnRJUFo3TUVSeHg4by93PT0KPWU4d3kKLS
+ 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
+ fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
-This driver doesn't need to add any register base address to any
-regmap call anymore since it was migrated to register as a SPMI
-subdevice with its own regmap reg_base, which makes the regmap
-API to automatically add such base address internally.
+Move bma220_set_wdt() into bma220_i2c.c instead of using a conditional
+based on i2c_verify_client() in bma220_core.c that would make core
+always depend on the i2c module.
 
-Since the iadc_{read,write,read_result}() functions now only do
-call regmap_{read,write,bulk_read}() and nothing else, simplify
-the driver by removing them and by calling regmap APIs directly.
-
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202510102117.Jqxrw1vF-lkp@intel.com/
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 ---
- drivers/iio/adc/qcom-spmi-iadc.c | 83 ++++++++++++--------------------
- 1 file changed, 30 insertions(+), 53 deletions(-)
+This patch fixes a linking error reported by the kernel robot
 
-diff --git a/drivers/iio/adc/qcom-spmi-iadc.c b/drivers/iio/adc/qcom-spmi-iadc.c
-index 67096952b229..7d46ec2d1a30 100644
---- a/drivers/iio/adc/qcom-spmi-iadc.c
-+++ b/drivers/iio/adc/qcom-spmi-iadc.c
-@@ -113,77 +113,59 @@ struct iadc_chip {
- 	struct completion complete;
- };
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+head:   89cba586b8b4cde09c44b1896624720ea29f0205
+commit: 3499375209ca839a741e775d579f8bb9b85529d5 [56/96] iio: accel: bma220: add i2c watchdog feature
+config: um-randconfig-002-20251021 (https://download.01.org/0day-ci/archive/20251021/202510210604.mAtgE54g-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251021/202510210604.mAtgE54g-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510210604.mAtgE54g-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   /usr/bin/ld: drivers/iio/accel/bma220_core.o: in function `bma220_init':
+>> bma220_core.c:(.text+0x3f8): undefined reference to `i2c_verify_client'
+   collect2: error: ld returned 1 exit status
+
+not sure how to make b4 not send out the cover letter for 1 patch series
+or how to make this patch a reply to the robot's email.
+---
+ drivers/iio/accel/bma220.h      |  6 ++++++
+ drivers/iio/accel/bma220_core.c | 19 -------------------
+ drivers/iio/accel/bma220_i2c.c  | 14 +++++++++++++-
+ 3 files changed, 19 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/iio/accel/bma220.h b/drivers/iio/accel/bma220.h
+index e53ca63de54b..00dfe275256b 100644
+--- a/drivers/iio/accel/bma220.h
++++ b/drivers/iio/accel/bma220.h
+@@ -11,6 +11,12 @@
+ #include <linux/pm.h>
+ #include <linux/regmap.h>
  
--static int iadc_read(struct iadc_chip *iadc, u16 offset, u8 *data)
++#define BMA220_REG_WDT				0x17
++#define BMA220_WDT_MASK				GENMASK(2, 1)
++#define BMA220_WDT_OFF				0x0
++#define BMA220_WDT_1MS				0x2
++#define BMA220_WDT_10MS				0x3
++
+ struct device;
+ 
+ extern const struct regmap_config bma220_i2c_regmap_config;
+diff --git a/drivers/iio/accel/bma220_core.c b/drivers/iio/accel/bma220_core.c
+index 871342d21456..f32d875b994e 100644
+--- a/drivers/iio/accel/bma220_core.c
++++ b/drivers/iio/accel/bma220_core.c
+@@ -11,7 +11,6 @@
+ #include <linux/cleanup.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+-#include <linux/i2c.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+@@ -78,11 +77,6 @@
+ #define BMA220_FILTER_MASK			GENMASK(3, 0)
+ #define BMA220_REG_RANGE			0x11
+ #define BMA220_RANGE_MASK			GENMASK(1, 0)
+-#define BMA220_REG_WDT				0x17
+-#define BMA220_WDT_MASK				GENMASK(2, 1)
+-#define BMA220_WDT_OFF				0x0
+-#define BMA220_WDT_1MS				0x2
+-#define BMA220_WDT_10MS				0x3
+ #define BMA220_REG_SUSPEND			0x18
+ #define BMA220_REG_SOFTRESET			0x19
+ 
+@@ -443,12 +437,6 @@ static int bma220_power(struct bma220_data *data, bool up)
+ 	return -EBUSY;
+ }
+ 
+-static int bma220_set_wdt(struct bma220_data *data, const u8 val)
 -{
--	unsigned int val;
--	int ret;
--
--	ret = regmap_read(iadc->regmap, offset, &val);
--	if (ret < 0)
--		return ret;
--
--	*data = val;
--	return 0;
+-	return regmap_update_bits(data->regmap, BMA220_REG_WDT, BMA220_WDT_MASK,
+-				  FIELD_PREP(BMA220_WDT_MASK, val));
 -}
 -
--static int iadc_write(struct iadc_chip *iadc, u16 offset, u8 data)
--{
--	return regmap_write(iadc->regmap, offset, data);
--}
+ static int bma220_init(struct device *dev, struct bma220_data *data)
+ {
+ 	int ret;
+@@ -477,13 +465,6 @@ static int bma220_init(struct device *dev, struct bma220_data *data)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to soft reset chip\n");
+ 
+-	if (i2c_verify_client(dev)) {
+-		ret = bma220_set_wdt(data, BMA220_WDT_1MS);
+-		if (ret)
+-			return dev_err_probe(dev, ret,
+-					     "Failed to set i2c watchdog\n");
+-	}
 -
- static int iadc_reset(struct iadc_chip *iadc)
- {
--	u8 data;
-+	u32 data;
- 	int ret;
- 
--	ret = iadc_write(iadc, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
-+	ret = regmap_write(iadc->regmap, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = iadc_read(iadc, IADC_PERH_RESET_CTL3, &data);
-+	ret = regmap_read(iadc->regmap, IADC_PERH_RESET_CTL3, &data);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = iadc_write(iadc, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
-+	ret = regmap_write(iadc->regmap, IADC_SEC_ACCESS, IADC_SEC_ACCESS_DATA);
- 	if (ret < 0)
- 		return ret;
- 
- 	data |= IADC_FOLLOW_WARM_RB;
- 
--	return iadc_write(iadc, IADC_PERH_RESET_CTL3, data);
-+	return regmap_write(iadc->regmap, IADC_PERH_RESET_CTL3, data);
+ 	return 0;
  }
  
- static int iadc_set_state(struct iadc_chip *iadc, bool state)
+diff --git a/drivers/iio/accel/bma220_i2c.c b/drivers/iio/accel/bma220_i2c.c
+index 2b85d4921768..8b6f8e305c8c 100644
+--- a/drivers/iio/accel/bma220_i2c.c
++++ b/drivers/iio/accel/bma220_i2c.c
+@@ -8,6 +8,7 @@
+  * I2C address is either 0x0b or 0x0a depending on CSB (pin 10)
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/i2c.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+@@ -16,16 +17,27 @@
+ 
+ #include "bma220.h"
+ 
++static int bma220_set_wdt(struct regmap *regmap, const u8 val)
++{
++	return regmap_update_bits(regmap, BMA220_REG_WDT, BMA220_WDT_MASK,
++				  FIELD_PREP(BMA220_WDT_MASK, val));
++}
++
+ static int bma220_i2c_probe(struct i2c_client *client)
  {
--	return iadc_write(iadc, IADC_EN_CTL1, state ? IADC_EN_CTL1_SET : 0);
-+	return regmap_write(iadc->regmap, IADC_EN_CTL1, state ? IADC_EN_CTL1_SET : 0);
+ 	struct regmap *regmap;
++	int ret;
+ 
+ 	regmap = devm_regmap_init_i2c(client, &bma220_i2c_regmap_config);
+ 	if (IS_ERR(regmap))
+ 		return dev_err_probe(&client->dev, PTR_ERR(regmap),
+ 				     "failed to create regmap\n");
+ 
+-	return bma220_common_probe(&client->dev, regmap, client->irq);
++	ret = bma220_common_probe(&client->dev, regmap, client->irq);
++	if (ret)
++		return ret;
++
++	return bma220_set_wdt(regmap, BMA220_WDT_1MS);
  }
  
- static void iadc_status_show(struct iadc_chip *iadc)
- {
--	u8 mode, sta1, chan, dig, en, req;
-+	u32 mode, sta1, chan, dig, en, req;
- 	int ret;
- 
--	ret = iadc_read(iadc, IADC_MODE_CTL, &mode);
-+	ret = regmap_read(iadc->regmap, IADC_MODE_CTL, &mode);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_DIG_PARAM, &dig);
-+	ret = regmap_read(iadc->regmap, IADC_DIG_PARAM, &dig);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_CH_SEL_CTL, &chan);
-+	ret = regmap_read(iadc->regmap, IADC_CH_SEL_CTL, &chan);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_CONV_REQ, &req);
-+	ret = regmap_read(iadc->regmap, IADC_CONV_REQ, &req);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_STATUS1, &sta1);
-+	ret = regmap_read(iadc->regmap, IADC_STATUS1, &sta1);
- 	if (ret < 0)
- 		return;
- 
--	ret = iadc_read(iadc, IADC_EN_CTL1, &en);
-+	ret = regmap_read(iadc->regmap, IADC_EN_CTL1, &en);
- 	if (ret < 0)
- 		return;
- 
-@@ -199,34 +181,34 @@ static int iadc_configure(struct iadc_chip *iadc, int channel)
- 
- 	/* Mode selection */
- 	mode = (IADC_OP_MODE_NORMAL << IADC_OP_MODE_SHIFT) | IADC_TRIM_EN;
--	ret = iadc_write(iadc, IADC_MODE_CTL, mode);
-+	ret = regmap_write(iadc->regmap, IADC_MODE_CTL, mode);
- 	if (ret < 0)
- 		return ret;
- 
- 	/* Channel selection */
--	ret = iadc_write(iadc, IADC_CH_SEL_CTL, channel);
-+	ret = regmap_write(iadc->regmap, IADC_CH_SEL_CTL, channel);
- 	if (ret < 0)
- 		return ret;
- 
- 	/* Digital parameter setup */
- 	decim = IADC_DEF_DECIMATION << IADC_DIG_DEC_RATIO_SEL_SHIFT;
--	ret = iadc_write(iadc, IADC_DIG_PARAM, decim);
-+	ret = regmap_write(iadc->regmap, IADC_DIG_PARAM, decim);
- 	if (ret < 0)
- 		return ret;
- 
- 	/* HW settle time delay */
--	ret = iadc_write(iadc, IADC_HW_SETTLE_DELAY, IADC_DEF_HW_SETTLE_TIME);
-+	ret = regmap_write(iadc->regmap, IADC_HW_SETTLE_DELAY, IADC_DEF_HW_SETTLE_TIME);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = iadc_write(iadc, IADC_FAST_AVG_CTL, IADC_DEF_AVG_SAMPLES);
-+	ret = regmap_write(iadc->regmap, IADC_FAST_AVG_CTL, IADC_DEF_AVG_SAMPLES);
- 	if (ret < 0)
- 		return ret;
- 
- 	if (IADC_DEF_AVG_SAMPLES)
--		ret = iadc_write(iadc, IADC_FAST_AVG_EN, IADC_FAST_AVG_EN_SET);
-+		ret = regmap_write(iadc->regmap, IADC_FAST_AVG_EN, IADC_FAST_AVG_EN_SET);
- 	else
--		ret = iadc_write(iadc, IADC_FAST_AVG_EN, 0);
-+		ret = regmap_write(iadc->regmap, IADC_FAST_AVG_EN, 0);
- 
- 	if (ret < 0)
- 		return ret;
-@@ -239,19 +221,19 @@ static int iadc_configure(struct iadc_chip *iadc, int channel)
- 		return ret;
- 
- 	/* Request conversion */
--	return iadc_write(iadc, IADC_CONV_REQ, IADC_CONV_REQ_SET);
-+	return regmap_write(iadc->regmap, IADC_CONV_REQ, IADC_CONV_REQ_SET);
- }
- 
- static int iadc_poll_wait_eoc(struct iadc_chip *iadc, unsigned int interval_us)
- {
- 	unsigned int count, retry;
- 	int ret;
--	u8 sta1;
-+	u32 sta1;
- 
- 	retry = interval_us / IADC_CONV_TIME_MIN_US;
- 
- 	for (count = 0; count < retry; count++) {
--		ret = iadc_read(iadc, IADC_STATUS1, &sta1);
-+		ret = regmap_read(iadc->regmap, IADC_STATUS1, &sta1);
- 		if (ret < 0)
- 			return ret;
- 
-@@ -267,11 +249,6 @@ static int iadc_poll_wait_eoc(struct iadc_chip *iadc, unsigned int interval_us)
- 	return -ETIMEDOUT;
- }
- 
--static int iadc_read_result(struct iadc_chip *iadc, u16 *data)
--{
--	return regmap_bulk_read(iadc->regmap, IADC_DATA, data, 2);
--}
--
- static int iadc_do_conversion(struct iadc_chip *iadc, int chan, u16 *data)
- {
- 	unsigned int wait;
-@@ -296,7 +273,7 @@ static int iadc_do_conversion(struct iadc_chip *iadc, int chan, u16 *data)
- 	}
- 
- 	if (!ret)
--		ret = iadc_read_result(iadc, data);
-+		ret = regmap_bulk_read(iadc->regmap, IADC_DATA, data, sizeof(*data));
- exit:
- 	iadc_set_state(iadc, false);
- 	if (ret < 0)
-@@ -392,10 +369,10 @@ static int iadc_update_offset(struct iadc_chip *iadc)
- 
- static int iadc_version_check(struct iadc_chip *iadc)
- {
--	u8 val;
-+	u32 val;
- 	int ret;
- 
--	ret = iadc_read(iadc, IADC_PERPH_TYPE, &val);
-+	ret = regmap_read(iadc->regmap, IADC_PERPH_TYPE, &val);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -404,7 +381,7 @@ static int iadc_version_check(struct iadc_chip *iadc)
- 		return -EINVAL;
- 	}
- 
--	ret = iadc_read(iadc, IADC_PERPH_SUBTYPE, &val);
-+	ret = regmap_read(iadc->regmap, IADC_PERPH_SUBTYPE, &val);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -413,7 +390,7 @@ static int iadc_version_check(struct iadc_chip *iadc)
- 		return -EINVAL;
- 	}
- 
--	ret = iadc_read(iadc, IADC_REVISION2, &val);
-+	ret = regmap_read(iadc->regmap, IADC_REVISION2, &val);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -428,7 +405,7 @@ static int iadc_version_check(struct iadc_chip *iadc)
- static int iadc_rsense_read(struct iadc_chip *iadc, struct device_node *node)
- {
- 	int ret, sign, int_sense;
--	u8 deviation;
-+	u32 deviation;
- 
- 	ret = of_property_read_u32(node, "qcom,external-resistor-micro-ohms",
- 				   &iadc->rsense[IADC_EXT_RSENSE]);
-@@ -440,7 +417,7 @@ static int iadc_rsense_read(struct iadc_chip *iadc, struct device_node *node)
- 		return -EINVAL;
- 	}
- 
--	ret = iadc_read(iadc, IADC_NOMINAL_RSENSE, &deviation);
-+	ret = regmap_read(iadc->regmap, IADC_NOMINAL_RSENSE, &deviation);
- 	if (ret < 0)
- 		return ret;
- 
+ static const struct of_device_id bma220_i2c_match[] = {
+
+---
+base-commit: 89cba586b8b4cde09c44b1896624720ea29f0205
+change-id: 20251021-bma220_set_wdt_move-06556f561ac8
+
+Best regards,
 -- 
-2.51.1
+Petre Rodan <petre.rodan@subdimension.ro>
 
 

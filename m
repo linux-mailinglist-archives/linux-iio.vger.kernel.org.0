@@ -1,233 +1,112 @@
-Return-Path: <linux-iio+bounces-25346-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25347-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A952ABFCB45
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 16:54:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86301BFCCC3
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 17:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08A97626032
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 14:44:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CBB2188BD98
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 15:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C6C32B994;
-	Wed, 22 Oct 2025 14:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FBC34C155;
+	Wed, 22 Oct 2025 15:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SSrRvcnz"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="WILyl/bn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B91624728F;
-	Wed, 22 Oct 2025 14:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBA634844D
+	for <linux-iio@vger.kernel.org>; Wed, 22 Oct 2025 15:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761144261; cv=none; b=A8xhlkWd1fMaMRl+SOTVqmBglj/r5wiwi81SLP5roE3c33bcoSbhm0c90cYvYNh3LGDgojlcqwEUbPSLUDMEGxPPTFaFHZjTX0lKaKvqRqAZ7uiYV58zxY8i9IincvvGdoVKddS8MKFTvPEk330UWxzNPa6/MbUWltsMN6web4w=
+	t=1761146044; cv=none; b=PUasVsaRTu5+QDifWnpGIzn2sHS24+5BErtPuSF3A/xulFfL3vXzJefEYxy6w+ujlkV4+Co+b0Bj2cKCXeO6rr5YsR/kdg3MIIbIsymNdlhpLX75WSvO89jRMQb3RuuHthjuXlZoMgxvkUlZMNVVSg1pHXQPRaqu8v2/oOF/1ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761144261; c=relaxed/simple;
-	bh=tCZTO0W751GktTbJXelH69v6OSj5y2VH2L80rPuRgHA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n2NJFdwbGYS0JnZnXfeMHoFp78ev7Jt3QMzOtM6No/SWf0HKWTHKH2DY/PWjE9UMZSAZYWT/P7vGUf73XQDdqWd1T78GhbZ6xjIYKawuBII2n40J+ME6xoR45KXi7HPodrsZL9JIu1FqEGc/IT7Xo+vdxpZGa8KJAajHeeGIH20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SSrRvcnz; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761144259; x=1792680259;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tCZTO0W751GktTbJXelH69v6OSj5y2VH2L80rPuRgHA=;
-  b=SSrRvcnze3nxJSaeS7cUFgNeFkRjHKqEgmF3cbh3Z4HPs1g79FkNvNIq
-   o6eXmNH8sLC+PeZUk/63+jN0wHnRDo7eYZFuQnZySgMUD5Yzjt+7ve3ZD
-   5fUtpAdXqU9Z8ofZ56WX5YVoM6LN3eVfwhD38d0DE3LuVY4MkwcHjJ2dZ
-   tUSjeLu//i/3cjJsRcZ01Oko/aY1rI8/97ZChz7ox6tHY0Ub9lduN4Gem
-   95ySCCn5KpirvnCA/JYHoWxUAFExiS3GQMVjSU/3/Z1dyZC7T5cSf9IKX
-   Yww6ko3yKbyqq0se+9Hp6LZVNGiuC4oascq6mZKbSgN4Je5QJhHQPHHWq
-   Q==;
-X-CSE-ConnectionGUID: VJXOwtJ1RR6/J7d6waKqqg==
-X-CSE-MsgGUID: 7Bm+5fyQSqOgCuIoY8TVhg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="85918196"
-X-IronPort-AV: E=Sophos;i="6.19,247,1754982000"; 
-   d="scan'208";a="85918196"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 07:44:19 -0700
-X-CSE-ConnectionGUID: 9Wg7VTI7Q2OOgnCwuxUASA==
-X-CSE-MsgGUID: v2vMYJCrQm6A7dQNpHXWig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,247,1754982000"; 
-   d="scan'208";a="183596475"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.83])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 07:44:15 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vBa4S-00000001iaZ-3dG1;
-	Wed, 22 Oct 2025 17:44:12 +0300
-Date: Wed, 22 Oct 2025 17:44:12 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] regulator: Support the LTM8054 voltage regulator
-Message-ID: <aPjtvPmc_7IBV7og@smile.fi.intel.com>
-References: <20250925-ltm8054-driver-v2-0-bb61a401a0dc@bootlin.com>
- <20250925-ltm8054-driver-v2-4-bb61a401a0dc@bootlin.com>
+	s=arc-20240116; t=1761146044; c=relaxed/simple;
+	bh=bJkRf2vDW66xzETEmduK5o/Wmh8MgCortzpmg5JEPoc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DJDI5Q7gMuO/h3SVBqCbnPaV6dgGs0TZnOeheECKMGZmdctGZdt851HkEvgHn5z8BjT8/4trxZQ8YyaWtTtd3NmoAEXRlz+a1Y+lX7gr/lVKT0y9cLUhCbVbvSnMJeS3tEzFm/LcwQFAM6Gha1uR1ptmZ0CUgB/NR7A6sQEwev8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=WILyl/bn; arc=none smtp.client-ip=209.85.167.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-445c6e9e0aaso2041912b6e.2
+        for <linux-iio@vger.kernel.org>; Wed, 22 Oct 2025 08:14:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761146041; x=1761750841; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M06GA4DzU6q4HcL9w50fg3W9nzfX6SVpmQDyjsPEDxA=;
+        b=WILyl/bno9iHRovIoGuzt1qOrfFXuCFLtYkN9W1HXfo7iMfQKCh9aUdvScBILF1qN1
+         qHEYWcyq5pcPdEtGuOSOaYcnBgcwXY9Q1HGMND12oMlaqdiHO97g+j0Paq58AwT8kg8c
+         qXbMVqEt8VglL7upyQgN7NvkdAp6cgcHk4omYQqARv64nl3ppKZXCmJK2uCUUa3zAtGv
+         LyS6QxCZswpi4NRMdRk5Y2ATzVfWtnucCnkuvTQP8xLKaf5Cm9xyCGc2lba/XKF6E0qA
+         CcZJk6CxbPV4/2bB56L4AL1qmsoYLvUa6mZrropBBTMZUzL8dOi+mybq/UdOHiiW1ptL
+         l0cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761146041; x=1761750841;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M06GA4DzU6q4HcL9w50fg3W9nzfX6SVpmQDyjsPEDxA=;
+        b=YCshwDhLa3V+zKsOmKeQXxaVXsnYns8N//nvEPIkqj2ForDJcsqc+zH8qjQsobY+DP
+         0sg9emlK6qnpNyflFmaIR49y6cLyCaxZ1+GhX1PhOXsrxMy78Ipt4le2SiJnJA08Z0Tm
+         jucfrBPO5qdofhu5w7Zhn/q9a5plO4e2YnRQnn7FOdSFqdB+Ri54s6s0C5RRwWALQ0Qa
+         xPZFN3TbAn9lrqRto15c8Ll5T9PDNuUivcrFEjT422ntyOK65D+NdD9JFf9QEFl3K1MK
+         qxed69KqGzmWx2ErcQyZNf/wxxNRSjHSdaVirb24uMVbB8bGb0BUIbdt8QDYTwp8eYc2
+         2gAw==
+X-Forwarded-Encrypted: i=1; AJvYcCXwQxGIZW58Ur0PhdyCtlmZ5FF3wFIHL4gCLgZPasTSGHl0htYCoBNR8zUh9GiGG3DW9EpgvvzW58k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzdbu9mRsi3wjNkC8hI9N2DDxKf7KZSlREX1FCS4VnE0kynOTC5
+	7qD4SHMQnsOywSgUyKJ1BYmNLm4ZuK26Y5MuHbc9I7AsBiDGgvHABofwo5SWdj15HUA=
+X-Gm-Gg: ASbGncvcT1U/YkTOIPvVulpzQ3E0OBvQjkU+lDdiM5jcAPTJJW08zGYhC8T61aStazK
+	Kd9gkivQ/+RJf/4NkL6/z5gnJpsgZWCeR45KdUz7zC252Vh4Lhws9epn+Nb3ZQXXHFrhwooHJ6F
+	34NJwu4dwx5FTKqonR6PwFaok3flqBhafB8Mepqzm5AccKqcSu8LOu53Lx/YBiibXwTcpFvmlKh
+	U8FYZ1LoiLKbPsCdSl+DAS6fBO2AlJ0mp3GK4lINDWo301kPDjwNQ9SRFT9ymz8iZcIqbGhHRgy
+	/853t13nFo+XPZxHBs5sL/OjppnjzfyIkS0PwJ0aDmAjXHZVF7fJ5EetqlAhqOqUmmp1VZnBxLQ
+	ULbSXPIG3mo53OWth/wh5MHTnQTz3UmS4r+ZFbC7P8F7Uj1aNw1pess2ZOyj6jcs9rHTGQarnWt
+	xzKYNyLUxG0iLoKSyB2ihfZVRCQLuL6kCoUcMjDNsHmMqif29lIA==
+X-Google-Smtp-Source: AGHT+IH5X1dX+eTbtzPr1DK1hodPbkihzSGYwZP+aVpU3q50pmX97szy9HuXtGku72DLkLr+jPiOWQ==
+X-Received: by 2002:a05:6808:2112:b0:43f:1b7d:b631 with SMTP id 5614622812f47-443a30af9femr9009191b6e.35.1761146040880;
+        Wed, 22 Oct 2025 08:14:00 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:500:4176:6994:bd72:1296? ([2600:8803:e7e4:500:4176:6994:bd72:1296])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-443df628a35sm3311240b6e.22.2025.10.22.08.14.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Oct 2025 08:14:00 -0700 (PDT)
+Message-ID: <cf276696-2928-4ddd-9750-db84466e4599@baylibre.com>
+Date: Wed, 22 Oct 2025 10:13:59 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250925-ltm8054-driver-v2-4-bb61a401a0dc@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH next] iio: imu: inv_icm45600: Add a missing return
+ statement in probe()
+To: Dan Carpenter <dan.carpenter@linaro.org>,
+ Remi Buisson <remi.buisson@tdk.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+References: <aPi5vEp75jH0imQc@stanley.mountain>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <aPi5vEp75jH0imQc@stanley.mountain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 25, 2025 at 02:37:36PM +0200, Romain Gantois wrote:
-> Add a stub driver for the  Linear Technology LTM8054 Buck-Boost voltage
-> regulator. This version only supports enabling/disabling the regulator via
-> a GPIO, and reporting the output voltage level from the resistor divider
-> values given in the device tree.
+On 10/22/25 6:02 AM, Dan Carpenter wrote:
+> The intention here was clearly to return -ENODEV but the return statement
+> was missing.  It would result in an off by one read in i3c_chip_info[] on
+> the next line.  Add the return statement.
+> 
+> Fixes: 1bef24e9007e ("iio: imu: inv_icm45600: add I3C driver for inv_icm45600 driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
 
-...
-
-It's a bit an interesting grouping of headers...
-
-> +#include <asm/div64.h>
-
-...starting with leading asm/*.
-
-> +#include <linux/array_size.h>
-> +
-> +#include <linux/device.h>
-> +#include <linux/device/devres.h>
-> +#include <linux/device/driver.h>
-> +
-> +#include <linux/dev_printk.h>
-> +#include <linux/err.h>
-> +#include <linux/errno.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/property.h>
-
-I would expect above to be (but not limited to)
-
-#include <linux/array_size.h>
-#include <linux/device.h>
-#include <linux/device/devres.h>
-#include <linux/device/driver.h>
-#include <linux/dev_printk.h>
-#include <linux/err.h>
-
-#include <linux/errno.h>
-
-#include <linux/gpio/consumer.h>
-#include <linux/math64.h>
-#include <linux/module.h>
-#include <linux/of.h>
-#include <linux/platform_device.h>
-#include <linux/property.h>
-
-Also missing
-types.h
-
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/regulator/driver.h>
-> +#include <linux/regulator/of_regulator.h>
-
-...
-
-> +static int ltm8054_of_parse(struct device *dev, struct ltm8054_priv *priv,
-> +			    struct regulator_config *config)
-> +{
-> +	struct device_node *np = dev->of_node;
-
-No need, see below how.
-
-> +	u32 r[2];
-> +	int ret;
-
-> +	config->of_node = np;
-
-Better to move it...
-
-> +
-> +	ret = device_property_read_u32_array(dev, "lltc,fb-voltage-divider", r, ARRAY_SIZE(r));
-> +	if (ret)
-> +		return ret;
-> +
-> +	priv->rdesc.fixed_uV = ltm8054_scale(LTM8054_FB_uV, r[0], r[1]);
-> +	priv->rdesc.min_uV = priv->rdesc.fixed_uV;
-> +	priv->rdesc.n_voltages = 1;
-
-...here and reuse.
-
-> +	config->init_data = of_get_regulator_init_data(dev,
-> +						       np,
-> +						       &priv->rdesc);
-
-	config->of_node = dev_of_node(dev);
-	config->init_data = of_get_regulator_init_data(dev,
-						       config->of_node,
-						       &priv->rdesc);
-
-> +	if (!config->init_data)
-> +		return -EINVAL;
-> +
-> +	config->ena_gpiod = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_LOW);
-> +	if (IS_ERR(config->ena_gpiod))
-> +		return PTR_ERR(config->ena_gpiod);
-> +
-> +	return 0;
-> +}
-
-> +static int ltm8054_probe(struct platform_device *pdev)
-> +{
-> +	struct regulator_config config = { };
-> +	struct device *dev = &pdev->dev;
-> +	struct regulator_dev *rdev;
-> +	struct ltm8054_priv *priv;
-> +	int ret;
-> +
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	priv->rdesc.name = "ltm8054-regulator",
-> +	priv->rdesc.ops = &ltm8054_regulator_ops,
-> +	priv->rdesc.type = REGULATOR_VOLTAGE,
-> +	priv->rdesc.owner = THIS_MODULE,
-
-The commas should be replaced by semicolons.
-
-> +	config.dev = dev;
-> +	config.driver_data = priv;
-> +
-> +	ret = ltm8054_of_parse(dev, priv, &config);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to parse device tree\n");
-> +
-> +	rdev = devm_regulator_register(dev, &priv->rdesc, &config);
-> +	if (IS_ERR(rdev))
-> +		return dev_err_probe(dev, PTR_ERR(rdev), "failed to register regulator\n");
-> +
-> +	return 0;
-> +}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

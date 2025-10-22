@@ -1,83 +1,83 @@
-Return-Path: <linux-iio+bounces-25343-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25344-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C86ABFB899
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 13:06:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 590AFBFB89C
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 13:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 815D7584FF6
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 11:05:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BC94568118
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 11:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E016328616;
-	Wed, 22 Oct 2025 11:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FA9320A0C;
+	Wed, 22 Oct 2025 11:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Xsk4Kmj2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SAK1q5/5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DA019D074
-	for <linux-iio@vger.kernel.org>; Wed, 22 Oct 2025 11:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAB6299A8C
+	for <linux-iio@vger.kernel.org>; Wed, 22 Oct 2025 11:05:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761131103; cv=none; b=ermxIuIAn4Y7+x65Mwv86QyiyBiyWqjQBvW4S1Ir27/NXJ859zX1REIZSqoZKamLbXqSBoGGoP01VUCAtI7MadaWSjWCbaBndAQE/QsYCE9/lIDivEM8ySGAYCiXmxGJUxcS/SlBZn2pFj+rcT8rrlN7RYb+A5lnRMV48PqVvys=
+	t=1761131111; cv=none; b=QdDtU6q8jVYjs/l6HWVoVELhkybdx65RxCyKsre5/PA5redyj1eW8tiGDiTfSD+1CXj1E0TD1/rDXlXMLrd0tUgUmG0n7nasp+yWC8fIi0+utzJiwHAfsfmjiXiRJjwevJ4OCuocaaNi7Gk/VtwCx+0oLWIGIahFAkFKKSYqfes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761131103; c=relaxed/simple;
-	bh=zvK8oqIbpq9S6ONSC/uzbjYtPbhFw9p9XGBh7GY2yzw=;
+	s=arc-20240116; t=1761131111; c=relaxed/simple;
+	bh=k/XV2MWcnA2Sz4dS032qJ6Jdbqs4hYbOsDA26lsRJBE=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=bnjsh+AWagaWPgj3P+IRirP13TpGIK6xSEl8hiIHaQWALmJZLNHXHDjGxk2KRFhFtUx2PhxfwLix32k4YpQbT1IFEPQmCpUEbuwJ3WUmgpUFM07LC0ECaYOi6wX9KyhP8MMnSRuMegzShm9NK+T7ULtTrs1SMCT+m8enSNsFSso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Xsk4Kmj2; arc=none smtp.client-ip=209.85.128.51
+	 Content-Disposition; b=MWfGg5TVjNhCfUIJQgwwGjjQ9UknENI5+QBMgPDwEmczfLA7wyYK7IFE3R2HYVvWK2xhBgL5CcESBbv8gAfceAKThsCHbWhHGz8a9zWVXaCGO9Yiv9NYIM+Gfj6HGCK5BXkf4MroisD4k4OOW6YhhZI1EGo30oHFZjQ4lLwc8+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SAK1q5/5; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4711825a02bso44661645e9.2
-        for <linux-iio@vger.kernel.org>; Wed, 22 Oct 2025 04:05:01 -0700 (PDT)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-421851bcb25so4015586f8f.2
+        for <linux-iio@vger.kernel.org>; Wed, 22 Oct 2025 04:05:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761131100; x=1761735900; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1761131108; x=1761735908; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=rgzPCJZ52mqTzrhyZgVvDremACECcbY2tu/WZsAw294=;
-        b=Xsk4Kmj2VDSI632PNH87nZDhQYbdesVuqt29QWn89ugMdnPjzCVs7qkQ5FCGtmP5ll
-         wELEYdD1yyiXKBAJWf0w/sdrmHoZ7QK0Faxrf6yBdl9s3Gldyxb9G+wmfSLe1pnfuJTr
-         twGhgE9AON069HFfKuOl5oJr0oBdE0Vr1+mSo0vY65af7ORVnj2km0Rsnl9fLvebJ98b
-         3wP+/a6Cqgdt3J/foxiaA5+eC/pe0rGLkcWJicIw+xeEvXdf65z2n60/F8zYsXqDIzbb
-         X/5eSPQ7lcSEFtIEdMoN8FeU04giErTXjo7Np3p0E9cy3H3VZBBTHpAboyWUO7NbF51k
-         lMxA==
+        bh=YC5fAMbX2oWGTXVlxAXkZBZYkAqJHmZfAJXqki8F5gs=;
+        b=SAK1q5/5sPXsOaGlm+UW3rKYnv1v/EtQd/nn4hELwKmp8bKlRQP/DDhNJ8evoSzcaM
+         AURffpi+QRQlTS8qBDyeOr+8Jo5gzunDP1l+NKFTVbi0EKCLIUzIXCWS9+nhsc+D7MBZ
+         JZlkQcKuKAzqVszVd73dKyw5J8KzrYAG72Greo+RwdNdA0O1iar6nCph7LcfLW+MQiH+
+         Ok9ruU4lTBAbe3YZMNEeLJCGVR5I9SsFWErU+Za+nyo1z20BVa2GM3uSU8/oBq5N16Hn
+         ++0QLvw0+NyyqT3Lhxihfuq8r25Y0d817oUgXeirwY6p+IFP2DzpdKyEWSEUJR6RSEfR
+         jytQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761131100; x=1761735900;
+        d=1e100.net; s=20230601; t=1761131108; x=1761735908;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rgzPCJZ52mqTzrhyZgVvDremACECcbY2tu/WZsAw294=;
-        b=m1Tyd2Ic3de/aKwFa9/AQ+lUk1VrXqtncOEq+XiZqy3WMS+/pChUX9Fi59GY+7GUF4
-         XQndwDeE1ft88mK0z3zPEN7OCqeNLcNEYaK5+INDGTjdUyqoLEo5nbJxUEepaYcLSHrk
-         ahIiPnmRSN9jEtzG+afHYBYEmZHcTE0WRF+ML9EBiDGcvg1sEdFRtheOYPExgx0qFn1B
-         PIeaMPnKu3VTuHMKhvRa2yykK+YK2cxhph+1R9A6W53jgVeYvZfT0SJpadu4Kv++1q4z
-         PtgQyKOSAckhLf5v9JBzQKEn3L+uAlAP928O5E5CbFH/iVp20F2/vDRtdCr09sor4xWE
-         7vSg==
-X-Gm-Message-State: AOJu0Yyg0vuyWXouUv64arlCNwPkg8xmoOcyWKaFw4ImIg815M6IPNeO
-	koCc4uCvJbVpbv/jyNNMQGKDbDFQaoCo7HQhYHgl60NtPEP5ybthIOREShExoODM82BB+XVDPJB
-	UPP8i
-X-Gm-Gg: ASbGncvsq3UNyjIABDth8cbi/1R0Gf2ekCLeh8YFGyW/MKCCE6OQ2QdEkyb517ztEac
-	NV970Z02NBL/3Ly0XbYB7yl16sVzfSgnm0vATBKwk1bF3uCJYNpTen8xLmzk4Nw6tPdYy8Z5Rxf
-	KPSNxRi94mDCr1XxAJ0GOQSD6s2+Nk8tKr+mYUZHnF2A5a/wkQZOhwpzyIWIZ0huxCzgLjCC48A
-	zTHHwlaEPByT7DSXEPx247+j6Ir4XlTV52jSRZmqOfxXsEhRJAcNO8cMAR/eQwH+yRcDRlK7m3n
-	+Sqvs9n9ajMmM+/bq9eyQVfrqF8Nn/2xPnFjzsxGzOccA5TrO49RB3/+ajWmM0OYLCQrVBLQeDR
-	UR1AW6+gPBvkXtfGlYDydlAd6zm71fl7oqmBFnb/oBdl9+r7bdiHWV+fS9L4YZzOHZuWc47Vwrc
-	3aGf1S0zk0xmTr8NYj
-X-Google-Smtp-Source: AGHT+IEmpt8Yp6R0xHvfAvQoZJlPe6/qWKOsvk19C+ZipEVXsHjGb4IJp0cY+XxUFF3zuUcFj/4U7Q==
-X-Received: by 2002:a05:600c:3149:b0:46e:4b8b:75f2 with SMTP id 5b1f17b1804b1-471178a7ea5mr138900255e9.16.1761131099532;
-        Wed, 22 Oct 2025 04:04:59 -0700 (PDT)
+        bh=YC5fAMbX2oWGTXVlxAXkZBZYkAqJHmZfAJXqki8F5gs=;
+        b=YbTauqtNw8f4tNa3VII6bbFD0+YHUt/yT5YwC48aEon2LbOjQKCdhzAZ+FRH3lg9IT
+         w0JYFL6gZXM106mLqb9j33+TFW+R43AntfODMeS+vqrdveTGPNmBBUha57bg6oqMXKM4
+         cpfxjtfl5joOb1Da3YQqgeG/PX8h8SJ/IelcY8NomDi7xfEkbum14FpXT3W3J+pbzHHi
+         EkQEcFxj4h42zjd8u29wMfxeXgjD43pdO1eAKrjqMD95oKJKbuBEa9LgFmcFmrUooVr7
+         YbQ/8+hWJiMrmUMMGorz3c9x4w1rgClsMpBkOA9jV+aHoDRL5Ja2cLRAUqRA/WPQ0/8R
+         vRyA==
+X-Gm-Message-State: AOJu0Yx9xbWIpREd4VYl9TK6IIqt4w0HT5RCDKQok3WtVG+7Vps796Wc
+	A3O6gBxopggZKtbtkB3RcUv3nPBl0B9efbAouSewy/gtaozWKx6D1r6hYXVi62hejiA=
+X-Gm-Gg: ASbGnctl84kfAailGywmlPmMOnGCvv2JO6kNOoLryaOz5rAPuBQ0/4vK7RpifPmZ6yM
+	VF91MEED4kLmxl5737YwXlZ+4e9YHX22gJLURT1lTLbw5mc3u/XO0hrLfmtRCk1zCI2CIj2Twd1
+	ZVQ9QIw0M21H7wbngQu8krUSiDYrwouO4I2PIB0Z+uLgM7x8rNZt6w4Ng5VZCLgfsQcvfvDsetW
+	82YWSz6GrkCS9u27rcvZVpqm2ng+26FLNXEazKZj2/shIM5Ai8tzHyT30J4UJ8KXZdTqsyRmlqG
+	9HZqNhYA67sybyhMrHP3VB2V5rzGWV62nKTdUKyptvw4rCVuRsU9V2UUi3ZSh2EwHwH//PBsnWb
+	aYa0XJ9vH50cpCmg2n2Jqpau7hP57RomMbNHvADoZJvT1zWCwW3NcJYaXvYmIN3fshErzOdJHCc
+	otnc2eGueUKCy+zdG9
+X-Google-Smtp-Source: AGHT+IEF0P//KngOe1MI7xdiQoENWliDPdQe5fCtM2HyEXV0Yk/DHRRTJDn0qsWdwjQIOJ/Q45z78Q==
+X-Received: by 2002:a05:6000:200f:b0:401:5ad1:682 with SMTP id ffacd0b85a97d-42704d521e8mr14823878f8f.14.1761131107573;
+        Wed, 22 Oct 2025 04:05:07 -0700 (PDT)
 Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-475c428c62fsm40658225e9.8.2025.10.22.04.04.58
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-427ea5a1056sm24443694f8f.2.2025.10.22.04.05.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 04:04:58 -0700 (PDT)
-Date: Wed, 22 Oct 2025 14:04:55 +0300
+        Wed, 22 Oct 2025 04:05:06 -0700 (PDT)
+Date: Wed, 22 Oct 2025 14:05:03 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
-To: David Lechner <dlechner@baylibre.com>
+To: Remi Buisson <remi.buisson@tdk.com>
 Cc: linux-iio@vger.kernel.org
-Subject: [bug report] iio: adc: ad7124: change setup reg allocation strategy
-Message-ID: <aPi6V-hcaKReSNWK@stanley.mountain>
+Subject: [bug report] iio: imu: inv_icm45600: add buffer support in iio
+ devices
+Message-ID: <aPi6Xw-ZoUkW76zR@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -87,36 +87,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Hello David Lechner,
+Hello Remi Buisson,
 
-Commit 9065197e0d41 ("iio: adc: ad7124: change setup reg allocation
-strategy") from Sep 23, 2025 (linux-next), leads to the following
+Commit 06674a72cf7a ("iio: imu: inv_icm45600: add buffer support in
+iio devices") from Oct 7, 2025 (linux-next), leads to the following
 Smatch static checker warning:
 
-	drivers/iio/adc/ad7124.c:595 ad7124_release_config_slot()
-	warn: potential bounds check after use 'channel'
+	drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c:377 inv_icm45600_buffer_postdisable()
+	error: uninitialized symbol 'sleep'.
 
-drivers/iio/adc/ad7124.c
-    587 static void ad7124_release_config_slot(struct ad7124_state *st, u8 channel)
-    588 {
-    589         unsigned int slot = st->channels[channel].cfg.cfg_slot;
-                                    ^^^^^^^^^^^^^^^^^^^^^
+drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
+    354 static int inv_icm45600_buffer_postdisable(struct iio_dev *indio_dev)
+    355 {
+    356         struct inv_icm45600_state *st = iio_device_get_drvdata(indio_dev);
+    357         struct device *dev = regmap_get_device(st->map);
+    358         unsigned int sensor;
+    359         unsigned int *watermark;
+    360         unsigned int sleep;
+    361         int ret;
+    362 
+    363         if (indio_dev == st->indio_gyro) {
+    364                 sensor = INV_ICM45600_SENSOR_GYRO;
+    365                 watermark = &st->fifo.watermark.gyro;
+    366         } else if (indio_dev == st->indio_accel) {
+    367                 sensor = INV_ICM45600_SENSOR_ACCEL;
+    368                 watermark = &st->fifo.watermark.accel;
+    369         } else {
+    370                 return -EINVAL;
+    371         }
+    372 
+    373         scoped_guard(mutex, &st->lock)
+    374                 ret = _inv_icm45600_buffer_postdisable(st, sensor, watermark, &sleep);
+    375 
+    376         /* Sleep required time. */
+--> 377         if (sleep)
 
-    590 
-    591         /*
-    592          * All of these conditions can happen at probe when all channels are
-    593          * disabled. Otherwise, they should not happen normally.
-    594          */
---> 595         if (channel >= st->num_channels || slot == AD7124_CFG_SLOT_UNASSIGNED ||
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-If channel is invalid then we would already have read from out of bounds.
+sleep is only set if _inv_icm45600_buffer_postdisable() succeeds.
 
-    596             st->cfg_slot_use_count[slot] == 0)
-    597                 return;
-    598 
-    599         st->cfg_slot_use_count[slot]--;
-    600         st->channels[channel].cfg.cfg_slot = AD7124_CFG_SLOT_UNASSIGNED;
-    601 }
+    378                 msleep(sleep);
+    379 
+    380         pm_runtime_put_autosuspend(dev);
+    381 
+    382         return ret;
+    383 }
 
 regards,
 dan carpenter

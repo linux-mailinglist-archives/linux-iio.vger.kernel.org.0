@@ -1,137 +1,121 @@
-Return-Path: <linux-iio+bounces-25355-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25356-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382CABFD710
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 19:03:37 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10676BFD85E
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 19:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CCD619A1AE0
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 17:04:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B077534553C
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Oct 2025 17:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F8E2749C4;
-	Wed, 22 Oct 2025 17:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6EA2566F5;
+	Wed, 22 Oct 2025 17:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="r04J1A8a"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IJpXCiIu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F9F35B123
-	for <linux-iio@vger.kernel.org>; Wed, 22 Oct 2025 17:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4283F35B15A
+	for <linux-iio@vger.kernel.org>; Wed, 22 Oct 2025 17:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761152612; cv=none; b=l/IpXjoENIOARV8bntTkQjJSops4u7BgYqsaLRmmbVdmLxsECmyHYL/HUbFQAbgynRp1jz6pQEVz0QxZUmjQSSESFHbfpMb7gj6q/9m8xowkAz89lTDbnYqZ/kT7wnV0LZJE6Pvclt+ltftpoQcapJJGpQz6xuidsJ6iszJPy1Q=
+	t=1761153530; cv=none; b=BcIHRSxdMuQMbfsrKpMSxCKtkVAIN8o+OhIM70Z88THBXzGiRKZ4QZWw8PxsaPyC/b2u03Qb0MgvzyHzyxRAOBhRZjOyM2aw417AKrNtjVPk2kWVFi24Mjojzr2levwAytCq3uzqs0veIYkAY8gs+/2063ncfsGR30ly7ZpMSGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761152612; c=relaxed/simple;
-	bh=R3kdlrw77LED+wsVg0L5dNH5LTE4fMRX/9gH9I9W4H4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EQCfUilsF5xuuNnStiQ1p/UXyiHjhH417yiXmj8801Ra557KiejTI0Od/EdE6J54RDZKrO8L2BQLuAi9ruGhNN4cm8BbwCmkK1pFfNCQoeo2O34/KvxV4MDiVA51fpyrLvwIvE889DOo/ivJnWsu/GFBIgm4X7CvyyD+FD4hxZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=r04J1A8a; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-650304a822aso1567224eaf.3
-        for <linux-iio@vger.kernel.org>; Wed, 22 Oct 2025 10:03:30 -0700 (PDT)
+	s=arc-20240116; t=1761153530; c=relaxed/simple;
+	bh=9nDv38hCGbawjqulRgNJdaybqnPPjLmt1oHyNKm03DU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cYDpnt3X07AmLta0IBJUX2c57iTww7GXPQl0rLCrDOTjzusNo21jgNyicrO9gAkHZZMEFnYhxMFnuafSq0ibQ6oLjR2AELISmYJRCjfTDoPyAVKCLe7EEfh6r6nd/S2q9JgtTXedNMUVWNkmQYq5UiNfJihdoRpF/Dzeja9VGaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IJpXCiIu; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3ece0e4c5faso6962395f8f.1
+        for <linux-iio@vger.kernel.org>; Wed, 22 Oct 2025 10:18:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761152609; x=1761757409; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XwfGThHvmVcSe5ARp0+SHwJ01qbi5m3iOi3dL9nhqHg=;
-        b=r04J1A8a59Xj7rlpvS+L3pPlkxMNFUB/C4Y0Xc1vO/7KO1Nc2T8PvX06A8nw/iCSCN
-         7Be32PV3OQF7BuiY+/fyQ1OgJbnULv2jxiwwGXMrs42V7w81PoQRv09Kwf52OfMpY4WR
-         OD2Sl3ymaVWRVdaweDUZlS5Jf0iGlzY/c8Y8+zqkErGM1B7BmExHxU05ksBxSpoxAtYO
-         0p5/nMtWw+KZlESuj7iEuB237O85aYPRTL7LvPIMgasXsGhQKTCtvzpFtrzb1oS3SARQ
-         +tsuTFlZvRAPgCblis60Obgn93Bt2quDdUqqF56r+okZhfLVfktmb77yYhrMPKKp3Tu1
-         uswg==
+        d=linaro.org; s=google; t=1761153526; x=1761758326; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UZd7NXk0kvOiCANiny7CPaVuKiR6qb7JU5QnvdLSwI4=;
+        b=IJpXCiIuwGLquPR66mO3rqLU6wRoWvaCBrp0PYqwIMGOWBCEMaP26aTpmAligg/ZID
+         shcPxnvCC10FNeGvdRE6E5DqPbs9YEPIyna3hlVKv4ObtF+n3TwmO+1kvBdVPDby/qZW
+         6lfU8FV92aEsJK/I2btdiGlFwOWNCg93rlI78yQ0MFg9A7cN+xdmNBQOI9eUQFEGbVSO
+         +dMr/vwTM3bHVrFkKjVHxSh4A6duvVU55fyyZtoTYXbcfUIr9yX/9Nybag1xPzBvKEZw
+         yJ8MXKsExDNEZkeKKEjEjD9JtEPC/tpzwMNuXDC3VTn8xaWXHqB+cFAsRQlBYuxDr4HV
+         w4/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761152609; x=1761757409;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XwfGThHvmVcSe5ARp0+SHwJ01qbi5m3iOi3dL9nhqHg=;
-        b=s/l7YhM+QRAoeM2Jkf84ximdYgY+d9js3P2htHpICm7QBmdbnOqXczjUnrk2kK5a9O
-         o5cRrdlbEcFmOdHVfncRrdvkt60vLu23SxnIwz6UWrrSy89ntanQWfBlMm0uXs/u3PFm
-         jb9nc+h7grpwHrvln5y4voKODJpqBJLchGjhVU9pXX0QKbLs2k70rDADKQXPKpMOxuRl
-         osPjT8zfRAB6H196x/pTqv9pRkchJPJcn5kQEBmLxiawNc8Wm7cFhuElFzC1kEke/B+O
-         sSVTk5QJZ91MDAMZw7v9+FZMs68PuNxE2Ph9jAZD3U9afs1dYSUvFLLwHdLG5rS5Fblx
-         Crmg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVuJgQD2lD1FunEgZJntqAP2Ow59JeVkYTBPUg6V/b/c3xZfbiOqjkULTwk4C/vSOsNFJlHOxl34s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyo2p7I+o65d+88Ono11k83TWG883hs8D1BpSZ3HpA7beZ7Ppsj
-	XahyO8mVI4J7vc1NWAjaE+NynknihFoPd05jOm6/pfYYm5T4Z/HcKnDPYvdAh3OvvW4=
-X-Gm-Gg: ASbGnctqQ3mmOok0hgryCYzbkIvBz0X/Doyr4hBYO2RRLxYZvN3hEBoSwsJ50zuMAv9
-	klos31BC5RQERC5rkmhQ3qIGMEry0XNws1D6nIdelPcQNQ2GZK+ckJ1bGA4a9bVJ0CgAbezOZGq
-	tAfaRzpFHaGGcrL8hJ1IP3sG3WX7FjrUZh5TF87L06g0Mbtwt6mJ7l34Gq4Bqp5ZB+xBeEF2Vro
-	cNMOgNP/7J5EfajzpAqFj15rsA+JRFn0vLqTSjDhgCcAJ2byJRV98KzkmgRu4qbg5cQ0gR66+UC
-	wiWRYS0Q8rMHVDokb4haTTXphM48imAGa91kaDoq9I3JjF1DJuVEgCDFaIVy2KT1mqPt9lYnn13
-	ynPHl/yO2T1ZO2Mu85Ur1htIyhXgy1Qn+zV+PMSHDqgZnVkBinhqslVAKRMYW5pNOx7aB7bnH73
-	dSIGTuDVsDC/GKUX6h15vcQ55rp7yGcNcHlfe+hy3+0q62wu4ZZ7YmuVPRaOkN
-X-Google-Smtp-Source: AGHT+IGYMQZ96Ni70MOY6AUaspj+zxS7uLkggZkCTrutX3cSI3hydzShXPRmiBmHi5D+RoDJHRlsOg==
-X-Received: by 2002:a05:6808:189c:b0:43f:5634:29ba with SMTP id 5614622812f47-443a2fb2c78mr9828633b6e.35.1761152609165;
-        Wed, 22 Oct 2025 10:03:29 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:4176:6994:bd72:1296? ([2600:8803:e7e4:500:4176:6994:bd72:1296])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65368f34be1sm318640eaf.17.2025.10.22.10.03.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Oct 2025 10:03:28 -0700 (PDT)
-Message-ID: <0e00bb14-19c7-493a-9629-354bac3a273e@baylibre.com>
-Date: Wed, 22 Oct 2025 12:03:27 -0500
+        d=1e100.net; s=20230601; t=1761153526; x=1761758326;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UZd7NXk0kvOiCANiny7CPaVuKiR6qb7JU5QnvdLSwI4=;
+        b=jkCl9/Xt78Csf612zqemYI0to5tuEXzoEyBpNs24z+tyXQO09teNrT+3/m3DJLBFrL
+         BtGO59MpN4kCZUIijWjGIYFlYdEaZu0FNVZquDGLrnaFiVAOEXRjRkFfB3aaTz7L/OpX
+         sLCplv18rq/AByGBzVcC47fIf+wuK0gOur90bNqWpCtqGROtCrA8F5Nx+BZhWdeFErtb
+         1t7PXz57VIZEFJZokpUEf0uV39XdLXQ9tDq91vnE0L/T4opm10nDwYnmfMnGZcC/pxGy
+         w6r89gnkUyy+w9K+c19+RCvYn0FCW5PtaScI2tx626On2CKD3BAFEh8HABhCKaIj5K69
+         uo0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVyZ9d5XcnVZStm4QA0jSHB6Oke1NajUat2DyNoSuaQv2MDLIBy0WvCR0Hdd+mipgsVFlNi5Wfngrs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz83diqp8k8GehCdHH5bke5znec8cH+swux8H7fuqsN1X5DcyJy
+	xTWvBHi5XDjoB+Wytifky2v2rtgUHQYmU+X7JNs83tmbpsPzd13OfynrY+XMVa1J4is=
+X-Gm-Gg: ASbGncvpUBIvVE0RuzhSfpK3NbfiZrPUvfDQqT4oodNsSiz7tCLmMDBuD2rOWsn15Ld
+	hCbajQx84CcOvKn1JmO3Ma+wW904Xz8fROzbfu0hx5k3BQzVNBCltDfBLtlGAWcFgrl1ixdfUM9
+	ixyh1mBFWCxBlK5WcR/UWh9xnrKeJ1zqbj0+tQ6l1jRLuj4S3wxXYDGxSk7GrB46iEj/oXV9q24
+	8DvV0cPv/8v4Jfcm3bJcyN9cspmFjE5zZjjhSe6ho4c8FsULASZotr6XJv+bnlf00yotQtkmx7F
+	a2ffe+hw9Mlw8lqwqeLSvGYMcm1+0yMjAsO08RvTLtvDWpHftYV3Olx6R11PclyledTBUd8rxit
+	ind/ItVuQPummz1mrwOFu0Qg9p3FnKmzGDl1C4J8Xts66uz0EU3D5JxcWTFBllQcl3kRmT8ZLyp
+	/pZzyOVEBQUh0c/JAC
+X-Google-Smtp-Source: AGHT+IF/18UTLbuAPy5mzziER/Bg1lMDCNNls6lTgLx/+erLteq4Yb3HlU/Bpe27lriZCde9I0QYvg==
+X-Received: by 2002:a05:6000:605:b0:3ea:c893:95c6 with SMTP id ffacd0b85a97d-42704d86b82mr13969661f8f.18.1761153526491;
+        Wed, 22 Oct 2025 10:18:46 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-427f009a96asm26486677f8f.31.2025.10.22.10.18.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Oct 2025 10:18:46 -0700 (PDT)
+Date: Wed, 22 Oct 2025 20:18:42 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: David Lechner <dlechner@baylibre.com>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7124: fix possible OOB array access
+Message-ID: <aPkR8imukdrZLdfk@stanley.mountain>
+References: <20251022-iio-adc-ad7124-fix-possible-oob-array-access-v1-1-2552062cc8e6@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: iio: pressure: Remove vdd-supply and
- vddio-supply from required list
-To: Frank Li <Frank.Li@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Antoni Pokusinski <apokusinski01@gmail.com>,
- Vasileios Amoiridis <vassilisamir@gmail.com>,
- Justin Weiss <justin@justinweiss.com>,
- "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20251022164154.2994517-1-Frank.Li@nxp.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20251022164154.2994517-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251022-iio-adc-ad7124-fix-possible-oob-array-access-v1-1-2552062cc8e6@baylibre.com>
 
-On 10/22/25 11:41 AM, Frank Li wrote:
-> Some board designs connect vdd and vddio to the system power supply. Remove
-> these properties from the required list and make them optional, since
-> drivers/iio/pressure/mpl3115.c does not use them.
+On Wed, Oct 22, 2025 at 10:15:05AM -0500, David Lechner wrote:
+> Reorder the channel bounds check before using it to index into the
+> channels array in ad7124_release_config_slot(). This prevents reading
+> past the end of the array.
 > 
-> Fix below CHECK_DTBS warnings:
-> arch/arm64/boot/dts/freescale/imx8qm-mek.dtb: pressure-sensor@60 (fsl,mpl3115): 'vdd-supply' is a required property
->         from schema $id: http://devicetree.org/schemas/iio/pressure/fsl,mpl3115.yaml#
-> 
+> The value read from invalid memory was not used, so this was mostly
+> harmless,
 
-Why not just add the required properties to the .dts file?
+I didn't spend a lot of time looking at the callers, but an out of bounds
+read will cause a KASAN warning at runtime (hopefully) and if the page
+we're reading from isn't mapped then it can cause a crash.
 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/iio/pressure/fsl,mpl3115.yaml | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/fsl,mpl3115.yaml b/Documentation/devicetree/bindings/iio/pressure/fsl,mpl3115.yaml
-> index 2933c2e10695e..04703a01cf7af 100644
-> --- a/Documentation/devicetree/bindings/iio/pressure/fsl,mpl3115.yaml
-> +++ b/Documentation/devicetree/bindings/iio/pressure/fsl,mpl3115.yaml
-> @@ -47,8 +47,6 @@ properties:
->  required:
->    - compatible
->    - reg
-> -  - vdd-supply
-> -  - vddio-supply
->  
->  additionalProperties: false
->  
+So, it's not like we can exploit this to get root but it potentially
+could be annoying.
+
+> but we still should not be reading out of bounds in the first place.
+
+Thanks!
+
+regards,
+dan carpenter
 
 

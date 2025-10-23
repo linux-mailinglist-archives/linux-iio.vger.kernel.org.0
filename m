@@ -1,92 +1,85 @@
-Return-Path: <linux-iio+bounces-25361-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25362-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB926BFFA7A
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Oct 2025 09:39:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF77DBFFE62
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Oct 2025 10:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ABB90568CE6
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Oct 2025 07:32:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2F73F4FA7BF
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Oct 2025 08:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2932C028A;
-	Thu, 23 Oct 2025 07:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE7E2EC0BD;
+	Thu, 23 Oct 2025 08:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HEFdjfkO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ctLIHAw2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54254236453
-	for <linux-iio@vger.kernel.org>; Thu, 23 Oct 2025 07:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34CF2F6196;
+	Thu, 23 Oct 2025 08:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761204675; cv=none; b=eV0ENVVimPVj1lC9AmdQUgExeaQI+4N3VqG4A2uZ8oN7THbLNxTR9EnDJHa3k/QU3S6S+Ok+ysdj1yl1uAy66uSWNdUbbzUu5FdTB6LerM+rTbuFCI40n/RF/eO364Q5DYGgH9m+rNHRGp3IQnN3Jak6ebjcL2FZy2YPTJ4ycFo=
+	t=1761207828; cv=none; b=F9rp45Q/pX95GwxFGnfd/wg02DC2HCZfVYM882qlmnGAV1yngPkX6JBZSL8y3BL2vnv7c8G+BA0WaIH7zMyUBDY4z0+R8Ah3dNjW0ElKh6tVe82oUCT8NufSWpkWOCo0pzBfeSMFRst5ipTJJw1qgTP/fT2FezpUawrIGevcsmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761204675; c=relaxed/simple;
-	bh=aFRDzPkcK9NfGl8UTUu2FSysM7F5S+eQ7XxMTHyQQzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=E76GqEZ+EPVghVnROwWPL6B7P7hj7SB93j+LSoUl6Pnpp11D9iloNsphluUWv5GXUOgtjQsbF6uWNVYwjc9h7jnsLl7AqPJ6Sq+KZCDJNXng9+/1q8k4r4Uykh13MXtbm+ezEFlSJ3GH7GM5G4OvQE3G2V71zgOW8thBPa50v5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HEFdjfkO; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-471b80b994bso5968485e9.3
-        for <linux-iio@vger.kernel.org>; Thu, 23 Oct 2025 00:31:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761204672; x=1761809472; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=A3Zl0NzO6dgztEpIBfhUUKoZHrDlf3kwSQWoMIJPwEA=;
-        b=HEFdjfkO7k87QHghfzIzojCtt0S0nv35/wt7CM/JFkqmB4Es5+y1zr+/2JWrELweTo
-         fLcjJ56OyDyw73tpkCXf0pEM/Ra/A1+QFheeRlogGers4ba1k8C/Dyuqe+07R13jiIgf
-         S56OzC6VhaegbcT0AH1f5Dii++gz/VSee72T4dnINMHd0r8QV24uQjkyIeAEvXrHvy7P
-         IU2yDTlhKd48cG0uyQUdxJZKMSYNwjQQTjVa/AI7oD2RxseZbfrzXAQsDmxKtm2kwZ1d
-         N9tYGgICibo5NcmuDC/WEZfBxUKznly8HL2DFYAD/LVI3H8FYa6Ns5CNiagf2qumJYnR
-         lbqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761204672; x=1761809472;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=A3Zl0NzO6dgztEpIBfhUUKoZHrDlf3kwSQWoMIJPwEA=;
-        b=pjjpHyYKvgWPwmqRqiSUPDnV0CSppFJ/dvD3OFd6s4DXx4eTT2d74fCXH9tJbIcljl
-         t7PiVJYL+qqbJxAgzipy1g1PQnhu5Ou5Jo7YFa9VFDScM0wkLUKDdCvR4LN86zkzFkRr
-         53dS1eJqggNOE80T0P8j0M9QUz0QUlqDkllfzXJR3Lh4q7fLQrHSOwSUh9pIM2rElmr+
-         WCYdWVIlS65j8Gw2P/U74e15z0fghkUiU7QXzI6BNuopbxFnW/Y33ajn0U1nEI9U+A47
-         d6koNroc5/NSV+UIYOhURK0eRECCof6h0QhsPk+PV04Q0fEZDbYaNz2JYt6sSPOfLnSP
-         z7dQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV4oo2pqfnC3ihY+yDP/PrhakqMJW5Ku8IKLcee1xQNuBR+bUuPCnqCVNoikvAYgaAnr/l9ahCTYFA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBdjbbobfoAGo/my2y4BEYDU5bqNSfNcUKRA6G/SUzR1nvLppD
-	7oXJDgEm/NPbKltLKHQ2A1ck+UK+j2agaaxgn+aAfVJpMLKeq0ll/Ru1rFzD9jXh/lY=
-X-Gm-Gg: ASbGncughIdj+5aGdDJW296RHoMiajtCPZ6liK4zBA/eThdWag524giPnua4RKJvT8v
-	PSLjOFeHDZjB7Ni/BAp5GPmyl4nOvIeXo5ESQKODszMG42ER/GLePtyZmN4CxdWCGXQWiGFayLp
-	o5Wtr3rayR1fA7iP0ijKXi5+QZDE2yWs5aIINRiKdnP/Rl89c1xa0p7b5ZHe8zEo7xJP4ZuG4o+
-	ZZWu25vuZSQB2df3qN+DJd3lze8TqvPsZfzs5FLir1dOu3qar3hzmXNLJcTrlgNPB/vyXFDFJo5
-	dZ48mE/hxSyUh8VX1gDXGDvVIU/Q38Ae1jv1/dcgOKaT5kA7wc4BqUSLaPypipFJPOOMiIdyNt8
-	L+iUEJNS7LaB/Uj/YciFxVcFbJ/ubfpl4mICovobsAEgOCwUoZAm4RsfvponBckrYUvJQbQCCX2
-	VmzStdzch3AxPdUD5A
-X-Google-Smtp-Source: AGHT+IGlhOgrTrFS3lTljK8PD6tgtfOcB8wV5TTCZ+KMjcR3xg+VWPl4LfT+6SvDqRlsNkBtYEe0Eg==
-X-Received: by 2002:a05:600c:45c9:b0:471:115e:87bd with SMTP id 5b1f17b1804b1-4711791c601mr162939935e9.26.1761204671516;
-        Thu, 23 Oct 2025 00:31:11 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-475c428dafesm80214005e9.6.2025.10.23.00.31.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 00:31:11 -0700 (PDT)
-Date: Thu, 23 Oct 2025 10:31:07 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Ariana Lazar <ariana.lazar@microchip.com>,
+	s=arc-20240116; t=1761207828; c=relaxed/simple;
+	bh=ptxKv8x6ylevA5yI5wa4vryf/6lVRy0gbUbnxJJtU2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D6z+Tfl6KR9jrDL0eKnZVhYXlS4n0L/60WH9+3VphcpwjWt6ac4ApcD4bHsIeAlCYcy1nyPh8e+3bVgkVRnnbnTjekEkyTnD7pbf9fgRm64g0D5IbEswpwTbAji9+PwsBzoxdzipHkRIUNmfDAy+AtnnhCNKckavIuU1us82cwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ctLIHAw2; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761207827; x=1792743827;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ptxKv8x6ylevA5yI5wa4vryf/6lVRy0gbUbnxJJtU2c=;
+  b=ctLIHAw2kJ0egEAGrF1G88enkF8ZcHTPGLMOi7Y7Mb/fiE9sEYyBXAdB
+   lFVoLGVSWrKPb3nsnBzKtKJa8TZ8tMudUc3fu294q4gwShu5pHIkizE9M
+   jWPsSC1Cz9aMfflkr5PYai6c5vtBhc/TCVafe6d4tX/scQMGAFcx0e1ha
+   jSlsrFYBR0++UyBMd4JuB7Bde7G3Mkfx2y54U8Ote9NlNlCPL7SqNCO22
+   9mnDTuI+yMVVVkioKv5rVIWmZuX4cGGUgJqVYVEw7iE/94izS9N+M/xkv
+   woHIFu/uCqVDjxeLvUrMRrJj4G2niAlAO4jRGtCivp2BFUwgd+jtAn29d
+   w==;
+X-CSE-ConnectionGUID: QCSiRrf0TpCu6/V3ttL8Vg==
+X-CSE-MsgGUID: 1FLG44dyRRe54pdhWC+8lw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="50950423"
+X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; 
+   d="scan'208";a="50950423"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 01:23:46 -0700
+X-CSE-ConnectionGUID: xewb7CYnSHm2QYHap8wVgA==
+X-CSE-MsgGUID: lpfHCmtBSPKbcNs6POSKHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; 
+   d="scan'208";a="183270380"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.163])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 01:23:42 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vBqbj-00000001tXy-1owL;
+	Thu, 23 Oct 2025 11:23:39 +0300
+Date: Thu, 23 Oct 2025 11:23:39 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ariana Lazar <ariana.lazar@microchip.com>
-Subject: Re: [PATCH 2/2] iio: adc: adding support for PAC1711
-Message-ID: <202510230847.CEW0lvJl-lkp@intel.com>
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] i3c: Add HDR API support
+Message-ID: <aPnmCwwZVZ5egqkP@smile.fi.intel.com>
+References: <20251014-i3c_ddr-v6-0-3afe49773107@nxp.com>
+ <20251014-i3c_ddr-v6-1-3afe49773107@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -95,70 +88,116 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251015-pac1711-v1-2-976949e36367@microchip.com>
+In-Reply-To: <20251014-i3c_ddr-v6-1-3afe49773107@nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Ariana,
+On Tue, Oct 14, 2025 at 12:40:00PM -0400, Frank Li wrote:
+> Rename struct i3c_priv_xfer to struct i3c_xfer, since private xfer in the
+> I3C spec refers only to SDR transfers. Ref: i3c spec ver1.2, section 3,
+> Technical Overview.
+> 
+> i3c_xfer will be used for both SDR and HDR.
+> 
+> Rename enum i3c_hdr_mode to i3c_xfer_mode. Previous definition need match
+> CCC GET_CAP1 bit position. Use 31 as SDR transfer mode.
+> 
+> Add i3c_device_do_xfers() with an xfer mode argument, while keeping
+> i3c_device_do_priv_xfers() as a wrapper that calls i3c_device_do_xfers()
+> with I3C_SDR for backward compatibility.
+> 
+> Introduce a 'cmd' field in struct i3c_xfer as an anonymous union with
+> 'rnw', since HDR mode uses read/write commands instead of the SDR address
+> bit.
+> 
+> Add .i3c_xfers() callback for master controllers. If not implemented, fall
+> back to SDR with .priv_xfers(). The .priv_xfers() API can be removed once
+> all controllers switch to .i3c_xfers().
+> 
+> Add 'mode_mask' bitmask to advertise controller capability.
 
-kernel test robot noticed the following build warnings:
+...
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ariana-Lazar/dt-bindings-iio-adc-adding-support-for-PAC1711/20251016-002337
-base:   19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-patch link:    https://lore.kernel.org/r/20251015-pac1711-v1-2-976949e36367%40microchip.com
-patch subject: [PATCH 2/2] iio: adc: adding support for PAC1711
-config: loongarch-randconfig-r072-20251019 (https://download.01.org/0day-ci/archive/20251023/202510230847.CEW0lvJl-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 15.1.0
+>  static int i3c_master_check_ops(const struct i3c_master_controller_ops *ops)
+>  {
+> -	if (!ops || !ops->bus_init || !ops->priv_xfers ||
+> +	if (!ops || !ops->bus_init ||
+>  	    !ops->send_ccc_cmd || !ops->do_daa || !ops->i2c_xfers)
+>  		return -EINVAL;
+>  
+> +	if (!ops->priv_xfers && !ops->i3c_xfers)
+> +		return -EINVAL;
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202510230847.CEW0lvJl-lkp@intel.com/
+I would find the logically coupled proto-based xfers:
 
-New smatch warnings:
-drivers/iio/adc/pac1711.c:473 pac1711_retrieve_data() error: uninitialized symbol 'ret'.
-drivers/iio/adc/pac1711.c:924 pac1711_read_raw() error: uninitialized symbol 'tmp'.
-drivers/iio/adc/pac1711.c:1124 pac1711_of_parse_channel_config() error: uninitialized symbol 'ret'.
+	if (!ops->i2c_xfers && !ops->i3c_xfers)
+		return -EINVAL;
 
-Old smatch warnings:
-drivers/iio/adc/pac1711.c:1079 pac1711_setup_vbus_range() warn: unsigned 'ret' is never less than zero.
-drivers/iio/adc/pac1711.c:1079 pac1711_setup_vbus_range() warn: error code type promoted to positive: 'ret'
-drivers/iio/adc/pac1711.c:1102 pac1711_setup_vsense_range() warn: unsigned 'ret' is never less than zero.
-drivers/iio/adc/pac1711.c:1102 pac1711_setup_vsense_range() warn: error code type promoted to positive: 'ret'
-drivers/iio/adc/pac1711.c:1377 pac1711_probe() warn: passing positive error code '1' to 'dev_err_probe'
 
-vim +/ret +473 drivers/iio/adc/pac1711.c
+>  	if (ops->request_ibi &&
+>  	    (!ops->enable_ibi || !ops->disable_ibi || !ops->free_ibi ||
+>  	     !ops->recycle_ibi_slot))
 
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  450  static int pac1711_retrieve_data(struct pac1711_chip_info *info,
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  451  				 u32 wait_time)
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  452  {
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  453  	int ret;
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  454  
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  455  	/*
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  456  	 * check if the minimal elapsed time has passed and if so,
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  457  	 * re-read the chip, otherwise the cached info is just fine
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  458  	 */
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  459  	if (time_after(jiffies, info->chip_reg_data.jiffies_tstamp +
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  460  			msecs_to_jiffies(PAC1711_MIN_POLLING_TIME_MS))) {
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  461  		ret = pac1711_reg_snapshot(info, true, PAC1711_REFRESH_REG_ADDR,
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  462  					   wait_time);
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  463  
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  464  		/*
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  465  		 * Re-schedule the work for the read registers timeout
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  466  		 * (to prevent chip regs saturation)
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  467  		 */
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  468  		cancel_delayed_work_sync(&info->work_chip_rfsh);
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  469  		schedule_delayed_work(&info->work_chip_rfsh,
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  470  				      msecs_to_jiffies(PAC1711_MAX_RFSH_LIMIT_MS));
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  471  	}
+>  }
 
-ret isn't initialized on the else path.
+...
 
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  472  
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15 @473  	return ret;
-de2a3cdfd6e76b2 Ariana Lazar 2025-10-15  474  }
+> -enum i3c_hdr_mode {
+> +enum i3c_xfer_mode {
+> +	/* The below 3 value (I3C_HDR*) must match GETCAP1 Byte bit position */
+>  	I3C_HDR_DDR,
+>  	I3C_HDR_TSP,
+>  	I3C_HDR_TSL,
+> +	/* Use for default SDR transfer mode */
+> +	I3C_SDR = 0x31,
+
+Why has this a specific value, while the rest have not? If it's HW mandated,
+the all of them has to be assigned properly to avoid potential bugs.
+
+>  };
+
+...
+
+>  /**
+> - * struct i3c_priv_xfer - I3C SDR private transfer
+> + * struct i3c_xfer - I3C data transfer
+>   * @rnw: encodes the transfer direction. true for a read, false for a write
+> + * @cmd: Read/Write command in HDR mode, read: 0x80 - 0xff, write: 0x00 - 0x7f
+>   * @len: transfer length in bytes of the transfer
+>   * @actual_len: actual length in bytes are transferred by the controller
+>   * @data: input/output buffer
+
+>   * @data.out: output buffer. Must point to a DMA-able buffer
+>   * @err: I3C error code
+>   */
+> -struct i3c_priv_xfer {
+> -	u8 rnw;
+> +struct i3c_xfer {
+> +	union {
+> +		u8 rnw;
+> +		u8 cmd;
+> +	};
+
+What field is used to distinguish the union member in current use?
+In another word, union must be accompanied with a selector.
+
+>  	u16 len;
+>  	u16 actual_len;
+>  	union {
+
+>  	enum i3c_error_code err;
+>  };
+
+...
+
+> +/* keep back compatible */
+> +#define i3c_priv_xfer i3c_xfer
+
+How many of the current users do this? Can't we just rename treewide?
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With Best Regards,
+Andy Shevchenko
+
 
 

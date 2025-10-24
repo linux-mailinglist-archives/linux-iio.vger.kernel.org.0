@@ -1,167 +1,137 @@
-Return-Path: <linux-iio+bounces-25412-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25413-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B424C05217
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 10:45:37 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CECAC0529B
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 10:48:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 37413568101
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 08:39:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 904D5564828
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 08:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27BF306B39;
-	Fri, 24 Oct 2025 08:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308133081A0;
+	Fri, 24 Oct 2025 08:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mb772Lkp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NX2s72mv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19263093B5;
-	Fri, 24 Oct 2025 08:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EBC305E2E
+	for <linux-iio@vger.kernel.org>; Fri, 24 Oct 2025 08:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761295030; cv=none; b=eYFGavXSt3AIqqG9O96uOtX21jFXOKvMuQIiRZL+ACEIKDKcKR831mzbbAp0DhNqZhkotMIPapje2Ey9vWNTekYPzg9GSXp2Xea7/575UP6RP5HTjaZCV6oQsOm4ubeQC3L451p2WyPG51PUa3Ch/0hSmoovoP+JUfLVBwshKHw=
+	t=1761295140; cv=none; b=B/5eXEhZ0srke/Fyg+PSAVD9GQJgDZq76CCyo8SPEJztAIOhE72Cbcw/u4axR5ItWFBQ4huaoFjCxKjibkoCrEFuZVCg5RlHDMJ6+Ge1Fj0WSSk0p3IFDjrCU5bhowvj/GCiZwT+Gg0v0PFs0SSJfTyNQRkgQFO076Krk4LPgKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761295030; c=relaxed/simple;
-	bh=JtArdcsAGcyEA/bMgXb5uTz2YbzLj81+yDW1/qVTVzc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BJwnXMklFWxRv7EgXwGlFBOiLo4fdIfnvFWsvz5E3/HCoET8NqNA0iooP70fIXYHw8RUn2keTQAbuPp/snCydOtpeOqNNLCzztfqF8wZgLBdsFLtKu+B4RFnqFocWLEsdRQr9LTYyBrmQmmDq3xXuaf67jQ71dMRdmd4fih1+2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mb772Lkp; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761295029; x=1792831029;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=JtArdcsAGcyEA/bMgXb5uTz2YbzLj81+yDW1/qVTVzc=;
-  b=mb772LkpFggH+atQsOTbVx6mK62R45P1Yphl1IzzqQ/zUS9kYEsbCzWX
-   2BWKo4HR4zQlCtrAX7LVKvJFRQrbm+pRSeUwoNkzPtdbe1pKHearseOVs
-   P3Lo2lJWKJDS5U2EStTaJhwbDS6A1sU/1zrxOsrQ3DCGjNGOLZUHcvZJY
-   pufrUL63ucjVMatEe47rC3Lkf/C6ckI/CvnM9ld221cQ9niXBmSeQ5mmA
-   MjMRBjYhqKWKblPn/GzP0+3J5upTut5X0yxasDZGCzYVN2nw+cUIj/bns
-   fpAD2zsvNf87lhBN6o1nM7/OjL/BwKcIC3o+6K5dJzw6Y4CYs7bcv+bCb
-   w==;
-X-CSE-ConnectionGUID: nKQ0bN8PSu61ycb0YhHbVw==
-X-CSE-MsgGUID: gX91Dji9Rt+ix5PxGMEKQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62504398"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; 
-   d="scan'208";a="62504398"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 01:37:08 -0700
-X-CSE-ConnectionGUID: F0C+QL8QTFCiKBQ47eivwA==
-X-CSE-MsgGUID: vB8owlCxR7CzMMWA9mVYhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; 
-   d="scan'208";a="185152775"
-Received: from opintica-mobl1 (HELO ashevche-desk.local) ([10.245.245.60])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 01:37:04 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vCDID-000000026T5-3koM;
-	Fri, 24 Oct 2025 11:37:01 +0300
-Date: Fri, 24 Oct 2025 11:37:01 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Akhilesh Patil <akhilesh@ee.iitb.ac.in>, jic23@kernel.org,
-	dlechner@baylibre.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, nuno.sa@analog.com, andy@kernel.org,
-	marcelo.schmitt1@gmail.com, vassilisamir@gmail.com,
-	salah.triki@gmail.com, skhan@linuxfoundation.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, akhileshpatilvnit@gmail.com
-Subject: Re: [PATCH 2/2] iio: pressure: adp810: Add driver for adp810 sensor
-Message-ID: <aPs6raLIcM3QbQXJ@smile.fi.intel.com>
-References: <cover.1760184859.git.akhilesh@ee.iitb.ac.in>
- <8c202e7ccd332b26217d529a7a73b7a3ef0726ea.1760184859.git.akhilesh@ee.iitb.ac.in>
- <CAHp75VdGJfMALGOFvkOW=JZ0yHE2QbRSzNs2Xd42-Weec1GmQw@mail.gmail.com>
- <95c1ba99-510b-4efb-9b6d-4c1103fc43a5@kernel.org>
- <aPp5OYcPxNNIOgB6@smile.fi.intel.com>
- <c45309cf-bd2c-41fe-b893-7e0a91de84a8@kernel.org>
- <aPs6HAJabFMRzX9Y@smile.fi.intel.com>
+	s=arc-20240116; t=1761295140; c=relaxed/simple;
+	bh=WXCqwiJaVzwif74IHtQzyPxXFrlHw+EGeR8pfbgmG08=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N9RG+qhzRE0G+sZUWboowExGq3fHGS6ux8323b3GbLgcGdu0CHbhYguTo38s9M2ZVP2WYYN4VCLgT7FVfczuNtkj8oUnL5qIqcNdYntmLdFhbFBOuVELbW3AW6GAYxWUo65RbcYR+8WSMiKhMOl1UijUeP4UBHmFfxiGUPkS0Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NX2s72mv; arc=none smtp.client-ip=209.85.218.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-b6d78062424so38794566b.1
+        for <linux-iio@vger.kernel.org>; Fri, 24 Oct 2025 01:38:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761295137; x=1761899937; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NOoOk6fIvEaDShhUmAzlzdMKvgXXV9HjXrl++QyhiQI=;
+        b=NX2s72mv9cBjMc5Fwa+10R5tk+AsdfpiTQVwN3tMWFthG3RwMzxr9zNDiPxGRXXpgA
+         yDVLTyg7oKTd6tu0LrL6z0aC97r181X17EiWbDfV7forO0DkaQIR294mt2gZ0eYHqK1J
+         JEWmDLnxerR0oSNlvxEQ+2V9snXLKou2wIU07eLQWIdmHGVKMiAMOYFZoq+ybN7yg1EW
+         GG3wKIso9Pb2vXuwrFmuS/dZtDrFq6hsAyiSLxZOVwSM51KU645Lcmoz/85H0b47VMFF
+         ZQWOIerznZh3a8JCloR5FjKu4zWwowiZYtO6ZYBtuC3E7I0d+Pt4i445kE24u6AqzKbz
+         7jZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761295137; x=1761899937;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NOoOk6fIvEaDShhUmAzlzdMKvgXXV9HjXrl++QyhiQI=;
+        b=TER85EBs8BFSonk841ETJF3+mP7WjODbiuwO3ZG6uICCF59P86Og/gSNCGGkRJ/4z/
+         VKsLwSgl9E6A9NcU5yx64uDC/S1MjALduHqDEwmPCNA4zfwSfRlK0ZvisDa6ZGPbSY4F
+         44EfD9mlym8zrNTHYXbXS4Hc/kF2TCQYmBQuz73AdD7/JE0mDDZA4Qd7oOWtexG/Ck88
+         dFnbcsQPKxS+h8o7DYo3vCVwOFY9kB1o3/WNJB9emFoEwFz1gjCX8icMET367QUqTbxA
+         4BU99lWRf12IMOfz2gam5b33UprJTVauFeeQ4DL3o8c8mHhGOmDCsKYoycJFmS9PUkgN
+         l3GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWoEckQz4Yn9GTs7aod5VumGAhdHxoVpqpYEBsGp7fNKSadMjKJbHadwtAJkZZ5Cilrz6MbqPgEorg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ6W0Js6T0WlDhtelsGsbmOCyi9BDJkU5dXRyFYU0aYCN7q4n0
+	mw8CyivSySxN3y05yCqvA+OHXe9Q7Ve7u+agFwzybD6PU+fvxMNXWBIEr4uLjeWO34zp2oe/Ekq
+	b0mv96mwq58aCEswbOPPhFQ24zvE7Mug=
+X-Gm-Gg: ASbGncuuHQiMG90q/ODRE4DrmodsbC8ppJ6k8Ius13V/9nhSOwzYl2VBH7MPsLaAt5p
+	FNHizSaVtojdW2+CG3M9DrHwmMVtGfC5WBOtdOfhWyv66JQJto99vSB5HTAtpX+v6TdPzvoc1/N
+	p+sU0c6woc9Egpx5nvQ7YUELLtTK4uxbsAtl4Rrwfh2fKUk1MUSWawq9wrQtQAvZqlFieZr7qLr
+	LBP6+bnxNJDV8SQVhgGb8u0g5K6MyHO8VwILbEpVf/WqYprEbvVu34xXKvTmZ0nn1X6iibW
+X-Google-Smtp-Source: AGHT+IFix1z6tMmwfjPEG1oQQ06cd/niYVFK7A3ERyfKb9o0nkBTriHS7CNo7xGrw+fDhLGT1YJYfTTjX20y7ecwqRg=
+X-Received: by 2002:a17:907:948f:b0:b57:2b82:732b with SMTP id
+ a640c23a62f3a-b6475706215mr3433422466b.54.1761295136987; Fri, 24 Oct 2025
+ 01:38:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aPs6HAJabFMRzX9Y@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20251012173035.12536-1-raskar.shree97@gmail.com> <20251018160400.6921df6c@jic23-huawei>
+In-Reply-To: <20251018160400.6921df6c@jic23-huawei>
+From: Shrikant <raskar.shree97@gmail.com>
+Date: Fri, 24 Oct 2025 14:08:44 +0530
+X-Gm-Features: AS18NWBKc75onvPQ2KcRtEzbrT_rOdOOZhjS01vyTKH3-6a5Fttp43NYSt_gDrg
+Message-ID: <CAHc1_P6a=6MGT4_6mmMLzBXz8WxVv1C29iwDwXrDywV+Z2k-0g@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] iio: health: max30100: Add DT LED pulse-width support
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, matt@ranostay.sg, 
+	skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 24, 2025 at 11:34:37AM +0300, Andy Shevchenko wrote:
-> On Fri, Oct 24, 2025 at 08:18:21AM +0200, Krzysztof Kozlowski wrote:
-> > On 23/10/2025 20:51, Andy Shevchenko wrote:
-> > > On Sun, Oct 12, 2025 at 05:12:26AM +0200, Krzysztof Kozlowski wrote:
-> > >> On 11/10/2025 16:10, Andy Shevchenko wrote:
-> > >>> On Sat, Oct 11, 2025 at 3:25 PM Akhilesh Patil <akhilesh@ee.iitb.ac.in> wrote:
+On Sat, Oct 18, 2025 at 8:34=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Sun, 12 Oct 2025 23:00:33 +0530
+> Shrikant Raskar <raskar.shree97@gmail.com> wrote:
+>
+> > Add Device Tree support for configuring the LED pulse-width of the MAX3=
+0100
+> > sensor, and updates the driver to read and apply this property.
+> >
+> > Testing:
+> > - Verify DT property read successfully in probe().
+> > - Verify default fallback to 1600 us when DT property is omitted.
+> > - Confirm SPO2_CONFIG register programmed correctly using regmap_read()=
+.
+> > - Validate different DT pulse-width values (200, 400, 800, 1600 us)
+> >   are applied correctly.
+> > - Validate probe() failure for invalid LED pulse-width
+> > - Tested-on: Raspberry Pi 3B + MAX30100 breakout board
+> >
+> > Changelog:
+> > Changes from v2:
+> > - Fix DT binding schema errors
+> > - Add default value
+> > - Remove changelog from commit message
+> > - Add missing header file
+> >
+> > Shrikant Raskar (2):
+> >   dt-bindings: iio: health: max30100: Add LED pulse-width property
+> >   iio: health: max30100: Make LED pulse-width configurable via DT
+> >
+> >  .../bindings/iio/health/maxim,max30100.yaml   |  8 ++++
+> >  drivers/iio/health/max30100.c                 | 38 +++++++++++++++++--
+> >  2 files changed, 43 insertions(+), 3 deletions(-)
+> >
+> >
+> > base-commit: 8bd9238e511d02831022ff0270865c54ccc482d6
+>
+> Applied to the togreg branch of iio.git and pushed out as testing for now
+Thanks for the update. I really appreciate your time and support!
 
-...
-
-> > >>>> +F:     Documentation/devicetree/bindings/iio/pressure/aosong,adp810.yaml
-> > >>>> +F:     drivers/iio/pressure/adp810.c
-> > >>>
-> > >>> Some tools will report an orphaned yaml file if you apply patch 1
-> > >>> without patch 2.
-> > >>
-> > >> You mean checkpatch? That warning is not really relevant. Adding
-> > >> maintainers entry here for both files is perfectly fine and correct.
-> > > 
-> > > It's relevant as long as I see (false positive) warnings from it. Can somebody
-> > 
-> > No, it is not relevant. Just because tool is inefficient does not allow
-> > you to point such nitpicks. You as reviewer are supposed to find
-> > difference which checkpatch warnings are important and which are not and
-> > DO NOT bother contributors with useless points that there is some
-> > orphaned file according to checkpatch.
-> > 
-> > > shut the checkpatch up about missing DT files in the MAINTAINERS?
-> > 
-> > That would be great but, if no one does it your comments on "orphaned
-> > file" are counter productive.
-> 
-> Something like this?
-> 
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index 6729f18e5654..818b49d314ce 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -3441,11 +3441,17 @@ sub process {
->  		     ($line =~ /\{\s*([\w\/\.\-]*)\s*\=\>\s*([\w\/\.\-]*)\s*\}/ &&
->  		      (defined($1) || defined($2))))) {
->  			$is_patch = 1;
-> -			$reported_maintainer_file = 1;
-> -			WARN("FILE_PATH_CHANGES",
-> -			     "added, moved or deleted file(s), does MAINTAINERS need updating?\n" . $herecurr);
-> +			# DT bindings are incorporate maintainer information, no need to report
-> +			if ($realfile !~ m@^Documentation/devicetree/bindings/@)) {
-> +				$reported_maintainer_file = 1;
-> +				WARN("FILE_PATH_CHANGES",
-> +				     "added, moved or deleted file(s), does MAINTAINERS need updating?\n" . $herecurr);
-> +			}
->  		}
-
-> +		    ($realfile =~ m@^Documentation/devicetree/bindings/.*\.txt$@)) {
-> +			if ($realfile =~ m@^include/asm/@) {
-
-These two lines are leftovers that needs to be removed, of course.
-
-Akhilesh, can you give a try of this change and see if the original DT schema
-binding patch is not reported anymore?
-
->  # Check for adding new DT bindings not in schema format
->  		if (!$in_commit_log &&
->  		    ($line =~ /^new file mode\s*\d+\s*$/) &&
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Regards,
+Shrikant
 

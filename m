@@ -1,137 +1,112 @@
-Return-Path: <linux-iio+bounces-25413-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25414-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CECAC0529B
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 10:48:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD150C052A1
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 10:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 904D5564828
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 08:41:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ACA51AA1AC0
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 08:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308133081A0;
-	Fri, 24 Oct 2025 08:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEE1305958;
+	Fri, 24 Oct 2025 08:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NX2s72mv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CtKgrNZC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EBC305E2E
-	for <linux-iio@vger.kernel.org>; Fri, 24 Oct 2025 08:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B3B2D640D;
+	Fri, 24 Oct 2025 08:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761295140; cv=none; b=B/5eXEhZ0srke/Fyg+PSAVD9GQJgDZq76CCyo8SPEJztAIOhE72Cbcw/u4axR5ItWFBQ4huaoFjCxKjibkoCrEFuZVCg5RlHDMJ6+Ge1Fj0WSSk0p3IFDjrCU5bhowvj/GCiZwT+Gg0v0PFs0SSJfTyNQRkgQFO076Krk4LPgKQ=
+	t=1761295653; cv=none; b=ISehAI5fRO6Brce10LogGXMjclQRE7DtzR5sYmXEVU4qZzXoO6LeOUPCDtr75hMtZ+sG0armN0Rmq7kxsL00Qbj50zDDV61NXzBIFLhR3+qs8x5QRgZHH1ml/t2isgrtdcWsrUGP2HdXjHJwe8V2la0H/oiGv0B7OtD9+ZkQvdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761295140; c=relaxed/simple;
-	bh=WXCqwiJaVzwif74IHtQzyPxXFrlHw+EGeR8pfbgmG08=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N9RG+qhzRE0G+sZUWboowExGq3fHGS6ux8323b3GbLgcGdu0CHbhYguTo38s9M2ZVP2WYYN4VCLgT7FVfczuNtkj8oUnL5qIqcNdYntmLdFhbFBOuVELbW3AW6GAYxWUo65RbcYR+8WSMiKhMOl1UijUeP4UBHmFfxiGUPkS0Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NX2s72mv; arc=none smtp.client-ip=209.85.218.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-b6d78062424so38794566b.1
-        for <linux-iio@vger.kernel.org>; Fri, 24 Oct 2025 01:38:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761295137; x=1761899937; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NOoOk6fIvEaDShhUmAzlzdMKvgXXV9HjXrl++QyhiQI=;
-        b=NX2s72mv9cBjMc5Fwa+10R5tk+AsdfpiTQVwN3tMWFthG3RwMzxr9zNDiPxGRXXpgA
-         yDVLTyg7oKTd6tu0LrL6z0aC97r181X17EiWbDfV7forO0DkaQIR294mt2gZ0eYHqK1J
-         JEWmDLnxerR0oSNlvxEQ+2V9snXLKou2wIU07eLQWIdmHGVKMiAMOYFZoq+ybN7yg1EW
-         GG3wKIso9Pb2vXuwrFmuS/dZtDrFq6hsAyiSLxZOVwSM51KU645Lcmoz/85H0b47VMFF
-         ZQWOIerznZh3a8JCloR5FjKu4zWwowiZYtO6ZYBtuC3E7I0d+Pt4i445kE24u6AqzKbz
-         7jZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761295137; x=1761899937;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NOoOk6fIvEaDShhUmAzlzdMKvgXXV9HjXrl++QyhiQI=;
-        b=TER85EBs8BFSonk841ETJF3+mP7WjODbiuwO3ZG6uICCF59P86Og/gSNCGGkRJ/4z/
-         VKsLwSgl9E6A9NcU5yx64uDC/S1MjALduHqDEwmPCNA4zfwSfRlK0ZvisDa6ZGPbSY4F
-         44EfD9mlym8zrNTHYXbXS4Hc/kF2TCQYmBQuz73AdD7/JE0mDDZA4Qd7oOWtexG/Ck88
-         dFnbcsQPKxS+h8o7DYo3vCVwOFY9kB1o3/WNJB9emFoEwFz1gjCX8icMET367QUqTbxA
-         4BU99lWRf12IMOfz2gam5b33UprJTVauFeeQ4DL3o8c8mHhGOmDCsKYoycJFmS9PUkgN
-         l3GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWoEckQz4Yn9GTs7aod5VumGAhdHxoVpqpYEBsGp7fNKSadMjKJbHadwtAJkZZ5Cilrz6MbqPgEorg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ6W0Js6T0WlDhtelsGsbmOCyi9BDJkU5dXRyFYU0aYCN7q4n0
-	mw8CyivSySxN3y05yCqvA+OHXe9Q7Ve7u+agFwzybD6PU+fvxMNXWBIEr4uLjeWO34zp2oe/Ekq
-	b0mv96mwq58aCEswbOPPhFQ24zvE7Mug=
-X-Gm-Gg: ASbGncuuHQiMG90q/ODRE4DrmodsbC8ppJ6k8Ius13V/9nhSOwzYl2VBH7MPsLaAt5p
-	FNHizSaVtojdW2+CG3M9DrHwmMVtGfC5WBOtdOfhWyv66JQJto99vSB5HTAtpX+v6TdPzvoc1/N
-	p+sU0c6woc9Egpx5nvQ7YUELLtTK4uxbsAtl4Rrwfh2fKUk1MUSWawq9wrQtQAvZqlFieZr7qLr
-	LBP6+bnxNJDV8SQVhgGb8u0g5K6MyHO8VwILbEpVf/WqYprEbvVu34xXKvTmZ0nn1X6iibW
-X-Google-Smtp-Source: AGHT+IFix1z6tMmwfjPEG1oQQ06cd/niYVFK7A3ERyfKb9o0nkBTriHS7CNo7xGrw+fDhLGT1YJYfTTjX20y7ecwqRg=
-X-Received: by 2002:a17:907:948f:b0:b57:2b82:732b with SMTP id
- a640c23a62f3a-b6475706215mr3433422466b.54.1761295136987; Fri, 24 Oct 2025
- 01:38:56 -0700 (PDT)
+	s=arc-20240116; t=1761295653; c=relaxed/simple;
+	bh=ItL3HwUX3mQOlR0jmO7bG+3JhJbzVE20bcx4/PFrwe4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bPvpA5hkQ6Ji7I0Auo5/8aSf+kE7034aFoDeuYT7lB0BDJBFj0G8+hwtXcCaGBIbKd3eStviAQKzjUs+opioaKqgrvoMsz40gmJKqzEk2UAaaFiWU4HcYaaEDKU5v+dwkBjF6kpWhW++lfu4vC0fwatARrKnHop2IQMdlrsCQjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CtKgrNZC; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761295653; x=1792831653;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ItL3HwUX3mQOlR0jmO7bG+3JhJbzVE20bcx4/PFrwe4=;
+  b=CtKgrNZCeJgd9JfeJbH66Y7dlbEvka59UIpdqvo18ICU8GqoOqWFYvPT
+   8gSzs8dgw3zfUe6+cwWSrdETzybMBZvXZ7IpzRLtueS3zgdS68bwKllY4
+   6M0MDtVy0dU03cDbeCHK8gg28MZz4RHky3H0C66rbtehLE7kRrIjUriSs
+   P+kBrDEjrOBhmKgycTzfaTfYIRibNtP+tjx4eYwcbJlqXfIMlHZJs6+N6
+   4+HcDroURKQCdKBz5qao6K5LkhNdtqZfKPYcr6uMytQXArEPDLp6Gqkmc
+   Qi93bQJVISIHuGLNr1C4piK6w6jgjSwmSfBRuNrDqmDxxGFG4GbvBLU8i
+   g==;
+X-CSE-ConnectionGUID: ldijfceWS/m2qeLyjnbvgg==
+X-CSE-MsgGUID: xvR+EfYvTKOjfcTj1Y0sLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="67120439"
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; 
+   d="scan'208";a="67120439"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 01:47:32 -0700
+X-CSE-ConnectionGUID: Vq3kYvgSReaaTsSq7YMbQg==
+X-CSE-MsgGUID: yV2kuODqQvCiRogo7q4h6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; 
+   d="scan'208";a="183986609"
+Received: from opintica-mobl1 (HELO ashevche-desk.local) ([10.245.245.60])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 01:47:29 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vCDSH-000000026dm-2uGy;
+	Fri, 24 Oct 2025 11:47:25 +0300
+Date: Fri, 24 Oct 2025 11:47:25 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Chu Guangqing <chuguangqing@inspur.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+	subhajit.ghosh@tweaklogic.com, javier.carrasco.cruz@gmail.com,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] iio: light: apds9960: convert to use maple tree
+ register cache
+Message-ID: <aPs9HdeTZKoqFqdk@smile.fi.intel.com>
+References: <20251024073823.35122-1-chuguangqing@inspur.com>
+ <20251024073823.35122-5-chuguangqing@inspur.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251012173035.12536-1-raskar.shree97@gmail.com> <20251018160400.6921df6c@jic23-huawei>
-In-Reply-To: <20251018160400.6921df6c@jic23-huawei>
-From: Shrikant <raskar.shree97@gmail.com>
-Date: Fri, 24 Oct 2025 14:08:44 +0530
-X-Gm-Features: AS18NWBKc75onvPQ2KcRtEzbrT_rOdOOZhjS01vyTKH3-6a5Fttp43NYSt_gDrg
-Message-ID: <CAHc1_P6a=6MGT4_6mmMLzBXz8WxVv1C29iwDwXrDywV+Z2k-0g@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] iio: health: max30100: Add DT LED pulse-width support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, matt@ranostay.sg, 
-	skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251024073823.35122-5-chuguangqing@inspur.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Sat, Oct 18, 2025 at 8:34=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Sun, 12 Oct 2025 23:00:33 +0530
-> Shrikant Raskar <raskar.shree97@gmail.com> wrote:
->
-> > Add Device Tree support for configuring the LED pulse-width of the MAX3=
-0100
-> > sensor, and updates the driver to read and apply this property.
-> >
-> > Testing:
-> > - Verify DT property read successfully in probe().
-> > - Verify default fallback to 1600 us when DT property is omitted.
-> > - Confirm SPO2_CONFIG register programmed correctly using regmap_read()=
-.
-> > - Validate different DT pulse-width values (200, 400, 800, 1600 us)
-> >   are applied correctly.
-> > - Validate probe() failure for invalid LED pulse-width
-> > - Tested-on: Raspberry Pi 3B + MAX30100 breakout board
-> >
-> > Changelog:
-> > Changes from v2:
-> > - Fix DT binding schema errors
-> > - Add default value
-> > - Remove changelog from commit message
-> > - Add missing header file
-> >
-> > Shrikant Raskar (2):
-> >   dt-bindings: iio: health: max30100: Add LED pulse-width property
-> >   iio: health: max30100: Make LED pulse-width configurable via DT
-> >
-> >  .../bindings/iio/health/maxim,max30100.yaml   |  8 ++++
-> >  drivers/iio/health/max30100.c                 | 38 +++++++++++++++++--
-> >  2 files changed, 43 insertions(+), 3 deletions(-)
-> >
-> >
-> > base-commit: 8bd9238e511d02831022ff0270865c54ccc482d6
->
-> Applied to the togreg branch of iio.git and pushed out as testing for now
-Thanks for the update. I really appreciate your time and support!
+On Fri, Oct 24, 2025 at 03:38:23PM +0800, Chu Guangqing wrote:
+> The maple tree register cache is based on a much more modern data structure
+> than the rbtree cache and makes optimisation choices which are probably
+> more appropriate for modern systems than those made by the rbtree cache.
 
-Regards,
-Shrikant
+...
+
+>  	.reg_defaults = apds9960_reg_defaults,
+>  	.num_reg_defaults = ARRAY_SIZE(apds9960_reg_defaults),
+
+^^^^ Be careful with such cases, the cache implementations may behave
+differently. Have you tested this on the actual HW?
+
+>  	.max_register = APDS9960_REG_GFIFO_DIR(RIGHT),
+> -	.cache_type = REGCACHE_RBTREE,
+> +	.cache_type = REGCACHE_MAPLE,
+>  };
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

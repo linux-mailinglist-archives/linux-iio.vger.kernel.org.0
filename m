@@ -1,173 +1,89 @@
-Return-Path: <linux-iio+bounces-25427-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25428-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5792C07956
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 19:51:01 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9011AC07CBE
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 20:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6BAF189FF33
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 17:51:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1FF88566B57
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 18:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9600343209;
-	Fri, 24 Oct 2025 17:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iitb.ac.in header.i=@iitb.ac.in header.b="kspQttvv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EA4346E77;
+	Fri, 24 Oct 2025 18:41:22 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp1.iitb.ac.in (smtpd9.iitb.ac.in [103.21.126.64])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BE9335093
-	for <linux-iio@vger.kernel.org>; Fri, 24 Oct 2025 17:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.21.126.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ABA1E98EF;
+	Fri, 24 Oct 2025 18:41:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761328234; cv=none; b=aBBPZMDzfsYlpA5w1LP9wgElDp8a6EizNnflHj4vonWBf/UQ+0bApAGkjyQ6pIZmFOPIEe2i8Nzu+MXraAan2SUoX7upTofEUZFtL7btvHgZQKTnW0IlTx/IJIte9PGGjcV/IxTxEGT382SxDnQKsGj4pNMCP0x5KxILLtujT+Q=
+	t=1761331282; cv=none; b=aG7F1HLd3/vXlTah3rGDz7OWuht/bqPbFaim3OEbJ9qvduA7b5sEE/0qy7FEdHeh7LVSO9ScOBal5eRUw4Oq2Jz6v+PPpVVClptygqFYOdJcbQruDqbL+PUC9N/iG2Q8YjFtXt0DYABkMX0Av4sNdUOVnwkZfhTI+Fkzeu7E/TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761328234; c=relaxed/simple;
-	bh=8qAR75JaH4mfH/My4QWqcxLHgY+ysFJl6KwuNGwLdMM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AwaemUT4e4KuYPkxirSCi8EVRPrmWO21LH9zyTqu1Bl6LI8p5Uolzf+D8Bo16F0BJk2RzylQpmhO59QhCCIYnZAL7VhY/kDJK5jjKh3siBlGSsJRE6QyXpyc/1k0qrdSpCT/+AYG//ctSx7ftTZdv62pXHpmEFcX7SNUlbKq404=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in; spf=pass smtp.mailfrom=ee.iitb.ac.in; dkim=pass (1024-bit key) header.d=iitb.ac.in header.i=@iitb.ac.in header.b=kspQttvv; arc=none smtp.client-ip=103.21.126.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ee.iitb.ac.in
-Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
-	by smtp1.iitb.ac.in (Postfix) with SMTP id 1DD2D104C1F9
-	for <linux-iio@vger.kernel.org>; Fri, 24 Oct 2025 23:20:20 +0530 (IST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.iitb.ac.in 1DD2D104C1F9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=iitb.ac.in; s=mail;
-	t=1761328220; bh=8qAR75JaH4mfH/My4QWqcxLHgY+ysFJl6KwuNGwLdMM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kspQttvvSziCmmRXrxP7mW6eNaCxwso9OF7lTCOO/hBQ+tVBK+MDq3w7cOCPOIzBu
-	 y84LXezttbplIUEDIzoVG/+QzCMNVjG67OT4pHLaX9ocgD6VK6jsmBzP1/+cYxOHRg
-	 zfNm9CEUXwOJ9reEX/4mgGKSa4+u3olUMpoOcJ50=
-Received: (qmail 28386 invoked by uid 510); 24 Oct 2025 23:20:20 +0530
-X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <akhilesh@ee.iitb.ac.in>, uid 501) with qmail-scanner-2.11
- spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/26337} 
- Clear:RC:1(10.200.1.25):SA:0(0.0/7.0):. Processed in 3.480435 secs; 24 Oct 2025 23:20:20 +0530
-X-Spam-Level: 
-X-Spam-Pyzor: Reported 0 times.
-X-Envelope-From: akhilesh@ee.iitb.ac.in
-X-Qmail-Scanner-Mime-Attachments: |
-X-Qmail-Scanner-Zip-Files: |
-Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
-  by ldns2.iitb.ac.in with SMTP; 24 Oct 2025 23:20:16 +0530
-Received: from bhairav.ee.iitb.ac.in (bhairav.ee.iitb.ac.in [10.107.1.1])
-	by ldns2.iitb.ac.in (Postfix) with ESMTP id A1A2E34150E;
-	Fri, 24 Oct 2025 23:20:15 +0530 (IST)
-Received: from bhairav-test.ee.iitb.ac.in (bhairav.ee.iitb.ac.in [10.107.1.1])
-	(Authenticated sender: akhilesh)
-	by bhairav.ee.iitb.ac.in (Postfix) with ESMTPSA id 644D11E815D7;
-	Fri, 24 Oct 2025 23:20:15 +0530 (IST)
-Date: Fri, 24 Oct 2025 23:20:10 +0530
-From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+	s=arc-20240116; t=1761331282; c=relaxed/simple;
+	bh=w1ujWxhmWuxUYS66/jXKPhJDpr15LDEM7NOuWwwpbr0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JiFP4wXt9wNd5xgXcMbieHtWrtfdoETbq7kTgwqb97+LYadwjbUkW2tOgYw6IVDeepjuJKMlfPAA67VIdJHUPOr3eHgg/x9vpExXCV+8qmD0WoFWiDrZr5ZWr1bxM1+NqJ1vV5cQiDOyXB1R/E1XFiQAUJ243ibNPwvWZkkVfIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ctWsZ0CC3z6L59C;
+	Sat, 25 Oct 2025 02:39:46 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9780F14014B;
+	Sat, 25 Oct 2025 02:41:17 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 24 Oct
+ 2025 19:41:16 +0100
+Date: Fri, 24 Oct 2025 19:41:15 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>, jic23@kernel.org,
-	dlechner@baylibre.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, nuno.sa@analog.com, andy@kernel.org,
-	marcelo.schmitt1@gmail.com, vassilisamir@gmail.com,
-	salah.triki@gmail.com, skhan@linuxfoundation.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, akhileshpatilvnit@gmail.com
-Subject: Re: [PATCH 2/2] iio: pressure: adp810: Add driver for adp810 sensor
-Message-ID: <20251024-175010-876729@bhairav-test.ee.iitb.ac.in>
-References: <cover.1760184859.git.akhilesh@ee.iitb.ac.in>
- <8c202e7ccd332b26217d529a7a73b7a3ef0726ea.1760184859.git.akhilesh@ee.iitb.ac.in>
- <CAHp75VdGJfMALGOFvkOW=JZ0yHE2QbRSzNs2Xd42-Weec1GmQw@mail.gmail.com>
- <95c1ba99-510b-4efb-9b6d-4c1103fc43a5@kernel.org>
- <aPp5OYcPxNNIOgB6@smile.fi.intel.com>
- <c45309cf-bd2c-41fe-b893-7e0a91de84a8@kernel.org>
- <aPs6HAJabFMRzX9Y@smile.fi.intel.com>
- <aPs6raLIcM3QbQXJ@smile.fi.intel.com>
+CC: Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Michael Hennerich
+	<Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, "David
+ Lechner" <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 2/3] iio: dac: ad5456: Add missing DT compatibles
+Message-ID: <20251024194115.000054bd@huawei.com>
+In-Reply-To: <aPupTHhbvvMq4c7I@smile.fi.intel.com>
+References: <20251023-ad5446-bindings-v2-0-27fab9891e86@analog.com>
+	<20251023-ad5446-bindings-v2-2-27fab9891e86@analog.com>
+	<aPupTHhbvvMq4c7I@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aPs6raLIcM3QbQXJ@smile.fi.intel.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Fri, Oct 24, 2025 at 11:37:01AM +0300, Andy Shevchenko wrote:
-> On Fri, Oct 24, 2025 at 11:34:37AM +0300, Andy Shevchenko wrote:
-> > On Fri, Oct 24, 2025 at 08:18:21AM +0200, Krzysztof Kozlowski wrote:
-> > > On 23/10/2025 20:51, Andy Shevchenko wrote:
-> > > > On Sun, Oct 12, 2025 at 05:12:26AM +0200, Krzysztof Kozlowski wrote:
-> > > >> On 11/10/2025 16:10, Andy Shevchenko wrote:
-> > > >>> On Sat, Oct 11, 2025 at 3:25 PM Akhilesh Patil <akhilesh@ee.iitb.ac.in> wrote:
-> 
-> ...
-> 
-> > > >>>> +F:     Documentation/devicetree/bindings/iio/pressure/aosong,adp810.yaml
-> > > >>>> +F:     drivers/iio/pressure/adp810.c
-> > > >>>
-> > > >>> Some tools will report an orphaned yaml file if you apply patch 1
-> > > >>> without patch 2.
-> > > >>
-> > > >> You mean checkpatch? That warning is not really relevant. Adding
-> > > >> maintainers entry here for both files is perfectly fine and correct.
-> > > > 
-> > > > It's relevant as long as I see (false positive) warnings from it. Can somebody
-> > > 
-> > > No, it is not relevant. Just because tool is inefficient does not allow
-> > > you to point such nitpicks. You as reviewer are supposed to find
-> > > difference which checkpatch warnings are important and which are not and
-> > > DO NOT bother contributors with useless points that there is some
-> > > orphaned file according to checkpatch.
-> > > 
-> > > > shut the checkpatch up about missing DT files in the MAINTAINERS?
-> > > 
-> > > That would be great but, if no one does it your comments on "orphaned
-> > > file" are counter productive.
-> > 
-> > Something like this?
-> > 
-> > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> > index 6729f18e5654..818b49d314ce 100755
-> > --- a/scripts/checkpatch.pl
-> > +++ b/scripts/checkpatch.pl
-> > @@ -3441,11 +3441,17 @@ sub process {
-> >  		     ($line =~ /\{\s*([\w\/\.\-]*)\s*\=\>\s*([\w\/\.\-]*)\s*\}/ &&
-> >  		      (defined($1) || defined($2))))) {
-> >  			$is_patch = 1;
-> > -			$reported_maintainer_file = 1;
-> > -			WARN("FILE_PATH_CHANGES",
-> > -			     "added, moved or deleted file(s), does MAINTAINERS need updating?\n" . $herecurr);
-> > +			# DT bindings are incorporate maintainer information, no need to report
-> > +			if ($realfile !~ m@^Documentation/devicetree/bindings/@)) {
-> > +				$reported_maintainer_file = 1;
-> > +				WARN("FILE_PATH_CHANGES",
-> > +				     "added, moved or deleted file(s), does MAINTAINERS need updating?\n" . $herecurr);
-> > +			}
-> >  		}
-> 
-> > +		    ($realfile =~ m@^Documentation/devicetree/bindings/.*\.txt$@)) {
-> > +			if ($realfile =~ m@^include/asm/@) {
-> 
-> These two lines are leftovers that needs to be removed, of course.
-> 
-> Akhilesh, can you give a try of this change and see if the original DT schema
-> binding patch is not reported anymore?
+On Fri, 24 Oct 2025 19:29:00 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-Hi Andy. I tested checkpatch.pl patch you suggested here. checkpatch
-does NOT show the warning now on my dt-bindings patch. Thanks for
-initiating this script improvement.
-I believe this is kernel wide script improvement and best to take
-independently if I understood correctly.
+> On Thu, Oct 23, 2025 at 02:01:38PM +0300, Nuno S=E1 wrote:
+> > Add missing of_device_id compatibles for the i2c and spi drivers. =20
+>=20
+> How does it work at all? Is there an ugly ifdeferry?=20
 
-Regards,
-Akhilesh
+Exactly that.
 
-> 
-> >  # Check for adding new DT bindings not in schema format
-> >  		if (!$in_commit_log &&
-> >  		    ($line =~ /^new file mode\s*\d+\s*$/) &&
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
+> No module should have two
+> module_*_driver() and other stuff.
+>=20
+Indeed, hence not using that infrastructure.
+
+I wouldn't mind more significant refactors...
+
+J
+
+
 

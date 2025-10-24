@@ -1,145 +1,181 @@
-Return-Path: <linux-iio+bounces-25422-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25423-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3328FC06DB8
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 17:03:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8ADC0721C
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 18:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DAB3E5092AC
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 15:01:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63B473BA9EB
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 16:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1507322C98;
-	Fri, 24 Oct 2025 15:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502E33321DD;
+	Fri, 24 Oct 2025 16:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eapkqcC3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E8LewufV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920FF31C56D
-	for <linux-iio@vger.kernel.org>; Fri, 24 Oct 2025 15:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A76C32A3C6;
+	Fri, 24 Oct 2025 16:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761318074; cv=none; b=uxHU15AyRLnVzLs/KJQ1KADOfVw+AfUaXXle1mtMakcVBtzyOOCqEojfKvU1iCKmw0x41S3Nya0xxNzLRJojppJ9ahK3hqNJiTpS9woz5mrMW50YjWqy9hfpeGL7u5OdbqEybdefwLmoYWLIblYR9QeWytOwXB3vQyGCxXNIivs=
+	t=1761321831; cv=none; b=l6nInrYv9UjUH9fnMxdjV6U/XJmBFdiLj4xI3dzLOjnqwUrgAWgTC/Za1TKenKfybcrw+bgZmAPi7uT4C2/ji76KbDQru5QhnLh84k3AoDiGTlXykwTX616C2+J6wWIjUi6bApLGYbv+JLklOXmjFpUDbiLu4LOtZVMrYlQBdTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761318074; c=relaxed/simple;
-	bh=Ipd+fJKM54dwFhjqVqY2/vt0B0gPimIr32J295wlB+M=;
+	s=arc-20240116; t=1761321831; c=relaxed/simple;
+	bh=4rQ06hcRDPh06TcIr4Hhsm2kdiwKuNYxumRXFNrUjJA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lhabQWLh+W6aUx1B+jCyTlsRh08vA66kT404HPCj/EwIXqECxpW5xQn3ucXcvOIJqQTS2F5/mLI44rkS2x/xjUTfeCa6dIpkGZYkWCUbMMmTffcAOlujLSlmjwvwOP063ukki0FsqVgC+IWE6vtIgCMt+eVaMotaEYEVjLHEN3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eapkqcC3; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b6cee846998so1432830a12.1
-        for <linux-iio@vger.kernel.org>; Fri, 24 Oct 2025 08:01:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761318071; x=1761922871; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ipd+fJKM54dwFhjqVqY2/vt0B0gPimIr32J295wlB+M=;
-        b=eapkqcC3gDLEE0fjFzXqlUpmKvq26CySDN96HJfNC9kv7HhsNAtnUBRYeLKEIXbAn8
-         YpOyEvQjCfQqLXG+3AqChnWMtVXL/diT3BurH2Zn/GeJulkqZMzRJpiuxH87jI6ypO4A
-         oHiC2s2yTaPotu4xCvggyAwl+uMapNTq8fzLTNMT2P9YgB5b8+VnRU74JGrCCXUQ3K48
-         ujKlTu6HCge7RYxJ6Fa1VzZehJHT1IwzdKhr+ZX4bOX+Ax97uIeYdwgv7jmgUUZs4ZsA
-         /QWidY+fOpUplPG7CXpWIjQHF7bKNjHU1npOH6gc5sgpAxtau9u2Gj35C3JziPlBeVJE
-         jmHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761318071; x=1761922871;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ipd+fJKM54dwFhjqVqY2/vt0B0gPimIr32J295wlB+M=;
-        b=MQAMOF9NY9iiZGGUr36CgeHKP1HMtjsZVpyYOoicvNxRJ/S97qBCdn6uGlg9OWfJtw
-         jWh3txMOQo7Q1XBuq+IHHEPZxfs1Wzux7c2u/XQOTUlwrZVso4T7KwT1u4LsYzpr5AD/
-         V3os8h27mTf/qBUZ012ExV/mx/8jJqbVRIlJNeyd4XgX5WPFHZOitOjmJ34R9TnVsaPK
-         rUWO/LHGWOTA3CMKjNs3AorVlHmZpsHh6vpybK/bsZ5YJ7eRr6jDiQPid2LnQu8FClm6
-         ngunTqb3cTdroP7VBgZG+H6qZBLYncLmnvCsgfiIJWJuCjolyUm6k0RwjBFxeVezkmwJ
-         pynQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5XTlAY6V8HOD0R2HwVZCYH5IYKU7zTE4VkivU0nhg+CsBM+n8qrMGJOvgxxGwIBcs25PRusdlx2U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQZpiMsMT9pMUtbvDHl9JnwbK1sDnz00v1lBrlJGY3IHaULWpX
-	COrnVXb03iHWNr+DzQywX9GiidPLkPOHb0IfJZ0w8SSg61tJH24naWyfZqOoHAXw5/M=
-X-Gm-Gg: ASbGnctyayQldUSlOY/QfDaiDaa2vZxLHR5wi4ta905ROacw9WE8He4mcSkxM1vJkin
-	bHgYrPEcQSf9mSLdRTPb5MeoKRMN/4NNhOr9RivoqmZaCbdNFj/TwMWC4SPfADO71xR2/y0Mx8D
-	tU2DNKWftpQ/5z1fY13KsamPNw66HeAxtjUw1zFptROrMIijW5sQgQ23MG4kkrH1SPqj7EIIld7
-	8kMQ5k4pMW+HKxj8XJwBzXt2kQSf8FUT2Zgnu3IKkE4B5pwK9JQShaZMVHh9mz3JFFsda0DG1nU
-	ZXvsK3ZkcwjIbgDHeNR52xyw85lh5nohg/k4xKT8281F1W0jkAff9kQ1sp2ZZ0H4d5y8uhLzva2
-	Bo7Riq9Z+3bBCk1rl5v6bpoIg2/FlaLp898XqkhBpSnSkPFgbRzycKD0Pk1IX+MDy3/jGEx3J5W
-	RRoV8=
-X-Google-Smtp-Source: AGHT+IHuDfyfb1rJHT8ZJBZDENWXEuZEgoATFw7kevTr6Wui6O5rdZfaFJ1o7hmkdy/EeXDSX0H8pg==
-X-Received: by 2002:a17:903:8c6:b0:28d:18fb:bb93 with SMTP id d9443c01a7336-290c9c8968cmr381787975ad.7.1761318070419;
-        Fri, 24 Oct 2025 08:01:10 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:c4aa:f655:2dba:5bb5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946e0f3794sm59537715ad.88.2025.10.24.08.01.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 08:01:09 -0700 (PDT)
-Date: Fri, 24 Oct 2025 09:01:05 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Robert Foss <rfoss@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Georgi Djakov <djakov@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=joe6FQClezer77/ddQFVWihMr9QQf/SK2UBSonJanoe4W7c54VzfgaZ/r+06DMFgGEjvftc9lHNukK8Oo3VKd8+Xt1ysUQQEYGWu8gltBUtF+pitsouX3Lzo+QWNSDXqSk2dIIkkwPK4LhErwYuPrNb+VCFyM1GakzJhUT59BAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E8LewufV; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761321830; x=1792857830;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=4rQ06hcRDPh06TcIr4Hhsm2kdiwKuNYxumRXFNrUjJA=;
+  b=E8LewufVOxQ5HbMhl4pPzsvceo8qzmYX8Zw0jI61OYSmJYCHZ/kQduSA
+   SnjYLzl0Ahru1o6ZAzTWcobcGe5Qe9d7SDFRVLvmMg9uCTYw8fQK5QSCh
+   nilq95pjqPgfPYHCN2Bjz7ozsi+Xt0PV7qeO/OBIIoTrfq1LT9/sFrVvb
+   ENVWn244n+WWYnIhlUUKarnp8lUtzixF8fhFBhlm0VyKA5YFmDK7rpVD7
+   0OMD20wEnLsF5HW3GdRRk23e8S0lJYLebnWGHc2+77+tMwQ+L80hge7EF
+   RTaTeMAwsJ7xs41devNKfcmj3Dt8NgfWXVYWxpt7sHvNaiti52koYOcTW
+   Q==;
+X-CSE-ConnectionGUID: YJvAx88bRAmZ7ChbH30NLA==
+X-CSE-MsgGUID: lyFltYAaQP2wqda7BA/o3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="81132279"
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; 
+   d="scan'208";a="81132279"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 09:03:49 -0700
+X-CSE-ConnectionGUID: oM1QeLgRR2izo7nsOkSYWQ==
+X-CSE-MsgGUID: nRGZyRpfSYK4S0x3HQThpw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; 
+   d="scan'208";a="215117928"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.147])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 09:03:45 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vCKGT-00000002Cpo-42le;
+	Fri, 24 Oct 2025 19:03:41 +0300
+Date: Fri, 24 Oct 2025 19:03:41 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Olivia Mackall <olivia@selenic.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-pm@vger.kernel.org, iommu@lists.linux.dev,
-	linux-media@vger.kernel.org, linux-mtd@lists.infradead.org,
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-sound@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Remove extra blank lines
-Message-ID: <aPuUseub-Z60hrOx@p14s>
-References: <20251023143957.2899600-1-robh@kernel.org>
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] i3c: Add HDR API support
+Message-ID: <aPujXUO2h5zHy2fj@smile.fi.intel.com>
+References: <20251014-i3c_ddr-v6-0-3afe49773107@nxp.com>
+ <20251014-i3c_ddr-v6-1-3afe49773107@nxp.com>
+ <aPnmCwwZVZ5egqkP@smile.fi.intel.com>
+ <aPpHTej/vKfiN68k@lizhi-Precision-Tower-5810>
+ <aPpyf1xPmU_koEXH@smile.fi.intel.com>
+ <aPq/6/+63sHuq/qy@lizhi-Precision-Tower-5810>
+ <aPsZB44qXR77jNHF@smile.fi.intel.com>
+ <aPuHKs3u344zoI2+@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20251023143957.2899600-1-robh@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aPuHKs3u344zoI2+@lizhi-Precision-Tower-5810>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org> # remoteproc
+On Fri, Oct 24, 2025 at 10:03:22AM -0400, Frank Li wrote:
+> On Fri, Oct 24, 2025 at 09:13:27AM +0300, Andy Shevchenko wrote:
+> > On Thu, Oct 23, 2025 at 07:53:15PM -0400, Frank Li wrote:
+> > > On Thu, Oct 23, 2025 at 09:22:55PM +0300, Andy Shevchenko wrote:
+> > > > On Thu, Oct 23, 2025 at 11:18:37AM -0400, Frank Li wrote:
+> > > > > On Thu, Oct 23, 2025 at 11:23:39AM +0300, Andy Shevchenko wrote:
+> > > > > > On Tue, Oct 14, 2025 at 12:40:00PM -0400, Frank Li wrote:
+
+...
+
+> > > > > > > +/* keep back compatible */
+> > > > > > > +#define i3c_priv_xfer i3c_xfer
+> > > > > >
+> > > > > > How many of the current users do this? Can't we just rename treewide?
+> > > > >
+> > > > > git grep -r priv_xfer drivers/
+> > > >
+> > > > `git grep -lw ...` is a better approach :-)
+> > > >
+> > > > > drivers/base/regmap/regmap-i3c.c:       struct i3c_priv_xfer xfers[] = {
+> > > > > drivers/base/regmap/regmap-i3c.c:       return i3c_device_do_priv_xfers(i3c, xfers, 1);
+> > > > > drivers/base/regmap/regmap-i3c.c:       struct i3c_priv_xfer xfers[2];
+> > > > > drivers/base/regmap/regmap-i3c.c:       return i3c_device_do_priv_xfers(i3c, xfers, 2);
+> > > > > drivers/hwmon/lm75.c:   struct i3c_priv_xfer xfers[] = {
+> > > > > drivers/hwmon/lm75.c:   ret = i3c_device_do_priv_xfers(i3cdev, xfers, 2);
+> > > > > drivers/hwmon/lm75.c:   struct i3c_priv_xfer xfers[] = {
+> > > > > drivers/hwmon/lm75.c:   return i3c_device_do_priv_xfers(i3cdev, xfers, 1);
+> > > > > drivers/i3c/device.c:int i3c_device_do_xfers(struct i3c_device *dev, struct i3c_priv_xfer *xfers,
+> > > > > drivers/i3c/master.c:   if (!ops->priv_xfers && !ops->i3c_xfers)
+> > > > > drivers/i3c/master.c:   if (!master->ops->priv_xfers)
+> > > > > drivers/i3c/master.c:   return master->ops->priv_xfers(dev, xfers, nxfers);
+> > > > > drivers/i3c/master/dw-i3c-master.c:static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+> > > > > drivers/i3c/master/dw-i3c-master.c:                                 struct i3c_priv_xfer *i3c_xfers,
+> > > > > drivers/i3c/master/dw-i3c-master.c:     .priv_xfers = dw_i3c_master_priv_xfers,
+> > > > > drivers/i3c/master/i3c-master-cdns.c:static int cdns_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+> > > > > drivers/i3c/master/i3c-master-cdns.c:                                 struct i3c_priv_xfer *xfers,
+> > > > > drivers/i3c/master/i3c-master-cdns.c:   .priv_xfers = cdns_i3c_master_priv_xfers,
+> > > > > drivers/i3c/master/mipi-i3c-hci/core.c:static int i3c_hci_priv_xfers(struct i3c_dev_desc *dev,
+> > > > > drivers/i3c/master/mipi-i3c-hci/core.c:                       struct i3c_priv_xfer *i3c_xfers,
+> > > > > drivers/i3c/master/mipi-i3c-hci/core.c: .priv_xfers             = i3c_hci_priv_xfers,
+> > > > > drivers/i3c/master/renesas-i3c.c:static int renesas_i3c_priv_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *i3c_xfers,
+> > > > > drivers/i3c/master/renesas-i3c.c:       .priv_xfers = renesas_i3c_priv_xfers,
+> > > > > drivers/i3c/master/svc-i3c-master.c:    struct i3c_priv_xfer *xfer;
+> > > > > drivers/i3c/master/svc-i3c-master.c:     * at svc_i3c_master_priv_xfers().
+> > > > > drivers/i3c/master/svc-i3c-master.c:static int svc_i3c_master_i3c_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *xfers,
+> > > > > drivers/net/mctp/mctp-i3c.c:    struct i3c_priv_xfer xfer = { .rnw = 1, .len = mi->mrl };
+> > > > > drivers/net/mctp/mctp-i3c.c:    rc = i3c_device_do_priv_xfers(mi->i3c, &xfer, 1);
+> > > > > drivers/net/mctp/mctp-i3c.c:    struct i3c_priv_xfer xfer = { .rnw = false };
+> > > > > drivers/net/mctp/mctp-i3c.c:    rc = i3c_device_do_priv_xfers(mi->i3c, &xfer, 1);
+> > > > >
+> > > > > After this patch merged, I can clean up it at difference subsytem. After
+> > > > > all cleanup done, we can safely remove this define.
+> > > >
+> > > > I counted 9. I think it's not a big deal to convert all of them at once without
+> > > > leaving an intermediate state. But this is a call for the I³C subsystem maintaiiner.
+> > >
+> > > There also are other cleanup works. The key point is that everyone agree my
+> > > HDR solution. Cleanup these is not big deal. I am not sure how to avoid
+> > > build broken at difference subsystem.
+> > >
+> > > After this patch merge, cleanup will be easier and safer.
+> >
+> > Then leave that renaming to the cleanup series. No need to use a define, just
+> > use the old function name.
+> 
+> Using old function name for HDR will be very strange and conflict with
+> spec's name convention.
+> 
+> The term 'private' transfer in i3c spec is specific for SDR transfer. It
+> is neccessary steps to complete whole naming switches.
+
+Right, but this out of scope OR a prerequisite to this series. My point that
+these two shouldn't be mixed and one left half-baked.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

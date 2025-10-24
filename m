@@ -1,286 +1,104 @@
-Return-Path: <linux-iio+bounces-25415-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25416-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604C9C05879
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 12:12:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1D2C059D9
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 12:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BFCC235BF2E
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 10:12:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05B7E3B3AAD
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Oct 2025 10:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89DCC30EF77;
-	Fri, 24 Oct 2025 10:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82EA13101B7;
+	Fri, 24 Oct 2025 10:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l/d2Y+U8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6AE30EF71;
-	Fri, 24 Oct 2025 10:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65A72C08C5;
+	Fri, 24 Oct 2025 10:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761300741; cv=none; b=f09v+JpsskT7BdlMmyaNUvWEr+LMVFYbk1OIXmlf/MzeFzug89UGYK7wNLe5cf/+U1lAyGKb2f2HnyJpTX0tADdamEpi2JjjQHS53/FAUpvHF5svVa3Y6LFW+N2ro4J7pKT5Fafi4SYUWysaZooslLAPh8xkCM0xrFVhl15OGdE=
+	t=1761301843; cv=none; b=WqszXQ8Y1GDhUpTUg/4Blg8h60kIOww2lHd7bdc1E5ECjLi8LEM9hShjyATOBDbKwo7ObuBo6lNVlH1Pn3aHzwn3zx3999FjBRwTzxlOKoFCew6LNvvc7Y5CQrPHfPO6S83gYCcNTy9zDD3g3bN1XJDkiBR0yyOz3t4GtdNYIOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761300741; c=relaxed/simple;
-	bh=465eVOWUp+N7PV0ZEpeRHSUci+OixbUnu7VD9WHOWkc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=icDon8lprJQS39aPnaFfwlQIsNWDstEdJr9RD8HkgX2ovr/mrkYmsruRNMyTnUYH8R9aCIZgJAu2X5wxwLxWMpQOe9JZP6QhwlkoGO1pv9o5lFMqOyT5VsfLdySoL/8HDN01s/NkVhnJsmBfEltnqG5Jd00+8qvtvp1hR3vkt0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ctJZ66v9Yz6L51R;
-	Fri, 24 Oct 2025 18:10:38 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 67985140372;
-	Fri, 24 Oct 2025 18:12:09 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 24 Oct
- 2025 11:12:08 +0100
-Date: Fri, 24 Oct 2025 11:12:07 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Conor Dooley <conor@kernel.org>
-CC: Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Michael Hennerich
-	<Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, "David
- Lechner" <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, "Rob
- Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 1/3] dt-bindings: iio: dac: Document AD5446 and
- similar devices
-Message-ID: <20251024111207.00007427@huawei.com>
-In-Reply-To: <20251023-food-say-5e396be087af@spud>
-References: <20251023-ad5446-bindings-v2-0-27fab9891e86@analog.com>
-	<20251023-ad5446-bindings-v2-1-27fab9891e86@analog.com>
-	<20251023-food-say-5e396be087af@spud>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1761301843; c=relaxed/simple;
+	bh=xjBMkmI+qsDoGp9ZiRzBUp/jILZSgk47twlvE8podR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V3tLwzIjbKeEYPSi2uB1jC8xElcJElsFUQBW+bL3lag82L5dWdGogO0j2ND7PJNmpxax1BRahWTKnVW+FwatlmBO0j0TZaCR8rUzoFUPWoMS+UDuM5Akun5De4LI/orJEy7f4PX/+EC41MlB1w3ZYxwADrK6fwIjDdmBSK+BABM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l/d2Y+U8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E75CC4CEF1;
+	Fri, 24 Oct 2025 10:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761301842;
+	bh=xjBMkmI+qsDoGp9ZiRzBUp/jILZSgk47twlvE8podR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=l/d2Y+U8bQs8VF+XsPwC/lo+bxBE0j4eWS6VDHNCD/dOyGEFM7pOVi7s1xB8wyT1F
+	 jv0kcNfIyneAU7DFc2XMuu8oHJ2C93dqlydWRrXYT3RCBqDbolkiQ18EsFfqCwzdIT
+	 F0FJ+u2jbBRNARJVywQ0ZMr1PM6LZQ50TTD9W4llmkHp0cxkQM8R7YTAZNZuhKj472
+	 K02nhKLn9f/Q1d19EUPlbhQT59235yFCKn8XDWmWaJOjbnUv34C0E0GbdT7yY2B8c1
+	 q4jVSAnw+7Qfl9JCs14YGXOOwUUitTY/lsolUgoznKOAtNMsr23PjYx6i1nIOnN4f/
+	 YsZZGbsmS20jw==
+Date: Fri, 24 Oct 2025 12:30:37 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Guenter Roeck <linux@roeck-us.net>, 
+	Jonathan Cameron <jic23@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Georgi Djakov <djakov@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Joerg Roedel <joro@8bytes.org>, Jassi Brar <jassisinghbrar@gmail.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, dmaengine@vger.kernel.org, 
+	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-pm@vger.kernel.org, iommu@lists.linux.dev, linux-media@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, linux-crypto@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Remove extra blank lines
+Message-ID: <fncqrwr6pi3ttxkf44hncy35ogxqdvql52hdcycq4yakbkeose@gv6lxr6a4uri>
+References: <20251023143957.2899600-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251023143957.2899600-1-robh@kernel.org>
 
-On Thu, 23 Oct 2025 19:24:17 +0100
-Conor Dooley <conor@kernel.org> wrote:
+Hi Rob,
 
-> On Thu, Oct 23, 2025 at 02:01:37PM +0300, Nuno S=E1 wrote:
-> > Add device tree binding documentation for the Analog Devices AD5446
-> > family of Digital-to-Analog Converters and compatible devices from
-> > Texas Instruments. There's both SPI and I2C interfaces and feature
-> > resolutions ranging from 8-bit to 16-bit.
-> >=20
-> > The binding covers 29 compatible devices including the AD5446 series, =
-=20
->=20
-> If they're compatible, how come there's no fallback use? Just to keep
-> things consistent with how they've always been while probing as spi
-> child devices?
-Hi Conor,
+On Thu, Oct 23, 2025 at 09:37:56AM -0500, Rob Herring (Arm) wrote:
+> Generally at most 1 blank line is the standard style for DT schema
+> files. Remove the few cases with more than 1 so that the yamllint check
+> for this can be enabled.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-They aren't compatible. The 2nd patch is misleading because it doesn't
-associate data with the of_device_id.  The driver is getting that from
-matching the compatible property with manufacturer stripped off.
-
-I've requested Nuno sort that out in v3. It's a bit more than just
-adding the data as would also involve moving away from using an enum
-to using pointers to the structures that the enum indexes (currently in
-an array).
-
-https://elixir.bootlin.com/linux/v6.17.4/source/drivers/iio/dac/ad5446.c#L3=
-15
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
 
 Thanks,
-
-J
->=20
-> Conor.
->=20
-> > AD5600 series, AD5620/5640/5660 variants with different voltage ranges,
-> > and TI DAC081s101/DAC101s101/DAC121s101 devices.
-> >=20
-> > Signed-off-by: Nuno S=E1 <nuno.sa@analog.com>
-> > ---
-> >  .../devicetree/bindings/iio/dac/adi,ad5446.yaml    | 138 +++++++++++++=
-++++++++
-> >  MAINTAINERS                                        |   8 ++
-> >  2 files changed, 146 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml =
-b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
-> > new file mode 100644
-> > index 000000000000..90fc8ca053fe
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
-> > @@ -0,0 +1,138 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/dac/adi,ad5446.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Analog Devices AD5446 and similar DACs
-> > +
-> > +maintainers:
-> > +  - Michael Hennerich <michael.hennerich@analog.com>
-> > +  - Nuno S=E1 <nuno.sa@analog.com>
-> > +
-> > +description: |
-> > +  Digital to Analog Converter devices supporting both SPI and I2C inte=
-rfaces.
-> > +  These devices feature a range of resolutions from 8-bit to 16-bit.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    oneOf:
-> > +      - description: SPI DACs
-> > +        enum:
-> > +          - adi,ad5300
-> > +          - adi,ad5310
-> > +          - adi,ad5320
-> > +          - adi,ad5444
-> > +          - adi,ad5446
-> > +          - adi,ad5450
-> > +          - adi,ad5451
-> > +          - adi,ad5452
-> > +          - adi,ad5453
-> > +          - adi,ad5512a
-> > +          - adi,ad5541a
-> > +          - adi,ad5542
-> > +          - adi,ad5542a
-> > +          - adi,ad5543
-> > +          - adi,ad5553
-> > +          - adi,ad5600
-> > +          - adi,ad5601
-> > +          - adi,ad5611
-> > +          - adi,ad5621
-> > +          - adi,ad5641
-> > +          - adi,ad5620-2500
-> > +          - adi,ad5620-1250
-> > +          - adi,ad5640-2500
-> > +          - adi,ad5640-1250
-> > +          - adi,ad5660-2500
-> > +          - adi,ad5660-1250
-> > +          - adi,ad5662
-> > +          - ti,dac081s101
-> > +          - ti,dac101s101
-> > +          - ti,dac121s101
-> > +      - description: I2C DACs
-> > +        enum:
-> > +          - adi,ad5301
-> > +          - adi,ad5311
-> > +          - adi,ad5321
-> > +          - adi,ad5602
-> > +          - adi,ad5612
-> > +          - adi,ad5622
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  vcc-supply:
-> > +    description:
-> > +      Reference voltage supply. If not supplied, devices with internal
-> > +      voltage reference will use that.
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +allOf:
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            enum:
-> > +              - adi,ad5300
-> > +              - adi,ad5310
-> > +              - adi,ad5320
-> > +              - adi,ad5444
-> > +              - adi,ad5446
-> > +              - adi,ad5450
-> > +              - adi,ad5451
-> > +              - adi,ad5452
-> > +              - adi,ad5453
-> > +              - adi,ad5512a
-> > +              - adi,ad5541a
-> > +              - adi,ad5542
-> > +              - adi,ad5542a
-> > +              - adi,ad5543
-> > +              - adi,ad5553
-> > +              - adi,ad5600
-> > +              - adi,ad5601
-> > +              - adi,ad5611
-> > +              - adi,ad5621
-> > +              - adi,ad5641
-> > +              - adi,ad5620-2500
-> > +              - adi,ad5620-1250
-> > +              - adi,ad5640-2500
-> > +              - adi,ad5640-1250
-> > +              - adi,ad5660-2500
-> > +              - adi,ad5660-1250
-> > +              - adi,ad5662
-> > +              - ti,dac081s101
-> > +              - ti,dac101s101
-> > +              - ti,dac121s101
-> > +    then:
-> > +      allOf:
-> > +        - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    spi {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        dac@0 {
-> > +            compatible =3D "adi,ad5446";
-> > +            reg =3D <0>;
-> > +            vcc-supply =3D <&dac_vref>;
-> > +        };
-> > +    };
-> > +  - |
-> > +    i2c {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        dac@42 {
-> > +            compatible =3D "adi,ad5622";
-> > +            reg =3D <0x42>;
-> > +            vcc-supply =3D <&dac_vref>;
-> > +        };
-> > +    };
-> > +...
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 940889b158eb..dae04c308975 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -440,6 +440,14 @@ W:	http://wiki.analog.com/AD5398
-> >  W:	https://ez.analog.com/linux-software-drivers
-> >  F:	drivers/regulator/ad5398.c
-> > =20
-> > +AD5456	DAC DRIVER
-> > +M:	Michael Hennerich <michael.hennerich@analog.com>
-> > +M:	Nuno S=E1 <nuno.sa@analog.com>
-> > +L:	linux-iio@vger.kernel.org
-> > +S:	Supported
-> > +W:	https://ez.analog.com/linux-software-drivers
-> > +F:	Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
-> > +
-> >  AD714X CAPACITANCE TOUCH SENSOR DRIVER (AD7142/3/7/8/7A)
-> >  M:	Michael Hennerich <michael.hennerich@analog.com>
-> >  S:	Supported
-> >=20
-> > --=20
-> > 2.34.1
-> >  =20
->=20
-
+Andi
 

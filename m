@@ -1,124 +1,109 @@
-Return-Path: <linux-iio+bounces-25438-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25439-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0587C08EFD
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Oct 2025 12:20:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A84BC090DB
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Oct 2025 15:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E3E54E241B
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Oct 2025 10:20:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B4193BEC03
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Oct 2025 13:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0F72ED871;
-	Sat, 25 Oct 2025 10:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79032DF138;
+	Sat, 25 Oct 2025 13:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nDDX/tTv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b5Brjm1b"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2FC2EB5B9
-	for <linux-iio@vger.kernel.org>; Sat, 25 Oct 2025 10:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053A72343C0
+	for <linux-iio@vger.kernel.org>; Sat, 25 Oct 2025 13:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761387631; cv=none; b=LJhu5UK4G+PJzpwtNAK22gZEigcauCKm2mz7WdDDcqv4f7sqGBd7iF4EdOKen9vFhma7osGtWTifxwze2DFnCcLh8atME8cjDuKtlI3hd+HW3f7bkkglDCi4nG3xoZn7tFDJgZGtu+i7VMOmIrO3XR+8fzLjt1xTk5O+iSHw+GI=
+	t=1761399316; cv=none; b=uxQY47iiX8Hs/0pDHymYT9TuaLenXD2hpDwn2QzfUs+b19tyCaz35ORBNCZZIu1LfgvY9+RkO+JiFHqpZLDi6AAtpK0hmopbsFN7Tvadilw1n6tIyXfYgBdFEzD6kSH4eu23VjYl12OHDwqAOWUH1G7FdK8cZZjWK0uDrdMWstQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761387631; c=relaxed/simple;
-	bh=n/WmFuxnjU+b5BqffW9C/hwrzM3poLDwCzQEeW+4gA4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Pm9mB7++gCPMf4JUucm8gUFoM3XKtcW3B08Q8N+nU2UsM5cS0d60kowYInOJdw0alqoZjYjpK254Z4pDMVpGj2WijDouFFAy1FCljvzN/6pOkyq0QZwaNRsZB+vOHLn1pGE3HYx4aH99hXXZB/LUtQBjNFlCZXEGr0WV5/tjh0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nDDX/tTv; arc=none smtp.client-ip=209.85.210.175
+	s=arc-20240116; t=1761399316; c=relaxed/simple;
+	bh=MfijaoVY3izM3fqXrWCWyMWpoHEq2dEdD86JsySrhGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MSLHOGstGINKfQyXCzGS9mWeKjqqYjdXbJ9O8lwpUkxSk4gQYZ4g3ct77aMHoYxdszt2C7ICXXIPT9I+Ouxce5d/Le0T1AoLAbLm1lKqbhjH+E2FGtJKQ8qMNJpxZK3cvU6V0HfFKOR3ZcZDlbvSI7tnzgVJTeVMo6zj8aTawTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b5Brjm1b; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7a23208a0c2so2316699b3a.0
-        for <linux-iio@vger.kernel.org>; Sat, 25 Oct 2025 03:20:29 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b50645ecfbbso621989266b.1
+        for <linux-iio@vger.kernel.org>; Sat, 25 Oct 2025 06:35:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761387629; x=1761992429; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2vevNR+/jFaSQTBPwXQ9KXYtO+RS1f1boQpLGvPWQCE=;
-        b=nDDX/tTvnsQXbSh+qGDh2osU4k/TR24I7/ORg2IrTSTIYxbEzPXI4NHvvneETOVnzI
-         WSIreuJgWqWv2IIChZ5jYSTegKVCQqbUTH0uLxvLniP+AqAWM+ndTCrbKNvfBPpSqNDS
-         pukt3b8FVzzMadmWaV95RjROlXfLoguV9GtIwo+GZGIjI7rsgHOX75YFwUcp7wwR5c5B
-         g4pkoze+u5qhQZC5Cy1Mr3jmBmWUIn0HoP/TcVi1WZczIbQ2LfrunzPHDvow6wAgcicc
-         dLRGW/S8SgHp5bVTfAf1neZlkMHj5/d7gGI+fJkNlhABmF+FnglBBbb10ZtT5ZzH6rES
-         Y8EA==
+        d=gmail.com; s=20230601; t=1761399313; x=1762004113; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MfijaoVY3izM3fqXrWCWyMWpoHEq2dEdD86JsySrhGc=;
+        b=b5Brjm1bhOaLOjrZZ6/NrbrSuOtLJcIweyh9gcGmA2a97zXJGo/DTaM+4QRp+kjtxw
+         i31ZxTnAnhbnQR4hnKYa97VMVK+MtmYlW9UNO4/fOkyjYYQB8cBNK88rFH1kKwgowZoG
+         ucLVqzmh1iclZfHBH5XyyAJuYTKRMTxju2zHHvfE88O1N7yvo+Q5wvEK+eWTFPgONBZv
+         wKSa7N2Jy3EuKyNDPRwvrFhBRlANDwyV1rBgtFFzX2/rhMy8MibQc2QIiC0vnMPE5mgA
+         SIF5ayGQcw6g2CvrRtVWjOpCLrToXNE2C+Lm/9JnthJvmPYMjtXKnnWneincdUS0OypQ
+         z8hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761387629; x=1761992429;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2vevNR+/jFaSQTBPwXQ9KXYtO+RS1f1boQpLGvPWQCE=;
-        b=oTxWNvwhPt9X8hqWbDdrbT+gN8HVivHJFncLH6jP8LaeipvfPODup/m5jBJN4zKV8Y
-         Tr6hbmyZQAj3a1cioBziALDnd0lqYbVyIW54XHAkCGwvx7AQbovwNFTdgfuXjYYDVMGm
-         0zbrQaDcaNuENLhiA8D9NRyV4JyIgndli5BF60hgwEjZAGE5Fk0Qq7lU5xkGh+Mf6ShT
-         jJdKet/b9bckEaRfwgEzgbMgiRfEvcvJk+P8cbGAqSZaYy3SrTYE2eQipbY0w5JQpyo1
-         ezDXkfEPXvd/Pzt/WVb6UW0cIBssrLcnwg/ZuDjr5xCn7Q2qcMi+YWVqjq2uWlmclsBU
-         4ZPg==
-X-Gm-Message-State: AOJu0YzMEbdqRpmjl76R9ofMoMRnRksW3s0b0Ug/3R326HMA4K63J8Vw
-	x+KOJKOXczI/dxZFaA820W5KHHjivuvIWarJ+y0jLHHCeSF55e0xDcl2
-X-Gm-Gg: ASbGncsaAtNS6PDPdJr9l5HnWJZkQNwr+hs0xLPZmTi+ousgJ2JWHolopLk6nPDATxj
-	rFxblqllx9q7Hx7UkcpVmHZq4XJcoA9zc85uAgwvUM1Hl25OE18ymHT1llHCUVVIub4a1qEPNpG
-	CDgsmeoZWVI6bLJD0nKwB7SQLR1pi8Pj5LlKtGV9NqeJeSGxu4a8zLrfy5M7D7wO3u3K9pivmzL
-	gYsc8zfWK2e7Xop3g7fA0NbpgD1RYXtyTBu662ybEHFAI8dv8PZuRTQ3iTUtgYNUIAyv2FRF2eT
-	mSjJK/enUl+NquVS3KsMVO9GrStTj8QMz3V42UzEbHMam4omUMYxkbduoUz9pq9StIjUHIhJ2iS
-	WED7AhbBzTcVvZpC2K9Ac5o97Kf31N2XHw1S0JuX2TIZu1vT+aIilf/8LocYFFf73QmeParXGs3
-	op7fIztbJD7wu1bWu7
-X-Google-Smtp-Source: AGHT+IHSSS9RbZgpApd9MbHtHjSs8JwOUFPxSOsL85Q0eyw90TSB4I+atkWIog5jAkoofR97NPCzIA==
-X-Received: by 2002:a05:6a00:2e1b:b0:7a2:7157:6d95 with SMTP id d2e1a72fcca58-7a2715777f0mr12532137b3a.14.1761387628859;
-        Sat, 25 Oct 2025 03:20:28 -0700 (PDT)
-Received: from crl-3.node2.local ([125.63.65.162])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a41c70ea64sm177639b3a.3.2025.10.25.03.20.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Oct 2025 03:20:28 -0700 (PDT)
-From: kriish.sharma2006@gmail.com
-To: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kriish Sharma <kriish.sharma2006@gmail.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] iio: document @chan parameter in iio_backend_oversampling_ratio_set
-Date: Sat, 25 Oct 2025 10:20:08 +0000
-Message-Id: <20251025102008.253566-1-kriish.sharma2006@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1761399313; x=1762004113;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MfijaoVY3izM3fqXrWCWyMWpoHEq2dEdD86JsySrhGc=;
+        b=spZZo3208N7Lsdprql17R/4CBl+3QUSWZ05YGmA2D/uJ2P2dT7jEzskdBT0pix8ylY
+         RDXpucLTEUpoa8DwwaZMjV+BJTFLtxEtfpxPImZU0LyZnKABEwoEVGXJH2ccIaxOwOPb
+         nFlR98izZuOee5hgFma5xWEQJwDVH29w7VZ3RxCuSTMcneqgLUqoE3yF5EsWrNiMjjcA
+         Ch+rjpUZdjjElqlWQGrYGdsSA6EgKLE6xzMs3t59MGTOqRaYwuWYX8Xz43X5yQAfWmWY
+         wtUkZ1VHe5emJbSS0N4RbGd3RUjJIUl4qR10DIpO4LEXtlGMGIUV8yFup7v4YdgJ7Ps4
+         h2Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCWYZaY97xi6QTkSfx5lTqGNhmctk3fyfVh5ZI8NNqVk2Tn+ha4QrHMis3UOgW9ldU027kYep8gPp1g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOBH/42ze6fWDEx2z3EIRsz6nPvM1FakHSwOIu+MSduDM8aqqZ
+	rE/4pLt8JVzOyYRjNW2q4rgPfBcZzOX9pvPhw4AcFRrnAXy1pnJtHeao1qsXOljaW90ooIDruKh
+	AyydUnUcIn06dmnF9xwcFU8Mgzn7+5pOUj2rcfz4=
+X-Gm-Gg: ASbGnculmijy6mcyotfwM9il0uwbB1Km8SiREv/y0BPFtE1xL9zhQAQU+StRwRI6lJJ
+	ySES4gleFPYML8iHJr78Ge8uh4CaTPXp9Er0d3eIXKKfQ+tZuCJ35VP17Xul8ErIcbGukHP0jDe
+	PLrSm7VKhyDozXh8yQwKZl50HH2m42P6+J/kMdlZknMcdhZtsRzpeVBFMBfYkf+q/cj6x0suQXp
+	UhIvTuVPLifH8fT14Shot19GtfFqhJ61I0TmoYh5lqmKs113w5nJYl3zK/y7Gv9Kdff0vNE
+X-Google-Smtp-Source: AGHT+IH7uZY/c9aXdldzkMbKAoJ/0i8VLLTPQXrnrc50zjlhNJvLjiDVLNrDt+OLtE1ordGJQHVqtIjtoshodf9kJXM=
+X-Received: by 2002:a17:907:9626:b0:b6d:5840:4b3d with SMTP id
+ a640c23a62f3a-b6d58405579mr947011766b.14.1761399313114; Sat, 25 Oct 2025
+ 06:35:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251025102008.253566-1-kriish.sharma2006@gmail.com>
+In-Reply-To: <20251025102008.253566-1-kriish.sharma2006@gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 25 Oct 2025 16:34:36 +0300
+X-Gm-Features: AWmQ_bl95j0vXJ3ZD4OQCpj-LWwza_GWmiE_3yUYJYUFMXDEz7Q-UHF09K0-mhY
+Message-ID: <CAHp75Vc=LeYEowm4HOa4iPJSMQmu75ch-wbKT4WNOyWvYH3u9A@mail.gmail.com>
+Subject: Re: [PATCH] iio: document @chan parameter in iio_backend_oversampling_ratio_set
+To: kriish.sharma2006@gmail.com
+Cc: =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Olivier Moysan <olivier.moysan@foss.st.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Kriish Sharma <kriish.sharma2006@gmail.com>
+On Sat, Oct 25, 2025 at 1:20=E2=80=AFPM <kriish.sharma2006@gmail.com> wrote=
+:
+>
+> Add missing kernel-doc entry for the @chan parameter in
+> iio_backend_oversampling_ratio_set(), which removes the warning reported =
+by
+> the kernel test robot.
 
-Add missing kernel-doc entry for the @chan parameter in
-iio_backend_oversampling_ratio_set(), which removes the warning reported by
-the kernel test robot.
+Is this the only issue with the kernel-doc? Can you run manually
+scripts/kernel-doc against this file (with -Wall) and check, please?
+The change itself is okay, FWIW,
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506292344.HLJbrrgR-lkp@intel.com
-Signed-off-by: Kriish Sharma <kriish.sharma2006@gmail.com>
----
- drivers/iio/industrialio-backend.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-index 23760652a046..937f4ef38e1e 100644
---- a/drivers/iio/industrialio-backend.c
-+++ b/drivers/iio/industrialio-backend.c
-@@ -717,6 +717,7 @@ EXPORT_SYMBOL_NS_GPL(iio_backend_data_size_set, "IIO_BACKEND");
- /**
-  * iio_backend_oversampling_ratio_set - set the oversampling ratio
-  * @back: Backend device
-+ * @chan: Channel number
-  * @ratio: The oversampling ratio - value 1 corresponds to no oversampling.
-  *
-  * Return:
--- 
-2.34.1
-
+--=20
+With Best Regards,
+Andy Shevchenko
 

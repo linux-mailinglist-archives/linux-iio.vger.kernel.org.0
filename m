@@ -1,192 +1,277 @@
-Return-Path: <linux-iio+bounces-25444-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25445-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484A1C0AC91
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Oct 2025 16:34:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8E0C0ADAC
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Oct 2025 17:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 696FE3B0485
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Oct 2025 15:33:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 172203B3BC3
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Oct 2025 16:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CA82D0275;
-	Sun, 26 Oct 2025 15:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74C5253950;
+	Sun, 26 Oct 2025 16:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fMOgmYUh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lDlLHUmG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B236BF9C1;
-	Sun, 26 Oct 2025 15:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ABB242D79
+	for <linux-iio@vger.kernel.org>; Sun, 26 Oct 2025 16:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761492814; cv=none; b=jFJA2oDK+0ALqHN1uGmhIVlPxqj0abKpJXRhdzeJWhygt6DE0tSXe69XLRz2NAwPy9f+ZG4htbgCzq2dWWFq65Liy923K6VBUAZJMris7qEZWrs+gfGzFq+seNzM3peSoZspLzQoVAjI2Q9PIstMEyaj/1wQCyQB8s0nIw5VM0A=
+	t=1761496522; cv=none; b=lwGjMB3l87VfzrUkJo7aPdHcKpzO89Uws2D3sjaRM5x37dNSSmuvsmv2EAevtAKBsON9sN0NcdsjRuPdJxOwkttKvi7ZuuTRuI8I5x1Hwh3dqwa17Ka33C0vQUWcsVwjJhbLLqdMk5twrlyTc9B/oDWly07dua9NkRqlkwKEXHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761492814; c=relaxed/simple;
-	bh=xcyneBcmqEXh1gtIGSMH8hZ6blwtbmsHjpXAgiQk4og=;
+	s=arc-20240116; t=1761496522; c=relaxed/simple;
+	bh=yt7o8v/fe1j3j05XnolAR9NoT6jX+EKYzwXle+WCACM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WBi40C7la0e99wtQN9qJd9atfOEQZLYyChbkC5OT3+TYnTRRqvC/X5BBM3DpoDsJF7hKWbZNrvLZ+FDFnlwgQfbAeXq8lThfNd9UFXpnH5cnuX0tY7Rf+Cg28zsOx38Z+f6gdMyMnZ5uP+Qc0dGmWrp32upcUB5d6PoCq3xbUk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fMOgmYUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08561C4CEE7;
-	Sun, 26 Oct 2025 15:33:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761492813;
-	bh=xcyneBcmqEXh1gtIGSMH8hZ6blwtbmsHjpXAgiQk4og=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fMOgmYUhH5CWiLpmpAcqvE2aJlNaa9a4g/kR0KAf7QFm3VqHWnqDGFH6fiFiRXAM7
-	 719RKdGnJaRpD5lYwjB9/+FGx+ADZLfA27ZyDl+Nos3NEnpOzfd+82u1znie4kyKSe
-	 ZeWvy7BGLefzertq5pdnKd+TYG5J5Um+zmnxR3uIjWn6yiEJa551R7aZZa14y0K8WO
-	 d7ZGFTNbDc10a6h73Aa5T1L5ejIPcXo3g9WBxrp6mfEbYBuGSKF70AzOnB1Vkp0OvV
-	 dj/+Pk8065yu30LhoAjkLSPUFLhaPWozHEb6dt0QS2vN8PkeW5pBlRGGfsWvGvs3J8
-	 fmkxtoOgOOKWQ==
-Date: Sun, 26 Oct 2025 21:03:07 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Guenter Roeck <linux@roeck-us.net>, 
-	Andi Shyti <andi.shyti@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Georgi Djakov <djakov@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Joerg Roedel <joro@8bytes.org>, 
-	Jassi Brar <jassisinghbrar@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Lee Jones <lee@kernel.org>, Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Mark Brown <broonie@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, dmaengine@vger.kernel.org, 
-	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, linux-input@vger.kernel.org, 
-	linux-pm@vger.kernel.org, iommu@lists.linux.dev, linux-media@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, linux-crypto@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Remove extra blank lines
-Message-ID: <hodycue2cqii22epdawn2pqx7twy5mzgrrlb53u7nj4h5w37ek@yvptyb2u6jj2>
-References: <20251023143957.2899600-1-robh@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gxygOhK+erKRmvuGWwlDU+SVY2y36md3T0aoinWTdmoEop/PtUz15ME9d5MNDjcZ4ZeKUD3sBOImRKnrtsvgcEUu6Wkg8HqP95PDwKI+Ffj/gltJYPETM0VYqNiYWFZAbOISy0vO1SJa1xfAxAlW+3IVs7ULJEfYLDpk/D621Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lDlLHUmG; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-46e6a689bd0so36081865e9.1
+        for <linux-iio@vger.kernel.org>; Sun, 26 Oct 2025 09:35:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761496518; x=1762101318; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6WGifvjdmNS6BAEGIP9IVWYOc5+AwrG3zJ9VQpVMyno=;
+        b=lDlLHUmGIy8q97s0fezXKIQs8tH8MdqaKzPiBFBOCKn1A6yGhHPATyHd8pPfyJyqIm
+         bEaKAiQfF1u4ydC9OvdQYmKxsTdMqQ80VYWbzlrnu1ZBOvnq6MsuapLEJA7Pjad9u7Zx
+         Un7Z/Cb3qGEzyUUiOAQYmOogXLVn5yRDiTgTUUuoZJJZerdQk1/z7/m6pWMJLWUwgVX+
+         lorEp9FfUzJrR0UfImA73QyLF056MYACCVYkHjTKfJSj9STdezqsbZtN5fPCDhN/BGXP
+         6P4s5V3nBWiPqcYeFvmmqtr0ck2FOAptbZU/Y1ZbKhQfVrrdnw1jQZaEZq/1HFghamds
+         hxEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761496518; x=1762101318;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6WGifvjdmNS6BAEGIP9IVWYOc5+AwrG3zJ9VQpVMyno=;
+        b=O9dMo3yBsX7buCb+VOwJEt5jSbQLrZgF9z9NoKm3intcBmjmbNgRruFX6QzP9SHC1B
+         hLYl8drsyo24Go5PIEuA4t3pArzKB0kYHbQ0YZ3zMsZHn+DJBXnS1mU3fj3YSAg4YkVk
+         V5yUmKUSlkNN5aI9XcPjXmkhapinzbGYCCfoJtTL9fBqHoz4ud7UAd4PK/z0jM8OtkFv
+         FKzQpaZ3c6piccCrSr096hGs4OTerChOtlgxQ9eGEtg5e4QNva03debsPcl/Qr/CanU4
+         epVWUMrW3t76JDnTyZs/dfQFh2UYvP79kfMwW6HzB8EPVE3AtvmiqRSCY05xiLsZIlfM
+         PdFA==
+X-Forwarded-Encrypted: i=1; AJvYcCVu3ZZE1SbQNHX1XEZLHsCAJYlXR6KY2BUIMWOX52SFqulbjgi9sUde6Iv6N67tn7HLpPJdewYps/U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjzowTC9EZjesZJMLPAlzXQfHdXgXcwlT7Uv+8EmgCDNdZjR6t
+	M2sB+JlsQsBozdSHKFNjcNH9Q62TqzxmKTPozdt2xIyOLuuOkTqinmm1
+X-Gm-Gg: ASbGncsb1siH+9zV/gQ85tUPAQTauToTxFgte0xZVPXBbjEvmmCliBOxblH6xtIBEeX
+	L0N5QLTlY/e+D6VC+V06E4p8YHgVRYxCN+On9xNu60WoqipNAVC8Fs9MmBAsl6ivhoTcAlr3sYQ
+	k3IgrtcPkchHRviOovcfKUBB0BPUHH+3vNqfRzDxNA+eS/Fac+sKqPNPSmBMZkgmTSR8PURldVp
+	vEBzzSa6VSU7tf/h03GyiLmGLhKYiaj2WVm0G1olPzr9JPlV5n1soBrJrYexxi8zo+z+d8XnAno
+	OD4MfED5ObibHzmuKEVgIfpN4omf1aFhKPdksYSjMpthlwCgunt+37hjppCBzApljSGvy90eaG2
+	BaUuQHCUsjGcbaWEAwOcjiJuVsVRd0mkHQ+XjQnmO1sScSavWTx1kyBrQEztqut/F7WJwiMqkk6
+	ezn8WOGg==
+X-Google-Smtp-Source: AGHT+IFWThCoxvJcBgUUBwLjwSDOlnnjJ96A1ZyZiJrxwSGOXtXBwlKYTWbldGijLHbHluRqRdy+6g==
+X-Received: by 2002:a05:600d:438b:b0:475:dbb5:23a2 with SMTP id 5b1f17b1804b1-475dbb5250amr21853355e9.16.1761496518265;
+        Sun, 26 Oct 2025 09:35:18 -0700 (PDT)
+Received: from home0.fritz.box ([2001:a61:123e:4501:d88:2861:1686:c41])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dcbb4001sm45138865e9.0.2025.10.26.09.35.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Oct 2025 09:35:17 -0700 (PDT)
+Date: Sun, 26 Oct 2025 17:35:15 +0100
+From: Jorge Marques <gastmaier@gmail.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Jorge Marques <jorge.marques@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 1/7] dt-bindings: iio: adc: Add adi,ad4062
+Message-ID: <lyu4x54r7dmtj4hcggsgzupcz6vzmflubm5bq2zafxgnyhjako@a74xbq3d6tyd>
+References: <20251013-staging-ad4062-v1-0-0f8ce7fef50c@analog.com>
+ <20251013-staging-ad4062-v1-1-0f8ce7fef50c@analog.com>
+ <20251013-step-quaintly-c58d8a1a460b@spud>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251023143957.2899600-1-robh@kernel.org>
+In-Reply-To: <20251013-step-quaintly-c58d8a1a460b@spud>
 
-On Thu, Oct 23, 2025 at 09:37:56AM -0500, Rob Herring (Arm) wrote:
-> Generally at most 1 blank line is the standard style for DT schema
-> files. Remove the few cases with more than 1 so that the yamllint check
-> for this can be enabled.
+On Mon, Oct 13, 2025 at 08:50:31PM +0100, Conor Dooley wrote:
+> On Mon, Oct 13, 2025 at 09:27:59AM +0200, Jorge Marques wrote:
+> > Add dt-bindings for AD4062 family, devices AD4060/AD4062, low-power with
+> > monitor capabilities SAR ADCs. Each variant of the family differs in
+> > granuality. The device contains two outputs (gp0, gp1). The outputs can
+> > be configured for range of options, such as threshold and data ready.
+> > The device uses a 2-wire I3C interface.
+> > 
+> > Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+> > ---
+> >  .../devicetree/bindings/iio/adc/adi,ad4062.yaml    | 83 ++++++++++++++++++++++
+> >  MAINTAINERS                                        |  6 ++
+> >  2 files changed, 89 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
+> > new file mode 100644
+> > index 0000000000000000000000000000000000000000..dcf86088fc4f32de7ad681561a09bad2755af04c
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
+> > @@ -0,0 +1,83 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +# Copyright 2024 Analog Devices Inc.
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/adc/adi,ad4062.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Analog Devices AD4062 ADC family device driver
+> > +
+> > +maintainers:
+> > +  - Jorge Marques <jorge.marques@analog.com>
+> > +
+> > +description: |
+> > +  Analog Devices AD4062 Single Channel Precision SAR ADC family
+> > +
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4060.pdf
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4062.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - adi,ad4060
+> > +      - adi,ad4062
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    minItems: 1
+> > +    maxItems: 2
+> > +
+> > +  interrupt-names:
+> > +    items:
+> > +      - const: gp0
+> > +        description: Signal coming from the GP0 pin.
+> > +      - const: gp1
+> > +        description: Signal coming from the GP1 pin.
+Hi Conor,
 > 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  Documentation/devicetree/bindings/.yamllint                  | 2 +-
->  Documentation/devicetree/bindings/arm/psci.yaml              | 1 -
->  .../bindings/clock/allwinner,sun4i-a10-gates-clk.yaml        | 1 -
->  .../devicetree/bindings/clock/renesas,cpg-mssr.yaml          | 1 -
->  .../devicetree/bindings/clock/xlnx,clocking-wizard.yaml      | 1 -
->  .../display/allwinner,sun4i-a10-display-frontend.yaml        | 1 -
->  .../devicetree/bindings/display/allwinner,sun6i-a31-drc.yaml | 1 -
->  .../bindings/display/allwinner,sun8i-a83t-dw-hdmi.yaml       | 1 -
->  .../devicetree/bindings/display/amlogic,meson-vpu.yaml       | 1 -
->  .../devicetree/bindings/display/bridge/adi,adv7511.yaml      | 1 -
->  .../devicetree/bindings/display/bridge/lvds-codec.yaml       | 1 -
->  .../devicetree/bindings/display/bridge/toshiba,tc358767.yaml | 1 -
->  .../devicetree/bindings/display/ilitek,ili9486.yaml          | 1 -
->  Documentation/devicetree/bindings/display/msm/gpu.yaml       | 1 -
->  .../devicetree/bindings/display/panel/panel-timing.yaml      | 1 -
->  .../devicetree/bindings/display/panel/tpo,tpg110.yaml        | 1 -
->  .../devicetree/bindings/display/rockchip/rockchip,dw-dp.yaml | 1 -
->  .../devicetree/bindings/display/simple-framebuffer.yaml      | 1 -
->  .../devicetree/bindings/dma/snps,dma-spear1340.yaml          | 1 -
->  Documentation/devicetree/bindings/dma/stericsson,dma40.yaml  | 1 -
->  .../devicetree/bindings/dma/stm32/st,stm32-dma.yaml          | 1 -
->  Documentation/devicetree/bindings/edac/apm,xgene-edac.yaml   | 1 -
->  .../devicetree/bindings/firmware/qemu,fw-cfg-mmio.yaml       | 1 -
->  Documentation/devicetree/bindings/fpga/fpga-region.yaml      | 5 -----
->  .../devicetree/bindings/gpio/brcm,xgs-iproc-gpio.yaml        | 1 -
->  .../devicetree/bindings/gpio/fairchild,74hc595.yaml          | 1 -
->  Documentation/devicetree/bindings/hwmon/adi,ltc2947.yaml     | 1 -
->  Documentation/devicetree/bindings/hwmon/adi,max31827.yaml    | 1 -
->  Documentation/devicetree/bindings/hwmon/national,lm90.yaml   | 1 -
->  Documentation/devicetree/bindings/hwmon/ti,tmp513.yaml       | 1 -
->  Documentation/devicetree/bindings/hwmon/ti,tps23861.yaml     | 1 -
->  Documentation/devicetree/bindings/i2c/i2c-mux-gpmux.yaml     | 1 -
->  .../devicetree/bindings/i2c/realtek,rtl9301-i2c.yaml         | 1 -
->  Documentation/devicetree/bindings/i2c/tsd,mule-i2c-mux.yaml  | 2 --
->  Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml    | 1 -
->  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml    | 1 -
->  Documentation/devicetree/bindings/iio/adc/adi,ad7949.yaml    | 1 -
->  Documentation/devicetree/bindings/iio/adc/adi,ade9000.yaml   | 1 -
->  .../devicetree/bindings/iio/adc/cosmic,10001-adc.yaml        | 1 -
->  Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml  | 1 -
->  .../devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml     | 1 -
->  .../devicetree/bindings/iio/afe/voltage-divider.yaml         | 1 -
->  .../devicetree/bindings/iio/frequency/adi,admv4420.yaml      | 1 -
->  .../devicetree/bindings/iio/pressure/murata,zpa2326.yaml     | 1 -
->  .../devicetree/bindings/iio/proximity/semtech,sx9324.yaml    | 1 -
->  .../devicetree/bindings/iio/temperature/adi,ltc2983.yaml     | 1 -
->  Documentation/devicetree/bindings/input/ti,drv266x.yaml      | 1 -
->  .../devicetree/bindings/interconnect/qcom,rpmh.yaml          | 1 -
->  .../devicetree/bindings/interrupt-controller/arm,gic-v3.yaml | 1 -
->  .../bindings/interrupt-controller/aspeed,ast2700-intc.yaml   | 1 -
->  .../bindings/interrupt-controller/fsl,vf610-mscm-ir.yaml     | 1 -
->  .../bindings/interrupt-controller/loongson,liointc.yaml      | 1 -
->  .../bindings/interrupt-controller/mediatek,mtk-cirq.yaml     | 1 -
->  .../bindings/interrupt-controller/mscc,ocelot-icpu-intr.yaml | 1 -
->  Documentation/devicetree/bindings/iommu/arm,smmu.yaml        | 4 ----
->  Documentation/devicetree/bindings/mailbox/arm,mhu.yaml       | 1 -
->  Documentation/devicetree/bindings/mailbox/arm,mhuv2.yaml     | 1 -
->  Documentation/devicetree/bindings/mailbox/mtk,adsp-mbox.yaml | 1 -
->  Documentation/devicetree/bindings/media/amphion,vpu.yaml     | 1 -
->  Documentation/devicetree/bindings/media/i2c/adi,adv7604.yaml | 2 --
->  .../devicetree/bindings/media/i2c/techwell,tw9900.yaml       | 1 -
->  Documentation/devicetree/bindings/media/nxp,imx8-jpeg.yaml   | 1 -
->  .../devicetree/bindings/media/qcom,sc8280xp-camss.yaml       | 1 -
->  .../bindings/media/samsung,exynos4212-fimc-is.yaml           | 1 -
->  .../devicetree/bindings/media/samsung,s5pv210-jpeg.yaml      | 1 -
->  Documentation/devicetree/bindings/media/st,stm32-dma2d.yaml  | 1 -
->  .../devicetree/bindings/media/video-interface-devices.yaml   | 4 ----
->  .../memory-controllers/qcom,ebi2-peripheral-props.yaml       | 1 -
->  Documentation/devicetree/bindings/mfd/stericsson,ab8500.yaml | 1 -
->  .../devicetree/bindings/mtd/amlogic,meson-nand.yaml          | 1 -
->  .../devicetree/bindings/mtd/marvell,nand-controller.yaml     | 1 -
->  Documentation/devicetree/bindings/mux/mux-controller.yaml    | 1 -
->  .../devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml   | 2 --
->  Documentation/devicetree/bindings/net/brcm,bcmgenet.yaml     | 1 -
->  .../devicetree/bindings/net/brcm,mdio-mux-iproc.yaml         | 1 -
->  .../devicetree/bindings/net/cortina,gemini-ethernet.yaml     | 1 -
->  Documentation/devicetree/bindings/net/fsl,gianfar.yaml       | 2 --
->  .../devicetree/bindings/net/mdio-mux-multiplexer.yaml        | 1 -
->  Documentation/devicetree/bindings/net/qcom,ipa.yaml          | 1 -
->  Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml    | 1 -
->  .../devicetree/bindings/net/wireless/ti,wlcore.yaml          | 1 -
->  .../devicetree/bindings/pci/altr,pcie-root-port.yaml         | 1 -
->  Documentation/devicetree/bindings/pci/loongson.yaml          | 1 -
->  Documentation/devicetree/bindings/pci/rockchip-dw-pcie.yaml  | 1 -
->  .../devicetree/bindings/pci/starfive,jh7110-pcie.yaml        | 1 -
+> Please move the descriptions to the interrupts property, by creating an
+> items list there. I think more information should probably be provided
+> about them, than just "signal coming from", perhaps referencing the
+> ability for what the signal actually represents being controllable at
+> runtime.
+
+I will add a short description of all mode that can be configured to
+during runtime. Since both can be configured to any mode except gp0 as
+dev_rdy, I will add an description to Interrupts, and then for each
+item, just say that for gp0 cannot be dev_rdy, aka:
+
+  interrupts:
+    description:
+      The interrupt pins are digital outputs that can be configured at runtime
+      as multiple interrupt signals. Each can be configured as GP_INTR, RDY,
+      DEV_EN, logic low, logic high and DEV_RDY (GP1 only). RDY is the
+      active-low data ready signal, indicates when new ADC data are ready to
+      read. DEV_EN synchronizes the enable and power-down states of signal
+      chain devices with the ADC sampling instant. DEV_RDY is an active-high
+      signal that indicates when the device is ready to accept serial interface
+      communications. In GP_INTR mode, the interrupt outputs one of the
+      threshold detection interrupt signals (MIN_INTR, MAX_INTR or either).
+    minItems: 1
+    items:
+      - description:
+          gp0, interrupt line for GP0 pin, cannot be configured as DEV_RDY.
+      - description:
+          gp1, interrupt line for GP1 pin, can be configured to any setting.
+
+  interrupt-names:
+    items:
+      - const: gp0
+      - const: gp1
+
+> 
+> > +
+> > +  vdd-supply:
+> > +    description: Analog power supply.
+> > +
+> > +  vio-supply:
+> > +    description: Digital interface logic power supply.
+> > +
+> > +  ref-supply:
+> > +    description: |
+> > +      Reference voltage to set the ADC full-scale range. If not present,
+> > +      vdd-supply is used as the reference voltage.
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - vdd-supply
+> > +  - vio-supply
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/i3c/i3c.yaml#
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > +
+> > +    i3c {
+> > +        #address-cells = <3>;
+> > +        #size-cells = <0>;
+> > +
+> > +        ad4062: adc@0,2ee007c0000 {
+> 
+> Remove the ad4062 label here, since there are no users.
+
+Ack.
+
+> 
+> Cheers,
+> Conor.
+> 
+> pw-bot: changes-requested
+> 
+Best regards,
+Jorge
+> > +            reg = <0x0 0x2ee 0x7c0000>;
+> > +            vdd-supply = <&vdd>;
+> > +            vio-supply = <&vio>;
+> > +            ref-supply = <&ref>;
+> > +
+> > +            gp1-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
+> > +            gp0-gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;
+> > +            interrupt-parent = <&gpio>;
+> > +            interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
+> > +                         <0 1 IRQ_TYPE_EDGE_FALLING>;
+> > +            interrupt-names = "gp0", "gp1";
+> > +        };
+> > +    };
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index f090c2f6e63a0d255a025885cc4573f5802ef159..afbfaeba5387b9fbfa9bf1443a059c47dd596d45 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -1400,6 +1400,12 @@ F:	Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+> >  F:	Documentation/iio/ad4030.rst
+> >  F:	drivers/iio/adc/ad4030.c
+> >  
+> > +ANALOG DEVICES INC AD4062 DRIVER
+> > +M:	Jorge Marques <jorge.marques@analog.com>
+> > +S:	Supported
+> > +W:	https://ez.analog.com/linux-software-drivers
+> > +F:	Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
+> > +
+> >  ANALOG DEVICES INC AD4080 DRIVER
+> >  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+> >  L:	linux-iio@vger.kernel.org
+> > 
+> > -- 
+> > 2.49.0
+> > 
 
 
-Acked-by: Manivannan Sadhasivam <mani@kernel.org> # For PCI controller bindings
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
 

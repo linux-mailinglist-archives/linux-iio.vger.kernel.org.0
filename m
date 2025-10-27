@@ -1,132 +1,110 @@
-Return-Path: <linux-iio+bounces-25450-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25451-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CECC0C4FE
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 09:31:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5777C0C516
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 09:33:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ECBB14F0A64
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 08:31:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDCEC19A0ECF
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 08:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50062E7166;
-	Mon, 27 Oct 2025 08:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD382E88BD;
+	Mon, 27 Oct 2025 08:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e4cnJE4P"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WnkLJyW0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25041D6AA;
-	Mon, 27 Oct 2025 08:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEA8145B16;
+	Mon, 27 Oct 2025 08:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761553862; cv=none; b=LF0x3ctEy2ej8hbExvmi+b7q/AL8NskTAnH3vIgNmYjGtuT0CY28TPED7cFFqMlmESJbD6wX7C6Lw06WMLdLBd71ggKidQ6YjAjTq0SBvZnTCRkD97QLch8RN2oC1v/XMp3CX5KwMHiARMpsPq8JhNPDP1/Zpe5ECNHwdoDv2L4=
+	t=1761553986; cv=none; b=cW8xGV3g70fJhx2s2ghTuHXNB7/VGH5bTXIBUJBvPaiWhyVt2Rfz9aWDvad+JQmZcBQ5b6eVpm5dCEcMgJyI58vpxu469oamnEaQqqbv4zVvnmRAYTHu6AcGZfgXSlXUkzQ3B0tMSYY5o/FAWRIXdIFf03AUXAB2CQSbNRBfxvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761553862; c=relaxed/simple;
-	bh=A5/SKv0LoCB75dMRgjs+vVsYbkBrNxa68MZbhjTXs88=;
+	s=arc-20240116; t=1761553986; c=relaxed/simple;
+	bh=J94I/XxMyqD+R/xjvVJmAjIzOxJ0IKNNoqfA8Y499JA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VVYPI8YZR80Mkrh7ZGkArA/l8BJPmKicef+/Ft6ot3zD+c1qYOtV1EJn5awpZBeuwqualt5yzILYtwQ1RF8JkvJCNdlHjicdSFT2coww0pcoc6ZLl8Hy75Rj4r9uBFVzRP7neCsDPUfivzaAOKfqYponK7sMXRPbe5Y5baJELAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e4cnJE4P; arc=none smtp.client-ip=192.198.163.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=HCy2wdSooOz+dLbLi7TtTHq5Eacq62skVrnbElIxINsZFtNr16p9Rzug4C1VFRTKZ2qy+29htVNkdqP7CpOqU2sAwclVYOtwudmL9AGRsIv2jtAm3u0f1+gZDc2cqW0c+zZDdAceU3Fu8LulIp8MQ5rq50h3thSbLseEr3i8ouk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WnkLJyW0; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761553861; x=1793089861;
+  t=1761553985; x=1793089985;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=A5/SKv0LoCB75dMRgjs+vVsYbkBrNxa68MZbhjTXs88=;
-  b=e4cnJE4Po45XrFSHY/VHFzxO5woyexPkiKLuNT+8+2hECWSv9cPUk4as
-   gsLY6l7DvcgVl6E6QVEqYBs5FHR92rToM+MUMZlcfESlTblez680J21bw
-   XM1OyW1+O/w38prD3/RkmlLA8Gvu55dRxlwktL55hnCokMjFFghmPIGFJ
-   5VJKDCWuwCsKzlLnzp2p8BYz7fDVuQ9sNSCs24NtPcVNqeJXX3GaGuCdF
-   o1YUWG2YYq+SVWsvtk815YLuX98rg142w57USUCZPQd7Gba/W24L0UE5i
-   jBnfOpAUEEc9RbBFlIhqo0vQcJGO+K5LKyrhRwZnnJkwMuHfv4nTmXrWN
-   Q==;
-X-CSE-ConnectionGUID: PQpfSZTkQ5yctdgiLYOD2A==
-X-CSE-MsgGUID: ZHdauaiWSYagLfp3w6JvKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63721379"
+   mime-version:in-reply-to;
+  bh=J94I/XxMyqD+R/xjvVJmAjIzOxJ0IKNNoqfA8Y499JA=;
+  b=WnkLJyW0dftIdHp6FZsRJlhS1amgpyyv47KJVv8FAJJFkBhbnHGyRRO3
+   1Hn72JUSfU/P+yVtaygSqYTre3Ox/JrtkQJJpn1Wi7kjUF9XdYbzukIfd
+   9Ixdro821g8Y5+MUsXoSOchjIBg4iY0ASMsXVVFd+/9yfaT5m9q3uvWJA
+   m2qsf+GJPUhu8Q5qq00C137ZmzfugZHlYZ6rl+jsmpOrAF4cM/ZfjK7iP
+   FY/2N/D8f98BGqjXNsRy7Wwsc2FRSE5ODvsngPKqfGAVmqFzBzCNLvbOd
+   02kSE/E87Huw9OeBzH6oL+Fr9Y4tu+IvNflWOyBy62LkS2KMQqGvA1zDw
+   A==;
+X-CSE-ConnectionGUID: QDi718GCRk61gRHeDaEK1g==
+X-CSE-MsgGUID: PwDJDaAnRjWgYD6EWskf4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63721516"
 X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="63721379"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 01:31:00 -0700
-X-CSE-ConnectionGUID: HtXxKZduTUG8wYB8pdWJjg==
-X-CSE-MsgGUID: xL6z9lUdSEqM3pq8l9qOHg==
+   d="scan'208";a="63721516"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 01:33:04 -0700
+X-CSE-ConnectionGUID: cGgRWlOjSmu6Qx7EiSkS5w==
+X-CSE-MsgGUID: br4NxVIGRvKJR2vC2gSF6Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="185335793"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.5])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 01:30:58 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 01:33:03 -0700
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vDIcx-00000002wr0-0rbc;
-	Mon, 27 Oct 2025 10:30:55 +0200
-Date: Mon, 27 Oct 2025 10:30:54 +0200
+	id 1vDIey-00000002wtS-100D;
+	Mon, 27 Oct 2025 10:33:00 +0200
+Date: Mon, 27 Oct 2025 10:32:59 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Gary =?utf-8?B?Q2h1KOalmuWFieW6hik=?= <chuguangqing@inspur.com>
-Cc: lars <lars@metafoo.de>,
-	"Michael.Hennerich" <Michael.Hennerich@analog.com>,
-	jic23 <jic23@kernel.org>, dlechner <dlechner@baylibre.com>,
-	"nuno.sa" <nuno.sa@analog.com>, andy <andy@kernel.org>,
-	"subhajit.ghosh" <subhajit.ghosh@tweaklogic.com>,
-	"javier.carrasco.cruz" <javier.carrasco.cruz@gmail.com>,
-	linux-iio <linux-iio@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: Re: [PATCH 4/4] iio: light: apds9960: convert to use maple tree
- register cache
-Message-ID: <aP8tvj_IPbv65m0T@smile.fi.intel.com>
-References: <abf45488369cbcce6298cc0ea19c0b3a24-10-25intel.com@sslemail.net>
- <aPs9HdeTZKoqFqdk@smile.fi.intel.com>
- <68fc4591.1.gk94qBPVZajhk94q@inspur.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: adis: fix all kernel-doc warnings in header
+ file
+Message-ID: <aP8uOznzM-ixyRLJ@smile.fi.intel.com>
+References: <20251026024759.433956-1-rdunlap@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <68fc4591.1.gk94qBPVZajhk94q@inspur.com>
+In-Reply-To: <20251026024759.433956-1-rdunlap@infradead.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Sat, Oct 25, 2025 at 11:36:45AM +0800, Gary Chu(楚光庆) wrote:
-> >On Fri, Oct 24, 2025 at 03:38:23PM +0800, Chu Guangqing wrote:
-> >> The maple tree register cache is based on a much more modern data structure
-> >> than the rbtree cache and makes optimisation choices which are probably
-> >> more appropriate for modern systems than those made by the rbtree cache.
+On Sat, Oct 25, 2025 at 07:47:59PM -0700, Randy Dunlap wrote:
+> Correct and add to adis.h to resolve all kernel-doc warnings:
+> 
+> - add a missing struct member description
+> - change one non-kernel-doc comment to use /* instead of /**
+> - correct function parameter @value to @val (7 locations)
+> - add function return value comments (13 locations)
+> 
+> Warning: include/linux/iio/imu/adis.h:97 struct member 'has_fifo'
+>  not described in 'adis_data'
+> Warning: include/linux/iio/imu/adis.h:139 Incorrect use of kernel-doc
+>  format: * The state_lock is meant to be used during operations that
+>  require
+> Warning: include/linux/iio/imu/adis.h:158 struct member '"__adis_"'
+>  not described in 'adis'
+> Warning: include/linux/iio/imu/adis.h:264 function parameter 'val'
+>  not described in 'adis_write_reg'
+> Warning: include/linux/iio/imu/adis.h:371 No description found for
+>  return value of 'adis_update_bits_base'
 
-...
-
-> >>   .reg_defaults = apds9960_reg_defaults,
-> >>   .num_reg_defaults = ARRAY_SIZE(apds9960_reg_defaults),
-> >
-> >^^^^ Be careful with such cases, the cache implementations may behave
-> >differently. Have you tested this on the actual HW?
-> >
-> We have conducted tests on some hardware, and performance improvements were observed,
->  though tests have not been carried out on all hardware models.
-> Neither rbtree nor maple tree directly depends on hardware types (such as CPU or peripheral
->  models). Instead, they rely on the address distribution characteristics (discrete/continuous)
->  of hardware registers. The optimal cache type is determined by the hardware layout.
-> Red-black trees excel at individual operations on discrete addresses, while Maple Trees are
->  proficient in range operations on contiguous addresses.
-
-It's not about the low-level cache implementation, it's about regmap
-abstraction implementation that might differ from cache to cache
-implementations. This all in regard how the cold cache is getting filled up.
-There is a separate discussion (unrelated to the topic of your series) where
-this was brought up. That's why I asked how this was tested.
-
-In any case, up to Jonathan, but I had to rise a potential misbehave, so in my
-opinion this kind of corner cases needs to be tested on real HW.
-
-> >>   .max_register = APDS9960_REG_GFIFO_DIR(RIGHT),
-> >> - .cache_type = REGCACHE_RBTREE,
-> >> + .cache_type = REGCACHE_MAPLE,
-> >>  };
+Thanks for fixing all these, Randy!
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
 -- 
 With Best Regards,

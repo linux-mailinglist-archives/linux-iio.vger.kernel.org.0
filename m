@@ -1,141 +1,120 @@
-Return-Path: <linux-iio+bounces-25496-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25497-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DC8C0EE0F
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 16:17:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DC8C0EF2B
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 16:27:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF626426BFB
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 15:08:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 12C6F4F8C32
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 15:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6D43093DF;
-	Mon, 27 Oct 2025 15:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6851430AACE;
+	Mon, 27 Oct 2025 15:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tbz1cVqZ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AkHuYLsS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9652E7645
-	for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 15:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56054302143
+	for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 15:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761577655; cv=none; b=fRsbuXKOXJGewqL5EiPE1SdnrYNkfSUx7qyT2KtSOW5F61XLHvyaL/UMNSJU3Oo00INPpBZa0pHhoe7yM+PzAmxPRRUEkaRBs9ZavSioZSKBbUOy3J0P4LctXeYK1Rpyqq+h1DEwCFimNTfZXsdHYGPb6aV5DB20aoSo+I3Wlgc=
+	t=1761578360; cv=none; b=E4/A/tMP5P/qX7p+RTII59D/5qQ1LyJMwqm2N+bI3xKdhux4PZ2PAPkAAubRvwCpBJj+M4tC8hBovZf/byg8Sc5E1/2+4uvDB8oJsN9Ieq6BcLaW62KWlP7WtY+9zNAA1JB3/3TDWaMi5Lm1yOGaz6ukzzR6sDdP+5VFMBPC2SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761577655; c=relaxed/simple;
-	bh=4KYywOgTHGEIz3ZCocUr/rj1P+mUN7k7cfPlJwv4luk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rTkrMbh/ZfQ3h53TDZtW+WlF2qPYlRom8KzirFy14ltLdBkxNEZkZ3NT56jmsMIS3talA7PqTjJxRBQsRty1Weaew4xUTF7KZG8Bi3bhDIUMO3//ne2jW6YW1Vanq1amj8S6qOcDNRbQC+CsZPJz/yE5dRGdD9RmW+wq7mcbegI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tbz1cVqZ; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-27d3540a43fso48555215ad.3
-        for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 08:07:34 -0700 (PDT)
+	s=arc-20240116; t=1761578360; c=relaxed/simple;
+	bh=KixK2y+JDj2jpYzeklb+J7CuSxEOJKGpkz49v27WZzw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NapT13eEeIS99aFFA9W23vUIY/9g/DEYaDxboJn4Zg14/MSu7XwXDPResEDVP6Eikd8BSXjlnOGKNJMwc55h97nxuwpZeYRdpFd77dIDqRlpoQCkLlpIuEz1EQq6UpFKeSLcLCMrfaFs5zbTRtYFSHp7SbMUK+01A+zCUpYk3eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AkHuYLsS; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-4445c606626so1161335b6e.3
+        for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 08:19:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761577654; x=1762182454; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qz3ecQyWxC7VNS5GAYBhcfKzMJ8mPoJ6wolDlF8Nh4U=;
-        b=Tbz1cVqZGseSwkIvYl/wlayY15FjFoE2rDnTwV0OruwzSlj4x4LuWngEEAf3cMNaK4
-         M/SCCf0W0Awo57RdGfDSyBh4L7DeUPJPkEB4KgV/okxGDwIp8imcBeNDmnw0JtDGLL4i
-         Otj6XBGoOk1Tp0QNr2hkAyDRh3Aaw7DTBPlLj5DXcXnlVYyhUUTGJt2lpnoPB1QPf+Qp
-         /bdKfs2N6qrJ5QCWNmpgQaNeYT+GrLLSz151I4TUNdxReaMpzsGt7Df0Mmu1rvYKlTA0
-         V3YeB5qM5SaOvhOOkJ3xYgRH6sv1ffXOncYMPE8tKKY2lElCwfi+YTQRIx7nifmZ8Fc/
-         NjeQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761578356; x=1762183156; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GOEpFoGH59PM/ywxUlp4N3kjMG7XFuzAFXwRgcemaNY=;
+        b=AkHuYLsSvNKHLktPzVrPstr0klzNEz01NL13g79nQmNPcly/Z07qvjCI8edqfCwONy
+         AGVWtbn5Bj5GucX25v4Y8pGXuDNa2Y85TqUR+zM/tu2lh7ib5jFMVAC+xYfwzri4XLKc
+         OWWIuLYy7ch/RrNi/532T/urjiSXFAofGva1YPz09uwvLOruta+wQ83gTL8xJqjjvcLJ
+         bS4ckwDaCBUyjfYGsjngIzzgbCjk7ggb58lvlFAEpOckKCE934lGfSXxhLZw0fOudjPJ
+         XNSB3d6B1+ZnyAvvbuqG7Qh9qDpJ6ncda8OQgEd+5BlLxm6KoxY/zbmLXB8zFQhSPFzy
+         3ylg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761577654; x=1762182454;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qz3ecQyWxC7VNS5GAYBhcfKzMJ8mPoJ6wolDlF8Nh4U=;
-        b=JNqDbevgaHWOi74l1Jr+M7NnHsGuwjz+tAxKJ2qVKy1YayUUe9ZbQPlX7S14KI97fj
-         MZfiaBPgnPjbjzsfDVftfk6FfKYrraXbr0fKCGsekBN5Rqh47HNEOAbLU8PrFlZxi84a
-         nHjugIwPU+Jsti6YPdMxT4LnDPFHE3cfDTEUJLbl9sGqf5lU2tcWqUlp+g8UFoztBGX5
-         72iR/cig6broyeooereSo2GeTU2zyb5wEW0Uhk2iZhumDYYxYhHh/1tGCJFkqMA4Ciog
-         7/8NW6EhnSO6osWzLpa3x7rAXXU0xnjPzHZVMc62SlLUlqyTlwBkJW+WMSZCS4Xo4nBA
-         Jedg==
-X-Forwarded-Encrypted: i=1; AJvYcCXU0ewdyEJfnSZdWANlkpct/2/QYDZYv6898jwtDHiaffUmX7l3nhEt91NeIRWIVKCa2fRr5h3DJ40=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCSaZydqMEBFqtYC0waoCrcR3SIgN0r+okr/jb8MkmiF/B0eTS
-	Kr0zvsjJnjgSogrsPu0q1Z2UwN+1xbqYnLu++22aTX2nbQxTmve6qaHS
-X-Gm-Gg: ASbGncvNLRIV0igzlBhZPx/oHQAtHiVUXECc4sIy1PFsh+JaM1SfHCa89IqlXZu8V/L
-	MnP0BC31pCHr4ECNvfoNXaHjeVNbhrvIhJ/4T5/InheSfyMODR/nQ/WhEZsbykS2DKB49N4eLD5
-	fp7u06rCqYWTswgACixIecCO2VEfIGHssB2MEHYn72hNJ+PcKvylFaqx9iYud7MMhl+3sBP/22T
-	IjIpKMJ+m6YTVFjk5pZ+9kojsLk6UtxU7ufThHg8Wo02SKNh1fjlhEE6B04aqB0ki+gKlMRclga
-	2p7C9JnB6R/8txs8AtxAAWw1cnxXtQpyvwkY+kaA9xTheNkEV+sho8Cnh85fdTRkWSHbaUyecco
-	ZBl0DvMqeFRrTgJnUPLYPn4NxsE6+QMYO+GXkehQ7odZcAVpy9mu6GwPoKCat1vUgdDMNIvvycW
-	cuDxgKM2h9LeJfmeuWF44CxXWhy8A5pPI3
-X-Google-Smtp-Source: AGHT+IHFy+IMljdrhVQ66DQvOfteh6iHx3cumDuMAgc7JMxc9hldJM3AHM32ikGVgmmr//G+ptdz1g==
-X-Received: by 2002:a17:902:e805:b0:24c:cc32:788b with SMTP id d9443c01a7336-294cb3693b5mr2991405ad.3.1761577653775;
-        Mon, 27 Oct 2025 08:07:33 -0700 (PDT)
-Received: from localhost.localdomain ([124.77.218.104])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29498d44db4sm86422035ad.86.2025.10.27.08.07.26
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 27 Oct 2025 08:07:30 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in ad3552r_hs_write_data_source
-Date: Mon, 27 Oct 2025 23:07:13 +0800
-Message-Id: <20251027150713.59067-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+        d=1e100.net; s=20230601; t=1761578356; x=1762183156;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GOEpFoGH59PM/ywxUlp4N3kjMG7XFuzAFXwRgcemaNY=;
+        b=pV6+rrCr+MvCzu8SunuoGtCLavI25Dc7jLjYriIv5NPw2yPecl4QlWuhy1k+Qbv9er
+         5zbfvSibpC6JIW1bzB1A+136A+gervLEQw/CfxLN4JitCPtWkMJOxv6wWNDXZecgJouK
+         Plwx0DtOZpCsa65V8aMy7FogDuNxuQmhQ0G0OtjsnvoAU4sfGn2RyIm8U+iI32RaaXYq
+         G8TcOn6vmrWKOhBTxOR1C6ajgTXz2p/doc736mFZkgTwglPhfxBBnxugc1kLETFBGz+7
+         OD89FfpUndoRYrYPcn3mxiZ6sDbC7jsrvcw8W4j8OBNHjrAOeJ/9hyrrssRAdMU0PsIO
+         dcDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX84yjIyYZu7oH8ojALFeVKETUziGNRrDPNpvBgMT9phVi97gxI815tHtaqJDMtsji322xpjB40bbE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFn2OxdkYvcgSbr1cB+wInpcGIGYItRhbsIosjKQbfjMwDcHN8
+	zMkcHdoGIihdYtRhsY+4ebcXI6oC0gGogPi6JRFgapEBp5otlWDJoUEpIhDMShJCiJ8=
+X-Gm-Gg: ASbGncs7SCTdeyBuOZf0+ZKmv+lyZom7vAjtOK0jFSOCQAB6YKt4VrmDSdXORF6UXap
+	UWHN7wksX6jTbOCh+oGQ63MKJ9Vfyi+glbuo8NhVk+3F7peoKKHoELPMI//Cvzy0T6sbw1W+iCW
+	5xmL/ALA2aQS7yAxgpMk6WEPv8Dw4uBz47WOCSxIM5zUh/HMojuACPsljizAwZFWg0xXw52hVHv
+	gYZkCL+tjupPJHojSG4XC8QiOblqM+YYDYVgI5tx3eqKr672Jxd0iidiCfI/A3bOZqoANTPqooz
+	X4ob/P/o2llM/IRP1qGppeMQztTi/7nNaNTJGpzdS6ytPQMEp8wmC00MIm8solvfOEIVq7e1OjP
+	J8CE7ZSfVIGZjg6ggqSGtXG2CehBcwYVulAPcGmkY/uLt4Fqw9/bTK3lBTjgTabuHrnX6s4z1SU
+	xXo4NxalDPIx1bDgb62nqWCcy9XXob3dUUmQcyj81Xk6xbzlO5Jg==
+X-Google-Smtp-Source: AGHT+IET1m0Og168FNkiHiiqS/dkK0Q1Ob1wq3rotBlVC0PelMHhFuKEOpxhv9FYgyGB4FjHQFu58w==
+X-Received: by 2002:a05:6808:21a6:b0:439:ae49:9159 with SMTP id 5614622812f47-44f6bb045aamr63228b6e.36.1761578356367;
+        Mon, 27 Oct 2025 08:19:16 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:500:46d5:c880:64c8:f854? ([2600:8803:e7e4:500:46d5:c880:64c8:f854])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-654ef272326sm1909058eaf.2.2025.10.27.08.19.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Oct 2025 08:19:15 -0700 (PDT)
+Message-ID: <0d423afe-9aa5-4423-935e-1acf71f457ee@baylibre.com>
+Date: Mon, 27 Oct 2025 10:19:14 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-When simple_write_to_buffer() succeeds, it returns the number of bytes
-actually copied to the buffer, which may be less than the requested
-'count' if the buffer size is insufficient. However, the current code
-incorrectly uses 'count' as the index for null termination instead of
-the actual bytes copied, leading to out-of-bound write.
-
-Add a check for the count and use the return value as the index.
-
-Found via static analysis. This is similar to the
-commit da9374819eb3 ("iio: backend: fix out-of-bound write")
-
-Fixes: b1c5d68ea66e ("iio: dac: ad3552r-hs: add support for internal ramp")
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+To: Miaoqian Lin <linmq006@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Angelo Dureghello <adureghello@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/iio/dac/ad3552r-hs.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+References: <20251027150713.59067-1-linmq006@gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20251027150713.59067-1-linmq006@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-index 41b96b48ba98..a9578afa7015 100644
---- a/drivers/iio/dac/ad3552r-hs.c
-+++ b/drivers/iio/dac/ad3552r-hs.c
-@@ -549,12 +549,15 @@ static ssize_t ad3552r_hs_write_data_source(struct file *f,
- 
- 	guard(mutex)(&st->lock);
- 
-+	if (count >= sizeof(buf))
-+		return -ENOSPC;
-+
- 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
- 				     count);
- 	if (ret < 0)
- 		return ret;
- 
--	buf[count] = '\0';
-+	buf[ret] = '\0';
- 
- 	ret = match_string(dbgfs_attr_source, ARRAY_SIZE(dbgfs_attr_source),
- 			   buf);
--- 
-2.39.5 (Apple Git-154)
+On 10/27/25 10:07 AM, Miaoqian Lin wrote:
+> When simple_write_to_buffer() succeeds, it returns the number of bytes
+> actually copied to the buffer, which may be less than the requested
+> 'count' if the buffer size is insufficient. However, the current code
+> incorrectly uses 'count' as the index for null termination instead of
+> the actual bytes copied, leading to out-of-bound write.
+> 
+> Add a check for the count and use the return value as the index.
+> 
+> Found via static analysis. This is similar to the
+> commit da9374819eb3 ("iio: backend: fix out-of-bound write")
+> 
+> Fixes: b1c5d68ea66e ("iio: dac: ad3552r-hs: add support for internal ramp")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> ---
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

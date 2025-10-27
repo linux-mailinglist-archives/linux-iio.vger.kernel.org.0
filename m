@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-25469-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25470-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5917DC0E29C
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 14:51:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65983C0E2EA
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 14:53:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47E951890F4E
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 13:49:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB4531888346
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 13:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FACB2D3750;
-	Mon, 27 Oct 2025 13:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DDC2874FB;
+	Mon, 27 Oct 2025 13:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKJnhYhi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oi3WFxtK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD372AD11;
-	Mon, 27 Oct 2025 13:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1C51FC3;
+	Mon, 27 Oct 2025 13:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761572954; cv=none; b=PUW63I2yaBZ+8O+jv6tMl3x1b1QfMqxKsHWvscTpx0cBTf/vZZEliPw4E1k7rFfY8GzTB8HDNYObwMw7scM59bRu82BHTnS0dntefDfEVxCGdVyVJfrshJDCyO2C7qYS985NS96tM3Tr/yUr6oCJIC70bOgsN9MEV8LszHGh0Ko=
+	t=1761573223; cv=none; b=HGH40bZAhYTmkDHZ4WvkIgTFbD317csptwmjfWO/njE3eSbRA2X//5d7xpzRAVffh81o7M2/brvh2U8Xl3rZED+Qnyqv3OCGjQslWSf1/tnuwlobqzgWfR7+9EWm3qv2WcU1SCCr9YhMi3hrvjht/95zGEYQmj0twnTxcNQgac0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761572954; c=relaxed/simple;
-	bh=BuQRZjoRLkFIeOGFeXAe+MJwyKbmh8gpiipXAD2WStQ=;
+	s=arc-20240116; t=1761573223; c=relaxed/simple;
+	bh=00/StiGDVWb510tqEvVqkR6oykDaB4Gc8QKjJUElnZA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rXlQEgCrgN3yoUr9H6GL17lLBx4n1qJUM+Xnjr82F4w8OuZgPkBwBIUuMudr9/c7QVoro40MObGH3X1P0Jrom4mHde4TufSHZolRTGTU2P9SPXWvSkx8pze5j0zzZRrzvNcklgRgQNCSQJtbvscA+hKNGb0bY4qyZUSrfFWm6oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKJnhYhi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68862C4CEF1;
-	Mon, 27 Oct 2025 13:49:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tpdVctzGLlju4oT40NqPgGsZ3f96ibRgLWJPy3meGL/WIBh3mqx6dnBFLZHH8uRDlQkIPV5LEKtNDoHbdtXeNsT0V/w2WwsOZNBe2lUtjRElPGnUZ1+9IGo9ZpiX9r5AAr8zjgynLG/HOOvwW4cv0ozqe8sKr/CHfzsq1m5ecKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oi3WFxtK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D10C4CEF1;
+	Mon, 27 Oct 2025 13:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761572954;
-	bh=BuQRZjoRLkFIeOGFeXAe+MJwyKbmh8gpiipXAD2WStQ=;
+	s=k20201202; t=1761573222;
+	bh=00/StiGDVWb510tqEvVqkR6oykDaB4Gc8QKjJUElnZA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YKJnhYhi7MR1rlWeQ7DklQ2nj+h4F/83VYrR90V9o5czk7DZaFlRPgwI7y2AwVwPA
-	 j8PvG6WhZdZ3PmJCzvNx/OwuEOB5OZZnP/OVPDl5TzK5+90LGMN8e7rkv3UfdSuhF2
-	 J8sVS0k3G8IU9oue3aWVz3wKvWDnweV4+UhcCfBrv+Rixs+ir0hqvhYCGmwgRuZxhM
-	 /zloM/HdZgQ7I/kqvJxZcNLH9Fs5gIW+w+5MCtCGilGeHPI6r5tWme4KbXkYHchNR/
-	 k+jStBqA2Klto/H43yjyOpPSO7/uv65SFYmX82Z1Ev2cXSQRpZuEs01+uI9MpRC7+8
-	 W5GCdjOfzs6GQ==
-Date: Mon, 27 Oct 2025 13:49:08 +0000
+	b=Oi3WFxtKT7qpaoHBzwtwOY2P7g679My6XIN8TmMyJfHZ44O/s4pEmcUKzlC+9+grU
+	 DdjX9lQ/82q8WH4vxLxxYxREYjTTJ4ShCkrqW5teQKpSCMYY9PU/VqmN8Ym+RpxhGt
+	 zeLqsOPeHkWKT6GOlViDqpQ5XQb2aD8jcG1vH5p5SIkRIAMI4/PvlyT0ZHjLyDVe+/
+	 k0i0zTZAfCHL4su/gFoUxn3mcocpSc0i4+bBc/JPax9JpBBFpMEXvltlNrJgw4wkqf
+	 j4TLsNJbcN2yJ1ssIrRwrVHIaPGaeKTXzBzOXzYDv/W1qbeJUEcq3xgbUdB8bnMMTY
+	 BNQAtR0GHcb1g==
+Date: Mon, 27 Oct 2025 13:53:36 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Pei Xiao <xiaopei01@kylinos.cn>
-Cc: eugen.hristev@linaro.org, alexandre.belloni@bootlin.com,
- lars@metafoo.de, linux-arm-kernel@lists.infradead.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- nicolas.ferre@microchip.com
-Subject: Re: [PATCH v2] iio: adc: at91-sama5d2_adc: Fix potential
- use-after-free in sama5d2_adc driver
-Message-ID: <20251027134908.36d63b9f@jic23-huawei>
-In-Reply-To: <268cbf0a5d9b931fcf6c025c53cc698ce78e4689.1760946527.git.xiaopei01@kylinos.cn>
-References: <e9d6831a-d0ef-440c-b235-fec18048deed@linaro.org>
-	<268cbf0a5d9b931fcf6c025c53cc698ce78e4689.1760946527.git.xiaopei01@kylinos.cn>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Axel Haslam <ahaslam@baylibre.com>, nuno.sa@analog.com,
+ dlechner@baylibre.com, andy@kernel.org, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v4 1/1] spi: offload: Add offset parameter
+Message-ID: <20251027135336.0b297370@jic23-huawei>
+In-Reply-To: <20251018141341.3ef2f6b7@jic23-huawei>
+References: <cd315e95c0bd8523f00e91c400abcd6a418e5924.1759760519.git.marcelo.schmitt@analog.com>
+	<176053044658.105519.915414342804429574.b4-ty@kernel.org>
+	<20251018141341.3ef2f6b7@jic23-huawei>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,71 +64,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 20 Oct 2025 15:49:25 +0800
-Pei Xiao <xiaopei01@kylinos.cn> wrote:
+On Sat, 18 Oct 2025 14:13:41 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> at91_adc_interrupt can call at91_adc_touch_data_handler function
-> to start the work by schedule_work(&st->touch_st.workq).
+> On Wed, 15 Oct 2025 13:14:06 +0100
+> Mark Brown <broonie@kernel.org> wrote:
 > 
-> If we remove the module which will call at91_adc_remove to
-> make cleanup, it will free indio_dev through iio_device_unregister
-> while the work mentioned above will be used. The sequence of operations
-> that may lead to a UAF bug is as follows:
+> > On Mon, 06 Oct 2025 11:25:41 -0300, Marcelo Schmitt wrote:  
+> > > Add an offset parameter that can be passed in the periodic trigger.
+> > > This is useful for example when ADC drivers implement a separate periodic
+> > > signal to trigger conversion and need offload to read the result with
+> > > some delay. While at it, add some documentation to offload periodic trigger
+> > > parameters.
+> > > 
+> > > 
+> > > [...]    
+> > 
+> > Applied to
+> > 
+> >    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+> > 
+> > Thanks!
+> > 
+> > [1/1] spi: offload: Add offset parameter
+> >       commit: b83fb1b14c06bdd765903ac852ba20a14e24f227
+> >   
+> Hi Mark,
 > 
-> CPU0                                      CPU1
+> The patch called out that we are after an immutable branch or similar for this one.
 > 
->                                      | at91_adc_workq_handler
-> at91_adc_remove                      |
-> iio_device_unregister(indio_dev)     |
-> //free indio_dev                     |
->                                      | iio_push_to_buffers(indio_dev)
->                                      | //use indio_dev
+> "
+> Hello,
+> 
+> This patch adds a small feature that is required for a series improving ad4030
+> in the IIO subsystem [1]. Can we have an immutable branch with this patch so
+> that it can be used as base for the IIO driver changes?
+> 
+> [1]: https://lore.kernel.org/linux-iio/cover.1758916484.git.marcelo.schmitt@analog.com/
+> "
+> 
+> If you can still set that up, much appreciated.
+Hi Mark,
 
-Hi,
+The ad4030 changes are stuck on resolving this or waiting a cycle :(
+If you get a chance to take a look and maybe merge it a different way that would be great.
 
-I'm not completely following your description here.
-The free doesn't happen in iio_device_unregister() but quite a bit later.
-So either the problem you are seeing is actually devm_ tear down that
-will do the free, or it's a more specific action in iio_device_unregister()
-though I'm not sure what it might be. Possibly a specific buffer mask
-getting torn down?  I haven't analysed it closely enough to figure out if
-there is a race there but it's the only thing I can immediately spot that
-would even be of interest to a work item in a driver via some core interfaces.
-
-Other than working out exact cause for anyone looking at this later, I'm
-also not sure you don't leave a potential race where a fresh request comes in
-between that cancel_work_sync() and the iio_device_unregister() call as it
-is only when iio_device_unregister() is complete that all interfaces are torn
-down that could start a fresh capture.
-
-So were the cancel_work_sync() one line later I would have been happy but
-from your description I'm not sure that fixes the bug you are seeing!
+Thanks,
 
 Jonathan
 
-
-
 > 
-> Fix it by ensuring that the work is canceled before proceeding with
-> the cleanup in at91_adc_remove.
+> Thanks,
 > 
-> Fixes: 3ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
-> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-> ---
->  drivers/iio/adc/at91-sama5d2_adc.c | 1 +
->  1 file changed, 1 insertion(+)
+> Jonathan
 > 
-> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> index b4c36e6a7490..1cd6ce61cf17 100644
-> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> @@ -2480,6 +2480,7 @@ static void at91_adc_remove(struct platform_device *pdev)
->  	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
->  	struct at91_adc_state *st = iio_priv(indio_dev);
->  
-> +	cancel_work_sync(&st->touch_st.workq);
->  	iio_device_unregister(indio_dev);
->  
->  	at91_adc_dma_disable(st);
+> > All being well this means that it will be integrated into the linux-next
+> > tree (usually sometime in the next 24 hours) and sent to Linus during
+> > the next merge window (or sooner if it is a bug fix), however if
+> > problems are discovered then the patch may be dropped or reverted.
+> > 
+> > You may get further e-mails resulting from automated or manual testing
+> > and review of the tree, please engage with people reporting problems and
+> > send followup patches addressing any issues that are reported if needed.
+> > 
+> > If any updates are required or you are submitting further changes they
+> > should be sent as incremental updates against current git, existing
+> > patches will not be replaced.
+> > 
+> > Please add any relevant lists and maintainers to the CCs when replying
+> > to this mail.
+> > 
+> > Thanks,
+> > Mark
+> >   
+> 
+> 
 
 

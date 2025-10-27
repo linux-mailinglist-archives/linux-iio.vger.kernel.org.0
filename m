@@ -1,127 +1,95 @@
-Return-Path: <linux-iio+bounces-25460-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25461-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27AABC0D756
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 13:17:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ACAAC0DAF5
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 13:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 35B404F3AEE
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 12:16:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EC7904F6B41
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 12:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9722F6914;
-	Mon, 27 Oct 2025 12:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D3F2E2EEE;
+	Mon, 27 Oct 2025 12:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e8xm93v+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MAJwR5FR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6142417C6;
-	Mon, 27 Oct 2025 12:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F211E3BB4A;
+	Mon, 27 Oct 2025 12:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761567366; cv=none; b=K4lK8DHzIvXG1BdgS3mWAzY6YXF4pALluV7XOnroFMTGZfnUD2+Zx1WD6rhnwxF8Arhm3CeEvHje6nGK7TzaxtlvUocG6ALCYApCwOK7JdV1o/vUFIvedpvwhYxgU6kg8Sd60WFgGR+/I0GUuQtgQNLfk8o33vdo04rXCRxkc8E=
+	t=1761568935; cv=none; b=aZKCwyCWzJ4Fqf42/J5v5FCvCbc/lgfN4toUKNe2W5YCgIW1ap3+dAqC52KtMj/+DC9SZGnyj+tfVyi1d1OT2wNTgOqLOpJXdlV/pUbWnu0yo3fCO7t7FfmpHrwpSUZHAZTNcPGOCQNUAP9x16w5OX5vfTPihMlacXuKKiR4pMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761567366; c=relaxed/simple;
-	bh=8REW9LKAMBJhiS0mstI+h8mwfhMdGAOr9OXOtnMD0Uk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QSDn62nkFrr6xIo4ENdmM/vhZPjXRKXOFsoHDQ27PeSO9L/LRPVPq96BLZOaZ5Pwra0Ec5TTWV5MZaXSqytVYnlqOxlk9OT1HxTUPC+6NQ5+w+SJ/pOOKhAzDcICDvPtGgvlcvQ4vhCdGdQxgGc2Ulf4c12+kdix2UStfUQ1+P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e8xm93v+; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761567363; x=1793103363;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8REW9LKAMBJhiS0mstI+h8mwfhMdGAOr9OXOtnMD0Uk=;
-  b=e8xm93v+66fqVBJf6Cb+M3YTTxA7aEvPirSvSbbKNL0o0smVFH4dENqV
-   GJNQoFYvw6i3WFZk/EqE3wBUEW3AoicJ49/grkYdwLNJHAPTn221+aZ3T
-   mkBcV5kX21XKFO+EWBfPauDDKysEGkvSPlJ4T3uT5NsomJWRqZtszAlpt
-   8TkmtUEyJ38QU00yB3x7wQJIHXV8QeTwzugV6YG7AHcRtLkpTMPm7tjWa
-   gz7W7fiOq31hWZEL0ibDIBh9y9QIZ/tNTiOinQhCcDuHGVHjr460kMaFT
-   RW1qofgdKD133hZXKh7Z3gICRVLUWP5ePMulELva5Xit9HNzSh4+CoLbX
-   A==;
-X-CSE-ConnectionGUID: Tc2q9bcqTcClu3hKqswe5g==
-X-CSE-MsgGUID: 80O+vkqqTpK38000zhvywA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74318623"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="74318623"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 05:16:02 -0700
-X-CSE-ConnectionGUID: kdjWm1B2Qb+/jb+kz3dkCQ==
-X-CSE-MsgGUID: TzrTW4HSTBGRQ7bZdVSNpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="185113205"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.5])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 05:16:01 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vDM8k-000000030ZN-19vW;
-	Mon, 27 Oct 2025 14:15:58 +0200
-Date: Mon, 27 Oct 2025 14:15:58 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	s=arc-20240116; t=1761568935; c=relaxed/simple;
+	bh=KD75sUwvrRjHB7yDYrRRvxYAC7F4QHY5w4Dp1x6bWpw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hr8lmbLHp0+MQxCE5YXlBVpunUk7f0PH3wGwaNvU9mbS1cYxYgniG6dBkpfA3hacdbg4zILUcKrDILK3yRJvj2QpfXjkBgLTSJve78AvPfNr2JvY0vuNVM3s5H3x673VUyzF9pSCounhV4BaBUvX2EyeVJoJ7T4XG7xZusQmbjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MAJwR5FR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55351C113D0;
+	Mon, 27 Oct 2025 12:42:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761568934;
+	bh=KD75sUwvrRjHB7yDYrRRvxYAC7F4QHY5w4Dp1x6bWpw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MAJwR5FR2GxEvc6wgl3NRlJZ6XmeIqi8sDxoYnjDBhT6Bjs0DV+lODAnR3CMjg5Zt
+	 NZgBl/5yo7YFALBrMh/25buLi/4XkeojAXdntX0+PGbeBTGBmnMXiYVSpXBrmpVUm6
+	 WvT+NJWHaw1YOMvdz109zdWVl6DFf6CbwntuaLhdboFsz0XoGNKrMt4npHini41Q/C
+	 e5Np7VMnh4nrh0L9dSN8wTOYCNN17/r8BlfjjDl6FP+NOew7hk2GH7MumFJ18XXG/4
+	 GMVgO+rjKaWIfaoLgO51VlN9Wm27YDoacjIx/SUmjuu4bncXrFi2JZGauoIbMiFW2j
+	 5S/wV3Oa7mw2A==
+Received: by wens.tw (Postfix, from userid 1000)
+	id 82B5A5FE2C; Mon, 27 Oct 2025 20:42:11 +0800 (CST)
+From: Chen-Yu Tsai <wens@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>
+Cc: Chen-Yu Tsai <wens@kernel.org>,
+	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: ad7124: change setup reg allocation strategy
-Message-ID: <aP9ifk-ms8RJi5ff@smile.fi.intel.com>
-References: <20250923-iio-adc-ad7124-change-setup-reg-allocation-strategy-v2-1-d9bf01bb3ad8@baylibre.com>
+Subject: [PATCH] iio: core: Use datasheet name as fallback for label
+Date: Mon, 27 Oct 2025 20:42:09 +0800
+Message-ID: <20251027124210.788962-1-wens@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250923-iio-adc-ad7124-change-setup-reg-allocation-strategy-v2-1-d9bf01bb3ad8@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 23, 2025 at 04:48:04PM -0500, David Lechner wrote:
-> Change the allocation strategy of the 8 SETUP registers from a least-
-> recently-used (LRU) to a first-come-first-served basis.
-> 
-> The AD7124 chips can have up to 16 channels enabled at a time in the
-> sequencer for buffered reads, but only have 8 SETUP configurations
-> (namely the OFFSET, GAIN, CONFIG and FILTER registers) that must be
-> shared among the 16 channels.  This means some of the channels must use
-> the exact same configuration parameters so that they can share a single
-> SETUP group of registers.  The previous LRU strategy did not keep track
-> of how many different configurations were requested at the same time,
-> so if there were more than 8 different configurations requested, some
-> channels would end up using the incorrect configuration because the slot
-> assigned to them would also be assigned to a different configuration
-> that wrote over it later.
-> 
-> Adding such tracking to solve this would make an already complex
-> algorithm even more complex.  Instead we can replace it with a simpler
-> first-come-first-serve strategy.  This makes it easy to track how many
-> different configurations are being requested at the same time.  This
-> comes at the expense of slightly longer setup times for buffered reads
-> since all setup registers must be written each time when a buffered read
-> is enabled.  But this is generally not considered a hot path where
-> performance is critical, so should be acceptable.
-> 
-> This new strategy also makes hardware debugging easier since SETUPs are
-> now assigned in a deterministic manner and in a logical order.
+Some IIO drivers do not provide labels or extended names for their
+channels. However they may provide datasheet names. axp20x-adc is
+one such example.
 
-...
+Use the datasheet name as a fallback for the channel label. This mainly
+benefits iio-hwmon by letting the produced hwmon sensors have more
+meaningful names rather than in_voltageX.
 
-> +#define AD7124_CFG_SLOT_UNASSIGNED	~0U
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+---
+ drivers/iio/industrialio-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Perhaps one of Uxx_MAX should be used instead?
-
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 88c3d585a1bd..d410ea2e7963 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -749,6 +749,9 @@ ssize_t do_iio_read_channel_label(struct iio_dev *indio_dev,
+ 	if (c->extend_name)
+ 		return sysfs_emit(buf, "%s\n", c->extend_name);
+ 
++	if (c->datasheet_name)
++		return sysfs_emit(buf, "%s\n", c->datasheet_name);
++
+ 	return -EINVAL;
+ }
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.47.3
 
 

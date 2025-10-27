@@ -1,216 +1,276 @@
-Return-Path: <linux-iio+bounces-25537-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25538-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DD4C11490
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 20:57:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3659CC1153A
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 21:11:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 268764F450B
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 19:54:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E58146448D
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 20:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447F44A00;
-	Mon, 27 Oct 2025 19:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19332E7631;
+	Mon, 27 Oct 2025 20:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b="AIhtHnxf"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="g255Wozy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from bee.birch.relay.mailchannels.net (bee.birch.relay.mailchannels.net [23.83.209.14])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013061.outbound.protection.outlook.com [40.107.162.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0027E2DF13E;
-	Mon, 27 Oct 2025 19:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.209.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4D82DC331;
+	Mon, 27 Oct 2025 20:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761594851; cv=pass; b=XzEBRcQwo4oOWAVqhwVgFjnbNeIcNHUj4UGlLoIYKMPfaiRvvdAegtEcECjxW7s2Pe2RN2GqdHWpVtmL+2uCSG05vpgPneGcWP7EdzjF0shqLmyppzjpoI9qv0FzNkXExaQmbe2nC8e5i/NOLwqAYt0tKgb8YfkN3W201cRVozQ=
+	t=1761595734; cv=fail; b=GluuV8T4dEoF2xgrBFCuv/PIs/M9kwa2qF5tFTsWZidvG3ikFtO9nv6TmYHrn0dpJ1rnQw/Vk2k2IL01M+o4NXHgHMnRPv+HEgqrw+dc0cgVBD2N7G5TX71CaPZLCaj0wQ6dC1mVKXi7qLDSu3oYnI+0urMVdmAI7OXzbbubsao=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761594851; c=relaxed/simple;
-	bh=Qqsc2ILZgnL5sfeCIPODmSHlfhcETbR+pkldb5j5XQI=;
-	h=Message-ID:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Date; b=SH4QjMgMpW2qoLkHh+F8tiFy9LL1sNLmgZpXT+XN74ZAvV8f0nmVvfgnA47OENMc2NTP5sfzrfqUH5k9sZ03XO97A+3XD0jEnJ8OdZTZAHW3iLKZuGI6rMstSz+Z4fyLEGK7PtN9rSHPwlgntQFt3YTMiNoacgd6fOX1xW2/3DY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com; spf=pass smtp.mailfrom=smankusors.com; dkim=pass (2048-bit key) header.d=smankusors.com header.i=@smankusors.com header.b=AIhtHnxf; arc=pass smtp.client-ip=23.83.209.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smankusors.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smankusors.com
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id B05D61E0916;
-	Mon, 27 Oct 2025 19:54:01 +0000 (UTC)
-Received: from fr-int-smtpout29.hostinger.io (100-121-54-118.trex-nlb.outbound.svc.cluster.local [100.121.54.118])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 1389C1E1D76;
-	Mon, 27 Oct 2025 19:53:59 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1761594841; a=rsa-sha256;
-	cv=none;
-	b=b+DcVB5QkAswxcZ8nx7C2mHWcMmr+WgVwvsbknTDVVgfcB8lcVWJkaDyNBCKR48g7MIk8X
-	WKOWQDDi5wGKUxmFxCEP0Qd5+dKOY+RMC79ED4depgBiDOnatJHLhPQCnxy/EhdAj5Bfzi
-	iJtOcoAvEv6osMzdLapkxuh9LmmlIds6ACfyAeH9/KJxqc/w/sQ4lwMt7vgF/Z6xApaCw2
-	zBIa91Zg24EicxlwiCb1WrAM/9NCHXV6DT1qU9SViVgyMCW/SFH+BnzuOWIsTHF3Ru8NM7
-	V4qenG5KvpzI9OeVS7wjK4uXf7YR/SizNWD08bEHApcX/R6fVa8rzOpNYs67OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1761594841;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fgu4haRJ3TjizkmXO7Ii38sA0+eFMmWygfP7GmFpSnc=;
-	b=xqABxCNOmxJ5I4OL1ZOzNYOxwtl0R5yhHrd7y72fGs5FeLjbC3AyaP9Zaz1hfWU9q8QiNe
-	v7Yh7TIWyFb135VPCEbDgQaEYSEqijmid1PzjYNCO5CfPTvrL9dveYq6SqWVtEERYklkgF
-	Zjg2FjCUGecTcN6IQYNmRrhK6vQ3wS3xYUddPIBWHKRU97A83iWbrkpHDoz9clumJX5t0i
-	nmRGigvC6Yj03TFA8jC3/j+XXkQq3/ynRv9nm+3thX0PWebgLCoNMNXa0rx7BqNN0g0FMy
-	0XiUY2jV127q2kjDegmjxqSM3Gjw5tXiReaZ0deNSXxumLUey79aryJ4sQtj+g==
-ARC-Authentication-Results: i=1;
-	rspamd-9799b5d46-sl7bq;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@smankusors.com
-X-Sender-Id: hostingeremail|x-authuser|linux@smankusors.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: hostingeremail|x-authuser|linux@smankusors.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Bubble-Descriptive: 59c52fe65fd9ccd9_1761594841553_3886930417
-X-MC-Loop-Signature: 1761594841553:1032203036
-X-MC-Ingress-Time: 1761594841553
-Received: from fr-int-smtpout29.hostinger.io (fr-int-smtpout29.hostinger.io
- [148.222.54.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.121.54.118 (trex/7.1.3);
-	Mon, 27 Oct 2025 19:54:01 +0000
-Received: from [IPV6:2001:448a:502c:2bb0:95e9:f097:b160:9749] (unknown [IPv6:2001:448a:502c:2bb0:95e9:f097:b160:9749])
-	(Authenticated sender: linux@smankusors.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cwPMQ0zcGz30Mj;
-	Mon, 27 Oct 2025 19:53:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smankusors.com;
-	s=hostingermail-a; t=1761594838;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Fgu4haRJ3TjizkmXO7Ii38sA0+eFMmWygfP7GmFpSnc=;
-	b=AIhtHnxfGcefMfT8wgkf8Saqi+HpoAEqCw6uyIbDHNKo7pA6T5vZDfrF/r1R9YZ9P8amZ6
-	nhsFScPgLGS8Bh66DeQZlGpE4dpkeFiWJknCMeQTEAz7Ofut+puWJdloPA90CBQUkE7W6K
-	w1tgpXZfFgcELkyLdTiP3fUx675+QU7JT0AbhXuv8JpYMiFe0xe9B0P8J3+ft1D6vr5rpe
-	zTfcYxLeVbT9DVoHPUQZq059SczorHnhu6h6TfN66tNXjoZeFfnpGw9AmMr9ueDJHMi5rc
-	cC3AfZ8BCVRi6xxvpyRpumEcTrkkCf4Zgo2KLL0AvsFiGFIPg0OiUeecanc7Xw==
-Message-ID: <003c5cf7-2498-4ff3-a8b4-2911941b1464@smankusors.com>
+	s=arc-20240116; t=1761595734; c=relaxed/simple;
+	bh=c4686o//XQ93ZDWO2+x94jsAlumh9S/pQjyXq5pgFxM=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=QGD6VWN/81z5OuoYRcrxA037Ppt2SiSgbkT2AKpmlzMroEXIMK+qGNck/XJ519v3rdWZhl0tRrA1iJo1hQvfh++0NEeq2SuuUXkcHjVwhbAW/wkTKm9eIEe5bIRUU/11zPZaF3pNaLuGe3YIv/ccwE2G8dJYbEJQhhwLXrE3fQk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=g255Wozy; arc=fail smtp.client-ip=40.107.162.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IamXaun8cSq7SblOR9pgk69X6cid1BovaCT9lr4NMmSXXSLEQ5DexCUXnfc7i0y41XnS41sMiCNhMllLIWPioQLJpsI+LdgFiaG6+E7g02l6qx5OY1ESS6m/LGX5SMxSOPD5VXr3+iGprii7jaQACdxERp82NnkeVc1tYvhEq79cfHTEw/yJ1cDsO6KZWVGEd14HwsS1YIegheHL3MZyha+WkGSMRYWPIz/bhes6UlYS4/ev7UqyhzvPGlyUfGywpf1RRc0la9VHSUvbqio2/dbT016ZSJCb266dSe1aUtfREmYtG+AdWkVBxXHSu/vNYgEcATRYgmN26bAKr2yDCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FBb9IKIuG5wSCggm3AHV/gmtTSCtzJ2jX6+iRDUCPrk=;
+ b=ZIqjlWtP9W/lOVZ1XQ4tELpl7gIaXPdg+t83sYgFRKXiUYa0MbAPKMoHgWFbGxDF4SNNN95TNrGYbcroF+SdqKzSicPfojpkoypegQGFZtLZ/03pFi2CaWRDR7VUitfFVVLejqA6xqmEh3YBReXQkJTmxCCJIs8kBw1TlbTU9FH5YBtdqJcRF1lqBMfcUrD15Da2gJGmKV29CVgIAotWNDRhuzQuCWCxnuotKyT/xg2dgOLqrLHZMpgVagPhCmm55wGE46i9CdYxggnWHmcXNsFb8Wq9ttTGWLDDz1/tPgbYnXONS3zxDNnrdANIyyuDnsMGBobJBYBfbQ4DVAMZmA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FBb9IKIuG5wSCggm3AHV/gmtTSCtzJ2jX6+iRDUCPrk=;
+ b=g255Wozyv0h+I8S/3m9meM3dqUET2TtcwWyhn0n4SjmexhwZrSFm3wcJjNrrBPTNGLv3OG+XU8nhQUAp4dZW3jwyBJuYhXOTf+ldgXCIvrCFDshX1rISakm8kNEe4bhgkC3o1GEFO1vFL+WgL0pXOobO1BkfQ+pdwCmRwTCw6bATWdOON6OrM4RMRkXj5wgoMg1x1t7mVW3nY+EPSHBmKRuJj5gRe6wZYOx2sDfy3AASm0qphQP+hZgO992UVugQa8rDTb5JLRzsmdCRYNFaoDkwPjCn1JCo8KiWjBFhEB2a2ppReTIHWXC+iP3/3KBgtP4zbTLkawYysVUY4JkyVQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com (2603:10a6:20b:4ff::22)
+ by VI0PR04MB11919.eurprd04.prod.outlook.com (2603:10a6:800:306::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Mon, 27 Oct
+ 2025 20:08:46 +0000
+Received: from AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e]) by AS4PR04MB9621.eurprd04.prod.outlook.com
+ ([fe80::a84d:82bf:a9ff:171e%4]) with mapi id 15.20.9253.017; Mon, 27 Oct 2025
+ 20:08:46 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v7 0/5] i3c: Add basic HDR mode support
+Date: Mon, 27 Oct 2025 16:08:28 -0400
+Message-Id: <20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAD3R/2gC/3XPwU7DMAwG4FeZciYodpw63Yn3QAiljctyoJ1SV
+ A1NfXeyCZEWxPG3/P2Wr2qWnGRWx8NVZVnSnKaxBH44qP4UxjfRKZas0KAzgK1Otn+NMesOHHn
+ fGpDOq7J9zjKky73p+aXkU5o/pvx5L17gNv3bsYA22qAPHFwki/Q0Xs6P/fSubg0LVtUiVYVFN
+ R6Dkc6iY9wru1HWVGWL6hrk2KMM8FvRjwJjuCoqyoZBQpk7ZrdX7h/liiIi8DQwo5O9ajYKNn8
+ 137eoZbZguKp1Xb8AdwL67qoBAAA=
+X-Change-ID: 20250129-i3c_ddr-b15488901eb8
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-iio@vger.kernel.org, 
+ joshua.yeong@starfivetech.com, devicetree@vger.kernel.org, 
+ Frank Li <Frank.Li@nxp.com>, Carlos Song <carlos.song@nxp.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Adrian Fluturel <fluturel.adrian@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761595722; l=2955;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=c4686o//XQ93ZDWO2+x94jsAlumh9S/pQjyXq5pgFxM=;
+ b=n2p798ddk4ySQKPN9Pknc703JAYFif6sEe7vg9HvdN0GkZms9sBDJJw1Tmf5fZC9/d0uyZ+iq
+ h5wwA0JV1NICSB5G8yZrgW4xTyuWPPKyxxjxolybAh7ptRoEUtUym9g
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: PH1PEPF00013303.namprd07.prod.outlook.com
+ (2603:10b6:518:1::12) To AS4PR04MB9621.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4ff::22)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: adc: qcom-pm8xxx-xoadc: fix incorrect
- calibration values
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
- <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux@smankusors.com
-References: <20251028-pm8xxx-xoadc-fix-v1-0-b000e1036e41@smankusors.com>
- <20251028-pm8xxx-xoadc-fix-v1-2-b000e1036e41@smankusors.com>
- <0eea7e4c-ec3b-421c-8522-aa3f52b5cb13@baylibre.com>
-Content-Language: en-US
-From: Antony Kurniawan Soemardi <linux@smankusors.com>
-In-Reply-To: <0eea7e4c-ec3b-421c-8522-aa3f52b5cb13@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Mon, 27 Oct 2025 19:53:37 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=GbNFnhXL c=1 sm=1 tr=0 ts=68ffcdd6 a=fmYAFP8Zw2ItDPOga5xpZw==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=NEAV23lmAAAA:8 a=wxLWbCv9AAAA:8 a=plTiqhbnNGnvf89LthUA:9 a=QEXdDO2ut3YA:10 a=QJY96suAAestDpCc5Gi9:22
-X-CM-Envelope: MS4xfMj4kKk2rdN5zvtBl8/FisUPSCboOIm3a1VUJK7+nTrr0wc0+5UaDYTWfjEI/LVhQzcxuTbKL7ywjiLyJEroooHoj4YuMAia+5R9bIZStUyvhWbfdzu0 CYQ6wmt2sk/rpI8L3m6pmdPwgtkR7uftWJVOEigf7HVov4sbsWApJbX4m2xioYpKQ4n8GqCt+8o52Oq4e926LWHmnN65pq+ksLRxt391cxRTcr7bPzuZwhHM hDcAh8ANQhPI0XqFik9OJilzpPKyg0F0EBvpJ8KM+ooZ6Vf4RVWjWIhIv0/Fh6hyMUWJU1wAeWEauIxn7KP5zzTLccEDRm5ZzGdxc0aB10IEbWOOf9u1p58s gl3T0jHXyG4lvPzmtpkz8uN3fE1cN7qQVyAd7QykGhoK6dS53Tkxx/VwpwR3ePqj/2a5rJjRX7ZxkH4D4UfX/VN9anehh7mW6XY/UJkevpZd6XFzwW+RQ++E 3sRny/RdlOoLjOkVjQZNBzE72gwZF/bPtSZIex3g6boB5dkeTTpKRzpJsWpr48ti1JP2xY34vbSNP6mm
-X-AuthUser: linux@smankusors.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9621:EE_|VI0PR04MB11919:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2902e1c1-0b11-452f-6774-08de1594a2c1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|52116014|7416014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TGhNTktmcVpiaHBTVFpWU0dtenllKzNEVVdRQW1idjlxTWJob1g1enpOTm9w?=
+ =?utf-8?B?bERBWldFRDhzKzhzUjJiTTNYRCt2SEFKRFlwNm54L2FaeWJuSUdPTktZRmVE?=
+ =?utf-8?B?bTlqemFJQTRGOXBaRlBGdmxsRUtrNmFWYnhWSXpEazNEcEQwUlVUbDlrYmxJ?=
+ =?utf-8?B?WVRCTGtPcEZNUGZUdExaUzVKZERXMDNGcnlWZDBMWGdvTWkrRkZBS09UTWU1?=
+ =?utf-8?B?UnMrd2g4ZGJ4cm5XSyt4R0RxVVpWY3JnRStzaW03dXVQZnZBSlhnL3psdXpi?=
+ =?utf-8?B?TURyVkdWZ0Z3VzU1OGs5V2pCaEF1S2hRaW5ZdHZiSmk3UllpaWJLTjhpSEhV?=
+ =?utf-8?B?VlN4K3k2OXRGUTJMUSsyL0JVSzdUdWM4RXRKNm9wWnAxYkRFb3pONkZKbVJR?=
+ =?utf-8?B?RHpUQTEvWFNzZENpZVZuWVVYZTNBUkQyUS8rK3hoekMvQUFNOW5XQUhjcGZS?=
+ =?utf-8?B?d2NmeUNuK3hDdW55OG8wckViRUJBMlAvVStGbGUybC9ZY1VObEtJRDBxVElR?=
+ =?utf-8?B?cjFXbk5VeC9DSkFHRm9SZFNvL0RZQmx1TjRqcjlyUERaV0NWbG51SllBQ3BT?=
+ =?utf-8?B?MUNUaGg4QXlyekxlUnhuQnBYQ2NSNnlUanF3MVBOVVpnd3RjQVZmSlJpb2Zj?=
+ =?utf-8?B?WUY2RGJCTW9GamFWQUNyckE3M200YWp4UHFFcm9PZm9jVGU3a1M2SUJrNEtn?=
+ =?utf-8?B?RFc0em81dGx2dWtVdldsUmJEK3kwMTZZRmNGYmNsYlFpZEZwSVBjVTZ4RW8y?=
+ =?utf-8?B?Qk9sRDBHK2lvMnJWcGVEOXI5V2ZLdDZqNjJSdFZVaG00V045QTlZL2ZQNUFX?=
+ =?utf-8?B?dU1UV3dxMkZMZ0tTWSt4Z3p5YmI5dEdCTWhlMWFVRythQWhkRm1mVXBTTlR2?=
+ =?utf-8?B?L29uVk1tYVI3WUp1Q0g2QU1uWE9mT1pJN0FUSWFHbVZYam0zQkpRekZjQ1FB?=
+ =?utf-8?B?TnhMdjhtbmlDQ3VoZ0QrL0tSQVdseHN0S0h3R09od2dxUFkwTWZhRkdFaVNK?=
+ =?utf-8?B?dTA2L1JSOE5IL3BEQzBZTUx0WWJOb1lyWFhsay8rbm1RU3hMcU1kZWplRVlN?=
+ =?utf-8?B?blNHRndFYy9vQTRzYkpmSTRxZ0twdEFlVzRycWVHS2R0N2IzTGxLTEZRWVFm?=
+ =?utf-8?B?UzhYeXg0cVdwaW42WkE4MGpRdzJGSXh1Y3ROcWVLMUthYTNGbGFJb0hhNEVV?=
+ =?utf-8?B?ZnNEMldESWV0b3Y4LzJtRzlLaU0xVjVMZDN2Y3lHM2xOOWQwQThCWXRRUUhH?=
+ =?utf-8?B?Y0IxaW5UWFVSWCs2TG14dlFtekRCNkt2WjJja3FtYjRVWUtqVi9uU2syeDZk?=
+ =?utf-8?B?SlpGMTBmTHp5dFBmTnp3RmZ0R2ZxMXdEdVZLN3g0N2hiTVN6R2xYVGh4SmEw?=
+ =?utf-8?B?YjM5ZHNJUU0rV1NrMGxNdzM0S1JyL2JBakxiWVZNN0kvMDUvVENQNDFZTk1D?=
+ =?utf-8?B?SnRRVHY2Wk44SmxTTEJHSHUrMmpCd1htcEpIbW1ZQkREbURGanpxUnBCVDZl?=
+ =?utf-8?B?M0tiSHRZZEtVZjlON3dHR1ZDNC9paEN1WkZxc3Mva0hKUFZSeEhCOEZXQ0RU?=
+ =?utf-8?B?Zm1xNnBGY1ZMMWxMTy9jbGtxN0wrYnNhWDVnS1p5WlJuNWhHeStuMjRSbzJm?=
+ =?utf-8?B?MDdsbW1IR3lRcFVNN3FxNmVCalVabUd0MmxQblI1cGsvZ0p3UkQza2VVaW96?=
+ =?utf-8?B?UE1UZDNkMDVsL1lFRGY4MWxHeUM1WUlYckxoS2xzNFYyZ29ybEZUU1gvUzFW?=
+ =?utf-8?B?dlJ5WmNsSTFnNXFSa1llSVB3c0RqYk1qNG02UFliQ2FmTFQycktLZnJTdHVF?=
+ =?utf-8?B?SkNGZ2NvY0JjS1U0K2tJZ2E0NU1zeElRVlBDellUdkJLUXZoVWR6Ym9nMnd4?=
+ =?utf-8?B?UUg2TldXaG9Ib2VJVHRUSmc0OEMyenZXK2dVWGFTMmFHSDZMZjBVVUxoSFJD?=
+ =?utf-8?B?T3UrOVZocGxtWklWNGZuQ2NqSkdwV2plQUR0eFBNRkdzQ0QzSWV1K0ZBbk1G?=
+ =?utf-8?B?MzhqQ0hYWGNkQ084MDlZTkpUdU1WK0tmZVl0WFlQRjJoZG1sWkJtOWMzTXVR?=
+ =?utf-8?Q?EM+J+5?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9621.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(52116014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RllKblJ3cDVPNDNNREdiaC92cjZLaUYvMjFiTXp0V2E2N0VVVFBuM05aWEl6?=
+ =?utf-8?B?K0pZeUZ5TWF5Z1Rhb0NSdTdrT0lKTjhvOVNrY1RoWEY4bm5wbEhvQmRtNGxo?=
+ =?utf-8?B?emZlY1hGVEN1N0pTS2NrOEE2d05CMjM0OXQ1WE53bTlNZm1KcU1IQTBjb3RX?=
+ =?utf-8?B?NCtYQVJBcEZDa1lBQXlUcGpqR1ZhV05QS1FqNVpTZnBNU3QvNmV2MXEvNCs4?=
+ =?utf-8?B?aGZiZ2t4SWZtOXZrYUhJaVhBMEdXSlphMlFmNy9pRDYxUE1qa2M2QUk0akp6?=
+ =?utf-8?B?R005RmYyelFyR2NBN3p3VGhyTStHQUNVMDRzMllXN0FiZVhKVmM3R1Z4VUd2?=
+ =?utf-8?B?SWpBNE1JSlJ5Q0lnalhSVWxQcitQaXBCNXpuSTV0MTFOUUFaQUxtWCtEZVRp?=
+ =?utf-8?B?UXZkNms0eWlIcVpwWFBhU01GWHArRWZVeSs1TGVkak55SlQzdDFIaTlCU2ly?=
+ =?utf-8?B?TzNNY2g2MEhDNjdOeVBRd0w3NXg0b2FjaVVIK25rWStENkxTSnpWMnN1ZWhW?=
+ =?utf-8?B?aDc5MVE1UU5EVlRrRGkyL3I0NEh1UmRIRFkxR0cyUjBibWlwY2VXWWRWRm8z?=
+ =?utf-8?B?VmhCQ0x2ZFpUc2lDMFkwb1AxR0pCczhNdGdYZFV4NjVrODkvU1RxWWRQR1pG?=
+ =?utf-8?B?TE1TYlNma0VnLzZLekpnenFXMGRJYkNVcGd6TmwzOFdCSEFpVlJJV2dsVytw?=
+ =?utf-8?B?RjYxQ3l4NWFjaWZpNVZ4OXUwSFBWTlZTc2J5K2ZqWnJndXQremQ3VWxpRzBH?=
+ =?utf-8?B?YUV2K1NaMzJqMU1vOEROS3pPZmtqdml5Q1ZtUk85L3JjbTBqZjdyNGFwbnps?=
+ =?utf-8?B?cUtlNjNPS0MvV3hNeWFmdWs2Um9HWXFMSWdrcGhUeTZPQkM3eUYvYUtQVXRI?=
+ =?utf-8?B?N1hRcndtUDluNHVkelRyYnZNSUZ2QmIrOENESkJETXI5L0U5d0VMY2dpQmpi?=
+ =?utf-8?B?U2lxaDNFU3pXQnNGT29aZlQ1T1lQWGtMUFFJdk5BWkI4V2VMYUQ4U3FNRDgx?=
+ =?utf-8?B?cGtva0xvZG4xVTVwR1Y4UEhEK3NhUnRGcG9xZjc1MXRITWZxTWlqd2dYelJm?=
+ =?utf-8?B?ZzErallERlk4dWl6bEh2R1BpUkNoVU02Ui8vakpveGZFZGwrL0t1RnBUWGw4?=
+ =?utf-8?B?eEd0TW9jUVBxMzRkUTJPK1I2cCs3QzhhcWQ0UWIweENXbTlvcktYUDVlbXg1?=
+ =?utf-8?B?YkNod2lwcVJyOUduZ3oxcHY0RGhkVE1YZWlIclByVEhLZWtDc296S3B1aG9M?=
+ =?utf-8?B?ekp3THpsRUZoT3lpNzd0V2pmSTJpcm9ZUkZvRzRiVk1OU2J4blA3b1F3MTJp?=
+ =?utf-8?B?ZHJzWDNyeTJyY1N2Ymh0S0hDVWhRclVwanZYaUp0L0M5NHIxbFNhSXVNbkdW?=
+ =?utf-8?B?ZUZQYW1aSVFVRnZ4dUpKdkJLdlFESFVlTWtxdEh0c0laWkxKTm95cG0wME9k?=
+ =?utf-8?B?cDhHRldZWUt6RG9mVndVMUc4SWRxNDdHdkR1RjdvNjNIQ1c0cFBEdkJOaTRF?=
+ =?utf-8?B?MnJsam03WjhGekxwNDhDYW5nWGpIN0FVQ3VlUXJpV0hyTGFZOUlxaVhvTzVy?=
+ =?utf-8?B?a2hJL0d5TDJmM3R0bnBwQUQ4eGdzdjlBZFZrT0lVeHpEREd2blNac0JHTTM5?=
+ =?utf-8?B?ZTB4OTBYS3hjMGQ2a0d5YVlmYmlVSC9zLyt4bGRMM0lSVlV4aUtXdk5GSE1X?=
+ =?utf-8?B?djdBcFVwKzR0bG41aGlFTC85THJLdFNHNEVRTlJvRnBwaExsRUN5bFlVOWYw?=
+ =?utf-8?B?dC95V2FMM3MvQjhlb00yZkJEMlU0dVArcllBSlRHWXN4ZHY3TEhVMS9UWTUv?=
+ =?utf-8?B?a3VwNXhWcm9VSTNJQms3N3p6VkNYWnozMFdMeEZ0TTZOYjNIZlR3THRiZ3RB?=
+ =?utf-8?B?M3IybGMwZVU1T2piaERCdDJkNWRGNFZrdUJxNXFaekYzb0JQNWFHQWFJUlIw?=
+ =?utf-8?B?RXc0alJyTERhVEQzY05FOHp4RVF5dDF1dnlMRWVpM05aUDM0akh5US9xQmJM?=
+ =?utf-8?B?ZS9oMTNJU1VNUFVtZXR2UnJvMHNIbUV3TGIyQi8ya0hrbzlpbkw1ZnduQmwz?=
+ =?utf-8?B?Z3haS0p4RTE4V1ZrNEQvNnZIZHB3Zld0d0Nvd3AvSFAxa1VvSGJxejVVajI4?=
+ =?utf-8?Q?s21k=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2902e1c1-0b11-452f-6774-08de1594a2c1
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9621.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 20:08:46.4886
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MJzWfOznRQxt/pa3Z3XFa35d6UNYhmNR4lAlOsAXVyr+ghkusrE5ffkhSjwcWXIbANjpdLzNQfGVij4re0uIJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11919
 
-On 10/28/2025 1:35 AM, David Lechner wrote:
-> On 10/27/25 12:29 PM, Antony Kurniawan Soemardi wrote:
->> On msm8960 phones, the XOADC driver was using incorrect calibration
->> values:
->> absolute calibration dx = 625000 uV, dy = 4 units
->> ratiometric calibration dx = 1800, dy = -29041 units
->>
->> As a result, reading from the IIO bus returned unexpected results:
->> in_voltage_7 (USB_VBUS): 0
->> in_voltage_10 (125V): 0
->>
->> The issue was caused by not setting the ratiometric scale (amux_ip_rsv)
->> from the predefined channels. Additionally, the downstream code always
-> Mentioning downstream kernels is usually a red flag. :-)
->
-> We can justify it here though by saying that there is no documentation
-> available other than downstream source code, so we are just using it
-> as a reference.
-ah ok, rewording needed then
->> set the ADC_ARB_USRP_DIG_PARAM register to PM8XXX_ADC_ARB_ANA_DIG [1].
->> That value does not include the SEL_SHIFT0 and SEL_SHIFT1 bits. Enabling
->> those bits caused calibration errors too, so they were removed.
->>
->> With these fixes, calibration now uses the correct values:
->> absolute calibration dx = 625000 uV, dy = 6307 units
->> ratiometric calibration dx = 1800, dy = 18249 units
->>
->> Reading from the IIO bus now returns expected results:
->> in_voltage_7 (USB_VBUS): 4973836
->> in_voltage_10 (125V): 1249405
-> Would be useful to mention which hardware you tested with in case
-> it turns out that there is some other hardware that does require the
-> SHIFT0/1 bits to be set.
-I did mention Sony Xperia SP from cover letter, but I haven't
-referenced it in this commit yet. Also I tried to search on Github for
-SHIFT0/1 bits, but couldn't find any usage of them...
->> [1] https://github.com/LineageOS/android_kernel_sony_msm8960t/blob/93319b1e5aa343ec1c1aabcb028c5e88c7df7c01/drivers/hwmon/pm8xxx-adc.c#L407-L408
->>
-> Since this is a fix, it should have a Fixes: tag. And it sounds like
-> possibly two separate fixes. In that case, it should be two separate
-> patches.
-Fixes into 63c3ecd946d4ae2879ec0d8c6dcb90132a74d831?
->> Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
->> ---
->>   drivers/iio/adc/qcom-pm8xxx-xoadc.c | 10 ++++++----
->>   1 file changed, 6 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
->> index 8555f34036fb13c41ac720dc02c1dc39876e9198..a53d361456ec36b66d258041877bd96ab37838c4 100644
->> --- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
->> +++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
->> @@ -503,10 +503,11 @@ static int pm8xxx_read_channel_rsv(struct pm8xxx_xoadc *adc,
->>   		goto unlock;
->>   
->>   	/* Decimation factor */
->> -	ret = regmap_write(adc->map, ADC_ARB_USRP_DIG_PARAM,
->> -			   ADC_ARB_USRP_DIG_PARAM_SEL_SHIFT0 |
->> -			   ADC_ARB_USRP_DIG_PARAM_SEL_SHIFT1 |
->> -			   ch->decimation << ADC_DIG_PARAM_DEC_SHIFT);
->> +	ret = regmap_update_bits(adc->map,
->> +				 ADC_ARB_USRP_DIG_PARAM,
->> +				 ADC_ARB_USRP_DIG_PARAM_DEC_RATE0 |
->> +				 ADC_ARB_USRP_DIG_PARAM_DEC_RATE1,
->> +				 ch->decimation << ADC_DIG_PARAM_DEC_SHIFT);
-> As a follow-up patch, it would be nice to update the driver to use FIELD_PREP().
->
-> I.e. remove ADC_ARB_USRP_DIG_PARAM_DEC_RATE0, ADC_ARB_USRP_DIG_PARAM_DEC_RATE1
-> and ADC_DIG_PARAM_DEC_SHIFT macros and replace them with one macro:
->
-> #define ADC_ARB_USRP_DIG_PARAM_DEC_RATE		GENMASK(6, 5)
->
-> Then use it like:
->
-> 	ret = regmap_update_bits(adc->map,
-> 				 ADC_ARB_USRP_DIG_PARAM,
-> 				 ADC_ARB_USRP_DIG_PARAM_DEC_RATE,
-> 				 FIELD_PREP(ADC_ARB_USRP_DIG_PARAM_DEC_RATE,
-> 					    ch->decimation));
->
-> This should be done for all of the similar multi-bit fields.
-as a follow up patch, you mean next version of this patch series, or
-separate patch series?
->>   	if (ret)
->>   		goto unlock;
->>   
->> @@ -783,6 +784,7 @@ static int pm8xxx_xoadc_parse_channel(struct device *dev,
->>   	ch->calibration = VADC_CALIB_ABSOLUTE;
->>   	/* Everyone seems to use default ("type 2") decimation */
->>   	ch->decimation = VADC_DEF_DECIMATION;
->> +	ch->amux_ip_rsv = hwchan->amux_ip_rsv;
->>   
->>   	if (!fwnode_property_read_u32(fwnode, "qcom,ratiometric", &rsv)) {
->>   		ch->calibration = VADC_CALIB_RATIOMETRIC;
->>
+Add basic HDR mode support, only support private transfer, not support
+CCC command.
+
+Update i3c framework API to allow pass down mode and extend driver callback
+function.
+
+Implement HDR transfer in svc i3c master driver.
+
+Simplifed HDR flow is (ref i3c spec line 5514) Figure 129
+
+<--              SDR            ---> | <--- HDR
+START 0x7E RnW(0) ACK CCC(ENTHDR0) T   HDR-CMD(00-7f write, 80--ff read)
+
+                                    ----> |
+HDR-DATA HDR-CRC HDR-RESTART .... HDR-EXIT
+
+Note: HDR-CMD is 16bit data, which included 7bit slave address and 8bit
+read/write command.
+
+svc hardware can auto issue SDR part.
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v7:
+- add explicit define for I3C_HDR_*
+- add missed include files.
+- detail see each patches' change log
+- CONFIG_DEBUG_ATOMIC_SLEEP=y
+- Link to v6: https://lore.kernel.org/r/20251014-i3c_ddr-v6-0-3afe49773107@nxp.com
+
+Changes in v6:
+- remove acpi part
+- collect Conor Dooley ack tags
+- Link to v5: https://lore.kernel.org/r/20251007-i3c_ddr-v5-0-444184f7725e@nxp.com
+
+Changes in v5:
+- Just realized missed CC mail list devicetree@vger.kernel.org and resend
+- Link to v4: https://lore.kernel.org/r/20251007-i3c_ddr-v4-0-3afea5105775@nxp.com
+
+Changes in v4:
+- use master's hdr_cap to check HDR cap.
+- add mmc5603 support.
+- Link to v3: https://lore.kernel.org/r/20250930-i3c_ddr-v3-0-b627dc2ef172@nxp.com
+
+Changes in v3:
+- Add new patch for change rnw to union for svc.
+- Detial changes see each patch's change log.
+- Link to v2: https://lore.kernel.org/r/20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com
+
+Changes in v2:
+- Add sensor driver, which use HDR mode read/write data.
+- change priv_xfer to i3c_xfer.
+- Link to v1: https://lore.kernel.org/r/20250129-i3c_ddr-v1-0-028a7a5d4324@nxp.com
+
+---
+Frank Li (5):
+      i3c: Add HDR API support
+      i3c: master: svc: Replace bool rnw with union for HDR support
+      i3c: master: svc: Add basic HDR mode support
+      dt-bindings: trivial-devices: add MEMSIC 3-axis magnetometer
+      iio: magnetometer: Add mmc5633 sensor
+
+ .../devicetree/bindings/trivial-devices.yaml       |   4 +
+ drivers/i3c/device.c                               |  27 +-
+ drivers/i3c/internals.h                            |   6 +-
+ drivers/i3c/master.c                               |  20 +-
+ drivers/i3c/master/svc-i3c-master.c                | 115 +++-
+ drivers/iio/magnetometer/Kconfig                   |  12 +
+ drivers/iio/magnetometer/Makefile                  |   1 +
+ drivers/iio/magnetometer/mmc5633.c                 | 588 +++++++++++++++++++++
+ include/linux/i3c/device.h                         |  40 +-
+ include/linux/i3c/master.h                         |   4 +
+ 10 files changed, 775 insertions(+), 42 deletions(-)
+---
+base-commit: df05ef50ada6a8e2fe758adf1b8fa35eea801b2d
+change-id: 20250129-i3c_ddr-b15488901eb8
+
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
 
 

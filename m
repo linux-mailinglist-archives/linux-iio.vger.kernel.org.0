@@ -1,197 +1,284 @@
-Return-Path: <linux-iio+bounces-25511-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25512-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C75C0FEF3
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 19:35:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C367C10056
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 19:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 936A119C27B4
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 18:36:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4E37E4F81EB
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 18:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0698E31A076;
-	Mon, 27 Oct 2025 18:35:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="OaXrUnXo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4458431B80D;
+	Mon, 27 Oct 2025 18:42:12 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7580D316918
-	for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 18:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F672D8DB9;
+	Mon, 27 Oct 2025 18:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761590147; cv=none; b=oHUDxKVVLjLWjZfG9huEoQnROp8Nw3TsiZTgare/s/caDzcGvak/6u6zCFRxGVMDvPaHkWqFOjkotv5JZO17Oo34F7snVnxDUIPEK21Gwom9ZpReC3LPgj56UoQBPVp9HblpRPFVztV2nogyHHYp0lBgjnxqQ122U0EOfvgljs0=
+	t=1761590532; cv=none; b=CBS7AhpCTr6wftnKBRwcNDKjktpvvTUQNX88utDzwIrOGiEipIhxdZZMR9LNGZUSnLgdzRAuFYZgFQL9JLK5IrJp7Gr8tyW05cLgN2Mr6QWI4FR8z1MwtmlFFVCgLD0C8lWHnNSh/SLeY2ayo19bWStQd3+0NWoPqh+JWHkLDkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761590147; c=relaxed/simple;
-	bh=PqKvPU0noBkdOcVjQUoD06IiGN+IODWXYRlWBSnglh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kBGo8GXaIUVLag81/usqjF9m8npGtR2LgXbFj+pzw3L3PLma3VxOGZjLey7IVb3JnoW3HHaaGdCTZIA+A3naEs2yupb9ffOjP3qzVF4EHPRBdS1iFDANaluQpdOfLgO2NU1qVSL1jnz4gSeFqf11VgvjETSxx5AdPvs2TEA5xnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=OaXrUnXo; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7c0e8367d4eso1702062a34.1
-        for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 11:35:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761590143; x=1762194943; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lvdP54SX5DIvg5ddC4TkLzn7pRZGLq9mZQ1eodiVzk4=;
-        b=OaXrUnXoKv6Nsxa1PoJ+HHhXW6ISObM5qw0IKdLLmBYldolKEOpBf5X2KVC0If6gYn
-         JkrH9FkdiiG7mv73n2j1hNGwS5spHo6VlL2jD9w8Ym5ArgsHLkUkERYanH891DNnZQ/2
-         JV/ZNaDpGfQs0d+PonA466jBXsswabk4T7gT4vF2CNYMCa1xH+ajTy7zA/koUFpiKRNy
-         Mqtf3edryksJ9lhC1cpnN6okGzGW6Dgh2CcXDnjNzxs/90gweAmoXaL/N1fDHSb6+pBt
-         gntjEI22QFLyeB1kmy6MU/GzojNZlTMSnKfy2ZJ1zoHY34v+B7KjB8eoY8sj49KYjf6B
-         9bjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761590143; x=1762194943;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lvdP54SX5DIvg5ddC4TkLzn7pRZGLq9mZQ1eodiVzk4=;
-        b=OJ+exTYPdP48OlzUnAbB79S/5A9Drbg67VA6bifcdFEZzFo4g9A3hz9uEooTib/At8
-         kK1iYE9UHOuwJl8plBJ5Yrvvoo22jjhpAdwNEOQxNx8tsT+qpDn59SWyPd3in8ENRKlZ
-         hUaJmoSvhmURRDGwmsas1rnODDGpcgFXBRAXFYEYesyUK/TUFHN+8WGkLxp3mZyD0Z1B
-         2RIR94IKtD20Q6gcvbXYp+EPPUKwzJmfGflGdU8Nfz90q9ZLhvoEdfxR/nFxyf5RldiH
-         JIPgHGgKbeSjjzNvl9igw5pDyxTBnxzrwAPUm4cRc4PKD48EYX9RS2SzZNfL/+rJGWEh
-         wGKA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnM53hhdKKqMXhQ4tGAY2l/BiE3w32ZGFG672ruy3ppIgOVuxd8PHCAJZCQz8B6Ms/Iy/L16t+jqg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytG9hl/pRRWiw8Sk9Nf4iGmsp6XLjKtRvGhHgZomlGTV2PPihb
-	Vd9b1kPuLTnEJNnkvT9BGnnd7T56OrcLh2ausU4YddutJkpqGNvqC1+6inOhV1oUAY0=
-X-Gm-Gg: ASbGncvTyfEXXHiYBRPN38KDrC9j+4zkZwn2nDfLECQUAsSn3JmgX8ZIG3PNnt+MdIw
-	i9TVOXG2dwLEr1osf6i8TyRQYPgV4FFIhWbbmyJ1QZvKZykHliUyp5aHI3+MwMVsLfYTkc+WipE
-	6/8L0tJxrwymR3Vpv1Kmcbzwnh5dpFaRZaKQ0f1b4aL62STwak3ZhjegJXF+g27yFqOARod7cuy
-	z5X2aMm0k5gVTtoef5oF1Oov3soLmG2s4D+8vmcraecYOp8yeCXVkZApWVSFtOoU6nObsjPNByG
-	NJf/GgnFZmL6qd3RSfani94acYW8B3KKFIvLKa5ooJPrFI4Qmt5w7oK35K4nbWLj4SizEY5R8J2
-	gBnFwZ8ikC8SNnCJExMPjl9RwdGqgivDzTaXR8giUIFtiB1NsI7SU4vaYnvbWnn1HmGdjup9yGp
-	B1WWTtAUeWzDAsZam7mRGbka/Vit//n80e9F7Ts1IKMlzLfKjrJw==
-X-Google-Smtp-Source: AGHT+IEsmQUfxd0dOcE/jYcTPBywE5Kc9BNx03k/QXwOh0ziGd8tdi38iwIv7izg1KS44yKfbURGxQ==
-X-Received: by 2002:a05:6808:188f:b0:44d:a271:fce4 with SMTP id 5614622812f47-44f6bb494e0mr343776b6e.47.1761590143393;
-        Mon, 27 Oct 2025 11:35:43 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:46d5:c880:64c8:f854? ([2600:8803:e7e4:500:46d5:c880:64c8:f854])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-654ef2eff7fsm1997150eaf.17.2025.10.27.11.35.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 11:35:42 -0700 (PDT)
-Message-ID: <0eea7e4c-ec3b-421c-8522-aa3f52b5cb13@baylibre.com>
-Date: Mon, 27 Oct 2025 13:35:41 -0500
+	s=arc-20240116; t=1761590532; c=relaxed/simple;
+	bh=xxOlJgeBwy+KzQJfsh3junpiGLLSk0j9on8nVYQ5M/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RrpFjl7IKk4YPSmGzYViTHZHcorOJozqc7tpbdowUKO7nYPr0XNtyv3zg1dU2jwlqiuyJ5uSsZu9F49FmToNQ+/AmyTnozOfJx0xqQdTjY3SjYJzaUC43hZQmCWsTlCJ2oS9ec31B7IUu0g4YCbo6pkfP24E2axTGkR1elsMPZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFEDC4CEF1;
+	Mon, 27 Oct 2025 18:42:01 +0000 (UTC)
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	David Miller <davem@davemloft.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Crt Mori <cmo@melexis.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alex Elder <elder@ieee.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Jason Baron <jbaron@akamai.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Kim Seer Paller <kimseer.paller@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Jianping Shen <Jianping.Shen@de.bosch.com>
+Cc: linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-edac@vger.kernel.org,
+	qat-linux@intel.com,
+	linux-gpio@vger.kernel.org,
+	linux-aspeed@lists.ozlabs.org,
+	linux-iio@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v5 00/23] Non-const bitfield helpers
+Date: Mon, 27 Oct 2025 19:41:34 +0100
+Message-ID: <cover.1761588465.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: adc: qcom-pm8xxx-xoadc: fix incorrect
- calibration values
-To: Antony Kurniawan Soemardi <linux@smankusors.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251028-pm8xxx-xoadc-fix-v1-0-b000e1036e41@smankusors.com>
- <20251028-pm8xxx-xoadc-fix-v1-2-b000e1036e41@smankusors.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20251028-pm8xxx-xoadc-fix-v1-2-b000e1036e41@smankusors.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/27/25 12:29 PM, Antony Kurniawan Soemardi wrote:
-> On msm8960 phones, the XOADC driver was using incorrect calibration
-> values:
-> absolute calibration dx = 625000 uV, dy = 4 units
-> ratiometric calibration dx = 1800, dy = -29041 units
-> 
-> As a result, reading from the IIO bus returned unexpected results:
-> in_voltage_7 (USB_VBUS): 0
-> in_voltage_10 (125V): 0
-> 
-> The issue was caused by not setting the ratiometric scale (amux_ip_rsv)
-> from the predefined channels. Additionally, the downstream code always
+	Hi all,
 
-Mentioning downstream kernels is usually a red flag. :-) 
+<linux/bitfield.h> contains various helpers for accessing bitfields, as
+typically used in hardware registers for memory-mapped I/O blocks.
+These helpers ensure type safety, and deduce automatically shift values
+from mask values, avoiding mistakes due to inconsistent shifts and
+masks, and leading to a reduction in source code size.
 
-We can justify it here though by saying that there is no documentation
-available other than downstream source code, so we are just using it
-as a reference.
+The existing FIELD_{GET,PREP}() macros are limited to compile-time
+constants.  However, it is very common to prepare or extract bitfield
+elements where the bitfield mask is not a compile-time constant (e.g. it
+comes from a table, or is created by shifting a compile-time constant).
+To avoid this limitation, the AT91 clock driver introduced its own
+field_{prep,get}() macros.  During the past four years, these have been
+copied to multiple drivers, and more copies are on their way[1], leading
+to the obvious review comment "please move this to <linux/bitfield.h>".
 
-> set the ADC_ARB_USRP_DIG_PARAM register to PM8XXX_ADC_ARB_ANA_DIG [1].
-> That value does not include the SEL_SHIFT0 and SEL_SHIFT1 bits. Enabling
-> those bits caused calibration errors too, so they were removed.
-> 
-> With these fixes, calibration now uses the correct values:
-> absolute calibration dx = 625000 uV, dy = 6307 units
-> ratiometric calibration dx = 1800, dy = 18249 units
-> 
-> Reading from the IIO bus now returns expected results:
-> in_voltage_7 (USB_VBUS): 4973836
-> in_voltage_10 (125V): 1249405
+Hence this series
+  1. Takes preparatory steps in drivers definining local
+     field_{get,prep}() macros (patches 1-10),
+  2. Makes field_{prep,get}() available for general use (patch 11),
+  3. Converts drivers with local variants to the common helpers (patches
+     12-21),
+  4. Converts a few Renesas drivers to the existing FIELD_{GET,PREP}()
+     and the new field_{get,prep}() helpers (patches 22-23).
 
-Would be useful to mention which hardware you tested with in case
-it turns out that there is some other hardware that does require the
-SHIFT0/1 bits to be set.
+Alternatives would be to use the typed {u*,be*,le*,...}_{get,encode}_bits()
+macros instead (which currently do not work with non-constant masks
+either, and the first attempt to change that generates much worse code),
+or to store the low bit and width of the mask instead (which would
+require changing all code that passes masks directly, and also generates
+worse code).
 
-> 
-> [1] https://github.com/LineageOS/android_kernel_sony_msm8960t/blob/93319b1e5aa343ec1c1aabcb028c5e88c7df7c01/drivers/hwmon/pm8xxx-adc.c#L407-L408
-> 
+Changes compared to v4[2]:
+  - Add preparatory patches to #undef field_{get,prep}() in individual
+    drivers before defining local variants,
+  - Update new smi330 IIO IMU driver,
+  - Add Acked-by,
+  - Document that mask must be non-zero,
+  - Document typical usage pattern,
+  - Recommend using FIELD_{PREP,GET}() directly to ensure compile-time
+    constant masks,
+  - Check BITS_PER_TYPE(mask) instead of sizeof(mask),
+  - Wire field_{get,prep}() to FIELD_{GET,PREP}() when mask is
+    constant, to improve type checking,
+  - Extract conversion of individual drivers into separate patches.
 
-Since this is a fix, it should have a Fixes: tag. And it sounds like
-possibly two separate fixes. In that case, it should be two separate
-patches.
+Changes compared to v3[3]:
+  - Update recently introduced FIELD_MODIFY() macro,
+  - Add Acked-by,
+  - Rebase on top of commit 7c68005a46108ffa ("crypto: qat - relocate
+    power management debugfs helper APIs") in v6.17-rc1,
+  - Convert more recently introduced upstream copies:
+      - drivers/edac/ie31200_edac.c
+      - drivers/iio/dac/ad3530r.c
 
-> Signed-off-by: Antony Kurniawan Soemardi <linux@smankusors.com>
-> ---
->  drivers/iio/adc/qcom-pm8xxx-xoadc.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> index 8555f34036fb13c41ac720dc02c1dc39876e9198..a53d361456ec36b66d258041877bd96ab37838c4 100644
-> --- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> +++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> @@ -503,10 +503,11 @@ static int pm8xxx_read_channel_rsv(struct pm8xxx_xoadc *adc,
->  		goto unlock;
->  
->  	/* Decimation factor */
-> -	ret = regmap_write(adc->map, ADC_ARB_USRP_DIG_PARAM,
-> -			   ADC_ARB_USRP_DIG_PARAM_SEL_SHIFT0 |
-> -			   ADC_ARB_USRP_DIG_PARAM_SEL_SHIFT1 |
-> -			   ch->decimation << ADC_DIG_PARAM_DEC_SHIFT);
-> +	ret = regmap_update_bits(adc->map,
-> +				 ADC_ARB_USRP_DIG_PARAM,
-> +				 ADC_ARB_USRP_DIG_PARAM_DEC_RATE0 |
-> +				 ADC_ARB_USRP_DIG_PARAM_DEC_RATE1,
-> +				 ch->decimation << ADC_DIG_PARAM_DEC_SHIFT);
+Changes compared to v2[4]:
+  - New patch "[PATCH v3 1/4] bitfield: Drop underscores from macro
+    parameters",
+  - Add Acked-by,
+  - Drop underscores from macro parameters,
+  - Use __auto_type where possible,
+  - Correctly cast reg to the mask type,
+  - Introduces __val and __reg intermediates to simplify the actual
+    operation,
+  - Drop unneeded parentheses,
+  - Clarify having both FIELD_{GET,PREP}() and field_{get,prep}(),
 
-As a follow-up patch, it would be nice to update the driver to use FIELD_PREP().
+Changes compared to v1[5]:
+  - Cast val resp. reg to the mask type,
+  - Fix 64-bit use on 32-bit architectures,
+  - Convert new upstream users:
+      - drivers/crypto/intel/qat/qat_common/adf_gen4_pm_debugfs.c
+      - drivers/gpio/gpio-aspeed.c
+      - drivers/iio/temperature/mlx90614.c
+      - drivers/pinctrl/nuvoton/pinctrl-ma35.c
+      - sound/usb/mixer_quirks.c
+  - Convert new user queued in renesas-devel for v6.15:
+      - drivers/soc/renesas/rz-sysc.c
+  - Drop the last 14 RFC patches.
+    They can be updated/resubmitted/applied later.
 
-I.e. remove ADC_ARB_USRP_DIG_PARAM_DEC_RATE0, ADC_ARB_USRP_DIG_PARAM_DEC_RATE1
-and ADC_DIG_PARAM_DEC_SHIFT macros and replace them with one macro:
+In the meantime, one more copy ended up in the IIO tree and in
+linux-next (commit 89cba586b8b4cde0 ("iio: imu: smi330: Add driver" in
+next-20251021 and later).  As this commit is not yet upstream, I cannot
+apply any updates (patches 10 and 21) for this driver yet.
 
-#define ADC_ARB_USRP_DIG_PARAM_DEC_RATE		GENMASK(6, 5)
+I plan to take all patches (except 10 and 21) through the
+Renesas tree, and provide an immutable branch + tag with all patches
+(except 10, 21, 22, and 23), so subsystem maintainers that want to queue
+patches that depend on the new helpers can easily do so.  Once that tag
+has been merged in subsystem trees or upstream, I plan to update and
+resend actual conversions (see patches 4-17 in v1[5]).
 
-Then use it like:
+To avoid build issues in linux-next, the IIO maintainer should:
+  1. Apply patch 10 now, and
+  2. Apply patch 21 later, either after
+       a. merging my immutable branch/tag, or
+       b. the new helpers in <linux/bitfield.h> are upstream,
 
-	ret = regmap_update_bits(adc->map,
-				 ADC_ARB_USRP_DIG_PARAM,
-				 ADC_ARB_USRP_DIG_PARAM_DEC_RATE,
-				 FIELD_PREP(ADC_ARB_USRP_DIG_PARAM_DEC_RATE,
-					    ch->decimation));
+Note that there is also a minor conflict with linux-next due to the
+removal of an include file from drivers/gpio/gpio-aspeed.c.
 
-This should be done for all of the similar multi-bit fields.
+Thanks for your comments!
 
->  	if (ret)
->  		goto unlock;
->  
-> @@ -783,6 +784,7 @@ static int pm8xxx_xoadc_parse_channel(struct device *dev,
->  	ch->calibration = VADC_CALIB_ABSOLUTE;
->  	/* Everyone seems to use default ("type 2") decimation */
->  	ch->decimation = VADC_DEF_DECIMATION;
-> +	ch->amux_ip_rsv = hwchan->amux_ip_rsv;
->  
->  	if (!fwnode_property_read_u32(fwnode, "qcom,ratiometric", &rsv)) {
->  		ch->calibration = VADC_CALIB_RATIOMETRIC;
-> 
+[1] Work-in-progress new copies posted during the last few months (there
+    may be more):
+      - "[PATCH 10/24] mtd: rawnand: sunxi: cosmetic: move ECC_PAT_FOUND register in SoC caps"
+	https://lore.kernel.org/20251016142752.2627710-11-richard.genoud@bootlin.com
+      - "[PATCH 12/24] mtd: rawnand: sunxi: cosmetic: move NFC_ECC_MODE offset in SoC caps"
+	https://lore.kernel.org/20251016142752.2627710-13-richard.genoud@bootlin.com
+      - "[PATCH v2 05/15] mtd: rawnand: sunxi: rework pattern found registers"
+	https://lore.kernel.org/20251013152645.1119308-6-richard.genoud@bootlin.com
+      - "[PATCH v2 07/15] mtd: rawnand: sunxi: introduce ecc_mode_mask in sunxi_nfc_caps"
+	https://lore.kernel.org/20251013152645.1119308-8-richard.genoud@bootlin.com
+      - "[PATCH v5 2/2] iio: imu: smi330: Add driver"
+	https://lore.kernel.org/20251009153149.5162-3-Jianping.Shen@de.bosch.com
+	Now in iio/togreg and linux-next (next-20251021 and later)
+      - "[PATCH v3 2/8] pwm: rzg2l-gpt: Add info variable to struct rzg2l_gpt_chip"
+	https://lore.kernel.org/20250923144524.191892-3-biju.das.jz@bp.renesas.com
+      - "[PATCH v2 3/3] gpio: gpio-ltc4283: Add support for the LTC4283 Swap Controller"
+	https://lore.kernel.org/20250903-ltc4283-support-v2-3-6bce091510bf@analog.com
+      - "[PATCH v7 15/24] media: i2c: add Maxim GMSL2/3 serializer and deserializer framework"
+	https://lore.kernel.org/20250718152500.2656391-16-demonsingur@gmail.com
+[2] "[PATCH v4 0/4] Non-const bitfield helpers"
+    https://lore.kernel.org/cover.1760696560.git.geert+renesas@glider.be
+[3] "[PATCH v3 0/4] Non-const bitfield helpers"
+    https://lore.kernel.org/all/cover.1739540679.git.geert+renesas@glider.be/
+[4] "[PATCH v2 0/3] Non-const bitfield helpers"
+    https://lore.kernel.org/all/cover.1738329458.git.geert+renesas@glider.be
+[5] "[PATCH 00/17] Non-const bitfield helper conversions"
+    https://lore.kernel.org/all/cover.1637592133.git.geert+renesas@glider.be
 
+Geert Uytterhoeven (23):
+  clk: at91: pmc: #undef field_{get,prep}() before definition
+  crypto: qat - #undef field_get() before local definition
+  EDAC/ie31200: #undef field_get() before local definition
+  gpio: aspeed: #undef field_{get,prep}() before local definition
+  iio: dac: ad3530r: #undef field_prep() before local definition
+  iio: mlx90614: #undef field_{get,prep}() before local definition
+  pinctrl: ma35: #undef field_{get,prep}() before local definition
+  soc: renesas: rz-sysc: #undef field_get() before local definition
+  ALSA: usb-audio: #undef field_{get,prep}() before local definition
+  [next] iio: imu: smi330: #undef field_{get,prep}() before definition
+  bitfield: Add non-constant field_{prep,get}() helpers
+  clk: at91: Convert to common field_{get,prep}() helpers
+  crypto: qat - convert to common field_get() helper
+  EDAC/ie31200: Convert to common field_get() helper
+  gpio: aspeed: Convert to common field_{get,prep}() helpers
+  iio: dac: Convert to common field_prep() helper
+  iio: mlx90614: Convert to common field_{get,prep}() helpers
+  pinctrl: ma35: Convert to common field_{get,prep}() helpers
+  soc: renesas: rz-sysc: Convert to common field_get() helper
+  ALSA: usb-audio: Convert to common field_{get,prep}() helpers
+  [next] iio: imu: smi330: Convert to common field_{get,prep}() helpers
+  clk: renesas: Use bitfield helpers
+  soc: renesas: Use bitfield helpers
+
+ drivers/clk/at91/clk-peripheral.c             |  1 +
+ drivers/clk/at91/pmc.h                        |  3 --
+ drivers/clk/renesas/clk-div6.c                |  6 +--
+ drivers/clk/renesas/rcar-gen3-cpg.c           | 15 ++----
+ drivers/clk/renesas/rcar-gen4-cpg.c           |  9 ++--
+ .../intel/qat/qat_common/adf_pm_dbgfs_utils.c |  8 +--
+ drivers/edac/ie31200_edac.c                   |  4 +-
+ drivers/gpio/gpio-aspeed.c                    |  5 +-
+ drivers/iio/dac/ad3530r.c                     |  3 --
+ drivers/iio/imu/smi330/smi330_core.c          |  4 --
+ drivers/iio/temperature/mlx90614.c            |  5 +-
+ drivers/pinctrl/nuvoton/pinctrl-ma35.c        |  4 --
+ drivers/soc/renesas/renesas-soc.c             |  4 +-
+ drivers/soc/renesas/rz-sysc.c                 |  3 +-
+ include/linux/bitfield.h                      | 54 +++++++++++++++++++
+ sound/usb/mixer_quirks.c                      |  4 --
+ 16 files changed, 73 insertions(+), 59 deletions(-)
+
+-- 
+2.43.0
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
 

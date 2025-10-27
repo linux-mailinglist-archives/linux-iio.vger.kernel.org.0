@@ -1,149 +1,149 @@
-Return-Path: <linux-iio+bounces-25498-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25499-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA983C0F02A
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 16:41:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A998C0F352
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 17:16:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E200A4FA12D
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 15:36:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 342C3564942
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 16:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0722310624;
-	Mon, 27 Oct 2025 15:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66D72877D2;
+	Mon, 27 Oct 2025 16:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zgyLo0VK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RsMdE0O6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E310030FF30
-	for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 15:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD2830CD91
+	for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 16:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761579307; cv=none; b=cESCGf86TFjID11uxp9jD08LgjAgw8/Ob+S9CuSzpSXLxCnquxeGmixEQqA4+h9rxMdUd+5LoVJW30YBpCiwNEhElFhAZUwW2cpmw8HqWzjGYaPINSjD4Km6c+b996I4RxDedNIRGl0kzkeDbSotSxOavM22kcyAR1KeOCgN7Ic=
+	t=1761581080; cv=none; b=P9Ig1WJLyG7s2RAEWjYTXKv5XlUNDV/FO/iJUsC3jqvCuacYMvJaqIEKwpSVTUjYHOso3oaPidqXPul9OQJtRzsnmCUQJp8xEPKQfjPoyqVkKfItTYE3OC7dmp76lc0SwjRLfgtpyq6ojzgiO0MkW3LrSiYUXJTB7E/qWUgB/Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761579307; c=relaxed/simple;
-	bh=lUh3vpGKqYs2pu/MSXfc3x0+dDC9t63CUv1Wi22tbtA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A/ebaEMpN0d6+5eIanY5EzYpnESXUqEV5IX8tBi45RkmcVxMesY4TSTuxmEgC7BO2aBLq1T1US1J7tMAotDpmO3NSJimyfxLf4vuyO7GtxWIWO23lpSjaiBx7F+PTUTQO1bPxgyHDf+qiTQFKIQ1/4uuVBes+YTMrO+ZDiqM+xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zgyLo0VK; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7c532d70cfaso1629025a34.1
-        for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 08:35:04 -0700 (PDT)
+	s=arc-20240116; t=1761581080; c=relaxed/simple;
+	bh=2063pxklqusQxNqj6V9Nfgba5zH13grbuHqPROtkanQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=P15lUal26aqmZJRPKn29RtQuXQYe2ujFMg7RkMbi3M52tGsNVoIV/q2DQne1WLjMJJMKLVccHUJV0MOKv3oOXz1CRLjwHdyFGUvUqXPrIx7YEV9O3sLi/1AdvPRA6FXQcIkfibZXOyh6sXbaLws7u+TKQKV9M7d48V+3Nd8QDNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RsMdE0O6; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4711b95226dso60533955e9.0
+        for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 09:04:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761579304; x=1762184104; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SgczX3f1Sdgn9dYt2cYjuFRk9Cp5P6JmUSzTKrcL85g=;
-        b=zgyLo0VKCw1yy9A5p0F2Ba6wDHn6U04F2H7MFjU+UW6KL/j0WpzxvRhyC124wfUH1E
-         ++cJqWv5ZwymX6PWqUQ/kX1wy7YKyB7NQCUgW/IEkwB5PO6OGxkCyHMKICskblU19Enx
-         9vrv7pX2b3cBvGAKSz2EwUYGFRt8UxwgIWzxJwcQTOqe5NO0/6yAQfTGh6ah8hvoN2OW
-         NLZ06xiUHsxaS2nXfEn/+sD0rVKAduReRJnTnnED2BolWdjwJCEzKX7buPg9UeiLfwOS
-         KSaDRvlPjkJ4be+TT01s+srv901Ea/t2K7obLeBGOwgp/CHrH/8Z1qnhWdtokedxAMaH
-         3Zqw==
+        d=gmail.com; s=20230601; t=1761581077; x=1762185877; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Vg3OblHUFTR5cgBEbwg1qfvtW4LF0GYw01JmGM+cw2g=;
+        b=RsMdE0O6aZjQnfFSjEuA1wyj2NmIl8Ts0i5dL9tFOwWDKpOOnEIk8zP5Gjo3c/5jTX
+         00feD9igIMWQb/u3cE3wGvtIELjgU6fiFf48O2ek7IKvB20fFmeKvvtJPSTn2X6V7qhr
+         oRWmXFXWyZdUmpRgeEgQXZJo4U6srcaQUhs01UQz1kt1TMVVJIGSauCOeQ0B7DBSzry+
+         AtYv8iwue0vyOxaoMupAuAQ5et3VduAkJQ59yk3iYTbo5+4779h6y0+QWPi+hW2I5sZO
+         TLnEKANCi3IX8YkJIlGH8G2dSjpQaReA/K+KO15Ql/PypL1POOq6MX0Gyvco31KF7P7m
+         /f6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761579304; x=1762184104;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SgczX3f1Sdgn9dYt2cYjuFRk9Cp5P6JmUSzTKrcL85g=;
-        b=F2Mm1szavUFBMEQ5STD3XIshfOT+8S84Hl2WT9OCli2gNgIGKbCJvo+xFdoE5nu86/
-         W71or9a/kjvnvXYcwNe1fD8JIMKyTZf5rIoEdWksj46sB5NXMr2etqLH0E/bqIqSRw2R
-         x1u8ieJudKews9sWQztDWAi/ERJyxKlT9vTD3REpIPjtqZUIRgQGYsy2hS7V9pSEMUCZ
-         YRknEXk/kJO/YhbSc43g6S1ed87qnm7YCAkRw0VJdkGrFkUqjWH75Hk3AIXSCIYheMpo
-         Anfp4E02CFEXm/ilwOCk/KCInOs0NffL58mqBF+0qwtotETeFtelyhn8mcYGZSnS0L+P
-         Puag==
-X-Gm-Message-State: AOJu0YywBt2bOSsmsfsYA4POQ76ntXiztF+RVd3hzqqcdSMPD2tbWLfx
-	9deijs6W82xBCz3BgeVaOMyCqPZvyub8rGa1gNWxufGC/rClXg2NBMkEZVSAJCoO6LM=
-X-Gm-Gg: ASbGnctcX+hpLuC5UCCxkgaIo+PsAkrMe9NVgfH9bDHzrYELAVJ1hD3JsA8uCYd98vU
-	Bb9n6GG4HlYLHaAg+iMEcTJzK+5prkdQVNO4NJtMHXwdysEZdlkg6NYe6B6eqO0HwVrpBtzvgYW
-	KbXekV/S/bijGavB+GHQkJRwrYVU7OqfWlBmYYlWNAdASA0uC4jRMBwsa2to/v7OAZ5ge7BddBj
-	yQ4O2aasCxacJTAVfcG1ubSQeJ6bf+n/to9OrzPnK1kubKOYNhxejBss2RNNs2rPC1UtYxIZIrh
-	7MtV3Ue2VZt4v2PjVZCC1vV0JnkwgRUKdF2TcCKOEdEFXfL1oLOugRKEQvMfMlwovWyo1ndBu/A
-	yAZtAL+wXnjVQAGnpc3FWGfM4n22hsgchQiiu+jrM+AfTEiJRDl2Bb2QRrUJKFYMRyQ7WSSioDa
-	j8hUfbLV7CA2sey81KkD/fyN27zhPi7Ilby8gpd34z0Reqhc0ZIDhwgoiOWnPj
-X-Google-Smtp-Source: AGHT+IHUsZNkj4+DOjpUKZ8N5ak286teUFNqlGTwrn0yBSlI3UZoPloQU43tTLH9nYRicMiQJtvJSw==
-X-Received: by 2002:a05:6830:d1b:b0:7c3:e07f:5681 with SMTP id 46e09a7af769-7c677f42aecmr143010a34.10.1761579303905;
-        Mon, 27 Oct 2025 08:35:03 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:46d5:c880:64c8:f854? ([2600:8803:e7e4:500:46d5:c880:64c8:f854])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c530221d90sm2315768a34.33.2025.10.27.08.35.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 08:35:03 -0700 (PDT)
-Message-ID: <23069e05-82d3-422f-9af7-fc100d4d1466@baylibre.com>
-Date: Mon, 27 Oct 2025 10:35:02 -0500
+        d=1e100.net; s=20230601; t=1761581077; x=1762185877;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Vg3OblHUFTR5cgBEbwg1qfvtW4LF0GYw01JmGM+cw2g=;
+        b=O5Sb9UeSm2BEimgaTeWgzj7vUAFWFPlzPaiiWT/kDr4rbI7Hd+BfZvm7tDFhen6EiP
+         2z4TfvpamHnTiKVayj9pltLfFX/eMjFMQmRrKSA1DxdTaG+Z5N6zb6A00V+7qY0YbcjV
+         bs8MOlK9Y1z8KwQtvYEiYrjH0vxvt7CjiQifNx5bc4XXG0a1zoH7GqDNNkGiKN9AtLWx
+         Eh7DPDUKme1W1hxeRwpO+y8TsNv5xlOV3VIF7vVXQg6dvUtSTZMu8X5H5vwACOPC9nMz
+         zNr5Ecfcz2cQRvJaHVtOxWrEoOP+V0zEDLpQOVWyKPu7q+ouXTFvY7Z9l1tBEeFt+iXm
+         nvqA==
+X-Forwarded-Encrypted: i=1; AJvYcCVyhTG0XFChiXO6GKb7ZU0kdY4Im+CGuePNaQ7XuaR6zHWd34HWCBa5VMmB1ZyaSoxzF3B+bMWhUI4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcuI/d7Z47tSrF6ewG2/r9Tfmpn/wosGzDmS6hZVJKidIoxTS8
+	TdkR0a7+e/HSb3X9Hyq3vbS4rzd4Oln/dluajYXyUd61vkL+/c+Naonn
+X-Gm-Gg: ASbGncuxps5F1nuZAcruOdomhntCx5U62YAArTAQtf+Tdv6FUKU3kgOi5bhKWxm1iBu
+	mRb/RT6PWy1FeMZ44LD4WKMzCABBgOGcTg2WWt4gAIQruBn+O18ZnHIFmNj78jolh76xnKXkP9+
+	lfzP6K37c87Zitw7mBLnFqI4n0JySA1KaNVxgvlH5oD7T06dfOuOOfre0TezgunyoDNzKgvrhRo
+	yJIqMK+iDfbqvucHFKLQ1Z10ciQJK8bj4oxoyPRRDVWxR+aN2LmfRK7kLeBMgZ2qyVIkWj7yzZn
+	1d9p3EKeyxzbxv2ycB5qr9pP04hX++EqBAx475roeCbOghTfSVDE0KAYiQLlpTAHj1y2dgWIIfM
+	euYy9siPU1dWREOHxueZcoczDZlW/Lu+/7OdMBCS1z6XKBIQYRV6EdJaNbHIU+vQTht0yro3NMu
+	vQY30TKIXnG4l05FoAtps=
+X-Google-Smtp-Source: AGHT+IEytXao2mgX8yrfl9oB4UaAMNKRdCeCXGPN2ypjlDiGpr6ck1lmJGhadthbosUq0yKGoSRQOw==
+X-Received: by 2002:a05:600c:46ca:b0:471:3b6:f2d with SMTP id 5b1f17b1804b1-47717e7a668mr1065825e9.38.1761581076812;
+        Mon, 27 Oct 2025 09:04:36 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd02cbc6sm147055475e9.1.2025.10.27.09.04.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 09:04:36 -0700 (PDT)
+Message-ID: <42e7a6644812626d7c1a58eb51bc7418ff31c0c4.camel@gmail.com>
+Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Miaoqian Lin <linmq006@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>,
+  Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron
+ <jic23@kernel.org>, David Lechner	 <dlechner@baylibre.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,  Andy Shevchenko	
+ <andy@kernel.org>, Angelo Dureghello <adureghello@baylibre.com>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Date: Mon, 27 Oct 2025 16:05:11 +0000
+In-Reply-To: <20251027150713.59067-1-linmq006@gmail.com>
+References: <20251027150713.59067-1-linmq006@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iio: fix kernel-doc warnings in industrialio-backend.c
-To: KRIISHSHARMA <kriish.sharma2006@gmail.com>, nuno.sa@analog.com,
- olivier.moysan@foss.st.com, jic23@kernel.org, andy@kernel.org
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel test robot <lkp@intel.com>
-References: <20251027092159.918445-1-kriish.sharma2006@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20251027092159.918445-1-kriish.sharma2006@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 10/27/25 4:21 AM, KRIISHSHARMA wrote:
-> From: Kriish Sharma <kriish.sharma2006@gmail.com>
-> 
-> Fix multiple kernel-doc warnings in drivers/iio/industrialio-backend.c,
-> including a missing description for the @chan parameter in
-> iio_backend_oversampling_ratio_set() and a missing return value
-> description in iio_backend_get_priv().
-> 
-> This addresses the warnings reported by kernel-doc and the kernel test
-> robot.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202506292344.HLJbrrgR-lkp@intel.com
-> Suggested-by: Andy Shevchenko <andy@kernel.org>
-> Signed-off-by: Kriish Sharma <kriish.sharma2006@gmail.com>
+On Mon, 2025-10-27 at 23:07 +0800, Miaoqian Lin wrote:
+> When simple_write_to_buffer() succeeds, it returns the number of bytes
+> actually copied to the buffer, which may be less than the requested
+> 'count' if the buffer size is insufficient. However, the current code
+> incorrectly uses 'count' as the index for null termination instead of
+> the actual bytes copied, leading to out-of-bound write.
+>=20
+> Add a check for the count and use the return value as the index.
+>=20
+> Found via static analysis. This is similar to the
+> commit da9374819eb3 ("iio: backend: fix out-of-bound write")
+>=20
+> Fixes: b1c5d68ea66e ("iio: dac: ad3552r-hs: add support for internal ramp=
+")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 > ---
-> 
-> v2:
-> - Fixed another kernel-doc warning.
-> 
-> v1: https://lore.kernel.org/all/20251025102008.253566-1-kriish.sharma2006@gmail.com
-> 
->  drivers/iio/industrialio-backend.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-> index 23760652a046..73704cc1bd03 100644
-> --- a/drivers/iio/industrialio-backend.c
-> +++ b/drivers/iio/industrialio-backend.c
-> @@ -717,6 +717,7 @@ EXPORT_SYMBOL_NS_GPL(iio_backend_data_size_set, "IIO_BACKEND");
->  /**
->   * iio_backend_oversampling_ratio_set - set the oversampling ratio
->   * @back: Backend device
-> + * @chan: Channel number
->   * @ratio: The oversampling ratio - value 1 corresponds to no oversampling.
->   *
->   * Return:
 
-I guess it would not hurt to change this to RETURNS: to match the
-rest of the file either.
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-> @@ -1064,6 +1065,9 @@ EXPORT_SYMBOL_NS_GPL(__devm_iio_backend_get_from_fwnode_lookup, "IIO_BACKEND");
->  /**
->   * iio_backend_get_priv - Get driver private data
->   * @back: Backend device
-> + *
-> + * RETURNS:
-> + * Pointer to the driver private data associated with the backend.
->   */
->  void *iio_backend_get_priv(const struct iio_backend *back)
->  {
-
+> =C2=A0drivers/iio/dac/ad3552r-hs.c | 5 ++++-
+> =C2=A01 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
+> index 41b96b48ba98..a9578afa7015 100644
+> --- a/drivers/iio/dac/ad3552r-hs.c
+> +++ b/drivers/iio/dac/ad3552r-hs.c
+> @@ -549,12 +549,15 @@ static ssize_t ad3552r_hs_write_data_source(struct =
+file
+> *f,
+> =C2=A0
+> =C2=A0	guard(mutex)(&st->lock);
+> =C2=A0
+> +	if (count >=3D sizeof(buf))
+> +		return -ENOSPC;
+> +
+> =C2=A0	ret =3D simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf=
+,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 count);
+> =C2=A0	if (ret < 0)
+> =C2=A0		return ret;
+> =C2=A0
+> -	buf[count] =3D '\0';
+> +	buf[ret] =3D '\0';
+> =C2=A0
+> =C2=A0	ret =3D match_string(dbgfs_attr_source, ARRAY_SIZE(dbgfs_attr_sour=
+ce),
+> =C2=A0			=C2=A0=C2=A0 buf);
 

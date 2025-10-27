@@ -1,122 +1,195 @@
-Return-Path: <linux-iio+bounces-25494-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25495-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C37C0EC42
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 16:01:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A96C0ED51
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 16:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01454188B735
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 15:00:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B82704632BE
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 15:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C422C3749;
-	Mon, 27 Oct 2025 14:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC5E309DDB;
+	Mon, 27 Oct 2025 15:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="X/36PQcf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tC34aBx+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376102D12EA
-	for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 14:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DB32C08B2;
+	Mon, 27 Oct 2025 15:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761577155; cv=none; b=k6Upvv5SRAmH8BLWzsZkaC0d9rdWVdcmdkMH/btAdQ70Ud6KplT3122MzUwV8Ds+WoXWSU6I8FlxesCNMgSJSbx5/L1IFgTFMmQAmbVLlQXH/j/Eevfg5YOTY3N/ZSgoSWSAcPa9ZXdh5gYUmuuN8GEq48WHoyaXxsHUjxjMPko=
+	t=1761577303; cv=none; b=d9mNLgrPnR4N7e3Jdv+ETT/QVa7q1Rwel2h0oNoMWC8g83tEnBMkO0iYRdCoejGA1p8EDy4cFesRTiN3WCFLP1jXdPRPJurVP4P+cCTiDlToxVED5Lf9+63/3lKyi1jTALNJvlcWf+hgB8cjaZE9jRIN/nQcahL9TVZmDnfyRas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761577155; c=relaxed/simple;
-	bh=7wL4+1onpcS68N8zd7qV0fUv0eIqqqeHEAHM6Nw9pSg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p/RGxqbuYW8Xaa+6nqq65e9sx62/WqNNfgRcMC3YvPRhXeK4QgAU67czLU/XG1KkrD5DkZJiCJOlA28zIkDr91SGwCxoFZKwTuDAxytsLqmMlog0YpMgrjMP3PagoXE0TVtxASJCObnbE0+EJ1eT5F6PW0YCpc8mMKwNhP3dnxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=X/36PQcf; arc=none smtp.client-ip=209.85.160.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-3d3116a5a26so1120655fac.3
-        for <linux-iio@vger.kernel.org>; Mon, 27 Oct 2025 07:59:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761577152; x=1762181952; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=42PPEESTPRM1MqRXwgq0RfVuUgixMW7zVQ9CGj4vqjk=;
-        b=X/36PQcfCZBVZF/dPsIyUvxa/CJMFGvsJ0hTekYcOxUk3SyIdaN+3lmWUPcqkeqTck
-         AQGE62bhBkWyHB9ZJZtQZMnqnSY/iy4jaCSrkGahSFMjGl3+q2URy2Q+Xi2XeKm6WQfa
-         CQgOPwGbBaychxI7ZLwg9pjb6FlfjsCCSR7iyRua88EpUcvoo5DaqVRrsuj7KplYynpA
-         BJnXU36gPehHoLXyUtqpVJR8gA6T4VIyzSVywFuYGbvvsi50MlZZaPFVCeRDtZkODf5O
-         I7/qf1NY/Qdpu+bcOoyOpfpBaQweiO49Z+SpawHFr8V6xNyGnG6tB5clajx4qJfruYDt
-         Pm8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761577152; x=1762181952;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=42PPEESTPRM1MqRXwgq0RfVuUgixMW7zVQ9CGj4vqjk=;
-        b=M8x9SRiy3HyTIHENmB4yTrVyl3zcyj7yBzHikGwP5gvm3f69v4Gavpz39BQ6cAHt+i
-         N9O6YgJP4RlCpyLcl7T5aY1dPLjqXmNCpDTGmfMGdNu0Dgr85eXElao0+RFz5AUqL333
-         D+eV5RblwzS/9oa3pwjZJkmASS0tPkrwB50nE2UmTIBFZm8/Hoh1rPtxaQ8PT5cEt4i3
-         6hb/sXQEF/miorFM/Cw6BRSruq9ji95UKVc3YYVEvrWPGUjcHVZ4fyT2CBAfm3wAJXv2
-         R2zCCUFrHKKu9NH5Cv0a4eW0gX7u9JH3T7H4TQcaqIded+J/T06/TZ3gWARrVhRkghao
-         4lUA==
-X-Gm-Message-State: AOJu0Yyt1gmz/pNIhQuawYW9tBOdw2ercJITxG3BSb8U9Z0bnVQJt53D
-	qnLspFrgGTVChTOMsJmd5vC3FKfUao2gqaolQsk7KtXmM8DVzzjZVcbPkTuh4CUKNTU=
-X-Gm-Gg: ASbGncvQ2cDEXc3mlOLE8zkPETWF6SYC0ap5XjVG2em4ox8eHci6VtYyF8bztdgb+5m
-	rBvuP4mTIJWd3KOVM6u7+fwKFk9YBq/rW9zsNHQFu/0W5NeO72vg/YjKl5ef2jit8Mbq9VU9jsN
-	dzt9MERKRWFos9n07euPVmAL5DYBVCQAjMwr6xWVYusvyZBcO4hXb3yrHx/2w88041QwOcJwf1b
-	p+xA6brxHrCNF+gqlgwW90lUeMgdGSdOEA7wRScyar+PymlbCuhqRdycQPKNywV5A0fBA+kzEKU
-	3BCNBg235aNdrV2tXXC4PohciZJ5VH4N0Q2jXhZx8BAbCF/ah8m9Zv/wED7/9IwGmavS8uuHo/p
-	uhgOzG1ov2QxKn9Lmnf44CgeF/9GPXDpTg6IziGkwNUmbnCEnUNpBEhb4yPqPywdGcx/rqDY+MX
-	ImE/ngDHhlGTOMtK904BEGGDN6+Y47/UEc8gMRlDKKvkoQ4IhrQQ==
-X-Google-Smtp-Source: AGHT+IHzuM7f2/mhqN6TNTjfjdCykv8WqRrQS182YAqAkII2xhAQD50KGvCHAYvbwychNayps4clAw==
-X-Received: by 2002:a05:6871:ac0e:b0:343:13e4:9d3 with SMTP id 586e51a60fabf-3c98d18e2bdmr17563909fac.49.1761577152296;
-        Mon, 27 Oct 2025 07:59:12 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:46d5:c880:64c8:f854? ([2600:8803:e7e4:500:46d5:c880:64c8:f854])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3d1e2c30b50sm2536302fac.11.2025.10.27.07.59.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 07:59:11 -0700 (PDT)
-Message-ID: <66c8f410-6bba-41d2-88e2-46dbe133adaa@baylibre.com>
-Date: Mon, 27 Oct 2025 09:59:10 -0500
+	s=arc-20240116; t=1761577303; c=relaxed/simple;
+	bh=XFlNwp1fOvUuFjxA+eajEGJRyfmsUFhUCbXE0Kg2oNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kZhQmEWx3Nmce0RK8MnAROHbCDGCpa843AAOKH1TzWVV2ncTIllv8RChDwDP719fzSoI2eTOxx7TAUm6zjvZLx956bVHbswzOrkSaWbUxMgCiE8AO0+mvyTfYztq1gANj/9dFKy2l9R9iHIbF0b4jftcKlCssuAGCK26y+JzKzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tC34aBx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B92C4CEF1;
+	Mon, 27 Oct 2025 15:01:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761577302;
+	bh=XFlNwp1fOvUuFjxA+eajEGJRyfmsUFhUCbXE0Kg2oNE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tC34aBx+LTDJv+caoIEAgf0yMH6Qv0uPVjri6HMbVCixro3laiZG4m3tdY7rniBj1
+	 deSJbR2DOTFQ2UVi6H4Ptq2MGXsisXRbWI6ck8EmQngw5VNTRT9Lf+F66VNsiOg0x5
+	 HAiKR5YLsw8wPnryewetE+eXfiWYUImnHsz71WNww1VfU5AhdgFAGwc4o8+qtJi6bX
+	 YpIqc7BSo6eXi5sAzF4E8PzZHzwrdv/oh15yc+v31jfqYG3CJ0/6cQSyFqtxXt3xPC
+	 EPrNOixVcCPms2vUPzJkelnXV0YcJYnH+QibzStvq0xN6E6x4EusJGeNkKq/gSNo9B
+	 fJIV99fl6P2Qg==
+Date: Mon, 27 Oct 2025 15:01:36 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>, Nuno =?UTF-8?B?U8Oh?= 
+ <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ David Lechner <dlechner@baylibre.com>, Andy Shevchenko  <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski  <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] dt-bindings: iio: dac: Document AD5446 and
+ similar devices
+Message-ID: <20251027150136.6cfd3774@jic23-huawei>
+In-Reply-To: <ffb2512aad9bec33b0fe27035f88e79636362645.camel@gmail.com>
+References: <20251023-ad5446-bindings-v2-0-27fab9891e86@analog.com>
+	<20251023-ad5446-bindings-v2-1-27fab9891e86@analog.com>
+	<20251023180831.000026ca@huawei.com>
+	<ffb2512aad9bec33b0fe27035f88e79636362645.camel@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH_v1_2/6=5D_units=3A_Add_value_of_=CF=80_*_1?=
- =?UTF-8?B?MOKBuQ==?=
-To: Jonathan Cameron <jic23@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Benson Leung <bleung@chromium.org>,
- Guenter Roeck <groeck@chromium.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>
-References: <20251027143850.2070427-1-andriy.shevchenko@linux.intel.com>
- <20251027143850.2070427-3-andriy.shevchenko@linux.intel.com>
- <20251027145213.7c93a3e2@jic23-huawei>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20251027145213.7c93a3e2@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 10/27/25 9:52 AM, Jonathan Cameron wrote:
-> On Mon, 27 Oct 2025 15:34:51 +0100
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> 
->> There are a few drivers that want to have this value, and at least one
->> known to come soon. Let's define a value for them.
-> 
-> Is there any way we can make the x10^9 bit obvious in the naming?  Or do
-> something a bit nasty like defining a macro along the lines of
-> 
-> PI(scale)?
-> e.g. PI(NANO), PI(10000) 
-> 
-This was my first thought when looking at this as well.
+On Mon, 27 Oct 2025 14:48:50 +0000
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-Or something like PI_x10(6).
+> On Thu, 2025-10-23 at 18:08 +0100, Jonathan Cameron wrote:
+> > On Thu, 23 Oct 2025 14:01:37 +0300
+> > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+> >  =20
+> > > Add device tree binding documentation for the Analog Devices AD5446
+> > > family of Digital-to-Analog Converters and compatible devices from
+> > > Texas Instruments. There's both SPI and I2C interfaces and feature
+> > > resolutions ranging from 8-bit to 16-bit.
+> > >=20
+> > > The binding covers 29 compatible devices including the AD5446 series,
+> > > AD5600 series, AD5620/5640/5660 variants with different voltage range=
+s,
+> > > and TI DAC081s101/DAC101s101/DAC121s101 devices.
+> > >=20
+> > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com> =20
+> > Hi Nuno,
+> >=20
+> > Thanks for filling in this missing doc.=C2=A0 I wonder what else is old
+> > enough that we still don't have docs? Guess I should check when
+> > I'm next bored enough (so that's not happening any time soon ;) =20
+>=20
+> Yeah, wouldn't be surprised if there's some more ADI old stuff hanging ar=
+ound.
+> This caught my attention since I saw that out of tree patch adding suppor=
+t for a
+> new device (with no real reason for not being in tree).
+>=20
+> >  =20
+> > > ---
+> > > =C2=A0.../devicetree/bindings/iio/dac/adi,ad5446.yaml=C2=A0=C2=A0=C2=
+=A0 | 138
+> > > +++++++++++++++++++++
+> > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 8 ++
+> > > =C2=A02 files changed, 146 insertions(+)
+> > >=20
+> > > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
+> > > b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
+> > > new file mode 100644
+> > > index 000000000000..90fc8ca053fe
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
+> > > @@ -0,0 +1,138 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/dac/adi,ad5446.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Analog Devices AD5446 and similar DACs
+> > > +
+> > > +maintainers:
+> > > +=C2=A0 - Michael Hennerich <michael.hennerich@analog.com>
+> > > +=C2=A0 - Nuno S=C3=A1 <nuno.sa@analog.com>
+> > > +
+> > > +description: | =20
+> >=20
+> > Trivial but don't need the | as hardly matters if these get formatted
+> > differently. =20
+>=20
+> Sure.
+>=20
+> >  =20
+> > > +=C2=A0 Digital to Analog Converter devices supporting both SPI and I=
+2C
+> > > interfaces.
+> > > +=C2=A0 These devices feature a range of resolutions from 8-bit to 16=
+-bit. =20
+> >=20
+> > ...
+> >  =20
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > index 940889b158eb..dae04c308975 100644
+> > > --- a/MAINTAINERS
+> > > +++ b/MAINTAINERS
+> > > @@ -440,6 +440,14 @@ W:	http://wiki.analog.com/AD5398
+> > > =C2=A0W:	https://ez.analog.com/linux-software-drivers
+> > > =C2=A0F:	drivers/regulator/ad5398.c
+> > > =C2=A0
+> > > +AD5456	DAC DRIVER =20
+> > Tab seems odd here.=20
+> >=20
+> > Hmm. For a lot of ADI drivers we have entries that would look like
+> > ANALOG DEVICES INC AD5456 DAC DRIVER
+> >=20
+> > Any reason for formatting it like this? =20
+>=20
+> Ok, time to come clean :)
+>=20
+> Bindings were AI generated and then I just cleaned the obvious problems (=
+clearly
+> I did not payed too much attention to the boilerplate stuff - lesson lear=
+ned).
+
+I'd hold off on doing anything much with AI on kernel code for now.
+A clear policy might come out of the maintainers summit in December.
+If you are curious, various threads on: https://lore.kernel.org/ksummit/
+
+DT bindings get picked up by various projects so they may have their own
+policy long run.
+
+J
+
+>=20
+> - Nuno S=C3=A1
+>=20
+> >  =20
+> > > +M:	Michael Hennerich <michael.hennerich@analog.com>
+> > > +M:	Nuno S=C3=A1 <nuno.sa@analog.com>
+> > > +L:	linux-iio@vger.kernel.org
+> > > +S:	Supported
+> > > +W:	https://ez.analog.com/linux-software-drivers
+> > > +F:	Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
+> > > +
+> > > =C2=A0AD714X CAPACITANCE TOUCH SENSOR DRIVER (AD7142/3/7/8/7A)
+> > > =C2=A0M:	Michael Hennerich <michael.hennerich@analog.com>
+> > > =C2=A0S:	Supported
+> > >  =20
+
 

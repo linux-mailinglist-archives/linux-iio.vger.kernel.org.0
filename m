@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-25477-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25478-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D359DC0E627
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 15:23:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 475BFC0E717
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 15:34:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEE8A189E596
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 14:24:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5FE174E7AEE
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Oct 2025 14:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176B5307AFA;
-	Mon, 27 Oct 2025 14:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761D83081AC;
+	Mon, 27 Oct 2025 14:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dmpz5sLm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHb93Idy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ACA17A2E0;
-	Mon, 27 Oct 2025 14:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3010722AE65;
+	Mon, 27 Oct 2025 14:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761575017; cv=none; b=HxYsRI3HCma6KH79WMSLsDDitb55Rf2hMg1KRLuWToIltSstgctBTOPRMd++TdKhLSroi8TI9CbIv1IKV+gRUivMj2hGpbTqLV922jfjafaUg3oX6T3YzNlTWJrOyf82POkYmZH/Sp+fxozreQiGy7jwqHKw3Gb3zvI49qR7DuM=
+	t=1761575258; cv=none; b=QLAjG60ZT+P5WMJkW5pJ8kvGooPWsRjipDJIhBDUVf0OqTFO/aPkCExXUY7RFMHrrT8+8DzC9pZf1suHiM7VbhIQ1vJJ18hWLNFGuDhOypxdpVklQI62z8H1VARtm4JehwcakGAtj69qmASECR3UjuiCsPLQW1dpDtAef2+LrVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761575017; c=relaxed/simple;
-	bh=bEZAhKU/gmp7DRZn+x/CT+6rXAvYol0BBVHtXI9aG3k=;
+	s=arc-20240116; t=1761575258; c=relaxed/simple;
+	bh=4R1bLbSxg2okxdRhJflBL/9jaJqqjFT1tnrAXgOWaFM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=arMCbZ45DH/cEuPoDjgQhSq1IQG5MrTVg0YB8HwcfF/qifleLP7F1y2ulKQxT8V5tATHvqXEF8ip9INMlm2yo6Sy5MC96VLxL3PHOO2HVYyqjYIT8h8FrDNbkgW/+s8eULEskQfjWD/9O69KVckGcgvr3CJ1sHx43FJVOE7Csj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dmpz5sLm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B68C4CEF1;
-	Mon, 27 Oct 2025 14:23:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zq4Hrr/oN0oVuRkcXzqdl0dqh8kl+194m9Td0bIFQmsqo1yzJQaYVGJ/BTd9QqcvADEPPSKt/yl4oaiR7pQGvhS1/vvt2tN8fXjUdRpDe1eVjK/khjKKquLRHMuBdkj8gcF4wTAERu+tarX9pUIXRFL/p7nTKwEKA1Ix+KfPVVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHb93Idy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0263C4CEF1;
+	Mon, 27 Oct 2025 14:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761575017;
-	bh=bEZAhKU/gmp7DRZn+x/CT+6rXAvYol0BBVHtXI9aG3k=;
+	s=k20201202; t=1761575257;
+	bh=4R1bLbSxg2okxdRhJflBL/9jaJqqjFT1tnrAXgOWaFM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Dmpz5sLmkgFWTzbdpjMsCcAdyuGEU6GNprBALP6mwxrpmDz69ZhOZqOoMDHoGLuaC
-	 G+nqYVWqcZX4EarRGnLTy3C6zlvHxPgXwCjxpLd5pBlGSIsI6KNoB070SUb3vHJRZ7
-	 BT0QqgUwseMy6ZB6+aH+tjfvPHdzKTa3zmkp0mN7rHrgknACtd+UexeMkLiOFy1Av/
-	 og/3JfBuKdVuACELMYHlTsWU0gmd2b/O9LnxfTu+cl9NOQy9lERgcbetoK9+pTaoRV
-	 C+z7KR0t3zDGJLJTUglQL7BvO+e9M6TvZZlCaUV85cxgWL/IX3rFxi6QlZ/WgOrEM+
-	 LRjosk3WOdqmw==
-Date: Mon, 27 Oct 2025 14:23:31 +0000
+	b=qHb93Idy7dl/Q0CRmDjOoQbUs3Mx3zsNh0AE9NwCGQ1xHKudBBPqftk4Zk2MSkac4
+	 bXRUnL0IsGrQtby1x5NTzTZufxg6q4tjc58qHpJACop6CDzCdIhaaZraeZk3VgoMpx
+	 Y6pZHJ1KOfu28gCIJHYHlDPGDTtSneMSEl89MslFqtjTInKT2nj3EmJgW762DFvFTU
+	 uVmw4XnqFG/HL3qM13oJFEKE+Yd44brcdboQ+dcOeypHUypMKFv2sOJsbv/RlUFFg2
+	 79RTjoQ4BHSxffnwdoMwLdL/+TcJnlB6zwLLvh6nijkdqXQDmcrZpruO6xHri3EYdd
+	 eTXsXy9Bi8DpA==
+Date: Mon, 27 Oct 2025 14:27:32 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Remi Buisson <remi.buisson@tdk.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH next] iio: imu: inv_icm45600: Add a missing return
- statement in probe()
-Message-ID: <20251027142331.29725dfe@jic23-huawei>
-In-Reply-To: <aPi5vEp75jH0imQc@stanley.mountain>
-References: <aPi5vEp75jH0imQc@stanley.mountain>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>
+Subject: Re: [PATCH] iio: adc: ad7124: fix possible OOB array access
+Message-ID: <20251027142732.261607cc@jic23-huawei>
+In-Reply-To: <20251022-iio-adc-ad7124-fix-possible-oob-array-access-v1-1-2552062cc8e6@baylibre.com>
+References: <20251022-iio-adc-ad7124-fix-possible-oob-array-access-v1-1-2552062cc8e6@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,45 +62,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 22 Oct 2025 14:02:20 +0300
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+On Wed, 22 Oct 2025 10:15:05 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> The intention here was clearly to return -ENODEV but the return statement
-> was missing.  It would result in an off by one read in i3c_chip_info[] on
-> the next line.  Add the return statement.
+> Reorder the channel bounds check before using it to index into the
+> channels array in ad7124_release_config_slot(). This prevents reading
+> past the end of the array.
 > 
-> Fixes: 1bef24e9007e ("iio: imu: inv_icm45600: add I3C driver for inv_icm45600 driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> The value read from invalid memory was not used, so this was mostly
+> harmless, but we still should not be reading out of bounds in the first
+> place.
+> 
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/linux-iio/aPi6V-hcaKReSNWK@stanley.mountain/
+> Fixes: 9065197e0d41 ("iio: adc: ad7124: change setup reg allocation strategy")
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Applied to the togreg branch of iio.git. 
+thanks,
+
+J
 > ---
->  drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/iio/adc/ad7124.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c
-> index b5df06b97d44..9247eae9b3e2 100644
-> --- a/drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c
-> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c
-> @@ -57,7 +57,8 @@ static int inv_icm45600_i3c_probe(struct i3c_device *i3cdev)
->  	}
+> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> index 9d58ced7371d0af7004a81153888714e9795d4f4..ed828a82acb71342fb2eae27abfbbd86861cba53 100644
+> --- a/drivers/iio/adc/ad7124.c
+> +++ b/drivers/iio/adc/ad7124.c
+> @@ -586,13 +586,18 @@ static int ad7124_request_config_slot(struct ad7124_state *st, u8 channel)
 >  
->  	if (chip == nb_chip)
-> -		dev_err_probe(&i3cdev->dev, -ENODEV, "Failed to match part id %d\n", whoami);
-> +		return dev_err_probe(&i3cdev->dev, -ENODEV,
-> +				     "Failed to match part id %d\n", whoami);
+>  static void ad7124_release_config_slot(struct ad7124_state *st, u8 channel)
+>  {
+> -	unsigned int slot = st->channels[channel].cfg.cfg_slot;
+> +	unsigned int slot;
 >  
->  	return inv_icm45600_core_probe(regmap, i3c_chip_info[chip], false, NULL);
->  }
+>  	/*
+> -	 * All of these conditions can happen at probe when all channels are
+> -	 * disabled. Otherwise, they should not happen normally.
+> +	 * All of these early return conditions can happen at probe when all
+> +	 * channels are disabled. Otherwise, they should not happen normally.
+>  	 */
+> -	if (channel >= st->num_channels || slot == AD7124_CFG_SLOT_UNASSIGNED ||
+> +	if (channel >= st->num_channels)
+> +		return;
+> +
+> +	slot = st->channels[channel].cfg.cfg_slot;
+> +
+> +	if (slot == AD7124_CFG_SLOT_UNASSIGNED ||
+>  	    st->cfg_slot_use_count[slot] == 0)
+>  		return;
+>  
+> 
+> ---
+> base-commit: 89cba586b8b4cde09c44b1896624720ea29f0205
+> change-id: 20251022-iio-adc-ad7124-fix-possible-oob-array-access-239be24ac692
+> 
+> Best regards,
 
-I'm going to apply this but the resulting code is still wrong (even if not
-a true bug after this fix).
-
-A hard ID match like this breaks use of dt fallback compatibles.
-What this should do is 'give it a go' on matching, but if there no match it should
-carry on as if the match was to whatever the compatible that was supplied was.
-When that happens a dev_info() is appropriate but not error out as this does.
-
-Remi, if possible could you look at adding such a patch on top of this?
-
-Thanks,
-
-Jonathan
 

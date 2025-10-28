@@ -1,67 +1,68 @@
-Return-Path: <linux-iio+bounces-25588-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25589-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D19C15483
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:57:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDF5C153F3
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:50:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E272461E9F
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 14:50:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6D11C4F140B
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 14:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91D833A03F;
-	Tue, 28 Oct 2025 14:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14DA33CE94;
+	Tue, 28 Oct 2025 14:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gehMMqVp"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Wwa2nopT"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013033.outbound.protection.outlook.com [40.107.162.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C97E305978;
-	Tue, 28 Oct 2025 14:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C1233CE84;
+	Tue, 28 Oct 2025 14:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.33
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761662979; cv=fail; b=rHE//l+syBzwMQc1nbOkgZ1SBg/+WV9P5EvfqC1lroZnC8/HuqF/pbT/Xm1Cy66QB5UkID4eBcca2rG2h4f8Vqh84H9phUpOJX9sQfrDOFxL0GYuwHY/EPCiRczlynREnrYjNh4CantrBfK+TdrzEFcBQnA7v+REfCtqtQnKD6Q=
+	t=1761662985; cv=fail; b=ivhIl4ohDUlXV8FwnHnZtcz0ZYmRD/tti6hOfDgYKkHOVkrAvAbLn7zf1Dxr8iOquGeiXgQCogP5UTtrT73XXLphMBakKK5s1pQ7SiUpXOKl5vGQKT+y92bwMC/RCY6WUVVwPwX6m/oy28W7uBo+T5LOAtScynl9jYGqgniWx4k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761662979; c=relaxed/simple;
-	bh=qTffBCdu8Mi22zZGCzL0uFmkILG2U6LbqIh7+jK2h4k=;
+	s=arc-20240116; t=1761662985; c=relaxed/simple;
+	bh=IyO4gvDiMVkIrAv3wfTcayqnmwaqUsnJdgwnigkUdYg=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=PAiXEbNAe8qqGRJ2F1k9O/DvR1VRl1DAkqnYahH+VyQE/23xMYjJUt3X+lE1wu9KAhZKz521W9OBsO1C1CAM6bXphzwrFjhJqNrdFtpuTfhhWouu6ho1mocIf8iKcEYAzW/Yfn0m8bxr+ZfdO10zckXHN7LCA5rqpd5yXaGP3Bc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gehMMqVp; arc=fail smtp.client-ip=40.107.162.33
+	 To:Cc:MIME-Version; b=MBOtdMGTh9Ttz7NjHfsNy8ecMlF8TeVOjoXVFntc5kdP4o9dYc2LiBWyhDzdNWCx+HMjqqsItAr/kRgL1BHHEi3hxYGf2oHXfl4dKDaNJp/Cu13FZ4MXulethtOWh6XXQlBQRAYb4M2TtT8ehSO0hiyoZRz5jBM5FNB7mIztBuQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Wwa2nopT; arc=fail smtp.client-ip=40.107.162.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q6yY1e/pSefw/e5/JJzij/ZXCd2ehocSnotAyQooiki8iLxY6inmwFiaPxfYlkvHfN9NH808gckdsvwk4q7lcgZnuu0Kwi4n6ggp3fCOdoqeaoimYDcVwQpFJmt7v+iYnVWa1jxcd2uZITcdRaITZUJtgBV6LJ3ADzfrFJS9xZD5WhRYjMo537HmvWD+UZ1fINNQ6oHtnmzsuwdXq8FQ8i08PjT4n8WkfBbIlTpfv/4GGAzkBMSVIBl4MSdKbIcQzN/QutKacCEWCdNC4Nz/lb1/jYWU3XeJn3Cxg//ABrJ09E3nAGorwpmTnrjQWBVzRY8QLv3wh0dPEYvAifgHug==
+ b=M6LGJjjb1OIQvlz+37KwuQxDGtODBzrEFXhbbA3JGim/sVJzyosIDRvCc0YBv6FA9ra48LAz7q0anpSxelk7Y99pinemZE980ug/XG8afg/Ubcxb/t2ZTUVPEUeXEUmvxgbgxQZ+s5cUPUxZY/D34PvS6pY3q3YbG7u2dpYQEV9ENZbwxt2EaqTBBflqX9z7ViOE4qEvTA3+P8C9+YNpEH/eyljAqS/6t8zDCyVlzbU7oaxzMemDT1nsc3l6pC0+r6H3At/UZwrDupl7q/MRCpVGrp9jepIcGe9G9cQ7XxFSRyx/Hves54bDJtGEydxmGEjutMXHQHzdmA0L8/7ALw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mizs44l9kM6gfuXuMhguTCgPiOcdxwSSLKRegAmEMuw=;
- b=RTl7VEDqNRYAVPD6vAIqpMTC8M5qusnS9xQj3rNQDuMONg6p29bIBE0+xemNTNgJU+DD/40YdThsqBolNAkD9i1nTKeNdD7JteCOe5erRbgSRByfv36n/mbypBvMwZOqUFW3TAztpW718wp/QWMW3t2C3fOuiX9KMCwxc2fofFDfZtZwr2bRwjxDhLvuk6XjisqEWZLYwzoR32bQaO6H5V8zNgSXPTHyGoUOG91xCHJLSJKE868He6zzbCyr3m7qevUx0StMhWIMFGo8CWqV62hpcCG1cFRyfvY7lMRG+vVl9TaOrJOYNlFwuvzHkpd04KybPu7+E6fTbj0I9nTTVQ==
+ bh=C/2t9xOxRR0k6wvZLNSCm6blXDZasSeQSURQqJNw5AE=;
+ b=mYO+/oQTIFl0kinEgfkHI1z3xMuPP2t8Z4kHZ1MumKFqE6OLAwURtSO0w+2vU7RaMjT4gBlm1qUqxiiTPFW30QdK3ifZRdggwMae6d3jSIs/6kuDSdz6+cb/Iuy421SqlVVTPwt1WmXMhzaxeDa1P3HYogY8E4S2eg3veyshjql/VUGuXp9wvoqoLIlrVLDTvoFuavp1zvffZGONGagsidFcnZJNIYdIs5Xm2VnjVGIjYW701yV9JhIfEwZq5Bfw5IxqZh+ViEEjiIRKmJLcw5lORA9oyBGqzUUHgv4ex14V0/jEHsJGNyoTDjIwSNkZCWXPrGFC9MaZX7R11pwm6A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mizs44l9kM6gfuXuMhguTCgPiOcdxwSSLKRegAmEMuw=;
- b=gehMMqVpdud2vOSzX7L2RQQ0C/qOrcct+1w4T3aV6KLCjjepJA8mZ6RsLyg2q/4T2wP16Ts0fV7JoH9ZmfjefX544xZOgmMO2548fcFAYttVkE6Adq5yEZo/Zua8YHNQbnff3Qb4dpYd0MVOwS5B7Ba/K0myIXgOYmyiQ1y06EM6S2OjRN/VFZc9Vp3zIIuopIaQpXeRduF5BrzM4/zuoitRMXVRbqYz4rZgVIsDJAHvpC6I0SlV/7OeZJJrg5NbZ+8n16tGUdZxG9/20OpYS5SVZ0lzcl+r6LgUdJx+gMf355X8V3bjqGEJdvAwvyMsf4YgC2njTlO4QqnCYYyo1w==
+ bh=C/2t9xOxRR0k6wvZLNSCm6blXDZasSeQSURQqJNw5AE=;
+ b=Wwa2nopTM7mZbwx81dIWc78ncCv2sC/cIcJclSEkXVQ4Y+gmICKiFaaElqKKtxIxyfWZyYQL1pN9uFGYaHbK2Nx+xWJvgHYLWNxN3ba9xT6mGQRBhIACctRm4Ur7sCPeoL4Fo4HaW/MW5ydJAQm1M47+MQcqDChiWmlMyAbLWXtw7gC3haftvgtypRqvjYDH89bPJ7yR1u0oFzUKR2AP1Gcx4Oz6k/wmL8CsNmHagUf7NJdEeRpJtghvmYGskiw6D9SINbpOQbijARGZnJFSqjb1WhJmH5BRJt37s5n4tgUpJpBKIC9/8kMdEoT8vL096SZRbEzKE8m/elmOOXvt9Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
  by VI0PR04MB10613.eurprd04.prod.outlook.com (2603:10a6:800:25f::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Tue, 28 Oct
- 2025 14:49:32 +0000
+ 2025 14:49:36 +0000
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9275.011; Tue, 28 Oct 2025
- 14:49:32 +0000
+ 14:49:36 +0000
 From: Frank Li <Frank.Li@nxp.com>
-Date: Tue, 28 Oct 2025 10:49:00 -0400
-Subject: [PATCH v8 4/6] i3c: master: svc: Add basic HDR mode support
+Date: Tue, 28 Oct 2025 10:49:01 -0400
+Subject: [PATCH v8 5/6] dt-bindings: trivial-devices: add MEMSIC 3-axis
+ magnetometer
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251028-i3c_ddr-v8-4-795ded2db8c2@nxp.com>
+Message-Id: <20251028-i3c_ddr-v8-5-795ded2db8c2@nxp.com>
 References: <20251028-i3c_ddr-v8-0-795ded2db8c2@nxp.com>
 In-Reply-To: <20251028-i3c_ddr-v8-0-795ded2db8c2@nxp.com>
 To: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
@@ -74,13 +75,13 @@ To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, 
  imx@lists.linux.dev, linux-iio@vger.kernel.org, 
  joshua.yeong@starfivetech.com, devicetree@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>, Carlos Song <carlos.song@nxp.com>
+ Frank Li <Frank.Li@nxp.com>, Conor Dooley <conor.dooley@microchip.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761662950; l=9137;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761662950; l=1253;
  i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=qTffBCdu8Mi22zZGCzL0uFmkILG2U6LbqIh7+jK2h4k=;
- b=KdGZp28fhgf/oe73CUOt1KSXxfM9ukipisBZFmrIZD0Ss00Qs5OqudWnrdxITTdhzsHiZRpTo
- k71os30AWfBCUBz5U+QrlayipsMQ4+wahwPdvYOJ8eks9AOIfsvXJNG
+ bh=IyO4gvDiMVkIrAv3wfTcayqnmwaqUsnJdgwnigkUdYg=;
+ b=thpQucEtltU9hy4KRLEnUfVIuw9XlJEMNPvInOjc7Dkemx6gZCqx9B6neaiIuX743pHs9SqJ2
+ wLhV75728EhBtqgwks64dYBqobgwPbtSOb01Cd6O97NA3/5BSEmLtHa
 X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
  pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
 X-ClientProxiedBy: BYAPR02CA0040.namprd02.prod.outlook.com
@@ -94,357 +95,138 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|VI0PR04MB10613:EE_
-X-MS-Office365-Filtering-Correlation-Id: f627e597-4d65-463e-2502-08de16313431
+X-MS-Office365-Filtering-Correlation-Id: 9b43af9f-b3af-4fa2-ce00-08de163136d0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|19092799006|7416014|52116014|376014|366016|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZnRhZEh6b2pUR25EUVJ0UnhyaWIvc3FDY05JWkFlVVZieEpKQ2NSN0wzbHBP?=
- =?utf-8?B?YW44Unc3MERsSnZ0N0loMTl1aEx4U3VFN2QrTnNPRnFUaXRKbHNqcFFNYXNQ?=
- =?utf-8?B?SkNheE5UdjVKYlhjVTJZTDczQmNFS1hISDhZOGNKNFVOL1ptUG16bCtNbTNi?=
- =?utf-8?B?L1JVcFZ6VHUrRlJkQXFIRUJZVlA3eTQ1ZEF5aFo4WWpJN2NMTElhNW9qMDdQ?=
- =?utf-8?B?Z1pRQnZJaVQ3K3diWHVMVndmdkdzUGtPeXVHeEtaS0VOcEFJVmNlRVZ2cnJI?=
- =?utf-8?B?N3JFdFMvQnFFRmdGL3Rmdjhnb3FsQjYxeVNoaDJjZzVCYXM4RVVvZlFIS0FK?=
- =?utf-8?B?S203eDdnTjVWWVYremxzV1JIdkVVWU91Rkk2eU50R2dsTVJFK2ZuTFJpa3ZU?=
- =?utf-8?B?aWdiUmtuTmtsNktINlNrQXhWTG9qQmZPWXVwRHBwSmNKTUtNZ3hvRmtjOGx0?=
- =?utf-8?B?WXhyUWxiMjBPZzhNaGxuaEdRMWlUdnVLK3llUnVMSUxFcXlYbCtXdU5VVy84?=
- =?utf-8?B?SlFxQU9McHArVHg2RllqQ2Q5Wkp6NEVOSTdSTkZhV3NYZVlPdlZsWURyWTZU?=
- =?utf-8?B?OWJWcXNMMmNya0QvdzFJWmI5YVBmKzNmZHlEWG1Gd092QklhRFdtbUJUdlJa?=
- =?utf-8?B?Q1hlRWdOYkp0bVNickhnUG4rV0RoaE1nQW5aajR5a3ZGN3IvOE0vK3g2cG1w?=
- =?utf-8?B?blVnQmxReVlXTmpoY1ZVSWZLTjUzVHV2UWswYVUxZHdyWmxnMUZGdFkyWkRu?=
- =?utf-8?B?dmJieERFMGtDcUZHN2UwUWtvM2oveC9YNDhPeUExck9FY08yNFNrYUpWaXow?=
- =?utf-8?B?ZEZXVHY2TllqbHNuUXREZE10V0gzbWpOQ2VGRGhwbFUwa015T1dSSmpDVm5s?=
- =?utf-8?B?aG94VHU4blpOOUZHUi9kYTdTN1RZL0RkRXF5ODFCUFZFMzJzN3NtbktmS042?=
- =?utf-8?B?WG9GLy9ieXV4TG9YUXpOV2UxQWhORDdCRmhrQnl4RjJGYjF6OGc5Vk5pTUxr?=
- =?utf-8?B?Zjd3eHJReGNiOVAvUjIzdk9Lc29tWU5wWEk5OCtRWjcyTStwK3FvS1hQdmR6?=
- =?utf-8?B?bXdVNHNzT1laNWZSeW13WTNmRVBzTUp1VWFlenFTUVRoc09HNXVGZkJ3SHNE?=
- =?utf-8?B?S1paOTNhOEd6UXhoV2ZtSkdIYndYbGphWXNpQnJEWm1kN0FwOW9kQVlnV2tK?=
- =?utf-8?B?Ym4wMWt6bnorVXhTRThRMEtDRU9sWlNodWZGQlNmN243OElaQk9UeFJQeStP?=
- =?utf-8?B?UDFNM2pPUUNMVlFwNm9mWUxnaElocUs3dDY5bXVBYnBjV1Arc1lQbHo0dmky?=
- =?utf-8?B?S0pUKytDSFVXWUwwdTI1ZkRNTVJnTXRSV0lVWlhaSjRIZDYxaXNPS2I2VDlM?=
- =?utf-8?B?ZkpmQUtNZzhvZ3NEajVxM0o0UnJKTU9XbXRXamRoOGcrd3U4alpSRlp6eU1p?=
- =?utf-8?B?UnZFdk5VdDh3NUtSZDdpZVlGN0JoYUFTR3h3VGt4eTAvamNzdG9zYnVqWlRl?=
- =?utf-8?B?ZHBZbG5pdkl6MkhuRVBHc3ZHSVNSd0RaMGJkMHltUkFhMkNGb08rUzIyWkwz?=
- =?utf-8?B?L3Ria3o5allpOUhRcXh2VTcxZTVjZTNOWndFZkphWE5lem5mRjdWS2MxUDNP?=
- =?utf-8?B?RWh3WjM4LzZ2SEVZN0NkdEc1S3BGbGdaYkxTdVFWSDNDQ2U4LzZxTlE0d0ZD?=
- =?utf-8?B?MWxhM3hUQmRsWktjTjZxZHl1Nk16dmNlRkwremUwajFmczA4Wm9tbUEzY213?=
- =?utf-8?B?dFZFcmdoblZiS1FlM2tsMTZ0VDVIN1NXOEk5OVl4VFBaVjFVNExFZll0WkRh?=
- =?utf-8?B?YkJ1cWNVWDhOMDVUWU1ZNlFJTFB3M2FlSVlQM0RkcVIrR3hiMk5qRFdtZkJm?=
- =?utf-8?B?NzEwcUdwOUtYOFhFSVdZMEtsUlZUUzNqTllieWFXM0tHZXozM0ZITlJoTkJy?=
- =?utf-8?B?TklHYnprQVNMbjY4NlZjT0Z2WEdpM2NQNjBQcHViZ0NhZGhSSHFVR09qbGR6?=
- =?utf-8?B?UVFuZjk0eDZWbjhZRnd0SWlFOWhwL3QvZmN2dDh4TXhpQ1JRZWpJUG5uRm5m?=
- =?utf-8?Q?gZSpW1?=
+	=?utf-8?B?cnpRSE5PekxneWYvU0E1SXBQRC92OGJ4VkdXUWNlV2lXVDVDT05PUXdxNXRj?=
+ =?utf-8?B?aTJjc2Q5SzV1dGNhV0I4MmJoQzdDaHptY0N0RTBOZWtkN1pHY1NROGYvOUdP?=
+ =?utf-8?B?S2xpVk16Q2pYUUZuTGxJd21Md1dOQlFiYjB6TGRNTnJObW52MXhzMW13K2xX?=
+ =?utf-8?B?bmd2ejFCSmU0Z04xZzlZaFNSRExJa2ZYRm5jWHNMeXFWMk1lVm04WFk2Z0Uw?=
+ =?utf-8?B?TGw0Qm8zSlYxS3lqNm5CNFk5U01uQ3NEYU5FdFVLVXhRYkN6N1hDSlJzbExX?=
+ =?utf-8?B?aW9Ja254S0RTRkk1MHRtUXVyQ0dNN1lBRFRvMzZZRjhGb2xhTGd3Z0x5OWJr?=
+ =?utf-8?B?d0xlUkJSY3QveXRoNVc0Q05ZV1RRNTd0dkJZTWtRS2lyYTQ0dEQ5ejBPSlJ1?=
+ =?utf-8?B?Wkw0WDdUWWlWSVNGMVFzZGw4Vk56ZEdXZkVwUzI3QWk0bldrV21rSkNoK3h6?=
+ =?utf-8?B?TERVMjJFZUpIOU9LaW9PUFhKTnNYc096cS96UHRNbUVlM3B0VVJEWmxVSnht?=
+ =?utf-8?B?VmZlV3kzNHNFQ2xDazZoVGZhY2NKdTg3ckEvc1ZESkRRQmlrb012M3NJcjJ5?=
+ =?utf-8?B?VTRkRFNtN3JSMm5YM3NJY3hJNU1VSEpCYlhOMG01V2JrbHhPcnhJRFMrUC9N?=
+ =?utf-8?B?QS9XVUVBdzhmYWk3Y3dXb1Y5T3lraGhvTjhqend4ci9iWE5KQzFSc0VlQ0ow?=
+ =?utf-8?B?NG9PcEE3MUZhcmprUmx5anY1ekQxSFlaTFlGVGJVZmtFcDJqKzQxS3U1RlY5?=
+ =?utf-8?B?Nmtwa2NGRjNXRklERnJQQXFQVDdaVnNFRlF2cG1JRjZwRUgwZVNIcVMvZWZ3?=
+ =?utf-8?B?VnVlZ3JIMVQycCtsbFZhSHRmL1d4eTdpMDl6RXdVaU1sOFAyRlBRaXpNMUl3?=
+ =?utf-8?B?R3psdVQzUXlVMUVvbnloZDd5cXJ6RUNGVEY5WmtJQ3cyb1FibUt1Tm5qU0gy?=
+ =?utf-8?B?L1d3ZEk1VlR6TkxEOXhUWkZJb2s3MGR1MmlxZ3dvd3dueEh2ZDh0UnAxZDFs?=
+ =?utf-8?B?SDY1aFVpNUZkQnpMZUc2cm00OENYSmJZU3pscnNQTWlPUEpzME5qeEx3T3JZ?=
+ =?utf-8?B?NVUrckxHbGJMTUFscC9tMUNFKzdFYXVKMmNkZ3lkVFZZL1ZKa1JlNTJRZnZR?=
+ =?utf-8?B?VDA0eStiTk4wOUhwdjFhQXhlVWQ0NjBRbDlSc0lHL2pseDNFdjZQTTFQVGxZ?=
+ =?utf-8?B?QjE4WWtMaWxFenllVDZxekZvRWN1ZlRHcHQxejUvUkc3VG9lREdESGc2RlZp?=
+ =?utf-8?B?eTA1eUxBa1VCbVRIaTRKREhaTVpLWmhuOTdXczJ4em1ULzY1VmJ1bEFWMWFy?=
+ =?utf-8?B?L1A3S01vU1dVU2lGSTV5azlvckFYSlhoWUxXdFdGT3VhVlFNVkRaOTMwdS9y?=
+ =?utf-8?B?dHBIWlY4czlFZytQTmRHeTIyUUtuaGlqaUxMd0FldlVsVUhvM0x1NjBGSGdj?=
+ =?utf-8?B?RlNOancrTnlXWGtVdHlLR3NrU1lMNXFwMWwrSHdKZk13bkViT3dlV2I5aHRU?=
+ =?utf-8?B?VzF1eDBsa0xsdVpLeVRDbmpjeVVFTkE2NXduUDUwc2ZCcFNvU3pRd09PM2wv?=
+ =?utf-8?B?WEVqcS92RnFRanpDcko5YW5KYU03L1dOaEZxS2ZXbkx3L0VCSkhkYWVtVHp2?=
+ =?utf-8?B?RnFaNDdQcFpUV3FReTl4dXZYaUhFaTczUEdWbVcxWm1PYnVSZnpYSERyUkda?=
+ =?utf-8?B?UjR6aUZEYnFPZXJ2MUo5c2FTcVZzVW1hQTQ1YXdjTVNlb2gza1pmUTZNb29B?=
+ =?utf-8?B?dmxWa0JvTXhwcXhLT2t2QUNSVW1uNlc2c1ByK0JOWElQeGxpbXNtVExUcEkx?=
+ =?utf-8?B?eVh3bSs5WmRzbm5kbWRRSjZGcXlZVElYenZqYlhsWXNqTDFFTW96dWthMm1n?=
+ =?utf-8?B?ejQ0UjNTbThOVHlTRktoQ1Q4Zlo3YXdMSGg4dzV5N1dXUzhuK3EyOWtncXZM?=
+ =?utf-8?B?KytvU0xENktxamlNaEJGVjFyMjJNdGVySFFlOVlQaEJvRUlKYzRqZnplZWkr?=
+ =?utf-8?B?UUdqSUwyZW9iMHh4Tkd0K3VuYzBzMHNpaXg0MmdRVktkcTJ3Ni85MCs4c3pj?=
+ =?utf-8?Q?vJ8I15?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?L2RpRkhaanFZeGVUTW0yOS9ocTMyRnR2TXZtRGRsQW5RT1hIcG9QL2RxN3lv?=
- =?utf-8?B?TXRFUGg0R0Y3RE9sd3VVeXRuSExrUkthY1o2M1B5TmxGTUZheUZqbis0Smlm?=
- =?utf-8?B?UFZzR25senFhMnJJRGs1ZnNuK2psd1hSZnhDd29JeGZGLzVUMittNTBGNG0z?=
- =?utf-8?B?enIyNkFNL2hjblVuR0lyVjgvajFlVSsyVExUWmpNNHRIODhRWDNYV0pZOWIy?=
- =?utf-8?B?YWZSVElEbHhveGFkL0ZES3M1MWN5NzQ0cGxsZUo3OHd2a1JOQmFaRVMwRHdx?=
- =?utf-8?B?eElMbkk1dStMbTlNbVNLSjZyTWFHVFN3RFcxZG1MUXg3V0YvZStacEo3YnRB?=
- =?utf-8?B?Z2ZWZ0Nsb0Q0cmEza1IwMmRpazg4K0VFcENPL2N4cE5MODVoOFVKWE1tRDY4?=
- =?utf-8?B?bjBsSTMwUXhFNU8yYjhtQlIrN0dFcEpnRWJmYWlvamZLbHNiUTVwdDNtQWNI?=
- =?utf-8?B?VVFHcExwY3Z3cXRmVFlGVVBKYWFkOFdOdElpMGk3M0EzVVlUaGlyTSt1YVpY?=
- =?utf-8?B?T1VCNUoyby9HSFlkOVhIWUJSTFhsYkY3NDFZakFrd1p5OHkxUk55a0srSXNI?=
- =?utf-8?B?YzhieXhFempkdFpZM2J4dWpPZTB2ZVJpN09UbDJoQWkvQkxHWHRrUitYeS9k?=
- =?utf-8?B?eDlZay9odGpmZXZKRlZETStMUEk3MDY0aW85R0ZmWVJOU3pEbWdieFFENXVB?=
- =?utf-8?B?MW1BT2lmaVlLYnJXenZxRk9hYS9CcGE0cWlEK2UzRE5kR0RsZ0lMUU81anVh?=
- =?utf-8?B?RVh4OXlvNzQvVjBVSDJqaWFiaFFzbkNNK3NXQlBtaHR3V1dwTVpCY1dScWpF?=
- =?utf-8?B?U05DRDFybDZQT2V5RythTldPdFovcCt5L3p5V3RmSnVqZENqT3FRREdQRGVr?=
- =?utf-8?B?dmdLaGs2WTJoWjU2R0JCR2ZsV29EZ1kydEtwSEIxS3NidHdkSzEvZmd5L2hk?=
- =?utf-8?B?M0RCUEt2aXRJMUxrL1NtalhXNWhnbkc4aWF3dnQ1QWJwN0Z4QVNYTFRrVzll?=
- =?utf-8?B?bXNCSjVNaHE2UTE1NmVvejZQLytjeitQN0N1d0x6di9sWnBLbXh6bTJCekVH?=
- =?utf-8?B?Y3hEZVBkQXlLa1R3VnJtSGNxMFR4Y25rcG5Ea2pRTDJvd3oxVWtLNnQrSVB2?=
- =?utf-8?B?TFU1ajJkQVI2d1lVMFRNMUNDS012dmd0QUJMeURObzlnd2hHeUlqeTV6QWdi?=
- =?utf-8?B?Mmo2eStOOEZDN2hxMTVzTUJ3NE8vbWpKUjlOWnFFRzljMXlTdCtMRHEzRU1o?=
- =?utf-8?B?UnUwNjZPM2JMUHZNK043d21WNkRUdXVPK2tFRk9aNUI0OUtxM0lPbktUQ2lU?=
- =?utf-8?B?RlVXRGp5RmZWeHVCdnhKM2VzcGZvWk8yMEtsY25uYThPcGNNVVJQeitpeWZu?=
- =?utf-8?B?Vk9LU28yQjVVV2NCTThoU05aTWIwTFJ0SUhZK2dLamV2cHJCZ3RDNUVFQ1VD?=
- =?utf-8?B?M25aUElzcEtXQnl4MlBQNkN5dVJDZEdONTdGc25yTkxQTEYrbUVMTVRVWDd0?=
- =?utf-8?B?MEg4TnlIVHAvUUtKeldGNUY2OU1jKzNzeUlRaU1xQkNrVWlvOE1xcnBlQVV0?=
- =?utf-8?B?Ykp3VmNuNWZlSmQ2eEx5a2RIcFJaTDlBR21GZm82K1ZqQ21tWlpxWGt2bjFP?=
- =?utf-8?B?eDBoWG5Kbm1zanJ3dlgwQTVFRmlLZHhhOXk1S3NPbVRnYnZqakZDaGFxbWs4?=
- =?utf-8?B?QnVJUkhtUVZrd0pnZU02TFNBYkFheU10dnVoRzJjYkkzZXhaUGo3eThTT3Ey?=
- =?utf-8?B?K3g1VCtWNzRLcVYwNGVsRGpLYnVGR0V6UkttSklabThxV3c5ZXFHUmJWL2lG?=
- =?utf-8?B?WUV5cWcxQXRHaURCa3dNZ3hZVldWOG1CRHg2TnhrUzNMdkRvbm1vR1U0VUJn?=
- =?utf-8?B?ZXZVaDBZWTNqVzdGYXV3Z1l1TS8ydjdPaFZyMytTY210TnkvbGdMSWJzRDhx?=
- =?utf-8?B?eEtjWmk2RFgrMFR1QUZqMGlNeWRoRVU2WGw5MXdZS3RYWll2QkZEQzJCb0tj?=
- =?utf-8?B?R0RKa29LOW04eDlLUjNVTStCS1hsa29JY2tDMC9CMFdtNDNENzFTRlg3ZVlQ?=
- =?utf-8?B?dXhrc2hPSjFkM0N6Uk5ZeFlVQU9Oa0xoR2FZczMveGtLeUJ6b3lIMWdsMVJU?=
- =?utf-8?Q?zTogcwJ4V3fhIy6kCN8cY8Ap9?=
+	=?utf-8?B?cE9OWkpqRWllcGh6cTNvU2xHVlZqb3pJbW94dHQyZmFkOHI1ZTlEUHlzQ0Z1?=
+ =?utf-8?B?eUNJc0U1REJ6akVsMDNJaHNPQjNQRUVmVmdwQmNzYmxYaXVSYWQ1UXZPTFFl?=
+ =?utf-8?B?TE93c0xCV3AwVmdYQm12YmpTWlBaTUlKMGJRU2owclNySlhwemVDUlJLMHg5?=
+ =?utf-8?B?WFZOQUsvQzlyNmh1elNsZ2lTR3hLYW1QemtaT1Noa2lUZXBwb3ZFNzd1azlY?=
+ =?utf-8?B?QzVUN0lkbjRrOW5SRitoNVhVZk14eFhpMVVtTjIvVmlRZFQyRUp5ZlBKVzhN?=
+ =?utf-8?B?NWtsSkExMGJESCtCUGdIM3NpLzFERzVONkJsOEFTbi8xMjAxdkJDcENzUE03?=
+ =?utf-8?B?aDBVQVFiRzE2OWhGSENFQlUwVXExQ0EwTHdoQUFyc3ZQZFY4ZTJ0cmR0WjVp?=
+ =?utf-8?B?cDJGTHVIU3VMMFdOR3NlcWpWcmZ3c1lXeHIxSmZMQzhNNnBVNkxhR0FDVHQy?=
+ =?utf-8?B?TC9NSFVCOGZZbm9zMlFreEhhZjEveG5JaEFyZFdYMURRTkhFdmt5TG9Bay84?=
+ =?utf-8?B?WUExbC9XQnFUNjFBZE8wSUhvMDJ1bGpVYkhTYnN4RlNYZEE0ZUNkMmY4TVFO?=
+ =?utf-8?B?Qkc3czZmeXkvZ1FLUDNNYlpjODM4dlgvUFhJV1Y5Qmh6aFJhRXhMM1VVVDUz?=
+ =?utf-8?B?K2hjM0NNa3E4SDU3TmtST3paR1RuSGJpWTI0ZTBFY3l2cDI0aUhnZHdIcWVH?=
+ =?utf-8?B?dXM3dC80dGFwckNRZVV2MjI1cHFaaEFvRlFPNkRPMUZ0VCs0STBzUWpxY0NX?=
+ =?utf-8?B?RXJqeWZpUXIwNVB5dUQzd1ZFZ1p5YklucUhHR3JNdW9oQmdTR3JmWFg4UWE5?=
+ =?utf-8?B?dE5mM3J4clhmTlBDTitOMitnTXoyUlhpUndzVnF1WXNvbDF3TlkvMTNMYTYv?=
+ =?utf-8?B?RUFQS1VVUTgrR0lrQ1NoZG9uemo4UEJZNUJab1JpNlJCZFlZekxVcE9MS3lL?=
+ =?utf-8?B?TG5Jck45M1BNZXBGTHhrZ3dIMUdaWTM3RUN1aFRnb3pkOHB4Y3IyWWppVjZE?=
+ =?utf-8?B?RnVaei9XZENFN1BwbFZGMmpsazhXRURrbmljdk44Wks4M3FwSFo4NUM5eFZR?=
+ =?utf-8?B?OVMweUNoamhkMHpmQTFyWjBTbDhrOFhUdXlWQVphYVpFQUUxV2FVMllidmxK?=
+ =?utf-8?B?WTZELy8xV0FDdjhOQ3NsQVlOQkdCTXhEVVlkOThpQ3VCa1YyOTEwTWNwSTN5?=
+ =?utf-8?B?bUNhWmFtaFVFNDVZd3hnL1V0RmZJYXhpYUh6aVlZR2h4bndlL0FIWGlUTDEy?=
+ =?utf-8?B?YmVpTU5vcXBVU1d2Nno0UmlXZjQwQXpEN1FSVVZxdEtYeG1OcGpwQ1ZrTHRH?=
+ =?utf-8?B?RC9RR3hlSm1QY3BtM09QaEFnK3o2S1phbWMzd1ZsL05LS1ZwWnhudFNwWHV1?=
+ =?utf-8?B?UzFKMUpNNXpVTCtkUjJOQnhTY21NVWo0Mm9Ca2Q1RGNocjlZWlpINGZDS09Y?=
+ =?utf-8?B?NGZVeUtlOGlIeUpVNWVQRTNtMytBcWxOOTRmcVBJR09kTW9zNzRCanpwMmpN?=
+ =?utf-8?B?cVptSjVRcWN2VXdkK0p5MWlkaFgvY09yZHVwMklXUzVsbWtZVzU5OEpuV3BH?=
+ =?utf-8?B?VXkvNFk1dUdQSnJuM3hodi9qRmtFS0NyK0RaMmErY0dSUmMySUJUeENKZ1JG?=
+ =?utf-8?B?aytoMjFFdktvcFNlcEd4WUZRVTVlSVVCM2FZK1lMcDlpdnZiOW1MKzZjRVd2?=
+ =?utf-8?B?ZFI3SVprWkk2S2Jnem1zQ01kdWVIdzZxM01FdUJZdG52NVo4c29YT0RCRlJr?=
+ =?utf-8?B?WlhWS3dhV2xtNW5UaW40c2V6VjBnQm9QbmIrRU1ZZEpaTWZSWFlMOUxvbitB?=
+ =?utf-8?B?aXlKdFA2QUgxL3lxTTNHdXRJRWRPT1lpVW5OVnVuOEw2WUNUSzhSQ0Fkelo4?=
+ =?utf-8?B?QWxxd1d4c3A4K1I1YXdrYUlOQ08vcmNaTFJjMDg4QzZuUUdaZnJQeXczTjhh?=
+ =?utf-8?B?OUU5ZE9JUGw4ZmNXcXJPMDd4M1JidytoRHVDOUY1RnZGdzRuWURvZmh3d0NS?=
+ =?utf-8?B?L1pMbU1MOTJjWDlxNkRvN0tmUEd0LzFlcVUvams2bTN4Rzg2aDZtR1Q4V0hS?=
+ =?utf-8?B?WFJ4UEloZDZmblVNYzN5d0gxczZQc2lyeUJsbEM1TVBYbVF1R0VGRUkwNDVD?=
+ =?utf-8?Q?GQVS3PtLjxjk4WmoB6/opBQBp?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f627e597-4d65-463e-2502-08de16313431
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b43af9f-b3af-4fa2-ce00-08de163136d0
 X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 14:49:31.9328
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 14:49:36.3039
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VJO+Qok8qTrg/WYG0CVya3NN2PrvXCOihYZtqXNNC7lRPTHsXhIA0dwOqzYmxZOySTV+PwMFLGWNMEsmuDCFFA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: NsFU6qQlDHaGuN6T1PtKegi1ffIaPFC32zJfJO6vWUjjO8E10/C7+ry6h5hcJoHe+NT5FMywLLnqa9LmtO5l4g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10613
 
-Add basic HDR mode support for the svs I3C master driver.
+Add compatible string 'memsic,mmc5603' and 'memsic,mmc5633' for
+MEMSIC 3-axis magnetometer.
 
-Only support for private transfers and does not support sending CCC
-commands in HDR mode.
-
-Key differences:
-- HDR uses commands (0x00-0x7F for write, 0x80-0xFF for read) to
-distinguish transfer direction.
-- HDR read/write commands must be written to FIFO before issuing the I3C
-address command. The hardware automatically sends the standard CCC command
-to enter HDR mode.
-- HDR exit pattern must be sent instead of send a stop after transfer
-completion.
-- Read/write data size must be an even number.
-
-Co-developed-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
-change in v7:
-- add comment about why need check return value readl_poll_timeout()
-in svc_i3c_master_emit_force_exit()
-- add comment about why need udelay(1)
-- remove reg = 0;
-- chagne to use readl_poll_timeout_atomic();
-- replace all i3c_priv_xfer with new i3c_xfer.
+Changes in v7
+- none
 
-change in v4
-- use hdr_cap.
+Changes in v6:
+- add Conor Dooley ack tag.
 
-change in v3
-- rename to svc_cmd_is_read()
-- rename to i3c_mode_to_svc_type()
-- use local varible bool rnw to reduce change
+Changes in v5
+- none
 
-change in v2
-- support HDR DDR write
-- rdterm unit is byte, not words (RM is wrong).
+Changes in v4
+- add memsic,mmc5603
+
+Changes from v1 .. v3
+- None
 ---
- drivers/i3c/master/svc-i3c-master.c | 96 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 83 insertions(+), 13 deletions(-)
+ Documentation/devicetree/bindings/trivial-devices.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 7c516e05d0a1a118479ee3d8ea8ae37ae19fea57..a732443caaf15a2f6e54de46bbafdeb3fc9a9296 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -40,11 +40,13 @@
- #define   SVC_I3C_MCTRL_REQUEST_NONE 0
- #define   SVC_I3C_MCTRL_REQUEST_START_ADDR 1
- #define   SVC_I3C_MCTRL_REQUEST_STOP 2
-+#define   SVC_I3C_MCTRL_REQUEST_FORCE_EXIT 6
- #define   SVC_I3C_MCTRL_REQUEST_IBI_ACKNACK 3
- #define   SVC_I3C_MCTRL_REQUEST_PROC_DAA 4
- #define   SVC_I3C_MCTRL_REQUEST_AUTO_IBI 7
- #define   SVC_I3C_MCTRL_TYPE_I3C 0
- #define   SVC_I3C_MCTRL_TYPE_I2C BIT(4)
-+#define   SVC_I3C_MCTRL_TYPE_DDR BIT(5)
- #define   SVC_I3C_MCTRL_IBIRESP_AUTO 0
- #define   SVC_I3C_MCTRL_IBIRESP_ACK_WITHOUT_BYTE 0
- #define   SVC_I3C_MCTRL_IBIRESP_ACK_WITH_BYTE BIT(7)
-@@ -95,6 +97,7 @@
- #define SVC_I3C_MINTMASKED   0x098
- #define SVC_I3C_MERRWARN     0x09C
- #define   SVC_I3C_MERRWARN_NACK BIT(2)
-+#define   SVC_I3C_MERRWARN_CRC	BIT(10)
- #define   SVC_I3C_MERRWARN_TIMEOUT BIT(20)
- #define SVC_I3C_MDMACTRL     0x0A0
- #define SVC_I3C_MDATACTRL    0x0AC
-@@ -174,7 +177,7 @@ struct svc_i3c_cmd {
- 	const void *out;
- 	unsigned int len;
- 	unsigned int actual_len;
--	struct i3c_priv_xfer *xfer;
-+	struct i3c_xfer *xfer;
- 	bool continued;
- };
- 
-@@ -389,7 +392,32 @@ svc_i3c_master_dev_from_addr(struct svc_i3c_master *master,
- 
- static bool svc_cmd_is_read(u32 rnw_cmd, u32 type)
- {
--	return rnw_cmd;
-+	return (type == SVC_I3C_MCTRL_TYPE_DDR) ? !!(rnw_cmd & 0x80) : rnw_cmd;
-+}
-+
-+static void svc_i3c_master_emit_force_exit(struct svc_i3c_master *master)
-+{
-+	u32 reg;
-+
-+	writel(SVC_I3C_MCTRL_REQUEST_FORCE_EXIT, master->regs + SVC_I3C_MCTRL);
-+
-+	/*
-+	 * Not need check error here because it is never happen at hardware. IP
-+	 * just wait for few fclk cycle to complete DDR exit pattern. Even
-+	 * though fclk stop, timeout happen here, the whole data actually
-+	 * already finish transfer. The next command will be timeout because
-+	 * wrong hardware state.
-+	 */
-+	readl_poll_timeout_atomic(master->regs + SVC_I3C_MSTATUS, reg,
-+				  SVC_I3C_MSTATUS_MCTRLDONE(reg), 0, 1000);
-+
-+	/*
-+	 * This delay is necessary after the emission of a stop, otherwise eg.
-+	 * repeating IBIs do not get detected. There is a note in the manual
-+	 * about it, stating that the stop condition might not be settled
-+	 * correctly if a start condition follows too rapidly.
-+	 */
-+	udelay(1);
- }
- 
- static void svc_i3c_master_emit_stop(struct svc_i3c_master *master)
-@@ -521,7 +549,7 @@ static void svc_i3c_master_ibi_isr(struct svc_i3c_master *master)
- 	 * cycle, leading to missed client IBI handlers.
- 	 *
- 	 * A typical scenario is when IBIWON occurs and bus arbitration is lost
--	 * at svc_i3c_master_priv_xfers().
-+	 * at svc_i3c_master_i3c_xfers().
- 	 *
- 	 * Clear SVC_I3C_MINT_IBIWON before sending SVC_I3C_MCTRL_REQUEST_AUTO_IBI.
- 	 */
-@@ -801,6 +829,8 @@ static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
- 
- 	info.dyn_addr = ret;
- 
-+	info.hdr_cap = I3C_CCC_HDR_MODE(I3C_HDR_DDR);
-+
- 	writel(SVC_MDYNADDR_VALID | SVC_MDYNADDR_ADDR(info.dyn_addr),
- 	       master->regs + SVC_I3C_MDYNADDR);
- 
-@@ -1314,6 +1344,16 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 	/* clean SVC_I3C_MINT_IBIWON w1c bits */
- 	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
- 
-+	if (xfer_type == SVC_I3C_MCTRL_TYPE_DDR) {
-+		/* DDR command need prefill into FIFO */
-+		writel(rnw_cmd, master->regs + SVC_I3C_MWDATAB);
-+		if (!rnw) {
-+			/* write data also need prefill into FIFO */
-+			ret = svc_i3c_master_write(master, out, xfer_len);
-+			if (ret)
-+				goto emit_stop;
-+		}
-+	}
- 
- 	while (retry--) {
- 		writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
-@@ -1407,7 +1447,7 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 
- 	if (rnw)
- 		ret = svc_i3c_master_read(master, in, xfer_len);
--	else
-+	else if (xfer_type != SVC_I3C_MCTRL_TYPE_DDR)
- 		ret = svc_i3c_master_write(master, out, xfer_len);
- 	if (ret < 0)
- 		goto emit_stop;
-@@ -1420,10 +1460,19 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 	if (ret)
- 		goto emit_stop;
- 
-+	if (xfer_type == SVC_I3C_MCTRL_TYPE_DDR &&
-+	    (readl(master->regs + SVC_I3C_MERRWARN) & SVC_I3C_MERRWARN_CRC)) {
-+		ret = -ENXIO;
-+		goto emit_stop;
-+	}
-+
- 	writel(SVC_I3C_MINT_COMPLETE, master->regs + SVC_I3C_MSTATUS);
- 
- 	if (!continued) {
--		svc_i3c_master_emit_stop(master);
-+		if (xfer_type != SVC_I3C_MCTRL_TYPE_DDR)
-+			svc_i3c_master_emit_stop(master);
-+		else
-+			svc_i3c_master_emit_force_exit(master);
- 
- 		/* Wait idle if stop is sent. */
- 		readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
-@@ -1433,7 +1482,11 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 	return 0;
- 
- emit_stop:
--	svc_i3c_master_emit_stop(master);
-+	if (xfer_type != SVC_I3C_MCTRL_TYPE_DDR)
-+		svc_i3c_master_emit_stop(master);
-+	else
-+		svc_i3c_master_emit_force_exit(master);
-+
- 	svc_i3c_master_clear_merrwarn(master);
- 	svc_i3c_master_flush_fifo(master);
- 
-@@ -1480,6 +1533,11 @@ static void svc_i3c_master_dequeue_xfer(struct svc_i3c_master *master,
- 	spin_unlock_irqrestore(&master->xferqueue.lock, flags);
- }
- 
-+static int i3c_mode_to_svc_type(enum i3c_xfer_mode mode)
-+{
-+	return (mode == I3C_SDR) ? SVC_I3C_MCTRL_TYPE_I3C : SVC_I3C_MCTRL_TYPE_DDR;
-+}
-+
- static void svc_i3c_master_start_xfer_locked(struct svc_i3c_master *master)
- {
- 	struct svc_i3c_xfer *xfer = master->xferqueue.cur;
-@@ -1669,9 +1727,8 @@ static int svc_i3c_master_send_ccc_cmd(struct i3c_master_controller *m,
- 	return ret;
- }
- 
--static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
--				     struct i3c_priv_xfer *xfers,
--				     int nxfers)
-+static int svc_i3c_master_i3c_xfers(struct i3c_dev_desc *dev, struct i3c_xfer *xfers,
-+				    int nxfers, enum i3c_xfer_mode mode)
- {
- 	struct i3c_master_controller *m = i3c_dev_get_master(dev);
- 	struct svc_i3c_master *master = to_svc_i3c_master(m);
-@@ -1679,19 +1736,32 @@ static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
- 	struct svc_i3c_xfer *xfer;
- 	int ret, i;
- 
-+	if (mode != I3C_SDR) {
-+		/*
-+		 * Only support data size less than FIFO SIZE when using DDR
-+		 * mode. First entry is cmd in FIFO, so actual available FIFO
-+		 * for data is SVC_I3C_FIFO_SIZE - 2 since DDR only supports
-+		 * even length.
-+		 */
-+		for (i = 0; i < nxfers; i++)
-+			if (xfers[i].len > SVC_I3C_FIFO_SIZE - 2)
-+				return -EINVAL;
-+	}
-+
- 	xfer = svc_i3c_master_alloc_xfer(master, nxfers);
- 	if (!xfer)
- 		return -ENOMEM;
- 
--	xfer->type = SVC_I3C_MCTRL_TYPE_I3C;
-+	xfer->type = i3c_mode_to_svc_type(mode);
- 
- 	for (i = 0; i < nxfers; i++) {
-+		u32 rnw_cmd = (mode == I3C_SDR) ? xfers[i].rnw : xfers[i].cmd;
-+		bool rnw = svc_cmd_is_read(rnw_cmd, xfer->type);
- 		struct svc_i3c_cmd *cmd = &xfer->cmds[i];
--		bool rnw = xfers[i].rnw;
- 
- 		cmd->xfer = &xfers[i];
- 		cmd->addr = master->addrs[data->index];
--		cmd->rnw = rnw;
-+		cmd->rnw_cmd = rnw_cmd;
- 		cmd->in = rnw ? xfers[i].data.in : NULL;
- 		cmd->out = rnw ? NULL : xfers[i].data.out;
- 		cmd->len = xfers[i].len;
-@@ -1890,7 +1960,7 @@ static const struct i3c_master_controller_ops svc_i3c_master_ops = {
- 	.do_daa = svc_i3c_master_do_daa,
- 	.supports_ccc_cmd = svc_i3c_master_supports_ccc_cmd,
- 	.send_ccc_cmd = svc_i3c_master_send_ccc_cmd,
--	.priv_xfers = svc_i3c_master_priv_xfers,
-+	.i3c_xfers = svc_i3c_master_i3c_xfers,
- 	.i2c_xfers = svc_i3c_master_i2c_xfers,
- 	.request_ibi = svc_i3c_master_request_ibi,
- 	.free_ibi = svc_i3c_master_free_ibi,
+diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+index 2eff6f274302add1ef8f6ae9ec9672697bc812ea..94fc8ff4504b5dc2c0fd7b384f6acaae3d5f80a4 100644
+--- a/Documentation/devicetree/bindings/trivial-devices.yaml
++++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+@@ -227,6 +227,10 @@ properties:
+           - meas,tsys01
+             # MEMSIC magnetometer
+           - memsic,mmc35240
++            # MEMSIC 3-axis magnetometer
++          - memsic,mmc5603
++            # MEMSIC 3-axis magnetometer (Support I3C HDR)
++          - memsic,mmc5633
+             # MEMSIC 3-axis accelerometer
+           - memsic,mxc4005
+             # MEMSIC 2-axis 8-bit digital accelerometer
 
 -- 
 2.34.1

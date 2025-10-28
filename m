@@ -1,179 +1,157 @@
-Return-Path: <linux-iio+bounces-25561-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25562-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D2FC13C7D
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 10:25:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B4FC13D1F
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 10:31:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 446F23AA418
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 09:22:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CF5B3AA66D
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 09:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493502FE578;
-	Tue, 28 Oct 2025 09:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57D72DCF72;
+	Tue, 28 Oct 2025 09:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CrWjjoaz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFzeK94G"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558F22BDC34
-	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 09:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C658D2FFDDE
+	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 09:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761643326; cv=none; b=KDu3OlLnkz+KLDvhXkskvM+IPWWL0NdqyRzzANZngtO+I732nCjM1bkpyozFnezDjrj1V6rnUiWRGveL9ssQIBewlbDueugi3dTDSjTB2UyydYP/2ehgo2QvTdxOrwHwifqc+1vaj/d8bOznH1WXWbdmb+2MBgjYwVhSBMng+Bo=
+	t=1761643649; cv=none; b=rX6Ktgw/9s90Z/pUea256T3VsgoNgDNljMsMsiOd/GPB+ThZ9Fu9tZP48+PJLAABOv63aiQQ+jYMhlf+tO7judgc5bd/zqt+P2nVVaXKEDCBuNLknTM2LoU4rKS2h6d9JXM57u8cHstZMgNNPwF7nuwJKPm6/rHBWZgSQvoMRUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761643326; c=relaxed/simple;
-	bh=qyDtyfHUsDFrz2HvcrljCpitgV3nqN5bjNEUeswpEB4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gqLWSQlCp3TzzhHqanuBVXPLbLVnrFLVxIg8X2qG7PbjOHGx3HuOq7LW+i+dw81LgY9G8QhWj9fM2O9Qs5xEINWMzqD6UuxRDkRpAHacTxJ99eSPhRBZO2Cs1brkpLsv0Npr1YNv7kWIi4rboFZ/IDcMlMK0vy1cL+kHMWACTKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CrWjjoaz; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1761643649; c=relaxed/simple;
+	bh=2nzO/Lgis0CGEF4PRwALL8keP37eKj0EffWsyrHfk8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=POdlOQvowCBNUczmq4xiOpPzuv8N7P++QArDFTSO/6ZGtQX1BN3jBPo9u34eBr8PM7u0tpfCv6nO5ndWzGJkVqr9ul9gI8kfEuFLs2FZOIpIENV+LQm679z/aWC7RyQgvdO9pHu/ae97QPNLD8g6/EXNmbNlas+L3a6FKLuvexU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFzeK94G; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-475d9de970eso28676205e9.1
-        for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 02:22:04 -0700 (PDT)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ee64bc6b85so5846067f8f.3
+        for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 02:27:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761643322; x=1762248122; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qyDtyfHUsDFrz2HvcrljCpitgV3nqN5bjNEUeswpEB4=;
-        b=CrWjjoazv3ym7sCg25MNCrIfjwOjVeb/nNT4nlbaiDpgcHu3sLRn5MkrbAu6y6KJ46
-         WbB9EGNEouYqVy0jpFovQ9eHowyl75j/v7eKfnOk9WFzocNBTKILX5K3LBCuknqdSx11
-         mEWKiiYdDZzX20svGkr5ltrR6wIsSyXA13SYPnvF+Q9ANzDuSZf9gYAsUITcdJQNKuRa
-         My7jBYtyq7LthhngjjjCJZyo/epXk9AbISVGl0ZmINbbdkBdurNpHJEo6JrT0U7gbFBF
-         rbA5k3Lpavq6GcfUdoOeLcIJHv1hW8UVzz4R9dPCA9L19q0InMxm8DAtJ2Dxskc0tRIK
-         QJVg==
+        d=gmail.com; s=20230601; t=1761643646; x=1762248446; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5Fa94rq4LY4WzohJQBw+1+fnrKto/qSLOJsPZx6Z7XI=;
+        b=gFzeK94GevHbhOMiC3e73zh2DVpGzeNYpfuermoLx17CgcM1z15E0c7VRnKDatBmJ9
+         jBfbONzCHIDfmkUHshBA01wOYhy7sios20iu02Ik00nZHUM4tWkWWSHSA9CM3zEyFn6P
+         BpUBQe3jLgkj3+jUqgzA8PIVc9kGACoPAYrDjZeNcOJWpMKKCyuHGDhm63G3N7WQ2CZ2
+         1DkV+0ij+AhS1S6s/bO0/fbzdUsOIK9RVU6t41G06Ox5M/drv9NGsVvIuFivpw1IJaeX
+         PF0SVq6RaPCfVb7CZxPQOijIHwDp+xe6SQ67OSGT31LA3hK/5LiY9Dh7Jk6bXRJMayVY
+         Zu+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761643322; x=1762248122;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qyDtyfHUsDFrz2HvcrljCpitgV3nqN5bjNEUeswpEB4=;
-        b=SovEQeWIfzxw6BMKH1JLu7WvIo4ib5tTeIHZlVFl335MMjYQlPcmBEissi82ySH8SQ
-         Hm2MQuDz5GSCAfLSxwH9Pb6aPwW2OMsleqSZqiajcIdd/Jsy3lQoBKpeFfwsp/dUgK/D
-         pNK6oFIXh7oIS5/i1PbXdPg76IUL0OKNquuEkHG2cAO1cKibCbvk0gCTL+v8+rpCW0Rz
-         KjcqNbD5SoaQoeDYiyqZFvrPaOswL76h3TRbuLwja5ahU6N7UcJQa+lgrRnyVjkw1YJb
-         QHVPj2J/EGcSvlQwD+wyQnxU1tux390VF3fKna57h/6rUXK1srzTH5/OSu5jcoazO7M4
-         P77g==
-X-Forwarded-Encrypted: i=1; AJvYcCWmThs0AygOOxYAmZR+XuBDsiRFTlqAuRqn7jWmV+YJG1kSxOQiiNlhj672bpk88Pc3nQ6AL7d7dQc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZrbi/+0A+1569aj1t51hha/2CxQLli3M6Pd+9o80N8+PhvpKZ
-	6UNFnskKHGdvHSFzOyPScu2f2FO8ZkbOCh13Zh5C2TbIun0Ini72J6fl
-X-Gm-Gg: ASbGncs4fCy+DrN8n4kXhwWuFmBdJbhhgnAArVGA5thpPrD1t9up4RSPD6pHVCbN04d
-	1a6MtUC42ealIGxtI7jFnihgifrslybkM9IPOHF7ikYgNdO0b5SVYKd3jIUSxYTObKlvTi44yyA
-	d12zjPgxRWgHnJBLRoe68hPT6Mx4vzAt9h+PgcSKp68oPMEQtPnkzZIR9tvv4VR3puIIr0tTPDt
-	uzvI1UmrrQawb1L5NjG5zdCmRziiGQwNSolYpn/s8CV5eGqW0KhmmWGIGdrhl/KfrlbjP13IMX8
-	LULD+fRMw00ivjriUUmV9PdWVsvy8PMpSI0hLXHoCnforeHaxFt0t1FObkjz5W9tQRG7txjbFP5
-	dsmFutwyGfgXRoDeipRuqVNByLTOoWcoEfn3IIOiN19CI++MiCFZ4WwiEYK89hvtLKRlXzO1xOv
-	y7y/0s6jNF
-X-Google-Smtp-Source: AGHT+IHwdxWEuyCVgrLBxpjJGOZCTptkhpTE8tcoIQqfi03N4Kvtq0Ch1ugi5oZ8rA6JxgyVnew9Vw==
-X-Received: by 2002:a05:600c:4446:b0:475:da13:2566 with SMTP id 5b1f17b1804b1-47717e6095fmr21047585e9.35.1761643322238;
-        Tue, 28 Oct 2025 02:22:02 -0700 (PDT)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd48942dsm187244135e9.4.2025.10.28.02.22.01
+        d=1e100.net; s=20230601; t=1761643646; x=1762248446;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5Fa94rq4LY4WzohJQBw+1+fnrKto/qSLOJsPZx6Z7XI=;
+        b=ew6VPZlapGz4x19z+5FTUwYu9WDhl5xiUaNPj1BMKHQXqNlVUnc8O07mQ0V9meFk4Z
+         oh37xyObphHzxu3viQRyaY1HiAB3pAUS3tZnv6XgzaStbmroX6Uvj1Bn9Edieym8XZZd
+         wdlCzGzQM/ZGCx6dGYgpIs8BzjLVLBNrJ/Rajj9D/XLjBlVXpMbTSxjaJpoObRk/YFA4
+         DX1wSbC0QRzeuwdJKJVTXVmcyXC835m/tR/4Sr9DbPLrPKzJL7bNNfaHagTW983DQbzr
+         aQGHPnHfgNJzx6Hjn5qajYNRW6ltmo3pHBizOIWL+mNNvPDetxQ3U7r5Lec3WPHde7ct
+         skMA==
+X-Gm-Message-State: AOJu0Yw7pDAOaPE0RIT0ZQLLNDUHZu8otfSGyUq1v8KDyHcBmdZ3bYnQ
+	r54BdhYOh4ceRezfyrPZxSR36Wci4gxbCHDQ2qyD7SQGYYUjFU8UL0CV
+X-Gm-Gg: ASbGncvVO7WxrfBeOTy5IXb5/XXpifX+e3FABb6a+ACuXuPx0HQe9nPaAQ+VaOR6/Fe
+	nJYF/U/Fp5W7E77xB5eR4khG/OBj4f5NElyI2JYFs930hukjx4iw6WMyrugPO/HU5imt+dAWy63
+	GD3wEwRU1+uiAKHl3yfCrEJY1LG6+S6RtEeJQQTkiBdBNg6rpyQZwhCIh2WHubBapqWse1l2RsV
+	9QsJldfJNH6WVqFTkybJil3z1RGU7OpYJAoVZyCAn5Xhr6Cc3yIdeei+Jgyn4obVH6iBuHhchrR
+	pEe1PRScuvH/L+YKi7o/DBOHj2XGkHs+R1+yGGBk+Fwq9ZMOuOUS5+Sq+OCphEBNvrPEtlzje3M
+	/V6FNZGunlJGC3i7lAfxitMg2Yjfup1BpjOdpx24qYXj4k7JtoWHVubPcTnS7VzfIXHU8QemdRf
+	HSeE4nw6G5U1MP2X9fHxhFY0e5o9GXgCiwci/jYAEvyg==
+X-Google-Smtp-Source: AGHT+IFF5YJfFnpTtTAVxGmV5ZlBFo/mf4gYcQP7jzA5jKthEnOt4UjCXc6otkG5ppk07jpyxXmDJg==
+X-Received: by 2002:a05:6000:25f4:b0:429:a7f1:bdda with SMTP id ffacd0b85a97d-429a7f1bf31mr2313106f8f.47.1761643645777;
+        Tue, 28 Oct 2025 02:27:25 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952d4494sm19408803f8f.21.2025.10.28.02.27.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Oct 2025 02:22:01 -0700 (PDT)
-Message-ID: <5e3bf0d87ae1b539d134edefee67d3e3ef3b46cb.camel@gmail.com>
-Subject: Re: [PATCH] iio: core: Use datasheet name as fallback for label
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>, Jonathan Cameron
-	 <jic23@kernel.org>
-Cc: Chen-Yu Tsai <wens@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- Nuno =?ISO-8859-1?Q?S=E1?=
-	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 28 Oct 2025 09:22:36 +0000
-In-Reply-To: <aQB5Dw2Eg0tVdNow@smile.fi.intel.com>
-References: <20251027124210.788962-1-wens@kernel.org>
-	 <20251027144327.09f59982@jic23-huawei>
-	 <aQB5Dw2Eg0tVdNow@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+        Tue, 28 Oct 2025 02:27:25 -0700 (PDT)
+Date: Tue, 28 Oct 2025 09:27:23 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, Jonathan Cameron
+ <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>
+Subject: Re: [PATCH v1 2/6] units: Add value of =?UTF-8?B?z4A=?= *
+ =?UTF-8?B?MTDigbk=?=
+Message-ID: <20251028092723.3403d122@pumpkin>
+In-Reply-To: <aQB55GjWQL3VD1MO@smile.fi.intel.com>
+References: <20251027143850.2070427-1-andriy.shevchenko@linux.intel.com>
+	<20251027143850.2070427-3-andriy.shevchenko@linux.intel.com>
+	<20251027193033.69728215@pumpkin>
+	<aQB55GjWQL3VD1MO@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2025-10-28 at 10:04 +0200, Andy Shevchenko wrote:
-> On Mon, Oct 27, 2025 at 02:43:27PM +0000, Jonathan Cameron wrote:
-> > On Mon, 27 Oct 2025 20:42:09 +0800
-> > Chen-Yu Tsai <wens@kernel.org> wrote:
-> >=20
-> > > Some IIO drivers do not provide labels or extended names for their
-> > > channels. However they may provide datasheet names. axp20x-adc is
-> > > one such example.
-> > >=20
-> > > Use the datasheet name as a fallback for the channel label. This main=
-ly
-> > > benefits iio-hwmon by letting the produced hwmon sensors have more
-> > > meaningful names rather than in_voltageX.
-> >=20
-> > I definitely don't want to have different behaviour for in kernel reque=
-sts
-> > and for people reading the _label attributes.=C2=A0=20
-> > https://elixir.bootlin.com/linux/v6.18-rc2/source/drivers/iio/industria=
-lio-core.c#L1232
-> > would need modifying to allow for the sysfs attributes to be created.
-> >=20
-> > In general I'm not sure I want to do this.=C2=A0 Datasheet names can be
-> > exceptionally
-> > obscure which is why we've kept them hidden from userspace.=C2=A0 At le=
-ast dts
-> > writers
-> > tend to have those names on their circuit diagrams and tend to have
-> > datasheet access.
-> >=20
-> > Let's see if anyone else has feedback on this suggestion over next week=
- or
-> > so.
+On Tue, 28 Oct 2025 10:08:04 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+
+> On Mon, Oct 27, 2025 at 07:30:33PM +0000, David Laight wrote:
+> > On Mon, 27 Oct 2025 15:34:51 +0100
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> >  =20
+> > > There are a few drivers that want to have this value, and at least one
+> > > known to come soon. Let's define a value for them. =20
 >=20
-> This is an ABI change without
+> > > +/* Value of =CF=80 * 10=E2=81=B9 */
 
-Indeed...
+Thinks - should non-ascii characters be allowed in comments.
+They can cause grief.
 
-> 1) proper documentation;
-> 2) backward compatibility (i.e. there is no knob to opt-out the change, o=
-r
-> make
-> it opt-in).
+> > > +#define PI	3141592653LL =20
+> >=20
+> > Is that the right value?
+> > IIRC the next digits are 58979 (I used to know the next few as well)
+> > which means it should be rounded up. =20
 >=20
-> In this form is definitely NAK.
->=20
-> If you wish something like this, better to have a separate attribute. But=
- the
-> problem maybe also that the same component (or 100% compatible one) made =
-by
-> different vendors and have different datasheet names. This means that the=
- new
-> attribute may still be ambiguous. Hence I see a little sense to have it,
-> rather
-> better to have these links / names to be put in DT schema. At least there=
- we
-> have different vendors and compatibility mappings.
+> Right, today I have the same thought that actually ChromeOS driver has a
+> off-by-one issue there.
 
-I mean, we already have labels for channels so this all looks like a bit of
-overlap to me (though I see the temptation of going this way). For
-extended_names, there was a reason why it came as a fallback for .label() [=
-1].
-For this, I'm not really convinced for now. There is also at least one driv=
-er
-already exporting the .datasheet_name as a label [2] so maybe we should do =
-that
-instead (again, I understand that doing it like this we only need to change=
- one
-place...)? Otherwise we should clean up those and that should definitely be=
- part
-of the series (if we even consider this).
+Not as though it is likely to make a difference.
+If any code needs anything more accurate than 3.1416 it probably cares
+whether the value is rounded down or up.
+
+> Btw, do you know if we can have compile-time divisions that can make 32-b=
+it
+> constants out of the 64-bit input? DIV_ROUND_CLOSEST_ULL() doesn't seem a=
+llow
+> that.
+
+Not sure, I did wonder how much thought had gone into the LL suffix.
+The value used will fit in u32 - but then any maths becomes unsigned.
+OTOH using LL forces 64bit maths on 32bit - not good.
+
+I suspect it would be better to drop a digit so the value fits in a
+signed 32bit variable.
+
+The other issue is whether scaling by a power of 10 is even right.
+If the code has to rescale the value using divides you really want
+to divide by a big power of 2 not 10.
+So multiplying by 2**29 may be more useful.
+
+	David
 
 
-[1]: https://lore.kernel.org/linux-iio/20210618123005.49867-1-paul@crapouil=
-lou.net/
-[2]: https://elixir.bootlin.com/linux/v6.18-rc2/source/drivers/iio/adc/xili=
-nx-ams.c#L539
 
-- Nuno S=C3=A1
+
+
 

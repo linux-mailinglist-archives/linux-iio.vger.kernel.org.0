@@ -1,91 +1,91 @@
-Return-Path: <linux-iio+bounces-25600-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25601-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F503C15BC3
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 17:19:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC624C15BE1
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 17:19:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E1A11C25335
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 16:13:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C825B421687
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 16:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F07634405E;
-	Tue, 28 Oct 2025 16:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3E634573F;
+	Tue, 28 Oct 2025 16:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KjJPEYPJ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Gw2QrTQ4";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KjJPEYPJ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Gw2QrTQ4"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HtMDbF8r";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ytJTULRp";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HtMDbF8r";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ytJTULRp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C582D33EB02
-	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 16:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7795034574A
+	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 16:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761668003; cv=none; b=OefYn5bxhEWSy2npAyZnsRov5qLAxSnfuvMbB15DquN1WsmBWoLTQLdpUUn3IZav0A7ui3JSCBciWHICqRYReMKjDcsyW6DNwg++2/qmncsiwk91DSqDuZcm0H6mDjP0FMIXypK1BKg7AUjplKLSOXafaMgrUtXwST04nxqLNlA=
+	t=1761668027; cv=none; b=es7F2cJaUeNnBAZnYrFo8RJp36Rk65AP9rTNJIEj3RL7/yShTWoSyXojkvb/gv2KEY5RDg3uJhDeFhjGYb7Z3RfPSRvvXTrktHSRvwDT8Dff24S4tx4wIOSSHQ77LrMNBRvGyaIm1MQdl/1DwXz+coE79ygmu/M5HXv7OJKsl7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761668003; c=relaxed/simple;
-	bh=AqmDL9HYwKlOC1v96mDTpURTB0eXu0WZp5/vnGerPw4=;
+	s=arc-20240116; t=1761668027; c=relaxed/simple;
+	bh=t3buJ2ysQkdol3q5rs3qBMfbIGRLgldMKJXCive1rt8=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gYGUxdPjU7vDwTqgVZwP5lL8SB0KJWCzBT7KzFTMj9ghlqnsNk5+4lrMve/lGevL/BmFW2ZgWHaMYsdxSWvLaWP+2liHARYyKnKstVZBQLuTJv8GZtlL7oCwZ/jUx4VFVy4t2NzRcGG780gUfT9gwvMAuUXhdyYpJ/SXw1PkCX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KjJPEYPJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Gw2QrTQ4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KjJPEYPJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Gw2QrTQ4; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version:Content-Type; b=ZRi0Qq1YXIHqznnA2xKaqnLBbLFyoskGqxt9u5IDYHWfZYODEG4UTvQjlV6RvfoWV2crqpLra7JaudFfupZjhJJ/4d3OAocup3BUyjGwhvWxSDNSW1FQJAo3TmsANBGRcjUGWpgkDHVkPZikVEN/HQoQV7vECff6iyAMOmBQaKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HtMDbF8r; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ytJTULRp; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HtMDbF8r; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ytJTULRp; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C99BD21A64;
-	Tue, 28 Oct 2025 16:13:19 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 71D431F46E;
+	Tue, 28 Oct 2025 16:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761667999; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1761668022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pSosvxi5dPFtdhC5U0/TTS2WAyGF8TeP5oXRsKZhx7U=;
-	b=KjJPEYPJ7HZdpBT02TjYQ61cQjBJIEBgA6xrd5hVWW6xAJANi0wiYFNW6d5v7xV2N7YmlE
-	h6SetL0FQi/IqvkJSpicxJI7317JmcnGp5XrGSNF69XjHib4Xs4pSezxRpirGmBaonvMPF
-	xG/ODKCnE+Q8Gml9lNP6EM6O/Lt0Fag=
+	bh=aIkfaA109e058juxrbARLnbhnw+30Zzst1672lVORwA=;
+	b=HtMDbF8r2wRWDGifnv9gYxSNAhmS0ojzB1YP8QtBcy8ubsAT3ZsONof3Bhi32jnCH/lw5z
+	Hq6v+a16uHNBw7YVLG0EXbD607lh+hXWEV2szjXMyw6CmEW2DhnqmsfmuG+WL6eiBIJi6S
+	EIT708Ji0KWfCPRQ6wSJTudLeMIbq9Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761667999;
+	s=susede2_ed25519; t=1761668022;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pSosvxi5dPFtdhC5U0/TTS2WAyGF8TeP5oXRsKZhx7U=;
-	b=Gw2QrTQ427yrPNuYnSYVl0sYdSQd5/RgHd0ptf3XwxfdMZudizoPqUBaiHtRb5cqG4Is5B
-	5/rgTt+d8ttytfBA==
-Authentication-Results: smtp-out1.suse.de;
+	bh=aIkfaA109e058juxrbARLnbhnw+30Zzst1672lVORwA=;
+	b=ytJTULRp9UW/jr9bzPTDO3cAAmBQor2fn8ie0J+jiQytAqY1LFwxRRsg/XxfPqgAg/w4Xj
+	zB2K4ve4Da2VOpCw==
+Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761667999; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1761668022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pSosvxi5dPFtdhC5U0/TTS2WAyGF8TeP5oXRsKZhx7U=;
-	b=KjJPEYPJ7HZdpBT02TjYQ61cQjBJIEBgA6xrd5hVWW6xAJANi0wiYFNW6d5v7xV2N7YmlE
-	h6SetL0FQi/IqvkJSpicxJI7317JmcnGp5XrGSNF69XjHib4Xs4pSezxRpirGmBaonvMPF
-	xG/ODKCnE+Q8Gml9lNP6EM6O/Lt0Fag=
+	bh=aIkfaA109e058juxrbARLnbhnw+30Zzst1672lVORwA=;
+	b=HtMDbF8r2wRWDGifnv9gYxSNAhmS0ojzB1YP8QtBcy8ubsAT3ZsONof3Bhi32jnCH/lw5z
+	Hq6v+a16uHNBw7YVLG0EXbD607lh+hXWEV2szjXMyw6CmEW2DhnqmsfmuG+WL6eiBIJi6S
+	EIT708Ji0KWfCPRQ6wSJTudLeMIbq9Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761667999;
+	s=susede2_ed25519; t=1761668022;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pSosvxi5dPFtdhC5U0/TTS2WAyGF8TeP5oXRsKZhx7U=;
-	b=Gw2QrTQ427yrPNuYnSYVl0sYdSQd5/RgHd0ptf3XwxfdMZudizoPqUBaiHtRb5cqG4Is5B
-	5/rgTt+d8ttytfBA==
+	bh=aIkfaA109e058juxrbARLnbhnw+30Zzst1672lVORwA=;
+	b=ytJTULRp9UW/jr9bzPTDO3cAAmBQor2fn8ie0J+jiQytAqY1LFwxRRsg/XxfPqgAg/w4Xj
+	zB2K4ve4Da2VOpCw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7D26E13A7D;
-	Tue, 28 Oct 2025 16:13:18 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 22B2113A7D;
+	Tue, 28 Oct 2025 16:13:41 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id udwmHJ7rAGmPCAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Tue, 28 Oct 2025 16:13:18 +0000
-Date: Tue, 28 Oct 2025 17:13:18 +0100
-Message-ID: <87o6prf1i9.wl-tiwai@suse.de>
+	id h0gZB7XrAGm0CAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Tue, 28 Oct 2025 16:13:41 +0000
+Date: Tue, 28 Oct 2025 17:13:40 +0100
+Message-ID: <87ms5bf1hn.wl-tiwai@suse.de>
 From: Takashi Iwai <tiwai@suse.de>
 To: Geert Uytterhoeven <geert+renesas@glider.be>
 Cc: Michael Turquette <mturquette@baylibre.com>,	Stephen Boyd
@@ -116,10 +116,10 @@ Cc: Michael Turquette <mturquette@baylibre.com>,	Stephen Boyd
 	qat-linux@intel.com,	linux-gpio@vger.kernel.org,
 	linux-aspeed@lists.ozlabs.org,	linux-iio@vger.kernel.org,
 	linux-sound@vger.kernel.org,	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 09/23] ALSA: usb-audio: #undef field_{get,prep}() before local definition
-In-Reply-To: <8f19d783dd783df5510408ffe9664dc6ef0d9434.1761588465.git.geert+renesas@glider.be>
+Subject: Re: [PATCH v5 20/23] ALSA: usb-audio: Convert to common field_{get,prep}() helpers
+In-Reply-To: <91f957d8857d64df9eae33824203cc770b0182b3.1761588465.git.geert+renesas@glider.be>
 References: <cover.1761588465.git.geert+renesas@glider.be>
-	<8f19d783dd783df5510408ffe9664dc6ef0d9434.1761588465.git.geert+renesas@glider.be>
+	<91f957d8857d64df9eae33824203cc770b0182b3.1761588465.git.geert+renesas@glider.be>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -129,7 +129,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
 X-Spamd-Result: default: False [-1.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
@@ -156,37 +156,38 @@ X-Spam-Flag: NO
 X-Spam-Score: -1.80
 X-Spam-Level: 
 
-On Mon, 27 Oct 2025 19:41:43 +0100,
+On Mon, 27 Oct 2025 19:41:54 +0100,
 Geert Uytterhoeven wrote:
 > 
-> Prepare for the advent of globally available common field_get() and
-> field_prep() macros by undefining the symbols before defining local
-> variants.  This prevents redefinition warnings from the C preprocessor
-> when introducing the common macros later.
+> Drop the driver-specific field_get() and field_prep() macros, in favor
+> of the globally available variants from <linux/bitfield.h>.
 > 
-> Suggested-by: Yury Norov <yury.norov@gmail.com>
 > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> --
-> v5:
->   - New.
 > ---
->  sound/usb/mixer_quirks.c | 2 ++
->  1 file changed, 2 insertions(+)
+> v5:
+>   - Extracted from "bitfield: Add non-constant field_{prep,get}()
+>     helpers".
+> ---
+>  sound/usb/mixer_quirks.c | 6 ------
+>  1 file changed, 6 deletions(-)
 > 
 > diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-> index 828af3095b86ee0a..713a8498b975e1ac 100644
+> index 713a8498b975e1ac..6eee89cbc0867f2b 100644
 > --- a/sound/usb/mixer_quirks.c
 > +++ b/sound/usb/mixer_quirks.c
-> @@ -3312,7 +3312,9 @@ static int snd_bbfpro_controls_create(struct usb_mixer_interface *mixer)
+> @@ -3311,12 +3311,6 @@ static int snd_bbfpro_controls_create(struct usb_mixer_interface *mixer)
+>  #define RME_DIGIFACE_REGISTER(reg, mask) (((reg) << 16) | (mask))
 >  #define RME_DIGIFACE_INVERT BIT(31)
 >  
->  /* Nonconst helpers */
-> +#undef field_get
->  #define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
-> +#undef field_prep
->  #define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
->  
+> -/* Nonconst helpers */
+> -#undef field_get
+> -#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
+> -#undef field_prep
+> -#define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
+> -
 >  static int snd_rme_digiface_write_reg(struct snd_kcontrol *kcontrol, int item, u16 mask, u16 val)
+>  {
+>  	struct usb_mixer_elem_list *list = snd_kcontrol_chip(kcontrol);
 
 Acked-by: Takashi Iwai <tiwai@suse.de>
 
@@ -194,4 +195,5 @@ Acked-by: Takashi Iwai <tiwai@suse.de>
 thanks,
 
 Takashi
+
 

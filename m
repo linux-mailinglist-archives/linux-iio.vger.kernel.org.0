@@ -1,194 +1,129 @@
-Return-Path: <linux-iio+bounces-25573-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25574-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26498C14455
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 12:08:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAA2C14647
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 12:35:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A1363A72E9
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 11:06:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 818714E6DBC
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 11:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE882FFDCE;
-	Tue, 28 Oct 2025 11:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7CD1D63EF;
+	Tue, 28 Oct 2025 11:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="bEruiZnB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A6ZwtEkT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-m32112.qiye.163.com (mail-m32112.qiye.163.com [220.197.32.112])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D87F22D7A5;
-	Tue, 28 Oct 2025 11:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0CC1DFD9A;
+	Tue, 28 Oct 2025 11:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761649562; cv=none; b=Avy1yxbasEaDewGyyMVt3kDDthMf9/kZ1vWcgRX2YDKyaQF93urWGduUEqmgN7WyapgYJO2jK9jXX5L+Bw50bUAmMZwWdOUQG8iD3hoceXEd5X3t139h+9KP8RXc8LUhL38pLG5GbnJQDOrUrXN51VJudnEJppOMVzSNmqNb9VM=
+	t=1761651266; cv=none; b=S5TThDCdtK6QRDcu1BlPwW7MDvmG8A9vMePR6k/VPrIMgVwOIRv6Fg6tHUEj8vgX30akzkPXQE/D4mNNL/jrJAid4oKgvDOHWFh89M7wuGkNry7yJlN4hT4KYzFuMT+Ua6R2FJVYxOw0RJex+TYDyih9AHKimZViv+5AxkPBZjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761649562; c=relaxed/simple;
-	bh=DCoMGRIHlQtoLLO1bGNuOufjU661UemuV7j+kHMgpOo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=czosaLzB+ddQaF5wHLlxY0IFzzAByg31ChlB6bbiXva08NRQUEFqjue+po5oiu0x3xmYyHPYL+dkWrn4+sjUD30PPrQ3sAV3tPHX9111T4RZ6EsEql7XKL3jTuhYEQps0MMW76MBeG2Q6chmxBMG+7wjYbBj1mEERFw6Z/pYgyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=bEruiZnB; arc=none smtp.client-ip=220.197.32.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from [172.16.12.26] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 277c22857;
-	Tue, 28 Oct 2025 19:05:48 +0800 (GMT+08:00)
-Message-ID: <2822bc51-2c3c-423c-8777-af52c5f0da95@rock-chips.com>
-Date: Tue, 28 Oct 2025 19:05:47 +0800
+	s=arc-20240116; t=1761651266; c=relaxed/simple;
+	bh=pu5MKC98iytXYXwdRFwcTAWCXS3UHEEjW1hJRxmpumE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lUHSgWdHMpORsSB8GuV23FFtDDZ+9vKV8azNCiruxM8G61IEw7KtH3m1HqAoJQVzycTtQRCyDb/b73vz0+4vT/RHCbt/dj9NZLToJ4ukO+Xa/ovfeRTPqMeGlekYLGI74dhHOoUP7/iuFmm3HycMs0heaKY6RnggJ/LF8/zS+bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A6ZwtEkT; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761651263; x=1793187263;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=pu5MKC98iytXYXwdRFwcTAWCXS3UHEEjW1hJRxmpumE=;
+  b=A6ZwtEkT3sRODin29DZ5eSEeM9TaiV8DBtCxmO6GGjK2/wxO44nbIjmK
+   82HBKTzRAFhUHvyqbV/MKHWa3dKjzKU/q+kBvy5uIsnmexwVx1vCZsFoT
+   yOXoLxM04fK0xNor5mFM/7C59Sx8SIv7mpd2nTVdirTC6ylcJaBt+lJW3
+   6/V/YyCQhoDN21T5r2vgGWILDGx1jzivhN8Q4cKInwPZvQkSIfp0dR4PS
+   0VVvhzmzHwC8wyFKTClG/yqor9CzQtddl7lTKF6dCLTE/lS8dPxc58hZB
+   FguG9UTpAXrAHJY5V88O7H30havEZTJivXS8jXlg7EkR3fmzJeRtq3zOf
+   w==;
+X-CSE-ConnectionGUID: 411/NEBIQ/araNv49UeJIw==
+X-CSE-MsgGUID: bir/HZhrTniOO6Q3Epwy4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="81378351"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="81378351"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:34:23 -0700
+X-CSE-ConnectionGUID: OijtI/erQ+e2KE2bWejLsA==
+X-CSE-MsgGUID: v/9TRkG1QcmHJEjfj0oGxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="215980085"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:34:20 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vDhxx-00000003IWC-0GNW;
+	Tue, 28 Oct 2025 13:34:17 +0200
+Date: Tue, 28 Oct 2025 13:34:16 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Stephan Gerhold <stephan@gerhold.net>, linux-iio@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: bmc150: Fix irq assumption regression
+Message-ID: <aQCqOJWQpvgI1o1q@smile.fi.intel.com>
+References: <20251027-fix-bmc150-v1-1-ccdc968e8c37@linaro.org>
+ <aP9dqnGb_tdWdr7y@smile.fi.intel.com>
+ <CACRpkdb9GYL3dQzn28Q5E_-keJdLLA+TiXxTuNf1aaevKqHJYA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/5] counter: Add rockchip-pwm-capture driver
-To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Lee Jones <lee@kernel.org>, William Breathitt Gray <wbg@kernel.org>
-Cc: kernel@collabora.com, Jonas Karlman <jonas@kwiboo.se>,
- Alexey Charkov <alchark@gmail.com>, linux-rockchip@lists.infradead.org,
- linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20251027-rk3576-pwm-v3-0-654a5cb1e3f8@collabora.com>
- <20251027-rk3576-pwm-v3-4-654a5cb1e3f8@collabora.com>
-Content-Language: en-US
-From: Damon Ding <damon.ding@rock-chips.com>
-In-Reply-To: <20251027-rk3576-pwm-v3-4-654a5cb1e3f8@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a9a2a7edc5f03a3kunmddd3695f160f5d
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQx5MSFZLSxhPSUoeTEtCSR9WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=bEruiZnB71xueUYJgaoCvzPxOfhsvA5KMVFq3QVee2vR0a5M2oLjHIWURnA/KnjEX9jELibw9sz3H5zs3QUAKS3dU3FwLNfzzqsk82FV+DOfPAz3rdWepdDZtXXg60FUw2P43lkXid+u9eveq7Kj7mQl/CrSQs3xG3yIg/CtrBw=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=K2mscf8leSzJwhOu2M/nnAE9gaYBbj3LyHdaS1gioCE=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdb9GYL3dQzn28Q5E_-keJdLLA+TiXxTuNf1aaevKqHJYA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Nicolas,
-
-On 10/28/2025 1:11 AM, Nicolas Frattaroli wrote:
-> Among many other things, Rockchip's new PWMv4 IP in the RK3576 supports
-> PWM capture functionality.
+On Mon, Oct 27, 2025 at 06:24:25PM +0100, Linus Walleij wrote:
+> On Mon, Oct 27, 2025 at 12:55 PM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> > On Mon, Oct 27, 2025 at 11:18:17AM +0100, Linus Walleij wrote:
 > 
-> Add a basic driver for this that works to expose HPC/LPC counts and
-> state change events to userspace through the counter framework. It's
-> quite basic, but works well enough to demonstrate the device function
-> exclusion stuff that mfpwm does, in order to eventually support all the
-> functions of this device in drivers within their appropriate subsystems,
-> without them interfering with each other.
+> > Hmm... Isn't this already being discussed somewhere? I have some déjà-vu.
 > 
-> Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-> ---
+> I brought it up on the PostmarkeOS IRC, otherwise I don't
+> know.
 
-......
+It might be that it was a cross-mail that describes the same issue in another
+IIO driver.
 
-> +
-> +/*
-> + * Channel 0 receives a state changed notification whenever the LPC interrupt
-> + * fires.
-> + *
-> + * Channel 1 receives a state changed notification whenever the HPC interrupt
-> + * fires.
-> + */
-> +static struct counter_signal rkpwmc_signals[] = {
-> +	{
-> +		.id = 0,
-> +		.name = "Channel 0"
-> +	},
-> +	{
-> +		.id = 1,
-> +		.name = "Channel 1"
-> +	},
-> +};
-> +
-> +static const enum counter_synapse_action rkpwmc_hpc_lpc_actions[] = {
-> +	COUNTER_SYNAPSE_ACTION_BOTH_EDGES,
-> +
-
-Redundant blank line. ;-)
-
-If the dclk cycle is regarded as the 'input signal', then the HPC/LPC 
-counters should be COUNTER_SYNAPSE_ACTION_BOTH_EDGES.
-
-If to deal with the interrupt for HPC or LPC, the LPC interrupt occurs 
-in several pclk cycles after the rising edge while the HPC interrupt is 
-generated similarly after the falling edge. Shall we distinguish the 
-synapses between LPC and HPC? LPC is COUNTER_SYNAPSE_ACTION_RISING_EDGE 
-and HPC is COUNTER_SYNAPSE_ACTION_FALLING_EDGE.
-
-> +};
-> +
-> +static struct counter_synapse rkpwmc_pwm_synapses[] = {
-> +	{
-> +		.actions_list = rkpwmc_hpc_lpc_actions,
-> +		.num_actions = ARRAY_SIZE(rkpwmc_hpc_lpc_actions),
-> +		.signal = &rkpwmc_signals[0]
-> +	},
-> +	{
-> +		.actions_list = rkpwmc_hpc_lpc_actions,
-> +		.num_actions = ARRAY_SIZE(rkpwmc_hpc_lpc_actions),
-> +		.signal = &rkpwmc_signals[1]
-> +	},
-> +};
-> +
-> +static const enum counter_function rkpwmc_functions[] = {
-> +	COUNTER_FUNCTION_INCREASE,
-> +};
-> +
-
-......
-
-> +
-> +static struct counter_comp rkpwmc_ext[] = {
-> +	COUNTER_COMP_ENABLE(rkpwmc_enable_read, rkpwmc_enable_write),
-> +};
-> +
-> +enum rkpwmc_count_id {
-> +	COUNT_LPC = 0,
-> +	COUNT_HPC = 1,
-> +};
-> +
-> +static struct counter_count rkpwmc_counts[] = {
-> +	{
-> +		.id = COUNT_LPC,
-> +		.name = "PWM core clock cycles during which the signal was low",
-> +		.functions_list = rkpwmc_functions,
-> +		.num_functions = ARRAY_SIZE(rkpwmc_functions),
-> +		.synapses = rkpwmc_pwm_synapses,
-> +		.num_synapses = ARRAY_SIZE(rkpwmc_pwm_synapses),
-> +		.ext = rkpwmc_ext,
-> +		.num_ext = ARRAY_SIZE(rkpwmc_ext),
-> +	},
-> +	{
-> +		.id = COUNT_HPC,
-> +		.name = "PWM core clock cycles during which the signal was high",
-> +		.functions_list = rkpwmc_functions,
-> +		.num_functions = ARRAY_SIZE(rkpwmc_functions),
-> +		.synapses = rkpwmc_pwm_synapses,
-> +		.num_synapses = ARRAY_SIZE(rkpwmc_pwm_synapses),
-> +		.ext = rkpwmc_ext,
-> +		.num_ext = ARRAY_SIZE(rkpwmc_ext),
-> +	},
-> +};
-> +
+> > > +     /* We do not always have an IRQ */
+> > > +     if (!data->has_irq)
+> >
+> > Wouldn't check for 0 be enough?
+> >
+> >         if (!data->irq)
 > 
+> But this driver does not store the IRQ number in the
+> instance struct because it isn't used outside of the probe()
+> function.
+> 
+> The information that needs to be stored is bool so that's
+> why I stored a bool.
 
-Additionally, I test the capture by connecting pwm0_ch0 and pwm2_ch0, 
-and the capture results are correct.
+I understand this, but I think storing the IRQ number is tiny better
+as we might have a chance to need it in the future.
 
-I think the counter/frequency meter/biphasic counter functions can also 
-be adapted to the counter framework. And they will be available soon in 
-the future. :-)
 
-Best regards,
-Damon
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

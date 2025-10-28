@@ -1,169 +1,182 @@
-Return-Path: <linux-iio+bounces-25582-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25583-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E8F6C15312
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:38:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F194C1538A
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C810189765A
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 14:37:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 235991B20155
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 14:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969AA32D450;
-	Tue, 28 Oct 2025 14:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65088238150;
+	Tue, 28 Oct 2025 14:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hsu/3FEj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="igwOak7r"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AC222A4E8
-	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 14:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927A4231832;
+	Tue, 28 Oct 2025 14:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761662211; cv=none; b=BWVAb4X2GcA+ysbF3kUXOyukqzXJfIvGm1rk5L7E4t3ECuWzhJRf0DVczuTg2uE6RTGst9g6hOV5ptqa1CDin32Flz7QlLGbhmTJWqHcFTVsOYhMyItiH5DYG9F21wcsmxCbygmTfKM4b9A5kemKP5MqjT8mosZqPxjOst+3BSc=
+	t=1761662752; cv=none; b=lOYE4kHPwiMXD2/+69XjChVvlh6ieQmIMYgXly/BKm+SrARebOtf3eXF8m1b0dAh+SvFjbGUhVtmZXap7XVccX889reXUNFG9NAJaF9fe6k6JntVUaxcd0djYg736Pw9ftBiTBV5qh3740vX0su4UR4X/qeOUyWZYNPkN9OoU5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761662211; c=relaxed/simple;
-	bh=2GvH00DhaFoAyZpv95ecvQbVJDyfnIvOh5tRoc/cRIU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uSvvp0n7V9GdxZ9W7Jz0AELN2BlMXlXMg66LA7ZZQjJvTtldP+rmGbi5GstxNIdu7NZGlHySOm1XNO68CiBvMN2szFQ2SWOwOJD8BpuqY8IUlT5QvaoEMl73jRTcFSgHYCbEvFRlj2GArj4gyvnCTgoz+J0VpulgXXlKKzifhu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hsu/3FEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF088C4CEE7
-	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 14:36:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761662210;
-	bh=2GvH00DhaFoAyZpv95ecvQbVJDyfnIvOh5tRoc/cRIU=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=Hsu/3FEj3tqI6gOiQPxoPutJe4NoOm4sYCbJtBBL/TO3+HIj6QdbZ+Rzz8QwpZQqP
-	 YunqXiY86Amiph0eOF7gDuoFv8mo+E0ZoR1vLXBbTedeJtH48jeHYoHox6WUQWFKcE
-	 N9UxCe8xeJMnmwtDbZPPvHQJ91n8qUMOz41T7NkvZV/Fy00NWenRI64XAE7JYWb11S
-	 IlpA4EM24ndfYOtrh9NMYMlvorMHkKPyRo2iBloA67lG+ODczYgxjsKulYsA+aCzG9
-	 OsPWSFsC44BXU2DUuSHqdC3nBYTxW7bDccXWaG9wR05Fhqp24y2KM7aFzJz0tHaKyg
-	 1OT4vxlhe4UuQ==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-378d710caedso66766201fa.3
-        for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 07:36:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWcUXcD9Zv9v+2QEUV/PdtS/TPgxcc4GcyCu/6nQ5/36iq/3LztWKQ7r7dfTBED/ZMmwogk1YO3ybg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFUZAMDE/ig8Foubb0Jr3DvefGAJjttoLrUomZdYNYFrWaLpAq
-	vR7fwOIdrBkq+G8/xizrzAW3bOlUcU/LemTaq5tZ2XgV9u49AKDa8nElHXyDO2OW+pYCEL6gafu
-	ZyjfZx8rmPCbc+EV9m7w/TzGmLsnvJEc=
-X-Google-Smtp-Source: AGHT+IFagmaN5pc8iTFpBam1mflqLJDFKJBmwYlCcnaXRBDuRgltQZk228NAOylmAF/pciOjvgmG1eG++a7Vlch3b2o=
-X-Received: by 2002:a05:651c:25c4:10b0:378:df4b:569 with SMTP id
- 38308e7fff4ca-3790779e617mr8935051fa.43.1761662209194; Tue, 28 Oct 2025
- 07:36:49 -0700 (PDT)
+	s=arc-20240116; t=1761662752; c=relaxed/simple;
+	bh=CKz4/uGHSCJbggykL29OUDHmz0rpQ9olHSJpLyDmkh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IdIkENh9choUkK4j9XkmOAmZqsptVx6kemv9IKwDjehz1fXOkgRQIg9QxrDiWR8hxJ/U9EvKuWOb14Ca18XM+L8YffHSG+AD+RGC8qCLQZznFa+1OwyJaUo1YiIoAMVUCl1dqY9zL++XyqsQG+fk9or6DC86VKV4eAwQbkfKYSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=igwOak7r; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761662751; x=1793198751;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=CKz4/uGHSCJbggykL29OUDHmz0rpQ9olHSJpLyDmkh0=;
+  b=igwOak7rTmMc6krsJpVMFbmAwRZXLGR9hA6SPlSMlYwTNo8sRt4o67Hc
+   pdEWvKMsUORGyYMn1yXNufcT2YaQGBf2pejsUR/T78S/cJD+3H2lA/dBo
+   GtQsOoGo39zLpcyJj2FFIHFQG8DaoEhoLSdMM1Qtfr56STCblU+3Q8zRM
+   StaN3jg+Z8CV8whi6tnao4g5R2f0SibxNm2lh6Df4TFgKgt1KeXg16YZi
+   dXbGGKlHHajBD98/4lvnwBtsglkSKAcFqKGdL216AH7UUnopk6KxmuYy4
+   OGDolhBwNPiQM74HfDIhM8hM9Mtz4lbn63zVrHfgKwbkdG5am8DCTk95B
+   Q==;
+X-CSE-ConnectionGUID: 1JX92ApKSR6GGXIjiMAqXw==
+X-CSE-MsgGUID: kVh3zKVaT52limn0G7Ro1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62968848"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="62968848"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 07:45:50 -0700
+X-CSE-ConnectionGUID: iWCXSjImRhGTf0U7Z51A1Q==
+X-CSE-MsgGUID: JmD6khTuQtSN9qRoSpbcNg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="184542880"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 07:45:47 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vDkxD-00000003LEB-3qpd;
+	Tue, 28 Oct 2025 16:45:43 +0200
+Date: Tue, 28 Oct 2025 16:45:43 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>, Markus Burri <markus.burri@mt.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+Message-ID: <aQDXF-AIF6wNIo76@smile.fi.intel.com>
+References: <20251027150713.59067-1-linmq006@gmail.com>
+ <aQB8PRlaBY_9-L8d@smile.fi.intel.com>
+ <aQB8j7Hc3b9vAT5_@smile.fi.intel.com>
+ <aQCHt9JL0Bc4Pduv@smile.fi.intel.com>
+ <071e3da4d69e10d64c54a18b7dd34ae11ab68f58.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251027124210.788962-1-wens@kernel.org> <20251027144327.09f59982@jic23-huawei>
- <aQB5Dw2Eg0tVdNow@smile.fi.intel.com> <5e3bf0d87ae1b539d134edefee67d3e3ef3b46cb.camel@gmail.com>
-In-Reply-To: <5e3bf0d87ae1b539d134edefee67d3e3ef3b46cb.camel@gmail.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Tue, 28 Oct 2025 22:36:35 +0800
-X-Gmail-Original-Message-ID: <CAGb2v676eOkPOc33+FMX6k9562gn34+MR15t-iucLjd0qQKs7Q@mail.gmail.com>
-X-Gm-Features: AWmQ_bkJ_P7M7poPJ00fR776xU6XPnoNYlaeTx79cNFzr9mfOUrn0-hhdF9xEcM
-Message-ID: <CAGb2v676eOkPOc33+FMX6k9562gn34+MR15t-iucLjd0qQKs7Q@mail.gmail.com>
-Subject: Re: [PATCH] iio: core: Use datasheet name as fallback for label
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>, 
-	Jonathan Cameron <jic23@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <071e3da4d69e10d64c54a18b7dd34ae11ab68f58.camel@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Oct 28, 2025 at 5:22=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.com=
-> wrote:
->
-> On Tue, 2025-10-28 at 10:04 +0200, Andy Shevchenko wrote:
-> > On Mon, Oct 27, 2025 at 02:43:27PM +0000, Jonathan Cameron wrote:
-> > > On Mon, 27 Oct 2025 20:42:09 +0800
-> > > Chen-Yu Tsai <wens@kernel.org> wrote:
-> > >
-> > > > Some IIO drivers do not provide labels or extended names for their
-> > > > channels. However they may provide datasheet names. axp20x-adc is
-> > > > one such example.
-> > > >
-> > > > Use the datasheet name as a fallback for the channel label. This ma=
-inly
-> > > > benefits iio-hwmon by letting the produced hwmon sensors have more
-> > > > meaningful names rather than in_voltageX.
-> > >
-> > > I definitely don't want to have different behaviour for in kernel req=
-uests
-> > > and for people reading the _label attributes.
-> > > https://elixir.bootlin.com/linux/v6.18-rc2/source/drivers/iio/industr=
-ialio-core.c#L1232
-> > > would need modifying to allow for the sysfs attributes to be created.
-> > >
-> > > In general I'm not sure I want to do this.  Datasheet names can be
-> > > exceptionally
-> > > obscure which is why we've kept them hidden from userspace.  At least=
- dts
-> > > writers
-> > > tend to have those names on their circuit diagrams and tend to have
-> > > datasheet access.
-> > >
-> > > Let's see if anyone else has feedback on this suggestion over next we=
-ek or
-> > > so.
-> >
-> > This is an ABI change without
->
-> Indeed...
->
-> > 1) proper documentation;
-> > 2) backward compatibility (i.e. there is no knob to opt-out the change,=
- or
-> > make
-> > it opt-in).
-> >
-> > In this form is definitely NAK.
-> >
-> > If you wish something like this, better to have a separate attribute. B=
-ut the
-> > problem maybe also that the same component (or 100% compatible one) mad=
-e by
-> > different vendors and have different datasheet names. This means that t=
-he new
-> > attribute may still be ambiguous. Hence I see a little sense to have it=
-,
-> > rather
-> > better to have these links / names to be put in DT schema. At least the=
-re we
-> > have different vendors and compatibility mappings.
->
-> I mean, we already have labels for channels so this all looks like a bit =
-of
-> overlap to me (though I see the temptation of going this way). For
-> extended_names, there was a reason why it came as a fallback for .label()=
- [1].
-> For this, I'm not really convinced for now. There is also at least one dr=
-iver
-> already exporting the .datasheet_name as a label [2] so maybe we should d=
-o that
-> instead (again, I understand that doing it like this we only need to chan=
-ge one
-> place...)? Otherwise we should clean up those and that should definitely =
-be part
-> of the series (if we even consider this).
+On Tue, Oct 28, 2025 at 12:31:04PM +0000, Nuno Sá wrote:
+> On Tue, 2025-10-28 at 11:07 +0200, Andy Shevchenko wrote:
+> > On Tue, Oct 28, 2025 at 10:19:27AM +0200, Andy Shevchenko wrote:
+> > > On Tue, Oct 28, 2025 at 10:18:05AM +0200, Andy Shevchenko wrote:
+> > > > On Mon, Oct 27, 2025 at 11:07:13PM +0800, Miaoqian Lin wrote:
 
-Thanks for the pointers. In my case I think either solution works.
+...
 
-The axp20x-adc driver currently provides _no_ labels. Would adding labels
-now be considered backward incompatible?
+> > > > > +	if (count >= sizeof(buf))
+> > > > > +		return -ENOSPC;
+> > > > 
+> > > > But this makes the validation too strict now.
+> > > > 
+> > > > >  	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos,
+> > > > > userbuf,
+> > > > >  				     count);
+> > > > 
+> > > > You definitely failed to read the code that implements the above.
+> > > > 
+> > > > >  	if (ret < 0)
+> > > > >  		return ret;
+> > > 
+> > > > > -	buf[count] = '\0';
+> > > > > +	buf[ret] = '\0';
+> > > 
+> > > Maybe this line is what we might need, but I haven't checked deeper if it's
+> > > a
+> > > problem.
+> > 
+> > So, copy_to_user() and copy_from_user() are always inlined macros.
+> > The simple_write_to_buffer() is not. The question here is how
+> > the __builit_object_size() will behave on the address given as a parameter to
+> > copy_from_user() in simple_write_to_buffer().
+> > 
+> > If it may detect reliably that the buffer is the size it has. I believe it's
+> > easy for the byte arrays on stack.
+> 
+> I think the above does not make sense (unless I'm missing your point which might
+> very well be).
+
+It seems I stand corrected. I was staring too much at copy_from_user() without
+retrieving the validation logic behind simple_write_to_buffer().
+
+> So, __builit_object_size() is for things known at compile time.
+> Moreover, simple_write_to_buffer() already has all of the gymnastics to make
+> sure copy_from_user() has the proper parameters. The thing is that it does it in
+> a "silent" way which means that if your buffer is not big enough you'll get a
+> concatenated string. Sure, you'll likely get an error down the road (due to an
+> invalid value) but I do see some value in returning back the root cause of the
+> issue.
+> 
+> So, the preliminary check while not being a big deal, it's also not completely
+> useless IMO. I do not have any strong feeling though. However, I think the below
+> is very much needed...
+> 
+> > That said, without proof that compiler is unable to determine the destination
+> > buffer size, this patch and the one by Markus are simple noise which actually
+> > changes an error code on the overflow condition.
+> > 
+> > The only line that assigns NUL character might be useful in some cases
+> > (definitely when buffer comes through indirect calls from a heap, etc).
+> 
+> I think you can easily pass a string >= than 64 bytes (from userspace). AFAIR,
+> you don't really set a size into debugfs files. For sure you can mess things
+> with zero sized binary attributes so I have some confidence you have the same
+> with debugfs.
+> 
+> And even if all the above is not reproducible I'm still of the opinion that
+> 
+> buf[ret] = '\0';
+> 
+> is semantically the correct code.
+
+Yes, but it should either be explained as just making code robust vs. real bugfix.
+For the latter I want to see the real traceback and a reproducer. I also wonder why
+we never had reports from syzkaller on this. It has non-zero chance to stumble over
+the issue here (if there is an issue to begin with).
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Thanks
-ChenYu
-
-> [1]: https://lore.kernel.org/linux-iio/20210618123005.49867-1-paul@crapou=
-illou.net/
-> [2]: https://elixir.bootlin.com/linux/v6.18-rc2/source/drivers/iio/adc/xi=
-linx-ams.c#L539
->
-> - Nuno S=C3=A1
 

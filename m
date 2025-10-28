@@ -1,298 +1,380 @@
-Return-Path: <linux-iio+bounces-25598-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25599-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0224AC1581D
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 16:38:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3658CC1580E
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 16:38:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 99E8A5806C5
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:31:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96CF3467230
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F442342169;
-	Tue, 28 Oct 2025 15:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3D2340A67;
+	Tue, 28 Oct 2025 15:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="AxbgFCu9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VsfpgWgx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013022.outbound.protection.outlook.com [40.107.159.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69234C133;
-	Tue, 28 Oct 2025 15:31:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761665486; cv=fail; b=FpZLUCbgneaFNhtCjVd8XuDwqOGHOMJEVsEiQAgn9cPeevN6uOjQqGyfmQFlclmfRDGTEkImGYPiHbwGaSQIz8LiQs9B8kGR6X6NZQmlw/chxbuFXT95KMRfFHxoqevvcIevl5hfGPvK9ARzD1MuERlfeMlpr66b7BMoyLq1of4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761665486; c=relaxed/simple;
-	bh=4x5q0IIg6nq47+ykD2TGSyEdSLof2c/IRPgFvkJaago=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=o9McMoQqlmpvpWuaJ6hnGVoedkDT7HAcJuE+SJieMrFfDugi5W2NzpQdWWL4rz1UsHVksvfwN9HqnSJGJt3E7/J3pWFaC36IfFy/Q3CXVcsdCjXrq2GQ9UCvmEKq4EG8Cvd97e9ticYCWM62mvrqBeNVMxgX6EtUZVja8cnTwD4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=AxbgFCu9; arc=fail smtp.client-ip=40.107.159.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=snVfrzKqcArVIVU/Qu3RhGpylie58Wu1RiGj7YcyAmU51jOFILTCf0KGHqG/nEjbG+yiuK+qIomXyfNlL5X3iXdrgYPakyXnLZGlMalsq8K/WvAjk8NXcV9GAKRaGEFvt1J/vzmKw1fyeAj6TH2pF2pv0ysEx0gwTePsJKP1/BbzgYzYNzezca+zkw0E8DryWf7Jfamzfsh783zZI50tHblKqnIRMxThX/rUyWWSVJWA9fIq6t9cO6f3mP7aGmBb1rqK+jkB+d0Ft/49i9FLxL6Vx3f5EqsouEP+NLymKPKXJu3Zvr+1eJPrYODk+9fXzOP0+Ruibq3udQPuiNMd1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OGhDkY5bOx5lRYv4cA2s0Y50rJQqDo5Zss0C9KinIVI=;
- b=qrnbcgvi4xqAGRjcmFcBscGjXqc/o95/pASzQzntKeo8qu2EDJEdLVxuNpRRAA4G6Nrr7vYGuqJMuIbJhGtcxxMd3e+es/1o8/qtO0QzuC4sT/Z/lHN5xSswlkfyknTg09uuWo20nJ/sxSTyjrbwL8JbAzlhWpFlHqUVDfH1K0sNgBbtli04wDLB1AxfyVnq4EyDULGYJEmiKt/Fp13v4izKHDhZCWlxNdB+/zlKy925DeKRwVzG1b72AXzrbSUVcN2V/P6niB5rVuBvmuHZTpVPfIlfrJmJja1pE3TIm5p3TT11SH+qHiuo0lM+bAtmSqfp1eSuKy4WlrF1kUzcFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OGhDkY5bOx5lRYv4cA2s0Y50rJQqDo5Zss0C9KinIVI=;
- b=AxbgFCu9iKtLzz7s3xRtpMENoZxynj63PhGTfqC7tzGAo9kM4fS6JV23h/NBF9gZnynEcmWuyFZNNux4UCAadAV/cGzP2F0FRi89H/Wg3q+K3I0CWpKcu5+LkTFBn37uzg1NW6PFNAxWdeEmXz95luUiAoLlx/744beuwk1CjAII+C7ml6LEcCZnEKD0xKIeNCy5XSvhqSOqckQuIqFeZlQlYvXGZZ+kIsrwUY7W5HPqiurA/zBo4HU666k1cA9iPMO3uYihrcNpCOYtEIKeWHvUOmhEXycVZtQCooQpe1jBvL05kMR0TKYWstyBy9Yxa61gE6Dv3bIfSaww3eec1g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by GV2PR04MB11376.eurprd04.prod.outlook.com (2603:10a6:150:29f::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Tue, 28 Oct
- 2025 15:31:21 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9275.011; Tue, 28 Oct 2025
- 15:31:21 +0000
-Date: Tue, 28 Oct 2025 11:31:11 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v7 5/5] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <aQDhv/r0l0oOjb9t@lizhi-Precision-Tower-5810>
-References: <20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com>
- <20251027-i3c_ddr-v7-5-866a0ff7fc46@nxp.com>
- <aQCgD3iVOXoNr7uY@smile.fi.intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQCgD3iVOXoNr7uY@smile.fi.intel.com>
-X-ClientProxiedBy: SJ0PR05CA0030.namprd05.prod.outlook.com
- (2603:10b6:a03:33b::35) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5099F33F8BE
+	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 15:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761665514; cv=none; b=pTRPE4cBEScutzHXYfpu25kccQctwbIBD3L885Rsv219oDmfS/devOt1/T+V9PTdG7C42wjCzrExNZz6x1w6XoFGBj5b6ABIL2vyUQqZb1G2BlzE0z8+L05X+KYKzPfG5wlghCdSSmetYkZScjfuBaa/RxYaaNnUYdzJ+0dHZIA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761665514; c=relaxed/simple;
+	bh=gps5GmUFZe/tqVq3RjLJUx/xwwFWnCWn/mCr/seuU+Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tvIPKEmGkIIkAz9FL4/UMScTilG6uGeKezzxFoxSrK2sOflmJQbzYJ770+3nWyDRVdjVhYtEmDdMso4caOU0Ye/uiyJI+AhXShN9RQe6q4C25m/Ud3zgFyf/+/5r+Bq17yQ1eowi/hawl3lpS3iRMW11BJBMU7et9v1hOatYy5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VsfpgWgx; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4710683a644so25515e9.0
+        for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 08:31:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761665510; x=1762270310; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mHeO0cQH9RupTiAzoEqwl/Xfh7lWUTkvWVkOhCTs6b8=;
+        b=VsfpgWgxirVqUDvvVTDf3zZUw2gUc//yI6fH+1qtspbEsEzgsLS0KZ0RijYAnWWbB/
+         3RRY6sD1X7/EtHtTvHPvRxL/7wZfd4lZ4I2Xk7X2g+8B/iwkvzBW/L4Wae0RItKTTJE8
+         pLKA3T3TrhARnUNgPy27CSUAagatJmcoctcNjsBMSpfgukBHhvWCzyVTGeuh0cAryx2w
+         nTa+/7ykLMlyI6gJVf9VO3d4Lelhto/ygTTCRdZPcS33mDH0b9kWW7J617ib0DRp1+lU
+         sZZEVw8PjSCeDE1CsDxyOLjAqv4A0FoG3XjJ2xdIyerexPAzIHl6wvkTtiDJIiPJoWEb
+         0fAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761665510; x=1762270310;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mHeO0cQH9RupTiAzoEqwl/Xfh7lWUTkvWVkOhCTs6b8=;
+        b=SLTlYJ+1MIPwTO+PkynU7vMJBdud/R2nmOj9YPeVx8nWgRemNfm6JxB4jHgFFsRMfX
+         NcXCbH4KTmtpeGnIZxq575eALt4SwpCiKYumXZmPSjoQ/QiryhjlK4zDtaYnthzzi6kF
+         YKM0a/PM2nj1t7B2u5EUE3OzLgZ83Zp+w1/pa6wAR/gVMrzqUB9Lv/9dv+mG4L7//iB+
+         UkEqyj5yv122+90OD8KVWUEZkLbKApAlC70neJl1LmnvDAUGreH2BhnHVUh8CH41YW4z
+         +ONREoUdAj+14ijmJs7eNnO3H1YqJ1uJAd6Wt+7+F12DzBuPVCwa7gUuEDnP75+C7f3t
+         3EHg==
+X-Forwarded-Encrypted: i=1; AJvYcCU26h9E/M0ThKcnpg8WAVfNUnntrFHjMf+A6ieMJ/IQ7aVV48rXwLB6KgxZrWSfhQATFriUl1c21nI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCy3/XkT3dp7CTGneUOZwX+CevZ4SJiOc5oWxHir5cxwuLroMQ
+	jE5bhinIQOXotRm37J5f3rsIscUkDYr7/pZDgDtHtyrZQoaM094OXLs3
+X-Gm-Gg: ASbGncuXsrZUMDzgk3Rbq4UM/srYBnwjXyDDGMJXkTqaT5jUec7V+GmiNUa9UCCnkt0
+	GPIxR1OxxINqIDoDdIDkpn1QVdHd+1NnL2vk2POtcl+P7X7kigFnPHgE39KT8wLHauh6nmi020M
+	3ZrEygPJRkJQNdC8Mxo7t0VuoCl3V8arcvfDqlDWZwthV9yvQ3J0Udr1LwNj+KO6Q11lRTGNTBW
+	0mUyKpQu5V3QGEkrc6cbI9liZdh6pgOqgx8SNOJjrn3JODMbP08m21GJ3GCG6sKOaBQu/2N0uQr
+	F16l1fSu762WtSVV7X9r3eqo1TfTaHd6e95LaV3NpKGRkCtNwkVYATCMtPRcrB5qXN8rFyjb5Gz
+	OfD5FLoALHw0IWM8rmcJ6yEaWnAkpnXxAxQEp6xGE8S+naVGTeCi0y1uOUmzUWEXywfEGPg/y7x
+	+xvInNe1WNjwcmePqPZD3oEicYHg==
+X-Google-Smtp-Source: AGHT+IHD8wOZ9kRsEzqPjfcFnaZh5OBIiFI+X0Bv5mHBsnr9pYEqChNGNJM3NekxGUbL+5IxFw5DHQ==
+X-Received: by 2002:a05:600d:435a:b0:475:ddad:c3a9 with SMTP id 5b1f17b1804b1-4771815fa1dmr19413695e9.13.1761665509267;
+        Tue, 28 Oct 2025 08:31:49 -0700 (PDT)
+Received: from HYB-DlYm71t3hSl.ad.analog.com ([2a02:3033:26a:a3f1:8c0b:198b:ba17:8680])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd489fa4sm197678155e9.16.2025.10.28.08.31.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 08:31:48 -0700 (PDT)
+Date: Tue, 28 Oct 2025 16:31:46 +0100
+From: Jorge Marques <gastmaier@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jorge Marques <jorge.marques@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 2/7] docs: iio: New docs for ad4062 driver
+Message-ID: <skcjf6tdo7bktdx4g2bm42gkzd5vdtckxsxzgu7s6dwmiwfdpw@hxhol4g4adcs>
+References: <20251013-staging-ad4062-v1-0-0f8ce7fef50c@analog.com>
+ <20251013-staging-ad4062-v1-2-0f8ce7fef50c@analog.com>
+ <20251018162113.002d92f7@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|GV2PR04MB11376:EE_
-X-MS-Office365-Filtering-Correlation-Id: 870cc839-d95f-44ef-84b2-08de16370bbd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?T6cGEPdkSdC2CCoKbeyIPA2aTZxS0NOjQNw327WTfIrbwCw9z6P5BaOS4kAC?=
- =?us-ascii?Q?O8JBBgPS0/TL62FOSN1WHbNNAcAKJ1GmTwDvVaSn55u5ePwv4fB5vC/51RUm?=
- =?us-ascii?Q?TFbmAlphnPKv12KIg6TasswTCffw0iPtbg8Aa0Tg65vejzzKnOesfBhMnRPs?=
- =?us-ascii?Q?pYyAsCj4oqt6Am7JztCQO0PxihLmaO1ouHibv79++lyj9Kyv+Ma8ewnIMIry?=
- =?us-ascii?Q?rHPbkuTG9tusyfLxPa42EiaBx/FsZp89clA5nxPZSET+cWm9zdKtQcNAAjih?=
- =?us-ascii?Q?mcl4QfujqKuNLmSMhtVZxIqRMxRd9MrNxQ4zKyiLAcKkN4Y0WVWtNzfiLi0S?=
- =?us-ascii?Q?7m2vzH7o4ve8OjPctUnrXYDgBVh7J8J0wguUP8rJDfmyG7U8oc2EcguboL80?=
- =?us-ascii?Q?6mN3MmHarWFdszidTnAX+G9lVHw+vsfRCYskXbaHR/XJgSHUNSZDF8JWRRtn?=
- =?us-ascii?Q?3hGe5jB6M7QuDDNHZWGIPaNLSafBszN2zLIZwhc9Q7HkAHu6V39NTPv9sZmI?=
- =?us-ascii?Q?F4l/DfVC68URssdxZiwS9XbyKvATebp4wz4I0GsDij1eQNXOzVVN/HyWkUVj?=
- =?us-ascii?Q?EKfzoCWjY8YY5WG2LBccuYFxDcXnb7eE4We3QtYag2LdFrMvOxEiK6IyHfi2?=
- =?us-ascii?Q?nlH8JyAlPYGJj+V9sSMYhmi66laLFJSrgNcm1Yuh0qTtmmdywpaiE/hM5R62?=
- =?us-ascii?Q?QCr42wJoKMazgAciABxKzwgUPzJhpn+4Ijds+/AMaEsTB5qKAjyn4Qldw4r3?=
- =?us-ascii?Q?qFP2NzMQHRjMxjWPT8pYAPBudNepXowYQeOWHLfFAEEjAstH3C1+4/FtrjwN?=
- =?us-ascii?Q?ke+q2STGo5gww46b68K+5ChW9fIso2Tus8RtUsfHhrzXo7J3BNmrgb81lSz5?=
- =?us-ascii?Q?TUkAYNp46TrEzEFgmiKvxD8wVTG04Uhm/X+sC0m2h5bIiM5BFWZcNiPpg5qh?=
- =?us-ascii?Q?gUb2+SqU1McEwhl8dp1xu79WUtpuB+9jzqsbWySyqOyGMDQ1pfywqZx8MiuU?=
- =?us-ascii?Q?2lS1U1GWqGh0uemjcxXhWXMOu+ThVpYBTZuQztJUIgseQT8ZrFQdRlHbsEVq?=
- =?us-ascii?Q?/Om9dfuppJpf7TUQq53vDZqc+LJwpaKQb6HC4hSYMc3dB5VIUaN/eI7uIFLR?=
- =?us-ascii?Q?04mfDIl+nVfyE1bRnhDsR7gYl+O+J6ud9HfX6LBtw8SXhvZ52ztU1jnKhUYw?=
- =?us-ascii?Q?ND0uhOcbxe+NslFPtPTPdtjzpzYElwV/QZxMfAPQWJI/aLjVAsvNlUvvxGwL?=
- =?us-ascii?Q?7ClbcIJB0WWSrkMyHqL5d/QcwH2Ylj0Pf+JxR0U/FrWfflBBmTXXRCb0p2l5?=
- =?us-ascii?Q?2dd0uKQSwv15TXOVDZjE8rqedaj81RR7ITGti8+Eii8KqGZzvRcY2soG3xz4?=
- =?us-ascii?Q?7flwrpFybcUfFTMl4s0xc3u+Qlbj3fQTB7LQumYeyrddHBY0aO8fca1j4hg0?=
- =?us-ascii?Q?m18m6z0oJ6PUkWNwPnDiUIA+f3AyHbBv3tGAsdwMZBfhiukilYSPRHH4p9jF?=
- =?us-ascii?Q?+BSZ+gM3jvhDhJDCYHVTtTHerA200kaC0UkB?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?abJmmUQ2sMsEVpGv6T9zl8VjjBdpR2Hjlk1GNkmfAjVgiW6dKQ7MDv6Rg3t3?=
- =?us-ascii?Q?PmJTHwlEi2nZp/8CWhEktu1fYVenLb9lUaxUtC1ZVKMnCJf6lyfu6CMzPoN9?=
- =?us-ascii?Q?7ljFZj5zd5A2Nm9PYm+UsMelEUh16yhrw/xOKyLPjHGR1LyJeKLiKvSYb6ol?=
- =?us-ascii?Q?KwNS04UzDLNi7VWSk+AmILg/kXyg+aIddIhZYt7oDQJSHLMY+7YeYyTlwRhO?=
- =?us-ascii?Q?Ta6Zj2jKoQl9UYwFgqCKT1O/6AE3GuzDHPmjmkUvR4lmM4nT+QBFnblwQXWe?=
- =?us-ascii?Q?gjGjGOhnHdDY+54PD7OLjkktVM/DQO2w1RMe75K6KdjSGQWbTQyIYPVloBEc?=
- =?us-ascii?Q?rjn/d9eMVmNZNbeOQCQsZxtEGVg0NK23cnDIkAspiUjvRGl3TPtitDoFHytw?=
- =?us-ascii?Q?ypxmYh73NUWMMfqZr/Lk+tNWBsKqhF1USFVU+X2cW3ZD9KsoC3w407vXbQli?=
- =?us-ascii?Q?83fCN6dMiLqG+C8g2tg1+1OiBBSZHsds2w+xCNhcKjL5vBPKiHvv20RdVPS4?=
- =?us-ascii?Q?iHjFDFR5am4WmFJwj5SqWQHFzh8r1b4+IYXDhkpM779/WfZARIyHZ6XON1zd?=
- =?us-ascii?Q?s48X7EVZ0ZLQp5P7dHDv6Lb7CkFVb0sv5dlezrWXJm8mNqQrxEueBXrJOyoZ?=
- =?us-ascii?Q?fi/vZIxVjbrh/OQ8268Dtmv/SVkSDokkEJqKOzXbMrDuZm8Y7KcxPbL4prYt?=
- =?us-ascii?Q?rzqExndE6mT6FpV6gc1WA77o2ZbbpvybUala98mOrEpKlCfDRpreigP9+Up3?=
- =?us-ascii?Q?38Gs+Q/ZOVyLLxuAnuF4xqYVtV6mGWHLFRDRsL/AQOeBPQ66Yk9V4GmCUmXh?=
- =?us-ascii?Q?ZonggAWdXZ0srLM1nGpQMSJ91V1yVbpLmS7w0UFNqhuP5toYv6sW1UHVJXgv?=
- =?us-ascii?Q?XcKaai18p4gSzXcd6FMURy1U1UzwRGnc5afUEQ5igdvu6vX9YOlC7nyueL95?=
- =?us-ascii?Q?MqNoG2IFDIvzP0sWVDl0wgZZf+xUdFZs79FnUdB18NrQTvcYLnYxTqgxvbaz?=
- =?us-ascii?Q?KceQTg6JRhrWMb4j4lupgsyVJIjyVZhEdC1GmFVNyPVVmg1s9vsbWJy75vv0?=
- =?us-ascii?Q?Oxf8OnG8MEuzOTZziyef6ujRamD5p2CN41B0hogKEPUdypEiAtqyKYVUKskR?=
- =?us-ascii?Q?YcrU/GAhZmMktEhI0Bq3werwuSyvRGjwkJW39rdkWAtqc4SLliWfPuZpNAvg?=
- =?us-ascii?Q?EPaRMASNGy0yjAOjylkO964yhSf5XE3AOgS7aj6xHWejOZ0kDeBNoS1btb1e?=
- =?us-ascii?Q?sK8WK91ks10Z44sZSp/jMZ1AglHkxqUVW8xAUFBOdj6w3ktVCO0t5V3WOEa/?=
- =?us-ascii?Q?d5RCGczpvwRr86X8yNbof31tJ47dBquKO0npmYcuNPJLOekMbDCnmjn1PT63?=
- =?us-ascii?Q?BVvHilujVR0oPAqGvrHCKtNb0tnBWaFTJ7UnmexqQzAfnE+35nnZQGO4MOij?=
- =?us-ascii?Q?Ef7kLsDEuSI/YMghn+shEwxqYVr6DFaWuf2+Sgfncoq449NHlqcHyfKH/rz2?=
- =?us-ascii?Q?z8a7wAPjtWKRTJR9nbFxit63hJxF47Ogb4irkSY7Nrug/tNqBSk3kJcbHcl0?=
- =?us-ascii?Q?mvYUkJDtJZJ0FreZKGs=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 870cc839-d95f-44ef-84b2-08de16370bbd
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 15:31:21.0892
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: phGpwvMtWw3f7rnIJ4hjvKNzOSqvfF3PVRLX1p6/BL5tblLoHAhoTK8MqVE40qtWh4QAuMCKCvd7C7t68RRA6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11376
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251018162113.002d92f7@jic23-huawei>
 
-On Tue, Oct 28, 2025 at 12:50:55PM +0200, Andy Shevchenko wrote:
-> On Mon, Oct 27, 2025 at 04:08:33PM -0400, Frank Li wrote:
-> > Add mmc5633 sensor basic support.
-> > - Support read 20 bits X/Y/Z magnetic.
-> > - Support I3C HDR mode to send start measurememt command.
-> > - Support I3C HDR mode to read all sensors data by one command.
->
-> ...
->
-> + time.h // for time constants
->
-> ...
->
-> > +struct mmc5633_data {
-> > +	struct device *dev;
-> > +	struct i3c_device *i3cdev;
-> > +	struct mutex mutex; /* protect to finish one whole measurement */
-> > +	struct regmap *regmap;
->
-> regmap has struct device, i3c_device presumable also, and here is struct
-> device. Don't we have some overhead?
+On Sat, Oct 18, 2025 at 04:21:13PM +0100, Jonathan Cameron wrote:
+> On Mon, 13 Oct 2025 09:28:00 +0200
+> Jorge Marques <jorge.marques@analog.com> wrote:
+> 
+> > This adds a new page to document how to use the ad4062 ADC driver.
+> > 
+> > Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+> Hi Jorge,
+> 
+> Various comments inline.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
 
-i3cdev is used for check it is i2c host or i3c host. If device connect to
-i2c host, i3cdev will be NULL.
+Hi Jonathan,
 
-Only if connect to i3c host, driver can use i3c transfer api. The HDR
-command is quite difference with SDR or I2C, which hard to wrap into regmap.
+> > ---
+> >  Documentation/iio/ad4062.rst | 89 ++++++++++++++++++++++++++++++++++++++++++++
+> >  MAINTAINERS                  |  1 +
+> >  2 files changed, 90 insertions(+)
+> > 
+> > diff --git a/Documentation/iio/ad4062.rst b/Documentation/iio/ad4062.rst
+> > new file mode 100644
+> > index 0000000000000000000000000000000000000000..b486d7fe1916d2963c94581be3696cf58d51ca48
+> > --- /dev/null
+> > +++ b/Documentation/iio/ad4062.rst
+> > @@ -0,0 +1,89 @@
+> > +.. SPDX-License-Identifier: GPL-2.0-only
+> > +
+> > +=============
+> > +AD4062 driver
+> > +=============
+> > +
+> > +ADC driver for Analog Devices Inc. AD4060/AD4062 devices. The module name is
+> > +``ad4062``.
+> > +
+> > +Supported devices
+> > +=================
+> > +
+> > +The following chips are supported by this driver:
+> > +
+> > +* `AD4060 <https://www.analog.com/AD4060>`_
+> > +* `AD4062 <https://www.analog.com/AD4062>`_
+> > +
+> > +Wiring modes
+> > +============
+> > +
+> > +The ADC is interfaced through an I3C bus, and contains two programmable GPIOs.
+> This raises a question on whether it makes sense for the binding to support providing
+> gpios from the start (as alternative to interrupts).  Seems like the two pins
+> are completely interchangeable so one might well be 'left' for use by some other
+> device that needs a gpio pin.
+> 
+> I don't mind that much if we want to leave the binding support for that for later
+> but in the ideal case we'd have it from the start (even if the driver doesn't
+> support it until we have a user).
 
-Anyway we need varible to indicate i3c or i2c. struct i3c_device *i3cdev
-will be simple and needn't force convert struct device in regmap.
+Yep, they are almost interchangeable except GP0 cannot be DEV_DRY (device is
+ready to accept serial interface communications). The question is how to
+represent that in the devicetree.
 
->
-> > +};
->
-> ...
->
-...
->
-> > +static int mmc5633_common_probe(struct device *dev, struct regmap *regmap,
-> > +				char *name, struct i3c_device *i3cdev)
-> > +{
-> > +	struct mmc5633_data *data;
-> > +	struct iio_dev *indio_dev;
-> > +	int ret;
-> > +
-> > +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> > +	if (!indio_dev)
-> > +		return -ENOMEM;
->
-> > +	dev_set_drvdata(dev, indio_dev);
->
-> If you use regmap stored device this won't be needed. See below.
->
-> > +	data = iio_priv(indio_dev);
-> > +
-> > +	data->regmap = regmap;
-> > +	data->i3cdev = i3cdev;
-> > +	data->dev = dev;
-> > +
-> > +	ret = devm_mutex_init(dev, &data->mutex);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	indio_dev->info = &mmc5633_info;
-> > +	indio_dev->name = name;
-> > +	indio_dev->channels = mmc5633_channels;
-> > +	indio_dev->num_channels = ARRAY_SIZE(mmc5633_channels);
-> > +	indio_dev->modes = INDIO_DIRECT_MODE;
-> > +
-> > +	ret = mmc5633_init(data);
-> > +	if (ret < 0)
-> > +		return dev_err_probe(dev, ret, "mmc5633 chip init failed\n");
-> > +
-> > +	return devm_iio_device_register(dev, indio_dev);
-> > +}
-> > +
-> > +static int mmc5633_suspend(struct device *dev)
-> > +{
-> > +	struct mmc5633_data *data = iio_priv(dev_get_drvdata(dev));
->
-> Than regmap will be derived directly from a device.
+I am ok with adding `gpio-controller` as an optional property. If
+present, and if the gp0/1 is not taken by the interrupt-names property,
+it fallback to expose as a gpo0 (they cannot be set as gpi).
 
-I have not got your idea. Can you point me a example?
+For the other roles, based on
+https://elixir.bootlin.com/linux/v6.18-rc3/source/Documentation/devicetree/bindings/hwmon/adi,ltc4282.yaml#L109
+We would have
 
-Frank
->
-> > +	regcache_cache_only(data->regmap, true);
+  adi,gp0-mode = "dev-en";
+  adi,gp1-mode = "rdy";
+
+Some examples:
+
+  // gp0: threshold-either (default), gp1: data ready (default)
+  adc@0,2ee007c0000 {
+      reg = <0x0 0x2ee 0x7c0000>;
+      vdd-supply = <&vdd>;
+      vio-supply = <&vio>;
+      ref-supply = <&ref>;
+
+      interrupt-parent = <&gpio>;
+      interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
+                   <0 1 IRQ_TYPE_EDGE_FALLING>;
+      interrupt-names = "gp0", "gp1";
+  };
+
+  // gp0: user GPO, gp1: data ready
+  adc@0,2ee007c0000 {
+      reg = <0x0 0x2ee 0x7c0000>;
+      vdd-supply = <&vdd>;
+      vio-supply = <&vio>;
+      ref-supply = <&ref>;
+
+      gpio-controller;
+
+      interrupt-parent = <&gpio>;
+      interrupts = <0 1 IRQ_TYPE_EDGE_FALLING>;
+      interrupt-names = "gp1";
+  };
+
+  // gp0: threshold crossed high value, g1: unused
+  adc@0,2ee007c0000 {
+      reg = <0x0 0x2ee 0x7c0000>;
+      vdd-supply = <&vdd>;
+      vio-supply = <&vio>;
+      ref-supply = <&ref>;
+
+      interrupt-parent = <&gpio>;
+      interrupts = <0 0 IRQ_TYPE_EDGE_FALLING>;
+      interrupt-names = "gp0";
+
+      adi,gp0-mode = "thresh-high"
+  };
+
+
+And the driver constraints the valid configurations.
+
+> 
 > > +
-> > +	return 0;
-> > +}
+> > +The ADC convert-start happens on the SDA rising edge of the I3C stop (P) bit
+> > +at the end of the read command.
 > > +
-> > +static int mmc5633_resume(struct device *dev)
-> > +{
->
-> Ditto.
->
-> > +	struct mmc5633_data *data = iio_priv(dev_get_drvdata(dev));
-> > +	int ret;
+> > +The two programmable GPIOS are optional and have a role assigned if present in
+> > +the devicetree:
 > > +
-> > +	regcache_mark_dirty(data->regmap);
-> > +	ret = regcache_sync_region(data->regmap, MMC5633_REG_CTRL0,
-> > +				   MMC5633_REG_CTRL1);
-> > +	if (ret < 0)
-> > +		dev_err(dev, "Failed to restore control registers\n");
+> > +- GP1: Is assigned the role of Data Ready signal.
+> 
+> I assume that's only the case if GP1 is provided?  If GP0 is the only one
+> we should allow use that for data ready.  As long as the DT allows that it is
+> permissible for the driver to not do so for now.
+> 
+
+Suggested `adi,gp*-mode` should solve.
+
 > > +
-> > +	regcache_cache_only(data->regmap, false);
+> > +Device attributes
+> > +=================
 > > +
-> > +	return 0;
-> > +}
->
-> ...
->
-> > +	return mmc5633_common_probe(dev, regmap, client->name, NULL);
->
-> dev can be derived from regmap.
->
-> ...
->
->
-> > +	return mmc5633_common_probe(dev, regmap, "mmc5633_i3c", i3cdev);
->
-> Ditto.
->
-> struct i3c_device doesn't have a name, does it?
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+> > +The ADC contains only one channel with following attributes:
+> > +
+> > +.. list-table:: Channel attributes
+> > +   :header-rows: 1
+> > +
+> > +   * - Attribute
+> > +     - Description
+> > +   * - ``in_voltage_calibscale``
+> > +     - Sets the scale factor to multiply the raw value.
+> That's confusing.  This should be hardware 'tweak' to compensate for
+> calibration or similar.  The text doesn't make it clear where that multiply
+> is happening. Sounds too much like _scale.
+
+The user does raw * _scale * _calibscale to get the value in volts.
+
+_calibscale is 1 by default and serves two purposes:
+
+* small hw corrections (matches ABI); or 
+* an arbitrary user set scale, ideally also for corrections, but not
+  constrained.
+
+For the prior, the device does support computing the appropriate
+_calibscale value, but it is not implemented.
+
+If it was implemented, it would occur once during driver initialization
+and then _calibscale default value would be approximately 1, (e.g.,
+0.997).
+
+> 
+> > +   * - ``in_voltage_oversampling_ratio``
+> > +     - Sets device's burst averaging mode to over sample using the
+> > +       internal sample rate. Value 1 disable the burst averaging mode.
+> > +   * - ``in_voltage_oversampling_ratio_available``
+> > +     - List of available oversampling values.
+> > +   * - ``in_voltage_raw``
+> > +     - Returns the raw ADC voltage value.
+> > +   * - ``in_voltage_scale``
+> > +     - Returs the channel scale in reference to the reference voltage
+> 
+> Spell check needed.  Also this describes why it might take different values
+> but not the bit users care about which is the standard ABI thing of
+> Real value in mV = _raw * _scale 
+> 
+Ack, will describe
+
+ raw * _scale * _calibscale
+
+> > +       ``ref-supply``.
+> > +
+> > +Also contain the following device attributes:
+> > +
+> > +.. list-table:: Device attributes
+> > +   :header-rows: 1
+> > +
+> > +   * - Attribute
+> > +     - Description
+> > +   * - ``samling_frequency``
+> 
+> Check these.. sampling_frequency.
+> 
+> > +     - Sets the sets the device internal sample rate, used in the burst
+> > +       averaging mode.
+> 
+> It's not use otherwise?  That's unusual ABI.  I'd expect it to give
+> the right value at least when burst mode isn't used. Or is burst mode
+> the only way we do buffered capture?
+> 
+
+It is not used otherwise, the device internal sample rate is used only
+to evenly distribute readings used in the burst averaging mode.
+There is no sampling trigger to evenly space the adc conversion reading,
+e.g.,:
+
+  Oversampling 4, sampling ratio 2Hz
+  Sampling trigger |        |        |        |        |
+  ADC conversion   ++++     ++++     ++++     ++++     ++++
+  ADC data ready      *        *        *        *        *
+
+  Oversampling 4, sampling ratio 1Hz
+  Sampling trigger |        |        |        |        |
+  ADC conversion   + + + +  + + + +  + + + +  + + + +  + + + +
+  ADC data ready         *        *        *        *        *
+
+For this driver, the sampling trigger is a register access (the stop bit
+of the i3c transfer to be exact), so in buffer mode it reads as fast as
+possible.
+
+> > +   * - ``sampling_frequency_available``
+> > +     - Lists the available device internal sample rates.
+> > +
+> > +Interrupts
+> > +==========
+> > +
+> > +The interrupts are mapped through the ``interrupt-names`` and ``interrupts``
+> > +properties.
+> > +
+> > +The ``interrupt-names`` ``gp1`` entry sets the role of Data Ready signal.
+> > +If it is not present, the driver fallback to enabling the same role as an
+> > +I3C IBI.
+> 
+> It feels like it should be easy to use the other GPO pin in this case if that
+> is present. 
+> 
+adi-gp0-mode should solve.
+
+I wouldn't auto-set the mode by the position in the interrupt-names
+array, but let me know your opinion.
+
+Best regards,
+Jorge
+> > +
+> > +Low-power mode
+> > +==============
+> > +
+> > +The device enters low-power mode on idle to save power. Enabling an event puts
+> > +the device out of the low-power since the ADC autonomously samples to assert
+> > +the event condition.
+> > +
+> > +Unimplemented features
+> > +======================
+> > +
+> > +- Monitor mode
+> > +- Trigger mode
+> > +- Averaging mode
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index afbfaeba5387b9fbfa9bf1443a059c47dd596d45..ce012c6c719023d3c0355676a335a55d92cf424c 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -1405,6 +1405,7 @@ M:	Jorge Marques <jorge.marques@analog.com>
+> >  S:	Supported
+> >  W:	https://ez.analog.com/linux-software-drivers
+> >  F:	Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
+> > +F:	Documentation/iio/ad4062.rst
+> >  
+> >  ANALOG DEVICES INC AD4080 DRIVER
+> >  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > 
+> 
 

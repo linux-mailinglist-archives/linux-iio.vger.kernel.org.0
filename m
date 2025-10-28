@@ -1,380 +1,197 @@
-Return-Path: <linux-iio+bounces-25599-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25600-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3658CC1580E
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 16:38:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F503C15BC3
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 17:19:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96CF3467230
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:31:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E1A11C25335
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 16:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3D2340A67;
-	Tue, 28 Oct 2025 15:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F07634405E;
+	Tue, 28 Oct 2025 16:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VsfpgWgx"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KjJPEYPJ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Gw2QrTQ4";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KjJPEYPJ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Gw2QrTQ4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5099F33F8BE
-	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 15:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C582D33EB02
+	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 16:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761665514; cv=none; b=pTRPE4cBEScutzHXYfpu25kccQctwbIBD3L885Rsv219oDmfS/devOt1/T+V9PTdG7C42wjCzrExNZz6x1w6XoFGBj5b6ABIL2vyUQqZb1G2BlzE0z8+L05X+KYKzPfG5wlghCdSSmetYkZScjfuBaa/RxYaaNnUYdzJ+0dHZIA=
+	t=1761668003; cv=none; b=OefYn5bxhEWSy2npAyZnsRov5qLAxSnfuvMbB15DquN1WsmBWoLTQLdpUUn3IZav0A7ui3JSCBciWHICqRYReMKjDcsyW6DNwg++2/qmncsiwk91DSqDuZcm0H6mDjP0FMIXypK1BKg7AUjplKLSOXafaMgrUtXwST04nxqLNlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761665514; c=relaxed/simple;
-	bh=gps5GmUFZe/tqVq3RjLJUx/xwwFWnCWn/mCr/seuU+Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tvIPKEmGkIIkAz9FL4/UMScTilG6uGeKezzxFoxSrK2sOflmJQbzYJ770+3nWyDRVdjVhYtEmDdMso4caOU0Ye/uiyJI+AhXShN9RQe6q4C25m/Ud3zgFyf/+/5r+Bq17yQ1eowi/hawl3lpS3iRMW11BJBMU7et9v1hOatYy5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VsfpgWgx; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4710683a644so25515e9.0
-        for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 08:31:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761665510; x=1762270310; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mHeO0cQH9RupTiAzoEqwl/Xfh7lWUTkvWVkOhCTs6b8=;
-        b=VsfpgWgxirVqUDvvVTDf3zZUw2gUc//yI6fH+1qtspbEsEzgsLS0KZ0RijYAnWWbB/
-         3RRY6sD1X7/EtHtTvHPvRxL/7wZfd4lZ4I2Xk7X2g+8B/iwkvzBW/L4Wae0RItKTTJE8
-         pLKA3T3TrhARnUNgPy27CSUAagatJmcoctcNjsBMSpfgukBHhvWCzyVTGeuh0cAryx2w
-         nTa+/7ykLMlyI6gJVf9VO3d4Lelhto/ygTTCRdZPcS33mDH0b9kWW7J617ib0DRp1+lU
-         sZZEVw8PjSCeDE1CsDxyOLjAqv4A0FoG3XjJ2xdIyerexPAzIHl6wvkTtiDJIiPJoWEb
-         0fAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761665510; x=1762270310;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mHeO0cQH9RupTiAzoEqwl/Xfh7lWUTkvWVkOhCTs6b8=;
-        b=SLTlYJ+1MIPwTO+PkynU7vMJBdud/R2nmOj9YPeVx8nWgRemNfm6JxB4jHgFFsRMfX
-         NcXCbH4KTmtpeGnIZxq575eALt4SwpCiKYumXZmPSjoQ/QiryhjlK4zDtaYnthzzi6kF
-         YKM0a/PM2nj1t7B2u5EUE3OzLgZ83Zp+w1/pa6wAR/gVMrzqUB9Lv/9dv+mG4L7//iB+
-         UkEqyj5yv122+90OD8KVWUEZkLbKApAlC70neJl1LmnvDAUGreH2BhnHVUh8CH41YW4z
-         +ONREoUdAj+14ijmJs7eNnO3H1YqJ1uJAd6Wt+7+F12DzBuPVCwa7gUuEDnP75+C7f3t
-         3EHg==
-X-Forwarded-Encrypted: i=1; AJvYcCU26h9E/M0ThKcnpg8WAVfNUnntrFHjMf+A6ieMJ/IQ7aVV48rXwLB6KgxZrWSfhQATFriUl1c21nI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCy3/XkT3dp7CTGneUOZwX+CevZ4SJiOc5oWxHir5cxwuLroMQ
-	jE5bhinIQOXotRm37J5f3rsIscUkDYr7/pZDgDtHtyrZQoaM094OXLs3
-X-Gm-Gg: ASbGncuXsrZUMDzgk3Rbq4UM/srYBnwjXyDDGMJXkTqaT5jUec7V+GmiNUa9UCCnkt0
-	GPIxR1OxxINqIDoDdIDkpn1QVdHd+1NnL2vk2POtcl+P7X7kigFnPHgE39KT8wLHauh6nmi020M
-	3ZrEygPJRkJQNdC8Mxo7t0VuoCl3V8arcvfDqlDWZwthV9yvQ3J0Udr1LwNj+KO6Q11lRTGNTBW
-	0mUyKpQu5V3QGEkrc6cbI9liZdh6pgOqgx8SNOJjrn3JODMbP08m21GJ3GCG6sKOaBQu/2N0uQr
-	F16l1fSu762WtSVV7X9r3eqo1TfTaHd6e95LaV3NpKGRkCtNwkVYATCMtPRcrB5qXN8rFyjb5Gz
-	OfD5FLoALHw0IWM8rmcJ6yEaWnAkpnXxAxQEp6xGE8S+naVGTeCi0y1uOUmzUWEXywfEGPg/y7x
-	+xvInNe1WNjwcmePqPZD3oEicYHg==
-X-Google-Smtp-Source: AGHT+IHD8wOZ9kRsEzqPjfcFnaZh5OBIiFI+X0Bv5mHBsnr9pYEqChNGNJM3NekxGUbL+5IxFw5DHQ==
-X-Received: by 2002:a05:600d:435a:b0:475:ddad:c3a9 with SMTP id 5b1f17b1804b1-4771815fa1dmr19413695e9.13.1761665509267;
-        Tue, 28 Oct 2025 08:31:49 -0700 (PDT)
-Received: from HYB-DlYm71t3hSl.ad.analog.com ([2a02:3033:26a:a3f1:8c0b:198b:ba17:8680])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd489fa4sm197678155e9.16.2025.10.28.08.31.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Oct 2025 08:31:48 -0700 (PDT)
-Date: Tue, 28 Oct 2025 16:31:46 +0100
-From: Jorge Marques <gastmaier@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jorge Marques <jorge.marques@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 2/7] docs: iio: New docs for ad4062 driver
-Message-ID: <skcjf6tdo7bktdx4g2bm42gkzd5vdtckxsxzgu7s6dwmiwfdpw@hxhol4g4adcs>
-References: <20251013-staging-ad4062-v1-0-0f8ce7fef50c@analog.com>
- <20251013-staging-ad4062-v1-2-0f8ce7fef50c@analog.com>
- <20251018162113.002d92f7@jic23-huawei>
+	s=arc-20240116; t=1761668003; c=relaxed/simple;
+	bh=AqmDL9HYwKlOC1v96mDTpURTB0eXu0WZp5/vnGerPw4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gYGUxdPjU7vDwTqgVZwP5lL8SB0KJWCzBT7KzFTMj9ghlqnsNk5+4lrMve/lGevL/BmFW2ZgWHaMYsdxSWvLaWP+2liHARYyKnKstVZBQLuTJv8GZtlL7oCwZ/jUx4VFVy4t2NzRcGG780gUfT9gwvMAuUXhdyYpJ/SXw1PkCX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KjJPEYPJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Gw2QrTQ4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KjJPEYPJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Gw2QrTQ4; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C99BD21A64;
+	Tue, 28 Oct 2025 16:13:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761667999; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pSosvxi5dPFtdhC5U0/TTS2WAyGF8TeP5oXRsKZhx7U=;
+	b=KjJPEYPJ7HZdpBT02TjYQ61cQjBJIEBgA6xrd5hVWW6xAJANi0wiYFNW6d5v7xV2N7YmlE
+	h6SetL0FQi/IqvkJSpicxJI7317JmcnGp5XrGSNF69XjHib4Xs4pSezxRpirGmBaonvMPF
+	xG/ODKCnE+Q8Gml9lNP6EM6O/Lt0Fag=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761667999;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pSosvxi5dPFtdhC5U0/TTS2WAyGF8TeP5oXRsKZhx7U=;
+	b=Gw2QrTQ427yrPNuYnSYVl0sYdSQd5/RgHd0ptf3XwxfdMZudizoPqUBaiHtRb5cqG4Is5B
+	5/rgTt+d8ttytfBA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761667999; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pSosvxi5dPFtdhC5U0/TTS2WAyGF8TeP5oXRsKZhx7U=;
+	b=KjJPEYPJ7HZdpBT02TjYQ61cQjBJIEBgA6xrd5hVWW6xAJANi0wiYFNW6d5v7xV2N7YmlE
+	h6SetL0FQi/IqvkJSpicxJI7317JmcnGp5XrGSNF69XjHib4Xs4pSezxRpirGmBaonvMPF
+	xG/ODKCnE+Q8Gml9lNP6EM6O/Lt0Fag=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761667999;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pSosvxi5dPFtdhC5U0/TTS2WAyGF8TeP5oXRsKZhx7U=;
+	b=Gw2QrTQ427yrPNuYnSYVl0sYdSQd5/RgHd0ptf3XwxfdMZudizoPqUBaiHtRb5cqG4Is5B
+	5/rgTt+d8ttytfBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7D26E13A7D;
+	Tue, 28 Oct 2025 16:13:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id udwmHJ7rAGmPCAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Tue, 28 Oct 2025 16:13:18 +0000
+Date: Tue, 28 Oct 2025 17:13:18 +0100
+Message-ID: <87o6prf1i9.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Michael Turquette <mturquette@baylibre.com>,	Stephen Boyd
+ <sboyd@kernel.org>,	Nicolas Ferre <nicolas.ferre@microchip.com>,	Alexandre
+ Belloni <alexandre.belloni@bootlin.com>,	Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>,	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,	David Miller
+ <davem@davemloft.net>,	Linus Walleij <linus.walleij@linaro.org>,	Bartosz
+ Golaszewski <brgl@bgdev.pl>,	Joel Stanley <joel@jms.id.au>,	Andrew Jeffery
+ <andrew@codeconstruct.com.au>,	Crt Mori <cmo@melexis.com>,	Jonathan Cameron
+ <jic23@kernel.org>,	Lars-Peter Clausen <lars@metafoo.de>,	Jacky Huang
+ <ychuang3@nuvoton.com>,	Shan-Chun Hung <schung@nuvoton.com>,	Yury Norov
+ <yury.norov@gmail.com>,	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jaroslav Kysela <perex@perex.cz>,	Takashi Iwai <tiwai@suse.com>,	Johannes
+ Berg <johannes@sipsolutions.net>,	Jakub Kicinski <kuba@kernel.org>,	Alex
+ Elder <elder@ieee.org>,	David Laight <david.laight.linux@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,	Jason Baron
+ <jbaron@akamai.com>,	Borislav Petkov <bp@alien8.de>,	Tony Luck
+ <tony.luck@intel.com>,	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Kim Seer Paller <kimseer.paller@analog.com>,	David Lechner
+ <dlechner@baylibre.com>,	Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,	Richard Genoud
+ <richard.genoud@bootlin.com>,	Cosmin Tanislav <demonsingur@gmail.com>,	Biju
+ Das <biju.das.jz@bp.renesas.com>,	Jianping Shen
+ <Jianping.Shen@de.bosch.com>,	linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,	linux-renesas-soc@vger.kernel.org,
+	linux-crypto@vger.kernel.org,	linux-edac@vger.kernel.org,
+	qat-linux@intel.com,	linux-gpio@vger.kernel.org,
+	linux-aspeed@lists.ozlabs.org,	linux-iio@vger.kernel.org,
+	linux-sound@vger.kernel.org,	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 09/23] ALSA: usb-audio: #undef field_{get,prep}() before local definition
+In-Reply-To: <8f19d783dd783df5510408ffe9664dc6ef0d9434.1761588465.git.geert+renesas@glider.be>
+References: <cover.1761588465.git.geert+renesas@glider.be>
+	<8f19d783dd783df5510408ffe9664dc6ef0d9434.1761588465.git.geert+renesas@glider.be>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251018162113.002d92f7@jic23-huawei>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-1.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TAGGED_RCPT(0.00)[renesas];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,wanadoo.fr];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[baylibre.com,kernel.org,microchip.com,bootlin.com,tuxon.dev,intel.com,gondor.apana.org.au,davemloft.net,linaro.org,bgdev.pl,jms.id.au,codeconstruct.com.au,melexis.com,metafoo.de,nuvoton.com,gmail.com,rasmusvillemoes.dk,perex.cz,suse.com,sipsolutions.net,ieee.org,wanadoo.fr,akamai.com,alien8.de,analog.com,bp.renesas.com,de.bosch.com,vger.kernel.org,lists.infradead.org,lists.ozlabs.org];
+	R_RATELIMIT(0.00)[to_ip_from(RLr5uiezb5xkkwytzfr8x566qh)];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[50];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email]
+X-Spam-Flag: NO
+X-Spam-Score: -1.80
+X-Spam-Level: 
 
-On Sat, Oct 18, 2025 at 04:21:13PM +0100, Jonathan Cameron wrote:
-> On Mon, 13 Oct 2025 09:28:00 +0200
-> Jorge Marques <jorge.marques@analog.com> wrote:
+On Mon, 27 Oct 2025 19:41:43 +0100,
+Geert Uytterhoeven wrote:
 > 
-> > This adds a new page to document how to use the ad4062 ADC driver.
-> > 
-> > Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-> Hi Jorge,
+> Prepare for the advent of globally available common field_get() and
+> field_prep() macros by undefining the symbols before defining local
+> variants.  This prevents redefinition warnings from the C preprocessor
+> when introducing the common macros later.
 > 
-> Various comments inline.
+> Suggested-by: Yury Norov <yury.norov@gmail.com>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> --
+> v5:
+>   - New.
+> ---
+>  sound/usb/mixer_quirks.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> Thanks,
-> 
-> Jonathan
-> 
+> diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+> index 828af3095b86ee0a..713a8498b975e1ac 100644
+> --- a/sound/usb/mixer_quirks.c
+> +++ b/sound/usb/mixer_quirks.c
+> @@ -3312,7 +3312,9 @@ static int snd_bbfpro_controls_create(struct usb_mixer_interface *mixer)
+>  #define RME_DIGIFACE_INVERT BIT(31)
+>  
+>  /* Nonconst helpers */
+> +#undef field_get
+>  #define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
+> +#undef field_prep
+>  #define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
+>  
+>  static int snd_rme_digiface_write_reg(struct snd_kcontrol *kcontrol, int item, u16 mask, u16 val)
 
-Hi Jonathan,
-
-> > ---
-> >  Documentation/iio/ad4062.rst | 89 ++++++++++++++++++++++++++++++++++++++++++++
-> >  MAINTAINERS                  |  1 +
-> >  2 files changed, 90 insertions(+)
-> > 
-> > diff --git a/Documentation/iio/ad4062.rst b/Documentation/iio/ad4062.rst
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..b486d7fe1916d2963c94581be3696cf58d51ca48
-> > --- /dev/null
-> > +++ b/Documentation/iio/ad4062.rst
-> > @@ -0,0 +1,89 @@
-> > +.. SPDX-License-Identifier: GPL-2.0-only
-> > +
-> > +=============
-> > +AD4062 driver
-> > +=============
-> > +
-> > +ADC driver for Analog Devices Inc. AD4060/AD4062 devices. The module name is
-> > +``ad4062``.
-> > +
-> > +Supported devices
-> > +=================
-> > +
-> > +The following chips are supported by this driver:
-> > +
-> > +* `AD4060 <https://www.analog.com/AD4060>`_
-> > +* `AD4062 <https://www.analog.com/AD4062>`_
-> > +
-> > +Wiring modes
-> > +============
-> > +
-> > +The ADC is interfaced through an I3C bus, and contains two programmable GPIOs.
-> This raises a question on whether it makes sense for the binding to support providing
-> gpios from the start (as alternative to interrupts).  Seems like the two pins
-> are completely interchangeable so one might well be 'left' for use by some other
-> device that needs a gpio pin.
-> 
-> I don't mind that much if we want to leave the binding support for that for later
-> but in the ideal case we'd have it from the start (even if the driver doesn't
-> support it until we have a user).
-
-Yep, they are almost interchangeable except GP0 cannot be DEV_DRY (device is
-ready to accept serial interface communications). The question is how to
-represent that in the devicetree.
-
-I am ok with adding `gpio-controller` as an optional property. If
-present, and if the gp0/1 is not taken by the interrupt-names property,
-it fallback to expose as a gpo0 (they cannot be set as gpi).
-
-For the other roles, based on
-https://elixir.bootlin.com/linux/v6.18-rc3/source/Documentation/devicetree/bindings/hwmon/adi,ltc4282.yaml#L109
-We would have
-
-  adi,gp0-mode = "dev-en";
-  adi,gp1-mode = "rdy";
-
-Some examples:
-
-  // gp0: threshold-either (default), gp1: data ready (default)
-  adc@0,2ee007c0000 {
-      reg = <0x0 0x2ee 0x7c0000>;
-      vdd-supply = <&vdd>;
-      vio-supply = <&vio>;
-      ref-supply = <&ref>;
-
-      interrupt-parent = <&gpio>;
-      interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
-                   <0 1 IRQ_TYPE_EDGE_FALLING>;
-      interrupt-names = "gp0", "gp1";
-  };
-
-  // gp0: user GPO, gp1: data ready
-  adc@0,2ee007c0000 {
-      reg = <0x0 0x2ee 0x7c0000>;
-      vdd-supply = <&vdd>;
-      vio-supply = <&vio>;
-      ref-supply = <&ref>;
-
-      gpio-controller;
-
-      interrupt-parent = <&gpio>;
-      interrupts = <0 1 IRQ_TYPE_EDGE_FALLING>;
-      interrupt-names = "gp1";
-  };
-
-  // gp0: threshold crossed high value, g1: unused
-  adc@0,2ee007c0000 {
-      reg = <0x0 0x2ee 0x7c0000>;
-      vdd-supply = <&vdd>;
-      vio-supply = <&vio>;
-      ref-supply = <&ref>;
-
-      interrupt-parent = <&gpio>;
-      interrupts = <0 0 IRQ_TYPE_EDGE_FALLING>;
-      interrupt-names = "gp0";
-
-      adi,gp0-mode = "thresh-high"
-  };
+Acked-by: Takashi Iwai <tiwai@suse.de>
 
 
-And the driver constraints the valid configurations.
+thanks,
 
-> 
-> > +
-> > +The ADC convert-start happens on the SDA rising edge of the I3C stop (P) bit
-> > +at the end of the read command.
-> > +
-> > +The two programmable GPIOS are optional and have a role assigned if present in
-> > +the devicetree:
-> > +
-> > +- GP1: Is assigned the role of Data Ready signal.
-> 
-> I assume that's only the case if GP1 is provided?  If GP0 is the only one
-> we should allow use that for data ready.  As long as the DT allows that it is
-> permissible for the driver to not do so for now.
-> 
-
-Suggested `adi,gp*-mode` should solve.
-
-> > +
-> > +Device attributes
-> > +=================
-> > +
-> > +The ADC contains only one channel with following attributes:
-> > +
-> > +.. list-table:: Channel attributes
-> > +   :header-rows: 1
-> > +
-> > +   * - Attribute
-> > +     - Description
-> > +   * - ``in_voltage_calibscale``
-> > +     - Sets the scale factor to multiply the raw value.
-> That's confusing.  This should be hardware 'tweak' to compensate for
-> calibration or similar.  The text doesn't make it clear where that multiply
-> is happening. Sounds too much like _scale.
-
-The user does raw * _scale * _calibscale to get the value in volts.
-
-_calibscale is 1 by default and serves two purposes:
-
-* small hw corrections (matches ABI); or 
-* an arbitrary user set scale, ideally also for corrections, but not
-  constrained.
-
-For the prior, the device does support computing the appropriate
-_calibscale value, but it is not implemented.
-
-If it was implemented, it would occur once during driver initialization
-and then _calibscale default value would be approximately 1, (e.g.,
-0.997).
-
-> 
-> > +   * - ``in_voltage_oversampling_ratio``
-> > +     - Sets device's burst averaging mode to over sample using the
-> > +       internal sample rate. Value 1 disable the burst averaging mode.
-> > +   * - ``in_voltage_oversampling_ratio_available``
-> > +     - List of available oversampling values.
-> > +   * - ``in_voltage_raw``
-> > +     - Returns the raw ADC voltage value.
-> > +   * - ``in_voltage_scale``
-> > +     - Returs the channel scale in reference to the reference voltage
-> 
-> Spell check needed.  Also this describes why it might take different values
-> but not the bit users care about which is the standard ABI thing of
-> Real value in mV = _raw * _scale 
-> 
-Ack, will describe
-
- raw * _scale * _calibscale
-
-> > +       ``ref-supply``.
-> > +
-> > +Also contain the following device attributes:
-> > +
-> > +.. list-table:: Device attributes
-> > +   :header-rows: 1
-> > +
-> > +   * - Attribute
-> > +     - Description
-> > +   * - ``samling_frequency``
-> 
-> Check these.. sampling_frequency.
-> 
-> > +     - Sets the sets the device internal sample rate, used in the burst
-> > +       averaging mode.
-> 
-> It's not use otherwise?  That's unusual ABI.  I'd expect it to give
-> the right value at least when burst mode isn't used. Or is burst mode
-> the only way we do buffered capture?
-> 
-
-It is not used otherwise, the device internal sample rate is used only
-to evenly distribute readings used in the burst averaging mode.
-There is no sampling trigger to evenly space the adc conversion reading,
-e.g.,:
-
-  Oversampling 4, sampling ratio 2Hz
-  Sampling trigger |        |        |        |        |
-  ADC conversion   ++++     ++++     ++++     ++++     ++++
-  ADC data ready      *        *        *        *        *
-
-  Oversampling 4, sampling ratio 1Hz
-  Sampling trigger |        |        |        |        |
-  ADC conversion   + + + +  + + + +  + + + +  + + + +  + + + +
-  ADC data ready         *        *        *        *        *
-
-For this driver, the sampling trigger is a register access (the stop bit
-of the i3c transfer to be exact), so in buffer mode it reads as fast as
-possible.
-
-> > +   * - ``sampling_frequency_available``
-> > +     - Lists the available device internal sample rates.
-> > +
-> > +Interrupts
-> > +==========
-> > +
-> > +The interrupts are mapped through the ``interrupt-names`` and ``interrupts``
-> > +properties.
-> > +
-> > +The ``interrupt-names`` ``gp1`` entry sets the role of Data Ready signal.
-> > +If it is not present, the driver fallback to enabling the same role as an
-> > +I3C IBI.
-> 
-> It feels like it should be easy to use the other GPO pin in this case if that
-> is present. 
-> 
-adi-gp0-mode should solve.
-
-I wouldn't auto-set the mode by the position in the interrupt-names
-array, but let me know your opinion.
-
-Best regards,
-Jorge
-> > +
-> > +Low-power mode
-> > +==============
-> > +
-> > +The device enters low-power mode on idle to save power. Enabling an event puts
-> > +the device out of the low-power since the ADC autonomously samples to assert
-> > +the event condition.
-> > +
-> > +Unimplemented features
-> > +======================
-> > +
-> > +- Monitor mode
-> > +- Trigger mode
-> > +- Averaging mode
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index afbfaeba5387b9fbfa9bf1443a059c47dd596d45..ce012c6c719023d3c0355676a335a55d92cf424c 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -1405,6 +1405,7 @@ M:	Jorge Marques <jorge.marques@analog.com>
-> >  S:	Supported
-> >  W:	https://ez.analog.com/linux-software-drivers
-> >  F:	Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
-> > +F:	Documentation/iio/ad4062.rst
-> >  
-> >  ANALOG DEVICES INC AD4080 DRIVER
-> >  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > 
-> 
+Takashi
 

@@ -1,121 +1,149 @@
-Return-Path: <linux-iio+bounces-25552-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25553-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF68C13732
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 09:09:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A8AC137B8
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 09:16:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 72043351AEB
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 08:09:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7E10050804D
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 08:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65A02D7398;
-	Tue, 28 Oct 2025 08:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399CC2D46D9;
+	Tue, 28 Oct 2025 08:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k9O+pVQb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZyC2WDhE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C062AE8E;
-	Tue, 28 Oct 2025 08:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EAC29E11E;
+	Tue, 28 Oct 2025 08:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761638958; cv=none; b=Y4g0SZh2yq0X1nyUUmnRMhVvB95IimllWw+ntbKPliMpv7XAHU2JfAKAbg6qaiosZalXDpvd4zWglKrN4M4Om8vkD3/G9dvB3B7Vlw1kCY3vNoYxw8bnw8IvG8J9A9z8CuvnCxjcSd3Me6mt/nIo0mK74QIUoLf9SynE+Wm5RWw=
+	t=1761639032; cv=none; b=KVP4+VKrXkqSgLLvnyazUHcFoAk7xO03kQNA0E2WFt/EI4k7K6ke5dOE/3srn8jBN6F8YsJuVTel6Z9wC69srCKwITbnHB7/qBxCagQa17oUAYEOEvv34rn0XaabMOFM9FnUPwWtgUXrAlpGItErnbJgpKXlzQgdbFVZpK4mNe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761638958; c=relaxed/simple;
-	bh=7z/1gXzlcZ6ipm71AwPYEiMUwyR4gAvf8U8KsM3aVVY=;
+	s=arc-20240116; t=1761639032; c=relaxed/simple;
+	bh=CCWns77OmOt4vjojJJ4+7pxoDkV1iHGduGsfXfkZa1g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VSNNjaBgF8Uju635agIlSaoF23QGdxYojzdczAbxjnerOMprxrqErOomTSvuA+6Y71dq34L3GYEAWhmbsXqN8EqnMzO/3bQ0ViqiUUHp4YnlbSzxjpEi2VJpwmKXTcrCAl2CcguRd1rtkmtHQes01MOn/43i4zzJyfSLoiAqDZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k9O+pVQb; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=oxEBHQV8RvYg6gD8hdCamD1JX+ys+VlkbD8RkkIHdghUc5sIYl4f5/eMyW2v2686BMMnX6hw7pQmJ/rsx2Mml8Vu9ZdSji9r70QXQQoP/279to+qWoNXt0EGcKpX9tSwKoG8Mi67Cxe7k+j3OLMYQVUYi5OC6eLaYRFeV5AgMEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZyC2WDhE; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761638957; x=1793174957;
+  t=1761639030; x=1793175030;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7z/1gXzlcZ6ipm71AwPYEiMUwyR4gAvf8U8KsM3aVVY=;
-  b=k9O+pVQb1DHN0wu9UpyNqRqK+M56vSJCtYKFkmxV0tj3vnYUegAqUxpM
-   9097kmZsa5yriHKbDCAJDivuUXW6eRr8FAMgXTQfQhSK7zTf0aFgzROGM
-   wOuU/x05I+aZcdNZu/IFc5CNZLFUwb0toQw7tfWgtjlat9IKdlxgmg5F/
-   O4668NdRM/Nmekq+rSWQUsXxC0hFKMlBSb0Vw30FEMGfySLFwPtKPzgZ+
-   EYnJ7bxn9CMjSg1pVXSW80Gh63i8oH/2x1K6QhUIxdiCXbgt7BtvFWD5u
-   OaXTu6fIuoJx0lpQOXvkROBxNHiYrydnTjEg/T8tyFNI++TQPsFJphRpI
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=CCWns77OmOt4vjojJJ4+7pxoDkV1iHGduGsfXfkZa1g=;
+  b=ZyC2WDhEtTf3dy11f6dOSj/lRbLgLmdUmn0enlouZiUZlsZQ5EvxEIHz
+   LzSbIR+QFBHCr340drKs3Fse6UL/vsYxioGce9Wb2OUb7apzYrKj+o9H0
+   9bpt07w9KpiRC5sNy4qZtMybW4ZBxxEK/yUWk2wTQH5HjgvxW/xdlbBu7
+   YU3a5Fl/IX+hB+7B5YwVnJ/IngFIGDpIkRgz76D60NANhCMq3s1qKAhmb
+   i8GQ4yI1F0kWZUEOJPxkC9fElrKoPxZUwA4TN6zbwk4QyXEr7tdmctTkL
+   FhCf5R0KzGErsv42C5Hw9N9x8qp8Ulyfdu6DuD0koXtij/AnBfvfpx0X+
    g==;
-X-CSE-ConnectionGUID: 0IwPRJ6GQ9uwlWciR86DOQ==
-X-CSE-MsgGUID: AF7MK445R0CjoymHlwKiSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63767813"
+X-CSE-ConnectionGUID: NvEL/5+8TjKCiNSECvdTPA==
+X-CSE-MsgGUID: 1vrPLTUnRKGgD3tdixyGyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63769181"
 X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="63767813"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 01:09:16 -0700
-X-CSE-ConnectionGUID: t5vVe9UuTEq2SveKnIcwng==
-X-CSE-MsgGUID: q2VaOrUDT/WqwGq3tF2ATw==
+   d="scan'208";a="63769181"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 01:10:30 -0700
+X-CSE-ConnectionGUID: /VdNS5MmR4eLlYiGyoT2Ew==
+X-CSE-MsgGUID: lWLXbDHWSW+9gYBHKRgDSg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="185610959"
+   d="scan'208";a="185366413"
 Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 01:09:13 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 01:10:28 -0700
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1vDelS-00000003FGw-0pnx;
-	Tue, 28 Oct 2025 10:09:10 +0200
-Date: Tue, 28 Oct 2025 10:09:09 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Benson Leung <bleung@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	"Daniel W. S. Almeida" <dwlsalmeida@gmail.com>
-Subject: Re: [PATCH v1 2/6] units: Add =?utf-8?Q?va?=
- =?utf-8?B?bHVlIG9mIM+AICogMTDigbk=?=
-Message-ID: <aQB6JdePRUuegGxn@smile.fi.intel.com>
-References: <20251027143850.2070427-1-andriy.shevchenko@linux.intel.com>
- <20251027143850.2070427-3-andriy.shevchenko@linux.intel.com>
- <20251027145213.7c93a3e2@jic23-huawei>
- <66c8f410-6bba-41d2-88e2-46dbe133adaa@baylibre.com>
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vDeme-00000003FJ4-1WAR;
+	Tue, 28 Oct 2025 10:10:24 +0200
+Date: Tue, 28 Oct 2025 10:10:24 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Gary =?utf-8?B?Q2h1KOalmuWFieW6hik=?= <chuguangqing@inspur.com>,
+	lars <lars@metafoo.de>,
+	"Michael.Hennerich" <Michael.Hennerich@analog.com>,
+	dlechner <dlechner@baylibre.com>, "nuno.sa" <nuno.sa@analog.com>,
+	andy <andy@kernel.org>,
+	"subhajit.ghosh" <subhajit.ghosh@tweaklogic.com>,
+	"javier.carrasco.cruz" <javier.carrasco.cruz@gmail.com>,
+	linux-iio <linux-iio@vger.kernel.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 4/4] iio: light: apds9960: convert to use maple tree
+ register cache
+Message-ID: <aQB6cFpTsBssGej3@smile.fi.intel.com>
+References: <abf45488369cbcce6298cc0ea19c0b3a24-10-25intel.com@sslemail.net>
+ <aPs9HdeTZKoqFqdk@smile.fi.intel.com>
+ <68fc4591.1.gk94qBPVZajhk94q@inspur.com>
+ <aP8tvj_IPbv65m0T@smile.fi.intel.com>
+ <20251027133806.5e4368bc@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <66c8f410-6bba-41d2-88e2-46dbe133adaa@baylibre.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251027133806.5e4368bc@jic23-huawei>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Oct 27, 2025 at 09:59:10AM -0500, David Lechner wrote:
-> On 10/27/25 9:52 AM, Jonathan Cameron wrote:
-> > On Mon, 27 Oct 2025 15:34:51 +0100
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Mon, Oct 27, 2025 at 01:38:06PM +0000, Jonathan Cameron wrote:
+> On Mon, 27 Oct 2025 10:30:54 +0200
+> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+> > On Sat, Oct 25, 2025 at 11:36:45AM +0800, Gary Chu(楚光庆) wrote:
+> > > >On Fri, Oct 24, 2025 at 03:38:23PM +0800, Chu Guangqing wrote:  
+> > > >> The maple tree register cache is based on a much more modern data structure
+> > > >> than the rbtree cache and makes optimisation choices which are probably
+> > > >> more appropriate for modern systems than those made by the rbtree cache.  
+
+...
+
+> > > >>   .reg_defaults = apds9960_reg_defaults,
+> > > >>   .num_reg_defaults = ARRAY_SIZE(apds9960_reg_defaults),  
+> > > >
+> > > >^^^^ Be careful with such cases, the cache implementations may behave
+> > > >differently. Have you tested this on the actual HW?
+> > > >  
+> > > We have conducted tests on some hardware, and performance improvements were observed,
+> > >  though tests have not been carried out on all hardware models.
+> > > Neither rbtree nor maple tree directly depends on hardware types (such as CPU or peripheral
+> > >  models). Instead, they rely on the address distribution characteristics (discrete/continuous)
+> > >  of hardware registers. The optimal cache type is determined by the hardware layout.
+> > > Red-black trees excel at individual operations on discrete addresses, while Maple Trees are
+> > >  proficient in range operations on contiguous addresses.  
 > > 
-> >> There are a few drivers that want to have this value, and at least one
-> >> known to come soon. Let's define a value for them.
-> > 
-> > Is there any way we can make the x10^9 bit obvious in the naming?  Or do
-> > something a bit nasty like defining a macro along the lines of
-> > 
-> > PI(scale)?
-> > e.g. PI(NANO), PI(10000) 
-> > 
-> This was my first thought when looking at this as well.
+> > It's not about the low-level cache implementation, it's about regmap
+> > abstraction implementation that might differ from cache to cache
+> > implementations. This all in regard how the cold cache is getting filled up.
+> > There is a separate discussion (unrelated to the topic of your series) where
+> > this was brought up.
 > 
-> Or something like PI_x10(6).
+> I appreciate these things can be hard to track down with lots of threads in flight
+> but any chance of a reference for that? I'd be a little surprised if these uses
+> are complicated enough to hit corner cases but would like to know more.
+> I've taken a few similar changes in the past thinking there would be no
+> practical difference.
 
-We need a good macro that may _at compile-time_ convert 64-bit input to 32-bit
-value that may be suitable for 32-bit arithmetics / architectures.
+Sure, it appeared in the discussion of v2 of the following patch:
+https://lore.kernel.org/linux-gpio/20251009132651.649099-2-bigunclemax@gmail.com/
 
+> > That's why I asked how this was tested.
+> > 
+> > In any case, up to Jonathan, but I had to rise a potential misbehave, so in my
+> > opinion this kind of corner cases needs to be tested on real HW.
+> > 
+> > > >>   .max_register = APDS9960_REG_GFIFO_DIR(RIGHT),
+> > > >> - .cache_type = REGCACHE_RBTREE,
+> > > >> + .cache_type = REGCACHE_MAPLE,
+> > > >>  };  
 
 -- 
 With Best Regards,

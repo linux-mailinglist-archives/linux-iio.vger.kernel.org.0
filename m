@@ -1,127 +1,180 @@
-Return-Path: <linux-iio+bounces-25575-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25576-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6011C14695
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 12:40:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D7CC147AA
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 12:56:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5BB883526B7
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 11:40:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0754406DB3
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 11:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C513081BE;
-	Tue, 28 Oct 2025 11:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0575313287;
+	Tue, 28 Oct 2025 11:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XDZWADUh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N0YA64Xw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56031303A38;
-	Tue, 28 Oct 2025 11:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D9A3128CD
+	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 11:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761651649; cv=none; b=PPxw8iVTHpk3Ti5P1cI0DJL6XYJW/sRyo4YjZHhJuulrYd7XfYcc0zDQFp8ytvbHkrYmfEO8HutERNIebbD/enLEj4sboMsU4iOWgExtWUn8wY7YiVfaChRfsXOnHaS7E2oz64gvvGx9GTc3ZEfwqHB99jHu1khvlHATrrWOelE=
+	t=1761652587; cv=none; b=EcLX8y0WDRhdHrCrFP2mcCtPp4khRDljFZ+4Pk01sJ/IS0W/S6p7kF+dvinwNmu78nY2ZTwvTChL8RfTkgICKqFgbuj15QwviZqpiZdQi9K74bn8leKDfg8aJMD1Y5YnNmrMgDE//uW3pEsOVPDCMuXaw4xuviROOvBzFeKBw+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761651649; c=relaxed/simple;
-	bh=Zm+ETHfHQTaVVdtsPF1GJ121hJhiaTf4ApL7QLbkG78=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BfKuKPDF4YimChJI5UtbDwlb01nCOQCY6mGeydDJOU56nLxcfooQeFsMRfVcHEJHdVHx2l1KUSq5qLOmGgTYcBDJE6CqHttvtdLZEcVLRqJyN/MiJNoiUK0OVv/x84iowjVqa2z94YX1QITMzyJU5JlKAbGap+6Yr4sy+jCHK5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XDZWADUh; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761651647; x=1793187647;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Zm+ETHfHQTaVVdtsPF1GJ121hJhiaTf4ApL7QLbkG78=;
-  b=XDZWADUhEfXnkda/C/PomLUW6YV7oKDb4KDmQhS8aZRdSRrEoSVDcS8M
-   M8Tcjku/wXS7JjOzIX0cae1L5YONThvzavSJACVTCw601fRhuyHyNzdzx
-   3izIyWxB66Zpg927Yv5a/cCgMPCM104BBsclyaRYgiTSpkQk5IZaP3gMk
-   DIJCKBD5GNWocKb0P+3aKDOjEnWnKm1I4eHN9AGwQYDZKs7hvMkZY3eSu
-   PtjrNr7Y2mvnbyhjytpEk3FteS6ywlpLOT2EBeJwspCZEZMQIOqrF3Vlk
-   jfe+AQ0zpLzuiQEKghgTFIhVxOLBgCoCEO6/WTV+2LP34wCGujctuUVBS
-   g==;
-X-CSE-ConnectionGUID: 8kDi/7gDSVusayX+TWQurQ==
-X-CSE-MsgGUID: NeNjj0acTLSHXtNjF4+yUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63784833"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="63784833"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:40:47 -0700
-X-CSE-ConnectionGUID: K3LoQzDVTaaqlrUpRPVskw==
-X-CSE-MsgGUID: 9hahvjJkTBSqd3lLPuLjog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="222533468"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 04:40:44 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vDi49-00000003IcZ-110I;
-	Tue, 28 Oct 2025 13:40:41 +0200
-Date: Tue, 28 Oct 2025 13:40:41 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
- ad3552r_hs_write_data_source
-Message-ID: <aQCruaNsGD24PFEk@smile.fi.intel.com>
-References: <20251027150713.59067-1-linmq006@gmail.com>
+	s=arc-20240116; t=1761652587; c=relaxed/simple;
+	bh=Ib4FTXEwOtlDTXM2VpO+nl6c+5tWeUf7p5dmbiVpUfs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CdCAWB9w2J5Mi73C7bn83tbJ0KmUBSEBVl/bK5y2hhmTF6EGETaPoWEy1Dgopuq2FCXZFlvhEGmVvGj4gI+BZAX8zkIMwpCGrQwZLvSQEWRovcLLVTKBfGHSMtZBavpO3wvVtBMzR4c3kwFfjMaaezhjwQ7MhWt9YZMF/DPmMos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N0YA64Xw; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-421851bcb25so3639729f8f.2
+        for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 04:56:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761652584; x=1762257384; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Ib4FTXEwOtlDTXM2VpO+nl6c+5tWeUf7p5dmbiVpUfs=;
+        b=N0YA64XwtWzOvj9H4V8peXzUoAq4NeO8IqQeaF57q5emQdaS7jRffhSfbXmbucKA/x
+         nrGb5808rJ6w2mIfHDYK0sXymb9M72Eoakp9fu2E03eihVgVme39DiulAFmRFyht7LVS
+         f3q4GqEVV1U2F2+ADpRchyc7kAG9JkZ3n2AsZl3fVPY0vC6gzMKW3iTztrUlXBtRXEbR
+         4EQ2bQiefTgUKiJ7syb6w2g3sceHd+r5pRhiO3zhhnMHW/U8y31WPvS38DvSXApNLvp7
+         Tb8Hqa5IM0xeOKY/Zltx44hu0biLU6chn1Q09JncWgjD3FYMFcxdOt8u5mOlfqPql8fd
+         8Huw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761652584; x=1762257384;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ib4FTXEwOtlDTXM2VpO+nl6c+5tWeUf7p5dmbiVpUfs=;
+        b=TDS9eQVSfLJ9kL4Lroa1CDL9lVJtHTA4zrSwZZwbkMA0tCnQPqCXjJJAD+Dt2Qw3Jq
+         Uqv1MIaGj26kH8Vl1d06az51qHZlLB4Btb6L0R/D6MJXHZ22lr3xegAjFp8Mhsqg/V8n
+         HUnz0vCOG7zOddKjPRtl8WdC9QF62jmTd/sc9oDvYw5sJVjjSWUYkKfOrYgoAyWH08lr
+         Mts/5WcPqnsrT5ZuwjjFdf1fqJo59TyxeOsv8kidiTkvFs7mHd1fLj0vDgKqeOAgrtNZ
+         H63s4y6WPcASAe3JuIo6lEzdsOoAiLJoYcPUOt+iQqBmNK0OWmAxvBmJYOeyPS9B5D36
+         fwDg==
+X-Gm-Message-State: AOJu0Yxdx8sRMgdqPYuWayYHlntJ/gmWKjApVUe20oSs7gLyncFNvuwU
+	iImqgUqWNldbtvK8Cz3AfmnvrzH30QrHSzY3kegLQ48+WS/m4oo+lCVA
+X-Gm-Gg: ASbGncvtjpdGCx7mzFn/5K+62BpP993coStMNJEynuSiMH7VYNjSfCfSDM9mUu1Eda5
+	JI3bAbSMD6QQ01/wKJE2YVVdsLKZyPIE1JouKI0bXGnAl8DkhAAWLjFTSMSyE6hqrQVHcJ7KJOY
+	W51IJpxOXQlxjtu1GvpOAZEFnLPIIWNNpbjJ+r4+h5JSxxrtYuImnHKDlylxqiD0Mm9ecuaAS2s
+	iv2tpPrfwrN1ytbzaIjwRnfKHQ+/RVI1NTBBm5fiS40+nNfIaJqQAFcqTuWy822NUYSO36MhDob
+	th7QTSGn+m8ZMMaY4tefYgS7Uo9yQY+Dz8fkp0iooQ0zPZeo/57zjnFlOVhyXe6GxAEtM+Rv1uA
+	X7dhOjmKXOyKM7fCnPXrdf2yVlThNQwVwpNkXqkzRqp4M1AGO+kdWBdlv8Lx/tbbf7BWBm9I0Hd
+	6XCq4JZrw5
+X-Google-Smtp-Source: AGHT+IHjYJZTMVZ2J00XT5f9CcLsMMeBwXk/4A4OAn+HKaImvZOZ6U1OX1tYqOecRVXVhSFhsX8FLg==
+X-Received: by 2002:a05:6000:2005:b0:427:6eb:8499 with SMTP id ffacd0b85a97d-429a7e59e59mr3391922f8f.24.1761652583845;
+        Tue, 28 Oct 2025 04:56:23 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952de4a1sm20027993f8f.37.2025.10.28.04.56.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 04:56:23 -0700 (PDT)
+Message-ID: <50f7ef82a98b2d2860466b85f172bcec36fd046b.camel@gmail.com>
+Subject: Re: [PATCH v3] iio: backend: fix kernel-doc to avoid warnings and
+ ensure consistency
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Kriish Sharma <kriish.sharma2006@gmail.com>, nuno.sa@analog.com, 
+	olivier.moysan@foss.st.com, jic23@kernel.org, dlechner@baylibre.com, 
+	andy@kernel.org
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, kernel test
+ robot	 <lkp@intel.com>
+Date: Tue, 28 Oct 2025 11:56:58 +0000
+In-Reply-To: <20251028093326.1087660-1-kriish.sharma2006@gmail.com>
+References: <20251028093326.1087660-1-kriish.sharma2006@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027150713.59067-1-linmq006@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Oct 27, 2025 at 11:07:13PM +0800, Miaoqian Lin wrote:
-> When simple_write_to_buffer() succeeds, it returns the number of bytes
-> actually copied to the buffer, which may be less than the requested
-> 'count' if the buffer size is insufficient. However, the current code
-> incorrectly uses 'count' as the index for null termination instead of
-> the actual bytes copied, leading to out-of-bound write.
-> 
-> Add a check for the count and use the return value as the index.
+On Tue, 2025-10-28 at 09:33 +0000, Kriish Sharma wrote:
+> Fix multiple kernel-doc warnings and make the documentation style
+> consistent in drivers/iio/industrialio-backend.c.
+>=20
+> Changes include:
+> =C2=A0- Add missing @chan parameter description in
+> =C2=A0=C2=A0 iio_backend_oversampling_ratio_set().
+> =C2=A0- Add missing RETURNS section in iio_backend_get_priv().
+> =C2=A0- Replace Return: with =E2=80=9CRETURNS:=E2=80=9D across the file f=
+or consistency.
+>=20
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes:
+> https://lore.kernel.org/oe-kbuild-all/202506292344.HLJbrrgR-lkp@intel.com
+> Suggested-by: Andy Shevchenko <andy@kernel.org>
+> Suggested-by: David Lechner <dlechner@baylibre.com>
+> Signed-off-by: Kriish Sharma <kriish.sharma2006@gmail.com>
+> ---
 
-...
+Thanks for this!
 
-> +	if (count >= sizeof(buf))
-> +		return -ENOSPC;
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-This is already done below.
-
->  	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
->  				     count);
->  	if (ret < 0)
->  		return ret;
-
-...
-
-> -	buf[count] = '\0';
-> +	buf[ret] = '\0';
-
-Do we have an actual issue right now? Can you model it and show a real
-traceback?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> v3:
+> =C2=A0- Changed Return: to RETURNS: for consistency across the file as
+> =C2=A0=C2=A0 suggested by David
+>=20
+> v2:
+> https://lore.kernel.org/all/20251027092159.918445-1-kriish.sharma2006@gma=
+il.com
+>=20
+> v1:
+> https://lore.kernel.org/all/20251025102008.253566-1-kriish.sharma2006@gma=
+il.com
+>=20
+> =C2=A0drivers/iio/industrialio-backend.c | 8 ++++++--
+> =C2=A01 file changed, 6 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industriali=
+o-
+> backend.c
+> index 23760652a046..447b694d6d5f 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -702,7 +702,7 @@ EXPORT_SYMBOL_NS_GPL(iio_backend_interface_type_get,
+> "IIO_BACKEND");
+> =C2=A0 * interface/data bus. Hence, the backend device needs to be aware =
+of it so
+> =C2=A0 * data can be correctly transferred.
+> =C2=A0 *
+> - * Return:
+> + * RETURNS:
+> =C2=A0 * 0 on success, negative error number on failure.
+> =C2=A0 */
+> =C2=A0int iio_backend_data_size_set(struct iio_backend *back, unsigned in=
+t size)
+> @@ -717,9 +717,10 @@ EXPORT_SYMBOL_NS_GPL(iio_backend_data_size_set,
+> "IIO_BACKEND");
+> =C2=A0/**
+> =C2=A0 * iio_backend_oversampling_ratio_set - set the oversampling ratio
+> =C2=A0 * @back: Backend device
+> + * @chan: Channel number
+> =C2=A0 * @ratio: The oversampling ratio - value 1 corresponds to no overs=
+ampling.
+> =C2=A0 *
+> - * Return:
+> + * RETURNS:
+> =C2=A0 * 0 on success, negative error number on failure.
+> =C2=A0 */
+> =C2=A0int iio_backend_oversampling_ratio_set(struct iio_backend *back,
+> @@ -1064,6 +1065,9 @@
+> EXPORT_SYMBOL_NS_GPL(__devm_iio_backend_get_from_fwnode_lookup,
+> "IIO_BACKEND");
+> =C2=A0/**
+> =C2=A0 * iio_backend_get_priv - Get driver private data
+> =C2=A0 * @back: Backend device
+> + *
+> + * RETURNS:
+> + * Pointer to the driver private data associated with the backend.
+> =C2=A0 */
+> =C2=A0void *iio_backend_get_priv(const struct iio_backend *back)
+> =C2=A0{
 

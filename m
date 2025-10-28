@@ -1,112 +1,107 @@
-Return-Path: <linux-iio+bounces-25591-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25592-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB16DC154AA
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:58:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2098C15447
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:55:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD95466121A
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 14:52:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A1025025D2
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 14:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523232571A0;
-	Tue, 28 Oct 2025 14:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CFF3314CB;
+	Tue, 28 Oct 2025 14:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M1kOWj/U"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DAF0aCPS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8562A2550AF;
-	Tue, 28 Oct 2025 14:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E659832ABCD;
+	Tue, 28 Oct 2025 14:54:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761663093; cv=none; b=ZYdgoUynNfXI0kMQQD5/Go+JA3uznBHTlCkEPxDyTpFOf3kPMkxDRBHoNmM93KMJpZPcZcno1FJjSrRxn/PNHlhrKPn4D236himN8VcNK0LjUKzZ/4bEG21qt4FCooqv4vW+oln8haa75jYQ3RROfiyBkd6FnGIcDJvUhGoLRdk=
+	t=1761663243; cv=none; b=TTgbe2uq9JmGuOmk5fk+CXoqnvk2GXj0YV0PJdesGU5FnuCkeM8pn110MAZOiQKY+owF6a04Ty/fSogwIUo2J113tx36eUYXtLVv1HIG2sp1kuJ9WdS2XMwyGJdttzdeK/h1N8FR2+UL97whoWU3eEQrLsnfi8Vs1+YasUbhF58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761663093; c=relaxed/simple;
-	bh=glytEKyAwbMVi2/7pNGHv7X6xwlwzIprNdGWYsCZk+0=;
+	s=arc-20240116; t=1761663243; c=relaxed/simple;
+	bh=mi5dp4FJzNlz74atslUNZlo0HuAOGR5OEssnOLjHZXw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZeCE2O6TdzRf3SF0q0VMMG5KJHhsErn1nYdZuk+rnzbRYNNV+4LLgd6OieMTNUcMvg6V7SDZ/vgp6o9n0YtbyERZf2xr3iRA/5qhmYX2TMRvtv+rNbfCQjGEbfBtpZy8vdfW39ElnU9l17gCGn5uGwa8gMnL+x2aqkn13H0Wx/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M1kOWj/U; arc=none smtp.client-ip=192.198.163.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=n0dZDfN6bZWduLkRlkJnTfV1sTOM4GkVdVpfogCvIKVuOIH+zYtnU2T4XW/5phfqk424U9y3+vBusXLmylt4E0Aa/hmDnK3/wrGDKhDts/8O6F97+6gqIJ74vwGga5InaT3aWyE6qBjbPxb8XDRVTbBlgG1E3uj5FUwi3FKcbsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DAF0aCPS; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761663092; x=1793199092;
+  t=1761663242; x=1793199242;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=glytEKyAwbMVi2/7pNGHv7X6xwlwzIprNdGWYsCZk+0=;
-  b=M1kOWj/ULCin5KwXun1kCmqxk4/7P82tkXrfxOBx//Ts608CxtPk/Gsg
-   oLiX/HCydrypGsA0dswh9FOFVWwIGGFIzA0yBVGbY3vxO/Cckl5caH0KO
-   8e7sMO1wbDMaXBWAcZfyPKFLCKGFbO1NhAi+HRHMaCyM9CN/HtjvhpDXb
-   lBALzY3P4ff/bzDMliwNIbLBCjdddzSNYmdcKhAASS01Ek6zJOA+Emav3
-   wK7s2W2aGDTYgLtwgZ4HzYlK+v/ghTUg2xJ/OC8VccJXz2PkgvU/oKoLp
-   zWnvJI+FjNoc7j9ud485G6LqQ8OCBKKoECMrzkxAWGgJ92Q66XYYq7fuv
-   Q==;
-X-CSE-ConnectionGUID: yoJXj2TtTTqNd/78Pfk8cA==
-X-CSE-MsgGUID: NtpwJPpcTrihxsD2D6gljw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66380922"
+   mime-version:in-reply-to;
+  bh=mi5dp4FJzNlz74atslUNZlo0HuAOGR5OEssnOLjHZXw=;
+  b=DAF0aCPSKMtFRh/1gv/nY99A6mycEjqc6R7Cg4GUdh4WxVaZOn7H7Wci
+   j9ErMqcXR/Cd/4SlVx4wbHuWnY0ExiP+sjIPEd5XVx2SKJhA4rqQHeE1t
+   B35RQIDfA9ozuyDCWs5zxLxHZa3wUgnp9c/lJLTdMD04jLO1bNw//nyRy
+   7bH2zlxXrbTUuzjS7krM3wfmZTV8Uvh6ZkPcW4XLgwTi7W5U0BY64bdbV
+   0hb1WsgRFgKJ7JWcrLNiUZbBHOi9ox3qvRax6PNFQ3d7Q/mJJZsBxtKwn
+   pMGnx6SsQn0obwHrTbJ7Nm5ScJQFJuRE82GhE251DTPt+2TeIgl/Dzu0l
+   g==;
+X-CSE-ConnectionGUID: CTWVpU5YQJ6H/qjsTWUjxQ==
+X-CSE-MsgGUID: n5jpTfzYQdyaHo0Of1n3nA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="67629264"
 X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="66380922"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 07:51:31 -0700
-X-CSE-ConnectionGUID: 6moAjRlNTzmLVxk8Bs4uIQ==
-X-CSE-MsgGUID: fzkGLTy6Rp2yFdFhD6uvmA==
+   d="scan'208";a="67629264"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 07:53:54 -0700
+X-CSE-ConnectionGUID: rgJB7n3+SFOXyrXLC2uGKw==
+X-CSE-MsgGUID: qaBRj9teRIeLIp8szEYJ4A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="208958106"
+   d="scan'208";a="186114724"
 Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 07:51:28 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 07:53:50 -0700
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vDl2j-00000003LJN-33uh;
-	Tue, 28 Oct 2025 16:51:25 +0200
-Date: Tue, 28 Oct 2025 16:51:25 +0200
+	id 1vDl51-00000003LN6-1Dhh;
+	Tue, 28 Oct 2025 16:53:47 +0200
+Date: Tue, 28 Oct 2025 16:53:47 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Chen-Yu Tsai <wens@kernel.org>
-Cc: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: core: Use datasheet name as fallback for label
-Message-ID: <aQDYbRutGLgDmWNu@smile.fi.intel.com>
-References: <20251027124210.788962-1-wens@kernel.org>
- <20251027144327.09f59982@jic23-huawei>
- <aQB5Dw2Eg0tVdNow@smile.fi.intel.com>
- <5e3bf0d87ae1b539d134edefee67d3e3ef3b46cb.camel@gmail.com>
- <CAGb2v676eOkPOc33+FMX6k9562gn34+MR15t-iucLjd0qQKs7Q@mail.gmail.com>
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
+	Adrian Fluturel <fluturel.adrian@gmail.com>
+Subject: Re: [PATCH v8 6/6] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <aQDY-9CEOlA74A-N@smile.fi.intel.com>
+References: <20251028-i3c_ddr-v8-0-795ded2db8c2@nxp.com>
+ <20251028-i3c_ddr-v8-6-795ded2db8c2@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGb2v676eOkPOc33+FMX6k9562gn34+MR15t-iucLjd0qQKs7Q@mail.gmail.com>
+In-Reply-To: <20251028-i3c_ddr-v8-6-795ded2db8c2@nxp.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Oct 28, 2025 at 10:36:35PM +0800, Chen-Yu Tsai wrote:
-> On Tue, Oct 28, 2025 at 5:22 PM Nuno Sá <noname.nuno@gmail.com> wrote:
+On Tue, Oct 28, 2025 at 10:49:02AM -0400, Frank Li wrote:
+> Add mmc5633 sensor basic support.
+> - Support read 20 bits X/Y/Z magnetic.
+> - Support I3C HDR mode to send start measurememt command.
+> - Support I3C HDR mode to read all sensors data by one command.
 
-...
+Seems you missed my comments against v7
+https://lore.kernel.org/linux-iio/20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com/T/#m377b66850dc0205c3b8723d09c647b545b029fbd
 
-> The axp20x-adc driver currently provides _no_ labels. Would adding labels
-> now be considered backward incompatible?
-
-It can be considered forward-incompatible :-)
-
-This kind of discussions happen in IIO in the past and probably still will in
-the future. Namely "What should be unique (enough?) string to recognise chip
-(platform?)?"
-
-So, you see, we need to answer first "What do we want to recognise?
-The platform or the chip?" Then decide what uniquiness will be enough.
 
 -- 
 With Best Regards,

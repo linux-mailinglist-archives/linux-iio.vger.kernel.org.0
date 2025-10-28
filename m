@@ -1,104 +1,99 @@
-Return-Path: <linux-iio+bounces-25570-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25572-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF327C1405F
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 11:15:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5256C14422
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 12:06:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A01744E5B84
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 10:15:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A77C61B21117
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 11:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A520302143;
-	Tue, 28 Oct 2025 10:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E099330BF59;
+	Tue, 28 Oct 2025 10:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UNJ4L9Ul"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="S1mtYRFF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mail-m32116.qiye.163.com (mail-m32116.qiye.163.com [220.197.32.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC1F23507B;
-	Tue, 28 Oct 2025 10:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A82306B0D;
+	Tue, 28 Oct 2025 10:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761646499; cv=none; b=IrPesmVbjOli/DaeEx9sTa+1WoQm2zuzbqdQYureQxxftFGGs2jAbL39k0fPhkYLybGXeSXDJTUkq5VbvoVV0glZRxH6vqWAHeqIT/3+5uI16Oey+THBAUF3Sq33gRc9r8vGdKo3ErP3C/nZDuT6yzC2Fe10jpshP1UjiUkgFOQ=
+	t=1761649098; cv=none; b=dJmHvP82T1qWLD7uGomCTz4Z/iSPGAKuBoPVysx5nPYHvQ+SADiGajzU5PFIx/9IcQKorGZW5Uy1NTKIHupmRPIulRC0b3zlfbG12I8CpMZkaKlm6n6MDR7p4JStadOy5wiJ0rROnP7Dp6HxvklxC9KTihDg92JPb1+MEIVrrbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761646499; c=relaxed/simple;
-	bh=4xas4y94vi3/3tBwp2J+Ktp/jrZPl//0sQ0Xoe5S36I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=COwahyOlbizxFS79DxQMFia0FHJ+7TB/L4iITwKQpkWA4QJNML2190OB0HR0ZuaonkUb8cI50shF10FFPAyDf2P+YFYc0M/wiSGuT9ae+NoJq2CwwpxnP17VAxlLrMDsPKsbGhU7VyQd1BxaBxqpIAM7QtFSq5On636XWieVHzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UNJ4L9Ul; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761646498; x=1793182498;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4xas4y94vi3/3tBwp2J+Ktp/jrZPl//0sQ0Xoe5S36I=;
-  b=UNJ4L9UlT5T2EsQF4T+SDfV+GoZE3lWl0GXyb/7rtV1Hi4EMT0L/iQtC
-   5Q5BEblpwkQjmYR6KZLDPjK1KELmvL7ufZ1vLNoYv9eUln31RIVBhj7cG
-   jyaA3I7sFJlXyXOHq0KvjdSXU+J7Yp9ZcdGUc7bksjzTmr8g3kC+iQkfw
-   2KDik9+B0PLtPGXI+QwV7HxQgkdoJ/fPUm+5o5O38hD8xHl5yLYbDDL8y
-   uaU1GNu9XB0QNwQE0Y627633mq5ihDWPl4SJqx+98xM2xtzXnNAGLThMr
-   OHyhDca4yiBj7CIunJPVVnW1vebnnh6y3ioWJ8KkBZj5DOqLmFv5M0Xaf
-   Q==;
-X-CSE-ConnectionGUID: iC3VGzNfSkOevWOn6dKqWQ==
-X-CSE-MsgGUID: HlhxQ3ICSQ+E7ZL3KPXZSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63444473"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="63444473"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 03:14:57 -0700
-X-CSE-ConnectionGUID: iFQ8YCGpRB2ERMJDAZdzpg==
-X-CSE-MsgGUID: 721JDO40R1+Z9Qpg7Dkeug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="215964946"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 03:14:55 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vDgj5-00000003HMI-2Wgx;
-	Tue, 28 Oct 2025 12:14:51 +0200
-Date: Tue, 28 Oct 2025 12:14:51 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Billy Tsai <billy_tsai@aspeedtech.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, joel@jms.id.au, andrew@codeconstruct.com.au,
-	linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: aspeed: clear reference voltage bits before
- configuring vref
-Message-ID: <aQCXm_rvwpB6-UUq@smile.fi.intel.com>
-References: <20251028054102.1954503-1-billy_tsai@aspeedtech.com>
+	s=arc-20240116; t=1761649098; c=relaxed/simple;
+	bh=26olVJnTBzVdqfMxmqduKc3AaTMDecoatS6OLyYX9xo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ksDa6jrnXQK+v9WO1vHApBtOm219qH90kzlP2MTNnzFPyvTfITmewprwfGQCrGoP1jxhvTMtkWXOMrPWT0FnUQW5XXpXewd0GLiGI79iFZ6pBJ9PP3Wfh/UlsY+LceLar3I7fJZvTowcLsQ+2iSKCf42/tZrqfb1Zm9gxJ2pIQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=S1mtYRFF; arc=none smtp.client-ip=220.197.32.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from [172.16.12.26] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 277b7c941;
+	Tue, 28 Oct 2025 18:42:52 +0800 (GMT+08:00)
+Message-ID: <dbb5f7b4-7dac-413e-8c0a-4f962b79eae0@rock-chips.com>
+Date: Tue, 28 Oct 2025 18:42:51 +0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251028054102.1954503-1-billy_tsai@aspeedtech.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/5] dt-bindings: pwm: Add a new binding for
+ rockchip,rk3576-pwm
+To: Conor Dooley <conor@kernel.org>
+Cc: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Lee Jones <lee@kernel.org>, William Breathitt Gray <wbg@kernel.org>,
+ kernel@collabora.com, Jonas Karlman <jonas@kwiboo.se>,
+ Alexey Charkov <alchark@gmail.com>, linux-rockchip@lists.infradead.org,
+ linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>
+References: <20251027-rk3576-pwm-v3-0-654a5cb1e3f8@collabora.com>
+ <20251027-rk3576-pwm-v3-1-654a5cb1e3f8@collabora.com>
+ <ff9631f5-8fff-4be8-8b6f-807c29943ef6@rock-chips.com>
+ <20251028-favored-dynamite-fa626b96ecba@spud>
+Content-Language: en-US
+From: Damon Ding <damon.ding@rock-chips.com>
+In-Reply-To: <20251028-favored-dynamite-fa626b96ecba@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-HM-Tid: 0a9a2a69de4503a3kunm3a0251b715b88b
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQxlMHVZKGkkeHR5DSUMZH0NWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=S1mtYRFF6hi+IK7RpvYsFRyQjzX9G+C1YGR+qZrW7CHGySfkhkjEJ6cltXdZZ5ZnbzFXXAyotA4NNbci43z7eiXayHbWdngregdEBj7/lEfAf2r4yQn0YVx5aR/TJErMMP3zqlDTE2SMXXNZJ7JDijcgo9+npF4OSioc323AKx4=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=gWFZ7wFU0oJn0xlF0a8hdwI8bFTvAeFwgQl1T8susj4=;
+	h=date:mime-version:subject:message-id:from;
 
-On Tue, Oct 28, 2025 at 01:41:02PM +0800, Billy Tsai wrote:
-> Ensures the reference voltage bits are cleared in the ADC engine
-> control register before configuring the voltage reference. This
-> avoids potential misconfigurations caused by residual bits.
+Hi Conor,
+
+On 10/28/2025 4:50 PM, Conor Dooley wrote:
+> On Tue, Oct 28, 2025 at 11:06:15AM +0800, Damon Ding wrote:
+>> On 10/28/2025 1:11 AM, Nicolas Frattaroli wrote:
+>   
+>> The RK3506 and RV1126B platforms that are about to be upstream also use this
+>> PWM IP. Would it be better to name the yaml file "pwm-rockchip-v4.yaml"?
 > 
-> Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-> ---
+> No. Files should be named to match a compatibles.
+> 
+>> Then subsequent platforms only need to expand the compatible property.
+> 
+> That's all subsequent platforms need to do anyway!
 
-It's a v2 and here a changelog is missing.
-No need to resend, just reply with a missing piece.
+Got it.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+Best regards,
+Damon
 
 

@@ -1,304 +1,129 @@
-Return-Path: <linux-iio+bounces-25554-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25555-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FB4C137BB
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 09:16:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2965C13843
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 09:23:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 103BE402FFC
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 08:16:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 88B1D541CDA
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 08:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5080D2D6E63;
-	Tue, 28 Oct 2025 08:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E552D7D42;
+	Tue, 28 Oct 2025 08:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="SB3GWG7T"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pbb8Z4mA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-m49200.qiye.163.com (mail-m49200.qiye.163.com [45.254.49.200])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04AD27FD62;
-	Tue, 28 Oct 2025 08:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F0C2D6E64;
+	Tue, 28 Oct 2025 08:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761639396; cv=none; b=oaH1ow0qsZNj/+ZbitDlmZtLLjGVg+eJt479+1Tk+sitvyJY4ZGfHCwaM6m95TrUh+43eBP3eTnBLBEX8S9n0UF7uEp7QDoeCXeJTxFMkafOrNKiVlRGf+Be3CURZw7ctVRTgyf9CtqaxbRDM+ANOTQsbUI71y5//fQc2tDC0VM=
+	t=1761639493; cv=none; b=mqEAR3hiIhEE19iG1lSKLg/zcsnsUIB3QGCp2KQnzsiP3YYPGKJ9wDPmAU/oYNXSvMtbSxBQZ5H6qKfKUYPYNKj3l4Z2uOdrIavAH8/VLdAGe3Oe4+g6oY3vwDUIPEhcyho7t/4zq4xN1V+EeOfN7l/PkSSbF4KEH6P+EAWuvLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761639396; c=relaxed/simple;
-	bh=vY09GGJJeSsAczwhvFSK2fxIUbQ9yAIAwFhyrfx8GqM=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=O0hObttWwVYJxiQ42T+02g8JLskqz6Goq0OlPc3Rasti/rTH7LGt+PfgULJCndV+DHwQZ6BsjB2FHPsEbQmQ/Ov9sR7q2uh/xQ/et/trIr/dMtzAkLiaiBnRKF9F/KtL7gDAjs7H49KNMD+sNwvnbId37sbwYJ4txG/NUOOZZy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=SB3GWG7T; arc=none smtp.client-ip=45.254.49.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from [172.16.12.26] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 277602d99;
-	Tue, 28 Oct 2025 16:16:27 +0800 (GMT+08:00)
-Content-Type: multipart/mixed; boundary="------------PdXS0cE3u8xAHvhAPnkRnp4J"
-Message-ID: <8a6e920b-9565-4161-9d71-63f924593c23@rock-chips.com>
-Date: Tue, 28 Oct 2025 16:16:26 +0800
+	s=arc-20240116; t=1761639493; c=relaxed/simple;
+	bh=MVSFbwblKngEk79Y3sKxyk9wd5p4f7fVCW6a/4FzAi8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Aq4/35Hb7lDQancJF4uHzo2vyCwyvxquCAnBEaFo6KefA2xkKYOXPdZnlLgz9s4D7jbELm0tZ7/oiFBhIfMA5lRo3VUs4noCid9o/1kd0hN+3tyvRLn2OAq0ppGAcmgw6bYz3bF0ssXNpOnNPxa+6tBpNhH4hPI6r62BozYChJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pbb8Z4mA; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761639492; x=1793175492;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MVSFbwblKngEk79Y3sKxyk9wd5p4f7fVCW6a/4FzAi8=;
+  b=Pbb8Z4mAShzmp0ccl5xXUWnjg+QYQVkwoWj+nOylUzwACZzS8fNbNeuQ
+   ClwKiJC4nHMKbSg2H42nHpM7klsSEGDumuOZbpctAe5TF0f03dS+f3VuI
+   j//+Iwjs4IRcns5KKx8g78UnIIy7gv3jy4vR+xlUgx8q/BJ4FipARPvBa
+   BLJVg0v2zx6N5Orp1n8eKuCsySq7YYEMnkZBK2biehi45eqoriK5muTuO
+   73Uevim+WrsfUyHgJQg/JlbJssoRd4qBnA0fQRQLbWZkS/CDj7SQCjpPY
+   cjkGFXd14taHke0wW+a3csIMR4+7/DlwbqjzroxCB96nn6ut+TowHpB1k
+   A==;
+X-CSE-ConnectionGUID: IJlYxyk2Q/CxCPyHxhbDyQ==
+X-CSE-MsgGUID: Wme6R/jOT62TLFifrIzjRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74851740"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="74851740"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 01:18:11 -0700
+X-CSE-ConnectionGUID: 4sZzpAyFS9aNK74HnA9pzw==
+X-CSE-MsgGUID: PzQeqeG4QOCrmejYy7V5fg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
+   d="scan'208";a="189593645"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.136])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 01:18:09 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vDeu5-00000003FRh-47UN;
+	Tue, 28 Oct 2025 10:18:05 +0200
+Date: Tue, 28 Oct 2025 10:18:05 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+Message-ID: <aQB8PRlaBY_9-L8d@smile.fi.intel.com>
+References: <20251027150713.59067-1-linmq006@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/5] pwm: Add rockchip PWMv4 driver
-To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Lee Jones <lee@kernel.org>, William Breathitt Gray <wbg@kernel.org>
-Cc: kernel@collabora.com, Jonas Karlman <jonas@kwiboo.se>,
- Alexey Charkov <alchark@gmail.com>, linux-rockchip@lists.infradead.org,
- linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20251027-rk3576-pwm-v3-0-654a5cb1e3f8@collabora.com>
- <20251027-rk3576-pwm-v3-3-654a5cb1e3f8@collabora.com>
-Content-Language: en-US
-From: Damon Ding <damon.ding@rock-chips.com>
-In-Reply-To: <20251027-rk3576-pwm-v3-3-654a5cb1e3f8@collabora.com>
-X-HM-Tid: 0a9a29e3d04203a3kunma54aa20d1201d1
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGRhNHVYYGkJPHU5PHhpNHUhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=SB3GWG7T0SlKULOUlaw954l4NyDL+/Bzf8HSPCc4jUguT6hvhizVzYnaLQSSvWeM9oEUq6ff3MuChk3Ts9xBN5xTncQCaPBtW1XqOVC8PV4UY1lmOCCAB68DO6ZMey7vmjiErK5PUVOukLybRhiWCZOcd53xlul0/VsWkPBCO5o=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=K+6HGTgjaSvG82Coa3pZ418ociHvbPlPsxJ2duK2Hvo=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027150713.59067-1-linmq006@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-This is a multi-part message in MIME format.
---------------PdXS0cE3u8xAHvhAPnkRnp4J
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-Hi Nicolas,
-
-On 10/28/2025 1:11 AM, Nicolas Frattaroli wrote:
-> The Rockchip RK3576 brings with it a new PWM IP, in downstream code
-> referred to as "v4". This new IP is different enough from the previous
-> Rockchip IP that I felt it necessary to add a new driver for it, instead
-> of shoehorning it in the old one.
+On Mon, Oct 27, 2025 at 11:07:13PM +0800, Miaoqian Lin wrote:
+> When simple_write_to_buffer() succeeds, it returns the number of bytes
+> actually copied to the buffer, which may be less than the requested
+> 'count' if the buffer size is insufficient. However, the current code
+> incorrectly uses 'count' as the index for null termination instead of
+> the actual bytes copied, leading to out-of-bound write.
 > 
-> Add this new driver, based on the PWM core's waveform APIs. Its platform
-> device is registered by the parent mfpwm driver, from which it also
-> receives a little platform data struct, so that mfpwm can guarantee that
-> all the platform device drivers spread across different subsystems for
-> this specific hardware IP do not interfere with each other.
-> 
-> Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-> ---
->   MAINTAINERS                   |   1 +
->   drivers/pwm/Kconfig           |  13 ++
->   drivers/pwm/Makefile          |   1 +
->   drivers/pwm/pwm-rockchip-v4.c | 353 ++++++++++++++++++++++++++++++++++++++++++
->   4 files changed, 368 insertions(+)
-> 
-
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8f3235ba825e..2079c2d51d5c 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -22372,6 +22372,7 @@ L:	linux-rockchip@lists.infradead.org
->   L:	linux-pwm@vger.kernel.org
->   S:	Maintained
->   F:	Documentation/devicetree/bindings/pwm/rockchip,rk3576-pwm.yaml
-> +F:	drivers/pwm/pwm-rockchip-v4.c
->   F:	drivers/soc/rockchip/mfpwm.c
->   F:	include/soc/rockchip/mfpwm.h
->   
-> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-> index c2fd3f4b62d9..b852a7b2a29d 100644
-> --- a/drivers/pwm/Kconfig
-> +++ b/drivers/pwm/Kconfig
-> @@ -615,6 +615,19 @@ config PWM_ROCKCHIP
->   	  Generic PWM framework driver for the PWM controller found on
->   	  Rockchip SoCs.
->   
-> +config PWM_ROCKCHIP_V4
-> +	tristate "Rockchip PWM v4 support"
-> +	depends on ARCH_ROCKCHIP || COMPILE_TEST
-> +	depends on HAS_IOMEM
-> +	depends on MFD_ROCKCHIP_MFPWM
-> +	help
-> +	  Generic PWM framework driver for the PWM controller found on
-> +	  later Rockchip SoCs such as the RK3576.
-> +
-> +	  Uses the Rockchip Multi-function PWM controller driver infrastructure
-> +	  to guarantee fearlessly concurrent operation with other functions of
-> +	  the same device implemented by drivers in other subsystems.
-> +
->   config PWM_SAMSUNG
->   	tristate "Samsung PWM support"
->   	depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST
-> diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
-> index dfa8b4966ee1..fe0d16558d99 100644
-> --- a/drivers/pwm/Makefile
-> +++ b/drivers/pwm/Makefile
-> @@ -55,6 +55,7 @@ obj-$(CONFIG_PWM_RENESAS_RZG2L_GPT)	+= pwm-rzg2l-gpt.o
->   obj-$(CONFIG_PWM_RENESAS_RZ_MTU3)	+= pwm-rz-mtu3.o
->   obj-$(CONFIG_PWM_RENESAS_TPU)	+= pwm-renesas-tpu.o
->   obj-$(CONFIG_PWM_ROCKCHIP)	+= pwm-rockchip.o
-> +obj-$(CONFIG_PWM_ROCKCHIP_V4)	+= pwm-rockchip-v4.o
->   obj-$(CONFIG_PWM_SAMSUNG)	+= pwm-samsung.o
->   obj-$(CONFIG_PWM_SIFIVE)	+= pwm-sifive.o
->   obj-$(CONFIG_PWM_SL28CPLD)	+= pwm-sl28cpld.o
-> diff --git a/drivers/pwm/pwm-rockchip-v4.c b/drivers/pwm/pwm-rockchip-v4.c
-> new file mode 100644
-> index 000000000000..7afa83f12b6a
-> --- /dev/null
-> +++ b/drivers/pwm/pwm-rockchip-v4.c
-> @@ -0,0 +1,353 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (c) 2025 Collabora Ltd.
-> + *
-> + * A Pulse-Width-Modulation (PWM) generator driver for the generators found in
-> + * Rockchip SoCs such as the RK3576, internally referred to as "PWM v4". Uses
-> + * the MFPWM infrastructure to guarantee exclusive use over the device without
-> + * other functions of the device from different drivers interfering with its
-> + * operation while it's active.
-> + *
-> + * Technical Reference Manual: Chapter 31 of the RK3506 TRM Part 1, a SoC which
-> + * uses the same PWM hardware and has a publicly available TRM.
-> + * https://opensource.rock-chips.com/images/3/36/Rockchip_RK3506_TRM_Part_1_V1.2-20250811.pdf
-> + *
-> + * Authors:
-> + *     Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-> + *
-> + * Limitations:
-> + * - When the output is disabled, it will end abruptly without letting the
-> + *   current period complete.
-> + *   TODO: This can be fixed in the driver in the future by having the enable-
-> + *         to-disable transition switch to oneshot mode with one repetition,
-> + *         and then disable the pwmclk and release mfpwm when the oneshot
-> + *         complete interrupt fires.
-> + * - When the output is disabled, the pin will remain driven to whatever state
-> + *   it last had.
-> + * - Adjustments to the duty cycle will only take effect during the next period.
-> + * - Adjustments to the period length will only take effect during the next
-> + *   period.
-> + * - offset should be between 0 and (period - duty)
-> + */
-> +
-> +#include <linux/math64.h>
-> +#include <linux/mfd/rockchip-mfpwm.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pwm.h>
-> +
-> +struct rockchip_pwm_v4 {
-> +	struct rockchip_mfpwm_func *pwmf;
-> +	struct pwm_chip chip;
-> +};
-> +
-> +struct rockchip_pwm_v4_wf {
-> +	u32 period;
-> +	u32 duty;
-> +	u32 offset;
-> +	u8 enable;
-> +};
-> +
+> Add a check for the count and use the return value as the index.
 
 ...
 
-> +
-> +static int rockchip_pwm_v4_read_wf(struct pwm_chip *chip, struct pwm_device *pwm,
-> +				   void *_wfhw)
-> +{
-> +	struct rockchip_pwm_v4 *pc = to_rockchip_pwm_v4(chip);
-> +	struct rockchip_pwm_v4_wf *wfhw = _wfhw;
-> +	int ret = 0;
-> +
+> +	if (count >= sizeof(buf))
+> +		return -ENOSPC;
 
-Redundant blank lin. ;-)
+But this makes the validation too strict now.
 
-> +
-> +	ret = mfpwm_acquire(pc->pwmf);
-> +	if (ret)
-> +		return ret;
-> +
-> +	wfhw->period = mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_PERIOD);
-> +	wfhw->duty = mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_DUTY);
-> +	wfhw->offset = mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_OFFSET);
-> +	wfhw->enable = mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_ENABLE) & PWMV4_EN_BOTH_MASK;
-> +
-> +	mfpwm_release(pc->pwmf);
-> +
-> +	return 0;
-> +}
-> +
+>  	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
+>  				     count);
 
-...
+You definitely failed to read the code that implements the above.
 
-> +MODULE_AUTHOR("Nicolas Frattaroli <nicolas.frattaroli@collabora.com>");
-> +MODULE_DESCRIPTION("Rockchip PWMv4 Driver");
-> +MODULE_LICENSE("GPL");
-> +MODULE_IMPORT_NS("ROCKCHIP_MFPWM");
-> +MODULE_ALIAS("platform:pwm-rockchip-v4");
-> 
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	buf[count] = '\0';
+> +	buf[ret] = '\0';
 
-Tested-by: Damon Ding <damon.ding@rock-chips.com>
+NAK.
 
-I have tested all the PWM channels in continuous mode on my 
-RK3576-IOTEST board.
+This patch is an unneeded churn.
 
-Test commands are like:
+-- 
+With Best Regards,
+Andy Shevchenko
 
-cd /sys/class/pwm/pwmchip0/
-echo 0 > export
-cd pwm0
-echo 10000 > period
-echo 5000 > duty_cycle
-echo normal > polarity
-echo 1 > enable
 
-In addition, the patch related to DTS are attached.
-
-Best regards,
-Damon
-
---------------PdXS0cE3u8xAHvhAPnkRnp4J
-Content-Type: text/plain; charset=UTF-8;
- name="rk3576_evb1_enable_all_pwm_channels.patch"
-Content-Disposition: attachment;
- filename="rk3576_evb1_enable_all_pwm_channels.patch"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvcm9ja2NoaXAvcmszNTc2LWV2YjEt
-djEwLmR0cyBiL2FyY2gvYXJtNjQvYm9vdC9kdHMvcm9ja2NoaXAvcmszNTc2LWV2YjEtdjEw
-LmR0cwppbmRleCBkYjhmZWY3YTRmMWIuLmI4ZGI2ZTRjMTI0NiAxMDA2NDQKLS0tIGEvYXJj
-aC9hcm02NC9ib290L2R0cy9yb2NrY2hpcC9yazM1NzYtZXZiMS12MTAuZHRzCisrKyBiL2Fy
-Y2gvYXJtNjQvYm9vdC9kdHMvcm9ja2NoaXAvcmszNTc2LWV2YjEtdjEwLmR0cwpAQCAtMjQs
-NiArMjQsNyBAQCBhbGlhc2VzIHsKIAogCWNob3NlbjogY2hvc2VuIHsKIAkJc3Rkb3V0LXBh
-dGggPSAic2VyaWFsMDoxNTAwMDAwbjgiOworCQlib290YXJncyA9ICJyb290PVBBUlRVVUlE
-PTYxNGUwMDAwLTAwMDAgcm9vdHdhaXQiOwogCX07CiAKIAlhZGNfa2V5czogYWRjLWtleXMg
-ewpAQCAtOTQxLDMgKzk0Miw4MyBAQCB2cDBfb3V0X2hkbWk6IGVuZHBvaW50QFJPQ0tDSElQ
-X1ZPUDJfRVBfSERNSTAgewogCQlyZW1vdGUtZW5kcG9pbnQgPSA8JmhkbWlfaW5fdnAwPjsK
-IAl9OwogfTsKKworJnB3bTBfMmNoXzAgeworCXN0YXR1cyA9ICJva2F5IjsKKwlwaW5jdHJs
-LTAgPSA8JnB3bTBtMV9jaDA+OworfTsKKworJnB3bTBfMmNoXzEgeworCXN0YXR1cyA9ICJv
-a2F5IjsKKwlwaW5jdHJsLTAgPSA8JnB3bTBtMl9jaDE+OworfTsKKworJnB3bTFfNmNoXzAg
-eworCXN0YXR1cyA9ICJva2F5IjsKKwlwaW5jdHJsLTAgPSA8JnB3bTFtMV9jaDA+OworfTsK
-KworJnB3bTFfNmNoXzEgeworCXN0YXR1cyA9ICJva2F5IjsKKwlwaW5jdHJsLTAgPSA8JnB3
-bTFtMV9jaDE+OworfTsKKworJnB3bTFfNmNoXzIgeworCXN0YXR1cyA9ICJva2F5IjsKKwlw
-aW5jdHJsLTAgPSA8JnB3bTFtMl9jaDI+OworfTsKKworJnB3bTFfNmNoXzMgeworCXN0YXR1
-cyA9ICJva2F5IjsKKwlwaW5jdHJsLTAgPSA8JnB3bTFtMV9jaDM+OworfTsKKworJnB3bTFf
-NmNoXzQgeworCXN0YXR1cyA9ICJva2F5IjsKKwlwaW5jdHJsLTAgPSA8JnB3bTFtMV9jaDQ+
-OworfTsKKworJnB3bTFfNmNoXzUgeworCXN0YXR1cyA9ICJva2F5IjsKKwlwaW5jdHJsLTAg
-PSA8JnB3bTFtMV9jaDU+OworfTsKKworJnB3bTJfOGNoXzAgeworCXN0YXR1cyA9ICJva2F5
-IjsKKwlwaW5jdHJsLTAgPSA8JnB3bTJtMV9jaDA+OworfTsKKworJnB3bTJfOGNoXzEgewor
-CXN0YXR1cyA9ICJva2F5IjsKKwlwaW5jdHJsLTAgPSA8JnB3bTJtMV9jaDE+OworfTsKKwor
-JnB3bTJfOGNoXzIgeworCXN0YXR1cyA9ICJva2F5IjsKKwlwaW5jdHJsLTAgPSA8JnB3bTJt
-MV9jaDI+OworfTsKKworJnB3bTJfOGNoXzMgeworCXN0YXR1cyA9ICJva2F5IjsKKwlwaW5j
-dHJsLTAgPSA8JnB3bTJtMV9jaDM+OworfTsKKworJnB3bTJfOGNoXzQgeworCXN0YXR1cyA9
-ICJva2F5IjsKKwlwaW5jdHJsLTAgPSA8JnB3bTJtMV9jaDQ+OworfTsKKworJnB3bTJfOGNo
-XzUgeworCXN0YXR1cyA9ICJva2F5IjsKKwlwaW5jdHJsLTAgPSA8JnB3bTJtMV9jaDU+Owor
-fTsKKworJnB3bTJfOGNoXzYgeworCXN0YXR1cyA9ICJva2F5IjsKKwlwaW5jdHJsLTAgPSA8
-JnB3bTJtMl9jaDY+OworfTsKKworJnB3bTJfOGNoXzcgeworCXN0YXR1cyA9ICJva2F5IjsK
-KwlwaW5jdHJsLTAgPSA8JnB3bTJtMl9jaDc+OworfTsK
-
---------------PdXS0cE3u8xAHvhAPnkRnp4J--
 

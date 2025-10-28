@@ -1,135 +1,169 @@
-Return-Path: <linux-iio+bounces-25581-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25582-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4297C152CE
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:32:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8F6C15312
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 15:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D72801B229C4
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 14:31:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C810189765A
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Oct 2025 14:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914181FECB0;
-	Tue, 28 Oct 2025 14:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969AA32D450;
+	Tue, 28 Oct 2025 14:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="s2MjgxQ6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hsu/3FEj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B479F1C6FE1
-	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 14:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AC222A4E8
+	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 14:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761661850; cv=none; b=rVRcYSaLOAUaLRc5z72NDvfcY2vbShxhRYfukEohfATBhdGF3aNGV3Qi3xigKVP2uvHGYDCsTk7u0OJsE7TfPP2TKqgsZS+VEoOzst7WHq3BwMEtIrfqPbqPi73luNmMOdNwUMMpyFyl/hzsRmfKDUdwX36zMyOGoHf15P1HklU=
+	t=1761662211; cv=none; b=BWVAb4X2GcA+ysbF3kUXOyukqzXJfIvGm1rk5L7E4t3ECuWzhJRf0DVczuTg2uE6RTGst9g6hOV5ptqa1CDin32Flz7QlLGbhmTJWqHcFTVsOYhMyItiH5DYG9F21wcsmxCbygmTfKM4b9A5kemKP5MqjT8mosZqPxjOst+3BSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761661850; c=relaxed/simple;
-	bh=/EnaIRg4we5FEW80Ou7ogsSNVQciSKk7T2iuyHX0uOI=;
+	s=arc-20240116; t=1761662211; c=relaxed/simple;
+	bh=2GvH00DhaFoAyZpv95ecvQbVJDyfnIvOh5tRoc/cRIU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mb1kpw/chdXL5KgU+iDooYfpIb1gybJ1IQFJC1NTxlwGZN78ZpWnMnJngJGpCqaebkppPFJ7goKsTexNhKnuZfNPP6Lm6v5WGveDWP/WE2cHyRYcjBW9VxRLrWefyINF6wyJdcw9MdIG74QOPNJliJ/UwWf8WM4rl3unHXqvoMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=s2MjgxQ6; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-378e8d10494so48525371fa.2
-        for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 07:30:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761661847; x=1762266647; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RVxwfZTDpc7M4pQsaPFzCx/W1h+13bfqb6IBb/Bsbhw=;
-        b=s2MjgxQ6lTaK6dun6iIHp7vmhEed6zrkl9FD7AP7/pt8N3Nos53voI7c4s0JhMrIQK
-         KftvX3G1+qbLqG0Ve4fo08Pg/FpSuaq7rtZynrv7eD6NWKBrjWLsiArPkheUp/91vKz3
-         bNB3tWgt7Q4iSnpnZKSjB+uLcKONRZCkBIS+QnRt3KNxGoXrp8hb05ma96QaVUwKnYpd
-         hkltdaGRBbgCCqVbVfQA+KOsR9la7PmqQ0zJYMoRucTqfO0NobO+etuO8i7053KCjLZ2
-         kWMQLVqGMmrKKXBogFQqEOBJGkPuKtT78HBOh2wmXzdevwcnhWI7KnxN2j3ty4TVTlhk
-         UVOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761661847; x=1762266647;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RVxwfZTDpc7M4pQsaPFzCx/W1h+13bfqb6IBb/Bsbhw=;
-        b=XkZ08IWH2ffIdib0pcwduXonCFec3jE3RG9WDjapgSOz3aDjLpDzmFdczODPB/6gAU
-         xWfXI7BC/tqJN+p3AJNjxsM02++JzVkiw8mWe3UNNCC8bGcOhNRrCyGTaCF4fgvTGi8e
-         I79Qz17x2XAyYU5gg3C8UqgLe0M4xn+/eXGxkyokBjYh0cpztfV9E36LGzfvE6sJa9r6
-         /0bWRIDocfUd23nH4PSQOxJ0js+SARKQfFTfwz+bwPh/PbbIdL6/r6V67cve/0M6vg+s
-         AvCVBjNkqetUU0vzbf60FqrhsNGoSxOExI1YKLHOXV0T81fc+k8tkNWtVTYj7eqxgubq
-         ohjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVljack+zmxvkSyXDDAy8EJuueQqiKB1S8AUqo9irfkmuFidpCpI24aVpaOdYzGoSsMzNnd6z8/hDw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQuT/aUuWtH6BPRA5jK4sAHonaMZwu9Psu59I8tDhY4714ZOzb
-	unLoN2VaO+6saE7vhy1VeQMPekGBuo0B0Nilmb7zZSlXlCOLu3bDd86zRwW2NNPj9JZA8EQBaAe
-	5SUVJt03XQwG7OPO/kX3ze7v5L6wGq2naVlGEaqH5Rg==
-X-Gm-Gg: ASbGncvQFK6QVFZ3Z5qjNtkSnPGF/Rb6kwT1n6xahSHOGjMW2wErEVPxLCNkFSbk/5L
-	YLZ2RDJinqshxortXZ3TvWKaR42a8fgVbc8Tyh1nO3ZiFW+Hj7aMzWS22TfuXNTnuPXSJeAX5Qq
-	bKJVAZyueY1bObcZsPe6iY2PdhEFC0leUo4b+b5vGpELOJxDxSyO2I0f1/TF6vIPw2qhPxzkh4D
-	sPQ4rz7iHJqZF+Y0Wd/9lKA4SixgUW3vqE0A9Rza/pGnqQwH4AvH4MmKrptLmS6LkRjxAA=
-X-Google-Smtp-Source: AGHT+IGfUDzyVfhtzulYZCc6iSfT211wGg2uBIly7fuTRZ7yuQGh9plAyDcmAhZ0TpLkRKajO5Ig9eKhL0B7O+boJMQ=
-X-Received: by 2002:a05:651c:23d2:20b0:378:e0e0:3b3a with SMTP id
- 38308e7fff4ca-379076be317mr9148741fa.14.1761661846757; Tue, 28 Oct 2025
- 07:30:46 -0700 (PDT)
+	 To:Cc:Content-Type; b=uSvvp0n7V9GdxZ9W7Jz0AELN2BlMXlXMg66LA7ZZQjJvTtldP+rmGbi5GstxNIdu7NZGlHySOm1XNO68CiBvMN2szFQ2SWOwOJD8BpuqY8IUlT5QvaoEMl73jRTcFSgHYCbEvFRlj2GArj4gyvnCTgoz+J0VpulgXXlKKzifhu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hsu/3FEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF088C4CEE7
+	for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 14:36:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761662210;
+	bh=2GvH00DhaFoAyZpv95ecvQbVJDyfnIvOh5tRoc/cRIU=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=Hsu/3FEj3tqI6gOiQPxoPutJe4NoOm4sYCbJtBBL/TO3+HIj6QdbZ+Rzz8QwpZQqP
+	 YunqXiY86Amiph0eOF7gDuoFv8mo+E0ZoR1vLXBbTedeJtH48jeHYoHox6WUQWFKcE
+	 N9UxCe8xeJMnmwtDbZPPvHQJ91n8qUMOz41T7NkvZV/Fy00NWenRI64XAE7JYWb11S
+	 IlpA4EM24ndfYOtrh9NMYMlvorMHkKPyRo2iBloA67lG+ODczYgxjsKulYsA+aCzG9
+	 OsPWSFsC44BXU2DUuSHqdC3nBYTxW7bDccXWaG9wR05Fhqp24y2KM7aFzJz0tHaKyg
+	 1OT4vxlhe4UuQ==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-378d710caedso66766201fa.3
+        for <linux-iio@vger.kernel.org>; Tue, 28 Oct 2025 07:36:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWcUXcD9Zv9v+2QEUV/PdtS/TPgxcc4GcyCu/6nQ5/36iq/3LztWKQ7r7dfTBED/ZMmwogk1YO3ybg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFUZAMDE/ig8Foubb0Jr3DvefGAJjttoLrUomZdYNYFrWaLpAq
+	vR7fwOIdrBkq+G8/xizrzAW3bOlUcU/LemTaq5tZ2XgV9u49AKDa8nElHXyDO2OW+pYCEL6gafu
+	ZyjfZx8rmPCbc+EV9m7w/TzGmLsnvJEc=
+X-Google-Smtp-Source: AGHT+IFagmaN5pc8iTFpBam1mflqLJDFKJBmwYlCcnaXRBDuRgltQZk228NAOylmAF/pciOjvgmG1eG++a7Vlch3b2o=
+X-Received: by 2002:a05:651c:25c4:10b0:378:df4b:569 with SMTP id
+ 38308e7fff4ca-3790779e617mr8935051fa.43.1761662209194; Tue, 28 Oct 2025
+ 07:36:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251027-fix-bmc150-v1-1-ccdc968e8c37@linaro.org>
- <aP9dqnGb_tdWdr7y@smile.fi.intel.com> <CACRpkdb9GYL3dQzn28Q5E_-keJdLLA+TiXxTuNf1aaevKqHJYA@mail.gmail.com>
- <aQCqOJWQpvgI1o1q@smile.fi.intel.com>
-In-Reply-To: <aQCqOJWQpvgI1o1q@smile.fi.intel.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 28 Oct 2025 15:30:35 +0100
-X-Gm-Features: AWmQ_blj3ecUmJnRC1MKqgYg_3nbYbn6QScF7hxV1R6JPg_7pa3_fIhb0qICMdE
-Message-ID: <CACRpkda6HFnFPHELYAPbco7x4Kr1Ri9PxM4rePOGfihV0mef0Q@mail.gmail.com>
-Subject: Re: [PATCH] iio: accel: bmc150: Fix irq assumption regression
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+References: <20251027124210.788962-1-wens@kernel.org> <20251027144327.09f59982@jic23-huawei>
+ <aQB5Dw2Eg0tVdNow@smile.fi.intel.com> <5e3bf0d87ae1b539d134edefee67d3e3ef3b46cb.camel@gmail.com>
+In-Reply-To: <5e3bf0d87ae1b539d134edefee67d3e3ef3b46cb.camel@gmail.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Tue, 28 Oct 2025 22:36:35 +0800
+X-Gmail-Original-Message-ID: <CAGb2v676eOkPOc33+FMX6k9562gn34+MR15t-iucLjd0qQKs7Q@mail.gmail.com>
+X-Gm-Features: AWmQ_bkJ_P7M7poPJ00fR776xU6XPnoNYlaeTx79cNFzr9mfOUrn0-hhdF9xEcM
+Message-ID: <CAGb2v676eOkPOc33+FMX6k9562gn34+MR15t-iucLjd0qQKs7Q@mail.gmail.com>
+Subject: Re: [PATCH] iio: core: Use datasheet name as fallback for label
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, David Lechner <dlechner@baylibre.com>, 
 	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Stephan Gerhold <stephan@gerhold.net>, linux-iio@vger.kernel.org, stable@vger.kernel.org
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 28, 2025 at 12:34=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
-> On Mon, Oct 27, 2025 at 06:24:25PM +0100, Linus Walleij wrote:
-> > On Mon, Oct 27, 2025 at 12:55=E2=80=AFPM Andy Shevchenko
-> > <andriy.shevchenko@intel.com> wrote:
-> > > On Mon, Oct 27, 2025 at 11:18:17AM +0100, Linus Walleij wrote:
-> >
-> > > Hmm... Isn't this already being discussed somewhere? I have some d=C3=
-=A9j=C3=A0-vu.
-> >
-> > I brought it up on the PostmarkeOS IRC, otherwise I don't
-> > know.
+On Tue, Oct 28, 2025 at 5:22=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.com=
+> wrote:
 >
-> It might be that it was a cross-mail that describes the same issue in ano=
-ther
-> IIO driver.
-
-Hm, I'm a bit worried that this may be a generic problem
-in several drivers that now think they can be used without
-IRQ but actually crash if you try to do that :/
-
-> > > Wouldn't check for 0 be enough?
+> On Tue, 2025-10-28 at 10:04 +0200, Andy Shevchenko wrote:
+> > On Mon, Oct 27, 2025 at 02:43:27PM +0000, Jonathan Cameron wrote:
+> > > On Mon, 27 Oct 2025 20:42:09 +0800
+> > > Chen-Yu Tsai <wens@kernel.org> wrote:
 > > >
-> > >         if (!data->irq)
+> > > > Some IIO drivers do not provide labels or extended names for their
+> > > > channels. However they may provide datasheet names. axp20x-adc is
+> > > > one such example.
+> > > >
+> > > > Use the datasheet name as a fallback for the channel label. This ma=
+inly
+> > > > benefits iio-hwmon by letting the produced hwmon sensors have more
+> > > > meaningful names rather than in_voltageX.
+> > >
+> > > I definitely don't want to have different behaviour for in kernel req=
+uests
+> > > and for people reading the _label attributes.
+> > > https://elixir.bootlin.com/linux/v6.18-rc2/source/drivers/iio/industr=
+ialio-core.c#L1232
+> > > would need modifying to allow for the sysfs attributes to be created.
+> > >
+> > > In general I'm not sure I want to do this.  Datasheet names can be
+> > > exceptionally
+> > > obscure which is why we've kept them hidden from userspace.  At least=
+ dts
+> > > writers
+> > > tend to have those names on their circuit diagrams and tend to have
+> > > datasheet access.
+> > >
+> > > Let's see if anyone else has feedback on this suggestion over next we=
+ek or
+> > > so.
 > >
-> > But this driver does not store the IRQ number in the
-> > instance struct because it isn't used outside of the probe()
-> > function.
-> >
-> > The information that needs to be stored is bool so that's
-> > why I stored a bool.
+> > This is an ABI change without
 >
-> I understand this, but I think storing the IRQ number is tiny better
-> as we might have a chance to need it in the future.
+> Indeed...
+>
+> > 1) proper documentation;
+> > 2) backward compatibility (i.e. there is no knob to opt-out the change,=
+ or
+> > make
+> > it opt-in).
+> >
+> > In this form is definitely NAK.
+> >
+> > If you wish something like this, better to have a separate attribute. B=
+ut the
+> > problem maybe also that the same component (or 100% compatible one) mad=
+e by
+> > different vendors and have different datasheet names. This means that t=
+he new
+> > attribute may still be ambiguous. Hence I see a little sense to have it=
+,
+> > rather
+> > better to have these links / names to be put in DT schema. At least the=
+re we
+> > have different vendors and compatibility mappings.
+>
+> I mean, we already have labels for channels so this all looks like a bit =
+of
+> overlap to me (though I see the temptation of going this way). For
+> extended_names, there was a reason why it came as a fallback for .label()=
+ [1].
+> For this, I'm not really convinced for now. There is also at least one dr=
+iver
+> already exporting the .datasheet_name as a label [2] so maybe we should d=
+o that
+> instead (again, I understand that doing it like this we only need to chan=
+ge one
+> place...)? Otherwise we should clean up those and that should definitely =
+be part
+> of the series (if we even consider this).
 
-Fair enough, it's a common pattern so I'll rewrite the patch
-like this!
+Thanks for the pointers. In my case I think either solution works.
 
-Yours,
-Linus Walleij
+The axp20x-adc driver currently provides _no_ labels. Would adding labels
+now be considered backward incompatible?
+
+
+Thanks
+ChenYu
+
+> [1]: https://lore.kernel.org/linux-iio/20210618123005.49867-1-paul@crapou=
+illou.net/
+> [2]: https://elixir.bootlin.com/linux/v6.18-rc2/source/drivers/iio/adc/xi=
+linx-ams.c#L539
+>
+> - Nuno S=C3=A1
 

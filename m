@@ -1,86 +1,83 @@
-Return-Path: <linux-iio+bounces-25608-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25609-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CFBC18FA3
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 09:21:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19FFC19016
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 09:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 519AB563D7E
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 08:14:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FAA11C8706D
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 08:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6242F5469;
-	Wed, 29 Oct 2025 08:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B105313E34;
+	Wed, 29 Oct 2025 08:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Eq6sX/QO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A1quZ97a"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2979315789;
-	Wed, 29 Oct 2025 08:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C15313E22;
+	Wed, 29 Oct 2025 08:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761725246; cv=none; b=tMyKEXmFoWw/rSo9qC6f40sh+21hJKxAB0tco1y0wq7uQ+7BwwWV7UTHEl1vjZDG7zBN0oH2BQ8j/X5yCy65InggU3Qea81JRathliVjqVUzeJSacmQ5Gxj040Sfu/5rjDKoimrlaUwBDKCmxBbbevZUvx9pWECaxhycGGlD8HM=
+	t=1761725637; cv=none; b=iA3jBL62bjTRXpFvSFZGilfwp8EBIWA6arX8DMrCqlimUvIKOUP6gtD357hB/dZ94MAETLPj+Oy0J1jsXqYmU4xOv/99P+m/jEk4/d0sO31r8qlrLw2eD6q1r1ha6SOYN4JxXdLahYrCou38z58OlQ5OrEldTsEC6ccCvAWHQj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761725246; c=relaxed/simple;
-	bh=28lsY/xP5QLqKPIvrhKvHJ0CklqT6R1GJ9nsZJRxcNw=;
+	s=arc-20240116; t=1761725637; c=relaxed/simple;
+	bh=Dzv/pCCsahShivNzdwwnXPDb373keXPupORPmlHLcHA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lW3yeEIXS91fLn6mCtlMO1z9/WlYC5wVDP2gPkGTmCppySI4wa1ME+4fuBEpj8zQJT7/p7FvRfECYwFWSsaJggKBMDPFHaU/DQZpD1pVUsWJ57WVdASfETVaSzghkc8zPGedIlGI8wpcVyfEatj/W4YnbkrjyVU+3Gll54jgZB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Eq6sX/QO; arc=none smtp.client-ip=198.175.65.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=QRnbEy4UAP10EwGBCwJRgUzUCmwM/nCv+srZUJIwMHTg4HkJN5NAl3Axom5tPzaQT36LeR7Kja49poX9Gj6tIaJWXU9LEv2ut1D98X0L0XGu9FDfXSw6DcL8dP/ChBsC9/htVEPygrc20k7TzGhl8dLra/k1s+534/PETPHPZ1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A1quZ97a; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761725245; x=1793261245;
+  t=1761725635; x=1793261635;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=28lsY/xP5QLqKPIvrhKvHJ0CklqT6R1GJ9nsZJRxcNw=;
-  b=Eq6sX/QOReyMh7RXOv+OE+vVYTwCLnzEH9ytQ96bX++kpEO+x00zSEWn
-   QtrGyT8P9rerJJLJLUPDeU9Cwwwh9LWL1klRif6pfsIASQWgi2NnnAL2H
-   oRUYBAn7KsQrcSrkD3jhOu0tyJgqlMddUpv4q5jMNT1mBW1GC7YLN6vAi
-   8A6iXFgYuP1RO+xHescgBDEuyn0BNDawtgFQb6znDuvbN/KDP6GTxdzal
-   LtBqGR9PurJCQtnomVZ/zlJlwBfBgZHSOJo/7jtM80PW/tHP/MZS+mVwV
-   QQ0SJqnPUFzLNiu5qruhIjBGEt9hvxqqPfB3YDQbM95DP1VvWN2DrTum3
-   A==;
-X-CSE-ConnectionGUID: pTmX07EATMiJLX5dCj72PA==
-X-CSE-MsgGUID: 1BeUafmXR4uJ2L4hckRYhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="67480214"
-X-IronPort-AV: E=Sophos;i="6.19,263,1754982000"; 
-   d="scan'208";a="67480214"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 01:07:24 -0700
-X-CSE-ConnectionGUID: LIDXKcu/RGm3nxaG4wzKIg==
-X-CSE-MsgGUID: tiwr6C3HS+Wk4w+q89cWBg==
+  bh=Dzv/pCCsahShivNzdwwnXPDb373keXPupORPmlHLcHA=;
+  b=A1quZ97aB2MKdWvYVaMEMvDTZJ9cfqXV1NvLu9u78FtJqPlo0+u8IO4o
+   HRTIWJlk6kLk1shjWYXg3q8olOG4GzGt+bJKPpgwEyKSYjUHqi5zZ0YI4
+   H1gzdd96j2cLcWUH9/ru2hIapyY36GWbDxx4bgnEVQCUMU+xsa6K8gOvh
+   klp8BzYO+4y5gkygpPGySDY4rv6aLfVR6SZ3nPdlNhecV8syu0WN7OJna
+   koePKLSMEEhYNgwCrByLN81aGPYUjnB3UbvpLToX4Zklnnw+SpicNa83W
+   ucs+ZStHXZ2mVIDinka4Ct6dQ7MaqgZEiOmZbflO4V+/Y/Eesn9SMm0Dv
+   w==;
+X-CSE-ConnectionGUID: /RfdCP+uT8KhvuK3XoIq+w==
+X-CSE-MsgGUID: URZ9qdm5SMu5lM3P488PYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67675818"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="67675818"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 01:13:55 -0700
+X-CSE-ConnectionGUID: TrhRsUlVSxmcy34w0n0yTQ==
+X-CSE-MsgGUID: hXGR3vlTSZO3A2t9pb8FSQ==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,263,1754982000"; 
+   d="scan'208";a="216247061"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.248])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 01:07:20 -0700
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 01:13:53 -0700
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vE1DA-00000003Y70-4Bfj;
-	Wed, 29 Oct 2025 10:07:17 +0200
-Date: Wed, 29 Oct 2025 10:07:16 +0200
+	id 1vE1JW-00000003YGY-0x7h;
+	Wed, 29 Oct 2025 10:13:50 +0200
+Date: Wed, 29 Oct 2025 10:13:49 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+To: Sukrut Heroorkar <hsukrut3@gmail.com>
+Cc: Nuno Sa <nuno.sa@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v7 5/5] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <aQHLNIKK4EknyWEr@smile.fi.intel.com>
-References: <20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com>
- <20251027-i3c_ddr-v7-5-866a0ff7fc46@nxp.com>
- <aQCgD3iVOXoNr7uY@smile.fi.intel.com>
- <aQDhv/r0l0oOjb9t@lizhi-Precision-Tower-5810>
+	Andy Shevchenko <andy@kernel.org>,
+	Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
+	"open list:IIO BACKEND FRAMEWORK" <linux-iio@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, shuah@kernel.org,
+	david.hunter.linux@gmail.com
+Subject: Re: [PATCH] iio: backend: document @chan in
+ iio_backend_oversampling_ratio_set kernel-doc comment
+Message-ID: <aQHMvdQXD4eRvPSV@smile.fi.intel.com>
+References: <20251029075117.104758-1-hsukrut3@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -89,71 +86,21 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aQDhv/r0l0oOjb9t@lizhi-Precision-Tower-5810>
+In-Reply-To: <20251029075117.104758-1-hsukrut3@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Oct 28, 2025 at 11:31:11AM -0400, Frank Li wrote:
-> On Tue, Oct 28, 2025 at 12:50:55PM +0200, Andy Shevchenko wrote:
-> > On Mon, Oct 27, 2025 at 04:08:33PM -0400, Frank Li wrote:
-
-...
-
-> > + time.h // for time constants
-
-First of all, please, please remove the context you are agree with
-(non-replying to).
-
-...
-
-> > > +struct mmc5633_data {
-> > > +	struct device *dev;
-> > > +	struct i3c_device *i3cdev;
-> > > +	struct mutex mutex; /* protect to finish one whole measurement */
-> > > +	struct regmap *regmap;
-> >
-> > regmap has struct device, i3c_device presumable also, and here is struct
-> > device. Don't we have some overhead?
+On Wed, Oct 29, 2025 at 01:21:16PM +0530, Sukrut Heroorkar wrote:
+> Buidling with W=1 reports:
+> Warning: drivers/iio/industrialio-backend.c:727 function parameter 'chan'
+> not described in 'iio_backend_oversampling_ratio_set'
 > 
-> i3cdev is used for check it is i2c host or i3c host. If device connect to
-> i2c host, i3cdev will be NULL.
-> 
-> Only if connect to i3c host, driver can use i3c transfer api. The HDR
-> command is quite difference with SDR or I2C, which hard to wrap into regmap.
-> 
-> Anyway we need varible to indicate i3c or i2c. struct i3c_device *i3cdev
-> will be simple and needn't force convert struct device in regmap.
+> The @chan parameter was added when iio_backend_oversampling_ratio_set() was
+> updated so the contexts could specify the channel, but the parameter was
+> never documented. Document @chan to silence this warning.
 
-This answers only to part of my question. Okay, let's leave it there, why do we
-need an explicit struct device then?
-
-> > > +};
-
-...
-
-> > > +static int mmc5633_suspend(struct device *dev)
-> > > +{
-> > > +	struct mmc5633_data *data = iio_priv(dev_get_drvdata(dev));
-> >
-> > Than regmap will be derived directly from a device.
-> 
-> I have not got your idea. Can you point me a example?
-
-dev_get_regmap()
-
-> > > +	regcache_cache_only(data->regmap, true);
-> > > +
-> > > +	return 0;
-> > > +}
-
-...
-
-> > > +	return mmc5633_common_probe(dev, regmap, "mmc5633_i3c", i3cdev);
-> >
-> > struct i3c_device doesn't have a name, does it?
-
-No answer?
-
+There is already more comprehensive patch available:
+https://lore.kernel.org/linux-iio/20251028093326.1087660-1-kriish.sharma2006@gmail.com/
 
 -- 
 With Best Regards,

@@ -1,123 +1,133 @@
-Return-Path: <linux-iio+bounces-25623-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25613-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4A9C1B7CD
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 15:59:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06ACDC1B9A7
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 16:20:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E836F1887B6E
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 14:54:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD630466DE8
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 14:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E306834B41C;
-	Wed, 29 Oct 2025 14:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424C12798EA;
+	Wed, 29 Oct 2025 14:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="u4f+gfDT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="STdMHBQT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A7C34A793
-	for <linux-iio@vger.kernel.org>; Wed, 29 Oct 2025 14:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A91263F44
+	for <linux-iio@vger.kernel.org>; Wed, 29 Oct 2025 14:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761749239; cv=none; b=UdMHmP0FvBHwKxQpQUmWvj2iJYUnBIp+UTefHwljusfZEbzleyF3Lj5gWRBn98g/R7iGXnxsr3oLFs0tMy3kEzgrhYlEDcqjJ/AQGZ9GfuAGW9jcl9iKQPCfk56AM+JGNT654PPEX0KfMrdH3nEcxzBF3lbfvkwXZS/flGCR578=
+	t=1761747603; cv=none; b=vBHDz/4QToMP7nCX3C4ptnt9dH8RN+LQ3JzmNnqeBMWZ/l3ksUB+qtECtMrE+dDPyhdqUB04H3GpIsk9r3TSiFjovAUlJk6e9VaMwSMLzvHXIiYc+M/eYOG81rNO5Y7rn91u4EYHFuBt9auMZeV0uGlK/Yf8jT+chiz0zBcdmlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761749239; c=relaxed/simple;
-	bh=Iq9TOV4FcGWhqql6PtEpR26BCz7j6f4oU9hSvDKk5F4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hswAplYu+Xq0pjd6YG26r7zu7HfBv0XD4CEwYGwERM5/m1L4c144yLo17AeJcR3exG+oOxsp1YXWXGu7Kv8hlYT5ZOEzdcNWdXZfEhDcC0mUP6JMWyrAQ1Bv1NL1ccW40bymwELxBNWyx39xZGRbXU4kClZL9TWxLjkmr4MTRv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=u4f+gfDT; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 750034E413CD;
-	Wed, 29 Oct 2025 14:47:16 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4976B606E8;
-	Wed, 29 Oct 2025 14:47:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DE80F102F24F9;
-	Wed, 29 Oct 2025 15:47:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761749235; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=32YjyCAMTifsZOSn5l7Q5VxrAGZMoiALl3BPu6raayM=;
-	b=u4f+gfDTXduqu9W7spUIVYKchETYLNw5B2oR8VBj90ITnXSO1Y16cEBeONKQZrDZnfuwqC
-	Xv4qm9pYmTJ9OWEoedNtYUhXC+DtjqvhoHc21uqJlxqiLs1DYETffMGNB31fQfVjUMlxMz
-	01hHuByXGZu4RlNaEw12qLrg5jx3RdHVswTpVM09T4Kx39xQiMlMxlnib0wiBzREG6kH7E
-	t6cnsgah5vuLOjJZNoggroLarmHEc5wJAyMTNwPNmCeWV4IIRIi+feUo5ZNl0gfOQsOaXY
-	Y3ivh2xfYVVoThuWA+v7WoguQD8PrbV9vCFSxnGdcfxhjYSG4rsC4PUC7z/wGA==
-From: "Herve Codina (Schneider Electric)" <herve.codina@bootlin.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: linux-iio@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pascal Eberhard <pascal.eberhard@se.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v2 3/4] ARM: dts: renesas: r9a06g032: Add the ADC device
-Date: Wed, 29 Oct 2025 15:46:43 +0100
-Message-ID: <20251029144644.667561-4-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251029144644.667561-1-herve.codina@bootlin.com>
-References: <20251029144644.667561-1-herve.codina@bootlin.com>
+	s=arc-20240116; t=1761747603; c=relaxed/simple;
+	bh=1CX+8+kOSf10qsVFbiIqXKLPwxKNZKPK3M5tdY2U3zQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qUFmoQtKYkkR01qIsjS6EFiYAn9zZoWbqpulh6g9MbrCsE8jJKnouL80WLUAinmJwumZ30fkmU768i4n8WZ1CUISl8PGWIEeYhmUhricaYpXkah5uJpylg+2do0CR9bPMnYLVKxrh2omgyJ32tZrz+K40uU94TEiEfYKDyFyuKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=STdMHBQT; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-59093250aabso7954411e87.2
+        for <linux-iio@vger.kernel.org>; Wed, 29 Oct 2025 07:19:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761747598; x=1762352398; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oOeCj7atBm+jp74qXquxytnJSCplsW/eyoN4u7SHchg=;
+        b=STdMHBQT12yVVhenBH9kjtzktzfxhBOPKOo9apSlTLueZcsupwgg31te2NoZ1MYB8V
+         MSCDsKHm3FOvPOU5eIBCDfHMdlRjXQ/WaIfGw7guwrNmTT3BzH6WS72IQ0rngTeIuIKG
+         geIpbGtk9/KkbvqJ4ys0/EumZ1gCsCKUv+qxxEKzmywlju+PTnHhCdTYr2IGsTbcyPmT
+         1dv7mnHne5W/9nCZuPRS5MOiokEytiREtrQcf4/hBmfAUMtMcLusUKfTMKcUvAn01g/8
+         YYl2+QIB5DhWKuvrDaYdcUxOB+ZWEQK/1a4i5MEDu6ruYYw7g+OmbE5blhnTFS7GFVRk
+         77Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761747598; x=1762352398;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oOeCj7atBm+jp74qXquxytnJSCplsW/eyoN4u7SHchg=;
+        b=RDMwoejO0/qeTS9Rg8qigloDXj1ebAcXzMbPXRi8sKnXdsFEsm6iudj5h1924rwv9B
+         FvICuclGUDI0V7prWMRtC4A2Vy5s6qZeowxzhrcL1TPZ4a0jCmgy8nHp504pPX6172ER
+         d+GZfZZRu7kPliG0fRV/AZsY8ZEjn7CX/WTBwVC3kLQ/d17+DoLRNOg/WQbh6XMZYTmg
+         IIXNZCIO2qrewIv9/cAoyXD8/6I1VkCETHYV53EivmBzmkQ2Mbfo4XLV0JAE1jfnpPle
+         SBmoBo96tYEwMUmcvFBFRNXmt/43Vg5zVz2h5nYYgbAkYO82zJfEEQIsQRp0AYE2rnG+
+         L+nA==
+X-Forwarded-Encrypted: i=1; AJvYcCWqlkG0hwmjvPOYUDyfs9mOsB5flI3ppyKPw4LvYZm8n16IZQfrG4pXZAenJdZAEu57dhPPCboYZmo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOoLBUbk4VAJi+LcsdLRbL+4w7LbRGloqQlXIv22EqRRwe8b3S
+	IBlc0bnuby6du0xzgOKxrWK2u1idkFXnhgYUPbT+oRNjwQoF/iAiLQ2u/zJJ1NBozJUTGHtisG/
+	hiqk4jqVVZVxffncl1m41vSi3Sl/l0sbVUHWB5+VvKA==
+X-Gm-Gg: ASbGnctbjaYSWVMCtZ0QgEI1vScnHogoRYSNGjm8wS7HDJTsBOob9EnT4PXIqTo3hEM
+	oWfduZ+j4tap6qs5Af4ZuVAxFbO0oA4AhDRxYg95+rGq06vRs0toS4WVHuco4MPQQC7KdQFm0LC
+	QH6PW/vx1+vDYcjj2j5jYbSjN76BNw8inMHYvH6q1xiJUOtVOdpwAbo+sL4LPnMO39o4GJOui+Q
+	bF6IROwuF7yHXd0JUpqoXseU3zC9VBw6ncHJgdEB6Bp1NaxBMCW5PYoN4+NBs4PrMNwy1QmZxna
+	PrltKw==
+X-Google-Smtp-Source: AGHT+IG59+bQUerf6uihfCFWCYSjQICr8Xo4ZbiwSS1E65/x2rl3ls+2t5ioYCJKzMBcQXa5Sk43LYjN69G8TJb8SWg=
+X-Received: by 2002:a05:6512:3055:b0:592:fc68:5b9d with SMTP id
+ 2adb3069b0e04-594128623cfmr1174582e87.10.1761747597543; Wed, 29 Oct 2025
+ 07:19:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <cover.1761588465.git.geert+renesas@glider.be> <03a492c8af84a41e47b33c9a974559805d070d8d.1761588465.git.geert+renesas@glider.be>
+In-Reply-To: <03a492c8af84a41e47b33c9a974559805d070d8d.1761588465.git.geert+renesas@glider.be>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 29 Oct 2025 15:19:45 +0100
+X-Gm-Features: AWmQ_bk2MMp0FQz04qrj-8hmhOAMRkHeQZjiqCVvFpO75M_-67m5zTnOfqmkGUQ
+Message-ID: <CACRpkda6ykSZ0k9q4ChBW5NuPZvmjVjH2LPxyp3RB-=fJLBPFg@mail.gmail.com>
+Subject: Re: [PATCH v5 07/23] pinctrl: ma35: #undef field_{get,prep}() before
+ local definition
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	David Miller <davem@davemloft.net>, Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Jacky Huang <ychuang3@nuvoton.com>, 
+	Shan-Chun Hung <schung@nuvoton.com>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>, 
+	David Laight <david.laight.linux@gmail.com>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Kim Seer Paller <kimseer.paller@analog.com>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Richard Genoud <richard.genoud@bootlin.com>, 
+	Cosmin Tanislav <demonsingur@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
+	Jianping Shen <Jianping.Shen@de.bosch.com>, linux-clk@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org, qat-linux@intel.com, 
+	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org, 
+	linux-iio@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The ADC available in the r9a06g032 SoC can use up to two internal ADC
-cores (ADC1 and ADC2) those internal cores are handled through ADC
-controller virtual channels.
+Hi Geert,
 
-Describe this device.
+thanks for your patch!
 
-Signed-off-by: Herve Codina (Schneider Electric) <herve.codina@bootlin.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- arch/arm/boot/dts/renesas/r9a06g032.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+On Mon, Oct 27, 2025 at 7:43=E2=80=AFPM Geert Uytterhoeven
+<geert+renesas@glider.be> wrote:
 
-diff --git a/arch/arm/boot/dts/renesas/r9a06g032.dtsi b/arch/arm/boot/dts/renesas/r9a06g032.dtsi
-index 13a60656b044..2c1577923223 100644
---- a/arch/arm/boot/dts/renesas/r9a06g032.dtsi
-+++ b/arch/arm/boot/dts/renesas/r9a06g032.dtsi
-@@ -290,6 +290,16 @@ i2c2: i2c@40064000 {
- 			status = "disabled";
- 		};
- 
-+		adc: adc@40065000 {
-+			compatible = "renesas,r9a06g032-adc", "renesas,rzn1-adc";
-+			reg = <0x40065000 0x200>;
-+			clocks = <&sysctrl R9A06G032_HCLK_ADC>, <&sysctrl R9A06G032_CLK_ADC>;
-+			clock-names = "pclk", "adc";
-+			power-domains = <&sysctrl>;
-+			#io-channel-cells = <1>;
-+			status = "disabled";
-+		};
-+
- 		pinctrl: pinctrl@40067000 {
- 			compatible = "renesas,r9a06g032-pinctrl", "renesas,rzn1-pinctrl";
- 			reg = <0x40067000 0x1000>, <0x51000000 0x480>;
--- 
-2.51.0
+> Prepare for the advent of globally available common field_get() and
+> field_prep() macros by undefining the symbols before defining local
+> variants.  This prevents redefinition warnings from the C preprocessor
+> when introducing the common macros later.
+>
+> Suggested-by: Yury Norov <yury.norov@gmail.com>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
+Do you want me to just merge this patch to the pinctrl tree or do
+you have other plans?
+
+Yours,
+Linus Walleij
 

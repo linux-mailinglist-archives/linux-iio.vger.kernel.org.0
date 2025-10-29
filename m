@@ -1,118 +1,218 @@
-Return-Path: <linux-iio+bounces-25625-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25626-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D01C1BB55
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 16:38:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61FDCC1BFA7
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 17:13:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7956F5A0CA3
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 14:57:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E96C85E5613
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 15:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2132C33B6E4;
-	Wed, 29 Oct 2025 14:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8B733DEC8;
+	Wed, 29 Oct 2025 15:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="MTnCWUVI"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="h3cNv8MD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010026.outbound.protection.outlook.com [52.101.84.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7DE2BEC30;
-	Wed, 29 Oct 2025 14:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761749589; cv=none; b=PTB7nk1a38ut8DeRwEZmivS5pkIh5zmkn32qKCNIYQ5hCPbgfvcbqzibVPySRfF198ABbT5R8HHpjeR6vat6RsWa9we72ymulvDpd3Ssmpvs4iKYFNysd551VmKsvpwMfElCIQfnE4xThsoPASfDpz4+phxkmioH6gGG4EGrYp0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761749589; c=relaxed/simple;
-	bh=N6uMqjuiISTOWC7xpwd26uYXqqmjP9OurvhshEZsv3s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qkdIgx8GWQ6ES7i7oeuIBbgW4n5WtwU+i4TMCJromrjcoeqYi8AD8I7DBFQ3cuSlmcySiry3AxzPCJoAEOPz6wmCm/PYhDyDf/Wucptt3IqUs0zegGq1nn06yB0sO/dj7DMGhH0a1LQFMAt3DAUuoljmAHDn3Nd4QBG4a+q7z54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=MTnCWUVI; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1761749585;
-	bh=N6uMqjuiISTOWC7xpwd26uYXqqmjP9OurvhshEZsv3s=;
-	h=From:Date:Subject:To:Cc:From;
-	b=MTnCWUVIZZoLoLMUjShhq8WfeteVxk53b8MtdCO/RuaHHHwwbPVsprs3iphiRon9f
-	 i3wnUDQDufMa7SIFA9FnJbbf2pfX8mAROh0/n6jGryZYgPpAoc6Qcb4Uqw924UrMbt
-	 csfoHWmzQPBgHv+oOijFX5uceXKiZxowHYHGA2+cNlgITkSlWeDOUH6pqWPdXHaf82
-	 Yv86sXEv++OHoGIK9G2CEr+sbEN3P3Jjzlbc7GHBdYjnjwuH2ktRVbFTVBrTxVcqgA
-	 9zTQ4wKO3qMTtqVyreZOHoDPTHNvTTIuUETLdBfx9JHsdhVfwjLJIXqjDeV4iv8fHv
-	 kfnRBfbS6VUZw==
-Received: from yukiji.home (amontpellier-657-1-116-247.w83-113.abo.wanadoo.fr [83.113.51.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laeyraud)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 325C517E12D5;
-	Wed, 29 Oct 2025 15:53:05 +0100 (CET)
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Date: Wed, 29 Oct 2025 15:52:53 +0100
-Subject: [PATCH] dt-bindings: iio: adc: Add compatible for MT8189 SoC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634CA2F6932;
+	Wed, 29 Oct 2025 15:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761753295; cv=fail; b=iqlqBEzY2nCJmRoi7V9H1bkcbZVo7QDT8YqIKUoX8riGCrF+Of9hzPBkYWJmAULp4gb4q0I3O+fVDExR0Oypm5Z7n37B/a5Wh5hZ15cCfK7tsVzBtnesuRyANbD8cbINo2OhvDedSPhnbCSvPXbv9ZA16g6liwTf0IqRBev7E5U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761753295; c=relaxed/simple;
+	bh=GqRGa/CYKLc5MpdCqpoPtHrDCRt01dP7f18aLvpKzhQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qd2Lwm2VlO2Zg+g7l7E+Il1JfVXaIJO2gR+ClM+YBDoFkHwoMt8JfV+6DAXTAdySvTUFi3zob7OsNbL4VC+v/bkyRbpttk6NGciF6aZ9IL4CYSyhKQSE/0qEYNVxBBz32cxX4hCfBAkK57OmNL2HK1WnRmCreJ0hH2tZmWuVzzU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=h3cNv8MD; arc=fail smtp.client-ip=52.101.84.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RE2xnnDlhdcELc+xypq92I2P6Ntvr0WF0yxtRb0/n2sl/Pn7hDuldaN+wiI2NAqESdfQUsKKtHmy13piXMjuO4hLnOObsAo3KJVWj2n+HdVZSAE6S0DpMcVqZLn/yIpw4JXG1s/kltyp6PVZJuyr7RY/p6kMTm02ADyQoibtEwnG2Qz8dQhFHqhrFsD9vIBsHO3yayhmM82/PnHRAbyE2IcI7TCq6kP2ienMwzw4/WOPazq4n1YmnRP2+G8Y9sSt6s/8e29iRo1RonDEoIqY6KqpnRJ9MMR+d/T6Qh/gpopnQHIuakDTCAuhR/eKLyGQAb/S+CInh7+VBLDF8bYf9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NLfG+9KrWtX0fjw5WBw21ZV6lBJChUzyO7XtILFosM8=;
+ b=aeCmtRFAy1Qo57ybHA7KAhk39R6wfEjHNqGfKU2EX4U884IOCmHfHJvDhT8bfHEwWXgxyFlOVbtRnRXwDZk5ERTmgTnfykUUi33LGVLlDwca7JwGVym2vQOnohFVwpFnL9LoFEbASVy59gVowUzdvoBHfrak8my+noQcdKd4rATGGdWMA/QS8Oi+dU1vvZDP8razow9RetZH65H1HFWAq61yn6Dz/sAxMJgF59PML62dJrEWIaDLZtDFbQxpU6JTqcHaQYxVmD5Q+9wjEdnNkV8Pm7agi6nnxxxvZzcliBs8AhjsOsmaHvI6YKwcrk1lgaOL72pt0cIIya34anftFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NLfG+9KrWtX0fjw5WBw21ZV6lBJChUzyO7XtILFosM8=;
+ b=h3cNv8MD/g0LJBYrbl5C27sNVYdmuYjWLh/6MGO+DLv+hsBUkMI24Zbu/aBVdeSwmfio51/qxtJDWFIQOLLmxT5Z4vhyjqiIRs3xZk5vaF6p/tteMg9jOCg3qVZFSazoIr4ay8wuHyHZSf4Si39UCOK+nq7y5KSA+Gr18YWWyukk5ud1Y7hqXaLN0n52fwMWcFiL+Vlft53bPCF0ewFLZ3iNTgGK2GCDVs2KYbVowvueRZ028tcxI02i3VykvqM0n5JtnHGuO/OdUCQEgaixU73X1VdHKwokk5hrM160Ne8o3VFE5UmqvckisbrspTlS8gjbXXcn9SLW1YQ2waoDig==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by DU2PR04MB9195.eurprd04.prod.outlook.com (2603:10a6:10:2fa::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.13; Wed, 29 Oct
+ 2025 15:54:49 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9275.011; Wed, 29 Oct 2025
+ 15:54:49 +0000
+Date: Wed, 29 Oct 2025 11:54:39 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
+	Adrian Fluturel <fluturel.adrian@gmail.com>
+Subject: Re: [PATCH v7 5/5] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <aQI4v1lVcagBWY3i@lizhi-Precision-Tower-5810>
+References: <20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com>
+ <20251027-i3c_ddr-v7-5-866a0ff7fc46@nxp.com>
+ <aQCgD3iVOXoNr7uY@smile.fi.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQCgD3iVOXoNr7uY@smile.fi.intel.com>
+X-ClientProxiedBy: PH0PR07CA0117.namprd07.prod.outlook.com
+ (2603:10b6:510:4::32) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-mt8189-dt-bindings-auxadc-v1-1-cd0496527a70@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAEQqAmkC/zWNQQ7CIBBFr0Jm7SSAGqFXMV1QGOssoArUkDS9u
- 8TG5fvJf2+DQpmpwCA2yPThwkvqoE4C/NOlmZBDZ9BSX5XUFmM1ylgMFSdOgdNc0K3NBY/GumB
- Jups5X6D/X5ke3H7u+3hwpvfaE/UYYXKF0C8xch1Eolbxn4Fx37+5ZLO9nAAAAA==
-X-Change-ID: 20251029-mt8189-dt-bindings-auxadc-89ad9e0a7834
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Zhiyong Tao <zhiyong.tao@mediatek.com>
-Cc: kernel@collabora.com, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761749585; l=1241;
- i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
- bh=N6uMqjuiISTOWC7xpwd26uYXqqmjP9OurvhshEZsv3s=;
- b=Oicll2/zjt262uSpgPWCOKPgyQiMpk6vchlAy9c5/PYkfYrtCokj1Yu4U0np4tZKQMgwvgHA/
- debgLh2k2e1BoaX6NH9qSgaQZk5VbTgAzovLXnicuABrQR9Dv0xjjYu
-X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
- pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DU2PR04MB9195:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2dbab5de-db43-451f-ff8b-08de17037dac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|19092799006|376014|7416014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?RcQTqWTpVd5CAQze0lRsuF2S4cLz/y0kB6ZDLEzOB+rGuxKxIL2DMxd6xTi7?=
+ =?us-ascii?Q?GYMmXA5K1gGdkB3zdnKPNdmsSiiDv43dheyEqJrpbR1Nlk7etu39VQfAS43n?=
+ =?us-ascii?Q?zaKB+OZupX7t5ekmGSl4lY+GrfOCqSiD5LM2gs2P88PtxDk1fVHSWvb/PMVX?=
+ =?us-ascii?Q?2AS18JRL/JOcTfUxtllu1cSVK4VK9DY6dnEq+MOmhByJcsuE1xQHePELo3Fy?=
+ =?us-ascii?Q?k8lpzDY3mOmRnsROkNCSN4MdbtuoZHhvHLVkfTRTsVUQOY+E4QlOv/Y5HT37?=
+ =?us-ascii?Q?GUVVgcJS5BMVqBQGW/oTKIdYroZXNUFRiJ2wgNdVwe9rnZ494TcVG55DO/S0?=
+ =?us-ascii?Q?uTHHjEK+rWDvbRe/prclbuSCrUAOnEZXWQK4sYXlheCkdZ6eYDBwwYD7sIc/?=
+ =?us-ascii?Q?iNLv4Tv0660olxViOfsaVBlyXAGoyCOl9IfrIWsqj7KyH0FUeHspwrnVYktT?=
+ =?us-ascii?Q?7EgyRs4fyaoFkwttj3k05SGqrSrs+Z0NEfCNsxU9WLjxOT5DsYDwR6RAFYFn?=
+ =?us-ascii?Q?ZGwzoiaxE7dn5JH20XSgQnex7KuxCPciFwBdeSWkF+kBsmIcbxeFUqvN/hyG?=
+ =?us-ascii?Q?0u8KRC5reeL45KY24ZggZUg2hYqEQNqyJG7TTJY/46h4S0xe1Y7cx7/vDPvd?=
+ =?us-ascii?Q?oGg5zRSC/iy0nDciW04fVAIK4PScsm7qpu8es5vdXuWqkMUWnbMe0jgQorcb?=
+ =?us-ascii?Q?4losYLcfRxTlgZsBNlSWE8r9a6L/LbbP3aGMsXLrhQvltzFT1hztZXO4vnR/?=
+ =?us-ascii?Q?PIk/CW6Hvw1Xb47iWSBywVnKXQFDI4e9W5ND4ZJQqVMNx1LWI5C6XYDZi3n3?=
+ =?us-ascii?Q?LFEMOvUjrajR+FawpSSukcMXiFFkJUSiUt1/TOPxGpQFRC7OQtlxhWtBwGaJ?=
+ =?us-ascii?Q?+KOaYoo+9pPmVuQaG/2cymVIANwESNI78OewUh6Ct9olW8/Xs38rIuSrzQLc?=
+ =?us-ascii?Q?Xk8WTrcIFK1YNYpkOJTfW7pjKmNwS3ptuStLHDBPFf0LGDI2M1uTASRXnIY5?=
+ =?us-ascii?Q?yBixVUXFY6bErTwQE87hx2AgIdj40EkCYQotIwY5OF87gc8yOOhF7fZ01y3r?=
+ =?us-ascii?Q?DMpA74d7GDETyrgdlOx78Sw9K3IbKU2rUH/5Ezlp9bqgMZFJ8iPE/kQYnvqg?=
+ =?us-ascii?Q?cJ2KXPqJf8/RElEcbE0X2GSnz+7WWhshHxK9Om9rPRcSDPvxvAoZsFRc1lAz?=
+ =?us-ascii?Q?p37sxRZDiTg+/d42hbQ07M0r9XOfNWoBcUlyJtfGmG/jaNZHM0UTKgTRDh2T?=
+ =?us-ascii?Q?3N6MujEttPit277aKY0NOA++WAIEqoYsyCyrUzF0GQWZp1JPRwOZA33HEkNo?=
+ =?us-ascii?Q?2uhcOTCSvnmQvuNPRObm33HxdBI8N2URLBpFZCsM1j2/ccDcXb/j3A48VimW?=
+ =?us-ascii?Q?gwrO+yIFMHUcnhtxdM/xRQYQV3K1/WBTxt+svGRPLkfhiglKNfmnLuPFZrFc?=
+ =?us-ascii?Q?HmGCVw0xYnJir28lfeK2rzRffiL/UT6fWXJW2PzzCj4T8mgB/WnVllNQ4+aK?=
+ =?us-ascii?Q?R+A+Qc02ggOjtlvATft3D4YWTQG1i0lUi+GF?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(19092799006)(376014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7OzvmhMveovcczK/f/9ZlQTNkFtGV/bGGHKzFOA9mNQ7C9JTgSMl/C0hpKkc?=
+ =?us-ascii?Q?M4sHAgmvj75vM0LlllgKZeQNjisR8qUZrhHjDpIbhv1kHEKfrV4fZ7UyluZs?=
+ =?us-ascii?Q?rZQjwmUMqV0hYvfmNHe7adfCYMzB8niEry/s13QQu/TQ68JvUZvhEdTyEgiE?=
+ =?us-ascii?Q?dF37W+38H8RQuUkLns0oytCIxpunoZNdFwl3EZXntCAtW+8xiUFKcEQSNz1v?=
+ =?us-ascii?Q?spDWgGrn8Ci/e92NW9+NJKbxRrpWTCPjYfHOgAhtLi1S5aCmQFL4AuT0+Y1b?=
+ =?us-ascii?Q?rjo3neWmgc0rAycX6jjjCxQDvlpw6T0mDVDIzzT47IJ2DB5gluGnpZy1nNFY?=
+ =?us-ascii?Q?12/6JzfXjHRYowJWpo8d5M8XKJ0UsIagOINSAkyHj3IAF72QMa018WBBA336?=
+ =?us-ascii?Q?bas5NHjgfLJk5j7axv7+UJWwO1ZFVz3SL9PnuJx/eO5oPHRmoAsBzDGyHWcl?=
+ =?us-ascii?Q?tUzhdoI6JbtQmdIF0z1hDRae5fIKdwVRUsaxFtuVW3iUhmtgxN8UCo3gYPJN?=
+ =?us-ascii?Q?0wSPvr3OeIVHXJLA7X+kHlbqYODos8AcAnmvM1+5d60IVC4gPCaJzNRp6Qzx?=
+ =?us-ascii?Q?7qnhjlo1mPRqr5j0IWx9lyTpL7hU7EJP2WSUQ+VgYLWpXMlFyHMROR3jB39/?=
+ =?us-ascii?Q?psTMrEI/BC9BNN9QbnUL1mcFuFjtSp533hqcKlyLcebfvC5d8ZRItRhpWau8?=
+ =?us-ascii?Q?KfRI0f46ThekXYFUBBxdEqWecl3gResU/xRAJRo1ACpcKDaapPEcJQwOkXUk?=
+ =?us-ascii?Q?fgseJZw/rRlbIli17dExexgSVdfBzd8hMxkvSybyvc1Uz3E0qjm1zqe+ZmrN?=
+ =?us-ascii?Q?y5eSVybQ0hwDnygOpq+UWke3p0tjW/NzjwVy98vxEdUQjpYNcBHCVhadgmnZ?=
+ =?us-ascii?Q?kZ0C+sQ7kCTJfdFPR1ZqoaxS7JsVpfqc39sKxY1FJs8TPgvuP3zbnLVGPlUP?=
+ =?us-ascii?Q?32ZU+03hzs58RgdvxVZ3QjwRs2b76CqvjyQnD1BBNCfovT7uGGmG8I2bsREp?=
+ =?us-ascii?Q?dOdLucX/k5qti+PeK90a7q/U/OAtZgWEYbfsvt3qGrXZfXvfOayg56m/H9PM?=
+ =?us-ascii?Q?n3xEs/NX8Z+N3vuCQAMfvHl6LY1mib0J6O8O1WWQuEGUsrQsl9aFXL7HU55b?=
+ =?us-ascii?Q?f6ccsACDK4gEud9i3m6GCv4SjQqvpEotOZVvnhlTmIQNu7lrshLBHZp6rr1E?=
+ =?us-ascii?Q?muml8BwhHyz3f3V9uFIShYwbTRStn2Yrg14vE4YRjU2zcmeLe5OydeOtFDo6?=
+ =?us-ascii?Q?e0rdY/cuPtExPj+OZHfk9DXb7AmcUALTvCvKuKnBHR65gGn6UdxgoZV4l+J2?=
+ =?us-ascii?Q?Qc2fv9B8w+2DRWe/+wyrFBCEzHbRwRIUV70oeHR0wWFAPph0ySLlQNlUe7EL?=
+ =?us-ascii?Q?OzM3eAsCvjG6jzUg8s6jGpODafcSmM4Y71KakjMghjc5AdxssXlxjRHlFXUF?=
+ =?us-ascii?Q?Qs6/sie2hBXRXRbFkY6fLqUJMKMawYR9Z+CG4/pjxhluYetAEJ/ahGErMB0M?=
+ =?us-ascii?Q?7O84CjF2R0DFdQ5f3zY2uoJBfzrYRpJYX0vDkII62Dqn7i1R/3S602qqzsXp?=
+ =?us-ascii?Q?ElXajJ0KIlpCRgZrues1eS7R1+PqksFnvnKbjcSU?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2dbab5de-db43-451f-ff8b-08de17037dac
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2025 15:54:49.5528
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: toDX48Gr9lmEwkzQUhi8JrTnjYGmC7rR2RZp78IMW4k0ED3XaXL9J1XAwy+gNbxPb9tCMcPOUBLaSviuPbhUxQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9195
 
-Add compatible string for MT8189 SoC.
-The AUXADC IP in this chip is fully compatible with the one found in
-MT8173 SoC.
+On Tue, Oct 28, 2025 at 12:50:55PM +0200, Andy Shevchenko wrote:
+> On Mon, Oct 27, 2025 at 04:08:33PM -0400, Frank Li wrote:
 
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
----
- Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml | 1 +
- 1 file changed, 1 insertion(+)
+After update patch, I met some problem, so reply at prevous your email.
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-index 14363389f30aef85c596251fca0fe800200e2b41..d9e825e5054fe51c4010fc8a97af05c7639d4753 100644
---- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-@@ -42,6 +42,7 @@ properties:
-               - mediatek,mt8183-auxadc
-               - mediatek,mt8186-auxadc
-               - mediatek,mt8188-auxadc
-+              - mediatek,mt8189-auxadc
-               - mediatek,mt8195-auxadc
-               - mediatek,mt8516-auxadc
-           - const: mediatek,mt8173-auxadc
+> > +	struct device *dev;
+> > +	struct i3c_device *i3cdev;
+> > +	struct mutex mutex; /* protect to finish one whole measurement */
+> > +	struct regmap *regmap;
+>
+> regmap has struct device, i3c_device presumable also, and here is struct
+> device. Don't we have some overhead?
 
----
-base-commit: c9a389ffad27e7847c69f4d2b67ba56b77190209
-change-id: 20251029-mt8189-dt-bindings-auxadc-89ad9e0a7834
+*dev already removed. i3cdev is kept as my reply at yesterday.
 
-Best regards,
--- 
-Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+>
+> > +static const struct {
+> > +   int val;
+> > +   int val2;
+>
+> No need. Just
+>
+> > +} mmc5633_samp_freq[] = {
 
+There are some place will like
+
+        if (mmc5633_samp_freq[i][0] == val &&
+                mmc5633_samp_freq[i][1] == val2)
+
+previous
+        if (mmc5633_samp_freq[i].val == val &&
+                mmc5633_samp_freq[i].val2 == val2)
+
+Previous version seem have better readablity. But it is not big deal, if
+you like, I change to [0][1].
+
+>
+> struct i3c_device doesn't have a name, does it?
+
+It has name, but it is hexnumber (VID+PID), like 0-4a20000f000.
+So use friend/readable name here.
+
+Frank
+
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 

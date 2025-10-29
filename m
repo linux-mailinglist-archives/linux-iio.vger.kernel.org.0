@@ -1,116 +1,118 @@
-Return-Path: <linux-iio+bounces-25624-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25625-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF6BC1BAAA
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 16:31:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D01C1BB55
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 16:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBAC46225C0
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 14:54:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7956F5A0CA3
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 14:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A53134DB48;
-	Wed, 29 Oct 2025 14:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2132C33B6E4;
+	Wed, 29 Oct 2025 14:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Gzkw2kEE"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="MTnCWUVI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6810F34C147;
-	Wed, 29 Oct 2025 14:47:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7DE2BEC30;
+	Wed, 29 Oct 2025 14:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761749242; cv=none; b=Eqs0efLZfI38hXIAs002djOruJjlhY8uiLxerNbmpV4uZafu5XgV4ndoDwBmfMmn48Cef7ksvO572XvfDGUVY1ejPpBwJdRNXK3yIRXRq1JcMmg1jmwxBdON9W7ZE3wa7x0ZC5wI4s/Gyk51m7GWQMAgqiVycPqyth4Q5xhjOu0=
+	t=1761749589; cv=none; b=PTB7nk1a38ut8DeRwEZmivS5pkIh5zmkn32qKCNIYQ5hCPbgfvcbqzibVPySRfF198ABbT5R8HHpjeR6vat6RsWa9we72ymulvDpd3Ssmpvs4iKYFNysd551VmKsvpwMfElCIQfnE4xThsoPASfDpz4+phxkmioH6gGG4EGrYp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761749242; c=relaxed/simple;
-	bh=3Aa+fgQhdXLmlBHwfKVF+zrnnydGtI+5KOVHCkraqPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nBeS3mauFVp+t5/0VxQD7vpt8Uat7cDHz/KSJmTlhMqXmQDbmmcP7Ih6D5ZzzrTiAhah9JJKrwSxAHamWiFNQwGvlzAhXJdTABrXd8qWKzMepFKg8wLFSHtwlaydDDGIh/7O1Bw3g7mjSwsH3QC/CcHBUA2pAhIw+9LvWexT1uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Gzkw2kEE; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id DB1E64E413CF;
-	Wed, 29 Oct 2025 14:47:18 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B0E29606E8;
-	Wed, 29 Oct 2025 14:47:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB3BD117F81D7;
-	Wed, 29 Oct 2025 15:47:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761749237; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=qkvhfd+aBeHI1uCgJoi4uMlo/YG8LyAVwUYzHTQgZ9w=;
-	b=Gzkw2kEEQEj3X5XxSDtl4tVFNKLwoXeXxslib+9dhSlg5S1cr6GK+Cvpk0oM7cEtK5mm7h
-	EIRxLC03Y6l5nNsDqJHyrB8L6FZFmXxsj1pDo32t+BbF7oWei9A85uvnSZwvrOvINzjY11
-	leO2R2hK0z5q8xQW7AilzEf2+9H14fn+qAq6IvYUSaZBTxTberuvVlN/z72LymvgcRhR+o
-	XM77xqsPwcqDj7xOGyZrzSA7W0oXuF2ST8r15/9pMnDb67DCFeU+i7tiaB2NuK9AGl+cIn
-	S8TH9F2h1jEsj4a/XYSljuOzzZogWQJqds9Ztnv45GKk084Bg+GEhrnqUVRBMg==
-From: "Herve Codina (Schneider Electric)" <herve.codina@bootlin.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: linux-iio@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pascal Eberhard <pascal.eberhard@se.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v2 4/4] MAINTAINERS: Add the Renesas RZ/N1 ADC driver entry
-Date: Wed, 29 Oct 2025 15:46:44 +0100
-Message-ID: <20251029144644.667561-5-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251029144644.667561-1-herve.codina@bootlin.com>
-References: <20251029144644.667561-1-herve.codina@bootlin.com>
+	s=arc-20240116; t=1761749589; c=relaxed/simple;
+	bh=N6uMqjuiISTOWC7xpwd26uYXqqmjP9OurvhshEZsv3s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qkdIgx8GWQ6ES7i7oeuIBbgW4n5WtwU+i4TMCJromrjcoeqYi8AD8I7DBFQ3cuSlmcySiry3AxzPCJoAEOPz6wmCm/PYhDyDf/Wucptt3IqUs0zegGq1nn06yB0sO/dj7DMGhH0a1LQFMAt3DAUuoljmAHDn3Nd4QBG4a+q7z54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=MTnCWUVI; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1761749585;
+	bh=N6uMqjuiISTOWC7xpwd26uYXqqmjP9OurvhshEZsv3s=;
+	h=From:Date:Subject:To:Cc:From;
+	b=MTnCWUVIZZoLoLMUjShhq8WfeteVxk53b8MtdCO/RuaHHHwwbPVsprs3iphiRon9f
+	 i3wnUDQDufMa7SIFA9FnJbbf2pfX8mAROh0/n6jGryZYgPpAoc6Qcb4Uqw924UrMbt
+	 csfoHWmzQPBgHv+oOijFX5uceXKiZxowHYHGA2+cNlgITkSlWeDOUH6pqWPdXHaf82
+	 Yv86sXEv++OHoGIK9G2CEr+sbEN3P3Jjzlbc7GHBdYjnjwuH2ktRVbFTVBrTxVcqgA
+	 9zTQ4wKO3qMTtqVyreZOHoDPTHNvTTIuUETLdBfx9JHsdhVfwjLJIXqjDeV4iv8fHv
+	 kfnRBfbS6VUZw==
+Received: from yukiji.home (amontpellier-657-1-116-247.w83-113.abo.wanadoo.fr [83.113.51.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laeyraud)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 325C517E12D5;
+	Wed, 29 Oct 2025 15:53:05 +0100 (CET)
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Date: Wed, 29 Oct 2025 15:52:53 +0100
+Subject: [PATCH] dt-bindings: iio: adc: Add compatible for MT8189 SoC
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251029-mt8189-dt-bindings-auxadc-v1-1-cd0496527a70@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAEQqAmkC/zWNQQ7CIBBFr0Jm7SSAGqFXMV1QGOssoArUkDS9u
+ 8TG5fvJf2+DQpmpwCA2yPThwkvqoE4C/NOlmZBDZ9BSX5XUFmM1ylgMFSdOgdNc0K3NBY/GumB
+ Jups5X6D/X5ke3H7u+3hwpvfaE/UYYXKF0C8xch1Eolbxn4Fx37+5ZLO9nAAAAA==
+X-Change-ID: 20251029-mt8189-dt-bindings-auxadc-89ad9e0a7834
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Zhiyong Tao <zhiyong.tao@mediatek.com>
+Cc: kernel@collabora.com, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761749585; l=1241;
+ i=louisalexis.eyraud@collabora.com; s=20250113; h=from:subject:message-id;
+ bh=N6uMqjuiISTOWC7xpwd26uYXqqmjP9OurvhshEZsv3s=;
+ b=Oicll2/zjt262uSpgPWCOKPgyQiMpk6vchlAy9c5/PYkfYrtCokj1Yu4U0np4tZKQMgwvgHA/
+ debgLh2k2e1BoaX6NH9qSgaQZk5VbTgAzovLXnicuABrQR9Dv0xjjYu
+X-Developer-Key: i=louisalexis.eyraud@collabora.com; a=ed25519;
+ pk=CHFBDB2Kqh4EHc6JIqFn69GhxJJAzc0Zr4e8QxtumuM=
 
-After contributing the driver, add myself as the maintainer for the
-Renesas RZ/N1 ADC driver.
+Add compatible string for MT8189 SoC.
+The AUXADC IP in this chip is fully compatible with the one found in
+MT8173 SoC.
 
-Signed-off-by: Herve Codina (Schneider Electric) <herve.codina@bootlin.com>
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 ---
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+ Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3da2c26a796b..a67babe1a5b4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21900,6 +21900,13 @@ F:	include/dt-bindings/net/pcs-rzn1-miic.h
- F:	include/linux/pcs-rzn1-miic.h
- F:	net/dsa/tag_rzn1_a5psw.c
- 
-+RENESAS RZ/N1 ADC DRIVER
-+M:	Herve Codina <herve.codina@bootlin.com>
-+L:	linux-renesas-soc@vger.kernel.org
-+S:	Supported
-+F:	Documentation/devicetree/bindings/iio/adc/renesas,rzn1-adc.yaml
-+F:	drivers/iio/adc/rzn1-adc.c
-+
- RENESAS RZ/N1 DWMAC GLUE LAYER
- M:	Romain Gantois <romain.gantois@bootlin.com>
- S:	Maintained
+diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+index 14363389f30aef85c596251fca0fe800200e2b41..d9e825e5054fe51c4010fc8a97af05c7639d4753 100644
+--- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+@@ -42,6 +42,7 @@ properties:
+               - mediatek,mt8183-auxadc
+               - mediatek,mt8186-auxadc
+               - mediatek,mt8188-auxadc
++              - mediatek,mt8189-auxadc
+               - mediatek,mt8195-auxadc
+               - mediatek,mt8516-auxadc
+           - const: mediatek,mt8173-auxadc
+
+---
+base-commit: c9a389ffad27e7847c69f4d2b67ba56b77190209
+change-id: 20251029-mt8189-dt-bindings-auxadc-89ad9e0a7834
+
+Best regards,
 -- 
-2.51.0
+Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
 

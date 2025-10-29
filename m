@@ -1,159 +1,101 @@
-Return-Path: <linux-iio+bounces-25628-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25629-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC81DC1C7B6
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 18:37:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B677C1C9B4
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 18:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 663CD5885F0
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 17:19:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D704F6447CF
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Oct 2025 17:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46CD346763;
-	Wed, 29 Oct 2025 17:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6147E350A1A;
+	Wed, 29 Oct 2025 17:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eg4Y5Fqu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOYx8S1r"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C0F31283D
-	for <linux-iio@vger.kernel.org>; Wed, 29 Oct 2025 17:19:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14CD2EF662;
+	Wed, 29 Oct 2025 17:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761758374; cv=none; b=ViWfNQUsS5OuA/6/m8YoL4UIS/jU02aINaP5oV70Y/jBvdDlkwnhr1DO/6B6O4wHY7IgYe4nnnJlivkcgtooFsKIQPnW/eg37vaxaxRgXU1B38cjMM0MbV+28XaexcJ5NqYJJj5vS0ByGFErNwBDSacpS4zBDwFVQAmzLVhSHCs=
+	t=1761759271; cv=none; b=FGuWrRGd4nMRgyA4hOteIWN3KYLNuNPtrt9JdKcEOG/vPut4pzhPYzFCL8SKGG3K/v5AGipb7hJFIrtNzrb/xRFGwMeWho3MfogBJsJ6JGZ+o91kY7uqIjgYDSJgn98PD3TNV2W3Mq8TNSSQoGPePbcBiLnlZLnrEtEXsbfd4IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761758374; c=relaxed/simple;
-	bh=uC9UtG1Fr3nkcml/pRdAfhXZa8c/EgGRc1KcEkhsiPM=;
+	s=arc-20240116; t=1761759271; c=relaxed/simple;
+	bh=cQ6u8qLg9RAS3sQx0DZqTPCs2pfg037ebM1hlPoMVXs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SYa7v07zJwjS8eleV+LcO3yeuMy1wUUeqyNcFhwFRTKreVT2BC/U0VF4qBAnowF15PO1BmnbbAqvT9xDmUPmq6lxv5wpLyMdUI2SOsL613srfoo5KoJla+9eTOdeOjt91CH9/3xMJvJkI6Qi8vswV2jMxtN7NqMh5Warzx8SIHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eg4Y5Fqu; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7a27053843bso246959b3a.1
-        for <linux-iio@vger.kernel.org>; Wed, 29 Oct 2025 10:19:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761758372; x=1762363172; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aCQGHjv2L44j3MTwWgphNqvwmgFbsURD1Ek139X5tpY=;
-        b=Eg4Y5FqupsHMH+sAHutea09YggvUzXDUMSN0TGglaS0+K3nPBRitT1NL4xOdLkdS8E
-         fH5jv28Y3wDN8zRWhwkRC14gH7KKCElxrUUvlovnqYJLXlkSZf69yaC1FBSTK3QIAPCd
-         xU228LMNk5xuIuO4qMQo041MLdxCfICgh95EjVFjJyPfbXjXslVv+RXDtvS8mV2HI4I5
-         HVHnHCyfm9HeZ47pXqXJHD1hkqMsoHzFnkRyFU/R+HpDTRMjNlxPEqqJCH8vYZBZN2jr
-         14Nbv23e1XpT4i/9hJEhKPucriMzFiZFJoUpeXIdwCU5TQHmZDAouDlClP1/qULNY/kR
-         jsqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761758372; x=1762363172;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aCQGHjv2L44j3MTwWgphNqvwmgFbsURD1Ek139X5tpY=;
-        b=q/BusMVKAnVaSsFY/tW3fIifyNKfJKK4kihzWCYs252KgwR83VmWFt8H2pOqB/1tfx
-         lWFCKz+vSQdfiq4GiyGzsl2W5S47sN2po0BZUhviELTn6Qegpr8aulokuOR8G35IEtX3
-         V0KgsjC7/ZCPTS0nDVG+UK64AU0JQ3mT8aERPAD0VY5i+m4IagHJF4AG0pavAXm6b8Tu
-         F+yoKLMobq9HUsA6HDXVT3UVyKUM8jv5NhAGPXkonDxpLtAocq3TlgrBxfoqfsaqB5te
-         j/fPH8toTibXjZ6NLNOKLbkzDOXms/9B/Q+rQTqLuFgW36fUSbyOkT2dAyEvAXqIridn
-         OcKA==
-X-Forwarded-Encrypted: i=1; AJvYcCVf4a2yw6gD8fJmbtDMyobeecS+lKVilXQTBVEXdUNWvJm3M+6s786CRX4D5fbk8KkJ61xT9/75g1g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+lCYwPnMdm1Vbjpzs6tY4t/EfIhVF2Ni4dSc2WyMGxGxbFUiB
-	/Y2Zp6aat+2hMYFuSHiidB5RrOtfNtjTXgW+LOzrcdxwPNvASFBmmQrB
-X-Gm-Gg: ASbGncv2YvFc3nYFWSmkww8cT2TWrzoBv5P2G81TiPPDdiJK2MyAFzR+i+R0R3Fnqru
-	gZO4HBPDk6RuDKGr+IIYrhLpTw0Ptkbe5YONj4MNrThBoMI4LRwXvIXNJ24p8xLsXxxAN1a1Jh/
-	NU+oN0WPhU9G7kma3wuQ1k8oIv5rr0a0UOD5+NNXSyIai5ZeztYkrFk6OH4FJVqKMQ4K7S0M+bd
-	5E9zJtY88TvO3SVkczePqqcoLWaQ5HcKyH1+wPmQ57HClMp1aOf3SBLiPQR1QyR90+AgiNVZmO+
-	N6z4dpn8nVoKZuNdHHguITWSfg6Tfh4Tsi/dvYIv2XWLiZCYpk6KRImCDAQOPx6KQX0d7CB9JLw
-	Oy/ybpLuOa+Wx4pEKaOPKMvjWI9YkwGCMrrFc/VMdqTLGKymHx3+j96ZXfffoBn6HuhOh72KHzb
-	Vk40BwlMUPxS83KeQBtSNU
-X-Google-Smtp-Source: AGHT+IGhZQVt8RAWqegksuHsY2aWHJeEyR48Taz4SwETmTmkW3PRPM7LH76hMjd7YkUyKwNfMhXirw==
-X-Received: by 2002:aa7:9902:0:b0:7a5:396d:76c4 with SMTP id d2e1a72fcca58-7a5396d7d74mr2196746b3a.23.1761758372250;
-        Wed, 29 Oct 2025 10:19:32 -0700 (PDT)
-Received: from localhost ([2804:30c:1653:6900:3b53:af9d:48d6:f107])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7a414032c71sm16054214b3a.25.2025.10.29.10.19.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 10:19:31 -0700 (PDT)
-Date: Wed, 29 Oct 2025 14:20:42 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Antoni Pokusinski <apokusinski01@gmail.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: mpl3115: add ctrl_reg4 to mpl3115_data
-Message-ID: <aQJM6u9pGSdds0X3@debian-BULLSEYE-live-builder-AMD64>
-References: <20251028213351.77368-1-apokusinski01@gmail.com>
- <20251028213351.77368-2-apokusinski01@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lQ42OKdX2YGK3Fqla5TtbNeBGWGuvwKamvXh//0nFDGGjS67ovO+oNhQtrJXlTp/sn0a4cJ9Q4Ea6AhABi3NZZ/QXbjJvvCj241eB7OiYtRcaOAHQyMtAKiPaoPQv8QmF+NjBfklm3ewIhTSSV7fFfTTIh3/A4Y7hWH8256VMIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOYx8S1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F1EC4CEF7;
+	Wed, 29 Oct 2025 17:34:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761759270;
+	bh=cQ6u8qLg9RAS3sQx0DZqTPCs2pfg037ebM1hlPoMVXs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EOYx8S1rgIjusrjqz5VxUMOjhk3aNW3LmV8MgkEo9Y9VNnbrIfBVxoYuTwPg0nHtL
+	 mcCUbVOpfKeEC1cN2axA3/YfwSHw1NIqe+l2nK9wdbUGlODAR5j0KGXqdlUsCcKo07
+	 XCEA1Sj+AH3NDzVhiD/KqQZnOFBZHietE9xwzC47GnjefybvJdeFi2qNXV2PR3moN6
+	 JuIWWbFOA95vl2vJtR9ZATQvdc/V691BkICvNgzU5sjWx/dpSRdnpb/uThT8ht6YzC
+	 tgn1SCfDnm6Inqnf3/WDDK/5H0WPp64DjCCwtyPt4eJAvSv7otHsWS2HNvgyyBd+mc
+	 zqMge5B1EBpoA==
+Date: Wed, 29 Oct 2025 17:34:25 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Zhiyong Tao <zhiyong.tao@mediatek.com>, kernel@collabora.com,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: Add compatible for MT8189 SoC
+Message-ID: <20251029-gamma-unmixable-05a8c5dc0960@spud>
+References: <20251029-mt8189-dt-bindings-auxadc-v1-1-cd0496527a70@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="kATwFr4KYeHZakeU"
+Content-Disposition: inline
+In-Reply-To: <20251029-mt8189-dt-bindings-auxadc-v1-1-cd0496527a70@collabora.com>
+
+
+--kATwFr4KYeHZakeU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251028213351.77368-2-apokusinski01@gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-Hi Antoni,
+On Wed, Oct 29, 2025 at 03:52:53PM +0100, Louis-Alexis Eyraud wrote:
+> Add compatible string for MT8189 SoC.
+> The AUXADC IP in this chip is fully compatible with the one found in
+> MT8173 SoC.
+>=20
+> Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-The patch itself looks good to me.
-I just wonder if it would make more sense to squash it with patch 2 since part
-of the code here is changed again in that patch (the mpl3115_set_trigger_state()).
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-On 10/28, Antoni Pokusinski wrote:
-> Cache the value of CTRL_REG4 in the mpl3115_data structure. This is a
-> preparation for adding support for the threshold events.
-> 
-> Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
-> ---
->  drivers/iio/pressure/mpl3115.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c
-> index c212dfdf59ff..4cc103e20a39 100644
-> --- a/drivers/iio/pressure/mpl3115.c
-> +++ b/drivers/iio/pressure/mpl3115.c
-> @@ -83,6 +83,7 @@ struct mpl3115_data {
->  	struct iio_trigger *drdy_trig;
->  	struct mutex lock;
->  	u8 ctrl_reg1;
-> +	u8 ctrl_reg4;
-I think this ...
+--kATwFr4KYeHZakeU
+Content-Type: application/pgp-signature; name="signature.asc"
 
->  };
->  
->  enum mpl3115_irq_pin {
-> @@ -376,6 +377,7 @@ static int mpl3115_config_interrupt(struct mpl3115_data *data,
->  		goto reg1_cleanup;
->  
->  	data->ctrl_reg1 = ctrl_reg1;
-> +	data->ctrl_reg4 = ctrl_reg4;
->  
->  	return 0;
->  
-> @@ -390,12 +392,15 @@ static int mpl3115_set_trigger_state(struct iio_trigger *trig, bool state)
->  	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
->  	struct mpl3115_data *data = iio_priv(indio_dev);
->  	u8 ctrl_reg1 = data->ctrl_reg1;
-> -	u8 ctrl_reg4 = state ? MPL3115_CTRL4_INT_EN_DRDY : 0;
-> +	u8 ctrl_reg4 = data->ctrl_reg4;
-and also this is changed again in patch 2.
+-----BEGIN PGP SIGNATURE-----
 
-I don't see much advantage in having it separated from patch 2.
-Might be simpler to just squash patch 1 and 2.
->  
-> -	if (state)
-> +	if (state) {
->  		ctrl_reg1 |= MPL3115_CTRL1_ACTIVE;
-> -	else
-> +		ctrl_reg4 |= MPL3115_CTRL4_INT_EN_DRDY;
-> +	} else {
->  		ctrl_reg1 &= ~MPL3115_CTRL1_ACTIVE;
-> +		ctrl_reg4 &= ~MPL3115_CTRL4_INT_EN_DRDY;
-> +	}
->  
->  	guard(mutex)(&data->lock);
->  
-> -- 
-> 2.25.1
-> 
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaQJQIQAKCRB4tDGHoIJi
+0laNAP9C38Qssv8uwb97bAU24YVQ1YwFUV2QSTpsq2dvEnILjgD/ZpYNtjV63fqu
+FACQa0/m0zVdoiWZl+u4KK02fETcsAA=
+=yxko
+-----END PGP SIGNATURE-----
+
+--kATwFr4KYeHZakeU--
 

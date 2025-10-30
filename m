@@ -1,127 +1,131 @@
-Return-Path: <linux-iio+bounces-25683-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25684-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AB2C206CD
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 14:59:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4414C2135E
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 17:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22D2E403283
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 13:56:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 781824E974B
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 16:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A1D226CF0;
-	Thu, 30 Oct 2025 13:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DFD277C96;
+	Thu, 30 Oct 2025 16:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UMl6jC/A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QZoYAMV6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0311EF39E;
-	Thu, 30 Oct 2025 13:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A7D26A088
+	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 16:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761832577; cv=none; b=sKp4Z9H1REZ4onEdTl+EAee2JjyB+dmM3Yq/r7xADdPX/NcmjyjKpuwyC4hKtUkzaqyuKjBr+MGpxxR3fbBSoS6XK2XbMcGTc44X6Aeal2Jmaelgke/7Hs4fgDCUvmxDkiBv2n/VXzGTG+yFlqMChmdiL5ATRocT5tIcOrAvpTA=
+	t=1761842083; cv=none; b=LlomE8/vwybveYl2Hc49xcFigsx/lh8J5B7bmVjbDOorYsrPkrMF9sV91m8vPdZzSfhsRCL/9xppcyx1RA/eVznhPHXUo5rsj1M58m2bZbfsquC/rN8FoH3Gl54qbvbbxQMFCpEIBXRDtEz2WQMYoy/uELUORqLLx/7K/FoWFgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761832577; c=relaxed/simple;
-	bh=JxiAItqGkjd++MYOaOMi3nNa/YOuw3UezW8CeaQ1LpU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d72+jYP3FO1gIbzGknxs3rXHgM34zWDXzOAu6XhGXZy1uI3x8nurW8Sw++RznsyHV6xO2sbb3XG7hZsRkUsS+X7BA//V5I2uFONyL1LsbEAUgoVJXrTd+nIqtysgFvarG1NDAZxW97BsoG/0Yd68xkFR4HKJQCoZnjvjAPyTqj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UMl6jC/A; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761832577; x=1793368577;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=JxiAItqGkjd++MYOaOMi3nNa/YOuw3UezW8CeaQ1LpU=;
-  b=UMl6jC/AO6DXSg/pOPGPKqIp4TpaRglL7mfKnWXK+jatSpJFYujVt3ix
-   wRQT5pxPia0EC73E3scPRq0YX5UadS3Eml1PnjCfN7l+LZndz8aAbEOSf
-   /TFEOsb7oqTDnd1n8vto5DiCVHSB6yZkmSFuWjRL8zqVHVeyTtNZ5l4Uj
-   Z1CIwrQiNTsDGqHt70aJ3fcdocxQbRN0KJ0kYcYAAQG5nYbM9BVGobMmf
-   ECHqUfg7Yg0cC3G8H71BKf7HQvsTqWEu9wMtbodPy1qFqGMAX+h6bF7G1
-   IrjIA7WFTjOPaRYIPqtLwp+wG4UFA/5awNQim3LGxlcJe32IatYTFI4ci
-   g==;
-X-CSE-ConnectionGUID: qcjQq77ZQeOkPwEZC8ZXhA==
-X-CSE-MsgGUID: xR4tsuHkRlGN/PtW0VgepQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="64006064"
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="64006064"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 06:56:15 -0700
-X-CSE-ConnectionGUID: 2UqlAQ35TquFj8rcUW6PuQ==
-X-CSE-MsgGUID: TeUppLPcQ6CKxbmnS9HyQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="185619224"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.174])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 06:56:13 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vET8M-00000003vgI-01m9;
-	Thu, 30 Oct 2025 15:56:10 +0200
-Date: Thu, 30 Oct 2025 15:56:09 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Francesco Lavra <flavra@baylibre.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 8/9] iio: imu: st_lsm6dsx: add event configurability on a
- per axis basis
-Message-ID: <aQNueWesrf_vXO06@smile.fi.intel.com>
-References: <20251030072752.349633-1-flavra@baylibre.com>
- <20251030072752.349633-9-flavra@baylibre.com>
- <aQMgxUNA8XNhPZdG@smile.fi.intel.com>
- <c1c7222b35a0a7bcddc5d88c92f64d2f2a75fdfd.camel@baylibre.com>
+	s=arc-20240116; t=1761842083; c=relaxed/simple;
+	bh=49TrQUGUtrEr2yZhMBoKYVsIAJVY+BeJ0rODJ0UUTWw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Mprz4UVFmBr845xud7gC2JFDRAbP7+3PUYJU1V9i7H9Zk3LK10mtEma5twLcFzn5KTvjiUljat2wzkOP434KXSYhvcqYlHuYCjQP2jjS5nR5M+vj1qYNNcJO5/d+KfVIjJ41OuZYY7Y244whZrSM2GoAPdt7f5tRTKaiVaHxHnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QZoYAMV6; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b6cf1a95274so892985a12.1
+        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 09:34:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761842081; x=1762446881; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2GemJnWb5rbunzFGiUAhg7eKB3QXcsT4ACvgb/nKBts=;
+        b=QZoYAMV6azRsYI4wMMudbgzETPhyCF0uRFgnDj0kFCm6BbFRka0ARsNJ8jF1RWdhYL
+         l8UCmeOlhwEA0ur39my95Pcv6um2mRoe1UG51/CVUOZmadDqZKtaSfsUeDyjiPhNUtLR
+         6QMy9UJG2BW19AJ886nRyzTdX9mEsfyzEkUqTJOGtzN1KdpLUzjBrBzjfJyCIjGGYa4e
+         FR17otrwGiMGLBF70OWq3PaAnZ8hF/TboHyMnfo4E70RJxITDV8sv2zgYvpxzBgksPTD
+         /GM7woueWkZI1Eb399L0zwKUP1IIF+JwBI/UXpG5pfzB3Gs6NJqfJbyRFcfeBgPhMJsh
+         FX5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761842081; x=1762446881;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2GemJnWb5rbunzFGiUAhg7eKB3QXcsT4ACvgb/nKBts=;
+        b=gle9diVu7bnBpxaT5nG/zWxIWkfJGzVVq4TPxfbREFQ4fGX62JQLaRjfCAc8kv62N2
+         Lt+lYF73Tph1zTdtag0lsEx26AW51N6CMBftzj2EEy0vaB6JcO3XSds+M8mlmQMk/zYa
+         qA8Ks/jt3j6410hb2iOiSfpwb4j2zyZZcosNy6lmKI2Xoe5tqyUSomNB+t6e3E4sc1cS
+         UcK783rMF2aAHuECwPncr5hkBff3wq+gO0KvtC0xCVLQaD2BnbqVrrpoegBZKqw+XvOj
+         4hnFxiRzt4pRmnkhnNFSjIbAYYgWNY9MY8y1Dzxb3tSL8o9TKS8R54hRjPIpBRuBn+4l
+         AKjw==
+X-Gm-Message-State: AOJu0YzT6RrfUT6dJfCCiVAQedkkdNvACy4jcVyeOgmRTsLsupVocfYP
+	IR+mm1zhSEX82QZRwZ+NRXa8ExKGc1jxTNB3+UM/2V7Rm9P9BeZ6ym04Tqsoj+jd7vY=
+X-Gm-Gg: ASbGncvM3wFnhYeHl58AiA6tlZ/VP441nvg/GdSNqqAus5KWK1Jh/B5J0Qc56noq0rQ
+	l9Zfbf9pBhFmpWWNW3q61au0qY0HNBbSNvy6se+CurfD8aXcYUJzehwEU+2jF1LnK/ZnxTjtk1x
+	MSrEZTKXLarrrNein4H3Dw7YSZZnAXdN3pxJ4aerJMieNmBqm2Nixv+jLqhCcS1r5Ynp5Yno6W/
+	xm7zIq9cgJib+CbbO1W+9RBd0mlozcBcNP1kbdmqfFW5Ea+7Qs6K/aTR7Ms8/iYT/hcZarnbfw+
+	pVLkCJRM+VGXRzz2wzrDsknjNYrdvDKxfMLy82VZyKTSY0beoJ/NoP4FtNttyWeukRGSvsfxDMU
+	p10epAhoMXBkximsBnnf+bdgAsAsvisav0U1ZjpXZqOU+HxOxJPkWONsdQf+dE8Lx7pexSO39Qf
+	72kZyELvN9V9A0FEoV6llM4e8F3bQ/U6J6Vy+FBFEqu3WkONX7sCBDGjFRhIzKVoAeJ+RKQNMmB
+	1WTkJqu1vojgt3I5uDFVMkgpT3BDBLq1CeCfOxfLfdOELQ=
+X-Google-Smtp-Source: AGHT+IFhVPa23fECGvV4dUIAld5HM4HNjatO6IlpoUW53cLuqxeeqTXNZkPLMxgkK1m51ToYYLi7xQ==
+X-Received: by 2002:a17:903:1111:b0:267:9931:dbfb with SMTP id d9443c01a7336-2951a526f47mr3589515ad.54.1761842080791;
+        Thu, 30 Oct 2025 09:34:40 -0700 (PDT)
+Received: from ajianan-Latitude-5591.. ([2402:e280:21d3:2:339d:c9c4:e069:47f7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498e429d9sm190932845ad.100.2025.10.30.09.34.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 09:34:40 -0700 (PDT)
+From: Ajith Anandhan <ajithanandhan0406@gmail.com>
+To: linux-iio@vger.kernel.org
+Cc: jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ajith Anandhan <ajithanandhan0406@gmail.com>
+Subject: [RFC PATCH 0/3] iio: adc: Add support for TI ADS1120 ADC
+Date: Thu, 30 Oct 2025 22:04:08 +0530
+Message-Id: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c1c7222b35a0a7bcddc5d88c92f64d2f2a75fdfd.camel@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Oct 30, 2025 at 12:23:19PM +0100, Francesco Lavra wrote:
-> On Thu, 2025-10-30 at 10:24 +0200, Andy Shevchenko wrote:
-> > On Thu, Oct 30, 2025 at 08:27:51AM +0100, Francesco Lavra wrote:
+This RFC patch series adds support for the Texas Instruments ADS1120,
+a precision 16-bit delta-sigma ADC with SPI interface.
 
-...
+The driver provides:
+- 4 single-ended voltage input channels
+- Programmable gain amplifier (1 to 128)
+- Configurable data rates (20 to 1000 SPS)
+- Single-shot conversion mode
 
-> > > +       old_enable = hw->enable_event[event];
-> > > +       new_enable = state ? (old_enable | BIT(axis)) : (old_enable &
-> > > ~BIT(axis));
-> > > +       if (!!old_enable == !!new_enable)
-> > 
-> > This is an interesting check. So, old_enable and new_enable are _not_
-> > booleans, right?
-> > So, this means the check test if _any_ of the bit was set and kept set or
-> > none were set
-> > and non is going to be set. Correct? I think a short comment would be
-> > good to have.
-> 
-> old_enable and new_enable are bit masks, but we are only interested in
-> whether any bit is set, to catch the cases where the bit mask goes from
-> zero to non-zero and vice versa. Will add a comment.
+I'm looking for feedback on:
+1. The implementation approach for single-shot conversions
+2. Any other suggestions for improvement
 
-If it's a true bitmask (assuming unsigned long type) then all this can be done
-via bitmap API calls. Otherwise you can also compare a Hamming weights of them
-(probably that gives even the same size of the object file, but !! instructions
- will be changed to hweight() calls (still a single assembly instr on modern
- architectures).
+Datasheet: https://www.ti.com/lit/gpn/ads1120
+
+Ajith Anandhan (3):
+  dt-bindings: iio: adc: Add TI ADS1120 binding
+  iio: adc: Add support for TI ADS1120
+  MAINTAINERS: Add entry for TI ADS1120 ADC driver
+
+ .../bindings/iio/adc/ti,ads1120.yaml          |  50 ++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/ti-ads1120.c                  | 509 ++++++++++++++++++
+ 5 files changed, 577 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1120.yaml
+ create mode 100644 drivers/iio/adc/ti-ads1120.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 

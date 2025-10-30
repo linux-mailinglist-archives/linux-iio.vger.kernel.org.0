@@ -1,140 +1,193 @@
-Return-Path: <linux-iio+bounces-25648-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25649-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924C2C1EDA8
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 08:52:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8433DC1EDE4
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 08:57:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEE65404DEC
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 07:51:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 419634E69F5
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 07:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BEA337BA4;
-	Thu, 30 Oct 2025 07:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E9F337BBD;
+	Thu, 30 Oct 2025 07:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mL9dvFU+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GAeoE5X1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D37C337B90;
-	Thu, 30 Oct 2025 07:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0373370E8;
+	Thu, 30 Oct 2025 07:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761810679; cv=none; b=qMDvEGrhLay2tVvIkrF6YqLlSL6rVkra/jncXpLn5r8Fi/N6cAnMqK2G1esdvpDzAmxt8Xx+Xf7Qek+VP0osIzTqGPtrMovoaz8hIsdy+0OcY3sp/HHdqxHIq6mII+cv2gIScjjZyusAOcDsXlReKto0FwPklitvvsuUb/Bisbo=
+	t=1761811055; cv=none; b=eFApbSa/2E5nL2P+w4HFDYqum+lhSkO0n2BzNqqYQLIpZ6w/5LValVaqu3lga+MxXgT9ZIef6QwJQX3rjBKYMoP1oD3lmQX2kI667Mm8T5dGXyneoZ6Na/oCQhWKDM7jhobDisKrMCqOp0oaxwygixQ0Z50JlJJxuUa8hnyxY+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761810679; c=relaxed/simple;
-	bh=i2o3lPX24fKmxQVeAxzXXKnFXNnmPunVGpcSChGJjZ4=;
+	s=arc-20240116; t=1761811055; c=relaxed/simple;
+	bh=jmkoTYfXOYR/kQSWEvqT4Zd7d1/KE/iBvwy5wjdIF+g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g75H7vRuQlp4OEuAkwuvNJA0Vylcp0NSuOtjBtxyYjL0NvmKnVQeSQKIB1Ie2yTWT3MCEXWYtYzk1W1tZD2ETrSjOjSTfnpqUbk7AO/31CqkMSiX0Z54MInD6jW0MOUHgHROYNvZPlgSjwULgJxyD1Gl2MIlFRVF0dyVjA0kPKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mL9dvFU+; arc=none smtp.client-ip=198.175.65.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=PZVeWfDtGvufNosRscLQpMpnubX8Sz2zIjYJLeC970q4xGyxDa7zlZrsL41F7he/lkKbrnfddHV5dnGb/b+KbFCJuzrbqtAhsWIeLwFJmSG8vNZgQyXN86yfZ94Som5jq2j6nkuTLw6EPGy0JcK35lbtcZ7SqAj0XlxnVl367wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GAeoE5X1; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761810678; x=1793346678;
+  t=1761811054; x=1793347054;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=i2o3lPX24fKmxQVeAxzXXKnFXNnmPunVGpcSChGJjZ4=;
-  b=mL9dvFU+jaetvl8FAHDrEWglI5oR8HnMBV0DSQ++s9RE4HIi+Y5Uqw52
-   L+N+4wGEDARihYZjczJboiI1QDCbr0zfP6GxyhFMfJidkglUQLPxC3uCr
-   jhWjs091eHpSRtLnogpvcUZEy85Wfvs5fOyEbVgDu+rZ1dh/JQjlb5OJG
-   6j0pVQZYQ+Lt5iJZDJLg3Gu6rd8L4GJGB9f0V/1MEhCrszQU8ZAKHtYpv
-   /zv5w0i/hrO8j+Z8dCovGq3GgQdHCrMvZA1vWOzxWbU+WIMBWuRRfVEPz
-   aQNefj1K6kQiAPCj6m6FjmLBVbytNRMV4a9ZYoY+iBkyz+5bYvOtgn7TX
+   mime-version:in-reply-to;
+  bh=jmkoTYfXOYR/kQSWEvqT4Zd7d1/KE/iBvwy5wjdIF+g=;
+  b=GAeoE5X1HwBYDwdYTqbrWMWxMDD1u/kZMWxwDGxRhT/crFsoS2AgFn2E
+   ZSMUzXIyjHwz3lbYC2T6gtsmW0H24+KQkYPobMSH0lqHMI1XDr0wdh2Ws
+   PJoV+u4ixe5vSPMmGm83XQYcMHq97RENAxhub+8xv+naVzykj1tIe0fqO
+   FKG0i0KPKDDBQs6Azp4cQhdEvGlzWI5u7DNWvRklJQiv0i3sRZ+Wvwed9
+   A2Go5+jYq5KjhtQZ4zXfaysXeQ4fQTyXDn8uJzUguOr6zv0SSVeTDEIGe
+   72OiN7gwDcjC0IjzmOPMaTNZzbUgIzitgkZbZ7dZytQjpTK63vce1EnPP
    Q==;
-X-CSE-ConnectionGUID: qm+8gNG3TuCt2273XoyEqA==
-X-CSE-MsgGUID: 9HVKlFp2TY+sHbQ8WVhi1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="75393483"
+X-CSE-ConnectionGUID: PAihyLHETXW0exdt552i6w==
+X-CSE-MsgGUID: bgQifCB+ShqMge024Q0H6A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="75064810"
 X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="75393483"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 00:51:16 -0700
-X-CSE-ConnectionGUID: I2DDdL9vQWaAvAcwSGvghg==
-X-CSE-MsgGUID: MHQTsx82RMa03zag5bzJtA==
+   d="scan'208";a="75064810"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 00:57:33 -0700
+X-CSE-ConnectionGUID: GcRp7Q2aSSGTPgNXsvhsJQ==
+X-CSE-MsgGUID: pRiA4t45TN66otEe3kWBxg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="186231747"
+   d="scan'208";a="185821911"
 Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.174])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 00:51:12 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 00:57:32 -0700
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vENR7-00000003ps3-2Wqs;
-	Thu, 30 Oct 2025 09:51:09 +0200
-Date: Thu, 30 Oct 2025 09:51:09 +0200
+	id 1vENXF-00000003pwl-0Nl3;
+	Thu, 30 Oct 2025 09:57:29 +0200
+Date: Thu, 30 Oct 2025 09:57:28 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v7 5/5] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <aQMY7WaDixv9C2QE@smile.fi.intel.com>
-References: <20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com>
- <20251027-i3c_ddr-v7-5-866a0ff7fc46@nxp.com>
- <aQCgD3iVOXoNr7uY@smile.fi.intel.com>
- <aQI4v1lVcagBWY3i@lizhi-Precision-Tower-5810>
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/9] iio: imu: st_lsm6dsx: dynamically initialize
+ iio_chan_spec data
+Message-ID: <aQMaaHWjgC2GMGmj@smile.fi.intel.com>
+References: <20251030072752.349633-1-flavra@baylibre.com>
+ <20251030072752.349633-2-flavra@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aQI4v1lVcagBWY3i@lizhi-Precision-Tower-5810>
+In-Reply-To: <20251030072752.349633-2-flavra@baylibre.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Oct 29, 2025 at 11:54:39AM -0400, Frank Li wrote:
-> On Tue, Oct 28, 2025 at 12:50:55PM +0200, Andy Shevchenko wrote:
-> > On Mon, Oct 27, 2025 at 04:08:33PM -0400, Frank Li wrote:
+On Thu, Oct 30, 2025 at 08:27:44AM +0100, Francesco Lavra wrote:
+> Using the ST_LSM6DSX_CHANNEL_ACC() macro as a static initializer
+> for the iio_chan_spec struct arrays makes all sensors advertise
+> channel event capabilities regardless of whether they actually
+> support event generation. And if userspace tries to configure
+> accelerometer wakeup events on a sensor device that does not
+> support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences
+> a NULL pointer when trying to write to the wakeup register.
+> Replace usage of the ST_LSM6DSX_CHANNEL_ACC() and
+> ST_LSM6DSX_CHANNEL() macros with dynamic allocation and
+> initialization of struct iio_chan_spec arrays, where the
+> st_lsm6dsx_event structure is only used for sensors that support
+> wakeup events; besides fixing the above bug, this serves as a
+> preliminary step for adding support for more event types.
+
+
+Sounds like a bug fix. Fixes tag?
 
 ...
 
-> > > +static const struct {
-> > > +   int val;
-> > > +   int val2;
-> >
-> > No need. Just
-> >
-> > > +} mmc5633_samp_freq[] = {
-> 
-> There are some place will like
-> 
->         if (mmc5633_samp_freq[i][0] == val &&
->                 mmc5633_samp_freq[i][1] == val2)
-> 
-> previous
->         if (mmc5633_samp_freq[i].val == val &&
->                 mmc5633_samp_freq[i].val2 == val2)
-> 
-> Previous version seem have better readablity. But it is not big deal, if
-> you like, I change to [0][1].
+> +static int st_lsm6dsx_chan_init(struct iio_chan_spec *channels, struct st_lsm6dsx_hw *hw,
+> +				enum st_lsm6dsx_sensor_id id, int index)
+> +{
+> +	struct iio_chan_spec *chan = &channels[index];
+> +
+> +	chan->type = (id == ST_LSM6DSX_ID_ACC) ? IIO_ACCEL : IIO_ANGL_VEL;
+> +	chan->address = hw->settings->chan_addr_base[id] + index * ST_LSM6DSX_CHAN_SIZE;
+> +	chan->modified = 1;
+> +	chan->channel2 = IIO_MOD_X + index;
+> +	chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+> +	chan->info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE);
+> +	chan->info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> +	chan->scan_index = index;
+> +	chan->scan_type.sign = 's';
+> +	chan->scan_type.realbits = 16;
+> +	chan->scan_type.storagebits = 16;
+> +	chan->scan_type.endianness = IIO_LE;
+> +	chan->ext_info = st_lsm6dsx_ext_info;
 
-It's not my preference, it's how all but this driver do in IIO, it's about
-consistency of the style / patterns.
++ blank line
+
+> +	if (id == ST_LSM6DSX_ID_ACC) {
+> +		if (hw->settings->event_settings.wakeup_reg.addr) {
+> +			chan->event_spec = &st_lsm6dsx_event;
+> +			chan->num_event_specs = 1;
+> +		}
+> +	}
+
+if (foo) { if (bar) {}  } == if (foo && bar).
+
+Based on this I'm in doubt what to suggest here as to me sounds like those
+couple of lines might deserve for a helper.
+
+Hence two options:
+1) do an equivalent conditional and reduce indentation level;
+2) do a helper with the inner conditional.
+
++ blank line
+
+> +	return 0;
+> +}
 
 ...
 
-> > struct i3c_device doesn't have a name, does it?
-> 
-> It has name, but it is hexnumber (VID+PID), like 0-4a20000f000.
-> So use friend/readable name here.
+> +	channels = devm_kzalloc(hw->dev, sizeof(*channels) * ST_LSM6DSX_CHAN_COUNT, GFP_KERNEL);
 
-I think it's better to use the name provided by the subsystem. This way we may
-guarantee the unique one. The hard coded values potentially might collide
-(imagine some I³C driver for the very similar chip, let's say, in hwmon).
+devm_kcalloc()
+
+> +	if (!channels)
+> +		return NULL;
+
+I would expect comment here...
+
+> +	for (i = 0; i < 3; i++) {
+
+3 might need to be defined.
+
+> +		if (st_lsm6dsx_chan_init(channels, hw, id, i) < 0)
+> +			return NULL;
+> +	}
+
++ blank line
+
+...and perhaps here to explain what's going on here.
+
+> +	channels[3].type = IIO_TIMESTAMP;
+> +	channels[3].channel = -1;
+> +	channels[3].scan_index = 3;
+> +	channels[3].scan_type.sign = 's';
+> +	channels[3].scan_type.realbits = 64;
+> +	channels[3].scan_type.storagebits = 64;
+
++ blank line.
+
+>  	iio_dev->modes = INDIO_DIRECT_MODE;
+>  	iio_dev->available_scan_masks = st_lsm6dsx_available_scan_masks;
+> -	iio_dev->channels = hw->settings->channels[id].chan;
+> -	iio_dev->num_channels = hw->settings->channels[id].len;
+> +	iio_dev->channels = channels;
+> +	iio_dev->num_channels = ST_LSM6DSX_CHAN_COUNT;
 
 -- 
 With Best Regards,

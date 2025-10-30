@@ -1,153 +1,220 @@
-Return-Path: <linux-iio+bounces-25654-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25655-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA9EC1EF82
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 09:24:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1D5C1EFAB
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 09:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5C1CA4E7BD3
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 08:24:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C351F3A6FF2
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 08:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2926C335BAF;
-	Thu, 30 Oct 2025 08:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B847433859A;
+	Thu, 30 Oct 2025 08:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hAI/LmWf"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eTVQqxHd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB3D32E69B;
-	Thu, 30 Oct 2025 08:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351B333436F
+	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 08:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761812684; cv=none; b=f1OJ/OC22XsKslN02azC5scj/mO4DbcFy67S64le6eVPCqK2kQuQb6iYVVquFA8a93Fsj5b1KVyYkKc+rYsRV2+q9UOpt428UsfIC4Ey67qvYkmwSLKxH8RqCv4H/+RsQpR44XV+MuxdpnIn/UP6BG27lslNcOZPtfLKHdQqqTg=
+	t=1761812847; cv=none; b=Dt0powMWA0s4ZIZ0ek4IQ1drIXiUv8dkEH7jQMli1hG3lpoIMwjh1NvnzKcu3R0veDTDzXB8phEWkSKoZbnR6oBixvkm7j2P69+6c60khYnknfxIagRlOwSFwBj4XJI4ZEGgZL14xfOnBLasHnvBSSz9plTe0qAL+nQsLI4u5/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761812684; c=relaxed/simple;
-	bh=b2dkplthGwsSV143iEmAOuYcZDKvI2X1EgZlXGLzbZ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HL51qLZj1ft0UzoO8Mt96u/r4aemfjoCVLbTTbzNROeliErc3JrmHGVkNgdV/QrS2lOMk4fRntd3u+IlWksDOmaKHgqjBwZHkhWlz/tzh2gLgrFpkEKaSF4OAQPq71IDxlHdSn8r4WK5Td26gIGoTptO4GAWJX8IevFSAuXrFJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hAI/LmWf; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761812683; x=1793348683;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=b2dkplthGwsSV143iEmAOuYcZDKvI2X1EgZlXGLzbZ0=;
-  b=hAI/LmWfZgaZb7/MvhJxFjtJnlhgVS2jasuFz5VzymggcUZhtGVTO2lb
-   wJjIDhRoPXxupMZNxZw3Ckv3+PEp3bhgQewQ35JmeZlsSNjU5iPP1hiBN
-   xUMqrWsBx2fXQGNtE7yI5X3/lbLToDaxfgtRtsRJWvU0xb4U9tu7mnkYa
-   SO+JIj6dkCJydF3HUeLIucOt4hTfW3hebg1kGCCQ8eDVeP4gtxyiGMoEZ
-   33uTWgE5VYsXB7SCH+RgvOqsiCEQcEyUwLXtRDo1k40D4i5b7cf01vJP2
-   MuUnWfHD19SGRKHRL4L7OokiIXIaHO0U8BhBM9AgH0t1w1UluFpDEUeiK
-   Q==;
-X-CSE-ConnectionGUID: SqKRinFcSnuXH95eqKVXOQ==
-X-CSE-MsgGUID: Dc/WnMYKTBmSXRb2RqB/RA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="62968914"
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="62968914"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 01:24:42 -0700
-X-CSE-ConnectionGUID: 1qirrtpNRbOB+B/4zlM8rA==
-X-CSE-MsgGUID: E8Ae3r1MQ861JuXWIOU6hA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="185086308"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.174])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 01:24:41 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vENxW-00000003qL4-0ejI;
-	Thu, 30 Oct 2025 10:24:38 +0200
-Date: Thu, 30 Oct 2025 10:24:37 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Francesco Lavra <flavra@baylibre.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 8/9] iio: imu: st_lsm6dsx: add event configurability on a
- per axis basis
-Message-ID: <aQMgxUNA8XNhPZdG@smile.fi.intel.com>
-References: <20251030072752.349633-1-flavra@baylibre.com>
- <20251030072752.349633-9-flavra@baylibre.com>
+	s=arc-20240116; t=1761812847; c=relaxed/simple;
+	bh=UDQb1+mEWC8Kf1gDMEyhFiMaB5sUmGPqCh+7teEp0uE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PuWpEza8CwPeLmtVwzx/Rn60VBE+RoTAqvSNAu+NexyMLKXc/C/c3v4C3VmLDV5YTgSENmqtWr6mfGNosnGVI1cgconUXKHEueizRNo4rT3JVS+gT5or/9HPVx56FAaY13aDNpJUR1mqYBYa2qU04iUDs29A62Io+sxNui9sk/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eTVQqxHd; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-475dae5d473so5844905e9.2
+        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 01:27:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761812843; x=1762417643; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/Cx0kxFaBCbR91JhvRx0ITZZstWHSbBwKql2sLDgf/c=;
+        b=eTVQqxHdvR8f6FZR3vhYwHzTaOI+Iqd0AidYzy/cQ6Ctqe1GOfwMfzLV1dD+hBdKMe
+         /UwURHlukUYdg5P/svRVgpEQTFajBSlJeqOa6oDt7V3Rp77Eh3olF+4NwKLVzcquCynp
+         XaQYXnsOCrUYemZFQgZibun5vI0IDiZFcj4tCZC7KEf5oKhtWBvAo4LOxvr2xWcL9Q1p
+         dl+Fo+Ve+5YPDy5wFmAC1s8TbRwPp94YOg/UxAg2iKlD0tGc2tyG0HN/3gl6URGWgLNv
+         flCPO5ph9AKOsTfvsM65h8mcTnD37+HXivzXWB+mZ+TjwRiBA3drP9vPnEwGev3EmW8N
+         /qzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761812843; x=1762417643;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/Cx0kxFaBCbR91JhvRx0ITZZstWHSbBwKql2sLDgf/c=;
+        b=DNLJtVLg4jk4X6ByZiAnQDrDYnEe9ld0PAx3+AviIg96xmlsl+pbLB5f2aItT2aShv
+         RvSbdjiAMTdRG/k8GPJxLtpHgtg1M+SXA+rFAwP4CO2C0WHuSJq2IbxqWFoN4yapeSWC
+         L6dYxLoSCNq8mwl5R7535W83ng/LgIflNHl0VVTg4vdWRhLPG47gNxotEAK1oHUMXUyw
+         oZytUYiqPkjIeQsoL0X6QYKtWTMEIrIO76oAGfr3QpYRhtPRK+Em5lIcGNnrUL83LJml
+         gqibJrL50G01ciCPM5E/GobjfejzZMELfSyCCrSYnlH4+rbJFONtbyQShsPf9Fgjvllo
+         i/hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUQCmtmnrHt9jWkLmaI3XNVv6xJJ2LnNQrqXt0k64oV4cb++gWlXpge5a1W8tZN8XdbOUd2wf3O8vI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZDHFrm1fCYRnGe0LZY2o8FVJFAmitBzGm7ccN7FaIhcl03Yn8
+	AqqOK9rITdEsC/FWU9nwcuwzbHni1OViPFQShKsyljBwBcnGC8rcyQ30/921kPXdz6o=
+X-Gm-Gg: ASbGncu/UdfYRAPBFoZBGjUnL+Mb2qkVyFBdp2oER44lGvNp59W7iG20ARITeUFS3B8
+	L7Ti99ejeVYdXkETVdreQlW4LWwaqJb3DnO9wTYriuYDi6sZdlzL3vrGpVDyz5jpDeH1vcQVeId
+	XKhsRgOL91rzeaNz2d5JAMOv3LYS7HotJXKpn81RBLjw/JyDhgX2Htv/KMnZ2LCoQyMnWsJTeAu
+	irwZSassmxje1OCLE1FR3jHqYppOGnw6zvC+rIRhHvHmBAzhVo9j09bU3a6lQPBFNaKhnca/jOu
+	Q+FmooEVISs/iHEWFLSeXwTlVd0w0L21tN1BSH3sfWMrXcIgce+72HnkOVC9DkJh47/xNm6YIJr
+	s3IFKROy/p6a/R2WwuapydbC9ei8LoYNi6rFTYsCZWiuvB9WokI1BYSQZT1LQkSlmG8Ww3i31F3
+	NFJMaZho5IDVMynw5qN4Mi/dXoC4X4cbhKC1P2jLwsmpI5CpSKe+N7YGA=
+X-Google-Smtp-Source: AGHT+IEpOqqQd6suUlzGZQizli8cmv6trmiqjxQtOiZEhtbP++rOooGf2lSVBQRYJvEyQY/YzRO1Ig==
+X-Received: by 2002:a05:600c:4e52:b0:477:c37:2ea7 with SMTP id 5b1f17b1804b1-47726009fe6mr20555685e9.21.1761812843457;
+        Thu, 30 Oct 2025 01:27:23 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:7e89:8fed:3647:15c8? ([2a05:6e02:1041:c10:7e89:8fed:3647:15c8])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-477289e7fd2sm28493615e9.16.2025.10.30.01.27.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Oct 2025 01:27:22 -0700 (PDT)
+Message-ID: <050f96d5-e60c-4b33-b6d2-24fb3925e378@linaro.org>
+Date: Thu, 30 Oct 2025 09:27:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251030072752.349633-9-flavra@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] iio: adc: Add the NXP SAR ADC support for the
+ s32g2/3 platforms
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
+ linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
+ ghennadi.procopciuc@oss.nxp.com
+References: <20251017164238.1908585-1-daniel.lezcano@linaro.org>
+ <20251017164238.1908585-3-daniel.lezcano@linaro.org>
+ <aPP0uVZu1T7tTQGo@ashevche-desk.local>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <aPP0uVZu1T7tTQGo@ashevche-desk.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 30, 2025 at 08:27:51AM +0100, Francesco Lavra wrote:
-> In order to be able to configure event detection on a per axis
-> basis (for either setting an event threshold/sensitivity value, or
-> enabling/disabling event detection), add new axis-specific fields
-> to struct st_lsm6dsx_event_src, and modify the logic that handles
-> event configuration to properly handle axis-specific settings when
-> supported by a given event source.
-> A future commit will add actual event sources with per-axis
-> configurability.
 
-...
+Hi Andy,
 
-> +	old_enable = hw->enable_event[event];
-> +	new_enable = state ? (old_enable | BIT(axis)) : (old_enable & ~BIT(axis));
-> +	if (!!old_enable == !!new_enable)
+On 10/18/25 22:12, Andy Shevchenko wrote:
+> On Fri, Oct 17, 2025 at 06:42:38PM +0200, Daniel Lezcano wrote:
+>> From: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
+>>
+>> The NXP S32G2 and S32G3 platforms integrate a successive approximation
+>> register (SAR) ADC. Two instances are available, each providing 8
+>> multiplexed input channels with 12-bit resolution. The conversion rate
+>> is up to 1 Msps depending on the configuration and sampling window.
+>>
+>> The SAR ADC supports raw, buffer, and trigger modes. It can operate
+>> in both single-shot and continuous conversion modes, with optional
+>> hardware triggering through the cross-trigger unit (CTU) or external
+>> events. An internal prescaler allows adjusting the sampling clock,
+>> while per-channel programmable sampling times provide fine-grained
+>> trade-offs between accuracy and latency. Automatic calibration is
+>> performed at probe time to minimize offset and gain errors.
+>>
+>> The driver is derived from the BSP implementation and has been partly
+>> rewritten to comply with upstream requirements. For this reason, all
+>> contributors are listed as co-developers, while the author refers to
+>> the initial BSP driver file creator.
+>>
+>> All modes have been validated on the S32G274-RDB2 platform using an
+>> externally generated square wave captured by the ADC. Tests covered
+>> buffered streaming via IIO, trigger synchronization, and accuracy
+>> verification against a precision laboratory signal source.
+> 
+> ...
+> 
+>> +#include <linux/circ_buf.h>
+> 
+> Why not kfifo?
 
-This is an interesting check. So, old_enable and new_enable are _not_ booleans, right?
-So, this means the check test if _any_ of the bit was set and kept set or none were set
-and non is going to be set. Correct? I think a short comment would be good to have.
+I'm sorry but I don't get your comment.
 
-> +		return 0;
+Do you mean why not use kfifo.h or use kfifo API and change all the code 
+using the circ_buf by the kfifo ?
+> ...
+> 
+>> +#define NXP_SAR_ADC_IIO_BUFF_SZ		(NXP_SAR_ADC_NR_CHANNELS + (sizeof(u64) / sizeof(u16)))
+> 
+> Hmm... Don't we have some macros so we can avoid this kind of hard coding?
 
-...
+I don't find such a macro, do you have a pointer ?
 
-> +static const struct st_lsm6dsx_reg *st_lsm6dsx_get_event_reg(struct st_lsm6dsx_hw *hw,
-> +							     enum st_lsm6dsx_event_id event,
-> +							     const struct iio_chan_spec *chan)
-> +{
-> +	const struct st_lsm6dsx_event_src *src = &hw->settings->event_settings.sources[event];
-> +	const struct st_lsm6dsx_reg *reg;
-> +
-> +	switch (chan->channel2) {
-> +	case IIO_MOD_X:
-> +		reg = &src->x_value;
-> +		break;
-> +	case IIO_MOD_Y:
-> +		reg = &src->y_value;
-> +		break;
-> +	case IIO_MOD_Z:
-> +		reg = &src->z_value;
-> +		break;
-> +	default:
-> +		return NULL;
-> +	}
+> ...
+> 
+>> +	ndelay(div64_u64(NSEC_PER_SEC, clk_get_rate(info->clk)) * 80U);
+> 
+> Do you need those 'U':s? clk_get_rate() already returns unsigned value of the
+> same or higher rank than int. No?
 
-> +	if (!reg->addr)
-> +		reg = &src->value;
-> +	return reg;
+May be not needed, but harmless. I can remove them if you want
 
-	if (reg->addr)
-		return reg;
+>> +static int nxp_sar_adc_start_conversion(struct nxp_sar_adc *info, bool raw)
+>> +{
+>> +	u32 mcr;
+>> +
+>> +	mcr = readl(NXP_SAR_ADC_MCR(info->regs));
+>> +
+>> +	FIELD_MODIFY(NXP_SAR_ADC_MCR_NSTART, &mcr, 0x1);
+>> +	FIELD_MODIFY(NXP_SAR_ADC_MCR_MODE, &mcr, !raw);
+> 
+> !raw, which is boolean, as a parameter to FIELD_MODIFY() seems a bit odd to me,
+> perhaps simple
+> 
+> 	raw ? 0 : 1
+> 
+> would work better?
 
-	/* Perhaps a comment here to explain the choice */
-	return &src->value;
+Sure
+> (Note, optimizer of the complier will avoid any branching)
+> 
+>> +	writel(mcr, NXP_SAR_ADC_MCR(info->regs));
+>> +
+>> +	return 0;
+>> +}
+> 
+> ...
+> 
+>> +	dma_samples = (u32 *)dma_buf->buf;
+> 
+> Is it aligned properly for this type of casting?
 
-> +}
+TBH, I don't know the answer :/
+
+How can I check that ?
+
+>> +	dmaengine_tx_status(info->dma_chan, info->cookie, &state);
+> 
+> No return value check?
+
+The return value is not necessary here because the caller of the 
+callback will check with dma_submit_error() in case of error which 
+covers the DMA_ERROR case and the other cases are not useful because the 
+residue is taken into account right after.
+
+It could be written differently with the DMA_COMPLETE check but the 
+result will be the same. I prefer to keep the current implementation 
+which has been tested.
+
+>> +static const struct nxp_sar_adc_data s32g2_sar_adc_data = {
+>> +	.vref_mV = 1800,
+>> +	.model = "s32g2-sar-adc"
+> 
+> Keep a trailing comma as here it's not a termination member.
+Ok, I'll add it
 
 -- 
-With Best Regards,
-Andy Shevchenko
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 

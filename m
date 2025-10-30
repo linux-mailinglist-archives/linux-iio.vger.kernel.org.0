@@ -1,128 +1,456 @@
-Return-Path: <linux-iio+bounces-25688-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25689-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67783C2142D
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 17:43:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC056C21460
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 17:46:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A69B4F0E61
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 16:40:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EB7224E8919
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 16:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19322DE1E0;
-	Thu, 30 Oct 2025 16:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E412DF3D1;
+	Thu, 30 Oct 2025 16:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q0fgZ8Yh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L8obaozL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566002153EA;
-	Thu, 30 Oct 2025 16:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D7F277C96;
+	Thu, 30 Oct 2025 16:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761842435; cv=none; b=drsiYAx7dDpnL0w+qr5YLAoJAAJp/67COM+GTMgo06donsU6g8Hhf8sZrhlcK5iUzppUbdTJMBe2kY1O808iWgrRXgmoSjXddzos/8sdLUdV7p5q5Dv5/IuCpF3HF0sqeM5EKWvl9c2a9HnxOl5gLAJG5bbs9JpCiY4UGiyTzn0=
+	t=1761842548; cv=none; b=aXXFlhTPGbZkxIRBtEXrTErKrWV9B40vQaqFsVd8L3QUcycE+/o74cGm3SOXeNwFrlblno+mr57UVkrtC0p0ot1x+qKNy2MjyqREUBWhV4iVcWL8Qq4JYbSs4QjuVJgL6dqAtw3nd2yeMzF7628LxE5H6ljf0D0LMb4/4jmnxJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761842435; c=relaxed/simple;
-	bh=D1fLHv6UtZH5JtJqdHVRIpQ3bulaFvN7jScs941smeY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GtAU3K6Pcb2VkVuE3H4DSZZjX+s4xGBGme+SqxepfxoFL8O8H3yL9FWp9JIVM6JYjYiFXW5W2DysZrSzYd0xMT+3KkUyBLvriarOd1QqvSXtbW3V1ntHtl6/6Y2mTfQZWJpiiC8xIHlKpheUHqYHOTHMyix49kRCfZfsZ/wlUSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q0fgZ8Yh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E609C4CEF8;
-	Thu, 30 Oct 2025 16:40:32 +0000 (UTC)
+	s=arc-20240116; t=1761842548; c=relaxed/simple;
+	bh=0IQFFDlxl9LPu85l9AkvRne4bRDfULuqaqsDAoZsvSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ut7OE0C6bpu3eKFOwCe7ooKeJZXRaRk65vBCQ11EDuDP8dFTuwEEeuKg7lLM52U45GELcQw42WVr5BdaCc10V5cytSxZlIJvKPw40cDzvjFUuf+wmHc79163t9u1joctPeK8WPsKZUykqc8DQAnDeUaGWPAiJGAHHlkIz1fuL04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8obaozL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B026BC4CEF1;
+	Thu, 30 Oct 2025 16:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761842434;
-	bh=D1fLHv6UtZH5JtJqdHVRIpQ3bulaFvN7jScs941smeY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q0fgZ8YhgrKj5qQZgtgSVBwpimwaFxFwdOg9jfm03O15RHO5ugSU23Hl2REJOjM4C
-	 OAmxVF5Gc6qYbTaepYjNv1Z2rxBl0ArILlQp7Q1J4PrGQNRS568ttPaVLSAhISvjXu
-	 UmeyTLXMiWgDmoVid0Sb/XELVz8rCaIME7F2K5wrwDqgXgFPnXbVEc44/lh4uSBuv+
-	 jjniqGZmQd9qHTYhGwQycKcODVNwWrJo/mqPYjCuLSd/p2ua6tCeyud+8AAbQVkdFr
-	 vILG8q8xJp6TbRwm5GF2fXjYSarJb8DVPsEQeV3AWXH7rN9T9L7QbAsQ5Akhf2iF1s
-	 g1uWaQPaF3y7A==
-Message-ID: <efd2690f-35ba-4104-ac88-4e068984d19f@kernel.org>
-Date: Thu, 30 Oct 2025 17:40:30 +0100
+	s=k20201202; t=1761842548;
+	bh=0IQFFDlxl9LPu85l9AkvRne4bRDfULuqaqsDAoZsvSQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L8obaozLTXOAHjCzu04/OJ8Z0vq6UdAFuFuWx/UxW0NCx9lOifaR8uc9qmpbfE4ht
+	 xvYYvZw990Je5AKKt7zdEAjtIxJiCPNGxSdixXGDyrbrQx5vBTHJMIFqZnP4uiP02T
+	 ch8uYBWCixK6L8v1jg4kigXwL94LgShZYKaDNFA3TXo8f2mpp6tmOnUqiFMB0xPakE
+	 u0xPzoGABZHUZFM7MZyUDzDcRH9Pykd7HmCxp/wKQX++JbHn3p0Z/MDT6LGZr8wlz0
+	 ZNlv4Tqy+9G4ag0CO2g0BXQj9HP+YPQ8DSsX6sZnu8ILTgV/xgFKFIG3fBkqZZTx9C
+	 P2sV3DM+M9AQQ==
+Date: Thu, 30 Oct 2025 17:42:24 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/9] iio: imu: st_lsm6dsx: dynamically initialize
+ iio_chan_spec data
+Message-ID: <aQOVcCinTd-ZJJX3@lore-desk>
+References: <20251030072752.349633-1-flavra@baylibre.com>
+ <20251030072752.349633-2-flavra@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/3] iio: adc: Add support for TI ADS1120 ADC
-To: Ajith Anandhan <ajithanandhan0406@gmail.com>, linux-iio@vger.kernel.org
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 30/10/2025 17:34, Ajith Anandhan wrote:
-> This RFC patch series adds support for the Texas Instruments ADS1120,
-> a precision 16-bit delta-sigma ADC with SPI interface.
-> 
-> The driver provides:
-> - 4 single-ended voltage input channels
-> - Programmable gain amplifier (1 to 128)
-> - Configurable data rates (20 to 1000 SPS)
-> - Single-shot conversion mode
-> 
-> I'm looking for feedback on:
-> 1. The implementation approach for single-shot conversions
-> 2. Any other suggestions for improvement
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="YQQtpU9Ze4ampjl4"
+Content-Disposition: inline
+In-Reply-To: <20251030072752.349633-2-flavra@baylibre.com>
 
 
-No need to call your patches RFC then. It only stops from merging and
-some people will not review the code (RFC means not ready for inclusion).
+--YQQtpU9Ze4ampjl4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Best regards,
-Krzysztof
+> Using the ST_LSM6DSX_CHANNEL_ACC() macro as a static initializer
+> for the iio_chan_spec struct arrays makes all sensors advertise
+> channel event capabilities regardless of whether they actually
+> support event generation. And if userspace tries to configure
+> accelerometer wakeup events on a sensor device that does not
+> support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences
+> a NULL pointer when trying to write to the wakeup register.
+> Replace usage of the ST_LSM6DSX_CHANNEL_ACC() and
+> ST_LSM6DSX_CHANNEL() macros with dynamic allocation and
+> initialization of struct iio_chan_spec arrays, where the
+> st_lsm6dsx_event structure is only used for sensors that support
+> wakeup events; besides fixing the above bug, this serves as a
+> preliminary step for adding support for more event types.
+
+I agree we are missing the Fixes tag here.
+
+>=20
+> Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  26 +--
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 164 ++++++++-----------
+>  2 files changed, 71 insertions(+), 119 deletions(-)
+>=20
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st=
+_lsm6dsx/st_lsm6dsx.h
+> index a4f558899767..db863bd1898d 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+> @@ -80,27 +80,6 @@ enum st_lsm6dsx_hw_id {
+>  					 * ST_LSM6DSX_TAGGED_SAMPLE_SIZE)
+>  #define ST_LSM6DSX_SHIFT_VAL(val, mask)	(((val) << __ffs(mask)) & (mask))
+> =20
+> -#define ST_LSM6DSX_CHANNEL_ACC(chan_type, addr, mod, scan_idx)		\
+> -{									\
+> -	.type =3D chan_type,						\
+> -	.address =3D addr,						\
+> -	.modified =3D 1,							\
+> -	.channel2 =3D mod,						\
+> -	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),			\
+> -	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),		\
+> -	.info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
+> -	.scan_index =3D scan_idx,						\
+> -	.scan_type =3D {							\
+> -		.sign =3D 's',						\
+> -		.realbits =3D 16,						\
+> -		.storagebits =3D 16,					\
+> -		.endianness =3D IIO_LE,					\
+> -	},								\
+> -	.event_spec =3D &st_lsm6dsx_event,				\
+> -	.ext_info =3D st_lsm6dsx_ext_info,				\
+> -	.num_event_specs =3D 1,						\
+> -}
+> -
+>  #define ST_LSM6DSX_CHANNEL(chan_type, addr, mod, scan_idx)		\
+>  {									\
+>  	.type =3D chan_type,						\
+> @@ -328,10 +307,7 @@ struct st_lsm6dsx_settings {
+>  		const char *name;
+>  		u8 wai;
+>  	} id[ST_LSM6DSX_MAX_ID];
+> -	struct {
+> -		const struct iio_chan_spec *chan;
+> -		int len;
+> -	} channels[2];
+> +	u8 chan_addr_base[2];
+
+nit: chan_addr[2]
+
+>  	struct {
+>  		struct st_lsm6dsx_reg irq1;
+>  		struct st_lsm6dsx_reg irq2;
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 216160549b5a..17b46e15cce5 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -96,26 +96,7 @@
+> =20
+>  #define ST_LSM6DSX_TS_SENSITIVITY		25000UL /* 25us */
+> =20
+> -static const struct iio_chan_spec st_lsm6dsx_acc_channels[] =3D {
+> -	ST_LSM6DSX_CHANNEL_ACC(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
+> -	ST_LSM6DSX_CHANNEL_ACC(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
+> -	ST_LSM6DSX_CHANNEL_ACC(IIO_ACCEL, 0x2c, IIO_MOD_Z, 2),
+> -	IIO_CHAN_SOFT_TIMESTAMP(3),
+> -};
+> -
+> -static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] =3D {
+> -	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
+> -	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
+> -	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x26, IIO_MOD_Z, 2),
+> -	IIO_CHAN_SOFT_TIMESTAMP(3),
+> -};
+> -
+> -static const struct iio_chan_spec st_lsm6ds0_gyro_channels[] =3D {
+> -	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x18, IIO_MOD_X, 0),
+> -	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x1a, IIO_MOD_Y, 1),
+> -	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x1c, IIO_MOD_Z, 2),
+> -	IIO_CHAN_SOFT_TIMESTAMP(3),
+> -};
+> +#define ST_LSM6DSX_CHAN_COUNT		4
+> =20
+>  static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] =3D=
+ {
+>  	{
+> @@ -142,15 +123,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_s=
+ensor_settings[] =3D {
+>  				.wai =3D 0x68,
+>  			},
+>  		},
+> -		.channels =3D {
+> -			[ST_LSM6DSX_ID_ACC] =3D {
+> -				.chan =3D st_lsm6dsx_acc_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> -			},
+> -			[ST_LSM6DSX_ID_GYRO] =3D {
+> -				.chan =3D st_lsm6ds0_gyro_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6ds0_gyro_channels),
+> -			},
+> +		.chan_addr_base =3D {
+> +			[ST_LSM6DSX_ID_ACC] =3D 0x28,
+> +			[ST_LSM6DSX_ID_GYRO] =3D 0x18,
+>  		},
+>  		.odr_table =3D {
+>  			[ST_LSM6DSX_ID_ACC] =3D {
+> @@ -246,15 +221,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_s=
+ensor_settings[] =3D {
+>  				.wai =3D 0x69,
+>  			},
+>  		},
+> -		.channels =3D {
+> -			[ST_LSM6DSX_ID_ACC] =3D {
+> -				.chan =3D st_lsm6dsx_acc_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> -			},
+> -			[ST_LSM6DSX_ID_GYRO] =3D {
+> -				.chan =3D st_lsm6dsx_gyro_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_gyro_channels),
+> -			},
+> +		.chan_addr_base =3D {
+> +			[ST_LSM6DSX_ID_ACC] =3D 0x28,
+> +			[ST_LSM6DSX_ID_GYRO] =3D 0x22,
+>  		},
+>  		.odr_table =3D {
+>  			[ST_LSM6DSX_ID_ACC] =3D {
+> @@ -412,15 +381,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_s=
+ensor_settings[] =3D {
+>  				.wai =3D 0x69,
+>  			},
+>  		},
+> -		.channels =3D {
+> -			[ST_LSM6DSX_ID_ACC] =3D {
+> -				.chan =3D st_lsm6dsx_acc_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> -			},
+> -			[ST_LSM6DSX_ID_GYRO] =3D {
+> -				.chan =3D st_lsm6dsx_gyro_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_gyro_channels),
+> -			},
+> +		.chan_addr_base =3D {
+> +			[ST_LSM6DSX_ID_ACC] =3D 0x28,
+> +			[ST_LSM6DSX_ID_GYRO] =3D 0x22,
+>  		},
+>  		.odr_table =3D {
+>  			[ST_LSM6DSX_ID_ACC] =3D {
+> @@ -590,15 +553,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_s=
+ensor_settings[] =3D {
+>  				.wai =3D 0x6a,
+>  			},
+>  		},
+> -		.channels =3D {
+> -			[ST_LSM6DSX_ID_ACC] =3D {
+> -				.chan =3D st_lsm6dsx_acc_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> -			},
+> -			[ST_LSM6DSX_ID_GYRO] =3D {
+> -				.chan =3D st_lsm6dsx_gyro_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_gyro_channels),
+> -			},
+> +		.chan_addr_base =3D {
+> +			[ST_LSM6DSX_ID_ACC] =3D 0x28,
+> +			[ST_LSM6DSX_ID_GYRO] =3D 0x22,
+>  		},
+>  		.odr_table =3D {
+>  			[ST_LSM6DSX_ID_ACC] =3D {
+> @@ -847,15 +804,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_s=
+ensor_settings[] =3D {
+>  				.wai =3D 0x6d,
+>  			},
+>  		},
+> -		.channels =3D {
+> -			[ST_LSM6DSX_ID_ACC] =3D {
+> -				.chan =3D st_lsm6dsx_acc_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> -			},
+> -			[ST_LSM6DSX_ID_GYRO] =3D {
+> -				.chan =3D st_lsm6dsx_gyro_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_gyro_channels),
+> -			},
+> +		.chan_addr_base =3D {
+> +			[ST_LSM6DSX_ID_ACC] =3D 0x28,
+> +			[ST_LSM6DSX_ID_GYRO] =3D 0x22,
+>  		},
+>  		.drdy_mask =3D {
+>  			.addr =3D 0x13,
+> @@ -1060,15 +1011,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx=
+_sensor_settings[] =3D {
+>  				.wai =3D 0x6b,
+>  			},
+>  		},
+> -		.channels =3D {
+> -			[ST_LSM6DSX_ID_ACC] =3D {
+> -				.chan =3D st_lsm6dsx_acc_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> -			},
+> -			[ST_LSM6DSX_ID_GYRO] =3D {
+> -				.chan =3D st_lsm6dsx_gyro_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_gyro_channels),
+> -			},
+> +		.chan_addr_base =3D {
+> +			[ST_LSM6DSX_ID_ACC] =3D 0x28,
+> +			[ST_LSM6DSX_ID_GYRO] =3D 0x22,
+>  		},
+>  		.drdy_mask =3D {
+>  			.addr =3D 0x13,
+> @@ -1237,15 +1182,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx=
+_sensor_settings[] =3D {
+>  				.wai =3D 0x70,
+>  			},
+>  		},
+> -		.channels =3D {
+> -			[ST_LSM6DSX_ID_ACC] =3D {
+> -				.chan =3D st_lsm6dsx_acc_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> -			},
+> -			[ST_LSM6DSX_ID_GYRO] =3D {
+> -				.chan =3D st_lsm6dsx_gyro_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_gyro_channels),
+> -			},
+> +		.chan_addr_base =3D {
+> +			[ST_LSM6DSX_ID_ACC] =3D 0x28,
+> +			[ST_LSM6DSX_ID_GYRO] =3D 0x22,
+>  		},
+>  		.drdy_mask =3D {
+>  			.addr =3D 0x13,
+> @@ -1443,15 +1382,9 @@ static const struct st_lsm6dsx_settings st_lsm6dsx=
+_sensor_settings[] =3D {
+>  				.wai =3D 0x22,
+>  			}
+>  		},
+> -		.channels =3D {
+> -			[ST_LSM6DSX_ID_ACC] =3D {
+> -				.chan =3D st_lsm6dsx_acc_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> -			},
+> -			[ST_LSM6DSX_ID_GYRO] =3D {
+> -				.chan =3D st_lsm6dsx_gyro_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_gyro_channels),
+> -			},
+> +		.chan_addr_base =3D {
+> +			[ST_LSM6DSX_ID_ACC] =3D 0x28,
+> +			[ST_LSM6DSX_ID_GYRO] =3D 0x22,
+>  		},
+>  		.odr_table =3D {
+>  			[ST_LSM6DSX_ID_ACC] =3D {
+> @@ -2366,21 +2299,64 @@ static int st_lsm6dsx_init_device(struct st_lsm6d=
+sx_hw *hw)
+>  	return st_lsm6dsx_init_hw_timer(hw);
+>  }
+> =20
+
+> +static int st_lsm6dsx_chan_init(struct iio_chan_spec *channels, struct s=
+t_lsm6dsx_hw *hw,
+> +				enum st_lsm6dsx_sensor_id id, int index)
+
+please try to respect the 79 column limit (I still like it :))
+
+> +{
+> +	struct iio_chan_spec *chan =3D &channels[index];
+> +
+> +	chan->type =3D (id =3D=3D ST_LSM6DSX_ID_ACC) ? IIO_ACCEL : IIO_ANGL_VEL;
+
+I think you should return an error here if id is not ST_LSM6DSX_ID_ACC or
+ST_LSM6DSX_ID_GYRO.
+
+> +	chan->address =3D hw->settings->chan_addr_base[id] + index * ST_LSM6DSX=
+_CHAN_SIZE;
+> +	chan->modified =3D 1;
+> +	chan->channel2 =3D IIO_MOD_X + index;
+> +	chan->info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW);
+> +	chan->info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE);
+> +	chan->info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> +	chan->scan_index =3D index;
+> +	chan->scan_type.sign =3D 's';
+> +	chan->scan_type.realbits =3D 16;
+> +	chan->scan_type.storagebits =3D 16;
+> +	chan->scan_type.endianness =3D IIO_LE;
+
+what about reducing the scope of ST_LSM6DSX_CHANNEL_ACC/ST_LSM6DSX_CHANNEL =
+here
+to improve the iio_chan_spec struct initialization since most of the fields=
+ are
+always the same between different sensors.
+
+> +	chan->ext_info =3D st_lsm6dsx_ext_info;
+> +	if (id =3D=3D ST_LSM6DSX_ID_ACC) {
+> +		if (hw->settings->event_settings.wakeup_reg.addr) {
+
+	if (id =3D=3D ST_LSM6DSX_ID_ACC &&
+	    hw->settings->event_settings.wakeup_reg.addr) {
+	    ...
+	}
+
+> +			chan->event_spec =3D &st_lsm6dsx_event;
+> +			chan->num_event_specs =3D 1;
+> +		}
+> +	}
+> +	return 0;
+> +}
+> +
+>  static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
+>  					       enum st_lsm6dsx_sensor_id id,
+>  					       const char *name)
+>  {
+>  	struct st_lsm6dsx_sensor *sensor;
+>  	struct iio_dev *iio_dev;
+> +	struct iio_chan_spec *channels;
+
+nit: chan to be consistent
+
+> +	int i;
+> =20
+>  	iio_dev =3D devm_iio_device_alloc(hw->dev, sizeof(*sensor));
+>  	if (!iio_dev)
+>  		return NULL;
+> =20
+> +	channels =3D devm_kzalloc(hw->dev, sizeof(*channels) * ST_LSM6DSX_CHAN_=
+COUNT, GFP_KERNEL);
+
+79 column limit here. I guess you can use even devm_kcalloc() here.
+
+> +	if (!channels)
+> +		return NULL;
+> +
+> +	for (i =3D 0; i < 3; i++) {
+> +		if (st_lsm6dsx_chan_init(channels, hw, id, i) < 0)
+> +			return NULL;
+> +	}
+
+new line here.
+
+> +	channels[3].type =3D IIO_TIMESTAMP;
+> +	channels[3].channel =3D -1;
+> +	channels[3].scan_index =3D 3;
+> +	channels[3].scan_type.sign =3D 's';
+> +	channels[3].scan_type.realbits =3D 64;
+> +	channels[3].scan_type.storagebits =3D 64;
+>  	iio_dev->modes =3D INDIO_DIRECT_MODE;
+>  	iio_dev->available_scan_masks =3D st_lsm6dsx_available_scan_masks;
+> -	iio_dev->channels =3D hw->settings->channels[id].chan;
+> -	iio_dev->num_channels =3D hw->settings->channels[id].len;
+> +	iio_dev->channels =3D channels;
+> +	iio_dev->num_channels =3D ST_LSM6DSX_CHAN_COUNT;
+> =20
+>  	sensor =3D iio_priv(iio_dev);
+>  	sensor->id =3D id;
+> --=20
+> 2.39.5
+>=20
+
+--YQQtpU9Ze4ampjl4
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaQOVcAAKCRA6cBh0uS2t
+rOqrAPwMXIiL2zjrmU0LLk8q1ipomNxc8bR+jyN7rLgk/o63xQEAkZdgtzjazdUj
+Jqs2M22PTQKOVo4f2khITKY6a5DaxAw=
+=/gfG
+-----END PGP SIGNATURE-----
+
+--YQQtpU9Ze4ampjl4--
 

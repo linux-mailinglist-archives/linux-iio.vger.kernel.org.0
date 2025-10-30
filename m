@@ -1,131 +1,128 @@
-Return-Path: <linux-iio+bounces-25687-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25688-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA73C2139A
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 17:36:42 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67783C2142D
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 17:43:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2F5104EEB37
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 16:35:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0A69B4F0E61
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 16:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64DF366FCA;
-	Thu, 30 Oct 2025 16:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19322DE1E0;
+	Thu, 30 Oct 2025 16:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtXl7teC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q0fgZ8Yh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BF3366FBA
-	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 16:35:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566002153EA;
+	Thu, 30 Oct 2025 16:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761842110; cv=none; b=PY0aFmM6XG8JS4tWanMkhFjX/Z57Ce9D7uRJp2u70h6alEBnL8hpXEz9dpeIG1aMGqEO4zEjLZ0UVHNhaQwF1k0klUx3eY2EacwnD/9WPhrNRVIvGgFdhF5DRLTq8p246pz4GWxMRBkZUOVI4rtT2qGux8tLBbtFpRSwxH/79bk=
+	t=1761842435; cv=none; b=drsiYAx7dDpnL0w+qr5YLAoJAAJp/67COM+GTMgo06donsU6g8Hhf8sZrhlcK5iUzppUbdTJMBe2kY1O808iWgrRXgmoSjXddzos/8sdLUdV7p5q5Dv5/IuCpF3HF0sqeM5EKWvl9c2a9HnxOl5gLAJG5bbs9JpCiY4UGiyTzn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761842110; c=relaxed/simple;
-	bh=KJhi7r1IxwKr2jceL8YpXI0OH3nQqefJ5FVtqYdua5A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=od1gUIEavchsKuBQNT6fftR1whPXK24spCmlBGBTv5m4NiWeHa+L6c5ZsIfm/qgVCVoTXlWpf3le9b4PLe8bJ2LVnHTCb5dvuEjTN5qIDmOkD1E2kL++ZusbOTH9M3+BZAcVgGrABAFkpDNOgZ4T6KbVnzG6Hhcv/BXdT8ZqxKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RtXl7teC; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-781010ff051so1121450b3a.0
-        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 09:35:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761842108; x=1762446908; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jGxSll59pDGaTOq1wz4y9sLfdgQmv4t8Ak/F6aB1JEE=;
-        b=RtXl7teCAhVeKP6/PyY54VoDUTJsdL4qEgzfduQcdLicZXxhKzc5IR8FyYCIzxEOxB
-         bKc8yxg7YXAR54SK57pSjsNf5r7MRX7YElNQh6IVl+IF8Mmbe9KiQJyUVOEXqSsdwVOp
-         NQMYHxH0tPGP0o+KtxXzih/4/S4ARFUiXPMxD5R0xPBG6s6jx0YWzuANpHM41yg1TRSm
-         BOwa9B0c/QFKtjSsPS4c8YtIcYctGGalgbQqtIGjvvNH2lm+aNyWhRBigKv8rHIk5cu+
-         J884vJfMfZ6fxscpY3YZ+j8HeOZUXRI1bVbvqJBATGm/IjFeP3VYS1tGmmJ8dZyrUpL4
-         tgkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761842108; x=1762446908;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jGxSll59pDGaTOq1wz4y9sLfdgQmv4t8Ak/F6aB1JEE=;
-        b=mKNrXyuW4nsY5EoiV1xBlYcSECSuXPdm9m/bItfn+nMD2Q6OwWxFftJggtTM7mfyhj
-         KYkPfCD6sNBvpKa0UxNZ9UaJUcqcpklKBDD9qw+TqFMpPRBhW7dRdWezHEyVPjuqYtLk
-         ZtMxwyI3EEQLsT5cvGxB4AdQJInnnWrhDaLvj6zTxI4Tbv5rsLxPwuK1x3O6fCo74Zvg
-         snFnquFqfxoozxm/lMLs41T28Tsu2P/M2yUwOuyKaXWZmNQRs+jmHejNFXoSETQdHNSi
-         kFiQUkIjNFJmixSZ8YxbUgNV0OKbLzpQ0jPhkKuAk/2N5v8Bb9NdWcHX5nFHVPmnLCMU
-         gmDw==
-X-Gm-Message-State: AOJu0YyiLQq0WgEo5kO/LLhITa/dP7CEjRQUXpDSN1xVJtWMspD3cD+o
-	KTBuT5/Q3j81u4/rp8XI3y9wrH51n2NGmtVrJV8fQQhYdSvAu3wv27CsSepUeqMt9s4=
-X-Gm-Gg: ASbGnctFPqG2ZIG8mfbs2Bkx9pnrwhbzQ58lXTXxx2NHsftOBl0GNSOOTW0sfHHrzLA
-	EpFIVRqNAUNh6xtgogGv3xZUsxxQEGiAupiC5cVh4ct7p6KpWFHkdeYo9XakfKT8UuPm/6lS3BW
-	CXYnM6i28zmUxaetSSHMy8DR+hVlEFwLYYLe0hsnEYynujcskGt74qgW6hhRy2LFnLAZGuWjZsn
-	OCuW3svbulmafhW6AL6pBuaHUKFA3ZVgMb88TBpl9BjgamMC4PO7hL+ys2iwQ7skELkOUMmMuQL
-	AJlESQ15hEKvUYKiyd+A0bG3pLPmgtx8TG78RqOb6+zUx0eFW1kYKIfTkpx6bpDRr7PYClNzioR
-	WBLdpXd38Y4OcTYDCQgQAUzmAmLylQhNJxk12PFpjne0T3BDon+Cwm02Q44K/dd0pYWCg5cn8H3
-	yDbGDrT7d7OGzyA6tgpyx/Mr4y+P9jKqbHHqxiLCcTXf0+pOdtBe3cpq2rgsWbNukZS39DE9sUO
-	X9J1GjfXHPn9TiVPhlDhYdyiTaecbOZH7U4/y7CBGPN2Oc=
-X-Google-Smtp-Source: AGHT+IEVgKwJVYk3LLzSGMiiVO2pd0zD6q0iNRm3NjG4WchOau35P7hbFf8JKXrswaA2JhS14jL/xA==
-X-Received: by 2002:a17:903:2348:b0:290:7e29:f59f with SMTP id d9443c01a7336-2951a3c366cmr5308655ad.27.1761842107861;
-        Thu, 30 Oct 2025 09:35:07 -0700 (PDT)
-Received: from ajianan-Latitude-5591.. ([2402:e280:21d3:2:339d:c9c4:e069:47f7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498e429d9sm190932845ad.100.2025.10.30.09.35.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 09:35:07 -0700 (PDT)
-From: Ajith Anandhan <ajithanandhan0406@gmail.com>
-To: linux-iio@vger.kernel.org
-Cc: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ajith Anandhan <ajithanandhan0406@gmail.com>
-Subject: [RFC PATCH 3/3] MAINTAINERS: Add entry for TI ADS1120 ADC driver
-Date: Thu, 30 Oct 2025 22:04:11 +0530
-Message-Id: <20251030163411.236672-4-ajithanandhan0406@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
-References: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
+	s=arc-20240116; t=1761842435; c=relaxed/simple;
+	bh=D1fLHv6UtZH5JtJqdHVRIpQ3bulaFvN7jScs941smeY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GtAU3K6Pcb2VkVuE3H4DSZZjX+s4xGBGme+SqxepfxoFL8O8H3yL9FWp9JIVM6JYjYiFXW5W2DysZrSzYd0xMT+3KkUyBLvriarOd1QqvSXtbW3V1ntHtl6/6Y2mTfQZWJpiiC8xIHlKpheUHqYHOTHMyix49kRCfZfsZ/wlUSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q0fgZ8Yh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E609C4CEF8;
+	Thu, 30 Oct 2025 16:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761842434;
+	bh=D1fLHv6UtZH5JtJqdHVRIpQ3bulaFvN7jScs941smeY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Q0fgZ8YhgrKj5qQZgtgSVBwpimwaFxFwdOg9jfm03O15RHO5ugSU23Hl2REJOjM4C
+	 OAmxVF5Gc6qYbTaepYjNv1Z2rxBl0ArILlQp7Q1J4PrGQNRS568ttPaVLSAhISvjXu
+	 UmeyTLXMiWgDmoVid0Sb/XELVz8rCaIME7F2K5wrwDqgXgFPnXbVEc44/lh4uSBuv+
+	 jjniqGZmQd9qHTYhGwQycKcODVNwWrJo/mqPYjCuLSd/p2ua6tCeyud+8AAbQVkdFr
+	 vILG8q8xJp6TbRwm5GF2fXjYSarJb8DVPsEQeV3AWXH7rN9T9L7QbAsQ5Akhf2iF1s
+	 g1uWaQPaF3y7A==
+Message-ID: <efd2690f-35ba-4104-ac88-4e068984d19f@kernel.org>
+Date: Thu, 30 Oct 2025 17:40:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/3] iio: adc: Add support for TI ADS1120 ADC
+To: Ajith Anandhan <ajithanandhan0406@gmail.com>, linux-iio@vger.kernel.org
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add a new MAINTAINERS entry for the Texas Instruments ADS1120
-ADC driver and its device tree binding.
-Signed-off-by: Ajith Anandhan <ajithanandhan0406@gmail.com>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+On 30/10/2025 17:34, Ajith Anandhan wrote:
+> This RFC patch series adds support for the Texas Instruments ADS1120,
+> a precision 16-bit delta-sigma ADC with SPI interface.
+> 
+> The driver provides:
+> - 4 single-ended voltage input channels
+> - Programmable gain amplifier (1 to 128)
+> - Configurable data rates (20 to 1000 SPS)
+> - Single-shot conversion mode
+> 
+> I'm looking for feedback on:
+> 1. The implementation approach for single-shot conversions
+> 2. Any other suggestions for improvement
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3da2c26a7..1efe88fc9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25613,6 +25613,13 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml
- F:	drivers/iio/adc/ti-ads1119.c
- 
-+TI ADS1120 ADC DRIVER
-+M:	Ajith Anandhan <ajithanandhan0406@gmail.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/ti,ads1120.yaml
-+F:	drivers/iio/adc/ti-ads1120.c
-+
- TI ADS7924 ADC DRIVER
- M:	Hugo Villeneuve <hvilleneuve@dimonoff.com>
- L:	linux-iio@vger.kernel.org
--- 
-2.34.1
 
+No need to call your patches RFC then. It only stops from merging and
+some people will not review the code (RFC means not ready for inclusion).
+
+Best regards,
+Krzysztof
 

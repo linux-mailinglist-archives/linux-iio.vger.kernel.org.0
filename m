@@ -1,103 +1,127 @@
-Return-Path: <linux-iio+bounces-25682-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25683-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5296C20628
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 14:54:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AB2C206CD
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 14:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0099B4ECDA6
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 13:53:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22D2E403283
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 13:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DD722E406;
-	Thu, 30 Oct 2025 13:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A1D226CF0;
+	Thu, 30 Oct 2025 13:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npp8d30E"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UMl6jC/A"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389C5194A65;
-	Thu, 30 Oct 2025 13:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0311EF39E;
+	Thu, 30 Oct 2025 13:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761832289; cv=none; b=mT+gRXNTyJjcIumiUBWeus/LxpsD7pNgYoOu2+oELTvzD4X02+TsrMhHGqVHlvW5CHomZfBxcon3xUP0vZ0O/BbCHsvFLZN6vveGQC2ZAbNqh/CV3lSZmoUzmXsHkY73NY/s3C5UGzMFbVFO2yBlsg+VLyDB+48xK1ukoN10ZNo=
+	t=1761832577; cv=none; b=sKp4Z9H1REZ4onEdTl+EAee2JjyB+dmM3Yq/r7xADdPX/NcmjyjKpuwyC4hKtUkzaqyuKjBr+MGpxxR3fbBSoS6XK2XbMcGTc44X6Aeal2Jmaelgke/7Hs4fgDCUvmxDkiBv2n/VXzGTG+yFlqMChmdiL5ATRocT5tIcOrAvpTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761832289; c=relaxed/simple;
-	bh=6VPqUQyQcSRQKEXeyerD21USQXJN+lundDeK7TpzpYs=;
+	s=arc-20240116; t=1761832577; c=relaxed/simple;
+	bh=JxiAItqGkjd++MYOaOMi3nNa/YOuw3UezW8CeaQ1LpU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dm6jKsaIPhGr5yVeu/ykVnLsdM1EqiDI0xw3OXCCmXOoLWfdOgtiz8pSsLza+u9vo+gzxcFTL2Xtb36KDThmHL+ARZ1KyttZYwz630guuqAxxwplGyLxb++JWD0exTF1EUjy3rzwp0KT+qeMyNzuBrdUoDz/sIr45jNFEms9bCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npp8d30E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493AFC4CEF1;
-	Thu, 30 Oct 2025 13:51:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761832288;
-	bh=6VPqUQyQcSRQKEXeyerD21USQXJN+lundDeK7TpzpYs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=npp8d30ERa7Ss6871jkOdtpPHu+a13/I8PlGf4cofbr+Bi+PQ6dxJYT8lWaZI/ukr
-	 JkbSAWOObhxx8ecZzSMhYCjGOYaevrRVYnMvPFb7IBKYZxki06VsTwJhSUpmJgvcBD
-	 ORJiY1c/nu1GXwLG4EAWo5O7CFIWIZPH0832/UILOzMseFfomrUqGvkTARhDSbRtHW
-	 s6QCUxxbmENjR8jVwZpxOjfOccA1mAhlF1kN6begFoOVO4Ybndp6Yvv11jrLhjKuYI
-	 vPCLU49/L/ExjKdbFF5wREtUrJFB3CaxJBht/uZyvBF+Ez9h47RTrIYPugbXKukRlY
-	 9afaeLexMegOQ==
-Date: Thu, 30 Oct 2025 08:51:26 -0500
-From: Rob Herring <robh@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=d72+jYP3FO1gIbzGknxs3rXHgM34zWDXzOAu6XhGXZy1uI3x8nurW8Sw++RznsyHV6xO2sbb3XG7hZsRkUsS+X7BA//V5I2uFONyL1LsbEAUgoVJXrTd+nIqtysgFvarG1NDAZxW97BsoG/0Yd68xkFR4HKJQCoZnjvjAPyTqj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UMl6jC/A; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761832577; x=1793368577;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=JxiAItqGkjd++MYOaOMi3nNa/YOuw3UezW8CeaQ1LpU=;
+  b=UMl6jC/AO6DXSg/pOPGPKqIp4TpaRglL7mfKnWXK+jatSpJFYujVt3ix
+   wRQT5pxPia0EC73E3scPRq0YX5UadS3Eml1PnjCfN7l+LZndz8aAbEOSf
+   /TFEOsb7oqTDnd1n8vto5DiCVHSB6yZkmSFuWjRL8zqVHVeyTtNZ5l4Uj
+   Z1CIwrQiNTsDGqHt70aJ3fcdocxQbRN0KJ0kYcYAAQG5nYbM9BVGobMmf
+   ECHqUfg7Yg0cC3G8H71BKf7HQvsTqWEu9wMtbodPy1qFqGMAX+h6bF7G1
+   IrjIA7WFTjOPaRYIPqtLwp+wG4UFA/5awNQim3LGxlcJe32IatYTFI4ci
+   g==;
+X-CSE-ConnectionGUID: qcjQq77ZQeOkPwEZC8ZXhA==
+X-CSE-MsgGUID: xR4tsuHkRlGN/PtW0VgepQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="64006064"
+X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
+   d="scan'208";a="64006064"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 06:56:15 -0700
+X-CSE-ConnectionGUID: 2UqlAQ35TquFj8rcUW6PuQ==
+X-CSE-MsgGUID: TeUppLPcQ6CKxbmnS9HyQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
+   d="scan'208";a="185619224"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.174])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 06:56:13 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vET8M-00000003vgI-01m9;
+	Thu, 30 Oct 2025 15:56:10 +0200
+Date: Thu, 30 Oct 2025 15:56:09 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/6] dt-bindings: spi: Add spi-buses property
-Message-ID: <20251030135126.GA3749313-robh@kernel.org>
-References: <20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
- <20251014-spi-add-multi-bus-support-v1-1-2098c12d6f5f@baylibre.com>
- <20251021142129.GA34073-robh@kernel.org>
- <14ae0769-341b-4325-b925-7bba6d57bbdf@baylibre.com>
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 8/9] iio: imu: st_lsm6dsx: add event configurability on a
+ per axis basis
+Message-ID: <aQNueWesrf_vXO06@smile.fi.intel.com>
+References: <20251030072752.349633-1-flavra@baylibre.com>
+ <20251030072752.349633-9-flavra@baylibre.com>
+ <aQMgxUNA8XNhPZdG@smile.fi.intel.com>
+ <c1c7222b35a0a7bcddc5d88c92f64d2f2a75fdfd.camel@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <14ae0769-341b-4325-b925-7bba6d57bbdf@baylibre.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c1c7222b35a0a7bcddc5d88c92f64d2f2a75fdfd.camel@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Oct 21, 2025 at 09:59:22AM -0500, David Lechner wrote:
-> On 10/21/25 9:21 AM, Rob Herring wrote:
-> > On Tue, Oct 14, 2025 at 05:02:11PM -0500, David Lechner wrote:
-> >> Add a spi-buses property to the spi-peripheral-props binding to allow
-> >> specifying the SPI data bus or buses that a peripheral is connected to
-> >> in cases where the SPI controller has more than one physical SPI data
-> >> bus.
+On Thu, Oct 30, 2025 at 12:23:19PM +0100, Francesco Lavra wrote:
+> On Thu, 2025-10-30 at 10:24 +0200, Andy Shevchenko wrote:
+> > On Thu, Oct 30, 2025 at 08:27:51AM +0100, Francesco Lavra wrote:
+
+...
+
+> > > +       old_enable = hw->enable_event[event];
+> > > +       new_enable = state ? (old_enable | BIT(axis)) : (old_enable &
+> > > ~BIT(axis));
+> > > +       if (!!old_enable == !!new_enable)
 > > 
-> > Is there a reason why spi-rx-bus-width property doesn't work for you? 
-> > The only thing I see would be you need to define the order of the pins 
-> > like "data-lanes" property.
-> > 
-> > Rob
+> > This is an interesting check. So, old_enable and new_enable are _not_
+> > booleans, right?
+> > So, this means the check test if _any_ of the bit was set and kept set or
+> > none were set
+> > and non is going to be set. Correct? I think a short comment would be
+> > good to have.
 > 
-> Because we can have both at the same time. In one of the other threads,
-> we talked about the AD4630 ADC that will require this since it has 2 data
-> buses each with a width of 4 (total of 8 lines).
-> 
-> See: https://lore.kernel.org/linux-iio/ad929fe5-be03-4628-b95a-5c3523bae0c8@baylibre.com/
+> old_enable and new_enable are bit masks, but we are only interested in
+> whether any bit is set, to catch the cases where the bit mask goes from
+> zero to non-zero and vice versa. Will add a comment.
 
-But it can't really be 2 independent buses/controllers unless the ADC 
-has 2 completely independent interfaces, right? Surely the clock is 
-shared across the 2 buses? So aren't you really just borrowing pins and 
-the fifo of the 2nd controller? That seems pretty controller specific to 
-support that. For example, how would you support this with spi-gpio 
-(obviously kind of pointless given the bandwidth needs with 8 data 
-lines) or any 2 independent instances of SPI controllers?
+If it's a true bitmask (assuming unsigned long type) then all this can be done
+via bitmap API calls. Otherwise you can also compare a Hamming weights of them
+(probably that gives even the same size of the object file, but !! instructions
+ will be changed to hweight() calls (still a single assembly instr on modern
+ architectures).
 
-Rob
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

@@ -1,220 +1,282 @@
-Return-Path: <linux-iio+bounces-25655-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25656-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1D5C1EFAB
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 09:27:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7480C1F2CC
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 10:04:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C351F3A6FF2
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 08:27:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E6C418950FA
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 09:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B847433859A;
-	Thu, 30 Oct 2025 08:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D6233A03A;
+	Thu, 30 Oct 2025 09:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eTVQqxHd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NRAc3mGT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351B333436F
-	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 08:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8093338939;
+	Thu, 30 Oct 2025 09:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761812847; cv=none; b=Dt0powMWA0s4ZIZ0ek4IQ1drIXiUv8dkEH7jQMli1hG3lpoIMwjh1NvnzKcu3R0veDTDzXB8phEWkSKoZbnR6oBixvkm7j2P69+6c60khYnknfxIagRlOwSFwBj4XJI4ZEGgZL14xfOnBLasHnvBSSz9plTe0qAL+nQsLI4u5/k=
+	t=1761814821; cv=none; b=Tt6yQfICCdWXbJ3iHvNQZwmsy6zVhqFq3rl4Xj+b2/BSyfPxvitbGdaeEwGBzoSYeCipWXPK7VOpiJI8bbSh+H6fJaQMqzLz9LUjH3kng+1SW2bLPL97wjgn/xeCqzhUyp9HO6WSARs72mErI6AbzFobb8VJRBem451gjS5ib+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761812847; c=relaxed/simple;
-	bh=UDQb1+mEWC8Kf1gDMEyhFiMaB5sUmGPqCh+7teEp0uE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PuWpEza8CwPeLmtVwzx/Rn60VBE+RoTAqvSNAu+NexyMLKXc/C/c3v4C3VmLDV5YTgSENmqtWr6mfGNosnGVI1cgconUXKHEueizRNo4rT3JVS+gT5or/9HPVx56FAaY13aDNpJUR1mqYBYa2qU04iUDs29A62Io+sxNui9sk/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eTVQqxHd; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-475dae5d473so5844905e9.2
-        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 01:27:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761812843; x=1762417643; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/Cx0kxFaBCbR91JhvRx0ITZZstWHSbBwKql2sLDgf/c=;
-        b=eTVQqxHdvR8f6FZR3vhYwHzTaOI+Iqd0AidYzy/cQ6Ctqe1GOfwMfzLV1dD+hBdKMe
-         /UwURHlukUYdg5P/svRVgpEQTFajBSlJeqOa6oDt7V3Rp77Eh3olF+4NwKLVzcquCynp
-         XaQYXnsOCrUYemZFQgZibun5vI0IDiZFcj4tCZC7KEf5oKhtWBvAo4LOxvr2xWcL9Q1p
-         dl+Fo+Ve+5YPDy5wFmAC1s8TbRwPp94YOg/UxAg2iKlD0tGc2tyG0HN/3gl6URGWgLNv
-         flCPO5ph9AKOsTfvsM65h8mcTnD37+HXivzXWB+mZ+TjwRiBA3drP9vPnEwGev3EmW8N
-         /qzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761812843; x=1762417643;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Cx0kxFaBCbR91JhvRx0ITZZstWHSbBwKql2sLDgf/c=;
-        b=DNLJtVLg4jk4X6ByZiAnQDrDYnEe9ld0PAx3+AviIg96xmlsl+pbLB5f2aItT2aShv
-         RvSbdjiAMTdRG/k8GPJxLtpHgtg1M+SXA+rFAwP4CO2C0WHuSJq2IbxqWFoN4yapeSWC
-         L6dYxLoSCNq8mwl5R7535W83ng/LgIflNHl0VVTg4vdWRhLPG47gNxotEAK1oHUMXUyw
-         oZytUYiqPkjIeQsoL0X6QYKtWTMEIrIO76oAGfr3QpYRhtPRK+Em5lIcGNnrUL83LJml
-         gqibJrL50G01ciCPM5E/GobjfejzZMELfSyCCrSYnlH4+rbJFONtbyQShsPf9Fgjvllo
-         i/hQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQCmtmnrHt9jWkLmaI3XNVv6xJJ2LnNQrqXt0k64oV4cb++gWlXpge5a1W8tZN8XdbOUd2wf3O8vI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZDHFrm1fCYRnGe0LZY2o8FVJFAmitBzGm7ccN7FaIhcl03Yn8
-	AqqOK9rITdEsC/FWU9nwcuwzbHni1OViPFQShKsyljBwBcnGC8rcyQ30/921kPXdz6o=
-X-Gm-Gg: ASbGncu/UdfYRAPBFoZBGjUnL+Mb2qkVyFBdp2oER44lGvNp59W7iG20ARITeUFS3B8
-	L7Ti99ejeVYdXkETVdreQlW4LWwaqJb3DnO9wTYriuYDi6sZdlzL3vrGpVDyz5jpDeH1vcQVeId
-	XKhsRgOL91rzeaNz2d5JAMOv3LYS7HotJXKpn81RBLjw/JyDhgX2Htv/KMnZ2LCoQyMnWsJTeAu
-	irwZSassmxje1OCLE1FR3jHqYppOGnw6zvC+rIRhHvHmBAzhVo9j09bU3a6lQPBFNaKhnca/jOu
-	Q+FmooEVISs/iHEWFLSeXwTlVd0w0L21tN1BSH3sfWMrXcIgce+72HnkOVC9DkJh47/xNm6YIJr
-	s3IFKROy/p6a/R2WwuapydbC9ei8LoYNi6rFTYsCZWiuvB9WokI1BYSQZT1LQkSlmG8Ww3i31F3
-	NFJMaZho5IDVMynw5qN4Mi/dXoC4X4cbhKC1P2jLwsmpI5CpSKe+N7YGA=
-X-Google-Smtp-Source: AGHT+IEpOqqQd6suUlzGZQizli8cmv6trmiqjxQtOiZEhtbP++rOooGf2lSVBQRYJvEyQY/YzRO1Ig==
-X-Received: by 2002:a05:600c:4e52:b0:477:c37:2ea7 with SMTP id 5b1f17b1804b1-47726009fe6mr20555685e9.21.1761812843457;
-        Thu, 30 Oct 2025 01:27:23 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:7e89:8fed:3647:15c8? ([2a05:6e02:1041:c10:7e89:8fed:3647:15c8])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-477289e7fd2sm28493615e9.16.2025.10.30.01.27.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Oct 2025 01:27:22 -0700 (PDT)
-Message-ID: <050f96d5-e60c-4b33-b6d2-24fb3925e378@linaro.org>
-Date: Thu, 30 Oct 2025 09:27:21 +0100
+	s=arc-20240116; t=1761814821; c=relaxed/simple;
+	bh=ai41Jj4Xl6lRV/HU9xvnUaP6ftQHoXPpEmIqxKoyHJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HopzkDNs+nbL1e9yHMhJV1yDgvxqOJCEfPkrERy4A1vCmr89S5+6M0hWY9l3t39oe84QZIAvWhor+k6cDIbA4zi/yQ1ph0jEzWUO5XKKfFa1nafogLaDiIFVgeuUCs2Xqu735jRtt+UzZex9CllLmm71BHovljuxCvUCpF4EV2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NRAc3mGT; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761814820; x=1793350820;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ai41Jj4Xl6lRV/HU9xvnUaP6ftQHoXPpEmIqxKoyHJA=;
+  b=NRAc3mGTk7ckcEO1e6kH8QVGeaC02LOx9bnd55PtN6EXdsLiVQJArBL8
+   HF2k5MpvNksJFo1xvhTOLVU26DImjr+qoR9Xp38FlIFHd+QtycQrlH1L1
+   qAuKHpVCBpSlmOSKRYMhNQjZIz8PaZzOpLdVOPIukWC5xcp7ZL72SVCz3
+   rQqPKJio3ywnDdkQLHhdkO7ypfVEDmPqdci7Y2Giv7QUQhSxjqbq4gS/R
+   zhNUGyEMDMXvF8CPDU2O87f7LSLO9EyjCEwvk3nOBPWAsPpsYTHDwzlii
+   ClwFRI6hCMSDjfKtsKQMdGSUOOOdRdG1KSN+hkVDqiJ1nt6SA+tTs2CmO
+   g==;
+X-CSE-ConnectionGUID: 8grLYYtHTU+WYfbHWppb0Q==
+X-CSE-MsgGUID: xEJvB6USQ9SOLnKdhW5BZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="63834735"
+X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
+   d="scan'208";a="63834735"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 02:00:19 -0700
+X-CSE-ConnectionGUID: LlAPZNzKRUKocnZDa90K9w==
+X-CSE-MsgGUID: Ewza8RhnSqGbuaZCQhbgrQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
+   d="scan'208";a="186344479"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.174])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 02:00:15 -0700
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vEOVw-00000003qtu-1deL;
+	Thu, 30 Oct 2025 11:00:12 +0200
+Date: Thu, 30 Oct 2025 11:00:12 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: "Herve Codina (Schneider Electric)" <herve.codina@bootlin.com>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Pascal Eberhard <pascal.eberhard@se.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
+Message-ID: <aQMpHDwCqcrNrnT9@smile.fi.intel.com>
+References: <20251029144644.667561-1-herve.codina@bootlin.com>
+ <20251029144644.667561-3-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/2] iio: adc: Add the NXP SAR ADC support for the
- s32g2/3 platforms
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
- linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
- ghennadi.procopciuc@oss.nxp.com
-References: <20251017164238.1908585-1-daniel.lezcano@linaro.org>
- <20251017164238.1908585-3-daniel.lezcano@linaro.org>
- <aPP0uVZu1T7tTQGo@ashevche-desk.local>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <aPP0uVZu1T7tTQGo@ashevche-desk.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251029144644.667561-3-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+
+On Wed, Oct 29, 2025 at 03:46:42PM +0100, Herve Codina (Schneider Electric) wrote:
+> The Renesas RZ/N1 ADC controller is the ADC controller available in the
+> Renesas RZ/N1 SoCs family. It can use up to two internal ADC cores (ADC1
+> and ADC2) those internal cores are not directly accessed but are handled
+> through ADC controller virtual channels.
+
+Looks much better, thanks! My comments below.
+
+...
+
++ array_size,h
+
+> +#include <linux/bitfield.h>
+> +#include <linux/bits.h>
+> +#include <linux/cleanup.h>
+> +#include <linux/clk.h>
+
++ dev_printk.h
++ err.h
+
+> +#include <linux/iio/iio.h>
+> +#include <linux/io.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+
++ mutex.h
+
+> +#include <linux/platform_device.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/regulator/consumer.h>
+
++ types.h
+
+...
+
+> +#define RZN1_ADC_CONTROL_REG			0x2c
+
+I would go with fixed-width values, e.g., 0x02c for the register definitions.
+
+> +#define RZN1_ADC_CONTROL_ADC_BUSY		BIT(6)
+> +
+> +#define RZN1_ADC_FORCE_REG			0x30
+> +#define RZN1_ADC_SET_FORCE_REG			0x34
+> +#define RZN1_ADC_CLEAR_FORCE_REG		0x38
+
+> +#define RZN1_ADC_CONFIG_REG			0x40
+
+> +
+> +#define RZN1_ADC_VC_REG(_n)			(0xc0 + 4 * (_n))
+
+> +#define RZN1_ADC_ADC1_DATA_REG(_n)		(0x100 + 4 * (_n))
+> +#define RZN1_ADC_ADC2_DATA_REG(_n)		(0x140 + 4 * (_n))
+
+...
+
+> +static int rzn1_adc_get_vref_mv(struct rzn1_adc *rzn1_adc, unsigned int chan)
+> +{
+> +	/*
+> +	 * chan 0..7 use ADC1 ch 0..7. Vref related to ADC1 core
+> +	 * chan 8..15 use ADC2 ch 0..7. Vref related to ADC2 core
+> +	 */
+
+Split it to two one line comments per each conditional.
+
+> +	if (chan < 8)
+> +		return rzn1_adc->adc1_vref_mv;
+> +	else if (chan < 16)
+
+Redundant 'else'.
+
+> +		return rzn1_adc->adc2_vref_mv;
+> +
+> +	return -EINVAL;
+> +}
+
+...
+
+> +static int rzn1_adc_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+> +			     int *val, int *val2, long mask)
+> +{
+> +	struct rzn1_adc *rzn1_adc = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = rzn1_adc_read_raw_ch(rzn1_adc, chan->channel, val);
+> +		if (ret)
+> +			return ret;
+> +		return IIO_VAL_INT;
+> +
+> +	case IIO_CHAN_INFO_SCALE:
+> +		ret = rzn1_adc_get_vref_mv(rzn1_adc, chan->channel);
+> +		if (ret < 0)
+> +			return ret;
+> +		*val = ret;
+> +		*val2 = 12;
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return -EINVAL;
+
+	default:
+		return -EINVAL;
+
+> +}
+
+...
+
+> +static const struct iio_info rzn1_adc_info = {
+> +	.read_raw = &rzn1_adc_read_raw
+
+Leave trailing comma, this is not a terminator entry.
+
+> +};
+
+...
+
+> +	if (rzn1_adc->adc1_vref_mv >= 0) {
+
+Can we call it _mV?
+
+...
+
+> +	if (rzn1_adc->adc2_vref_mv >= 0) {
+
+Ditto.
 
 
-Hi Andy,
+...
 
-On 10/18/25 22:12, Andy Shevchenko wrote:
-> On Fri, Oct 17, 2025 at 06:42:38PM +0200, Daniel Lezcano wrote:
->> From: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
->>
->> The NXP S32G2 and S32G3 platforms integrate a successive approximation
->> register (SAR) ADC. Two instances are available, each providing 8
->> multiplexed input channels with 12-bit resolution. The conversion rate
->> is up to 1 Msps depending on the configuration and sampling window.
->>
->> The SAR ADC supports raw, buffer, and trigger modes. It can operate
->> in both single-shot and continuous conversion modes, with optional
->> hardware triggering through the cross-trigger unit (CTU) or external
->> events. An internal prescaler allows adjusting the sampling clock,
->> while per-channel programmable sampling times provide fine-grained
->> trade-offs between accuracy and latency. Automatic calibration is
->> performed at probe time to minimize offset and gain errors.
->>
->> The driver is derived from the BSP implementation and has been partly
->> rewritten to comply with upstream requirements. For this reason, all
->> contributors are listed as co-developers, while the author refers to
->> the initial BSP driver file creator.
->>
->> All modes have been validated on the S32G274-RDB2 platform using an
->> externally generated square wave captured by the ADC. Tests covered
->> buffered streaming via IIO, trigger synchronization, and accuracy
->> verification against a precision laboratory signal source.
-> 
-> ...
-> 
->> +#include <linux/circ_buf.h>
-> 
-> Why not kfifo?
+> +	ret = devm_regulator_get_enable_optional(dev, avdd_name);
+> +	if (ret < 0) {
+> +		if (ret != -ENODEV)
+> +			return dev_err_probe(dev, ret,
+> +					     "Failed to get '%s' regulator\n",
+> +					     avdd_name);
+> +		return 0;
+> +	}
 
-I'm sorry but I don't get your comment.
+	if (ret == -ENODEV)
+		return dev_err_probe(); // takes less LoCs
+	if (ret < 0) // do we need ' < 0' part?
+		return 0;
 
-Do you mean why not use kfifo.h or use kfifo API and change all the code 
-using the circ_buf by the kfifo ?
-> ...
-> 
->> +#define NXP_SAR_ADC_IIO_BUFF_SZ		(NXP_SAR_ADC_NR_CHANNELS + (sizeof(u64) / sizeof(u16)))
-> 
-> Hmm... Don't we have some macros so we can avoid this kind of hard coding?
+> +	ret = devm_regulator_get_enable_read_voltage(dev, vref_name);
+> +	if (ret < 0) {
+> +		if (ret != -ENODEV)
+> +			return dev_err_probe(dev, ret,
+> +					     "Failed to get '%s' regulator\n",
+> +					     vref_name);
+> +		return 0;
+> +	}
 
-I don't find such a macro, do you have a pointer ?
+In the same way as above.
 
-> ...
-> 
->> +	ndelay(div64_u64(NSEC_PER_SEC, clk_get_rate(info->clk)) * 80U);
-> 
-> Do you need those 'U':s? clk_get_rate() already returns unsigned value of the
-> same or higher rank than int. No?
+...
 
-May be not needed, but harmless. I can remove them if you want
+> +static DEFINE_RUNTIME_DEV_PM_OPS(rzn1_adc_pm_ops,
+> +				 rzn1_adc_pm_runtime_suspend,
+> +				 rzn1_adc_pm_runtime_resume, NULL);
 
->> +static int nxp_sar_adc_start_conversion(struct nxp_sar_adc *info, bool raw)
->> +{
->> +	u32 mcr;
->> +
->> +	mcr = readl(NXP_SAR_ADC_MCR(info->regs));
->> +
->> +	FIELD_MODIFY(NXP_SAR_ADC_MCR_NSTART, &mcr, 0x1);
->> +	FIELD_MODIFY(NXP_SAR_ADC_MCR_MODE, &mcr, !raw);
-> 
-> !raw, which is boolean, as a parameter to FIELD_MODIFY() seems a bit odd to me,
-> perhaps simple
-> 
-> 	raw ? 0 : 1
-> 
-> would work better?
+Please, split it based on logic:
 
-Sure
-> (Note, optimizer of the complier will avoid any branching)
-> 
->> +	writel(mcr, NXP_SAR_ADC_MCR(info->regs));
->> +
->> +	return 0;
->> +}
-> 
-> ...
-> 
->> +	dma_samples = (u32 *)dma_buf->buf;
-> 
-> Is it aligned properly for this type of casting?
+static DEFINE_RUNTIME_DEV_PM_OPS(rzn1_adc_pm_ops,
+				 rzn1_adc_pm_runtime_suspend, rzn1_adc_pm_runtime_resume, NULL);
 
-TBH, I don't know the answer :/
+OR
 
-How can I check that ?
-
->> +	dmaengine_tx_status(info->dma_chan, info->cookie, &state);
-> 
-> No return value check?
-
-The return value is not necessary here because the caller of the 
-callback will check with dma_submit_error() in case of error which 
-covers the DMA_ERROR case and the other cases are not useful because the 
-residue is taken into account right after.
-
-It could be written differently with the DMA_COMPLETE check but the 
-result will be the same. I prefer to keep the current implementation 
-which has been tested.
-
->> +static const struct nxp_sar_adc_data s32g2_sar_adc_data = {
->> +	.vref_mV = 1800,
->> +	.model = "s32g2-sar-adc"
-> 
-> Keep a trailing comma as here it's not a termination member.
-Ok, I'll add it
+static DEFINE_RUNTIME_DEV_PM_OPS(rzn1_adc_pm_ops,
+				 rzn1_adc_pm_runtime_suspend,
+				 rzn1_adc_pm_runtime_resume,
+				 NULL);
 
 -- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+With Best Regards,
+Andy Shevchenko
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+
 

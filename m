@@ -1,121 +1,223 @@
-Return-Path: <linux-iio+bounces-25707-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25708-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01BEC220B9
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 20:44:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C2C8C220D4
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 20:46:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF6443BD82A
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 19:44:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2673A18829B5
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 19:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E88306B3C;
-	Thu, 30 Oct 2025 19:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514133126C9;
+	Thu, 30 Oct 2025 19:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWDBd8Oo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GYRixxz6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB585303C93;
-	Thu, 30 Oct 2025 19:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43C72F12AF;
+	Thu, 30 Oct 2025 19:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761853493; cv=none; b=cv5Y1oGaommHao+5hXSx1kEwwOJtnyvFWeN8aoG69g4q27DVRmiVFPIluzkWot7ijw+pvFlo27pKddeYse5FNmodciuUNJOE2dCitOD0j8hPZWxrtuT3n4VbdpcFaRbiCzG/bCNHzoJNkTvpb0UCSf5EhIE9MIz/c33cnvBtnzY=
+	t=1761853584; cv=none; b=u5ZNaeFvNEZuTE2eb1eifZSjMeUZVVLP3Zc5GoI465Vf4046GKQeN0dkNRbwbyNwzeC2HDX3h3/65SIVWSoaoQ/GUWSV0PdQmfjeLQa76w4dbrVcXWhSVVi1dGvxAMudijceOmmrf5IKr9ak1sx5GdZ8tSNnYtRC9lwtnOvuRjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761853493; c=relaxed/simple;
-	bh=PZyWz8m5oVk6vmpbI4mjqP5R4XQLSw7Yez3/419CvQk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K+8GMBO1OtH8RCZ+5SJE/vERUGXI7+ZiwAEPBnqkCkEDdMbwksfg01mGxMKugq3Q7va7MiKyrmM2OO8bSWIkN3VtP+YgKlQQTn96UGrSkJnK2xXBoxnARMOcsmBWX9DwWd7O9u/eIVJsxuYYx/3OEipJ/6kOekLl+nElLQ53vc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWDBd8Oo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE187C4CEF1;
-	Thu, 30 Oct 2025 19:44:50 +0000 (UTC)
+	s=arc-20240116; t=1761853584; c=relaxed/simple;
+	bh=GV2XRPs93TwYftizCqQPTtAV3OHflrc4UhVM50o3qOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kqXzCoLQwhEiKFOvG8eleW49DNe/BxHYUE4FTSxrvXwutVFSvSB7dPclRpYCoaURMuN+a0pvOFlowJ/CYdn6vjXULIcalhmasHTJYxbPavjXWYIhV4YGGNC0jWmSaiIesX1LT8hY5TyJGNZT/QJaJhENoEyXC//ETy8EkBiqwBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GYRixxz6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C70C4CEF1;
+	Thu, 30 Oct 2025 19:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761853493;
-	bh=PZyWz8m5oVk6vmpbI4mjqP5R4XQLSw7Yez3/419CvQk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZWDBd8OoXP3pq0+P4fXwfdhnz9SAroOZVt6K7UTfnyIP6dYvgfigZqlDntu7IxW0D
-	 MMHfX5OAEiVpY/0Y+Lkr65opCjmuLRb6D388xROfVJM7s18miYXTm29PKV8UbCnafU
-	 NjzRApKLy40WnaCGPhXYVqyBJa5aXJ9Eam6eqaomrGDQVP/BZbV3D19iwlSlwzwktx
-	 mXn3iz+VC14lQOvJABnVh8d55C6t4DPFHnUSOpL2IpM03nWh82wMR9olxuP9mUcQya
-	 bwbJBvL22XjHJ7h88hDw49r89UJXXHvpZM+6jpj/zGgigAMCQkhMXL/ab3ErMh/nQk
-	 6itgDz54hAraQ==
-Message-ID: <50e76ddf-abc2-4c5f-adc2-c2d03b6fe459@kernel.org>
-Date: Thu, 30 Oct 2025 20:44:48 +0100
+	s=k20201202; t=1761853583;
+	bh=GV2XRPs93TwYftizCqQPTtAV3OHflrc4UhVM50o3qOI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GYRixxz68G0B3WvSiTR45ogAq1hCd3hip6IbAr/vpLSvMQXPh5bqwKR3fHwvAiato
+	 k9lLxJ9Ol9IrjuTPLH4cv014bh8GtkT3rSxRQSzbQzx7GkYZcsUhrgxsizNlJgfS9i
+	 HssBlKBGGA9AOg0QdRsEjZoWkCmbgCCOZ4gdieHpstJL7HQCGPUCYACe6CBFZz0F4d
+	 6UXn0RZmedORIu4k14ErbNgOuNfJAnYjpVCE+h4NoJ6JbM+yxnmxzHC2wvJucQp0YT
+	 VqQi6/6Mr7HsE+WssAKVJA6F01m+5MK27cfqtX7ZQzSTFWGDgznlUEZqL507BbeBkm
+	 CZB2fDXCDdykg==
+Date: Thu, 30 Oct 2025 19:46:15 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jack Hsu <jh.hsu@mediatek.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com, srini@kernel.org,
+	ukleinek@kernel.org, gregkh@linuxfoundation.org,
+	jirislaby@kernel.org, daniel.lezcano@linaro.org, tglx@linutronix.de,
+	chunfeng.yun@mediatek.com, wim@linux-watchdog.org,
+	linux@roeck-us.net, sean.wang@mediatek.com,
+	zhiyong.tao@mediatek.com, andrew-ct.chen@mediatek.com,
+	lala.lin@mediatek.com, jitao.shi@mediatek.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-pwm@vger.kernel.org,
+	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-watchdog@vger.kernel.org,
+	Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH v6 10/11] arm64: dts: mediatek: add properties for MT6359
+Message-ID: <20251030-boaster-chewing-61d458aa6c9e@spud>
+References: <20251030134541.784011-1-jh.hsu@mediatek.com>
+ <20251030134541.784011-11-jh.hsu@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/3] iio: adc: Add support for TI ADS1120 ADC
-To: Ajith Anandhan <ajithanandhan0406@gmail.com>
-Cc: linux-iio@vger.kernel.org, jic23@kernel.org, dlechner@baylibre.com,
- nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
- <efd2690f-35ba-4104-ac88-4e068984d19f@kernel.org>
- <CABPXPSKzOhGicdPLoMFy8xvd0Xx5_D2P2pduteY3QhDRV4d2Ow@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <CABPXPSKzOhGicdPLoMFy8xvd0Xx5_D2P2pduteY3QhDRV4d2Ow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qjInnEs/qoh/Iqxq"
+Content-Disposition: inline
+In-Reply-To: <20251030134541.784011-11-jh.hsu@mediatek.com>
 
-On 30/10/2025 17:49, Ajith Anandhan wrote:
-> Thank you for the feedback! I’ll resend this as regular PATCH series
-> shortly. I appreciate you taking the time to review.
 
-Please avoid top-posting.
+--qjInnEs/qoh/Iqxq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Don't resend now. Next version will be v2 and send it after you receive
-review.
+On Thu, Oct 30, 2025 at 09:44:42PM +0800, Jack Hsu wrote:
+> Add properties of rtc fg (Fuel Gauge), external crystal
+> and auxadc definition for mt6359 pmic.
+>=20
+> Signed-off-by: Jack Hsu <jh.hsu@mediatek.com>
+> ---
+>  arch/arm64/boot/dts/mediatek/mt6359.dtsi | 20 ++++++++++
+>  include/dt-bindings/iio/mt635x-auxadc.h  | 50 ++++++++++++++++++++++++
+>  2 files changed, 70 insertions(+)
+>  create mode 100644 include/dt-bindings/iio/mt635x-auxadc.h
+>=20
+> diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/d=
+ts/mediatek/mt6359.dtsi
+> index 467d8a4c2aa7..cc7053bdd292 100644
+> --- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
+> +++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
+> @@ -3,6 +3,8 @@
+>   * Copyright (C) 2022 MediaTek Inc.
+>   */
+> =20
+> +#include <dt-bindings/iio/mt635x-auxadc.h>
+> +
+>  &pwrap {
+>  	pmic: pmic {
+>  		compatible =3D "mediatek,mt6359";
+> @@ -302,6 +304,24 @@ mt6359_vsram_others_sshub_ldo: ldo_vsram_others_sshu=
+b {
+> =20
+>  		mt6359rtc: rtc {
+>  			compatible =3D "mediatek,mt6358-rtc";
+> +			#address-cells =3D <1>;
+> +			#size-cells =3D <1>;
+> +			status =3D "disabled";
+> +
+> +			fginit: fginit {
+> +				reg =3D <0 0x1>;
+> +				bits =3D <0 8>;
+> +			};
 
-Best regards,
-Krzysztof
+Uhhhh, what on earth is going on here? This is an RTC, what does
+fuelgauge stuff have to do with it? Did you test this at all? What does
+it even do? Very confused.
+
+> +
+> +			fgsoc: fgsoc {
+> +				reg =3D <1 0x1>;
+> +				bits =3D <0 8>;
+> +			};
+> +
+> +			ext32k: ext32k {
+> +				reg =3D <2 0x1>;
+> +				bits =3D <6 1>;
+> +			};
+>  		};
+>  	};
+>  };
+> diff --git a/include/dt-bindings/iio/mt635x-auxadc.h b/include/dt-binding=
+s/iio/mt635x-auxadc.h
+> new file mode 100644
+> index 000000000000..69ba13a7b9ec
+> --- /dev/null
+> +++ b/include/dt-bindings/iio/mt635x-auxadc.h
+> @@ -0,0 +1,50 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause */
+> +/*
+> + * Copyright (c) 2020 MediaTek Inc.
+> + */
+> +
+> +#ifndef _DT_BINDINGS_MT635X_AUXADC_H
+> +#define _DT_BINDINGS_MT635X_AUXADC_H
+> +
+> +/* PMIC MT635x AUXADC channels */
+> +#define AUXADC_BATADC				0x00
+> +#define AUXADC_ISENSE				0x01
+> +#define AUXADC_VCDT	    			0x02
+> +#define AUXADC_BAT_TEMP				0x03
+> +#define AUXADC_BATID				0x04
+> +#define AUXADC_CHIP_TEMP			0x05
+> +#define AUXADC_VCORE_TEMP			0x06
+> +#define AUXADC_VPROC_TEMP			0x07
+> +#define AUXADC_VGPU_TEMP			0x08
+> +#define AUXADC_ACCDET				0x09
+> +#define AUXADC_VDCXO				0x0a
+> +#define AUXADC_TSX_TEMP				0x0b
+> +#define AUXADC_HPOFS_CAL			0x0c
+> +#define AUXADC_DCXO_TEMP			0x0d
+> +#define AUXADC_VBIF		    		0x0e
+> +#define AUXADC_IMP			    	0x0f
+> +#define AUXADC_IMIX_R				0x10
+> +#define AUXADC_VTREF				0x11
+> +#define AUXADC_VSYSSNS				0x12
+> +#define AUXADC_VIN1				    0x13
+> +#define AUXADC_VIN2			    	0x14
+> +#define AUXADC_VIN3			    	0x15
+> +#define AUXADC_VIN4			    	0x16
+> +#define AUXADC_VIN5			    	0x17
+> +#define AUXADC_VIN6			    	0x18
+> +#define AUXADC_VIN7		            0x19
+
+What has this fine got to do with the node you're adding above? I don't
+understand why this is in this patch.
+There's random whitespace problems in it, and half the defines look
+bizarre. This seems like it should be in the same patch as some binding
+changes for an iio device? The mt635x auxadc binding doesn't even permit
+anything that would use any of the properties beyond this point.
+
+NAK.
+
+> +
+> +#define AUXADC_CHAN_MIN				AUXADC_BATADC
+> +#define AUXADC_CHAN_MAX				AUXADC_VIN7
+> +
+> +#define ADC_PURES_100K				(0)
+> +#define ADC_PURES_30K				(1)
+> +#define ADC_PURES_400K				(2)
+> +#define ADC_PURES_OPEN				(3)
+> +
+> +#define ADC_PURES_100K_MASK			(ADC_PURES_100K << 8)
+> +#define ADC_PURES_30K_MASK			(ADC_PURES_30K << 8)
+> +#define ADC_PURES_400K_MASK			(ADC_PURES_400K << 8)
+> +#define ADC_PURES_OPEN_MASK			(ADC_PURES_OPEN << 8)
+> +
+> +#endif /* _DT_BINDINGS_MT635X_AUXADC_H */
+> --=20
+> 2.45.2
+>=20
+
+--qjInnEs/qoh/Iqxq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaQPAhwAKCRB4tDGHoIJi
+0rESAQC+pk8ew/zg9l4Rp9iAnTnoGDOpKly9i4yhdfpXcv5AowEAvBfWYIfZ0eSw
++rZuOzIx3kHSDbDpctohV+Wb6SErqQY=
+=lc/Z
+-----END PGP SIGNATURE-----
+
+--qjInnEs/qoh/Iqxq--
 

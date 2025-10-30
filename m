@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-25640-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25641-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75B4C1EBE2
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 08:28:13 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37670C1EBE8
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 08:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BE2C74E72B8
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 07:28:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 882A24E752C
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 07:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1A2337109;
-	Thu, 30 Oct 2025 07:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B89833769C;
+	Thu, 30 Oct 2025 07:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1cwqcG3R"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="jvT92i5h"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3087336EE0
-	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 07:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC9A336EF4
+	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 07:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761809279; cv=none; b=HgtiGOQ753EE9zCW0xwjhL/dbCazyG0E80kCE0FuhE1Qj2R+/pYFqkhIdm5Je39xxsft74DQrkB+MEe8Hy1YegIqDzasyg9TarAuML+9mwpTyHWZKAjUidrWFG1rjz+VLKrGXN2uUjpfRlYJdt9oiG+1NTsUkpFy4z4Lotve4gY=
+	t=1761809280; cv=none; b=nPrzuygp4ID/INjO4f/hhXHWYRSvv9ZNxJzEfd1Lo7n6xKttBgnpORGg/ikdc0reOo2OT6kvtaUyMBqw0JdRetGwzoYHW57agocI7WUpuSnrBHEgtZAjyaS2o1ynNQfdig6GN+YHWTLuTFzA/9htm1WlzKLGHk5QtSCZBUI5BPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761809279; c=relaxed/simple;
-	bh=3i6TmZy38WX7WjId5K7zj8RwsRnHvMYK+XMl1I3L4Vg=;
+	s=arc-20240116; t=1761809280; c=relaxed/simple;
+	bh=5udrDdlPMpudCr1yZSepm0qaGnwL+JdHE+fbHDma8IU=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JhizEs+jtWAqlJUupgu47Y4owqFEOZMwRo4aMxAH6ccD73sP/Wlw53pmx1t91VR7Zdl6laQeW9S3o+qVzKNtKEsYl6LMG1/RkRfe/wR+3Q/mgTFBSPi6hJVS/Oh9KV5sIFmOa3R391c7H1u5x9WQy2JMl08DgN3K3K6Pi2lEzmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1cwqcG3R; arc=none smtp.client-ip=209.85.218.49
+	 MIME-Version; b=ShjVmyRpXCiI7zWoGyH9zGVPSI4ySy3yIwxopaHcpfx6wp/M3vgzzrs8aBfmvvON9buTnLHnp4LkhV4dJG2nMbRrqn2slJbOfgwsg8XA/jFaHEAWGbWibUnjpJWQbN3GJGwg/B+aizquUD2ffY2jbT8cLNENCiYXXE6oQnQIA7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=jvT92i5h; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b5e19810703so101275366b.2
-        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 00:27:57 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b7042e50899so180224166b.0
+        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 00:27:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761809276; x=1762414076; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761809277; x=1762414077; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gSmb/SMvgajuw0XM3CeiqPJTigcBiO6jLs/P2xRmhdg=;
-        b=1cwqcG3RUe6aFyATRm95Bvf9ZNHazagYXzYBK0RxW3c/G4Sz6hRMZUnmalY7R220nC
-         I32sRMkKcSoYrhuV66kr5FJaFJXE+K46cy38cZZg3zEFGBCGvN8qwvAfxKddDdEViobF
-         FUTZnumzOa2Nft0Q6EeygB+uQlpzo0NfjZ8rEKNjJWsl8FPC92zHWMG6jXdoIM9Mixaw
-         Z0Ciphef7YBTLvTHSpEG76fpVElGLSBGi3HJM37smk/S4vRez4VdlLitBChjizhZTrIf
-         py58BuU0h7kqNf6YKGQzNWZQkOoB+raEDtbSRfKQRtZUpkwk1L7XdsAw9y9vRJAtVhGk
-         +c6g==
+        bh=ehIJ73lPnu+6O4xgnu4sQPXRj/ZPgaqQ3z7fCTL7zhE=;
+        b=jvT92i5hOIrKpmdg1Ur3ABKHHYr+LhqnfdYQthcg7iC3t6XGRh6DmNJ9n93US2Ff+0
+         GOoVpQwosskQLScZ/8p+2VNGlctKDEheEuvH9aguzdlZmB5o9tP/pAtuOXOdAndfYeJH
+         VNyTJiGN0wjX++MfdlXvwUXNU8yJTBQYlRHd8MFekdVr8+W1lq4Im3z+TPlL41biz+aP
+         yoiynGW5rqOrqwMfTF2+UC9sCLdta3od9FReX1lIgXbOP8LsD19DPHTJlgxLOS1WVmYm
+         ws37t9PhXv95Yn2nznx9gzoKaG2tJJu2GDFIs0ufN89lnCFkFzotIPjzwsescr2JgnAd
+         b/Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761809276; x=1762414076;
+        d=1e100.net; s=20230601; t=1761809277; x=1762414077;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gSmb/SMvgajuw0XM3CeiqPJTigcBiO6jLs/P2xRmhdg=;
-        b=h0Rd0KUyGAbYOoLFGsAX59EhPHLg9b/Lda8ldH8JMDA9Cgb/FZbsUwe+BsM78I4SHI
-         Ys+luVdDHD/RId4yG4879CMC9d0MZP2gFIlE299xNbcAcCgUG81oyhlI40Z5QWm+23Ou
-         NCPyj6erZKOa9C3DyiHi0Cg3yneysaBU5UMAxcYRIRluFkd+F6QIcvqtJgYSRVnOkftU
-         FcUPXuo5PT42J+I7GWyOAjSiP6s+v0Orz54AkE80sKX79lW+BcCDtWiMjjqZ6WaGISL+
-         pBwCxgXAue0UvCPZVRggmBB+yD913qFh0WuwAoRoOL54bWmZ+wr/OpR4oZe/ZaU7cOO1
-         Q7yA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTDF8rCACP0MYF+JTk6rJImU6NLZMtAhCF3hCyVCInXyr9DpIgFgkpFV7Glyb57yprJRwBJrFt364=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm1sCC3/0DLlIf84qRNsJYBkhKtARdyBuYIc9p3M4GVJGrUDAR
-	1qYX8U55AMcBLaVRPCXpuc3l+NAvfXKVGw65769D+Hc4HXWapGqXU/J1JH399U6Kyn4=
-X-Gm-Gg: ASbGncsCqgMNEg7n8tkqreJycYYQta/yfliOzq95ZAzU8jMYjepb4EwkymOt6/lqJTU
-	85KvZ5NMo9R9MpV0W968etyOs+Rl5n6GttaVR0bk1BmzCddpA5vMjJiJaUZNDb0TAqwpicbz8+c
-	ZMLfdSM0ob6zNfluLtpD3O4nDCtwusBNpdbxTX6qJvKB6+mCccGvAH94cFzSjuNHqXyXs3HFP/8
-	aN9Wuhf12ECv4EzfIWXGqMwzSbVrwk182GMZ8rJz7JQhCZCwR3G1LCaaq9/7AIaZTzeQ46baMJK
-	CGjWBZsp018YFQrr/5yNBHEpefcIEhZB3wIONzb/ds2mzPi6NFYq7UNxQfykxujR2EzPkhUWGd4
-	Np550RrNx8pY0Inp8dAfS+zK+9DoizRmZQe3cyIqeb1ZUvs2jS/fazQ78Z1AfGoNupsx8OfSJAP
-	v3fP+rGqeIPQC0kk+IqT0i3pvyWw==
-X-Google-Smtp-Source: AGHT+IHGOFhWIN+SV4j2Me3OHGGwVE+Gn++jUOxTVSTpnIdG/QQBUMUulH0Be6RC9euvGOaBVOjjbA==
-X-Received: by 2002:a17:907:72c4:b0:b45:60ad:daf9 with SMTP id a640c23a62f3a-b7053b0cf7amr200573266b.3.1761809276149;
-        Thu, 30 Oct 2025 00:27:56 -0700 (PDT)
+        bh=ehIJ73lPnu+6O4xgnu4sQPXRj/ZPgaqQ3z7fCTL7zhE=;
+        b=Qk2I2U9dVvkg3nUjaTOf+Y96QW4LhdokIIGHAbK7wTgvhCL2oglbt1ESMRzupaGJCL
+         g8Y0HqV8DdbZlFNtUNocwuM5MflIZ34VLcP+XP54ofQW2BCFWzPOOvyzgxZ55ipV3KXH
+         2+mIgGKXagoueKoaC+weB9MwrUq5rfeTfF8HOnAx+ypcPsTfFKRkJvTHxQBQjsQ/yk9/
+         yO9scqyqfHrWSzBTaW2CMaHBKf0O8RLLyxNWL7a8A5v3QAjFL2ohHHcEZL3+V9q7zYrf
+         bAhdClqASD/aaSgugeUATbaSbrxlldqiN4qz1cI7IUucglh82Z6/sF7mk/wCP30rHHNG
+         MyoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXUkq/iw0bKexpoMGb67jVgbQtbavLxEh4bgRdKqCBc4GeCWtPTdyEOXHBt1NHUsT0LTe+mS3SSGlk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8jih2dj4Woqt94udj8QHtggb1HpH6bglLX01GsGgV6tgWIoQ8
+	RpDxO2Xjj80Ztp2FgE7f4hR0C7X2BvrGrrvTLtnqB/dI+Qk26rwY8b06BvPY+7aBXRI=
+X-Gm-Gg: ASbGnctH6EqRru3F7graCRzoH1GZCo91uhCLbAInwCkoaPjsDj/8V0wHtFYKhn7UTvO
+	vkGsx+DLsvqu9HVLuG+6YAfYgDxssgl+L0+oZ5l+wfz69tsSPkRuhbdosIMOluGmzTGFRAPq0Vg
+	ivwAxTGJPqQU0T5jk1v6Gngqt3zTyO7Zw2IUTDsuF6WYZrEL6l/7lY3E4K7ZJ6zyBv5dpfdgPYJ
+	Dt+/MR6x0Y8p5p97mQP5rg4Vlqjf/1YaU0BoZA3husT/ejOOU2Ys5Qv5msUL48IzzkIVxZvs0G1
+	l/eU4OyHImxJZiEKzTuVEmNcByPvw5Q/Es90oGWq+oVhN9tbxzh6Vcju4j08CFiA5WlHLeicWJ2
+	WmSyjz3hcpTwi2/ezsMRTDcjuAqyAC9IOK6DDFeWBfNuqGuHhFiat9dKSvHVim84N+/g4PqDqkh
+	NngOYC03Zu/zPhv7DKrOMFS1MriQ==
+X-Google-Smtp-Source: AGHT+IEbm+Ph/BHY3X6rf2/ObAk9FRxDe/dtnkcM68DCMfwtCwzw/eavt2N/8WTvTK0XroSzL0OvUQ==
+X-Received: by 2002:a17:907:3fa1:b0:b6d:6ae2:b66 with SMTP id a640c23a62f3a-b703d2f62d4mr544570666b.20.1761809277192;
+        Thu, 30 Oct 2025 00:27:57 -0700 (PDT)
 Received: from localhost (mob-176-247-57-96.net.vodafone.it. [176.247.57.96])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d853f98adsm1636197366b.49.2025.10.30.00.27.55
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d85398439sm1682670866b.36.2025.10.30.00.27.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 00:27:55 -0700 (PDT)
+        Thu, 30 Oct 2025 00:27:57 -0700 (PDT)
 From: Francesco Lavra <flavra@baylibre.com>
 To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -82,9 +82,9 @@ To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Andy Shevchenko <andy@kernel.org>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/9] iio: imu: st_lsm6dsx: make event_settings more generic
-Date: Thu, 30 Oct 2025 08:27:45 +0100
-Message-Id: <20251030072752.349633-3-flavra@baylibre.com>
+Subject: [PATCH 3/9] iio: imu: st_lsm6dsx: move wakeup event enable mask to event_src
+Date: Thu, 30 Oct 2025 08:27:46 +0100
+Message-Id: <20251030072752.349633-4-flavra@baylibre.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20251030072752.349633-1-flavra@baylibre.com>
 References: <20251030072752.349633-1-flavra@baylibre.com>
@@ -94,298 +94,253 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8864; i=flavra@baylibre.com; h=from:subject; bh=3i6TmZy38WX7WjId5K7zj8RwsRnHvMYK+XMl1I3L4Vg=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpAxNIlCNm6znDWf19r1q0ljsU0Akp3kpaTA5jk S1Tpv4QB66JAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaQMTSAAKCRDt8TtzzpQ2 X+QcDACbVDo/H7DUrCyRumfJV1cFjgV8pyb3qpzMK7JgXPL+a1NW6oPgLXYtFA5jP/xiLZ0D5QF moJGjq92wH8yLpQkLjW9nkUGmcscDCgJmoRHGSTJ5+ydr6NcRyb72fzVvVbKISzfMSOOw3mbeGZ byN+bJA0f/I+5+XnABmBd5758KovWJi4UQlPo3PPAHBS4Y/BmeaVnPWEIP3Nfg9FcrngEX8ybOF RYxHbtPfnxxboAffPsoKS2F2LMAsC87/7D9U6Ee/4SAH3g/bHnt0x9aQEgn+S+PC+Q0TQhi8FmY r8+I1rvKLtS98apzXQhLbdKkPE+E8TDmvMMXB1CrOpgDRwBRb6CvYEdtPHmVSVHMy9ZQK3AavR7 wpbi+V7MqP//Np6li8L2r87YGTqzi1EQVjXAMmihd8nJDoIOSTkWRWB0ktIIaCtVX8UWvUVougT 73E6NlHODNIKQPjYp2MTNrpGSeMn6Fb3gDvq1pgfSqCEBgopJm1s41W58l00e/BzJOaY4=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7477; i=flavra@baylibre.com; h=from:subject; bh=5udrDdlPMpudCr1yZSepm0qaGnwL+JdHE+fbHDma8IU=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpAxNJUqwdeZd2hE7bzBsdS7ZsaGVJIXj6S1gwW zjdQ38hhwaJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaQMTSQAKCRDt8TtzzpQ2 X4seC/0YTo0aLdkslaQoGRrOIQuzRI+uwzb2ayKLfNeD6SWwEZtlcTvAVmMwFsk4TYnU6DrKrcF yrPe/XiYDq+NYjgM43qBOxdUoIrdyd6lRmc7kpw3YuVdbi0MlFYtn1nb+eF8q4c8EKIxaywxi+d kE/349O5UhcRji18ZQvhdChVDR2DoqXKhHMek2ro7JxGxu5azF9Pk+Fnq6Gqtw/IGB+4R9lNj3F /PI88/j9Gl80stNv8Z2fKavy5ISg36zevNUAgEQU+j8+0EfscDUnNHKtx5PKfuSmbavb9lGfize 8kOTPAH92QSLdI2yLUJri+VdQ2Hd8TRUJfpuSqGZotZWrBLWPLoVUMnwbURcjaXtC7hS8VC9vyS zVyWSvl84WgtAIhFbgt+/zVezCWEN3LWLZDoBULPWqpMMfelgmkeSg+dEdCDYXXKSpLy65OjF9r qG10M91YleUlgyNRJzL2M2qVBtO8syciMVNF5v2CgRYBOG2eQqMucAGdWjLFTqZPKxha4=
 X-Developer-Key: i=flavra@baylibre.com; a=openpgp; fpr=8657854F953BDCA31EC314E6EDF13B73CE94365F
 Content-Transfer-Encoding: 8bit
 
-The st_lsm6dsx_event_settings structure contains fields specific
-for one event type (wakeup). In preparation for adding support for
-more event types, introduce an event id enum and a generic event
-source structure, and replace wakeup-specific data in struct
-st_lsm6dsx_event_settings with an array of event source structures.
+The mask value being assigned to the irq1_func and irq2_func fields
+of the irq_config struct is specific to a single event source (i.e.
+the wakeup event), and as such it should be separate from the
+definition of the interrupt function registers, which cover
+multiple event sources.
+In preparation for adding support for more event types, change the
+irq1_func and irq2_func type from an {address, mask} pair to an
+address, and move the mask value to a new field of struct
+st_lsm6dsx_event_src. No functional changes.
 
 Signed-off-by: Francesco Lavra <flavra@baylibre.com>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  21 ++-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 136 +++++++++++--------
- 2 files changed, 96 insertions(+), 61 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  7 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 80 +++++++-------------
+ 2 files changed, 30 insertions(+), 57 deletions(-)
 
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index db863bd1898d..05689887f7ec 100644
+index 05689887f7ec..5c73156b714a 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -221,14 +221,23 @@ struct st_lsm6dsx_shub_settings {
- 	u8 pause;
- };
+@@ -228,6 +228,7 @@ enum st_lsm6dsx_event_id {
  
-+enum st_lsm6dsx_event_id {
-+	ST_LSM6DSX_EVENT_WAKEUP,
-+	ST_LSM6DSX_EVENT_MAX
-+};
-+
-+struct st_lsm6dsx_event_src {
-+	struct st_lsm6dsx_reg value;
-+	u8 status_reg;
-+	u8 status_mask;
-+	u8 status_x_mask;
-+	u8 status_y_mask;
-+	u8 status_z_mask;
-+};
-+
- struct st_lsm6dsx_event_settings {
- 	struct st_lsm6dsx_reg enable_reg;
--	struct st_lsm6dsx_reg wakeup_reg;
--	u8 wakeup_src_reg;
--	u8 wakeup_src_status_mask;
--	u8 wakeup_src_z_mask;
--	u8 wakeup_src_y_mask;
--	u8 wakeup_src_x_mask;
-+	struct st_lsm6dsx_event_src sources[ST_LSM6DSX_EVENT_MAX];
- };
+ struct st_lsm6dsx_event_src {
+ 	struct st_lsm6dsx_reg value;
++	u8 enable_mask;
+ 	u8 status_reg;
+ 	u8 status_mask;
+ 	u8 status_x_mask;
+@@ -320,8 +321,8 @@ struct st_lsm6dsx_settings {
+ 	struct {
+ 		struct st_lsm6dsx_reg irq1;
+ 		struct st_lsm6dsx_reg irq2;
+-		struct st_lsm6dsx_reg irq1_func;
+-		struct st_lsm6dsx_reg irq2_func;
++		u8 irq1_func;
++		u8 irq2_func;
+ 		struct st_lsm6dsx_reg lir;
+ 		struct st_lsm6dsx_reg clear_on_read;
+ 		struct st_lsm6dsx_reg hla;
+@@ -420,7 +421,7 @@ struct st_lsm6dsx_hw {
+ 	u8 ts_sip;
+ 	u8 sip;
  
- enum st_lsm6dsx_ext_sensor_id {
+-	const struct st_lsm6dsx_reg *irq_routing;
++	u8 irq_routing;
+ 	u8 event_threshold;
+ 	u8 enable_event;
+ 
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 17b46e15cce5..bb4c4c531128 100644
+index bb4c4c531128..4bae5da8910e 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -350,15 +350,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			},
- 		},
- 		.event_settings = {
--			.wakeup_reg = {
--				.addr = 0x5B,
--				.mask = GENMASK(5, 0),
-+			.sources = {
-+				[ST_LSM6DSX_EVENT_WAKEUP] = {
-+					.value = {
-+						.addr = 0x5b,
-+						.mask = GENMASK(5, 0),
-+					},
-+					.status_reg = 0x1b,
-+					.status_mask = BIT(3),
-+					.status_z_mask = BIT(0),
-+					.status_y_mask = BIT(1),
-+					.status_x_mask = BIT(2),
-+				},
- 			},
--			.wakeup_src_reg = 0x1b,
--			.wakeup_src_status_mask = BIT(3),
--			.wakeup_src_z_mask = BIT(0),
--			.wakeup_src_y_mask = BIT(1),
--			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -510,15 +514,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 			},
- 		},
- 		.event_settings = {
--			.wakeup_reg = {
--				.addr = 0x5B,
--				.mask = GENMASK(5, 0),
-+			.sources = {
-+				[ST_LSM6DSX_EVENT_WAKEUP] = {
-+					.value = {
-+						.addr = 0x5b,
-+						.mask = GENMASK(5, 0),
-+					},
-+					.status_reg = 0x1b,
-+					.status_mask = BIT(3),
-+					.status_z_mask = BIT(0),
-+					.status_y_mask = BIT(1),
-+					.status_x_mask = BIT(2),
-+				},
- 			},
--			.wakeup_src_reg = 0x1b,
--			.wakeup_src_status_mask = BIT(3),
--			.wakeup_src_z_mask = BIT(0),
--			.wakeup_src_y_mask = BIT(1),
--			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -741,15 +749,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+@@ -290,14 +290,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
  				.addr = 0x58,
- 				.mask = BIT(7),
+ 				.mask = BIT(0),
  			},
--			.wakeup_reg = {
--				.addr = 0x5B,
--				.mask = GENMASK(5, 0),
-+			.sources = {
-+				[ST_LSM6DSX_EVENT_WAKEUP] = {
-+					.value = {
-+						.addr = 0x5b,
-+						.mask = GENMASK(5, 0),
-+					},
-+					.status_reg = 0x1b,
-+					.status_mask = BIT(3),
-+					.status_z_mask = BIT(0),
-+					.status_y_mask = BIT(1),
-+					.status_x_mask = BIT(2),
-+				},
- 			},
--			.wakeup_src_reg = 0x1b,
--			.wakeup_src_status_mask = BIT(3),
--			.wakeup_src_z_mask = BIT(0),
--			.wakeup_src_y_mask = BIT(1),
--			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -972,15 +984,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+-			.irq1_func = {
+-				.addr = 0x5e,
+-				.mask = BIT(5),
+-			},
+-			.irq2_func = {
+-				.addr = 0x5f,
+-				.mask = BIT(5),
+-			},
++			.irq1_func = 0x5e,
++			.irq2_func = 0x5f,
+ 			.hla = {
+ 				.addr = 0x12,
+ 				.mask = BIT(5),
+@@ -356,6 +350,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 						.addr = 0x5b,
+ 						.mask = GENMASK(5, 0),
+ 					},
++					.enable_mask = BIT(5),
+ 					.status_reg = 0x1b,
+ 					.status_mask = BIT(3),
+ 					.status_z_mask = BIT(0),
+@@ -454,14 +449,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
  				.addr = 0x58,
- 				.mask = BIT(7),
+ 				.mask = BIT(0),
  			},
--			.wakeup_reg = {
--				.addr = 0x5b,
--				.mask = GENMASK(5, 0),
-+			.sources = {
-+				[ST_LSM6DSX_EVENT_WAKEUP] = {
-+					.value = {
-+						.addr = 0x5b,
-+						.mask = GENMASK(5, 0),
-+					},
-+					.status_reg = 0x1b,
-+					.status_mask = BIT(3),
-+					.status_z_mask = BIT(0),
-+					.status_y_mask = BIT(1),
-+					.status_x_mask = BIT(2),
-+				},
- 			},
--			.wakeup_src_reg = 0x1b,
--			.wakeup_src_status_mask = BIT(3),
--			.wakeup_src_z_mask = BIT(0),
--			.wakeup_src_y_mask = BIT(1),
--			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -1147,15 +1163,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+-			.irq1_func = {
+-				.addr = 0x5e,
+-				.mask = BIT(5),
+-			},
+-			.irq2_func = {
+-				.addr = 0x5f,
+-				.mask = BIT(5),
+-			},
++			.irq1_func = 0x5e,
++			.irq2_func = 0x5f,
+ 			.hla = {
+ 				.addr = 0x12,
+ 				.mask = BIT(5),
+@@ -520,6 +509,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 						.addr = 0x5b,
+ 						.mask = GENMASK(5, 0),
+ 					},
++					.enable_mask = BIT(5),
+ 					.status_reg = 0x1b,
+ 					.status_mask = BIT(3),
+ 					.status_z_mask = BIT(0),
+@@ -648,14 +638,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
  				.addr = 0x58,
- 				.mask = BIT(7),
+ 				.mask = BIT(0),
  			},
--			.wakeup_reg = {
--				.addr = 0x5B,
--				.mask = GENMASK(5, 0),
-+			.sources = {
-+				[ST_LSM6DSX_EVENT_WAKEUP] = {
-+					.value = {
-+						.addr = 0x5b,
-+						.mask = GENMASK(5, 0),
-+					},
-+					.status_reg = 0x1b,
-+					.status_mask = BIT(3),
-+					.status_z_mask = BIT(0),
-+					.status_y_mask = BIT(1),
-+					.status_x_mask = BIT(2),
-+				},
+-			.irq1_func = {
+-				.addr = 0x5e,
+-				.mask = BIT(5),
+-			},
+-			.irq2_func = {
+-				.addr = 0x5f,
+-				.mask = BIT(5),
+-			},
++			.irq1_func = 0x5e,
++			.irq2_func = 0x5f,
+ 			.hla = {
+ 				.addr = 0x12,
+ 				.mask = BIT(5),
+@@ -755,6 +739,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 						.addr = 0x5b,
+ 						.mask = GENMASK(5, 0),
+ 					},
++					.enable_mask = BIT(5),
+ 					.status_reg = 0x1b,
+ 					.status_mask = BIT(3),
+ 					.status_z_mask = BIT(0),
+@@ -895,14 +880,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.addr = 0x56,
+ 				.mask = BIT(6),
  			},
--			.wakeup_src_reg = 0x1b,
--			.wakeup_src_status_mask = BIT(3),
--			.wakeup_src_z_mask = BIT(0),
--			.wakeup_src_y_mask = BIT(1),
--			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -1347,15 +1367,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.addr = 0x50,
- 				.mask = BIT(7),
+-			.irq1_func = {
+-				.addr = 0x5e,
+-				.mask = BIT(5),
+-			},
+-			.irq2_func = {
+-				.addr = 0x5f,
+-				.mask = BIT(5),
+-			},
++			.irq1_func = 0x5e,
++			.irq2_func = 0x5f,
+ 			.hla = {
+ 				.addr = 0x12,
+ 				.mask = BIT(5),
+@@ -990,6 +969,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 						.addr = 0x5b,
+ 						.mask = GENMASK(5, 0),
+ 					},
++					.enable_mask = BIT(5),
+ 					.status_reg = 0x1b,
+ 					.status_mask = BIT(3),
+ 					.status_z_mask = BIT(0),
+@@ -1106,14 +1086,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.addr = 0x56,
+ 				.mask = BIT(6),
  			},
--			.wakeup_reg = {
--				.addr = 0x5b,
--				.mask = GENMASK(5, 0),
-+			.sources = {
-+				[ST_LSM6DSX_EVENT_WAKEUP] = {
-+					.value = {
-+						.addr = 0x5b,
-+						.mask = GENMASK(5, 0),
-+					},
-+					.status_reg = 0x45,
-+					.status_mask = BIT(3),
-+					.status_z_mask = BIT(0),
-+					.status_y_mask = BIT(1),
-+					.status_x_mask = BIT(2),
-+				},
+-			.irq1_func = {
+-				.addr = 0x5e,
+-				.mask = BIT(5),
+-			},
+-			.irq2_func = {
+-				.addr = 0x5f,
+-				.mask = BIT(5),
+-			},
++			.irq1_func = 0x5e,
++			.irq2_func = 0x5f,
+ 			.hla = {
+ 				.addr = 0x12,
+ 				.mask = BIT(5),
+@@ -1169,6 +1143,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 						.addr = 0x5b,
+ 						.mask = GENMASK(5, 0),
+ 					},
++					.enable_mask = BIT(5),
+ 					.status_reg = 0x1b,
+ 					.status_mask = BIT(3),
+ 					.status_z_mask = BIT(0),
+@@ -1279,14 +1254,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.addr = 0x56,
+ 				.mask = BIT(0),
  			},
--			.wakeup_src_reg = 0x45,
--			.wakeup_src_status_mask = BIT(3),
--			.wakeup_src_z_mask = BIT(0),
--			.wakeup_src_y_mask = BIT(1),
--			.wakeup_src_x_mask = BIT(2),
- 		},
- 	},
- 	{
-@@ -1861,7 +1885,7 @@ st_lsm6dsx_write_event(struct iio_dev *iio_dev,
- 	if (val < 0 || val > 31)
- 		return -EINVAL;
- 
--	reg = &hw->settings->event_settings.wakeup_reg;
-+	reg = &hw->settings->event_settings.sources[ST_LSM6DSX_EVENT_WAKEUP].value;
- 	data = ST_LSM6DSX_SHIFT_VAL(val, reg->mask);
- 	err = st_lsm6dsx_update_bits_locked(hw, reg->addr,
- 					    reg->mask, data);
-@@ -2318,7 +2342,7 @@ static int st_lsm6dsx_chan_init(struct iio_chan_spec *channels, struct st_lsm6ds
- 	chan->scan_type.endianness = IIO_LE;
- 	chan->ext_info = st_lsm6dsx_ext_info;
- 	if (id == ST_LSM6DSX_ID_ACC) {
--		if (hw->settings->event_settings.wakeup_reg.addr) {
-+		if (hw->settings->event_settings.sources[ST_LSM6DSX_EVENT_WAKEUP].value.addr) {
- 			chan->event_spec = &st_lsm6dsx_event;
- 			chan->num_event_specs = 1;
- 		}
-@@ -2389,6 +2413,7 @@ static bool
- st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
+-			.irq1_func = {
+-				.addr = 0x5e,
+-				.mask = BIT(5),
+-			},
+-			.irq2_func = {
+-				.addr = 0x5f,
+-				.mask = BIT(5),
+-			},
++			.irq1_func = 0x5e,
++			.irq2_func = 0x5f,
+ 			.hla = {
+ 				.addr = 0x03,
+ 				.mask = BIT(4),
+@@ -1373,6 +1342,7 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 						.addr = 0x5b,
+ 						.mask = GENMASK(5, 0),
+ 					},
++					.enable_mask = BIT(5),
+ 					.status_reg = 0x45,
+ 					.status_mask = BIT(3),
+ 					.status_z_mask = BIT(0),
+@@ -1825,10 +1795,11 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_dev,
+ static int st_lsm6dsx_event_setup(struct st_lsm6dsx_hw *hw, bool state)
  {
- 	const struct st_lsm6dsx_event_settings *event_settings;
-+	const struct st_lsm6dsx_event_src *event_src;
- 	int err, data;
- 	s64 timestamp;
+ 	const struct st_lsm6dsx_reg *reg;
++	u8 enable_mask;
+ 	unsigned int data;
+ 	int err;
  
-@@ -2396,13 +2421,14 @@ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
- 		return false;
+-	if (!hw->settings->irq_config.irq1_func.addr)
++	if (!hw->irq_routing)
+ 		return -ENOTSUPP;
  
- 	event_settings = &hw->settings->event_settings;
--	err = st_lsm6dsx_read_locked(hw, event_settings->wakeup_src_reg,
-+	event_src = &event_settings->sources[ST_LSM6DSX_EVENT_WAKEUP];
-+	err = st_lsm6dsx_read_locked(hw, event_src->status_reg,
- 				     &data, sizeof(data));
- 	if (err < 0)
- 		return false;
+ 	reg = &hw->settings->event_settings.enable_reg;
+@@ -1841,9 +1812,10 @@ static int st_lsm6dsx_event_setup(struct st_lsm6dsx_hw *hw, bool state)
+ 	}
  
- 	timestamp = iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
--	if ((data & hw->settings->event_settings.wakeup_src_z_mask) &&
-+	if ((data & event_src->status_z_mask) &&
- 	    (hw->enable_event & BIT(IIO_MOD_Z)))
- 		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
- 			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-@@ -2412,7 +2438,7 @@ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
- 						  IIO_EV_DIR_EITHER),
- 						  timestamp);
- 
--	if ((data & hw->settings->event_settings.wakeup_src_y_mask) &&
-+	if ((data & event_src->status_y_mask) &&
- 	    (hw->enable_event & BIT(IIO_MOD_Y)))
- 		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
- 			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-@@ -2422,7 +2448,7 @@ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
- 						  IIO_EV_DIR_EITHER),
- 						  timestamp);
- 
--	if ((data & hw->settings->event_settings.wakeup_src_x_mask) &&
-+	if ((data & event_src->status_x_mask) &&
- 	    (hw->enable_event & BIT(IIO_MOD_X)))
- 		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
- 			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
-@@ -2432,7 +2458,7 @@ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
- 						  IIO_EV_DIR_EITHER),
- 						  timestamp);
- 
--	return data & event_settings->wakeup_src_status_mask;
-+	return data & event_src->status_mask;
+ 	/* Enable wakeup interrupt */
+-	data = ST_LSM6DSX_SHIFT_VAL(state, hw->irq_routing->mask);
+-	return st_lsm6dsx_update_bits_locked(hw, hw->irq_routing->addr,
+-					     hw->irq_routing->mask, data);
++	enable_mask = hw->settings->event_settings.sources[ST_LSM6DSX_EVENT_WAKEUP].enable_mask;
++	data = ST_LSM6DSX_SHIFT_VAL(state, enable_mask);
++	return st_lsm6dsx_update_bits_locked(hw, hw->irq_routing,
++					     enable_mask, data);
  }
  
- static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
+ static int st_lsm6dsx_read_event(struct iio_dev *iio_dev,
+@@ -2097,11 +2069,11 @@ st_lsm6dsx_get_drdy_reg(struct st_lsm6dsx_hw *hw,
+ 
+ 	switch (drdy_pin) {
+ 	case 1:
+-		hw->irq_routing = &hw->settings->irq_config.irq1_func;
++		hw->irq_routing = hw->settings->irq_config.irq1_func;
+ 		*drdy_reg = &hw->settings->irq_config.irq1;
+ 		break;
+ 	case 2:
+-		hw->irq_routing = &hw->settings->irq_config.irq2_func;
++		hw->irq_routing = hw->settings->irq_config.irq2_func;
+ 		*drdy_reg = &hw->settings->irq_config.irq2;
+ 		break;
+ 	default:
 -- 
 2.39.5
 

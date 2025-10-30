@@ -1,90 +1,79 @@
-Return-Path: <linux-iio+bounces-25656-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25657-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7480C1F2CC
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 10:04:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A97C0C1F3B3
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 10:18:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E6C418950FA
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 09:00:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8B1A24E7B26
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 09:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D6233A03A;
-	Thu, 30 Oct 2025 09:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370EF31960E;
+	Thu, 30 Oct 2025 09:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NRAc3mGT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="STcxgVNt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8093338939;
-	Thu, 30 Oct 2025 09:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906612D0C9D;
+	Thu, 30 Oct 2025 09:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761814821; cv=none; b=Tt6yQfICCdWXbJ3iHvNQZwmsy6zVhqFq3rl4Xj+b2/BSyfPxvitbGdaeEwGBzoSYeCipWXPK7VOpiJI8bbSh+H6fJaQMqzLz9LUjH3kng+1SW2bLPL97wjgn/xeCqzhUyp9HO6WSARs72mErI6AbzFobb8VJRBem451gjS5ib+U=
+	t=1761815904; cv=none; b=eLIlESYyFWXiw8WXErhC7BOrQxSzioIsSUKR/UFCqt7cot+99+sOV19lN10CiPDBUyNxH3EvefJSzq3fGG20hzhB1rYn8s3diJYHgzxGldS4b7K0oUXioCRrCAZE8TLyqJxclncZ96I73X9BcOie/yAMB0lkia7qsOLfTQwiW4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761814821; c=relaxed/simple;
-	bh=ai41Jj4Xl6lRV/HU9xvnUaP6ftQHoXPpEmIqxKoyHJA=;
+	s=arc-20240116; t=1761815904; c=relaxed/simple;
+	bh=zHCqDJZUfYLD2C0sOWZh7SsMj50sJuSbJFBamQ1EwHw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HopzkDNs+nbL1e9yHMhJV1yDgvxqOJCEfPkrERy4A1vCmr89S5+6M0hWY9l3t39oe84QZIAvWhor+k6cDIbA4zi/yQ1ph0jEzWUO5XKKfFa1nafogLaDiIFVgeuUCs2Xqu735jRtt+UzZex9CllLmm71BHovljuxCvUCpF4EV2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NRAc3mGT; arc=none smtp.client-ip=198.175.65.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=DagrDwwNqDpHqESWqOSjuNbXuthJ9l+5hBo7cHGohtxYPupRvwIDzSTKjlycaZrNC9Df/WBK2nc+ed3XLUsFSvGpCNS0pNZPvk/1T+H8EQyYjbeCwXK7e9SUsfE56TROtSOgnpngkjDRW/Z3HEHrKO2An2seOwwWJbVPX9ab5Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=STcxgVNt; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761814820; x=1793350820;
+  t=1761815902; x=1793351902;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=ai41Jj4Xl6lRV/HU9xvnUaP6ftQHoXPpEmIqxKoyHJA=;
-  b=NRAc3mGTk7ckcEO1e6kH8QVGeaC02LOx9bnd55PtN6EXdsLiVQJArBL8
-   HF2k5MpvNksJFo1xvhTOLVU26DImjr+qoR9Xp38FlIFHd+QtycQrlH1L1
-   qAuKHpVCBpSlmOSKRYMhNQjZIz8PaZzOpLdVOPIukWC5xcp7ZL72SVCz3
-   rQqPKJio3ywnDdkQLHhdkO7ypfVEDmPqdci7Y2Giv7QUQhSxjqbq4gS/R
-   zhNUGyEMDMXvF8CPDU2O87f7LSLO9EyjCEwvk3nOBPWAsPpsYTHDwzlii
-   ClwFRI6hCMSDjfKtsKQMdGSUOOOdRdG1KSN+hkVDqiJ1nt6SA+tTs2CmO
-   g==;
-X-CSE-ConnectionGUID: 8grLYYtHTU+WYfbHWppb0Q==
-X-CSE-MsgGUID: xEJvB6USQ9SOLnKdhW5BZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="63834735"
+  bh=zHCqDJZUfYLD2C0sOWZh7SsMj50sJuSbJFBamQ1EwHw=;
+  b=STcxgVNtjkYIvuTKUEyPqXDJeTh4ALnetru4D+inoODnDOHeX6dbIfw2
+   WVJHTSFqjfSBhD1a3EEq//dj3XXwkI2nXNplQkkRBSzpTcd17lJxuoRcy
+   sgdGptgI1hDGG8p/tF3WtvMTmvlzd/G+yTKmiKaHYRXlTltjy30k9dU2G
+   AAT9znUU9ODI3I0hvGGzqOi6XbQxkYBUktvl11/dkZoUYUQ0N8M+qqPSo
+   hwVZCoDONzLypgCM1gcDt0NLI7jGbA+7WYX+kvvW1GTtfMT8YiVYXRSSN
+   GHljNlhpPs6Pug8PgfnE57gx1Ia+UCxaElQbr2DvufL00Kfwem+QWGkik
+   Q==;
+X-CSE-ConnectionGUID: WeilZlqdS2yH84gO2TtYRw==
+X-CSE-MsgGUID: cCb5jPvQRGKIgt6C0fA4IQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="67812050"
 X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="63834735"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 02:00:19 -0700
-X-CSE-ConnectionGUID: LlAPZNzKRUKocnZDa90K9w==
-X-CSE-MsgGUID: Ewza8RhnSqGbuaZCQhbgrQ==
+   d="scan'208";a="67812050"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 02:18:14 -0700
+X-CSE-ConnectionGUID: 18ap4ge9So6E8UWbDzdDcQ==
+X-CSE-MsgGUID: DdF1Q12oRgOwaTsGiEd3tQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="186344479"
+   d="scan'208";a="186646242"
 Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.174])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 02:00:15 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 02:18:12 -0700
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vEOVw-00000003qtu-1deL;
-	Thu, 30 Oct 2025 11:00:12 +0200
-Date: Thu, 30 Oct 2025 11:00:12 +0200
+	id 1vEOnK-00000003r8q-0kjR;
+	Thu, 30 Oct 2025 11:18:10 +0200
+Date: Thu, 30 Oct 2025 11:18:09 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: "Herve Codina (Schneider Electric)" <herve.codina@bootlin.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pascal Eberhard <pascal.eberhard@se.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
-Message-ID: <aQMpHDwCqcrNrnT9@smile.fi.intel.com>
-References: <20251029144644.667561-1-herve.codina@bootlin.com>
- <20251029144644.667561-3-herve.codina@bootlin.com>
+To: Antoni Pokusinski <apokusinski01@gmail.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, marcelo.schmitt1@gmail.com,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: mpl3115: add threshold events support
+Message-ID: <aQMtUUp_QoR4l3nd@smile.fi.intel.com>
+References: <20251028213351.77368-1-apokusinski01@gmail.com>
+ <20251028213351.77368-3-apokusinski01@gmail.com>
+ <aQHPUQ5bU7sFojul@smile.fi.intel.com>
+ <20251029224605.3ixkvmmkm36iwh22@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -93,186 +82,62 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251029144644.667561-3-herve.codina@bootlin.com>
+In-Reply-To: <20251029224605.3ixkvmmkm36iwh22@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Oct 29, 2025 at 03:46:42PM +0100, Herve Codina (Schneider Electric) wrote:
-> The Renesas RZ/N1 ADC controller is the ADC controller available in the
-> Renesas RZ/N1 SoCs family. It can use up to two internal ADC cores (ADC1
-> and ADC2) those internal cores are not directly accessed but are handled
-> through ADC controller virtual channels.
+On Wed, Oct 29, 2025 at 11:46:05PM +0100, Antoni Pokusinski wrote:
+> On Wed, Oct 29, 2025 at 10:24:49AM +0200, Andy Shevchenko wrote:
+> > On Tue, Oct 28, 2025 at 10:33:52PM +0100, Antoni Pokusinski wrote:
 
-Looks much better, thanks! My comments below.
-
-...
-
-+ array_size,h
-
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/cleanup.h>
-> +#include <linux/clk.h>
-
-+ dev_printk.h
-+ err.h
-
-> +#include <linux/iio/iio.h>
-> +#include <linux/io.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-
-+ mutex.h
-
-> +#include <linux/platform_device.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regulator/consumer.h>
-
-+ types.h
+Please, remove context you are agree with!
+Otherwise raise your point(s).
 
 ...
 
-> +#define RZN1_ADC_CONTROL_REG			0x2c
 
-I would go with fixed-width values, e.g., 0x02c for the register definitions.
+> > > -	u8 ctrl_reg1 = data->ctrl_reg1;
+> > > -	u8 ctrl_reg4 = data->ctrl_reg4;
+> > > +	u8 ctrl_reg1, ctrl_reg4;
+> > 
+> > > +	guard(mutex)(&data->lock);
+> > 
+> > Why this is moved? Before the access to the data->ctrl* was done without
+> > locking. Is it an existing bug?
+> > 
+> Since this patchset adds `write_event_config()` in which CTRL_REG1.ACTIVE
+> and CTRL_REG4 are modified, the lock now needs to guard the read of
+> data->ctrl_regX as well. Otherwise, we could have e.g. 2 concurrent
+> threads executing `set_trigger_state()` and `write_event_config()` that
+> would read data->ctrl_regX at the same time and then one would overwrite
+> the other's values in `config_interrupt()`.
+> 
+> In the current driver I don't think there is any bug in here. The only
+> place (except probe) where the data->ctrl_regX is modified is
+> `config_interrupt()`, called from `set_trigger_state()`. If we had
+> concurrent calls to this function, then the final values of CTRL_REG1
+> and CTRL_REG4 would simply depend on which thread is scheduled as the last one.
+> With the `guard(mutex)` before accessing data->ctrl_reg1, the situation
+> would be exactly the same.
 
-> +#define RZN1_ADC_CONTROL_ADC_BUSY		BIT(6)
-> +
-> +#define RZN1_ADC_FORCE_REG			0x30
-> +#define RZN1_ADC_SET_FORCE_REG			0x34
-> +#define RZN1_ADC_CLEAR_FORCE_REG		0x38
+I see, can you summarize this in the commit message as well?
+And/or in the code near to the lock description.
 
-> +#define RZN1_ADC_CONFIG_REG			0x40
-
-> +
-> +#define RZN1_ADC_VC_REG(_n)			(0xc0 + 4 * (_n))
-
-> +#define RZN1_ADC_ADC1_DATA_REG(_n)		(0x100 + 4 * (_n))
-> +#define RZN1_ADC_ADC2_DATA_REG(_n)		(0x140 + 4 * (_n))
-
-...
-
-> +static int rzn1_adc_get_vref_mv(struct rzn1_adc *rzn1_adc, unsigned int chan)
-> +{
-> +	/*
-> +	 * chan 0..7 use ADC1 ch 0..7. Vref related to ADC1 core
-> +	 * chan 8..15 use ADC2 ch 0..7. Vref related to ADC2 core
-> +	 */
-
-Split it to two one line comments per each conditional.
-
-> +	if (chan < 8)
-> +		return rzn1_adc->adc1_vref_mv;
-> +	else if (chan < 16)
-
-Redundant 'else'.
-
-> +		return rzn1_adc->adc2_vref_mv;
-> +
-> +	return -EINVAL;
-> +}
-
-...
-
-> +static int rzn1_adc_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
-> +			     int *val, int *val2, long mask)
-> +{
-> +	struct rzn1_adc *rzn1_adc = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = rzn1_adc_read_raw_ch(rzn1_adc, chan->channel, val);
-> +		if (ret)
-> +			return ret;
-> +		return IIO_VAL_INT;
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		ret = rzn1_adc_get_vref_mv(rzn1_adc, chan->channel);
-> +		if (ret < 0)
-> +			return ret;
-> +		*val = ret;
-> +		*val2 = 12;
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return -EINVAL;
-
-	default:
-		return -EINVAL;
-
-> +}
-
-...
-
-> +static const struct iio_info rzn1_adc_info = {
-> +	.read_raw = &rzn1_adc_read_raw
-
-Leave trailing comma, this is not a terminator entry.
-
-> +};
-
-...
-
-> +	if (rzn1_adc->adc1_vref_mv >= 0) {
-
-Can we call it _mV?
-
-...
-
-> +	if (rzn1_adc->adc2_vref_mv >= 0) {
-
-Ditto.
-
-
-...
-
-> +	ret = devm_regulator_get_enable_optional(dev, avdd_name);
-> +	if (ret < 0) {
-> +		if (ret != -ENODEV)
-> +			return dev_err_probe(dev, ret,
-> +					     "Failed to get '%s' regulator\n",
-> +					     avdd_name);
-> +		return 0;
-> +	}
-
-	if (ret == -ENODEV)
-		return dev_err_probe(); // takes less LoCs
-	if (ret < 0) // do we need ' < 0' part?
-		return 0;
-
-> +	ret = devm_regulator_get_enable_read_voltage(dev, vref_name);
-> +	if (ret < 0) {
-> +		if (ret != -ENODEV)
-> +			return dev_err_probe(dev, ret,
-> +					     "Failed to get '%s' regulator\n",
-> +					     vref_name);
-> +		return 0;
-> +	}
-
-In the same way as above.
-
-...
-
-> +static DEFINE_RUNTIME_DEV_PM_OPS(rzn1_adc_pm_ops,
-> +				 rzn1_adc_pm_runtime_suspend,
-> +				 rzn1_adc_pm_runtime_resume, NULL);
-
-Please, split it based on logic:
-
-static DEFINE_RUNTIME_DEV_PM_OPS(rzn1_adc_pm_ops,
-				 rzn1_adc_pm_runtime_suspend, rzn1_adc_pm_runtime_resume, NULL);
-
-OR
-
-static DEFINE_RUNTIME_DEV_PM_OPS(rzn1_adc_pm_ops,
-				 rzn1_adc_pm_runtime_suspend,
-				 rzn1_adc_pm_runtime_resume,
-				 NULL);
+> > > +	ctrl_reg1 = data->ctrl_reg1;
+> > > +	ctrl_reg4 = data->ctrl_reg4;
+> > >  
+> > >  	if (state) {
+> > >  		ctrl_reg1 |= MPL3115_CTRL1_ACTIVE;
+> > >  		ctrl_reg4 |= MPL3115_CTRL4_INT_EN_DRDY;
+> > >  	} else {
+> > > -		ctrl_reg1 &= ~MPL3115_CTRL1_ACTIVE;
+> > >  		ctrl_reg4 &= ~MPL3115_CTRL4_INT_EN_DRDY;
+> > > -	}
+> > >  
+> > > -	guard(mutex)(&data->lock);
+> > > +		if (!ctrl_reg4)
+> > > +			ctrl_reg1 &= ~MPL3115_CTRL1_ACTIVE;
+> > > +	}
 
 -- 
 With Best Regards,

@@ -1,170 +1,195 @@
-Return-Path: <linux-iio+bounces-25659-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25660-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C6AC1F497
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 10:29:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1AAC1F49D
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 10:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 448314E96EF
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 09:28:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2F794E8F36
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 09:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB189340DB8;
-	Thu, 30 Oct 2025 09:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30904340A59;
+	Thu, 30 Oct 2025 09:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NduRzxun"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kUpQQp2h"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E464F340A59;
-	Thu, 30 Oct 2025 09:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E416E340A43
+	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 09:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761816497; cv=none; b=Rnf0HeZjNzDER0xySpB/bvbj/Yb0qiHlJUezfNP/0C++BXj/mcQagRcO5ioF3OteNCuqF1SKFI5OFpSZZUPO70XZC/dLy74CjdjbEDXIsnh7RDyUwbLRjo1TOsREvp4XdKiej0dHlh5rGIlEloV0PNhVv2ikFxvp3ucpyUE94UE=
+	t=1761816504; cv=none; b=WTBM5vrvGeFohHcDy8xzZypTJrLoROvUVVxNda7StjsiVJ2OJpV5BH9QH31L3HJ/zHrH4/truzhYhvN/6qSdRXCF6xAET6X1QI/m2oN/ik+9F+nPMzgm1sIrIFTzBwVD52hOqpKrMxVjvqpNPbyneXySLTXyBkZEBUwOTxo7EN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761816497; c=relaxed/simple;
-	bh=3uKpmZcVcyDfgPeokSA3YXGsdGowE+EW6/E6D4PyU6k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pwcW6B3bzlPwZjV0B3pGHTjEPGyib+W3BwRtwxHJvsA32e1FecnF+Nx+8X4E2DC6KsWVIbTO2xZrA4+V+8dJwnzU5KBnmfBx0hu8JmZVLse6VBA1QpIJFxVT+R2Sh0k5B1jrm3GZVbrd5Mewy7kbqDXT8EsReGgr0/fR3f+x9Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NduRzxun; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761816496; x=1793352496;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3uKpmZcVcyDfgPeokSA3YXGsdGowE+EW6/E6D4PyU6k=;
-  b=NduRzxunVzYiFYnC/67wGf1mpqpv9KPI7B7G1dlArazhsaXULNrb305P
-   YwnlZyfUS/gP0PLOF3z7QsY/hfvrTubN7zkxmkAYvoxGAbzDJXW1TfMSC
-   oEiRMSzOL+U4M17zxW6kAwqE3T4YTiFJVglrdQCtvwzNuHz+NKrNTnhVJ
-   b5JhE/FxWaX1bCjfjbXOYR6sNjb9zKuZxRgzSS9GQ8hgTuu9NL50zgARY
-   J/x3dO/d9Q0uWGSAkFNJr8Hz3C2T7kguuaW6mFhgSFNVPVpqFV7g0GAB0
-   FqifbuSp7ooOjpvckmLklpyzrPbVEpZR6ClGfRu0c1zWt6P4V7dAmBAqd
-   A==;
-X-CSE-ConnectionGUID: Dt7OVbVDQaKZURNbk5QLtw==
-X-CSE-MsgGUID: 1CVglTfSRd+4mpjnuwRC0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="64048391"
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="64048391"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 02:28:15 -0700
-X-CSE-ConnectionGUID: c3zb3I3eRieOVLLjc3wNiw==
-X-CSE-MsgGUID: 63dfAW39RvORT7FEd1j5og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="190239957"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.174])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 02:28:12 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vEOwy-00000003rFz-3nKg;
-	Thu, 30 Oct 2025 11:28:08 +0200
-Date: Thu, 30 Oct 2025 11:28:08 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, robh@kernel.org, conor+dt@kernel.org,
-	krzk+dt@kernel.org, linux-iio@vger.kernel.org, s32@nxp.com,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	chester62515@gmail.com, mbrugger@suse.com,
-	ghennadi.procopciuc@oss.nxp.com
-Subject: Re: [PATCH v5 2/2] iio: adc: Add the NXP SAR ADC support for the
- s32g2/3 platforms
-Message-ID: <aQMvqHGN7r6babgw@smile.fi.intel.com>
-References: <20251017164238.1908585-1-daniel.lezcano@linaro.org>
- <20251017164238.1908585-3-daniel.lezcano@linaro.org>
- <aPP0uVZu1T7tTQGo@ashevche-desk.local>
- <050f96d5-e60c-4b33-b6d2-24fb3925e378@linaro.org>
+	s=arc-20240116; t=1761816504; c=relaxed/simple;
+	bh=3KFae3mnHAdFgFch5WE6C2EMGzI5ArupRlzDKVWdUMU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cU9DsTBNJ1bY0PQvCNvXdnYkwUaogL3V13TYl4l/K4a0ObsI7+/VOCofWBxLjRuDF0uMiGUGhsmPfgvEUW61p7nrTRlyvcF5kCv7zm+HqPJGxCBDmv6JyhP/83VIMMR6ZXBehsCXJvUxOw+cq03erOhGs9DQWhXyI6feW3sTjYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kUpQQp2h; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-46e6a689bd0so8241695e9.1
+        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 02:28:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761816500; x=1762421300; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3KFae3mnHAdFgFch5WE6C2EMGzI5ArupRlzDKVWdUMU=;
+        b=kUpQQp2hixzbrRyl76dwIB85fUNBHwHtc5rZjDBeYHTmFgYWP+mHqXZC1m9/9y7x0K
+         8HbUO7yWW0mnybxPfVdxRYOOuriki8kN2wKLqMhgR7hAj3oQxqIr0UWqYuZdaHWDeXBi
+         Od/3B4UfB2WZmRhSBkcjWsefZxH6jg7YuAAEU4kwP3q3lsp2E90PJ8ZT2B6qDU0sRAkF
+         UNSfCYWqjwBfkbZzud7ZDWKyAXuSGzmZEKC0nIOFHk0YBiDMyoF+8xNIsCqK8xZrgAOK
+         YGlWGYH318kXq/ovFWAndE4FtDNWPj3b91quV0lOgvUIb4W7oWEjZoP8Xb/xPdepQy+E
+         mmww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761816500; x=1762421300;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3KFae3mnHAdFgFch5WE6C2EMGzI5ArupRlzDKVWdUMU=;
+        b=dfGrOcICgAvaJdN2waswwn57kz8gbdFLppE1NqvDeXQkQKHLwmimzYgg/bpl1EkaSk
+         OObq1jRstCHKKg2E99MINkRdWs5ZjiHSZoPg79Vvo+Er0O99xsSm0P1Uy9UOu1CJf4ac
+         1isc7c9G4yR6mbcI9pl2WAFssMpGqWy+4qGp+viaacQMDE2kHTnDaji7dOyjeVlBnf/Z
+         jaJsmHrnNlNWyVqrN5nhebiOiAFJ/UxahHz0HjwRxPi8Moqlt5MOOjs2B8mFJWup+GO0
+         VFn5MM4tpO5Thos04tYnn08sDtFZM1xEfQdvG519k65LHRIOTVvnAsjfBwFN5UZX9vD8
+         vG8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVw4zRzBz13LWIub5MMXadKcvWUqV2k442i4ozbRjMeJERF2RHz02AXJuBBiE3GhwfZpVpeAKjaHXI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxdcbi+DMWhM/Tkwm85YMzk4OfhONqGWiB6EsgUBLsH10Hr67Fl
+	KX80XiopJHo1ZJTCdunHWrLOUlBQoNdEdgCmw/dfoW9aCiCLQ/NphEbe
+X-Gm-Gg: ASbGncv0N6KscQspou+dgSIfNX0gWHel7YMvlR9fz9M0TOptmi8Dnv146Jbbaaz3UDW
+	wnPFdi9xfElmnO+e0rwPZI5bPQSjDbUQlK/bpvnmmh8vB4PJNhrL8WYvillOc+5XqE41HFy0tEt
+	CrGZ/fDY96RjwtC8QzMDxfmF506KKkDoQgJ1kVJS1MMq+ldZFtAhzoR4CJmfiGzdkPMhBZEasjr
+	kbg7j+jCSBBqz27rwlr5aIJH43jbE2SNW5tx5aSSpWMCHAh+BQFrjsmqTC63Co9cZAgl5xO1gOK
+	vU/Gmsm0GqoUS7MibWdaIV1gaZxgbf3yWx8xrqTAEQCWDLC3OmUNFa7S4utof+5ssQMeFslDW1t
+	7AY1UGQn4ztTXT3blYRPUeuH7VGd5a7qNhZCT3pfZ/B/LpX535PgAz8tm72WzUE0L12hnoMWqq1
+	9zuKa680HwbREmO9wCyXs=
+X-Google-Smtp-Source: AGHT+IFF7NXPdvCAbGKnhLasZSsumjveW6sgM14GbeDb/ZSePCiZlozXxupC6H8veSQgZ8O+6rzmTA==
+X-Received: by 2002:a05:600c:348a:b0:475:dd89:ac7 with SMTP id 5b1f17b1804b1-47726701f1bmr19220215e9.1.1761816499994;
+        Thu, 30 Oct 2025 02:28:19 -0700 (PDT)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4772899991asm29042145e9.3.2025.10.30.02.28.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 02:28:19 -0700 (PDT)
+Message-ID: <ca6760182b4662c96df6204bae903d8affa6a8e3.camel@gmail.com>
+Subject: Re: [PATCH v6 8/8] iio: adc: ad4030: Support common-mode channels
+ with SPI offloading
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Jonathan Cameron
+	 <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ 	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, michael.hennerich@analog.com,
+ nuno.sa@analog.com, 	eblanc@baylibre.com, dlechner@baylibre.com,
+ andy@kernel.org, robh@kernel.org, 	krzk+dt@kernel.org, conor+dt@kernel.org,
+ corbet@lwn.net
+Date: Thu, 30 Oct 2025 09:28:54 +0000
+In-Reply-To: <aQJY7XizVWbE68ll@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1760984107.git.marcelo.schmitt@analog.com>
+	 <3fadbf22973098c4be9e5f0edd8c22b8b9b18ca6.1760984107.git.marcelo.schmitt@analog.com>
+	 <20251027140423.61d96e88@jic23-huawei>
+	 <aQJY7XizVWbE68ll@debian-BULLSEYE-live-builder-AMD64>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <050f96d5-e60c-4b33-b6d2-24fb3925e378@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Oct 30, 2025 at 09:27:21AM +0100, Daniel Lezcano wrote:
-> On 10/18/25 22:12, Andy Shevchenko wrote:
-> > On Fri, Oct 17, 2025 at 06:42:38PM +0200, Daniel Lezcano wrote:
+On Wed, 2025-10-29 at 15:11 -0300, Marcelo Schmitt wrote:
+> On 10/27, Jonathan Cameron wrote:
+> > On Mon, 20 Oct 2025 16:15:39 -0300
+> > Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+> >=20
+> > > AD4030 and similar devices can read common-mode voltage together with
+> > > ADC sample data. When enabled, common-mode voltage data is provided i=
+n a
+> > > separate IIO channel since it measures something other than the prima=
+ry
+> > > ADC input signal and requires separate scaling to convert to voltage
+> > > units. The initial SPI offload support patch for AD4030 only provided
+> > > differential channels. Now, extend the AD4030 driver to also provide
+> > > common-mode IIO channels when setup with SPI offloading capability.
+> > >=20
+> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > > ---
+> > > New patch.
+> > > I hope this works for ADCs with two channels. It's not clear if works=
+ as
+> > > expected with current HDL and single-channel ADCs (like ADAQ4216).
+> > >=20
+> > > The ad4630_fmc HDL project was designed for ADCs with two channels an=
+d
+> > > always streams two data channels to DMA (even when the ADC has only o=
+ne
+> > > physical channel). Though, if the ADC has only one physical channel, =
+the
+> > > data that would come from the second ADC channel comes in as noise an=
+d
+> > > would have to be discarded. Because of that, when using single-channe=
+l
+> > > ADCs, the ADC driver would need to use a special DMA buffer to filter=
+ out
+> > > half of the data that reaches DMA memory. With that, the ADC sample d=
+ata
+> > > could be delivered to user space without any noise being added to the=
+ IIO
+> > > buffer. I have implemented a prototype of such specialized buffer
+> > > (industrialio-buffer-dmaengine-filtered), but it is awful and only wo=
+rked
+> > > with CONFIG_IIO_DMA_BUF_MMAP_LEGACY (only present in ADI Linux tree).=
+ Usual
+> > > differential channel data is also affected by the extra 0xFFFFFFFF da=
+ta
+> > > pushed to DMA. Though, for the differential channel, it's easier to s=
+ee it
+> > > shall work for two-channel ADCs (the sine wave appears "filled" in
+> > > iio-oscilloscope).
+> > >=20
+> > > So, I sign this, but don't guarantee it to work.
+> >=20
+> > So what's the path to resolve this?=C2=A0 Waiting on HDL changes or not=
+ support
+> > those devices until we have a clean solution?
+>=20
+> Waiting for HDL to get updated I'd say.
 
-...
+Agree. We kind of control the IP here so why should we do awful tricks in
+SW right :)? At the very least I would expect hdl to be capable to discard =
+the
+data in HW.
 
-> > > +#include <linux/circ_buf.h>
-> > 
-> > Why not kfifo?
-> 
-> I'm sorry but I don't get your comment.
-> 
-> Do you mean why not use kfifo.h or use kfifo API and change all the code
-> using the circ_buf by the kfifo ?
+>=20
+> >=20
+> > Also, just to check, is this only an issue with the additional stuff th=
+is
+> > patch adds or do we have a problem with SPI offload in general (+ this
+> > IP) and those single channel devices?
+>=20
+> IMO, one solution would be to update the HDL project for AD4630 and simil=
+ar ADCs
+> to not send data from channel 2 to DMA memory when single-channel ADCs ar=
+e
+> connected. Another possibility would be to intercept and filter out the e=
+xtra
+> data before pushing it to user space. My first attempt of doing that didn=
+'t
+> work out with upstream kernel but I may revisit that.
 
-Yes, I mean why use circ_buf API and not kfifo API.
+I'm also confused. Is this also an issue with the current series without co=
+mmon mode?
 
-...
+If I'm getting things right, one channel ADCs pretty much do not work right=
+ now with
+spi offload?
 
-> > > +#define NXP_SAR_ADC_IIO_BUFF_SZ		(NXP_SAR_ADC_NR_CHANNELS + (sizeof(u64) / sizeof(u16)))
-> > 
-> > Hmm... Don't we have some macros so we can avoid this kind of hard coding?
-> 
-> I don't find such a macro, do you have a pointer ?
+If the above is correct I would just not support it for 1 channel ADCs.
 
-If I got the use case correctly, I was thinking of IIO_DECLARE_BUFFER_WITH_TS().
-
-...
-
-> > > +	ndelay(div64_u64(NSEC_PER_SEC, clk_get_rate(info->clk)) * 80U);
-> > 
-> > Do you need those 'U':s? clk_get_rate() already returns unsigned value of the
-> > same or higher rank than int. No?
-> 
-> May be not needed, but harmless. I can remove them if you want
-
-I think using them in cases that have no side-effects are not needed.
-
-...
-
-> > > +	dma_samples = (u32 *)dma_buf->buf;
-> > 
-> > Is it aligned properly for this type of casting?
-> 
-> TBH, I don't know the answer :/
-> 
-> How can I check that ?
-
-Is buf defined as a pointer to u32 / int or bigger? or is it just byte buffer?
-If the latter, how does the address of it being formed? Does it come from a heap
-(memory allocator)? If yes, we are fine, as this is usually the case for all
-(k)malloc'ed memory.
-
-...
-
-> > > +	dmaengine_tx_status(info->dma_chan, info->cookie, &state);
-> > 
-> > No return value check?
-> 
-> The return value is not necessary here because the caller of the callback
-> will check with dma_submit_error() in case of error which covers the
-> DMA_ERROR case and the other cases are not useful because the residue is
-> taken into account right after.
-
-In some cases it might return DMA_PAUSE (and actually this is the correct way
-to get residue, one needs to pause the channel to read it, otherwise it will
-give outdated / incorrect information).
-
-> It could be written differently with the DMA_COMPLETE check but the result
-> will be the same. I prefer to keep the current implementation which has been
-> tested.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+- Nuno S=C3=A1
 

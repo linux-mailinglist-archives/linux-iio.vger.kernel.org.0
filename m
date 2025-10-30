@@ -1,97 +1,101 @@
-Return-Path: <linux-iio+bounces-25666-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25667-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE53C1FCB2
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 12:23:52 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BE0C1FD53
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 12:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 048F91887684
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 11:23:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 38A304EACD1
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 11:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7850833F360;
-	Thu, 30 Oct 2025 11:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C8C2E7F08;
+	Thu, 30 Oct 2025 11:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="sAe8V63J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="avHiK9ad"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616F52820A4
-	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 11:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF80B2E7182
+	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 11:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761823406; cv=none; b=QFbumgANtych8zRFucWObu2lAJPc+K0ja9LdcSoCz5CQySRBopDnl5VdCl8mzx9+C1T1gPM5Fy5lirOal/kGBjD8Cy1eY0hCJsDBVeqI/ZJW8xEoyrUh0rwyxMOaAlv9vZe9IOB+aut4r19XrQlOwF+NPvROv177HlLQ9Q1Rk6g=
+	t=1761823825; cv=none; b=n7Z6tehc41aEVJO8v/FkTNJ436wlYIwJMZe+xLrOqsdzVZXMLf44Oynp6laZJHOQr/1ZeuiAlOVD3+bobVOQ5RpY5z18uafH+1XyxZAIih9rVjNZ9LCK0/db1FaCLrSs79ixptcSUef/gxLJpCX9Tp7qQfx+x/1BPziA61Gn3Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761823406; c=relaxed/simple;
-	bh=oiUbO1d3hb2fwzyCZ+aN2Hxgm3x+P2N3m7QZfKf1EAY=;
+	s=arc-20240116; t=1761823825; c=relaxed/simple;
+	bh=4uA8/LSk51CL/xWdnxtTQ8rqPvqegWlSzlDh/g8t3tg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JHRk439rAYDazdVk1jzqZ1wtd/dDFSUUifIGu3xusclcvwx3nX7jJii+JXREEWcMb7KPGPDMIddFBPTwBwUzZV2FNKsp0m+0BB7a7b5yVEulW47NenYW9LQRYRKKUeXO+bNnJ8F5XBZ9R04rYzfVdQWArXnMwc6YP0f7+lPjS8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=sAe8V63J; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63e18829aa7so1240866a12.3
-        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 04:23:24 -0700 (PDT)
+	 Content-Type:MIME-Version; b=E7viqwJFc/NWtNnAZXduxLaPuoCd3fTyGHyi+EsxmnsoUV0TpER3/Z2P639FB/Akoa7/mxQHqpyGUWcRU+LKkFH3puyiSyeFMh3LHZJLTVKyyG+6eyj546YRn3MEt92qymzGTGSjZxJ9XweMV3/9JBW+L8+e1RPxGH+bTTtpPy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=avHiK9ad; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4711810948aso7185915e9.2
+        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 04:30:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761823403; x=1762428203; darn=vger.kernel.org;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oiUbO1d3hb2fwzyCZ+aN2Hxgm3x+P2N3m7QZfKf1EAY=;
-        b=sAe8V63JnpEcCGswa8MKd0Y7HagTC14/S30d7mhnq+oJ44/B9V7T4pjMLHi6nH3Pir
-         y5Zdw4bOWV5k8Qh6VWxwf8h0OB/Xtc+PiJfXHOHzzI4oW5WQNcJ+wTYymjAGt+tnq8jQ
-         IpFNk266U0Gyaih75FTZBWQW3tXmelFfy3UXxMjLo5SpODTvFCCqgSmxjNTRYAL3THaB
-         PkZYQvY78OV9GDXjYuvvCUuZ0nJME4Jxv3vnIDrUy4ei8QYee9mDS3XhdEf8sBkqQTXA
-         KWp0+hXEZTvzaEaOkebo9zLZUl8HfOQ5DHh27HKk+V0bP9jlTagKW9lNMGsfWv9Cb+nv
-         H8Cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761823403; x=1762428203;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20230601; t=1761823821; x=1762428621; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=oiUbO1d3hb2fwzyCZ+aN2Hxgm3x+P2N3m7QZfKf1EAY=;
-        b=ojHo91ks1XXYT2bzWluZC4Hs7godtrBEOJRpY4Jt8dvEt29WE7lb/qj57rOjRh9J/H
-         rwslBVPxTb5DtxeQkT3RIUy8/uAR8QTs8DoUBAQJysQmTwroyKSi8WrublOibgneS5MG
-         htlQF4JKKz03M7PRYom1gYakWB599jquKAxf8y+XFdk72w/qbuxhkIajLevQm4VTS/oA
-         3cshVTLA1YS22D6vmBwdL5EWB0cPZkBNwl8lVHJMaXjNQGd1XZHUKPqtScfPlw7pH6AB
-         n8dgzCEjnZ65MZio3R9eramWuyjMTrP5NPq/7AbGfCaeM6h3zK9gY7AZtcduuJqvVZhb
-         ep9g==
-X-Forwarded-Encrypted: i=1; AJvYcCX2spd+Ky4rvvTygmJYtlnW+QjFVDPnUvg/zvdgO2aEYq51XpLCTuaB/wskygX3KznrSe7DPtLCqN0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx892XkYJgvJZXITfxUT3Zo7ZmgzhpCcQ8CxJ880aSiXZ0Lo0X/
-	Rx9Yjese0SvGkKyetzUI4umvE8kLOaolj/eyV0Sn/5ETfyBtbBQFABRyRCOZRN1Qy5w=
-X-Gm-Gg: ASbGncuFoh/uOKWe82SUCkyXyOLgI6Yo9PuY/PnXcNVLbfoAfZ4d/7A/Vm6dQYU7G4d
-	/uqL0z/knG4Onqw987W0rTS8QeYOYYL1I6QtFT9na6BXkILnY2PKdwTw9EeC5uRtGJVaEZt2J+w
-	NiqwKj7rFIpjF34r5bk+1RYxT9i92ztWiXjsi69W3ge2p+/6aFDM7wF+QHG5FmXNdSTj8wgwkFC
-	K7q7G8S7LsnPIRXqj7nPqLqVihSrdR9B366pwWT7foC+DBUVBWD9sTDJTEEYmU+pEyhdzfzxhXe
-	GBfPMhzryzpK572oyOOia8M+yl7fa1cjoK4cmQZowJ+/66zQ3s1VsitHzsYal98gFvldwkEBPJc
-	LqWHgN9QZx+7kIftz/aJVDJ9JVOTvPPNk8PngxQTcbbNavVRgkCnsQZiO8pIFdQpSiv4qo/785Q
-	2MnZUXoGhtHb/8KY5fMBRSkZvbMODNvZcXuA1jjg==
-X-Google-Smtp-Source: AGHT+IFc6m+nMDFkhuN6fkCkGUFwscTkxeKDllrODi6tgfhp7cY/9rkLZ7I78qym6yK6GnQjQmsvWQ==
-X-Received: by 2002:a05:6402:5114:b0:63b:ef0e:dfca with SMTP id 4fb4d7f45d1cf-64061a20728mr2188847a12.4.1761823402628;
-        Thu, 30 Oct 2025 04:23:22 -0700 (PDT)
-Received: from [10.203.83.89] (mob-176-247-57-96.net.vodafone.it. [176.247.57.96])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e7efd0c1fsm14634640a12.37.2025.10.30.04.23.21
+        bh=K2qKS73IWJ8+zq351GS6CPlwYR91jDvtL1Q7uQRB4zs=;
+        b=avHiK9adneFUSMetft1tBDDUZD4q5DSAEoOlHz743KEu7E+Oz2DEkMHOXcD1D4VkkY
+         koQdnmjeeJwbwRqcGFE8RXNmHI+ymNWRqDbyskoj4y+7K8NrLOxk4Sz7cApIsjlZdeWi
+         g900sLTqqlfDq2K/Q6joI3CaBorSg7bbcUEMMhORepwTR1BkupXh1NrShpWfWTWO6hXU
+         3TbGo/gfY7Zgib1lZh/RcmuLljSLoeztKR5D4St1UBaMAUuKe6y1u7cDZhb1xtiLdcEn
+         emGKrr4lof/VnwayDLVHFvny8NE0SHhWYUSe4gHXR8Y+NBnveKPIPu4xwyWm27x5tAvj
+         7gyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761823821; x=1762428621;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=K2qKS73IWJ8+zq351GS6CPlwYR91jDvtL1Q7uQRB4zs=;
+        b=tDq9gcrZOmmhdF0jeDu5RpmGrKFneLw1gifuXJy7seYrE4XCRqVIFNGHZiJ6MnU51U
+         g5klsQvIw2HRiYPGqCsvq8RxI6QKfIv10gcPg84J92SFzIZ1FBcl2+x7KfExuRPQn4m9
+         uBjjICj3L+r9ZORoRQQ4N2CuWBSb3w79FIvT9/rE3b+0hNDDc/m56JGSY5/o968nUsuR
+         g3Oh9H5A09jFRXV7J4YM0Eu+Axt2woOklVMNcFlJvdbbT2vAW6V7k2azQD7klzQX6pTk
+         H6BVonVLMVa068J+sFTmCqS57QLxdJ8DCzZoxlRVf47NQHXD6wgFnbUFOG8rmkRd6x4r
+         AYvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWoIuETT0xWg6vi1RTIaXaBJOCd475LeF5RGg6++6LXjA+BceBkviwDRFA7SKODcEykrEUTedA8g6k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPYD58Y7AXliuYxpLJyY6JY9gWrEkFnJI0Oh4zKKjUzze1yvJF
+	BQk6og5YDgneV5dgebZlM4OAHBne7KUn5M147pXVBvrylianhkuzMvv/
+X-Gm-Gg: ASbGncvkHRkxZlmZXa83qH6n+BYIZDxlO4hIWecLOkzOCv7BeJ26pxAH/2ZcW5VYvxj
+	WHNNXkzT2ItiEnpWimMPU7VXx67jfi4BBsKKeG5go+OWXT6itC71g2adaoyVFSZoq0lYApAeNfs
+	gaCL/66uL/myQnWk+qFHRjPW/UB4jL0I6+E28zMggHCAZbUdBfv7aPhi1CbbN2oYPzYd6NVAI1T
+	KA2ieyI5izOL8YrRjQV3MHX1dtOw+ROlzuc/NREBW5eiKpTCCxVlbNpyYDXLdRs/5OfalxbJD4I
+	xia1S8LpPTLqmIMRPIkVuWdwLG8RkJovNAIh8HuExaqfx77YtZkbQzd1/H9xeJG3v6Dk2J8/Ufm
+	KLjdXZ7qA3+YBxd0K6HZzQO+wn4p07Tsi2OBK9xblOnH5B7WlNLQsQYcI0CrwXTlMV3CrejPSSU
+	vA41t2KwiEpHU=
+X-Google-Smtp-Source: AGHT+IFSOpkJSdg6ugWCyA5+Rww0fX360jymnHQbC2nFr3fn+6+n66mWuXI9qqpzsxPXHfdZA0PV6Q==
+X-Received: by 2002:a05:600c:4e8e:b0:471:9da:5232 with SMTP id 5b1f17b1804b1-4771e333a2amr54208215e9.15.1761823820643;
+        Thu, 30 Oct 2025 04:30:20 -0700 (PDT)
+Received: from [10.5.0.2] ([91.250.240.53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4771904fc1bsm64161175e9.11.2025.10.30.04.30.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 04:23:22 -0700 (PDT)
-Message-ID: <c1c7222b35a0a7bcddc5d88c92f64d2f2a75fdfd.camel@baylibre.com>
-Subject: Re: [PATCH 8/9] iio: imu: st_lsm6dsx: add event configurability on
- a per axis basis
-From: Francesco Lavra <flavra@baylibre.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Jonathan Cameron
- <jic23@kernel.org>,  David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 30 Oct 2025 12:23:19 +0100
-In-Reply-To: <aQMgxUNA8XNhPZdG@smile.fi.intel.com>
-References: <20251030072752.349633-1-flavra@baylibre.com>
-	 <20251030072752.349633-9-flavra@baylibre.com>
-	 <aQMgxUNA8XNhPZdG@smile.fi.intel.com>
-Organization: BayLibre
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-P5Tv+66OR+vtWhWFF83f"
-User-Agent: Evolution 3.46.4-2 
+        Thu, 30 Oct 2025 04:30:20 -0700 (PDT)
+Message-ID: <1a95bd186bf1b5b3e2d3b3808069dba6649bafd1.camel@gmail.com>
+Subject: Re: [PATCH v2 1/3] dt-bindings: iio: dac: Document AD5446 and
+ similar devices
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>,  David Lechner <dlechner@baylibre.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, 	linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org
+Date: Thu, 30 Oct 2025 11:30:55 +0000
+In-Reply-To: <20251027150136.6cfd3774@jic23-huawei>
+References: <20251023-ad5446-bindings-v2-0-27fab9891e86@analog.com>
+		<20251023-ad5446-bindings-v2-1-27fab9891e86@analog.com>
+		<20251023180831.000026ca@huawei.com>
+		<ffb2512aad9bec33b0fe27035f88e79636362645.camel@gmail.com>
+	 <20251027150136.6cfd3774@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -99,81 +103,150 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
+On Mon, 2025-10-27 at 15:01 +0000, Jonathan Cameron wrote:
+> On Mon, 27 Oct 2025 14:48:50 +0000
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>=20
+> > On Thu, 2025-10-23 at 18:08 +0100, Jonathan Cameron wrote:
+> > > On Thu, 23 Oct 2025 14:01:37 +0300
+> > > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+> > > =C2=A0=20
+> > > > Add device tree binding documentation for the Analog Devices AD5446
+> > > > family of Digital-to-Analog Converters and compatible devices from
+> > > > Texas Instruments. There's both SPI and I2C interfaces and feature
+> > > > resolutions ranging from 8-bit to 16-bit.
+> > > >=20
+> > > > The binding covers 29 compatible devices including the AD5446 serie=
+s,
+> > > > AD5600 series, AD5620/5640/5660 variants with different voltage ran=
+ges,
+> > > > and TI DAC081s101/DAC101s101/DAC121s101 devices.
+> > > >=20
+> > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>=C2=A0=20
+> > > Hi Nuno,
+> > >=20
+> > > Thanks for filling in this missing doc.=C2=A0 I wonder what else is o=
+ld
+> > > enough that we still don't have docs? Guess I should check when
+> > > I'm next bored enough (so that's not happening any time soon ;)=C2=A0=
+=20
+> >=20
+> > Yeah, wouldn't be surprised if there's some more ADI old stuff hanging =
+around.
+> > This caught my attention since I saw that out of tree patch adding supp=
+ort for a
+> > new device (with no real reason for not being in tree).
+> >=20
+> > > =C2=A0=20
+> > > > ---
+> > > > =C2=A0.../devicetree/bindings/iio/dac/adi,ad5446.yaml=C2=A0=C2=A0=
+=C2=A0 | 138
+> > > > +++++++++++++++++++++
+> > > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 8 ++
+> > > > =C2=A02 files changed, 146 insertions(+)
+> > > >=20
+> > > > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5446.y=
+aml
+> > > > b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..90fc8ca053fe
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
+> > > > @@ -0,0 +1,138 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/iio/dac/adi,ad5446.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Analog Devices AD5446 and similar DACs
+> > > > +
+> > > > +maintainers:
+> > > > +=C2=A0 - Michael Hennerich <michael.hennerich@analog.com>
+> > > > +=C2=A0 - Nuno S=C3=A1 <nuno.sa@analog.com>
+> > > > +
+> > > > +description: |=C2=A0=20
+> > >=20
+> > > Trivial but don't need the | as hardly matters if these get formatted
+> > > differently.=C2=A0=20
+> >=20
+> > Sure.
+> >=20
+> > > =C2=A0=20
+> > > > +=C2=A0 Digital to Analog Converter devices supporting both SPI and=
+ I2C
+> > > > interfaces.
+> > > > +=C2=A0 These devices feature a range of resolutions from 8-bit to =
+16-bit.=C2=A0=20
+> > >=20
+> > > ...
+> > > =C2=A0=20
+> > > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > > index 940889b158eb..dae04c308975 100644
+> > > > --- a/MAINTAINERS
+> > > > +++ b/MAINTAINERS
+> > > > @@ -440,6 +440,14 @@ W:	http://wiki.analog.com/AD5398
+> > > > =C2=A0W:	https://ez.analog.com/linux-software-drivers
+> > > > =C2=A0F:	drivers/regulator/ad5398.c
+> > > > =C2=A0
+> > > > +AD5456	DAC DRIVER=C2=A0=20
+> > > Tab seems odd here.=20
+> > >=20
+> > > Hmm. For a lot of ADI drivers we have entries that would look like
+> > > ANALOG DEVICES INC AD5456 DAC DRIVER
+> > >=20
+> > > Any reason for formatting it like this?=C2=A0=20
+> >=20
+> > Ok, time to come clean :)
+> >=20
+> > Bindings were AI generated and then I just cleaned the obvious problems=
+ (clearly
+> > I did not payed too much attention to the boilerplate stuff - lesson le=
+arned).
+>=20
+> I'd hold off on doing anything much with AI on kernel code for now.
+> A clear policy might come out of the maintainers summit in December.
+> If you are curious, various threads on: https://lore.kernel.org/ksummit/
 
---=-P5Tv+66OR+vtWhWFF83f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Right, I did saw some threads regarding some patches being automatically se=
+nt
+(I think the AUTOSEL stuff for stable) by AI. Not completely the same here =
+as I still
+reviewed it and changed things (more like co-developed thing :)).
+=20
+>=20
+> DT bindings get picked up by various projects so they may have their own
+> policy long run.
+>=20
 
-T24gVGh1LCAyMDI1LTEwLTMwIGF0IDEwOjI0ICswMjAwLCBBbmR5IFNoZXZjaGVua28gd3JvdGU6
-Cj4gT24gVGh1LCBPY3QgMzAsIDIwMjUgYXQgMDg6Mjc6NTFBTSArMDEwMCwgRnJhbmNlc2NvIExh
-dnJhIHdyb3RlOgo+ID4gSW4gb3JkZXIgdG8gYmUgYWJsZSB0byBjb25maWd1cmUgZXZlbnQgZGV0
-ZWN0aW9uIG9uIGEgcGVyIGF4aXMKPiA+IGJhc2lzIChmb3IgZWl0aGVyIHNldHRpbmcgYW4gZXZl
-bnQgdGhyZXNob2xkL3NlbnNpdGl2aXR5IHZhbHVlLCBvcgo+ID4gZW5hYmxpbmcvZGlzYWJsaW5n
-IGV2ZW50IGRldGVjdGlvbiksIGFkZCBuZXcgYXhpcy1zcGVjaWZpYyBmaWVsZHMKPiA+IHRvIHN0
-cnVjdCBzdF9sc202ZHN4X2V2ZW50X3NyYywgYW5kIG1vZGlmeSB0aGUgbG9naWMgdGhhdCBoYW5k
-bGVzCj4gPiBldmVudCBjb25maWd1cmF0aW9uIHRvIHByb3Blcmx5IGhhbmRsZSBheGlzLXNwZWNp
-ZmljIHNldHRpbmdzIHdoZW4KPiA+IHN1cHBvcnRlZCBieSBhIGdpdmVuIGV2ZW50IHNvdXJjZS4K
-PiA+IEEgZnV0dXJlIGNvbW1pdCB3aWxsIGFkZCBhY3R1YWwgZXZlbnQgc291cmNlcyB3aXRoIHBl
-ci1heGlzCj4gPiBjb25maWd1cmFiaWxpdHkuCj4gCj4gLi4uCj4gCj4gPiArwqDCoMKgwqDCoMKg
-wqBvbGRfZW5hYmxlID0gaHctPmVuYWJsZV9ldmVudFtldmVudF07Cj4gPiArwqDCoMKgwqDCoMKg
-wqBuZXdfZW5hYmxlID0gc3RhdGUgPyAob2xkX2VuYWJsZSB8IEJJVChheGlzKSkgOiAob2xkX2Vu
-YWJsZSAmCj4gPiB+QklUKGF4aXMpKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGlmICghIW9sZF9lbmFi
-bGUgPT0gISFuZXdfZW5hYmxlKQo+IAo+IFRoaXMgaXMgYW4gaW50ZXJlc3RpbmcgY2hlY2suIFNv
-LCBvbGRfZW5hYmxlIGFuZCBuZXdfZW5hYmxlIGFyZSBfbm90Xwo+IGJvb2xlYW5zLCByaWdodD8K
-PiBTbywgdGhpcyBtZWFucyB0aGUgY2hlY2sgdGVzdCBpZiBfYW55XyBvZiB0aGUgYml0IHdhcyBz
-ZXQgYW5kIGtlcHQgc2V0IG9yCj4gbm9uZSB3ZXJlIHNldAo+IGFuZCBub24gaXMgZ29pbmcgdG8g
-YmUgc2V0LiBDb3JyZWN0PyBJIHRoaW5rIGEgc2hvcnQgY29tbWVudCB3b3VsZCBiZQo+IGdvb2Qg
-dG8gaGF2ZS4KCm9sZF9lbmFibGUgYW5kIG5ld19lbmFibGUgYXJlIGJpdCBtYXNrcywgYnV0IHdl
-IGFyZSBvbmx5IGludGVyZXN0ZWQgaW4Kd2hldGhlciBhbnkgYml0IGlzIHNldCwgdG8gY2F0Y2gg
-dGhlIGNhc2VzIHdoZXJlIHRoZSBiaXQgbWFzayBnb2VzIGZyb20KemVybyB0byBub24temVybyBh
-bmQgdmljZSB2ZXJzYS4gV2lsbCBhZGQgYSBjb21tZW50LgoKPiAKPiA+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gMDsKPiAKPiAuLi4KPiAKPiA+ICtzdGF0aWMgY29uc3Qg
-c3RydWN0IHN0X2xzbTZkc3hfcmVnICpzdF9sc202ZHN4X2dldF9ldmVudF9yZWcoc3RydWN0Cj4g
-PiBzdF9sc202ZHN4X2h3ICpodywKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGVudW0KPiA+IHN0X2xzbTZkc3hfZXZlbnRf
-aWQgZXZlbnQsCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBjb25zdAo+ID4gc3RydWN0IGlpb19jaGFuX3NwZWMgKmNoYW4p
-Cj4gPiArewo+ID4gK8KgwqDCoMKgwqDCoMKgY29uc3Qgc3RydWN0IHN0X2xzbTZkc3hfZXZlbnRf
-c3JjICpzcmMgPSAmaHctPnNldHRpbmdzLQo+ID4gPmV2ZW50X3NldHRpbmdzLnNvdXJjZXNbZXZl
-bnRdOwo+ID4gK8KgwqDCoMKgwqDCoMKgY29uc3Qgc3RydWN0IHN0X2xzbTZkc3hfcmVnICpyZWc7
-Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqBzd2l0Y2ggKGNoYW4tPmNoYW5uZWwyKSB7Cj4gPiAr
-wqDCoMKgwqDCoMKgwqBjYXNlIElJT19NT0RfWDoKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqByZWcgPSAmc3JjLT54X3ZhbHVlOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoGJyZWFrOwo+ID4gK8KgwqDCoMKgwqDCoMKgY2FzZSBJSU9fTU9EX1k6Cj4gPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmVnID0gJnNyYy0+eV92YWx1ZTsKPiA+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBicmVhazsKPiA+ICvCoMKgwqDCoMKgwqDCoGNhc2Ug
-SUlPX01PRF9aOgo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJlZyA9ICZzcmMt
-PnpfdmFsdWU7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYnJlYWs7Cj4gPiAr
-wqDCoMKgwqDCoMKgwqBkZWZhdWx0Ogo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oHJldHVybiBOVUxMOwo+ID4gK8KgwqDCoMKgwqDCoMKgfQo+IAo+ID4gK8KgwqDCoMKgwqDCoMKg
-aWYgKCFyZWctPmFkZHIpCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmVnID0g
-JnNyYy0+dmFsdWU7Cj4gPiArwqDCoMKgwqDCoMKgwqByZXR1cm4gcmVnOwo+IAo+IMKgwqDCoMKg
-wqDCoMKgwqBpZiAocmVnLT5hZGRyKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-cmV0dXJuIHJlZzsKPiAKPiDCoMKgwqDCoMKgwqDCoMKgLyogUGVyaGFwcyBhIGNvbW1lbnQgaGVy
-ZSB0byBleHBsYWluIHRoZSBjaG9pY2UgKi8KPiDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuICZzcmMt
-PnZhbHVlOwo+ID4gCldpbGwgZG8uCj4gCgo=
+I see, it's kind of handy (for bindings not so complicated) as it can come =
+up with maybe
+50/60% of the whole thing. But sure, I will refrain from using it until we =
+have a clear
+policy in place.
 
+BTW, writing covers and commit messages would be fine, right?
 
---=-P5Tv+66OR+vtWhWFF83f
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+- Nuno S=C3=A1
 
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmkDSqcACgkQ7fE7c86U
-Nl833AwAo56B5J8jwaMwRZfxSZBiXXlGiXcihr/4WOhKCmcG94wZLv3nxhbFCFz1
-9gNnk7THZeGhlfGUX8nlz85YhbcFtjStfqE+Nb1m9Y6AwGcAj6k+cs8vAQGYtZaP
-YCFunzUO8WZ0Yg0XtW7toxkdmCVmuPppQUNFd1YDoF7BiyYPrdt+jipjGvpxGMUX
-1HE2+fxYtt0T32f8XxXTd+jODRVI3jLGmfoYwWOdaVIcio2uQiaf6dMtXwDlLO7T
-CpjvG0bhNT/YZu1vlYuZmZY4MP1lrEaWnwsbgxIImVLHaLnnlq6IUFkskbtXc5zt
-0P/LVzYDnzKT+bG0572AJHeE0pdUBHoxwaTH2X1YNvIvrsAH9Di1U71CLBG+I+4j
-D+gEeXcOInrxG3Zzzmd60DKxcA+wloD3UAxr3DWvoh1XZdfV2AJHNihJlxGwI24B
-ZWEXiTxakdYApMMKgsfrw8PKr28nPPULLcmxJGglr1WMuxodn2G6GTGEcWDSKuOH
-S4/mPwKH
-=PGvm
------END PGP SIGNATURE-----
-
---=-P5Tv+66OR+vtWhWFF83f--
+> J
+>=20
+> >=20
+> > - Nuno S=C3=A1
+> >=20
+> > > =C2=A0=20
+> > > > +M:	Michael Hennerich <michael.hennerich@analog.com>
+> > > > +M:	Nuno S=C3=A1 <nuno.sa@analog.com>
+> > > > +L:	linux-iio@vger.kernel.org
+> > > > +S:	Supported
+> > > > +W:	https://ez.analog.com/linux-software-drivers
+> > > > +F:	Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
+> > > > +
+> > > > =C2=A0AD714X CAPACITANCE TOUCH SENSOR DRIVER (AD7142/3/7/8/7A)
+> > > > =C2=A0M:	Michael Hennerich <michael.hennerich@analog.com>
+> > > > =C2=A0S:	Supported
+> > > > =C2=A0=20
 

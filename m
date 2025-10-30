@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-25644-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25642-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC6CC1EC03
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 08:29:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA97C1EC00
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 08:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A38E189A432
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 07:29:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CC3D189DBE3
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Oct 2025 07:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A95339B44;
-	Thu, 30 Oct 2025 07:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF8D33893E;
+	Thu, 30 Oct 2025 07:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vPizLmos"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="C3dX9SNh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F9F3385A3
-	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 07:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FC4337BAF
+	for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 07:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761809286; cv=none; b=Gp/bpZXzbkAy4OAbTd1kwa0JmUqeuY0zQzhc5GnUfI631SceYefryDTKGkCzaHLyufbTGq4yP2ne8Y375f+Kvs/0v4BA43XWsU7H2oMS9iEKQkgM8xsCJe7rBNoWWoPSzgSBqSbCCkbIsAoyCAtPHUxD2hcG+WGY2IQvNbcqFhI=
+	t=1761809284; cv=none; b=dBwP521U0c5XdWi0gWgH9mvdyPDMAXVf3g2vtlr621OdX1fIUAJISBe6k08x3sP9jeu2zSvdKAbOtACBMaXM36giQwWozI6FT/y7x9XPxxIwd5Tj/oOy7hq4GmsW+77lMauhKFaMUfuz9ZUVKyFLAF8lfDRqGFLj8B9AK6AZ0QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761809286; c=relaxed/simple;
-	bh=Q+pY5HlZqzp8d24g9WNWApNUCq5yqQgOxp3B34hW/uI=;
+	s=arc-20240116; t=1761809284; c=relaxed/simple;
+	bh=b7Dh9immXL0raytQ5VJzXmvSgU6Eg8zKWr14CvTFrQI=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kjtqv89AHRVfdX8TJDROMY9SrR32CwC98GmXyGcct/YhJuUyZSZWe4RhOvnd5KG/SnKDWPEDKvTraLn9R4EBXSyfAxyk768Z4E4b6KJp027HD/lTRbv82Guu4JeESiso6PwNz2RsREfdR6o9JxuzahKS2S7wp6rO/2BTzK1c6Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vPizLmos; arc=none smtp.client-ip=209.85.208.52
+	 MIME-Version; b=BCil9Lay/ZgOq4d+PEw+NZwbcvLkFatplqaE4+6WOsCJKVFZM5LdrC5k79W/CDRbB5b6P/q1c5UvKbdeMDRAHmt0I86A0DuvnuJKUO5IOq1WY75nuEOOkkRPT9G8u1ApZbUDtD2X/wm1spFFxZBDpPOTvGyDVhtYcVkYSIu+dUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=C3dX9SNh; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6406b8e1fb8so220376a12.0
-        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 00:28:00 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b403bb7843eso156472066b.3
+        for <linux-iio@vger.kernel.org>; Thu, 30 Oct 2025 00:28:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761809279; x=1762414079; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761809280; x=1762414080; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=eykfaIYOJ1O3INq90WvPnPMlXLtVxr6TQYwO1to6mmA=;
-        b=vPizLmoslaMEXu41tuytJwx1CBYYAOawuFJCrVrShp7ZmabAMBacMjHYjbsYy3XIfF
-         n56b7G85d2PwvdWPqUvRB6ZscyE3rb34jawwJrjiLK7v7RDLMCX6Ssyk+B5UVG79jYBZ
-         ZTt4pwbcfyfKo3m2R9mdTWoRJOmp4ay0nHTMk7XGeBtVeoR8GxPUGZHa8k5INmKQ7Wk9
-         pzV9dHq6Ca+vgy7QxiwXMP5fom0bC3ym8fthGPtADH4NYdqF/EzPVNPjQzRnhzJVFzc+
-         uVZ4ewtRmBlYOYG98HMg9ftfDBJp+7wN/I2XIe4Q/E0/PSDKDwZBeDeSTGO1M/i9Faqs
-         zxXw==
+        bh=QT0z8mODIZIMMuRwFEf11FLhr8FVbk/1fZHt5oodyj0=;
+        b=C3dX9SNhczqtyCYSvYL5QQBAa7+SPSYyEJH1vomMZhVcNlTwD19YC/wUwVbl4+M8vk
+         lprtnjdrdA2Dt/0R2T0hp/YZ0Rwp+7WRP57Yqjf6QxuUzt7JQrUg9w+a94BSaDeTy/ZK
+         W05OkJq/nBNL3d+KIvFZS54k8NaaMfw5L7RW6jEIRC5RhTqB2L6yvxeppoJRFMV1aBvu
+         VusShjPgEn/eAWXtrq/NU0AWcDf7Rb2r1ymR0woPxqkTSevvz1cByaulYzHFdeLbjabX
+         8I3pMBVrR1Lgl5X+jppC5NmF0vo1vf6GP2mdbgaBY+otMp56qi/sw95nArqEuj1aP4C+
+         WvFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761809279; x=1762414079;
+        d=1e100.net; s=20230601; t=1761809280; x=1762414080;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eykfaIYOJ1O3INq90WvPnPMlXLtVxr6TQYwO1to6mmA=;
-        b=OrEDZwiVycMYMndJeAWDOIB6/1bWKNWa3WfIXJWsG4PNuCsYg+EZMIJ2+biSd9tW47
-         U0nLrqDuN6K1XtjfVPLTjlL/CLj/27fn8gUXIT07HTVyyG1eXIp1dXBN8Wwb2bRG3YLc
-         9xoVkc1AknmgISRd7Wn/12tRAeU1C1Bzc3Q70uoAO3491TetTCV/74WkB3zysIjjMFpy
-         NWHd3+XwamnZ+wv4+XzazbeONocVFvRZ3oZdv4a4NqWCVwPhS7NkWwxlCc3ThavmaAiT
-         vHmZZivB48Owxa2/AT+WfyeFYxUkAKUUkTkVpX8sV5HwELPJd08YY7TqPkIc82X69oDD
-         qoYw==
-X-Forwarded-Encrypted: i=1; AJvYcCXXlQhWmvnyDYp4ZI0vVFO6j0crOkpqwYl/1UgHWAMR0feOdhIpK/UPQggQnH92XOGByGCTMGINIcg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvbyC05JJoQgMhpCRHZnk1ZnJ9z1zdshhlYQLNDyIIwvEn6Mjm
-	uHxeFyqMWq++CLATRJ7nriio1lJnYMO8UfPJ69rNWxyCTd4zvoSgRWFW0vSw4ICCKuE=
-X-Gm-Gg: ASbGnculdYSfiEkG8/YL2jDo53gFRAX9GJP9vI3fnkBGK13KMJc4d/UiAkIv2qlFk3t
-	eACeMRC+IFXfvD1fbOWOIb4FRKP109wXe2WxgEH2i+c+oRlhHrZEUuUntUJVvSVXS9HAXMNQtRI
-	IXkFidW9rSlC3hl6wXuFu5cKoXVGiSSr7gvmFg08uW2etq9k4TPaqTDa9glT5/X0REC2wn6C44X
-	lAn48HgT6P4MZ8NerqbftwOLpGpbfcAjP1dwoHXMKKhjgmr5C+0AdGZAh+Ve84hvA1xBNGw61Jj
-	tzKAFunl/uOefognqndkD6losJuwH3Gvw+xIKFVQGuh+g2B99mCpkMP4FqVOaUUknaCqBVpuFNz
-	fu+INbF/6zbs2JF0INJn+VPQpRwtcH7nNKp0Or6uNzH6d3Ipt20l5CRdqkQJuPZ7dCVncZsJ/S1
-	8XHdr9GuXPkOy2HA/dvgokN+6wPA==
-X-Google-Smtp-Source: AGHT+IHYWU9UwqdXA1AtOzYeRK4XQDCqB2oVm2eTFxu6lZwncXbBg4xxA2xQx+z3ZdHxqH2Ww6Djtw==
-X-Received: by 2002:a17:906:7305:b0:b41:e675:95cd with SMTP id a640c23a62f3a-b703d2da8dcmr670932066b.13.1761809279239;
-        Thu, 30 Oct 2025 00:27:59 -0700 (PDT)
+        bh=QT0z8mODIZIMMuRwFEf11FLhr8FVbk/1fZHt5oodyj0=;
+        b=oCqQQdkmQa7xMP5fq/Ph+kLVrxQI9mu9p1SohsRtC7ELzuSWsQePb4OmFT6Lt60Rzg
+         Mg51LaiZDisyvjtwL1BJKl62T7dsgwJplmKOkER6wv6VhTgnyeLD6JOD3mVR2nQFM3wa
+         +qKSiPDzYODaiZtCY0QMNKzx6T7jkROo4ahCKHB8th0slxBUsDL++3PACpvZ/mFLEYA6
+         cSBr6GhebI7sjv1EA/l/VfsC1F39iIiJ+N07cIetjdj9hKqhQkusJRcBzAzs6jedg+du
+         1U1COAu0vIiO7z3BFHBTjDOWjYAIpcTfb8ljNu7k+ELt53At63mW3icXGX964s2tiqat
+         SZHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUn4fenOUv9bIpFrHuYXn4YQPt7cjunYKnorSUBKWyNCfuJygpExZFWaDBKSP3c2kzFOuLwgpRSLVE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJ26gqcnS4ZYLzHqTci1NkjGjg5VTw2BlDTkhVDr5623yexcif
+	4SsXTjiDY4/lhVSI9bwsJo8CMnugONasgsf6DWZ1mI3efqvrolTBs/vq9Dr2/+G66fI=
+X-Gm-Gg: ASbGncspPyPys0j9kWifZOpOEv+SK/Xn+h1dU4faNFmMCHVKF2KdkrBmWexVEr4/pby
+	uxKNRLHVy9QU3TGjkUz62Ehbq01TOH4MjqDuyz1SMmgag1sHI3RQG1uMiJVQzWU3qBHHAtVNJt0
+	w/uSRBP56Hp0EQ8TsV4+oh5oFniI5fQehuKVFDTKsxWwpLJsLGMITyts8r/DYIZyK97crGCUEFl
+	BK+9knyuwDcXYe1ZMpOTk2xCs0+DD9kxhDh++2WvhFv+ppBkSafdLfg8EvP+kfbN1z4QgOcndUr
+	xPlbe9lsFEKe8iZFvC/SssGwKjQDRsB4t8kOws7VOHpP6FEeojhziml9FDmbQ/cMeUgIr59+8HT
+	SoSy9X1MRIaAmRN2M5TdtCKYuGqo0ARV6YKXVrzdmxmLrFrhDPXKYX/UBYkYkmDuBw2THS3cf98
+	fNO2KZ1kGGbnIHMddE+4z7cARV0g==
+X-Google-Smtp-Source: AGHT+IE28vhagzBIqtsvFMlUCSlRCxRphCpZDF1Ly1iiRyJKZCT9Fu6Ll5Quw1HqsG9dFJn6ANMnnQ==
+X-Received: by 2002:a17:907:2da0:b0:b47:de64:df1b with SMTP id a640c23a62f3a-b7053e097aamr189683066b.39.1761809280322;
+        Thu, 30 Oct 2025 00:28:00 -0700 (PDT)
 Received: from localhost (mob-176-247-57-96.net.vodafone.it. [176.247.57.96])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d8536968csm1685933366b.29.2025.10.30.00.27.58
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e7ef8288asm14128438a12.10.2025.10.30.00.27.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 00:27:59 -0700 (PDT)
+        Thu, 30 Oct 2025 00:28:00 -0700 (PDT)
 From: Francesco Lavra <flavra@baylibre.com>
 To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -82,9 +82,9 @@ To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Andy Shevchenko <andy@kernel.org>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 5/9] iio: imu: st_lsm6dsx: rework code to check for enabled events
-Date: Thu, 30 Oct 2025 08:27:48 +0100
-Message-Id: <20251030072752.349633-6-flavra@baylibre.com>
+Subject: [PATCH 6/9] iio: imu: st_lsm6dsx: remove event_threshold field from hw struct
+Date: Thu, 30 Oct 2025 08:27:49 +0100
+Message-Id: <20251030072752.349633-7-flavra@baylibre.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20251030072752.349633-1-flavra@baylibre.com>
 References: <20251030072752.349633-1-flavra@baylibre.com>
@@ -94,83 +94,78 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2663; i=flavra@baylibre.com; h=from:subject; bh=Q+pY5HlZqzp8d24g9WNWApNUCq5yqQgOxp3B34hW/uI=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpAxNJKCWlxgi4/ZnYsQDZ4vSnVm8krv2CHT0fN us7wnzgonaJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaQMTSQAKCRDt8TtzzpQ2 X6S/C/9vHbJkvEDDf4MRA1ZyOsLosL+qRvBHwdceDO6Ecw1q9QByAliTbIv+Lkjwz8uD3lci/oq wgS1zTlMzkVcwQiM4E3HGDIqEYLiQrGoTnIFlTMfRJYrOJZIHzX9HcAEsqGKaf230JzEsxipoQu E6YrD69YFpVxeJIcIhNqIB554PB9f0Cz/nORQRFASxd5KKjq1NcOlT0jQtQXsN9UVsmEBLrvNY8 YCz0mFrpWbYuiBdQcNz7OQBaKnd5/Qdfa8N1JNdt1JDwejj3hPuezzaABNN9p+qgs3wHJ44xmAQ ece9ybp7LEIgcM7Dlunsdg6ROtMr8N+cXYBFbIjTh3+bJTbVOBX1b7/Ig6TKFtg/uqVLiZHjHXV 3MUHzqIUajFzeWa7gmsRm+tGzFdrDPCfLpYFO4Ls4v9zqKMelLVjq22bTXTHzD0NhYAgCI2XGbV mfTMph1i6dPwqMMRk7xbR4vy886UHiD2Fu2gnA1xNaXM2RH2Dl95aQyt6XFgPHQEJnfQE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2449; i=flavra@baylibre.com; h=from:subject; bh=b7Dh9immXL0raytQ5VJzXmvSgU6Eg8zKWr14CvTFrQI=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpAxNK2vYG8vGV/Fkd4xN4etrjC5aDxbKlwjtbe g/iAEenn6iJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaQMTSgAKCRDt8TtzzpQ2 X7B9C/9Dr35JbHqe3T9yYUEs/dpWOJDYkCA024XIf6eIPF2OaKWYtW7tl/o0lpmzEzazRXH+zEl O8HEcPNs/JSm1mg602ZOV0TO5C9FTNehbpBBZN7SdQZG7e3inJDqyxG3DAU8yHiigNmlVi4PcKU ialKHxEqWkVwj3aDHkblUBYRKxBy85PMnVo7MzaTTj7xeqs63A2VSL1imLFjZCqe0p1VPjKx/M9 m4I+OTDyeag7b2W5ZIKZ2y1goXaLvFwzzPrfuGB1fC7GpLKnlDwzrOo4JxV+plynLgnDn+UfObS teeVRfVjITra8nmFE/sdumDhBo/zw5VBWqhUnzi4T/Oxd85gz9vHgVN/eQghjLsGLSFmzl+X8l7 KAuXajxfiaEoN8UEs8IPxatmY5StDjVD3sT4+4pptEWXpecrZU9T5538+W6eFOeQ7qGizGsgBXW Ax8nyGxhNB3Vlmu4MW/LLOGJrc46RXHjoqolVPQ2VwXEUmkl+wKfPxqrOM0Qqm2+hjIsA=
 X-Developer-Key: i=flavra@baylibre.com; a=openpgp; fpr=8657854F953BDCA31EC314E6EDF13B73CE94365F
 Content-Transfer-Encoding: 8bit
 
-The enable_event field in struct st_lsm6dsx_hw does not lend itself
-well to handling multiple event sources, so it will have to be
-modified to add support for more event sources. As a preparatory
-step, remove references to this field from code that does not deal
-with event management; rework the st_lsm6dsx_check_events()
-function so that it returns whether any events are currently
-enabled on a given sensor.
+This field is used to store the wakeup event detection threshold
+value. When adding support for more event types, some of which may
+have different threshold values for different axes, storing all
+threshold values for all event sources would be cumbersome. Thus,
+remove this field altogether, and read the currently configured
+value from the sensor when requested by userspace.
 
 Signed-off-by: Francesco Lavra <flavra@baylibre.com>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 --
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 12 +++++++++---
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index ec4efb29c4cc..98aa3cfb711b 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -398,7 +398,6 @@ struct st_lsm6dsx_sensor {
+  * @sip: Total number of samples (acc/gyro/ts) in a given pattern.
+  * @buff: Device read buffer.
+  * @irq_routing: pointer to interrupt routing configuration.
+- * @event_threshold: wakeup event threshold.
+  * @enable_event: enabled event bitmask.
+  * @iio_devs: Pointers to acc/gyro iio_dev instances.
+  * @settings: Pointer to the specific sensor settings in use.
+@@ -422,7 +421,6 @@ struct st_lsm6dsx_hw {
+ 	u8 sip;
+ 
+ 	u8 irq_routing;
+-	u8 event_threshold;
+ 	u8 enable_event;
+ 
+ 	u8 *buff;
 diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 76025971c05d..157bc2615dc6 100644
+index 157bc2615dc6..ea145e15cd36 100644
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -1670,11 +1670,11 @@ __st_lsm6dsx_sensor_set_enable(struct st_lsm6dsx_sensor *sensor,
- }
- 
- static int
--st_lsm6dsx_check_events(struct st_lsm6dsx_sensor *sensor, bool enable)
-+st_lsm6dsx_check_events(struct st_lsm6dsx_sensor *sensor)
+@@ -1825,12 +1825,20 @@ static int st_lsm6dsx_read_event(struct iio_dev *iio_dev,
  {
+ 	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
  	struct st_lsm6dsx_hw *hw = sensor->hw;
++	const struct st_lsm6dsx_reg *reg;
++	u8 data;
++	int err;
  
--	if (sensor->id == ST_LSM6DSX_ID_GYRO || enable)
-+	if (sensor->id != ST_LSM6DSX_ID_ACC)
- 		return 0;
+ 	if (type != IIO_EV_TYPE_THRESH)
+ 		return -EINVAL;
  
- 	return hw->enable_event;
-@@ -1683,7 +1683,7 @@ st_lsm6dsx_check_events(struct st_lsm6dsx_sensor *sensor, bool enable)
- int st_lsm6dsx_sensor_set_enable(struct st_lsm6dsx_sensor *sensor,
- 				 bool enable)
- {
--	if (st_lsm6dsx_check_events(sensor, enable))
-+	if (st_lsm6dsx_check_events(sensor))
- 		return 0;
- 
- 	return __st_lsm6dsx_sensor_set_enable(sensor, enable);
-@@ -1711,11 +1711,9 @@ static int st_lsm6dsx_read_oneshot(struct st_lsm6dsx_sensor *sensor,
- 	if (err < 0)
- 		return err;
- 
--	if (!hw->enable_event) {
--		err = st_lsm6dsx_sensor_set_enable(sensor, false);
--		if (err < 0)
--			return err;
--	}
-+	err = st_lsm6dsx_sensor_set_enable(sensor, false);
++	reg = &hw->settings->event_settings.sources[ST_LSM6DSX_EVENT_WAKEUP].value;
++	err = st_lsm6dsx_read_locked(hw, reg->addr, &data, sizeof(data));
 +	if (err < 0)
 +		return err;
++
+ 	*val2 = 0;
+-	*val = hw->event_threshold;
++	*val = (data & reg->mask) >> __ffs(reg->mask);
  
- 	*val = (s16)le16_to_cpu(data);
+ 	return IIO_VAL_INT;
+ }
+@@ -1862,8 +1870,6 @@ st_lsm6dsx_write_event(struct iio_dev *iio_dev,
+ 	if (err < 0)
+ 		return -EINVAL;
  
-@@ -2743,7 +2741,7 @@ static int st_lsm6dsx_suspend(struct device *dev)
- 			continue;
+-	hw->event_threshold = val;
+-
+ 	return 0;
+ }
  
- 		if (device_may_wakeup(dev) &&
--		    sensor->id == ST_LSM6DSX_ID_ACC && hw->enable_event) {
-+		    st_lsm6dsx_check_events(sensor)) {
- 			/* Enable wake from IRQ */
- 			enable_irq_wake(hw->irq);
- 			continue;
-@@ -2774,7 +2772,7 @@ static int st_lsm6dsx_resume(struct device *dev)
- 
- 		sensor = iio_priv(hw->iio_devs[i]);
- 		if (device_may_wakeup(dev) &&
--		    sensor->id == ST_LSM6DSX_ID_ACC && hw->enable_event)
-+		    st_lsm6dsx_check_events(sensor))
- 			disable_irq_wake(hw->irq);
- 
- 		if (!(hw->suspend_mask & BIT(sensor->id)))
 -- 
 2.39.5
 

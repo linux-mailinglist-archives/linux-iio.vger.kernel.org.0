@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-25760-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25761-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B8BC25C97
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 16:14:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA663C25CA5
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 16:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEE5C188D2A7
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 15:08:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0EF0188AC14
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 15:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE951EE019;
-	Fri, 31 Oct 2025 15:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8939A220F5D;
+	Fri, 31 Oct 2025 15:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ztb6NN8D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kR0murrP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22931DC198
-	for <linux-iio@vger.kernel.org>; Fri, 31 Oct 2025 15:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53951DD543
+	for <linux-iio@vger.kernel.org>; Fri, 31 Oct 2025 15:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761923262; cv=none; b=lMygRJ97X3NRBP84jJBCW5I1JgYiyBEZKPQEYvsfl9aVV43694Agf9qCHBZK/lOUkCrX0PIxD5fQzEue97wsJ1kBUEtyo8K2TLCGaRcR16ZtyRog3VIq/AnUGvfTd19LVLzcL7HuxOi0OjrXhMPotJ7s/EfUe8Y6gJ//12v6z9E=
+	t=1761923306; cv=none; b=HtFu1ApV93r/JZR2fhV4QdWLO9JQ7B3zzk7Tzu9Kx/6otno1WCgMmBYbPa0pfDHpu7CiPsBf7rJU3qzyOgylXwDg3OW20CSpsxw/GJjjGGTRe8/19sO6j/ja/qc/+0zpsq85RY9ULSimZr4WDThuUoLwR9NAPr576rDAZQyjwmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761923262; c=relaxed/simple;
-	bh=PbvsIHP2yoN2ylbMzJL4WS6oUFqXg+YzCduhccCTFdY=;
+	s=arc-20240116; t=1761923306; c=relaxed/simple;
+	bh=djnlzVgOMsmSB/nqXGgvUll0Ew/fU2Sig1E37NvoEP8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VasEzUvUc15HvDOGu9OrttM3K2kMGgUJ9uUtEITpashx5CEMd6LoFsT+30ObqK7hAf6pSEhA1DmUko8Bz/W6EI6aMN3qEeFJBjm8QbGgBKDjTM4tgqc1qSG4cA5BukKUdFt9bpcw99AStC2Wyzccccu+b++5Ht3P+YQWwIHAuTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ztb6NN8D; arc=none smtp.client-ip=198.175.65.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=okPDz7Xx2BreB+cCOo/y95IZg+DH26XXts85KcPVHY2nIENHxdBAlfC3lOwuVSItDiEDYnrNzyk/AewScOQaYLVB4XnHbjp9o3bRR6+cRNIUAdaYqce4sbOyjsA16wx/NVfYHE07iU61tj1efnivNThPIJCi++fw12YGoihtNGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kR0murrP; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761923261; x=1793459261;
+  t=1761923304; x=1793459304;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=PbvsIHP2yoN2ylbMzJL4WS6oUFqXg+YzCduhccCTFdY=;
-  b=Ztb6NN8DI65Bab7LRDhryN5ViC1LTwUNV+cjwPYUlkluEFT9tFZj2X7+
-   8g+XmgnrP4E2SK0ESTEOzFE9FGpi6JdPOKuoykpEUrL8xfJJ7X/SMLQkw
-   48Y1TKLmFbbRovolMDnEq/nQhVFi3gHXr2Xp7N0gOW/U9VzPk9EdnvbwI
-   qaoRA5/PK6soLoczOBClI/7JbPZNrRQtUOsOvK0cfokDrPjxk9bJoX+be
-   +AzGniekBYhzQHzbCW92JpILuF0qlN3e3Rw5Gw0Se6CaGZAChy13uTLe8
-   6Ab7dZi3P7dKHey6RmSN2DFX9hOcKBmkQ7wR0DF6OfXYeaAZwTg92m8tc
-   w==;
-X-CSE-ConnectionGUID: ZxOLwAqBTzmB4smeynqu7w==
-X-CSE-MsgGUID: 3HriJn9MTUq+BpGnUz5Ohw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="74377678"
+  bh=djnlzVgOMsmSB/nqXGgvUll0Ew/fU2Sig1E37NvoEP8=;
+  b=kR0murrPPAnxHGbPTDskKineC1MHiytMqbHt+EwU9C05PMFa74cKGzYl
+   swYM8nfhtDoyMKi+Ro5lckRIenum1hfGTXbby9UelP6EY6M6hYhps/M1f
+   Pk2epQIgW3pyqa4IOHWHtXT0Bw5YSBAtwZoPcGF6CARTG11L9CE+WLSco
+   72IkmZp5ONN++t4LUz39AR6d5vW2Bwl5fDVbBfxd9eYN96AyJ6ga9DXqb
+   beuvyCFHIT49RBTuA1HsHjP5Rg8g+RKNlXlnYxCafAo/5e2RZwc5MvLNz
+   nby6CCik8/9sQuqjsabEEOht1lw0dDbUan+DeFdXv7cjNcY1tPp0EiCV7
+   A==;
+X-CSE-ConnectionGUID: 7OQzDZtGSqiGDtW1r3KMFg==
+X-CSE-MsgGUID: NKOcSP6DTY+3sIuuSJ2nnw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="63105584"
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="74377678"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 08:07:40 -0700
-X-CSE-ConnectionGUID: gXIo+etQTXqvrVou4ZwQrQ==
-X-CSE-MsgGUID: FdM1I+DsSymMHz3rWyN3sQ==
+   d="scan'208";a="63105584"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 08:08:23 -0700
+X-CSE-ConnectionGUID: HV3c+yEdQRKvuC55zenVpw==
+X-CSE-MsgGUID: jg/uTV+JQ/ygxQGgnQ3Bqw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="191402274"
+   d="scan'208";a="190603798"
 Received: from mgoodin-mobl3.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.66])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 08:07:39 -0700
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 08:08:22 -0700
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vEqj0-00000004IvH-0WC6;
-	Fri, 31 Oct 2025 17:07:34 +0200
-Date: Fri, 31 Oct 2025 17:07:33 +0200
+	id 1vEqji-00000004Iw0-0H7f;
+	Fri, 31 Oct 2025 17:08:18 +0200
+Date: Fri, 31 Oct 2025 17:08:17 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
@@ -70,13 +70,13 @@ Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
 	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v3 02/10] iio: dac: ad5446: Use DMA safe buffer for
- transfers
-Message-ID: <aQTQtUUQpWY_L5q1@smile.fi.intel.com>
+Subject: Re: [PATCH v3 04/10] iio: dac: ad5446: Move to single chip_info
+ structures
+Message-ID: <aQTQ4Zn3W99ZZITL@smile.fi.intel.com>
 References: <20251031-dev-add-ad5542-v3-0-d3541036c0e6@analog.com>
- <20251031-dev-add-ad5542-v3-2-d3541036c0e6@analog.com>
- <aQS7YIxYH2suDmoS@smile.fi.intel.com>
- <83da9af88f23bc87c558e220d7d1a32a0d91403d.camel@gmail.com>
+ <20251031-dev-add-ad5542-v3-4-d3541036c0e6@analog.com>
+ <aQS9-NofUjxBoPyu@smile.fi.intel.com>
+ <c7fa340961e12157d7a2ee67177e02e81e523aa3.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -86,47 +86,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <83da9af88f23bc87c558e220d7d1a32a0d91403d.camel@gmail.com>
+In-Reply-To: <c7fa340961e12157d7a2ee67177e02e81e523aa3.camel@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Oct 31, 2025 at 03:00:07PM +0000, Nuno Sá wrote:
-> On Fri, 2025-10-31 at 15:36 +0200, Andy Shevchenko wrote:
-> > On Fri, Oct 31, 2025 at 12:31:23PM +0000, Nuno Sá via B4 Relay wrote:
+On Fri, Oct 31, 2025 at 03:05:41PM +0000, Nuno Sá wrote:
+> On Fri, 2025-10-31 at 15:47 +0200, Andy Shevchenko wrote:
+> > On Fri, Oct 31, 2025 at 12:31:25PM +0000, Nuno Sá via B4 Relay wrote:
 
 ...
 
-> > > +	union {
-> > > +		__be16 d16;
-> > > +		u8 d24[3];
+> > > +static const struct ad5446_chip_info ad5310_chip_info = {
+> > > +	.channel = AD5446_CHANNEL_POWERDOWN(10, 16, 2),
+> > > +	.write = ad5446_write,
+> > > +};
+> > > +
+> > > +static const struct ad5446_chip_info ad5320_chip_info = {
+> > > +	.channel = AD5446_CHANNEL_POWERDOWN(12, 16, 0),
+> > > +	.write = ad5446_write,
+> > > +};
+> > > +
+> > > +static const struct ad5446_chip_info ad5444_chip_info = {
+> > > +	.channel = AD5446_CHANNEL(12, 16, 2),
+> > > +	.write = ad5446_write,
+> > > +};
+> > > +
+> > > +static const struct ad5446_chip_info ad5446_chip_info = {
+> > > +	.channel = AD5446_CHANNEL(14, 16, 0),
+> > > +	.write = ad5446_write,
+> > > +};
+> > > +
+> > > +static const struct ad5446_chip_info ad5450_chip_info = {
+> > > +	.channel = AD5446_CHANNEL(8, 16, 6),
+> > > +	.write = ad5446_write,
+> > > +};
+> > > +
+> > > +static const struct ad5446_chip_info ad5451_chip_info = {
+> > > +	.channel = AD5446_CHANNEL(10, 16, 4),
+> > > +	.write = ad5446_write,
+> > > +};
+> > > +
+> > > +static const struct ad5446_chip_info ad5541a_chip_info = {
+> > > +	.channel = AD5446_CHANNEL(16, 16, 0),
+> > > +	.write = ad5446_write,
+> > > +};
+> > > +
+> > > +static const struct ad5446_chip_info ad5512a_chip_info = {
+> > > +	.channel = AD5446_CHANNEL(12, 16, 4),
+> > > +	.write = ad5446_write,
+> > > +};
+> > > +
+> > > +static const struct ad5446_chip_info ad5553_chip_info = {
+> > > +	.channel = AD5446_CHANNEL(14, 16, 0),
+> > > +	.write = ad5446_write,
+> > > +};
 > > 
-> > Why not __be32 d24; ? Yes, it will require explicit size to be provided, but at
-> > least it will look consistent with the above. OR u8 d16[2]; ? But then it becomes
-> > simply a u8 buf[3] __aligned...;
-> 
-> Because I'm just keeping put_unaligned_be24() as before. In fact I'm just keeping the
-> same type. Sure we could do __be32 and the cpu_to_be32() with a proper shift but 
-> I'm already doing way too much than I signed up for when sending v1 :)
-
-I think no shift would be needed.
-
-> > > +	} __aligned(IIO_DMA_MINALIGN);
-> > >  };
-
-...
-
-> > > -	ret = i2c_master_send(client, (char *)&data, sizeof(data));
-> > > +	ret = i2c_master_send_dmasafe(client, (char *)&st->d16, sizeof(st->d16));
+> > > +static const struct ad5446_chip_info ad5600_chip_info = {
+> > > +	.channel = AD5446_CHANNEL(16, 16, 0),
+> > > +	.write = ad5446_write,
+> > > +};
 > > 
-> > This will add a quite an overhead to the transfer (not that I²C is super fast,
-> > but rather the processor is going to do _a lot_ of additional work here instead
-> > of doing something more useful.
+> > Seems same as ad5541a_chip_info(). Do we need duplicates _now_?
 > 
-> No really. This exactly to tell the i2c to not do any bounce buffer if the adapter
-> calls i2c_get_dma_safe_msg_buf(). So I would say, it's actually faster.
+> Yeah, it seems it was a duplicate before. I guess it could be a precursor
+> patch. Or if there's no real need for a re-spin (other than this), it
+> could be a follow up one, maybe?
 
-I might have forgotten the implementation of that, but does it hold for the
-controllers (or cases) that never supported DMA?
+Ideally, if possible to implement, this should be a precursor cleanup.
 
 -- 
 With Best Regards,

@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-25738-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25739-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA69C2501A
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B9AC2501D
 	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 13:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 87DC23511DE
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 12:31:11 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7266C3511A7
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 12:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26ECE3491C6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5933491DA;
 	Fri, 31 Oct 2025 12:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fy4TyR5m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yy0iRq19"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02B2322C89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46CD33031D
 	for <linux-iio@vger.kernel.org>; Fri, 31 Oct 2025 12:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761913861; cv=none; b=IONmu/XD4qTsOEYmvgAYW5OmobrNJDWvo/Q8t4vm2LTXc2BhH9nObej/ePTFGByjUW9Njq7vw1sFhBGrMEHAhiVZr0NH86KHYRUQKBWqd/GR4D/BhOk1KTIzRIIWQmQXFDfl969gbf94tcvQO3eQtz15VfARDOiYQvcNrJ81T6M=
+	t=1761913862; cv=none; b=tx+g4eQMf0EZnD7HXPaDwno5/7y0uheo3aVD5cC5DtrtMuHjll08epbHIdOLqkOVuauJ3EwV2Ym9IDd7oZfO4uIbu0GYkQc84nfq2NlfPirJWohPwhDOGg2FZqQg6FdN3HSwXoK2Stzbqp2kpheRRjLeLI9JBmIibXVp11XoVTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761913861; c=relaxed/simple;
-	bh=pK6vCEZC6DF7MwzAFXKfnnTvYAgdCk2SG8ngn/f4ZaQ=;
+	s=arc-20240116; t=1761913862; c=relaxed/simple;
+	bh=kgkQ5ZLEY+CnmbfHIWE+KeYZQnP3lZR3rOo4iJQzQDE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=r6hwPMjsTvc9HCcyZ1N8kGLB5wlgo9gR6+GPo3DQP/k4A5N8toHat+XIcAKthZ6s5jUMsKW/77qWPYEXmECDH58rgKg/ECs53RIOvF1BeqnkSuihftfOT+WjkNzgSoRi0UfzYm73b+T7YGOYswrzk2ELEnfGTAQf/zsL06yOryU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fy4TyR5m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9CD7EC4CEF8;
+	 In-Reply-To:To:Cc; b=Ohc2AcM8KEzAIjB5is5G9OfoPyQTUoEpHmre50Y7l/hTf+GcNUhL8HyUgwoCNrXvvPm7hyxyA442SbUy/6sRA3Uk2DFS4IB6a7MjeU6lKTo9XN2xu6BbERMXs9oWcfd5uX7jAXX2IRD1YD3yEiV/wRoVMtK3PZ1gRKbRPkRG2n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yy0iRq19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A7512C116D0;
 	Fri, 31 Oct 2025 12:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1761913861;
-	bh=pK6vCEZC6DF7MwzAFXKfnnTvYAgdCk2SG8ngn/f4ZaQ=;
+	bh=kgkQ5ZLEY+CnmbfHIWE+KeYZQnP3lZR3rOo4iJQzQDE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Fy4TyR5mGsWRniso3/7npJCPcv8WXFYSSEjd68Zg7/FqnftuXADY6ar0CJqZqxKHQ
-	 qRj0CAY06eP48nToGy8SvY8YcIl4jvnGB1xzJ9c4FitacYyBQ78rEcHvr/msM6WF5c
-	 YO2P8iCECAMfoNR22YDcS0bwfphcShFDDmQ/itRxeE9fJ1xailT00it0fgmw0Gk70Q
-	 gDKa3Snrptm6CM80/1dXTivTvbvBxoDTTMIexp1JKoVuj+dPrFqLrc4qTcZn8vPDZ9
-	 KqXoiewaEVzW7sVMS9vuCrsAMnhF9drSN82bgiVx7mek3XkJ1HeKYIkWX4I+LpYgxC
-	 7Y4t1zwfVxlcA==
+	b=Yy0iRq19eDk5NC+89Gui6R/33l40rjyzrHXSxgWZsdTld4cRUyhy7s88RmLD62hxR
+	 WpNVB7xdAFxZRx5WtH57KiHiySAOQtbW9ZWQo4x/R5E5ZG1aqmD1whp6gEsZpniWMw
+	 7MEs3nCRlyQRgWw1kLNAjFo8Hb6OY8IvZHwyxMcLv/skAaObA7vczwYfxtJyJnWcI+
+	 nqaY+sP8j1vFXGE7PeRhBxPmi634S2kQRbxhuMQoE53U7SaiITw5OXe31jUqs2NNHn
+	 +/KFfec7l9z3JqdIbXpEbJkKGphHy7Vf8yVu/+UXOpBt8BJB1RZF23GPs9qy6R4bWi
+	 JTmuBh8PZlJhg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B90ECCF9FF;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DA7ACCF9FE;
 	Fri, 31 Oct 2025 12:31:01 +0000 (UTC)
 From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 31 Oct 2025 12:31:22 +0000
-Subject: [PATCH v3 01/10] dt-bindings: iio: dac: Document AD5446 and
- similar devices
+Date: Fri, 31 Oct 2025 12:31:23 +0000
+Subject: [PATCH v3 02/10] iio: dac: ad5446: Use DMA safe buffer for
+ transfers
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251031-dev-add-ad5542-v3-1-d3541036c0e6@analog.com>
+Message-Id: <20251031-dev-add-ad5542-v3-2-d3541036c0e6@analog.com>
 References: <20251031-dev-add-ad5542-v3-0-d3541036c0e6@analog.com>
 In-Reply-To: <20251031-dev-add-ad5542-v3-0-d3541036c0e6@analog.com>
 To: linux-iio@vger.kernel.org
@@ -64,11 +64,11 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
  Andy Shevchenko <andy@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761913895; l=5117;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761913895; l=1997;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=ilsaRzkJ8yfckQSj+fp3nBx94rCUsN0wDViEmHKqLcY=;
- b=LW+YfTsxc66zAfFngVgjqxsnZge7ZEacFrgQfSweDqr7iazsWVFUv1z9wTitpxAVSxrwQy1Cl
- pGC4lexVyEyD5goBvOC6bEEuhHkZL9L2nmNtm8+256MLM6R0c1wN8Y0
+ bh=46famHhMqK6pdPFGxx4pY0sifQUpnrHIY3AH+TPxpr8=;
+ b=00Tar9g9oEW48q/R54iqV5VAMF+tEHPWspqQcR/wo5tKASkRMvrNZ6g/U9I82KC41dwBhTCL8
+ UloJ6u81a4/BV3uCexiQ3h677eAS46Dhg6wcQrQ3dm93+ICgHJLffFT
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -78,184 +78,72 @@ Reply-To: nuno.sa@analog.com
 
 From: Nuno Sá <nuno.sa@analog.com>
 
-Add device tree binding documentation for the Analog Devices AD5446
-family of Digital-to-Analog Converters and derivative devices from
-Texas Instruments. There's both SPI and I2C interfaces and feature
-resolutions ranging from 8-bit to 16-bit.
+Make sure to use DMA safe buffer. While for i2c we could be fine without
+them, we need it for spi anyways.
 
-The binding covers 29 derivatives devices including the AD5446 series,
-AD5600 series, AD5620/5640/5660 variants with different voltage ranges,
-and TI DAC081s101/DAC101s101/DAC121s101 devices.
+As we now have DMA safe buffers, use i2c_master_send_dmasafe().
 
 Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
- .../devicetree/bindings/iio/dac/adi,ad5446.yaml    | 138 +++++++++++++++++++++
- MAINTAINERS                                        |   8 ++
- 2 files changed, 146 insertions(+)
+ drivers/iio/dac/ad5446.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
-new file mode 100644
-index 000000000000..2669d2c4948b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
-@@ -0,0 +1,138 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/dac/adi,ad5446.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices AD5446 and similar DACs
-+
-+maintainers:
-+  - Michael Hennerich <michael.hennerich@analog.com>
-+  - Nuno Sá <nuno.sa@analog.com>
-+
-+description:
-+  Digital to Analog Converter devices supporting both SPI and I2C interfaces.
-+  These devices feature a range of resolutions from 8-bit to 16-bit.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - description: SPI DACs
-+        enum:
-+          - adi,ad5300
-+          - adi,ad5310
-+          - adi,ad5320
-+          - adi,ad5444
-+          - adi,ad5446
-+          - adi,ad5450
-+          - adi,ad5451
-+          - adi,ad5452
-+          - adi,ad5453
-+          - adi,ad5512a
-+          - adi,ad5541a
-+          - adi,ad5542
-+          - adi,ad5542a
-+          - adi,ad5543
-+          - adi,ad5553
-+          - adi,ad5600
-+          - adi,ad5601
-+          - adi,ad5611
-+          - adi,ad5621
-+          - adi,ad5641
-+          - adi,ad5620-2500
-+          - adi,ad5620-1250
-+          - adi,ad5640-2500
-+          - adi,ad5640-1250
-+          - adi,ad5660-2500
-+          - adi,ad5660-1250
-+          - adi,ad5662
-+          - ti,dac081s101
-+          - ti,dac101s101
-+          - ti,dac121s101
-+      - description: I2C DACs
-+        enum:
-+          - adi,ad5301
-+          - adi,ad5311
-+          - adi,ad5321
-+          - adi,ad5602
-+          - adi,ad5612
-+          - adi,ad5622
-+
-+  reg:
-+    maxItems: 1
-+
-+  vcc-supply:
-+    description:
-+      Reference voltage supply. If not supplied, devices with internal
-+      voltage reference will use that.
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad5300
-+              - adi,ad5310
-+              - adi,ad5320
-+              - adi,ad5444
-+              - adi,ad5446
-+              - adi,ad5450
-+              - adi,ad5451
-+              - adi,ad5452
-+              - adi,ad5453
-+              - adi,ad5512a
-+              - adi,ad5541a
-+              - adi,ad5542
-+              - adi,ad5542a
-+              - adi,ad5543
-+              - adi,ad5553
-+              - adi,ad5600
-+              - adi,ad5601
-+              - adi,ad5611
-+              - adi,ad5621
-+              - adi,ad5641
-+              - adi,ad5620-2500
-+              - adi,ad5620-1250
-+              - adi,ad5640-2500
-+              - adi,ad5640-1250
-+              - adi,ad5660-2500
-+              - adi,ad5660-1250
-+              - adi,ad5662
-+              - ti,dac081s101
-+              - ti,dac101s101
-+              - ti,dac121s101
-+    then:
-+      allOf:
-+        - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        dac@0 {
-+            compatible = "adi,ad5446";
-+            reg = <0>;
-+            vcc-supply = <&dac_vref>;
-+        };
-+    };
-+  - |
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        dac@42 {
-+            compatible = "adi,ad5622";
-+            reg = <0x42>;
-+            vcc-supply = <&dac_vref>;
-+        };
-+    };
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8082081ea742..9654f0c25423 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -440,6 +440,14 @@ W:	http://wiki.analog.com/AD5398
- W:	https://ez.analog.com/linux-software-drivers
- F:	drivers/regulator/ad5398.c
+diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
+index ad304b0fec08..de5e4e0e397e 100644
+--- a/drivers/iio/dac/ad5446.c
++++ b/drivers/iio/dac/ad5446.c
+@@ -47,6 +47,10 @@ struct ad5446_state {
+ 	unsigned			pwr_down_mode;
+ 	unsigned			pwr_down;
+ 	struct mutex			lock;
++	union {
++		__be16 d16;
++		u8 d24[3];
++	} __aligned(IIO_DMA_MINALIGN);
+ };
  
-+AD5446	ANALOG DEVICES INC AD5446 DAC DRIVER
-+M:	Michael Hennerich <michael.hennerich@analog.com>
-+M:	Nuno Sá <nuno.sa@analog.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
-+
- AD714X CAPACITANCE TOUCH SENSOR DRIVER (AD7142/3/7/8/7A)
- M:	Michael Hennerich <michael.hennerich@analog.com>
- S:	Supported
+ /**
+@@ -265,19 +269,18 @@ static int ad5446_probe(struct device *dev, const char *name,
+ static int ad5446_write(struct ad5446_state *st, unsigned val)
+ {
+ 	struct spi_device *spi = to_spi_device(st->dev);
+-	__be16 data = cpu_to_be16(val);
++	st->d16 = cpu_to_be16(val);
+ 
+-	return spi_write(spi, &data, sizeof(data));
++	return spi_write(spi, &st->d16, sizeof(st->d16));
+ }
+ 
+ static int ad5660_write(struct ad5446_state *st, unsigned val)
+ {
+ 	struct spi_device *spi = to_spi_device(st->dev);
+-	uint8_t data[3];
+ 
+-	put_unaligned_be24(val, &data[0]);
++	put_unaligned_be24(val, &st->d24[0]);
+ 
+-	return spi_write(spi, data, sizeof(data));
++	return spi_write(spi, st->d24, sizeof(st->d24));
+ }
+ 
+ /*
+@@ -489,13 +492,13 @@ static inline void ad5446_spi_unregister_driver(void) { }
+ static int ad5622_write(struct ad5446_state *st, unsigned val)
+ {
+ 	struct i2c_client *client = to_i2c_client(st->dev);
+-	__be16 data = cpu_to_be16(val);
++	st->d16 = cpu_to_be16(val);
+ 	int ret;
+ 
+-	ret = i2c_master_send(client, (char *)&data, sizeof(data));
++	ret = i2c_master_send_dmasafe(client, (char *)&st->d16, sizeof(st->d16));
+ 	if (ret < 0)
+ 		return ret;
+-	if (ret != sizeof(data))
++	if (ret != sizeof(st->d16))
+ 		return -EIO;
+ 
+ 	return 0;
 
 -- 
 2.51.0

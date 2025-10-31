@@ -1,119 +1,106 @@
-Return-Path: <linux-iio+bounces-25719-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25720-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8315FC23B55
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 09:12:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7787BC23CC6
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 09:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2E5ED34E79C
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 08:12:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D1373AD7CF
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 08:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B53132D0E2;
-	Fri, 31 Oct 2025 08:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0872D5940;
+	Fri, 31 Oct 2025 08:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OaZUKr8O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9B5iD6S"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18962F3C25;
-	Fri, 31 Oct 2025 08:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955B3253957;
+	Fri, 31 Oct 2025 08:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761898166; cv=none; b=go/74rPPpTZHJUQ6vdhH7Hqs1in2pZZUYNg2SntWk+1rzyz/dxiEm6hQaMB4pnD7FEmBnhyNRwBpymYv88dAlPIlZgOoKEqWreRBLgZh96uL/2l8uRiL8on3W9/V79xgzB3khh5U3XX5FVghLOH4yIb7UvEbNi1ZpUFQ2IN4pEE=
+	t=1761898741; cv=none; b=GTqH21C/Xun4zcrzpq4qtm6vR3trqmOmdxsYUrK0PLpNGZ68F1hUe2ZO84+T3exyYON5s1EMVY6+hS/nxAqWS6ayAAKxWJ3LzaXouh8JbcRMjq2Q7bHzxPK02Erjq6MRliskyK7DtDfbca5oqfgnO0GeT2gBSHWaz4ahuGbM4Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761898166; c=relaxed/simple;
-	bh=o9FBPBRATXBwXK/2M5swSUhsXlpoKgEfd7COEYBxngs=;
+	s=arc-20240116; t=1761898741; c=relaxed/simple;
+	bh=AGxEpfdFzeMPLbbU8OvwzY2XUqW8zSz0RQQyFpRG6d0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=epyNPQtko3EsUjAuoW7cFcEfZDEhbJEWNcGGaw3LGeWrkCqvfhlnu608LAKOd3l2RLiAB3PoL/OgD7nLlkMsfCiYXm2YdFN+Cy79nwboTuZE5RwGnJXnzgXxOzFdGCmUzGhX2bx3/pogffkICgeP6Nb6sbEAL1IfJhxpTX4K3Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OaZUKr8O; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761898165; x=1793434165;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=o9FBPBRATXBwXK/2M5swSUhsXlpoKgEfd7COEYBxngs=;
-  b=OaZUKr8OtBrGc87fQqfbHH7ZzWfhPLhR9+87QgS9rr++H9noFPp0Xkkv
-   TKWykLWN9tuXSuMnvkd3DGpIaW8RQJ0sAH01o0t9zHXZkWfM0vioBzllF
-   8iKLFjx1ZxOYTqeIm0aSiSxe5N4JNkELImvgB6VlAMwLxbpBTs7WzmS6B
-   8BA+XUrCR7SkuKBDh12E/N9krYeS4pAoAiZCPqQshqMkR1So+v72gFE+q
-   SDBX6jPWxYU+7/6B1lIGYc/Iv5Y1pTF0GndF2jlVOm7qLpITzvET5GVnb
-   9VDObjnsMJuh7/Nsm5nHDhJTy06JO+xOu/soV9tEuHXc0K+6mSSKBIwr3
-   Q==;
-X-CSE-ConnectionGUID: U629vDU6SpW32GI3AHwysA==
-X-CSE-MsgGUID: MscwsG95QAeL0TLhT+feew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="89518439"
-X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; 
-   d="scan'208";a="89518439"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 01:09:24 -0700
-X-CSE-ConnectionGUID: OQN2MLtbRryxW153S58zTA==
-X-CSE-MsgGUID: YU5gG/sbTbaXAjB/ZVC+kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; 
-   d="scan'208";a="216828945"
-Received: from mgoodin-mobl3.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.66])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 01:09:18 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vEkC9-00000004Cho-2vhT;
-	Fri, 31 Oct 2025 10:09:13 +0200
-Date: Fri, 31 Oct 2025 10:09:12 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Francesco Lavra <flavra@baylibre.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/9] iio: imu: st_lsm6dsx: dynamically initialize
- iio_chan_spec data
-Message-ID: <aQRuqKn6iTenCfiL@smile.fi.intel.com>
-References: <20251030072752.349633-1-flavra@baylibre.com>
- <20251030072752.349633-2-flavra@baylibre.com>
- <aQOVcCinTd-ZJJX3@lore-desk>
- <55cf525d734878369f936834cca60ce7972d268a.camel@baylibre.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FU5xRb1yGMYOT71FUuADMm6yRGi5x9AISPermZKiE2mZXdaSjpUjzDuOMhcHUN2vkQ6sp9YAoDeVU1L73JD+I8YsTOUU9gtLEk6NMzzkIfBwM+nInjWwKJl5oRlAesCXEYlmrhJiuJGkHpNOYxuvW8nejdOxgOTWRlg0lQ9Couw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9B5iD6S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951DCC4CEF1;
+	Fri, 31 Oct 2025 08:19:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761898741;
+	bh=AGxEpfdFzeMPLbbU8OvwzY2XUqW8zSz0RQQyFpRG6d0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i9B5iD6So1tBa+W3HGzzdrJEoYssS0I/TdaKA7iETf4GbEXCu8eFd4N07emeZtW56
+	 V+IS7Iyijb7uQzSiI2cHacxEZzVs9qL16hGYusSWjQwaJv2YbFR0oKuDria3hAl3VS
+	 oFA6KqXuvmAXuP6HgqfVGrcu6Wt79oXUjOfaNYB/DsochjvqB5NGCiSEid5QiypFLj
+	 4qEbvqjfEP1VVqkXfOib2NJDYYoABI9TEWJz2s7zqOfUJNLVbKqcZdadh5BuD5CUYN
+	 FGZohvODi6HmGpcVVMrruhTtwodRy4J4WI+hL1gRwd0Q5ilDY96c4Z7nhnksSgnDRq
+	 6VMwh4Z4n2N9w==
+Date: Fri, 31 Oct 2025 09:18:58 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Jack Hsu <jh.hsu@mediatek.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, 
+	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, srini@kernel.org, 
+	ukleinek@kernel.org, gregkh@linuxfoundation.org, jirislaby@kernel.org, 
+	daniel.lezcano@linaro.org, tglx@linutronix.de, chunfeng.yun@mediatek.com, 
+	wim@linux-watchdog.org, linux@roeck-us.net, sean.wang@mediatek.com, 
+	zhiyong.tao@mediatek.com, andrew-ct.chen@mediatek.com, lala.lin@mediatek.com, 
+	jitao.shi@mediatek.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-pwm@vger.kernel.org, linux-serial@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org, 
+	Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH v6 07/11] dt-bindings: usb: Support MediaTek MT8189 evb
+ board xhci
+Message-ID: <20251031-clever-yak-of-expression-d9a6f1@kuoka>
+References: <20251030134541.784011-1-jh.hsu@mediatek.com>
+ <20251030134541.784011-8-jh.hsu@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <55cf525d734878369f936834cca60ce7972d268a.camel@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20251030134541.784011-8-jh.hsu@mediatek.com>
 
-On Fri, Oct 31, 2025 at 09:04:58AM +0100, Francesco Lavra wrote:
-> On Thu, 2025-10-30 at 17:42 +0100, Lorenzo Bianconi wrote:
-
-[...]
-
-> > > +static int st_lsm6dsx_chan_init(struct iio_chan_spec *channels, struct
-> > > st_lsm6dsx_hw *hw,
-> > > +                               enum st_lsm6dsx_sensor_id id, int
-> > > index)
-> > 
-> > please try to respect the 79 column limit (I still like it :))
+On Thu, Oct 30, 2025 at 09:44:39PM +0800, Jack Hsu wrote:
+> modify dt-binding for support mt8189 evb board dts node of xhci
 > 
-> OK
+> Signed-off-by: Jack Hsu <jh.hsu@mediatek.com>
+> ---
+>  .../devicetree/bindings/usb/mediatek,mtk-xhci.yaml         | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/usb/mediatek,mtk-xhci.yaml b/Documentation/devicetree/bindings/usb/mediatek,mtk-xhci.yaml
+> index 004d3ebec091..05cb6a219e5c 100644
+> --- a/Documentation/devicetree/bindings/usb/mediatek,mtk-xhci.yaml
+> +++ b/Documentation/devicetree/bindings/usb/mediatek,mtk-xhci.yaml
+> @@ -34,6 +34,7 @@ properties:
+>            - mediatek,mt8183-xhci
+>            - mediatek,mt8186-xhci
+>            - mediatek,mt8188-xhci
+> +          - mediatek,mt8189-xhci
+>            - mediatek,mt8192-xhci
+>            - mediatek,mt8195-xhci
+>            - mediatek,mt8365-xhci
+> @@ -119,6 +120,9 @@ properties:
+>    resets:
+>      maxItems: 1
+>  
+> +  reset-names:
+> +    maxItems: 1
 
-FWIW, the limit is the exact 80. Don't waste that 1 characters when it's the case.
+No, drop. Not needed, not related, not explained in the commit msg,
 
-(And moreover there is a note in the documentation that allows, and we follow
- that from time to time in IIO, slightly longer lines if it really increases
- readability.)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Best regards,
+Krzysztof
 
 

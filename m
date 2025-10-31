@@ -1,108 +1,125 @@
-Return-Path: <linux-iio+bounces-25750-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25751-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731E1C2516D
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 13:49:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81A3C251C1
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 13:55:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 908C94F5697
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 12:48:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4C76188BE5E
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 12:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DB2348864;
-	Fri, 31 Oct 2025 12:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBD4340A41;
+	Fri, 31 Oct 2025 12:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bqpsvIkH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GXH3YiIh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AA0318157;
-	Fri, 31 Oct 2025 12:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C9C12DDA1;
+	Fri, 31 Oct 2025 12:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761914869; cv=none; b=dJsbOo6DqbcNx6zc4FDFF15BsL47e+PpgnBoP8uSQsyrhJjArDnvTxNYPKFbmmZzK2oBcLTu34RpH86SLElV5Emsu/9pokc5NhtTFVWERg8cAF0YON/Mz1+HhG48WedxOLnSj9LmHWv/21u1UyJMYxv9ZPzbcAI7o3gvNXjn/Bk=
+	t=1761915128; cv=none; b=IfgpkbkEnM9yfTMSCvJ+qEDbxMm9W2MWpkZBSCikBfS5cmsFFv33a03BYvBq1628vd8WNSwcbAzq4v15p61m86js6cG7Zof98eIcVtuMX0pIZkgiyNs0y5apN+QRE7EUUZ4QUidonou83BWUUAhEDepziVMru4DjrsnCUn60x48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761914869; c=relaxed/simple;
-	bh=Wr5WkAhQ1P4UtW5zWzRR9PdNLDhmoSwH1Ltzzq+g+z0=;
+	s=arc-20240116; t=1761915128; c=relaxed/simple;
+	bh=GkOQLeyfaij/XYkI3FhobsjBO6mHEPS5prVE1+pfEoU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lhAkAzYU5FU3i8FWLPiwpWp7ef7xP+I6R1lhEbWqHICWVWFjsTQBNcXL/UfK3xxl53HSIIKyupLiGKojJsRTJQjqoCOiImauQYMhYGFE+FmWPI9gtRsj8TrKAtGJKddn4ENZcXbIMt5e29ysmxvzlfZfOIm2erCyMtQOojPw9Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bqpsvIkH; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=lWtnCO2Po7cCU6r5IY+fKI1csQPoR0t3KlwByRjGG7JA0xQhIkNP1p5ahsVPMmHD+9vPFE0v/k2ZNV3JtBHtnUc2NMrivVo4p2MRWJ7AgYcFroLrhMh82X6XZI/BnX/h2pbfqVf10Vdxh7aK6SR6VdyundYGMOuhlqSduTgpQVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GXH3YiIh; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761914868; x=1793450868;
+  t=1761915127; x=1793451127;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Wr5WkAhQ1P4UtW5zWzRR9PdNLDhmoSwH1Ltzzq+g+z0=;
-  b=bqpsvIkHZFq3DF2tREsVa2FRzL6gEhSD0Me046JEx2ReyDB/voRKDCrz
-   bVihwzr9xA4aUD/HjvM4/jfxeyI3CsT994znw+YBM/oCZQmxrkWLVFcjx
-   ljsXbFh12XQtXG6ET4ltTvee7C7Seu4J2a8E10OCCEB8XEi4g1z0544WF
-   qheVhaxToZWfik3KyIsFdjEv7c/31mtDdxtuE6CP+buqiJy1+lrf10PSk
-   UhOoTQBY28qhVyLIGMiBLnqxQ1n/ePUEY1dxqf0paImRM/ioCak6pYUWd
-   1GUVXwoiiBguoI3rn2wv7tMa1DviZjNgD0Jw7/qRhKMefGUBJoQSVgk6a
-   w==;
-X-CSE-ConnectionGUID: dkcy/tn8S5um1rXfz2oB7A==
-X-CSE-MsgGUID: /+YdE7wCSBWo7KAGtAKDjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63279641"
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="63279641"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 05:47:47 -0700
-X-CSE-ConnectionGUID: emTcr4y+SmCGbNclHg31kw==
-X-CSE-MsgGUID: bOohS8kzSOGSoMtaG4dXiA==
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=GkOQLeyfaij/XYkI3FhobsjBO6mHEPS5prVE1+pfEoU=;
+  b=GXH3YiIhT/9ae+/1FJMrtl0mGTWj3mMWJIC2KBPSb9c1TtRllkJ3IpSB
+   a5M/6UyqCPaOuRxk+zkhdksOQOTerinBcw7WUVWF7QKF4wrnOjL0jMEF1
+   y65plJ6QDrTw2jolTB0utC/QrCGNF/cN6e9j2H+7yY4AX2m48Aw5eGd59
+   z7bM5Uqy4o1ghVpFnR6RdLuBtDJG5XIp7MYTU6pIfsynfX6DM0tZ6GPGT
+   hk21f62RqtLDX1rRK1OHMOU406XP569/cBtHCQWk+wZuXOemgG+ZPYPw1
+   Wp//l6sLghz+MEa7RxOZ6/QharpWS/152WDw48YeGIwom+WYWULyBiafa
+   g==;
+X-CSE-ConnectionGUID: yQwi5v69TmyULNRTaAE7Gw==
+X-CSE-MsgGUID: JC2CAWuzT66iV25NWSrxHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67913081"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="67913081"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 05:52:06 -0700
+X-CSE-ConnectionGUID: BV+22n4ISQWlcC43elCuTw==
+X-CSE-MsgGUID: HlD5QPeoRMSTDy3WVngyOg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="186106036"
+   d="scan'208";a="185915353"
 Received: from mgoodin-mobl3.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.66])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 05:47:45 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 05:52:03 -0700
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vEoXc-00000004GQm-1Q9y;
-	Fri, 31 Oct 2025 14:47:40 +0200
-Date: Fri, 31 Oct 2025 14:47:39 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: remi.buisson@tdk.com
-Cc: Jonathan Cameron <jic23@kernel.org>,
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vEobm-00000004GU1-308i;
+	Fri, 31 Oct 2025 14:51:58 +0200
+Date: Fri, 31 Oct 2025 14:51:57 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jyoti Bhayana <jbhayana@google.com>,
+	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: inv_icm45600: Initializes
- inv_icm45600_buffer_postdisable sleep
-Message-ID: <aQSv6xM6j-lpTzdb@smile.fi.intel.com>
-References: <20251031-icm45600_fix_buffer_sleep_init-v1-1-924efbb165e8@tdk.com>
+	Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH v1 1/1] iio: common: scmi_sensors: Replace const_ilog2()
+ with ilog2()
+Message-ID: <aQSw7V7tYjBOtJ7k@smile.fi.intel.com>
+References: <20251031074500.3958667-1-andriy.shevchenko@linux.intel.com>
+ <20251031094336.6f352b4f@pumpkin>
+ <aQSHVsWGXzigTEMe@smile.fi.intel.com>
+ <20251031124530.3db7805b@pumpkin>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251031-icm45600_fix_buffer_sleep_init-v1-1-924efbb165e8@tdk.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251031124530.3db7805b@pumpkin>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Oct 31, 2025 at 10:58:02AM +0000, Remi Buisson via B4 Relay wrote:
-> From: Remi Buisson <remi.buisson@tdk.com>
+On Fri, Oct 31, 2025 at 12:45:30PM +0000, David Laight wrote:
+> On Fri, 31 Oct 2025 11:54:30 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > On Fri, Oct 31, 2025 at 09:43:36AM +0000, David Laight wrote:
+> > > On Fri, 31 Oct 2025 08:45:00 +0100
+> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
 
-Sorry, but you must write the commit message.
+...
 
-> Fixes: 06674a72cf7a ("iio: imu: inv_icm45600: add buffer support in iio devices")
-> ---
-> The sleep variable in inv_icm45600_buffer_postdisable could be used without being
-> assigned in case f error. It must be initialized to 0 by default.
+> > > >  		tstamp_scale = sensor->sensor_info->tstamp_scale +
+> > > > -			       const_ilog2(NSEC_PER_SEC) / const_ilog2(10);
+> > > > +			       ilog2(NSEC_PER_SEC) / ilog2(10);  
+> > > 
+> > > Is that just a strange way of writing 9 ?  
+> > 
+> > Why? It's correct way of writing log¹⁰(NSEC_PER_SEC), the problem here is that
+> > "i" people do not think about :-)
+> 
+> Even without the "i" the division could easily give 8.999999.
+> So you'd be relying on rounding to get the required integral value.
+> 
+> > But we have intlog10(), I completely forgot about it.
+> 
+> And it isn't the function the code is looking for.
+> (The result is shifted left 24 and it doesn't have an optimisation
+> for constants.)
 
-Why is this in the comment and not in the commit message? Also, can you spell
-out the real compilation warning or so?
-
-Otherwise the code might look okay, depending on the context. Again, usually
-it's recommended to assign as late as possible to avoid subtle mistakes when
-the same variable might be reused in the (future) code.
+Do you have an idea how to improve that?
 
 -- 
 With Best Regards,

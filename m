@@ -1,131 +1,138 @@
-Return-Path: <linux-iio+bounces-25729-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25731-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB48AC24649
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 11:17:52 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7BFC24853
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 11:38:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A08D518879D7
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 10:14:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 58436347B35
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 10:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA115337108;
-	Fri, 31 Oct 2025 10:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F6133FE0F;
+	Fri, 31 Oct 2025 10:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FOHff1DU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JTUrI/kp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CBF336EEE;
-	Fri, 31 Oct 2025 10:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1BB327214;
+	Fri, 31 Oct 2025 10:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761905629; cv=none; b=UUwtqxpZTLRbRsEhvU62uIqOOtBdXEKXUvGFwNgSunm4tRCu8E60vFugls/VmAVbsdbMA9YNlOpqhsgZYorvo/1UV5rc3D8zM/SPKJODJxqtJujwUqL4WoqF3esMDcA2YEE3pBTO2PP15EwsAxkE0rD9y99MVMm5ibRsuZ5bss4=
+	t=1761907114; cv=none; b=i5oYK1Bgk/AG73dM18jZMMUu+t7DqjNPGzPVkkQmAmFz/jH3jPlYAazkcr6KjFgYTrFezhLbqyWcsgzT9Vvlyr92QKCH9i7lqeCIj/pqf3lxubkzhsyxOct3MQfKsKjOaOd+KddnEDnRbiuhXXY35nCMLHzCL6BaUhubXw2PyeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761905629; c=relaxed/simple;
-	bh=j1jjnwDIh5t39z7XcYR7u4oLR3Jy9sTKHizlMRr8z+Q=;
+	s=arc-20240116; t=1761907114; c=relaxed/simple;
+	bh=pCW3mqiYKpJ+hdcxPaMD/6xe2J8m7xgEe48dlvDZ3gY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e1bnxyl/+rUi74iTzW6WKMpg1rdd6f5syUuyuW6KyrwkePTQVT4nLvbYMtt7bUzloBaO8y//MwGByJxmRN4OFS3Dc64Mlzra0YPMGjpcQr+imNfktPcXDJpvYVUXQx0FEkMJp0fbUGtz2IxuDFleP31mvg9dloyLzhzT2FkdNMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FOHff1DU; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761905628; x=1793441628;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=j1jjnwDIh5t39z7XcYR7u4oLR3Jy9sTKHizlMRr8z+Q=;
-  b=FOHff1DU7eqQzM3eVWvaR9wlyR5udglSetKcU4pweRMw8v8XIrAG9QKs
-   dUOo4IFs3dvASFOnGDEbU01961ZjgmF/h1UeBQ57ewOEd6tOWt9iFt2lE
-   8dPcC/LscyhD9i6MlEOncTtBzafwluOr1FPCEKil7kdPWjaxpJ/Gql8Y4
-   xcuRZATdwxyR4s3wljQ36+LtIvFdJW9VDZ+jdKOkPYbdbmwxRiETTyP70
-   q7ZdSao1QJMct56pmjLp6Lag1DfcYU1wwoo922SdaVNIG7RE2eW2LHtph
-   EgW/TO2zaVL7PEHgoRtxKzbsqlo9p79uhdEDCEdaUoGvQPSW9sWnHsttu
-   g==;
-X-CSE-ConnectionGUID: pWe0dcH8R1++Gki+HxlovQ==
-X-CSE-MsgGUID: PykOsH5TTHCocq3HWus+mw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="64163390"
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="64163390"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 03:13:46 -0700
-X-CSE-ConnectionGUID: XtNKVTXjR/6tWVY+YomUTA==
-X-CSE-MsgGUID: j445RgFrTFeePPFGCO4Utg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="190551159"
-Received: from mgoodin-mobl3.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.66])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 03:13:44 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vEm8a-00000004EWX-0pWz;
-	Fri, 31 Oct 2025 12:13:40 +0200
-Date: Fri, 31 Oct 2025 12:13:39 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jorge Marques <jorge.marques@analog.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, gastmaier@gmail.com
-Subject: Re: [PATCH] iio: accel: Change adxl345 depend to negate adxl35x
-Message-ID: <aQSL0wCr56zr5Y35@smile.fi.intel.com>
-References: <20251031-adxl345-allow-adxl34x-mod-v1-1-cd65749ba89c@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=shnnbyq9qK5vLxpSPz09Cz1UTHLsL5XRmaFLm9AU8JVjKHV87ERo590g6FgJSWzRdoBlXyfwiqkdozMO8fY2sHVxIL2PQbvzSngtAeio2oiQsFTWOL1vZSZK51W4Em770/kOe7i52z2awEk/3pGiekYrytE/DBCFYQB791j0/oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JTUrI/kp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372BFC4CEF8;
+	Fri, 31 Oct 2025 10:38:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761907113;
+	bh=pCW3mqiYKpJ+hdcxPaMD/6xe2J8m7xgEe48dlvDZ3gY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JTUrI/kpTP1FK7p2e+8hPfAZy7ga0BoJ9cSl7qZorGTNxxiKLgt6MZyK57ZH1Lr07
+	 6tcdKn+x6niUhnZl8r++Hx6gZMQvGcURlMLzPbdJefISbiIGWao0PzaldpHaRet2Pi
+	 Cq4+XtreH74oI49663XJEq8RhZy81HhMOo7ZF/v+h4a6GB9KlbXGyTSpmtPy28ONnE
+	 jR8BK8GJZqikTWRoRhv8xMpUxdqL6rTxF7QAawZaDAAcj8QW+gwoolUfWPi8C5eKSL
+	 s3Cenygcd5JjViuZ8K86iaUzocAk7iBxH3mc40jbKfBca0ugRTaQX5nIvmzjKiblQq
+	 H5F94Oe9DISAw==
+Date: Fri, 31 Oct 2025 10:38:24 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Jack Hsu <jh.hsu@mediatek.com>, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, jic23@kernel.org, dlechner@baylibre.com,
+	nuno.sa@analog.com, andy@kernel.org, matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com, srini@kernel.org,
+	ukleinek@kernel.org, gregkh@linuxfoundation.org,
+	jirislaby@kernel.org, daniel.lezcano@linaro.org, tglx@linutronix.de,
+	chunfeng.yun@mediatek.com, wim@linux-watchdog.org,
+	linux@roeck-us.net, sean.wang@mediatek.com,
+	zhiyong.tao@mediatek.com, andrew-ct.chen@mediatek.com,
+	lala.lin@mediatek.com, jitao.shi@mediatek.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-pwm@vger.kernel.org,
+	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-watchdog@vger.kernel.org,
+	Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH v6 07/11] dt-bindings: usb: Support MediaTek MT8189 evb
+ board xhci
+Message-ID: <20251031-overbid-renounce-e6f3b03ee18f@spud>
+References: <20251030134541.784011-1-jh.hsu@mediatek.com>
+ <20251030134541.784011-8-jh.hsu@mediatek.com>
+ <20251030-underwent-courier-1f4322e1cb34@spud>
+ <20251031-nifty-sticky-hoatzin-eeafeb@kuoka>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="YeQbD5mvaLkqbUCf"
+Content-Disposition: inline
+In-Reply-To: <20251031-nifty-sticky-hoatzin-eeafeb@kuoka>
+
+
+--YeQbD5mvaLkqbUCf
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251031-adxl345-allow-adxl34x-mod-v1-1-cd65749ba89c@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 31, 2025 at 11:05:08AM +0100, Jorge Marques wrote:
-> Change 'depends on INPUT_ADXL34X=n' to '!(INPUT_ADXL34X)' to allow both
-> drivers to be compiled as modules. The user then can use the blacklist
-> to block loading one.
+On Fri, Oct 31, 2025 at 09:19:26AM +0100, Krzysztof Kozlowski wrote:
+> On Thu, Oct 30, 2025 at 07:32:26PM +0000, Conor Dooley wrote:
+> > On Thu, Oct 30, 2025 at 09:44:39PM +0800, Jack Hsu wrote:
+> > > modify dt-binding for support mt8189 evb board dts node of xhci
+> > >=20
+> > > Signed-off-by: Jack Hsu <jh.hsu@mediatek.com>
+> > > ---
+> > >  .../devicetree/bindings/usb/mediatek,mtk-xhci.yaml         | 7 +++++=
++-
+> > >  1 file changed, 6 insertions(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/Documentation/devicetree/bindings/usb/mediatek,mtk-xhci.=
+yaml b/Documentation/devicetree/bindings/usb/mediatek,mtk-xhci.yaml
+> > > index 004d3ebec091..05cb6a219e5c 100644
+> > > --- a/Documentation/devicetree/bindings/usb/mediatek,mtk-xhci.yaml
+> > > +++ b/Documentation/devicetree/bindings/usb/mediatek,mtk-xhci.yaml
+> > > @@ -34,6 +34,7 @@ properties:
+> > >            - mediatek,mt8183-xhci
+> > >            - mediatek,mt8186-xhci
+> > >            - mediatek,mt8188-xhci
+> > > +          - mediatek,mt8189-xhci
+> > >            - mediatek,mt8192-xhci
+> > >            - mediatek,mt8195-xhci
+> > >            - mediatek,mt8365-xhci
+> > > @@ -119,6 +120,9 @@ properties:
+> > >    resets:
+> > >      maxItems: 1
+> > > =20
+> > > +  reset-names:
+> > > +    maxItems: 1
+> >=20
+> > Is this reset required on mt8189? Does it appear on other mediatek xhci
+> > controllers?
+>=20
+> reset was there, it is the name added for some unknown reason.
 
-> ---
-> There are two drivers for the compatible:
-> 
-> - adi,adxl345
-> 
-> * IIO: 
->   drivers/iio/accel/adxl345_core.c
->   drivers/iio/accel/adxl345_spi.c
->   drivers/iio/accel/adxl345_i2c.c
-> * Inputs:
->   drivers/input/misc/adxl34x-spi.c
->   drivers/input/misc/adxl34x-i2c.c
-> 
-> To disallows both being complied, the depends INPUT_ADXL34X=n
-> was added to ADXL345 symbols. However, it should be possible to compile
-> both as modules, then blacklist one of them in the /etc/modprobe.d/blacklist.conf
-> file. This patch changes the rule to !(INPUT_ADXL34X) to allow both as
-> modules, but still disallow INPUT_ADXL34X to be built-in and ADXL345 as
-> module.
-> 
-> The following compatibles are not shared between both drivers:
-> 
-> * IIO:
->   adi,adxl375 spi/i2c
-> * Inputs:
->   adi,adxl34x i2c
+Ah, so not helpful at all since no name is defined and therefore making
+the property unusable :)
 
-I like the idea, but I think this needs to be clearly stated in the Kconfig
-help for both symbols. So user will _know_ that in such a case it's their
-responsibility of properly made choice. On top of that you might want to
-investigate existing DTS in the kernel and see if some of the choices may be
-made at the platform / CPU level.
+--YeQbD5mvaLkqbUCf
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-With Best Regards,
-Andy Shevchenko
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaQSRnQAKCRB4tDGHoIJi
+0kPCAP96dXVUKgWcbJl1yhQ4f4EkFhlKfrn2Z7Gj6M2yxhUAZwD/XjwGvcKdjEOk
+OaeQJhtXQLUywWYtJY6pBr35YwUCWQo=
+=AXz7
+-----END PGP SIGNATURE-----
 
+--YeQbD5mvaLkqbUCf--
 

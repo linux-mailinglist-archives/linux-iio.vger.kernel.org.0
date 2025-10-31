@@ -1,201 +1,132 @@
-Return-Path: <linux-iio+bounces-25736-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25737-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3804FC24F7A
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 13:21:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C73DCC25036
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 13:32:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58F2E18940D7
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 12:21:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E35C420AFC
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 12:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5102E5B0D;
-	Fri, 31 Oct 2025 12:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E8A33F8CD;
+	Fri, 31 Oct 2025 12:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b="A4UWeNPA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NlSsEVNl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D86D2DECCC;
-	Fri, 31 Oct 2025 12:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761913276; cv=pass; b=ue7hJm0qrGXBDz8odRvQM2hRrxzEwFsz1CuLHukhMy7vFQi1cVMv2LTY8CEjylD56+9JdWk0mKduo9emMQOdDzXHxSw1zNatyht7tEezeWSNasR8POfhjgdCcFK1jAbtgn1akdSRwHvmRE9MjyDPjA8Evh9gGc80ksYvcE0Qww0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761913276; c=relaxed/simple;
-	bh=Scd1u7SC+wtoF8qRLRcLirPesMqeM0t7KGRqqRm5fyc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=phm11EargheRv52m2+A5buZZJ5lUJ5YVaFoYgzeYnJ9Tp5m+ukVSe4ZqtVTaovPnTZbulAeXXyekt/4QzliecKdqZudqCgYvFO2zQmIoZlNXY1T5CKZmiXb1im+6QPoHL4ZlLVo/D9QlCgymVbccLmLLRpqTvRN7e0gNCNot3F8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b=A4UWeNPA; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1761913244; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=NYrVCdrwtfSvlZFvJ04ri1DzX5zX+b3GD79h1D4eMLRK+QMF1d9Gjbk8uTIAj+zGkoAJb4xaZTd/j1SKn6x8IK0jf3mmTSZh9ocQNSkaoj8VVjZyc7G3isqnk3DQmngoLqesqxv0omMYcrVZgkFvc1SYkhP58fLyamktkuJfyOY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1761913244; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=5zTIt+rAoBvPMQKP7EcQfAbiSRLViWy6hR5zucTP3Kg=; 
-	b=AgWKks5HGuNLTYPTjTAo5RCmaBhczJXzyVAtAdFgJz8BxzBx+cwzJHjph843CcGQXnWeWPtf7Q8W0SlTY33D8w9KfOJwvB7zcWpzLy6AQXNq1dkKkUCC6zJA7KFpDOgpSvpjaFh7Eomwvdcc05286lfR8CLt+2MNKlx2YyGs6C4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
-	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1761913244;
-	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-	bh=5zTIt+rAoBvPMQKP7EcQfAbiSRLViWy6hR5zucTP3Kg=;
-	b=A4UWeNPA23M7lsIukrsOH7bMGSKligZV1HnaAwV2DdWV6EclFAbHWF/fr7a0+yW4
-	pdvNPakawyFW5CNuDHtiQm/hXB/U1P5eEW3+7psTi3EP3NA138ZJQRXZv9sVLSpjS3H
-	44DG+udYIh/AlEO1zDtzVvp5ZbKgIWSirRZCQXm8=
-Received: by mx.zohomail.com with SMTPS id 1761913243469405.4251213598277;
-	Fri, 31 Oct 2025 05:20:43 -0700 (PDT)
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Lee Jones <lee@kernel.org>, William Breathitt Gray <wbg@kernel.org>,
- Johan Jonker <jbx6244@yandex.com>
-Cc: kernel@collabora.com, Jonas Karlman <jonas@kwiboo.se>,
- Alexey Charkov <alchark@gmail.com>, linux-rockchip@lists.infradead.org,
- linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] mfd: Add Rockchip mfpwm driver
-Date: Fri, 31 Oct 2025 13:20:37 +0100
-Message-ID: <3598089.ElGaqSPkdT@workhorse>
-In-Reply-To: <16341fe2-7d2b-45a6-a861-93950c1bbd1f@yandex.com>
-References:
- <20251027-rk3576-pwm-v3-0-654a5cb1e3f8@collabora.com>
- <20251027-rk3576-pwm-v3-2-654a5cb1e3f8@collabora.com>
- <16341fe2-7d2b-45a6-a861-93950c1bbd1f@yandex.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67AC2773CC
+	for <linux-iio@vger.kernel.org>; Fri, 31 Oct 2025 12:31:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761913861; cv=none; b=WAo3/mfpbKByc/GPvWLvEArhrsyYcVOX+xCa/U/OYhNAdeTiBWa/Qwg+H5CidZxXlsisUFNAksFoK+yddaBhPKy9ZUoDIYeeONBR7YLGWxTYAmjasg6eDEPdNt+EItqKOCdZSMOUVx71hxcQ6GG4jPF6KYsVFlkNiGrRIv8gnPc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761913861; c=relaxed/simple;
+	bh=jWiOqwF7DWrzPKoJfUyuoXIXrfNLEtkDJ9x6KviWuyA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jkV5IS4MYE2ukylSlGMFx/vQXF5CTBhDoqE7OlDCIIfpcOvEe63s9Z1DjqzxvcX5yM5FUbPWM60aNRd5Ip5mCtcJCOD3UMKVJtTaRp9eT+iMcl4KZydM1OOXRGjT6h2YcoV/NtFwHknzP9jev8EgskrR6iJs4qxqBjVsJJQLhyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NlSsEVNl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 829F1C4CEFB;
+	Fri, 31 Oct 2025 12:31:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761913861;
+	bh=jWiOqwF7DWrzPKoJfUyuoXIXrfNLEtkDJ9x6KviWuyA=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=NlSsEVNlRcFbg1QbcKmpQ0aWlrYHOOQWEr2hdI3+7utcV4LPoKJnVy2HR8t4OJXB7
+	 4zuuYjZFaDh4kQooW74b8Ez/sWlKuBbV8iW4rxAjVp52iOa468JSGzIP8Dw5qLAz6T
+	 nVbIRKKSBoCGYH0KuktSpiprBu1vc4X3TDLLEUq0Q/L+Rz2xjb9yF5Q0MaR57zJk8l
+	 Labjrg6hlXJePwseXZzhRscCIQCOCT05nTSEDIAu+EnnA3RsrbahekqNV8VNl0Eb6f
+	 iM54Pxz11HNO5FVhgs/gPzSFHdujQCWY9xiNTS3kZxelttUViW1rvyOpL3A4vRgcfv
+	 XtUI1ZEhgd3BQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A3CDCCF9FE;
+	Fri, 31 Oct 2025 12:31:01 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v3 00/10] iio: dac: ad5446: Refactor and add support for
+ AD5542
+Date: Fri, 31 Oct 2025 12:31:21 +0000
+Message-Id: <20251031-dev-add-ad5542-v3-0-d3541036c0e6@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABmsBGkC/3WMvQ7CIBRGX6Vh9hr+2oKT72EcKNy2JAoGDNE0f
+ XdpJx0cvuF8yTkLyZg8ZnJqFpKw+OxjqCAODbGzCROCd5UJp7xllElwWMA4V9e2koOySgvpUFF
+ EUqVHwtG/9uDlWnn2+RnTe+8Xtr1/U4UBAzs6pns3UGHo2QRzi9PRxjvZWoV/+VxsnpQdDD44H
+ 6YMhQMF3o9m0EozVN1PYF3XD1d62QvuAAAA
+X-Change-ID: 20251014-dev-add-ad5542-8c8934de80ee
+To: linux-iio@vger.kernel.org
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ Andy Shevchenko <andy@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761913895; l=2096;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=jWiOqwF7DWrzPKoJfUyuoXIXrfNLEtkDJ9x6KviWuyA=;
+ b=HdkM0cxlCm7NuBbo9wGO1HJgCRkwWc5wkUaHkJt+OFwAO9XQM9LcDX4iQ7IQ/v36fkuElw8aS
+ Ot1UkRIHWfjAFYDMrhM9iDZ1Y0Gt4xM1v5yfiWjzYKmV5ZPLOMqDEzs
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-On Tuesday, 28 October 2025 19:52:53 Central European Standard Time Johan J=
-onker wrote:
->=20
-> On 10/27/25 18:11, Nicolas Frattaroli wrote:
-> > With the Rockchip RK3576, the PWM IP used by Rockchip has changed
-> > substantially. Looking at both the downstream pwm-rockchip driver as
-> > well as the mainline pwm-rockchip driver made it clear that with all its
-> > additional features and its differences from previous IP revisions, it
-> > is best supported in a new driver.
-> >=20
-> > This brings us to the question as to what such a new driver should be.
-> > To me, it soon became clear that it should actually be several new
-> > drivers, most prominently when Uwe Kleine-K=C3=B6nig let me know that I
-> > should not implement the pwm subsystem's capture callback, but instead
-> > write a counter driver for this functionality.
-> >=20
-> > Combined with the other as-of-yet unimplemented functionality of this
-> > new IP, it became apparent that it needs to be spread across several
-> > subsystems.
-> >=20
-> > For this reason, we add a new MFD core driver, called mfpwm (short for
-> > "Multi-function PWM"). This "parent" driver makes sure that only one
-> > device function driver is using the device at a time, and is in charge
-> > of registering the MFD cell devices for the individual device functions
-> > offered by the device.
-> >=20
-> > An acquire/release pattern is used to guarantee that device function
-> > drivers don't step on each other's toes.
-> >=20
-> > Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-> > ---
-> >  MAINTAINERS                        |   2 +
-> >  drivers/mfd/Kconfig                |  15 ++
-> >  drivers/mfd/Makefile               |   1 +
-> >  drivers/mfd/rockchip-mfpwm.c       | 340 +++++++++++++++++++++++++++
-> >  include/linux/mfd/rockchip-mfpwm.h | 454 +++++++++++++++++++++++++++++=
-++++++++
-> >  5 files changed, 812 insertions(+)
-> >=20
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index baecabab35a2..8f3235ba825e 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -22372,6 +22372,8 @@ L:	linux-rockchip@lists.infradead.org
-> >  L:	linux-pwm@vger.kernel.org
-> >  S:	Maintained
->=20
-> >  F:	Documentation/devicetree/bindings/pwm/rockchip,rk3576-pwm.yaml
->=20
-> A question not so much for Nicolas specific:
-> The yaml documents already have a 'maintainers' entry.
-> However MAINTAINERS is full yaml entries.
-> Could someone explain why we still need dual registration?
->=20
-> maintainers:
->   - Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
->=20
-> > +F:	drivers/soc/rockchip/mfpwm.c
-> > +F:	include/soc/rockchip/mfpwm.h
->=20
-> different file name and location?
->=20
->   drivers/mfd/rockchip-mfpwm.c       | 340 +++++++++++++++++++++++++++
->   include/linux/mfd/rockchip-mfpwm.h | 454 ++++++++++++++++++++++++++++++=
-+++++++
->=20
->=20
+Alright, what was suposed to be a simple one liner patch ended up being
+a full refactor (modernization) of the whole thing :). I think the
+changes are anyways fairly simple so hopefully nothing was broken.
 
-Yeah, I forgot to adjust this when moving this to being an MFD.
-I'll fix it in v4.
+I'm also aware of the checkpatch failure in Patch 6 ("iio: dac: ad5446:
+Separate I2C/SPI into different drivers") but I'm really not seeing the
+added value of adding the kconfig help text to the core symbol. 
 
-> > [... snip ...]
-> > diff --git a/drivers/mfd/rockchip-mfpwm.c b/drivers/mfd/rockchip-mfpwm.c
-> > new file mode 100644
-> > index 000000000000..08c2d8da41b7
-> > --- /dev/null
-> > +++ b/drivers/mfd/rockchip-mfpwm.c
-> > [... snip ...]
-> > +
-> > +static int mfpwm_register_subdevs(struct rockchip_mfpwm *mfpwm)
-> > +{
-> > +	int ret;
-> > +
->=20
-> > +	ret =3D mfpwm_register_subdev(mfpwm, "pwm-rockchip-v4");
->=20
-> Not sure who came up with this name?
+---
+Changes in v3:
+- Patch 1:
+   * Changed commit message as suggested by Conor;
+   * Dropped formatting on the binding description;
+   * Used typical Analog title in MAINTAINERS entry.
+- Patch 2-4, 6-9
+   * New patches.
+- Link to v2: https://lore.kernel.org/r/20251023-ad5446-bindings-v2-0-27fab9891e86@analog.com
 
-I did.
+---
+Michael Hennerich (1):
+      iio: dac: ad5446: Add AD5542 to the spi id table
 
-> In case we need to filter wouldn't be easier to order it just like the bi=
-ndings: manufacture '-' function
+Nuno Sá (9):
+      dt-bindings: iio: dac: Document AD5446 and similar devices
+      iio: dac: ad5446: Use DMA safe buffer for transfers
+      iio: dac: ad5446: Don't ignore missing regulator
+      iio: dac: ad5446: Move to single chip_info structures
+      iio: dac: ad5456: Add missing DT compatibles
+      iio: dac: ad5446: Separate I2C/SPI into different drivers
+      iio: dac: ad5446: Make use of devm_mutex_init()
+      iio: dac: ad5446: Make use of the cleanup helpers
+      iio: dac: ad5446: Fix coding style issues
 
-It's based on the filename of the pwm output driver. pwm-rockchip.c
-is already taken by v1 to v3 hardware. Apparently however, pwm
-subsystem drivers then reverse the order in the driver name, so
-`pwm-rockchip.c` registers a driver with the name `rockchip-pwm`.
+ .../devicetree/bindings/iio/dac/adi,ad5446.yaml    | 138 ++++++
+ MAINTAINERS                                        |  12 +
+ drivers/iio/dac/Kconfig                            |  31 +-
+ drivers/iio/dac/Makefile                           |   2 +
+ drivers/iio/dac/ad5446-i2c.c                       |  99 ++++
+ drivers/iio/dac/ad5446-spi.c                       | 254 +++++++++++
+ drivers/iio/dac/ad5446.c                           | 498 +++------------------
+ drivers/iio/dac/ad5446.h                           |  76 ++++
+ 8 files changed, 663 insertions(+), 447 deletions(-)
+---
+base-commit: 4b17a60d1e1c2d9d2ccbd58642f6f4ac2fa364ba
+change-id: 20251014-dev-add-ad5542-8c8934de80ee
+--
 
-So I'll rename my PWM output driver to `rockchip-pwm-v4`. The v4
-stays, it refers to the hardware IP revision.
-
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret =3D mfpwm_register_subdev(mfpwm, "rockchip-pwm-capture");
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > [... snip ...]
-
-Kind regards,
-Nicolas Frattaroli
-
-
+Thanks!
+- Nuno Sá
 
 
 

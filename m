@@ -1,163 +1,201 @@
-Return-Path: <linux-iio+bounces-25735-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25736-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C7AC24D1E
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 12:44:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3804FC24F7A
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 13:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93CF13BA0C2
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 11:43:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58F2E18940D7
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 12:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFB8346E51;
-	Fri, 31 Oct 2025 11:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5102E5B0D;
+	Fri, 31 Oct 2025 12:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="g+MiLl4E"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b="A4UWeNPA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AD0346A19
-	for <linux-iio@vger.kernel.org>; Fri, 31 Oct 2025 11:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761911030; cv=none; b=SbI6KHGa5JItSX4EVzQbmNCSi+BASgrAoNma8plJOlQDZPPSA8vXeUxTwoMu7HSBGMW8hi4Ae8vYNCYHYdCLtQJwiPzdp9V0fevB5bgtXFleTEugjWd0714YfaIJ7OLUDlNS633cLOGF55xjqjp96WD/TkneWqQpEdv8NYXkG0k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761911030; c=relaxed/simple;
-	bh=UJ99E57Gzp44AGQUn/uVwSyKH+gfNwxwFBUmawztNas=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RkT1ZyKZCkxhpA0L4LQjTNSN3EUOv5J7t60aYu9g8pqKjV7EPyjulpAjDggIma/rSWqRQmAxasUuepIMsY2hEqH+wNgbkgy6FIVZgTpYvcfxOR911CAT7h/+eTudVP2MoQOP1J97Ie1Jcvxu2pKgrVlQh7YbzRj1UfTwgzG/arI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=g+MiLl4E; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b6d5c59f2b6so546918366b.2
-        for <linux-iio@vger.kernel.org>; Fri, 31 Oct 2025 04:43:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1761911026; x=1762515826; darn=vger.kernel.org;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UJ99E57Gzp44AGQUn/uVwSyKH+gfNwxwFBUmawztNas=;
-        b=g+MiLl4ECgQs/h5TEvuS60ZTVFHktP9d4oIrlytxgYYaIG1E8jMlmItbXtX6UfHy0U
-         aJ1yx6g0hDH6PWuJjtMnN0SzFaV3ndx3gpw/99nRlkNQCAOjqWBFUDW4PhWrV178baiH
-         0G0V7Fv0jZsQvrrqy2tapEYtu5cXIYgD+G6cRt/MdTtuyzzmm0eeHK8bpEVtk7s35l4n
-         53qPiYqWs+p/RDMT/+WGsbhBhz1ENqHutMZ08S8IRLewJnAWB22ucBx6WZ/9P0VsTFxC
-         sDBjxgExN6oFZVwET3Bisv+U8o23ccijagGX2/TWg4EOyo+SKbz2vXMIK0ldsHJIO4eI
-         grHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761911026; x=1762515826;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UJ99E57Gzp44AGQUn/uVwSyKH+gfNwxwFBUmawztNas=;
-        b=YhzZQOXwvgd/Lwf9nU46H9ns/staI2Sqjqw4d/NgFt7MXTceMKZrz6s2t0CosFQYFP
-         Egz82TQvB6aRn3wvr4kwPlN4+OtpSaRcPgNhPlKdPkb4x86vahOqOP87UOTkHosomEnG
-         CAi28jXso455jYJF4suN/sz6RwnIcrz/Z+6zl+CLXLYFoec0a9BoKS5ERKpb/543QPdl
-         12nqJk3Uoy0M2ELfh5bYI1eSX4Tue7hTUeFeK+3TRPioNj7jlqpRoEHkuvH6Unlpe6Yp
-         I6em7rj+RjtrQAi36XoJU2M1WEcsczC4S0DIUUHCQqRqAg6AwM6vrrWHgmAtideLBIuJ
-         0H3A==
-X-Forwarded-Encrypted: i=1; AJvYcCWEyZK9RPYgUhKP9Ol/jf4BPDQakmrCojuXYyByYWtaGJRT5EDf7/eO/x0C15wFjsUZVnLR6cpPPQ0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxgn3whNyLv6/eSjflmFCzd/3uGpHKnYYi6RqmIX1e00DQnzm+R
-	RF8hM+c5yFmNHrDPMuavl+DFWr7A/UIIqcWAXFtIZkTuS/HPO2Zyq4c1tb3mAla7nSk=
-X-Gm-Gg: ASbGncvleZYkC9N7vrLjVSOxuuzvEgidW3er9GAbtb7UJNPoxUfNsWOwisFg7KUsgUz
-	Q4v+ylR1CDyMSqw8c96Xg+AtrF7Rze740jgN+obkTpYuVPThFMzEgpfBCQP56QkxV5d4khgMCnj
-	Zwl+RamHn9cadnnNHUyVBG6rhgxiNXKSc8Ht1npmahH0qSkkLVP35QnU9Wykv6bnbBl4s9lX8t9
-	kYKVA0z3XzHyaZMug1GNW3YOYJhlQ6DMIVNDkijbPV/TGALDvbNOmcGByKE+EkqLKYme55l4ukH
-	zQS551ZRS4agDOLz7k+SlBm50/nvY+mBnuMKnUmy31dKs303DbjRDbN7gMJ8N4Q+5W+yY8BQTQ6
-	gJoFyazEN3JchRwK7wjuaXGrPcRhUVwiaU5M1kf6g3heZyKudlX9rJkF73nasFvqkmasXNChN7d
-	4uUaFVY2NyCy6CcBED76vXe05S7YChwZBqlgwW9Dxb547ArYgoPh3ywXKFQj6y
-X-Google-Smtp-Source: AGHT+IGl6cehL2XT1Dt5ia4ja85e/cEaMvBzQav3xw1vRSFclSEFYe2UzFwP/UMKQjClT0kQ7aJFMw==
-X-Received: by 2002:a17:907:3d4c:b0:b3c:3c8e:189d with SMTP id a640c23a62f3a-b70704bc39cmr359300066b.32.1761911025762;
-        Fri, 31 Oct 2025 04:43:45 -0700 (PDT)
-Received: from [10.203.83.168] (mob-176-247-67-93.net.vodafone.it. [176.247.67.93])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7077c3ad2fsm153616966b.42.2025.10.31.04.43.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Oct 2025 04:43:45 -0700 (PDT)
-Message-ID: <e82fc48fadc89014764ad3c0c5f07d0075cf6748.camel@baylibre.com>
-Subject: Re: [PATCH 1/9] iio: imu: st_lsm6dsx: dynamically initialize
- iio_chan_spec data
-From: Francesco Lavra <flavra@baylibre.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Jonathan Cameron
- <jic23@kernel.org>,  David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 31 Oct 2025 12:43:39 +0100
-In-Reply-To: <aQR0Iy2UJn9-XxpG@smile.fi.intel.com>
-References: <20251030072752.349633-1-flavra@baylibre.com>
-	 <20251030072752.349633-2-flavra@baylibre.com> <aQOVcCinTd-ZJJX3@lore-desk>
-	 <3e7944588d3011b6a144d70ab9027a05a1e230d0.camel@baylibre.com>
-	 <aQR0Iy2UJn9-XxpG@smile.fi.intel.com>
-Organization: BayLibre
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-FBmvEx+jh5329MlkkTEj"
-User-Agent: Evolution 3.46.4-2 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D86D2DECCC;
+	Fri, 31 Oct 2025 12:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761913276; cv=pass; b=ue7hJm0qrGXBDz8odRvQM2hRrxzEwFsz1CuLHukhMy7vFQi1cVMv2LTY8CEjylD56+9JdWk0mKduo9emMQOdDzXHxSw1zNatyht7tEezeWSNasR8POfhjgdCcFK1jAbtgn1akdSRwHvmRE9MjyDPjA8Evh9gGc80ksYvcE0Qww0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761913276; c=relaxed/simple;
+	bh=Scd1u7SC+wtoF8qRLRcLirPesMqeM0t7KGRqqRm5fyc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=phm11EargheRv52m2+A5buZZJ5lUJ5YVaFoYgzeYnJ9Tp5m+ukVSe4ZqtVTaovPnTZbulAeXXyekt/4QzliecKdqZudqCgYvFO2zQmIoZlNXY1T5CKZmiXb1im+6QPoHL4ZlLVo/D9QlCgymVbccLmLLRpqTvRN7e0gNCNot3F8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b=A4UWeNPA; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1761913244; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=NYrVCdrwtfSvlZFvJ04ri1DzX5zX+b3GD79h1D4eMLRK+QMF1d9Gjbk8uTIAj+zGkoAJb4xaZTd/j1SKn6x8IK0jf3mmTSZh9ocQNSkaoj8VVjZyc7G3isqnk3DQmngoLqesqxv0omMYcrVZgkFvc1SYkhP58fLyamktkuJfyOY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1761913244; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=5zTIt+rAoBvPMQKP7EcQfAbiSRLViWy6hR5zucTP3Kg=; 
+	b=AgWKks5HGuNLTYPTjTAo5RCmaBhczJXzyVAtAdFgJz8BxzBx+cwzJHjph843CcGQXnWeWPtf7Q8W0SlTY33D8w9KfOJwvB7zcWpzLy6AQXNq1dkKkUCC6zJA7KFpDOgpSvpjaFh7Eomwvdcc05286lfR8CLt+2MNKlx2YyGs6C4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
+	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1761913244;
+	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+	bh=5zTIt+rAoBvPMQKP7EcQfAbiSRLViWy6hR5zucTP3Kg=;
+	b=A4UWeNPA23M7lsIukrsOH7bMGSKligZV1HnaAwV2DdWV6EclFAbHWF/fr7a0+yW4
+	pdvNPakawyFW5CNuDHtiQm/hXB/U1P5eEW3+7psTi3EP3NA138ZJQRXZv9sVLSpjS3H
+	44DG+udYIh/AlEO1zDtzVvp5ZbKgIWSirRZCQXm8=
+Received: by mx.zohomail.com with SMTPS id 1761913243469405.4251213598277;
+	Fri, 31 Oct 2025 05:20:43 -0700 (PDT)
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Lee Jones <lee@kernel.org>, William Breathitt Gray <wbg@kernel.org>,
+ Johan Jonker <jbx6244@yandex.com>
+Cc: kernel@collabora.com, Jonas Karlman <jonas@kwiboo.se>,
+ Alexey Charkov <alchark@gmail.com>, linux-rockchip@lists.infradead.org,
+ linux-pwm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] mfd: Add Rockchip mfpwm driver
+Date: Fri, 31 Oct 2025 13:20:37 +0100
+Message-ID: <3598089.ElGaqSPkdT@workhorse>
+In-Reply-To: <16341fe2-7d2b-45a6-a861-93950c1bbd1f@yandex.com>
+References:
+ <20251027-rk3576-pwm-v3-0-654a5cb1e3f8@collabora.com>
+ <20251027-rk3576-pwm-v3-2-654a5cb1e3f8@collabora.com>
+ <16341fe2-7d2b-45a6-a861-93950c1bbd1f@yandex.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-
---=-FBmvEx+jh5329MlkkTEj
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, 2025-10-31 at 10:32 +0200, Andy Shevchenko wrote:
-> On Fri, Oct 31, 2025 at 09:26:19AM +0100, Francesco Lavra wrote:
-> > On Thu, 2025-10-30 at 17:42 +0100, Lorenzo Bianconi wrote:
+On Tuesday, 28 October 2025 19:52:53 Central European Standard Time Johan J=
+onker wrote:
 >=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chan->ext_info =3D st_ls=
-m6dsx_ext_info;
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (id =3D=3D ST_LSM6DSX=
-_ID_ACC) {
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0if (hw->settings->event_settings.wakeup_reg.addr) {
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (id =3D=3D ST_LSM6=
-DSX_ID_ACC &&
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hw=
-->settings->event_settings.wakeup_reg.addr) {
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ..=
-.
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> On 10/27/25 18:11, Nicolas Frattaroli wrote:
+> > With the Rockchip RK3576, the PWM IP used by Rockchip has changed
+> > substantially. Looking at both the downstream pwm-rockchip driver as
+> > well as the mainline pwm-rockchip driver made it clear that with all its
+> > additional features and its differences from previous IP revisions, it
+> > is best supported in a new driver.
 > >=20
-> > In patch 4/9, the inner conditional will be replaced by more generic
-> > code,
-> > so we would revert to if (id =3D=3D ST_LSM6DSX_ID_ACC) [...]
+> > This brings us to the question as to what such a new driver should be.
+> > To me, it soon became clear that it should actually be several new
+> > drivers, most prominently when Uwe Kleine-K=C3=B6nig let me know that I
+> > should not implement the pwm subsystem's capture callback, but instead
+> > write a counter driver for this functionality.
+> >=20
+> > Combined with the other as-of-yet unimplemented functionality of this
+> > new IP, it became apparent that it needs to be spread across several
+> > subsystems.
+> >=20
+> > For this reason, we add a new MFD core driver, called mfpwm (short for
+> > "Multi-function PWM"). This "parent" driver makes sure that only one
+> > device function driver is using the device at a time, and is in charge
+> > of registering the MFD cell devices for the individual device functions
+> > offered by the device.
+> >=20
+> > An acquire/release pattern is used to guarantee that device function
+> > drivers don't step on each other's toes.
+> >=20
+> > Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+> > ---
+> >  MAINTAINERS                        |   2 +
+> >  drivers/mfd/Kconfig                |  15 ++
+> >  drivers/mfd/Makefile               |   1 +
+> >  drivers/mfd/rockchip-mfpwm.c       | 340 +++++++++++++++++++++++++++
+> >  include/linux/mfd/rockchip-mfpwm.h | 454 +++++++++++++++++++++++++++++=
+++++++++
+> >  5 files changed, 812 insertions(+)
+> >=20
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index baecabab35a2..8f3235ba825e 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -22372,6 +22372,8 @@ L:	linux-rockchip@lists.infradead.org
+> >  L:	linux-pwm@vger.kernel.org
+> >  S:	Maintained
 >=20
-> Hmm... The obvious follow up question is why can't we stick with the
-> original
-> conditional to begin with?
+> >  F:	Documentation/devicetree/bindings/pwm/rockchip,rk3576-pwm.yaml
+>=20
+> A question not so much for Nicolas specific:
+> The yaml documents already have a 'maintainers' entry.
+> However MAINTAINERS is full yaml entries.
+> Could someone explain why we still need dual registration?
+>=20
+> maintainers:
+>   - Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+>=20
+> > +F:	drivers/soc/rockchip/mfpwm.c
+> > +F:	include/soc/rockchip/mfpwm.h
+>=20
+> different file name and location?
+>=20
+>   drivers/mfd/rockchip-mfpwm.c       | 340 +++++++++++++++++++++++++++
+>   include/linux/mfd/rockchip-mfpwm.h | 454 ++++++++++++++++++++++++++++++=
++++++++
+>=20
+>=20
 
-There is no original conditional, this is new code.
-So the code here is `if (cond1) {if (cond2) {}}`; in patch 4/9 it will
-become `if (cond1) {something else}`.
-Or, better yet, as you suggested earlier, in the next revision the code
-here will be `if (cond1) helper()`, and in the patch 4/9 this will stay the
-same and only the code inside the helper will change.
+Yeah, I forgot to adjust this when moving this to being an MFD.
+I'll fix it in v4.
+
+> > [... snip ...]
+> > diff --git a/drivers/mfd/rockchip-mfpwm.c b/drivers/mfd/rockchip-mfpwm.c
+> > new file mode 100644
+> > index 000000000000..08c2d8da41b7
+> > --- /dev/null
+> > +++ b/drivers/mfd/rockchip-mfpwm.c
+> > [... snip ...]
+> > +
+> > +static int mfpwm_register_subdevs(struct rockchip_mfpwm *mfpwm)
+> > +{
+> > +	int ret;
+> > +
+>=20
+> > +	ret =3D mfpwm_register_subdev(mfpwm, "pwm-rockchip-v4");
+>=20
+> Not sure who came up with this name?
+
+I did.
+
+> In case we need to filter wouldn't be easier to order it just like the bi=
+ndings: manufacture '-' function
+
+It's based on the filename of the pwm output driver. pwm-rockchip.c
+is already taken by v1 to v3 hardware. Apparently however, pwm
+subsystem drivers then reverse the order in the driver name, so
+`pwm-rockchip.c` registers a driver with the name `rockchip-pwm`.
+
+So I'll rename my PWM output driver to `rockchip-pwm-v4`. The v4
+stays, it refers to the hardware IP revision.
+
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret =3D mfpwm_register_subdev(mfpwm, "rockchip-pwm-capture");
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > [... snip ...]
+
+Kind regards,
+Nicolas Frattaroli
 
 
---=-FBmvEx+jh5329MlkkTEj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
 
------BEGIN PGP SIGNATURE-----
 
-iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmkEoOsACgkQ7fE7c86U
-Nl98lgv+KTuhsLEtskTA1c/naduRtBbctpqlwzDeaO1NTVgCmG0pbKRDd3KuZKKK
-LHR1671fi14G9/6bUo4Upr5cD0DHtq1FDy4IS4EaGubI/Ghhng0D22nsCFQfyobE
-c4sytsvcZWAlTNfLjkl+6dv+rgRLPRo0hc4bUPZyCiaZ4GOtDa5x7/q0uEI5ppbM
-J/AUWtkuWrclvNrDwSxM0oMms38//x61K2yytp0/p7h4dX5mFeYeTNvb28tdgU3V
-LcIWQKAGlfN9kzp8Hv6tkLhd+LMg/ldETJwlC15a/s7yjImWTzXjOSLMY1ysUVYK
-BEmKuXY/QxmseguaVn3tE6gh06xYFMk2gyFB01sGA3iq6ReU6RBqmRaqmKCuilei
-f96po3OQhbC4m0LRj6gBMebmPYqc75YQmstaJ0JuluohwEt8Z/s6G1+Ib1zDhq+q
-hIG7hL+lRIHl5X0OBZEe6uPL6lkAGGsUJwS+hzWBgmgEgMJ1UM4yRsWp5z6/hj1i
-rWoqhItx
-=t1lv
------END PGP SIGNATURE-----
-
---=-FBmvEx+jh5329MlkkTEj--
 

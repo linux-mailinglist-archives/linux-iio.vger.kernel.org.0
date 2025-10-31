@@ -1,162 +1,109 @@
-Return-Path: <linux-iio+bounces-25761-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25762-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA663C25CA5
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 16:15:18 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEE8C25E5E
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 16:50:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0EF0188AC14
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 15:08:56 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 98CF434FC54
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 15:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8939A220F5D;
-	Fri, 31 Oct 2025 15:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kR0murrP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1123C2E62A6;
+	Fri, 31 Oct 2025 15:50:22 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53951DD543
-	for <linux-iio@vger.kernel.org>; Fri, 31 Oct 2025 15:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05A521FF35
+	for <linux-iio@vger.kernel.org>; Fri, 31 Oct 2025 15:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761923306; cv=none; b=HtFu1ApV93r/JZR2fhV4QdWLO9JQ7B3zzk7Tzu9Kx/6otno1WCgMmBYbPa0pfDHpu7CiPsBf7rJU3qzyOgylXwDg3OW20CSpsxw/GJjjGGTRe8/19sO6j/ja/qc/+0zpsq85RY9ULSimZr4WDThuUoLwR9NAPr576rDAZQyjwmw=
+	t=1761925821; cv=none; b=YnDcHzlzlvhem9ocq3YzRuW6WzsGxFJcTZMghRBGcmRvP+y/OQTnsgiSMXFRN+6XdJp6JcMBNfAk2qgJMFzknq8ggChGuGCsLSR57lL4C4uvdI8w6x8KRRG5sbdrwOiQBm9Hq4FPNC7J22RI1Mbc20uJ9NATYXR1HDHb19+nHD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761923306; c=relaxed/simple;
-	bh=djnlzVgOMsmSB/nqXGgvUll0Ew/fU2Sig1E37NvoEP8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=okPDz7Xx2BreB+cCOo/y95IZg+DH26XXts85KcPVHY2nIENHxdBAlfC3lOwuVSItDiEDYnrNzyk/AewScOQaYLVB4XnHbjp9o3bRR6+cRNIUAdaYqce4sbOyjsA16wx/NVfYHE07iU61tj1efnivNThPIJCi++fw12YGoihtNGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kR0murrP; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761923304; x=1793459304;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=djnlzVgOMsmSB/nqXGgvUll0Ew/fU2Sig1E37NvoEP8=;
-  b=kR0murrPPAnxHGbPTDskKineC1MHiytMqbHt+EwU9C05PMFa74cKGzYl
-   swYM8nfhtDoyMKi+Ro5lckRIenum1hfGTXbby9UelP6EY6M6hYhps/M1f
-   Pk2epQIgW3pyqa4IOHWHtXT0Bw5YSBAtwZoPcGF6CARTG11L9CE+WLSco
-   72IkmZp5ONN++t4LUz39AR6d5vW2Bwl5fDVbBfxd9eYN96AyJ6ga9DXqb
-   beuvyCFHIT49RBTuA1HsHjP5Rg8g+RKNlXlnYxCafAo/5e2RZwc5MvLNz
-   nby6CCik8/9sQuqjsabEEOht1lw0dDbUan+DeFdXv7cjNcY1tPp0EiCV7
-   A==;
-X-CSE-ConnectionGUID: 7OQzDZtGSqiGDtW1r3KMFg==
-X-CSE-MsgGUID: NKOcSP6DTY+3sIuuSJ2nnw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="63105584"
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="63105584"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 08:08:23 -0700
-X-CSE-ConnectionGUID: HV3c+yEdQRKvuC55zenVpw==
-X-CSE-MsgGUID: jg/uTV+JQ/ygxQGgnQ3Bqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="190603798"
-Received: from mgoodin-mobl3.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.66])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 08:08:22 -0700
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vEqji-00000004Iw0-0H7f;
-	Fri, 31 Oct 2025 17:08:18 +0200
-Date: Fri, 31 Oct 2025 17:08:17 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v3 04/10] iio: dac: ad5446: Move to single chip_info
- structures
-Message-ID: <aQTQ4Zn3W99ZZITL@smile.fi.intel.com>
+	s=arc-20240116; t=1761925821; c=relaxed/simple;
+	bh=5B9WvgHjgL985Md9AgrbSfI8j9AjLdP3Z4IB72DZ6O0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H5l3yka9ef1c3jI+q8Y65yCHRgNYtYt7yYAIMHPDy9puT1mSnUPLO4omQp9aeXL7R/p5DBlpRe9SSlgjiKaM3ZRQjVL3YAfrVzZZLT3cEGwgnxl0eSEt5yssUKriUseiYPFDGgYQYdRJhIowa1WlnHDHh/8w0he0M9/t/J3RqGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cylhY67Hgz6GD5P;
+	Fri, 31 Oct 2025 23:46:37 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7EDFB1402F3;
+	Fri, 31 Oct 2025 23:50:16 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 31 Oct
+ 2025 15:50:15 +0000
+Date: Fri, 31 Oct 2025 15:50:14 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+CC: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>, <nuno.sa@analog.com>,
+	<linux-iio@vger.kernel.org>, Michael Hennerich
+	<Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, "David
+ Lechner" <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH v3 02/10] iio: dac: ad5446: Use DMA safe buffer for
+ transfers
+Message-ID: <20251031155014.000018c7@huawei.com>
+In-Reply-To: <aQTQtUUQpWY_L5q1@smile.fi.intel.com>
 References: <20251031-dev-add-ad5542-v3-0-d3541036c0e6@analog.com>
- <20251031-dev-add-ad5542-v3-4-d3541036c0e6@analog.com>
- <aQS9-NofUjxBoPyu@smile.fi.intel.com>
- <c7fa340961e12157d7a2ee67177e02e81e523aa3.camel@gmail.com>
+	<20251031-dev-add-ad5542-v3-2-d3541036c0e6@analog.com>
+	<aQS7YIxYH2suDmoS@smile.fi.intel.com>
+	<83da9af88f23bc87c558e220d7d1a32a0d91403d.camel@gmail.com>
+	<aQTQtUUQpWY_L5q1@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c7fa340961e12157d7a2ee67177e02e81e523aa3.camel@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Fri, Oct 31, 2025 at 03:05:41PM +0000, Nuno Sá wrote:
-> On Fri, 2025-10-31 at 15:47 +0200, Andy Shevchenko wrote:
-> > On Fri, Oct 31, 2025 at 12:31:25PM +0000, Nuno Sá via B4 Relay wrote:
+On Fri, 31 Oct 2025 17:07:33 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-...
+> On Fri, Oct 31, 2025 at 03:00:07PM +0000, Nuno S=E1 wrote:
+> > On Fri, 2025-10-31 at 15:36 +0200, Andy Shevchenko wrote: =20
+> > > On Fri, Oct 31, 2025 at 12:31:23PM +0000, Nuno S=E1 via B4 Relay wrot=
+e: =20
+>=20
+> ...
+>=20
+> > > > +	union {
+> > > > +		__be16 d16;
+> > > > +		u8 d24[3]; =20
+> > >=20
+> > > Why not __be32 d24; ? Yes, it will require explicit size to be provid=
+ed, but at
+> > > least it will look consistent with the above. OR u8 d16[2]; ? But the=
+n it becomes
+> > > simply a u8 buf[3] __aligned...; =20
+> >=20
+> > Because I'm just keeping put_unaligned_be24() as before. In fact I'm ju=
+st keeping the
+> > same type. Sure we could do __be32 and the cpu_to_be32() with a proper =
+shift but=20
+> > I'm already doing way too much than I signed up for when sending v1 :) =
+=20
+>=20
+> I think no shift would be needed.
 
-> > > +static const struct ad5446_chip_info ad5310_chip_info = {
-> > > +	.channel = AD5446_CHANNEL_POWERDOWN(10, 16, 2),
-> > > +	.write = ad5446_write,
-> > > +};
-> > > +
-> > > +static const struct ad5446_chip_info ad5320_chip_info = {
-> > > +	.channel = AD5446_CHANNEL_POWERDOWN(12, 16, 0),
-> > > +	.write = ad5446_write,
-> > > +};
-> > > +
-> > > +static const struct ad5446_chip_info ad5444_chip_info = {
-> > > +	.channel = AD5446_CHANNEL(12, 16, 2),
-> > > +	.write = ad5446_write,
-> > > +};
-> > > +
-> > > +static const struct ad5446_chip_info ad5446_chip_info = {
-> > > +	.channel = AD5446_CHANNEL(14, 16, 0),
-> > > +	.write = ad5446_write,
-> > > +};
-> > > +
-> > > +static const struct ad5446_chip_info ad5450_chip_info = {
-> > > +	.channel = AD5446_CHANNEL(8, 16, 6),
-> > > +	.write = ad5446_write,
-> > > +};
-> > > +
-> > > +static const struct ad5446_chip_info ad5451_chip_info = {
-> > > +	.channel = AD5446_CHANNEL(10, 16, 4),
-> > > +	.write = ad5446_write,
-> > > +};
-> > > +
-> > > +static const struct ad5446_chip_info ad5541a_chip_info = {
-> > > +	.channel = AD5446_CHANNEL(16, 16, 0),
-> > > +	.write = ad5446_write,
-> > > +};
-> > > +
-> > > +static const struct ad5446_chip_info ad5512a_chip_info = {
-> > > +	.channel = AD5446_CHANNEL(12, 16, 4),
-> > > +	.write = ad5446_write,
-> > > +};
-> > > +
-> > > +static const struct ad5446_chip_info ad5553_chip_info = {
-> > > +	.channel = AD5446_CHANNEL(14, 16, 0),
-> > > +	.write = ad5446_write,
-> > > +};
-> > 
-> > > +static const struct ad5446_chip_info ad5600_chip_info = {
-> > > +	.channel = AD5446_CHANNEL(16, 16, 0),
-> > > +	.write = ad5446_write,
-> > > +};
-> > 
-> > Seems same as ad5541a_chip_info(). Do we need duplicates _now_?
-> 
-> Yeah, it seems it was a duplicate before. I guess it could be a precursor
-> patch. Or if there's no real need for a re-spin (other than this), it
-> could be a follow up one, maybe?
+Using a __be32 to me implies things we don't want to imply. In particular
+if it's read in to &d24 then if interpreted as a __be32 it would be 256x
+too big (I'd not do this for le24 either though which doesn't need the shif=
+t)
+The u8 [3] makes no such implication.
 
-Ideally, if possible to implement, this should be a precursor cleanup.
+So I'd prefer sticking to storing be24 in a 3 byte location.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+(just picking out this one bit to reply to).
 
 

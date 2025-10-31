@@ -1,161 +1,147 @@
-Return-Path: <linux-iio+bounces-25766-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25767-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A41C26071
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 17:11:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3623EC262CD
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 17:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 41C444F038D
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 16:07:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A3F6200EE
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Oct 2025 16:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A362FE060;
-	Fri, 31 Oct 2025 16:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C285130BB9F;
+	Fri, 31 Oct 2025 16:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="iKRIkobG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D6dQgcF9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF282F5328;
-	Fri, 31 Oct 2025 16:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE10F2F3C2A
+	for <linux-iio@vger.kernel.org>; Fri, 31 Oct 2025 16:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761926681; cv=none; b=OFqNYcNA7SCot1kk3PewjMF5SYJos74d4eoeRI1bAocI2Ajms2BWuxPO8QQPI29h8p+dYVAkNtx+px1u2Kj631UJTtYOYdZ5YPSTjNTUTRPc9OL8PuTEgOTc+794fgQMdZv56zO2A51w881OWxOCj4y1o8muRQQi7qyZ10FFcGM=
+	t=1761927217; cv=none; b=ArWURJjtn6+LYNyqz4TVsMIWBY1JT6puLWfUlaWPio9kGRg9Ky9k5POwJC8yjQi2d6Mt8/D3ua5+EdbmnYBCtQUGfpYzdTneCzIgJaN6etlaxU7FzIvexvdK16SdRQ55SBDyItL4wSZ328CFLv1ro7JY6++xcHK8ioW5cN4A7Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761926681; c=relaxed/simple;
-	bh=5nJubTjjNG9NKAIGiUGcTFQ2vFJbo2q8cvOpWG0OPwM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n3qP/yJF7JUFGVfqP/r6XQs+4ng2Z9hMgHD3ijdG/yNNHWatZmfiJ5LqVQQ8faE8XNFXwGowQCKSXcZ69Fc/BqN7MXf9z8b5oOuTvoc73OYJl9oerPI1ZeSmDu1l6M5WGSqUM5Yc6/mB9YHv1YWWe48hn6pgDId0VTk5D+ulXZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=iKRIkobG; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59VFFuAe2389589;
-	Fri, 31 Oct 2025 12:04:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=ACaFc
-	ZXW4lsjQ8W8UsFyNwiqNeeTdM/FeLiR7V0spOw=; b=iKRIkobGSSDmFtCB54R1R
-	Sck8Vuj2cAP8qd2TOUqr439TC2MZcdestkVISzTLNshgSj5pidU2pAGX8A23Xjz3
-	AD6KRNpoeKWKdcTqWF2DfljFznhv4KdVq6IS8+0Ks16cjxfEZmFfRKGVz5IDSWUv
-	uLryonr7Sap0bmNrq0FM0yVZaQJS0J8M4yq73dzo7P65WYQsVQrJkBUPmkHmJ4Uh
-	QrfysHXH26u/Z5DgQ4YQUwUWmLKgcOGHIZDdP7Y8CmrWBt5cEoAhMutjcBqxYXn+
-	2Orxc86jUGS/egwS3PoR+mumn6SmVJF5u66ie6Q6wMNTMKVisUTnaEKI3MTtsjeM
-	w==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4a4yktg8ck-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Oct 2025 12:04:35 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 59VG4YDi064378
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 31 Oct 2025 12:04:34 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Fri, 31 Oct 2025 12:04:34 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Fri, 31 Oct 2025 12:04:34 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Fri, 31 Oct 2025 12:04:34 -0400
-Received: from Ubuntu.ad.analog.com ([10.32.15.145])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 59VG4K1N006874;
-	Fri, 31 Oct 2025 12:04:30 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH 3/3] Documentation: ABI: adl8113: add documentation
-Date: Fri, 31 Oct 2025 16:04:05 +0000
-Message-ID: <20251031160405.13286-4-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251031160405.13286-1-antoniu.miclaus@analog.com>
-References: <20251031160405.13286-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1761927217; c=relaxed/simple;
+	bh=ndOEHZ3nWccRUrwdUMb0NZJPH9B3+tUoq0msaJX3oRU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Gds1rxBJyPXL08nl3qZXePS9++kjvMvF5pPEqayKSOW7YINSSjLNdHxpPZEAEEHMheufjdHOo0tYdqQD9ERCjBVTgXRZLaK9lC4hap/GKsiCeaTX8ywDARO4vMW0LtI2j1GhvG0HpWtmzJYiwDv+dcn0mthot2nswuew6AaypZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D6dQgcF9; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-475dc6029b6so24552115e9.0
+        for <linux-iio@vger.kernel.org>; Fri, 31 Oct 2025 09:13:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761927214; x=1762532014; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0sN3X2Xwo6rgocUEV/FIBQzOQxPvDntamogTA2IKqR4=;
+        b=D6dQgcF9lny/vFokxaWJdICvY0QTb4NTgCdgveyuLz5ugCUWpa2Ho0+fyFA8w8Q4pJ
+         9pUPdx1224oqIqfxmEhAVonZbpasRW+xqdY0OPKE4bEEvLnpo6mdnGdaFuAn4KHDQzdW
+         PBxzRwRhwRKa46di9YTZKOu9fawaorTpO3Yr+MnWAUZfJ/YV33TVVrdoS107siSl7Ut0
+         xUa1bD7tgRIPrFw4aOy+1ht65SicGSMou3HeBL0BX8ewQroAVETC8Mjxfh8lxuj1X4UF
+         wUFrEFhSj1qOkbbP8ZI4Tx+6MvYT9cbsWIlMOtLg1xyhRsh/tEAi0r2qLQj05Pj+S/IN
+         rgOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761927214; x=1762532014;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0sN3X2Xwo6rgocUEV/FIBQzOQxPvDntamogTA2IKqR4=;
+        b=bTOgt+Gq5CSSTMcaj8U16WIiGunQ6SdpOiMvtUITYXeUJH4e6m57PVxHm0YsjBeD2R
+         LP0rwNS0ojmAy+w1F2Ch2MZW91Xvck3QaV7T3JLgKlJQN9EEzd4689nknRzGX4phbTdE
+         ptWFjq8ZVCDijaVQ55dfgr0250IrK99yHz7qKkgpULqT3pI2LLJtwmjGM4kQrGQ3Ajmf
+         zTiORNjJvdMMlSSO+VK8JNe7/B31wdUSM39sPXyzbep3EvVAacx1bS5TZwJkG5e0HxNt
+         jpf2dJgNgXMMBd5OFiZesZSsp2JY7X3BXOIwU4KS1hBB0v8KD4V4kS7VazhOw6h+BqvF
+         jmMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSeZj+63NAqWrDG0KLajSfy6vTg8NRn0HNNCVnXEm1IY+AhNRzJwgcIas1SwFOcI3huG13GAue8TU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxaucpp4kdbdtcsXYLJR3vsR8NTguSDMI6tNMQoSW5I4cHPBwkA
+	W6Xfr0IgljxAHQ00XoMiJuBe9yvf8q9oe1vRgOAIFGL8E4Kl9EBW5oBc
+X-Gm-Gg: ASbGnctnr5C9RoEPaCAnZTQQW6SPaqBBlRexrPYdM4HaQkfDudq0axAhx6xcIT0W7zr
+	Ee88lF8j6JvxL8GTADWBRQlD1fmaY0Sg6PmXxp2w1wL7aaLvWEbpes4Bq/Arxsw8UDajNoncvDG
+	xIVGtt4yjFRjt9cSVGQRljK9Z07Vtt+I1gX4leG7O4CQ4K5iQIXaX0oBkesiK39tg24W6932Fy2
+	qHxVzl6QgH0vgyJNdnXD2l5eRVzGpTumg2bWEBcK9cN3AdMBeWxjashK3UJkteHs0zpUG3w240x
+	yNi18zyKnK9JFaTh2+JgSmtgtHzugpJl2QuC69Ye+eNwjrrr0uoWrHaV6fHzN/FteIWaStpe9vk
+	iKmNurXc6bw8/Vu2d7g91PM+0Halt3SbRLmTJ+EYxUgJjS2vEksvb5jqoZrpTVjCE4TOVDGJ7iC
+	sWD6gwAOqn7E14gv3W8sTp1sE39LYWERmq9Fd0B3BaPmrpxO070KD3
+X-Google-Smtp-Source: AGHT+IHVP72QSGXFkR2pGkrGQk5WvUtITPWOK+QFA8hZ2bNsTY9AyXA5gNFkfS4+KdvMg01Jb8B6bA==
+X-Received: by 2002:a05:600c:a0b:b0:476:57b4:72b6 with SMTP id 5b1f17b1804b1-477305a6db5mr44531025e9.8.1761927213600;
+        Fri, 31 Oct 2025 09:13:33 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c13f2b5asm4250397f8f.40.2025.10.31.09.13.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 09:13:33 -0700 (PDT)
+Date: Fri, 31 Oct 2025 16:13:31 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jyoti Bhayana
+ <jbhayana@google.com>, Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH v1 1/1] iio: common: scmi_sensors: Replace const_ilog2()
+ with ilog2()
+Message-ID: <20251031161331.0f0ef347@pumpkin>
+In-Reply-To: <aQSw7V7tYjBOtJ7k@smile.fi.intel.com>
+References: <20251031074500.3958667-1-andriy.shevchenko@linux.intel.com>
+	<20251031094336.6f352b4f@pumpkin>
+	<aQSHVsWGXzigTEMe@smile.fi.intel.com>
+	<20251031124530.3db7805b@pumpkin>
+	<aQSw7V7tYjBOtJ7k@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 8EKqH7PB3eWYEbMD1xDhiyoS124djkfp
-X-Proofpoint-ORIG-GUID: 8EKqH7PB3eWYEbMD1xDhiyoS124djkfp
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMxMDE0NCBTYWx0ZWRfX0t2CdHzunGj8
- NAJlkt2w0fVf01hSWFAu0HExgRIvpDp5P1a8PAyMBBFzyW7alcZ+SpKTAFbXpboB5o93KaVv0Ld
- mqo0PEMSeyGe0Uj1PLgLcWF8NRIjQi0ujm+Em75Xw23Moljq9YNPxcTEiqBX+aKNx/RVBz3y1tY
- zUtuMdDzwDgoHKcaGwr9vUuyDyOJeVV+vYqVk2pkpqllzn+1IjExi8+B4gmoSTVq/JZXg1D1RpY
- bgE2d8izXkNQI+zrNDrhmgIBx2MI/NtpPxcpFm1NszewaadO0wdH6Pq6rHalhNWRnBz5V0NsVOm
- ZkE7BvdIk+JxQM0ZtOgqRd1jt9e6kEzIuZXD9VBiysovUOmEPEY/2PMriq9C2o1awG2LmCVcr47
- pHUm0X3LSeEuv2Lqe6MqtzkuGJ/dGQ==
-X-Authority-Analysis: v=2.4 cv=Uq1u9uwB c=1 sm=1 tr=0 ts=6904de14 cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8
- a=5ChSaQLCZzwPHQEXt9AA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-31_05,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 priorityscore=1501 bulkscore=0 spamscore=0
- phishscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2510310144
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Add ABI documentation for the ADL8113 Low Noise Amplifier,
-covering the 4 pin-selectable operating modes.
+On Fri, 31 Oct 2025 14:51:57 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- .../testing/sysfs-bus-iio-amplifiers-adl8113  | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113
+> On Fri, Oct 31, 2025 at 12:45:30PM +0000, David Laight wrote:
+> > On Fri, 31 Oct 2025 11:54:30 +0200
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote: =20
+> > > On Fri, Oct 31, 2025 at 09:43:36AM +0000, David Laight wrote: =20
+> > > > On Fri, 31 Oct 2025 08:45:00 +0100
+> > > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:   =20
+>=20
+> ...
+>=20
+> > > > >  		tstamp_scale =3D sensor->sensor_info->tstamp_scale +
+> > > > > -			       const_ilog2(NSEC_PER_SEC) / const_ilog2(10);
+> > > > > +			       ilog2(NSEC_PER_SEC) / ilog2(10);   =20
+> > > >=20
+> > > > Is that just a strange way of writing 9 ?   =20
+> > >=20
+> > > Why? It's correct way of writing log=C2=B9=E2=81=B0(NSEC_PER_SEC), th=
+e problem here is that
+> > > "i" people do not think about :-) =20
+> >=20
+> > Even without the "i" the division could easily give 8.999999.
+> > So you'd be relying on rounding to get the required integral value.
+> >  =20
+> > > But we have intlog10(), I completely forgot about it. =20
+> >=20
+> > And it isn't the function the code is looking for.
+> > (The result is shifted left 24 and it doesn't have an optimisation
+> > for constants.) =20
+>=20
+> Do you have an idea how to improve that?
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113 b/Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113
-new file mode 100644
-index 000000000000..6155b79e6b83
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113
-@@ -0,0 +1,32 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/mode
-+Date:		January 2025
-+KernelVersion:	6.14
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		This attribute allows the user to set the operation mode of the
-+		ADL8113 Low Noise Amplifier. The available modes control signal
-+		routing through different paths within the device.
-+
-+		The supported modes are:
-+
-+		* internal_amplifier - Signal passes through the internal low
-+		  noise amplifier (VA=0, VB=0). Provides 14dB gain.
-+
-+		* internal_bypass - Signal bypasses through internal bypass path
-+		  (VA=1, VB=1). Provides 0dB gain.
-+
-+		* external_bypass_a - Signal routes through external bypass path A
-+		  (VA=0, VB=1). Provides 0dB gain.
-+
-+		* external_bypass_b - Signal routes through external bypass path B
-+		  (VA=1, VB=0). Provides 0dB gain.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/mode_available
-+Date:		January 2025
-+KernelVersion:	6.14
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading this attribute returns a space-separated list of all
-+		available operation modes for the ADL8113 device. The modes
-+		control the signal path and determine whether the signal passes
-+		through the internal amplifier or various bypass paths.
--- 
-2.43.0
+Not sure I'd want to get cpp to generate a high-precision log.
+It if definitely doable, but will be a mind-blowing mess.
+(and I'm not sure how many MB the expanded line would be).
+An ilog10() would be easier (probably looking like const_ilog2()).
+
+But for this code just use '+ 9' and add a suitable comment :-)
+
+	David
+
 
 

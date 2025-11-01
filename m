@@ -1,210 +1,175 @@
-Return-Path: <linux-iio+bounces-25783-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25784-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE7DC27DF3
-	for <lists+linux-iio@lfdr.de>; Sat, 01 Nov 2025 13:25:00 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D98C28282
+	for <lists+linux-iio@lfdr.de>; Sat, 01 Nov 2025 17:25:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1421F188E360
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Nov 2025 12:25:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB0AD4E5019
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Nov 2025 16:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1701C2F6904;
-	Sat,  1 Nov 2025 12:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C3224DCE6;
+	Sat,  1 Nov 2025 16:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RgqMCPri"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ND0y+nyb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3816F2C21DF
-	for <linux-iio@vger.kernel.org>; Sat,  1 Nov 2025 12:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97912264CD;
+	Sat,  1 Nov 2025 16:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761999893; cv=none; b=VgK8OcwNt94o9OLtqkuf5Ea84TpHzJBTcDDKNJPgimc4eP77DlrTSZd322eFrJ0D4ImcZvn2xcHFoYgIjCwBpyAaFS/RJrzxxuIg/GarbDUPwo3q8la4cIuOF1e4Jfb80/fZeA88YpM63ZxwH2/8mf3ZILUdViVkvOFYHw2exrs=
+	t=1762014336; cv=none; b=Mq2YgeW/4tR8CO+8rhPpW38Ba2fRPtdnlnEQVbLEvJFT+pbgSBHQeR+7a6hwP/Y6hlCtsm4lbdRA2VDjltZo1j6p8OeNfE1mUWC+iPG7LLPpZs+ijuOmGxe/pia2vRp5GDR0Fl3cIUBpnqamNgY8U5LBF40iCWKYlAypIjBfxy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761999893; c=relaxed/simple;
-	bh=H3T42zwZoQOY918AUIfXPtQAQ8O4vJUH6zE5aMCtHeQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rjSVhNXdRh5ElgfymSSXyCgcBTh2zlukP29fLULczHNpXuLgRdBh1n7KUmaU8cwbXBZ6xJvVV4YThcWQ8xF4iikt0hvAUz6i0RMt95YWZYPX+Pak7AKkQ9W0tV8y1IOIXtNB2YXXbCnpGjsrueuQTVBawBxgglZkQ9KO/x5OAlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RgqMCPri; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-33b5a3e8ae2so3533163a91.1
-        for <linux-iio@vger.kernel.org>; Sat, 01 Nov 2025 05:24:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761999891; x=1762604691; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AicKeGnMXx8PABK7v2yBnCUGk97CkJDInr2iWMYCK54=;
-        b=RgqMCPrirpwlk8jFzakVb9m3YGeBglQjl+LMtpXvz4+DoWm1D06rkyklM5fBVfD62u
-         2t/Lv0VNBgPVJoh74uAfHuvXh4D4gl4+D+pdcjm4Rrs8AWdx97Ofc4qyB2mkR0JMprc4
-         aWwHykGm7aFq6SOm4ky1OuOvQJEP9HtwjYNcXRNRzOzL2cC0iOROVEomngPnKGz12Zhp
-         m1cvqUjMU7mAgaeZ5sJTsSKUupH7tylCd9UmqD0GgHdmntQ377v/XD1xYz9ODEOXlLGp
-         giZplxDzcy5wX8YlI+0yQT0FZHM+9O4rOmqfBR9kM0wKfdRGNi7MVBn7pknIPwd+pWy8
-         2EUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761999891; x=1762604691;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AicKeGnMXx8PABK7v2yBnCUGk97CkJDInr2iWMYCK54=;
-        b=xMEDVMVq5hTWmEBfFB7Iml9L4+JZQ/39GEVkuYuy3sn8+ZY8mc8CcHrt7upeuZCYK4
-         waRijGnJufv4/WGHQnzRg+020egasjxa/IaytkpSbivHBdyqU3Lr/rmtRgrv8zVO0kOQ
-         Bgz6Evw+f7Ii41UpBHdgUpiOQUvZbgh9qSV0PYNxZUC0HU+Q1Wr1q33iT5xLYOrtLRr2
-         lTm5gWHQtE5yPluEwmtx0J0ThszZM1VDmenT64CM817SAVFTJE1W+hhkUF7bjo3lpwA8
-         fm8rpDJrorGnpbbEb1u9YTjsAcdgjsFwtBJyY8t8+KGuU82USJwQOX9uPINLm3KXyfry
-         7yGQ==
-X-Gm-Message-State: AOJu0YwU6m1oOdOAMjXvfoYpnaNeM7VFmliBUwC5wL7RmwMYQmF2dUzX
-	sbVLQXTc0x1TjTDjjhPM144Xsxo1VjgwA7bSSxZK/jjQ0NkX6dPcmqAW
-X-Gm-Gg: ASbGncupz6eLep623q/CrCx+9ntaaRZMY7P6945JzIKJVroSOihLgEBuDLTwn+A1M9S
-	epEk1oDyUU2dVZCpaIJjalrsgqmcjDxZhbSfZDNmeGWg4jNJPb85LsqYumC2CW60Q1EaBd9RHeF
-	cfS7oiqRGECOXZT0Kvh3zC8Q4QyyrERDBZ0GRhNkLsQEa3Zmps2k8GysoZCW0h6c38wFKBrKhLM
-	QtPsm+ybGEa3FwrgZIH0og65jugzyAX0pVG6/1xznVDR0Zgd0v3RnvsB/L4oYOKQgS0AQaaltHf
-	61Yt11IM7gBleUy5AtUx2jiWtGO8m1GZQ1NEcyRlXUa6kwRN5IsbWxlaOcvLoejd4dMp86A6G5X
-	wu9k6Og6BrhRaZ//mHcmn+2xwUTdpTY19rcNNp1jFpT4aLvUwCcmgMuV/VCUKD8RB9ghqfWMG0l
-	RJageeUoDewGfuzdYyrnPDTeg6COfeGZYedMa6sd1uURslKW0uYCb9Kttnh9O+4rPg+RU6IHR8J
-	K6OVaeRQECRiYso8PpLH4zp/vMDGS/PB4XOsYs8rHYX2hOKPT7UunyJXqhFCFYi4xUTIgbSYaJA
-	vdcRMjkD
-X-Google-Smtp-Source: AGHT+IEkansOp7TmntY6pjVJdWg2R+kz+hv16vydkYdNnNBGWpvEJ3956bhJwqof2q5MCUwJUJGaqg==
-X-Received: by 2002:a17:902:e891:b0:24b:1585:6350 with SMTP id d9443c01a7336-295185b3b01mr86689115ad.11.1761999891327;
-        Sat, 01 Nov 2025 05:24:51 -0700 (PDT)
-Received: from ?IPV6:2402:e280:21d3:2:61a9:cfa6:c139:b812? ([2402:e280:21d3:2:61a9:cfa6:c139:b812])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2952699b785sm56474475ad.78.2025.11.01.05.24.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Nov 2025 05:24:51 -0700 (PDT)
-Message-ID: <1c5a2683-77ad-4687-b47b-18732807d5e8@gmail.com>
-Date: Sat, 1 Nov 2025 17:54:47 +0530
+	s=arc-20240116; t=1762014336; c=relaxed/simple;
+	bh=SRbrrNLlJ5lCbs8a/4PWMzoJ6nWZ1XkxIIFLmPdvMh4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XDF152MwFwZSebwjM2EwtUAqhu6+jWmz7/+xK3TpGcoiye2FPpZrtpXBrJ6dxJ+IOTWQRPhOZ3DEoFkmWNi78yl9IIv9yKTORz2ush8LNo395tHkZCep4IyV+Tkk6eupjIcdj1Egoymop+ES1dZVRBwba9z9fPLmLLKHhKnIXh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ND0y+nyb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7BBC4CEF1;
+	Sat,  1 Nov 2025 16:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762014335;
+	bh=SRbrrNLlJ5lCbs8a/4PWMzoJ6nWZ1XkxIIFLmPdvMh4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ND0y+nybUBovBHJJGQhF0YDfxfAQZWjjCD6xEBXDM+C2f+k06RTyJrp54kXqb+6yZ
+	 2toHnjxWY10D7gZKaO63DhrOcx3VSiZsYMbAI8RlSO6hSJrN0gsJl07GlrRTExg5Mm
+	 fzBBu15ZEew41apW9f7pH5kzZL7iObKgrvwJ/0bfyV/CARe+rKha1pHvEBltcZ/ANf
+	 7sWljTmDpl4gcDF+kYoA0ziyG4euiz0gY/CWUYU93eWJTEsYdrQy0P55tv4NqXpRlX
+	 439sQAld8HajfvUaez574QXfnUKEHq2I3evrRUGYoxGa0igT7fQU/pCFBH0rI/KLf6
+	 AmZpG7/srIDMw==
+Date: Sat, 1 Nov 2025 16:25:25 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+ devicetree@vger.kernel.org, linux@roeck-us.net, Carlos Song
+ <carlos.song@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, Adrian
+ Fluturel <fluturel.adrian@gmail.com>
+Subject: Re: [PATCH v9 0/6] i3c: Add basic HDR mode support
+Message-ID: <20251101162525.44c9862b@jic23-huawei>
+In-Reply-To: <20251031-i3c_ddr-v9-0-f1e523ebaf78@nxp.com>
+References: <20251031-i3c_ddr-v9-0-f1e523ebaf78@nxp.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/3] dt-bindings: iio: adc: Add TI ADS1120 binding
-To: David Lechner <dlechner@baylibre.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: linux-iio@vger.kernel.org, jic23@kernel.org, nuno.sa@analog.com,
- andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
- <20251030163411.236672-2-ajithanandhan0406@gmail.com>
- <20251030171212.00004069@huawei.com>
- <31d3d3f9-c9e2-4ad9-a3c6-e85fab4520d6@baylibre.com>
-Content-Language: en-US
-From: Ajith Anandhan <ajithanandhan0406@gmail.com>
-In-Reply-To: <31d3d3f9-c9e2-4ad9-a3c6-e85fab4520d6@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 10/31/25 1:34 AM, David Lechner wrote:
-> On 10/30/25 12:12 PM, Jonathan Cameron wrote:
->> On Thu, 30 Oct 2025 22:04:09 +0530
->> Ajith Anandhan<ajithanandhan0406@gmail.com> wrote:
->>
->>> Add device tree binding documentation for the Texas Instruments
->>> ADS1120.
->>>
->>> The binding defines required properties like compatible, reg, and
->>> SPI configuration parameters.
->>>
->>> Link:https://www.ti.com/lit/gpn/ads1120
->> Datasheet:https://www.ti.com/lit/gpn/ads1120
->>
->> Is a somewhat official tag for these. Though better to put it in the dt-binding
->> doc itself as well or instead of here.
->>
->>> Signed-off-by: Ajith Anandhan<ajithanandhan0406@gmail.com>
->>> ---
->>>   .../bindings/iio/adc/ti,ads1120.yaml          | 50 +++++++++++++++++++
->>>   1 file changed, 50 insertions(+)
->>>   create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1120.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1120.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1120.yaml
->>> new file mode 100644
->>> index 000000000..09285c981
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1120.yaml
->>> @@ -0,0 +1,50 @@
->>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id:http://devicetree.org/schemas/iio/adc/ti,ads1120.yaml#
->>> +$schema:http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: Texas Instruments ADS1120 4-channel, 16-bit, 2kSPS ADC
->>> +
->>> +maintainers:
->>> +  - Ajith Anandhan<ajithanandhan0406@gmail.com>
->>> +
->>> +properties:
->>> +  compatible:
->>> +    const: ti,ads1120
->>> +
->>> +  reg:
->>> +    maxItems: 1
->>> +
->>> +  spi-max-frequency:
->>> +    maximum: 4000000
->>> +
->>> +  spi-cpha: true
->>> +
->>> +  "#io-channel-cells":
->>> +    const: 1
->> Power supplies should be here and required (even if real boards
->> rely on stub regulators).
->>
->> Looks like there is an optional reference as well - so include that
->> but not as required (use internal ref if not supplied).
-> Actually, there are two. REF{P,N}1 is an alternative function of
-> the AIN{0,3} pins.
+On Fri, 31 Oct 2025 12:39:12 -0400
+Frank Li <Frank.Li@nxp.com> wrote:
 
-I'll add avdd-supply as required and vref-supply as optional to support 
-both external reference configurations (REFP0/REFN0 and REFP1/REFN1).
+> Add basic HDR mode support, only support private transfer, not support
+> CCC command.
+> 
+> Update i3c framework API to allow pass down mode and extend driver callback
+> function.
+> 
+> Implement HDR transfer in svc i3c master driver.
+> 
+> Simplifed HDR flow is (ref i3c spec line 5514) Figure 129
+> 
+> <--              SDR            ---> | <--- HDR
+> START 0x7E RnW(0) ACK CCC(ENTHDR0) T   HDR-CMD(00-7f write, 80--ff read)
+> 
+>                                     ----> |  
+> HDR-DATA HDR-CRC HDR-RESTART .... HDR-EXIT
+> 
+> Note: HDR-CMD is 16bit data, which included 7bit slave address and 8bit
+> read/write command.
+> 
+> svc hardware can auto issue SDR part.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
->
-> It is also possible that the analog power supply can be used as
-> a reference source instead of the internal one.
->
-> This came up recently and we glossed over it. However, I think
-> it would make sense to have a flag property that means "the
-> AVSS supply is of sufficient quality that it is better than
-> the internal reference supply", e.g. ti,avdss-is-ref. And
-> drivers can use this info to decide if they want to select it
-> as the reference voltage or not.
+Hi. Assuming everyone is happy with this version, the next question is how
+we expect to merge this. I think someone (either myself or Alexandre most likely)
+probably needs to spin an immutable branch with the i3c parts in it.
 
-I'll add the ti,avdss-is-ref boolean property to let the driver know 
-when AVDD is suitable as a reference source.
+Then we can merge that into both trees and I can apply the driver on top.
 
->
->> There is a data ready pin as well so I'd expect an interrupt.
-> There is actually two DRDY pins. One is shared with DOUT, so we
-> should have two interrupts and interrupt-names so we know which
-> pin is actually wired up.
-Thanks for the clarification. I'll add support for up to two interrupts 
-with interrupt-names ("drdy" and "dout") to handle both pin configurations.
->
->> All these should be in the binding from the start as we want it
->> to be as complete as possible.  The driver doesn't have to use everything
->> the binding supplies.
->>
-> Another trivial one is an optional clocks property for the external
-> clock. It doesn't need clock-names since there is only one.
-Will add the optional clocks property for external clock support.
->
-> Additional bindings needed when this is used with temperature sensors
-> are not so trivial though, so we don't need to add those until someone
-> actually needs them.
+Jonathan
 
-I'll incorporate all these changes in v2. Thank you both for the 
-thorough review!
-
-
--- 
-Best Regards,
-Ajith Anandhan.
+> ---
+> Changes in v9:
+> - remove reducated check for ops->priv_xfer.
+> - improve mmc5633 (see patch's change log for detail)
+> - Link to v8: https://lore.kernel.org/r/20251028-i3c_ddr-v8-0-795ded2db8c2@nxp.com
+> 
+> Changes in v8:
+> - Add cleanup patch replace framework's i3c_priv_xfer with i3c_xfer
+> - Link to v7: https://lore.kernel.org/r/20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com
+> 
+> Changes in v7:
+> - add explicit define for I3C_HDR_*
+> - add missed include files.
+> - detail see each patches' change log
+> - CONFIG_DEBUG_ATOMIC_SLEEP=y
+> - Link to v6: https://lore.kernel.org/r/20251014-i3c_ddr-v6-0-3afe49773107@nxp.com
+> 
+> Changes in v6:
+> - remove acpi part
+> - collect Conor Dooley ack tags
+> - Link to v5: https://lore.kernel.org/r/20251007-i3c_ddr-v5-0-444184f7725e@nxp.com
+> 
+> Changes in v5:
+> - Just realized missed CC mail list devicetree@vger.kernel.org and resend
+> - Link to v4: https://lore.kernel.org/r/20251007-i3c_ddr-v4-0-3afea5105775@nxp.com
+> 
+> Changes in v4:
+> - use master's hdr_cap to check HDR cap.
+> - add mmc5603 support.
+> - Link to v3: https://lore.kernel.org/r/20250930-i3c_ddr-v3-0-b627dc2ef172@nxp.com
+> 
+> Changes in v3:
+> - Add new patch for change rnw to union for svc.
+> - Detial changes see each patch's change log.
+> - Link to v2: https://lore.kernel.org/r/20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com
+> 
+> Changes in v2:
+> - Add sensor driver, which use HDR mode read/write data.
+> - change priv_xfer to i3c_xfer.
+> - Link to v1: https://lore.kernel.org/r/20250129-i3c_ddr-v1-0-028a7a5d4324@nxp.com
+> 
+> ---
+> Frank Li (6):
+>       i3c: Add HDR API support
+>       i3c: Switch to use new i3c_xfer from i3c_priv_xfer
+>       i3c: master: svc: Replace bool rnw with union for HDR support
+>       i3c: master: svc: Add basic HDR mode support
+>       dt-bindings: trivial-devices: add MEMSIC 3-axis magnetometer
+>       iio: magnetometer: Add mmc5633 sensor
+> 
+>  .../devicetree/bindings/trivial-devices.yaml       |   4 +
+>  drivers/i3c/device.c                               |  27 +-
+>  drivers/i3c/internals.h                            |   6 +-
+>  drivers/i3c/master.c                               |  19 +-
+>  drivers/i3c/master/svc-i3c-master.c                | 115 +++-
+>  drivers/iio/magnetometer/Kconfig                   |  12 +
+>  drivers/iio/magnetometer/Makefile                  |   1 +
+>  drivers/iio/magnetometer/mmc5633.c                 | 598 +++++++++++++++++++++
+>  include/linux/i3c/device.h                         |  42 +-
+>  include/linux/i3c/master.h                         |   4 +
+>  10 files changed, 784 insertions(+), 44 deletions(-)
+> ---
+> base-commit: df05ef50ada6a8e2fe758adf1b8fa35eea801b2d
+> change-id: 20250129-i3c_ddr-b15488901eb8
+> 
+> Best regards,
+> --
+> Frank Li <Frank.Li@nxp.com>
+> 
 
 

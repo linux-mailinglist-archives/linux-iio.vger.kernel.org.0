@@ -1,56 +1,59 @@
-Return-Path: <linux-iio+bounces-25801-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25802-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34399C28E90
-	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 12:55:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE897C28EDB
+	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 13:00:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9BFD9346F4A
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 11:55:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 859FE1891110
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 11:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E72D2741C9;
-	Sun,  2 Nov 2025 11:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13A52D9498;
+	Sun,  2 Nov 2025 11:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sqX9bacd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dr6LVaKj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDF434D3A6;
-	Sun,  2 Nov 2025 11:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7332D8768;
+	Sun,  2 Nov 2025 11:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762084504; cv=none; b=rxa9MLjDfmtISPk4yzHMlpwQqjZM/2ClqFqYfhCazlCg3GREfwLPzJ//4DmgDJTVHnfN38OdtZcyIYrM4nDexRNE4mlcGbqpp65Qlj1vZ3IvdyQU73zPJIGdT/xzyRBqjwm5kKqR8LKUE+FrobDtfK9gPtsN3zwX1EGUSR8Crcg=
+	t=1762084602; cv=none; b=e4fCYls5OfMQPxUN0ZEoOVOtbm9ipXbd5VHYd/e0CR+HFoUyAggp7kKG1DDnR03BYs+pqTxAFbNqmyxfqWgFwiYwXPhCVbgXFS38Mpn07Eez1LPEhnjedeQIBQJ+RJW4Q6m5dXCeqUMn7FnQNQMoimnLr8AyIg+2/14mrZdLuPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762084504; c=relaxed/simple;
-	bh=4byWlS4fL+6q8oWe+gFhgxj6Us50M89a+fr4vDI6gZ8=;
+	s=arc-20240116; t=1762084602; c=relaxed/simple;
+	bh=+wmiDFhFXA2YVu1X1MKHj4l8bg7wnF06/ff6trOOXvY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I6imfd3QXiCkxl/CP3UAm6TeVCgbKIYq40eLkYKIMJUs1Len2+iut8Vz5p0f2ti1KviylrK7iuP5QsQ2dvMgD60BPQga7LzCrVJiU8ay0lgqoNGzBwWQfhYPlcQCVlTVmOgZHWfjAnxHC6yDy+j2g4+at1Jrg4eoPkd+QIy3tMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sqX9bacd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A845C4CEF7;
-	Sun,  2 Nov 2025 11:55:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dPsO4tdc8WATArBkI78pUJNCZmHpVLfFRPYvtS4w1WC0rPh6bEpBieiVyPM+j5GoIVPxwex8j1s4f4VRiMO4OKeOEsdrfUO6NSXztS4bz2kdFo3HJEQ/8FLNESodD2LnRHtVpxubwHMVdz+8VaUkJ5GgWGPoq6tLGSWAsnV8bb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dr6LVaKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F46C4CEF7;
+	Sun,  2 Nov 2025 11:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762084503;
-	bh=4byWlS4fL+6q8oWe+gFhgxj6Us50M89a+fr4vDI6gZ8=;
+	s=k20201202; t=1762084602;
+	bh=+wmiDFhFXA2YVu1X1MKHj4l8bg7wnF06/ff6trOOXvY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sqX9bacdTO6kA04TljVruXOYjIpm0+7ul8GXjT44YpQVb+sYMSJtqp/aoYHXvKWPP
-	 57EHN03Oj96eR+u1zUsnwYVuNsRXzgCeuS7piGN3IVMUsCaxGfwXMxNkAvrICusjUQ
-	 XyJoUxeNSM/RylCcG3awPmg8bqA5G+vplKFTt4LLyXxmgji6amRGYtdiDgDi5Z/Y9C
-	 rvgP3n5nidqVyqNSXYAtdGSejnruy+FVLqJJtjPtDpKBjrIyHiG1vT1/wDvxYI9Bb6
-	 tZdgrH4hf9ngnpVKzU23U7WYxXozRtVCY318asSCHqeu1oz0iWwlqv+cbP+NQFdiLa
-	 NRBbCN1PQFICg==
-Date: Sun, 2 Nov 2025 11:54:58 +0000
+	b=dr6LVaKjZB/ITtxmvRF2giUHPuzbwNr2b5p5FV3DbM5he2aVFVRD6w+Cr4/lXijdW
+	 xogsZ6qvaMkLiwh0MmJPBdC5i5wT7/D674Q/FYywH8tD1VXsGXf2qa/a6nd6potZAh
+	 CFlnqnKGHmstwYqzHCDQ/u7kyvpQNB/kCBd6pp/cIs5ErunK0LWg0ibfEuZI24dFEf
+	 RDVo0YLyzwcFVzpOhESNAETj1q9DXI7GlcHWjoucbpAXBHM56r21CrBB6hOazisApu
+	 Lb64vKSHR9gbwHlD7kmvzG3k98RprlmAIXcbXQ/j3PoNO75nWsTh9QNUyo4lrGyxTx
+	 ig7oIN0FA4Yzw==
+Date: Sun, 2 Nov 2025 11:56:36 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Pei Xiao <xiaopei01@kylinos.cn>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eugen.hristev@linaro.org
-Subject: Re: [PATCH v3] iio: adc: at91-sama5d2_adc: Fix potential
- use-after-free in sama5d2_adc driver
-Message-ID: <20251102115458.4d37556a@jic23-huawei>
-In-Reply-To: <90dec520a9537af2feab9d56b22d99878fba9e2a.1761705396.git.xiaopei01@kylinos.cn>
-References: <90dec520a9537af2feab9d56b22d99878fba9e2a.1761705396.git.xiaopei01@kylinos.cn>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Kriish Sharma <kriish.sharma2006@gmail.com>, nuno.sa@analog.com,
+ olivier.moysan@foss.st.com, dlechner@baylibre.com, andy@kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, kernel test robot
+ <lkp@intel.com>
+Subject: Re: [PATCH v3] iio: backend: fix kernel-doc to avoid warnings and
+ ensure consistency
+Message-ID: <20251102115636.38a25092@jic23-huawei>
+In-Reply-To: <aQCW9LqtwA7WE-DI@smile.fi.intel.com>
+References: <20251028093326.1087660-1-kriish.sharma2006@gmail.com>
+	<aQCW9LqtwA7WE-DI@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,65 +61,28 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 29 Oct 2025 10:40:16 +0800
-Pei Xiao <xiaopei01@kylinos.cn> wrote:
+On Tue, 28 Oct 2025 12:12:04 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> at91_adc_interrupt can call at91_adc_touch_data_handler function
-> to start the work by schedule_work(&st->touch_st.workq).
-> 
-> If we remove the module which will call at91_adc_remove to
-> make cleanup, it will free indio_dev through iio_device_unregister but
-> quite a bit later. While the work mentioned above will be used. The
-> sequence of operations that may lead to a UAF bug is as follows:
-> 
-> CPU0                                      CPU1
-> 
->                                      | at91_adc_workq_handler
-> at91_adc_remove                      |
-> iio_device_unregister(indio_dev)     |
-> //free indio_dev a bit later         |
->                                      | iio_push_to_buffers(indio_dev)
->                                      | //use indio_dev
-> 
-> Fix it by ensuring that the work is canceled before proceeding with
-> the cleanup in at91_adc_remove.
-> 
-> Fixes: 3ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
-This ID doesn't exist in my history  it should be
-23ec2774f1cc
-
-I'll fix that up whilst applying.  Ideally I'd like Eugen to take a look
-but I'm fairly confident so I'll queue this up on the fixes-togreg branch
-of iio.git and mark it for stable.
+> On Tue, Oct 28, 2025 at 09:33:26AM +0000, Kriish Sharma wrote:
+> > Fix multiple kernel-doc warnings and make the documentation style
+> > consistent in drivers/iio/industrialio-backend.c.
+> >=20
+> > Changes include:
+> >  - Add missing @chan parameter description in
+> >    iio_backend_oversampling_ratio_set().
+> >  - Add missing RETURNS section in iio_backend_get_priv().
+> >  - Replace Return: with =E2=80=9CRETURNS:=E2=80=9D across the file for =
+consistency. =20
+>=20
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+>=20
+Applied.
 
 Thanks,
 
 Jonathan
-
-
-
-> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-> ---
-> changlog in v3: move cancel_work_sync after iio_device_unregister
-> changlog in v2: use correct Fix id
-> ---
->  drivers/iio/adc/at91-sama5d2_adc.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> index b4c36e6a7490..aa4ba3f5a506 100644
-> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> @@ -2481,6 +2481,7 @@ static void at91_adc_remove(struct platform_device *pdev)
->  	struct at91_adc_state *st = iio_priv(indio_dev);
->  
->  	iio_device_unregister(indio_dev);
-> +	cancel_work_sync(&st->touch_st.workq);
->  
->  	at91_adc_dma_disable(st);
->  
-
 

@@ -1,62 +1,56 @@
-Return-Path: <linux-iio+bounces-25800-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25801-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FD4C28E72
-	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 12:48:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34399C28E90
+	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 12:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A8B188A058
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 11:48:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9BFD9346F4A
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 11:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBCF267B90;
-	Sun,  2 Nov 2025 11:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E72D2741C9;
+	Sun,  2 Nov 2025 11:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vONUFMFD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sqX9bacd"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3043712D1F1;
-	Sun,  2 Nov 2025 11:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDF434D3A6;
+	Sun,  2 Nov 2025 11:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762084077; cv=none; b=gtKeANrLCnGbMQGV7Xwye/7sOihKkM+jElGIXJP3YGV00JrMCzVz4XtoB7QFgCMEefL61SY+JSqD+vg808rf/4ICnrrLUDwsUkRj3z/FMvPZrfsDorAne75Pj1EiwcGzun7eq2S5LB9yZR+O5n3UlYyszmkD0w8L13TziEuvL0w=
+	t=1762084504; cv=none; b=rxa9MLjDfmtISPk4yzHMlpwQqjZM/2ClqFqYfhCazlCg3GREfwLPzJ//4DmgDJTVHnfN38OdtZcyIYrM4nDexRNE4mlcGbqpp65Qlj1vZ3IvdyQU73zPJIGdT/xzyRBqjwm5kKqR8LKUE+FrobDtfK9gPtsN3zwX1EGUSR8Crcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762084077; c=relaxed/simple;
-	bh=KO/jjXTKZVsrw6rCyoErvTVk/A4+o+Omg76KyraJmGc=;
+	s=arc-20240116; t=1762084504; c=relaxed/simple;
+	bh=4byWlS4fL+6q8oWe+gFhgxj6Us50M89a+fr4vDI6gZ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fl2y4z9x8TEufSZv39f4kd+M8RjtJF6/ENyUYJcjAM/kCZBObxEdminSGN07/vnVsA1OByvGgSjBQIMRvx8My8/CRJafpoc+oHV11tJaLg41VJenF60ykWEbRkRYtOmEdB7Dg6YE1fnNTJPPPSAERnhvvTqlOgM+gmVEkeW6JiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vONUFMFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A72C4CEF7;
-	Sun,  2 Nov 2025 11:47:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I6imfd3QXiCkxl/CP3UAm6TeVCgbKIYq40eLkYKIMJUs1Len2+iut8Vz5p0f2ti1KviylrK7iuP5QsQ2dvMgD60BPQga7LzCrVJiU8ay0lgqoNGzBwWQfhYPlcQCVlTVmOgZHWfjAnxHC6yDy+j2g4+at1Jrg4eoPkd+QIy3tMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sqX9bacd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A845C4CEF7;
+	Sun,  2 Nov 2025 11:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762084076;
-	bh=KO/jjXTKZVsrw6rCyoErvTVk/A4+o+Omg76KyraJmGc=;
+	s=k20201202; t=1762084503;
+	bh=4byWlS4fL+6q8oWe+gFhgxj6Us50M89a+fr4vDI6gZ8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vONUFMFD94gmqI+BBnwZYmyqRc0SQOqvxiYa4hfaa3nFdqCZXkeNuWOI8JAYcLFAm
-	 SJ+5zNWokriMhORoIQLFjJpMw2DgLvoedr9g5LkmtCeGQbxel5NkeLsL43ETYXNXwe
-	 W4g5mQI6cNtXKtQq6GANilqX5fMH0szKCkjKLHKxz939xHdI6rktLayxQDI2M2Pa5Y
-	 i3L2KGtAlTkDSMTl+V8Ra0FQWi1aiFaaFuuU43VIffxfDp3rCaOD7x2nJj8tKFebzd
-	 zPHWWKW7fa4M8btqmNzkqIvf/3S4AzCQZlD3KgCxA/E+UpYDhRKDKdNsmCMl3mXhkp
-	 oXYpHIT/9piOg==
-Date: Sun, 2 Nov 2025 11:47:48 +0000
+	b=sqX9bacdTO6kA04TljVruXOYjIpm0+7ul8GXjT44YpQVb+sYMSJtqp/aoYHXvKWPP
+	 57EHN03Oj96eR+u1zUsnwYVuNsRXzgCeuS7piGN3IVMUsCaxGfwXMxNkAvrICusjUQ
+	 XyJoUxeNSM/RylCcG3awPmg8bqA5G+vplKFTt4LLyXxmgji6amRGYtdiDgDi5Z/Y9C
+	 rvgP3n5nidqVyqNSXYAtdGSejnruy+FVLqJJtjPtDpKBjrIyHiG1vT1/wDvxYI9Bb6
+	 tZdgrH4hf9ngnpVKzU23U7WYxXozRtVCY318asSCHqeu1oz0iWwlqv+cbP+NQFdiLa
+	 NRBbCN1PQFICg==
+Date: Sun, 2 Nov 2025 11:54:58 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Zhiyong Tao <zhiyong.tao@mediatek.com>, kernel@collabora.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: Add compatible for MT8189 SoC
-Message-ID: <20251102114748.5b0b6da9@jic23-huawei>
-In-Reply-To: <20251029-mt8189-dt-bindings-auxadc-v1-1-cd0496527a70@collabora.com>
-References: <20251029-mt8189-dt-bindings-auxadc-v1-1-cd0496527a70@collabora.com>
+To: Pei Xiao <xiaopei01@kylinos.cn>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ eugen.hristev@linaro.org
+Subject: Re: [PATCH v3] iio: adc: at91-sama5d2_adc: Fix potential
+ use-after-free in sama5d2_adc driver
+Message-ID: <20251102115458.4d37556a@jic23-huawei>
+In-Reply-To: <90dec520a9537af2feab9d56b22d99878fba9e2a.1761705396.git.xiaopei01@kylinos.cn>
+References: <90dec520a9537af2feab9d56b22d99878fba9e2a.1761705396.git.xiaopei01@kylinos.cn>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,44 +61,62 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 29 Oct 2025 15:52:53 +0100
-Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com> wrote:
+On Wed, 29 Oct 2025 10:40:16 +0800
+Pei Xiao <xiaopei01@kylinos.cn> wrote:
 
-> Add compatible string for MT8189 SoC.
-> The AUXADC IP in this chip is fully compatible with the one found in
-> MT8173 SoC.
+> at91_adc_interrupt can call at91_adc_touch_data_handler function
+> to start the work by schedule_work(&st->touch_st.workq).
 > 
-> Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-This had me confused. I tend to review backwards in time so
-I picked up Jack Hsu's equivalent patch from the 
-[PATCH v6 00/11] Add mt8189 dts evaluation board and Makefile 
-series. v6 being posted a day after you.
+> If we remove the module which will call at91_adc_remove to
+> make cleanup, it will free indio_dev through iio_device_unregister but
+> quite a bit later. While the work mentioned above will be used. The
+> sequence of operations that may lead to a UAF bug is as follows:
+> 
+> CPU0                                      CPU1
+> 
+>                                      | at91_adc_workq_handler
+> at91_adc_remove                      |
+> iio_device_unregister(indio_dev)     |
+> //free indio_dev a bit later         |
+>                                      | iio_push_to_buffers(indio_dev)
+>                                      | //use indio_dev
+> 
+> Fix it by ensuring that the work is canceled before proceeding with
+> the cleanup in at91_adc_remove.
+> 
+> Fixes: 3ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
+This ID doesn't exist in my history  it should be
+23ec2774f1cc
 
-Thanks
+I'll fix that up whilst applying.  Ideally I'd like Eugen to take a look
+but I'm fairly confident so I'll queue this up on the fixes-togreg branch
+of iio.git and mark it for stable.
+
+Thanks,
 
 Jonathan
 
+
+
+> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 > ---
->  Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml | 1 +
+> changlog in v3: move cancel_work_sync after iio_device_unregister
+> changlog in v2: use correct Fix id
+> ---
+>  drivers/iio/adc/at91-sama5d2_adc.c | 1 +
 >  1 file changed, 1 insertion(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> index 14363389f30aef85c596251fca0fe800200e2b41..d9e825e5054fe51c4010fc8a97af05c7639d4753 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> @@ -42,6 +42,7 @@ properties:
->                - mediatek,mt8183-auxadc
->                - mediatek,mt8186-auxadc
->                - mediatek,mt8188-auxadc
-> +              - mediatek,mt8189-auxadc
->                - mediatek,mt8195-auxadc
->                - mediatek,mt8516-auxadc
->            - const: mediatek,mt8173-auxadc
-> 
-> ---
-> base-commit: c9a389ffad27e7847c69f4d2b67ba56b77190209
-> change-id: 20251029-mt8189-dt-bindings-auxadc-89ad9e0a7834
-> 
-> Best regards,
+> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+> index b4c36e6a7490..aa4ba3f5a506 100644
+> --- a/drivers/iio/adc/at91-sama5d2_adc.c
+> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+> @@ -2481,6 +2481,7 @@ static void at91_adc_remove(struct platform_device *pdev)
+>  	struct at91_adc_state *st = iio_priv(indio_dev);
+>  
+>  	iio_device_unregister(indio_dev);
+> +	cancel_work_sync(&st->touch_st.workq);
+>  
+>  	at91_adc_dma_disable(st);
+>  
 
 

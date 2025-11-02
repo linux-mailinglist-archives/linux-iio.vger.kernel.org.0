@@ -1,65 +1,62 @@
-Return-Path: <linux-iio+bounces-25805-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25806-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F05EC28EFC
-	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 13:14:03 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D423C28F11
+	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 13:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 47F37347EBD
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 12:14:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6C7104E5908
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 12:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579EA265296;
-	Sun,  2 Nov 2025 12:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8F84414;
+	Sun,  2 Nov 2025 12:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tI9FbkxA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TY9v5a2w"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DA54A3C;
-	Sun,  2 Nov 2025 12:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3442528FD;
+	Sun,  2 Nov 2025 12:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762085636; cv=none; b=Mwl7kuwSXPAX+GffxyPwwB9jpD1xzyv/kXDKEfkSbVJmMcdnyLBnQnTAJ7GWEO1u1+zQiapUms01ZqiU8YEwSiz2KJIBlG/LW0wK+RuP23ylnCL8t3UecrtZJ6GO/ZP0B351xbfBbgXcTj2udDDY4N79cUhUj2nuWjEVoWyNPWU=
+	t=1762085731; cv=none; b=sEDdghVauYNo0Y6lEElzLVaMSQJvqvrikmqzElscq6rReEj1zjkQHx/6R5087NakKhspBISBEJy88P7EOL4oXTiKCFIvK5SOYjtRBpNTZ/X+FPQqMfpZdo+JIQWn4HEUDJk5HrSk8bXEoI18qNHskhiqCM4+iEuOmIGPpA0ijKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762085636; c=relaxed/simple;
-	bh=gJ9Gi3u5SrdQ0lj8khp8OmOLQpUTeBQv9G5hejIauVk=;
+	s=arc-20240116; t=1762085731; c=relaxed/simple;
+	bh=3k97OTELKzAVCJ9qui84cL+tLyGh4k0aajyBkqcVMDc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ugoKPYhuJ8bcw0FwvYuXg8A3CtnLJ9fMUdk+9XIV1my2SRhTupQbInkHxGbzkqsfwAUetNhI5AbW/AHLE2lvH4Qj+x8GsGfHn0ufClHzGQCNI4Fs1LKCDGSUYLazf33D5fTfCTURA0z219EBPGF7sejGAHRRl7qUDIWYLM1ZLjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tI9FbkxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED40FC4CEF7;
-	Sun,  2 Nov 2025 12:13:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aLuCixuwCf9ss41JLdVrpyYTf+Ek208QGiHG8yukGurO405ogmk3QFQu//eQBHjsm8YuSLX5hMCu3OVh+1BNfJYN0FEz6du3iY7F95cerbvNNcRjCVMURMx4lJ9mB3XKx8SMeAV39VkA6+NPvMZ4j6BAe3ffYWLJ44H4myvYl3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TY9v5a2w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93125C4CEF7;
+	Sun,  2 Nov 2025 12:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762085635;
-	bh=gJ9Gi3u5SrdQ0lj8khp8OmOLQpUTeBQv9G5hejIauVk=;
+	s=k20201202; t=1762085730;
+	bh=3k97OTELKzAVCJ9qui84cL+tLyGh4k0aajyBkqcVMDc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tI9FbkxAwqQFaC1/jW5rC0SOpAbquiJGGTJhZ2Y2Yi/JWY8EEhhChoCkGewUs4yRa
-	 +1yv6sREzZguipqWAwh9u7oppbNqOtAnj5oDPXUTXVhVdK5Y3daLaiC4nSlWYu5YrN
-	 CzFh+FY6EU2zSKoLKUrgzaxNvBbrGfH+D+qt1gsdz5jA8d0xFHpIzI0U5oAtF1V0jQ
-	 r9dYXgc98AEHstGQctjXWUcO1iVzAwl/ulFOlIJGW2uoOw+85LM4BvpVLuDyArNNci
-	 hbuk5Cs2PZcBhpuwqbaIq71ve9QmATtsI8I+ndMrVZCyxdcZiKJ0j6X8V7QnwWqDMX
-	 TOfvhUe8/xbsA==
-Date: Sun, 2 Nov 2025 12:13:48 +0000
+	b=TY9v5a2wf7T+BQlpIFHnasE5REPJXcYtG/9R4/cj4nEnmE1FzcC74GQiclyw3DbyJ
+	 Es7NvRYumCu8SXJ2FrmjQX80yPCbb3pRwe84uMvOnADUlcaDQicHwrx6MXY+O5jx2H
+	 kBPw/TA3f4meltpe7L4VaDElAgWbkDEuagyWXU6Uob8ib0kE8nXUGQo5+MGC7gD2eM
+	 MxlB8+9dVgWXN4I9hU/KgKBIcPxEsrjPO/q327hjuygsM2ZY5+Puj/0BygksCMb09m
+	 AjeN6TIzyyEuI0QPM6vzfjVGfGYU3MdySzV6Rdr+6lL0bgiz81N0WEXMCd9oLdE3hc
+	 VTDw8wHW5oHDA==
+Date: Sun, 2 Nov 2025 12:15:24 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>, Nuno =?UTF-8?B?U8Oh?=	
- <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
- David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski	 <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: iio: dac: Document AD5446 and
- similar devices
-Message-ID: <20251102121348.76dfad7c@jic23-huawei>
-In-Reply-To: <1a95bd186bf1b5b3e2d3b3808069dba6649bafd1.camel@gmail.com>
-References: <20251023-ad5446-bindings-v2-0-27fab9891e86@analog.com>
-	<20251023-ad5446-bindings-v2-1-27fab9891e86@analog.com>
-	<20251023180831.000026ca@huawei.com>
-	<ffb2512aad9bec33b0fe27035f88e79636362645.camel@gmail.com>
-	<20251027150136.6cfd3774@jic23-huawei>
-	<1a95bd186bf1b5b3e2d3b3808069dba6649bafd1.camel@gmail.com>
+To: Remi Buisson <Remi.Buisson@tdk.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "kernel-janitors@vger.kernel.org"
+ <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH next] iio: imu: inv_icm45600: Add a missing return
+ statement in probe()
+Message-ID: <20251102121524.7f9729ea@jic23-huawei>
+In-Reply-To: <FR2PPF4571F02BCBB9894C421F5472EDE968CF8A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
+References: <aPi5vEp75jH0imQc@stanley.mountain>
+	<20251027142331.29725dfe@jic23-huawei>
+	<FR2PPF4571F02BCBB9894C421F5472EDE968CF8A@FR2PPF4571F02BC.DEUP281.PROD.OUTLOOK.COM>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,162 +67,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 30 Oct 2025 11:30:55 +0000
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Fri, 31 Oct 2025 09:56:45 +0000
+Remi Buisson <Remi.Buisson@tdk.com> wrote:
 
-> On Mon, 2025-10-27 at 15:01 +0000, Jonathan Cameron wrote:
-> > On Mon, 27 Oct 2025 14:48:50 +0000
-> > Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-> >  =20
-> > > On Thu, 2025-10-23 at 18:08 +0100, Jonathan Cameron wrote: =20
-> > > > On Thu, 23 Oct 2025 14:01:37 +0300
-> > > > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-> > > > =C2=A0  =20
-> > > > > Add device tree binding documentation for the Analog Devices AD54=
-46
-> > > > > family of Digital-to-Analog Converters and compatible devices from
-> > > > > Texas Instruments. There's both SPI and I2C interfaces and feature
-> > > > > resolutions ranging from 8-bit to 16-bit.
-> > > > >=20
-> > > > > The binding covers 29 compatible devices including the AD5446 ser=
-ies,
-> > > > > AD5600 series, AD5620/5640/5660 variants with different voltage r=
-anges,
-> > > > > and TI DAC081s101/DAC101s101/DAC121s101 devices.
-> > > > >=20
-> > > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>=C2=A0  =20
-> > > > Hi Nuno,
-> > > >=20
-> > > > Thanks for filling in this missing doc.=C2=A0 I wonder what else is=
- old
-> > > > enough that we still don't have docs? Guess I should check when
-> > > > I'm next bored enough (so that's not happening any time soon ;)=C2=
-=A0  =20
-> > >=20
-> > > Yeah, wouldn't be surprised if there's some more ADI old stuff hangin=
-g around.
-> > > This caught my attention since I saw that out of tree patch adding su=
-pport for a
-> > > new device (with no real reason for not being in tree).
-> > >  =20
-> > > > =C2=A0  =20
-> > > > > ---
-> > > > > =C2=A0.../devicetree/bindings/iio/dac/adi,ad5446.yaml=C2=A0=C2=A0=
-=C2=A0 | 138
-> > > > > +++++++++++++++++++++
-> > > > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 8 ++
-> > > > > =C2=A02 files changed, 146 insertions(+)
-> > > > >=20
-> > > > > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5446=
-.yaml
-> > > > > b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
-> > > > > new file mode 100644
-> > > > > index 000000000000..90fc8ca053fe
-> > > > > --- /dev/null
-> > > > > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
-> > > > > @@ -0,0 +1,138 @@
-> > > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > > > +%YAML 1.2
-> > > > > +---
-> > > > > +$id: http://devicetree.org/schemas/iio/dac/adi,ad5446.yaml#
-> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > > +
-> > > > > +title: Analog Devices AD5446 and similar DACs
-> > > > > +
-> > > > > +maintainers:
-> > > > > +=C2=A0 - Michael Hennerich <michael.hennerich@analog.com>
-> > > > > +=C2=A0 - Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > > > +
-> > > > > +description: |=C2=A0  =20
-> > > >=20
-> > > > Trivial but don't need the | as hardly matters if these get formatt=
-ed
-> > > > differently.=C2=A0  =20
-> > >=20
-> > > Sure.
-> > >  =20
-> > > > =C2=A0  =20
-> > > > > +=C2=A0 Digital to Analog Converter devices supporting both SPI a=
-nd I2C
-> > > > > interfaces.
-> > > > > +=C2=A0 These devices feature a range of resolutions from 8-bit t=
-o 16-bit.=C2=A0  =20
-> > > >=20
-> > > > ...
-> > > > =C2=A0  =20
-> > > > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > > > index 940889b158eb..dae04c308975 100644
-> > > > > --- a/MAINTAINERS
-> > > > > +++ b/MAINTAINERS
-> > > > > @@ -440,6 +440,14 @@ W:	http://wiki.analog.com/AD5398
-> > > > > =C2=A0W:	https://ez.analog.com/linux-software-drivers
-> > > > > =C2=A0F:	drivers/regulator/ad5398.c
-> > > > > =C2=A0
-> > > > > +AD5456	DAC DRIVER=C2=A0  =20
-> > > > Tab seems odd here.=20
-> > > >=20
-> > > > Hmm. For a lot of ADI drivers we have entries that would look like
-> > > > ANALOG DEVICES INC AD5456 DAC DRIVER
-> > > >=20
-> > > > Any reason for formatting it like this?=C2=A0  =20
-> > >=20
-> > > Ok, time to come clean :)
-> > >=20
-> > > Bindings were AI generated and then I just cleaned the obvious proble=
-ms (clearly
-> > > I did not payed too much attention to the boilerplate stuff - lesson =
-learned). =20
-> >=20
-> > I'd hold off on doing anything much with AI on kernel code for now.
-> > A clear policy might come out of the maintainers summit in December.
-> > If you are curious, various threads on: https://lore.kernel.org/ksummit=
-/ =20
->=20
-> Right, I did saw some threads regarding some patches being automatically =
-sent
-> (I think the AUTOSEL stuff for stable) by AI. Not completely the same her=
-e as I still
-> reviewed it and changed things (more like co-developed thing :)).
-> =20
-> >=20
-> > DT bindings get picked up by various projects so they may have their own
-> > policy long run.
-> >  =20
->=20
-> I see, it's kind of handy (for bindings not so complicated) as it can com=
-e up with maybe
-> 50/60% of the whole thing. But sure, I will refrain from using it until w=
-e have a clear
-> policy in place.
->=20
-> BTW, writing covers and commit messages would be fine, right?
+> >
+> >
+> >From: Jonathan Cameron <jic23@kernel.org>=20
+> >Sent: Monday, October 27, 2025 3:24 PM
+> >To: Dan Carpenter <dan.carpenter@linaro.org>
+> >Cc: Remi Buisson <Remi.Buisson@tdk.com>; David Lechner <dlechner@baylibr=
+e.com>; Nuno S=C3=A1 <nuno.sa@analog.com>; Andy Shevchenko <andy@kernel.org=
+>; linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org; kernel-janitors=
+@vger.kernel.org
+> >Subject: Re: [PATCH next] iio: imu: inv_icm45600: Add a missing return s=
+tatement in probe()
+> >
+> >On Wed, 22 Oct 2025 14:=E2=80=8A02:=E2=80=8A20 +0300 Dan Carpenter <dan.=
+=E2=80=8Acarpenter@=E2=80=8Alinaro.=E2=80=8Aorg> wrote: > The intention her=
+e was clearly to return -ENODEV but the return statement > was missing. It =
+would result in an off by one read in i3c_chip_info[]
+> >On Wed, 22 Oct 2025 14:02:20 +0300
+> >Dan Carpenter <dan.carpenter@linaro.org> wrote:
+> > =20
+> >> The intention here was clearly to return -ENODEV but the return statem=
+ent
+> >> was missing.  It would result in an off by one read in i3c_chip_info[]=
+ on
+> >> the next line.  Add the return statement.
+> >>=20
+> >> Fixes: 1bef24e9007e ("iio: imu: inv_icm45600: add I3C driver for inv_i=
+cm45600 driver")
+> >> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> >> ---
+> >>  drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c | 3 ++-
+> >>  1 file changed, 2 insertions(+), 1 deletion(-)
+> >>=20
+> >> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c b/drivers=
+/iio/imu/inv_icm45600/inv_icm45600_i3c.c
+> >> index b5df06b97d44..9247eae9b3e2 100644
+> >> --- a/drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c
+> >> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_i3c.c
+> >> @@ -57,7 +57,8 @@ static int inv_icm45600_i3c_probe(struct i3c_device =
+*i3cdev)
+> >>  	}
+> >> =20
+> >>  	if (chip =3D=3D nb_chip)
+> >> -		dev_err_probe(&i3cdev->dev, -ENODEV, "Failed to match part id %d\n"=
+, whoami);
+> >> +		return dev_err_probe(&i3cdev->dev, -ENODEV,
+> >> +				     "Failed to match part id %d\n", whoami);
+> >> =20
+> >>  	return inv_icm45600_core_probe(regmap, i3c_chip_info[chip], false, N=
+ULL);
+> >>  } =20
+> >
+> >I'm going to apply this but the resulting code is still wrong (even if n=
+ot
+> >a true bug after this fix).
+> >
+> >A hard ID match like this breaks use of dt fallback compatibles.
+> >What this should do is 'give it a go' on matching, but if there no match=
+ it should
+> >carry on as if the match was to whatever the compatible that was supplie=
+d was.
+> >When that happens a dev_info() is appropriate but not error out as this =
+does.
+> >
+> >Remi, if possible could you look at adding such a patch on top of this?
+> >
+> >Thanks,
+> >
+> >Jonathan
+> > =20
+> Thanks Jonathan, the fix is correct.
+> The problem is that I3C don't specify any device in the device tree,
+> and these sensors cannot be identified by their I3C IDs neither.
+> So, the driver cannot fallbacks to any compatible device, other than pick=
+ing one, more or less, at random.
+> Do you see any way to work around this limitation?
 
-Yes - I've not seen anyone object to that and it is very helpful
-in improving the readability of those.  As long as people closely check
-the result!
+Ah.  I'd missed that. Fair enough, sounds like nothing we can do
+if the driver doesn't know the ID.
 
->=20
-> - Nuno S=C3=A1
->=20
-> > J
-> >  =20
-> > >=20
-> > > - Nuno S=C3=A1
-> > >  =20
-> > > > =C2=A0  =20
-> > > > > +M:	Michael Hennerich <michael.hennerich@analog.com>
-> > > > > +M:	Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > > > +L:	linux-iio@vger.kernel.org
-> > > > > +S:	Supported
-> > > > > +W:	https://ez.analog.com/linux-software-drivers
-> > > > > +F:	Documentation/devicetree/bindings/iio/dac/adi,ad5446.yaml
-> > > > > +
-> > > > > =C2=A0AD714X CAPACITANCE TOUCH SENSOR DRIVER (AD7142/3/7/8/7A)
-> > > > > =C2=A0M:	Michael Hennerich <michael.hennerich@analog.com>
-> > > > > =C2=A0S:	Supported
-> > > > > =C2=A0  =20
-
+Jonathan
 

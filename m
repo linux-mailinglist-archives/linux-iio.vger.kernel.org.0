@@ -1,82 +1,56 @@
-Return-Path: <linux-iio+bounces-25791-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25792-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46FBC28D7C
-	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 11:43:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB66C28DAE
+	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 11:58:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F132E3B3AB1
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 10:43:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2CC53A3CCE
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 10:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715C9266581;
-	Sun,  2 Nov 2025 10:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBD12609FC;
+	Sun,  2 Nov 2025 10:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YojVFjn8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3Jys8vA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E62534D3BA;
-	Sun,  2 Nov 2025 10:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DDA1F03D7;
+	Sun,  2 Nov 2025 10:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762080222; cv=none; b=sFzI8Z+HtEjM7X8/nqWKH+K4KW/D5eaCFMBBNnJJRJy4BQZSkoGjbePVurm1YsQvWvLG9zwXvb4A9bpC8iiIMM3x3xtpFzpLL4u65KXRG+k6SUZrPlOQIISM4GZW7EjqUMP/1nL4MwDqxh7Wby2FFLAkkIelHaRea+aiE2fRNQE=
+	t=1762081022; cv=none; b=OSsMuh1O9aO0t8XWhFVAEU0dOTrh3Wi8bsyqE3B9lLk5pHqvpx6pPwGJGHnEZkgMq8mhCOCaJ/Z1/IPW5hFGkDzTB5oxs/at+BOkYRe2GG5DEEuB5k5OH0Sj/qzXZtE2wpS+qKDuuJIvwK3Ilvb6CYLhdIN7hhTahyHgjPeR8G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762080222; c=relaxed/simple;
-	bh=4u8d6QQgjLsALEyZL0hM355ahA8pgo9Ke2RDvhyV/FU=;
+	s=arc-20240116; t=1762081022; c=relaxed/simple;
+	bh=VETvWM9sV4Inw4AwNYnPAuJaCEgDO8N9qrqjhHB+EJk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YcRFsyeTdzBB1FAc1+kdF1Xx7mYh/iBAnsBPke+spVFGtOJ+Gkruz8olYvwD2uH8e2GYs4NZsXIbo78AIOwtQQm3cNGb2fppvj45jwPpY1DtLjJZ7GOsFeR1Wb3QNs7xf/rWr5NNhNsUzTDJb6TmFsmLg1bCJQyC3cXcthsqb3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YojVFjn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E047CC4CEF7;
-	Sun,  2 Nov 2025 10:43:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uo2AAO85zMixT0ZzGRSGLjjzmHlzlza6k2Wh8cFRNvu/9m3lvQBgQgvatxUAWS7lbciPXpbyV/F1c3iKrEmJHiy74m1xbujt6NjOahbSIjJX5xuffZ0JR0wj9unMWJ9WB2X4UT/pe7KtLAqH2a1Ovv5FL/iqbXKPwbmw20BUeas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3Jys8vA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D6B1C4CEF7;
+	Sun,  2 Nov 2025 10:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762080221;
-	bh=4u8d6QQgjLsALEyZL0hM355ahA8pgo9Ke2RDvhyV/FU=;
+	s=k20201202; t=1762081021;
+	bh=VETvWM9sV4Inw4AwNYnPAuJaCEgDO8N9qrqjhHB+EJk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YojVFjn8WsOc90BQ7IjaCvSpawTY/iFM2EPhYDD5dnGWRgy1V9yvL/MEqZ0TtAlR7
-	 bOb/fXVYiil59qXvBq/U3REBPlb5nBkGwDqRIYMBz5I0KEBRnvT5ZEiaYzNyd6y9Zf
-	 5IIUOWr69e6TstOOUFAcseA/Uh3WnpVn2+gfAVjCfVQRnOUA5ypJyOfrOHReuHp7Sg
-	 WGYh/9kMA2mX62kCZYu70IxtgYDcwIcClH+HreNxArWG+BioiWd94cJCtOu6NOrbBI
-	 1yerwBgfvmBsmLmV1VasI237/BiNNQOhrrQMTL8p3/eC2uQh+6fEkO+1LfX3YVL0KT
-	 1QsxP0qktpdJg==
-Date: Sun, 2 Nov 2025 10:43:26 +0000
+	b=P3Jys8vAOaOFcymhw/zjhdD3qCRFUeoioz3y+N8oVQ5KDOKm+6E60DkpG9fOCCD7c
+	 fvCqyX9YA75b5kiaLX2tV9bm+ci9UnuCs2IvNHHrQqZTAGQrV2pEHGmj+IybiO8ore
+	 dU7P3zOFJV1a+x2PcWpReHXcMnWDAAe8w0IS+OT62N1NsXuheLJHvRsRtacCSUMBGg
+	 wTWF/fOMsd0ezB4gZti57FFSXpXlLIYUiq790SiwwgshcPdKzinyVDkrv+9j/BPL3Y
+	 27lVv9lMCSs/rLh/MyF/kHgWUtgp2wgQPTJ4CsFaCksClpFRoTOIMjNDDHksy104AZ
+	 rwPSu2SERmgAQ==
+Date: Sun, 2 Nov 2025 10:56:33 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre
- Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>, Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, David Miller
- <davem@davemloft.net>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun
- Hung <schung@nuvoton.com>, Yury Norov <yury.norov@gmail.com>, Rasmus
- Villemoes <linux@rasmusvillemoes.dk>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Johannes Berg <johannes@sipsolutions.net>,
- Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>, David Laight
- <david.laight.linux@gmail.com>, Vincent Mailhol
- <mailhol.vincent@wanadoo.fr>, Jason Baron <jbaron@akamai.com>, Borislav
- Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Kim Seer Paller
- <kimseer.paller@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Richard Genoud <richard.genoud@bootlin.com>, Cosmin Tanislav
- <demonsingur@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, Jianping
- Shen <Jianping.Shen@de.bosch.com>, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org,
- qat-linux@intel.com, linux-gpio@vger.kernel.org,
- linux-aspeed@lists.ozlabs.org, linux-iio@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next v5 10/23] iio: imu: smi330: #undef
- field_{get,prep}() before definition
-Message-ID: <20251102104326.0f1db96a@jic23-huawei>
-In-Reply-To: <97549838f28a1bb7861cfb42ee687f832942b13a.1761588465.git.geert+renesas@glider.be>
-References: <cover.1761588465.git.geert+renesas@glider.be>
-	<97549838f28a1bb7861cfb42ee687f832942b13a.1761588465.git.geert+renesas@glider.be>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 3/3] Documentation: ABI: adl8113: add documentation
+Message-ID: <20251102105633.3036186f@jic23-huawei>
+In-Reply-To: <20251031160405.13286-4-antoniu.miclaus@analog.com>
+References: <20251031160405.13286-1-antoniu.miclaus@analog.com>
+	<20251031160405.13286-4-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -87,45 +61,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 27 Oct 2025 19:41:44 +0100
-Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+On Fri, 31 Oct 2025 16:04:05 +0000
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> Prepare for the advent of globally available common field_get() and
-> field_prep() macros by undefining the symbols before defining local
-> variants.  This prevents redefinition warnings from the C preprocessor
-> when introducing the common macros later.
+> Add ABI documentation for the ADL8113 Low Noise Amplifier,
+> covering the 4 pin-selectable operating modes.
 > 
-> Suggested-by: Yury Norov <yury.norov@gmail.com>
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-So this is going to make a mess of merging your series given this is
-queued up for next merge window.
-
-I can pick this one up perhaps and we loop back to the replacement of
-these in a future patch?  Or perhaps go instead with a rename
-of these two which is probably nicer in the intermediate state than
-undefs.
-
-> --
-> v5:
->   - New.
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
->  drivers/iio/imu/smi330/smi330_core.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  .../testing/sysfs-bus-iio-amplifiers-adl8113  | 32 +++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113
 > 
-> diff --git a/drivers/iio/imu/smi330/smi330_core.c b/drivers/iio/imu/smi330/smi330_core.c
-> index d9178725ade3da83..a79964fe68fadf47 100644
-> --- a/drivers/iio/imu/smi330/smi330_core.c
-> +++ b/drivers/iio/imu/smi330/smi330_core.c
-> @@ -68,7 +68,9 @@
->  #define SMI330_SOFT_RESET_DELAY 2000
->  
->  /* Non-constant mask variant of FIELD_GET() and FIELD_PREP() */
-> +#undef field_get
->  #define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
-> +#undef field_prep
->  #define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
->  
->  #define SMI330_ACCEL_CHANNEL(_axis) {					\
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113 b/Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113
+> new file mode 100644
+> index 000000000000..6155b79e6b83
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113
+> @@ -0,0 +1,32 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/mode
+> +Date:		January 2025
+> +KernelVersion:	6.14
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		This attribute allows the user to set the operation mode of the
+> +		ADL8113 Low Noise Amplifier. The available modes control signal
+> +		routing through different paths within the device.
+> +
+> +		The supported modes are:
+> +
+> +		* internal_amplifier - Signal passes through the internal low
+> +		  noise amplifier (VA=0, VB=0). Provides 14dB gain.
+> +
+> +		* internal_bypass - Signal bypasses through internal bypass path
+> +		  (VA=1, VB=1). Provides 0dB gain.
+
+These first would map fine to standard ABI for gain control I think.
+I'd prefer to see that used if possible than invention of new ABI for that.
+
+> +
+> +		* external_bypass_a - Signal routes through external bypass path A
+> +		  (VA=0, VB=1). Provides 0dB gain.
+
+Problem with this an next one as I mention in binding is we have no idea what
+is between those two external pins so no way to present a generic userspace interface.
+
+Any idea if there is anything that is standard to wire in there?  I could see for instance
+nesting a similar amplifier to this one with different gain.  Maybe we should have
+a go at describing that.  This device would be a consumer of channels provided by
+another etc.
+
+> +
+> +		* external_bypass_b - Signal routes through external bypass path B
+> +		  (VA=1, VB=0). Provides 0dB gain.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/mode_available
+> +Date:		January 2025
+> +KernelVersion:	6.14
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Reading this attribute returns a space-separated list of all
+> +		available operation modes for the ADL8113 device. The modes
+> +		control the signal path and determine whether the signal passes
+> +		through the internal amplifier or various bypass paths.
 
 

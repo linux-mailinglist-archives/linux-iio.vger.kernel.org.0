@@ -1,67 +1,62 @@
-Return-Path: <linux-iio+bounces-25799-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25800-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3A7C28E63
-	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 12:42:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FD4C28E72
+	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 12:48:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EE973B1D8E
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 11:42:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A8B188A058
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 11:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5042D8DD3;
-	Sun,  2 Nov 2025 11:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBCF267B90;
+	Sun,  2 Nov 2025 11:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4QlC+D/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vONUFMFD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60730210F59;
-	Sun,  2 Nov 2025 11:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3043712D1F1;
+	Sun,  2 Nov 2025 11:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762083733; cv=none; b=Es2A7EK4EU3FhJC2CUHsIo1VxL0VepFJOyDeAoFenS621vOYK85x/6ndHZoC9vONd2ZnMWrf/uMw7NRs3EQE1iUyWzao5yD0PaRAbbsFLCKrpFalq9fNyAXfs2lwDww1YjLQVwGFHtUcqbSAGTPQJyxK+xV5yN6EXtIqY5t/iN4=
+	t=1762084077; cv=none; b=gtKeANrLCnGbMQGV7Xwye/7sOihKkM+jElGIXJP3YGV00JrMCzVz4XtoB7QFgCMEefL61SY+JSqD+vg808rf/4ICnrrLUDwsUkRj3z/FMvPZrfsDorAne75Pj1EiwcGzun7eq2S5LB9yZR+O5n3UlYyszmkD0w8L13TziEuvL0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762083733; c=relaxed/simple;
-	bh=Qhv1WcJSX0Gbo4sykFz90BCNTR/3+y4I0vbbjKSkLtg=;
+	s=arc-20240116; t=1762084077; c=relaxed/simple;
+	bh=KO/jjXTKZVsrw6rCyoErvTVk/A4+o+Omg76KyraJmGc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YabJw9FLRN+GKaASU3s6WkJqkBzOZMrcauGkXNrKjaQQFwGD8aN1q9diMAR0RcXAB+bubncDgSAfDnFu9hd27dzbraTuHPI2H1HuyFDR0d+d0fEytZL6YPVg/T+bi113iim8uo/uz3af3TJmmhs6sZeve0GXDzJA7IME1RN4X8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4QlC+D/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6AEC4CEF7;
-	Sun,  2 Nov 2025 11:42:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fl2y4z9x8TEufSZv39f4kd+M8RjtJF6/ENyUYJcjAM/kCZBObxEdminSGN07/vnVsA1OByvGgSjBQIMRvx8My8/CRJafpoc+oHV11tJaLg41VJenF60ykWEbRkRYtOmEdB7Dg6YE1fnNTJPPPSAERnhvvTqlOgM+gmVEkeW6JiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vONUFMFD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A72C4CEF7;
+	Sun,  2 Nov 2025 11:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762083733;
-	bh=Qhv1WcJSX0Gbo4sykFz90BCNTR/3+y4I0vbbjKSkLtg=;
+	s=k20201202; t=1762084076;
+	bh=KO/jjXTKZVsrw6rCyoErvTVk/A4+o+Omg76KyraJmGc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I4QlC+D/DJDloLzGjxK4Jb0n/9/nQwvjgzj9izK7P5mND1VdNTPJDaxo9GhZA9GNF
-	 m/tCpoOk3TC0/vApvUsXzLOf2YzgmtxjBHZoskSRBy2QISs14lRgK9RxfK7po/Xl+l
-	 OEoIVX13MfjaXuLCsyR8u0PXSt9LTswz4H9WqRmooQr22H8ZBBgVDIpuVeI4DKjwTP
-	 blJeI+KPsphuESXnhn5qGlVPwfCxpU446P59b/jMfk0NOSlVxa53m6uAPvyGEeqCXd
-	 ZJT6H2Jt5ZTXkixzJJ4fMY6oM5yRUXdGCPu9v7Uj3fmYLRccCJhmOy3Ug/Ar+jzTTv
-	 vfK94GofqlylA==
-Date: Sun, 2 Nov 2025 11:42:06 +0000
+	b=vONUFMFD94gmqI+BBnwZYmyqRc0SQOqvxiYa4hfaa3nFdqCZXkeNuWOI8JAYcLFAm
+	 SJ+5zNWokriMhORoIQLFjJpMw2DgLvoedr9g5LkmtCeGQbxel5NkeLsL43ETYXNXwe
+	 W4g5mQI6cNtXKtQq6GANilqX5fMH0szKCkjKLHKxz939xHdI6rktLayxQDI2M2Pa5Y
+	 i3L2KGtAlTkDSMTl+V8Ra0FQWi1aiFaaFuuU43VIffxfDp3rCaOD7x2nJj8tKFebzd
+	 zPHWWKW7fa4M8btqmNzkqIvf/3S4AzCQZlD3KgCxA/E+UpYDhRKDKdNsmCMl3mXhkp
+	 oXYpHIT/9piOg==
+Date: Sun, 2 Nov 2025 11:47:48 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: "Herve Codina (Schneider Electric)" <herve.codina@bootlin.com>, Wolfram
- Sang <wsa+renesas@sang-engineering.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
- <magnus.damm@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, linux-iio@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Pascal Eberhard <pascal.eberhard@se.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
-Message-ID: <20251102114206.37b3bbf5@jic23-huawei>
-In-Reply-To: <aQMpHDwCqcrNrnT9@smile.fi.intel.com>
-References: <20251029144644.667561-1-herve.codina@bootlin.com>
-	<20251029144644.667561-3-herve.codina@bootlin.com>
-	<aQMpHDwCqcrNrnT9@smile.fi.intel.com>
+To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Zhiyong Tao <zhiyong.tao@mediatek.com>, kernel@collabora.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: Add compatible for MT8189 SoC
+Message-ID: <20251102114748.5b0b6da9@jic23-huawei>
+In-Reply-To: <20251029-mt8189-dt-bindings-auxadc-v1-1-cd0496527a70@collabora.com>
+References: <20251029-mt8189-dt-bindings-auxadc-v1-1-cd0496527a70@collabora.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -72,18 +67,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 30 Oct 2025 11:00:12 +0200
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+On Wed, 29 Oct 2025 15:52:53 +0100
+Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com> wrote:
 
-> On Wed, Oct 29, 2025 at 03:46:42PM +0100, Herve Codina (Schneider Electric) wrote:
-> > The Renesas RZ/N1 ADC controller is the ADC controller available in the
-> > Renesas RZ/N1 SoCs family. It can use up to two internal ADC cores (ADC1
-> > and ADC2) those internal cores are not directly accessed but are handled
-> > through ADC controller virtual channels.  
+> Add compatible string for MT8189 SoC.
+> The AUXADC IP in this chip is fully compatible with the one found in
+> MT8173 SoC.
 > 
-> Looks much better, thanks! My comments below.
-FWIW I took a look as well but found the only things I noticed were a small
-subset of Andy's much more thorough review ;)
+> Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+This had me confused. I tend to review backwards in time so
+I picked up Jack Hsu's equivalent patch from the 
+[PATCH v6 00/11] Add mt8189 dts evaluation board and Makefile 
+series. v6 being posted a day after you.
+
+Thanks
 
 Jonathan
+
+> ---
+>  Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+> index 14363389f30aef85c596251fca0fe800200e2b41..d9e825e5054fe51c4010fc8a97af05c7639d4753 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+> @@ -42,6 +42,7 @@ properties:
+>                - mediatek,mt8183-auxadc
+>                - mediatek,mt8186-auxadc
+>                - mediatek,mt8188-auxadc
+> +              - mediatek,mt8189-auxadc
+>                - mediatek,mt8195-auxadc
+>                - mediatek,mt8516-auxadc
+>            - const: mediatek,mt8173-auxadc
+> 
+> ---
+> base-commit: c9a389ffad27e7847c69f4d2b67ba56b77190209
+> change-id: 20251029-mt8189-dt-bindings-auxadc-89ad9e0a7834
+> 
+> Best regards,
+
 

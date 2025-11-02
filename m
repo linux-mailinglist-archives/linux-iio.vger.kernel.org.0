@@ -1,146 +1,250 @@
-Return-Path: <linux-iio+bounces-25789-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25790-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584F6C28C76
-	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 10:18:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1909AC28D66
+	for <lists+linux-iio@lfdr.de>; Sun, 02 Nov 2025 11:38:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ABCBF34763E
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 09:18:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8F4BB4E3B15
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 10:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B15C13635E;
-	Sun,  2 Nov 2025 09:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1CA22264CD;
+	Sun,  2 Nov 2025 10:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLAQhLax"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RjjTEi+i"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2890E12B93
-	for <linux-iio@vger.kernel.org>; Sun,  2 Nov 2025 09:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8D1202F9C;
+	Sun,  2 Nov 2025 10:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762075121; cv=none; b=sHeQkVdI4AR3+Pli0GUUvOKO+fa7a2fBXpPTaFb8lUpBjq0BQ1KiW4a87aRwLE1oIityvt+8XvUhZ9euZZnpccb/oRTQujS+kqPsinUGb7BqS/Wj6L2lgF40cHixpyURD8PCcWph/vAmiF0ZzW8CW2enZjxppykc3Tj48a1oXhg=
+	t=1762079894; cv=none; b=oz3XC8swVVzkGevyIfbldx6XaSxpRBYb99H+rhvCgvnwb92ax0HtVXgXStr1lFQNx073rLnDdlWlVHJ0pU10PA/KHGoQckk8vJipkPx9rOz8W8gjoE1IX0okbG9Z1SC60OnZ0879QHrasdUZfKSbDdtzUWJAu/Uen3+9I2RbCSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762075121; c=relaxed/simple;
-	bh=Zep/cfWVXjjpIYokeFUVVRUhRrfu+xR1PtXslkQpqrE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IhYLmHKvA3J/nKED6y1VPsGruaggU0Z0M6FfBCh7owhFn0AhlYjl98A7P6jhODyGItFk1yLn1vUyuSfCEArDKzi7qQfKOn6RdP982E29hsUQ73YS1yVcdkooAI3mGPWX7Fby8WuH0iJKyo9iGchn6gFDbjytg2Kq5kx9OPzDU7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLAQhLax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13480C4CEF7;
-	Sun,  2 Nov 2025 09:18:38 +0000 (UTC)
+	s=arc-20240116; t=1762079894; c=relaxed/simple;
+	bh=czP7YbvSnWl+QBZ/OpftcMTzFtBFis7UJczjWGygrcM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F5nisl6u96NAxYfuHLZM19bzmtpGdHjOIvKXDQLFZ4a/p08h9yigJdgF8M8lYt3NPk4zRbTD1FeAjEjb/nf4n7kHIKR2xU3qeFJmpBuF95Xfbpnc2OaFyxssh/Sag2CJ2U0zzGbZCUiSaSBBz4zOxSwT+CIhLem437nw7VokdlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RjjTEi+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20456C4CEF7;
+	Sun,  2 Nov 2025 10:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762075120;
-	bh=Zep/cfWVXjjpIYokeFUVVRUhRrfu+xR1PtXslkQpqrE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CLAQhLax2jwyX9tmqgt/gPbji4jVbg1qKaeDJrWU+GCEH3B6lLn0fEmimDaW08U6o
-	 DZaESdVBqUjX1u3GSNMSjSm6jd550HbzlHI/9mFrAmBftsWIxTpm4ZJZAeKk+Y6bkB
-	 06Bpzw71zZhctRlAoL3nhuk5SFtT1vEcxNi3By2OSaIcFCWc6pIazS89AOdiARl785
-	 G1/TxvLLwMbS3jOIaqPcIT4NfOa+CEOzXmqbeUmu5wWibQ4e+x5zXvlsVTnSrmbar9
-	 UehG+3LTLhLl3jUlB6Pu4EyF7NHeunpgGUh/hqu/kzMdrIdQoXBYzyh5foJJ5ymfHs
-	 k2iP46q5Tw1TQ==
-Message-ID: <3e98c5e5-8411-4b69-81a8-9ea52a50f9ea@kernel.org>
-Date: Sun, 2 Nov 2025 10:18:37 +0100
+	s=k20201202; t=1762079893;
+	bh=czP7YbvSnWl+QBZ/OpftcMTzFtBFis7UJczjWGygrcM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RjjTEi+in/b8qUlEHCg7pOsOqHggr4ahzQ7JA/tvckfZWyx67hZ9NydT6jawUBoPs
+	 D/Che19cmK8iFqazo7DPrKgB8VbgenGJXu2Du6vjzBCdTku51SsxnJj3U3HZDEfkWL
+	 T0I7Io0YCFrcgn5/hl64zEkY8vNZdOM2ix9YwUYts3XORYBMDB4YD5yiN3mR5QzjeU
+	 grxbGE5n3SvOYIIfcKmQxC/Q+r0ZyWK9omeJpIehQjNBjHfG2XjsSEjIG6RAUpm5IP
+	 s5yVXWIkXHBrL2d6XLPGiiP+iUt15QUhJTT9K2yoPI9H5Kp+tMmZPSu0pT8eznuYrM
+	 kuFLR1Uq/PVHA==
+Date: Sun, 2 Nov 2025 10:38:08 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Antoni Pokusinski <apokusinski01@gmail.com>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] iio: mpl3115: add threshold events support
+Message-ID: <20251102103808.73cac929@jic23-huawei>
+In-Reply-To: <20251031201821.88374-2-apokusinski01@gmail.com>
+References: <20251031201821.88374-1-apokusinski01@gmail.com>
+	<20251031201821.88374-2-apokusinski01@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/10] dt-bindings: iio: dac: Document AD5446 and
- similar devices
-To: nuno.sa@analog.com, linux-iio@vger.kernel.org
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Andy Shevchenko <andy@kernel.org>
-References: <20251031-dev-add-ad5542-v3-0-d3541036c0e6@analog.com>
- <20251031-dev-add-ad5542-v3-1-d3541036c0e6@analog.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251031-dev-add-ad5542-v3-1-d3541036c0e6@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 31/10/2025 13:31, Nuno Sá via B4 Relay wrote:
-> From: Nuno Sá <nuno.sa@analog.com>
+On Fri, 31 Oct 2025 21:18:22 +0100
+Antoni Pokusinski <apokusinski01@gmail.com> wrote:
+
+> Add support for pressure and temperature rising threshold events. For
+> both channels *_en and *_value (in raw units) attributes are exposed.
 > 
-> Add device tree binding documentation for the Analog Devices AD5446
-> family of Digital-to-Analog Converters and derivative devices from
-> Texas Instruments. There's both SPI and I2C interfaces and feature
-> resolutions ranging from 8-bit to 16-bit.
+> Since in write_event_config() the ctrl_reg1.active and ctrl_reg4
+> are modified, accessing the data->ctrl_reg{1,4} in set_trigger_state()
+> and write_event_config() needs to be now guarded by data->lock.
+> Otherwise, it would be possible that 2 concurrent threads executing
+> these functions would access the data->ctrl_reg{1,4} at the same time
+> and then one would overwrite the other's result.
 > 
-> The binding covers 29 derivatives devices including the AD5446 series,
-> AD5600 series, AD5620/5640/5660 variants with different voltage ranges,
-> and TI DAC081s101/DAC101s101/DAC121s101 devices.
+> Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
+
+Generally looks good to me, but some comments on the 24 bit value reading.
+
+You got a lot of review quickly for this patch so I want to give some time
+for follow up on v2 anyway. 
+
+Thanks,
+
+Jonathan
 
 
-<form letter>
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
+> ---
+>  drivers/iio/pressure/mpl3115.c | 219 +++++++++++++++++++++++++++++++--
+>  1 file changed, 209 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c
+> index c212dfdf59ff..472e9fd65776 100644
+...
+> @@ -347,15 +370,45 @@ static irqreturn_t mpl3115_interrupt_handler(int irq, void *private)
+>  	struct iio_dev *indio_dev = private;
+>  	struct mpl3115_data *data = iio_priv(indio_dev);
+>  	int ret;
+> +	__be32 val_press;
+> +	__be16 val_temp;
+>  
+>  	ret = i2c_smbus_read_byte_data(data->client, MPL3115_INT_SOURCE);
+>  	if (ret < 0)
+>  		return IRQ_HANDLED;
+>  
+> -	if (!(ret & MPL3115_INT_SRC_DRDY))
+> +	if (!(ret & (MPL3115_INT_SRC_TTH | MPL3115_INT_SRC_PTH |
+> +		     MPL3115_INT_SRC_DRDY)))
+>  		return IRQ_NONE;
+>  
+> -	iio_trigger_poll_nested(data->drdy_trig);
+> +	if (ret & MPL3115_INT_SRC_DRDY)
+> +		iio_trigger_poll_nested(data->drdy_trig);
+> +
+> +	if (ret & MPL3115_INT_SRC_PTH) {
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(IIO_PRESSURE, 0,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_RISING),
+> +						    iio_get_time_ns(indio_dev));
+> +
+> +		/* Reset the SRC_PTH bit in INT_SOURCE */
+> +		i2c_smbus_read_i2c_block_data(data->client,
+> +					      MPL3115_OUT_PRESS,
+> +					      3, (u8 *)&val_press);
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
+This is an oddity.  Why read into a __be32 when it's a 24bit number?
+I guess it doesn't really matter as you just need a big enough space
+and throw the value away.  However, I'd read it into a u8 [3]; then size off that
+as well.
 
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
+There are two existing cases of this in the driver. One of them should use
+get_unaligned_be24 on a u8[3] buffer.  The other one is more complex as it's
+reading directly into the scan buffer that gets pushed to the kfifo and is
+reading into a u8 buffer ultimately anyway so at least there is no
+real suggestion of it being 32 bits (just a +4 shift to deal with natural
+alignment as the storage has to be power of 2 in that case.).
 
-Please kindly resend and include all necessary To/Cc entries.
-</form letter>
+hmm. I think either we should tidy up the easy case (_read_info_raw) +
+use a u8[3] here or just stick to this being odd.
+My preference would be to have another patch tidying up the other case
++ use a u8[3] here.
 
 
-Best regards,
-Krzysztof
+
+> +	}
+> +
+> +	if (ret & MPL3115_INT_SRC_TTH) {
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(IIO_TEMP, 0,
+> +						    IIO_EV_TYPE_THRESH,
+> +						    IIO_EV_DIR_RISING),
+> +						    iio_get_time_ns(indio_dev));
+> +
+> +		/* Reset the SRC_TTH bit in INT_SOURCE */
+> +		i2c_smbus_read_i2c_block_data(data->client,
+> +					      MPL3115_OUT_TEMP,
+> +					      2, (u8 *)&val_temp);
+> +	}
+>  
+>  	return IRQ_HANDLED;
+>  }
+
+> +
+> +static int mpl3115_read_thresh(struct iio_dev *indio_dev,
+> +			       const struct iio_chan_spec *chan,
+> +			       enum iio_event_type type,
+> +			       enum iio_event_direction dir,
+> +			       enum iio_event_info info,
+> +			       int *val, int *val2)
+> +{
+> +	struct mpl3115_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +	__be16 tmp;
+> +
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EINVAL;
+> +
+> +	switch (chan->type) {
+> +	case IIO_PRESSURE:
+> +		ret = i2c_smbus_read_i2c_block_data(data->client,
+> +						    MPL3115_PRESS_TGT,
+> +						    sizeof(tmp), (u8 *)&tmp);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		/*
+> +		 * Target value for the pressure is
+> +		 * 16-bit unsigned value in 2 Pa units
+
+Trivial but wrap comments to 80 char limit. Obviously doesn't really matter;
+just a question of consistency.
+
+
+> +		 */
+> +		*val = be16_to_cpu(tmp) << 1;
+> +
+> +		return IIO_VAL_INT;
+> +	case IIO_TEMP:
+> +		ret = i2c_smbus_read_byte_data(data->client, MPL3115_TEMP_TGT);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		/* Target value for the temperature is 8-bit 2's complement */
+> +		*val = sign_extend32(ret, 7);
+> +
+> +		return IIO_VAL_INT;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int mpl3115_write_thresh(struct iio_dev *indio_dev,
+> +				const struct iio_chan_spec *chan,
+> +				enum iio_event_type type,
+> +				enum iio_event_direction dir,
+> +				enum iio_event_info info,
+> +				int val, int val2)
+> +{
+> +	struct mpl3115_data *data = iio_priv(indio_dev);
+> +	__be16 tmp;
+> +
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EINVAL;
+> +
+> +	switch (chan->type) {
+> +	case IIO_PRESSURE:
+> +		val >>= 1;
+> +
+> +		if (val < 0 || val > U16_MAX)
+> +			return -EINVAL;
+> +
+> +		tmp = cpu_to_be16(val);
+> +
+> +		return i2c_smbus_write_i2c_block_data(data->client,
+> +						      MPL3115_PRESS_TGT,
+> +						      sizeof(tmp), (u8 *)&tmp);
+> +	case IIO_TEMP:
+> +		if (val < S8_MIN || val > S8_MAX)
+> +			return -EINVAL;
+> +
+> +		return i2c_smbus_write_byte_data(data->client,
+> +						 MPL3115_TEMP_TGT, val);
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
 

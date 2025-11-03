@@ -1,144 +1,126 @@
-Return-Path: <linux-iio+bounces-25814-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25815-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B10C299E5
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 00:15:28 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 632E3C2A5B4
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 08:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50307188E098
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Nov 2025 23:15:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0B6E6342692
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 07:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5D8256C6F;
-	Sun,  2 Nov 2025 23:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC872BEC21;
+	Mon,  3 Nov 2025 07:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="veGqDOkc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JbwEfPEf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6838A254876
-	for <linux-iio@vger.kernel.org>; Sun,  2 Nov 2025 23:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7D72BE7BB
+	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 07:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762125306; cv=none; b=kWSilPNfq0eZBOlvDEQAtzKL8vOZJbpdV431Bg4oRLWAFoqJhmIyUFbcHkI0nQ4wLIrmUP03V1KSRsweFG4mXsvwICmSEVZ1TEiYx6EikZp1exK98p894VKakUgN25GKx4cxQQlP+S6fRP80YFL3+jo4hibhqwU+Nr6MfGpPSlk=
+	t=1762155551; cv=none; b=Vjglf4dGO+h3Gkguo0m5KqZp3KiRMwU8sNU6RI+eUXxz7V9qM0WnUXNB0C7imqtJ1SogTgFVbkPBOnO6B3PhRZ0Rf+C2qBZfrBZqxTjGxRznPZlsWBoAaQdc2zATeDJvFudY9CuQj1yj7e23Kx20cR/g7nl0tojI+Pb1owpfHZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762125306; c=relaxed/simple;
-	bh=gJ+z+fSwzGRoLTASac48Xt/red+jojCgmvvYT9GdSRk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pikhI/q1RX9mtyndULHBzgd+0MTYVUpPbYXMR0KMr3/0XsdYPObzclad+KgkqHEtLBKwuyEkLHC0mZQOF8bdcH9JTNtryJHt6LYatOExYlGQJeTA7dFa7AQFETz7Y+madehktcepLmHCAiRynUK4nUwx+5d9q+rwBdMRF+QX7hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=veGqDOkc; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37902f130e1so39803721fa.1
-        for <linux-iio@vger.kernel.org>; Sun, 02 Nov 2025 15:15:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762125301; x=1762730101; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yhefXJf25nlZX433BsR2ypBCZ8ChrLrkfTMoigu+ucU=;
-        b=veGqDOkc2KbhhYjsZ6lnbXmmedGeZoZMglsu3m9z2Ag0Z0bdrOYId3GZuEWhYWx0wI
-         QEl0Q9LXRGXaHhR55y8x6ETnqRedFkOF1K1RR49+BaYHgSdEqcTfNCnEhQt7o6Je59Cf
-         KVvfDY/Kk/QDbmSmB9l2fTmu3WGrWtGh5AOzwj9esPRfhpfNIkiz3MlTjJg+M+N/ndpa
-         geV2axmVI2rxVLB6HmhRYF8WTJ7KIFl1p7BcApKDg8NPbtSvw53jfFdBap4gPtbQ0+Hb
-         QYdytI+Gj6ya4I1KUy/71GBHTtwcAGNq9roNc6o/vDW32qf0M8U5G9RKh2EfePP2Cxni
-         qfqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762125301; x=1762730101;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yhefXJf25nlZX433BsR2ypBCZ8ChrLrkfTMoigu+ucU=;
-        b=P53NvxpjmtOtJrCPkVu/arptp1lhzme6dA/h4p+mtbFlkyJyremsUJhn5IPj+vNlHE
-         rZD9crYu5vjLe8GnepwERiAWYHaLnZS7LS2Tm1MgK1zRzhDZb34eytF8uCwiqAmPzjyN
-         7L1PTyYVO0V8pNnuYAo8ghx27vpz5qVnZxQ4E2gq0622ua3M5n5FcWaE4Lowb6QK0iwS
-         7q8PiC9R6a4agrIrQwEWPT1gU+61mYXoI1nT+5QGlqaTNsEVUZawh9rG62/Gc9Au7YkB
-         pjifs+tQMHLBSuYg8EjfdaadfAjM0Cuk6kVoNLu9SOFeg06ArH0H1rPMHMRo/otK+Bvk
-         R2Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCWtslmtJaekSH+5Il2/cc/6gEeUe+g2mE3K4klx6xwZWYNj9AtnQnTOdi2B1RkIMYwXKVu/EC9mAeE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybuJMdQOypGM15eYx0KkkADfNyPlRW/t8lMb2CPKkwdg4lUbv3
-	C/MN2dJS+fw6835XlDEyFdbeo9oFILN9/wdcYpvZmEnDx5eCrHshOqJm9VaTEkoIOxdONEZDVwQ
-	a4zqIdPpRKrtX4M0eUxlegSrhL+pptkevyBoUC/RvwA==
-X-Gm-Gg: ASbGncvWWjZvkXwAwF0ILDQ5WgUw2X2SwEHMtdJTsubBkGO/h6zPgrG5VXCo97hdXTn
-	5pI89z7krhUTtJ9aqiuXvg4/DnwTW5EWcaGM+TnOig774oHQuFOg8F2GUQP6bwkK2LqvO+3G7jT
-	X7lFvAHq1ZBsw0K3H4OfExg1T8PoOpJ8vm/JqWfGYNNjhA2VL3+oCLqwACd2Ix1gGajL/uR7qIS
-	DdCvIlbojLW42Hfsl9GEZAxHMUGXrSX6x2Qe/eCDtrqHByAVzWin/Ek62CNZaaoJpW+m9i9EV/p
-	pPGlgA==
-X-Google-Smtp-Source: AGHT+IHNOSftU4LA4kaZ2zit5fbsUjeer+Cqtnxd6HV9vMAwCSf0ZxvdazFj8kc8iFBA+Oyhy9hRt9pMH+krWfgjY8s=
-X-Received: by 2002:a05:6512:1453:20b0:594:2646:2350 with SMTP id
- 2adb3069b0e04-594264628f8mr1107502e87.21.1762125301355; Sun, 02 Nov 2025
- 15:15:01 -0800 (PST)
+	s=arc-20240116; t=1762155551; c=relaxed/simple;
+	bh=pP4FI3JUws2ERrPs37rF79tn0wXHcdyHuReOqZrpnkw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AZh+j9+zdWktkB+dENSUUEDNcli5Qq6TkaojUTZ/CE3GbaH8naHtB6C9H+REQpYXeMuaro6lAV9ErnIbEXvBU2QX2k1VPNHwt3ZCu3mZ+WRiFl43KyCnrDSrLEt2q7raftaGHkYVTUgroyYtURAuDziU/3zi1FjqP/uCFTzGIRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JbwEfPEf; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762155549; x=1793691549;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=pP4FI3JUws2ERrPs37rF79tn0wXHcdyHuReOqZrpnkw=;
+  b=JbwEfPEf5PxBYtpkbF/YThF9p5ziA0EI9I2MA0bqNZs4+roWhirvPGxd
+   tgd7++ac7XzteLm+WnlP+YfQ8qguemRQg7BrXB4hCn2briT0RmotvwJi+
+   gN6qwm+5G6NsPiX55OUnRbGxqvpgsDBPPGxXuXNLEjulzl6x2VBfqUV0i
+   zj7ckoOCnvJw4+baqu9vpQQ1lHr7luehDAIFzBcEPlNBGiD7ECrjAPRTr
+   Q9j9t87obH6mEOgHSAhsZsBxFAvRwtSMWM3VMARVE5AkSI0uSLUAMzTM/
+   Wark+jYadDEEGM2K+deJjfCf2UOKvvcOFA8SqYsw592iC9ma+/QIGF/tO
+   w==;
+X-CSE-ConnectionGUID: Bt8d+I+bQmqrflDZ348Ttg==
+X-CSE-MsgGUID: AhxuMemTRH+a8NXqBGpxYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="74827984"
+X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
+   d="scan'208";a="74827984"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2025 23:39:09 -0800
+X-CSE-ConnectionGUID: HmJscCvtQcSQk7ZtfZlUng==
+X-CSE-MsgGUID: arTkJhN0SbOmnL3ssNBA3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
+   d="scan'208";a="186672752"
+Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2025 23:39:07 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vFp9b-000000054oo-1msZ;
+	Mon, 03 Nov 2025 09:39:03 +0200
+Date: Mon, 3 Nov 2025 09:39:02 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Nuno =?iso-8859-1?Q?S=E1?= via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>,
+	nuno.sa@analog.com, linux-iio@vger.kernel.org,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH v3 06/10] iio: dac: ad5446: Separate I2C/SPI into
+ different drivers
+Message-ID: <aQhcFl4fE5Akn397@smile.fi.intel.com>
+References: <20251031-dev-add-ad5542-v3-0-d3541036c0e6@analog.com>
+ <20251031-dev-add-ad5542-v3-6-d3541036c0e6@analog.com>
+ <20251101164612.449606c2@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1761588465.git.geert+renesas@glider.be> <03a492c8af84a41e47b33c9a974559805d070d8d.1761588465.git.geert+renesas@glider.be>
- <CACRpkda6ykSZ0k9q4ChBW5NuPZvmjVjH2LPxyp3RB-=fJLBPFg@mail.gmail.com> <CAMuHMdWriu9eUHMSKcv7ojSqbquP3=z2oaquQZLx5nmN0EcGaA@mail.gmail.com>
-In-Reply-To: <CAMuHMdWriu9eUHMSKcv7ojSqbquP3=z2oaquQZLx5nmN0EcGaA@mail.gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 3 Nov 2025 00:14:50 +0100
-X-Gm-Features: AWmQ_bkG07aYa3yfLgn8mo--U0KGtThYfcOHYFtKUjSupbZy0y5m0bQWTypUrbs
-Message-ID: <CACRpkdbR+5jh+OqYAU4vyUP-aQSjgMG3RRBkUTWnWz=VEy2Oew@mail.gmail.com>
-Subject: Re: [PATCH v5 07/23] pinctrl: ma35: #undef field_{get,prep}() before
- local definition
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	David Miller <davem@davemloft.net>, Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Jacky Huang <ychuang3@nuvoton.com>, 
-	Shan-Chun Hung <schung@nuvoton.com>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>, 
-	David Laight <david.laight.linux@gmail.com>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Kim Seer Paller <kimseer.paller@analog.com>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Richard Genoud <richard.genoud@bootlin.com>, 
-	Cosmin Tanislav <demonsingur@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Jianping Shen <Jianping.Shen@de.bosch.com>, linux-clk@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org, qat-linux@intel.com, 
-	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org, 
-	linux-iio@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251101164612.449606c2@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Oct 29, 2025 at 3:59=E2=80=AFPM Geert Uytterhoeven <geert@linux-m68=
-k.org> wrote:
-> On Wed, 29 Oct 2025 at 15:20, Linus Walleij <linus.walleij@linaro.org> wr=
-ote:
-> > On Mon, Oct 27, 2025 at 7:43=E2=80=AFPM Geert Uytterhoeven
-> > <geert+renesas@glider.be> wrote:
-> >
-> > > Prepare for the advent of globally available common field_get() and
-> > > field_prep() macros by undefining the symbols before defining local
-> > > variants.  This prevents redefinition warnings from the C preprocesso=
-r
-> > > when introducing the common macros later.
-> > >
-> > > Suggested-by: Yury Norov <yury.norov@gmail.com>
-> > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> >
-> > Do you want me to just merge this patch to the pinctrl tree or do
-> > you have other plans?
->
-> My plan (cfr. cover letter) was to take it myself, as this is a hard
-> dependency for 11/23.
+On Sat, Nov 01, 2025 at 04:46:12PM +0000, Jonathan Cameron wrote:
+> On Fri, 31 Oct 2025 12:31:27 +0000
+> Nuno Sá via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+> 
+> Looks good to me.  A few minor things inline.
+> In particular a question of which include is missing for the byteorder stuff.
+> Maybe Andy can help with a suggestion on that?
 
-OK go ahead:
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+asm/byteorder.h
 
-I see there are other review comments, I trust you will fix them up
-and merge the result nicely.
+...
 
-Yours,
-Linus Walleij
+> > +	st->d16 = cpu_to_be16(val);
+> 
+> Should have an include for this.  Probably
+> 
+> linux/byteorder/generic.h
+> though the kernel (and iio) has a random mix of that and
+> asm/byteorder.h
+
+Can somebody go and fix all of them to be asm/byteorder.h? Yeah, it might need
+some thinking as in some _rare_ cases the author might imply the explicit
+choice of the algo in use. But then it might be problematic on some architectures
+as well...
+
+> Hmm. linux/unaligned.h is using asm/byteorder.h so maybe that's the better choice
+
+Yes.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

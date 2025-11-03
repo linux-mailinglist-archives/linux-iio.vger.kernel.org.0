@@ -1,133 +1,166 @@
-Return-Path: <linux-iio+bounces-25827-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25828-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AED3C2A98F
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 09:41:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4A3C2AB7C
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 10:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E79024EA50E
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 08:41:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72EFB3B4F44
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 09:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F8E2E0B42;
-	Mon,  3 Nov 2025 08:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF442EA151;
+	Mon,  3 Nov 2025 09:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iWIQ6qIs"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KgOoiL/3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8A92E03EF
-	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 08:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0C2E9EDA
+	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 09:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762159265; cv=none; b=OwfyNIrgt79wIKrYNd7Psk5u8fcNhV4g0IYkGir9xNTZrd2Vcf2GX9nWy7wPssbObxXmAjVTjhccCG9hf2bbPe1YgvlOCcrDT0WZpZznD0h/XQbLayTHA3mIXJ6eQvU8DczBT7NV3/FjU5bTH7LnwRaOSKyc/nWvtfjM3wEvLDg=
+	t=1762161906; cv=none; b=PHDlLGyHDe792mbIIJOU79A2XB+cgRjeSoWWheCK8ETjfOQj7S7tp79XM8qJZvU/eyrg9J+4mc4lJFEsplprRgQFnl4d+S4A8998ZQyDHYlK8/zNmO1uHSZY+9dnAfSB4gLWcfZWE/3dACKxpyT9S4/bDeo8taNIIte1jb4O2Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762159265; c=relaxed/simple;
-	bh=v+GhSFMVaW/Lfg8/fIiRNwYwGsUSOMGi1AXYxUkQrxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gfwqpo2DVlJpa7g2HsvCypuViUi1XJLls7OdP5Fc+8CJfeIfv0e6WJbDI18MEwcuiHkQtWTWGyP4GQELBAtrexlIkm4jjx4M5Q3M5hmIwUkdfXngh2EADTuOyqIErFQWqcwrFOSKASyF83fWL2h2vsvPqNXOklwCY5VJeucNeI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iWIQ6qIs; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 136841A1831;
-	Mon,  3 Nov 2025 08:40:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C7E4F60628;
-	Mon,  3 Nov 2025 08:40:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 23F7A11818002;
-	Mon,  3 Nov 2025 09:40:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762159252; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=OdBSKKFuFhKbNuvtZatqu6kaGrQLICACn7lyjwcUeMg=;
-	b=iWIQ6qIsThvjONMtKyRFIt3RRi6l8dYaN4kZtEpF0WxdZTR7zGXHa3A3SoAxpgiYwhng1C
-	zo2hxlhOeOIb85bpal78IjolPGrbtnhMf2GTaOtON4SFmj2JNEwTdhhikSLHT8y9Vdw5pv
-	PGiWyZayoE1KrFgQsZhXz5nqIV76pBGQ8b8xJ76M3McS23COAjPQu2EtNEeGG/Y9zwpRNq
-	g9l+LJDWDxoiA7qLF+F93yPnQWhTEwvv/B1gMSc6SWwqI7FSB0SrI3CR5JZdfOpIGSeo7I
-	GXAnVbrl6Vm6a//OWA6mPtDG2QKiil4G6Ce/v9nokrQP0Y5ZxZU1SzYSk1dnMA==
-Date: Mon, 3 Nov 2025 09:40:45 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, Jonathan Cameron
- <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Liam
- Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Pascal Eberhard
- <pascal.eberhard@se.com>, Miquel Raynal <miquel.raynal@bootlin.com>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
-Message-ID: <20251103094045.73a061ea@bootlin.com>
-In-Reply-To: <aQMpHDwCqcrNrnT9@smile.fi.intel.com>
-References: <20251029144644.667561-1-herve.codina@bootlin.com>
-	<20251029144644.667561-3-herve.codina@bootlin.com>
-	<aQMpHDwCqcrNrnT9@smile.fi.intel.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1762161906; c=relaxed/simple;
+	bh=J8wpUcNN6eKIe2BNft5mcvC6Lwm7D6CpSo7ypNdqnRg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=evXp8fFMluY92i4B9cSWsiaM/0Qvpi5wKi+5zgBxUYHF1u62abN0plLUdjePcYoAifGo2Q6VzV1gHtUAziNd7XwfGyrWBY6Ofrn7QBOtPpu5UnSXAbx1h5ACsOa7mTl/vpwhoe6JUsAtGdGx5NskKo80oF3f1kIFhxOeqzHttrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KgOoiL/3; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-640d0ec9651so485842a12.3
+        for <linux-iio@vger.kernel.org>; Mon, 03 Nov 2025 01:25:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762161902; x=1762766702; darn=vger.kernel.org;
+        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
+         :to:from:subject:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J8wpUcNN6eKIe2BNft5mcvC6Lwm7D6CpSo7ypNdqnRg=;
+        b=KgOoiL/38Rtc+gBugYUplM6MQImn/eksHW+v/7hDUGOdNaqbui3Zibgq6fuSrhxWsX
+         5f27zsZJaevPOgMQFFOuH39EXGDOQed7O5WIJfkgs7vCsB8oqIzUeM2RDlRbw4HZkjCh
+         GQ1NE1AxHA8gtomYJsZTV5id+0K8kKZQzUySeEh7AjXwcMfhnKf972K/wzryOxp118kK
+         7hBndlOoG7u7BSZsY/fy1I7XK22rw5ab1tRPZyiRB6THvJipbkoiJRgPNhA+ST5zWaEW
+         89PsnG8ZfDdJFVHhhtZnZoEvbhKM7GN8/k+XT9MxvbjlEeS/1g7B+GDHJ3272RiDJh9r
+         4+jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762161902; x=1762766702;
+        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
+         :to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=J8wpUcNN6eKIe2BNft5mcvC6Lwm7D6CpSo7ypNdqnRg=;
+        b=TdJsaL/9IDdgI59Q+EEsrfG2SwP8kayyvmona7aqULmz7oADvy4jnp0j4zpe+D7ZQn
+         9WaAZnqzD2CRMwM5vfq/jBslbWclHZW+9ParoNJYRPaPoPbBxxhXFI7L1Xbi+ce6DnbM
+         eQ2hyrA2JdSLEhbwM6HotSGiNCg/77pjcG8AoZUuYAtFXi3NXPSd5UsW7dl/wS1m5Lxc
+         c7dbgudWY4w6NXDbg4AfImtut8NPfeQxt9CBWvat1eSYWxq0rive3aziz1GVUAX+0JGi
+         OeUD3m3WroTRlfesymmNcYWXFtrHAHgqfAzYpPCycTXMEVSbIUoiUvPFUnTWurAtH+mh
+         Tzyg==
+X-Forwarded-Encrypted: i=1; AJvYcCW/DNKpVluulG2xF0zW2c3g0V8Xsn9VZRkUBP/MvF1fzmaHXqUqYeZkUZJXKIpHtTjJM+CxaXlKd8s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxSd/QL4K3KPSnJrrhSqkAAetBLOBXC4TnKiZWdTlIldrD4PKh
+	b60dywB3tTeWKd3e0+PSQhftRhCgEOstTXV39C0rYKo4QJxHoAo5gP+qZhb7o43BdMs=
+X-Gm-Gg: ASbGncvLwnI0DVdDhtbiBb15ggSlAIKVx+gXFTtkHwh1QGNUQTuu3ZlVxhJQijr23wr
+	fWkEg7xyGVFhMvWXp/3+m/ymuAp6D6gyaIAW/7TVpI1wXDH+XhIGWTAut2d5li0TrZPWCQImIX3
+	0Y26A45OdU5yoxIU4LSk4rT794vJs24Fq0vQTNr8cTC+Z3bZ/GAoieQC8mFkhFnthOIgWdtqJ5L
+	q7B+8y3dcnrtYRY1uD7FOFH5wZydyQDSHkx+CkzN0M9Gqy6jxp4lTq0qTbwIxBU6sE7OO/HLC9K
+	VrYhPxP4GibN1/iRQwT+IniZwCxOCGNV6qJzTnxDxg7VoMFxXqBoSSIyEfa/gzYOlFDGPhsPY9j
+	AkODg0EWNCg3IkTt6iVnUeyPFfB32ceX/WXL5S7n0Q8uVP277zgF8/WDzU5UYdCWRk+CvPLi2gW
+	0HKNPi9/jfv1ws9SpiB5Zge0lnpdm+0zC6czyDeJxgptx4CaoyPg==
+X-Google-Smtp-Source: AGHT+IH5hULo+8FDQ2WYcjV+y6dq0RuxLkwQQ2iO35o/+oBwlQsLx4u0zvThA0iUaycg5B4WYA5Ppw==
+X-Received: by 2002:a05:6402:2750:b0:63c:683c:f9d2 with SMTP id 4fb4d7f45d1cf-64076f78d17mr10299643a12.12.1762161901830;
+        Mon, 03 Nov 2025 01:25:01 -0800 (PST)
+Received: from [10.203.83.103] (mob-176-247-82-42.net.vodafone.it. [176.247.82.42])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64094ec0921sm6848587a12.11.2025.11.03.01.25.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 01:25:01 -0800 (PST)
+Message-ID: <87f68357d52fe6406bab42d5bfb41e4addd9d301.camel@baylibre.com>
+Subject: Re: [PATCH 1/9] iio: imu: st_lsm6dsx: dynamically initialize
+ iio_chan_spec data
+From: Francesco Lavra <flavra@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, David Lechner
+ <dlechner@baylibre.com>,  Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>,  linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 03 Nov 2025 10:24:54 +0100
+In-Reply-To: <20251102111648.73422267@jic23-huawei>
+References: <20251030072752.349633-1-flavra@baylibre.com>
+	 <20251030072752.349633-2-flavra@baylibre.com>
+	 <20251102111648.73422267@jic23-huawei>
+Organization: BayLibre
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-MnvrRlCym1HWP7zf9aXq"
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Andy,
 
-On Thu, 30 Oct 2025 11:00:12 +0200
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+--=-MnvrRlCym1HWP7zf9aXq
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-...
-> 
-> > +	ret = devm_regulator_get_enable_optional(dev, avdd_name);
-> > +	if (ret < 0) {
-> > +		if (ret != -ENODEV)
-> > +			return dev_err_probe(dev, ret,
-> > +					     "Failed to get '%s' regulator\n",
-> > +					     avdd_name);
-> > +		return 0;
-> > +	}  
-> 
-> 	if (ret == -ENODEV)
-> 		return dev_err_probe(); // takes less LoCs
-> 	if (ret < 0) // do we need ' < 0' part?
-> 		return 0;
-> 
+On Sun, 2025-11-02 at 11:16 +0000, Jonathan Cameron wrote:
+> On Thu, 30 Oct 2025 08:27:44 +0100
+> Francesco Lavra <flavra@baylibre.com> wrote:
+>=20
+> > Using the ST_LSM6DSX_CHANNEL_ACC() macro as a static initializer
+> > for the iio_chan_spec struct arrays makes all sensors advertise
+> > channel event capabilities regardless of whether they actually
+> > support event generation. And if userspace tries to configure
+> > accelerometer wakeup events on a sensor device that does not
+> > support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences
+> > a NULL pointer when trying to write to the wakeup register.
+> > Replace usage of the ST_LSM6DSX_CHANNEL_ACC() and
+> > ST_LSM6DSX_CHANNEL() macros with dynamic allocation and
+> > initialization of struct iio_chan_spec arrays, where the
+> > st_lsm6dsx_event structure is only used for sensors that support
+> > wakeup events; besides fixing the above bug, this serves as a
+> > preliminary step for adding support for more event types.
+> >=20
+> > Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+>=20
+> In cases where there are only a small number of options for what the
+> channel
+> arrays should contain, my normal preference would be more data over
+> moving
+> the complexity into code.=C2=A0 That is have two struct iio_chan_spec arr=
+ays
+> and
+> pick between them based on availability of the interrupt.
+>=20
+> I haven't checked the whole series yet, but how many channel arrays
+> would we need to support the features you are introducing here? That is
+> how many different combinations exist in the supported chips?
 
-Well, I need to abort on error returned by devm_regulator_get_enable_optional()
-but I need also to filter out the ENODEV error.
+In the current code there are 3 struct iio_chan_spec arrays; we would need
+one more to fix the above bug, and one more to add tap event support; so a
+total of 5 arrays (each of length 4).
+As for struct iio_event_spec, the current code has one array (of length 1),
+and to add tap event support we would need another array (of length 2).
 
-ENODEV, returned by devm_regulator_get_enable_optional(), means that the
-regulator is not present. This should not be seen as an error by the caller.
-Indeed, the regulator is not present and so, the related ADC core will not
-be used. This is not an error from the caller perspective.
+--=-MnvrRlCym1HWP7zf9aXq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-The code you proposed is not correct regarding this point.
+-----BEGIN PGP SIGNATURE-----
 
-Instead of my original code, I can propose the following:
-	if (ret < 0) {
-		if (ret == -ENODEV)
-			return 0;
+iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmkIdOYACgkQ7fE7c86U
+Nl+o0Qv+L1+kfzgrRneLLXOc6I57yrBmlGbdoXM7PhnsMsoM78a2fFO+EYxJFd03
+HFVM63v6jyl14NDLXiY5YX3XoaMDCdafqimlBYX5EbqBBXzALeyLjAd5ZYwDBfc/
+YBdFYRwKAOxwbSN/nLB1nqbNf3vpzU+mZRArVLz/AeyQQXAgpPmKXee4HzXb0nko
+af7ywKzE31Y6XznU7887dRt9HyuGqzE1qzb5CBEZqjaULhCHzpqIpdMnlVpMwFjD
+87Ff1q69NuNiJW153aakIYHQaZFd+olGvAWZChmaUlNCEsUpzf/sySDdiz2GVnrR
+zZ5GP+a6/njT7AJtKCsYbrqmECMR5NsErlHDCAkanTUvuAtoR8p7EXrunHDpleKk
+5lhli1jyQNRTsdskptXSJ8PdSogB0noRrIe/E4EAOjHS/bQ4UuIxt18nLSE5KKJI
+pHj04/HaNglVynOq/uYuzfkDAkfOei/20P3RpFJHhuBDIdIx+doSmyGlOOpMIy+0
+u0RTrkCu
+=ZdQR
+-----END PGP SIGNATURE-----
 
-		return dev_err_probe(dev, ret,
-				     "Failed to get '%s' regulator\n",
-				     avdd_name);
-	}
-
-What do you think about it?
-
-For other comments you have sent, I agree with them and I will take them into
-account in the next iteration.
-
-Best regards,
-Hervé
-
+--=-MnvrRlCym1HWP7zf9aXq--
 

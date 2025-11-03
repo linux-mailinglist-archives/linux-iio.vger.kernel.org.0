@@ -1,174 +1,186 @@
-Return-Path: <linux-iio+bounces-25829-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25830-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FCFC2AC51
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 10:35:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59666C2ACA9
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 10:38:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A37163B5703
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 09:34:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BE471348FF8
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 09:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2562EB87A;
-	Mon,  3 Nov 2025 09:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFFC2EBB98;
+	Mon,  3 Nov 2025 09:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DhkIGDo5"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xB2g1qtr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256B32EB845
-	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 09:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206CD2EBBB3
+	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 09:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762162475; cv=none; b=jRFDT5dB655U64ELzmbKz/E9r4bd23gvBkRnZSxcJRn+HrfzdyqPtx9e70bq2PndODrCncDBOuHXfgwKhvq6gbDjphEzaDXHzzTo3jce5A9JFazi7xNWwi6CUheRQwsOQhw4tklJgAijR9XPFv0yrU/ojUumiMVmjcan7URasEg=
+	t=1762162584; cv=none; b=JUgemiRAPglkYABqnSGKXi4/h+SF8b7yprq52NJItPjq0Ay+HFsGsZIQYl6GzGoaX78tquZOEI0GCy2c1yz3OQ/RAk+7aaB898u8PB5NeDuEVJ5qmtlWkbOwn6aznsKhxBcR8tOceGpu78Up4t+HbEEZ6BTr8437N/ULndD0nrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762162475; c=relaxed/simple;
-	bh=i7DOvgsvt3ZQmezVkp8vi6qSNyStUcEGPJnNb6H63Pw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iPg3w1MuisPwH9G26BtUHJzm+kl4RASNgZyodOuxjZThorIAFAa/ERqrbAuZ+HNRkysDsunugeRSGxOdEwU6bar5qXM9xwQoZrn0VuoNsnLS1ZnMJG0N9LCodOEP1KQWzpakAb8GnLPjOzQCXhxOCzfCsrdBQCCSMQRD/PQ3VdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DhkIGDo5; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-63bea08a326so6060381a12.3
-        for <linux-iio@vger.kernel.org>; Mon, 03 Nov 2025 01:34:32 -0800 (PST)
+	s=arc-20240116; t=1762162584; c=relaxed/simple;
+	bh=/fMMww+VnRA+hcUIhl7JMhlaSfVDZu5RLtut+X9bMaI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lOGh9WOlGTz6mdAM7iylRcQLt3z/zPRY3e8xkcH0jMzsuady7AtH0q+GUKmyIYhrYu3tX+as8jRSrNxtDAe6adzvjI3RN8Cr7qGbYiwmNjNI2E6kdzLTubqvHzoA+3DQk3lxF3TWEiLdBSg+1YLEVMWNYuFwmJTIel4fUGGH8bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xB2g1qtr; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5942bac322dso758061e87.0
+        for <linux-iio@vger.kernel.org>; Mon, 03 Nov 2025 01:36:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762162471; x=1762767271; darn=vger.kernel.org;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i7DOvgsvt3ZQmezVkp8vi6qSNyStUcEGPJnNb6H63Pw=;
-        b=DhkIGDo5S2BVh7xneec4YlTW1Nx83x4WZp0g1tx1sZZBxyNLQpgfocqgjic7rHgNMm
-         qA3CTCHtKCPDpDotM8ka4ghjYAmpoxbBNqp3YTn7DiT3PEKovRh43gVFNC5eQ22qdWJ8
-         8d8RPWYfcPSwr8tuFqyZE7nITz1XWDJgUjAKDzHy2r8tHhqeSY2Wxg5BW9+9Axt+nK3S
-         /bH8tYobIoBsokzH5yZebNuaWRAtEjTuFXF+wO8n+eKN45kBorP669ouWWWuCZh9Pnha
-         EfpS79BZv02PrVW/4UFMndCTGpPzn+V2Opbxr8L5UDhF+FDE5QztYFXlepA1FrD6qMNJ
-         CYuw==
+        d=linaro.org; s=google; t=1762162580; x=1762767380; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9yW62hLGR641KE85jpQSWPUCRsBAzSiXnExBD5jnO/s=;
+        b=xB2g1qtrpd44V4OkSLjf1aDJE+B1F/K45/lOKgy0lxFr194hrglfNEXsFhC+X7pyeL
+         hSSu/WBingd/arXSglbELlXLqvSWC2bALZoHfglrHHKqqENqJF31SRJ/3TZjRKlptOTN
+         qVm7M/z1YT6zlKDd2/HXXGf9CtH3uFXi98e43VfbLlw7UZmFQBKnDlttVtWrz0qVDVKr
+         EsErNj63EDd/V0aDvaVgQf9L3NCtYSte2objlr7HTtFrifF5TVXq2PqeEeGKMtqNpltR
+         dGo4htu1GsiO2+0ccHO7k1AMdXrTGAFASOPdQ8OrSTkFdqgM9tIvZeeA7IEI7f51hEpj
+         Oaog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762162471; x=1762767271;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=i7DOvgsvt3ZQmezVkp8vi6qSNyStUcEGPJnNb6H63Pw=;
-        b=l26Z8F0g+xjC0zREnrBwVMSBtEqOZvV9gtNGv0Gy+F8Kqyi0Ah5WzXEOWNqf/+t7E/
-         08k5nCSJ2H+3RpOElTHjMbfa0UCTHGCwmSpCLUCwrk+rk0Vx/h3Kl/5z0iA3jZwkWbmr
-         w9xnd3YUsqCcN1sJ3wz8TLGDVmdiNnFUhW+hbVd7Q9j7QRalDQp2DvHqwWshH5WpRdlZ
-         IXmKrdicrSUEsJr6c+lcnk97kQnZdqLi7IXeyHjAkX8wWBLJRG59iseYlYy0glpMpWZu
-         Se2RFVGhm5Um0LyiKk0Ia7ea046LqiiFyx6WVkAt4mPBXNxe/3iBN1Cp4jnKwJepccXv
-         8+kA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+PflBkW1mqUdvau2b/adl8f+WU8mgYhg7fVE4q0K27SslaJSHMX83NzxEWAKrArw76UmHwX+G5+M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDooloD74S+oxrq0DB/6zSmIgFkby0GzgiOCq8V2GWeXUBgBNr
-	UwGMkKj++tCEA1k4s4tLBRdvxHTqxTOqCb2bh/NfbrZ04zERpT8Q5WN//GGMCw2ia/U=
-X-Gm-Gg: ASbGnctVb1HoCa6lWakoU6GkJaU48adGjCXGvNubU/PPpdBy8MDK5Hp9eCBs9o0t3O9
-	RZxx/7PVo1s6vWCwFBPkuTU/9vaGC8F00YZWe+8XfSJrF5cyPSKjT8XLYx0WcUwq11UyMK4r7Kf
-	s0RsHCS8DO3SKp7k2jhynoXezqSSFw8pLsFmRjPrzk+2BUgFs2f/VDOfmtrl6hrwAZsdLVFbrtZ
-	ooZPGhpCpiU/kobTYYJgSMNeNB6Pqw8WkcjbUsEZ13Pi2s3EAvvCaZ56KAX2dYPnMUjS7OhGh/7
-	m2AUoZYY+4nrZR1gEFct9KPJrFWcZiK1lRbV3bGOxZITYqb75Vrz3CcK69Mvasp35o00fcLD98w
-	SfTZEXCSV46Y35t6/ld/pDpAIhBPucIxgy0ZaK+ccgSohfX2Y1B7dXEEn0uO3P3wEyfDcJzn93p
-	WYjuqTQMoV+mRn/kb9aDLR9X26YNRZSVkcefmbqPf/kiJtM9oxXQ==
-X-Google-Smtp-Source: AGHT+IGnMLRGHhpO38MioC8H/phmYtpI9tWiHTI1pjfDUHvbCJftgf1K8ac1oy3OCTnGcK6thqrCtw==
-X-Received: by 2002:a17:907:7f13:b0:b6d:5718:d43f with SMTP id a640c23a62f3a-b70705ea525mr1074949666b.39.1762162471439;
-        Mon, 03 Nov 2025 01:34:31 -0800 (PST)
-Received: from [10.203.83.103] (mob-176-247-82-42.net.vodafone.it. [176.247.82.42])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7077975d24sm994396166b.1.2025.11.03.01.34.29
+        d=1e100.net; s=20230601; t=1762162580; x=1762767380;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9yW62hLGR641KE85jpQSWPUCRsBAzSiXnExBD5jnO/s=;
+        b=oDHagRCeDqNiQQxFfKT77EXfXndK7pouA3fbY2GRdRbrfdLTsyzfcOa69cMT1aMhM1
+         FejDvMuulvIpEIp7WFy8Ckzuasaw6DwRstEVMYOwYVtN5lU4i5bZ2wUUHuQTOAICgcO5
+         T9wsY0zT245ASh/4yMyuDq1R98sOrKmq+EdTmHYA8ja81gL003tgDLxWooNk/nd7uHt8
+         UZEI/mGr5+ElPLLCV6b53kCAQxEPuOi4GIobYD3lwqZr3PD52zWxzJb+nG13JdRncE14
+         JadB1eHEtP23wdR+POUkEQVrrSTWBM5hhSCVwmiikLzQrOOW7WzLW1tacLqlSBNaX2dA
+         RFWg==
+X-Gm-Message-State: AOJu0Ywex+KhnvesxW9j1E1nRX2q2AMaEGGsDZqSb9necTtTQ/dIf+fZ
+	6PqJey+r2q9FkICvXpEijH5fknO7fexcfnXIXmd3F1g/8JO2wmaDtRx5DkUCrELcOb0=
+X-Gm-Gg: ASbGncs1Jb54bY8eS/WqAg513PQokS1CoISQt8Yp81SvcGTtKKYdDkYCX/9nu8BFaVy
+	XBLd+4qJpiOHlVWvHStWpfGYwbKaKulMBlCjX7BTgL+JkA3Lt3wG2K6fo6Scc7llgVRL2aAjC9G
+	RBa6PKlcf8HM0dmIUepK21N+rXAaJBEwwnFPtWkRp1QlhOoCPEW1MIVXuWIR0Nm6gbAKMjxVGXe
+	ikI7gb9jA0fIgphnV/tjRCCUhTKfeIGQgBBnHrt6pKHMV7N7InU1hKKkfAIAk0PtHs2MQA/Sp0j
+	XuNqsKKAVsuD401breTjpyy0AjR4wWTaxqoujFYPWLzyZZe0VseFvwTZqt5vz4oPZVpgluRtJkg
+	1RNmSxfrxPS1wTXcBt1CcbyXpkYfcKHtPKfUcMta7rtkqSJgrkPwdLYOzgcyDQdIVJwUmmY3LHJ
+	gzSRn+X4sdCFMc0bzcrtMzxJOefN2ouGilXb5Z77g1Iqs8
+X-Google-Smtp-Source: AGHT+IEbLGArSP9pXAbGMd97ofMZmPRcH8dCTCvclwnpkuf4fwAmP+p9NpZYFomPMnXnC7iNc9dIaQ==
+X-Received: by 2002:ac2:4c49:0:b0:594:2df2:84ab with SMTP id 2adb3069b0e04-5942df28800mr633101e87.8.1762162580137;
+        Mon, 03 Nov 2025 01:36:20 -0800 (PST)
+Received: from [192.168.1.2] (c-92-34-217-190.bbcust.telenor.se. [92.34.217.190])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5941f39c0fdsm2722074e87.39.2025.11.03.01.36.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Nov 2025 01:34:30 -0800 (PST)
-Message-ID: <25732d2be08156b4f55e97f5306d1fd080255ae7.camel@baylibre.com>
-Subject: Re: [PATCH 6/9] iio: imu: st_lsm6dsx: remove event_threshold field
- from hw struct
-From: Francesco Lavra <flavra@baylibre.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan Cameron
-	 <jic23@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Lorenzo Bianconi
-	 <lorenzo@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
-	=?ISO-8859-1?Q?S=E1?=
-	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 03 Nov 2025 10:34:28 +0100
-In-Reply-To: <CAHp75Ve2+eU2X30EvC8dOuhEo3XZBwFrUH60itEYdYdGM7HvOA@mail.gmail.com>
-References: <20251030072752.349633-1-flavra@baylibre.com>
-	 <20251030072752.349633-7-flavra@baylibre.com>
-	 <aQMbb6BUBHQUXX9y@smile.fi.intel.com>
-	 <32a7741bc568243c8a19d691b922d9a8c2cba429.camel@baylibre.com>
-	 <aQNs8VVoStUJ6YHB@smile.fi.intel.com>
-	 <20251102112958.435688d5@jic23-huawei>
-	 <CAHp75Ve2+eU2X30EvC8dOuhEo3XZBwFrUH60itEYdYdGM7HvOA@mail.gmail.com>
-Organization: BayLibre
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-Zznj8JQRuN4PD+b2+6iB"
-User-Agent: Evolution 3.46.4-2 
+        Mon, 03 Nov 2025 01:36:19 -0800 (PST)
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 03 Nov 2025 10:36:18 +0100
+Subject: [PATCH v2] iio: accel: bmc150: Fix irq assumption regression
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251103-fix-bmc150-v2-1-0811592259df@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22MywrCMBBFf6XM2kgykoeu/A/pok3HdkCTkkhQS
+ v7d2LXLcy/nbJApMWW4dBskKpw5hgZ46MAvQ5hJ8NQYUKJWEq2481uMT6+0FJa0cQpxRKOhCWu
+ i9u6xW9944fyK6bO3i/qtfzNFCSW8n/zZOHL+ZK8PDkOKx5hm6GutX6YOqd+lAAAA
+X-Change-ID: 20251027-fix-bmc150-7e568122b265
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, 
+ Stephan Gerhold <stephan@gerhold.net>
+Cc: linux-iio@vger.kernel.org, stable@vger.kernel.org, 
+ Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.14.3
 
+The code in bmc150-accel-core.c unconditionally calls
+bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
+such as on the runtime PM resume path giving a kernel
+splat like this if the device has no interrupts:
 
---=-Zznj8JQRuN4PD+b2+6iB
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Unable to handle kernel NULL pointer dereference at virtual
+  address 00000001 when read
+CPU: 0 UID: 0 PID: 393 Comm: iio-sensor-prox Not tainted
+  6.18.0-rc1-postmarketos-stericsson-00001-g6b43386e3737 #73 PREEMPT
+Hardware name: ST-Ericsson Ux5x0 platform (Device Tree Support)
+PC is at bmc150_accel_set_interrupt+0x98/0x194
+LR is at __pm_runtime_resume+0x5c/0x64
+(...)
+Call trace:
+bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
+bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
+__iio_update_buffers from enable_store+0x84/0xc8
+enable_store from kernfs_fop_write_iter+0x154/0x1b4
+kernfs_fop_write_iter from do_iter_readv_writev+0x178/0x1e4
+do_iter_readv_writev from vfs_writev+0x158/0x3f4
+vfs_writev from do_writev+0x74/0xe4
+do_writev from __sys_trace_return+0x0/0x10
 
-On Sun, 2025-11-02 at 15:45 +0200, Andy Shevchenko wrote:
-> On Sun, Nov 2, 2025 at 1:30=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
-> > On Thu, 30 Oct 2025 15:49:37 +0200
-> > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
-> > > On Thu, Oct 30, 2025 at 12:10:08PM +0100, Francesco Lavra wrote:
-> > > > On Thu, 2025-10-30 at 10:01 +0200, Andy Shevchenko wrote:
-> > > > > On Thu, Oct 30, 2025 at 08:27:49AM +0100, Francesco Lavra wrote:
->=20
-> ...
->=20
-> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *val =3D (data & reg->mas=
-k) >> __ffs(reg->mask);
-> > > > >=20
-> > > > > Seems like yet another candidate for field_get() macro.
-> > > >=20
-> > > > FIELD_GET() can only be used with compile-time constant masks.
-> > > > And apparently this is the case with u8_get_bits() too, because you
-> > > > get a
-> > > > "bad bitfield mask" compiler error if you try to use u8_get_bits().
-> > >=20
-> > > We are talking about different things.
-> > > Here are the pointers to what I'm talking:
-> > >=20
-> > > - git grep -n -w 'field_get'
-> > > -
-> > > https://lore.kernel.org/linux-gpio/cover.1761588465.git.geert+renesas=
-@glider.be/
-> > >=20
-> > True that it will be a usecase for that, but given plan is to merge
-> > that through
-> > a different tree in next merge window, it's not available for us yet.=
-=C2=A0
-> > Hence would
-> > be a follow up patch next cycle.
->=20
-> Yes, but we can still define them here. Dunno either with #under or
-> under (namespaced) names, but still possible to use now.
+This bug seems to have been in the driver since the beginning,
+but it only manifests recently, I do not know why.
 
-OK, I will define an ST_LSM6DSX_FIELD_GET() macro.
+Store the IRQ number in the state struct, as this is a common
+pattern in other drivers, then use this to determine if we have
+IRQ support or not.
 
---=-Zznj8JQRuN4PD+b2+6iB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Changes in v2:
+- Instead of a bool has_irq in the state struct, store the Linux IRQ
+  number itself and switch behaviour on that.
+- Link to v1: https://lore.kernel.org/r/20251027-fix-bmc150-v1-1-ccdc968e8c37@linaro.org
+---
+ drivers/iio/accel/bmc150-accel-core.c | 5 +++++
+ drivers/iio/accel/bmc150-accel.h      | 1 +
+ 2 files changed, 6 insertions(+)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
+index 3c5d1560b163..42ccf0316ce5 100644
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -523,6 +523,10 @@ static int bmc150_accel_set_interrupt(struct bmc150_accel_data *data, int i,
+ 	const struct bmc150_accel_interrupt_info *info = intr->info;
+ 	int ret;
+ 
++	/* We do not always have an IRQ */
++	if (data->irq <= 0)
++		return 0;
++
+ 	if (state) {
+ 		if (atomic_inc_return(&intr->users) > 1)
+ 			return 0;
+@@ -1696,6 +1700,7 @@ int bmc150_accel_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 	}
+ 
+ 	if (irq > 0) {
++		data->irq = irq;
+ 		ret = devm_request_threaded_irq(dev, irq,
+ 						bmc150_accel_irq_handler,
+ 						bmc150_accel_irq_thread_handler,
+diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-accel.h
+index 7a7baf52e595..e8f26198359f 100644
+--- a/drivers/iio/accel/bmc150-accel.h
++++ b/drivers/iio/accel/bmc150-accel.h
+@@ -58,6 +58,7 @@ enum bmc150_accel_trigger_id {
+ 
+ struct bmc150_accel_data {
+ 	struct regmap *regmap;
++	int irq;
+ 	struct regulator_bulk_data regulators[2];
+ 	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
+ 	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
 
-iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmkIdyQACgkQ7fE7c86U
-Nl+4oQv/f0YDTxKPnmDQtZLAMR1rSQ09I8ZI5A77NP5H9+zOBl/32hcta/Z0ouua
-Eg/D1CS3D6dzKddOtET0ZHTN6pH83uLRf45ItatUhBpdtSoBs1WGJaWMveIgixVU
-Ls2WK2onK7krHRYNtjMnH0WKsWdFiU8IYRrs0vdJfOncCsAJkIjtnz+geQvMSLSi
-E4q6hElEDAtd/jvTwf3WFIeRAXEgcY1nlBnSVIuETjjaNChJ+U4MasoN7L9K2cwy
-wV72ImowIft5kxrj2HZRx9jwlvv3oyyt3pggFHbp2Q21YRSF8TWeypVIK6aQ0YVp
-/ZIREHvhNqnZQHMl1fMiifzaW4z58bJAU6Raq7AOhG4Wa6t83ajDGZrXki2lhQrs
-gYX4i68dSZ84ujA3S/JXpROnc/Udb8RyGYvYZtZXUKKXEY8irlPd0KuHFYOGcKPI
-s11blc3Qfl9Omaz1II1g9pT0mdFOYqhIVzaLAu1v2EWNXi4KNkgSi6XXUaEIBjWR
-sFNThTOi
-=Wfrg
------END PGP SIGNATURE-----
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251027-fix-bmc150-7e568122b265
 
---=-Zznj8JQRuN4PD+b2+6iB--
+Best regards,
+-- 
+Linus Walleij <linus.walleij@linaro.org>
+
 

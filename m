@@ -1,152 +1,113 @@
-Return-Path: <linux-iio+bounces-25853-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25852-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE18C2C7FE
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 15:56:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C704C2C9CD
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 16:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4CEE24E9555
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 14:53:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2125E4F3744
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 15:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD54334395;
-	Mon,  3 Nov 2025 14:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712863321BF;
+	Mon,  3 Nov 2025 14:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ZfCxeYZo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q4BzEEfE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D7332F778
-	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 14:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788AF3321A8;
+	Mon,  3 Nov 2025 14:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762181629; cv=none; b=h5oVNAaoASsii9fFRwP6llAjYR4L94eLAManL3NWuQ4S9Er6y1/Ogj0ddEnjuKPmi7/mJ4O0jjOSOvbLDfymr+zY1TN1jfsbfRg/pQ1/byTuW9qzF6lNk01wjt9CJUmXvVp7Xt4QG/VUETKv3Z855fNIDrlXo7h08ucsovUxps8=
+	t=1762181497; cv=none; b=jN+uXezoqKFj0emLdBI4cs4983HfK7euacD/AvQ4InTIU8sQ8Oyyxm3SfS16PBxBgR6/ROQkm8y9rc9fMUw2xa1rKajvWedp/rzKgBNzkYB5NfHSEZPv1IdszgFx95bMsWC70gHgT5orc57N/10H5TJNDqJFyDVjilxE11vM/VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762181629; c=relaxed/simple;
-	bh=ehgZ4ZdKsHFQmxa3sEld7o3zP6QkHPreEmxCnU/yFug=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p0LqluX90Eyk8oWiRuimM3bjXjX285Wt+XoB7TuWPDkEJt8mbn0TY4R6GjvLbsmKxWWRmxI04S8re0MRCj6WS8tcQu0NX/wk9t/+7OSOPe1U3FZmFE4JTAcr+L60i0m5sTNxup89sBvuNoo6CYecLKepJT9Lzp7adv33DdfHK70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ZfCxeYZo; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-3d573d8bc5fso1530837fac.2
-        for <linux-iio@vger.kernel.org>; Mon, 03 Nov 2025 06:53:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762181625; x=1762786425; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2oRhMrtETyf8iDJxvxWets9ZrKCJQU2U505W6uUmeok=;
-        b=ZfCxeYZoDItY2EIVbbo4sQ/Nb3PW88I90jpArNPXWD6CcSYkK1RoeNGFb1S084vABH
-         g9aHk5DvPVoQmqHIWdZW8NzfyeuCpfNnwzkZAPsgG1OO68EE2Fx42rRHd+1//9tmhV/N
-         mBjMNC1ZqhehkVbs2cm8th8ndl0KTSoCdsL7mbfBJkDx9qzb0kyKUSFIvET3vksQo/rK
-         sPciLPY3P1DGV2yh1N4/FtOKt9VNU95tYI34UOMbkgEK30xZ+v6Q6u85VEh7Cni+tTcV
-         adkPMwVSjkDKy9OBxtB9A8v6HtIHXaFifherVKFqcdGx8RY+q8jipJ4dnZV//TpL7wK/
-         Y5jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762181625; x=1762786425;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2oRhMrtETyf8iDJxvxWets9ZrKCJQU2U505W6uUmeok=;
-        b=ZASnfdfM8UNf634OXdKNbOffcq2QKvPhCFg5ZamCp0qwubFk/6/xK2az5w74xVkgZC
-         dkb68sKiYi5kAb95G2KZB9eg78QKpOtExHySBMLBl0Dn76KVzyZ/ZcL5kc1AgFwB8p7D
-         h5yrroHxS6lQf5+Qv9rYNW1qztop/uZVSQEK0g21lWpQjnvPKLaBbEPRZSLAiMhNhMjM
-         e2im2+r3DuBVZP6obg5RtPAhpMz/UafLkk1df7boXut48EZf3fQiKZO5rEHYszj9FJqb
-         916DeS9OqoQufzgENuqomaHVY7xQLHfOUk3gCPUz/x/zpmPFe9MUEmnTjuAS+RTBygZL
-         3PSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVVDo1Yayre0Lp0HqCk6xY+/2ACffdtv/59kaiU5UBsLF0MuSecwh2wLIQ7X9DgiEVGjaUN5cYyejU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9i+jSV0jV04N9mTKqLDoIUbOaoBV0ZLEXv8mzucJdEf/B7lVb
-	JcgMFaOyvQI1k/jZnwDyEsCMEtwkbFDNYK3uLB0EMec4loZDJfFQtYeXLLjNCy148RM=
-X-Gm-Gg: ASbGncuq7uU4ngQM6ScdRcAXlmPEMS/U8jKAEPv5uJfYP8S/G6E5ArqFXJXs8o3gf64
-	WNWlGqjH/8b+p2ioBN1fc+4DuUJjOzgnVQx+FwIY6x5yiev16zza+e4Ex7vF41ifmB96OSY2NwQ
-	wrH0Orm0X/r9pKVnfacuJ6czs0H7gkXeS2stIEQb0qvnZ6FE9Se0cDsMxzcjvKcYlpqd3uh2+C/
-	ExCfbw+gvSILLWxeAQZuz7hkTzw6Ske2tI4VkMwq6HJHyzjsAhlVl8jNruJzFK21Zvf/beEV29e
-	bhRUoa1GvsaTxKB6wlRkUnOJ147uNuZhu1cFqssCWmXaGZsvLqo6vdp9TGRHiPLInoCluCjYZet
-	Qzi/+7w0KV49MgtgCr22q5kmxqi9T6CpDoZFSK6qvWc5Jo1xaLhV3Q6rm2MioHR12hHSQLVsWuw
-	1W4JLHZ3yTr6PNN2Go6dvyzBvpvgVhH4QuvX82oQtZGuMJ6s8iTLgqvXhgNwZC
-X-Google-Smtp-Source: AGHT+IEJo7rLgIuSX0Rig2sD9HKUnrO5Vlavhp/7cDNnxbSPaLQkc0oS3be+i0RSaCSC/XzS1N8XhQ==
-X-Received: by 2002:a05:6870:5d86:b0:3c9:810d:494b with SMTP id 586e51a60fabf-3daca101f52mr4992674fac.8.1762181625628;
-        Mon, 03 Nov 2025 06:53:45 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:37c9:fd3e:34ae:9253? ([2600:8803:e7e4:500:37c9:fd3e:34ae:9253])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3dff5213959sm116338fac.10.2025.11.03.06.53.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Nov 2025 06:53:45 -0800 (PST)
-Message-ID: <798a41fa-eda6-4f27-955c-82fdb61c2083@baylibre.com>
-Date: Mon, 3 Nov 2025 08:53:44 -0600
+	s=arc-20240116; t=1762181497; c=relaxed/simple;
+	bh=G2KqnsuQ5Zzarl98yuoYLfJaqg+1gXkeK1KX3acp8Fk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eNqGaecyuWec8wYIVvQbIlBXhDFgGu/z2lvjXgNH80gK0Phj2eWuVJ2jEKhToyGW3LDMO9eLQN2IqFP3B8W47hTTlNm5ZIue0jsa2IREGK6MLltWuA78pjLtcabQxBoWRa0LSEvKOwPw4Ng7u9rZJ+2p6CZxr6eRph7y7eEvhGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q4BzEEfE; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762181495; x=1793717495;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=G2KqnsuQ5Zzarl98yuoYLfJaqg+1gXkeK1KX3acp8Fk=;
+  b=Q4BzEEfE9h3aaycBHaR0R49d3D8dHCVcUIZlrumblk6ib8dNaNhaReio
+   tfDjRA0QvYBiPZ05AuEzJ1rrZ52uj39hGtAhdzw+XtwwFVkIoqvy4gK8D
+   KGwNo8G3XRKQFOk6r1Fl+T/7rz0Wz5Qv10Bz96hYRks1v4yb5wJmkMjPc
+   DHuIFsV6quza0Oh/FmJWsXdEApINmPAjpuFove0Au8nYbfoy/qjn38ijl
+   s4yuYhOV0wXluB0F+ndKShLsN2khx0ZNEO1pIJ6b1Q+QaG/qWHM5dm3Pd
+   PpdzJzsbhYM4ozjelj+Q78SS8JFsKgfTHx6jD68JMeCytX4iBImMNVJlZ
+   A==;
+X-CSE-ConnectionGUID: apaPngRJR1GI2Qlj4hzL+A==
+X-CSE-MsgGUID: UyoBvm7TSruLKab26y9ruA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="81666331"
+X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
+   d="scan'208";a="81666331"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 06:51:35 -0800
+X-CSE-ConnectionGUID: UHG/pcslROie+eo1QdVyhA==
+X-CSE-MsgGUID: sNHlAtf+QX6OTevRICShpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
+   d="scan'208";a="187607026"
+Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 06:51:31 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vFvu1-00000005B8f-1G3Y;
+	Mon, 03 Nov 2025 16:51:25 +0200
+Date: Mon, 3 Nov 2025 16:51:24 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: "Herve Codina (Schneider Electric)" <herve.codina@bootlin.com>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Pascal Eberhard <pascal.eberhard@se.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
+Message-ID: <aQjBbBuZkARkGGan@smile.fi.intel.com>
+References: <20251103141834.71677-1-herve.codina@bootlin.com>
+ <20251103141834.71677-3-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/9] iio: imu: st_lsm6dsx: remove event_threshold field
- from hw struct
-To: Francesco Lavra <flavra@baylibre.com>,
- Andy Shevchenko <andy.shevchenko@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
- Lorenzo Bianconi <lorenzo@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251030072752.349633-1-flavra@baylibre.com>
- <20251030072752.349633-7-flavra@baylibre.com>
- <aQMbb6BUBHQUXX9y@smile.fi.intel.com>
- <32a7741bc568243c8a19d691b922d9a8c2cba429.camel@baylibre.com>
- <aQNs8VVoStUJ6YHB@smile.fi.intel.com> <20251102112958.435688d5@jic23-huawei>
- <CAHp75Ve2+eU2X30EvC8dOuhEo3XZBwFrUH60itEYdYdGM7HvOA@mail.gmail.com>
- <25732d2be08156b4f55e97f5306d1fd080255ae7.camel@baylibre.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <25732d2be08156b4f55e97f5306d1fd080255ae7.camel@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251103141834.71677-3-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 11/3/25 3:34 AM, Francesco Lavra wrote:
-> On Sun, 2025-11-02 at 15:45 +0200, Andy Shevchenko wrote:
->> On Sun, Nov 2, 2025 at 1:30 PM Jonathan Cameron <jic23@kernel.org> wrote:
->>> On Thu, 30 Oct 2025 15:49:37 +0200
->>> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
->>>> On Thu, Oct 30, 2025 at 12:10:08PM +0100, Francesco Lavra wrote:
->>>>> On Thu, 2025-10-30 at 10:01 +0200, Andy Shevchenko wrote:
->>>>>> On Thu, Oct 30, 2025 at 08:27:49AM +0100, Francesco Lavra wrote:
->>
->> ...
->>
->>>>>>> +       *val = (data & reg->mask) >> __ffs(reg->mask);
->>>>>>
->>>>>> Seems like yet another candidate for field_get() macro.
->>>>>
->>>>> FIELD_GET() can only be used with compile-time constant masks.
->>>>> And apparently this is the case with u8_get_bits() too, because you
->>>>> get a
->>>>> "bad bitfield mask" compiler error if you try to use u8_get_bits().
->>>>
->>>> We are talking about different things.
->>>> Here are the pointers to what I'm talking:
->>>>
->>>> - git grep -n -w 'field_get'
->>>> -
->>>> https://lore.kernel.org/linux-gpio/cover.1761588465.git.geert+renesas@glider.be/
->>>>
->>> True that it will be a usecase for that, but given plan is to merge
->>> that through
->>> a different tree in next merge window, it's not available for us yet. 
->>> Hence would
->>> be a follow up patch next cycle.
->>
->> Yes, but we can still define them here. Dunno either with #under or
->> under (namespaced) names, but still possible to use now.
-> 
-> OK, I will define an ST_LSM6DSX_FIELD_GET() macro.
+On Mon, Nov 03, 2025 at 03:18:32PM +0100, Herve Codina (Schneider Electric) wrote:
+> The Renesas RZ/N1 ADC controller is the ADC controller available in the
+> Renesas RZ/N1 SoCs family. It can use up to two internal ADC cores (ADC1
+> and ADC2) those internal cores are not directly accessed but are handled
+> through ADC controller virtual channels.
 
-The macro should be named exactly `field_get()`, otherwise we will
-have to rename all of the callers later after the series adding it
-to linux/bitfield.h is merged. And it should have an
-`#undef field_get` just like the other patches that series. Then
-later, we only need to remove the #undef and #def lines and not
-change the rest of the code.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

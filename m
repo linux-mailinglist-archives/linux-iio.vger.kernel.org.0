@@ -1,94 +1,92 @@
-Return-Path: <linux-iio+bounces-25837-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25838-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C48C2B1E8
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 11:44:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205B2C2B1F1
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 11:45:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D64CD3ACB8E
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 10:42:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5F4C3B7DC2
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 10:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767A92FE571;
-	Mon,  3 Nov 2025 10:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745B02FF161;
+	Mon,  3 Nov 2025 10:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jmdC3iGS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZpCsnoMh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980011DF74F
-	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 10:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD472FF158
+	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 10:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762166571; cv=none; b=IkVZWZMqIGF5Z+W0IvvtFtqAsS+Bdryx4UUMwXr4lTQQsElVZnfoJo/bLYnJC7FLJFF7s1E0de8X2vk3xsQJ6ejEEPiXDqDzjtbmwqjSJQ4LbbJ3dIr0Pm/A3VKB1g/hqYKZvnkJDD0sIb9E+/zCw7AbiOfn5QeaXpfHoswGqIA=
+	t=1762166655; cv=none; b=Am6Tmee6jyx7BIH+hNgUrKAQrnhsw8UZ5MgJ7x+rhwASSoohpfd/4yObc4vLIgXqi6AUGA59gHhq3yof/9EcVC/vSLoQCSIfz/zwuYpSQyfsGlmp5bBQ8bq7LSZLRd2hZBYVX4GDc9Yaam7sbHPOUTbXu0sd14SM5tbh2QBNQDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762166571; c=relaxed/simple;
-	bh=uIwmmWbf5c+njS/FfLR0Rc6VWzmIcFUMhywikgWBWMw=;
+	s=arc-20240116; t=1762166655; c=relaxed/simple;
+	bh=gwxrWXEX7fo23pH19yXG5KJRK3YBkYUcouQhjKfGxfI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WUn6L2ZdRtaCATsn5T0cjiRoUIKpvzhWHvMWv8rKWFhdJGzDhDVUlTQwFZAfT8Rcg0y4pJqsX4JXuQxQ8N8T2SCT0LiXTe5d4k2UIMUY5XiJcysLBzGo7bNZpQLQr4ItyWGGOcZTRYGiSmQTx/GJu9bseqCtlfxa4JZKF2/Luk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jmdC3iGS; arc=none smtp.client-ip=209.85.128.41
+	 Content-Type:MIME-Version; b=pm5selkgq6AhyTHCb7xVsiQVFRWyQa8qROeAd581w+FokQO0Xe9rvXX4T26lq4tDwYFC2/Da9juiohL2gdzp6JOmVGx1oKI9QggBNGW84U4SWgXye3Kjx9sLTEvtfNM3zF+juUC3trZ8oTKtOp08tqVBRQQhBvyDpe32o7Vbb+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZpCsnoMh; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47112a73785so27865175e9.3
-        for <linux-iio@vger.kernel.org>; Mon, 03 Nov 2025 02:42:49 -0800 (PST)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4711b95226dso53930895e9.0
+        for <linux-iio@vger.kernel.org>; Mon, 03 Nov 2025 02:44:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762166568; x=1762771368; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762166651; x=1762771451; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=kvI/x1vaT0M1lYPuFLpSNzfsdRDGeiwLG/ytatnOCpI=;
-        b=jmdC3iGSIqn3CJXeyN6zRUVPqC15KnekUGoVUZ5mNrJQYHOxhv2NcxQTLpdSqn8U+x
-         gOzegne/qThr3bIOHwIUn6x1umH72WtmM9nATYKiQV+ApGjps5pvw1VYkCJV4hERkG/y
-         DnMD2psX7I6FWpOute1ZGWhZp5kyLoOPdgqJrogeAS57pTFr9kI7yq5Nddc7WNr6PeYv
-         2SBrkeL5v3gSheu7WE+wZkyqrlHLC4SL28l6CgdzP5FiAfiiohqvg5XjZn36enpHCWUv
-         LxWZVTjI1lh09y2ND8z8xvZWTRZOUAUyTR8hW8B2vlQLczmRRAF43+ZGi/kk6ssEniZ8
-         M/8w==
+        bh=gwxrWXEX7fo23pH19yXG5KJRK3YBkYUcouQhjKfGxfI=;
+        b=ZpCsnoMh5zYYVlq7Xi7kxyAu4hPcTvqU5eabIxTw5RmDp3L+FuPFIWYkUVBsuWBunZ
+         5k1w6s60WH81n4wp1T5thx5MMUzQNtAma/Eq3b9oeXrj0G2CQ+VDsZxtxUyhV547t9ev
+         ok1upMDStrJt9sKjuxg5Bay4rC9MnN9aADSw1c1H+HkzwVjezI8urrhHSpSteIvHAhSW
+         bqftkEp9PQCN3+QX9jTg5WecthtizSkdecrMMHlL+VAlxkP70PCk8tbHgPAOWLeLMzkt
+         RGXQ+zcr8e4IMt7AF1tigmEQd73s9seQZG9eqG/sO0Eb4Z3QUVMFTNsGXaxKzw5Z5sNV
+         GfAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762166568; x=1762771368;
+        d=1e100.net; s=20230601; t=1762166651; x=1762771451;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kvI/x1vaT0M1lYPuFLpSNzfsdRDGeiwLG/ytatnOCpI=;
-        b=XgUBmylkAJDC+m3Dl9lXCQFkYHTO1QRNOF9e5EMtR+nagtbX9FILhJOh/ntUmhW8g1
-         CUbxeseSv6bj5HUrtKWG8DYuH2fi1cnL4lCFrbcHp1LTEJ4KB0iACFsIlFkAHv5oEauT
-         Q8LKApLIvetzSnhG7NkZ10Kd/SvtTeeSCecWmpNU596l2M6yiV6gyLKz/SgaxJUZqbkh
-         eEzVOTBQMMI8vv3ZSdEKNkUiiOiXkRgyXZuflNHEMpcSzRoLgztgX6GX9WfsS1JJfpCS
-         PZARgOiWQFruQSeDynPCZmRY9TKuSL8lUGQvZC4ZGbvJKV2nN3Hbz5Jk+KOWtSky1FIJ
-         h7ew==
-X-Forwarded-Encrypted: i=1; AJvYcCVWdVJfR5Dv10wH0VQC9hESQQwTUMBTYmkjE27Jf/fbJerRK4R2gBh9+7mXNSwPS16uAiiYRD/tK3A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEEDgb2l2zVER6TlOGs7h0yagrlzBjDWqs9tpmHlaZqIIkPp7T
-	rrgrKa77tubvsX/3a5uWLwE8Wu1ruR5b4Lj5cmpcrGWD8+pjz5s6CGL5
-X-Gm-Gg: ASbGncuYBgqWK4nVso8cRmF0JPQJKBwKCGtIwI3TsDIFEuKa5Rl0uyk2fU2LoubU0wX
-	7ozLiT4N9pxJAzc+PXSVH4q0Ish4qXp3HEu2VE272pKOlnBtTfakHEVDM+C+KmrIX+1bjTioCQN
-	5wzCBS6S+F8LkiuW14/YMvDuPpnawZ8nfkpjFn8LOPE8du/x9o2xUYugp5LUxtdBwYR8zZB1SaM
-	2Z7xkDJfx/Zm4uFH5v61PpuGXTso/1GgL7k4aP4BZ6g6ue+10IPTUsNYobUvWP8pyY5+Icknlel
-	bs9BBtU3xSjKsD53HSSuH+6AWJeWOuHSBPD43G4rDoHDG3l6tNPnqSvvilbvvQlj8ltK7Kp9+In
-	yh4vN5tf2JfytlGzodt2RvuuJQ23Fr1kP0/n8z9k6BMSGETTohxE8Wg73eV67cssNbE4U/OjUdk
-	6Y+vAxtKfJfGK3aYK2Zg8=
-X-Google-Smtp-Source: AGHT+IG6mUyUie6cS60nZSS3OeVRXVMBaCXdabekJ8CsGUA1VfT/hup+fBBpR19mXUZjHJGYn2xTPw==
-X-Received: by 2002:a05:600c:871a:b0:471:d2d:ac42 with SMTP id 5b1f17b1804b1-477307c5165mr103889485e9.14.1762166567763;
-        Mon, 03 Nov 2025 02:42:47 -0800 (PST)
+        bh=gwxrWXEX7fo23pH19yXG5KJRK3YBkYUcouQhjKfGxfI=;
+        b=bCBkSOBRNjCAHlea15o0ZVKgiPC7i5aiFTYt2C6XJjHVR7gBAyipBHyJwWtM+QYh69
+         UirweNtYWfeTq48AYlDTVKHsKLmrla2wK2AWFmaUFsbhNADJw9/vAsx3jjTxqdQmQS/w
+         la9Pot2pDO/mIymR+6/qNb559sdyEyFVjm4azAumeMj+a9VpevH5UAraC9AY4DO3dhFv
+         kIffMyai1Gop3B/usp+xddXfFBjlNq8G0P8yBpoiwS7ZRJXM3rj0O7V//2KMFi0lpR1K
+         QvbQcKF0+GI/yLN7ohvH9YmvE+2rOSxMkub3a07mPGifIx2PIX5MJHrOpMJy5VyekJ5z
+         kLPw==
+X-Forwarded-Encrypted: i=1; AJvYcCVP6tQN7kmPGchbe3n3F/b0l2lrjQNKaZbJqVzslP2CKgpledg4Vr0L7eggbya9dWH6KJMHIczeld8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMHFlkf86oc5rhMtDKirPBuGJsppWlnmHzy5ec25AoZYEkW96c
+	lpnhnlx1Y3IuH1AHveSAD7W0xXe/Dskcfp8aIRumWe7+YALDVWCvz1pS
+X-Gm-Gg: ASbGnctZOkJmpN30bvwVe2tnVF36mqlEGs4P4G1YrNnFe0G4vqQc7BfCEHnKKcikk0J
+	wvLcTYbjG6y8IoAiiFlsQoXi6LZt7DrXus+J0PbtluQKCXM1w24kgYomKxrezgXx6VrQuNf2IN6
+	xJXY/resEqwZSar0OaLGnRkRVqcwHi5K2zsGxm3uxi7blnwFZGrYSqFziEBxXaAyb90u2w6D8wj
+	hIpjITEXKN4HO9q/xdA0QVC2C2WdX0rDoH+QjCjU06vwN/FGgRs551TdHkKcMBl7PCXANyTR0wq
+	UdMyo9GI1nxK/5WV7uAlgpBSKxl2rPwubdVdj5s/zuTW2BJGdtUgC7+/uaaFGp/Wd6gI8b/C14q
+	zN5jTaVq4IXe/hC7iTTAZbNp4spZQXVITIRtHJ84H5ClfZJPA8MljMv4ZXan4hA7UKrhUR4YPYw
+	PjhSG6NEru
+X-Google-Smtp-Source: AGHT+IEZQEt8x3hNjFj2GY6h6M1uNTt+5/WDtXW3KDcxy8WpiE5bUoGql0X9KEjvJhdt1dZKY0FjNQ==
+X-Received: by 2002:a05:600c:64c4:b0:46c:adf8:c845 with SMTP id 5b1f17b1804b1-477307db9aemr99822765e9.16.1762166650641;
+        Mon, 03 Nov 2025 02:44:10 -0800 (PST)
 Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773c583d91sm148675685e9.17.2025.11.03.02.42.47
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773c394e33sm148339775e9.13.2025.11.03.02.44.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Nov 2025 02:42:47 -0800 (PST)
-Message-ID: <5055dbac56e5535e7595eef7c4378067cf736be5.camel@gmail.com>
-Subject: Re: [PATCH v3 02/10] iio: dac: ad5446: Use DMA safe buffer for
- transfers
+        Mon, 03 Nov 2025 02:44:10 -0800 (PST)
+Message-ID: <f7f0bb22506abf662d3538346c693d9a73551de3.camel@gmail.com>
+Subject: Re: [PATCH v3 09/10] iio: dac: ad5446: Fix coding style issues
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Michael Hennerich
-	 <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, David
- Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
-Date: Mon, 03 Nov 2025 10:43:23 +0000
-In-Reply-To: <aQTQtUUQpWY_L5q1@smile.fi.intel.com>
+To: Jonathan Cameron <jic23@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?= via B4
+ Relay <devnull+nuno.sa.analog.com@kernel.org>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Michael Hennerich	
+ <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Andy
+ Shevchenko <andy@kernel.org>
+Date: Mon, 03 Nov 2025 10:44:46 +0000
+In-Reply-To: <20251101165133.334b93c7@jic23-huawei>
 References: <20251031-dev-add-ad5542-v3-0-d3541036c0e6@analog.com>
-	 <20251031-dev-add-ad5542-v3-2-d3541036c0e6@analog.com>
-	 <aQS7YIxYH2suDmoS@smile.fi.intel.com>
-	 <83da9af88f23bc87c558e220d7d1a32a0d91403d.camel@gmail.com>
-	 <aQTQtUUQpWY_L5q1@smile.fi.intel.com>
+		<20251031-dev-add-ad5542-v3-9-d3541036c0e6@analog.com>
+	 <20251101165133.334b93c7@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.1 
@@ -99,64 +97,69 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Fri, 2025-10-31 at 17:07 +0200, Andy Shevchenko wrote:
-> On Fri, Oct 31, 2025 at 03:00:07PM +0000, Nuno S=C3=A1 wrote:
-> > On Fri, 2025-10-31 at 15:36 +0200, Andy Shevchenko wrote:
-> > > On Fri, Oct 31, 2025 at 12:31:23PM +0000, Nuno S=C3=A1 via B4 Relay w=
-rote:
+On Sat, 2025-11-01 at 16:51 +0000, Jonathan Cameron wrote:
+> On Fri, 31 Oct 2025 12:31:30 +0000
+> Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 >=20
-> ...
->=20
-> > > > +	union {
-> > > > +		__be16 d16;
-> > > > +		u8 d24[3];
-> > >=20
-> > > Why not __be32 d24; ? Yes, it will require explicit size to be provid=
-ed, but at
-> > > least it will look consistent with the above. OR u8 d16[2]; ? But the=
-n it becomes
-> > > simply a u8 buf[3] __aligned...;
+> > From: Nuno S=C3=A1 <nuno.sa@analog.com>
 > >=20
-> > Because I'm just keeping put_unaligned_be24() as before. In fact I'm ju=
-st keeping the
-> > same type. Sure we could do __be32 and the cpu_to_be32() with a proper =
-shift but=20
-> > I'm already doing way too much than I signed up for when sending v1 :)
+> > Fix style issues as reported by checkpatch. Additionally, make sure
+> > include files are given in alphabetical order and that we include the
+> > ones that were missing and remove the one we don't really use.
+> If it's only 1 say what it is.=C2=A0 I see quite a few so guessing that
+> was meant to be plural?
 >=20
-> I think no shift would be needed.
+> Headers and white space are different things so really should be
+> 2 patches.
+>=20
 
-The shift would be just to discard MSB...
-
->=20
-> > > > +	} __aligned(IIO_DMA_MINALIGN);
-> > > > =C2=A0};
->=20
-> ...
->=20
-> > > > -	ret =3D i2c_master_send(client, (char *)&data, sizeof(data));
-> > > > +	ret =3D i2c_master_send_dmasafe(client, (char *)&st->d16, sizeof(=
-st->d16));
-> > >=20
-> > > This will add a quite an overhead to the transfer (not that I=C2=B2C =
-is super fast,
-> > > but rather the processor is going to do _a lot_ of additional work he=
-re instead
-> > > of doing something more useful.
-> >=20
-> > No really. This exactly to tell the i2c to not do any bounce buffer if =
-the adapter
-> > calls i2c_get_dma_safe_msg_buf(). So I would say, it's actually faster.
->=20
-> I might have forgotten the implementation of that, but does it hold for t=
-he
-> controllers (or cases) that never supported DMA?
-
-When the DMA flag is given, it just means i2c_get_dma_safe_msg_buf() will g=
-ive the=20
-buffer you passed to i2c and does not setup any safe, bounce for you. So, I=
-t should
-work.
+Ok, will do. I actually had two patches but then feel into the temptation o=
+f making
+the series a bit smaller.
 
 - Nuno S=C3=A1
 
+> Actual changes all look good
+>=20
+> Jonathan
+>=20
+> >=20
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> > ---
+> > =C2=A0drivers/iio/dac/ad5446.c | 41 ++++++++++++++++++-----------------=
+------
+> > =C2=A01 file changed, 18 insertions(+), 23 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
+> > index d288fb56e324..bf9f7edb1a81 100644
+> > --- a/drivers/iio/dac/ad5446.c
+> > +++ b/drivers/iio/dac/ad5446.c
+> > @@ -5,21 +5,17 @@
+> > =C2=A0 * Copyright 2010 Analog Devices Inc.
+> > =C2=A0 */
+> > =C2=A0
+> > +#include <linux/array_size.h>
+> > =C2=A0#include <linux/cleanup.h>
+> > -#include <linux/export.h>
+> > -#include <linux/interrupt.h>
+> > -#include <linux/workqueue.h>
+> > =C2=A0#include <linux/device.h>
+> > -#include <linux/kernel.h>
+> > -#include <linux/slab.h>
+> > -#include <linux/sysfs.h>
+> > -#include <linux/list.h>
+> > -#include <linux/regulator/consumer.h>
+> > =C2=A0#include <linux/err.h>
+> > -#include <linux/module.h>
+> > -
+> > +#include <linux/export.h>
+> > =C2=A0#include <linux/iio/iio.h>
+> > -#include <linux/iio/sysfs.h>
+> > +#include <linux/kstrtox.h>
+> > +#include <linux/module.h>
+> > +#include <linux/mutex.h>
+> > +#include <linux/regulator/consumer.h>
+> > +#include <linux/sysfs.h>
+> > =C2=A0
+> > =C2=A0#include "ad5446.h"
 

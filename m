@@ -1,96 +1,102 @@
-Return-Path: <linux-iio+bounces-25828-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25829-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4A3C2AB7C
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 10:25:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FCFC2AC51
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 10:35:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72EFB3B4F44
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 09:25:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A37163B5703
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 09:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF442EA151;
-	Mon,  3 Nov 2025 09:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2562EB87A;
+	Mon,  3 Nov 2025 09:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KgOoiL/3"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DhkIGDo5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0C2E9EDA
-	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 09:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256B32EB845
+	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 09:34:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762161906; cv=none; b=PHDlLGyHDe792mbIIJOU79A2XB+cgRjeSoWWheCK8ETjfOQj7S7tp79XM8qJZvU/eyrg9J+4mc4lJFEsplprRgQFnl4d+S4A8998ZQyDHYlK8/zNmO1uHSZY+9dnAfSB4gLWcfZWE/3dACKxpyT9S4/bDeo8taNIIte1jb4O2Ho=
+	t=1762162475; cv=none; b=jRFDT5dB655U64ELzmbKz/E9r4bd23gvBkRnZSxcJRn+HrfzdyqPtx9e70bq2PndODrCncDBOuHXfgwKhvq6gbDjphEzaDXHzzTo3jce5A9JFazi7xNWwi6CUheRQwsOQhw4tklJgAijR9XPFv0yrU/ojUumiMVmjcan7URasEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762161906; c=relaxed/simple;
-	bh=J8wpUcNN6eKIe2BNft5mcvC6Lwm7D6CpSo7ypNdqnRg=;
+	s=arc-20240116; t=1762162475; c=relaxed/simple;
+	bh=i7DOvgsvt3ZQmezVkp8vi6qSNyStUcEGPJnNb6H63Pw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=evXp8fFMluY92i4B9cSWsiaM/0Qvpi5wKi+5zgBxUYHF1u62abN0plLUdjePcYoAifGo2Q6VzV1gHtUAziNd7XwfGyrWBY6Ofrn7QBOtPpu5UnSXAbx1h5ACsOa7mTl/vpwhoe6JUsAtGdGx5NskKo80oF3f1kIFhxOeqzHttrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KgOoiL/3; arc=none smtp.client-ip=209.85.208.45
+	 Content-Type:MIME-Version; b=iPg3w1MuisPwH9G26BtUHJzm+kl4RASNgZyodOuxjZThorIAFAa/ERqrbAuZ+HNRkysDsunugeRSGxOdEwU6bar5qXM9xwQoZrn0VuoNsnLS1ZnMJG0N9LCodOEP1KQWzpakAb8GnLPjOzQCXhxOCzfCsrdBQCCSMQRD/PQ3VdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DhkIGDo5; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-640d0ec9651so485842a12.3
-        for <linux-iio@vger.kernel.org>; Mon, 03 Nov 2025 01:25:03 -0800 (PST)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-63bea08a326so6060381a12.3
+        for <linux-iio@vger.kernel.org>; Mon, 03 Nov 2025 01:34:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762161902; x=1762766702; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762162471; x=1762767271; darn=vger.kernel.org;
         h=mime-version:user-agent:organization:references:in-reply-to:date:cc
          :to:from:subject:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=J8wpUcNN6eKIe2BNft5mcvC6Lwm7D6CpSo7ypNdqnRg=;
-        b=KgOoiL/38Rtc+gBugYUplM6MQImn/eksHW+v/7hDUGOdNaqbui3Zibgq6fuSrhxWsX
-         5f27zsZJaevPOgMQFFOuH39EXGDOQed7O5WIJfkgs7vCsB8oqIzUeM2RDlRbw4HZkjCh
-         GQ1NE1AxHA8gtomYJsZTV5id+0K8kKZQzUySeEh7AjXwcMfhnKf972K/wzryOxp118kK
-         7hBndlOoG7u7BSZsY/fy1I7XK22rw5ab1tRPZyiRB6THvJipbkoiJRgPNhA+ST5zWaEW
-         89PsnG8ZfDdJFVHhhtZnZoEvbhKM7GN8/k+XT9MxvbjlEeS/1g7B+GDHJ3272RiDJh9r
-         4+jA==
+        bh=i7DOvgsvt3ZQmezVkp8vi6qSNyStUcEGPJnNb6H63Pw=;
+        b=DhkIGDo5S2BVh7xneec4YlTW1Nx83x4WZp0g1tx1sZZBxyNLQpgfocqgjic7rHgNMm
+         qA3CTCHtKCPDpDotM8ka4ghjYAmpoxbBNqp3YTn7DiT3PEKovRh43gVFNC5eQ22qdWJ8
+         8d8RPWYfcPSwr8tuFqyZE7nITz1XWDJgUjAKDzHy2r8tHhqeSY2Wxg5BW9+9Axt+nK3S
+         /bH8tYobIoBsokzH5yZebNuaWRAtEjTuFXF+wO8n+eKN45kBorP669ouWWWuCZh9Pnha
+         EfpS79BZv02PrVW/4UFMndCTGpPzn+V2Opbxr8L5UDhF+FDE5QztYFXlepA1FrD6qMNJ
+         CYuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762161902; x=1762766702;
+        d=1e100.net; s=20230601; t=1762162471; x=1762767271;
         h=mime-version:user-agent:organization:references:in-reply-to:date:cc
          :to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=J8wpUcNN6eKIe2BNft5mcvC6Lwm7D6CpSo7ypNdqnRg=;
-        b=TdJsaL/9IDdgI59Q+EEsrfG2SwP8kayyvmona7aqULmz7oADvy4jnp0j4zpe+D7ZQn
-         9WaAZnqzD2CRMwM5vfq/jBslbWclHZW+9ParoNJYRPaPoPbBxxhXFI7L1Xbi+ce6DnbM
-         eQ2hyrA2JdSLEhbwM6HotSGiNCg/77pjcG8AoZUuYAtFXi3NXPSd5UsW7dl/wS1m5Lxc
-         c7dbgudWY4w6NXDbg4AfImtut8NPfeQxt9CBWvat1eSYWxq0rive3aziz1GVUAX+0JGi
-         OeUD3m3WroTRlfesymmNcYWXFtrHAHgqfAzYpPCycTXMEVSbIUoiUvPFUnTWurAtH+mh
-         Tzyg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/DNKpVluulG2xF0zW2c3g0V8Xsn9VZRkUBP/MvF1fzmaHXqUqYeZkUZJXKIpHtTjJM+CxaXlKd8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxSd/QL4K3KPSnJrrhSqkAAetBLOBXC4TnKiZWdTlIldrD4PKh
-	b60dywB3tTeWKd3e0+PSQhftRhCgEOstTXV39C0rYKo4QJxHoAo5gP+qZhb7o43BdMs=
-X-Gm-Gg: ASbGncvLwnI0DVdDhtbiBb15ggSlAIKVx+gXFTtkHwh1QGNUQTuu3ZlVxhJQijr23wr
-	fWkEg7xyGVFhMvWXp/3+m/ymuAp6D6gyaIAW/7TVpI1wXDH+XhIGWTAut2d5li0TrZPWCQImIX3
-	0Y26A45OdU5yoxIU4LSk4rT794vJs24Fq0vQTNr8cTC+Z3bZ/GAoieQC8mFkhFnthOIgWdtqJ5L
-	q7B+8y3dcnrtYRY1uD7FOFH5wZydyQDSHkx+CkzN0M9Gqy6jxp4lTq0qTbwIxBU6sE7OO/HLC9K
-	VrYhPxP4GibN1/iRQwT+IniZwCxOCGNV6qJzTnxDxg7VoMFxXqBoSSIyEfa/gzYOlFDGPhsPY9j
-	AkODg0EWNCg3IkTt6iVnUeyPFfB32ceX/WXL5S7n0Q8uVP277zgF8/WDzU5UYdCWRk+CvPLi2gW
-	0HKNPi9/jfv1ws9SpiB5Zge0lnpdm+0zC6czyDeJxgptx4CaoyPg==
-X-Google-Smtp-Source: AGHT+IH5hULo+8FDQ2WYcjV+y6dq0RuxLkwQQ2iO35o/+oBwlQsLx4u0zvThA0iUaycg5B4WYA5Ppw==
-X-Received: by 2002:a05:6402:2750:b0:63c:683c:f9d2 with SMTP id 4fb4d7f45d1cf-64076f78d17mr10299643a12.12.1762161901830;
-        Mon, 03 Nov 2025 01:25:01 -0800 (PST)
+        bh=i7DOvgsvt3ZQmezVkp8vi6qSNyStUcEGPJnNb6H63Pw=;
+        b=l26Z8F0g+xjC0zREnrBwVMSBtEqOZvV9gtNGv0Gy+F8Kqyi0Ah5WzXEOWNqf/+t7E/
+         08k5nCSJ2H+3RpOElTHjMbfa0UCTHGCwmSpCLUCwrk+rk0Vx/h3Kl/5z0iA3jZwkWbmr
+         w9xnd3YUsqCcN1sJ3wz8TLGDVmdiNnFUhW+hbVd7Q9j7QRalDQp2DvHqwWshH5WpRdlZ
+         IXmKrdicrSUEsJr6c+lcnk97kQnZdqLi7IXeyHjAkX8wWBLJRG59iseYlYy0glpMpWZu
+         Se2RFVGhm5Um0LyiKk0Ia7ea046LqiiFyx6WVkAt4mPBXNxe/3iBN1Cp4jnKwJepccXv
+         8+kA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+PflBkW1mqUdvau2b/adl8f+WU8mgYhg7fVE4q0K27SslaJSHMX83NzxEWAKrArw76UmHwX+G5+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDooloD74S+oxrq0DB/6zSmIgFkby0GzgiOCq8V2GWeXUBgBNr
+	UwGMkKj++tCEA1k4s4tLBRdvxHTqxTOqCb2bh/NfbrZ04zERpT8Q5WN//GGMCw2ia/U=
+X-Gm-Gg: ASbGnctVb1HoCa6lWakoU6GkJaU48adGjCXGvNubU/PPpdBy8MDK5Hp9eCBs9o0t3O9
+	RZxx/7PVo1s6vWCwFBPkuTU/9vaGC8F00YZWe+8XfSJrF5cyPSKjT8XLYx0WcUwq11UyMK4r7Kf
+	s0RsHCS8DO3SKp7k2jhynoXezqSSFw8pLsFmRjPrzk+2BUgFs2f/VDOfmtrl6hrwAZsdLVFbrtZ
+	ooZPGhpCpiU/kobTYYJgSMNeNB6Pqw8WkcjbUsEZ13Pi2s3EAvvCaZ56KAX2dYPnMUjS7OhGh/7
+	m2AUoZYY+4nrZR1gEFct9KPJrFWcZiK1lRbV3bGOxZITYqb75Vrz3CcK69Mvasp35o00fcLD98w
+	SfTZEXCSV46Y35t6/ld/pDpAIhBPucIxgy0ZaK+ccgSohfX2Y1B7dXEEn0uO3P3wEyfDcJzn93p
+	WYjuqTQMoV+mRn/kb9aDLR9X26YNRZSVkcefmbqPf/kiJtM9oxXQ==
+X-Google-Smtp-Source: AGHT+IGnMLRGHhpO38MioC8H/phmYtpI9tWiHTI1pjfDUHvbCJftgf1K8ac1oy3OCTnGcK6thqrCtw==
+X-Received: by 2002:a17:907:7f13:b0:b6d:5718:d43f with SMTP id a640c23a62f3a-b70705ea525mr1074949666b.39.1762162471439;
+        Mon, 03 Nov 2025 01:34:31 -0800 (PST)
 Received: from [10.203.83.103] (mob-176-247-82-42.net.vodafone.it. [176.247.82.42])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64094ec0921sm6848587a12.11.2025.11.03.01.25.00
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7077975d24sm994396166b.1.2025.11.03.01.34.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Nov 2025 01:25:01 -0800 (PST)
-Message-ID: <87f68357d52fe6406bab42d5bfb41e4addd9d301.camel@baylibre.com>
-Subject: Re: [PATCH 1/9] iio: imu: st_lsm6dsx: dynamically initialize
- iio_chan_spec data
+        Mon, 03 Nov 2025 01:34:30 -0800 (PST)
+Message-ID: <25732d2be08156b4f55e97f5306d1fd080255ae7.camel@baylibre.com>
+Subject: Re: [PATCH 6/9] iio: imu: st_lsm6dsx: remove event_threshold field
+ from hw struct
 From: Francesco Lavra <flavra@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, David Lechner
- <dlechner@baylibre.com>,  Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>,  linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 03 Nov 2025 10:24:54 +0100
-In-Reply-To: <20251102111648.73422267@jic23-huawei>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan Cameron
+	 <jic23@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Lorenzo Bianconi
+	 <lorenzo@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
+	=?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 03 Nov 2025 10:34:28 +0100
+In-Reply-To: <CAHp75Ve2+eU2X30EvC8dOuhEo3XZBwFrUH60itEYdYdGM7HvOA@mail.gmail.com>
 References: <20251030072752.349633-1-flavra@baylibre.com>
-	 <20251030072752.349633-2-flavra@baylibre.com>
-	 <20251102111648.73422267@jic23-huawei>
+	 <20251030072752.349633-7-flavra@baylibre.com>
+	 <aQMbb6BUBHQUXX9y@smile.fi.intel.com>
+	 <32a7741bc568243c8a19d691b922d9a8c2cba429.camel@baylibre.com>
+	 <aQNs8VVoStUJ6YHB@smile.fi.intel.com>
+	 <20251102112958.435688d5@jic23-huawei>
+	 <CAHp75Ve2+eU2X30EvC8dOuhEo3XZBwFrUH60itEYdYdGM7HvOA@mail.gmail.com>
 Organization: BayLibre
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-MnvrRlCym1HWP7zf9aXq"
+	protocol="application/pgp-signature"; boundary="=-Zznj8JQRuN4PD+b2+6iB"
 User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -100,67 +106,69 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 
---=-MnvrRlCym1HWP7zf9aXq
+--=-Zznj8JQRuN4PD+b2+6iB
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 2025-11-02 at 11:16 +0000, Jonathan Cameron wrote:
-> On Thu, 30 Oct 2025 08:27:44 +0100
-> Francesco Lavra <flavra@baylibre.com> wrote:
+On Sun, 2025-11-02 at 15:45 +0200, Andy Shevchenko wrote:
+> On Sun, Nov 2, 2025 at 1:30=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+> > On Thu, 30 Oct 2025 15:49:37 +0200
+> > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+> > > On Thu, Oct 30, 2025 at 12:10:08PM +0100, Francesco Lavra wrote:
+> > > > On Thu, 2025-10-30 at 10:01 +0200, Andy Shevchenko wrote:
+> > > > > On Thu, Oct 30, 2025 at 08:27:49AM +0100, Francesco Lavra wrote:
 >=20
-> > Using the ST_LSM6DSX_CHANNEL_ACC() macro as a static initializer
-> > for the iio_chan_spec struct arrays makes all sensors advertise
-> > channel event capabilities regardless of whether they actually
-> > support event generation. And if userspace tries to configure
-> > accelerometer wakeup events on a sensor device that does not
-> > support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences
-> > a NULL pointer when trying to write to the wakeup register.
-> > Replace usage of the ST_LSM6DSX_CHANNEL_ACC() and
-> > ST_LSM6DSX_CHANNEL() macros with dynamic allocation and
-> > initialization of struct iio_chan_spec arrays, where the
-> > st_lsm6dsx_event structure is only used for sensors that support
-> > wakeup events; besides fixing the above bug, this serves as a
-> > preliminary step for adding support for more event types.
-> >=20
-> > Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+> ...
 >=20
-> In cases where there are only a small number of options for what the
-> channel
-> arrays should contain, my normal preference would be more data over
-> moving
-> the complexity into code.=C2=A0 That is have two struct iio_chan_spec arr=
-ays
-> and
-> pick between them based on availability of the interrupt.
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *val =3D (data & reg->mas=
+k) >> __ffs(reg->mask);
+> > > > >=20
+> > > > > Seems like yet another candidate for field_get() macro.
+> > > >=20
+> > > > FIELD_GET() can only be used with compile-time constant masks.
+> > > > And apparently this is the case with u8_get_bits() too, because you
+> > > > get a
+> > > > "bad bitfield mask" compiler error if you try to use u8_get_bits().
+> > >=20
+> > > We are talking about different things.
+> > > Here are the pointers to what I'm talking:
+> > >=20
+> > > - git grep -n -w 'field_get'
+> > > -
+> > > https://lore.kernel.org/linux-gpio/cover.1761588465.git.geert+renesas=
+@glider.be/
+> > >=20
+> > True that it will be a usecase for that, but given plan is to merge
+> > that through
+> > a different tree in next merge window, it's not available for us yet.=
+=C2=A0
+> > Hence would
+> > be a follow up patch next cycle.
 >=20
-> I haven't checked the whole series yet, but how many channel arrays
-> would we need to support the features you are introducing here? That is
-> how many different combinations exist in the supported chips?
+> Yes, but we can still define them here. Dunno either with #under or
+> under (namespaced) names, but still possible to use now.
 
-In the current code there are 3 struct iio_chan_spec arrays; we would need
-one more to fix the above bug, and one more to add tap event support; so a
-total of 5 arrays (each of length 4).
-As for struct iio_event_spec, the current code has one array (of length 1),
-and to add tap event support we would need another array (of length 2).
+OK, I will define an ST_LSM6DSX_FIELD_GET() macro.
 
---=-MnvrRlCym1HWP7zf9aXq
+--=-Zznj8JQRuN4PD+b2+6iB
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmkIdOYACgkQ7fE7c86U
-Nl+o0Qv+L1+kfzgrRneLLXOc6I57yrBmlGbdoXM7PhnsMsoM78a2fFO+EYxJFd03
-HFVM63v6jyl14NDLXiY5YX3XoaMDCdafqimlBYX5EbqBBXzALeyLjAd5ZYwDBfc/
-YBdFYRwKAOxwbSN/nLB1nqbNf3vpzU+mZRArVLz/AeyQQXAgpPmKXee4HzXb0nko
-af7ywKzE31Y6XznU7887dRt9HyuGqzE1qzb5CBEZqjaULhCHzpqIpdMnlVpMwFjD
-87Ff1q69NuNiJW153aakIYHQaZFd+olGvAWZChmaUlNCEsUpzf/sySDdiz2GVnrR
-zZ5GP+a6/njT7AJtKCsYbrqmECMR5NsErlHDCAkanTUvuAtoR8p7EXrunHDpleKk
-5lhli1jyQNRTsdskptXSJ8PdSogB0noRrIe/E4EAOjHS/bQ4UuIxt18nLSE5KKJI
-pHj04/HaNglVynOq/uYuzfkDAkfOei/20P3RpFJHhuBDIdIx+doSmyGlOOpMIy+0
-u0RTrkCu
-=ZdQR
+iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmkIdyQACgkQ7fE7c86U
+Nl+4oQv/f0YDTxKPnmDQtZLAMR1rSQ09I8ZI5A77NP5H9+zOBl/32hcta/Z0ouua
+Eg/D1CS3D6dzKddOtET0ZHTN6pH83uLRf45ItatUhBpdtSoBs1WGJaWMveIgixVU
+Ls2WK2onK7krHRYNtjMnH0WKsWdFiU8IYRrs0vdJfOncCsAJkIjtnz+geQvMSLSi
+E4q6hElEDAtd/jvTwf3WFIeRAXEgcY1nlBnSVIuETjjaNChJ+U4MasoN7L9K2cwy
+wV72ImowIft5kxrj2HZRx9jwlvv3oyyt3pggFHbp2Q21YRSF8TWeypVIK6aQ0YVp
+/ZIREHvhNqnZQHMl1fMiifzaW4z58bJAU6Raq7AOhG4Wa6t83ajDGZrXki2lhQrs
+gYX4i68dSZ84ujA3S/JXpROnc/Udb8RyGYvYZtZXUKKXEY8irlPd0KuHFYOGcKPI
+s11blc3Qfl9Omaz1II1g9pT0mdFOYqhIVzaLAu1v2EWNXi4KNkgSi6XXUaEIBjWR
+sFNThTOi
+=Wfrg
 -----END PGP SIGNATURE-----
 
---=-MnvrRlCym1HWP7zf9aXq--
+--=-Zznj8JQRuN4PD+b2+6iB--
 

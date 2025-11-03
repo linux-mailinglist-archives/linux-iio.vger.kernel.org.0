@@ -1,90 +1,98 @@
-Return-Path: <linux-iio+bounces-25841-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25842-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B988C2B2E1
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 11:57:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F0AC2B6F5
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 12:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 43EC84E1E0B
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 10:57:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B0173BBB30
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 11:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A293009E4;
-	Mon,  3 Nov 2025 10:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCA130214D;
+	Mon,  3 Nov 2025 11:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hi4W+XX6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qm1zZ+o+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5012C2FBDF4
-	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 10:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E26A2FBDF4
+	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 11:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762167430; cv=none; b=dkcB6Q3UyUf4UNzbpPXE5MQHjlr9ZzKmrF5hOL3PLBxXrVPdsiI/Kt+VFL0eAtWGwc69tY6HhGyiAJNjpyPrZQWCvye1O8mapHEhwTz3a5NIYGEwQZBckOgXINSBpBuMnp09zYFhn8rdtTGlfw9TOgIl6wcdIwdX8VH4Sb5P/WE=
+	t=1762169643; cv=none; b=XZFZUidONTopVtBOswScBmn9I8yC5mzZ3I+fGWgF3w8cn/okQ3pDC9BIuos4Yp98X73RWl4oy6X7L65KZpA3wFyLnma+1XphHXKjvQvyih9K8HGQ99TmJOOKGBg8AxpkbTI0CsUJYPOtqhR9i/GOvOKUI+uhoU4uhKsR86F+XlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762167430; c=relaxed/simple;
-	bh=e7fjHsFD2eyrJ5RrOquWq5GjtIlxXdTSBusZrxSeweA=;
+	s=arc-20240116; t=1762169643; c=relaxed/simple;
+	bh=cuQUH77MkBh0VUBEfQGuQkOtLJDnbqOfJIHSvLF3Blg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rzqoAk0peAA7cVfpynMYyQ6F6AIoOS8fMu8IEKUZA3b3gIsRzff07k90BycWUc7DLkHd0K36x6DnGqB+dixyUqUu4FYhwlbcRbD4nlEEIaC6RiJ4/H26PLhmMJH2zCnx6x71vw3InvwuoSQ5fdH1EHQPGb7q4gDL4QIFSN7iAXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hi4W+XX6; arc=none smtp.client-ip=209.85.221.50
+	 Content-Type:MIME-Version; b=h6qshO+lvPPxr30vKnX1CRMUNnjq6PAgbk0VW1fCJqheFkpCQtUxndUPeNnLFfB1g+4T7jCKi0FV0O//XGCQqZUHYGqXPvS6OuITajsmP4Y1PDfQuPeG3M5V/x1v32waG5Wte501HAKFKqLsyzHBC3uuasrM2w8BMYN2V6ifR+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qm1zZ+o+; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3ee64bc6b90so3411998f8f.0
-        for <linux-iio@vger.kernel.org>; Mon, 03 Nov 2025 02:57:07 -0800 (PST)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-426fd62bfeaso1751030f8f.2
+        for <linux-iio@vger.kernel.org>; Mon, 03 Nov 2025 03:34:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762167426; x=1762772226; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762169640; x=1762774440; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=wmjPsfyNQFfTt8C+gqJW0+KGVvRLkw86W7Sj1YjfJ4U=;
-        b=Hi4W+XX6zgl9APxR0oXKmmoS289oiaDxbEsNqd73CznP/n3J55OKXfOfITm3q4eQhw
-         GdGyOm697II9SB14tK2+RBCAxfBBCiw2dARQYWbtMV8wftdAy5GZwjBVMXZfFBD8Wsyg
-         pDYs6PnE/45pqDMy0dAKI3pAc+AXfDqRkpB+aKhNcZ7wLbt8qhjt9/A8Jp8D6Qyr+hRL
-         bwo7iLmOjrNMnRyCuTlNydY3XO6e8pFnFgJ0XqivX/TCxStPnFTvsQ8+KP442g9VLT/d
-         KH1SQ7Oof36c7u/e+iZhvGZnLMj9JZ7tk1e2YXcHkxtH6m7fnV7qfWEzkNii/j8Acu5u
-         gDIA==
+        bh=vOloNiz/LIv+fxFQ4H8D3qzw660SR91t+vlAvFfeGIo=;
+        b=Qm1zZ+o+uZFKnjRV9heoNFHkbIeApl9qHzONenf88RFQO61+ioJpy0ZW1TqyRCeAM9
+         akUU/2guK4zn97emgosIuPDn/lWcZrfCtxOtaY1mSJU1egvWOtd9l5Wc04AG1j0x+PmW
+         oYe6fSFvbOAFMRqPVy6qTanEnLmNAG/Wm/FCP2pa6qDAhMKT6rcgOhVObVx4H/DIFGzT
+         CX5y0VUC0tMBc/zHbeDeuDWOw/cMO+eUxHspQifuUZX9W287zvRkYAhJgU9yV6DKGF8O
+         MjBHBKe3hemuMv6zaxeB1ZHkgjVwaUA/RoXO1JnbrKHRG7o09fQ60lL2fT9l4u801LGe
+         emTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762167426; x=1762772226;
+        d=1e100.net; s=20230601; t=1762169640; x=1762774440;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=wmjPsfyNQFfTt8C+gqJW0+KGVvRLkw86W7Sj1YjfJ4U=;
-        b=ffFoUhTOLGHhD4NzqL6WG+K1sDrUeWnSy4ONYxRddAXUfERvPBD/MicT/KjagtFBxV
-         TQk8yGVP7yK+RZjuYVeEfbe2cLKLwGEPkTyPg9/pMgeW6AS4sMuRkb1LT36nYe6BkJDc
-         BeICa8M7WVf0p8PHHH5bUiVScg75HopRvEEq4vxkuyOrczDdc1+Y1qNTXnfJB+8/ahRY
-         Sk59Fc36cj0ueTcEcBZ8cjnjjBZEf3xx+1/kLSl/TzuUTVR7KAgSdnB1JHxnJ2MmHn0m
-         m4UESgxoH/gBWqq0Q3Z+mwDxhBTzMyixqGndnYb8aL/kkmHMnk9n5vCZpNWlX197+ZKr
-         nvbA==
-X-Gm-Message-State: AOJu0YwxT01pL166p24RvOUUecEzwq34TucSlzlipKyxZAn8LKixSAPp
-	tcN1Hih0LbJ9ZM+4Lw3A6e4pfIZhINg/95Xa5neOdW0YJ3yZ+IgXaXlL
-X-Gm-Gg: ASbGncuHeROeHD+6iNmRF4ZovE6njXZEPp5+oyBrNS7k7Ka3oU3hP6270UwK9nVefij
-	ifEtnfBI+ClVVvmjYc0xNmRKEiwSgptUfdRNixv0MkF4x7PTlm3lC9aGzcDXJSqI82yUk5UWQiX
-	IueM3B0wvk0tTguDPDe3YUqC8p5MeOh1j7gDqACTVZH3emUiJbg5i4/BcWQzP2pNqz0xSsvQFx3
-	5dnryY+RPAWr90l/Puoq9cJSmJcWaI3sUpfMMTtFLpTIGAwuTAvnlkkqS4xlYcbSEcZBW+x0870
-	CWh+VkLlCqjGJrkY3wywTU3rz7cHgav7/G8DVIEdAWUQ88fEfSVHwIIy77ez6cXq9DTdWGqqra3
-	DiGfigBgPY8zxVAWGdyuGoDB5AoMYWMgEblwA6hRM0S9H1lJlJFfwwqe4v9IaTl3ggYrYlFNuRq
-	Qecmo2qGNSC69IXEEREcY=
-X-Google-Smtp-Source: AGHT+IE5AQkFM+XV2z5/8xPw0v/KrOs+8F52m+pF9B5viDBT2kts7kP09Ga+4II7Li7wpof9PXB5UQ==
-X-Received: by 2002:a05:6000:1846:b0:429:bc56:cd37 with SMTP id ffacd0b85a97d-429bd672607mr8359558f8f.6.1762167425415;
-        Mon, 03 Nov 2025 02:57:05 -0800 (PST)
+        bh=vOloNiz/LIv+fxFQ4H8D3qzw660SR91t+vlAvFfeGIo=;
+        b=atV+XK4lLSDBNtOE6vhUJMWBUpy/FiMBG0SjIVM1n/d7m2U2KH9zvFaLCSTJQ5P50s
+         zFzis3t25PAUwuDWgjQ9D0MMTmKxTnqihPVXFOs9me1oh24J7ejEhrhjbH7L3hWNzzIz
+         ya6eWsvJN5mNFkmSnfH5S3Tslec5qpIOUQzsALFN6GdA4okBb/SREiAPLeYtLCcMaSgh
+         ua0XJ4JML3CBdjQqCdO9hPSVcj5JA1ydqr5pfZVLJJt7VCWbE/lIaZbCfaKurWMHYJ9V
+         obo+TMn7pj487h/yfNv8CR0FUKSzmXsalAb8os9pgli0XW/gGQxiuQbUvuoeuO5QeOU8
+         DCfA==
+X-Gm-Message-State: AOJu0Yx85HNpHuVBP3g9pWR0rfN64s1hZAyYvlygE570quECtMm1Vz5f
+	OOomF34shET9p6uT/nx/1lrr5LRPkVZgOG7uMrnSHSzyOPB0cinsvrn2
+X-Gm-Gg: ASbGncvH/jZra/tokicpkAnkCIdzibbXhYKVMYq0I1MPEmy3YvjosOLPV0yJuYUMt6N
+	znz6hLqekKPwYwgwloGCUxVBwaThPP+ZdsyVCKz5ZING0xXQ+xXuit4RFF3MGXsLCsokIM6SYXK
+	mMV9D5koSbclZXu6X20WjLhhh05Wwkl2IBwgT2W5Rx9DiceAaHLIbZemrCelIK9uwXOOZDMJzOf
+	vdnTG8JEn781BfH+3KXfccgkFbJvXhsfaF8TlTdlHgF3XGsgRKzC0oqeA2VPtsrPFf3ncJjRFuc
+	7yeZG3lRMBmTWSi/ou6CXp3vuaDdXbDN9RiWaYFk4cAmrpgGrjha0aENqfJCRxjjy05HJEWlaUo
+	ktkHg6hNLphTLA6FReK+YLAS5K9n1SKG3eMIheXExZFYR34Ys/3T0+SBH5RMC3PxZl62Z+gaiLf
+	xLmi4jK8bk
+X-Google-Smtp-Source: AGHT+IHEgZpMAanIx/WNbbiJiPaCSI2QOctFxePvc+vMhoOiDgHLLdOJk4neydoG/A7CpeJvkw4SLA==
+X-Received: by 2002:a05:6000:24c7:b0:3ec:de3c:c56 with SMTP id ffacd0b85a97d-429bd68cf3fmr10670694f8f.16.1762169640205;
+        Mon, 03 Nov 2025 03:34:00 -0800 (PST)
 Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429ca375a1dsm12889836f8f.27.2025.11.03.02.57.04
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c13e1d47sm20034750f8f.23.2025.11.03.03.33.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Nov 2025 02:57:04 -0800 (PST)
-Message-ID: <952b6f1c6f917f197fceab5b5f01494ea7e3502c.camel@gmail.com>
-Subject: Re: [PATCH v2] iio: accel: bmc150: Fix irq assumption regression
+        Mon, 03 Nov 2025 03:33:59 -0800 (PST)
+Message-ID: <20e485b69419ffd518c7aeb16881df429b0a4873.camel@gmail.com>
+Subject: Re: [PATCH v2 2/4] iio: adc: Add support for the Renesas RZ/N1 ADC
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Linus Walleij <linus.walleij@linaro.org>, Jonathan Cameron
-	 <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?=
-	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Matti Vaittinen
-	 <mazziesaccount@gmail.com>, Stephan Gerhold <stephan@gerhold.net>
-Cc: linux-iio@vger.kernel.org, stable@vger.kernel.org
-Date: Mon, 03 Nov 2025 10:57:40 +0000
-In-Reply-To: <20251103-fix-bmc150-v2-1-0811592259df@linaro.org>
-References: <20251103-fix-bmc150-v2-1-0811592259df@linaro.org>
+To: "Herve Codina (Schneider Electric)" <herve.codina@bootlin.com>,  Wolfram
+ Sang <wsa+renesas@sang-engineering.com>, Jonathan Cameron
+ <jic23@kernel.org>, David Lechner	 <dlechner@baylibre.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,  Andy Shevchenko	
+ <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski	
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Geert
+ Uytterhoeven	 <geert+renesas@glider.be>, Magnus Damm
+ <magnus.damm@gmail.com>, Liam Girdwood	 <lgirdwood@gmail.com>, Mark Brown
+ <broonie@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Pascal Eberhard	
+ <pascal.eberhard@se.com>, Miquel Raynal <miquel.raynal@bootlin.com>, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Mon, 03 Nov 2025 11:34:35 +0000
+In-Reply-To: <20251029144644.667561-3-herve.codina@bootlin.com>
+References: <20251029144644.667561-1-herve.codina@bootlin.com>
+	 <20251029144644.667561-3-herve.codina@bootlin.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.1 
@@ -95,100 +103,96 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Mon, 2025-11-03 at 10:36 +0100, Linus Walleij wrote:
-> The code in bmc150-accel-core.c unconditionally calls
-> bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
-> such as on the runtime PM resume path giving a kernel
-> splat like this if the device has no interrupts:
+On Wed, 2025-10-29 at 15:46 +0100, Herve Codina (Schneider Electric) wrote:
+> The Renesas RZ/N1 ADC controller is the ADC controller available in the
+> Renesas RZ/N1 SoCs family. It can use up to two internal ADC cores (ADC1
+> and ADC2) those internal cores are not directly accessed but are handled
+> through ADC controller virtual channels.
 >=20
-> Unable to handle kernel NULL pointer dereference at virtual
-> =C2=A0 address 00000001 when read
-> CPU: 0 UID: 0 PID: 393 Comm: iio-sensor-prox Not tainted
-> =C2=A0 6.18.0-rc1-postmarketos-stericsson-00001-g6b43386e3737 #73 PREEMPT
-> Hardware name: ST-Ericsson Ux5x0 platform (Device Tree Support)
-> PC is at bmc150_accel_set_interrupt+0x98/0x194
-> LR is at __pm_runtime_resume+0x5c/0x64
-> (...)
-> Call trace:
-> bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
-> bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
-> __iio_update_buffers from enable_store+0x84/0xc8
-> enable_store from kernfs_fop_write_iter+0x154/0x1b4
-> kernfs_fop_write_iter from do_iter_readv_writev+0x178/0x1e4
-> do_iter_readv_writev from vfs_writev+0x158/0x3f4
-> vfs_writev from do_writev+0x74/0xe4
-> do_writev from __sys_trace_return+0x0/0x10
->=20
-> This bug seems to have been in the driver since the beginning,
-> but it only manifests recently, I do not know why.
->=20
-> Store the IRQ number in the state struct, as this is a common
-> pattern in other drivers, then use this to determine if we have
-> IRQ support or not.
->=20
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
-> Changes in v2:
-> - Instead of a bool has_irq in the state struct, store the Linux IRQ
-> =C2=A0 number itself and switch behaviour on that.
-> - Link to v1: https://lore.kernel.org/r/20251027-fix-bmc150-v1-1-ccdc968e=
-8c37@linaro.org
+> Signed-off-by: Herve Codina (Schneider Electric) <herve.codina@bootlin.co=
+m>
 > ---
 
-LGTM,
+Not much to add to Andy's review. Looks in good shape... Just one small rem=
+ark
+from me. With it and Andy's stuff addressed:
 
 Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-> =C2=A0drivers/iio/accel/bmc150-accel-core.c | 5 +++++
-> =C2=A0drivers/iio/accel/bmc150-accel.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1 =
-+
-> =C2=A02 files changed, 6 insertions(+)
+> =C2=A0drivers/iio/adc/Kconfig=C2=A0=C2=A0=C2=A0 |=C2=A0 10 +
+> =C2=A0drivers/iio/adc/Makefile=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
+> =C2=A0drivers/iio/adc/rzn1-adc.c | 493 ++++++++++++++++++++++++++++++++++=
++++
+> =C2=A03 files changed, 504 insertions(+)
+> =C2=A0create mode 100644 drivers/iio/adc/rzn1-adc.c
 >=20
-> diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bm=
-c150-accel-core.c
-> index 3c5d1560b163..42ccf0316ce5 100644
-> --- a/drivers/iio/accel/bmc150-accel-core.c
-> +++ b/drivers/iio/accel/bmc150-accel-core.c
-> @@ -523,6 +523,10 @@ static int bmc150_accel_set_interrupt(struct bmc150_=
-accel_data *data, int i,
-> =C2=A0	const struct bmc150_accel_interrupt_info *info =3D intr->info;
-> =C2=A0	int ret;
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 58a14e6833f6..113f6a5c9745 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -1403,6 +1403,16 @@ config RZG2L_ADC
+> =C2=A0	=C2=A0 To compile this driver as a module, choose M here: the
+> =C2=A0	=C2=A0 module will be called rzg2l_adc.
 > =C2=A0
-> +	/* We do not always have an IRQ */
-> +	if (data->irq <=3D 0)
-> +		return 0;
+> +config RZN1_ADC
+> +	tristate "Renesas RZ/N1 ADC driver"
+> +	depends on ARCH_RZN1 || COMPILE_TEST
+> +	help
+> +	=C2=A0 Say yes here to build support for the ADC found in Renesas
+> +	=C2=A0 RZ/N1 family.
 > +
-> =C2=A0	if (state) {
-> =C2=A0		if (atomic_inc_return(&intr->users) > 1)
-> =C2=A0			return 0;
-> @@ -1696,6 +1700,7 @@ int bmc150_accel_core_probe(struct device *dev, str=
-uct regmap *regmap, int
-> irq,
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	if (irq > 0) {
-> +		data->irq =3D irq;
-> =C2=A0		ret =3D devm_request_threaded_irq(dev, irq,
-> =C2=A0						bmc150_accel_irq_handler,
-> =C2=A0						bmc150_accel_irq_thread_handler,
-> diff --git a/drivers/iio/accel/bmc150-accel.h b/drivers/iio/accel/bmc150-=
-accel.h
-> index 7a7baf52e595..e8f26198359f 100644
-> --- a/drivers/iio/accel/bmc150-accel.h
-> +++ b/drivers/iio/accel/bmc150-accel.h
-> @@ -58,6 +58,7 @@ enum bmc150_accel_trigger_id {
-> =C2=A0
-> =C2=A0struct bmc150_accel_data {
-> =C2=A0	struct regmap *regmap;
-> +	int irq;
-> =C2=A0	struct regulator_bulk_data regulators[2];
-> =C2=A0	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
-> =C2=A0	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
+> +	=C2=A0 To compile this driver as a module, choose M here: the
+> +	=C2=A0 module will be called rzn1-adc.
+> +
+> =C2=A0config SC27XX_ADC
+> =C2=A0	tristate "Spreadtrum SC27xx series PMICs ADC"
+> =C2=A0	depends on MFD_SC27XX_PMIC || COMPILE_TEST
+> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+> index d008f78dc010..ba7a8a63d070 100644
+> --- a/drivers/iio/adc/Makefile
+> +++ b/drivers/iio/adc/Makefile
+> @@ -123,6 +123,7 @@ obj-$(CONFIG_ROHM_BD79112) +=3D rohm-bd79112.o
+> =C2=A0obj-$(CONFIG_ROHM_BD79124) +=3D rohm-bd79124.o
+> =C2=A0obj-$(CONFIG_ROCKCHIP_SARADC) +=3D rockchip_saradc.o
+> =C2=A0obj-$(CONFIG_RZG2L_ADC) +=3D rzg2l_adc.o
+> +obj-$(CONFIG_RZN1_ADC) +=3D rzn1-adc.o
+> =C2=A0obj-$(CONFIG_SC27XX_ADC) +=3D sc27xx_adc.o
+> =C2=A0obj-$(CONFIG_SD_ADC_MODULATOR) +=3D sd_adc_modulator.o
+> =C2=A0obj-$(CONFIG_SOPHGO_CV1800B_ADC) +=3D sophgo-cv1800b-adc.o
+> diff --git a/drivers/iio/adc/rzn1-adc.c b/drivers/iio/adc/rzn1-adc.c
+> new file mode 100644
+> index 000000000000..52ec13adddef
+> --- /dev/null
+> +++ b/drivers/iio/adc/rzn1-adc.c
+> @@ -0,0 +1,493 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Renesas RZ/N1 ADC driver
+> + *
+> + * Copyright (C) 2025 Schneider-Electric
+> + *
+> + * Author: Herve Codina <herve.codina@bootlin.com>
+> + *
+> + * The RZ/N1 ADC controller can handle channels from its internal ADC1 a=
+nd/or
+> + * ADC2 cores. The driver use ADC1 and/or ADC2 cores depending on the pr=
+esence
+> + * of the related power supplies (AVDD and VREF) description in the devi=
+ce-tree.
+> + */
+
+...
+
 >=20
-> ---
-> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-> change-id: 20251027-fix-bmc150-7e568122b265
->=20
-> Best regards,
+> +
+> +	platform_set_drvdata(pdev, indio_dev);
+> +
+
+If I'm not missing nothing, there's no real need to pass in indio_dev. So, =
+why not
+passing rzn1_adc directly and avoid the pointer arithmetic's in the pm call=
+backs?
+
+- Nuno S=C3=A1
+
 

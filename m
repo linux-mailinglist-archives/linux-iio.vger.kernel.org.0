@@ -1,121 +1,130 @@
-Return-Path: <linux-iio+bounces-25858-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25859-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6776C2D9C2
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 19:11:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B0EC2DE83
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 20:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EA95189A03D
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 18:11:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A8AC64E6FE0
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 19:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E7231C56D;
-	Mon,  3 Nov 2025 18:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FD334D3AE;
+	Mon,  3 Nov 2025 19:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WzezhX5v"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GVcPP52j"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2F431B832;
-	Mon,  3 Nov 2025 18:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440EF1F5842
+	for <linux-iio@vger.kernel.org>; Mon,  3 Nov 2025 19:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762193464; cv=none; b=lKxyCxxCxKn2pbnutKHBcV+3HSjRcM2I11+QamYPfZYCPWb9sINe7jtcfVeh2+Dic3ENGwEIrlFZrO5UBofxwTjpfCJL5zeImPr4+GEybMYis49C7TK+9/Bgawy9wLdGZgaMlbfoGbPgqw/WlKXf/w00lSA0lmFCQjdby/ZQmOg=
+	t=1762198252; cv=none; b=kZ8D9T7EJOcituRarqCkA9pkFscjs7cxhOudKvv37y17vDPumlcFhjS81kGGLGXiLnW4i4R52rHxegrEodnCLtWK6lrj1l4Von/fBn/RFLor9sqYII9DpdicpOi/2731u4cEfX227q1/+fg8RMjyElyjb5Oae0nREx7YHF38pZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762193464; c=relaxed/simple;
-	bh=va05Mvt1eD6PFtFEKUpfUa5jMNLoaEZADG41u4Ql/M4=;
+	s=arc-20240116; t=1762198252; c=relaxed/simple;
+	bh=YHBAC6juqzw9QNKr8JnqHv6/9+EyVEJoViTpmSKU51E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h7i/r3mVqUqiPGFAyT0M1Jhca6wH2JtGGbVuA+smuqT8w506PmXcJq7Q4AAlg8MbtgZdYMHMJ79n1qQ0dRrIKr8bI8Pywx8ljItP0A6TMGJo8d3qwM4HzLQw56k54fOgnyl4LedSuAnjckynDJWd9BZ2h83rFGnUxr+mXIEE9C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WzezhX5v; arc=none smtp.client-ip=192.198.163.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=AmwqSTjuDtVbOzU/EDyoB6Zhlfx+qcWyHTRX1OilZt2YXRyo4Y2y9Cgw83xqhy2uzJg7+EhZqtGwrd7TtL9IvZNNEqoY8awR6eyGIEViGrfJAQFELtTrVxtRLfOhVs4n5PA2eb15GaoVO7EJRo502eFDsixpheXr3W/WQeuNUyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GVcPP52j; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762193464; x=1793729464;
+  t=1762198250; x=1793734250;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=va05Mvt1eD6PFtFEKUpfUa5jMNLoaEZADG41u4Ql/M4=;
-  b=WzezhX5vP4eqjEfEWSedLXcNf5hyRJ3E5f+lKwZG2DVihtGe/nRQrnQK
-   MK+YzyPU+G4gTh3DGNPPm+q9ar3yixOCvYucKSqe5MGA0HBDezw/ICD1S
-   sJ8rEG3l8X70kZfubmaJmD2Gj1Gbs3UF3Th7c/fHsVbhtw3SJa247f5lk
-   s3H3xTUaEkvYS7C46qwJm5GYVBJJCFW67IQuiD70HOCHv2ZZBIamewH3/
-   GRSZgREZcgT34bcMYNN+8aU7g3SXYiM8GyOAFZTM8e1589SDc1DNnJ0wo
-   MkjbU2IUEvuU2yifiaq6SPKooYec90FGPmf0s92YMlVQzlfQapvxY7Bxu
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=YHBAC6juqzw9QNKr8JnqHv6/9+EyVEJoViTpmSKU51E=;
+  b=GVcPP52jRhCBMnNikaAxVgagPSWTGObyRIY4UOAK3imfCpm3qY4yVgRs
+   212epVyUWXuDclT4QKmZXpz3cdhFet05pQubVq3K/MLbJh3tEMJzTFM5d
+   H0XfD6znrRcESg1uEeoErNGdY8WkLuXxiXZBguHKE8+RgXQkZYdhiaz78
+   grU0FzQPqx7xD0xbsUllzXqMnxQDGd+u3h7TXVczgP8ngf5l1dKbrIvQn
+   6kYuWziiLJfD+Y1ZO2GI3rLtgtN8Z0TUx+DfFvEp761obExNtLmskkI0E
+   ttFs532BNdwEfNmU214F2sJYfA3F2jMf734cG+zdmv6XRZb08TUIyXt9V
    g==;
-X-CSE-ConnectionGUID: SzgVStMESbaX/2M/XXaN7Q==
-X-CSE-MsgGUID: 7XdgR2R5TYW4WpSgbspTJg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="64310646"
-X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
-   d="scan'208";a="64310646"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 10:11:03 -0800
-X-CSE-ConnectionGUID: lYK2nm35QX+me1Q/Ii1pxg==
-X-CSE-MsgGUID: c/gQnkyGRYa3OAlETYavtA==
+X-CSE-ConnectionGUID: A+OjbNldTAmI3981XKTjFQ==
+X-CSE-MsgGUID: TsKH7yCQQOSz9/hwX+Howw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="63485847"
+X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
+   d="scan'208";a="63485847"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 11:30:49 -0800
+X-CSE-ConnectionGUID: sN2cPSdYRxiAZ+a/5eeeWA==
+X-CSE-MsgGUID: Wj7QQOk2QD+BaylHIYFZEg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
-   d="scan'208";a="187083144"
+X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
+   d="scan'208";a="191044392"
 Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 10:10:59 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 11:30:48 -0800
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vFz12-00000005ERt-0H0D;
-	Mon, 03 Nov 2025 20:10:52 +0200
-Date: Mon, 3 Nov 2025 20:10:51 +0200
+	id 1vG0GJ-00000005FZR-0h56;
+	Mon, 03 Nov 2025 21:30:43 +0200
+Date: Mon, 3 Nov 2025 21:30:42 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>,
+	nuno.sa@analog.com, linux-iio@vger.kernel.org,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
 	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, linux@roeck-us.net,
-	Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v9 6/6] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <aQjwK2IC1NML2w5F@smile.fi.intel.com>
-References: <20251031-i3c_ddr-v9-0-f1e523ebaf78@nxp.com>
- <20251031-i3c_ddr-v9-6-f1e523ebaf78@nxp.com>
- <aQhkRmtJMoB7vv8U@smile.fi.intel.com>
- <aQjQ4jsG6Gc2u3n+@lizhi-Precision-Tower-5810>
+	Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH v3 06/10] iio: dac: ad5446: Separate I2C/SPI into
+ different drivers
+Message-ID: <aQkC4kev0hR9-yQU@smile.fi.intel.com>
+References: <20251031-dev-add-ad5542-v3-0-d3541036c0e6@analog.com>
+ <20251031-dev-add-ad5542-v3-6-d3541036c0e6@analog.com>
+ <20251101164612.449606c2@jic23-huawei>
+ <aQhcFl4fE5Akn397@smile.fi.intel.com>
+ <3c82c959e714ec8507d2c28494bb24d9146cfee3.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aQjQ4jsG6Gc2u3n+@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3c82c959e714ec8507d2c28494bb24d9146cfee3.camel@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Nov 03, 2025 at 10:57:22AM -0500, Frank Li wrote:
-> On Mon, Nov 03, 2025 at 10:13:58AM +0200, Andy Shevchenko wrote:
-> > On Fri, Oct 31, 2025 at 12:39:18PM -0400, Frank Li wrote:
+On Mon, Nov 03, 2025 at 10:40:20AM +0000, Nuno Sá wrote:
+> On Mon, 2025-11-03 at 09:39 +0200, Andy Shevchenko wrote:
+> > On Sat, Nov 01, 2025 at 04:46:12PM +0000, Jonathan Cameron wrote:
+> > > On Fri, 31 Oct 2025 12:31:27 +0000
+> > > Nuno Sá via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
 ...
 
-> > > - 1 -> ARRAY_SIZE()
-> >
-> > Maybe I missed the answer, but why are the arrays to begin with?
+> > > > +	st->d16 = cpu_to_be16(val);
+> > > 
+> > > Should have an include for this.  Probably
+> > > 
+> > > linux/byteorder/generic.h
+> > > though the kernel (and iio) has a random mix of that and
+> > > asm/byteorder.h
 > 
-> I3C/I2C transfer API required pass down one array. Keep the same coding
-> style with existed one, like
+> Yeah, I did tried linux/byteorder/generic.h but it fails to compile if it's the first 
+> thing we include so I did not wanted to go that way :)
+> > Can somebody go and fix all of them to be asm/byteorder.h? Yeah, it might need
+> > some thinking as in some _rare_ cases the author might imply the explicit
+> > choice of the algo in use. But then it might be problematic on some architectures
+> > as well...
+> > 
+> > > Hmm. linux/unaligned.h is using asm/byteorder.h so maybe that's the better choice
+> > 
+> > Yes.
 > 
-> source/drivers/base/regmap/regmap-i3c.c
+> Hmm, so linux/unaligned.h or asm/byteorder.h? For the spi version I do have
+> linux/unaligned.h beacuse we use some APIs but for i2c there's no use on unaligned so
+> it feels a bit odd to include it?
 
-I can understand why it's done there (there are read and write and they use
-different amount of items in the arrays). But here in your case IIRC there
-is only one function that uses predefined arrays out of a single entry. So
-I do not see a justification for having an array. OTOH it's not a big deal
-and I leave it to Jonathan to decide.
+Maybe I misread what Jonathan said, but I meant that asm/byteorder.h is a
+better choice over other *byteorder*.h variants.
 
 -- 
 With Best Regards,

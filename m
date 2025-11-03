@@ -1,119 +1,118 @@
-Return-Path: <linux-iio+bounces-25825-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25826-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A106C2A93C
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 09:32:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD3FC2A942
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 09:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0733E3A7E48
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 08:29:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CBB73A39C0
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 08:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47862DC77C;
-	Mon,  3 Nov 2025 08:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E872DEA83;
+	Mon,  3 Nov 2025 08:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lAz7ASkb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="La9rBQQK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A28353363;
-	Mon,  3 Nov 2025 08:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B99072605;
+	Mon,  3 Nov 2025 08:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762158585; cv=none; b=F5RldKBmE54CIcxWUdRLzV5HNN6wWLZnfqao3EDknUlaklTNC5d5N3mOy0KtIin7kmAA2FE2riZ1PURuveSWZnd8phIcwOcSt4BBzP6POD+YxzXR5EAWCAZzzbrqUFT/SB+OnwQHLtw2m2kDI+jgKGD2GqPxFeeDf6qkEg8A5GQ=
+	t=1762158634; cv=none; b=uRxvhRjeW4WWy74ovl/bDgGsfxS0Zz46+nPw6Mx3u/VZRWpkVLHJJHeZQ6baSv1QOUxBCmA8kfFCcycxl6DIZ0hIMRrzugsyPDiIF7cQYnaeOLO1rmkM5+7LlRwZh2oos3V3bvSn+AtHXq445xVrf4GXqmNt7EtXzCcc+kXO78k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762158585; c=relaxed/simple;
-	bh=QaXWOKRR0oLApgRTFcnBA0aGTeHTQUruM4agZxllNWU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IRSQrw5X3YSyfcI9Dn2WrQC3q+bX2PZlrEhYsrsBIHDWkSoaayS3a2pWsHeZDn5lVG++qAzdVu5zMmO2XVg+FjOrTyGY3LA65BDdWElSlqCkQjx49HfRnIfW7Wm3Um9IbrYN4/o4JKwFRiiOXM+66OP9OckTvZcM3KctV7Fvitk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lAz7ASkb; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1762158634; c=relaxed/simple;
+	bh=S6yyFzMmtyqyR4pOSLkTbp/pNg+DaRIc5SyGLiJx7Tk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZALLcSpyTEvTUSPMjY2cjTbTzwrs5qVVefTr6M0+l5BoVNpK7h3EoMcqp2MAaifDQ3+X/g639I1LsH+0t4rUltBTxIPITzCz1Qq6NrFTSgm4rvo1FTFkGgmGxi2w7qQcio4j5sCHWPENUlJE8+p9+BkwmC3BSJcnKjOrF18xbBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=La9rBQQK; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762158583; x=1793694583;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=QaXWOKRR0oLApgRTFcnBA0aGTeHTQUruM4agZxllNWU=;
-  b=lAz7ASkbZAfgYKbfBKyvF/0owIbOy4wC6XZNFI2OKNhLmXE0Cj1gRHJN
-   NnpbeVnTdJDSTrtJ42OUIe5xY/R/1d3KuUvktxskYxIfyud6s/LmWYgQ5
-   9VIIFuJ+DAOUOY3BklHUMzU3O1Zwng6sQrHK8JxollOQBnPsCJWJjA7Zq
-   JWmrc3oaX+GQCAm9nTizvpgOgKBelqj8NdQRUbyICn9WPBO0GhnDxggq2
-   xeIDMILp8DMn6F0BPEAog3LASdDBITiGRlnS8dOs18ATy8Rzcu40LHHbO
-   ylzUbmn9eVO78nPtcibXxmm3vxH6jpOb3IQQjfsjFFS3a6RHYTvvnrBTj
-   Q==;
-X-CSE-ConnectionGUID: 2PbWFI/xTkGoWSkBIP6dYg==
-X-CSE-MsgGUID: s8lVYVApRxON4+dqr47+ig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="74906927"
+  t=1762158633; x=1793694633;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=S6yyFzMmtyqyR4pOSLkTbp/pNg+DaRIc5SyGLiJx7Tk=;
+  b=La9rBQQKhlRLpm2Vop00F5NTgdlxJfBVWDmhTuS/0x5ebbKKA3ko1JWk
+   1Ik30eAUDzfdM8iWQSQ8+o23kykA8SCJST/Xloyrqk96WOJUQLXdaz8Eo
+   /S5jbpRYmbmo3KXTPM58kgo59lihGHm2yc5ojn1I2Id9TrdDVNLWh/nWT
+   2QQVNthJzF2A6GpuHmB0YJRA8U8VYIa8mde0s6lfuTPsNi3i/918B4Frj
+   il4ftnxM2gKA3r2ueVKEhtqFSaZbVfeDTZ4n78zlA5PD3jYUcld3iO1+1
+   n3QKMibYb2/At/ZaE4NhK3m876AHG3A1DSXVs6b8y5NSlbplrvrT0mZRT
+   g==;
+X-CSE-ConnectionGUID: wlsW7mKFT/WzTXdsmGis0g==
+X-CSE-MsgGUID: 6OY6XwcITjeghiG0MZklJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="51799318"
 X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="74906927"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:29:42 -0800
-X-CSE-ConnectionGUID: PEZxTFVEROiUnEwgRUTbfw==
-X-CSE-MsgGUID: 6fZ8levTRtSjBB2soH1qMg==
+   d="scan'208";a="51799318"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:30:32 -0800
+X-CSE-ConnectionGUID: 4J3sswDESXyOmYqwBLmOJQ==
+X-CSE-MsgGUID: r3Xr3olwRH2nwfQhwDgr8g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="190902577"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa003.jf.intel.com with ESMTP; 03 Nov 2025 00:29:40 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 7154E95; Mon, 03 Nov 2025 09:29:39 +0100 (CET)
+Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:30:28 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1vFpxH-000000055de-1ZOH;
+	Mon, 03 Nov 2025 10:30:23 +0200
+Date: Mon, 3 Nov 2025 10:30:22 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jyoti Bhayana <jbhayana@google.com>,
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jyoti Bhayana <jbhayana@google.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>
-Subject: [PATCH v2 1/1] iio: common: scmi_sensors: Get rid of const_ilog2()
-Date: Mon,  3 Nov 2025 09:29:11 +0100
-Message-ID: <20251103082937.4081863-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
+Subject: Re: [PATCH v1 1/1] iio: common: scmi_sensors: Replace const_ilog2()
+ with ilog2()
+Message-ID: <aQhoHj0s_bjI1gNs@smile.fi.intel.com>
+References: <20251031074500.3958667-1-andriy.shevchenko@linux.intel.com>
+ <20251031094336.6f352b4f@pumpkin>
+ <aQSHVsWGXzigTEMe@smile.fi.intel.com>
+ <20251031124530.3db7805b@pumpkin>
+ <aQSw7V7tYjBOtJ7k@smile.fi.intel.com>
+ <20251031161331.0f0ef347@pumpkin>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251031161331.0f0ef347@pumpkin>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Fisrt of all, const_ilog2() was a workaround of some sparse issue,
-which was never appeared in the C functions. Second, the calls here
-are done against constants and work with a bit of luck. Replace
-this altogether by a pre-calculated simple integer constant.
-Amend a comment to give a hint where it comes from.
+On Fri, Oct 31, 2025 at 04:13:31PM +0000, David Laight wrote:
+> On Fri, 31 Oct 2025 14:51:57 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > On Fri, Oct 31, 2025 at 12:45:30PM +0000, David Laight wrote:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
+...
 
-v2: Rewrite the patch completely (David)
+> > Do you have an idea how to improve that?
+> 
+> Not sure I'd want to get cpp to generate a high-precision log.
+> It if definitely doable, but will be a mind-blowing mess.
+> (and I'm not sure how many MB the expanded line would be).
+> An ilog10() would be easier (probably looking like const_ilog2()).
+> 
+> But for this code just use '+ 9' and add a suitable comment :-)
 
- drivers/iio/common/scmi_sensors/scmi_iio.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+v2 is sent: 20251103082937.4081863-1-andriy.shevchenko@linux.intel.com
 
-diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
-index 39c61c47022a..5136ad9ada04 100644
---- a/drivers/iio/common/scmi_sensors/scmi_iio.c
-+++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
-@@ -66,10 +66,9 @@ static int scmi_iio_sensor_update_cb(struct notifier_block *nb,
- 		/*
- 		 *  Timestamp returned by SCMI is in seconds and is equal to
- 		 *  time * power-of-10 multiplier(tstamp_scale) seconds.
--		 *  Converting the timestamp to nanoseconds below.
-+		 *  Converting the timestamp to nanoseconds (10⁹) below.
- 		 */
--		tstamp_scale = sensor->sensor_info->tstamp_scale +
--			       const_ilog2(NSEC_PER_SEC) / const_ilog2(10);
-+		tstamp_scale = sensor->sensor_info->tstamp_scale + 9;
- 		if (tstamp_scale < 0) {
- 			do_div(time, int_pow(10, abs(tstamp_scale)));
- 			time_ns = time;
+
 -- 
-2.50.1
+With Best Regards,
+Andy Shevchenko
+
 
 

@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-25822-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25823-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31070C2A878
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 09:19:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AAFC2A84D
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 09:15:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDAE33A6D73
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 08:14:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07E6A18904C8
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 08:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE432D879C;
-	Mon,  3 Nov 2025 08:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EF02D837B;
+	Mon,  3 Nov 2025 08:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GKdcCZ3h"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FvbJ0XVG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDD623ABB0;
-	Mon,  3 Nov 2025 08:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630E715530C;
+	Mon,  3 Nov 2025 08:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762157659; cv=none; b=AsfJm5TjYwCGxJHZFThCSu7M884ezbj1c3JqNw3py0fo7WS2diZxTWnjGNj3wq2SGvu1yDmUknFwG7xYBz3ZfyiPBr499alyYH/aUIt4rtuqjv5OJzHkPyCW3Vw5Iq1aUWoq8dGYbwp70R76uMT0K1Opp+SS+dwLSKybWW7coYw=
+	t=1762157726; cv=none; b=teNbtnKtFThw0aqM+ZO8rqXp/6bGI22hVHtKcy8H9XBpnNGwqNqJnAb/MSZGpf8DQ40xR5HAisCXc0QqtYcKEkGo+Yp/cAHhkv0fZc0ATCT5+9SuvwUk7cA+lRdWPvR3IQZtEJVbam2+bl2ynCdKrvLY3LQa9YpOiFGvGCpL47Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762157659; c=relaxed/simple;
-	bh=eUC7CdLY2n+Ok064KsLsxj3DXcXd7nr4SrWNiG96MhI=;
+	s=arc-20240116; t=1762157726; c=relaxed/simple;
+	bh=VufkWrtuA/KSjpuq1x6sOOrO8BVr8XELL5F/FJgAris=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bjoDwpayvq1gBvzKYQ2mWbHJnrQRxBTcgAoBuPd07kWzFTPVL3FPn1Nm4x2B2mmmF+W8i7333tx5BKz4E0Fb8tPBQHs5GnMTpSgWhy+7U+wfLimRh5Q4G+AHQEonqRqe6/xuQTIMfLloCadfEtieYaFmZFIv0eL7nimfjtREO9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GKdcCZ3h; arc=none smtp.client-ip=192.198.163.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=YsDnmWzniEG7L8NYWmI+OosmtPLW0vG3SYAbdOrbGqpbZZWgQC9JssbXcfUBVSt/82TKrJWlIHrnAIh87NwmRyyu2g4vnULDlz6IcbX8pzAIwOdPNyIv+UQl3hRlaxEsW6w6IKAT+dCzdNJ/J3WXFHeocYw0+j+esJL1Iqp5yL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FvbJ0XVG; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762157657; x=1793693657;
+  t=1762157725; x=1793693725;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=eUC7CdLY2n+Ok064KsLsxj3DXcXd7nr4SrWNiG96MhI=;
-  b=GKdcCZ3hykFCqqjx0d5xZgRTqOvVh2YmhIJyZ77ZtG1+IG7xue1769Jv
-   iVqbdaznpbH8oy+RY+36UtNZYvWCZUtIjgt8Oo+yLhobS6zNQVXxCLSA5
-   q+MC7dHZp+WaVhH7hnKs9OtTU1KCK6numfhV2fNDND3M5Iy7eFeYMUf8U
-   AQZOsLTqHaqHOK5CKtqh7zUrzuSJU9L8SvQ80PWiJ5APrPSENCVXHhJIV
-   XYPr3bi4Ga2KewS40OQ3I/G4eqY+s0UKx0h4sbAyY3DdK/HY6jj0EQBc2
-   qUSzUablhkpvtGuuJEcIU4vQqonIjcMx0c+VS7mHRLe4E6dwJtOUyT4uh
+  bh=VufkWrtuA/KSjpuq1x6sOOrO8BVr8XELL5F/FJgAris=;
+  b=FvbJ0XVGV9OnfSQKa5ZuSA7EpIJynLhwJovU8+G7nBsbe8I65lFDWNJo
+   DEIsGIyxzXgdiboGxgyYPNPpSFCP3qLMDAlwzvZiru9uYpe7dRsPJJY4t
+   rg8vO0VAaumtq5uhMdzEe2mL6sFXxECagL3Cjcxi5V0uf0bBr1Vn5DvKt
+   OR6wbqkOHW+mm8PzCZ0MjZkMt7UDl39fq93RNnLnfrzkOLkNtLmMJML6g
+   82QpViBRb0VEQM7IdM+Kcm9ADWQVW+4r1f5NMjH5kObSIr/TiBDqEzsUm
+   wWsMNR/bFsD9nLNA7rPpfDs+sVXRn0NZC77w0ky7bmSmT1QDojsQLRJAp
    A==;
-X-CSE-ConnectionGUID: h3TKMb65TPC7s0sVTt+jHw==
-X-CSE-MsgGUID: mJMnrLKTTgelXqTBjIIyHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="75579235"
+X-CSE-ConnectionGUID: 4fh5oSLYSAqVNJYqo2i8vg==
+X-CSE-MsgGUID: afaiU5vbSY+0FZhR8MWz1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="74830750"
 X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="75579235"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:14:09 -0800
-X-CSE-ConnectionGUID: ndL/zb5NTZGkQ8kBQOxdhw==
-X-CSE-MsgGUID: wc3i3tJZR1O9K3nOaBqx6Q==
+   d="scan'208";a="74830750"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:15:24 -0800
+X-CSE-ConnectionGUID: xxrSDRuvS4a2Km8/zCjM/A==
+X-CSE-MsgGUID: jgG0tFbES6C1Q/WdN6bt/g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="186952919"
+   d="scan'208";a="191914908"
 Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:14:06 -0800
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:15:20 -0800
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vFphP-000000055OO-0fwu;
-	Mon, 03 Nov 2025 10:13:59 +0200
-Date: Mon, 3 Nov 2025 10:13:58 +0200
+	id 1vFpib-000000055PN-1HjE;
+	Mon, 03 Nov 2025 10:15:13 +0200
+Date: Mon, 3 Nov 2025 10:15:12 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -77,11 +77,12 @@ Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
 	devicetree@vger.kernel.org, linux@roeck-us.net,
 	Carlos Song <carlos.song@nxp.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v9 6/6] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <aQhkRmtJMoB7vv8U@smile.fi.intel.com>
+Subject: Re: [PATCH v9 0/6] i3c: Add basic HDR mode support
+Message-ID: <aQhkkEh5C6vl2nbT@smile.fi.intel.com>
 References: <20251031-i3c_ddr-v9-0-f1e523ebaf78@nxp.com>
- <20251031-i3c_ddr-v9-6-f1e523ebaf78@nxp.com>
+ <20251101162525.44c9862b@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,70 +91,19 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251031-i3c_ddr-v9-6-f1e523ebaf78@nxp.com>
+In-Reply-To: <20251101162525.44c9862b@jic23-huawei>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Oct 31, 2025 at 12:39:18PM -0400, Frank Li wrote:
-> Add mmc5633 sensor basic support.
-> - Support read 20 bits X/Y/Z magnetic.
-> - Support I3C HDR mode to send start measurememt command.
-> - Support I3C HDR mode to read all sensors data by one command.
+On Sat, Nov 01, 2025 at 04:25:25PM +0000, Jonathan Cameron wrote:
+> On Fri, 31 Oct 2025 12:39:12 -0400
+> Frank Li <Frank.Li@nxp.com> wrote:
 
-...
+> Assuming everyone is happy with this version,
 
-> - 1 -> ARRAY_SIZE()
-
-Maybe I missed the answer, but why are the arrays to begin with?
-
-...
-
-> +#define MMC5633_REG_YOUT_H	0x03
-> +#define MMC5633_REG_ZOUT_L	0x04
-> +#define MMC5633_REG_ZOUT_H	0x05
-> +#define MMC5633_REG_XOUT_2	0x06
-> +#define MMC5633_REG_YOUT_2	0x07
-> +#define MMC5633_REG_ZOUT_2	0x08
-> +#define MMC5633_REG_TOUT	0x09
-
-Are those _L, _H, _2 come from the datasheet?
-
-...
-
-> +struct mmc5633_data {
-> +	struct i3c_device *i3cdev;
-> +	struct mutex mutex; /* protect to finish one whole measurement */
-> +	struct regmap *regmap;
-
-Btw, have you experimented to shuffle this to put regmap to be the first
-member, for example? Does it affect the binary (compiled object) size?
-
-> +};
-
-...
-
-> +	regmap = devm_regmap_init_i2c(client, &mmc5633_regmap_config);
-> +	if (IS_ERR(regmap))
-> +		return dev_err_probe(dev, PTR_ERR(regmap), "regmap init failed");
-
-Missing trailing \n. Please, double check all messages for this.
-
-...
-
-> +	ret = regmap_attach_dev(dev, regmap, &mmc5633_regmap_config);
-> +	if (ret)
-> +		return ret;
-
-Why?
-
-...
-
-> +	ret = regmap_attach_dev(dev, regmap, &mmc5633_regmap_config);
-> +	if (ret)
-> +		return ret;
-
-
-Ditto.
+Almost. Some nit-picks, but the main comments are:
+1) arrays out of a single entry;
+2) seems unneeded calls to regmap_dev_attach().
 
 -- 
 With Best Regards,

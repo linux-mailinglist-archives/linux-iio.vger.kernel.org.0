@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-25818-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25819-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA33BC2A7C1
-	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 09:07:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 714E5C2A7CD
+	for <lists+linux-iio@lfdr.de>; Mon, 03 Nov 2025 09:08:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A5D23B6135
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 07:59:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 724D73B8384
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Nov 2025 08:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA6E2D372D;
-	Mon,  3 Nov 2025 07:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE8C2D46CC;
+	Mon,  3 Nov 2025 08:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qEru4fIe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ttxQDPg6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9602D3218;
-	Mon,  3 Nov 2025 07:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FF32D372A;
+	Mon,  3 Nov 2025 08:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762156794; cv=none; b=qXJM1f3VU9Y8f/A3MYG6oIprfKWktAxHAi+rP21ky2rBnqvOlyc1kEccTpU03ay/RjBGTwKWdWdn1LzB/tMz84isQ8MesCV5xBx1PCGlbP+/lKdmeXc337948LOKLKEikQr5BDWdoRfR3mnoSMYU/jF5UDLxahrPjcaARU/3vTY=
+	t=1762156812; cv=none; b=uEjOcV3VJGnBfoIysbGclcHq8Yt19peG0Jif2C169WtPUez3F3iWc5mwURIMi8j1R2rY4ZWh2/vcQRhXSVDsgX+O6tO216ZP59FrMqdAs7G3TklWyDZpmrMv/sbzFwUW6HOOX5yZ7e57TyWHjv8zcjVyxfMytTAeRKTCCtBo+Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762156794; c=relaxed/simple;
-	bh=+xcweK9EZEBTKBz330wYb+3sHFbUoqkPXf3f/3iWTvE=;
+	s=arc-20240116; t=1762156812; c=relaxed/simple;
+	bh=k8xUp6bYueJmV2nq4Bw2KrEj8rt9MWjTaYtL8qt8QLs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NtTZmtulgeTpUMUuOz1We36adqPK1+RhiuEq26yrjDFLu7y1arlRCucQ8Y+Fo5gWfOQHOplXcHG46FksNWQRRW0NDR/5jZTFmgNW/QKhsMLJMWJ6NY4njqWwYlJ4KeIcl9OfUluluwyEClPId1PCpSFQ/DEVVS3t+3Ohnjhnh8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qEru4fIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A0FC4CEE7;
-	Mon,  3 Nov 2025 07:59:50 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=tPx3o8JNLvTxfe0jDaX+EwhXho325ml8n0bVGaawCCTKmHxu04R2LbQFGyGclyDOU4c91COZZKmV8eHxKiwDvnjZJERM12FWzkX4ecX/YKqZtFLOPE4TmRPGDr9gboqlUaYZW82u6L+fcWwSyOMs8ac5vnNiYE8S3HSfNXEsBU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ttxQDPg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3636BC4CEE7;
+	Mon,  3 Nov 2025 08:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762156793;
-	bh=+xcweK9EZEBTKBz330wYb+3sHFbUoqkPXf3f/3iWTvE=;
+	s=k20201202; t=1762156812;
+	bh=k8xUp6bYueJmV2nq4Bw2KrEj8rt9MWjTaYtL8qt8QLs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qEru4fIet1xW4Vl78rDpBSbz2b6weOMEL+oMf7M4TP863mes5XvGnnRqRJyxw+JpC
-	 +XRHM5z3HzXWGeDeTayuHbOW+UNb1F5t4OY684+G9H8oCoz9j4DP5y44T9Ky+U80Dx
-	 HH1ZJrvZbRJQ5T/dLVHOe9sqCRwqNNkLiU3eW6GBFMbsqW+TnT93t7lpylk0z7YOIP
-	 jZWLSuHGq3+Wi+9P3K8DVR3zLa+F7I/7bj7ClZBQBtPNAwZACqYK9sn3eMikYTr9L2
-	 2RNQa1QovVZBoqb7KHMfPPPvh9xQrj/uFwPvbH8R8mttAnRWjaZTTVzAj0DbecT+Ss
-	 8JUr1cHyhYhmw==
-Message-ID: <7349d741-7b6b-4736-a8d7-13fd3e7f1352@kernel.org>
-Date: Mon, 3 Nov 2025 08:59:48 +0100
+	b=ttxQDPg6jtNykrkfjTDtGG5MTvUGdUu7NvFFD1vy7dIreYcKOrguUE8KN1cdThOpy
+	 7B4B5oDjAhrk8+Qa98wTkKN7S4bbwHMA7CXSA1cjlOyJvMxkFu7fzpDBZlznY7cJj3
+	 aZMkVqeaoP9CYaD7PcdxjOOXxhbpG3uMFjR3H2rImtc3wW8VMKNNLHyX18wun9olf2
+	 JaLdOAeb8t+l9JWqEKTfhq0ijd+ZWoUV+T9W3qxCHjGNXGPqVuYCd/cieT6u4blgWf
+	 BFAhawOE3v2Vgqs7mEvh/YXNDsxKdX+EVL4Ar+aVThWojS54SY8DOEhaRXrSRhwLiM
+	 1rSQtFJndyX9w==
+Message-ID: <4c3d72a4-0b55-4fc1-a8a0-43485a87d529@kernel.org>
+Date: Mon, 3 Nov 2025 09:00:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,7 +50,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] iio: proximity: update Lidar-lite v2 and create v3
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: proximity: Remove Lidar-lite-v2
+ from trivial
 To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, robh@kernel.org,
  krzk+dt@kernel.org, jic23@kernel.org, dlechner@baylibre.com,
  nuno.sa@analog.com, andy@kernel.org, conor+dt@kernel.org,
@@ -58,6 +59,7 @@ To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, robh@kernel.org,
 Cc: ~lkcamp/patches@lists.sr.ht, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 References: <20251102221643.9966-1-rodrigo.gobbi.7@gmail.com>
+ <20251102221643.9966-2-rodrigo.gobbi.7@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,27 +105,21 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251102221643.9966-1-rodrigo.gobbi.7@gmail.com>
+In-Reply-To: <20251102221643.9966-2-rodrigo.gobbi.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 02/11/2025 23:10, Rodrigo Gobbi wrote:
-> This series moves the Lidar v2 binding from trivial to a dedicated place.
-> It also adds the v3, which was not described yet, in the same place since
-> it's the same hardware and it is already supported by the driver.
-> ---
-> Hi, all,
-> Very few changes in this v3. At the v2 link, there was a discussion about
-> the PWM output pin and the current support of that. It was suggested to
-> not add that pin here, at least for now.
-> Tks and regards.
+> The lidar-lite-v2 IC is not a trivial device because it has a few more
+> pins like power-en, mode ctrl and supplies.
 > 
-> Changelog:
-> v3: split things in a patchset
+> Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 --
+>  1 file changed, 2 deletions(-)
 
-Hm? Why. That's non-bisectable now
 
-
+That's not a separate commit.
 
 Best regards,
 Krzysztof

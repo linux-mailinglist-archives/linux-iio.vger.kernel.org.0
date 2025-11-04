@@ -1,112 +1,137 @@
-Return-Path: <linux-iio+bounces-25869-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25873-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EEBBC31625
-	for <lists+linux-iio@lfdr.de>; Tue, 04 Nov 2025 15:06:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C9CC31DF4
+	for <lists+linux-iio@lfdr.de>; Tue, 04 Nov 2025 16:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1EBF1897F60
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Nov 2025 14:04:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 071BD4F2537
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Nov 2025 15:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B334032C95E;
-	Tue,  4 Nov 2025 14:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C109B2FB619;
+	Tue,  4 Nov 2025 15:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gdiJyohv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116D532AAA0;
-	Tue,  4 Nov 2025 14:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7668927467D;
+	Tue,  4 Nov 2025 15:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762265004; cv=none; b=DrVMucY8g+R4Y5dhnXOh8EcBKw47dohPnu1UjzAZ73vFkiGIdc5EvVywVq/7+7jSkp3n9XMrT+rNouxBUCsyKicBRdpnO2Rrmg1eXqSWG8p46lHufu7uEqVRFtY2EF94rQgZe5fC9D68uAlDnRKrBAM4kTFWFZ/0qWKv2y/Egu4=
+	t=1762270474; cv=none; b=u3Hu7BGroSeC1y2zjxfUtLUnDUCXfePp9J9tYkBRW661JBQI4wrivVK57WC8XbhWDi/aaKLBe/kfNF4PeWQ4Yjj6e/WAQu9hDh9AN5wiAsmrTyU+aTzrw3HGxXd3eZDJk/MGO3jeJFBhktfhLZULDfFMwUhkzv5/o7XLTduDP90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762265004; c=relaxed/simple;
-	bh=TIs0KSHaAZac+8fB2KI+RpslKr1YnFy+r4pUcWY1ixE=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=trd2O0JDbKPwPkNVJHfMWsW37Jix7eYusNXXKEfPV1VCjK+HkSNmdXUlAfFPXlARcaGNvEBl5McbZBLxxfvqMhwwop97DDe1Cun7scMF1rQ2xQobwaQ7/NoBGkOTAPXydXzpS7XYylD3jcuSRlaa8o4cEiwTXM7vo0SZRxKiacg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d19CQ1Q53zHnH87;
-	Tue,  4 Nov 2025 22:03:14 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id A80611402F0;
-	Tue,  4 Nov 2025 22:03:17 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 4 Nov
- 2025 14:03:17 +0000
-Date: Tue, 4 Nov 2025 14:03:15 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Antoni Pokusinski
-	<apokusinski01@gmail.com>, <dlechner@baylibre.com>, <nuno.sa@analog.com>,
-	<andy@kernel.org>, <marcelo.schmitt1@gmail.com>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] iio: mpl3115: add threshold events support
-Message-ID: <20251104140315.0000394d@huawei.com>
-In-Reply-To: <aQhmNDoI8k3KvyMR@smile.fi.intel.com>
-References: <20251031201821.88374-1-apokusinski01@gmail.com>
-	<20251031201821.88374-2-apokusinski01@gmail.com>
-	<20251102103808.73cac929@jic23-huawei>
-	<aQhmNDoI8k3KvyMR@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1762270474; c=relaxed/simple;
+	bh=7iEpKsNY9UcWlnJ7pT3KJl2nLgV7qbqXVE2QPMDs5mw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SXjuj4rjeqLjve9CScAYJX14OqUDc8lWTscxTp/hvWWYStQpNLexUQjbeeENrFUqiaCkn9ngApNNcfkgkMpJ72/wBvvK8GolHdUJJH5B/W489a33h87D7RXuWOUiyINEtH2U4mDevzCQ+3TCH7gWBykHELMHbh5Pfo1zpB7Yplo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gdiJyohv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DD3D9C4CEF7;
+	Tue,  4 Nov 2025 15:34:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762270473;
+	bh=7iEpKsNY9UcWlnJ7pT3KJl2nLgV7qbqXVE2QPMDs5mw=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=gdiJyohvLb5JLoWDanfDwZyBNjO7InvoAPX7L+fro4CR6ZH9sXBpNjhVMcJiVzQIm
+	 8AlpIZKVaSDug4BQht6IkGhdCoxOfWjMHvwXXkLjPrQJWfr6DS7+x/qE9dFNveG1Fy
+	 y9Za2OkO9BcLaFf+Sd8a/BTaApkVdaufTjXfu5LxZnLm6PBcaWhcipNlhxoyR54MdY
+	 ceep3Gw4F1ViQrvO3mzF+OFOegYduPHhkbw8q1FsMkAGNbL+sF4GNznxNEVDUDxtKn
+	 AGxN6XEaHGcFCH0RjBTkHcsyLZ9Z2S6Nb9y5GkoEd2f52HT4Wr3S0vXXAg7c15LTCo
+	 FgQM705ltrvvw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDDA2CCFA0C;
+	Tue,  4 Nov 2025 15:34:33 +0000 (UTC)
+From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v4 00/12] iio: dac: ad5446: Refactor and add support for
+ AD5542
+Date: Tue, 04 Nov 2025 15:35:05 +0000
+Message-Id: <20251104-dev-add-ad5542-v4-0-6fe35458bf8c@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIACkdCmkC/3WOSw6CMBBAr2K6dkx/QHHlPYyL0hmgiRZDTaMh3
+ N3CCkNczOLN5L3MxCKNniI7HyY2UvLRDyGDPh6Y623oCDxmZpLLQnChASmBRcxTFFqCcaZWGsl
+ wIpal50itf6/B6y1z7+NrGD9rP4ll+zeVBAhwLYq6woYryy822PvQndzwYEsryY0v1eJpXULjA
+ /rQRUgSOMiqtU1takGm3AXUJqDE7gGVfVSFzsfScfr153n+Ao2aH1UuAQAA
+X-Change-ID: 20251014-dev-add-ad5542-8c8934de80ee
+To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762270508; l=2152;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=7iEpKsNY9UcWlnJ7pT3KJl2nLgV7qbqXVE2QPMDs5mw=;
+ b=5L7Odu9gQy7Jw8c3ekOOT4+mL/wwB7bK3LUouy2Cb05NXb/eFdlo4hzzZbU6bl4EE/Tisv6Z6
+ DcUNI/8HWNXDzsY3EeoY/o0+UTmVq4d+HliIoZF4+WU3AKDGpbDomA8
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-On Mon, 3 Nov 2025 10:22:12 +0200
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+Alright, what was suposed to be a simple one liner patch ended up being
+a full refactor (modernization) of the whole thing :). I think the
+changes are anyways fairly simple so hopefully nothing was broken.
 
-> On Sun, Nov 02, 2025 at 10:38:08AM +0000, Jonathan Cameron wrote:
-> > On Fri, 31 Oct 2025 21:18:22 +0100
-> > Antoni Pokusinski <apokusinski01@gmail.com> wrote:  
-> 
-> ...
-> 
-> 
-> > Generally looks good to me, but some comments on the 24 bit value reading.  
-> 
-> > > +		i2c_smbus_read_i2c_block_data(data->client,
-> > > +					      MPL3115_OUT_PRESS,
-> > > +					      3, (u8 *)&val_press);  
-> > 
-> > This is an oddity.  Why read into a __be32 when it's a 24bit number?
-> > I guess it doesn't really matter as you just need a big enough space
-> > and throw the value away.  However, I'd read it into a u8 [3]; then size off that
-> > as well.
-> > 
-> > There are two existing cases of this in the driver. One of them should use
-> > get_unaligned_be24 on a u8[3] buffer.  The other one is more complex as it's
-> > reading directly into the scan buffer that gets pushed to the kfifo and is
-> > reading into a u8 buffer ultimately anyway so at least there is no
-> > real suggestion of it being 32 bits (just a +4 shift to deal with natural
-> > alignment as the storage has to be power of 2 in that case.).
-> > 
-> > hmm. I think either we should tidy up the easy case (_read_info_raw) +
-> > use a u8[3] here or just stick to this being odd.
-> > My preference would be to have another patch tidying up the other case
-> > + use a u8[3] here.  
-> 
-> Just a side question... Wondering, if we actually can defined __be24 and __le24
-> types (or at least u24) for really explicit cases.
+I'm also aware of the checkpatch failure in Patch 7 ("iio: dac: ad5446:
+Separate I2C/SPI into different drivers") but I'm really not seeing the
+added value of adding the kconfig help text to the core symbol. 
 
-Would be useful for readability. Particularly if we could make it work with the
-type checking stuff similar to the endian markings, but restricted to only be
-accessed with the unaligned accessors.  Possibly worth doing even without that.
+---
+Changes in v4:
+- Patch 3
+  * New patch
+- Patch 6
+  * Include err.h and asm/byteorder;
+  * Changed Module description as suggested by Jonathan;
+- Patch 8
+  * New patch
+- Link to v3: https://lore.kernel.org/r/20251031-dev-add-ad5542-v3-0-d3541036c0e6@analog.com
 
-Jonathan
+---
+Michael Hennerich (1):
+      iio: dac: ad5446: Add AD5542 to the spi id table
 
-> 
+Nuno Sá (11):
+      dt-bindings: iio: dac: Document AD5446 and similar devices
+      iio: dac: ad5446: Use DMA safe buffer for transfers
+      iio: dac: ad5446: Drop duplicated spi_id entry
+      iio: dac: ad5446: Don't ignore missing regulator
+      iio: dac: ad5446: Move to single chip_info structures
+      iio: dac: ad5456: Add missing DT compatibles
+      iio: dac: ad5446: Separate I2C/SPI into different drivers
+      iio: dac: ad5446: Make use of devm_mutex_init()
+      iio: dac: ad5446: Make use of the cleanup helpers
+      iio: dac: ad5446: Refactor header inclusion
+      iio: dac: ad5446: Fix coding style issues
+
+ .../devicetree/bindings/iio/dac/adi,ad5446.yaml    | 138 ++++++
+ MAINTAINERS                                        |  12 +
+ drivers/iio/dac/Kconfig                            |  31 +-
+ drivers/iio/dac/Makefile                           |   2 +
+ drivers/iio/dac/ad5446-i2c.c                       | 102 +++++
+ drivers/iio/dac/ad5446-spi.c                       | 252 ++++++++++
+ drivers/iio/dac/ad5446.c                           | 506 +++------------------
+ drivers/iio/dac/ad5446.h                           |  76 ++++
+ 8 files changed, 664 insertions(+), 455 deletions(-)
+---
+base-commit: 4b17a60d1e1c2d9d2ccbd58642f6f4ac2fa364ba
+change-id: 20251014-dev-add-ad5542-8c8934de80ee
+--
+
+Thanks!
+- Nuno Sá
+
 
 

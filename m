@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-25896-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25897-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6419C329A4
-	for <lists+linux-iio@lfdr.de>; Tue, 04 Nov 2025 19:20:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C82EAC32A13
+	for <lists+linux-iio@lfdr.de>; Tue, 04 Nov 2025 19:27:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8240234C39B
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Nov 2025 18:20:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 768CF3B3332
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Nov 2025 18:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C9B33C523;
-	Tue,  4 Nov 2025 18:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0891F31E10F;
+	Tue,  4 Nov 2025 18:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O1jS+qqB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZeXt/Zx+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58421FF1B4;
-	Tue,  4 Nov 2025 18:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F921EB1A4;
+	Tue,  4 Nov 2025 18:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762280439; cv=none; b=KanzOwjucdte15LZph1B4MkUH1IZKB+226nH867LbZEKYu5BfiyNNbjXqyHLFw2mW6O7wSA0fY2Gm+x9uuDT0N4hi+M1lslp9yoyVMILoA9uOpgTnxN4aGovMLmvWP7Gew6VVoKZT0e29Ru/vaKlsygYvQIoywZt9iHhcZD/UUU=
+	t=1762280596; cv=none; b=K/Z1leWkHf5kMQwngZQsrw1zMzGE2SAVFAMFlRzQobaa3zX9CLgmW+YyTYNtIc2PjY344uQHyjuBfFtVxz7YWQkViigW59M44qqNvD0a/I5DASHaMNzyJgDUpLgvEb0Tq2+9+Mr2SWfR3rsY8tm/JHqAAXS/DlvOpRib4GPwKWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762280439; c=relaxed/simple;
-	bh=O5RvaqHOvrsqAaN64GAmKPSMHBDHIU8ImAJ4wQw+YSg=;
+	s=arc-20240116; t=1762280596; c=relaxed/simple;
+	bh=qipXzjZ693kWM+AZ/RIROVELXEE6fEONI00jx4ELHk0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kih2GGL1VZRbF4K2R8+0+YEX0HMTpfnIRp9sDualO6gtoqUWP4vmf5jiMJp8/vzJJVNDxOXnM19fDqA2en8oU8BNsIQfdhrOAnkHvCnKdKwp2FInFWj7e+ZuyExdA7N6LB2LTdAKa50a3eU37LNA4TG8TApEgMy7O1yTcHk+f0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O1jS+qqB; arc=none smtp.client-ip=198.175.65.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=NHDg60fCEsGqnSlzk4VFJayrlbIAGk5Cxko9dOOW6Iyzkqm6sEp79/xBri5apKcAHYmWGuryvv12+qn5N4ZlZgk+zyCt5gVb45QyTDK7euQDSRcKF7xe/r8ENImJMW+YxyB/2cYTG0NSGF3HdRrmEkgboyLm2m1wA/Leu1MvB5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZeXt/Zx+; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762280438; x=1793816438;
+  t=1762280596; x=1793816596;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=O5RvaqHOvrsqAaN64GAmKPSMHBDHIU8ImAJ4wQw+YSg=;
-  b=O1jS+qqBHY67K31rCydI4Yqp/d3Qkd4sHg/aGk8J1sxmr4l/5+SnSKxs
-   qfcYUkmf88oE6tKewM4TNDdZXg8nxJRvHXxj28F91636ETN5nxUDZO5nq
-   tslFxSBZy37L/2BgH1/mK3mYtumCLFkq5EdFZexDmVc77fgAPiOudaIno
-   mubJlmBYEgQy7YLMZ6vZsi+STjwNJuk0xozWGwrKUXa9+vpIddkOvc4+U
-   NzBgPZCtbR7Qu+jbIvcdy6I5rP22Q0bvj3V9mxobDsWSnnsdPIP9AhvCw
-   LWPKshSBr8JXBpMvtkmyPSY9VPOL2ALylyEo30hZWzxtdGZMnZkFDnyeN
-   w==;
-X-CSE-ConnectionGUID: rWfwPYATRiyJFd5LFIEVUA==
-X-CSE-MsgGUID: w4yJKFYMRvmfqHgwCizlfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="75834822"
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; 
-   d="scan'208";a="75834822"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 10:20:37 -0800
-X-CSE-ConnectionGUID: 6sOkKGiwSMaalj6XZzTvGA==
-X-CSE-MsgGUID: rWK4S1vwRVK0xToKjdBHCg==
+  bh=qipXzjZ693kWM+AZ/RIROVELXEE6fEONI00jx4ELHk0=;
+  b=ZeXt/Zx+tlRK5lLm7kMls1bpsxcGVZhBBM10uBk8rmxZ7o0lyeY+HA1u
+   ImNP1JpFdVDKyz+xbwaBbUSs74n6zA/qk9v0GzixNaidfHFheRHF7kA9H
+   NgAKMk2V2lbTKIfa9J2QbAOOdm6yoePYIYxW/Tcvnl8n5BEVkoIp8q2e1
+   NWoUHLIGj3NIfPKBcPgx9/3hhyW6C+nxbjOVyK+R/+WJrBWuRbRovEngY
+   ORJL4mpBJVo3B0UOy5X9kFWK6K7lBN0O0kv4iJnsx+2XPrNyyIyO7Id70
+   YTt+60fURkfLhLjtN8OLjMRsWCmQ2ZiMptufHVMSKLbXCpU6jS/ATCHxm
+   g==;
+X-CSE-ConnectionGUID: B5tGkvhEQxSEmBX2IU48rg==
+X-CSE-MsgGUID: x57/k9VgRgStXyCrr+rMSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64292834"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="64292834"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 10:23:15 -0800
+X-CSE-ConnectionGUID: YQQmmwOrS5m4djZjV9ekfA==
+X-CSE-MsgGUID: WYPk+VbqQqSjWCzditOPoQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; 
-   d="scan'208";a="191583481"
+   d="scan'208";a="187676362"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.146])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 10:20:35 -0800
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 10:23:12 -0800
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vGLdw-00000005XZr-0hZs;
-	Tue, 04 Nov 2025 20:20:32 +0200
-Date: Tue, 4 Nov 2025 20:20:31 +0200
+	id 1vGLgT-00000005Xbu-2yj6;
+	Tue, 04 Nov 2025 20:23:09 +0200
+Date: Tue, 4 Nov 2025 20:23:09 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: nuno.sa@analog.com
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
@@ -73,11 +73,11 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v4 07/12] iio: dac: ad5446: Separate I2C/SPI into
- different drivers
-Message-ID: <aQpD7zx7D6sQOAdC@smile.fi.intel.com>
+Subject: Re: [PATCH v4 09/12] iio: dac: ad5446: Make use of the cleanup
+ helpers
+Message-ID: <aQpEjYRQTDolSIXO@smile.fi.intel.com>
 References: <20251104-dev-add-ad5542-v4-0-6fe35458bf8c@analog.com>
- <20251104-dev-add-ad5542-v4-7-6fe35458bf8c@analog.com>
+ <20251104-dev-add-ad5542-v4-9-6fe35458bf8c@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -87,98 +87,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251104-dev-add-ad5542-v4-7-6fe35458bf8c@analog.com>
+In-Reply-To: <20251104-dev-add-ad5542-v4-9-6fe35458bf8c@analog.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Nov 04, 2025 at 03:35:12PM +0000, Nuno Sá via B4 Relay wrote:
+On Tue, Nov 04, 2025 at 03:35:14PM +0000, Nuno Sá via B4 Relay wrote:
+
+> Use the auto unlocking helpers from cleanup.h. Allows for some code
+> simplification.
 > 
-> Properly separate the I2C and SPI drivers into two different drivers
-> living in their own source file (as usual). So that no need for the
-> hacky ifdefery.
+> While at it, don't use the ternary operator in
+> ad5446_write_dac_powerdown() and add an helper function to write the DAC
+> code. The reason for the function was purely to avoid having to use
+> unreachable().
 
 ...
 
-> +#include <linux/iio/iio.h>
-> +#include <linux/mutex.h>
-> +#include <linux/types.h>
-> +
-> +struct device;
-> +
-> +extern const struct iio_chan_spec_ext_info ad5446_ext_info_powerdown[];
-> +
-> +#define _AD5446_CHANNEL(bits, storage, _shift, ext) { \
-> +	.type = IIO_VOLTAGE, \
-> +	.indexed = 1, \
-> +	.output = 1, \
+> +static int ad5446_write_dac_raw(struct iio_dev *indio_dev,
+> +				const struct iio_chan_spec *chan,
+> +				int val)
+> +{
+> +	struct ad5446_state *st = iio_priv(indio_dev);
 
-> +	.channel = 0, \
+> +	if (val >= (1 << chan->scan_type.realbits) || val < 0)
+> +		return -EINVAL;
 
-Unneeded.
+BIT() ?
+in_range() ?
 
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
-> +	.scan_type = { \
-> +		.sign = 'u', \
-> +		.realbits = (bits), \
-> +		.storagebits = (storage), \
-> +		.shift = (_shift), \
-> +		}, \
-> +	.ext_info = (ext), \
+> +	val <<= chan->scan_type.shift;
+> +	guard(mutex)(&st->lock);
+> +
+> +	st->cached_val = val;
+> +	if (st->pwr_down)
+> +		return 0;
+> +
+> +	return st->chip_info->write(st, val);
 > +}
-> +
-> +#define AD5446_CHANNEL(bits, storage, shift) \
-> +	_AD5446_CHANNEL(bits, storage, shift, NULL)
-> +#define AD5446_CHANNEL_POWERDOWN(bits, storage, shift) \
-> +	_AD5446_CHANNEL(bits, storage, shift, ad5446_ext_info_powerdown)
-> +
-> +/**
-> + * struct ad5446_state - driver instance specific data
-> + * @dev:		this device
-> + * @chip_info:		chip model specific constants, available modes etc
-> + * @vref_mv:		actual reference voltage used
-> + * @cached_val:		store/retrieve values during power down
-> + * @pwr_down_mode:	power down mode (1k, 100k or tristate)
-> + * @pwr_down:		true if the device is in power down
-> + * @lock:		lock to protect the data buffer during write ops
-> + */
-> +struct ad5446_state {
-> +	struct device *dev;
-> +	const struct ad5446_chip_info *chip_info;
-> +	unsigned short vref_mv;
 
-_mV?
-
-> +	unsigned int cached_val;
-> +	unsigned int pwr_down_mode;
-> +	unsigned int pwr_down;
-> +	/* mutex to protect device shared data */
-> +	struct mutex lock;
-> +	union {
-> +		__be16 d16;
-> +		u8 d24[3];
-> +	} __aligned(IIO_DMA_MINALIGN);
-> +};
-> +
-> +/**
-> + * struct ad5446_chip_info - chip specific information
-> + * @channel:		channel spec for the DAC
-> + * @int_vref_mv:	AD5620/40/60: the internal reference voltage
-> + * @write:		chip specific helper function to write to the register
-> + */
-> +struct ad5446_chip_info {
-> +	struct iio_chan_spec channel;
-> +	u16 int_vref_mv;
-
-_mV?
-
-> +	int (*write)(struct ad5446_state *st, unsigned int val);
-> +};
-> +
-> +int ad5446_probe(struct device *dev, const char *name,
-> +		 const struct ad5446_chip_info *chip_info);
-> +
-> +#endif
 
 -- 
 With Best Regards,

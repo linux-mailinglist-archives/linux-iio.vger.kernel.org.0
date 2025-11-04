@@ -1,53 +1,52 @@
-Return-Path: <linux-iio+bounces-25874-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25875-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A139C31DD3
-	for <lists+linux-iio@lfdr.de>; Tue, 04 Nov 2025 16:35:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E8EC31E03
+	for <lists+linux-iio@lfdr.de>; Tue, 04 Nov 2025 16:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1A43421C59
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Nov 2025 15:34:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 257224F41C7
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Nov 2025 15:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2680303C9C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54C13233E3;
 	Tue,  4 Nov 2025 15:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ToYtb7O5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4GTq4n4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76731277011;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767A927BF7C;
 	Tue,  4 Nov 2025 15:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762270474; cv=none; b=IOArwhbgNlRWe3kdcTU0lrjNVaNwIVhZJMwcSxMpo9AbH3EFYQqxlwBHpRA6qUGQBIyLyW0vxP5ktoQQ+6a6IHxWudtO/wXSTW5y11mjnrcsU1s04hFVepWDCz6o39uV5CY8TnIBcITuO9dCUjcbrsxfuWOmoCMgGrT0kelMD/k=
+	t=1762270474; cv=none; b=UScdec3eRPrtM3/7v8wX91rteDaXM7O2DGbyllp59itTH0YXbYnJI5cZ0pHvw7DBZTen214BPJlunGkKWLHUWAxidUzbNlO85DJlHE/kZWZoX/BYcfsxIRfjrFOf8quJys3zJ0hbVdxdJtPUr/LuikqPMB+1WG4PFoIuwsYVyfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762270474; c=relaxed/simple;
-	bh=kgkQ5ZLEY+CnmbfHIWE+KeYZQnP3lZR3rOo4iJQzQDE=;
+	bh=F6UI+eN8N6kLNATzQWjpDkJSVtUKoac0Fua7sSCUpWI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bs1lgvbmA1F/oJ/9kUZaytTkbyCaEXL8cZLbLhGly4dF4Ez78yJlgdTj3Usxje7zdj90eSy9JjVpxPN+NSujMN1qNCoGL7ORKo/hdJECkJzQavkoid7hYqHMRrw2SO7YR2zKpF02Bk54CTUPyLg6qn12Qmqf9yRwcsr8AVYCz3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ToYtb7O5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 038C3C16AAE;
+	 In-Reply-To:To:Cc; b=nZZPCeVIXu+v5B4ywqEYBpRbEgAUHyp7HxGnn8iPxpRQPgivrn3Y1jqGekbexNF6ptigCl+wyOr5FqLq77hTfUPoYNY6uet9kBkvCp+12ioHyxGfOQhj1RvPzbp9kpRP29Nj5zM4InpkJe1IYXPzn14ZGEGMci4o1GcCFzB41Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4GTq4n4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0FDE5C19423;
 	Tue,  4 Nov 2025 15:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1762270474;
-	bh=kgkQ5ZLEY+CnmbfHIWE+KeYZQnP3lZR3rOo4iJQzQDE=;
+	bh=F6UI+eN8N6kLNATzQWjpDkJSVtUKoac0Fua7sSCUpWI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ToYtb7O5WGWAnh7ipgoGTBTUZx4KOmtAsIr5B6dPrasmvM9oh5DgPN3uuG6cNcfAM
-	 dUUkwh4B9e+mlvxwRaPqQsTmcxWcgitQu3o74+Zbn6oCgwCaShKL5fj3ON+pLdjqvF
-	 l6TGVeeYT1I4BUgxtOx06npYwqsuoFzctKrfjlhs0tYC4GvwMjQL862hDvWxDDpszU
-	 Dzg1pTQvDd5Nt/CiOeHYTZm61lft/GD2eWugyZ+qbz7L5Y2pdV41mtc4lbtMurez4J
-	 1rGAXUuy5jLi+f1avGzD14oQsjdf7idY3hcks3A262q5/6sNeotx1BVjO32qz/AsHV
-	 4MqY1DX4sCJlg==
+	b=e4GTq4n40vqkfYmqfsl+ZQT/IRnLKivyYoKeL0wnvtjYORBKGGdji8PENqFrlED58
+	 /uVVblR6Jm/jxm55o7Mx6SmpRwkDorknNpJ6kJ8+64qUrYyaJj4w5aHjunkt8hQYRY
+	 f8JDEV94EvPOpuq3zB8dzLqWeeMHtZsIsXVwiA54GSnczR3id241kUrBlUA9x22hZM
+	 r+DjXLhAj8Fr0oo2+e7E8uV14UhKES7TM5MH/gYOP/eZ4ptj9f+Mw4Rgksk3B7x6i0
+	 SWOQ2/CoEe2jQQKsY1YwubOsB9ffSLljToqxvdinijBUGLlCTbicOKPWxpkjd2p6O0
+	 NWfnNu+keDFRA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECC4ECCFA0D;
-	Tue,  4 Nov 2025 15:34:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05A2BCCFA04;
+	Tue,  4 Nov 2025 15:34:34 +0000 (UTC)
 From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Tue, 04 Nov 2025 15:35:07 +0000
-Subject: [PATCH v4 02/12] iio: dac: ad5446: Use DMA safe buffer for
- transfers
+Date: Tue, 04 Nov 2025 15:35:08 +0000
+Subject: [PATCH v4 03/12] iio: dac: ad5446: Drop duplicated spi_id entry
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251104-dev-add-ad5542-v4-2-6fe35458bf8c@analog.com>
+Message-Id: <20251104-dev-add-ad5542-v4-3-6fe35458bf8c@analog.com>
 References: <20251104-dev-add-ad5542-v4-0-6fe35458bf8c@analog.com>
 In-Reply-To: <20251104-dev-add-ad5542-v4-0-6fe35458bf8c@analog.com>
 To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
@@ -66,11 +65,11 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762270508; l=1997;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762270508; l=1347;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=46famHhMqK6pdPFGxx4pY0sifQUpnrHIY3AH+TPxpr8=;
- b=ALDlYE1NquYKGgazTyb0hXprmbuPRP7TCR9ISRMcP4MU62GqaEyD04k3URvM0kGcyzmUfKnxS
- wBxSGEmTqAtCaiKcRBC8prYyY1Rxn0rqG+WxHhvrLBZPJ2g7pnUXgPB
+ bh=mlIlN1vKecNlba8Yd4mqcS02tNFjhgmuz7OVQKG3b7Q=;
+ b=rW/B7LL2sa4JZTr7uIeqW9F+scJRM8g+L6hoSs+Z5nBRP+OPbno9ZH8rmhoQhcWke4thp+yRU
+ 5HzXzM58tMTBDyeKe68o+AqYCJ2ugiIiwvQjLOzvnQ7ySMMYf7bcWXc
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -80,72 +79,46 @@ Reply-To: nuno.sa@analog.com
 
 From: Nuno Sá <nuno.sa@analog.com>
 
-Make sure to use DMA safe buffer. While for i2c we could be fine without
-them, we need it for spi anyways.
-
-As we now have DMA safe buffers, use i2c_master_send_dmasafe().
+AD5600 and AD5541A are compatible so there's no need to have a dedicated
+entry for ID_AD5600.
 
 Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/dac/ad5446.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/iio/dac/ad5446.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
 diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
-index ad304b0fec08..de5e4e0e397e 100644
+index de5e4e0e397e..c0a38f642451 100644
 --- a/drivers/iio/dac/ad5446.c
 +++ b/drivers/iio/dac/ad5446.c
-@@ -47,6 +47,10 @@ struct ad5446_state {
- 	unsigned			pwr_down_mode;
- 	unsigned			pwr_down;
- 	struct mutex			lock;
-+	union {
-+		__be16 d16;
-+		u8 d24[3];
-+	} __aligned(IIO_DMA_MINALIGN);
- };
- 
- /**
-@@ -265,19 +269,18 @@ static int ad5446_probe(struct device *dev, const char *name,
- static int ad5446_write(struct ad5446_state *st, unsigned val)
- {
- 	struct spi_device *spi = to_spi_device(st->dev);
--	__be16 data = cpu_to_be16(val);
-+	st->d16 = cpu_to_be16(val);
- 
--	return spi_write(spi, &data, sizeof(data));
-+	return spi_write(spi, &st->d16, sizeof(st->d16));
- }
- 
- static int ad5660_write(struct ad5446_state *st, unsigned val)
- {
- 	struct spi_device *spi = to_spi_device(st->dev);
--	uint8_t data[3];
- 
--	put_unaligned_be24(val, &data[0]);
-+	put_unaligned_be24(val, &st->d24[0]);
- 
--	return spi_write(spi, data, sizeof(data));
-+	return spi_write(spi, st->d24, sizeof(st->d24));
- }
- 
- /*
-@@ -489,13 +492,13 @@ static inline void ad5446_spi_unregister_driver(void) { }
- static int ad5622_write(struct ad5446_state *st, unsigned val)
- {
- 	struct i2c_client *client = to_i2c_client(st->dev);
--	__be16 data = cpu_to_be16(val);
-+	st->d16 = cpu_to_be16(val);
- 	int ret;
- 
--	ret = i2c_master_send(client, (char *)&data, sizeof(data));
-+	ret = i2c_master_send_dmasafe(client, (char *)&st->d16, sizeof(st->d16));
- 	if (ret < 0)
- 		return ret;
--	if (ret != sizeof(data))
-+	if (ret != sizeof(st->d16))
- 		return -EIO;
- 
- 	return 0;
+@@ -301,7 +301,6 @@ enum ad5446_supported_spi_device_ids {
+ 	ID_AD5541A,
+ 	ID_AD5512A,
+ 	ID_AD5553,
+-	ID_AD5600,
+ 	ID_AD5601,
+ 	ID_AD5611,
+ 	ID_AD5621,
+@@ -356,10 +355,6 @@ static const struct ad5446_chip_info ad5446_spi_chip_info[] = {
+ 		.channel = AD5446_CHANNEL(14, 16, 0),
+ 		.write = ad5446_write,
+ 	},
+-	[ID_AD5600] = {
+-		.channel = AD5446_CHANNEL(16, 16, 0),
+-		.write = ad5446_write,
+-	},
+ 	[ID_AD5601] = {
+ 		.channel = AD5446_CHANNEL_POWERDOWN(8, 16, 6),
+ 		.write = ad5446_write,
+@@ -427,7 +422,7 @@ static const struct spi_device_id ad5446_spi_ids[] = {
+ 	{"ad5542a", ID_AD5541A}, /* ad5541a and ad5542a are compatible */
+ 	{"ad5543", ID_AD5541A}, /* ad5541a and ad5543 are compatible */
+ 	{"ad5553", ID_AD5553},
+-	{"ad5600", ID_AD5600},
++	{"ad5600", ID_AD5541A}, /* ad5541a and ad5600 are compatible  */
+ 	{"ad5601", ID_AD5601},
+ 	{"ad5611", ID_AD5611},
+ 	{"ad5621", ID_AD5621},
 
 -- 
 2.51.0

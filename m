@@ -1,187 +1,250 @@
-Return-Path: <linux-iio+bounces-25977-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25978-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6E7C3C3E5
-	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 17:06:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC41AC3C481
+	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 17:11:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 954BC4F9F2E
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 16:01:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 985D23BBDD7
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 16:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB8434A76F;
-	Thu,  6 Nov 2025 16:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628FF346A1C;
+	Thu,  6 Nov 2025 16:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TqFUfg9s"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mfIwBrcB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA38B33A023
-	for <linux-iio@vger.kernel.org>; Thu,  6 Nov 2025 16:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DE23321BF
+	for <linux-iio@vger.kernel.org>; Thu,  6 Nov 2025 16:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762444906; cv=none; b=PAbZvcNNfrDIc80zxhwosP3J4zdtNIeE1uYN3tqQj58TBAaYX1mHO5dov/FV+9Avv0r8J632bKXYUBitghV+jg9yPuRI3YPV9vrx7SiNVj5/xoTYHb+B2wKsd/SmJ/KQU/DtR6wgiQwRfIRoWlvyGxOtOU1pvrtTfSZCXeNELAQ=
+	t=1762445176; cv=none; b=lrXS9B1FFGD9VmWtc1C2CXsPhQbN9+2KT3A8MgsW2pPE4BTNH29oEDUVT2jTdE0SPYYew6iuGfQne2gEJH38YydMX6LbAOb8ex5JRVqLSVAetW7i2FpiM6xR4rix572Nlsg2ek0bXa7JWRpjuB6R+HnditYpTQbeAe0ZkV5FLn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762444906; c=relaxed/simple;
-	bh=T9dOCjt5CSMA8b/M7JLaYkgOskmgR2ygjFafGQfTcfE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O7pb317hSHgkQY5ySS8NvpDjB4WpZPI99sbV6bgTRK7uOdXpKr0tSVodgTEjgWM24GX4OViUMRIo2c9bvMv/YSpBBesAcP6a4rs11NBbv7enw4qa3Vwd19igL508mTku0b0onwl/YL66XsBGN/14utOaCF9u1mlbs8GP30F2s1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TqFUfg9s; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-787ab220b1cso18293887b3.0
-        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 08:01:43 -0800 (PST)
+	s=arc-20240116; t=1762445176; c=relaxed/simple;
+	bh=dvzFUSi8epjcH2tzVkZdfAKadQfAEcDxUUQ1NgNUv5U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gcUUgnOaTkW0jRgWgP+B0q/kHNHu5R+tcwSPrW1c5tFVINAdU3H8UgjWwCvjMrAZEGFpOcBJrhg99dY/PkHgSkb1mGZLGQojywXaVJDNOuFEeHH0qWmSNtQ+GrS05Josd1e49GEWTjZs0kl+Nvhix1UspJmAfx9GVcjtuBTA/F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mfIwBrcB; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-656b1f906e4so575861eaf.0
+        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 08:06:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762444902; x=1763049702; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uDqvdpSXd7EVG4K3GSPuN1+lwa+x8rxJ7aM50JiFwXE=;
-        b=TqFUfg9sdXxypsXTeE5BSr5Qkw8tO2/cIJTGInEFiTFfU5cxawi9hpV918beskopTK
-         /6SnOKWCg0fYbXrnhClN6h/ZIDJ4hKq5K80QFj6VxjsZGVVErM0AHnnIBpSHYHq1r1pS
-         8Yxk9b6xcmhTp/sTdYFZaoEoARZJ8pcFux2xGerbAVMQqtK8XqjLNHMhF4PzVwrtHAdm
-         R+CiwBInxL+6ZNI3IyjxHEyzQQMDawko9u6NiKv8LZfJbo+iN8UPF14mSG3wTNjFoQoz
-         v26N7sZ2QU8jlslhMel0AWHK42O5moBUO2mtG/6vNATPQxCZ2Y2TIM2PntMcOdpJXv3F
-         /zpw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762445172; x=1763049972; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KzWUN8FCOcO8+x+mhLttst82Or3UpUTXEtfV8i7GE9o=;
+        b=mfIwBrcBCuHG4FPwRh5TRFYF+Q5vonVhtF9xnXNG7xrEet7+Qldny9zFJk2e/8Kcl+
+         YrBP9YQoQO4iN97uYYdYh8x1FN2XVbWgkiYKCdRyArA6zryLxjQw+AvbOo3QKi983SnB
+         6pmADW//82wUzGznP3+pvtAxPuPFhn/9yxtZKfMopmtmIyROacE2Y7/G2BEqBnZHm+GO
+         z5dl/uE2dOo8xJJm2eA8GmLvgvsKiUdrQOn+T0M+hFU3A29s4E7rSDL9Qj8OJ4s7YH+7
+         3j/8M9Y0ORxFT0rvSi4zU4dP8MgE6DQ6B0txQ0UvpFo9224sloEZ5sQf7m03Jltn+L00
+         xfvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762444902; x=1763049702;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uDqvdpSXd7EVG4K3GSPuN1+lwa+x8rxJ7aM50JiFwXE=;
-        b=naHpYlGUFHuWez4VkZns+SmJynoh96l64NV1faeG07pEVBiE80c+ml7fblXwPZFXPq
-         +vxVgRkggwnXcCTMOIBhjR0fjfMTbGsRZzdAFjpEK5y6CfoAx5YG9N53gN82OezRicQd
-         YREs3X4zarDYbdf6OlkgMljtONESk6ABO4/KqS34AMMVXmGdFmuLcdRQbePMB8D67Gqq
-         V9kyHr1tWRFA3f6aA7QKn2zz74FeiO81SVLMios5zRbOvjexIJvbnXlRa334RfDcGAjQ
-         vYUMPb6d3zD6Rr4TlJvGY1uT5FnANIRLyWXzuVcqiSaTs/21JvnXkaX/9VGaue6RaQuz
-         eZHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVpmigXRL7bZlGb3Bdtgq59s4IpmmE92/y0ioIghLw/3AGoNTF9Lg9DbQLbDZZurKlrPtT8UsIzMXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy9Vyf7oX/Xk5/fKWY0x9gj+E15j6roVsBugJ6SWndjQHP2kot
-	CcBNsLyFtlQLCX7YNqEV96mpH0y1lI2TBngIX2lKrY5276tdVh7LtL1H
-X-Gm-Gg: ASbGncs3hwXb9nbLPw3a6vBXJXo1jAGPpJgfPvjh+1llZ1zG+jeNutW5MAuO2Og1Qf5
-	jCJjz6gz7oyk0SxxTEwg1HcU65S4VuCm8wtWAipIe/M3b+0+rc7mOGrZMvsXnmcru+AckzVEp/i
-	bvcf7r94OdgJFZthgkicqkGQwpaGygPBSDADQjoMGEXvxAwTigh+P25DGPyibzfWPvdv8jcrNtk
-	CCoe1W18KzaDt+k2kAhrwoOgka4N8jJVRmsAgyg2IZtOEkmMI9hqLZB3Ec5OWMQoOpboLW+TXFc
-	oqgE934K05KbTfqB3yHrQ2F8XhfphRrteKRylRuvd9Q8+bqFH+isnubyKOGI7r0jVPEKC6HriLe
-	60aISRLIjXT+1BvUQrU/afBM3a+ZzCtxoWuAYiHFPjLrEzEViQtsSjqf3JkUAJwI6nhO21JJxYa
-	leFcTTz2RsJQK9Ro8VpYY+rjJG3hSmSRJN
-X-Google-Smtp-Source: AGHT+IHH1OiCGEbzPId419SmPeowjgjZvd2uwuBPgu14uOeMTfnhF3EzyBaZ3Vf1fe9K5qAqRN9gOQ==
-X-Received: by 2002:a05:690e:2405:b0:63f:b1fd:3850 with SMTP id 956f58d0204a3-640c3b56ae5mr33952d50.33.1762444901924;
-        Thu, 06 Nov 2025 08:01:41 -0800 (PST)
-Received: from localhost (c-73-105-0-253.hsd1.fl.comcast.net. [73.105.0.253])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-787b15d6379sm9121887b3.45.2025.11.06.08.01.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 08:01:40 -0800 (PST)
-Date: Thu, 6 Nov 2025 11:01:39 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	David Miller <davem@davemloft.net>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Crt Mori <cmo@melexis.com>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Kim Seer Paller <kimseer.paller@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Jianping Shen <Jianping.Shen@de.bosch.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-edac@vger.kernel.org, qat-linux@intel.com,
-	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-	linux-iio@vger.kernel.org, linux-sound@vger.kernel.org,
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 12/26] bitfield: Add less-checking __FIELD_{GET,PREP}()
-Message-ID: <aQzGY4AKiMQpuL0R@yury>
-References: <cover.1762435376.git.geert+renesas@glider.be>
- <cfc32f8530d5c0d4a7fb33c482a4bf549f26ec24.1762435376.git.geert+renesas@glider.be>
- <aQy0T2vUINze_6_q@smile.fi.intel.com>
+        d=1e100.net; s=20230601; t=1762445172; x=1763049972;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KzWUN8FCOcO8+x+mhLttst82Or3UpUTXEtfV8i7GE9o=;
+        b=dRoN//8LC4TZp7YAN2Sg10BMwEforbCI5dUnAziHjeEVAKb8T+1ytJvu9r6vAinxZz
+         /saM9J4nXVeaPyLbahHHKHpCibjw1CeryOewKb2UsT1toJKR31Bnow1nk/77pza3IHUF
+         L/Ulw2hZE30Xyb770QA0bry6FnMLPgI3UqyRNzATAD6nj3wXlkliPUuS9DfJ/r32hqxr
+         dEikMoRpOZQ09AUndFzvD51yL7F9Zxrikj215Z1d2eDTyEhll7W1eBm6poxNVO8D9z4F
+         kD8UaF1kKs3l1KT19kWr9Jg1GP55+9IsHLs7MQ3yjc7fyiwfTtiEnuxH1DVYo2EghTBP
+         hJWw==
+X-Forwarded-Encrypted: i=1; AJvYcCWS+djVnlM1ae6Xgyp+O3ue7y5ZWy7AgA4SzXZdNxqgvOkJ5WPw8YBV3epEI8XU6obCSlMNVzToBSs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3wtLxSKxXBxu7wSLS07H/ILC3/BL+rxQiKfSd+shLZ2tWuLuj
+	lFPXpQdO4EowtCM0RKtKy/6LmtV1RjlR35d8WabijwE4Mhzifcy0qntIxRTJyMQB2cY=
+X-Gm-Gg: ASbGncveZDH0ncjl7E139VNS19yxZH8OA9PSxnZmTbMiuDbG/ZtZQdCHB2/UI29dTvF
+	4OaEITRMAO+EHVRSOOIntpblOE53H/lms7Oo5KnnHXaMJeoMLQ52hGtIEshum+Ercp9tVYb38rd
+	ZuxcmP5joec0CyiCX3QS5YEtCVqQzCsmCTcHjlBBYKpDL+x1tG3TFw99MfdWBJWEzN48xolrFpx
+	v4uSa2HjH4HcJJu6UzJLg92Mnarh8X3wO0Y+PFd6o8uqGC0mYQJdbcfK5hFUP+lwQTLbw30QiRX
+	+vhHTnL87XiFrfS7XiBCRxi/b0S2eI6swAG9TKNb0AGxiL6NDb4hGXkfBMvKsO54ZCV7I/iSE2p
+	alP6nqWd1nzQVlLvlFddNn1YbYPS7wnpn2EGnkzN3mBldZBmjlVpeHGt0ub9P8y8b8MOEfNuUED
+	lkFA8+7FLZkVjm2897DqRN58VGL0OC/2whBfRfKdPllvd5ueX33zdrUL41lGH6j2WNZOGszoI=
+X-Google-Smtp-Source: AGHT+IFI6H/3hvueZT5ogwYKaGlE41TBa2skYAA82ynhTSyHl8t87EXdYbpmxdU5A8/jzWyDKkV3bA==
+X-Received: by 2002:a05:6808:3a09:b0:450:10b:a53a with SMTP id 5614622812f47-450010baa44mr2530751b6e.65.1762445171752;
+        Thu, 06 Nov 2025 08:06:11 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:149c:d223:50dd:7f45? ([2600:8803:e7e4:500:149c:d223:50dd:7f45])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-656c57d5928sm1006344eaf.13.2025.11.06.08.06.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Nov 2025 08:06:11 -0800 (PST)
+Message-ID: <5a9346c3-fcc1-42c9-8f4d-8fe579a5c012@baylibre.com>
+Date: Thu, 6 Nov 2025 10:06:10 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQy0T2vUINze_6_q@smile.fi.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] bindings: iio: adc: Add bindings for TI ADS131M0x
+ ADCs
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>
+References: <20251105143814.1807444-1-o.rempel@pengutronix.de>
+ <20251105143814.1807444-2-o.rempel@pengutronix.de>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20251105143814.1807444-2-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 06, 2025 at 04:44:31PM +0200, Andy Shevchenko wrote:
-> On Thu, Nov 06, 2025 at 02:34:00PM +0100, Geert Uytterhoeven wrote:
-> > The BUILD_BUG_ON_MSG() check against "~0ull" works only with "unsigned
-> > (long) long" _mask types.  For constant masks, that condition is usually
-> > met, as GENMASK() yields an UL value.  The few places where the
-> > constant mask is stored in an intermediate variable were fixed by
-> > changing the variable type to u64 (see e.g. [1] and [2]).
-> > 
-> > However, for non-constant masks, smaller unsigned types should be valid,
-> > too, but currently lead to "result of comparison of constant
-> > 18446744073709551615 with expression of type ... is always
-> > false"-warnings with clang and W=1.
-> > 
-> > Hence refactor the __BF_FIELD_CHECK() helper, and factor out
-> > __FIELD_{GET,PREP}().  The later lack the single problematic check, but
-> > are otherwise identical to FIELD_{GET,PREP}(), and are intended to be
-> > used in the fully non-const variants later.
-> > 
-> > [1] commit 5c667d5a5a3ec166 ("clk: sp7021: Adjust width of _m in
-> >     HWM_FIELD_PREP()")
-> > [2] commit cfd6fb45cfaf46fa ("crypto: ccree - avoid out-of-range
-> >     warnings from clang")
+On 11/5/25 8:38 AM, Oleksij Rempel wrote:
+> Add device tree bindings documentation for the Texas Instruments
+> ADS131M0x analog-to-digital converters. This family includes the ADS131M02,
+> ADS131M03, ADS131M04, ADS131M06, and ADS131M08 variants.
 > 
-> 
-> Also can be made as
-> 
-> Link: https://git.kernel.org/torvalds/c/5c667d5a5a3ec166 [1]
-> 
-> The positive effect that one may click that on Git Web.
-> Ideally, of course, would be an additional parses on Git Web kernel.org uses to
-> parse that standard "commit ...()" notation to add the respective HREF link.
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  .../bindings/iio/adc/ti,ads131m08.yaml        | 162 ++++++++++++++++++
 
-Those flying over Atlantic or cruising cross Caribbean would disagree. :)
- 
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+For consistency, I always try to name the file after the lowest part number.
+Since we usually list things from lowest to highest it makes the file name
+match the first item in the compatible: list. Not sure how widely that is
+done in general though.
+
+>  1 file changed, 162 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads131m08.yaml
 > 
-> ...
-> 
-> > +	BUILD_BUG_ON_MSG(__bf_cast_unsigned(mask, mask) >		\
-> > +			 __bf_cast_unsigned(reg, ~0ull),		\
-> > +			 pfx "type of reg too small for mask")
-> 
-> Perhaps we may convert this (and others?) to static_assert():s at some point?
-> 
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads131m08.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads131m08.yaml
+> new file mode 100644
+> index 000000000000..193ac84c41cd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads131m08.yaml
+> @@ -0,0 +1,162 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/ti,ads131m08.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments ADS131M0x 2-, 3-, 4-, 6- and 8-Channel ADCs
+
+The more interesting thing to me than the number of channels is that
+these are simultaneous sampling. But I guess it says that below already.
+
+> +
+> +maintainers:
+> +  - Oleksij Rempel <o.rempel@pengutronix.de>
+> +
+> +description: |
+> +  The ADS131M0x are a family of multichannel, simultaneous sampling,
+> +  24-bit, delta-sigma, analog-to-digital converters (ADCs) with a
+> +  built-in programmable gain amplifier (PGA) and internal reference.
+> +  Communication with the ADC chip is via SPI.
+> +
+> +  Datasheets:
+> +  - ADS131M08: https://www.ti.com/lit/ds/symlink/ads131m08.pdf
+> +  - ADS131M06: https://www.ti.com/lit/ds/symlink/ads131m06.pdf
+> +  - ADS131M04: https://www.ti.com/lit/ds/symlink/ads131m04.pdf
+> +  - ADS131M03: https://www.ti.com/lit/ds/symlink/ads131m03.pdf
+> +  - ADS131M02: https://www.ti.com/lit/ds/symlink/ads131m02.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,ads131m02
+> +      - ti,ads131m03
+> +      - ti,ads131m04
+> +      - ti,ads131m06
+> +      - ti,ads131m08
+> +
+> +  reg:
+> +    description: SPI chip select number.
+> +
+> +  clocks:
+> +    description:
+> +      Phandle to the external clock source required by the ADC's CLKIN pin.
+> +      The datasheet recommends specific frequencies based on the desired power
+> +      mode (e.g., 8.192 MHz for High-Resolution mode).
+> +    maxItems: 1
+
+We probably also need to know what is wired to the clock pin so that the driver
+can correctly set XTAL_DIS in the CLOCK register.
+
+clock-names:
+  description:
+    Indicates if a crystal oscillator (XTAL) or CMOS signal is connected (CLKIN).
+  enum: [xtal, clkin]
+
+
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+
+In addition to the supplies that Jonathan mentioned, we can also add
+an interrupts property for the DRDY output signal.
+
+And a reset-gpios for the reset signal.
+
+These are all trivial bindings we know are going to be correct even if
+the driver doesn't use them yet.
+
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +
+> +patternProperties:
+> +  "^channel@([0-7])$":
+> +    type: object
+> +    $ref: /schemas/iio/adc/adc.yaml#
+> +    description: |
+> +      Properties for a single ADC channel. The maximum valid channel number
+> +      depends on the specific compatible string used (e.g., 0-1 for ads131m02,
+> +      0-7 for ads131m08).
+
+I think this description would be better as a comment on the if statements
+below so that it isn't so far away from the relevant code.
+
+> +
+> +    properties:
+> +      reg:
+> +        description: The channel index (0-7).
+> +        minimum: 0
+> +        maximum: 7 # Max channels on ADS131M08
+> +
+> +      label: true
+> +
+> +    required:
+> +      - reg
+> +
+> +    unevaluatedProperties: false
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: ti,ads131m02
+> +    then:
+> +      patternProperties:
+> +        "^channel@[0-7]$":
+
+        "^channel@[0-1]$":
+
+Same pattern applies to the similar statements below (that I trimmed from the reply).
+
+> +          properties:
+> +            reg:
+> +              maximum: 1
+> +        "^channel@([2-7])$": false
+> +
 

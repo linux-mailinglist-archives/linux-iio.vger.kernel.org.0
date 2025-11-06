@@ -1,85 +1,120 @@
-Return-Path: <linux-iio+bounces-25979-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25980-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A0EC3C47B
-	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 17:11:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62019C3C42D
+	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 17:08:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9C42B4F4B21
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 16:07:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D38EC1B2227A
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 16:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F0D33CEA1;
-	Thu,  6 Nov 2025 16:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673C2346A12;
+	Thu,  6 Nov 2025 16:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ULtLdBXd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jlpSd2oO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B5C316918;
-	Thu,  6 Nov 2025 16:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48646302CD0;
+	Thu,  6 Nov 2025 16:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762445247; cv=none; b=ZKBQYzdYTCPqSnK0LYhp5vqA9n4LLdZFwrO5Qy7McnrHAcsVFBryQLXILNKReQ14A4BOnS6wcrJwiZ2dZxIR5tb4vie1RIFb9BD+n21aLqVE4cFgfElDz0iuyAHVRBd8k/HEPhGVu3npPYVU546B0rZAqTvZFyPaHSJkDZS2jDk=
+	t=1762445333; cv=none; b=tgNmyL5bByQeZEKzBewrZ3d1+UIWzOV4OIdE1D7aNQpDLUKwyyty79gvYliH1RpOpYr/wfxjxUEAsd4vUihnRUaMqumhTFd2Ixjn8Q/d4Tp5oPVR9DkyvXkaIQWxqH3G3U3uHtFs0QFvOkkIm1geqaHp0ksPXRS78tbBunDdAm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762445247; c=relaxed/simple;
-	bh=SbAz1dDS4lGDeM9FWy6nLhyTEHqSyFKNrQiQdkYRtqE=;
+	s=arc-20240116; t=1762445333; c=relaxed/simple;
+	bh=BxSiubnDJFoi3hF0gZEV1dDowKtMOnRvt3PDCt/YgRc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GUP2yG81d/zLQy9jqLodXMm90uWGV5pfPf8CiPxhKu+0Ku6IZN+zoWc1UDnLsrujxjx0IFcbLikxbzY5ORLYDck+MgnJrCoGJ9fxGEZgVEYxNnxdv3vQpeZ8nmfF8jaG+1jEfPaXGz2CAs2+p61kRCcmyZMV4Xqj9oSuOByHyvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ULtLdBXd; arc=none smtp.client-ip=198.175.65.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=rVDuktOEjau/zvPRHJUSf41hyi4OacpvccYWbIeDnk71P8DgsgBfuit369aDlGZI7MlVQ2FaVlzfniuxzrpyWbyAFPp/e+Bech877/sLvpzVyV14uVCgkEa7cqOv91WXvQxGxNp3rcxIrk3lDagrmYq490A0RBBo7FdGAVkcyNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jlpSd2oO; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762445245; x=1793981245;
+  t=1762445331; x=1793981331;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=SbAz1dDS4lGDeM9FWy6nLhyTEHqSyFKNrQiQdkYRtqE=;
-  b=ULtLdBXdJUgpKbjcSsLkbbmzSaiuP89PFBRX/pb7WCP69TbVvaMuzX1V
-   kA/Xq0M6KpAg0OzKEvXRQn1nSxYmQSI+CkySBs+CKOizHhDMtkDrV6MWt
-   k0JfUDkGnbSQogQrzn68mc+jBpeceFdJMSyAdo9uXxTWQ0reUZbwRFsRw
-   kpy87CjRowBJTKYpcJAbJbdShXpcMrEAK+DIPvOOCkHkPDnl+rqLZttmf
-   sntr4ERF2agrIW1dy0GPbIkQDFmGHwF2JoxGkI6PhqvNxi37Z/Mrztr3R
-   y8n27HxS5vKCjZgQT39WtQUmuPnTNGk3hqxAUN3j3ilOfXsW5RX/ITEAI
-   g==;
-X-CSE-ConnectionGUID: ivy8FE9RRXqDfGvzV9cAug==
-X-CSE-MsgGUID: sbtaZjGxTV20ZDb+FVBPpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64469941"
+  bh=BxSiubnDJFoi3hF0gZEV1dDowKtMOnRvt3PDCt/YgRc=;
+  b=jlpSd2oOR5wZlMbTql+TSqjVWomKBBKMFkf1/VdgcqMXuz273YF6XP6X
+   +hPmSHg9qpLxrHinF0rWesen27BrXf3Q/KirEanRteCqzFck4Wk/gny19
+   sh2CkJ9tzG9UCuYUcXj3ael/zNDeKJe4eUJslJ4Qudtrf7J6PJzGx8SYI
+   Fx/q/sKACbeesblHGGowKuUmu9z/wknoGpL8oDx1Bib1SRanJAAUVLfx7
+   R81tD6r1n/xHs/oeQ86a+ovpfwSlt6PkWqHSJXDx8ajSIYOiy0u2hV1Q0
+   jEDx68lju7PZcMkaZ4AvvqSpAX+mT/9MQf6pF3JW+oSZdgHOyRl+wSe6l
+   w==;
+X-CSE-ConnectionGUID: ejueZuzTRHOLyplIDnJ0GA==
+X-CSE-MsgGUID: TSwY/vFASaOIYPLsG/HSyQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="52154280"
 X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
-   d="scan'208";a="64469941"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 08:07:24 -0800
-X-CSE-ConnectionGUID: xyGQLGVLSAGvFCLnQ0FfRg==
-X-CSE-MsgGUID: QGNNY7BrSregxim4Q2AYIA==
+   d="scan'208";a="52154280"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 08:08:49 -0800
+X-CSE-ConnectionGUID: csRhl/YrR3mh6V3vjCg1UA==
+X-CSE-MsgGUID: aB5X0TIERP63avd4sWT1og==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
-   d="scan'208";a="218545205"
+   d="scan'208";a="187454619"
 Received: from abityuts-desk.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.224])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 08:07:21 -0800
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 08:08:39 -0800
 Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vH2W6-00000006BoP-1d52;
-	Thu, 06 Nov 2025 18:07:18 +0200
-Date: Thu, 6 Nov 2025 18:07:18 +0200
+	id 1vH2XJ-00000006BqD-4AI9;
+	Thu, 06 Nov 2025 18:08:33 +0200
+Date: Thu, 6 Nov 2025 18:08:33 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	David Miller <davem@davemloft.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Crt Mori <cmo@melexis.com>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Kim Seer Paller <kimseer.paller@analog.com>,
 	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] iio: add processed write API
-Message-ID: <aQzHtqFEIA5E0ikO@smile.fi.intel.com>
-References: <20251106-ltm8054-driver-v3-0-fd1feae0f65a@bootlin.com>
- <20251106-ltm8054-driver-v3-2-fd1feae0f65a@bootlin.com>
+	Andy Shevchenko <andy@kernel.org>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Jianping Shen <Jianping.Shen@de.bosch.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-edac@vger.kernel.org, qat-linux@intel.com,
+	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+	linux-iio@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 12/26] bitfield: Add less-checking __FIELD_{GET,PREP}()
+Message-ID: <aQzIAd91tlR3o9hu@smile.fi.intel.com>
+References: <cover.1762435376.git.geert+renesas@glider.be>
+ <cfc32f8530d5c0d4a7fb33c482a4bf549f26ec24.1762435376.git.geert+renesas@glider.be>
+ <aQy0T2vUINze_6_q@smile.fi.intel.com>
+ <aQzGY4AKiMQpuL0R@yury>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -88,175 +123,47 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251106-ltm8054-driver-v3-2-fd1feae0f65a@bootlin.com>
+In-Reply-To: <aQzGY4AKiMQpuL0R@yury>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Nov 06, 2025 at 03:11:47PM +0100, Romain Gantois wrote:
-> Add a function to allow IIO consumers to write a processed value to a
-> channel.
+On Thu, Nov 06, 2025 at 11:01:39AM -0500, Yury Norov wrote:
+> On Thu, Nov 06, 2025 at 04:44:31PM +0200, Andy Shevchenko wrote:
+> > On Thu, Nov 06, 2025 at 02:34:00PM +0100, Geert Uytterhoeven wrote:
+> > > The BUILD_BUG_ON_MSG() check against "~0ull" works only with "unsigned
+> > > (long) long" _mask types.  For constant masks, that condition is usually
+> > > met, as GENMASK() yields an UL value.  The few places where the
+> > > constant mask is stored in an intermediate variable were fixed by
+> > > changing the variable type to u64 (see e.g. [1] and [2]).
+> > > 
+> > > However, for non-constant masks, smaller unsigned types should be valid,
+> > > too, but currently lead to "result of comparison of constant
+> > > 18446744073709551615 with expression of type ... is always
+> > > false"-warnings with clang and W=1.
+> > > 
+> > > Hence refactor the __BF_FIELD_CHECK() helper, and factor out
+> > > __FIELD_{GET,PREP}().  The later lack the single problematic check, but
+> > > are otherwise identical to FIELD_{GET,PREP}(), and are intended to be
+> > > used in the fully non-const variants later.
+> > > 
+> > > [1] commit 5c667d5a5a3ec166 ("clk: sp7021: Adjust width of _m in
+> > >     HWM_FIELD_PREP()")
+> > > [2] commit cfd6fb45cfaf46fa ("crypto: ccree - avoid out-of-range
+> > >     warnings from clang")
+> > 
+> > 
+> > Also can be made as
+> > 
+> > Link: https://git.kernel.org/torvalds/c/5c667d5a5a3ec166 [1]
+> > 
+> > The positive effect that one may click that on Git Web.
+> > Ideally, of course, would be an additional parses on Git Web kernel.org uses to
+> > parse that standard "commit ...()" notation to add the respective HREF link.
+> 
+> Those flying over Atlantic or cruising cross Caribbean would disagree. :)
 
-...
-
-> +int iio_divide_by_value(int *result, s64 numerator,
-> +			unsigned int type, int val, int val2)
-> +{
-> +	s64 tmp_num, tmp_den;
-> +
-> +	switch (type) {
-> +	case IIO_VAL_INT:
-> +		tmp_num = numerator;
-> +		tmp_den = val;
-> +		break;
-> +	case IIO_VAL_INT_PLUS_MICRO:
-> +	case IIO_VAL_INT_PLUS_NANO:
-> +		switch (type) {
-> +		case IIO_VAL_INT_PLUS_MICRO:
-> +			tmp_num = MICRO;
-> +			tmp_den = MICRO;
-> +			break;
-> +
-> +		case IIO_VAL_INT_PLUS_NANO:
-> +			tmp_num = NANO;
-> +			tmp_den = NANO;
-> +			break;
-> +		}
-
-> +		tmp_num *= numerator;
-> +		tmp_den = (s64)abs(val) * tmp_den + (s64)abs(val2);
-
-Here is a subtle bug. The problematic piece is abs(). See
-https://lore.kernel.org/r/20251106152051.2361551-1-andriy.shevchenko@linux.intel.com
-for the answer.
-
-> +		if (val < 0 || val2 < 0)
-> +			tmp_num *= -1;
-
-Drop that duplication of the switches above and split the calculations. Note,
-with the split done, the confusing assignments of tmp_den will gone as well.
-
-> +		break;
-> +	case IIO_VAL_FRACTIONAL:
-> +		tmp_num = (s64)numerator * (s64)val2;
-> +		tmp_den = val;
-> +		break;
-> +	case IIO_VAL_FRACTIONAL_LOG2:
-> +		tmp_num = (s64)numerator << val2;
-> +		tmp_den = val;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!tmp_den)
-> +		return -ERANGE;
-> +
-> +	*result = div64_s64(tmp_num, tmp_den);
-> +
-> +	return IIO_VAL_INT;
-> +}
-
-...
-
-> +	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
-
-> +	if (offset_type >= 0) {
-
-Why?
-
-> +		switch (offset_type) {
-> +		case IIO_VAL_INT:
-> +		case IIO_VAL_INT_PLUS_MICRO:
-> +			half_step = MICRO / 2;
-> +			break;
-> +		case IIO_VAL_INT_PLUS_NANO:
-> +			half_step = NANO / 2;
-> +			break;
-> +		case IIO_VAL_FRACTIONAL:
-> +			offset_val = DIV_ROUND_CLOSEST(offset_val, offset_val2);
-> +			break;
-> +		case IIO_VAL_FRACTIONAL_LOG2:
-> +			offset_val >>= offset_val2;
-> +			break;
-
-> +		default:
-
-You probably wanted to check it here.
-
-> +			return -EINVAL;
-
-
-
-> +		}
-> +
-> +		/* Round fractional part to closest to reduce rounding bias. */
-> +		if (half_step) {
-> +			if (offset_val2 >= half_step)
-> +				*raw -= 1;
-> +			else if (offset_val2 <= -half_step)
-> +				*raw += 1;
-> +		}
-> +
-> +		*raw -= offset_val;
-> +	}
-
-...
-
-> +EXPORT_SYMBOL_GPL(iio_write_channel_processed_scale);
-
-Can we start using namespaced exports?
-
-...
-
-> +/**
-> + * iio_divide_by_value() - Divide by an IIO value
-> + * @result:	Destination pointer for the division result
-> + * @numerator:	Numerator.
-> + * @type:	One of the IIO_VAL_* constants. This decides how the @val
-> + *		and @val2 parameters are interpreted.
-> + * @val:	Denominator.
-> + * @val2:	Denominator. @val2 use depends on type.
-> + *
-> + * Divide an s64 number by an IIO value, storing the result as
-
-s64 number --> @numerator
-
-> + * IIO_VAL_INT. This is typically used for scaling.
-> + *
-> + * Returns:
-> + * IIO_VAL_INT on success or a negative error-number on failure.
-
-Use % for the constants. It will be rendered differently (font) when
-applicable. Same for other constants in all of the kernel-doc you add.
-
-> + */
-
-...
-
-> +/**
-> + * iio_write_channel_processed_scale() - scale and write processed value to a given channel
-> + * @chan:		The channel being queried.
-> + * @val:		Value to write.
-> + * @scale:		Processed value is divided by this scale factor during the conversion.
-> + *
-> + * This function writes a processed value to a channel. A processed value means
-> + * that this value will have the correct unit and not some device internal
-> + * representation. If the device does not support writing a processed value, the
-> + * function will query the channel's scale and offset and write an appropriately
-> + * transformed raw value.
-
-> + * Context: May sleep.
-
-The above kernel-doc doesn't have this!
-
-> + * Return: an error code or 0.
-
-Be consistent with the existing code, and even in your own change.
-
-("Return" section name, "Context" section presence, etc.)
-
-Use Perl (original) kernel-doc for now, the Python has a significant regression
-(the fix is pending to go to Linus' branch).
+They won't. The purpose of these Links is described in the above commit message.
+Even they read the commit message before clicking.
 
 -- 
 With Best Regards,

@@ -1,134 +1,118 @@
-Return-Path: <linux-iio+bounces-25930-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25931-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843E7C399E9
-	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 09:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A679DC39BCA
+	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 10:05:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F6B41A237C0
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 08:45:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94273189C641
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 09:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3ADE308F38;
-	Thu,  6 Nov 2025 08:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84AA309DDF;
+	Thu,  6 Nov 2025 09:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5ukcegI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25975308F2A
-	for <linux-iio@vger.kernel.org>; Thu,  6 Nov 2025 08:44:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D64239E9E;
+	Thu,  6 Nov 2025 09:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762418683; cv=none; b=nPGvOHmhYegXOj/CTj8vPl1CtA3brf4qrlN4ELAH4OPEdL6iFg142bm3YqctdBAmMBUw1GUIJlTixuj2Sk9BSay6ikCdIRB5uBmqcddrvrO2+PHWjlI3GjU4qk0cWu+RQL4cfQG+QSaMmxdxlsFvv4OdAwl8BxmV3mBoNc38oPs=
+	t=1762419877; cv=none; b=OtmSdmATiGp9cNuvG2idRkWbrApKn9GF42xDySPIrMwnz0OYkkRqCtee96eCLoM7R7uI95PuIgqX6xc6usixvMHe+dRzrTEkztfeqe4i3LC6Le9Eh8j4cprS+mzet1MjjhdO92lk+C0+EaMCg+TgwH9K30hUDLgXIBvaIN9lkls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762418683; c=relaxed/simple;
-	bh=4e2WDzqLKYzpn41/EU08/ysLwcMnKhTYCq1gfsIkVBw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tYfvs2kEorbbDA05Rs+tdYpLgGZrCf63yk9pI3tSGQBhFpchs9k4p78wUoSOOVdEhnWlnhuLdOSbnSDypMhjqW27s0w7i0m9YqwWIV0SrF6jAKhyFNqXocD8Jawk22fOhzT8zlhg79HxYDAMs0QvoA5TlUOMuhUY3acafJM2d50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-551b9d94603so176203e0c.1
-        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 00:44:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762418681; x=1763023481;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mz1Q2mn9SZfrcMx6xhR+wHR4X9YWp5k+qUP26CNzhQI=;
-        b=jucKIgXh5Hd8nAo6Yl7EHBO+xxkowx3lXE0R8VBfKFhx4nlDDvZqSEANOZMOXfEdJM
-         gL6FR/sO8/R6Q/6S6efB3bNsm8IgyhDYwNZEPRbgGnvXkGW44qzQl6alPF2aQd3X0u1/
-         O9H18TQRcmT2yHv82rhDQhu6DabHhQt2wsUxcNSZBYz8BTO1wFsOWumqPdj0VZD50uwA
-         Mq1SrucZKGJI7gRn66PsM6gLo2+6Erkwla+c8gG9pWEzXDxBA4q/EqlOltDrwW5Bpu3v
-         VZZO0yIGO9W3AIXZ2+jZbbycb+5MX5/6/hJ9xnLVVH8GnvvNLJdz8egSskGqlEKVrOBJ
-         32zg==
-X-Forwarded-Encrypted: i=1; AJvYcCWeqoQsqlfEsz7j3wMpKh0XokNpEvnsu0uYVwJLs8LwHC5QtAg7r6fHQsnu6GS5yrxp/+O37/Lq1Jo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuDSYHWczLS/h6ZJUkzg6XQlDGRBGRbdWkaA6WbB5jMqtltAkr
-	kknXxNtp3lamoXDZTb5d6Fj0MqcvzX68xunLaVl4WVCjRDkFOUrQ+dfvrsFZYQkt
-X-Gm-Gg: ASbGncsnteBInZOXNGTxKUNHFE7Edy/fvaQ34UAMctfTnKiTt8rPG15UiVdmO4bDvPW
-	o35Wza6UxPYFuvsTPZcxZWRf396lCTRhlfqWDI1ZdqoRKanV4sLai1dAK8c5aqOALlzFkK5yvnI
-	MX6Lr1VWHgKL2f/tKTA3TsGtwsaK8C9dNpF6I6uWDifhYBqBmiCjxYkqSi2ZK3dsGflN/E1iA56
-	bXmBx0PFONFOA+znJMBbaV/MusncF4oZR8xgd3jBBCvvkngX+p/zRe2wORK828GozKd7ANizbnL
-	ylEG2MrFq2QhjQga6gldXBOFFsE1+mcQPCacB1wA4MfB/2wjZ8CpER68GmtDUULaOLGDp/BVspH
-	dkKE138Iqa/wrQK6+mWrjnnhdWoM590egoktXjSbqolK9UAunz+HkyXtNr7SYj36WN5AQ6P4fUu
-	5KFUWwaYSwgIs5M3LlGB4OS1kJwYvho+ZTGrDwo0Yw/Y4r8ihGHpPvLS+ckws=
-X-Google-Smtp-Source: AGHT+IGsJ64cs3l0AdHibZb/YDVLTqLMZtbcr9oVx2R96s7j39ELBkltIIWGBCMas6wAUeCiNh/5Hg==
-X-Received: by 2002:a05:6102:374e:b0:5db:f615:1819 with SMTP id ada2fe7eead31-5dd88ef3ed9mr2125130137.3.1762418680815;
-        Thu, 06 Nov 2025 00:44:40 -0800 (PST)
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com. [209.85.222.48])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-937088206a6sm785442241.6.2025.11.06.00.44.39
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Nov 2025 00:44:39 -0800 (PST)
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-93516cbe2bbso218400241.2
-        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 00:44:39 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUcOMr+Uh2kM7i95sIGbIxteu5pJgccQ86S3PYa30rQQcfvaWZENhdwDTYMiEpk2P2GA7vRRajYuyE=@vger.kernel.org
-X-Received: by 2002:a05:6102:e0d:b0:5db:cc92:26e7 with SMTP id
- ada2fe7eead31-5dd8926eff6mr2132593137.38.1762418679294; Thu, 06 Nov 2025
- 00:44:39 -0800 (PST)
+	s=arc-20240116; t=1762419877; c=relaxed/simple;
+	bh=rUwPmkH8kWk1exxLyZIry9wcfD3f8VL+DC2RWEsGmo4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ska1KyWYwKwtnyTTE7gJKHr8Af/scyUfBbHGbbgnYBH5rqYKTooy0ckSGmE4atBNnC6LN9FGRpyNqRQpyF8B2z1NRY4jU3v3Mi7b2xYak8GiVaJ8/Rt79V9ZGl5QButTU7WWo7WxatBAQRx4GyiaQF+6mFGltH8VrHfOgDCzRAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5ukcegI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980E6C4CEF7;
+	Thu,  6 Nov 2025 09:04:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762419877;
+	bh=rUwPmkH8kWk1exxLyZIry9wcfD3f8VL+DC2RWEsGmo4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=q5ukcegIHkGGfbGe3wBEjUx4e/bYvj7mlBFbcVuGTAfCQ/uPDpPBA0ziewrXbXAnr
+	 8vLXcDHOFfke7Be96lL3zrGcJ04I9IFB8XbsjUYgM7Ehn6b3CXMjAvZ/hr2K6XWRmF
+	 gJVasCBiyF4VXdQq3QmEOCfR7ZzGF153e6DmU5luVzN99O1j7QuGBTMNTptoFSrpnH
+	 RbQLnIfdMZcHxtRVlgbhXZA9XKO563UQcRBuBafYIn3vJfuukZOar/7BxuLzrsgeki
+	 Q6COZwX8m9sTpHv5SYm4C8hkWS0HZqsgsCOR1e9ExD+ZVRZc7tkCZm2P7RRKmKl4A9
+	 SNk9NZm7JArtA==
+Date: Thu, 6 Nov 2025 10:04:34 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com, ramona.gradinariu@analog.com, 
+	antoniu.miclaus@analog.com, jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
+	andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: accel: adxl380: add new supported
+ parts
+Message-ID: <20251106-adorable-beluga-of-admiration-4dbd17@kuoka>
+References: <2b8fc2ea006d06660c83f1e9e1ccfc865803dafb.1762281527.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251006172119.2888-1-wsa+renesas@sang-engineering.com>
- <20251006172119.2888-2-wsa+renesas@sang-engineering.com> <20251009204726.GA3306624-robh@kernel.org>
- <aOgsxSfGIVBpfkpb@shikoro>
-In-Reply-To: <aOgsxSfGIVBpfkpb@shikoro>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 6 Nov 2025 09:44:28 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUf2QB__ZXsJK-iMAt7U-89d7s76oRB8KE9Jj0XywxzJQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bl7RbaNV7V4JGT9opu1pZKZ4R-1R9XxMMdHotgYEewUqOZDK542sndaY3s
-Message-ID: <CAMuHMdUf2QB__ZXsJK-iMAt7U-89d7s76oRB8KE9Jj0XywxzJQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] dt-bindings: iio: accel: adxl345: document second interrupt
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Rob Herring <robh@kernel.org>, linux-renesas-soc@vger.kernel.org, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <2b8fc2ea006d06660c83f1e9e1ccfc865803dafb.1762281527.git.Jonathan.Santos@analog.com>
 
-Hi Wolfram,
+On Wed, Nov 05, 2025 at 09:40:24AM -0300, Jonathan Santos wrote:
+> Include ADXL318 and ADXL319 accelerometers to the documentation.
+> The ADXL318 is based on the ADXL380, while the ADXL319 is based on the
+> ADXL382. However, the ADXL318/319 do not support some built-in features
+> like single tap, double tap and triple tap detection, and also activity
+> and inactivity detection.
+>=20
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> ---
+>  .../devicetree/bindings/iio/accel/adi,adxl380.yaml    | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml=
+ b/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
+> index f1ff5ff4f478..f38f384dd818 100644
+> --- a/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
+> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
+> @@ -11,18 +11,21 @@ maintainers:
+>    - Antoniu Miclaus <antoniu.miclaus@analog.com>
+> =20
+>  description: |
+> -  The ADXL380/ADXL382 is a low noise density, low power, 3-axis
+> -  accelerometer with selectable measurement ranges. The ADXL380
+> -  supports the =C2=B14 g, =C2=B18 g, and =C2=B116 g ranges, and the ADXL=
+382 supports
+> -  =C2=B115 g, =C2=B130 g, and =C2=B160 g ranges.
+> +  The ADXL380/ADXL382 and ADXL318/ADXL319 are low noise density,
+> +  low power, 3-axis accelerometers with selectable measurement ranges.
+> +  The ADXL380 and ADXL318 support the =C2=B14 g, =C2=B18 g, and =C2=B116=
+ g ranges,
+> +  while the ADXL382 and ADXL319 support =C2=B115 g, =C2=B130 g, and =C2=
+=B160 g ranges.
+> =20
+>    https://www.analog.com/en/products/adxl380.html
+> +  https://www.analog.com/en/products/adxl318.html
 
-On Sun, 12 Oct 2025 at 02:01, Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
-> > > +    oneOf:
-> > > +      - items:
-> > > +          - enum: [INT1, INT2]
-> > > +      - items:
-> > > +          - const: INT1
-> > > +          - const: INT2
-> >
-> > This is better written as:
-> >
-> > minItems: 1
-> > items:
-> >   - enum: [INT1, INT2]
-> >   - const: INT2
-> >
-> > It is mainly better because using 'oneOf' results in poor error
-> > messages.
->
-> But wouldn't that allow naming both interrupts INT2? Or is this
-> magically prevented somehow?
+318 < 380
 
-    "That's because we require strings to be unique entries, so [...]
-twice will be rejected."
+> =20
+>  properties:
+>    compatible:
+>      enum:
+>        - adi,adxl380
+>        - adi,adxl382
+> +      - adi,adxl318
+> +      - adi,adxl319
 
-https://lore.kernel.org/all/20251009200054.GA3245555-robh@kernel.org/
+Same here. Please keep this sorted.
 
-Gr{oetje,eeting}s,
+Best regards,
+Krzysztof
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 

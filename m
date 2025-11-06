@@ -1,73 +1,69 @@
-Return-Path: <linux-iio+bounces-25989-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25990-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748D0C3CE31
-	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 18:40:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39807C3CE49
+	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 18:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 173CE4F364D
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 17:36:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2FBD3B78A2
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 17:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D038334C98F;
-	Thu,  6 Nov 2025 17:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B0534F48F;
+	Thu,  6 Nov 2025 17:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CFz1pOKN"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GkwPMEup"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013009.outbound.protection.outlook.com [40.107.162.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9DB2DCC1C;
-	Thu,  6 Nov 2025 17:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA90C34C9AF;
+	Thu,  6 Nov 2025 17:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762450592; cv=fail; b=aJlqsn2l0W9o87zvU3qnVN0UO00vmAyBAHdavQ0AVqCEj0IPUrXoNnM1ZxE+6SThgaaqEe5gIsxc8XeDAxjE2WfHlGjMpoFd5YTt2EdfX7an01JUrxII+Hh4MQs+sPSh+Q29etBCEQ5eJ1lK9KtAO9lAFH4tbvHsV5xnexXsIeM=
+	t=1762450595; cv=fail; b=IXpIMCbmycuT6ZS4LxqS7cCgiIp/mdglN8oPL9jplC6/EJlU9P6q3aF0FM7HxE4bgQJSO3XihGAgMPcR/HobA+4rAUSGlFB9jQ2eZh0R2HaMNQ/dnTcui1Z9eb1IIjARlV89+QBzD0etPQdxss8yY9zjetxZXx/0nbQEPS/bpKk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762450592; c=relaxed/simple;
-	bh=axkRrkf+Teli/2xFNFPj1iYrpssU6hayqrigQuApKiU=;
-	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=ahhHem1dkm7OFQve8aALqQQBowkyp84NUdDnwivnA/WCsKSSMIRRq9PEBiMh3o7WQruoX+/XDA6pnbNLr+UOePzEaFyVhVWzEZeaGfu5+3sjBkBAULAnM4a0ewAEtl4Mw3ZINbkrdejSh3hqMLgTJSTHNilY3JvuZxb5/T+Nlls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CFz1pOKN; arc=fail smtp.client-ip=40.107.162.9
+	s=arc-20240116; t=1762450595; c=relaxed/simple;
+	bh=Xu8bp9V4hfsx8ETYTi55tKRQ6COWT2egdx/YMlh7Rpg=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=afSBjQmOL9hxcweIV899UD6pcKLYZcJabnC04Rwi+aHUyQlGo8W0q4C+EQZfuizzQQVD+UEN/yBXp/Yy0c+UyaaCMmccYhU2N4p0vHt+xcGLAW86COJSitYRMENxjHevOdWCDk+gCZ6YVuA3m1FQEaJMI8cVSexgsNQ1Lt3eih4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GkwPMEup; arc=fail smtp.client-ip=40.107.162.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YlKYG6utApf/PRVp+I/2FUCKOWo360Ne685ZffFJqP+Q+xjU7UODmR2Yuy9fjTUse+pdzfARqFqs0OCEQqSgZ+hVwtlc8K/o3COKg4oYW0EvHQmaZI7c5nYf40YhH+hUwLSn5KpCIcfq2PrSl4f+O/MV1x+dR49xxVa6hQ2RoavA5fOicRqb1jWGc8CQmg8EHzP2y5XKJKTnhpq8PDNP1mgmlcfQqgiTsH7Npb8nl3VI1UsuWOV6hF9P8STUeAHutcHX6Ig41sSYKrwrpvrwVqRjoZvecDLlVtscqI+I1GUsLDm9Trjx5M+2phf5DQlUyCZYjTpz6+RdjxqW9pvI1A==
+ b=rGNR5Fyt5Sfnaq4Cd8rTFdiVUkK4wYZ06AbpNCE4hyNXCOwPcWAQU3C4ojsQT+r4T8CugaeiBnPe2UO9iTV/5u2WaMg0pLLuIoqfcUJuutEFxANDRny7M52eiFrvJIwx94QxniF1ypXP4UXb22jjb5/kIUhN3PDuitvqhqce4sD/bdVsBqoQm+X1MbaSuqRreq1ntl02DK7wleZwgAEX6Zuz8arX/ecmmRQpeQVIqFr6CfsfdjJR1Km6DiNr5RNVOkO/QWB0dahomhjM2t1ewYykUNxhMOmPaIR+XxrqHxjcDEJ7qOPpqc170WdtPUXUHeLVr3+oeq8Tb5SwD5zg1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zMrwmi5i48O3DBiUSp0AOmgF4h343gTsYMivUrxP7ZY=;
- b=kmcKrLnJtd+lizBmlEC99/G5TtaJk38A2Yzd4zcOjwIARP+n00VLsoS8ZS7RmUC1bDIMsRjFfiMgBIGPkN+hiRHUV7KPMjXd6inZ0/1k/QjxdaUj+lsjIIqlzxRiMLkRWX9FiItf+Wn/82PLqSL8HTOPtVgdqJyg0a1KEzt5GPD4vc8CqxhucX72cxRoKZSfOqRJe/5zALqQFf6f46E4tuX7G2hSOW6qzSLtapXqfg5OSOfFphnUAfYz49ia6H1qydjuZkqOBgbam1suf9x5EWGUsSQLXXMraL42wtVtuAvbjRPc8bHsmVp6TarV69HDLmSfggcenbKtcJrYB97cdA==
+ bh=+OEKCc7tVnIacFKaPEeylBUa7U0P1wVjPQ/ux24a1u0=;
+ b=IfAyVoxswJlBwGu85wbSolUo68VOD1D6av1349cre55aw5irZq80O1WkiDWrrarnIC1ExANe6SnvZdVUMlXhJz4UQbr2ELZAMTOUHg1ehAmzs1PiRrvi1693CUK+kOVgcFFs6WG3rOuCRpLpiU4MfhcQXEKNQIkxtF4uckDEnEt7yfSJvN63YE+1MZcTUp2CC23YXxJjdTOuWR/f+lrByqN9ZIyiJU2SFYZVB/cjaWl+E4WtB4An1NgiHLa414nLnyyFMzzwHy0s5eqvesq4PZ8pVRGu+pxWMrUlp2btDwt/PS18WIDQwT57gE6nl7lW2Sgh5MjSYLVAUb6A07wYOg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zMrwmi5i48O3DBiUSp0AOmgF4h343gTsYMivUrxP7ZY=;
- b=CFz1pOKNIvkw2QA1oMaSMlrnkjsvSI/wMM5/SQaIUcgheCQTMJXvccSS3iSMKe+zR/J7v+WEo+/2fetpQRpQp872x/5nQrtAq3UKajkOdNant5fuAoqsisJoQRKaBekFIF+G9AE0aQDu8FD5fq8sanjGRiaF+F34oNp7sZF63fNfTA+6LIHzz+K5ssNTFFCI2Jm0/i7t5Lm4whWGV+RLgXEvUGEXJhG6c7MQtBWcQBjIoQzPTSE6kRXoBd/bb+yevZa0mz/ES1GBdABvvN5Eo9FRx4XUsljsZ6U1YlvD/tuZBbnZjmT5KxsICPq4W0C74KtSsbSwNTM59LizQopqZg==
+ bh=+OEKCc7tVnIacFKaPEeylBUa7U0P1wVjPQ/ux24a1u0=;
+ b=GkwPMEup3nKoCyFlh+Z5HFfLI1HzXjkL8aI6QBZb4nZZuvjVgwQlJFUphWrwvVFAJjFwaqgOq91MnaemUYmNH3au5JcS1M86TBg1Uv2LgZX9E+hXqV41YO2dIeIWU34DQGxiON+bBim/arBjtA4Eeis9GlWaZPi9/sIQSrBQl9UDfWPri4PfAgB/yLvVkolChe2ZORjwXLfod6eOJvYNjAoAIpcnfWME6OMkEOQIZrDA0kRbm85aGaaZlXejKXYXXqDJvVnYg5g5NM99JXrYNNn6YcBHVzL5itdfMZH4MdEvwKGUQUg32GyiuO7hTwtS32kHTJSW0V1BQdyMPjjRmQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
  by GV1PR04MB10989.eurprd04.prod.outlook.com (2603:10a6:150:200::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.10; Thu, 6 Nov
- 2025 17:36:25 +0000
+ 2025 17:36:28 +0000
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9298.006; Thu, 6 Nov 2025
- 17:36:25 +0000
+ 17:36:28 +0000
 From: Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v11 0/6] i3c: Add basic HDR mode support
-Date: Thu, 06 Nov 2025 12:35:59 -0500
-Message-Id: <20251106-i3c_ddr-v11-0-33a6a66ed095@nxp.com>
+Date: Thu, 06 Nov 2025 12:36:00 -0500
+Subject: [PATCH v11 1/6] i3c: Add HDR API support
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAH/cDGkC/3XRS04DMQwG4KtUWTModh7OsOIeCKE8HJoFnWoGj
- Yqq3p20QiRTxNJWvt9yfBYLz4UX8bQ7i5nXspTpUAuAh52Ie39456Gk2hAo0UjAcSgqvqU0DwG
- Mdm6UwMGJ+vo4cy6nW9TLa633Zfmc5q9b8grX7t+MFQY5SHSevElaoX4+nI6PcfoQ14QVmxpRN
- 4VVWYdeclBoCLdKdUrJplRVwSKliJzhXulfBVJSU7oq5TP72jdEZqvMP8pUpbUGpzMRGt4q2yn
- o9rI/s/RIpEDSVlGnsJtFVTlrvcyZctR2q1yvXFOuKhpN4oQpuHj3G2OnFDQ1VpWBDSoOPpPbK
- pCNgewWg3rlgRXrGCKQVN2dL5fLN+aESAeFAgAA
-X-Change-ID: 20250129-i3c_ddr-b15488901eb8
+Message-Id: <20251106-i3c_ddr-v11-1-33a6a66ed095@nxp.com>
+References: <20251106-i3c_ddr-v11-0-33a6a66ed095@nxp.com>
+In-Reply-To: <20251106-i3c_ddr-v11-0-33a6a66ed095@nxp.com>
 To: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
  Miquel Raynal <miquel.raynal@bootlin.com>, 
  Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
@@ -78,17 +74,13 @@ To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, 
  imx@lists.linux.dev, linux-iio@vger.kernel.org, 
  joshua.yeong@starfivetech.com, devicetree@vger.kernel.org, 
- linux@roeck-us.net, Frank Li <Frank.Li@nxp.com>, 
- Carlos Song <carlos.song@nxp.com>, 
- Conor Dooley <conor.dooley@microchip.com>, 
- Adrian Fluturel <fluturel.adrian@gmail.com>, 
- Andy Shevchenko <andriy.shevchenko@intel.com>
+ linux@roeck-us.net, Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762450581; l=3848;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762450581; l=10620;
  i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=axkRrkf+Teli/2xFNFPj1iYrpssU6hayqrigQuApKiU=;
- b=mNoV+DXe2sGOI1v2QVDWUJti2W8ImoE8NUYqmja45Nt+C88FTzopUV6SXNSJxIqfkhEBNQBzM
- m8gTTEn2ZdDBDh9T3jMPBEoadHCzntOonKuHG4o6UCUKPG2qmSlOwea
+ bh=Xu8bp9V4hfsx8ETYTi55tKRQ6COWT2egdx/YMlh7Rpg=;
+ b=iBRvaTdUTOWW84l2WENim6RKx8P2Wt9oegFU7hQRbgvy8E1TdA6id6KTo1Nr3OM9IaeG3BAda
+ fWD7TUzD49sCw7Q6zwiONWJOtN9M5aYoR5IC7Dsvv4t+mCetKKWWeBA
 X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
  pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
 X-ClientProxiedBy: SA0PR11CA0111.namprd11.prod.outlook.com
@@ -102,200 +94,403 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|GV1PR04MB10989:EE_
-X-MS-Office365-Filtering-Correlation-Id: 101628e2-543e-4841-2641-08de1d5b025d
+X-MS-Office365-Filtering-Correlation-Id: bc2ec14d-9d7e-4397-06da-08de1d5b0432
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|7416014|376014|366016|52116014|1800799024|38350700014|7053199007;
+	BCL:0;ARA:13230040|19092799006|7416014|376014|366016|52116014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?V3dwQU5NcTVjRDVrc0ExVllpUTZ0dG9xVjMyYUVUKzd4TFVlaXRWY2Y0REVO?=
- =?utf-8?B?dVdtYitnYUlqVG9rNSttS0k3UkNobE9PNjNHQ3MyNE1OaStIQnNPQXl5dElT?=
- =?utf-8?B?R1Jvc2N1MFFFK0x6RlowbHd2dC8wdDBsbTA0Kys1NEl4dWJpRW0rYnJDYW5l?=
- =?utf-8?B?WjlSSGE0YkN5S2hoTDUwV1dJcDVJZkVPdkw0SmlVMk9kQzlvUFJES2FRL2lS?=
- =?utf-8?B?VkVlNE9lbllsZHRnejhYQUphbXZoWjVKbWppSFc3MHhyY1Q2anpIckV5YmhC?=
- =?utf-8?B?dGNGYmhaSlQ1ZXRoR2JPc096RzFsUm5sTkVKMDlHWUdZY2xqN3plNnJSb3N5?=
- =?utf-8?B?RU9WdVlCUVFzS3hyWlRURFRwRzB5NUhQcjdRTXZXZjRBTkFIa0U2aUloeUtK?=
- =?utf-8?B?ZUVmR3hNVFg5a25kUDBUWXJYVkVNTGdNc1BOa1BXd29sZ2hVS2FOMTBiclJZ?=
- =?utf-8?B?VktRQjJVelo5Vlhpd3JYRElMaFJ2Q1hTUnNiU3VHRkpLVk1MLzlXNW9ZQTZn?=
- =?utf-8?B?cm1GOE9raWFyNjlRamJOMnRnTkQ3Q3BVOUJTOWo1NW41RU5BdVRiV1E1Nmgz?=
- =?utf-8?B?OUdtdTB0SnFGNEFSY2pDMXJKRG9zcHMxOERub1M0VVdmU3ZlWUtvNmtrdk13?=
- =?utf-8?B?TzNuRSs5endsRTNRVjF6U3VHR2pnUGJEL2wvSHYyTzBvU1ZLQ01JRmRNbVVU?=
- =?utf-8?B?THdFQ0FoOWdLNk4wS2V5dlRZQzQ1YVRSUHRuYll2Q3llT3J5dkhMT3l1bnpp?=
- =?utf-8?B?T0ZWQkRTSkNuc2owZXpmeDBOUTAvZ05DckcxMmNhUVFJQW9LTVdlZmdoeFFm?=
- =?utf-8?B?RW9rTmVpS3hTOFZlbDRmWkswallkek41OEFPL1pQQitOQVpDRVNUSHN5MlJ3?=
- =?utf-8?B?T3VIRXpFN3RrNnA1L0pLNEhNRHZQUHRBa2dYa3prbFJXR1B0WnNhZU5HZ0dy?=
- =?utf-8?B?MGZaNnNFaGZZcjcrTC91amF2K1N3RlM4aC94T0Q0bjN4Ri9DL3pseWdPdzMr?=
- =?utf-8?B?SFl2WlNGL1RIT2piMUszQVZ6VVBGaVJ3aFp6VC9tcXV0R0NOTjhNSW5TcmFx?=
- =?utf-8?B?OTZudTF5eWZCdTluYlZpRFZMWDNDUkpHT1pINWZtRG13UzlxWjI5NWEzVC8z?=
- =?utf-8?B?ZUtTelVhdGtEMTBtaXc5czgwTDZRSkdya0dJWEhYbzh2Wi85OTNUazFaRWQz?=
- =?utf-8?B?MzJaTnY4MmhWZjNMN2w0MWpDTC8vWkUrN1hxb3FRZmZRVndOMjdwQVljL3BZ?=
- =?utf-8?B?UnRIc0VTOExFbG9hSXRTZzhRYU9OU3JIRG52b0xiWFErRmd6U2JKcHdlcEFk?=
- =?utf-8?B?UnphSzgwTVlHTVhXdXppU3RudzhGNjdrbTg4aWxBczNGSjZGMElJTk9kbGNP?=
- =?utf-8?B?QnBubzJoeGdZQUhJeGVPM2FxRDE5YzAyeStET1M4ZmlNeHNMbFpzWDltVzBI?=
- =?utf-8?B?ZTUrWXZGc2s0SVU4YnNEMWdRTGtxY1FYUkNPR1pTZTZuZTR3aEpsSU1hTzZE?=
- =?utf-8?B?b0ZYcEQ1TkgrVDJ3clB4dDhlS1MvMHVlVEJVS3hJWXlLdnJlMDJ3TDRCaWEv?=
- =?utf-8?B?NTNIUUFoSm4zYWsvem5ZanFEVHc1aUxnR1NLdlB6V2tsR29NdG1BVUgvQURi?=
- =?utf-8?B?MkZrS0tndHZrclBCR2xvTytRci8xSlI2cms3aWxQRjN5aGYvVmJmT0xUaVZU?=
- =?utf-8?B?WFhTMnlyZE5MRFliMjZrSW0xMnM3azg4VnZYRU9KZkFDazJXRGxINjNXb09h?=
- =?utf-8?B?QWtCWk1UejJRYmVzVjI3WGRmSXlQMUN0aThWTXpURTdKRTdkVld5ekZSNVZv?=
- =?utf-8?B?aFF1UkVmcE9mNkwxTUkvRWJKVExzU2EyZUZvZlV3bnk2U21uRXlnZDFNa2lL?=
- =?utf-8?B?cEg0ZytTdWluRVNJUTJ4WTBZK1psZi9UcTZrQmxMME1vRHorK1Z6MXg0c0Fm?=
- =?utf-8?B?WjU4dU8wUUlFd1ZlUGVtTmhCd0h0ZVdSQU9rL24rTUdtbENpaUlpZ2VHQysy?=
- =?utf-8?B?UXB4RS9qWlFoZ2M0ZU5Xd3MzU2JsSFJKTGJWeE1uNGxMQmxNZEJIUGFhUTJv?=
- =?utf-8?Q?mkTyzK?=
+	=?utf-8?B?dkFtSGxPMHRwc2xmTFZvb2M1Wm9qbkw4YTN1bXFEM0EwSS9Ca2tLU2ljT2o5?=
+ =?utf-8?B?WUZkamx5Ym0rbklyMGNuZzQxRWFpMjY3S1NGMTBXRlFXV3VYblNqSEpqRXVt?=
+ =?utf-8?B?RXpHbFkvU2FYa3hqK09IbXRUalg3bnNlYnhMNGlwVkdtVFVOK29KTU5sRGJT?=
+ =?utf-8?B?Ry80RFZIUE9xWXVQL1VKYmorR1ZNWVZMcEZocmZhVm1EbU94R1YxMUVKSStL?=
+ =?utf-8?B?bFNFOXRZT2Z0Ti9uT2lVcXg3RldqOE1USDlRS3AvcHdvamJRclNmS2dYLzZ2?=
+ =?utf-8?B?VURJbGhXdWl6RUZSSDhlZzk5OHF2QlJoQTI0OHhjSzZoL05kUDUyWnBMQ0p2?=
+ =?utf-8?B?Y2hCSDZMMDQ5TDZyeWlVeVRMQVRsM2ZqanJvUWhiTnM2V1czR24rNmljbFB5?=
+ =?utf-8?B?U0Q2V2w2OEtmOHNTUDdiZ1Q4KzFRQmtLanp5WEVKTE9pODU3R05kcGIrbHVY?=
+ =?utf-8?B?eC91N1ZoQndZckpRVTNvZ25DMXhCMm1WU1gyWVJJTnBGR3FwdmxBbjFLTTl0?=
+ =?utf-8?B?OTJMbmM0VDBISWtEY3FrNW5PaHR6Vk5ZUitXSG81WTlqb0tEOVR0YkRNaUw4?=
+ =?utf-8?B?Z2pwVVg4MFY4OFRYNC8zSnZMM2N0aEFXVGtHV3pSNXZ1SERVRTFjd3phL2RL?=
+ =?utf-8?B?eXRXNkJ1TDk4YTRJaVh0ZXI1TFZndnRhZkYvcTc4QzZoYTRyVUorS0xncHN1?=
+ =?utf-8?B?QWJac1NueE9VRWVrZXp1TVFXVFFmeFJZbEIzN3RiMmV6QThUZnh4a3A0MXZy?=
+ =?utf-8?B?TEhkVDY2cllkZkduK3MxdWdNNG5VcWlXVlg4aENQN0xsVjFKKzhINmRlSWdK?=
+ =?utf-8?B?RXZYWmUvVlZCamtrL1hzam1udXQ2YThudndhTHBJMkp6RGdQQncwYmZkWnlN?=
+ =?utf-8?B?RWd6Vy9nbUwxMTdLYUZXWVd3OTJ6aStBKzVPM0FPcG5TMWtqVTd5U0hVVDUr?=
+ =?utf-8?B?emJNOThNTFVOcUVKVUFyL0x6ZDVteWhOYXJxd1NqaGZjc2VaZEVoM2VIU1BE?=
+ =?utf-8?B?MUl1QUZHcFNJMXBZMWlkUXFhRlB6TGdRcEJyOWdvMVN2YmtTTWNHeVhiTTNX?=
+ =?utf-8?B?bmVNSXNuZUJ5NUZCdjRUbU1ETHYzZThveGdoWFRmQkc3TVJVUDlUVHNTWW5y?=
+ =?utf-8?B?bzlEQ3puWloxRHg4RlV5aXF4MnlSbEFQcVhhMVVvd09pcnV0V3IyYVl2R1Jz?=
+ =?utf-8?B?K1kvY3ptM1BCNEhEY01PRUlWaTVMVzhobjdXbDNWci9SUTRoTzE3M2hlaDFX?=
+ =?utf-8?B?eEFhc1BGTUJta3ptd09nOHR0RXg0eGpUVHJjb29qMHUvY3FocXZ0TVAwUXVa?=
+ =?utf-8?B?MjBqZUtSSURzMHZsdGZDT3J4clJlZzlzRitmK3IwSXVYMVU2NU5OSEIrOFlJ?=
+ =?utf-8?B?bzQyMTNsZjFsZ3dTaU5yaXRkNVVRSURybUloaE5VSEtwRWVYT1VCWVJ4WVEy?=
+ =?utf-8?B?ZGlqV2E4aUtsSDdEZERWZjRUZStUSHV5ZEo3ZkdnU0pkTVFoTU4zcFJSTm1v?=
+ =?utf-8?B?WWFoREk2QVF6UGI1eTZ2S2g5Ymo1M2x0ck4yb0RHM2tybmhUVmpwOThDaG5Z?=
+ =?utf-8?B?U2JjWE45aDREdDdVVlNoSVVQY0xadVpGR2RxR0dILzdKbW9JOGx3azdSSndW?=
+ =?utf-8?B?SDV2VEFtUWZEendGZnZ4VE9MQ0oySGlzcGpEeFhtUU9Xb2FsWm00Wk03QTRz?=
+ =?utf-8?B?RWJwaytxUVhHT2Y3S2J2MlhlSGhJWGg3UGpOOWV6clhMVHY3bk5BQ3h6MHdr?=
+ =?utf-8?B?dHQyMFVIcVF6K2R5aSs0ZlYxV3I4VVpzZTJpMDVoVEwydnBjdkk0TE1YZ2tm?=
+ =?utf-8?B?dStqTDF3cXJlV1JGQzJyZWRQdlhxaFMyS2FrMVZjZU1zNUY2b1lLV0x0aXl6?=
+ =?utf-8?B?bFprQ2NBWmo5YUlFRGZSTlJLQTNWemozNk5WeEptZzZObStiQ3BqcksxVERm?=
+ =?utf-8?B?cFJtQlhYRUpQRys2a243dEg5cEtuSG5NakIyNmFSS2crV25hT0F5RDY1ZW9v?=
+ =?utf-8?B?L1NvS3hEclhTUWV2TXZHVzVpMllNeEcwYW1vMlJXa3g4TlM5MVgrZFF3L01Y?=
+ =?utf-8?Q?/DFuPX?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(366016)(52116014)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(366016)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YkVJOUdFTmptbVJBbk5FdmZVUExWN3VaVzJNOGc3NVFEOEtnRGxQb3hNU01E?=
- =?utf-8?B?eTltbXRyblpkd0l4R3pZSlBNMGdQMzN5MlJPUnQweUVvcm02UG9PYWRGRk9P?=
- =?utf-8?B?b2Y0Vi9TVnFCcE5DRWViczBSVmtVWEpITGlicHN1cHVvcGRQTSt2NlJ6M0F5?=
- =?utf-8?B?MFNnOEpSMUV4L0ZtKzRlMnJzamx5VTFBY1kxMytkd1FtSkx0Ty9lbVJmbW85?=
- =?utf-8?B?djJ5TitjT3lUNlFteWZMR3hubEdBUC8xejZUNEc4TlJGVEtsZ1RKL09JUnFE?=
- =?utf-8?B?aWtsNzNJR1hqaUt0bVpEemswOWhlRFFFRWYrRlUxT25Ob0NhMTduUm40NUdy?=
- =?utf-8?B?VFAvV1Z2NHlIeFVyWXRrVms1UnNCRUw5cVZJaGs4VkRCYVlVOFBYMHR5M2hY?=
- =?utf-8?B?UWwvS1FBZG1VSythU3BIdUU5YkI1OGZzaUtmNk01ZjR1UkFyYjdlSDR1bldk?=
- =?utf-8?B?YXlvbHc1OU96VEl2dnZTQ041WTBCeU9tMlJRcEh5NURLQ1RuMmlFMit4bldU?=
- =?utf-8?B?b1Znc1IrRThxRmtIUkR6Y0xWN0N2SnpyYk9rY1pCREZYOGt1L0hxZzk1c05L?=
- =?utf-8?B?bkNCNDNHT3RadWFIKzYrVmJuWDdRbUl5UWNSWHRIOHNWbnAwZlZ3emhqZ2Q5?=
- =?utf-8?B?QlUxNmZ2OHprc0pTa1FTUlpqT3NHMk1UeStoaHRTNUtNTS8wRVRoZG5HV0VU?=
- =?utf-8?B?djdFZ1NIdDZCQmpJSEpWUGV3UVRsckJQbThycTcrald0c09QakFXelh2SkFq?=
- =?utf-8?B?TngzQkIyMDRnWlhiWkR4cHJEc0Rab25Jem1XdW5KeGlPNllNNXM0YTRpaVlx?=
- =?utf-8?B?Mm41SU5HTFRiRk5CdXlYUFRCWFphOW5Wc0tmaXFoVzBFOW1GYXpSK2wvWWNF?=
- =?utf-8?B?dE1teHJ4TGJWcUV2azY2ODZPcUtxNXNjUHlHVHliWmxkckpYdG9wd0dhZVhX?=
- =?utf-8?B?WG84UTF4d296UlhsdXdIYTJHL2dHUVhKSDVlYnNOeHVPQWhXZzYySE1oSzlV?=
- =?utf-8?B?VUJnRnV2T0V5S3BTUEl5L3BEYmMxbndTUjIyWDd2Q2FBdTlPNWIwZ2Jpblp0?=
- =?utf-8?B?VERrNkNOU0pNeWducTkzT1lHV3ZWNHJxNTM1SXp6bFEvekNHTnVwOEpPdlZt?=
- =?utf-8?B?VW5Fd1REdC9VdnE5SjhEd1BuU2tHUnRaQ3cxVkw1d3VBNHJQRHdHSWFnWFgw?=
- =?utf-8?B?L052a0grUC96dHFOc1ZrdlYwL3YvZTZZZmZucWxnRFV6NzNsNTVNNHYrbXpZ?=
- =?utf-8?B?SHkxSkpOeEpIMEZlamxGWWhlakRRK3A3eGdudXJodWcvZXA4VnVpSzJUakR5?=
- =?utf-8?B?c3Iva2RVNkEycytvTUU3anJITWxibW5KNzNKMTY1blZrRGxReHBQeTJEdE5a?=
- =?utf-8?B?MGx3V1lRZHFKMHNTb0QxUjBhSHJSMlgxdzJTSzdqaUhLend3RWNBd2VyQmxh?=
- =?utf-8?B?Qm1xSTVwTjdiQjFZZXlJNlk1TlF1ZDcrZytyNG1wU2wzam9hdzN0Q3YxNHVI?=
- =?utf-8?B?R2grQ0Y5d3FKekZnUncwVS9qemRGOUJzZnJ6MlZkRm54QmNFbUhqQW02NlMr?=
- =?utf-8?B?TUNidFRya0xKUU0vdGg5U051ZUFZV3ZRR3YrcGxnWFZ3R0ZFeVRzRVlqQjFT?=
- =?utf-8?B?RThCYkcvOE9wdGxESmdBQnBvaXBHZHFENnZ2ZEtHektXR3k1YXIrcCswNHpn?=
- =?utf-8?B?QU1OMkVIazhjQVlUTDRPeG9oY0JxOUl5aFZxQjAyMk8rZG1abmlZMjM2b3Vz?=
- =?utf-8?B?N2Z5U1hOK1hCM0k5NUpBUTY3SzZZdGNZeG5PbXpYbXBKdTM1MDBMUXhvTzkr?=
- =?utf-8?B?cnVXbUhFSWUwQW81ZmdQMW13cE5vWVBtTEVOd1ZqNjBRSjFsUXBnak5GMXFF?=
- =?utf-8?B?Ui8wcnhnR1dEMEhtYmxKcndLZmF5SXFNQmJjZHZMVURXaWFwSjlQalUvTzZK?=
- =?utf-8?B?UEY0Mmk3eGd3MzVNMnU4dk95aDgxOVcvbkhDaWVTOURDQWY0djF0K0IvWERq?=
- =?utf-8?B?NUMzbVRBbDRiVGdrdnVrZG5vM0srZHd4YkpKbUthZ1FBakExNzN6ZkIyQmcy?=
- =?utf-8?B?LzFtL3l0MEFWaERoaVdWZHNEaW9QTWlJcEI2QjFZcUlOZERBTTlXVWRnYktC?=
- =?utf-8?Q?BPB2uHZewZLpZXiYRyPtntttC?=
+	=?utf-8?B?TC9pYUtIN2Rzd0MrSnhZVDJjTkp5RXNneHhnWHQ0UGF3TkJ0OWx4dGtVNGxO?=
+ =?utf-8?B?K0dDaFlYZnp6U2RoTklEY04ySndMMGR0Uzh3cGd5dHF0RWJSUC9TOUppc3hw?=
+ =?utf-8?B?anF1ellRL1ZqbGNSSmd0Uk4zOUw5b0xxbGdDWW9pdXhCS2Y4aFZxTlRReUNj?=
+ =?utf-8?B?M0pqYkN3TWxVWlk5dC9wZW9DSFhZc24wWU5kVENUOFN2dmxGN3hwWkpLeTFa?=
+ =?utf-8?B?T2dKSnhzOWM2YWFBdHBIUFc0eGdIeXA4U3VtTGZlcXdtNEpTa0xhWkY1bFZB?=
+ =?utf-8?B?QXlXVUo3ZkU4YlZUTkFXbG0zaHJldUp0VGUwWmlXMGtnbHVpKzBjYjZUQU5B?=
+ =?utf-8?B?bTQ2d0tyVmR0a0RsdUgvanBvWXF3aVlyeGg2M3FOenJGdXVOYkpraCs5enJl?=
+ =?utf-8?B?b2V1RnJPbzF2THVTWTlrRUFVenRtM2VoZ01pNFZIcnNkWld5UVBNT2RVRmlP?=
+ =?utf-8?B?WnFaUTY3WjJWaEE1N3dWVUJ6OHF3RFlUZ2MxZXdwSE5mWGw4M2F1RSt3UVRn?=
+ =?utf-8?B?WUNjMHA0Um05MWU3VzZpb2UrWEhOSzJnclR6ZlVYVmx3cmEySmxNNVdjdnd6?=
+ =?utf-8?B?UEdDM1Bub2NZcnEvRXN4L2NyUjJhOGtWd1VPZWRVSVhDZzZ5NGtKZW9QR2NN?=
+ =?utf-8?B?L1doc0tFOGUvNERMVVV1N0ttUFhEdkhINXQ5MDlWNWNrbWlxS00vYUJieTlH?=
+ =?utf-8?B?N29JVFU3STBmRDg4N2tnZ1V5eVEwZUxrR0R3cmtsUkNqOFh0d09hanVxZ3o0?=
+ =?utf-8?B?bXFCcGtPZW55QTNZenhXVFNybjFaeXo4RUIxWXVwVUlQWDcycUhKcjkwakVh?=
+ =?utf-8?B?WUx5dG4zVGNWRGpDWTBpQjhJY3hDZTZ2OERaOVlpaTlBMmxWb2dyM2lGYkxC?=
+ =?utf-8?B?bmZGQ2VUVm8yK1FjVkpMY1F1MjYzeWc0c0orSVI5Y1hNZGY4OW1sRWZQbi9Q?=
+ =?utf-8?B?UkFXQ2dLRGtqcXF4M1F5WmpBZzVCYXNyODRnZ0V4M3lXb3JWY2JRRlBFajJy?=
+ =?utf-8?B?Y0dzOXRydVpzVThjOWZXK2FUUEJUcERIL0R3WWVlSnI4WEhhd1ZGNWtDQTJF?=
+ =?utf-8?B?VWVYd0RRMjdra3UyVzBZL0ZRUVFXanY1UFMyb0JsUHlhQkxnTS96aGllSHo1?=
+ =?utf-8?B?TXlaYlRVbWVuYXdzRTJ3bU01Y2hRdEIxcFZObVdsdTZTcEVHV1FibXVFOWRr?=
+ =?utf-8?B?RTlUbjcrVUpLNW44YWEwMWxqT2piZ2gzb00zNTV3VU5ET0RoWllpU05peVJ3?=
+ =?utf-8?B?dk5KeDg1bmZsdXdPMVJDanYvK3Byc0FzQ1hkU3VnUEJzK25KdWMrMW8yZm0y?=
+ =?utf-8?B?eUlRUkpMc0NEMkYvbmpMTExpSlRCbEFUWHlOR2FnUkRZZmswbDAvWFJkWFNr?=
+ =?utf-8?B?SVV2Z0lIOEQ4czRjQldpZnNzTlE3N0drbVlPUTdPTk1TNEMweDFTZFR0OFov?=
+ =?utf-8?B?bE4vWmpRQ21XR2VEY2lYK0d4Z1l6M29PdnZ3REVCbGZHbmIwZklhcm5DVDFi?=
+ =?utf-8?B?YUZrU1AzZGF1VmdOc1JvQzBzT3FKbzJ6QU9hQUhsMU5hYkpRZlBuczMxbkdT?=
+ =?utf-8?B?SHVBblBXOHBtbUNuTG1KTnNpZndBSTduRjZJdUQwWmhzVHg3dVcrbDByUTZQ?=
+ =?utf-8?B?bGlSU21aUDMzY3pnZlNSSDhDdFlkRFNneVJQU2t2cEluSzIvMFFDWGhhQ2Ja?=
+ =?utf-8?B?dmlPNEgyY25pbUtyK1ZHWlEyTm1qNm5ZOUFQNlhQcTdGOVQydkZNeUVGUjRy?=
+ =?utf-8?B?VUhUOU84SlFrUHcxN2U0MnpJZkRVYzNPaEpWUWp5cFFldXdZVWhHUDdiUExu?=
+ =?utf-8?B?U1g0UTUxZUhpdUJ2NzRidGRFYk1IeHJwVG9KbWNSN09temFtdG5ObExBSjAr?=
+ =?utf-8?B?ZnhYMSt4UnMwUGRkVXZJTXhET0V2RzJuRlBTWnhPd0xhNk9JbmtaV3ZHVFJt?=
+ =?utf-8?B?c1ZYYVp5WWdKMEdMRnVwaWpnbkUrbUZHNElLQnBYT2lMUHUza2xQR1NSWGRV?=
+ =?utf-8?B?UVJDS255aEtxTHZZSWtkUHpjNzh2OTNjZVJWTHBQcmJVVFlFcEp3TDZhci9x?=
+ =?utf-8?B?YVhOQUhoQ0IvRGFjZ1BaYUVpbmYvRkNTSUt6bGRheHUvSFZYOWw1QzlXa2RK?=
+ =?utf-8?Q?oyQd3VfJf2WDJAEdqECBVYpkX?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 101628e2-543e-4841-2641-08de1d5b025d
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc2ec14d-9d7e-4397-06da-08de1d5b0432
 X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 17:36:25.4019
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 17:36:28.3972
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8mw+5fz07ad9n5sgsJy+8KtH+CiIHNyDoeXAjLSIG9y79vg1DVfRotkO4DP1Rryzq/xS+wTvGetPXzotcHKcfA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: JDSe6WeNCKVg67YycxoIbtINgMpiQzqlpANv92U02u2saCNzOoSj+qtFfLeC0bJZ1AMwJP3aor66VYIcLb+mBg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10989
 
-Add basic HDR mode support, only support private transfer, not support
-CCC command.
+Rename struct i3c_priv_xfer to struct i3c_xfer, since private xfer in the
+I3C spec refers only to SDR transfers. Ref: i3c spec ver1.2, section 3,
+Technical Overview.
 
-Update i3c framework API to allow pass down mode and extend driver callback
-function.
+i3c_xfer will be used for both SDR and HDR.
 
-Implement HDR transfer in svc i3c master driver.
+Rename enum i3c_hdr_mode to i3c_xfer_mode. Previous definition need match
+CCC GET_CAP1 bit position. Use 31 as SDR transfer mode.
 
-Simplifed HDR flow is (ref i3c spec line 5514) Figure 129
+Add i3c_device_do_xfers() with an xfer mode argument, while keeping
+i3c_device_do_priv_xfers() as a wrapper that calls i3c_device_do_xfers()
+with I3C_SDR for backward compatibility.
 
-<--              SDR            ---> | <--- HDR
-START 0x7E RnW(0) ACK CCC(ENTHDR0) T   HDR-CMD(00-7f write, 80--ff read)
+Introduce a 'cmd' field in struct i3c_xfer as an anonymous union with
+'rnw', since HDR mode uses read/write commands instead of the SDR address
+bit.
 
-                                    ----> |
-HDR-DATA HDR-CRC HDR-RESTART .... HDR-EXIT
+Add .i3c_xfers() callback for master controllers. If not implemented, fall
+back to SDR with .priv_xfers(). The .priv_xfers() API can be removed once
+all controllers switch to .i3c_xfers().
 
-Note: HDR-CMD is 16bit data, which included 7bit slave address and 8bit
-read/write command.
-
-svc hardware can auto issue SDR part.
+Add 'mode_mask' bitmask to advertise controller capability.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
-Changes in v11:
-- Add Andy Shevchenko's reviewed-by tags
-- fix some nits at mmc5633, see patch's change log for detail.
-- Link to v10: https://lore.kernel.org/r/20251104-i3c_ddr-v10-0-e3e4cbc17034@nxp.com
+Why not add hdr mode in struct i3c_priv_xfer because mode can't be mixed in
+one i3c transfer. for example, can't send a HDR follow one SDR between
+START and STOP.
 
-Changes in v10:
-- remove !! at svc patch
-- align datasheet register name in mmc5633
-- remove reduntant regmap_attach_dev()
-- see patch's change log for detail
-- Link to v9: https://lore.kernel.org/r/20251031-i3c_ddr-v9-0-f1e523ebaf78@nxp.com
+i3c_priv_xfer should be treat as whole i3c transactions. If user want send
+HDR follow SDR, should be call i3c_device_do_priv_xfers_mode() twice,
+instead put into a big i3c_priv_xfer[n].
 
-Changes in v9:
-- remove reducated check for ops->priv_xfer.
-- improve mmc5633 (see patch's change log for detail)
-- Link to v8: https://lore.kernel.org/r/20251028-i3c_ddr-v8-0-795ded2db8c2@nxp.com
+change in v9
+- fix typo Deprecated
+- remove reduntant master->ops->priv_xfers check.
 
-Changes in v8:
-- Add cleanup patch replace framework's i3c_priv_xfer with i3c_xfer
-- Link to v7: https://lore.kernel.org/r/20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com
+change in v8
+- new API use i3c_xfer instead of i3c_priv_xfer.
 
-Changes in v7:
-- add explicit define for I3C_HDR_*
-- add missed include files.
-- detail see each patches' change log
-- CONFIG_DEBUG_ATOMIC_SLEEP=y
-- Link to v6: https://lore.kernel.org/r/20251014-i3c_ddr-v6-0-3afe49773107@nxp.com
+change in v7
+- explicit set enum I3C_HDR_* to value, which spec required.
+- add comments about check priv_xfers and i3c_xfers
 
-Changes in v6:
-- remove acpi part
-- collect Conor Dooley ack tags
-- Link to v5: https://lore.kernel.org/r/20251007-i3c_ddr-v5-0-444184f7725e@nxp.com
+change in v5-v6
+- none
 
-Changes in v5:
-- Just realized missed CC mail list devicetree@vger.kernel.org and resend
-- Link to v4: https://lore.kernel.org/r/20251007-i3c_ddr-v4-0-3afea5105775@nxp.com
+change in v4
+- Rename enum i3c_hdr_mode to i3c_xfer_mode.
 
-Changes in v4:
-- use master's hdr_cap to check HDR cap.
-- add mmc5603 support.
-- Link to v3: https://lore.kernel.org/r/20250930-i3c_ddr-v3-0-b627dc2ef172@nxp.com
+change in v3
+- Add Deprecated comment for priv_xfers.
 
-Changes in v3:
-- Add new patch for change rnw to union for svc.
-- Detial changes see each patch's change log.
-- Link to v2: https://lore.kernel.org/r/20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com
-
-Changes in v2:
-- Add sensor driver, which use HDR mode read/write data.
-- change priv_xfer to i3c_xfer.
-- Link to v1: https://lore.kernel.org/r/20250129-i3c_ddr-v1-0-028a7a5d4324@nxp.com
-
+change in v2
+- don't use 'priv_' since it is refer to sdr mode transfer in spec.
+- add 'mode_mask' indicate controller's capibility.
+- add helper function to check master's supported transfer mode.
 ---
-Frank Li (6):
-      i3c: Add HDR API support
-      i3c: Switch to use new i3c_xfer from i3c_priv_xfer
-      i3c: master: svc: Replace bool rnw with union for HDR support
-      i3c: master: svc: Add basic HDR mode support
-      dt-bindings: trivial-devices: add MEMSIC 3-axis magnetometer
-      iio: magnetometer: Add mmc5633 sensor
+ drivers/i3c/device.c       | 27 ++++++++++++++++++++-------
+ drivers/i3c/internals.h    |  6 +++---
+ drivers/i3c/master.c       | 19 ++++++++++++++-----
+ include/linux/i3c/device.h | 40 +++++++++++++++++++++++++++++-----------
+ include/linux/i3c/master.h |  4 ++++
+ 5 files changed, 70 insertions(+), 26 deletions(-)
 
- .../devicetree/bindings/trivial-devices.yaml       |   4 +
- drivers/i3c/device.c                               |  27 +-
- drivers/i3c/internals.h                            |   6 +-
- drivers/i3c/master.c                               |  19 +-
- drivers/i3c/master/svc-i3c-master.c                | 115 +++-
- drivers/iio/magnetometer/Kconfig                   |  12 +
- drivers/iio/magnetometer/Makefile                  |   1 +
- drivers/iio/magnetometer/mmc5633.c                 | 585 +++++++++++++++++++++
- include/linux/i3c/device.h                         |  42 +-
- include/linux/i3c/master.h                         |   4 +
- 10 files changed, 771 insertions(+), 44 deletions(-)
----
-base-commit: df05ef50ada6a8e2fe758adf1b8fa35eea801b2d
-change-id: 20250129-i3c_ddr-b15488901eb8
+diff --git a/drivers/i3c/device.c b/drivers/i3c/device.c
+index 2396545763ff853097d9f0173787e087f7a6e688..8a156f5ad6929402eb92b152d2e80754dd5a2387 100644
+--- a/drivers/i3c/device.c
++++ b/drivers/i3c/device.c
+@@ -15,12 +15,12 @@
+ #include "internals.h"
+ 
+ /**
+- * i3c_device_do_priv_xfers() - do I3C SDR private transfers directed to a
+- *				specific device
++ * i3c_device_do_xfers() - do I3C transfers directed to a specific device
+  *
+  * @dev: device with which the transfers should be done
+  * @xfers: array of transfers
+  * @nxfers: number of transfers
++ * @mode: transfer mode
+  *
+  * Initiate one or several private SDR transfers with @dev.
+  *
+@@ -33,9 +33,8 @@
+  *   'xfers' some time later. See I3C spec ver 1.1.1 09-Jun-2021. Section:
+  *   5.1.2.2.3.
+  */
+-int i3c_device_do_priv_xfers(struct i3c_device *dev,
+-			     struct i3c_priv_xfer *xfers,
+-			     int nxfers)
++int i3c_device_do_xfers(struct i3c_device *dev, struct i3c_xfer *xfers,
++			int nxfers, enum i3c_xfer_mode mode)
+ {
+ 	int ret, i;
+ 
+@@ -48,12 +47,12 @@ int i3c_device_do_priv_xfers(struct i3c_device *dev,
+ 	}
+ 
+ 	i3c_bus_normaluse_lock(dev->bus);
+-	ret = i3c_dev_do_priv_xfers_locked(dev->desc, xfers, nxfers);
++	ret = i3c_dev_do_xfers_locked(dev->desc, xfers, nxfers, mode);
+ 	i3c_bus_normaluse_unlock(dev->bus);
+ 
+ 	return ret;
+ }
+-EXPORT_SYMBOL_GPL(i3c_device_do_priv_xfers);
++EXPORT_SYMBOL_GPL(i3c_device_do_xfers);
+ 
+ /**
+  * i3c_device_do_setdasa() - do I3C dynamic address assignement with
+@@ -260,6 +259,20 @@ i3c_device_match_id(struct i3c_device *i3cdev,
+ }
+ EXPORT_SYMBOL_GPL(i3c_device_match_id);
+ 
++/**
++ * i3c_device_get_supported_xfer_mode - Returns the supported transfer mode by
++ *					connected master controller.
++ * @dev: I3C device
++ *
++ * Return: a bit mask, which supported transfer mode, bit position is defined at
++ *	   enum i3c_hdr_mode
++ */
++u32 i3c_device_get_supported_xfer_mode(struct i3c_device *dev)
++{
++	return i3c_dev_get_master(dev->desc)->this->info.hdr_cap | BIT(I3C_SDR);
++}
++EXPORT_SYMBOL_GPL(i3c_device_get_supported_xfer_mode);
++
+ /**
+  * i3c_driver_register_with_owner() - register an I3C device driver
+  *
+diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
+index 79ceaa5f5afd6f8772db114472cfad99d4dd4341..f609e5098137c1b00db1830a176bb44c2802eb6f 100644
+--- a/drivers/i3c/internals.h
++++ b/drivers/i3c/internals.h
+@@ -15,9 +15,9 @@ void i3c_bus_normaluse_lock(struct i3c_bus *bus);
+ void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
+ 
+ int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev);
+-int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+-				 struct i3c_priv_xfer *xfers,
+-				 int nxfers);
++int i3c_dev_do_xfers_locked(struct i3c_dev_desc *dev,
++			    struct i3c_xfer *xfers,
++			    int nxfers, enum i3c_xfer_mode mode);
+ int i3c_dev_disable_ibi_locked(struct i3c_dev_desc *dev);
+ int i3c_dev_enable_ibi_locked(struct i3c_dev_desc *dev);
+ int i3c_dev_request_ibi_locked(struct i3c_dev_desc *dev,
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 66513a27e6e776d251203b286bcaecb9d8fc67b9..30c5e5de7963c78735e96605367e9a762d286e86 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2821,10 +2821,14 @@ EXPORT_SYMBOL_GPL(i3c_generic_ibi_recycle_slot);
+ 
+ static int i3c_master_check_ops(const struct i3c_master_controller_ops *ops)
+ {
+-	if (!ops || !ops->bus_init || !ops->priv_xfers ||
++	if (!ops || !ops->bus_init ||
+ 	    !ops->send_ccc_cmd || !ops->do_daa || !ops->i2c_xfers)
+ 		return -EINVAL;
+ 
++	/* Must provide one of priv_xfers (SDR only) or i3c_xfers (all modes) */
++	if (!ops->priv_xfers && !ops->i3c_xfers)
++		return -EINVAL;
++
+ 	if (ops->request_ibi &&
+ 	    (!ops->enable_ibi || !ops->disable_ibi || !ops->free_ibi ||
+ 	     !ops->recycle_ibi_slot))
+@@ -3014,9 +3018,8 @@ int i3c_dev_setdasa_locked(struct i3c_dev_desc *dev)
+ 						dev->boardinfo->init_dyn_addr);
+ }
+ 
+-int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+-				 struct i3c_priv_xfer *xfers,
+-				 int nxfers)
++int i3c_dev_do_xfers_locked(struct i3c_dev_desc *dev, struct i3c_xfer *xfers,
++			    int nxfers, enum i3c_xfer_mode mode)
+ {
+ 	struct i3c_master_controller *master;
+ 
+@@ -3027,9 +3030,15 @@ int i3c_dev_do_priv_xfers_locked(struct i3c_dev_desc *dev,
+ 	if (!master || !xfers)
+ 		return -EINVAL;
+ 
+-	if (!master->ops->priv_xfers)
++	if (mode != I3C_SDR && !(master->this->info.hdr_cap & BIT(mode)))
+ 		return -EOPNOTSUPP;
+ 
++	if (master->ops->i3c_xfers)
++		return master->ops->i3c_xfers(dev, xfers, nxfers, mode);
++
++	if (mode != I3C_SDR)
++		return -EINVAL;
++
+ 	return master->ops->priv_xfers(dev, xfers, nxfers);
+ }
+ 
+diff --git a/include/linux/i3c/device.h b/include/linux/i3c/device.h
+index 7f136de4b73ef839fb4a1837a87b1aebbddbfe93..7f7738041f3809e538816e94f90b99e58eb806f9 100644
+--- a/include/linux/i3c/device.h
++++ b/include/linux/i3c/device.h
+@@ -39,20 +39,25 @@ enum i3c_error_code {
+ };
+ 
+ /**
+- * enum i3c_hdr_mode - HDR mode ids
++ * enum i3c_xfer_mode - I3C xfer mode ids
+  * @I3C_HDR_DDR: DDR mode
+  * @I3C_HDR_TSP: TSP mode
+  * @I3C_HDR_TSL: TSL mode
++ * @I3C_SDR: SDR mode (NOT HDR mode)
+  */
+-enum i3c_hdr_mode {
+-	I3C_HDR_DDR,
+-	I3C_HDR_TSP,
+-	I3C_HDR_TSL,
++enum i3c_xfer_mode {
++	/* The below 3 value (I3C_HDR*) must match GETCAP1 Byte bit position */
++	I3C_HDR_DDR = 0,
++	I3C_HDR_TSP = 1,
++	I3C_HDR_TSL = 2,
++	/* Use for default SDR transfer mode */
++	I3C_SDR = 0x31,
+ };
+ 
+ /**
+- * struct i3c_priv_xfer - I3C SDR private transfer
++ * struct i3c_xfer - I3C data transfer
+  * @rnw: encodes the transfer direction. true for a read, false for a write
++ * @cmd: Read/Write command in HDR mode, read: 0x80 - 0xff, write: 0x00 - 0x7f
+  * @len: transfer length in bytes of the transfer
+  * @actual_len: actual length in bytes are transferred by the controller
+  * @data: input/output buffer
+@@ -60,8 +65,11 @@ enum i3c_hdr_mode {
+  * @data.out: output buffer. Must point to a DMA-able buffer
+  * @err: I3C error code
+  */
+-struct i3c_priv_xfer {
+-	u8 rnw;
++struct i3c_xfer {
++	union {
++		u8 rnw;
++		u8 cmd;
++	};
+ 	u16 len;
+ 	u16 actual_len;
+ 	union {
+@@ -71,6 +79,9 @@ struct i3c_priv_xfer {
+ 	enum i3c_error_code err;
+ };
+ 
++/* keep back compatible */
++#define i3c_priv_xfer i3c_xfer
++
+ /**
+  * enum i3c_dcr - I3C DCR values
+  * @I3C_DCR_GENERIC_DEVICE: generic I3C device
+@@ -297,9 +308,15 @@ static __always_inline void i3c_i2c_driver_unregister(struct i3c_driver *i3cdrv,
+ 		      i3c_i2c_driver_unregister,	\
+ 		      __i2cdrv)
+ 
+-int i3c_device_do_priv_xfers(struct i3c_device *dev,
+-			     struct i3c_priv_xfer *xfers,
+-			     int nxfers);
++int i3c_device_do_xfers(struct i3c_device *dev, struct i3c_xfer *xfers,
++			int nxfers, enum i3c_xfer_mode mode);
++
++static inline int i3c_device_do_priv_xfers(struct i3c_device *dev,
++					   struct i3c_priv_xfer *xfers,
++					   int nxfers)
++{
++	return i3c_device_do_xfers(dev, xfers, nxfers, I3C_SDR);
++}
+ 
+ int i3c_device_do_setdasa(struct i3c_device *dev);
+ 
+@@ -341,5 +358,6 @@ int i3c_device_request_ibi(struct i3c_device *dev,
+ void i3c_device_free_ibi(struct i3c_device *dev);
+ int i3c_device_enable_ibi(struct i3c_device *dev);
+ int i3c_device_disable_ibi(struct i3c_device *dev);
++u32 i3c_device_get_supported_xfer_mode(struct i3c_device *dev);
+ 
+ #endif /* I3C_DEV_H */
+diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+index c52a82dd79a63436c1de6a01c11df9e295c1660e..d0d5b3a9049f0b5ff65ae6c5a7d59444b373edec 100644
+--- a/include/linux/i3c/master.h
++++ b/include/linux/i3c/master.h
+@@ -474,9 +474,13 @@ struct i3c_master_controller_ops {
+ 				 const struct i3c_ccc_cmd *cmd);
+ 	int (*send_ccc_cmd)(struct i3c_master_controller *master,
+ 			    struct i3c_ccc_cmd *cmd);
++	/* Deprecated, please use i3c_xfers() */
+ 	int (*priv_xfers)(struct i3c_dev_desc *dev,
+ 			  struct i3c_priv_xfer *xfers,
+ 			  int nxfers);
++	int (*i3c_xfers)(struct i3c_dev_desc *dev,
++			 struct i3c_xfer *xfers,
++			 int nxfers, enum i3c_xfer_mode mode);
+ 	int (*attach_i2c_dev)(struct i2c_dev_desc *dev);
+ 	void (*detach_i2c_dev)(struct i2c_dev_desc *dev);
+ 	int (*i2c_xfers)(struct i2c_dev_desc *dev,
 
-Best regards,
---
-Frank Li <Frank.Li@nxp.com>
+-- 
+2.34.1
 
 

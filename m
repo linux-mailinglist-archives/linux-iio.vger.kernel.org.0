@@ -1,966 +1,259 @@
-Return-Path: <linux-iio+bounces-25925-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25926-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BF3C377EF
-	for <lists+linux-iio@lfdr.de>; Wed, 05 Nov 2025 20:34:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38762C392B9
+	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 06:34:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 209B618C7822
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Nov 2025 19:34:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F4934E8056
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 05:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CCF340DA0;
-	Wed,  5 Nov 2025 19:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74372D8368;
+	Thu,  6 Nov 2025 05:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="kzjC0M1E";
+	dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="p0R9zZon"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD72B34217C;
-	Wed,  5 Nov 2025 19:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762371254; cv=none; b=AqQvu8RaFRmYg0MpFbtmM1RV1Y6ulJr8Dl3vqFbn5ho90RBnm40zru/I6OPJmeXL8x68pe2MUSJRedVLqzCPvbLGNzt3CvVUcEbRifs7Ai6RfqtWBBbJ38p6wLBt7m9DADBmQ0QCA6r09cdHboqSIMHE+Ibkptv8C0avxTdTKfo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762371254; c=relaxed/simple;
-	bh=J/KAxoGK17iIaiAlXrD98N4ca3o6DuDjfIxl6h49p1I=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l9Vr5n6RhulohjyuBrulTyzgE82MiyCC/qyNZYSXZVd/sQ2DYW4aXpWRcYgcO+PpxkyP4XVvraHxukOcVv5rHwQ/viqvzHR87jx3Cq/3yZbKyZdxc6C+Tb01SyOGPsOlXjEPr82GPBp0FimxrXGf2fIqHGjF11l7y3/qGiYWaXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d1wVc17V2zHnGh0;
-	Thu,  6 Nov 2025 03:34:00 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 03D02140370;
-	Thu,  6 Nov 2025 03:34:06 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 5 Nov
- 2025 19:34:05 +0000
-Date: Wed, 5 Nov 2025 19:34:03 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-CC: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	David Jander <david@protonic.nl>, <kernel@pengutronix.de>,
-	<linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, Andy Shevchenko <andy.shevchenko@gmail.com>,
-	David Lechner <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
-	<nuno.sa@analog.com>
-Subject: Re: [PATCH v1 2/2] iio: adc: Add TI ADS131M0x ADC driver
-Message-ID: <20251105193403.000026fe@huawei.com>
-In-Reply-To: <20251105143814.1807444-3-o.rempel@pengutronix.de>
-References: <20251105143814.1807444-1-o.rempel@pengutronix.de>
-	<20251105143814.1807444-3-o.rempel@pengutronix.de>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F383712B94;
+	Thu,  6 Nov 2025 05:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=60.244.123.138
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762407250; cv=fail; b=aEZU9OvTTsQgrjz1/FDbXRPs8IXN+yyqHSG/8fTGVbV7tVm+cTgNoUTz3NKBeO2gQW0eRjXeh8R1Tj/PRNLq7vXVnmXnHGlpOL2/rzJdokx8v/tH2h4DbMoQAptwvEflRyJoZLiaa8z5mlqpcXWTv6Xs04JMhRlAwMxnrq6EbDo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762407250; c=relaxed/simple;
+	bh=oMYMLtJjkiXqTJmg4czMgcEx5xLAXCNmWbi7Td0iZvM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=IU+5KqyLa5dF8K2i0VY2RfpMTiELMFoKZvH8n7LsyrG3RvZp62/AMnsAo4Qpi78bCYGAk7ob4iE2dg90kocQKHwpPZweNKVMTCxQ9RkK16Vcnx2vnkCAkriPfdcyvw0lNTg/weDx9Qg84Al4QTfVDdPvu8Xk6S54KvD5sh/tUVc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=kzjC0M1E; dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b=p0R9zZon; arc=fail smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 31b9d2f4bad211f08ac0a938fc7cd336-20251106
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=oMYMLtJjkiXqTJmg4czMgcEx5xLAXCNmWbi7Td0iZvM=;
+	b=kzjC0M1E3z94UNf3oKwsISzoIU0ozEbNb5JTpilklpI3kMQVoyPxLeqxYZUOzJDse6z2m3SEUURiAL+4v66MI0IF9ln0ECvf/LgSuenrcjVn7csTfeNaugL9KpZ6e2hLpRuh7dG+YLONPiWHpngOLKvOLdds//g3BXs8KlRO6P4=;
+X-CID-CACHE: Type:Local,Time:202511061333+08,HitQuantity:1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:2021e217-e523-491d-8a19-bfaa4479fed3,IP:0,UR
+	L:0,TC:0,Content:11,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:11
+X-CID-META: VersionHash:a9d874c,CLOUDID:25fe186b-d4bd-4ab9-8221-0049857cc502,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|888|898,
+	TC:-5,Content:3|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BE
+	C:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 31b9d2f4bad211f08ac0a938fc7cd336-20251106
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+	(envelope-from <jh.hsu@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1833995332; Thu, 06 Nov 2025 13:33:58 +0800
+Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Thu, 6 Nov 2025 13:33:57 +0800
+Received: from SG2PR04CU010.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
+ 15.2.1748.26 via Frontend Transport; Thu, 6 Nov 2025 13:33:55 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xHgDRNDdg29HdXxIi5swoGs4Pk1ztkDn2cnCNPqqdeQni9OaDj1LLEIZUa+ZtjI//cTSzUn7EEK/xiqi2zslsqGjOg49A6jKhhr0Bwl4l5k62WucE35lzhN1vfBcGod1Con2mYl/DtCWseEMJu/9GcOWdiPeATmYBqpwVww/Cpz5a4dSp8w+tqCwW5IAwyL6nWNzCGptw/hxXM2QnG6x8NwLmm56uMdZiXnL6sZSGMcelXZq25LWBHcMpUG2ZFiGlDK3dyCon7PCKu7hKiZcQEwcDh0hHZi5uBRKZ3sAQl64Od3yxiCQ2WJlj91hI1T2hdyMC7isLpdDfHDaNnhexg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oMYMLtJjkiXqTJmg4czMgcEx5xLAXCNmWbi7Td0iZvM=;
+ b=NF+s+nqU4j1RnKBCzYQelYnE9LowTXRYOAHQnYdPmJ4fABYlylX0AoEpMTHOVa3riGaSvM80Nsql+9qWTiNC0FDBd2R8hr9rNldkHfZbqW5cTlemC0q6/MG5TP/9Pb0H3fAN8u0u09U9N459geOuKo6CxX8E1HmAU5hnS5i+1JPMCxgUFi5d029NeuY4poCr1oF8Trz2WLgCLLlApekuVJKQe7xTDZdRBQnSLxDmW+a/pVBPNeTEwFzpOemmwszXz6JYykATOb9P6/YoXWH3NHxThUaSZ5cGrXDDzZDIifiuTVuQaK+rqP1JLNYhyOVtreCdUItgxHmzX/MsFKkLAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oMYMLtJjkiXqTJmg4czMgcEx5xLAXCNmWbi7Td0iZvM=;
+ b=p0R9zZons2kQGn2ITIZULzGJwDFe/8mrZdSplpxUMpB2sAVxDxU/BSK8iHZpbmFyIJnCfFUV6cpsSkHaqJSl+Mx2KJSe0puOIX3yCAXZbgC6jU5jG3yS4qQKtT6hKiCjWiZUgv11APp56fA54krdCCMd3qfvyoInCti7QeW7F0s=
+Received: from SG2PR03MB6326.apcprd03.prod.outlook.com (2603:1096:4:176::14)
+ by SI2PR03MB6614.apcprd03.prod.outlook.com (2603:1096:4:1e5::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.8; Thu, 6 Nov
+ 2025 05:33:51 +0000
+Received: from SG2PR03MB6326.apcprd03.prod.outlook.com
+ ([fe80::7452:609e:ecaf:7103]) by SG2PR03MB6326.apcprd03.prod.outlook.com
+ ([fe80::7452:609e:ecaf:7103%4]) with mapi id 15.20.9275.013; Thu, 6 Nov 2025
+ 05:33:50 +0000
+From: =?utf-8?B?SmggSHN1ICjoqLHluIzlrZwp?= <Jh.Hsu@mediatek.com>
+To: "conor@kernel.org" <conor@kernel.org>
+CC: "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+	"ukleinek@kernel.org" <ukleinek@kernel.org>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "wim@linux-watchdog.org" <wim@linux-watchdog.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "jirislaby@kernel.org"
+	<jirislaby@kernel.org>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "nuno.sa@analog.com" <nuno.sa@analog.com>,
+	"linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	=?utf-8?B?Q2h1bmZlbmcgWXVuICjkupHmmKXls7Ap?= <Chunfeng.Yun@mediatek.com>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+	=?utf-8?B?QW5kcmV3LUNUIENoZW4gKOmZs+aZuui/qik=?=
+	<Andrew-CT.Chen@mediatek.com>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+	"linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	=?utf-8?B?WmhpeW9uZyBUYW8gKOmZtuW/l+WLhyk=?= <Zhiyong.Tao@mediatek.com>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, "andy@kernel.org"
+	<andy@kernel.org>, =?utf-8?B?TGFsYSBMaW4gKOael+engOiKrCk=?=
+	<Lala.Lin@mediatek.com>, Sean Wang <Sean.Wang@mediatek.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "robh@kernel.org"
+	<robh@kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "jic23@kernel.org"
+	<jic23@kernel.org>, "dlechner@baylibre.com" <dlechner@baylibre.com>,
+	"srini@kernel.org" <srini@kernel.org>,
+	=?utf-8?B?Sml0YW8gU2hpICjnn7PorrDmtpsp?= <jitao.shi@mediatek.com>,
+	Project_Global_Chrome_Upstream_Group
+	<Project_Global_Chrome_Upstream_Group@mediatek.com>, "linux@roeck-us.net"
+	<linux@roeck-us.net>
+Subject: Re: [PATCH v6 00/11] Add mt8189 dts evaluation board and Makefile
+Thread-Topic: [PATCH v6 00/11] Add mt8189 dts evaluation board and Makefile
+Thread-Index: AQHcSaOp1Vthoe3gBUqff+IAb2o1qbTbGTmAgAiZAYCAAMQPAIAAtEqA
+Date: Thu, 6 Nov 2025 05:33:50 +0000
+Message-ID: <49022cbd70fbd06fd066872c9d9cf1919f7ff75c.camel@mediatek.com>
+References: <20251030134541.784011-1-jh.hsu@mediatek.com>
+	 <20251030-deodorant-unglazed-190cbfb4a69b@spud>
+	 <d75decc54a4fc129e5f011cd6e91191896203b48.camel@mediatek.com>
+	 <20251105-unbolted-kosher-8812a5349106@spud>
+In-Reply-To: <20251105-unbolted-kosher-8812a5349106@spud>
+Accept-Language: zh-TW, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SG2PR03MB6326:EE_|SI2PR03MB6614:EE_
+x-ms-office365-filtering-correlation-id: c0ec75b7-8bf4-4bac-b725-08de1cf610dc
+x-ld-processed: a7687ede-7a6b-4ef6-bace-642f677fbe31,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|42112799006|38070700021;
+x-microsoft-antispam-message-info: =?utf-8?B?RVBTbVVvTkRkMzdMVVZPZUxXUVd3OGZtZUVLbm1aNUg3akpRSWFCT3Zod2pv?=
+ =?utf-8?B?ZFAwY2hjaGpVQVBpQzRJV1BEL3RWV3dJVytTYmd2cTVCZWFIQ2tYaGszZC9I?=
+ =?utf-8?B?MGdRUlYrOWJJZDhPbmdCMEdyWEdWWjRZeGFvYVNWd2h4cXJxcXdYVko4YnVT?=
+ =?utf-8?B?Z1ZBSnBpNzcza3FUeEwxWDRZUmh4NVc3ZExmYkpLMERNRHpFZ0hER09abVZl?=
+ =?utf-8?B?T3ZYMWRIOGNrbFdBdG9VRlh0TW9USXhBZEVQb2FETnBITHY1dzNRKzUzb1hj?=
+ =?utf-8?B?TzUrMlhwQ08yaWwrU3IzeUM5bmJCcHFqY2M2R0pmZ3RMUWdlenA5ajZscTFD?=
+ =?utf-8?B?TVhxTW4xR3dmaUFPSjBKMDlUbzhSbDYwYkxGaW9CY2xjTWczOWZEUXNEeWVX?=
+ =?utf-8?B?RzFXeldKcVZ6bUwvaFh4ek9yQ3pXdzd0QzR0a29KT281MUlrZHJLNGRacFhE?=
+ =?utf-8?B?eHRlV2ZyM1QzTld1b3FqN0JoZUV1WVFycXhVQU9XTTlNUkd2NWRtK2p3aWQ4?=
+ =?utf-8?B?K2xnSVdqVUNwdWxtSjBmTDVWdjlubFhZL3ZOZmViVmFRWVBJVm16c2ZObTJ6?=
+ =?utf-8?B?Z2xxVlNRR0FubXRRbXhheXdrdStScHZJSHpCT2hiUXFCend2aWM0dkF4R1N0?=
+ =?utf-8?B?VVQ1bGN3VzNteDBYV0JaSldKaGM2OWFVbGFWKytKWDRkdkpuTVdkME9nbVVK?=
+ =?utf-8?B?eVJsVGswanN3S3BWWWFnYkZ4N2trbEt3SlBNbStIaWQxRWcvMlIyNnZzMTRE?=
+ =?utf-8?B?TVRUekJkZ0owSjFpL2dxczZCN1IrNzkzZWxsRXhhN0UyWU1kRHNVZmppSmI4?=
+ =?utf-8?B?QWZJamphMW9TbFJRcFFXdmErcHR6VnNvMmhGOVRaRkI0YnZzRXM1ZGh3aXBJ?=
+ =?utf-8?B?Q1pDRE1YNXVqa3F3aWFWa01TdWtwZHlma2VuUHcrZWZvQlQ5UnNwdVFud2pF?=
+ =?utf-8?B?Z2dUSjZKcVhHdVpLSHpqbUFma0NqaE9Rc0c1T3o2NlU0dkNjUis0MEcvSUVM?=
+ =?utf-8?B?OCs1VWpERjlJVndabmlzOVJCNWJNWjd0TENRdU5ySld6NXdLSFRqNEFDL1k2?=
+ =?utf-8?B?bTBTZ2RlRGp1RVU4RjJRU0wzcUdvTDZHOGlQK212VlJrdWx6R2hvajhtdG5a?=
+ =?utf-8?B?Wi90U3A2c1FPeUxGbkl3NG1BOEtiQTFEMEk3UVJzcU8vZTgrOFJRRTdnK200?=
+ =?utf-8?B?WEptaElkTUlHalJqSUQvZTg5aWhRRldDeU81ak00RlJoRm8vblB6MWVWZi9G?=
+ =?utf-8?B?eTM2QUFVUDJxVkFEVERyS1NIbE1jd21GSEJoeTlRRk5tNkY3eDB5WGxleldo?=
+ =?utf-8?B?QWpoZENDS0xzS0tPbmJMZUhrVlIxbEZmU3J6Tnp1RUpTQk5mTVRoOEM3aWR4?=
+ =?utf-8?B?ajM5MWw2QkdjS2RVRUtLdldsdmJHZ0wzSVh6S05JeGN4V1RaNmdJQythRU4v?=
+ =?utf-8?B?R2M5cHlnaTlhb2h3REJiVHpVbUpseUM4TXpLYWt5eEtXN1R5aWZjNmtLRisz?=
+ =?utf-8?B?RHZPWkdjN2w3aEhlTE11RDYxREN4STNzMTRZUFlJSGFJZ0VudE91YkJUOXdj?=
+ =?utf-8?B?L1V1b3Z5SkxUMmxsLzNqZ0tiZFo5ZFNtMDB0dC92TlFUQmRsQmNQU0RxdThY?=
+ =?utf-8?B?akRDaWJLVXUvdmtnbjMwLzM0S1BET0N4QnMxUnBFTE5RMWVSbHloSGdUbmNK?=
+ =?utf-8?B?TzRoRW1jTkNGamVTOTJsb1N0dEhhSy8vTEdOSzVReXo5V3Rlc2p4U3J4LzJx?=
+ =?utf-8?B?QkdMZmk1RERjTU1XRm1UZEdUNTd2R2NMdTdrK3NrMHhUZVZmVDBLalEwa1dl?=
+ =?utf-8?B?WnRFZ1RGYUcvMjlpVG1hYXVRb0NkTFVoYTFWVG5LejVTNi9VcVV1M200Qjlu?=
+ =?utf-8?B?WkUvR3VnNnRTK01qd252aEsxY2F4S2pRbE5aUUM3dDhhMHNXT2U2bzRDaHlJ?=
+ =?utf-8?B?YzFhZ3N4ZWltdjd6SEJQNkJmUTJBcEhnVGhKakNxOEV4YlJvZEJPUEZzdmZa?=
+ =?utf-8?B?Z2gvMmJOWnlWdllwMUFNSFhodGpsNURSQ0dkWGlPTUR2cTYzS2VLYTJQZDhK?=
+ =?utf-8?Q?82uv1E?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR03MB6326.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(42112799006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dFpZNDc4cDgvcy80ZjZzemVFVkRDdlhPbjFVeUczbkdlUDBtdVBJZkNkZTJE?=
+ =?utf-8?B?ZFRDU0RTQm1QU2lvNFQ2eG11NXBVMC9OUWVCelo4MnEyemVwVCtwOGxUaFV0?=
+ =?utf-8?B?ZU1IM2p0VGNTVkhSeFAyY2pxWkZZTkxFZzFXVTluV2M2KytYWHNZd2lyVzdh?=
+ =?utf-8?B?OCtmcXpDNC81RVB3VUZKaHh1cW84cE1PczFKQjBGQ2d0NkVYTllPUU5CNVMw?=
+ =?utf-8?B?YXg1bDZMOVBCd3dHTkRUSlROOXhYVzlHSWxjRS9zdkVNN2Q1MGlsbW1OV2NZ?=
+ =?utf-8?B?aiswY3c2MHFpK0ErblY0dkREZ24rUFJOM1NYZUxGdDdZdG4rcWR1S3ViSDNw?=
+ =?utf-8?B?aEtiTkhQak9XNDE3RVAyQ1hnd29Fb0F4Q2tOU1c3ZGNlR1FiT3krb2tHdndX?=
+ =?utf-8?B?VlgySEpwOWVNUXNFWSswVzJHcEJReE9lVFU4RkFnUmNFVmV6b0xEdE9jWnMw?=
+ =?utf-8?B?Y3pMS2tKeTN1L0VUckZHK2hrRm5weHUzd21kMEIyQ05UcjdDTFJFSi9MR0Ir?=
+ =?utf-8?B?QktxWnhoSHJRRnlSUW1ZZkRMcUN5ZW81VHdJdTZBWjFGUlFvM2J5WEIvT0xw?=
+ =?utf-8?B?RTA2UGtwS1RDUXFWMmZUc0paZTZOeDgzQUhyUFF5K3crNC9ZWkRpK2VyYUpF?=
+ =?utf-8?B?WWtISi9sM2NvY012VnVSMDVUaWYyRi9XNExUNFBuNm9sSXhtV28venNnMDRP?=
+ =?utf-8?B?TjI3eHhpbXc1QWpjK2paZDBFQW9VQjlrVzJCQTdsNTUwL2VBWk9Wd3hpWmF2?=
+ =?utf-8?B?TWVZenVKTUUxdWZXSlFPSFZxekNrTHpQclZFWGFHOHhoZWNrOHVCR2NNSzZz?=
+ =?utf-8?B?SHE2eDNTVXpPdXo4ZExBQjJMZDl2d1ViT21GdTlIUnZNNVR2eEUzRUkwNGRF?=
+ =?utf-8?B?SkNUU3VlT0JWL1JRS2NCL3FvSlI0OFpaVVZKck95cm5ubVlJSXN3QndNc3Qw?=
+ =?utf-8?B?MGhPOXhJbFk5U1JaVVFxRWxTMnIzOWNLQTNMaUU5ME5rekNZbnN2Yld3cGRn?=
+ =?utf-8?B?VnlOOFBlOWxGM1lxZWtBaytzNHdMNnJReEFVekt3c3J4K0g3aVFkeG5nRWJy?=
+ =?utf-8?B?a1FPdlU1ckorOGpzTDdIVlU4Y2J4WGpaTzZka1dmUFF3MEtCakFWNjlQNUFE?=
+ =?utf-8?B?V21LY3Zjd2Zzb05tTFI0NUw2MTRxWEtWZTdlU1pGRTVhTVpkVVF0Mk0zdzhQ?=
+ =?utf-8?B?RWJ3dFlDcERjeHFmWGwwSVlmanFVZkg1Q0NvaCtPSzZSdDNYV050QVoyTEhF?=
+ =?utf-8?B?UGR1VjRxQnRqYk5kWVhFT2FaVHducXd5NGFOc1BJcm9pWVliWG53L1hTK2Iv?=
+ =?utf-8?B?UEl1S1RqbC9FWVNnRTA1NUNFOW5pWVJHSXByU0g2M2h1eEljSVdFdThTSUhG?=
+ =?utf-8?B?VmtXam5OYlBzcWJNNVpBKzRDQjhaR2JBOGpqQXVJNnBkams4b0JEeklyaGF1?=
+ =?utf-8?B?bGI1bytQMGxWcjV5S1M5UENXaTFzVFdEOUxnWGk3UHM3Q2tOVGpkZWlwMzNV?=
+ =?utf-8?B?ZXhFRkxMdmYvdzdNUXNNZTBtSXVCY1hsUkU5UkpwcXJiVldxU09hZ3crQ2lX?=
+ =?utf-8?B?LzRZcXo0bWhrYnFjeTZDbjY5MGllTjBNNFpjWXRkUzh0ZldIeGFwbDdWVEdr?=
+ =?utf-8?B?azJVNzhBRkJ4OWF3RUt0eFc3OS9rYjZRNkN2c1FtVVhkSTlQQ0dCL0hIejdw?=
+ =?utf-8?B?MkxvUi8yRU5FL3czRUF1WXV3K09XVkdGRUF2Wk5Xb2lXaG5ja0IzTkE3YlBk?=
+ =?utf-8?B?V2xiZW13dDNITlprM3ppRWFtL1N1ZjFiQld5VzV1ZisyUldDL3lvd1hMRnZ5?=
+ =?utf-8?B?bVFSVGZVWXdMUkZJSlJPL3BHMFM4SndNOG9OejdiWlREV2VEUnByKzhWWW5l?=
+ =?utf-8?B?SWFWTGN2cUpDMkdpVllZdUhLOHdVb3dpK0R2RDRwMHA2c2FtbWw4Z0xJcEJL?=
+ =?utf-8?B?VVRtMnZpZVBXY2JBVUVXRzg3bng4T0NUaTJ4akNVYnJEYlp0MTJmVmhnTHR0?=
+ =?utf-8?B?c3BqNHJRV2hTeUw1YXpxcEhlSGhpVXdHNkZURFJOZkhOZWhPaHR1UHRTdDJ6?=
+ =?utf-8?B?QTAzY0w3UWZQdFNwNHZTN01mbyt5TmZwWk82OU5VUTNiTG81Z2tlWVR2TENr?=
+ =?utf-8?B?QlRJVzhuOVFxb0IyYzhVRklTOWpWSDZzN2RmMmdqRXZ5MTE5bWRSbVdRMmUx?=
+ =?utf-8?B?blE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <942811483E3C3947AEFF4904BC743BA4@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml100005.china.huawei.com (7.214.146.113)
-
-On Wed, 5 Nov 2025 15:38:14 +0100
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-
-> From: David Jander <david@protonic.nl>
-> 
-> Add a new IIO ADC driver for Texas Instruments ADS131M0x devices
-> (ADS131M02/03/04/06/08). These are 24-bit, up to 64 kSPS, simultaneous-
-> sampling delta-sigma ADCs accessed via SPI.
-> 
-> Highlights:
-> - Supports 2/3/4/6/8-channel variants with per-channel RAW and SCALE.
-> - Implements device-required full-duplex fixed-frame transfers.
-> - Handles both input and output CRC; uses a non-reflected CCITT (0x1021)
->   implementation because the generic crc_ccitt helper is incompatible.
-> 
-> Note: Despite the almost identical name, this hardware is not
-> compatible with the ADS131E0x series handled by
-> drivers/iio/adc/ti-ads131e08.c.
-> 
-> Signed-off-by: David Jander <david@protonic.nl>
-> Co-developed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-
-Hi Oleksij, David,
-
-Various comments inline.
-
-Jonathan
-
-> diff --git a/drivers/iio/adc/ti-ads131m0x.c b/drivers/iio/adc/ti-ads131m0x.c
-> new file mode 100644
-> index 000000000000..d40aacc129ba
-> --- /dev/null
-> +++ b/drivers/iio/adc/ti-ads131m0x.c
-> @@ -0,0 +1,886 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Driver for Texas Instruments ADS131M0x family ADC chips.
-> + *
-> + * Copyright (C) 2024 Protonic Holland
-> + * Copyright (C) 2025 Oleksij Rempel <kernel@pengutronix.de>, Pengutronix
-> + *
-> + * Primary Datasheet Reference (used for citations):
-> + * ADS131M08 8-Channel, Simultaneously-Sampling, 24-Bit, Delta-Sigma ADC
-> + * Document SBAS950B, Revised February 2021
-> + * https://www.ti.com/lit/ds/symlink/ads131m08.pdf
-> + */
-> +
-> +#include <linux/clk.h>
-> +#include <linux/delay.h>
-> +#include <linux/err.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-
-I guess here for of_match_ptr() which I suggest you drop. Then this include
-isn't needed.
-
-> +#include <linux/property.h>
-> +#include <linux/spi/spi.h>
-> +
-> +/* Max channels supported by the largest variant in the family (ADS131M08) */
-> +#define ADS131M_MAX_CHANNELS		8
-> +
-> +/* ADS131M08 tolerates up to 25 MHz SCLK.
-> + */
-> +#define ADS131M_MAX_SCLK_HZ		25000000
-> +
-> +/* Section 6.7, t_REGACQ (min time after reset) is 5us */
-> +#define ADS131M_RESET_DELAY_US		10
-> +
-> +/*
-> + * SPI Frame word count calculation.
-> + * Frame = N channel words + 1 response word + 1 CRC word.
-> + * Word size depends on WLENGTH bits in MODE register (Default 24-bit).
-> + */
-> +#define ADS131M_FRAME_WSIZE(nch)	(nch + 2)
-Similar to case below ((nch) + 2) prefererd.
-
-> +/*
-> + * Index calculation for the start byte of channel 'x' data within the RX buffer.
-> + * Assumes 24-bit words (3 bytes per word).
-> + * The received frame starts with the response word (e.g., STATUS register
-> + * content when NULL command was sent), followed by data for channels 0 to N-1,
-> + * and finally the output CRC word.
-> + * Response = index 0..2, Chan0 = index 3..5, Chan1 = index 6..8, ...
-> + * Index for ChanX = 3 (response) + x * 3 (channel data size).
-> + */
-> +#define ADS131M_CHANNEL_INDEX(x)	(x * 3 + 3)
-((x) * 3 + 3)
-to avoid having to check carefully for odd things being passed as x and
-precedence issues that might result.
-
-
-
-> +enum ads131m_device_id {
-> +	ADS131M08_ID,
-> +	ADS131M06_ID,
-> +	ADS131M04_ID,
-> +	ADS131M03_ID,
-> +	ADS131M02_ID,
-reverse order.
-> +};
-> +
-> +struct ads131m_priv {
-> +	struct spi_device *spi;
-> +	struct clk *clk;
-> +	struct mutex lock;
-
-Lock should have a commment describing what data it protects.
-Looks like internal state during rmw sequences. Maybe other stuff?
-
-> +	u8 num_channels;
-> +	const struct ads131m_configuration *config;
-> +	u8 tx_buffer[ADS131M_FRAME_BSIZE(ADS131M_MAX_CHANNELS)]
-> +		__aligned(IIO_DMA_MINALIGN);
-> +	u8 rx_buffer[ADS131M_FRAME_BSIZE(ADS131M_MAX_CHANNELS)]
-> +		__aligned(IIO_DMA_MINALIGN);
-> +	struct spi_transfer xfer[1];
-> +	struct spi_message msg;
-> +	unsigned int gain[ADS131M_MAX_CHANNELS];
-> +};
-
-> +
-> +/**
-> + * ads131m_tx_frame_unlocked - Sends a command frame with Input CRC
-> + * @priv: Device private data structure.
-> + * @command: The 16-bit command to send (e.g., NULL, RREG, RESET).
-> + *
-> + * Assumes the mutex lock is held.
-> + * This function sends a command in Word 0, and its calculated 16-bit
-> + * CRC in Word 1, as required when Input CRC is enabled.
-> + *
-> + * Return: 0 on success, or a negative error code from spi_sync.
-> + */
-> +static int ads131m_tx_frame_unlocked(struct ads131m_priv *priv, u32 command)
-> +{
-> +	int ret;
-> +	u16 crc;
-> +
-> +	/*
-> +	 * Zero the entire TX buffer to send a valid frame.
-
-Single line comments where it fits give shorter overall driver
-and more on a screen at time (important for those of us who have
-less than perfect eyesight!)
-
-> +	 */
-> +	memset(priv->tx_buffer, 0, ADS131M_FRAME_BSIZE(priv->num_channels));
-> +
-> +	/*
-> +	 * Word 0: 16-bit command, MSB-aligned in 24-bit word.
-> +	 */
-> +	put_unaligned_be24(command << 8, &priv->tx_buffer[0]);
-Similar to below. Smells like it should be a 16bit write to the correct location.
-
-> +
-> +	/*
-> +	 * Word 1: Input CRC
-> +	 * Calculated over the 3 bytes of Word 0.
-> +	 */
-> +	crc = ads131m_crc_calculate(priv->tx_buffer, 3);
-> +	put_unaligned_be24(crc << 8, &priv->tx_buffer[3]);
-likewise.
-
-> +
-> +	return spi_sync(priv->spi, &priv->msg);
-> +}
-> +
-> +/**
-> + * ads131m_rx_frame_unlocked - Receives a full SPI data frame.
-> + * @priv: Device private data structure.
-> + *
-> + * This function sends a NULL command (with its CRC) to clock out a
-> + * full SPI frame from the device (e.g., response + channel data + CRC).
-> + *
-> + * Assumes the mutex lock is held.
-
-Can use a lockdep assert to make this explicit in code and drop
-the comment.
-
-> + *
-> + * Return: 0 on success, or a negative error code from spi_sync.
-> + */
-> +static int ads131m_rx_frame_unlocked(struct ads131m_priv *priv)
-> +{
-> +	return ads131m_tx_frame_unlocked(priv, ADS131M_CMD_NULL);
-> +}
-> +
-> +/**
-> + * ads131m_check_status_crc_err - Checks for an Input CRC error.
-> + * @priv: Device private data structure.
-> + *
-> + * Sends a NULL command to fetch the STATUS register and checks the
-> + * CRC_ERR bit. This is used to verify the integrity of the previous
-> + * command (like RREG or WREG).
-> + *
-> + * Context: This function assumes the mutex 'lock' is held.
-> + * Return: 0 on success, -EIO if CRC_ERR bit is set.
-> + */
-> +static int ads131m_check_status_crc_err(struct ads131m_priv *priv)
-> +{
-> +	int ret;
-> +	u16 status;
-> +
-> +	ret = ads131m_rx_frame_unlocked(priv);
-> +	if (ret < 0) {
-> +		dev_err(&priv->spi->dev, "SPI error on STATUS read for CRC check\n");
-
-Local dev variable useful here.
-
-> +		return ret;
-> +	}
-> +
-> +	status = get_unaligned_be16(&priv->rx_buffer[0]);
-> +	if (status & ADS131M_STATUS_CRC_ERR) {
-> +		dev_err(&priv->spi->dev, "Previous input CRC error, STATUS=0x%04x\n",
-> +			status);
-> +		return -EIO;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * ads131m_write_reg_unlocked - Writes a single register and verifies the ACK.
-> + * @priv: Device private data structure.
-> + * @reg: The 8-bit register address.
-> + * @val: The 16-bit value to write.
-> + *
-> + * This function performs the full 3-cycle WREG operation with Input CRC:
-> + * 1. (Cycle 1) Sends WREG command, data, and its calculated CRC.
-> + * 2. (Cycle 2) Sends NULL+CRC to retrieve the response from Cycle 1.
-> + * 3. Verifies the response is the correct ACK for the WREG.
-> + * 4. (Cycle 3) Sends NULL+CRC to retrieve STATUS and check for CRC_ERR.
-> + *
-> + * Assumes the mutex lock is held.
-> + *
-> + * Return: 0 on success, or a negative error code.
-> + */
-> +static int ads131m_write_reg_unlocked(struct ads131m_priv *priv, u8 reg,
-> +				      u16 val)
-> +{
-> +	u16 command, expected_ack, response, crc;
-> +	int ret;
-> +
-> +	command = ADS131M_CMD_WREG(reg, 0); /* n=0 for 1 register */
-n = 0
-> +	/*
-> +	 * Per Table 8-11, WREG response is: 010a aaaa ammm mmmm
-> +	 * For 1 reg (n=0 -> m=0): 010a aaaa a000 0000 = 0x4000 | (reg << 7)
-
-n = 0 -> m = 0
-Slightly long line is fine.
-I'd format all these comments along those lines.
-
-
-> +	 */
-> +	expected_ack = 0x4000 | (reg << 7);
-> +
-> +	/*
-> +	 * Cycle 1: Send WREG Command + Data + Input CRC
-> +	 */
-> +
-> +	/* Zero the entire TX buffer */
-> +	memset(priv->tx_buffer, 0, ADS131M_FRAME_BSIZE(priv->num_channels));
-> +
-> +	/* Word 0: WREG command, 1 reg (n=0), MSB-aligned */
-> +	put_unaligned_be24(command << 8, &priv->tx_buffer[0]);
-That shift makes me thing this is better represented as
-	put_unaligned_be16(command, &priv->tx_buffer[0]);
-	//gap but it's zero so no problem.
-	put_unaligned_be16(val, &priv->tx_buffer[3]);
-	//gap here as well, also zero currently.
-> +
-> +	/* Word 1: Data, MSB-aligned */
-The msb aligned seems obvious.
-> +	put_unaligned_be24(val << 8, &priv->tx_buffer[3]);
-> +
-> +	/*
-> +	 * Word 2: Input CRC
-> +	 * Calculated over Word 0 (Cmd) and Word 1 (Data).
-> +	 */
-> +	crc = ads131m_crc_calculate(priv->tx_buffer, 6);
-> +	put_unaligned_be24(crc << 8, &priv->tx_buffer[6]);
-	put_unaligned_be16(crc, &priv->tx_buffer[6]);
-and another gap after this.
-
-> +
-> +	/* We ignore the RX buffer (it's from the *previous* command) */
-Prefer imperative for documentation.
-	/* Ignore the RX buffer  ...
-
-> +	ret = spi_sync(priv->spi, &priv->msg);
-> +
-
-Drop this blank line.
-
-> +	if (ret < 0) {
-> +		dev_err(&priv->spi->dev, "SPI error on WREG (cycle 1)\n");
-
-Worth a local variable for this function.
-	struct device *dev = &priv->spi->dev;
-
-> +		goto write_err;
-> +	}
-> +
-> +	/*
-> +	 * Cycle 2: Send NULL Command to get the WREG response
-> +	 */
-> +	ret = ads131m_rx_frame_unlocked(priv);
-> +	if (ret < 0) {
-> +		dev_err(&priv->spi->dev, "SPI error on WREG ACK (cycle 2)\n");
-> +		goto write_err;
-> +	}
-> +
-> +	/*
-> +	 * Response is in the first 2 bytes of the RX buffer
-> +	 * (MSB-aligned 16-bit response)
-> +	 */
-> +	response = get_unaligned_be16(&priv->rx_buffer[0]);
-> +
-> +	if (response != expected_ack) {
-> +		dev_err(&priv->spi->dev,
-> +			"WREG(0x%02x) failed, expected ACK 0x%04x, got 0x%04x\n",
-> +			reg, expected_ack, response);
-> +		ret = -EIO;
-> +		/*
-> +		 * Don't unlock yet, still need to do Cycle 3 to clear
-> +		 * any potential CRC_ERR flag from this failed command.
-> +		 */
-> +	} else {
-> +		dev_dbg(&priv->spi->dev, "WREG(0x%02x) ACK 0x%04x OK\n",
-> +			reg, response);
-> +	}
-> +
-> +	/*
-> +	 * Cycle 3: Check STATUS for Input CRC error.
-> +	 * This is necessary even if ACK was wrong, to clear the CRC_ERR flag.
-> +	 */
-> +	if (ads131m_check_status_crc_err(priv) < 0)
-> +		ret = -EIO;
-> +
-> +write_err:
-As below. Early return preferred. It's easier to read in simple functions like
-this as we can immediately see no cleanup is happening in those error paths
-(so nothing to check!)
-
-> +	return ret;
-> +}
-> +
-> +/**
-> + * ads131m_read_reg_unlocked - Reads a single register from the device.
-> + * @priv: Device private data structure.
-> + * @reg: The 8-bit register address.
-> + * @val: Pointer to store the 16-bit register value.
-> + *
-> + * This function performs the full 3-cycle RREG operation with Input CRC:
-> + * 1. (Cycle 1) Sends the RREG command + Input CRC.
-> + * 2. (Cycle 2) Sends NULL+CRC to retrieve the register data.
-> + * 3. (Cycle 3) Sends NULL+CRC to retrieve STATUS and check for CRC_ERR.
-> + *
-> + * Assumes the mutex lock is held.
-> + *
-> + * Return: 0 on success, or a negative error code.
-> + */
-> +static int ads131m_read_reg_unlocked(struct ads131m_priv *priv, u8 reg, u16 *val)
-> +{
-> +	u16 command;
-> +	int ret;
-> +
-> +	command = ADS131M_CMD_RREG(reg, 0); /* n=0 for 1 register */
-n = 0
-Might as well keep comments to kernel coding style too as helps readability.
-
-> +
-> +	/*
-> +	 * Cycle 1: Send RREG Command + Input CRC
-> +	 * We ignore the RX buffer (it's from the previous command).
-> +	 */
-> +	ret = ads131m_tx_frame_unlocked(priv, command);
-> +	if (ret < 0) {
-> +		dev_err(&priv->spi->dev, "SPI error on RREG (cycle 1)\n");
-> +		goto read_err;
-> +	}
-> +
-> +	/*
-> +	 * Cycle 2: Send NULL Command to get the register data
-> +	 */
-> +	ret = ads131m_rx_frame_unlocked(priv);
-> +	if (ret < 0) {
-> +		dev_err(&priv->spi->dev, "SPI error on RREG data (cycle 2)\n");
-> +		goto read_err;
-> +	}
-> +
-> +	/*
-> +	 * Per datasheet, for a single reg read, the response is the data.
-> +	 * It's in the first 2 bytes of the RX buffer (MSB-aligned 16-bit).
-> +	 */
-> +	*val = get_unaligned_be16(&priv->rx_buffer[0]);
-> +
-> +	dev_dbg(&priv->spi->dev, "RREG(0x%02x) = 0x%04x\n", reg, *val);
-> +
-> +	/*
-> +	 * Cycle 3: Check STATUS for Input CRC error.
-> +	 * The RREG command does not execute if CRC is bad, but we read
-> +	 * STATUS anyway to clear the flag in case it was set.
-> +	 */
-> +	if (ads131m_check_status_crc_err(priv) < 0)
-> +		ret = -EIO;
-> +
-> +read_err:
-> +	return ret;
-
-Return early on error and drop this (or at least make it return 0 always)
-
-> +}
-> +
-> +/**
-> + * ads131m_rmw_reg - Reads, modifies, and writes a single register.
-> + * @priv: Device private data structure.
-> + * @reg: The 8-bit register address.
-> + * @clear: Bitmask of bits to clear.
-> + * @set: Bitmask of bits to set.
-> + *
-> + * This function performs an atomic read-modify-write operation on a register.
-> + * It reads the register, applies the clear and set masks, and writes
-> + * the new value back if it has changed.
-> + *
-> + * Context: This function handles its own mutex locking
-> + *
-> + * Return: 0 on success, or a negative error code.
-> + */
-> +static int ads131m_rmw_reg(struct ads131m_priv *priv, u8 reg, u16 clear,
-> +			   u16 set)
-> +{
-> +	u16 old_val, new_val;
-> +	int ret = 0;
-Always set before use - don't init.
-> +
-> +	mutex_lock(&priv->lock);
-
-As below. Use guard() and early returns on error.
-
-
-> +
-> +	ret = ads131m_read_reg_unlocked(priv, reg, &old_val);
-> +	if (ret < 0)
-> +		goto rmw_unlock;
-> +
-> +	new_val = (old_val & ~clear) | set;
-> +
-> +	if (new_val == old_val)
-> +		goto rmw_unlock;
-> +
-> +	ret = ads131m_write_reg_unlocked(priv, reg, new_val);
-> +
-> +rmw_unlock:
-> +	mutex_unlock(&priv->lock);
-> +	return ret;
-> +}
-
-> +
-> +/**
-> + * ads131m_adc_read - Reads channel data, checks input and output CRCs.
-> + * @priv: Device private data structure.
-> + * @channel: The channel number to read.
-> + * @val: Pointer to store the raw 24-bit value.
-> + *
-> + * This function sends a NULL command (with Input CRC) to retrieve data.
-> + * It checks the received STATUS word for any Input CRC errors from the
-> + * previous command, and then verifies the Output CRC of the current
-> + * data frame.
-> + *
-> + * Return: 0 on success, or a negative error code.
-> + */
-> +static int ads131m_adc_read(struct ads131m_priv *priv, u8 channel, s32 *val)
-> +{
-> +	int ret;
-> +	u8 *buf;
-> +	u16 status;
-> +
-> +	mutex_lock(&priv->lock);
-
-guard(mutex)(&priv->lock); Then no need to unlock in any paths.
-
-> +
-> +	/* Send NULL command + Input CRC, and receive data frame */
-> +	ret = ads131m_rx_frame_unlocked(priv);
-> +	if (ret < 0) {
-> +		mutex_unlock(&priv->lock);
-> +		return ret;
-> +	}
-> +
-> +	/*
-> +	 * Check STATUS word (Word 0) for an Input CRC Error from the
-> +	 * previous SPI frame.
-> +	 */
-> +	status = get_unaligned_be16(&priv->rx_buffer[0]);
-> +	if (status & ADS131M_STATUS_CRC_ERR) {
-> +		dev_err_ratelimited(&priv->spi->dev,
-> +				    "Previous input CRC Error reported in STATUS (0x%04x)\n",
-> +				    status);
-> +	}
-> +
-> +	/*
-> +	 * Validate the output CRC on the current data frame to ensure
-> +	 * data integrity.
-> +	 */
-> +	ret = ads131m_verify_output_crc(priv);
-> +	if (ret < 0) {
-> +		mutex_unlock(&priv->lock);
-> +		return ret;
-> +	}
-> +
-> +	buf = &priv->rx_buffer[ADS131M_CHANNEL_INDEX(channel)];
-> +	*val = sign_extend32(get_unaligned_be24(buf), 23);
-> +
-> +	mutex_unlock(&priv->lock);
-> +
-> +	return 0;
-> +}
-
-
-> +
-> +static const struct ads131m_configuration ads131m_config[] = {
-> +	[ADS131M08_ID] = {
-We used to do this enum and array approach a lot, but it doesn't scale
-particularly well and leaves an enum around people tend to abuse to
-do thing sin code that belong as data.
-
-As such, modern preference in IIO is separate named structures
-static const struct ads131m_configuration ads131m08_config = {
-};
-
-etc
-
-> +		.channels = ads131m08_channels,
-> +		.num_channels = ARRAY_SIZE(ads131m08_channels),
-> +		.reset_ack = 0xFF28,
-> +	},
-> +	[ADS131M06_ID] = {
-> +		.channels = ads131m06_channels,
-> +		.num_channels = ARRAY_SIZE(ads131m06_channels),
-> +		.reset_ack = 0xFF26,
-> +	},
-> +	[ADS131M04_ID] = {
-> +		.channels = ads131m04_channels,
-> +		.num_channels = ARRAY_SIZE(ads131m04_channels),
-> +		.reset_ack = 0xFF24,
-> +	},
-> +	[ADS131M03_ID] = {
-> +		.channels = ads131m03_channels,
-> +		.num_channels = ARRAY_SIZE(ads131m03_channels),
-> +		.reset_ack = 0xFF23,
-> +	},
-> +	[ADS131M02_ID] = {
-> +		.channels = ads131m02_channels,
-> +		.num_channels = ARRAY_SIZE(ads131m02_channels),
-> +		.reset_ack = 0xFF22,
-> +	},
-> +};
-
-> +/*
-> + * Prepares the reusable SPI message structure for a full-duplex transfer.
-> + * The ADS131M requires sending a command frame while simultaneously
-> + * receiving the response/data frame from the previous command cycle.
-> + *
-> + * This message is optimized for the primary data acquisition workflow:
-> + * sending a single-word command (like NULL) and receiving a full data
-> + * frame (Response + N*Channels + CRC).
-> + *
-> + * This pre-configured message is NOT suitable for variable-length SPI
-> + * transactions (e.g., multi-word WREG or multi-response RREG),
-> + * which would require a separate, dynamically-sized spi_message.
-> + */
-> +static void ads131m_prepare_message(struct ads131m_priv *priv)
-> +{
-> +	priv->xfer[0].tx_buf = &priv->tx_buffer[0];
-> +	priv->xfer[0].rx_buf = &priv->rx_buffer[0];
-> +	priv->xfer[0].len = ADS131M_FRAME_BSIZE(priv->num_channels);
-> +	spi_message_init_with_transfers(&priv->msg, &priv->xfer[0], 1);
-
-Consider doing devm_spi_optimize_message() to reduce the overheads of
-this particular message further.
-
-> +}
-
-> +
-> +/**
-> + * ads131m_soft_reset - Issues a software RESET and verifies ACK.
-> + * @priv: Device private data structure.
-> + *
-> + * This function sends a RESET command (with Input CRC), waits t_REGACQ,
-> + * reads back the RESET ACK, and then sends a final NULL to check for
-> + * any input CRC errors.
-> + *
-> + * Return: 0 on success, or a negative error code.
-> + */
-> +static int ads131m_soft_reset(struct ads131m_priv *priv)
-> +{
-> +	struct spi_device *spi = priv->spi;
-> +	u16 response;
-> +	int ret;
-> +	u16 expected_ack = priv->config->reset_ack;
-Pick a consistent ordering for declarations when there is no dependency
-between them. I'm not spotting one here. Something like reverse xmas tree
-is easy to follow.
-
-> +
-> +	mutex_lock(&priv->lock);
-
-Include cleanup.h and
-	guard(mutex)(&priv->lock);
-then no need for got he got err_unlock or any manual unlocking.
-
-> +	dev_dbg(&spi->dev, "Sending RESET command\n");
-
-Probably not appropriate to keep this level of debug print in a
-production driver.
-
-> +	ret = ads131m_tx_frame_unlocked(priv, ADS131M_CMD_RESET);
-> +	if (ret < 0) {
-> +		dev_err(&spi->dev, "Failed to send RESET command\n");
-> +		goto err_unlock;
-
-Only in probe so
-		return dev_err_probe() is appropriate even in here.
-same for all other cases in this function.
-
-> +	}
-> +
-> +	/* Wait t_REGACQ (5us) for device to be ready after reset */
-> +	usleep_range(ADS131M_RESET_DELAY_US, ADS131M_RESET_DELAY_US + 5);
-
-fsleep(). That provides a standard 'slack' on a sleep like this.
-
-> +
-> +	/* Cycle 2: Send NULL+CRC to retrieve the response to the RESET */
-> +	dev_dbg(&spi->dev, "Reading RESET ACK\n");
-> +	ret = ads131m_rx_frame_unlocked(priv);
-> +	if (ret < 0) {
-> +		dev_err(&spi->dev, "Failed to read RESET ACK\n");
-> +		goto err_unlock;
-> +	}
-> +
-> +	response = get_unaligned_be16(&priv->rx_buffer[0]);
-> +
-> +	/* Check against the device-specific ACK value */
-> +	if (response != expected_ack) {
-> +		dev_warn(&spi->dev, "RESET ACK mismatch, got 0x%04x, expected 0x%04x\n",
-> +			 response, expected_ack);
-> +		ret = -EIO;
-> +		goto err_unlock;
-> +	}
-> +
-> +	/* Cycle 3: Check STATUS for Input CRC error on the RESET command. */
-> +	if (ads131m_check_status_crc_err(priv) < 0)
-> +		ret = -EIO;
-> +
-> +err_unlock:
-> +	mutex_unlock(&priv->lock);
-> +	return ret;
-> +}
-> +
-> +/**
-> + * ads131m_hw_init - Initialize the ADC hardware.
-> + * @priv: Device private data structure.
-> + *
-> + * This function performs the hardware-specific initialization sequence:
-> + * 1. Enables the main clock.
-> + * 2. Issues a software RESET command to clear FIFOs and defaults.
-> + * 3. Configures the MODE register to clear RESET, set CCITT CRC,
-> + * and enable Input CRC checking.
-> + *
-> + * Return: 0 on success, or a negative error code.
-> + */
-> +static int ads131m_hw_init(struct ads131m_priv *priv)
-> +{
-> +	struct spi_device *spi = priv->spi;
-> +	u16 clear_mask, set_mask;
-> +	int ret;
-> +
-> +	ret = clk_prepare_enable(priv->clk);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "clk enable failed: %d\n", ret);
-> +		return ret;
-> +	}
-> +	ret = devm_add_action_or_reset(&spi->dev, ads131m_clk_disable_unprepare,
-> +				       priv->clk);
-
-As Marc pointed out just use the enabled form when getting the clock
-in the first place.
-
-> +	if (ret) {
-> +		clk_disable_unprepare(priv->clk);
-> +		return ret;
-> +	}
-> +
-> +	/*
-> +	 * Issue a software RESET to ensure device is in a known state.
-> +	 * This clears the 2-deep FIFO and resets all registers to default.
-> +	 */
-> +	ret = ads131m_soft_reset(priv);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/*
-> +	 * The RESET command sets all registers to default, which means:
-> +	 * 1. The RESET bit (Bit 10) in MODE is set to '1'.
-> +	 * 2. The CRC_TYPE bit (Bit 11) in MODE is '0' (CCITT).
-> +	 * 3. The RX_CRC_EN bit (Bit 12) in MODE is '0' (Disabled).
-> +	 *
-> +	 * We must:
-> +	 * 1. Clear the RESET bit.
-> +	 * 2. Enable Input CRC (RX_CRC_EN).
-> +	 * 3. Explicitly clear the ANSI CRC bit (for certainty).
-> +	 */
-> +	clear_mask = ADS131M_MODE_CRC_TYPE_ANSI | ADS131M_MODE_RESET_FLAG;
-> +	set_mask = ADS131M_MODE_RX_CRC_EN;
-> +
-> +	ret = ads131m_rmw_reg(priv, ADS131M_REG_MODE, clear_mask, set_mask);
-
-As below - I'd pass the iio_dev around to avoid need to duplicate any data
-that is in there in priv.
-
-> +	if (ret < 0) {
-> +		dev_err(&spi->dev, "Failed to configure MODE register\n");
-> +		return ret;
-Only called in probe, so 
-		return dev_err_probe()
-
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ads131m_probe(struct spi_device *spi)
-> +{
-> +	const struct ads131m_configuration *config;
-> +	struct iio_dev *indio_dev;
-> +	struct ads131m_priv *priv;
-> +	int ret;
-> +
-> +	spi->mode = SPI_MODE_1;
-
-Should come from the firmware, not be specified in driver.
-cpha should be set in the dt binding.
-
-> +	spi->bits_per_word = 8;
-IIRC that's the default.
-
-> +
-> +	if (!spi->max_speed_hz || spi->max_speed_hz > ADS131M_MAX_SCLK_HZ)
-> +		spi->max_speed_hz = ADS131M_MAX_SCLK_HZ;
-
-If this isn't variable, normal assumption is it is a problem for firmware
-so drivers tend to not enforce max frequencies.
-> +
-> +	ret = spi_setup(spi);
-> +	if (ret < 0) {
-> +		dev_err(&spi->dev, "Error in spi setup\n");
-> +		return ret;
-
-return dev_err_probe();
-
-> +	}
-> +
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*priv));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	priv = iio_priv(indio_dev);
-> +	priv->spi = spi;
-> +
-> +	indio_dev->name = spi_get_device_id(spi)->name;
-
-Put the string in your config structure.  This path tends to end up
-fragile as it depends on exactly how the firmware match was done.
-
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->info = &ads131m_info;
-> +
-> +	config = device_get_match_data(&spi->dev);
-> +	if (!config) {
-> +		const struct spi_device_id *id;
-> +
-> +		id = spi_get_device_id(spi);
-> +		if (!id)
-> +			return -ENODEV;
-> +
-> +		config = (const void *)id->driver_data;
-
-spi_get_device_match_data()
-
-> +	}
-> +	priv->config = config;
-> +
-> +	indio_dev->channels = config->channels;
-> +	indio_dev->num_channels = config->num_channels;
-> +	priv->num_channels = config->num_channels;
-
-Why do you need another copy?  I'd just pass indio_dev
-into the functions that need this and use iio_priv() to get to
-the prv structure.
-
-> +
-> +	/* Get the external clock source connected to the CLKIN pin */
-> +	priv->clk = devm_clk_get(&spi->dev, NULL);
-> +	if (IS_ERR(priv->clk)) {
-> +		ret = PTR_ERR(priv->clk);
-> +		dev_err(&spi->dev, "clk get failed: %d\n", ret);
-> +		return ret;
-
-		return dev_err_probe();
-
-For all error reporting in probe.  Pretty prints the error value and
-gives shorter code.  Also possible this particular call might defer
-if the clock chip driver hasn't probed yet.
-
-
-> +	}
-> +
-> +	mutex_init(&priv->lock);
-	ret = devm_mutex_init(&priv->lock);
-	if (ret)
-		return ret;
-
-Very small advantage for debug, but also now easy to do so we might as well.
-
-> +	/* Setup the reusable SPI message structure */
-Seems fairly obvious from function name. Probably drop this comment.
-
-> +	ads131m_prepare_message(priv);
-> +
-> +	/*
-> +	 * Perform all hardware-specific initialization.
-> +	 */
-
-The function name feels sufficient to convey that it is hardware init
-so drop the comment.
-
-> +	ret = ads131m_hw_init(priv);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
-> +}
-> +
-> +static const struct of_device_id ads131m_of_match[] = {
-> +	{ .compatible = "ti,ads131m08", .data = &ads131m_config[ADS131M08_ID] },
-As below, reverse the ordering.
-
-> +	{ .compatible = "ti,ads131m06", .data = &ads131m_config[ADS131M06_ID] },
-> +	{ .compatible = "ti,ads131m04", .data = &ads131m_config[ADS131M04_ID] },
-> +	{ .compatible = "ti,ads131m03", .data = &ads131m_config[ADS131M03_ID] },
-> +	{ .compatible = "ti,ads131m02", .data = &ads131m_config[ADS131M02_ID] },
-> +	{ /* sentinel */ },
-	{ }
-So no comma the sentinel.
-> +};
-> +MODULE_DEVICE_TABLE(of, ads131m_of_match);
-> +
-> +static const struct spi_device_id ads131m_id[] = {
-> +	{ "ads131m08", (kernel_ulong_t)&ads131m_config[ADS131M08_ID] },
-
-Normally do these in opposite order. Doesn't really matter but nice to have
-a universal style so I'd prefer it that way up.
-
-> +	{ "ads131m06", (kernel_ulong_t)&ads131m_config[ADS131M06_ID] },
-> +	{ "ads131m04", (kernel_ulong_t)&ads131m_config[ADS131M04_ID] },
-> +	{ "ads131m03", (kernel_ulong_t)&ads131m_config[ADS131M03_ID] },
-> +	{ "ads131m02", (kernel_ulong_t)&ads131m_config[ADS131M02_ID] },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(spi, ads131m_id);
-> +
-> +static struct spi_driver ads131m_driver = {
-> +	.driver = {
-> +		.name = "ads131m0x",
-> +		.of_match_table = of_match_ptr(ads131m_of_match),
-
-Drop of_match_ptr(). It prevents other types of firmware - e.g. the
-magic ACPI ID that says use the dt binding, from working and provide
-no real benefit.
-
-> +	},
-> +	.probe = ads131m_probe,
-> +	.id_table = ads131m_id,
-> +};
-> +module_spi_driver(ads131m_driver);
-> +
-> +MODULE_AUTHOR("David Jander <david@protonic.nl>");
-> +MODULE_DESCRIPTION("Texas Instruments ADS131M0x ADC driver");
-> +MODULE_LICENSE("GPL");
-
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR03MB6326.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0ec75b7-8bf4-4bac-b725-08de1cf610dc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2025 05:33:50.3066
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: lS8GpuJGBlesYtxE8eUdrosUI4Fo+7jBa0WfglG/QT2FFyN5MAyiiV/dTp4XDKJDn3N/J8tj7pbD+xWmJcCMpQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI2PR03MB6614
+
+T24gV2VkLCAyMDI1LTExLTA1IGF0IDE4OjQ4ICswMDAwLCBDb25vciBEb29sZXkgd3JvdGU6DQo+
+ID4gPiBQbGVhc2UgZHJvcCBtZW50aW9uIG9mIHRoZSBldmIgZnJvbSBhbGwgb2YgdGhlc2UgY29t
+bWl0IG1lc3NhZ2VzLg0KPiA+ID4gVGhlDQo+ID4gPiBjb21wYXRpYmxlIGhhcyBub3RoaW5nIHRv
+IGRvIHdpdGggdGhlIGV2YiBib2FyZCwgaXQncyBnb2luZyB0byBiZQ0KPiA+ID4gY29tbW9uDQo+
+ID4gPiBhY3Jvc3MgYWxsIGJvYXJkcyB1c2luZyBhbiBtdDgxODkuDQo+ID4gPiANCj4gPiA+ID4g
+wqAgYXJtNjQ6IGR0czogbWVkaWF0ZWs6IEFkZCBNVDYzMTkgUE1JQyBTdXBwb3J0DQo+ID4gPiA+
+IMKgIGFybTY0OiBkdHM6IG1lZGlhdGVrOiBhZGQgcHJvcGVydGllcyBmb3IgTVQ2MzU5DQo+ID4g
+PiANCj4gPiA+IFdhaXQgYSBtaW51dGUsIHdoYXQgYXJlIHRoZXNlIHR3byBwYXRjaGVzIGV2ZW4g
+ZG9pbmcgaW4gdGhpcw0KPiA+ID4gc2VyaWVzDQo+ID4gPiBpbg0KPiA+ID4gdGhlIGZpcnN0IHBs
+YWNlLCB3aGVuIGl0IGlzIG90aGVyd2lzZSBhYm91dCB0aGUgbXQ4MTg5Pw0KPiA+IA0KPiA+IG10
+ODE4OSBldmIgYm9hcmQgaW5jbHVkZSBtdDYzeHguZHRzaSzCoA0KPiA+IGFuZCB0aGUgZHRzaSBm
+aWxlcyBtYXliZSBmb3Igb3RoZXIgYm9hcmRzIGluIHRoZSBmdXR1cmUswqANCj4gPiBpZS4gbXQ4
+MTg5LzgxeHggY3VzdG9tL09FTS9PRE0gYm9hcmRzLg0KPiA+IFNob3VsZCBpIHNlcGFyYXRlIHRo
+b3NlIHR3byBwYXRjaGVzIGFzIGEgbmV3IHBhdGNoIHNlcmllcyA/DQo+IA0KPiBUaGV5IHNlZW1l
+ZCB1bnJlbGF0ZWQgdG8geW91ciBzZXJpZXMgYW5kIHBvb3IgcXVhbGl0eSB0byB0aGUgcG9pbnQN
+Cj4gdGhhdA0KPiB0aGV5IGxvb2tlZCBsaWtlIGFuIGFjY2lkZW50YWwgaW5jbHVzaW9ucywgZ2l2
+ZW4gdGhlcmUncyBubyBtZW50aW9uDQo+IG9mDQo+IHRoZW0gaW4gdGhlIGNvdmVyIGxldHRlci4g
+U2luY2UgdGhleSBkbyBhcHBlYXIgdG8gYmUgcmVsYXRlZCwgc3VyZQ0KPiBrZWVwDQo+IHRoZW0u
+IFRoYXQgc2FpZCwgdGhlICJhZGQgcHJvcGVydGllcyBmb3IgTVQ2MzU5IiBwYXRjaCBpcyBpbiBu
+ZWVkIG9mDQo+IG1ham9yIHJld29yaywgc28geW91J2xsIGhhdmUgdG8gcmV3b3JrIGl0Lg0KDQpH
+b3QgaXQsIHdpbGwgYWRkIG10NjN4eCBpbmZvcm1hdGlvbiBhbmQgcmV3b3JrIG10NjN4eCBkdHNp
+IGluIG5leHQNCnZlcnNpb24NCg0KDQoNCg==
 

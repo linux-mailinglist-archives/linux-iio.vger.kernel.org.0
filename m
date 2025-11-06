@@ -1,130 +1,134 @@
-Return-Path: <linux-iio+bounces-25929-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25930-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22580C39966
-	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 09:29:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843E7C399E9
+	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 09:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4BA61A22EA5
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 08:30:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F6B41A237C0
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 08:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61C0302167;
-	Thu,  6 Nov 2025 08:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3ADE308F38;
+	Thu,  6 Nov 2025 08:44:43 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE2B302142;
-	Thu,  6 Nov 2025 08:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25975308F2A
+	for <linux-iio@vger.kernel.org>; Thu,  6 Nov 2025 08:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762417791; cv=none; b=NBvyQEjL9/kSMA5X97wF9oi4smhzTEZvuNKZqp3bKpu+pkwJW9VPc65o8sEc+QZTiFyFsuAwZqVtU4iw19w8XsUqtmYDNFGEYQun3j8o68N93sukagYhNi3ObB3ORvC1USpGvsGorAqnDM4AA0JMktlvJG1XkQh4FxXse9DLsuA=
+	t=1762418683; cv=none; b=nPGvOHmhYegXOj/CTj8vPl1CtA3brf4qrlN4ELAH4OPEdL6iFg142bm3YqctdBAmMBUw1GUIJlTixuj2Sk9BSay6ikCdIRB5uBmqcddrvrO2+PHWjlI3GjU4qk0cWu+RQL4cfQG+QSaMmxdxlsFvv4OdAwl8BxmV3mBoNc38oPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762417791; c=relaxed/simple;
-	bh=UxbC1vicz9GSMfWV81A0ecke1oaKM6VqkOqImVMc98w=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=WAFO+gfiBmjsGd5os09G+aSQkP72s/j+rzyWv6ZhV4SR1mReg41OY6SxJLBiwUtZYmLDw/khlyvR7OWXJ90By9MTuy0bI3Y3IWl52Nw8S5lA1GH6a+jbnFZReUqyv/J7bidQo+8e0eV8stpUMWhQc5ZrJ7WsXVLA6/2Ag2In7Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-03 (Coremail) with SMTP id rQCowAC3NOxkXAxpmp61AQ--.43240S2;
-	Thu, 06 Nov 2025 16:29:32 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org,
-	error27@gmail.com,
-	andriy.shevchenko@intel.com
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] iio: trigger: Fix error handling in viio_trigger_alloc
-Date: Thu,  6 Nov 2025 16:29:23 +0800
-Message-Id: <20251106082923.32688-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:rQCowAC3NOxkXAxpmp61AQ--.43240S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFWkCF1kGF18ZryxKFy3Jwb_yoW8CFWfpa
-	n7ZayqkryDJF1kXw47Z3W8ZryfGa1rKa15KF48A3sI93y5XryrKFyIyrWjyw18Jry8XF42
-	qasrXa45Cr1DAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
-	v_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
-	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
-	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
-	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
-	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUeYLvDUUU
-	U
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1762418683; c=relaxed/simple;
+	bh=4e2WDzqLKYzpn41/EU08/ysLwcMnKhTYCq1gfsIkVBw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tYfvs2kEorbbDA05Rs+tdYpLgGZrCf63yk9pI3tSGQBhFpchs9k4p78wUoSOOVdEhnWlnhuLdOSbnSDypMhjqW27s0w7i0m9YqwWIV0SrF6jAKhyFNqXocD8Jawk22fOhzT8zlhg79HxYDAMs0QvoA5TlUOMuhUY3acafJM2d50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-551b9d94603so176203e0c.1
+        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 00:44:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762418681; x=1763023481;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mz1Q2mn9SZfrcMx6xhR+wHR4X9YWp5k+qUP26CNzhQI=;
+        b=jucKIgXh5Hd8nAo6Yl7EHBO+xxkowx3lXE0R8VBfKFhx4nlDDvZqSEANOZMOXfEdJM
+         gL6FR/sO8/R6Q/6S6efB3bNsm8IgyhDYwNZEPRbgGnvXkGW44qzQl6alPF2aQd3X0u1/
+         O9H18TQRcmT2yHv82rhDQhu6DabHhQt2wsUxcNSZBYz8BTO1wFsOWumqPdj0VZD50uwA
+         Mq1SrucZKGJI7gRn66PsM6gLo2+6Erkwla+c8gG9pWEzXDxBA4q/EqlOltDrwW5Bpu3v
+         VZZO0yIGO9W3AIXZ2+jZbbycb+5MX5/6/hJ9xnLVVH8GnvvNLJdz8egSskGqlEKVrOBJ
+         32zg==
+X-Forwarded-Encrypted: i=1; AJvYcCWeqoQsqlfEsz7j3wMpKh0XokNpEvnsu0uYVwJLs8LwHC5QtAg7r6fHQsnu6GS5yrxp/+O37/Lq1Jo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuDSYHWczLS/h6ZJUkzg6XQlDGRBGRbdWkaA6WbB5jMqtltAkr
+	kknXxNtp3lamoXDZTb5d6Fj0MqcvzX68xunLaVl4WVCjRDkFOUrQ+dfvrsFZYQkt
+X-Gm-Gg: ASbGncsnteBInZOXNGTxKUNHFE7Edy/fvaQ34UAMctfTnKiTt8rPG15UiVdmO4bDvPW
+	o35Wza6UxPYFuvsTPZcxZWRf396lCTRhlfqWDI1ZdqoRKanV4sLai1dAK8c5aqOALlzFkK5yvnI
+	MX6Lr1VWHgKL2f/tKTA3TsGtwsaK8C9dNpF6I6uWDifhYBqBmiCjxYkqSi2ZK3dsGflN/E1iA56
+	bXmBx0PFONFOA+znJMBbaV/MusncF4oZR8xgd3jBBCvvkngX+p/zRe2wORK828GozKd7ANizbnL
+	ylEG2MrFq2QhjQga6gldXBOFFsE1+mcQPCacB1wA4MfB/2wjZ8CpER68GmtDUULaOLGDp/BVspH
+	dkKE138Iqa/wrQK6+mWrjnnhdWoM590egoktXjSbqolK9UAunz+HkyXtNr7SYj36WN5AQ6P4fUu
+	5KFUWwaYSwgIs5M3LlGB4OS1kJwYvho+ZTGrDwo0Yw/Y4r8ihGHpPvLS+ckws=
+X-Google-Smtp-Source: AGHT+IGsJ64cs3l0AdHibZb/YDVLTqLMZtbcr9oVx2R96s7j39ELBkltIIWGBCMas6wAUeCiNh/5Hg==
+X-Received: by 2002:a05:6102:374e:b0:5db:f615:1819 with SMTP id ada2fe7eead31-5dd88ef3ed9mr2125130137.3.1762418680815;
+        Thu, 06 Nov 2025 00:44:40 -0800 (PST)
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com. [209.85.222.48])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-937088206a6sm785442241.6.2025.11.06.00.44.39
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Nov 2025 00:44:39 -0800 (PST)
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-93516cbe2bbso218400241.2
+        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 00:44:39 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUcOMr+Uh2kM7i95sIGbIxteu5pJgccQ86S3PYa30rQQcfvaWZENhdwDTYMiEpk2P2GA7vRRajYuyE=@vger.kernel.org
+X-Received: by 2002:a05:6102:e0d:b0:5db:cc92:26e7 with SMTP id
+ ada2fe7eead31-5dd8926eff6mr2132593137.38.1762418679294; Thu, 06 Nov 2025
+ 00:44:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20251006172119.2888-1-wsa+renesas@sang-engineering.com>
+ <20251006172119.2888-2-wsa+renesas@sang-engineering.com> <20251009204726.GA3306624-robh@kernel.org>
+ <aOgsxSfGIVBpfkpb@shikoro>
+In-Reply-To: <aOgsxSfGIVBpfkpb@shikoro>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 6 Nov 2025 09:44:28 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUf2QB__ZXsJK-iMAt7U-89d7s76oRB8KE9Jj0XywxzJQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bl7RbaNV7V4JGT9opu1pZKZ4R-1R9XxMMdHotgYEewUqOZDK542sndaY3s
+Message-ID: <CAMuHMdUf2QB__ZXsJK-iMAt7U-89d7s76oRB8KE9Jj0XywxzJQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] dt-bindings: iio: accel: adxl345: document second interrupt
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Rob Herring <robh@kernel.org>, linux-renesas-soc@vger.kernel.org, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-viio_trigger_alloc() initializes the device with device_initialize()
-but uses kfree() directly in error paths, which bypasses the device's
-release callback iio_trig_release(). This could lead to memory leaks
-and inconsistent device state.
+Hi Wolfram,
 
-Additionally, the current error handling has the following issues:
-1. Potential double-free of IRQ descriptors when kvasprintf fails.
-2. The release function may attempt to free negative subirq_base.
-3. Missing mutex_destroy in release function.
+On Sun, 12 Oct 2025 at 02:01, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+> > > +    oneOf:
+> > > +      - items:
+> > > +          - enum: [INT1, INT2]
+> > > +      - items:
+> > > +          - const: INT1
+> > > +          - const: INT2
+> >
+> > This is better written as:
+> >
+> > minItems: 1
+> > items:
+> >   - enum: [INT1, INT2]
+> >   - const: INT2
+> >
+> > It is mainly better because using 'oneOf' results in poor error
+> > messages.
+>
+> But wouldn't that allow naming both interrupts INT2? Or is this
+> magically prevented somehow?
 
-Fix these issues by:
-1. Replacing kfree(trig) with put_device(&trig->dev) in error paths.
-2. Setting subirq_base to 0 after freeing IRQ descriptors in error
-path to prevent double-free in release callback.
-3. Modifying release function to properly handle negative subirq_base.
-4. Adding missing mutex_destroy().
+    "That's because we require strings to be unique entries, so [...]
+twice will be rejected."
 
-Found by code review.
+https://lore.kernel.org/all/20251009200054.GA3245555-robh@kernel.org/
 
-Cc: stable@vger.kernel.org
-Fixes: 2c99f1a09da3 ("iio: trigger: clean up viio_trigger_alloc()")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v2:
-- modified the patch, thanks for developer's suggestions.
----
- drivers/iio/industrialio-trigger.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Gr{oetje,eeting}s,
 
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index 54416a384232..9f6d30a244d9 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -524,6 +524,7 @@ static void iio_trig_release(struct device *device)
- 			       CONFIG_IIO_CONSUMERS_PER_TRIGGER);
- 	}
- 	kfree(trig->name);
-+	mutex_destroy(&trig->pool_lock);
- 	kfree(trig);
- }
- 
-@@ -596,8 +597,9 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
- 
- free_descs:
- 	irq_free_descs(trig->subirq_base, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
-+	trig->subirq_base = 0;
- free_trig:
--	kfree(trig);
-+	put_device(&trig->dev);
- 	return NULL;
- }
- 
--- 
-2.17.1
+                        Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 

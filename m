@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-25973-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25974-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6664C3C172
-	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 16:36:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD87CC3C220
+	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 16:44:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4D7C54E3308
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 15:36:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF66A3ADD48
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 15:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B9A4207A;
-	Thu,  6 Nov 2025 15:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709D929ACF0;
+	Thu,  6 Nov 2025 15:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="RCBBHmI5"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="kevjdNmR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CCF279327
-	for <linux-iio@vger.kernel.org>; Thu,  6 Nov 2025 15:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1247A29B766
+	for <linux-iio@vger.kernel.org>; Thu,  6 Nov 2025 15:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762443407; cv=none; b=q/s9OOxIuDgRsLEbROZKviRBlhGsXd1NZvyOCemMcIOEryybdMwUaMX0djJlZbtY/As3vlJi/varoyVgXTJuBVIm+G8aLo6zqgOmrEE25dn6UNPLV6YuxAtiP3ivHqnvyVW2MWyXFIil6/mVwTlfmjmK/YHAqsEn44xCCLzVp2g=
+	t=1762443603; cv=none; b=I9b+BengM/AA4BXZwk1yUtFF/5qHeWH4JxXQHxf2dY7yDN+8JLWRZ2M0Y0PZ2YzPjVnYZn2ZQSmXOHEwiA9apu5mITXCEFUKSsnYzAHNIwWJQSQzBgujDS1Iu/FuaWkBxzLfbE1kV4sk5rvLMIW+8QyuV9JZIu7IkkJ4NM2OKUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762443407; c=relaxed/simple;
-	bh=xk6l2WOOOp6czqXIg1WfykCAiMAdHCUw6VSHs/tqjfg=;
+	s=arc-20240116; t=1762443603; c=relaxed/simple;
+	bh=OvVab99hJjNyRIYEydBN0V5gIv2r0yCOEdtFZCKRP7A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YwdHk/RahjT60mGtSd4eVXMnZZPes1HJ21kDG2iwbBR7OZ+VV1MHKHmNxHNyo4butRk3IxYiv886rKTvWvW/feqDDVzplDavMU3iOj1m7Y0KTEvtpEUQ19lMwPzVpLe+SWTdH4tfyM90uKRm1to4chCViQnA/qSzw89hBqlaElo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=RCBBHmI5; arc=none smtp.client-ip=209.85.128.53
+	 In-Reply-To:Content-Type; b=LFSlAdUH7U3D8bsc7yQo9/wkxt5MfhHHuHhWzP28Rx2OPK94hl8WFmZA9vnXk98j0BoP/UPRRGP7YT6b1ho03JWVP98q7DTHV/45W/5izrne430XHrqIVEU96TVR7S5BbV67hZAMw+tDGv66wLo+ljyPHuURFvNga+9MDy/ZR4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=kevjdNmR; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4775ae77516so13202585e9.1
-        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 07:36:45 -0800 (PST)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-42421b1514fso623097f8f.2
+        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 07:40:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1762443404; x=1763048204; darn=vger.kernel.org;
+        d=tuxon.dev; s=google; t=1762443599; x=1763048399; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=NoiFfWZaW31Ma9mD3WuZZQSDOEMD5VY8nTTYH6Ca1fs=;
-        b=RCBBHmI5NJuL/b0QMZqwJKF7ud8TA4ryMo59VDUQpnay3XsUAvEHe9LO/fOzuRpsZT
-         Jx1NFanVf4S6AnMyYzJCnljlJyN6jxlel+V/rblI5B/Ke6DaEPf+ndUzWrqDMCP+HdnB
-         uDl16AbXtCY5QarJXQGxMW4weytJLsYo/hhgWgTWp6oEXUmaIM9yVLpkAXqAknXGbXx1
-         QuqO79EbjR+FpS9ROH8ywiCYKLR1Vo0TveRfPl4UAmhu6xulcIFSO5a0/1OJf0Rjev67
-         yegxuQY82ZCP4p/4NvCgTDGdk/lzzVLD1htvb51kbSpM+eaB4whicLPwz/DWF4glUFn4
-         0IHQ==
+        bh=NCImS8vAPGN6LTIAPQAR8IZZ+CU8X+89zO49Z6Ixv/M=;
+        b=kevjdNmRx/vPItHpbAA8Fj/gaSq9j+ClmImM0Wu41WWm99Io6fzx1WKICnV2NjGuga
+         7IPYAskhRW4/AmYolW7YBPO5Us9+jZsIrLHiG60JwBHYXnsUkPauVfjnTaE7HaGJ2vb9
+         YGNWemlzo8c5S8XaxIUhpJdfzy1o0vDVeYDzanJ7FEzuwIBnVjTH+A2WC6Akerw0Ujh9
+         XdXdYQ+U6S1KSzGZWRK+gDlIUg3OtdsU6dsVGLp7OZhbTOU7VORIj2VozYwXtAmuFWWY
+         NHgSOcI4vnO0JmiT4KN7GSGhmyfgV6CH/JaOMA9Vvl/ijiQ7GjMFxUmDrbMY5N/29B7v
+         jW6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762443404; x=1763048204;
+        d=1e100.net; s=20230601; t=1762443599; x=1763048399;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NoiFfWZaW31Ma9mD3WuZZQSDOEMD5VY8nTTYH6Ca1fs=;
-        b=vpwPpAcC9bzhwg0ZUXtxjAXGWGdmcVvyV8Rp/1w2FjFwo0ZuxY+07EGhI0R9JVPdZh
-         dH3xVUAhfxBs6TRiljRxs8UqNyf8JOMtL8cz97qgLeakIgrypzSUh2oN+lJl7Jpr2QAW
-         MocXcynWWmV62S2YBjbaffrbTIBMfTe6zzOZZNIOd014JFgSIQhCpT96x9CxBb8qeBwM
-         ++9szvOeR4KG/UPo7qILlP6DN9rELaOwC6BXDFj+m81drMoBA4/xZjhgToIb0RUbUyx0
-         RYEmKkrvd1289wAd6O1hxWTq8kuX6Xu4RvBpxBJL/n0DKHuy5B7LRm/ICbV+aZFL/z6L
-         zVnA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8HDpD71HIANZjShwiW54glmFD/G73rbYnuOcAaHx56sRCu3dLHPOd8KIa+p9kUKhCH4LE7EGqLl0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYAHw70hYXTIgndXYuS2DWtzeu7VTLOuP+tLJBX6mED2F09aIj
-	RYmRGYqsFxQlihzeldWqekrpDksyUcruLl4ItOFG3jyUAg2gN8xuE5DVs33mOYln2sA=
-X-Gm-Gg: ASbGnctmF+1STq13hQq5268iY1fzSMszNxOXtdWimgk3y+D7B3gq3WtH2FbAtoqWK4x
-	Yb/ct/pjzvdJ1zm21j63sjU2iESj+7VpgRSKmr44fYUtCKHnM6hJm0yeaxECz/8M0mXSgI8WyhZ
-	KY0MAgCAGD46j9AqH90bYE2Aztea5zDcM/Dz9GxhPv69aUwdCdddp6fsvx0OwaJZA3c0i7tHCme
-	7POYmZ3xx1ZQp/EXpV6w0QUXUxrq8TkjA1NeUsxSi+8l/HmJCyvI4JiPc5hYi+Dq+AfOmIJToBY
-	ga/OY1JMBI7VzY/49LjH0mMX4n1mvcC6IHrIolurmulyQ6f3eAU1KQ2/BmOIqOtkyKWcofCu4By
-	Z4djSoD+CR8IE2/VCWn0dHslgoG1gFFutNmt/sETLhuQ7G4tAu3u8g4MhedkqQuiAwilRHDYae0
-	m8P8zO2YiZ4z3gFZJQsa0=
-X-Google-Smtp-Source: AGHT+IHm/6/RnHvUQpqjyEKIYZGBSjHuPRp5b3DBLGbL1GoDEzCDZheRRGUhzX2BHAHpgilQLx/Q7g==
-X-Received: by 2002:a05:600c:621a:b0:471:14f5:126f with SMTP id 5b1f17b1804b1-4775ce206f3mr59734595e9.33.1762443404278;
-        Thu, 06 Nov 2025 07:36:44 -0800 (PST)
+        bh=NCImS8vAPGN6LTIAPQAR8IZZ+CU8X+89zO49Z6Ixv/M=;
+        b=Ok9As12RiTfTulOIiOo4ic3MbqSaSXPD12eB3CYSLDIrEK4zYEnHfKF8+8jvloWCsg
+         JxNKV4JyvMPyiDwUXI/YCPz7dyNmD7sRa56eCii+2pA27IdIo2GlI8hVjpdElIJqmJE1
+         ZbJvWPeB6tvVFSLUQNR5+K4Agy4RZVr35dXtEPxVr6mlJS7nTQd78VDTWNRJNi54wb++
+         GpmmIZ59IXjOu3I5QYwnZrhUvNBOEVs4d+jUk69PF5Q/SDFYEFMlyyfsS68jfZCTupgQ
+         qJAQKD4jNxjQsQbiyjdsYjqJC1E/joMgXu+uffb/RviUP6U0Yv9R0s0/RAJojpRJtHxq
+         c31g==
+X-Forwarded-Encrypted: i=1; AJvYcCUVG/VON421q97a/HD4ElUmKRnVUnhXX4g7lOVY8oLH8DwbhVZN/NYhOCGxi0wsrcdkpALd23+SogA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZt4d7L10pQaU2vEfnTS0C69O1Hf/2nKTav49nuCsR+Hzi9Em8
+	DGboye1cB11uFxbU1YtsRJaLZQ1wIb/haRWNvl6qCP38EiDCD05qRmDyQb/H252MBPg=
+X-Gm-Gg: ASbGncsptfgtYFMLtN2PpJFc19KhwfCKevvF81wR5Vj8+9Ll5c7Ps7Z2QEPBkaAVw80
+	njWIgeefUqjQpLScrkrDLd4AhtshB0e2X0QVKBqEnX9635RorOzzTLF5HJY5zJdNpcGXa9KNJYf
+	gyhmFp4kzI2Xwu8da8+c3P1LTpG57t7vCdTQWI7RMWYlWEQ19dgfzfcHxJoto7idm3Q42y9Etgc
+	FsR+1yaJALeMdzAp9LLSYfDao651Zn4O7qBbsjO2bawLI/ILMdHsI9UUqgKDWE1XDwj3VexF0MR
+	l+PbelT5GxYEbjtsC41Bbz0xTiYquSlkPshnzKv/9r7nA6J+GbIuJZcEijoGdpQb2otmAnJLv88
+	ay13yH8v5mb7p9xErgcpc+vfkBtaz8AQyn2rSjG8C8wS+kB7wybIBMn5uZ8y3XPaJmMNm6XMFJn
+	Js6a5Rhfpv
+X-Google-Smtp-Source: AGHT+IEnd90RJHx7ZuzW87zs5Q4EEB4nWgY3Vtjy9fpk248/BemBXzC7fRUumPfx0M4xpvI1GCS0qw==
+X-Received: by 2002:a05:6000:2510:b0:429:d0b8:3850 with SMTP id ffacd0b85a97d-429e330b68dmr6675168f8f.48.1762443599342;
+        Thu, 06 Nov 2025 07:39:59 -0800 (PST)
 Received: from [192.168.50.4] ([82.78.167.134])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477622f42a5sm98437525e9.1.2025.11.06.07.36.41
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429eb4772basm6489913f8f.26.2025.11.06.07.39.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Nov 2025 07:36:43 -0800 (PST)
-Message-ID: <d1b02488-7722-4b39-bb8e-f7e5c8e11b1e@tuxon.dev>
-Date: Thu, 6 Nov 2025 17:36:40 +0200
+        Thu, 06 Nov 2025 07:39:58 -0800 (PST)
+Message-ID: <181cb561-4fdf-49c0-aeb0-85844411a6ad@tuxon.dev>
+Date: Thu, 6 Nov 2025 17:39:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,8 +83,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/26] clk: at91: pmc: #undef field_{get,prep}() before
- definition
+Subject: Re: [PATCH v6 08/26] soc: renesas: rz-sysc: #undef field_get() before
+ local definition
 To: Geert Uytterhoeven <geert+renesas@glider.be>,
  Yury Norov <yury.norov@gmail.com>,
  Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
@@ -123,24 +123,24 @@ Cc: linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-sound@vger.kernel.org, linux-mtd@lists.infradead.org,
  linux-kernel@vger.kernel.org
 References: <cover.1762435376.git.geert+renesas@glider.be>
- <939d8c6da1f468026b1bb201413ba08b1d0751fd.1762435376.git.geert+renesas@glider.be>
+ <7feec8e9cf823dd365d6e0f21004f943964e52a0.1762435376.git.geert+renesas@glider.be>
 From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Content-Language: en-US
-In-Reply-To: <939d8c6da1f468026b1bb201413ba08b1d0751fd.1762435376.git.geert+renesas@glider.be>
+In-Reply-To: <7feec8e9cf823dd365d6e0f21004f943964e52a0.1762435376.git.geert+renesas@glider.be>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 11/6/25 15:33, Geert Uytterhoeven wrote:
-> Prepare for the advent of globally available common field_get() and
-> field_prep() macros by undefining the symbols before defining local
-> variants.  This prevents redefinition warnings from the C preprocessor
-> when introducing the common macros later.
+> Prepare for the advent of a globally available common field_get() macro
+> by undefining the symbol before defining a local variant.  This prevents
+> redefinition warnings from the C preprocessor when introducing the common
+> macro later.
 > 
 > Suggested-by: Yury Norov <yury.norov@gmail.com>
 > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-Acked-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+
 

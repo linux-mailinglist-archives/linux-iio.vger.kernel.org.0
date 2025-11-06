@@ -1,127 +1,146 @@
-Return-Path: <linux-iio+bounces-25972-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25973-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091AAC3C18D
-	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 16:37:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6664C3C172
+	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 16:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 273B542584F
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 15:31:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4D7C54E3308
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 15:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373E8299931;
-	Thu,  6 Nov 2025 15:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B9A4207A;
+	Thu,  6 Nov 2025 15:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hjqP4PWE"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="RCBBHmI5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0ECE2957C2;
-	Thu,  6 Nov 2025 15:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CCF279327
+	for <linux-iio@vger.kernel.org>; Thu,  6 Nov 2025 15:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762443078; cv=none; b=tCuVQ5JW0p5YYqV4KlB8m3RhZGWWCX8f0q5wGFMMzCXgdE0aXdY8hx/6qIxXth+9OUPYZNKbkrDwhN21WaenrU1agiz7BB9+xXC/DSMrO2JzJeitK4yuUJBARCzZWdIYZtxPjA3CG5QIO3xW/dWATw4ohrBHGANcKoSpLvNKGnU=
+	t=1762443407; cv=none; b=q/s9OOxIuDgRsLEbROZKviRBlhGsXd1NZvyOCemMcIOEryybdMwUaMX0djJlZbtY/As3vlJi/varoyVgXTJuBVIm+G8aLo6zqgOmrEE25dn6UNPLV6YuxAtiP3ivHqnvyVW2MWyXFIil6/mVwTlfmjmK/YHAqsEn44xCCLzVp2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762443078; c=relaxed/simple;
-	bh=YNrEBMo35Bq9a0Ubhu/XS6aeK5Om7SRwirX8uKP/5Uk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=GxrOB9VDrqylu0Kve72kOCpPYTPJqEHpCS3sjJsa/1kGWr4wNQOr3k4ndhKL446Zd5EvZ2maT6XAtY5ld7uUCn/biotx74eA5X5XLVZAoCI8ssLRZEqi2Q0f1vd7fnQcoFFS2iB/17y6jKYNuEEh3xH1FDukPfX9WYbXYnmhI2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hjqP4PWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5EE78C4CEF7;
-	Thu,  6 Nov 2025 15:31:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762443076;
-	bh=YNrEBMo35Bq9a0Ubhu/XS6aeK5Om7SRwirX8uKP/5Uk=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=hjqP4PWEu8GLjLHqkvC073J1gjpAJolDkRTIJgulkZqNvgdAPtmOj9VgeTAKVBgKu
-	 U8YJS7oB2DDXYI4gF93xkShfBAkGIs3M2IpDj4RkWYkUeb7yQwaZtOKGrYryYyB9by
-	 WpkEyrpkWYClXfH8Sv2brWRKjxY7tGqvwF1P9MYqHtkR0LW77u6wMaSIrNKEJWmveQ
-	 3jJwAXE/7EcnVRroHoLhFXzlv2tNRyWE1S/tm91MFEaAwQZvUicrN9tyIJkmMseixD
-	 hf/30ZTTeRoX8cnNPi8oOYo3jt17bFAgDVLjd3/Xh1+bU29WdXxZkStScd5UvYFx2K
-	 Q5QTgQGHgcG+w==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56E5FCCF9F8;
-	Thu,  6 Nov 2025 15:31:16 +0000 (UTC)
-From: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
-Date: Thu, 06 Nov 2025 15:31:07 +0000
-Subject: [PATCH v3] iio: imu: inv_icm45600: Initializes
- inv_icm45600_buffer_postdisable sleep
+	s=arc-20240116; t=1762443407; c=relaxed/simple;
+	bh=xk6l2WOOOp6czqXIg1WfykCAiMAdHCUw6VSHs/tqjfg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YwdHk/RahjT60mGtSd4eVXMnZZPes1HJ21kDG2iwbBR7OZ+VV1MHKHmNxHNyo4butRk3IxYiv886rKTvWvW/feqDDVzplDavMU3iOj1m7Y0KTEvtpEUQ19lMwPzVpLe+SWTdH4tfyM90uKRm1to4chCViQnA/qSzw89hBqlaElo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=RCBBHmI5; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4775ae77516so13202585e9.1
+        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 07:36:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1762443404; x=1763048204; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NoiFfWZaW31Ma9mD3WuZZQSDOEMD5VY8nTTYH6Ca1fs=;
+        b=RCBBHmI5NJuL/b0QMZqwJKF7ud8TA4ryMo59VDUQpnay3XsUAvEHe9LO/fOzuRpsZT
+         Jx1NFanVf4S6AnMyYzJCnljlJyN6jxlel+V/rblI5B/Ke6DaEPf+ndUzWrqDMCP+HdnB
+         uDl16AbXtCY5QarJXQGxMW4weytJLsYo/hhgWgTWp6oEXUmaIM9yVLpkAXqAknXGbXx1
+         QuqO79EbjR+FpS9ROH8ywiCYKLR1Vo0TveRfPl4UAmhu6xulcIFSO5a0/1OJf0Rjev67
+         yegxuQY82ZCP4p/4NvCgTDGdk/lzzVLD1htvb51kbSpM+eaB4whicLPwz/DWF4glUFn4
+         0IHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762443404; x=1763048204;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NoiFfWZaW31Ma9mD3WuZZQSDOEMD5VY8nTTYH6Ca1fs=;
+        b=vpwPpAcC9bzhwg0ZUXtxjAXGWGdmcVvyV8Rp/1w2FjFwo0ZuxY+07EGhI0R9JVPdZh
+         dH3xVUAhfxBs6TRiljRxs8UqNyf8JOMtL8cz97qgLeakIgrypzSUh2oN+lJl7Jpr2QAW
+         MocXcynWWmV62S2YBjbaffrbTIBMfTe6zzOZZNIOd014JFgSIQhCpT96x9CxBb8qeBwM
+         ++9szvOeR4KG/UPo7qILlP6DN9rELaOwC6BXDFj+m81drMoBA4/xZjhgToIb0RUbUyx0
+         RYEmKkrvd1289wAd6O1hxWTq8kuX6Xu4RvBpxBJL/n0DKHuy5B7LRm/ICbV+aZFL/z6L
+         zVnA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8HDpD71HIANZjShwiW54glmFD/G73rbYnuOcAaHx56sRCu3dLHPOd8KIa+p9kUKhCH4LE7EGqLl0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYAHw70hYXTIgndXYuS2DWtzeu7VTLOuP+tLJBX6mED2F09aIj
+	RYmRGYqsFxQlihzeldWqekrpDksyUcruLl4ItOFG3jyUAg2gN8xuE5DVs33mOYln2sA=
+X-Gm-Gg: ASbGnctmF+1STq13hQq5268iY1fzSMszNxOXtdWimgk3y+D7B3gq3WtH2FbAtoqWK4x
+	Yb/ct/pjzvdJ1zm21j63sjU2iESj+7VpgRSKmr44fYUtCKHnM6hJm0yeaxECz/8M0mXSgI8WyhZ
+	KY0MAgCAGD46j9AqH90bYE2Aztea5zDcM/Dz9GxhPv69aUwdCdddp6fsvx0OwaJZA3c0i7tHCme
+	7POYmZ3xx1ZQp/EXpV6w0QUXUxrq8TkjA1NeUsxSi+8l/HmJCyvI4JiPc5hYi+Dq+AfOmIJToBY
+	ga/OY1JMBI7VzY/49LjH0mMX4n1mvcC6IHrIolurmulyQ6f3eAU1KQ2/BmOIqOtkyKWcofCu4By
+	Z4djSoD+CR8IE2/VCWn0dHslgoG1gFFutNmt/sETLhuQ7G4tAu3u8g4MhedkqQuiAwilRHDYae0
+	m8P8zO2YiZ4z3gFZJQsa0=
+X-Google-Smtp-Source: AGHT+IHm/6/RnHvUQpqjyEKIYZGBSjHuPRp5b3DBLGbL1GoDEzCDZheRRGUhzX2BHAHpgilQLx/Q7g==
+X-Received: by 2002:a05:600c:621a:b0:471:14f5:126f with SMTP id 5b1f17b1804b1-4775ce206f3mr59734595e9.33.1762443404278;
+        Thu, 06 Nov 2025 07:36:44 -0800 (PST)
+Received: from [192.168.50.4] ([82.78.167.134])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477622f42a5sm98437525e9.1.2025.11.06.07.36.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Nov 2025 07:36:43 -0800 (PST)
+Message-ID: <d1b02488-7722-4b39-bb8e-f7e5c8e11b1e@tuxon.dev>
+Date: Thu, 6 Nov 2025 17:36:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/26] clk: at91: pmc: #undef field_{get,prep}() before
+ definition
+To: Geert Uytterhoeven <geert+renesas@glider.be>,
+ Yury Norov <yury.norov@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, David Miller
+ <davem@davemloft.net>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, Jaroslav Kysela
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Johannes Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>,
+ Alex Elder <elder@ieee.org>, David Laight <david.laight.linux@gmail.com>,
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Jason Baron
+ <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
+ Tony Luck <tony.luck@intel.com>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Kim Seer Paller <kimseer.paller@analog.com>,
+ David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Richard Genoud <richard.genoud@bootlin.com>,
+ Cosmin Tanislav <demonsingur@gmail.com>,
+ Biju Das <biju.das.jz@bp.renesas.com>,
+ Jianping Shen <Jianping.Shen@de.bosch.com>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
+Cc: linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-edac@vger.kernel.org, qat-linux@intel.com, linux-gpio@vger.kernel.org,
+ linux-aspeed@lists.ozlabs.org, linux-iio@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1762435376.git.geert+renesas@glider.be>
+ <939d8c6da1f468026b1bb201413ba08b1d0751fd.1762435376.git.geert+renesas@glider.be>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Content-Language: en-US
+In-Reply-To: <939d8c6da1f468026b1bb201413ba08b1d0751fd.1762435376.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251106-icm45600_fix_buffer_sleep_init-v3-1-ea3af68a3e61@tdk.com>
-X-B4-Tracking: v=1; b=H4sIADq/DGkC/5XNTQ7CIBCG4as0rMUABayuvIcxpNDBTrQ/gUo0T
- e8u7catLt/J5PlmEiEgRHIqZhIgYcShz1HuCuLaur8BxSY3EUwozkpO0XVSacaMx5exT+8hmPg
- AGA32ONGKaeE1sIOvJMnIGCA/bgOXa+4W4zSE97aX+Hr9mU6ccnoUEry1XCuozlNz37uhIyucx
- H+YyJhyjWMSuHW2/mLLsnwAYfqKBRcBAAA=
-X-Change-ID: 20251031-icm45600_fix_buffer_sleep_init-8062f6e07f84
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Remi Buisson <remi.buisson@tdk.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762443075; l=1651;
- i=remi.buisson@tdk.com; s=20250411; h=from:subject:message-id;
- bh=rjnLQ6ftgwL85LuwafkGpdVGU467jrrcGeZbXQXb9hI=;
- b=ES1XiY4cP7x/ZryQs38bwESSenkew1n22WNYFTdrjBMW0FOOO2LXuvCE4l2wHWM5Xqc6Bckjf
- YAcXmJFirzMCjns+lWL8C6Up8ONWfc2enfoYDcB/6pAMlvYioCwydD/
-X-Developer-Key: i=remi.buisson@tdk.com; a=ed25519;
- pk=yDVMi4C7RpXN4dififo42A7fDDt3THYzoZoNq9lUZuo=
-X-Endpoint-Received: by B4 Relay for remi.buisson@tdk.com/20250411 with
- auth_id=372
-X-Original-From: Remi Buisson <remi.buisson@tdk.com>
-Reply-To: remi.buisson@tdk.com
-
-From: Remi Buisson <remi.buisson@tdk.com>
-
-The sleep variable in inv_icm45600_buffer_postdisable could be used without
-being assigned in case of error. It must be initialized to 0 by default.
-
-Closes:https://lore.kernel.org/linux-iio/aPi6Xw-ZoUkW76zR@stanley.mountain/
-
-Fixes: 06674a72cf7a ("iio: imu: inv_icm45600: add buffer support in iio devices")
-Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
----
-Changes in v3:
-- Fix commit message: fix and closes moved to SoB
-- Fix assignement of sleep variable after declaration.
-- Link to v2: https://lore.kernel.org/r/20251031-icm45600_fix_buffer_sleep_init-v2-1-5cdc04e1bcba@tdk.com
-
-Changes in v2:
-- Moving pacth description from cover-letter to single commit
-- Link to v1: https://lore.kernel.org/r/20251031-icm45600_fix_buffer_sleep_init-v1-1-924efbb165e8@tdk.com
----
- drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
-index 2efcc177f9d60a6a2509e448c0ddaf4b9e1fd755..2b9ea317385ceb680f013c4c1b2a6a74fbe5d7e7 100644
---- a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
-+++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
-@@ -370,6 +370,7 @@ static int inv_icm45600_buffer_postdisable(struct iio_dev *indio_dev)
- 		return -EINVAL;
- 	}
- 
-+	sleep = 0;
- 	scoped_guard(mutex, &st->lock)
- 		ret = _inv_icm45600_buffer_postdisable(st, sensor, watermark, &sleep);
- 
-
----
-base-commit: 70437bbd7529e9860fb7f0c92a89e0e6abaa994e
-change-id: 20251031-icm45600_fix_buffer_sleep_init-8062f6e07f84
-
-Best regards,
--- 
-Remi Buisson <remi.buisson@tdk.com>
 
 
+
+On 11/6/25 15:33, Geert Uytterhoeven wrote:
+> Prepare for the advent of globally available common field_get() and
+> field_prep() macros by undefining the symbols before defining local
+> variants.  This prevents redefinition warnings from the C preprocessor
+> when introducing the common macros later.
+> 
+> Suggested-by: Yury Norov <yury.norov@gmail.com>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+
+Acked-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 

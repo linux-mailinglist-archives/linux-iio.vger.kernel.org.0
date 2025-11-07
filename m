@@ -1,208 +1,134 @@
-Return-Path: <linux-iio+bounces-26006-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26007-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF1DC3EDA6
-	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 09:00:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC74C3EDE5
+	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 09:04:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8E81934BBE4
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 08:00:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73F5B3A541B
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 08:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127CF30F92D;
-	Fri,  7 Nov 2025 08:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5324330F7E0;
+	Fri,  7 Nov 2025 08:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AmyoA+YH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q0AzOqIU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5C730F930
-	for <linux-iio@vger.kernel.org>; Fri,  7 Nov 2025 08:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D59730DEC8
+	for <linux-iio@vger.kernel.org>; Fri,  7 Nov 2025 08:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762502437; cv=none; b=dktsRQDpqd0Ks5qLORcSY1Q/Gd9hXwf1nyZNi6Y0el7R2f/j54Xobwe1Zmwtve4YVmYU1LI3pa97BrrHRK5iBSsRtB0SrBlbzKzQDQyoZhpYgYuRa6SF7L4css7IdxpbQ4U0aQ9Am4JfyXxStLTc+NrvXKSi23UNV/6Rdpd8gRE=
+	t=1762502665; cv=none; b=fhY7FEMJvkVPw111kZ7NdnwOhEihS1CB7JK4qlljh+3XDmsNGUr3FhP7H1Mhj6jyvtfFd6z1zr41IYs5Oydw6ynNO+Kx+pRXXjQt28Ya3/2rW59On5wbKdoKiLbY6Vm6mSB/M84JpxvunFrqWHON4lyukMwsduuPyNlIKw/1Foc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762502437; c=relaxed/simple;
-	bh=gTrtMTVdIq8o2Lv2gAG8UVNbAa67NI0LZcaPzCP9uxA=;
+	s=arc-20240116; t=1762502665; c=relaxed/simple;
+	bh=snAkFDVYRfKppUHhQmG/xJ0KfiGHH3syHzc39HQjvR8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g8OmJGqF922PXGdRrxWpdQmzURDWfYS3364TQpiYN5VK5SOWkWKHuSiIkJQtRMA+AjTLKs6rnhm6YWTEnkean98O2vQksOdeHTfulKyzwcLmY9TdGu5YnmFb0B7jFD7/GaJ+Q8Hd3u3Is/rL4TCrTp+C7GuySGa1rUakVF4khGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AmyoA+YH; arc=none smtp.client-ip=209.85.208.44
+	 To:Cc:Content-Type; b=ujLUBGLy/QrrtsM0cwvDBXyfA0+DMWpNWcIlZKogHLD/OCDNIH1QGMqr9WyiBRaxZ07NXlj6KrgJ8jWL47VA7+anWoVXs+iETnzY8xd9zT3ac7eegEJPODgQ35GixxQFmB/yE2M+qLPWv7I00XlTKEbPFQcJuS5CgJACrCCo/jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q0AzOqIU; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64034284521so727366a12.1
-        for <linux-iio@vger.kernel.org>; Fri, 07 Nov 2025 00:00:34 -0800 (PST)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b3c2c748bc8so52110466b.2
+        for <linux-iio@vger.kernel.org>; Fri, 07 Nov 2025 00:04:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762502433; x=1763107233; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762502662; x=1763107462; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L4L8nwY5tA46qS9RhjMiBvwIJ3m3PvlUWeeZDUBNYNE=;
-        b=AmyoA+YHQZgstGRmD8U6Uc5Qp3lHeC8gVhIBg5c7IDTiz9uxO1MKh5pvTLMYZ1uWXu
-         ZOiCh/0sWFaopk+f5KfR3BcFOL9zYZNgwM+yWnrs/cvXnteu3aoXVLpBmW9Pfhsbf51W
-         laGx54OYB+zhf/9On7oJS1XjUSQyqr2R4q7FPf5IKZPIZLj6jE2u+xaaRonDpdo8cYNo
-         sT26cX0LyiU9BpU1+93/AVTPh27969l83AWVEOF9a/s1OW3QFogNfFxrcAkv9htYErpE
-         eVO+m5sjBQ7LePaEsHPnv1juoEuTT3WWZG2NexOODGf77B/buQoApHYTaAQa3EaoqGXO
-         dy/Q==
+        bh=I90MjBmySIkPhmxDdLvFAJjwQFW8Mzv4w6oF/Lid6MY=;
+        b=Q0AzOqIUo/L4CBpR1nForJyvfg22SFOPDyAHpH5MQGsK2hDMkaJWO5YqPIWdYFtdkj
+         7CwuoFieZZ4OzRtUWg5d66296UsdUv+UoMv93RaYVY6TRsr0HWEgz1K321rBE7fYJLkL
+         yysjAiaMSKLyV4OUCNOYMel5aCKouTHxdtxWtgSZgeZX7vLPkEBysKZv5MOihESMlnwH
+         zOVfSC5HrcuRk5pHWnJRpUcBkQfV8GuUh1CPj6Qj3pDYuJEpsa9ZT6enXaiOgxibBhLo
+         kLz7CEtJdpacUuvrQhzQxg604u0EM+2cx3kj+zx49udfiyaOWHxKsuVIijGuZzUds6l1
+         QkIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762502433; x=1763107233;
+        d=1e100.net; s=20230601; t=1762502662; x=1763107462;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=L4L8nwY5tA46qS9RhjMiBvwIJ3m3PvlUWeeZDUBNYNE=;
-        b=kO3lKsKxgvju/1OWQo+fSpKsd9e0ZSRYgWeBIBjCNfSuV8qimQ8mbfvl8cdS4LjEb9
-         5d7oivzeMuKybf1EXxnAWuOyQbrmBi9DpU0Nb6aEDB1iUYEUL42PprppFqOif6QVi1ae
-         nzwhhKDJSItXaFXklZmnmgNDYYdbJ0UWzVrw2SPM4+JdNi1kHnJ+qUgxugMYxRffbttc
-         OdHy3CH0zIIKTQoANgBDJ3RswiFrdaHd0fhhg5roQwyWgi0CsMDDMVSePKk5K+P3ZU35
-         KKggtQjWSH7c4vvKBYEDknTyaBFZa6/E+1yNORi7GM0O6LcAjUDXuhJX1WwCItWvQwlK
-         ygWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU1vMqAVukFS1qDIyYV0Qt/hLgEa/yh9R/K0mSmrD2mf6Yp5axoCuV79vWUhKwlZIritID25ED2RMQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywa6Nf/5VpkPWwDVs4bJfWFzyR9fOSO/0Sys7+YPaenpBxqwaSo
-	6JYk7eaY2zLfNNMXdHD7/grq/OdBBEOavnsAjE6crP2xu7rL8KCwc7OwQMTM6pc4BkiWppe300V
-	v1spJdPL0kp7z9QWvJC/ok0skY43fcfE=
-X-Gm-Gg: ASbGncsgViEutAGdRwNOND1HWUObvaBUyD9jSg2ot8DdPf+97RE+vLFx3Ebtwto4hkA
-	WavFrdrAZToUrh/ICZAwa1v8SsZ0RVXPGY4+5nYEyNrEc2KbihJ2CJGcOlG0Jiz7MZoIUsoIULo
-	UdgbteqPBJU8gGt8vOQNQMx2/w0yby904vKg/iQbz9VvqDB0isINotVpEMA9WZW3b9LzitCgmyB
-	x7In3mEw2RSfKmQc7jVSN+QXb+FNThuoCsBN6xzcZpI3cVw3GdGXAiFLNNmlwEMlFUlFkRz
-X-Google-Smtp-Source: AGHT+IF1uok4S2/ZJxGVMG6j0RZBxmZiPcUtNqCXKtotlWPr6F8OAXOZaMRmuRE8uDgHau7bT5W5RrHY3dcLjEjQckY=
-X-Received: by 2002:a17:907:3cd6:b0:b70:6f46:d401 with SMTP id
- a640c23a62f3a-b72c093317amr195124066b.11.1762502433125; Fri, 07 Nov 2025
- 00:00:33 -0800 (PST)
+        bh=I90MjBmySIkPhmxDdLvFAJjwQFW8Mzv4w6oF/Lid6MY=;
+        b=QMjZH08VNLwfJjLRdScqLF4HpdR/i7mV/Nz8Wet+0t4300tS3j7zyk8AznkCAbBYok
+         ToPVV8lPiuut2Bq840vHqFO/p0nw9QXOaQ1R7fMx0SouOrJWFg0YO763kUfbldBNmYa0
+         OF4rLK6+S0vPaEbe2iZ8VtpOy7T1B3SgRjCiIqkJtjkgIrDalngwybsEa+WJx+KvgF8M
+         4cghVSI79pqlqoNt4BPtfg8ggUj6Iv8gVUyDhhzvhgCCrjYiQwssfdOcsoHLpTsVu26R
+         WGqaVVAKFHJKB5JChMeB8YnJ/1oV+3ITi0bqn9zZjTEpTN4vnpwFOdMIMs+uFu61YQn5
+         uzRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVc7keCbdfp6A39gQ9Htl8zT1ZHzpikxRxQ2seFCBQsnt3oKeLezaVfrerCj5UoX6U+j4q0e7qf6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwagI5pqXLzqT1xSBiyChTjDxb9ObqpYEcIejlgBvLy9Xn2jyrJ
+	IkmD883pGKcMZfFCBsFLzQMY+d7ZF75YSjUJHNXblNhNZ1cZiMgM2p1XC31EG84g+mHF8QnMJZ1
+	89prBtkZY09cgPx+l9FCmoXflRrLW5GU=
+X-Gm-Gg: ASbGncuUjAYm1Af8QuSpZYnKnEhIu7UwjWWd7zJ1wWhzeVwVnfnnObAMjPGT6wJigPk
+	+osXoU4O4ePkBfOjf+OxIjitE4csl+by6iZALWXaLxX7v0aBudRSSg8kiDItYMdv4Ejx+0NYkwG
+	sfNWNle7DngXUME5Jv49oosoCCJz8blQxeTGtTrUYTyE8ENajV1bXvMqSAv6aFMcc1PN8d3zLJR
+	I3fJs9tWD45LgSk8cWAkItP5bTJD7OUanmjBmz974jC8PN7bcHsLwh88fJYow==
+X-Google-Smtp-Source: AGHT+IH7QgHT9eplPXnblcZrAf+4AH1nvr7H0mJZC5Z77CdcMj1Gwejx1wskK7SvWJW9voFU7/sfUU/ovQGDLgCuQK0=
+X-Received: by 2002:a17:907:7246:b0:b71:dd06:48de with SMTP id
+ a640c23a62f3a-b72c0dbef32mr188016666b.59.1762502659405; Fri, 07 Nov 2025
+ 00:04:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1762435376.git.geert+renesas@glider.be> <cfc32f8530d5c0d4a7fb33c482a4bf549f26ec24.1762435376.git.geert+renesas@glider.be>
- <aQy0T2vUINze_6_q@smile.fi.intel.com> <CAMuHMdXVUJq36GvNUQE8FnHsX+=1jG4GOJ_034r=fgr_Rw4Djg@mail.gmail.com>
- <aQzIIqNnTY41giH_@smile.fi.intel.com> <CAMuHMdW8ndAdGnSHopYFMWvw7wk7wKz_7+N91M1jRHoqK1KBrg@mail.gmail.com>
- <c62eb5a727f149fb9d8b4a4c8d77418a@realtek.com>
-In-Reply-To: <c62eb5a727f149fb9d8b4a4c8d77418a@realtek.com>
+References: <20251107020200.6285-1-make24@iscas.ac.cn>
+In-Reply-To: <20251107020200.6285-1-make24@iscas.ac.cn>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 7 Nov 2025 09:59:56 +0200
-X-Gm-Features: AWmQ_bndsm6ikZxAsR6MbqZ_7CJczSuokLGcsZHpDoyZxbjksOeSkgDr0jWR8fA
-Message-ID: <CAHp75VeMqvywS20603yDSo-C3KCu+i+8vvDNuz3h9e8Ma9BOCw@mail.gmail.com>
-Subject: Re: [PATCH v6 12/26] bitfield: Add less-checking __FIELD_{GET,PREP}()
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	Yury Norov <yury.norov@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	David Miller <davem@davemloft.net>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>, 
-	Andrew Jeffery <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Jacky Huang <ychuang3@nuvoton.com>, 
-	Shan-Chun Hung <schung@nuvoton.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>, 
-	David Laight <david.laight.linux@gmail.com>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Kim Seer Paller <kimseer.paller@analog.com>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Richard Genoud <richard.genoud@bootlin.com>, 
-	Cosmin Tanislav <demonsingur@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Jianping Shen <Jianping.Shen@de.bosch.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, "qat-linux@intel.com" <qat-linux@intel.com>, 
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, 
-	"linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>, 
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
-	"linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>, 
-	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	linux-wireless <linux-wireless@vger.kernel.org>
+Date: Fri, 7 Nov 2025 10:03:43 +0200
+X-Gm-Features: AWmQ_bkyChgkG7twno4Fs2ZRPuAxXDGpX4YTffQDhSDTVbjb7HgdE6IcQyCfBLI
+Message-ID: <CAHp75VfiKrCC-T45z4RggH0-eMnxvRW2pGC85KWZDdoaxNALDw@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: trigger: Fix error handling in viio_trigger_alloc
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com, 
+	andy@kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 7, 2025 at 3:16=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> wr=
-ote:
+On Fri, Nov 7, 2025 at 4:02=E2=80=AFAM Ma Ke <make24@iscas.ac.cn> wrote:
 >
-> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Thu, 6 Nov 2025 at 17:09, Andy Shevchenko
-> > <andriy.shevchenko@intel.com> wrote:
-> > > On Thu, Nov 06, 2025 at 03:49:03PM +0100, Geert Uytterhoeven wrote:
-> > > > On Thu, 6 Nov 2025 at 15:44, Andy Shevchenko
-> > > > <andriy.shevchenko@intel.com> wrote:
-> > > > > On Thu, Nov 06, 2025 at 02:34:00PM +0100, Geert Uytterhoeven wrot=
-e:
-> > > > > > The BUILD_BUG_ON_MSG() check against "~0ull" works only with "u=
-nsigned
-> > > > > > (long) long" _mask types.  For constant masks, that condition i=
-s usually
-> > > > > > met, as GENMASK() yields an UL value.  The few places where the
-> > > > > > constant mask is stored in an intermediate variable were fixed =
-by
-> > > > > > changing the variable type to u64 (see e.g. [1] and [2]).
-> > > > > >
-> > > > > > However, for non-constant masks, smaller unsigned types should =
-be valid,
-> > > > > > too, but currently lead to "result of comparison of constant
-> > > > > > 18446744073709551615 with expression of type ... is always
-> > > > > > false"-warnings with clang and W=3D1.
-> > > > > >
-> > > > > > Hence refactor the __BF_FIELD_CHECK() helper, and factor out
-> > > > > > __FIELD_{GET,PREP}().  The later lack the single problematic ch=
-eck, but
-> > > > > > are otherwise identical to FIELD_{GET,PREP}(), and are intended=
- to be
-> > > > > > used in the fully non-const variants later.
-> >
-> > > > > > +     BUILD_BUG_ON_MSG(__bf_cast_unsigned(mask, mask) >        =
-       \
-> > > > > > +                      __bf_cast_unsigned(reg, ~0ull),         =
-       \
-> > > > > > +                      pfx "type of reg too small for mask")
-> > > > >
-> > > > > Perhaps we may convert this (and others?) to static_assert():s at=
- some point?
-> > > >
-> > > > Nick tried that before, without success:
-> > > > https://lore.kernel.org/all/CAKwvOdm_prtk1UQNJQGidZm44Lk582S3p=3Dof=
-0y46+rVjnSgXJg@mail.gmail.com
-> > >
-> > > Ah, this is unfortunate.
-> >
-> > Of course, it might be an actual bug in the i915 driver...
-> >
-> > The extra checking in field_prep() in case the compiler can
-> > determine that the mask is a constant already found a possible bug
-> > in drivers/net/wireless/realtek/rtw89/core.c:rtw89_roc_end():
-> >
-> >     rtw89_write32_mask(rtwdev, reg, B_AX_RX_FLTR_CFG_MASK, rtwdev->hal.=
-rx_fltr);
-> >
-> > drivers/net/wireless/realtek/rtw89/reg.h:
-> >
-> >     #define B_AX_RX_MPDU_MAX_LEN_MASK GENMASK(21, 16)
-> >     #define B_AX_RX_FLTR_CFG_MASK ((u32)~B_AX_RX_MPDU_MAX_LEN_MASK)
-> >
-> > so it looks like B_AX_RX_FLTR_CFG_MASK is not the proper mask for
-> > this operation...
+> viio_trigger_alloc() initializes the device with device_initialize()
+> but uses kfree() directly in error paths, which bypasses the device's
+> release callback iio_trig_release(). This could lead to memory leaks
+> and inconsistent device state.
 >
-> The purpose of the statements is to update values excluding bits of
-> B_AX_RX_MPDU_MAX_LEN_MASK. The use of B_AX_RX_FLTR_CFG_MASK is tricky, bu=
-t
-> the operation is correct because bit 0 is set, so __ffs(mask) returns 0 i=
-n
-> rtw89_write32_mask(). Then, operation looks like
+> Additionally, the current error handling has the following issues:
+> 1. Potential double-free of IRQ descriptors when kvasprintf() fails.
+> 2. The release function may attempt to free negative subirq_base.
+> 3. Missing mutex_destroy() in release function.
 >
->    orig =3D read(reg);
->    new =3D (orig & ~mask) | (data & mask);
->    write(new);
+> Fix these issues by:
+> 1. Replacing kfree(trig) with put_device(&trig->dev) in error paths.
+> 2. Removing the free_descs label and handling IRQ descriptor freeing
+>    directly in the kvasprintf() error path.
+> 3. Adding missing mutex_destroy().
 >
-> Since we don't use FIELD_{GET,PREP} macros with B_AX_RX_FLTR_CFG_MASK, ho=
-w
-> can you find the problem? Please guide us. Thanks.
+> Found by code review.
 
-Isn't FIELD_MODIFY() what you want to use?
+...
+
+>         trig->name =3D kvasprintf(GFP_KERNEL, fmt, vargs);
+> -       if (trig->name =3D=3D NULL)
+> -               goto free_descs;
+> +       if (trig->name =3D=3D NULL) {
+
+> +               irq_free_descs(trig->subirq_base, CONFIG_IIO_CONSUMERS_PE=
+R_TRIGGER);
+
+Why?
+
+> +               goto free_trig;
+> +       }
+
+Please, slow down and think a bit. Also you may split the patch to at least=
+ two:
+1) add missed mutex_destroy();
+2) fix the clean up in the error path.
+
 
 --=20
 With Best Regards,

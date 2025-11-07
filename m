@@ -1,761 +1,164 @@
-Return-Path: <linux-iio+bounces-26020-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26021-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAC3C40680
-	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 15:40:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22EFC4078B
+	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 15:57:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22F31189BF08
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 14:40:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5AAAC3434AA
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 14:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A26329375;
-	Fri,  7 Nov 2025 14:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCAD32860B;
+	Fri,  7 Nov 2025 14:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XfhIWza9"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UabSgmvo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75002EBDF0
-	for <linux-iio@vger.kernel.org>; Fri,  7 Nov 2025 14:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B143929A9C9
+	for <linux-iio@vger.kernel.org>; Fri,  7 Nov 2025 14:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762526425; cv=none; b=CFMhaQt8Edn5XYbFgvEuQskB8idyOugTm0VgAd4l2nmjsSPec5OIpa98qho0KyltoB+iiJ8RsazLx0JqTMdpSLRh8D77egegk0Pjg6tAoxWl0Wo5llDvELrZ0Puud7WVaGSp54HymQ+/lRK7D+tFeR4FRVLN0rLHWxw1jlHqUuo=
+	t=1762527284; cv=none; b=tDS4xAA+AhPW9R1AoNpHQ8iyAwWBYMtk8j89Nl3mOHo5OyDSMcOMpdaMmw3uEzxoRHDBxMi1s7cQ/JDX3YMe3KdE7jYN8O7BJfectLAzXMwNIhPahUA4gn/ugtZtyG2WLrjceGdUwNmEcEkbX8ZP2m7+h7A+fNapQHwve68JMuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762526425; c=relaxed/simple;
-	bh=5rIM6bQKZCsCAdxLkLPTH7YrpQmQsdkFo+HxpLuQoKw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q5EJDOKCCIcCDx/xJBAXPlU6DAv8hypqzq/MAjo3He8yjjUNs6sKTt40ebkmXYuQpQH3mYaPIHDX774VMmNHEQOvXdZpnVfX16cfaZBUpoYbcEnpi7JkCTqqUejXIUijvNnpbx/5UVtBJARedILRfDuP+EL3hu+wqtvsZuL3w5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XfhIWza9; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b55517e74e3so762177a12.2
-        for <linux-iio@vger.kernel.org>; Fri, 07 Nov 2025 06:40:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762526423; x=1763131223; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4HS21bJTAjOGfhmndTU6cJHTPCBeMsxYMNbP9hGxFzQ=;
-        b=XfhIWza9xLWOtCssOp2UQr/KP/fxv3jZoQz6swIrBko0lZ8Y7g4za4JJ6IHgUeuelF
-         zH6u5Vm8Fdg2SBKUFnxE1CrKoRlhCB6EfuaZOKfAEDQyQtK13hoBaZLNDSBPJReyAh1F
-         Wdq7rc2o8vtmQUeLfJ6wLfCGU5VZVidNyQoejj3aLizFKo4XA3zi/YL+1+A42B5263cL
-         +uSEYRc60FLWzfReaCoaxP960xU/EnS69EkIqwSrOvjsslHQozbh/hXLpHVvxJZN1SgT
-         HaiPnstT0f4LdY6vCiOwHmQKs3q+HJHztQjj1psc9Q6YwBDSsCYw/g9Oa1GzVmM7Dx0I
-         zcTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762526423; x=1763131223;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4HS21bJTAjOGfhmndTU6cJHTPCBeMsxYMNbP9hGxFzQ=;
-        b=s5cpACm8DeH4P20Lnx3NM/azvmyvYmTM2JejcelvgJgn+wZGyCr83XNWQsmCPT0sCd
-         gQz7FmsLsxCEXnK259Y1vjCF6QkYWx0sMIJZDPHeRlguOdED25DGX0GIFBs4lvCofOpD
-         ZxthfdVJ7hLRjCNBg7Xjum6bL9tmsZFueAdoehzEb3u2d3Ligs8Ew+G3iYf6HZy1w0KE
-         6ApNc0YYBHUfwL4Un3zjBLtxGuogVEzCNo2EVEaHsjHAWGQN+nROPyVe1+RxVCk7vfPx
-         AmQ+B1dQvVHJgFvHH8DCILnvKIzCNL/Qs3vG1Vm8UMBKu1ZX39OEh3K/oMxB9xAVhrFI
-         QjAw==
-X-Gm-Message-State: AOJu0YyybeNCR+LbQA9fIp2tDclpkR4BJQXfJUX8YkV3lUMxhmU05R40
-	S9tnKNkrJdf93rSkUFQk3bSm9l6qIFiw4LlSvZ42TdOeJ/uFPSlywSvL
-X-Gm-Gg: ASbGncuBPLCi+iTSRXZBjECGDWzxBFYXj9sleSEb+6DypUpxIiedefssi1ERHepfjtS
-	qb6/JbsMXGIofPgjpSJP+nKQiVwMgS3DV/CnDt5GxTmzOy3q9uNblFu7+89k2Zt1IUqZ2oiZbfN
-	Q6csEcIjK94SMggSz6QkkziomC4XHCuG6mAofZ3AMImCu/MJkc7OyWbtzXq5uGjNHywZpEYIWTE
-	K91U6j38l9Zaa6B5JBqb4E1iPLYJCSX3YqJuKn7Ct0peIQuSRglnr4EBMaDtEmqIq90gFhTKjfB
-	4mUUrdXY+aQpLQUnXQcOBhTc1U8sQaSFkq7IoerZQtBhSvRdjXH62WgPW3lP/5b44909Yy3htz8
-	bwrL/Erh5VK6oJbgDCHSLBV6ikNO+0kyfF8ng3R/GlOM7dSwGyNE5VtozjTqQGCZy8dd9sTAA44
-	iq8FmGF3J8E/YEN0JFhK8AB5buZGFq+pZ+xi/PuoCYnmubbx/aI25t++dX5wl5XNj91BjkKEKyn
-	0OrRX7S+4fknOdFP8KOpmf5+httRu7Hp6g4bi5PYgBKVjrv+/9YB6VBnsOoLFl/fHIFRDaI6z+N
-	ewcR+gFuql32dIGWetM=
-X-Google-Smtp-Source: AGHT+IF3Ke6lqajaU/cezFyKlwzUXjz+57rGoWMaQpTcrQQJAhbCTNALp/gqR8k3U00asbNywguQig==
-X-Received: by 2002:a17:902:9344:b0:295:3eb5:6de1 with SMTP id d9443c01a7336-297c044f779mr31766365ad.34.1762526422575;
-        Fri, 07 Nov 2025 06:40:22 -0800 (PST)
-Received: from ?IPV6:2402:e280:21d3:2:b586:93ae:6db3:2abb? ([2402:e280:21d3:2:b586:93ae:6db3:2abb])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29651ccca64sm62199445ad.105.2025.11.07.06.40.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Nov 2025 06:40:22 -0800 (PST)
-Message-ID: <38483816-8477-4c17-9c62-37d122b0a55a@gmail.com>
-Date: Fri, 7 Nov 2025 20:10:15 +0530
+	s=arc-20240116; t=1762527284; c=relaxed/simple;
+	bh=2Zfuuwknwc5hDDwag7QjI+SHOWoLDfi1+qT/MitF9Bg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rsk2U/hcAM6vw+2sV9t60Pa4zDPUinYRA3NLEACiajbLbOMWLb0dr+YBpCRx3FYORNoyTuEm4oIdrtwmSaIx7vI3XZvBYoCTS+bhI7ehOY9iSE7OPFvQLqrw5R8tbJFbCRcv9UOgGfcPa7PdKj042N0u+ANoQxheYj6ZgVgM3k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UabSgmvo; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B49FE1A1925;
+	Fri,  7 Nov 2025 14:54:39 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8851B606A6;
+	Fri,  7 Nov 2025 14:54:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6F2DA11852830;
+	Fri,  7 Nov 2025 15:54:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1762527278; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=+RrXgoXV3dOkYMPWy7ye0LNIEtkAh8Hi3Fbrz8hJU1M=;
+	b=UabSgmvoubfdbwzci/9uOC7fJEPw6GOF8Fasdn8B7uOlMKhFhIM5ZwpUlN+9SDngbieIqZ
+	HQHt5My33IA6wAxM9AChk/cTQc0vjcq8kru7CSTvP4ecPMVY+EX8QTA0tNiEs7CrIxuU5T
+	3BJHFiZK5/VUQx/VQPU4tAIgOflU7D60845fS5V5KhnkUahbL3swn/7iK3VuKAFNQ3MKiO
+	hdaj+YbgBvcKKs/UPTR+z5IwSguHu3WyUuBVHTlKa3aQr/Gq4TBgZct//mvAcc0YYsptqF
+	i6Vl9Vkis8v3Eu5U0a5YeK1rEpnLD0miq1FgEIeFn3T6FWp0qxShSivDf+iJsg==
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Hans de Goede <hansg@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject:
+ Re: [PATCH v3 5/5] regulator: ltm8054: Support output current limit control
+Date: Fri, 07 Nov 2025 15:54:28 +0100
+Message-ID: <13882660.uLZWGnKmhe@fw-rgant>
+In-Reply-To: <aQzpvR-030zgA82E@smile.fi.intel.com>
+References:
+ <20251106-ltm8054-driver-v3-0-fd1feae0f65a@bootlin.com>
+ <20251106-ltm8054-driver-v3-5-fd1feae0f65a@bootlin.com>
+ <aQzpvR-030zgA82E@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/3] iio: adc: Add support for TI ADS1120
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: linux-iio@vger.kernel.org, jic23@kernel.org, dlechner@baylibre.com,
- nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
- <20251030163411.236672-3-ajithanandhan0406@gmail.com>
- <20251030175433.00004cc2@huawei.com>
-Content-Language: en-US
-From: Ajith Anandhan <ajithanandhan0406@gmail.com>
-In-Reply-To: <20251030175433.00004cc2@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart3017360.e9J7NaK4W3";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/30/25 11:24 PM, Jonathan Cameron wrote:
-> On Thu, 30 Oct 2025 22:04:10 +0530
-> Ajith Anandhan <ajithanandhan0406@gmail.com> wrote:
->
->> Add driver for the Texas Instruments ADS1120, a precision 16-bit
->> analog-to-digital converter with an SPI interface.
->>
->> The driver provides:
->> - 4 single-ended voltage input channels
->> - Programmable gain amplifier (1 to 128)
->> - Configurable data rates (20 to 1000 SPS)
->> - Single-shot conversion mode
->>
->> Link: https://www.ti.com/lit/gpn/ads1120
-> Datasheet:
->
->> Signed-off-by: Ajith Anandhan <ajithanandhan0406@gmail.com>
-> Hi Ajith
->
-> Various comments inline.  Mostly superficial stuff but the DMA safety
-> of SPI buffers needs fixing.  There is a useful talk from this given
-> by Wolfram Sang if you want to understand more about this
-> https://www.youtube.com/watch?v=JDwaMClvV-s
->
-> Thanks,
->
-> Jonathan
->
->
-> Thank you for the detailed review and the helpful video reference!
->> diff --git a/drivers/iio/adc/ti-ads1120.c b/drivers/iio/adc/ti-ads1120.c
->> new file mode 100644
->> index 000000000..07a6fb309
->> --- /dev/null
->> +++ b/drivers/iio/adc/ti-ads1120.c
->> @@ -0,0 +1,509 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * TI ADS1120 4-channel, 2kSPS, 16-bit delta-sigma ADC
->> + *
->> + * Datasheet: https://www.ti.com/lit/gpn/ads1120
->> + *
->> + * Copyright (C) 2025 Ajith Anandhan <ajithanandhan0406@gmail.com>
->> + */
->> +
->> +#include <linux/delay.h>
->> +#include <linux/device.h>
->> +#include <linux/err.h>
->> +#include <linux/kernel.h>
-> Figure out what you are actually using. There is ongoing effort to not include
-> kernel.h in drivers because there is usually a small set of more appropriate
-> fine grained includes.
->
-Sure. I'll replace kernel.h with the specific includes needed.
->> +#include <linux/module.h>
->> +#include <linux/mod_devicetable.h>
->> +#include <linux/mutex.h>
->> +#include <linux/spi/spi.h>
->> +
->> +#include <linux/iio/iio.h>
->> +
->> +/* Commands */
->> +#define ADS1120_CMD_RESET		0x06
->> +#define ADS1120_CMD_START		0x08
->> +#define ADS1120_CMD_PWRDWN		0x02
->> +#define ADS1120_CMD_RDATA		0x10
->> +#define ADS1120_CMD_RREG		0x20
->> +#define ADS1120_CMD_WREG		0x40
->> +
->> +/* Registers */
->> +#define ADS1120_REG_CONFIG0		0x00
->> +#define ADS1120_REG_CONFIG1		0x01
->> +#define ADS1120_REG_CONFIG2		0x02
->> +#define ADS1120_REG_CONFIG3		0x03
->> +
->> +/* Config Register 0 bit definitions */
->> +#define ADS1120_MUX_MASK		GENMASK(7, 4)
->> +#define ADS1120_MUX_AIN0_AVSS		0x80
->> +#define ADS1120_MUX_AIN1_AVSS		0x90
->> +#define ADS1120_MUX_AIN2_AVSS		0xa0
->> +#define ADS1120_MUX_AIN3_AVSS		0xb0
->> +
->> +#define ADS1120_GAIN_MASK		GENMASK(3, 1)
-> Better to name these so it's obvious which register they are in.
-> #define ADS1120_CFG0_GAIN_MSK or similar.
-> Saves anyone checking every time that it's being written to
-> the appropriate register.
-I'll rename all masks to include register names.
->> +#define ADS1120_GAIN_1			0x00
->> +#define ADS1120_GAIN_2			0x02
->> +#define ADS1120_GAIN_4			0x04
->> +#define ADS1120_GAIN_8			0x06
->> +#define ADS1120_GAIN_16			0x08
->> +#define ADS1120_GAIN_32			0x0a
->> +#define ADS1120_GAIN_64			0x0c
->> +#define ADS1120_GAIN_128		0x0e
-> Same as called out for DR below. (applies in other places
-> as well).
-Sure.
->> +
->> +#define ADS1120_PGA_BYPASS		BIT(0)
->> +
->> +/* Config Register 1 bit definitions */
->> +#define ADS1120_DR_MASK			GENMASK(7, 5)
->> +#define ADS1120_DR_20SPS		0x00
->> +#define ADS1120_DR_45SPS		0x20
->> +#define ADS1120_DR_90SPS		0x40
->> +#define ADS1120_DR_175SPS		0x60
->> +#define ADS1120_DR_330SPS		0x80
->> +#define ADS1120_DR_600SPS		0xa0
->> +#define ADS1120_DR_1000SPS		0xc0
-> Define these as values of the field (So not shifted)
->
-> #define ADS1120_DR_20SPS	0
-> #define ADS1120_DR_45SPS	1
-> etc.
-> Then use FIELD_PREP(ADS1120_DR_MASK, ADIS1120_DR_20SPS)
-> and similar to set them.
-I'll use the FIELD_PREP and fix the values.
->
->> +
->> +#define ADS1120_MODE_MASK		GENMASK(4, 3)
->> +#define ADS1120_MODE_NORMAL		0x00
-> No other values for a 2 bit field? Define all values even
-> if you only use one for now.  Makes it easier to review the
-> values
-I'll define all the available values.
->> +
->> +#define ADS1120_CM_SINGLE		0x00
->> +#define ADS1120_CM_CONTINUOUS		BIT(2)
->> +
->> +#define ADS1120_TS_EN			BIT(1)
->> +#define ADS1120_BCS_EN			BIT(0)
->> +
->> +/* Config Register 2 bit definitions */
->> +#define ADS1120_VREF_MASK		GENMASK(7, 6)
->> +#define ADS1120_VREF_INTERNAL		0x00
->> +#define ADS1120_VREF_EXT_REFP0		0x40
->> +#define ADS1120_VREF_EXT_AIN0		0x80
->> +#define ADS1120_VREF_AVDD		0xc0
->> +
->> +#define ADS1120_REJECT_MASK		GENMASK(5, 4)
->> +#define ADS1120_REJECT_OFF		0x00
->> +#define ADS1120_REJECT_50_60		0x10
->> +#define ADS1120_REJECT_50		0x20
->> +#define ADS1120_REJECT_60		0x30
->> +
->> +#define ADS1120_PSW_EN			BIT(3)
->> +
->> +#define ADS1120_IDAC_MASK		GENMASK(2, 0)
->> +
->> +/* Config Register 3 bit definitions */
->> +#define ADS1120_IDAC1_MASK		GENMASK(7, 5)
->> +#define ADS1120_IDAC2_MASK		GENMASK(4, 2)
->> +#define ADS1120_DRDYM_EN		BIT(1)
->> +
->> +/* Default configuration values */
->> +#define ADS1120_DEFAULT_GAIN		1
->> +#define ADS1120_DEFAULT_DATARATE	175
-> These should be just handled by writing the registers in init.
-> The defines in of themselves don't help over seeing the default
-> set in code.
-Sure.I'll write it at init.
->
->> +
->> +struct ads1120_state {
->> +	struct spi_device	*spi;
->> +	struct mutex		lock;
-> Locks should always have comments to say what data they protect.
-I'll add the appropriate comments.
->
->> +	/*
->> +	 * Used to correctly align data.
->> +	 * Ensure natural alignment for potential future timestamp support.
-> You don't do that except by coincidence of IIO_DMA_MINALIGN being large
-> enough. So this comment is misleading - Drop it.
-Sure.
->
->> +	 */
->> +	u8 data[4] __aligned(IIO_DMA_MINALIGN);
-> Unless everything after this is used for DMA buffers you have defeated
-> the point of the __aligned 'trick'.  We need to ensure nothing that isn't
-> used for DMA and can potentially be modified in parallel with this
-> is not in the cache line.  Probably a case of just moving data to the
-> end of the structure.
-I'll move the data buffer to the end of the struct.
->
->> +
->> +	u8 config[4];
->> +	int current_channel;
->> +	int gain;
->> +	int datarate;
->> +	int conv_time_ms;
->> +};
->> +
->> +struct ads1120_datarate {
->> +	int rate;
->> +	int conv_time_ms;
->> +	u8 reg_value;
->> +};
->> +
->> +static const struct ads1120_datarate ads1120_datarates[] = {
->> +	{ 20,   51, ADS1120_DR_20SPS },
-> As above, use the field values not the shifted ones.
-Agreed.
->
->> +	{ 45,   24, ADS1120_DR_45SPS },
->> +	{ 90,   13, ADS1120_DR_90SPS },
->> +	{ 175,   7, ADS1120_DR_175SPS },
->> +	{ 330,   4, ADS1120_DR_330SPS },
->> +	{ 600,   3, ADS1120_DR_600SPS },
->> +	{ 1000,  2, ADS1120_DR_1000SPS },
->> +};
->> +static int ads1120_write_cmd(struct ads1120_state *st, u8 cmd)
->> +{
->> +	st->data[0] = cmd;
->> +	return spi_write(st->spi, st->data, 1);
->> +}
->> +
->> +static int ads1120_write_reg(struct ads1120_state *st, u8 reg, u8 value)
->> +{
->> +	u8 buf[2];
->> +
->> +	if (reg > ADS1120_REG_CONFIG3)
->> +		return -EINVAL;
->> +
->> +	buf[0] = ADS1120_CMD_WREG | (reg << 2);
->> +	buf[1] = value;
->> +
->> +	return spi_write(st->spi, buf, 2);
-> sizeof(buf);
->
-> However DMA safety thing applies here as well so you can't just use
-> a buffer in the stack.  Can use spi_write_then_read() though as that bounce
-> buffers.
-I prefer to use the global buffer for now.
->
->> +}
->> +
->> +static int ads1120_set_channel(struct ads1120_state *st, int channel)
->> +{
->> +	u8 mux_val;
->> +	u8 config0;
->> +
->> +	if (channel < 0 || channel > 3)
->> +		return -EINVAL;
->> +
->> +	/* Map channel to AINx/AVSS single-ended input */
->> +	mux_val = ADS1120_MUX_AIN0_AVSS + (channel << 4);
->> +
->> +	config0 = (st->config[0] & ~ADS1120_MUX_MASK) | mux_val;
->> +	st->config[0] = config0;
-> FIELD_MODIFY() after the defines are field values (not shifted version)
-> and that << 4 is gone.
-I'll use the FIELD_MODIFY with proper arguments.
->
->> +
->> +	return ads1120_write_reg(st, ADS1120_REG_CONFIG0, config0);
->> +}
->> +
->> +static int ads1120_set_gain(struct ads1120_state *st, int gain_val)
->> +{
->> +	u8 gain_bits;
->> +	u8 config0;
->> +	int i;
->> +
->> +	/* Find gain in supported values */
->> +	for (i = 0; i < ARRAY_SIZE(ads1120_gain_values); i++) {
->> +		if (ads1120_gain_values[i] == gain_val) {
->> +			gain_bits = i << 1;
-> 			gain_bits = BIT(i);
->
->> +			goto found;
-> Avoid this goto by the following simplifying code flow.
+--nextPart3017360.e9J7NaK4W3
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Date: Fri, 07 Nov 2025 15:54:28 +0100
+Message-ID: <13882660.uLZWGnKmhe@fw-rgant>
+In-Reply-To: <aQzpvR-030zgA82E@smile.fi.intel.com>
+MIME-Version: 1.0
 
-I'll refactor it.
+Hello Andy,
 
->
-> 			break;
->> +		}
->> +	}
-> 	if (i == ARRAY_SIZE(ads1120_gain_values)
-> 		return -EINVAL;
->
-> 	config0 = ...
->
->> +	return -EINVAL;
->> +
->> +found:
->> +	config0 = (st->config[0] & ~ADS1120_GAIN_MASK) | gain_bits;
->> +	st->config[0] = config0;
-> FIELD_MODIFY()
-Sure.
->
->> +	st->gain = gain_val;
-> Similar to below - I'd not store this explicitly. Where it is used
-> is not a fast path so add loop to look it up there.
->
-> It's much easier to be sure there is no getting out of sync with
-> only one store of information, even if it does bloat the code a it.
-MSTM. I'll correct it.
->
->> +
->> +	return ads1120_write_reg(st, ADS1120_REG_CONFIG0, config0);
->> +}
->> +
->> +static int ads1120_set_datarate(struct ads1120_state *st, int rate)
->> +{
->> +	u8 config1;
->> +	int i;
->> +
->> +	/* Find data rate in supported values */
->> +	for (i = 0; i < ARRAY_SIZE(ads1120_datarates); i++) {
->> +		if (ads1120_datarates[i].rate == rate) {
-> Flip logic to reduce indent
-> 		if (ads1120_datarates[i].rate != rate)
-> 			continue;
->
-> 		config1 =...
-I'll follow the same.
->> +			config1 = (st->config[1] & ~ADS1120_DR_MASK) |
->> +				  ads1120_datarates[i].reg_value;
-> FIELD_MODIFY() once reg_value is the field value not a shifted version of it.
-> And operate directly on st->config[1]
-Agreed.
->
->> +			st->config[1] = config1;
->> +			st->datarate = rate;
->> +			st->conv_time_ms = ads1120_datarates[i].conv_time_ms;
->> +
->> +			return ads1120_write_reg(st, ADS1120_REG_CONFIG1,
->> +						 config1);
->> +		}
->> +	}
->> +
->> +	return -EINVAL;
->> +}
->> +
->> +static int ads1120_read_raw_adc(struct ads1120_state *st, int *val)
->> +{
->> +	u8 rx_buf[4];
->> +	u8 tx_buf[4] = { ADS1120_CMD_RDATA, 0xff, 0xff, 0xff };
->> +	int ret;
->> +	struct spi_transfer xfer = {
->> +		.tx_buf = tx_buf,
->> +		.rx_buf = rx_buf,
->> +		.len = 4,
->> +	};
->> +
->> +	ret = spi_sync_transfer(st->spi, &xfer, 1);
-> SPI requires DMA safe buffers.  2 ways to make that true
-> here.
-> 1. Put a buffer at the end of iio_priv() structure and mark it
->     __aligned(IIO_DMA_MINALIGN);
-> 2. Allocate on the heap here.
-> (Can't use spi_write_then read() here if those '0xff's are required values).
-I have chose to move(option 1) the buffer to the end of structure.
->> +	if (ret)
->> +		return ret;
->> +
->> +	/*
->> +	 * Data format: 16-bit two's complement MSB first
->> +	 * rx_buf[0] is echo of command
->> +	 * rx_buf[1] is MSB of data
->> +	 * rx_buf[2] is LSB of data
->> +	 */
->> +	*val = (s16)((rx_buf[1] << 8) | rx_buf[2]);
-> 	*val = sign_extend32(get_unaligned_be16(&rx_buf[1]), 15);
-> or something along those lines.
-I'll fix.
->
->> +
->> +	return 0;
->> +}
->> +
->> +static int ads1120_read_measurement(struct ads1120_state *st, int channel,
->> +				    int *val)
->> +{
->> +	int ret;
->> +
->> +	ret = ads1120_set_channel(st, channel);
->> +	if (ret)
->> +		return ret;
->> +
->> +	/* Start single-shot conversion */
-> This all seems fairly standard so not sure what your RFC question was
-> looking for feedback on wrt to how you did single conversions?
+On Thursday, 6 November 2025 19:32:29 CET Andy Shevchenko wrote:
+> On Thu, Nov 06, 2025 at 03:11:50PM +0100, Romain Gantois wrote:
+> > The LTM8054 supports setting a fixed output current limit using a sense
+> > resistor connected to a dedicated pin. This limit can then be lowered
+> > dynamically by varying the voltage level of the CTL pin.
+...
+> > +	ctl_dac = devm_iio_channel_get(&pdev->dev, "ctl");
+> > +	if (IS_ERR(ctl_dac)) {
+> > 
+> > +		if (PTR_ERR(ctl_dac) == -ENODEV)
+> > +			return ERR_PTR(-EPROBE_DEFER);
+> 
+> Hmm... Are you sure about this?
 
-I was indeed concerned about using the polling(adding wait) method to 
-read adc values.
+The only case where I want to defer is if the IO channel hasn't been created 
+yet. From what I've read in iio_channel_get(), -ENODEV is returned specifically 
+in this case. For example in fwnode_iio_channel_get_by_name() you have:
 
-That's the reason i have asked it in the cover letter.
+```
+if (!IS_ERR(chan) || PTR_ERR(chan) != -ENODEV)
+		return chan;
+```
 
->
->> +	ret = ads1120_write_cmd(st, ADS1120_CMD_START);
->> +	if (ret)
->> +		return ret;
->> +
->> +	/* Wait for conversion to complete */
->> +	msleep(st->conv_time_ms);
->> +
->> +	/* Read the result */
->> +	ret = ads1120_read_raw_adc(st, val);
->> +	if (ret)
->> +		return ret;
->> +
->> +	st->current_channel = channel;
->> +
->> +	return 0;
->> +}
->> +
->> +static int ads1120_read_raw(struct iio_dev *indio_dev,
->> +			    struct iio_chan_spec const *chan,
->> +			    int *val, int *val2, long mask)
->> +{
->> +	struct ads1120_state *st = iio_priv(indio_dev);
->> +	int ret;
->> +
->> +	switch (mask) {
->> +	case IIO_CHAN_INFO_RAW:
->> +		mutex_lock(&st->lock);
->> +		ret = ads1120_read_measurement(st, chan->channel, val);
-> guard() as below.
-Sure.
->
->> +		mutex_unlock(&st->lock);
->> +		if (ret)
->> +			return ret;
->> +		return IIO_VAL_INT;
->> +
->> +	case IIO_CHAN_INFO_SCALE:
->> +		*val = st->gain;
->> +		return IIO_VAL_INT;
->> +
->> +	case IIO_CHAN_INFO_SAMP_FREQ:
->> +		*val = st->datarate;
->> +		return IIO_VAL_INT;
->> +
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +}
->> +
->> +static int ads1120_write_raw(struct iio_dev *indio_dev,
->> +			     struct iio_chan_spec const *chan,
->> +			     int val, int val2, long mask)
->> +{
->> +	struct ads1120_state *st = iio_priv(indio_dev);
->> +	int ret;
->> +
->> +	switch (mask) {
->> +	case IIO_CHAN_INFO_SCALE:
->> +		mutex_lock(&st->lock);
-> include cleanup.h and use
->
-> 		guard(mutex)(&st->lock;
-> 		return ads1120_set_gain(st, val);
-> here.  Similar for other cases.
-I'll include cleanup.h and use guard instead of handling mutex directly.
->   
->> +		ret = ads1120_set_gain(st, val);
->> +		mutex_unlock(&st->lock);
->> +		return ret;
->> +
->> +	case IIO_CHAN_INFO_SAMP_FREQ:
->> +		mutex_lock(&st->lock);
->> +		ret = ads1120_set_datarate(st, val);
->> +		mutex_unlock(&st->lock);
->> +		return ret;
->> +
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +}
->> +
->> +static int ads1120_read_avail(struct iio_dev *indio_dev,
->> +			      struct iio_chan_spec const *chan,
->> +			      const int **vals, int *type, int *length,
->> +			      long mask)
->> +{
->> +	static const int datarates[] = { 20, 45, 90, 175, 330, 600, 1000 };
-> I'd put this up alongside the register defines.  Much easier to see it aligns
-> with those that way.
-I'll fix.
->> +
->> +	switch (mask) {
->> +	case IIO_CHAN_INFO_SCALE:
->> +		*vals = ads1120_gain_values;
->> +		*type = IIO_VAL_INT;
->> +		*length = ARRAY_SIZE(ads1120_gain_values);
->> +		return IIO_AVAIL_LIST;
->> +
->> +	case IIO_CHAN_INFO_SAMP_FREQ:
->> +		*vals = datarates;
->> +		*type = IIO_VAL_INT;
->> +		*length = ARRAY_SIZE(datarates);
->> +		return IIO_AVAIL_LIST;
->> +
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +}
-> ...
->
->> +
->> +static int ads1120_init(struct ads1120_state *st)
->> +{
->> +	int ret;
->> +
->> +	/* Reset device to default state */
-> I think that is is obvious enough from the function name that I'd
-> drop this comment.
-I'll remove the comment.
->
->> +	ret = ads1120_reset(st);
->> +	if (ret) {
->> +		dev_err(&st->spi->dev, "Failed to reset device\n");
->> +		return ret;
-> return dev_err_probe()
-Noted.
->
->> +	}
->> +
->> +	/*
->> +	 * Configure Register 0:
->> +	 * - Input MUX: AIN0/AVSS (updated per channel read)
->> +	 * - Gain: 1
->> +	 * - PGA bypassed (lower power consumption)
->> +	 */
->> +	st->config[0] = ADS1120_MUX_AIN0_AVSS | ADS1120_GAIN_1 |
->> +			ADS1120_PGA_BYPASS;
->> +	ret = ads1120_write_reg(st, ADS1120_REG_CONFIG0, st->config[0]);
->> +	if (ret)
->> +		return ret;
->> +
->> +	/*
->> +	 * Configure Register 1:
->> +	 * - Data rate: 175 SPS
->> +	 * - Mode: Normal
->> +	 * - Conversion mode: Single-shot
->> +	 * - Temperature sensor: Disabled
->> +	 * - Burnout current: Disabled
-> If you want to make this more self documenting you can use
-> the definition changes above and
-> 	st->config[1] = FIELD_PREP(ADS1120_CFG1_DR_MASK, ADS1120_CFG1_DR_175_SPS) |
-> 			FIELD_PREP(ADS1120_CFG1_MODE_MASK, ADS1120_CFG1_MODE_NORMAL) |
-> 			FIELD_PREP(ADS1120_CFG1_CONTINOUS, 0) |
-> 			FIELD_PREP(ADS1120_CFG1_TEMP, 0) |
-> 			FIELD_PREP(ADS1120_CFG1_BCS, 0);
-> So provide field writes with 0 rather than setting them by their absence.
-I'll use FIELD_PREP and add the fields with 0 to show their disable status.
->
->
-> 	
->> +	 */
->> +	st->config[1] = ADS1120_DR_175SPS | ADS1120_MODE_NORMAL |
->> +			ADS1120_CM_SINGLE;
->> +	ret = ads1120_write_reg(st, ADS1120_REG_CONFIG1, st->config[1]);
->> +	if (ret)
->> +		return ret;
->> +
->> +	/*
->> +	 * Configure Register 2:
->> +	 * - Voltage reference: AVDD
->> +	 * - 50/60Hz rejection: Off
->> +	 * - Power switch: Off
->> +	 * - IDAC: Off
->> +	 */
->> +	st->config[2] = ADS1120_VREF_AVDD | ADS1120_REJECT_OFF;
-> Currently config[2] and config[3] are unused outside this function.
-> Might make sense to use local variables for now.
-I'll use local variables for config[2] and config[3].
->
->> +	ret = ads1120_write_reg(st, ADS1120_REG_CONFIG2, st->config[2]);
->> +	if (ret)
->> +		return ret;
->> +
->> +	/*
->> +	 * Configure Register 3:
->> +	 * - IDAC1: Disabled
->> +	 * - IDAC2: Disabled
->> +	 * - DRDY mode: DOUT/DRDY pin behavior
->> +	 */
->> +	st->config[3] = ADS1120_DRDYM_EN;
->> +	ret = ads1120_write_reg(st, ADS1120_REG_CONFIG3, st->config[3]);
->> +	if (ret)
->> +		return ret;
->> +
->> +	/* Set default operating parameters */
->> +	st->gain = ADS1120_DEFAULT_GAIN;
->> +	st->datarate = ADS1120_DEFAULT_DATARATE;
->> +	st->conv_time_ms = 7; /* For 175 SPS */
-> I'd set these alongside where you do the writes.
-> Where possible just retrieve the value from what is cached in the config[]
-> registers rather than having two ways to get to related info.
-Sure, I'll fix.
->
->> +	st->current_channel = -1;
->> +
->> +	return 0;
->> +}
->> +
->> +static int ads1120_probe(struct spi_device *spi)
->> +{
-> There are enough uses of spi->dev that I'd add a local variable
-> 	struct device *dev = &spi->dev;
->
-I'll add local var to handle it.
->> +	struct iio_dev *indio_dev;
->> +	struct ads1120_state *st;
->> +	int ret;
->> +
->> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
->> +	if (!indio_dev)
->> +		return -ENOMEM;
->> +
->> +	st = iio_priv(indio_dev);
->> +	st->spi = spi;
->> +
->> +	mutex_init(&st->lock);
-> 	ret = devm_mutex_init(&spi->dev, st->lock);
-> 	if (ret)
-> 		return ret;
->
-> This helper is so easy to use it makes sense to use it here even though
-> the lock debugging it enables is unlikely to be particularly useful.
-Agreed.
->
->> +
->> +	indio_dev->name = "ads1120";
->> +	indio_dev->modes = INDIO_DIRECT_MODE;
->> +	indio_dev->channels = ads1120_channels;
->> +	indio_dev->num_channels = ARRAY_SIZE(ads1120_channels);
->> +	indio_dev->info = &ads1120_info;
->> +
->> +	ret = ads1120_init(st);
->> +	if (ret) {
->> +		dev_err(&spi->dev, "Failed to initialize device: %d\n", ret);
->> +		return ret;
-> For errors in code only called form probe path use
-> 		return dev_err_probe(&spi->dev, ret, "Failed to initialize device\n");
->
-> Whilst this particular path presumably doesn't defer it is still a useful
-> helper and pretty prints the return value + takes a few lines less than what
-> you currently have.
-Agreed. I'll follow the same.
->
->> +	}
->> +
->> +	return devm_iio_device_register(&spi->dev, indio_dev);
->> +}
+> > 
+> >  	priv->rdesc.type = REGULATOR_VOLTAGE;
+> >  	priv->rdesc.owner = THIS_MODULE;
+> > 
+> > +	if (ctl_dac) {
+> > +		priv->ctl_dac = ctl_dac;
+> > 
+> > +		INIT_WORK(&priv->ctl_work.work, ltm8054_do_ctl_work);
+> > +		init_completion(&priv->ctl_rw_done);
+> 
+> Do devm-helpers.h APIs help with something here? Does
+> devm_add_action_or_reset() help with not covered cases?
 
-I’ll post v2 with these fixes shortly.
+I could definitely use a cleanup action to flush the ctl pin work item instead 
+of doing it in a remove() function. It would also remove the gotos below.
 
-BR,
+Thanks,
 
-Ajith.
+-- 
+Romain Gantois, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--nextPart3017360.e9J7NaK4W3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAmkOCCQACgkQKCYAIARz
+eA4N4w//ZG1VoCZ4y9y5UR6dM4AuEhYD/K3kpUS7HDu/6tc4OXhOcyY0JiA/Ac+Y
+7F146YlRsdWF9djikBdjH7j4JYlioJ4VL68oSfHoQ2akSPDOzcGWWWEpJLAyLvqc
+Qincr9O2NRkEdB9mn7rza5I9o6/tQDw6ZSy4Qdy7PKLWRd579b72PUaUGCdHAD9F
+TWhdvOqpkC+Wzj7E5vF4sl62C7C3gn/Pf8JfLD6LVI1X9Wu4RyXDVfmotejBwZIO
+0XSlWCf851fKAsVr++aaz8oRAnHb3K0x3ix7nNu7Za5mI19Ur7ODGNoKfOcYHg3C
+VVQx1N6yBgZa9RSTNmmxj92AVNc/71oBuQiBt3c0VWv92VAmE7YudGRfCmXOZdix
+iDzuy0B/8C5GO+9TQnBkrz0RSzc7AAmi9hGCmYt8FHkmPBh94CBtshnyIcb7Lpqg
+NGc4AoNMXMFb1rJINlgtRIsdo14VMIOdUMGJELskYaOPwJns28UMblvDfGEKBZFE
+5MEPTQDE6QUBjTG2VzZRnWRPze0LrO5ZsQQFH55mTp8L8Kjvnpg7TxUJrpTB5LAJ
+zgPSpKju2Tz95hUFeQ7JXo8g2YfRsb3wsZQwwmaKpY8Xc2XnkwX62IHmlrRgmGhH
+N3+nEdXAYRL0zz6VGB612VYzp0PWOwfCSajMoLp6awsmqYr325s=
+=FJSm
+-----END PGP SIGNATURE-----
+
+--nextPart3017360.e9J7NaK4W3--
+
 
 
 

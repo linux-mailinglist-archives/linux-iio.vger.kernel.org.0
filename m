@@ -1,266 +1,169 @@
-Return-Path: <linux-iio+bounces-26016-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26017-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25876C3FAE9
-	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 12:15:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55346C3FC04
+	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 12:36:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9DA1B34B741
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 11:15:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB96718923DC
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 11:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C3C2248B8;
-	Fri,  7 Nov 2025 11:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790222D24BF;
+	Fri,  7 Nov 2025 11:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hv8bkE0x"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hMK24NHU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0AA2C9D;
-	Fri,  7 Nov 2025 11:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB0E287508
+	for <linux-iio@vger.kernel.org>; Fri,  7 Nov 2025 11:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762514134; cv=none; b=eCWuyT3558mEVqtTqPoaK6szL8nLLZXA0iz/0LCwWnhZ05WN6+M/n/3cyScBOWYiesqju3+RIJqdrXANWJHZwTxe1bTcKSzLBwUdGg/kAQrP77BY6a1ibv2rD4xn2+u2GpzZRdF05W2ClcTji/VNjXxBENV3rcIpFg74m2FMdz0=
+	t=1762515380; cv=none; b=nQ/ByfXdou+lCQxX8dOODu/ECe8b8XNGqi5ceZzxAbyoPsIH+PJhJfUXRw+AgKvracgQFgk2ZfnAQjs3UgVh9cNw8ULq0+LaHUdfNko+I5Sc6O6b3aVu/LDcu6Eiq2T8xmNoH0Rvvypnv4WMwPWD945HZ/qOHlHWfYc7C8I8W4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762514134; c=relaxed/simple;
-	bh=AtjVellgJiMMxUlOBM13bMyvXugC/bdRQTnYl63LCtM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WU0uqYbGPuAOF0XrJpa6SUKbY3jMu8PMhDUa37h6xI/AQHrqdrnvhOoWLQUAMEDqLclCe49Jb5GORTtfU8pnTBy9SSI9vmb1CwCirMlF2DoqOmZJroP/z7g8Y9ATIkjsjxFHDYQ/5b/pRByNhNxHV5ihm36pjV4xaH3/y76G45I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hv8bkE0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89E5C116B1;
-	Fri,  7 Nov 2025 11:15:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762514134;
-	bh=AtjVellgJiMMxUlOBM13bMyvXugC/bdRQTnYl63LCtM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hv8bkE0x2DIzpoVWBkVnXYE6tnqjItZaptk00oTAbM8tp2kArVTLfCwO9+nq5Vd+P
-	 Ixt2G5+NqtFDGZ+EvfAxEk0ArvpmjbhKk5XYVFI5oHnoUGs1LY99CzPtiYU2795JTg
-	 cahCjU1wfeOEV/7hxjug/T7NHIZgJaixd0wbbambGKA7p9aahybS9KHoiWZ8mqGa+e
-	 ReKx58+Y5HPXdydL1C/60NedhRdN3pp6JwYhcd7cf0yNXtjXQWxJCM9XKetN5pd/xH
-	 LYuhP5g0rkE5NgGfwEPUdHm48cnE5F3lDZVa3D0qhpBy0T25r7S2xtXoDGDp2w3/nb
-	 kqmEZZwfQnIZQ==
-Date: Fri, 7 Nov 2025 12:15:31 +0100
-From: Vinod Koul <vkoul@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>, dlechner@baylibre.com,
-	nuno.sa@analog.com, andy@kernel.org, robh@kernel.org,
-	conor+dt@kernel.org, krzk+dt@kernel.org, linux-iio@vger.kernel.org,
-	s32@nxp.com, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, chester62515@gmail.com,
-	mbrugger@suse.com, ghennadi.procopciuc@oss.nxp.com,
-	dmaengine@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] iio: adc: Add the NXP SAR ADC support for the
- s32g2/3 platforms
-Message-ID: <aQ3U0_6RM0KMP_od@vaman>
-References: <20251017164238.1908585-1-daniel.lezcano@linaro.org>
- <20251017164238.1908585-3-daniel.lezcano@linaro.org>
- <20251019094246.38daf7bf@jic23-huawei>
+	s=arc-20240116; t=1762515380; c=relaxed/simple;
+	bh=zc7EQnNjmRr1XU6lGykGKLz8scv8SLWTjQFPhZxkdgc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sKF+e7zJgH+wdL4kRr87WZXheuo2RMSNfo4aq7rs5MIszPROQT86gfI7dvmFeAU8bGkpM5nRMNQu/zjoimU9ni1W8xWAJ2WKN2wWi97HBRT+xc8GYxsHfNlZA1LXSceQZj5rmvdwUrXsB45Dds9xC9JWAVftrKnyCDDv441HFQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hMK24NHU; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-429b72691b4so522851f8f.3
+        for <linux-iio@vger.kernel.org>; Fri, 07 Nov 2025 03:36:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762515376; x=1763120176; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9JTGRP3Os3ULo6Z7owLq7b27T5LEh91I3qkDXn2bT8s=;
+        b=hMK24NHU9ASeLfzpQwXI3mQ8ZPbx7MZzgknsb9/jUcllKOnHSJMpNqq1Gutemwp9DL
+         IjTBCWNdyASJ+ZPC5Il0NrujHNNdbHBvUaI2DpY7scAH5L/GrH1H3P9mYQjocu49JrLK
+         rfYAsKcMGleMOQVdueBwIlwybFNIwHRzKFSD381oJHW9BEOqPnCEX4V22YOkPSY8+r/o
+         j8R932bX3JTTMvFJcbvOV72tDp/JwnhDp3ozgWthc6o81SyfIfvkdmIVc9XvoxPR6dIw
+         CEHa5yGtkSgDYxj2TV0qoiJ+7ngzujYV5NoH9cjeZdiDCrElDZK0YSlqA0/R2qSzws7V
+         TbLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762515376; x=1763120176;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9JTGRP3Os3ULo6Z7owLq7b27T5LEh91I3qkDXn2bT8s=;
+        b=DYhBhkeGqbB60R9jL9rki1YUtrLPF1ZEYNi9j3qeAPcqW4rvdVqnOdX/TmLjlxoXU/
+         zQTRaVhPkdzPvyrWWLsvnKUct+lK08YWyfK/yyo9Cw7ETqS8X5UanBOsYkV9fwYBEpvC
+         H8kbTsWCz9Gu32OgcE4q5txCc8duxpSW/joopxops0FEeczBuSra3OSK235/S60lG/N5
+         8Ga9ROFuLU3L90FRkWqF843agHVVuDMbi6G/Bck+MLbVeZ2ZLGfXOlNbAKF2PjENJcij
+         bCyrAbuAzyv06U/WLOwEB+XZIuN53lODAfYt64svOs2AN9UMQcO+Mu9zX6W5b6BlCSQF
+         /TXA==
+X-Forwarded-Encrypted: i=1; AJvYcCV0Fm9raBO4fF9DTYU3BpOtsckUxoQUT8JJIaBnlFrQJtm1KGGbdNStEeihdAy99lwWi7ZnrpVvScs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzxy8q4cnL4eHa5vg0zlLGpo+MUTbfzU35+JR8efGRHGdldXZOd
+	BbhEBE3Nnl5FHzLTT9MgvLmVv5YRl9s/hZIuoJai4OyzbUIzXJIWlSBGpWWX8eomIHU=
+X-Gm-Gg: ASbGncs+D7X7hD4VG5H/7L6arxc2TWxTROnskViWLJ+75cL58wQU7tnafNo5fKqHVqJ
+	5RS1h8PhEPzzfxp/arIcEp2ACw7ZCiSSEUcuRwgohWlepu2PFcVQgqpka3hYgEkwQxzNB/OYY1a
+	TKcxbTQNKqWVDtyQEy++6qndb2gp8PsLorBw4Xgfy93AXuDCGCpwyrHDAhKDPE0VUA0Dvm/N+/c
+	Lf2RmlTyyYnA/q2mn6c4+dmyMiP5ozDF1i2ukBOYJkaBRyuRHWvgr3hR52WTWq9W+AfjIGKY8J2
+	/XKffzMOHnYOaxrU8GY3rD7UxG6S/meIxLZ3Vgoq2NARctDPJXcHuHaVOFjLvYx+V5AAK8WmtrM
+	wpBwES2JGEqcB9KZXMOqkX3slOnYcTpGUA4xXgs/TY4tkFWsnz7Jk01+iRxYgzBY5gF2WUlgIth
+	BrUvkgkoay6XwgzJra8sRu/zKgYur51KcNncC+
+X-Google-Smtp-Source: AGHT+IG2dUCqDcfLmg6GQ5lAlXBIqxs9KWH+YNv4QsB30IZJTtg9NVCN7IdyFXcfIOHqLU7l2omYAg==
+X-Received: by 2002:a05:6000:184e:b0:429:f0a4:22e with SMTP id ffacd0b85a97d-42ae5ae9b17mr2326856f8f.54.1762515376522;
+        Fri, 07 Nov 2025 03:36:16 -0800 (PST)
+Received: from [192.168.2.1] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-42ac679c5dcsm5661874f8f.44.2025.11.07.03.36.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Nov 2025 03:36:16 -0800 (PST)
+Message-ID: <d783184f-6598-479a-99f3-e142e83bbb81@linaro.org>
+Date: Fri, 7 Nov 2025 12:36:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251019094246.38daf7bf@jic23-huawei>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] iio: adc: Add the NXP SAR ADC support for the
+ s32g2/3 platforms
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
+ linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
+ ghennadi.procopciuc@oss.nxp.com
+References: <20251017164238.1908585-1-daniel.lezcano@linaro.org>
+ <20251017164238.1908585-3-daniel.lezcano@linaro.org>
+ <aPP0uVZu1T7tTQGo@ashevche-desk.local>
+ <050f96d5-e60c-4b33-b6d2-24fb3925e378@linaro.org>
+ <aQMvqHGN7r6babgw@smile.fi.intel.com>
+ <c4c14051-2ba2-4d80-a22d-4deb3709f727@linaro.org>
+ <aQSvZT73NBWZFVfk@smile.fi.intel.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <aQSvZT73NBWZFVfk@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 19-10-25, 09:42, Jonathan Cameron wrote:
-> On Fri, 17 Oct 2025 18:42:38 +0200
-> Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
+On 10/31/25 13:45, Andy Shevchenko wrote:
+> On Fri, Oct 31, 2025 at 12:32:03PM +0100, Daniel Lezcano wrote:
+>> On 10/30/25 10:28, Andy Shevchenko wrote:
+>>> On Thu, Oct 30, 2025 at 09:27:21AM +0100, Daniel Lezcano wrote:
+>>>> On 10/18/25 22:12, Andy Shevchenko wrote:
+>>>>> On Fri, Oct 17, 2025 at 06:42:38PM +0200, Daniel Lezcano wrote:
 > 
-> > From: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
-> > 
-> > The NXP S32G2 and S32G3 platforms integrate a successive approximation
-> > register (SAR) ADC. Two instances are available, each providing 8
-> > multiplexed input channels with 12-bit resolution. The conversion rate
-> > is up to 1 Msps depending on the configuration and sampling window.
-> > 
-> > The SAR ADC supports raw, buffer, and trigger modes. It can operate
-> > in both single-shot and continuous conversion modes, with optional
-> > hardware triggering through the cross-trigger unit (CTU) or external
-> > events. An internal prescaler allows adjusting the sampling clock,
-> > while per-channel programmable sampling times provide fine-grained
-> > trade-offs between accuracy and latency. Automatic calibration is
-> > performed at probe time to minimize offset and gain errors.
-> > 
-> > The driver is derived from the BSP implementation and has been partly
-> > rewritten to comply with upstream requirements. For this reason, all
-> > contributors are listed as co-developers, while the author refers to
-> > the initial BSP driver file creator.
-> > 
-> > All modes have been validated on the S32G274-RDB2 platform using an
-> > externally generated square wave captured by the ADC. Tests covered
-> > buffered streaming via IIO, trigger synchronization, and accuracy
-> > verification against a precision laboratory signal source.
-> > 
-> > Co-developed-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
-> > Signed-off-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
-> > Co-developed-by: Ciprian Costea <ciprianmarian.costea@nxp.com>
-> > Signed-off-by: Ciprian Costea <ciprianmarian.costea@nxp.com>
-> > Co-developed-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
-> > Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
-> > Signed-off-by: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
-> > Co-developed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> > Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> [ ... ]
 > 
-> Hi Daniel,
+>>>>>> +	dma_samples = (u32 *)dma_buf->buf;
+>>>>>
+>>>>> Is it aligned properly for this type of casting?
+>>>>
+>>>> TBH, I don't know the answer :/
+>>>>
+>>>> How can I check that ?
+>>>
+>>> Is buf defined as a pointer to u32 / int or bigger? or is it just byte buffer?
+>>> If the latter, how does the address of it being formed? Does it come from a heap
+>>> (memory allocator)? If yes, we are fine, as this is usually the case for all
+>>> (k)malloc'ed memory.
+>>
+>> buf is a byte buffer allocated with dmam_alloc_coherent(..., GFP_KERNEL)
 > 
-> Only significant question in here is around lifetimes of the
-> dma buffer.
+> We are fine :-)
 > 
-> +CC Vinod and dmaengine list. Hopefully someone will rapidly tell me
-> my concern is garbage ;)
+> ...
+> 
+>>>>>> +	dmaengine_tx_status(info->dma_chan, info->cookie, &state);
+>>>>>
+>>>>> No return value check?
+>>>>
+>>>> The return value is not necessary here because the caller of the callback
+>>>> will check with dma_submit_error() in case of error which covers the
+>>>> DMA_ERROR case and the other cases are not useful because the residue is
+>>>> taken into account right after.
+>>>
+>>> In some cases it might return DMA_PAUSE (and actually this is the correct way
+>>> to get residue, one needs to pause the channel to read it, otherwise it will
+>>> give outdated / incorrect information).
+>>
+>> But if the residue is checked in the callback routine without checking
+>> DMA_PAUSED, the result is the same no ?
+> 
+> DMA in some corner cases might have already be charged for the next transfer.
+> Do you have a synchronisation between DMA start and residue check?
+> 
+> I.o.w. this may work for your case, but in general it's not guaranteed. The proper
+> read of residue is to: pause DMA --> read residue --> resume DMA.
+> 
 
-Thanks for looping me in
-> 
-> IIO folk who are familiar with dmaengine channels etc please take
-> a look at this as well.  I think all the upstream drivers we have doing
-> similar things to this predate devm_ management being a common thing.
-> 
-> Jonathan
-> 
-> 
-> > diff --git a/drivers/iio/adc/nxp-sar-adc.c b/drivers/iio/adc/nxp-sar-adc.c
-> > new file mode 100644
-> > index 000000000000..fa390c9d911f
-> > --- /dev/null
-> > +++ b/drivers/iio/adc/nxp-sar-adc.c
-> > @@ -0,0 +1,1006 @@
-> 
-> > +
-> > +static void nxp_sar_adc_dma_cb(void *data)
-> > +{
-> > +	struct nxp_sar_adc *info = iio_priv(data);
-> > +	struct iio_dev *indio_dev = data;
-> 
-> Trivial but it would slightly more intuitive to do.
-> 	struct iio_dev *indio_dev = data;
-> 	struct nxp_sar_adc *info = iio_priv(indio_dev);
-> 
-> > +	struct dma_tx_state state;
-> > +	struct circ_buf *dma_buf;
-> > +	struct device *dev_dma;
-> > +	u32 *dma_samples;
-> > +	s64 timestamp;
-> > +	int idx, ret;
-> > +
-> > +	guard(spinlock_irqsave)(&info->lock);
-> > +
-> > +	dma_buf = &info->dma_buf;
-> > +	dma_samples = (u32 *)dma_buf->buf;
-> > +	dev_dma = info->dma_chan->device->dev;
-> > +
-> > +	dmaengine_tx_status(info->dma_chan, info->cookie, &state);
-> > +
-> > +	dma_sync_single_for_cpu(dev_dma, info->rx_dma_buf,
-> > +				NXP_SAR_ADC_DMA_BUFF_SZ, DMA_FROM_DEVICE);
-> > +
-> > +	/* Current head position. */
-> > +	dma_buf->head = (NXP_SAR_ADC_DMA_BUFF_SZ - state.residue) /
-> > +			NXP_SAR_ADC_DMA_SAMPLE_SZ;
-> > +
-> > +	/* If everything was transferred, avoid an off by one error. */
-> > +	if (!state.residue)
-> > +		dma_buf->head--;
-> > +
-> > +	/* Something went wrong and nothing transferred. */
-> > +	if (state.residue == NXP_SAR_ADC_DMA_BUFF_SZ)
-> > +		goto out;
-> > +
-> > +	/* Make sure that head is multiple of info->channels_used. */
-> > +	dma_buf->head -= dma_buf->head % info->channels_used;
-> > +
-> > +	/*
-> > +	 * dma_buf->tail != dma_buf->head condition will become false
-> > +	 * because dma_buf->tail will be incremented with 1.
-> > +	 */
-> > +	while (dma_buf->tail != dma_buf->head) {
-> > +		idx = dma_buf->tail % info->channels_used;
-> > +		info->buffer[idx] = dma_samples[dma_buf->tail];
-> > +		dma_buf->tail = (dma_buf->tail + 1) % NXP_SAR_ADC_DMA_SAMPLE_CNT;
-> > +		if (idx != info->channels_used - 1)
-> > +			continue;
-> > +
-> > +		/*
-> > +		 * iio_push_to_buffers_with_timestamp should not be
-> 
-> Comment needs an update as using with_ts()
-> 
-> 
-> > +		 * called with dma_samples as parameter. The samples
-> > +		 * will be smashed if timestamp is enabled.
-> > +		 */
-> > +		timestamp = iio_get_time_ns(indio_dev);
-> > +		ret = iio_push_to_buffers_with_ts(indio_dev, info->buffer,
-> > +						  sizeof(info->buffer),
-> > +						  timestamp);
-> > +		if (ret < 0 && ret != -EBUSY)
-> > +			dev_err_ratelimited(&indio_dev->dev,
-> > +					    "failed to push iio buffer: %d",
-> > +					    ret);
-> > +	}
-> > +
-> > +	dma_buf->tail = dma_buf->head;
-> > +out:
-> > +	dma_sync_single_for_device(dev_dma, info->rx_dma_buf,
-> > +				   NXP_SAR_ADC_DMA_BUFF_SZ, DMA_FROM_DEVICE);
-> > +}
-> 
-> 
-> 
-> > +static int nxp_sar_adc_dma_probe(struct device *dev, struct nxp_sar_adc *info)
-> > +{
-> > +	struct device *dev_dma;
-> > +	u8 *rx_buf;
-> > +
-> > +	info->dma_chan = devm_dma_request_chan(dev, "rx");
-> > +	if (IS_ERR(info->dma_chan))
-> > +		return PTR_ERR(info->dma_chan);
-> > +
-> > +	dev_dma = info->dma_chan->device->dev;
-> > +	rx_buf = dmam_alloc_coherent(dev_dma, NXP_SAR_ADC_DMA_BUFF_SZ,
-> > +				     &info->rx_dma_buf, GFP_KERNEL);
-> 
-> Is this setting up the right life time?  Superficially it looks to be
-> associating the buffer lifetime with a device related to the dma engine rather
-> than the device we are dealing with here.
+I'll use the new callback function dma_async_tx_callback_result() which 
+should prevent that and allows to remove the spinlock at the same time
 
-Absolutely! the buffer ought to be mapped always with dmaengine device.
-The transaction are performed by the dmaengine device and that is why
-mapping should always be done with dmaengine device, it will not work
-otherwise.
-
-> This particular pattern with devm_dma_request_chan() is vanishingly rare
-> so not much prior art to rely on.
-
-I personally do not like that, dmaengine channel is a shared resource
-and it should be grabbed at runtime and freed up after use. Ideally
-would be good if we grab the channel when we need i
-
-But I know people like to grab channels at startup :-(
-
-> If the info->dma_chan->device->dev is instantiated by devm_dma_request_chan()
-> and hence torn down as that is unwound it will be fine as this is simply
-> nested devm handling, but it seems a struct dma_device has many chans so
-> I think that isn't the case.
-> 
-> Given that device parameter is also needed for the buffer allocation and
-> making sure we have the right properties / iommu magic etc, I'm not sure
-> how to make this work. One option would be to use dma_alloc_coherent() and
-> tear down with a devm_add_action_or_reset() handler on dev rather than
-> dev_dma.
-> 
-> > +	if (!rx_buf)
-> > +		return -ENOMEM;
-> > +
-> > +	info->dma_buf.buf = rx_buf;
-> > +
-> > +	return 0;
-> > +}
 
 -- 
-~Vinod
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 

@@ -1,89 +1,80 @@
-Return-Path: <linux-iio+bounces-26011-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26012-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB67FC3F272
-	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 10:27:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4987FC3F3CE
+	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 10:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AA8234E696D
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 09:27:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A6953B3BC6
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 09:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE6902FB098;
-	Fri,  7 Nov 2025 09:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB96305949;
+	Fri,  7 Nov 2025 09:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cc+q2iTY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YHD/N4Mo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10E32E229C
-	for <linux-iio@vger.kernel.org>; Fri,  7 Nov 2025 09:27:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A633054E4;
+	Fri,  7 Nov 2025 09:44:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762507630; cv=none; b=UhiXRQrU+sie8Urn5EDJ/bbDMpYs2dH1DecAdfSjkVxnDdYezn1ASijrLhWUXTRL5cf2gZYFsL8jOu5mHh4oRA5r9z+twnB0WZtk2vwhDGWCuG1VgrPBFMvXvQ5YooF2rWbfQWBpDKTBAbcP2Sme6TMPdb0BS+g5EYeN48eEi9I=
+	t=1762508671; cv=none; b=FI6ZFDrV5fyes/Oc/6C5pMRXu5Nxw14dygrB/RP/XWCl4RXiIpbwLpqynN+VxREVTZ3A5MAO4EJHqQ+M0K/JtKBGjhFJbCFXBnyzd+O1VdkL5uqoJPEwdDU29WMg/1dRPbuh9JLX3Fz5FoAVKlaMqqZGA5xA7aVdE4MQdJTqvWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762507630; c=relaxed/simple;
-	bh=kDAyi9ioMc/rzuwTBPGk8+ebQ5bgGc7bdn52u50c0fM=;
+	s=arc-20240116; t=1762508671; c=relaxed/simple;
+	bh=HeImgwmqI5Xxh4kXHCdMK9Vu3Gjea6W4SMp3xb6vOWY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pqt5xtWTwDodaMCaVC219SP7Kb/M+HS7BdXiP5WhIQx1PQ6YwCvTJSSYFfM+vafZVQPly2npi9PoDjimaij9Ej5KDOe6XUVeeFnGCpFtXGjn47XrzGmdMdWHmtTVapeCn3N7xydMwGo+wRbj57sVga8H3z27+mT20J7cjAVPhhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cc+q2iTY; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-429b7eecf7cso344122f8f.0
-        for <linux-iio@vger.kernel.org>; Fri, 07 Nov 2025 01:27:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762507626; x=1763112426; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=geTnwrqDK13fknylndNDrxsZhVlDgoBw/RlgWBbQVGk=;
-        b=cc+q2iTY7BCdrO/UDtugvs/5XQt2hTUlEOOcVDDJy2MTcywH+bCzO1YwJnkUk+g4/D
-         AT5gKDAv7DC9va9b2V0je/2EdiTp0OLan4C2y4pifBtUa+fnzVbsTAPypBRES2P2wwzv
-         R0cbHJDrKY9NT2o+AY89Z6vZbjOCDioau/ToNkkcL/atTCtIRICu9zICXWmyQ58ZUguy
-         wWpXR6g2h/PdgI3W6TAfFMhKjNag/YZYdD2hqq4CKcRBlgoF94J6jRVYPxFMt1ALd8/1
-         nPBF+JQ8XLuaiPulpA3G5mbtKFkX0ZTz+1wMjIzSWj0IohTzy7z6LZoMWcNDvisF/ll6
-         2KZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762507626; x=1763112426;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=geTnwrqDK13fknylndNDrxsZhVlDgoBw/RlgWBbQVGk=;
-        b=QmG4PgICZ82u/Hgx1iOVVdja4DE6A6bOBjDA9ogaUAT5csEA47UmYLG2jjMcC6mVss
-         BYg/ccW+Hcxx9AERVwhKhyglqGf0EbsZjVJZ4skqjveamkPC1c2SIV058RBTHNAzKAbs
-         ilUsN8u3lwgtdvOoi66ptLnhn3WloU6w10b9pNEjlNZWiy2m8nUD/KREC1/5GcBTtfck
-         XFFhvPaY19CRNLvgQBIJM5VdVkF6jPuK3OBwmS7eQ6eMGWstJeexOffg0E9wMlXHlELT
-         uzLjyYkhr9RshElpshO8Vj/3bO0ZomunWRFtqniQsaziw+PrqPHME7JXxMufWUmnID/l
-         6/Gw==
-X-Forwarded-Encrypted: i=1; AJvYcCWoIlSuqF6vtkx86mABS0CMCxl5ptxeuA5anjXV+nALBKx+pTKRxrQfh1SGO9f/dFVmwkQbp6+lpmM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXPnGWAbCNdh8K+w7QpDo2weqJqJ4W9JZtUsiTrxXRlqclPkrx
-	n8fUDWYFe6Bq/5O0OPR/5HrDcCbA0Mzk1mqQjdjQoBrL+U+GUDU+/1KT
-X-Gm-Gg: ASbGncuRAljQuOPkDdgPTfUN6de4YefZ4TQ3s1DASUr0XnZPxsmvPZ62t8uTecTIzSs
-	Og8447ooJ+MwqlbYDoCyc6EnpQiIgEXRB4LpjJGqZzcbOleit9cOQJ7mPgbEXwIzdHWPMVUtgQu
-	alH1r8OUcOjQxANmhDPdBTD+ZB/XutC4QJWys5lCYI6M+wPD6SK8k9Q1t4sXYt+yKqviEi6005g
-	456DWAqKO+PyEpPsSVFB6DRkrfOy3/y3LJVumdYmW1HqHhNqv4hcxUPJbMJ2e/EZIQAcdvDgZxI
-	Qh9Qu3jyStqi6kqQqML2BMwrXO/PPZGyFOt2A35ZXCp0eyrL8ymc00xJRMUuLY2luTs7kdJBC95
-	BKBD8uF3ej4HTPWMMDf+luFPnkKw2WUbYKucgYoABziVrRsdJegnNv/5vftzO7wEc7i9ivPmu5g
-	1Ap7c3q8b9x3PeDmb4hMcMREe74qbR+4pdZoGO1M1qHRc=
-X-Google-Smtp-Source: AGHT+IGyQU5w/jXirb835rluq2NuRTlYaAkODeiLEa1G2akDocz91dbrmmPOmGY260WwpC+esGaMPA==
-X-Received: by 2002:a5d:5850:0:b0:429:bb77:5deb with SMTP id ffacd0b85a97d-42b26fcfe3cmr1102328f8f.31.1762507625992;
-        Fri, 07 Nov 2025 01:27:05 -0800 (PST)
-Received: from antoni-VivoBook-ASUSLaptop-X512FAY-K512FA ([78.212.142.90])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac67845ccsm4047020f8f.36.2025.11.07.01.27.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 01:27:05 -0800 (PST)
-Date: Fri, 7 Nov 2025 10:26:46 +0100
-From: Antoni Pokusinski <apokusinski01@gmail.com>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] iio: ABI: document pressure event attributes
-Message-ID: <20251107092646.qaeocpvux4kjfu3i@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
-References: <20251105095615.4310-1-apokusinski01@gmail.com>
- <20251105095615.4310-4-apokusinski01@gmail.com>
- <aQ1aJ2RNMXp9TXzY@debian-BULLSEYE-live-builder-AMD64>
+	 Content-Type:Content-Disposition:In-Reply-To; b=iWEnxS/+iCtTOjpr9woK0/sGeaRGK/AgEYjDIhDrKoeB1QDtcMHQkPUmyXrqLmkECT/Uyw91X0gSyTCzMGzz6vfDq4ccaINyZTbZPpeE2DsX2sGs/K6wLWksDXVnX5fY2kON19XR76Y48BV3AFp+R2hXdsLtKgHFiMUziTA687Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YHD/N4Mo; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762508669; x=1794044669;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HeImgwmqI5Xxh4kXHCdMK9Vu3Gjea6W4SMp3xb6vOWY=;
+  b=YHD/N4MonnffwQCgA43ZqgaO27MSaCImhjBl4eOhuRdte6v0dp1B3CZn
+   KkpH5p0BxjZehs9QTVMlL64YLRg9QC4VeaAjtqy9LcbWyJy6NfRdTZJ6o
+   jKOeGlO2QVoQz6SWf/BAQGp6Ab3NvMefESYw+1joAUERWMHdGgV/7vkK3
+   0WhMyZmxIMozohBkTvHnHzmGjPTOvTm2m6SyfjRIi6MWyC4LqpHl3jACH
+   jtTSplE+8n12DClrZrjgMaHGodjqE8LtV/j6GPv5oyIv+HF8k/CouzoyB
+   kepwiovYKrQN9wt5aTbAWzalfDZ7Rd4MCMddhuJ6ky5V6OpU40FuhiTHR
+   g==;
+X-CSE-ConnectionGUID: r5emiBTnSQyZfxb55f4aKg==
+X-CSE-MsgGUID: El36jitiRKSr2CpTvr3gvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="64695129"
+X-IronPort-AV: E=Sophos;i="6.19,286,1754982000"; 
+   d="scan'208";a="64695129"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 01:44:29 -0800
+X-CSE-ConnectionGUID: 9Cy/uejiTU2pxWlcxBtQNQ==
+X-CSE-MsgGUID: oaiYB27ESNCK8jfmeNUXuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,286,1754982000"; 
+   d="scan'208";a="188718864"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.27])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 01:44:26 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vHJ15-00000006QFB-45d5;
+	Fri, 07 Nov 2025 11:44:23 +0200
+Date: Fri, 7 Nov 2025 11:44:23 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: remi.buisson@tdk.com
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] iio: imu: inv_icm45600: Initializes
+ inv_icm45600_buffer_postdisable sleep
+Message-ID: <aQ2_d4r7gwwxjLHs@smile.fi.intel.com>
+References: <20251107-icm45600_fix_buffer_sleep_init-v4-1-5648fbfb57ad@tdk.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -92,50 +83,23 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aQ1aJ2RNMXp9TXzY@debian-BULLSEYE-live-builder-AMD64>
+In-Reply-To: <20251107-icm45600_fix_buffer_sleep_init-v4-1-5648fbfb57ad@tdk.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Nov 06, 2025 at 11:32:07PM -0300, Marcelo Schmitt wrote:
-> On 11/05, Antoni Pokusinski wrote:
-> > Add sysfs pressure event attributes exposed by the mpl3115 driver. These
-> > allow controlling the threshold value and the enable state.
-> > 
-> > Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
-> > ---
-> >  Documentation/ABI/testing/sysfs-bus-iio | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> > index 352ab7b8476c..5f87dcee78f7 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-iio
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> > @@ -898,6 +898,7 @@ What:		/sys/.../iio:deviceX/events/in_tempY_thresh_rising_en
-> >  What:		/sys/.../iio:deviceX/events/in_tempY_thresh_falling_en
-> >  What:		/sys/.../iio:deviceX/events/in_capacitanceY_thresh_rising_en
-> >  What:		/sys/.../iio:deviceX/events/in_capacitanceY_thresh_falling_en
-> > +What:		/sys/.../iio:deviceX/events/in_pressure_thresh_rising_en
-> >  KernelVersion:	2.6.37
-> >  Contact:	linux-iio@vger.kernel.org
-> >  Description:
-> > @@ -1047,6 +1048,7 @@ What:		/sys/.../events/in_capacitanceY_thresh_rising_value
-> >  What:		/sys/.../events/in_capacitanceY_thresh_falling_value
-> >  What:		/sys/.../events/in_capacitanceY_thresh_adaptive_rising_value
-> >  What:		/sys/.../events/in_capacitanceY_thresh_falling_rising_value
-> > +What:		/sys/.../events/in_pressure_thresh_rising_value
-> This is how it's currently appearing in sysfs, right?
-Yes, that's right.
+On Fri, Nov 07, 2025 at 09:13:58AM +0000, Remi Buisson via B4 Relay wrote:
+> 
+> The sleep variable in inv_icm45600_buffer_postdisable could be used without
 
-> If so, IIO event sysfs entry generation might need a tweak.
-> 
-> For what matters to mpl3115 event support patch set, I think this is okay.
-> 
-> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> 
-> >  KernelVersion:	2.6.37
-> >  Contact:	linux-iio@vger.kernel.org
-> >  Description:
-> > -- 
-> > 2.25.1
-> > 
-Kind regards,
-Antoni Pokusinski
+inv_icm45600_buffer_postdisable()
+
+> being assigned in case of error. It must be initialized to 0 by default.
+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

@@ -1,134 +1,135 @@
-Return-Path: <linux-iio+bounces-26004-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26005-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D0BC3E30E
-	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 03:02:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F52C3E3FA
+	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 03:31:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 895164E43EC
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 02:02:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 640BF4E5FD3
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 02:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6367626CE2D;
-	Fri,  7 Nov 2025 02:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0EB221299;
+	Fri,  7 Nov 2025 02:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gra32C08"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7BA1F8AC5;
-	Fri,  7 Nov 2025 02:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77DE1D6187
+	for <linux-iio@vger.kernel.org>; Fri,  7 Nov 2025 02:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762480957; cv=none; b=HzWaG1p93rm9Goma5nivGgKtXm7zcoIzLmg5j3AYWmvBFfGV8LuxntQdLAFf3dC5sJZfHpL1YSOV3zAvN1vV9M/XGXIZQ7GAAis3rLCb1/ZruLqV3yZ+Qe4LtHwV0KJB3cgR3IGH0EhICTy5vUHIr7Uczmp3KU9cTI/5QLmymxY=
+	t=1762482657; cv=none; b=CoeskYd8D72nHj+mGL+btSFshAfmxeGJEl7TGYDGq4eArVS3FSt3xsD/cumejr318GwPyEBbH4JTkLa8JeVDA2RmRb4uljCbcU9EPlzKTI2aFwF+juVkTBIE6hFh3AZpaUvC+oi3A5FAnv0JmagJE0eSLghFtODty5mWTa6K1Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762480957; c=relaxed/simple;
-	bh=kCB4KWLVe36DQ6wTdgNiQBnbTyRXqUgiTbvbgnzh0jc=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=jgJEscmK5PkrdhdcrhtxCqesIffZ1uisNUNIg3VBHfaTCkHFAl/FiAmggy6pqzHABdNHe25bMOkRDWQy4Ty1l2STeM7MIxtWPTet+RDwS5zIzRCVk2Rm+I5epEZom1BbmRJfTWsRz2BC5WdXs+QDvy9hl2g9ZSGol2gX39hmDec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowAD3ZvUZUw1plVrWAQ--.41683S2;
-	Fri, 07 Nov 2025 10:02:11 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: jic23@kernel.org,
-	dlechner@baylibre.com,
-	nuno.sa@analog.com,
-	andy@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	Ma Ke <make24@iscas.ac.cn>
-Subject: [PATCH v3] iio: trigger: Fix error handling in viio_trigger_alloc
-Date: Fri,  7 Nov 2025 10:02:00 +0800
-Message-Id: <20251107020200.6285-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:zQCowAD3ZvUZUw1plVrWAQ--.41683S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFWkCF1kGF18ZryxKFy3Jwb_yoW8ZFWUpa
-	n7Z3yUtFWkJF1kXF47Zry8Xa4fKa1rK3W5KFW0934ak3y5XryrKFyxAFWUAw18JrW8XrsF
-	qF9rXa45Cr17XF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
-	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
-	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
-	x2IErcIFxwCY1x0262kKe7AKxVWUAVWUtwCY02Avz4vE14v_Gr1l42xK82IYc2Ij64vIr4
-	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
-	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
-	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAv
-	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14
-	v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUkHUDUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+	s=arc-20240116; t=1762482657; c=relaxed/simple;
+	bh=m/FxyrDohLxVI5g6VU54h2YzJGrnT+5TCt3twZ+P7V4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fZDxwNTogVWhjf6xPkcsr3havLtIQdPvE0LEzgbJ5fnFUPzuq00rdJ0W66gDyZ7kgwq//Ei8XKk04iHJuVMUSkcHyGvkosU1j+SfxQi1dbp8sTaKpTpeeOeiYAgP4n7IANBRtl6HinKorLnpC0XHN2lVvrXDYJzOUiYAzfvJ/zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gra32C08; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-44fff490b19so69579b6e.1
+        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 18:30:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762482655; x=1763087455; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QitgsGMcCeaaCUn3+Z4foq6QODVB8MooID8xUuvB0Bg=;
+        b=gra32C088VwRq8kYtcqPlenq4JiQibvRRdQ+kGbtzqYKs4VFn3hV+hiOqsGsPIYHvP
+         yGxeG0jTqmdZMJQXZV9vVsRWH057BnE2D5Il16K6i6ipSAWuiK68lXbxyVZsIika27TK
+         9i9eXZksEUHeGzk8icBx0eut36kI6Y8waKHzU92FeNFEGIRpkn5801tBGQO5GQTbJbl4
+         pbLA7ckDjcMEgA0BgMIixV8BIcOZYbi6zlsJvgKYuFLbM5oGOvUB8+C4DvrIEpXhRyfm
+         TlSa8R9CookG7Y/ceNCvfpK+bVIYKOrBYR6qWNByOC4hkvQf25vGKB0ltuazzW9f5akR
+         0dLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762482655; x=1763087455;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QitgsGMcCeaaCUn3+Z4foq6QODVB8MooID8xUuvB0Bg=;
+        b=CadaBax1uLERg4puvbR/zAlBCNOjFgVGb7IA0TjZ5nxmupCOsvzXJ+3ZrusTjxltM5
+         Pl/KLASmappIX5cdGC0hnDIc3Bxsc3MB3wvTzMsrmozPxWyOwL99uMQOfrKBfW0stZrt
+         +F0B0a3R8OU+QZNPQU3FV5QLjftRcFw2ikbraaIKYcbU0OcKZdwlOUf5N8mK2qanXVvj
+         KEzlqkE2iSIw4UCkveXMLANP1czIxOyqMu+53KJgkSF2JgwpJ5yK9To4Y0LNW6SpiBUn
+         C+7qc2vjz+IwVIM8+xUHMgeqiTJN5OaJBinIl6t7wjtA6cFvRdfFze6NcxDh28wdOmFI
+         zEkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXR+MShrIJs45EvZDgJS5yBVTE1THzZ2NnoavqnL+dNjwldWfZkte/hEd4zEV655rh4urZsP9NBPQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxC6VMy5XoN/dlcQse2QKYzM8MmC/J4lK6Nhl0tMUlwswhYNfsq
+	HcotLU1td/E5VoNzU4gG+YQ23N+Nll/cKd093Mw3mhd0pjzrA9LDK3s3
+X-Gm-Gg: ASbGncuhYuuoa+t7gPpLmHLk//jM/P5PgVSoQD4MaZmD3m/ZjDY8YSH3563ca3eRHWe
+	Zfx5NflyRB70EJTTj6c/jLVIHodF6WDoVId1tKehuMSK/wEffBH/RTzIfaKPCZzBAss4ukgbjaU
+	a2a6G82qfDdnUEOUkkRzNnsZp15qXxIJeNvFeF2PUYtON8Z7oN9C9BDU+GBDCZgrOkqtdXdPKxi
+	ZEc48AUBbm5JRA9Rkxyp4oAry3XshPTEXe5DuzrvDsnWcfilc2d1n9KSTW6eqNo5m8pIlqInML8
+	JjnIEplzVZ7PYddgM35jYPwrb/3U2APd3r1xW7AH+c017KfB2GXoaDbQPWrJtcfRTz7oqfByCWT
+	yGGku8sbrrNfYi4rkavdNwTL4n0yqtQvmuVHnG/Q2GYOWteTPTPSOM7YoQwTyLigamOFV0lvjS7
+	D6v7BT5WYDrDL7Q0tTl3qS
+X-Google-Smtp-Source: AGHT+IH1ZtROpNSLwljnDJvmsH7HrvXKX7fauIOjFJbIdXtQGCfFuG8X9AAIMN1cUxaAcaR9GIlCfg==
+X-Received: by 2002:a05:6808:320f:b0:450:1179:5f3c with SMTP id 5614622812f47-45015ebf797mr808667b6e.37.1762482654788;
+        Thu, 06 Nov 2025 18:30:54 -0800 (PST)
+Received: from localhost ([2804:30c:1653:6900:3b53:af9d:48d6:f107])
+        by smtp.gmail.com with UTF8SMTPSA id 006d021491bc7-656c57d5928sm1611773eaf.13.2025.11.06.18.30.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Nov 2025 18:30:53 -0800 (PST)
+Date: Thu, 6 Nov 2025 23:32:07 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Antoni Pokusinski <apokusinski01@gmail.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] iio: ABI: document pressure event attributes
+Message-ID: <aQ1aJ2RNMXp9TXzY@debian-BULLSEYE-live-builder-AMD64>
+References: <20251105095615.4310-1-apokusinski01@gmail.com>
+ <20251105095615.4310-4-apokusinski01@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105095615.4310-4-apokusinski01@gmail.com>
 
-viio_trigger_alloc() initializes the device with device_initialize()
-but uses kfree() directly in error paths, which bypasses the device's
-release callback iio_trig_release(). This could lead to memory leaks
-and inconsistent device state.
+On 11/05, Antoni Pokusinski wrote:
+> Add sysfs pressure event attributes exposed by the mpl3115 driver. These
+> allow controlling the threshold value and the enable state.
+> 
+> Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
+> ---
+>  Documentation/ABI/testing/sysfs-bus-iio | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index 352ab7b8476c..5f87dcee78f7 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -898,6 +898,7 @@ What:		/sys/.../iio:deviceX/events/in_tempY_thresh_rising_en
+>  What:		/sys/.../iio:deviceX/events/in_tempY_thresh_falling_en
+>  What:		/sys/.../iio:deviceX/events/in_capacitanceY_thresh_rising_en
+>  What:		/sys/.../iio:deviceX/events/in_capacitanceY_thresh_falling_en
+> +What:		/sys/.../iio:deviceX/events/in_pressure_thresh_rising_en
+>  KernelVersion:	2.6.37
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+> @@ -1047,6 +1048,7 @@ What:		/sys/.../events/in_capacitanceY_thresh_rising_value
+>  What:		/sys/.../events/in_capacitanceY_thresh_falling_value
+>  What:		/sys/.../events/in_capacitanceY_thresh_adaptive_rising_value
+>  What:		/sys/.../events/in_capacitanceY_thresh_falling_rising_value
+> +What:		/sys/.../events/in_pressure_thresh_rising_value
+This is how it's currently appearing in sysfs, right?
+If so, IIO event sysfs entry generation might need a tweak.
 
-Additionally, the current error handling has the following issues:
-1. Potential double-free of IRQ descriptors when kvasprintf() fails.
-2. The release function may attempt to free negative subirq_base.
-3. Missing mutex_destroy() in release function.
+For what matters to mpl3115 event support patch set, I think this is okay.
 
-Fix these issues by:
-1. Replacing kfree(trig) with put_device(&trig->dev) in error paths.
-2. Removing the free_descs label and handling IRQ descriptor freeing
-   directly in the kvasprintf() error path.
-3. Adding missing mutex_destroy().
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 
-Found by code review.
-
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/iio/industrialio-trigger.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index 54416a384232..7576dedee68e 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -524,6 +524,7 @@ static void iio_trig_release(struct device *device)
- 			       CONFIG_IIO_CONSUMERS_PER_TRIGGER);
- 	}
- 	kfree(trig->name);
-+	mutex_destroy(&trig->pool_lock);
- 	kfree(trig);
- }
- 
-@@ -575,8 +576,10 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
- 		goto free_trig;
- 
- 	trig->name = kvasprintf(GFP_KERNEL, fmt, vargs);
--	if (trig->name == NULL)
--		goto free_descs;
-+	if (trig->name == NULL) {
-+		irq_free_descs(trig->subirq_base, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
-+		goto free_trig;
-+	}
- 
- 	INIT_LIST_HEAD(&trig->list);
- 
-@@ -594,10 +597,8 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
- 
- 	return trig;
- 
--free_descs:
--	irq_free_descs(trig->subirq_base, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
- free_trig:
--	kfree(trig);
-+	put_device(&trig->dev);
- 	return NULL;
- }
- 
--- 
-2.17.1
-
+>  KernelVersion:	2.6.37
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+> -- 
+> 2.25.1
+> 
 

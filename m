@@ -1,158 +1,169 @@
-Return-Path: <linux-iio+bounces-25998-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-25999-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B409EC3D5AA
-	for <lists+linux-iio@lfdr.de>; Thu, 06 Nov 2025 21:28:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC155C3DFA8
+	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 01:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A1DFA4E23D1
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Nov 2025 20:28:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 992884E6DBE
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 00:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073562FC00E;
-	Thu,  6 Nov 2025 20:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6479D246BD8;
+	Fri,  7 Nov 2025 00:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MmhIkOBZ"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="vz1xJ4ZN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF4C2FB98A
-	for <linux-iio@vger.kernel.org>; Thu,  6 Nov 2025 20:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDE41F19A;
+	Fri,  7 Nov 2025 00:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762460930; cv=none; b=QmWwNJ0547sR1vb/E3XJEWpNmmbEQ/kH5MsFL3lzImvhZI+cz9kZQhqqO02Fd3FclXAlzpm6+Wm4Z9qT1K+BrrKGDUJxvyBXztBEHRxxKyEt47iv80dVkTndBMsh+mMRgVS/Osyfh/S4dc0fyejhvPCkLoPNI2+qvg9/KMmsd7Q=
+	t=1762475452; cv=none; b=CuUoces3pkumgL6vx9T712wNo+0TvplQqzb3gXom0pAYRe8ZHtFzzx2KvE3jwodsGOcDgh5xkz39o5henZ0NpSmIvIlIjrRglNoFGyLR+urOiBu5D6RTAlYvVKfNMhBB2e+nlUBYiUadDw2LL6G9oIRPVUloXRDhFJDeqIWqgZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762460930; c=relaxed/simple;
-	bh=B4MV3a78BmAOsDcZT7VlxQ8YoFXZlfgiZoml033GCjg=;
+	s=arc-20240116; t=1762475452; c=relaxed/simple;
+	bh=rbYZFDhnLDpEpqh6sqUJeLRBPVCKU6SN6dWVJ2axnoc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ji7rFbi2YEC6ohGMxsTorYW32D7cLuvYNICpWIGwXMaAR9nybk+UrSYpGOyc4EGqBZ/VDGB0rFKwCHjnJSdp4r8kPpY0RZM60hcXOw9FvZ3ngUWlgHEvZui4hPobFS4eIqc1QzLmhTwTD5jiAOm+olGGsUQ16WoEuZ63YvoE+VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MmhIkOBZ; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3ece1102998so18116f8f.2
-        for <linux-iio@vger.kernel.org>; Thu, 06 Nov 2025 12:28:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762460927; x=1763065727; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HhPIfP8De21bOH+Y4KvdOsnM2WwwWLHXmrn7DnA7LPU=;
-        b=MmhIkOBZTphXlxRYnteH2IhD6m4pob6tyZFMEchoQJHTNdGPmbEm0YtQj6VGvGf930
-         upZri9Z6wA8do06fVQYkp17XzkFuCRmyb+5qiQHXO/1lrGcJgqWqNYz0cuSbdHcqn8A1
-         xMDY3+oFgIZGDVvciWn2NejZ4Ito54ThOmH/6LgJYW8UcMMi/QSJUcXFzSYEOCg/oOoT
-         62OUYlG4m96HyB4CdBbBkkSgPMz8uoWo80yaCgEYSWFgzAXl/Tlm9UVnH7fiEaOeaaV7
-         jdCYedRzMVm1JyUKgM2iEVh8KKcIV5jPMIuWWG0TIWiM7UW7f5QjJlmAP+op6u4GsL9S
-         JqZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762460927; x=1763065727;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HhPIfP8De21bOH+Y4KvdOsnM2WwwWLHXmrn7DnA7LPU=;
-        b=hsMlg1oi6niyO3ywvlTc9FfqVe+fb917yfReg9ZCdzjdDxDUU6meMxVBo+HMxev9vy
-         ymfozksy4oeVORjYLi/4R1nhwfivRJbwMKcFmhEi+QXzFblaUw3pE3zhnej1pj/V/0M+
-         XVJh5mV54+j+il7NWAZMmZmPKp9NlMrZm25hrwGyv3ISFwQ3Ci+Yv6WnfDPHo2O950Yg
-         HoOpPX/ApKkl/fYEXoeEMJq1iRYHEcVkyiLKFXsHLn2Tiwf+GAF70tP9fNIavTbjZlC6
-         oJJQ/4ZbjPg2p6Z9tjO//moi5SWj3LoatYA35Ehr0i+2iAlubOZrgYH9RdT+EVIUU/CE
-         v5RA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyD3mmVDpfh9BRhmhjmzX/KgpSBgJx2fDsAbHVSDlkvgtRzwDC5KTOC0jy7AMnFiUk0fD06tLwBnk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzja3EWg1paMR/3E2PJi5uMULNJGmbkOObmlEyf0RaFLJDmY031
-	sw5/SaqtH1ujo3bVvTyKhVEMiVF5Nst0J8MZ3b/EVZohS4YHpaVG5hQc
-X-Gm-Gg: ASbGncucCZofucLl6l3O7xCGiNG6UKG/kwn1PQEMtQuFxFQy9YCBqVnHW7mrQcG7AS3
-	W9Bt/tG1EzGTsZoI/jBk7KMDAt/n1+qWjriZauAwQcMPd8F8qqMscZxFeFp2/YdBiqxK0TD/87z
-	IKCzntLf6aI735a1d20AFstmYu0uxaBHWntC5b2G0PGvZ8J3UZ4HuLd3OStHPp5OHLD0y1ujSBP
-	L90GzD1+dzgaMEEk9CPaNctL0xp7rmEOQ4D3wyB1AdpIhM9pZCUzPbCKt0mGRiCSFpF249Y0/Fv
-	YUqj5cf78pVgfKFGXww+tb4NqrXhvV/U7OXtI9aLNy4VS00xVbk0loAYNsDNm2EqV72oWxnbCW0
-	72/ExDcODbJrjXS8n11I0iZeYLP3HHE5hlyZ3ZK+K1byDV7f1SlTtyvSMwIuT2IfsizBbribnG0
-	Pw/bOrsJpLEOovLuVnFR4afyI6Mu4ukbG1VLxbcJyQng==
-X-Google-Smtp-Source: AGHT+IGi4oopRGqO7VlJNFJdPy+Tg07BkrBGU2k4ZbWfn30X2KSeolXIbSvjfrVYP9WC+iZ49D20iw==
-X-Received: by 2002:a05:6000:4103:b0:429:c774:dbfc with SMTP id ffacd0b85a97d-42adc68837fmr419498f8f.12.1762460927240;
-        Thu, 06 Nov 2025 12:28:47 -0800 (PST)
-Received: from antoni-VivoBook-ASUSLaptop-X512FAY-K512FA ([78.208.193.3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42abe63e13csm1001842f8f.19.2025.11.06.12.28.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 12:28:45 -0800 (PST)
-Date: Thu, 6 Nov 2025 21:28:07 +0100
-From: Antoni Pokusinski <apokusinski01@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, marcelo.schmitt1@gmail.com,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] iio: mpl3115: add threshold events support
-Message-ID: <20251106202748.zuysikmqfy3mfacd@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
-References: <20251105095615.4310-1-apokusinski01@gmail.com>
- <20251105095615.4310-3-apokusinski01@gmail.com>
- <aQtsXcf_rHVdwqeZ@smile.fi.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=QdfzDn1Kpnkp1oC4pk0K8caxZ5K+xr0/fcjOIY1dzDLiC3eh8kwMV6eVcLQ6VE3TAzlvcLEIYnwPJ7XvJWscT3vG9fhHxrWga0fDtnq7WUOEcxYDguKCn7Whu8DFD0kerciprbeDmTjsCVEUVqtMuxnUw05/ddpB8YVuy/RHBTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=vz1xJ4ZN; arc=none smtp.client-ip=172.105.74.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from lipo.home.arpa (unknown [IPv6:2a02:2f0e:3e0c:5b00:f1e0:3f4b:286c:9ddb])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id DC9B6160209;
+	Fri, 07 Nov 2025 02:30:39 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
+	s=mail; t=1762475440;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gu0/BUJoXynDAUB8R6H/4sFrLhmyaLY5XvHLuteKYUA=;
+	b=vz1xJ4ZNN0Oc8OJ8PUha5ATdtvhD8CjOaIDgZoLRb9iPzi5r2nPhCDp5sPlsaTC1yD80mG
+	K3T9nunvb6l5iQI+A6CYLO8xCZ3cZSazrrrsGXxZCTDTZZo0oac8y3NfZv8PlZD2drU+C8
+	8pFwVnLyHKIJwqLUVshHMN3TX43jQknjBMTi5vZHKmbJWMtcK0Wa92DYsObTiHKwpaw9nt
+	9iSsuLdCHPRQPTTXxANeAEHdHU2fNMcGhW1zGabQpA36B5S6ezxkObhV5cuqlzsqvz09gn
+	FFe+ILx8L3j0O3lg2TG6bybX8UB7zePRa3l82mWColM4Np/EkffJ0gHYrSUP1g==
+Date: Fri, 7 Nov 2025 02:30:33 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jagath Jog J <jagathjog1996@gmail.com>
+Subject: Re: [PATCH 3/6] iio: accel: bma220: add tap detection
+Message-ID: <aQ09qTYr0gqlb0If@lipo.home.arpa>
+References: <20251014-bma220_events-v1-0-153424d7ea08@subdimension.ro>
+ <20251014-bma220_events-v1-3-153424d7ea08@subdimension.ro>
+ <20251018181632.76851d4e@jic23-huawei>
+ <aQW9OnJSrOzn_Sws@lipo.home.arpa>
+ <20251102122053.49ee2632@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VSn+NfuX/JxFTYS/"
+Content-Disposition: inline
+In-Reply-To: <20251102122053.49ee2632@jic23-huawei>
+
+
+--VSn+NfuX/JxFTYS/
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aQtsXcf_rHVdwqeZ@smile.fi.intel.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 05, 2025 at 05:25:17PM +0200, Andy Shevchenko wrote:
-> On Wed, Nov 05, 2025 at 10:56:14AM +0100, Antoni Pokusinski wrote:
-> > static irqreturn_t mpl3115_interrupt_handler(int irq, void *private)
-> 
-> >  	struct iio_dev *indio_dev = private;
-> >  	struct mpl3115_data *data = iio_priv(indio_dev);
-> >  	int ret;
-> > +	u8 val_press[3];
-> > +	__be16 val_temp;
-> 
-> s/_temp/$SOMETHING meaningful/ ?
-> 
-In this case I'd leave the "val_temp". We have "val_press" and
-"val_temp" here so imo it indicates quite clearly that this variable
-stores a temperature measurement.
+On Sun, Nov 02, 2025 at 12:20:53PM +0000, Jonathan Cameron wrote:
+> On Sat, 1 Nov 2025 09:56:42 +0200
+> Petre Rodan <petre.rodan@subdimension.ro> wrote:
+>=20
+> > Hello Jonathan,
+> >=20
+> > thank you for the review.
+> >=20
+> > On Sat, Oct 18, 2025 at 06:16:32PM +0100, Jonathan Cameron wrote:
+> > > > +			ret =3D regmap_read(data->regmap, BMA220_REG_CONF3, &reg_val);
+> > > > +			if (ret)
+> > > > +				return ret;
+> > > > +			*val =3D FIELD_GET(BMA220_TT_DUR_MSK, reg_val); =20
+> > >=20
+> > > This needs to be in second if you are using duration. Is the register=
+ really in seconds? =20
+> >=20
+> > this IC has a very small number of bits that configure
+> > duration/hysteresis/threshold levels. it's between 2 and 6 for each
+> > of them. in the case of high and low G events the duration is not
+> > even directly defined as a time interval, but as a count of samples
+> > that are over a threshold value.
+>=20
+> The ABI is in seconds, so you have to deal with scaling wrt to the sampli=
+ng
+> frequency at the time.  I know it can be a pain to do, but consistent use=
+rspace
+> is the aim and so we need to match the ABI.
 
-The cases with "tmp" that you pointed out can be a bit confusing indeed, so
-I'm going to replace them with something more meaningful (e.g.
-"tmp" -> "press_tgt" in read_thresh() )  
+on this bma220 chip, when someone modifies the cut off frequency of the fil=
+ter then the ic automatically adjusts the sampling rate. and this sample ra=
+te is not exposed on any of the registers.
+since duration parameters are defined as a count of samples and the sample =
+rate looks to be unknown I don't see how I could adapt to an API that is ba=
+sed on a unit of seconds.
 
-> >  	ret = i2c_smbus_read_byte_data(data->client, MPL3115_INT_SOURCE);
-> >  	if (ret < 0)
-> >  		return IRQ_HANDLED;
-> >  
-> > -	if (!(ret & MPL3115_INT_SRC_DRDY))
-> > +	if (!(ret & (MPL3115_INT_SRC_TTH | MPL3115_INT_SRC_PTH |
-> > +		     MPL3115_INT_SRC_DRDY)))
-> >  		return IRQ_NONE;
-> >  
-> > -	iio_trigger_poll_nested(data->drdy_trig);
-> > +	if (ret & MPL3115_INT_SRC_DRDY)
-> > +		iio_trigger_poll_nested(data->drdy_trig);
-> > +
-> > +	if (ret & MPL3115_INT_SRC_PTH) {
-> > +		iio_push_event(indio_dev,
-> > +			       IIO_UNMOD_EVENT_CODE(IIO_PRESSURE, 0,
-> > +						    IIO_EV_TYPE_THRESH,
-> > +						    IIO_EV_DIR_RISING),
-> > +						    iio_get_time_ns(indio_dev));
-> > +
-> > +		/* Reset the SRC_PTH bit in INT_SOURCE */
-> > +		i2c_smbus_read_i2c_block_data(data->client,
-> > +					      MPL3115_OUT_PRESS,
-> > +					      sizeof(val_press), val_press);
-> > +	}
-> > +
-> > +	if (ret & MPL3115_INT_SRC_TTH) {
-> > +		iio_push_event(indio_dev,
-> > +			       IIO_UNMOD_EVENT_CODE(IIO_TEMP, 0,
-> > +						    IIO_EV_TYPE_THRESH,
-> > +						    IIO_EV_DIR_RISING),
-> > +						    iio_get_time_ns(indio_dev));
-> > +
-> > +		/* Reset the SRC_TTH bit in INT_SOURCE */
-> > +		i2c_smbus_read_i2c_block_data(data->client,
-> > +					      MPL3115_OUT_TEMP,
-> > +					      2, (u8 *)&val_temp);
+> > I was hoping that simply passing along a unitless value between 0 and
+> > parameter_max would be enough to customize all the event parameters.
+> > this does mean that the driver makes the assumption that the user is
+> > familiar with the device datasheet and knows the number of bits every
+> > parameter has been allocated. should the driver provide a conversion
+> > table for tt_duration just like for _scale_table and
+> > _lpf_3dB_freq_Hz_table?
+>=20
+> Exactly.
 
-Kind regards,
-Antoni
+I was thinking today of a more analog-feeling API, one in which a variable =
+that can take values linearly between min and max can be set to a percentag=
+e of it's scale. think of stereo systems - most of us don't want to set a p=
+recise amount of decibels of attenuation when operating the volume knob, we=
+ just want to set it lower or higher until a condition matches. in this API=
+ the primary unit of measurement would not be dBs but notches or ticks - ca=
+lculated based on min, max and the native resolution of the control (how ma=
+ny bits are allocated for it in the ic's memory map). this has also the ben=
+efit of translating nicely when the control is rendered as a widget in a GU=
+I. think about a 0 to 11 volume knob.
+is there anything like this already implemented? is there any merit to this=
+ idea?
 
+ I will shelve the event part of this driver for another time, just got som=
+e Honeywell pressure sensors that need a new driver.
+
+best regards,
+peter
+
+--VSn+NfuX/JxFTYS/
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEGiKYHD4NvFCkTqJ3dCsnp2M6SWMFAmkNPaIACgkQdCsnp2M6
+SWM73w//WsL6yDvpxuWQzPxfjXZHsBJoah8ojgxzS2EvrD7ijEyBCpI/tgrljytM
+EksqfXO29+YQYLM+z+xru5W/lMC7w8xM1J0UCgJZMJ38hi6zrbGlXGxqGW5cAgDy
+BfR6tWjKixPaDJV6D5t9M+gTmJMVDJxnQ1FuKoAggpBKg+f/3/rZdTkdF8GIe7Wl
+/b8v9bvZ4RtCsETl2ithaOLC3CUdJj38Z3Pc4YNDpViMxCpZ/Cjm4IkCTnCRviBu
+6h0bx7hYEGwOA4SirzMtJj+xTfkHWeKzfw/KxYc1TrGayKgjCaq3yiYurosuwtw6
+Wr0dO/U2iQPHPEyYz486pVx84O34AnfRczQZWS6Gw8e4kYUjzZYv6iFRYncGjg2S
+2CBTjSZqurNhrIbw6S8U7A4K44OZr3AR4cHgI+AQvou5Oss8NX+INrlZSLF8dsqV
+oAiVZUTUulWXDriZM6iZXOBwU8C/M4Qp1IkVlsnhHva/4bqxusa//TAQCTCF7N3N
+cjPgW8T2VoyC1bwGZRkV1JWLWbyoHXpCbNGq/Bu9+KXgAuiWGb6cKd+4rWxZmjA2
+onP5MqTS1gkAsDtXjoKkim1SgJnsW5kEMFcJpdHGXBLxZvvRqyVRGMz+Bwd/qE6j
+DXXss8o/WznLIFkRI+96iSzW6ZRYXz3kL9/+YGfqiEFw5kKuQVI=
+=QZSc
+-----END PGP SIGNATURE-----
+
+--VSn+NfuX/JxFTYS/--
 

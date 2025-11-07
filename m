@@ -1,148 +1,155 @@
-Return-Path: <linux-iio+bounces-26042-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26043-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8449CC41C1B
-	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 22:15:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E888C41CA0
+	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 23:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6627E3AB151
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 21:14:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6773E4F3543
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 22:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DAA3093CA;
-	Fri,  7 Nov 2025 21:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840503126BD;
+	Fri,  7 Nov 2025 22:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gfRyHloZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Av4MvMcN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F41245014
-	for <linux-iio@vger.kernel.org>; Fri,  7 Nov 2025 21:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9967A3101DB
+	for <linux-iio@vger.kernel.org>; Fri,  7 Nov 2025 22:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762550050; cv=none; b=L8IjpfXOAOQ1Nv6oEYLiGeA3pUyGdjTujrZXARYghZy5rT3bDYiqKH65cur6SGNIkgNO379CFtzEGQYDQjDUC0z7X8L8aPoIIEGddXb5Bg66JiT4XmW6g46EgBB0HbgGtpiBhfAAlqbJFoLzccAW2e19KSxklv2SCicooYDsF1Q=
+	t=1762552885; cv=none; b=FiNlFLBCiUe21u9xztA8u6W1DGD76pYSA7dZ2xJqAL584p9BRkH1SQ0VCUyHf4nPd91b2YbY1I0mFU30DC5rB39puF4i0UnYifjM6EpVwGgQcgGkK0UOJlDCpCtpY5cBHqcuavpZ+N+jyrcnLbUKxhu6E2dL7puOYrA6SKQl3PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762550050; c=relaxed/simple;
-	bh=UV51qyXzYtxwGuB0zES4FqkBW93FAxvKUjuQF+mTpr0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=gGgxNm7UVt7VdEPU34K6mJ8qz8QLBWQxhmoio25jiBLRz30AFEG6WiUErLckkzzXGffojiy7Ts87OYN9SV3lF3u1RdNegLYn9z9AarqNCsDVHcRH0MOx9W+QO4vd7EWixkN9oUxt5Bp2102ypngPHZHZGNS9SnxlIhdy3y8yCv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gfRyHloZ; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-656c665749dso248439eaf.0
-        for <linux-iio@vger.kernel.org>; Fri, 07 Nov 2025 13:14:08 -0800 (PST)
+	s=arc-20240116; t=1762552885; c=relaxed/simple;
+	bh=ZvRRiQ8rvc30G23b9Bf39pSTr1/076pCJ7w6F4gS79g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OTnyEGxbSMSJeQSoXGRrQGIdxee7+yYJntf6tBSh6XL3m7z+dDJdf5/bdgvgz/lTIeiJP6KWCHn+52mRTH1FCHAGNVwyonFpmp37rSD0KFj+DOJrWi+Iqe7kAx9iTiOF/9CdvTzV/0CO1/bRxo7J2TaWBN8bV3ziMtESFWON6Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Av4MvMcN; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47112a73785so8069095e9.3
+        for <linux-iio@vger.kernel.org>; Fri, 07 Nov 2025 14:01:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1762550048; x=1763154848; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Vo2b5stOOMkheFTgFZGlOEGzsHrk4gEITKRM/xPVOlg=;
-        b=gfRyHloZ8hHEZSlMb20dAUZruZQMPz3LxKyzsL2eEEpk4ZUChE2sBNNmMVyZ+K61ll
-         h+9drTxHRX1LZoamY204Uae1mtOj8FQ4NfmHqcxxyhlAGgjZRa/bpkSO6ADVhlsmzsjJ
-         HB0TZETIZ+IeToO6xrB8EkR9OJCZTXHefip1KB2bdzDq5rJNctmpifpbSQK3m5S41Ev+
-         JDLRxHSDCSFlJQ9D8FozcvyFaG4I8X+p14VC+LEIfmokliiDRGUofTLTAAuDPEyw/jGj
-         wjZpTP585I/gKPSgnjG8oJu2A/SovYmyl1im3cALpJcPM8SUSRfp9nIfYITaD8mA5PMk
-         zxEA==
+        d=gmail.com; s=20230601; t=1762552882; x=1763157682; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7YwdZPYZiho3Subcd9u/9cmTkYwrhyDSdsl+gE3HRmw=;
+        b=Av4MvMcN8wtmlHrAiemuQO0srtJ/2kjeMFxyIOu6iygRwZcre2Rog/2yhDFrz/FpOv
+         JAcfJKCAvrzH9ppGA6BE2saq6QRePpFOFtSk7QLH6JmOAbJEOkVKxuyKy6ETI/Ku4dVD
+         931DcWZw6r5ALhaTjnAncaDNsCwT0z25Msxcc0knp8lvQyLd2nwxt58FBfSpe3Dz9GO9
+         X6hCozVP2WChk8HcbWElXcu8VuBRCh5bGhYqJI2E4YZKR6X3q+W1SBJQxL7Y6ZRTBwrj
+         /P9U4a5XMPsRj4xNtxQZ+3FmnMPpsJ5WEHTeR3x0VJIcl9X8aqXiTCoQT1BtiRTkFzvm
+         HyPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762550048; x=1763154848;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vo2b5stOOMkheFTgFZGlOEGzsHrk4gEITKRM/xPVOlg=;
-        b=CkXnOX48CWsq1jnax5HlptBRdjPn66vq3T60Hv7tlBhF5o04xawamUb//g4/LEBpc0
-         8owF6mmdlt2yBdEzJZI3pX3MOYKPiz1GmbCTX1L1uTMAAGFUQ2EQwqrEAJs8dsTwERNM
-         b0C2P0GmuHnhJbCp5rjlsP/ALkj4c8rogNqvg7HPFqlRwq5gZxAorNi0h4/c/z+Mt0pl
-         SC7/FN26scijHicrKxcg5GiGOUhSPDHqomhhDiKlHws+UwkxvtSUOrJLQVSXjdZRQdgY
-         ySi+nKYVhrYE0SsFCoxHN7tFucY4thbvqtdq7NSPLG5O2nMewaSiEM1wkp69QUqyNBx5
-         UKMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWj4m9IwVek5wZ1klwGJ4Eug4bfv6PJCLWPNwR06MUeKOLB8feWYZ+qL8ypWBQsqMPHVJ8UpYmoekA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU9ngNiXB+cNc6H6hW6gUCGEMrRnYwFABLKF+wR8HiGQ6IeGeY
-	fr5Y0fUK3eGrYv9wUqMPdqcggIwQ0rzzfCRe5GreBWo+Bnzts1qy2Jy8OEjoIBnAOmE=
-X-Gm-Gg: ASbGncsH+CAJqu4+5wFP5fapR1o8e/KC0IC3SY85nCclLF5QRHZIdDo/vN8wVjVIZ9p
-	Oaw5X0zi9kutuFnex2AqFrtbw7bXpZxu64TZkyTzhATUCCWzB3wrzCbwj7RyzB0852Fv+Lpsgtj
-	sGRh9ZWTpgsgddBg9G7Wx6VKDIbppCQ90Mz0+xv7/8KKaVztx5Myx/IkhucKUAh+b3FP71WOSia
-	j/PbzY8xtVb7euoumSDiAJiK3yaaJqzF8MLtEzFaV3y4wdGRKb31OnwcX1/d1uz3X2kDmxLdxEq
-	4Tc4G7PEMRATll+qWGvks/LFhWMsPpQY1RI+9AxbLsHYE1AG3NOBnvaRTEl/J5jIqbn/YnJFNcn
-	BX0E+ZOPdgidKJg5npu/l5kXgdGKwjygQY/sgCU1nD7ufznsILD6slGmGqulSdZkwmsNOLM23DU
-	gLmFqk2r77m7/0IzS1v45rANfSyAq0rV0sKQoB3uLczcisPjzvFs2sB/9QcPgp8tvwG17ntDg=
-X-Google-Smtp-Source: AGHT+IH58JNXTTmu6lPkALuS59F00c00c+agrganN7d8UEB0Nzs1Gj/HxCtytEXComYXlhKlM//Npw==
-X-Received: by 2002:a05:6808:80c6:b0:44d:aa05:ce74 with SMTP id 5614622812f47-4502a1be72amr387091b6e.19.1762550047721;
-        Fri, 07 Nov 2025 13:14:07 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:7bb8:950b:327d:4ba4? ([2600:8803:e7e4:500:7bb8:950b:327d:4ba4])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-450027f640esm2781467b6e.23.2025.11.07.13.14.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Nov 2025 13:14:06 -0800 (PST)
-Message-ID: <45bf8a0c-0491-4356-ad54-79c25079ad19@baylibre.com>
-Date: Fri, 7 Nov 2025 15:14:04 -0600
+        d=1e100.net; s=20230601; t=1762552882; x=1763157682;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7YwdZPYZiho3Subcd9u/9cmTkYwrhyDSdsl+gE3HRmw=;
+        b=XogFC8FpCyWxNW20Gk/sdyg9jVGgFOORRgiDeoIyKqArVkKQFIdIeUq4ggSrrgskW0
+         9uLyjDwwycF79aOyP+sIj1ekEZsMXzt1pS9to0my0xOAtTAXAwx/PuBWWW+7JhZZPa2J
+         r5D1J35UI6M9rTD9pQNkkvGeVIpFREJyIVhuQ0tZMGibQsoRsur5dqTpL0+pZeOlOD7H
+         cwzCc6VRIkCK/WXzgvyVBJX1xTg7KnH2Kbsp5k2NrXa3q2Fuehv5J1sqDftGxRL+iri7
+         CnFWUKWaAB5Sc92IIGGBFGJsZFinX7wSQcv4sw4OUEGE9pxwvZIkKN9HdHnvtBP6tJ1N
+         8PtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWUeuoSyAk4ITc8u8xqTK374cpX2LnmcY4YUiE9asZg5o8cOEO9aCG6v/QebNKBIxOhVr4HMznKsts=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwN/H+xCeYX3Hd6fqnetwa4vzaM5eOpcryKRq57VbBzq7QMjA2q
+	L/bURC3wGZj/dIYZ1Kv5cxXoZDvxvJH8qGyP7+Yx3Ug8DJt6cDwx2ZYA
+X-Gm-Gg: ASbGncs6QKYol7RpbzgAwoXba/f1nr+dNYd87ZnJxhDYXZB3uFdGVjT3MNKgO4DATwT
+	sh86DcZ3l8CTr+debrW1Yfu/bKkf4F7twaUun/c/xRqcl1t8KIcIGbZyJn4Jix+0qDk7NS652RC
+	wcrDVfxqgFQdg/50HfyNQp58kjspPzMhUKs2NkyeOMpCcnzXRyFS59fdFc1urCryno/k/UPJKTw
+	RRdIqTkoWeAsA3YDOCcxkqr2sj+43PlwirnwgISW8p26EFIGjXURI66SfMWLy01wvZ+TQRWBVwL
+	XAT2ltADz5Qlq+XcW1G24X5vp762lWHbufw9k1gEWqCw5my2uxKAD51JqXIY+B4SENpIKFWzVF0
+	vtNhG3QStCYHHBHEuLdNAMRClG0JR9wVhTVfcvTcOiDcdlj2crVIOMwpia5jCq1+AUTatpzrtg8
+	N37jfCRSpe8i0QdtQ4A++ZpUEnCLU6yJ56U5lOJqH3kA==
+X-Google-Smtp-Source: AGHT+IETa6C6wu7fSXxfvpKHmlI5Z2mbLTetko1XH88Udj/UuTbG92MTj44YOV8YPsC3UCB7lVjncQ==
+X-Received: by 2002:a05:600c:8010:b0:456:1b6f:c888 with SMTP id 5b1f17b1804b1-4777327709fmr4392515e9.23.1762552881794;
+        Fri, 07 Nov 2025 14:01:21 -0800 (PST)
+Received: from antoni-VivoBook-ASUSLaptop-X512FAY-K512FA ([37.160.63.21])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775cdce8d2sm186801765e9.8.2025.11.07.14.01.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Nov 2025 14:01:21 -0800 (PST)
+Date: Fri, 7 Nov 2025 23:01:06 +0100
+From: Antoni Pokusinski <apokusinski01@gmail.com>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+	andy@kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] iio: mpl3115: add threshold events support
+Message-ID: <20251107220106.ihk6e46paxmyfqgg@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
+References: <20251105095615.4310-1-apokusinski01@gmail.com>
+ <20251105095615.4310-3-apokusinski01@gmail.com>
+ <aQ1Rdcbi3e8lzOvM@debian-BULLSEYE-live-builder-AMD64>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH_v2_2/6=5D_units=3A_Add_32-_and_64-bit_sign?=
- =?UTF-8?Q?ed_values_of_=CF=80?=
-From: David Lechner <dlechner@baylibre.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Hans Verkuil <hverkuil+cisco@kernel.org>, linux-iio@vger.kernel.org,
- chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>
-References: <20251107201005.3156118-1-andriy.shevchenko@linux.intel.com>
- <20251107201005.3156118-3-andriy.shevchenko@linux.intel.com>
- <fb4aafc1-dbfb-4533-b368-5d26e24acdf1@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <fb4aafc1-dbfb-4533-b368-5d26e24acdf1@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQ1Rdcbi3e8lzOvM@debian-BULLSEYE-live-builder-AMD64>
 
-On 11/7/25 3:09 PM, David Lechner wrote:
-> On 11/7/25 2:03 PM, Andy Shevchenko wrote:
->> There are a few drivers that want to have these values, and
->> one more known to come soon. Let's define the values for them.
->>
->> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> ---
->>  include/linux/units.h | 6 ++++++
->>  1 file changed, 6 insertions(+)
->>
->> diff --git a/include/linux/units.h b/include/linux/units.h
->> index f626e212d4ca..5b3293bce04c 100644
->> --- a/include/linux/units.h
->> +++ b/include/linux/units.h
->> @@ -21,6 +21,12 @@
->>  #define PICO	1000000000000ULL
->>  #define FEMTO	1000000000000000ULL
->>  
->> +/* Value of π * 10⁸ (fits s32 or signed int) */
->> +#define PI	314159265
+On Thu, Nov 06, 2025 at 10:55:01PM -0300, Marcelo Schmitt wrote:
+> Hi Antoni,
 > 
-> It isn't clear to me at all in the other patches that e.g.
-> DIV_ROUND_UP(PI, 1000) would be π ✕ 10⁴ (rounded to nearest
+> v3 looks mostly good to me.
+> A couple of minor suggestions in addition to Andy's.
+> 
+> On 11/05, Antoni Pokusinski wrote:
+> > +
+> > +static int mpl3115_write_thresh(struct iio_dev *indio_dev,
+> > +				const struct iio_chan_spec *chan,
+> > +				enum iio_event_type type,
+> > +				enum iio_event_direction dir,
+> > +				enum iio_event_info info,
+> > +				int val, int val2)
+> > +{
+> > +	struct mpl3115_data *data = iio_priv(indio_dev);
+> > +	__be16 tmp;
+> > +
+> > +	if (info != IIO_EV_INFO_VALUE)
+> > +		return -EINVAL;
+> > +
+> > +	switch (chan->type) {
+> > +	case IIO_PRESSURE:
+> > +		val >>= 1;
+> > +
+> > +		if (val < 0 || val > U16_MAX)
+> Alternatively, could use in_range() for the check.
+> 
+> > +			return -EINVAL;
+> > +
+> > +		tmp = cpu_to_be16(val);
+> > +
+> > +		return i2c_smbus_write_i2c_block_data(data->client,
+> > +						      MPL3115_PRESS_TGT,
+> > +						      sizeof(tmp), (u8 *)&tmp);
+> > +	case IIO_TEMP:
+> > +		if (val < S8_MIN || val > S8_MAX)
+> this could also use in_range().
+> 
+> If you opt for the macro,
+> #include <linux/minmax.h>
+>
+I see that the in_range() macro operates only on unsigned values, so
+placing it here would be wrong I guess. In order to keep the style
+consistenc in this function, I'd keep both checks as "val < x || val > y"
 
-Typo. Should be DIV_ROUND_UP(PI, 10000) or  DIV_ROUND_UP(PI, 10 * KILO).
-
-> integer, of course).
-> 
-> Calling these PI_E8 and PI_E18 or PI_x10_8 and PI_x10_18
-> would help to clear that up.
-> 
->> +
->> +/* Value of π * 10¹⁸ (fits s64 or signed long long) */
->> +#define PI_LL	3141592653589793238LL
->> +
->>  /* Hz based multipliers */
->>  #define NANOHZ_PER_HZ		1000000000UL
->>  #define MICROHZ_PER_HZ		1000000UL
-> 
+> > +			return -EINVAL;
+> > +
+> > +		return i2c_smbus_write_byte_data(data->client,
+> > +						 MPL3115_TEMP_TGT, val);
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+Kind regards,
+Antoni Pokusinski
 
 

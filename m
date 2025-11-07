@@ -1,144 +1,139 @@
-Return-Path: <linux-iio+bounces-26018-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26019-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B47C402BF
-	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 14:44:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF92C4030D
+	for <lists+linux-iio@lfdr.de>; Fri, 07 Nov 2025 14:50:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B28024EEC50
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 13:44:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD05018906DF
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Nov 2025 13:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3024E2F5321;
-	Fri,  7 Nov 2025 13:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD453176ED;
+	Fri,  7 Nov 2025 13:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fgloT27L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/P5DJQF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9191E231A32
-	for <linux-iio@vger.kernel.org>; Fri,  7 Nov 2025 13:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF31D30E82D;
+	Fri,  7 Nov 2025 13:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762523048; cv=none; b=Gf9ltOxpV/uow7dQsaJBXpMqol2NUzo1gES6RsVdsSR1+mWfI4D1ZzFi4KWXN0OXYuzeiD+0yoQq++rw191NevvKWMVlVYtn9xLxyvOd1p4nkWvhRr6D/Rkfn1SqiCCqs3NLFN+WQHokZXzbX1hbgZu/Mg0Oqg2b1mPw7oxkbho=
+	t=1762523399; cv=none; b=b1YYQtzJiGTarl6lSOfX7TR4B0hD/3XX7s7dgWXfUwBPLlMoQ6EgqSWRM2YU90GSSjr0wIBMFz79fAnBZy4k4Bp0P4jAuuQac9woseb9uK5ssW/QVdKNJl9ynMPmlCCLwIVK7a7HLNnxqoB6dKMQPlidNsb24YA3hFC1XaXBdt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762523048; c=relaxed/simple;
-	bh=Kek2ni9K7tlXAKMV2yxnaJRcPVXhJP6mmBKqRazXcxU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CRmsmTy8tyGixO6b0sB/Ayvqt+0hyK5h93Z2PPH2WsKTnPgn4MQprTKD9zzawoeBTTQAa4Oe7uSV/IWVaaPl9ukyFIj8DXGcUHlMWDQfS6lVW3BIjYp5vTQptA9fzIqsDszeSQrHuaTvb8KAJZRC/xR8lgB9Cnuu5ede07rPAkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fgloT27L; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-297d4a56f97so3031905ad.1
-        for <linux-iio@vger.kernel.org>; Fri, 07 Nov 2025 05:44:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762523044; x=1763127844; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=T51sKGmzO5ESwXBqJuoshtIPtbH/U8t3k8P6xn6hgWk=;
-        b=fgloT27LOWI0lrnwCSZ+TPo2ysIgzhsaJe7atO6MROOjr8STMdpBxA6hROblRwatJ1
-         PzATAik3H8QnSO3I7nLYMRQFZ6OrlP5PHC2LUBqj8YBGPgMu+QSOvUKZkWlDc0eZI+Eu
-         yAeXuoKv3zoibimpL6mBZMbOloF6dqLKNFeQCaA6291WUxD4iMe66JiO1XYm6czim2kq
-         jTFv4Y7Cx3rBTim5W/GElrvU1eD7hrix7CX+QSSi3T9tyRZSyBgEsSeLXD3q5ESO4Wmx
-         5brnhV/GAFs1TUyPJoCzoi0rG+dIt5fMt1FTqsvZRsAURbhYQfFxiKkSx9nhBD5OXhAt
-         9lWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762523044; x=1763127844;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=T51sKGmzO5ESwXBqJuoshtIPtbH/U8t3k8P6xn6hgWk=;
-        b=BbvMK77ntxrMT6Hx+yi3RhonDL5bEpGXUb4qETZMV9KRQKnhZrBtwTTmeH3LEfYQT5
-         74nZA7ku96ilGYi9XtoxtUQ0y9TU3ZLgqknOO1kAmIbLXuWGg7TBtzzbF7IJjMPBr3+O
-         CApaezttDQzPygHDTaH777nZlIBJPsJkV7BjrlmG92ojeT1kjHAolPH4Gy5psBOShhiV
-         EWR7Ru7ZN5UHIIfjmRiix4Nct8aqshjRLXYSZxBL2QMleGqtq01bEH5vFUvnskYMFqFX
-         vBzv0y150DGv2rb0u0jdl+bKLdSrgf+ikZLHJMhndZ4yr1Xqy4AKC61RuzOYBPxmrGGF
-         7sAQ==
-X-Gm-Message-State: AOJu0Yyug3oRthWpiMstlLk/X7qG2n9ln0j1jd2ecW/cj1JORB3jDNDZ
-	OLKtTeMeKnqEJt2msCvac3wTl1YhUfNUvqNXuob5ZPk8IYIRMnRinKvb
-X-Gm-Gg: ASbGnctfoxC8mULDaz8xxU8l28F3qarOZ0l5jh5UgfuY0tvJh4ydZqQrwitJ7ZeNdvu
-	D2kLdmybKkXZ1aBCUScOMlTlKolyWke6n7CJbB2FTesjM2n7HDsVZbkn0LR3iEXyf8trkGisl2/
-	PwO3MHNK4ki7TK47AC8+vGRQYq0tTnA2zBPsRN1DF9zW6xlRhn9u5D12EBh/h7amk/NbHqCh3Yo
-	M7+0AFQQN7YrwEweK+Y3lvlmM0q8xWRI1MfzgX1/Qv/7+p9yoKTFrT36AZFsGMbL6gENmfwVNjt
-	jiBEt5SlIolQLHxtkYlt5GKVQ9GgNGEaLjIYUDRWifYWQ7WoaRb0b4I+Ua1L2jU2jgnyFo4cKL9
-	oi4FPMGmYbBrkzd9GtIeWnkFCCj20hBToYbpbwYbCrqd2ifFpYNWoVJQ2qB56apBGa3uEc78Fv8
-	IUG/1rOgHvo6moroEwk6/HaOBqtPfryqm+Og12cxd6ZLBTgfsdJJKWyk3ITPLUnbBP66Db4wqtc
-	BBAaKayy3aGU4HC8yaInNzGm4dET22KLUtN8YxLntI7275PZFN8dIsU9ScQlvTlIpAZ8jllK32l
-	Qsmac/SI
-X-Google-Smtp-Source: AGHT+IEQTc9ird2Of3/UqLYc19J1u7EOVDH6cqhobpLuQc6M3Vc5JPZ+PlHeMA3ePxLyPNMmC8Ej7w==
-X-Received: by 2002:a17:903:287:b0:292:dca8:c140 with SMTP id d9443c01a7336-297c047a762mr40598415ad.44.1762523043769;
-        Fri, 07 Nov 2025 05:44:03 -0800 (PST)
-Received: from ?IPV6:2402:e280:21d3:2:b586:93ae:6db3:2abb? ([2402:e280:21d3:2:b586:93ae:6db3:2abb])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-296509683easm61055775ad.15.2025.11.07.05.43.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Nov 2025 05:44:03 -0800 (PST)
-Message-ID: <8ab11fa8-defa-47f5-a9cb-e3e95b5b32ca@gmail.com>
-Date: Fri, 7 Nov 2025 19:13:56 +0530
+	s=arc-20240116; t=1762523399; c=relaxed/simple;
+	bh=C2E1eLR24JnqBes35lbVTeNq6xeo1y8IdaNwDApDH6k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IBfUVZcXWoGvGipgjen6noszZ5VW2qSIic6gYsVtCopjfsHS5lRCzIa1KXNebi2fc3xZVk/9PXyuu4r58WJoIY8et9eoL+O+p/W7ntGnMCWdcgT+pufYkgBQ+POZtAw0ZGlr1nl4vf5fe3tSZnBMLFIRAE3U6CC5RA6Ib/Ei4Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/P5DJQF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8B5EFC116B1;
+	Fri,  7 Nov 2025 13:49:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762523398;
+	bh=C2E1eLR24JnqBes35lbVTeNq6xeo1y8IdaNwDApDH6k=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=N/P5DJQFMuDm2JwGwSvRotNHGdhfXuew4T7/cuCZv9NaJqpfcuyq2mfPoba5dcfZw
+	 K4djo8QpFmHK1h1xYBLbdgFwrdjJwVIAgY/aU3fnQSVhoxWPH8lQMs/QOZKOOUiHui
+	 jqgV/dC019sBsrXUJMOI0Lbb0AkhgF2sT7rYOI9LH41EBz6E/s3SZTF3dh6IblBY0+
+	 zIDZQqwcnNNCw0oWRQRoqTX2C8RKI+qPjDQvpPUEJ7zUIqCm6ywPYEXf6A4mUJxaxv
+	 gj+9yviVzPH/SstXagsa+vnu0NgeC3bw2AmmQag+L8zFJOBgUPXpH+WYpmnlMnEXX7
+	 4w8av3Iw5O6BA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84093CCF9F8;
+	Fri,  7 Nov 2025 13:49:58 +0000 (UTC)
+From: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
+Date: Fri, 07 Nov 2025 13:49:56 +0000
+Subject: [PATCH v5] iio: imu: inv_icm45600: Initializes
+ inv_icm45600_buffer_postdisable sleep
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/3] MAINTAINERS: Add entry for TI ADS1120 ADC driver
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: linux-iio@vger.kernel.org, jic23@kernel.org, dlechner@baylibre.com,
- nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
- <20251030163411.236672-4-ajithanandhan0406@gmail.com>
- <20251030175510.00005af8@huawei.com>
-Content-Language: en-US
-From: Ajith Anandhan <ajithanandhan0406@gmail.com>
-In-Reply-To: <20251030175510.00005af8@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20251107-icm45600_fix_buffer_sleep_init-v5-1-45581918ea63@tdk.com>
+X-B4-Tracking: v=1; b=H4sIAAP5DWkC/5XOTU7DMBAF4KtUXmPk8V9MV9wDoch2ZugImlR2i
+ EBV7o7TTemqsHxPo+/NWVQsjFXsd2dRcOHK09iCe9iJfIjjG0oeWhZaaQfKgOR8tM4r1RN/9em
+ TCEtfPxBPPY88y6C8Jo+qo2BFQ04F2+Fl4OW15QPXeSrfl70FtvbP9AIS5JO2SCmBdxie5+H9M
+ U9HscGL/h+mG+bykJVFSDnFW8xcMVD+LmYahtFE8iEa9HCL2d9Ydxez22feBkqUXBeHK7au6w+
+ UKvD6sQEAAA==
+X-Change-ID: 20251031-icm45600_fix_buffer_sleep_init-8062f6e07f84
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Remi Buisson <remi.buisson@tdk.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andy Shevchenko <andriy.shevchenko@intel.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762523397; l=2135;
+ i=remi.buisson@tdk.com; s=20250411; h=from:subject:message-id;
+ bh=v52ZqvJfSOkOyp0ViAifF442SwvXQu+wDMWWMy7Pi4I=;
+ b=4HSGmUqYEyslnZV/k5FGQ3NsiLYEY0vzSbfuuyOFVuz2CTSZTankBePjUNLDe5l+mOPm3BA/C
+ Q8sf3TM3lxtDQc/QCkKECDjG4YCr1UmHRqk7JZQtTWxRv35/JmN+JWH
+X-Developer-Key: i=remi.buisson@tdk.com; a=ed25519;
+ pk=yDVMi4C7RpXN4dififo42A7fDDt3THYzoZoNq9lUZuo=
+X-Endpoint-Received: by B4 Relay for remi.buisson@tdk.com/20250411 with
+ auth_id=372
+X-Original-From: Remi Buisson <remi.buisson@tdk.com>
+Reply-To: remi.buisson@tdk.com
 
-On 10/30/25 11:25 PM, Jonathan Cameron wrote:
-> On Thu, 30 Oct 2025 22:04:11 +0530
-> Ajith Anandhan <ajithanandhan0406@gmail.com> wrote:
->
->> Add a new MAINTAINERS entry for the Texas Instruments ADS1120
->> ADC driver and its device tree binding.
-> blank line before tag block.
-Noted.
->> Signed-off-by: Ajith Anandhan <ajithanandhan0406@gmail.com>
-> Just bring this in along with the code, it doesn't need a separate
-> commit.
->
-> Thanks,
->
-> Jonathan
+From: Remi Buisson <remi.buisson@tdk.com>
 
-I will add along with the code.
+The sleep variable in inv_icm45600_buffer_postdisable() could be used without
+being assigned in case of error. It must be initialized to 0 by default.
 
->> ---
->>   MAINTAINERS | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 3da2c26a7..1efe88fc9 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -25613,6 +25613,13 @@ S:	Maintained
->>   F:	Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml
->>   F:	drivers/iio/adc/ti-ads1119.c
->>   
->> +TI ADS1120 ADC DRIVER
->> +M:	Ajith Anandhan <ajithanandhan0406@gmail.com>
->> +L:	linux-iio@vger.kernel.org
->> +S:	Maintained
->> +F:	Documentation/devicetree/bindings/iio/adc/ti,ads1120.yaml
->> +F:	drivers/iio/adc/ti-ads1120.c
->> +
->>   TI ADS7924 ADC DRIVER
->>   M:	Hugo Villeneuve <hvilleneuve@dimonoff.com>
->>   L:	linux-iio@vger.kernel.org
+Fixes: 06674a72cf7a ("iio: imu: inv_icm45600: add buffer support in iio devices")
+Closes: https://lore.kernel.org/linux-iio/aPi6Xw-ZoUkW76zR@stanley.mountain/
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
+---
+Changes in v5:
+- Adding parenthesis to function name in commit message
+- Adding Reviewed-by tag
+- Link to v4: https://lore.kernel.org/r/20251107-icm45600_fix_buffer_sleep_init-v4-1-5648fbfb57ad@tdk.com
+
+Changes in v4:
+- Add space in closse tag in commit message
+- Remove extra blank line in commit message
+- Link to v3: https://lore.kernel.org/r/20251106-icm45600_fix_buffer_sleep_init-v3-1-ea3af68a3e61@tdk.com
+
+Changes in v3:
+- Fix commit message: fix and closes moved to SoB
+- Fix assignement of sleep variable after declaration.
+- Link to v2: https://lore.kernel.org/r/20251031-icm45600_fix_buffer_sleep_init-v2-1-5cdc04e1bcba@tdk.com
+
+Changes in v2:
+- Moving pacth description from cover-letter to single commit
+- Link to v1: https://lore.kernel.org/r/20251031-icm45600_fix_buffer_sleep_init-v1-1-924efbb165e8@tdk.com
+---
+ drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
+index 2efcc177f9d60a6a2509e448c0ddaf4b9e1fd755..2b9ea317385ceb680f013c4c1b2a6a74fbe5d7e7 100644
+--- a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
++++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
+@@ -370,6 +370,7 @@ static int inv_icm45600_buffer_postdisable(struct iio_dev *indio_dev)
+ 		return -EINVAL;
+ 	}
+ 
++	sleep = 0;
+ 	scoped_guard(mutex, &st->lock)
+ 		ret = _inv_icm45600_buffer_postdisable(st, sensor, watermark, &sleep);
+ 
+
+---
+base-commit: 70437bbd7529e9860fb7f0c92a89e0e6abaa994e
+change-id: 20251031-icm45600_fix_buffer_sleep_init-8062f6e07f84
+
+Best regards,
+-- 
+Remi Buisson <remi.buisson@tdk.com>
 
 
 

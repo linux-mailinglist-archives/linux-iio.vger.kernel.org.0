@@ -1,64 +1,60 @@
-Return-Path: <linux-iio+bounces-26077-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26078-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78447C4414A
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 16:09:01 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE7DC4418C
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 16:53:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 027573AC735
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 15:09:00 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 97E4A34684D
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 15:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BF42FB0A0;
-	Sun,  9 Nov 2025 15:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B65C2FE59A;
+	Sun,  9 Nov 2025 15:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVgzaT62"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RjXh/WZw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2C71C84DC;
-	Sun,  9 Nov 2025 15:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F279D1F7569;
+	Sun,  9 Nov 2025 15:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762700934; cv=none; b=MOwzVuL3kbnSUslvfwYOm5rYfvmwUblsbxXNt+l9VrwU7br0S0XRQQDL0RGRCLOGJIodZfjz/BlUo00xOXjsz5QIPt0y0Vns8dG0ObesTDyXFQ42pwd5TSKOIUQR5nLM+JADoNFYrJBkF2cmHtPvN7zrkyWKHSNX+O5k8ZP0c4Q=
+	t=1762703600; cv=none; b=n4vjVA9ydQkyQ+L92Ws4NGuQxFb2ZeqY+QBFEXPy6SDFlyIaM9EaGROvRbSLFhD+yIzNnYHHKYcd0MK9kny25fh3OdOMpwiYo6dwTH+LZYEdYmSKcDoB29h+W/KzuysLiga10h+Ip8n9jy/DQNm4kmTDPXCakq3pprpl/HARvd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762700934; c=relaxed/simple;
-	bh=UsiRGVkkiN8UxPf6zagckvEmaIPz91rtZ6xa8MBMRjY=;
+	s=arc-20240116; t=1762703600; c=relaxed/simple;
+	bh=vGm7piNNumvfH+d3L5yt/YJWBCXJfExiMhY1zi82YOU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MsjJHKjtsEV9UQbpQxr26V+ki+sTbZ+n+C3LITkVvpFH8co3tcBshHjBkljRRCh3vjPKNXZ0VYKLq8KMtPO9O7MzfebUtxnSF0DMoDgq5bKdP+D+hb6O6ReuwJrxtCyH1x+FVAQ3A5ndIDnxsLw/LGfVkjCGtMSW8nnE3mjRLcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVgzaT62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB105C4CEF8;
-	Sun,  9 Nov 2025 15:08:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YDeh10zQbISD5Sal7C+4uJbr8+Ds8oXigvacu0M3SYPnHkEyr/nxVDtnW3+lbY2XKRLLiPE1rzaIHtqRSgyXSnCr4X56//g+u3japNtoXGwIyA1b0XxlLSkBN2rInlyntdQY6fOwBch1+zAPzuTnXHU9QVp5Pd0lJ8cTc4J/lY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RjXh/WZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BDAC19422;
+	Sun,  9 Nov 2025 15:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762700934;
-	bh=UsiRGVkkiN8UxPf6zagckvEmaIPz91rtZ6xa8MBMRjY=;
+	s=k20201202; t=1762703599;
+	bh=vGm7piNNumvfH+d3L5yt/YJWBCXJfExiMhY1zi82YOU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jVgzaT62BeuiE95+q8cRtVX4MIDhLS9H6ljBrxfe3qu9H+iBS1l+wUEtg1/iswda9
-	 G+KU5hSe8K/3WxiPDrO3qwu+JZuUrXdaIZGViZ1fzSHXTAdUY/ycwmWQtTG/cDLJmj
-	 3anF6J/o9puA6SJsUp9CWTirxoBOjRbZmLTC6g5pqrMG55AlaeBrLjlRBVwjqsdWQR
-	 w5eLT65XDwRbf49W5ur8qyhR6skr85b5h+tWn084DEStI/TeQGzTyN1GWDwRBPXWve
-	 9w7558vYs6anJWhkd3Cds3QhAkjYqGQ3M37IO/Dd6AaqsOLxjkRodYUetYr03E2vc5
-	 knFK9VkoxwFKg==
-Date: Sun, 9 Nov 2025 15:08:46 +0000
+	b=RjXh/WZwlyQdf4vOwkk8FbnxyG/SaDMXcwPh64eneNAS2ItkdouCqZbk8i/Eaaru0
+	 ndnB5aAxncPTPtxcpsXLGwG5CyGSnaUfv6Hm3+SvmoUw/hpu3X311rGQGaRBnCA3NA
+	 5gnDLxMdSjiTEnAGINUcAGz4UAY6GG76m19lsMzYrSJT4AcBV4xMUVsty6LSLt8IUt
+	 lOD4YN9Ddit8b/JKQZI2HPp5t+chTun5XAT1Xeb7UyUIpU1BUMeatI/y0lj6Z9TwUy
+	 IQTaq95s3cHmuSNLPLoiSNjQLP2kOumwdw3GoJrsiG3TK0W7aWPKypMAs4XyCo8TcK
+	 UGAK7sEsP3cMg==
+Date: Sun, 9 Nov 2025 15:53:12 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: "Herve Codina (Schneider Electric)" <herve.codina@bootlin.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Magnus Damm
- <magnus.damm@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, linux-iio@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Pascal Eberhard <pascal.eberhard@se.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 0/4] Add support for the Renesas RZ/N1 ADC
-Message-ID: <20251109150846.25c7ae49@jic23-huawei>
-In-Reply-To: <20251103141834.71677-1-herve.codina@bootlin.com>
-References: <20251103141834.71677-1-herve.codina@bootlin.com>
+To: Ariana Lazar <ariana.lazar@microchip.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/2] iio: dac: adding support for Microchip
+ MCP47FEB02
+Message-ID: <20251109155312.499d5eb5@jic23-huawei>
+In-Reply-To: <20251103-mcp47feb02-v2-2-8c37741bd97a@microchip.com>
+References: <20251103-mcp47feb02-v2-0-8c37741bd97a@microchip.com>
+	<20251103-mcp47feb02-v2-2-8c37741bd97a@microchip.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,114 +65,277 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon,  3 Nov 2025 15:18:30 +0100
-"Herve Codina (Schneider Electric)" <herve.codina@bootlin.com> wrote:
+On Mon, 3 Nov 2025 17:50:30 +0200
+Ariana Lazar <ariana.lazar@microchip.com> wrote:
 
-> Hi,
+> This is the iio driver for Microchip MCP47F(E/V)B(0/1/2)1,
+> MCP47F(E/V)B(0/1/2)2, MCP47F(E/V)B(0/1/2)4 and MCP47F(E/V)B(0/1/2)8 series
+> of buffered voltage output Digital-to-Analog Converters with nonvolatile =
+or
+> volatile memory and an I2C Interface.
 >=20
-> The Renesas RZ/N1 ADC controller is the ADC controller available in the
-> Renesas RZ/N1 SoCs family.
+> The families support up to 8 output channels.
 >=20
-> It can use up to two internal ADC cores (ADC1 and ADC2) those internal
-> cores are handled through ADC controller virtual channels.
+> The devices can be 8-bit, 10-bit and 12-bit.
 >=20
-> Best regards,
-> Herve Codina
->=20
-> Changes v2 -> v3:
->=20
-Applied 1-2,4 to the togreg branch of iio.git.
-A little bit of merge noise due to another Renesas ADC driver being
-added recently, but only in Makefile / Kconfig so hopefully I didn't mess
-up merging them.
+> Signed-off-by: Ariana Lazar <ariana.lazar@microchip.com>
+
+A few minor things. Some of which probably overlap with Andy's comments.
+
+Jonathan
+
+> diff --git a/drivers/iio/dac/mcp47feb02.c b/drivers/iio/dac/mcp47feb02.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..69f5ebbc89aed8ce229cd0c6a=
+37ca58f8a822d46
+> --- /dev/null
+> +++ b/drivers/iio/dac/mcp47feb02.c
 
 
-> v2: https://lore.kernel.org/lkml/20251029144644.667561-1-herve.codina@boo=
-tlin.com/
->=20
->   Patch 1:
->     - Add 'Reviewed-by: Rob Herring'.
->=20
->   Patch 2:
->     - Add missing header files.
->     - Use fixed-width values for register definitions.
->     - Split comments and remove a redundant 'else'.
->     - Return the error in the 'switch case' default statement.
->     - Leave a trailing comma in struct iio_info.
->     - Move *_vref_mv to *_vref_mV.
->     - Split the DEFINE_RUNTIME_DEV_PM_OPS().
->     - Update error code handling in rzn1_adc_core_get_regulators().
->     - Pass rzn1_adc in platform_set_drvdata(), update suspend/resume
->       function accordingly.
->     - Add 'Reviewed-by: Nuno S=C3=A1'
->=20
->   Patches 3 and 4:
->     No change.
->=20
-> Changes v1 -> v2:
->=20
-> v1: https://lore.kernel.org/lkml/20251015142816.1274605-1-herve.codina@bo=
-otlin.com/
->=20
->   Rebase on top of v6.18-rc3 to have commit db82b8dbf5f0 ("PM: runtime:
->   Fix conditional guard definitions")
->=20
->   Patch 1:
->     - Remove unneeded 'dependencies' part.
->     - Rename "adc-clk" clock to "adc".
->     - Move 'additionalProperties: false' just before the example.
->     - Use const instead of enum for the "renesas,r9a06g032-adc"
->       compatible string.
->     - Fix the ACD typo.
->=20
->   Patch 2:
->     - Fix the ACD typo.
->     - Rename "adc-clk" clock to "adc".
->     - Update included headers and sort them.
->     - Align register definitions at the same column.
->     - Inline the FIELD_GET() instead of having macros.
->     - Introduce RZN1_ADC_NO_CHANNEL
->     - Get Vref voltage value at probe().
->     - Remove the bitmap in rzn1_adc_set_iio_dev_channels().
->     - Use dev_err_probe() in rzn1_adc_set_iio_dev_channels().
->     - Use auto-cleanup variant for PM runtime "resume and get".
->     - Use scoped_guard() for mutex.
->     - Use devm_mutex_init().
->     - Use the fixed "rzn1-adc" string for indio_dev->name.
->     - Use DEFINE_RUNTIME_DEV_PM_OPS().
->     - Fix rzn1_adc_of_match table and remove of_match_ptr().
->     - Add a comment related to decoupling between IIO chans and ADC1 or
->       ADC2 core chans
->     - Update and add several comments related to ADC core usage and the
->       relationship with ADC core regulator presence.
->     - Remove clocks and regulators handling from PM runtime
->       suspend()/remove().
->     - Simplify the driver removing the no more relevant struct
->       rzn1_adc_core.
->=20
->   Patch 3:
->     - Rename "adc-clk" clock to "adc".
->     - Add 'Reviewed-by: Wolfram Sang'
->=20
->   Patch 4
->     - Removed the linux-iio list
->=20
-> Herve Codina (Schneider Electric) (4):
->   dt-bindings: iio: adc: Add the Renesas RZ/N1 ADC
->   iio: adc: Add support for the Renesas RZ/N1 ADC
->   ARM: dts: renesas: r9a06g032: Add the ADC device
->   MAINTAINERS: Add the Renesas RZ/N1 ADC driver entry
->=20
->  .../bindings/iio/adc/renesas,rzn1-adc.yaml    | 111 ++++
->  MAINTAINERS                                   |   7 +
->  arch/arm/boot/dts/renesas/r9a06g032.dtsi      |  10 +
->  drivers/iio/adc/Kconfig                       |  10 +
->  drivers/iio/adc/Makefile                      |   1 +
->  drivers/iio/adc/rzn1-adc.c                    | 490 ++++++++++++++++++
->  6 files changed, 629 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/renesas,rzn=
-1-adc.yaml
->  create mode 100644 drivers/iio/adc/rzn1-adc.c
->=20
 
+> +static int mcp47feb02_suspend(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
+> +	struct mcp47feb02_data *data =3D iio_priv(indio_dev);
+> +	int ret, ch;
+> +	u8 pd_mode;
+> +
+> +	guard(mutex)(&data->lock);
+> +
+> +	for_each_set_bit(ch, &data->active_channels_mask, data->phys_channels) {
+> +		data->chdata[ch].powerdown =3D true;
+> +		pd_mode =3D data->chdata[ch].powerdown_mode + 1;
+> +		regmap_update_bits(data->regmap, MCP47FEB02_POWER_DOWN_REG_ADDR,
+> +				   DAC_CTRL_MASK(ch), DAC_CTRL_VAL(ch, pd_mode));
+
+ret =3D=20
+
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret =3D regmap_write(data->regmap, ch << 3, data->chdata[ch].dac_data);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+
+
+> +static void mcp47feb02_init_scale(struct mcp47feb02_data *data, enum mcp=
+47feb02_scale scale,
+> +				  int vref_mv, int scale_avail[])
+> +{
+> +	int value_micro, value_int;
+> +	s64 tmp;
+> +
+> +	tmp =3D (s64)vref_mv * 1000000LL >> data->info->resolution;
+
+MICRO or similar appropriate and avoids need to count zeros.
+
+> +	value_int =3D div_s64_rem(tmp, 1000000LL, &value_micro);
+> +	scale_avail[scale * 2] =3D value_int;
+> +	scale_avail[scale * 2 + 1] =3D value_micro;
+> +}
+
+> +
+> +static void mcp47feb02_get_scale_avail(struct mcp47feb02_data *data, int=
+ *val, int *val2,
+> +				       enum mcp47feb02_scale scale, int ch)
+
+I'm not really following why this is get_scale_avail.  Just seems to be get=
+ting
+the scale from the index.  The function name should probably be less
+about 'how' than 'what' it is doing.
+
+> +{
+> +	if (data->phys_channels >=3D 4 && (ch % 2)) {
+> +		*val =3D data->scale_1[scale * 2];
+> +		*val2 =3D data->scale_1[scale * 2 + 1];
+> +	} else {
+> +		*val =3D data->scale[scale * 2];
+> +		*val2 =3D data->scale[scale * 2 + 1];
+> +	}
+> +}
+
+
+> +
+> +static int mcp47feb02_read_label(struct iio_dev *indio_dev,
+> +				 struct iio_chan_spec const *ch, char *label)
+> +{
+> +	struct mcp47feb02_data *data =3D iio_priv(indio_dev);
+> +
+> +	return sysfs_emit(label, "%s\n", data->labels[ch->address]);
+> +
+> +	return 0;
+
+I'm a bit surprised the compiler isn't moaning about unreachable code.
+
+> +}
+
+> +
+> +static int mcp47feb02_init_ctrl_regs(struct mcp47feb02_data *data)
+> +{
+> +	int ret, i, vref_ch, gain_ch, pd_ch, pd_tmp;
+> +	struct device *dev =3D &data->client->dev;
+> +
+> +	ret =3D regmap_read(data->regmap, MCP47FEB02_VREF_REG_ADDR, &vref_ch);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D regmap_read(data->regmap, MCP47FEB02_GAIN_BIT_STATUS_REG_ADDR, =
+&gain_ch);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D regmap_read(data->regmap, MCP47FEB02_POWER_DOWN_REG_ADDR, &pd_c=
+h);
+> +	if (ret)
+> +		return ret;
+> +
+> +	gain_ch =3D gain_ch >> 8;
+
+Is this extracting a field from a register? Probably better as a mask defin=
+ition and
+FIELD_GET()
+
+> +	for_each_set_bit(i, &data->active_channels_mask, data->phys_channels) {
+> +		data->chdata[i].ref_mode =3D (vref_ch >> (2 * i)) & SET_DAC_CTRL_MASK;
+> +		data->chdata[i].use_2x_gain =3D (gain_ch >> i)  & SET_GAIN_BIT;
+> +
+> +		/*
+> +		 * Inform the user that the current voltage reference read from volati=
+le
+> +		 * register of the chip is different from the one from device tree.
+> +		 * You can't have an external voltage reference connected to the pin a=
+nd
+> +		 * select the internal BandGap, because the VREF pin is either an inpu=
+t or
+> +		 * an output. When the DAC=E2=80=99s voltage reference is configured a=
+s the VREF pin,
+> +		 * the pin is an input. When the DAC=E2=80=99s voltage reference is co=
+nfigured as the
+> +		 * internal band gap, the pin is an output.
+> +		 */
+> +		if (data->chdata[i].ref_mode =3D=3D MCP47FEB02_INTERNAL_BAND_GAP) {
+> +			if (data->phys_channels >=3D 4 && (i % 2)) {
+> +				if (data->use_vref1)
+> +					dev_info(dev, "cannot use Vref1 and internal BandGap");
+> +			} else {
+> +				if (data->use_vref)
+> +					dev_info(dev, "cannot use Vref and internal BandGap");
+> +			}
+> +		}
+> +
+> +		pd_tmp =3D (pd_ch >> (2 * i)) & SET_DAC_CTRL_MASK;
+> +		data->chdata[i].powerdown_mode =3D pd_tmp ? (pd_tmp - 1) : pd_tmp;
+> +		data->chdata[i].powerdown =3D !!(data->chdata[i].powerdown_mode);
+> +	}
+> +
+> +	return 0;
+> +}
+
+> +
+> +static int mcp47feb02_probe(struct i2c_client *client)
+> +{
+> +	const struct i2c_device_id *id =3D i2c_client_get_device_id(client);
+> +	const struct mcp47feb02_features *info;
+> +	struct device *dev =3D &client->dev;
+> +	struct mcp47feb02_data *data;
+> +	struct iio_dev *indio_dev;
+> +	int vref1_mv =3D 0;
+> +	int vref_mv =3D 0;
+> +	int vdd_mv =3D 0;
+> +	int ret;
+> +
+> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	data =3D iio_priv(indio_dev);
+> +	data->client =3D client;
+> +	info =3D i2c_get_match_data(client);
+> +	if (!info)
+> +		return -EINVAL;
+> +
+> +	data->info =3D info;
+> +
+> +	if (info->have_eeprom) {
+> +		data->regmap =3D devm_regmap_init_i2c(client, &mcp47feb02_regmap_confi=
+g);
+> +		indio_dev->info =3D &mcp47feb02_info;
+> +	} else {
+> +		data->regmap =3D devm_regmap_init_i2c(client, &mcp47fvb02_regmap_confi=
+g);
+> +		indio_dev->info =3D &mcp47fvb02_info;
+> +	}
+> +
+> +	if (IS_ERR(data->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(data->regmap), "Error initializing i=
+2c regmap\n");
+> +
+> +	indio_dev->name =3D id->name;
+
+This is fragile because it ultimately looks up in one type of
+firmware matching structure when we might have probed from another and
+hence relies on names matching precisely across those structures.
+Best to avoid that. Just embed the name string in your info structure inste=
+ad.
+
+> +
+> +	ret =3D mcp47feb02_parse_fw(indio_dev, info);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Error parsing devicetree data\n");
+Error parsing firmware data.  As it should be, your code is firmware type i=
+ndependent
+so error messages should not suggest it is device tree only.
+
+
+> +
+> +	ret =3D devm_mutex_init(dev, &data->lock);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret =3D devm_regulator_get_enable_read_voltage(dev, "vdd");
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	vdd_mv =3D ret / 1000;
+> +
+> +	ret =3D devm_regulator_get_enable_read_voltage(dev, "vref");
+> +	if (ret > 0) {
+> +		vref_mv =3D ret / 1000;
+> +		data->use_vref =3D true;
+> +	} else {
+> +		dev_info(dev, "Vref is unavailable, internal band gap can be used inst=
+ead\n");
+
+Feels too noisy.  dev_dbg() appropriate I think.
+
+> +	}
+> +
+> +	if (info->have_ext_vref1) {
+> +		ret =3D devm_regulator_get_enable_read_voltage(dev, "vref1");
+> +		if (ret > 0) {
+> +			vref1_mv =3D ret / 1000;
+> +			data->use_vref1 =3D true;
+> +		} else {
+> +			dev_info(dev,
+> +				 "Vref1 is unavailable, internal band gap can be used instead\n");
+
+Likewise, dev_dbg().
+
+> +		}
+> +	}
+> +
+> +	ret =3D mcp47feb02_init_ctrl_regs(data);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Error initialising vref register\n");
+> +
+> +	ret =3D mcp47feb02_init_ch_scales(data, vdd_mv, vref_mv, vref1_mv);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+> +}
 

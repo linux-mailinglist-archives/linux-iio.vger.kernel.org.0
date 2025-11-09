@@ -1,58 +1,68 @@
-Return-Path: <linux-iio+bounces-26100-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26101-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278A1C442E8
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 17:56:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC34C442F8
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 18:00:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C14664E567B
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 16:56:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E62263B0E03
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 17:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035733019C0;
-	Sun,  9 Nov 2025 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C4F2F6912;
+	Sun,  9 Nov 2025 17:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qjmlDeRS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIgjYpcz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B158E1F4180;
-	Sun,  9 Nov 2025 16:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856B734D3A9;
+	Sun,  9 Nov 2025 17:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762707383; cv=none; b=Q4T2FOyZzCkjr6+hqeK/sGnEtH8ATWJrjLxmjgbHCUoFRp8uFavP3TKtLLx9nGt0yF57m/Nzz85dnRAxYCzi9xkT/uTIDT9RzLKp4/NKjHv0ZHa3aV80YY34mF4xnHjdWYETTJGR+I/dLJFYskDI8o4dRmnBD2xjwoniPggtrV8=
+	t=1762707640; cv=none; b=PCDk0dg7t0+9bQfzZGb5Zh9JGpKBNcj9cp1U7inU9Moltx1b94847FJ8RXfu1dGsVJCeBYaqoe6/rasX/8QoT0eL0PoH07s4/lHZu8HoFTGztlVaFH592JEyg+HDwG5pUYC9TbHUjlgY/525Qqa4+oXl2YKgsmCEl7OX9on+Xvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762707383; c=relaxed/simple;
-	bh=qFQWHrCg8bBWOU0kX6eRJlnNKMob7uzzc/HLBRNXvz4=;
+	s=arc-20240116; t=1762707640; c=relaxed/simple;
+	bh=/YTzYEC+/7A1yssydEpBLvFuXa5TokqzNj5SqgQkNMo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aZTGZE5j4Ep2SD0mmjfWLGFZpJtE+eAiSChKZbEJ47HTNwq7IznGAJFBKv8DMc8xAr/ypDtuEbNpcxmph54gKwR3OdY/x4Yq2CzlBtRSpO5jFgtufByOl7z2P1oVCPz6by7G0rtB9/emJzioU9jSEW0rjn9rOUPQAgtScs9n/fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qjmlDeRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA45BC4CEF8;
-	Sun,  9 Nov 2025 16:56:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oIv5S8/2dbDNdhLBbw8HqTwQ5CGgrs7jWfNcyvQn0pjwb+JNB3QN7IaYkI30h+7asa2EchUyADDh2j1AckswVU0/580xuhWeeUBU6fUGMRKAD6x3GACkMSc4FSceKeAbxrftTVr8jhlly5EcwMaP1Tc1ZJFLIoNeX4JxIC4iRH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIgjYpcz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B82FC4CEF7;
+	Sun,  9 Nov 2025 17:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762707383;
-	bh=qFQWHrCg8bBWOU0kX6eRJlnNKMob7uzzc/HLBRNXvz4=;
+	s=k20201202; t=1762707640;
+	bh=/YTzYEC+/7A1yssydEpBLvFuXa5TokqzNj5SqgQkNMo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qjmlDeRSKmCBOPZPQbA8xyV9fnzr/Qyiz6aKTPl48YBOCyIQJKq2mAhUgyF5vcXRh
-	 RMCnzd+SKEy/UMsfJwUlUFYpnvCKquiBSqtpfSXh+9CivzqhlTUpaJsrs0lZC23n45
-	 702kDoJnyyPGof+7FBuJs3qU+R4rVmKrSIw0/AhzBDvoDjyGZnBbrAToQ30yFHR1PB
-	 IVKAPMsCFP6cBPo0yQeBv5VlV8oe3i2cT6c7N+91xVlXzTg0rmrAI1209XzrRDm8pj
-	 13Si6wrIMcgX9hsLP1M8FeZwSDYChgTKmiQu5pnaBsa1yMibk75JmFa2riF6w7Qmol
-	 SE2rv5S5KSktg==
-Date: Sun, 9 Nov 2025 16:56:17 +0000
+	b=EIgjYpczUOJ/qkpiyiaObxa/4HwzMUGSj/DKg/EDJY1bXoIX3RaGcEIACjwzpLhDU
+	 OO+QHIEIaLofhMLq2t4CS3ec98r6oyFiOEjSIC3z1KAThmfRyJLWcDNre7NGFWCGVA
+	 e1NJ2Y3/C+HueHWreW0A6XfygPU76invrZXlXEc7OO1oMicZsLP14Z94fxKDyo/nLU
+	 hkYFboDAHp32P2w3BaLCM4MOi2C3vpMQF9+t783kIgTnSC52fong2/QUEF15oKLWQ0
+	 9yyUDa9OvYsw0py629P+lAxAAwfF8WfnVAnFZ6Hnycns9D1oW85mremLgPymNpVtTc
+	 sW0bzB5r9W43w==
+Date: Sun, 9 Nov 2025 17:00:32 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
-Cc: remi.buisson@tdk.com, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@intel.com>
-Subject: Re: [PATCH v5] iio: imu: inv_icm45600: Initializes
- inv_icm45600_buffer_postdisable sleep
-Message-ID: <20251109165617.330d1712@jic23-huawei>
-In-Reply-To: <20251107-icm45600_fix_buffer_sleep_init-v5-1-45581918ea63@tdk.com>
-References: <20251107-icm45600_fix_buffer_sleep_init-v5-1-45581918ea63@tdk.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Hans Verkuil
+ <hverkuil+cisco@kernel.org>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, "chrome-platform@lists.linux.dev"
+ <chrome-platform@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-media@vger.kernel.org"
+ <linux-media@vger.kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Benson Leung <bleung@chromium.org>,
+ Guenter Roeck <groeck@chromium.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>
+Subject: Re: [PATCH v2 2/6] units: Add 32- and 64-bit signed values of
+ =?UTF-8?B?z4A=?=
+Message-ID: <20251109170032.2763ae5b@jic23-huawei>
+In-Reply-To: <CAHp75VexvdYyjt1GkbfqOotkFpLeb=io6outJ5dpRqBv2qPNng@mail.gmail.com>
+References: <20251107201005.3156118-1-andriy.shevchenko@linux.intel.com>
+	<20251107201005.3156118-3-andriy.shevchenko@linux.intel.com>
+	<fb4aafc1-dbfb-4533-b368-5d26e24acdf1@baylibre.com>
+	<CAHp75VexvdYyjt1GkbfqOotkFpLeb=io6outJ5dpRqBv2qPNng@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,64 +70,67 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 07 Nov 2025 13:49:56 +0000
-Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org> wrote:
+On Sat, 8 Nov 2025 21:02:54 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> From: Remi Buisson <remi.buisson@tdk.com>
-> 
-> The sleep variable in inv_icm45600_buffer_postdisable() could be used without
-> being assigned in case of error. It must be initialized to 0 by default.
-> 
-> Fixes: 06674a72cf7a ("iio: imu: inv_icm45600: add buffer support in iio devices")
-> Closes: https://lore.kernel.org/linux-iio/aPi6Xw-ZoUkW76zR@stanley.mountain/
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
-Lots of versions.  Ah well. this is effectively the one b4 picked up.
+> =D0=BF=CA=BC=D1=8F=D1=82=D0=BD=D0=B8=D1=86=D1=8F, 7 =D0=BB=D0=B8=D1=81=D1=
+=82=D0=BE=D0=BF=D0=B0=D0=B4=D0=B0 2025=E2=80=AF=D1=80. David Lechner <dlech=
+ner@baylibre.com> =D0=BF=D0=B8=D1=88=D0=B5:
+>=20
+> > On 11/7/25 2:03 PM, Andy Shevchenko wrote: =20
+> > > There are a few drivers that want to have these values, and
+> > > one more known to come soon. Let's define the values for them.
+> > > =20
+>=20
+>=20
+>=20
+>=20
+>=20
+> > > @@ -21,6 +21,12 @@
+> > >  #define PICO 1000000000000ULL
+> > >  #define FEMTO        1000000000000000ULL
+> > >
+> > > +/* Value of =CF=80 * 10=E2=81=B8 (fits s32 or signed int) */
+> > > +#define PI   314159265 =20
+> >
+> > It isn't clear to me at all in the other patches that e.g.
+> > DIV_ROUND_UP(PI, 1000) would be =CF=80 =E2=9C=95 10=E2=81=B4 (rounded t=
+o nearest
+> > integer, of course).
+> >
+> > Calling these PI_E8 and PI_E18 or PI_x10_8 and PI_x10_18
+> > would help to clear that up. =20
+>=20
+>=20
+>=20
+> This will be an awful and ugly name(s). I fully disagree on such a
+> proposal. The power is chosen to fit the type with maximum precision, no
+> need to explain this in the name.
+With no indicate of the multiplier we have to check it every time wwe
+use it which isn't ideal either.
 
-J
-> ---
-> Changes in v5:
-> - Adding parenthesis to function name in commit message
-> - Adding Reviewed-by tag
-> - Link to v4: https://lore.kernel.org/r/20251107-icm45600_fix_buffer_sleep_init-v4-1-5648fbfb57ad@tdk.com
-> 
-> Changes in v4:
-> - Add space in closse tag in commit message
-> - Remove extra blank line in commit message
-> - Link to v3: https://lore.kernel.org/r/20251106-icm45600_fix_buffer_sleep_init-v3-1-ea3af68a3e61@tdk.com
-> 
-> Changes in v3:
-> - Fix commit message: fix and closes moved to SoB
-> - Fix assignement of sleep variable after declaration.
-> - Link to v2: https://lore.kernel.org/r/20251031-icm45600_fix_buffer_sleep_init-v2-1-5cdc04e1bcba@tdk.com
-> 
-> Changes in v2:
-> - Moving pacth description from cover-letter to single commit
-> - Link to v1: https://lore.kernel.org/r/20251031-icm45600_fix_buffer_sleep_init-v1-1-924efbb165e8@tdk.com
-> ---
->  drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
-> index 2efcc177f9d60a6a2509e448c0ddaf4b9e1fd755..2b9ea317385ceb680f013c4c1b2a6a74fbe5d7e7 100644
-> --- a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
-> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
-> @@ -370,6 +370,7 @@ static int inv_icm45600_buffer_postdisable(struct iio_dev *indio_dev)
->  		return -EINVAL;
->  	}
->  
-> +	sleep = 0;
->  	scoped_guard(mutex, &st->lock)
->  		ret = _inv_icm45600_buffer_postdisable(st, sensor, watermark, &sleep);
->  
-> 
-> ---
-> base-commit: 70437bbd7529e9860fb7f0c92a89e0e6abaa994e
-> change-id: 20251031-icm45600_fix_buffer_sleep_init-8062f6e07f84
-> 
-> Best regards,
+So I agree with David that we have to indicate this somewhere. Maybe hold t=
+he
+multiplier in a separate define
+#define PI_MUL
+#define PI_MUL_LL
+
+Then compute the divisions by (PI_MUL) / KILO or something along those line=
+s?
+>=20
+> > =20
+> > > +
+> > > +/* Value of =CF=80 * 10=C2=B9=E2=81=B8 (fits s64 or signed long long=
+) */
+> > > +#define PI_LL        3141592653589793238LL
+> > > +
+> > >  /* Hz based multipliers */
+> > >  #define NANOHZ_PER_HZ                1000000000UL
+> > >  #define MICROHZ_PER_HZ               1000000UL =20
+> >
+> > =20
 
 

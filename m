@@ -1,60 +1,58 @@
-Return-Path: <linux-iio+bounces-26098-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26099-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABBF0C442D9
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 17:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3133C442DF
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 17:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 601D9346F47
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 16:51:09 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 43BA5346A3C
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 16:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B0D302743;
-	Sun,  9 Nov 2025 16:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE872FFDC0;
+	Sun,  9 Nov 2025 16:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sKqLlFY6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P13zxzlt"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB541AA7BF;
-	Sun,  9 Nov 2025 16:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DD51F4180;
+	Sun,  9 Nov 2025 16:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762707063; cv=none; b=nmsJVbdR1VKN+KsBlS0b+JeaVfMhRndYxVsQY+CTRJo0d9Xz7rY7EvRb56SLrCFpH0rJUvIQ83B32RBy6/IwknNBWrtfZwUxCRhT1i714B7t2oSgCwCMcO5h7xOjosRBjObv6VAIhb+tgEYY21t7+7qLh1pugFx/IpbHk6PGlHw=
+	t=1762707292; cv=none; b=QfwmfCfykh8TMCsazAy0llkCY6r46vXaVvARTsb0EVTvxdPgKARJHDNJXFarALuEuimaXKuFc+YfFSGRP3DfqIsMGzEXpxKZ+h/Cfof8DVCJYB3ESRD0Vn2tcfcZYIA5s+Vhagy4vlDY20tN8gQ4NV9OQoAve5ylmMMHEqzK9bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762707063; c=relaxed/simple;
-	bh=kh2HcZWxFtQ1ynTFpWR+bGwBRk8sdEv+XtPgpWe+6ZU=;
+	s=arc-20240116; t=1762707292; c=relaxed/simple;
+	bh=/wpTCdz3UjmMfn5iwAu+TiyZ5R+huaPQIxtcSKNdxXI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fhh5mvnvjnkchDmnfvXXiHnn9Nd6AjqJHptJ+5o0Efsiq95S7Nqv6qfvhJgT+uJmP8pE88GK0persFSDqi9l8iHVHMcx8A2lr9pQzciCHMf0LOr7rwwaMC7mTBB7LEDKMRJ/lhMgs5hieJ/aLlB0gy08eNkmVmWAs+R79d4U6rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sKqLlFY6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277BEC4AF09;
-	Sun,  9 Nov 2025 16:50:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ck9NzY4NUn29nKTaXdR64iRKgp8GFnBwbT/jvNMTx3Kx9al+ZAaWzvw+HJwIVZvsdFnqfmSZHFLqCCq6NVe7PBCKEop8oAOnCYmt4DIUOAVHdi9ICzhxLMbsWvhn7ooAy73Kvuyleq7uoVSEkqagvBGzPmT6LvF1an3cop4nSIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P13zxzlt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E23C19421;
+	Sun,  9 Nov 2025 16:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762707062;
-	bh=kh2HcZWxFtQ1ynTFpWR+bGwBRk8sdEv+XtPgpWe+6ZU=;
+	s=k20201202; t=1762707292;
+	bh=/wpTCdz3UjmMfn5iwAu+TiyZ5R+huaPQIxtcSKNdxXI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sKqLlFY6Cylhra5n55FxnldeN/3y1Mxn/b2Q/VBLJumDFH5Hx8r2VThpYW7gmgho/
-	 fEsy+VPAzfXdkm3O/JbWl+nRG21gXfcRMFo1TyMqxgd8imKc/isrRqL9CflcIQUatV
-	 rxeAOlvM0jQAdDNVypIc+TZ9XInUCS57cf8iWjrQy0tfqTHMQh6NPN12+P3QVEE1U8
-	 QI9s4mdupLwBaW4QDuybhoZTQ9ecisJNMh446Xv+GpEkBIFmeWUpbfAtP2LZVFITb4
-	 ZaRdoOTYmeqjb2sbawCkGaIG+uj95hJpS6eIF0a3wBC+UtdgLNMYwx8E1oOh/ex2i0
-	 oloS8upfu7OZw==
-Date: Sun, 9 Nov 2025 16:50:55 +0000
+	b=P13zxzltTdBOJQPKI9i51AQzbbRh+hQruZh/uaiLDtzOJYGZwXRRAQ0Tax4Uv1ab5
+	 twin2+GjW/2MnDcx/cex61HtRgXF11rEjkXLty3lORlcCpUUSC3661mj5n/pDZSVXS
+	 Fpk1Glj6YEEZxCRev7fNxZP6I8oHCo3+qcwyjQN45hUnYzAZS1QLJ7NJnleVI8qGG1
+	 JONFssx6C5DKdO55B+wD8wbbhsLhQ5QWaqZLc03L07GGu8CwpD6cAHiEG6QgWDLkye
+	 BlK8IjMcoW/VjTIJoLuahgQQf0Zf+2bLkt992MD7RabO7oWVusnqO8zexsThnIQe2Y
+	 UVMvAh5zzch3w==
+Date: Sun, 9 Nov 2025 16:54:46 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <Michael.Hennerich@analog.com>,
- <ramona.gradinariu@analog.com>, <antoniu.miclaus@analog.com>,
- <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
- <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>
-Subject: Re: [PATCH 2/2] iio: accel: adxl380: add support for ADXL318 and
- ADXL319
-Message-ID: <20251109165055.404d0417@jic23-huawei>
-In-Reply-To: <7d990c72acca31b2fe6c7685fd13ef5284c7646f.1762281527.git.Jonathan.Santos@analog.com>
-References: <2b8fc2ea006d06660c83f1e9e1ccfc865803dafb.1762281527.git.Jonathan.Santos@analog.com>
-	<7d990c72acca31b2fe6c7685fd13ef5284c7646f.1762281527.git.Jonathan.Santos@analog.com>
+To: Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org>
+Cc: remi.buisson@tdk.com, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] iio: imu: inv_icm45600: Initializes
+ inv_icm45600_buffer_postdisable sleep
+Message-ID: <20251109165446.5ef7be81@jic23-huawei>
+In-Reply-To: <20251107-icm45600_fix_buffer_sleep_init-v4-1-5648fbfb57ad@tdk.com>
+References: <20251107-icm45600_fix_buffer_sleep_init-v4-1-5648fbfb57ad@tdk.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,124 +63,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 5 Nov 2025 09:40:34 -0300
-Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+On Fri, 07 Nov 2025 09:13:58 +0000
+Remi Buisson via B4 Relay <devnull+remi.buisson.tdk.com@kernel.org> wrote:
 
-> The ADXL318 and ADXL319 are low noise density, low power, 3-axis
-> accelerometers based on ADXL380 and ADXL382, respectively. The main
-> difference between the new parts and the existing ones are the absence
-> of interrupts and events like tap detection, activity/inactivity, and
-> free-fall detection.
+> From: Remi Buisson <remi.buisson@tdk.com>
 > 
-> Other differences in the new parts are fewer power modes, basically
-> allowing only idle and measurement modes, and the removal of the 12-bit
-> SAR ADC path for the 3-axis signals (known as lower signal chain),
-> being excluisive for the temperature sensor in the ADXL318/319.
+> The sleep variable in inv_icm45600_buffer_postdisable could be used without
+> being assigned in case of error. It must be initialized to 0 by default.
 > 
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Only comments are about numeric order, similar to the comments on
-the dt-binding.
+> Fixes: 06674a72cf7a ("iio: imu: inv_icm45600: add buffer support in iio devices")
+> Closes: https://lore.kernel.org/linux-iio/aPi6Xw-ZoUkW76zR@stanley.mountain/
+I added a reported-by for Dan as well based on that link.
+
+Applied to the togreg branch of iio.git as this is new code we are fixing from this cycle.
 
 Thanks,
 
 Jonathan
 
+> Signed-off-by: Remi Buisson <remi.buisson@tdk.com>
 > ---
->  drivers/iio/accel/adxl380.c     | 134 ++++++++++++++++++++++----------
->  drivers/iio/accel/adxl380.h     |   4 +
->  drivers/iio/accel/adxl380_i2c.c |   4 +
->  drivers/iio/accel/adxl380_spi.c |   4 +
->  4 files changed, 107 insertions(+), 39 deletions(-)
+> Changes in v4:
+> - Add space in closse tag in commit message
+> - Remove extra blank line in commit message
+> - Link to v3: https://lore.kernel.org/r/20251106-icm45600_fix_buffer_sleep_init-v3-1-ea3af68a3e61@tdk.com
 > 
-> diff --git a/drivers/iio/accel/adxl380.c b/drivers/iio/accel/adxl380.c
-> index 0cf3c6815829..7733a0902afa 100644
-> --- a/drivers/iio/accel/adxl380.c
-> +++ b/drivers/iio/accel/adxl380.c
-> @@ -27,6 +27,8 @@
+> Changes in v3:
+> - Fix commit message: fix and closes moved to SoB
+> - Fix assignement of sleep variable after declaration.
+> - Link to v2: https://lore.kernel.org/r/20251031-icm45600_fix_buffer_sleep_init-v2-1-5cdc04e1bcba@tdk.com
+> 
+> Changes in v2:
+> - Moving pacth description from cover-letter to single commit
+> - Link to v1: https://lore.kernel.org/r/20251031-icm45600_fix_buffer_sleep_init-v1-1-924efbb165e8@tdk.com
+> ---
+>  drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
+> index 2efcc177f9d60a6a2509e448c0ddaf4b9e1fd755..2b9ea317385ceb680f013c4c1b2a6a74fbe5d7e7 100644
+> --- a/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
+> +++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_buffer.c
+> @@ -370,6 +370,7 @@ static int inv_icm45600_buffer_postdisable(struct iio_dev *indio_dev)
+>  		return -EINVAL;
+>  	}
 >  
->  #define ADXL380_ID_VAL				380
->  #define ADXL382_ID_VAL				382
-> +#define ADXL318_ID_VAL				380
-> +#define ADXL319_ID_VAL				382
-
-Similar to the binding.  Sort these by number.
-
+> +	sleep = 0;
+>  	scoped_guard(mutex, &st->lock)
+>  		ret = _inv_icm45600_buffer_postdisable(st, sensor, watermark, &sleep);
 >  
->  #define ADXL380_DEVID_AD_REG			0x00
->  #define ADLX380_PART_ID_REG			0x02
-> @@ -178,41 +180,6 @@ enum adxl380_tap_time_type {
-
-> +
-> +const struct adxl380_chip_info adxl382_chip_info = {
-> +	.name = "adxl382",
-> +	.chip_id = ADXL382_ID_VAL,
-> +	.scale_tbl = {
-> +		[ADXL382_OP_MODE_15G_RANGE] = { 0, 4903325 },
-> +		[ADXL382_OP_MODE_30G_RANGE] = { 0, 9806650 },
-> +		[ADXL382_OP_MODE_60G_RANGE] = { 0, 19613300 },
-> +	},
-> +	.samp_freq_tbl = { 16000, 32000, 64000 },
-> +	/*
-> +	 * The datasheet defines an intercept of 570 LSB at 25 degC
-> +	 * and a sensitivity of 10.2 LSB/C.
-> +	 */
-> +	.temp_offset =  25 * 102 / 10 - 570,
-> +	.has_low_power = true,
-> +	.info = &adxl380_info,
-> +};
-> +EXPORT_SYMBOL_NS_GPL(adxl382_chip_info, "IIO_ADXL380");
-> +
-> +const struct adxl380_chip_info adxl318_chip_info = {
-> +	.name = "adxl318",
-> +	.chip_id = ADXL318_ID_VAL,
-> +	.scale_tbl = {
-> +		[ADXL380_OP_MODE_4G_RANGE] = { 0, 1307226 },
-> +		[ADXL380_OP_MODE_8G_RANGE] = { 0, 2615434 },
-> +		[ADXL380_OP_MODE_16G_RANGE] = { 0, 5229886 },
-> +	},
-> +	.samp_freq_tbl = { 8000, 16000, 32000 },
-> +	/*
-> +	 * The datasheet defines an intercept of 550 LSB at 25 degC
-> +	 * and a sensitivity of 10.2 LSB/C.
-> +	 */
-> +	.temp_offset =  25 * 102 / 10 - 550,
-> +	.info = &adxl318_info,
-> +};
-> +EXPORT_SYMBOL_NS_GPL(adxl318_chip_info, "IIO_ADXL380");
-> +
-> +const struct adxl380_chip_info adxl319_chip_info = {
-Numeric order preferred for these structures as well.
-There might have been some argument for grouping by ID but that
-doesn't seem to be the case either here.
-
-> +	.name = "adxl319",
-> +	.chip_id = ADXL319_ID_VAL,
-> +	.scale_tbl = {
-> +		[ADXL382_OP_MODE_15G_RANGE] = { 0, 4903325 },
-> +		[ADXL382_OP_MODE_30G_RANGE] = { 0, 9806650 },
-> +		[ADXL382_OP_MODE_60G_RANGE] = { 0, 19613300 },
-> +	},
-> +	.samp_freq_tbl = { 16000, 32000, 64000 },
-> +	/*
-> +	 * The datasheet defines an intercept of 550 LSB at 25 degC
-> +	 * and a sensitivity of 10.2 LSB/C.
-> +	 */
-> +	.temp_offset =  25 * 102 / 10 - 550,
-> +	.info = &adxl318_info,
-> +};
-> +EXPORT_SYMBOL_NS_GPL(adxl319_chip_info, "IIO_ADXL380");
-
-> diff --git a/drivers/iio/accel/adxl380.h b/drivers/iio/accel/adxl380.h
-> index a683625d897a..5d88c111d616 100644
-> --- a/drivers/iio/accel/adxl380.h
-> +++ b/drivers/iio/accel/adxl380.h
-
->  
->  extern const struct adxl380_chip_info adxl380_chip_info;
->  extern const struct adxl380_chip_info adxl382_chip_info;
-> +extern const struct adxl380_chip_info adxl318_chip_info;
-> +extern const struct adxl380_chip_info adxl319_chip_info;
-Sort numerically.
-
+> 
+> ---
+> base-commit: 70437bbd7529e9860fb7f0c92a89e0e6abaa994e
+> change-id: 20251031-icm45600_fix_buffer_sleep_init-8062f6e07f84
+> 
+> Best regards,
 
 

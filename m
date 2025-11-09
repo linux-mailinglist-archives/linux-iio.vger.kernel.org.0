@@ -1,64 +1,60 @@
-Return-Path: <linux-iio+bounces-26068-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26069-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB99C43F4D
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 14:57:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 513DCC43F80
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 15:02:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBA633AD785
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 13:57:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19745188AF78
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 14:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2982FB968;
-	Sun,  9 Nov 2025 13:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F352FABFE;
+	Sun,  9 Nov 2025 14:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCF42VMg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJ0S72Zz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13081CFBA;
-	Sun,  9 Nov 2025 13:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61AE2EBDDC;
+	Sun,  9 Nov 2025 14:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762696658; cv=none; b=rx8BT+SWNkqUEgZSRvD9bODSlkbrno1IVjJWFFQc0TQFCz4vg+LXe2hbP2S5uwfnCbryqBVFepInVLRZVEkKyvHiT1fKte/IyDESJwxzBx58B+tNjbdUe2riN+e6CsIAHOEHY0Trvr0VmJOzSMBO6TC+N9nNrj6DI9fJMK4L7Bg=
+	t=1762696941; cv=none; b=hN+TzOw/Bt/9mVfxstBUBv93H07KwKkIKcjCG2DYRk5GoBwdws47LAwLPjhVqa8mp0ne83ym62tJYABR6reHM8CPe0TYnb+BrzyxdylvXlBZdKql7LKhiwO1+p0+Ir5LniQdZ+b/UhkTL8kTDHIvuxPsSzAdCO21AUDe0Mw7AVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762696658; c=relaxed/simple;
-	bh=sqCExe7TvzBIlrizfDnjeq9qTbAz4DDhCt3BiP31r3c=;
+	s=arc-20240116; t=1762696941; c=relaxed/simple;
+	bh=8Xby+xRc+0y+B8bFE0Vu5Y/NCe7fSkl59x0fZcQoHEI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BZBMNiUhPCN/OBjUoqLEq6azZnXI5SWq85IY9mogyoyLDEtsOvanUQYiMchi55PVUovJ0m9fu68mCPzye9dpGFtOgfU/F9M8Znf2Es0idzy3sGliGesg75ngkW5KowE9UjP7+HR7cubKKya5Bl5jyxuFbTsD8INWxWMYr/rLJjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCF42VMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4CBC4CEFB;
-	Sun,  9 Nov 2025 13:57:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uc2re4h7HiW1bJm97XuogpejJbE1cMcAk73cWV0sM1qxBKNAci3fpjrtj0ataYk2NJOgZB93ChHKM8+8AcfjVY+wzudhcTlPjcoiw7c+B6mXSKFWebjMktyRQ4JQUQ/GMnwaxlzejm/GwkIXNScC+sCjFmYPOPFvY4FdGxea99Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJ0S72Zz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19EDC19422;
+	Sun,  9 Nov 2025 14:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762696657;
-	bh=sqCExe7TvzBIlrizfDnjeq9qTbAz4DDhCt3BiP31r3c=;
+	s=k20201202; t=1762696941;
+	bh=8Xby+xRc+0y+B8bFE0Vu5Y/NCe7fSkl59x0fZcQoHEI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aCF42VMgrNTEJSwJI9nVyj1xVoa9C8Ec+DDNCfCCVvK2K2Hb02oAAdYyEU/c+N7Yo
-	 0WTZXStAS8Ac9tB1HMeeA55W61N7L1JuQlzfSuk3o4zaA/JdY8BVk2TYEMW3AqerZL
-	 /Cn0lzdAzictXV6gHm+jrUTcl1Rf1J/N3RCfdI/NeLle9maxwPjcOlj04S4XyJ0IIK
-	 6nk/7EceagZuwTL6FFJN3Pta384gOpOjA0T3wwM5KVL9ROaUxXKBCHyKTBzLRviK4D
-	 wQ6a+wdYk0EoOlMG9kiPpDHSomklmr/jSd0Z6a2yu6jJQQnILF7KOOThgrIq1sbX0i
-	 WGiAHXPaayIzA==
-Date: Sun, 9 Nov 2025 13:57:28 +0000
+	b=NJ0S72ZzKx17Xy2t2QhnjMLdmBwVVgN7MXM6yhPfyeufnqBTxYEZ18WowMjeZEy6w
+	 nyTQuRlIZxzMazas4osUXakavydLJbQxnVl2Rv8HdV3iPGSPVtbNbXM9qsysZhXUzN
+	 t3SZ4qrqQn+Pw2Lw4nPQJ1EqSVoH06OpDO3LELbg9OIqN3vrCfekfUF5UBSIoZIwUJ
+	 Y6mv30doYQuM8mxKofGGS8odq//G2PrvweRyKpYNCT68tnHpZYW/WvcSTNIlz6cW+b
+	 zf5aiXUo72bd0XPU2h0og4WS4MZfbDOdvJ+PUA2+TV/QRSkw1KUn0WPIRviyH7lAeT
+	 YsAoY7iJDINxg==
+Date: Sun, 9 Nov 2025 14:02:15 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
- devicetree@vger.kernel.org, linux@roeck-us.net, Carlos Song
- <carlos.song@nxp.com>, Adrian Fluturel <fluturel.adrian@gmail.com>, Andy
- Shevchenko <andriy.shevchenko@intel.com>
-Subject: Re: [PATCH v11 6/6] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <20251109135728.223d3857@jic23-huawei>
-In-Reply-To: <20251106-i3c_ddr-v11-6-33a6a66ed095@nxp.com>
-References: <20251106-i3c_ddr-v11-0-33a6a66ed095@nxp.com>
-	<20251106-i3c_ddr-v11-6-33a6a66ed095@nxp.com>
+To: Ajith Anandhan <ajithanandhan0406@gmail.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
+ linux-iio@vger.kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/3] iio: adc: Add support for TI ADS1120
+Message-ID: <20251109140215.18655bf9@jic23-huawei>
+In-Reply-To: <38483816-8477-4c17-9c62-37d122b0a55a@gmail.com>
+References: <20251030163411.236672-1-ajithanandhan0406@gmail.com>
+	<20251030163411.236672-3-ajithanandhan0406@gmail.com>
+	<20251030175433.00004cc2@huawei.com>
+	<38483816-8477-4c17-9c62-37d122b0a55a@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,37 +65,76 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 06 Nov 2025 12:36:05 -0500
-Frank Li <Frank.Li@nxp.com> wrote:
+On Fri, 7 Nov 2025 20:10:15 +0530
+Ajith Anandhan <ajithanandhan0406@gmail.com> wrote:
 
-> Add mmc5633 sensor basic support.
-> - Support read 20 bits X/Y/Z magnetic.
-> - Support I3C HDR mode to send start measurememt command.
-> - Support I3C HDR mode to read all sensors data by one command.
+> On 10/30/25 11:24 PM, Jonathan Cameron wrote:
+> > On Thu, 30 Oct 2025 22:04:10 +0530
+> > Ajith Anandhan <ajithanandhan0406@gmail.com> wrote:
+> >  
+> >> Add driver for the Texas Instruments ADS1120, a precision 16-bit
+> >> analog-to-digital converter with an SPI interface.
+> >>
+> >> The driver provides:
+> >> - 4 single-ended voltage input channels
+> >> - Programmable gain amplifier (1 to 128)
+> >> - Configurable data rates (20 to 1000 SPS)
+> >> - Single-shot conversion mode
+> >>
+> >> Link: https://www.ti.com/lit/gpn/ads1120  
+> > Datasheet:
+> >  
+> >> Signed-off-by: Ajith Anandhan <ajithanandhan0406@gmail.com>  
+> > Hi Ajith
+> >
+> > Various comments inline.  Mostly superficial stuff but the DMA safety
+> > of SPI buffers needs fixing.  There is a useful talk from this given
+> > by Wolfram Sang if you want to understand more about this
+> > https://www.youtube.com/watch?v=JDwaMClvV-s
+> >
+> > Thanks,
+> >
+> > Jonathan
+
+Hi Ajith,
+
+A small process thing around efficiency.
+
+Crop your reply to only include things where you are answering questions
+or wish the discussion to focus.  If you accept changes, just put that stuff
+in the change log for the next version.
+Save a lot of scrolling and makes it a lot less likely important stuff
+will be lost in the noise!
+
+> >> +static int ads1120_read_measurement(struct ads1120_state *st, int channel,
+> >> +				    int *val)
+> >> +{
+> >> +	int ret;
+> >> +
+> >> +	ret = ads1120_set_channel(st, channel);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	/* Start single-shot conversion */  
+> > This all seems fairly standard so not sure what your RFC question was
+> > looking for feedback on wrt to how you did single conversions?  
 > 
-> Co-developed-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Co-developed-by: Adrian Fluturel <fluturel.adrian@gmail.com>
-> Signed-off-by: Adrian Fluturel <fluturel.adrian@gmail.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v11
-> - add andy shevchenak's reviewed by tag
-> - use unsigned int for regmap
-> - compact mmc5633_read_avail arg list to few lines
-> - move check condition to one line for read_poll_timeout()
-> - leave i3c_xfer as size 1 array to align existed code style in kernel
-> tree, git grep -r i3c_priv_xfer drivers/, leave to jonathan to do decide.
-I don't feel strongly either way, so fine with just having it as
-you have it here.
+> I was indeed concerned about using the polling(adding wait) method to 
+> read adc values.
+> 
+> That's the reason i have asked it in the cover letter.
+Ok. A bit more detail next time on what you want feedback on will
+help focus things.
 
-I'm assuming there will either be an immutable branch that I can
-pick up to get the i3c changes, or that we'll split this across cycles
-(so i3c bit goes in this cycle, driver next).
+> 
+> >  
+> >> +	ret = ads1120_write_cmd(st, ADS1120_CMD_START);
+> >> +	if (ret)
 
-So I'll keep an eye open for how that part merges if everyone is happy
-with it.  Feel free to poke me if I look like I missed it.
+Thanks,
 
 Jonathan
+
+
+
 

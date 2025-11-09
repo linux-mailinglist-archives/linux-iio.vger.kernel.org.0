@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-26108-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26109-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D130FC4446D
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 18:27:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6F6C4447F
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 18:31:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 513944E63A2
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 17:26:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91BDB18896AD
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 17:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918DD3074AF;
-	Sun,  9 Nov 2025 17:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D448D3064A1;
+	Sun,  9 Nov 2025 17:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ShYh8nZk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nMg8OIHE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC44307486;
-	Sun,  9 Nov 2025 17:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FCE305E3A;
+	Sun,  9 Nov 2025 17:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762708732; cv=none; b=YaLnf2r18F41W0XWLJzt5l6a1EhpiWvcpR32aTSPwyNMh9fbH2/9WzfGIS2NDEFetxnxU/ycCFy7SXAQW8VZYi5s6P9fZVz6o9S0DG8UQlLflZ0PAYUNcA8GW09GFjupjc98Hf6IasR8N3VxrLna3+uiDTS1pEell+wzNbfYKAo=
+	t=1762708958; cv=none; b=lq8fBSR3uITXAsuCGIJGQnefgNgLiahzyGEN1y3FOUFrggY9/P0hwmHQj2AJ0zCSl44JaQzJBiWNSIrTQhYdA5Di6RKZ1j8qROZFyJkrDCBg08MEpJoH04UEg2cCKpkze4NRDDrACaPm/ZfGxsqL5YGvgXPaHqNeGNZKB8yAAlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762708732; c=relaxed/simple;
-	bh=Q2fI1+bHl2Igjaaj5gGVaw6PsXmW3Hxdw7GJHyoQ7fM=;
+	s=arc-20240116; t=1762708958; c=relaxed/simple;
+	bh=A5s0fFD+mU9Sqbg0aCjZQdmRQywvhDPbuhdhAqZW0M8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NeWnti4xDQ83vd7mWVJutZe/EZJzB+kWUvS5mv1DNibx3bgZFHe+ZNSfLSdaa1uvHb0EB8Fq7j8uzhnz+urxD6hhCdyAxWnrgPl59qQHUqToW0qDoYZ++9cOh3u0ZlI/No9DEuVYrN2dJJmlbrloQKqucSdY/w10IQXluwBoQfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ShYh8nZk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7C9C4CEF8;
-	Sun,  9 Nov 2025 17:18:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eOuOrbKZWDDmlsbWSVUP9tJu4KHq1sRdFvktR8vFRCqKXf52vR17/Np95RViC2pHjoYJ43x/ryvOjalfGNxEh3pTGaiPPT1MCQ8/ll47QtRDXx11oGZ6dVhMmsQwsYDxpxHAInYueKEY6XJ2PQ4C2mRoOANybkhxAxEL/mma7+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nMg8OIHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EE4C19422;
+	Sun,  9 Nov 2025 17:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762708730;
-	bh=Q2fI1+bHl2Igjaaj5gGVaw6PsXmW3Hxdw7GJHyoQ7fM=;
+	s=k20201202; t=1762708958;
+	bh=A5s0fFD+mU9Sqbg0aCjZQdmRQywvhDPbuhdhAqZW0M8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ShYh8nZkIBR/kVDC9zLZdxVo0r0K3HN49U7eRUY+J7Osd76wuA37J+8oKfB3SiRDs
-	 N2dgvujFyfwhTziuGEIrdDjoTbbHDIu/ybUMvQe5QHeF6ugEe6oudsZldOixkIR5xa
-	 PsZb5fg/1v8f+cPgrZTxJJEwsd+xybiFjRoaeQDwVe/5KytTBMm8222tDWRNxWHQlc
-	 tpLOPyX5EargCDgIugB5UB4E4aKo4DbosnMJiGnlDgqQSh7cL9xJ48OIfFx/Top+27
-	 culYwopnIW8pdMwHN8SvJvPgSeNcNdjK+1KpLWL3TZeKwL3Zbld+YlXySz5e0L15eG
-	 T5lCMk1HDlgQQ==
-Date: Sun, 9 Nov 2025 17:18:22 +0000
+	b=nMg8OIHETRfRJCqRrZM7s3ady71xhe51nE75ZWQrOFvzgUH/yaUvNclveAa1wFTlc
+	 iv+0A577qnkCjH9N0OVOuGK9OGGyteBUYG2VApiBQSN/2VDxek0sI5rjZ2OTWz/deA
+	 U551xsJvzhm27drDNsSERlw3FhrCNtzTB2ljMZudj9Klisg956gwKYwXKiiyCcnzqn
+	 Cqn4pZd1zXnAMX90h0WCTJMjGUSGzy/5xcv/Cf0BHcu00xXe0f9ZGaQM26PxwkDpQH
+	 cJZm3Q5IHu4EOdZbaGg0eVOq0FhGT+NDApHNsxljG32NKLsKoAsAVMbbtXJmRBkBGU
+	 1qygTj7+NcX/Q==
+Date: Sun, 9 Nov 2025 17:22:13 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 3/3] Documentation: ABI: adl8113: add documentation
-Message-ID: <20251109171822.135460aa@jic23-huawei>
-In-Reply-To: <20251108174357.3748-4-antoniu.miclaus@analog.com>
+Subject: Re: [PATCH v2 2/3] iio: amplifiers: adl8113: add driver support
+Message-ID: <20251109172213.69d35297@jic23-huawei>
+In-Reply-To: <20251108174357.3748-3-antoniu.miclaus@analog.com>
 References: <20251108174357.3748-1-antoniu.miclaus@analog.com>
-	<20251108174357.3748-4-antoniu.miclaus@analog.com>
+	<20251108174357.3748-3-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,71 +61,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 8 Nov 2025 17:43:54 +0000
+On Sat, 8 Nov 2025 17:43:53 +0000
 Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> Add ABI documentation for the ADL8113 Low Noise Amplifier,
-> covering the 4 pin-selectable operating modes.
+> Add support for adl8113 10MHz to 12GHz Low Noise Amplifier with
+> 10MHz to 14GHz bypass switches.
 > 
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Hi Antoniu
 
-I'm still reluctant to have a mode parameter because they are close
-to unusable because they always indicate something highly device
-specific that no generic userspace can make use of.
+I think we need to come up with an innovative solution for the "mode".
+I'm not sure what it is yet though so very much looking for some discussion.
 
-My hang up continues to be that the first two are normal _scale
-controls, but the 2nd two are saying use this path for the signal
-with analog components in it, but providing no info on what that
-means wrt to what is measured.
+thanks,
 
-If we do go ahead with this, then it needs a more specific name
-to avoid trampling on the namespace as "mode" would.
-> ---
-> 
-> Changes in v2:
-> - Enhance external_bypass_a mode description: clarify signal routing from RFIN to OUT_A and from IN_A to RFOUT
-> - Enhance external_bypass_b mode description: clarify signal routing from RFIN to OUT_B and from IN_B to RFOUT
->  .../testing/sysfs-bus-iio-amplifiers-adl8113  | 32 +++++++++++++++++++
->  1 file changed, 32 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113 b/Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113
+Jonathan
+
+> diff --git a/drivers/iio/amplifiers/adl8113.c b/drivers/iio/amplifiers/adl8113.c
 > new file mode 100644
-> index 000000000000..6e3994283a45
+> index 000000000000..8c234f0a1b6a
 > --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-amplifiers-adl8113
-> @@ -0,0 +1,32 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/mode
-> +Date:		January 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		This attribute allows the user to set the operation mode of the
-> +		ADL8113 Low Noise Amplifier. The available modes control signal
-> +		routing through different paths within the device.
+> +++ b/drivers/iio/amplifiers/adl8113.c
+> @@ -0,0 +1,213 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * ADL8113 Low Noise Amplifier with integrated bypass switches
+> + *
+> + * Copyright 2025 Analog Devices Inc.
+> + */
 > +
-> +		The supported modes are:
+> +#include <linux/array_size.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+
+Not sure if this file is being used.  It is rare to see it needed in a modern drive.
+
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/property.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/slab.h>
+> +#include <linux/sysfs.h>
+
 > +
-> +		* internal_amplifier - Signal passes through the internal low
-> +		  noise amplifier (VA=0, VB=0). Provides 14dB gain.
+> +static int adl8113_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int *val, int *val2, long mask)
+> +{
+> +	struct adl8113_state *st = iio_priv(indio_dev);
+> +	int ret;
 > +
-> +		* internal_bypass - Signal bypasses through internal bypass path
-> +		  (VA=1, VB=1). Provides 0dB gain.
-> +
-> +		* external_bypass_a - Signal routes from RFIN to OUT_A and from IN_A to RFOUT
-> +		  (VA=0, VB=1). Provides 0dB gain.
-> +
-> +		* external_bypass_b - Signal routes from RFIN to OUT_B and from IN_B to RFOUT
-> +		  (VA=1, VB=0). Provides 0dB gain.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/mode_available
-> +Date:		January 2025
-> +KernelVersion:	6.14
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Reading this attribute returns a space-separated list of all
-> +		available operation modes for the ADL8113 device. The modes
-> +		control the signal path and determine whether the signal passes
-> +		through the internal amplifier or various bypass paths.
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_HARDWAREGAIN:
+> +		switch (st->current_mode) {
+> +		case ADL8113_INTERNAL_AMPLIFIER:
+> +			*val = 14;
+> +			*val2 = 0;
+> +			ret = IIO_VAL_INT_PLUS_MICRO_DB;
+return ...
+
+> +			break;
+> +		case ADL8113_INTERNAL_BYPASS:
+> +			*val = 0;
+> +			*val2 = 0;
+gain of bypass = 1.0 rather than 0.0 which is open circuit gain.
+
+> +			ret = IIO_VAL_INT_PLUS_MICRO_DB;
+return IIO_VAL_INT...
+
+> +			break;
+> +		case ADL8113_EXTERNAL_BYPASS_A:
+> +		case ADL8113_EXTERNAL_BYPASS_B:
+> +		default:
+> +			ret = -EINVAL;
+return -EINVAL;
+
+Early returns save a line of code here and I general think make
+for much more readable code.
+
+> +		}
+> +		return ret;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
 
 

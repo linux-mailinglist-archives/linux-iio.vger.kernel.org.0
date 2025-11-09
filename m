@@ -1,61 +1,87 @@
-Return-Path: <linux-iio+bounces-26061-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26062-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D0DC43E9F
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 14:33:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E47C43EB2
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 14:35:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FCC93B3DFE
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 13:33:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDCEB188AC26
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 13:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B222F690E;
-	Sun,  9 Nov 2025 13:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31212F9C2D;
+	Sun,  9 Nov 2025 13:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T8eUPm2K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NQyQz3Xu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2876D17BA6;
-	Sun,  9 Nov 2025 13:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BF517BA6;
+	Sun,  9 Nov 2025 13:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762695179; cv=none; b=mWa1KPUxdkUMaV9X7jYgRCXKxagXKn/XamiPC1niV1VuMg/CTjD2+UmPAGXXf/otF/m+2WHZ7807J4HcHuoo55cJjWZtykJ34KSzlZflITjtnSqvpYa5HfGN7CtyJ0XPuO+DtqNS0lk9M4WTb4ZCNx9vJJ7flJrpOASa7zJCFkU=
+	t=1762695295; cv=none; b=aG0u7k5Q79/Cygjzz31EqRbIW4bnQXPDkkmmQvrRySrN7iyxU0ixdm4YLhGADgo/S9sFft/JdkKIZEXeZa6h7JwnDv8YbZliLz7a/0rFDmYX1JUGeJjJwrsFlmVrGXum2/JgVbr45Ezy9SWHL3cV+udbg5KnMht4kb2ExsDJNt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762695179; c=relaxed/simple;
-	bh=zBgrIPb5cE5ztA5qvprLBptRrpizoXny+vEc9FLxnR0=;
+	s=arc-20240116; t=1762695295; c=relaxed/simple;
+	bh=RT2rRE/ELY9bGrDnosbnveAK4kjkneS/XTqVsxUylns=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QQCG7z+RJF/XT/aCQoX1hejiDJraEdqottYm0ibAty9Ky1k4F+YGT889wL4LTgmCpTezOTWKzMA611N0EFvTqvgSDKYlXkWiEAvlRdV6eCxOma61ToozHLHLbDLHU9YKn8+PMkvqB4ZXmDp7EbT9hmB4QRs09+uhsAJVOC/jISU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T8eUPm2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AD7C4CEF8;
-	Sun,  9 Nov 2025 13:32:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tsm4n4Up7zw1iSUisWDASM00BWiB/1yzZQr4hcr6IUX+TgO6s6QixPHorSFPV9+S/Qu8vxoS2bQXmuln6C2iYnEAtn4BzbSuxcCBsZqHaMmkPXDmuXs1M+0zWvJCn/yjzdP4zu+UOPFZuyxUvD5Iu8UVxHu+JVSPTRuN4CKxvfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NQyQz3Xu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06534C19422;
+	Sun,  9 Nov 2025 13:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762695178;
-	bh=zBgrIPb5cE5ztA5qvprLBptRrpizoXny+vEc9FLxnR0=;
+	s=k20201202; t=1762695295;
+	bh=RT2rRE/ELY9bGrDnosbnveAK4kjkneS/XTqVsxUylns=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=T8eUPm2KtnyaUB+ndr1SJh9tTUDJa0NlBXr1AApL236mP7MO2hU69UPWWmts/P8QG
-	 +zyAFcOAmWrXzvKNSr55GZlhv2NEL8jklvIc6E4Bp+O1CeeRey3HEGkjjrT7mmN9Le
-	 yPkV1AILm6eusozxEZU7g5z1WhFnSwfiGTQ+JifueSTz2e2sivS4I7ZEnZXS4ZBzRu
-	 yahduZL9iGmyr9/yvkthbgeG4lJBEuD6z9wieruOGLAFyWtmEPZui3AfnrUaj00Qtr
-	 QAeRs+MFrR9MOYwKHKr2auzMJMPCJne4hCMC+KJqKs5WAJtK7vJMbNKnapw/qfy56k
-	 PFxUMXQyD+yDg==
-Date: Sun, 9 Nov 2025 13:32:52 +0000
+	b=NQyQz3Xu/4ch5jjTTPDSBjeBVRNEYduCHsh+EDx3P6FlYJVpOQX6pKco9OgMOx/in
+	 F80rjoMsLS/7XLxYrF1FBo4MLkHRajQPKOTIZOaC/6fi4uIG17iRyOJ0/gCowNRs1d
+	 ppYRn1q4Dml/h8MeJM8+xvbkn6hxSYS0Z2rnmdV3FUTzsqvHwhUI9R7XecGmL4AZ66
+	 FwIhhM5L3YI62kDlehONx8TWE1Va+28/8EvO//yU3GevKDsQAA9ma5ZjkVGW1Wx847
+	 0ivPCgE6pzDWEvB89x/gYKximcAcQCf/eOzmpaCr0FWO1PrXAbtfbX3KfScts9bAF9
+	 YRGLPkFrZYHmA==
+Date: Sun, 9 Nov 2025 13:34:39 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Francesco Lavra <flavra@baylibre.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, David Lechner
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Yury Norov <yury.norov@gmail.com>, Michael Turquette
+ <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, David Miller <davem@davemloft.net>, Linus
+ Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, Lars-Peter
+ Clausen <lars@metafoo.de>, Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun
+ Hung <schung@nuvoton.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Johannes
+ Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>, Alex
+ Elder <elder@ieee.org>, David Laight <david.laight.linux@gmail.com>,
+ Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Jason Baron
+ <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>, Tony Luck
+ <tony.luck@intel.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Kim Seer Paller <kimseer.paller@analog.com>, David Lechner
  <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ Shevchenko <andy@kernel.org>, Richard Genoud <richard.genoud@bootlin.com>,
+ Cosmin Tanislav <demonsingur@gmail.com>, Biju Das
+ <biju.das.jz@bp.renesas.com>, Jianping Shen <Jianping.Shen@de.bosch.com>,
+ Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
+ <nick.desaulniers+lkml@gmail.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, Vignesh
+ Raghavendra <vigneshr@ti.com>, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org,
+ qat-linux@intel.com, linux-gpio@vger.kernel.org,
+ linux-aspeed@lists.ozlabs.org, linux-iio@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-mtd@lists.infradead.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/9] iio: imu: st_lsm6dsx: dynamically initialize
- iio_chan_spec data
-Message-ID: <20251109133252.1ae632b5@jic23-huawei>
-In-Reply-To: <87f68357d52fe6406bab42d5bfb41e4addd9d301.camel@baylibre.com>
-References: <20251030072752.349633-1-flavra@baylibre.com>
-	<20251030072752.349633-2-flavra@baylibre.com>
-	<20251102111648.73422267@jic23-huawei>
-	<87f68357d52fe6406bab42d5bfb41e4addd9d301.camel@baylibre.com>
+Subject: Re: [PATCH -next v6 10/26] iio: imu: smi330: #undef
+ field_{get,prep}() before definition
+Message-ID: <20251109133439.3d841b5b@jic23-huawei>
+In-Reply-To: <54c739d05673e512d091bf78e54cd00e3655d7d4.1762435376.git.geert+renesas@glider.be>
+References: <cover.1762435376.git.geert+renesas@glider.be>
+	<54c739d05673e512d091bf78e54cd00e3655d7d4.1762435376.git.geert+renesas@glider.be>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,55 +89,49 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 03 Nov 2025 10:24:54 +0100
-Francesco Lavra <flavra@baylibre.com> wrote:
+On Thu,  6 Nov 2025 14:33:58 +0100
+Geert Uytterhoeven <geert+renesas@glider.be> wrote:
 
-> On Sun, 2025-11-02 at 11:16 +0000, Jonathan Cameron wrote:
-> > On Thu, 30 Oct 2025 08:27:44 +0100
-> > Francesco Lavra <flavra@baylibre.com> wrote:
-> >  =20
-> > > Using the ST_LSM6DSX_CHANNEL_ACC() macro as a static initializer
-> > > for the iio_chan_spec struct arrays makes all sensors advertise
-> > > channel event capabilities regardless of whether they actually
-> > > support event generation. And if userspace tries to configure
-> > > accelerometer wakeup events on a sensor device that does not
-> > > support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences
-> > > a NULL pointer when trying to write to the wakeup register.
-> > > Replace usage of the ST_LSM6DSX_CHANNEL_ACC() and
-> > > ST_LSM6DSX_CHANNEL() macros with dynamic allocation and
-> > > initialization of struct iio_chan_spec arrays, where the
-> > > st_lsm6dsx_event structure is only used for sensors that support
-> > > wakeup events; besides fixing the above bug, this serves as a
-> > > preliminary step for adding support for more event types.
-> > >=20
-> > > Signed-off-by: Francesco Lavra <flavra@baylibre.com> =20
-> >=20
-> > In cases where there are only a small number of options for what the
-> > channel
-> > arrays should contain, my normal preference would be more data over
-> > moving
-> > the complexity into code.=C2=A0 That is have two struct iio_chan_spec a=
-rrays
-> > and
-> > pick between them based on availability of the interrupt.
-> >=20
-> > I haven't checked the whole series yet, but how many channel arrays
-> > would we need to support the features you are introducing here? That is
-> > how many different combinations exist in the supported chips? =20
->=20
-> In the current code there are 3 struct iio_chan_spec arrays; we would need
-> one more to fix the above bug, and one more to add tap event support; so a
-> total of 5 arrays (each of length 4).
-> As for struct iio_event_spec, the current code has one array (of length 1=
-),
-> and to add tap event support we would need another array (of length 2).
+> Prepare for the advent of globally available common field_get() and
+> field_prep() macros by undefining the symbols before defining local
+> variants.  This prevents redefinition warnings from the C preprocessor
+> when introducing the common macros later.
+> 
+> Suggested-by: Yury Norov <yury.norov@gmail.com>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+I tweaked the original driver to avoid the naming clash so this can be dropped
+and we can replace with the new function next cycle.
 
-That sounds small enough to me that I'd prefer const data that you pick bet=
-ween
-rather than dynamic creation.
+Thanks,
 
 Jonathan
+
+> ---
+> v6:
+>   - No changes,
+> 
+> v5:
+>   - New.
+> ---
+>  drivers/iio/imu/smi330/smi330_core.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/iio/imu/smi330/smi330_core.c b/drivers/iio/imu/smi330/smi330_core.c
+> index d9178725ade3da83..a79964fe68fadf47 100644
+> --- a/drivers/iio/imu/smi330/smi330_core.c
+> +++ b/drivers/iio/imu/smi330/smi330_core.c
+> @@ -68,7 +68,9 @@
+>  #define SMI330_SOFT_RESET_DELAY 2000
+>  
+>  /* Non-constant mask variant of FIELD_GET() and FIELD_PREP() */
+> +#undef field_get
+>  #define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
+> +#undef field_prep
+>  #define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
+>  
+>  #define SMI330_ACCEL_CHANNEL(_axis) {					\
+
 

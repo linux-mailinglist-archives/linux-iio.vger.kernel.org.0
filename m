@@ -1,62 +1,62 @@
-Return-Path: <linux-iio+bounces-26090-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26091-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E529C4422D
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 17:16:52 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 118F3C44243
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 17:19:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 14E744E0416
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 16:16:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A49C54E5613
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 16:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEF82FFF82;
-	Sun,  9 Nov 2025 16:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2C62FFF98;
+	Sun,  9 Nov 2025 16:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DMm03nIp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hr/OZCxE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2DB1A9FAA;
-	Sun,  9 Nov 2025 16:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3AB5C96;
+	Sun,  9 Nov 2025 16:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762705007; cv=none; b=kfvjzLRihLFljftsNrB810Z/5+ZJKOMztj0dIV1/2ll4h8I4Mo2eA9odtPZI4UHW+3B/QXUfgNnSmcqqAAK9qL9qxBr2bumlhPbMdgoonGXODLLGmBYD1O4ft6SMe+/nc3DCyGyzPkr5lPTXrJFCL3H4hb21/nOljEoJBCEll1Q=
+	t=1762705182; cv=none; b=qbTlxuQqNnq1nQYBl58tJ4darI4Ma1D/Gwy2dO1ry+jBy/rHJwxwXr4cUP/sThTKPq5PSXmZQckigYCAQtEB4tIQLram4nlSTrEoeEo1q1QJi7dO6zmppVX/fQTsXFzximwFlqblv0uGslVlrhPkhdA2h04hjG62uUuKiz8jahE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762705007; c=relaxed/simple;
-	bh=GkGocr5eAOyLL18g4Je+C0cYvLrAR70j/M2hE+tfMZ0=;
+	s=arc-20240116; t=1762705182; c=relaxed/simple;
+	bh=2ppow4A47+wHLUX6xZe/3VqgZmxAer6B1Qvbvr0/ql0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=imw5g3JXQRv+R7yLwXVfj9ZlpJWxajFlnhnPJpF0ApqvQ0aFwaBa/YPShpB5ztYBzaGyGmbytjz77eVnkLAOLi7xVpcCmHTpQcaL/Yufv6IupJzQzJT7ukiOxH11KmVrkNESoASaP8Sp4cYuEvJ/mAH9BtyUFz7cXlwmG8A3H/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DMm03nIp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86558C19421;
-	Sun,  9 Nov 2025 16:16:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TVxEFKc4OY6P5PmiqjLx6lqCgidza4qSdmvWPnRZ8vnhbn7LoabXaXB9QOxpN1vGeRfSxW3U8P5khD+S94gY2+y2SYpfW5BU88NbtcCTK0+uSWfAc8dZ1cORMcrv9ylgnEP6H9NdoHTjxaCtV97fApnW23jCvUEGg4p9zbgUnDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hr/OZCxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178B4C116B1;
+	Sun,  9 Nov 2025 16:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762705007;
-	bh=GkGocr5eAOyLL18g4Je+C0cYvLrAR70j/M2hE+tfMZ0=;
+	s=k20201202; t=1762705181;
+	bh=2ppow4A47+wHLUX6xZe/3VqgZmxAer6B1Qvbvr0/ql0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DMm03nIpA95NzNQD9/HkzXNajmu3Hvtoya7qbUWA0azwE7d04uQHwYflsN7SEI/zr
-	 +vZFLRtP/TaQFZTwMP2YJ9K5B1P2HgMS3Ehy9cQ8I5FwjvthQ9WEF1/CIq6xEhremS
-	 HlS9wiNXhs7stG+2Nd+a4Ls4kHY9X36rp4+dPDL1FpydLWnCjiwZoIF7AH74Aaz6rJ
-	 4eMVzkDuPgOkaG07/1y1+USQWmHRzViOkwsNVvWfDlcOByyjccVxWriBITd+vWLY+R
-	 vyNTbpJv0zyOflJFcctOAlgZLCPSGiveRY/ChoP5Tyv39o/VEhQkOWWYad+CWNXq7L
-	 ArGBWQ3U6klug==
-Date: Sun, 9 Nov 2025 16:16:40 +0000
+	b=Hr/OZCxE3YsxVVwJunOnlOeep56JjZbmzU/bYm5C/dTu3XSxPCzTuR3nlfqRBDUeg
+	 rwd0vI/w3XiA50MpFMYcmxnFU7IRewXGxrvfClzY21i/7QOtdnNu0CBpViGpt4nxTS
+	 vDb9R3IeM478CLjgOFOWbZtkpGX24wlkyXvNW8uTGCEHx+j25XRSC7uytIu8L5arB/
+	 DwsI++wgRUZKziO70qX4LNFJG0OPU++LEsj0lUsVhLkv+Audt4kfRcVC3dMDAGVttc
+	 jo+SsO+aTe4VRiMspY8xac3PI7u106mtTL/24WOcFaLx+iOmIHT8V6MvT2jT/oSMME
+	 FrlTDKJ50U7fQ==
+Date: Sun, 9 Nov 2025 16:19:33 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= via B4 Relay
- <devnull+nuno.sa.analog.com@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, Michael Hennerich
  <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Andy
  Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
  Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
  Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v4 08/12] iio: dac: ad5446: Make use of
- devm_mutex_init()
-Message-ID: <20251109161640.6b63600d@jic23-huawei>
-In-Reply-To: <20251104-dev-add-ad5542-v4-8-6fe35458bf8c@analog.com>
+Subject: Re: [PATCH v4 09/12] iio: dac: ad5446: Make use of the cleanup
+ helpers
+Message-ID: <20251109161933.001043ce@jic23-huawei>
+In-Reply-To: <aQpEjYRQTDolSIXO@smile.fi.intel.com>
 References: <20251104-dev-add-ad5542-v4-0-6fe35458bf8c@analog.com>
-	<20251104-dev-add-ad5542-v4-8-6fe35458bf8c@analog.com>
+	<20251104-dev-add-ad5542-v4-9-6fe35458bf8c@analog.com>
+	<aQpEjYRQTDolSIXO@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,35 +67,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 04 Nov 2025 15:35:13 +0000
-Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Tue, 4 Nov 2025 20:23:09 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> From: Nuno S=C3=A1 <nuno.sa@analog.com>
+> On Tue, Nov 04, 2025 at 03:35:14PM +0000, Nuno S=C3=A1 via B4 Relay wrote:
 >=20
-> Use devm_mutex_init() which is helpful with CONFIG_DEBUG_MUTEXES.
+> > Use the auto unlocking helpers from cleanup.h. Allows for some code
+> > simplification.
+> >=20
+> > While at it, don't use the ternary operator in
+> > ad5446_write_dac_powerdown() and add an helper function to write the DAC
+> > code. The reason for the function was purely to avoid having to use
+> > unreachable(). =20
 >=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-Applied.
+> ...
+>=20
+> > +static int ad5446_write_dac_raw(struct iio_dev *indio_dev,
+> > +				const struct iio_chan_spec *chan,
+> > +				int val)
+> > +{
+> > +	struct ad5446_state *st =3D iio_priv(indio_dev); =20
+>=20
+> > +	if (val >=3D (1 << chan->scan_type.realbits) || val < 0)
+> > +		return -EINVAL; =20
+>=20
+> BIT() ?
+> in_range() ?
+>=20
+It's a code move, so I'd rather that change if made is a separate patch.
+BIT() is fine, but in_range() is a bit odd when the start is 0.
 
-> ---
->  drivers/iio/dac/ad5446.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+Hence applied this as it stands.
+> > +	val <<=3D chan->scan_type.shift;
+> > +	guard(mutex)(&st->lock);
+> > +
+> > +	st->cached_val =3D val;
+> > +	if (st->pwr_down)
+> > +		return 0;
+> > +
+> > +	return st->chip_info->write(st, val);
+> > +} =20
 >=20
-> diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
-> index c7876217c7ec..59e1f67ef334 100644
-> --- a/drivers/iio/dac/ad5446.c
-> +++ b/drivers/iio/dac/ad5446.c
-> @@ -184,7 +184,9 @@ int ad5446_probe(struct device *dev, const char *name,
->  	indio_dev->channels =3D &st->chip_info->channel;
->  	indio_dev->num_channels =3D 1;
-> =20
-> -	mutex_init(&st->lock);
-> +	ret =3D devm_mutex_init(dev, &st->lock);
-> +	if (ret)
-> +		return ret;
-> =20
->  	st->pwr_down_mode =3D MODE_PWRDWN_1k;
-> =20
 >=20
 
 

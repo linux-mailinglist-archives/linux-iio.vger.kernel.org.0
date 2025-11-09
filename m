@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-26085-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26086-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F73C441E3
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 17:06:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEADC441E9
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 17:06:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A96D3AA968
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 16:06:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DADCF4E6784
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 16:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383F32FFF9A;
-	Sun,  9 Nov 2025 16:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B8B2FFF98;
+	Sun,  9 Nov 2025 16:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOfqN4pD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNfY/x07"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78D02FB097;
-	Sun,  9 Nov 2025 16:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DBDDF59;
+	Sun,  9 Nov 2025 16:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762704364; cv=none; b=TOTEm4SuLvWQcmIp+rYSWJECDJmstz+ibIc7bOBs4Ie5PUTw32/2+at+8TiUFUct2+96kATWC85vugzIoQIeCMJI9mA2XzDusgyW7pp1EiRTYycgxt8XWG9Or2aK0uQ+3o3vcvmWH/+lBev6aVqCG85N154yQrnkV/iaNFHCJK8=
+	t=1762704409; cv=none; b=HbHHn38/wEisaedaHzDC9/B005sFqedn6/HQ1kOjVMAy3VdiQziBgX9VDrTyHAk/xtgNA+gkpAMcZV8Y89ZPzsbQHEdNsrWjcIDc3Ve/sil4X/iHW5wfDWRXtJsnIPDhvS7O4mJW0cNrT+YQ+VG3YWdJJZya2ub4C6ZLcdpETww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762704364; c=relaxed/simple;
-	bh=2/PBE+Jvd0Ocvid7j1XEbUJpOlkPnx/8SyKpguoyaI8=;
+	s=arc-20240116; t=1762704409; c=relaxed/simple;
+	bh=gcn7BAdpLSA8lZBC0V0AtycAh/9rpUNW4E8Lh45i3O8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mPPtPGnCBWNGRVzmQJcQ44/hCy0a/2Nvi6k+jVNmyXrphstOz5ttBuAhDIfsE8TbLWYaiXtXDWm0htnlwVjNjDj2EHXFi/mRfeYpNcIbXWAMSIgIgnjI2yE6jARtosYbhjK6QkdfBb3q/6M73T0STcxlUMOXmlkzlSkfI7544Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOfqN4pD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8E5C19422;
-	Sun,  9 Nov 2025 16:06:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OEol7k3F+dHZjYa39/4TaM062k+d4KUf1DYSNbOAl0yZoRGDYx0RRTH/EN/5QiO8cVd7gcnHDzh1tbKtZJw2Onq3KWT3XUu0UbttBAfpYRrV+qMZXoSvdptkGa9ZAggRjaq6FyMwbT9V4FhG0Tm7WIDWeBnEy0s6Y5ZbaN7D19I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNfY/x07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A745CC116B1;
+	Sun,  9 Nov 2025 16:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762704363;
-	bh=2/PBE+Jvd0Ocvid7j1XEbUJpOlkPnx/8SyKpguoyaI8=;
+	s=k20201202; t=1762704407;
+	bh=gcn7BAdpLSA8lZBC0V0AtycAh/9rpUNW4E8Lh45i3O8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AOfqN4pDcEDwTSpL2LHtEd/XuBRRGXUgjNpGWSKsTq/HCsMVVaQ7bVQELv93psPix
-	 jZdrCTXZzs9a76M08kk+Kvmhzz8h+ViWBPKjsZ1vWz0oT51cMcehT8/2V5roAhOCrU
-	 LIE1ASYMYOiBUsOZvngsrZ/jpCCGwAcADommkqXbNIivf+e2iYR+2KezH2TE6piDvC
-	 osB3jCkLJOdnLi2mAr6BpcCuIIIHO9LRRmtGyZ3eSNzvPl/JRa099QJhp6ffOgrnXM
-	 RrFe73vVCHm4oAIDvQiYDFI8qbhDx8RaDtSPStLVgZPWLZs6xRDmdmBqgmWcX/DQsb
-	 p2rFDaKU84NMw==
-Date: Sun, 9 Nov 2025 16:05:56 +0000
+	b=MNfY/x07zDR1HerxX+HARlWm+gsM4F2ReBFytS40gZURjhFbJTq+NsY85z79IaPhT
+	 ZvEgGH211M52qreYTTD9dXXzeatYAgcOr3vTouBzOARLU3nOst1dW64nnSVn3cC/NM
+	 G/4LoPHTDCE2qjPpqn9fnDte5AXKT2sIXX7a6PXkQN+qbJVC/E1W305dXWjdfaEKMn
+	 zKCzNna1+/JWtSwiDe8/TlWZK9mxT9b7diluyYQzeswY7e9q6PIppqlgsdi0WzxpkQ
+	 UZH9JZq+VMNsEh7dxEIUaUXtEbdQI8ZX2AlPyNAWbR9F0H6XMfTvPbFWy2rXifBxF4
+	 IeJYF4bR5D+cg==
+Date: Sun, 9 Nov 2025 16:06:41 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno =?UTF-8?B?U8Oh?= via B4 Relay
  <devnull+nuno.sa.analog.com@kernel.org>
@@ -51,12 +51,12 @@ Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
  Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
  Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
  Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v4 04/12] iio: dac: ad5446: Don't ignore missing
- regulator
-Message-ID: <20251109160556.2e2e9bbc@jic23-huawei>
-In-Reply-To: <20251104-dev-add-ad5542-v4-4-6fe35458bf8c@analog.com>
+Subject: Re: [PATCH v4 05/12] iio: dac: ad5446: Move to single chip_info
+ structures
+Message-ID: <20251109160641.360e376a@jic23-huawei>
+In-Reply-To: <20251104-dev-add-ad5542-v4-5-6fe35458bf8c@analog.com>
 References: <20251104-dev-add-ad5542-v4-0-6fe35458bf8c@analog.com>
-	<20251104-dev-add-ad5542-v4-4-6fe35458bf8c@analog.com>
+	<20251104-dev-add-ad5542-v4-5-6fe35458bf8c@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,43 +67,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 04 Nov 2025 15:35:09 +0000
+On Tue, 04 Nov 2025 15:35:10 +0000
 Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
 > From: Nuno S=C3=A1 <nuno.sa@analog.com>
 >=20
-> If the chip does not have an internal reference, do not ignore a missing
-> regulator as we won't be able to actually provide a proper scale for the
-> DAC. Since it's now seen as an error, flip the if() logic so errors are
-> treated first (which is the typical pattern).
+> Do not use an array with an enum id kind of thing. Use the more
+> maintainable chip_info variable per chip.
+>=20
+> Adapt the probe functions to use the proper helpers (for SPI and I2c).
+> Note that in a following patch we'll also add the chip_info variables to
+> the of_device_id tables. Hence already use the helpers that internally use
+> device_get_match_data().
 >=20
 > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 Applied.
-> ---
->  drivers/iio/dac/ad5446.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/iio/dac/ad5446.c b/drivers/iio/dac/ad5446.c
-> index c0a38f642451..cbe2a6862f10 100644
-> --- a/drivers/iio/dac/ad5446.c
-> +++ b/drivers/iio/dac/ad5446.c
-> @@ -253,10 +253,11 @@ static int ad5446_probe(struct device *dev, const c=
-har *name,
->  	if (ret < 0 && ret !=3D -ENODEV)
->  		return ret;
->  	if (ret =3D=3D -ENODEV) {
-> -		if (chip_info->int_vref_mv)
-> -			st->vref_mv =3D chip_info->int_vref_mv;
-> -		else
-> -			dev_warn(dev, "reference voltage unspecified\n");
-> +		if (!chip_info->int_vref_mv)
-> +			return dev_err_probe(dev, ret,
-> +					     "reference voltage unspecified\n");
-> +
-> +		st->vref_mv =3D chip_info->int_vref_mv;
->  	} else {
->  		st->vref_mv =3D ret / 1000;
->  	}
->=20
-
 

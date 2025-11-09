@@ -1,84 +1,59 @@
-Return-Path: <linux-iio+bounces-26058-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26059-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69DA7C43E56
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 14:01:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B84DC43E84
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 14:26:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 16C4E3477AE
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 13:01:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 631893A9B6A
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 13:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4904D2F6160;
-	Sun,  9 Nov 2025 13:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B420B2F6933;
+	Sun,  9 Nov 2025 13:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EiUmTl27"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJy4cR4J"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D941E2EBBA1;
-	Sun,  9 Nov 2025 13:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3E22E9EAD;
+	Sun,  9 Nov 2025 13:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762693286; cv=none; b=nvNqdFmtuUM4mQmr3oV8rHyH1/AV+UxWRXghRGrGZLa2Spv8lyPbw8gKabjsc5IKHCOSTpnOTIKYSiswlCWZYikn//BeU9ZALLT6i/IzyYk3vXa1yvtPxFt0EiBujcXGTt4+Ntg/0prlWbBWmZZgx1NBGwL6BOVlEjvc/CA9etc=
+	t=1762694813; cv=none; b=qWIVziIQ8DzFPZiH4Xh1SywGIyFOgYBVgUWoxwbzlFbzdZy8tC76odV6tOnlXd9UHf9XsmwIgaT0F6myXghQOAGMhb2C8LTbdmkuTKZRtIbB9z7K+JErQgljGF1P6HkitHZGpg7nBbvturyjY22CTwMNcju0tx1NZnpAXLYACow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762693286; c=relaxed/simple;
-	bh=zNi9nu3L6TvcyXChQiHADlE5BR7XOd1UsthZfvb4G1U=;
+	s=arc-20240116; t=1762694813; c=relaxed/simple;
+	bh=IUda8zNNMXVp7xJWxMaUMifTHdBiFeF3ML87rFUp4Ds=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wj8zfwqS3bH9wFQQVkAwJ+fiul/J2EAI+3DWzK893jB/y+yllBK4B9G0G/BBpIY38/OaX5vrvKI/PuWlpcrRzJb4B2HCuJv1zqDCS3O8036GHVZ+Gf/jKulM4bRhp2oJ78X0fAyZp92u0LtrD3CmC0qfnb3z8FfRhT2bQ5jrcfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EiUmTl27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BF3C4CEF8;
-	Sun,  9 Nov 2025 13:00:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q/P5rJtP4BmCvqof/qtte+5Vw2k3AOoeLRLANbLccQg/w0cDFjZ5srK/8oByikkvQ4TbFHCjLc+atSYealxw382BKV6ip0PloPDnzzuPWs52UApSxtvtu/NRDuw6oQdu2Bo8XQRk2FPJx2fMFiT6iV12lOvPnLeWcYx/KMFgdXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJy4cR4J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F429C19421;
+	Sun,  9 Nov 2025 13:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762693285;
-	bh=zNi9nu3L6TvcyXChQiHADlE5BR7XOd1UsthZfvb4G1U=;
+	s=k20201202; t=1762694813;
+	bh=IUda8zNNMXVp7xJWxMaUMifTHdBiFeF3ML87rFUp4Ds=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EiUmTl27nujv51T7if+PVcEwebMCbQCSCq+8xYpaEYI85RENWVNiRhQBbcZizkEcl
-	 BoNN96p+WxmZf8XdtZd2JsH89A3j92nUV/nviNZBdoUa+JlTXZfeI1MheP7j0cuQVS
-	 h92D51+L7hZ918wSo/TloZRFQb8IuVvMFsY/0olkMlPlIk7n0h9fCRAkSB/zrNZYUy
-	 o4R3RMn97X9Qp2F9/enYc19Uabz3of7vben/btpQkQj13pd57/4mn4NtxOfAoZl9rB
-	 nGuOIb3srFqktlT4NZZ/24ryLC2SYkCUPIwvyjQnO0esl0QpJC6RsjhO0psREWxDAE
-	 TbMdryqtL/QNQ==
-Date: Sun, 9 Nov 2025 12:59:56 +0000
+	b=sJy4cR4JcarB+ST0D41mdlj4zqYHkqcMMhq2W7xJMtuY3eSRPhFRzw6G876T/cJzk
+	 FvE7+uE+C+yR/PBJOvJAF7YaidZaX1MHfKZqYaEUGwby5ZR/0PNUjtIHMxKMA1wJaD
+	 G6vQJPvEgFV3pP2nGeoiJICSgUcnaYNPeYhayuEUGiXUHOiyRbByp27EOHzvCObOiS
+	 sbOrc8MpFMN4Rv0WoZmMEJYJnLDzAr4/7eLRKqD77ZpOu/w8ZLB+m5KTiKZ/wu/B88
+	 sPjKulUqLgA6gpYrPVR029HEnodYw0eg2R8yXdj2afdszfeOHLwHPOWvNvPgVAgd/0
+	 wvOsCuRP9CFBA==
+Date: Sun, 9 Nov 2025 13:26:46 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre
- Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>, Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, David Miller
- <davem@davemloft.net>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun
- Hung <schung@nuvoton.com>, Yury Norov <yury.norov@gmail.com>, Rasmus
- Villemoes <linux@rasmusvillemoes.dk>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Johannes Berg <johannes@sipsolutions.net>,
- Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>, David Laight
- <david.laight.linux@gmail.com>, Vincent Mailhol
- <mailhol.vincent@wanadoo.fr>, Jason Baron <jbaron@akamai.com>, Borislav
- Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Kim Seer Paller
- <kimseer.paller@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Richard Genoud <richard.genoud@bootlin.com>, Cosmin Tanislav
- <demonsingur@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, Jianping
- Shen <Jianping.Shen@de.bosch.com>, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org,
- qat-linux@intel.com, linux-gpio@vger.kernel.org,
- linux-aspeed@lists.ozlabs.org, linux-iio@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next v5 10/23] iio: imu: smi330: #undef
- field_{get,prep}() before definition
-Message-ID: <20251109125956.106c9a1a@jic23-huawei>
-In-Reply-To: <CAMuHMdUkm2hxSW1yeKn8kZkSrosr8V-QTrHKSMkY2CPJ8UH_BQ@mail.gmail.com>
-References: <cover.1761588465.git.geert+renesas@glider.be>
-	<97549838f28a1bb7861cfb42ee687f832942b13a.1761588465.git.geert+renesas@glider.be>
-	<20251102104326.0f1db96a@jic23-huawei>
-	<CAMuHMdUkm2hxSW1yeKn8kZkSrosr8V-QTrHKSMkY2CPJ8UH_BQ@mail.gmail.com>
+To: Eugen Hristev <eugen.hristev@linaro.org>
+Cc: Pei Xiao <xiaopei01@kylinos.cn>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH v3] iio: adc: at91-sama5d2_adc: Fix potential
+ use-after-free in sama5d2_adc driver
+Message-ID: <20251109132646.308c7126@jic23-huawei>
+In-Reply-To: <cbd2f040-9377-4862-ae52-aac35adb1b9d@linaro.org>
+References: <90dec520a9537af2feab9d56b22d99878fba9e2a.1761705396.git.xiaopei01@kylinos.cn>
+	<20251102115458.4d37556a@jic23-huawei>
+	<cbd2f040-9377-4862-ae52-aac35adb1b9d@linaro.org>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -89,71 +64,127 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 3 Nov 2025 11:09:36 +0100
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Thu, 6 Nov 2025 16:24:07 +0200
+Eugen Hristev <eugen.hristev@linaro.org> wrote:
 
+> On 11/2/25 13:54, Jonathan Cameron wrote:
+> > On Wed, 29 Oct 2025 10:40:16 +0800
+> > Pei Xiao <xiaopei01@kylinos.cn> wrote:
+> >   
+> >> at91_adc_interrupt can call at91_adc_touch_data_handler function
+> >> to start the work by schedule_work(&st->touch_st.workq).
+> >>
+> >> If we remove the module which will call at91_adc_remove to
+> >> make cleanup, it will free indio_dev through iio_device_unregister but
+> >> quite a bit later. While the work mentioned above will be used. The
+> >> sequence of operations that may lead to a UAF bug is as follows:
+> >>
+> >> CPU0                                      CPU1
+> >>
+> >>                                      | at91_adc_workq_handler
+> >> at91_adc_remove                      |
+> >> iio_device_unregister(indio_dev)     |
+> >> //free indio_dev a bit later         |
+> >>                                      | iio_push_to_buffers(indio_dev)
+> >>                                      | //use indio_dev
+> >>
+> >> Fix it by ensuring that the work is canceled before proceeding with
+> >> the cleanup in at91_adc_remove.
+> >>
+> >> Fixes: 3ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")  
+> > This ID doesn't exist in my history  it should be
+> > 23ec2774f1cc
+> > 
+> > I'll fix that up whilst applying.  Ideally I'd like Eugen to take a look
+> > but I'm fairly confident so I'll queue this up on the fixes-togreg branch
+> > of iio.git and mark it for stable.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
+> > 
+> >   
+> >> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+> >> ---
+> >> changlog in v3: move cancel_work_sync after iio_device_unregister
+> >> changlog in v2: use correct Fix id
+> >> ---
+> >>  drivers/iio/adc/at91-sama5d2_adc.c | 1 +
+> >>  1 file changed, 1 insertion(+)
+> >>
+> >> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+> >> index b4c36e6a7490..aa4ba3f5a506 100644
+> >> --- a/drivers/iio/adc/at91-sama5d2_adc.c
+> >> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+> >> @@ -2481,6 +2481,7 @@ static void at91_adc_remove(struct platform_device *pdev)
+> >>  	struct at91_adc_state *st = iio_priv(indio_dev);
+> >>  
+> >>  	iio_device_unregister(indio_dev);
+> >> +	cancel_work_sync(&st->touch_st.workq);  
+> 
 > Hi Jonathan,
 > 
-> On Sun, 2 Nov 2025 at 11:43, Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Mon, 27 Oct 2025 19:41:44 +0100
-> > Geert Uytterhoeven <geert+renesas@glider.be> wrote:
-> >  
-> > > Prepare for the advent of globally available common field_get() and
-> > > field_prep() macros by undefining the symbols before defining local
-> > > variants.  This prevents redefinition warnings from the C preprocessor
-> > > when introducing the common macros later.
-> > >
-> > > Suggested-by: Yury Norov <yury.norov@gmail.com>
-> > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>  
-> >
-> > So this is going to make a mess of merging your series given this is
-> > queued up for next merge window.
-> >
-> > I can pick this one up perhaps and we loop back to the replacement of
-> > these in a future patch?  Or perhaps go instead with a rename
-> > of these two which is probably nicer in the intermediate state than
-> > undefs.  
-> 
-> Renaming would mean a lot of churn.
-> Just picking up the #undef patch should be simple and safe? The
-> removal of the underf and redef can be done in the next cycle.
-> Thanks!
+> Can we push to buffers *after* device was unregistered with
+> iio_device_unregister() ? Is that right ? Both Pei and I considered it's
+> not.
+I started answering this confidently with 'sure that's fine' then got
+less confident as I tried to show that :(
 
-Only 1 call of each of these in the driver, so churn is small either way.
+iio_buffer_deactivate_all() should have removed all the buffers from
+the list that iio_push_to_buffers() walks to find out what buffers are
+registered.  So it should end up as a noop after iio_device_unregister()
 
-To avoid a bisection problem if your tree merges first I need to modify
-this stuff in the original patch or leave it for Linus to deal with as
-a merge conflict resolution which is mess I'd rather do without.
+That call is made from iio_disable_all_buffers() in iio_device_unregister()
 
-So I'll rebase now and rename these functions to have an smi330_ prefix.
-Better to potentially cause people problems when I have 23 patches
-on top of this (and hopefully no one is based on those yet) than when
-I have many more.
+It's worth checking there are no races if we end up with work whilst
+the unregister is ongoing. That I'm rather doubtful about having looked
+at this code for first time for a long while. The removal is under the
+info_exist_lock but the walk of the buffers in iio_push_to_buffers isn't.
 
-So tweaked and pushed out a new version where this patch isn't needed.
-We can move to your new code next cycle.
+My first instinct is we should have a specific lock to protect the buffer
+list against concurrent accesses but that is messy.  We might be able to
+use the existence lock for that. (info_exist_lock) + a check on
+indio_dev->info (for consistency with the meaning of that lock rather than
+anything else as the buffers are actually removed just before that is set null).
+
+Before posing a patch though I'd like a few more eyes on this.
+
+Completely untested potential fix:
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index f1448ae1b843..ab76fc25c3b5 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -2382,6 +2382,10 @@ int iio_push_to_buffers(struct iio_dev *indio_dev, const void *data)
+        int ret;
+        struct iio_buffer *buf;
+ 
++       guard(mutex)(&iio_dev_opaque->info_exist_lock);
++       if (!indio_dev->info)
++               return -ENODEV;
++
+        list_for_each_entry(buf, &iio_dev_opaque->buffer_list, buffer_list) {
+                ret = iio_push_to_buffer(buf, data);
+                if (ret < 0)
+
+
+
+Thanks,
 
 Jonathan
 
 
 
 > 
-> > > --- a/drivers/iio/imu/smi330/smi330_core.c
-> > > +++ b/drivers/iio/imu/smi330/smi330_core.c
-> > > @@ -68,7 +68,9 @@
-> > >  #define SMI330_SOFT_RESET_DELAY 2000
-> > >
-> > >  /* Non-constant mask variant of FIELD_GET() and FIELD_PREP() */
-> > > +#undef field_get
-> > >  #define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
-> > > +#undef field_prep
-> > >  #define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
-> > >
-> > >  #define SMI330_ACCEL_CHANNEL(_axis) {                                        \  
+> Eugen
 > 
-> Gr{oetje,eeting}s,
 > 
->                         Geert
+> 
+> >>  
+> >>  	at91_adc_dma_disable(st);
+> >>    
+> >   
+> 
 > 
 
 

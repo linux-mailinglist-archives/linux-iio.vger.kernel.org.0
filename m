@@ -1,62 +1,59 @@
-Return-Path: <linux-iio+bounces-26094-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26095-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB75DC44267
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 17:32:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E8FC44285
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 17:38:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8E433AD0B6
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 16:32:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 563251884708
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 16:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165C7303A38;
-	Sun,  9 Nov 2025 16:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73C3303A2A;
+	Sun,  9 Nov 2025 16:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uI/hDStn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNgRTevb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20192FFF94;
-	Sun,  9 Nov 2025 16:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613691FAC42;
+	Sun,  9 Nov 2025 16:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762705969; cv=none; b=qVXgXPfGupDqwmtg9lX3ttiNb32sfhkXB6gkCRFtrYXkT65Iw5c1bzUMr57oX6PQnFdYXyvkDgcOG1CAyizyJqRFvMIitykGMow1U4eE9bSS1+m4Tml4XNoV5V/meQ8Udl4Fe2OzYNfPOkM79aHy1lSJfFIibmFVqXEMp6z9Yc4=
+	t=1762706326; cv=none; b=C+1KlKycPJYpb9rAqIS3xmNPlWwf2BbNFNNQN6VU70XRkuciu7m1wYBVlza82XDWIGK7yZSJ3fO8S7N/oFuFoIZtvolXUM9Lbq8DnRgSh9xKTlUvk96pyDICaqqwZEe6FTkjToi+YFI86ADsZvB4DMJiF3sf+LmBhfE89vuKQ90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762705969; c=relaxed/simple;
-	bh=IHSkKfxDXOEzAiJ4OsaBd2WyTY7cy0e4Eh42LB5ZmoQ=;
+	s=arc-20240116; t=1762706326; c=relaxed/simple;
+	bh=tyUFY2EVCKcCKGylmHqPrCF4+Regt0Z1xbdOg2MeKdA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YWlqL/z0OXF+P23uir6oL0PI38hKop8oTGEQk7Lrk3y3eTpyYw+2k0nNXPUwz9pUwL368SChOCt6bE9XQ2R8ngWBvV//DquCELLP/p4cVbPHlsVzOq5H7seghlPGbqopS8ZJ+1PLFqCGzG0Q8kB+Db8YHI2hNO/P2hM79WrLIok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uI/hDStn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE46C19421;
-	Sun,  9 Nov 2025 16:32:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HVjWedI5svUc7nRuHNg8Kyko1eU7Sx4Iakx5OoPF0Dg+U1/t+mlWp1PZXu9leOPpZ9GWWAeBRuMYf4ZbHJKO9nFyjnvfuqnzBarjK9wAC6RxhlP8O9N2f6Gv/DVVwAIvp0P0qbThlmQiOJXIwx+7ivYP1USrkFP+F+W5WlLr7n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNgRTevb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD15C4CEF7;
+	Sun,  9 Nov 2025 16:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762705966;
-	bh=IHSkKfxDXOEzAiJ4OsaBd2WyTY7cy0e4Eh42LB5ZmoQ=;
+	s=k20201202; t=1762706325;
+	bh=tyUFY2EVCKcCKGylmHqPrCF4+Regt0Z1xbdOg2MeKdA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uI/hDStnZcwnLzT1SNes/yvlEkXW/iFFASTfmxxQaFDmRNmgtxMJJxFX1Ak479d8W
-	 E8HgBfx9YeWP7iCyrET1GCrPMGCwzZUuRPLA8kmuFy04hVy2l39fcry8sLfJXb5NQD
-	 VJVJgJPg9YpdUVV3HtYJzXqspjuxVOJNVfyq2rjY5TGhKo55+5i3tgemD3TmQwORIu
-	 e0pVlOv3nxFEuZO/EZ/4nyXdkdTszV+NFYzorHeap45niJ6vqoEq74q981GoVbeHtf
-	 UiZls4Zc9qWcMlR08hFpYyKpyw3lbViAsJsBaBJp4xNoJcMBxfMhGIhccb2wzV1hXX
-	 F3hUNyNWcUB6w==
-Date: Sun, 9 Nov 2025 16:32:39 +0000
+	b=nNgRTevbyQn1SM/yHdbbKUOALQlamILo5IBnDJLl6QKMPiqf/+qLJ+0UGcOr2cVRX
+	 RB2ynW5psFNYszlXuxEv2MyT40C+LF0irdT3G/Wg+gCx+omekS5ahGuFm3YwlSlKOf
+	 Dl8Pf5m+v3Qs4lCTESzn+JmtVTEMG3Sajg5yRi3vsb+Kwba7Wqw7Ml/vwt+WaqjBFk
+	 9yajWV4RxeR92P4pp1GJOj4G+ow5ML4BAx3LrPXHV6V8lM/fNZFROJiGDafatEgy4h
+	 pdV/L1ZxcA4tRawWuCZ0mLp3G2OfrnM2T2X4lmw/wetbqTMhgt4YoyIBg5Sd57/7pC
+	 CCl/keBUksy9A==
+Date: Sun, 9 Nov 2025 16:38:40 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= via B4 Relay
- <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Andy
- Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v4 12/12] iio: dac: ad5446: Add AD5542 to the spi id
- table
-Message-ID: <20251109163239.5319293e@jic23-huawei>
-In-Reply-To: <20251104-dev-add-ad5542-v4-12-6fe35458bf8c@analog.com>
-References: <20251104-dev-add-ad5542-v4-0-6fe35458bf8c@analog.com>
-	<20251104-dev-add-ad5542-v4-12-6fe35458bf8c@analog.com>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Antoni Pokusinski <apokusinski01@gmail.com>, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] iio: mpl3115: use get_unaligned_be24 to retrieve
+ pressure data
+Message-ID: <20251109163840.64144586@jic23-huawei>
+In-Reply-To: <aQ1MfTu24hhk-dKP@debian-BULLSEYE-live-builder-AMD64>
+References: <20251105095615.4310-1-apokusinski01@gmail.com>
+	<20251105095615.4310-2-apokusinski01@gmail.com>
+	<aQ1MfTu24hhk-dKP@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,52 +61,51 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 04 Nov 2025 15:35:17 +0000
-Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Thu, 6 Nov 2025 22:33:49 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-> From: Michael Hennerich <michael.hennerich@analog.com>
->=20
-> This adds support for the AD5542 single channel Current Source and
-> Voltage Output DACs.
->=20
-> It is similar to the AD5542A model so just use the same id.
->=20
-> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> Co-developed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> ---
->  drivers/iio/dac/ad5446-spi.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/drivers/iio/dac/ad5446-spi.c b/drivers/iio/dac/ad5446-spi.c
-> index 1a52f6014fad..487268d52ce2 100644
-> --- a/drivers/iio/dac/ad5446-spi.c
-> +++ b/drivers/iio/dac/ad5446-spi.c
-> @@ -175,6 +175,7 @@ static const struct spi_device_id ad5446_spi_ids[] =
-=3D {
->  	{"ad5453", (kernel_ulong_t)&ad5446_chip_info}, /* ad5453 is compatible =
-to the ad5446 */
->  	{"ad5512a", (kernel_ulong_t)&ad5512a_chip_info},
->  	{"ad5541a", (kernel_ulong_t)&ad5541a_chip_info},
-> +	{"ad5542", (kernel_ulong_t)&ad5541a_chip_info}, /* ad5541a and ad5542 a=
-re compatible */
->  	{"ad5542a", (kernel_ulong_t)&ad5541a_chip_info}, /* ad5541a and ad5542a=
- are compatible */
->  	{"ad5543", (kernel_ulong_t)&ad5541a_chip_info}, /* ad5541a and ad5543 a=
-re compatible */
->  	{"ad5553", (kernel_ulong_t)&ad5553_chip_info},
-> @@ -211,6 +212,7 @@ static const struct of_device_id ad5446_of_ids[] =3D {
->  	{ .compatible =3D "adi,ad5453", .data =3D &ad5446_chip_info },
->  	{ .compatible =3D "adi,ad5512a", .data =3D &ad5512a_chip_info },
->  	{ .compatible =3D "adi,ad5541a", .data =3D &ad5541a_chip_info },
-> +	{ .compatible =3D "adi,ad5542", .data =3D &ad5541a_chip_info },
->  	{ .compatible =3D "adi,ad5542a", .data =3D &ad5541a_chip_info },
->  	{ .compatible =3D "adi,ad5543", .data =3D &ad5541a_chip_info },
->  	{ .compatible =3D "adi,ad5553", .data =3D &ad5553_chip_info },
->=20
+> On 11/05, Antoni Pokusinski wrote:
+> > The pressure measurement result is arranged as 20-bit unsigned value
+> > residing in three 8-bit registers. Hence, it can be retrieved using
+> > get_unaligned_be24 and by applying 4-bit shift.
+> > 
+> > Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
+> > ---
+> >  drivers/iio/pressure/mpl3115.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c  
+> ...
+> >  
+> > -		*val = be32_to_cpu(tmp) >> chan->scan_type.shift;
+> > +		*val = get_unaligned_be24(tmp) >> 4;  
+> hmm, now the number of bits shifted is dissociated from the channel characteristics.
+> We can do
+> 		*val = get_unaligned_be24(tmp) >> (24 - chan->scan_type.realbits);
+This encodes that the field is always aligned to the maximum bit. Whilst it might
+be true, there is nothing inherent that says it must be.
 
-Applied.
+I'm not sure why we aren't using chan->scan_type.shift though.
+
+> or maybe
+> 		*val = get_unaligned_be24(tmp) >> (sizeof(tmp) - chan->scan_type.realbits);
+
+That one needs a BYTES_TO_BITS factor too.
+
+> but it starts becoming too long IMO. Even longer if `tmp` gets a more meaningful
+> name. Ah well, any of the three forms should work the same at the end of day so
+> no strong opinion.
+> 
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> 
+> >  		return IIO_VAL_INT;
+> >  	}
+> >  	case IIO_TEMP: { /* in 0.0625 celsius / LSB */
+> > -- 
+> > 2.25.1
+> >   
+
 

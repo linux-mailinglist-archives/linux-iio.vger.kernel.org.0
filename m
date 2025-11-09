@@ -1,87 +1,59 @@
-Return-Path: <linux-iio+bounces-26065-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26066-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE36BC43F02
-	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 14:39:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00494C43F38
+	for <lists+linux-iio@lfdr.de>; Sun, 09 Nov 2025 14:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0AEE44E2C0F
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 13:39:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC26C188C5E5
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Nov 2025 13:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0867D2FB098;
-	Sun,  9 Nov 2025 13:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8AB2FB094;
+	Sun,  9 Nov 2025 13:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRuJdceF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CqnfcmlS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96ED02F9C2A;
-	Sun,  9 Nov 2025 13:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30141C695;
+	Sun,  9 Nov 2025 13:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762695561; cv=none; b=jSiprsBlkmk8dIAyll7LjIQTVt/vqWfITlCXM1moeQp4q/DzI6cB6ydF3guQ5TkdQrNOzqBd9NJH5m67Ud7ky6Br5SYvC4bLQrFQN7tP/2ENa8zZ5v7/juVbVoN7TWgTzmG3a+zeHqWquAxYSrlwtld8U3Oz4HEfOgU0zI3SlPQ=
+	t=1762696243; cv=none; b=oWSIwGHr9BU2H5PKBri31TvkXr3yGAAtTXlLGsJwKJw0oL29LnzMrifEUPGZkHThEY8cUJAB65JAAEUrlw4SI4+0cZ4uH4A/6sw6lZ9PCivNeoXk9daFWYJQ6B7qpWfjrHLk8oVLRqAEK2WJVcH+lY7RJwAZsRWbub5HcNDcyWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762695561; c=relaxed/simple;
-	bh=TmS8CkFMzA8p257zgP8ajlZZj7NKktorZzJfGu8kADk=;
+	s=arc-20240116; t=1762696243; c=relaxed/simple;
+	bh=cuEucSgyJsPvgO1+0PApeWx27vuWaEEkAYpo2mXy/xw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oxPMtn2895LE8umcn2gLyZtWIGE4By/VkBSj7G/Qib0Lpm/tqGoR+eXIf+b/oZL+6C5Ph5FZTBiPjuPOPCGD3j9ko1i+crZ8aDl33bV3sb+kALOzrm42kPXoqc629Du+fFoWfg22Tr+lwbHW9w2XETGQ5uafLDP8DIAWQRkPVj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRuJdceF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DF5C4CEF7;
-	Sun,  9 Nov 2025 13:39:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EoWiLX5flKwXcdnTwx2TjHfD8LM7lK9K335j30NmYTM7lN9DSx5NhbKgvYm+ozn4hgzedRsOhC9dePq+2mc6q4rRGG1/Kzw04noYTpQ+Ys3gX3LFV8vSJYiVPYwDb34Tz/0W9xIFYdrVsqG3jnU3F99aI852xv1egf5kLU2eGJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CqnfcmlS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6C0C4CEF7;
+	Sun,  9 Nov 2025 13:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762695561;
-	bh=TmS8CkFMzA8p257zgP8ajlZZj7NKktorZzJfGu8kADk=;
+	s=k20201202; t=1762696243;
+	bh=cuEucSgyJsPvgO1+0PApeWx27vuWaEEkAYpo2mXy/xw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eRuJdceFQsdR7lWVjZXcQ5eo2LTrpkwCjVnhqhWqMgsWHpPaOmCSWAruleR0rDa3c
-	 zewmxH8r/ugX+Auz1z/GzwLYEmryJP7Yxt9ENJ0AKXlgrY5A6lsFG5/fgdl/WlQuI0
-	 wm5J1acBHw4E/gK68u06+opel8VRhYcrJcvtOFcncyLFMAVSPe89x4T+DcAQy3aEQQ
-	 oX85a3JCzSZAbUxwWvjBgSMTrD8mI2+wsSwQYY/Cvor7FYRe2eXlHmti2qvQabVS0/
-	 o+scmlpg9ZtBwS6CeH2c/exLXcnhRK2SIJLAmWLQvpPhhKxsXEyIVR2Jv6uyzWZ37T
-	 Qr+4vzbXZuRrg==
-Date: Sun, 9 Nov 2025 13:39:04 +0000
+	b=CqnfcmlS4jce+Tk3CwuSGAeaz1SRW71oYW6V/gX1TsYq9tjHjf8KkXIjPSBbh0eDL
+	 0jCqExKdkp14iKV2Ioza9ZianctOKuUSpsfXAjTIN7ETrTNPYi/RelwHnWpSVrNFCm
+	 SyeZXeW2OVj2se2iLruyLZOcMRyfFOHi/o7ZhUOJ+ATdQqfdH2hlc3oIFUzTxw+LZl
+	 EBhMw7/drRGtC9aUsBWfnKTCix8SUFAObMpD/L0YvUtYyVQR4Gbyg9Mp2I/d/ZQzLR
+	 A4zjYw5k2v1BtYwU/tUhKg75NF9s7PrzecSQ+MBu4Sv2B+5G7EwG3KMSUPzZNg6CCe
+	 Ey4z/HL+JQbmQ==
+Date: Sun, 9 Nov 2025 13:50:36 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Yury Norov <yury.norov@gmail.com>, Michael Turquette
- <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Nicolas Ferre
- <nicolas.ferre@microchip.com>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, David Miller <davem@davemloft.net>, Linus
- Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun
- Hung <schung@nuvoton.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Johannes
- Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>, Alex
- Elder <elder@ieee.org>, David Laight <david.laight.linux@gmail.com>,
- Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Jason Baron
- <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>, Tony Luck
- <tony.luck@intel.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Kim Seer Paller <kimseer.paller@analog.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Richard Genoud <richard.genoud@bootlin.com>,
- Cosmin Tanislav <demonsingur@gmail.com>, Biju Das
- <biju.das.jz@bp.renesas.com>, Jianping Shen <Jianping.Shen@de.bosch.com>,
- Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
- <nick.desaulniers+lkml@gmail.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, Vignesh
- Raghavendra <vigneshr@ti.com>, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org,
- qat-linux@intel.com, linux-gpio@vger.kernel.org,
- linux-aspeed@lists.ozlabs.org, linux-iio@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next v6 23/26] iio: imu: smi330: Convert to common
- field_{get,prep}() helpers
-Message-ID: <20251109133904.5eff2558@jic23-huawei>
-In-Reply-To: <a2275bd69f25d33f9fd3345409b2d8ae6285b9a7.1762435376.git.geert+renesas@glider.be>
-References: <cover.1762435376.git.geert+renesas@glider.be>
-	<a2275bd69f25d33f9fd3345409b2d8ae6285b9a7.1762435376.git.geert+renesas@glider.be>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Ma Ke <make24@iscas.ac.cn>, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, error27@gmail.com, andriy.shevchenko@intel.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: trigger: Fix error handling in
+ viio_trigger_alloc
+Message-ID: <20251109135036.4c05833b@jic23-huawei>
+In-Reply-To: <74993472-4845-42d5-8b50-8fa8dc5b42fa@suswa.mountain>
+References: <20251106082923.32688-1-make24@iscas.ac.cn>
+	<74993472-4845-42d5-8b50-8fa8dc5b42fa@suswa.mountain>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -92,47 +64,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu,  6 Nov 2025 14:34:11 +0100
-Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+On Thu, 6 Nov 2025 18:16:06 +0300
+Dan Carpenter <dan.carpenter@linaro.org> wrote:
 
-> Drop the driver-specific field_get() and field_prep() macros, in favor
-> of the globally available variants from <linux/bitfield.h>.
+> On Thu, Nov 06, 2025 at 04:29:23PM +0800, Ma Ke wrote:
+> > ---
+> > Changes in v2:
+> > - modified the patch, thanks for developer's suggestions.
+> > ---
+> >  drivers/iio/industrialio-trigger.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+> > index 54416a384232..9f6d30a244d9 100644
+> > --- a/drivers/iio/industrialio-trigger.c
+> > +++ b/drivers/iio/industrialio-trigger.c
+> > @@ -524,6 +524,7 @@ static void iio_trig_release(struct device *device)
+> >  			       CONFIG_IIO_CONSUMERS_PER_TRIGGER);
+> >  	}
+> >  	kfree(trig->name);
+> > +	mutex_destroy(&trig->pool_lock);
+> >  	kfree(trig);
+> >  }
+> >  
+> > @@ -596,8 +597,9 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
+> >  
+> >  free_descs:
+> >  	irq_free_descs(trig->subirq_base, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
+> > +	trig->subirq_base = 0;  
 > 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> This doesn't work.  Do it before the goto.
 
-This will need a revist next cycle. I preferred not to have
-the odd looking undef in the driver at introduction so prefixed with smi330_
-instead.  Only one instance so it wasn't worth comments to make ti clear what was going on.
+This is a bit ugly however we do it. Maybe should just call
+device_initialize() to hand over to the reference counted version much later?
+Just before return trig seems easiest spot to reason about.
 
-J
+That seems nicer than doing an irq_get_chip() in iio_trig_release() to figure
+out if the first part of the if (trig->subirq_base) conditional block should run or not.
 
+Adding a flag to the trig structure just to indicate we got to running
+that loop also feels annoying but at least would ensure we could just do
+a put_device() in here without the other handling above.
 
-> ---
-> v6:
->   - No changes,
 > 
-> v5:
->   - New.
-> ---
->  drivers/iio/imu/smi330/smi330_core.c | 6 ------
->  1 file changed, 6 deletions(-)
+> regards,
+> dan carpenter
 > 
-> diff --git a/drivers/iio/imu/smi330/smi330_core.c b/drivers/iio/imu/smi330/smi330_core.c
-> index a79964fe68fadf47..83e0dff5d973d046 100644
-> --- a/drivers/iio/imu/smi330/smi330_core.c
-> +++ b/drivers/iio/imu/smi330/smi330_core.c
-> @@ -67,12 +67,6 @@
->  #define SMI330_CHIP_ID 0x42
->  #define SMI330_SOFT_RESET_DELAY 2000
->  
-> -/* Non-constant mask variant of FIELD_GET() and FIELD_PREP() */
-> -#undef field_get
-> -#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
-> -#undef field_prep
-> -#define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
-> -
->  #define SMI330_ACCEL_CHANNEL(_axis) {					\
->  	.type = IIO_ACCEL,						\
->  	.modified = 1,							\
+> >  free_trig:
+> > -	kfree(trig);
+> > +	put_device(&trig->dev);
+> >  	return NULL;
+> >  }
+> >  
+> > -- 
+> > 2.17.1  
 
 

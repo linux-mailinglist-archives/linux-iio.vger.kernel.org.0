@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-26142-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26144-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A4EC47AD0
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 16:51:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544B3C47ADC
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 16:51:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0D361894C67
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 15:46:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65C44188175C
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 15:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD432749C7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E219D2749E4;
 	Mon, 10 Nov 2025 15:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfjBqVXq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABtXqFWL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68914224AE8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C2B199939;
 	Mon, 10 Nov 2025 15:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762789530; cv=none; b=KiBwLQubP1XnkePV+4Jt3DMQqda15Z3cFzKeVVyhTTzZFWHV/dWdC4k2hgwOgqPE1is/Rzw93XDg/Upzw+kqiajyE4qrPbBT1t/gBzvqUWMPp314ucYCoBSuNIAF3/0NfoLhITaor8Ey0yJm1pBbXSkvWs0Zn3TzAfYkdfBJNpI=
+	t=1762789530; cv=none; b=DG3FyOSRJLEpzXq2wW1MMxnSIwD9rhcvCu4vy4VPLM/H5bP3mGYGWHHVxZBo152nNim73vISKZwN2YAqYegY2XmDcEiFAW7vdOZyxlOGlmpheDTP0MrQxv+9VPs/Jc5PrnYyNr/N6TdBE8dOcVRaY0qoUAHqFDWrYOXlFp6X5iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762789530; c=relaxed/simple;
-	bh=tGxprLrftAwjCoXRJ+nMUe8IsESY4LQ1oVBr+0IAoZY=;
+	bh=2n36zq1CxHrYLfPgKy50ZPY3hod8lrNllZ/6mW3AS/I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UYyVBtMXT0i1N2lDSE0nS0HEAWGkED/vImyGDNC1/lA+l7+/hE8LCVY1kiEqDoEom6ftLRgk90AocMrG48PJnUM24mlncCO4u+Y+U/6L/PILBeP5brmlw1K8Y0Y69Dm2m30C37u/G4GmFpwTkmd0VlRJEklTT99SL2zNk34Cpvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KfjBqVXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E083AC116D0;
+	 In-Reply-To:To:Cc; b=YeK6QHk5GVrpbUPI5LKMnIeCrOdQ94sdmwbJCDXY8gKY+fx8nCk/amACcAgV1GPMJkRllb3fLFvZZKTbyOk0S8pKD5WE0+m6LuZZfysfulubW6Ztq8eyQ0lR0mHSP+lmJh/SBZRFNezAAK9dljtmwUig05gaTdjJmBQFog4uCGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABtXqFWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F38F6C2BCAF;
 	Mon, 10 Nov 2025 15:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1762789530;
-	bh=tGxprLrftAwjCoXRJ+nMUe8IsESY4LQ1oVBr+0IAoZY=;
+	bh=2n36zq1CxHrYLfPgKy50ZPY3hod8lrNllZ/6mW3AS/I=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=KfjBqVXqSXm10xxchP+gqjfb96ScZCWi40kfdsNGtiHo6bnYXgaPJrbjIsGhJlPV2
-	 Soto2ZMOfPsZtifQXcDO/Xqxl6VLnsImjc8/hnhzCNFdoYSKvX35UwFJa6QXFUEMVT
-	 3+FVRVU7dp+oZ9w43QdUYihny72mR0uNt7b3MyL50AmMnmRE8kp10xlpANULXcDNal
-	 rjnF9gRdYFv5dLjMCTCgaY66tONPfyOZeec2jaPzLNiC/JzGtPpF3Y8b1HPoWj51Pz
-	 CrAQxvtNJ873s3Ux++P2YrLmJ7gB7rD4YYBSbkndI+3PXrxQ8g5GeOjg6Aj/6Ecboc
-	 NQbDyjtUGogMA==
+	b=ABtXqFWLkKafcoMC9uW9uYNCDV9h73o8B00NlE0e8EhGoac0uxsOgSu6HNVvIZ02P
+	 F70V2VfHNHwV+jv7ZMZG12g6F4Vyp3+7Tv9exd1ZzOrYzmsq5Whw7+sWWXgYzdLrMn
+	 t6NYBSJKtp//5Gi7pNWNTlV857ki2wEmSIp7iihek/Sgk2YpAU7X9T/3rHPI00hXR6
+	 uYh+NPo4knrgIX7+oUYilzN/5Jn9kazScE8/nlCOn9Mf8OaLmalyTJ8tq06N9Ip4Fx
+	 wIrLbnzCsjZUM/GohhjS4u4VEQkztmSOHG1wZI2Y6nWg9cDtIwtAazvCpW2EbGyJe7
+	 MBUTQZDiTJ6Xw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5916CD1297;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E34C3CCF9E3;
 	Mon, 10 Nov 2025 15:45:29 +0000 (UTC)
 From: Rodrigo Alencar via B4 Relay <devnull+rodrigo.alencar.analog.com@kernel.org>
-Date: Mon, 10 Nov 2025 15:44:45 +0000
-Subject: [PATCH 2/3] dt-bindings: iio: frequency: add adf41513
+Date: Mon, 10 Nov 2025 15:44:46 +0000
+Subject: [PATCH 3/3] docs: iio: add documentation for adf41513 driver
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251110-adf41513-iio-driver-v1-2-2df8be0fdc6e@analog.com>
+Message-Id: <20251110-adf41513-iio-driver-v1-3-2df8be0fdc6e@analog.com>
 References: <20251110-adf41513-iio-driver-v1-0-2df8be0fdc6e@analog.com>
 In-Reply-To: <20251110-adf41513-iio-driver-v1-0-2df8be0fdc6e@analog.com>
 To: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
@@ -68,11 +68,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
  Rodrigo Alencar <rodrigo.alencar@analog.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762789528; l=10076;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762789528; l=14078;
  i=rodrigo.alencar@analog.com; s=default; h=from:subject:message-id;
- bh=lVwojzT6WizUcRBWmB0UObJnWFpsQQtx46u9qWYqXPk=;
- b=qag8YCAvMAps567tUXFTXniKVEZnj5V2mENJlLRLZblYYhjBulcN02vGl4wTne98lGQGoZPfw
- R0RSSWRvAG/BszqaaBWExVZ58uArfTtsIRlAi+aKqmeKPJZRqu1Y0/b
+ bh=CEa06klTzZWnce6W7y6zRpHzUOeheQBfElqFjN0BVzI=;
+ b=iC9yExOVFcygBYJh3TAf6aNBHoT5k7tZiO6SmiaFu1LpccECSfgw9+9b6OGgZfOAWJScpcQRT
+ dcgqjr6BLvPAqHxQ0oeY10AwVW79fdySIxct3NWJN31FIfozidu424u
 X-Developer-Key: i=rodrigo.alencar@analog.com; a=ed25519;
  pk=ULeHbgU/OYh/PG/4anHDfLgldFItQHAhOktYRVLMFRo=
 X-Endpoint-Received: by B4 Relay for rodrigo.alencar@analog.com/default
@@ -82,298 +82,421 @@ Reply-To: rodrigo.alencar@analog.com
 
 From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-ultralow noise PLL frequency synthesizer that can be used to
-implement local oscillators (LOs) as high as 26.5 GHz
+add documentation for adf41513 driver which describes the device
+driver files and shows how userspace may consume the ABI for various
+tasks
 
 Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
 ---
- .../bindings/iio/frequency/adi,adf41513.yaml       | 268 +++++++++++++++++++++
- MAINTAINERS                                        |   1 +
- 2 files changed, 269 insertions(+)
+ Documentation/iio/adf41513.rst | 377 +++++++++++++++++++++++++++++++++++++++++
+ Documentation/iio/index.rst    |   1 +
+ MAINTAINERS                    |   1 +
+ 3 files changed, 379 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml
+diff --git a/Documentation/iio/adf41513.rst b/Documentation/iio/adf41513.rst
 new file mode 100644
-index 000000000000..7e1ad80d68af
+index 000000000000..a2d5425d49c9
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml
-@@ -0,0 +1,268 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/frequency/adi,adf41513.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/Documentation/iio/adf41513.rst
+@@ -0,0 +1,377 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+title: Analog Devices ADF41513 PLL Frequency Synthesizer
++===============
++ADF41513 driver
++===============
 +
-+maintainers:
-+  - Rodrigo Alencar <rodrigo.alencar@analog.com>
++This driver supports Analog Devices' ADF41513 and ADF41510 PLL frequency
++synthesizers on SPI bus.
 +
-+description:
-+  The ADF41513 is an ultralow noise frequency synthesizer that can be used to
-+  implement local oscillators (LOs) as high as 26.5 GHz in the upconversion and
-+  downconversion sections of wireless receivers and transmitters. The ADF41510
-+  supports frequencies up to 10 GHz.
++1. Supported devices
++====================
 +
-+  https://www.analog.com/en/products/adf41513.html
-+  https://www.analog.com/en/products/adf41510.html
++* `ADF41510 <https://www.analog.com/ADF41510>`_
++* `ADF41513 <https://www.analog.com/ADF41513>`_
 +
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adf41510
-+      - adi,adf41513
++The ADF41513 is an ultralow noise frequency synthesizer that can be used to
++implement local oscillators (LOs) as high as 26.5 GHz in the upconversion and
++downconversion sections of wireless receivers and transmitters. The ADF41510
++is a similar device that supports frequencies up to 10 GHz.
 +
-+  reg:
-+    maxItems: 1
++Both devices support integer-N and fractional-N operation modes, providing
++excellent phase noise performance and flexible frequency generation
++capabilities.
 +
-+  spi-max-frequency:
-+    maximum: 25000000
++Key Features:
 +
-+  clocks:
-+    maxItems: 1
-+    description: Clock that provides the reference input frequency.
++- **ADF41513**: 1 GHz to 26.5 GHz frequency range
++- **ADF41510**: 1 GHz to 10 GHz frequency range
++- Integer-N and fractional-N operation modes
++- Ultra-low phase noise (-235 dBc/Hz integer-N, -231 dBc/Hz fractional-N)
++- High maximum PFD frequency (250 MHz integer-N, 125 MHz fractional-N)
++- 25-bit fixed modulus or 49-bit variable modulus fractional modes
++- Programmable charge pump currents with 16x range
++- Digital lock detect functionality
++- Phase resync capability for consistent output phase
++- Clock framework integration for system clock generation
 +
-+  '#clock-cells':
-+    const: 0
++2. Device attributes
++====================
 +
-+  clock-output-names:
-+    maxItems: 1
++The ADF41513 driver provides the following IIO extended attributes for
++frequency control and monitoring:
 +
-+  vcc-supply:
-+    description: Power supply for the device (3.3V)
++Each IIO device has a device folder under ``/sys/bus/iio/devices/iio:deviceX``,
++where X is the IIO index of the device. Under these folders reside a set of
++device files that provide access to the synthesizer's functionality.
 +
-+  chip-enable-gpios:
-+    description:
-+      GPIO that controls the chip enable pin. A logic low on this pin
-+      powers down the device and puts the charge pump output into
-+      three-state mode.
-+    maxItems: 1
++The following table shows the ADF41513 related device files:
 +
-+  lock-detect-gpios:
-+    description:
-+      GPIO for lock detect functionality. When configured for digital lock
-+      detect, this pin will output a logic high when the PLL is locked.
-+    maxItems: 1
+++----------------------+-------------------------------------------------------+
++| Device file          | Description                                           |
+++======================+=======================================================+
++| frequency            | RF output frequency control and readback (Hz)         |
+++----------------------+-------------------------------------------------------+
++| frequency_resolution | Target frequency resolution control (Hz)              |
+++----------------------+-------------------------------------------------------+
++| refin_frequency      | Reference input frequency control and readback (Hz)   |
+++----------------------+-------------------------------------------------------+
++| powerdown            | Power management control (0=active, 1=power down)     |
+++----------------------+-------------------------------------------------------+
 +
-+  adi,power-up-frequency:
-+    $ref: /schemas/types.yaml#/definitions/uint64
-+    minimum: 1000000000
-+    maximum: 26500000000
-+    default: 10000000000
-+    description:
-+      The PLL tunes to this frequency (in Hz) on driver probe.
-+      Range is 1 GHz to 26.5 GHz for ADF41513, and 1 GHz to 10 GHz for ADF41510.
++2.1 Frequency Control
++----------------------
 +
-+  adi,reference-div-factor:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 1
-+    maximum: 32
-+    description:
-+      Reference division factor (R Counter). If not specified, the driver
-+      will calculate the optimal value automatically.
++The ``frequency`` attribute controls the RF output frequency with sub-Hz precision.
++The driver automatically selects between integer-N and fractional-N modes to
++achieve the requested frequency with the best possible phase noise performance.
 +
-+  adi,reference-doubler-enable:
-+    description:
-+      Enables the reference doubler. The maximum reference frequency when
-+      the doubler is enabled is 225 MHz.
-+    type: boolean
++**Supported ranges:**
 +
-+  adi,reference-div2-enable:
-+    description:
-+      Enables the reference divide-by-2 function. This provides a 50%
-+      duty cycle signal to the PFD.
-+    type: boolean
++- **ADF41513**: 1,000,000,000 Hz to 26,500,000,000 Hz (1 GHz to 26.5 GHz)
++- **ADF41510**: 1,000,000,000 Hz to 10,000,000,000 Hz (1 GHz to 10 GHz)
 +
-+  adi,charge-pump-current-microamp:
-+    minimum: 450
-+    maximum: 7200
-+    default: 2400
-+    description:
-+      Charge pump current in microamps. The value will be rounded to the
-+      nearest supported value.
++The frequency is specified in Hz, for sub-Hz precision use decimal notation.
++For example, 12.102000000 GHz would be written as "12102000000.000000".
 +
-+  adi,charge-pump-resistor-ohms:
-+    minimum: 1800
-+    maximum: 10000
-+    default: 2700
-+    description:
-+      External charge pump resistor value in ohms. This sets the maximum
-+      charge pump current along with the charge pump current setting.
++2.2 Frequency Resolution Control
++--------------------------------
 +
-+  adi,muxout-select:
-+    description:
-+      On chip multiplexer output selection.
-+      high_z - MUXOUT Pin set to high-Z. (default)
-+      muxout_high - MUXOUT Pin set to high.
-+      muxout_low - MUXOUT Pin set to low.
-+      f_div_rclk - MUXOUT Pin set to R divider output
-+      f_div_nclk - MUXOUT Pin set to N divider output
-+      lock_detect - MUXOUT Pin set to Digital lock detect
-+      serial_data - MUXOUT Pin set to Serial data output
-+      readback - MUXOUT Pin set to Readback mode
-+      f_div_clk1 - MUXOUT Pin set to CLK1 divider output
-+      f_div_rclk_2 - MUXOUT Pin set to R divider/2 output
-+      f_div_nclk_2 - MUXOUT Pin set to N divider/2 output
-+    enum: [high_z, muxout_high, muxout_low, f_div_rclk, f_div_nclk, lock_detect,
-+           serial_data, readback, f_div_clk1, f_div_rclk_2, f_div_nclk_2]
++The ``frequency_resolution`` attribute controls the target frequency resolution
++that the driver attempts to achieve. This affects the choice between fixed
++modulus (25-bit) and variable modulus (49-bit) fractional-N modes:
 +
-+  adi,muxout-level-1v8-enable:
-+    description:
-+      Set MUXOUT and DLD logic levels to 1.8V. Default is 3.3V.
-+    type: boolean
++- **Fixed modulus**: Resolution = f_PFD / 2^25 (typically ~3 Hz with 100 MHz PFD)
++- **Variable modulus**: Resolution = f_PFD / 2^49 (µHz resolution possible)
 +
-+  adi,phase-detector-polarity-positive-enable:
-+    description:
-+      Set phase detector polarity to positive. Default is negative.
-+      Use positive polarity with non-inverting loop filter and VCO with
-+      positive tuning slope, or with inverting loop filter and VCO with
-+      negative tuning slope.
-+    type: boolean
++Default resolution is 1 Hz (1,000,000 µHz).
 +
-+  adi,lock-detect-precision:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0
-+    maximum: 3
-+    description:
-+      Lock detector precision setting. Controls the sensitivity of the
-+      lock detector. Lower values of precision increases the lock detector
-+      window size.
++2.3 Reference Input Control
++---------------------------
 +
-+  adi,lock-detect-count:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0
-+    maximum: 7
-+    description: |
-+      Lock detector count setting (3-bit value). Determines the number of
-+      consecutive phase detector cycles that must be within the lock detector
-+      window before lock is declared. The count grows in powers of two of the
-+      programmed value:
-+      - if adi,fast-lock-enable is set count = 2 * 2^value
-+      - if adi,fast-lock-enable is not set count = 64 * 2^value
++The ``refin_frequency`` attribute allows control of the reference input frequency
++when using a programmable reference clock. The supported range is 10 MHz to
++800 MHz.
 +
-+  adi,lock-detect-bias-microamp:
-+    description:
-+      Lock detector bias current. Controls the lock detector window size
-+      along with the lock detector precision setting. Lower bias current
-+      increases the window size.
-+    enum: [10, 20, 30, 40]
++2.4 Power Management
++--------------------
 +
-+  adi,fast-lock-enable:
-+    description:
-+      Enable fast lock mode. This changes the lock detector clock selection
-+      for faster lock indication.
-+    type: boolean
++The ``powerdown`` attribute provides software power control:
 +
-+  adi,phase-resync-enable:
-+    description:
-+      Enable phase resync functionality. This produces a consistent output
-+      phase offset with respect to the input reference.
-+    type: boolean
++- **0**: Device active and operational
++- **1**: Device in power-down mode (low power consumption)
 +
-+  adi,12bit-clk-divider:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0
-+    maximum: 4095
-+    description:
-+      CLK1 divider value used when adi,phase-resync-enable is set
++3. Operating modes
++==================
 +
-+  adi,12bit-clk2-divider:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0
-+    maximum: 4095
-+    description:
-+      CLK2 divider value used when adi,phase-resync-enable is set
++3.1 Integer-N Mode
++------------------
 +
-+  adi,le-sync-enable:
-+    description:
-+      Synchronize the rising edge of LE on an SPI write with the falling
-+      edge of the reference signal to prevent glitches.
-+    type: boolean
++When the requested frequency can be achieved as an integer multiple of the PFD
++frequency (within the specified resolution tolerance), the driver automatically
++selects integer-N mode for optimal phase noise performance.
 +
-+  adi,freq-resolution:
-+    $ref: /schemas/types.yaml#/definitions/uint64
-+    minimum: 1
-+    default: 1000000
-+    description:
-+      Initial frequency resolution in micro-Hz (µHz) for the algorithm to achieve.
-+      This influences the choice between fixed and variable modulus modes.
-+      Default is 1000000 µHz (1 Hz).
++In integer-N mode:
 +
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - vcc-supply
++- Phase noise: -235 dBc/Hz normalized floor
++- Frequency resolution: f_PFD (same as PFD frequency)
++- Maximum PFD frequency: 250 MHz
++- Bleed current: Disabled for best performance
 +
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++3.2 Fractional-N Mode
++---------------------
 +
-+unevaluatedProperties: false
++When sub-integer frequency steps are required, the driver automatically selects
++fractional-N mode using either fixed or variable modulus.
 +
-+examples:
-+  - |
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++**Fixed Modulus (25-bit)**:
 +
-+        pll@0 {
-+            compatible = "adi,adf41513";
-+            reg = <0>;
-+            spi-max-frequency = <10000000>;
-+            clocks = <&ref_clk>;
-+            vcc-supply = <&vcc_3v3>;
-+            #clock-cells = <0>;
++- Used when variable modulus is not required
++- Resolution: f_PFD / 2^25
++- Simpler implementation, faster settling
 +
-+            adi,power-up-frequency = /bits/ 64 <12000000000>;
-+            adi,charge-pump-current-microamp = <2400>;
-+            adi,phase-detector-polarity-positive-enable;
-+        };
++**Variable Modulus (49-bit)**:
++
++- Used for maximum resolution requirements
++- Resolution: f_PFD / 2^49 (theoretical)
++- Exact frequency synthesis capability
++
++In fractional-N mode:
++
++- Phase noise: -231 dBc/Hz normalized floor
++- Maximum PFD frequency: 125 MHz
++- Bleed current: Automatically enabled and optimized
++- Dithering: Enabled to reduce fractional spurs
++
++3.3 Automatic Mode Selection
++----------------------------
++
++The driver automatically selects the optimal operating mode based on:
++
++1. **Frequency accuracy requirements**: Determined by frequency_resolution setting
++2. **Phase noise optimization**: Integer-N preferred when possible
++3. **PFD frequency constraints**: Different limits for integer vs fractional modes
++4. **Prescaler selection**: Automatic 4/5 vs 8/9 prescaler selection based on frequency
++
++4. Clock framework integration
++==============================
++
++The ADF41513 driver integrates with the Linux Common Clock Framework (CCF) when
++the device tree includes clock provider properties (``#clock-cells = <0>``).
++
++When enabled, the driver registers as a clock provider, allowing other kernel
++drivers to use the synthesizer output as a system clock source.
++
++**Device tree configuration for clock provider**:
++
++.. code-block:: dts
++
++    adf41513@0 {
++        compatible = "adi,adf41513";
++        reg = <0>;
++        /* ... other properties ... */
++        #clock-cells = <0>;
++        clock-output-names = "adf41513_clk";
 +    };
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
 +
-+        /* Example with advanced features enabled */
-+        pll_advanced@0 {
-+            compatible = "adi,adf41513";
-+            reg = <0>;
-+            spi-max-frequency = <25000000>;
-+            clocks = <&ref_clk>;
-+            vcc-supply = <&vcc_3v3>;
-+            chip-enable-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>;
-+            lock-detect-gpios = <&gpio0 11 GPIO_ACTIVE_HIGH>;
-+            #clock-cells = <0>;
-+            clock-output-names = "adf41513_clk";
++**Clock consumer example**:
 +
-+            adi,power-up-frequency = /bits/ 64 <15500000000>;
-+            adi,charge-pump-current-microamp = <3600>;
-+            adi,charge-pump-resistor-ohms = <2700>;
-+            adi,reference-doubler-enable;
-+            adi,muxout-select = "lock_detect";
-+            adi,lock-detect-precision = <1>;
-+            adi,lock-detect-count = <4>;
-+            adi,lock-detect-bias-microamp = <40>;
-+            adi,fast-lock-enable;
-+            adi,phase-resync-enable;
-+            adi,12bit-clk-divider = <1>;
-+            adi,12bit-clk2-divider = <200>;
-+            adi,le-sync-enable;
-+            adi,freq-resolution = /bits/ 64 <1000000>;
-+            adi,phase-detector-polarity-positive-enable;
-+        };
++.. code-block:: dts
++
++    some_device {
++        clocks = <&adf41513>;
++        clock-names = "ref_clk";
 +    };
-+...
++
++5. Device tree configuration
++============================
++
++See ``Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml`` for
++complete device tree binding documentation.
++
++**Basic configuration example**:
++
++.. code-block:: dts
++
++    adf41513@0 {
++        compatible = "adi,adf41513";
++        reg = <0>;
++        spi-max-frequency = <10000000>;
++        clocks = <&ref_clk>;
++        clock-names = "clkin";
++        vcc-supply = <&vcc_3v3>;
++
++        adi,power-up-frequency = /bits/ 64 <12000000000>;
++    };
++
++6. Performance characteristics
++==============================
++
++6.1 Phase Noise Performance
++----------------------------
++
++The ADF41513 provides excellent phase noise performance:
++
++**Integer-N mode**:
++
++- Normalized phase noise floor: -235 dBc/Hz
++- 1/f noise corner: Typically around 10 kHz offset
++- Best performance mode for integer frequency multiples
++
++**Fractional-N mode**:
++
++- Normalized phase noise floor: -231 dBc/Hz
++- Additional fractional spurs may be present
++- Optimized with automatic bleed current and dithering
++
++6.2 Frequency Ranges and Prescalers
++------------------------------------
++
++The driver automatically selects the appropriate prescaler based on frequency:
++
++**4/5 Prescaler**:
++
++- RF frequency range: 1 GHz to 16 GHz
++- Integer-N: N = 20 to 511
++- Fractional-N: N = 23 to 511
++
++**8/9 Prescaler** (ADF41513 only):
++
++- RF frequency range: 1 GHz to 26.5 GHz
++- Integer-N: N = 64 to 1023
++- Fractional-N: N = 75 to 1023
++
++6.3 Reference Input Requirements
++---------------------------------
++
++- Frequency range: 10 MHz to 800 MHz
++- Input sensitivity: -10 dBm to +8 dBm
++- Slew rate requirement: >320 V/µs (>500 V/µs recommended)
++- With doubler enabled: Maximum 225 MHz reference frequency
++
++7. Usage examples
++=================
++
++7.1 Basic Frequency Setting
++----------------------------
++
++Set output frequency to 12.102 GHz:
++
++.. code-block:: bash
++
++    root:/sys/bus/iio/devices/iio:device0> echo 12102000000 > out_altvoltage0_frequency
++
++Read current frequency:
++
++.. code-block:: bash
++
++    root:/sys/bus/iio/devices/iio:device0> cat out_altvoltage0_frequency
++    12101999999.582767
++
++7.2 High Resolution Frequency Control
++-------------------------------------
++
++Configure for sub-Hz resolution and set a precise frequency:
++
++.. code-block:: bash
++
++    # Set resolution to 0.1 Hz (100,000 µHz)
++    root:/sys/bus/iio/devices/iio:device0> echo 0.1 > out_altvoltage0_frequency_resolution
++
++    # Set frequency to 12.102 GHz (1 µHz precision)
++    root:/sys/bus/iio/devices/iio:device0> echo 12102000000 > out_altvoltage0_frequency
++    root:/sys/bus/iio/devices/iio:device0> cat out_altvoltage0_frequency
++    12101999999.980131
++
++7.3 Reference Frequency Control
++-------------------------------
++
++Change reference input frequency (if using programmable reference):
++
++.. code-block:: bash
++
++    # Set reference to 122.88 MHz
++    root:/sys/bus/iio/devices/iio:device0> echo 122880000 > out_altvoltage0_refin_frequency
++
++    # Verify the change
++    root:/sys/bus/iio/devices/iio:device0> cat out_altvoltage0_refin_frequency
++    122880000
++
++7.4 Power Management
++--------------------
++
++Power down the device:
++
++.. code-block:: bash
++
++    root:/sys/bus/iio/devices/iio:device0> echo 1 > out_altvoltage0_powerdown
++
++    # Power back up
++    root:/sys/bus/iio/devices/iio:device0> echo 0 > out_altvoltage0_powerdown
++
++7.5 Monitor Lock Status
++-----------------------
++
++When lock detect GPIO is configured, check if PLL is locked:
++
++.. code-block:: bash
++
++    # Read frequency - will return error if not locked
++    root:/sys/bus/iio/devices/iio:device0> cat out_altvoltage0_frequency
++
++If the PLL is not locked, the frequency read will return ``-EBUSY`` (Device or resource busy).
++
++8. Advanced features
++====================
++
++8.1 Phase Resync
++-----------------
++
++When enabled in device tree (``adi,phase-resync-enable``), the phase resync
++feature provides a consistent output phase relationship to the reference input.
++This is particularly useful for beamforming applications where phase coherence
++across multiple synthesizers is required.
++
++8.2 Charge Pump Optimization
++-----------------------------
++
++The driver automatically optimizes charge pump settings:
++
++- **Current**: Programmable from 0.45 mA to 7.2 mA
++- **Bleed current**: Automatically calculated and enabled in fractional-N mode
++- **Loop filter integration**: Works with external passive loop filters
++
++8.3 Spurious Performance
++------------------------
++
++The driver includes automatic spur reduction techniques:
++
++- **Integer boundary spur avoidance**: Automatic PFD frequency optimization
++- **Fractional spur reduction**: Automatic dithering and bleed current
++- **Reference spur suppression**: High PFD frequency operation when possible
++
++9. Troubleshooting
++==================
++
++9.1 Common Issues
++-----------------
++
++**"PLL un-locked" errors**:
++
++- Check reference input signal quality and level
++- Verify loop filter design matches charge pump current
++- Ensure VCO tuning range covers target frequency
++- Check power supply voltage and stability
++
++**Frequency accuracy issues**:
++
++- Verify reference frequency accuracy
++- Check frequency_resolution setting
++- Ensure target frequency is within device range
++
++**High spurious content**:
++
++- Verify PCB layout follows ADI recommendations
++- Check loop filter component values and quality
++- Ensure adequate power supply decoupling
++- Verify reference input signal purity
+diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
+index 315ae37d6fd4..420669af60db 100644
+--- a/Documentation/iio/index.rst
++++ b/Documentation/iio/index.rst
+@@ -29,6 +29,7 @@ Industrial I/O Kernel Drivers
+    ad7625
+    ad7944
+    ade9000
++   adf41513
+    adis16475
+    adis16480
+    adis16550
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 8df4a0d216c8..1bbcff826238 100644
+index 1bbcff826238..833020f01c3c 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1606,6 +1606,7 @@ M:	Rodrigo Alencar <rodrigo.alencar@analog.com>
- L:	linux-iio@vger.kernel.org
+@@ -1607,6 +1607,7 @@ L:	linux-iio@vger.kernel.org
  S:	Supported
  W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml
+ F:	Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml
++F:	Documentation/iio/adf41513.rst
  F:	drivers/iio/frequency/adf41513.c
  
  ANALOG DEVICES INC ADF4377 DRIVER

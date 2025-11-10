@@ -1,67 +1,59 @@
-Return-Path: <linux-iio+bounces-26151-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26152-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0A3C483FB
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 18:15:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CDDC48EB7
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 20:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65F2F422F70
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 17:04:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 71DF34F2C9A
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 19:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765F22FC866;
-	Mon, 10 Nov 2025 17:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FC132A3DA;
+	Mon, 10 Nov 2025 19:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/f8290t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z8BofuqZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262F828D829;
-	Mon, 10 Nov 2025 17:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4C323ABA1;
+	Mon, 10 Nov 2025 19:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762794249; cv=none; b=pUbX9ls2BYefcEXjHN00vxm1i4F164H7eTk7CdMKu5OH9yBivweV64THPckM5NeZDy/C5OG4nTqAImymHUxPIx6nglMgT8cQOPRXb/RJvLQZHRq5oL/BWBgNPb7OCjUgETkGEjzFeG5Mk5FJmqH5u987B8iZKxIdxOJLbAiqAcY=
+	t=1762801650; cv=none; b=FbgZy14Kg/YHka6c00NKdbNrP/5DiV9zxtEYre1oVjoONzVtZPjhlZYKaLGAGLH7kqkcoD528GEEzDVtl7fiMHOtg3kxi26legN3aAC3l3XQkpWONrVqGXc2MumDWJJJ8sLLXTizWHPRzmaS8UqwdVozNp4g0L80M6F2A4vX5js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762794249; c=relaxed/simple;
-	bh=GlWEUJ81HuML3QniPfob+FZyBGIp/OgbbJgntqBpGV0=;
+	s=arc-20240116; t=1762801650; c=relaxed/simple;
+	bh=gdMPSWFUx6fQxjEeg88AQCpfbokaGBVOZ3O5cWM3Xts=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WYflYcfTK1r2rQUZcGIdzeKNqaJFwcZecFJnEpe1YrmFx6CfoN2yjCSmYhDqZXYpTub+4mce3PcON4ga5KxaTimcwwVseJUGL+zxLxO/qqhT1D50ZHVL6pL7I8ZIMNqooW5Mwwv0l3s+eal4EmKZuhlH75esnUAOS1P/+plQ1pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/f8290t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8DDC4CEF5;
-	Mon, 10 Nov 2025 17:04:07 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=O97/1+VOtg0iqj8tFRGgJutaz5I5Ce3D+ZLZZLjyynMJu/k8asnXC+vtu1pcJom9En09Fw9aHKi4yQo7TfSxVMDJq+aDCpR+hmF64/yAHO391lYZBsUbQpjaLIAhHXFKUAxoMD3w6QiQhZoWl1McxO8eOTtQDVJ6llo41Lmv5tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z8BofuqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C83CC4CEF5;
+	Mon, 10 Nov 2025 19:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762794248;
-	bh=GlWEUJ81HuML3QniPfob+FZyBGIp/OgbbJgntqBpGV0=;
+	s=k20201202; t=1762801650;
+	bh=gdMPSWFUx6fQxjEeg88AQCpfbokaGBVOZ3O5cWM3Xts=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V/f8290tO0Qum103i3UTbYvQJViWqXdRzOLaLZpBVpzFJbKTDf8GfzuY7aTcAvTRA
-	 /jF6uSv2pWoAceJx7WXTgkYDQbOUQid0BbI5xyZK/DMk/dP5EkZKnznNi3d9XAUS0w
-	 U5uoiA7WuqFmoo8FhrRcjTfambWpwdFgjro4beBd+36XfArmfbcp+v2EUD5ikr/EAm
-	 fALV09seY/gdEf074FGUCjQxQd8DiXYQGY2oAZ5Ogc0Iu49+IWaiGixzUHWtgtdwMW
-	 A2VqkOPYjDao3JHSacdLMAIiR2MVf4ykzKwnyTHKmtZE8u1pQNhQ6iKaS0oriFO0p8
-	 iGTOVCHfe65Ig==
-Date: Mon, 10 Nov 2025 17:04:05 +0000
-From: Mark Brown <broonie@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH 1/6] dt-bindings: spi: Add spi-buses property
-Message-ID: <aRIbBVNzo-7EYJbl@finisterre.sirena.org.uk>
-References: <20251014-spi-add-multi-bus-support-v1-0-2098c12d6f5f@baylibre.com>
- <20251014-spi-add-multi-bus-support-v1-1-2098c12d6f5f@baylibre.com>
- <20251021142129.GA34073-robh@kernel.org>
- <14ae0769-341b-4325-b925-7bba6d57bbdf@baylibre.com>
- <20251030135126.GA3749313-robh@kernel.org>
- <f731ebd7-6494-45f5-861d-05a2926cc5fa@baylibre.com>
+	b=Z8BofuqZKxDxoVpIR4gMTKkobJ7QaF6zjZmN6oY9SWF1wnk3/nUCO1tVsXHeGeRu3
+	 F8X5wlX4tqmRBbxbMVAvXkz5zzDMbvTIo9BI5sLSbYTSv2tuNsLGo8Ky43OPPtdkqx
+	 bzrxwtuJFOFNKz6DcFe74hc4sRkm2fwFcgSRHFBjA0SKyca0TRKg/6O6yIzfpGSmsp
+	 7Xfec9U7HeRxJNJw/SLCR/YNxLf9+lcEPB4j8mZ7jpGKc5PIshX66ozUMceiWF/K8p
+	 0cpkNLprCSxaElJekdx2syr7EMObMmswk3KPNzEVvUwVnVVTJXAz+xUEg5xQC9ngbc
+	 hPzOHcsqMvJog==
+Date: Mon, 10 Nov 2025 19:07:24 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jic23@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
+	andy@kernel.org, Michael.Hennerich@analog.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, corbet@lwn.net,
+	cosmin.tanislav@analog.com, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v1 1/3] dt-bindings: iio: adc: Add AD4134
+Message-ID: <20251110-unsightly-blah-410539e95a18@spud>
+References: <cover.1762777931.git.marcelo.schmitt@analog.com>
+ <608ab00821af9f766c75d88f59940fed87cb6df7.1762777931.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -69,52 +61,60 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="JY5VEXwAAsIpIsIR"
+	protocol="application/pgp-signature"; boundary="rJNX4uVi5xG0GC+z"
 Content-Disposition: inline
-In-Reply-To: <f731ebd7-6494-45f5-861d-05a2926cc5fa@baylibre.com>
-X-Cookie: You dialed 5483.
+In-Reply-To: <608ab00821af9f766c75d88f59940fed87cb6df7.1762777931.git.marcelo.schmitt@analog.com>
 
 
---JY5VEXwAAsIpIsIR
+--rJNX4uVi5xG0GC+z
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 30, 2025 at 05:42:44PM -0500, David Lechner wrote:
-> On 10/30/25 8:51 AM, Rob Herring wrote:
+On Mon, Nov 10, 2025 at 09:45:18AM -0300, Marcelo Schmitt wrote:
 
-> > But it can't really be 2 independent buses/controllers unless the ADC=
-=20
-> > has 2 completely independent interfaces, right?
+> +  adi,control-mode:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    description:
+> +      Describes whether the device is wired to an SPI interface or not. The
 
-> Correct.
+Can you explain how you don't automagically know this from what bus
+you're on?
 
-> The proposed property really only concerns the data lines (tx/rx). It doe=
-sn't
-> care if there is 1 or 2 SCLK lines and it doesn't care if there is only 1=
- CS
-> line.
+> +      PIN/SPI pin on the device must be set accordingly, i.e., PIN/SPI must be
+> +      set to logic high for SPI Control Mode, low for Pin Control Mode. When
+> +      absent, implies the SPI interface configuration.
+> +    enum: [ spi-control-mode, pin-control-mode ]
+> +    default: spi-control-mode
+> +
+> +  adi,asrc-mode:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    description:
+> +      Asynchronous Sample Rate Converter (ASRC) operation mode control input.
+> +      Describes whether the MODE pin is set to a high level (for master mode
+> +      operation) or to a low level (for slave mode operation).
 
-> So maybe spi-data-buses would be a better name for the property? Or
-> spi-data-ports (using the NXP FlexSPI controller docs terminology)?
-> Or spi-data-channels?
+I don't really get this one. If this is an input to the device that
+controls behaviour (master v slave) why is an option needed too? Clearly
+this is not a gpio but it seems like it could be one, in which case you'd
+need some sort of asrc-gpios property. Is it not possible to read the
+value of this setting out of the device's registers (maybe it's not when
+there's no spi interface connected?)?
+It's not used in your driver, so I can't look there easily to see what's
+going on.
 
-This bindings discussion seems to have stalled out?
+> +    enum: [ high, low ]
+> +    default: low
 
---JY5VEXwAAsIpIsIR
+--rJNX4uVi5xG0GC+z
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkSGv0ACgkQJNaLcl1U
-h9ChyQgAg3ZRTKZiHLuTOHpkH+zC1xu6qXXVEgDCvya8kcGtk1SZuS/Z9ctSXQRd
-AUAwuRDDY51+uQVewX3TPXBjsfJK1c/3CQOWZ2boNWgOrpHcN4WhQESem7O9eYue
-ONdSa6DpVU0E+SLo0TYkNBSEeE0WKEhGGlYjW0CvIlHiZBHo7zxzqxt7lXPd48um
-2pYqZMdC/h5yeahRJ8Cjl2ZdJLKGvqnE+DP0UBLoHxNKxDznMCwFwzxHL8YLWsjn
-dxoMNisrtyJSeFBHrjdHPHFEeaZD4Pn2lvk4sCdi+vG/tWeGUVIU/Lnp9YjK96/D
-Q+Xe+sZVvakT+7qwg5XHHYOY5wVc8g==
-=XKp/
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaRI37AAKCRB4tDGHoIJi
+0jIVAP9dkrrgzG/cSA6tOhSgQaiGaYLQh5ZGJauZzUJXnSJVPwD8Dugs/GOYERvs
+j5eJjvifsUN8QWWVuP2JQLxEV+Jnug8=
+=nHVh
 -----END PGP SIGNATURE-----
 
---JY5VEXwAAsIpIsIR--
+--rJNX4uVi5xG0GC+z--
 

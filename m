@@ -1,92 +1,86 @@
-Return-Path: <linux-iio+bounces-26150-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26149-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A955C482AC
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 18:01:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07146C48326
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 18:05:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 86A234F8DD0
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 16:52:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9DC864F1B9E
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 16:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A119732573D;
-	Mon, 10 Nov 2025 16:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425392F6931;
+	Mon, 10 Nov 2025 16:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nV3j4stb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TwEkKaEv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8541313E06
-	for <linux-iio@vger.kernel.org>; Mon, 10 Nov 2025 16:45:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71548285071;
+	Mon, 10 Nov 2025 16:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762793135; cv=none; b=fde0DzO2Gh92rc1UvpMd4uIcr+z7d+jYGWDakWojIpkfn9T1/rrcz17SSRpg0RUrm29FZb7y5NdiPYrsqVQDIsj8FhSjp1V3RKhjnq5EPv+5NXt4tKlvohogtcfeHrnkUG44GaECPkHiP9POyPziYSouRMFLX9Zh0yXz4BIR9DM=
+	t=1762792896; cv=none; b=Lk3c20nG5NjMvWokt9kfrb/cMn+JFOTLGKleCvYeW+kj+6RteblbGP+FQVpD49haxxuJhMqZzNOkUeK6IZmLsABn0mweamttq9B6jTCLkjGna1NYpbot1rZzSsfSpim7NkwwdZ9a/0dLt9LR4c4XvMzGUNJRH87u2MoQPUX9Is0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762793135; c=relaxed/simple;
-	bh=bgCzKrhzMsbjtyucE9Wji1o3OOtYybWdKrlZ1ecTWTE=;
+	s=arc-20240116; t=1762792896; c=relaxed/simple;
+	bh=+JaRnn6TOFncnY8V8tno8RX9mMo3XnHLQl5ZHhchGwM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kUOU6+69ars5elKd2KG5soF8QDU+tn5vGxvw1jZAE9LYdaROVTEZUQv+mgMYo/lQ0y8TePwQPy54sE664pyXsUdb3W60atNfv33gtZaWaXCJv1qso8WINZACt11cNmqtLCmpdz8b3myr8bV1F/c4chkXYnfy1kx8o3IMPrVzZtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nV3j4stb; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b593def09e3so2011134a12.2
-        for <linux-iio@vger.kernel.org>; Mon, 10 Nov 2025 08:45:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762793133; x=1763397933; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ejgzWIAmMtwDeIAONVbXRMu0MknYB8VkcpRxQd2rWvU=;
-        b=nV3j4stbm+vcaGq0c5YHStIInJnhL8I54TPjZHDp6q0rY3KJdBeU2LdLBV+A8PMLNd
-         3UDAcZroJ2/4u1ohtPKCixAdo5DMgRp2pTa42z705lK6Wh1wbqoz5w7yKpZlwP+YwK1d
-         FXnwb72f4hCaWLFToIN26L5qlwRTbbqvPDgUPiPgNFY9ZFeg4nRg10UdtOeHyebrPBLV
-         hW8pIVyoJkAu/yL6AeYS3+gn9fIGyx3klbslQG0NE+ySA5owcPBHKAMKkJ6LUUbPA7hq
-         jyAh0y2ElV8g7ZXuLNUfRXPtZ5ThaRkUiYl0HTwaUGr+FTOUYjQdjLUJhmRyo5hoaOms
-         P+sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762793133; x=1763397933;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ejgzWIAmMtwDeIAONVbXRMu0MknYB8VkcpRxQd2rWvU=;
-        b=Zimrpx3XyiO+ju9++rxRMvWM5DGt1JHMly5qwmW7k/eaqoA0OwZkxXetAK5fY0JF0n
-         vV5TXcxdHHe4UIs2qsEXOUsXy7gif40db9r8aNHjLMRvdDN+1kMATtbNNbItkZIlcCwW
-         KBqUM7ZD5OfV/xCLySR53jciEuYyqI7OFa1rxy7gBVqFiGMnyUOgyQtEAIK88Utx6JQx
-         9dBHWEswAHy8BUs1axRQHG+eOZNXgXtrqlWS/7Ap1wdlC3P2X7bXSlC+BnERmSisMiER
-         rFCbNTBwJ4tHtkC4JcC09yEvBLvUclXiM0c818LkaDQ55bQ/VD5EZU0C3DlNsDnMrKX4
-         BNMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW0F03jr2gjbWZ7FusnzuHpX4bocBM0urXxgbJoZgHc8/oIl4CIf120JRB3JelmPhB+L0SvYbbRJVA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8rMxQEbkwJgEK1eQo+hhafo31JCbsykoWA1MRlvlu28jbWovH
-	BpJ03czkkABZuUYRd22YypKrGlGNyIt7SvJ1KQNtEtE0oD+QJRFlbhg4
-X-Gm-Gg: ASbGnctYQ1jlhgyf3s48Rol0+aPNXeU3JWBodedlEisLnQs71SuZ75mBXicfCQqD59w
-	agcWbdIkKJHpNnwiaBYJ5duKGM4r2Yqiw230XcM2ySGj0OXKWzAVDClIOACqmwuO/a/hYaw1KFc
-	kWHGxpOO+bw+E9oSVRXACeUAhdpbXX5U+Mgt24VTwn3a+SKh3yUjBsII1qqXwk/FomSp5ItVs2f
-	3gvPwvHY5k3YV1tOHbtz63OS4kngi/Ix31RK4VhE5r3wjur+dUQIp7q3FQt/dfzdWTyQC9909Bg
-	hjjrY9admFsIg/MDk4oFEVD0yUR0ocSyPGmLK28h+eF9+ESY+ZaBEGjhT6IkwuYbcnsAnSO+gFX
-	R/RTlsoicmreCHysu0wvZQ8Lkm/0TWG5YTPvIxKA7l5rWDnt29tsG4CTKRSd/JSbc+Q/2ALk0FJ
-	+1qp6GDZdmKQ==
-X-Google-Smtp-Source: AGHT+IHlDbq/FuhUx5b37jOHHuGk+B4j8Ue7lQztTGR+qjnK+j0oCN6+BEjfuAMoSyUWo5a31EZ/jA==
-X-Received: by 2002:a17:902:da4b:b0:295:24d7:3792 with SMTP id d9443c01a7336-297e54030a4mr120060845ad.1.1762793133088;
-        Mon, 10 Nov 2025 08:45:33 -0800 (PST)
-Received: from localhost ([2804:30c:1661:8a00:578a:911c:ac25:24a6])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-29651c7409esm150687835ad.64.2025.11.10.08.45.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 08:45:32 -0800 (PST)
-Date: Mon, 10 Nov 2025 13:46:50 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=gI2+79UM9j5ioqixZWDV/vPuNhDiKYIM8X0jOY3sJpLzmfYhR3lEu+qTXZUWkIJYhkxXasp4SIbzRJ/Kd79lZDl4aBpc4j0oW3GaAbFWqrzM1a9Wuj4W7h3RfP+WVk9iv8kjgvE9BEDz/W7lGj2bkhANMjoed23X9YZIcyUmT7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TwEkKaEv; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762792895; x=1794328895;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=+JaRnn6TOFncnY8V8tno8RX9mMo3XnHLQl5ZHhchGwM=;
+  b=TwEkKaEv1/cUSGxDDzvdXOlyr7/B8sqpB0o7FlUygLjSr0SJTjgmVHUF
+   jlqFrwTy62rzRQOiFd+ofVYPCTPX/Qxu4FU6hjItr++PmYlUx+IGk8P9B
+   nellj32u8vZ785UygSZhyWUKP07CFLTffoZFk+gEoaJIZpX0J6ZiF19Op
+   BsxKzGvIRJ3IOIAc/iANpQEB9JFK4SNMNsTJhSF60qmnyWyKNUEArZCXF
+   aG5EyWkskZTpNhBVS6AIZ61Wtb9YUa/5V3tCpSqIAU8Oqz7g69hIQNTSq
+   uJYDCNOHYcde8XhjwZ3HJ+Q6jCoL3sh+H8U6vVjr2NQ2Rca5A4d4pGG1R
+   w==;
+X-CSE-ConnectionGUID: IVNECE2HQyWga069usm/ug==
+X-CSE-MsgGUID: o93Db2ewSzSG29PL51HLFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="75532349"
+X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
+   d="scan'208";a="75532349"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 08:41:34 -0800
+X-CSE-ConnectionGUID: OkxH/shdQ7O3addLoVZBbg==
+X-CSE-MsgGUID: HTwgO6D2RVyzJn4eMqNJbQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
+   d="scan'208";a="193096616"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.235])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 08:41:31 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vIUxL-00000007W2x-3TGZ;
+	Mon, 10 Nov 2025 18:41:27 +0200
+Date: Mon, 10 Nov 2025 18:41:27 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: rodrigo.alencar@analog.com
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jic23@kernel.org, nuno.sa@analog.com,
-	dlechner@baylibre.com, andy@kernel.org,
-	Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, corbet@lwn.net, cosmin.tanislav@analog.com
-Subject: Re: [PATCH v1 0/3] iio: adc: Add AD4134 minimum I/O support
-Message-ID: <aRIW-tksre10iB1v@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1762777931.git.marcelo.schmitt@analog.com>
- <5e0ea52e6a77a1d6af861ba5aaeeea5c3d514705.camel@gmail.com>
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH 1/3] iio: frequency: adf41513: driver implementation
+Message-ID: <aRIVt5zpWmlBVjyh@smile.fi.intel.com>
+References: <20251110-adf41513-iio-driver-v1-0-2df8be0fdc6e@analog.com>
+ <20251110-adf41513-iio-driver-v1-1-2df8be0fdc6e@analog.com>
+ <aRITLaJir-2IoclU@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -96,39 +90,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5e0ea52e6a77a1d6af861ba5aaeeea5c3d514705.camel@gmail.com>
+In-Reply-To: <aRITLaJir-2IoclU@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi Nuno,
+On Mon, Nov 10, 2025 at 06:30:38PM +0200, Andy Shevchenko wrote:
+> On Mon, Nov 10, 2025 at 03:44:44PM +0000, Rodrigo Alencar via B4 Relay wrote:
 
-On 11/10, Nuno Sá wrote:
-> On Mon, 2025-11-10 at 09:44 -0300, Marcelo Schmitt wrote:
-> > This patch series adds basic support for ad4134. AD4134 is a very flexible
-> > device that can be configured in many different ways. This series aims to
-> > support the simplest way of interfacing with AD4134 which is called minimum I/O
-> > mode in data sheet. This is essentially usual SPI with the addition of an ODR
-> > (Output Data Rate) GPIO which functions as conversion start signal in minimum
-> > I/O mode. The CS pin may be connected to a host controller CS pin or grounded.
-> > 
-> > This set provides just one feature:
-> > - Single-shot ADC sample read.
-> > 
-> > [PATCH 1] Device tree documentation for AD4134.
-> > [PATCH 2] IIO Linux driver for AD4134.
-> > [PATCH 3] Initial IIO documentation.
-> > 
-> > There is a driver by Cosmin on ADI Linux tree that supports AD4134 in wiring
-> > configurations suited for high speed data transfers. Even though the minimum I/O
-> > support was initialy based on that high speed transfer driver, the result ended
-> > up becoming entirely different. Also, because the different wiring
-> > configurations are likely going to use different resources and software
-> > interfaces, the code for AD4134 support was split into ad4134-spi.c,
-> > ad4134-common.h, and ad4134-common.c.
-> 
-> I'm familiar with the odd way this part is implemented in ADI tree :). Question is, are
-> you intending to support the high speed bits? I guess so, otherwise having the above split
-> would not make much sense.
-> 
-Yes, the intent is that the common parts may be reusable by the high speed
-driver when we get to upstream that. For now, this only supports conventional SPI.
-We may, at least, get some support for AD4134, though.
+...
+
+> In any case, I stopped my review here, you have more than enough to fix.
+> Please, come next time with a tag from one whose name is in the MAINTAINERS.
+> From now on it will be my requirement as a reviewer of IIO subsystem.
+
+And to be more clear on this requirement (for all submissions from @analog.com
+and related): A name from approximately below list I want to see as Rb.
+
+	Antoniu Miclaus <antoniu.miclaus@analog.com>
+	Marcelo Schmitt <marcelo.schmitt@analog.com>
+	Michael Hennerich <michael.hennerich@analog.com>
+        Nuno Sá <nuno.sa@analog.com>
+
+(those people seems experienced and I have heard of / from).
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

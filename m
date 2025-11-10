@@ -1,122 +1,204 @@
-Return-Path: <linux-iio+bounces-26139-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26140-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1215C477E9
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 16:22:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0D7C47B15
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 16:53:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D83C13BABC7
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 15:15:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1324D4F77D5
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 15:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB1831A54B;
-	Mon, 10 Nov 2025 15:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F33313546;
+	Mon, 10 Nov 2025 15:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N3/YeC+B"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VtMJ9ZVm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988C0315789
-	for <linux-iio@vger.kernel.org>; Mon, 10 Nov 2025 15:10:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA9F31326F
+	for <linux-iio@vger.kernel.org>; Mon, 10 Nov 2025 15:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762787428; cv=none; b=diztY99qL/3BpJYjV3DoKikMg7OD1XyEhJY6gjintah4k4hjKSE0u3HE7yQ0CoS8BAweG2VciYFAhtaAgtRvq7MT/FN3swLD7KvVr/PfOA7J+z3vxoNazPBK35vhfrB3wW75RVmNnuXVIIkezZGkfTmGTisUvWyKW0Qw0fMdp9Y=
+	t=1762789314; cv=none; b=A2u9/Rcn+RMChybQrrX2Kp0RrDhyO/lVo4z+whvsWkn6o9wztfxBaklNkzTeM0whzFscYgb1EAKX7w4dg9eD5QXiXN4YxkuVpRxze+hFVSPjXiHKQnqLVtiMCCJtpyButnk8RJO+UohTc4gY3agnydlDExqySP7CEgzXiUnlfaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762787428; c=relaxed/simple;
-	bh=hHhiNACwtPLvWt3UU8MHG4kcjsqq5PZ9cNakiqX/+fk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o2jL7GtTJv5H50eq3jRWd6s279JhitrCdu4GB4+2HOeaZW1wvNKNGzaAI4+H/87c9ayH4IjxRVkJOzygobPwviGjYOZFL/QNZOUdgK3F3ZnHBDlDUTxus5AzzkvnJxvtwazc4B7NRXaQhagZwA/hWj8x5JIj5q+0rGqrnbtg/iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N3/YeC+B; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1762789314; c=relaxed/simple;
+	bh=IBEHosaYIw4Uy2q8CYzcuC+/MKjcxH+HXLEgyNLHiEc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IBvonMsJXBkoQc4kbu2xXFFFfGgtilMXObzZdY/6R9EuKZDn29XA4cv2RcjWDqk+orcUJJaqJH+3VJOTFIphocbWym+69EiHnnpk78uiNNLkRjBoM9agvvmlI9DmCNrtY73EOhWp0gHGPci80Q7k3KHrudWcNL7/xfIaRsWW7fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VtMJ9ZVm; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-477563e28a3so21473065e9.1
-        for <linux-iio@vger.kernel.org>; Mon, 10 Nov 2025 07:10:26 -0800 (PST)
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7b4933bc4bbso1004318b3a.1
+        for <linux-iio@vger.kernel.org>; Mon, 10 Nov 2025 07:41:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762787425; x=1763392225; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hHhiNACwtPLvWt3UU8MHG4kcjsqq5PZ9cNakiqX/+fk=;
-        b=N3/YeC+BmW7RWIqQlYNpiwVKY3kMdjX9NgzVHXceDHsoHhxVV60k2hV1pK2fbmbR94
-         I6h9ih3V2z1G5xFf5Jmb0HaVddFYkAVV+GrSlcr7Qbl7/GQDXcdKnxXCL2Jod5NYTiVM
-         nUpsz8CndyRoe3OkgFIVR4Th1dIJOvLaWe6hoZULByZ4T/UilGJ+Av4ObDgDi+8vdIIe
-         SWVEz1PEU6EwtDSa1gBq2MCW4NNIkkvLinZDpQOqOyCEjhz8SHoVBi6B1vKtq+JKbtoG
-         nO/bgddvCRSvbIKqz4SUz+Vn8j8KkyFXj+rd7m4amt0sNbyng1iZhSnOYv559pKpVipV
-         0DhQ==
+        d=gmail.com; s=20230601; t=1762789312; x=1763394112; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/ylq5ip16KIlNEm4q5Drc6EevlzHi/eE660ukaOSOxw=;
+        b=VtMJ9ZVmyhkYlREYDhuIP/MGHIeqIrH8d9SKCs4YNq6LqjSPiaIAjiKoPLnmDhvbTX
+         OknozvPCaRJOSApwEiqdz0D3Swz6niOUIKUDq85P6q8R1PVTfK2YIe4N/RIhH3JnMkeO
+         ck/BBOYNtHsxdb5j3YkqFgL9odOF3fOFYxHujKxXXJ5vcKRzFpSmW3qf8zEgNEpes3qr
+         03FpkWFAgbfgiojS14yLcN5QgRcZuIEcdgOqRaIG2WWuPQbYS6h0o/OEikWMfgzDv1ep
+         Zi4XwmUJUw/Y6v8TAtEYjPN5OP67B9FvgKnzNhwq6QZBKOyJu1I+aXRob/AYt0QB+zpD
+         OYgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762787425; x=1763392225;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hHhiNACwtPLvWt3UU8MHG4kcjsqq5PZ9cNakiqX/+fk=;
-        b=pyPWvnC5JDI5HY7DLsRJlTlnLV5iO9NPx4ZnWLEYdyLMSIZS5skkiVEQpHS5LiWImu
-         +UmrgwELSw9/ROWlGBQ1ZnJp0d1hAJxKO9/wHl2S53nf57ol/mw1SYkVyoZ2KKEbDt+j
-         bTuzHsd0vgIb2QsjZtgIclwYTz9LQk2o6HaBcaAnTWV2Pu8ksOOXO/O5zcU16GZ9o9IX
-         oWkxdIJ+EBoLLRK6MmLQOYzH8Td4U5h9H+r3HScLB4OhzrqJ34WcuNDgNcCJwqYNMDVm
-         B1jNlkgyjwIwzNHP//RNWmfMolMnsrhDkE3yLDV9T9RsC/USW93xZYw27mDP5XYv8xTP
-         MDEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVhSybVDxaGdT9AjMvAVZbArrKL7DuqyCjyw4GryKKn1W078uVCX8kKMFNhRIIc+yWyWSU64AK9z8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOEvhFZ3N1/nqB21mT00X9nPfNEshCzjcAyJZXLSBNEn6CbaRI
-	3j0cdt85a7DJ9HELbcjyv1Y+MDk7z2OVhpNOOd1a3WsbhVX4cPUnhg1M
-X-Gm-Gg: ASbGnctMwQsbUys3UOJ42ZyS3ERtbvqVfHq7FX1RBbLrI8WvcLwZ9cPuwFuu+068o0F
-	awlk3DI2OD7ZEwHujSfNjdKLz5VBxlbyqtR3P3a1f8KoZR8H2iIGEB9R7UjD5Uf25Dw8dkV7YqF
-	v1Q24Zeoaarrmho+tXe3Mfz2pjwHJ6PrF2GLJAj8oVIqME7q1In5VpOQpaJshaxddmuCYTJU7lS
-	8n4uGDjB37HMIGaZKWUkWux5sTDkUb2knkMt0+iDxkfrBPh3pai6yhBDby1Sk42O+MAtf1xJQiQ
-	nK5JF5xvrK8zbVDWB2WKXDbznEsrWEJuY5j5uKw4RUnRqego+PlNzN1Zavp+IhvgxSaFh+XMSHG
-	wS05uYaPP8RZnve3mx5kMj7RcRXcRvWCe+2OXtAaMW0S0MgxNzsr5Np08RjBJGcK0ch4V09NoIS
-	8sqNF1h8u0kCjOxfztrDo=
-X-Google-Smtp-Source: AGHT+IG1FdeoLFHPrIVWt45DxGvO2t555I8WDLNwgA8Cs0QQUwl5h3pf4ldR+8LWwVHCFvNCrdc4Lg==
-X-Received: by 2002:a05:600c:5307:b0:477:f2c:291c with SMTP id 5b1f17b1804b1-477731e0345mr71759665e9.14.1762787424649;
-        Mon, 10 Nov 2025 07:10:24 -0800 (PST)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42abe63ba87sm23585387f8f.14.2025.11.10.07.10.23
+        d=1e100.net; s=20230601; t=1762789312; x=1763394112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/ylq5ip16KIlNEm4q5Drc6EevlzHi/eE660ukaOSOxw=;
+        b=sMFq4zwnXbjXwHZ3xsdJVtWG/oC3hKjpCLou/UVEnoAwEVada0MMUuJ0N25RXL+VdW
+         gbG+aAu38W30sXgdhV+n42wvH3gSH2EGHezgsrWlwWcMcX02mtghRK0M05DHkVN4gWHn
+         T3wJdg2c9XVoG8mP5q2hOJNxHrY1pVCXIohLrIAFsNfO47qcWVb5YXAJ5ulA1EVCt/9e
+         qges/sDa9hswdgqRI0JByIGGIozaR4pZCygkWKoq/+kgB7h+jbJ9OvTgRAkSUGJqKIwu
+         ZDPUszA1u+XmyQvOJJ772a3NLVk4T6uAZ2vDsObzDCYRtd08Uhap3irZk6QLom5yGH3j
+         oLaA==
+X-Forwarded-Encrypted: i=1; AJvYcCXfBTGYW6vDv2KP4f5lJf8SXMrH0FcwNs+UmQUvSXwb1OS8+MeWwRFaW8nUyNWR76RSobCt6Qe4qr0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1GTT2pvNw9pKtjPe0iSNROCjWJQ6LHpHhkVOXskj/8dN82aCL
+	XkRdMR+SuQ7ndBDBY1oHvt9FYXcVMGA5WhJOYyyrgbXNAqH8/ykAOLS0
+X-Gm-Gg: ASbGncsuD4AFGSnARLqs3OQsEhlUMVO2JNyENigG02QAKTbgzXLc7qZrybn9grotb16
+	uIBcizNYj8v9dOOdnjVO82fF2QhqEFcFWt5lRJMKzKsarYbqeKjkgZ8xPCIfI+R+8ebrRxSZfE9
+	Rjb0topbZXC2Ee7HpdVfUgCyeRKnzE1Vn91gAPbfL9ABXbsxWdbApMEPCiYOK91oNkT7W2DqDnF
+	KeK7yOemK6sp8hqYQGJflgaY/Ot/f3jlPoAWLSRd2mc65LtpV5iuErKBGtVpKRC3dEJxtNQVE2p
+	d5u8ZFuEO5Xu8lthQUgUVHcqoycNjTXYfdGQJOHG9NO37jCsKRt5djsNqeV7elyL2hzv42bPpBk
+	S9DdHKYB5CaP/iwD+eWg2mpnQxpW7gl6DbaZ0kxljIt21lWJ2yXOaC9+PIxLj8bgf9kt4/8pNkt
+	L4njJa+1myow==
+X-Google-Smtp-Source: AGHT+IH2AanJ/xvo0tNEHTz1Ql1SAqJGcv6JRo7rtSuZftddi6C1S80+uwRJGFeK0pubFMUbdbyzbA==
+X-Received: by 2002:a05:6a00:3213:b0:7ae:b13f:37c2 with SMTP id d2e1a72fcca58-7b14a1206aemr10855026b3a.10.1762789312083;
+        Mon, 10 Nov 2025 07:41:52 -0800 (PST)
+Received: from localhost ([2804:30c:1661:8a00:578a:911c:ac25:24a6])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7b0cc76c0dbsm12121713b3a.51.2025.11.10.07.41.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 07:10:24 -0800 (PST)
-Message-ID: <e9620db2aab086914fd23dcbaf888be8d72fd8cc.camel@gmail.com>
-Subject: Re: [PATCH v4 07/12] iio: dac: ad5446: Separate I2C/SPI into
- different drivers
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?= via B4
- Relay <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org,  Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Andy
- Shevchenko	 <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring	 <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley	 <conor+dt@kernel.org>
-Date: Mon, 10 Nov 2025 15:11:01 +0000
-In-Reply-To: <20251109161614.671ab74b@jic23-huawei>
-References: <20251104-dev-add-ad5542-v4-0-6fe35458bf8c@analog.com>
-		<20251104-dev-add-ad5542-v4-7-6fe35458bf8c@analog.com>
-	 <20251109161614.671ab74b@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 
+        Mon, 10 Nov 2025 07:41:51 -0800 (PST)
+Date: Mon, 10 Nov 2025 12:43:09 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jic23@kernel.org, nuno.sa@analog.com,
+	dlechner@baylibre.com, andy@kernel.org,
+	Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, corbet@lwn.net, cosmin.tanislav@analog.com
+Subject: Re: [PATCH v1 0/3] iio: adc: Add AD4134 minimum I/O support
+Message-ID: <aRIIDTUR5Pyz1Rxi@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1762777931.git.marcelo.schmitt@analog.com>
+ <aRHgaXxxnD5YsIQQ@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRHgaXxxnD5YsIQQ@smile.fi.intel.com>
 
-On Sun, 2025-11-09 at 16:16 +0000, Jonathan Cameron wrote:
-> On Tue, 04 Nov 2025 15:35:12 +0000
-> Nuno S=C3=A1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
->=20
-> > From: Nuno S=C3=A1 <nuno.sa@analog.com>
-> >=20
-> > Properly separate the I2C and SPI drivers into two different drivers
-> > living in their own source file (as usual). So that no need for the
-> > hacky ifdefery.
-> >=20
-> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> Applied in a fairly manual process due to earlier tweaks. Please sanity c=
-heck
-> I didn't mess it up!
+Hi Andy,
 
-Yeps, checked testing and patch looks good.
+On 11/10, Andy Shevchenko wrote:
+> On Mon, Nov 10, 2025 at 09:44:56AM -0300, Marcelo Schmitt wrote:
+> > This patch series adds basic support for ad4134. AD4134 is a very flexible
+> > device that can be configured in many different ways. This series aims to
+> > support the simplest way of interfacing with AD4134 which is called minimum I/O
+> > mode in data sheet. This is essentially usual SPI with the addition of an ODR
+> > (Output Data Rate) GPIO which functions as conversion start signal in minimum
+> > I/O mode. The CS pin may be connected to a host controller CS pin or grounded.
+> > 
+> > This set provides just one feature:
+> > - Single-shot ADC sample read.
+> > 
+> > [PATCH 1] Device tree documentation for AD4134.
+> > [PATCH 2] IIO Linux driver for AD4134.
+> > [PATCH 3] Initial IIO documentation.
+> > 
+> > There is a driver by Cosmin on ADI Linux tree that supports AD4134 in wiring
+> > configurations suited for high speed data transfers. Even though the minimum I/O
+> > support was initialy based on that high speed transfer driver, the result ended
+> > up becoming entirely different. Also, because the different wiring
+> > configurations are likely going to use different resources and software
+> > interfaces, the code for AD4134 support was split into ad4134-spi.c,
+> > ad4134-common.h, and ad4134-common.c.
+> 
+> The cover letter misses the answer to: "Why do we need a brand new driver?
+> Don't we have anything similar already in IIO that can be expanded to cover
+> this one?"
 
-- Nuno S=C3=A1
+Ah sorry about that, let me provide more context.
+
+ADI has a design called AD4134 which people would like to use with Linux.
+This is another fast sample rate ADC that would need SPI offload support to
+reach maximum sample rate. The driver I mentioned above provides support for the
+SPI offload use case but, it has not been reviewed nor merged to mainline Linux
+(at least as far as I'm aware of). I also searched the lore and found no
+previous matches for ad4134. So, we currently have no driver supporting AD4134
+on mainline Linux.
+
+Why not just upstreaming the SPI offload support driver for AD4134? To achieve
+the highest sample rates, the AD4134 provides a dedicated set of lines (DOUT0 to
+DOUT3) to output ADC sample data. We would need to describe and manage an
+additional bus this part (an SPI bus for configuration, and a data bus to read
+ADC conversions). In ADI tree + HDL, the data bus is read through SPI-Engine
+as usual SPI data and a second SPI controller interface is used for normal SPI
+commands. The setup actually uses two AD4134 devices and is more or less like
+the diagram below.
+
+::
+
+                                                              +-------------+
+  +----------------------+                                    |  DATA HOST  |
+  |       AD4134         |                                    | (SPI-ENGINE)|
+  |                      |                                    |             |
+  |Data interface  DOUT0 |----------------------------------->| GPI0        |
+  |for ADC data    DOUT1 |----------------------------------->| GPI1        |
+  |read back       DOUT2 |----------------------------------->| GPI2        |
+  |                DOUT3 |----------------------------------->| GPI3        |
+  |                DCLK  |<--------------+        +---------->| GPI4        |
+  |                ODR   |<------------+ |        | +-------->| GPI5        |
+  |                      |             | |        | | +------>| GPI6        |
+  |                      |             | |        | | | +---->| GPI7        |
+  | SPI interface   CS   |<-------+    | +--------|-|-|-|-+---| DCLK        |
+  | for register    SCLK |<-----+ |    |          | | | | |   |             |
+  | access          SDI  |<---+ | |    |          | | | | |   | TRIGGER     |
+  |                 SDO  |--+ | | |    |          | | | | |   +-------------+
+  +----------------------+  | | | |    +----------|-|-|-|-|-+     ^
+                            | | | |               | | | | | |     |
+  +----------------------+  | | | | +-----------+ | | | | | | +---+
+  |       AD4134         |  | | | | |   HOST    | | | | | | | |
+  |                      |  | | | | |(ZED PS SPI) | | | | | | |  +------------+
+  | SPI interface   CS   |<-|-|-|-+-| CS        | | | | | | | |  | PULSE      |
+  | for register    SCLK |<-|-|-+---| SCLK      | | | | | | | |  | GENERATOR  |
+  | access          SDI  |<-|-+-----| MOSI      | | | | | | | |  |(AXI PWM GEN)
+  |                 SDO  |--+------>| MISO      | | | | | | | |  |            |
+  |                      |          +-----------+ | | | | | | +--| OUT0       |
+  |                      |                        | | | | | +----| OUT1       |
+  |Data interface  DOUT0 |------------------------+ | | | | |    +------------+
+  |for ADC data    DOUT1 |--------------------------+ | | | |
+  |read back       DOUT2 |----------------------------+ | | |
+  |                DOUT3 |------------------------------+ | |
+  |                DCLK  |<-------------------------------+ |
+  |                ODR   |<---------------------------------+
+  +----------------------+
+
+
+Luckily, for handling the dedicated data bus, we might benefit from the multi-bus
+support [1] in the future. Though, the high speed setup has other implied
+intricacies such as an additional periodic signal (ODR) being required to sample
+data in addition to DCLK.
+
+[1]: https://lore.kernel.org/linux-iio/20251107-spi-add-multi-bus-support-v2-0-8a92693314d9@baylibre.com/
+
+Although we got that working on ADI tree, there are some aspects of the high
+speed driver that could be improved before upstreaming, IMHO.
+So, to start with something less overwhelming, I thought of trying the minimum
+I/O mode first (a.k.a. usual SPI interface). Note that the -common parts of the
+driver are intended to be reusable by the high speed driver when we get to
+upstreaming that. Also, by the way, that high speed driver doesn't support
+minimum I/O mode and the intent is that the drivers will provide complementary
+ways of interfacing with AD4134.
+
+With best regards,
+Marcelo
 

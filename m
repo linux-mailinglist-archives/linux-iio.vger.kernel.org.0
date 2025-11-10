@@ -1,92 +1,89 @@
-Return-Path: <linux-iio+bounces-26136-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26137-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBF0C47531
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 15:48:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA41DC47555
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 15:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 923D74E3BBE
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 14:48:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B78E1884D84
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Nov 2025 14:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6081C313E21;
-	Mon, 10 Nov 2025 14:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468EF313E21;
+	Mon, 10 Nov 2025 14:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mrKtTsa/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KFWpkzen"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7665E30FC19
-	for <linux-iio@vger.kernel.org>; Mon, 10 Nov 2025 14:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A31F23C4FF
+	for <linux-iio@vger.kernel.org>; Mon, 10 Nov 2025 14:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762786094; cv=none; b=rZgD3T+gr+LQCrDXoV+rVZ+TEzUPdwsu8TdIOtEAvxgW/IbIfF2idcCsB0Moos2F3uRmjXsFhs/VOpERxgGjRoVTczkNCv6RF8pls0rh3G+I5m/cxUR1pBx4rc84YlQzCGrS5/1mZ527Exwh/AzbpCGKV1ReIov6ZGs0/vQLpTw=
+	t=1762786166; cv=none; b=mRF6JTMjGZrpGDcaz9OTZIIODMiTBChmnp75sAxnG0pABRPtNu3zzwBu4R3ZGbCXFVQrt8+h5Ggcclp0T9uBbiIEKd5kIQYP8NPmNNdJyfQn+CS+Y0EmjFdEm/YO1Ialm0dvxhQYKtTxNP9d2xtzXqBh/Jgt2G7Kz6mOSfop8ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762786094; c=relaxed/simple;
-	bh=LPHuH34GPzz+FS33GWGiucjUVrgKTliQiQDa8mDrPto=;
+	s=arc-20240116; t=1762786166; c=relaxed/simple;
+	bh=fj1lgNaqat0WAlpO8teOq5f/zGFKDOK7LqmlNPzOs28=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=H+kYXUoH6AxYnaxDoTcn9McFBf/kruJi/RiWwzNFTsbcBV6qFfrPHYtHTeeT9vXHruB+dz9tWx5/IN6O/zL8OfJWA9BQbj++RAUuFJ+/0Tu1nCQ1gf+aYAUQ5GtZfn69gh9y7XTJY2qteqhhvzgWla0mxWM+RfqtZse3SyU6qSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mrKtTsa/; arc=none smtp.client-ip=209.85.128.48
+	 Content-Type:MIME-Version; b=E8eluGD3KxU/mNa7KEmglF5a8LaHWFa4GuFOPFDIsckp7u4ngC1MOb8QXqCMhMCRb7Qfj/GbadA1lzra+P3riSQCgobWQgtCqvGjBVKF/KlezKfwX5/Ex2Ee/LtY12M9BK8QHJHIzn+xSXWdpz/5t7JEr5No5QDzpQWgiTmgrWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KFWpkzen; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-477563e28a3so21251065e9.1
-        for <linux-iio@vger.kernel.org>; Mon, 10 Nov 2025 06:48:12 -0800 (PST)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42b3d4d9ca6so579740f8f.2
+        for <linux-iio@vger.kernel.org>; Mon, 10 Nov 2025 06:49:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762786091; x=1763390891; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762786163; x=1763390963; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=LPHuH34GPzz+FS33GWGiucjUVrgKTliQiQDa8mDrPto=;
-        b=mrKtTsa/Waj1IsC00cI2/hZIW3lo0cdVW7+7mKXNZtIH+0sINwOiud66lJSMlFl8Lu
-         NSegLjc9zyP/bcP4NLVFR+4+B28aocJbymeEVpNYIbBcsutZQCOQepec8dkpVYrvGMMg
-         vP+gWyegzSO6Zm46s12EwF/AS1aPcASDEhAbjNhtXu+VnvZIkkwucFIKSr53XwvFrGgv
-         NB4YEX7XTSmGkCo646UzXMp1x9zuSfLEZxGD6WKGX9nyKeuh5fRJodobCLquBl+JTgPp
-         wwdufxIdXyE5kBIOol8fdoGRNht5nrMPZLv/YUhJ44ekIqC0gx5/7SsFRRcZmrROyzsE
-         0Hiw==
+        bh=rtwHEg8AcEZ1RJZW5TUVf80IN2gTbqjeIF8J9dLK1i4=;
+        b=KFWpkzendZ1grw5IfI9Hl6ZrCXpIXCwg3kYWuXAvDZEGI1J4+uFP9OnyWhtyJp5xFU
+         b1s8Tx1zj8/CcCKOxL3b7ziLXL4LZYMaTdqfs+QF9P/oNQzgr/Cka9NCKdO5WB2UYsZq
+         ISYrit+eN/UvWFAgfUIEdAnxGvUgdUBoa/tx1yJEWzUGq4hkDnErMuiGTplntjwzztLP
+         Sdd3IDe3rgJfwdpbgmZCncwM5b3hJ9mC1r/d/B6eupG4je6p/D/B0z9YIvnjC2y5/MGG
+         wVq0mrHXVQTeoSSFaoFTpeNi+IWr5TcEBhGq3NaUOVHGAoIiDDojun3WPQrNSteMUPmL
+         7gVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762786091; x=1763390891;
+        d=1e100.net; s=20230601; t=1762786163; x=1763390963;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LPHuH34GPzz+FS33GWGiucjUVrgKTliQiQDa8mDrPto=;
-        b=KQG7+kODOqjLLu9ruLyiwrUf69erzQdCnj1i3eAPL17KNXgF2Obi/7A3yL89lWKDZ7
-         W7xXAJpZtHgfmDZjM+KFg0fKuSzYANm2TamlLN3gAgCwwqEl6SACHIVKOjq+Qfo9+pRv
-         0APLKlEO3v81ud86NXwrXdaLO/y2DCdRoDRu0AFAXyjWM+EjQ8mFoeMFMkJ7eoCNHfFh
-         LDRfxTKlvazWcUNwTpNHKwXfsvJzppSweLeQ4fMafzpRIjO4SYIdN7DOJV0OXg+b1J+Z
-         Hm8T5tmrvBRIGUj552pnKCSZyPPGu/Cf0wVLY3tEHE9j1oxOgbIwk27IjvKOB5CFZZDk
-         WO2g==
-X-Forwarded-Encrypted: i=1; AJvYcCV6ygyh67qsXVmZU0iP7J9QVZ+kiPQqEfDiEdb4V1LJEuxuqd+6+dL7JUr4W4XcyBxQAG1dGlxmp5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yya87OXH09UF8easTONH1PGCveacDq3BegKytSyfI+YjDwRImTO
-	bytPNfb7SiXq3DzIoA4OqGF8eTtqxgNGgKIVKfSYMb1IQ0S5g68yDeAm
-X-Gm-Gg: ASbGncsqVNh0+n1WjCdhnqw9Loj54f+wOZHOdGG3tgkXQ/p5h7CRJQM026l2BEwVVAT
-	E1xUiovcUA4n5c+mzA+dySb7hd34gfhP1KBbV1SqrAP2zoGjEz9KiVWZQNj7d3cLypVV8B+dajn
-	nM0AwmJ8oYEUuN+c4ua1d7NvUkN04VQlqXlJK+ScQG7B8/g6HFFWhdLvXOVpZVf+lwhg96EF8Ns
-	35L2C0u3NA6VIGzlTalZbU4OTyyZU3HHTiRVfGQZY3sHNYRvoh1URLYGyMliAQ9i4LXrlOMZwzn
-	3oL9NMIdICO1DwLbuMmYec0NAnKVhaeXlfz6VHDvunDMuTlMYXh/RbjQ37iR6kgaH3Gt7mqddwS
-	MsQLhMchtzDZiILF4hWgKVd3EUbrPnao77mLPHRyNrEjFvejF+UL0V0kbAhG0Xi2TD/EgRr1BYR
-	ZviRJAvCTdZ8nG0YtigY0=
-X-Google-Smtp-Source: AGHT+IFyyPGi2h2HdORU5Y7qZAm0mzvGdm657Ujj5pRLIdfkz1ikPx4AlWnK/vjsN3l+QNuYFG0dhA==
-X-Received: by 2002:a05:600c:a30d:b0:471:ea1:a460 with SMTP id 5b1f17b1804b1-4776dcbe68cmr86535255e9.11.1762786090588;
-        Mon, 10 Nov 2025 06:48:10 -0800 (PST)
+        bh=rtwHEg8AcEZ1RJZW5TUVf80IN2gTbqjeIF8J9dLK1i4=;
+        b=HcvjJAQkd0hEHaWOMZi7cmqEj88T833j0Sc8dw9WZ7u3vthGD/5tHiB8sh5Tv0/H3f
+         hpMmofez1BxaaWx51BKZvLLLGDBrhxou+1BEi7Z6iNBUevJoWqNkqWyxfcOxmGm2L+wC
+         Fd2Aaz5VxDkigV8Pu0ehXnDrdVmaIaeYmcUGS96N6CY3Hv7HHpK550zd+UbeD63vigZ5
+         zVEZT8ONwQ5OUHzUOGQSdkGp8TN7T96KJzo/fxUrQF+BVdiyNxAym4FJkjnOF7wvGzfI
+         cSFWGuSXmZZcLtj4450tbs2i8J3d2od37sUHR9e6lBwPNovOBqQ/q1+FXBM/xI7YxmFV
+         YKRQ==
+X-Gm-Message-State: AOJu0YxH62ScrCDQ3Slsullr5YHj/yMWqU3SjlArDcaMmDUkgOT2qrDM
+	CsAWzZRRpfOeKMFxxMdFUqRAJhX9WwEKQHVscR9amNl3K6Caskt8vk4q
+X-Gm-Gg: ASbGnctHLRvnwKNla6XDcxkE04uSuC5h9F2nhc/Jicy0wTTweO8z5PLb+Jh+KmxL9bD
+	PtsgHcU9/gy6nXR2uF+sz4Xt67SjwTqc79aK8Z6mHIpC40vRFEG/nNHvdJwLrw6k0/l9tnY0w6b
+	hROeKSiGN6rNQTxEdRVNKdNsAiMa/upTzAoWKFE671X2QywXCetTWsunJbl4w3Ss1aj3LejMfTG
+	iLtsJOOL0SCOXG6yujojcgbVdnkMiHNJM/wG0tXn1v/Ju+3UVbZjQZFvq6CYCNeX5TB6+3EGZ+t
+	uVXPfKcT7fk4YJBMklMe/klfDKNf3jLPaSUFCsMyJu7A25AAK41vwLzVXn4yKd6E/PdAYYCWTia
+	k9v6bnTSEo3IY24r9HBKTuoXb0LYc73vPGuE007yhrrDomVibBlK7FIwk+8kA+erVe+fKbDLzmI
+	E1bEuoOd8miCkRzQ3cvTI=
+X-Google-Smtp-Source: AGHT+IEOESIpSzas46jUxYDZXLiicWyoxGFZ51X/ZIxX8n/fWi5wNV9wtaFsyvpMDT/n0KzMw/ZuEA==
+X-Received: by 2002:a05:6000:64d:b0:429:dc9a:ed35 with SMTP id ffacd0b85a97d-42b2dc9f1b5mr5675297f8f.43.1762786159884;
+        Mon, 10 Nov 2025 06:49:19 -0800 (PST)
 Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b2e052f32sm15817388f8f.17.2025.11.10.06.48.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b2ee2ed31sm15770160f8f.29.2025.11.10.06.49.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 06:48:10 -0800 (PST)
-Message-ID: <5e0ea52e6a77a1d6af861ba5aaeeea5c3d514705.camel@gmail.com>
-Subject: Re: [PATCH v1 0/3] iio: adc: Add AD4134 minimum I/O support
+        Mon, 10 Nov 2025 06:49:19 -0800 (PST)
+Message-ID: <e1b6d5d1fee6a6879d94d22d95a15fbdf5d47231.camel@gmail.com>
+Subject: Re: [PATCH v4 2/2] iio: trigger: fix device initialization order in
+ viio_trigger_alloc
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- 	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Cc: jic23@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
- andy@kernel.org, 	Michael.Hennerich@analog.com, robh@kernel.org,
- krzk+dt@kernel.org, 	conor+dt@kernel.org, corbet@lwn.net,
- cosmin.tanislav@analog.com, 	marcelo.schmitt1@gmail.com
-Date: Mon, 10 Nov 2025 14:48:46 +0000
-In-Reply-To: <cover.1762777931.git.marcelo.schmitt@analog.com>
-References: <cover.1762777931.git.marcelo.schmitt@analog.com>
+To: Ma Ke <make24@iscas.ac.cn>, jic23@kernel.org, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	akpm@linux-foundation.org
+Date: Mon, 10 Nov 2025 14:49:56 +0000
+In-Reply-To: <20251110035838.37029-1-make24@iscas.ac.cn>
+References: <20251110035838.37029-1-make24@iscas.ac.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.1 
@@ -97,87 +94,73 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Mon, 2025-11-10 at 09:44 -0300, Marcelo Schmitt wrote:
-> This patch series adds basic support for ad4134. AD4134 is a very flexibl=
-e
-> device that can be configured in many different ways. This series aims to
-> support the simplest way of interfacing with AD4134 which is called minim=
-um I/O
-> mode in data sheet. This is essentially usual SPI with the addition of an=
- ODR
-> (Output Data Rate) GPIO which functions as conversion start signal in min=
-imum
-> I/O mode. The CS pin may be connected to a host controller CS pin or grou=
-nded.
+On Mon, 2025-11-10 at 11:58 +0800, Ma Ke wrote:
+> Move device initialization to the end of viio_trigger_alloc() to
+> simplify error handling. This follows the pattern used in similar
+> functions like spi_alloc_device(), where device_initialize() is called
+> only after all resources have been successfully allocated.
 >=20
-> This set provides just one feature:
-> - Single-shot ADC sample read.
+> This change eliminates the need for complex cleanup in error paths and
+> ensures that the device release callback only runs when the device was
+> fully initialized.
 >=20
-> [PATCH 1] Device tree documentation for AD4134.
-> [PATCH 2] IIO Linux driver for AD4134.
-> [PATCH 3] Initial IIO documentation.
+> By moving device_initialize() after all resource allocations, we can
+> use simple kfree() in error paths instead of put_device(), making the
+> code more straightforward and less error-prone.
 >=20
-> There is a driver by Cosmin on ADI Linux tree that supports AD4134 in wir=
-ing
-> configurations suited for high speed data transfers. Even though the mini=
-mum I/O
-> support was initialy based on that high speed transfer driver, the result=
- ended
-> up becoming entirely different. Also, because the different wiring
-> configurations are likely going to use different resources and software
-> interfaces, the code for AD4134 support was split into ad4134-spi.c,
-> ad4134-common.h, and ad4134-common.c.
+> Found by code review.
+>=20
+> Suggested-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
 
-I'm familiar with the odd way this part is implemented in ADI tree :). Ques=
-tion is, are
-you intending to support the high speed bits? I guess so, otherwise having =
-the above split
-would not make much sense.
+Have the same question Andy has... With that addressed:
 
-- Nuno S=C3=A1
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
+> Changes in v4:
+> - split the patch into two independent patches and modified according to =
+developer's suggestions;
+> Changes in v3:
+> - modified the patch;
+> Changes in v2:
+> - modified the patch, thanks for developer's suggestions.
+> ---
+> =C2=A0drivers/iio/industrialio-trigger.c | 13 +++++++------
+> =C2=A01 file changed, 7 insertions(+), 6 deletions(-)
 >=20
-> With best regards,
-> Marcelo
->=20
-> Marcelo Schmitt (3):
-> =C2=A0 dt-bindings: iio: adc: Add AD4134
-> =C2=A0 iio: adc: Initial support for AD4134
-> =C2=A0 Docs: iio: Add AD4134
->=20
-> =C2=A0.../bindings/iio/adc/adi,ad4134.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | 209 +++++++++++++
-> =C2=A0Documentation/iio/ad4134.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 58 =
-++++
-> =C2=A0Documentation/iio/index.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0 1 +
-> =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- |=C2=A0=C2=A0 9 +
-> =C2=A0drivers/iio/adc/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 15 +
-> =C2=A0drivers/iio/adc/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 |=C2=A0=C2=A0 2 +
-> =C2=A0drivers/iio/adc/ad4134-common.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 200 ++++++++++++
-> =C2=A0drivers/iio/adc/ad4134-common.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 132 ++++++++
-> =C2=A0drivers/iio/adc/ad4134-spi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 287 +++++=
-+++++++++++++
-> =C2=A09 files changed, 913 insertions(+)
-> =C2=A0create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad=
-4134.yaml
-> =C2=A0create mode 100644 Documentation/iio/ad4134.rst
-> =C2=A0create mode 100644 drivers/iio/adc/ad4134-common.c
-> =C2=A0create mode 100644 drivers/iio/adc/ad4134-common.h
-> =C2=A0create mode 100644 drivers/iio/adc/ad4134-spi.c
->=20
->=20
-> base-commit: c5411c8b9ed1caf53604bb1a5be3f487988efc98
+> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industriali=
+o-trigger.c
+> index 5baa83349e8f..760ae3e60639 100644
+> --- a/drivers/iio/industrialio-trigger.c
+> +++ b/drivers/iio/industrialio-trigger.c
+> @@ -562,12 +562,6 @@ struct iio_trigger *viio_trigger_alloc(struct device=
+ *parent,
+> =C2=A0	if (!trig)
+> =C2=A0		return NULL;
+> =C2=A0
+> -	trig->dev.parent =3D parent;
+> -	trig->dev.type =3D &iio_trig_type;
+> -	trig->dev.bus =3D &iio_bus_type;
+> -	device_initialize(&trig->dev);
+> -	INIT_WORK(&trig->reenable_work, iio_reenable_work_fn);
+> -
+> =C2=A0	mutex_init(&trig->pool_lock);
+> =C2=A0	trig->subirq_base =3D irq_alloc_descs(-1, 0,
+> =C2=A0					=C2=A0=C2=A0=C2=A0 CONFIG_IIO_CONSUMERS_PER_TRIGGER,
+> @@ -593,6 +587,13 @@ struct iio_trigger *viio_trigger_alloc(struct device=
+ *parent,
+> =C2=A0				=C2=A0 IRQ_NOREQUEST | IRQ_NOAUTOEN, IRQ_NOPROBE);
+> =C2=A0	}
+> =C2=A0
+> +	/* Initialize device only after all resources are allocated */
+> +	trig->dev.parent =3D parent;
+> +	trig->dev.type =3D &iio_trig_type;
+> +	trig->dev.bus =3D &iio_bus_type;
+> +	device_initialize(&trig->dev);
+> +	INIT_WORK(&trig->reenable_work, iio_reenable_work_fn);
+> +
+> =C2=A0	return trig;
+> =C2=A0
+> =C2=A0free_descs:
 

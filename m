@@ -1,138 +1,156 @@
-Return-Path: <linux-iio+bounces-26171-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26172-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515BBC4F5ED
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 19:04:00 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB55C4F917
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 20:17:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29AA9189991B
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 18:04:25 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 47B02346429
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 19:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF6E36B071;
-	Tue, 11 Nov 2025 18:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC25324B2F;
+	Tue, 11 Nov 2025 19:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UoxZ2qIT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAB3TiSt"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FBD2798F8;
-	Tue, 11 Nov 2025 18:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78742571BE;
+	Tue, 11 Nov 2025 19:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762884232; cv=none; b=X2h1omWYUQsJt8X+MInld4L6Co7W7xU5uLq8LDpKMZ1ZEz0OsvHO7d/OXv7gRbhtjibccO9QdXskIG2PdwU0db8A12Nm4aM5LgghNfSwCIWgYQQtkTKpCTVLa5cj1BPlkmX1jeqv5woWu7npms1ET42suYvxh43VziTEsFK30OQ=
+	t=1762888668; cv=none; b=TBb/aWU0jTg8i0jrNz1WbVOW3lAeZPR7pCcbL2SO9eWbBAbFI+p5TLUiNcOnDjVktgn9W0YfppWECngOdTywYmQjWyoSJu6uPH1bVs7nXt4oXJ3+sCo3WrPnuAlntbUuEeGRWuy8nHCSlFm7j9UjmzfZjzZ/AGSSPdh3KFkWX3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762884232; c=relaxed/simple;
-	bh=mirE0FVC1aFCsQq2eMehFBIBONouR+WUmeEdSPLLXaU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F4pbBvf6LnY9krM64BcUDBtxo/7m7TkG1kiVB0J4q8Nb5UTXwC5Kqd0t8fipX4KH8rARN6Xk3qno/CABi4mnsrT3i4cLgzfyc3OAbj6ZDvsGbiuwPbagfMyCbEX9b/NCdXTKFkdhhChuLtrZzcVC/1D3nlFYulHwLaeq7ZTL2cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UoxZ2qIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B8BC4CEF5;
-	Tue, 11 Nov 2025 18:03:45 +0000 (UTC)
+	s=arc-20240116; t=1762888668; c=relaxed/simple;
+	bh=41RLRtaKbXKVyhTCyKGvYapSSOb8728iYPhMLtH1kSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=njk41oaX0JhW9Mt/26CCUL8MvphIpHTP/uT229bHmQbCVE0u/e6FsK8isfCKz77W0NicfbISBjWgpbhHRB+dVO2YlBLaGxAVFr8SdN4wroFJZ+k3XA4sOGHPzh7eLcmrDIAyc9jg0e4h8LDgBXo96EE927CYGEwbQXHjbXZT8IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAB3TiSt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8EDC4CEFB;
+	Tue, 11 Nov 2025 19:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762884232;
-	bh=mirE0FVC1aFCsQq2eMehFBIBONouR+WUmeEdSPLLXaU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UoxZ2qITmDCIv3Aw71Gtor6BXmxZ1wnoHiUP/IBntzbdAFxQ9XxovK8QSj2aDPfZf
-	 8IqPCAlCuq0F29Cbyszl60cwbOySqlX8Rj5fwBoLkDonymsRi7FtTTer6S+8EI4kqM
-	 /ut0BcYpYH4KdK4sZNYt0ARyTafsLbJsT2J1vKYwJE48dIlDpf49nt492SCsRajbeb
-	 N7w7bHAXlZp2gWqVuLabvi9TMqJAmHGuMrDDhb1WkFwSw2R9+XPQRX4y7EiAn/1Y0P
-	 pkrI36WZ83pDlW7P7nW0wY6+KaIUsVMglj8ztkQuZyvx7fRB8f45cARtGA3HLG7lmq
-	 XpVhTSucBjALg==
-Date: Tue, 11 Nov 2025 18:03:43 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jack Hsu <jh.hsu@mediatek.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	andy@kernel.org, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com, srini@kernel.org,
-	ukleinek@kernel.org, gregkh@linuxfoundation.org,
-	jirislaby@kernel.org, daniel.lezcano@linaro.org, tglx@linutronix.de,
-	chunfeng.yun@mediatek.com, wim@linux-watchdog.org,
-	linux@roeck-us.net, sean.wang@mediatek.com,
-	zhiyong.tao@mediatek.com, andrew-ct.chen@mediatek.com,
-	lala.lin@mediatek.com, jitao.shi@mediatek.com,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-pwm@vger.kernel.org,
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-watchdog@vger.kernel.org,
-	Project_Global_Chrome_Upstream_Group@mediatek.com
-Subject: Re: [PATCH v7 8/9] arm64: dts: mediatek: update rtc properties for
- MT6359
-Message-ID: <20251111-heroism-greasily-fb01345ae609@spud>
-References: <20251111070031.305281-1-jh.hsu@mediatek.com>
- <20251111070031.305281-9-jh.hsu@mediatek.com>
+	s=k20201202; t=1762888668;
+	bh=41RLRtaKbXKVyhTCyKGvYapSSOb8728iYPhMLtH1kSQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WAB3TiStxkM1FNwO8Op8NHHDZWFMtIxWcQcyMeysB/zEXMu7NC5jN7X7oCAZuO/uB
+	 kcb7FtT/bygYU7KdFv5BXUDnSmTnFkOZ8nnrMugK3rc8YAb9Myqj0+j/30pn8eY8Mi
+	 FkINs55JVB5sRHCnTlFQ5BMCeVelWSh/mOsZSAa3tc2o2UVRqLAHzjnGrk3XfMFmKE
+	 yUZtkwYIljsWxIjRlVV5OUJuG4eBUG7Ex4ojuJLvn0I0Ye5hWgfKtnWEOSOBCHSp4c
+	 JDb7nCKhP6NvnxojBfFa0FUjKp21Eg/jL89c2RHwG69wReDvu3Q1lYYDIxR5d/e8TK
+	 8F/IQbicLA9ig==
+Date: Tue, 11 Nov 2025 19:17:33 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre
+ Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, David Miller
+ <davem@davemloft.net>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
+ Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, Lars-Peter
+ Clausen <lars@metafoo.de>, Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun
+ Hung <schung@nuvoton.com>, Yury Norov <yury.norov@gmail.com>, Rasmus
+ Villemoes <linux@rasmusvillemoes.dk>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Johannes Berg <johannes@sipsolutions.net>,
+ Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>, David Laight
+ <david.laight.linux@gmail.com>, Vincent Mailhol
+ <mailhol.vincent@wanadoo.fr>, Jason Baron <jbaron@akamai.com>, Borislav
+ Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Kim Seer Paller
+ <kimseer.paller@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Richard Genoud <richard.genoud@bootlin.com>, Cosmin Tanislav
+ <demonsingur@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, Jianping
+ Shen <Jianping.Shen@de.bosch.com>, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org,
+ qat-linux@intel.com, linux-gpio@vger.kernel.org,
+ linux-aspeed@lists.ozlabs.org, linux-iio@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next v5 10/23] iio: imu: smi330: #undef
+ field_{get,prep}() before definition
+Message-ID: <20251111191351.06c0e660@jic23-huawei>
+In-Reply-To: <CAMuHMdX8c1VkBuPDpJ5mpCcRH+zEX4F1bQKFf_V8N9ZZtCYqxA@mail.gmail.com>
+References: <cover.1761588465.git.geert+renesas@glider.be>
+	<97549838f28a1bb7861cfb42ee687f832942b13a.1761588465.git.geert+renesas@glider.be>
+	<20251102104326.0f1db96a@jic23-huawei>
+	<CAMuHMdUkm2hxSW1yeKn8kZkSrosr8V-QTrHKSMkY2CPJ8UH_BQ@mail.gmail.com>
+	<20251109125956.106c9a1a@jic23-huawei>
+	<CAMuHMdX8c1VkBuPDpJ5mpCcRH+zEX4F1bQKFf_V8N9ZZtCYqxA@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wFCZWHo1MJf80ONG"
-Content-Disposition: inline
-In-Reply-To: <20251111070031.305281-9-jh.hsu@mediatek.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 10 Nov 2025 09:59:34 +0100
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
 
---wFCZWHo1MJf80ONG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Hi Jonathan,
 
-On Tue, Nov 11, 2025 at 02:59:22PM +0800, Jack Hsu wrote:
-> Update properties of rtc for mt6359 PMIC
->=20
-> Signed-off-by: Jack Hsu <jh.hsu@mediatek.com>
->=20
-> ---
-> Changs in v7:
->  - remove mt635x-auadc.h
->  - remove fg nodes
->=20
-> ---
->  arch/arm64/boot/dts/mediatek/mt6359.dtsi | 3 +++
->  1 file changed, 3 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/d=
-ts/mediatek/mt6359.dtsi
-> index 467d8a4c2aa7..fe737254c091 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-> +++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-> @@ -302,6 +302,9 @@ mt6359_vsram_others_sshub_ldo: ldo_vsram_others_sshub=
- {
-> =20
->  		mt6359rtc: rtc {
->  			compatible =3D "mediatek,mt6358-rtc";
-> +			#address-cells =3D <1>;
-> +			#size-cells =3D <1>;
-> +			status =3D "disabled";
+Hi Geert,
 
-Okay, this looks a lot better now. Still missing an explanation of why
-it has been moved to disabled though, especially since you just go and
-re-enable it (without adding child devices that use the address/size
-cells).
-pw-bot: changes-requested
+> 
+> On Sun, 9 Nov 2025 at 14:01, Jonathan Cameron <jic23@kernel.org> wrote:
+> > On Mon, 3 Nov 2025 11:09:36 +0100
+> > Geert Uytterhoeven <geert@linux-m68k.org> wrote:  
+> > > On Sun, 2 Nov 2025 at 11:43, Jonathan Cameron <jic23@kernel.org> wrote:  
+> > > > On Mon, 27 Oct 2025 19:41:44 +0100
+> > > > Geert Uytterhoeven <geert+renesas@glider.be> wrote:
+> > > >  
+> > > > > Prepare for the advent of globally available common field_get() and
+> > > > > field_prep() macros by undefining the symbols before defining local
+> > > > > variants.  This prevents redefinition warnings from the C preprocessor
+> > > > > when introducing the common macros later.
+> > > > >
+> > > > > Suggested-by: Yury Norov <yury.norov@gmail.com>
+> > > > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>  
+> > > >
+> > > > So this is going to make a mess of merging your series given this is
+> > > > queued up for next merge window.
+> > > >
+> > > > I can pick this one up perhaps and we loop back to the replacement of
+> > > > these in a future patch?  Or perhaps go instead with a rename
+> > > > of these two which is probably nicer in the intermediate state than
+> > > > undefs.  
+> > >
+> > > Renaming would mean a lot of churn.
+> > > Just picking up the #undef patch should be simple and safe? The
+> > > removal of the underf and redef can be done in the next cycle.
+> > > Thanks!  
+> >
+> > Only 1 call of each of these in the driver, so churn is small either way.
+> >
+> > To avoid a bisection problem if your tree merges first I need to modify
+> > this stuff in the original patch or leave it for Linus to deal with as
+> > a merge conflict resolution which is mess I'd rather do without.  
+> 
+> If you add the #undef, there won't be any bisection problem?
 
->  		};
->  	};
->  };
-> --=20
-> 2.45.2
->=20
+Two different things.  The bisection comment was about squashing into the
+original driver patch - not what was squashed.  Your tree may well merge
+before mine does and a bisection could therefore land in between the 
+driver introduction and a patch I merge today.
 
---wFCZWHo1MJf80ONG
-Content-Type: application/pgp-signature; name="signature.asc"
+The rename is a preference only because I don't want an undef that smells
+like a hack / bug work around kicking around in the tree for significant time
+(probably a whole kernel cycle). In this case the churn is very similar
+with that or a rename of the macros - so rename it is.
 
------BEGIN PGP SIGNATURE-----
+Jonathan
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaRN6fwAKCRB4tDGHoIJi
-0uoFAQDNm4ule8p2MhE3JjSHzEvgFm4U+PmD7w7D5a6po+6lFQD+MjosiBlNJq1z
-mhXOc0fMS+qD6LGsDwugFT6pPQ4lzwA=
-=+aBt
------END PGP SIGNATURE-----
+ 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
 
---wFCZWHo1MJf80ONG--
 

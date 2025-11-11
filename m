@@ -1,63 +1,61 @@
-Return-Path: <linux-iio+bounces-26173-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26174-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E19CC4F97D
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 20:25:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7F7C4FA3A
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 20:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E1F5B343051
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 19:25:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 327554E2BBC
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 19:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949C7C2EA;
-	Tue, 11 Nov 2025 19:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CAF333448;
+	Tue, 11 Nov 2025 19:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InNmF67p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkdn7Kgu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D64D2F28EB;
-	Tue, 11 Nov 2025 19:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022073254A8;
+	Tue, 11 Nov 2025 19:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762889117; cv=none; b=fx4f20XHGFZiU07QPjany/LNWNuZc2xcnw+MxzhLuHm+BnrAl4nteX5my9CvDtQPbKpyf6n2shjttx/S/ERvk0WRgn+itWyKchiZ2B7ZHEJ2mmw27mtrjhhBlXHfLn2IaBe54W1mIKRjsNYaaYBKultqJIEMT5EuJvPSja/E700=
+	t=1762890430; cv=none; b=jYT3xsnXukGqxFhKk8y2Yyj6XVnJRyF1AXLhiIe+pfkoabXjxumrLFr9f7w1Z6rqnlr0Kce1DsfVIkPPP75ju/QM+yxaqtsIzX8/YChKRDydwjuswLavEeGGae+aWzSJBh8yBswrZuFK12PbxG9m16To/ASgJ8Ew8YVXtgITrJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762889117; c=relaxed/simple;
-	bh=IVQxVjxc4z1K0/u4zAAKxwl6Gk16icCKaP5SPNOFg7U=;
+	s=arc-20240116; t=1762890430; c=relaxed/simple;
+	bh=0Ktb1TweGnNTBqjtAY5SaKqT2o0Or34mDCZKWxPEmao=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mp4pgq+UiZANqLx2jrc5lsq4utcGYqIuF5zjhtiLNgv4P8Z135blcVxM6K5Fd+lxZM9gcSbQyXHctlJWCqQl5HE8VEMM+60J7rzwC/GppKyqZIfZ6sHqC1bail3wXWhLIfbO8HDef6GslkQg2At6JsjPObNpGDs3j3gDDGTmc4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InNmF67p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED95C116D0;
-	Tue, 11 Nov 2025 19:25:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eS/BprpS/X/QR/vlLlWv9D2wuY4ePCaW/qtqd4os42be/6D13Kaz2PlZOsVnFRl3Im05atradtY93dGG3WN3C68w4wo9lQLHAN0VClU8tNeTEOFt41KKJDnCgIFPMTGlQKvwiDMAlPPgLUvt2g/+cs1mR2iJEvWhm1PG9oShwdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkdn7Kgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E20C16AAE;
+	Tue, 11 Nov 2025 19:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762889116;
-	bh=IVQxVjxc4z1K0/u4zAAKxwl6Gk16icCKaP5SPNOFg7U=;
+	s=k20201202; t=1762890429;
+	bh=0Ktb1TweGnNTBqjtAY5SaKqT2o0Or34mDCZKWxPEmao=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=InNmF67phlhuM6WWZ4+J6R8uAQd81jpDlr+axxDpPgqIU9fLR7LDlKjYmLIDhRKWy
-	 hjIowlPR4d5CDJ9ppWpPMmAmbxyJDv4RNqZgrxyn3CGDRVtmwCyXRfmS1z/TYUIa6C
-	 DJ/agAs4n5OhsmL2nIayLm4q9tRDmozrb5DqdU23cuKR/YbHztfKzduf7jA2xssrS1
-	 UNIf/fznf8r3W+mYhBW3OiFojs1/tL/xCUuluOrhqLH9varbDw+4tW0G2shAVwugLk
-	 v3zxqRKsT1/XeKMVskHn3tM28wCvXOt9jbsNwwjUT5WHlYpn6P3793kDDdp4OQ504x
-	 GyLah0d2t0x4g==
-Date: Tue, 11 Nov 2025 19:25:10 +0000
+	b=fkdn7Kgubp9ZYDiM873okv6Y3IUWjscBGuwRu+a4gnVy4Q0Z1O9N7aTE7YUO/JVOd
+	 YNGLNQ34KGaEdrmU7SrG6cAPh1vSc4FIfpa5uUdf/rYY1sblaoVF02rseJd2Bvj+tJ
+	 f/MV+AKWaFYgrMVufQFTNcJZfBKZIP4QyStt/QNT/e7eCnUENSByAHWITjg9qp7FvA
+	 qyAkaPRPh+9p8OeBfohfUXMy50zgabt2bb9k57ieRYN6XyweIlq3TDTqnIAKhbK735
+	 Mv8Hmx9nqGk/FHwNM9G6u9Osfkz5snFOIWizaRlnAs74eC7z6d5nWW7R2iNfiGO0Fi
+	 zTnk1tbm03+Vg==
+Date: Tue, 11 Nov 2025 19:47:03 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Andy
- Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v4 10/12] iio: dac: ad5446: Refactor header inclusion
-Message-ID: <20251111192510.15cedf67@jic23-huawei>
-In-Reply-To: <aRDsU-Zy49vm7N0R@smile.fi.intel.com>
-References: <20251104-dev-add-ad5542-v4-0-6fe35458bf8c@analog.com>
-	<20251104-dev-add-ad5542-v4-10-6fe35458bf8c@analog.com>
-	<aQpE0_-YVeHmfL2v@smile.fi.intel.com>
-	<20251109163030.66ad74fa@jic23-huawei>
-	<aRDsU-Zy49vm7N0R@smile.fi.intel.com>
+To: Antoni Pokusinski <apokusinski01@gmail.com>
+Cc: marcelo.schmitt1@gmail.com, andy@kernel.org, nuno.sa@analog.com,
+ dlechner@baylibre.com, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] iio: mpl3115: use get_unaligned_be24 to retrieve
+ pressure data
+Message-ID: <20251111194703.0dc872a0@jic23-huawei>
+In-Reply-To: <20251110155932.o2oipfzuxhgq4vn4@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
+References: <20251105095615.4310-1-apokusinski01@gmail.com>
+	<20251105095615.4310-2-apokusinski01@gmail.com>
+	<aQ1MfTu24hhk-dKP@debian-BULLSEYE-live-builder-AMD64>
+	<20251109163840.64144586@jic23-huawei>
+	<20251110155932.o2oipfzuxhgq4vn4@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,80 +63,104 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 9 Nov 2025 21:32:35 +0200
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+On Mon, 10 Nov 2025 16:59:32 +0100
+Antoni Pokusinski <apokusinski01@gmail.com> wrote:
 
-> On Sun, Nov 09, 2025 at 04:30:30PM +0000, Jonathan Cameron wrote:
-> > On Tue, 4 Nov 2025 20:24:19 +0200
-> > Andy Shevchenko <andriy.shevchenko@intel.com> wrote: =20
-> > > On Tue, Nov 04, 2025 at 03:35:15PM +0000, Nuno S=C3=A1 via B4 Relay w=
-rote: =20
->=20
-> ...
->=20
-> > > > +#include <linux/export.h>
-> > > >  #include <linux/iio/iio.h>
-> > > > +#include <linux/kstrtox.h>
-> > > > +#include <linux/module.h>
-> > > > +#include <linux/mutex.h>
-> > > > +#include <linux/regulator/consumer.h>
-> > > > +#include <linux/sysfs.h>   =20
-> > >=20
-> > > Most likely the types.h is missing and maybe more... =20
-> >=20
-> > Looks like types.h belongs only in the header. =20
->=20
-> Hmm... IIRC my suggestion was based on seeing one of uXX/sXX in the code,
-> but now I lost the context and maybe I memorised that wrongly.
->=20
-> > FWIW I ran iwyu against this with my usual iio.imp file
-> > (shared previously on list)
-> >=20
-> > drivers/iio/dac/ad5446.h should add these lines:
-> > #include <linux/compiler.h>  // for __aligned
-> > #include <linux/minmax.h>    // for __cmp_op_max
-> > #include <linux/stddef.h>    // for NULL
-> >=20
-> > drivers/iio/dac/ad5446.h should remove these lines:
-> >=20
-> > The full include-list for drivers/iio/dac/ad5446.h:
-> > #include <linux/bits.h>      // for BIT
-> > #include <linux/compiler.h>  // for __aligned
-> > #include <linux/iio/iio.h>   // for IIO_DMA_MINALIGN, iio_chan_spec
-> > #include <linux/minmax.h>    // for __cmp_op_max
-> > #include <linux/mutex.h>     // for mutex
-> > #include <linux/stddef.h>    // for NULL
-> > #include <linux/types.h>     // for __be16, u16, u8
-> > struct device;  // lines 10-10
-> > ---
-> >=20
-> > So maybe those 3 extra in the header  but seem not much needed in the c=
- file.
-> >=20
-> > Hence applied with the compiler.h one added to the header.
-> > Whereever that minmax is coming from is burried deep in macro
-> > so probably isn't appropriate anyway =20
->=20
-> If we use min()/max() or something from there it relies on the __cmp_op_m=
-ax(),
-> so probably it's needed.
+> On Sun, Nov 09, 2025 at 04:38:40PM +0000, Jonathan Cameron wrote:
+> > On Thu, 6 Nov 2025 22:33:49 -0300
+> > Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+> >   
+> > > On 11/05, Antoni Pokusinski wrote:  
+> > > > The pressure measurement result is arranged as 20-bit unsigned value
+> > > > residing in three 8-bit registers. Hence, it can be retrieved using
+> > > > get_unaligned_be24 and by applying 4-bit shift.
+> > > > 
+> > > > Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
+> > > > ---
+> > > >  drivers/iio/pressure/mpl3115.c | 7 ++++---
+> > > >  1 file changed, 4 insertions(+), 3 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/iio/pressure/mpl3115.c b/drivers/iio/pressure/mpl3115.c    
+> > > ...  
+> > > >  
+> > > > -		*val = be32_to_cpu(tmp) >> chan->scan_type.shift;
+> > > > +		*val = get_unaligned_be24(tmp) >> 4;    
+> > > hmm, now the number of bits shifted is dissociated from the channel characteristics.
+> > > We can do
+> > > 		*val = get_unaligned_be24(tmp) >> (24 - chan->scan_type.realbits);  
+> > This encodes that the field is always aligned to the maximum bit. Whilst it might
+> > be true, there is nothing inherent that says it must be.
+> > 
+> > I'm not sure why we aren't using chan->scan_type.shift though.  
+> The chan->scan_type.shift is 12 for the pressure channel, because
+> .realbits is 32. In order to better reflect the actual data format,
+> the pressure .shift and .realbits should be changed to 4 and 24 respectively
+> and the we could use the chan->scan_type.shift in here indeed.
+> 
+> But then the `iio_generic_buffer` tool should also be updated so that it
+> can manage the scan_data with realbits not being in the form 2^n.
+> Currently it supports only scan sizes of 1,2,4,8 bytes [1].
 
-That was where I got stuck.  Neither min nor max is used in this file.
-Anyhow, I played guess where it might be.
-I think it is probablythe MAX() call in iio.h (which includes minmax.h)
-Hence I'm not bothered about that being included directly in this c file.
+> 
+> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/tools/iio/iio_generic_buffer.c#n189
 
-If anyone can spot a more direct use then shout and I'll be happy to add
-that include.
+I think this is confusing storagebits and realbits.
+
+storagebits is always power of 2 * 8 because we want them naturally aligned for
+efficient accesses.  realbits is however many bits of actual data we have, so once we
+shift off the bottom "shift" bits, how many to mask.
+  
+This confusion isn't helped by inconsistent names between that
+tool and the kernel. 
+
+Anyhow, I indeed now see why it is shifted by 4 here - thanks for talking me through it!
+
+You could do the much messier
+*val = get_unaligned_be24(tmp) >> (chan->scan_type.shift - (chan->scan_type_storage_bits - 24));
+Which is hideous.  Perhaps a comment will do the job.
+
+/*
+ * Note that chan->scan_type.shift accounts for 24 bit big endian data being
+ * read into the lower addresses of a 32 bit buffer - hence shift here is 4 rather
+ * than 12.
+ */
+
+Or as another option. Could do in _fill_trig_buffer() do
+
+ret = i2c_smbus_read_i2c_block_data(data->client,
+			MPL3115_OUT_PRESS, 3, &buffer[pos + 1]);
+Then set the shift for the pressure channel to 4.  That is, read the 3 bytes
+after leave the most significant byte as 0. 
+
+Whilst technically an ABI change, and correctly written software shouldn't notice.
 
 Jonathan
 
-
->=20
-> > and including stddef for NULL seems over the top. =20
->=20
+ 
+> >   
+> > > or maybe
+> > > 		*val = get_unaligned_be24(tmp) >> (sizeof(tmp) - chan->scan_type.realbits);  
+> > 
+> > That one needs a BYTES_TO_BITS factor too.
+> >   
+> > > but it starts becoming too long IMO. Even longer if `tmp` gets a more meaningful
+> > > name. Ah well, any of the three forms should work the same at the end of day so
+> > > no strong opinion.
+> > > 
+> > > Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> > >   
+> > > >  		return IIO_VAL_INT;
+> > > >  	}
+> > > >  	case IIO_TEMP: { /* in 0.0625 celsius / LSB */
+> > > > -- 
+> > > > 2.25.1
+> > > >     
+> >  
+> Kind regards,
+> Antoni Pokusinski
+> 
 
 

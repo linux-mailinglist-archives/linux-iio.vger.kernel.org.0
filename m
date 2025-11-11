@@ -1,311 +1,428 @@
-Return-Path: <linux-iio+bounces-26168-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26169-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D13AC4E4EC
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 15:11:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9DCC4EBE0
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 16:17:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A588A3B2405
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 14:06:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 095BA4EE2DD
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 15:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFEF30DD04;
-	Tue, 11 Nov 2025 14:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9FF35F8A1;
+	Tue, 11 Nov 2025 15:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="rqgvLme0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lK88oE4e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C440E239E70;
-	Tue, 11 Nov 2025 14:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762869976; cv=fail; b=JXNKexHfKYGhWGxy5NLUnhtyiCXVNOlVlsgOrQSmPt0cLh/LaHJ2uvYuXFlxncAPcN6HKa0SNOhCHLLhYRQgx9z6uNVGorrpkj1czCYpJvfXx697SVNI+KcJQBSGUek+gdDY1Au3As8BnY8AWOSW0PYZjcmkF786xzcu0CC8qIU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762869976; c=relaxed/simple;
-	bh=cbDQIhFUv2x0gT/5WajCbo9nygWLGG5wDbZ6H4/zvqk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IwbCiEF62gj8KL9RgwXH6jqchTzGAphA+QZaFL/v7kiMHm+4NHDjQswrxo7u74xpmS/C3MmkSo/UjgOHURA/q5q5rR90t9LMlEyxKyLjWZ3R3q+/OataXo2o5W/altysB1up9v3mqdSQxrejdmACOOaDpEUVwJ1Az/ONL1GTXGw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=rqgvLme0; arc=fail smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5ABBZYYY2216927;
-	Tue, 11 Nov 2025 09:06:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=WOEX9
-	oJI2mmeSeIyElhxNmnm4vngr7VWn9chx5GjwU0=; b=rqgvLme0bXDNKpZPDhV/d
-	u2HY+zvrOHOOZvtr1iMUaX2JkUXJ8CUDZ2DRv6fuVBs9yKgTwGILyxmdlos+oXIY
-	uuZDhIK3gZD9RvOkMuVbgtN2eaLdFQ1YtpP/Nlkl1ZZSgkgzxxYU11Wn5vlPrm/s
-	vMsTsXdpejaTTQtWcfEV1UbAIBrSKF3kpnATS23WBoMB4/XZmjz67/qbR6UvOZAz
-	NS11zCwNjiP00lm6+FSNeDt3twax8/XWwsY0Dt/+OP/0FSlHPdttj4ocm0Yj1NSP
-	NUaSsHlUBSG6/omq8l6FFMJ9bcc8RwPyiFu4L3gbuMj+XPc/QgxrGZ2Z04ZwGVN3
-	Q==
-Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010015.outbound.protection.outlook.com [52.101.193.15])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4abp20vye1-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 11 Nov 2025 09:06:05 -0500 (EST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EcuANNqtZTuYlkgSylef77/mdR8Xiq+GYpga0LCal5tdEAjYispJQ3pKP5b+BiuvIl1s08YMgN/x0aBVMEtmarR1gCgaRb7mF7ePbeA/aCQnPz4KkwhbSNWqVD4C+9RvVndIsE83C6GkQFlhz2VG8MZOfNWWQRVQQ37MbH5YYxbT9QNxNsnu5vdspuIGl16vDc89kyw68TjlOL4Wp4SqzS1M+uunF0WYJVuE4pLtJUNQk8ySOuC7Uy2sRc5f2Fu/AwV2u8NqE82oWWoKOaOpNW1pxREdB7zgryzbLGM6qNHD/2A7j41yAHLfl0qs/0n1Keo5929w4GVp4VdkQh/afg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WOEX9oJI2mmeSeIyElhxNmnm4vngr7VWn9chx5GjwU0=;
- b=oIFTAYMQEawQp6La1sREhjWGVEV8M8kHh/jQT0kig2VsNo/mkkENdcqhIx09lBhtCltoadOOVbjscPlu5q/mLKWAMiMlkvXrG0UNmBFWS5B64KgnNtJNpvMZ6DNSaQ6n+rukvctjxVGoWcW4K2ZTkPD4XZA8a/De80X8qIeOi4fmgU4B6gHlK0jyqNiKFGdHdjR/zjDZKZs/qyvdxK+WDlTGrNi3nV0c/ttOOgFMrzsPWmNN4XWmJ3tfoKOdMHY5Zi0iHd3nPJHntHV75iH86FBTiRKw5dk0KVgX9GfIKzCayTtn/U37DEQrB0trJgvxv/BUqsxNk1fJ8qnyabCkqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-Received: from CY4PR03MB3399.namprd03.prod.outlook.com (2603:10b6:910:57::13)
- by CH5PR03MB7791.namprd03.prod.outlook.com (2603:10b6:610:211::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Tue, 11 Nov
- 2025 14:06:03 +0000
-Received: from CY4PR03MB3399.namprd03.prod.outlook.com
- ([fe80::1527:d313:16d4:2376]) by CY4PR03MB3399.namprd03.prod.outlook.com
- ([fe80::1527:d313:16d4:2376%6]) with mapi id 15.20.9253.011; Tue, 11 Nov 2025
- 14:06:02 +0000
-From: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
-To: Jonathan Cameron <jic23@kernel.org>
-CC: "robh@kernel.org" <robh@kernel.org>,
-        "conor+dt@kernel.org"
-	<conor+dt@kernel.org>,
-        "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>
-Subject: RE: [PATCH v2 2/3] iio: amplifiers: adl8113: add driver support
-Thread-Topic: [PATCH v2 2/3] iio: amplifiers: adl8113: add driver support
-Thread-Index: AQHcUNdQj3XZPqjGvUGLb5IyFqz4crTqmReAgALs0OA=
-Date: Tue, 11 Nov 2025 14:06:02 +0000
-Message-ID:
- <CY4PR03MB33991FC450F33126532B80C19BCFA@CY4PR03MB3399.namprd03.prod.outlook.com>
-References: <20251108174357.3748-1-antoniu.miclaus@analog.com>
-	<20251108174357.3748-3-antoniu.miclaus@analog.com>
- <20251109172213.69d35297@jic23-huawei>
-In-Reply-To: <20251109172213.69d35297@jic23-huawei>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY4PR03MB3399:EE_|CH5PR03MB7791:EE_
-x-ms-office365-filtering-correlation-id: 419f9ba9-0338-4c7a-947f-08de212b72cb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?gmwj1Ug7adbiw4ztiFKeL+8EaaOU7jnT/dhmnGKwBCGQpZKiay5V1pIyjsMe?=
- =?us-ascii?Q?SkaqDk4/CvxFkPhmMTgWpY2H74a7wMwivOcoXYrEp/F+KaRAfu9q8JRrQ9vW?=
- =?us-ascii?Q?8eHGp0X3daUG6fsY14nTfqvo6KC+nYi9V5sj0jSAXzWOYy3dVrfnR9JQBTt9?=
- =?us-ascii?Q?Mm00U+0GOynbifJYmkPW0+HaeMvxU4n7Ck6159XU7qN5FbBoDfs+LmdfKB+A?=
- =?us-ascii?Q?IBPA6gHjyOZNfLEpPWOaA7wwEWBiDvYI8bvd6oatm0L4N/YVRN0z0PuHcPej?=
- =?us-ascii?Q?/KT/OjenI2CmV9rJC719j8GkSq7GSeSzd/OIk5lc1udh9eHIif6axcZXUcvE?=
- =?us-ascii?Q?5O8tbK8yo8OX9L5F9WOgvBjDU5N6i4NNcOExiS3+yYcRkunGTCgcbu+vMbh1?=
- =?us-ascii?Q?406YHWD+bDKs6U1KtXdL8BwaIdYNopgUDn1J84zYIQgk+CmcFZWPioKVsfYP?=
- =?us-ascii?Q?i0lg5YyeKFbasXrDg34M49Ep1RRJ60ZRTWkQw9k0ulTITSqzaf22F2HKNDxS?=
- =?us-ascii?Q?/xVWS2PU/2/5tU5Cdnvm9qxzwOrXuQovyW+Y/nXhVCNbLEQ55MrVI3wBa28p?=
- =?us-ascii?Q?FtGvyX7v9/jwGoT2dbQqAwVN9j3L8YF2W3rLB6AzgspzrksiRbcyyQoF7Hhd?=
- =?us-ascii?Q?ealy0ZYVVdUTUPPWdPudEuDchTdg+/JedIHjsB9r2hnTduGlzgWm33gXS9nv?=
- =?us-ascii?Q?V0LZ+CFF3RlVwGLjDvHCJA9RSzWropWyBx/p+hiByvBLEOdIo/yMgiB2iD2C?=
- =?us-ascii?Q?eFKjIcdWWmvjAQ8+8PfKdYJjMhkWPHKwDodzqv7jWyY3m/AjDlqhbEw90Q1H?=
- =?us-ascii?Q?x+o+aeNhP3EqQwg6al44FZZlY5GyzEHr7Hp3LTq36VDhO0/6bSsonZEVs4sW?=
- =?us-ascii?Q?d6rInWzqEPArxHyzPM5pMyQ7zMUlCUrUhk+Di3abgl5aTC//z2+O/tSqXJX8?=
- =?us-ascii?Q?dclIV9kVGLS99wJRy5F73hZTvK/zbtwvSgFJtaZ352lA0ZuOFIe7rQt83t23?=
- =?us-ascii?Q?k5rW7cOe4FOLNXBm5TIyT56EivmJjUxA1MB++osdqGYvdpPE+1fb3blsjnKv?=
- =?us-ascii?Q?TrKeYMjz17/4HCovnH+8MyeZB/laN/hY6Zc6Fjjvm712ST3UpLIlIkZuk9T+?=
- =?us-ascii?Q?isfPOvuDR1yPiZjQ0wVJ5eVLCg5CoioXkOMX2Bek8LeuA6e0gQv92J2hGkRM?=
- =?us-ascii?Q?WBmjfVNfA1EqdxDJ3EYmohV8yC7z6OCCBbxstH9a7aGaKi4sqxWh1ZYQ2pWd?=
- =?us-ascii?Q?lwQnFtmyFD0MZTe1f/yEgMlH7+mtygmLm/yyO93LVfXGIohYjZ9izoHQNjX8?=
- =?us-ascii?Q?GRSw0XebRKeXNmbzwmobdVnfNlX1il6Cf7dzDF5ruM9sD/xBrLsKIumByvDk?=
- =?us-ascii?Q?hHw5HQzU7ftUYcYkEXzlrCvOvKM7IqaNvMYJGK1eWbc01HQQ31psgXur9/SI?=
- =?us-ascii?Q?uaFAXd39lRYqoVlOmvg4s/3infpYUM+UNSE410j7YrcZngqQAseUyIIej2H7?=
- =?us-ascii?Q?kInyICN5KTuHeNn1oX4LcV8QsNZJHW05zqxr?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR03MB3399.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?vEw5zFCfIEHBZWGg3bw+oDvmnDpQFC9vfmQ4G2MrV9hdxIY1la6ZPsQKIzZ6?=
- =?us-ascii?Q?0Kmvzw4PN0v3g8fbIJ4OPRgFuscIv0fhn59kKOJJuBzyPhd+13GYJLenXCy0?=
- =?us-ascii?Q?XN9PmToWVyxv37oYp1wQs6sxjc2u7k7G4qMx/pNadr6EfLIUrZycpY/WbhNA?=
- =?us-ascii?Q?aog2+3RIejIX3oBCb5eQ72fGomhY7kdCO67NnZzPmlCWpJWx2nPYX4rKMrDM?=
- =?us-ascii?Q?eHqPWuhLPT0rMbN/eQ0a2mjXh2JDcz4UMlIbyoJd+ir74+8ZXTW3xvaYAJRc?=
- =?us-ascii?Q?1mVG3knZ8fEjeYiLx2nSYl4j71uerPFUnn1qaccKHGN/bsgSTbNBGECV8Tsp?=
- =?us-ascii?Q?bHpfIOPwlXR4E79dvOFEtE3iSyxNd5r2L+C2atvCiYb/E0CTIbqTJ6gi5JqO?=
- =?us-ascii?Q?PyaPvcbeCWCGODlpcm26Q+ui4CrUfQ335t6DRJyG6pqtcbicPHlY9ydweRUW?=
- =?us-ascii?Q?TsYwGA+qSfz2sl2PyCK+bQXlxN0vzZmzJdS2hIzAwD9DuajPAWJQ73FsMELu?=
- =?us-ascii?Q?+Ibq1hmAf4GnG/8grmeJ/2Inoi/HzQwQnkYiJizeJ2dc5NY4sIVAImKpdXC9?=
- =?us-ascii?Q?G7mGYepeQQM8vu0TjEpPZ52FO5upVaktpEe5HxyWJgQzhD+9EjkzGIV/sMx9?=
- =?us-ascii?Q?w1SzJGvYazN0P1jgvJIyy2o7D6Sd51DW0V45eLvDlL7c9EtgqPaJIgDpAQL5?=
- =?us-ascii?Q?oXhL2uXF9yZBe0pdA4AFOGnnH5KTJ9ATLCrHN/twtunfxHNtVsmaQ8aZToVS?=
- =?us-ascii?Q?70NrAYvMKxBQVFx1cQzu5613OcEBbIYff/gAiOyLEK4FPt9oG75NBcLUu5IY?=
- =?us-ascii?Q?5FXHvV8+jUaDHSZUsjnuFGWghFlr86tgpEwrwzc71cVpa46a6fGNl4Ysryel?=
- =?us-ascii?Q?JQtescql0wFGyQ64MJepv8y1r0EoCDihDw2g+sot1pigji3dUcYO30s+SCy5?=
- =?us-ascii?Q?osxyi+6fu4bAfoY8yYrUbj+KNpXUIKIml3wd6qErAeEcyf0rXjQNS9OtaM+4?=
- =?us-ascii?Q?EuXvSf1OX9LXLmty90TWAbllKRGW4L4DAaxO6p0NLTY+RVAbF8uUCzybTxU+?=
- =?us-ascii?Q?VSmMnEdACYGcMsPcLaE/IZmZZXhtxUl1r6SvnjZKDbzXwFm0PlYreSqFxLkQ?=
- =?us-ascii?Q?jUT/Z4aR8SKzcHHUrRSQ0HjuCDTmQej82bUxKL69e5zcNmCnDTNZ11V7Hl7z?=
- =?us-ascii?Q?6swxCds+r5xaXZpRMX7TKEit8/9oppfIenXa9/H6SNULhYRcZ2J22N7jhMnI?=
- =?us-ascii?Q?DDaWF8TQzAaL9wx1S993PEZ3fzw5U6rMFzByLVeauPMJDdbxGMdTlCpQ21aS?=
- =?us-ascii?Q?k4s2+984BWsdCAlKZ1MWUUWk9bfufoIIcjiXZ+qDwpZ5F7o4B+GD5LNS8KFq?=
- =?us-ascii?Q?kSD3bFU+TzKJUG3PZYd3PLnXmJvGpwDtfkkNEme3e9PlWPiFLeEuxd4L0DfF?=
- =?us-ascii?Q?561DgWZl6n1sqQae3ZEtNXy2XhK2iMa2m4IPwkGcceP5nYPm5/yYiowBeC8J?=
- =?us-ascii?Q?22+KBuwppxm9UoM9jsqVnANCKQW5l9Tvsp9/QDXIsu/4nlCneVmC4WrShTQo?=
- =?us-ascii?Q?nHE8bpTrYGbJnG9TN7ZLmXLk2iv/IlF2LFxQI3M1utR3C4af7Y+SmW82fJdU?=
- =?us-ascii?Q?bg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615532586CE
+	for <linux-iio@vger.kernel.org>; Tue, 11 Nov 2025 15:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762873898; cv=none; b=eOV1bzNHEQrAs81fNxx24ZzHEt19+Bfx7Pp2d2FJOhB05QqbsurTnVMBNik8l0EfuC/5n1krt4pLJY/h7B/PxWArBYByotBvg+5zv/NFgza4gcGrvsWuQuvlYWdJ+O0z7+5C/LjzHpI76hKmXdS+ifKzF5u1mSl2Ua7c/ibD/gQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762873898; c=relaxed/simple;
+	bh=cBvHiE3MTqLVsG6y+J/uHOAvi+GgMGuElM6WaC2JkxQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tyk+idk5B+7wx2lsKORqgXttmQ7CmdI7xWB/+OD8PgiPizCUX4ACQsm/lEwMxzdBj6hRK+dcvMvmhgLRCS/vjTBmJyPueN84lYOhMPotQz35FY6+c4SbfunOjs5zBEGQqFpFUAgJH0pyRE0jeVls7qp5AJm5T2JxD9Vb+Y+nTYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lK88oE4e; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-343684a06b2so3148195a91.1
+        for <linux-iio@vger.kernel.org>; Tue, 11 Nov 2025 07:11:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762873896; x=1763478696; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=n7eTYb2wlhJyNuQSOocKUpulhkuV3RsO5wtmlgEoTf8=;
+        b=lK88oE4e9KtrSLYgwxqDlzjZODXegI6NHGChKNCfa90JZvP42NNDACmB+/B8Kl193C
+         q2s92M23fvvTfrtao9V94GwwHE/b5iecgc6KxCj6VJhMhP6AQ9l1UycOJ8bpu1LUaZLi
+         owOgyqsnSNlzIDeRmblI/ldTk1kgvt6v4HDLpLpamOoXZIu+J6QATBY4ORoj7B8LSli1
+         sh6MbQDHNu+f20ANL3hWsaukkiDVUYjSDIyitp5S6q5dpuvD+uOkUaBot05k8zoHaTtJ
+         L+dwoctgp3KVMxtguFgfU8cXfQ0VGe9jiSn0C1m2OlhQbf1fSIiAM9N8nBUHK4B9t0UE
+         gsaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762873896; x=1763478696;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n7eTYb2wlhJyNuQSOocKUpulhkuV3RsO5wtmlgEoTf8=;
+        b=A9DTBIZ1gu+LFTy7553YQF+ofxzi5YmmB3fsnxl3eSFmKyikLdJlgWQ9OcvyK6cK8F
+         btyCDKjEVxmkGx/ENcsBrzIf7z3VO+GbuTm9L9hcuE7j4VcjKHK39esNKW3X1yDeKaOB
+         KdCOTKDQDg50DFdcbshJihy6dMJgz719vORPvsqBbB2bbU1EmSqg9XOAROPExkJ46jTt
+         SXl+f9ovbejZI4tqBUnX+TOeUSKEWB0ZudXUa+hHdbHkSikQVebaOVivMr5teshuSmAq
+         juWh7F07/h+jqcvWLxAqNmpaFZz9XP2LqteCVM7bii0xd1LBoUX+SpVYAaHeAY4oTHQ2
+         5inw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmoR5sfbIVbqXVr223e/n/ZooaqiHiiXCClx23CS7dpdGsb+uy5p/oaXRwvaGPnk69IlWy1RYLqpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQQXS4axtdHWsW04oLH4njXfP7fE33WBtx2v03mx1zSFav+AVc
+	N1ctAc/EED69VwSuxwunNFwN/xIMKCisiqaWX6Mw51oWqDaMwe81MR1d
+X-Gm-Gg: ASbGncuMTvddFIXtZPCr1qOUNKhxkfczjTt10y0/nWpVjR0MY6UXsOSzvBetWFXPiLQ
+	1Bm3tTVpgwrs69b6KBTJy6Q3It6RdrfBxrpHfHhJ5aqJwVU3gFqlXzvBJ7jk7F/RrKd7dVzDCqM
+	A82wQ57DKhLxhyoZ3hhmRnRUPrORCiqmyZ0tcNrkEEUoDkAOYGMixsKrzyiv3pODq7uZDbBTbFt
+	Zn7ctqzcb3p3ZA3czaBPwrGSr6vXHyrQGapvSDLeWI28hze2VrI/JwZEDkcHW1UCrkE3/zkklMg
+	o1YMIjhlKnA+aL1EK2mJnd8aClCZwNq6kq8wrhKHXEHyF9CP80m3fZrwHAWKnJXDyHMBM+J6n7W
+	c4aMo7s59lnbciMxaFJog1IfTiA6LUPSei1a31f9qMP2ic9zYZMQHn9zqqjo/p5PQlZnAcJ9kx4
+	8K09c7B26YCw==
+X-Google-Smtp-Source: AGHT+IEanSf8MNOoYPmR8r6QP42O+LoZWPLOQBKQDi9X75YOlY83hfm2jvOchw3UXfBmb7KUYvVt2A==
+X-Received: by 2002:a17:902:f601:b0:295:915d:1eed with SMTP id d9443c01a7336-297e56d0e7dmr168612555ad.47.1762873895461;
+        Tue, 11 Nov 2025 07:11:35 -0800 (PST)
+Received: from localhost ([2804:30c:1661:8a00:578a:911c:ac25:24a6])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-ba901c3817csm15946063a12.30.2025.11.11.07.11.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Nov 2025 07:11:33 -0800 (PST)
+Date: Tue, 11 Nov 2025 12:12:51 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 4/6] spi: axi-spi-engine: support
+ SPI_MULTI_BUS_MODE_STRIPE
+Message-ID: <aRNSc1GEz0UNx17i@debian-BULLSEYE-live-builder-AMD64>
+References: <20251107-spi-add-multi-bus-support-v2-0-8a92693314d9@baylibre.com>
+ <20251107-spi-add-multi-bus-support-v2-4-8a92693314d9@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR03MB3399.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 419f9ba9-0338-4c7a-947f-08de212b72cb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Nov 2025 14:06:02.5876
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mhFTnjXKDQQ5M4TUT94fT1/wsIPscJ4pN4FkMMy20ssaQ7QGi5MCL3tlTxYUx6Heoepa8WnAblvdyI4Dvj8m51sAeXG69VMDcGR8VJWxEoc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH5PR03MB7791
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTExMDExMyBTYWx0ZWRfXwZ+lkFUvypwE
- pqxkzhMWMXb7BfR/3FZ2hyi+I2LnIj27AI3iSi7voAQBsNh3vtkaXjrgNDcsSxACF0h+4h67jRd
- lPuar4TLzusrEY9YXAoyS7j+Ck9bXpJQciIdHFlU5fiJDg7agTZU08Skxxk7t/f7TUDZIBbDEgD
- wBHAYlmwk2ISMMWqQAd7qHS1v8994aUiffB1Z6tp0gli+PKcgZNMMK5nkCxFQIA2f24T4aDbTiB
- /9XnZ66/TCHlDd7vKpkv+HPT4QR8u+FVyP3Elv22RIoB65i6ywAs+4IaVGRPi6yCDVz2nlonlBo
- Emd+I4Fz318HDaL1witpP+3jPP8CbT2i0Iyj829DYhN5Y2PbKiiebOXMJd+IiFFdeK6gWimX8h5
- N167VIiLqvz3WAQsLXuGbo3Lq3M4HQ==
-X-Proofpoint-ORIG-GUID: e8kf-H3Zfg4qCelxHIm_bj0NJQSXEXhe
-X-Authority-Analysis: v=2.4 cv=e9oLiKp/ c=1 sm=1 tr=0 ts=691342cd cx=c_pps
- a=7hCjIaGjES2TrnZcIlaVSg==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8
- a=rk2IJEayB13-zSkHiaMA:9 a=CjuIK1q_8ugA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: e8kf-H3Zfg4qCelxHIm_bj0NJQSXEXhe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-11_02,2025-11-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 spamscore=0 adultscore=0 suspectscore=0
- priorityscore=1501 clxscore=1015 phishscore=0 lowpriorityscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2511110113
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251107-spi-add-multi-bus-support-v2-4-8a92693314d9@baylibre.com>
 
+Hi David,
 
+The updates to spi-engine driver look good.
+Only one comment about what happens if we have conflicting bus modes for the
+offload case. Just to check I'm getting how this is working.
 
-> -----Original Message-----
-> From: Jonathan Cameron <jic23@kernel.org>
-> Sent: Sunday, November 9, 2025 7:22 PM
-> To: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>
-> Cc: robh@kernel.org; conor+dt@kernel.org; linux-iio@vger.kernel.org; linu=
-x-
-> kernel@vger.kernel.org; devicetree@vger.kernel.org
-> Subject: Re: [PATCH v2 2/3] iio: amplifiers: adl8113: add driver support
->=20
-> [External]
->=20
-> On Sat, 8 Nov 2025 17:43:53 +0000
-> Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
->=20
-> > Add support for adl8113 10MHz to 12GHz Low Noise Amplifier with
-> > 10MHz to 14GHz bypass switches.
-> >
-> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> Hi Antoniu
->=20
-> I think we need to come up with an innovative solution for the "mode".
-> I'm not sure what it is yet though so very much looking for some discussi=
-on.
->=20
-> thanks,
->=20
-> Jonathan
->=20
-> > diff --git a/drivers/iio/amplifiers/adl8113.c
-> b/drivers/iio/amplifiers/adl8113.c
-> > new file mode 100644
-> > index 000000000000..8c234f0a1b6a
-> > --- /dev/null
-> > +++ b/drivers/iio/amplifiers/adl8113.c
-> > @@ -0,0 +1,213 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * ADL8113 Low Noise Amplifier with integrated bypass switches
-> > + *
-> > + * Copyright 2025 Analog Devices Inc.
-> > + */
-> > +
-> > +#include <linux/array_size.h>
-> > +#include <linux/device.h>
-> > +#include <linux/err.h>
-> > +#include <linux/gpio/consumer.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
->=20
-> Not sure if this file is being used.  It is rare to see it needed in a mo=
-dern drive.
->=20
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/module.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/property.h>
-> > +#include <linux/regulator/consumer.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/sysfs.h>
->=20
-> > +
-> > +static int adl8113_read_raw(struct iio_dev *indio_dev,
-> > +			    struct iio_chan_spec const *chan,
-> > +			    int *val, int *val2, long mask)
-> > +{
-> > +	struct adl8113_state *st =3D iio_priv(indio_dev);
-> > +	int ret;
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_HARDWAREGAIN:
-> > +		switch (st->current_mode) {
-> > +		case ADL8113_INTERNAL_AMPLIFIER:
-> > +			*val =3D 14;
-> > +			*val2 =3D 0;
-> > +			ret =3D IIO_VAL_INT_PLUS_MICRO_DB;
-> return ...
->=20
-> > +			break;
-> > +		case ADL8113_INTERNAL_BYPASS:
-> > +			*val =3D 0;
-> > +			*val2 =3D 0;
-> gain of bypass =3D 1.0 rather than 0.0 which is open circuit gain.
-Isn't this supposed to be a dB value since I am returning IIO_VAL_INT_PLUS_=
-MICRO_DB? Linear gain of 1 =3D 0dB.
->=20
-> > +			ret =3D IIO_VAL_INT_PLUS_MICRO_DB;
-> return IIO_VAL_INT...
->=20
-> > +			break;
-> > +		case ADL8113_EXTERNAL_BYPASS_A:
-> > +		case ADL8113_EXTERNAL_BYPASS_B:
-> > +		default:
-> > +			ret =3D -EINVAL;
-> return -EINVAL;
->=20
-> Early returns save a line of code here and I general think make
-> for much more readable code.
->=20
-> > +		}
-> > +		return ret;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
+On 11/07, David Lechner wrote:
+> Add support for SPI_MULTI_BUS_MODE_STRIPE to the AXI SPI engine driver.
+> 
+> The v2.0.0 version of the AXI SPI Engine IP core supports multiple
+> buses. This can be used with SPI_MULTI_BUS_MODE_STRIPE to support
+> reading from simultaneous sampling ADCs that have a separate SDO line
+> for each analog channel. This allows reading all channels at the same
+> time to increase throughput.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+> v2 changes:
+> * Fixed off-by-one in SPI_ENGINE_REG_DATA_WIDTH_NUM_OF_SDIO_MASK GENMASK
+> ---
+>  drivers/spi/spi-axi-spi-engine.c | 128 +++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 124 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+> index e06f412190fd243161a0b3df992f26157531f6a1..c9d146e978b89abb8273900722ae2cfafdd6325f 100644
+> --- a/drivers/spi/spi-axi-spi-engine.c
+> +++ b/drivers/spi/spi-axi-spi-engine.c
+> @@ -23,6 +23,9 @@
+>  #include <linux/spi/spi.h>
+>  #include <trace/events/spi.h>
+>  
+> +#define SPI_ENGINE_REG_DATA_WIDTH		0x0C
+> +#define   SPI_ENGINE_REG_DATA_WIDTH_NUM_OF_SDIO_MASK	GENMASK(23, 16)
+> +#define   SPI_ENGINE_REG_DATA_WIDTH_MASK		GENMASK(15, 0)
+>  #define SPI_ENGINE_REG_OFFLOAD_MEM_ADDR_WIDTH	0x10
+>  #define SPI_ENGINE_REG_RESET			0x40
+>  
+> @@ -75,6 +78,8 @@
+>  #define SPI_ENGINE_CMD_REG_CLK_DIV		0x0
+>  #define SPI_ENGINE_CMD_REG_CONFIG		0x1
+>  #define SPI_ENGINE_CMD_REG_XFER_BITS		0x2
+> +#define SPI_ENGINE_CMD_REG_SDI_MASK		0x3
+> +#define SPI_ENGINE_CMD_REG_SDO_MASK		0x4
+>  
+>  #define SPI_ENGINE_MISC_SYNC			0x0
+>  #define SPI_ENGINE_MISC_SLEEP			0x1
+> @@ -105,6 +110,10 @@
+>  #define SPI_ENGINE_OFFLOAD_CMD_FIFO_SIZE	16
+>  #define SPI_ENGINE_OFFLOAD_SDO_FIFO_SIZE	16
+>  
+> +/* Extending SPI_MULTI_BUS_MODE values for optimizing messages. */
+> +#define SPI_ENGINE_MULTI_BUS_MODE_UNKNOWN	-1
+> +#define SPI_ENGINE_MULTI_BUS_MODE_CONFLICTING	-2
+> +
+>  struct spi_engine_program {
+>  	unsigned int length;
+>  	uint16_t instructions[] __counted_by(length);
+> @@ -142,6 +151,9 @@ struct spi_engine_offload {
+>  	unsigned long flags;
+>  	unsigned int offload_num;
+>  	unsigned int spi_mode_config;
+> +	unsigned int multi_bus_mode;
+> +	u8 primary_bus_mask;
+> +	u8 all_bus_mask;
+>  	u8 bits_per_word;
+>  };
+>  
+> @@ -165,6 +177,22 @@ struct spi_engine {
+>  	bool offload_requires_sync;
+>  };
+>  
+> +static u8 spi_engine_primary_bus_flag(struct spi_device *spi)
+> +{
+> +	return BIT(spi->data_bus[0]);
+> +}
+> +
+> +static u8 spi_engine_all_bus_flags(struct spi_device *spi)
+> +{
+> +	u8 flags = 0;
+> +	int i;
+> +
+> +	for (i = 0; i < spi->num_data_bus; i++)
+> +		flags |= BIT(spi->data_bus[i]);
+> +
+> +	return flags;
+> +}
+> +
+>  static void spi_engine_program_add_cmd(struct spi_engine_program *p,
+>  	bool dry, uint16_t cmd)
+>  {
+> @@ -193,7 +221,7 @@ static unsigned int spi_engine_get_config(struct spi_device *spi)
+>  }
+>  
+>  static void spi_engine_gen_xfer(struct spi_engine_program *p, bool dry,
+> -	struct spi_transfer *xfer)
+> +				struct spi_transfer *xfer, u32 num_lanes)
+>  {
+>  	unsigned int len;
+>  
+> @@ -204,6 +232,9 @@ static void spi_engine_gen_xfer(struct spi_engine_program *p, bool dry,
+>  	else
+>  		len = xfer->len / 4;
+>  
+> +	if (xfer->multi_bus_mode == SPI_MULTI_BUS_MODE_STRIPE)
+> +		len /= num_lanes;
+> +
+>  	while (len) {
+>  		unsigned int n = min(len, 256U);
+>  		unsigned int flags = 0;
+> @@ -269,6 +300,7 @@ static int spi_engine_precompile_message(struct spi_message *msg)
+>  {
+>  	unsigned int clk_div, max_hz = msg->spi->controller->max_speed_hz;
+>  	struct spi_transfer *xfer;
+> +	int multi_bus_mode = SPI_ENGINE_MULTI_BUS_MODE_UNKNOWN;
+>  	u8 min_bits_per_word = U8_MAX;
+>  	u8 max_bits_per_word = 0;
+>  
+> @@ -284,6 +316,24 @@ static int spi_engine_precompile_message(struct spi_message *msg)
+>  			min_bits_per_word = min(min_bits_per_word, xfer->bits_per_word);
+>  			max_bits_per_word = max(max_bits_per_word, xfer->bits_per_word);
+>  		}
+> +
+> +		if (xfer->rx_buf || xfer->offload_flags & SPI_OFFLOAD_XFER_RX_STREAM ||
+> +		    xfer->tx_buf || xfer->offload_flags & SPI_OFFLOAD_XFER_TX_STREAM) {
+> +			switch (xfer->multi_bus_mode) {
+> +			case SPI_MULTI_BUS_MODE_SINGLE:
+> +			case SPI_MULTI_BUS_MODE_STRIPE:
+> +				break;
+> +			default:
+> +				/* Other modes, like mirror not supported */
+> +				return -EINVAL;
+> +			}
+> +
+> +			/* If all xfers have the same multi-bus mode, we can optimize. */
+> +			if (multi_bus_mode == SPI_ENGINE_MULTI_BUS_MODE_UNKNOWN)
+> +				multi_bus_mode = xfer->multi_bus_mode;
+> +			else if (multi_bus_mode != xfer->multi_bus_mode)
+> +				multi_bus_mode = SPI_ENGINE_MULTI_BUS_MODE_CONFLICTING;
 
+Here we check all xfers have the same multi-bus mode and keep the mode that has
+been set. Otherwise, we set this conflicting mode and the intent is to generate
+SDI and SDO mask commands on demand on spi_engine_precompile_message(). OTOH,
+if all xfers have the same multi-bus mode, we can add just one pair of SDI/SDO
+mask commands in spi_engine_trigger_enable() and one pair latter in
+spi_engine_trigger_disable(). I guess this is the optimization mentioned in the
+comment.
+
+> +		}
+>  	}
+>  
+>  	/*
+> @@ -297,6 +347,10 @@ static int spi_engine_precompile_message(struct spi_message *msg)
+>  			priv->bits_per_word = min_bits_per_word;
+>  		else
+>  			priv->bits_per_word = 0;
+> +
+> +		priv->multi_bus_mode = multi_bus_mode;
+> +		priv->primary_bus_mask = spi_engine_primary_bus_flag(msg->spi);
+> +		priv->all_bus_mask = spi_engine_all_bus_flags(msg->spi);
+>  	}
+>  
+>  	return 0;
+> @@ -310,6 +364,7 @@ static void spi_engine_compile_message(struct spi_message *msg, bool dry,
+>  	struct spi_engine_offload *priv;
+>  	struct spi_transfer *xfer;
+>  	int clk_div, new_clk_div, inst_ns;
+> +	int prev_multi_bus_mode = SPI_MULTI_BUS_MODE_SINGLE;
+>  	bool keep_cs = false;
+>  	u8 bits_per_word = 0;
+>  
+> @@ -334,6 +389,7 @@ static void spi_engine_compile_message(struct spi_message *msg, bool dry,
+>  		 * in the same way.
+>  		 */
+>  		bits_per_word = priv->bits_per_word;
+> +		prev_multi_bus_mode = priv->multi_bus_mode;
+>  	} else {
+>  		spi_engine_program_add_cmd(p, dry,
+>  			SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_CONFIG,
+> @@ -344,6 +400,24 @@ static void spi_engine_compile_message(struct spi_message *msg, bool dry,
+>  	spi_engine_gen_cs(p, dry, spi, !xfer->cs_off);
+>  
+>  	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+> +		if (xfer->rx_buf || xfer->offload_flags & SPI_OFFLOAD_XFER_RX_STREAM ||
+> +		    xfer->tx_buf || xfer->offload_flags & SPI_OFFLOAD_XFER_TX_STREAM) {
+> +			if (xfer->multi_bus_mode != prev_multi_bus_mode) {
+> +				u8 bus_flags = spi_engine_primary_bus_flag(spi);
+> +
+> +				if (xfer->multi_bus_mode == SPI_MULTI_BUS_MODE_STRIPE)
+> +					bus_flags = spi_engine_all_bus_flags(spi);
+> +
+> +				spi_engine_program_add_cmd(p, dry,
+> +					SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_SDI_MASK,
+> +							     bus_flags));
+> +				spi_engine_program_add_cmd(p, dry,
+> +					SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_SDO_MASK,
+> +							     bus_flags));
+> +			}
+> +			prev_multi_bus_mode = xfer->multi_bus_mode;
+> +		}
+> +
+>  		new_clk_div = host->max_speed_hz / xfer->effective_speed_hz;
+>  		if (new_clk_div != clk_div) {
+>  			clk_div = new_clk_div;
+> @@ -360,7 +434,7 @@ static void spi_engine_compile_message(struct spi_message *msg, bool dry,
+>  					bits_per_word));
+>  		}
+>  
+> -		spi_engine_gen_xfer(p, dry, xfer);
+> +		spi_engine_gen_xfer(p, dry, xfer, spi->num_data_bus);
+>  		spi_engine_gen_sleep(p, dry, spi_delay_to_ns(&xfer->delay, xfer),
+>  				     inst_ns, xfer->effective_speed_hz);
+>  
+> @@ -394,6 +468,17 @@ static void spi_engine_compile_message(struct spi_message *msg, bool dry,
+>  	if (clk_div != 1)
+>  		spi_engine_program_add_cmd(p, dry,
+>  			SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_CLK_DIV, 0));
+> +
+> +	/* Restore single bus mode unless offload disable will restore it later. */
+> +	if (prev_multi_bus_mode == SPI_MULTI_BUS_MODE_STRIPE &&
+> +	    (!msg->offload || priv->multi_bus_mode != SPI_MULTI_BUS_MODE_STRIPE)) {
+> +		u8 bus_flags = spi_engine_primary_bus_flag(spi);
+> +
+> +		spi_engine_program_add_cmd(p, dry,
+> +			SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_SDI_MASK, bus_flags));
+> +		spi_engine_program_add_cmd(p, dry,
+> +			SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_SDO_MASK, bus_flags));
+> +	}
+>  }
+>  
+>  static void spi_engine_xfer_next(struct spi_message *msg,
+> @@ -799,6 +884,17 @@ static int spi_engine_setup(struct spi_device *device)
+>  	writel_relaxed(SPI_ENGINE_CMD_CS_INV(spi_engine->cs_inv),
+>  		       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+>  
+> +	if (host->num_data_bus > 1) {
+> +		u8 bus_flags = spi_engine_primary_bus_flag(device);
+> +
+> +		writel_relaxed(SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_SDI_MASK,
+> +						    bus_flags),
+> +			       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+> +		writel_relaxed(SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_SDO_MASK,
+> +						    bus_flags),
+> +			       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+> +	}
+> +
+>  	/*
+>  	 * In addition to setting the flags, we have to do a CS assert command
+>  	 * to make the new setting actually take effect.
+> @@ -902,6 +998,15 @@ static int spi_engine_trigger_enable(struct spi_offload *offload)
+>  						    priv->bits_per_word),
+>  			       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+>  
+> +	if (priv->multi_bus_mode == SPI_MULTI_BUS_MODE_STRIPE) {
+> +		writel_relaxed(SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_SDI_MASK,
+> +						    priv->all_bus_mask),
+> +			       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+> +		writel_relaxed(SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_SDO_MASK,
+> +						    priv->all_bus_mask),
+> +			       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+> +	}
+> +
+>  	writel_relaxed(SPI_ENGINE_CMD_SYNC(1),
+>  		spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+>  
+> @@ -929,6 +1034,16 @@ static void spi_engine_trigger_disable(struct spi_offload *offload)
+>  	reg &= ~SPI_ENGINE_OFFLOAD_CTRL_ENABLE;
+>  	writel_relaxed(reg, spi_engine->base +
+>  			    SPI_ENGINE_REG_OFFLOAD_CTRL(priv->offload_num));
+> +
+> +	/* Restore single-bus mode. */
+> +	if (priv->multi_bus_mode == SPI_MULTI_BUS_MODE_STRIPE) {
+> +		writel_relaxed(SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_SDI_MASK,
+> +						    priv->primary_bus_mask),
+> +			       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+> +		writel_relaxed(SPI_ENGINE_CMD_WRITE(SPI_ENGINE_CMD_REG_SDO_MASK,
+> +						    priv->primary_bus_mask),
+> +			       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+> +	}
+>  }
+>  
+>  static struct dma_chan
+> @@ -973,7 +1088,7 @@ static int spi_engine_probe(struct platform_device *pdev)
+>  {
+>  	struct spi_engine *spi_engine;
+>  	struct spi_controller *host;
+> -	unsigned int version;
+> +	unsigned int version, data_width_reg_val;
+>  	int irq, ret;
+>  
+>  	irq = platform_get_irq(pdev, 0);
+> @@ -1042,7 +1157,7 @@ static int spi_engine_probe(struct platform_device *pdev)
+>  		return PTR_ERR(spi_engine->base);
+>  
+>  	version = readl(spi_engine->base + ADI_AXI_REG_VERSION);
+> -	if (ADI_AXI_PCORE_VER_MAJOR(version) != 1) {
+> +	if (ADI_AXI_PCORE_VER_MAJOR(version) > 2) {
+>  		dev_err(&pdev->dev, "Unsupported peripheral version %u.%u.%u\n",
+>  			ADI_AXI_PCORE_VER_MAJOR(version),
+>  			ADI_AXI_PCORE_VER_MINOR(version),
+> @@ -1050,6 +1165,8 @@ static int spi_engine_probe(struct platform_device *pdev)
+>  		return -ENODEV;
+>  	}
+>  
+> +	data_width_reg_val = readl(spi_engine->base + SPI_ENGINE_REG_DATA_WIDTH);
+> +
+>  	if (adi_axi_pcore_ver_gteq(version, 1, 1)) {
+>  		unsigned int sizes = readl(spi_engine->base +
+>  				SPI_ENGINE_REG_OFFLOAD_MEM_ADDR_WIDTH);
+> @@ -1097,6 +1214,9 @@ static int spi_engine_probe(struct platform_device *pdev)
+>  	}
+>  	if (adi_axi_pcore_ver_gteq(version, 1, 3))
+>  		host->mode_bits |= SPI_MOSI_IDLE_LOW | SPI_MOSI_IDLE_HIGH;
+> +	if (adi_axi_pcore_ver_gteq(version, 2, 0))
+> +		host->num_data_bus = FIELD_GET(SPI_ENGINE_REG_DATA_WIDTH_NUM_OF_SDIO_MASK,
+> +					       data_width_reg_val);
+>  
+>  	if (host->max_speed_hz == 0)
+>  		return dev_err_probe(&pdev->dev, -EINVAL, "spi_clk rate is 0");
+> 
+> -- 
+> 2.43.0
+> 
+> 
 

@@ -1,50 +1,60 @@
-Return-Path: <linux-iio+bounces-26177-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26178-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98CDC4FBA6
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 21:43:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF847C4FD21
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 22:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80CBE3B2CEA
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 20:42:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFD8D3A1712
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 21:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54371324B0B;
-	Tue, 11 Nov 2025 20:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2682459C9;
+	Tue, 11 Nov 2025 21:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVRgFHOF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ej4+SPqC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BF533D6CB
-	for <linux-iio@vger.kernel.org>; Tue, 11 Nov 2025 20:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EA135CBB9;
+	Tue, 11 Nov 2025 21:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762893767; cv=none; b=J2vkM3N2f1dhv6ws51/NuRZtF+bYKDAuj6Sif0vfE8Jkc0E3qsa5HvPdxoKTAGgkTCkDXvanuhGWornukY5JNgAEcHqg6l4dYFi6tidJQeMtT/Ohz+ze17rFy+iomdiuejdhjtUvpJS96KyY7Et6tq10xWKfFoMHNuxOPsAYo18=
+	t=1762895517; cv=none; b=DgPDrNGfbyq4eFe4Jzg4nhi+BLvXzTGhzxVNLvJC8PLrvcyeG+Py8BBGIi4pOupBhkIWqaRy8Wtb18DS+vC8kTX7has6m4OkuIgaHLOBFHh0Yjmd4HI3rRf2cKpKJhHnE4P1hd4eZ90QSrkclAYmDXwRFRY+WjoxYOlXDr3wgXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762893767; c=relaxed/simple;
-	bh=IjwWKwjLXp4bWBQoxQ0unOLpxurM7Lubo5JAewrdshk=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=RSEdHHmJ39blrERLRqRC2WY0YzfmQYk9kv4mCWTN5ImVVSrBIpeqdGLtts1RCiX+bCa/aVzRZOBCnRsZQZvsXrQgoCIVAnOelRlhKENf30/icPQrbjUy67xQYPUPaBzymVsY63Si7Jepa6Tbp/QTGf+thPkyElz2LS9l3v+hRnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVRgFHOF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10A8C4CEF5;
-	Tue, 11 Nov 2025 20:42:45 +0000 (UTC)
+	s=arc-20240116; t=1762895517; c=relaxed/simple;
+	bh=3lyHQk+0PzRgbds35eaJRyIdDSi1lVrFMz7RE1ZSqws=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cmQc+OPnQl+btDTSSxo0H4uGO/oaXpIj+7yRGwnZFco61i6ExDFEHxaYietAzv/TVna0NXzCsxkdWWko5Y6qJF4lAaVqx5LMIT4aAkuM+JFi3W00bnzXjtzdJxDaVNDNqOgp+Bq0WTazDhq021M0fKukmnABgcTfyikvgZ64Nkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej4+SPqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C80FC4CEF5;
+	Tue, 11 Nov 2025 21:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762893766;
-	bh=IjwWKwjLXp4bWBQoxQ0unOLpxurM7Lubo5JAewrdshk=;
-	h=Date:From:To:Subject:From;
-	b=YVRgFHOF1dFlWkiAt69LXhuWRFQQV0/ylrWqhTFOCJGDggzfHr3gB1D/76jsegCMq
-	 kP6yrODFEhrwXRgBhNmLxcPPBKwMqMmIVXQPEMQXCMNDkXuqp3SKl68AILXuZ7cSFe
-	 fdb1WPIy1Y22pIXJKwzqiZGp7hqNCX2MQmLL24UD019I8ku0HET+Jtaf8u8Voqipco
-	 dt7aJVLUn6xA6Lm5U8JfF3//06XvekDBFNNo+lx6BMwO0vBc9ErCeMmR5gFXvqGmt1
-	 3ArzN3KpKQHMUDeOQHMS/mN6QcZvUit5CnG4fIYiO1LbXLrT9TGiADTlVJHbirKI8g
-	 ybLAp0hVDZ4/g==
-Date: Tue, 11 Nov 2025 20:42:41 +0000
+	s=k20201202; t=1762895517;
+	bh=3lyHQk+0PzRgbds35eaJRyIdDSi1lVrFMz7RE1ZSqws=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ej4+SPqCnxQFqkrgxlg+EOX/GriEHMHKiEQGTqk0VlHEBdp4MpgObRj0Br9mGmslR
+	 TZ2JwH91cvp/LgqtNKWSJtPziiqWygeuczj+PV+8qBERpepo9vKssbDG3BcHwZHvso
+	 bNOsgoV/rTtLJzHljjUpJQ57q4jUKOXsQmLcR4VbnQsvZ2VrIaC7ZNTAVv0DyFV6vc
+	 x73jcH+hoKtPMTfpEADif4X8+SmFVfHcEJfrGX+F0Nzsz6HLCQ4EuvBXAVqZESLQdW
+	 4zJGzfcPhJSmsHuPCJd7LFl3zUCOH10SL3S7NwbfLLC7tyaGr0xDI13W8hmONZN9+W
+	 dljQp0vn1hbtQ==
+Date: Tue, 11 Nov 2025 21:11:48 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] IIO: 1st set of fixes for 6.18
-Message-ID: <20251111204241.283143b8@jic23-huawei>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nuno.sa@analog.com>, <dlechner@baylibre.com>, <andy@kernel.org>,
+ <Michael.Hennerich@analog.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+ <conor+dt@kernel.org>, <corbet@lwn.net>, <cosmin.tanislav@analog.com>,
+ <marcelo.schmitt1@gmail.com>
+Subject: Re: [PATCH v1 2/3] iio: adc: Initial support for AD4134
+Message-ID: <20251111211148.322e5aaf@jic23-huawei>
+In-Reply-To: <86f532ae3a9b3f122b9d5dbada9c131a0c048ca7.1762777931.git.marcelo.schmitt@analog.com>
+References: <cover.1762777931.git.marcelo.schmitt@analog.com>
+	<86f532ae3a9b3f122b9d5dbada9c131a0c048ca7.1762777931.git.marcelo.schmitt@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -52,123 +62,229 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The following changes since commit 3a8660878839faadb4f1a6dd72c3179c1df56787:
+On Mon, 10 Nov 2025 09:45:40 -0300
+Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
 
-  Linux 6.18-rc1 (2025-10-12 13:42:36 -0700)
+> AD4134 is a 24-bit, 4-channel, simultaneous sampling, precision
+> analog-to-digital converter (ADC). The device can be managed through SPI or
+> direct control of pin logical levels (pin control mode). The AD4134 design
+> also features a dedicated bus for ADC sample data output. Though, this
+> initial driver for AD4134 only supports usual SPI connections.
+> 
+> The different wiring configurations will likely require distinct software
+> to handle. So, the code specific to SPI is enclosed in ad4134-spi.c, while
+> functionality that may be useful to all wiring configuration is set into
+> ad4134-common.h and ad4134-common.c.
 
-are available in the Git repository at:
+'maybe' isn't usually a justification for a split.  If that code
+was on list even as an RFC before merging  I'd be fine with this, but if it is
+something we might never see upstream, then squash the abstractions for
+now. Those then end up being introduced as a precursor part of the patch
+set that gives them a reason to exist.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fi=
-xes-for-6.18a
+> 
+> Add basic support for AD4134 that allows single-shot ADC sample read.
+> 
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+A few other comments inline,
 
-for you to fetch changes up to 3aa385a9c75c09b59dcab2ff76423439d23673ab:
+Thanks, J
+> diff --git a/drivers/iio/adc/ad4134-common.c b/drivers/iio/adc/ad4134-common.c
+> new file mode 100644
+> index 000000000000..05332a640926
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad4134-common.c
 
-  iio: accel: bmc150: Fix irq assumption regression (2025-11-11 20:22:23 +0=
-000)
+> +
+> +static const char *const ad4134_clk_sel[] = {
+> +	"xtal1-xtal2", "clkin"
+> +};
+> +
+> +static int ad4134_clock_select(struct ad4134_state *st)
+> +{
+> +	struct device *dev = st->dev;
+> +	struct clk *sys_clk;
+> +	int ret;
+> +
+> +	ret = device_property_match_property_string(dev, "clock-names",
+> +						    ad4134_clk_sel,
+> +						    ARRAY_SIZE(ad4134_clk_sel));
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "failed to find external clock\n");
+> +
+> +	sys_clk = devm_clk_get_enabled(dev, ad4134_clk_sel[ret]);
+> +	if (IS_ERR(sys_clk))
+> +		return dev_err_probe(dev, PTR_ERR(sys_clk),
+> +				     "failed to get %s external clock\n",
+> +				     ad4134_clk_sel[ret]);
+This is a somewhat unusual approach. More common to just trying getting
+an optional clock and if that fails try the other one.
 
-----------------------------------------------------------------
-IIO: Fixes for 6.18 (set 1)
+devm_clk_get_optional_enabled()
 
-The usual mixed back of brand new and ancient bugs.
 
-dmaengine buffer / core
-- Add new callback to allow fetching the providing device for a DMA
-  channel. Use this to get the right device for the dmaengine buffer
-  implementation.
-adi,ad4030
-- Fix incorrect _scale value for common-mode channels.
-adi,ad7124
-- Fix gain and offset for temperature channel.
-adi,ad7280a
-- Fix a factor of 10 error when setting the balance timer.
-adi,ad7380
-- Fix sampling frequency to account for need to trigger twice per scan
-  for some supported chips.
-adi,adxl355
-- Ensure a long enough wait after SW reset.
-bosch,bmc150
-- Fix wrong assumption that interrupts are always available.
-bosch,bmp280
-- Fix the measurement time calculation.
-richtek,rtq6056
-- Fix wrong sign bit when sign extending.
-samsung,ssp
-- Fix cleanup of registered mfd devices on error.
-st,lsm6dsx
-- Fix wrong sized array for register information.
-- Fix a wrong time stamp calculation for some devices.
-st,stm32-dfsdm
-- Update handling of st,adc-alt-channel to reflect binding change as
-  part of moving to iio-backend framework.
-ti,hdc3020
-- Fix wrong units for temperature and humidity. Also the thresholds
-  and hysteresis.
+> +
+> +	st->sys_clk_rate = clk_get_rate(sys_clk);
+> +	if (st->sys_clk_rate != AD4134_EXT_CLOCK_MHZ)
+> +		dev_warn(dev, "invalid external clock frequency %lu\n",
+> +			 st->sys_clk_rate);
+> +
+> +	return 0;
+> +}
 
-----------------------------------------------------------------
-Achim Gratz (1):
-      iio: pressure: bmp280: correct meas_time_us calculation
+> diff --git a/drivers/iio/adc/ad4134-common.h b/drivers/iio/adc/ad4134-common.h
+> new file mode 100644
+> index 000000000000..c0a553d827c9
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad4134-common.h
 
-ChiYuan Huang (1):
-      iio: adc: rtq6056: Correct the sign bit index
+> +
+> +#define AD4134_CH_VREG(x)			((x) + 0x50) /* chanX virtual register */
+> +#define AD4134_VREG_CH(x)			((x) - 0x50) /* chan of virtual reg X */
 
-Christophe JAILLET (1):
-      iio:common:ssp_sensors: Fix an error handling path ssp_probe()
+Add a comment or two on what virtual registers are for.
 
-David Lechner (3):
-      iio: adc: ad7380: fix SPI offload trigger rate
-      iio: adc: ad7280a: fix ad7280_store_balance_timer()
-      iio: adc: ad7124: fix temperature channel
+> +struct iio_scan_type ad4134_scan_types[] = {
+> +	AD4134_SCAN_TYPE(16, 16),
+> +	AD4134_SCAN_TYPE(16, 24),
 
-Dimitri Fedrau (2):
-      iio: humditiy: hdc3020: fix units for temperature and humidity measur=
-ement
-      iio: humditiy: hdc3020: fix units for thresholds and hysteresis
+There are no buffer in here so can type ends up meaning little.
+If this eventually doesn't become useful, storage bits must be a power of 2 * 8
+So can't be 24.  
 
-Francesco Lavra (1):
-      iio: imu: st_lsm6dsx: fix array size for st_lsm6dsx_settings fields
+> +	AD4134_SCAN_TYPE(24, 24),
+> +	AD4134_SCAN_TYPE(24, 32),
+> +};
+> +
+> +#define AD4134_CHANNEL(_index) {						\
+> +	.type = IIO_VOLTAGE,							\
+> +	.indexed = 1,								\
+> +	.channel = (_index),							\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),				\
+> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),			\
+> +	.scan_index = (_index),							\
+> +	.has_ext_scan_type = 1,							\
+> +	.ext_scan_type = ad4134_scan_types,					\
+> +	.num_ext_scan_type = ARRAY_SIZE(ad4134_scan_types)			\
+> +}
 
-Linus Walleij (1):
-      iio: accel: bmc150: Fix irq assumption regression
+> diff --git a/drivers/iio/adc/ad4134-spi.c b/drivers/iio/adc/ad4134-spi.c
+> new file mode 100644
+> index 000000000000..7d0749e5c084
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad4134-spi.c
+> @@ -0,0 +1,287 @@
 
-Marcelo Schmitt (1):
-      iio: adc: ad4030: Fix _scale value for common-mode channels
+> +
+> +#include "ad4134-common.h"
 
-Mario Tesi (1):
-      iio: st_lsm6dsx: Fixed calibrated timestamp calculation
+> +static int ad4134_reg_write(void *context, unsigned int reg, unsigned int val)
+> +{
+> +	struct ad4134_state *st = context;
+> +	struct spi_device *spi = to_spi_device(st->dev);
+> +	struct spi_transfer xfer = {
+> +		.tx_buf = st->tx_buf,
+> +		.rx_buf = st->rx_buf,
+> +		.len = AD4134_SPI_MAX_XFER_LEN,
+> +	};
+> +	int ret;
+> +
+> +	ad4134_prepare_spi_tx_buf(reg, val, st->tx_buf);
+> +
+> +	ret = spi_sync_transfer(spi, &xfer, 1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (st->rx_buf[2] != st->tx_buf[2])
+> +		dev_dbg(st->dev, "reg write CRC check failed\n");
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4134_data_read(struct ad4134_state *st, unsigned int reg,
+> +			    unsigned int *val)
+> +{
+> +	struct spi_device *spi = to_spi_device(st->dev);
+> +	struct iio_scan_type *scan_type = &ad4134_scan_types[st->current_scan_type];
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	/*
+> +	 * Data from all four channels is serialized and output on SDO. Read
+> +	 * them all but keep only the requested data.
 
-Nuno S=C3=A1 (3):
-      iio: buffer: support getting dma channel from the buffer
-      iio: buffer-dma: support getting the DMA channel
-      iio: buffer-dmaengine: enable .get_dma_dev()
+I'm failing to spot this mode described on the datasheet.  Could you
+provide a reference section?
 
-Olivier Moysan (1):
-      iio: adc: stm32-dfsdm: fix st,adc-alt-channel property handling
+> +	 */
+> +	for (i = 0; i < ARRAY_SIZE(ad4134_chan_set); i++) {
+> +		ret = spi_write_then_read(spi, NULL, 0, st->rx_buf,
+> +					  BITS_TO_BYTES(scan_type->storagebits));
+> +		if (ret)
+> +			return ret;
+> +
+> +		if (i != AD4134_VREG_CH(reg))
+> +			continue;
+> +
+> +		if (scan_type->realbits == 16)
+> +			*val = get_unaligned_be16(st->rx_buf);
+> +		else
+> +			*val = get_unaligned_be24(st->rx_buf);
+> +
+> +		*val >>= scan_type->shift;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4134_reg_read(void *context, unsigned int reg, unsigned int *val)
+> +{
+> +	struct ad4134_state *st = context;
+> +	struct spi_device *spi = to_spi_device(st->dev);
+> +	struct spi_transfer xfer = {
+> +		.tx_buf = st->tx_buf,
+> +		.rx_buf = st->rx_buf,
+> +		.len = AD4134_SPI_MAX_XFER_LEN,
+> +	};
+> +	unsigned int inst;
+> +	int ret;
+> +
+> +	if (reg >= AD4134_CH_VREG(0))
+> +		return ad4134_data_read(st, reg, val);
 
-Valek Andrej (1):
-      iio: accel: fix ADXL355 startup race condition
+If you are going down this path the xfer isn't used.  To avoid that being
+a little confusing I'd factor out the rest of this function into a helper
 
- drivers/iio/accel/adxl355_core.c                   | 44 +++++++++++--
- drivers/iio/accel/bmc150-accel-core.c              |  5 ++
- drivers/iio/accel/bmc150-accel.h                   |  1 +
- drivers/iio/adc/ad4030.c                           |  2 +-
- drivers/iio/adc/ad7124.c                           | 12 ++--
- drivers/iio/adc/ad7280a.c                          |  2 +-
- drivers/iio/adc/ad7380.c                           |  8 +++
- drivers/iio/adc/rtq6056.c                          |  2 +-
- drivers/iio/adc/stm32-dfsdm-adc.c                  |  5 +-
- drivers/iio/buffer/industrialio-buffer-dma.c       |  6 ++
- drivers/iio/buffer/industrialio-buffer-dmaengine.c |  2 +
- drivers/iio/common/ssp_sensors/ssp_dev.c           |  4 +-
- drivers/iio/humidity/hdc3020.c                     | 73 +++++++++++++-----=
-----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h            | 40 ++++++++----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c       | 19 +++---
- drivers/iio/industrialio-buffer.c                  | 21 +++++--
- drivers/iio/pressure/bmp280-core.c                 | 15 +++--
- include/linux/iio/buffer-dma.h                     |  1 +
- include/linux/iio/buffer_impl.h                    |  2 +
- 19 files changed, 185 insertions(+), 79 deletions(-)
+> +
+> +	inst = AD4134_REG_READ_MASK | reg;
+> +	ad4134_prepare_spi_tx_buf(inst, 0, st->tx_buf);
+> +
+> +	ret = spi_sync_transfer(spi, &xfer, 1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val = st->rx_buf[1];
+> +
+> +	/* Check CRC */
+> +	if (st->rx_buf[2] != st->tx_buf[2])
+> +		dev_dbg(st->dev, "reg read CRC check failed\n");
+> +
+> +	return 0;
+> +}
+
+
+> +
+> +static const struct ad4134_bus_info ad4134_min_io_bus_info = {
+
+given it's a mix of bus specific and other stuff, I'm not sure 
+that calling this bus_info makes sense.  Maybe just ad4134_info?
+
+> +	.chip_info = &ad4134_chip_info,
+> +	.bops = &ad4134_min_io_bops,
+> +};
+
+
 

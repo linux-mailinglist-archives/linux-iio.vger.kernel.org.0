@@ -1,86 +1,63 @@
-Return-Path: <linux-iio+bounces-26172-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26173-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB55C4F917
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 20:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E19CC4F97D
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 20:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 47B02346429
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 19:17:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E1F5B343051
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 19:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC25324B2F;
-	Tue, 11 Nov 2025 19:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949C7C2EA;
+	Tue, 11 Nov 2025 19:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAB3TiSt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InNmF67p"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78742571BE;
-	Tue, 11 Nov 2025 19:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D64D2F28EB;
+	Tue, 11 Nov 2025 19:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762888668; cv=none; b=TBb/aWU0jTg8i0jrNz1WbVOW3lAeZPR7pCcbL2SO9eWbBAbFI+p5TLUiNcOnDjVktgn9W0YfppWECngOdTywYmQjWyoSJu6uPH1bVs7nXt4oXJ3+sCo3WrPnuAlntbUuEeGRWuy8nHCSlFm7j9UjmzfZjzZ/AGSSPdh3KFkWX3Q=
+	t=1762889117; cv=none; b=fx4f20XHGFZiU07QPjany/LNWNuZc2xcnw+MxzhLuHm+BnrAl4nteX5my9CvDtQPbKpyf6n2shjttx/S/ERvk0WRgn+itWyKchiZ2B7ZHEJ2mmw27mtrjhhBlXHfLn2IaBe54W1mIKRjsNYaaYBKultqJIEMT5EuJvPSja/E700=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762888668; c=relaxed/simple;
-	bh=41RLRtaKbXKVyhTCyKGvYapSSOb8728iYPhMLtH1kSQ=;
+	s=arc-20240116; t=1762889117; c=relaxed/simple;
+	bh=IVQxVjxc4z1K0/u4zAAKxwl6Gk16icCKaP5SPNOFg7U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=njk41oaX0JhW9Mt/26CCUL8MvphIpHTP/uT229bHmQbCVE0u/e6FsK8isfCKz77W0NicfbISBjWgpbhHRB+dVO2YlBLaGxAVFr8SdN4wroFJZ+k3XA4sOGHPzh7eLcmrDIAyc9jg0e4h8LDgBXo96EE927CYGEwbQXHjbXZT8IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAB3TiSt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8EDC4CEFB;
-	Tue, 11 Nov 2025 19:17:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mp4pgq+UiZANqLx2jrc5lsq4utcGYqIuF5zjhtiLNgv4P8Z135blcVxM6K5Fd+lxZM9gcSbQyXHctlJWCqQl5HE8VEMM+60J7rzwC/GppKyqZIfZ6sHqC1bail3wXWhLIfbO8HDef6GslkQg2At6JsjPObNpGDs3j3gDDGTmc4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InNmF67p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED95C116D0;
+	Tue, 11 Nov 2025 19:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762888668;
-	bh=41RLRtaKbXKVyhTCyKGvYapSSOb8728iYPhMLtH1kSQ=;
+	s=k20201202; t=1762889116;
+	bh=IVQxVjxc4z1K0/u4zAAKxwl6Gk16icCKaP5SPNOFg7U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WAB3TiStxkM1FNwO8Op8NHHDZWFMtIxWcQcyMeysB/zEXMu7NC5jN7X7oCAZuO/uB
-	 kcb7FtT/bygYU7KdFv5BXUDnSmTnFkOZ8nnrMugK3rc8YAb9Myqj0+j/30pn8eY8Mi
-	 FkINs55JVB5sRHCnTlFQ5BMCeVelWSh/mOsZSAa3tc2o2UVRqLAHzjnGrk3XfMFmKE
-	 yUZtkwYIljsWxIjRlVV5OUJuG4eBUG7Ex4ojuJLvn0I0Ye5hWgfKtnWEOSOBCHSp4c
-	 JDb7nCKhP6NvnxojBfFa0FUjKp21Eg/jL89c2RHwG69wReDvu3Q1lYYDIxR5d/e8TK
-	 8F/IQbicLA9ig==
-Date: Tue, 11 Nov 2025 19:17:33 +0000
+	b=InNmF67phlhuM6WWZ4+J6R8uAQd81jpDlr+axxDpPgqIU9fLR7LDlKjYmLIDhRKWy
+	 hjIowlPR4d5CDJ9ppWpPMmAmbxyJDv4RNqZgrxyn3CGDRVtmwCyXRfmS1z/TYUIa6C
+	 DJ/agAs4n5OhsmL2nIayLm4q9tRDmozrb5DqdU23cuKR/YbHztfKzduf7jA2xssrS1
+	 UNIf/fznf8r3W+mYhBW3OiFojs1/tL/xCUuluOrhqLH9varbDw+4tW0G2shAVwugLk
+	 v3zxqRKsT1/XeKMVskHn3tM28wCvXOt9jbsNwwjUT5WHlYpn6P3793kDDdp4OQ504x
+	 GyLah0d2t0x4g==
+Date: Tue, 11 Nov 2025 19:25:10 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre
- Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
- <claudiu.beznea@tuxon.dev>, Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, David Miller
- <davem@davemloft.net>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun
- Hung <schung@nuvoton.com>, Yury Norov <yury.norov@gmail.com>, Rasmus
- Villemoes <linux@rasmusvillemoes.dk>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Johannes Berg <johannes@sipsolutions.net>,
- Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>, David Laight
- <david.laight.linux@gmail.com>, Vincent Mailhol
- <mailhol.vincent@wanadoo.fr>, Jason Baron <jbaron@akamai.com>, Borislav
- Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Kim Seer Paller
- <kimseer.paller@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Richard Genoud <richard.genoud@bootlin.com>, Cosmin Tanislav
- <demonsingur@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>, Jianping
- Shen <Jianping.Shen@de.bosch.com>, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-edac@vger.kernel.org,
- qat-linux@intel.com, linux-gpio@vger.kernel.org,
- linux-aspeed@lists.ozlabs.org, linux-iio@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next v5 10/23] iio: imu: smi330: #undef
- field_{get,prep}() before definition
-Message-ID: <20251111191351.06c0e660@jic23-huawei>
-In-Reply-To: <CAMuHMdX8c1VkBuPDpJ5mpCcRH+zEX4F1bQKFf_V8N9ZZtCYqxA@mail.gmail.com>
-References: <cover.1761588465.git.geert+renesas@glider.be>
-	<97549838f28a1bb7861cfb42ee687f832942b13a.1761588465.git.geert+renesas@glider.be>
-	<20251102104326.0f1db96a@jic23-huawei>
-	<CAMuHMdUkm2hxSW1yeKn8kZkSrosr8V-QTrHKSMkY2CPJ8UH_BQ@mail.gmail.com>
-	<20251109125956.106c9a1a@jic23-huawei>
-	<CAMuHMdX8c1VkBuPDpJ5mpCcRH+zEX4F1bQKFf_V8N9ZZtCYqxA@mail.gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Michael Hennerich
+ <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Andy
+ Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH v4 10/12] iio: dac: ad5446: Refactor header inclusion
+Message-ID: <20251111192510.15cedf67@jic23-huawei>
+In-Reply-To: <aRDsU-Zy49vm7N0R@smile.fi.intel.com>
+References: <20251104-dev-add-ad5542-v4-0-6fe35458bf8c@analog.com>
+	<20251104-dev-add-ad5542-v4-10-6fe35458bf8c@analog.com>
+	<aQpE0_-YVeHmfL2v@smile.fi.intel.com>
+	<20251109163030.66ad74fa@jic23-huawei>
+	<aRDsU-Zy49vm7N0R@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -88,69 +65,80 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 10 Nov 2025 09:59:34 +0100
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Sun, 9 Nov 2025 21:32:35 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> Hi Jonathan,
+> On Sun, Nov 09, 2025 at 04:30:30PM +0000, Jonathan Cameron wrote:
+> > On Tue, 4 Nov 2025 20:24:19 +0200
+> > Andy Shevchenko <andriy.shevchenko@intel.com> wrote: =20
+> > > On Tue, Nov 04, 2025 at 03:35:15PM +0000, Nuno S=C3=A1 via B4 Relay w=
+rote: =20
+>=20
+> ...
+>=20
+> > > > +#include <linux/export.h>
+> > > >  #include <linux/iio/iio.h>
+> > > > +#include <linux/kstrtox.h>
+> > > > +#include <linux/module.h>
+> > > > +#include <linux/mutex.h>
+> > > > +#include <linux/regulator/consumer.h>
+> > > > +#include <linux/sysfs.h>   =20
+> > >=20
+> > > Most likely the types.h is missing and maybe more... =20
+> >=20
+> > Looks like types.h belongs only in the header. =20
+>=20
+> Hmm... IIRC my suggestion was based on seeing one of uXX/sXX in the code,
+> but now I lost the context and maybe I memorised that wrongly.
+>=20
+> > FWIW I ran iwyu against this with my usual iio.imp file
+> > (shared previously on list)
+> >=20
+> > drivers/iio/dac/ad5446.h should add these lines:
+> > #include <linux/compiler.h>  // for __aligned
+> > #include <linux/minmax.h>    // for __cmp_op_max
+> > #include <linux/stddef.h>    // for NULL
+> >=20
+> > drivers/iio/dac/ad5446.h should remove these lines:
+> >=20
+> > The full include-list for drivers/iio/dac/ad5446.h:
+> > #include <linux/bits.h>      // for BIT
+> > #include <linux/compiler.h>  // for __aligned
+> > #include <linux/iio/iio.h>   // for IIO_DMA_MINALIGN, iio_chan_spec
+> > #include <linux/minmax.h>    // for __cmp_op_max
+> > #include <linux/mutex.h>     // for mutex
+> > #include <linux/stddef.h>    // for NULL
+> > #include <linux/types.h>     // for __be16, u16, u8
+> > struct device;  // lines 10-10
+> > ---
+> >=20
+> > So maybe those 3 extra in the header  but seem not much needed in the c=
+ file.
+> >=20
+> > Hence applied with the compiler.h one added to the header.
+> > Whereever that minmax is coming from is burried deep in macro
+> > so probably isn't appropriate anyway =20
+>=20
+> If we use min()/max() or something from there it relies on the __cmp_op_m=
+ax(),
+> so probably it's needed.
 
-Hi Geert,
+That was where I got stuck.  Neither min nor max is used in this file.
+Anyhow, I played guess where it might be.
+I think it is probablythe MAX() call in iio.h (which includes minmax.h)
+Hence I'm not bothered about that being included directly in this c file.
 
-> 
-> On Sun, 9 Nov 2025 at 14:01, Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Mon, 3 Nov 2025 11:09:36 +0100
-> > Geert Uytterhoeven <geert@linux-m68k.org> wrote:  
-> > > On Sun, 2 Nov 2025 at 11:43, Jonathan Cameron <jic23@kernel.org> wrote:  
-> > > > On Mon, 27 Oct 2025 19:41:44 +0100
-> > > > Geert Uytterhoeven <geert+renesas@glider.be> wrote:
-> > > >  
-> > > > > Prepare for the advent of globally available common field_get() and
-> > > > > field_prep() macros by undefining the symbols before defining local
-> > > > > variants.  This prevents redefinition warnings from the C preprocessor
-> > > > > when introducing the common macros later.
-> > > > >
-> > > > > Suggested-by: Yury Norov <yury.norov@gmail.com>
-> > > > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>  
-> > > >
-> > > > So this is going to make a mess of merging your series given this is
-> > > > queued up for next merge window.
-> > > >
-> > > > I can pick this one up perhaps and we loop back to the replacement of
-> > > > these in a future patch?  Or perhaps go instead with a rename
-> > > > of these two which is probably nicer in the intermediate state than
-> > > > undefs.  
-> > >
-> > > Renaming would mean a lot of churn.
-> > > Just picking up the #undef patch should be simple and safe? The
-> > > removal of the underf and redef can be done in the next cycle.
-> > > Thanks!  
-> >
-> > Only 1 call of each of these in the driver, so churn is small either way.
-> >
-> > To avoid a bisection problem if your tree merges first I need to modify
-> > this stuff in the original patch or leave it for Linus to deal with as
-> > a merge conflict resolution which is mess I'd rather do without.  
-> 
-> If you add the #undef, there won't be any bisection problem?
-
-Two different things.  The bisection comment was about squashing into the
-original driver patch - not what was squashed.  Your tree may well merge
-before mine does and a bisection could therefore land in between the 
-driver introduction and a patch I merge today.
-
-The rename is a preference only because I don't want an undef that smells
-like a hack / bug work around kicking around in the tree for significant time
-(probably a whole kernel cycle). In this case the churn is very similar
-with that or a rename of the macros - so rename it is.
+If anyone can spot a more direct use then shout and I'll be happy to add
+that include.
 
 Jonathan
 
- 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
+
+>=20
+> > and including stddef for NULL seems over the top. =20
+>=20
 
 

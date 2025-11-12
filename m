@@ -1,211 +1,153 @@
-Return-Path: <linux-iio+bounces-26188-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26189-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD6AC54B1D
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Nov 2025 23:12:09 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B85C54C33
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Nov 2025 23:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BAE254E231B
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Nov 2025 22:07:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3CADB4E0616
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Nov 2025 22:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1DB28CF56;
-	Wed, 12 Nov 2025 22:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC1B2E2EE7;
+	Wed, 12 Nov 2025 22:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="OpM7dkA7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BeyGCtIp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE48227E1D7;
-	Wed, 12 Nov 2025 22:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8302D193F
+	for <linux-iio@vger.kernel.org>; Wed, 12 Nov 2025 22:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762985228; cv=none; b=afGslvTSgTM79/fJZx+D2uOD909UC4XQYvxncXKies0Qc8Y1badMYQmrtSmxxBz97+jXfpQwxYvkpSMcfYKeFK7xN/0h1c4LUuRO9nCX3hXPTQeaGiD45f6AkCimoUpbDK2LDllQNfnbtq7QyVrY1+qi0WaaZI78Z9QutUB7C2M=
+	t=1762988245; cv=none; b=rRzscbkyDVoUEArx761+1hgy2UnLIsfIlwk3OEDFth0iTp28kvawam5EC0txxK2IYwjP6O6NF63Lp7fLo82poDKExc8HVRv6qW6SHzBwKLYY8GxiaH6V2IEuLkwnhx7UhFnS+XJp4DozB3Y9h/uWiMkQ4Lr7uo2B0ExlVaSmfE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762985228; c=relaxed/simple;
-	bh=NWNQWQtgXB9lxG6Z3RvO1fP1+VWNeupgLceuYxPJYoY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=Y11F9gaNxDGRJOQDBfEHmRuahuTPNcZxbgckbwfdOjvbP9vFxTSMxyh4Sg8J5KX7CgMJbaL0NZ9XxeK2WAK8uARzmGaAa5b6Gt6i1JIO8GgI4G2N+pArm+JgPeGuAfdfsxp4/g1jE8a1dlP6rpgrdZrpaAP0gahxqnyP0ZjScrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=OpM7dkA7; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5ACLfvWU2822525;
-	Wed, 12 Nov 2025 17:06:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=DKIM; bh=p3dYgZtyFgq3UP4PJjCI8l8uT2E
-	rSdGDa8/dxkqVwpE=; b=OpM7dkA70d3wrXShTxiU+5gFcuiFu1Mvehx4DT3KR5b
-	JwdNxMU5tzoZRxEIwWadF1ypBS7lEGSrlM89KXa4SA7Olehg6nafCMeEr1WSkJVO
-	VnngNLyu80u5GWCj8+fq8OCoUsESHNjSeRCqUrtdcl7EIBOO1voygHUpXSIdJevP
-	Bqvql9vW6fY+EGL5Buve7828JmsgI5ZlZ1YQJlwaQanXs6WKe/JVyS5YEN/ejSS/
-	0ZSZCFAqKHDcJk9NmRMNJnkd2Uh56nf9a7wjOGXi6pvfF4mGOX3DFJfus3c8sWEw
-	maM2uQ/X4JR6TKJkE7pFPzVGMiaQut1KMu+CGwneUyw==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4acpk2kxkr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Nov 2025 17:06:56 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 5ACM6tVP029738
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 12 Nov 2025 17:06:55 -0500
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Wed, 12 Nov 2025 17:06:55 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Wed, 12 Nov 2025 17:06:55 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Wed, 12 Nov 2025 17:06:55 -0500
-Received: from HYB-DlYm71t3hSl.ad.analog.com ([10.66.6.192])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5ACM6jSq001880;
-	Wed, 12 Nov 2025 17:06:47 -0500
-From: Jorge Marques <jorge.marques@analog.com>
-Date: Wed, 12 Nov 2025 23:06:38 +0100
-Subject: [PATCH v2] iio: accel: Change adxl345 depend to negate adxl35x
+	s=arc-20240116; t=1762988245; c=relaxed/simple;
+	bh=vGkHHaiy3MOyxLXpItzTUmCw6cPMAJKBLTMBmp9fJvg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kam8z3odVFW6huG/a82KxFoKKNihi07wgMMXf3tAoWdo5DpOwU4Z0E/lvJRMWsincmKv35nOcqaegBDcoaB44XxZVnOa9yw3xTTH+T4ewzNYvWbk5bmrIltoq6mJ8sdQ7saQ2GpNtxUrNsu3lm3CYUVJCxlAMt8by58QIhBRAWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BeyGCtIp; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42b3ad51fecso165933f8f.1
+        for <linux-iio@vger.kernel.org>; Wed, 12 Nov 2025 14:57:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762988242; x=1763593042; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4XAHcY8QOlmnRNr0WHp8n4Z1UHEJ+UhQLLpBoP3WxWw=;
+        b=BeyGCtIpgA3XcAhPQz9KGsqYJNAeHzi6h1fefetCMgNeNyOATyWpFrv+fM7QkM348b
+         iYMmaAjIwcRNYNf1Ve9xR6HgQhHkq6DbNSVf4JkKQ3TCWdoX/zS+fVpXkJLnA4nNVrKZ
+         Qux0H4jI6jLjbRuE8ZXolNsXo2FvCFJcUdHt7aE5+mwm1VVMAd+YTrqBt+KS9QGwEj5l
+         enqcuMQvL5zm+sZVTFyAFsqRakmrNMN2zUhHl+ohBGQrs/Whk4u/HmzqdaeQJkUkQXFv
+         Ib0t8FR/HAxCHJzY/j57oKVCY6kDJMMd45x3TO5D8SZ/V+XZAT1wB38bgIVqsBWaW6J2
+         sJbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762988242; x=1763593042;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4XAHcY8QOlmnRNr0WHp8n4Z1UHEJ+UhQLLpBoP3WxWw=;
+        b=GmFotHO5AJ6Sxg/5uD7AWNmGudOKkT6DPsvGukCu4TA460ExCUQ+eFBwQz15+7Avwg
+         AMRFwDN4C0+Rg1kBCsMHDjmiGWRipVEH8UMI1ZKIplUHKx1BbdQ/oEoVYRpz2SxLy9cV
+         8dMdxKjD7seKm5JeCrwZRC2hLoTQcH5SfwRmjMj7pC3clD+iwC1WTmPR+C7uXRFrfuS3
+         laUy1Zozi++SP92y7V/rIDPPp7tFhYfDqLiRRPV0qOHMlfKrcAdVLcEnZZDqHiZK2c1T
+         m7IIuijaNYPRKHjBx+pMWsqF4QPm3Ihv/FmITUc0BukmEhz2Mq5r3KRDiVGV/EyeomTo
+         C/CQ==
+X-Gm-Message-State: AOJu0Yw8fcC/wOaDWDJbyTzJYeGWYkB+rpXpwtlAZ9YMoJOwLdb8j26o
+	jR/8NxbsQ5NFKejcj/+m26iBlmNShWeS80FbYmMx5VLfyJBNbhZn87lX
+X-Gm-Gg: ASbGncsFDX2vAZHUY6xD8KXK4uwBC8RKGbq9vQw2RFD2OU7x3ElUB2lusjUZIGO3t7n
+	6180WzJKqCIemYnc5JOUtF/ZlM0lwVvvkWdZ7JQvRb9l6JnsX//OPetaOAB8z4nG4p+LDvZ2fXX
+	HcDPD1ZZ1iS28E/M6RT6r42MUx8bjiHje8/+shaEWy5I+FfMlAR6/hfo4u1+mzY2WiuG2Sw05WQ
+	lffo44yGG0aYzFvwBY0/z4FG2Ah9dQCy/CxeWYrqScqSMlFjU8f8cjEDdpDtNPssbzXN8Ac78xX
+	cOosGi1Osw8j2fV9FTKwXlhMo5DfqzmmLiEvns+GZYDa82EUOy7wb4yWR/2nGmYC6+MIyowUmzb
+	Kl0QFle/8e6tmtHByC+K7r3L7DgEjdxXbD4isiOWgUjMzPb3yCvuA9jvLCnyUiQfGy+w8fDRV
+X-Google-Smtp-Source: AGHT+IFXMDCLxFuuc4wUyJhDEvYIta/DJd7NNDT/1TjJrbWKKGa/j3geMAGKKaRYDGMbM1sA9IzI/Q==
+X-Received: by 2002:a05:6000:459a:b0:42b:2dfd:5350 with SMTP id ffacd0b85a97d-42b4bdd90e1mr3323681f8f.56.1762988241533;
+        Wed, 12 Nov 2025 14:57:21 -0800 (PST)
+Received: from localhost.localdomain ([78.209.131.33])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b53e85cc0sm236979f8f.17.2025.11.12.14.57.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 14:57:21 -0800 (PST)
+From: Antoni Pokusinski <apokusinski01@gmail.com>
+To: jic23@kernel.org,
+	dlechner@baylibre.com,
+	nuno.sa@analog.com,
+	andy@kernel.org,
+	marcelo.schmitt1@gmail.com
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Antoni Pokusinski <apokusinski01@gmail.com>
+Subject: [PATCH v4 0/3] iio: mpl3115: support for events
+Date: Wed, 12 Nov 2025 23:56:58 +0100
+Message-Id: <20251112225701.32158-1-apokusinski01@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20251112-adxl345-allow-adxl34x-mod-v2-1-5b1561eae5a0@analog.com>
-X-B4-Tracking: v=1; b=H4sIAO0EFWkC/43NQQ6CMBAF0KuQWTuGAYrgynsYFu20QpNCSWsQQ
- 7i7lXgAl+8n//8NognWRLhmGwSz2Gj9lFCcMuBBTr1Bq5OhyAtBeUko9erKSqB0zr9+WnH0Ghs
- uFRErUXENqT8H87DrsX3vkgcbnz68j6uFvuk/qwshIetaXKpWyablm5yk8/2Z/Qjdvu8fmNrAG
- 8MAAAA=
-X-Change-ID: 20251031-adxl345-allow-adxl34x-mod-8c3b11cb54c6
-To: Jonathan Cameron <jic23@kernel.org>,
-        David Lechner
-	<dlechner@baylibre.com>,
-        =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-        "Andy
- Shevchenko" <andy@kernel.org>
-CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <gastmaier@gmail.com>, Jorge Marques <jorge.marques@analog.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762985205; l=2855;
- i=jorge.marques@analog.com; s=20250303; h=from:subject:message-id;
- bh=NWNQWQtgXB9lxG6Z3RvO1fP1+VWNeupgLceuYxPJYoY=;
- b=iwA6ZQ8hNbOvjo2wvoTVgEREQYY2kjehG6fD7z6+9dNYQSvftlQrVczEBsrJKkyqFZhYo6K5V
- uW6x9qosEppDW1q4HjuNoERePzd78t2JL221p4101SpoFgMJnEF4RrK
-X-Developer-Key: i=jorge.marques@analog.com; a=ed25519;
- pk=NUR1IZZMH0Da3QbJ2tBSznSPVfRpuoWdhBzKGSpAdbg=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=d8D4CBjE c=1 sm=1 tr=0 ts=69150501 cx=c_pps
- a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=mWDnpkxqepvMiBNsm70A:9 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: jFNvueJ5ppIMI9ZCVV6RFPxBg6yUEMGG
-X-Proofpoint-ORIG-GUID: jFNvueJ5ppIMI9ZCVV6RFPxBg6yUEMGG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEyMDE3OCBTYWx0ZWRfX98L1ZnU4TWQk
- 6FQSJy2r+vLIRbxGYJ7fWYDjr/FuRaKsLois2ZJlDaKkMSi5VtvZKAJatKQXlKgu7fSQZSFmYqk
- LbFmwVFwPV2XibfZEatYBZg6MDPN6xBulAk+95YzA7T0RxVEtPi9+r9QswO9GPNkh0P7T5H7h1Z
- 8EDX00ilUY6zJWbqt4A9MLuD4SrmCr0nb0wuR5bq32Xm2YnoCERxdJna7j2Uum0yJBK41wW+1FD
- Y0yiNsKpDPMTjnwzvGBC1HeTqKcYe4r833QmzRjONhRwvXh1x2nmEMy1zICT88/LWgAAfaTRs9u
- yc6nGNdSjFpAgORFulnp/3jMNxCV7clkf3/1FZrFlKHeBPqAwO1Aq7icLO9bgBpeOMnaS6r7HTw
- OSk0eVoj02ekWy632RqfF60M1YA3iQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-12_06,2025-11-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
- clxscore=1015 suspectscore=0 impostorscore=0 adultscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511120178
+Content-Transfer-Encoding: 8bit
 
-Change 'depends on INPUT_ADXL34X=n' to '!(INPUT_ADXL34X)' to allow both
-drivers to be compiled as modules. The user then can use the blacklist
-to block loading one.
+Hello,
+The mpl3115 device can raise interrupts when a pressure or temperature
+threshold is crossed, this patchset adds support for them using IIO's
+events interface.
 
-Signed-off-by: Jorge Marques <jorge.marques@analog.com>
----
-There are two drivers for the compatible:
+In v4 mostly some minor variable rename changes and a comment in
+read_info_raw according to the review in v3.
 
-- adi,adxl345
-
-* IIO: 
-  drivers/iio/accel/adxl345_core.c
-  drivers/iio/accel/adxl345_spi.c
-  drivers/iio/accel/adxl345_i2c.c
-* Inputs:
-  drivers/input/misc/adxl34x-spi.c
-  drivers/input/misc/adxl34x-i2c.c
-
-To disallows both being complied, the depends INPUT_ADXL34X=n
-was added to ADXL345 symbols. However, it should be possible to compile
-both as modules, then blacklist one of them in the /etc/modprobe.d/blacklist.conf
-file. This patch changes the rule to !(INPUT_ADXL34X) to allow both as
-modules, but still disallow INPUT_ADXL34X to be built-in and ADXL345 as
-module.
-
-The following compatibles are not shared between both drivers:
-
-* IIO:
-  adi,adxl375 spi/i2c
-* Inputs:
-  adi,adxl34x i2c
----
-Changes in v2:
-- Added warning to Kconfig for users to not add both to the kernel.
-  A similar patch will be sent to the input subsystem.
-- Link to v1: https://lore.kernel.org/r/20251031-adxl345-allow-adxl34x-mod-v1-1-cd65749ba89c@analog.com
----
- drivers/iio/accel/Kconfig | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-index 76911278fb217..3d3f8d8673dde 100644
---- a/drivers/iio/accel/Kconfig
-+++ b/drivers/iio/accel/Kconfig
-@@ -64,7 +64,7 @@ config ADXL345
- 
- config ADXL345_I2C
- 	tristate "Analog Devices ADXL345 3-Axis Digital Accelerometer I2C Driver"
--	depends on INPUT_ADXL34X=n
-+	depends on !INPUT_ADXL34X
- 	depends on I2C
- 	select ADXL345
- 	select REGMAP_I2C
-@@ -74,11 +74,12 @@ config ADXL345_I2C
- 
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called adxl345_i2c and you will also get adxl345_core
--	  for the core module.
-+	  for the core module. INPUT_ADXL34X share compatibles with this
-+	  driver, do not add both modules to the kernel.
- 
- config ADXL345_SPI
- 	tristate "Analog Devices ADXL345 3-Axis Digital Accelerometer SPI Driver"
--	depends on INPUT_ADXL34X=n
-+	depends on !INPUT_ADXL34X
- 	depends on SPI
- 	select ADXL345
- 	select REGMAP_SPI
-@@ -88,7 +89,8 @@ config ADXL345_SPI
- 
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called adxl345_spi and you will also get adxl345_core
--	  for the core module.
-+	  for the core module. INPUT_ADXL34X share compatibles with this
-+	  driver, do not add both modules to the kernel.
- 
- config ADXL355
- 	tristate
+Kind regards,
+Antoni Pokusinski
 
 ---
-base-commit: 70437bbd7529e9860fb7f0c92a89e0e6abaa994e
-change-id: 20251031-adxl345-allow-adxl34x-mod-8c3b11cb54c6
+Changes since v3:
+(patch 1/3 "use get_unaligned_be24() to retrieve pressure data")
+* commit msg: "get_unaligned_be24" -> "get_unaligned_be24()"
+* read_info_raw: renamed "tmp[3]" -> "press_be24[3]"
+* read_info_raw: added comment at pressure val computation
+(patch 2/3 "add threshold support")
+* interrupt_handler: added sizeof() in a i2c_read_i2c_block call
+* read_thresh: renamed "tmp" -> "press_tgt"
+* write_thresh: renamed "tmp" -> "press_tgt"
 
-Best regards,
+Changes since v2:
+(general)
+* added the patch tidying up the pressure data retrieval (u8[3] used)
+(patch 2/3 "add threshold support")
+* includes: removed unused linux/units.h
+* read_thresh: fixed comment formatting
+* interrupt_handler: val_press is now u8[3] instead of __be32
+
+Changes since v1:
+(general)
+* squashed the cleanup patch
+* added the patch with the documentation update
+(patch 1/2 "add threshold event support")
+* patch description: explained changes in locking
+* read_event_config: replaced switch with ifs
+* read_event_config: return as early as possible, got rid of int_en_mask
+* read/write_thresh: pressure: calculation changes to comply with raw ABI
+* interrupt_handler: reordered the INT_SRC_* bits in if condition
+* read/write_thresh: used sizeof() and values from limits.h
+* write_thresh: replaced `u8 tmp[2]` with `__be16 tmp`
+* dropped the space between casting `(u8 *) &tmp`
+
+
+Antoni Pokusinski (3):
+  iio: mpl3115: use get_unaligned_be24() to retrieve pressure data
+  iio: mpl3115: add threshold events support
+  iio: ABI: document pressure event attributes
+
+ Documentation/ABI/testing/sysfs-bus-iio |   2 +
+ drivers/iio/pressure/mpl3115.c          | 234 ++++++++++++++++++++++--
+ 2 files changed, 223 insertions(+), 13 deletions(-)
+
+
+base-commit: 1d09cf18cc91d29f650ad9811ed4868d9304d6c7
 -- 
-Jorge Marques <jorge.marques@analog.com>
+2.25.1
 
 

@@ -1,290 +1,259 @@
-Return-Path: <linux-iio+bounces-26178-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26179-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF847C4FD21
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 22:14:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 074A7C503B6
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Nov 2025 02:46:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFD8D3A1712
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Nov 2025 21:12:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5A6D3B2F3E
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Nov 2025 01:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2682459C9;
-	Tue, 11 Nov 2025 21:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3C2288515;
+	Wed, 12 Nov 2025 01:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ej4+SPqC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNaDaWGL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EA135CBB9;
-	Tue, 11 Nov 2025 21:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B6D284689
+	for <linux-iio@vger.kernel.org>; Wed, 12 Nov 2025 01:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762895517; cv=none; b=DgPDrNGfbyq4eFe4Jzg4nhi+BLvXzTGhzxVNLvJC8PLrvcyeG+Py8BBGIi4pOupBhkIWqaRy8Wtb18DS+vC8kTX7has6m4OkuIgaHLOBFHh0Yjmd4HI3rRf2cKpKJhHnE4P1hd4eZ90QSrkclAYmDXwRFRY+WjoxYOlXDr3wgXk=
+	t=1762912013; cv=none; b=Qf0JtEx4KpHOvA7+3nZld59XCijEqJ1lsR17sjsfeJ8KTUwfzqdQ4dinQEEBovs4NNSqQ8EdFkgsi6xwemzZ8HAI2J+wv6I7jRrMh+cnoQItCvwGVD3Zm00xmjt+LmA/3toklHEvJ0q6ObefDeyHDRKoTA6dVXONl7aidyV8ebs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762895517; c=relaxed/simple;
-	bh=3lyHQk+0PzRgbds35eaJRyIdDSi1lVrFMz7RE1ZSqws=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cmQc+OPnQl+btDTSSxo0H4uGO/oaXpIj+7yRGwnZFco61i6ExDFEHxaYietAzv/TVna0NXzCsxkdWWko5Y6qJF4lAaVqx5LMIT4aAkuM+JFi3W00bnzXjtzdJxDaVNDNqOgp+Bq0WTazDhq021M0fKukmnABgcTfyikvgZ64Nkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej4+SPqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C80FC4CEF5;
-	Tue, 11 Nov 2025 21:11:53 +0000 (UTC)
+	s=arc-20240116; t=1762912013; c=relaxed/simple;
+	bh=vobJ/1vdObFgvyWypp5ZNLxQcdCa9e4yhVUGVXNVasg=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=C8I/oylwPq4bOl4YqcNfIvbYGYGnxIwF1IZATzWzRA3eotGuzjsNN0w+xsBfe41WKN3W/dXQ5IJN1bBz0GY1C+2C78+P+reIjTcLKMBxZzvHoP+sPrTL3BYJMkmIaHpto7T+obp7CoVhzIIyxpEQ3SLpqvtbarH+bBkyK12qeBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNaDaWGL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EADB7C4CEFB
+	for <linux-iio@vger.kernel.org>; Wed, 12 Nov 2025 01:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762895517;
-	bh=3lyHQk+0PzRgbds35eaJRyIdDSi1lVrFMz7RE1ZSqws=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ej4+SPqCnxQFqkrgxlg+EOX/GriEHMHKiEQGTqk0VlHEBdp4MpgObRj0Br9mGmslR
-	 TZ2JwH91cvp/LgqtNKWSJtPziiqWygeuczj+PV+8qBERpepo9vKssbDG3BcHwZHvso
-	 bNOsgoV/rTtLJzHljjUpJQ57q4jUKOXsQmLcR4VbnQsvZ2VrIaC7ZNTAVv0DyFV6vc
-	 x73jcH+hoKtPMTfpEADif4X8+SmFVfHcEJfrGX+F0Nzsz6HLCQ4EuvBXAVqZESLQdW
-	 4zJGzfcPhJSmsHuPCJd7LFl3zUCOH10SL3S7NwbfLLC7tyaGr0xDI13W8hmONZN9+W
-	 dljQp0vn1hbtQ==
-Date: Tue, 11 Nov 2025 21:11:48 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nuno.sa@analog.com>, <dlechner@baylibre.com>, <andy@kernel.org>,
- <Michael.Hennerich@analog.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
- <conor+dt@kernel.org>, <corbet@lwn.net>, <cosmin.tanislav@analog.com>,
- <marcelo.schmitt1@gmail.com>
-Subject: Re: [PATCH v1 2/3] iio: adc: Initial support for AD4134
-Message-ID: <20251111211148.322e5aaf@jic23-huawei>
-In-Reply-To: <86f532ae3a9b3f122b9d5dbada9c131a0c048ca7.1762777931.git.marcelo.schmitt@analog.com>
-References: <cover.1762777931.git.marcelo.schmitt@analog.com>
-	<86f532ae3a9b3f122b9d5dbada9c131a0c048ca7.1762777931.git.marcelo.schmitt@analog.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=k20201202; t=1762912013;
+	bh=vobJ/1vdObFgvyWypp5ZNLxQcdCa9e4yhVUGVXNVasg=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=NNaDaWGLhdkpqdo0gZ5SwEbZrnt6TOUXfWAwTgZrd55x6m7ksZpqqLSSBYWSJvEwX
+	 GRI/Yojkb7B+aYIXjFsylhaVk9p3UHNlwWNK+4i4Z/RU09O4IsjcR+clWwERT+Bxx1
+	 eiAZIAngHvPGwg67lam6W4OnBoQ3WMEYYW+jdnf8N4yWxyaDUtOECExHAmOdL93NFz
+	 sC5PaoiJ+06WiT2uIGBMsh7VJZsd1SH4/ulQofK74K4RXKG8DCTg7S3275dcJ8MSq3
+	 3xsqH0kqq9/ol6tM+KCgv9PpNHO0x7jC6Sa2zha6PUR5IFFJ4ALtsSwrkF37ICxI0x
+	 xo6ZIqwkxHlyw==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id DF052C53BBF; Wed, 12 Nov 2025 01:46:52 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 220772] NULL pointer dereference in bmc150-accel-core
+Date: Wed, 12 Nov 2025 01:46:52 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: highwaystar.ru@gmail.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-220772-217253-hKYWpHfSlh@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-220772-217253@https.bugzilla.kernel.org/>
+References: <bug-220772-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Nov 2025 09:45:40 -0300
-Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D220772
 
-> AD4134 is a 24-bit, 4-channel, simultaneous sampling, precision
-> analog-to-digital converter (ADC). The device can be managed through SPI or
-> direct control of pin logical levels (pin control mode). The AD4134 design
-> also features a dedicated bus for ADC sample data output. Though, this
-> initial driver for AD4134 only supports usual SPI connections.
-> 
-> The different wiring configurations will likely require distinct software
-> to handle. So, the code specific to SPI is enclosed in ad4134-spi.c, while
-> functionality that may be useful to all wiring configuration is set into
-> ad4134-common.h and ad4134-common.c.
+--- Comment #3 from Vitaliy Tomin (highwaystar.ru@gmail.com) ---
+(In reply to Jonathan Cameron from comment #2)
+> On Sun, 09 Nov 2025 19:59:38 +0000
+> bugzilla-daemon@kernel.org wrote:
 
-'maybe' isn't usually a justification for a split.  If that code
-was on list even as an RFC before merging  I'd be fine with this, but if it is
-something we might never see upstream, then squash the abstractions for
-now. Those then end up being introduced as a precursor part of the patch
-set that gives them a reason to exist.
-
-> 
-> Add basic support for AD4134 that allows single-shot ADC sample read.
-> 
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-A few other comments inline,
-
-Thanks, J
-> diff --git a/drivers/iio/adc/ad4134-common.c b/drivers/iio/adc/ad4134-common.c
-> new file mode 100644
-> index 000000000000..05332a640926
-> --- /dev/null
-> +++ b/drivers/iio/adc/ad4134-common.c
-
-> +
-> +static const char *const ad4134_clk_sel[] = {
-> +	"xtal1-xtal2", "clkin"
-> +};
-> +
-> +static int ad4134_clock_select(struct ad4134_state *st)
-> +{
-> +	struct device *dev = st->dev;
-> +	struct clk *sys_clk;
-> +	int ret;
-> +
-> +	ret = device_property_match_property_string(dev, "clock-names",
-> +						    ad4134_clk_sel,
-> +						    ARRAY_SIZE(ad4134_clk_sel));
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "failed to find external clock\n");
-> +
-> +	sys_clk = devm_clk_get_enabled(dev, ad4134_clk_sel[ret]);
-> +	if (IS_ERR(sys_clk))
-> +		return dev_err_probe(dev, PTR_ERR(sys_clk),
-> +				     "failed to get %s external clock\n",
-> +				     ad4134_clk_sel[ret]);
-This is a somewhat unusual approach. More common to just trying getting
-an optional clock and if that fails try the other one.
-
-devm_clk_get_optional_enabled()
+> Could you share the names of the triggers under
+> /sys/bus/iio/devices/trigger*/name
+> and
+> cat /proc/interrupts
+>=20
+> Maybe the tooling is using an hrtimer or sysfs trigger but the
+> driver seems to have a validate_trigger callback that should prevent that
+> so I think we need a little more information.
+>=20
+> Thanks
+>=20
+> Jonathan
 
 
-> +
-> +	st->sys_clk_rate = clk_get_rate(sys_clk);
-> +	if (st->sys_clk_rate != AD4134_EXT_CLOCK_MHZ)
-> +		dev_warn(dev, "invalid external clock frequency %lu\n",
-> +			 st->sys_clk_rate);
-> +
-> +	return 0;
-> +}
+There is no such files here:
+tomin@fedora:~$ ls /sys/bus/iio/devices/trigger*/name
+ls: cannot access '/sys/bus/iio/devices/trigger*/name': No such file or
+directory
+tomin@fedora:~$ ls /sys/bus/iio/devices/iio\:device*/
+'/sys/bus/iio/devices/iio:device0/':
+buffer                   events                       in_accel_x_raw=20=20
+in_temp_offset  name                          subsystem
+buffer0                  firmware_node                in_accel_y_raw=20=20
+in_temp_raw     power                         trigger
+current_timestamp_clock  in_accel_sampling_frequency  in_accel_z_raw=20=20
+in_temp_scale   sampling_frequency_available  uevent
+dev                      in_accel_scale               in_mount_matrix  labe=
+l=20=20=20
+       scan_elements                 waiting_for_supplier
 
-> diff --git a/drivers/iio/adc/ad4134-common.h b/drivers/iio/adc/ad4134-common.h
-> new file mode 100644
-> index 000000000000..c0a553d827c9
-> --- /dev/null
-> +++ b/drivers/iio/adc/ad4134-common.h
+'/sys/bus/iio/devices/iio:device1/':
+buffer                   events                       in_accel_x_raw=20=20
+in_temp_offset  name                          subsystem
+buffer0                  firmware_node                in_accel_y_raw=20=20
+in_temp_raw     power                         trigger
+current_timestamp_clock  in_accel_sampling_frequency  in_accel_z_raw=20=20
+in_temp_scale   sampling_frequency_available  uevent
+dev                      in_accel_scale               in_mount_matrix  labe=
+l=20=20=20
+       scan_elements                 waiting_for_supplier
+tomin@fedora:~$ ls /sys/bus/iio/devices/iio\:device*/trigger
+'/sys/bus/iio/devices/iio:device0/trigger':
+current_trigger
 
-> +
-> +#define AD4134_CH_VREG(x)			((x) + 0x50) /* chanX virtual register */
-> +#define AD4134_VREG_CH(x)			((x) - 0x50) /* chan of virtual reg X */
-
-Add a comment or two on what virtual registers are for.
-
-> +struct iio_scan_type ad4134_scan_types[] = {
-> +	AD4134_SCAN_TYPE(16, 16),
-> +	AD4134_SCAN_TYPE(16, 24),
-
-There are no buffer in here so can type ends up meaning little.
-If this eventually doesn't become useful, storage bits must be a power of 2 * 8
-So can't be 24.  
-
-> +	AD4134_SCAN_TYPE(24, 24),
-> +	AD4134_SCAN_TYPE(24, 32),
-> +};
-> +
-> +#define AD4134_CHANNEL(_index) {						\
-> +	.type = IIO_VOLTAGE,							\
-> +	.indexed = 1,								\
-> +	.channel = (_index),							\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),				\
-> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),			\
-> +	.scan_index = (_index),							\
-> +	.has_ext_scan_type = 1,							\
-> +	.ext_scan_type = ad4134_scan_types,					\
-> +	.num_ext_scan_type = ARRAY_SIZE(ad4134_scan_types)			\
-> +}
-
-> diff --git a/drivers/iio/adc/ad4134-spi.c b/drivers/iio/adc/ad4134-spi.c
-> new file mode 100644
-> index 000000000000..7d0749e5c084
-> --- /dev/null
-> +++ b/drivers/iio/adc/ad4134-spi.c
-> @@ -0,0 +1,287 @@
-
-> +
-> +#include "ad4134-common.h"
-
-> +static int ad4134_reg_write(void *context, unsigned int reg, unsigned int val)
-> +{
-> +	struct ad4134_state *st = context;
-> +	struct spi_device *spi = to_spi_device(st->dev);
-> +	struct spi_transfer xfer = {
-> +		.tx_buf = st->tx_buf,
-> +		.rx_buf = st->rx_buf,
-> +		.len = AD4134_SPI_MAX_XFER_LEN,
-> +	};
-> +	int ret;
-> +
-> +	ad4134_prepare_spi_tx_buf(reg, val, st->tx_buf);
-> +
-> +	ret = spi_sync_transfer(spi, &xfer, 1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (st->rx_buf[2] != st->tx_buf[2])
-> +		dev_dbg(st->dev, "reg write CRC check failed\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad4134_data_read(struct ad4134_state *st, unsigned int reg,
-> +			    unsigned int *val)
-> +{
-> +	struct spi_device *spi = to_spi_device(st->dev);
-> +	struct iio_scan_type *scan_type = &ad4134_scan_types[st->current_scan_type];
-> +	unsigned int i;
-> +	int ret;
-> +
-> +	/*
-> +	 * Data from all four channels is serialized and output on SDO. Read
-> +	 * them all but keep only the requested data.
-
-I'm failing to spot this mode described on the datasheet.  Could you
-provide a reference section?
-
-> +	 */
-> +	for (i = 0; i < ARRAY_SIZE(ad4134_chan_set); i++) {
-> +		ret = spi_write_then_read(spi, NULL, 0, st->rx_buf,
-> +					  BITS_TO_BYTES(scan_type->storagebits));
-> +		if (ret)
-> +			return ret;
-> +
-> +		if (i != AD4134_VREG_CH(reg))
-> +			continue;
-> +
-> +		if (scan_type->realbits == 16)
-> +			*val = get_unaligned_be16(st->rx_buf);
-> +		else
-> +			*val = get_unaligned_be24(st->rx_buf);
-> +
-> +		*val >>= scan_type->shift;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad4134_reg_read(void *context, unsigned int reg, unsigned int *val)
-> +{
-> +	struct ad4134_state *st = context;
-> +	struct spi_device *spi = to_spi_device(st->dev);
-> +	struct spi_transfer xfer = {
-> +		.tx_buf = st->tx_buf,
-> +		.rx_buf = st->rx_buf,
-> +		.len = AD4134_SPI_MAX_XFER_LEN,
-> +	};
-> +	unsigned int inst;
-> +	int ret;
-> +
-> +	if (reg >= AD4134_CH_VREG(0))
-> +		return ad4134_data_read(st, reg, val);
-
-If you are going down this path the xfer isn't used.  To avoid that being
-a little confusing I'd factor out the rest of this function into a helper
-
-> +
-> +	inst = AD4134_REG_READ_MASK | reg;
-> +	ad4134_prepare_spi_tx_buf(inst, 0, st->tx_buf);
-> +
-> +	ret = spi_sync_transfer(spi, &xfer, 1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*val = st->rx_buf[1];
-> +
-> +	/* Check CRC */
-> +	if (st->rx_buf[2] != st->tx_buf[2])
-> +		dev_dbg(st->dev, "reg read CRC check failed\n");
-> +
-> +	return 0;
-> +}
+'/sys/bus/iio/devices/iio:device1/trigger':
+current_trigger
 
 
-> +
-> +static const struct ad4134_bus_info ad4134_min_io_bus_info = {
 
-given it's a mix of bus specific and other stuff, I'm not sure 
-that calling this bus_info makes sense.  Maybe just ad4134_info?
+tomin@fedora:~$ cat /proc/interrupts
+            CPU0       CPU1       CPU2       CPU3=20=20=20=20=20=20=20
+   1:          0          0         72          0 IR-IO-APIC    1-edge=20=
+=20=20=20=20
+i8042
+   8:          0          0          0          0 IR-IO-APIC    8-edge=20=
+=20=20=20=20
+rtc0
+   9:      10041          0          0          0 IR-IO-APIC    9-fasteoi=
+=20=20
+acpi
+  12:          0          6          0          0 IR-IO-APIC   12-edge=20=
+=20=20=20=20
+i8042
+  14:          8          0          0          0 IR-IO-APIC   14-fasteoi=
+=20=20
+INTC1057:00
+  16:         56          0          0          0 IR-IO-APIC   16-fasteoi=
+=20=20
+mmc0, i801_smbus
+  27:          0          0       5167          0 IR-IO-APIC   27-fasteoi=
+=20=20
+i2c_designware.1, idma64.1
+  29:        236          0          0          0 IR-IO-APIC   29-fasteoi=
+=20=20
+i2c_designware.3, idma64.3
+  31:          0          0          0          0 IR-IO-APIC   31-fasteoi=
+=20=20
+i2c_designware.5, idma64.5
+  32:          0          0          0          0 IR-IO-APIC   32-fasteoi=
+=20=20
+i2c_designware.6, idma64.6
+  33:          0       4921          0          0 IR-IO-APIC   33-fasteoi=
+=20=20
+i2c_designware.4, idma64.4
+  39:          0          0          0          0 IR-IO-APIC   39-fasteoi=
+=20=20
+pxa2xx-spi.0, idma64.0
+  40:          0          0          0          0 IR-IO-APIC   40-fasteoi=
+=20=20
+i2c_designware.2, idma64.2
+ 120:          0          1          0          0 IR-PCI-MSI-0000:00:1d.0=
+=20=20=20
+0-edge      aerdrv, PCIe bwctrl
+ 121:       9054          0          0          0 IR-PCI-MSI-0000:00:14.0=
+=20=20=20
+0-edge      xhci_hcd
+ 126:         10          4          0         30 IR-PCI-MSIX-0000:01:00.0=
+=20=20=20
+0-edge      nvme0q0
+ 127:       7450          0          0          0 IR-PCI-MSIX-0000:01:00.0=
+=20=20=20
+1-edge      nvme0q1
+ 128:          0       5690          0          0 IR-PCI-MSIX-0000:01:00.0=
+=20=20=20
+2-edge      nvme0q2
+ 129:          0          0       5152          0 IR-PCI-MSIX-0000:01:00.0=
+=20=20=20
+3-edge      nvme0q3
+ 130:          0          0          0       6240 IR-PCI-MSIX-0000:01:00.0=
+=20=20=20
+4-edge      nvme0q4
+ 131:          0      10732      10690       1008 IR-PCI-MSI-0000:00:02.0=
+=20=20=20
+0-edge      i915
+ 132:          8          0          0          0 intel-gpio  306  GDIX1001=
+:00
+ 133:          0         49          0          0 IR-PCI-MSI-0000:00:16.0=
+=20=20=20
+0-edge      mei_me
+ 134:        883       1015        400        779 IR-PCI-MSIX-0000:00:14.3=
+=20=20=20
+0-edge      iwlwifi:default_queue
+ 135:         46         59         35          4 IR-PCI-MSIX-0000:00:14.3=
+=20=20=20
+1-edge      iwlwifi:queue_1
+ 136:          5         68          1         17 IR-PCI-MSIX-0000:00:14.3=
+=20=20=20
+2-edge      iwlwifi:queue_2
+ 137:         20         30         25         35 IR-PCI-MSIX-0000:00:14.3=
+=20=20=20
+3-edge      iwlwifi:queue_3
+ 138:         21        123        114        269 IR-PCI-MSIX-0000:00:14.3=
+=20=20=20
+4-edge      iwlwifi:queue_4
+ 139:          0          0          0          5 IR-PCI-MSIX-0000:00:14.3=
+=20=20=20
+5-edge      iwlwifi:exception
+ 140:       1213          0          0          0 IR-PCI-MSI-0000:00:1f.3=
+=20=20=20
+0-edge      snd_hda_intel:card1
+ NMI:          8          8          9          8   Non-maskable interrupts
+ LOC:      87542      86732      94323      81275   Local timer interrupts
+ SPU:          0          0          0          0   Spurious interrupts
+ PMI:          8          8          9          8   Performance monitoring
+interrupts
+ IWI:       2334      10486       9187       2892   IRQ work interrupts
+ RTR:          0          0          0          0   APIC ICR read retries
+ RES:       1781       1199       1600       3146   Rescheduling interrupts
+ CAL:      23231      22621      16364      21816   Function call interrupts
+ TLB:       1208       1127       1072       1304   TLB shootdowns
+ TRM:        680        680        680        680   Thermal event interrupts
+ THR:          0          0          0          0   Threshold APIC interrup=
+ts
+ DFR:          0          0          0          0   Deferred Error APIC
+interrupts
+ MCE:          0          0          0          0   Machine check exceptions
+ MCP:          3          4          4          4   Machine check polls
+ ERR:          0
+ MIS:          0
+ PIN:          0          0          0          0   Posted-interrupt
+notification event
+ NPI:          0          0          0          0   Nested posted-interrupt
+event
+ PIW:          0          0          0          0   Posted-interrupt wakeup
+event
+ PMN:          0          0          0          0   Posted MSI notification
+event
 
-> +	.chip_info = &ad4134_chip_info,
-> +	.bops = &ad4134_min_io_bops,
-> +};
+--=20
+You may reply to this email to add a comment.
 
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

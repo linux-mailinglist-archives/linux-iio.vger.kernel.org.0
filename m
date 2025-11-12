@@ -1,65 +1,65 @@
-Return-Path: <linux-iio+bounces-26181-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26180-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612A1C5345E
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Nov 2025 17:06:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69631C532E4
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Nov 2025 16:51:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7C28564D18
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Nov 2025 15:04:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7485F544F0A
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Nov 2025 15:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592C1346FB3;
-	Wed, 12 Nov 2025 14:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A60346E50;
+	Wed, 12 Nov 2025 14:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MSqcILE1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hPgj24so"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841D2346E46;
-	Wed, 12 Nov 2025 14:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7611A346E41;
+	Wed, 12 Nov 2025 14:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762959463; cv=none; b=E0cd7iAQLjgS9BwhfR+Cy26TLF3m69zbJQnQScTAUq0KKrxKIrxKD21yJ2lP/j4Ev0PUREN0WjXt3Cjx7r+HQqed2JZKfgwlmGfWQIcehaT3x59LDMMycCIoD94JfyZDB5fS2uDJZ5y2wWZnX8LEfLtK1TOu1hHFLXbgtiyazZ8=
+	t=1762959461; cv=none; b=YPPBCuh+jzyZ9PGbLZ9j6g3MI8VDygmPninz+3RZuy+psSDSIm4MW/yPIsUbixJqVo/7zi+E+oLFK+pVc63DZN6bkdqrP2Cf24mFYsplbSdbjgJ0KMVqX9tXrrvkkpt6URYmKlqFmMDBXF+kLMbzZJZxq992uT1XR8KJTh3FzGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762959463; c=relaxed/simple;
-	bh=pYvFKKD4RrCAt43G3E8x50+Y+idteWAh5jNa5Ia/hIM=;
+	s=arc-20240116; t=1762959461; c=relaxed/simple;
+	bh=dzPIN1K4a2crXL9FdXtllClPyLCjvr+amLRN6CCJ9DE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0CP1GGDSwVIX+5TkbTrTiy+GtwEDj+e5L3Ldfr37La+T0m8ACS33tB7k8F/1az+YIlP7evRsQeMnWQRDxuPhywwmrpN1bBbBdIeu8k+cgIpHFZ7/GMBnSnyEqKgNCdaaLMPUg9+2XBVAbxLmVzVQIQiRDQb08yDIskhZTqoPss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MSqcILE1; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=MHXje7MYDg67YF7mZz/ddKPj5rgxb9QZtuyP4MZLYuSHHkFJOLnOdj0hwByMjqVkXmekmR6EdiA1PlkUfhY4LHNixRtr3uIg4wu2inOGLnGcQY3sTcWTJW6Oaibe64wGPm4hacKors5AtIZu/ZaIj1XUaMBTGocT2MNf1+S1AmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hPgj24so; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762959461; x=1794495461;
+  t=1762959459; x=1794495459;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pYvFKKD4RrCAt43G3E8x50+Y+idteWAh5jNa5Ia/hIM=;
-  b=MSqcILE1RdWn4qWv5IBDifmeBCBJHFeQcJQ/7SBOJOgpMKkz1d/dkPl1
-   AZo2EONc98inBl1WTjjtpXB2vG2/b7Ool95t6v8J5H8Cu7X6j4yaz+6X7
-   T1ittP7+tBnVtxGxV7FJRZpWQaOivYtTIpTyzc5Kkt+oG2Dtysf/RQqeE
-   NOk/xk3MRrSs7Gm33CC4CPC3O/8Y8nHcmtN8r53T53z6mZ4wkYRKXrybq
-   59Pjfj3uuhDrHAPzAhHReDLdCK4h4o6/GzoT+G38cOBJr5viUsNM3MRT6
-   MwWcUGttz5XWM05aVces0jQ5vj9+3mrUnkUDrnw0d4hpioxB29RlCoQFO
-   A==;
-X-CSE-ConnectionGUID: vrPti66AS6+JI4t9bHB2RA==
-X-CSE-MsgGUID: dsXjd++cSCak1ayNWfjeFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="64728026"
+  bh=dzPIN1K4a2crXL9FdXtllClPyLCjvr+amLRN6CCJ9DE=;
+  b=hPgj24soos9MQ0bn94V+Ffm2mXCkY6Rq8qEbOB+1Kwp4X39SGYmsXE5Z
+   px4vZlnyRErYhCCbB3c8YXlFoNJBaf8RjQ/HM4HPms4rTVxgXJCJ6hb4X
+   yhyi4nMw5EijP7vBQ/GvtKZ6dAEX0DeoOsPyyTmBgAWClCZGwtYZPWXts
+   oLuvcnDKXQZ+zK8w17D3Vel1T0fguOF6f9iJdeP70GQdjJ40dQCv/s3IK
+   FEt6ILf7tRU/r9dQBQpCIPQfvEpO121WQQS3c60RAYPwRKHE1V8UKaZPj
+   JabYxHD+oPe9Te0gXkLx6x/J2TJUYg0p5coLN/aFco1Bpl57FDDiTWWWR
+   Q==;
+X-CSE-ConnectionGUID: DweKAa+IT3SNMpR2Sm7rng==
+X-CSE-MsgGUID: O2zy6zldTsaBY4HpBP3cTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="64728018"
 X-IronPort-AV: E=Sophos;i="6.19,299,1754982000"; 
-   d="scan'208";a="64728026"
+   d="scan'208";a="64728018"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
   by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 06:57:38 -0800
-X-CSE-ConnectionGUID: 4bq1oUjrT7iPAASnPCeSXw==
-X-CSE-MsgGUID: C9L1zFCQSJSZoFeRN3g+WQ==
+X-CSE-ConnectionGUID: 7mz2q09mQNC7ixwOcD8f/g==
+X-CSE-MsgGUID: h0CL+YTFTgSZ8gNpn7iqHA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,299,1754982000"; 
-   d="scan'208";a="188874871"
+   d="scan'208";a="188874869"
 Received: from black.igk.intel.com ([10.91.253.5])
   by fmviesa007.fm.intel.com with ESMTP; 12 Nov 2025 06:57:37 -0800
 Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 28E9097; Wed, 12 Nov 2025 15:57:36 +0100 (CET)
+	id 2C87798; Wed, 12 Nov 2025 15:57:36 +0100 (CET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	linux-iio@vger.kernel.org,
@@ -69,9 +69,9 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 2/3] iio: core: Clean up device correctly on iio_device_alloc() failure
-Date: Wed, 12 Nov 2025 15:55:09 +0100
-Message-ID: <20251112145735.2075527-3-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 3/3] iio: core: Replace lockdep_set_class() + mutex_init() by combined call
+Date: Wed, 12 Nov 2025 15:55:10 +0100
+Message-ID: <20251112145735.2075527-4-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20251112145735.2075527-1-andriy.shevchenko@linux.intel.com>
 References: <20251112145735.2075527-1-andriy.shevchenko@linux.intel.com>
@@ -83,44 +83,29 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Once we called device_initialize() we have to call put_device()
-on it. Refactor the code to make it in the right order.
+Replace lockdep_set_class() + mutex_init() by combined call
+mutex_init_with_key().
 
-Fixes: fe6f45f6ba22 ("iio: core: check return value when calling dev_set_name()")
-Fixes: 847ec80bbaa7 ("Staging: IIO: core support for device registration and management")
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/industrialio-core.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/iio/industrialio-core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 93d6e5b101cf..5d2f35cf18bc 100644
+index 5d2f35cf18bc..f69deefcfb6f 100644
 --- a/drivers/iio/industrialio-core.c
 +++ b/drivers/iio/industrialio-core.c
-@@ -1697,11 +1697,6 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 		ACCESS_PRIVATE(indio_dev, priv) = (char *)iio_dev_opaque +
- 			ALIGN(sizeof(*iio_dev_opaque), IIO_DMA_MINALIGN);
+@@ -1717,9 +1717,8 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
  
--	indio_dev->dev.parent = parent;
--	indio_dev->dev.type = &iio_device_type;
--	indio_dev->dev.bus = &iio_bus_type;
--	device_initialize(&indio_dev->dev);
--
- 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
+ 	lockdep_register_key(&iio_dev_opaque->mlock_key);
+-	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
  
- 	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
-@@ -1727,6 +1722,11 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 	mutex_init(&iio_dev_opaque->mlock);
+-	mutex_init(&iio_dev_opaque->mlock);
++	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
  	mutex_init(&iio_dev_opaque->info_exist_lock);
  
-+	indio_dev->dev.parent = parent;
-+	indio_dev->dev.type = &iio_device_type;
-+	indio_dev->dev.bus = &iio_bus_type;
-+	device_initialize(&indio_dev->dev);
-+
- 	return indio_dev;
- }
- EXPORT_SYMBOL(iio_device_alloc);
+ 	indio_dev->dev.parent = parent;
 -- 
 2.50.1
 

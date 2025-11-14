@@ -1,82 +1,69 @@
-Return-Path: <linux-iio+bounces-26220-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26224-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A254C5D094
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 13:13:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F103C5DE7A
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 16:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C2B724E7DB8
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 12:10:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46B2B4A29BB
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 15:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD624314D3D;
-	Fri, 14 Nov 2025 12:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFBB329387;
+	Fri, 14 Nov 2025 15:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="O0NI//jb"
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="cS2A43bV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx12.kaspersky-labs.com (mx12.kaspersky-labs.com [91.103.66.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7BA314A70;
-	Fri, 14 Nov 2025 12:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC76423C8C7;
+	Fri, 14 Nov 2025 15:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.103.66.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763122212; cv=none; b=nb9H3gwuQvwXh9Oy2td6+5spn0StkOVTB4LugJod+udpSKUEyUfcJBbKFl4+TU4ZGokVa05YkpW4M0fwr1/Zz+pjub2IRjjctGTs+MxIqr+f3AFIuYLlOT8hXrKTG7Pg8ql7BuID/TBPjcpl09ROgztAI+KPRtFkUukp+bzkabs=
+	t=1763133213; cv=none; b=NKl873anMzcPh1gPN7cqtG9jpJ5B8c1Jh1ijDuvSMEdFhnAHa8tWKEUde10ykKJAGbH7ZFQMhn+tjzJ0zTRAkTujLd75hM+z+QwhR6hdQ2fLIMltSNOL1ZTzoDcmF+18Oihg2jBrEG7229/9FeyGWBvy4m1SpSbv62x8ME337MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763122212; c=relaxed/simple;
-	bh=HAc/xn10cMvNrj7udzOuqVdwq77+2n6om11MvoL9Ydo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GRV76MuLhOrfrVgWnKyll4vARAZz9496rxEvCjcCxzfJnl09gqdu6AoO6XQz+Xt70wzgxpWLLInrGbhyj4tFztOeUGErsge/3mT0cbye1wwJq9vwPAyZGf/kH5AceUCGqyStvFkNpmICDaIHXuGVIih9f6Ev5nSy9Ed1D+4PDHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=O0NI//jb; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AEA1iFw182654;
-	Fri, 14 Nov 2025 07:10:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=r1qbt
-	qSdgoIFAE2l3CRrdhP7Abyiyjhy1QaEh6P9RcY=; b=O0NI//jbQqSuz/7FvzV7A
-	MViNemScuAQV+pZBgquZPadXPAYmhJcFjspKzxDJ0Q7o3MmHZHVHNIfteJDxAAT3
-	uFr8K2RrPy2A6xnke1sIjnBOmXBqUkyb7C/Qll+xRBJC9YuRBOwlT3G8OmsWeFwA
-	N9DOysv55jlhNJABVmMbMD4ZyY1FD/JH4SiNOiJiS4s3S2JMZDHdG0dFOMf63/Jk
-	x+2FaxKvPwWMxsv6Vz+MTer51ks2aCI6/vxYaAUcLJqLkbOmqy+itxC/iioZaHW1
-	aO1VOYKK7YTWyj44M7Mkw3JDsJ4GcrJ05cmpfqY/DP0wEo1UiFiM+7WlbOvXmhqn
-	w==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4ady1fhfc7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Nov 2025 07:10:08 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5AECA74e045510
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 14 Nov 2025 07:10:07 -0500
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Fri, 14 Nov 2025 07:10:07 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Fri, 14 Nov 2025 07:10:07 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Fri, 14 Nov 2025 07:10:07 -0500
-Received: from Ubuntu.ad.analog.com ([10.66.6.193])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5AEC9r21019558;
-	Fri, 14 Nov 2025 07:10:01 -0500
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH 2/2] iio: frequency: adf4377: add clk provider support
-Date: Fri, 14 Nov 2025 12:09:08 +0000
-Message-ID: <20251114120908.6502-3-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1763133213; c=relaxed/simple;
+	bh=YqkPVmpDk2fSDnlwhZMK0gPFa2MKjyVSjtXITuXKuKc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MHGNenmbmUqReh++tKm568BD5roHwb6UBMBtd1FcYbY4odIVpHsxZ4JNR2YM9sM5xUjeEfQCi9GoNnp+9xLXrk6LE1WFvj/28G+rr7dX65v0r9yIxmK7SPF2VrH2qULl8TAGZHA+j9hl3BCZ3IE+6X5mnc7arzFIauJrJciIE8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=cS2A43bV; arc=none smtp.client-ip=91.103.66.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1763133201;
+	bh=53yxrozI3CF/mq6hkWqgfKTmUqtBzQ0Rcjlnyy5wc5w=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=cS2A43bVo17uwPo5mJiX2Gnu9cQaGK8WW/4PpzP2FmN86wv8JE6/VUoOrTl1y9r/X
+	 upPRgDwMwkyXBkaOxAp0YkOZaoJJIyM/Fu9jfJMXJ6nWQJ4zLAvRDrlu+J0hz1L5i/
+	 uyxP66Vy+oGe9mbHVbFHjBQZ4eEynCV2GAH9hLPM8iCDXdutPCTwO4ekqXWWua6mWs
+	 ipvoTLM0LQVDLuJFsIyXBKtkJdKTXQ8AR/RHWIJwgSiw8hYeBzC4Zxjh6QJLG3hnKn
+	 oS00233quCdVmRt3URR/fAYJiSBN1PR2z4HwEKNeklaZwDy4He/xMkd/kHeHMKQ899
+	 jjTY/2UtX/pDg==
+Received: from relay12.kaspersky-labs.com (localhost [127.0.0.1])
+	by relay12.kaspersky-labs.com (Postfix) with ESMTP id CFA725A180B;
+	Fri, 14 Nov 2025 18:13:21 +0300 (MSK)
+Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub12.kaspersky-labs.com (Postfix) with ESMTPS id E416F5A5483;
+	Fri, 14 Nov 2025 18:13:20 +0300 (MSK)
+Received: from zhigulin-p.avp.ru (10.16.104.190) by HQMAILSRV2.avp.ru
+ (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Fri, 14 Nov
+ 2025 18:13:03 +0300
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+To: Lars-Peter Clausen <lars@metafoo.de>
+CC: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>, Michael Hennerich
+	<Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, David
+ Lechner <dlechner@baylibre.com>, =?UTF-8?q?Nuno=20S=C3=A1?=
+	<nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Greg Kroah-Hartman
+	<gregkh@suse.de>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
+Subject: [PATCH] iio: adc: ad7280a: handle spi_setup() errors in probe()
+Date: Fri, 14 Nov 2025 18:13:01 +0300
+Message-ID: <20251114151302.2255348-1-Pavel.Zhigulin@kaspersky.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251114120908.6502-1-antoniu.miclaus@analog.com>
-References: <20251114120908.6502-1-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,216 +72,81 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=YcywJgRf c=1 sm=1 tr=0 ts=69171c20 cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=gAnH3GRIAAAA:8
- a=nVjtjxfPRRi5vZi_wFUA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: lkWrhNhuYcFaSdjwk7xGPEOJuxbnyMiM
-X-Proofpoint-GUID: lkWrhNhuYcFaSdjwk7xGPEOJuxbnyMiM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE0MDA5NyBTYWx0ZWRfXweV6WbONYK7w
- m3UociPOzoTplwLJba9qDgHrgAv8zvXoy/Q//WFifBVLOLDfChuF3DpqPaUoqClVeUJsBFLJybg
- 5wQpoJ9nTzp3XUl4D+2YO0oPIUtFRLHYr0wF8oz0p+dcaURtwmcGZ1YuObLidMmXfjFLpQUwdrt
- K91vsU5TskyoabD4/l3hKApmI6nhRIbOi5XCOgogZiUwZE1qtyuzxl/9pJ3oppPJyGylBMg/8p3
- sHJrnm6RPHp6nopijELhXe6x0llxTR7qKITzNpHTSGzMqaxtaXZR1tLgoWaRn/dzggsIST4lcCF
- Ca0XYbRYBWUOIEIJtZtT8Fd9mK2sZEwA52N+viPPJj8aV5h3CuOU/+JP3KmojbnkjUQ/dx6x7bM
- XjA5G4QXKgmVmpDMvo8Kxotj6Dwwhg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-14_03,2025-11-13_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 priorityscore=1501
- suspectscore=0 impostorscore=0 malwarescore=0 phishscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511140097
+X-ClientProxiedBy: HQMAILSRV4.avp.ru (10.64.57.54) To HQMAILSRV2.avp.ru
+ (10.64.57.52)
+X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 11/14/2025 14:58:55
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 198109 [Nov 14 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.11
+X-KSE-AntiSpam-Info: Envelope from: Pavel.Zhigulin@kaspersky.com
+X-KSE-AntiSpam-Info: LuaCore: 76 0.3.76
+ 6aad6e32ec76b30ee13ccddeafeaa4d1732eef15
+X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
+X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: zhigulin-p.avp.ru:7.1.1,5.0.1;kaspersky.com:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {Tracking_white_helo}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 11/14/2025 15:01:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 11/14/2025 2:08:00 PM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/11/14 12:42:00 #27925085
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 52
 
-Add clk provider feature for the adf4377.
+The probe() function ignored the return value of spi_setup(), leaving SPI
+configuration failures undetected. If spi_setup() fails, the driver should
+stop initialization and propagate the error to the caller.
 
-Even though the driver was sent as an IIO driver in most cases the
-device is actually seen as a clock provider.
+Add proper error handling: check the return value of spi_setup() and return
+it on failure.
 
-This patch aims to cover actual usecases requested by users in order to
-completely control the output frequencies from userspace.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Fixes: 2051f25d2a26 ("iio: adc: New driver for AD7280A Lithium Ion Battery Monitoring System")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 ---
- drivers/iio/frequency/adf4377.c | 131 +++++++++++++++++++++++++++++++-
- 1 file changed, 129 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7280a.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/frequency/adf4377.c b/drivers/iio/frequency/adf4377.c
-index 08833b7035e4..08dc2110cf8c 100644
---- a/drivers/iio/frequency/adf4377.c
-+++ b/drivers/iio/frequency/adf4377.c
-@@ -8,6 +8,7 @@
- #include <linux/bitfield.h>
- #include <linux/bits.h>
- #include <linux/clk.h>
-+#include <linux/clk-provider.h>
- #include <linux/clkdev.h>
- #include <linux/delay.h>
- #include <linux/device.h>
-@@ -435,9 +436,14 @@ struct adf4377_state {
- 	struct gpio_desc	*gpio_ce;
- 	struct gpio_desc	*gpio_enclk1;
- 	struct gpio_desc	*gpio_enclk2;
-+	struct clk		*clk;
-+	struct clk		*clkout;
-+	struct clk_hw		hw;
- 	u8			buf[2] __aligned(IIO_DMA_MINALIGN);
- };
- 
-+#define to_adf4377_state(h)	container_of(h, struct adf4377_state, hw)
-+
- static const char * const adf4377_muxout_modes[] = {
- 	[ADF4377_MUXOUT_HIGH_Z] = "high_z",
- 	[ADF4377_MUXOUT_LKDET] = "lock_detect",
-@@ -929,6 +935,120 @@ static int adf4377_freq_change(struct notifier_block *nb, unsigned long action,
- 	return NOTIFY_OK;
- }
- 
-+static void adf4377_clk_del_provider(void *data)
-+{
-+	struct adf4377_state *st = data;
-+
-+	of_clk_del_provider(st->spi->dev.of_node);
-+}
-+
-+static unsigned long adf4377_clk_recalc_rate(struct clk_hw *hw,
-+					      unsigned long parent_rate)
-+{
-+	struct adf4377_state *st = to_adf4377_state(hw);
-+	u64 freq;
-+	int ret;
-+
-+	ret = adf4377_get_freq(st, &freq);
-+	if (ret)
-+		return 0;
-+
-+	return freq;
-+}
-+
-+static int adf4377_clk_set_rate(struct clk_hw *hw,
-+				unsigned long rate,
-+				unsigned long parent_rate)
-+{
-+	struct adf4377_state *st = to_adf4377_state(hw);
-+
-+	return adf4377_set_freq(st, rate);
-+}
-+
-+static int adf4377_clk_prepare(struct clk_hw *hw)
-+{
-+	struct adf4377_state *st = to_adf4377_state(hw);
-+
-+	return regmap_update_bits(st->regmap, 0x1a, ADF4377_001A_PD_CLKOUT1_MSK |
-+				  ADF4377_001A_PD_CLKOUT2_MSK,
-+				  FIELD_PREP(ADF4377_001A_PD_CLKOUT1_MSK, 0) |
-+				  FIELD_PREP(ADF4377_001A_PD_CLKOUT2_MSK, 0));
-+}
-+
-+static void adf4377_clk_unprepare(struct clk_hw *hw)
-+{
-+	struct adf4377_state *st = to_adf4377_state(hw);
-+
-+	regmap_update_bits(st->regmap, 0x1a, ADF4377_001A_PD_CLKOUT1_MSK |
-+			   ADF4377_001A_PD_CLKOUT2_MSK,
-+			   FIELD_PREP(ADF4377_001A_PD_CLKOUT1_MSK, 1) |
-+			   FIELD_PREP(ADF4377_001A_PD_CLKOUT2_MSK, 1));
-+}
-+
-+static int adf4377_clk_is_enabled(struct clk_hw *hw)
-+{
-+	struct adf4377_state *st = to_adf4377_state(hw);
-+	unsigned int readval;
-+	int ret;
-+
-+	ret = regmap_read(st->regmap, 0x1a, &readval);
-+	if (ret)
+diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
+index dda2986ccda0..63fceb239bd8 100644
+--- a/drivers/iio/adc/ad7280a.c
++++ b/drivers/iio/adc/ad7280a.c
+@@ -1024,7 +1024,9 @@ static int ad7280_probe(struct spi_device *spi)
+
+ 	st->spi->max_speed_hz = AD7280A_MAX_SPI_CLK_HZ;
+ 	st->spi->mode = SPI_MODE_1;
+-	spi_setup(st->spi);
++	ret = spi_setup(st->spi);
++	if (ret < 0)
 +		return ret;
-+
-+	return !(readval & (ADF4377_001A_PD_CLKOUT1_MSK | ADF4377_001A_PD_CLKOUT2_MSK));
-+}
-+
-+static const struct clk_ops adf4377_clk_ops = {
-+	.recalc_rate = adf4377_clk_recalc_rate,
-+	.set_rate = adf4377_clk_set_rate,
-+	.prepare = adf4377_clk_prepare,
-+	.unprepare = adf4377_clk_unprepare,
-+	.is_enabled = adf4377_clk_is_enabled,
-+};
-+
-+static int adf4377_clk_register(struct adf4377_state *st)
-+{
-+	struct spi_device *spi = st->spi;
-+	struct clk_init_data init;
-+	struct clk *clk;
-+	const char *parent_name;
-+	int ret;
-+
-+	if (!device_property_present(&spi->dev, "#clock-cells"))
-+		return 0;
-+
-+	if (device_property_read_string(&spi->dev, "clock-output-names", &init.name)) {
-+		init.name = devm_kasprintf(&spi->dev, GFP_KERNEL, "%s-clk",
-+					   fwnode_get_name(dev_fwnode(&spi->dev)));
-+		if (!init.name)
-+			return -ENOMEM;
-+	}
-+
-+	parent_name = of_clk_get_parent_name(spi->dev.of_node, 0);
-+	if (!parent_name)
-+		return -EINVAL;
-+
-+	init.ops = &adf4377_clk_ops;
-+	init.parent_names = &parent_name;
-+	init.num_parents = 1;
-+	init.flags = CLK_SET_RATE_PARENT;
-+
-+	st->hw.init = &init;
-+	clk = devm_clk_register(&spi->dev, &st->hw);
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+
-+	st->clk = clk;
-+
-+	ret = of_clk_add_provider(spi->dev.of_node, of_clk_src_simple_get, clk);
-+	if (ret)
-+		return ret;
-+
-+	st->clkout = clk;
-+
-+	return devm_add_action_or_reset(&spi->dev, adf4377_clk_del_provider, st);
-+}
-+
- static const struct adf4377_chip_info adf4377_chip_info = {
- 	.name = "adf4377",
- 	.has_gpio_enclk2 = true,
-@@ -958,8 +1078,6 @@ static int adf4377_probe(struct spi_device *spi)
- 
- 	indio_dev->info = &adf4377_info;
- 	indio_dev->name = "adf4377";
--	indio_dev->channels = adf4377_channels;
--	indio_dev->num_channels = ARRAY_SIZE(adf4377_channels);
- 
- 	st->regmap = regmap;
- 	st->spi = spi;
-@@ -979,6 +1097,15 @@ static int adf4377_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
-+	ret = adf4377_clk_register(st);
-+	if (ret)
-+		return ret;
-+
-+	if (!st->clkout) {
-+		indio_dev->channels = adf4377_channels;
-+		indio_dev->num_channels = ARRAY_SIZE(adf4377_channels);
-+	}
-+
- 	return devm_iio_device_register(&spi->dev, indio_dev);
- }
- 
--- 
+
+ 	st->ctrl_lb = FIELD_PREP(AD7280A_CTRL_LB_ACQ_TIME_MSK, st->acquisition_time) |
+ 		FIELD_PREP(AD7280A_CTRL_LB_THERMISTOR_MSK, st->thermistor_term_en);
+--
 2.43.0
 
 

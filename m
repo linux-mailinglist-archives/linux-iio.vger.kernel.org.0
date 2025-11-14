@@ -1,228 +1,302 @@
-Return-Path: <linux-iio+bounces-26210-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26211-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D676C5C493
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 10:33:22 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B523EC5C695
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 11:00:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A467D42211E
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 09:28:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 95D203479F1
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 09:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982D0306B31;
-	Fri, 14 Nov 2025 09:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25523090CD;
+	Fri, 14 Nov 2025 09:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NzuQ0lR3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eOIHdJMQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B849028727C;
-	Fri, 14 Nov 2025 09:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E9D21CC60;
+	Fri, 14 Nov 2025 09:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763112441; cv=none; b=r392oKcMOyqBA3ayn7sIrRVziWpfGGNl32CQeD5frNl9HI/v2HbqV/EEK7Q6o8VQnTeGZBXto80Of30hJBTi5EBxF+krQnSXyLVnYycpYK7PxhWV1kTDrCeDspBJREcuRup7gNYWWYHDp5oEmOFDPAK7NEgYlseBCq5nudiOFLc=
+	t=1763113890; cv=none; b=HbuNQAr9/B25l+QxPr2D9SM3bOr3N4lDipeFtruIwIoOyQxGnALspbZ451vfHq2aVssu5vJVX4hgaDtWcSovvRkDgp7IBFEYnpBeFDxDRNK7Q/+lQWunTntL1yYDC29L2pjZicYT3X2HQn0ISCaSl3Hute0O5uS2auDqA8/+KY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763112441; c=relaxed/simple;
-	bh=JEFXzboCDJt0JmXtr+UN4FXJ3ZEMeYNhJunbMmjv/q4=;
+	s=arc-20240116; t=1763113890; c=relaxed/simple;
+	bh=O6LXDluXDEafQVVWq0RnhAB+p7afdg+5W2HmBgq2z8g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QS0BuGKpA3yqEP0Afv4KM73LMPP7TLOdNZNMZuZ1kip4j9/Y9uLnSw9lh4nltMiZpwCrjH36hJ69KvMlUf2cjoLWS3ojNBx5X+oCgMOP9/Fl/k2EfSCXsTdCQQxdontQvplHyJavcHlrcoa5O8mivD640O7U6crEThQ9WqzcR54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NzuQ0lR3; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763112440; x=1794648440;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JEFXzboCDJt0JmXtr+UN4FXJ3ZEMeYNhJunbMmjv/q4=;
-  b=NzuQ0lR3TlX5mCm2XFeIoBLd6j3+nTwWhPMSIeC7ZWXdL4NEffVY063m
-   ihgaCm9e3Jn0p4Tlp0O+ip5C/VfRDML+2E/qanGMliON1jXgtmDHWbfFK
-   OfXMU9TzSDn6PTEQCDO8eUT3Crt8O95ZbEk9bZ/Rni3tz2BEHl1Ndf45w
-   6Pat/L81aR9wR7FYlafyRFGIegI0avb2f1xUzbhHDZQw6sTHKE715Oolm
-   U9c4Wq/vj8stCK/9Gv8AJQ4QZDz4Okvk45jEKo43gUZgQgLAXrZSTBbvx
-   SrIyUlozZGot3yb4gfHbOK8zABKgvwUBXz5B6Zu20XhZqkjzrfU2V4IK7
-   w==;
-X-CSE-ConnectionGUID: EMY+raUMS3G/4oF4P3BBRA==
-X-CSE-MsgGUID: splbwSesRFuG7hpnOES09g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="76306657"
-X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; 
-   d="scan'208";a="76306657"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 01:27:20 -0800
-X-CSE-ConnectionGUID: 4AjhgMubSHes0WVu/Jx9Pg==
-X-CSE-MsgGUID: rr1ahpIVT1iWUmr5/Xq9uA==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 14 Nov 2025 01:27:15 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vJq5J-0006P9-0Q;
-	Fri, 14 Nov 2025 09:27:13 +0000
-Date: Fri, 14 Nov 2025 17:26:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, jic23@kernel.org, nuno.sa@analog.com,
-	dlechner@baylibre.com, andy@kernel.org,
-	Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, corbet@lwn.net, cosmin.tanislav@analog.com,
-	marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v1 2/3] iio: adc: Initial support for AD4134
-Message-ID: <202511141657.LqnXWUQm-lkp@intel.com>
-References: <86f532ae3a9b3f122b9d5dbada9c131a0c048ca7.1762777931.git.marcelo.schmitt@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mh3wZeVnvkiZqp47e6kqlSu2PZSqPa92yvguRzjsg+cONf9zJCv1/Bal9YYT7Mui/x4TD4IKT3HaGMjvzhBbXr8rPIJ7p+Qy8Bj1y3Z/i8pAIfoiKbz9SvvqCJDlZTzt/5WBXuBav7cZ/yHGZO6r0clD0okAxCVFBUmuGM4GEkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eOIHdJMQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6F3C116D0;
+	Fri, 14 Nov 2025 09:51:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763113889;
+	bh=O6LXDluXDEafQVVWq0RnhAB+p7afdg+5W2HmBgq2z8g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eOIHdJMQE0TDkiX7ARkxw5G2WdNrnktz7C93zfpLOjSLn1DGMqxCGRL2+H11VXA5t
+	 TAOlaPLd7XmgJ+NrCWHohiq4sDtyeWuovmYsxLE6NpZDcPacrgvR/xN/N5QBnZp7E0
+	 RllAb1nSls9OhiBIou1vVRW7VHcLKxVoN+cobTMUB8JTFrxeD8T3wLJ0OcXmalQAsP
+	 SGvrZFfnjccYHeBUeR7Fo73jBd6Y+o468gsooIAT788zEP9Zp52R8ccTrqslkPpBcF
+	 gIebxjHCKli7Z65Z1mWRmDJcA4xPW8Cr/Ra2MqmxiQGtOI/WdLa9Xo5nqkPOfDLcT3
+	 nZXpAlzBI8F8A==
+Date: Fri, 14 Nov 2025 10:51:27 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Damon Ding <damon.ding@rock-chips.com>
+Cc: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, Lee Jones <lee@kernel.org>, 
+	William Breathitt Gray <wbg@kernel.org>, kernel@collabora.com, Jonas Karlman <jonas@kwiboo.se>, 
+	Alexey Charkov <alchark@gmail.com>, linux-rockchip@lists.infradead.org, linux-pwm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] pwm: Add rockchip PWMv4 driver
+Message-ID: <fgu42esufq2x4fcccncqs3hlotih2gqmws5atotlaznuahoslw@34vblr6vboze>
+References: <20251027-rk3576-pwm-v3-0-654a5cb1e3f8@collabora.com>
+ <20251027-rk3576-pwm-v3-3-654a5cb1e3f8@collabora.com>
+ <8a6e920b-9565-4161-9d71-63f924593c23@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xfykpml5ewgt3ra3"
 Content-Disposition: inline
-In-Reply-To: <86f532ae3a9b3f122b9d5dbada9c131a0c048ca7.1762777931.git.marcelo.schmitt@analog.com>
-
-Hi Marcelo,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on c5411c8b9ed1caf53604bb1a5be3f487988efc98]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Marcelo-Schmitt/dt-bindings-iio-adc-Add-AD4134/20251110-204756
-base:   c5411c8b9ed1caf53604bb1a5be3f487988efc98
-patch link:    https://lore.kernel.org/r/86f532ae3a9b3f122b9d5dbada9c131a0c048ca7.1762777931.git.marcelo.schmitt%40analog.com
-patch subject: [PATCH v1 2/3] iio: adc: Initial support for AD4134
-config: nios2-allyesconfig (https://download.01.org/0day-ci/archive/20251114/202511141657.LqnXWUQm-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511141657.LqnXWUQm-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511141657.LqnXWUQm-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/iio/adc/ad4134-common.c: In function 'ad4134_probe':
->> drivers/iio/adc/ad4134-common.c:178:34: error: implicit declaration of function 'FIELD_PREP' [-Werror=implicit-function-declaration]
-     178 |                                  FIELD_PREP(AD4134_DATA_PACKET_CONFIG_FRAME_MASK,
-         |                                  ^~~~~~~~~~
-   cc1: some warnings being treated as errors
+In-Reply-To: <8a6e920b-9565-4161-9d71-63f924593c23@rock-chips.com>
 
 
-vim +/FIELD_PREP +178 drivers/iio/adc/ad4134-common.c
+--xfykpml5ewgt3ra3
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 3/5] pwm: Add rockchip PWMv4 driver
+MIME-Version: 1.0
 
-    87	
-    88	int ad4134_probe(struct device *dev, const struct ad4134_bus_info *bus_info)
-    89	{
-    90		bool use_internal_ldo_retulator;
-    91		struct gpio_desc *reset_gpio;
-    92		struct iio_dev *indio_dev;
-    93		struct ad4134_state *st;
-    94		int ret;
-    95	
-    96		indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
-    97		if (!indio_dev)
-    98			return -ENOMEM;
-    99	
-   100		st = iio_priv(indio_dev);
-   101		st->dev = dev;
-   102	
-   103		indio_dev->name = bus_info->chip_info->name;
-   104	
-   105		/* Required regulators */
-   106		ret = devm_regulator_bulk_get_enable(dev, 3, ad4143_regulator_names);
-   107		if (ret)
-   108			return dev_err_probe(dev, ret, "failed to enable power supplies\n");
-   109	
-   110		/* Required regulator that we need to read the voltage */
-   111		ret = devm_regulator_get_enable_read_voltage(dev, "refin");
-   112		if (ret < 0)
-   113			return dev_err_probe(dev, ret, "failed to get REFIN voltage.\n");
-   114	
-   115		st->refin_mv = ret / MILLI;
-   116	
-   117		/*
-   118		 * If ldoin is not provided, then avdd1v8, dvdd1v8, and clkvdd are
-   119		 * required.
-   120		 */
-   121		ret = devm_regulator_get_enable_optional(dev, "ldoin");
-   122		if (ret < 0 && ret != -ENODEV)
-   123			return dev_err_probe(dev, ret, "failed to enable ldoin supply\n");
-   124	
-   125		use_internal_ldo_retulator = ret == 0;
-   126	
-   127		if (!use_internal_ldo_retulator) {
-   128			ret = devm_regulator_get_enable(dev, "avdd1v8");
-   129			if (ret < 0)
-   130				return dev_err_probe(dev, ret,
-   131						     "failed to enable avdd1v8 supply\n");
-   132	
-   133			ret = devm_regulator_get_enable(dev, "dvdd1v8");
-   134			if (ret < 0)
-   135				return dev_err_probe(dev, ret,
-   136						     "failed to enable dvdd1v8 supply\n");
-   137	
-   138			ret = devm_regulator_get_enable(dev, "clkvdd");
-   139			if (ret < 0)
-   140				return dev_err_probe(dev, ret,
-   141						     "failed to enable clkvdd supply\n");
-   142		}
-   143	
-   144		ret = ad4134_clock_select(st);
-   145		if (ret)
-   146			return ret;
-   147	
-   148		crc8_populate_msb(ad4134_spi_crc_table, AD4134_SPI_CRC_POLYNOM);
-   149	
-   150		reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-   151		if (IS_ERR(reset_gpio))
-   152			return dev_err_probe(dev, PTR_ERR(reset_gpio),
-   153					     "failed to find reset GPIO\n");
-   154	
-   155		if (reset_gpio) {
-   156			fsleep(AD4134_RESET_TIME_US);
-   157			gpiod_set_value_cansleep(reset_gpio, 0);
-   158		}
-   159	
-   160		ret = bus_info->bops->config_iio_dev(indio_dev);
-   161		if (ret)
-   162			return dev_err_probe(dev, ret, "failed to config IIO device\n");
-   163	
-   164		st->regmap = bus_info->bops->init_regmap(st);
-   165		if (IS_ERR(st->regmap))
-   166			return dev_err_probe(st->dev, PTR_ERR(st->regmap),
-   167					     "failed to initialize regmap");
-   168	
-   169		/* wiring/configuration specific setup */
-   170		ret = bus_info->bops->setup(st);
-   171		if (ret)
-   172			return dev_err_probe(dev, ret, "failed to setup bus\n");
-   173	
-   174		/* Bump precision to 24-bit */
-   175		st->current_scan_type = AD4134_DATA_PACKET_24BIT_FRAME;
-   176		ret = regmap_update_bits(st->regmap, AD4134_DATA_PACKET_CONFIG_REG,
-   177					 AD4134_DATA_PACKET_CONFIG_FRAME_MASK,
- > 178					 FIELD_PREP(AD4134_DATA_PACKET_CONFIG_FRAME_MASK,
-   179						    st->current_scan_type));
-   180		if (ret)
-   181			return ret;
-   182	
-   183		/* Set high performance power mode */
-   184		ret = regmap_update_bits(st->regmap, AD4134_DEVICE_CONFIG_REG,
-   185					 AD4134_DEVICE_CONFIG_POWER_MODE_MASK,
-   186					 FIELD_PREP(AD4134_DEVICE_CONFIG_POWER_MODE_MASK,
-   187						    AD4134_POWER_MODE_HIGH_PERF));
-   188		if (ret)
-   189			return ret;
-   190	
-   191		return devm_iio_device_register(dev, indio_dev);
-   192	}
-   193	EXPORT_SYMBOL_NS_GPL(ad4134_probe, "IIO_AD4134");
-   194	
+On Tue, Oct 28, 2025 at 04:16:26PM +0800, Damon Ding wrote:
+> Hi Nicolas,
+>=20
+> On 10/28/2025 1:11 AM, Nicolas Frattaroli wrote:
+> > The Rockchip RK3576 brings with it a new PWM IP, in downstream code
+> > referred to as "v4". This new IP is different enough from the previous
+> > Rockchip IP that I felt it necessary to add a new driver for it, instead
+> > of shoehorning it in the old one.
+> >=20
+> > Add this new driver, based on the PWM core's waveform APIs. Its platform
+> > device is registered by the parent mfpwm driver, from which it also
+> > receives a little platform data struct, so that mfpwm can guarantee that
+> > all the platform device drivers spread across different subsystems for
+> > this specific hardware IP do not interfere with each other.
+> >=20
+> > Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+> > ---
+> >   MAINTAINERS                   |   1 +
+> >   drivers/pwm/Kconfig           |  13 ++
+> >   drivers/pwm/Makefile          |   1 +
+> >   drivers/pwm/pwm-rockchip-v4.c | 353 +++++++++++++++++++++++++++++++++=
++++++++++
+> >   4 files changed, 368 insertions(+)
+> >=20
+>=20
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 8f3235ba825e..2079c2d51d5c 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -22372,6 +22372,7 @@ L:	linux-rockchip@lists.infradead.org
+> >   L:	linux-pwm@vger.kernel.org
+> >   S:	Maintained
+> >   F:	Documentation/devicetree/bindings/pwm/rockchip,rk3576-pwm.yaml
+> > +F:	drivers/pwm/pwm-rockchip-v4.c
+> >   F:	drivers/soc/rockchip/mfpwm.c
+> >   F:	include/soc/rockchip/mfpwm.h
+> > diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+> > index c2fd3f4b62d9..b852a7b2a29d 100644
+> > --- a/drivers/pwm/Kconfig
+> > +++ b/drivers/pwm/Kconfig
+> > @@ -615,6 +615,19 @@ config PWM_ROCKCHIP
+> >   	  Generic PWM framework driver for the PWM controller found on
+> >   	  Rockchip SoCs.
+> > +config PWM_ROCKCHIP_V4
+> > +	tristate "Rockchip PWM v4 support"
+> > +	depends on ARCH_ROCKCHIP || COMPILE_TEST
+> > +	depends on HAS_IOMEM
+> > +	depends on MFD_ROCKCHIP_MFPWM
+> > +	help
+> > +	  Generic PWM framework driver for the PWM controller found on
+> > +	  later Rockchip SoCs such as the RK3576.
+> > +
+> > +	  Uses the Rockchip Multi-function PWM controller driver infrastructu=
+re
+> > +	  to guarantee fearlessly concurrent operation with other functions of
+> > +	  the same device implemented by drivers in other subsystems.
+> > +
+> >   config PWM_SAMSUNG
+> >   	tristate "Samsung PWM support"
+> >   	depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TE=
+ST
+> > diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
+> > index dfa8b4966ee1..fe0d16558d99 100644
+> > --- a/drivers/pwm/Makefile
+> > +++ b/drivers/pwm/Makefile
+> > @@ -55,6 +55,7 @@ obj-$(CONFIG_PWM_RENESAS_RZG2L_GPT)	+=3D pwm-rzg2l-gp=
+t.o
+> >   obj-$(CONFIG_PWM_RENESAS_RZ_MTU3)	+=3D pwm-rz-mtu3.o
+> >   obj-$(CONFIG_PWM_RENESAS_TPU)	+=3D pwm-renesas-tpu.o
+> >   obj-$(CONFIG_PWM_ROCKCHIP)	+=3D pwm-rockchip.o
+> > +obj-$(CONFIG_PWM_ROCKCHIP_V4)	+=3D pwm-rockchip-v4.o
+> >   obj-$(CONFIG_PWM_SAMSUNG)	+=3D pwm-samsung.o
+> >   obj-$(CONFIG_PWM_SIFIVE)	+=3D pwm-sifive.o
+> >   obj-$(CONFIG_PWM_SL28CPLD)	+=3D pwm-sl28cpld.o
+> > diff --git a/drivers/pwm/pwm-rockchip-v4.c b/drivers/pwm/pwm-rockchip-v=
+4.c
+> > new file mode 100644
+> > index 000000000000..7afa83f12b6a
+> > --- /dev/null
+> > +++ b/drivers/pwm/pwm-rockchip-v4.c
+> > @@ -0,0 +1,353 @@
+> > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > +/*
+> > + * Copyright (c) 2025 Collabora Ltd.
+> > + *
+> > + * A Pulse-Width-Modulation (PWM) generator driver for the generators =
+found in
+> > + * Rockchip SoCs such as the RK3576, internally referred to as "PWM v4=
+". Uses
+> > + * the MFPWM infrastructure to guarantee exclusive use over the device=
+ without
+> > + * other functions of the device from different drivers interfering wi=
+th its
+> > + * operation while it's active.
+> > + *
+> > + * Technical Reference Manual: Chapter 31 of the RK3506 TRM Part 1, a =
+SoC which
+> > + * uses the same PWM hardware and has a publicly available TRM.
+> > + * https://opensource.rock-chips.com/images/3/36/Rockchip_RK3506_TRM_P=
+art_1_V1.2-20250811.pdf
+> > + *
+> > + * Authors:
+> > + *     Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+> > + *
+> > + * Limitations:
+> > + * - When the output is disabled, it will end abruptly without letting=
+ the
+> > + *   current period complete.
+> > + *   TODO: This can be fixed in the driver in the future by having the=
+ enable-
+> > + *         to-disable transition switch to oneshot mode with one repet=
+ition,
+> > + *         and then disable the pwmclk and release mfpwm when the ones=
+hot
+> > + *         complete interrupt fires.
+> > + * - When the output is disabled, the pin will remain driven to whatev=
+er state
+> > + *   it last had.
+> > + * - Adjustments to the duty cycle will only take effect during the ne=
+xt period.
+> > + * - Adjustments to the period length will only take effect during the=
+ next
+> > + *   period.
+> > + * - offset should be between 0 and (period - duty)
+> > + */
+> > +
+> > +#include <linux/math64.h>
+> > +#include <linux/mfd/rockchip-mfpwm.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/pwm.h>
+> > +
+> > +struct rockchip_pwm_v4 {
+> > +	struct rockchip_mfpwm_func *pwmf;
+> > +	struct pwm_chip chip;
+> > +};
+> > +
+> > +struct rockchip_pwm_v4_wf {
+> > +	u32 period;
+> > +	u32 duty;
+> > +	u32 offset;
+> > +	u8 enable;
+> > +};
+> > +
+>=20
+> ...
+>=20
+> > +
+> > +static int rockchip_pwm_v4_read_wf(struct pwm_chip *chip, struct pwm_d=
+evice *pwm,
+> > +				   void *_wfhw)
+> > +{
+> > +	struct rockchip_pwm_v4 *pc =3D to_rockchip_pwm_v4(chip);
+> > +	struct rockchip_pwm_v4_wf *wfhw =3D _wfhw;
+> > +	int ret =3D 0;
+> > +
+>=20
+> Redundant blank lin. ;-)
+>=20
+> > +
+> > +	ret =3D mfpwm_acquire(pc->pwmf);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	wfhw->period =3D mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_PERIOD);
+> > +	wfhw->duty =3D mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_DUTY);
+> > +	wfhw->offset =3D mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_OFFSET);
+> > +	wfhw->enable =3D mfpwm_reg_read(pc->pwmf->base, PWMV4_REG_ENABLE) & P=
+WMV4_EN_BOTH_MASK;
+> > +
+> > +	mfpwm_release(pc->pwmf);
+> > +
+> > +	return 0;
+> > +}
+> > +
+>=20
+> ...
+>=20
+> > +MODULE_AUTHOR("Nicolas Frattaroli <nicolas.frattaroli@collabora.com>");
+> > +MODULE_DESCRIPTION("Rockchip PWMv4 Driver");
+> > +MODULE_LICENSE("GPL");
+> > +MODULE_IMPORT_NS("ROCKCHIP_MFPWM");
+> > +MODULE_ALIAS("platform:pwm-rockchip-v4");
+> >=20
+>=20
+> Tested-by: Damon Ding <damon.ding@rock-chips.com>
+>=20
+> I have tested all the PWM channels in continuous mode on my RK3576-IOTEST
+> board.
+>=20
+> Test commands are like:
+>=20
+> cd /sys/class/pwm/pwmchip0/
+> echo 0 > export
+> cd pwm0
+> echo 10000 > period
+> echo 5000 > duty_cycle
+> echo normal > polarity
+> echo 1 > enable
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks for the test, very appreciated.
+
+I wonder what made you test using sysfs instead of
+https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/libpwm.git/.
+Is it unknown? Too complicated? Other problems?
+
+Best regards
+Uwe
+
+--xfykpml5ewgt3ra3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmkW+5wACgkQj4D7WH0S
+/k53tgf/ZFRrKZ3wCBT3fPYwc0esDlhE8SB04CeKkBuW/VIrFjkskcsGK2iJKR2r
+2bauJvrF4JaMaXzQb6gVZSdvirjIoNyObsUw1GcjndwxA18k+/7c2XPywT5JLtZ7
+c+OelHzh2dmXjDARoRMrHeUHIMMdTJIZZGtWl5mVNhoF/dwsbnw6ClUScmjrK/rs
+tcR6Mp6S9pWnYscxTq05ftyRClMflmU+FF7Svjq0ssoaZllI0W5KSUwAv9xOh1aO
+3LbRu0QVA9I0O5QKgJcIPjPbF14lBC2FFDSKJSAxTWVZLpzQtD3//phd42ktFrHr
+3kEGqi3j/uy7FRv8XWmKVGE2TfESaw==
+=aZBT
+-----END PGP SIGNATURE-----
+
+--xfykpml5ewgt3ra3--
 

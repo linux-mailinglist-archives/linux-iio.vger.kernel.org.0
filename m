@@ -1,358 +1,159 @@
-Return-Path: <linux-iio+bounces-26229-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26230-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F46C5EDE6
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 19:30:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30710C5F7BB
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 23:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1A5064E1CC7
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 18:25:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 694914E2843
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 22:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BABB3431F5;
-	Fri, 14 Nov 2025 18:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D04E32D451;
+	Fri, 14 Nov 2025 22:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fN56Awec"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="JMQQRvIg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61ADD2DAFAE
-	for <linux-iio@vger.kernel.org>; Fri, 14 Nov 2025 18:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F4930DD21;
+	Fri, 14 Nov 2025 22:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763144703; cv=none; b=YdGQe2LH8n1TwZmclb08lJolY4JTDnlyHp3mPjsh1ReGWhPE38mIRZXHAh+ls3Haxmrx9l3Apt0/bxUGDHx4d2izdQVnxrraOHYZ06CktRGxEN1X5IQ2nLPJeoABssTv/6aIndl/XiosqytDPEk54gA9bZHUFV7NV7sJ+1AgYlg=
+	t=1763158456; cv=none; b=Df5yb837PzQZ7GblqCj92Oo55GfG/CO3HzAGfzUxCUPCQTDF3mMaRsiXe/CylyshB/RWPC61rz4l5OKJLJGi1v6mmQARfwpbB5WK3bt4N6y20jTm8JmbCM6W7yALDcXJfYCjfhVYqJN8JrUgQrhmDnoW4VZLIkLI6q6fgNlE4VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763144703; c=relaxed/simple;
-	bh=gJaks/UCvgAlXCLih4Srnc070Lq8z81HWpnI4Tauz7U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LrqJOry74pGFXCqwbWaXabOPyG1AWkynuBzBdVj1D0JZlXKz/ryStE1Hf3oTPQvvgvw9mTubMq95zcJCs1cyLfX735qFci8T45HmQTzD1wC7cfmUh3bYk65mK0qqFhlGhZ6UffLLg/+MWJNI69jf8ceqo7xUfkSKFlj95qa/nAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fN56Awec; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b70bee93dc4so324930166b.3
-        for <linux-iio@vger.kernel.org>; Fri, 14 Nov 2025 10:25:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763144700; x=1763749500; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HOlPxByPVTPCbTo7AMY18VmB1hSsPxJmT9QGb8+o0Aw=;
-        b=fN56AwecxiOpQWDyG2SpPU6VJq0OS5BrFE+pbSK+VTIhDJ8qnTT5lhmA0xcVkYLhIw
-         t1cEghNwjtUqRxeecw7TDXQStmKMtWMuerMNjUW9toiN4MvMZh52rQzMCy5SP5GSFwjn
-         E5OjZVxMbla1cesxr/1BHngx80m2BR7qR8UfxQdWvWaAbSIdTgaGJ2eXLTIk2Z8HobPP
-         n0rll75APNIl7rDMApEY7DgDFzkXsjbZJMkI9OyNTRXEMu0a1P1CRgAVxxUl55Ir2ym+
-         EbS9JDQKbWyDU1vgrIkPprDv9BIU7lGmLtTt/COXmu67PkVk0xZ3vDf7+TKWeLdM1kzP
-         7yXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763144700; x=1763749500;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HOlPxByPVTPCbTo7AMY18VmB1hSsPxJmT9QGb8+o0Aw=;
-        b=qjk1QkNQO6utBjZT+2FGBRw8uqeE05eewjL9RBeebVEJE6eaGxqp21LSdsKwdAwWQ9
-         JJpCw92w26HNxz5gYK5pBNSxqN7Lre3e7p/z0uqDHCDV2goXbNItNVP7ikPOa1T4cxSF
-         gswoiAFnx5gOt3I3g0oreRVjXwsImUA6nvDSxMRMlK6ftmXnLmkMCi/o6qeJfyOpR235
-         GUBfU0VZyy2RwEoeTSxkSHRD20aCmgNu3RenzQHi5EC7iHg2xcuvv/Y36TC05x5dFYRj
-         WpXS45O0SDoQqe9vVDXtR3B260pFsUSKhdV/PbSkdmSFtDyZs9WKvImGa7OLJy4JVN2Q
-         7Zdg==
-X-Forwarded-Encrypted: i=1; AJvYcCXwAUCF54OCzUkWn1OXjzgbaAfi9ss1Hl987q4+CLenXgS4qecKB7taZGMtAu7h5VppfqdJW5nupKE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFXN5VesYoQRNhuCWw6YPWYSh/b4pSvohhIX38t3zibEIIG9Zn
-	EwfjdXd8RB3HTa3D6eBqkQQ85Y7FYaE3EzbmkB+EQWVUT+sY6/PmaSRzTnY8H3J/osgzpXPQife
-	wbzRP9jFI0FGdEo3p1ZLfXqkPR0GrgcA=
-X-Gm-Gg: ASbGnctaQSO7YOxhls9+/HY0Y8vwLqmwYZCJ/ddRO+t36o41x0xOGtdnlCIXBaP4O1c
-	AJtnG/QIy178r4p6UtowrKP95oclkowTMH1dK4PgSQ8xH+mgbe138PXVb7pJ64+CAT5bc6UOlyJ
-	VziPRkgb61Fq5j63fgn33tMFfJoXPr4TOWlhX19zHv9KHbsdlKFtVq3x1fuGsUhndMBhUrMThWN
-	F3YcUGSnNb+v4mks/0klX3gLTKDsCtxGZcIKLTeXaUTIpWzdyUdmxPAjbrQpw==
-X-Google-Smtp-Source: AGHT+IHooFAx39vbTH14kY2vkzUUNpCSYRss1/mwUR7nsY81OVmVVvb4tRt71ZKJsCxS1Y/sfm0rX/p9bYgSlzoQFyc=
-X-Received: by 2002:a17:907:a4c:b0:b72:d001:7653 with SMTP id
- a640c23a62f3a-b736780c141mr411429466b.19.1763144699443; Fri, 14 Nov 2025
- 10:24:59 -0800 (PST)
+	s=arc-20240116; t=1763158456; c=relaxed/simple;
+	bh=I/n/umDaG0wyFTA9deHSKF97P6x7F7Asozf3Srs9n4I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ya/F9Kv0CS8a3m7mMqO6MLd2S1dAfQ8OA6hMwA06R5LDXwJoaHjKbup7xUeDAHvlNRYlc/orHJstfv2YdX9aLSkTWg9Ulo4mpDxxCCfMUaqCG3EthSYui/4FteDlZpggKUZvOEgVVm0VV9mH9X0GCU5mDEzY8Q6xY+65nbwrTvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=JMQQRvIg; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AEGg7qH940543;
+	Fri, 14 Nov 2025 17:14:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=7TdyL0Hlv2aE6dt5TjGtS3RWKvK
+	du8lRwhP9+Sf4NO8=; b=JMQQRvIg1JYIcXVVfzxvErM4cCSYpmMod72roGq0/zF
+	ZEObkN8ZxfGQERcmIvwLZ+oNKZ6Fbd4bQ4sYq3XheTfkXhT494adYLSjNTZ/mYMa
+	FYp+IDtaDceQE/h4o3pERd10vWnyh1wvSItd/6IWXaDXNRD4UjTG0DR0FfdY2mgG
+	fVVpq9K0hQ6ijkiQl/R0be/n6DGE6RIpK2HzHIskpqQr/vf1NU36bJIJEP6z0S2h
+	LZJlJNytqR3m7q5U0DNWQ9/CuB6enimbJRNJUCIInO8J74bG+Jcg9YaZUmHI5qq+
+	6taFP9svRO0Y61qt53kJuHBs3jrMCyWPeVQD1RsC6aQ==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4ae861978j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Nov 2025 17:14:10 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5AEME93R009962
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 14 Nov 2025 17:14:09 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Fri, 14 Nov 2025 17:14:09 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Fri, 14 Nov 2025 17:14:09 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Fri, 14 Nov 2025 17:14:09 -0500
+Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5AEMDtBf030861;
+	Fri, 14 Nov 2025 17:13:58 -0500
+From: Jonathan Santos <Jonathan.Santos@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Jonathan Santos <Jonathan.Santos@analog.com>,
+        <Michael.Hennerich@analog.com>, <ramona.gradinariu@analog.com>,
+        <antoniu.miclaus@analog.com>, <jic23@kernel.org>,
+        <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>
+Subject: [PATCH v2 1/2] dt-bindings: iio: accel: adxl380: add new supported parts
+Date: Fri, 14 Nov 2025 19:13:55 -0300
+Message-ID: <27fdb3b85015d29c01b804e7f1de5fa615cf9f5f.1763134751.git.Jonathan.Santos@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251114092000.4058978-1-o.rempel@pengutronix.de> <20251114092000.4058978-3-o.rempel@pengutronix.de>
-In-Reply-To: <20251114092000.4058978-3-o.rempel@pengutronix.de>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 14 Nov 2025 20:24:23 +0200
-X-Gm-Features: AWmQ_bkzDCK-qXNyHUrYcmb0FM-3ZSN52nNcYrFmhBRlsvWdBHMMQo35fe5RytA
-Message-ID: <CAHp75Vcjv=XerYsunKO7h_e_jBMQuaKvkvRAuPLAXLqevM4jMw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] iio: adc: Add TI ADS131M0x ADC driver
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	David Jander <david@protonic.nl>, kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	Andy Shevchenko <andy@kernel.org>, David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 5_xMSQEX9bU8-P3oueMDVElWTnAvzD6w
+X-Proofpoint-ORIG-GUID: 5_xMSQEX9bU8-P3oueMDVElWTnAvzD6w
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE0MDE4MSBTYWx0ZWRfX1Fh71ipV/Sw5
+ Fc1t6RJnj+Tk3GSxSe1cQ5fn61xzwsDkWOb/RUGBbyfSqiRDwEjTwVxYSeELLLpFNPCfY0gnwM3
+ 2lI+5iC86BP3ANdtrZmkw8Xmj/3Vixd0f7yuIFSUGjCE4Zw7/Sg0CZMBmBbOI89cDKaqQV31YDV
+ LQh77RdE+BBrppuScKORaa2y+1+WgH7HoYXr0pUNHrZ6PqqpUxUqi4ZohqcU2xgbydCVI0nJm2P
+ Ti4do8JvtAq9cOD9jSsmvjtG4xHs/tPAQrv7KaDcTGzn8toRj+bW+b/FcD6zDDdEJ9TKYVhPsSb
+ z4n40JAEVW0oShZtY0evbq9bWhfKPP6/Dik6c8PPkn9u2pL68tgZ5ox/bqFLXCvqwY+Oog5O0c7
+ Vn0FsskP95RQSs0aCNNgLfnPE/4gmQ==
+X-Authority-Analysis: v=2.4 cv=b4O/I9Gx c=1 sm=1 tr=0 ts=6917a9b2 cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=gAnH3GRIAAAA:8 a=k4j7YIrD2z0abcBcpGAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=qG3zLgC56WEA:10 a=18YE-K8rVzMA:10 a=fBYpuoihzhcA:10 a=XfvEQclAs2gA:10
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-14_07,2025-11-13_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1015 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511140181
 
-On Fri, Nov 14, 2025 at 11:20=E2=80=AFAM Oleksij Rempel <o.rempel@pengutron=
-ix.de> wrote:
->
-> From: David Jander <david@protonic.nl>
->
-> Add a new IIO ADC driver for Texas Instruments ADS131M0x devices
-> (ADS131M02/03/04/06/08). These are 24-bit, up to 64 kSPS, simultaneous-
-> sampling delta-sigma ADCs accessed via SPI.
->
-> Highlights:
-> - Supports 2/3/4/6/8-channel variants with per-channel RAW and SCALE.
-> - Implements device-required full-duplex fixed-frame transfers.
-> - Handles both input and output CRC
->
-> Note: Despite the almost identical name, this hardware is not
-> compatible with the ADS131E0x series handled by
-> drivers/iio/adc/ti-ads131e08.c.
+Include ADXL318 and ADXL319 accelerometers to the documentation.
+The ADXL318 is based on the ADXL380, while the ADXL319 is based on the
+ADXL382. However, the ADXL318/319 do not support some built-in features
+like single tap, double tap and triple tap detection, and also activity
+and inactivity detection.
 
-...
+Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+---
+Changes in v2:
+- resorted the new parts references by numerical order.
+---
+ .../devicetree/bindings/iio/accel/adi,adxl380.yaml    | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-> +config TI_ADS131M02
-> +       tristate "Texas Instruments ADS131M02"
-> +       depends on SPI && COMMON_CLK && REGULATOR
+diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
+index f1ff5ff4f478..ab517720a6a7 100644
+--- a/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
++++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
+@@ -11,16 +11,19 @@ maintainers:
+   - Antoniu Miclaus <antoniu.miclaus@analog.com>
+ 
+ description: |
+-  The ADXL380/ADXL382 is a low noise density, low power, 3-axis
+-  accelerometer with selectable measurement ranges. The ADXL380
+-  supports the ±4 g, ±8 g, and ±16 g ranges, and the ADXL382 supports
+-  ±15 g, ±30 g, and ±60 g ranges.
++  The ADXL380/ADXL382 and ADXL318/ADXL319 are low noise density,
++  low power, 3-axis accelerometers with selectable measurement ranges.
++  The ADXL380 and ADXL318 support the ±4 g, ±8 g, and ±16 g ranges,
++  while the ADXL382 and ADXL319 support ±15 g, ±30 g, and ±60 g ranges.
+ 
++  https://www.analog.com/en/products/adxl318.html
+   https://www.analog.com/en/products/adxl380.html
+ 
+ properties:
+   compatible:
+     enum:
++      - adi,adxl318
++      - adi,adxl319
+       - adi,adxl380
+       - adi,adxl382
+ 
 
-Hmm... The COMMON_CLK looks strange here. Why?
+base-commit: 1c9986e782de45bf32fb4f886a40c1393d169568
+-- 
+2.34.1
 
-> +       select CRC_ITU_T
-
-Btw, why does it not use regmap?
-
-...
-
-> +#include <linux/array_size.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/bitops.h>
-> +#include <linux/cleanup.h>
-> +#include <linux/clk.h>
-> +#include <linux/crc-itu-t.h>
-> +#include <linux/delay.h>
-> +#include <linux/dev_printk.h>
-
-> +#include <linux/device.h>
-
-Is it used? I haven't found what API or data structure is required from her=
-e.
-
-> +#include <linux/device/devres.h>
-> +#include <linux/err.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/lockdep.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/string.h>
-> +#include <linux/types.h>
-> +#include <linux/unaligned.h>
-
-...
-
-> +#define ADS131M_CMD_RREG_OP            0xa000
-> +#define ADS131M_CMD_WREG_OP            0x6000
-
-These two have bit 13 always set. What is the meaning of that bit?
-
-> +#define ADS131M_CMD_RREG(a, n) \
-> +       (ADS131M_CMD_RREG_OP | \
-> +        FIELD_PREP(ADS131M_CMD_ADDR_MASK, a) | \
-> +        FIELD_PREP(ADS131M_CMD_NUM_MASK, n))
-> +#define ADS131M_CMD_WREG(a, n) \
-> +       (ADS131M_CMD_WREG_OP | \
-> +        FIELD_PREP(ADS131M_CMD_ADDR_MASK, a) | \
-> +        FIELD_PREP(ADS131M_CMD_NUM_MASK, n))
-
-...
-
-> +/**
-> + * ads131m_tx_frame_unlocked - Sends a command frame with Input CRC
-> + * @priv: Device private data structure.
-> + * @command: The 16-bit command to send (e.g., NULL, RREG, RESET).
-> + *
-> + * This function sends a command in Word 0, and its calculated 16-bit
-> + * CRC in Word 1, as required when Input CRC is enabled.
-> + *
-> + * Return: 0 on success, or a negative error code from spi_sync.
-
-spi_sync()
-
-But I would drop it as it makes dependency on the code changes and it
-will deviate easily if code grows and something else becomes a call
-that returns an error, also this simply doesn't scale: are you going
-to list whole bunch of APIs in the kernel doc? (rhetorical Q) Ditto
-for other similar cases.
-
-> + */
-
-...
-
-> +/**
-> + * ads131m_check_status_crc_err - Checks for an Input CRC error.
-> + * @priv: Device private data structure.
-> + *
-> + * Sends a NULL command to fetch the STATUS register and checks the
-> + * CRC_ERR bit. This is used to verify the integrity of the previous
-> + * command (like RREG or WREG).
-> + *
-> + * Return: 0 on success, -EIO if CRC_ERR bit is set.
-
-Note, this kernel-doc line is good as it doesn't rely on the code,
-rather on the HW programming flow.
-
-> + */
-
-...
-
-> +static int ads131m_rmw_reg(struct ads131m_priv *priv, u8 reg, u16 clear,=
- u16 set)
-> +{
-> +       u16 old_val, new_val;
-> +       int ret;
-> +
-> +       guard(mutex)(&priv->lock);
-> +
-> +       ret =3D ads131m_read_reg_unlocked(priv, reg, &old_val);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       new_val =3D (old_val & ~clear) | set;
-> +       if (new_val =3D=3D old_val)
-> +               return 0;
-> +
-> +       return ads131m_write_reg_unlocked(priv, reg, new_val);
-> +}
-
-...
-
-> +static int ads131m_hw_reset(struct ads131m_priv *priv)
-> +{
-> +       struct device *dev =3D &priv->spi->dev;
-> +       int ret;
-> +
-> +       /* Datasheet: Hold /RESET low for > 2 f_CLKIN cycles. 1us is ampl=
-e. */
-> +       ret =3D gpiod_set_value_cansleep(priv->reset_gpio, 1);
-> +       if (ret < 0)
-> +               return dev_err_probe(dev, ret, "Failed to assert reset GP=
-IO\n");
-
-
-> +       fsleep(1);
-
-Hmm... Is it needed? I think the GPIO is slow enough to avoid delays
-like this, but okay.
-
-> +       ret =3D gpiod_set_value_cansleep(priv->reset_gpio, 0);
-> +       if (ret < 0)
-> +               return dev_err_probe(dev, ret, "Failed to deassert reset =
-GPIO\n");
-> +
-> +       /* Wait t_REGACQ (5us) for registers to be accessible */
-> +       fsleep(ADS131M_RESET_DELAY_US);
-> +
-> +       return 0;
-> +}
-
-Can you use the reset-gpio driver instead of a custom approach?
-
-...
-
-> +       /*
-> +        * Get the optional external reference. This schedules regulator_=
-put()
-> +        * automatically.
-> +        */
-> +       priv->refin_supply =3D devm_regulator_get_optional(dev, "refin");
-> +       ret =3D PTR_ERR_OR_ZERO(priv->refin_supply);
-> +       if (ret =3D=3D -ENODEV)
-> +               priv->refin_supply =3D NULL;
-> +       else if (ret < 0)
-> +               return dev_err_probe(dev, ret, "failed to get refin regul=
-ator\n");
-
-So, will the refin_supply be ever an error pointer? I think no, hence
-why IS_ERR_OR_NULL() in the user somewhere above in the code?
-
-...
-
-> +static int ads131m_parse_clock(struct ads131m_priv *priv, bool *is_xtal)
-> +{
-> +       struct device *dev =3D &priv->spi->dev;
-> +       int ret;
-> +
-> +       priv->clk =3D devm_clk_get_enabled(dev, NULL);
-> +       if (IS_ERR(priv->clk))
-> +               return dev_err_probe(dev, PTR_ERR(priv->clk), "clk get en=
-abled failed\n");
-> +
-> +       ret =3D device_property_match_string(dev, "clock-names", "xtal");
-> +       if (ret =3D=3D 0) {
-> +               if (!priv->config->supports_xtal)
-> +                       return dev_err_probe(dev, -EINVAL,
-> +                                            "'xtal' clock not supported =
-on this device");
-
-> +               *is_xtal =3D true;
-> +
-> +               return 0;
-
-This...
-
-> +       } else if (ret > 0) {
-> +               return dev_err_probe(dev, -EINVAL, "'xtal' must be the on=
-ly or first clock name");
-
-> +       } else if (ret =3D=3D -ENODATA) {
-> +               *is_xtal =3D false;
-> +
-> +               return 0;
-> +       }
-> +
-> +       return dev_err_probe(dev, ret, "failed to read 'clock-names' prop=
-erty");
-
-...and this can be deduplicated, so the first one becomes just a check
-for !supports_xtal.
-
-  if (ret =3D=3D 0) && !supports_xtal)
-    return dev_err_probe(...);
-  else if (ret > 0)
-    return dev_err_probe(...);
-
-This one will be modified to
-
-  else if (ret !=3D -ENODATA)
-    return dev_err_probe(...);
-
-  *is_xtal =3D !ret;
-  return ret;
-
-> +}
-
-...
-
-> +       config =3D spi_get_device_match_data(spi);
-
-> +       if (!config)
-> +               return dev_err_probe(dev, -EINVAL, "No device configurati=
-on data found\n");
-
-Without this code will crash, right? So, I consider this check is
-redundant because any support of any new chip requires this, and if
-one didn't add the driver data, means it wasn't tested (which is a
-good trap on itself during code review).
-
-...
-
-> +       { } /* Fixed sentinel */
-
-No comment needed.
-
---=20
-With Best Regards,
-Andy Shevchenko
 

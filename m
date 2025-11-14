@@ -1,1254 +1,228 @@
-Return-Path: <linux-iio+bounces-26209-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26210-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B55C5C448
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 10:29:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D676C5C493
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 10:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 18283351093
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 09:21:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A467D42211E
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Nov 2025 09:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDE9306B30;
-	Fri, 14 Nov 2025 09:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982D0306B31;
+	Fri, 14 Nov 2025 09:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NzuQ0lR3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DB5304BC2
-	for <linux-iio@vger.kernel.org>; Fri, 14 Nov 2025 09:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B849028727C;
+	Fri, 14 Nov 2025 09:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763112010; cv=none; b=rw9+HoiW4sntAcum0ujCcD2fnCi0wsG53lSBRaS8myMndGu680GAAbvnXZNUrRPBFDUnG2HPcoYw6kXjilx8dZ9hIDInf8yMx1oWnBzkKHLKoMQhhwjCpJ6b4BkrQ5cJHNPGbhAF70lDIoxPR6chzNuZqKg6CCatDGcCTvSVxBU=
+	t=1763112441; cv=none; b=r392oKcMOyqBA3ayn7sIrRVziWpfGGNl32CQeD5frNl9HI/v2HbqV/EEK7Q6o8VQnTeGZBXto80Of30hJBTi5EBxF+krQnSXyLVnYycpYK7PxhWV1kTDrCeDspBJREcuRup7gNYWWYHDp5oEmOFDPAK7NEgYlseBCq5nudiOFLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763112010; c=relaxed/simple;
-	bh=QYTJJCBcDmagt6hXeB6bYKfYvPalOn529DdzzajnRHs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qvxD6G/eWMliuoHS5ppSbHnzZqoMdqV9+4vUGYTWpb/BGaMQI1JbQRETmhywmfBWBCr/MQUhq3eE5vH2O7sqocu61ghCLZO8SLJo3Y2usREiDG2CUwU1OuJyzN/EndtLg0INv8Go/DFUys3vJOJMuFTBW5mVC+uprHqsn/Dx3Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vJpyM-0004v2-Ak; Fri, 14 Nov 2025 10:20:02 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vJpyL-000OhO-2i;
-	Fri, 14 Nov 2025 10:20:01 +0100
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vJpyL-0000000H1wO-3DLK;
-	Fri, 14 Nov 2025 10:20:01 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: David Jander <david@protonic.nl>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Andy Shevchenko <andy@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-Subject: [PATCH v3 2/2] iio: adc: Add TI ADS131M0x ADC driver
-Date: Fri, 14 Nov 2025 10:20:00 +0100
-Message-ID: <20251114092000.4058978-3-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251114092000.4058978-1-o.rempel@pengutronix.de>
-References: <20251114092000.4058978-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1763112441; c=relaxed/simple;
+	bh=JEFXzboCDJt0JmXtr+UN4FXJ3ZEMeYNhJunbMmjv/q4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QS0BuGKpA3yqEP0Afv4KM73LMPP7TLOdNZNMZuZ1kip4j9/Y9uLnSw9lh4nltMiZpwCrjH36hJ69KvMlUf2cjoLWS3ojNBx5X+oCgMOP9/Fl/k2EfSCXsTdCQQxdontQvplHyJavcHlrcoa5O8mivD640O7U6crEThQ9WqzcR54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NzuQ0lR3; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763112440; x=1794648440;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JEFXzboCDJt0JmXtr+UN4FXJ3ZEMeYNhJunbMmjv/q4=;
+  b=NzuQ0lR3TlX5mCm2XFeIoBLd6j3+nTwWhPMSIeC7ZWXdL4NEffVY063m
+   ihgaCm9e3Jn0p4Tlp0O+ip5C/VfRDML+2E/qanGMliON1jXgtmDHWbfFK
+   OfXMU9TzSDn6PTEQCDO8eUT3Crt8O95ZbEk9bZ/Rni3tz2BEHl1Ndf45w
+   6Pat/L81aR9wR7FYlafyRFGIegI0avb2f1xUzbhHDZQw6sTHKE715Oolm
+   U9c4Wq/vj8stCK/9Gv8AJQ4QZDz4Okvk45jEKo43gUZgQgLAXrZSTBbvx
+   SrIyUlozZGot3yb4gfHbOK8zABKgvwUBXz5B6Zu20XhZqkjzrfU2V4IK7
+   w==;
+X-CSE-ConnectionGUID: EMY+raUMS3G/4oF4P3BBRA==
+X-CSE-MsgGUID: splbwSesRFuG7hpnOES09g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="76306657"
+X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; 
+   d="scan'208";a="76306657"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 01:27:20 -0800
+X-CSE-ConnectionGUID: 4AjhgMubSHes0WVu/Jx9Pg==
+X-CSE-MsgGUID: rr1ahpIVT1iWUmr5/Xq9uA==
+X-ExtLoop1: 1
+Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 14 Nov 2025 01:27:15 -0800
+Received: from kbuild by 7b01c990427b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vJq5J-0006P9-0Q;
+	Fri, 14 Nov 2025 09:27:13 +0000
+Date: Fri, 14 Nov 2025 17:26:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, jic23@kernel.org, nuno.sa@analog.com,
+	dlechner@baylibre.com, andy@kernel.org,
+	Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, corbet@lwn.net, cosmin.tanislav@analog.com,
+	marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v1 2/3] iio: adc: Initial support for AD4134
+Message-ID: <202511141657.LqnXWUQm-lkp@intel.com>
+References: <86f532ae3a9b3f122b9d5dbada9c131a0c048ca7.1762777931.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86f532ae3a9b3f122b9d5dbada9c131a0c048ca7.1762777931.git.marcelo.schmitt@analog.com>
 
-From: David Jander <david@protonic.nl>
+Hi Marcelo,
 
-Add a new IIO ADC driver for Texas Instruments ADS131M0x devices
-(ADS131M02/03/04/06/08). These are 24-bit, up to 64 kSPS, simultaneous-
-sampling delta-sigma ADCs accessed via SPI.
+kernel test robot noticed the following build errors:
 
-Highlights:
-- Supports 2/3/4/6/8-channel variants with per-channel RAW and SCALE.
-- Implements device-required full-duplex fixed-frame transfers.
-- Handles both input and output CRC
+[auto build test ERROR on c5411c8b9ed1caf53604bb1a5be3f487988efc98]
 
-Note: Despite the almost identical name, this hardware is not
-compatible with the ADS131E0x series handled by
-drivers/iio/adc/ti-ads131e08.c.
+url:    https://github.com/intel-lab-lkp/linux/commits/Marcelo-Schmitt/dt-bindings-iio-adc-Add-AD4134/20251110-204756
+base:   c5411c8b9ed1caf53604bb1a5be3f487988efc98
+patch link:    https://lore.kernel.org/r/86f532ae3a9b3f122b9d5dbada9c131a0c048ca7.1762777931.git.marcelo.schmitt%40analog.com
+patch subject: [PATCH v1 2/3] iio: adc: Initial support for AD4134
+config: nios2-allyesconfig (https://download.01.org/0day-ci/archive/20251114/202511141657.LqnXWUQm-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251114/202511141657.LqnXWUQm-lkp@intel.com/reproduce)
 
-Signed-off-by: David Jander <david@protonic.nl>
-Co-developed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v3:
-- Add Kconfig 'select CRC_ITU_T' for crc_itu_t() usage
-- Replace custom CRC logic with crc_itu_t() and add detailed comment
-- Rewrite RREG/WREG command macros using FIELD_PREP() and GENMASK()
-- Add GENMASK-based CMD_ADDR and CMD_NUM masks, remove hand-written shifts
-- Replace ADS131M_SCALE_DIVISOR with CODE_BITS and use BIT(CODE_BITS)
-- Rename ADS131M_VREF_INTERNAL_MV to ADS131M_VREF_INTERNAL_mV
-- Rename local vref_uv -> vref_uV for unit correctness
-- Collapse multi-line function prototypes into single-line forms
-- Consolidate CLOCK register updates into one rmw with clear mask
-- Remove unused clk_clear logic and use positive extref checks
-- Introduce ads131m_parse_clock() helper combining clk enable and xtal parsing
-- Validate xtal only for xtal-capable variants; default to clkin otherwise
-- Improve device_property_match_string() error handling for xtal cases
-- Fix refin regulator handling with PTR_ERR_OR_ZERO() pattern
-- Clean up dev_err_ratelimited() formatting and log message consistency
-- Add missing kernel headers: array_size.h, bitops.h, crc-itu-t.h, etc.
-- Reorder ads131m_configuration struct; convert flags to bitfields
-- Add trailing comma to IIO channel macro for checkpatch compatibility
-- Minor whitespace and style fixes across write/read helpers
-changes v2:
-- add <linux/cleanup.h>, <linux/unaligned.h>; drop <linux/of.h>,
-  <linux/property.h>;
-- parenthesize macro args (ADS131M_FRAME_WSIZE, ADS131M_CHANNEL_INDEX).
-- add indio_dev to priv; add .name to config; drop enum device IDs + table,
-  use per-variant ads131m0{2,3,4,6,8}_config.
-- switch to spi_get_device_match_data(spi); set indio_dev->name = config->name.
-- replace manual prepare/enable + devm action with devm_clk_get_enabled();
-- use guard(mutex); add lockdep_assert_held() where needed;
-- use put_unaligned_be16() for command/data/CRC (was BE24 with shifts);
-- call devm_spi_optimize_message();
-- use fsleep() for instead of usleep_ranges()
-- convert to dev_err_probe() paths; tighten comments; simplify flow.
-- drop manual spi->mode/bpw/max_speed
-- reorder/static arrays by variant; no functional change.
-- remove of_match_ptr() wrapper
-- remove stray debug logs
-- rename driver file, Kconfig, and Makefile object to ti-ads131m02.
-- remove ADS131M_MAX_SCLK_HZ define (now relies on firmware).
-- change ADS131M_RESET_DELAY_US from 10us to 5us per datasheet.
-- add optional hardware reset GPIO support.
-- reordere struct ads131m_priv to place DMA buffers last
-- remove unused gain array and simplified IIO_CHAN_INFO_SCALE logic.
-- rename size macros to ADS131M_FRAME_WORDS/BYTES for clarity.
-- rate-limite error messages in SPI helpers to prevent log flooding.
-- remove spi_setup() call from probe.
-- change xfer[1] array to a single struct spi_transfer xfer.
-- update scale calculation comment in read_raw.
-- add support for avdd, dvdd, and optional refin regulators
-- add support for "clock-names" to select xtal or clkin
-- configure CLOCK register based on chip (M06/M08) capabilities
-- add scaling support when using an external reference
-- refactor scaling logic into a new ads131m_read_scale() helper
----
- drivers/iio/adc/Kconfig        |   11 +
- drivers/iio/adc/Makefile       |    1 +
- drivers/iio/adc/ti-ads131m02.c | 1053 ++++++++++++++++++++++++++++++++
- 3 files changed, 1065 insertions(+)
- create mode 100644 drivers/iio/adc/ti-ads131m02.c
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511141657.LqnXWUQm-lkp@intel.com/
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 58a14e6833f6..539d43dd6655 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1691,6 +1691,17 @@ config TI_ADS131E08
- 	  This driver can also be built as a module. If so, the module will be
- 	  called ti-ads131e08.
- 
-+config TI_ADS131M02
-+	tristate "Texas Instruments ADS131M02"
-+	depends on SPI && COMMON_CLK && REGULATOR
-+	select CRC_ITU_T
-+	help
-+	  Say yes here to get support for Texas Instruments ADS131M02, ADS131M03,
-+	  ADS131M04, ADS131M06 and ADS131M08 chips.
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called ti-ads131m02.
-+
- config TI_ADS7138
- 	tristate "Texas Instruments ADS7128 and ADS7138 ADC driver"
- 	depends on I2C
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index d008f78dc010..1179f86e6caa 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -147,6 +147,7 @@ obj-$(CONFIG_TI_ADS1119) += ti-ads1119.o
- obj-$(CONFIG_TI_ADS124S08) += ti-ads124s08.o
- obj-$(CONFIG_TI_ADS1298) += ti-ads1298.o
- obj-$(CONFIG_TI_ADS131E08) += ti-ads131e08.o
-+obj-$(CONFIG_TI_ADS131M02) += ti-ads131m02.o
- obj-$(CONFIG_TI_ADS7138) += ti-ads7138.o
- obj-$(CONFIG_TI_ADS7924) += ti-ads7924.o
- obj-$(CONFIG_TI_ADS7950) += ti-ads7950.o
-diff --git a/drivers/iio/adc/ti-ads131m02.c b/drivers/iio/adc/ti-ads131m02.c
-new file mode 100644
-index 000000000000..fdd3bc536cb3
---- /dev/null
-+++ b/drivers/iio/adc/ti-ads131m02.c
-@@ -0,0 +1,1053 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Driver for Texas Instruments ADS131M02 family ADC chips.
-+ *
-+ * Copyright (C) 2024 Protonic Holland
-+ * Copyright (C) 2025 Oleksij Rempel <kernel@pengutronix.de>, Pengutronix
-+ *
-+ * Primary Datasheet Reference (used for citations):
-+ * ADS131M08 8-Channel, Simultaneously-Sampling, 24-Bit, Delta-Sigma ADC
-+ * Document SBAS950B, Revised February 2021
-+ * https://www.ti.com/lit/ds/symlink/ads131m08.pdf
-+ */
-+
-+#include <linux/array_size.h>
-+#include <linux/bitfield.h>
-+#include <linux/bitops.h>
-+#include <linux/cleanup.h>
-+#include <linux/clk.h>
-+#include <linux/crc-itu-t.h>
-+#include <linux/delay.h>
-+#include <linux/dev_printk.h>
-+#include <linux/device.h>
-+#include <linux/device/devres.h>
-+#include <linux/err.h>
-+#include <linux/iio/iio.h>
-+#include <linux/lockdep.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/spi/spi.h>
-+#include <linux/string.h>
-+#include <linux/types.h>
-+#include <linux/unaligned.h>
-+
-+/* Max channels supported by the largest variant in the family (ADS131M08) */
-+#define ADS131M_MAX_CHANNELS		8
-+
-+/* Section 6.7, t_REGACQ (min time after reset) is 5us */
-+#define ADS131M_RESET_DELAY_US		5
-+
-+#define ADS131M_WORD_SIZE_BYTES		3
-+#define ADS131M_RESPONSE_WORDS		1
-+#define ADS131M_CRC_WORDS		1
-+
-+/*
-+ * SPI Frame word count calculation.
-+ * Frame = N channel words + 1 response word + 1 CRC word.
-+ * Word size depends on WLENGTH bits in MODE register (Default 24-bit).
-+ */
-+#define ADS131M_FRAME_WORDS(nch) \
-+	((nch) + ADS131M_RESPONSE_WORDS + ADS131M_CRC_WORDS)
-+
-+/*
-+ * SPI Frame byte size calculation.
-+ * Assumes default word size of 24 bits (3 bytes).
-+ */
-+#define ADS131M_FRAME_BYTES(nch) \
-+	(ADS131M_FRAME_WORDS(nch) * ADS131M_WORD_SIZE_BYTES)
-+
-+/*
-+ * Index calculation for the start byte of channel 'x' data within the RX buffer.
-+ * Assumes 24-bit words (3 bytes per word).
-+ * The received frame starts with the response word (e.g., STATUS register
-+ * content when NULL command was sent), followed by data for channels 0 to N-1,
-+ * and finally the output CRC word.
-+ * Response = index 0..2, Chan0 = index 3..5, Chan1 = index 6..8, ...
-+ * Index for ChanX = 3 (response) + x * 3 (channel data size).
-+ */
-+#define ADS131M_CHANNEL_INDEX(x) \
-+	((x) * ADS131M_WORD_SIZE_BYTES + ADS131M_WORD_SIZE_BYTES)
-+
-+#define ADS131M_CMD_NULL		0x0000
-+#define ADS131M_CMD_RESET		0x0011
-+
-+#define ADS131M_CMD_ADDR_MASK		GENMASK(11, 7)
-+#define ADS131M_CMD_NUM_MASK		GENMASK(6, 0)
-+
-+#define ADS131M_CMD_RREG_OP		0xa000
-+#define ADS131M_CMD_WREG_OP		0x6000
-+
-+#define ADS131M_CMD_RREG(a, n) \
-+	(ADS131M_CMD_RREG_OP | \
-+	 FIELD_PREP(ADS131M_CMD_ADDR_MASK, a) | \
-+	 FIELD_PREP(ADS131M_CMD_NUM_MASK, n))
-+#define ADS131M_CMD_WREG(a, n) \
-+	(ADS131M_CMD_WREG_OP | \
-+	 FIELD_PREP(ADS131M_CMD_ADDR_MASK, a) | \
-+	 FIELD_PREP(ADS131M_CMD_NUM_MASK, n))
-+
-+/*  STATUS Register (0x01h) bit definitions */
-+#define ADS131M_STATUS_CRC_ERR		BIT(12) /* Input CRC Error */
-+
-+#define ADS131M_REG_MODE		0x02
-+#define ADS131M_MODE_RX_CRC_EN		BIT(12) /* Enable Input CRC */
-+#define ADS131M_MODE_CRC_TYPE_ANSI	BIT(11) /* 0 = CCITT, 1 = ANSI */
-+#define ADS131M_MODE_RESET_FLAG		BIT(10)
-+
-+#define ADS131M_REG_CLOCK		0x03
-+#define ADS131M_CLOCK_XTAL_DIS		BIT(7)
-+#define ADS131M_CLOCK_EXTREF_EN		BIT(6)
-+
-+/* 1.2V internal reference, in millivolts, for IIO_VAL_FRACTIONAL_LOG2 */
-+#define ADS131M_VREF_INTERNAL_mV	1200
-+/* 24-bit resolution */
-+#define ADS131M_RESOLUTION_BITS		24
-+/* Signed data uses (RESOLUTION_BITS - 1) magnitude bits */
-+#define ADS131M_CODE_BITS              (ADS131M_RESOLUTION_BITS - 1)
-+
-+/* External ref FSR = Vref * 0.96 */
-+#define ADS131M_EXTREF_SCALE_NUM	96
-+#define ADS131M_EXTREF_SCALE_DEN	100
-+
-+struct ads131m_configuration {
-+	const struct iio_chan_spec *channels;
-+	const char *name;
-+	u16 reset_ack;
-+	u8 num_channels;
-+	u8 supports_extref:1;
-+	u8 supports_xtal:1;
-+};
-+
-+struct ads131m_priv {
-+	struct iio_dev *indio_dev;
-+	struct spi_device *spi;
-+	struct clk *clk;
-+	const struct ads131m_configuration *config;
-+	struct gpio_desc *reset_gpio;
-+
-+	struct regulator *refin_supply;
-+
-+	struct spi_transfer xfer;
-+	struct spi_message msg;
-+
-+	/*
-+	 * Protects the shared tx_buffer and rx_buffer. More importantly,
-+	 * this serializes all SPI communication to ensure the atomicity
-+	 * of multi-cycle command sequences (like WREG, RREG, or RESET).
-+	 */
-+	struct mutex lock;
-+
-+	/*
-+	 * DMA-safe buffers are placed at the end of the struct.
-+	 * This prevents the compiler from inserting large, wasteful
-+	 * padding blocks between non-aligned fields.
-+	 *
-+	 * Both buffers require alignment, as the size of tx_buffer (30 bytes)
-+	 * is not a multiple of typical DMA alignment values.
-+	 */
-+	u8 tx_buffer[ADS131M_FRAME_BYTES(ADS131M_MAX_CHANNELS)]
-+		__aligned(IIO_DMA_MINALIGN);
-+	u8 rx_buffer[ADS131M_FRAME_BYTES(ADS131M_MAX_CHANNELS)]
-+		__aligned(IIO_DMA_MINALIGN);
-+};
-+
-+/**
-+ * ads131m_crc_calculate - CRC-16 for ADS131M SPI frames (CCITT, MSB-first)
-+ * @buffer: data buffer
-+ * @len:    buffer length in bytes
-+ *
-+ * ADS131M0x devices require CRC-16-CCITT with polynomial 0x1021,
-+ * MSB-first (non-reflected) processing, and initial value 0xFFFF.
-+ *
-+ * The kernel helper crc_itu_t() implements this CCITT variant.
-+ * Do not use crc_ccitt(), which is the reflected (LSB-first) variant and
-+ * yields different results for the same input.
-+ *
-+ * Return: 16-bit CRC over @buffer.
-+ */
-+static u16 ads131m_crc_calculate(const u8 *buffer, size_t len)
-+{
-+	return crc_itu_t(0xffff, buffer, len);
-+}
-+
-+/**
-+ * ads131m_tx_frame_unlocked - Sends a command frame with Input CRC
-+ * @priv: Device private data structure.
-+ * @command: The 16-bit command to send (e.g., NULL, RREG, RESET).
-+ *
-+ * This function sends a command in Word 0, and its calculated 16-bit
-+ * CRC in Word 1, as required when Input CRC is enabled.
-+ *
-+ * Return: 0 on success, or a negative error code from spi_sync.
-+ */
-+static int ads131m_tx_frame_unlocked(struct ads131m_priv *priv, u32 command)
-+{
-+	struct iio_dev *indio_dev = priv->indio_dev;
-+	u16 crc;
-+
-+	lockdep_assert_held(&priv->lock);
-+
-+	memset(priv->tx_buffer, 0, ADS131M_FRAME_BYTES(indio_dev->num_channels));
-+
-+	/* Word 0: 16-bit command, MSB-aligned in 24-bit word */
-+	put_unaligned_be16(command, &priv->tx_buffer[0]);
-+
-+	/* Word 1: Input CRC. Calculated over the 3 bytes of Word 0. */
-+	crc = ads131m_crc_calculate(priv->tx_buffer, 3);
-+	put_unaligned_be16(crc, &priv->tx_buffer[3]);
-+
-+	return spi_sync(priv->spi, &priv->msg);
-+}
-+
-+/**
-+ * ads131m_rx_frame_unlocked - Receives a full SPI data frame.
-+ * @priv: Device private data structure.
-+ *
-+ * This function sends a NULL command (with its CRC) to clock out a
-+ * full SPI frame from the device (e.g., response + channel data + CRC).
-+ *
-+ * Return: 0 on success, or a negative error code from spi_sync.
-+ */
-+static int ads131m_rx_frame_unlocked(struct ads131m_priv *priv)
-+{
-+	return ads131m_tx_frame_unlocked(priv, ADS131M_CMD_NULL);
-+}
-+
-+/**
-+ * ads131m_check_status_crc_err - Checks for an Input CRC error.
-+ * @priv: Device private data structure.
-+ *
-+ * Sends a NULL command to fetch the STATUS register and checks the
-+ * CRC_ERR bit. This is used to verify the integrity of the previous
-+ * command (like RREG or WREG).
-+ *
-+ * Return: 0 on success, -EIO if CRC_ERR bit is set.
-+ */
-+static int ads131m_check_status_crc_err(struct ads131m_priv *priv)
-+{
-+	struct device *dev = &priv->spi->dev;
-+	u16 status;
-+	int ret;
-+
-+	lockdep_assert_held(&priv->lock);
-+
-+	ret = ads131m_rx_frame_unlocked(priv);
-+	if (ret < 0) {
-+		dev_err_ratelimited(dev,
-+				    "SPI error on STATUS read for CRC check\n");
-+		return ret;
-+	}
-+
-+	status = get_unaligned_be16(&priv->rx_buffer[0]);
-+	if (status & ADS131M_STATUS_CRC_ERR) {
-+		dev_err_ratelimited(dev,
-+				    "Previous input CRC error, STATUS = 0x%04x\n",
-+				    status);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * ads131m_write_reg_unlocked - Writes a single register and verifies the ACK.
-+ * @priv: Device private data structure.
-+ * @reg: The 8-bit register address.
-+ * @val: The 16-bit value to write.
-+ *
-+ * This function performs the full 3-cycle WREG operation with Input CRC:
-+ * 1. (Cycle 1) Sends WREG command, data, and its calculated CRC.
-+ * 2. (Cycle 2) Sends NULL+CRC to retrieve the response from Cycle 1.
-+ * 3. Verifies the response is the correct ACK for the WREG.
-+ * 4. (Cycle 3) Sends NULL+CRC to retrieve STATUS and check for CRC_ERR.
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+static int ads131m_write_reg_unlocked(struct ads131m_priv *priv, u8 reg, u16 val)
-+{
-+	struct iio_dev *indio_dev = priv->indio_dev;
-+	u16 command, expected_ack, response, crc;
-+	struct device *dev = &priv->spi->dev;
-+	int ret_crc_err = 0;
-+	int ret;
-+
-+	lockdep_assert_held(&priv->lock);
-+
-+	command = ADS131M_CMD_WREG(reg, 0); /* n = 0 for 1 register */
-+	/*
-+	 * Per Table 8-11, WREG response is: 010a aaaa ammm mmmm
-+	 * For 1 reg (n = 0 -> m = 0): 010a aaaa a000 0000 = 0x4000 | (reg << 7)
-+	 */
-+	expected_ack = 0x4000 | (reg << 7);
-+
-+	/* Cycle 1: Send WREG Command + Data + Input CRC */
-+
-+	memset(priv->tx_buffer, 0, ADS131M_FRAME_BYTES(indio_dev->num_channels));
-+
-+	/* Word 0: WREG command, 1 reg (n = 0), MSB-aligned */
-+	put_unaligned_be16(command, &priv->tx_buffer[0]);
-+
-+	/* Word 1: Data, MSB-aligned */
-+	put_unaligned_be16(val, &priv->tx_buffer[3]);
-+
-+	/* Word 2: Input CRC. Calculated over Word 0 (Cmd) and Word 1 (Data). */
-+	crc = ads131m_crc_calculate(priv->tx_buffer, 6);
-+	put_unaligned_be16(crc, &priv->tx_buffer[6]);
-+
-+	/* Ignore the RX buffer (it's from the previous command) */
-+	ret = spi_sync(priv->spi, &priv->msg);
-+	if (ret < 0) {
-+		dev_err_ratelimited(dev, "SPI error on WREG (cycle 1)\n");
-+		return ret;
-+	}
-+
-+	/* Cycle 2: Send NULL Command to get the WREG response */
-+	ret = ads131m_rx_frame_unlocked(priv);
-+	if (ret < 0) {
-+		dev_err_ratelimited(dev, "SPI error on WREG ACK (cycle 2)\n");
-+		return ret;
-+	}
-+
-+	/*
-+	 * Response is in the first 2 bytes of the RX buffer
-+	 * (MSB-aligned 16-bit response)
-+	 */
-+	response = get_unaligned_be16(&priv->rx_buffer[0]);
-+	if (response != expected_ack) {
-+		dev_err_ratelimited(dev, "WREG(0x%02x) failed, expected ACK 0x%04x, got 0x%04x\n",
-+				    reg, expected_ack, response);
-+		ret_crc_err = -EIO;
-+		/*
-+		 * Don't return yet, still need to do Cycle 3 to clear
-+		 * any potential CRC_ERR flag from this failed command.
-+		 */
-+	}
-+
-+	/*
-+	 * Cycle 3: Check STATUS for Input CRC error.
-+	 * This is necessary even if ACK was wrong, to clear the CRC_ERR flag.
-+	 */
-+	ret = ads131m_check_status_crc_err(priv);
-+	if (ret < 0)
-+		return ret;
-+
-+	return ret_crc_err;
-+}
-+
-+/**
-+ * ads131m_read_reg_unlocked - Reads a single register from the device.
-+ * @priv: Device private data structure.
-+ * @reg: The 8-bit register address.
-+ * @val: Pointer to store the 16-bit register value.
-+ *
-+ * This function performs the full 3-cycle RREG operation with Input CRC:
-+ * 1. (Cycle 1) Sends the RREG command + Input CRC.
-+ * 2. (Cycle 2) Sends NULL+CRC to retrieve the register data.
-+ * 3. (Cycle 3) Sends NULL+CRC to retrieve STATUS and check for CRC_ERR.
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+static int ads131m_read_reg_unlocked(struct ads131m_priv *priv, u8 reg, u16 *val)
-+{
-+	struct device *dev = &priv->spi->dev;
-+	u16 command;
-+	int ret;
-+
-+	lockdep_assert_held(&priv->lock);
-+
-+	command = ADS131M_CMD_RREG(reg, 0); /* n=0 for 1 register */
-+
-+	/*
-+	 * Cycle 1: Send RREG Command + Input CRC
-+	 * Ignore the RX buffer (it's from the previous command)
-+	 */
-+	ret = ads131m_tx_frame_unlocked(priv, command);
-+	if (ret < 0) {
-+		dev_err_ratelimited(dev, "SPI error on RREG (cycle 1)\n");
-+		return ret;
-+	}
-+
-+	/* Cycle 2: Send NULL Command to get the register data */
-+	ret = ads131m_rx_frame_unlocked(priv);
-+	if (ret < 0) {
-+		dev_err_ratelimited(dev, "SPI error on RREG data (cycle 2)\n");
-+		return ret;
-+	}
-+
-+	/*
-+	 * Per datasheet, for a single reg read, the response is the data.
-+	 * It's in the first 2 bytes of the RX buffer (MSB-aligned 16-bit).
-+	 */
-+	*val = get_unaligned_be16(&priv->rx_buffer[0]);
-+
-+	/*
-+	 * Cycle 3: Check STATUS for Input CRC error.
-+	 * The RREG command does not execute if CRC is bad, but we read
-+	 * STATUS anyway to clear the flag in case it was set.
-+	 */
-+	return ads131m_check_status_crc_err(priv);
-+}
-+
-+/**
-+ * ads131m_rmw_reg - Reads, modifies, and writes a single register.
-+ * @priv: Device private data structure.
-+ * @reg: The 8-bit register address.
-+ * @clear: Bitmask of bits to clear.
-+ * @set: Bitmask of bits to set.
-+ *
-+ * This function performs an atomic read-modify-write operation on a register.
-+ * It reads the register, applies the clear and set masks, and writes
-+ * the new value back if it has changed.
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+static int ads131m_rmw_reg(struct ads131m_priv *priv, u8 reg, u16 clear, u16 set)
-+{
-+	u16 old_val, new_val;
-+	int ret;
-+
-+	guard(mutex)(&priv->lock);
-+
-+	ret = ads131m_read_reg_unlocked(priv, reg, &old_val);
-+	if (ret < 0)
-+		return ret;
-+
-+	new_val = (old_val & ~clear) | set;
-+	if (new_val == old_val)
-+		return 0;
-+
-+	return ads131m_write_reg_unlocked(priv, reg, new_val);
-+}
-+
-+/**
-+ * ads131m_verify_output_crc - Verifies the CRC of the received SPI frame.
-+ * @priv: Device private data structure.
-+ *
-+ * This function calculates the CRC-16-CCITT (Poly 0x1021, Seed 0xFFFF) over
-+ * the received response and channel data, and compares it to the CRC word
-+ * received at the end of the SPI frame.
-+ *
-+ * Return: 0 on success, -EIO on CRC mismatch.
-+ */
-+static int ads131m_verify_output_crc(struct ads131m_priv *priv)
-+{
-+	struct iio_dev *indio_dev = priv->indio_dev;
-+	struct device *dev = &priv->spi->dev;
-+	u16 calculated_crc;
-+	u16 received_crc;
-+	size_t data_len;
-+
-+	lockdep_assert_held(&priv->lock);
-+
-+	/*
-+	 * Frame: [Response][Chan 0]...[Chan N-1][CRC Word]
-+	 * Data for CRC: [Response][Chan 0]...[Chan N-1]
-+	 * Data length = (N_channels + 1) * 3 bytes (at 24-bit word size)
-+	 */
-+	data_len = ADS131M_FRAME_BYTES(indio_dev->num_channels) - 3;
-+	calculated_crc = ads131m_crc_calculate(priv->rx_buffer, data_len);
-+
-+	/*
-+	 * The received 16-bit CRC is MSB-aligned in the last 24-bit word.
-+	 * We extract it from the first 2 bytes (BE) of that word.
-+	 */
-+	received_crc = get_unaligned_be16(&priv->rx_buffer[data_len]);
-+	if (calculated_crc != received_crc) {
-+		dev_err_ratelimited(dev, "Output CRC error. Got %04x, expected %04x\n",
-+				    received_crc, calculated_crc);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * ads131m_adc_read - Reads channel data, checks input and output CRCs.
-+ * @priv: Device private data structure.
-+ * @channel: The channel number to read.
-+ * @val: Pointer to store the raw 24-bit value.
-+ *
-+ * This function sends a NULL command (with Input CRC) to retrieve data.
-+ * It checks the received STATUS word for any Input CRC errors from the
-+ * previous command, and then verifies the Output CRC of the current
-+ * data frame.
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+static int ads131m_adc_read(struct ads131m_priv *priv, u8 channel, s32 *val)
-+{
-+	struct device *dev = &priv->spi->dev;
-+	u16 status;
-+	int ret;
-+	u8 *buf;
-+
-+	guard(mutex)(&priv->lock);
-+
-+	/* Send NULL command + Input CRC, and receive data frame */
-+	ret = ads131m_rx_frame_unlocked(priv);
-+	if (ret < 0)
-+		return ret;
-+
-+	/*
-+	 * Check STATUS word (Word 0) for an Input CRC Error from the
-+	 * previous SPI frame.
-+	 */
-+	status = get_unaligned_be16(&priv->rx_buffer[0]);
-+	if (status & ADS131M_STATUS_CRC_ERR) {
-+		dev_err_ratelimited(dev, "Previous input CRC Error reported in STATUS (0x%04x)\n",
-+				    status);
-+	}
-+
-+	/*
-+	 * Validate the output CRC on the current data frame to ensure
-+	 * data integrity.
-+	 */
-+	ret = ads131m_verify_output_crc(priv);
-+	if (ret < 0)
-+		return ret;
-+
-+	buf = &priv->rx_buffer[ADS131M_CHANNEL_INDEX(channel)];
-+	*val = sign_extend32(get_unaligned_be24(buf), 23);
-+
-+	return 0;
-+}
-+
-+static int ads131m_read_scale(struct ads131m_priv *priv, int *val, int *val2)
-+{
-+	struct device *dev = &priv->spi->dev;
-+	int vref_uV;
-+	int ret;
-+
-+	/* This driver assumes default PGA gain of 1 */
-+	if (IS_ERR_OR_NULL(priv->refin_supply)) {
-+		/*
-+		 * Internal 1.2V reference.
-+		 * Scale = 1200mV / 2^23
-+		 */
-+		*val = ADS131M_VREF_INTERNAL_mV;
-+		*val2 = ADS131M_RESOLUTION_BITS - 1;
-+
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+	}
-+
-+	ret = regulator_get_voltage(priv->refin_supply);
-+	if (ret < 0) {
-+		dev_err_ratelimited(dev, "failed to get refin voltage: %pe\n",
-+				    ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	vref_uV = ret;
-+
-+	/*
-+	 * External reference.
-+	 * Scale(mV) = (vref_uV * 0.96) / (1000 * 2^(CODE_BITS))
-+	 */
-+	*val = div_s64((s64)vref_uV * ADS131M_EXTREF_SCALE_NUM, 1000);
-+	*val2 = ADS131M_EXTREF_SCALE_DEN * BIT(ADS131M_CODE_BITS);
-+
-+	return IIO_VAL_FRACTIONAL;
-+}
-+
-+static int ads131m_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *channel,
-+			    int *val, int *val2, long mask)
-+{
-+	struct ads131m_priv *priv = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = ads131m_adc_read(priv, channel->channel, val);
-+		if (ret)
-+			return ret;
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		return ads131m_read_scale(priv, val, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+#define ADS131M_VOLTAGE_CHANNEL(num)	\
-+	{ \
-+		.type = IIO_VOLTAGE, \
-+		.indexed = 1, \
-+		.channel = (num), \
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
-+			BIT(IIO_CHAN_INFO_SCALE), \
-+	}
-+
-+static const struct iio_chan_spec ads131m02_channels[] = {
-+	ADS131M_VOLTAGE_CHANNEL(0),
-+	ADS131M_VOLTAGE_CHANNEL(1),
-+};
-+
-+static const struct iio_chan_spec ads131m03_channels[] = {
-+	ADS131M_VOLTAGE_CHANNEL(0),
-+	ADS131M_VOLTAGE_CHANNEL(1),
-+	ADS131M_VOLTAGE_CHANNEL(2),
-+};
-+
-+static const struct iio_chan_spec ads131m04_channels[] = {
-+	ADS131M_VOLTAGE_CHANNEL(0),
-+	ADS131M_VOLTAGE_CHANNEL(1),
-+	ADS131M_VOLTAGE_CHANNEL(2),
-+	ADS131M_VOLTAGE_CHANNEL(3),
-+};
-+
-+static const struct iio_chan_spec ads131m06_channels[] = {
-+	ADS131M_VOLTAGE_CHANNEL(0),
-+	ADS131M_VOLTAGE_CHANNEL(1),
-+	ADS131M_VOLTAGE_CHANNEL(2),
-+	ADS131M_VOLTAGE_CHANNEL(3),
-+	ADS131M_VOLTAGE_CHANNEL(4),
-+	ADS131M_VOLTAGE_CHANNEL(5),
-+};
-+
-+static const struct iio_chan_spec ads131m08_channels[] = {
-+	ADS131M_VOLTAGE_CHANNEL(0),
-+	ADS131M_VOLTAGE_CHANNEL(1),
-+	ADS131M_VOLTAGE_CHANNEL(2),
-+	ADS131M_VOLTAGE_CHANNEL(3),
-+	ADS131M_VOLTAGE_CHANNEL(4),
-+	ADS131M_VOLTAGE_CHANNEL(5),
-+	ADS131M_VOLTAGE_CHANNEL(6),
-+	ADS131M_VOLTAGE_CHANNEL(7),
-+};
-+
-+static const struct ads131m_configuration ads131m02_config = {
-+	.channels = ads131m02_channels,
-+	.num_channels = ARRAY_SIZE(ads131m02_channels),
-+	.reset_ack = 0xff22,
-+	.name = "ads131m02",
-+};
-+
-+static const struct ads131m_configuration ads131m03_config = {
-+	.channels = ads131m03_channels,
-+	.num_channels = ARRAY_SIZE(ads131m03_channels),
-+	.reset_ack = 0xff23,
-+	.name = "ads131m03",
-+};
-+
-+static const struct ads131m_configuration ads131m04_config = {
-+	.channels = ads131m04_channels,
-+	.num_channels = ARRAY_SIZE(ads131m04_channels),
-+	.reset_ack = 0xff24,
-+	.name = "ads131m04",
-+};
-+
-+static const struct ads131m_configuration ads131m06_config = {
-+	.channels = ads131m06_channels,
-+	.num_channels = ARRAY_SIZE(ads131m06_channels),
-+	.reset_ack = 0xff26,
-+	.supports_extref = true,
-+	.supports_xtal = true,
-+	.name = "ads131m06",
-+};
-+
-+static const struct ads131m_configuration ads131m08_config = {
-+	.channels = ads131m08_channels,
-+	.num_channels = ARRAY_SIZE(ads131m08_channels),
-+	.reset_ack = 0xff28,
-+	.supports_extref = true,
-+	.supports_xtal = true,
-+	.name = "ads131m08",
-+};
-+
-+static const struct iio_info ads131m_info = {
-+	.read_raw = ads131m_read_raw,
-+};
-+
-+/*
-+ * Prepares the reusable SPI message structure for a full-duplex transfer.
-+ * The ADS131M requires sending a command frame while simultaneously
-+ * receiving the response/data frame from the previous command cycle.
-+ *
-+ * This message is optimized for the primary data acquisition workflow:
-+ * sending a single-word command (like NULL) and receiving a full data
-+ * frame (Response + N*Channels + CRC).
-+ *
-+ * This pre-configured message is NOT suitable for variable-length SPI
-+ * transactions (e.g., multi-word WREG or multi-response RREG),
-+ * which would require a separate, dynamically-sized spi_message.
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+static int ads131m_prepare_message(struct ads131m_priv *priv)
-+{
-+	struct iio_dev *indio_dev = priv->indio_dev;
-+	struct device *dev = &priv->spi->dev;
-+	int ret;
-+
-+	priv->xfer.tx_buf = priv->tx_buffer;
-+	priv->xfer.rx_buf = priv->rx_buffer;
-+	priv->xfer.len = ADS131M_FRAME_BYTES(indio_dev->num_channels);
-+	spi_message_init_with_transfers(&priv->msg, &priv->xfer, 1);
-+
-+	ret = devm_spi_optimize_message(dev, priv->spi, &priv->msg);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to optimize SPI message\n");
-+
-+	return 0;
-+}
-+
-+/**
-+ * ads131m_hw_reset - Pulses the optional hardware reset GPIO.
-+ * @priv: Device private data structure.
-+ *
-+ * Pulses the /RESET line to perform a hardware reset and waits the
-+ * required t_REGACQ time for the device to be ready.
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+static int ads131m_hw_reset(struct ads131m_priv *priv)
-+{
-+	struct device *dev = &priv->spi->dev;
-+	int ret;
-+
-+	/* Datasheet: Hold /RESET low for > 2 f_CLKIN cycles. 1us is ample. */
-+	ret = gpiod_set_value_cansleep(priv->reset_gpio, 1);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to assert reset GPIO\n");
-+
-+	fsleep(1);
-+
-+	ret = gpiod_set_value_cansleep(priv->reset_gpio, 0);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to deassert reset GPIO\n");
-+
-+	/* Wait t_REGACQ (5us) for registers to be accessible */
-+	fsleep(ADS131M_RESET_DELAY_US);
-+
-+	return 0;
-+}
-+
-+/**
-+ * ads131m_sw_reset - Issues a software RESET and verifies ACK.
-+ * @priv: Device private data structure.
-+ *
-+ * This function sends a RESET command (with Input CRC), waits t_REGACQ,
-+ * reads back the RESET ACK, and then sends a final NULL to check for
-+ * any input CRC errors.
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+static int ads131m_sw_reset(struct ads131m_priv *priv)
-+{
-+	u16 expected_ack = priv->config->reset_ack;
-+	struct device *dev = &priv->spi->dev;
-+	u16 response;
-+	int ret;
-+
-+	guard(mutex)(&priv->lock);
-+
-+	ret = ads131m_tx_frame_unlocked(priv, ADS131M_CMD_RESET);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to send RESET command\n");
-+
-+	/* Wait t_REGACQ (5us) for device to be ready after reset */
-+	fsleep(ADS131M_RESET_DELAY_US);
-+
-+	/* Cycle 2: Send NULL + CRC to retrieve the response to the RESET */
-+	ret = ads131m_rx_frame_unlocked(priv);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to read RESET ACK\n");
-+
-+	response = get_unaligned_be16(&priv->rx_buffer[0]);
-+
-+	/* Check against the device-specific ACK value */
-+	if (response != expected_ack)
-+		return dev_err_probe(dev, -EIO,
-+				     "RESET ACK mismatch, got 0x%04x, expected 0x%04x\n",
-+				     response, expected_ack);
-+
-+	/* Cycle 3: Check STATUS for Input CRC error on the RESET command. */
-+	return ads131m_check_status_crc_err(priv);
-+}
-+
-+/**
-+ * ads131m_reset - Resets the device using hardware or software.
-+ * @priv: Device private data structure.
-+ *
-+ * This function performs a hardware reset if the reset-gpio is provided,
-+ * otherwise it issues a software RESET command via SPI.
-+ *
-+ * Note: The software reset path also validates the device's reset
-+ * acknowledgment against the expected ID for the compatible string.
-+ * The hardware reset path bypasses this ID check.
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+static int ads131m_reset(struct ads131m_priv *priv)
-+{
-+	if (priv->reset_gpio)
-+		return ads131m_hw_reset(priv);
-+
-+	return ads131m_sw_reset(priv);
-+}
-+
-+/*
-+ * This is a local helper to be passed to devm_add_action_or_reset.
-+ * It mimics the non-exported regulator_action_disable() from devres.c.
-+ */
-+static void ads131m_regulator_disable_action(void *data)
-+{
-+	struct regulator *regulator = data;
-+
-+	regulator_disable(regulator);
-+}
-+
-+/**
-+ * ads131m_power_init - Get and enable regulators.
-+ * @priv: Device private data structure.
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+static int ads131m_power_init(struct ads131m_priv *priv)
-+{
-+	struct device *dev = &priv->spi->dev;
-+	static const char * const supply_ids[] = { "avdd", "dvdd" };
-+	int ret;
-+
-+	/* Get and enable the mandatory supplies */
-+	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(supply_ids), supply_ids);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "failed to enable regulators\n");
-+
-+	/* If the model doesn't support extref, we're done. */
-+	if (!priv->config->supports_extref)
-+		return 0;
-+
-+	/*
-+	 * Get the optional external reference. This schedules regulator_put()
-+	 * automatically.
-+	 */
-+	priv->refin_supply = devm_regulator_get_optional(dev, "refin");
-+	ret = PTR_ERR_OR_ZERO(priv->refin_supply);
-+	if (ret == -ENODEV)
-+		priv->refin_supply = NULL;
-+	else if (ret < 0)
-+		return dev_err_probe(dev, ret, "failed to get refin regulator\n");
-+
-+	/* If the regulator was not found, we're done. */
-+	if (!priv->refin_supply)
-+		return 0;
-+
-+	/*
-+	 * We need to store the regulator pointer for scaling, but
-+	 * devm_regulator_get_enable_optional() doesn't return it.
-+	 * We must use devm_regulator_get_optional(), manually enable,
-+	 * and schedule the disable action.
-+	 */
-+	ret = regulator_enable(priv->refin_supply);
-+	if (ret) {
-+		/*
-+		 * Enable failed. devm_regulator_put() is already scheduled,
-+		 * so we just return the error.
-+		 */
-+		return dev_err_probe(dev, ret, "failed to enable refin regulator\n");
-+	}
-+
-+	/*
-+	 * Schedule our local ads131m_regulator_disable_action() helper
-+	 * to be called on driver unload.
-+	 */
-+	return devm_add_action_or_reset(dev, ads131m_regulator_disable_action,
-+					priv->refin_supply);
-+}
-+
-+/**
-+ * ads131m_hw_init - Initialize the ADC hardware.
-+ * @priv: Device private data structure.
-+ * @is_xtal: True if 'clock-names' is "xtal", false if "clkin".
-+ *
-+ * This function performs the hardware-specific initialization sequence:
-+ * - Issues a software RESET command to clear FIFOs and defaults.
-+ * - Configures the MODE register to clear RESET, set CCITT CRC,
-+ * and enable Input CRC checking.
-+ *
-+ * Return: 0 on success, or a negative error code.
-+ */
-+static int ads131m_hw_init(struct ads131m_priv *priv, bool is_xtal)
-+{
-+	struct device *dev = &priv->spi->dev;
-+	u16 mode_clear, mode_set;
-+	int ret;
-+
-+	/*
-+	 * Issue a software RESET to ensure device is in a known state.
-+	 * This clears the 2-deep FIFO and resets all registers to default.
-+	 */
-+	ret = ads131m_reset(priv);
-+	if (ret < 0)
-+		return ret;
-+
-+	/*
-+	 * Configure CLOCK register (0x03) based on DT properties.
-+	 * This register only needs configuration for 32-pin (M06/M08)
-+	 * variants, as the configurable bits (XTAL_DIS, EXTREF_EN)
-+	 * are reserved on 20-pin (M02/M03/M04) variants.
-+	 */
-+	if (priv->config->supports_xtal || priv->config->supports_extref) {
-+		u16 clk_set = 0;
-+
-+		if (priv->config->supports_xtal && !is_xtal)
-+			clk_set |= ADS131M_CLOCK_XTAL_DIS;
-+
-+		if (priv->config->supports_extref && priv->refin_supply)
-+			clk_set |= ADS131M_CLOCK_EXTREF_EN;
-+
-+		ret = ads131m_rmw_reg(priv, ADS131M_REG_CLOCK,
-+				      ADS131M_CLOCK_EXTREF_EN | ADS131M_CLOCK_XTAL_DIS, clk_set);
-+		if (ret < 0)
-+			return dev_err_probe(dev, ret, "Failed to configure CLOCK register\n");
-+	}
-+
-+	/*
-+	 * The RESET command sets all registers to default, which means:
-+	 * 1. The RESET bit (Bit 10) in MODE is set to '1'.
-+	 * 2. The CRC_TYPE bit (Bit 11) in MODE is '0' (CCITT).
-+	 * 3. The RX_CRC_EN bit (Bit 12) in MODE is '0' (Disabled).
-+	 *
-+	 * We must:
-+	 * 1. Clear the RESET bit.
-+	 * 2. Enable Input CRC (RX_CRC_EN).
-+	 * 3. Explicitly clear the ANSI CRC bit (for certainty).
-+	 */
-+	mode_clear = ADS131M_MODE_CRC_TYPE_ANSI | ADS131M_MODE_RESET_FLAG;
-+	mode_set = ADS131M_MODE_RX_CRC_EN;
-+
-+	ret = ads131m_rmw_reg(priv, ADS131M_REG_MODE, mode_clear, mode_set);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to configure MODE register\n");
-+
-+	return 0;
-+}
-+
-+/**
-+ * ads131m_parse_clock - enable clock and detect "xtal" selection
-+ * @priv: Device private data structure.
-+ * @is_xtal: result flag (true if "xtal", false if default "clkin")
-+ *
-+ * Return: 0 on success, negative errno on real error.
-+ */
-+static int ads131m_parse_clock(struct ads131m_priv *priv, bool *is_xtal)
-+{
-+	struct device *dev = &priv->spi->dev;
-+	int ret;
-+
-+	priv->clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(priv->clk))
-+		return dev_err_probe(dev, PTR_ERR(priv->clk), "clk get enabled failed\n");
-+
-+	ret = device_property_match_string(dev, "clock-names", "xtal");
-+	if (ret == 0) {
-+		if (!priv->config->supports_xtal)
-+			return dev_err_probe(dev, -EINVAL,
-+					     "'xtal' clock not supported on this device");
-+		*is_xtal = true;
-+
-+		return 0;
-+	} else if (ret > 0) {
-+		return dev_err_probe(dev, -EINVAL, "'xtal' must be the only or first clock name");
-+	} else if (ret == -ENODATA) {
-+		*is_xtal = false;
-+
-+		return 0;
-+	}
-+
-+	return dev_err_probe(dev, ret, "failed to read 'clock-names' property");
-+}
-+
-+static int ads131m_probe(struct spi_device *spi)
-+{
-+	const struct ads131m_configuration *config;
-+	struct device *dev = &spi->dev;
-+	struct iio_dev *indio_dev;
-+	struct ads131m_priv *priv;
-+	bool is_xtal;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	priv = iio_priv(indio_dev);
-+	priv->indio_dev = indio_dev;
-+	priv->spi = spi;
-+
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->info = &ads131m_info;
-+
-+	config = spi_get_device_match_data(spi);
-+	if (!config)
-+		return dev_err_probe(dev, -EINVAL, "No device configuration data found\n");
-+
-+	priv->config = config;
-+	indio_dev->name = config->name;
-+	indio_dev->channels = config->channels;
-+	indio_dev->num_channels = config->num_channels;
-+
-+	ret = ads131m_parse_clock(priv, &is_xtal);
-+	if (ret < 0)
-+		return ret;
-+
-+	priv->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
-+	if (IS_ERR(priv->reset_gpio))
-+		return dev_err_probe(dev, PTR_ERR(priv->reset_gpio),
-+				     "Failed to get reset GPIO\n");
-+
-+	ret = devm_mutex_init(dev, &priv->lock);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ads131m_prepare_message(priv);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ads131m_power_init(priv);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ads131m_hw_init(priv, is_xtal);
-+	if (ret < 0)
-+		return ret;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static const struct of_device_id ads131m_of_match[] = {
-+	{ .compatible = "ti,ads131m02", .data = &ads131m02_config },
-+	{ .compatible = "ti,ads131m03", .data = &ads131m03_config },
-+	{ .compatible = "ti,ads131m04", .data = &ads131m04_config },
-+	{ .compatible = "ti,ads131m06", .data = &ads131m06_config },
-+	{ .compatible = "ti,ads131m08", .data = &ads131m08_config },
-+	{ } /* Fixed sentinel */
-+};
-+MODULE_DEVICE_TABLE(of, ads131m_of_match);
-+
-+static const struct spi_device_id ads131m_id[] = {
-+	{ "ads131m02", (kernel_ulong_t)&ads131m02_config },
-+	{ "ads131m03", (kernel_ulong_t)&ads131m03_config },
-+	{ "ads131m04", (kernel_ulong_t)&ads131m04_config },
-+	{ "ads131m06", (kernel_ulong_t)&ads131m06_config },
-+	{ "ads131m08", (kernel_ulong_t)&ads131m08_config },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, ads131m_id);
-+
-+static struct spi_driver ads131m_driver = {
-+	.driver = {
-+		.name = "ads131m02",
-+		.of_match_table = ads131m_of_match,
-+	},
-+	.probe = ads131m_probe,
-+	.id_table = ads131m_id,
-+};
-+module_spi_driver(ads131m_driver);
-+
-+MODULE_AUTHOR("David Jander <david@protonic.nl>");
-+MODULE_DESCRIPTION("Texas Instruments ADS131M02 ADC driver");
-+MODULE_LICENSE("GPL");
+All errors (new ones prefixed by >>):
+
+   drivers/iio/adc/ad4134-common.c: In function 'ad4134_probe':
+>> drivers/iio/adc/ad4134-common.c:178:34: error: implicit declaration of function 'FIELD_PREP' [-Werror=implicit-function-declaration]
+     178 |                                  FIELD_PREP(AD4134_DATA_PACKET_CONFIG_FRAME_MASK,
+         |                                  ^~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/FIELD_PREP +178 drivers/iio/adc/ad4134-common.c
+
+    87	
+    88	int ad4134_probe(struct device *dev, const struct ad4134_bus_info *bus_info)
+    89	{
+    90		bool use_internal_ldo_retulator;
+    91		struct gpio_desc *reset_gpio;
+    92		struct iio_dev *indio_dev;
+    93		struct ad4134_state *st;
+    94		int ret;
+    95	
+    96		indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+    97		if (!indio_dev)
+    98			return -ENOMEM;
+    99	
+   100		st = iio_priv(indio_dev);
+   101		st->dev = dev;
+   102	
+   103		indio_dev->name = bus_info->chip_info->name;
+   104	
+   105		/* Required regulators */
+   106		ret = devm_regulator_bulk_get_enable(dev, 3, ad4143_regulator_names);
+   107		if (ret)
+   108			return dev_err_probe(dev, ret, "failed to enable power supplies\n");
+   109	
+   110		/* Required regulator that we need to read the voltage */
+   111		ret = devm_regulator_get_enable_read_voltage(dev, "refin");
+   112		if (ret < 0)
+   113			return dev_err_probe(dev, ret, "failed to get REFIN voltage.\n");
+   114	
+   115		st->refin_mv = ret / MILLI;
+   116	
+   117		/*
+   118		 * If ldoin is not provided, then avdd1v8, dvdd1v8, and clkvdd are
+   119		 * required.
+   120		 */
+   121		ret = devm_regulator_get_enable_optional(dev, "ldoin");
+   122		if (ret < 0 && ret != -ENODEV)
+   123			return dev_err_probe(dev, ret, "failed to enable ldoin supply\n");
+   124	
+   125		use_internal_ldo_retulator = ret == 0;
+   126	
+   127		if (!use_internal_ldo_retulator) {
+   128			ret = devm_regulator_get_enable(dev, "avdd1v8");
+   129			if (ret < 0)
+   130				return dev_err_probe(dev, ret,
+   131						     "failed to enable avdd1v8 supply\n");
+   132	
+   133			ret = devm_regulator_get_enable(dev, "dvdd1v8");
+   134			if (ret < 0)
+   135				return dev_err_probe(dev, ret,
+   136						     "failed to enable dvdd1v8 supply\n");
+   137	
+   138			ret = devm_regulator_get_enable(dev, "clkvdd");
+   139			if (ret < 0)
+   140				return dev_err_probe(dev, ret,
+   141						     "failed to enable clkvdd supply\n");
+   142		}
+   143	
+   144		ret = ad4134_clock_select(st);
+   145		if (ret)
+   146			return ret;
+   147	
+   148		crc8_populate_msb(ad4134_spi_crc_table, AD4134_SPI_CRC_POLYNOM);
+   149	
+   150		reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+   151		if (IS_ERR(reset_gpio))
+   152			return dev_err_probe(dev, PTR_ERR(reset_gpio),
+   153					     "failed to find reset GPIO\n");
+   154	
+   155		if (reset_gpio) {
+   156			fsleep(AD4134_RESET_TIME_US);
+   157			gpiod_set_value_cansleep(reset_gpio, 0);
+   158		}
+   159	
+   160		ret = bus_info->bops->config_iio_dev(indio_dev);
+   161		if (ret)
+   162			return dev_err_probe(dev, ret, "failed to config IIO device\n");
+   163	
+   164		st->regmap = bus_info->bops->init_regmap(st);
+   165		if (IS_ERR(st->regmap))
+   166			return dev_err_probe(st->dev, PTR_ERR(st->regmap),
+   167					     "failed to initialize regmap");
+   168	
+   169		/* wiring/configuration specific setup */
+   170		ret = bus_info->bops->setup(st);
+   171		if (ret)
+   172			return dev_err_probe(dev, ret, "failed to setup bus\n");
+   173	
+   174		/* Bump precision to 24-bit */
+   175		st->current_scan_type = AD4134_DATA_PACKET_24BIT_FRAME;
+   176		ret = regmap_update_bits(st->regmap, AD4134_DATA_PACKET_CONFIG_REG,
+   177					 AD4134_DATA_PACKET_CONFIG_FRAME_MASK,
+ > 178					 FIELD_PREP(AD4134_DATA_PACKET_CONFIG_FRAME_MASK,
+   179						    st->current_scan_type));
+   180		if (ret)
+   181			return ret;
+   182	
+   183		/* Set high performance power mode */
+   184		ret = regmap_update_bits(st->regmap, AD4134_DEVICE_CONFIG_REG,
+   185					 AD4134_DEVICE_CONFIG_POWER_MODE_MASK,
+   186					 FIELD_PREP(AD4134_DEVICE_CONFIG_POWER_MODE_MASK,
+   187						    AD4134_POWER_MODE_HIGH_PERF));
+   188		if (ret)
+   189			return ret;
+   190	
+   191		return devm_iio_device_register(dev, indio_dev);
+   192	}
+   193	EXPORT_SYMBOL_NS_GPL(ad4134_probe, "IIO_AD4134");
+   194	
+
 -- 
-2.47.3
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

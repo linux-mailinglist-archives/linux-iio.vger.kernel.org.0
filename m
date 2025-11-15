@@ -1,120 +1,118 @@
-Return-Path: <linux-iio+bounces-26234-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26235-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D307C60742
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Nov 2025 15:19:23 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31309C60906
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Nov 2025 18:13:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 055EB3BCB5E
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Nov 2025 14:16:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0E0D7352465
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Nov 2025 17:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08692FC029;
-	Sat, 15 Nov 2025 14:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0661A301030;
+	Sat, 15 Nov 2025 17:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bG3jtSVL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CL3HK0iH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A7F2877F7
-	for <linux-iio@vger.kernel.org>; Sat, 15 Nov 2025 14:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED832D77F7;
+	Sat, 15 Nov 2025 17:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763216191; cv=none; b=uAR5HgpvgN0DfwbgSASIr6RvfQH9/nxIf55X5cVYf4zo1XGFqN/pN3FCBIB8D6O5KdS5DPdYO6cEuwao/UCbDO4QNq32Swm7V5Pm/sSLVy560ext4Tdj1vlOHJ9gtAx6jKPlnANtdMvZ9IkYMQUIdOtswD69wdgV95L++tq58cA=
+	t=1763226744; cv=none; b=tTfecqVdhRppLrvuB8mab1l41EgLeL+gIzfgYPxqcbSP/JGaKalN5PwmkWzqnqZMDeQ4AhKZpEApc+54Nw+GGlY0j6MfWCSWw0wsNiKhCvBag6qipzDwjAp7YHwo0AmmmIl7O26DU4lVJ5+AtWdEELRLIaHKOKuBHKxCTB4XT5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763216191; c=relaxed/simple;
-	bh=lQDMn33BZA4A6/Iz+tzzcStrq+yIE8dCfga/dGLU5pQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lxWtVmWPMBj37yLbdugttEPUqxB0ujklm/tW0h6X03Q89KMoBIwcXA0tVOyu0l05fE5u6bMtpltW+t16ONA5Gmm5nDzKARdSXZEcWRFYE9qkvHvIBu4Sl+cubW41R6tMwzzcMKAMR6q0/7K1M1c+TI4r+J9O7jP2+rftKpgVD3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bG3jtSVL; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bc0d7255434so1754709a12.0
-        for <linux-iio@vger.kernel.org>; Sat, 15 Nov 2025 06:16:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763216189; x=1763820989; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=a+fpNKU67bQPKNnLnZxW1QMryMXbqH3Y66bi/S1gzo4=;
-        b=bG3jtSVLIOzCP3ri06v/F0WfTRMrhGtjp7Zmus+VjsqvPIEKUGbpT2PznRsq5rJLVB
-         wnQndURAPMksO9is7j3Q0HRrota1quKir5K6C7fKWisj97UGy/kl+IKWKQT6tb9KlUwu
-         rPBiXC47wCDh4LtU+l1d6EgBIYO/kalGcsE8ws/CPSorYiGMRiKl3MfbkwY7R8IlQMJK
-         eo3OOBZA+KvFjmIolgsdZS0DLl+RrTdWZ/AstZnMiKCJmN0J3vNBd7yGCF6Tjk2YyjK6
-         6BsEn1ybO42kdxfNSNOYdW2SM4F+TMoWBkH9QbICIt78LCPSrk0BM7jXEFWlKpSTRPmK
-         hJhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763216189; x=1763820989;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a+fpNKU67bQPKNnLnZxW1QMryMXbqH3Y66bi/S1gzo4=;
-        b=Dx7E1ntGycCJZijkqBYfS0QZhZtPXkBTaUeoqCy1Lmtu8WIEL/GA6JFSS8n8lRQ53q
-         EftdF0mMKyplQv0p9WhXhNdHGgJZwM4U77uMK1Vm6IZV1VLZ2ndYF0WzzMxPhvNzUBKv
-         Ez6xgXyFrkJexCS/WQQAbUiEpXmMqtcK4wn5lX8OFvlvDQqafqIjxe5hDI99+NCmA5fj
-         nSTersKNu0S0Fpsudsh6nbvSbLQ2w5qzlrESfPddAP09lhQs/l7h8zUErAtGc3XN8/PW
-         RdxvBZXwMXK+I2brdyHGfQ8SP0SjneEGUXErEVwof3K7NJI6Iz7Iv+TV77tfO1NGXJ2f
-         W3gw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlqp4EPyXPqUbO89H5oy9r2RDFu+MiHEjmbQsRj3IslEfAMn4AEDPGGJYtBPoO6bnR0CXRob6WV8E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfXHFabGyF+abwlxvySIFnVhgeXyh6sp2z6oL9ccKogERj8urq
-	4jJq9B/RbsDM4UghDB0BW500yj2XBP4CruGsCeKFWqeYO/hua54kuO25
-X-Gm-Gg: ASbGncs4iVShZqekQ+Jvbborq3motw7a2JKNuA5t8OBcjwug+MRXfmV7ePRrOrUE7LM
-	DlTo3yaZvHVw8uYkR5cM/Zve72y2bPwnEqQLD//Wn5jVE43h6ngPJwO1EJOh9kEpyCC/hVoZKyH
-	42zHWbzFM6/Dv7K0by5LCAdXMUrr9oUaQvNTTm3mquISonGKzU443qG4AQimpwOW3Dcgr61r0+F
-	ULq01DYciJFY8oH87fFLeRzl91hgZHIOe8bXVd/3lwEmxkIDJZ39NF1pTXzLgZsfU327zYUKcRw
-	htPtfseGc5PyyZ4IP63SBqjd08b3UdQEh8fnbHt8ynh3YqeXXQdrVreNeNiNt1M9RMEQaktROjL
-	/kff2oGQZUAxfb5b1hsmABaTSk4d/98Zu1IXpMmIi8BOMOPRPkrXsQEev4AsWFx9nZnENGxRR62
-	fGdakvGHHDhdl5FBXS6TZy
-X-Google-Smtp-Source: AGHT+IFt5UfNZZzCWoZkNCgT7H9T2i6L90DMNpbzvAx2Pg8fW7yyjEV9hJ62Kua4odWnEM6/XiVGpA==
-X-Received: by 2002:a05:7301:150e:b0:2a4:5a7a:3a5c with SMTP id 5a478bee46e88-2a4abdd0b97mr2113431eec.26.1763216189264;
-        Sat, 15 Nov 2025 06:16:29 -0800 (PST)
-Received: from localhost ([2804:30c:1661:8a00:578a:911c:ac25:24a6])
-        by smtp.gmail.com with UTF8SMTPSA id 5a478bee46e88-2a49db102f5sm17940394eec.4.2025.11.15.06.16.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Nov 2025 06:16:28 -0800 (PST)
-Date: Sat, 15 Nov 2025 11:17:48 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 4/6] spi: axi-spi-engine: support
- SPI_MULTI_BUS_MODE_STRIPE
-Message-ID: <aRiLjGnPLteViM2K@debian-BULLSEYE-live-builder-AMD64>
-References: <20251107-spi-add-multi-bus-support-v2-0-8a92693314d9@baylibre.com>
- <20251107-spi-add-multi-bus-support-v2-4-8a92693314d9@baylibre.com>
+	s=arc-20240116; t=1763226744; c=relaxed/simple;
+	bh=5j4/aYUCi2pGyCmWfgWOhOgjHxwvOVufrjBIhcVXRmk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gN+IbmqoHE0bhO123bfM4aX22aTXnWsEQoSM9xFzZ9llXql7MI97tSB9zP1TU+rgkoZAM0hybRaM4QdfPvueeT7zzkQQiVlWtybKJN0FhZorrbr774Zem5+S9GU7gFtV4dhE6uEFGervPOn/1NYryIJkyu1VlCzZ4IrHTTQMOZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CL3HK0iH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC41DC113D0;
+	Sat, 15 Nov 2025 17:12:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763226744;
+	bh=5j4/aYUCi2pGyCmWfgWOhOgjHxwvOVufrjBIhcVXRmk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CL3HK0iHZQso0OJ3E19vujvzTmqhP8wCUCJ6UXdJ9KuiU30jemB/KCHUyApZEepEa
+	 EQgS6C3LD9ClKEy3/2zxKJb4VW2jjjnfPJ9HBJ/HsQAnApkpoiLFRB/rbpH9Y61ovG
+	 7ZHJyRwoBT5H9bqvIuKyCnLRSxobvbln9NecoRFKms76mY6y2KcR4ZAunfvFVqaQpD
+	 hiBP7C+hMxai8utkMWFt/qAfFSJsdRQ8kK++zapDVhQNjGEzlOzlyFvw2+4XALYs59
+	 lml9hXdTUyvZy+QLkaSE9uMQdewa/RKRY68Kl2BVru+6avFShigJeCC5XBttafAGe3
+	 zy+WEPA6mjT1w==
+Date: Sat, 15 Nov 2025 17:12:17 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <Michael.Hennerich@analog.com>,
+ <ramona.gradinariu@analog.com>, <antoniu.miclaus@analog.com>,
+ <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>, Andy
+ Shevchenko <andriy.shevchenko@intel.com>
+Subject: Re: [PATCH v2 2/2] iio: accel: adxl380: add support for ADXL318 and
+ ADXL319
+Message-ID: <20251115171217.4f9d1d12@jic23-huawei>
+In-Reply-To: <94f1c01bdaea81a1a5f14df6aa95bc2b209165e9.1763134751.git.Jonathan.Santos@analog.com>
+References: <27fdb3b85015d29c01b804e7f1de5fa615cf9f5f.1763134751.git.Jonathan.Santos@analog.com>
+	<94f1c01bdaea81a1a5f14df6aa95bc2b209165e9.1763134751.git.Jonathan.Santos@analog.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251107-spi-add-multi-bus-support-v2-4-8a92693314d9@baylibre.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 11/07, David Lechner wrote:
-> Add support for SPI_MULTI_BUS_MODE_STRIPE to the AXI SPI engine driver.
+On Fri, 14 Nov 2025 19:14:02 -0300
+Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+
+> The ADXL318 and ADXL319 are low noise density, low power, 3-axis
+> accelerometers based on ADXL380 and ADXL382, respectively. The main
+> difference between the new parts and the existing ones are the absence
+> of interrupts and events like tap detection, activity/inactivity, and
+> free-fall detection.
 > 
-> The v2.0.0 version of the AXI SPI Engine IP core supports multiple
-> buses. This can be used with SPI_MULTI_BUS_MODE_STRIPE to support
-> reading from simultaneous sampling ADCs that have a separate SDO line
-> for each analog channel. This allows reading all channels at the same
-> time to increase throughput.
+> Other differences in the new parts are fewer power modes, basically
+> allowing only idle and measurement modes, and the removal of the 12-bit
+> SAR ADC path for the 3-axis signals (known as lower signal chain),
+> being excluisive for the temperature sensor in the ADXL318/319.
 > 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-> v2 changes:
-> * Fixed off-by-one in SPI_ENGINE_REG_DATA_WIDTH_NUM_OF_SDIO_MASK GENMASK
-> ---
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+
+One tiny thing I'll tweak whilst applying.   Applied to the togreg
+branch of iio.git which will go out initially as testing.
+
+Thanks,
+
+Jonathan
+
+
+
+>  static const unsigned int adxl380_th_reg_high_addr[2] = {
+>  	[ADXL380_ACTIVITY] = ADXL380_THRESH_ACT_H_REG,
+>  	[ADXL380_INACTIVITY] = ADXL380_THRESH_INACT_H_REG,
+> @@ -276,9 +243,14 @@ static int adxl380_set_measure_en(struct adxl380_state *st, bool en)
+>  		if (ret)
+>  			return ret;
+>  
+> -		/* Activity/ Inactivity detection available only in VLP/ULP mode */
+> -		if (FIELD_GET(ADXL380_ACT_EN_MSK, act_inact_ctl) ||
+> -		    FIELD_GET(ADXL380_INACT_EN_MSK, act_inact_ctl))
+> +		/*
+> +		 * Activity/Inactivity detection available only in VLP/ULP
+> +		 * mode and for devices that support low power modes. Otherwise
+> +		 * go straight to measure mode (same bits as ADXL380_OP_MODE_HP).
+> +		 */
+> +		if (st->chip_info->has_low_power &&
+> +		    (FIELD_GET(ADXL380_ACT_EN_MSK, act_inact_ctl) ||
+> +		    FIELD_GET(ADXL380_INACT_EN_MSK, act_inact_ctl)))
+
+Looks like this is aligned one space before where it should be.
+
+>  			op_mode = ADXL380_OP_MODE_VLP;
+
 

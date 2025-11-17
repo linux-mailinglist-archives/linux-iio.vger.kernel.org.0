@@ -1,172 +1,194 @@
-Return-Path: <linux-iio+bounces-26272-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26273-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74014C65F57
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Nov 2025 20:27:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9B6C66924
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 00:42:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E43F4E89FD
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Nov 2025 19:23:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id F2287298E0
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Nov 2025 23:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C612C0294;
-	Mon, 17 Nov 2025 19:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EF2321440;
+	Mon, 17 Nov 2025 23:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EZ2yzndN"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NID8ih42"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE60D27B4EB
-	for <linux-iio@vger.kernel.org>; Mon, 17 Nov 2025 19:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD8E31A061
+	for <linux-iio@vger.kernel.org>; Mon, 17 Nov 2025 23:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763407428; cv=none; b=fgEM9nC/RQ3mbox+3UD6dcNz+eGnimjS4kxRziX15Bq/vxgWkDfPA8S4AWWyffT2Hf+PQ+jyS6eNyMpOrgzdH+ZR4X9OvAeX0qOfsDzIu/CcJc+RZD1zckovV4Hx/7uA7LlHMtojiJghZfHW7lTY5QN0YIxaTQeWXv5fNYso9mk=
+	t=1763422932; cv=none; b=ZRRruMQn1X80SDR2CWIn40XlkRrEC19WB8xnIxdAQ3NKojllpgpSz4nbqgLIvcOLikGrwQcH1Y8n/v279lju4anfsAvbkrUM6x58V1EGJGNLAZuFlRSIKTsRyvE84WDwdnfN4zqA/Zfsr2N2fGrK5KCUK8z0XGddT2nola32Oe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763407428; c=relaxed/simple;
-	bh=sTgr/cCR5rQ198gvvRk9lbJy5qEfmwTEVsfJmE9BKcY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WAEC2GMBVgo9tOsCucgn0/y+5inYYKGWSJZUkNmV8Ek3g9V0LBjMpNK70KaOdOeupxBeQHbzqeOWS5Z2RHtobnaBBR309/AZxqKucYGcvxKRAqgxj76f5W8IY13IUbnE6JdTwDkeBefyjHZK0rM8Ps/+uI6r6U+jTqZBdeVXxvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EZ2yzndN; arc=none smtp.client-ip=209.85.218.50
+	s=arc-20240116; t=1763422932; c=relaxed/simple;
+	bh=C1CiXSMjr1ONnvgc8yNUoBYht2QInAElu2Jdtm3VvzE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Lf0yk+8EahJ2bh12qseYAbyByo7BrelChtkDnkdVfjTWu+rtpcuWeIitucTKu2ViUBO0TxTFxsnlw90aJLlPgDvqubBgJFvUIsS4S5wLNC+fXOffrZBp+l7VIlPs7M4KLu2rIOhArNrTQAORQcEnKyCg9xwsrGfn8hVsp71ZJ+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NID8ih42; arc=none smtp.client-ip=209.85.161.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b737502f77bso386992466b.2
-        for <linux-iio@vger.kernel.org>; Mon, 17 Nov 2025 11:23:44 -0800 (PST)
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-657244ed2c2so1234955eaf.1
+        for <linux-iio@vger.kernel.org>; Mon, 17 Nov 2025 15:42:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763407423; x=1764012223; darn=vger.kernel.org;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sTgr/cCR5rQ198gvvRk9lbJy5qEfmwTEVsfJmE9BKcY=;
-        b=EZ2yzndNWSBabbKhQcABup443id8g4V0OVTGM5+1YfAYV5KC8spm5weTlK4xsdm74y
-         JD6NCfqCFKpvV2Hgb7M9kynHfv4GYqYSYGClvKz69PBRoRm+71KUGfEbiuDrcHYrIV0S
-         MBVvicDXxcaaSHwNcFrFnbZwpS5AyLQQ6j7jsr3LFcVROIke4Ejxlapn4RgPFh/ng00/
-         YbWLOkOr0qZ4t+/zw8AmZrQOt8otkg589at+Rq8FVmrpOeIlFfTBHR7sTR/Qjk0iCHB5
-         6yUjdjE/ZS3SHZqNZ7zR/xKOofrGfnJAluJ2QMOYTZKSAOsqOVsLH6SakiXC1x+Ujvuh
-         EADQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763422927; x=1764027727; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tg/jgZzk5xK45ykGPR1yuuEKOuJiixva9naVUDB32NY=;
+        b=NID8ih42Js4E6N3Yy7hnGf2vR9sitn8A5fW+/cOaYdlhq1oWYsuq9PeeqyMzDhS6af
+         2j1ZTp8ww0YLM5aOd8g9x8lC4lUsquGJVDZ35e8fWCzRcrhr8cx8AWtWUCwMRQkJ9rDG
+         QVfX1DIy9XB05VkSIxMKZlAWHw7Wy7yaLUNIDuiBnL6cf3Ef57ONvqGGbCzrF2YeYD5h
+         7ws2kIfX7LlRX3rAzJritg6+f9TrRV68jSXKvtX9Yio3SRWprLgGvyrdP/+FlIUKvh9t
+         cQdmVxdZL01xQffud9F+X0Ic1vUd6WwAaM2lgxIMg2EiKWMYnY/QsaCOtVTISw7mE7Vb
+         RhoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763407423; x=1764012223;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sTgr/cCR5rQ198gvvRk9lbJy5qEfmwTEVsfJmE9BKcY=;
-        b=SSfAjV59Ea43lqHSlT6pH/nQEU3mMEpKPuk1PeDd31xlzjawFcvCeGOAKsGPxi3dx1
-         TGiB5KCXJh1FQj8OQxhoVwnT9pFDGb9Ah6uJ3riULE+tddCxjSR7jnM15yFm4VPpFLnu
-         Nz77XPrawtD7S4u4L1a/MsHwi1KbqAA5SqIwk6TNwVbCUsWC9fg1K3+OzXy9qbrCio2k
-         Ftu3MUTV2D+7be2qww1P9rhF3y11DnFG5VL/4n0bWWdiZP0ztgFdlWxjCaN2c6i9buRR
-         gDGsPK0Oc/cDC/vRqQ5Y/i/j6/ZReqqjR5m92wABCCY3Xs6VRi5NN6PDg363+AyM3anE
-         CXnw==
-X-Forwarded-Encrypted: i=1; AJvYcCW0FI5V0vPiAeS79Ah+GM1i6hE+lt5S5v09EMOAbqZlXLXwuRlexDXrVURKIgu92YKrER2rQiCIoY0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+4rXE9IW4FYPvDm8hym+poe/eja8RNaAfKuNt4Lv4ksv6vtND
-	jSb3e/bVTDjtuEJldksn1U8nlVw+kzgjTuSruPBbm1cnZjj3Wqm+2h6tXivtADsHtig=
-X-Gm-Gg: ASbGncvZYxpM8HeA9rYhSWFN6RROliNUcNXLh4GquICQiS4PFeo7wp/KHfF0wQY03j0
-	6jY5d+9FUKjrXVf6HloHnXYUgner+EgAxdM944xP5wmBRfW+01Ek/l7lhsv1YUmKyb8pH2StkBx
-	HPhTQlNSb5VPh3LxpZQsn/WjcvmrgwV6WXZtJAwOBcOk7NGrVDTTTi6v74gXNXg3UeObmkpuTbX
-	Q+tH8STAcQ8XPrhUrYM2ii4bqARUTG96dUJ7omekv3Y5fQiP/eQJudOShc2i0D7Lr5Di0gWb3jn
-	v0pIxWw/eg2U3Te1HjdrIVrRK53PZAAATbw7KdT6pbGEzTEY6ue+1uDbVUaESms1rDG617gXM+F
-	KPgA6TIu63E96QZCt3sTe9tlHL8A0oqekctdky4x+LvP/yoetcXTOEH0cgVMXehdv/E/61uoROI
-	8O7KAWOgMuIz8DFzTfZ0VcnH34TyUtJPCF4f9MvMtm+ojYYsoZx94Rw3Lgi0jE
-X-Google-Smtp-Source: AGHT+IG+yiygqQm9CiObIS61IUqNuGkJpW3m2zFGp1F2YDfUOa+COxpnpwQncvBwCC8zgRehSyQj6w==
-X-Received: by 2002:a17:907:1b14:b0:b73:8d2e:2d30 with SMTP id a640c23a62f3a-b738d2e3694mr664368966b.39.1763407423214;
-        Mon, 17 Nov 2025 11:23:43 -0800 (PST)
-Received: from [10.203.83.1] (mob-176-247-43-136.net.vodafone.it. [176.247.43.136])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fda8da2sm1120970666b.55.2025.11.17.11.23.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Nov 2025 11:23:42 -0800 (PST)
-Message-ID: <5b23d077d8882d6b2a2e66817b1b6bcebc6bb5a2.camel@baylibre.com>
-Subject: Re: [PATCH 8/9] iio: imu: st_lsm6dsx: add event configurability on
- a per axis basis
-From: Francesco Lavra <flavra@baylibre.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Jonathan Cameron
- <jic23@kernel.org>,  David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 17 Nov 2025 20:23:35 +0100
-In-Reply-To: <aQNueWesrf_vXO06@smile.fi.intel.com>
-References: <20251030072752.349633-1-flavra@baylibre.com>
-	 <20251030072752.349633-9-flavra@baylibre.com>
-	 <aQMgxUNA8XNhPZdG@smile.fi.intel.com>
-	 <c1c7222b35a0a7bcddc5d88c92f64d2f2a75fdfd.camel@baylibre.com>
-	 <aQNueWesrf_vXO06@smile.fi.intel.com>
-Organization: BayLibre
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-LMDfikblbUQzONUIIIpj"
-User-Agent: Evolution 3.46.4-2 
+        d=1e100.net; s=20230601; t=1763422927; x=1764027727;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tg/jgZzk5xK45ykGPR1yuuEKOuJiixva9naVUDB32NY=;
+        b=UL+KcHLwMAtRa65mTuuJln1v9cWdtT/eEKy4l148IoB5DeJTq0f0ERTAk9q5mVRgQE
+         FmaacsseGzxlz/RHiMCJkQ+PpnW4ayNDtOxeWXVZXo5jMkk075mD1SEQErL9bP4EOgWH
+         pea95y35MsIhNS2isD5czRMUJf7OC0gohFpsBcNnkfVCjXFz28JWoFFZoFUxp8LnjM9b
+         /OWY0G9d9QRB2VyUVxXytqIxpkC6T4mF25O65DSNj2nGHSb1gYT5Nro1weFCa9usb35a
+         EP448iruKWPtlhcxhpidVLcJCc3Mr/9ibsspd+8lbqieqn353xHnF0+fYYdkBvmKb2bK
+         r3bw==
+X-Forwarded-Encrypted: i=1; AJvYcCVl3jxn7KHQdVg2TllL6yGAQzGikCGphb8TewJ86XYumvjgqt1tYN2pMCIgkQqP4AbBz846yDpMso4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvNLWx6hcepqW+/tcU8tXBwqSfSyAlgio1smS3hPVK+mnDhTI2
+	s8Lo6WcP/MccGyeeOmEBJS1TQv0VVGWZgZJ26HZbl+Bkl27u3OnCHdPv68TdoHac36NI4ziiWUp
+	rmtjF
+X-Gm-Gg: ASbGnctLQHh8WXHL+gK0zVeRH/vMNQJ+RbvCaWKXeTg2UiCehH5I7rlUNd2KyPawyn2
+	kxYgM+xpQI/K+4E750eWE1KDck0csF6XWcG6eEYHs+IMw18IlWuVEu4aMEblYWWlQ4oTaFvV7XK
+	UZDJeX4axg2IJ3d7gPTxKwQCxbZtn38TinO9k4wXe39lbOGix0qod+GAppSNDhq/cqV+A8ERpbM
+	Hru3o25pejRg8qSj7vfQnsvjJ4rJliQO6NCCgzQxYNsmCs7cOpy2jqvG1Gt4QqRzIS+s2SSmfSx
+	SQUJCVSfKuwtPD81puUQiUq4BCh0OhZAzueCOIlH6nUJPmwP9MeIYb1feGJK9nrNgn9zOy5+Fdj
+	MyctU2k/p5ayh51UeLJPZcIajIQGCmNkSicZ0Bzql2815yOqVoWKJQC/2DvSrpzwNXNwaahGhT3
+	Rx/vcqLtgFs7foiVlUBrkJ1I3rmIC4E3le6s5bdW+mlBXlyJEgHw==
+X-Google-Smtp-Source: AGHT+IF9rsbj2v0migbUw/0QbebZ9MvOA2t7vDRnUBel/lU5OuvNJRbNK6ZCXzUCdjPOQXjEWKGxuw==
+X-Received: by 2002:a05:6808:4f6b:b0:450:bb4e:8395 with SMTP id 5614622812f47-450bb4e89e9mr3417672b6e.53.1763422927119;
+        Mon, 17 Nov 2025 15:42:07 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:8e86:179b:44b8:cc2b? ([2600:8803:e7e4:500:8e86:179b:44b8:cc2b])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c73a3bd060sm5970941a34.24.2025.11.17.15.42.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Nov 2025 15:42:05 -0800 (PST)
+Message-ID: <bf45b26e-2cd1-464f-a180-46120b4b0473@baylibre.com>
+Date: Mon, 17 Nov 2025 17:42:04 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] dt-bindings: iio: amplifiers: add adl8113
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20251114115725.5660-1-antoniu.miclaus@analog.com>
+ <20251114115725.5660-2-antoniu.miclaus@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20251114115725.5660-2-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 11/14/25 5:57 AM, Antoniu Miclaus wrote:
+> Add devicetree bindings for adl8113.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> 
+> Changes in v3:
+> - Remove extra blank line from YAML file for cleaner formatting
+> ---
+>  .../bindings/iio/amplifiers/adi,adl8113.yaml  | 64 +++++++++++++++++++
+>  1 file changed, 64 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/amplifiers/adi,adl8113.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/amplifiers/adi,adl8113.yaml b/Documentation/devicetree/bindings/iio/amplifiers/adi,adl8113.yaml
+> new file mode 100644
+> index 000000000000..0ad83a01ee37
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/amplifiers/adi,adl8113.yaml
+> @@ -0,0 +1,64 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/amplifiers/adi,adl8113.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices ADL8113 Low Noise Amplifier with integrated bypass switches
+> +
+> +maintainers:
+> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
+> +
+> +description: |
+> +  The ADL8113 is a 10MHz to 12GHz Low Noise Amplifier with integrated bypass
+> +  switches controlled by two GPIO pins (VA and VB). The device supports four
+> +  operation modes:
+> +    - Internal Amplifier: VA=0, VB=0 - Signal passes through the internal LNA
+> +    - Internal Bypass: VA=1, VB=1 - Signal bypasses through internal path
+> +    - External Bypass A: VA=0, VB=1 - Signal routes from RFIN to OUT_A and from IN_A to RFOUT
+> +    - External Bypass B: VA=1, VB=0 - Signal routes from RFIN to OUT_B and from IN_B to RFOUT
+> +
+> +    https://www.analog.com/en/products/adl8113.html
+> +
+> +properties:
+> +  compatible:
+> +    const: adi,adl8113
+> +
+> +  vdd1-supply: true
+> +
+> +  vdd2-supply: true
+> +
+> +  vss2-supply: true
+> +
+> +  va-gpios:
+> +    description:
+> +      GPIO connected to the VA control pin. Must be specified as GPIO_ACTIVE_HIGH.
+> +    maxItems: 1
+> +
+> +  vb-gpios:
+> +    description:
+> +      GPIO connected to the VB control pin. Must be specified as GPIO_ACTIVE_HIGH.
+> +    maxItems: 1
 
 
---=-LMDfikblbUQzONUIIIpj
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Could make things simpler to make a single property and use it as
+a gpio array. I would call it switch-gpios.
 
-On Thu, 2025-10-30 at 15:56 +0200, Andy Shevchenko wrote:
-> On Thu, Oct 30, 2025 at 12:23:19PM +0100, Francesco Lavra wrote:
-> > On Thu, 2025-10-30 at 10:24 +0200, Andy Shevchenko wrote:
-> > > On Thu, Oct 30, 2025 at 08:27:51AM +0100, Francesco Lavra wrote:
->=20
-> ...
->=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0old_enable =3D hw->enabl=
-e_event[event];
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0new_enable =3D state ? (=
-old_enable | BIT(axis)) : (old_enable
-> > > > &
-> > > > ~BIT(axis));
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!!old_enable =3D=3D =
-!!new_enable)
-> > >=20
-> > > This is an interesting check. So, old_enable and new_enable are _not_
-> > > booleans, right?
-> > > So, this means the check test if _any_ of the bit was set and kept
-> > > set or
-> > > none were set
-> > > and non is going to be set. Correct? I think a short comment would be
-> > > good to have.
-> >=20
-> > old_enable and new_enable are bit masks, but we are only interested in
-> > whether any bit is set, to catch the cases where the bit mask goes from
-> > zero to non-zero and vice versa. Will add a comment.
->=20
-> If it's a true bitmask (assuming unsigned long type) then all this can be
-> done
-> via bitmap API calls. Otherwise you can also compare a Hamming weights of
-> them
-> (probably that gives even the same size of the object file, but !!
-> instructions
-> =C2=A0will be changed to hweight() calls (still a single assembly instr o=
-n
-> modern
-> =C2=A0architectures).
+> +
+> +required:
+> +  - compatible
+> +  - va-gpios
+> +  - vb-gpios
+> +  - vdd1-supply
+> +  - vdd2-supply
+> +  - vss2-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    amplifier {
+> +        compatible = "adi,adl8113";
+> +        va-gpios = <&gpio 22 GPIO_ACTIVE_HIGH>;
+> +        vb-gpios = <&gpio 23 GPIO_ACTIVE_HIGH>;
 
-These are u8 variables, so we can't use the bitmap API. And I don't
-understand the reason for using hweight(), given that the !! operators
-would still be needed.
+Seems like we would also want some binding to describe what is
+connected to each of the bypasses. Maybe io-channels that link
+to other amplifier channels?
 
---=-LMDfikblbUQzONUIIIpj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+> +        vdd1-supply = <&vdd1_5v>;
+> +        vdd2-supply = <&vdd2_3v3>;
+> +        vss2-supply = <&vss2_neg>;
+> +    };
+> +...
 
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmkbdjcACgkQ7fE7c86U
-Nl89Pgv+IELjf0J8E61Wde2AB7Nhrv3vDN2XuVUPNmjXu4mKEtJ0TZwI7dIblLMP
-4aR06Mu7FinPtgV3Ks8WcETmJl8CU4XRc2/TesrTFQqoKjxrw6AwR5QS5d0imrwh
-L43b05j7Z6UadnXP4AqIHns0PBWLNQiFFr4BEDcOv/hBpS58DlUbntoSZYJ3nqdr
-KzX8GJ1EiqQuShUZeqVWF/Y1FMrS+CGg+XiU0Dv5gD0Xe2XNGAF6QOZGfUufbFXJ
-vQWtohGsow7Prdxc5LUhE8/KpVcnfQjOnfAaDLRRDm6lInYljm1iGpybd9xJfLIK
-FOPE/LwhGGwzEYqr95wBtvJF8mOVxnWoi8R0rL6b+xV4p6sLm9jVvnIciZT9ec81
-elsm680NP2WyoIBJ0Bw0UFx4hVHP9O1v4cBF6UuHHrWP2nZ7IQrr/R9lM0vTA/6z
-Mw77zajP867LjbNds95WnHo+G4rJltfJ+anohXFUi88uQlKooBSxlwCbp4lbhnIq
-3YrXp7Qx
-=g5jt
------END PGP SIGNATURE-----
-
---=-LMDfikblbUQzONUIIIpj--
 

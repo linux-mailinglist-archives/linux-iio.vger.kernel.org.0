@@ -1,174 +1,131 @@
-Return-Path: <linux-iio+bounces-26293-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26294-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4F2C69EE8
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 15:25:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20486C6A48C
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 16:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id A6B0D2B1F1
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 14:25:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 142414F26F9
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 15:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9022135F8A4;
-	Tue, 18 Nov 2025 14:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5736135C194;
+	Tue, 18 Nov 2025 15:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MMKpwumA"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="h10hpQzZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B396935E546;
-	Tue, 18 Nov 2025 14:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30593570B6
+	for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 15:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763475759; cv=none; b=VFXjt/KwNbN4aRK5HD0hJVb8EUlBCUpCwmQ2lD97OlKbnm9EnWjRgaHGT42mU3Q00Hvd9bvjQe3RrH5CqGJPYC5yG/5VlUWgvk2u5+7t94B6BdX7sFTjqJZVnQcwPPeeyUVY/PQ1teT2A1NHvZ1fiknACxHJIwzSvcAPDU9lWYM=
+	t=1763478847; cv=none; b=Mu2GoyqgXGZKzSEfl3pwOBau7Fm4fq8wquEMMUJXyjE7bFKBiL4+khc1E8tQnf1XWPJ5XO5vkxEWJy+5AQaqqoS4SFpUMZ42LylAqJz1MdmeKgzVt70U8EWy8UzrZZEYVWxKe2XltXUeauBhT3ybRsRXHK56uG5ISRqE1KqCtoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763475759; c=relaxed/simple;
-	bh=fwWsMZA40ndxBike93FRIIJct3hr38w4a3KFs5WIip0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tz5MY8l8QtzSta30OYjZADA/5aFWwTAnW6U4eybzpJaW6pmCtu75UkxMBQqcZ+mvaPy31ZwWgG9pbpBU0SBXTn/cIlo1K/3fZJw9MZBob+t7tkkD/wdfjgowF/9XaAfiGmq8pYuCAmV+GXARihpRoKpzJfF6TPxvW5UN/gx5kD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MMKpwumA; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763475757; x=1795011757;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fwWsMZA40ndxBike93FRIIJct3hr38w4a3KFs5WIip0=;
-  b=MMKpwumAbz1HdmWwPTtpdXSxbKJQRn9XcNzYEi5zCC4YUi9IJkNDwIbP
-   f05QYlO6ync0z3lqqSFe4p9CONDfbPLagOn5j4b/OPSau2WTDc8TT5p7+
-   0DSGPPGgvK1BKAy1N9fS4pjdFQHYkz4Js3hOIHsu4+arUUBbKBGA1c2uL
-   N0Azzv3RT06WWO1ZAkpTTcGfLqmxYicDOXKJTwrOPvmDWPRjdMSREu0BA
-   Nrg0jocho3wHcZ3VbxKdZ9xjCces4JjS6e8H5ODgRLCNH0uhOYKQ8PSuD
-   bW17jmeNh40sABnmFYBUl6lUUnOFbY6KMlUoUliD0nQXzzdPVqlaVt7mj
-   w==;
-X-CSE-ConnectionGUID: HkkXJjMDQmCLqu8G9apQBQ==
-X-CSE-MsgGUID: MyBQusoSRmaWCHutba/W/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="65587149"
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="65587149"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 06:22:37 -0800
-X-CSE-ConnectionGUID: 1B2Da2WtSui7d3FCBL1WAA==
-X-CSE-MsgGUID: XqS35Pd+RA6FwyfvZ+OeLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="214167862"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa002.fm.intel.com with ESMTP; 18 Nov 2025 06:22:33 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 9578F98; Tue, 18 Nov 2025 15:22:32 +0100 (CET)
-Date: Tue, 18 Nov 2025 15:22:32 +0100
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
-	robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
-	linux-iio@vger.kernel.org, s32@nxp.com,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	chester62515@gmail.com, mbrugger@suse.com,
-	ghennadi.procopciuc@oss.nxp.com, Vinod Koul <vinod.koul@linaro.org>
-Subject: Re: [PATCH v5 2/2] iio: adc: Add the NXP SAR ADC support for the
- s32g2/3 platforms
-Message-ID: <aRyBKH4KOQ1L8lA4@black.igk.intel.com>
-References: <20251017164238.1908585-1-daniel.lezcano@linaro.org>
- <20251017164238.1908585-3-daniel.lezcano@linaro.org>
- <aPP0uVZu1T7tTQGo@ashevche-desk.local>
- <050f96d5-e60c-4b33-b6d2-24fb3925e378@linaro.org>
- <aQMvqHGN7r6babgw@smile.fi.intel.com>
- <c4c14051-2ba2-4d80-a22d-4deb3709f727@linaro.org>
- <aQSvZT73NBWZFVfk@smile.fi.intel.com>
- <bb985484-dc67-42ba-bbc4-94bab89f72b1@linaro.org>
+	s=arc-20240116; t=1763478847; c=relaxed/simple;
+	bh=RQEpkMOuZrkK2YOaBS1E2tkJQCzquhBcELMN4PmdBYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mTU08W/jSXmFYZZo18WViBH44y8/fZI7Yn5x7LQ4DMKV1TbUQ2oicjOtaqMUKvzFRk1XOuTXwK+KXAcbAPlaDbzBoHuHhBlJEDzQnu108bORod1QK6Sm9HRlNB1yPq+eJivZJxU6GA62EyalG1X/QeCCG1ez1LkQmcwnXjyGMUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=h10hpQzZ; arc=none smtp.client-ip=209.85.210.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-74526ca79beso4293012a34.0
+        for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 07:14:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763478844; x=1764083644; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7r+XsMefqJ/y0he7o52hSgDRc1AgbWU6XIMPumfhemE=;
+        b=h10hpQzZhiRDc8VKxFw5gOSYNAEYiA8bADvMUjzqXFTNVCt2AWqByzNsxjZKGTYFtV
+         38opdvK9g16QKAw/i4bb6YOxN7YU/chaCRTZEQpF/gnHvJ01GnoPmqrmSr9d/NzIKjFZ
+         epvipRbrlbxUrGi5UyUqWINMKfLNKSlwM1OeN+deQXggqKM4OBpArycCKZISr5dORbsE
+         p6T3iJT9FDW4vARYwsS5YK9QQ+nJW9kAmSoGHXCPbo1qlAuL9xgnmKXgFYGFsngDYjm6
+         08jnaYjI3FeqT10XeXC5CUVUfOUz5DMgaOcL4mNAcKKvHnWe67xCUBfzYnjsWoepoIJe
+         SErQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763478844; x=1764083644;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7r+XsMefqJ/y0he7o52hSgDRc1AgbWU6XIMPumfhemE=;
+        b=Moj4ogYvDDynpNTSsq7dTRB94KwIuRlVLukBNtbQCFT6oJ7XPMrKhgZXi8gIthTQJu
+         TqLF4gUP67+g3poLhvLwQESMkmfZUxlHINX/tldYuVIz593NjEG9x0Vo86SZ2w5BhmuG
+         avbb6fXqPKE/QdREL4ck4K6jBWVfFsJazUTUrT4JgvKKisEYekBLs2Pi04WZs8+x3EpF
+         ZJLLafgKOA+QqwnTOcjb5ca/DupdScVpMmgAh7MUAJzJg2bqZRA/AsGWC9wFgBWOvDXo
+         LWnstqIfpfVace3JsqDiXQwbNbZfRycfLSWr3Rc7FRfN1imS4VeNZP/9bcLpUpSMiHbD
+         wPww==
+X-Forwarded-Encrypted: i=1; AJvYcCWBAgArbgABPI6a7hmYNwPhZM/HBiodXFEb/p7YDHR7rkfDEJrgAmwukLZRg9eZUl5cs4Zo5z+LGAo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSKwyoY9aXWxxmGrfkFKeZUWCernWKjt+lHC5RUIHw9fxZpG/A
+	ECcwH5krKNup1Pkg47tziLa929LA/c/t5+XkwIymOa4DUPGPWq7kl7uShPDxEbO0fazXou3QPU1
+	5GOcJ
+X-Gm-Gg: ASbGncvQ87HMSz0EWtxGBI0Yjj3v+6xTSU7ZzgHvMQwarsw5qGB2WBDUcOYED922lV7
+	Ajyk5wW7Q4ksW5Yt8MrmSEnmr3w360zFvYz/q49BGk0u6i+4pHxOrXl85kE00m//CQ/A09tYNg0
+	8saPRIZfkCMzgrta0J2wzi//kYppNK7Y+hulwr5qF7RnrfIosN6Bka1sqSZjVbDobSCUOjpEVjH
+	ZXFWYkQBKyfWOYBvPm/xlAPfs7gM0cc1QKGTHgLwZn82kMripzCyH2kkxEpchvhgaUXDEGdRNMe
+	H2S8o/jN75bXWRCRELzdZYYneNqjce+H6wiJgzd47Qapr2WPHWjeqyf9DzDyzZQ/n3OSBcKukVS
+	832TazmgMXp3l9wzpY93VQDz8tTwWRvZk7hb6fh3+CwkPCNlTtW+2g0646J/vMZYIMkT8Uzmbnq
+	8dYkciTduMaXFbmojtJHw77cowsjUMUMQeIynhFED+fG0IAysImg==
+X-Google-Smtp-Source: AGHT+IEA9iyMjnN+s/VcQjXsmQfU+gFhguO8C7imemBqcQRzFsisigJn/msgaF6YLKJjnXyFesnCbA==
+X-Received: by 2002:a05:6830:449f:b0:7c7:c71:849b with SMTP id 46e09a7af769-7c7444659aamr12422176a34.14.1763478843932;
+        Tue, 18 Nov 2025 07:14:03 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:8e86:179b:44b8:cc2b? ([2600:8803:e7e4:500:8e86:179b:44b8:cc2b])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c73a3bd060sm6627007a34.24.2025.11.18.07.14.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Nov 2025 07:14:03 -0800 (PST)
+Message-ID: <39c9971e-a825-4d43-b28d-3a7750c6415a@baylibre.com>
+Date: Tue, 18 Nov 2025 09:14:02 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bb985484-dc67-42ba-bbc4-94bab89f72b1@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/2] iio: adc: Add support for TI ADS131M0x ADCs
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ Andy Shevchenko <andy@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>
+References: <20251118141821.907364-1-o.rempel@pengutronix.de>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20251118141821.907364-1-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 18, 2025 at 02:57:41PM +0100, Daniel Lezcano wrote:
-> On 10/31/25 13:45, Andy Shevchenko wrote:
-> > On Fri, Oct 31, 2025 at 12:32:03PM +0100, Daniel Lezcano wrote:
-> > > On 10/30/25 10:28, Andy Shevchenko wrote:
-> > > > On Thu, Oct 30, 2025 at 09:27:21AM +0100, Daniel Lezcano wrote:
-> > > > > On 10/18/25 22:12, Andy Shevchenko wrote:
-> > > > > > On Fri, Oct 17, 2025 at 06:42:38PM +0200, Daniel Lezcano wrote:
+On 11/18/25 8:18 AM, Oleksij Rempel wrote:
+> This series adds support for the Texas Instruments ADS131M0x family of
+> 24-bit, simultaneous-sampling ADCs. The first patch introduces the
+> DeviceTree binding, and the second adds the driver itself.
+> 
+> These devices are not compatible with the ADS131E0x series despite the
+> similar naming.
+> 
+> David Jander (1):
+>   iio: adc: Add TI ADS131M0x ADC driver
+> 
+> Oleksij Rempel (1):
+>   bindings: iio: adc: Add bindings for TI ADS131M0x ADCs
+> 
+>  .../bindings/iio/adc/ti,ads131m02.yaml        | 208 ++++
+>  drivers/iio/adc/Kconfig                       |  11 +
+>  drivers/iio/adc/Makefile                      |   1 +
+>  drivers/iio/adc/ti-ads131m02.c                | 968 ++++++++++++++++++
+>  4 files changed, 1188 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads131m02.yaml
+>  create mode 100644 drivers/iio/adc/ti-ads131m02.c
+> 
+> --
+> 2.47.3
+> 
 
-[ ... ]
-
-> > > > > > > +	dmaengine_tx_status(info->dma_chan, info->cookie, &state);
-> > > > > > 
-> > > > > > No return value check?
-> > > > > 
-> > > > > The return value is not necessary here because the caller of the callback
-> > > > > will check with dma_submit_error() in case of error which covers the
-> > > > > DMA_ERROR case and the other cases are not useful because the residue is
-> > > > > taken into account right after.
-> > > > 
-> > > > In some cases it might return DMA_PAUSE (and actually this is the correct way
-> > > > to get residue, one needs to pause the channel to read it, otherwise it will
-> > > > give outdated / incorrect information).
-> > > 
-> > > But if the residue is checked in the callback routine without checking
-> > > DMA_PAUSED, the result is the same no ?
-> > 
-> > DMA in some corner cases might have already be charged for the next transfer.
-> > Do you have a synchronisation between DMA start and residue check?
-> > 
-> > I.o.w. this may work for your case, but in general it's not guaranteed. The proper
-> > read of residue is to: pause DMA --> read residue --> resume DMA.
-> 
-> I discussed with Vinod about this change and he suggested to use the
-> callback_result() to get the residue as a parameter so the
-> dmaengine_txstatus() call won't be needed anymore.
-> 
-> Unfortunately, it does not work. I had a look in the DMA driver and the
-> internals but my knowledge is limited in this area so I was unable to find
-> out what is going on. Moreover there are no so many driver using this API I
-> can use as an example. The best I was able to do was propagating the residue
-> to the result in the vchan_complete() but it does not work.
-> 
-> Then I stepped back by not using the callback_result() and used
-> dmaengine_pause(), read the residue, dmaengine_resume() but there are no
-> result after these calls. I don't know why.
-> 
-> The issue you are mentioning above should be handled in other drivers doing
-> the same kind of acquisition but the routine is similar to the one proposed
-> here (eg. stm32).
-> 
-> The NXP SAR acquisition routine is running since several years in production
-> AFAICT.
-> 
-> I investigated the different solutions without success, while I can run the
-> acquisition routine without problem here with my hardware. A signal
-> generator captured by the ADC, plotted and compared with the oscilloscope
-> display.
-> 
-> The circ buffer is working well here and no bug was spotted with the current
-> routine. I think I did my best to make the driver better from its initial
-> submission. The best is the enemy of the good, and I would like to make some
-> progress here in the driver acceptance. Changing the entire driver for the
-> sake of replacing the circ_buffer by the kfifo and change the code for a
-> scenario which is not happening is not really worth. Especially that the DMA
-> engine is being modified to take into the cyclic DMA in its API, thus the
-> circ_buffer and the routine will go away once the driver is changed to take
-> into account this new API.
-> 
-> IOW, can we keep this routine as it is for now as it works fine and go
-> forward for a v6 ?
-
-Thanks for trying and getting to this. Please, make a summary of the research
-and pack it into a paragraph in the commit message, so we will have this in
-the history. Maybe even a short comment in the code.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

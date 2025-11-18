@@ -1,135 +1,211 @@
-Return-Path: <linux-iio+bounces-26286-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26287-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A20CC69494
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 13:11:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F010DC69CE6
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 15:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id AB1272B2D2
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 12:11:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id E319B2B725
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 14:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD2931D75C;
-	Tue, 18 Nov 2025 12:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E2F35CB80;
+	Tue, 18 Nov 2025 13:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fSyJWPox"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GC/MRswZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B93530103D
-	for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 12:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C4035C1BB
+	for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 13:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763467865; cv=none; b=SvR/IQ2WTL3A9c83YXjjBONY9xQzNxBKHMDh/vygSizOQYUeK2PJ3hA3bRA45e2Qf8hu+KUnalKa6UhE5yyTN+/KLF5mfeMFOurPRaEBjHhwsDPX/jDndVnwh8wDhLBAoza3d5ZPClpkElhssSp4t7bblSFsKi3duaUI+Xnd1Fg=
+	t=1763474266; cv=none; b=PVIeyUGVs0/EwLk645QKQbHBhn4x5eZ4fsh99mni44QruWLROeK0wtGnxfSyG+sZa/TlBH0ua0HGVdPcCo6smIpBw9fhsRPDAReUfwX8fNkhNeLmzGd00DmUuT/l++qiR3atisxuUYowztAZGLIpcB2040fVDbUyInqqt3kmttQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763467865; c=relaxed/simple;
-	bh=17XNnwLdMemyuDuOqXGKlJ5O6NnP79UC4YL65XMZBtU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eFdD9GWkEEUwmXU7HP96PcO2IAVCF3wzuX0fgvOtk9TFGiTuuuI1UDpJW1ovIdBEX/S4lB63/h3s5S1upcSe3/v86YjS59KWQ6HHK85msZpLxuDyh6bNVVMhK9iM5us9S7tH04Rk6VDBKMF/NKFU0vQ/CbznDVa78yCOGFI/UwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fSyJWPox; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b736cd741c1so647027266b.0
-        for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 04:11:03 -0800 (PST)
+	s=arc-20240116; t=1763474266; c=relaxed/simple;
+	bh=mfMgEPem+bHdCW32SziEJw133LN6fYuGSmC870ikt8I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nottOQQp8UGbQ/smetCAdyIO9MnYWFjOFcstBlTj9+CF2tQ3bHYFiSoRWpMwoS8DmAomquSLZcb2yk/Qo4MxzPlwkGldD6+VFd7xh46wYKRRdgJmQaYAd1N8tuXZkcFQPuQcTmqNXc9koLnN/duyukSusXrZ5yqSNgcfLV7qhEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GC/MRswZ; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-47796a837c7so20891925e9.0
+        for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 05:57:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763467862; x=1764072662; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S96NTwNKmvexih7lLAZCcVSzdOV9SItIYr/gsU2pZA0=;
-        b=fSyJWPoxAO4jSHOdJIib5sic5IYBwANgfyj1zozA3vQ4oGWTMaPCDh+AO97Tp+AbXU
-         hf/dvUJlmIKftYb236v38wuh87IvTv2nJajsTXjcp38iQHSdMqxbPp/oDYISF1U4FYfb
-         Dek0gpH3aChBNNxKbWl2XzNTIjmyyjbU0N+hGj3R3DasbPulKspmzhOcSzWtyooIo+Zo
-         Rnk9qPEFl6nd0KF77dlx0rznjJlNXPpqV360f5it3FSX9CdJQb1CzWlhJ8x2H55NZGq+
-         Lhbbu6/fEm/7LzxUEKaDHjhdXzea6kHiaBzVcPSnpKCMl2fwjR9vdqUEeT9Pru15H+w9
-         YpAQ==
+        d=linaro.org; s=google; t=1763474262; x=1764079062; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SUDZ4lylaMkBQy9BPqNgegQrO9kWuZYea7qf7A3b2LY=;
+        b=GC/MRswZcBaqLBUZI42NmlIMRt8m1+kqjMzSYRp/vGIwLdk4VT9YAhhFki3sgYhm+W
+         7MQVjmuUJQ1ez34bK5mLygiDm7A8dwn+hVGnbO2YjIAcFPlU7+W8xgQFPW7rjaMDaNkU
+         r+Sk6lzg/k1I4q9jygJNZWo20NQvvNK/bhMHPNMg5KjBCzBUzinQnzlrmTHOluMtAiPh
+         NOmzC/oRCgpT/56bJ7zDSDFpOMUaU2Ix2yn0C6+2pV70QGS+pFT7biLv+lICiEgdDAnT
+         DTD4scazP+3d/b181e4SikN9AQAfjJpSQPTKLLLDqR6hEppqFZxJheA851yByUyrYQwz
+         soAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763467862; x=1764072662;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=S96NTwNKmvexih7lLAZCcVSzdOV9SItIYr/gsU2pZA0=;
-        b=xGw4kQ6WWivjq0X3uZOq8odC8go+riTcOtw9MrvU2yD2PQS95mQgNrZwWeRGTf4dRv
-         QURXb4sT02hzEeEfVNghQdQLNg86iJk8OxuiBEr/qNd25+wcBd+t2xej+IDn2koPRzhI
-         9cwMp+ZAIB0Lale6xcKbe/HQipQZBkEfny0QN+1ij+rxHLtbpFVaXqZlQo0vF62Kfh60
-         hWo2xLNF3pQKTBcS6Y+grSMl9KLFAyccoKbaHzKgCFLz2wEnoz0zYODyPTTm8ns1u2xc
-         TJRkAz7iot0eOcQTkw0vdPIvF/bnN5JFtDEBn9DftduUY3pqKIjEnC1DsbkezA6PHX5i
-         F1PA==
-X-Forwarded-Encrypted: i=1; AJvYcCV9hBQlaza0qqjmkSMFSDEyn5GWCfoqbT6fZgSYcDOEhbiKNKPMpy8CxRckmWrQad5TUf2Jk2FSRO0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEVtPpKVLKaqNrkz+V/l1p/wpwRf3QyYl7ov4ykj6SpB2q/LRl
-	k57Zlp4riy71dgRqXKrEmq+lJN0ZeQU2p+0ehYovm/CL9bGzhim2AWmBTASs+t+40MPWcyjHKl0
-	KdhYM3w5Fu4dGx5g8yzMGkojI/DNpY70=
-X-Gm-Gg: ASbGncszkDjf8Qz1L8sR2xId13MUa09nTCbwsVl+mknCyc6KYr4zAuxwxWHEPBAq2eU
-	KRnMg0SMqXFcoNmDMJmtavHWdjPSM1T4jm6yQOd8VBbxemjolSFZaRcqKC8AWAD95rE/CIeDDLK
-	ya/wDF0QB2bYc4SWfpBDE0rwe/ZnkmyAYEVhoLfynS5psknXVSGKLAOHGrRN74acG3mDH9Mb1li
-	4zaM9kTbarMyBGYRQM+7AAmHZRIHE7PfbfVthCsIbEB0BsH6bpOMnA1a91PLttnydiRfwIxD6ig
-	1zKvmt1EVjfAX1mceqGevS856TUeomV2lFP84t4LvVUSUAEgvE8xlRT8y3CRty78D5JwtYk=
-X-Google-Smtp-Source: AGHT+IG086oEWZheGOwau+XoF2l2bVGxVG+fm1vm1dIRHk44wbZ5lS3J9QohWdvbh4rKsAG9075DeYIITho2M4cbvx8=
-X-Received: by 2002:a17:907:8dcd:b0:b73:79e9:7d3b with SMTP id
- a640c23a62f3a-b7379e9837cmr1402879066b.25.1763467861752; Tue, 18 Nov 2025
- 04:11:01 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763474262; x=1764079062;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SUDZ4lylaMkBQy9BPqNgegQrO9kWuZYea7qf7A3b2LY=;
+        b=Il4C2gh7n9ZkKTMQnc69o1d3f1w52n1WBhZWypMEbsTE8DCdDofUL1HgXz04RmYVk0
+         PAxD5vpUBcIrHn3vsLAJzIxC4Z/8tkEBCndurFdQkK4Teg74Bw53LkHvW6x9uALN5xKU
+         0RNAS47o54L5slK4s1mg3mIBQA6XPVFlwmQPMudkps7QQ8hWpszt7scSV3oAsYplD8hz
+         AXeFDEM6+fBiyd57ruRBdrT9Y1jFHw5dsFo0H/hzd+vwFtWCZG3GbQmvmOTlvts8ijpi
+         2EZphTANHjCSXstxB/zdicsXgQsjc1Oy68DbS9EEmiXQaQvQXlO3E3bimUXgn2gU3v8B
+         RFZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJQ3z0QC7nDSEzXszIvxWv3oEL62luNMAc3T7UjqXfQeyT+gOWBuNnFL8LCRiHFN8IWhYH6HwTqtA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVXe+vHA2LUKleqlEmoNAIQFe4YgZ68fspHKbT2dSl+ta3C0VA
+	6bS1xTQyJE4vrUka9tScnXS6v5YkIM+ja+P04vT1uE7LFB66gnpJV3rfvJggQy5dwM0=
+X-Gm-Gg: ASbGncvluuqLJJWkocvuVwI2f6zWBS0ZvOz654FgAdbk4JAuinzA8SSB0BUUnIsw6RY
+	56UYp+ocQV+BvlC8jiw+pi07jwFK45p65ufMYjIjQa1UWMRtsBMr4uptBYWFVdIPRhVYgKvuciK
+	9c3JkRXWC2K6GF/4CJJrOBaonQCop+lYnz4eXjY3/TnyHJmywpkKgsbZ7H2fgIpTcQKD6xlMEme
+	zPkV2oN6m36f0M+m8jU2mniLO2NdQqvOL9OnMfFg5TNm23RS6oAX3fheeHYWZvSuvGdRQ5RIt9I
+	OigyKvdL/6GEc18G20MD+12RsD4uN4hHkptwNuMzlvCGnHz8ro8zWKsH0UjC27ZZS9kkpH3kr/X
+	M8CPmNzz4z+te09qrE3mr37wFKIsgO0LIZgCZIq/AOP0X5+t9w2NkZGwnau66ZRxK87ckdPOUmD
+	3z/QpxKxiyXmOvqD1AhG50HEMgqhCDXLR87cJaGbm9lM4h6GHF5Gbk4N5B7MYfN8SsWg==
+X-Google-Smtp-Source: AGHT+IG9vP9ywNhwcCVn9uZYhtMtnoVY99ke6nSnOYKsVre1wo2fJQ2gXlVy6Kn/osQqy7PyWirVeQ==
+X-Received: by 2002:a05:600c:4585:b0:477:63dc:be00 with SMTP id 5b1f17b1804b1-4778feaa7f5mr130859165e9.25.1763474262494;
+        Tue, 18 Nov 2025 05:57:42 -0800 (PST)
+Received: from ?IPV6:2a05:6e02:1041:c10:3006:e9fd:4de4:66f6? ([2a05:6e02:1041:c10:3006:e9fd:4de4:66f6])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-47787e36ca3sm393988575e9.5.2025.11.18.05.57.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Nov 2025 05:57:42 -0800 (PST)
+Message-ID: <bb985484-dc67-42ba-bbc4-94bab89f72b1@linaro.org>
+Date: Tue, 18 Nov 2025 14:57:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251116101620.25277-1-i.shihao.999@gmail.com>
- <CAHp75VdY7W8EgOfKuxtTALj777aVatxV5dqsxm688JTy=iVW2Q@mail.gmail.com>
- <20251116152800.4c1849cc@jic23-huawei> <34a55901fe0729145097d287a98746f23eea13d8.camel@gmail.com>
-In-Reply-To: <34a55901fe0729145097d287a98746f23eea13d8.camel@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 18 Nov 2025 14:10:25 +0200
-X-Gm-Features: AWmQ_bnlFWB8k-p28R4cyez2s9mHpB0Dy7l8qo3cMKv2hx7hvO6Ni9lYDoVRUbg
-Message-ID: <CAHp75VejBvRX=5psgVgGPCsKk7gVgcDUd1q3Gn+4_jyzk=2pEw@mail.gmail.com>
-Subject: Re: [PATCH] staging: iio: adt7316: replace sprintf() with sysfs_emit()
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Shi Hao <i.shihao.999@gmail.com>, 
-	Michael.Hennerich@analog.com, lars@metafoo.de, dlechner@baylibre.com, 
-	nuno.sa@analog.com, andy@kernel.org, gregkh@linuxfoundation.org, 
-	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] iio: adc: Add the NXP SAR ADC support for the
+ s32g2/3 platforms
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
+ linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
+ ghennadi.procopciuc@oss.nxp.com, Vinod Koul <vinod.koul@linaro.org>
+References: <20251017164238.1908585-1-daniel.lezcano@linaro.org>
+ <20251017164238.1908585-3-daniel.lezcano@linaro.org>
+ <aPP0uVZu1T7tTQGo@ashevche-desk.local>
+ <050f96d5-e60c-4b33-b6d2-24fb3925e378@linaro.org>
+ <aQMvqHGN7r6babgw@smile.fi.intel.com>
+ <c4c14051-2ba2-4d80-a22d-4deb3709f727@linaro.org>
+ <aQSvZT73NBWZFVfk@smile.fi.intel.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <aQSvZT73NBWZFVfk@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 18, 2025 at 10:17=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.co=
-m> wrote:
-> On Sun, 2025-11-16 at 15:28 +0000, Jonathan Cameron wrote:
-> > On Sun, 16 Nov 2025 13:08:07 +0200
-> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-...
+Hi Andy,
 
-> > Applied, but I will note that this driver is a long way from suitable
-> > for moving out of staging and I would be surprised if more than
-> > one or two of the lines changed in this patch make it through the
-> > necessary refactors (should anyone actually have another go at
-> > doing them).  Anyhow, I still think this is worth taking just to
-> > reduce the noise of remaining instances of this.
-> >
-> > I'd have deleted this long ago except I actually have one somewhere
-> > and it one of the supported parts was still listed as suitable for
-> > new designs when I checked not long ago.
->
-> Seems to be now "just" in production. So no longer advised for new design=
-s. I gave a
-> quick look and this is far from being a simple driver. It would require a=
- fair amount
-> of work to bring it out of staging. So, are there users relying on stagin=
-g drivers?
+On 10/31/25 13:45, Andy Shevchenko wrote:
+> On Fri, Oct 31, 2025 at 12:32:03PM +0100, Daniel Lezcano wrote:
+>> On 10/30/25 10:28, Andy Shevchenko wrote:
+>>> On Thu, Oct 30, 2025 at 09:27:21AM +0100, Daniel Lezcano wrote:
+>>>> On 10/18/25 22:12, Andy Shevchenko wrote:
+>>>>> On Fri, Oct 17, 2025 at 06:42:38PM +0200, Daniel Lezcano wrote:
+> 
+> [ ... ]
+> 
+>>>>>> +	dma_samples = (u32 *)dma_buf->buf;
+>>>>>
+>>>>> Is it aligned properly for this type of casting?
+>>>>
+>>>> TBH, I don't know the answer :/
+>>>>
+>>>> How can I check that ?
+>>>
+>>> Is buf defined as a pointer to u32 / int or bigger? or is it just byte buffer?
+>>> If the latter, how does the address of it being formed? Does it come from a heap
+>>> (memory allocator)? If yes, we are fine, as this is usually the case for all
+>>> (k)malloc'ed memory.
+>>
+>> buf is a byte buffer allocated with dmam_alloc_coherent(..., GFP_KERNEL)
+> 
+> We are fine :-)
+> 
+> ...
+> 
+>>>>>> +	dmaengine_tx_status(info->dma_chan, info->cookie, &state);
+>>>>>
+>>>>> No return value check?
+>>>>
+>>>> The return value is not necessary here because the caller of the callback
+>>>> will check with dma_submit_error() in case of error which covers the
+>>>> DMA_ERROR case and the other cases are not useful because the residue is
+>>>> taken into account right after.
+>>>
+>>> In some cases it might return DMA_PAUSE (and actually this is the correct way
+>>> to get residue, one needs to pause the channel to read it, otherwise it will
+>>> give outdated / incorrect information).
+>>
+>> But if the residue is checked in the callback routine without checking
+>> DMA_PAUSED, the result is the same no ?
+> 
+> DMA in some corner cases might have already be charged for the next transfer.
+> Do you have a synchronisation between DMA start and residue check?
+> 
+> I.o.w. this may work for your case, but in general it's not guaranteed. The proper
+> read of residue is to: pause DMA --> read residue --> resume DMA.
 
-If there is no choice, yes. For example FBTFT is famous for being used
-by IoT / DIY _a lot_. Currently a bit less since we got tinyDRM
-subsystem with most popular drivers reimplemented there.
+I discussed with Vinod about this change and he suggested to use the 
+callback_result() to get the residue as a parameter so the 
+dmaengine_txstatus() call won't be needed anymore.
 
-> But I would assume that for staging we are still free to drop support it?
+Unfortunately, it does not work. I had a look in the DMA driver and the 
+internals but my knowledge is limited in this area so I was unable to 
+find out what is going on. Moreover there are no so many driver using 
+this API I can use as an example. The best I was able to do was 
+propagating the residue to the result in the vchan_complete() but it 
+does not work.
 
-At any level, we are still free to drop :-) Just different conditions
-applied. For staging is basically an "effective immediately" case.
+Then I stepped back by not using the callback_result() and used 
+dmaengine_pause(), read the residue, dmaengine_resume() but there are no 
+result after these calls. I don't know why.
 
---=20
-With Best Regards,
-Andy Shevchenko
+The issue you are mentioning above should be handled in other drivers 
+doing the same kind of acquisition but the routine is similar to the one 
+proposed here (eg. stm32).
+
+The NXP SAR acquisition routine is running since several years in 
+production AFAICT.
+
+I investigated the different solutions without success, while I can run 
+the acquisition routine without problem here with my hardware. A signal 
+generator captured by the ADC, plotted and compared with the 
+oscilloscope display.
+
+The circ buffer is working well here and no bug was spotted with the 
+current routine. I think I did my best to make the driver better from 
+its initial submission. The best is the enemy of the good, and I would 
+like to make some progress here in the driver acceptance. Changing the 
+entire driver for the sake of replacing the circ_buffer by the kfifo and 
+change the code for a scenario which is not happening is not really 
+worth. Especially that the DMA engine is being modified to take into the 
+cyclic DMA in its API, thus the circ_buffer and the routine will go away 
+once the driver is changed to take into account this new API.
+
+IOW, can we keep this routine as it is for now as it works fine and go 
+forward for a v6 ?
+
+
+
+
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 

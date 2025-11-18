@@ -1,218 +1,199 @@
-Return-Path: <linux-iio+bounces-26301-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26303-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D1FC6B04B
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 18:42:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46991C6B0E2
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 18:52:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8F004E5548
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 17:35:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 154ED3621B4
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 17:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017DD366DBD;
-	Tue, 18 Nov 2025 17:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383882C236D;
+	Tue, 18 Nov 2025 17:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="uj56So53"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ZwzGcwex"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A923570B5;
-	Tue, 18 Nov 2025 17:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015A72AD35
+	for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 17:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763487227; cv=none; b=s7nuVYeDMvsE2c8rkeOtMEi1IpkNeGyA33IO/0OhcRutCuXq42Gab9swgh6nnPQb/AQiOGP5zgnJoF02Ncv9y/BhUTmyz/5aij3XYEeb+13slWtGTm2YWawdi6At6mxFN88/sqgXVOy5Itpl7U1XE/KzeVD990g2TF8D7wWMKds=
+	t=1763487966; cv=none; b=sddIyQ8xWm2DBBGOszjzKFskq+fkoLUXhGgdYCxi7JHMH7J7gKjFSifBwY8+gInkK4dJCGflUbCCFj/OYog8Z0B6bJ4T98se6ipHjKCID8O7iChAcmH5ImNL6Hlyx48p6jnDdptgkFWbN7hongUsrwJ2DF07rMvCDwtJdMLbX58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763487227; c=relaxed/simple;
-	bh=HHJjNMzkyNm9+eFvyfLIB9NBXsLMLugJ/Yh/qD3ILHo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WSc0hUEpQytsqkj1Opjwf9sQf+zQO3Gehn5hS+eSSNXt7T3ZHOzK2XTvdztnS6DjnUW4yI4Og5fjoUUYjMT8D1aoguYdgfVocndEf8pF6Fm3tAHt7/UDMyWBs4z0iv0sSLdjS62ln5gDqqhHGFdXVLSR7xBD2owsnFkQyX6MpFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=uj56So53; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AIH4Ap02367616;
-	Tue, 18 Nov 2025 12:33:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=1qes9
-	a+k/Joj4ek4Moqp7NAJ7jPKzssVq+1TxZw4cv8=; b=uj56So53v/d+FdljkkOZF
-	QYu6ZFUH7wGWhnglKEPVg45bXNApfM3WgY7Bc5W0431uyJvqWzVqPg0hXu2C3p/W
-	NAxjZFSvxh2kumZyG/3OjEdn7fQH8kHy+TTvmFfu2EqOEQQDFKb+L5guhMCEoi6n
-	eRuhxFFiOewscrHz+aKHNwjtTWlZmcFQa3QZeV976OHqC2jadoJb6XEWP+sHBwXL
-	JQY+H+p2R624oi8Cwzl5KQoBjvX1xXykykbthGFRbjlOTdVzb5OOPBEfe9uypIin
-	DVhaB1oyoXjLdHobU/JAcitBHlzeHuFUIMkgHe25sUY1aYSoX5D99fpSKw0Eopj9
-	g==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4aggt2kpt0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Nov 2025 12:33:15 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 5AIHXExf043299
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 18 Nov 2025 12:33:14 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Tue, 18 Nov 2025 12:33:14 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Tue, 18 Nov 2025 12:33:14 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Tue, 18 Nov 2025 12:33:14 -0500
-Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5AIHWxKX007681;
-	Tue, 18 Nov 2025 12:33:01 -0500
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
-To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <jic23@kernel.org>, <nuno.sa@analog.com>, <dlechner@baylibre.com>,
-        <andy@kernel.org>, <Michael.Hennerich@analog.com>, <robh@kernel.org>,
-        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <corbet@lwn.net>,
-        <cosmin.tanislav@analog.com>, <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v2 3/3] Docs: iio: Add AD4134
-Date: Tue, 18 Nov 2025 14:32:58 -0300
-Message-ID: <5d51a7a53eac60ff555fe2350fac69fcb7f9e9f2.1763478299.git.marcelo.schmitt@analog.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1763478299.git.marcelo.schmitt@analog.com>
-References: <cover.1763478299.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1763487966; c=relaxed/simple;
+	bh=IDXXPntONLtWnQ4H/+mhIZ/CKssmJVfOe9vQjmQEy+4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sXdi+hwsLoagYY3/IOitthdt2MuS5iFxSQzBpiHqbyPQ+8KetmzbOuol7KF4YPqkv7A5fR/FQwi7CzYq1aa3y/VdrEy1AIU/Wtbl0UgbGRlac51BR8MFYEG8gyVQIk6lmGkdu6iXM2LwstCYtbnMavu6an56Itl03o7zkVGnzaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ZwzGcwex; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-45076d89e56so2616923b6e.1
+        for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 09:46:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763487962; x=1764092762; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tRB3SkR03cIdDSITzGw4J5oXKbUxrRLBIfPvKWW4i4Y=;
+        b=ZwzGcwex5++eHc7+B8WWsnstjkfTiYsv1x0bVohUwjmyQkslQ5v+4r8nAV9m9kbu8J
+         0P9j8j/U/KGuB2AnNifdK8bYARA1E96bK0kMz3b72dwM+pP50JvDX3JZWKxWulkuzL0q
+         oqIS96iQJ/WBdfCltuhLVhW72PEi2hq3xdKz0cOeZOF/NHmdhrhnEAjeEPTOSDEtDzmr
+         G/QMcVSuNH48WsHlXD5lUvWaVZFBnWS/glyJyvPKI42BUuRqvea9AV2ydwcDfZNLnLWX
+         aoTJo4pMtZQnq0hpTfNO6k5UfdzTy499LkrwCJeZ16rMnBT6FLeoH/ZOHPcgzhIfsO/B
+         T08w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763487962; x=1764092762;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tRB3SkR03cIdDSITzGw4J5oXKbUxrRLBIfPvKWW4i4Y=;
+        b=UG6uC3mZ8Am65oYXwMv55U1JZaMFbSr7PermUXBjJ9xy06hDsDUMRUtydyX1VFTX02
+         OIZCP7uzJwKnNmp0BIif5tch2f6vO48vZxOfxO3vJflnoqQdr9Ss/AqoTB0vQgfO1JsS
+         B5rI28+Q0MVS6s9a9mnuKUAAzJZaKeXBKmhaUejLRHAsd7qFawgKzWFIBdwjmyBetcI1
+         ZeUpMxxuPgT8d01Ik9jfrAqlIFGLS0lA04FYxm03mH2vydlDCUbYncnbWlMDydvxoHni
+         5oufNHmppKg0bzNQuIRXKt/QfIMh6mSnUkY2aaalFXnFLYUco+Obx9VYTLN6Ccys4wgE
+         1hyA==
+X-Forwarded-Encrypted: i=1; AJvYcCX7VganRMpM7Ii0BjaX2Kqlr6apDAh1bLhKUP83+mB2uuG2XLu+KMBhqXAMHuSnXNjr+BPGrJXZ/5k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzSoFTRii2azVaBdBaQahoioOhiAG5BHBtr2P5ZK95T7UcoX4G
+	nYt1jX02Dj9DqYkUy1HYTAISzvhfnRbFDDv2ipGt9/rrmdqi4a2MMD6A0xI0jIqN3Yo=
+X-Gm-Gg: ASbGnct/NYeJax71K4fDxz0eacVwb+X1FPRtdCPxO3aSiOaMxo3Uc5Q365h74XB/kbW
+	OtEQ+WqJ6UXz4zsC2vB/OM0i9ZGDxSTKEm7A9yNKkjgdNsQ+NZJyxRQ53azV95kd9g3SAy6dQxu
+	k+lvcJursNqxOXt/veLTj/g4KGSebjT/HAn4wgr9vqsFzw1Aqz/CDykMJWuPiEjJUfq42TuOW12
+	FVab397QApL0j5lo6l4ATqMKptG1j1oeiuSMDWyUOmr9+nXUuUUrFxIOo5TkId1Tpqt1+/k4v6l
+	Km1D5UTx7eaVnUtRA6gdAoHrSuffssfqZljxuL87R6sksuBMHsp+DTApAWTaZfTqGBtfe1bgyLQ
+	E3Db7L4Kpac4ldDX3wUns75rzkiRf5Y0d4CqfXRs7oH9INyQt4LVGBCHpwMerrwQbjdyZT/m+Bc
+	Y88DbkCipp9EMAFdRpPivrGOyoz4voBNPyZkuyVsPdwyV5q4vgtbM9assnRaKN
+X-Google-Smtp-Source: AGHT+IEyXv7o8silWSWiXUwK16E7SzqW9ae9uZ2yQok+gwbaS1AMF/9TQObjEohC0ILlJFcIzyAJfQ==
+X-Received: by 2002:a05:6808:8955:b0:450:c877:fd5e with SMTP id 5614622812f47-450c878022cmr4423732b6e.19.1763487962096;
+        Tue, 18 Nov 2025 09:46:02 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:8e86:179b:44b8:cc2b? ([2600:8803:e7e4:500:8e86:179b:44b8:cc2b])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65724cb873dsm5554288eaf.4.2025.11.18.09.46.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Nov 2025 09:46:01 -0800 (PST)
+Message-ID: <97c6b55d-9505-4091-8f0b-317dcbd70838@baylibre.com>
+Date: Tue, 18 Nov 2025 11:46:00 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: XAPmJovnoQV6oo0RDSTWPdvmB0FVjqM7
-X-Proofpoint-ORIG-GUID: XAPmJovnoQV6oo0RDSTWPdvmB0FVjqM7
-X-Authority-Analysis: v=2.4 cv=FsIIPmrq c=1 sm=1 tr=0 ts=691caddc cx=c_pps
- a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8
- a=B918M15fmQb9CbtuFVMA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTE4MDE0MiBTYWx0ZWRfX60KlLUMwCxtL
- kDE21z2BoQj+cSTExKJWcWuT+69flRJq7XIoRdWCWzaalKTrEVpHMMC2srKX6J3lOEd07mYDf3Z
- JowK7F4uq9uiShAjU5Z9PzYdUssxU+pTrh2e6J+Je8PZvTTOKULdBDaW1YcHNIOjsbLuYcKwS8C
- 1AztNShou4otxBTxYkjQw2vMjapo3OdPFIpecCAUJz/+On0lx0fctx1WO4jTLz0cpCxTkaIhmTo
- aINZvaBvyghjImvTsyH6tPl/76mltyVeG2fWip2diPVxd60lQo82IeV6S70THD14oRSZfM2i6n3
- OGXxXlYmBsWyGsjuLvM98UAVqq+xfzy9Icu2qYKYDIqeevuXBwgKCT1klmLxvZLZ6NKqTOhVvuQ
- 683lntnM2StPspqNh4id9NNG0zzz2Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-18_02,2025-11-18_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 bulkscore=0 adultscore=0 phishscore=0
- priorityscore=1501 clxscore=1015 spamscore=0 impostorscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2511180142
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/6] dt-bindings: iio: adc: adi,ad7380: add spi-buses
+ property
+To: Rob Herring <robh@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Michael Hennerich <michael.hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <20251107-spi-add-multi-bus-support-v2-0-8a92693314d9@baylibre.com>
+ <20251107-spi-add-multi-bus-support-v2-5-8a92693314d9@baylibre.com>
+ <20251118155905.GB3236324-robh@kernel.org>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20251118155905.GB3236324-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add initial documentation for the ad4134 IIO driver.
+On 11/18/25 9:59 AM, Rob Herring wrote:
+> On Fri, Nov 07, 2025 at 02:52:51PM -0600, David Lechner wrote:
+>> Add spi-buses property to describe how many SDO lines are wired up on
+>> the ADC. These chips are simultaneous sampling ADCs and have one SDO
+>> line per channel, either 2 or 4 total depending on the part number.
+>>
+>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+>> ---
+>>  .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 22 ++++++++++++++++++++++
+>>  1 file changed, 22 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+>> index b91bfb16ed6bc6c605880f81050250d1ed9c307a..9ef46cdb047d45d088e0fbc345f58c5b09083385 100644
+>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+>> @@ -62,6 +62,10 @@ properties:
+>>    spi-cpol: true
+>>    spi-cpha: true
+>>  
+>> +  spi-data-buses:
+>> +    minItems: 1
+>> +    maxItems: 4
+>> +
+> 
+> As the property is not required, what's the default?
 
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
----
-Change log v1 -> v2:
-- Now using "~~~~~~~~" to mark fourth level topic.
+spi-perepheral-props.yaml defines:
 
- Documentation/iio/ad4134.rst | 58 ++++++++++++++++++++++++++++++++++++
- Documentation/iio/index.rst  |  1 +
- MAINTAINERS                  |  1 +
- 3 files changed, 60 insertions(+)
- create mode 100644 Documentation/iio/ad4134.rst
+	default: [0]
 
-diff --git a/Documentation/iio/ad4134.rst b/Documentation/iio/ad4134.rst
-new file mode 100644
-index 000000000000..fa44a05e6793
---- /dev/null
-+++ b/Documentation/iio/ad4134.rst
-@@ -0,0 +1,58 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+=============
-+AD4134 driver
-+=============
-+
-+Device driver for Analog Devices Inc. AD4134 and similar ADCs.
-+
-+Supported devices
-+=================
-+
-+* `AD4134 <https://www.analog.com/AD4134>`_
-+* `AD7134 <https://www.analog.com/AD7134>`_
-+
-+Wiring connections
-+------------------
-+
-+AD4134 and similar ADCs can operate in a few different wiring configurations.
-+
-+Minimum I/O mode (SPI control mode)
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+The minimum I/O mode wiring allows AD4134 register and data access with the
-+conventional set of SPI bus lines. The hardware configuration settings for using
-+AD4134 in minimum I/O mode are:
-+
-++----------------------------+----------------------+--------------------+
-+| Pin Function               |         Level        | Description        |
-++============================+======================+====================+
-+| PIN/SPI                    |         High         | SPI control mode   |
-++----------------------------+----------------------+--------------------+
-+| MODE                       |         Low          | ASRC slave mode    |
-++----------------------------+----------------------+--------------------+
-+| DCLKIO                     |         Low          | DCLK input         |
-++----------------------------+----------------------+--------------------+
-+| DCLKMODE                   |         Low          | Gated DCLK         |
-++----------------------------+----------------------+--------------------+
-+
-+A possible connection schema that sets AD4134 digital interface for minimum I/O
-+mode is:
-+
-+::
-+
-+                                 IOVDD
-+      +------------------------+   |
-+      |                PIN/SPI |<--+     +-------------+
-+      |                        |         |     HOST    |
-+      |                   DCLK |<--+     |             |
-+      |           FORMAT1/SCLK |<--+---- | SCLK        |
-+      |   AD4134      DEC2/SDI |<--------| SDO         |
-+      |               DEC3/SDO |-------->| SDI         |
-+      |                    ODR |<--------| GPIO        |
-+      |             FORMAT0/CS |<--+     |             |
-+      |                   MODE |<--+     +-------------+
-+      |            DEC0/DCLKIO |<--+
-+      |          DEC1/DCLKMODE |<--+
-+      +------------------------+   |
-+                                  GND
-diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-index 315ae37d6fd4..d4ed782c93a6 100644
---- a/Documentation/iio/index.rst
-+++ b/Documentation/iio/index.rst
-@@ -22,6 +22,7 @@ Industrial I/O Kernel Drivers
-    ad3552r
-    ad4000
-    ad4030
-+   ad4134
-    ad4695
-    ad7191
-    ad7380
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a1541cf3967b..b2c101598636 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1455,6 +1455,7 @@ L:	linux-iio@vger.kernel.org
- S:	Supported
- W:	https://ez.analog.com/linux-software-drivers
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad4134.yaml
-+F:	Documentation/iio/ad4134.rst
- F:	drivers/iio/adc/ad4134.c
- 
- ANALOG DEVICES INC AD4170-4 DRIVER
--- 
-2.51.0
+Do I need to repeat that here?
+
+> 
+>>    vcc-supply:
+>>      description: A 3V to 3.6V supply that powers the chip.
+>>  
+>> @@ -245,6 +249,22 @@ allOf:
+>>        patternProperties:
+>>          "^channel@[0-3]$": false
+>>  
+>> +  # 2-channel chip can only have up to 2 buses
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          enum:
+>> +            - adi,ad7380
+>> +            - adi,ad7381
+>> +            - adi,ad7386
+>> +            - adi,ad7387
+>> +            - adi,ad7388
+>> +            - adi,ad7389
+>> +    then:
+>> +      properties:
+>> +        spi-data-buses:
+>> +          maxItems: 2
+>> +
+>>  examples:
+>>    - |
+>>      #include <dt-bindings/interrupt-controller/irq.h>
+>> @@ -260,6 +280,7 @@ examples:
+>>              spi-cpol;
+>>              spi-cpha;
+>>              spi-max-frequency = <80000000>;
+>> +            spi-data-buses = <0>, <1>;
+>>  
+>>              interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+>>              interrupt-parent = <&gpio0>;
+>> @@ -284,6 +305,7 @@ examples:
+>>              spi-cpol;
+>>              spi-cpha;
+>>              spi-max-frequency = <80000000>;
+>> +            spi-data-buses = <0>, <1>, <2>, <3>;
+> 
+> An example that doesn't look like a 1 to 1 mapping would be better. 
+> Otherwise, it still looks to me like you could just define the bus 
+> width.
+
+I'm not sure we could do that on this chip since it doesn't have
+the possibility of more than one line per channel. I can add a
+patch with a binding for a different chip though that can have
+such an example.
+
+> 
+>>  
+>>              interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+>>              interrupt-parent = <&gpio0>;
+>>
+>> -- 
+>> 2.43.0
+>>
 
 

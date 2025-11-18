@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-26297-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26298-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E633C6A79D
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 17:03:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D94C6A746
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 16:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 51281356A6F
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 15:57:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 6F1F12C9CA
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 15:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AAC36827D;
-	Tue, 18 Nov 2025 15:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7801B368291;
+	Tue, 18 Nov 2025 15:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hwBleh9m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTmizjH4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A0F365A05;
-	Tue, 18 Nov 2025 15:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263B036826B;
+	Tue, 18 Nov 2025 15:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763481440; cv=none; b=fV+v9aSNrt6H3NlAPwEfXjh/dm3vOT+n6JKkYEmtTD4Jsvh56iu7UDNA/zxfA/9Zi1h5jnlDlIndnvz98Gm49SB9CuAAF4Ozp4450qvl+Ig3WhZoCrDIm+2V7ZTU6cF6hATCxIpV6GeHdofNCpLn2oB0RMlif/SDEaRUUPfPx18=
+	t=1763481549; cv=none; b=okOZRssyKy/v+znOWw6272EUePV3DZ9NQHCxz5E86oGYJcmRfBWLB+l8OmNWd0CqMClLL09ZWZjScNtYV5iS6lMjXz/poHVUQaqlzOQTX1M3TqBI3ISCE+cwoXs4YvAhnsChIugjWnxvlkOT79zS3aVqpl0FrUY7thSofV3keSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763481440; c=relaxed/simple;
-	bh=idRAsV6uM03dWhIhWg26jqhQuDz/mORf5Ur8q/hbScg=;
+	s=arc-20240116; t=1763481549; c=relaxed/simple;
+	bh=mu+F5dcHgAQNH4gip4qm7MaAGlv17GgF0Odh5VKbdTg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q336JjYbEQ320XYTAHW+xRMgr3qWBVmxiovB90NvK3763v39Erahnq7focBqQnFpknLPe7BE+xVFISoXygvmdRKI1xr5EQ/tf/I+rICw69aC/VofIR/9vG5k3lsglR9tjWIvJOi45lMjQCVGUwy9Meu6DZL8vm1eiLIZcroP65U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hwBleh9m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D623C19422;
-	Tue, 18 Nov 2025 15:57:19 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=nR9DVfm7lnVhi96S+8XrMIqDQXIsd6K1LZQWFZbc7YtSGls2otIIK5xADOQo5H0r6xzfTffcVfhc4nDMZS7hmcbuKjPVBbc/i4P0TtXPQqNGkt9lQUzVNMECZP8YuLq+27ty/TDhPnq+97dVT1AxAX3FemmWM6KMR1mK0aahiO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTmizjH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFB8C19422;
+	Tue, 18 Nov 2025 15:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763481439;
-	bh=idRAsV6uM03dWhIhWg26jqhQuDz/mORf5Ur8q/hbScg=;
+	s=k20201202; t=1763481548;
+	bh=mu+F5dcHgAQNH4gip4qm7MaAGlv17GgF0Odh5VKbdTg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hwBleh9mfK9U5pjZmr17Kt8MU8q2DFw3YzUEYBKLMB9R1wb+1iPczvO0N7a0TEysB
-	 F+9v4sc8ZaBKZefpitsS4Dt2RZRMdxJhz3qUH1QyRfZP125VsvHoCdR6PtQ5RRakLl
-	 Wk2771Y/Hk8U+PL2aRgSFi4Jq5V815XqCuJljd/voN6iazoOh9QeE7BtR9a3dy5qnf
-	 ku0+Vk5sWAgpmyiT0S9ycJlh+pi5Bi8PxhU0Z60ifbNbG8ptQbMyvBOu0OjNbCyrsB
-	 aJDY+4N9Avxaw3OLLYicAT2r9HEueeC3y6VP1u97UZVzmlIs9G88mKxTuzeEyGQtwK
-	 KBIl7p3fSUXgg==
-Date: Tue, 18 Nov 2025 09:57:17 -0600
+	b=HTmizjH4fh1B/8G+7+ffhUVRojiXbbtEID2v4Lh74MW4myiDMBc8vDUkqEO2RPaze
+	 UXk+0eMD/ODSpN6mzFlIuZQVcB6dly3QCDX2xXps/57kgifPhvYmRa9pC4dsItUWcJ
+	 MOXnCqYjpeHTUzjlzteTAlNDJu2aSaFLiwQg79RKJLShbOK0ulyPK+O/p7jQgz8IKd
+	 dGOEQPhsk/cOfSLZGpReMgC7c1JnkzWEEn/d/Y8fVLaBAFE5xelhjs28Hm/81PwKz1
+	 AHLlwzi/h6rD5kiCYPei8/loB3DNHTUjWnkO3CgHNX7T+iwBTkwOarXXjz29IQAVXc
+	 3VUUENIQS1Rvw==
+Date: Tue, 18 Nov 2025 09:59:05 -0600
 From: Rob Herring <robh@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Mark Brown <broonie@kernel.org>,
@@ -55,10 +55,11 @@ Cc: Mark Brown <broonie@kernel.org>,
 	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 1/6] spi: dt-bindings: Add spi-data-buses property
-Message-ID: <20251118155717.GA3236324-robh@kernel.org>
+Subject: Re: [PATCH v2 5/6] dt-bindings: iio: adc: adi,ad7380: add spi-buses
+ property
+Message-ID: <20251118155905.GB3236324-robh@kernel.org>
 References: <20251107-spi-add-multi-bus-support-v2-0-8a92693314d9@baylibre.com>
- <20251107-spi-add-multi-bus-support-v2-1-8a92693314d9@baylibre.com>
+ <20251107-spi-add-multi-bus-support-v2-5-8a92693314d9@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,69 +68,80 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251107-spi-add-multi-bus-support-v2-1-8a92693314d9@baylibre.com>
+In-Reply-To: <20251107-spi-add-multi-bus-support-v2-5-8a92693314d9@baylibre.com>
 
-On Fri, Nov 07, 2025 at 02:52:47PM -0600, David Lechner wrote:
-> Add a spi-data-buses property to the spi-peripheral-props binding to
-> allow specifying the SPI data bus or buses that a peripheral is
-> connected to in cases where the SPI controller has more than one
-> physical SPI data bus.
+On Fri, Nov 07, 2025 at 02:52:51PM -0600, David Lechner wrote:
+> Add spi-buses property to describe how many SDO lines are wired up on
+> the ADC. These chips are simultaneous sampling ADCs and have one SDO
+> line per channel, either 2 or 4 total depending on the part number.
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
+>  .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 > 
-> v2 changes:
-> * Renamed property from spi-buses to spi-data-buses to make it clear
->   that we are only talking about the SDI/SDO lines and not the entire
->   SPI bus (SCK, CS, etc).
-> * Fixed prefix order in subject.
-> 
-> This patch has been seen before in a different series from Sean [1].
-> 
-> [1]: https://lore.kernel.org/linux-spi/20250616220054.3968946-2-sean.anderson@linux.dev/
-> 
-> Changes:
-> * Added maxItems. (8 is the most I've seen so far on an ADC)
-> * Tweaked the description a bit.
-> ---
->  .../devicetree/bindings/spi/spi-peripheral-props.yaml        | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> index 8b6e8fc009dbdc80978f3afef84ddc688ade4348..6fe739eaf09876b9c5d8902f792ca02181d7266f 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> @@ -89,6 +89,18 @@ properties:
->      description:
->        Delay, in microseconds, after a write transfer.
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> index b91bfb16ed6bc6c605880f81050250d1ed9c307a..9ef46cdb047d45d088e0fbc345f58c5b09083385 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> @@ -62,6 +62,10 @@ properties:
+>    spi-cpol: true
+>    spi-cpha: true
 >  
 > +  spi-data-buses:
-
-I think spi-data-map would be better.
-
-Or we could just reuse 'data-lanes' property. It seems like the same 
-problem of mapping peripheral lanes/lines to controller/host 
-lanes/lines.
-
-> +    description:
-> +      Array of data bus numbers that describes which SPI data buses of the
-> +      controller are connected to the peripheral. This only applies to
-> +      peripherals connected to specialized SPI controllers that have multiple
-> +      SPI data buses (a set of independent SDI/SDO lines each with its own
-> +      serializer) on a single controller.
-
-Please make it clear what's the index and what's the value: "The index 
-corresponds to the peripheral data line and the value corresponds to the 
-controller data line."
-
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
 > +    minItems: 1
-> +    maxItems: 8
-> +    default: [0]
+> +    maxItems: 4
 > +
->    stacked-memories:
->      description: Several SPI memories can be wired in stacked mode.
->        This basically means that either a device features several chip
+
+As the property is not required, what's the default?
+
+>    vcc-supply:
+>      description: A 3V to 3.6V supply that powers the chip.
+>  
+> @@ -245,6 +249,22 @@ allOf:
+>        patternProperties:
+>          "^channel@[0-3]$": false
+>  
+> +  # 2-channel chip can only have up to 2 buses
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - adi,ad7380
+> +            - adi,ad7381
+> +            - adi,ad7386
+> +            - adi,ad7387
+> +            - adi,ad7388
+> +            - adi,ad7389
+> +    then:
+> +      properties:
+> +        spi-data-buses:
+> +          maxItems: 2
+> +
+>  examples:
+>    - |
+>      #include <dt-bindings/interrupt-controller/irq.h>
+> @@ -260,6 +280,7 @@ examples:
+>              spi-cpol;
+>              spi-cpha;
+>              spi-max-frequency = <80000000>;
+> +            spi-data-buses = <0>, <1>;
+>  
+>              interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+>              interrupt-parent = <&gpio0>;
+> @@ -284,6 +305,7 @@ examples:
+>              spi-cpol;
+>              spi-cpha;
+>              spi-max-frequency = <80000000>;
+> +            spi-data-buses = <0>, <1>, <2>, <3>;
+
+An example that doesn't look like a 1 to 1 mapping would be better. 
+Otherwise, it still looks to me like you could just define the bus 
+width.
+
+>  
+>              interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+>              interrupt-parent = <&gpio0>;
 > 
 > -- 
 > 2.43.0

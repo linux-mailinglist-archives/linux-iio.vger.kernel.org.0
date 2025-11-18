@@ -1,144 +1,140 @@
-Return-Path: <linux-iio+bounces-26277-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26279-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3933AC682E2
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 09:22:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8BBC6876E
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 10:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CF34E3513B0
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 08:17:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 944382A64C
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Nov 2025 09:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23AC30CD88;
-	Tue, 18 Nov 2025 08:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480FB30F932;
+	Tue, 18 Nov 2025 09:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKrRKswX"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="aI27Mqaw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12D530DD21
-	for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 08:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AB73112BD
+	for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 09:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763453849; cv=none; b=a7rcDL2p3J+Y+u/H32QdjlB0fIjlMXQsHCi9gtxU3LFtwWKC+dRWFGX+AtMcKRsJGNi0quBL3faL30tP1T89DE7Z8/ZFgX2CuaJwiwmo1R6IxgIN10nTcWZUZj7Oku3apsOMxtvGjq/lgG3ySzPICCESfLToJjjoOfAer//xjDs=
+	t=1763457392; cv=none; b=tC42A4+uYEhlOzaBugzM1CoNGpM4XuWHi1U99s38RRrsWBLJP/p+rGOet/2MGvtvXDQCmbyCo0NAdbcL8gy/8m9AxD4T2vGESyvB6+pi6qEWttgVN4MXtedHRAUNPgkuHjFnhsvigfGDABo3FoKCWKep5q/AiiWOX+T7ctAdLas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763453849; c=relaxed/simple;
-	bh=Xbkd0OhYK9CGSu7BYStw60Kktb8UPNtSubpkQmtNXQ4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UclFcgIWh7L0JntvmswrmLQm0lJFvWjwF6QXKcuxO0PeGfVcasCT7eC9/NSXw7JpBJPRdelslL5UZUZYAHVLcuS5zUHtcHxWsABgW17U0OGcsk4kEWTAzy6acpf6mq59LXwgLTHZXI/AhOdE+jsIHGEK+gGR2ROI1V6NEkzVqmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKrRKswX; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477632d9326so35170075e9.1
-        for <linux-iio@vger.kernel.org>; Tue, 18 Nov 2025 00:17:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763453846; x=1764058646; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Xbkd0OhYK9CGSu7BYStw60Kktb8UPNtSubpkQmtNXQ4=;
-        b=kKrRKswXT/RReYMXU+TukCUrXy7yd91kfB1ZOWCq4dpvfSz3s9QVFdZBE/opHn0RES
-         IhAiGRiBM2pve7N0gL5agBEiAnpiX04STINS9ITBBQoiRmWvOMli2hqMb9zheQ0NAkJM
-         oOQYKNjcokAOIpkkiJzEMZRJG1Zz9reTEv/dQIWbY34EtWBRHzomEzZQMm4hDn7iXE2S
-         jBXkqj/ZiBIJMFKuVTADTvC2ZeGjAsX2HSJmmnw0+o6bSKLip+NAZaMP5kjYH1k3eEoM
-         axsZwTbjSu9lMXUzuJW00wS/0pGtgquzxM5ZREEcKakI+2Az9tq7xvrflpdLca29Mm80
-         9qLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763453846; x=1764058646;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xbkd0OhYK9CGSu7BYStw60Kktb8UPNtSubpkQmtNXQ4=;
-        b=gQXySKu+IgXI+ZBRvV4VIc1XKVPvZx2dyiZ2WmHl3m6xZldba+ed66Sb4hG/vCOmvp
-         yQxlWmZ5xpRw/g4B6gimB8FgEY+1nCF0UmrRlshnFJQjpi67wlhb9qIjW9V3zD1sOB/x
-         IYafpxUDHchPSsvh8w2LDUOg4KQ8TScVHxn2gwnmUeAjuvrwbXxm5QSxDv2BJBnxgkx3
-         8B38B5tzcHHbLPDnjereJFoxWtRyyClJQDiUSpeBSNHIJf7oQVrJAVS3YD4gWeXCVlJP
-         q5MnVMQxBqaoanmcSk7aI+CMYFgkxoEXxECtKOvGGPtT60y91GgabH+OLgHqSMQkdvBR
-         BizQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUPqxxTRnF8UEIcofRaZFzEgB1JKklFk+i03eVD0U39hFTiQinN0drvv9tzRd4zvFrYAKOVt2QDyaA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7BTgH4UHcI2ZyxaCoqRQXCuhHO18gns8utvJSRe7Yb+Sdhr9F
-	HS837AVXT7dVYBJmFubypi51eTxmvNCXU9q0k1o5KA0A4yXaOqeEBxD0m6JwRg==
-X-Gm-Gg: ASbGncsHxTl7t65kw61Yur0m4SHLLwt0RfUwExZ6g6WT7B9inxZdNc5rb4wAetP0VEu
-	nbkbYLZY4nJClMXhSaqmcsRFnCJkyNFcqMYsEbTY6YRziDfOujyH3KSc6Yr+hEwFxmr5zTGse4o
-	Gd7HW4T7SuzRP+VO4l/AfusVZaM1glhNJNFqMMI4oj0RKgHDEmTQfDglV36LOLoO3LZTTtWyKVj
-	VV/qenQAtrGB9XGknGnE1Yh51sUt1fIbR3nAl9zhsMuYBxyEA9UX2gNmDpnkV5l89exE//UpmRC
-	BeE/6eOcXTooEEF0Y4c2xq83EdhgvAJe10rP4eDLULx4sI7RgNxqT4eF0YgEchphD6C8Do/69ym
-	Q6cQeZMl8XI4Ui/vjsxSJjYS+XVfFS1wILiXhJgOv+8cI34wGaH76rr/adXdgOqCnWXbWF0aCzf
-	OUBJGlwc1uUBuvxYsraErtP5SBllmIKFqbFCkdWDGQ99fsAuQG
-X-Google-Smtp-Source: AGHT+IEQK9M+UEhXUxY/WFeaRZPh0DFjsNVaCKSh+luJ0k+GHsFsMy0/x61VLnd/4XfZ5D3SUwZ4aw==
-X-Received: by 2002:a05:600c:a07:b0:46f:c55a:5a8d with SMTP id 5b1f17b1804b1-4778fe55101mr136563585e9.4.1763453845879;
-        Tue, 18 Nov 2025 00:17:25 -0800 (PST)
-Received: from ?IPv6:2001:818:ea56:d000:94c4:fb0e:28f:2a8d? ([2001:818:ea56:d000:94c4:fb0e:28f:2a8d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4779920f2cdsm200467775e9.10.2025.11.18.00.17.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 00:17:25 -0800 (PST)
-Message-ID: <34a55901fe0729145097d287a98746f23eea13d8.camel@gmail.com>
-Subject: Re: [PATCH] staging: iio: adt7316: replace sprintf() with
- sysfs_emit()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko
-	 <andy.shevchenko@gmail.com>
-Cc: Shi Hao <i.shihao.999@gmail.com>, Michael.Hennerich@analog.com, 
-	lars@metafoo.de, dlechner@baylibre.com, nuno.sa@analog.com,
- andy@kernel.org, 	gregkh@linuxfoundation.org, linux-iio@vger.kernel.org, 
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-Date: Tue, 18 Nov 2025 08:18:28 +0000
-In-Reply-To: <20251116152800.4c1849cc@jic23-huawei>
-References: <20251116101620.25277-1-i.shihao.999@gmail.com>
-		<CAHp75VdY7W8EgOfKuxtTALj777aVatxV5dqsxm688JTy=iVW2Q@mail.gmail.com>
-	 <20251116152800.4c1849cc@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1763457392; c=relaxed/simple;
+	bh=HlvJh/d+H01RMGcaIajlUtWn0/55klvBZdKu9AtWwd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f+nojdlUIkIfPyuYf8mrtFL0BLadJXHxPXVb7oNapgwVzV3Js+WM/ftDKYQtrfGRRqoPumuHbkKrOP+r4nj18oGiB+p5hXtGLePfMXWnZav0nvi71wste5fNZpHFchb8D18GWgLhdfyLG+gUFumgcEbdEcOgoPEyq2ioBkOzwiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=aI27Mqaw; arc=none smtp.client-ip=185.136.64.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 20251118083607d89b452e7400020763
+        for <linux-iio@vger.kernel.org>;
+        Tue, 18 Nov 2025 09:36:08 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=N8PWbhNGE835ewlSJOR81Jz9u85SnjicOh3tRt55o+E=;
+ b=aI27Mqaw7RFigT111R6iaEUr4MsS2aJ1nZLHD5bIOVh0MvO0UJnFM8mvfufuaLoXRx1ij4
+ h+0KMWJv/4z2GCCmd2y6SkQn9Fj0AexzMkZV0upWSsrl7BhZoNwPTA2LcyV0hBPTm1hmjEc+
+ uXgl10jTJ2n+KxHrY9FdTlBhG05CdWp4OnyJnoEOgbSlMzgls8tCGJ+SGxvY9XW5eLvbJPlu
+ TpnsnLXPsSaQcOiiGmVliBaB51S1PfFOI5DhtLDRYyEalaf+5FqyYAa9shmmO0H8vWhNybIO
+ r0KvyJzFCR4UDESVNvnfx5wZqlREgJy1w0nxaah2aK1IpiQ2UfwN9H/A==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-iio@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	William Breathitt Gray <wbg@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	linux-kernel@vger.kernel.org,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+Date: Tue, 18 Nov 2025 09:35:48 +0100
+Message-ID: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On Sun, 2025-11-16 at 15:28 +0000, Jonathan Cameron wrote:
-> On Sun, 16 Nov 2025 13:08:07 +0200
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->=20
-> > On Sun, Nov 16, 2025 at 12:16=E2=80=AFPM Shi Hao <i.shihao.999@gmail.co=
-m> wrote:
-> > >=20
-> > > Convert several sprintf() calls to sysfs_emit() in the
-> > > sysfs show functions, as it is the preferred helper and
-> > > prevents potential buffer overruns.
-> > >=20
-> > > No functional changes intended.=C2=A0=20
-> >=20
-> > I briefly looked at it and see no issues,
-> > Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> >=20
->=20
-> Applied, but I will note that this driver is a long way from suitable
-> for moving out of staging and I would be surprised if more than
-> one or two of the lines changed in this patch make it through the
-> necessary refactors (should anyone actually have another go at
-> doing them).=C2=A0 Anyhow, I still think this is worth taking just to
-> reduce the noise of remaining instances of this.
->=20
-> I'd have deleted this long ago except I actually have one somewhere
-> and it one of the supported parts was still listed as suitable for
-> new designs when I checked not long ago.
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-Seems to be now "just" in production. So no longer advised for new designs.=
- I gave a
-quick look and this is far from being a simple driver. It would require a f=
-air amount
-of work to bring it out of staging. So, are there users relying on staging =
-drivers?
-But I would assume that for staging we are still free to drop support it?
+An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
+CONFIG_PROVE_RAW_LOCK_NESTING warns:
+=============================
+[ BUG: Invalid wait context ]
+6.18.0-rc1+git... #1
+-----------------------------
+some-user-space-process/1251 is trying to lock:
+(&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
+other info that might help us debug this:
+context-{2:2}
+no locks held by some-user-space-process/....
+stack backtrace:
+CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
+Call trace:
+ show_stack (C)
+ dump_stack_lvl
+ dump_stack
+ __lock_acquire
+ lock_acquire
+ _raw_spin_lock_irqsave
+ counter_push_event [counter]
+ interrupt_cnt_isr [interrupt_cnt]
+ __handle_irq_event_percpu
+ handle_irq_event
+ handle_simple_irq
+ handle_irq_desc
+ generic_handle_domain_irq
+ gpio_irq_handler
+ handle_irq_desc
+ generic_handle_domain_irq
+ gic_handle_irq
+ call_on_irq_stack
+ do_interrupt_handler
+ el0_interrupt
+ __el0_irq_handler_common
+ el0t_64_irq_handler
+ el0t_64_irq
 
->=20
-> ADI folk, I would like to hear if we should just delete this one.
+... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
+alternative to switching to raw_spinlock_t, because the latter would limit
+all potential nested locks to raw_spinlock_t only.
 
-I guess Michael is the best person to answer this question.
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
+Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+ drivers/counter/interrupt-cnt.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-- Nuno S=C3=A1
+diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
+index 6c0c1d2d7027d..e6100b5fb082e 100644
+--- a/drivers/counter/interrupt-cnt.c
++++ b/drivers/counter/interrupt-cnt.c
+@@ -229,8 +229,7 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
+ 
+ 	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
+-			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
+-			       dev_name(dev), counter);
++			       IRQF_TRIGGER_RISING, dev_name(dev), counter);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.51.1
+
 

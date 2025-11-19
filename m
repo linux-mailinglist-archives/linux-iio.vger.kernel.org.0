@@ -1,289 +1,186 @@
-Return-Path: <linux-iio+bounces-26314-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26315-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB49C6F75B
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Nov 2025 15:56:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13BAEC6F862
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Nov 2025 16:06:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B30793C1214
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Nov 2025 14:49:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 621F84FDDE2
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Nov 2025 14:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4969A34F48A;
-	Wed, 19 Nov 2025 14:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F5436B07D;
+	Wed, 19 Nov 2025 14:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ij76wMoh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SsmAN0H0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C34927CB0A
-	for <linux-iio@vger.kernel.org>; Wed, 19 Nov 2025 14:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AD8369962
+	for <linux-iio@vger.kernel.org>; Wed, 19 Nov 2025 14:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763563550; cv=none; b=UCsTPnzY9nkV0pC5BjCkwOQmJc+ytkFX9NTmxUujW1MbhB9HFphTmMn1s7dNVypXkgKPwZro8GKRBHtCubNioF1Wm97k+oDN8UjTPkP/z05gtdwKxUzjZmPNf3nwlbpI+P1Xbyp9IWvP5MEuiK2GUIPRUANzIt4iMmluxNN87lE=
+	t=1763563836; cv=none; b=QyuHrD9uoatr/AzX2qFyCBEh877qVVEQ3tp9OKnYrntjiai9Jye9tG0dM+FusZsW6AAfizdu9l8a66R5Axb6RRm1jXdjnEBv42sBF0mPy0oPDjuIqYxbWrgdDN870PhXXmVU4LKoZRQCeGS4T2DSjgPX3/GhWfKph77fVHbX+NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763563550; c=relaxed/simple;
-	bh=FpgOAbIYhuYfiHny/yTXdpx2tP9GMeonyI6HAzCnoR4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bs+MS5nuhxDb6M4eAZRdr+E180p4ybvsEj6vlG1GDLGGz+5JRLFDA61a5gSPkGx/wLZYu0JoumXYFCGc/JPR1g2hDinScezrRTvTkzm47YV4yLWhmAMiBbeiGYiXGCHdT7D3LNCgTtf+sw7/BRqOc4//zg8V4IllZwPv6oZtevg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ij76wMoh; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7c704bf2d9eso3056116a34.0
-        for <linux-iio@vger.kernel.org>; Wed, 19 Nov 2025 06:45:45 -0800 (PST)
+	s=arc-20240116; t=1763563836; c=relaxed/simple;
+	bh=1Wruu9gggvjosYoKum2V+cZ9fCd6dFFd/5SKcpbFf7A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PYCY6Hq/QnUzvETfiGrN09/OnYD8K/iHrQ28XACYiCngTi8UPCbaTNQrzo37N/u/PazFtTTzDe3CM/TnYJ++aaTWsrQf9kvVJtvTQFcsQ5q65cgO32FWlQVfRWeehhRGDbbr8oR+NcsMf+wuve2KrwNAerau4SMplHCtOXj341Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SsmAN0H0; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-88249766055so85045726d6.1
+        for <linux-iio@vger.kernel.org>; Wed, 19 Nov 2025 06:50:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763563544; x=1764168344; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=65Ns16gxTh3NW+vKmsGtUFPKjw4kyOUeoeH+pasPpPo=;
-        b=ij76wMohszUBXAvHRcWAy+ztoR5AmKX2VibM3qCs8or2AlxNIvE5UoyjX7GyT1CNmy
-         yFPKqrjzsTTiRfOifvX67RJp+3AQsLlcTyslqoKF+JTo+8l4MvlDal9gCB/9IRMLlFjz
-         +VtcyB0ga+VXdcwht4rwDOYl1Fxz3oDQKy5VZzQ47yPvCKhrw8LQ6XoRHpUaMXQKIqiC
-         X8QofHaCfP6hDf7ngWFn5mJVzhwNcDOmGnIhhC1A20j695ER45n4kP9J8U+NjiCxiLyb
-         ycwyaNifPt3CDFDbtkpM+Rg7fBy/VmR/OctJLw9Oszg7aHJL5QSE+sgg2LSPoa852Zgg
-         4khA==
+        d=gmail.com; s=20230601; t=1763563832; x=1764168632; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UEa5dU5h8VTkStggLA2EFBcu8SFqsu0VyRflw3qSQbY=;
+        b=SsmAN0H0dW4pniwEPfi7ntnomTvrnK0bOh98GRqlM66jfMIRrCCmEP2AvXC3HRRCmV
+         7g/qWz/7yxs1plOWoLSgEZFqXqMOfVAES46UCC3gAbXavKi2qNkqks9VPXfNYmkzGuFd
+         Q5I9V127jwdVG17TFwwx5snj3oIsqDAQ4U3ZDMIjFeJBPC1kDbDek9H08MwcYqowfH2y
+         OG+QJJFzNqeD0YdjzmGTC9LhWa1frGuIlT1/8whm+I2RPHXYOfLqG7/tExznEqIkOaLF
+         MVab0MlufwIXjF/3XH8b7kl/bcvgJoS2Kb6Zaia++StlKQIiiuC3nKR94iY+PKgXA6a8
+         5wbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763563544; x=1764168344;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=65Ns16gxTh3NW+vKmsGtUFPKjw4kyOUeoeH+pasPpPo=;
-        b=qHe/FRLrIJFlMVOLitF4DKo+ZfgQPjxA2fn2cBrt1BOFZb70b8YseDv6QRPbSZm29e
-         hCfrQ61YygRcvexQx4hr5uPZVVK2OKk9R4l/4NS1iTFCUZGK+zG0yvlBPoP2ELLZc0NL
-         HYnukPSaiUSLYISN0qxip9BxdMAK3t4Sqn6bW/8qkYOQc3NGmXk1/YLIYHMGAJCKmOdg
-         7gjVv1mNGO63pjpPxOjrWHJ71xaXwJBbWryKfK+IgscLBCnigYiaAvPuM5erJlFhh8JR
-         Z96USjg4MvUCj2kqyTbKeAEplRsGUsQ5nE1eAcdDJKI772CCnhJciEwMQdVxzUJ0gOWE
-         NX1A==
-X-Forwarded-Encrypted: i=1; AJvYcCVDRwo3boLyVzSPqxMopTmEK+fI9EjiuP/fWmKQ3e05N6ve+Z16ceYOJSddPC9zUO2lfSYQmQV2vEg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6r+gHuWfaCdwY1Y+7/M4kmXVB3F1uV56W8wIPQBodbg+CN/s2
-	1fumzZ+ipCN8OeQYMw+idZiyuf7WHXqQJ1y0dEftmFzMFi8c+ODNSI+yF0C3Vn15swI=
-X-Gm-Gg: ASbGncuFvMDZMyKZKfYcLX+q21eAh29ZYgMnuSAU6KIJPEYULClkmUn532jtOoTa+C5
-	4pDHTLxgxETKljDfEfLm7hWAUZ4HUBGr2fyO+tM0tH2/gbWnI/UNElZI5kfHVek1Q5YH0jDeYCw
-	fFlLlXRuXKKqEahPwZJtYMrQjvRGOH3qRG3zAQ0tdP+pnueQrj3oI8raEHTxS57jaOVmPtoVanV
-	GXXeWFXoGvsSrZnegPcQ2mYyMQj42N3NKQaKXOXX5r+Tn1Aqdvwci5tnTtTeMqgdOYxJ5D4XmdK
-	63QzHvcZ+MKnduM4yu+wilXCTMnK8kpmsFeThOAJwoG9aRm7FUtMaxhhjaHYDGT55eMkmDwoaBB
-	OhTeqCzXVQnjVXhd9IWVyxwU8Bc/YXrLdtloLfWGz3SoqUbHfUwET/gKm868sjo2flfhwt1N8k5
-	Kc9inbRnKp7pFffsQky47M/3TPaJwqLWQMr1FPlJavthRyxTta1HGgRgVTLk+k
-X-Google-Smtp-Source: AGHT+IGAT38Ks4Qoob8CXFhi3Zr9y4b0BYvNCj7qmWn7rmgJYD09bg+QwprfnFA3SZGLWLjrYnkusQ==
-X-Received: by 2002:a05:6808:1302:b0:44d:a6a8:1b6a with SMTP id 5614622812f47-4509755d5d2mr9071196b6e.50.1763563544459;
-        Wed, 19 Nov 2025 06:45:44 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:f327:6b3c:8989:a18d? ([2600:8803:e7e4:500:f327:6b3c:8989:a18d])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3e8834111c5sm5421311fac.13.2025.11.19.06.45.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Nov 2025 06:45:43 -0800 (PST)
-Message-ID: <f2ac13fc-8f47-465e-8cef-e2e34bf41818@baylibre.com>
-Date: Wed, 19 Nov 2025 08:45:42 -0600
+        d=1e100.net; s=20230601; t=1763563832; x=1764168632;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UEa5dU5h8VTkStggLA2EFBcu8SFqsu0VyRflw3qSQbY=;
+        b=BRkLYUEcWkl/72cFys89pxt3JTTO0X/RQh/9E+xYN0ZdpUnwPG0K6DagpMjhE2iJOr
+         U2pGw7kDH0DI4DcbuoxiJwBBQBuCrSdWnwJDKl5gkEU9EU5yFteoLefsp0IHeRTbu2q3
+         XpcKLJaVCXSukfxAbuLDNcCeDacmrSrh5rzggqHOIk5LuY+OGZ1sun7VV9nD8Y1PHigu
+         3j3RlNhKDrFuqMGD1KoD7fPpp/phudrYO0J7dqxcCOHd0NTUGQE5gtZXyRS28mCTjkac
+         7TiNmPDFXh32pBWKiQp4SYb15eoDh7WS0olpWH9rHxk9DT2XqI5qM+M3oE4aE0zGAsdz
+         23pg==
+X-Forwarded-Encrypted: i=1; AJvYcCU25SFvITXZNM75ir9cOw+3clXZIyoJfDqSny3GYv+oNnGj5/g9HC9NjIV9nVAY77KW/CSjRtYD1Sw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydRv5tQoQpI/byWZGLtuVgA3o/XaoXXOpplP1P59VUG0OpO7c0
+	rg93ShQBrAnYUMLvD+lswm6Eu4aBFA5csp5UrCo7ZpAMogQ2mN7Lj5jd
+X-Gm-Gg: ASbGnctHNWv2roZ/n0q/ZsB4KAM+wJW3tVAS2FDmfgoShdx8rupEASl0/QZzDLvHCTy
+	Cr4a8W8/W+nTY58giYFH0gU534UWTQVf9zE52JjqAk1Vyp+Au1Hr//+oJAsLVfQY3/FdkjpxkVt
+	4vCiqHrTjbLWXxcy/cYyIKf2SJkaFDOokrAfY4BbNp04dXOLdPs4aPx3GfENyllcRND7D4ftEfq
+	hbgE4IGhqUm+6gymxlbzwJJVZbjperAv2TL1649uLvTTRVRZTKKRgMX7f5o6pj1WoRMuqPKAxjK
+	yqcJL4vRIdkuKq5myjbEtp+gcdIXUL7ecqIAHRUAVJGwjMrXyKRdRl594ztStIalme8O7fj9xrk
+	0bm1BA/RYUI2DGlzD/PTMAUdWNFRb777V0D7/muVb9VGqWvPvs+1f9Z8LXrhOh0Z380Tnh7Vujt
+	dNZSOwauBsuFNMIPlHcQ==
+X-Google-Smtp-Source: AGHT+IEl27VY0Fzg06WvTYKsPnTaG3CI8XR1O4Jx2OOSNMzexShqbizbMp95FvmlDbVG54xJ6MBR9A==
+X-Received: by 2002:a05:6214:529d:b0:882:49f4:da25 with SMTP id 6a1803df08f44-8829269e07bmr301776726d6.39.1763563831679;
+        Wed, 19 Nov 2025 06:50:31 -0800 (PST)
+Received: from localhost ([12.22.141.131])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-882862d04e1sm135929226d6.7.2025.11.19.06.50.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Nov 2025 06:50:31 -0800 (PST)
+Date: Wed, 19 Nov 2025 09:50:30 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	David Miller <davem@davemloft.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Crt Mori <cmo@melexis.com>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>,
+	David Laight <david.laight.linux@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Kim Seer Paller <kimseer.paller@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Jianping Shen <Jianping.Shen@de.bosch.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-edac@vger.kernel.org, qat-linux@intel.com,
+	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+	linux-iio@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 00/26] Non-const bitfield helpers
+Message-ID: <aR3ZNmSMmtSsUR23@yury>
+References: <cover.1762435376.git.geert+renesas@glider.be>
+ <aQzQjSMOSrUIgMCL@yury>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] dt-bindings: iio: adc: adi,ad7380: add spi-buses
- property
-To: Rob Herring <robh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20251107-spi-add-multi-bus-support-v2-0-8a92693314d9@baylibre.com>
- <20251107-spi-add-multi-bus-support-v2-5-8a92693314d9@baylibre.com>
- <20251118155905.GB3236324-robh@kernel.org>
- <97c6b55d-9505-4091-8f0b-317dcbd70838@baylibre.com>
- <CAL_Jsq+ZZE0g424jE75xeCt2KY1ThPLqmbmOs0o_ddaJ8fOf3w@mail.gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <CAL_Jsq+ZZE0g424jE75xeCt2KY1ThPLqmbmOs0o_ddaJ8fOf3w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQzQjSMOSrUIgMCL@yury>
 
-On 11/19/25 7:18 AM, Rob Herring wrote:
-> On Tue, Nov 18, 2025 at 11:46 AM David Lechner <dlechner@baylibre.com> wrote:
->>
->> On 11/18/25 9:59 AM, Rob Herring wrote:
->>> On Fri, Nov 07, 2025 at 02:52:51PM -0600, David Lechner wrote:
->>>> Add spi-buses property to describe how many SDO lines are wired up on
->>>> the ADC. These chips are simultaneous sampling ADCs and have one SDO
->>>> line per channel, either 2 or 4 total depending on the part number.
->>>>
->>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
->>>> ---
->>>>  .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 22 ++++++++++++++++++++++
->>>>  1 file changed, 22 insertions(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
->>>> index b91bfb16ed6bc6c605880f81050250d1ed9c307a..9ef46cdb047d45d088e0fbc345f58c5b09083385 100644
->>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
->>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
->>>> @@ -62,6 +62,10 @@ properties:
->>>>    spi-cpol: true
->>>>    spi-cpha: true
->>>>
->>>> +  spi-data-buses:
->>>> +    minItems: 1
->>>> +    maxItems: 4
->>>> +
->>>
->>> As the property is not required, what's the default?
->>
->> spi-perepheral-props.yaml defines:
->>
->>         default: [0]
->>
->> Do I need to repeat that here?
+On Thu, Nov 06, 2025 at 11:45:02AM -0500, Yury Norov wrote:
+> On Thu, Nov 06, 2025 at 02:33:48PM +0100, Geert Uytterhoeven wrote:
+> > 	Hi all,
+> > 
+> > <linux/bitfield.h> contains various helpers for accessing bitfields, as
+> > typically used in hardware registers for memory-mapped I/O blocks.
+> > These helpers ensure type safety, and deduce automatically shift values
+> > from mask values, avoiding mistakes due to inconsistent shifts and
+> > masks, and leading to a reduction in source code size.
+> > 
+> > The existing FIELD_{GET,PREP}() macros are limited to compile-time
+> > constants.  However, it is very common to prepare or extract bitfield
+> > elements where the bitfield mask is not a compile-time constant (e.g. it
+> > comes from a table, or is created by shifting a compile-time constant).
+> > To avoid this limitation, the AT91 clock driver introduced its own
+> > field_{prep,get}() macros.  During the past four years, these have been
+> > copied to multiple drivers, and more copies are on their way[1], leading
+> > to the obvious review comment "please move this to <linux/bitfield.h>".
+> > 
+> > Hence this series
+> >   1. Takes preparatory steps in drivers definining local
+> >      field_{get,prep}() macros (patches 1-11),
+> >   2. Introduces __FIELD_{PREP,GET}() helpers to avoid clang W=1 warnings
+> >      (patch 12),
+> >   3. Makes field_{prep,get}() available for general use (patch 13),
+> >   4. Converts drivers with local variants to the common helpers (patches
+> >      14-24),
+> >   5. Converts a few Renesas drivers to the existing FIELD_{GET,PREP}()
+> >      and the new field_{get,prep}() helpers (patches 25-26).
+> > 
+> > Alternatives would be to use the typed {u*,be*,le*,...}_{get,encode}_bits()
+> > macros instead (which currently do not work with non-constant masks
+> > either, and the first attempt to change that generates much worse code),
+> > or to store the low bit and width of the mask instead (which would
+> > require changing all code that passes masks directly, and also generates
+> > worse code).
 > 
-> No. So that means you only use one channel and the others are not connected?
+> Everyone please send your tags. I'm going to merge it in
+> bitmap-for-next before Monday.
 
-Correct.
+Fortunately I didn't specify the exact Monday. :)
 
-> 
->>
->>>
->>>>    vcc-supply:
->>>>      description: A 3V to 3.6V supply that powers the chip.
->>>>
->>>> @@ -245,6 +249,22 @@ allOf:
->>>>        patternProperties:
->>>>          "^channel@[0-3]$": false
->>>>
->>>> +  # 2-channel chip can only have up to 2 buses
->>>> +  - if:
->>>> +      properties:
->>>> +        compatible:
->>>> +          enum:
->>>> +            - adi,ad7380
->>>> +            - adi,ad7381
->>>> +            - adi,ad7386
->>>> +            - adi,ad7387
->>>> +            - adi,ad7388
->>>> +            - adi,ad7389
->>>> +    then:
->>>> +      properties:
->>>> +        spi-data-buses:
->>>> +          maxItems: 2
->>>> +
->>>>  examples:
->>>>    - |
->>>>      #include <dt-bindings/interrupt-controller/irq.h>
->>>> @@ -260,6 +280,7 @@ examples:
->>>>              spi-cpol;
->>>>              spi-cpha;
->>>>              spi-max-frequency = <80000000>;
->>>> +            spi-data-buses = <0>, <1>;
->>>>
->>>>              interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
->>>>              interrupt-parent = <&gpio0>;
->>>> @@ -284,6 +305,7 @@ examples:
->>>>              spi-cpol;
->>>>              spi-cpha;
->>>>              spi-max-frequency = <80000000>;
->>>> +            spi-data-buses = <0>, <1>, <2>, <3>;
->>>
->>> An example that doesn't look like a 1 to 1 mapping would be better.
->>> Otherwise, it still looks to me like you could just define the bus
->>> width.
->>
->> I'm not sure we could do that on this chip since it doesn't have
->> the possibility of more than one line per channel.
-> 
-> That's a property of the SPI controller though, right?
-> 
-> If the above controller had 4 lines per channel/serializer, then you could have:
-> 
-> spi-data-buses = <0>, <4>, <8>, <12>;
+Now it's in my tree for local testing:
 
-Ah, I get what you mean now. The intention here though was that the
-index numbers correspond to the data lane (channel/serializer), not
-to individual lines. So the example you gave would mean that the chip
-has at least 13 data lanes (rather than what I think your intention was
-of saying it has at least 16 data wires). I did it that way because all
-of the hardware I looked at didn't allow assigning arbitrary data lines
-to arbitrary lanes/channels so it keeps things simpler and easier to match
-to the actual hardware docs.
+https://github.com/norov/linux/tree/field-prep-for-6.19
 
-I intend to change the property name to data-lanes so I will use that
-below instead of spi-data-buses.
+Will move in bitmap-for-next shortly.
 
-For this ADC, I would still write:
-
-	data-lanes: <0>, <1>, <2>, <3>;
-
-to mean:
-
-+--------------+    +----------+
-| SPI          |    | AD7380-4 |
-| Controller   |    | ADC      |
-|              |    |          |   
-|        SDIA0 |<---| SDOA     |
-|        SDIA1 |x   |          |
-|        SDIA2 |x   |          |
-|        SDIA3 |x   |          |
-|              |    |          |
-|        SDIB0 |<---| SDOB     |
-|        SDIB1 |x   |          |
-|        SDIB2 |x   |          |
-|        SDIB3 |x   |          |
-|              |    |          |
-|        SDIC0 |<---| SDOC     |
-|        SDIC1 |x   |          |
-|        SDIC2 |x   |          |
-|        SDIC3 |x   |          |
-|              |    |          |
-|        SDID0 |<---| SDOD     |
-|        SDID1 |x   |          |
-|        SDID2 |x   |          |
-|        SDID3 |x   |          |
-|              |    |          |
-+--------------+     +---------+
-
-I.e. lanes <0>=A, <1>=B, <2>=C, <3>=D and there is an implied default
-spi-rx-bus-width = <1>;
-
-
-For another chip we are working on, we could have:
-
-	spi-rx-bus-width = <4>;
-	data-lanes: <0>, <1>;
-
-Meaning:
-
-+--------------+    +----------+
-| SPI          |    | AD4630   |
-| Controller   |    | ADC      |
-|              |    |          |   
-|        SDIA0 |<---| SDOA0    |
-|        SDIA1 |<---| SDOA1    |
-|        SDIA2 |<---| SDOA2    |
-|        SDIA3 |<---| SDOA3    |
-|              |    |          |
-|        SDIB0 |<---| SDOB0    |
-|        SDIB1 |<---| SDOB1    |
-|        SDIB2 |<---| SDOB2    |
-|        SDIB3 |<---| SDOB3    |
-|              |    |          |
-|        SDIC0 |x   |          |
-|        SDIC1 |x   |          |
-|        SDIC2 |x   |          |
-|        SDIC3 |x   |          |
-|              |    |          |
-|        SDID0 |x   |          |
-|        SDID1 |x   |          |
-|        SDID2 |x   |          |
-|        SDID3 |x   |          |
-|              |    |          |
-+--------------+     +---------+
-
-> 
-> Rob
-
+Thanks,
+Yury
 

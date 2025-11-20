@@ -1,78 +1,79 @@
-Return-Path: <linux-iio+bounces-26329-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26330-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C1FC72E7D
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Nov 2025 09:35:56 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF31BC72E59
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Nov 2025 09:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CCA2F4EC905
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Nov 2025 08:29:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 38A5235B349
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Nov 2025 08:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6737130CDBC;
-	Thu, 20 Nov 2025 08:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BB330F544;
+	Thu, 20 Nov 2025 08:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="TDw2ufj5"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cqcNsUiy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA6630C616
-	for <linux-iio@vger.kernel.org>; Thu, 20 Nov 2025 08:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA3030C61E
+	for <linux-iio@vger.kernel.org>; Thu, 20 Nov 2025 08:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763627182; cv=none; b=F0hHvJ3rvryS6yaHeqvdmFd/ICivEs5q1got4drf1Ij1ZPps5vgNIir35zTjCzUtYbuyU8aGpmCoNsgBr0BobS2qi+kb0YoeaGml7B6vapSLlVsQXyONPhmTVdplFANvLaAg23DUkr3A88QDtPmKfppOUxfty6CEv2gHbcIuawM=
+	t=1763627183; cv=none; b=GzRaf966RPO7eiBdRSXJ3l3/f8ccmYK4h6u1cPMXz1AIBXlcPGK6hTUpSBbnjngY2vxgDiD6yMtRerLfFjm3VcfET0UddQhWDj2btsgjYHlhOYO96lioDRCsfDjJM6uCrmGVO7j558bnoSM/hMdb/9n6Mqx6vTe5pPtRmyjtwe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763627182; c=relaxed/simple;
-	bh=NJ9+ni9tjiEFyLqyjknlb8H77fEVqdcPkQvWufgkhRg=;
+	s=arc-20240116; t=1763627183; c=relaxed/simple;
+	bh=47mPrZHijqjGm1AMWrbG+8cwdi3Wv5j/BmTxIhmQBEw=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=giaIHotUrO2X1Wb2zyxGTE9ZZlllJsF0e0Mkq3lOaigCGjlCLkJ4sRuQ7neFeKUH5MISrrGbfgG1ZFB+cAVTTleBK5jQeFcSEiVVkwiyFvmnDSWHzXg3VHeu5ztH2NRW7lt5p9RMGDsWLoJDrK/OgZm6Y9C8/E+F8z5NhHWEFx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=TDw2ufj5; arc=none smtp.client-ip=209.85.128.51
+	 MIME-Version; b=LtFS79Um20u75dLIkHA+rxvsDS67fxb5xDfzJOKTt9C8LfhHiymNXjhakVABZIDzBolAduys15YRr4LuR+7o9Csw+7oJ7l8FlcWJtN11E4pQ6+w1ShzNgZuq3eeAI+7CI/BpRRrXsmo62U+y953kZGy3IMReUTlmCUEOvpHHYRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cqcNsUiy; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477a219db05so3714625e9.2
-        for <linux-iio@vger.kernel.org>; Thu, 20 Nov 2025 00:26:19 -0800 (PST)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42b387483bbso371752f8f.1
+        for <linux-iio@vger.kernel.org>; Thu, 20 Nov 2025 00:26:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763627178; x=1764231978; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763627180; x=1764231980; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tbaQKfxHLaDmuudc50zb/1EfAh1OSh/uCcSH2yo6k94=;
-        b=TDw2ufj5js5l87CdVI09BTcyqb/WCwVG/pX9v5f9PN/tsOjEqbZWaMt3iS7MINymri
-         ntl105tX5dJT8IfLppojp4uNefgP2CJJVpSfKE3g/AN1xWZPpudeU14lqzkYn5R0s77i
-         Xcsekzn2/8iK3+NGtQ6JyZ4xIn6hP4nwkbKzx9gZ61YevAkdfRFnXF/UdlP7snHyb3up
-         3eCQpF5kFeuADOMSNJALhBPrzNyY+e7q483bIoyHUndS9gJdajjRkFZgGcM8N6/OTNRM
-         cLSV3U3tffCw0uXmM+WrSsQVN0s/zog1z3p0foobPfJxBNKDrjl5fAp7PSJ9FOcAQ2JG
-         aJ5A==
+        bh=lPSxFWZnb/6QKSItrwTL8YBNanLm9rz5scONQu9zZ0Y=;
+        b=cqcNsUiy2TTU+DDR764pRMv5B5q2TdszTOC6DshpuuReVyLBi8gHGgK7gFBsPgcCO6
+         sgMs9vy7n40xt3X6P1qA85+/4SuMEnDQDpa8GXkjYDvFkQUWtjsU2LSWMma/ofxG3Bb5
+         9b5DfidXEoO60CLZn5pjAwQ4i+66CaIRtxsmft2hldDsE3xhMvzSB+A/wMewrIz/9EbA
+         R+5XhAuRLfCTcVmBmMpmGJViVCFpHoiLfaU0JEEH4706n0kEmGX8ci9UjgD/aO2qfzfc
+         b+qEMb5xEUoDivh+BUSG1OuzbiIxsMV7ao+axYuPl0gtzE+49dejF0izlj/rGmetoGOF
+         vL1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763627178; x=1764231978;
+        d=1e100.net; s=20230601; t=1763627180; x=1764231980;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=tbaQKfxHLaDmuudc50zb/1EfAh1OSh/uCcSH2yo6k94=;
-        b=fp8zY0TnRNvTkBjwHH9AWKuCLnsg3SH5Ljis7IbebsofBmRoHjrZsuR4lAPf4FJlbs
-         z3rsYQA/feSHil5YzAFdphY5sI5l6Qs3fVCMB7WKtyKszlzRWBKCDy6CZJw5CWDU0GRh
-         EvBCjeDyzwTmSG1O47erT1CmX2wyA+yFOjA360Pv7E2kmjTx7m5OcD1zrQ1lAvJo/9WI
-         sO+0EUikb3x2dTBqFRSlQgpsZdauQbWlSxyoO3AL8SoGFRcqMBOV4yp9CR7nE6Hx1TIn
-         gJLsXZ8jeR1EeIFg3jWCuHVeuK5MEmXHzFx4DJMO2kwxXrzc5QnTdOlTVQk5sT0BGfEK
-         2iog==
-X-Forwarded-Encrypted: i=1; AJvYcCXGwvjiWvI3cqpmAMM9SQ+bmAsRKJy9GXRZ1YallNCJVKnplwIJNRK6VWoAnRxfaV4nOQqxobAaOoE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZzT7uPWwnD1O9qzOtz2ktrOsI3ORiPBtrAt/572S6De/vRhNn
-	+VoBPp2wdTqqbGQiphHMYt2NQbl+AW2av1esSEB9RcMMUomxiCSpwbJXwPcE+iUArs0=
-X-Gm-Gg: ASbGnctx61KBpH5lOH4dSRF9a4/5tGR/90K4l5WMdNmwk4yyQPKckA53Q3GOUNhB8Za
-	8z/PlS8LOlJ+dgarwaJ6g7AnKDcDkFY3ECkmM+gnfTaC8f8Lfo61GlD4XUJtMGM85Uo1P3q+xY/
-	+KXSh2pFmh9DIAKh4cytrYseOaNcUbS+mvRiRYx8P7qLhXhLM4fQa4ul2hqf6tuTD8sgqo+XEjW
-	UI9AF7wRpl71xfpGy81kfBh+jMbRjPwbBlPe0u6sbe4d4+jgnEEqSbYg473daFr67cFJd2CtKZt
-	QQwyKaPKp1/Gm40Tp/81NhpB1KDbA9bwDXb3ref8fiItGPY5Kbuas45B/Lo1eJ0VuGLvfX2HVn3
-	s4vjdhAXSxvRZ1dHmFPzWRNl9FZoA8DdU5n0RpO6S7heO8/57pbIMN5c=
-X-Google-Smtp-Source: AGHT+IFYCfLo55w9X/Ry2+e45PLt6auk6ctX1o6IT5ZsjL0OQ6wgMf8aLPBxQuXgVokm2RvvZDFL6g==
-X-Received: by 2002:a05:600c:1c14:b0:477:8b2e:aa7d with SMTP id 5b1f17b1804b1-477b8aa0ed3mr27973975e9.30.1763627178328;
-        Thu, 20 Nov 2025 00:26:18 -0800 (PST)
+        bh=lPSxFWZnb/6QKSItrwTL8YBNanLm9rz5scONQu9zZ0Y=;
+        b=b0qxQyNMx8WCMLBy935O3PbBFa4mrODri4A9+znQZCG490KTdd9zFzCiUjrWp0ruPh
+         ETH8pUUgePAOb8ncBgdCidfgIUH9YAJ7myaPxnvq29j80FUoNlLDdDiusemPuIi9Ak8I
+         5JLL5Gtys04U1tBHiqTc+TPFt38WWu1hTkwn9hbkqYxoNyJYxq10qVZQlZEd81ago69T
+         xWgz08ET649Zx0lbjQ3udXrFNzUQgOWxHB5tECOKw5WU9sX2cio66r0CnbDaIRsINNTx
+         Kow2LfB7jZ47ywPo5IGAyiSK9+AE5hOiUKpEOPYuUym9Wd/Wq0YDxxoWoEN/ezk6a/rt
+         oBVg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0RzZ34f5qVw3i6QG70LMPrmWPV/SkG5N2EDXcQ3MAMCdMwyciwOyltptEIfF3x9j7/w/W7JELEPA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmdjxWJ42omeKeNu2ptCP2Ekc+9Sj0AC5OMi3jJ/X3LmUEj4eu
+	YRqWK/hVlQkXAwAwSirUgkgcO92cSSsC1pjN1oh1PGLfyq6SEew/wzAvhugAU3GMoi759sxpiL5
+	HEd8e
+X-Gm-Gg: ASbGnctW6P1bbXBwep9tYQ9bOWzpcoz9qaDugYqYnDMZ0lgQSiYlaZUODeMqfWA4+iE
+	uXWAvCZH3rlHnu9HyI1WoG3HUrDx4NidkvvQ6mfSEpKWTnfbQ5qJ7ttNi6PTAtuyhoJ6pXsGMIX
+	nqhoJTWl5J7JfmzKRKlAy/f1d0LVM8hyiJwegK6cYkC0W/AD2ybw1Kpg8hokqHft+qkBPsFWJWE
+	svY/ONfnef29Wjw4K3aUooKbTUSuU9Q+0FBbvoVh+2Ag+8T4ZLd2ey01pOm1hvVHFVK5P2PAtlo
+	vj5PE+KNrWPx8p6rzlLmd9zLtUgr/NKBBr/WIk/db8vzWcAyGmdNFPtdhGORD5kf6Rv3Cd0gKYR
+	qmb1XPNq7zk/hp0U7zbcT+BgSz0DzzsxingaIXiJ38AfRspqWD87btJg=
+X-Google-Smtp-Source: AGHT+IFaIl00qIG4e442uJoYOLlCW4eU3tv1KImChCNKtIRML0L/ku2AMvpYaIrNrF2rsZ6awug8Cg==
+X-Received: by 2002:a05:6000:288f:b0:429:ef82:585b with SMTP id ffacd0b85a97d-42cb9a0c689mr1817244f8f.9.1763627179616;
+        Thu, 20 Nov 2025 00:26:19 -0800 (PST)
 Received: from localhost ([151.35.219.2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f34fddsm4206625f8f.14.2025.11.20.00.26.17
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fb8e62sm4013666f8f.35.2025.11.20.00.26.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 00:26:18 -0800 (PST)
+        Thu, 20 Nov 2025 00:26:19 -0800 (PST)
 From: Francesco Lavra <flavra@baylibre.com>
 To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -81,9 +82,9 @@ To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Andy Shevchenko <andy@kernel.org>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/9] iio: imu: st_lsm6dsx: fix iio_chan_spec for sensors without event detection
-Date: Thu, 20 Nov 2025 09:26:07 +0100
-Message-Id: <20251120082615.3263892-2-flavra@baylibre.com>
+Subject: [PATCH v2 2/9] iio: imu: st_lsm6dsx: make event_settings more generic
+Date: Thu, 20 Nov 2025 09:26:08 +0100
+Message-Id: <20251120082615.3263892-3-flavra@baylibre.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20251120082615.3263892-1-flavra@baylibre.com>
 References: <20251120082615.3263892-1-flavra@baylibre.com>
@@ -93,66 +94,289 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2506; i=flavra@baylibre.com; h=from:subject; bh=NJ9+ni9tjiEFyLqyjknlb8H77fEVqdcPkQvWufgkhRg=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpHtB4X4JCEU27Jb2F/dd3AOO4o39IAMFbxS5DF 0Lku7/jV4yJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaR7QeAAKCRDt8TtzzpQ2 X0ekC/9Ji/sg23f3L/hsVRFo/MHNBkNygKuQmy/IZTpew2oOwonCw/s6HsycI0RPkILwIw8/J2Y m8NzUSmQp2XbiALOGhY+syijYf1vQs4sebrd8rvnH7TIu2DnhlCqckJMfacpT2DjO7F8xDxgqkP s8+s9E3ZQ+SXroJoUx94pCZzgvHf5arBCMdHl/H5jCBrri2cuBAKphzuT2c4D+85vdrOS4ffozW U8roOHaIWEHAQLXT7KM+AQM9O6UAN/Rp8LdUFIPOZYY9RDuSDL20Jjw9wYGIrtDTcU4siXgfT33 III8zXEUt8uvioTngS+WXsPuWB6654zTOf/2kGaDBtBBjignpwZrUnteNsUIASsZUEUDAl8nWv2 93iWyMOo8RqUa/R2qQJOlDnF8kkV3/QFqkH1fMDO6xzyOPwb8l647IIpIUQ+KKHbIL/tx8Q+qr5 uM/Akox5o6Ye8McCYPkgxCpcFUoM7+b1f2dJABb9h7/sNX5I862mMfEtyXR5L1lodDexM=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8384; i=flavra@baylibre.com; h=from:subject; bh=47mPrZHijqjGm1AMWrbG+8cwdi3Wv5j/BmTxIhmQBEw=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpHtB59m6Jh10y8zsCS9pO++AMDbpz3lwlF7nmT y56gCrKdbeJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaR7QeQAKCRDt8TtzzpQ2 X26xDACmOnjzcLOdsDuEy9HEjdlskDOXOdtcyxEF1uIYEziYNGU0CxGJBZr82BXkHA8J/6BKjj4 qBv1UcQsVoaM5Zs/A/64dEcvAzzBjrdxD6Vfm5YCXUQ4vKkGVqup7LvQZzqDI+fqOaY++Boom7d nOJl6v7ZDjPJHWE51tptaS5ShtOzBbozXxpzQjk9sUdFeAuEigOKzhvT6FYFmH8d2b9t30Wg99o CSpmaK+Ql5WINqy+91z012YWhD/DFlC2NXEDLsfmPe7Q/ATDLRvhwZrsGjr9LVxtCSG3Iu384ne QmaD1rxbzNWWrFaxvIaqHQRzKCibmhpNyGp4XZNex2Ga69ax5GEvWyyo1XnJQZWoG05gA68MaZ6 9jFTllKM6uL413Su7igpn6eA1VfLpfB+lT10tU6FjepdkT9cLo35EyMR1tzy7yusJYVeEYnAF+y gn8MUCmN5wL8XRwnFK4kIm6o9NK+fF42UvLQaGrexluY0Za2WybmVRWtJrj6ZIJ7jDhZ4=
 X-Developer-Key: i=flavra@baylibre.com; a=openpgp; fpr=8657854F953BDCA31EC314E6EDF13B73CE94365F
 Content-Transfer-Encoding: 8bit
 
-The st_lsm6dsx_acc_channels array of struct iio_chan_spec has a non-NULL
-event_spec field, indicating support for IIO events. However, event
-detection is not supported for all sensors, and if userspace tries to
-configure accelerometer wakeup events on a sensor device that does not
-support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences a NULL
-pointer when trying to write to the wakeup register.
-Define an additional struct iio_chan_spec array whose members have a NULL
-event_spec field, and use this array instead of st_lsm6dsx_acc_channels for
-sensors without event detection capability.
+The st_lsm6dsx_event_settings structure contains fields specific for one
+event type (wakeup). In preparation for adding support for more event
+types, introduce an event id enum and a generic event source structure, and
+replace wakeup-specific data in struct st_lsm6dsx_event_settings with an
+array of event source structures.
 
-Fixes: b5969abfa8b8 ("iio: imu: st_lsm6dsx: add motion events")
 Signed-off-by: Francesco Lavra <flavra@baylibre.com>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  21 ++-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 134 +++++++++++--------
+ 2 files changed, 95 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 216160549b5a..a09df9d772dd 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -103,6 +103,13 @@ static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(3),
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index a4f558899767..4c3ff1cc0097 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -242,14 +242,23 @@ struct st_lsm6dsx_shub_settings {
+ 	u8 pause;
  };
  
-+static const struct iio_chan_spec st_lsm6ds0_acc_channels[] = {
-+	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
-+	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
-+	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2c, IIO_MOD_Z, 2),
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
++enum st_lsm6dsx_event_id {
++	ST_LSM6DSX_EVENT_WAKEUP,
++	ST_LSM6DSX_EVENT_MAX
 +};
 +
- static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
- 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
- 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
-@@ -144,8 +151,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 		},
- 		.channels = {
- 			[ST_LSM6DSX_ID_ACC] = {
--				.chan = st_lsm6dsx_acc_channels,
--				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+				.chan = st_lsm6ds0_acc_channels,
-+				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
++struct st_lsm6dsx_event_src {
++	struct st_lsm6dsx_reg value;
++	u8 status_reg;
++	u8 status_mask;
++	u8 status_x_mask;
++	u8 status_y_mask;
++	u8 status_z_mask;
++};
++
+ struct st_lsm6dsx_event_settings {
+ 	struct st_lsm6dsx_reg enable_reg;
+-	struct st_lsm6dsx_reg wakeup_reg;
+-	u8 wakeup_src_reg;
+-	u8 wakeup_src_status_mask;
+-	u8 wakeup_src_z_mask;
+-	u8 wakeup_src_y_mask;
+-	u8 wakeup_src_x_mask;
++	struct st_lsm6dsx_event_src sources[ST_LSM6DSX_EVENT_MAX];
+ };
+ 
+ enum st_lsm6dsx_ext_sensor_id {
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index a09df9d772dd..a71174e75f44 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -388,15 +388,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
  			},
- 			[ST_LSM6DSX_ID_GYRO] = {
- 				.chan = st_lsm6ds0_gyro_channels,
-@@ -1445,8 +1452,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
  		},
- 		.channels = {
- 			[ST_LSM6DSX_ID_ACC] = {
--				.chan = st_lsm6dsx_acc_channels,
--				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+				.chan = st_lsm6ds0_acc_channels,
-+				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
+ 		.event_settings = {
+-			.wakeup_reg = {
+-				.addr = 0x5B,
+-				.mask = GENMASK(5, 0),
++			.sources = {
++				[ST_LSM6DSX_EVENT_WAKEUP] = {
++					.value = {
++						.addr = 0x5b,
++						.mask = GENMASK(5, 0),
++					},
++					.status_reg = 0x1b,
++					.status_mask = BIT(3),
++					.status_z_mask = BIT(0),
++					.status_y_mask = BIT(1),
++					.status_x_mask = BIT(2),
++				},
  			},
- 			[ST_LSM6DSX_ID_GYRO] = {
- 				.chan = st_lsm6dsx_gyro_channels,
+-			.wakeup_src_reg = 0x1b,
+-			.wakeup_src_status_mask = BIT(3),
+-			.wakeup_src_z_mask = BIT(0),
+-			.wakeup_src_y_mask = BIT(1),
+-			.wakeup_src_x_mask = BIT(2),
+ 		},
+ 	},
+ 	{
+@@ -554,15 +558,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 			},
+ 		},
+ 		.event_settings = {
+-			.wakeup_reg = {
+-				.addr = 0x5B,
+-				.mask = GENMASK(5, 0),
++			.sources = {
++				[ST_LSM6DSX_EVENT_WAKEUP] = {
++					.value = {
++						.addr = 0x5b,
++						.mask = GENMASK(5, 0),
++					},
++					.status_reg = 0x1b,
++					.status_mask = BIT(3),
++					.status_z_mask = BIT(0),
++					.status_y_mask = BIT(1),
++					.status_x_mask = BIT(2),
++				},
+ 			},
+-			.wakeup_src_reg = 0x1b,
+-			.wakeup_src_status_mask = BIT(3),
+-			.wakeup_src_z_mask = BIT(0),
+-			.wakeup_src_y_mask = BIT(1),
+-			.wakeup_src_x_mask = BIT(2),
+ 		},
+ 	},
+ 	{
+@@ -791,15 +799,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.addr = 0x58,
+ 				.mask = BIT(7),
+ 			},
+-			.wakeup_reg = {
+-				.addr = 0x5B,
+-				.mask = GENMASK(5, 0),
++			.sources = {
++				[ST_LSM6DSX_EVENT_WAKEUP] = {
++					.value = {
++						.addr = 0x5b,
++						.mask = GENMASK(5, 0),
++					},
++					.status_reg = 0x1b,
++					.status_mask = BIT(3),
++					.status_z_mask = BIT(0),
++					.status_y_mask = BIT(1),
++					.status_x_mask = BIT(2),
++				},
+ 			},
+-			.wakeup_src_reg = 0x1b,
+-			.wakeup_src_status_mask = BIT(3),
+-			.wakeup_src_z_mask = BIT(0),
+-			.wakeup_src_y_mask = BIT(1),
+-			.wakeup_src_x_mask = BIT(2),
+ 		},
+ 	},
+ 	{
+@@ -1028,15 +1040,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.addr = 0x58,
+ 				.mask = BIT(7),
+ 			},
+-			.wakeup_reg = {
+-				.addr = 0x5b,
+-				.mask = GENMASK(5, 0),
++			.sources = {
++				[ST_LSM6DSX_EVENT_WAKEUP] = {
++					.value = {
++						.addr = 0x5b,
++						.mask = GENMASK(5, 0),
++					},
++					.status_reg = 0x1b,
++					.status_mask = BIT(3),
++					.status_z_mask = BIT(0),
++					.status_y_mask = BIT(1),
++					.status_x_mask = BIT(2),
++				},
+ 			},
+-			.wakeup_src_reg = 0x1b,
+-			.wakeup_src_status_mask = BIT(3),
+-			.wakeup_src_z_mask = BIT(0),
+-			.wakeup_src_y_mask = BIT(1),
+-			.wakeup_src_x_mask = BIT(2),
+ 		},
+ 	},
+ 	{
+@@ -1209,15 +1225,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.addr = 0x58,
+ 				.mask = BIT(7),
+ 			},
+-			.wakeup_reg = {
+-				.addr = 0x5B,
+-				.mask = GENMASK(5, 0),
++			.sources = {
++				[ST_LSM6DSX_EVENT_WAKEUP] = {
++					.value = {
++						.addr = 0x5b,
++						.mask = GENMASK(5, 0),
++					},
++					.status_reg = 0x1b,
++					.status_mask = BIT(3),
++					.status_z_mask = BIT(0),
++					.status_y_mask = BIT(1),
++					.status_x_mask = BIT(2),
++				},
+ 			},
+-			.wakeup_src_reg = 0x1b,
+-			.wakeup_src_status_mask = BIT(3),
+-			.wakeup_src_z_mask = BIT(0),
+-			.wakeup_src_y_mask = BIT(1),
+-			.wakeup_src_x_mask = BIT(2),
+ 		},
+ 	},
+ 	{
+@@ -1415,15 +1435,19 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 				.addr = 0x50,
+ 				.mask = BIT(7),
+ 			},
+-			.wakeup_reg = {
+-				.addr = 0x5b,
+-				.mask = GENMASK(5, 0),
++			.sources = {
++				[ST_LSM6DSX_EVENT_WAKEUP] = {
++					.value = {
++						.addr = 0x5b,
++						.mask = GENMASK(5, 0),
++					},
++					.status_reg = 0x45,
++					.status_mask = BIT(3),
++					.status_z_mask = BIT(0),
++					.status_y_mask = BIT(1),
++					.status_x_mask = BIT(2),
++				},
+ 			},
+-			.wakeup_src_reg = 0x45,
+-			.wakeup_src_status_mask = BIT(3),
+-			.wakeup_src_z_mask = BIT(0),
+-			.wakeup_src_y_mask = BIT(1),
+-			.wakeup_src_x_mask = BIT(2),
+ 		},
+ 	},
+ 	{
+@@ -1935,7 +1959,7 @@ st_lsm6dsx_write_event(struct iio_dev *iio_dev,
+ 	if (val < 0 || val > 31)
+ 		return -EINVAL;
+ 
+-	reg = &hw->settings->event_settings.wakeup_reg;
++	reg = &hw->settings->event_settings.sources[ST_LSM6DSX_EVENT_WAKEUP].value;
+ 	data = ST_LSM6DSX_SHIFT_VAL(val, reg->mask);
+ 	err = st_lsm6dsx_update_bits_locked(hw, reg->addr,
+ 					    reg->mask, data);
+@@ -2420,6 +2444,7 @@ static bool
+ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
+ {
+ 	const struct st_lsm6dsx_event_settings *event_settings;
++	const struct st_lsm6dsx_event_src *src;
+ 	int err, data;
+ 	s64 timestamp;
+ 
+@@ -2427,13 +2452,14 @@ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
+ 		return false;
+ 
+ 	event_settings = &hw->settings->event_settings;
+-	err = st_lsm6dsx_read_locked(hw, event_settings->wakeup_src_reg,
++	src = &event_settings->sources[ST_LSM6DSX_EVENT_WAKEUP];
++	err = st_lsm6dsx_read_locked(hw, src->status_reg,
+ 				     &data, sizeof(data));
+ 	if (err < 0)
+ 		return false;
+ 
+ 	timestamp = iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
+-	if ((data & hw->settings->event_settings.wakeup_src_z_mask) &&
++	if ((data & src->status_z_mask) &&
+ 	    (hw->enable_event & BIT(IIO_MOD_Z)))
+ 		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
+ 			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
+@@ -2443,7 +2469,7 @@ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
+ 						  IIO_EV_DIR_EITHER),
+ 						  timestamp);
+ 
+-	if ((data & hw->settings->event_settings.wakeup_src_y_mask) &&
++	if ((data & src->status_y_mask) &&
+ 	    (hw->enable_event & BIT(IIO_MOD_Y)))
+ 		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
+ 			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
+@@ -2453,7 +2479,7 @@ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
+ 						  IIO_EV_DIR_EITHER),
+ 						  timestamp);
+ 
+-	if ((data & hw->settings->event_settings.wakeup_src_x_mask) &&
++	if ((data & src->status_x_mask) &&
+ 	    (hw->enable_event & BIT(IIO_MOD_X)))
+ 		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
+ 			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
+@@ -2463,7 +2489,7 @@ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
+ 						  IIO_EV_DIR_EITHER),
+ 						  timestamp);
+ 
+-	return data & event_settings->wakeup_src_status_mask;
++	return data & src->status_mask;
+ }
+ 
+ static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
 -- 
 2.39.5
 

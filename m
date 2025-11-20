@@ -1,230 +1,177 @@
-Return-Path: <linux-iio+bounces-26337-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26338-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75240C72EB6
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Nov 2025 09:38:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB0FC7302A
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Nov 2025 10:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8E9C4EDFB1
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Nov 2025 08:31:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 75EB02FAA0
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Nov 2025 09:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF34328273;
-	Thu, 20 Nov 2025 08:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E4530C61B;
+	Thu, 20 Nov 2025 09:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PV//OcXK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E76tF9x+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2049325735
-	for <linux-iio@vger.kernel.org>; Thu, 20 Nov 2025 08:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4C930C35D;
+	Thu, 20 Nov 2025 09:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763627191; cv=none; b=WSy3lhDG6ndC4dunMJPb7IjHK3OPDZtz8Atw1eECJqIl+n3itF6JjE7bE7/fZozV0AFuTkI+VMKDmieaFv0K7emRRPJEBI46gsEd9Jfzvi6NWkekBb/fvM6qaLXGt1DHi2Y6tuj2Qr+o35lRAjckO3tcYCZM3uieLEOyuxpBfv4=
+	t=1763629532; cv=none; b=XGKaU11ebAcIgj1kd9W4TY297QmNpnRhwrq9opPtad3sAFk+4wEb2IsOsN+WyhyDyTUFzHbKkwNs9jFsT+v1nE8nUOTXNFLRJE+eKPdGUDI3e0DmXo1zVtpk+nyiNS+KZZN5SA8u4uUgse5bUjDtWHEsG2ZYl5OOIl8oq3pH7jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763627191; c=relaxed/simple;
-	bh=rCueut8oKenLkzP/pdx8S5ZQVc/azzywTOOlHs8t1/A=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nIunxEDx7vFTfC+pQMsiIeuSUbFn7GdqZVV1qOV5PhtwLpLFPtYsY44QWJ68a/Griqhc+YDQeGzVDXdGESzzCsaipC2qiDQQtLXszu3+K5FkRPGNBXksXDNNh9oCiQjsw4ZAku0pPQPUHpKTEfNVJXUtquEBI97kPxGnvQnZdWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PV//OcXK; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-42b39d51dcfso334335f8f.2
-        for <linux-iio@vger.kernel.org>; Thu, 20 Nov 2025 00:26:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763627188; x=1764231988; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PX6DdzcBdAgazqaRtWaoP1G3y29Y/m2GG3jReyS8qiU=;
-        b=PV//OcXKLO49qFfNi8bUQ7lQ7Qq62Y9+fOqVpd7C8PX5qlbKz2PxbL3e2mDmvqCmgI
-         sslje1OwtS6oHidVezw/E0zqdxfItcyRsCke/+2sZk4YGeXQNpXsLBqBBf+Uv2Yy8pJX
-         x1CS+pISI8SPrJeub2zNimsuthPD8lylcuQzcJydP69sNQFM/kEkgpFWQmEQscgzBK3D
-         UaIJHV6Py9Ui58sR6J2Pf45854JT/KjBkChMVZExKSPxZ6CWMAAOmf2aPdQP+z+ToxA8
-         vGwfBJuOJ4fXgOvuuVtw9yDYPQAXZpOcI7xRnWjdEq3fShKMg/kS9yRGrquNS8l/H6JF
-         1wlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763627188; x=1764231988;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=PX6DdzcBdAgazqaRtWaoP1G3y29Y/m2GG3jReyS8qiU=;
-        b=oZ41wTP6lafwnfbP/E0hPOmTh0yOQ+URlkr+G/POehovO/GBrMKrF+8zWWw2hIEsPe
-         Bgfez67mVsvPJaJG6gI0PknT8fDsIQHnSldqVFZr0P9X24J2KOUD8DkY4sYuJquQBsOH
-         6DvR+KOSk/e7pBLf9Bun54HjpDVn1nM6Nqhak6vIfGn8kPsbx9OytxaWU2M4XjomEw95
-         ipHHd5pC4mo7CdwbEHkysUDPNnuaCGFbLzxyzZSEtZd/HNCuOCVFi+uil27o5pa1JFZI
-         dPP6rwNLgEByoQPGNyF5BVNs221/Z3WKfn/zX7Yx7LtW3a37oUs4yyATd8c7zuQVG/3l
-         Du0g==
-X-Forwarded-Encrypted: i=1; AJvYcCWhba0AWKqG6+0tv8/NVazfrQSh7lMmCzDQUE7DiCBS5ZK6wIflMdoQ9+cvpZ2aDfX3zvYUJupXjFw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywleau2N9YNMYeav0ViyBQtdCHXIkoms0uAKimbHO4Cz+qCUpjB
-	F6mrixUII5tM0EKPgu9O4Z8bLW62TZl6S7A9GEbexloHxJLtemgz/laWzmTU8bxKETfiuMjeFk9
-	0DL6G
-X-Gm-Gg: ASbGncvYia+yUu5BeYKBCxocingE3Av2bJSqsv3t7LRZEglb6XYs1fEIl8cljDG++Nl
-	NxhyX6fKMBzWZV9FToOx01kGLHKZ07qMpjkiN99fmoDkhNZL6gRc3Z6NJzj278xa6+mLF7dEkz9
-	22V+N3nOasHyjxnmi39BL9I5cS20cT4/H0yRM3NfgXJH1UzqQAUaPF5dHjMKEJwWOwmOUZRYNXV
-	rBOXlwL5mMWS/zfblO3bvH3eWd6gwf7Vcoq7CWWi91kpxXS+7xE8dJx34WNjPPL56oRxLBxGZcZ
-	ThDvYp4aM+JTsIIVk/cPtePZTwPcD6+LWizYtr7xs05/Ds0g75GiHjItdS6tA9mki77hyq27l5e
-	SbTZ406xJI+Ha2HoynxaH4/X89UieWAyEVziH1UysPsfRmkQ7OKOzX6A=
-X-Google-Smtp-Source: AGHT+IG802Gei6CAzXsOaDNbdW60lD9/nV5nK8bJuNWbFp6TGJvXHnh57A2zHwT6/ty7W1wS6XC4qw==
-X-Received: by 2002:a05:6000:428a:b0:42b:3bfc:d5cb with SMTP id ffacd0b85a97d-42cb9a55986mr1634050f8f.51.1763627188022;
-        Thu, 20 Nov 2025 00:26:28 -0800 (PST)
-Received: from localhost ([151.35.219.2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fa35c2sm3670859f8f.25.2025.11.20.00.26.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Nov 2025 00:26:27 -0800 (PST)
-From: Francesco Lavra <flavra@baylibre.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
+	s=arc-20240116; t=1763629532; c=relaxed/simple;
+	bh=E25ZtGkJprSRR7U/LkQIJLqplYxisrCQAtRXyuKlm0Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e8vy2QbcvQ722dFAGzunTCJ4x9p3EN28lkFwvKTdoPRnA7mWcoXeQqEoGKotcIWrEw7WH1rs/BB2HsiBGhtc1N4KK4SKiWztv88MpUE50YMR5qbVrRuU4SwEBAPXhmy2+xd9EUTINvKifs8y/Lq1p3kr3cW4GDZWhjZ8dGewpks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E76tF9x+; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763629531; x=1795165531;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=E25ZtGkJprSRR7U/LkQIJLqplYxisrCQAtRXyuKlm0Y=;
+  b=E76tF9x+YtoyQOMbSi54Y9OCB6IgUUZw70hCKhUmKrZV3cYruWJbLpU6
+   suup3GOJy/1ZOSfKl2n4lfJ0F9kbaJir2KhrHbCZpJbeRgdLJe7AE76/N
+   bp6QeqALileshQ0qvviEqh4TRrfUpzIvrvYJXSydxUn5LxM8fJB3VPvdD
+   tybob8Etk2W0YHcEasuV+aRLmn61HRMItzO+rUFPrGmjvicOJh+xxIeyo
+   TkbeRpPofFLAmoDbBMX1sk8dum+M7obe2NMfANpB0D6TV1V7vm3SjMn7a
+   H+sUlYuJTkyQfSMGfkxrRnb0Sg/9K9K21e9JhsNFdpsOdJBsWyC2oZKFZ
+   Q==;
+X-CSE-ConnectionGUID: aXVdzVmoT3yyCEW/iQo0Zg==
+X-CSE-MsgGUID: cWtDxda+SBKoYMmb+9tF7w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="69560422"
+X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; 
+   d="scan'208";a="69560422"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 01:05:30 -0800
+X-CSE-ConnectionGUID: GPz6FuYRQVGKmzMS17w8VQ==
+X-CSE-MsgGUID: 5NfqCymEQmOrSw7zaL6t8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; 
+   d="scan'208";a="222242823"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa001.fm.intel.com with ESMTP; 20 Nov 2025 01:05:28 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 409B196; Thu, 20 Nov 2025 10:05:27 +0100 (CET)
+Date: Thu, 20 Nov 2025 10:05:27 +0100
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 9/9] iio: imu: st_lsm6dsx: add tap event detection
-Date: Thu, 20 Nov 2025 09:26:15 +0100
-Message-Id: <20251120082615.3263892-10-flavra@baylibre.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251120082615.3263892-1-flavra@baylibre.com>
-References: <20251120082615.3263892-1-flavra@baylibre.com>
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 8/9] iio: imu: st_lsm6dsx: add event configurability on a
+ per axis basis
+Message-ID: <aR7Z19wgPksymwkw@black.igk.intel.com>
+References: <20251030072752.349633-1-flavra@baylibre.com>
+ <20251030072752.349633-9-flavra@baylibre.com>
+ <aQMgxUNA8XNhPZdG@smile.fi.intel.com>
+ <c1c7222b35a0a7bcddc5d88c92f64d2f2a75fdfd.camel@baylibre.com>
+ <aQNueWesrf_vXO06@smile.fi.intel.com>
+ <5b23d077d8882d6b2a2e66817b1b6bcebc6bb5a2.camel@baylibre.com>
+ <aRxN_Gnsl0qq8wDn@black.igk.intel.com>
+ <82bf13fd5ada664d9e4fdbc3ee453204e55d318b.camel@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4455; i=flavra@baylibre.com; h=from:subject; bh=rCueut8oKenLkzP/pdx8S5ZQVc/azzywTOOlHs8t1/A=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpHtB8QOA8X/mB6mZ0YURPf5zlC0oGj0Ne0K+Cg YtUsyRJXr+JAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaR7QfAAKCRDt8TtzzpQ2 Xx1/C/4+y62W1GV5v+dJYV9rWI6c9J4mRTAuH2Qf1wbrvJWk/wn+EDMbfzeErWGUyO8j7Qdk9Nl CvITr106a3DmMvl4OfucJD2bTo3S8v1C4Gz5cDAjs43S3162o8RNLp8LfLLupKvIl37mWCrTIbU 198/ndh6P0IJnGEIjAWaTsIjjaXWSNApSvOpg8e78eLN4os4MXe9SLXEeAroD+T2j2bmufPeo9d 9wHxGP6vj95lfp5Ont8UlYc2HyA8IeaELU/abvGRJB+6GdMwHM+AOcENJAhRH48euoR6iEuPs8R S5KV1eLp9m+UYtd6l+MFWJpi4v6NnmcZzhJSYaEsFmq8YMjdLHVIzPER9IV8Dy/qvuITMgImOuy jXIdgEH4eWzGpJasZHhBLE/ewUnxBE0AHQFXu+lqKcaNdfdoO7cHNcoTNtYuV0k8P53FgNkoJOh A6/lYE9q1ZB05RLSk6R88mPg3bqh3YSdx525CqQNvYOfryRibZ+AA+mxDb3YfQ6hIJ7wk=
-X-Developer-Key: i=flavra@baylibre.com; a=openpgp; fpr=8657854F953BDCA31EC314E6EDF13B73CE94365F
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <82bf13fd5ada664d9e4fdbc3ee453204e55d318b.camel@baylibre.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-In order to allow sensors to advertise tap event capability and report tap
-events, define a new struct iio_event_spec array that includes a tap event
-spec, and a new struct iio_chan_spec array that references the new
-iio_event_spec array; for the LSM6DSV chip family, use the new
-iio_chan_spec array and define an event source for tap events.
-Tested on LSMDSV16X.
+On Tue, Nov 18, 2025 at 12:01:57PM +0100, Francesco Lavra wrote:
+> On Tue, 2025-11-18 at 11:44 +0100, Andy Shevchenko wrote:
+> > On Mon, Nov 17, 2025 at 08:23:35PM +0100, Francesco Lavra wrote:
+> > > On Thu, 2025-10-30 at 15:56 +0200, Andy Shevchenko wrote:
+> > > > On Thu, Oct 30, 2025 at 12:23:19PM +0100, Francesco Lavra wrote:
+> > > > > On Thu, 2025-10-30 at 10:24 +0200, Andy Shevchenko wrote:
+> > > > > > On Thu, Oct 30, 2025 at 08:27:51AM +0100, Francesco Lavra wrote:
 
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  1 +
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 55 +++++++++++++++++++-
- 2 files changed, 54 insertions(+), 2 deletions(-)
+...
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 3b90261e6bb1..5d820f2a0bce 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -245,6 +245,7 @@ struct st_lsm6dsx_shub_settings {
- 
- enum st_lsm6dsx_event_id {
- 	ST_LSM6DSX_EVENT_WAKEUP,
-+	ST_LSM6DSX_EVENT_TAP,
- 	ST_LSM6DSX_EVENT_MAX
- };
- 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index 562544636f36..55cd63643c52 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -105,6 +105,21 @@ static const struct iio_event_spec st_lsm6dsx_ev_motion[] = {
- 	},
- };
- 
-+static const struct iio_event_spec st_lsm6dsx_ev_motion_tap[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_EITHER,
-+		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
-+				 BIT(IIO_EV_INFO_ENABLE),
-+	},
-+	{
-+		.type = IIO_EV_TYPE_GESTURE,
-+		.dir = IIO_EV_DIR_SINGLETAP,
-+		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
-+				 BIT(IIO_EV_INFO_ENABLE),
-+	},
-+};
-+
- static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
- 	ST_LSM6DSX_CHANNEL_ACC(0x28, IIO_MOD_X, 0, st_lsm6dsx_ev_motion),
- 	ST_LSM6DSX_CHANNEL_ACC(0x2a, IIO_MOD_Y, 1, st_lsm6dsx_ev_motion),
-@@ -119,6 +134,13 @@ static const struct iio_chan_spec st_lsm6ds0_acc_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(3),
- };
- 
-+static const struct iio_chan_spec st_lsm6dsx_acc_tap_channels[] = {
-+	ST_LSM6DSX_CHANNEL_ACC(0x28, IIO_MOD_X, 0, st_lsm6dsx_ev_motion_tap),
-+	ST_LSM6DSX_CHANNEL_ACC(0x2a, IIO_MOD_Y, 1, st_lsm6dsx_ev_motion_tap),
-+	ST_LSM6DSX_CHANNEL_ACC(0x2c, IIO_MOD_Z, 2, st_lsm6dsx_ev_motion_tap),
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
-+};
-+
- static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
- 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
- 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
-@@ -1250,8 +1272,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 		},
- 		.channels = {
- 			[ST_LSM6DSX_ID_ACC] = {
--				.chan = st_lsm6dsx_acc_channels,
--				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
-+				.chan = st_lsm6dsx_acc_tap_channels,
-+				.len = ARRAY_SIZE(st_lsm6dsx_acc_tap_channels),
- 			},
- 			[ST_LSM6DSX_ID_GYRO] = {
- 				.chan = st_lsm6dsx_gyro_channels,
-@@ -1426,6 +1448,30 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 					.status_y_mask = BIT(1),
- 					.status_x_mask = BIT(2),
- 				},
-+				[ST_LSM6DSX_EVENT_TAP] = {
-+					.x_value = {
-+						.addr = 0x57,
-+						.mask = GENMASK(4, 0),
-+					},
-+					.y_value = {
-+						.addr = 0x58,
-+						.mask = GENMASK(4, 0),
-+					},
-+					.z_value = {
-+						.addr = 0x59,
-+						.mask = GENMASK(4, 0),
-+					},
-+					.enable_mask = BIT(6),
-+					.enable_axis_reg = 0x56,
-+					.enable_x_mask = BIT(3),
-+					.enable_y_mask = BIT(2),
-+					.enable_z_mask = BIT(1),
-+					.status_reg = 0x46,
-+					.status_mask = BIT(5),
-+					.status_x_mask = BIT(2),
-+					.status_y_mask = BIT(1),
-+					.status_z_mask = BIT(0),
-+				},
- 			},
- 		},
- 	},
-@@ -1939,6 +1985,8 @@ st_lsm6dsx_get_event_id(enum iio_event_type type)
- 	switch (type) {
- 	case IIO_EV_TYPE_THRESH:
- 		return ST_LSM6DSX_EVENT_WAKEUP;
-+	case IIO_EV_TYPE_GESTURE:
-+		return ST_LSM6DSX_EVENT_TAP;
- 	default:
- 		return ST_LSM6DSX_EVENT_MAX;
- 	}
-@@ -2606,6 +2654,9 @@ static bool st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
- 	events_found = st_lsm6dsx_report_events(hw, ST_LSM6DSX_EVENT_WAKEUP,
- 						IIO_EV_TYPE_THRESH,
- 						IIO_EV_DIR_EITHER);
-+	events_found |= st_lsm6dsx_report_events(hw, ST_LSM6DSX_EVENT_TAP,
-+						 IIO_EV_TYPE_GESTURE,
-+						 IIO_EV_DIR_SINGLETAP);
- 
- 	return events_found;
- }
+> > > > > > > +       old_enable = hw->enable_event[event];
+> > > > > > > +       new_enable = state ? (old_enable | BIT(axis)) :
+> > > > > > > (old_enable
+> > > > > > > &
+> > > > > > > ~BIT(axis));
+> > > > > > > +       if (!!old_enable == !!new_enable)
+> > > > > > 
+> > > > > > This is an interesting check. So, old_enable and new_enable are
+> > > > > > _not_
+> > > > > > booleans, right?
+> > > > > > So, this means the check test if _any_ of the bit was set and
+> > > > > > kept
+> > > > > > set or
+> > > > > > none were set
+> > > > > > and non is going to be set. Correct? I think a short comment
+> > > > > > would be
+> > > > > > good to have.
+> > > > > 
+> > > > > old_enable and new_enable are bit masks, but we are only interested
+> > > > > in
+> > > > > whether any bit is set, to catch the cases where the bit mask goes
+> > > > > from
+> > > > > zero to non-zero and vice versa. Will add a comment.
+> > > > 
+> > > > If it's a true bitmask (assuming unsigned long type) then all this
+> > > > can be
+> > > > done
+> > > > via bitmap API calls. Otherwise you can also compare a Hamming
+> > > > weights of
+> > > > them
+> > > > (probably that gives even the same size of the object file, but !!
+> > > > instructions
+> > > >  will be changed to hweight() calls (still a single assembly instr on
+> > > > modern
+> > > >  architectures).
+> > > 
+> > > These are u8 variables, so we can't use the bitmap API.
+> > 
+> > OK. But hweight8() can still be used.
+> > 
+> > > And I don't
+> > > understand the reason for using hweight(), given that the !! operators
+> > > would still be needed.
+> > 
+> > No, you won't need !! with that.
+> 
+> I still don't understand. Are you proposing to replace `if (!!old_enable ==
+> !!new_enable)` with `if (hweight8(old_enable) == hweight8(new_enable))`?
+> That won't work, because we only need to check whether the Hamming weight
+> goes from zero to non-zero and vice versa.
+
+       old_enable = hw->enable_event[event];
+       new_enable = state ? (old_enable | BIT(axis)) :
+                            (old_enable & ~BIT(axis));
+       if (!!old_enable == !!new_enable)
+               return 0;
+
+If I am not mistaken this will do exactly the same in a simpler way.
+
+	old_enable = hw->enable_event[event];
+	if (state)
+		new_enable = old_enable | BIT(axis);
+	else
+		new_enable = old_enable & ~BIT(axis);
+	if ((new_enable ^ old_enable) != BIT(axis))
+		return 0;
+
+
 -- 
-2.39.5
+With Best Regards,
+Andy Shevchenko
+
 
 

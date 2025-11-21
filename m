@@ -1,171 +1,154 @@
-Return-Path: <linux-iio+bounces-26344-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26345-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA08C7759B
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 06:22:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1263C77C25
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 08:50:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A7CA4360D2F
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 05:21:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id B4DAA2E94F
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 07:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FD12F8BD1;
-	Fri, 21 Nov 2025 05:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5FC1C5D59;
+	Fri, 21 Nov 2025 07:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rZsk7Lyu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOWxk8Y0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252C52F7ACA;
-	Fri, 21 Nov 2025 05:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA016279DA2;
+	Fri, 21 Nov 2025 07:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763702456; cv=none; b=dAVGlZ5QKHEHJpvvSFOtdjnLgg7uEwGXKiZBPB9sdtf5tBUqpl49iwIEv60rHyAaPPw9Rg4LMbaph01ljXCrdmHEwLyiuh0fLwMgbzDogzzG6sFc1eWFKVyIbb9UyMZ3VwY4fkWB0bas72v+xyDe3MyB6oHYuru9hw+fEP3n4+8=
+	t=1763711437; cv=none; b=ov/ZqivGXj2NcrATUEBbwG53GvHD8NZKgIqMvpBPvGd7CpojiMSqOL+bZJlP0soVmxK5FO3CF7oj5dYrcAZXtXtNe6qGPtOrSpgKubCe5yl2bN2F8mYLdVKfpnXoSifOq7wVwFeyhJL+tJ8G8DFi+YKVwKKpUqdLZfJPjny8Rb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763702456; c=relaxed/simple;
-	bh=59fhQFZGoydaHxlMPuxXXLYxyde4wR0Kx8QXeefUfKI=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=CjV35B+P7FvPwIJA5LM0vsTdTJTwO7kHvmixUfagHBN/sE/ChWnlgnpEcQInpNXXAIQTRJEu28OxYxVzEWImigVEsL/YrPmsxa26+o0/FvYdcQto1woJdGShuEtbMvRJfZ2bxhEAY+ByrloTht8MdCyB+OgM62RFol9YAk+vSBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rZsk7Lyu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FE0C4CEFB;
-	Fri, 21 Nov 2025 05:20:55 +0000 (UTC)
+	s=arc-20240116; t=1763711437; c=relaxed/simple;
+	bh=v3ojaLrv4fpBGkDt0UPOBs4pfLwMz41Hw5DOKHirYeo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G+VN6U84a0BnwBrJNYm2iehj0dt27lBY4x9Hqk2SNPENnKjl0An2lN8fPfbFhay1bDVbpUHGBrUMoHSTCkPtj/Xs1LKFgEiSANxEhzBSzaSCgIhzTkLkdEOKl3/3ox+v56F0WBJdMtUeQvPcrsrHWQA2SmYYL4rqSjzvCupH+tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOWxk8Y0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A66C113D0;
+	Fri, 21 Nov 2025 07:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763702456;
-	bh=59fhQFZGoydaHxlMPuxXXLYxyde4wR0Kx8QXeefUfKI=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=rZsk7LyuN+Z0DDtMKnmRZDSu1SvHU56yTM8dagFD3IWv8IdbovcyvKGUedcxwiw1O
-	 gyEfO8JoIwk7kGttMi27uuyiJEfLMsFjtnkjtty2ZYsDXiLkM91VirYiyh21ImzV47
-	 r2jbOpI8NmVwHfIo1luC8gnFQ87AEdipjIZz3ovtOXpTd52R6N900IhlQtmxRDBbPm
-	 oYtoGJQdCQHAHvroLRVRp5sye0CDBUGsMCH/GWjykfnYptVf6pF88JDfmwcq/s1PmA
-	 1SMm3smBej+qLwc2Ur8nENCark02bRSTN2dpQNldW5wzWg3aNGUshhvCpRjvpEqbE7
-	 C3XTogMZYshpA==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1763711437;
+	bh=v3ojaLrv4fpBGkDt0UPOBs4pfLwMz41Hw5DOKHirYeo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cOWxk8Y0Aon1Bc8ugXKbuLND0k30GLeOOpHpf+dRRo+w5GEgtCsu8Aip4nZMo9uFC
+	 z61cqjNVFzkevM8eOKVV1/T2+wxKAwSSmMX/4dxkMgTFf+ohbibkyamAET1sdcV+qy
+	 D22b2+MZxSfPuVV0QjAAlUf3whmXvJHqP4ImKBi2HN0L2fI1i83cnmFRBBBZ5h5wBJ
+	 k4MqiL6PIydAtYy43ymX0Vg5MlhJONat57kjLdtrJMDjX1j0KYtZ+ayB3LCcVsxiKL
+	 VCe+nm+jJE1/7ZEs+HpASPM18DrJfhY5s+KJrEkpq86P3/ef9I5O0kbzz/hA8JH8Wv
+	 4+Zvpv+IxyLow==
+Date: Fri, 21 Nov 2025 08:50:34 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Francesco Lavra <flavra@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/9] iio: imu: st_lsm6dsx: fix iio_chan_spec for
+ sensors without event detection
+Message-ID: <aSAZyjAvBpzKsa4-@lore-desk>
+References: <20251120082615.3263892-1-flavra@baylibre.com>
+ <20251120082615.3263892-2-flavra@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Z7oW0FEYeedHhEzm"
+Content-Disposition: inline
+In-Reply-To: <20251120082615.3263892-2-flavra@baylibre.com>
+
+
+--Z7oW0FEYeedHhEzm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20251114120908.6502-3-antoniu.miclaus@analog.com>
-References: <20251114120908.6502-1-antoniu.miclaus@analog.com> <20251114120908.6502-3-antoniu.miclaus@analog.com>
-Subject: Re: [PATCH 2/2] iio: frequency: adf4377: add clk provider support
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, conor+dt@kernel.org, devicetree@vger.kernel.org, jic23@kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, robh@kernel.org
-Date: Thu, 20 Nov 2025 19:13:54 -0800
-Message-ID: <176369483456.11952.769972703298837189@localhost.localdomain>
-User-Agent: alot/0.11
 
-Quoting Antoniu Miclaus (2025-11-14 04:09:08)
-> diff --git a/drivers/iio/frequency/adf4377.c b/drivers/iio/frequency/adf4=
-377.c
-> index 08833b7035e4..08dc2110cf8c 100644
-> --- a/drivers/iio/frequency/adf4377.c
-> +++ b/drivers/iio/frequency/adf4377.c
-> @@ -929,6 +935,120 @@ static int adf4377_freq_change(struct notifier_bloc=
-k *nb, unsigned long action,
->         return NOTIFY_OK;
->  }
+> The st_lsm6dsx_acc_channels array of struct iio_chan_spec has a non-NULL
+> event_spec field, indicating support for IIO events. However, event
+> detection is not supported for all sensors, and if userspace tries to
+> configure accelerometer wakeup events on a sensor device that does not
+> support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences a NULL
+> pointer when trying to write to the wakeup register.
+> Define an additional struct iio_chan_spec array whose members have a NULL
+> event_spec field, and use this array instead of st_lsm6dsx_acc_channels f=
+or
+> sensors without event detection capability.
+>=20
+> Fixes: b5969abfa8b8 ("iio: imu: st_lsm6dsx: add motion events")
+> Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+> ---
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 15 +++++++++++----
+>  1 file changed, 11 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
+mu/st_lsm6dsx/st_lsm6dsx_core.c
+> index 216160549b5a..a09df9d772dd 100644
+> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+> @@ -103,6 +103,13 @@ static const struct iio_chan_spec st_lsm6dsx_acc_cha=
+nnels[] =3D {
+>  	IIO_CHAN_SOFT_TIMESTAMP(3),
+>  };
 > =20
-> +static void adf4377_clk_del_provider(void *data)
-> +{
-> +       struct adf4377_state *st =3D data;
-> +
-> +       of_clk_del_provider(st->spi->dev.of_node);
-> +}
-> +
-> +
-> +static int adf4377_clk_is_enabled(struct clk_hw *hw)
-> +{
-> +       struct adf4377_state *st =3D to_adf4377_state(hw);
-> +       unsigned int readval;
-> +       int ret;
-> +
-> +       ret =3D regmap_read(st->regmap, 0x1a, &readval);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return !(readval & (ADF4377_001A_PD_CLKOUT1_MSK | ADF4377_001A_PD=
-_CLKOUT2_MSK));
-> +}
-> +
-> +static const struct clk_ops adf4377_clk_ops =3D {
-> +       .recalc_rate =3D adf4377_clk_recalc_rate,
-> +       .set_rate =3D adf4377_clk_set_rate,
-> +       .prepare =3D adf4377_clk_prepare,
-> +       .unprepare =3D adf4377_clk_unprepare,
-> +       .is_enabled =3D adf4377_clk_is_enabled,
-
-In theory .is_enabled shouldn't sleep to match the contract of
-.enable/.disable. Probably should change this to .is_prepared?
-
+> +static const struct iio_chan_spec st_lsm6ds0_acc_channels[] =3D {
+> +	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
+> +	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
+> +	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2c, IIO_MOD_Z, 2),
+> +	IIO_CHAN_SOFT_TIMESTAMP(3),
 > +};
 > +
-> +static int adf4377_clk_register(struct adf4377_state *st)
-> +{
-> +       struct spi_device *spi =3D st->spi;
-> +       struct clk_init_data init;
-> +       struct clk *clk;
-> +       const char *parent_name;
-> +       int ret;
-> +
-> +       if (!device_property_present(&spi->dev, "#clock-cells"))
-> +               return 0;
-> +
-> +       if (device_property_read_string(&spi->dev, "clock-output-names", =
-&init.name)) {
-> +               init.name =3D devm_kasprintf(&spi->dev, GFP_KERNEL, "%s-c=
-lk",
-> +                                          fwnode_get_name(dev_fwnode(&sp=
-i->dev)));
-> +               if (!init.name)
-> +                       return -ENOMEM;
-> +       }
-> +
-> +       parent_name =3D of_clk_get_parent_name(spi->dev.of_node, 0);
-> +       if (!parent_name)
-> +               return -EINVAL;
-> +
-> +       init.ops =3D &adf4377_clk_ops;
-> +       init.parent_names =3D &parent_name;
+>  static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] =3D {
+>  	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
+>  	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
+> @@ -144,8 +151,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_se=
+nsor_settings[] =3D {
+>  		},
+>  		.channels =3D {
+>  			[ST_LSM6DSX_ID_ACC] =3D {
+> -				.chan =3D st_lsm6dsx_acc_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> +				.chan =3D st_lsm6ds0_acc_channels,
+> +				.len =3D ARRAY_SIZE(st_lsm6ds0_acc_channels),
+>  			},
+>  			[ST_LSM6DSX_ID_GYRO] =3D {
+>  				.chan =3D st_lsm6ds0_gyro_channels,
+> @@ -1445,8 +1452,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_=
+sensor_settings[] =3D {
+>  		},
+>  		.channels =3D {
+>  			[ST_LSM6DSX_ID_ACC] =3D {
+> -				.chan =3D st_lsm6dsx_acc_channels,
+> -				.len =3D ARRAY_SIZE(st_lsm6dsx_acc_channels),
+> +				.chan =3D st_lsm6ds0_acc_channels,
+> +				.len =3D ARRAY_SIZE(st_lsm6ds0_acc_channels),
+>  			},
+>  			[ST_LSM6DSX_ID_GYRO] =3D {
+>  				.chan =3D st_lsm6dsx_gyro_channels,
+> --=20
+> 2.39.5
+>=20
 
-We should be able to use clk_parent_data here instead of
-of_clk_get_parent_name(). It will require setting the proper DT
-node/device when registering the clk but it looks like you're doing that
-already.
+--Z7oW0FEYeedHhEzm
+Content-Type: application/pgp-signature; name=signature.asc
 
-> +       init.num_parents =3D 1;
-> +       init.flags =3D CLK_SET_RATE_PARENT;
-> +
-> +       st->hw.init =3D &init;
-> +       clk =3D devm_clk_register(&spi->dev, &st->hw);
+-----BEGIN PGP SIGNATURE-----
 
-Please use devm_clk_hw_register()
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaSAZygAKCRA6cBh0uS2t
+rNA4AQDXT86jj3gd3vDX89jXk2tVrmc6mWyzn5Qs2wmh7FRLtAD+I2VoJKU/yi7T
+Gx7yDeF0FheHijZxwS+RubDNZ99SUQE=
+=CgUl
+-----END PGP SIGNATURE-----
 
-> +       if (IS_ERR(clk))
-> +               return PTR_ERR(clk);
-> +
-> +       st->clk =3D clk;
-> +
-> +       ret =3D of_clk_add_provider(spi->dev.of_node, of_clk_src_simple_g=
-et, clk);
-
-Please add a clk_hw provider. A clk provider isn't typically a clk
-consumer of the clk it provides. I think we have devm for that too?
-
-> +       if (ret)
-> +               return ret;
-> +
-> +       st->clkout =3D clk;
-> +
-> +       return devm_add_action_or_reset(&spi->dev, adf4377_clk_del_provid=
-er, st);
-> +}
-> +
->  static const struct adf4377_chip_info adf4377_chip_info =3D {
->         .name =3D "adf4377",
->         .has_gpio_enclk2 =3D true,
+--Z7oW0FEYeedHhEzm--
 

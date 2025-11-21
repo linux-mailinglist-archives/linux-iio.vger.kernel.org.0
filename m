@@ -1,347 +1,144 @@
-Return-Path: <linux-iio+bounces-26365-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26366-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9656AC7A66B
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 16:07:07 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 680F8C7B0AD
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 18:20:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 850654F2A36
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 14:58:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5128A345311
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 17:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2E0314D31;
-	Fri, 21 Nov 2025 14:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2A6346FC0;
+	Fri, 21 Nov 2025 17:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AnzW3Nvl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UV+7jSuF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1462BE7AC
-	for <linux-iio@vger.kernel.org>; Fri, 21 Nov 2025 14:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A093340A4C
+	for <linux-iio@vger.kernel.org>; Fri, 21 Nov 2025 17:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763737090; cv=none; b=bGSTGImYEuChgrJSWsNPHHM06k/ctn64jpGzG+JSw7/Mty6hDPw3AOFwCkak+vPdZ7TIpqRt2VZHBxQJ0wngPJVlYF2DWMKPEGG2yBMrYmSXdwPjfY2l+K5yF1BId8WSXtmfhf7FTBTZJV810mmvRhumMpTwIPh4cef504167Oo=
+	t=1763745400; cv=none; b=Lf7xiUXRtow0K8XNCbhS+e9fG5dZoKiAsRBSCGOk4xECs+opbfXl45GAthprv+BAi9ZFETei2PntbmUQVImWwjDbMDFZ6csOOF32BsrEu8Dzn29LqpQk0KIMlcahg8avp21y7ySsaKyslL/oEh8W8j/4qvFO+l178S0sa5TJxs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763737090; c=relaxed/simple;
-	bh=ZBN61/kQgi5/O9/msU05a3+8B53ER6SruttjusNlF1E=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WLZX3vbsi0yJYSbz7gfrRkxe/WhmyIURDT0LIVgNIhqz8WmTV3YPVpRctpTaXYJgjFUlXlVp/i+txHzWoaaUw9Bjf9cFTP5umI36aas3d0QEtA6+C9Y2lCoj+4wy0SwPP5Qv6sZG/q4ryhptWVCFNAnCQxNO+QoPEcMaIStD3J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AnzW3Nvl; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so22838755e9.3
-        for <linux-iio@vger.kernel.org>; Fri, 21 Nov 2025 06:58:05 -0800 (PST)
+	s=arc-20240116; t=1763745400; c=relaxed/simple;
+	bh=SkLzZ5Rd4z/hR09+MOL5og400mSYcS/W6VZzgWxZRzM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DHsf2cwyM3c40wvcpsqT4RccZXz5jgfHy1hsSfcWoerkvHLNV0C1Mkt0VbBgmc3NMy/d2pVVQ9cA7wdZORTLCXDxx6sr+qLs1MfWqGGW6XrdBdhL6jRYPwV6fySHrocWpC8TdcShVemaIvnU737YBJB4et3+nw5tXCHEAPAxrzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UV+7jSuF; arc=none smtp.client-ip=209.85.217.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-5dbde7f4341so2879932137.1
+        for <linux-iio@vger.kernel.org>; Fri, 21 Nov 2025 09:16:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763737084; x=1764341884; darn=vger.kernel.org;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZBN61/kQgi5/O9/msU05a3+8B53ER6SruttjusNlF1E=;
-        b=AnzW3NvlTtIwF/7+JGyHBOaPjEup9QOL7+mHXyz1cThS+F2GlCjpy6MxHVC+BnDqVa
-         hc/qq+/r3kcqehs8ocKeLtMR0b23Ow4Av93TMQWzgiIUB13QC2H1sO0heodMF9jSe4AP
-         inVoteKulwn78IR8LoWjqDBc3iF8OO6fTVtv42JM5vwM9LHGpVv3Qm4l+yuMYG5dYGkp
-         Qb9OWISDnjMV1gsE2d2CiIoRTMl9omA4qHdqt6AV9U1gPZZiAymm910dA8eh+LKZ/piV
-         lqgfFU+uCSx6xY7d5MEztoyozhWFhhS+3D16BqFYGW1GrmnUon63Ts1iu0dUG1qrRkDr
-         eZbQ==
+        d=gmail.com; s=20230601; t=1763745398; x=1764350198; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=t+pdDwG6dzXuJBegjHU77HvlovlFjmyHVEdno7rJHvc=;
+        b=UV+7jSuF9nEziGK3jib2z4+ng5Kg3R5j4ALSWEe3CNwy6/qpVzWeRiUIIXq42TtQcK
+         W/eShYRW84Vr/7AHDiA6UrL17vYcJzvl2U95f4LO9XoX6mtMcEmZOgvixM8CMY2a+Zo6
+         8iF/FYk67XsE2w2RqxrvqUy3r7skRjJNbjbtU9M4+mhwfAV4WeDxgWVDlRVCSyeq3USf
+         xYTb8UBwDSepX/ftJinw3wTx9XSbKfihuFyBVRfD89HwiuMM1npDmyXJo9LtT4A6HD+w
+         ecHyiDV0DjkE6cjuV7OsQKg37P7Wazq+jRV5TnPGoro9A+2W6iT41NfOkJDZMtk27XEn
+         aOCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763737084; x=1764341884;
-        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
-         :to:from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZBN61/kQgi5/O9/msU05a3+8B53ER6SruttjusNlF1E=;
-        b=Wf4rXag/RSAfQlZ9WZbtgHajJnqQ/Iuz+GrvIYdXa9+Ql1xKxfQqywXM+JwjwrTqfk
-         zX403JEDyqbpChXkuh1HXPpjqe7X5WG7nsPOBT+A6y2MtiDHeUHhMBcTM1Kge5rRGJwM
-         Owm3PVg3B9DKAy4yYPxyQv79XsT/pJ3U8OqRGMVMSM0e5fP+Ry+84rEZDgltXE5p26sR
-         qkTzpG4/SMmX4rz3pGWgjqtjOhcBbT5adp9iAd+1V4g/kDUZ0Umksjj7y4eUMPj4o/B4
-         I3NqSJhUp6aWAf3YJJlC4YFvuj37W1B/72Y9zVN3bEzRYTJd6ZMiRiLGUH1JI2hITCP/
-         9VcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVvo+0NwssoJsOvrbVdAMPQ7uWmP09yuvhLIFGP4psW5uui0VFoQIFX5W4ShxpYcDd08OywYMT2x0I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytOlKaRG0BOXOOfgYbDlSbd5L9C/R1Or+9/apzBN+7RstT25To
-	K5BKjD5qKfNJ5vHZNJ5oFoT4lL+QePSK9CxZDDg8p/s3Ze6zFM42x5kHOLeBc7ku5Cvyjspd9AP
-	Z8X27
-X-Gm-Gg: ASbGncs/Zv7gnFHB0gB5WFmJ4iP+cV/IhxPZy8Wn2eTJcFwdo/ELHAUpb0HGGVDVVPm
-	xetZGIrw3X6cGGjRTKqSYuy6gGzuQATMvdEbbXfFU8xF9UvBtPTdBFbrGf7BqV7SfXnfNUQdYpZ
-	BW5YP3/rYRcvhXjelPz5S/d8qb3JV8y589ZehRoC93miweXs9jgDvxO+4Kt0STJWRU5FGmQAeel
-	cwzZn4nnvnBFGZi0biQ96cAZfLXTC1CyfTqNIjSO8TLs+towPpDEwM3ksPraLPt7LN+kNiIUkL0
-	olPQX4GCqvDnPESwKaOYaJkZzoGutcf+qUA9dfvIjeQFYI7PJBHQsISCSlrQt//efnYn9HCQ2ox
-	kYPWZ5TFqPno9Su81C52l5+7NQJ1spPnrmPood1Al6QzOK+8R8IDQdX9oNbM51TnmIFc4NLA=
-X-Google-Smtp-Source: AGHT+IGpWdALqr4BOZVBJ9KeilEj1y1TqBHHrSujBbNxo4Jd3S+sPXH1zq/HRufezIXorjDTGTAZwA==
-X-Received: by 2002:a05:600c:1f1a:b0:45d:f81d:eae7 with SMTP id 5b1f17b1804b1-477c114f45fmr25825615e9.28.1763737083994;
-        Fri, 21 Nov 2025 06:58:03 -0800 (PST)
-Received: from [10.203.83.225] ([151.37.150.124])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf22ea00sm47639735e9.14.2025.11.21.06.58.02
+        d=1e100.net; s=20230601; t=1763745398; x=1764350198;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t+pdDwG6dzXuJBegjHU77HvlovlFjmyHVEdno7rJHvc=;
+        b=pObGfm3VwThC12LdQMlw42UBVbVV9tPM0PkGgOV30RrHKI/0NRj9Tog9FVcCLMUgK5
+         T9IobFelg36Fo4YIF1xHjq1YKKiZnWDcQ8ar6/cIjgZQWDGsLyZflH39+XMLy76muHDv
+         n/9pyHBG6OUw8R3SFS0nPw8KUIHEePhaEpCT+NFzZ6Ud5D5Up/P6C7T/kvP2rK1aKJak
+         qEUMBERZRao0mtDVkCZjT9GQ+Gp4fjg9gY44I0qAaN34pOlIdugluWTWzjuNxsShR8TV
+         7rGnjV4mWXC4YHhdG1VU7fq6xy82se9OfW182dPCX3fMtTKY5ikWjoMK9L0by414MfZA
+         88sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhQRnCeaaqfgspVqAJ7OEwm60URq0/iEGOhkQ84LIX/vqdqBToH10UDDOKuyOuiPXZ3mOHp4yLofs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAGj0MyPzdlVedyv0F36n0l/vG5WKFK5+RYzkumL5Sz4m5bX63
+	AVJ9BaliskewM41ar+9xr9iP4/8+xcHpiwhNRQ1XfiOFhUpprWU3stIK
+X-Gm-Gg: ASbGncsnxx1hZZpTQ3p0Cfeka8EBvk3ZHjsmqw7ukQu3Tg58DtLz7YgwJ+ZEmkUaS4m
+	2GB4CC21+190xMhpwKzFlX6N/3P4EGSdU/WYBGrE81RNR2HlHq+NaDpmwOBka45EJ34Y7F/BEf0
+	WlBPax0+/6faWBy9PEAOUiyKUfgMR7t+oSnyZ3aeirDhQNDGdc5sAdlJYYbIRoxnlaf7MWdm5y1
+	h+OZ0ftS/pA4I89VOYTN/btWPhLuktnPp8i5xufGawlvv6o9eKj8Ni7cUz3bFwarAQWEIrmCPrY
+	WoHxoO/OimXLu/+zeNzxogTvwEK2OPuV/fSmzvtUPLGlPaKnO+XDc+eq276tgH7om82dXmiEk10
+	0dv36CrrANqyYKAhfPBhGBF9ETKYTivAxeEnlyOQw+WuIU966fTeP5eoI2EzJrZKb9khETNwBKX
+	xJKdEt4P4fQpvp
+X-Google-Smtp-Source: AGHT+IF8/Ex/eDUVlLmdr1+X5s76Sr+ZCE3NK6DYE+c5IyTnbzkxdfegbW2OXzGM0O7lBMRkfsguUg==
+X-Received: by 2002:a67:e114:0:b0:5e1:86cd:21a3 with SMTP id ada2fe7eead31-5e1dcf41e1amr1261335137.14.1763745397783;
+        Fri, 21 Nov 2025 09:16:37 -0800 (PST)
+Received: from [192.168.100.70] ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-93c562728fdsm2554368241.7.2025.11.21.09.16.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 06:58:03 -0800 (PST)
-Message-ID: <0da1f46640226ab52ef0a726a5110cc56b85cdd4.camel@baylibre.com>
-Subject: Re: [PATCH 8/9] iio: imu: st_lsm6dsx: add event configurability on
- a per axis basis
-From: Francesco Lavra <flavra@baylibre.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Jonathan Cameron
- <jic23@kernel.org>,  David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,  linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Fri, 21 Nov 2025 15:57:57 +0100
-In-Reply-To: <aSAxjBCfiw-iCWhI@smile.fi.intel.com>
-References: <c1c7222b35a0a7bcddc5d88c92f64d2f2a75fdfd.camel@baylibre.com>
-	 <aQNueWesrf_vXO06@smile.fi.intel.com>
-	 <5b23d077d8882d6b2a2e66817b1b6bcebc6bb5a2.camel@baylibre.com>
-	 <aRxN_Gnsl0qq8wDn@black.igk.intel.com>
-	 <82bf13fd5ada664d9e4fdbc3ee453204e55d318b.camel@baylibre.com>
-	 <aR7Z19wgPksymwkw@black.igk.intel.com>
-	 <50107aecc446ba42e312b81e18a6ffe871fa3291.camel@baylibre.com>
-	 <aR8esn94zI140351@smile.fi.intel.com> <aR9ej_7o0te-HO8P@smile.fi.intel.com>
-	 <e448a6fdb420b0c0561ab2255820d2ba62f838a1.camel@baylibre.com>
-	 <aSAxjBCfiw-iCWhI@smile.fi.intel.com>
-Organization: BayLibre
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-/TigasTORFHwyr9i7yRy"
-User-Agent: Evolution 3.46.4-2 
+        Fri, 21 Nov 2025 09:16:37 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+Subject: [PATCH 0/2] iio: Add support for TI ADS1X18 ADCs
+Date: Fri, 21 Nov 2025 12:16:13 -0500
+Message-Id: <20251121-ads1x18-v1-0-86db080fc9a4@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAF2eIGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDA0Mj3cSUYsMKQwtdgxQDc3PLFAMzM0sDJaDqgqLUtMwKsEnRsbW1AOj
+ JF21ZAAAA
+X-Change-ID: 20251012-ads1x18-0d0779d06690
+To: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Tobias Sperling <tobias.sperling@softing.com>
+Cc: David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Kurt Borja <kuurtb@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1112; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=SkLzZ5Rd4z/hR09+MOL5og400mSYcS/W6VZzgWxZRzM=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDJkK8/Kqv8yQ2/Z/SULi0ZeLvh06uOgge1mbiSnjH9HQj
+ ROjPkRKdpSyMIhxMciKKbK0Jyz69igq763fgdD7MHNYmUCGMHBxCsBErj1jZNj63jD5bFf4+WYJ
+ yV8zbHa2yjHOZ3HbLGX24wOv3pKYNVEMf/ificq+XPk3v69xubjbZbuzm17uEdSwLnn2u23BpuP
+ 9wpwA
+X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
+ fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 
+Hi,
 
---=-/TigasTORFHwyr9i7yRy
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This series adds a new driver for TI ADS1X18 SPI devices.
 
-On Fri, 2025-11-21 at 11:31 +0200, Andy Shevchenko wrote:
-> On Fri, Nov 21, 2025 at 10:14:06AM +0100, Francesco Lavra wrote:
-> > On Thu, 2025-11-20 at 20:31 +0200, Andy Shevchenko wrote:
-> > > On Thu, Nov 20, 2025 at 03:59:18PM +0200, Andy Shevchenko wrote:
-> > > > On Thu, Nov 20, 2025 at 12:43:09PM +0100, Francesco Lavra wrote:
-> > > > > On Thu, 2025-11-20 at 10:05 +0100, Andy Shevchenko wrote:
-> > > > > > On Tue, Nov 18, 2025 at 12:01:57PM +0100, Francesco Lavra
-> > > > > > wrote:
-> > > > > > > On Tue, 2025-11-18 at 11:44 +0100, Andy Shevchenko wrote:
-> > > > > > > > On Mon, Nov 17, 2025 at 08:23:35PM +0100, Francesco Lavra
-> > > > > > > > wrote:
-> > > > > > > > > On Thu, 2025-10-30 at 15:56 +0200, Andy Shevchenko wrote:
-> > > > > > > > > > On Thu, Oct 30, 2025 at 12:23:19PM +0100, Francesco
-> > > > > > > > > > Lavra
-> > > > > > > > > > wrote:
-> > > > > > > > > > > On Thu, 2025-10-30 at 10:24 +0200, Andy Shevchenko
-> > > > > > > > > > > wrote:
-> > > > > > > > > > > > On Thu, Oct 30, 2025 at 08:27:51AM +0100, Francesco
-> > > > > > > > > > > > Lavra
-> > > > > > > > > > > > wrote:
->=20
-> ...
->=20
-> > > > > > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0old_en=
-able =3D hw->enable_event[event];
-> > > > > > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0new_en=
-able =3D state ? (old_enable |
-> > > > > > > > > > > > > BIT(axis))
-> > > > > > > > > > > > > :
-> > > > > > > > > > > > > (old_enable
-> > > > > > > > > > > > > &
-> > > > > > > > > > > > > ~BIT(axis));
-> > > > > > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!!=
-old_enable =3D=3D !!new_enable)
-> > > > > > > > > > > >=20
-> > > > > > > > > > > > This is an interesting check. So, old_enable and
-> > > > > > > > > > > > new_enable
-> > > > > > > > > > > > are
-> > > > > > > > > > > > _not_
-> > > > > > > > > > > > booleans, right?
-> > > > > > > > > > > > So, this means the check test if _any_ of the bit
-> > > > > > > > > > > > was
-> > > > > > > > > > > > set and
-> > > > > > > > > > > > kept
-> > > > > > > > > > > > set or
-> > > > > > > > > > > > none were set
-> > > > > > > > > > > > and non is going to be set. Correct? I think a
-> > > > > > > > > > > > short
-> > > > > > > > > > > > comment
-> > > > > > > > > > > > would be
-> > > > > > > > > > > > good to have.
-> > > > > > > > > > >=20
-> > > > > > > > > > > old_enable and new_enable are bit masks, but we are
-> > > > > > > > > > > only
-> > > > > > > > > > > interested
-> > > > > > > > > > > in
-> > > > > > > > > > > whether any bit is set, to catch the cases where the
-> > > > > > > > > > > bit
-> > > > > > > > > > > mask
-> > > > > > > > > > > goes
-> > > > > > > > > > > from
-> > > > > > > > > > > zero to non-zero and vice versa. Will add a comment.
-> > > > > > > > > >=20
-> > > > > > > > > > If it's a true bitmask (assuming unsigned long type)
-> > > > > > > > > > then
-> > > > > > > > > > all
-> > > > > > > > > > this
-> > > > > > > > > > can be
-> > > > > > > > > > done
-> > > > > > > > > > via bitmap API calls. Otherwise you can also compare a
-> > > > > > > > > > Hamming
-> > > > > > > > > > weights of
-> > > > > > > > > > them
-> > > > > > > > > > (probably that gives even the same size of the object
-> > > > > > > > > > file,
-> > > > > > > > > > but
-> > > > > > > > > > !!
-> > > > > > > > > > instructions
-> > > > > > > > > > =C2=A0will be changed to hweight() calls (still a singl=
-e
-> > > > > > > > > > assembly
-> > > > > > > > > > instr on
-> > > > > > > > > > modern
-> > > > > > > > > > =C2=A0architectures).
-> > > > > > > > >=20
-> > > > > > > > > These are u8 variables, so we can't use the bitmap API.
-> > > > > > > >=20
-> > > > > > > > OK. But hweight8() can still be used.
-> > > > > > > >=20
-> > > > > > > > > And I don't
-> > > > > > > > > understand the reason for using hweight(), given that the
-> > > > > > > > > !!
-> > > > > > > > > operators
-> > > > > > > > > would still be needed.
-> > > > > > > >=20
-> > > > > > > > No, you won't need !! with that.
-> > > > > > >=20
-> > > > > > > I still don't understand. Are you proposing to replace `if
-> > > > > > > (!!old_enable =3D=3D
-> > > > > > > !!new_enable)` with `if (hweight8(old_enable) =3D=3D
-> > > > > > > hweight8(new_enable))`?
-> > > > > > > That won't work, because we only need to check whether the
-> > > > > > > Hamming
-> > > > > > > weight
-> > > > > > > goes from zero to non-zero and vice versa.
-> > > > > >=20
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 old_enable =3D hw->enable_=
-event[event];
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 new_enable =3D state ? (ol=
-d_enable | BIT(axis)) :
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 (old_enable & ~BIT(axis));
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!!old_enable =3D=3D !!=
-new_enable)
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 return 0;
-> > > > > >=20
-> > > > > > If I am not mistaken this will do exactly the same in a simpler
-> > > > > > way.
-> > > > > >=20
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0old_enable =3D =
-hw->enable_event[event];
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (state)
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0new_enable =3D old_enable | BIT(axis);
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0else
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0new_enable =3D old_enable & ~BIT(axis);
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if ((new_enable=
- ^ old_enable) !=3D BIT(axis))
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> > > > >=20
-> > > > > This doesn't look right to me, if new_enable differs from
-> > > > > old_enable
-> > > > > by
-> > > > > just one bit (which it does), then the XOR result will always
-> > > > > have
-> > > > > this bit
-> > > > > (and no others) set, so (new_enable ^ old_enable) will always
-> > > > > equal
-> > > > > BIT(axis).
-> > > > > We are not checking if the bit was already set or clear, when
-> > > > > this
-> > > > > code
-> > > > > runs we already know that the bit is changing, what we are
-> > > > > checking
-> > > > > is
-> > > > > whether all bits are zero before or after this change.
-> > > >=20
-> > > > The check I proposed is to have a look for the cases when
-> > > > old_enable
-> > > > was 0 and
-> > > > the BIT(axis) is set and when the BIT(axis) was _the last_ bit in
-> > > > the
-> > > > mask that
-> > > > got reset. If it's not the case, the code will return 0. I think my
-> > > > check is
-> > > > correct.
-> > > >=20
-> > > > Should I write a test case?
-> > >=20
-> > > FWIW,
-> > > https://gist.github.com/andy-shev/afe4c0e009cb3008ac613d8384aaa6eb
-> >=20
-> > The code in your gist produces:
-> >=20
-> > Initial event: 0x92, new state: True for bit 0x20
->=20
-> Initial event is 10010010b, we assume that we got in the code when
-> required
-> state is to 'set' (True) with axis =3D 5 (means 00100000b when powered).
->=20
-> The [-] are special cases just to show the algo.
->=20
-> > [-] 0x00 | 0x20 --> 1: handle
->=20
-> If initial event is 0 we handle
->=20
-> If _after_ that the bit 5 set (which is NOT the case in _this_
-> iteration),
-> we will stop handling.
+This is my first time contributing to the IIO subsystem and making
+dt-bindings documentation, so (don't) go easy on me :p.
 
-We have to stop handling not only if bit 5 is set, but also if any other
-bit is set after that.
+As explained in Patch 2 changelog, the DRDY interrupt line is shared
+with the MOSI pin. This awkward quirk is also found on some Analog
+Devices sigma-delta SPI ADCs, so the interrupt and trigger design is
+inspired by those.
 
-> > [0] 0x92 | 0x20 --> 1: handle
->=20
-> So, it's again step 1. I _assumed_ that your code works and sets the bit.
+Thank you in advance for your reviews.
 
-Even if it's again step 1, this is not supposed to be handled, because
-there are bits already set in the current bitmask.
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+Kurt Borja (2):
+      dt-bindings: iio: adc: Add TI ADS1018/ADS1118
+      iio: adc: Add ti-ads1x18 driver
 
-Enabling an event source for an axis may need two registers to be set:
-1) an axis-specific enable register
-2) an event-specific enable register (global for all axes)
+ .../devicetree/bindings/iio/adc/ti,ads1118.yaml    | 132 +++
+ MAINTAINERS                                        |   7 +
+ drivers/iio/adc/Kconfig                            |  12 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/iio/adc/ti-ads1x18.c                       | 919 +++++++++++++++++++++
+ 5 files changed, 1071 insertions(+)
+---
+base-commit: f9e05791642810a0cf6237d39fafd6fec5e0b4bb
+change-id: 20251012-ads1x18-0d0779d06690
 
-If no events are enabled on any axis, when we enable the event source for
-axis X, we have to do both steps above; if then we enable the same event
-source for axis Y, we have to do just step 1 but not step 2; and that's
-what the (!!old_enable =3D=3D !!new_enable) check is supposed to do: to che=
-ck
-if, after setting the axis-specific enable register, we have to set also
-the event-specific enable register. If I replace that check with
-((new_enable ^ old_enable) !=3D BIT(axis)), then I'm doing both steps for
-every axis, which is unnecessary when enabling the event (because we don't
-need to set again the event-specific register after we set it for the first
-axis), and is wrong when disabling the event (because disabling the event
-for a single axis would inadvertently disable it globally (i.e. for all
-axes).
+-- 
+ ~ Kurt
 
-
---=-/TigasTORFHwyr9i7yRy
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmkgffUACgkQ7fE7c86U
-Nl9szgv+LKhxgC+3fxp0jw/GnRB32LR5SN9ZJD2dVgU6VQ5PQXmjChx2HhsKnfYs
-jRxfYE5UkEgifgKva2ohC/z/3+XkZxKDYnOH0KGixmJuAipDUJzdSugGb1upeArT
-D7I3eFEdNKmyB6SaXenhbWWEg8NsWTcGQxt/qk6qEJnlj4R+DMMw4ATMPg89b9mu
-Pnm+yMK3DoQQrGaQvDhzVr2k5qk0abjeCLB04TRn46qc9P58jGo9qm0bqOpfLznb
-jFWLXYxXLgW3yqw12tDaSaCFvGvXimfNxGCW7CqCotAU6w1H7PVdQtVt4kUGe3C3
-xSmS3TaK73XCWtNXx5oQWdQwZza+c6RlzPAs9+awoZxK4baMGf10XbxVr83E+Iy5
-R+xq0R9oFzvsAcpt+2cvlNrK8dvnDhKOTBYwvhjUK+tqWEdXRqOJjqBNUBqc0Vl4
-IPiZNE4dcWoBpI72WgWoi0Ap0EFaavKJC/nVsd2qWoXFe28K2VIel7ApFYpxATtd
-QG9CQdDN
-=qgju
------END PGP SIGNATURE-----
-
---=-/TigasTORFHwyr9i7yRy--
 

@@ -1,468 +1,299 @@
-Return-Path: <linux-iio+bounces-26351-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26352-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36DD3C78005
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 09:53:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E257C7814C
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 10:16:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F406F4E834D
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 08:53:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9937A4EA380
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Nov 2025 09:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295B62BD001;
-	Fri, 21 Nov 2025 08:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20E633EAF8;
+	Fri, 21 Nov 2025 09:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r1S9Qe1m"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hR/XHQOW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D776713777E;
-	Fri, 21 Nov 2025 08:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31928339B53
+	for <linux-iio@vger.kernel.org>; Fri, 21 Nov 2025 09:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763715192; cv=none; b=GB8qc+d90mSt/kvZLK4GGcnerq1NifniBO+G5LXDxajFlf/n/Bcatsor2jXySbUuoUUbq1Kr/4O0EKaQlMUX4McRrEmpAEEFoFDrT2kPgjDC6mJMzOMtdiFsba8T1g4+A62gIH7kSWO/YTLLtQI1EUm75Q1YyDFdPVKwui+cwKA=
+	t=1763716457; cv=none; b=NgihQJ4WELUyx98PV0v5R8matUZLhVsEozfyiLSVEHt0eMODcHwi1tCRBwQ1cMDifGc/S0GDS9RBi8DZJuywnrHGKCMvHoYuBycQBEke+JNSD1I1QMRvVTixTbSa0dJFja/cKkUY2oRpWLsCfoQfbBEGIWiFuGU1fUwz/X+jowM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763715192; c=relaxed/simple;
-	bh=0EGQUvFaaPO+K5NSQwTtmSbj3iZDfTfRBMueMbzncGo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=glKY7whvFedIaIW7yGxrYNRw4H7noV2FpIB5/Sozo/lmE7Y9CYUPSLE6nDCgdK+HfADCOItEV65D8vm5ZGTtv9hO3iDC+4s/S4XOsUSFaT60b8wEOX/B553OkFKC5AedJETatXTbjnBS9MzriCEM1N6YbzWf67emV7gQJjd7oTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r1S9Qe1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBA4C4CEF1;
-	Fri, 21 Nov 2025 08:53:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763715192;
-	bh=0EGQUvFaaPO+K5NSQwTtmSbj3iZDfTfRBMueMbzncGo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r1S9Qe1mGDF0MyhpYbtpQtfjNUeSjMz+jsTLHb89wMK0kEULgfOg0QWjeTrV6Tuwk
-	 zkmM7QD5KeuRAeqdyYnUlpDBjW9AcYeLsIS3WhNrGNfl5KSBARvzrtPGHC0cw12kuL
-	 AkNDUoU3xyED+9qM/hTz2aLQB41QvKJ7SkXMCBI4DNQPxyi869BOlGNgVszNkgJgd7
-	 ysYZM7MkMNVfydcwhLv33ktj0YamTtT/M9alv4AnsLsWKhropW6GtXrPzzHZWBHCAf
-	 OOJYAyWbuyr18z4/czoBFZs9a2GT6HDxqqoodH524+AaQpKDhBeZUdhd/bvB8gNPLU
-	 qwF9wvVL0Dh6g==
-Date: Fri, 21 Nov 2025 09:53:10 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Francesco Lavra <flavra@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 6/9] iio: imu: st_lsm6dsx: make event management
- functions generic
-Message-ID: <aSAodnHzW6fvm9yb@lore-desk>
-References: <20251120082615.3263892-1-flavra@baylibre.com>
- <20251120082615.3263892-7-flavra@baylibre.com>
+	s=arc-20240116; t=1763716457; c=relaxed/simple;
+	bh=1Cad4Yu7sxw2yU1HvK2lu14O1FOytLHWk5gMsFz2OzM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FaPjzLMesQIlhEYe+XjwjCEG4ueaZihGWPWwSVtihOWhYeEzsNUNq2xfoZQhMPCv7Zcq9DDRIIDgYZbfDwZgYK4cx/JhlDoEYrpBFf7or5SSuNRGRdwuLErYaziJSR3cJzFWuNSDhyV4PswhaufKsq7cbL9y+7J/9jZNrhPGfnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hR/XHQOW; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42b32a3e78bso1479692f8f.0
+        for <linux-iio@vger.kernel.org>; Fri, 21 Nov 2025 01:14:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763716453; x=1764321253; darn=vger.kernel.org;
+        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
+         :to:from:subject:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1Cad4Yu7sxw2yU1HvK2lu14O1FOytLHWk5gMsFz2OzM=;
+        b=hR/XHQOWrTUmXdrJ8v8iIkfllE50OZkuPKVtphpwc2cdyEelLP00EWLHDzks3csaZQ
+         4b6vh5y7ypwvm1vlFDMb+lXPXrwMJbcIzFulluGsFW+PFMKqqpGYyPKbWxTcNDBhIpyl
+         mxONeJECYt7+c2gb8sd+fsRNWhhp25B9qgfU4sn/uZlcAF2TVzukTcd8DE1YPWenc6HV
+         1MrS64Fa9djtWWlVpfnzzy+cpB+ebDWNVXUbE0MxkhlSnwl3kGNtTpfwTtbOwCLU6a8t
+         v2jfDV9QwMo4ychY5piK1VTKGVw2oJcL8poTzQRY6NOIWWBQ7WQ039tEueODmxB/dmdF
+         cVRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763716453; x=1764321253;
+        h=mime-version:user-agent:organization:references:in-reply-to:date:cc
+         :to:from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1Cad4Yu7sxw2yU1HvK2lu14O1FOytLHWk5gMsFz2OzM=;
+        b=Clh5smyVmpzGmct66eKOgGQ5DoHxQp5SOGfVU2fM6K7S03CZj0224I9mrkU/JME9dM
+         QqMHb4B6MiMoXwT1rFh5LfYMtDTDZ6x3CvLfZXwGOTmFybtblEMWjrdchOJdZeEHoSKg
+         4prU82OMquVIhWWd6Cfn+9SCiPDPQ+pmFrEqjddOo+ScZHO63l/jPIvl6J6yI0AxY+Io
+         kJoLS93Bu8CByTB5jZZ8ivFWRUn2Qe5oC0Xf7zRpKx09Kf3RvPGpylXU0H19sbgYvCRS
+         tJVjcQoUOOOfo5S/ReHIDs5MlpSFGcM927X3hV8/q9ArN6wlkO7ve0xgdVHzs5NIGkyh
+         2aUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWe9unN4wR2f2m4GhzcGcosxCOFFSUpSILlOaQv2A5EdIrOe/XXY5rVmCtt9uFxIvve4UFvaM2a/ec=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyxZxERYG9xZUqEovt8sT9rs1x3al4asr9mqxnQNXg2uY/RXL9
+	9HyMSs4mqejY5YrEGROcI6Us+ORFCRyd6cvFDC9fSPQzjaiwgksrSLciiQ4lXFnVHXh4omQgZA4
+	HbhsE
+X-Gm-Gg: ASbGncv9SrCOO426sGPsrBtgvozOz5XuzcEOXPUnLT11dV5NB945gpZE6aa7F3Amvzh
+	cBIAE06oV1p/LeV+GuXq75OnCX5WwtNk1ke9EIv4qhAOcfnXD1V9vIAQKtkraed8fP1kGaL02jC
+	kTO884ptK2Gj9jnAqqO8/Kcrrcvn0iMqObsaTvSlCZSTfhcICNtIrL5jqr9R7bQWhLA5IcK3JtT
+	Qmtr50/r8zs5yj9FZ98TMzWsyvehzr2h82wEpglakLvU8o3sIxD7iT11l8RB05uxYWlo2TI3+qO
+	Sz9FYQzdQTdvPefVaApl7+OR/wS+YP9DXyTUqMfU+HGzwJYlTsuXX6X+CayP5vZrSCh53/GQvXg
+	M5vV9E1MOeWOU08uMSw/7tdg/2eLGlQADAKvS0GzCkBqNPg6FC2MnKzErvxpQp4IGOV9FQNs51h
+	DL9Wcky0q9ogvVBQ==
+X-Google-Smtp-Source: AGHT+IF9C1z74yl1sSJHydBt4B4BwcMPHGHILNFAg/vkmACHM/u3tnCTEIMtoF3jGucjxVM+AFMbkQ==
+X-Received: by 2002:a05:6000:2411:b0:42b:3a84:1ee1 with SMTP id ffacd0b85a97d-42cc1cbd1f6mr1434468f8f.18.1763716453421;
+        Fri, 21 Nov 2025 01:14:13 -0800 (PST)
+Received: from [10.203.83.154] ([151.37.169.12])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f363c0sm9815487f8f.18.2025.11.21.01.14.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Nov 2025 01:14:12 -0800 (PST)
+Message-ID: <e448a6fdb420b0c0561ab2255820d2ba62f838a1.camel@baylibre.com>
+Subject: Re: [PATCH 8/9] iio: imu: st_lsm6dsx: add event configurability on
+ a per axis basis
+From: Francesco Lavra <flavra@baylibre.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Jonathan Cameron
+ <jic23@kernel.org>,  David Lechner <dlechner@baylibre.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,  linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Fri, 21 Nov 2025 10:14:06 +0100
+In-Reply-To: <aR9ej_7o0te-HO8P@smile.fi.intel.com>
+References: <20251030072752.349633-9-flavra@baylibre.com>
+	 <aQMgxUNA8XNhPZdG@smile.fi.intel.com>
+	 <c1c7222b35a0a7bcddc5d88c92f64d2f2a75fdfd.camel@baylibre.com>
+	 <aQNueWesrf_vXO06@smile.fi.intel.com>
+	 <5b23d077d8882d6b2a2e66817b1b6bcebc6bb5a2.camel@baylibre.com>
+	 <aRxN_Gnsl0qq8wDn@black.igk.intel.com>
+	 <82bf13fd5ada664d9e4fdbc3ee453204e55d318b.camel@baylibre.com>
+	 <aR7Z19wgPksymwkw@black.igk.intel.com>
+	 <50107aecc446ba42e312b81e18a6ffe871fa3291.camel@baylibre.com>
+	 <aR8esn94zI140351@smile.fi.intel.com> <aR9ej_7o0te-HO8P@smile.fi.intel.com>
+Organization: BayLibre
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-ZIeMP/I06AU+I7WukbTm"
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="W+u8RGf0S8Ui6rb4"
-Content-Disposition: inline
-In-Reply-To: <20251120082615.3263892-7-flavra@baylibre.com>
 
 
---W+u8RGf0S8Ui6rb4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--=-ZIeMP/I06AU+I7WukbTm
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-> In preparation for adding support for more event types, use an array
-> indexed by event ID instead of a scalar value to store enabled events, and
-> refactor the functions to configure and report events so that their
-> implementation is not specific for wakeup events. Move the logic to update
-> the global event interrupt enable flag from st_lsm6dsx_event_setup() to i=
-ts
-> calling function, so that it can take into account also event sources
-> different from the source being configured. While changing the signature =
-of
-> the st_lsm6dsx_event_setup() function, opportunistically add the currently
-> unused `axis` parameter, which will be used when adding support for
-> enabling and disabling events on a per axis basis.
-
-Just some nits inline. Fixing them:
-
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
+On Thu, 2025-11-20 at 20:31 +0200, Andy Shevchenko wrote:
+> On Thu, Nov 20, 2025 at 03:59:18PM +0200, Andy Shevchenko wrote:
+> > On Thu, Nov 20, 2025 at 12:43:09PM +0100, Francesco Lavra wrote:
+> > > On Thu, 2025-11-20 at 10:05 +0100, Andy Shevchenko wrote:
+> > > > On Tue, Nov 18, 2025 at 12:01:57PM +0100, Francesco Lavra wrote:
+> > > > > On Tue, 2025-11-18 at 11:44 +0100, Andy Shevchenko wrote:
+> > > > > > On Mon, Nov 17, 2025 at 08:23:35PM +0100, Francesco Lavra
+> > > > > > wrote:
+> > > > > > > On Thu, 2025-10-30 at 15:56 +0200, Andy Shevchenko wrote:
+> > > > > > > > On Thu, Oct 30, 2025 at 12:23:19PM +0100, Francesco Lavra
+> > > > > > > > wrote:
+> > > > > > > > > On Thu, 2025-10-30 at 10:24 +0200, Andy Shevchenko wrote:
+> > > > > > > > > > On Thu, Oct 30, 2025 at 08:27:51AM +0100, Francesco
+> > > > > > > > > > Lavra
+> > > > > > > > > > wrote:
 >=20
-> Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-> ---
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |   2 +-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 149 ++++++++++++++-----
->  2 files changed, 109 insertions(+), 42 deletions(-)
+> ...
 >=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st=
-_lsm6dsx/st_lsm6dsx.h
-> index e727a87413e5..037b3b817e83 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-> @@ -446,7 +446,7 @@ struct st_lsm6dsx_hw {
->  	u8 sip;
-> =20
->  	u8 irq_routing;
-> -	u8 enable_event;
-> +	u8 enable_event[ST_LSM6DSX_EVENT_MAX];
-> =20
->  	u8 *buff;
-> =20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/i=
-mu/st_lsm6dsx/st_lsm6dsx_core.c
-> index 117ecb080d8e..18a09ed6907c 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-> @@ -1747,11 +1747,16 @@ static int
->  st_lsm6dsx_check_events(struct st_lsm6dsx_sensor *sensor)
->  {
->  	struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> +	int event;
-> =20
->  	if (sensor->id !=3D ST_LSM6DSX_ID_ACC)
->  		return 0;
-> =20
-> -	return hw->enable_event;
-> +	for (event =3D 0; event < ST_LSM6DSX_EVENT_MAX; event++) {
-> +		if (hw->enable_event[event])
-> +			return true;
-> +	}
-> +	return false;
->  }
-> =20
->  int st_lsm6dsx_sensor_set_enable(struct st_lsm6dsx_sensor *sensor,
-> @@ -1864,9 +1869,10 @@ static int st_lsm6dsx_write_raw(struct iio_dev *ii=
-o_dev,
->  	return err;
->  }
-> =20
-> -static int st_lsm6dsx_event_setup(struct st_lsm6dsx_hw *hw, bool state)
-> +static int st_lsm6dsx_event_setup(struct st_lsm6dsx_hw *hw,
-> +				  enum st_lsm6dsx_event_id event, int axis,
-> +				  bool state)
->  {
-> -	const struct st_lsm6dsx_reg *reg;
->  	const struct st_lsm6dsx_event_src *src;
->  	u8 enable_mask;
->  	unsigned int data;
-> @@ -1875,22 +1881,24 @@ static int st_lsm6dsx_event_setup(struct st_lsm6d=
-sx_hw *hw, bool state)
->  	if (!hw->irq_routing)
->  		return -ENOTSUPP;
-> =20
-> -	reg =3D &hw->settings->event_settings.enable_reg;
-> -	if (reg->addr) {
-> -		data =3D ST_LSM6DSX_SHIFT_VAL(state, reg->mask);
-> -		err =3D st_lsm6dsx_update_bits_locked(hw, reg->addr,
-> -						    reg->mask, data);
-> -		if (err < 0)
-> -			return err;
-> -	}
-> -
-> -	/* Enable wakeup interrupt */
-> -	src =3D &hw->settings->event_settings.sources[ST_LSM6DSX_EVENT_WAKEUP];
-> +	/* Enable/disable event interrupt */
-> +	src =3D &hw->settings->event_settings.sources[event];
->  	enable_mask =3D src->enable_mask;
->  	data =3D ST_LSM6DSX_SHIFT_VAL(state, enable_mask);
->  	return st_lsm6dsx_update_bits_locked(hw, hw->irq_routing, enable_mask, =
-data);
->  }
-> =20
-> +static enum st_lsm6dsx_event_id
-> +st_lsm6dsx_get_event_id(enum iio_event_type type)
-> +{
-> +	switch (type) {
-> +	case IIO_EV_TYPE_THRESH:
-> +		return ST_LSM6DSX_EVENT_WAKEUP;
-> +	default:
-> +		return ST_LSM6DSX_EVENT_MAX;
-> +	}
-> +}
-> +
->  static int st_lsm6dsx_read_event(struct iio_dev *iio_dev,
->  				 const struct iio_chan_spec *chan,
->  				 enum iio_event_type type,
-> @@ -1898,16 +1906,17 @@ static int st_lsm6dsx_read_event(struct iio_dev *=
-iio_dev,
->  				 enum iio_event_info info,
->  				 int *val, int *val2)
->  {
-> +	enum st_lsm6dsx_event_id event =3D st_lsm6dsx_get_event_id(type);
->  	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
->  	struct st_lsm6dsx_hw *hw =3D sensor->hw;
->  	const struct st_lsm6dsx_reg *reg;
->  	u8 data;
->  	int err;
-> =20
-> -	if (type !=3D IIO_EV_TYPE_THRESH)
-> +	if (event =3D=3D ST_LSM6DSX_EVENT_MAX)
->  		return -EINVAL;
-> =20
-> -	reg =3D &hw->settings->event_settings.sources[ST_LSM6DSX_EVENT_WAKEUP].=
-value;
-> +	reg =3D &hw->settings->event_settings.sources[event].value;
->  	err =3D st_lsm6dsx_read_locked(hw, reg->addr, &data, sizeof(data));
->  	if (err < 0)
->  		return err;
-> @@ -1926,19 +1935,20 @@ st_lsm6dsx_write_event(struct iio_dev *iio_dev,
->  		       enum iio_event_info info,
->  		       int val, int val2)
->  {
-> +	enum st_lsm6dsx_event_id event =3D st_lsm6dsx_get_event_id(type);
->  	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
->  	struct st_lsm6dsx_hw *hw =3D sensor->hw;
->  	const struct st_lsm6dsx_reg *reg;
->  	unsigned int data;
->  	int err;
-> =20
-> -	if (type !=3D IIO_EV_TYPE_THRESH)
-> +	if (event =3D=3D ST_LSM6DSX_EVENT_MAX)
->  		return -EINVAL;
-> =20
->  	if (val < 0 || val > 31)
->  		return -EINVAL;
-> =20
-> -	reg =3D &hw->settings->event_settings.sources[ST_LSM6DSX_EVENT_WAKEUP].=
-value;
-> +	reg =3D &hw->settings->event_settings.sources[event].value;
->  	data =3D ST_LSM6DSX_SHIFT_VAL(val, reg->mask);
->  	err =3D st_lsm6dsx_update_bits_locked(hw, reg->addr,
->  					    reg->mask, data);
-> @@ -1954,13 +1964,53 @@ st_lsm6dsx_read_event_config(struct iio_dev *iio_=
-dev,
->  			     enum iio_event_type type,
->  			     enum iio_event_direction dir)
->  {
-> +	enum st_lsm6dsx_event_id event =3D st_lsm6dsx_get_event_id(type);
->  	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
->  	struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> =20
-> -	if (type !=3D IIO_EV_TYPE_THRESH)
-> +	if (event =3D=3D ST_LSM6DSX_EVENT_MAX)
->  		return -EINVAL;
-> =20
-> -	return !!(hw->enable_event & BIT(chan->channel2));
-> +	return !!(hw->enable_event[event] & BIT(chan->channel2));
-> +}
-> +
-> +/**
-> + * st_lsm6dsx_check_other_events - Check for enabled sensor events.
-> + * @hw: Sensor hardware instance.
-> + * @curr: Current event type.
-> + *
-> + * Return: whether any events other than @curr are enabled.
-> + */
-> +static bool st_lsm6dsx_check_other_events(struct st_lsm6dsx_hw *hw,
-> +					  enum st_lsm6dsx_event_id curr)
-> +{
-> +	enum st_lsm6dsx_event_id other;
-> +
-> +	for (other =3D 0; other < ST_LSM6DSX_EVENT_MAX; other++) {
-> +		if (other !=3D curr && hw->enable_event[other])
-> +			return true;
-> +	}
-
-new line here
-
-> +	return false;
-> +}
-> +
-> +static int st_lsm6dsx_events_enable(struct st_lsm6dsx_sensor *sensor,
-> +				    bool state)
-> +{
-> +	struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> +	const struct st_lsm6dsx_reg *reg;
-> +
-> +	reg =3D &hw->settings->event_settings.enable_reg;
-> +	if (reg->addr) {
-> +		int err;
-> +
-> +		err =3D regmap_update_bits(hw->regmap, reg->addr, reg->mask,
-> +					 ST_LSM6DSX_SHIFT_VAL(state, reg->mask));
-> +		if (err)
-> +			return err;
-> +	}
-
-new line here
-
-> +	if (state || !(hw->fifo_mask & BIT(sensor->id)))
-> +		return __st_lsm6dsx_sensor_set_enable(sensor, state);
-
-new line here
-
-> +	return 0;
->  }
-> =20
->  static int
-> @@ -1969,22 +2019,24 @@ st_lsm6dsx_write_event_config(struct iio_dev *iio=
-_dev,
->  			      enum iio_event_type type,
->  			      enum iio_event_direction dir, bool state)
->  {
-> +	enum st_lsm6dsx_event_id event =3D st_lsm6dsx_get_event_id(type);
->  	struct st_lsm6dsx_sensor *sensor =3D iio_priv(iio_dev);
->  	struct st_lsm6dsx_hw *hw =3D sensor->hw;
-> +	int axis =3D chan->channel2;
-
-I think you can drop axis here and just use chan->channel2 directly.
-
->  	u8 enable_event;
->  	int err;
-> =20
-> -	if (type !=3D IIO_EV_TYPE_THRESH)
-> +	if (event =3D=3D ST_LSM6DSX_EVENT_MAX)
->  		return -EINVAL;
-> =20
->  	if (state) {
-> -		enable_event =3D hw->enable_event | BIT(chan->channel2);
-> +		enable_event =3D hw->enable_event[event] | BIT(axis);
-> =20
->  		/* do not enable events if they are already enabled */
-> -		if (hw->enable_event)
-> +		if (hw->enable_event[event])
->  			goto out;
->  	} else {
-> -		enable_event =3D hw->enable_event & ~BIT(chan->channel2);
-> +		enable_event =3D hw->enable_event[event] & ~BIT(axis);
-> =20
->  		/* only turn off sensor if no events is enabled */
->  		if (enable_event)
-> @@ -1992,22 +2044,24 @@ st_lsm6dsx_write_event_config(struct iio_dev *iio=
-_dev,
->  	}
-> =20
->  	/* stop here if no changes have been made */
-> -	if (hw->enable_event =3D=3D enable_event)
-> +	if (hw->enable_event[event] =3D=3D enable_event)
->  		return 0;
-> =20
-> -	err =3D st_lsm6dsx_event_setup(hw, state);
-> +	err =3D st_lsm6dsx_event_setup(hw, event, axis, state);
->  	if (err < 0)
->  		return err;
-> =20
->  	mutex_lock(&hw->conf_lock);
-> -	if (enable_event || !(hw->fifo_mask & BIT(sensor->id)))
-> -		err =3D __st_lsm6dsx_sensor_set_enable(sensor, state);
-> +	if (enable_event)
-> +		err =3D st_lsm6dsx_events_enable(sensor, true);
-> +	else if (!st_lsm6dsx_check_other_events(hw, event))
-> +		err =3D st_lsm6dsx_events_enable(sensor, false);
->  	mutex_unlock(&hw->conf_lock);
->  	if (err < 0)
->  		return err;
-> =20
->  out:
-> -	hw->enable_event =3D enable_event;
-> +	hw->enable_event[event] =3D enable_event;
-> =20
->  	return 0;
->  }
-> @@ -2418,18 +2472,20 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(st=
-ruct st_lsm6dsx_hw *hw,
->  }
-> =20
->  static bool
-> -st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
-> +st_lsm6dsx_report_events(struct st_lsm6dsx_hw *hw, enum st_lsm6dsx_event=
-_id id,
-> +			 enum iio_event_type type, enum iio_event_direction dir)
->  {
-> +	u8 enable_event =3D hw->enable_event[id];
-
-same here, can you just use hw->enable_event[id] directly?
-
->  	const struct st_lsm6dsx_event_settings *event_settings;
->  	const struct st_lsm6dsx_event_src *src;
->  	int err, data;
->  	s64 timestamp;
-> =20
-> -	if (!hw->enable_event)
-> +	if (!enable_event)
->  		return false;
-> =20
->  	event_settings =3D &hw->settings->event_settings;
-> -	src =3D &event_settings->sources[ST_LSM6DSX_EVENT_WAKEUP];
-> +	src =3D &event_settings->sources[id];
->  	err =3D st_lsm6dsx_read_locked(hw, src->status_reg,
->  				     &data, sizeof(data));
->  	if (err < 0)
-> @@ -2437,38 +2493,49 @@ st_lsm6dsx_report_motion_event(struct st_lsm6dsx_=
-hw *hw)
-> =20
->  	timestamp =3D iio_get_time_ns(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
->  	if ((data & src->status_z_mask) &&
-> -	    (hw->enable_event & BIT(IIO_MOD_Z)))
-> +	    (enable_event & BIT(IIO_MOD_Z)))
->  		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
->  			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
->  						  0,
->  						  IIO_MOD_Z,
-> -						  IIO_EV_TYPE_THRESH,
-> -						  IIO_EV_DIR_EITHER),
-> +						  type,
-> +						  dir),
->  						  timestamp);
-> =20
->  	if ((data & src->status_y_mask) &&
-> -	    (hw->enable_event & BIT(IIO_MOD_Y)))
-> +	    (enable_event & BIT(IIO_MOD_Y)))
->  		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
->  			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
->  						  0,
->  						  IIO_MOD_Y,
-> -						  IIO_EV_TYPE_THRESH,
-> -						  IIO_EV_DIR_EITHER),
-> +						  type,
-> +						  dir),
->  						  timestamp);
-> =20
->  	if ((data & src->status_x_mask) &&
-> -	    (hw->enable_event & BIT(IIO_MOD_X)))
-> +	    (enable_event & BIT(IIO_MOD_X)))
->  		iio_push_event(hw->iio_devs[ST_LSM6DSX_ID_ACC],
->  			       IIO_MOD_EVENT_CODE(IIO_ACCEL,
->  						  0,
->  						  IIO_MOD_X,
-> -						  IIO_EV_TYPE_THRESH,
-> -						  IIO_EV_DIR_EITHER),
-> +						  type,
-> +						  dir),
->  						  timestamp);
-> =20
->  	return data & src->status_mask;
->  }
-> =20
-> +static bool st_lsm6dsx_report_motion_event(struct st_lsm6dsx_hw *hw)
-> +{
-> +	bool events_found;
-> +
-> +	events_found =3D st_lsm6dsx_report_events(hw, ST_LSM6DSX_EVENT_WAKEUP,
-> +						IIO_EV_TYPE_THRESH,
-> +						IIO_EV_DIR_EITHER);
-> +
-> +	return events_found;
-> +}
-> +
->  static irqreturn_t st_lsm6dsx_handler_thread(int irq, void *private)
->  {
->  	struct st_lsm6dsx_hw *hw =3D private;
-> --=20
-> 2.39.5
+> > > > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0old_enable=
+ =3D hw->enable_event[event];
+> > > > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0new_enable=
+ =3D state ? (old_enable | BIT(axis))
+> > > > > > > > > > > :
+> > > > > > > > > > > (old_enable
+> > > > > > > > > > > &
+> > > > > > > > > > > ~BIT(axis));
+> > > > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!!old_=
+enable =3D=3D !!new_enable)
+> > > > > > > > > >=20
+> > > > > > > > > > This is an interesting check. So, old_enable and
+> > > > > > > > > > new_enable
+> > > > > > > > > > are
+> > > > > > > > > > _not_
+> > > > > > > > > > booleans, right?
+> > > > > > > > > > So, this means the check test if _any_ of the bit was
+> > > > > > > > > > set and
+> > > > > > > > > > kept
+> > > > > > > > > > set or
+> > > > > > > > > > none were set
+> > > > > > > > > > and non is going to be set. Correct? I think a short
+> > > > > > > > > > comment
+> > > > > > > > > > would be
+> > > > > > > > > > good to have.
+> > > > > > > > >=20
+> > > > > > > > > old_enable and new_enable are bit masks, but we are only
+> > > > > > > > > interested
+> > > > > > > > > in
+> > > > > > > > > whether any bit is set, to catch the cases where the bit
+> > > > > > > > > mask
+> > > > > > > > > goes
+> > > > > > > > > from
+> > > > > > > > > zero to non-zero and vice versa. Will add a comment.
+> > > > > > > >=20
+> > > > > > > > If it's a true bitmask (assuming unsigned long type) then
+> > > > > > > > all
+> > > > > > > > this
+> > > > > > > > can be
+> > > > > > > > done
+> > > > > > > > via bitmap API calls. Otherwise you can also compare a
+> > > > > > > > Hamming
+> > > > > > > > weights of
+> > > > > > > > them
+> > > > > > > > (probably that gives even the same size of the object file,
+> > > > > > > > but
+> > > > > > > > !!
+> > > > > > > > instructions
+> > > > > > > > =C2=A0will be changed to hweight() calls (still a single
+> > > > > > > > assembly
+> > > > > > > > instr on
+> > > > > > > > modern
+> > > > > > > > =C2=A0architectures).
+> > > > > > >=20
+> > > > > > > These are u8 variables, so we can't use the bitmap API.
+> > > > > >=20
+> > > > > > OK. But hweight8() can still be used.
+> > > > > >=20
+> > > > > > > And I don't
+> > > > > > > understand the reason for using hweight(), given that the !!
+> > > > > > > operators
+> > > > > > > would still be needed.
+> > > > > >=20
+> > > > > > No, you won't need !! with that.
+> > > > >=20
+> > > > > I still don't understand. Are you proposing to replace `if
+> > > > > (!!old_enable =3D=3D
+> > > > > !!new_enable)` with `if (hweight8(old_enable) =3D=3D
+> > > > > hweight8(new_enable))`?
+> > > > > That won't work, because we only need to check whether the
+> > > > > Hamming
+> > > > > weight
+> > > > > goes from zero to non-zero and vice versa.
+> > > >=20
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 old_enable =3D hw->enable_even=
+t[event];
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 new_enable =3D state ? (old_en=
+able | BIT(axis)) :
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 (old_enable & ~BIT(axis));
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!!old_enable =3D=3D !!new_=
+enable)
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 return 0;
+> > > >=20
+> > > > If I am not mistaken this will do exactly the same in a simpler
+> > > > way.
+> > > >=20
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0old_enable =3D hw->=
+enable_event[event];
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (state)
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0new_enable =3D old_enable | BIT(axis);
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0else
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0new_enable =3D old_enable & ~BIT(axis);
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if ((new_enable ^ o=
+ld_enable) !=3D BIT(axis))
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> > >=20
+> > > This doesn't look right to me, if new_enable differs from old_enable
+> > > by
+> > > just one bit (which it does), then the XOR result will always have
+> > > this bit
+> > > (and no others) set, so (new_enable ^ old_enable) will always equal
+> > > BIT(axis).
+> > > We are not checking if the bit was already set or clear, when this
+> > > code
+> > > runs we already know that the bit is changing, what we are checking
+> > > is
+> > > whether all bits are zero before or after this change.
+> >=20
+> > The check I proposed is to have a look for the cases when old_enable
+> > was 0 and
+> > the BIT(axis) is set and when the BIT(axis) was _the last_ bit in the
+> > mask that
+> > got reset. If it's not the case, the code will return 0. I think my
+> > check is
+> > correct.
+> >=20
+> > Should I write a test case?
 >=20
+> FWIW, https://gist.github.com/andy-shev/afe4c0e009cb3008ac613d8384aaa6eb
 
---W+u8RGf0S8Ui6rb4
-Content-Type: application/pgp-signature; name=signature.asc
+The code in your gist produces:
+
+Initial event: 0x92, new state: True for bit 0x20
+[-] 0x00 | 0x20 --> 1: handle
+[0] 0x92 | 0x20 --> 1: handle
+[1] 0x93 | 0x20 --> 1: handle
+[2] 0x93 | 0x20 --> 1: handle
+[3] 0x97 | 0x20 --> 1: handle
+[4] 0x9f | 0x20 --> 1: handle
+[5] 0x9f | 0x20 --> 1: handle
+[6] 0xbf | 0x20 --> 0: return
+[7] 0xff | 0x20 --> 0: return
+[-] 0xff | 0x20 --> 0: return
+
+But this is not what I need. I need "handle" to be there only when the
+bitmask goes from 0x00 to non-zero (in the above example, only at the first
+[-] iteration); all the other cases should be a "return". Likewise, if
+there is '&' instead of '|', I need "handle" to be there only when the
+bitmask goes from non-zero to 0x00.
+
+--=-ZIeMP/I06AU+I7WukbTm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaSAodgAKCRA6cBh0uS2t
-rPeDAP98dmHwWhrr07o0WB++YE+53oP0IQ6keJnBSd4Sonv72wD+Nm1YlZEiuRZQ
-1Y6z1cHKs34VbpY34mkxRlsPl5F6YA8=
-=fyGA
+iQGzBAABCgAdFiEEhleFT5U73KMewxTm7fE7c86UNl8FAmkgLV4ACgkQ7fE7c86U
+Nl/Y3Av/XW7ygoTih0T8fziBumdJw46kU/oPnzwU+y6yUkYs3n8pwzEYJAdfVwuA
+0pP7aGpsaMBC6J0iAfQyB9EX5rdpTS7WXVszBCy2bSgHPTUJX87b/icb3GERqb9q
+zEXYl+qZEfgconDuTQrtmMfBwqFUOtJ3q3CdTylt8bh0rkJDP7RNB7MfXyQswrOW
+Hbbz27rzQkusr7JF+oDcwkRXVbWM2AuW56H0cFwBRteDEtU49QvwZO9IotDZ0SxS
+FlicHEARYbbI8SWI932avg3mql9+YLZBGL3iO93CV3Hud3Bw1QhdzuGk3diezFIt
+Ps3JXCRhCHT46WBAKlDehvK0LIRSyoxORH5Yu29NMsQkWGPmasRldUf9cutaFhfo
+3/PQvzaEGsjMi87rOVcSZjTwAbkZzO1vGzbvEO20kYbrVXj4s103esC5mi/bX2pi
+3SLzlK87XJUtUZ01R2VbG2t7JKOTNDyatYfY7BOVAHGhIcwxm+eYeRa8vnCm972+
+nsaT6Bay
+=Bv3V
 -----END PGP SIGNATURE-----
 
---W+u8RGf0S8Ui6rb4--
+--=-ZIeMP/I06AU+I7WukbTm--
 

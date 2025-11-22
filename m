@@ -1,275 +1,163 @@
-Return-Path: <linux-iio+bounces-26380-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26381-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72247C7C028
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 01:26:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C776DC7CBBC
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 10:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 152C84E1AF9
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 00:26:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AEB254E3FCC
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 09:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8642F1EEA5F;
-	Sat, 22 Nov 2025 00:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D763422A4CC;
+	Sat, 22 Nov 2025 09:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RHuEdCGo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h+svoLMC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17F51D5AC6
-	for <linux-iio@vger.kernel.org>; Sat, 22 Nov 2025 00:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601002D7D41;
+	Sat, 22 Nov 2025 09:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763771189; cv=none; b=kaRR+/mAj3wZm1y6sDVhofcSS5MDF3nifIPYFKiI8amDEufomuSfJKj3Zlj8yH43IidMheD6hMWYqm+uuduKSGBEmtNpmfHLnPoIgUDTAK/rYXztDl0dYER35fEN+x4yw5gGJIvjhx36UYXjC+sXddJUbx1qEiL9MqjJaBTGj/o=
+	t=1763804102; cv=none; b=OJINRp6khitJj7xtgOlWZ8cGFQQjJdr5EfSR6mtQ2Wq4i4mPZxcDZF8LYeTSofjS2UJSv6Ev/BxxniqoVrtRXMyxagdARe9V4e/ZYPUC9Mjov/cO0bcH2K58l2VAFEqgQvQf8P3wDQXhIXlKhs2Amsjk++fxhs+HJ0KKFFrLViM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763771189; c=relaxed/simple;
-	bh=bDC+LxsuLI7dLZ+JKqVXr59YLNIGptoJM8bUsszq5+Q=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:Mime-Version:
-	 References:In-Reply-To; b=aSZxUa/u0oDiCysIA8t0YHMj59NYRLRTPIEGsuCpLPF7CqAzzM+oNfS2fDVLgTx1HVABjwsHk+Xy0fMw3QNKCOF9qulagrVpJEtcQe4qcSQesJOU9PqJaCMZblglUeD2A1Ad96y80eYMco4703/SSdoNPkpygepBsE0U1ywoT2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RHuEdCGo; arc=none smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-9372310418bso744281241.3
-        for <linux-iio@vger.kernel.org>; Fri, 21 Nov 2025 16:26:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763771186; x=1764375986; darn=vger.kernel.org;
-        h=in-reply-to:references:content-transfer-encoding:mime-version:to
-         :from:subject:cc:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eA3LGvlVMXR3Plz0WCz3iOl+L+AbTQoSVlGUy1TH+so=;
-        b=RHuEdCGo+9SaIBHrL8kQ+X3RrA/mG2pS248o4qsnJLpZzXJTRtCZqs0FJ1ZrouWd1m
-         T0jryzU0vHqUeV/hfDLEX4mSo+0pSvr8NdLoWe5RdZHuhcdQTFAM1UFjIImtK6HFjzC5
-         cMZDgtTv0NUnWfbXrddp/X4zOQn1DBScI1arx+xRoRLL0g6HbHwGKjngjosyxS8g7vZ7
-         fyiC/6CKSZFatLLC4o1Fa07JqDmhVips/TE084t3z9OpdLClO6kKBKfzl56ESu5VvTds
-         3WTo1qYfp/HBdoQquO1Zoc9Ie0DbLm9VaDIwuoYJWbVa+93r67vl2adARH50p5IQFG+g
-         cPSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763771186; x=1764375986;
-        h=in-reply-to:references:content-transfer-encoding:mime-version:to
-         :from:subject:cc:message-id:date:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eA3LGvlVMXR3Plz0WCz3iOl+L+AbTQoSVlGUy1TH+so=;
-        b=YY/jd+95B3zlTRWjiI6uvETc4qiNoFb+oWftzzR6yXiyugrb/I5YDMEELDPcgh1hBM
-         1SP3bYEk09cn1kwmoerXfjZ6yXbPegTqulPrb7mjYAifuGrVTumbOHCypfmV4CTf0SKK
-         C6aAjpvSHK4kS1Gh9Wf8CU6CKlQSajtAxq4qroBUs2DJGiPaaLzZrhkJ9Bow0OxBQTbo
-         bBmRgsxHozs495Z3ipQOwELXMyAKOqkS7Yy7bAVUBX10kk18GrxPUw6iKWhE1Vms0mGf
-         WV+OcMphq6KVHftN7/5L4LLr5QGW77XiomEr64ahJT11UwnJLhkxWvXzUU1S8cKxBTKu
-         SCLg==
-X-Forwarded-Encrypted: i=1; AJvYcCVQoXPwK9NGlV3Ght5tuTyOr4xl1WFOkv6nO5ZA5J1hcBEude307DGGLPyxjETsiurmSsVmHnyvNFw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZlbwUn/1a9U5PvUUsprqudaibbp4+piYrspf+2K0QZxtu8ckG
-	Tfw6GZ1zY6T3QSes/ZXHG+bse2taeHKd8WRhju0nYqmyyihPDpNtmhoiyFLYmQ==
-X-Gm-Gg: ASbGnctNzECzvC21OiaapEyM2JYADLDedJLh9tjB9TkoTR/VKP+PNxhTBLKwImyuJ+T
-	My+ncCuZI/U9MFJyxDckE/oVXDAkEwbxwcJ4dZvPi9woU6u6czlYKlb1rtcSrFD+AIpMCTOhO0e
-	+S1xsCxORaW8OeEeURBGUCmCnb+kOkcpXPGs1cHSjjxUWtUQdnsc0o75lsL1oJQ5WYlgl17Sisw
-	3B1FWBLKXrotNtBTZ0sfye+LVkrriPPVYOxk2hmPfKrIODuDFHerdlOVv9ONTw0BBAegqSq5Dvr
-	VhYB5SNQQX2G2GKPlcA0U44J8Z9Q7FVMikzIIW+CIIYBWKCUI92Ochu6O+G80JBRlaFEZbOajmx
-	nqg9j8wk9YN1LOVTU89pgELFDmtSw9YdyyhbN3owB77ctafmV8di3sNo8gr5HcAJKGv4WJtNdYe
-	3gC3Y=
-X-Google-Smtp-Source: AGHT+IFgolZkPHp9RA6XxN56LqJL3IsIaP/ha4/Nx/gmiXo0RsyimYW7lgq5cTmJGYQkc9HbKH4+yA==
-X-Received: by 2002:a05:6102:334c:b0:5dd:b69a:cdce with SMTP id ada2fe7eead31-5e1de0eccc9mr1209279137.1.1763771186484;
-        Fri, 21 Nov 2025 16:26:26 -0800 (PST)
-Received: from localhost ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-93c5658147fsm3082065241.15.2025.11.21.16.26.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Nov 2025 16:26:26 -0800 (PST)
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 21 Nov 2025 19:26:24 -0500
-Message-Id: <DEESPC8XZSXI.3G1JISSNEBC3Q@gmail.com>
-Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
- <andy@kernel.org>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add TI ADS1018/ADS1118
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
- <kuurtb@gmail.com>, "Jonathan Cameron" <jic23@kernel.org>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Tobias Sperling"
- <tobias.sperling@softing.com>
+	s=arc-20240116; t=1763804102; c=relaxed/simple;
+	bh=rcfRz5k0GYyw69T9wpTBQasXqUZl3FDwZfjNsTnP7Vs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K9QCMr3FWQeMBHdVXGleCrHjMKCTRWmKxRUeDzjTzf2zNpgFZ6ByMQJIQRVc4ACgAPCJstQbAbN7iGPyaU9C0j6wEuQLv/wjmNQKtXR919bM5ZQlkM56L3ZsIIRbVb/uU/1SDxUItTekTWGs3YxedF3LxssePAuNm3e65Z32980=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h+svoLMC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DEDC4CEF5;
+	Sat, 22 Nov 2025 09:34:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763804100;
+	bh=rcfRz5k0GYyw69T9wpTBQasXqUZl3FDwZfjNsTnP7Vs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=h+svoLMC57QZg+w9zj0DwWH+dcwWzOaIvjzdzGNXBKjiN5A7l3eqhXWrrclkNtVJM
+	 3AZAgx9a52cDCjlVVoFjNi4w/TShY1Vi0OZ20IXqEwKHdM1xx/6pjBbdmhxtzBpOsy
+	 arKcrzGleCDgnZ1uDKMBmmSNcCns2xW3TzZUMBMDfQnm6D8UEyxZuV85e1ASa7pver
+	 KE+i4VClYuRSDqqTbL2Peq7/fNSWOMJdVUDOhnhSXeR3YOHpB3mV3upzFb4y8dhTnj
+	 PBJcOmV8PsdqtqjNY4ppcCdfwiBl4tLw8gNI7U9dwdVXKl0FdATX9kZpbW6MqC/4iB
+	 X7dkbB+k1azeg==
+Message-ID: <6ec98294-82b1-4d3e-a7b6-95cb1d65f206@kernel.org>
+Date: Sat, 22 Nov 2025 10:34:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: aerc 0.21.0-0-g5549850facc2
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add TI ADS1018/ADS1118
+To: David Lechner <dlechner@baylibre.com>, Kurt Borja <kuurtb@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Tobias Sperling <tobias.sperling@softing.com>
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
 References: <20251121-ads1x18-v1-0-86db080fc9a4@gmail.com>
  <20251121-ads1x18-v1-1-86db080fc9a4@gmail.com>
- <09d8aa0c-8713-4673-8d70-ff5d59392c12@baylibre.com>
-In-Reply-To: <09d8aa0c-8713-4673-8d70-ff5d59392c12@baylibre.com>
+ <32e76bff-f535-40ce-88e2-7bbf7da87620@kernel.org>
+ <DEEO8SSA15XY.1SDBZEILR5AHM@gmail.com>
+ <2676d37e-fe3c-4504-8990-fbee0ce8407a@baylibre.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
+ QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
+ +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
+ ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
+ 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
+ hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
+ tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
+ 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
+ naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
+ hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
+ whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
+ qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
+ RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
+ Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
+ H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
+ dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
+ AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
+ jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
+ zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
+ XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
+In-Reply-To: <2676d37e-fe3c-4504-8990-fbee0ce8407a@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri Nov 21, 2025 at 5:32 PM -05, David Lechner wrote:
-> On 11/21/25 11:16 AM, Kurt Borja wrote:
->> Add documentation for Texas Instruments ADS1018 and ADS1118
->> analog-to-digital converters.
->>=20
->> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
->> ---
->>  .../devicetree/bindings/iio/adc/ti,ads1118.yaml    | 132 ++++++++++++++=
-+++++++
->>  1 file changed, 132 insertions(+)
->>=20
->> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1118.yaml b=
-/Documentation/devicetree/bindings/iio/adc/ti,ads1118.yaml
->> new file mode 100644
->> index 000000000000..eb7228ed6ddb
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1118.yaml
->
-> I like to make the file name match the lowest number. That way it matches
-> the first item in the compatible list.
->
->> @@ -0,0 +1,132 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->
-> Better to be specific with GPL-2.0-only or GPL-2.0-or-later (your choice)=
-.
+On 21/11/2025 23:40, David Lechner wrote:
+> On 11/21/25 2:56 PM, Kurt Borja wrote:
+>> Hi Krzysztof,
+>>
+>> On Fri Nov 21, 2025 at 2:10 PM -05, Krzysztof Kozlowski wrote:
+>>> On 21/11/2025 18:16, Kurt Borja wrote:
+>>>> Add documentation for Texas Instruments ADS1018 and ADS1118
+>>>> analog-to-digital converters.
+>>>>
+>>>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+>>>
+>>> You did not test it before sending, so no full review but few nits to
+>>> save you one round of reviews:
+>>
+>> My bad! I will fix the errors. Thanks!
+>>
+> 
+> ...
+> 
+>>>> +  interrupts:
+>>>> +    description: DOUT/DRDY (Data Out/Data Ready) line.
+>>>> +    maxitems: 1
+>>>> +
+>>>> +  drdy-gpios:
+>>>> +    description:
+>>>> +      Extra GPIO line connected to DOUT/DRDY (Data Out/Data Ready). This allows
+>>>> +      distinguishing between latched and real DRDY IRQs.
+>>>
+>>> I have feeling that you miss proper handling of IRQs (e.g. active level)
+>>> on your board.
+>>
+>> Can you elaborate? Should I specify active level here?
+>>
+>>>
+> The problem is not about the levels. It is rather that the behavior of the
+> interrupt when disabled/masked is different on different interrupt controllers.
+> 
+> On some controllers, if an event happens while disabled/masked, it "remembers"
+> that and will trigger the interrupt as soon as it is enabled even if the
+> condition doesn't exist anymore. Not a great hardware design IMHO, but there
+> is real hardware that does this.
 
-I will go for GPL-2.0-only on both files.
+Isn't it misconfiguration of trigger as I said before? It should be for
+example edge, instead of level?
 
->
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/adc/ti,ads1118.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: TI ADS1018/ADS1118 SPI analog to digital converter
->> +
->> +maintainers:
->> +  - Kurt Borja <kuurtb@gmail.com>
->> +
->> +description: |
->> +  The ADS1018/ADS1118 is a precision, low-power, 12-bit or 16-bit, nois=
-e-free,
->> +  analog-to-digital converter (ADC). It integrates a programmable gain =
-amplifier
->> +  (PGA), voltage reference, oscillator and high-accuracy temperature se=
-nsor.
->> +
->> +  Datasheets:
->> +    - ADS1018: https://www.ti.com/lit/ds/symlink/ads1018.pdf
->> +    - ADS1118: https://www.ti.com/lit/ds/symlink/ads1118.pdf
->> +
->> +properties:
->> +  compatible:
->> +    enum:
->> +      - ti,ads1018
->> +      - ti,ads1118
->> +
->> +  reg:
->> +    maxitems: 1
->
-> We know the max SCLK rate from the datasheet, so we can add:
->
-> spi-max-frequency:
->   maximum: 4000000
->
-> And we need to explicitly mention this one (it isn't part of
-> spi-peripheral-props.yaml but rather comes from spi-controller.yaml):
->
-> spi-cpha: true
->
->> +
->> +  interrupts:
->> +    description: DOUT/DRDY (Data Out/Data Ready) line.
->> +    maxitems: 1
->> +
->> +  drdy-gpios:
->> +    description:
->> +      Extra GPIO line connected to DOUT/DRDY (Data Out/Data Ready). Thi=
-s allows
->> +      distinguishing between latched and real DRDY IRQs.
->> +    maxitems: 1
->> +
->> +  '#address-cells':
->> +    const: 1
->> +
->> +  '#size-cells':
->> +    const: 0
->> +
->> +  '#io-channel-cells':
->> +    const: 1
->> +
->
-> All chips need power, so we should have:
->
-> vdd-supply: true
->
-> and make it required.
->
->> +required:
->> +  - compatible
->> +  - reg
->> +  - drdy-gpios
->
-> The chip can be used without needing the DRDY signal, so drdy-gpios and
-> interrupts should not be required.
->
->> +  - '#address-cells'
->> +  - '#size-cells'
->> +
->> +patternProperties:
->> +  "^channel@[0-7]$":
->> +    type: object
->> +    $ref: /schemas/iio/adc/adc.yaml#
->> +    description: Properties for a single ADC channel.
->> +
->> +    properties:
->> +      reg:
->> +        minimum: 0
->> +        maximum: 7
->> +        description: The channel index (0-7).
->> +
->> +      ti,gain:
->> +        $ref: /schemas/types.yaml#/definitions/uint32
->> +        minimum: 0
->> +        maximum: 5
->> +        description:
->> +          Programmable gain amplifier configuration, as described in th=
-e PGA
->> +          Config Register Field description. If not present, the defaul=
-t is
->> +          used.
->
-> The gain is programmable, so normally, we would set that by writing
-> to the in_voltageY_scale attribute rather than hard-coding it in the
-> devicetree.
->
->> +
->> +      ti,datarate:
->> +        $ref: /schemas/types.yaml#/definitions/uint32
->> +        minimum: 0
->> +        maximum: 7
->> +        description:
->> +          Data rate configuration, as described in the DR Config Regist=
-er Field
->> +          description. If not present, the default is used.
->
-> Likewise, the data rate should be set at runtime using a
-> sampling_frequency attribute rather than being hard-coded
-> in the devicetree.
-
-I actually took this approach from ti-ads1015. I was debating this
-myself.
-
-I'll gladly drop these.
-
->
->> +
->> +    required:
->> +      - reg
->> +
->> +    additionalProperties: false
->> +
-> So we shouldn't need explicit channel properties at this time.
-
-Ack for the rest of comments.
-
-
---=20
- ~ Kurt
-
+Best regards,
+Krzysztof
 

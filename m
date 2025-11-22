@@ -1,147 +1,158 @@
-Return-Path: <linux-iio+bounces-26382-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26383-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D5DC7CCB5
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 11:32:10 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A81C7D313
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 16:09:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 39C0B4E43AE
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 10:32:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E70F4E298A
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 15:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5CB279918;
-	Sat, 22 Nov 2025 10:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E1428A701;
+	Sat, 22 Nov 2025 15:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JizNm2M6"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eUCMvaYY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808F71C3F36;
-	Sat, 22 Nov 2025 10:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E58128642D
+	for <linux-iio@vger.kernel.org>; Sat, 22 Nov 2025 15:09:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763807525; cv=none; b=EwYFBQ9a3KkNYzIw8GUtwsoQp1Uf6optKeEqRTHFuTMsukhpp7xAEOMQFbjhzj925Rl+b4ZdjYOBLg2KgRQ/FBkYZ9vzKQMdN6oTcVawD95ZKTmFAmUWSO27Pe5ZkEOlItzyLZM9BhVOdpPCRcwgz4cwpb+kGEAeV290LvRwVXM=
+	t=1763824178; cv=none; b=R7afBwgT7RviydtFk6DqG4wlMhGV4vqftQaWzhnCTa0usd0ukAWlPeZfWObqyd98XHc9aGKSS3N9WrVMtG3Prro1xa9RQ0CRQwNo7xJhmkq0WKo+AiLQn8Vqza0G1lSrHkdmglHMTVrrE1H4Jf0Qs+z2aHXm9gQ23JD4HHWjIfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763807525; c=relaxed/simple;
-	bh=wpdyCFZbk7NVeZvDHyBA6YIaYgqFxFMIT40Zw2qft9A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FAB9Cj8k1tIbqOIgmb6HGp4t8uGKkdYZtWS1ZyHkh+mPUy9IiXGkhfs0h3u4siUkBM2Tx60t2Hbfr9Q2VWBZ+oSArn5gy6mEl2ArdTs6eMepHzT1CDUg+dQk+h8tHmPboPiyPfMzEGVYWdaKrx42uBB8XMcXkd55TVJ3RibatQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JizNm2M6; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763807523; x=1795343523;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wpdyCFZbk7NVeZvDHyBA6YIaYgqFxFMIT40Zw2qft9A=;
-  b=JizNm2M69HOnJpJoXa+2UcEu42lYNqm65vLO4IV+zqhUvSZWFsUehkJC
-   OBuIer2iz3pcLhtqHcmmiDfOIYHrjI2hQKr1b/Va3jwMYRzfNSvFbKArq
-   z0DtpiCZlu7XSuMUpjMafJqZmRYXQuCPBh84Cn+OSrAA+RYKnQwArf6q2
-   0CilteqNEV34ezKtG31R3EpxB8jLcVRmsL8ebTfFEtrx1aHMeR444f7HY
-   r8K5gtykCY3DObE07Bq7pvHroxI5IonH0Vo/CSrLsVfiHw2/Ey26orNDb
-   GXAAhNPQMCyzANLeBSJ7URq65J2AvCdNdwol0kPPSe4kM2GwzgwpfHFQF
-   Q==;
-X-CSE-ConnectionGUID: tfQLa7PvSrWnVlOg5VFPhg==
-X-CSE-MsgGUID: E2TQ7JPASiO/05tbb3qjeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="88539583"
-X-IronPort-AV: E=Sophos;i="6.20,218,1758610800"; 
-   d="scan'208";a="88539583"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2025 02:32:03 -0800
-X-CSE-ConnectionGUID: xbXfXHmXQBqLtdxObvlFkQ==
-X-CSE-MsgGUID: eSHHYEuIRVGMiBPqgygvYg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,218,1758610800"; 
-   d="scan'208";a="229203826"
-Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 22 Nov 2025 02:32:01 -0800
-Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vMkuL-0007Pf-2h;
-	Sat, 22 Nov 2025 10:31:57 +0000
-Date: Sat, 22 Nov 2025 18:31:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kurt Borja <kuurtb@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Tobias Sperling <tobias.sperling@softing.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Kurt Borja <kuurtb@gmail.com>
-Subject: Re: [PATCH 2/2] iio: adc: Add ti-ads1x18 driver
-Message-ID: <202511221834.DmWdWn3a-lkp@intel.com>
-References: <20251121-ads1x18-v1-2-86db080fc9a4@gmail.com>
+	s=arc-20240116; t=1763824178; c=relaxed/simple;
+	bh=bD6IiCa7MG1LDG3Vy/sVRmJM8FL0GK3kXQ8ix0ygN3g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TMkfmHLlc4pom2FyRZVITZu4WTG0p+2Fw3HgQ4CvKVRa18A143ylU8sdJGqof+pbjEVuG0I5tPwaKTvN962YYcw9mU3Wf4boIOsqxWJDpZHmm6Y8Nd3ZBJ5XFhDD97Cn3FhzPxQ51fa8zWzmFyBf1GWexBJsJdPjR6FKv/qm4Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eUCMvaYY; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-3e89a44007dso2207523fac.1
+        for <linux-iio@vger.kernel.org>; Sat, 22 Nov 2025 07:09:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763824174; x=1764428974; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XJ00G5DdHxmUWt9ADxO6Ey9yvGgI73+lh18WVqepTD4=;
+        b=eUCMvaYYlDNGT02uOVYjeo0urVOipryLCetZu3yPMbqm15El+ya9j9wwqSuDn86VTj
+         brO92kqLBeoTcBJhKd98Bqq3aD3D6NSQMXYEE4OLNyEemgVT6E/yDZiy3kxEWb8IwW9Y
+         pXKa55iFVK7CfVWMY8tfdJ3ekeHw1SMZx8Sizq7UnTRpi0ZFj/rIkr4HNhJZ5ILyfBKC
+         15tU9EdSwQGyqls0j9+UUVJzAk28puLJWY9X7rQWknlYyTiEUjoFDNJp12hw7tPTV01h
+         k/DmBQMRW7C6hI/KSVIpogrkyucwl0Btjn/dygS6Hw0Q2Lp1GlkLAqTSVAnEzC4iGvbD
+         5UyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763824174; x=1764428974;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XJ00G5DdHxmUWt9ADxO6Ey9yvGgI73+lh18WVqepTD4=;
+        b=XvsXB1m2rRBLk9KYDOMkWs1jXu425TPH3HKqZtB9fxzyolaG2LWFJ9c+8Y16IqeQLC
+         WmG8JZKN8ihgzeLbQhIqKOY/rN9/+QketDV9Glym2LvePtsthRGs7+xztz9SJXSQx6A9
+         /P12pWW2Keud9zIYttM5MYNmgucGPJy13bjo1cUW7/GpmpEYilm4Xw4JXwLBOvxXmeOQ
+         03b7CWW4F1XMU/0qDiO9eyB14Tn2ays+TI74ZbdKoiUoxsDc+JkrhmsN2jOWyWN+ues1
+         q4IcXX/71tHID2FM1V+VeGw07/kJqH1cb6czZ8LxkB9RF6Rx69OuSLBBKgzdw9OIauU7
+         1RIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUojlK373pEDY7lxnh06IuCC9xw2/DvyRINhTZKgTkbVfG1DR9zowWdLoxJyM75BnEFOX3bvmwZiyw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFAU/RseFs1Rqf2Vnku9uBfJyfX/Ou9reDUGHSfStyCElBW2Zj
+	lSJdtn+NRYsEWIgwGng2Aryue4BpNikkMCjJiit7LHWkkIqbIWqTSX8WWWoueUZOcP8=
+X-Gm-Gg: ASbGncuIeLXjRSEvzvJsOp/AJI1KY4fMkrP7XOFtKvKRdZ8aIkKM0sqX7CZZTpB4nd8
+	Hi6xZpo5ZahkXhVFDRP6/Bt7b9ZpWSfkIktonMHr7UBBgIdd/Mp2Pb3YkVpxMe+8zrOBPWvUrPH
+	Cyd3xzrtHNJIi38VM8WdTeOrux4V7jz1iBUHUegZtne5KJDXVSeaOvAVhSn1oE6a9GVyAoE9DF+
+	Ol+asvAuFrBoq55OgfGcFsjC338UQZTbEKX7+sgsZlG70VUuDLC6ZgqOIT66JKrdY39T6YH5eu3
+	ZjZWSJZVold6K1gsKdkDXdRD7WrBhBNc02VcJCTOsdziRRb14vXZg7LiWnxfRoACFN3TQx1XGJK
+	6VvG/snMj564CmAdW5BvKSQp/ShhpX4nQKAc2LMoHJyqE7Z+f5GUe6y4lsVmXUoMX6sfFqcOTxF
+	XbMG4BUDTIbdAJDXBHMRCYiRFjQwCWuDYovV8004jezxyU8E94+t5skiOTylQR
+X-Google-Smtp-Source: AGHT+IEQOaRdqKonG9tlK9tE3Ji2R9zXetxeakG5C4CdmSrR6Ade+eh+1BwXwf4Y4MB7MZrKyrAlPg==
+X-Received: by 2002:a05:6870:4409:b0:3ec:64bf:ef5 with SMTP id 586e51a60fabf-3ecbbe84eaemr2904401fac.27.1763824173974;
+        Sat, 22 Nov 2025 07:09:33 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:e782:93d8:7c2f:f9df? ([2600:8803:e7e4:500:e782:93d8:7c2f:f9df])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3ec9dc88896sm4056963fac.15.2025.11.22.07.09.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 22 Nov 2025 07:09:32 -0800 (PST)
+Message-ID: <a61ad3ae-b511-4af6-80a2-590fc05b1bfc@baylibre.com>
+Date: Sat, 22 Nov 2025 09:09:29 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251121-ads1x18-v1-2-86db080fc9a4@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add TI ADS1018/ADS1118
+To: Krzysztof Kozlowski <krzk@kernel.org>, Kurt Borja <kuurtb@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Tobias Sperling <tobias.sperling@softing.com>
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20251121-ads1x18-v1-0-86db080fc9a4@gmail.com>
+ <20251121-ads1x18-v1-1-86db080fc9a4@gmail.com>
+ <32e76bff-f535-40ce-88e2-7bbf7da87620@kernel.org>
+ <DEEO8SSA15XY.1SDBZEILR5AHM@gmail.com>
+ <2676d37e-fe3c-4504-8990-fbee0ce8407a@baylibre.com>
+ <6ec98294-82b1-4d3e-a7b6-95cb1d65f206@kernel.org>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <6ec98294-82b1-4d3e-a7b6-95cb1d65f206@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Kurt,
+On 11/22/25 3:34 AM, Krzysztof Kozlowski wrote:
+> On 21/11/2025 23:40, David Lechner wrote:
+>> On 11/21/25 2:56 PM, Kurt Borja wrote:
+>>> Hi Krzysztof,
+>>>
+>>> On Fri Nov 21, 2025 at 2:10 PM -05, Krzysztof Kozlowski wrote:
+>>>> On 21/11/2025 18:16, Kurt Borja wrote:
+>>>>> Add documentation for Texas Instruments ADS1018 and ADS1118
+>>>>> analog-to-digital converters.
+>>>>>
+>>>>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+>>>>
+>>>> You did not test it before sending, so no full review but few nits to
+>>>> save you one round of reviews:
+>>>
+>>> My bad! I will fix the errors. Thanks!
+>>>
+>>
+>> ...
+>>
+>>>>> +  interrupts:
+>>>>> +    description: DOUT/DRDY (Data Out/Data Ready) line.
+>>>>> +    maxitems: 1
+>>>>> +
+>>>>> +  drdy-gpios:
+>>>>> +    description:
+>>>>> +      Extra GPIO line connected to DOUT/DRDY (Data Out/Data Ready). This allows
+>>>>> +      distinguishing between latched and real DRDY IRQs.
+>>>>
+>>>> I have feeling that you miss proper handling of IRQs (e.g. active level)
+>>>> on your board.
+>>>
+>>> Can you elaborate? Should I specify active level here?
+>>>
+>>>>
+>> The problem is not about the levels. It is rather that the behavior of the
+>> interrupt when disabled/masked is different on different interrupt controllers.
+>>
+>> On some controllers, if an event happens while disabled/masked, it "remembers"
+>> that and will trigger the interrupt as soon as it is enabled even if the
+>> condition doesn't exist anymore. Not a great hardware design IMHO, but there
+>> is real hardware that does this.
+> 
+> Isn't it misconfiguration of trigger as I said before? It should be for
+> example edge, instead of level?
+> 
+> Best regards,
+> Krzysztof
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on f9e05791642810a0cf6237d39fafd6fec5e0b4bb]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Kurt-Borja/dt-bindings-iio-adc-Add-TI-ADS1018-ADS1118/20251122-012031
-base:   f9e05791642810a0cf6237d39fafd6fec5e0b4bb
-patch link:    https://lore.kernel.org/r/20251121-ads1x18-v1-2-86db080fc9a4%40gmail.com
-patch subject: [PATCH 2/2] iio: adc: Add ti-ads1x18 driver
-config: openrisc-randconfig-r131-20251122 (https://download.01.org/0day-ci/archive/20251122/202511221834.DmWdWn3a-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251122/202511221834.DmWdWn3a-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511221834.DmWdWn3a-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/adc/ti-ads1x18.c:237:16: sparse: sparse: cast to restricted __be16
->> drivers/iio/adc/ti-ads1x18.c:244:28: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned short @@     got restricted __be16 [usertype] @@
-   drivers/iio/adc/ti-ads1x18.c:244:28: sparse:     expected unsigned short
-   drivers/iio/adc/ti-ads1x18.c:244:28: sparse:     got restricted __be16 [usertype]
-   drivers/iio/adc/ti-ads1x18.c:788:15: sparse: sparse: cast to restricted __be16
-   drivers/iio/adc/ti-ads1x18.c:813:15: sparse: sparse: cast to restricted __be16
-
-vim +237 drivers/iio/adc/ti-ads1x18.c
-
-   226	
-   227	static int __ads1x18_read_conver(struct ads1x18 *ads1x18, u16 *cnv)
-   228	{
-   229		int ret;
-   230	
-   231		ads1x18->tx_buf[0] = 0;
-   232		ads1x18->tx_buf[1] = 0;
-   233		ret = spi_sync_locked(ads1x18->spi, &ads1x18->message);
-   234		if (ret)
-   235			return ret;
-   236	
- > 237		*cnv = be16_to_cpu(ads1x18->rx_buf[0]);
-   238	
-   239		return 0;
-   240	}
-   241	
-   242	static int __ads1x18_write_config(struct ads1x18 *ads1x18, u16 cfg)
-   243	{
- > 244		ads1x18->tx_buf[0] = cpu_to_be16(cfg);
-   245		ads1x18->tx_buf[1] = 0;
-   246	
-   247		return spi_sync_locked(ads1x18->spi, &ads1x18->message);
-   248	}
-   249	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+No. It it still works like this for edge triggers.
 

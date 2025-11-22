@@ -1,116 +1,150 @@
-Return-Path: <linux-iio+bounces-26390-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26391-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DCEC7D493
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 18:06:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E32C7D833
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 22:51:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 414D94E3764
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 17:06:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 183174E1AA7
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Nov 2025 21:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03C1286890;
-	Sat, 22 Nov 2025 17:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20145298CA3;
+	Sat, 22 Nov 2025 21:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="UbByZQUj"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="qzdXPGRj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5F3221DB5
-	for <linux-iio@vger.kernel.org>; Sat, 22 Nov 2025 17:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132C0275114;
+	Sat, 22 Nov 2025 21:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763831175; cv=none; b=QfP4UPr73Jimja1GwDYNuAq6vPdIt/feMKSs1udm1FWqMvPnUo3ncNnkL+JExmQzmWIeliomAP4LgCTs++Bfee9kHQ5x7Wk5oIYKm1JI/Fq80XiWnKwK8MaPzhDya/iNQt6Lm2HgaTqLvibvOgmhWPQtgEZQYDLzY14OTB8MEC0=
+	t=1763848304; cv=none; b=gfPJyoCvQRXCU24q4Ij1eVy9NZnavOJyQ2Tzu2Bi0hSo3tWJQpDodsCmMfDN5EHVOybjGEjbtOOaW0N2ALi3MlFSne0ttBD2uhfNu+f9l0vFpeu6viyydgoti+xCItvdTuAuR6QLvjeMvEiMmjsKC6zoqW5TGw0+RpbbsypBuh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763831175; c=relaxed/simple;
-	bh=BjYN9KVpj6k/cdbwYIU96egJdlwqxlFXknvKkAJzUUs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zvswo+649+yoHe5ZQLYTLDVaB36VSPd7GNzxTSuqc0s7roWiNWuiL1PgFAyuHm3WB0L9tv/4Pmjfs4o8UrZXOQgaxhaB6i7IWRDq8VZiqVg2un+ORSNbrVEskzbVjLg2oeZxDtGZ9j8kAKlODLzCBnj5YNmi/hAoOFlcmLGGzoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=UbByZQUj; arc=none smtp.client-ip=209.85.160.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-3e7f68df436so1695183fac.1
-        for <linux-iio@vger.kernel.org>; Sat, 22 Nov 2025 09:06:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1763831172; x=1764435972; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qiTj6DmfHFLNbN7gghkMYecVa4SkrJ/b1ayhBYh4ZlQ=;
-        b=UbByZQUjuHpcVJ02u/3K0yvdJ8cJX95ZTzeMMzT+zhk86E5SnMg7kJM4qHjMIw3qTF
-         eB+1X58L9eanYqj4OPLq3jiZAAx0ZMi64zothVDsgjlibh8QTNea9sAmTfXccFNRqH57
-         dqzoUamKb1mIX5W9ek272LyU04QpfJZtgLhtQVxUS1l7Gx0Bnt886jZSbTjDT7NQ3s0n
-         k0/9WSIo/48Oo7ErXZP+HPNuam/35ButjHQIqHvnTXcPhVKeksd7Kj23YkpSaOsr38lY
-         zjv3ocC3+GKZ2f4v27HpRdHHuoyvbvyZVgIi1FzqYKR+xsITxGGvR2be+sTcqnpfI8qh
-         rQpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763831172; x=1764435972;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qiTj6DmfHFLNbN7gghkMYecVa4SkrJ/b1ayhBYh4ZlQ=;
-        b=mz7dAaiBp+XYibmTpuTnS7Fhsi/VYmrArNR0iS9G/JpaHTadI+ifYyvwh3b1lV31YE
-         NaQqGX/Rv0xpU63ZQ8qDRfJ9mQg+YUAleawaRdo8Lga7pmagO+xAcv9t1F0hsOldZsET
-         IBvx4sCLCtK5LUoLeHMUwZ5bwm9Qu2+L8cnoo0U8NWvd2R4dIictiD9Ak1/MzZ94AYJ9
-         1mX34PWjGf1haFsW1ADioDRBqaUtfIViWXi2umlgOW2kxQ65TacUti1vwJWbO57BkQYT
-         a+vTnTW6y3YP50HWYmwOP/THebYE+tT+2n/6et63687fKSV8/jbedULQW4yj4f3B3119
-         EDcA==
-X-Gm-Message-State: AOJu0YwSNh8Jmu2D6g345S773viXAx7WZeO//FEz5tebFjUjb2yF54NT
-	OJtnTNdcRLezmUkKR8WvnHEZpE6TU01VUvJh3q7l72n5iIC0Bsr2NHAOh+KS8g2kCz8=
-X-Gm-Gg: ASbGnct/WkRLNSOnAH23MfUZ8OBMozG1Clrk+KD2IE5iDjM48meAA7dbnWBArmj2DQ/
-	r6dO4bCM3LKZcHZWr5FR+TteFZc4jI+VrStviznTxIHVjkpKKMfCv7FygeYLa3LhcSCcMCutW72
-	rjRCxqovwXhTNXSNGiGImVakVrcTsYhazzKMXMHS6L959waQn8VKRKWavQSGcSTAk4vyNbnSWLq
-	kcbFT7sC6aeEy8T0s525OU6jRoLNOg8IdCYA7iS2iwYdPsQTS7H3vO+NjJDzTEaGdHzz6gk/blO
-	Tnd6UhaLxKf9gOUve1WgK0vsocf1rCHjkFA9hDZ/7y9L6ZNQC9DZR2X7dBk3Znr7JsGUhw6dH5H
-	zkDzCkv/guZe1QqFHRZRc+ryvRf+3KkzeyQaUA5Bf8+lRp8SlMYWKKsJUdN0n3lOq4SV9qwBf69
-	efKimo5f03vJWNSi0G/1iamrc8l4cCS8oQPI6vS6NMNGcLbTpdM4nbCvSfZzQY1xtOON0OKLw=
-X-Google-Smtp-Source: AGHT+IGlXuU7CV0HYerfRvfrCi3bMB4lFNt4UrO+yWjId/5UQGy4cSrVoKBT59z594zR51ZFdEKN+Q==
-X-Received: by 2002:a05:6871:693:b0:3ec:7947:33ac with SMTP id 586e51a60fabf-3ecbbdc15c1mr2818580fac.16.1763831172068;
-        Sat, 22 Nov 2025 09:06:12 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:e782:93d8:7c2f:f9df? ([2600:8803:e7e4:500:e782:93d8:7c2f:f9df])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3ec9c3449d0sm4179813fac.8.2025.11.22.09.06.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Nov 2025 09:06:10 -0800 (PST)
-Message-ID: <4453f8a7-801b-4230-ab69-be06396f9075@baylibre.com>
-Date: Sat, 22 Nov 2025 11:06:08 -0600
+	s=arc-20240116; t=1763848304; c=relaxed/simple;
+	bh=thLXfCrTDyhEm2pTU5U01Uq0iCrYisCNN0k4tZMKQ5w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MUI6/Zy8TC3lsbwb0v3/j7yFcipVD042mRixMnhXzSQHY16Rgi+uecvQxb628NVJzsgxfw7NJd0qYlpkTDFIL4+Pb5iozFzx7XUZirJIh0ghWKrtUjjr/ZGH6wXhBhEkg70zu84KuZo3fbmhcAYewTQT364i7Z7fc6HjTP0nji8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=qzdXPGRj; arc=none smtp.client-ip=172.105.74.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:3e0c:5b00:e2d5:5eff:fed9:f1c4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id A7E75160209;
+	Sat, 22 Nov 2025 23:42:55 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
+	s=mail; t=1763847776;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dxa9nZvojCKSjTT1DMnUxxV0VIypptAUoO2NwAJzQyg=;
+	b=qzdXPGRj3UADRBTbF+yU/3LBKdZKZ0qlzAZdCgtwOQcGlF4m0dWl3wziC+KlFLuRumJ/Km
+	NSD36B06QQaxz80e8i1L3oDqzeybUctCq6oLW9ik7mlWAXruViS8uaDdIY+KDdnFrmoGcI
+	22ZgFhuGwJ2/aPaIFhPIwW8KxuWyk38uZ+noQaZb1q43/NvjRxbW0PIhYGRgjqB8QnELDu
+	91v/HFOOxzAzDlHeAXzF/JRMpN05tWwrUVyRhbiHPGoydMpSJBITqNbGQFGfF+29vWjxRY
+	95WUCRQLKfANNXY85zEltkhxmr4JGxLkoGNQNm1KX92HLmK2NhS1pRr3dWXEZA==
+From: Petre Rodan <petre.rodan@subdimension.ro>
+Subject: [PATCH 0/2] iio: pressure: add Honeywell ABP2 driver
+Date: Sat, 22 Nov 2025 23:42:43 +0200
+Message-Id: <20251122-honeywell_abp2_driver-v1-0-7a8e265f9627@subdimension.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/2] NXP SAR ADC IIO driver for s32g2/3 platforms
-To: Daniel Lezcano <daniel.lezcano@linaro.org>, jic23@kernel.org,
- nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, conor+dt@kernel.org,
- krzk+dt@kernel.org
-Cc: linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
- ghennadi.procopciuc@oss.nxp.com, vkoul@kernel.org
-References: <20251119223905.107065-1-daniel.lezcano@linaro.org>
- <1dcf3278-7552-4b52-91d2-e8e711f8b230@linaro.org>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <1dcf3278-7552-4b52-91d2-e8e711f8b230@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFMuImkC/x3MQQqEMBAF0atIrw2YZlScqwwSNH61QaJ0QB3Eu
+ xtcvkXVRREqiPTNLlLsEmUNCTbPyM9dmGBkSCYuuLSW2cxrwP/Asriu39gNKjvUNL5uKoyF//R
+ Mqd0Uo5zv99fe9wOtfAnRZwAAAA==
+X-Change-ID: 20251122-honeywell_abp2_driver-9c796ef0c4b2
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Petre Rodan <petre.rodan@subdimension.ro>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2195;
+ i=petre.rodan@subdimension.ro; h=from:subject:message-id;
+ bh=thLXfCrTDyhEm2pTU5U01Uq0iCrYisCNN0k4tZMKQ5w=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQmRDc25wM
+ k02U1dNQnl5WmlBR2tpTGxiOVZkL3FvTW9aSDgwbkNhWVJDZlFaCnkzU0NMTU1taENzazFYa05o
+ SllhWDRrQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcElpNVd
+ BQW9KRUhRcko2ZGpPa2xqNVdnUC9SdHdkNTNpbHJPTmU4bEZwdUNrVE9iUmQxaU52Sk9rYWFDZw
+ paelZSOE4vRWwwOTJFVVJpVUVqbmEyNCtoamdZOVFlUWVCL3gvc2dkUHl4YWFJYW9PVVhka2Vaa
+ zRPVnFSS3owCmFxUER6WWljRzZtaTg2OGtFSWMxVGR1NjlCS0F0UFFPMm8xb3J1OHR1MEFtbm1S
+ b2Exa2Flb2VEYm9Hdzl3ZVoKZGFzcTk1d0svYVNVZ1dVNVpScDlPUzJjZlE5N2dQNlFydzlTRkp
+ iSkwwajdtcGpxT0ZkUDNNUklHQkVTTnQrNQpHZ3h0SWROU3pmQjBkYmtDY2dpOUFicmtjajhqT0
+ o1cmhKdVdHUmxrMnhPWnUyRVBrM0V5a3ViU3ppaXlOcTBMCkV2LzdqL1NOVGd2VGczN25oVkRnU
+ HdOU28wZTBmdXBreWpIS09meTlya3Bxc0d3cmZmUFJLSGlUVERkT1F5NTQKdkloeGE1ME5OaEFH
+ akdac2QwbDd0cktYNzFjS1owVVhBd2p4LzdFUG0yUHZXLytRNjFTbU5VNnJ1OThjK0ZGNQp5OXd
+ QVk9uWEhKdEdtTDZjVVo0UWpaQ1NEMzREcGdXOVFmTlpYaFMvOGh6NXhBS0pVVTczQXFDU1dUb0
+ w1Ri9nCklqenFpVGdTMEk0OC8raVNEUVdQc3VnMUhsTUR4ZjZYV3pqS1RSTkNEMkZQZWR1ZC8yV
+ lY5ZFVRUHJqQzVKM0EKVHp2NkphbEFiWG5yKzRIaytJbHNJNVI0MnpHMEFXRnRYbVB2Z3VOMXRB
+ Y0lHTDhBWDdTTDROSk5uays2eGkxVgo5RWhBZmJzRHdQYjRKREFpRGNjdktlNldHTVlLV3lQTWw
+ vOU1nOG1MNjVCVkJjVlpMYjg3d3NJWEIxT2xadzVpCmt3bkxBSSs5S0JrYnhRPT0KPVFXQzkKLS
+ 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
+ fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
-On 11/22/25 10:16 AM, Daniel Lezcano wrote:
-> 
-> Hi Johnathan,
-> 
-> I believe I took all comments into account.
-> 
-> Can this series be considered to be merged ?
-> 
-> Thanks
-> 
->   -- Daniel
-> 
-FYI, things usually slow down a bit in the IIO subsystem between -rc6 and
-the next -rc1. So it might take a bit longer than usual to have a look again.
+Adds driver for digital Honeywell ABP2 series of board mount
+pressure and temperature sensors.
+
+This driver differs quite a bit from the Honeywell ABP series that
+is already present in the kernel:
+
+- many more pressure-triplet variations of pressure ranges and
+units
+- extra end of conversion interrupt feature
+- implements both i2c and SPI interfaces
+- uses a bidirectional data retrieving protocol (4 wire SPI instead of 3 wire)
+- 24+24bit resolution vs 14+11bit on the ABP
+
+Specific low level i2c and spi data transfer API is used instead
+of regmap because the protocol is based on simple commands instead
+of on a memory map.
+
+Given the fact that the sensor can perform gage and differential
+pressure measurements with a full-scale range of down to 500 pascals
+the offset and scale are calculated in such a way to provide a result
+in pascals, not kilopascals. Just like the Honeywell MPR driver.
+For a kilopascal output the scale representation would lose too much
+precision.
+
+Tested on two different sensors.
+
+datasheet:
+https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/basic-abp2-series/documents/sps-siot-abp2-series-datasheet-32350268-en.pdf
+
+Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
+---
+Petre Rodan (2):
+      dt-bindings: iio: pressure: add honeywell,abp2030pa
+      iio: pressure: add Honeywell ABP2 driver
+
+ .../bindings/iio/pressure/honeywell,abp2030pa.yaml | 133 +++++
+ MAINTAINERS                                        |   7 +
+ drivers/iio/pressure/Kconfig                       |  24 +
+ drivers/iio/pressure/Makefile                      |   3 +
+ drivers/iio/pressure/abp2030pa.c                   | 543 +++++++++++++++++++++
+ drivers/iio/pressure/abp2030pa.h                   |  79 +++
+ drivers/iio/pressure/abp2030pa_i2c.c               |  93 ++++
+ drivers/iio/pressure/abp2030pa_spi.c               |  88 ++++
+ 8 files changed, 970 insertions(+)
+---
+base-commit: f9e05791642810a0cf6237d39fafd6fec5e0b4bb
+change-id: 20251122-honeywell_abp2_driver-9c796ef0c4b2
+
+Best regards,
+-- 
+Petre Rodan <petre.rodan@subdimension.ro>
 
 

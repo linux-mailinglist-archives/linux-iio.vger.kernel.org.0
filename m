@@ -1,64 +1,64 @@
-Return-Path: <linux-iio+bounces-26416-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26417-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AA4C7FEA4
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 11:33:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D4CC7FF32
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 11:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D3986341627
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 10:33:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ABB394E23AE
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 10:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFCAF2517AA;
-	Mon, 24 Nov 2025 10:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7D42F7ACA;
+	Mon, 24 Nov 2025 10:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LYgLdkmC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lR4PXTcO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16C81D555;
-	Mon, 24 Nov 2025 10:33:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494A321A449;
+	Mon, 24 Nov 2025 10:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763980401; cv=none; b=s2slUH2fEqDliR/7LN8dZwspI+TuVYdAv++HRIUJiwbmBYJ9DLtxcq3EjJRgE6oN/QX2MXpeXFKGgjd8YcWFrNvcjqJ6kPFwqD2L94whKcomBsDesAhWS99eIoOJQUYLlxjANGCnmi5amtwlCGMdka8vwJokU6tZac96uX+o9bY=
+	t=1763980845; cv=none; b=UiGHr4/zfMZVGivOpm9MCzthOjNdjxX2G3X0UKIpw7eKbwwpBHrjatSF33Jmne2DNt8pJqa01Df3d3DbPkdN+QgRQwJgxTdAUIMdFg7SJfNK8y3+vq/tVs26iQFRmGo/Lt6EnWuL+OoLtMmSIBkDindqBFYeM3M2dMLc/UsMAfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763980401; c=relaxed/simple;
-	bh=HNVb1N1/RPjWqxX1WO4WpghVU8NPAOP2ZybpahlmGFI=;
+	s=arc-20240116; t=1763980845; c=relaxed/simple;
+	bh=ODndMX6CiQo0rN0bWUTcqRFHIkrIyq5OhKM+gC7WSlU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nVtWNv31mWDgtffcGbVAjA11F72mpBKzlCuKSfrwsaYM1+Yp3vaE9sSN1DnVhL8/Rmv+pAtx8+2KMN41EctZEI/4THP1XaNpvi6WaFxmQGW5/c3S1ujWxEI25WovBfCKfqgXT/MrpNENY+QGJexxXUboRiDsnZVLF/1nKxlD9TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LYgLdkmC; arc=none smtp.client-ip=192.198.163.8
+	 Content-Type:Content-Disposition:In-Reply-To; b=pwEW+mhIKeDJLPcpW04ba6RmickgWCysEW52tM+tOAaa//ZGNw0bNVuNlCEiK/zbL45jyQKJL63oF33gYWWECiphTUrxIxTkdtZja4OJuOHLXhz7iDsp2Bv2JXP4babckS0TobecUlgexcoMwp4OLnQrCizgbZUDXPBd5kNFu0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lR4PXTcO; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763980400; x=1795516400;
+  t=1763980844; x=1795516844;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=HNVb1N1/RPjWqxX1WO4WpghVU8NPAOP2ZybpahlmGFI=;
-  b=LYgLdkmCp+C7tgT/NQDNFiJXwYtzm4O3SSBqaMlVfB7uMq9GCwO1X9VS
-   RkTm2ywKb8HayuPjt26fLj7mDtHed5VDP3LX/KH83GSghIyDOkqetvV/A
-   ZLZl6yHgCSKPLayYPrDOCfwTxRG+mJ0YWyprsHegsIrONnMLkB/XK4Xkw
-   IpJJBq5XmG+N8LRdJZK/7fl7yQmvOOnotjfLtnWOaMsu+EsoIFqmVVmmy
-   kIMcBfaHDLi7XO7Zps+4Fg/mHH9axuTOnoaUsZlz1B3JGdJoB5kOTwsE0
-   Q+bBBOP9SyiKU5nqnH8eEE8uAy4dGhXePA1B4LE3PCAb/5CpeEGl7gSCJ
-   g==;
-X-CSE-ConnectionGUID: tHGKGyNkSsaLKR2cdC51JQ==
-X-CSE-MsgGUID: 3V5QjeRVSBG8YpYgGyiDLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="83590567"
+  bh=ODndMX6CiQo0rN0bWUTcqRFHIkrIyq5OhKM+gC7WSlU=;
+  b=lR4PXTcO4KdG1S3geKYOcFHMwNaX1P1aKtxCRW42ohzRA5EaQbg0LP0u
+   RL+L33ckjBcBzvSAnGkrzspZsA7a0tFEGXvm9NZZRA3TuTfH48QN9tMWv
+   mgr1E9T+iWqB0vm8tw/CArMr74JrgArJqhp2s+/enc4e63ESiVbMDHyya
+   9lYApFPuxHaONgY3bSN9UONNIWPdGq0tymA5ZP4pwAvXGSpbXtVL31cis
+   GFiZsUiQgcrux6a0kK89HBDvm1YVwbvNidLSgjUKsDw67uJ6s088V4U0R
+   Tu3g4esSujswxnKrrAMSV9gfqgLiPWMr7/rsD+NBzY57dAuWBKCbmIIJ6
+   w==;
+X-CSE-ConnectionGUID: 3ZRtXh61STaav41K3ezeqA==
+X-CSE-MsgGUID: YxFAtuUnSOm8/AKcKevZ4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="65673374"
 X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="83590567"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 02:33:19 -0800
-X-CSE-ConnectionGUID: 9WyeEq98S/mqJJOFd4PHPA==
-X-CSE-MsgGUID: MbV6DTrPQrWPF0mx8AuiAg==
+   d="scan'208";a="65673374"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 02:40:44 -0800
+X-CSE-ConnectionGUID: RfhoPo0NS/CHVVhNnMLJNA==
+X-CSE-MsgGUID: P/Kbpg4aSmqK1jS2+CUXoQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="196468300"
+   d="scan'208";a="197227696"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.5])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 02:33:15 -0800
-Date: Mon, 24 Nov 2025 12:33:12 +0200
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 02:40:40 -0800
+Date: Mon, 24 Nov 2025 12:40:37 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Jorge Marques <jorge.marques@analog.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
@@ -74,10 +74,10 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2 7/9] iio: adc: ad4062: Add IIO Events support
-Message-ID: <aSQ0aM2u49qzIZDm@smile.fi.intel.com>
+Subject: Re: [PATCH v2 9/9] iio: adc: ad4062: Add GPIO Controller support
+Message-ID: <aSQ2JUN05vmMQC1I@smile.fi.intel.com>
 References: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
- <20251124-staging-ad4062-v2-7-a375609afbb7@analog.com>
+ <20251124-staging-ad4062-v2-9-a375609afbb7@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -86,226 +86,124 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251124-staging-ad4062-v2-7-a375609afbb7@analog.com>
+In-Reply-To: <20251124-staging-ad4062-v2-9-a375609afbb7@analog.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Nov 24, 2025 at 10:18:06AM +0100, Jorge Marques wrote:
-> Adds support for IIO Events. Optionally, gp0 is assigned as Threshold
-> Either signal, if not present, fallback to an I3C IBI with the same
-> role.
+On Mon, Nov 24, 2025 at 10:18:08AM +0100, Jorge Marques wrote:
+> When gp0 or gp1 is not taken as an interrupt, expose them as gpo if
+
+GPO
+
+> gpio-contoller is set in the devicetree.
+
+Why can't gpio-regmap be used?
 
 ...
 
-> +static ssize_t ad4062_events_frequency_store(struct device *dev,
-> +					     struct device_attribute *attr,
-> +					     const char *buf, size_t len)
+> +static int ad4062_gpio_get(struct gpio_chip *gc, unsigned int offset)
 > +{
-> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> +	struct ad4062_state *st = iio_priv(indio_dev);
-> +	int val, ret;
+> +	struct ad4062_state *st = gpiochip_get_data(gc);
+> +	unsigned int reg_val;
+> +	int ret;
 > +
-> +	if (!iio_device_claim_direct(indio_dev))
-> +		return -EBUSY;
-> +	if (st->wait_event) {
-> +		ret = -EBUSY;
-> +		goto out_release;
-> +	}
-> +
-> +	ret = kstrtoint(buf, 10, &val);
-> +	if (ret < 0)
-> +		goto out_release;
-> +
-> +	st->events_frequency = find_closest_descending(val, ad4062_conversion_freqs,
-> +						       ARRAY_SIZE(ad4062_conversion_freqs));
-> +	ret = 0;
-> +
-> +out_release:
-> +	iio_device_release_direct(indio_dev);
-> +	return ret ? ret : len;
+> +	ret = regmap_read(st->regmap, AD4062_REG_GP_CONF, &reg_val);
+> +	if (ret)
+> +		return 0;
 
-	return ret ?: len;
+> +	if (st->gpo_irq[offset])
+> +		return -ENODEV;
+
+Consider using valid_mask instead (.init_valid_mask() callback).
+Hmm... And it seems it's in place. I didn't get what is here then and
+why we need to do it after accessing the HW? If there are side-effects
+they must be described.
+
+> +	if (offset)
+> +		reg_val = FIELD_GET(AD4062_REG_GP_CONF_MODE_MSK_1, reg_val);
+> +	else
+> +		reg_val = FIELD_GET(AD4062_REG_GP_CONF_MODE_MSK_0, reg_val);
+> +
+> +	return reg_val == AD4062_GP_STATIC_HIGH ? 1 : 0;
+
+	return !!(reg_val == AD4062_GP_STATIC_HIGH);
+
+also will work.
 
 > +}
 
-...
-
-> +static IIO_DEVICE_ATTR(sampling_frequency, 0644, ad4062_events_frequency_show,
-> +		       ad4062_events_frequency_store, 0);
-
-IIO_DEVICE_ATTR_RW()
-
-...
-
->  {
->  	struct ad4062_state *st = i3cdev_get_drvdata(i3cdev);
->  
-> -	if (iio_buffer_enabled(st->indio_dev))
-> -		iio_trigger_poll_nested(st->trigger);
-> -	else
-> -		complete(&st->completion);
-> +	if (st->wait_event) {
-> +		iio_push_event(st->indio_dev,
-> +			       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, 0,
-> +						    IIO_EV_TYPE_THRESH,
-> +						    IIO_EV_DIR_EITHER),
-> +			       iio_get_time_ns(st->indio_dev));
-> +	} else {
-> +		if (iio_buffer_enabled(st->indio_dev))
-> +			iio_trigger_poll_nested(st->trigger);
-> +		else
-> +			complete(&st->completion);
-> +	}
-
-Less ping-pong:ish if you simply add a new code.
-
-	if (st->wait_event) {
-		iio_push_event(st->indio_dev,
-			       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, 0,
-						    IIO_EV_TYPE_THRESH,
-						    IIO_EV_DIR_EITHER),
-			       iio_get_time_ns(st->indio_dev));
-
-		return;
-	}
-
->  }
-
-...
-
-> +static int ad4062_monitor_mode_enable(struct ad4062_state *st, bool enable)
+> +static int ad4062_gpio_init_valid_mask(struct gpio_chip *gc,
+> +				       unsigned long *valid_mask,
+> +				       unsigned int ngpios)
 > +{
-> +	int ret = 0;
-
-Unneeded assignment.
-
-> +	if (!enable) {
-> +		pm_runtime_put_autosuspend(&st->i3cdev->dev);
-> +		return 0;
-> +	}
-
-Just split to two functions and drop parameter 'enable',
-
-> +	ACQUIRE(pm_runtime_active_try_enabled, pm)(&st->i3cdev->dev);
-> +	ret = ACQUIRE_ERR(pm_runtime_active_try_enabled, &pm);
-> +	if (ret)
-> +		return ret;
+> +	struct ad4062_state *st = gpiochip_get_data(gc);
 > +
-> +	ret = ad4062_conversion_frequency_set(st, st->events_frequency);
-> +	if (ret)
-> +		return ret;
+> +	bitmap_zero(valid_mask, ngpios);
 > +
-> +	ret = ad4062_set_operation_mode(st, AD4062_MONITOR_MODE);
-> +	if (ret)
-> +		return ret;
-> +
-> +	pm_runtime_get_noresume(&st->i3cdev->dev);
+> +	if (!st->gpo_irq[0])
+> +		set_bit(0, valid_mask);
+> +	if (!st->gpo_irq[1])
+> +		set_bit(1, valid_mask);
+
+Why atomic bit set:s?
+
+
 > +	return 0;
 > +}
-
-...
-
-> +static int ad4062_write_event_config(struct iio_dev *indio_dev,
-> +				     const struct iio_chan_spec *chan,
-> +				     enum iio_event_type type,
-> +				     enum iio_event_direction dir,
-> +				     bool state)
+> +
+> +static int ad4062_gpio_init(struct ad4062_state *st)
 > +{
-> +	struct ad4062_state *st = iio_priv(indio_dev);
+> +	struct device *dev = &st->i3cdev->dev;
+> +	struct gpio_chip *gc;
+> +	u8 val, mask;
 > +	int ret;
+
+> +	if ((st->gpo_irq[0] && st->gpo_irq[1]) ||
+> +	    !device_property_read_bool(dev, "gpio-controller"))
+> +		return 0;
+
+Do you need this? valid_mask should take care of this.
+
+> +	gc = devm_kzalloc(dev, sizeof(*gc), GFP_KERNEL);
+> +	if (!gc)
+> +		return -ENOMEM;
 > +
-> +	if (!iio_device_claim_direct(indio_dev))
-> +		return -EBUSY;
-> +	if (st->wait_event == state) {
-> +		ret = 0;
-> +		goto out_release;
+> +	val = 0;
+> +	mask = 0;
+> +	if (!st->gpo_irq[0]) {
+> +		mask |= AD4062_REG_GP_CONF_MODE_MSK_0;
+> +		val |= FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_0, AD4062_GP_STATIC_LOW);
+> +	}
+> +	if (!st->gpo_irq[1]) {
+> +		mask |= AD4062_REG_GP_CONF_MODE_MSK_1;
+> +		val |= FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_1, AD4062_GP_STATIC_LOW);
 > +	}
 > +
-> +	ret = ad4062_monitor_mode_enable(st, state);
-> +	if (!ret)
-> +		st->wait_event = state;
-
-Please use regular patter to check for errors first.
-
-	if (st->wait_event == state)
-		ret = 0;
-	else
-		ret = ad4062_monitor_mode_enable(st, state);
-	if (ret)
-		goto out_release;
-
-	st->wait_event = state;
-
-Always think about readability first and then about size of the source code.
-
-> +out_release:
-> +	iio_device_release_direct(indio_dev);
-> +	return ret;
-> +}
-
-...
-
-> +static int ad4062_read_event_value(struct iio_dev *indio_dev,
-> +				   const struct iio_chan_spec *chan,
-> +				   enum iio_event_type type,
-> +				   enum iio_event_direction dir,
-> +				   enum iio_event_info info, int *val,
-> +				   int *val2)
-> +{
-> +	struct ad4062_state *st = iio_priv(indio_dev);
-> +	int ret;
+> +	ret = regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
+> +				 mask, val);
+> +	if (ret)
+> +		return ret;
 > +
-> +	if (!iio_device_claim_direct(indio_dev))
-> +		return -EBUSY;
-> +	if (st->wait_event) {
-> +		ret = -EBUSY;
-> +		goto out_release;
-> +	}
+> +	ret = devm_add_action_or_reset(dev, ad4062_gpio_disable, st);
+> +	if (ret)
+> +		return ret;
 > +
-> +	switch (info) {
-> +	case IIO_EV_INFO_VALUE:
-> +		ret = __ad4062_read_event_info_value(st, dir, val);
-> +		break;
-> +	case IIO_EV_INFO_HYSTERESIS:
-> +		ret = __ad4062_read_event_info_hysteresis(st, dir, val);
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		break;
-> +	}
+> +	gc->parent = dev;
+> +	gc->label = st->chip->name;
+> +	gc->owner = THIS_MODULE;
+> +	gc->base = -1;
+> +	gc->ngpio = 2;
+> +	gc->init_valid_mask = ad4062_gpio_init_valid_mask;
+> +	gc->get_direction = ad4062_gpio_get_direction;
+> +	gc->set = ad4062_gpio_set;
+> +	gc->get = ad4062_gpio_get;
+> +	gc->can_sleep = true;
 > +
-> +out_release:
-> +	iio_device_release_direct(indio_dev);
-> +	return ret ? ret : IIO_VAL_INT;
-
-	return ret ?: IIO_VAL_INT;
-
-> +}
-
-...
-
-> +static int __ad4062_write_event_info_value(struct ad4062_state *st,
-> +					   enum iio_event_direction dir, int val)
-> +{
-> +	u8 reg;
+> +	ret = devm_gpiochip_add_data(dev, gc, st);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Unable to register GPIO chip\n");
 > +
-> +	if (val > 2047 || val < -2048)
-> +		return -EINVAL;
-
-There was already magic '11', perhaps define it and use there and here?
-
-#define x11	11 // needs a good name
-
-	if (val > BIT(x11) || val < -BIT(x11))
-
-> +	if (dir == IIO_EV_DIR_RISING)
-> +		reg = AD4062_REG_MAX_LIMIT;
-> +	else
-> +		reg = AD4062_REG_MIN_LIMIT;
-> +	put_unaligned_be16(val, st->buf.bytes);
-> +
-> +	return regmap_bulk_write(st->regmap, reg, &st->buf.be16,
-> +				 sizeof(st->buf.be16));
+> +	return 0;
 > +}
 
 -- 

@@ -1,304 +1,302 @@
-Return-Path: <linux-iio+bounces-26434-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26435-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD05C81A4D
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 17:45:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 289D6C81E78
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 18:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4D553A380F
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 16:44:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4076B3AA426
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 17:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECED2BCF4A;
-	Mon, 24 Nov 2025 16:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC022C1596;
+	Mon, 24 Nov 2025 17:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="FDRRuZGD";
-	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="UpfJCvMr"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="aFxsDuRC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [85.215.255.102])
+Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F7628D8DB;
-	Mon, 24 Nov 2025 16:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.102
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764002647; cv=pass; b=LIvhh7cImkQQ5/bf8RxC68gggmKorMmYcwRaWdGOlTYpgaKFMRXPTIMOnL+8chVnT++P4Hk6GuOGNDMXslz5r9A1MIvzbgjSA9dFYVUL0qQ88EywUj3k+kX74bFFIn9Ajd68qIEml/J0sawUH/7BwZH8sDCzOd3Hu3+OtPQHW18=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764002647; c=relaxed/simple;
-	bh=YAUaPVN/LGE+6Tp5hwdCL/oWm3I9gZiHnGqVnZITlYs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=jm3Wx8Ej+cRfg2PsgVJjPTZq0WrMWWcv/IHA99XkxyacY9l6KRiXgiY2+/6Elun7dRduyhM4dR5m+k1IIq50EO5JyhkRtLG0fa/w0k++6M5WVGteq1GZy0rwcRK51zTVO/XyvEmHHZ6ODLn9UCxMfCo+5jzQxWrBy015SJcVSUk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=FDRRuZGD; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=UpfJCvMr; arc=pass smtp.client-ip=85.215.255.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
-ARC-Seal: i=1; a=rsa-sha256; t=1764001204; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=Mi6ffgTzeLDd6by16LVPA9WBGsA3fZVxfsWD+cc37oI6ulg6dD65T95bJgc6HltKK7
-    N4uWDZgtyOZZdYje8gbuVu9T95X4b6tGrirbXguEMFuLjxnmBeIEHwAlx2PfiDgOUf0X
-    Y5unUlSKON44f9TwafsNmg1XK3HCWLwKQQjfA0arXHoDi0VhL9qaRszysZeC26RBdtLK
-    YO6XinkyNSO/eRv4GXglIu2zaNXRdLUGDJVxoPF+Ebn7lEWzAKhSqULCVuldOiLIotTx
-    q8gu653gQC85578icQWFyQi2iHeAZ1lQr+Y9ej1sK6GmFp8zfbiANYXvd+0sRoKehivg
-    eixA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1764001204;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=YAUaPVN/LGE+6Tp5hwdCL/oWm3I9gZiHnGqVnZITlYs=;
-    b=cUCmeEBRlYbwM5vOtKFOqHLCauD/E9W7U80NSRAFCB7CoOMD6R2e9+FINz97vTBUxa
-    EaSR9ryKUBDxRXQpAuCFmDrC0Vlz24ODRPRgx20QLtw0CMv6m9nQcIyaVoFA8Hxfe7Ns
-    oRovNaPokz6MeFJr6evXGsdP1dQAe4qrW7Rhh8UKE+mmCQQTJhJXqs0jPA9JE2TMH1EX
-    +yD6kiySzwCuyWvVMLnxzmucLJJrS/5Vb+Y87JuqTctbDFAEVk5grUxKLv8SBccG9mq+
-    b+y8Oj/N/tdmVhKCQxdC+mP4Lcd2i8XJLq1ejg/w9WMfARWVbl5i+FddPbgbqtCDfNeR
-    mgPQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo03
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1764001204;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=YAUaPVN/LGE+6Tp5hwdCL/oWm3I9gZiHnGqVnZITlYs=;
-    b=FDRRuZGDOWIr7PVjsgzCEoc3WjvlYfn5g1ULeDbZRLMYz5CmpY7CZr3cK7UpgYkx0e
-    MJeOyEuhc+s50fia250GETWkb2KyfPR/uu4luJS0hYtGHVYWjj1C0gj4wgXUQbE8ASZY
-    8cbYgmpw+KOk576zSdy2+AnnWs2yoLYgND53GmUAS0eQCYLLfmWBhCTk49aW9cvhkbHv
-    HX6d1mkeNCVs9FwkkOx2Oz+apKUpgSQwGiZb+KHXhrCBW37hjEaBQ2sr0RL/5DH+ejQ7
-    vB8wAa9r1qfbx9RWiahdkadBDaB5zU34WX42srJQJlf0ZoT8+a2k/5Sm1R8szDOOpyRd
-    RIQw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1764001204;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=YAUaPVN/LGE+6Tp5hwdCL/oWm3I9gZiHnGqVnZITlYs=;
-    b=UpfJCvMrspS72WrTrjWL4jgwZQ8Vv8hqUUkLNHFb0/XXkbAeu7OKuXDGtFnCaVbnqc
-    2w8c+jlmQ0tQ0RvKt+AA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lFzL1yeT0Z"
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 54.0.0 DYNA|AUTH)
-    with ESMTPSA id Qc14a81AOGJvF96
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-	(Client did not present a certificate);
-    Mon, 24 Nov 2025 17:19:57 +0100 (CET)
-Content-Type: text/plain;
-	charset=us-ascii
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7AB2C08CA;
+	Mon, 24 Nov 2025 17:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764005361; cv=none; b=Bf51ggjOLG4VGhyKnF424L+t7aKm1S+qyY/fOU3F2HUUNpaQOW7auuiWLGoVwgvJry93KgqD+eFCwmAy42S0614jRr89Nvh8K4Nvz5/VDafvjvHedkh8lpTPq6tmECRPKmqjvEYN70rmZIsD/yhvp2aKFBMsZbQUrhv7pfWMzuQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764005361; c=relaxed/simple;
+	bh=pZK7vppatgHDpAKvfeBDFUvY5cNqTwlkjr6axCAT14U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bHzmOkyM0TOQWRQ4uRjScYKlixYPu9AQ1aLNtuIu+eX4+x7EZt+1zGlCPUvRbxIVauN/thggrMRVrYx3zaeHWEKgM1tkKDtXDc3XspAoz+ZPThLV+XzIi3a+q2LespD4nDY62A4yAfqzp5G9jgkGyh75QS9/XFxunh9a6EOEMxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=aFxsDuRC; arc=none smtp.client-ip=172.105.74.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from lipo.home.arpa (unknown [IPv6:2a02:2f0e:3e0c:5b00:f1e0:3f4b:286c:9ddb])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 5FD81160209;
+	Mon, 24 Nov 2025 19:29:09 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
+	s=mail; t=1764005349;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/wX3MhZ4d9SWgJbAQdtWpWHsxoS+X0UtYW/P4qrtNcE=;
+	b=aFxsDuRCQZ/nfwG8TI7hBVV4nQ3lyC7V5k02FTjdL7UVhL5OLbSJLlwfhKkjMbzW+ffsMf
+	MkEH5nkUH4LZym/HeBk2f7L37fWlePbdBrNER+KB7xTGgk1nrv2kZVu/hyjhLTsoZz7p3F
+	adTSv5VUI72O4yoK/bnoFbcHVOQZDL09ja5gDdyU+CjRd637AZNwB7bwV8ZwzAb8MZQ9+X
+	argWfxqzjHFgz4DSiqkdvWlvenct1m2WccMRB8EoTUzE6sd5spVUVQ5rhWuzJatsPN8qh0
+	He+czEB5m5HlDzLFcg5O4pUyPYA42JkEeSGCsQI7ZZa2qZzh6JwkeTNfOrCU7w==
+Date: Mon, 24 Nov 2025 19:29:06 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: pressure: add Honeywell ABP2 driver
+Message-ID: <aSSV4lxzatAFds5e@lipo.home.arpa>
+References: <20251122-honeywell_abp2_driver-v1-0-7a8e265f9627@subdimension.ro>
+ <20251122-honeywell_abp2_driver-v1-2-7a8e265f9627@subdimension.ro>
+ <aSRF-DL3rKjyFleg@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.3\))
-Subject: Re: [PATCH v4 0/6] Add support for the LTM8054 voltage regulator
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <4053840.MHq7AAxBmi@fw-rgant>
-Date: Mon, 24 Nov 2025 17:19:45 +0100
-Cc: Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>,
- =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>,
- Guenter Roeck <linux@roeck-us.net>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org,
- Conor Dooley <conor.dooley@microchip.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Peter Rosin <peda@axentia.se>,
- Mariel Tinaco <Mariel.Tinaco@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Kevin Tsai <ktsai@capellamicro.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Eugen Hristev <eugen.hristev@linaro.org>,
- Vinod Koul <vkoul@kernel.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- Sebastian Reichel <sre@kernel.org>,
- Chen-Yu Tsai <wens@csie.org>,
- Support Opensource <support.opensource@diasemi.com>,
- Paul Cercueil <paul@crapouillou.net>,
- Iskren Chernev <me@iskren.info>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Matheus Castello <matheus@castello.eng.br>,
- Saravanan Sekar <sravanhome@gmail.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Casey Connolly <casey.connolly@linaro.org>,
- =?utf-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
- Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>,
- Amit Kucheria <amitk@kernel.org>,
- Thara Gopinath <thara.gopinath@gmail.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Dixit Parmar <dixitparmar19@gmail.com>,
- linux-hwmon@vger.kernel.org,
- linux-input@vger.kernel.org,
- linux-phy@lists.infradead.org,
- linux-pm@vger.kernel.org,
- linux-mips@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org,
- linux-arm-msm@vger.kernel.org,
- linux-sound@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- Andy Shevchenko <andriy.shevchenko@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <732D3F12-0361-4800-8981-EF629B4C491F@goldelico.com>
-References: <20251124-ltm8054-driver-v4-0-107a8a814abe@bootlin.com>
- <23111366.EfDdHjke4D@fw-rgant>
- <563331EB-2460-4CF5-87B3-5FE60B18BB70@goldelico.com>
- <4053840.MHq7AAxBmi@fw-rgant>
-To: Romain Gantois <romain.gantois@bootlin.com>
-X-Mailer: Apple Mail (2.3826.700.81.1.3)
+In-Reply-To: <aSRF-DL3rKjyFleg@smile.fi.intel.com>
 
-Hi,
 
-> Am 24.11.2025 um 16:57 schrieb Romain Gantois =
-<romain.gantois@bootlin.com>:
+hello Andy.
+
+thank you for the review.
+
+On Mon, Nov 24, 2025 at 01:48:08PM +0200, Andy Shevchenko wrote:
+> On Sat, Nov 22, 2025 at 11:42:45PM +0200, Petre Rodan wrote:
+[..]
+
+> > +/*
+> > + * transfer function A: 10%   to 90%   of 2^24
 >=20
-> Hi Nikolaus,
+> Too many spaces, also this may be a one-line comment.
+
+it was intentional to have the comment multiline.
+in case we need to add additional transfer functions in the future for comp=
+atible ICs the diff will be a few lines smaller.
+
+> > + */
+> > +static const struct abp2_func_spec abp2_func_spec[] =3D {
+> > +	[ABP2_FUNCTION_A] =3D { .output_min =3D 1677722, .output_max =3D 1509=
+9494 },
+> > +};
 >=20
-> On Monday, 24 November 2025 16:35:28 CET H. Nikolaus Schaller wrote:
 > ...
-> > > Sorry, I don't quite understand your remark. To integrate this =
-voltage
-> > > regulator component into the Linux regulator abstraction, I'm =
-providing a
-> > > current limit control function. To provide such a function, the =
-voltage
-> > > level on a pin has to be controlled. AFAIK, the kernel abstraction =
-used
-> > > to set precise voltages on lines is an IO channel.
-> >=20
-> > I was curious to learn about this topic and looked into the data =
-sheet:
-> >=20
-> > =
-https://www.analog.com/media/en/technical-documentation/data-sheets/8054fa=
-.p
-> > df
-> >=20
-> > As far as I see the LTM8054 does not even have a programming =
-interface.
-> > So is it reasonable to provide a dedicated driver at all?
-> >=20
-> > The figure on page 20 seems to suggest that there is an external DAC
-> > which drives the regulator. And the regulator drives for example a =
-fan.
-> >=20
-> > So I would think of a driver for the specific DAC and ignore the =
-specific
-> > LTM chip at all.
-> >=20
 >=20
-> In my use case, the LTM8054 feeds a DC output port on which various =
-devices=20
-> may be plugged. Dynamic output current limitation and output voltage =
-level=20
-> control for these devices is a requirement, as well as stepped voltage=20=
-
-> transitions, thus the need for a proper regulator device.
+> > +enum abp2_variants {
 >=20
-> The LTM8054's feedback pin can be driven by a different DAC, which =
-allows for=20
-> dynamic output voltage control. This is a more complex upstreaming =
-topic=20
-> however, so I've left it out of this initial series. There are other =
-component=20
-> functions which fit in squarely into the regulator framework, such as=20=
+> Why explicit assignments? Is it related to some HW register?
 
-> input current limit control and soft-start. But I understand that the =
-current=20
-> driver might look a bit "bare".
+no registers, I just need to ensure the two arrays
 
-So you just want to have some user-space mechanism to control voltage
-and current limits? Can't this be done by directly controlling them =
-through
-the iio API?
+static const char * const abp2_triplet_variants[ABP2_VARIANTS_MAX] =3D {
+	[ABP2001BA] =3D "001BA", [ABP21_6BA] =3D "1.6BA", [ABP22_5BA] =3D "2.5BA",=
+ ..
 
-Is this for a device that is already in kernel or planned to be =
-supported?
-Or is it "application support" for some SBC?
+static const struct abp2_range_config abp2_range_config[ABP2_VARIANTS_MAX] =
+=3D {
+	[ABP2001BA] =3D { .pmin =3D       0, .pmax =3D  100000 },
+   	[ABP21_6BA] =3D { .pmin =3D       0, .pmax =3D  160000 }, ..
 
-Are you looking for a virtual "glue" driver to logically combine several =
-low
-level functions?
+keep being consistent and are resistant to later editing.
 
+I feel like I had a better implementation two years ago when I used a singl=
+e struct containing all this information and had a custom/NIH search functi=
+on, but you kindly asked me [1] to use device_property_match_property_strin=
+g() instead and split my single struct into this three parts mess.
+
+[1] https://lore.kernel.org/linux-iio/ZWcUPkzfGqxYsysp@smile.fi.intel.com/
+
+> Can be done easier with a macro with more robustness against typos:
 >=20
-> > What could be necessary is if you really want to be able to =
-"regulate"
-> > the current going to Vout, some bridge between regulator API and =
-some
-> > IIO DAC.
-> >=20
-> > And enabling/disabling the regulator by some GPIO can be described =
-in
-> > the DT already through a "regulator-fixed".
-> >=20
+> #define ABP2_VARIANT(v)		[ABP2 ## v] =3D ##v
 >=20
-> This is a possibility, but when you bring in all of these other =
-hardware=20
-> functions that I mentionned e.g. output voltage control and stepping, =
-you'll=20
-> end up with several different devices which look unrelated from =
-userspace, but=20
-> actually control the same chip.
+> static const char * const abp2_triplet_variants[] =3D {
+> 	ABP2_VARIANT(001BA), ABP2_VARIANT(1_6BA), ABP2_VARIANT(2_5BA), ABP2_VARI=
+ANT(004BA),
+> 	...
+> };
+>=20
+> but this will loose the possibility to make '.' in the name. Up to you.
 
-That is quite usual... I have often heard: user space must fix this as =
-kernel
-just provides basic functions in a harmonized way and integration has to
-be tailored to the device anyways :)
+thanks, but I need '.' in the name. the dot is used in the part number (and=
+ thus in the pressure triplet).
 
-> Userspace will also have to know about some hardware details to =
-properly=20
-> control the DACs, such as the values of the sense and feedback =
-resistors. In=20
-> my opinion, this bypasses the kernel's abstraction of hardware.
+> > +static int abp2_get_measurement(struct abp2_data *data)
+> > +{
+> > +	struct device *dev =3D data->dev;
+> > +	int ret;
+> > +
+> > +	memset(data->buffer, 0, sizeof(data->buffer));
+> > +	reinit_completion(&data->completion);
+> > +
+> > +	ret =3D data->ops->write(data, ABP2_CMD_SYNC, ABP2_PKT_SYNC_LEN);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	if (data->irq > 0) {
+> > +		ret =3D wait_for_completion_timeout(&data->completion, HZ);
+>=20
+> Where is HZ defined? Include that.
+>=20
+> > +		if (!ret) {
+> > +			dev_err(dev, "timeout waiting for EOC interrupt\n");
+> > +			return -ETIMEDOUT;
+> > +		}
+> > +	} else
+> > +		fsleep(5000);
+>=20
+> Better to have 5 * USEC_PER_MSEC. Also missed comment why this long delay
+> is needed (will require time.h).
+>=20
+> Missed {} as well.
 
-I came up with this argument several times in the part and got a lot of =
-contrary :)
+I'm not sure I understand where are braces needed/not needed in this contex=
+t.
 
-What I still wonder: does your hardware warrant an upstream driver for a
-non-programable chip if a different solution (with help of user-space) =
-already
-exist?
+> > +	ret =3D data->ops->read(data, ABP2_CMD_NOP, ABP2_PKT_NOP_LEN);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	/*
+> > +	 * status byte flags
+> > +	 *  bit7 SANITY_CHK     - must always be 0
+> > +	 *  bit6 ABP2_ST_POWER  - 1 if device is powered
+> > +	 *  bit5 ABP2_ST_BUSY   - 1 if device has no new conversion ready
+> > +	 *  bit4 SANITY_CHK     - must always be 0
+> > +	 *  bit3 SANITY_CHK     - must always be 0
+> > +	 *  bit2 MEMORY_ERR     - 1 if integrity test has failed
+> > +	 *  bit1 SANITY_CHK     - must always be 0
+> > +	 *  bit0 MATH_ERR       - 1 during internal math saturation err
+> > +	 */
+> > +
+> > +	if (data->buffer[0] =3D=3D (ABP2_ST_POWER | ABP2_ST_BUSY))
+> > +		return -ETIMEDOUT;
+> > +
+> > +	if (data->buffer[0] !=3D ABP2_ST_POWER) {
+> > +		dev_err(data->dev,
+> > +			"unexpected status byte 0x%02x\n", data->buffer[0]);
+> > +		return -ETIMEDOUT;
+> > +	}
+>=20
+> I am not sure the chosen error code in both cases is good enough.
 
-Another question: is your scheme generic enough so that it can be =
-expected
-that other devices are using it in the same way?
+I'm open to recommendations on better error codes.
 
-Or could the power controller framework (/sys/class/power_supply) fit =
-better?
+first error: chip reports it's busy 5ms after start conversion command. bas=
+ed on the datasheet the conversion should have been ready at this point in =
+time. this sounds to me like a timeout error.
 
-There is an API to ask chargers etc. for battery voltage and current =
-limits or
-even write them.
+second error: status byte contains unexpected flags being set - either an i=
+nternal error - see table above or a bus read error. yes, timeout is not go=
+od here but what should it be?
 
-There is also "generic-adc-battery" which allows to hook up with =
-arbitrary
-iio-adcs for measurements - although you need a DAC in your setup. Maybe =
-an
-extension here is a better strategy than a dedicated ltm8054 driver?
+I'm using two conditionals because I want to log only invalid statuses and =
+ignore simple 'device busy' errors.
 
-BR,
-Nikolaus
+> > +struct abp2_ops {
+> > +	int (*init)(struct device *dev);
+> > +	int (*read)(struct abp2_data *data, const u8 cmd, const u8 cnt);
+> > +	int (*write)(struct abp2_data *data, const u8 cmd, const u8 cnt);
+>=20
+> What is the meaning of const for the POD type parameters? I mean this giv=
+es
+> really a little protection if any. I do not see a point here to have them=
+ being const.
 
+I read a few books about C programming a few decades back and there was a c=
+onsensus on using const in function prototypes wherever a parameter was sup=
+posed to not be changed.
+of course it's not bulletproof, but why do you feel I should stop following=
+ that advice for functions that are not tied to any pre-existing kernel API?
+
+> > +int abp2_common_probe(struct device *dev, const struct abp2_ops *ops, =
+int irq);
+> > +
+> > +#endif
+>=20
+> ...
+>=20
+> > +#include <linux/device.h>
+> > +#include <linux/errno.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/mod_devicetable.h>
+> > +#include <linux/module.h>
+> > +#include <linux/types.h>
+>=20
+> > +static int abp2_i2c_init(struct device *dev)
+> > +{
+> > +	return 0;
+> > +}
+>=20
+> Is this stub required?
+
+do I have a 100% guarantee that the kernel will not try to execute a null p=
+ointer function in abp2_common_probe()?
+
+	ret =3D data->ops->init(data->dev); // needed only for SPI.
+
+later edit:
+since I will remove devm_kzalloc(), the _init will probably go away entirel=
+y together with the stub.
+
+> > +static int abp2_i2c_read(struct abp2_data *data, const u8 unused, cons=
+t u8 cnt)
+> > +{
+> > +	struct i2c_client *client =3D to_i2c_client(data->dev);
+> > +	int ret;
+> > +
+> > +	if (cnt > ABP2_MEASUREMENT_RD_SIZE)
+> > +		return -EOVERFLOW;
+> > +
+> > +	ret =3D i2c_master_recv(client, data->buffer, cnt);
+> > +	if (ret < 0)
+> > +		return ret;
+>=20
+> > +	else if (ret !=3D cnt)
+>=20
+> Redundant 'else'.
+>=20
+> > +		return -EIO;
+> > +
+> > +	return 0;
+> > +}
+
+are you implying that __i2c_transfer() errors out if the number of bytes tr=
+ansfered is not cnt?
+
+> > +static const struct abp2_ops abp2_i2c_ops =3D {
+> > +	.init =3D abp2_i2c_init,
+> > +	.read =3D abp2_i2c_read,
+> > +	.write =3D abp2_i2c_write,
+> > +};
+>=20
+> So, why can't regmap I=B2C be used?
+[..]
+> So, why can't regmap SPI be used?
+
+there are no registers, no memory map, just a 'start conversion' and the eq=
+uivalent of a 'read conversion' command.
+any reason one would use the regmap API in this case?
+
+best regards,
+peter
 

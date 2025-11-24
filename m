@@ -1,70 +1,74 @@
-Return-Path: <linux-iio+bounces-26402-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26406-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FB2C7F8E9
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 10:20:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036C7C7F92E
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 10:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F04D14E592F
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 09:19:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 996654E2D60
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 09:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B242F547D;
-	Mon, 24 Nov 2025 09:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87DC2F657A;
+	Mon, 24 Nov 2025 09:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="SmA7eRj5"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Z+GHzqs4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8162F4A16;
-	Mon, 24 Nov 2025 09:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9341F2F362D;
+	Mon, 24 Nov 2025 09:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763975939; cv=none; b=EDmIrSThYPfbYZJRZ7U4G7BJuril6O300IhERF4d/ZH7bxrPmdcgn7P2kximdFRsVG+fCi35J+QKk5/1DNXC7RtGlJTmHgYlp2JyDUVHJ72UXBuDembSPLETzD6JWjdtw/eUMJ7Xm1ptxkRQSmuKCrc0wkjv3tMhteZkxNpEP6Q=
+	t=1763975941; cv=none; b=n5G36VuE1VEbmu0f84Pn18ghWhnp6bNkpb4/IJX6hZ7S/aKrWfLD7LADj1Axp6CfOFhKzafQiPP0fdMAsn9Yw788e6h3+IKZfyzREk4v4BnaLCgdgqR7LjdFsqInqqXsKFbsp1mBFFit48aK2mI/BYtlA46wt3IHSk16DLT5hPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763975939; c=relaxed/simple;
-	bh=Z8LmT3qY041U83j0q+I/X13ABeV5uquFKXkkjyjU46A=;
+	s=arc-20240116; t=1763975941; c=relaxed/simple;
+	bh=EGqnRUIZ88XhAFWn4QO7hpGwrC+uXo5B8lnXB90TgQg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=NyC6rRYySb+Q1mLWnNf6A3h8ZgRhyc66+fL59eVYtwDrlY91ohWlbn0fBLdeIqBTZstJYmwe40T671iIh8E/RzCFevD1CAFaM6W4d2TXCweI8V+45mLMI5JPMrjwQX9gQV8G7NLgAiVKZQ7q1K/K3TBwkHXa3JYqgQ76IEhgluk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=SmA7eRj5; arc=none smtp.client-ip=148.163.135.77
+	 In-Reply-To:To:CC; b=XBkDZlVf6q7/ui9Qb6SGmqQzsVciCdGNUvNt7N2Vntef05JXdKSpHd6jot+o62l1t8m9PBgcI5Nn7eAOmf3qxJ0bPna1klaR1rxPUeUWhDPWzvswpokd8IzbNWmxU5BzfKBc+0KbYDjPKunmA+pBNecMTdveC0FoBDDDZ6F2LxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Z+GHzqs4; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AO72rRt3692062;
-	Mon, 24 Nov 2025 04:18:29 -0500
+	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AO6pmEo3691513;
+	Mon, 24 Nov 2025 04:18:33 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=P0sLh
-	+LxqQq6lmxSuci+6Il+GFar9iBr5Mc1DPZRFLY=; b=SmA7eRj5rcxN6NdXvvuIA
-	psb/Zr4QvNJnTJ017G5Xjsk2x9bdwlpUYvqJe+5jVQwG5upymSj06pHFIyxnbJoF
-	+SyUmmiJ1+4a5iTPnelTJakirAoVfShtpdWn0bR6+maz9B4spPGHv11xEJr7GLom
-	Jtm0JU07RYE1DBSD2qHfMcn8qVBIgs+Q/P1MinhsofZAZawG2XN/iNtpH7b3jIlR
-	ObrwfmOVsXWF0dcsMy6FXJtqP21pACcBtoS7Fji0UUxRv7kJAodfoQf50SwhIDED
-	HADYz1phOnkjyDK3apj0fc7CIV+OwieL52K7Q4Depfd0IcqI9y2UGLF/7GEFwXk+
-	w==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=AXRG/
+	cFkj+CyiAXAi/zi6KitRch88deGb+3V+LLFRic=; b=Z+GHzqs4CMt9DKD3SBRY3
+	xjnpvmqoPar5wpzmLP5lVkwHoMaQsSvmlJJBkpf/2wdruZDYeGyWt7CAbTOEKzNg
+	fdHGTbsBUsfuKeixn6j4YoY9n2n7HcOgPXNl9N/iZIDIVHEEJsnHDZRpnkHXTzN9
+	lLZlSCQBOmqFtX3zgu96qjpcKYVM2CgWqUHOFlIhvogBAAjaf9opYTNn6+ZenqpD
+	v1rTocM/bU5mDF4WMfwcC7pwVJ1JxQOiheAldDJ9/unSYQTgLmIPBBe9GL2hcGbU
+	XAwg0M0Pqd/C3sBIHd2PXLSbyj5K9m00omiIFTRdaofex/AX8d0yAg2tniYC5usJ
+	A==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4akvcjmw7y-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4akvcjmw8f-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Nov 2025 04:18:28 -0500 (EST)
+	Mon, 24 Nov 2025 04:18:33 -0500 (EST)
 Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5AO9IR8J050884
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5AO9IWd3050905
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 24 Nov 2025 04:18:27 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.37; Mon, 24 Nov
- 2025 04:18:27 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Mon, 24 Nov 2025 04:18:27 -0500
+	Mon, 24 Nov 2025 04:18:32 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Mon, 24 Nov 2025 04:18:32 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Mon, 24 Nov 2025 04:18:31 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Mon, 24 Nov 2025 04:18:31 -0500
 Received: from HYB-DlYm71t3hSl.ad.analog.com (HYB-DlYm71t3hSl.ad.analog.com [10.44.3.82])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5AO9I8VL024016;
-	Mon, 24 Nov 2025 04:18:20 -0500
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5AO9I8VM024016;
+	Mon, 24 Nov 2025 04:18:23 -0500
 From: Jorge Marques <jorge.marques@analog.com>
-Date: Mon, 24 Nov 2025 10:18:01 +0100
-Subject: [PATCH v2 2/9] docs: iio: New docs for ad4062 driver
+Date: Mon, 24 Nov 2025 10:18:02 +0100
+Subject: [PATCH v2 3/9] iio: adc: Add support for ad4062
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -72,16 +76,16 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20251124-staging-ad4062-v2-2-a375609afbb7@analog.com>
+Content-Transfer-Encoding: 8bit
+Message-ID: <20251124-staging-ad4062-v2-3-a375609afbb7@analog.com>
 References: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
 In-Reply-To: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
 To: Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich
 	<Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        David
- Lechner <dlechner@baylibre.com>,
+        "David
+ Lechner" <dlechner@baylibre.com>,
         =?utf-8?q?Nuno_S=C3=A1?=
 	<nuno.sa@analog.com>,
         Andy Shevchenko <andy@kernel.org>, Rob Herring
@@ -96,27 +100,27 @@ CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
         <linux-gpio@vger.kernel.org>, Jorge Marques <jorge.marques@analog.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1763975888; l=4325;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1763975888; l=27152;
  i=jorge.marques@analog.com; s=20250303; h=from:subject:message-id;
- bh=Z8LmT3qY041U83j0q+I/X13ABeV5uquFKXkkjyjU46A=;
- b=jJNj03hkSeBFF9vkNqDG9dZrPgoF43A3DbjgZmysB03r5VB5qLsuCbuY1b7za0N/W/1cYfFHj
- 0PiDJzywFR2CLYi5wEkJ2/N3l89jXQ6YjlhOjWT01RXrD4yoNtJaKYi
+ bh=EGqnRUIZ88XhAFWn4QO7hpGwrC+uXo5B8lnXB90TgQg=;
+ b=qEegrXG76NyHDfyd0U2khGUG+Q75sZSDyUY9YnF2cmEdxATazPzPrt7T5AWmq7XBQW6FeQgzk
+ bJ6h5rDU2tpCasv5TmwYfl4dUABMANa47ZPPqirA1EfXhaZPit+wB/M
 X-Developer-Key: i=jorge.marques@analog.com; a=ed25519;
  pk=NUR1IZZMH0Da3QbJ2tBSznSPVfRpuoWdhBzKGSpAdbg=
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI0MDA4MSBTYWx0ZWRfXxZ/qTJBhbYe5
- tBhuWZhMaw4340Jmr9lVy9tASE1Xbsxi2/CTtBEicUE2aZO5Oa4kK7STr1yD9vD5+X5M6QWIrZi
- DSgLnZE18WHRQks8b5aU8f3L33OYF9TiOjv8Vow1hih+Q4eM4N9SHZDScXd/5lKXkjTAFiGBLkS
- TwZ+RkDt89RyZcaMqRBfsZqfbqM3qpUiJHf5s5jymXbmIUxAUvIaHT0alcUwOW7GZVcEEcxYf2j
- e5sMzE9vtzepHsCMAGDkRItLUOkvihy9OGC0WskPsDYRfF4yzDsB90TXDTTcJC0vFJTIG/SOcLg
- 5yWQfDS0KmnCfOTB0M9hQOGLqxEtQBMY/yY7RCyVJcpJvERn7cgOlTPDShdwYCR8Lup40to0W67
- AjNaLsFlH9bH6jpBo2CEHouJP+dqYw==
-X-Authority-Analysis: v=2.4 cv=EqrfbCcA c=1 sm=1 tr=0 ts=692422e4 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI0MDA4MSBTYWx0ZWRfX/zbbA4tyt/UM
+ JFNgXhqewBN/czeos9QA5kTx0aWm9AgyW3GdhsMdJb2C51SYuKCvFOpWlmp7p/4DS/4sc7w1I1c
+ j8WJgAmIS3nSrTDL8nt2onEe7g97mEi/n24jlqnCDCzCzYEv5m39hS1vbGi+hyd9DBJdINa0odn
+ MUP7mC1Yqy7+1t/RKm+Cu+zpin2rkNUToIRR3fIG0yjKZpSnKpa1gBHEJ1ewEXEuBuvLL99Iq8W
+ XixtJoIyWDQc6Ti8T8I5CW0ilmKKGw6AAgRK8o2IBwifyTk7sOBMOWiEZB+WWUduu+HOiyHvpmt
+ jmgVQjiFaaKQfx3CYJFScVbRP2x/S/MsgT/esFTNzL/XWnYG8o3Ok0cKxZSTT+55mCmhA6NWmT8
+ vV0kCmRFJRyRtjVbR4xHF6Jt0dCsXQ==
+X-Authority-Analysis: v=2.4 cv=EqrfbCcA c=1 sm=1 tr=0 ts=692422e9 cx=c_pps
  a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
  a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=gAnH3GRIAAAA:8 a=5m_mccj1f-mIrhuec74A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: NlgkzN2oYlEEivSc8m3yj9ygm_2uOyVt
-X-Proofpoint-GUID: NlgkzN2oYlEEivSc8m3yj9ygm_2uOyVt
+ a=gAnH3GRIAAAA:8 a=wY3Oww9YKB1vFLSdLmoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: RtM4wrKGC-O-gakpp2LudEgBmK3lAuZV
+X-Proofpoint-GUID: RtM4wrKGC-O-gakpp2LudEgBmK3lAuZV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-11-24_03,2025-11-21_01,2025-10-01_01
@@ -126,139 +130,951 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511240081
 
-This adds a new page to document how to use the ad4062 ADC driver.
+The AD4060/AD4062 are versatile, 16-bit/12-bit, successive approximation
+register (SAR) analog-to-digital converter (ADC) with low-power and
+threshold monitoring modes.
 
 Signed-off-by: Jorge Marques <jorge.marques@analog.com>
 ---
- Documentation/iio/ad4062.rst | 94 ++++++++++++++++++++++++++++++++++++++++++++
- Documentation/iio/index.rst  |  1 +
- MAINTAINERS                  |  1 +
- 3 files changed, 96 insertions(+)
+ MAINTAINERS              |   1 +
+ drivers/iio/adc/Kconfig  |  11 +
+ drivers/iio/adc/Makefile |   1 +
+ drivers/iio/adc/ad4062.c | 881 +++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 894 insertions(+)
 
-diff --git a/Documentation/iio/ad4062.rst b/Documentation/iio/ad4062.rst
-new file mode 100644
-index 0000000000000..e6bcca2bef24b
---- /dev/null
-+++ b/Documentation/iio/ad4062.rst
-@@ -0,0 +1,94 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+=============
-+AD4062 driver
-+=============
-+
-+ADC driver for Analog Devices Inc. AD4060/AD4062 devices. The module name is
-+``ad4062``.
-+
-+Supported devices
-+=================
-+
-+The following chips are supported by this driver:
-+
-+* `AD4060 <https://www.analog.com/AD4060>`_
-+* `AD4062 <https://www.analog.com/AD4062>`_
-+
-+Wiring modes
-+============
-+
-+The ADC is interfaced through an I3C bus, and contains two programmable GPIOs.
-+
-+The ADC convert-start happens on the SDA rising edge of the I3C stop (P) bit
-+at the end of the read command.
-+
-+The two programmable GPIOS are optional and have a role assigned if present in
-+the devicetree ``interrupt-names`` property:
-+
-+- GP1: Is assigned the role of Data Ready signal.
-+
-+Device attributes
-+=================
-+
-+The ADC contains only one channel with following attributes:
-+
-+.. list-table:: Channel attributes
-+   :header-rows: 1
-+
-+   * - Attribute
-+     - Description
-+   * - ``in_voltage_calibscale``
-+     - Sets the gain scaling factor that the hardware applies to the sample,
-+       to compensate for system gain error.
-+   * - ``in_voltage_oversampling_ratio``
-+     - Sets device's burst averaging mode to over sample using the
-+       internal sample rate. Value 1 disable the burst averaging mode.
-+   * - ``in_voltage_oversampling_ratio_available``
-+     - List of available oversampling values.
-+   * - ``in_voltage_raw``
-+     - Returns the raw ADC voltage value.
-+   * - ``in_voltage_scale``
-+     - Returns the channel scale in reference to the reference voltage
-+       ``ref-supply`` or ``vdd-supply`` if the former not present.
-+
-+Also contain the following device attributes:
-+
-+.. list-table:: Device attributes
-+   :header-rows: 1
-+
-+   * - Attribute
-+     - Description
-+   * - ``sampling_frequency``
-+     - Sets the duration of a single scan, used in the burst averaging mode.
-+       The duration is described by ``(n_avg - 1) / fosc + tconv``, where
-+       ``n_avg`` is the oversampling ratio, ``fosc`` is the internal sample
-+       rate and ``tconv`` is the ADC conversion time.
-+   * - ``sampling_frequency_available``
-+     - Lists the available sampling frequencies, computed on the current
-+       oversampling ratio. If the ratio is 1, the frequency is ``1/tconv``.
-+
-+Interrupts
-+==========
-+
-+The interrupts are mapped through the ``interrupt-names`` and ``interrupts``
-+properties.
-+
-+The ``interrupt-names`` ``gp1`` entry sets the role of Data Ready signal.
-+If it is not present, the driver fallback to enabling the same role as an
-+I3C IBI.
-+
-+Low-power mode
-+==============
-+
-+The device enters low-power mode on idle to save power. Enabling an event puts
-+the device out of the low-power since the ADC autonomously samples to assert
-+the event condition.
-+
-+Unimplemented features
-+======================
-+
-+- Monitor mode
-+- Trigger mode
-+- Averaging mode
-+- General purpose output
-diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-index 315ae37d6fd4b..ba3e609c6a13c 100644
---- a/Documentation/iio/index.rst
-+++ b/Documentation/iio/index.rst
-@@ -22,6 +22,7 @@ Industrial I/O Kernel Drivers
-    ad3552r
-    ad4000
-    ad4030
-+   ad4062
-    ad4695
-    ad7191
-    ad7380
 diff --git a/MAINTAINERS b/MAINTAINERS
-index e22ba5ec8c849..8fc28b789d639 100644
+index 8fc28b789d639..003f51cfb0d07 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1437,6 +1437,7 @@ M:	Jorge Marques <jorge.marques@analog.com>
- S:	Supported
+@@ -1438,6 +1438,7 @@ S:	Supported
  W:	https://ez.analog.com/linux-software-drivers
  F:	Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
-+F:	Documentation/iio/ad4062.rst
+ F:	Documentation/iio/ad4062.rst
++F:	drivers/iio/adc/ad4062.c
  
  ANALOG DEVICES INC AD4080 DRIVER
  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 58da8255525e4..e506dbe83f488 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -70,6 +70,17 @@ config AD4030
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called ad4030.
+ 
++config AD4062
++	tristate "Analog Devices AD4062 Driver"
++	depends on I3C
++	select REGMAP_I3C
++	help
++	  Say yes here to build support for Analog Devices AD4062 I3C analog
++	  to digital converters (ADC).
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called ad4062.
++
+ config AD4080
+ 	tristate "Analog Devices AD4080 high speed ADC"
+ 	depends on SPI
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index 7cc8f9a12f763..a897252eeed40 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -11,6 +11,7 @@ obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
+ obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
+ obj-$(CONFIG_AD4000) += ad4000.o
+ obj-$(CONFIG_AD4030) += ad4030.o
++obj-$(CONFIG_AD4062) += ad4062.o
+ obj-$(CONFIG_AD4080) += ad4080.o
+ obj-$(CONFIG_AD4130) += ad4130.o
+ obj-$(CONFIG_AD4170_4) += ad4170-4.o
+diff --git a/drivers/iio/adc/ad4062.c b/drivers/iio/adc/ad4062.c
+new file mode 100644
+index 0000000000000..6866393ffef8d
+--- /dev/null
++++ b/drivers/iio/adc/ad4062.c
+@@ -0,0 +1,881 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Analog Devices AD4062 I3C ADC driver
++ *
++ * Copyright 2025 Analog Devices Inc.
++ */
++#include <linux/array_size.h>
++#include <linux/bitfield.h>
++#include <linux/bitops.h>
++#include <linux/completion.h>
++#include <linux/delay.h>
++#include <linux/err.h>
++#include <linux/i3c/device.h>
++#include <linux/i3c/master.h>
++#include <linux/iio/iio.h>
++#include <linux/iio/sysfs.h>
++#include <linux/interrupt.h>
++#include <linux/jiffies.h>
++#include <linux/math.h>
++#include <linux/minmax.h>
++#include <linux/pm_runtime.h>
++#include <linux/property.h>
++#include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
++#include <linux/string.h>
++#include <linux/types.h>
++#include <linux/units.h>
++#include <linux/unaligned.h>
++#include <linux/util_macros.h>
++
++#define AD4062_REG_INTERFACE_CONFIG_A			0x00
++#define AD4062_REG_DEVICE_CONFIG			0x02
++#define     AD4062_REG_DEVICE_CONFIG_POWER_MODE_MSK	GENMASK(1, 0)
++#define     AD4062_REG_DEVICE_CONFIG_LOW_POWER_MODE	3
++#define AD4062_REG_PROD_ID_1				0x05
++#define AD4062_REG_DEVICE_GRADE				0x06
++#define AD4062_REG_SCRATCH_PAD				0x0A
++#define AD4062_REG_VENDOR_H				0x0D
++#define AD4062_REG_STREAM_MODE				0x0E
++#define AD4062_REG_INTERFACE_STATUS			0x11
++#define AD4062_REG_MODE_SET				0x20
++#define     AD4062_REG_MODE_SET_ENTER_ADC		BIT(0)
++#define AD4062_REG_ADC_MODES				0x21
++#define     AD4062_REG_ADC_MODES_MODE_MSK		GENMASK(1, 0)
++#define AD4062_REG_ADC_CONFIG				0x22
++#define     AD4062_REG_ADC_CONFIG_REF_EN_MSK		BIT(5)
++#define     AD4062_REG_ADC_CONFIG_SCALE_EN_MSK		BIT(4)
++#define AD4062_REG_AVG_CONFIG				0x23
++#define AD4062_REG_GP_CONF				0x24
++#define     AD4062_REG_GP_CONF_MODE_MSK_1		GENMASK(6, 4)
++#define AD4062_REG_INTR_CONF				0x25
++#define     AD4062_REG_INTR_CONF_EN_MSK_1		GENMASK(5, 4)
++#define AD4062_REG_TIMER_CONFIG				0x27
++#define     AD4062_REG_TIMER_CONFIG_FS_MASK		GENMASK(7, 4)
++#define AD4062_REG_MON_VAL				0x2F
++#define AD4062_REG_ADC_IBI_EN				0x31
++#define AD4062_REG_ADC_IBI_EN_CONV_TRIGGER		BIT(2)
++#define AD4062_REG_FUSE_CRC				0x40
++#define AD4062_REG_DEVICE_STATUS			0x41
++#define     AD4062_REG_DEVICE_STATUS_DEVICE_RESET	BIT(6)
++#define AD4062_REG_IBI_STATUS				0x48
++#define AD4062_REG_CONV_READ_LSB			0x50
++#define AD4062_REG_CONV_TRIGGER				0x59
++#define AD4062_REG_CONV_AUTO				0x61
++#define AD4062_MAX_REG					AD4062_REG_CONV_AUTO
++
++#define AD4062_I3C_VENDOR	0x0177
++
++#define AD4062_SOFT_RESET	0x81
++#define AD4060_MAX_AVG		0x7
++#define AD4062_MAX_AVG		0xB
++#define AD4062_MON_VAL_MAX_GAIN		1999970
++#define AD4062_MON_VAL_MIDDLE_POINT	0x8000
++#define AD4062_GP_DRDY		0x2
++#define AD4062_INTR_EN_NEITHER	0x0
++#define AD4062_TCONV_NS		270
++
++enum ad4062_operation_mode {
++	AD4062_SAMPLE_MODE = 0x0,
++	AD4062_BURST_AVERAGING_MODE = 0x1,
++	AD4062_MONITOR_MODE = 0x3,
++};
++
++struct ad4062_chip_info {
++	const struct iio_chan_spec channels[1];
++	const char *name;
++	u16 prod_id;
++	u8 max_avg;
++};
++
++enum {
++	AD4062_SCAN_TYPE_SAMPLE,
++	AD4062_SCAN_TYPE_BURST_AVG,
++};
++
++static const struct iio_scan_type ad4062_scan_type_12_s[] = {
++	[AD4062_SCAN_TYPE_SAMPLE] = {
++		.sign = 's',
++		.realbits = 16,
++		.storagebits = 32,
++		.endianness = IIO_BE,
++	},
++	[AD4062_SCAN_TYPE_BURST_AVG] = {
++		.sign = 's',
++		.realbits = 16,
++		.storagebits = 32,
++		.endianness = IIO_BE,
++	},
++};
++
++static const struct iio_scan_type ad4062_scan_type_16_s[] = {
++	[AD4062_SCAN_TYPE_SAMPLE] = {
++		.sign = 's',
++		.realbits = 16,
++		.storagebits = 32,
++		.endianness = IIO_BE,
++	},
++	[AD4062_SCAN_TYPE_BURST_AVG] = {
++		.sign = 's',
++		.realbits = 24,
++		.storagebits = 32,
++		.endianness = IIO_BE,
++	},
++};
++
++static const int ad4062_conversion_freqs[] = {
++	2000000, 1000000, 300000, 100000,	/*  0 -  3 */
++	33300, 10000, 3000, 500,		/*  4 -  7 */
++	333, 250, 200, 166,			/*  8 - 11 */
++	140, 124, 111,				/* 12 - 15 */
++};
++
++struct ad4062_state {
++	const struct ad4062_chip_info *chip;
++	const struct ad4062_bus_ops *ops;
++	enum ad4062_operation_mode mode;
++	struct completion completion;
++	struct iio_trigger *trigger;
++	struct iio_dev *indio_dev;
++	struct i3c_device *i3cdev;
++	struct regmap *regmap;
++	u16 sampling_frequency;
++	int vref_uv;
++	int samp_freqs[ARRAY_SIZE(ad4062_conversion_freqs)];
++	u8 oversamp_ratio;
++	union {
++		__be32 be32;
++		__be16 be16;
++		u8 bytes[4];
++	} buf __aligned(IIO_DMA_MINALIGN);
++	u8 reg_addr_conv;
++};
++
++static const struct regmap_range ad4062_regmap_rd_ranges[] = {
++	regmap_reg_range(AD4062_REG_INTERFACE_CONFIG_A, AD4062_REG_DEVICE_GRADE),
++	regmap_reg_range(AD4062_REG_SCRATCH_PAD, AD4062_REG_INTERFACE_STATUS),
++	regmap_reg_range(AD4062_REG_MODE_SET, AD4062_REG_ADC_IBI_EN),
++	regmap_reg_range(AD4062_REG_FUSE_CRC, AD4062_REG_IBI_STATUS),
++	regmap_reg_range(AD4062_REG_CONV_READ_LSB, AD4062_REG_CONV_AUTO),
++};
++
++static const struct regmap_access_table ad4062_regmap_rd_table = {
++	.yes_ranges = ad4062_regmap_rd_ranges,
++	.n_yes_ranges = ARRAY_SIZE(ad4062_regmap_rd_ranges),
++};
++
++static const struct regmap_range ad4062_regmap_wr_ranges[] = {
++	regmap_reg_range(AD4062_REG_INTERFACE_CONFIG_A, AD4062_REG_DEVICE_CONFIG),
++	regmap_reg_range(AD4062_REG_SCRATCH_PAD, AD4062_REG_SCRATCH_PAD),
++	regmap_reg_range(AD4062_REG_STREAM_MODE, AD4062_REG_INTERFACE_STATUS),
++	regmap_reg_range(AD4062_REG_MODE_SET, AD4062_REG_ADC_IBI_EN),
++	regmap_reg_range(AD4062_REG_FUSE_CRC, AD4062_REG_DEVICE_STATUS),
++};
++
++static const struct regmap_access_table ad4062_regmap_wr_table = {
++	.yes_ranges = ad4062_regmap_wr_ranges,
++	.n_yes_ranges = ARRAY_SIZE(ad4062_regmap_wr_ranges),
++};
++
++static int ad4062_conversion_frequency_set(struct ad4062_state *st, u8 val)
++{
++	return regmap_write(st->regmap, AD4062_REG_TIMER_CONFIG,
++			    FIELD_PREP(AD4062_REG_TIMER_CONFIG_FS_MASK, val));
++}
++
++#define AD4062_CHAN(bits) {							\
++	.type = IIO_VOLTAGE,								\
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_RAW) |				\
++				    BIT(IIO_CHAN_INFO_SCALE) |				\
++				    BIT(IIO_CHAN_INFO_CALIBSCALE) |			\
++				    BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
++	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
++	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
++	.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),		\
++	.indexed = 1,									\
++	.channel = 0,									\
++	.has_ext_scan_type = 1,								\
++	.ext_scan_type = ad4062_scan_type_##bits##_s,					\
++	.num_ext_scan_type = ARRAY_SIZE(ad4062_scan_type_##bits##_s),			\
++}
++
++static const struct ad4062_chip_info ad4060_chip_info = {
++	.name = "ad4060",
++	.channels = { AD4062_CHAN(12) },
++	.prod_id = 0x7A,
++	.max_avg = AD4060_MAX_AVG,
++};
++
++static const struct ad4062_chip_info ad4062_chip_info = {
++	.name = "ad4062",
++	.channels = { AD4062_CHAN(16) },
++	.prod_id = 0x7C,
++	.max_avg = AD4062_MAX_AVG,
++};
++
++static int ad4062_set_oversampling_ratio(struct ad4062_state *st, unsigned int val)
++{
++	int ret;
++
++	if (val < 1 || val > BIT(st->chip->max_avg + 1))
++		return -EINVAL;
++
++	/* 1 disables oversampling */
++	val = ilog2(val);
++	if (val == 0) {
++		st->mode = AD4062_SAMPLE_MODE;
++	} else {
++		st->mode = AD4062_BURST_AVERAGING_MODE;
++		ret = regmap_write(st->regmap, AD4062_REG_AVG_CONFIG, val - 1);
++		if (ret)
++			return ret;
++	}
++	st->oversamp_ratio = BIT(val);
++
++	return 0;
++}
++
++static int ad4062_get_oversampling_ratio(struct ad4062_state *st,
++					 unsigned int *val)
++{
++	int ret, buf;
++
++	if (st->mode == AD4062_SAMPLE_MODE) {
++		*val = 1;
++		return 0;
++	}
++
++	ret = regmap_read(st->regmap, AD4062_REG_AVG_CONFIG, &buf);
++	return 0;
++}
++
++static int ad4062_calc_sampling_frequency(int fosc, unsigned int n_avg)
++{
++	/* See datasheet page 31 */
++	u64 duration = div_u64((u64)(n_avg - 1) * NSEC_PER_SEC, fosc) + AD4062_TCONV_NS;
++
++	return DIV_ROUND_UP_ULL(NSEC_PER_SEC, duration);
++}
++
++static int ad4062_populate_sampling_frequency(struct ad4062_state *st)
++{
++	for (int i = 0; i < ARRAY_SIZE(ad4062_conversion_freqs); i++)
++		st->samp_freqs[i] = ad4062_calc_sampling_frequency(ad4062_conversion_freqs[i],
++								   st->oversamp_ratio);
++	return 0;
++}
++
++static int ad4062_get_sampling_frequency(struct ad4062_state *st, int *val)
++{
++	*val = ad4062_calc_sampling_frequency(ad4062_conversion_freqs[st->sampling_frequency],
++					      st->oversamp_ratio);
++	return 0;
++}
++
++static int ad4062_set_sampling_frequency(struct ad4062_state *st, int val)
++{
++	int ret;
++
++	ret = ad4062_populate_sampling_frequency(st);
++	if (ret)
++		return ret;
++
++	st->sampling_frequency = find_closest_descending(val, st->samp_freqs,
++							 ARRAY_SIZE(ad4062_conversion_freqs));
++	return 0;
++}
++
++static int ad4062_check_ids(struct ad4062_state *st)
++{
++	int ret;
++	u16 val;
++
++	ret = regmap_bulk_read(st->regmap, AD4062_REG_PROD_ID_1,
++			       &st->buf.be16, sizeof(st->buf.be16));
++	if (ret)
++		return ret;
++
++	val = get_unaligned_be16(st->buf.bytes);
++	if (val != st->chip->prod_id)
++		dev_warn(&st->i3cdev->dev,
++			 "Production ID x%x does not match known values", val);
++
++	ret = regmap_bulk_read(st->regmap, AD4062_REG_VENDOR_H,
++			       &st->buf.be16, sizeof(st->buf.be16));
++	if (ret)
++		return ret;
++
++	val = get_unaligned_be16(st->buf.bytes);
++	if (val != AD4062_I3C_VENDOR) {
++		dev_err(&st->i3cdev->dev,
++			"Vendor ID x%x does not match expected value\n", val);
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++static int ad4062_set_operation_mode(struct ad4062_state *st,
++				     enum ad4062_operation_mode mode)
++{
++	int ret;
++
++	if (mode == AD4062_BURST_AVERAGING_MODE) {
++		ret = ad4062_conversion_frequency_set(st, st->sampling_frequency);
++		if (ret)
++			return ret;
++	}
++
++	ret = regmap_update_bits(st->regmap, AD4062_REG_ADC_MODES,
++				 AD4062_REG_ADC_MODES_MODE_MSK, mode);
++	if (ret)
++		return ret;
++
++	return regmap_write(st->regmap, AD4062_REG_MODE_SET,
++			    AD4062_REG_MODE_SET_ENTER_ADC);
++}
++
++static int ad4062_soft_reset(struct ad4062_state *st)
++{
++	u8 val = AD4062_SOFT_RESET;
++	int ret;
++
++	ret = regmap_write(st->regmap, AD4062_REG_INTERFACE_CONFIG_A, val);
++	if (ret)
++		return ret;
++
++	/* Wait AD4062 treset time */
++	fsleep(5000);
++
++	return 0;
++}
++
++static int ad4062_setup(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
++			const bool *ref_sel)
++{
++	struct ad4062_state *st = iio_priv(indio_dev);
++	const struct iio_scan_type *scan_type;
++	int ret;
++	u8 val;
++
++	scan_type = iio_get_current_scan_type(indio_dev, chan);
++	if (IS_ERR(scan_type))
++		return PTR_ERR(scan_type);
++
++	val = FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_1, AD4062_GP_DRDY);
++	ret = regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
++				 AD4062_REG_GP_CONF_MODE_MSK_1, val);
++	if (ret)
++		return ret;
++
++	ret = regmap_update_bits(st->regmap, AD4062_REG_ADC_CONFIG,
++				 AD4062_REG_ADC_CONFIG_REF_EN_MSK,
++				 FIELD_PREP(AD4062_REG_ADC_CONFIG_REF_EN_MSK,
++					    *ref_sel));
++	if (ret)
++		return ret;
++
++	ret = regmap_write(st->regmap, AD4062_REG_DEVICE_STATUS,
++			   AD4062_REG_DEVICE_STATUS_DEVICE_RESET);
++	if (ret)
++		return ret;
++
++	val = FIELD_PREP(AD4062_REG_INTR_CONF_EN_MSK_1, AD4062_INTR_EN_NEITHER);
++	ret = regmap_update_bits(st->regmap, AD4062_REG_INTR_CONF,
++				 AD4062_REG_INTR_CONF_EN_MSK_1, val);
++	if (ret)
++		return ret;
++
++	put_unaligned_be16(AD4062_MON_VAL_MIDDLE_POINT, st->buf.bytes);
++	return regmap_bulk_write(st->regmap, AD4062_REG_MON_VAL,
++				 &st->buf.be16, sizeof(st->buf.be16));
++}
++
++static irqreturn_t ad4062_irq_handler_drdy(int irq, void *private)
++{
++	struct iio_dev *indio_dev = private;
++	struct ad4062_state *st = iio_priv(indio_dev);
++
++	complete(&st->completion);
++
++	return IRQ_HANDLED;
++}
++
++static void ad4062_ibi_handler(struct i3c_device *i3cdev,
++			       const struct i3c_ibi_payload *payload)
++{
++	struct ad4062_state *st = i3cdev_get_drvdata(i3cdev);
++
++	complete(&st->completion);
++}
++
++static void ad4062_remove_ibi(void *data)
++{
++	struct i3c_device *i3cdev = data;
++
++	i3c_device_disable_ibi(i3cdev);
++	i3c_device_free_ibi(i3cdev);
++}
++
++static int ad4062_request_ibi(struct i3c_device *i3cdev)
++{
++	const struct i3c_ibi_setup ibireq = {
++		.max_payload_len = 1,
++		.num_slots = 1,
++		.handler = ad4062_ibi_handler,
++	};
++	int ret;
++
++	ret = i3c_device_request_ibi(i3cdev, &ibireq);
++	if (ret)
++		return ret;
++
++	ret = i3c_device_enable_ibi(i3cdev);
++	if (ret)
++		goto err_enable_ibi;
++
++	return devm_add_action_or_reset(&i3cdev->dev, ad4062_remove_ibi, i3cdev);
++
++err_enable_ibi:
++	i3c_device_free_ibi(i3cdev);
++	return ret;
++}
++
++static int ad4062_request_irq(struct iio_dev *indio_dev)
++{
++	struct ad4062_state *st = iio_priv(indio_dev);
++	struct device *dev = &st->i3cdev->dev;
++	int ret;
++
++	ret = fwnode_irq_get_byname(dev_fwnode(&st->i3cdev->dev), "gp1");
++	if (ret == -EPROBE_DEFER) {
++		return ret;
++	} else if (ret < 0) {
++		ret = regmap_update_bits(st->regmap, AD4062_REG_ADC_IBI_EN,
++					 AD4062_REG_ADC_IBI_EN_CONV_TRIGGER,
++					 AD4062_REG_ADC_IBI_EN_CONV_TRIGGER);
++	} else {
++		ret = devm_request_threaded_irq(dev, ret,
++						ad4062_irq_handler_drdy,
++						NULL, IRQF_ONESHOT, indio_dev->name,
++						indio_dev);
++	}
++
++	return ret;
++}
++
++static const int ad4062_oversampling_avail[] = {
++	1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096,
++};
++
++static int ad4062_read_avail(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan, const int **vals,
++			     int *type, int *len, long mask)
++{
++	struct ad4062_state *st = iio_priv(indio_dev);
++	int ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		*vals = ad4062_oversampling_avail;
++		*len = ARRAY_SIZE(ad4062_oversampling_avail);
++		*type = IIO_VAL_INT;
++
++		return IIO_AVAIL_LIST;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		ret = ad4062_populate_sampling_frequency(st);
++		if (ret)
++			return ret;
++		*vals = st->samp_freqs;
++		*len = st->oversamp_ratio != 1 ? ARRAY_SIZE(ad4062_conversion_freqs) : 1;
++		*type = IIO_VAL_INT;
++
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad4062_get_chan_scale(struct iio_dev *indio_dev, int *val, int *val2)
++{
++	struct ad4062_state *st = iio_priv(indio_dev);
++	const struct iio_scan_type *scan_type;
++
++	scan_type = iio_get_current_scan_type(indio_dev, st->chip->channels);
++	if (IS_ERR(scan_type))
++		return PTR_ERR(scan_type);
++
++	*val = (st->vref_uv * 2) / MILLI;
++
++	*val2 = scan_type->realbits - 1; /* signed */
++
++	return IIO_VAL_FRACTIONAL_LOG2;
++}
++
++static int ad4062_get_chan_calibscale(struct ad4062_state *st, int *val, int *val2)
++{
++	u16 gain;
++	int ret;
++
++	ret = regmap_bulk_read(st->regmap, AD4062_REG_MON_VAL,
++			       &st->buf.be16, sizeof(st->buf.be16));
++	if (ret)
++		return ret;
++
++	gain = get_unaligned_be16(st->buf.bytes);
++
++	/* From datasheet: code out = code in × mon_val/0x8000 */
++	*val = gain / AD4062_MON_VAL_MIDDLE_POINT;
++	*val2 = mul_u64_u32_div(gain % AD4062_MON_VAL_MIDDLE_POINT, NANO,
++				AD4062_MON_VAL_MIDDLE_POINT);
++
++	return IIO_VAL_INT_PLUS_NANO;
++}
++
++static int ad4062_set_chan_calibscale(struct ad4062_state *st, int gain_int, int gain_frac)
++{
++	u64 gain;
++	int ret;
++
++	if (gain_int < 0 || gain_frac < 0)
++		return -EINVAL;
++
++	gain = mul_u32_u32(gain_int, MICRO) + gain_frac;
++
++	if (gain > AD4062_MON_VAL_MAX_GAIN)
++		return -EINVAL;
++
++	put_unaligned_be16(DIV_ROUND_CLOSEST_ULL(gain * AD4062_MON_VAL_MIDDLE_POINT,
++						 MICRO),
++			   st->buf.bytes);
++
++	ret = regmap_bulk_write(st->regmap, AD4062_REG_MON_VAL,
++				&st->buf.be16, sizeof(st->buf.be16));
++	if (ret)
++		return ret;
++
++	/* Enable scale if gain is not one. */
++	return regmap_update_bits(st->regmap, AD4062_REG_ADC_CONFIG,
++				  AD4062_REG_ADC_CONFIG_SCALE_EN_MSK,
++				  FIELD_PREP(AD4062_REG_ADC_CONFIG_SCALE_EN_MSK,
++					     !(gain_int == 1 && gain_frac == 0)));
++}
++
++static int __ad4062_read_chan_raw(struct ad4062_state *st, int *val)
++{
++	struct i3c_device *i3cdev = st->i3cdev;
++	struct i3c_priv_xfer t[2] = {
++		{
++			.data.out = &st->reg_addr_conv,
++			.len = sizeof(st->reg_addr_conv),
++			.rnw = false,
++		},
++		{
++			.data.in = &st->buf.be32,
++			.len = sizeof(st->buf.be32),
++			.rnw = true,
++		}
++	};
++	int ret;
++
++	reinit_completion(&st->completion);
++	/* Change address pointer to trigger conversion */
++	ret = i3c_device_do_priv_xfers(i3cdev, &t[0], 1);
++	if (ret)
++		return ret;
++	/*
++	 * Single sample read should be used only for oversampling and
++	 * sampling frequency pairs that take less than 1 sec.
++	 */
++	ret = wait_for_completion_timeout(&st->completion,
++					  msecs_to_jiffies(1000));
++	if (!ret)
++		return -ETIMEDOUT;
++
++	ret = i3c_device_do_priv_xfers(i3cdev, &t[1], 1);
++	if (ret)
++		return ret;
++	*val = get_unaligned_be32(st->buf.bytes);
++	return 0;
++}
++
++static int ad4062_read_chan_raw(struct ad4062_state *st, int *val)
++{
++	int ret;
++
++	ACQUIRE(pm_runtime_active_try_enabled, pm)(&st->i3cdev->dev);
++	ret = ACQUIRE_ERR(pm_runtime_active_try_enabled, &pm);
++	if (ret)
++		return ret;
++
++	ret = ad4062_set_operation_mode(st, st->mode);
++	if (ret)
++		return ret;
++
++	return __ad4062_read_chan_raw(st, val);
++}
++
++static int ad4062_read_raw_dispatch(struct ad4062_state *st, int *val, int *val2,
++				    long info)
++{
++	switch (info) {
++	case IIO_CHAN_INFO_RAW:
++		return ad4062_read_chan_raw(st, val);
++
++	case IIO_CHAN_INFO_CALIBSCALE:
++		return ad4062_get_chan_calibscale(st, val, val2);
++
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		return ad4062_get_oversampling_ratio(st, val);
++
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		return ad4062_get_sampling_frequency(st, val);
++
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad4062_read_raw(struct iio_dev *indio_dev,
++			   struct iio_chan_spec const *chan, int *val,
++			   int *val2, long info)
++{
++	struct ad4062_state *st = iio_priv(indio_dev);
++	int ret;
++
++	if (info == IIO_CHAN_INFO_SCALE)
++		return ad4062_get_chan_scale(indio_dev, val, val2);
++
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
++
++	ret = ad4062_read_raw_dispatch(st, val, val2, info);
++
++	iio_device_release_direct(indio_dev);
++	return ret ? ret : IIO_VAL_INT;
++}
++
++static int ad4062_write_raw_dispatch(struct ad4062_state *st, int val, int val2,
++				     long info)
++{
++	switch (info) {
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		return ad4062_set_oversampling_ratio(st, val);
++
++	case IIO_CHAN_INFO_CALIBSCALE:
++		return ad4062_set_chan_calibscale(st, val, val2);
++
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		return ad4062_set_sampling_frequency(st, val);
++
++	default:
++		return -EINVAL;
++	}
++};
++
++static int ad4062_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan, int val,
++			    int val2, long info)
++{
++	struct ad4062_state *st = iio_priv(indio_dev);
++	int ret;
++
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
++
++	ret = ad4062_write_raw_dispatch(st, val, val2, info);
++
++	iio_device_release_direct(indio_dev);
++	return ret;
++}
++
++static int ad4062_debugfs_reg_access(struct iio_dev *indio_dev, unsigned int reg,
++				     unsigned int writeval, unsigned int *readval)
++{
++	struct ad4062_state *st = iio_priv(indio_dev);
++	int ret;
++
++	if (readval)
++		ret = regmap_read(st->regmap, reg, readval);
++	else
++		ret = regmap_write(st->regmap, reg, writeval);
++
++	return ret;
++}
++
++static int ad4062_get_current_scan_type(const struct iio_dev *indio_dev,
++					const struct iio_chan_spec *chan)
++{
++	struct ad4062_state *st = iio_priv(indio_dev);
++
++	return st->mode == AD4062_BURST_AVERAGING_MODE ?
++			   AD4062_SCAN_TYPE_BURST_AVG :
++			   AD4062_SCAN_TYPE_SAMPLE;
++}
++
++static const struct iio_info ad4062_info = {
++	.read_raw = ad4062_read_raw,
++	.write_raw = ad4062_write_raw,
++	.read_avail = ad4062_read_avail,
++	.get_current_scan_type = &ad4062_get_current_scan_type,
++	.debugfs_reg_access = &ad4062_debugfs_reg_access,
++};
++
++static const struct regmap_config ad4062_regmap_config = {
++	.name = "ad4062",
++	.reg_bits = 8,
++	.val_bits = 8,
++	.max_register = AD4062_MAX_REG,
++	.rd_table = &ad4062_regmap_rd_table,
++	.wr_table = &ad4062_regmap_wr_table,
++	.can_sleep = true,
++};
++
++static int ad4062_regulators_get(struct ad4062_state *st, bool *ref_sel)
++{
++	struct device *dev = &st->i3cdev->dev;
++	int ret;
++
++	ret = devm_regulator_get_enable(dev, "vio");
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "Failed to enable vio voltage\n");
++
++	st->vref_uv = devm_regulator_get_enable_read_voltage(dev, "ref");
++	*ref_sel = st->vref_uv == -ENODEV;
++	if (st->vref_uv < 0 && st->vref_uv != -ENODEV) {
++		return dev_err_probe(dev, st->vref_uv,
++				     "Failed to enable and read ref voltage\n");
++	} else if (st->vref_uv == -ENODEV) {
++		st->vref_uv = devm_regulator_get_enable_read_voltage(dev, "vdd");
++		if (st->vref_uv < 0)
++			return dev_err_probe(dev, st->vref_uv,
++					     "Failed to enable and read vdd voltage\n");
++	} else {
++		ret = devm_regulator_get_enable(dev, "vdd");
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "Failed to enable vdd regulator\n");
++	}
++
++	return 0;
++}
++
++static const struct i3c_device_id ad4062_id_table[] = {
++	I3C_DEVICE(AD4062_I3C_VENDOR, ad4060_chip_info.prod_id, &ad4060_chip_info),
++	I3C_DEVICE(AD4062_I3C_VENDOR, ad4062_chip_info.prod_id, &ad4062_chip_info),
++	{ }
++};
++MODULE_DEVICE_TABLE(i3c, ad4062_id_table);
++
++static int ad4062_probe(struct i3c_device *i3cdev)
++{
++	const struct i3c_device_id *id = i3c_device_match_id(i3cdev, ad4062_id_table);
++	const struct ad4062_chip_info *chip = id->data;
++	struct device *dev = &i3cdev->dev;
++	struct iio_dev *indio_dev;
++	struct ad4062_state *st;
++	bool ref_sel;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++	st->i3cdev = i3cdev;
++	i3cdev_set_drvdata(i3cdev, st);
++	init_completion(&st->completion);
++
++	ret = ad4062_regulators_get(st, &ref_sel);
++	if (ret)
++		return ret;
++
++	st->regmap = devm_regmap_init_i3c(i3cdev, &ad4062_regmap_config);
++	if (IS_ERR(st->regmap))
++		return dev_err_probe(dev, PTR_ERR(st->regmap),
++				     "Failed to initialize regmap\n");
++
++	st->mode = AD4062_SAMPLE_MODE;
++	st->chip = chip;
++	st->sampling_frequency = 0;
++	st->oversamp_ratio = BIT(0);
++	st->indio_dev = indio_dev;
++	st->reg_addr_conv = AD4062_REG_CONV_TRIGGER;
++
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->num_channels = 1;
++	indio_dev->info = &ad4062_info;
++	indio_dev->name = chip->name;
++	indio_dev->channels = chip->channels;
++
++	ret = ad4062_soft_reset(st);
++	if (ret)
++		return dev_err_probe(dev, ret, "AD4062 failed to soft reset\n");
++
++	ret = ad4062_check_ids(st);
++	if (ret)
++		return ret;
++
++	ret = ad4062_setup(indio_dev, indio_dev->channels, &ref_sel);
++	if (ret)
++		return ret;
++
++	ret = ad4062_request_irq(indio_dev);
++	if (ret)
++		return ret;
++
++	pm_runtime_set_active(dev);
++	ret = devm_pm_runtime_enable(dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to enable pm_runtime\n");
++
++	pm_runtime_set_autosuspend_delay(dev, 1000);
++	pm_runtime_use_autosuspend(dev);
++
++	ret = ad4062_request_ibi(i3cdev);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to request i3c ibi\n");
++
++	return devm_iio_device_register(dev, indio_dev);
++}
++
++static int ad4062_runtime_suspend(struct device *dev)
++{
++	struct ad4062_state *st = dev_get_drvdata(dev);
++
++	return regmap_write(st->regmap, AD4062_REG_DEVICE_CONFIG,
++			    FIELD_PREP(AD4062_REG_DEVICE_CONFIG_POWER_MODE_MSK,
++				       AD4062_REG_DEVICE_CONFIG_LOW_POWER_MODE));
++}
++
++static int ad4062_runtime_resume(struct device *dev)
++{
++	struct ad4062_state *st = dev_get_drvdata(dev);
++	int ret;
++
++	ret = regmap_clear_bits(st->regmap, AD4062_REG_DEVICE_CONFIG,
++				AD4062_REG_DEVICE_CONFIG_POWER_MODE_MSK);
++	if (ret)
++		return ret;
++
++	fsleep(4000);
++	return 0;
++}
++
++static DEFINE_RUNTIME_DEV_PM_OPS(ad4062_pm_ops, ad4062_runtime_suspend,
++				 ad4062_runtime_resume, NULL);
++
++static struct i3c_driver ad4062_driver = {
++	.driver = {
++		.name = "ad4062",
++		.pm = pm_ptr(&ad4062_pm_ops),
++	},
++	.probe = ad4062_probe,
++	.id_table = ad4062_id_table,
++};
++module_i3c_driver(ad4062_driver);
++
++MODULE_AUTHOR("Jorge Marques <jorge.marques@analog.com>");
++MODULE_DESCRIPTION("Analog Devices AD4062");
++MODULE_LICENSE("GPL");
 
 -- 
 2.51.1

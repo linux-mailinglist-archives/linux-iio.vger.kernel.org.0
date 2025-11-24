@@ -1,52 +1,53 @@
-Return-Path: <linux-iio+bounces-26442-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26444-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDCDC82D04
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Nov 2025 00:35:42 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DCBC82D12
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Nov 2025 00:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E4714E7161
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 23:35:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2A61E348AAD
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 23:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857B42FABE7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0472FD7B2;
 	Mon, 24 Nov 2025 23:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PIFsg5/1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzwoRwJy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3021E2550D5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E462F83AB;
 	Mon, 24 Nov 2025 23:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764027324; cv=none; b=qPBYt42BE+qOZ1TwUww3uwz4gXW0meCZsMZN9gl9lxIVWLGa83WugPdVW7sI66EDiTeC7oxHjtM/vDwfgk/CRK6QNrGDkCtchg99LvLMmF+y+7aY5tK63RtpTuUx5sWaLrZNE+d1LabB10HAJrsO2WfyQIrnTac6zFrsI8v+Sno=
+	t=1764027324; cv=none; b=liBL5nQnfeDcqR08lNP379svOifiDEzWMlG/ztIbF7PlH+mkq0fCt5Pp2BHHuUcu3Wejiu6ai2Pun2/9sB8WK/q6NnifGm6vELvBBodLWkfZNIESVWrVDZ3u4OdGs7fDYj9tjZMZODP8m/c8Ou76b4XAup3fd2cwfIee5OSqupg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764027324; c=relaxed/simple;
-	bh=DOWNpn9zwiyXvYPX7PwLf+MWR5LFTvKq9m3rZeADCDM=;
+	bh=4s39l/QafgDyne7Fk0MupeREU7/ycQbXTGHYHcfkGAQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KwHHHNLNtaLd7Z7WHgnfCmvmCHei9d46HM4IJRrqNU+DYz13+PN5DCJt0A946BY2OvULwLt62nnFQpw/aFSPWtriYOVwW58II8rKArajmlCAY0//EBH12BzQaztAE8xMpEfjat6dM9Kqw10ZamSHFtBe8nmlL6g8hU8/sxM61Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PIFsg5/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BB94EC19425;
+	 In-Reply-To:To:Cc; b=KAKps9d6+KP84xRsWEJ6eZszaAA25VYX8RN4Cdoms5ZdiMBgZcKnp5yLisNLSDW2DdQIcdKhFZ/uZGZrlMNd8lc55IZIA7vX4gQey/o2JrjhLtgndfpqugH/oMLKCawmiE6qB9s514yTKtKeE6ji0UwtuKlEIZn30h5qZq4fns8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzwoRwJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C8837C2BCB0;
 	Mon, 24 Nov 2025 23:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1764027323;
-	bh=DOWNpn9zwiyXvYPX7PwLf+MWR5LFTvKq9m3rZeADCDM=;
+	bh=4s39l/QafgDyne7Fk0MupeREU7/ycQbXTGHYHcfkGAQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PIFsg5/1V1utYolEeUxJ1Jppkd9D5JFYa66HrVO928NSc0RsRYv7l9RFV1AiV4SjY
-	 gK4VLX04BqP5jvfh51v4URAI7XZdxMfx8/Vq6iTr3VCw3vabS+4lao/JJ9GxsLMx8E
-	 4cVv1yCW7m5zmBWVPr+g7z75Sc9SHGAwbaBNBL0NjIHbCfujQJ6imHcf6oEU7sS29X
-	 5kp/sKWgTyp/mCI23VPAyyPGTkHaYWc2/Z9vmsd64SmulsfOGDpKQtui74NIQWVi/S
-	 IPiy39xnGfhS3GPfQJK2Qn2xOzusVzbcsT1FwQrshyqgW67P6HnJFkLXnvq9AL/lUM
-	 f7f0Y/o3VfBVQ==
+	b=dzwoRwJyRIuwVAV9ki2N/QeAfGmeEZB+2oy32qTXOQDln6LRMiPWM+18H/yNKf7SU
+	 yTmedX0oS3n/bBHUioxAeDh/nOQ/XtIQxzMUgkuhz5Zd/l+zSkMpnxg55aGJBclUbM
+	 WHTIzNiY86QhZt00BiePmanNAM3wkBExQfRs4GV5Ol0KLD2QZ5mxWqQIFHmvS8FcYw
+	 YfRGVK1YcmFnnrWTkaftHimMS1lIsyuz80so/6aohXPrSd5wqFVom3gHPC5C2iOnuS
+	 IPIVuQq+nMXcJ9I18s/u3kGuyx3Y/VSwg8DlYgjOND0gH2pP2UNoYVhb4pu0Q9KmXt
+	 kExYfd/Jxo6XQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AAD00CFD369;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9FF7CFD36C;
 	Mon, 24 Nov 2025 23:35:23 +0000 (UTC)
 From: Rudraksha Gupta via B4 Relay <devnull+guptarud.gmail.com@kernel.org>
-Date: Mon, 24 Nov 2025 15:35:24 -0800
-Subject: [PATCH v4 3/6] ARM: dts: qcom: msm8960: expressatt: Add NFC
+Date: Mon, 24 Nov 2025 15:35:25 -0800
+Subject: [PATCH v4 4/6] ARM: dts: qcom: msm8960: expressatt: Add
+ Magnetometer
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251124-expressatt_nfc_accel_magn_light-v4-3-9c5686ad67e2@gmail.com>
+Message-Id: <20251124-expressatt_nfc_accel_magn_light-v4-4-9c5686ad67e2@gmail.com>
 References: <20251124-expressatt_nfc_accel_magn_light-v4-0-9c5686ad67e2@gmail.com>
 In-Reply-To: <20251124-expressatt_nfc_accel_magn_light-v4-0-9c5686ad67e2@gmail.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -70,11 +71,11 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  Rudraksha Gupta <guptarud@gmail.com>, 
  Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764027322; l=1820;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764027322; l=1006;
  i=guptarud@gmail.com; s=20240916; h=from:subject:message-id;
- bh=rOtVB/zkRWn92j/Dp4B0g4zF8yGu78fQec4Jct5Q/Xk=;
- b=KkNe7n0hC/QuFvC6UK4PfFEqY1ZCNyiZcyLv9YzkQnZwBaWCYQ0ezB+4Z66dlps6ow2TBVW4h
- FoT9K3xUGIdCxsDmBk4hoinuZs2mWtL5iLTkJzQrPPwZXP/vAijBrxR
+ bh=7jrbiFxqBdAClrq/n9H3dJIomUxZ8Xc6QvLk/kgFMvE=;
+ b=reakw873qQWdfmQwHHLrt2onXrvLUiqgp/jZu9RU6H70hA4ED0hQhMHEo7nM2IZ2vrRmvys1P
+ hUvRikVVUw0D6V1iof74GtNrLmB2IJMlwAxnaaL7ZifQmMIAL79eph0
 X-Developer-Key: i=guptarud@gmail.com; a=ed25519;
  pk=ETrudRugWAtOpr0OhRiheQ1lXM4Kk4KGFnBySlKDi2I=
 X-Endpoint-Received: by B4 Relay for guptarud@gmail.com/20240916 with
@@ -84,79 +85,39 @@ Reply-To: guptarud@gmail.com
 
 From: Rudraksha Gupta <guptarud@gmail.com>
 
-Add pn544 NFC chip
+Add the Yamaha magnetometer. Mount Matrix is left as a TODO.
 
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
 ---
- .../dts/qcom/qcom-msm8960-samsung-expressatt.dts   | 45 ++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+ .../boot/dts/qcom/qcom-msm8960-samsung-expressatt.dts | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/arch/arm/boot/dts/qcom/qcom-msm8960-samsung-expressatt.dts b/arch/arm/boot/dts/qcom/qcom-msm8960-samsung-expressatt.dts
-index 8d75ebd7976c..4f9b59db7bc3 100644
+index 4f9b59db7bc3..d32461fc58e9 100644
 --- a/arch/arm/boot/dts/qcom/qcom-msm8960-samsung-expressatt.dts
 +++ b/arch/arm/boot/dts/qcom/qcom-msm8960-samsung-expressatt.dts
-@@ -182,6 +182,22 @@ touchscreen: touchscreen-int-state {
- 		bias-disable;
- 		drive-strength = <2>;
+@@ -487,3 +487,22 @@ nfc@2b {
+ 		pinctrl-names = "default";
  	};
-+
-+	nfc_default: nfc-default-state {
-+		irq-pins {
-+			pins = "gpio106";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-pull-down;
-+		};
-+
-+		firmware-pins {
-+			pins = "gpio92";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-disable;
-+		};
-+	};
- };
- 
- &pm8921 {
-@@ -195,6 +211,14 @@ prox_sensor_int: prox-sensor-int-state {
- 		input-enable;
- 		bias-disable;
- 	};
-+
-+	nfc_enable: nfc-enable-state {
-+		pins = "gpio21";
-+		function = "normal";
-+		bias-disable;
-+		qcom,drive-strength = <PMIC_GPIO_STRENGTH_LOW>;
-+		power-source = <PM8921_GPIO_S4>;
-+	};
- };
- 
- &rpm {
-@@ -442,3 +466,24 @@ &usb1 {
- 	dr_mode = "otg";
- 	status = "okay";
  };
 +
-+&gsbi7 {
++&gsbi12 {
 +	qcom,mode = <GSBI_PROT_I2C>;
 +
 +	status = "okay";
 +};
 +
-+&gsbi7_i2c {
++&gsbi12_i2c {
 +	status = "okay";
 +
-+	nfc@2b {
-+		compatible = "nxp,pn544-i2c";
-+		reg = <0x2b>;
-+		interrupts-extended = <&tlmm 106 IRQ_TYPE_EDGE_RISING>;
-+		enable-gpios = <&pm8921_gpio 21 GPIO_ACTIVE_HIGH>;
-+		firmware-gpios = <&tlmm 92 GPIO_ACTIVE_HIGH>;
++	magnetometer@2e {
++		compatible = "yamaha,yas532";
++		reg = <0x2e>;
++		vdd-supply = <&pm8921_l9>;
++		iovdd-supply = <&pm8921_lvs4>;
 +
-+		pinctrl-0 = <&nfc_default &nfc_enable>;
-+		pinctrl-names = "default";
++		/* TODO: Figure out Mount Matrix */
 +	};
 +};
 

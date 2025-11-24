@@ -1,97 +1,83 @@
-Return-Path: <linux-iio+bounces-26412-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26413-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72542C7F9BB
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 10:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 150FCC7FA9D
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 10:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 70B754E4F7A
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 09:24:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D9ADD4E22D1
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 09:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8B42F5483;
-	Mon, 24 Nov 2025 09:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE4D2F60C7;
+	Mon, 24 Nov 2025 09:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZdtpfeP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HD5JNrH+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92C9263C8A
-	for <linux-iio@vger.kernel.org>; Mon, 24 Nov 2025 09:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FEC2F5465;
+	Mon, 24 Nov 2025 09:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763976269; cv=none; b=gMLyabfddCksj0glad5XWgz174S51c4gnDoCFOiewDKYuKsN/g+KAqcsIybE8myU6SZxrbEINdQC+TjnWSbQWw7hOIrblZCoIC/fEEcxwW/bJgIZM0cQz9caAMXu8zBqyVm7pJjZVz9GPNeUulfIbWwgCp5JTgtvlkj1ELpQYh4=
+	t=1763976981; cv=none; b=ebGEJHxFfMyP6fj5/A1xpXU0vwCj6V4bDANTQYtXne2ASldlFKdTNmpMn9WSEvZfcAaxHziY4sOTIjjw63wYQrAT8QigZ6J7or4xBh5PDA07GNj6L8SV+Uo0osv0RE3+fA66IZMrxD0ht4Bt6f3n0ptH2/FHiCwhPL+XVDk6ur0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763976269; c=relaxed/simple;
-	bh=P3TNnHmbMQ7RiZfj11COEtOadWn9ZwdSOUvW0u0Lo8A=;
+	s=arc-20240116; t=1763976981; c=relaxed/simple;
+	bh=V0qerlrtNZqBpFKg+N9laGJk6nVd3gEUb27Uxk15PNM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nb5gBV9dFSzvJpNKMWl4zoudPxaBS1FXBIdfUOJJkGyzzgzXneh2X1JyBHDhF3R+PjNNyO6DLJWeSTTCmZLLSt/O4A/BrqbKlODS+nnug9e/hJ9acNazPJhXTAhM+SLtihxPHcgFW4HRmlWE7M3KdVY8joSINcLDxaaoK0WTxUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZdtpfeP; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b7291af7190so595887466b.3
-        for <linux-iio@vger.kernel.org>; Mon, 24 Nov 2025 01:24:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763976266; x=1764581066; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=slSocduRhMtJsbQHXkMC9k8pMNaviAqpRIeDggJm8mI=;
-        b=ZZdtpfePZFfUT/ZvhU2u/xPyRTq5AfkmYgwBxMgiIm7eNwOoFh9ZRn0tZvJR7Js6bv
-         qyaRbzaYX6bvV3RvEsVZm9GQDMRBdu3iRP9eJFDv5Wl2HtYi0i49qYVJA7+2cTVlIPRX
-         Lj1AQvJit2VCRos+jwBKM7u2pqXsbuJAaTJ4iZJ6yPn4X81ufl+9M8c8vmCQmVo67kHM
-         u7wsRiB1AJTQ9L4ETsKRRXA2AkJKdzSAoM4NbvGh0QP1uwPAqZMZkOCq4LGgCHUhhwMX
-         Je8I2P2viPlA2uIsQNLZs2Fwb6gDLY+Cur9+XIHp7LkZyEVBu+X1J0L4XQp4YVzIpUNa
-         s6WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763976266; x=1764581066;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=slSocduRhMtJsbQHXkMC9k8pMNaviAqpRIeDggJm8mI=;
-        b=HwftBhQi2RTzuvrRI7NF07Bhy1OhIs6ZqpE0/pui+2oAqj7imwmOYj97HDEiJI1RCi
-         VS2DyHbvO41Tx73/LAwjaIEO1JCnotIV4N5HHNODq0Ah/8WFi2soioxzUTfNkysV5Wwl
-         p3Jc+bXqFhzVaT6tkyC6p5Q0KcFryU6P9mmggGchQock5Co4orBwE/8d3elW4ysgwisI
-         NAeLFLZTBLF5WyK77aLbJvF6SmV04bjtLHo0nqLjNaiXr2b5FhoYAJ+Od65QNqV2xXYD
-         mE8ZNFZmcD7nNiaHDE2/wB6L51/JYqplBgZC8dDbMV3E63sBiATvN9A/xQqWP2svlwgX
-         98TA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFn1fMXT5/XiRmBNFtBws3leeXy48I+pncqgjJDOu25Tb2fTbqtcC7WV/oL1Yx41EQ17dGS9fqYK0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYtQoDjnJngQXwagrwa8HNBbw9Qh6nVinAIRqg9eBp9xdfJd2v
-	HV107smrhSBv09bDlkTwaqL7nZMfjabGX+ZxDrgtq/Rqt0fJNEfp2nb9
-X-Gm-Gg: ASbGncs8ZEGFdbT7t8mgxz3P1ryBt1kfgwnc2lc05R5WNZUHPDf5oE1FsXkAanztYCp
-	/rZ/FgTg2gNxfmFt6/41OfId4m6Yk4Up+pdvE1vRU2hR2bMdpbPA6X1BQBnk4C0QkNYriYnKiNv
-	OEK+mVBf7VNIK/mGe8+AW0BbR7Kl3ZB09TksmJvR74dJpbU0RDL9xme97HQUMD9nOB3SyOnxmRl
-	rDoKuhojiDsW3VC3lcwstbO1XVIHKkFWqbbNU82qFOphQrqhk7DlBajN+0J2Zuda3J4mjI7ogMu
-	1g8UKvjy9PuXYfTcjRPh0pb9FrbppNZj5Y2lEDuvc++5E0EtOpMRDbi4PPrE8Yib0GJ3zqJfrU/
-	zB71z7JQgQGwMHm8HeRynV2YLHw01Ev2m7NVvoxANYD7ZlIBLplUwRKl5suB4ivkZ+TGPExkTFU
-	Yl3yGDA1ro3sTgq3Y2kuXzf1RtMsJphAGo3E4J+TFRbV+q0KF0ErXIXMNtjbfgKtRPkap8
-X-Google-Smtp-Source: AGHT+IG43taRGXlMb7A2ZG4Z0Lz7XxTi1f/W9lGskn1Ni6JWJYwXfKHzRtFJ/vmRNLd6ClmF9wOYDQ==
-X-Received: by 2002:a17:907:8e96:b0:b47:2be3:bc75 with SMTP id a640c23a62f3a-b76718ab22emr1047239266b.60.1763976265537;
-        Mon, 24 Nov 2025 01:24:25 -0800 (PST)
-Received: from HYB-DlYm71t3hSl.ad.analog.com ([2a02:3033:267:9a21:9532:f12d:5875:dc2c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7655028400sm1195719166b.56.2025.11.24.01.24.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 01:24:25 -0800 (PST)
-Date: Mon, 24 Nov 2025 10:24:22 +0100
-From: Jorge Marques <gastmaier@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Jorge Marques <jorge.marques@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, 
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 3/7] iio: adc: Add support for ad4062
-Message-ID: <m4a3o4fbs5bhsru6fsmik3qtthvit3565lkp6itjyqzjbd55hd@whjpvtn7xngm>
-References: <20251013-staging-ad4062-v1-0-0f8ce7fef50c@analog.com>
- <20251013-staging-ad4062-v1-3-0f8ce7fef50c@analog.com>
- <20251018171032.144a126c@jic23-huawei>
- <ou6qwayt4g7qaoe5dm7tdg6jl5dwquslpfbok6on5r2q2wytyl@wlqxj5y6ircj>
- <aSQMjZbc75cQtFqJ@smile.fi.intel.com>
- <o4kt2of4xql4azufjgiecm4jzuexgm6nkvr7aghbwfk6qd7yqd@r4plggehzces>
- <aSQhTd5Z7KyvHtbG@smile.fi.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UiMjlu1+WNxiwzbjMc1PFhHz19PFiu+XaB7TaP/NIYRQlLNZkUb4AqDbxYt/cRFw1oKWS3Uqvcu9mZ3Al2MZQ6hwWRqrgtNfiwkxlq73v7u013LM/RIapNCHJxy87LYrRnSBHLpOYxCsLiOSAT83si9Qn+DMQefYxLRFmQ8RJlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HD5JNrH+; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763976980; x=1795512980;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=V0qerlrtNZqBpFKg+N9laGJk6nVd3gEUb27Uxk15PNM=;
+  b=HD5JNrH+TtgocZv884PL23IyO6mHmdAa6RbaSq2IGGn4CRwRDAAEOI7u
+   +G6PsATyD1XuJbWKomASRihykrWsBiatz7KkZct8uEGWbc9ICrnHcERKH
+   Wu97AU2c06IU7yxoMYGcu3eQwKK/rtr9RmoBJ49BPfI9T1Bze/WpaLA8X
+   YeY8pGlXBzj7FZTlIlStrwn/j5L/Y/R9sZbNejJOH3l6mMiWcxN2uwLWd
+   KWY8rW3vRrKxDrpxvchB13cQjcVZrgmUfzBxIFULtQrwgDP9/OEK6l4ee
+   j1ajaCR0XCD0cSZwh8kks4HY/Qb3oyy5H7HzWwEi3DVnw9GX9MUMvVUYg
+   w==;
+X-CSE-ConnectionGUID: +/5t9wo+Sx+bQHudlKMVxQ==
+X-CSE-MsgGUID: EmQwJSCsRDm9awOGBguw7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="83360369"
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
+   d="scan'208";a="83360369"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 01:36:19 -0800
+X-CSE-ConnectionGUID: 8Ppew+02R1yotk90oqeDzw==
+X-CSE-MsgGUID: XhIxGgG1RUCS0TUsoDinHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
+   d="scan'208";a="191446304"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.5])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 01:36:15 -0800
+Date: Mon, 24 Nov 2025 11:36:12 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Jorge Marques <jorge.marques@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v2 5/9] iio: adc: ad4062: Add IIO Trigger support
+Message-ID: <aSQnDMsE13zwM1YO@smile.fi.intel.com>
+References: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
+ <20251124-staging-ad4062-v2-5-a375609afbb7@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -100,31 +86,118 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aSQhTd5Z7KyvHtbG@smile.fi.intel.com>
+In-Reply-To: <20251124-staging-ad4062-v2-5-a375609afbb7@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Nov 24, 2025 at 11:11:41AM +0200, Andy Shevchenko wrote:
-> On Mon, Nov 24, 2025 at 09:57:26AM +0100, Jorge Marques wrote:
-> > On Mon, Nov 24, 2025 at 09:43:09AM +0200, Andy Shevchenko wrote:
-> 
-> ...
-> 
-> > I will submitted v2 shortly.
-> 
-> I think the "shortly" is not needed, please take your time, this seems missed
-> v6.19-rc1 anyway.
+On Mon, Nov 24, 2025 at 10:18:04AM +0100, Jorge Marques wrote:
+> Adds support for IIO Trigger. Optionally, gp1 is assigned as Data Ready
+> signal, if not present, fallback to an I3C IBI with the same role.
+> The software trigger is allocated by the device, but must be attached by
+> the user before enabling the buffer. The purpose is to not impede
+> removing the driver due to the increased reference count when
+> iio_trigger_set_immutable or iio_trigger_get is used.
 
-Hi Andy,
+We refer to the functions as func(). Mind the parentheses.
 
-I was submitting when this reached my mailbox. Still, noted the comment
-on your next e-mail and no pressure on the release window, I just didn't
-have further changes for this revision.
+...
 
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
-Thanks,
-Jorge
+> +	struct ad4062_state *st = container_of(work, struct ad4062_state,
+> +					       trig_conv);
+
+I think the
+
+	struct ad4062_state *st =
+		container_of(work, struct ad4062_state, trig_conv);
+
+reads better.
+
+> +	int ret;
+
+...
+
+> +	/* Read current conversion, if at reg CONV_READ, stop bit triggers
+> +	 * next sample and does not need writing the address.
+> +	 */
+
+/*
+ * The multi-line comment style is as in
+ * this example. Please, check and update.
+ */
+
+> +static irqreturn_t ad4062_poll_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct ad4062_state *st = iio_priv(indio_dev);
+> +
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +	schedule_work(&st->trig_conv);
+> +
+> +	return IRQ_HANDLED;
+>  }
+
+...
+
+> +static int ad4062_triggered_buffer_postenable(struct iio_dev *indio_dev)
+> +{
+> +	struct ad4062_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = pm_runtime_resume_and_get(&st->i3cdev->dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad4062_set_operation_mode(st, st->mode);
+> +	if (ret)
+> +		goto out_mode_error;
+> +
+> +	/* CONV_READ requires read to trigger first sample. */
+> +	struct i3c_priv_xfer t[2] = {
+> +		{
+> +			.data.out = &st->reg_addr_conv,
+> +			.len = sizeof(st->reg_addr_conv),
+> +			.rnw = false,
+> +		},
+> +		{
+> +			.data.in = &st->buf.be32,
+> +			.len = sizeof(st->buf.be32),
+> +			.rnw = true,
+> +		}
+> +	};
+> +
+> +	ret = i3c_device_do_priv_xfers(st->i3cdev, t, st->gpo_irq[1] ? 2 : 1);
+> +	if (ret)
+> +		goto out_mode_error;
+> +	return 0;
+> +
+> +out_mode_error:
+> +	pm_runtime_put_autosuspend(&st->i3cdev->dev);
+> +
+> +	return ret;
+
+I guess with ACQUIRE() this function will look better, because the explicit
+reference count bumping (with an associated comment) is more descriptive on
+what's going on here with PM. Same for other related functions.
+
+> +}
+
+...
+
+>  	if (ret)
+>  		return dev_err_probe(dev, ret, "Failed to request i3c ibi\n");
+>  
+> +	INIT_WORK(&st->trig_conv, ad4062_trigger_work);
+
+This is mixture of devm_*() and non-devm_*() calls. How did you (stress) test
+the removal and error paths here? Wouldn't devm-helpers.h APIs help here to
+make / keep order correct?
+
+>  	return devm_iio_device_register(dev, indio_dev);
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

@@ -1,66 +1,56 @@
-Return-Path: <linux-iio+bounces-26437-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26438-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D72C82215
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 19:41:45 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5547C827BA
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 22:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B57B94E3D10
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 18:41:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B6F5E4E2E06
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 21:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49B031987E;
-	Mon, 24 Nov 2025 18:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD54E32B991;
+	Mon, 24 Nov 2025 21:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BQgJRgNM"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="xKSwrsPT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295F015442C;
-	Mon, 24 Nov 2025 18:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17269195811;
+	Mon, 24 Nov 2025 21:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764009700; cv=none; b=PTkzWMh6U55gseOrFcq4nKB+alx2pnBzbZ+Wd2oud3JrElZ4tRywYNrPK0YqHUGIMANnJ15rmofX6i8N2bSSHTTQlWSvDyAqFJI034YFIHSpokh7kqBK8tJl9RymqzD7q3qh3xzYhZ39uSiZMAKOI8prK8QuqgW5EDVs+BqkT0k=
+	t=1764018490; cv=none; b=JXJT/0Jx/8Y0Dmt4C8wM1azo1b4bEGtnM1QuTtKHqUbHiSPwux35zYyp8e0JMXLH6o9SNmEQDeP/8bZsxAtWm0sRfxOX+loVTunrBGn/h7TWddOOP5aP3j4CX2POrfXN2I//EmKyxexKz65nbGcopR5lyocNcvVO6pICIs9WuGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764009700; c=relaxed/simple;
-	bh=xDiifGEgvjDi6KwydZXLf6/JprHKgNEt1TP4N4I2Bm8=;
+	s=arc-20240116; t=1764018490; c=relaxed/simple;
+	bh=NW0f5JPi9SEMKFTgzI3Czans/wgatKxBoCU9pPLfF5w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eRVOMZoUsLSTuDU+PSw6S9mPcomhHnUD83PZfKIkZe2cBU8O0DO25xBZpMQH5EDNewnVL5nnaKgxS7BhRPFFMo0IK/yKcDtSI+XFWyezjRdihGSNukBwMX2ICHXgswLdJR1L/Swn5cRryJrLU1OL93e/EtVR0dv6+L+L0v/h2us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BQgJRgNM; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764009698; x=1795545698;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xDiifGEgvjDi6KwydZXLf6/JprHKgNEt1TP4N4I2Bm8=;
-  b=BQgJRgNMQo8r+O/XDoVlSLyVE5qySEGSbXfUTIy4TT23Sul9dj8MLGv4
-   UWaBh2TcshQ//XBuW9XPq5V7qvi4N9yAdAqetSQg0Ywu9+acIkAAq2kI7
-   vUV/spRp+rwy4gz4It1hQVt9vIsulnhd17Mdjm5cDf5YV35mh+pR/fo9C
-   w3zA2penbbXkJ/Blj6pMyTPy22PM5PjeqlMcp6xubJCy4Dga510xH9t4n
-   Za4iYzXWoJcH5D6VaJ+Ufy/fF/bFr94EJIPTo1Yi3bVkL4tldI/p3yOPC
-   XAm+OrLd5YUXuYxH5vzTq0FCpE/aAmnXvzm9uk6wisq+AKVIkgVxYaGXL
-   w==;
-X-CSE-ConnectionGUID: 45ISepUyRlWtW1NgS1qU9g==
-X-CSE-MsgGUID: Vui9bSeCTeuU5fAcyZ8Z+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="77490413"
-X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; 
-   d="scan'208";a="77490413"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 10:41:37 -0800
-X-CSE-ConnectionGUID: 1sH49ktuSMuDfvVgvFJ7fg==
-X-CSE-MsgGUID: UH0vu2X/SUSyLPDblKlTIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; 
-   d="scan'208";a="223386405"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.5])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 10:41:35 -0800
-Date: Mon, 24 Nov 2025 20:41:32 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LpGTJYycmiNSC5x18+hy0YLhoGKkWdFp4+/aD5pmfsGdMTe90S9H4YL4KGm1cF4U/VM8eXaYS7SNxBmcPKy+fdSvMuKuKccbhWTxw0zi7/zlHARzUs9N7Fzj1N2ABGS5/tfbq+Im7Dl3Jelz+gXNzFCCj/GRy5snW+y+jo0qCSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=xKSwrsPT; arc=none smtp.client-ip=172.105.74.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from lipo.home.arpa (unknown [IPv6:2a02:2f0e:3e0c:5b00:f1e0:3f4b:286c:9ddb])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id BF027160209;
+	Mon, 24 Nov 2025 23:08:03 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
+	s=mail; t=1764018484;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IEEhvbpjXvfPRiWmMBKAzn1X/BOJQLsBZlc4aFyD7vc=;
+	b=xKSwrsPTSlAw3oV3btc5rgAb8Ul+x7zQM+ocgad7PyIyMdmhWiBvPpvnAwjilp23oaTI3B
+	w2hao1EWx1HRNhKJkEFfH0AjR1/8SANvfJGViQVyXP+NBvjcq9wp7yJ8e+UF1KPN9h+iNG
+	Z8TE4F8W8r+VaecUcq5XwsrkwtlVONc2+TdFlgiwkl+1v2EQNzO7AYb9uY1OhsZecyAxea
+	Glkb0GtDjvb0TPy07gIcunTnADHvwK3rObX2ibZlLI00J9ImOIubJU2RjKwDrmt2MSnZOV
+	H0vXduvO1JzH0JOIFSAgQ4C8/u8tHVw9Mxg7rQMMa4Lixr4POac6cCFBNUqywA==
+Date: Mon, 24 Nov 2025 23:08:00 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
@@ -69,11 +59,12 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 2/2] iio: pressure: add Honeywell ABP2 driver
-Message-ID: <aSSm3JMY3DSg1Nns@smile.fi.intel.com>
+Message-ID: <aSTJML3fxp0sSeCq@lipo.home.arpa>
 References: <20251122-honeywell_abp2_driver-v1-0-7a8e265f9627@subdimension.ro>
  <20251122-honeywell_abp2_driver-v1-2-7a8e265f9627@subdimension.ro>
  <aSRF-DL3rKjyFleg@smile.fi.intel.com>
  <aSSV4lxzatAFds5e@lipo.home.arpa>
+ <aSSm3JMY3DSg1Nns@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,253 +73,100 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aSSV4lxzatAFds5e@lipo.home.arpa>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <aSSm3JMY3DSg1Nns@smile.fi.intel.com>
 
-On Mon, Nov 24, 2025 at 07:29:06PM +0200, Petre Rodan wrote:
 
-> thank you for the review.
+hello!
 
-You're welcome.
+On Mon, Nov 24, 2025 at 08:41:32PM +0200, Andy Shevchenko wrote:
+> On Mon, Nov 24, 2025 at 07:29:06PM +0200, Petre Rodan wrote:
+> 
+> > > Why explicit assignments? Is it related to some HW register?
+> > 
+> > no registers, I just need to ensure the two arrays
+> > 
+> > static const char * const abp2_triplet_variants[ABP2_VARIANTS_MAX] = {
+> > 	[ABP2001BA] = "001BA", [ABP21_6BA] = "1.6BA", [ABP22_5BA] = "2.5BA", ..
+> > 
+> > static const struct abp2_range_config abp2_range_config[ABP2_VARIANTS_MAX] = {
+> > 	[ABP2001BA] = { .pmin =       0, .pmax =  100000 },
+> >    	[ABP21_6BA] = { .pmin =       0, .pmax =  160000 }, ..
+> > 
+> > keep being consistent and are resistant to later editing.
+> 
+> So, if it's pure software numbering, just drop assignments in the enum.
 
-> On Mon, Nov 24, 2025 at 01:48:08PM +0200, Andy Shevchenko wrote:
-> > On Sat, Nov 22, 2025 at 11:42:45PM +0200, Petre Rodan wrote:
+so you want the consistency check to be dropped? we have data in two different arrays and they must be kept in perfect sync. if I were to remove the assignments someone comes a few years in the future, inserts a new device in the abp2_triplet_variants array at position 84 out of 113, also inserts a new {pmin, pmax} into the abp2_range_config array accidentally at position 83 and the compiler will be none the wiser.
+just the day before I had to remove a variant because of a typo in the datasheet. I cheat and use a script to generate the structs [1], but if I had to modify them by hand, the assignments would make sure I delete the proper line.
+
+am I proud of this? no, and I told you my preference. this is just a compromise that uses the non-specific match function and still provides a guardrail for future editing.
+
+[1] https://codeberg.org/subDIMENSION/lkm_sandbox/src/branch/main/honeywell_abp2030pa/scripts/parse_variants_table.sh
 
 [..]
 
-> > > +/*
-> > > + * transfer function A: 10%   to 90%   of 2^24
+> > > So, why can't regmap SPI be used?
 > > 
-> > Too many spaces, also this may be a one-line comment.
+> > there are no registers, no memory map, just a 'start conversion' and the
+> > equivalent of a 'read conversion' command.
+> > any reason one would use the regmap API in this case?
 > 
-> it was intentional to have the comment multiline.
-> in case we need to add additional transfer functions in the future for
-> compatible ICs the diff will be a few lines smaller.
+> At bare minimum the commit message should have a justification for the choice
+> explaining all this.
 
-This is just a comment, won't be a big churn to change (note, it's different
-to the cases of trailing commas where it has more significant impact).
+I had the justification in the cover letter instead, my bad, will include it in
+the commit message instead.
 
-> > > + */
+> Ideally, try to find a way how to use regmap API. We have several weeks of
+> time for this exercise.
 
-...
+you did not mention why use an API designed for devices with registers and a memory map on an IC that has neither.
 
-> > > +enum abp2_variants {
-> > 
-> > Why explicit assignments? Is it related to some HW register?
-> 
-> no registers, I just need to ensure the two arrays
-> 
-> static const char * const abp2_triplet_variants[ABP2_VARIANTS_MAX] = {
-> 	[ABP2001BA] = "001BA", [ABP21_6BA] = "1.6BA", [ABP22_5BA] = "2.5BA", ..
-> 
-> static const struct abp2_range_config abp2_range_config[ABP2_VARIANTS_MAX] = {
-> 	[ABP2001BA] = { .pmin =       0, .pmax =  100000 },
->    	[ABP21_6BA] = { .pmin =       0, .pmax =  160000 }, ..
-> 
-> keep being consistent and are resistant to later editing.
-
-So, if it's pure software numbering, just drop assignments in the enum.
-
-> I feel like I had a better implementation two years ago when I used a single
-> struct containing all this information and had a custom/NIH search function,
-> but you kindly asked me [1] to use device_property_match_property_string()
-> instead and split my single struct into this three parts mess.
-
-Yes, and that still stays.
-
-> [1] https://lore.kernel.org/linux-iio/ZWcUPkzfGqxYsysp@smile.fi.intel.com/
-
-> > Can be done easier with a macro with more robustness against typos:
-> > 
-> > #define ABP2_VARIANT(v)		[ABP2 ## v] = ##v
-> > 
-> > static const char * const abp2_triplet_variants[] = {
-> > 	ABP2_VARIANT(001BA), ABP2_VARIANT(1_6BA), ABP2_VARIANT(2_5BA), ABP2_VARIANT(004BA),
-> > 	...
-> > };
-> > 
-> > but this will loose the possibility to make '.' in the name. Up to you.
-> 
-> thanks, but I need '.' in the name. the dot is used in the part number (and
-> thus in the pressure triplet).
-
-OK.
-
-...
-
-> > > +	if (data->irq > 0) {
-> > > +		ret = wait_for_completion_timeout(&data->completion, HZ);
-> > 
-> > Where is HZ defined? Include that.
-> > 
-> > > +		if (!ret) {
-> > > +			dev_err(dev, "timeout waiting for EOC interrupt\n");
-> > > +			return -ETIMEDOUT;
-> > > +		}
-> > > +	} else
-> > > +		fsleep(5000);
-> > 
-> > Better to have 5 * USEC_PER_MSEC. Also missed comment why this long delay
-> > is needed (will require time.h).
-> > 
-> > Missed {} as well.
-> 
-> I'm not sure I understand where are braces needed/not needed in this context.
-
-It's according to the Coding Style. If one branch needs that, the second must
-be on par.
-
-...
-
-> > > +	/*
-> > > +	 * status byte flags
-> > > +	 *  bit7 SANITY_CHK     - must always be 0
-> > > +	 *  bit6 ABP2_ST_POWER  - 1 if device is powered
-> > > +	 *  bit5 ABP2_ST_BUSY   - 1 if device has no new conversion ready
-> > > +	 *  bit4 SANITY_CHK     - must always be 0
-> > > +	 *  bit3 SANITY_CHK     - must always be 0
-> > > +	 *  bit2 MEMORY_ERR     - 1 if integrity test has failed
-> > > +	 *  bit1 SANITY_CHK     - must always be 0
-> > > +	 *  bit0 MATH_ERR       - 1 during internal math saturation err
-> > > +	 */
-> > > +
-> > > +	if (data->buffer[0] == (ABP2_ST_POWER | ABP2_ST_BUSY))
-> > > +		return -ETIMEDOUT;
-
--EBUSY as I read the comment above.
-
-> > > +	if (data->buffer[0] != ABP2_ST_POWER) {
-> > > +		dev_err(data->dev,
-> > > +			"unexpected status byte 0x%02x\n", data->buffer[0]);
-> > > +		return -ETIMEDOUT;
-
--EIO
-
-> > > +	}
-> > 
-> > I am not sure the chosen error code in both cases is good enough.
-> 
-> I'm open to recommendations on better error codes.
-
-See below.
-
-> first error: chip reports it's busy 5ms after start conversion command. based
-> on the datasheet the conversion should have been ready at this point in time.
-> this sounds to me like a timeout error.
-
-I think EBUSY consistent with the comment given above in the code.
-
-> second error: status byte contains unexpected flags being set - either an
-> internal error - see table above or a bus read error. yes, timeout is not
-> good here but what should it be?
-> 
-> I'm using two conditionals because I want to log only invalid statuses and
-> ignore simple 'device busy' errors.
-
-You know the HW much better than me, so I proposed on the context I see in the
-code, you may take the advice or do differently, but -ETIMEDOUT in these cases
-seems to me not a fit.
-
-...
-
-> > > +struct abp2_ops {
-> > > +	int (*init)(struct device *dev);
-> > > +	int (*read)(struct abp2_data *data, const u8 cmd, const u8 cnt);
-> > > +	int (*write)(struct abp2_data *data, const u8 cmd, const u8 cnt);
-> > 
-> > What is the meaning of const for the POD type parameters? I mean this gives
-> > really a little protection if any. I do not see a point here to have them being const.
-> 
-> I read a few books about C programming a few decades back and there was a
-> consensus on using const in function prototypes wherever a parameter was
-> supposed to not be changed.  of course it's not bulletproof, but why do you
-> feel I should stop following that advice for functions that are not tied to
-> any pre-existing kernel API?
-
-This is quite good advice for the pointers to the arrays and / or structures,
-but for simple numbers it makes a little sense inside one small driver.
-(Although, it has more sense in the generic libraries, but still.)
-
-> > > +int abp2_common_probe(struct device *dev, const struct abp2_ops *ops, int irq);
-
-You see, here I haven't commented anything as const qualifier for ops here is
-very good and should be present like you have done already.
-
-> > > +#endif
-
-...
-
-> > > +static int abp2_i2c_init(struct device *dev)
-> > > +{
-> > > +	return 0;
-> > > +}
-> > 
-> > Is this stub required?
-> 
-> do I have a 100% guarantee that the kernel will not try to execute a null
-> pointer function in abp2_common_probe()?
-
-Depends on what you do with this. If you do not check at the caller, then yes,
-stub is needed, but in kernel we usually do
-
-	if (...->init) {
-		ret = ->init(...);
-		...
-	}
-
-> 	ret = data->ops->init(data->dev); // needed only for SPI.
-> 
-> later edit:
-> since I will remove devm_kzalloc(), the _init will probably go away entirely
-> together with the stub.
-
-OK.
-
-...
-
-> > > +static int abp2_i2c_read(struct abp2_data *data, const u8 unused, const u8 cnt)
-> > > +{
-> > > +	struct i2c_client *client = to_i2c_client(data->dev);
-> > > +	int ret;
-> > > +
-> > > +	if (cnt > ABP2_MEASUREMENT_RD_SIZE)
-> > > +		return -EOVERFLOW;
-> > > +
-> > > +	ret = i2c_master_recv(client, data->buffer, cnt);
-> > > +	if (ret < 0)
-> > > +		return ret;
-> > 
-> > > +	else if (ret != cnt)
-> > 
-> > Redundant 'else'.
-
-> > > +		return -EIO;
-> > > +
-> > > +	return 0;
-> > > +}
-> 
-> are you implying that __i2c_transfer() errors out if the number of bytes transfered is not cnt?
-
-	git log --grep "redundant 'else'"
-
-will answer to this question.
+I also have a bughunt in the spi-omap2-mcspi driver related to improper CS delays in queued transfers, regmap will probably just be an extra layer of abstraction I will have to go thru :/
 
 [..]
 
-> > So, why can't regmap SPI be used?
-> 
-> there are no registers, no memory map, just a 'start conversion' and the
-> equivalent of a 'read conversion' command.
-> any reason one would use the regmap API in this case?
+oh, and
 
-At bare minimum the commit message should have a justification for the choice
-explaining all this. Ideally, try to find a way how to use regmap API. We have
-several weeks of time for this exercise.
+struct abp2_spi_buf {
+	u8 tx[ABP2_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
+};
+
+static int abp2_spi_init(struct device *dev)
+{
+	struct spi_device *spi = to_spi_device(dev);
+	struct abp2_spi_buf *buf;
+
+	buf = devm_kzalloc(dev, sizeof(*buf), GFP_KERNEL);
+
+> Using devm_*() here is most likely a mistake. What is the object lifetime in
+> comparison to the used device?
+
+I did think that placing this into the abp2_data struct would be a better idea, but I was not sure how to handle the alignment issue since there is already the read buffer there:
+
+
+#define ABP2_MEASUREMENT_RD_SIZE 7
+
+struct abp2_data {
+	struct device *dev;
+	const struct abp2_ops *ops;
+	s32 pmin;
+	s32 pmax;
+[..]
+	struct {
+		u32 chan[2];
+		aligned_s64 timestamp;
+	} scan;
++	u8 spi_tx_buffer[ABP2_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
+	u8 buffer[ABP2_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
+};
+
+how do I make sure both 7byte buffers are aligned? can I __align twice in a struct as above? or should I align only the first buffer and make it 8bytes long?
+I had a close look and even if the SoC's SPI driver supports both DMA and PIO, I've seen it pick PIO every single time while talking to my pressure sensor.
+
+best regards,
+peter
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+petre rodan
 

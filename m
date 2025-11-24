@@ -1,61 +1,60 @@
-Return-Path: <linux-iio+bounces-26432-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26433-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4887C81733
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 16:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A63C8177E
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 17:03:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 298163464FB
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 15:57:55 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AAF173472AA
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 16:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6A5314B75;
-	Mon, 24 Nov 2025 15:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06EE314D07;
+	Mon, 24 Nov 2025 16:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VarxPDuE"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="23udfwRH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9902D59F7;
-	Mon, 24 Nov 2025 15:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA63314A99;
+	Mon, 24 Nov 2025 16:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763999865; cv=none; b=c4lT/JuL4gRLnd+klc6Wx1ZULCHVxluLkxuMYRCbRq0onePqX8EVKG7Nmpfi3u4myunlKvxCjEFHFFt+QLvcHXIf0xbRafhxLjpYb7NfSMnBeRReJonlRVZM0JKnANI6lDsMsRKYE1kojhjqyAVX2QauoQd3YzZp4IBlquwYRYE=
+	t=1764000162; cv=none; b=ZITF02+fXUqMm8ZjTEUmEzvkwzmdohXeNVb9T0PZEvxIGs893fc10/LjMLdn+y/CIvjgFsTylnxoPKHqX5HwdzbFbXXDMSEeAazp6+8/6TAJrbYlKgKMKTskmUvCxKohrzmtuZSKqIwXb59UmaXybRqqNxLbWTLA/V6p5JxL2x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763999865; c=relaxed/simple;
-	bh=yGI97hDLro8+McOQ+lHZp2VCQuWtN25N7eUBLNYm8jU=;
+	s=arc-20240116; t=1764000162; c=relaxed/simple;
+	bh=5Q+VikH8axfZlkzsYeZld/28ixnUIrc2DukFEZtwOPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rTCsm3F2lnq7TAt/+LcdW13xRmQbXCch6c9ZUKmnAMj/ev38+TWORiKXVad0Mr8ZrqOCBtHIACfQ+775h1cgIMw/cPEzmJocUsX1XkHzOxSlMMcSz6mLyJKWzklWBv36HJvmKyNvQy/6NSHG8E8uAiEIDeC+jzWk+uzxyIGyXw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VarxPDuE; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version:Content-Type; b=B4JaPK7wamMqoS8udRO9RQRJRCdG+w93QjIc8DHXCSX/lYY+NwTPgL/ppzSGLHLtTuPWAZ+oaITRE+Ef1uf2u8hG0E37x+cWPoRrSbUny6oLVD7/YyHlShLRfWV+IDPZXx3G2+1LBzmHTPFATgBiZEgJRK3pRsA9TX+bBkZv7Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=23udfwRH; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9F79A1A1D1F;
-	Mon, 24 Nov 2025 15:57:41 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 37A521A1D1F;
+	Mon, 24 Nov 2025 16:02:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 71C74606FC;
-	Mon, 24 Nov 2025 15:57:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0297B10371A40;
-	Mon, 24 Nov 2025 16:57:20 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0CFEF60705;
+	Mon, 24 Nov 2025 16:02:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8569410371A40;
+	Mon, 24 Nov 2025 17:02:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763999858; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=UX028RVBrtav4WisvLm2dO1F8K5+rUIM4Xp+GTn4l88=;
-	b=VarxPDuEXoNSmVvJFI8GatO2RP9trnXzaYCfsYMM6RiiQJ2m93PBXrieFqWdi7u6Z2RoZg
-	GAGA01Dg63AWsSjF79FfLxVFlCWOLC7nb+Zva16AiZR4LFaDIOkwTjS+1qvXT6UkmCc4TH
-	yzjFgzaGeZFlS18DchOYD0zIe6ixo0ZO9D4JFiPQlx//8nY7IyIYwgA24Z48+/kegy6SN7
-	r9KW3P+aPv0ig9jzpcYgX+xbOwsPSqiPsLbiFMkGf/rdRqa9+vF2g0o12LRVP64iuC5S5t
-	QWlRuX+uUfAmODHQDKv6cyMvrBcyY/vc3NIbj+57IejdauvBbh+DRTxNEjxg7Q==
+	t=1764000156; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=fSwjEBFFDA7v4bZHV1Jm9ubAIPIsgOhP8uG9o5XCi3w=;
+	b=23udfwRHWY7LPrwckXXVkKWtIY8/eTNFCxCxQWXtjDVTJ3DRPxhsKBikUYSYQORgje6CfI
+	Uj0uzPLpyPefkgYCQVeW/eBaaXFS4BJr8RNGi+1iy91XiIL3CsJhIcwHld7ZhcrnTzLsos
+	/KrNNrVd+eZVVCHWi/UzDkWw6jo5WJ7c50lLUi8UwiyiOAm7ArWsJL86sYoxm1eLHptku9
+	S4iBPNHAB7Hlw7ubbePM5/A97LXQv8Cg5Naj0CNOC1a+vVOiqALNKbPLhffpETcy5bQb7W
+	bJlpVwC81gpwBBgLKILszMA6tPpRo1nN9vMHFgx+mFx2CsYzS4BkK9jesRKLmA==
 From: Romain Gantois <romain.gantois@bootlin.com>
-To: "H. Nikolaus Schaller" <hns@goldelico.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
  David Lechner <dlechner@baylibre.com>,
  Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Guenter Roeck <linux@roeck-us.net>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Andy Shevchenko <andy@kernel.org>, Guenter Roeck <linux@roeck-us.net>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
  linux-iio@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
  MyungJoo Ham <myungjoo.ham@samsung.com>,
@@ -100,93 +99,63 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  linux-stm32@st-md-mailman.stormreply.com,
  Andy Shevchenko <andriy.shevchenko@intel.com>
 Subject: Re: [PATCH v4 0/6] Add support for the LTM8054 voltage regulator
-Date: Mon, 24 Nov 2025 16:57:16 +0100
-Message-ID: <4053840.MHq7AAxBmi@fw-rgant>
-In-Reply-To: <563331EB-2460-4CF5-87B3-5FE60B18BB70@goldelico.com>
+Date: Mon, 24 Nov 2025 17:02:21 +0100
+Message-ID: <5820146.Sb9uPGUboI@fw-rgant>
+In-Reply-To: <da5457ea-c1ed-4c90-8743-fc982a02ed88@roeck-us.net>
 References:
  <20251124-ltm8054-driver-v4-0-107a8a814abe@bootlin.com>
  <23111366.EfDdHjke4D@fw-rgant>
- <563331EB-2460-4CF5-87B3-5FE60B18BB70@goldelico.com>
+ <da5457ea-c1ed-4c90-8743-fc982a02ed88@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2111402.atdPhlSkOF";
+Content-Type: multipart/signed; boundary="nextPart2407312.OBFZWjSADL";
  micalg="pgp-sha512"; protocol="application/pgp-signature"
 X-Last-TLS-Session-Version: TLSv1.3
 
---nextPart2111402.atdPhlSkOF
-Content-Type: multipart/alternative; boundary="nextPart2186563.taCxCBeP46";
+--nextPart2407312.OBFZWjSADL
+Content-Type: multipart/alternative; boundary="nextPart2232231.yKVeVyVuyW";
  protected-headers="v1"
 Content-Transfer-Encoding: 7Bit
 From: Romain Gantois <romain.gantois@bootlin.com>
-To: "H. Nikolaus Schaller" <hns@goldelico.com>
-Date: Mon, 24 Nov 2025 16:57:16 +0100
-Message-ID: <4053840.MHq7AAxBmi@fw-rgant>
-In-Reply-To: <563331EB-2460-4CF5-87B3-5FE60B18BB70@goldelico.com>
+Date: Mon, 24 Nov 2025 17:02:21 +0100
+Message-ID: <5820146.Sb9uPGUboI@fw-rgant>
+In-Reply-To: <da5457ea-c1ed-4c90-8743-fc982a02ed88@roeck-us.net>
 MIME-Version: 1.0
 
 This is a multi-part message in MIME format.
 
---nextPart2186563.taCxCBeP46
+--nextPart2232231.yKVeVyVuyW
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"
 
-Hi Nikolaus,
-
-On Monday, 24 November 2025 16:35:28 CET H. Nikolaus Schaller wrote:
+On Monday, 24 November 2025 16:40:37 CET Guenter Roeck wrote:
 ...
-> > Sorry, I don't quite understand your remark. To integrate this voltage
-> > regulator component into the Linux regulator abstraction, I'm providing a
-> > current limit control function. To provide such a function, the voltage
-> > level on a pin has to be controlled. AFAIK, the kernel abstraction used
-> > to set precise voltages on lines is an IO channel.
+> > 
+> > Do you think that using the IIO consumer API is not correct here? What
+> > other
+> > 
+> > method do you think I should use?
 > 
-> I was curious to learn about this topic and looked into the data sheet:
+> Ok, I had a look into the datasheet. Unless I am missing something, the chip
+> doesn't have a digital control or monitoring interface such as I2C or SPI.
 > 
-> https://www.analog.com/media/en/technical-documentation/data-sheets/8054fa.p
-> df
+> At the same time, you copied the hardware monitoring mailing list on this
+> summary and on (at least) one of the patches, but apparently not on all of
+> them. This lead to my apparently wrong assumption that iio is used to
+> monitor (not [just] control) something on the chip. I wrongly assumed that
+> IIO is used to report chip status (voltage, current, temperature) using an
+> internal DAC. Obviously that was a wrong assumption. Sorry for that.
 > 
-> As far as I see the LTM8054 does not even have a programming interface.
-> So is it reasonable to provide a dedicated driver at all?
-> 
-> The figure on page 20 seems to suggest that there is an external DAC
-> which drives the regulator. And the regulator drives for example a fan.
-> 
-> So I would think of a driver for the specific DAC and ignore the specific
-> LTM chip at all.
-> 
+> Apparently you copied the hwmon mailing list for the introduction of an IIO
+> namespace and its use in a couple of hwmon drivers in one of the patches.
+> My personal opinion is that this should not be part of this series but a
+> series of its own. That is just my personal opinion, though.
 
-In my use case, the LTM8054 feeds a DC output port on which various devices 
-may be plugged. Dynamic output current limitation and output voltage level 
-control for these devices is a requirement, as well as stepped voltage 
-transitions, thus the need for a proper regulator device.
-
-The LTM8054's feedback pin can be driven by a different DAC, which allows for 
-dynamic output voltage control. This is a more complex upstreaming topic 
-however, so I've left it out of this initial series. There are other component 
-functions which fit in squarely into the regulator framework, such as 
-input current limit control and soft-start. But I understand that the current 
-driver might look a bit "bare".
-
-> What could be necessary is if you really want to be able to "regulate"
-> the current going to Vout, some bridge between regulator API and some
-> IIO DAC.
-> 
-> And enabling/disabling the regulator by some GPIO can be described in
-> the DT already through a "regulator-fixed".
-> 
-
-This is a possibility, but when you bring in all of these other hardware 
-functions that I mentionned e.g. output voltage control and stepping, you'll 
-end up with several different devices which look unrelated from userspace, but 
-actually control the same chip.
-
-Userspace will also have to know about some hardware details to properly 
-control the DACs, such as the values of the sense and feedback resistors. In 
-my opinion, this bypasses the kernel's abstraction of hardware.
+I understand. I can split it out.
 
 Thanks,
 
@@ -196,7 +165,7 @@ Embedded Linux and Kernel engineering
 https://bootlin.com
 
 
---nextPart2186563.taCxCBeP46
+--nextPart2232231.yKVeVyVuyW
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/html; charset="utf-8"
 
@@ -204,53 +173,29 @@ Content-Type: text/html; charset="utf-8"
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 </head>
-<body><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">Hi Nikolaus,</p>
-<br /><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">On Monday, 24 November 2025 16:35:28 CET H. Nikolaus Schaller wrote:</p>
+<body><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">On Monday, 24 November 2025 16:40:37 CET Guenter Roeck wrote:</p>
 <p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">...</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; &gt; Sorry, I don't quite understand your remark. To integrate this voltage</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; &gt; regulator component into the Linux regulator abstraction, I'm providing a</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; &gt; current limit control function. To provide such a function, the voltage</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; &gt; level on a pin has to be controlled. AFAIK, the kernel abstraction used</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; &gt; to set precise voltages on lines is an IO channel.</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; &gt; </p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; &gt; Do you think that using the IIO consumer API is not correct here? What</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; &gt; other</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; &gt; </p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; &gt; method do you think I should use?</p>
 <p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; I was curious to learn about this topic and looked into the data sheet:</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; Ok, I had a look into the datasheet. Unless I am missing something, the chip</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; doesn't have a digital control or monitoring interface such as I2C or SPI.</p>
 <p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; https://www.analog.com/media/en/technical-documentation/data-sheets/8054fa.p</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; df</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; At the same time, you copied the hardware monitoring mailing list on this</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; summary and on (at least) one of the patches, but apparently not on all of</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; them. This lead to my apparently wrong assumption that iio is used to</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; monitor (not [just] control) something on the chip. I wrongly assumed that</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; IIO is used to report chip status (voltage, current, temperature) using an</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; internal DAC. Obviously that was a wrong assumption. Sorry for that.</p>
 <p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; As far as I see the LTM8054 does not even have a programming interface.</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; So is it reasonable to provide a dedicated driver at all?</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; The figure on page 20 seems to suggest that there is an external DAC</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; which drives the regulator. And the regulator drives for example a fan.</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; So I would think of a driver for the specific DAC and ignore the specific</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; LTM chip at all.</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; </p>
-<br /><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">In my use case, the LTM8054 feeds a DC output port on which various devices </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">may be plugged. Dynamic output current limitation and output voltage level </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">control for these devices is a requirement, as well as stepped voltage </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">transitions, thus the need for a proper regulator device.</p>
-<br /><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">The LTM8054's feedback pin can be driven by a different DAC, which allows for </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">dynamic output voltage control. This is a more complex upstreaming topic </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">however, so I've left it out of this initial series. There are other component </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">functions which fit in squarely into the regulator framework, such as </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">input current limit control and soft-start. But I understand that the current </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">driver might look a bit &quot;bare&quot;.</p>
-<br /><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; What could be necessary is if you really want to be able to &quot;regulate&quot;</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; the current going to Vout, some bridge between regulator API and some</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; IIO DAC.</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; And enabling/disabling the regulator by some GPIO can be described in</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; the DT already through a &quot;regulator-fixed&quot;.</p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; </p>
-<br /><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">This is a possibility, but when you bring in all of these other hardware </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">functions that I mentionned e.g. output voltage control and stepping, you'll </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">end up with several different devices which look unrelated from userspace, but </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">actually control the same chip.</p>
-<br /><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">Userspace will also have to know about some hardware details to properly </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">control the DACs, such as the values of the sense and feedback resistors. In </p>
-<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">my opinion, this bypasses the kernel's abstraction of hardware.</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; Apparently you copied the hwmon mailing list for the introduction of an IIO</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; namespace and its use in a couple of hwmon drivers in one of the patches.</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; My personal opinion is that this should not be part of this series but a</p>
+<p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">&gt; series of its own. That is just my personal opinion, though.</p>
+<br /><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">I understand. I can split it out.</p>
 <br /><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">Thanks,</p>
 <br /><p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">-- </p>
 <p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">Romain Gantois, Bootlin</p>
@@ -258,31 +203,31 @@ Content-Type: text/html; charset="utf-8"
 <p style="margin-top:0;margin-bottom:0;margin-left:0;margin-right:0;">https://bootlin.com</p>
 <br /></body>
 </html>
---nextPart2186563.taCxCBeP46--
+--nextPart2232231.yKVeVyVuyW--
 
---nextPart2111402.atdPhlSkOF
+--nextPart2407312.OBFZWjSADL
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part.
 Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAmkkgFwACgkQKCYAIARz
-eA6Alg/8COym+7pL1LpZ1EUBzLeuPJJMpNXAoKBsdBPOyD3NnxUoT3dqx1KV6Qxl
-qgm6tINDewDnwWGblDKog18X7I3G9JZVLM4/LwN//KMnkzo+GcECfLyFvnNrzKhg
-X1ZpkaamjbifIadbFXhOy1HQ/A6tO90ICk4ae2Dgye9PCZAqsL/GUGtcwiJzbWTk
-mNNqqvmwxf7KGS/63peSY0oGREjOfo95tZPllfLxP5lgvdVP/kiTot7ErGsaFh5y
-zzUIaEYjpiE86eQ+0/gKRs+Xkn4sAOyPzzRwoycI9JsYuJOPLEkIdChhAKNkKUD9
-MmGR4aMVjgLxKxu2dfNwsJmVQJ8mkVor+3jqyP77XSyM7E71ZesHrujCRodKaicr
-hiTtUMGt5qkalsMDHQLJ8MR3R/hMJWK2u1uKitIC0NhXCNQfR2yGlEothJDFcdQL
-K0cOhaJGpDnxfaopsfnN9ianNPZ5MhUYJj6qvQPAjTtARK8E+uL2ysXgZ9bQ1xKx
-g+URjMLJ49zdR8rHCJw0PLPE7Cb8GcsPFlad9yWPzjhJxk5y8JTMNWAnzZTRH96b
-I/PLDFBC9fy13WU6sj9591J0oxcpRC/k6ctEDZzN5sQZ8J+2rwc9moNFpGRpuLGc
-sefn100uth/gnbi+8IJjmTB564t5KIY0Xpnk7+3vfqFC2a88B+o=
-=Wv+m
+iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAmkkgY0ACgkQKCYAIARz
+eA7Sbw/+IYj1nxQCZiCtv+dhusxsoeEnMc+7km6Tdiz5j2SjZJRD/edgkVP7TjRx
+wVQcHHDUrVzdLDYyWfvYZ0F1/gPV3ucv6nxkzKsluOW/atgPproy8w1sbLq+ISP+
+uLXFWne5Rdt+OhRG8kGDHcP5XKa98L1b/IFCoTdTe/jINYXwYDR2CxyFURJQrNSL
+naSNbJjMu1adFjsOKsemwKKQOI4lVy6xd7zVfKRAlquVAP3NW1LV71QrEhVfnKFg
+XY+Q0KMQp+EVd5BKw2C0PNkrrjC3kJ1YWEBV861/Cs/eK207rHf0vNPiaDCLntfz
+csXkzjesTqOs7KlwU6MTPAE9yDRA6bzJjWr/GHfBxkYoNoSmEml90yeFLaPSJg/L
+pMhv+nUSVazSCwI5ALEd/lNu/JXEn4j/Ec1WJVcTIiL4iRDZxJkokTXim2oV6lY6
+F8f834u+ZEhjk/0qFRPTOCBbPD94TMRL+0rd6pnm/+uqOeK5mJicMQzEjx9JRsh/
+ksjQoJ68S+fLTpNLKGZ2JWb/e7TgVnyJmenjVT3sAO/VAPxvBr3KqaWi9w9bjY+1
+2Y6b49RMZ3BVqxwfKe8Za3xO2q6W1Uznm8M7yOUJ31tf7pcxVLYgB8Vbeb3Ackkv
+IJbePktWu8NRDvwSQ1495EHaLKPtXsC1mT0yoAd41nvKbvte21U=
+=W/xS
 -----END PGP SIGNATURE-----
 
---nextPart2111402.atdPhlSkOF--
+--nextPart2407312.OBFZWjSADL--
 
 
 

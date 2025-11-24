@@ -1,326 +1,130 @@
-Return-Path: <linux-iio+bounces-26410-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26412-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2E6C7F937
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 10:22:01 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72542C7F9BB
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 10:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C986E348FD3
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 09:19:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 70B754E4F7A
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 09:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6842F8BD0;
-	Mon, 24 Nov 2025 09:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8B42F5483;
+	Mon, 24 Nov 2025 09:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="xmUru0DI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZdtpfeP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824332F5A17;
-	Mon, 24 Nov 2025 09:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92C9263C8A
+	for <linux-iio@vger.kernel.org>; Mon, 24 Nov 2025 09:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763975942; cv=none; b=k14Xci5wQbzS8TvUSH+ZveEYhrX4aAAzvqlmzJci2byGjYyPQT1sYzGnpbc0Set9qtO6iPIdeqhznorcN2qsWGqijc7nlehpvqb2+nzVu3b5jyNLJ58dkbj00wGz+n+/ARnIpjIiQdoZTGLYKjNJynaZ/YMCdukqf+PoyCnmgxE=
+	t=1763976269; cv=none; b=gMLyabfddCksj0glad5XWgz174S51c4gnDoCFOiewDKYuKsN/g+KAqcsIybE8myU6SZxrbEINdQC+TjnWSbQWw7hOIrblZCoIC/fEEcxwW/bJgIZM0cQz9caAMXu8zBqyVm7pJjZVz9GPNeUulfIbWwgCp5JTgtvlkj1ELpQYh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763975942; c=relaxed/simple;
-	bh=K+zt3nceOOODApou1DvNcVnqg8L6U+BAmtwiQUTSD/g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=X8LGjFKPWeXkji7lRYMD4RDblXH73RfYyHmE68rSkYoVZnrwNAFvq08jSm7SOLlFpY4b/nrc6N5wbGXtyjyVKsQwTidZwrrUVymOnVAZlANk8NIxySHgLbBcQDrcFX8Aq0xs0VSUMlze9zBeTKlyjWB0cuYdXOLVavHjjEYJ4Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=xmUru0DI; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AO9FOq0420237;
-	Mon, 24 Nov 2025 04:18:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=CFxea
-	+0RlEzrXndzpVbk0p5/3GjSlvBMRFAAzli0hlw=; b=xmUru0DI8Es/vIqElXdD8
-	b6vajFlAD5HEAXo8ofI/reNuod3RMJKUF/rOqV2P/XvEXD8VuCDXcimTPsXWrtRQ
-	ZWoZcVB7sh38JKoNo5xidIQyv8q9bNqYnzZOSrmQFREoNNvL0jGg4ywYzvs05rO5
-	jE8GjRcic/OUjzfNGVfwxiHyxB0lQfOiuVBOsY4Jt8eww9ilCgouk/XsOil1N2GX
-	KkllLB72pbkGqwjqOHDPg1sH0a9NYs+FmcVSqcZ2CS7p+3flntKN+w0f6eVtWqe3
-	3nV9t2F58u34L3UHlegiiHb/k2Po9hWyrWXED4SfXuzeRxIflLjWLOaWl1RWFP73
-	g==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4aky424gt7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Nov 2025 04:18:45 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 5AO9IikJ007671
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 24 Nov 2025 04:18:44 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Mon, 24 Nov 2025 04:18:44 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Mon, 24 Nov 2025 04:18:43 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Mon, 24 Nov 2025 04:18:43 -0500
-Received: from HYB-DlYm71t3hSl.ad.analog.com (HYB-DlYm71t3hSl.ad.analog.com [10.44.3.82])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5AO9I8VS024016;
-	Mon, 24 Nov 2025 04:18:37 -0500
-From: Jorge Marques <jorge.marques@analog.com>
-Date: Mon, 24 Nov 2025 10:18:08 +0100
-Subject: [PATCH v2 9/9] iio: adc: ad4062: Add GPIO Controller support
+	s=arc-20240116; t=1763976269; c=relaxed/simple;
+	bh=P3TNnHmbMQ7RiZfj11COEtOadWn9ZwdSOUvW0u0Lo8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nb5gBV9dFSzvJpNKMWl4zoudPxaBS1FXBIdfUOJJkGyzzgzXneh2X1JyBHDhF3R+PjNNyO6DLJWeSTTCmZLLSt/O4A/BrqbKlODS+nnug9e/hJ9acNazPJhXTAhM+SLtihxPHcgFW4HRmlWE7M3KdVY8joSINcLDxaaoK0WTxUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZdtpfeP; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b7291af7190so595887466b.3
+        for <linux-iio@vger.kernel.org>; Mon, 24 Nov 2025 01:24:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763976266; x=1764581066; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=slSocduRhMtJsbQHXkMC9k8pMNaviAqpRIeDggJm8mI=;
+        b=ZZdtpfePZFfUT/ZvhU2u/xPyRTq5AfkmYgwBxMgiIm7eNwOoFh9ZRn0tZvJR7Js6bv
+         qyaRbzaYX6bvV3RvEsVZm9GQDMRBdu3iRP9eJFDv5Wl2HtYi0i49qYVJA7+2cTVlIPRX
+         Lj1AQvJit2VCRos+jwBKM7u2pqXsbuJAaTJ4iZJ6yPn4X81ufl+9M8c8vmCQmVo67kHM
+         u7wsRiB1AJTQ9L4ETsKRRXA2AkJKdzSAoM4NbvGh0QP1uwPAqZMZkOCq4LGgCHUhhwMX
+         Je8I2P2viPlA2uIsQNLZs2Fwb6gDLY+Cur9+XIHp7LkZyEVBu+X1J0L4XQp4YVzIpUNa
+         s6WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763976266; x=1764581066;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=slSocduRhMtJsbQHXkMC9k8pMNaviAqpRIeDggJm8mI=;
+        b=HwftBhQi2RTzuvrRI7NF07Bhy1OhIs6ZqpE0/pui+2oAqj7imwmOYj97HDEiJI1RCi
+         VS2DyHbvO41Tx73/LAwjaIEO1JCnotIV4N5HHNODq0Ah/8WFi2soioxzUTfNkysV5Wwl
+         p3Jc+bXqFhzVaT6tkyC6p5Q0KcFryU6P9mmggGchQock5Co4orBwE/8d3elW4ysgwisI
+         NAeLFLZTBLF5WyK77aLbJvF6SmV04bjtLHo0nqLjNaiXr2b5FhoYAJ+Od65QNqV2xXYD
+         mE8ZNFZmcD7nNiaHDE2/wB6L51/JYqplBgZC8dDbMV3E63sBiATvN9A/xQqWP2svlwgX
+         98TA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFn1fMXT5/XiRmBNFtBws3leeXy48I+pncqgjJDOu25Tb2fTbqtcC7WV/oL1Yx41EQ17dGS9fqYK0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYtQoDjnJngQXwagrwa8HNBbw9Qh6nVinAIRqg9eBp9xdfJd2v
+	HV107smrhSBv09bDlkTwaqL7nZMfjabGX+ZxDrgtq/Rqt0fJNEfp2nb9
+X-Gm-Gg: ASbGncs8ZEGFdbT7t8mgxz3P1ryBt1kfgwnc2lc05R5WNZUHPDf5oE1FsXkAanztYCp
+	/rZ/FgTg2gNxfmFt6/41OfId4m6Yk4Up+pdvE1vRU2hR2bMdpbPA6X1BQBnk4C0QkNYriYnKiNv
+	OEK+mVBf7VNIK/mGe8+AW0BbR7Kl3ZB09TksmJvR74dJpbU0RDL9xme97HQUMD9nOB3SyOnxmRl
+	rDoKuhojiDsW3VC3lcwstbO1XVIHKkFWqbbNU82qFOphQrqhk7DlBajN+0J2Zuda3J4mjI7ogMu
+	1g8UKvjy9PuXYfTcjRPh0pb9FrbppNZj5Y2lEDuvc++5E0EtOpMRDbi4PPrE8Yib0GJ3zqJfrU/
+	zB71z7JQgQGwMHm8HeRynV2YLHw01Ev2m7NVvoxANYD7ZlIBLplUwRKl5suB4ivkZ+TGPExkTFU
+	Yl3yGDA1ro3sTgq3Y2kuXzf1RtMsJphAGo3E4J+TFRbV+q0KF0ErXIXMNtjbfgKtRPkap8
+X-Google-Smtp-Source: AGHT+IG43taRGXlMb7A2ZG4Z0Lz7XxTi1f/W9lGskn1Ni6JWJYwXfKHzRtFJ/vmRNLd6ClmF9wOYDQ==
+X-Received: by 2002:a17:907:8e96:b0:b47:2be3:bc75 with SMTP id a640c23a62f3a-b76718ab22emr1047239266b.60.1763976265537;
+        Mon, 24 Nov 2025 01:24:25 -0800 (PST)
+Received: from HYB-DlYm71t3hSl.ad.analog.com ([2a02:3033:267:9a21:9532:f12d:5875:dc2c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7655028400sm1195719166b.56.2025.11.24.01.24.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 01:24:25 -0800 (PST)
+Date: Mon, 24 Nov 2025 10:24:22 +0100
+From: Jorge Marques <gastmaier@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Jorge Marques <jorge.marques@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 3/7] iio: adc: Add support for ad4062
+Message-ID: <m4a3o4fbs5bhsru6fsmik3qtthvit3565lkp6itjyqzjbd55hd@whjpvtn7xngm>
+References: <20251013-staging-ad4062-v1-0-0f8ce7fef50c@analog.com>
+ <20251013-staging-ad4062-v1-3-0f8ce7fef50c@analog.com>
+ <20251018171032.144a126c@jic23-huawei>
+ <ou6qwayt4g7qaoe5dm7tdg6jl5dwquslpfbok6on5r2q2wytyl@wlqxj5y6ircj>
+ <aSQMjZbc75cQtFqJ@smile.fi.intel.com>
+ <o4kt2of4xql4azufjgiecm4jzuexgm6nkvr7aghbwfk6qd7yqd@r4plggehzces>
+ <aSQhTd5Z7KyvHtbG@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20251124-staging-ad4062-v2-9-a375609afbb7@analog.com>
-References: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
-In-Reply-To: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich
-	<Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "David
- Lechner" <dlechner@baylibre.com>,
-        =?utf-8?q?Nuno_S=C3=A1?=
-	<nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-        Linus Walleij
-	<linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, Jorge Marques <jorge.marques@analog.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1763975888; l=5730;
- i=jorge.marques@analog.com; s=20250303; h=from:subject:message-id;
- bh=K+zt3nceOOODApou1DvNcVnqg8L6U+BAmtwiQUTSD/g=;
- b=1VAot/oOiNyakNSh6gDyBPRNszQvAcZm8xQNisXkdA/bzEsIP70eTI0VY9+l3Kb9oasJEsf9O
- CueObBm8ZDNBgVKmgjWk9wntp7ztaAUEPhpWEIeTCBsejt4IE8rxTcR
-X-Developer-Key: i=jorge.marques@analog.com; a=ed25519;
- pk=NUR1IZZMH0Da3QbJ2tBSznSPVfRpuoWdhBzKGSpAdbg=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=ffGgCkQF c=1 sm=1 tr=0 ts=692422f5 cx=c_pps
- a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=gAnH3GRIAAAA:8 a=tsAnktj4w5_xAW6w_LAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: qnndZnCmPiIo8KBvd6zxKRxwrLjot_Oa
-X-Proofpoint-ORIG-GUID: qnndZnCmPiIo8KBvd6zxKRxwrLjot_Oa
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI0MDA4MSBTYWx0ZWRfXzm1H17O3z1ka
- 58Sk6AOif0vFEOksLwDwuI+DxVIxm7//yL+swNiROzxCdBTePaStLBpoVxx6ldZFdgGS6Lw1NW7
- fdwDOc5kVxPEpnF9Vm4CfGyq3TJ28ibutbmB6GeBvol46JNhyb4KIgE/ICTipduEL4dKJ9a4GbL
- KxRRYgCxgl2i8Nng1BJGN20EDPBdlQo/rDcJwOpEjsU8/erMTNQsLLPidK3ZEZHzTFDNb7iV11v
- G7AQzmRQ+r5BJkQ/5LyBzRChHK6lfVW6rx/vvnuBi2b35ke8t/JY95bnb0DY/fp6evucUcFEkK1
- s/6kjx1ZlAQJjGTAF0Y4JgiQ4jOUD74Pb7/QyiZuwd0QytTT2gqCgecR7mvkhIWcMcDS5CCqs0A
- Px0Kz/jNJMMSiFs63DwwofN0yHYm7Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-24_03,2025-11-21_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 clxscore=1015
- lowpriorityscore=0 adultscore=0 phishscore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511240081
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aSQhTd5Z7KyvHtbG@smile.fi.intel.com>
 
-When gp0 or gp1 is not taken as an interrupt, expose them as gpo if
-gpio-contoller is set in the devicetree.
+On Mon, Nov 24, 2025 at 11:11:41AM +0200, Andy Shevchenko wrote:
+> On Mon, Nov 24, 2025 at 09:57:26AM +0100, Jorge Marques wrote:
+> > On Mon, Nov 24, 2025 at 09:43:09AM +0200, Andy Shevchenko wrote:
+> 
+> ...
+> 
+> > I will submitted v2 shortly.
+> 
+> I think the "shortly" is not needed, please take your time, this seems missed
+> v6.19-rc1 anyway.
 
-Signed-off-by: Jorge Marques <jorge.marques@analog.com>
----
- drivers/iio/adc/ad4062.c | 134 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 134 insertions(+)
+Hi Andy,
 
-diff --git a/drivers/iio/adc/ad4062.c b/drivers/iio/adc/ad4062.c
-index 3df7dbf29ae4a..203b06276431f 100644
---- a/drivers/iio/adc/ad4062.c
-+++ b/drivers/iio/adc/ad4062.c
-@@ -10,6 +10,7 @@
- #include <linux/completion.h>
- #include <linux/delay.h>
- #include <linux/err.h>
-+#include <linux/gpio/driver.h>
- #include <linux/i3c/device.h>
- #include <linux/i3c/master.h>
- #include <linux/iio/buffer.h>
-@@ -85,8 +86,11 @@
- #define AD4062_MAX_AVG		0xB
- #define AD4062_MON_VAL_MAX_GAIN		1999970
- #define AD4062_MON_VAL_MIDDLE_POINT	0x8000
-+#define AD4062_GP_DISABLED	0x0
- #define AD4062_GP_INTR		0x1
- #define AD4062_GP_DRDY		0x2
-+#define AD4062_GP_STATIC_LOW	0x5
-+#define AD4062_GP_STATIC_HIGH	0x6
- #define AD4062_INTR_EN_NEITHER	0x0
- #define AD4062_INTR_EN_EITHER	0x3
- #define AD4062_TCONV_NS		270
-@@ -635,12 +639,14 @@ static int ad4062_request_irq(struct iio_dev *indio_dev)
- 	if (ret == -EPROBE_DEFER) {
- 		return ret;
- 	} else if (ret < 0) {
-+		st->gpo_irq[0] = false;
- 		ret = regmap_update_bits(st->regmap, AD4062_REG_ADC_IBI_EN,
- 					 AD4062_REG_ADC_IBI_EN_MAX | AD4062_REG_ADC_IBI_EN_MIN,
- 					 AD4062_REG_ADC_IBI_EN_MAX | AD4062_REG_ADC_IBI_EN_MIN);
- 		if (ret)
- 			return ret;
- 	} else {
-+		st->gpo_irq[0] = true;
- 		ret = devm_request_threaded_irq(dev, ret, NULL,
- 						ad4062_irq_handler_thresh,
- 						IRQF_ONESHOT, indio_dev->name,
-@@ -1263,6 +1269,130 @@ static int ad4062_regulators_get(struct ad4062_state *st, bool *ref_sel)
- 	return 0;
- }
- 
-+static int ad4062_gpio_get_direction(struct gpio_chip *gc, unsigned int offset)
-+{
-+	return GPIO_LINE_DIRECTION_OUT;
-+}
-+
-+static int ad4062_gpio_set(struct gpio_chip *gc, unsigned int offset, int value)
-+{
-+	struct ad4062_state *st = gpiochip_get_data(gc);
-+	unsigned int reg_val = value ? AD4062_GP_STATIC_HIGH : AD4062_GP_STATIC_LOW;
-+
-+	if (st->gpo_irq[offset])
-+		return -ENODEV;
-+
-+	if (offset)
-+		return regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
-+					  AD4062_REG_GP_CONF_MODE_MSK_1,
-+					  FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_1, reg_val));
-+	else
-+		return regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
-+					  AD4062_REG_GP_CONF_MODE_MSK_0,
-+					  FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_0, reg_val));
-+}
-+
-+static int ad4062_gpio_get(struct gpio_chip *gc, unsigned int offset)
-+{
-+	struct ad4062_state *st = gpiochip_get_data(gc);
-+	unsigned int reg_val;
-+	int ret;
-+
-+	ret = regmap_read(st->regmap, AD4062_REG_GP_CONF, &reg_val);
-+	if (ret)
-+		return 0;
-+
-+	if (st->gpo_irq[offset])
-+		return -ENODEV;
-+
-+	if (offset)
-+		reg_val = FIELD_GET(AD4062_REG_GP_CONF_MODE_MSK_1, reg_val);
-+	else
-+		reg_val = FIELD_GET(AD4062_REG_GP_CONF_MODE_MSK_0, reg_val);
-+
-+	return reg_val == AD4062_GP_STATIC_HIGH ? 1 : 0;
-+}
-+
-+static void ad4062_gpio_disable(void *data)
-+{
-+	struct ad4062_state *st = data;
-+	u8 val = FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_0, AD4062_GP_DISABLED) |
-+		 FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_1, AD4062_GP_DISABLED);
-+
-+	regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
-+			   AD4062_REG_GP_CONF_MODE_MSK_1 | AD4062_REG_GP_CONF_MODE_MSK_0,
-+			   val);
-+}
-+
-+static int ad4062_gpio_init_valid_mask(struct gpio_chip *gc,
-+				       unsigned long *valid_mask,
-+				       unsigned int ngpios)
-+{
-+	struct ad4062_state *st = gpiochip_get_data(gc);
-+
-+	bitmap_zero(valid_mask, ngpios);
-+
-+	if (!st->gpo_irq[0])
-+		set_bit(0, valid_mask);
-+	if (!st->gpo_irq[1])
-+		set_bit(1, valid_mask);
-+
-+	return 0;
-+}
-+
-+static int ad4062_gpio_init(struct ad4062_state *st)
-+{
-+	struct device *dev = &st->i3cdev->dev;
-+	struct gpio_chip *gc;
-+	u8 val, mask;
-+	int ret;
-+
-+	if ((st->gpo_irq[0] && st->gpo_irq[1]) ||
-+	    !device_property_read_bool(dev, "gpio-controller"))
-+		return 0;
-+
-+	gc = devm_kzalloc(dev, sizeof(*gc), GFP_KERNEL);
-+	if (!gc)
-+		return -ENOMEM;
-+
-+	val = 0;
-+	mask = 0;
-+	if (!st->gpo_irq[0]) {
-+		mask |= AD4062_REG_GP_CONF_MODE_MSK_0;
-+		val |= FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_0, AD4062_GP_STATIC_LOW);
-+	}
-+	if (!st->gpo_irq[1]) {
-+		mask |= AD4062_REG_GP_CONF_MODE_MSK_1;
-+		val |= FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_1, AD4062_GP_STATIC_LOW);
-+	}
-+
-+	ret = regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
-+				 mask, val);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev, ad4062_gpio_disable, st);
-+	if (ret)
-+		return ret;
-+
-+	gc->parent = dev;
-+	gc->label = st->chip->name;
-+	gc->owner = THIS_MODULE;
-+	gc->base = -1;
-+	gc->ngpio = 2;
-+	gc->init_valid_mask = ad4062_gpio_init_valid_mask;
-+	gc->get_direction = ad4062_gpio_get_direction;
-+	gc->set = ad4062_gpio_set;
-+	gc->get = ad4062_gpio_get;
-+	gc->can_sleep = true;
-+
-+	ret = devm_gpiochip_add_data(dev, gc, st);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Unable to register GPIO chip\n");
-+
-+	return 0;
-+}
-+
- static const struct i3c_device_id ad4062_id_table[] = {
- 	I3C_DEVICE(AD4062_I3C_VENDOR, ad4060_chip_info.prod_id, &ad4060_chip_info),
- 	I3C_DEVICE(AD4062_I3C_VENDOR, ad4062_chip_info.prod_id, &ad4062_chip_info),
-@@ -1351,6 +1481,10 @@ static int ad4062_probe(struct i3c_device *i3cdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to request i3c ibi\n");
- 
-+	ret = ad4062_gpio_init(st);
-+	if (ret)
-+		return ret;
-+
- 	INIT_WORK(&st->trig_conv, ad4062_trigger_work);
- 
- 	return devm_iio_device_register(dev, indio_dev);
+I was submitting when this reached my mailbox. Still, noted the comment
+on your next e-mail and no pressure on the release window, I just didn't
+have further changes for this revision.
 
--- 
-2.51.1
-
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
+Thanks,
+Jorge
 

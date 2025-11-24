@@ -1,56 +1,57 @@
-Return-Path: <linux-iio+bounces-26425-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26426-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA9EC8125E
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 15:50:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0B9C81261
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 15:51:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2BCC64E7CA8
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 14:49:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E0B9D4E7FEA
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Nov 2025 14:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67658313527;
-	Mon, 24 Nov 2025 14:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7F828FA9A;
+	Mon, 24 Nov 2025 14:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZwCjZDzH"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a+Ore6GW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BF22D4B6D;
-	Mon, 24 Nov 2025 14:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E585E313277
+	for <linux-iio@vger.kernel.org>; Mon, 24 Nov 2025 14:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763995737; cv=none; b=QRqwX5wv1Q8Qi/akudIHkD0dJfpZpIPDHMRIushbsjnEC7DOGUIsr5ZwkrlyN+FayK2N60WgxfhxvkLz3ijCzoJ4dLN98O70eXvXyESRrMjrnQJ8Q/skKyl7nrG9e13L0YW2FKux39JRJUm2Bhw9BMLTDmLCYB7NdzlxPvCw8Rc=
+	t=1763995738; cv=none; b=t39AFMmPvauDfe+wKnfT3E1qvakGM/l+Ms2zCZpJhV8qmEeL9SW2yfvvscS/5E0kDb6VYp+RZPtwxQSc7I0GNhtT9RlD+RiCkdIDJ4vyjb982isxUxvF3dmFMPr0KcwPUzswaQgi4sbzT092Tne/aSm+r8bFIHPH68S8LYifPI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763995737; c=relaxed/simple;
-	bh=0XXtFH5JTRu9GjlvApke3LBXNZd41+3sp9DO1muAbzk=;
+	s=arc-20240116; t=1763995738; c=relaxed/simple;
+	bh=oep1bdWFRbFW7rlKaUYj86LsnLto/9YhZ3F1OTo86zk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ISUiL2XKAMDtL6o0ddRAfuG1a0mGLqthEXGV88bqgT/8FkE0vJJgBtrelw5eCGFWLJooYnJMlfEVDNjVj/sGUxNoFpBkqWYUoDeON+WqFE1GorKB8WW5Me4vWQ6U1SEVU6WlgA31hPSPyyclUQ5b4FvT+bwKaQvbMZme0TRmlno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZwCjZDzH; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=JE+Qrq52x8kdZdDlxCycojQ8fq23aHgEgeVaHAIvIJF+3PcQbOnH8FckPn6jzihzQdRHfS/w8I0RTl2Z9UA1es6pp+RpkJRQO9hM2A5REYz/Fom/gKLu8Xz5nWlfp7cG+AERpJgK7EmwL4xOL/aXeYbZWyMgjJP+GwUds1/z5Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a+Ore6GW; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id B3081C139B1;
-	Mon, 24 Nov 2025 14:48:30 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id F2326C139AF;
+	Mon, 24 Nov 2025 14:48:31 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 542B6606FC;
-	Mon, 24 Nov 2025 14:48:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0988510371DA2;
-	Mon, 24 Nov 2025 15:48:50 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 938EA606FC;
+	Mon, 24 Nov 2025 14:48:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D8CDF10371DB5;
+	Mon, 24 Nov 2025 15:48:52 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763995732; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1763995733; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=61cfthlfsbdCdnzz/AbceXADf0E+18fSp8Ri+Oo2Qb0=;
-	b=ZwCjZDzHomN+kRis1qXgWgXS/wKCVUhmF9RxzHi6SbeGZ308ZLdEG8Z58JRAF6LTW+4rzC
-	nNbI5pN3SFjTG688OxB4xbfzgxNlH/8BStO37d0UuiSNaKhu1zdxKbQheLXGwXpOvynxqv
-	ScW31K84CtB9lo9zFT8AimxCFgsndhGDU3ujN9oCXoMsVstu8dUoH1hwc3Pkc5D4xfYh7C
-	OgnZXsiX8z33AX2eWEuCpXPzv7nWcUNwSZbrMlp+cDW8+uPRNgbCCvK0p6Lm0C/aMhXPA5
-	WVtiIqh5eGOrTdF/jCaBuozn+5VefavhuI/ylol1DZQL8fjhdhPVCJvK2jW0yw==
+	bh=E65SZmiDoU6jgob3AdJWifHU8CJmVyqhN7mABheg6DU=;
+	b=a+Ore6GWJnT6PuoOWGUyrIBBpwetMqj+niV1fB//nICmsG/TAk48IonEARWIqoEr36/QDP
+	7PmsZJ1+uNEmW8eEmbbMYb4qBZlppqSRacrqbWBDMuvNlhQWMBhLD0Ec9RMt7N3DLjgpfW
+	zpGjoI4MXS3Ux3FiyxujIRBr1mUM5x4+ynhslX8YQ9RMP0ApmGnY9PwGrawSv85UVuD4uy
+	3VQDklA2fekypOyObmxxGkB0ljKkbc/GXCtvGsFNs/+DIY0zvAP9TngW/zkxirAL4Gt4yl
+	rz6dL+3QOdaKfGznYOEyhKWNdVRDMoMCV3UVdq6iXpawf71gsD0QJfCtBXRWIA==
 From: Romain Gantois <romain.gantois@bootlin.com>
-Date: Mon, 24 Nov 2025 15:48:09 +0100
-Subject: [PATCH v4 5/6] regulator: Support the LTM8054 voltage regulator
+Date: Mon, 24 Nov 2025 15:48:10 +0100
+Subject: [PATCH v4 6/6] regulator: ltm8054: Support output current limit
+ control
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -59,7 +60,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251124-ltm8054-driver-v4-5-107a8a814abe@bootlin.com>
+Message-Id: <20251124-ltm8054-driver-v4-6-107a8a814abe@bootlin.com>
 References: <20251124-ltm8054-driver-v4-0-107a8a814abe@bootlin.com>
 In-Reply-To: <20251124-ltm8054-driver-v4-0-107a8a814abe@bootlin.com>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -70,197 +71,374 @@ To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  Andy Shevchenko <andy@kernel.org>
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-iio@vger.kernel.org, Romain Gantois <romain.gantois@bootlin.com>, 
- Andy Shevchenko <andriy.shevchenko@intel.com>
+ linux-iio@vger.kernel.org, Romain Gantois <romain.gantois@bootlin.com>
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Add a stub driver for the  Linear Technology LTM8054 Buck-Boost voltage
-regulator. This version only supports enabling/disabling the regulator via
-a GPIO, and reporting the output voltage level from the resistor divider
-values given in the device tree.
+The LTM8054 supports setting a fixed output current limit using a sense
+resistor connected to a dedicated pin. This limit can then be lowered
+dynamically by varying the voltage level of the CTL pin.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Support controlling the LTM8054's output current limit.
+
 Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
 ---
- MAINTAINERS                           |   1 +
- drivers/regulator/Kconfig             |   8 +++
- drivers/regulator/Makefile            |   1 +
- drivers/regulator/ltm8054-regulator.c | 123 ++++++++++++++++++++++++++++++++++
- 4 files changed, 133 insertions(+)
+ drivers/regulator/Kconfig             |   1 +
+ drivers/regulator/ltm8054-regulator.c | 260 +++++++++++++++++++++++++++++++++-
+ 2 files changed, 259 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 01949aab8240..f8dfa965c11b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14794,6 +14794,7 @@ LTM8054 REGULATOR DRIVER
- M:	Romain Gantois <romain.gantois@bootlin.com>
- S:	Maintained
- F:	Documentation/devicetree/bindings/regulator/adi,ltm8054.yaml
-+F:	drivers/regulator/ltm8054-regulator.c
- 
- LTP (Linux Test Project)
- M:	Andrea Cervesato <andrea.cervesato@suse.com>
 diff --git a/drivers/regulator/Kconfig b/drivers/regulator/Kconfig
-index 0b2dac6f66ad..ab97025c8f94 100644
+index ab97025c8f94..7b70f640ba25 100644
 --- a/drivers/regulator/Kconfig
 +++ b/drivers/regulator/Kconfig
-@@ -595,6 +595,14 @@ config REGULATOR_LTC3676
- 	  This enables support for the LTC3676
- 	  8-output regulators controlled via I2C.
+@@ -597,6 +597,7 @@ config REGULATOR_LTC3676
  
-+config REGULATOR_LTM8054
-+	tristate "LTM8054 Buck-Boost voltage regulator"
-+	help
-+	  This driver provides support for the Analog Devices LTM8054
-+	  Buck-Boost micromodule regulator. The LTM8054 has an adjustable
-+	  output current limitation and a feedback pin for setting the
-+	  output voltage level.
-+
- config REGULATOR_MAX14577
- 	tristate "Maxim 14577/77836 regulator"
- 	depends on MFD_MAX14577
-diff --git a/drivers/regulator/Makefile b/drivers/regulator/Makefile
-index 316a84ea92d4..f494a963e5de 100644
---- a/drivers/regulator/Makefile
-+++ b/drivers/regulator/Makefile
-@@ -72,6 +72,7 @@ obj-$(CONFIG_REGULATOR_LP8788) += lp8788-ldo.o
- obj-$(CONFIG_REGULATOR_LP8755) += lp8755.o
- obj-$(CONFIG_REGULATOR_LTC3589) += ltc3589.o
- obj-$(CONFIG_REGULATOR_LTC3676) += ltc3676.o
-+obj-$(CONFIG_REGULATOR_LTM8054) += ltm8054-regulator.o
- obj-$(CONFIG_REGULATOR_MAX14577) += max14577-regulator.o
- obj-$(CONFIG_REGULATOR_MAX1586) += max1586.o
- obj-$(CONFIG_REGULATOR_MAX5970) += max5970-regulator.o
+ config REGULATOR_LTM8054
+ 	tristate "LTM8054 Buck-Boost voltage regulator"
++	depends on IIO
+ 	help
+ 	  This driver provides support for the Analog Devices LTM8054
+ 	  Buck-Boost micromodule regulator. The LTM8054 has an adjustable
 diff --git a/drivers/regulator/ltm8054-regulator.c b/drivers/regulator/ltm8054-regulator.c
-new file mode 100644
-index 000000000000..c432b00d75a4
---- /dev/null
+index c432b00d75a4..4613f3f57860 100644
+--- a/drivers/regulator/ltm8054-regulator.c
 +++ b/drivers/regulator/ltm8054-regulator.c
-@@ -0,0 +1,123 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Analog Devices LTM8054 Buck-Boost regulator driver
-+ *
-+ * Copyright (C) 2025 Bootlin
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/array_size.h>
++#include <linux/completion.h>
+ #include <linux/device.h>
+ #include <linux/device/devres.h>
+ #include <linux/device/driver.h>
+@@ -13,12 +14,20 @@
+ #include <linux/err.h>
+ #include <linux/errno.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/iio/consumer.h>
++#include <linux/jiffies.h>
++#include <linux/lockdep.h>
+ #include <linux/math64.h>
++#include <linux/minmax.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/property.h>
++#include <linux/string_choices.h>
+ #include <linux/types.h>
++#include <linux/units.h>
++#include <linux/workqueue.h>
+ 
+ #include <linux/regulator/consumer.h>
+ #include <linux/regulator/driver.h>
+@@ -27,7 +36,36 @@
+ /* The LTM8054 regulates its FB pin to 1.2V */
+ #define LTM8054_FB_uV 1200000
+ 
++/* Threshold voltage between the Vout and Iout pins which triggers current
++ * limiting.
 + */
++#define LTM8054_VOUT_IOUT_MAX_uV 58000
 +
-+#include <linux/array_size.h>
-+#include <linux/device.h>
-+#include <linux/device/devres.h>
-+#include <linux/device/driver.h>
-+#include <linux/dev_printk.h>
-+#include <linux/err.h>
-+#include <linux/errno.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/math64.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/types.h>
++#define LTM8054_MAX_CTL_uV 1200000
++#define LTM8054_MIN_CTL_uV 50000
 +
-+#include <linux/regulator/consumer.h>
-+#include <linux/regulator/driver.h>
-+#include <linux/regulator/of_regulator.h>
++#define LTM8054_CTL_RW_TIMEOUT msecs_to_jiffies(500)
 +
-+/* The LTM8054 regulates its FB pin to 1.2V */
-+#define LTM8054_FB_uV 1200000
-+
-+struct ltm8054_priv {
-+	struct regulator_desc rdesc;
++/* CTL pin read/write transaction */
++struct ltm8054_ctl_pin_work {
++	struct work_struct work;
++	unsigned int ctl_val;
++	int ret;
++	bool write;
 +};
 +
-+static int ltm8054_scale(unsigned int uV, u32 r1, u32 r2)
+ struct ltm8054_priv {
++	struct device *dev;
++
++	struct iio_channel *ctl_dac;
++	struct ltm8054_ctl_pin_work ctl_work;
++	/* Lock for ctl_work. */
++	struct mutex ctl_work_lock;
++	struct completion ctl_rw_done;
++
++	int min_uA;
++	int max_uA;
++
+ 	struct regulator_desc rdesc;
+ };
+ 
+@@ -41,14 +79,198 @@ static int ltm8054_scale(unsigned int uV, u32 r1, u32 r2)
+ 	return uV + tmp;
+ }
+ 
+-static const struct regulator_ops ltm8054_regulator_ops = { };
++static void ltm8054_do_ctl_work(struct work_struct *work)
 +{
-+	u64 tmp;
-+
-+	tmp = (u64)uV * r1;
-+	do_div(tmp, r2);
-+
-+	return uV + tmp;
-+}
-+
-+static const struct regulator_ops ltm8054_regulator_ops = { };
-+
-+static int ltm8054_of_parse(struct device *dev, struct ltm8054_priv *priv,
-+			    struct regulator_config *config)
-+{
-+	u32 r[2];
++	struct ltm8054_ctl_pin_work *ctl_work =
++		container_of_const(work, struct ltm8054_ctl_pin_work, work);
++	struct ltm8054_priv *priv =
++		container_of_const(ctl_work, struct ltm8054_priv, ctl_work);
++	unsigned int val;
++	bool write;
 +	int ret;
 +
-+	ret = device_property_read_u32_array(dev, "regulator-fb-voltage-divider-ohms",
-+					     r, ARRAY_SIZE(r));
++	lockdep_assert_not_held(&priv->ctl_work_lock);
++
++	scoped_guard(mutex, &priv->ctl_work_lock) {
++		val = ctl_work->ctl_val;
++		write = ctl_work->write;
++	}
++
++	/* Standard IIO voltage unit is mV, scale accordingly. */
++	if (write)
++		ret = iio_write_channel_processed_scale(priv->ctl_dac, val, KILO);
++	else
++		ret = iio_read_channel_processed_scale(priv->ctl_dac, &val, KILO);
++
++	dev_dbg(priv->dev, "%s CTL IO channel, val: %duV\n", str_write_read(write), val);
++
++	scoped_guard(mutex, &priv->ctl_work_lock) {
++		ctl_work->ret = ret;
++		ctl_work->ctl_val = val;
++	}
++
++	complete(&priv->ctl_rw_done);
++}
++
++static int ltm8054_ctl_pin_rw(struct ltm8054_priv *priv, bool write, unsigned int *ctl_val)
++{
++	struct ltm8054_ctl_pin_work *ctl_work = &priv->ctl_work;
++	int ret;
++
++	lockdep_assert_not_held(&priv->ctl_work_lock);
++
++	/*
++	 * The get/set_current_limit() callbacks have an active regulator core
++	 * reservation ID (obtained with ww_acquire_init()).
++	 *
++	 * Or, the IO channel driver may call something like
++	 * regulator_enable(), meaning this thread would acquire a new
++	 * regulator core reservation ID before the current one is dropped
++	 * (using ww_acquire_fini()). This is forbidden.
++	 *
++	 * Thus, perform the IO channel read/write in a different thread, and
++	 * wait for it to complete, with a timeout to avoid deadlocking.
++	 */
++
++	scoped_guard(mutex, &priv->ctl_work_lock) {
++		if (work_busy(&ctl_work->work))
++			return -EBUSY;
++
++		if (write) {
++			ctl_work->ctl_val = *ctl_val;
++			ctl_work->write = 1;
++		} else {
++			ctl_work->write = 0;
++		}
++
++		schedule_work(&ctl_work->work);
++	}
++
++	ret = wait_for_completion_timeout(&priv->ctl_rw_done, LTM8054_CTL_RW_TIMEOUT);
++	reinit_completion(&priv->ctl_rw_done);
++
++	if (unlikely(!ret))
++		return -ETIMEDOUT;
++
++	scoped_guard(mutex, &priv->ctl_work_lock) {
++		ret = ctl_work->ret;
++
++		if (ret)
++			return ret;
++
++		if (!write)
++			*ctl_val = ctl_work->ctl_val;
++	}
++
++	return 0;
++}
++
++static int ltm8054_set_current_limit(struct regulator_dev *rdev, int min_uA, int max_uA)
++{
++	struct ltm8054_priv *priv = rdev_get_drvdata(rdev);
++	unsigned int ctl_val;
++	u64 vdac_uV;
++
++	min_uA = clamp_t(int, min_uA, priv->min_uA, priv->max_uA);
++
++	/* adjusted current limit = Rsense current limit * CTL pin voltage / max CTL pin voltage */
++	vdac_uV = (u64)min_uA * LTM8054_MAX_CTL_uV;
++	do_div(vdac_uV, priv->max_uA);
++
++	dev_dbg(&rdev->dev,
++		"Setting current limit to %duA, CTL pin to %lluuV\n", min_uA, vdac_uV);
++
++	ctl_val = vdac_uV;
++
++	return ltm8054_ctl_pin_rw(priv, 1, &ctl_val);
++}
++
++static int ltm8054_get_current_limit(struct regulator_dev *rdev)
++{
++	struct ltm8054_priv *priv = rdev_get_drvdata(rdev);
++	unsigned int ctl_val;
++	int ret;
++	u64 uA;
++
++	ret = ltm8054_ctl_pin_rw(priv, 0, &ctl_val);
 +	if (ret)
 +		return ret;
 +
-+	priv->rdesc.fixed_uV = ltm8054_scale(LTM8054_FB_uV, r[0], r[1]);
-+	priv->rdesc.min_uV = priv->rdesc.fixed_uV;
-+	priv->rdesc.n_voltages = 1;
++	uA = (u64)ctl_val * priv->max_uA;
++	do_div(uA, LTM8054_MAX_CTL_uV);
 +
-+	config->of_node = dev_of_node(dev);
-+	config->init_data = of_get_regulator_init_data(dev,
-+						       config->of_node,
-+						       &priv->rdesc);
-+	if (!config->init_data)
-+		return -EINVAL;
-+
-+	config->ena_gpiod = devm_gpiod_get_optional(dev, "enable", GPIOD_OUT_LOW);
-+	if (IS_ERR(config->ena_gpiod))
-+		return PTR_ERR(config->ena_gpiod);
-+
-+	return 0;
++	return uA;
 +}
 +
-+static int ltm8054_probe(struct platform_device *pdev)
++static const struct regulator_ops ltm8054_no_ctl_ops = { };
++
++static const struct regulator_ops ltm8054_ctl_ops = {
++	.set_current_limit = ltm8054_set_current_limit,
++	.get_current_limit = ltm8054_get_current_limit,
++};
++
++static struct iio_channel *ltm8054_init_ctl_dac(struct platform_device *pdev)
 +{
-+	struct regulator_config config = { };
-+	struct device *dev = &pdev->dev;
-+	struct regulator_dev *rdev;
-+	struct ltm8054_priv *priv;
++	struct iio_channel *ctl_dac;
++	enum iio_chan_type type;
 +	int ret;
 +
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
++	ctl_dac = devm_iio_channel_get(&pdev->dev, "ctl");
++	if (IS_ERR(ctl_dac)) {
++		/*
++		 * If the IO channel is not available yet, request probe retry.
++		 *
++		 * devm_iio_channel_get() will return ENODEV if it can't find
++		 * the channel, which will happen if the channel's driver
++		 * hasn't probed yet.  If it returned any other error code,
++		 * then something went wrong with the IO channel, don't retry.
++		 */
++		if (PTR_ERR(ctl_dac) == -ENODEV)
++			return ERR_PTR(-EPROBE_DEFER);
 +
-+	priv->rdesc.name = "ltm8054-regulator";
-+	priv->rdesc.ops = &ltm8054_regulator_ops;
-+	priv->rdesc.type = REGULATOR_VOLTAGE;
-+	priv->rdesc.owner = THIS_MODULE;
++		return ctl_dac;
++	}
 +
-+	config.dev = dev;
-+	config.driver_data = priv;
-+
-+	ret = ltm8054_of_parse(dev, priv, &config);
++	ret = iio_get_channel_type(ctl_dac, &type);
 +	if (ret)
-+		return dev_err_probe(dev, ret, "failed to parse device tree\n");
++		return ERR_PTR(ret);
 +
-+	rdev = devm_regulator_register(dev, &priv->rdesc, &config);
-+	if (IS_ERR(rdev))
-+		return dev_err_probe(dev, PTR_ERR(rdev), "failed to register regulator\n");
++	if (type != IIO_VOLTAGE)
++		return ERR_PTR(-EINVAL);
 +
-+	return 0;
++	return ctl_dac;
++}
+ 
+ static int ltm8054_of_parse(struct device *dev, struct ltm8054_priv *priv,
+ 			    struct regulator_config *config)
+ {
++	u32 rsense;
+ 	u32 r[2];
++	u64 tmp;
+ 	int ret;
+ 
++	ret = device_property_read_u32(dev, "adi,iout-rsense-micro-ohms", &rsense);
++	if (ret)
++		return ret;
++
++	if (rsense == 0)
++		return -EINVAL;
++
++	/* The maximum output current limit is the one set by the Rsense resistor */
++	tmp = (u64)LTM8054_VOUT_IOUT_MAX_uV * MICRO;
++	do_div(tmp, rsense);
++	priv->max_uA = tmp;
++
++	/*
++	 * Applying a voltage below LTM8054_MAX_CTL_uV on the CTL pin reduces
++	 * the output current limit. If this level drops below
++	 * LTM8054_MIN_CTL_uV the regulator stops switching.
++	 */
++
++	tmp = (u64)priv->max_uA * LTM8054_MIN_CTL_uV;
++	do_div(tmp, LTM8054_MAX_CTL_uV);
++	priv->min_uA = tmp;
++
+ 	ret = device_property_read_u32_array(dev, "regulator-fb-voltage-divider-ohms",
+ 					     r, ARRAY_SIZE(r));
+ 	if (ret)
+@@ -58,6 +280,9 @@ static int ltm8054_of_parse(struct device *dev, struct ltm8054_priv *priv,
+ 	priv->rdesc.min_uV = priv->rdesc.fixed_uV;
+ 	priv->rdesc.n_voltages = 1;
+ 
++	dev_dbg(dev, "max_uA: %d min_uA: %d fixed_uV: %d\n",
++		priv->max_uA, priv->min_uA, priv->rdesc.fixed_uV);
++
+ 	config->of_node = dev_of_node(dev);
+ 	config->init_data = of_get_regulator_init_data(dev,
+ 						       config->of_node,
+@@ -72,23 +297,53 @@ static int ltm8054_of_parse(struct device *dev, struct ltm8054_priv *priv,
+ 	return 0;
+ }
+ 
++static void ltm8054_cancel_ctl_work(void *ctl_work)
++{
++	cancel_work_sync(ctl_work);
 +}
 +
-+static const struct of_device_id ltm8054_of_match[] = {
-+	{ .compatible = "adi,ltm8054" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, ltm8054_of_match);
+ static int ltm8054_probe(struct platform_device *pdev)
+ {
+ 	struct regulator_config config = { };
++	struct iio_channel *ctl_dac = NULL;
+ 	struct device *dev = &pdev->dev;
+ 	struct regulator_dev *rdev;
+ 	struct ltm8054_priv *priv;
+ 	int ret;
+ 
++	/* Do this first, as it might defer. */
++	if (device_property_match_string(dev, "io-channel-names", "ctl") >= 0) {
++		ctl_dac = ltm8054_init_ctl_dac(pdev);
++		if (IS_ERR(ctl_dac))
++			return dev_err_probe(dev, PTR_ERR(ctl_dac),
++					     "failed to initialize CTL DAC\n");
++	}
 +
-+static struct platform_driver ltm8054_driver = {
-+	.probe = ltm8054_probe,
-+	.driver = {
-+		.name  = "ltm8054",
-+		.of_match_table = ltm8054_of_match,
-+	},
-+};
-+module_platform_driver(ltm8054_driver);
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
++	priv->dev = dev;
+ 	priv->rdesc.name = "ltm8054-regulator";
+-	priv->rdesc.ops = &ltm8054_regulator_ops;
++	priv->rdesc.ops = &ltm8054_no_ctl_ops;
+ 	priv->rdesc.type = REGULATOR_VOLTAGE;
+ 	priv->rdesc.owner = THIS_MODULE;
+ 
++	if (ctl_dac) {
++		priv->ctl_dac = ctl_dac;
 +
-+MODULE_DESCRIPTION("LTM8054 regulator driver");
-+MODULE_AUTHOR("Romain Gantois <romain.gantois@bootlin.com>");
-+MODULE_LICENSE("GPL");
++		INIT_WORK(&priv->ctl_work.work, ltm8054_do_ctl_work);
++		init_completion(&priv->ctl_rw_done);
++
++		devm_add_action_or_reset(priv->dev, ltm8054_cancel_ctl_work, &priv->ctl_work.work);
++
++		ret = devm_mutex_init(priv->dev, &priv->ctl_work_lock);
++		if (ret)
++			return ret;
++
++		priv->rdesc.ops = &ltm8054_ctl_ops;
++	}
++
+ 	config.dev = dev;
+ 	config.driver_data = priv;
+ 
+@@ -121,3 +376,4 @@ module_platform_driver(ltm8054_driver);
+ MODULE_DESCRIPTION("LTM8054 regulator driver");
+ MODULE_AUTHOR("Romain Gantois <romain.gantois@bootlin.com>");
+ MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS("IIO_CONSUMER");
 
 -- 
 2.51.2

@@ -1,130 +1,170 @@
-Return-Path: <linux-iio+bounces-26472-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26473-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64677C87142
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Nov 2025 21:38:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6ADC87380
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Nov 2025 22:23:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A38273B108E
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Nov 2025 20:38:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 973773B582A
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Nov 2025 21:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1898B2D5419;
-	Tue, 25 Nov 2025 20:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54BD2FC877;
+	Tue, 25 Nov 2025 21:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l4WWgWLU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jxomuv+L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB5F22D7A9;
-	Tue, 25 Nov 2025 20:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44D02FB0B3
+	for <linux-iio@vger.kernel.org>; Tue, 25 Nov 2025 21:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764103086; cv=none; b=ulxSUg0qhmza9TH6Vy5o/Hh4gvtMPr6BkGTNw5hueUlv8Vat2YbEf72xFxK/icpX7ABIkgDaKHbQtE7PFKLYM5THuTlBmsqz4OikMixRDOiG59RtS/DIKiv8O/81ZtVZ26qi0fB9Hd2+TsXZhxsxYlwmkfJmZBR6TUiQ9ZwtWME=
+	t=1764105799; cv=none; b=scaT/nfFVtSum4u9g+m/s9alRuFzaoZZnOjTLaJTJk1973YvZ/VpWHU9QmSqUQniPCfQ1mNX8sRdaXJ0i8GC3/EdsJj/Izz0McteheqWjYKzDo0TnVZtT0Jr+bbGFGQ4cteblREvB2W0ElDxx1IV2Gdc3iVxWVHjsmxlRjzomeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764103086; c=relaxed/simple;
-	bh=8xpvt79m2P3o/4iW9PtUDwW0MW3vseH0PKSudd7s8ls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RuualzdOL2gMOHRqyXjTG7KMRW7VrTVOxMTyVlIFC7gFBs7uNoEB9akVYfNGhaukF3ZCL9Eng3Pa5Aw/FIcLlypzTVBajHs2IrNyZwBir5ZZU1fs1REmXMVpJvO5gSOTua7oE8T+4AwxzKtpC+raYrc0xKKBdcnpn6qkCwmC+0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l4WWgWLU; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764103085; x=1795639085;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8xpvt79m2P3o/4iW9PtUDwW0MW3vseH0PKSudd7s8ls=;
-  b=l4WWgWLUv3yutvfQ/dzghUj/+TJBXmI1JDffZBWopQJih2/1xfCVRlcj
-   Sj+vgPZ/e/tYzBTXmHfs2FtxC5XD8nkQdkixVown45xa5lb/2yfIAa9IH
-   8T/uvqcYYiNmCNDGiOJ9iYRTjY+NPiecSanEVciryHueshHF9s1KiccBd
-   2fUOJ/w/D+lW7kiGgGfke9GxGfhsPDzEaUsV/JpRv5GieUkNpQ0SUTUd8
-   N4CKPYUoFzQyGeG3Fz1DtV3xD2ZVd4GWJdiZFWL3vNKayuhrD+dXG5DY1
-   pGil4x1a4oMOvJyV6CK9CzRL0cZ6vnMW71zikQN85wF6v857IqbUq21x4
-   w==;
-X-CSE-ConnectionGUID: kkWCbeCSTw2U8fd3MxU/EA==
-X-CSE-MsgGUID: hbzrWfexSrevCTMUvU6HMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="83522744"
-X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
-   d="scan'208";a="83522744"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 12:38:05 -0800
-X-CSE-ConnectionGUID: /UI6LBPjSz2GFbAY5Cn1Ug==
-X-CSE-MsgGUID: TPsMXwzISXaiaBuujoCKiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,226,1758610800"; 
-   d="scan'208";a="196902566"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.22])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 12:38:02 -0800
-Date: Tue, 25 Nov 2025 22:37:59 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Francesco Lavra <flavra@baylibre.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 7/9] iio: imu: st_lsm6dsx: add event configurability
- on a per axis basis
-Message-ID: <aSYTpxnMLFamU4zC@smile.fi.intel.com>
-References: <20251125202307.4033346-1-flavra@baylibre.com>
- <20251125202307.4033346-8-flavra@baylibre.com>
+	s=arc-20240116; t=1764105799; c=relaxed/simple;
+	bh=XW8A4SzGkXNACEumt8HO2D04lyJS8Mfw08PkaKSIHl4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Urn1mimpLBJfsUa6RLCjxNBrOBq8EaxEVZU1H8noSPdSkqqcTYSQPPBsAgKy23Uqwofsh8MEcXG83mZnv01pdlyHKfPYOZ5hC8XLpUQ0q4bxtLVkTelFhe173yv7kLGpBdJIF9G16qBTFA6QrRoiGCA3s9hdXFnNOf5cIPnjykY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jxomuv+L; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-bc0e89640b9so3835725a12.1
+        for <linux-iio@vger.kernel.org>; Tue, 25 Nov 2025 13:23:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764105796; x=1764710596; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U4IPiaiC8wPPJ43L5jRER+JtLVLAZIm9IvLWnVk5O64=;
+        b=jxomuv+LDLuWrt8BHvoPK9PCJoKFokds+p7JXcTxp33BbfVa5yluoYVGSy1rqC9dvh
+         MN/6dLjD3TAUVFYjmoK0pxBVvD4e6mxdxKDTBWbFR9IMVAKjXy405uZnaulSSm6tdcaP
+         vSwI6B7yqF0wMnjQGaI8NCi95wYpAiZvUG/66X0kmuoqsdf3YfB5yPk5Q+neT/5/1lCC
+         Yzf+D3FTpt+VGN0kVxbpAIFOsQ9r+nOx6inPnNvdOb/fcw8hJMGw9KvmMFr+/p8CNFib
+         GHut+daAkxA3VtnHPHvLekZoOE3EOsvjR759RUCEzAw9tZjQJ73CIg/SJ8DsIhEA1cWI
+         hTPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764105796; x=1764710596;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U4IPiaiC8wPPJ43L5jRER+JtLVLAZIm9IvLWnVk5O64=;
+        b=dRa8NvIlcI+U+cxNqEFIa4oeBffGaqQSsxl5ssdZK4atHKFi09uyC25I3kfW+Kz9fG
+         852CqiMF6XvUhtiTE+EneCNrzGMKbxZ+LyEJ3bgstlVLxk651zDTRpSlJSa9HXMXwPGA
+         lCUKdXGMwkimpV7UFS+DqYS98CkYJD9fPZ5mdBVgfKawEYHWIpKNn4mDb/KFWvDbq/AJ
+         5jw82bP77VTCG4pC5Nh8v05H7Y7DfTgwzb0uuhtP/ZAvdzgfVcInQ1rhAKichHWohDAL
+         7D+jbhJ7VZBWXYVgBqJc1yjgrIk8iuBOXeFYp9aHGb5VdGK8jeBqDuBVSwGexbCUD7je
+         Ns+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVXcG3EXSQFQmE1YRHwmj+zgYO/LGXtC/llAO+bw3CEnjaAqmxDKOIsyhgUGSuhBwJldgKvCMSXZpg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyX41Z/N9s074XrXdP9LOib09xluDRtejPI7HS7M5RFutNxxvmA
+	ggBezB+9UWMsigaoiMj8taMsA+StwPvpRn3JdEmHdDLrPlU4ALV4OMsK
+X-Gm-Gg: ASbGncsxNte0ER8Oh1TQVLLtdQ23NpIBTOIFC4MrsccsaWF9v0mI6MXxdtVSdO1mFsL
+	8BKiTvz4PDvUDtDbBDe/N/XaxkMa7PtNEYheYsjOKaonYVlF9ELVqfU2DK+uL7HRodHKdSyjRuO
+	kN77l0QVq9O9gFk5dxN5j+RG3Ln+nVg32j111wFnVBXtD3zxC1rfwFT7RZCTZCKJiOao+qiXn4u
+	HCV81j9lCdLde+P66Fjuah9N2layykDa9513jkCOYuHvX0pHMpZxuCJI5RcnuQLBI44vJ8XQkcK
+	IZZhFyf668qLZdLGT/keyU+/+d3bwaDAw8rxkkhm420lXMpu17zp+SQnAMdYNkgVn1oM85CydoB
+	a8uZ+bwMfoMB6+05xjsCi1fOPwdll+Si8GPJmKiW5vXTKZXc3mHwq7WkzdMzFdxHg8nE6rYrwME
+	VOKkCmGhm9Yd7z7PjFgyKJfkhXz4uN2jI5gPJygcS7CKKbhtWbMrjRekr7oTXyZ+Dx
+X-Google-Smtp-Source: AGHT+IF6D8g2wIy+N6TKTf0dz5XOxIIs00ONhYLTRePucR1HQFiuvK+uZSIsc+LE+bc5dfe4y+fV4g==
+X-Received: by 2002:a05:7301:100a:b0:2a4:3594:72ed with SMTP id 5a478bee46e88-2a7192a78d9mr9719248eec.28.1764105795955;
+        Tue, 25 Nov 2025 13:23:15 -0800 (PST)
+Received: from [192.168.68.63] (104-12-136-65.lightspeed.irvnca.sbcglobal.net. [104.12.136.65])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2a6fc53169csm63700374eec.4.2025.11.25.13.23.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Nov 2025 13:23:15 -0800 (PST)
+Message-ID: <61e860e7-fc3b-49ad-bf6a-9745f205d52b@gmail.com>
+Date: Tue, 25 Nov 2025 13:23:14 -0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125202307.4033346-8-flavra@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 5/6] iio: accel: Prevent NULL pointer dereference in
+ interrupt setup
+To: Andy Shevchenko <andriy.shevchenko@intel.com>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20251124-expressatt_nfc_accel_magn_light-v4-0-9c5686ad67e2@gmail.com>
+ <20251124-expressatt_nfc_accel_magn_light-v4-5-9c5686ad67e2@gmail.com>
+ <d3318386-2646-4f1c-ab4b-6ae3bc71e9bb@oss.qualcomm.com>
+ <aSWPnRBRdPS8vnir@smile.fi.intel.com>
+Content-Language: en-US
+From: Rudraksha Gupta <guptarud@gmail.com>
+In-Reply-To: <aSWPnRBRdPS8vnir@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 25, 2025 at 09:23:05PM +0100, Francesco Lavra wrote:
-> In order to be able to configure event detection on a per axis
-> basis (for either setting an event threshold/sensitivity value, or
-> enabling/disabling event detection), add new axis-specific fields
-> to struct st_lsm6dsx_event_src, and modify the logic that handles
-> event configuration to properly handle axis-specific settings when
-> supported by a given event source.
-> A future commit will add actual event sources with per-axis
-> configurability.
 
-...
+On 11/25/25 03:14, Andy Shevchenko wrote:
+> On Tue, Nov 25, 2025 at 11:45:22AM +0100, Konrad Dybcio wrote:
+>> On 11/25/25 12:35 AM, Rudraksha Gupta via B4 Relay wrote:
+>>> The bmc150_accel_set_interrupt() function assumes that the interrupt
+>>> info is provided. However, when no IRQ is provided, the info pointer
+>>> remains NULL, leading to a kernel oops:
+>> Hm, are you sure your device really doesn't have a pin connected to
+>> the IC's interrupt line?
+> I don't know the actual case here, but in general such a design occurred
+> in real life. So, shouldn't be a surprise to see another polling only mode
+> connection like this.
+>
+I unfortunately don't have the schematics, so I can only reference the 
+downstream kernel:
 
-> +	/*
-> +	 * If the set of axes for which the event source is enabled does not
-> +	 * change from empty to non-empty or vice versa, there is nothing else
-> +	 * to do.
-> +	 */
-> +	old_enable = hw->enable_event[event];
-> +	new_enable = state ? (old_enable | BIT(axis)) :
-> +			     (old_enable & ~BIT(axis));
-> +	if (!!old_enable == !!new_enable)
-> +		return 0;
+https://codeberg.org/LogicalErzor/Android_Kernel_Samsung_D2/commits/branch/downstream
 
-Sorry, I had no time to answer to you on previous round.
-I read and found that I was mistaken assuming that the axis
-is the bit that appears to be last when doing something here.
-Without that assumption my approach (obviously) won't work.
 
-However, the !! here is also not needed, the
+The above is my kernel tree. This is based on:
 
-	if (!old_enable == !new_enable)
+https://github.com/LineageOS/android_kernel_samsung_d2/tree/cm-14.1
 
-will work the same way. This will address my concerns about double negation and
-makes code easier to understand as we don't need to implicitly convert integers
-to booleans and than back to integers.
 
-(and yes, I run the updated test cases to see it works as expected).
+but with a few added commits on top to help me navigate the codebase. 
+Notably, I've removed all .c files that wasn't needed by the downstream 
+kernel, and verified that it works by flashing the kernel with 
+Cyanogenmod running.
 
--- 
-With Best Regards,
-Andy Shevchenko
 
+Based on the device's config:
+
+https://codeberg.org/LogicalErzor/Android_Kernel_Samsung_D2/src/branch/downstream/arch/arm/configs/cyanogen_expressatt_defconfig
+
+
+There is no .irq defined for the accelerator:
+
+https://codeberg.org/LogicalErzor/Android_Kernel_Samsung_D2/src/branch/downstream/arch/arm/mach-msm/board-express.c#L2100
+
+
+I also couldn't find a hardcoded irq in the driver code as well:
+
+https://codeberg.org/LogicalErzor/Android_Kernel_Samsung_D2/src/branch/downstream/drivers/sensors/accelerometer/yas_acc_driver-bma25x.c
+
+https://codeberg.org/LogicalErzor/Android_Kernel_Samsung_D2/src/branch/downstream/drivers/sensors/accelerometer/yas_acc_kernel_driver.c
+
+
+This seems to be confirmed upstream too, where one has an irq:
+
+https://github.com/torvalds/linux/blob/master/arch/arm/boot/dts/st/ste-ux500-samsung-skomer.dts#L420
+
+
+and others don't:
+
+https://github.com/torvalds/linux/blob/master/arch/arm/boot/dts/st/ste-ux500-samsung-kyle.dts#L439
+
+https://github.com/torvalds/linux/blob/master/arch/arm/boot/dts/st/ste-ux500-samsung-codina-tmo.dts#L506
+
+
+Happy to split this patch series into two, just let me know! :)
 
 

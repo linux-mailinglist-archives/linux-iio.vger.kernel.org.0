@@ -1,78 +1,79 @@
-Return-Path: <linux-iio+bounces-26462-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26463-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73ACAC87027
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Nov 2025 21:23:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CC5C87030
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Nov 2025 21:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E2F7634DB49
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Nov 2025 20:23:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ED213AF592
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Nov 2025 20:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294A633AD80;
-	Tue, 25 Nov 2025 20:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A57833B6F8;
+	Tue, 25 Nov 2025 20:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NfLKCRYw"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MgiM+INT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88712BD590
-	for <linux-iio@vger.kernel.org>; Tue, 25 Nov 2025 20:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106382FB0B9
+	for <linux-iio@vger.kernel.org>; Tue, 25 Nov 2025 20:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764102192; cv=none; b=SgA1A3bq1i9ftR8FzXAxfkXni+WhtaaPXxJD8uy6j9NI/ab/sqtvAVitYFLy1YwysXMMph8XZuqsucy1+100YGI8dfdOI4Yesva9MaOh+YD+0oL0v3W0wWSBr6W2WZmHs4fxw+CBWHtUjKZe0NrV6NuTBIv7wH5tGGl7CiIS33M=
+	t=1764102194; cv=none; b=JalwN/fbQ/ms2LWbSaPWM/lZ29damPm15KAzyCP/2gk3HMoJgDvj1VlQIZcPgplG6j59DrS53Y9M/aC7UAKKuK+Acm6jsN4JiosGQn2JOfyh/7+Jc0sn499bfPmh5KJwjYaUhkWqwzsIqaxCTtfA+FnsmJUamYGbYQAdvovGWdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764102192; c=relaxed/simple;
-	bh=NeqCVQGg5qT1aYQwYOfhby3FJklWkiVsbk0k6PcqOjU=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=CjCfyougEay+m5RBDLOtFNjsQH6YBkVVLynIdKNEuE5yVEWvvdxCq0ITxDBbY6xfe7wkytJsqbK3vIhTeJC3r1nOac+RLs+qkn0nMg8G9cu97JSEBtCjzCgUU2lr/Pms7x4x1UbnjhA3ZEjb4TUkyQ3mjCH8QO0fX0B2yLIpdXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NfLKCRYw; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1764102194; c=relaxed/simple;
+	bh=Xb/mqp4+YwITWlbn8v8dEwFHqYPu9zYkndT2tCfzi90=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NsiLrshI58luqMXbklEFq5WyF88Qok076YyF9hMVx/nOSxikKXTPj6L+D75zhspkr4V1LyX00nd0gfRhAbQabHG7PVMGsYYqLp/Gk6zglmVXLyvQ2T9eShx9Xx94ozv6G1OxAwghfkbEib8AEyWhJZi22EOpqcCj8S9fUm5skME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MgiM+INT; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6419b7b4b80so8366870a12.2
-        for <linux-iio@vger.kernel.org>; Tue, 25 Nov 2025 12:23:10 -0800 (PST)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b737c6c13e1so534134666b.3
+        for <linux-iio@vger.kernel.org>; Tue, 25 Nov 2025 12:23:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764102189; x=1764706989; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DFe0G2+EmVdbEh2bmdGGxP4y2UuZO0CW3KK/wYTXjeY=;
-        b=NfLKCRYwAWIE7u6ImKQU8NHc0bH/Bmog3ivduKIoXMDZFVYxWtlBdZLL1QKp72IoWJ
-         O7XoGYJppKD7ZYCB3wzfXxFJFlqdH3XqweSK+iC5dMY2ggO6RC6iPl46HQ91BYjqUU0R
-         v4VqxAudhIiZQCtMzNpqlN4Iwb0i499dI7uS1rJ1eKoQURAx6T75h7zJ40TMWt0CJD2R
-         4RoTY/qEeGuFJZTOvcGYF4oWaScpmmXgjiPXFkCcmvwnyXU0D5qunkJX4PPE+Xc+ZcX0
-         gz1xJOfNfSxA4Gk32zznM4yym1nJDeY4zf5piY3j5ZZBczm1FxRGBOpm6O09ASj5eTZX
-         maBA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764102190; x=1764706990; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Ib0drqFrjnDrbAYTSSfxv4es9CvzBMVOslQd6EXaRk=;
+        b=MgiM+INTWMEjj5TL/Y6K42VIPQ35oJPQNO8uOTrmiWCitqdiSbhLZFdB7PBoU/qCd6
+         mEZq4flDo8PfbdvCNvKVehtSOnJVlrb+UrGmhHsuL8KBANNwabegvfc2BWWV+f5cz0Vh
+         rzPkuJ7kdAwKH/+ouJzJTf82TieEDZqJmIJSDJwDGW8BA+s7wTsVUg47jhpmogsSFaUF
+         MP+p/9hXOevJd11fLiWW7+IiWBPFLwSN0L2Hh4X1W/4ajx19wpBegOKdRR5FMtBiXeMp
+         d3eX/EyooK8lVhOLdjo++k33CeCYdGoni152nb1FGX+XXbaZQvT+RtAFsHeA8IQWRxT8
+         +CzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764102189; x=1764706989;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DFe0G2+EmVdbEh2bmdGGxP4y2UuZO0CW3KK/wYTXjeY=;
-        b=KMBJvSLjW+Nuy9lZLYiQKVxwEPqfAav2LlefS3mnqmCqCZtPfYNcWXSpaQzD699MpQ
-         Q55XQARaJrEWVvoxG74d0IOGFNbaeSFN7vqVRMeWG4oHUuqhnBgoxJZkOPPCXXdSvxeY
-         9fE3DRnd9oAsSaoUaAyXR2FfgQpfZbHp/YHlLy69qU1TFmjzJ8q5jYEIPwiiBbqHKGJc
-         olhwZgDEYrCxHSH0f+wyDju+tJ/OsJ2lSTtsDKW8DzD/im8DPaOK7FPiHx8DRvziLZq3
-         EH7wKqSMOlfuVpTzaGhBGWdLaukd/lXujfB+rw2NkXf4dTgxkv5OTmysQEEWUBveUrdR
-         v/+A==
-X-Forwarded-Encrypted: i=1; AJvYcCXIrwL1DM21M4/s+/tJyVE+j23B6mGLheaJWRvFb8wjqfuJ5akp3HTs4W6k26zuIMVxuQVCIoWLCzg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/hg9Oz6JJNgoh9nTjx0w/p0UYhi6024nnwotXnuezzY8OG859
-	78kckuuX95Jrz1M542is5bExXj8Tx2HX098l+2ZzpSMoMx8MNbiy3MFkRpAN5pgZ+8i+R26EVC2
-	HKYAp
-X-Gm-Gg: ASbGncvvWqcu/rYImwK1JczHoQXvWZCioO7H/GapOANOGwF5fuBzokS+f7/f2OMaxtW
-	L4P/WSDM+DDgzouWqmsWx7U+b0CyGRMpkpsq9n7IbIJb1ivTCw+MyU/zOnZBOCji0ZMAq82vxeM
-	lDVzv25+sJJEyuWgx76M/yQFR+Ru90dmwA66qBz/kImmM6/qlttNY06Z4s2hiOnmYLZi4IfGN/Z
-	iHjPqgRGiar/+NVAQDqCsS+ixE5veAXivh53wbXMGhg5jlHhuP/fUjH9/4KPm403ol9V9L4XXsl
-	u/0csrxPKnYqB+HeQpWt3EcMB30AbO5NGoOY2CSivXFBu4oegoYMqovr8p50av9heTJG9wBEr1n
-	ustyhenhPEX18p+ZGHfNAQkpsEh726f/ed4rwco/mE/BF3bzM4nTYmNZH1H2UMLfGlMte3OLsJe
-	MwfQ==
-X-Google-Smtp-Source: AGHT+IF/z+2yeKjjDxF07ijR874tTzM0h2cLI9XrL/kaOfCtNyB3kX9BvQH3+Op7yW527F5YMffdEw==
-X-Received: by 2002:a17:907:7248:b0:b76:23b0:7d6f with SMTP id a640c23a62f3a-b76718cef3amr1688216866b.56.1764102189036;
-        Tue, 25 Nov 2025 12:23:09 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764102190; x=1764706990;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8Ib0drqFrjnDrbAYTSSfxv4es9CvzBMVOslQd6EXaRk=;
+        b=q2nK0UH3aZ10K2N7+0GvQHziPCW524r1REYN/x0oCa+pO7d52OMm59NnN/Exxrsnt6
+         iUEEIuGYhwAP2FZ5atnIg6G97WuQbZg+j2rZof1I3H3wFnCI2oJoXNjBXTviamcN1lAL
+         pbZNavoTzHqE5wqJ6Y/3fAMnd4YJ9agJxfykKzCPGdp0doW8Kt6gTlDrXAX921gTPNNq
+         C3hqKp3/V89nXTXP3xLrmp/C24yscqBLqldkSWUTI8PlTyw2R71ryVZY9dwdYL1HLivS
+         9LhA0nIoxhwnHMHUilpGixvISD/PgEKh73pWpt/vBz+pTXQK6QGUtluPC8JktJj9VKWv
+         G4WA==
+X-Forwarded-Encrypted: i=1; AJvYcCVd9xSAtqxN2pN5E3eHQoLDlchtjINhiU4QEh5pGCmyfTMhhy/ocv6vZM5Y6r4TN+JyBArznhwVOys=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFUfbyf3c80lQoOZrykq9qx0ffkZUYfFF2s4La2QNDYFZZ4wDe
+	a9+Xb2bRbMsTJQ/c+2rx4Z21DdjB6lJL2Jyx1NwoXjBcqaKX0Dsmb50Y36/htT0O3WM=
+X-Gm-Gg: ASbGncuMck3gLAN6Djgd9O8SoX4tSk8Vpla07J1yrly/FK/YFZoiHzEphx/4Ux2x7pS
+	2wy1bPnkhbm2c36axy801kW8UeMArOq4oP/BMBZFHFa/3GEk2AtULONtsin3Ck0YyOuJQTU1A2z
+	ExCrPYIwNVyHx3TJwGi5yl67WZhMPQbBndVQt/LLprkL2RVEcsCdXXFCs9ECxHQ461ZQjV9ghGq
+	x4rxKr4AHzfv1rxzD6DIlrgNbW9D6sEb2cTJe9rimQd0YrUo7P+VQx+18gM2b9A2+8DuNETYvGl
+	4SLqfC0XI86onuQs4aqktPPZT1MjA/khxza3yLWR9ypnlb8gIeXbhD1XGBsI3h+Ad34RJKKs3OS
+	hOMqa1YZBOjfjwTu0UTxoTh1PVw9tIjc80Z8XVumkvp8qxr9HXLNqS5IzRcLU6DUnyEkxYUslpc
+	YIfA==
+X-Google-Smtp-Source: AGHT+IGmtQaLA/Uc4OF4O4nDM/5+lEJ34paMjp1QNcJa/UK+uZ+msJKQDzBQKODh/ewuat38K/Z4PA==
+X-Received: by 2002:a17:907:744:b0:b73:b0eb:16f5 with SMTP id a640c23a62f3a-b76c55f4037mr512604466b.31.1764102190146;
+        Tue, 25 Nov 2025 12:23:10 -0800 (PST)
 Received: from localhost ([151.35.128.119])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654cdd60csm1677336566b.3.2025.11.25.12.23.08
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b765c1379ddsm1583680466b.0.2025.11.25.12.23.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 12:23:08 -0800 (PST)
+        Tue, 25 Nov 2025 12:23:09 -0800 (PST)
 From: Francesco Lavra <flavra@baylibre.com>
 To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -81,70 +82,81 @@ To: Lorenzo Bianconi <lorenzo@kernel.org>,
 	Andy Shevchenko <andy@kernel.org>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/9] st_lsm6dsx: add tap event detection
-Date: Tue, 25 Nov 2025 21:22:58 +0100
-Message-Id: <20251125202307.4033346-1-flavra@baylibre.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>
+Subject: [PATCH v3 1/9] iio: imu: st_lsm6dsx: fix iio_chan_spec for sensors without event detection
+Date: Tue, 25 Nov 2025 21:22:59 +0100
+Message-Id: <20251125202307.4033346-2-flavra@baylibre.com>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251125202307.4033346-1-flavra@baylibre.com>
+References: <20251125202307.4033346-1-flavra@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2446; i=flavra@baylibre.com; h=from:subject; bh=NeqCVQGg5qT1aYQwYOfhby3FJklWkiVsbk0k6PcqOjU=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpJg/9P/TX+7ynskpYl5KRVi1zx/MmtHcGM5b2y QVMDTfx+xmJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaSYP/QAKCRDt8TtzzpQ2 X1oCC/9ayrymZybUS8mTvGSveFbD5Z8zyvGAotHNY9rA55ek5/Q8rPj/uiq5DoeVlI7nG7L2oOC kJFNmK5fBreIepGFPdTnSf+fvFb9ZK8SiZTtssrKfXgomdZssYjixw3ZLACF9KawOXgEBcNZWOt 0W28viOptiK0a0NvdtVGqr+IUVNb+UnzpZRILd/sOlemnhVOyMt+BsO48NaDnj5h3sxpShxQJcE uVOoH3I/z6+jS20WYJFy67S4Dg48Iyrek5/4rQULdaA6mU40RX2cD6FjOlL8raZyofACQ1pllDL VxAmMgjBCWsbO3wK/twILmNrXfTm+SciTHaoaPvtC9A76Ygbb7psQVG7WzpZpXC3rFe1bddtR6x 1zjczluwrAPcieEGs4PsPkwqf167VxAyszahtz0ut3+YqPBkOx50lNvpt89ScF+0OCd/ZCCYQOd xAHftApGpNcTifMCVX+oqhTfvLZ3dUPTLNa46tD6F8vSvAmbI003YwxJvXlEJojThxRcA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2615; i=flavra@baylibre.com; h=from:subject; bh=Xb/mqp4+YwITWlbn8v8dEwFHqYPu9zYkndT2tCfzi90=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpJhACb7PSvMCE4FL2AoX2G7rJWV6MWZPzu6uCj zuR4kzIvpiJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaSYQAgAKCRDt8TtzzpQ2 X032C/4nr+nfvc3LvitKlpUfYNuGChz6j9VHNrts/2ML7zBvEZbr2bf+mgUJM3NRJu439PRLxm5 TR6jyO8W809+M8QORepMjECfKhVAprfkRUa+QZMkn6gvyyQ3f70Rn8tN5LXFpV3WdSyUcxU4U3I o4UOGkdA9nYRGB5x0f8iX5X9T4FHGf2UUv8XVX0v84kty3LtqPoQM78oOa0edMM8SuKXlCvQ9ao YTHri8qWoNV/ov2hlMJgrsxjDKTJ4cYg5r0/A8RfUqlzxoa+eQcl9X3QBlK+668855qRRDsAzRe dXQQ8znDKyjcdre090FAc5JyWl70bl9GfM57zYpsLIYyt+F+gsEsLqi3fcQlu2vfdJx+ZTFVg3T d6SqVFXiBEaGenHn2fSIJL5rIqXRu99+dQUWif+SJkveP3Ra9dCu/M7URSfghJ0LlXSQ0H6qSz7 QEB5QJvpvef5o6QBwHWcWUkm/vQaYHT8nAxsIJ7fJYfMWYKXexBY2yy2bviRt/1i78aq0=
 X-Developer-Key: i=flavra@baylibre.com; a=openpgp; fpr=8657854F953BDCA31EC314E6EDF13B73CE94365F
 Content-Transfer-Encoding: 8bit
 
-The bulk of this patch set consists of reworking the existing code for
-event detection (which supports IIO_EV_TYPE_THRESH events only) in order to
-make it generic to accommodate different event types. Actual support for
-tap events is implemented in the last patch.
-Tested on LSMDSV16X.
+The st_lsm6dsx_acc_channels array of struct iio_chan_spec has a non-NULL
+event_spec field, indicating support for IIO events. However, event
+detection is not supported for all sensors, and if userspace tries to
+configure accelerometer wakeup events on a sensor device that does not
+support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences a NULL
+pointer when trying to write to the wakeup register.
+Define an additional struct iio_chan_spec array whose members have a NULL
+event_spec field, and use this array instead of st_lsm6dsx_acc_channels for
+sensors without event detection capability.
 
-Changes from v2 [2]:
-- replaced status_reg and status_mask in struct st_lsm6dsx_event_src with a
-  struct st_lsm6dsx_reg field (Lorenzo)
-- dropped new local variables in favor of directly using fields of existing
-  struct variables (Lorenzo)
-- added blank line after return statements (Lorenzo)
-- added Andy's Reviewed-by tag to patches 1-6,8-9
-- added Lorenzo's Acked-by tag to patches 1-3,6,9
+Fixes: b5969abfa8b8 ("iio: imu: st_lsm6dsx: add motion events")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-Changes from v1 [1]:
-- added Fixes tag to patch 1/9 (Andy, Lorenzo)
-- added st_lsm6dsx_field_get() temporary macro, to be removed once the
-  generic FIELD_GET() macro lands (Andy)
-- refactored st_lsm6dsx_write_event_config() with the addition of two
-  helper functions st_lsm6dsx_check_other_events() and
-  st_lsm6dsx_events_enable() (Andy)
-- replaced dynamic allocation of iio_chan_spec and iio_event_spec arrays
-  with the addition of new static arrays (Jonathan)
-- changed line wrapping to 80 characters (Lorenzo, Andy)
-- changed line wrapping for commit messages to 75 characters (Jonathan)
-- added comments to st_lsm6dsx_event_setup() and st_lsm6dsx_get_event_reg()
-  (Andy)
-- miscellaneous stylistic changes (Andy)
-
-[1] https://lore.kernel.org/linux-iio/20251030072752.349633-1-flavra@baylibre.com/T/
-[2] https://lore.kernel.org/linux-iio/20251120082615.3263892-1-flavra@baylibre.com/T/
-
-Francesco Lavra (9):
-  iio: imu: st_lsm6dsx: fix iio_chan_spec for sensors without event
-    detection
-  iio: imu: st_lsm6dsx: make event_settings more generic
-  iio: imu: st_lsm6dsx: move wakeup event enable mask to event_src
-  iio: imu: st_lsm6dsx: rework code to check for enabled events
-  iio: imu: st_lsm6dsx: remove event_threshold field from hw struct
-  iio: imu: st_lsm6dsx: make event management functions generic
-  iio: imu: st_lsm6dsx: add event configurability on a per axis basis
-  iio: imu: st_lsm6dsx: add event spec parameter to iio_chan_spec
-    initializer
-  iio: imu: st_lsm6dsx: add tap event detection
-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  56 +-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 538 +++++++++++++------
- 2 files changed, 395 insertions(+), 199 deletions(-)
-
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 216160549b5a..a09df9d772dd 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -103,6 +103,13 @@ static const struct iio_chan_spec st_lsm6dsx_acc_channels[] = {
+ 	IIO_CHAN_SOFT_TIMESTAMP(3),
+ };
+ 
++static const struct iio_chan_spec st_lsm6ds0_acc_channels[] = {
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2c, IIO_MOD_Z, 2),
++	IIO_CHAN_SOFT_TIMESTAMP(3),
++};
++
+ static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
+ 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
+ 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
+@@ -144,8 +151,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		},
+ 		.channels = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+-				.chan = st_lsm6dsx_acc_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
++				.chan = st_lsm6ds0_acc_channels,
++				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.chan = st_lsm6ds0_gyro_channels,
+@@ -1445,8 +1452,8 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
+ 		},
+ 		.channels = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+-				.chan = st_lsm6dsx_acc_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
++				.chan = st_lsm6ds0_acc_channels,
++				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.chan = st_lsm6dsx_gyro_channels,
 -- 
 2.39.5
 

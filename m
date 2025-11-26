@@ -1,81 +1,82 @@
-Return-Path: <linux-iio+bounces-26486-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26487-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0498AC8AC23
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 16:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB14C8AE50
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 17:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DC9444E1E1F
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 15:55:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C6E564ED758
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 16:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A291333B6E9;
-	Wed, 26 Nov 2025 15:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671D633D6D9;
+	Wed, 26 Nov 2025 16:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UWmV9y/N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fqHUyOBg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D08309DB5
-	for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 15:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4440533A719
+	for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 16:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764172547; cv=none; b=YbKE2Msp2Uw6UBvpCPxiFY2Pxgd8PaAtxsuYSB+3wPW0bP6vYK12oYxtc8A7yFfIhFVcTsiUEhh2lWq5Ldckra7KgjO1yBZ1S4CvgZ5jzjK/FkMQkOwIj/izeLPMcEgsPA6kHPW3JkOQQHuyJCSrqeC1P1x7Tk+7wM/1sRIHMJY=
+	t=1764173700; cv=none; b=iS0dP+DbLpfmYqGXBuVFibaS9BLhtmR2GE4GMffrPLiB6u/H0/LGhQizmNUm9ndrpXSYl/eLw88r7OpV2xaqURktA+IDpUahTB3HsEMvaZlAA6sW6VvJkjK5QB68AVbJMYazk2t21q22UYNsOX5xtC5eMdw2fwB9D0Vtg36rtMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764172547; c=relaxed/simple;
-	bh=lASm2siB5AU0w5u55FAD+C2Ou4paYQEnU69Wbb4v2Yo=;
+	s=arc-20240116; t=1764173700; c=relaxed/simple;
+	bh=wRQ3hhxr8ynwsumdaV3tuxpgPBo2pa1cIS9EqkVPA9U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ROg737eduXrkYfDjXWf2ISExDcGmEwLkYhds6GM7mojKaJZc7b9MEvb3Vc0pjafaXkEe2hW1a+Jk9YtdxUTLenhH0boSZ9lwgDy74Ua0GBmUiJjXK+BDprfPtuI1CysnvnHxJwfBU05IA+NruhzTPATQIpnsg4EYNBJW7P1UC38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UWmV9y/N; arc=none smtp.client-ip=209.85.208.54
+	 Content-Type:Content-Disposition:In-Reply-To; b=E7u0lebpWnCmHUgEgqQudkBiJLHXmlHjE+oZ+LnrOIykMMxVgaegbySdFKNpHjPh1qfRwXoaCzegOFovDecEcwmjuYWOZK/dR4OcU02o64OnDoIgKa35HO+HVOuQW6VxebZfjf0SwcTMIqwdyDNgdezU7OzzHBqFv683aQQb1Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fqHUyOBg; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64320b9bb4bso2111799a12.0
-        for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 07:55:45 -0800 (PST)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-477632d9326so41405055e9.1
+        for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 08:14:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764172544; x=1764777344; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764173697; x=1764778497; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rG1nOVu8gVLE+V2Sxzp2pYjIM+pZyr/YOIj56xPih2c=;
-        b=UWmV9y/NodWXuqhJY1TrxxsW5M1ncI40fhICgsktkYPkqohzrKM5KW8gECsBOkUMmc
-         GomMVh5SAwe28JGNT4WeVfyWdctx/9vWYlroKPha9wg8kMPsREvY5d//lXoxsnW1UkFi
-         pGFo7cozZkoNz4/xCnDXm2Aclxz3llxgBJitrL5N9yEG4avTKJKfoG8YwiWv77A9JTTD
-         2zHAuhkmOLH9hE2MlyVtRYbSM5uricdM0rHaz+yHpHE5RIoF8TD0rASiGuNpbWZIqiZc
-         GcR0VeCKBmUrnvceelH7wMbrwnxTuR+mK/r7337QBmHOFLSRwY/TGl7N6YAI1JzZtzps
-         e7zg==
+        bh=4jnrJZ3DV6tiJN7SO227QEgRI6iBE+6hMDjYZLi5jdY=;
+        b=fqHUyOBgwQTXv0gxb36c6vfiVOrI4688BEnQkIJOEexfDicAyH4yamDJEhBH6eJIyt
+         iCCUfwHU5hEjmlOjvIaeCbpQ7SprYT2eh2JQamjWv+jEOUAaPMibIgIwLWZX4azYy4vl
+         jTuUYaPiWL4U8ER1rwsHo1VtVWigj6cG1eiHIDWpY0tEd2FcK7c3T4dYVDU8UJB6DffV
+         SIcNQ/36W9BTbkGYh93QBwTrY5pbB8G0oIKyTom7EyEq3Ko/PBYXIjISJJF6ymMcy/m/
+         yT4iCwHF5Q+yOYKdI2yN5FjLdXNVZLuKLVLKGJCbIaXKuM4MGcZ++i3pVcRVOXcyxFdX
+         5IPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764172544; x=1764777344;
+        d=1e100.net; s=20230601; t=1764173697; x=1764778497;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rG1nOVu8gVLE+V2Sxzp2pYjIM+pZyr/YOIj56xPih2c=;
-        b=buAUPQMDkE1PQ7UR3RKa9S+CzHDzzPJ+8EWoCuf3h+J/k2UxoegTCxVPpGTaHnOFoG
-         TOfA8mKsJhjV81MNrE7dLICrWtUSbKRHvlNxN7ontsxeZfLAd1LPgwRmBQfF7pqJkV84
-         aKoe76K08Un8ptKIssnMWwc6AS85YtAi4sF60m0KOp53i0hkQN7a4c+zRid+ShebEDyN
-         l0LE1PUU1yx4bQyDUxsyen3mv38aGJns5WpxX7HHIOFSB5j9TDg55N9H1HCEZ2LphDXw
-         7dKPvaitz4XBJqvyUFOwrXMbfSbvhxTTdCuYReFnbuewwTTRsJUVJ6FslSFLdNMvDF1/
-         w73Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX9nzDTznF4jfIurtX55io/lu60M9fehCDTMjg6pmnHEe/0LyyT5HQKkkXv1nnnWAg1GjAsqGMf2jU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9fcvfKPTBqQ4lCWZSt09S+G47iF34LR1J0UKsWBQupXLD0bGa
-	2jNy+5fRsWWMeWHp6F5rjLLDvWTW/8KaDm8dRaBCWU3dp8O/G+UsibrB
-X-Gm-Gg: ASbGncuo1E8ev3vKPrytRrm73eGvHZhsFDpKxNWgNP3ARohhcAr8Y1kbQi2iQwvIGG+
-	FO45avvKxW4iM+fk1WscMmuuAf0exF9+1p+yZPHLjJeKQnJsjwPJExaKgDw34d/iuZgTqCvkjRA
-	WBKzQLH62CqBdf/T7iekJXV7PN+p3eeRK0tpP/ifXNTH1Ocw4wPOnx5Cvth8krvAZoUR3SHfuDo
-	RHNluRnqKZvJDo/aM/+B4T8Wov1cEq7I9SicYub01PQY6S/2zr+MJlLwsjjfjIqMb24S/wJkFGW
-	YQjy8C/lfp//3X1FW+TDR7gGwbmOdk1qGVOGUnpgWfcekO7jAyJn/AdTGX9P3Ra5T1u4q0DRyqE
-	sJRg7snZqhrZUS75z77sy5VmyPaCsUPCIUitxWyG//JWnjiFaYtfbNwuEgGaSH7TSoohe6WzpfI
-	MymxSTtPwNu5vfAf9FBY8cyvZYdqtjtEDZvlfuIo3Qf/78JR2UXdTl72PFYYqP94Y4HUY=
-X-Google-Smtp-Source: AGHT+IFOk4Dc71dAU1PFak6lwxd8NQT+2eJebIKCLnu747O0fz8ysrn20pLcynZiSjtb/k5bFDX7Ag==
-X-Received: by 2002:aa7:d4ce:0:b0:640:931e:ccac with SMTP id 4fb4d7f45d1cf-64539658323mr16418976a12.7.1764172544022;
-        Wed, 26 Nov 2025 07:55:44 -0800 (PST)
+        bh=4jnrJZ3DV6tiJN7SO227QEgRI6iBE+6hMDjYZLi5jdY=;
+        b=qOaKjkQBvLbwC5mtU9C0YRj0cCEF9TIsVUUJBx/87SrVXpHgTiJClzhP4eqmTUTApn
+         P/OuZG/9ZAXCRKKmsshU5gQpxymVxgNnSaW+d/+prCgK5tg0NcwClvWhZfBWKb6eYap2
+         EBDjSyNz9ju0DbpzTCskZlCAAt3fEisEJe4nu22X76IN5i0z0zXFl+w1Kn+pgDizv3CW
+         sfG0k0ryPfUuZlgMIMbqQLPwNLkah4kA4Zy4kvu45xDXUj0ASRNcRS1SxvLnJAEPhNgR
+         9tmlvNIMGdkqyBOhY1KiQr5JzJ5WRbElBe1n5jNeGTYB4yjVH0wFwyEEuzfnDn5UGu/Q
+         JHPw==
+X-Forwarded-Encrypted: i=1; AJvYcCVLm4V+48lKkNB8gIzscZjsMbyyuhd6ayuVBqfu0+PIR5X5YWFbh6pUKfgDcc08ZfbQdSs4SjwC4ak=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNaet3vFZ7FRm6Mp9N4VLIk37nhKNpCkse3P461BaMsEQzD9gF
+	cAnpaiBIjdAXuvmDX2KGLHeHZ0hkwNI2gF6Cs0bAsdMRGBHmdBIdU/lT
+X-Gm-Gg: ASbGncsvRXwOOlEMqyRNb/52XWlBSoyc+2ilL/8yImBJH69hFvwtmkNJDNuEnvd6SNE
+	vCHL7Qr8ETlXMD0pPQCN+08IVR24k/FTYsrGYZVEAOZ+kcHieTpKRflw1o92ms+/4zc1EDMAaBY
+	soNm6dqmkQt0RbN8SH1r5GhGS0WNc8sfZc4Bli/Sbxns2k9MegcG/UcKR3zFDHamrYTqtBP3k/8
+	+JhGKfYu1+VgE7/2hsfkoJxdZOWFAeYnx/TtkS2LVe3Yk5GCZyLCEzc6KXsm3KRz5x8lGbVkSOl
+	k+bVi1IGdpzD9fdox9Cm/uGW31/xDx4sLBSbNu9kG4Mo+G72TFx4XSaOdAmQd34qtuTJactCenI
+	vr7tL1CAp2huM9/Bxml4Uh795MuQaAsMzK1g053EkKBtIWkN214wnbzd/75zfwfSsBNMBJHlJxS
+	FAEfWVXaKfxFrIQQRCW9VOQXW3lyQBJMwcG+glG6jc8/6SfcsSYPDqaL1IST7cmoD5NSXtEBl8Y
+	W2cIQ==
+X-Google-Smtp-Source: AGHT+IF2T4LsAtdee1NZuFFVfKlipt4/KBH4/Ccs99ShvPJ6a7TsSLGj+qx1/tjpI53mxG7Y1vFGYA==
+X-Received: by 2002:a05:600c:1994:b0:46f:c55a:5a8d with SMTP id 5b1f17b1804b1-477c0176437mr210285655e9.4.1764173696176;
+        Wed, 26 Nov 2025 08:14:56 -0800 (PST)
 Received: from HYB-DlYm71t3hSl.ad.analog.com ([2001:a61:123e:4501:1025:ba00:55dc:4ccc])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6453633fe28sm18380759a12.0.2025.11.26.07.55.42
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790b0c44dcsm49350765e9.11.2025.11.26.08.14.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 07:55:43 -0800 (PST)
-Date: Wed, 26 Nov 2025 16:55:41 +0100
+        Wed, 26 Nov 2025 08:14:55 -0800 (PST)
+Date: Wed, 26 Nov 2025 17:14:54 +0100
 From: Jorge Marques <gastmaier@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: Jorge Marques <jorge.marques@analog.com>, 
 	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
 	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
@@ -84,11 +85,11 @@ Cc: Jorge Marques <jorge.marques@analog.com>,
 	Jonathan Corbet <corbet@lwn.net>, Linus Walleij <linus.walleij@linaro.org>, 
 	Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2 9/9] iio: adc: ad4062: Add GPIO Controller support
-Message-ID: <rk4hmupbrb5ugxft6upj7ru43x3z7ybrobax45rorpwbcwleh6@vzxrr3m7r6ep>
+Subject: Re: [PATCH v2 1/9] dt-bindings: iio: adc: Add adi,ad4062
+Message-ID: <uajoey6nl4nb5kbymadsd36lftg5atbhyjhp3bgu5plhuvc2ca@5h4wn5qobjg6>
 References: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
- <20251124-staging-ad4062-v2-9-a375609afbb7@analog.com>
- <aSQ2JUN05vmMQC1I@smile.fi.intel.com>
+ <20251124-staging-ad4062-v2-1-a375609afbb7@analog.com>
+ <20251125-marvellous-camel-of-kindness-d274ee@kuoka>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -97,151 +98,120 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aSQ2JUN05vmMQC1I@smile.fi.intel.com>
+In-Reply-To: <20251125-marvellous-camel-of-kindness-d274ee@kuoka>
 
-On Mon, Nov 24, 2025 at 12:40:37PM +0200, Andy Shevchenko wrote:
-> On Mon, Nov 24, 2025 at 10:18:08AM +0100, Jorge Marques wrote:
-> > When gp0 or gp1 is not taken as an interrupt, expose them as gpo if
-Hi Andy,
+On Tue, Nov 25, 2025 at 10:50:59AM +0100, Krzysztof Kozlowski wrote:
+> On Mon, Nov 24, 2025 at 10:18:00AM +0100, Jorge Marques wrote:
+Hi Krzysztof,
+> > Add dt-bindings for AD4062 family, devices AD4060/AD4062, low-power with
+> > monitor capabilities SAR ADCs. Each variant of the family differs in
+> > resolution. The device contains two outputs (gp0, gp1). The outputs can
+> > be configured for range of options, such as threshold and data ready.
+> > The device uses a 2-wire I3C interface.
+> > 
+> > Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+> > ---
+> >  .../devicetree/bindings/iio/adc/adi,ad4062.yaml    | 123 +++++++++++++++++++++
+> >  MAINTAINERS                                        |   6 +
+> >  2 files changed, 129 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
+> > new file mode 100644
+> > index 0000000000000..a25af66dd64d2
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
+> > @@ -0,0 +1,123 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +# Copyright 2024 Analog Devices Inc.
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/adc/adi,ad4062.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Analog Devices AD4062 ADC family device driver
+> > +
+> > +maintainers:
+> > +  - Jorge Marques <jorge.marques@analog.com>
+> > +
+> > +description: |
+> > +  Analog Devices AD4062 Single Channel Precision SAR ADC family
+> > +
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4060.pdf
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4062.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - adi,ad4060
+> > +      - adi,ad4062
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    description:
+> > +      The interrupt pins are digital outputs that can be configured at runtime
+> > +      as multiple interrupt signals. Each can be configured as GP_INTR, RDY,
+> > +      DEV_EN, logic low, logic high and DEV_RDY (GP1 only). RDY is the
+> > +      active-low data ready signal, indicates when new ADC data are ready to
+> > +      read. DEV_EN synchronizes the enable and power-down states of signal
+> > +      chain devices with the ADC sampling instant. DEV_RDY is an active-high
+> > +      signal that indicates when the device is ready to accept serial interface
+> > +      communications. In GP_INTR mode, the interrupt outputs one of the
+> > +      threshold detection interrupt signals (MIN_INTR, MAX_INTR or either).
+> > +    minItems: 1
 > 
-> GPO
+> So the wire/pin can be physically disconnected?
+> 
+Yes, the device can yield those interrupts as through I3C
+In-Band-Interrupts (IBI), which are messages sent in the I3C bus by the
+target (this device). I consider as a fallback, because the overhead for
+those bus interrupts are much higher. The user can have all interrupts
+as IBIs, and re-use the pins as generic GPOs.
+> > +    items:
+> > +      - description:
+> > +          gp0, interrupt line for GP0 pin, cannot be configured as DEV_RDY.
+> 
+> Write concise statements - duplicating gp0 is not helping. "GP0 pin,
+> cannot be configured as DEV_RDY."
+> 
+> "GP1 pin, can be configured to any setting."
+> 
+> 
+Ok
+> > +      - description:
+> > +          gp1, interrupt line for GP1 pin, can be configured to any setting.
+> > +
+> > +  interrupt-names:
+> 
+> Why this is not matching interrupts in number of items?
+> 
+Is missing
+
+    minItems: 1
+
+thanks,
+> > +    items:
+> > +      - const: gp0
+> > +      - const: gp1
+> > +
+> > +  gpio-controller:
+> > +    description:
+> > +      Marks the device node as a GPIO controller. GPs not listed in
+> > +      interrupt-names are exposed as a GPO.
+> 
+> "not listed as interrupts are..."
+> 
 Ack.
-> 
-> > gpio-contoller is set in the devicetree.
-> 
-> Why can't gpio-regmap be used?
-> 
-Because the device register values (0x5, 0x6) does not fit the gpio-regmap.
-It writes the mask for high and 0 for low.
-But low is 01[01] and
-    high   01[10]
-
-A different series would need to extend the gpio-regmap ops, but if you
-implement your custom reg read/write, then you save at most ~5 lines...
-I will add that to the commit message.
-> ...
-> 
-> > +static int ad4062_gpio_get(struct gpio_chip *gc, unsigned int offset)
-> > +{
-> > +	struct ad4062_state *st = gpiochip_get_data(gc);
-> > +	unsigned int reg_val;
-> > +	int ret;
 > > +
-> > +	ret = regmap_read(st->regmap, AD4062_REG_GP_CONF, &reg_val);
-> > +	if (ret)
-> > +		return 0;
-Should have been
-  		return ret;
+> > +  '#gpio-cells':
+> > +    const: 2
+> > +    description:
+> > +      The first cell is the GPIO number and the second cell specifies
+> > +      GPIO flags, as defined in <dt-bindings/gpio/gpio.h>.
 > 
-> > +	if (st->gpo_irq[offset])
-> > +		return -ENODEV;
-> 
-> Consider using valid_mask instead (.init_valid_mask() callback).
-> Hmm... And it seems it's in place. I didn't get what is here then and
-> why we need to do it after accessing the HW? If there are side-effects
-> they must be described.
-> 
-True, this is not necessary the valid mask does the same.
-> > +	if (offset)
-> > +		reg_val = FIELD_GET(AD4062_REG_GP_CONF_MODE_MSK_1, reg_val);
-> > +	else
-> > +		reg_val = FIELD_GET(AD4062_REG_GP_CONF_MODE_MSK_0, reg_val);
-> > +
-> > +	return reg_val == AD4062_GP_STATIC_HIGH ? 1 : 0;
-> 
-> 	return !!(reg_val == AD4062_GP_STATIC_HIGH);
-> 
-> also will work.
->
- 	return reg_val == AD4062_GP_STATIC_HIGH;
-> > +}
-> 
-> > +static int ad4062_gpio_init_valid_mask(struct gpio_chip *gc,
-> > +				       unsigned long *valid_mask,
-> > +				       unsigned int ngpios)
-> > +{
-> > +	struct ad4062_state *st = gpiochip_get_data(gc);
-> > +
-> > +	bitmap_zero(valid_mask, ngpios);
-> > +
-> > +	if (!st->gpo_irq[0])
-> > +		set_bit(0, valid_mask);
-> > +	if (!st->gpo_irq[1])
-> > +		set_bit(1, valid_mask);
-> 
-> Why atomic bit set:s?
-> 
-Not needed, will use
-
-	if (!st->gpo_irq[0])
-		*valid_mask |= BIT(0);
-	if (!st->gpo_irq[1])
-		*valid_mask |= BIT(1);
-
-> 
-> > +	return 0;
-> > +}
-> > +
-> > +static int ad4062_gpio_init(struct ad4062_state *st)
-> > +{
-> > +	struct device *dev = &st->i3cdev->dev;
-> > +	struct gpio_chip *gc;
-> > +	u8 val, mask;
-> > +	int ret;
-> 
-> > +	if ((st->gpo_irq[0] && st->gpo_irq[1]) ||
-> > +	    !device_property_read_bool(dev, "gpio-controller"))
-> > +		return 0;
-> 
-> Do you need this? valid_mask should take care of this.
-> 
-True, this is not necessary.
-> > +	gc = devm_kzalloc(dev, sizeof(*gc), GFP_KERNEL);
-> > +	if (!gc)
-> > +		return -ENOMEM;
-> > +
-> > +	val = 0;
-> > +	mask = 0;
-> > +	if (!st->gpo_irq[0]) {
-> > +		mask |= AD4062_REG_GP_CONF_MODE_MSK_0;
-> > +		val |= FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_0, AD4062_GP_STATIC_LOW);
-> > +	}
-> > +	if (!st->gpo_irq[1]) {
-> > +		mask |= AD4062_REG_GP_CONF_MODE_MSK_1;
-> > +		val |= FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_1, AD4062_GP_STATIC_LOW);
-> > +	}
-> > +
-> > +	ret = regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
-> > +				 mask, val);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = devm_add_action_or_reset(dev, ad4062_gpio_disable, st);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	gc->parent = dev;
-> > +	gc->label = st->chip->name;
-> > +	gc->owner = THIS_MODULE;
-> > +	gc->base = -1;
-> > +	gc->ngpio = 2;
-> > +	gc->init_valid_mask = ad4062_gpio_init_valid_mask;
-> > +	gc->get_direction = ad4062_gpio_get_direction;
-> > +	gc->set = ad4062_gpio_set;
-> > +	gc->get = ad4062_gpio_get;
-> > +	gc->can_sleep = true;
-> > +
-> > +	ret = devm_gpiochip_add_data(dev, gc, st);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "Unable to register GPIO chip\n");
-> > +
-> > +	return 0;
-> > +}
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
+> Best regards,
+> Krzysztof
 > 
 
 Best regards,

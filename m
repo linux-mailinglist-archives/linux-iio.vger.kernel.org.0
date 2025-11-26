@@ -1,154 +1,288 @@
-Return-Path: <linux-iio+bounces-26493-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26494-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5FCC8BDEC
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 21:33:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7164C8BE49
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 21:42:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EA5564E2604
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 20:33:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9273A3ABB7D
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 20:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA153342534;
-	Wed, 26 Nov 2025 20:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E748341069;
+	Wed, 26 Nov 2025 20:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bxTNxxJO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V+2v6hwu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F77033CEBD
-	for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 20:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5D5335555
+	for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 20:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764189183; cv=none; b=Yy6CxnwJ/NdGZ+Bn2k32z31KWx85ZtO/esmusQITwRVVL5OiHZdTVbExk/UvgSVW77lhyK4ljOayU/cSBwf21Tmv3Ljam7gDbWbRDa34w28fd/sQjOPvKEwxIo28Dk56sXZynunDlhkt0l0PyhHCfmLI5PMvXcMwSRjHnrNl5YY=
+	t=1764189723; cv=none; b=l6Scf59drlW3UR1sKQqtXafQB9tqq3lRAHQlVVsrogiZjRoDj2+h7ILN2MTz3c2iTZUuipNRSFwiflcceW4qimkZUTRXUnzsVElqJnVRpYtjok2mcsmN1vAFLtSuxeqMZwEg3MazRC19lXguIv6CW6fMaVoP7lyKio8A+Sw0p9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764189183; c=relaxed/simple;
-	bh=OcCJWTIODqW7TIcFVJGQzn+dDIxvYGjc8NCyKSND5pA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyF3fvb3eLzeCdKjZFFSvBpo4lzqvpvWrOqBmyMjkp9pW8UzaCVkK7sojr/T7b9mylznPM5HKjL0I0b2s3mUEKFJ+0ySH/fY3OWwhpyWMeugrQt3BA15iZp216TDp4xj6yZl6b0UaCXjnqjueBsLWTJqiUYFXVqwSSXOetyMOko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bxTNxxJO; arc=none smtp.client-ip=209.85.217.41
+	s=arc-20240116; t=1764189723; c=relaxed/simple;
+	bh=gPkcXCQlXJNROTcaxmSAMs9kpL1cZWSI3zhIKPHcblo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=nsAS4ov9kJHLDYLNFeULz8yG87z5x+fDTYwTASpbrh4REQlekiC2xbEr7+JlIB9LOtdS6yGLQjFX8u3F0kB3F7GWO+s53klT54ij7htKyp/i7pcpvlvZo3+ptr1d9vUR0j5zJJ3D53Hu8UAZhiFMi0J56sGVWAsSI7z1wqEQsds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V+2v6hwu; arc=none smtp.client-ip=209.85.222.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-5dfd4a02638so41744137.2
-        for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 12:33:01 -0800 (PST)
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-93a9f6efebbso59048241.0
+        for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 12:42:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764189181; x=1764793981; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1764189721; x=1764794521; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ExXVu4E8deaOdjHxg4z5w9l+p9F94Q0P0PGH7/LEDOc=;
-        b=bxTNxxJOXSIYSn2/2gnndk9RjkZXggytlxNKvdwgV78ww1W9dmMmyk9jaqVLM1JqG+
-         KORmuKIL8HtiuFjsO862PqDpl2yhvbsQ2sEqYlQEK2mv/oe9WOR8jneFadGKo9COFHVo
-         aFKi2NZt58BHd12SZQwnWK9LT5XjGtBUWK/n0ANS9/tA4E6kVIc8yyiTyfYr/OMHcnfR
-         bimtbSNZ1lUuFIqquC8FYd+Qv2CFyk8euAKhFmvWyuUzDG0CUZCd9xz+3cLDL1jSZidV
-         dLVbOYGfRc72DpV26lmPSFO7LYoPtvtbWIrdg7/uvzFshYCRUbCGI6Dg0gQkEjFOg2Hh
-         6HDg==
+        bh=beH/zrD36B/kWUfgdvNXJPmVrJ7wkbiE2Bb6drSFFqk=;
+        b=V+2v6hwuCvAzGNmlsdu35q9KVu+fO7ZEvKUiA0sX9H11rGUERa9/UcnBPXzSPVx0Tj
+         fK7BH2EWra+AglnzTSjaUbH6l53N36QICw5eOZK7A3KiKk8eRIFYQKS2XddVO+ATbrv5
+         UhVvrLYWn91S7I1H9eI4kyGwRmE2IDcY8mhTaKdt8f0pY1ymnhVvOeP6bxewS5W+eJ4E
+         yfGkPpz1r96wQmjemm+/5KtEIJDCqFHMadjRlp2JOS8TII5e1trFVffHWmYXC/MNfeh/
+         Mp/JkTtwDs3/BxperV3XA+7SanSle7CTTsXHL/Y/Yz//C7xGIDE5nLeOFUV3v/yeuoAI
+         e8Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764189181; x=1764793981;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ExXVu4E8deaOdjHxg4z5w9l+p9F94Q0P0PGH7/LEDOc=;
-        b=sTMAyFR3iYfLricb3ed9fEaYyNi7egyJud7F0veiYqzRUaZ68SOGSreQE6psvMUGPU
-         ciXr/ff7VRdSJu99Nv0cSO+jUjJ9ANcmlso43uqUt2exsib4rflqrlG4LNROTuQiwSuc
-         L4Hqgviqj1CYgcOuIaUUUnA71sRu2wi8FYzGB4w1vQgYF7AQFP80F1yugGop8Tuyb1N3
-         nstm5ctOgkgK4N8OBtgaeAbI7pL7HunSm3h6mr8iCFQN2Cinvn5Ii80PFZ6HZu5Ms4Gs
-         p9dY2WScBLpA7CyNStcXADs6tuPrP2cHsCT4RAN3YamoZLFPxxOIpb1VgidNsxtUN3ZI
-         bmIg==
-X-Forwarded-Encrypted: i=1; AJvYcCX6nprI6VMDKVA1+nwvUjZmW1SDNlJXQ63aKqL3WuzP+Du4hgW0Q2h/447ubavcFLxUevIHNoKCDmk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcGx6iZ0snPZoZDQCAaTMWKOnBtTO977EjV1bdlZK9Wlpo9QU5
-	Vr6bHFWnQFQQ9pV7SHq3nyc4vsnrPhFIPECXRiJAB5YH0nWeUXQuITrR
-X-Gm-Gg: ASbGncsXqurfATzzraSYWNpADsey+7aekUKDN75+uBQbs3K/T6zVSfn6NTxylI5Yh3D
-	BUYE9QAfC1SCqSrTsOLmPlJCAHFH4Evs8qAPKu88swhBQlVBaY5tb/QiKrIjfnwaCzAXeiwmFat
-	h/tWA3BKtbxPt5LTuN+tUoNUl22888z4r5JfgofBM7E/dy5Rdfg9bho7qYocVq8vbh0qmsRipdw
-	lPJMhFREZmPEPxgmrpYoqq09Vy1wZH6Pdiwn5GHgX9cKHlR21CB8/Z/uAMJnvR11I7B1o4drVUA
-	6Sug8bUqD+YLLnGhAuhawKqWIoctcYjRXvBnhd6tiN3lvgrvExU6tX/YpoqY8X8bAwo3ZAel35I
-	TwbropuFxFUw9FTVOzJlhlLrmAacT4kHxWFWBE82Ftd+ueXTF0cgoj0VM8lW0DktZ+6KixmkbAF
-	asO59PKXTyKKJvJPwZsZluSJyeebqfhrEEfGz54lq9mTwVHaSM/mjPzEWuyaTMqCACuSdQo1q2P
-	s6V3GzGlE5QePMHhOCAXItLUenScug6wR+b0MD42Y9hvRttNYGGcRdc9pSmECm1PLqFowcJbw==
-X-Google-Smtp-Source: AGHT+IFFnpg/EgbHbhvlZfcqJFLaxhOtKzuQJ3sF7g9Z2WLgv4B968LMG9bUk/V+49vrvNHQjCyz5Q==
-X-Received: by 2002:a05:6102:1513:b0:5dd:b100:47df with SMTP id ada2fe7eead31-5e1de1375a1mr6104972137.4.1764189181011;
-        Wed, 26 Nov 2025 12:33:01 -0800 (PST)
-Received: from Lewboski.localdomain ([181.191.143.230])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5e1bd9687b0sm8112832137.6.2025.11.26.12.32.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 12:33:00 -0800 (PST)
-From: Tomas Borquez <tomasborquez13@gmail.com>
-To: jic23@kernel.org
-Cc: andy@kernel.org,
-	andriy.shevchenko@intel.com,
-	dlechner@baylibre.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	nuno.sa@analog.com,
-	Tomas Borquez <tomasborquez13@gmail.com>
-Subject: [PATCH v3] iio: isl29018.c: replace sprintf with safer alternatives
-Date: Wed, 26 Nov 2025 17:32:40 -0300
-Message-ID: <20251126203240.13466-1-tomasborquez13@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251126172432.5532-1-tomasborquez13@gmail.com>
-References: <20251126172432.5532-1-tomasborquez13@gmail.com>
+        d=1e100.net; s=20230601; t=1764189721; x=1764794521;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=beH/zrD36B/kWUfgdvNXJPmVrJ7wkbiE2Bb6drSFFqk=;
+        b=iKLA9MIberTFW2f+I7c+R6jqUqIv4vE5HOIjyaCOKpNvFW0q5goT8k0lAR5gGo6wFv
+         v5xagc0gnbZv0X7K6IU0XNRMnptBs0QWrv0nb+bOFMW4zT9Mv0Gq2sc8T70eePruEBlT
+         LU0uHbOFZMTMYuwOoPGLkOQMzMdeFzHN9n+JGw4tqwrlBiYavHntj4iYjbFIkJ0+k3gQ
+         YMStOOQuOR3w2Vk+cjArsSOL2xoaYNxndDcS3HWLLbkf3isvZNX88Yk2h3CVREfrYLL9
+         V94S0Ft14c56oDO6i+1u4oe9oXB8Yb5KHg4hotdBtOG8R+srNXbY07xP5AXa6isLd0T3
+         NPcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOn24SxevFwy1SwC8tIU744JQaDRQVDWUq5LNk6W7JcFWWEm4LMXBsXcB5L3F2CVbbByWrDVS80u4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGi5pNn0I0yxWeEVzHPtbaT1cUaGIpkdFbvBxfNcxgdavv0ZgR
+	yFMXgRt/Rko8f8qi1imwEkzsUYTLg9CExzq4WbOtWeeUj7PSLtY4vWCk
+X-Gm-Gg: ASbGncty0AuPxLyenY/EhmjFPwgNfle6evZFGQe7aapeyzB1DN/jlVnyUcOY+Dptm2m
+	3/mP9DPG60orPgffuPsLecPfal8wUxQQN12Oiq61Uda1FD4uI/KhxnT1oqu5Hob4mO2tsCoEGbp
+	yIf8WDmK3YQGMl8ZfHtBtLWesmjAAk2HWqOAAyadDXVSZY0KZZVR4DfJpr/MGHAFMc/sogGo6x6
+	PD/FbHMkB8Uvx64Lh+8Eg1LKqd659i7bo7KzhhU6gzx2NLBmrs+mQyEAWVAQgdGsBkra/VnJYMQ
+	LoB17T4VvdLRysvfdDK7A/fVCaHs7+ljmdjos7vnEorK8jJs579cGRiZljc4O1tbYvP1Wuxb9tz
+	+8v3G2/vyW7XfQycQMASuTalipyHB0+/mKQFrx4pK62GInvHnkl836T8aeZh3eN4MTpDl60f2jX
+	cRpcPVSw==
+X-Google-Smtp-Source: AGHT+IEepyxYSNYcT/rKhpiKM0CVI2kOD4MeYpfdJ9GWVSarvSkIZ5eJZUWsGFJcQABPF4R4jt7LSA==
+X-Received: by 2002:a05:6102:598e:b0:5db:f031:84ce with SMTP id ada2fe7eead31-5e1de35f809mr7277275137.29.1764189720757;
+        Wed, 26 Nov 2025 12:42:00 -0800 (PST)
+Received: from localhost ([2800:bf0:4580:3149:7d4:54b1:c444:6f2f])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-93c564c83f5sm8642800241.11.2025.11.26.12.41.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Nov 2025 12:42:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 26 Nov 2025 15:41:58 -0500
+Message-Id: <DEIX2829UYMB.8D3TGUFHXS10@gmail.com>
+Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
+ <andy@kernel.org>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
+ Cameron" <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 2/2] iio: adc: Add ti-ads1x18 driver
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
+ <kuurtb@gmail.com>, "Jonathan Cameron" <jic23@kernel.org>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Tobias Sperling"
+ <tobias.sperling@softing.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251121-ads1x18-v1-0-86db080fc9a4@gmail.com>
+ <20251121-ads1x18-v1-2-86db080fc9a4@gmail.com>
+ <30a7e100-5919-4b5f-86cc-589283acd6cc@baylibre.com>
+ <DEESNJT0ZQC0.39LYY6I1KWZ7E@gmail.com>
+ <9fba8701-a9c2-45b4-9bc1-5c49813e72cc@baylibre.com>
+In-Reply-To: <9fba8701-a9c2-45b4-9bc1-5c49813e72cc@baylibre.com>
 
-This patch replaces sprintf() with sysfs_emit() and sysfs_emit_at() safer alternative
-with no functional changes.
+On Sat Nov 22, 2025 at 10:56 AM -05, David Lechner wrote:
+> On 11/21/25 6:24 PM, Kurt Borja wrote:
+>> On Fri Nov 21, 2025 at 5:33 PM -05, David Lechner wrote:
+>>> On 11/21/25 11:16 AM, Kurt Borja wrote:
+>>>
+>
+> ...
+>
+>>> #define ADS1018_CFG_REG			0x0000
+>>=20
+>> I didn't define these because ads1118 dumps all registers (2) in each
+>> transfer.
+>
+> Oh, right, there is basically only one register so we don't have to
+> address it. :-)
+>
+>
+>>>
+>>> It is a bit confusing to have this here rather than in the buffer
+>>> enable callback since that is also setting the config that triggers
+>>> the first conversion.
+>>>
+>>> Having the spi_bus_lock() and enable_irq() in the buffer enable
+>>> would make more sense to me too.
+>>=20
+>> This is the approach ad_sigma_delta takes.
+>>=20
+>
+> I did some work on that with that module recently. I would not say that
+> it is an ideal reference. IIRC, it still has some race condition with
+> enabling/disabling interrupts in some cases. So hopefully we can do bette=
+r
+> here.
 
-Signed-off-by: Tomas Borquez <tomasborquez13@gmail.com>
----
-V2:
-- Fixed recipient list to include all reviewers (no code changes)
-V3:
-- Improved patch description and fixed indentation
+Oh - I meant haveing spi_bus_lock() and enable_irq() in buffer enable is
+the approach ad_sigma_delta takes.
 
- drivers/iio/light/isl29018.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+I moved them to set_trigger_state() to be able to use other triggers.
+Furthermore if interrupts or drdy-gpios are not defined, we don't really
+have to take spi_bus_lock() and doing it this way ensures that.
 
-diff --git a/drivers/iio/light/isl29018.c b/drivers/iio/light/isl29018.c
-index 1b4c184230..b6ab726d1d 100644
---- a/drivers/iio/light/isl29018.c
-+++ b/drivers/iio/light/isl29018.c
-@@ -273,9 +273,9 @@ static ssize_t in_illuminance_scale_available_show
- 
- 	mutex_lock(&chip->lock);
- 	for (i = 0; i < ARRAY_SIZE(isl29018_scales[chip->int_time]); ++i)
--		len += sprintf(buf + len, "%d.%06d ",
--			       isl29018_scales[chip->int_time][i].scale,
--			       isl29018_scales[chip->int_time][i].uscale);
-+		len += sysfs_emit_at(buf, len, "%d.%06d ",
-+				     isl29018_scales[chip->int_time][i].scale,
-+				     isl29018_scales[chip->int_time][i].uscale);
- 	mutex_unlock(&chip->lock);
- 
- 	buf[len - 1] = '\n';
-@@ -293,8 +293,8 @@ static ssize_t in_illuminance_integration_time_available_show
- 	int len = 0;
- 
- 	for (i = 0; i < ARRAY_SIZE(isl29018_int_utimes[chip->type]); ++i)
--		len += sprintf(buf + len, "0.%06d ",
--			       isl29018_int_utimes[chip->type][i]);
-+		len += sysfs_emit_at(buf, len, "0.%06d ",
-+				     isl29018_int_utimes[chip->type][i]);
- 
- 	buf[len - 1] = '\n';
- 
-@@ -330,7 +330,7 @@ static ssize_t proximity_on_chip_ambient_infrared_suppression_show
- 	 * Return the "proximity scheme" i.e. if the chip does on chip
- 	 * infrared suppression (1 means perform on chip suppression)
- 	 */
--	return sprintf(buf, "%d\n", chip->prox_scheme);
-+	return sysfs_emit(buf, "%d\n", chip->prox_scheme);
- }
- 
- static ssize_t proximity_on_chip_ambient_infrared_suppression_store
--- 
-2.43.0
+For this reason I would like to keep this for v2 and we can discuss it
+further if you disagree.
+
+>
+>>>> +
+>>>> +static int ads1x18_message_init(struct ads1x18 *ads1x18)
+>>>> +{
+>>>> +	struct spi_device *spi =3D ads1x18->spi;
+>>>> +
+>>>> +	/*
+>>>> +	 * We need to keep CS asserted to catch "data-ready" interrupts.
+>>>> +	 * Otherwise the DOUT/DRDY line enters a Hi-Z state and it can't be
+>>>> +	 * driven by the ADC.
+>>>> +	 */
+>>>> +	ads1x18->xfer.cs_change =3D 1;
+>>>
+>>> I think this is going to be problematic for reading/writing the configu=
+ration
+>>> register and for direct reads of a single sample. My suggestion to make=
+ a
+>>=20
+>> Can you elaborate on why it would be problematic?
+>
+> This transfer is used for all SPI messages. So it means that CS will stil=
+l
+> be high after every transfer, not just the ones during a buffered read wh=
+ere
+> it is actually needed.
+>
+> This would be a problem if there were any other devices on the SPI bus.
+> When the controller communicates with the other device, the ADC will
+> still be listening and responding because CS is still high.
+
+Thanks for the heads up!
+
+This was a misunderstading on my part, I thought the SPI core would
+de-assert CS if another device requested a transfer.
+
+>
+>
+>>>> +
+>>>> +static int ads1x18_channels_init(struct ads1x18 *ads1x18,
+>>>> +				 const struct ads1x18_chip_info *info,
+>>>> +				 struct iio_chan_spec **cs)
+>>>> +{
+>>>> +	struct device *dev =3D &ads1x18->spi->dev;
+>>>> +	struct iio_chan_spec *channels;
+>>>> +	int ret, nchans, index =3D 0;
+>>>> +
+>>>> +	nchans =3D device_get_named_child_node_count(dev, "channel");
+>>>> +	if (!nchans)
+>>>> +		return dev_err_probe(dev, -ENODEV,
+>>>> +				     "No ADC channels described.\n");
+>>>> +
+>>>> +	channels =3D devm_kcalloc(dev, nchans + 2, sizeof(*channels), GFP_KE=
+RNEL);
+>>>> +	if (!channels)
+>>>> +		return -ENOMEM;
+>>>> +
+>>>> +	device_for_each_named_child_node_scoped(dev, child, "channel") {
+>>>> +		ret =3D ads1x18_fill_properties(ads1x18, child, &channels[index]);
+>>>> +		if (ret)
+>>>> +			return ret;
+>>>> +
+>>>> +		channels[index].scan_index =3D index;
+>>>> +		ads1x18->bufidx_to_addr[index] =3D channels[index].address;
+>>>> +		index++;
+>>>> +	}
+>>>
+>>> There is a small enough number of channels that we shouldn't need any o=
+f this.
+>>> We can just make an array big enough for all channels in struct ads1x18=
+.
+>>=20
+>> Ack.
+>>=20
+>> Do you think we should just let every channel be visible in sysfs or
+>> should we still control visibility with the channel@[0-7] node?
+>
+> Yes. It is normal to show all channels. The few exceptions, like multiple=
+xed
+> chips where there can be 100s or 1000s of possible combinations of differ=
+ential
+> channels possible. And sometimes for ADCs built into a SoC, we omit the c=
+hannels
+> that aren't wired up to something.
+>
+> It makes it much easier to write userspace software though if every insta=
+nce
+> of the ADC has exactly the same attributes, so I try to advocate for that=
+.
+
+Agreed.
+
+>
+>
+>>>> +	ads1x18->chip_info =3D info;
+>>>> +	mutex_init(&ads1x18->msg_lock);
+>>>> +	init_completion(&ads1x18->data_ready);
+>>>> +	spi_set_drvdata(spi, ads1x18);
+>>>
+>>> There is no spi_get_drvdata(), so we don't need this.
+>>=20
+>> I do however use dev_get_drvdata() directly in PM ops.
+>>=20
+>
+> OK, so dev_set_drvdata() would make it symmetric.
+>
+>
+>>>
+>>> I think we could simplify this and avoid needing to use pm runtime (and=
+ use
+>>> even less power!). During probe, put the chip in power down mode. When =
+doing
+>>> direct reads of a single value, put the chip in single-shot mode. When =
+doing
+>>> starting a buffered read, put it in continuous mode and when the buffer=
+ed read
+>>> is stopped, put it back in shutdown mode.
+>>=20
+>> These chips only have two modes single-shot (low-power) and continuous.
+>> Are you suggesting we shut it down using the vdd regulator?
+>>=20
+>> Either way, can't the system go to sleep while in buffer mode? If that's
+>> the case we should still need these handlers.
+>>=20
+>
+> I hope not. I would suspect that most IIO drivers are broken in this
+> regard. I've never attempted to try to implement suspend/resume in an
+> IIO driver yet because I didn't have an application that required it
+> and it would be very difficult to get right without very extensive
+> testing.
+
+Then I'll drop it.
+
+Thanks! I will submit v2 soon :)
+
+
+--=20
+ ~ Kurt
 
 

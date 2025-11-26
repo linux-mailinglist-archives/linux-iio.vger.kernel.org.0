@@ -1,81 +1,79 @@
-Return-Path: <linux-iio+bounces-26482-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26483-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD973C89917
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 12:40:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63127C8A224
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 15:03:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC8403B4196
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 11:40:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CE1C3A5633
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Nov 2025 14:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BE73233ED;
-	Wed, 26 Nov 2025 11:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633C8239E9D;
+	Wed, 26 Nov 2025 14:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VFAfN93u"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ClfPAeex"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925F2258EC2
-	for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 11:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A92E21D3DC
+	for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 14:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764157208; cv=none; b=ZRg5iV3r6krF2sHYp57T0NKGAMoDHwLj/asvMsNPrbYODK1++1zLVkOR6D0CmTZ6zR5jpaYZ3L8839stBfeCc3TDEF/ER/Sp8NdTy0F7WXXSeLP/Ni/t48/ynNa7Vo1Ijvf4Y36rpnj/qtonov0RFn+3QmvTsdmgpy4bs/Bs/io=
+	t=1764165788; cv=none; b=jiE2PUrWUSJgOvM7G0slpMF9jGUf4zGWv+eWE6urPiRZnB1TDtxiKkcf5hoWNDK+L6H3ciJ1XxtsTC1OBn/u+PLKYaoRrHkj0WwZJQxc0ABfyqPJNXlw+IXfI9FCJz0ZXsooRO3p/KBg/r9yH2oEvZM+Iajm/Z7A6azjP3IbCSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764157208; c=relaxed/simple;
-	bh=jHKAKgyPg3W/G8524ABvZ+B58swKOBhVrdFUeoI8x+8=;
+	s=arc-20240116; t=1764165788; c=relaxed/simple;
+	bh=E4sngIhqOutXvjOl8aX3GMc9+zQwuLNz1SHOZj/U2nQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YeoxzUSD0qaBWRFtqKNX5PNf6jnwZZuGlmmwTeN//qxnzUHngS2bUs7RipIuF4jEleWZ0ia0ocBspHhQH4/c019VuhDDNkk08m8A9/AvglikYaIFEN1FnNGnucQqfJoKXub+Za1Ei2lGegWKSpFqP3aFaWYoDDs70NreZOMs/KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VFAfN93u; arc=none smtp.client-ip=209.85.221.49
+	 Content-Type:Content-Disposition:In-Reply-To; b=tAz4/WNhOqTk82rLL9HJT4P0ciZs7KvHd7tX7QHGJjTn3paYCXQudGOeSIeibfnAzKq2QPmI3NkhHy7D0IYM8ja7zkdsqiGbBmYF9DqWY3nB3XMnpE0rj73kjAyb7d26aU7qPTblBCIRo8w9A2UjfzgZZIwrORdaTu9gcdwqByg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ClfPAeex; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-42b379cd896so3669033f8f.3
-        for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 03:40:04 -0800 (PST)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b736d883ac4so1222692366b.2
+        for <linux-iio@vger.kernel.org>; Wed, 26 Nov 2025 06:03:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764157203; x=1764762003; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=80bh3XWCt9HrtGnwRb5ljnRsELmreFDRBDJ96f4NaMY=;
-        b=VFAfN93uVQuI2ssUPxV/pXzYoKRAfM/GjuYJg0s6w/PHC5BcR7fAX/Zh4SOY9CBDEJ
-         A3QeS5yx0Umr3MsQKEZRmjP8ivsFHJmNMH7vFq3M5X/jExxf8bTIlMd9q/QwSLjia2Ac
-         odLjKW9sBwFsh8rMrHmso1F5ZcwadQWfoD4UWi74EiSujGdkuKcE187yKV/7aoSEXZ5S
-         jf5nYwrZa+xlDb7RhysBYAgzfmHp1+zYVQgG+uB+EttKsWvABPWg4ZeSpIAcBu7zsncm
-         Mbwgu4Cueet95L0+lFJOY1wfdre9BKaUAoieoFpSJsClGHNbqDDjgy2vbNf+sT3ipCqa
-         TY+Q==
+        d=gmail.com; s=20230601; t=1764165784; x=1764770584; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9Zxq7LFozTa8UOST16z7P92kDr19l2Us3OjrO19iH8s=;
+        b=ClfPAeexFhzHzMmadWORel+/uZKTwMVgjrpuroN34+q+1W9WZWStqIfyADRTAcYKuk
+         rju0pzsIo0WXdU3iPsXdA5+EFrvRv6SF7PkJABT6PzMRYNWZXe/QaQa/SLZI4+iWNiXF
+         IqE0v0iRC4KMVF+jG7JlioRDBTz1De4JcqkDtbbj4gKe3JxrdsiePBfa84ppVhTI4g1H
+         zB/YwR6j/RRsLWlO7UdMw9++65mNHrIst9d8A/vPyLlOGHVRLDLdAzaLjBYQqJskJkwK
+         +RUYEXOECN1Ak4oq8ZeV9aoOkPm9nAm+O2/5RaWiULFK25vbK/SjvyBc6CKy48nORg0N
+         rIDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764157203; x=1764762003;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=80bh3XWCt9HrtGnwRb5ljnRsELmreFDRBDJ96f4NaMY=;
-        b=jHPMQzX+hZN3BSRXEcLYZG/2uxFXSWf5FxEDhD7DfiQHNLhGQmeuKG8rsCwzwfbhey
-         wV0jnsy1A1XcIRh94M8XnnJFwKUag7LgH4cq+hiSQ5nnpG6aXJfxQNRVjh0/8GKujuLF
-         SBKhTEs9msxwPds82mtTj6aaFmKsTqz8rvZV7nGyJq2btRrbiAoP+W2dFUVrtCeXioqf
-         25o0M80RlfT1q0TxqmLtVHdYgnbZGqAG0sjeAhDMKGfHbMkGEScXTNNBGLchNhI+5b4C
-         Uw9HkYcr/KqE2AOwLy4jnbCsbaS8bsw+aoLGE67BGiMyhbNUmdbJEcw+c05+QzVakymx
-         lTkg==
-X-Forwarded-Encrypted: i=1; AJvYcCUhWwCtjfJ4P9VXKBdrxSyTaBobGI2BiGGVUzZLko+yu5rj3YX8oz0wf5teV6ajfblvgfCrd5a8aMo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSADeirnX5qlET2nbSd+z2fw+NwFtTNlIVY4CEt+WiK4Def4xu
-	FP9H6tvrJmGicKLWwG3eELeSmtqC6MXGC0++uSRduPiptewlmL0fxBzE
-X-Gm-Gg: ASbGncvlwhoQWJ1KEI5nJwqBrXCE8Zx+rwquCaK5Y2+RzVYEtdxpzXdTqcblUKVV/Ak
-	X7Wlc49c3JnoCeo+zhX4V6NBrsnF6ONs84uAqS11qBa1LajtJ9giLeh+IRqKz9AwoKcAfLqmwE2
-	8TdLcBE/+zspcX8KckJLy3vVZa6ouQ2uS7H3X2clZRSPXLg1esAIYYjVWRcts3zznfvHwEcwB8m
-	nBfUDTgeq9Tj/Ze3aHODH3GZcSjzOgOPzD0f6hb7Y4yW3yu2zozqGNOzhJ2Ww1xVSuMal2WT3xo
-	b72vNrlfuhHvxdoK/zX3QuBG5nxIBczbHb7CoY/bOcBCAStOrfIX3NOjJNgaJjfrsiCV/MOtl+X
-	ADryOpkfKGlU6KHEweuDtzhV3n6UIkXeUj9txWFObFLTWrvXEGJ49mQkNZNHO06rVOUj6ZsZxHo
-	xWRhHUE3qhyN6mShtJ3LfxW3hXGizwEidcYy0i239RNbwVOH/3sKgdXIDAA58tojr/5+ipxVLiB
-	sy1Wg==
-X-Google-Smtp-Source: AGHT+IHzturO050/1zg7Fbh3okV6QiNTnsU5AaJIWtQPP/hc6hDFzi5kyxPzq+8eudXbHxbbzMjGLg==
-X-Received: by 2002:a05:6000:401e:b0:427:690:1d84 with SMTP id ffacd0b85a97d-42cc1d0ce5bmr18273783f8f.32.1764157202441;
-        Wed, 26 Nov 2025 03:40:02 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764165784; x=1764770584;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9Zxq7LFozTa8UOST16z7P92kDr19l2Us3OjrO19iH8s=;
+        b=fjIR9rG7JUMibqM8SNyl5Vut9FxdeRcHJ10bhzmdJyx4zafDT9buwfBMmBi+exbJUp
+         wADmPBP7SVsS86oy2Z2nbSI2I7I5M0Uzfc4whysxF3Ewz1NdVgWOlFB/VNO4EyEgTyhQ
+         IgeGc3AIsLsgizKmFnv7aIVdm+wjzCEhF2CKX9pLrLt/dGkeJeDj8tRbVJusgQsqbBp8
+         Sx0BKLzh+AO9GQUd64yR05UJwYU2RiJylkS7vBEYzc5JrUTXaExNNJ1C/zQz4OFyH+EY
+         u8etbMKm6x62PuEr67ieLA/dhUdYe7KkHOV3k6mWNf0i+Dm0TvKWTmvHHJzUI0YZZWsS
+         cExw==
+X-Forwarded-Encrypted: i=1; AJvYcCWm0BRRoLAYaQeo7LfXb4Ac3NcdNH9Osg+3Y2lJMkpXyRkwEImQ6tHBPN+aO1/g2d3NCtl9Dz5ICNA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw50qViJPw+gpJ1PwDR1jaDRhVRMxJeD+Po+mogOwl8cxYxWtyr
+	oM2WmOdg8SodSvFNTFJKsfQZ+MDvoKYcKHkTRL1b70z0zpaTxXyzRScd
+X-Gm-Gg: ASbGnctUHLRNrv/bGVMGUO0TJGgvz4c7uBA3cBcZxyBaC8NH5mJeYYM7tNcoqoM8db7
+	RU76bi2xRzI70s79TJ+lcHfyZ0FmoKugLUX3JAAeiOKsEA9kwg093XlnVcuCn14is9dPfvbBDkk
+	wH3S2fdwBrtOR3rtRtfs87/5DRcs7bf/yyAKNsAWePMXvlyN+Xhb2r94sGvFS73u6lw08AW67Jk
+	HMqEXUJWb1fXGLZVD9Uwy938mtOektUrn3ngrDwTRs3RUb+b4wkTuI2R+tkydlthdebbiVSUUzl
+	zH87eDWPo3TXo7dd+22Cu1thIdzk0DUS46TbU62FQLAP//6Z4Paa3ydyaSYZRipX5MtdX6xnR0B
+	hAvg/AoqK5zL1IF0RNFIvtugtBjJ80yFGRiZLuasjYiHJAcfo+nr4xhTgIuwh7u1YpuU4mgLBmP
+	m949zXRyaqOnYTiP3WvaimguHqNG0Dw3+1xoW8Vnt8x47SOOzxjjwewXfK9y+3ASYgHps=
+X-Google-Smtp-Source: AGHT+IEKc6DMi1rnsiKXGQ7YCm1EduL/BJbWA26zQIPUem7U5uZbM9JaOZh/wc742sj/SZNAl5nqiA==
+X-Received: by 2002:a17:907:2d90:b0:b6d:6c1a:31ae with SMTP id a640c23a62f3a-b767183c1femr2036911366b.49.1764165784185;
+        Wed, 26 Nov 2025 06:03:04 -0800 (PST)
 Received: from HYB-DlYm71t3hSl.ad.analog.com ([2001:a61:123e:4501:1025:ba00:55dc:4ccc])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fd8c47sm41757015f8f.38.2025.11.26.03.40.01
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654d73430sm1901764266b.24.2025.11.26.06.03.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 03:40:02 -0800 (PST)
-Date: Wed, 26 Nov 2025 12:40:00 +0100
+        Wed, 26 Nov 2025 06:03:03 -0800 (PST)
+Date: Wed, 26 Nov 2025 15:03:01 +0100
 From: Jorge Marques <gastmaier@gmail.com>
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: Jorge Marques <jorge.marques@analog.com>, 
@@ -86,522 +84,89 @@ Cc: Jorge Marques <jorge.marques@analog.com>,
 	Jonathan Corbet <corbet@lwn.net>, Linus Walleij <linus.walleij@linaro.org>, 
 	Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2 3/9] iio: adc: Add support for ad4062
-Message-ID: <aslj3klmv6heyyhgltzewkdze5p4c3hlkzfbxbfnzwwgd375gv@m6iqpst5sv6b>
+Subject: Re: [PATCH v2 5/9] iio: adc: ad4062: Add IIO Trigger support
+Message-ID: <57msi3wjxm7oilpaky2ezurqvun4p5hdsicrhq5rhkljka3ryo@xqvdzdiwnl6y>
 References: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
- <20251124-staging-ad4062-v2-3-a375609afbb7@analog.com>
- <aSQxiSoZcI_ol3S5@smile.fi.intel.com>
+ <20251124-staging-ad4062-v2-5-a375609afbb7@analog.com>
+ <aSQnDMsE13zwM1YO@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aSQxiSoZcI_ol3S5@smile.fi.intel.com>
+In-Reply-To: <aSQnDMsE13zwM1YO@smile.fi.intel.com>
 
-On Mon, Nov 24, 2025 at 12:20:57PM +0200, Andy Shevchenko wrote:
-> On Mon, Nov 24, 2025 at 10:18:02AM +0100, Jorge Marques wrote:
-> > The AD4060/AD4062 are versatile, 16-bit/12-bit, successive approximation
-> > register (SAR) analog-to-digital converter (ADC) with low-power and
-> > threshold monitoring modes.
-> 
-> ...
-> 
+On Mon, Nov 24, 2025 at 11:36:12AM +0200, Andy Shevchenko wrote:
+> On Mon, Nov 24, 2025 at 10:18:04AM +0100, Jorge Marques wrote:
 Hi Andy,
-> > +#define AD4062_SOFT_RESET	0x81
+> > Adds support for IIO Trigger. Optionally, gp1 is assigned as Data Ready
+> > signal, if not present, fallback to an I3C IBI with the same role.
+> > The software trigger is allocated by the device, but must be attached by
+> > the user before enabling the buffer. The purpose is to not impede
+> > removing the driver due to the increased reference count when
+> > iio_trigger_set_immutable or iio_trigger_get is used.
 > 
-> The grouping seems a bit strange. Haven't you forgotten a blank line here?
-> Ditto for other similar cases.
+> We refer to the functions as func(). Mind the parentheses.
+> 
+> ...
 > 
 Ack.
-> > +#define AD4060_MAX_AVG		0x7
-> > +#define AD4062_MAX_AVG		0xB
+> > +	struct ad4062_state *st = container_of(work, struct ad4062_state,
+> > +					       trig_conv);
 > 
-> > +#define AD4062_MON_VAL_MAX_GAIN		1999970
+> I think the
 > 
-> This is decimal...
+> 	struct ad4062_state *st =
+> 		container_of(work, struct ad4062_state, trig_conv);
 > 
-> > +#define AD4062_MON_VAL_MIDDLE_POINT	0x8000
-> 
-> ...and this is hexadecimal. Can you make these consistent?
-> Also, is there any explanation of the number above? To me
-> it looks like 2000000 - 30. Is it so? Or is this a fraction
-> number multiplied by 1000000 or so? In any case some elaboration
-> would be good to have.
-> 
-Since this is not a magic number, I will use directly below.
-It MAX_MON_VAL/MON_VAL_MIDDLE_POINT = 0xFFFF/0x8000
-> > +#define AD4062_GP_DRDY		0x2
-> > +#define AD4062_INTR_EN_NEITHER	0x0
-> > +#define AD4062_TCONV_NS		270
-> 
-> ...
-> 
-> > +struct ad4062_state {
-> > +	const struct ad4062_chip_info *chip;
-> > +	const struct ad4062_bus_ops *ops;
-> > +	enum ad4062_operation_mode mode;
-> > +	struct completion completion;
-> > +	struct iio_trigger *trigger;
-> > +	struct iio_dev *indio_dev;
-> > +	struct i3c_device *i3cdev;
-> > +	struct regmap *regmap;
-> > +	u16 sampling_frequency;
-> > +	int vref_uv;
-> > +	int samp_freqs[ARRAY_SIZE(ad4062_conversion_freqs)];
-> > +	u8 oversamp_ratio;
-> > +	union {
-> > +		__be32 be32;
-> > +		__be16 be16;
-> > +		u8 bytes[4];
-> > +	} buf __aligned(IIO_DMA_MINALIGN);
-> > +	u8 reg_addr_conv;
-> 
-> Can't we group u8:s to save a few bytes of memory?
-> 
-Sure
-
-  struct ad4062_state {
-  	// ...
-  	union {
-  		__be32 be32;
-  		__be16 be16;
-  		u8 bytes[4];
-  	} buf __aligned(IIO_DMA_MINALIGN);
-  	u16 sampling_frequency;
-  	u8 oversamp_ratio;
-  	u8 reg_addr_conv;
-  };
-
-> > +};
-> 
-> ...
-> 
-> > +static int ad4062_set_oversampling_ratio(struct ad4062_state *st, unsigned int val)
-> > +{
-> > +	int ret;
-> > +
-> > +	if (val < 1 || val > BIT(st->chip->max_avg + 1))
-> 
-> in_range() ?
-> 
-> 	in_range(val, 1, GENMASK(st->chip->max_avg, 0))
-> 
-> if I am not mistaken. Also note, the GENMASK() approach makes possible
-> to have all 32 bits set, however it's most unlikely to happen here anyway.
-> 
-Sure, but requires locals to not trigger suspicious usage of sizeof.
-  	// ...
-  	const u32 _max = GENMASK(st->chip->max_avg, 0);
-  	const u32 _min = 1;
-  	int ret;
-  
-  	if (in_range(val, _min, _max))
-> > +		return -EINVAL;
-> > +
-> > +	/* 1 disables oversampling */
-> > +	val = ilog2(val);
-> > +	if (val == 0) {
-> > +		st->mode = AD4062_SAMPLE_MODE;
-> > +	} else {
-> > +		st->mode = AD4062_BURST_AVERAGING_MODE;
-> > +		ret = regmap_write(st->regmap, AD4062_REG_AVG_CONFIG, val - 1);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +	st->oversamp_ratio = BIT(val);
-> > +
-> > +	return 0;
-> > +}
-> 
-> ...
-> 
-> > +static int ad4062_get_oversampling_ratio(struct ad4062_state *st,
-> > +					 unsigned int *val)
-> > +{
-> > +	int ret, buf;
-> > +
-> > +	if (st->mode == AD4062_SAMPLE_MODE) {
-> > +		*val = 1;
-> > +		return 0;
-> > +	}
-> 
-> > +	ret = regmap_read(st->regmap, AD4062_REG_AVG_CONFIG, &buf);
-> > +	return 0;
-> 
-> This is strange piece of code. Why do we have ret at all?
-> Please, try to compile kernel also with `make LLVM=1 W=1 ...`
-> assuming you have clang installed. It catches such issues quite
-> well.
-> 
-Can return directly yes.
-> > +}
-> 
-> ...
-> 
-> > +static int ad4062_calc_sampling_frequency(int fosc, unsigned int n_avg)
-> > +{
-> > +	/* See datasheet page 31 */
-> > +	u64 duration = div_u64((u64)(n_avg - 1) * NSEC_PER_SEC, fosc) + AD4062_TCONV_NS;
-> > +
-> > +	return DIV_ROUND_UP_ULL(NSEC_PER_SEC, duration);
-> 
-> Why u64?
-> 
-> The DIV_ROUND_UP_ULL() seems an overkill here. Or do you expect duration be
-> more than 4 billions?
-> 
-This is necessary since at fosc 111 Hz and avg 4096 it does take longer
-than 4 seconds, even though I do timeout after 1 seconds in the raw
-acquisition.
-> > +}
-> > +
-> > +static int ad4062_populate_sampling_frequency(struct ad4062_state *st)
-> > +{
-> > +	for (int i = 0; i < ARRAY_SIZE(ad4062_conversion_freqs); i++)
-> 
-> Why signed iterator?
-> 
-Ack, can be u8.
-> > +		st->samp_freqs[i] = ad4062_calc_sampling_frequency(ad4062_conversion_freqs[i],
-> > +								   st->oversamp_ratio);
-> 
-> Perhaps
-> 
-> 		st->samp_freqs[i] =
-> 			ad4062_calc_sampling_frequency(ad4062_conversion_freqs[i],
-> 						       st->oversamp_ratio);
-> 
-> But I am not insisting on this case and similar.
-> 
-> 
-Ack.
-> > +	return 0;
-> > +}
-> 
-> > +static int ad4062_get_sampling_frequency(struct ad4062_state *st, int *val)
-> > +{
-> > +	*val = ad4062_calc_sampling_frequency(ad4062_conversion_freqs[st->sampling_frequency],
-> > +					      st->oversamp_ratio);
-> 
-> Oh, temporary variable makes this better for readability.
-> 
-Ack.
-> > +	return 0;
-> > +}
-> 
-> ...
-> 
-> > +static int ad4062_check_ids(struct ad4062_state *st)
-> > +{
-> 
-> 	struct device *dev = &st->i3cdev->dev;
+> reads better.
 > 
 Ack.
 > > +	int ret;
-> > +	u16 val;
-> > +
-> > +	ret = regmap_bulk_read(st->regmap, AD4062_REG_PROD_ID_1,
-> > +			       &st->buf.be16, sizeof(st->buf.be16));
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	val = get_unaligned_be16(st->buf.bytes);
-> > +	if (val != st->chip->prod_id)
-> > +		dev_warn(&st->i3cdev->dev,
-> > +			 "Production ID x%x does not match known values", val);
-> 
-> 		dev_warn(dev, "Production ID x%x does not match known values", val);
-> 
-Ack.
-> > +	ret = regmap_bulk_read(st->regmap, AD4062_REG_VENDOR_H,
-> > +			       &st->buf.be16, sizeof(st->buf.be16));
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	val = get_unaligned_be16(st->buf.bytes);
-> > +	if (val != AD4062_I3C_VENDOR) {
-> > +		dev_err(&st->i3cdev->dev,
-> > +			"Vendor ID x%x does not match expected value\n", val);
-> 
-> 		dev_err(dev, "Vendor ID x%x does not match expected value\n", val);
-> 
-Ack.
-> > +		return -ENODEV;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
 > 
 > ...
 > 
-> > +static int ad4062_soft_reset(struct ad4062_state *st)
+> > +	/* Read current conversion, if at reg CONV_READ, stop bit triggers
+> > +	 * next sample and does not need writing the address.
+> > +	 */
+> 
+> /*
+>  * The multi-line comment style is as in
+>  * this example. Please, check and update.
+>  */
+> 
+Ack.
+> > +static irqreturn_t ad4062_poll_handler(int irq, void *p)
 > > +{
-> > +	u8 val = AD4062_SOFT_RESET;
-> > +	int ret;
-> > +
-> > +	ret = regmap_write(st->regmap, AD4062_REG_INTERFACE_CONFIG_A, val);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Wait AD4062 treset time */
-> > +	fsleep(5000);
-> 
-> 5 * USEC_PER_MSEC
-> 
-> This gives a hint on the units without even a need to comment or look somewhere
-> else.
->
-// TODO
-Since the device functional blocks are powered when voltage is supplied,
-here we can stick with the treset datasheet value 60ns (ndelay(60)).
-> > +	return 0;
-> > +}
-> 
-> ...
-> 
-> > +static int ad4062_request_irq(struct iio_dev *indio_dev)
-> > +{
+> > +	struct iio_poll_func *pf = p;
+> > +	struct iio_dev *indio_dev = pf->indio_dev;
 > > +	struct ad4062_state *st = iio_priv(indio_dev);
-> > +	struct device *dev = &st->i3cdev->dev;
-> > +	int ret;
 > > +
-> > +	ret = fwnode_irq_get_byname(dev_fwnode(&st->i3cdev->dev), "gp1");
-> > +	if (ret == -EPROBE_DEFER) {
-> > +		return ret;
-> 
-> > +	} else if (ret < 0) {
-> 
-> Redundant 'else'
-> 
-Ack.
-> > +		ret = regmap_update_bits(st->regmap, AD4062_REG_ADC_IBI_EN,
-> > +					 AD4062_REG_ADC_IBI_EN_CONV_TRIGGER,
-> > +					 AD4062_REG_ADC_IBI_EN_CONV_TRIGGER);
-> > +	} else {
-> > +		ret = devm_request_threaded_irq(dev, ret,
-> > +						ad4062_irq_handler_drdy,
-> > +						NULL, IRQF_ONESHOT, indio_dev->name,
-> > +						indio_dev);
-> > +	}
+> > +	iio_trigger_notify_done(indio_dev->trig);
+> > +	schedule_work(&st->trig_conv);
 > > +
-> > +	return ret;
-> > +}
+> > +	return IRQ_HANDLED;
+> >  }
 > 
 > ...
 > 
-> > +static const int ad4062_oversampling_avail[] = {
-> > +	1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096,
-> 
-> It's not easy to count them at glance, please add a comment with indices.
-> 
-Ack, will use
-  static const int ad4062_oversampling_avail[] = {
-          BIT(0), BIT(1), BIT(2), BIT(3), BIT(4), BIT(5), BIT(6), BIT(7), BIT(8),
-  	BIT(9), BIT(10), BIT(11), BIT(12),
-  };
-> > +};
-> 
-> ...
-> 
-> > +static int ad4062_read_avail(struct iio_dev *indio_dev,
-> > +			     struct iio_chan_spec const *chan, const int **vals,
-> > +			     int *type, int *len, long mask)
+> > +static int ad4062_triggered_buffer_postenable(struct iio_dev *indio_dev)
 > > +{
 > > +	struct ad4062_state *st = iio_priv(indio_dev);
 > > +	int ret;
 > > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> > +		*vals = ad4062_oversampling_avail;
-> > +		*len = ARRAY_SIZE(ad4062_oversampling_avail);
-> > +		*type = IIO_VAL_INT;
-> > +
-> > +		return IIO_AVAIL_LIST;
-> > +	case IIO_CHAN_INFO_SAMP_FREQ:
-> > +		ret = ad4062_populate_sampling_frequency(st);
-> > +		if (ret)
-> > +			return ret;
-> > +		*vals = st->samp_freqs;
-> > +		*len = st->oversamp_ratio != 1 ? ARRAY_SIZE(ad4062_conversion_freqs) : 1;
-> 
-> Why not using positive conditional?
-> 
-> Funny trick that Elvis operator can be used in this case, but please don't,
-> it will make code harder to follow.
-> 
-Ack.
-> > +		*type = IIO_VAL_INT;
-> > +
-> > +		return IIO_AVAIL_LIST;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> 
-> ...
-> 
-> > +static int ad4062_get_chan_scale(struct iio_dev *indio_dev, int *val, int *val2)
-> > +{
-> > +	struct ad4062_state *st = iio_priv(indio_dev);
-> > +	const struct iio_scan_type *scan_type;
-> > +
-> > +	scan_type = iio_get_current_scan_type(indio_dev, st->chip->channels);
-> > +	if (IS_ERR(scan_type))
-> > +		return PTR_ERR(scan_type);
-> > +
-> > +	*val = (st->vref_uv * 2) / MILLI;
-> 
-> It's most likely (MICRO / MILLI) instead of MILLI. Am I right?
-> 
-Sure.
-> > +	*val2 = scan_type->realbits - 1; /* signed */
-> > +
-> > +	return IIO_VAL_FRACTIONAL_LOG2;
-> > +}
-> 
-> ...
-> 
-> > +static int ad4062_get_chan_calibscale(struct ad4062_state *st, int *val, int *val2)
-> > +{
-> > +	u16 gain;
-> > +	int ret;
-> > +
-> > +	ret = regmap_bulk_read(st->regmap, AD4062_REG_MON_VAL,
-> > +			       &st->buf.be16, sizeof(st->buf.be16));
+> > +	ret = pm_runtime_resume_and_get(&st->i3cdev->dev);
 > > +	if (ret)
 > > +		return ret;
 > > +
-> > +	gain = get_unaligned_be16(st->buf.bytes);
-> > +
-> > +	/* From datasheet: code out = code in × mon_val/0x8000 */
-> > +	*val = gain / AD4062_MON_VAL_MIDDLE_POINT;
-> 
-> > +	*val2 = mul_u64_u32_div(gain % AD4062_MON_VAL_MIDDLE_POINT, NANO,
-> > +				AD4062_MON_VAL_MIDDLE_POINT);
-> 
-> I don't see the need for 64-bit division. Can you elaborate what I miss here?
-> 
-> > +	return IIO_VAL_INT_PLUS_NANO;
-> > +}
-> 
-Can be improved to
-
-  static int ad4062_get_chan_calibscale(struct ad4062_state *st, int *val, int *val2)
-  {
-  	int ret;
-  
-  	ret = regmap_bulk_read(st->regmap, AD4062_REG_MON_VAL,
-  			       &st->buf.be16, sizeof(st->buf.be16));
-  	if (ret)
-  		return ret;
-  
-  	/* From datasheet: code out = code in × mon_val/0x8000 */
-  	*val = get_unaligned_be16(st->buf.bytes) * 2;
-  	*val2 = 16;
-  
-  	return IIO_VAL_FRACTIONAL_LOG2;
-  }
-> ...
-> 
-> > +static int ad4062_set_chan_calibscale(struct ad4062_state *st, int gain_int, int gain_frac)
-> 
-> Forgot to wrap this line.
-> 
-ack
-> > +{
-> > +	u64 gain;
-> > +	int ret;
-> > +
-> > +	if (gain_int < 0 || gain_frac < 0)
-> > +		return -EINVAL;
-> > +
-> > +	gain = mul_u32_u32(gain_int, MICRO) + gain_frac;
-> 
-> > +
-> 
-> Redundant blank line.
-> 
-Ack.
-> > +	if (gain > AD4062_MON_VAL_MAX_GAIN)
-> > +		return -EINVAL;
-> > +
-> > +	put_unaligned_be16(DIV_ROUND_CLOSEST_ULL(gain * AD4062_MON_VAL_MIDDLE_POINT,
-> > +						 MICRO),
-> > +			   st->buf.bytes);
-> 
-> Also in doubt here about 64-bit division.
-> 
-This can be slightly improved to
-
-  static int ad4062_set_chan_calibscale(struct ad4062_state *st, int gain_int,
-  				      int gain_frac)
-  {
-  	u32 gain;
-  	int ret;
-  
-  	if (gain_int < 0 || gain_frac < 0)
-  		return -EINVAL;
-  
-  	gain = gain_int * MICRO + gain_frac;
-  	if (gain > 1999970)
-  		return -EINVAL;
-  
-  	put_unaligned_be16(DIV_ROUND_CLOSEST_ULL((u64)gain * AD4062_MON_VAL_MIDDLE_POINT,
-  						 MICRO),
-  			   st->buf.bytes);
-  
-  	ret = regmap_bulk_write(st->regmap, AD4062_REG_MON_VAL,
-  				&st->buf.be16, sizeof(st->buf.be16));
-  	if (ret)
-  		return ret;
-  
-  	/* Enable scale if gain is not equal to one */
-  	return regmap_update_bits(st->regmap, AD4062_REG_ADC_CONFIG,
-  				  AD4062_REG_ADC_CONFIG_SCALE_EN_MSK,
-  				  FIELD_PREP(AD4062_REG_ADC_CONFIG_SCALE_EN_MSK,
-  					     !(gain_int == 1 && gain_frac == 0)));
-  }
-
-To provide the enough resolution to compute every step (e.g., 0xFFFF and
-0xFFFE) with the arbitrary user input.
-
-> > +	ret = regmap_bulk_write(st->regmap, AD4062_REG_MON_VAL,
-> > +				&st->buf.be16, sizeof(st->buf.be16));
+> > +	ret = ad4062_set_operation_mode(st, st->mode);
 > > +	if (ret)
-> > +		return ret;
+> > +		goto out_mode_error;
 > > +
-> > +	/* Enable scale if gain is not one. */
-> 
-> "...is not equal to one."
-> 
-> Also be consistent with the style for one-line comments. Choose one and
-> use it everywhere. Usual cases:
-> - my one-line comment
-> - My one-line comment
-> - My one-line comment.
-> 
-Ack.
-> 
-> > +	return regmap_update_bits(st->regmap, AD4062_REG_ADC_CONFIG,
-> > +				  AD4062_REG_ADC_CONFIG_SCALE_EN_MSK,
-> > +				  FIELD_PREP(AD4062_REG_ADC_CONFIG_SCALE_EN_MSK,
-> > +					     !(gain_int == 1 && gain_frac == 0)));
-> > +}
-> 
-> ...
-> 
-> > +static int __ad4062_read_chan_raw(struct ad4062_state *st, int *val)
-> 
-> Can be named without leading double underscore? Preference is to use
-> the suffix, like _no_pm (but you can find better one).
-> 
-Since there is one usage of this method, can be merged into ad4062_read_chan_raw.
-> > +{
-> > +	struct i3c_device *i3cdev = st->i3cdev;
+> > +	/* CONV_READ requires read to trigger first sample. */
 > > +	struct i3c_priv_xfer t[2] = {
 > > +		{
 > > +			.data.out = &st->reg_addr_conv,
@@ -614,219 +179,71 @@ Since there is one usage of this method, can be merged into ad4062_read_chan_raw
 > > +			.rnw = true,
 > > +		}
 > > +	};
-> > +	int ret;
 > > +
-> > +	reinit_completion(&st->completion);
-> > +	/* Change address pointer to trigger conversion */
-> > +	ret = i3c_device_do_priv_xfers(i3cdev, &t[0], 1);
-> 
-> Why array? Just split them on per transfer and use separately. This gives a bit
-> odd feeling that the two goes together, but no. They are semi-related as we
-> have a special condition after the first one.
-> 
-For this commit sure, but in the next a fallback method is introduced
-for when the gp1 gpio line is not connected.
-There are two register to trigger and read samples:
-
-* write CONV_READ -> read dummy value - [conversion] -> read value -> [conv ...
-* write CONV_TRIGGER - [conversion] -> read value -> write ...
-
-The first allows almost twice the sampling frequency, but does not work
-with the fallback because In-Band-Interrupt for CONV_READ are not
-yielded.
-
+> > +	ret = i3c_device_do_priv_xfers(st->i3cdev, t, st->gpo_irq[1] ? 2 : 1);
 > > +	if (ret)
-> > +		return ret;
-> > +	/*
-> > +	 * Single sample read should be used only for oversampling and
-> > +	 * sampling frequency pairs that take less than 1 sec.
-> > +	 */
-> > +	ret = wait_for_completion_timeout(&st->completion,
-> > +					  msecs_to_jiffies(1000));
-> > +	if (!ret)
-> > +		return -ETIMEDOUT;
-> > +
-> > +	ret = i3c_device_do_priv_xfers(i3cdev, &t[1], 1);
-> > +	if (ret)
-> > +		return ret;
-> > +	*val = get_unaligned_be32(st->buf.bytes);
+> > +		goto out_mode_error;
 > > +	return 0;
-> > +}
-> 
-> ...
-> 
-> > +static int ad4062_read_raw_dispatch(struct ad4062_state *st, int *val, int *val2,
-> > +				    long info)
-> 
-> The parameters are split in a logical way here...
-> 
-> (however preference is
-> 
-> static int ad4062_read_raw_dispatch(struct ad4062_state *st,
-> 				    int *val, int *val2, long info)
-> 
-> to fit 80 characters)
-> 
-> ...
-Ack.
-> 
-> > +static int ad4062_read_raw(struct iio_dev *indio_dev,
-> > +			   struct iio_chan_spec const *chan, int *val,
-> > +			   int *val2, long info)
-> 
-> ...but here. Why not
-> 
-> static int ad4062_read_raw(struct iio_dev *indio_dev,
-> 			   struct iio_chan_spec const *chan,
-> 			   int *val, int *val2, long info)
-> 
-> ?
-> 
-Ack.
-> > +	struct ad4062_state *st = iio_priv(indio_dev);
-> > +	int ret;
 > > +
-> > +	if (info == IIO_CHAN_INFO_SCALE)
-> > +		return ad4062_get_chan_scale(indio_dev, val, val2);
-> > +
-> > +	if (!iio_device_claim_direct(indio_dev))
-> > +		return -EBUSY;
-> > +
-> > +	ret = ad4062_read_raw_dispatch(st, val, val2, info);
-> > +
-> > +	iio_device_release_direct(indio_dev);
-> > +	return ret ? ret : IIO_VAL_INT;
-> 
-> 	return ret ?: IIO_VAL_INT;
-> 
-> > +}
-> 
-> ...
-Ack.
-> 
-> > +static int ad4062_debugfs_reg_access(struct iio_dev *indio_dev, unsigned int reg,
-> > +				     unsigned int writeval, unsigned int *readval)
-> > +{
-> > +	struct ad4062_state *st = iio_priv(indio_dev);
-> > +	int ret;
-> > +
-> > +	if (readval)
-> > +		ret = regmap_read(st->regmap, reg, readval);
-> > +	else
-> > +		ret = regmap_write(st->regmap, reg, writeval);
+> > +out_mode_error:
+> > +	pm_runtime_put_autosuspend(&st->i3cdev->dev);
 > > +
 > > +	return ret;
 > 
-> Do you expand this in the following patches? If not, ret is not needed.
-> Just return directly.
+> I guess with ACQUIRE() this function will look better, because the explicit
+> reference count bumping (with an associated comment) is more descriptive on
+> what's going on here with PM. Same for other related functions.
 > 
-Not anymore, will just return.
+Oh this one slipped through my fingers, should be using ACQUIRE as well, thanks
 > > +}
 > 
 > ...
 > 
-> > +static int ad4062_regulators_get(struct ad4062_state *st, bool *ref_sel)
-> > +{
-> > +	struct device *dev = &st->i3cdev->dev;
-> > +	int ret;
-> > +
-> > +	ret = devm_regulator_get_enable(dev, "vio");
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret,
-> > +				     "Failed to enable vio voltage\n");
-> > +
-> > +	st->vref_uv = devm_regulator_get_enable_read_voltage(dev, "ref");
-> > +	*ref_sel = st->vref_uv == -ENODEV;
+> >  	if (ret)
+> >  		return dev_err_probe(dev, ret, "Failed to request i3c ibi\n");
+> >  
+> > +	INIT_WORK(&st->trig_conv, ad4062_trigger_work);
 > 
-> _uV ?
+> This is mixture of devm_*() and non-devm_*() calls. How did you (stress) test
+> the removal and error paths here? Wouldn't devm-helpers.h APIs help here to
+> make / keep order correct?
 > 
-Ack.
-> > +	if (st->vref_uv < 0 && st->vref_uv != -ENODEV) {
-> 
-> You already has the second part
-> 
-> 	if (st->vref_uV < 0 && !*ref_sel) {
-> 
-> I believe this is better to understand as we check that ref_sel is not chosen.
-> 
-Ack.
-> > +		return dev_err_probe(dev, st->vref_uv,
-> > +				     "Failed to enable and read ref voltage\n");
-> 
-> > +	} else if (st->vref_uv == -ENODEV) {
-> 
-> Redundant 'else'
-> 
-> 	if (*ref_sel) {
-> 
-> (also in similar way as above)
-> 
-> I don't know if the above was asked specifically, but if so, I ask
-> the requestor(s) to reconsider.
-> 
-Ack. Asked for returning error first, good path return 0 and not return
-ret;
-> > +		st->vref_uv = devm_regulator_get_enable_read_voltage(dev, "vdd");
-> > +		if (st->vref_uv < 0)
-> > +			return dev_err_probe(dev, st->vref_uv,
-> > +					     "Failed to enable and read vdd voltage\n");
-> > +	} else {
-> > +		ret = devm_regulator_get_enable(dev, "vdd");
-> > +		if (ret)
-> > +			return dev_err_probe(dev, ret,
-> > +					     "Failed to enable vdd regulator\n");
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> 
-> ...
-> 
-> > +static int ad4062_runtime_resume(struct device *dev)
-> > +{
-> > +	struct ad4062_state *st = dev_get_drvdata(dev);
-> > +	int ret;
-> > +
-> > +	ret = regmap_clear_bits(st->regmap, AD4062_REG_DEVICE_CONFIG,
-> > +				AD4062_REG_DEVICE_CONFIG_POWER_MODE_MSK);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	fsleep(4000);
-> 
-> 4 * USEC_PER_MSEC, also would be good to add a comment for this long delay.
-> 
-Will add
-	/* Wait device functional blocks to power up */
-Based on hardware tests, I can drop to 2 * USEC_PER_MSEC, lower than
-that the device is not ready to switch to acquisition mode for
-conversions.
-> > +	return 0;
-> > +}
-> 
-> ...
-> 
-> > +static DEFINE_RUNTIME_DEV_PM_OPS(ad4062_pm_ops, ad4062_runtime_suspend,
-> > +				 ad4062_runtime_resume, NULL);
-> 
-> I think the logical split is slightly better:
-> 
-> static DEFINE_RUNTIME_DEV_PM_OPS(ad4062_pm_ops,
-> 				 ad4062_runtime_suspend, ad4062_runtime_resume, NULL);
-> 
-> OR
-Ack.
-> 
-> static DEFINE_RUNTIME_DEV_PM_OPS(ad4062_pm_ops,
-> 				 ad4062_runtime_suspend,
-> 				 ad4062_runtime_resume,
-> 				 NULL);
+Oh yeah, missed this helper
+
+  	ret = devm_work_autocancel(dev, &st->trig_conv, ad4062_trigger_work);
+  	if (ret)
+  		return ret;
+
+the path was missing clean-up, and did cause issue if there was work
+being done on detach
+
+  ERROR: iio:device0: Unable to get next block: Connection timed out (110)
+  8<--- cut here ---
+  Unable to handle kernel paging request at virtual address bf00715c when execute
+  [bf00715c] *pgd=0b43f811, *pte=00000000, *ppte=00000000
+  Internal error: Oops: 80000007 [#1] PREEMPT SMP ARM
+  Modules linked in: ad4062 regmap_i3c nvmem_axi_sysid [last unloaded: adi_i3c_master]
+  CPU: 0 UID: 0 PID: 8033 Comm: kworker/0:6 Not tainted 6.12.0+ #4
+  Hardware name: Xilinx Zynq Platform
+  Workqueue: events ad4062_trigger_work [ad4062]
+  PC is at 0xbf00715c
+  LR is at wait_for_completion_timeout+0xf0/0x118
+  pc : [<bf00715c>]    lr : [<c07ec920>]    psr: 60000013
+  sp : e0911ec0  ip : 00000000  fp : dfb960e0
+  r10: 00000011  r9 : 00000001  r8 : c4b89d40
+  r7 : c49e4500  r6 : c49da040  r5 : 00000001  r4 : e0911ef4
+  r3 : cb455500  r2 : 00000000  r1 : 00000000  r0 : 00000000
+  Flags: nZCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
+
+thanks,
+
+Best regards,
+Jorge
+> >  	return devm_iio_device_register(dev, indio_dev);
 > 
 > -- 
 > With Best Regards,
 > Andy Shevchenko
 > 
 > 
-Best Regards,
-Jorge
 

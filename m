@@ -1,88 +1,88 @@
-Return-Path: <linux-iio+bounces-26522-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26523-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89AF5C8F782
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Nov 2025 17:13:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01882C8F7A3
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Nov 2025 17:16:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBF2F3AC5C9
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Nov 2025 16:13:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3652E354333
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Nov 2025 16:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B056337115;
-	Thu, 27 Nov 2025 16:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F742C326A;
+	Thu, 27 Nov 2025 16:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ILUboCil"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KPs5FdL0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB1F2C235D
-	for <linux-iio@vger.kernel.org>; Thu, 27 Nov 2025 16:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EC72C0F9A
+	for <linux-iio@vger.kernel.org>; Thu, 27 Nov 2025 16:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764259990; cv=none; b=BoUzKGs9a9m+RbHAiTO0LiKaSF8MO3DOy9DFmv6aeVZTWx2/iRqWQLkBWo91TSVcrBcd7D7MFe8GA/StrNBaTTRNG7V+LLZ20UHixAu7Je+vbGyDcVgKo0NGuIwRz7gDSuMHodzlcBf4Up52FsY2jLs8wQF5SNXBZ3paIohUTMQ=
+	t=1764260205; cv=none; b=mNya39zaY9bcTdOSdmKWOnjvCcnb+9HnG68/f+YzJQHUUYgC9rjXrrnF8zLJ5ZdtHfPHoZCWzb5PeGREvB2mIF44KgC/BdfXrVQOeSBMGnzWuEnqYd4BXS2HkAsNQ51r9qbL/qrpZcUxP0MxmYtoWrqv7/slvfJuJmrzJSf0WaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764259990; c=relaxed/simple;
-	bh=vHkgE8J7FmhstuADR1oxca5gWYlZxfEf1EiRPemtMDo=;
+	s=arc-20240116; t=1764260205; c=relaxed/simple;
+	bh=xDypKOX/n6GRcGDAU8VyLfV/rY9GENv82TIM6XTxRto=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t1zI2IcsV+vDm1XeeQZRR6MDC6kaq9E3l7OJF47sLEqhr16oloxk91Ugh+UU4S7WewTMOz57w8dTi5JWZQqiVQ5456l4iEXz9mWF2XwpsfhFW5sF1KhWRDRFPaPRBUQY9wNeBShukSrk4PbgYu6KE/PINrtqhqwyrHGNmkW38No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ILUboCil; arc=none smtp.client-ip=209.85.218.44
+	 To:Cc:Content-Type; b=rGG61br0Yes2IEmCFYe0UsINSbBgzZFAAyhfehWPKlIuSUCeCZhDu3MoPA3wlt2jz0iDc6rdfVLkOuuqgpW/lrM6FETfh3fSGNtmsHt4moFxCHfW91fcR5nnDRnsSzLmwgJVGET+wWRE6LXxO25KSEr/p75XQoRAjiAHjrK7Qic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KPs5FdL0; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b735487129fso147398466b.0
-        for <linux-iio@vger.kernel.org>; Thu, 27 Nov 2025 08:13:07 -0800 (PST)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b737c6c13e1so193183266b.3
+        for <linux-iio@vger.kernel.org>; Thu, 27 Nov 2025 08:16:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764259986; x=1764864786; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764260200; x=1764865000; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vHkgE8J7FmhstuADR1oxca5gWYlZxfEf1EiRPemtMDo=;
-        b=ILUboCilhRu7W2l5uL+twL13aTtqP0MhjgKRRx2EMIflWnKm2tTIgbXCp9YjNKx4uu
-         UsKxTeNgyxoxqMXz3Cf64Of7brK0+IiX8CjgvisY2mcFDpRTG2JO2Le9mJDH3klbrY5N
-         C/OCOysbYHIDDRPNHlyvUxA0eu+ypLJ3qSI0cw3KEbK3SzDI9oRyX9AvAq4QGNRy+d0K
-         A1XUYALNm8gGVaBIqY93OILPgJ06q2xrQDn/ZR5NDnlmBPM2gk+t8BFZQI3+vNP+GF+B
-         LdNWFf+5jS1NyT8YJ4G6rJmQd1u6PAQeU5jrjouOzp+aQCxDSNr8Q9J9Nj42mPRCY+rn
-         HFgg==
+        bh=KNO28PzgIsx+2Ndb8A3ECc1R+7TzxXSai5xVu+osWaY=;
+        b=KPs5FdL04I8adeZnQ9V4xT1D/R21qLv4bEymY7y1NKEsv1aSHOxF7+0WOhOANz6hEu
+         H0t9EqE3YzDceOOA3aOZJ50d9mUgX6KkcBRvBSfaqWx0Vx5/aQXfdqzXkhrn9NrISEpq
+         FNhREaJi6TU+fIpTf4p3drfvf7RVIdc9L2+mIuGhqUNNVtnf4tdoPBB0GJ8B1hso97xG
+         XEQnXkv895T5F58P8cYDt+Z/7cV2HHFfsC5TbUh7o34q52u+qWHcnDjbG1vyCouftlhm
+         Ojjghv40AkxBRREjFwcO5yf9SysAncr+yoDaaiYIpcUnwfWjCWKTlUaJcVSdFALHypzg
+         bynw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764259986; x=1764864786;
+        d=1e100.net; s=20230601; t=1764260200; x=1764865000;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=vHkgE8J7FmhstuADR1oxca5gWYlZxfEf1EiRPemtMDo=;
-        b=DReaW60lrGoj/AToqzpXVSQZas1oXJ0ZbPTKpeKlL/DpK3FX81P/yP/GArsh6Kch9y
-         D7PwtO1OCjvFy2807+x3KWr2bDPoeUNFtxdopuh+MlEn5TVc/9mytwiNYV7w0N1/qPXh
-         VXWwLfvVWTZFsUI7L3515mWPpOynEYQEebGJaqXGBM2zNPEErqQUQnKfeomnjahzgSpk
-         B27/hLFwErFzVD/+ZK++QPQCiwq0QyIa7cCmIHPHGJS3l6RfR15P4OoIqQInbw1M3NFb
-         S2PjZeGDIdFf/UJ/tEVk5c90Kj+wkiAfA8/rPBzQjDYe5gxkHuexKn9J3RgopQiPJML/
-         jJpg==
-X-Forwarded-Encrypted: i=1; AJvYcCWS7UsUNx8YUBFYS+wbTGJcfl2ai8lWjUjh42Eo0lptbXKTvBUnQ/wg91TYWWy+aPluaAI0h92oS9E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFABZlWLCRl4d6ytDlz5rxGQZx37ctTSpPXIJL+OWSNsh5GQXh
-	00FSCdss2q6RNghH9KtIEkTWf0cL7b9tUUUB5ITPzsMJec/FJucFi4ojy4sv6AoI3uUWr3SmIBk
-	Xy51EQS2LPPNINYbXo0Oq/lCllP2xAEo=
-X-Gm-Gg: ASbGnctR/3VrsBQ0qbGun4Z7ii7LujQ7DwSjPfqY0+KkJW9A6RXoe1Rz/sJxZ0Dm72H
-	3dgf8mJoEtrG2mZh6qjfD8zxw8Jf2PCpkuCF4ZtO8BIjIB/p7NUWvYuGGQ6XFBe7FaTx5Acwl0s
-	LNiv0f+LtdLLqfXfs3i6l4QqyLhugz/XhLg2C16D4ifjYJGcPSNPiuLxDL5rvf9sz9ADZHUwLj9
-	vHNWuHJxWK/WhXusNcFAdhdlVyJazKpg0tzn4dJltPSdiGS19iLLmN1pMd4kRCwhKn1NNFjJSOC
-	MxUBTlwuS3H9Hmuc3Jul1S0EInS4sxZVpWZAsmxW+gBoGhT6dacVZOOfCak4FWrH/54fJqQ=
-X-Google-Smtp-Source: AGHT+IHL5lD9l+Hh164xtP764PC1ElejfIHOpAawihP6o7z5n7+TtXrvPC3UUFXr2PXT/YoRMV/DR5xhbgT7VKwIfhk=
-X-Received: by 2002:a17:907:d05:b0:b73:7ca6:220d with SMTP id
- a640c23a62f3a-b7671a4728bmr2613030766b.59.1764259985521; Thu, 27 Nov 2025
- 08:13:05 -0800 (PST)
+        bh=KNO28PzgIsx+2Ndb8A3ECc1R+7TzxXSai5xVu+osWaY=;
+        b=IlZmk5jN3M9ZvqJjdZlXpSIQcW6gh6EJC5s8cNU7dOtSCoMFmhr6rKcUTzh7mvI37s
+         TiTHRkOdAh/27SPIT6nFdkJkoEhMofMf6vrfXEaKmEyy8MZmzEML9o2oWBb9bP0yD4fn
+         19kZbZQRVj8j4g0SuO/rSaLk7w3f0wBRPBnGUhyvzTzUKPGwBzFmFCJGTiNVCwLxiEss
+         yRO47sPEE65ZQyg6FCUmzggLP6sU6wiv0biXa6qD3/9XH2Ur6G/TqBIpaFlOrVoV88Bu
+         87zcQtbgdmSWotxiZvhRNlMyAQKWtMDc+wPWTiuzF+hwh2w8YC758/eBYYj26S2n4Lvf
+         qN6w==
+X-Forwarded-Encrypted: i=1; AJvYcCWSOuQzMwJ2F9tFZ75QeKHpXpZr9kYnA5u3+ulcxPPe3TxiZqwVTnFzqR2JH0xZYNIzYMUwi2dF1O4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz32uUUlfJFYH2m7mCk/VPO96tQYHClZJReUeCZ/jYXfRZ+3Vbe
+	PXQOUVzGGc/d8GOd2l+TBoOvweZQCqFgxmIHfClapkhhoMLVHCi4yaPR9m/9wNoGURt/KcBm2i7
+	zu+jzW/XTIPP8RzBy4Nef2pObEbpxY1Q=
+X-Gm-Gg: ASbGncu9173iurMnXAVdb9Fy0+DhGgtVWGmwqGj3knnoJSR6LM9oEsDwdL4RaFqDDuN
+	5z1LEZviQcIc9qet/EfPHxS1L7dNQhAX7XOPVf2T/7PILz+m5xQpHmrRuHYJp38BRbf+uTuoyLw
+	5mrFeQolPVse2cYRWTjnZ4C013aiwEOYKdtO1+o7zQcFYL8rjJ0M51i2T1wEZwlN/GkfrPV4V88
+	gqnl+Wr8/1P1OlvroH9Ka8HvqwCq/gCcIk7bBROjuYW6nITbej5Eo7kt3iHou2UKWyTBxzuFLU6
+	KCznLCMiPDHXxSQFFmVcN0/dbHZWFNmryxM/gF4KGKPhNlaLtt9peywEzkM9fc/j3PVOkxo=
+X-Google-Smtp-Source: AGHT+IE6et7KPZp2GkXfofcAVlXzT7muZvGR6VaoGxIvgHz2tucfIoZqOFaUmU2ZIt9fSGn6WlPk+6UoVkEjoIjxQZM=
+X-Received: by 2002:a17:906:f5a5:b0:b3f:f207:b748 with SMTP id
+ a640c23a62f3a-b76c547167bmr1211487466b.10.1764260200132; Thu, 27 Nov 2025
+ 08:16:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251127155452.42660-1-dev-josejavier.rodriguez@duagon.com> <20251127155452.42660-3-dev-josejavier.rodriguez@duagon.com>
-In-Reply-To: <20251127155452.42660-3-dev-josejavier.rodriguez@duagon.com>
+References: <20251127155452.42660-1-dev-josejavier.rodriguez@duagon.com>
+In-Reply-To: <20251127155452.42660-1-dev-josejavier.rodriguez@duagon.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 27 Nov 2025 18:12:29 +0200
-X-Gm-Features: AWmQ_bl-vjVNPE1-lBZUlM8SQoQAsmh5XSIjD1Lm2LJMWJiupqb_fmgKaxReBWs
-Message-ID: <CAHp75VfhM5GuYY1qUKgBhePDo4oe5k3K1ZDTPbYJNr5NtjVVfQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mcb: Remove MODULE_ALIAS from all mcb client drivers
+Date: Thu, 27 Nov 2025 18:16:03 +0200
+X-Gm-Features: AWmQ_bkZa2nrqUftdjH6MAYONe3JSVeW4Th2GGUqnpqYo2uuwkRVZXIvhkoPc0g
+Message-ID: <CAHp75VdvJUFwFBRKT+iqwQXiK-toah3gZq6pX9Omcp6d2R7g+A@mail.gmail.com>
+Subject: Re: [PATCH 0/2] mcb: Add modpost support for processing MODULE_DEVICE_TABLE
 To: Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>
 Cc: linus.walleij@linaro.org, brgl@kernel.org, jic23@kernel.org, 
 	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, 
@@ -90,21 +90,59 @@ Cc: linus.walleij@linaro.org, brgl@kernel.org, jic23@kernel.org,
 	jth@kernel.org, wim@linux-watchdog.org, linux@roeck-us.net, nathan@kernel.org, 
 	nsc@kernel.org, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-iio@vger.kernel.org, linux-serial@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Jorge Sanjuan Garcia <dev-jorge.sanjuangarcia@duagon.com>
+	linux-watchdog@vger.kernel.org, linux-kbuild@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Thu, Nov 27, 2025 at 5:56=E2=80=AFPM Jose Javier Rodriguez Barbarin
 <dev-josejavier.rodriguez@duagon.com> wrote:
 >
-> MODULE_ALIAS information is no longer needed as now all mcb client
-> drivers are reporting such information through MODULE_DEVICE_TABLE.
+> During the process of update of one of the device drivers that are part o=
+f
+> mcb bus (gpio-menz127.c),
 
-While this is not a big change, I still would recommend to split on
-per-driver basis, and with pushing the first one as kinda a fix after
-v6.19-rc1 (to v6.19-rcX) allows other maintainers to apply the rest on
-driver-basis. This helps everybody I assume.
+> one maintainer of the GPIO subsystem
+
+Krzysztof? Did I miss something and he is now a (co)maintainer here?
+
+> asked me
+> why I was adding new MODULE_ALIAS when I also added the same new
+> information on MODULE_DEVICE_TABLE.
+>
+> You can find the messages here:
+>
+> https://lore.kernel.org/linux-gpio/80a20b13-7c6a-4483-9741-568424f957ef@k=
+ernel.org/
+>
+> After a deeper analysis, I came across that the mcb_table_id defined insi=
+de
+> MODULE_DEVICE_TABLE on all device drivers was being ignored as modpost wa=
+s
+> not processing the mcb MODULE_DEVICE_TABLE entries. For this reason, form=
+er
+> contributors were using MODULE_ALIAS for enabling mcb to autoload the
+> device drivers.
+>
+> My proposal with these changes is to complete the mcb bus by adding
+> modpost support for processing mcb MODULE_DEVICE_TABLE and removing
+> MODULE_ALIAS from all device drivers as they are no longer needed.
+>
+> Jose Javier Rodriguez Barbarin (2):
+>   mcb: Add missing modpost build support
+>   mcb: Remove MODULE_ALIAS from all mcb client drivers
+>
+>  drivers/gpio/gpio-menz127.c            | 1 -
+>  drivers/iio/adc/men_z188_adc.c         | 1 -
+>  drivers/tty/serial/8250/8250_men_mcb.c | 3 ---
+>  drivers/tty/serial/men_z135_uart.c     | 1 -
+>  drivers/watchdog/menz69_wdt.c          | 1 -
+>  scripts/mod/devicetable-offsets.c      | 3 +++
+>  scripts/mod/file2alias.c               | 9 +++++++++
+>  7 files changed, 12 insertions(+), 7 deletions(-)
+>
+> --
+> 2.51.1
+
 
 
 --=20

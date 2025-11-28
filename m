@@ -1,153 +1,254 @@
-Return-Path: <linux-iio+bounces-26548-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26550-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F2BC92D12
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Nov 2025 18:40:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 080A2C92E54
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Nov 2025 19:19:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E24144E2656
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Nov 2025 17:40:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B637F3A9FC0
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Nov 2025 18:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85037333440;
-	Fri, 28 Nov 2025 17:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC0432F74A;
+	Fri, 28 Nov 2025 18:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BHZPkkfn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bYF+x+fi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6E3332EC9
-	for <linux-iio@vger.kernel.org>; Fri, 28 Nov 2025 17:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F30233704;
+	Fri, 28 Nov 2025 18:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764351612; cv=none; b=mtBJKRJhsaAAnSodM3+qHBhFCQLCkIr8tV+kp5G+tvSwQ3pndeIPoMHa5Uhh2mgsF9LJzsmdLEOFaFPx5eGS11buGaALlBniF2NLD4eI6JnrSOrZ6GMED/47CmjFGWf8B3ULXAtB9/ORge5pIHtf3ztfjtKBJyvsLf/Z/sVek9o=
+	t=1764353989; cv=none; b=lIfYIcVwvuXinnwjeVic4JBR/wtBsBafJtbh1d4P9XhMj/pYqNPCeIcxITGmEgzaSi56x3a8vsa9Rugglx531k2YoO4/twoGOvNtmacivF1Mn+cNiHS0YoZLkflCtmBruauzP/+sKSTUe8ZmEbGWgDnyFLmwLJ/UjydlNeSAJS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764351612; c=relaxed/simple;
-	bh=O3gwZTCrjFoeqf+4ZZG/d68f+S5hhU8HJwBqekuNMGA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=rz/R6tExVR4oMDlDQD0V6F2Jkzy7JQ9VRaJ9anmv5ZjJgxYcR5qswqmlzMO005IoeCg62Q825CLNrofub90kvf27FQcKGpIZG5xGcv4dZau9n7fZ09OqEjKMcLrCZGjC1hlCWoK9CkvjKQ0GDb3ObtW3CrA1FcfTBDBdQRoIz+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BHZPkkfn; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-55b155c9ab2so640471e0c.1
-        for <linux-iio@vger.kernel.org>; Fri, 28 Nov 2025 09:40:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764351608; x=1764956408; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ksf9bpHNFLQpJsZYVUeK4l3VWIZV+1TA8e1+Ve8vX3E=;
-        b=BHZPkkfna4KayLc1o458l5oA2AVaiqU/d6U4sniNrf3ijQ7XYEi+hIt8mWinIQvjzC
-         GMEsYJbSo+PXit5owWSYfZT69Yw8llUO7SaFaR3jGWMZkv6tUESm51lJLobKTlDEoKMG
-         H4mJkaSnuXRRxNO1bTYFuQt2Zp0TYazFWus0FoW13O3kQHft5g5+Y+HigwSakOZ8sAV5
-         bZsuvLOYFzjsWZy8NZXaQJOrLDlQkHqUNq5ADwxWDX+rjdGUKsEV/9N2JhUgw2wVQlMH
-         cZw/rrjeHt4wg5Jptjps+uJnrfck5Z6rQWjrd4EJk8cy/5IbUlpkXUra/7OYsRcbodY0
-         Suqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764351608; x=1764956408;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ksf9bpHNFLQpJsZYVUeK4l3VWIZV+1TA8e1+Ve8vX3E=;
-        b=uQBbtTkT+saVC4CyUqPEpkMNwhVdoQeKbdNtVIfioNcLM9imx1Ij1MGwxnoO6/Sy3U
-         ghk3VqpHFZV8M8jRBraPq5BeKJdDnivJ3zTdzrBXP/jmr11xG2xh9ET/Y9SmWdzs0PUx
-         FqliZhIO86BT14RSocFPpH0ZhXXY+fHigQOaLbZs3p2dhd09f1DgvCEOW9Mcpnl4D9Iy
-         cGM+qAt5vIDMVFNvJABlv/eDrlxbb+z9TjC1xQE4z1atsj4kAjmgvJHZIoPYoFpZwQAi
-         pX6cYQRMq383RbM+TnT0SgkPlNcAaus/BvAsMFcetRNbJzsxk5iULvoRkjQNm3X5V2F1
-         MKzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCNQKAQPOdbbBYUS7XlS6hhYDP8ZnvYh0KsLnwTzt//5NiTG3SzGDVmS0hUulipjA+B+NV2mVssys=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ240DcDG8x/XsIxQJRgrqjNYGh4MY9GBpgUvqUalyEaXauI+F
-	DKC96ubWBlq53gkJ72y892i16EFAEs/DCDmkyAH/sBAH9S9mbONvDwdWnoHuMg==
-X-Gm-Gg: ASbGncuOP6+rfZ1FPHWitpNFj2cfND+9xzMMrqXPbpv6lfIzplTZJ5W/I5gbb52O26/
-	Mvg/BO1elqdDpIQxt3wizJN9ZI2+PObnk7CH6Cg/NNXI7ZeRMFJClqeVMVQW9Y6qnXv+dDPC55i
-	j75EdgOnprsa2golUJhsAxTf7xqJP4fdnYoKSdGMYNTaMkfkqMdpsA0rf5dOHkH8zUqI5txF1yy
-	PvFfUAFZGIGiB0dm34LVRTR3D88C48szDe/HTNdgx6AEMFcfSAP6ozVDBlPc7AbsL9UfXKRlzEY
-	PFCr+glCJrD1wCUww9wNfdeRU+HUV4ck/PwSE4BuDBonhR/OBZ4Vt298BpnPjXETdiR7Fry63n3
-	7UaKIY1ia4rege2NwzGQWGNGR1A1ziXVhZ1fmRobxByd0xkBXu9V0cPISOqkP2Jg8J4vCGXqLx8
-	KJDqPKog==
-X-Google-Smtp-Source: AGHT+IFe8GiAMTa0/l9shgwgJWoUbKMN6FN3Mnu2XXuSPGgXKPKMwILFzaMqyMjJpH018s1tlchfJw==
-X-Received: by 2002:a05:6122:6b1b:b0:55b:9bee:ff61 with SMTP id 71dfb90a1353d-55b9bef0f0amr7951568e0c.16.1764351608522;
-        Fri, 28 Nov 2025 09:40:08 -0800 (PST)
-Received: from localhost ([2800:bf0:4580:3149:7d4:54b1:c444:6f2f])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-55cf5186d0csm2161858e0c.20.2025.11.28.09.40.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Nov 2025 09:40:07 -0800 (PST)
+	s=arc-20240116; t=1764353989; c=relaxed/simple;
+	bh=TQacgkZQcsvptdNv9G3fP+zzJTK8GgNwUEialm8Ojz8=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=KkLGdQBMl+2ozCmyJVc2mg8QYlsrUgFdmDqSNwGB66LMMCH6cVWMY3vF/Hw06vmu9UIgXupvUgEevMx8rNy9O2YUSkx3MpSMLtpaC+TtvQduagQfFrf9cMdGBJEl/dN2zXa7WWqljiNuf364lZKRu1a7Jo9hNGEdV5Ehl2AKjm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bYF+x+fi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612DAC4CEF1;
+	Fri, 28 Nov 2025 18:19:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764353987;
+	bh=TQacgkZQcsvptdNv9G3fP+zzJTK8GgNwUEialm8Ojz8=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=bYF+x+fiaHuy3l7Qi37uyk/kpp2VFq7w5F+psb5GqMBNHMs6ES9UAU3zlvkWGRUO6
+	 nbRZgjBmN9v/uiJeWOnmEpJpOYQCh0gevEOVgSOnMIzJXy2mnYAEEq80kFrHQH+PCV
+	 SjaHqGmYKNz1i7HQIAKIVL+sJPB7K6q6UbfNjPTZKsVCBh7+jsFeO5I+cwfW4gEBsG
+	 qZNbBEtkomzmpqYzNURmREoYPXk7MCXs5ITWoP881CvNh22F1m1V4yG4DjHlWnEdxA
+	 9S5KypnEoeS0ggrToNDCs0AmyB1Nkyo98XI8sGIUM70eyD6FtZq79+Xkj97Cv7/fXZ
+	 AbJBPnrv30NhQ==
+Date: Fri, 28 Nov 2025 12:19:45 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 28 Nov 2025 12:40:06 -0500
-Message-Id: <DEKIG2EXEUS9.28A50WAN06ZMQ@gmail.com>
-To: "Krzysztof Kozlowski" <krzk@kernel.org>, "Kurt Borja"
- <kuurtb@gmail.com>, "Jonathan Cameron" <jic23@kernel.org>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Tobias Sperling"
- <tobias.sperling@softing.com>
-Cc: "David Lechner" <dlechner@baylibre.com>, =?utf-8?q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Jonathan Cameron"
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Add TI ADS1018/ADS1118
-From: "Kurt Borja" <kuurtb@gmail.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251127-ads1x18-v2-0-2ebfd780b633@gmail.com>
- <20251127-ads1x18-v2-1-2ebfd780b633@gmail.com>
- <bc76c2c9-ceb6-4ba4-80f0-8a114c5da033@kernel.org>
-In-Reply-To: <bc76c2c9-ceb6-4ba4-80f0-8a114c5da033@kernel.org>
-
-On Fri Nov 28, 2025 at 4:43 AM -05, Krzysztof Kozlowski wrote:
-> On 28/11/2025 04:37, Kurt Borja wrote:
->> +
->> +  interrupts:
->> +    description: DOUT/DRDY (Data Out/Data Ready) line.
->> +    maxItems: 1
->> +
->> +  drdy-gpios:
->> +    description:
->> +      Extra GPIO line connected to DOUT/DRDY (Data Out/Data Ready). Thi=
-s allows
->> +      distinguishing between interrupts triggered by the data-ready sig=
-nal and
->> +      interrupts triggered by an SPI transfer.
->> +    maxItems: 1
->> +
->> +  '#address-cells':
->> +    const: 1
->> +
->> +  '#size-cells':
->> +    const: 0
->
-> These two properties are not correct now - you do not have any children.
->
->> +
->> +  '#io-channel-cells':
->> +    const: 1
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - vdd-supply
->> +  - '#address-cells'
->> +  - '#size-cells'
->
-> And they should not be required.
-
-I'll drop these. Thank you, Krzysztof!
-
->
->
-> Best regards,
-> Krzysztof
+MIME-Version: 1.0
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Conor Dooley <conor+dt@kernel.org>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+In-Reply-To: <20251128144428.24450-2-antoniu.miclaus@analog.com>
+References: <20251128144428.24450-1-antoniu.miclaus@analog.com>
+ <20251128144428.24450-2-antoniu.miclaus@analog.com>
+Message-Id: <176435398575.2319875.11190556309787903382.robh@kernel.org>
+Subject: Re: [PATCH v5 1/2] dt-bindings: iio: amplifiers: add adl8113
 
 
---=20
- ~ Kurt
+On Fri, 28 Nov 2025 16:44:10 +0200, Antoniu Miclaus wrote:
+> Add devicetree bindings for adl8113.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> Changes in v5:
+> - Replace separate va-gpios and vb-gpios properties with single ctrl-gpios array
+> - Remove second example, keep only one with external bypass configuration
+> - Add comments to external bypass gains in example
+> 
+>  .../bindings/iio/amplifiers/adi,adl8113.yaml  | 89 +++++++++++++++++++
+>  1 file changed, 89 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/amplifiers/adi,adl8113.yaml
+> 
+
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 428, in get_or_retrieve
+    resource = registry._retrieve(uri)
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/validator.py", line 426, in retrieve
+    return DRAFT201909.create_resource(self.schemas[uri])
+                                       ~~~~~~~~~~~~^^^^^
+KeyError: 'http://devicetree.org/schemas/thermal/qcom-tsens.yaml'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 682, in lookup
+    retrieved = self._registry.get_or_retrieve(uri)
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 435, in get_or_retrieve
+    raise exceptions.Unretrievable(ref=uri) from error
+referencing.exceptions.Unretrievable: 'http://devicetree.org/schemas/thermal/qcom-tsens.yaml'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/validators.py", line 463, in _validate_reference
+    resolved = self._resolver.lookup(ref)
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 686, in lookup
+    raise exceptions.Unresolvable(ref=ref) from error
+referencing.exceptions.Unresolvable: /schemas/thermal/qcom-tsens.yaml#
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/bin/dt-validate", line 8, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 158, in main
+    sg.check_dtb(filename)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 95, in check_dtb
+    self.check_subtree(dt, subtree, False, "/", "/", filename)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 88, in check_subtree
+    self.check_subtree(tree, value, disabled, name, fullname + name, filename)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 88, in check_subtree
+    self.check_subtree(tree, value, disabled, name, fullname + name, filename)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 83, in check_subtree
+    self.check_node(tree, subtree, disabled, nodename, fullname, filename)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 34, in check_node
+    for error in self.validator.iter_errors(node, filter=match_schema_file,
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                            compatible_match=compatible_match):
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/validator.py", line 448, in iter_errors
+    for error in self.DtValidator(schema, registry=self.registry).iter_errors(instance):
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/validators.py", line 384, in iter_errors
+    for error in errors:
+                 ^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/_keywords.py", line 296, in properties
+    yield from validator.descend(
+    ...<4 lines>...
+    )
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/validators.py", line 432, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/_keywords.py", line 275, in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/validators.py", line 465, in _validate_reference
+    raise exceptions._WrappedReferencingError(err) from err
+jsonschema.exceptions._WrappedReferencingError: Unresolvable: /schemas/thermal/qcom-tsens.yaml#
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 428, in get_or_retrieve
+    resource = registry._retrieve(uri)
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/validator.py", line 426, in retrieve
+    return DRAFT201909.create_resource(self.schemas[uri])
+                                       ~~~~~~~~~~~~^^^^^
+KeyError: 'http://devicetree.org/schemas/thermal/qcom-tsens.yaml'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 682, in lookup
+    retrieved = self._registry.get_or_retrieve(uri)
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 435, in get_or_retrieve
+    raise exceptions.Unretrievable(ref=uri) from error
+referencing.exceptions.Unretrievable: 'http://devicetree.org/schemas/thermal/qcom-tsens.yaml'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/validators.py", line 463, in _validate_reference
+    resolved = self._resolver.lookup(ref)
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 686, in lookup
+    raise exceptions.Unresolvable(ref=ref) from error
+referencing.exceptions.Unresolvable: /schemas/thermal/qcom-tsens.yaml#
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/bin/dt-validate", line 8, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 158, in main
+    sg.check_dtb(filename)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 95, in check_dtb
+    self.check_subtree(dt, subtree, False, "/", "/", filename)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 88, in check_subtree
+    self.check_subtree(tree, value, disabled, name, fullname + name, filename)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 88, in check_subtree
+    self.check_subtree(tree, value, disabled, name, fullname + name, filename)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 83, in check_subtree
+    self.check_node(tree, subtree, disabled, nodename, fullname, filename)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/dtb_validate.py", line 34, in check_node
+    for error in self.validator.iter_errors(node, filter=match_schema_file,
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                            compatible_match=compatible_match):
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/validator.py", line 448, in iter_errors
+    for error in self.DtValidator(schema, registry=self.registry).iter_errors(instance):
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/validators.py", line 384, in iter_errors
+    for error in errors:
+                 ^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/_keywords.py", line 296, in properties
+    yield from validator.descend(
+    ...<4 lines>...
+    )
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/validators.py", line 432, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/_keywords.py", line 334, in allOf
+    yield from validator.descend(instance, subschema, schema_path=index)
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/validators.py", line 432, in descend
+    for error in errors:
+                 ^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/_keywords.py", line 275, in ref
+    yield from validator._validate_reference(ref=ref, instance=instance)
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/jsonschema/validators.py", line 465, in _validate_reference
+    raise exceptions._WrappedReferencingError(err) from err
+jsonschema.exceptions._WrappedReferencingError: Unresolvable: /schemas/thermal/qcom-tsens.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20251128144428.24450-2-antoniu.miclaus@analog.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

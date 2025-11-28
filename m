@@ -1,81 +1,82 @@
-Return-Path: <linux-iio+bounces-26529-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26530-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED80C90C8A
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Nov 2025 04:37:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4DBFC90C93
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Nov 2025 04:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DBBE835109B
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Nov 2025 03:37:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A5A984E29A7
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Nov 2025 03:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665752D594F;
-	Fri, 28 Nov 2025 03:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8193B2D7DC5;
+	Fri, 28 Nov 2025 03:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ph5Qw1Bo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kk/gtXCx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC84C2857EF
-	for <linux-iio@vger.kernel.org>; Fri, 28 Nov 2025 03:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA112857EF
+	for <linux-iio@vger.kernel.org>; Fri, 28 Nov 2025 03:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764301050; cv=none; b=DWsJ/I+xDQiq4TJ+0FhkImoCwvUrHqvEy0CMpR7JVqFUbwaMdXTUjGsPkQMbM+Dg7uAtN9NXT30daunvZNbG1XZeJ9VRVsCQLggTQUKPAv0pN1QDtR8BnShzz0bjjo44OWasNysWJ1eLjNI7GeFx7dUEstieMc9wrZPm1gOvDyA=
+	t=1764301052; cv=none; b=hQOHIj9kB0hYC8Rt25Iv73cvb9f+XqB3hA2bSj55NBbv+yCZHGgEf5mfUTAFpc7zEPOfWhxCXPTr6qyyt3OfZvtJHWeZ9niEW3dDDysog6VdCwXhSPMKLACyeSh+2/HJyt3MeSZWw2TrAmLdkPvKVvxE5ZVRXkN82Eufb1c33Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764301050; c=relaxed/simple;
-	bh=V5iOOlNuMfmgIjeAxadZc2xd+oV6bLx3zUaQtyWg6T0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aOCS6GqJ+1terdjM7GMJRo7Rm25aza6sPybJ2hqPGLE5UTtxJQncsVTnvdX0etxeGnuXdyY+Smljjp2vieBTvEhY4TvFCw7xh6vrrz+WNuGgRFeOrozSe+/yl1FC8dEp5U0dLklPzaKDd9nK9F3oyK58NFqqSf3XjgKVFKcy/XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ph5Qw1Bo; arc=none smtp.client-ip=209.85.222.49
+	s=arc-20240116; t=1764301052; c=relaxed/simple;
+	bh=zN4mTvAlNG+j5dkz9olyk6N5wrggUvPOvD8a++d87Lc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Qx2DGEldSgPdLVETNMXVQ8qenPOWZ3kKZChxpnvl55ud8JK5mU4orYRzew0TvS6ukgEBKvZ5MQU2VmBMmur4/NhQbn3JD2V2WjMPUU4DdJQuQ1YeBQyuB0/Sp6fMCe1IvKC6k9fXvyrnlWqbQG+Ml0lBbGfn81wsf45C31UlSfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kk/gtXCx; arc=none smtp.client-ip=209.85.217.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-9372310418bso372973241.3
-        for <linux-iio@vger.kernel.org>; Thu, 27 Nov 2025 19:37:28 -0800 (PST)
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-5dbd9c7e468so537632137.3
+        for <linux-iio@vger.kernel.org>; Thu, 27 Nov 2025 19:37:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764301047; x=1764905847; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=P3yYxVlXjQpAYVmn1yZeDARt+Kd7Sj2iOkrz+byPjis=;
-        b=Ph5Qw1Bo6/af3TsPnNwA632AZZXvpWdgBkdAm3U11Dx1In38Af+KQN3pKG6/CUTV+1
-         dT9M94PAEGrBQ1M3UCZL4YTxov0Zvycq3HqnpcTQs4R3rsc3tpQfNXi+7ybP3SKROJ7r
-         080GhzLJqPQWxBpDAnnw3z8/LIL8XFBEkQsM7+c8mTlPzEzUls4zcjx7tgYZxC8R7uXV
-         vyNlKqRSRutS3tDr3+/Y8QgoMZPNIELUKMWMGbLBPyJuqzfESVotpVY/42oO8iBR2FRa
-         UMlgc+EtBVjJVWlPN0JByQG2JqObAFNtwl8EGPjEMbJ+BbE6qQ1u5tBfHtbpfFAR/Tt7
-         Oh8g==
+        d=gmail.com; s=20230601; t=1764301049; x=1764905849; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AABb+J7VAVGq7TKx/cUCiui5FZaOhmyV1W31gf2aLcI=;
+        b=Kk/gtXCxyuI/+Zj2QpW4Uuw6gpW57vrQpEg+4OZhQ19oX651avu7+45tOImfkzfXsk
+         U1SogdedPMfNRYqwqnMubCD6L4+XZuAZVx9Ta6yamwnZLYS5QCtWiWc0JpazGpa4i/ks
+         GkyqAy6ezcj4H/hF7IPAalpFgdSVh9BrnU+9KNKDzPqLLOA5yimDs7Q/FKEbVyIO9s2L
+         A9HeiE2NdwbkhC2Q3LC7knJf8CsKqKhfr5RR5HLtxZlcmOQNaRY8e6XMpLCJ8MArmMdO
+         7GNJEcgut4TmiSCrefOQ4pyiXtYFJbxtksbnm1FcO6cCnUf1q2VzaSFvTmS/LTodLzF0
+         TVxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764301047; x=1764905847;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P3yYxVlXjQpAYVmn1yZeDARt+Kd7Sj2iOkrz+byPjis=;
-        b=J9CWGmBmDwL8vxMHM3NxIHgTmcUlLGMKpjHGyTVpQAZ8XS2Zdl5kBfi2GnqRq4cwHN
-         0hwkBkR0PiT4S6lWR/hSev3dm1B28kr7G0cYsHkLFJwPGkeuOGNa+dLcxiD5EEdI8Nk3
-         O82eOh96nTjK8f9239vq3qRzyB5YY5RVFIHWsaZ48JhSYbeOfardaMPj99EoAFxqeB4p
-         Y4EyIxTF0gHu1NCe1ga7mXY3tsqj+J4+V4ufGOg5OmKHa2K+FPxnK697Nzq60vwPz28t
-         lhCOZLFejCNGLd2ZKWqNk38iHH/TGMFB4PGL58cMKLIGrwHDi3+w2gM0Lt/tmN0kgvkC
-         RoRA==
-X-Forwarded-Encrypted: i=1; AJvYcCUN5x2Nty5CURNLex3YeJd8Tej3p0QGwyNHpFh0uPSi0naenSVwSCRR/g+eEhRWn5tDrCBuinFEIZ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/7XO/Yr75cOibiibgixLDtxkv6AUs1xvZzkp5Zuvk8BdG+DL3
-	b3xiIXG/fR26k1aIjIcfCPDx8CVlROThEdbMQfRh38LkqxJNeRuefYRacercIw==
-X-Gm-Gg: ASbGncuxfBmNsmu19hRKpHs2IILR0NqHs+F/PV5NmFCx+QNNrCsBW2RuDp7N8nw7hRx
-	fjPzFCOpMzx0eW+2ct2r+Du34P5fS02Ff6u4gssh+zDOfMCJlcu/dIGXulsma/+UCVbrMT2cUpN
-	w8GWLlyikrTWZV7iUbUVbshjmS+dJPWI/LTOp3GmbYb8RjRqFvAh9D/vEw9rYTpJS6/WtbJ5uT9
-	Bju1+ErpZIW7U/Lr6n4Qx0O51+r/voHNE2cNOMZdduo0jo41bVQJqFTFkT1z8oBpC0R2AxOBojO
-	QtpGa/VImRtxqjPDKu39U5fWvHr0L4JU0D9c1KFYvEQskjBWzrThaIWAHLoYGuTKAJJjz0zSZiG
-	uSdi2Dqh1ID4djsK5Nzc0RK40rL/8cjub4xNEO3BPy/QLBYoP6pTcsdzfVeC92T6psMREBOXlY+
-	o/QxJUmAlf32Pg
-X-Google-Smtp-Source: AGHT+IF/M+qcXryFQZVFAKx8VIF/OdADcKPRswi6KLOIA8QaeDqW0eXZ3Fw8VA/hKd02wdjtvJWKlw==
-X-Received: by 2002:a05:6102:3a06:b0:5de:31b1:2011 with SMTP id ada2fe7eead31-5e1de1666b9mr8275069137.17.1764301047486;
-        Thu, 27 Nov 2025 19:37:27 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764301049; x=1764905849;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AABb+J7VAVGq7TKx/cUCiui5FZaOhmyV1W31gf2aLcI=;
+        b=uXmjlCvgaHHKQAYKmuTFoDdharjwKlEBm5JCLbR+Ep0To9nd02HJlznaU5e9XNIIh3
+         fB/v685DX8toKlOak1MAf4HV3oBlOpJiLJ0X/pFjzCQPu2v77Ob9cF10oXTGhhUdcBvt
+         X2mXbxltyjjzMqgCv5wZK78dCBvC6II0mx0fEhkr3lgG9jrvDQzMDGIG2aPc73L2LRmi
+         fge6aaBG1cyGsCIa6cX4VAuMYzrLReNGQTZiwH+Hyp2vfvtCzKetfNgNQ7Qtkl74nuRL
+         RBd1KRsytZ2bdf8YkjGeHMoUctxLrSdrtPN+PjRRwm11ssOP4amQy/PkFCTopMEJKTV8
+         mArw==
+X-Forwarded-Encrypted: i=1; AJvYcCULJMxIw/EzbDdiIzDjfk4B3sdxLDdByoAVbfIbBkbREd6qzaNEeAYG/CK5IqU+/lkRsGFHdQqVvOc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQF1Kyuji0Uhj/dOF18zBubsGfxA4xvhiLo5Fff10LfO8+Wl/J
+	vd5waA5wwHp59EgsmaYF4A3C9EhT5FT6Di6McDwVcfUW4c/vB4Qo08oQ
+X-Gm-Gg: ASbGncuBdLnu7x5VK59LRD9XByWkOIZ2bhPYPyiKR1Vs08Sjc2dAEpV7200YvwRG8Bt
+	ItRzgo7BUkCW2JLM7b9opKxN537BEfup63Gitq6OEXe3zxEaTcm/mYT8Kw+ucDM2/azs0UZypmJ
+	28RHaySwJ6lKNCkqTUOsl3t+5VTYxl3QCJ5UTs6mDBW4RMLH3386loAJ2CIzHODVS7kBXefp5gb
+	VKwjFr53a2TDmDo6EKyZUJRPoBvqVmXOeCJSqyN0mBcf7kb6aJtoSYsPMeQFRf0m8z0yrL+Kpsz
+	0dykuasIvJ6qATJOwOukzCm/DG8pxs+LIJ/1jRcmU64GfXe42ugMydI/7yx21rJ1+bD1nlgwJ8U
+	lzDu5vt/s6/nV51p9mCY/OsCuJPp3MiSYHMbQwyx57nBqicwFCozLQUrPQczFD+Mf1Gq+OJd5ZZ
+	z+tnnk4ayPZiw1dK5NOtkCz28=
+X-Google-Smtp-Source: AGHT+IGwtp7PrAsIHTD4uB2Oxo042oMNiACJI0iD4v9fC+ytl628G33X0a2EjGjxFvkynmU5sWJKog==
+X-Received: by 2002:a05:6102:5107:b0:5db:ef30:b74f with SMTP id ada2fe7eead31-5e1de0c07b0mr7355964137.8.1764301049390;
+        Thu, 27 Nov 2025 19:37:29 -0800 (PST)
 Received: from [192.168.100.70] ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5e24d94f2d2sm1170483137.8.2025.11.27.19.37.25
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5e24d94f2d2sm1170483137.8.2025.11.27.19.37.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Nov 2025 19:37:27 -0800 (PST)
+        Thu, 27 Nov 2025 19:37:29 -0800 (PST)
 From: Kurt Borja <kuurtb@gmail.com>
-Subject: [PATCH v2 0/2] iio: Add support for TI ADS1X18 ADCs
-Date: Thu, 27 Nov 2025 22:37:09 -0500
-Message-Id: <20251127-ads1x18-v2-0-2ebfd780b633@gmail.com>
+Date: Thu, 27 Nov 2025 22:37:10 -0500
+Subject: [PATCH v2 1/2] dt-bindings: iio: adc: Add TI ADS1018/ADS1118
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,10 +85,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOUYKWkC/z3MQQrCMBCF4auUWRuZCZomrryHdBGTtB2wrSQSK
- iV3N1Zw+T8e3wYpRA4JLs0GMWROvMw15KEBN9p5CIJ9bZAoz4QkhfWJVtICPbat8aiUQajvZww
- 9r7t062qPnF5LfO9wpu/6M0jS38gkUGjl76ixd8aersNk+XF0ywRdKeUD+4lWQZ4AAAA=
-X-Change-ID: 20251012-ads1x18-0d0779d06690
+Message-Id: <20251127-ads1x18-v2-1-2ebfd780b633@gmail.com>
+References: <20251127-ads1x18-v2-0-2ebfd780b633@gmail.com>
+In-Reply-To: <20251127-ads1x18-v2-0-2ebfd780b633@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
@@ -99,89 +99,142 @@ Cc: David Lechner <dlechner@baylibre.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
  Kurt Borja <kuurtb@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2897; i=kuurtb@gmail.com;
- h=from:subject:message-id; bh=V5iOOlNuMfmgIjeAxadZc2xd+oV6bLx3zUaQtyWg6T0=;
- b=owGbwMvMwCUmluBs8WX+lTTG02pJDJmaEq+EvrIciJBt+mLydIbMwksrX0uGmK40uXIsfr9ee
- SdbgwpHRykLgxgXg6yYIkt7wqJvj6Ly3vodCL0PM4eVCWQIAxenAEwkwZ+RoTftoOSyM67LKlkf
- Ha4pWtLgPZl1idS8AK8wn/DJ+V/lSxn+p86yVJNy3DFFZ7aWtV/qkxpPZ88rk/+vOr/i0Irc55f
- +sQIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3398; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=zN4mTvAlNG+j5dkz9olyk6N5wrggUvPOvD8a++d87Lc=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDJmaEl9MrcTCq50kNO+tqjTMcJz2lT+2+0inrqiyrM2jI
+ uUXjYodpSwMYlwMsmKKLO0Ji749isp763cg9D7MHFYmkCEMXJwCMJF5JowMt69LnxfetNJtkaKo
+ xCXLYF/zEwL1jUufvft8vddqddJ7WUaGMyc4Y20fLz45obPsYaLj4cjYmVIn+DNZ31gkKFkKqS9
+ nAwA=
 X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
  fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 
-Hi,
-
-This series adds a new driver for TI ADS1X18 SPI devices.
-
-This is my first time contributing to the IIO subsystem and making
-dt-bindings documentation, so (don't) go easy on me :p.
-
-As explained in Patch 2 changelog, the DRDY interrupt line is shared
-with the MOSI pin. This awkward quirk is also found on some Analog
-Devices sigma-delta SPI ADCs, so the interrupt and trigger design is
-inspired by those.
-
-@ David:
-
-I didn't move enable_irq() and spi_bus_lock() out of .set_trigger_state.
-I explained some of my reasoning in v1 and I expanded patch 2 changelog
-on that. If you disagree with this, let me know!
-
-Thank you in advance for your reviews.
+Add documentation for Texas Instruments ADS1018 and ADS1118
+analog-to-digital converters.
 
 Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
-v2:
-  - [Patch 1]:
-    - Move MAINTAINERS change here
-    - Use generic node names: ads1118@0 -> adc@0
-    - Rename file to ti,ads1118.yaml -> ti,ads1018.yaml
-    - Drop ti,gain and ti,datarate
-    - Add spi-cpha and spi-max-frecuency properties as they are fixed in
-      all models
-    - Add vdd-supply
-    - Make interrupts and drdy-gpios optional properties
+ .../devicetree/bindings/iio/adc/ti,ads1018.yaml    | 93 ++++++++++++++++++++++
+ MAINTAINERS                                        |  6 ++
+ 2 files changed, 99 insertions(+)
 
-  - [Patch 2]:
-    - Update probe based on dt-bindings changes
-    - Rename file to ti-ads1x18.c -> ti-ads1018.c
-    - Rework ads1018_oneshot(), instead of waiting for IRQ wait an
-      appropriate delay before reading again
-    - Only alloc and register a trigger if we have an IRQ line
-    - Drop ads1x18->msg_lock in favor of IIO API locks
-    - Read conver before enabling and after disabling IRQ to ensure CS
-      state is correct
-    - Add ads1018_read_locked() which takes an additional argument
-      `hold_cs` to explicitly control CS state in trigger and buffer
-    - Fix ADS1X18_CHANNELS_MAX limit 9 -> 10
-    - Call iio_trigger_notify_done() in all IRQ handler paths
-    - Drop unused includes
-    - Drop BIT_U16 and GENMASK_U16 macros
-    - Drop unnecessary named defines
-    - Use u8 types in ads1018_chan_data
-    - Rename some struct members for clarity
-    - Move tx_buf and rx_buf to the end of struct ads1018
-    - Rework channel handling to just make everything visible and add
-      ADS1018_VOLT_DIFF_CHAN
-    - Use .scan_index instead of .address in IIO channels
-    
-  - v1: https://lore.kernel.org/r/20251121-ads1x18-v1-0-86db080fc9a4@gmail.com
-
----
-Kurt Borja (2):
-      dt-bindings: iio: adc: Add TI ADS1018/ADS1118
-      iio: adc: Add ti-ads1018 driver
-
- .../devicetree/bindings/iio/adc/ti,ads1018.yaml    |  93 +++
- MAINTAINERS                                        |   7 +
- drivers/iio/adc/Kconfig                            |  12 +
- drivers/iio/adc/Makefile                           |   1 +
- drivers/iio/adc/ti-ads1018.c                       | 716 +++++++++++++++++++++
- 5 files changed, 829 insertions(+)
----
-base-commit: f9e05791642810a0cf6237d39fafd6fec5e0b4bb
-change-id: 20251012-ads1x18-0d0779d06690
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml
+new file mode 100644
+index 000000000000..021f2a3ca4be
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml
+@@ -0,0 +1,93 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/ti,ads1018.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: TI ADS1018/ADS1118 SPI analog to digital converter
++
++maintainers:
++  - Kurt Borja <kuurtb@gmail.com>
++
++description: |
++  The ADS1018/ADS1118 is a precision, low-power, 12-bit or 16-bit, noise-free,
++  analog-to-digital converter (ADC). It integrates a programmable gain amplifier
++  (PGA), voltage reference, oscillator and high-accuracy temperature sensor.
++
++  Datasheets:
++    - ADS1018: https://www.ti.com/lit/ds/symlink/ads1018.pdf
++    - ADS1118: https://www.ti.com/lit/ds/symlink/ads1118.pdf
++
++properties:
++  compatible:
++    enum:
++      - ti,ads1018
++      - ti,ads1118
++
++  reg:
++    maxItems: 1
++
++  vdd-supply: true
++
++  spi-max-frequency:
++    maximum: 4000000
++
++  spi-cpha: true
++
++  interrupts:
++    description: DOUT/DRDY (Data Out/Data Ready) line.
++    maxItems: 1
++
++  drdy-gpios:
++    description:
++      Extra GPIO line connected to DOUT/DRDY (Data Out/Data Ready). This allows
++      distinguishing between interrupts triggered by the data-ready signal and
++      interrupts triggered by an SPI transfer.
++    maxItems: 1
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  '#io-channel-cells':
++    const: 1
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++  - '#address-cells'
++  - '#size-cells'
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: true
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/gpio/gpio.h>
++
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++            compatible = "ti,ads1118";
++            reg = <0>;
++
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            spi-max-frequency = <4000000>;
++            spi-cpha;
++
++            vdd-supply = <&vdd_3v3_reg>;
++
++            interrupts-extended = <&gpio 14 IRQ_TYPE_EDGE_FALLING>;
++            drdy-gpios = <&gpio 14 GPIO_ACTIVE_LOW>;
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 31d98efb1ad1..3d5295b5d6eb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -25646,6 +25646,12 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml
+ F:	drivers/iio/adc/ti-ads1119.c
+ 
++TI ADS1018 ADC DRIVER
++M:	Kurt Borja <kuurtb@gmail.com>
++L:	linux-iio@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/iio/adc/ti,ads1018.yaml
++
+ TI ADS7924 ADC DRIVER
+ M:	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+ L:	linux-iio@vger.kernel.org
 
 -- 
- ~ Kurt
+2.52.0
 
 

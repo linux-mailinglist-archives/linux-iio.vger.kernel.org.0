@@ -1,277 +1,214 @@
-Return-Path: <linux-iio+bounces-26555-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26556-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221FFC93038
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Nov 2025 20:26:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EACC93760
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Nov 2025 04:47:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 855D834CE9A
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Nov 2025 19:26:08 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 619C734A0CB
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Nov 2025 03:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7990B332919;
-	Fri, 28 Nov 2025 19:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEBB1A23B6;
+	Sat, 29 Nov 2025 03:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NNEe8VWr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TIOvKzlc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8813B2080C8;
-	Fri, 28 Nov 2025 19:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F1B405F7
+	for <linux-iio@vger.kernel.org>; Sat, 29 Nov 2025 03:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764357959; cv=none; b=UgkEbjMDgDLm0nfxhe7QRv+5xWs9TWiGqaoegIbapEJRC4qQaEkXsm50bYq6/GVNU/82dsE2h/BZB9bC0uUrfVqeZDN8uviE2VllG2k0RKOrMtK5qmv1HaqpDMql18sEPj1I//W6rIiPVlOIPafMqXI+CRdWpaIvJvPLsK/SJFY=
+	t=1764388059; cv=none; b=CqByjEG7idSjKpt+NS/+X2mFh7GY2e0Mg4ou2Ka1sXX/ttsCEVAHLZfrYMiCIcyF7ch57lygFgP9l7wiBBObMCrrLtnzpG+GUGOToV3JXmrxCb8g3Mf6pgAe99i+5zHItL06uw6ZgBmhXplcrvkjNwvKL9WTgGSf32L/4CskXgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764357959; c=relaxed/simple;
-	bh=ZgJg19JgVapqtEPwhxxKRypueCcS657c0JxAgQtWkMk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ud8W+QLTnEEPhNEUcjylXtKL/nOZZBC5sdcsOxrXzNaV/38Di9dl3V4qRtUwcNgiB0LaHdBPFwm6NxveBjjJJgyh6ZcUH+ir9lYmeePVwb6wiMAj+ImrnmmGo1Rp+Kbri2YDigm0evysANlQ2vSSR7xxB5AYoQcVUO1uUBrgimQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NNEe8VWr; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764357958; x=1795893958;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZgJg19JgVapqtEPwhxxKRypueCcS657c0JxAgQtWkMk=;
-  b=NNEe8VWrVO7M40Ry48W+bzgwdwoJneBDaOXmp18kTfWNk/Z1GreQDtCO
-   7qFATVcNHlwxBNuwkQawtefOoJW9h9Axr6Ds5f6vhohaBLnnIm8HAu8DB
-   r05QD0Vxec/dgViut2ABgdcnElV/xDt9CfX7bd4hWYZXVOhTzELF1CO08
-   1PKUnyxS6bgFoY+bJhp9MqvkglCwhK/POnQlSEqzsHD/0AG4ZCJQ8atY/
-   4kPI3A98k2snFJySOdlZ/wCh6cS8+7RR/Q8TH3MtFlyMms855n5AUp6lF
-   Sc43+ho51yHQ2V63aSI7QQ2zd8Bda3RbDPgTMIK0Apqlmf5DCZtylPt/e
-   g==;
-X-CSE-ConnectionGUID: D7jH7Jp1QIylLMOiDbt1fg==
-X-CSE-MsgGUID: D7eRvhlHRQqnP1jkEOlTIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="66339621"
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="66339621"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 11:25:57 -0800
-X-CSE-ConnectionGUID: Vn3gvOaiSiazneVBYPV21w==
-X-CSE-MsgGUID: xgpQSso1RDSsHXKA92I+Cw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="193419743"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.17])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 11:25:53 -0800
-Date: Fri, 28 Nov 2025 21:25:50 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jorge Marques <gastmaier@gmail.com>
-Cc: Jorge Marques <jorge.marques@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2 3/9] iio: adc: Add support for ad4062
-Message-ID: <aSn3PthKIvFAhDS6@smile.fi.intel.com>
-References: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
- <20251124-staging-ad4062-v2-3-a375609afbb7@analog.com>
- <aSQxiSoZcI_ol3S5@smile.fi.intel.com>
- <aslj3klmv6heyyhgltzewkdze5p4c3hlkzfbxbfnzwwgd375gv@m6iqpst5sv6b>
- <aSgSsGSUuBtMOuro@smile.fi.intel.com>
- <zryqws2h2i4duejczo2rptwhlzhile7fa7brriqh2hmtarwjxn@cr2cyzymwpav>
+	s=arc-20240116; t=1764388059; c=relaxed/simple;
+	bh=yvuiPhp54wO6JJ8+rqOVUCDwrN2fpqtAXT2pT5bMb+E=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jNkEHgSBfUtsk9ounVUPAUt52GOi2r7N1J/OEFfuJEq6/UsSrwWfIbU98JDfgcgXDNWyhmfcfsITk+X4BPOtqM+TJYl+IMcXBDvPvplzyCkS7Eh9G4vFDgQpN07rCS/RpkONfFv2t4g3xkAuYqkm7ieDdKbagMW0vqfTiu29BdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TIOvKzlc; arc=none smtp.client-ip=209.85.217.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-5dfc6be7df3so772050137.0
+        for <linux-iio@vger.kernel.org>; Fri, 28 Nov 2025 19:47:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764388056; x=1764992856; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=o+WemKR66A2jsYlrCntI/kxVeNaQ2VT5vDEXnzsmvfI=;
+        b=TIOvKzlcVgtUyU3mqVy1pWDfN3RMiNILg8/rp7Kr3HfWIGX8kkuCaZU8iFlf3l7i4K
+         QoosmPeYl9BjIeDXrWy2sWCUH9r+K8u/J6vAwzkTGpQKXsiK9kmMCVUDkD35vVQ7eJGK
+         bDek1kRWNvEHr2JrIAlN7pGJIyFqz4jDU+Xl9iLIld9RW2Wrzu9A+XX79l8AtXJSJcjS
+         4ZZ9wFhOTGlMSUGgoXNYRdOFWqusdaP7az0syumZ4Sad+ONR3qNjPhcrZTSNmsjsSras
+         s7KTQNqy9CL28R8BrKgOnyUfXopGE6T6xIdCrLxmIn5Gg7OvH6Cz4rr5El2N1WoSHc+r
+         0LEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764388056; x=1764992856;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o+WemKR66A2jsYlrCntI/kxVeNaQ2VT5vDEXnzsmvfI=;
+        b=tX533+oL5Ja80K0x7D8b2w77wOHrKgTtzkF9HV+Du09a0oBkJ0GCh1kfzgpD6TtFQS
+         CQJlr2hHdB3UZ10GRl4viIIf6JQjY9R7LBaDGZF70jo0vVxSNPXYxF5bwtCbnrf/+STi
+         y7dHU3ZGPKLfQW26b74n14IuraztwGyeYF1/BXUL2uqZYEEOoyPnGIz36bKYqBAsFhP0
+         6ixQyk8JieZvT54uUHjQ5dfFYRdhg4JELgLMAG63JLrSNgtUJmV53u1m3msLSeG1liTN
+         UbRAtg2cNXv3HuQqpf+DVirpmEuy1r2n6lnMttBW9R/xHpASq/9wvno5URE9trBg4D2p
+         Lrfw==
+X-Forwarded-Encrypted: i=1; AJvYcCUoDMAObvdPBMXfPCrxmhnO64fQD5aoPCangyM6gkKPrJ/R19eD9Dr8lgnRGpbuc/xWRCjLfwqRMkg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeboiOfTu+TLCoVkyyO8EXrNFQuWY/fxnObaYY+L5K4kNlxraw
+	kMVnI2w5FP2A9YsiGcpA9JarxVnc88IDKrAs/V3gVdaXR8+/fSEUrZDr
+X-Gm-Gg: ASbGncsilwIQEByTscz0vm1XkyBtXAQ66s3gN8ZfcuasRt5f9sSSM2gssqz3HYwtjoN
+	KaZ2YOiApNSe53jP49vmp2vT3wlk3UpMIoASNPRoN+tQrCphdF5TeTXaXxKI4tBSuc/CxgHwT88
+	I6J9GzNtOMy/ldsue0g0rYY7rjnW4x/b4qrx6homFzrDBOenM+Abirvm4mByBgTGX4wWSUTtdyK
+	/tqnRiIom7Dd/vqEkLbnyBB7qk1IOeimXnH9sYphtU2v9CI9oZNjhBcKbaH1oH8+au24nzzdcAD
+	26to8FImsrV+2C/H1cA/7mfX18HXgtXGyoccn3NgEtocyss88wMKkXqgb9O5w4AB4kUNz4bopkl
+	j6OsvGyNL+tdQW5THtBOw0Yv4F7jXUQBlTepQ0RABfK/UqZXbpAxS5ec4YMMNoUcOBuQGAD478k
+	5SMQVpe4G0ieB4Rh/DJW4kd7I=
+X-Google-Smtp-Source: AGHT+IFriGnbvZfMgscLKz2M7HYz15cqGgb8idOJzTIt6/dQmhOawxZPI7HO4ranmrj6t7PICDwHSQ==
+X-Received: by 2002:a67:e707:0:b0:5db:f710:497e with SMTP id ada2fe7eead31-5e1de3444c6mr11030831137.21.1764388056399;
+        Fri, 28 Nov 2025 19:47:36 -0800 (PST)
+Received: from [192.168.100.70] ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5e24d917860sm2562662137.2.2025.11.28.19.47.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Nov 2025 19:47:36 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+Subject: [PATCH v3 0/2] iio: Add support for TI ADS1X18 ADCs
+Date: Fri, 28 Nov 2025 22:47:11 -0500
+Message-Id: <20251128-ads1x18-v3-0-a6ebab815b2d@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <zryqws2h2i4duejczo2rptwhlzhile7fa7brriqh2hmtarwjxn@cr2cyzymwpav>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAL9sKmkC/02MwQ6CMBAFf4X0bM3uom3x5H8YD4UWaCLUtKbBE
+ P7dgolynJc3M7Nog7ORXYqZBZtcdH7MUB4K1vR67Cx3JjMjoDMCEtcm4oSKgwEpKwNCVMDy+xl
+ s66atdLtn7l18+fDewgnX9dtAwl8jIQeuhKlBQdtU+nTtBu0ex8YPbG0k2nvy71H2yNatkQpqU
+ ZZ7b1mWDzSV8UjWAAAA
+X-Change-ID: 20251012-ads1x18-0d0779d06690
+To: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Tobias Sperling <tobias.sperling@softing.com>
+Cc: David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Kurt Borja <kuurtb@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3910; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=yvuiPhp54wO6JJ8+rqOVUCDwrN2fpqtAXT2pT5bMb+E=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDJlaOUd+/Tv1dOMl4TVvJlr/Pnf2goFrjpjGhUCX6aHTj
+ B6Ui3Zt6yhlYRDjYpAVU2RpT1j07VFU3lu/A6H3YeawMoEMYeDiFICJPJVh+MU0+3/0jQ2XPwrN
+ 4p27SShVfVZOxIkJD6aF8c+YvW/JmZS7DH/FQwM3Hbdj1r5S/4vtYFKI95YNxW//Ff33v5lo2vR
+ DfgcPAA==
+X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
+ fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 
-On Fri, Nov 28, 2025 at 07:50:02PM +0100, Jorge Marques wrote:
-> On Thu, Nov 27, 2025 at 10:58:24AM +0200, Andy Shevchenko wrote:
-> > On Wed, Nov 26, 2025 at 12:40:00PM +0100, Jorge Marques wrote:
-> > > On Mon, Nov 24, 2025 at 12:20:57PM +0200, Andy Shevchenko wrote:
-> > > > On Mon, Nov 24, 2025 at 10:18:02AM +0100, Jorge Marques wrote:
+Hi,
 
-Please, remove the context you are agree with or which has no need
-to be answered, it helps to parse and reply.
+This series adds a new driver for TI ADS1X18 SPI devices.
 
-...
+This is my first time contributing to the IIO subsystem and making
+dt-bindings documentation, so (don't) go easy on me :p.
 
-> > > > > +static int ad4062_calc_sampling_frequency(int fosc, unsigned int n_avg)
-> > > > > +{
-> > > > > +	/* See datasheet page 31 */
-> > > > > +	u64 duration = div_u64((u64)(n_avg - 1) * NSEC_PER_SEC, fosc) + AD4062_TCONV_NS;
-> > > > > +
-> > > > > +	return DIV_ROUND_UP_ULL(NSEC_PER_SEC, duration);
-> > > > 
-> > > > Why u64?
-> > > > 
-> > > > The DIV_ROUND_UP_ULL() seems an overkill here. Or do you expect duration be
-> > > > more than 4 billions?
-> > > > 
-> > > This is necessary since at fosc 111 Hz and avg 4096 it does take longer
-> > > than 4 seconds, even though I do timeout after 1 seconds in the raw
-> > > acquisition.
-> > 
-> > Values above NSEC_PER_SEC+1 do not make sense (it will return 0),
-> > and that fits u32. Can you refactor to avoid 64-bit arithmetics?
-> 
-> Ok, any frequency lower than 1 Hz does not make sense.
+As explained in Patch 2 changelog, the DRDY interrupt line is shared
+with the MOSI pin. This awkward quirk is also found on some Analog
+Devices sigma-delta SPI ADCs, so the interrupt and trigger design is
+inspired by those.
 
-Depends on the cases, we have sub-Hz sensors or some other stuff.
-So, "...does not make sense in _this_ case." That's what I implied.
+@ David:
 
->   static int ad4062_calc_sampling_frequency(int fosc, unsigned int oversamp_ratio)
+I didn't move enable_irq() and spi_bus_lock() out of .set_trigger_state.
+I explained some of my reasoning in v1 and I expanded patch 2 changelog
+on that. If you disagree with this, let me know!
 
-Shouldn't fosc be unsigned?
+Thank you in advance for your reviews.
 
->   {
->   	/* See datasheet page 31 */
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+v2:
+  - [Patch 1]:
+    - Move MAINTAINERS change here
+    - Use generic node names: ads1118@0 -> adc@0
+    - Rename file to ti,ads1118.yaml -> ti,ads1018.yaml
+    - Drop ti,gain and ti,datarate
+    - Add spi-cpha and spi-max-frecuency properties as they are fixed in
+      all models
+    - Add vdd-supply
+    - Make interrupts and drdy-gpios optional properties
 
-It's fine, but better to add a formula here or more information about
-the calculations done in the function.
+  - [Patch 2]:
+    - Update probe based on dt-bindings changes
+    - Rename file to ti-ads1x18.c -> ti-ads1018.c
+    - Rework ads1018_oneshot(), instead of waiting for IRQ wait an
+      appropriate delay before reading again
+    - Only alloc and register a trigger if we have an IRQ line
+    - Drop ads1x18->msg_lock in favor of IIO API locks
+    - Read conver before enabling and after disabling IRQ to ensure CS
+      state is correct
+    - Add ads1018_read_locked() which takes an additional argument
+      `hold_cs` to explicitly control CS state in trigger and buffer
+    - Fix ADS1X18_CHANNELS_MAX limit 9 -> 10
+    - Call iio_trigger_notify_done() in all IRQ handler paths
+    - Drop unused includes
+    - Drop BIT_U16 and GENMASK_U16 macros
+    - Drop unnecessary named defines
+    - Use u8 types in ads1018_chan_data
+    - Rename some struct members for clarity
+    - Move tx_buf and rx_buf to the end of struct ads1018
+    - Rework channel handling to just make everything visible and add
+      ADS1018_VOLT_DIFF_CHAN
+    - Use .scan_index instead of .address in IIO channels
+    
+  - v1: https://lore.kernel.org/r/20251121-ads1x18-v1-0-86db080fc9a4@gmail.com
 
->   	u32 period = NSEC_PER_SEC / fosc;
+---
+v3:
+  - [Patch 1]:
+    - Use unevaluatedProperties: false
+    - Drop #address-cells and #size-cells
 
-period_ns ?
+  - [Patch 2:]
+    - Add kernel-doc to internal API
+    - Drop bits.h and bitops.h includes
+    - Add types.h include
+    - Use unsigned type for data_rate_mode_to_hz
+    - Rename __ads1018_read_raw() -> ads1018_read_raw_unlocked()
+    - Rename __ads1018_write_raw() -> ads1018_write_raw_unlocked()
+    - Rename ads1018_read_locked -> ads1018_read_unlocked() for
+      consistency
+    - Let ads1018_read_unlocked() take NULL cnv pointers
+    - Add ads1018_set_trigger_{enable,disable}()
+    - Refactor ads1018_write_raw_unlocked() loop matching
+    - Invert ads1018_trigger_handler() logic to follow traditional error
+      handling pattern
+    - Refactor ads1018_trigger_setup() cleaner
+    - Make ADS1018_FSR_TO_SCALE() calculation be 32-bit compatible
+    - Some additionall minor cleanups
 
-(We usually add units to this kind of variables for better understanding
- of the calculations)
+  - Link to v2: https://lore.kernel.org/r/20251127-ads1x18-v2-0-2ebfd780b633@gmail.com
 
->   	u32 n_avg = BIT(oversamp_ratio) - 1;
->   
->   	/* Result is less than 1 Hz */
->   	if (n_avg >= fosc)
->   		return 1;
+---
+Kurt Borja (2):
+      dt-bindings: iio: adc: Add TI ADS1018/ADS1118
+      iio: adc: Add ti-ads1018 driver
 
-+ blank line.
-
->   	return NSEC_PER_SEC / (n_avg * period + AD4062_TCONV_NS);
->   }
-
-LGTM, thanks!
-
-> > > > > +}
-
-...
-
-> > >   static int ad4062_set_chan_calibscale(struct ad4062_state *st, int gain_int,
-> > >   				      int gain_frac)
-> > >   {
-> > >   	u32 gain;
-> > >   	int ret;
-> > >   
-> > >   	if (gain_int < 0 || gain_frac < 0)
-> > >   		return -EINVAL;
-> > >   
-> > >   	gain = gain_int * MICRO + gain_frac;
-> > >   	if (gain > 1999970)
-> > 
-> > But this magic should be changed to what you explained to me
-> > (as in 0xffff/0x8000 with the proper precision, and this
-> >  can be done in 32-bit space).
-> > 
-> > Or even better
-> > 
-> > 	if (gain_int < 0 || gain_int > 1)
-> > 		return -EINVAL;
-> > 
-> > 	if (gain_int == 1 && gain_frac > 0x7fff) // did I get this right?
-> > 		return -EINVAL;
-
-> gain_frac would be 999999 max, or 999970 for the limit that fits in the
-> register after the math. I think > 1.999.970 is self explanatory.
-
-On the place of unprepared reader this is a complete magic number without
-scale, without understanding where it came from, etc.
-
-So, can you define it as a derivative from the other constants and with
-a comment perhaps?
-
-> > >   		return -EINVAL;
-> > >   
-> > >   	put_unaligned_be16(DIV_ROUND_CLOSEST_ULL((u64)gain * AD4062_MON_VAL_MIDDLE_POINT,
-> > >   						 MICRO),
-> > 
-> > ...with temporary variable at minimum.
-> > 
-> > But again, I still don't see the need for 64-bit space.
-> 
-> Well, by dividing mon_val and micro values by a common divisor the
-> operation fit in 32-bits:
-> 
->   static int ad4062_set_chan_calibscale(struct ad4062_state *st, int gain_int,
->                                         int gain_frac)
->   {
-
-	/* Divide numerator and denumerator by known great common divider */
-
->           const u32 mon_val = AD4062_MON_VAL_MIDDLE_POINT / 64;
->           const u32 micro = MICRO / 64;
-
-Yep, I suggested the same in another patch under review (not yours) for
-the similar cases where we definitely may easily avoid overflow.
-
-Alternatively you can use gcd().
-
->           const u32 gain = gain_int * MICRO + gain_frac;
->           int ret;
-> 
->           if (gain_int < 0 || gain_frac < 0)
->                   return -EINVAL;
-> 
->           if (gain > 1999970)
->                   return -EINVAL;
-> 
->           put_unaligned_be16(DIV_ROUND_CLOSEST(gain * mon_val, micro), st->buf.bytes);
-> 
->           ret = regmap_bulk_write(st->regmap, AD4062_REG_MON_VAL,
->                                   &st->buf.be16, sizeof(st->buf.be16));
->           if (ret)
->                   return ret;
-> 
->           /* Enable scale if gain is not equal to one */
->           return regmap_update_bits(st->regmap, AD4062_REG_ADC_CONFIG,
->                                     AD4062_REG_ADC_CONFIG_SCALE_EN_MSK,
->                                     FIELD_PREP(AD4062_REG_ADC_CONFIG_SCALE_EN_MSK,
->                                                !(gain_int == 1 && gain_frac == 0)));
-
-Btw, I think you can move this check up and save in a temporary variable which
-might affect the binary size of the compiled object as accesses to the gain_int
-and gain_frac will be grouped in the same place with potential of the reusing
-the CPU register(s)..
-
->   }
-
-> > >   			   st->buf.bytes);
-> > >   
-> > >   	ret = regmap_bulk_write(st->regmap, AD4062_REG_MON_VAL,
-> > >   				&st->buf.be16, sizeof(st->buf.be16));
-> > >   	if (ret)
-> > >   		return ret;
-> > >   
-> > >   	/* Enable scale if gain is not equal to one */
-> > >   	return regmap_update_bits(st->regmap, AD4062_REG_ADC_CONFIG,
-> > >   				  AD4062_REG_ADC_CONFIG_SCALE_EN_MSK,
-> > >   				  FIELD_PREP(AD4062_REG_ADC_CONFIG_SCALE_EN_MSK,
-> > >   					     !(gain_int == 1 && gain_frac == 0)));
-> > >   }
-> > > 
-> > > To provide the enough resolution to compute every step (e.g., 0xFFFF and
-> > > 0xFFFE) with the arbitrary user input.
+ .../devicetree/bindings/iio/adc/ti,ads1018.yaml    |  82 +++
+ MAINTAINERS                                        |   7 +
+ drivers/iio/adc/Kconfig                            |  12 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/iio/adc/ti-ads1018.c                       | 811 +++++++++++++++++++++
+ 5 files changed, 913 insertions(+)
+---
+base-commit: f9e05791642810a0cf6237d39fafd6fec5e0b4bb
+change-id: 20251012-ads1x18-0d0779d06690
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+ ~ Kurt
 
 

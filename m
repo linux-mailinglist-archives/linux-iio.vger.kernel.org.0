@@ -1,125 +1,123 @@
-Return-Path: <linux-iio+bounces-26565-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26566-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2C0C94B25
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Nov 2025 04:32:50 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9471FC95026
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Nov 2025 14:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8B04C345B15
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Nov 2025 03:32:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7683E343188
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Nov 2025 13:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEFBD221290;
-	Sun, 30 Nov 2025 03:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00938221F11;
+	Sun, 30 Nov 2025 13:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cv2MFjN3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vA4CIQsX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10298125A9
-	for <linux-iio@vger.kernel.org>; Sun, 30 Nov 2025 03:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7952186A;
+	Sun, 30 Nov 2025 13:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764473564; cv=none; b=H242qOHo0x32fwFpctbrely9PFpzBA1QJtS9p+CTkJlio2W06CKzmprb5AXrk0cGwXfTif9YEwTlRViBrAC3ICA6npcWQ3zedf23sYdGbI9B4YlefvdA1EmIKl1vrFcnjVuNNexl7HIJpJxmqGrNkKWyem2KkAwnI4+aPhcoE8g=
+	t=1764511049; cv=none; b=QCmKSO+aJ0ggxAGCQteHjP0oHp+cOj3zg49OuPN7NIoK8uGQhajHck2BjApD1anyT/0rW9WbtPU/e5iqdUdPAIP5VmwZVsN4DIjoYQNBiaG99p6KNn3gDc0yMKgI3sQ4dOYp6flAfVND7/4JuzW5PAeIaGTEla5UaKkoM9Eb+ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764473564; c=relaxed/simple;
-	bh=LUC96Uugn9hTwy25i99pP6p0oGWbawWUD3WLuZuC7Xs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=iYMPMYd0gpm2yiIjzzdIrmlPg4QHQdKaStuEO5vQWk8vnqcaoV0Dpq2G4TEneYqidJL4j2NkMw1ST/VvpySNe8YxuQdZUGOTLPZBjA1TbYcKtyNjLshZ/vom0sH3oTv6DpK0dnA/b4HwiZ2FBHDSXEA8+ANIxLnnbPHnOp8p+ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cv2MFjN3; arc=none smtp.client-ip=209.85.217.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-5dd6fbe5091so1171466137.1
-        for <linux-iio@vger.kernel.org>; Sat, 29 Nov 2025 19:32:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764473562; x=1765078362; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LUC96Uugn9hTwy25i99pP6p0oGWbawWUD3WLuZuC7Xs=;
-        b=cv2MFjN3w0TqHqFgOWNk7M7rilmtK/6AybES7UlVvbLy6xmkPT8PjGan0swxbbrLQP
-         wop7bdu8MLgpu0retSu47Ppb409Q+dQpTIDANsYwtLmXNJrxWURIE+XKsC1TGi13Wc0e
-         1cTCptj8JNjCGThZdAZDB2GCNlDhn/mh9oewEHT0n3yzIiHdYX5QDZgJVAwoKmexTLp4
-         Onqnxu7eyIbEUZRm2/iIII4Dq3i1TBLoEVpYDm7eKDBsrCb1FCxuIGomc5C/FMXEOBxm
-         M4dpDif9m6Ldz+ORi2w49wdd4v84LAQphas9QO+vdsuPpvv4Ls1l91Goi5u1gl3ZacxR
-         3QSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764473562; x=1765078362;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LUC96Uugn9hTwy25i99pP6p0oGWbawWUD3WLuZuC7Xs=;
-        b=dgaxDMDvIETQ54N/jtccki2n/P/DxLLWL2HiEV66vyaBN163gvOT5EvFTaYfIEZQF0
-         o19euOx7MTDxFGRfKANbv6Rd+1s2ihTuPbk1DOPmfzxCBpW2QEuZLDP+CVrHToJLjxNE
-         AE4a+0Ik3llzY6xUtIhVlBQzpVuApwpcR9/INj+TNQxr7LEClpWj6FdBeBuvIFEScjl5
-         Ew6w0zNBizG1eivL83IsTxiZLRN2SqB+0ywZwf6w8023pE1PUbRjNS9dEe5KESPo0XSU
-         aRamo7xZS2qqzD46glRIG8uMYQ/D6A/8OsMgggHF7QjYRYRciu+ZFFWlg2jTaXrzj5d3
-         HbUw==
-X-Forwarded-Encrypted: i=1; AJvYcCX/SIFm7oJSVUQlBB7TnD+weNENhksPjUz/lJSdCH651for5fSXmb7l85edhTcC+O9tneIWnVDK2Hw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhQTKjoxUdK2Fawg1wsJCjZMnqHCQyAjqCu6M4SEwGGtbRonlr
-	6SfAW40GDBNXrAclra4J3NN4JvNPmD4OJ3LKeYns9mbP2hDUsDHZ7mAo
-X-Gm-Gg: ASbGncuYIUFmcBEC1GZ+NAEOtbyl6aVtS82rTbfUA4QaPREW2kc+QyhfDkuZ/4j6XlF
-	WBXcJojtS0cEElJMNyK0U2FYIBhINGkYH2bbug/QXIac+JXYgURTm1DUCgfbVXudXKCUtJD+lEp
-	hVaEOxW/DN+MLk4nhTfH1ImrOuRq06qU/2F/NCLowHE4rQun6cJaMQT7gWEOF+5zPI2OrP5V7pC
-	hEX6N9RJatCHVdp+/sIaWXM2qoP8m1EQVbEPezGbk21ThyGE2T3yD+jq0XH0DzmbJe8fbRX2io1
-	NKsOBsLSwL7N/aWKEcbVK/Qgk5nQniHP6V5pAWyrSoIqhqN7FGYzgvzkNgJ+yE7WcmrrL5X/Fz2
-	0jY2Ptk8LuHzEcFEmcAy2eJSbTUjA3m0bAM+IPpkV7AB5V873JdtKHIszMZZxdOpsZ9DI+aYI0/
-	gM9JY=
-X-Google-Smtp-Source: AGHT+IFm5CZ17K9+Lz1xQ9ifHnG2x5dQS8IISpGfPF1WLpY3EynlM01Pj7jh/h/WNPGQfZn+8R4/gQ==
-X-Received: by 2002:a05:6102:3906:b0:5df:bb10:631e with SMTP id ada2fe7eead31-5e1de4bc6bcmr12176645137.41.1764473561981;
-        Sat, 29 Nov 2025 19:32:41 -0800 (PST)
-Received: from localhost ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-55cf516c7c5sm3865194e0c.17.2025.11.29.19.32.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Nov 2025 19:32:41 -0800 (PST)
+	s=arc-20240116; t=1764511049; c=relaxed/simple;
+	bh=ZB0aNDoJbR7KCgkbpMsgbU9QCSi+qeVI22J87/0V+f8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aOHFLCvIzVUMZpUa//0oSdertBa8ZMC6qIJdlaR5gWFfkWZxFI7JgH6UxSlZs20h9kPwcyNKB7P3gHfYc4Wf2s4VYdC+79LYzOIIUQ97xVuz4SYo6jUCFRdLwr0lar2/SE8q/aYzGsV3LXENzzWcAAHV8/xodT57XmvW041Z8P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vA4CIQsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCECC4CEF8;
+	Sun, 30 Nov 2025 13:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764511049;
+	bh=ZB0aNDoJbR7KCgkbpMsgbU9QCSi+qeVI22J87/0V+f8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vA4CIQsXW1L4TO5BVfBXEVECIfMvTvMFKYI34kOyc3emtoWAm3b4Nw3DjkNLvg7wU
+	 hRh97yqTAgV39W29gpbrKLJJQnrzMHa4lCgaulS1VQ6PLRzexV1ft7Fp5Zt4XJ2sT3
+	 jpSMidlm6qn7jYdM46Zfrv1KVJEtX8cumCQb5EMPrsx6HXX2NwQQrFn+sTWm8nS7jl
+	 YWLXgvrZUNknYQl3lX0ofcdFAdcKHBS7Ydx/AMRHmc87OlcV5Uc4Zw7pB/XeDq8iY8
+	 DKfxleei0pZeyMGlu/aUA/KPQRJY73EGgjo5qY0aRr2KwdOtZpi5pqxo3BDIau5wkU
+	 kDgIqprbhR62A==
+From: William Breathitt Gray <wbg@kernel.org>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-iio@vger.kernel.org,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc: William Breathitt Gray <wbg@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	linux-kernel@vger.kernel.org,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+Date: Sun, 30 Nov 2025 22:57:15 +0900
+Message-ID: <176451098931.9836.4127167335264943589.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
+References: <20251118083603.778626-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 29 Nov 2025 22:32:39 -0500
-Message-Id: <DELPOB1I3E5R.1REVC6T7ELDGI@gmail.com>
-Cc: "David Lechner" <dlechner@baylibre.com>, =?utf-8?q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Jonathan Cameron"
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: Add TI ADS1018/ADS1118
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "Krzysztof Kozlowski" <krzk@kernel.org>, "Kurt Borja"
- <kuurtb@gmail.com>, "Jonathan Cameron" <jic23@kernel.org>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Tobias Sperling"
- <tobias.sperling@softing.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251128-ads1x18-v3-0-a6ebab815b2d@gmail.com>
- <20251128-ads1x18-v3-1-a6ebab815b2d@gmail.com>
- <63be9769-dda8-4c58-92b9-31ebfd4c5f5c@kernel.org>
-In-Reply-To: <63be9769-dda8-4c58-92b9-31ebfd4c5f5c@kernel.org>
-
-On Sat Nov 29, 2025 at 4:25 AM -05, Krzysztof Kozlowski wrote:
-> On 29/11/2025 04:47, Kurt Borja wrote:
->> Add documentation for Texas Instruments ADS1018 and ADS1118
->> analog-to-digital converters.
->>=20
->> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
->> ---
->
->
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
->
-> Best regards,
-> Krzysztof
-
-Thank you, Krzysztof!
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1397; i=wbg@kernel.org; h=from:subject:message-id; bh=Ivzz5NMzZaBZSReLzEG+Clk4t6mpdj6JIAG6CCrrIDc=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDJk6viZaHmnftkhuu2LJZsYUsNpEWYSjyy9h+vszi0+KK OeV/1/XUcrCIMbFICumyNJrfvbug0uqGj9ezN8GM4eVCWQIAxenAExk8gKGfwr3T3BfcFz72F9q flPkq/ua8+XmOX7eoL07k0FCbfnHj5WMDGf8VJ6p5Z9dpCnGXXTbNd/jwYm9z7YwBCyyTJCekMF XxAwA
+X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
+Content-Transfer-Encoding: 8bit
 
 
---=20
- ~ Kurt
+On Tue, 18 Nov 2025 09:35:48 +0100, A. Sverdlin wrote:
+> An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
+> CONFIG_PROVE_RAW_LOCK_NESTING warns:
+> =============================
+> [ BUG: Invalid wait context ]
+> 6.18.0-rc1+git... #1
+> -----------------------------
+> some-user-space-process/1251 is trying to lock:
+> (&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
+> other info that might help us debug this:
+> context-{2:2}
+> no locks held by some-user-space-process/....
+> stack backtrace:
+> CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
+> Call trace:
+>  show_stack (C)
+>  dump_stack_lvl
+>  dump_stack
+>  __lock_acquire
+>  lock_acquire
+>  _raw_spin_lock_irqsave
+>  counter_push_event [counter]
+>  interrupt_cnt_isr [interrupt_cnt]
+>  __handle_irq_event_percpu
+>  handle_irq_event
+>  handle_simple_irq
+>  handle_irq_desc
+>  generic_handle_domain_irq
+>  gpio_irq_handler
+>  handle_irq_desc
+>  generic_handle_domain_irq
+>  gic_handle_irq
+>  call_on_irq_stack
+>  do_interrupt_handler
+>  el0_interrupt
+>  __el0_irq_handler_common
+>  el0t_64_irq_handler
+>  el0t_64_irq
+> 
+> [...]
 
+Applied, thanks!
+
+[1/1] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+      commit: 1ea0a54c0a1fac796b133253804e392cb44068c8
+
+Best regards,
+-- 
+William Breathitt Gray <wbg@kernel.org>
 

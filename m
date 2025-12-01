@@ -1,82 +1,48 @@
-Return-Path: <linux-iio+bounces-26578-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26579-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DA0C95778
-	for <lists+linux-iio@lfdr.de>; Mon, 01 Dec 2025 01:44:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 859FFC9611D
+	for <lists+linux-iio@lfdr.de>; Mon, 01 Dec 2025 09:06:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA0C63A1BE3
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Dec 2025 00:44:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D93A3A2641
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Dec 2025 08:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302AA45948;
-	Mon,  1 Dec 2025 00:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EF22D1911;
+	Mon,  1 Dec 2025 08:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VMAyTRDk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SckUCPVx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969892032D
-	for <linux-iio@vger.kernel.org>; Mon,  1 Dec 2025 00:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B616C2BE7CB;
+	Mon,  1 Dec 2025 08:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764549860; cv=none; b=dl+uTKVgk4bcE97dNvWmFuyN/3HVdKVuupSo/YvFdi1tAldbQ/I/fypFSHpy+KuHj8stOa693Uubr5LqzaKcoPl3od/aqtF7GORKXFhl+/UNVhCb09J3zjbxTJlQIwJGX+r71ToT0XQCEa9WITbcEz0alY28z2xf3Kl0Zw+MKTA=
+	t=1764576413; cv=none; b=TnS18ASStNiWwJazYUcMq8Y4YzZ3Tn04TzNc31v3JRpqOfFxkUZpjW3WmQs1l5qGpx86Dy38MHL6/WvkLclAJMRnX6GXLZqHFjVG8wYDlr/NgvRWEJI8TuiPGnOQyxn+65Go8fa9zWI43DsFeAlqJTWcIY22kEuYkaLIXR0Kd2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764549860; c=relaxed/simple;
-	bh=WXei8faNKFRbZg/5TRBpJIVvZ5EV4z9whv3No2ypEdg=;
+	s=arc-20240116; t=1764576413; c=relaxed/simple;
+	bh=AWxWdF9jmtD1m+ElThswGyUYrrBvfvOWX4QA3C3aBBM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gQXpblebqQqk67x68FmrzgcNCe2z9vKmWBr2l9kjW5CZIgE7DzsgQA/fYF6jY7iw8cE4Jz6GYzhBzOZ6fY4zqZsrjbiImnh09FRH6cFAXJLV5iFsTXJBWmA1WqGQWrrj1nABnL466W8XD2zSpK2XZqz8cG8iQz+oz7oVbEEdnVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VMAyTRDk; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7aa9be9f03aso3013752b3a.2
-        for <linux-iio@vger.kernel.org>; Sun, 30 Nov 2025 16:44:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764549858; x=1765154658; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=loQBrjsHTLWumic5XUfpbVeTUpVIR2+yqTrDotKERHY=;
-        b=VMAyTRDkTdDDHtdDk4RvIQACnLWow6xl7MH2H36dKK8KcRjs26CRPye1lumSZgwL6I
-         VTGz6RF0+FwxHBWWnMyBZKWSunE8wq9En8b9ot93uu9/STnPO6UwczSJRctdtAXTX9vL
-         F8dWH8TkVQaWcnzBr1YeTYFeH8VECBVKZv1Hm129yd51Xep35Fm1zBzqnfWrEJ0G6dIe
-         PGvs8ZECyoOFielqaC/LHyxhfDz4taMfYHaBCqf2/lNBCom6jLSiT1Zv3QJxaIlRJ57O
-         V/0kqyo+zZBI9VK6axYWmMW4w2YYQJaIh14U8RcTcINsxYJl2imec5EAAn0TTocBbcqE
-         +H9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764549858; x=1765154658;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=loQBrjsHTLWumic5XUfpbVeTUpVIR2+yqTrDotKERHY=;
-        b=WSZN4Q+IQCc6NOWeJzE945mJbtRL2OSIm+Av83bG0oqz+mLHnHXEy+I9W1EB4yQGjJ
-         Rm4I/EE2xGgTlNNJaNpqJ7kKNW3b76hAUVLXfnMSHJEaaRhh4IS3kHOxc8tf4nk+dW6N
-         bZMoySmjRb1o7s8nej0hb3otaLq4HKh8piyVLA4if6LWGneCm+snkJCY0O+fMiF6nb/u
-         6+9lbPVW3jqQy2GX5U0WfBtINNaMOQ76V8uafmh0EtFlET6BZZbX/Mf0xjv8H76yZy0H
-         p3TPu4leNwzrBjcI/bNCUGvNqmz33VqBHRy7Y72PmGpqvZmEqDvaBExjYSd5k/DXqckT
-         CN+w==
-X-Forwarded-Encrypted: i=1; AJvYcCXppqeAGqzKCXuM625CgNxo61YNHLhy9qxd1QZsaLGqpo6jRfuZWlnMzywPT/GADvnXFh6cgoHu4m4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGLq3mCeWjbReNhqYP11ce1hZLUA8vApjnR6nJyMVKU0sHtvO3
-	vZBygE2CXLWqX3VK3+NBFyzX89j02MO2y9RWXfpUNurO+IWpWibsw/ib
-X-Gm-Gg: ASbGncuo6HebslmhlrVk+bPBVxWPaSnadYkpchmWnZBDdnwfauJg7GZXftD6V0T7TXH
-	tbh/l+jjJzQG73C3GoEjyXiDRnNomIhwjYOiVfsuRVnL3ZqmIYs8xGKi4ee/R7u2zcTfGm/dZRS
-	cU1O6z6KxVUOcYciElgKv5Eq7BI2mZE2SShZ24xjgTkdBiS3Twfpsq3h1ljp56wqxdbq/H53Egu
-	v8/PJZc+xxWVw7Vg2DFLEosofUbV4Gk+GSvDJ+ztSIPhsKQwGDWvPr8l9HKxfjNDJK5MZOXJj9r
-	p+lc4ekSL/EL6V+qUT5Jxst7J+AFTac0CLMyJmrqDDUVDCY604dE8bLjx5Lkx+eJRS/6cj1bTEt
-	fyTKy8rju+A3WG+ynICWWt1Sh2dTGTsGJ1I9YTtFCo6TzmnFlIwKjfxgfiUQbuwb4yLgqz10cjH
-	5/19+vLtDkkp+IRr3lozb5AU4gtmSOIfd7S6/F+AyGZP/deZu+kUaMpPixmgRpnLdV
-X-Google-Smtp-Source: AGHT+IFgJVWGW8YwKUU9Iny4M1dxzau1tG3wPCluSngGPGy5qUbx1lrl2uJNSMdXKWMj7Ocp4T1S4A==
-X-Received: by 2002:a05:7022:20f:b0:11b:c2fd:3960 with SMTP id a92af1059eb24-11c9d85ff19mr19455932c88.28.1764549857774;
-        Sun, 30 Nov 2025 16:44:17 -0800 (PST)
-Received: from [192.168.68.63] (104-12-136-65.lightspeed.irvnca.sbcglobal.net. [104.12.136.65])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11dcb03c232sm51936663c88.6.2025.11.30.16.44.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 30 Nov 2025 16:44:17 -0800 (PST)
-Message-ID: <ff66f890-b405-4a81-9d8d-7d94fee68680@gmail.com>
-Date: Sun, 30 Nov 2025 16:44:16 -0800
+	 In-Reply-To:Content-Type; b=MWZSclw/oEvwdW81yXXZzxTO0UUFtfoOIxCqDmD3MXp5LuvLH3SFJwM33HKc2m+50wqlj/cYjU6qR7EwbJ7sIFeL2kEKcUcR38yRLwuF+RNY/qoaaFyriZZM+SqtCJme0Nva0cIKpBvK/O7g22jU0cJImuh6FXVnhduZaFlTL8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SckUCPVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC953C4CEF1;
+	Mon,  1 Dec 2025 08:06:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764576413;
+	bh=AWxWdF9jmtD1m+ElThswGyUYrrBvfvOWX4QA3C3aBBM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SckUCPVxVfDdrhJytf0wJpjZxoTZkY+vKOuxKGFJJTEEHEiOFyg+bEc0e5Hozi9fU
+	 OUcXQmw8pyNFbFZfzy4+DkJMQvOovVVUBlUqjiHsmeN9dQdybx4qrKD4anX/civUCM
+	 blSNDbcn/CpiNUdA+2ubbdb4xCUfOm5tZzuZUDcCdTL9usqhmNv2ou3Mth9pG4EETj
+	 h1ChWcCzk7MkAxOMK0B9wBsgV2xeQHTeVFPrjfz5nVYWaNI7xnuhETL9EpHPgGuY8o
+	 1CxNpU/facwVOdlJiSodD+M4H4TR9NCkUvqQLcSj/3DXXa6tf2pvT6nXD5k2VS5l+a
+	 oET3GLpfnuliw==
+Message-ID: <607dbea3-d887-414e-a0cc-515b9a1f1eb8@kernel.org>
+Date: Mon, 1 Dec 2025 09:06:48 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,45 +50,106 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/6] iio: accel: Prevent NULL pointer dereference in
- interrupt setup
-To: Andy Shevchenko <andriy.shevchenko@intel.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20251124-expressatt_nfc_accel_magn_light-v4-0-9c5686ad67e2@gmail.com>
- <20251124-expressatt_nfc_accel_magn_light-v4-5-9c5686ad67e2@gmail.com>
- <d3318386-2646-4f1c-ab4b-6ae3bc71e9bb@oss.qualcomm.com>
- <aSWPnRBRdPS8vnir@smile.fi.intel.com>
- <61e860e7-fc3b-49ad-bf6a-9745f205d52b@gmail.com>
- <c627fc05-6980-44bd-bdde-4750b3bafe2d@oss.qualcomm.com>
- <aSieijZt117wOh-6@smile.fi.intel.com>
+Subject: Re: [PATCH v2 1/4] dt-bindings: iio: proximity: Add RF Digital
+ RFD77402 ToF sensor
+To: Shrikant Raskar <raskar.shree97@gmail.com>, jic23@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ heiko@sntech.de, neil.armstrong@linaro.org, skhan@linuxfoundation.org,
+ david.hunter.linux@gmail.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251130153712.6792-1-raskar.shree97@gmail.com>
+ <20251130153712.6792-2-raskar.shree97@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Rudraksha Gupta <guptarud@gmail.com>
-In-Reply-To: <aSieijZt117wOh-6@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251130153712.6792-2-raskar.shree97@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello all,
+On 30/11/2025 16:37, Shrikant Raskar wrote:
+> The RF Digital RFD77402 is a Time-of-Flight (ToF) proximity and distance
+> sensor that provides absolute and highly accurate distance measurements
+> from 100 mm up to 2000 mm over an I²C interface. It includes an optional
+> interrupt pin that signals when new measurement data is ready.
+> 
+> Signed-off-by: Shrikant Raskar <raskar.shree97@gmail.com>
+> ---
+> Changelog:
+> Changes since v1:
+> - Fix patch heading
+> - Fix commit message
+> - Remove '|' from description
+> - Update interrupt description
+> - Add 'vdd-supply' to required
 
 
-Seems like Linus Walleij encountered this as well, and the fix seems to 
-have landed upstream:
 
-https://lore.kernel.org/all/20251103-fix-bmc150-v2-1-0811592259df@linaro.org/
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 
-This patch no longer applies.
+<form letter>
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you know the process, just skip it entirely
+(please do not feel offended by me posting it here - no bad intentions
+intended, no patronizing, I just want to avoid wasted efforts). If you
+do not know the process, here is a short explanation:
+
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
+of patchset, under or above your Signed-off-by tag, unless patch changed
+significantly (e.g. new properties added to the DT bindings). Tag is
+"received", when provided in a message replied to you on the mailing
+list. Tools like b4 can help here ('b4 trailers -u ...'). However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for tags received on the version they apply.
+
+Full context and explanation:
+https://elixir.bootlin.com/linux/v6.15/source/Documentation/process/submitting-patches.rst#L591
+</form letter>
 
 
-Thanks,
-
-Rudraksha
-
+Best regards,
+Krzysztof
 

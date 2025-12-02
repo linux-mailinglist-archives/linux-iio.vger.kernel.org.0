@@ -1,96 +1,128 @@
-Return-Path: <linux-iio+bounces-26648-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26649-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A8B6C9C92B
-	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 19:16:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A0DC9CAE8
+	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 19:48:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 032AE3AB102
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 18:14:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A18533A74D3
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 18:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F5C2D12EB;
-	Tue,  2 Dec 2025 18:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6094C2D192B;
+	Tue,  2 Dec 2025 18:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ejxh1dHb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FK4aE4wc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA7E21773D
-	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 18:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEED23E229
+	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 18:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764699217; cv=none; b=C16Ez4VV+VW/Skp9EaEIabVMIh+kOqXlLMWk5cSA34qokPLNDHJmvZU0ahPfgnp8CPIgFdmLXx9oeP6iVDtTIczsbWtYq+bLSW9EILaPSvbOFajrwyDwX8YPmye+bQf5xgXmEguzFNS61mOuUqAZ+s6U3J+t1UgpJCH3ctMfbNw=
+	t=1764701297; cv=none; b=h5RLmSFgEQjUzrjbh5LLMPoPutuam/D31vWAtMJPEIfM/E5CarjP5JyTwy+duuTTDxZ8SmO/X1+XihYsBsWpWbqfXHNClr+8U9t/l5QCt19v7WQPf14MWYC96HZ50EFFBDiEMbKHH5PjAzqv7xMq4EIfsudbrdoZSKFO61qK4F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764699217; c=relaxed/simple;
-	bh=bdthcyLeDFW7Ku0MwoZu7F1rr9YLEfvT55xqiidmiKI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L4q0ySmBCGS46em8IeB7/dmsBxmgupnpu3fZ5bheiMk+ROg5FZD0gdZapr7awv9UXNtAZUmS+bBIyw/6NrWucAInnlsnstqFYQKgFWGTkfVigMlMYZUz+O72LO+7DZtbP+WX54XDc4NVFOdHFbb6ILrp2gTmjcr4pggvuw37Dgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ejxh1dHb; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1764699212;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=viWv9NWMNAydT5kwQiEWz7g+oXce/Xi4AyaKIz18PVU=;
-	b=ejxh1dHbIG7kdTsfR12Zf8ncmCgRg1JU1FgJbkPSMzVddtKQJVyI3t8iTNqJSDRe7hi4r8
-	8XCM8VxDJJFjKhkaVm/e/eCFPrAKw6A3lMPZljVLhbmXHwa90+dWticbPxgePvg3JSvThB
-	imgq6h2Mnw86G9tpQbqxGZbdAXKCPqE=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Marius Cristea <marius.cristea@microchip.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: PAC1934: Fix clamped value in pac1934_reg_snapshot
-Date: Tue,  2 Dec 2025 19:13:06 +0100
-Message-ID: <20251202181307.510970-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1764701297; c=relaxed/simple;
+	bh=qmcfhShQh6q6Tg47kHVH1nCSCPnOjgsMPs/kyL1Sick=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MJNcmCfLQ1q+8lc9heBng4ProvyVe9WrpFX7fw1nVrod2Ux/9JK98hw4NPnL6TzoT/qAqTGZmVVWek1bTdE2lLZoHntNnVu8CJ+5FoMaGcL5ZuuqDvSJyClVMdjtde9yXfHpKl3kxtycub82+XG3YxkR51rR8GarpxaGRkR4rvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FK4aE4wc; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b770f4accc0so786446466b.1
+        for <linux-iio@vger.kernel.org>; Tue, 02 Dec 2025 10:48:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764701294; x=1765306094; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YK2nhrM29O2hgg2Ta9uM55oXWMLeg2yr8elEf68PO2E=;
+        b=FK4aE4wc33gtpKoj5VGypbgR8T+2ecMIE0VhF+9S3A7zr7e7wVqR23rke+VLuRmRE3
+         bcbTr4skPBweB3ZLW5fwzUCNvlUznpCHf9ybqnSSblsgZPx/XOGizIOBV/caIOvD9ceF
+         8hVt9ZbHdmNY3FyAp7d94iI0f03btXlWuKT64gTmx/s4Wv437a0NNzneKb1QWoHpOro1
+         X2STTZk6lhQ/+rdsCCOvkG+zFydyKbUW7V10n/KTQG+nJZ8QP2aM+I3ToedhMtJ+R1lm
+         RTf1dKf5VapzdsIfog1TFpF8YRn4JBVgYeJk4bMJPcGBkU8MQtfy6l+uXq2PibmQo/w8
+         Ee9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764701294; x=1765306094;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YK2nhrM29O2hgg2Ta9uM55oXWMLeg2yr8elEf68PO2E=;
+        b=FfNgbfoes/RTJJEPCMMM7zxVnGfAdzFueJCGDempci3hL/xcjTuiFa18XurNcmSek4
+         Qt7bClV0iv6+RJnUy6pLo7IcSQGle6cjp3zn9hgdtHxl4p/O940MhbW3JFx7giphezf7
+         A6A/WlvLThPF3GJ9yUUwmJ6qv040XAkwub6Cn5iGBWPXhIGSKupFhTVh6Ox+gbJDiAvP
+         gKvPbXU1GMvz7vls4wrx9yLZxHZv69ixnlc/aNCuz1Y97JySEfzVHRF0QIMuojT8W9XC
+         aQsEiOLOI02LlCsDltnRZlrPDstS0BCb+tHYVfR2f97gfjVinaTMy8qkoKzdKrzoCFHM
+         h4xA==
+X-Forwarded-Encrypted: i=1; AJvYcCXqMCXn1+V42/I21zEw/S7+3Krz0VD86wKK5zZW6hPPYJT7hVjNUZnBvdhs1Xovcc10CzG2nq5Cf3A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8+HVqWYJhlSykiudrjteb8d8c9r9prUU+aqaspkh9bJlM4eHx
+	1Le+JowedhLkDzMDW/1vmGYVgzzICYZHWoR1TgXwlqGh0arYPlaFSAlFJJKhbaQeTvc4eianPP1
+	L2wmUFRb91W9rCI2ROBQpmGC1stcwd4I=
+X-Gm-Gg: ASbGncthBOpibrfA8R3BJQ0zoSlMqJb97NTm7M4IyJVttk1K6Xrh2jNfd4/hHnjniEK
+	TTpxXZsGz91tobg3pRqSW6BoVQ5rVQAjLCcNM/2qHqJhuIs4lZCx6QXBbtzGXEEljT0VGqF1hD0
+	SqkpT3E/JZ9IYvpFzX6oDM+kcd2CF5uJ2HBZXRjtZFtX6qFkea2UXClRJhp5a72R52VBaPAivPT
+	Vagd7/J6b8XvmGfz4JCTK9/TjfqQSN+0kwcqDMFboFRhaIdKRny3vOAPLTB4SYy/eXIbeF6ZN1i
+	YwzxPLZOdUEnwsqCZ9mbfH1PMVIRTMspa7iNrWs7gj+u/sXWD6zqQZ/NabeooXQUULJ16dPZanv
+	LTA47bg==
+X-Google-Smtp-Source: AGHT+IEde5Ne2FWmn/NCQ+IRx4n/GD9c9A5QSTODzTd0KanvaOIf2EO3FmVJ55kB63cvLDvHqezaxI6V2mbDnsSWA4o=
+X-Received: by 2002:a17:907:970d:b0:b73:8cea:62b3 with SMTP id
+ a640c23a62f3a-b76c555d4e4mr3503240366b.41.1764701293826; Tue, 02 Dec 2025
+ 10:48:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20251202181307.510970-2-thorsten.blum@linux.dev>
+In-Reply-To: <20251202181307.510970-2-thorsten.blum@linux.dev>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 2 Dec 2025 20:47:37 +0200
+X-Gm-Features: AWmQ_blkY4KethoMOw3VYF_HN2LLZpgOJNsEjED8qY3jBtSrhG66YIa0fXVjIf4
+Message-ID: <CAHp75VebjUo2JH49tmuOvgjKUbsUmZg0C461wwvL-bRaDd5C9Q@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: PAC1934: Fix clamped value in pac1934_reg_snapshot
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Marius Cristea <marius.cristea@microchip.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, stable@vger.kernel.org, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The local variable 'curr_energy' was never clamped to
-PAC_193X_MIN_POWER_ACC or PAC_193X_MAX_POWER_ACC because the return
-value of clamp() was not used. Fix this by assigning the clamped value
-back to 'curr_energy'.
+On Tue, Dec 2, 2025 at 8:13=E2=80=AFPM Thorsten Blum <thorsten.blum@linux.d=
+ev> wrote:
+>
+> The local variable 'curr_energy' was never clamped to
+> PAC_193X_MIN_POWER_ACC or PAC_193X_MAX_POWER_ACC because the return
+> value of clamp() was not used. Fix this by assigning the clamped value
+> back to 'curr_energy'.
 
-Cc: stable@vger.kernel.org
-Fixes: 0fb528c8255b ("iio: adc: adding support for PAC193x")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- drivers/iio/adc/pac1934.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+...
 
-diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
-index 48df16509260..256488d3936b 100644
---- a/drivers/iio/adc/pac1934.c
-+++ b/drivers/iio/adc/pac1934.c
-@@ -665,7 +665,8 @@ static int pac1934_reg_snapshot(struct pac1934_chip_info *info,
- 			/* add the power_acc field */
- 			curr_energy += inc;
- 
--			clamp(curr_energy, PAC_193X_MIN_POWER_ACC, PAC_193X_MAX_POWER_ACC);
-+			curr_energy = clamp(curr_energy, PAC_193X_MIN_POWER_ACC,
-+					    PAC_193X_MAX_POWER_ACC);
- 
- 			reg_data->energy_sec_acc[cnt] = curr_energy;
- 		}
--- 
-Thorsten Blum <thorsten.blum@linux.dev>
-GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
+>                         /* add the power_acc field */
+>                         curr_energy +=3D inc;
+>
+> -                       clamp(curr_energy, PAC_193X_MIN_POWER_ACC, PAC_19=
+3X_MAX_POWER_ACC);
+> +                       curr_energy =3D clamp(curr_energy, PAC_193X_MIN_P=
+OWER_ACC,
+> +                                           PAC_193X_MAX_POWER_ACC);
+>
+>                         reg_data->energy_sec_acc[cnt] =3D curr_energy;
 
+Hmm... Maybe
+
+                       reg_data->energy_sec_acc[cnt] =3D clamp(curr_energy,
+                                           PAC_193X_MIN_POWER_ACC,
+                                           PAC_193X_MAX_POWER_ACC);
+
+?
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

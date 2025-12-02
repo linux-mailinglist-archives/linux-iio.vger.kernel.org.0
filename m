@@ -1,180 +1,132 @@
-Return-Path: <linux-iio+bounces-26640-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26641-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699CEC9C277
-	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 17:13:18 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA3EC9C35A
+	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 17:30:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD3D43A9D80
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 16:08:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 56825342214
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 16:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2E328469A;
-	Tue,  2 Dec 2025 16:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B106D28640F;
+	Tue,  2 Dec 2025 16:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IbmZ5G9F"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EHGXQQfs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6588287268
-	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 16:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A37F270557
+	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 16:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764691698; cv=none; b=BQ4sPELb4XgJ2FhhoVjcpoUk0MF8+WXDQn0d0NeiHy9YtdZquHkFin9wRfvdW9cDbe12ZBdTeNH2OV5fMrAuuRs21dIg0A7fdPP6dBta5rNJNVC986LpZy30oyUwdO9I3QicjkLbzhbJe0qBXHt6Uj4TNB6MbkCnayYehy0c6oQ=
+	t=1764692973; cv=none; b=qrxy7O19LkUIEfYowBnl0PqYmwgtDdKQ/4CKWzG/t2O5eVhN9u4WDPz/K9k3icekSDgrekDD+UCDqKR6bOOLDuKDg3oscetMSw3Z7qUfZmPpg0EYNwDKW8UpyJ4bhGrXyKlAklLAm+O+FiIiZmTzpTVZIkf3qb5BQ338jXNP9MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764691698; c=relaxed/simple;
-	bh=g+P6WznOZVMRIKxm6yWTjkhYjM78AYVWkUJIRoCPcC0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SO/kRkFA1gRB4xJx6Kv0WQSI8JBTrAftDBlksgxgPVjqR2gCqUKwbbGdY11szsVqJ/lScWs0ek6xLIYkFlt2xA4WyfoHoMuPPskhmnc8+BhIFQcinLjSdNdaPLcgj0C1//tyF4optOvf4pswTSWcng/NDBJJX3tzCC2wWd8RqTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IbmZ5G9F; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso64685475e9.3
-        for <linux-iio@vger.kernel.org>; Tue, 02 Dec 2025 08:08:16 -0800 (PST)
+	s=arc-20240116; t=1764692973; c=relaxed/simple;
+	bh=7Ob/SW0CCBrP6rVCm5L7RBvmi5T1Z6RTpPIUlZyLOfM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bd8AyjRwcYBDhS2JU0OdsZ9/c6preoxymR/7Byrs+kuOhC7bHMWUAxHapRruIQXZodyDVg90TRQU6WqdixbZKoygb9GPTAbJ/dSCLFLYgB/HkuIQZDRdPNvKfhpSfOFTLbwBOviZ7xbtDN6x1m4fB6qb3cVdOxapkCfwOpSPztM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EHGXQQfs; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7c6cc366884so1711390a34.1
+        for <linux-iio@vger.kernel.org>; Tue, 02 Dec 2025 08:29:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764691695; x=1765296495; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8taEGCmJMa0QdyAqmJiHyi9j2hnnWICf9uWNlE276Ag=;
-        b=IbmZ5G9FfNxl2/BwbXzWr42hLowUspd+UojzRsZh2mYAMd0nRtFeAwJBv2p44ufVh+
-         tKd3V1/xgF8qQFBYwtLF0b2xeTQLThMRKHHRk6BQuN09IeQHgWpN2JVB1VSz94BGs/N0
-         Behry0u05+HAxKU7RKwTgVv/5ymSC7vN7VkzweKkICXzVO85aOmyNDY/LkCaWuqMEIcK
-         cQzW6mgP9bj9QJOdN31hBbAq/celLpzFrb91FI/6jwYukhneWqZXHPg+aN2eQE2SWZ8j
-         yDt2F1B4eL7jdis8dHVKWjNb6tY/n9oAeeVtt4P/ENI9C9gGGWBLCGgdYniVTjhIyuN+
-         QgoA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764692970; x=1765297770; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iCwyHQPtWtaQ1W7hHrnxyQUAOefNwO9H71b7bAnV3zo=;
+        b=EHGXQQfsLcnEsubGU79KxYt2DpZSjsZ6MhuRg6DQv9DboqvKTWggDWwZqOIH+biBMi
+         +IMdn7GjWEOBNMhrj/1mg8YWuLMgWJCnXc5uyojfuOtsUQGbLiuJvv7l85COIg9rSjNf
+         8eo1ZlYLf8kj08r3FtogX9TbpQSNgxqqzdj+7oNY/iJM7QpGmq4BDhTimsNi0ceq+bKn
+         fzncK38piy5auEJnKthqFbUXkBTfvmvSP4iEM8WiMRaL1oEOyTU/pxlicVcUwgYKx/r/
+         7EeyHjrOPed7mB6pmH9ckdfggtW0bFok7ui4M/QKPdb9+g9nVIx72epTZJx4J3M10Oov
+         2n2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764691695; x=1765296495;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8taEGCmJMa0QdyAqmJiHyi9j2hnnWICf9uWNlE276Ag=;
-        b=eCloRdv7sLEQFwBSdIZBvzINifGdyqeVO40Es7UKOsDA8honA4LL8u+ptV8svuOwxn
-         lO5YHrHWQkCZtSCTYhIADtXWnRjn7Bi5/Nvy1RtRzcuuXlF4d6K71Ns+85APCNrsME6m
-         R/7Hlx1V9REx6+ba6SaogNuamlkvvElVya5E5UTFn0Rc0i+eukewmSpMhUCWVbe3bHPR
-         EZtMXbcpiEXMl519tcILIFAgOFIQVPnbi6kmigNrIifY+31V8prbji9ngD/WzxK+P5Ej
-         2iioHvcbQKBekNu9E70k3Ex5hdxOdPXLziMXUZ0IfrR6kv/yQCN6UBt1elAQwZ7afhMz
-         4/2w==
-X-Forwarded-Encrypted: i=1; AJvYcCWSOkGyeFvzfHDiewYid/kvdJlN2QqPvA/y7c0vZP5aNzJ+mvwIMxO+ggyFGNlBaj+ikuUsbeuMifk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkXMacH0ug9gKuaDbW+2enw59sCiEMNFjCy7NnKOJyUrDx5Zso
-	xu25eoSHZ8Hn+MLJTM28E9WjMg+SuMj1avHduQYB02tZ8nYmEOkSbmAg
-X-Gm-Gg: ASbGncuofJpNv+ee4i5I4qvz7mon+rmxlcL1Zdl7Z/ktWeWQyhAZt22IJX6I7sNemeK
-	lBCHv9j+9cbdKawZ0Xp6Jqi/nWytr+0I8o/jRM/DmXWhkqX+uOJbyDNdyFAx2PtvUwgQcNC6QRL
-	4Wq744UeHzGu3aMyFlhA6yM3CNTTroKdzIS3wtdKASwzL0+Sx3efR932ch5ov6zNSNjrz26Pb/3
-	3tV5FzSLjfTg383JCk6hDTHP6TIWAAyFC94Uj03XSjHJin9KyZWYU6MGB5lSrNGM7kxHLyqsAgc
-	ZcFzXxdl80noXkWeJh5ZgF6pfdqc1SlDsjpbkwq1L7ngfszgDI/wxQfwdNxSGHsiOA0y/nmj+a8
-	0M7xTWTrA7IwepVeFK7Z1pn35M334UARpvIFVjc84EPacHjeiEfYpL2eWsytYuUIu7cqkKMb2zC
-	otzHza0lDPpyVMfchJRew=
-X-Google-Smtp-Source: AGHT+IHN8MLUgVqG1TZJOjfcwHO3vzVTApj51Da/zxDzFVWxbtRl2/o/4nKL8gjUmVEELWg/xEjhFQ==
-X-Received: by 2002:a05:600c:4f50:b0:477:ae31:1311 with SMTP id 5b1f17b1804b1-4792a47aadfmr1656855e9.13.1764691695014;
-        Tue, 02 Dec 2025 08:08:15 -0800 (PST)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42e1ca4078csm32812818f8f.29.2025.12.02.08.08.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Dec 2025 08:08:14 -0800 (PST)
-Message-ID: <2ccd698bb58f36fc1d25c36c43e20a6b689cdf5c.camel@gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: adc: ad9467: support write/read offset
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Tomas Melin <tomas.melin@vaisala.com>, Andy Shevchenko
-	 <andriy.shevchenko@intel.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich	
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Jonathan
- Cameron	 <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Andy
- Shevchenko	 <andy@kernel.org>, Alexandru Ardelean
- <alexandru.ardelean@analog.com>,  Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 02 Dec 2025 16:08:54 +0000
-In-Reply-To: <c1cce165-0c34-4277-89b4-b0117ebb4bba@vaisala.com>
-References: <20251202-ad9434-fixes-v2-0-fa73d4eabbea@vaisala.com>
-	 <20251202-ad9434-fixes-v2-2-fa73d4eabbea@vaisala.com>
-	 <aS7zf3ZGVEdTrNvF@smile.fi.intel.com>
-	 <c1cce165-0c34-4277-89b4-b0117ebb4bba@vaisala.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+        d=1e100.net; s=20230601; t=1764692970; x=1765297770;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iCwyHQPtWtaQ1W7hHrnxyQUAOefNwO9H71b7bAnV3zo=;
+        b=JFrebGaLUAVQfXCHKXPUpIsyvnQ1kuosvhRAU6O0Sk/Hxu0QyMnngjcqjVx7Pa1RJf
+         775SF4ZkPPBzVnQP9TmiZc49ez1ljHDk+xR6PTmcnA5i+9LflBYc8ZrhbdLlf0jjDgi8
+         cncUSdR0GAZ1T+/J08xU/6vUr3wbK2/JetxduNzdi4OsOPIjiqqygT1wHtMLIr9mW9ci
+         ZDPfMZZ5fj1wqROazCLruTsbhKh9VcgVEajR8AV9sRyvT+dAnUAoggA8Mf+zsKNVHhFq
+         v8IO2SvEv90+UCNZ/WzRfUGMZ9kqAk7FLPDpZ2g0SiKl6ay7hzU6ht7xMr4470kBDoGo
+         4axg==
+X-Forwarded-Encrypted: i=1; AJvYcCVg5Psa13n8hLHJ/16gNg49POp9UaX2czujyyRKXF0NfWgpQ0NiVpupcZ2CGGtkR54Qy3ijRbjTsds=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrQuIr+FMDFe9oDXzfjNpMRYjyuT+QHxIIffw9ROMIn8b+sqHc
+	ZtRGKalsriPpLIwRrzkh2FO04fP/w2uMwjH7NuyIeBPfYN8NngpEgB9SAtk+NDyBiDs=
+X-Gm-Gg: ASbGnctPh1Xw0gdV5VLlujpvcj7XkaMd8alDl6jGaQ7E++LAuYWnOfHX1i+3Iw8ihWf
+	lzEr1NgzzOSR3Om6Zqknm8mfCbjJAo5L4OXshqVj4REievtmR9DJlpGr6Iz6uw16RsM6U+I0PQn
+	YMWam9UDO2+M1u08trg7UrE2N2sw54MQKbh4Wh+rQGQtiC6ck0tiTKSPNHwT+nuXpJTBAnvDhlO
+	NfJGXzTOND5yjrNi2jE9bOTzbJQgdm5YHW27wOC8V47le5H7TIPff98dFyMbuvp4d51dYPtXdHF
+	eYz28E0pDn5rp5zFpQj1wkjMyDLWwIHzgW7D7U3z8VjrXNneFvMX5qD2he9Oz7X+si73/BW4Y54
+	aNWKUtvF2UHCuO60f5RItYfxR5Vwh0UdCK8kLS4CyO6nfMNFDD2PJZbBAD56KlVVaQYIyyRLydj
+	z5ALBRg/RRo8wmgrxPjKXu8O31ZADKFrOpIE93zeALAedrHbAkNX7suAqTrtfo
+X-Google-Smtp-Source: AGHT+IFbzrMau3TkW8XR5v7695pyjhfacK0gWPg9OK/lv1/9IXxrc0EQfiWkOLsYP0yQV3QfIjle4w==
+X-Received: by 2002:a05:6830:6303:b0:7c7:827f:872e with SMTP id 46e09a7af769-7c94aebdec1mr43867a34.38.1764692970157;
+        Tue, 02 Dec 2025 08:29:30 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:8f05:e265:a988:1b22? ([2600:8803:e7e4:500:8f05:e265:a988:1b22])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c90fe0b238sm6888271a34.20.2025.12.02.08.29.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Dec 2025 08:29:29 -0800 (PST)
+Message-ID: <02285ef6-0928-46a9-8f93-b63fce30535d@baylibre.com>
+Date: Tue, 2 Dec 2025 10:29:28 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] iio: adc: ad9467: fixes for ad9434
+To: Tomas Melin <tomas.melin@vaisala.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
+ Andy Shevchenko <andy@kernel.org>,
+ Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251202-ad9434-fixes-v2-0-fa73d4eabbea@vaisala.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20251202-ad9434-fixes-v2-0-fa73d4eabbea@vaisala.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2025-12-02 at 17:01 +0200, Tomas Melin wrote:
->=20
->=20
-> On 02/12/2025 16:11, Andy Shevchenko wrote:
-> > On Tue, Dec 02, 2025 at 12:53:09PM +0000, Tomas Melin wrote:
-> > > Support configuring output calibration value. Among the devices
-> > > currently supported by this driver, this setting is specific to
-> > > ad9434. The offset can be used to calibrate the output against
-> > > a known input. The register is called offset, but the procedure
-> > > is best mapped internally with calibbias operation.
-> >=20
-> > ...
-> >=20
-> > > =C2=A0static const struct iio_chan_spec ad9434_channels[] =3D {
-> > > -	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 12, 's'),
-> > > +	{
-> > > +		.type =3D IIO_VOLTAGE,
-> > > +		.indexed =3D 1,
-> > > +		.channel =3D 0,
-> > > +		.info_mask_shared_by_type =3D
-> > > +		BIT(IIO_CHAN_INFO_SCALE) |
-> > > +		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> > > +		BIT(IIO_CHAN_INFO_CALIBBIAS),
-> >=20
-> > Wrong indentation.
->=20
-> Can you please provide example of your preferred indentation for this
-> particular case? This is used in several places around the code and
-> seemed like one of the more readable.
->=20
-> >=20
-> > > +		.info_mask_shared_by_type_available =3D
-> > > +		BIT(IIO_CHAN_INFO_SCALE) |
-> > > +		BIT(IIO_CHAN_INFO_CALIBBIAS),
-> >=20
-> > Ditto.
-> >=20
-> > > +		.scan_index =3D 0,
-> > > +		.scan_type =3D {
-> > > +			.sign =3D 's',
-> > > +			.realbits =3D 12,
-> > > +			.storagebits =3D 16,
-> > > +		},
-> > > +	},
-> > > =C2=A0};
-> >=20
-> > I'm not sure about macro-less approach here, I think that we want more
-> > consistency and hence before doing this change probably we want to clea=
-n up
-> > the existing macro, then split it to two, and add another one here base=
-d on
-> > the low-level, which was split in the previous clean up.
->=20
-> As mentioned, this is only needed for a single channel, and since it is
-> different than the other, it needs to be separated. Do You think we
-> actually need another macro for this?
->=20
-> >=20
-> > ...
-> >=20
-> > > +	return ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
-> > > +				AN877_ADC_TRANSFER_SYNC);
-> >=20
-> > I would make it one line, despite on being 85 characters long.
-> > But it's up to you and maintainers.
-> I would like to not fight against checkpatch here.
->=20
-> >=20
+On 12/2/25 6:53 AM, Tomas Melin wrote:
+> Add support for setting offset range (calibration) for the ad9434
+> and fixup vref mask handling.
+> 
+> Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
+> ---
+> Changes in v2:
+> Updates according to received feedback:
+> - embed ad9434 channel description instead of resorting to macro
+> - change INFO_OFFSET to INFO_CALIBBIAS
+> - keep offset value untouched in case of error
+> - drop length from avail_range
+> - Link to v1: https://lore.kernel.org/r/20251201-ad9434-fixes-v1-0-54a9ca2ac514@vaisala.com
+> 
+> ---
+> Tomas Melin (2):
+>       iio: adc: ad9467: fix ad9434 vref mask
+>       iio: adc: ad9467: support write/read offset
+> 
+>  drivers/iio/adc/ad9467.c | 62 ++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 60 insertions(+), 2 deletions(-)
+> ---
+> base-commit: 9b9e43704d2b05514aeeaea36311addba2c72408
+> change-id: 20251201-ad9434-fixes-6dfdc86fb881
+> 
+> Best regards,
 
-AFAIK, Jonathan policy is that 80 column limit is still the preferred limit=
- unless readability is
-hurt. So I would say the line break here is up to the IIO policy.
-
-- Nuno S=C3=A1
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

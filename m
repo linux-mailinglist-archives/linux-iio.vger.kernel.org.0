@@ -1,93 +1,98 @@
-Return-Path: <linux-iio+bounces-26624-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26625-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5A1C9BABA
-	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 14:50:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A79C9BADE
+	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 14:55:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 675893481EB
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 13:50:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 234743482AC
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 13:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742B931CA42;
-	Tue,  2 Dec 2025 13:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2557331ED7C;
+	Tue,  2 Dec 2025 13:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gIh8HXe6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q7vZyEKD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6AC31A056
-	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 13:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCFB31D723
+	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 13:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764683436; cv=none; b=ICdGnrIEgF8sThfpS6kfLmWdhw7tIg9rubRlypgSrpvdvpAitQYM/6r3dIBsL/8NYtp/3o839ymMs/++/nklRdIcNV+0wJ7QUc3DTccm85zzkuIsTweuLMoKwY6K4l0qOovQuywJ+Cx0FsJj5DCvaogtJPpaaF/IxJvNKsEwB14=
+	t=1764683702; cv=none; b=ZwCuwnnjVLd/yQFx/AzRyzzs9t5J4lwurERUqQ39Hj6wGfQlbY6Aa1XBNYislq4oGf5x0Py97sM0hZXIgcFlDpqbBGwmDgqq6K2rnbAvqmDplQ2oulCMo9A+aO8xVf18tzJ08SQz6PNeklPCIMk9GO6iKoTrcGr5LsphuGpLESM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764683436; c=relaxed/simple;
-	bh=LhaFwAdu/Fz6q5nxDw8k/AUqHqbHJARKQ2qgwoUK78o=;
+	s=arc-20240116; t=1764683702; c=relaxed/simple;
+	bh=rYPu9wGVMJD3qxc3VrFM1hzhlwplY+KT749qc7N7eLY=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JBbS+NmVi2M90VFthGqp+k2WMpc5tuvftvDL2OUX5kkQ4B8RUkwL9jYG9oy7BovvHmEQMx7H7/IJYbD7+cere0Oa+WkFfEAU+2Hufv//lydb0nQUMrz0Ajtbx8QzXU8PC9HHofPBCttrxgBg4WRCAR2z5LkeDnSK9A3Iegksn9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gIh8HXe6; arc=none smtp.client-ip=209.85.128.51
+	 Content-Type:MIME-Version; b=Q9tF6/YSy7AdvDD8bXmpPO9pq8hydvCdiRNGHkuMKCuu+nX9AVRRugXGnZLAm8s041Khq1O/cNjGSvi5eLceeiqVkZJ1ckxkJewvfvIdEbPySBvyQsrs1ahDWO+G7qtGcVRmTgXWX+xALNqk9tdLwElwdIv/9mvLSLN123upMuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q7vZyEKD; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477b1cc8fb4so33647505e9.1
-        for <linux-iio@vger.kernel.org>; Tue, 02 Dec 2025 05:50:34 -0800 (PST)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42e2e671521so1694300f8f.1
+        for <linux-iio@vger.kernel.org>; Tue, 02 Dec 2025 05:55:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764683433; x=1765288233; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764683699; x=1765288499; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=8gqmfPqUGJNnpZYL2jaQaSraxMW5RhwWoqjqG64qTZU=;
-        b=gIh8HXe6XUGI5pLRDPYPiY2EPuwp3VIdC3D4XSIb1oC/wf9RmeQB/Gdk11m/rkjfk2
-         rupijm/SNtmZct6rlm5tBdlIGaq+CnmIwx6TnziwvaEqosTDLtRb9QlKjlFwrlPDZhvQ
-         7VrFq4B3oAGg1Boqhpfu5NDmNyz53G6gqtcWvIiiztmz4wst1MEGCXfZy/kthQrSHUNh
-         KfcRSXYSrjc4qgfloza7QZEC1fPjqQoP+KqjsI+45QziNLQ6VKEi4KzjImRdcUXlZ+X9
-         3cv32QPRQky27k5/ip4keN6l0HRTQO7z2dac+78RBy/dRfZM6kReSwbhMWDSq6W1QdQk
-         EPhw==
+        bh=q/lyaGrD1zYP4nMnrlel1vvhznbrPEiq90hsTruO97U=;
+        b=Q7vZyEKDfm59WErxIVSixBiIbejhXbXD+0VVl67Q9/LClrUcYFlurwIabFR+9sJnw1
+         LQAEtqKxGzq4AU+3wqlVmHCMzOWh1sM7MvwN54hVdpOO34eHqss/FVDmhH02BVvs1WXh
+         lS5SSS/ayPSHd7NAbkfw+mST9rtMUy7d4X4Pgxkvycqpid8FumJ+/w+jQ3lkLcPoesL7
+         SsnUZov8dmJQqvEPX3Ir5R71k6w6PdFSIYnJZhk+KycsV7xch1La5Pqq0YDUS1mcoKXF
+         jWx7qpfGi4SKIQN6EFPg40DDGCF+qm/xGi+o/x8hgBqFSAhFKyw8yy5hapff6rBWgscN
+         5S9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764683433; x=1765288233;
+        d=1e100.net; s=20230601; t=1764683699; x=1765288499;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8gqmfPqUGJNnpZYL2jaQaSraxMW5RhwWoqjqG64qTZU=;
-        b=jCqkMDrkrPZrxmKTEO8T6Hukujl/IH7jDhcF4eVlPGeqYHYgQYjH7NbHh8/iYc/5kS
-         f9ohXOrYOOTqzD+07hc7WgeG6nw4Xxhb9rdEv0lR1LTOMcHqmYN2g9+3UtrxU7jUCSvm
-         hX0/72nYimlZG3gnRoZ3Sr3fJhbmqdRkAmcfbD+Aq+AeUDf2Bky2Xv12c1PYX927Nm1G
-         Dq6NbNVE4jfiShvdte7cllCmoIL5VmVCWvkm1S8y/DP0sxLSC/jCDyWmRJPA6re7aXW3
-         6yk4rcWDu+X0aUQiRknLfQ4M8maZhgqWEQjrbEk8eBft8Ipgs0GXvJTWC2PIjzP/yAuQ
-         X0Ew==
-X-Forwarded-Encrypted: i=1; AJvYcCW6crr/7MTzTtXFe5ysBq+y/evxEFNQdKvmW5wDcLCTBrMPnPQRMS/j/muJzs5LQ85WjcwWbbrqvXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOnxOEtHIdZrsTNMlPljOJI1IdXIhs2p2sRaRGjKomoNu3UuY4
-	A46NCGszeLq63sMHMRb5n/c41k0UzZe/MzVUdR+8X7VsI7SXfIVdFXwc
-X-Gm-Gg: ASbGnctkJbpC62doNQy+urLJmyWBwcIXyJQI+0/WHVYhwICdTIzsIsg5s3dKJq5oxYN
-	Q+JSluqLQ5KqI5dJzfTlD89aLIct8Zgrkq7vFXKtjL4vZf52vxBQNHbzl2V+KG6D4Z0o3UTFB9F
-	ttAXBz0NOU9x7eyigVu4MDQdxPN02dQ/5SHOZChGJcqKV46pGQlo1E+zg1WZ45q25Z9I3F2y6E+
-	cX7pmFLezUwMGZXypWAv1cRk01X7I1LQFqEwPDlkcPXB40rbQOYBpWacpXlzWvWDbjJyFn5PAa7
-	J0BQVYdgGgmUueOGVFGoJAKTkL0Qwj728zmg1J5BpagJS0PJwskpssWuAz8jtyUlkVfw7XSH8lx
-	3QPZ/Cme80cx+hoLKHRXX3gUa+HPUEBfbfo9O1tm/UwAbcZT0SdHFCJDtiLZBmh9gctSO8/2Mz+
-	u8fL6giO38pbnir8tZpFw=
-X-Google-Smtp-Source: AGHT+IEV6IUEQ4zmnpCvt9yp7MvRVVkLGg7uNh0UVfL2Eu28c00bREziwfDzSdssdx2H79r09ZOyfA==
-X-Received: by 2002:a05:600c:4694:b0:46e:4246:c90d with SMTP id 5b1f17b1804b1-47904ad06f3mr293663915e9.11.1764683432791;
-        Tue, 02 Dec 2025 05:50:32 -0800 (PST)
+        bh=q/lyaGrD1zYP4nMnrlel1vvhznbrPEiq90hsTruO97U=;
+        b=hQo4c1ma3QaAgnAhzXT+11/bIRFCP5koOYKqoWq124FWUzqWcblsuxh2HMYJAzBN+V
+         HuIBe7RCjhG2zr++d4WzAl+yPvDfJHoehWwtXJuVahU1FIzdLRJrCHxYfTiMRg2RaQrU
+         PQkhsm4qzKzJpS6aqm+hihFW5tl0vrvNeh5nlPI0sIUcF38Gj+jl/ehWK8ncJ+AcodNt
+         qqsMIIjNl694HHKyJKFnlQ0mfD3NaMLBlmFESvZRyTeBj2IcgMpn7YT/s1j9Xs59TNVJ
+         7zDCwQnj5Am/lQPoIZKmhzWGfUfSBkH3jXKKWdCeWLNqsuFzaNjumGpO6FUisEwlv5nS
+         SSbg==
+X-Forwarded-Encrypted: i=1; AJvYcCXE/B3hVVWMIem36hlhb3tXFIiIXFncnHt/8TiOIURqez0hWAMQLoIXnfXR49GMsciBCHL6wOXnCH4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyB0GdDXfJcZDnnJUQjUdobm0ZOVKeQ0OUVrvGsBnEKiJF5ZGE0
+	JOD56hTU+3inzwd8+l6c0uE9+Y6RKLezIcitbm2iNAejtGwJFlmrjpZ9
+X-Gm-Gg: ASbGncvUdYWNP+khC66YdByBjJ+0NzM+NH5DEmtD+j3ciicl5jKRDUgYqStN7yvwY7b
+	s+ggzE7ZMkNTgUbsFmYAYYfFGQ1zmPw2+81Mgp5DtJVpMzNUTqRIJuhP/MBNgEcfBA082kHy+VB
+	oxVVY2c12M2D1qqFGFU70eGFy3Y84sWDC5OfJ4bieGb7Z/AaIBuRa8vtC+ryPcjAdM/+Ol17aF/
+	ESTTWwJRM2M+WFPePR26g8FiGKe+OOu4ckbyPb3h4SQeYziFVh54vzOdwdQ3bX+37pn8ua97YMK
+	7K+xX69hqt0NsB2mYy7TO/wSG7bz2rl1Y9iBy/FAP343qw8AhY1gMNZsNNqDCcpfHp4qU9P6Fb+
+	5dvyUyNWWczzhWgX1m61grgDBNnD2GpJjvyY2FTDZeZMWZfbtdvtyLx73pI5JKHfcHvhHPbJsKF
+	hxKoYsHfrdlpuBlttvlWQ=
+X-Google-Smtp-Source: AGHT+IGPIJAb6n7MVUXkK/sY1lEb6sUlZ2omnYjaBcbZhIBLn498o8u4JCPCZAwkTS4bxKhIRR7lfA==
+X-Received: by 2002:a5d:64e5:0:b0:42b:3963:d08f with SMTP id ffacd0b85a97d-42e0f23179fmr33074672f8f.26.1764683699345;
+        Tue, 02 Dec 2025 05:54:59 -0800 (PST)
 Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479111438b9sm341578365e9.2.2025.12.02.05.50.32
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42e1c5d618csm32462903f8f.14.2025.12.02.05.54.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Dec 2025 05:50:32 -0800 (PST)
-Message-ID: <6143064d409b8325bbbb2ddb1d468d5303b4303a.camel@gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: adc: ad9467: fix ad9434 vref mask
+        Tue, 02 Dec 2025 05:54:59 -0800 (PST)
+Message-ID: <ac51767a823e71a4779beee246c50deb30b57db8.camel@gmail.com>
+Subject: Re: [PATCH] staging: iio: adt7316: replace sprintf() with
+ sysfs_emit()
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Tomas Melin <tomas.melin@vaisala.com>, Lars-Peter Clausen
- <lars@metafoo.de>,  Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,  David
- Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
- Alexandru Ardelean	 <alexandru.ardelean@analog.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, 	linux-kernel@vger.kernel.org
-Date: Tue, 02 Dec 2025 13:51:12 +0000
-In-Reply-To: <20251202-ad9434-fixes-v2-1-fa73d4eabbea@vaisala.com>
-References: <20251202-ad9434-fixes-v2-0-fa73d4eabbea@vaisala.com>
-	 <20251202-ad9434-fixes-v2-1-fa73d4eabbea@vaisala.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>, Andy Shevchenko
+	 <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Shi Hao <i.shihao.999@gmail.com>, 
+	Michael.Hennerich@analog.com, lars@metafoo.de, dlechner@baylibre.com, 
+	nuno.sa@analog.com, andy@kernel.org, gregkh@linuxfoundation.org, 
+	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Date: Tue, 02 Dec 2025 13:55:39 +0000
+In-Reply-To: <20251119145751.00003a9c@huawei.com>
+References: <20251116101620.25277-1-i.shihao.999@gmail.com>
+		<CAHp75VdY7W8EgOfKuxtTALj777aVatxV5dqsxm688JTy=iVW2Q@mail.gmail.com>
+		<20251116152800.4c1849cc@jic23-huawei>
+		<34a55901fe0729145097d287a98746f23eea13d8.camel@gmail.com>
+		<CAHp75VejBvRX=5psgVgGPCsKk7gVgcDUd1q3Gn+4_jyzk=2pEw@mail.gmail.com>
+	 <20251119145751.00003a9c@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.2 
@@ -98,39 +103,70 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Tue, 2025-12-02 at 12:53 +0000, Tomas Melin wrote:
-> The mask setting is 5 bits wide for the ad9434
-> (ref. data sheet register 0x18 FLEX_VREF). Apparently the settings
-> from ad9265 were copied by mistake when support for the device was added
-> to the driver.
+On Wed, 2025-11-19 at 14:57 +0000, Jonathan Cameron wrote:
+> On Tue, 18 Nov 2025 14:10:25 +0200
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 >=20
-> Fixes: 4606d0f4b05f ("iio: adc: ad9467: add support for AD9434 high-speed=
- ADC")
-> Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
-> ---
-> =C2=A0drivers/iio/adc/ad9467.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> > On Tue, Nov 18, 2025 at 10:17=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmai=
+l.com> wrote:
+> > > On Sun, 2025-11-16 at 15:28 +0000, Jonathan Cameron wrote:=C2=A0=20
+> > > > On Sun, 16 Nov 2025 13:08:07 +0200
+> > > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:=C2=A0=20
+> >=20
+> > ...
+> >=20
+> > > > Applied, but I will note that this driver is a long way from suitab=
+le
+> > > > for moving out of staging and I would be surprised if more than
+> > > > one or two of the lines changed in this patch make it through the
+> > > > necessary refactors (should anyone actually have another go at
+> > > > doing them).=C2=A0 Anyhow, I still think this is worth taking just =
+to
+> > > > reduce the noise of remaining instances of this.
+> > > >=20
+> > > > I'd have deleted this long ago except I actually have one somewhere
+> > > > and it one of the supported parts was still listed as suitable for
+> > > > new designs when I checked not long ago.=C2=A0=20
+> > >=20
+> > > Seems to be now "just" in production. So no longer advised for new de=
+signs. I gave a
+> > > quick look and this is far from being a simple driver. It would requi=
+re a fair amount
+> > > of work to bring it out of staging. So, are there users relying on st=
+aging drivers?=C2=A0=20
+> >=20
+> > If there is no choice, yes. For example FBTFT is famous for being used
+> > by IoT / DIY _a lot_. Currently a bit less since we got tinyDRM
+> > subsystem with most popular drivers reimplemented there.
+> >=20
+> > > But I would assume that for staging we are still free to drop support=
+ it?=C2=A0=20
+> >=20
+> > At any level, we are still free to drop :-) Just different conditions
+> > applied. For staging is basically an "effective immediately" case.
+> >=20
 >=20
-> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> index f7a9f46ea0dc405e25f312197df4b2131871b4bc..2d8f8da3671dac61994a1864a=
-82cdbef7f54c1af 100644
-> --- a/drivers/iio/adc/ad9467.c
-> +++ b/drivers/iio/adc/ad9467.c
-> @@ -95,7 +95,7 @@
-> =C2=A0
-> =C2=A0#define CHIPID_AD9434			0x6A
-> =C2=A0#define AD9434_DEF_OUTPUT_MODE		0x00
-> -#define AD9434_REG_VREF_MASK		0xC0
-> +#define AD9434_REG_VREF_MASK		GENMASK(4, 0)
+> If no one replies to this thread in next few weeks to say otherwise, let =
+us see
+> if anyone objects to patches. I'll spin a series in a few weeks and they =
+can sit
+> in linux-next for most of the cycle to see anyone notices.=C2=A0 It is ea=
+sy to bring
+> drivers back if turns out anyone cares and then there is some motivation =
+to
+> finally clean them up.
+>=20
+> staging/iio/
+> 	accel/adis16203 is production
+> 	adc/ad7816 is production (7817, 7818) - the 7816 itself is obsolete.
+> 	addac/adt7316 is production (what we are discussing here)
 
-In theory we should fix it using the same mask style as the other variants =
-and then moving all to
-GENMASK(). However, I do not feel strong about it and I can send a follow u=
-p. Hence:
+I checked internally and we still have customers actually buying some of th=
+e chips supported by the
+above driver. Not sure if it is being used with linux though... And more im=
+portantly, I cannot also
+commit that someone will jump in to clean it up.
 
-Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+- Nuno S=C3=A1
 
-> =C2=A0
-> =C2=A0/*
-> =C2=A0 * Analog Devices AD9467 16-Bit, 200/250 MSPS ADC
 

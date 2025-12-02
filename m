@@ -1,198 +1,106 @@
-Return-Path: <linux-iio+bounces-26616-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26617-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D93CC9A741
-	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 08:31:39 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD33C9ABA1
+	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 09:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEDDA3A5DF8
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 07:31:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D8AD7345DD9
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 08:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBC53016FB;
-	Tue,  2 Dec 2025 07:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bY3TTYiS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7988E3054C2;
+	Tue,  2 Dec 2025 08:40:54 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE00221FD0;
-	Tue,  2 Dec 2025 07:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E762F691B;
+	Tue,  2 Dec 2025 08:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764660686; cv=none; b=Xy/he+zWBpRqpLVKRJDl7x1hoDJLteWu9SXww00JywupqDUUuV1Uqks+yyc7hgLV1R+O8vRQ7Fa8gixFvRn9+TCP2bVNoEwOevpErAllrwretEkzPAxpAbE/8IBZHh/3za1XdNjxl5DHmRK5QaGQQZfHCAZltLZwtqwTI+sXVkU=
+	t=1764664854; cv=none; b=D3MacIXziYTit2+LErPkTUBZKSAWqot6qGI0L8BvKnkAM2pdKGn8ZU50QY6izNFl+Nbc6i0k6swpEVKgu9vVYOriIIERVSsvMG0FEUpnVfYdZo7h9hIlgxo1h8sODjHnG7IJPS1Een5ov9W7IzMXspt5tlhe+IaK5mTGdi0uLfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764660686; c=relaxed/simple;
-	bh=rWht80TdDMbsCZaWcUFcjjhYySkfTb93xasOXU5Ylxc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BZN8md+SJ5y6N4Aib5vdj+d/3PRR/FYnwGDkFM4vRVymDxCXgn7/eD3WvfeL31lVCVhlq0RkBCwCFFBM43XIDNV82l9XABky0ChwzHY0FO1RnJF+2fFlRC/MJq+ebz9UYXy4yG4xwItllH/eJpvYwQDqFJ2sPQ733P2TvUz0ank=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bY3TTYiS; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 0C0B44E419D4;
-	Tue,  2 Dec 2025 07:31:20 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C3C60606E3;
-	Tue,  2 Dec 2025 07:31:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 403D9103C8F04;
-	Tue,  2 Dec 2025 08:30:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764660676; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=gutkuk21iRBLBzb9hvOl6cUp6HFUU/VZ7OrEhTRZmwQ=;
-	b=bY3TTYiSLFXa5B94KQgeAayt80JXK78ig76Aq2SyfufNuWcT41c/auFS4kPqbVeYIZlJKX
-	QrXrN/qRIP4zNsj2m/7od8XOWVPza9ZQvvaa8nia4r3ByMuNdtTuF/t2v7gxBFCMMsW9RB
-	i0p/8OBYWY3+n3FRUeyswfCRhz6Fv2at184ftP1FUUlpPAnLeFkqXVNSm5O6zbN24Wre4+
-	N8LDjO5ty4mD4BpDEbuBV6eat2hrRdfThqf+Hnymm7a9OslgagnMsXhZ11fV4HVQz7RWeL
-	AMcHDMFpAB93S2dU0dURDWQPs1MVtcc1ZnrYa/w6k4129RIITI9OMaZRIN58Wg==
-From: Romain Gantois <romain.gantois@bootlin.com>
-To: MyungJoo Ham <myungjoo.ham@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>, Guenter Roeck <linux@roeck-us.net>,
- Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Mariel Tinaco <Mariel.Tinaco@analog.com>,
- Kevin Tsai <ktsai@capellamicro.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Eugen Hristev <eugen.hristev@linaro.org>, Vinod Koul <vkoul@kernel.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- Sebastian Reichel <sre@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
- Hans de Goede <hansg@kernel.org>,
- Support Opensource <support.opensource@diasemi.com>,
- Paul Cercueil <paul@crapouillou.net>, Iskren Chernev <me@iskren.info>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Matheus Castello <matheus@castello.eng.br>,
- Saravanan Sekar <sravanhome@gmail.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Casey Connolly <casey.connolly@linaro.org>,
- Pali =?UTF-8?B?Um9ow6Fy?= <pali@kernel.org>,
- Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>, Amit Kucheria <amitk@kernel.org>,
- Thara Gopinath <thara.gopinath@gmail.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- David Lechner <dlechner@baylibre.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH] iio: inkern: Use namespaced exports
-Date: Tue, 02 Dec 2025 08:30:58 +0100
-Message-ID: <5948030.DvuYhMxLoT@fw-rgant>
-In-Reply-To: <78240755-44dc-4835-aca5-99540cca0304@baylibre.com>
-References:
- <20251201-iio-inkern-use-namespaced-exports-v1-1-da1935f70243@bootlin.com>
- <78240755-44dc-4835-aca5-99540cca0304@baylibre.com>
+	s=arc-20240116; t=1764664854; c=relaxed/simple;
+	bh=iD0+avu6pX4z2YnF8WjTS6d7hUKbsFDLIFXQ4T7IpHo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sTjPO6AVZd8AK53fHC4NPpwaKtjMwF2BSsqtGzMyfyASzR8yBjwxGg4stZO079LMOErjIimJC8zlXo1oSwvDs+g4XMNRs+QirtfQmf2UduQ/QjHBfi7+WuUsAJuMlSBuLmj91zD5NJNCWXA8Pk4yKiNAt6SlgSXGr2kHumkMRfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from DESKTOP-L0HPE2S (unknown [124.16.141.245])
+	by APP-01 (Coremail) with SMTP id qwCowACHHc0Npi5pGWLWAg--.48847S2;
+	Tue, 02 Dec 2025 16:40:46 +0800 (CST)
+From: Haotian Zhang <vulab@iscas.ac.cn>
+To: wbg@kernel.org
+Cc: andriy.shevchenko@linux.intel.com,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haotian Zhang <vulab@iscas.ac.cn>
+Subject: [PATCH] counter: 104-quad-8: Fix incorrect return value in IRQ handler
+Date: Tue,  2 Dec 2025 16:39:52 +0800
+Message-ID: <20251202083952.1975-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart6220005.lOV4Wx5bFT";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACHHc0Npi5pGWLWAg--.48847S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Gw4rKFW7XrWfKryrtw4ruFg_yoWkCrb_ur
+	nrZwnrAFW7tr1DCrZIgr1Yv3sIv3Z5WFyfJF47tFy3t34DWr9Ivr18Zrn8GF4xWr48AFnx
+	KFn5CrWIkry7CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb48FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjO6pDUUUU
+	U==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwsEA2kuYGnb5AACs4
 
---nextPart6220005.lOV4Wx5bFT
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Romain Gantois <romain.gantois@bootlin.com>
-Subject: Re: [PATCH] iio: inkern: Use namespaced exports
-Date: Tue, 02 Dec 2025 08:30:58 +0100
-Message-ID: <5948030.DvuYhMxLoT@fw-rgant>
-In-Reply-To: <78240755-44dc-4835-aca5-99540cca0304@baylibre.com>
-MIME-Version: 1.0
+quad8_irq_handler() should return irqreturn_t enum values, but it
+directly returns negative errno codes from regmap operations on error.
 
-On Monday, 1 December 2025 18:15:54 CET David Lechner wrote:
-> On 12/1/25 4:59 AM, Romain Gantois wrote:
-> > Use namespaced exports for IIO consumer API functions.
-> > 
-> > Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
-> > ---
-> 
-> ...
-> 
-> > diff --git a/drivers/iio/dac/ds4424.c b/drivers/iio/dac/ds4424.c
-> > index a8198ba4f98a..33d6692f46fe 100644
-> > --- a/drivers/iio/dac/ds4424.c
-> > +++ b/drivers/iio/dac/ds4424.c
-> > @@ -14,7 +14,6 @@
-> > 
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/driver.h>
-> >  #include <linux/iio/machine.h>
-> > 
-> > -#include <linux/iio/consumer.h>
-> 
-> Unrelated change?
+Return IRQ_NONE instead of raw errno codes on regmap operation failures.
 
-Indeed, I'll leave that out in v2.
+Fixes: 98ffe0252911 ("counter: 104-quad-8: Migrate to the regmap API")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+---
+ drivers/counter/104-quad-8.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> >  #define DS4422_MAX_DAC_CHANNELS		2
-> >  #define DS4424_MAX_DAC_CHANNELS		4
-> > 
-> > @@ -321,3 +320,4 @@ MODULE_AUTHOR("Ismail H. Kose
-> > <ismail.kose@maximintegrated.com>");> 
-> >  MODULE_AUTHOR("Vishal Sood <vishal.sood@maximintegrated.com>");
-> >  MODULE_AUTHOR("David Jung <david.jung@maximintegrated.com>");
-> >  MODULE_LICENSE("GPL v2");
-> > 
-> > +MODULE_IMPORT_NS("IIO_CONSUMER");
-> 
-> Is this actually needed if we don't use anything from consumer.h?
-
-No, it's not.
-
-Thanks,
-
+diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+index ce81fc4e1ae7..17f4da6c24af 100644
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -1201,7 +1201,7 @@ static irqreturn_t quad8_irq_handler(int irq, void *private)
+ 
+ 	ret = regmap_read(priv->map, QUAD8_INTERRUPT_STATUS, &status);
+ 	if (ret)
+-		return ret;
++		return IRQ_NONE;
+ 	if (!status)
+ 		return IRQ_NONE;
+ 
+@@ -1233,7 +1233,7 @@ static irqreturn_t quad8_irq_handler(int irq, void *private)
+ 
+ 	ret = regmap_write(priv->map, QUAD8_CHANNEL_OPERATION, CLEAR_PENDING_INTERRUPTS);
+ 	if (ret)
+-		return ret;
++		return IRQ_NONE;
+ 
+ 	return IRQ_HANDLED;
+ }
 -- 
-Romain Gantois, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---nextPart6220005.lOV4Wx5bFT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAmkulbIACgkQKCYAIARz
-eA6r+A//aMF01GyQ28Vt1qVRnR+uQNAhVi/B2aUu4XYyy1hc2lVzhHwvSjyYiXET
-h1jorSaLD9m5MsoTo9Scxhpu1d5KWIy5DaNATac1wmHh9t0IdE8gw1kNaUcNmefr
-NFOanFttvVt7e9cko6PsxmX9GOioawS3CVrJuObkGGftqR3KVD3WMOg+n551pkK4
-63Xbfe6PPADF06Lyu2kyyxUXLwIsuXQ8Z4dQ+kX4Bky34L0v4w0Yxos4Uhkwv5ur
-SOUtezyExAQTgAJi9KW5MPADpCdXfB3moTv29CdWRs1K8XLkxxLeprZnutXRFxOu
-CrmiA30lNs2pp7wut+8PfmeYX6btqOCMQ8KENXNV9StrRc9UqD6K6TbbJGE/Vbzg
-gxDVp9t0i0nxcQAwhtvnlmAjf3pxeJWXf1iII5ooXoxv2yW1G+FsL9RBztyEnTA1
-0iLFg1Yyx/28b7iZsf6oD5luqSRnQ7Qi0js5sAA3rVHfMtOlO/rGcUH1BprrpLPa
-m5jycApgp26OuCSxacOhlAZ6iXy1pyepTaDlS9wz1kbdwVJOf3IaWuRhDHrRugCd
-zya/579XFCsbobzejkSRHzgwylhuGsDMAniIn0MaeQw3E5wyBTCVJTXx9qebFj3v
-sUVcLNhFQBy/G8YWighvreSaPr43mWS4ueBmAMClqYmOzq2nF2k=
-=n+bE
------END PGP SIGNATURE-----
-
---nextPart6220005.lOV4Wx5bFT--
-
-
+2.50.1.windows.1
 
 

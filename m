@@ -1,84 +1,84 @@
-Return-Path: <linux-iio+bounces-26618-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26619-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81443C9B05D
-	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 11:03:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD15DC9B1B5
+	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 11:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2AF944E3C49
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 10:03:55 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1E0354E5430
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 10:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2764F30BB94;
-	Tue,  2 Dec 2025 10:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B717930DD18;
+	Tue,  2 Dec 2025 10:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="x1bEamW1"
+	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="m1ynU7rs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023107.outbound.protection.outlook.com [52.101.83.107])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021114.outbound.protection.outlook.com [52.101.65.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7063027702E;
-	Tue,  2 Dec 2025 10:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EA7230BCC;
+	Tue,  2 Dec 2025 10:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.114
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764669823; cv=fail; b=YENY41mmDW5z1+7nVpqxHGl5DVHRII7vAvcIyVCYDS3VFwBqbPcNztVtqajij3YZbXE6dcgOH5ZmasVGk6C5bUdZBwjGEEm7yVcIrnvaX4A99GSTX7Gr7LfCwkDUbbQpw4dLg7QrxglqY26b4NCW6jM8fNWRZGb1psEL07CXrYY=
+	t=1764670868; cv=fail; b=WOex815CrIlSaa8qPQWjvaB0vre5RRR9vxwocfpAuPRC1tDum4ZzD5YnmcbsRK+Jf98cSLth9lWczxHj8jS8HL3pc4Ij1aQvIxFmws/NPo+O2tteh8UladOQ6KE39QeV7SvRubmH6Y49+8tdwUCkFuTxXQb9H1TXX/lRmVDt57c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764669823; c=relaxed/simple;
-	bh=enWgY99fjuMlDmHwNdr7y539QON+1JH0+3VAsmM+3nc=;
+	s=arc-20240116; t=1764670868; c=relaxed/simple;
+	bh=2keDlab4tvaqJegv9BrsBLdPnZ0jP3zyropDKbcUYG0=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RVyU7QOaRUQ/kIzaL+Z+y0eeHywbuWAkcYkYhD6OO+hkGXKtJP/BsXjRPPWXuBqn5GCwRVaL32N6y0pQjODMD3cML15cO2qrztuikOjBUiJFynodP1MpY1Egtr6ejyDIRl1BUnRaVfq58ArplU+WHqbIQKLjorlEo05/cV9WtaU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=x1bEamW1; arc=fail smtp.client-ip=52.101.83.107
+	 Content-Type:MIME-Version; b=I9LdNrYgicrLB/ETSGGIUwf6jWw2KeYkj9RST6MGOMEh7u2GjArPbLsAosLlOuad1zGZ/ggY8H9I1uKKGgXDc641xJ6uBGLReEEnogZPOBa0fPpDIzk8WvzF6n2qyTCoOfHaZGjhdQHzN/1drB2VGfm4AizHTEiP8K3ZKw7BDaQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=m1ynU7rs; arc=fail smtp.client-ip=52.101.65.114
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HEJIzjW/uc8R4AxA78TtMhpEDuDVALeY4l6wirnTYE914EHMC7Svqz9TA35yAS2O/a+wBjDUmeX0BtjXjG/oPTT2qUJiR5vh4tpuhaFSXHpcboNSFwwg36TLye8XkCsncwSwbFNVYgjVSrg6diFErnA5Atl910wfVB5y5bA5RZ2tZTJtbih88s68Wx72QYVLWVWvtM2pz0Gv1iBLwDHh8icEgmNw9O8RfiZK0TxW+HPDNZBt5HABjUBF1cFgyjYE4X7bIvv3kvDgwXmGWtb3pFBmAu7smixtoizvSyT19Yw/5jf8BOyaNaykIDRTOHXcNwX9XQaGBzY5M+7OnG7CXQ==
+ b=ZP2SxFr0JyxiCaV5Co3BMZk4VCJnkXbYshR6U5Pxja1fR47cxaTTQaPHjLP01eHzDFaoQFgeSBsvs9sbM6NK/DTuqt6oAw7+bvehw3KBNsATJxSaVv2yhNMCSeL6BqS3ZMbdoOjlLs43/+GmpsllCaiodG5XiALmSvA4hBBx5QOSNKkb+GIYLHGgNDudPqvXFjNZ3WWfmsScM3sP46jJ/74hhP65iLvI5br1jbc9a6MWZujzOxHqN2ISQ0DlTPa4kiKJYnYFv8mTTXQ74+N2xR9I0JT7WmxKkfRDrKJhD26qOO/vIn8k8d4ciYH/YcOwfvQs4oNDFsZw8Ykyix0aHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aaeQQ6ehspRvBOOchx3nRpcwUs7Ikfuowg578hzWO6g=;
- b=OyI7z2vg+ashssrNNaaQh3tkA+y6X4f+mPY5pGtNddlJGCaVXVRWm1/2xLLXb86pkDIQfggpWQEunnpjoNO9QjJPQXlLLOPqJ8znp0lg4hV3VRfmXgPW4fXYndn2SwY+e+W//jahePEtt4YOUjArmA8G8L74k0sgWUhTZs3W1K4CxDD5e1YbxludPC2ymzxx1yzVCXtefYXiMtekFdr2RLvNnVk6tJIqhWY8TA+wvbFdPXphbjLFwLzN/yi3YZmXtQpPSH5VTUouw4sMGwWC3Fut+TfQaibnUulYkkUDqaBNI8LiJdtFT9L76zX9xKyMmiJ98fR/Ee0ZiPTauZz8JQ==
+ bh=BbNw3VYHxecburOiX1IhT5YAhL7or8Ca5aDGjvKmfNk=;
+ b=HO33Z16Q1hFQWo8H9TmfenZZl2UKRIxR7s0CbjGEf0RhiQ0FHlTCsXBAsjyrsQ2TarVYuY3wEsiOJ0xFXUCkL2AYrgLmcZM+k7ZujJyxbYsNFwPZxOcwUgXmWlUS+EaQdmfufRoFoSKI9dj/+crEREc08VDj27W5rSg/y9SD3ePapV0qWiiGpgmVxVCKAXlKxBx7cke64yrWDrJT8c+BiSiwlcmhGoGXFMXYMIhvlBNaAgo1sGahEx6BjE7Vc0Ma7g5R4Hfnw6zcc9Bp/j364tYTwdhvf6eww6vWP5kOZfK/nC5Y7yVraLOdjUaKhEFyZxuXtPhOzhVEWxYx2f1ctw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
  dkim=pass header.d=vaisala.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aaeQQ6ehspRvBOOchx3nRpcwUs7Ikfuowg578hzWO6g=;
- b=x1bEamW1aUeCmEqbtkvQirNf4K8kvGbveUf6rB+CgVHmmuxZaxk7B/4J+MGkKmPH6FVNnQ6gAgBY/F6Lc9m4JmXefuO5voWFk+UJ0NAv9xNcqw0Za7QLT/N+865Wrxwme93oYTmKurwM1SBQtwXoe6TfRc9kiWbLO7M+DIFh4R7PRewLlm2Xl1s0j8srorXlgU4Zat8I3c3Tia5xsz/9F4bW6swPlEhOm5T9W3AVyX9XOpxTe5cmtX+X/Zq1ALpHuF9scot6FHrEJxZ3TXXU30Gf84a8w0JtulWSgtajPBD8HjL4pi9e69m3aDYt+5E3cqWTwWJDavNAVpMnDIBM/g==
+ bh=BbNw3VYHxecburOiX1IhT5YAhL7or8Ca5aDGjvKmfNk=;
+ b=m1ynU7rsabeThIkffRnTLtoPqvQgjXWTaE3F59Ksniht/5EQq023uq00E/oxxMTK1Odtvv8uUB8vzRxPZNuW1wPCiXH5aELrdYoICxtRBg5FewGxr1xYXFFn0FZuyf4IU9viDQS9J9zhPdIqYSJGvnsn+JeNEImBxGVl2+7R1zQnIhxJiAz23SzLLDMZsN56XmGVREoKB0hNkKrrwEMsYaXl9xsMxXeS0QUR7gei5mlPBrKVjJTWsG6ayi4cJbnSkxb/F3XMJGz10DZu7+DGBrDFGfd5ff1O2AsLlFBfxJJVYxjOcrxDsWqARaGV1TxH6Bs8XAgujMfwooIy/J3+9Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=vaisala.com;
 Received: from AMBPR06MB10365.eurprd06.prod.outlook.com (2603:10a6:20b:6f0::7)
- by VI1PR06MB8688.eurprd06.prod.outlook.com (2603:10a6:800:1d3::18) with
+ by DB9PR06MB7562.eurprd06.prod.outlook.com (2603:10a6:10:251::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Tue, 2 Dec
- 2025 10:03:31 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Tue, 2 Dec
+ 2025 10:20:58 +0000
 Received: from AMBPR06MB10365.eurprd06.prod.outlook.com
  ([fe80::4606:8e25:96e6:bede]) by AMBPR06MB10365.eurprd06.prod.outlook.com
  ([fe80::4606:8e25:96e6:bede%5]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
- 10:03:31 +0000
-Message-ID: <44a38485-ce29-45c8-8892-5000abb8d44e@vaisala.com>
-Date: Tue, 2 Dec 2025 12:03:21 +0200
+ 10:20:58 +0000
+Message-ID: <9f1ba4d9-8a94-4445-988a-56725a197a1c@vaisala.com>
+Date: Tue, 2 Dec 2025 12:20:51 +0200
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/2] iio: adc: ad9467: support write/read offset
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
+To: David Lechner <dlechner@baylibre.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
  Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
- Alexandru Ardelean <alexandru.ardelean@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ Andy Shevchenko <andy@kernel.org>,
+ Alexandru Ardelean <alexandru.ardelean@analog.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20251201-ad9434-fixes-v1-0-54a9ca2ac514@vaisala.com>
  <20251201-ad9434-fixes-v1-2-54a9ca2ac514@vaisala.com>
- <CAHp75VdaYR5S7MmVEMBH1e6g-0bQim_d7m48=X2ybpf3hBAfTA@mail.gmail.com>
+ <7e042d4e-0ca6-4b2c-9b65-79593a526b5d@baylibre.com>
 Content-Language: en-US
 From: Tomas Melin <tomas.melin@vaisala.com>
-In-Reply-To: <CAHp75VdaYR5S7MmVEMBH1e6g-0bQim_d7m48=X2ybpf3hBAfTA@mail.gmail.com>
+In-Reply-To: <7e042d4e-0ca6-4b2c-9b65-79593a526b5d@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: GV2PEPF0001A32E.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::695) To AMBPR06MB10365.eurprd06.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: HE1PR05CA0293.eurprd05.prod.outlook.com
+ (2603:10a6:7:93::24) To AMBPR06MB10365.eurprd06.prod.outlook.com
  (2603:10a6:20b:6f0::7)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -87,195 +87,265 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMBPR06MB10365:EE_|VI1PR06MB8688:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f5ecc7a-b5b6-434b-f304-08de318a0c3a
+X-MS-TrafficTypeDiagnostic: AMBPR06MB10365:EE_|DB9PR06MB7562:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7a9e1d96-07cc-4e15-f5c8-08de318c7c70
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YW1VT3YrYVIxQmNRZmdqVGF2RE5keE5CQVQ4ZDZ1S1R2ZzJ5MmRJL3FCTmNF?=
- =?utf-8?B?UWlJdGdoNzBKb3lDdS9PU3VsK2NwUndOdXpmaUUrUlJiRkNZSGJjOTlZODRO?=
- =?utf-8?B?b3BkaitsU01PTmlZbStIZnp1dXd2anlQR1d6RlZDY1VYOUpha25paVBDdVpQ?=
- =?utf-8?B?b2ZRNk9oQ1pldHdiYWhKQmNUNXlMbTdielRDLzM5TDFzdDV5QVErNGcyb3Fs?=
- =?utf-8?B?K1k5c21OZ1lHK0JvOS9UZ29zYjBsNHJHVDUvZUoyOGRRR2JrZ3FNY2pzajAy?=
- =?utf-8?B?QzNkNUpncnJ3SlBBTHBHdFNnSy8wR0R6dzR2M1R2TG9Rb0NtdTRQQWxId0lo?=
- =?utf-8?B?VDIvMGhaT3lRTHpFQU1Ha3YvWjZSbW01NG5jVEZOblhqQ1BEK2ltZFNuMlAz?=
- =?utf-8?B?dDBTK2N5MzFtODFOQVR4Z1p0V0ttSXpNd05UTlpvb3A3aEZrOTZKTXVsZjBG?=
- =?utf-8?B?Rk10dVB3ZVpaMDl2VzNIaTRDMmFPOWorTmVETGVPcFgzT0RMcGZvM21QSDFF?=
- =?utf-8?B?K05YR0NtQnJZTFkxMzZTa1ppLzk2WG1tcjk3dHkyUk9QUmNBQUZZVFdmbjgz?=
- =?utf-8?B?akM5T3ViR3JwZEoxSTY1U294U09jL3ZsbVR4MzRBR3NoN2xzZUUvWi9ZZ1dk?=
- =?utf-8?B?Q0FPRUM1NE54QUpMUzZRcEN2c1REN3dKVFRnSk5taE5CQWZYbm1CVlpvWWpP?=
- =?utf-8?B?L2NtN0lySk45WGVjemlRTnVSRWo1RHBySEZEczMrbjlmMnE2WUE1L0p5V2po?=
- =?utf-8?B?TGlkSks3TDEyVXdvM2pDbG5lODNLQ0VISURrOEJicWlUNmdOUDBLRkp6enk2?=
- =?utf-8?B?dmV3U3lRSWhxMmlCdXBkMTkzUjg0bmo5RzQ4YjZHQ2dLMWtSRUZaYUgyV3p3?=
- =?utf-8?B?anFxdkQxNFUzL01vSlo5N1hYbzdlVy9RNy91aVJYVzJjRStXMlVzTUZ4RzdX?=
- =?utf-8?B?eGgwdUN6eEFVS0ord2lzcUpHUUt6L1h5YW5ISVR6aXdmVmlIenVQd2J4Tkk1?=
- =?utf-8?B?RGJQUEh6dGkyL0ljcUFPQ3VnWm1LRExoNXNGdlRZZFROU0pKN3VXVFAwSWZY?=
- =?utf-8?B?TUlhaGlTV0M3aTNYQmZpeGFqTllJYzFYL1ZJeHVSMHB6Qlp1TUs3aVhXVFg2?=
- =?utf-8?B?T3B4RytxTUo3VlhiYWtYcVBmTFVFVmZsb1h3eHhjRTR2QlRIZ1ZxRjJjTTJq?=
- =?utf-8?B?YzB5NDdNVGNvSDhhVS9qdDNjT3VKRDN5UDJseUs0MStNakdVT083MUVCa2tx?=
- =?utf-8?B?cWZPNFF3dUM5MFlKdkU3SHRuNWV2Uklqak9vU2hPMStoRHEvemc3eGhqRzdJ?=
- =?utf-8?B?TnlpZTgzM0dkVTlUdjFpeWNPTEJ5TXJlQ3VDaElPNVc0U2F5akhCQUJnTkVa?=
- =?utf-8?B?Q2kwODFVM3J5eXZhWERWSmJ1eFAwOG5QVVdhOUczWGxGR241enpiU21FeVRk?=
- =?utf-8?B?eHhkdFkreSt4N3Y4NHpReDBsS0tEME5WOUJRUWNYeDA4eUdxNTV5bmp6QXpL?=
- =?utf-8?B?TWFXSHZueDd0VHhPSjRZN0Z3dWlGMUxzRmpPM0hKKzB3Wk9GSnZCZ1dLWTZx?=
- =?utf-8?B?ZW02WEJYUFNxVXJPbDZzdDJiVXN5MmVQZllBTC91bWo2THFEeXRBZnd2a0Jm?=
- =?utf-8?B?WVhkTnkyOHR2UnN0R3N0Zk9hVktReU1uV0N5ZXpRM0RSWU9VSkNzSTc0VDZn?=
- =?utf-8?B?b0ZiZlBnb1JoZ2tzM2ZRUkVEN0JZRXpjTk1SN0NmaVNiVGJhTnl4U2dLNEQ4?=
- =?utf-8?B?M1NBRlk1SUJORFBJSENEUTBQVXluUHRkNTZSdjczMm5DMHNWQWh2N3lQQitl?=
- =?utf-8?B?RmN4cHhHYStzcitUeEJ6anYra3ExRExRamRnL1pCb0s4ejEvLzZtY0JyUmhO?=
- =?utf-8?B?OUZ6SXo4MUJBc2dmd3hNZFhoS0ROMGRuR3MzMUJFd3VEZnVaZWRDa1hQVXlC?=
- =?utf-8?Q?3FvtU8ZHQIq46K5yCyGKqVoZnUK21/DX?=
+	=?utf-8?B?Rlc5cmpFVjhSMTZlSGhxZFRheDd4a29uNk5CRVpNemxpNFJHWU04b3I1cjZR?=
+ =?utf-8?B?cmp6UjlMVjZJOXZzSzlLWkRtaCtKR2NZeks5SDlTY3hqU0dpS2ZuM2lCcGxq?=
+ =?utf-8?B?TzlxYWVWTzBNNGdVMTBCUmUyK0hIQU1QbXE3d1cwNGVZR29JcUZrc2pwRWt5?=
+ =?utf-8?B?Q3lhMzdwUFFYbk5McHNWZnVzOGF0NmlaQWNzcmNMUGQwM1NoWCtFajc2cWJr?=
+ =?utf-8?B?VkQvcjg2eW9uMm1veHR1MmhBUTJWVitaWHU3ZWFDKzYxa08zZlBsUVZ3aHJm?=
+ =?utf-8?B?Q3Y2NThvU2pBL0R5VVFzYXZSYUVzZDIzQUI1aTlpTjlRT0lrcitBRDVBUlRw?=
+ =?utf-8?B?M29FbmdXWmlIaDE2Mk9pTWJ0VGFQWnROc3VxMTZ1ajQ5U0RMVXIxUnA2dkQ2?=
+ =?utf-8?B?L2pYQWpXY3d5bXpDOTN5SzJNRkJlTzhGSEVhcFArbGhaTS9mbU1PUnBhQzQz?=
+ =?utf-8?B?Z2I1Mi93dEhIaVlHVkExUU1CRWdoWEg5Q1FrWWh0SHkzRE1GRHN3dlhHcmV2?=
+ =?utf-8?B?U3BGSnlzaW9BbXpzejBnck5MaXRudkkrZHZkTTdoWXN2OWdpSEVVbW1VU1oz?=
+ =?utf-8?B?eURWSmVwUGowZ1RDbGVMdlg5VXV3QWhQVGRSQTVETVJaYnFQVm9oVkpUMGhW?=
+ =?utf-8?B?R3NqRGlLNm0zTDZtb0U3c3B0Rjk4MTMzK1JiN0p1d2tPaHlzckF1R0d5S1V1?=
+ =?utf-8?B?bzBiZUxkVy9nSkwrREVyWVdWZWErVFdHelUzWERjQTJJblpIenE1alNFT042?=
+ =?utf-8?B?ODNyMTdzRjY3MGRrNDQ4SEM4RzBnQ3ZJTUlHOXlCZk9lM2ZDSzAzSUhsVjFk?=
+ =?utf-8?B?Q0RsNDJta1B1MlVmVzFDd25VMmc4Y1FISWtUTytIa2xRdFlmSHVQVm1rbGE5?=
+ =?utf-8?B?K0d1U2swTTRWVW91ZHg2NjJQQlVnMlNKZEVscXk0WTI1TTBQQXlmZjVGZ1p6?=
+ =?utf-8?B?ejhMQ0Yram1ENmcwcDh5ZEpDemNFTHRFcFQ2b2MwbnhMT2I2M3pIeGJUMk1J?=
+ =?utf-8?B?NmdqUGM4c01TcG1tdHNnQjNITmMydzY4Mkw4YnczNU52ZXV3SklyUWJ4R1BE?=
+ =?utf-8?B?bGczb0VranpzZ0tmMEkya2hXcldQdTA3ZWdrY1AzdFRHYitPOTkwQVJMR1Jw?=
+ =?utf-8?B?bG9rS3hQZkcxUXdEdnlRQ2FPcW5qZ0dqekYrTVFGejdWUTc1dmVWcFhJWTZy?=
+ =?utf-8?B?YUZQcFhoeXBRbjAvMi9ZSUpQc0xpd1JtNURLNjMxZUtFT1pLUlM5R2RTMGtX?=
+ =?utf-8?B?dm1Yd0psNWlneVE0bllxdFhoU3dpRjh4UXZwbmpPZ3lrQmJ3VWZ2eEdzNC85?=
+ =?utf-8?B?SXZmRmNBTkwvU211d2ZoT3NnNnZtaUhoeVZaUVBqUWNndkxKckZqN2IxL3Z4?=
+ =?utf-8?B?UEhTRHZ5UTFrZGxHckRBbTZjbTlBZ2RabVdWSmNjRitLY2NxQUtWdXQ3OW1y?=
+ =?utf-8?B?V1pSNWtQVzgycEFGa2Zya1B1QmhpVEkyYWdTanlpMFRLb25KRjI2TFpLWVVY?=
+ =?utf-8?B?RXQ3dU9uU1lQUXNNOTk3TGxNRTVkMTBoQndaSnlEbnliMHBIRzA2YjBlelRk?=
+ =?utf-8?B?bDdxZlBSbXBsVG5EVkJMYzdIY0JqNWYwSlQ2MlY1ZzI2Z09ZTGQydG9Xd2RP?=
+ =?utf-8?B?MEdCQXhEcllHU2xrU2xXL0tzRHE2Wno1cjVqMU9hVW5sYkxiQUhwNHJKQXo4?=
+ =?utf-8?B?QUluTUMwK2VMM1drMVErVnN2YUpFdE4vWGRQd3kzTG1KWU1UdWtnVFlpRU8w?=
+ =?utf-8?B?akU3RHlsY0lqNC93Sm45a1Z2UzE0YjNaTnpKQTc2ZjNoUG5INEJ4L09RWG9I?=
+ =?utf-8?B?NnJodnIwQ1lFZGVZUFdyMUJKcHhUYzdsOEpwRE04cFV0NHFRUEVnOWg4ZTgx?=
+ =?utf-8?B?YXU0QnJVTkUzY1NCUzNUcCtlS2JhalA4dXBzRk1zVFdzUDd5dzhFbUJEcXR6?=
+ =?utf-8?Q?cInlQxcQM84koU5ZczbzfGpxiqVasJ6J?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR06MB10365.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MWlveTQ3NHYxNTcxckUyRWZwZTlVZmpKdlc4dE1YQzBzejU5UWUzTHIva2lp?=
- =?utf-8?B?cHBRaURGM09TUDIzQkRkTDhuSWVCWTVwMXJpQStoOHRrbHl1Y05zSkQvTDlu?=
- =?utf-8?B?TlphTld5S0NINUtjdWZ0eGVGR1dUY0dGM25xOFNnRlJraDcxSE1ZMUlpUHc5?=
- =?utf-8?B?Zm1tMlhiUmNCTk1zTjIvOW92OFp6eVZyZ1BjQWswaUVNekZrTk5sa0o1OGYw?=
- =?utf-8?B?L0czM0plTUVucUtCNU5CcEtIYUR1aE9YTW16bkNkbW9JbUt2MzhmeTY2L2N2?=
- =?utf-8?B?bEVsaGpGL2FWZmtWTks5cFBaRjF4VGl5OVVvK1R4enRVVDJNRUo5bXVaY2da?=
- =?utf-8?B?RjUxUktxR0hVTUhuQTBMNi9XM05MMFp4akxsS1JUaFdUWk9TbEY2M0phaCtj?=
- =?utf-8?B?VGczZklXUFJEa2IzcXNIK3UwWHhFcFRicUJzSEd6UjA2RnYvSm9DcU9vbTYz?=
- =?utf-8?B?a2Q0MFVFTmRGWmxQN0N2ZUhScXFJMGhLQTl5emRmbHBUSXFnTE02ZjZjNVdT?=
- =?utf-8?B?aDNRTGNLRXdKWjhMbk4xaG9vVm1tUDBRRWNtNzc5Um1WanFPeWs2a3htTC9a?=
- =?utf-8?B?dmdhYTllZis3L3NoMzgvRENQRnV4YzEvSHk3YVNVcTVWcS9oOG5ldjhNT253?=
- =?utf-8?B?U1NzZldhWmxiRGNwK2VoMzVhUTg1eWkzaEZnL1hEZmhlN2pVSXBTMDA0ang0?=
- =?utf-8?B?a2p0OVVlVmJ5Ky9yR2lTMTRRWTNxcG9hWUdzNVBCRzhJZmFOUVFlc2VxMGRY?=
- =?utf-8?B?Wkg1Qy9qY21WcXNuRGpDVmFSNXkxQU9hdjN4Q2hwRU1xWFZvWDFKcmlHVkMw?=
- =?utf-8?B?dVU4WmtOMXhxU01nT2swUENLbHN3c2FOREM0VWJjSGtsY0dvNlEzVnJ3YUhU?=
- =?utf-8?B?Y0dEcnhDdXRYQTZVOWt6R0RLcHh5QzJUQnFYbzlSQ3RFc0VtVnRIMDg5ZU9I?=
- =?utf-8?B?bnVSWS9MQmp3aVdzdS9lc3BVamQxSkxhUVpYdnA4UzBCd1YzQzl6MzUvQ2d4?=
- =?utf-8?B?cC9ZcGVzWFNKOGZmbFpNQkhJSmgxNUxtTzk0VmZBQkUwT3BydWI1NThIRFA4?=
- =?utf-8?B?ckNNdGNKQzlHMUJHVFhYWnJVSkhScnZ6VzRXUU82dERheGhnbDQ3U3NiTzNv?=
- =?utf-8?B?c3VJT09RcFY2V2MrNCt3cTRtWkRYUWk3c3lGZ3B6eDJmT3VEck9uMy9Id2FE?=
- =?utf-8?B?L0xrRzRuVHM4dzlQNXZYMXVEWWx6MVE2bUppTVh2Y1J6cVQxTGdqWXk2KzdY?=
- =?utf-8?B?SUFlV25qc1NZQUhYeTEzOTlEdk1RaVVzdWNSeGJHYXFudHYwTC82R01wYS9a?=
- =?utf-8?B?Y0h1OWk1RXh5UGN4TERRczEvMk1nZlBicjVMK242ZWd3cnlSUExFd0JtMDVa?=
- =?utf-8?B?b1FjUFpLaGd6a2s5M1NPeWR4Tnh6MTVETm5JdlBUNEZEVE5ib3pIcEp1b3FN?=
- =?utf-8?B?d3NZZGF4dFFtd21KMERPbVNCcmhlYmR4alg4TzM3RExzVysvbGZ3dWM3VHJy?=
- =?utf-8?B?bXpuNW0zaXFwNWpCeGFNQlg3VUgyRTFUd0VSMGlJVU9yajB5cXF6MmhMNmIv?=
- =?utf-8?B?TnNpdURzbWplR3dTV0xWa2RGYzFWYmhvdUxYY3N6SmJ5aFhQZzQ4SEtNcEY1?=
- =?utf-8?B?djJxakNQT1Q3ZHhqckFHVlpLNkdBdkJtWnQ3eDdYUjhLRWtjSlpoUjE4cnBF?=
- =?utf-8?B?L0l6U01XQ29RQ09pNnNYblZ3Yk1YSEdIbkxGbUtqbS9MeklHdXl0V1JFaWd3?=
- =?utf-8?B?VXJqZFYxbTBEUDlLR3JPNms4SmtDL05PSjV4UlNuZlFNYTVtM0F6MzBHVkc1?=
- =?utf-8?B?cHBkL2wrYU84M0JtbThSZnFaWUpVV1g0M3hRN1JBQmxBbFI4c0ptNGhmWHFv?=
- =?utf-8?B?bXgrVmREWXdkZVFaTzIyWTdMRFdZQ3BEVmNnZVZVSlVLTDE3V0JWTktoRFhP?=
- =?utf-8?B?QjgwWlFYOEZNVzhoc1dxT3puSnArQVBZK3F2OUkwbnUvdEhmTTFkRkVJNHNt?=
- =?utf-8?B?aU4xbWpCd2tVSDVLWnFzQS9zRUJBWXlNc2tWVUpxQjRqaVozeW8wV2pGRmZ4?=
- =?utf-8?B?MkVjeTdqVTNWMWpJN1hXSVNOYm8rMlFJWHhpYVVOQnpkUkhmaWVJM1U2Y1RZ?=
- =?utf-8?B?ZS93dmJmSjNEZmZBWUIrWU93Um1zenBoZWw3c0R4YXRLNTFpWi9mcHQyNXVR?=
- =?utf-8?B?Q3c9PQ==?=
+	=?utf-8?B?WUtSbytZRlpiQjBEbUN0VDIrYmt4WGNHRkRSZGtaaG9KeEZ3bG03NjVBclBu?=
+ =?utf-8?B?R3FlMVJTUGpJR21iaEFHUENQaDNBejZlTmdqVG9BaHZhOURwY0sreG4rV1FT?=
+ =?utf-8?B?RWcrL1ErVGY5dDRMaUo0Wm1KMytRaWVqWWpXcGgzaTVmRlJQOGtDVmRycDdu?=
+ =?utf-8?B?OXNmWlFnUzUzeVpab0dKc2lYSDRKNTYvU3liZHVHaXFTSlFoN1g3c05aR1RE?=
+ =?utf-8?B?ZTZ1TjF4akpMR1BUbytMRi9JdDBFTUVTU3QzRmQyVjZkQzZNMFJPRHd5RUY0?=
+ =?utf-8?B?YTVvSXc5bzJTQXM1elFDV2VTS2M2VTZ1RkZDbStwMTQwR0VKVzZKQmFMcjRK?=
+ =?utf-8?B?blo2SkJCZ2dGSGZiTVF5ZzNnSzNtYXh0RmhFaVhtZ29nT0VNWkNhbkxCZUpW?=
+ =?utf-8?B?TkZOekRPZEdlMS9EaFJYWHh1RlhXeVdmVkVUM3hiRmEzWU45cVJkMGs1YnhB?=
+ =?utf-8?B?K1c4TldDWHYzVlE5RjdCMXliRFpPU0x3NUdGcXFuc00vVFFYR3d2WWh0dkhD?=
+ =?utf-8?B?bUtpSUc5aVp0ZEpMNXJEOE01Q2ExVkoxMWYyMC93YXpXdm9IUUlsZHNmUW9M?=
+ =?utf-8?B?a3ZnUU0yOTZWcDV1eTA5bkpFL1RUUWg0aGJPQTNjRlFHY2ZBQzd5bVIwVFZB?=
+ =?utf-8?B?dFpTeEZhelBVTXdzcHdsUFVaRTFrS25BdndPVHl1NFNNZmFnTWdHc0JnRUQr?=
+ =?utf-8?B?RksrNy9qRW4wcTBEbmliTUV2QWowMnlDSlVuanFmSHJCOW9HR1QzaWpIRU01?=
+ =?utf-8?B?MnZxVEJnTHl3Mml2TlZnVU4wNzZVTjdMRzd6VjJZZkwvZlByb0VYSnozSStt?=
+ =?utf-8?B?cDF0L3BMVFpYQ1NvTm04ck40OTZuRjdTcmRKREs0bHlPUVBuWHRNZmgvWitH?=
+ =?utf-8?B?S2VvbEx1UHVtS1p2WFdOUldaYldEaU53dC9sVmNzSUJZdTlNNzcxYS82Y2Rz?=
+ =?utf-8?B?dVdhNWl5Qjk0dHFENmxJazRzYlg2Ym9hTnZiZjZsWHplSlJ6WTd1WXRZTWls?=
+ =?utf-8?B?Z2lPVDhtZ2w1c25VaTVicmU2T2svN2FGSU8rbVBhbWprQU9IbGdFT1NNNkN2?=
+ =?utf-8?B?a2Q4Tm5SVTVudVl4N052TkpCcDFBQ2UvUk44R3pUeGFpUnNqaHNpQTEwSTZZ?=
+ =?utf-8?B?cmplRmJtQmJNdWw1U3oyZjRoUTh0SDAyVU8wTThIZ1RZd0I4c0V2SDNPOE5H?=
+ =?utf-8?B?K2RFeFVjRUQ1ZytsT0s0dGhQZm1mRC8xcXZnV0FlNTgvMmVVd2lKWnozWTJV?=
+ =?utf-8?B?ZWZFaU9RVndldU5Hc3o0Y0J3R1NZK1dkSlhtL1lYaXcraENKZDBJUVR6WXR0?=
+ =?utf-8?B?SmFxRWl2d0E5T0xSb2lIc1hpR0VEWm9ZS0tqSTY2WUF6TnloYVhTZS9vYm5l?=
+ =?utf-8?B?cUphaWpYSEFpZC9HcXBKYkZHTnFzblJQWlp4QVVsY3U5WWNqcmkxV0tZUkpQ?=
+ =?utf-8?B?bENoVXgzelhuQmFBc3dCT1kxYkFwczBhN1MxblM1VlNGVkRKblJCRHk2OThm?=
+ =?utf-8?B?UEZiM0FLaFdpRk80SzhkNVdGSGIyZkF4Z1lzdnVoY2k0eFl5S1FxMnY3cFBB?=
+ =?utf-8?B?THBWYzhWendROU0wWWFUYTh0aitPeC9wd1dxZS9JVVFzSllSTVBaUDV1L3d3?=
+ =?utf-8?B?aGRQbHFMSEtxRnRWc1pmMTE0M2hmYml4SmZ4UXVtcEcyTldUMXZob0o4amRP?=
+ =?utf-8?B?ZnVXOW1qaW52aEE2Zm9MUXNVOVJjc2J4UzYxVFU4RVNQd0N1TzVDK0ttdzdh?=
+ =?utf-8?B?ei9JUFJtWTJXSGxSN3JLbGhadEsyWEtQNm1GVG9VRnlUQTlxRFpDMk1tQXE3?=
+ =?utf-8?B?YlZyZ0VLY0p6T3pOU1hRSGM0Y05hZkVUTVVydzdEWTlGcTlkY0JlUTRaZkta?=
+ =?utf-8?B?VWtkdEtXZ0h0TEYrbm9ReU9ZQnVHQzk2OFJHWW5ZakJoU0tUbTYrdjBzejFI?=
+ =?utf-8?B?dHdiZzdPbUVpWVZ1em4yRWd5R1AyZDd6dEFBZnNDTEtYUmxJa0RrNWtqMW1Y?=
+ =?utf-8?B?eHVwTldFcE9wcHl3VUZRdFdxVzV4am5Tc0JPZzVWWDNMRnRzendCZjBKbjBm?=
+ =?utf-8?B?aUcxNTBUSlpOVVkxYndncUErLzk0UURxdDlmN2VScGxHcXlRVVVpbmhCaTNz?=
+ =?utf-8?B?eVhPWTMxbS9lTHV0eW5sMEdKQ3JST3NLaEI3ZmxTUGxuelJMenRZYkltUTBo?=
+ =?utf-8?B?WEE9PQ==?=
 X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f5ecc7a-b5b6-434b-f304-08de318a0c3a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a9e1d96-07cc-4e15-f5c8-08de318c7c70
 X-MS-Exchange-CrossTenant-AuthSource: AMBPR06MB10365.eurprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 10:03:31.5110
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 10:20:58.7290
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O4RJ+8SEaK0T9ieiCQlbQTGI5NLZviga2CWhQRTywAwEc6rXcfssrl+nVS4NuFjj3fc2iChmurjydAVHMlCvKQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR06MB8688
+X-MS-Exchange-CrossTenant-UserPrincipalName: HUeLFvDM3fHgEXyMIDoeX8u74mbCAnxqnTZZrs5rAK8Hzp2WgJKFYy8mbdModsdKsOSrNkQ9VtNgpoloRuX9oQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR06MB7562
 
-Hi Andy,
+Hi David,
 
-On 01/12/2025 15:59, Andy Shevchenko wrote:
-> On Mon, Dec 1, 2025 at 2:00 PM Tomas Melin <tomas.melin@vaisala.com> wrote:
->>
+On 01/12/2025 19:40, David Lechner wrote:
+> On 12/1/25 5:59 AM, Tomas Melin wrote:
 >> Support configuring output offset value. Among the devices
 >> currently supported by this driver, this setting is specific to
 >> ad9434.
 > 
-> ...
-> 
->> +#define AD9434_CHAN(_chan, avai_mask, _si, _bits, _sign)               \
->> +{                                                                      \
->> +       .type = IIO_VOLTAGE,                                            \
->> +       .indexed = 1,                                                   \
->> +       .channel = _chan,                                               \
->> +       .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |          \
->> +               BIT(IIO_CHAN_INFO_SAMP_FREQ) |                          \
->> +               BIT(IIO_CHAN_INFO_OFFSET),                              \
->> +       .info_mask_shared_by_type_available = avai_mask,                \
-> 
-> Okay, this macro uses parameterized avai_mask (which should be spelled
-> correctly and probably in parentheses, but it's not the point) and
-> it's being called only once. Why can't we just embed it for now?
+> What is the purpose of adjusting the offset. If it is to compensate
+> e.g. for manufacturing variations, the CALIBBIAS might be a better
+> choice. In any case, the commit message should explain a bit better
+> the intended use.
 
-Sure, I'm ok with embedding if that is preferred.
-
+This is indeed more of a calibration. It should compensate for
+difference between expected and actual output. I agree that the
+CALIBBIAS seems to be a better fit.
 
 > 
-> 
->> +       .scan_index = _si,                                              \
->> +       .scan_type = {                                                  \
->> +               .sign = _sign,                                          \
->> +               .realbits = _bits,                                      \
->> +               .storagebits = 16,                                      \
->> +       },                                                              \
->> +}
-> 
-> Also, looking at the existing macro below, I think you should have a
-> common, parameterised macro and then 3 different on top of it for this
-> case, and for the existing two.
-> 
-> Does it make sense?
-Keeping this and embedding the ad9434 declaration.
-
-> 
->>  #define AD9467_CHAN(_chan, avai_mask, _si, _bits, _sign)               \
-> 
-> ...
-> 
->>  static const struct iio_chan_spec ad9434_channels[] = {
->> -       AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 12, 's'),
->> +       AD9434_CHAN(0, BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET),
->> +                   0, 12, 's'),
+>>
+>> Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
+>> ---
+>>  drivers/iio/adc/ad9467.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 57 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+>> index 2910b6c5b576d101a25c0b5f0fb9024f0b4da63d..41b29e9e765b4296358bb277d63993889ce46290 100644
+>> --- a/drivers/iio/adc/ad9467.c
+>> +++ b/drivers/iio/adc/ad9467.c
+>> @@ -145,6 +145,7 @@ struct ad9467_chip_info {
+>>  	unsigned int num_lanes;
+>>  	unsigned int dco_en;
+>>  	unsigned int test_points;
+>> +	const int *offset_range;
+>>  	/* data clock output */
+>>  	bool has_dco;
+>>  	bool has_dco_invert;
+>> @@ -234,6 +235,10 @@ static int ad9467_reg_access(struct iio_dev *indio_dev, unsigned int reg,
+>>  	return 0;
+>>  }
+>>  
+>> +static const int ad9434_offset_range[] = {
+>> +	-128, 1, 127,
+>> +};
+>> +
+>>  static const unsigned int ad9265_scale_table[][2] = {
+>>  	{1250, 0x00}, {1500, 0x40}, {1750, 0x80}, {2000, 0xC0},
 >>  };
-> 
-> Also the first and third parameters are identical in all cases, can we
-> for now just make them using a single parameter?
-> 
-> ...
-> 
+>> @@ -281,6 +286,23 @@ static void __ad9467_get_scale(struct ad9467_state *st, int index,
+>>  	*val2 = tmp % 1000000;
+>>  }
+>>  
+>> +#define AD9434_CHAN(_chan, avai_mask, _si, _bits, _sign)		\
+>> +{									\
+>> +	.type = IIO_VOLTAGE,						\
+>> +	.indexed = 1,							\
+>> +	.channel = _chan,						\
+>> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
+>> +		BIT(IIO_CHAN_INFO_SAMP_FREQ) |				\
+>> +		BIT(IIO_CHAN_INFO_OFFSET),				\
+>> +	.info_mask_shared_by_type_available = avai_mask,		\
+>> +	.scan_index = _si,						\
+>> +	.scan_type = {							\
+>> +		.sign = _sign,						\
+>> +		.realbits = _bits,					\
+>> +		.storagebits = 16,					\
+>> +	},								\
+>> +}
+>> +
+>>  #define AD9467_CHAN(_chan, avai_mask, _si, _bits, _sign)		\
+>>  {									\
+>>  	.type = IIO_VOLTAGE,						\
+>> @@ -298,7 +320,8 @@ static void __ad9467_get_scale(struct ad9467_state *st, int index,
+>>  }
+>>  
+>>  static const struct iio_chan_spec ad9434_channels[] = {
+>> -	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 12, 's'),
+>> +	AD9434_CHAN(0, BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET),
+>> +		    0, 12, 's'),
+>>  };
+>>  
+>>  static const struct iio_chan_spec ad9467_channels[] = {
+>> @@ -367,6 +390,7 @@ static const struct ad9467_chip_info ad9434_chip_tbl = {
+>>  	.default_output_mode = AD9434_DEF_OUTPUT_MODE,
+>>  	.vref_mask = AD9434_REG_VREF_MASK,
+>>  	.num_lanes = 6,
+>> +	.offset_range = ad9434_offset_range,
+>>  };
+>>  
+>>  static const struct ad9467_chip_info ad9265_chip_tbl = {
+>> @@ -499,6 +523,29 @@ static int ad9467_set_scale(struct ad9467_state *st, int val, int val2)
+>>  	return -EINVAL;
+>>  }
+>>  
 >> +static int ad9467_get_offset(struct ad9467_state *st, int *val)
 >> +{
->> +       *val = ad9467_spi_read(st, AN877_ADC_REG_OFFSET);
->> +       if (*val < 0)
->> +               return *val;
+>> +	*val = ad9467_spi_read(st, AN877_ADC_REG_OFFSET);
+>> +	if (*val < 0)
+>> +		return *val;
 > 
-> The standard pattern is to avoid polluting the output in case of known
-> errors. Hence
 > 
->    int ret;
-> 
->        ret = ad9467_spi_read(st, AN877_ADC_REG_OFFSET);
->        if (ret < 0)
->                return ret;
-> 
->        *val = ret;
-ok, will change to this format.
+> Since processed value is (raw + offset) * scale, this means that
+> the offset will be applied twice, once in hardware and once in
+> software. I don't think that is the intended case here?
+offset has not been used in "official" way here. But I think this should
+be sorted out if moving to CALIBBIAS?
 
 > 
->> +       return IIO_VAL_INT;
+>> +
+>> +	return IIO_VAL_INT;
 >> +}
+>> +
+>> +static int ad9467_set_offset(struct ad9467_state *st, int val)
+>> +{
+>> +	int ret;
+>> +
+>> +	if (val < st->info->offset_range[0] || val > st->info->offset_range[2])
+>> +		return -EINVAL;
+>> +
+>> +	ret = ad9467_spi_write(st, AN877_ADC_REG_OFFSET, val);
+>> +	if (ret < 0)
+>> +		return ret;
 > 
+> This could use a comment explaining why we need to do the sync after
+> adjusting the offset.
+Certain registers in the map needs the sync to take effect. I can add
+comment.>
+>> +	return ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
+>> +				AN877_ADC_TRANSFER_SYNC);
+>> +}
+>> +
+>>  static int ad9467_outputmode_set(struct ad9467_state *st, unsigned int mode)
+>>  {
+>>  	int ret;
+>> @@ -802,6 +849,8 @@ static int ad9467_read_raw(struct iio_dev *indio_dev,
+>>  	struct ad9467_state *st = iio_priv(indio_dev);
+>>  
+>>  	switch (m) {
+>> +	case IIO_CHAN_INFO_OFFSET:
+>> +		return ad9467_get_offset(st, val);
+>>  	case IIO_CHAN_INFO_SCALE:
+>>  		return ad9467_get_scale(st, val, val2);
+>>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>> @@ -836,6 +885,8 @@ static int ad9467_write_raw(struct iio_dev *indio_dev,
+>>  	int ret;
+>>  
+>>  	switch (mask) {
+>> +	case IIO_CHAN_INFO_OFFSET:
+>> +		return ad9467_set_offset(st, val);
+>>  	case IIO_CHAN_INFO_SCALE:
+>>  		return ad9467_set_scale(st, val, val2);
+>>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>> @@ -874,6 +925,11 @@ static int ad9467_read_avail(struct iio_dev *indio_dev,
+>>  	const struct ad9467_chip_info *info = st->info;
+>>  
+>>  	switch (mask) {
+>> +	case IIO_CHAN_INFO_OFFSET:
+>> +		*type = IIO_VAL_INT;
+>> +		*vals = info->offset_range;
+>> +		*length = 3;
 > 
-> ...
+> We don't need to specify length when using IIO_AVAIL_RANGE.
 > 
->> +       if (val < st->info->offset_range[0] || val > st->info->offset_range[2])
->> +               return -EINVAL;
-> 
-> Wondering if at some point we can switch to in_range(). And we perhaps
-> need a new generic macro to supply start/end instead of start/size.
-Atleast drop-in usage of in_range() does not seems feasible?
-
-Thanks,
-Tomas
-
-
+>> +		return IIO_AVAIL_RANGE;
+>>  	case IIO_CHAN_INFO_SCALE:
+>>  		*vals = (const int *)st->scales;
+>>  		*type = IIO_VAL_INT_PLUS_MICRO;
+>>
 > 
 
 

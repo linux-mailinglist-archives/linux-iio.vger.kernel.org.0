@@ -1,108 +1,139 @@
-Return-Path: <linux-iio+bounces-26644-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26645-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BA09C9C55B
-	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 18:08:08 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C988EC9C76C
+	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 18:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB513A75CE
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 17:07:37 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4D98D34821A
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 17:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589BA2C026C;
-	Tue,  2 Dec 2025 17:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895872C21F8;
+	Tue,  2 Dec 2025 17:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Mvju4zv1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="URILl8/V"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BC6220687
-	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 17:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD032C0F78
+	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 17:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764695250; cv=none; b=VnHUnlFW5B3PGTfBb/VsxkRFF/fzHmH0qid7x/GKiMxRuTfOUJWvsYSDryYpdkDWYFwDvIBKi4cxPmRgomIvLy7iuRXs8W1TIXqPonaVNiEHGvHe8OKSwi51ntwqyan3gCcC/SOYmFITTgHJliC6E0qnCha/CIdao1jSz3UHqvU=
+	t=1764697766; cv=none; b=KCisg/H6FBLKNnDkT1i/CgAGvp8FnkTpe0YIlRNTbb5TMFqjZKlwV/Vjmv/M08OWJWR/bCVuQSAR0XK4b2K1Fm7QgQVjLm0udTXabGSoH156JpMzNbcQRBY5n6N/yNjYbC8WXNCkRnYT4YXTlcZNmxgBIZLsVPQ42wtRNqWhhME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764695250; c=relaxed/simple;
-	bh=W/hnSeMCg+W015Cn892P0HxaTYvwCN+oAP/xc/6bCJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZDCOacxnbv+mL3sSU14gh2pl0zW5SHme3CoZFYkSoHZciddWf7WeU63+MWbmJ3v+9883/oBcAo6F5PaZeg6houJjXUG6X74pI9y6dea1r0ZS6o+N0zFWeYCPjZoXw0EgMkVtDMnknDEnx/lrQQ+36OdhPsX+C8e1PQfhahPDEoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Mvju4zv1; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 7BFE0C16A20;
-	Tue,  2 Dec 2025 17:07:02 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B305C606D6;
-	Tue,  2 Dec 2025 17:07:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8A2B111919DE1;
-	Tue,  2 Dec 2025 18:07:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764695244; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=6Er31q3t3D9gDuRWCtmdgM2TNfpxlbVnIHYGvg/Vq/c=;
-	b=Mvju4zv1UyTlkJNTxNx8wDVLUVXLZ/EeOiQS6vKcvKy1up6MPthK6/BtaBYRFYjqwJop/9
-	/wryL3GpnX3d0tJe+cIYz3QY6J+bLto6sLBrP7OVqXkJtEmZbgr5xWS/Dy+jtf8JRYg6/v
-	p+SjOOIC1rUNgLb4ONS2ZFhKjp+f9sNOOVj1d4icJzeAdxcWOf+Doquvbw+Ons7pfWppHi
-	On9a7deMVX5QKmeRd6Ed44STYFYYdk9OB+tneBwtQTIulfQfTZgwRgj+BF4djdk4cKUl9n
-	TV2r8coBIPzA9qRKq70l+CrTOHPAE0V7pFUnn5LgxAtN28mRCMX0XrpxD8HjyQ==
-Date: Tue, 2 Dec 2025 18:07:19 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-iio@vger.kernel.org,
-	joshua.yeong@starfivetech.com, devicetree@vger.kernel.org,
-	linux@roeck-us.net, Carlos Song <carlos.song@nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>
-Subject: Re: (subset) [PATCH v11 0/6] i3c: Add basic HDR mode support
-Message-ID: <176469517224.2676946.11188643090832836705.b4-ty@bootlin.com>
-References: <20251106-i3c_ddr-v11-0-33a6a66ed095@nxp.com>
+	s=arc-20240116; t=1764697766; c=relaxed/simple;
+	bh=lFD7YqZqIOM9zNsrKDqdar20gGVc1+ve8YCHIZohhpM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Vx/JghEZCJbK/nCh5OgJfOcThp1Cgqt25FfMo52FiZbFZkZlW8JFe06hfX1QwXvsVjx9oyAEoSHmvfcd9gnKMVnBDb9FqEmMaYjZchJlfvaDag/+DgyyGwOanAUzIepOoLmfC6YH8EYjWbWQa4YBadRhr1QrmGLyTKOW6WEPG4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=URILl8/V; arc=none smtp.client-ip=209.85.217.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-5dbdb139b5bso4971503137.2
+        for <linux-iio@vger.kernel.org>; Tue, 02 Dec 2025 09:49:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764697763; x=1765302563; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lFD7YqZqIOM9zNsrKDqdar20gGVc1+ve8YCHIZohhpM=;
+        b=URILl8/VJruojCS6f31vNbZIiVbeMhvow2XTLdM+aRSUgEbYITrpCJdqmzRqSPhOKi
+         +Xr1DOivvb/Ez4kdeM3/a0Nlyg+qf2FwZOpYGjmPfZEnJnQ3m2MN7w0TvqcQgl24ULZc
+         IbJsLnbqKFBgT+DuDrg3t+pSYrtl6naxOkFs1Nk965BG4WBPV4P+aVkSTiYmrI2vK8Mj
+         byZ6qg7frR6de97B87+sA6e2uy5O4cx0NcPE9G49Xq7BU8a0dKiAAdGYH5T4jhYSJmjg
+         AyJ1/U14rBuFaWLuy0BuzGZHc6WJ5fcMas0Mv5hw6UZfsNkaHldWJKCWayQlWq77AuEn
+         6uIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764697763; x=1765302563;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lFD7YqZqIOM9zNsrKDqdar20gGVc1+ve8YCHIZohhpM=;
+        b=jNErz4s3lNcKl25vW4qNKMvIXSgVUHuZFx/LrjO7y2SxuQrzi1LLDuthazZPNfvc12
+         B1XsYkuSO1rQ+jdSs2fkTHb04ttFRVrtVYG1am2pxibB3yAriiJj1P9UvZHryLMsOyil
+         FJ9Gk25UkaHqwRamBpznhslOUAS9E7Vft2l/7vrjcPC6oWKopKp/jAyounmAiGSVhk7v
+         sKYGgIda97Cqy+VQB7aLCSpADBbdh1o83k9zOprYVQyaZwwavxlAeY41B71UaXlNWinV
+         UBrZ1ajcBCPUZh35ZkOpARvzOz6YnIPOh/zuwgjo+EAZDqEuoykvQMcuanCBrz2YXyTb
+         AISA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgCnCnE29toyeoldCjZ9qggIdL2KdqEG077b4vmrEzLxW+KUZmeKrBNEWdgyCrfdRiMMWhq5Erc0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHMpZIIdG5WrN/O2DYhSjQ5yQufa+w4MUBW/DdHQv8M0nMa3ms
+	QR4AhFopOkuVNKMjRWeuEOT1CGk74vUQO1e0VPjum8xZELLd0RqYeBlc
+X-Gm-Gg: ASbGncvjnujX+Ah5e6NlSYCIMKwKbzfOsQpmaZDel9dY9vbfJPYME1FSip7D2OKYihv
+	oN5868f+6MSolVYxTHcjvREy9oF/zCgYJXrokHqLiZWk8loVOpY66C0rHkYizfWckVdu4CN6l6f
+	MaXA3LtFlGuJkaowb8E68GvijwKDB/Z9ah3bt7Rq59R16aNB7tWnmRLXonZ7EiZD5VFDzBpcXDh
+	9vPCjmuUJ4hY8uEmALdWUVafGKUeLM6avuuW6edNuYPkL5g1xpZ6UvOUFfRpP4iRZZoyDHnzoEn
+	Dg5kr8Zo6MCogUV7hI8VYGvJRP4hJbOy7fhR1+4CTB8i7GoOAK98rmZF/R2b7TRs8PxBJrMjjVU
+	T7w7lUE2UhHTa9pjN8nklAbIKRWFIvQa51PGa9xUAU1poJo5Yl4bnDs0HXO49idGgXd86HW204B
+	lrDB404m6gfCft8wUd
+X-Google-Smtp-Source: AGHT+IE1CcIiiEo8CpEWTWXoBBMghBqvdzUH0ukhewnvrLWZreULDTL/mlRBc0qJBYu4mG8WzyOq3g==
+X-Received: by 2002:a05:6102:54a8:b0:5df:c10a:6683 with SMTP id ada2fe7eead31-5e2243e1470mr12768970137.35.1764697763507;
+        Tue, 02 Dec 2025 09:49:23 -0800 (PST)
+Received: from localhost ([2800:bf0:4580:3149:7d4:54b1:c444:6f2f])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5e24dce4a6fsm6362031137.9.2025.12.02.09.49.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Dec 2025 09:49:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251106-i3c_ddr-v11-0-33a6a66ed095@nxp.com>
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 02 Dec 2025 12:49:21 -0500
+Message-Id: <DENX5BPCUHZO.1H0XL6I8M5EJD@gmail.com>
+Cc: "David Lechner" <dlechner@baylibre.com>, "Jonathan Cameron"
+ <jic23@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Tobias
+ Sperling" <tobias.sperling@softing.com>, =?utf-8?q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>,
+ <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Jonathan Cameron"
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 2/2] iio: adc: Add ti-ads1018 driver
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "Andy Shevchenko" <andriy.shevchenko@intel.com>, "Kurt Borja"
+ <kuurtb@gmail.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251128-ads1x18-v3-0-a6ebab815b2d@gmail.com>
+ <20251128-ads1x18-v3-2-a6ebab815b2d@gmail.com>
+ <a01f95ba-23c0-4c4b-a6bc-31b316bb04ef@baylibre.com>
+ <DENT40NRKH0V.3UD0JBGRUSCDS@gmail.com>
+ <aS7-yml5a2yjM28D@smile.fi.intel.com>
+In-Reply-To: <aS7-yml5a2yjM28D@smile.fi.intel.com>
 
-On Thu, 06 Nov 2025 12:35:59 -0500, Frank Li wrote:
-> Add basic HDR mode support, only support private transfer, not support
-> CCC command.
-> 
-> Update i3c framework API to allow pass down mode and extend driver callback
-> function.
-> 
-> Implement HDR transfer in svc i3c master driver.
-> 
-> [...]
+On Tue Dec 2, 2025 at 9:59 AM -05, Andy Shevchenko wrote:
+> On Tue, Dec 02, 2025 at 09:39:34AM -0500, Kurt Borja wrote:
+>> On Mon Dec 1, 2025 at 6:09 PM -05, David Lechner wrote:
+>
+> ...
+>
+>> I agree, this naming is a bit confusing.
+>>=20
+>> Andy, are you okay if I revert this back to __ads1018_read_raw()? I can
+>> add a comment on context.
+>
+> Only if it doesn't start with __ (double underscore), just find the best =
+suffix
+> (or prefix?) for it.
+>
+> TL;DR: I'm against functions without clear semantics to start with __. Us=
+ually
+> this means unlocked in terms of spinlock/mutex/etc. Is it the case here? =
+IIRC
+> it is not.
 
-Applied, thanks!
+It is the unlocked (iio_device_claim_direct() mutex) version of
+ads1018_read_raw() which is the .read_raw callback passed to iio_info.
 
-[1/6] i3c: Add HDR API support
-      https://git.kernel.org/abelloni/c/256a21743d91
-[2/6] i3c: Switch to use new i3c_xfer from i3c_priv_xfer
-      https://git.kernel.org/abelloni/c/9280b6ebbf08
-[3/6] i3c: master: svc: Replace bool rnw with union for HDR support
-      https://git.kernel.org/abelloni/c/108420fe2100
-[4/6] i3c: master: svc: Add basic HDR mode support
-      https://git.kernel.org/abelloni/c/4e7263b87ca3
+You might be thinking of ads1018_read_locked() which is an
+spi_sync_locked() wrapper. I will rename it to ads1018_spi_read_locked()
+to avoid confussion.
 
-Best regards,
 
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+--=20
+ ~ Kurt
+
 

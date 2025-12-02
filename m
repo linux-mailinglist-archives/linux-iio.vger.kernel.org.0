@@ -1,168 +1,256 @@
-Return-Path: <linux-iio+bounces-26630-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26631-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04320C9BD61
-	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 15:45:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B61C9BD73
+	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 15:46:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7A4D3A7C91
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 14:45:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7795A3A7C76
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 14:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEFB23C4F3;
-	Tue,  2 Dec 2025 14:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BFE1EDA3C;
+	Tue,  2 Dec 2025 14:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eTy0C4YL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hJjtyn7i"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26F6221F1C;
-	Tue,  2 Dec 2025 14:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA8518C933
+	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 14:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764686699; cv=none; b=AUOmD4Ur88B0E9tkEGM6QNLAOYdwXPpy1zI0CleTfybYSFtJpySiifZqn0lyv6NjTXC0RvLse4ksXQ+KhQ+FUC73AWt0I/m8wldtoJcYGKZHPdsShWJoUdAiAPrSqgIZJgWgXmMPII5Vm26RBCx9tpYWSIhkh/HfsQSevh3n4Po=
+	t=1764686803; cv=none; b=CsU/Q6iR/UKVqev5zKzTdbBboK9ZMssGILLZIdVyLIFdePprYu03mG54uNy8ADuAwm77gce8XMuPnVfTrTdnRow6D689ngQFzuoWyK+6t64A5h/o78KFmHpLMAL8WHA6Nb544sMFAtK5pFMXVQVLfBB259eh7pdu1SzNjaBABT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764686699; c=relaxed/simple;
-	bh=drmaHx8A3tfUo7PtrNFgvL/zaRUIypa5BMDzZXvuKsM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s48cXCEWozTyPwDT3jqNcW834ruiBhlHE2BWIBlHbY4wwrITrWDzH06tMlHrmkhodIHPzsklzdV4Qe4hf4opL/jBWRoOfczaY26nzh6aoD4JOr/vVPk6waL0mtH2o1S1FzmoVmIHrkbdH6aYRb9xBkTRfIrTTcAl/onQRec97Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eTy0C4YL; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764686698; x=1796222698;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=drmaHx8A3tfUo7PtrNFgvL/zaRUIypa5BMDzZXvuKsM=;
-  b=eTy0C4YLiqp2AXBOgOVhUqbkA3qsYTBAVjLQxvOeHYPckmzOO0pXG4Y3
-   Bl7TLvzxD1HZA4hkhFe4Gjqro002GiU1EtKUp4aKxx0rCGyeZDan5nntY
-   9d5lcNTA1nXzKQ8wk9uB06UdRVXrzbGIJd1Ec3/Kh2gaClhupakKFxBjR
-   /AWHbgepIbeL0KsUDPjzRQW4ptE2ahoemYuUFK5BT289Gi1pBYUz9WqDv
-   s6Inarf9BJrLWSzI765c4rSzWMu7N4L3l3w8cITUss49uUtT6j+H+B+sE
-   o6CkzVpBB2jrVqVx5oUF/NinlC9ZEglOmOzIvrFtnugmmiValkVHuLS5L
-   g==;
-X-CSE-ConnectionGUID: O6pyBbMER8eVTdGXO6oB3A==
-X-CSE-MsgGUID: MCzNyJcZTE2KVGQ3SVoOzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66542199"
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="66542199"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 06:44:53 -0800
-X-CSE-ConnectionGUID: UmYuxgvTQ+uVdHnudGRgJw==
-X-CSE-MsgGUID: imyvE0xcQjOgMjdd7h2rAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; 
-   d="scan'208";a="231705342"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.91])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 06:44:51 -0800
-Date: Tue, 2 Dec 2025 16:44:47 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 2/7] spi: Support controllers with multiple data lanes
-Message-ID: <aS77X7T50D8x6yZR@smile.fi.intel.com>
-References: <20251201-spi-add-multi-bus-support-v3-0-34e05791de83@baylibre.com>
- <20251201-spi-add-multi-bus-support-v3-2-34e05791de83@baylibre.com>
+	s=arc-20240116; t=1764686803; c=relaxed/simple;
+	bh=MoS7F23fetzjMdg5mb8OfGPgJPbLAfpu6CaMEvPxbyw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=eVhnTcWven8zuzFRfWXuWE5Y3dMj4+uKh5/zoySMSaGO5YtacuX00ei0h+Yn5DyoAWZI+O3XiTze9GEOov2AyQKv7xdbZA2dg2ReNIWVRQ0P6t9ccZFzDCdKmw3Up8R0/DW/exr92ekVP1Y+3EK1EM/fodLGZUy62kbaNWQu4h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hJjtyn7i; arc=none smtp.client-ip=209.85.217.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-5dd6fbe50c0so2292335137.2
+        for <linux-iio@vger.kernel.org>; Tue, 02 Dec 2025 06:46:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764686800; x=1765291600; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7DY7E3WB0ICOl9V1+gQL7qAH+nekudiHdVslHe/Z11Y=;
+        b=hJjtyn7ibgr/tPL4uemKfTtNOgaKZyzYDpQk8XlaNNTI9VYl3yvr6YGsuRKMWXyGCO
+         3cboKCZr9ZpYyMvdPUsFVREMHnCCV9JXkIJwcLcKdhRyyjx9Nu/k09Sk93aRQ0OR0cz3
+         DKkN7efd4+C4kP7rCrjz24dTerBY0rtmMYoqnxAj1zJ1wBwzK6yv5hgvs0xSjywuQWlt
+         Q69j2qDKLiaipIBUMMZvFOvgGX26BB9b4q9qsFWxgwlMKw32hrB3QPl/U0O+TzVJtz/L
+         Bed+CegQaPHPWs4Xe8T7Vmmaljgt+AA0x6Jj9qB1BBGhnevVSp3xZ0aJWKLRXEzUum2W
+         CRJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764686800; x=1765291600;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7DY7E3WB0ICOl9V1+gQL7qAH+nekudiHdVslHe/Z11Y=;
+        b=wq4ChW+eYQcVAKzoHDshTnx0Esf8XdDIKoxYUn2pafhN/ToI+sq5cCGEEsUcUEukbc
+         2oU7GAdKoR+iXtFtMcg27heWVnlJyEl37zWJtYZS/j/8joHg9iBav6KW4iAaRVTTy8m7
+         NZv8REUoFIY3X5dHkth/HBM9prAg2/hr1v8KqXB0pVKC3VTphLKVbS5mPcWKqzvSmakZ
+         6QG1Hy2Pl8+YhQGdqTrp5v6zlo3/wlBVVmvsEYN+pS9Kkg+yvTRyeQeAsQ3T+6KOHFMS
+         jabvW4S/n+1Mmzsmm8MK/l9TBzlBTHODJOe4xX4u7DjPAOnTcAIKLKG+Ppwv86Tg09Ot
+         ebJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ599m/I24VBibXNrK3MgzeahOTUWB0cS8MdcQOiJQSari9YA7lJL/AEwaO8bMt0depEl5BnqgRBc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8+SGk71wNPOxukoDVSWvUf8Y5VR/FP2fDo3w2abpjAS4Lnm2b
+	Jc9dc40wERUChDZhGVcJDw8Ofk2MFLt5xKhkr9rou3vO6HObwLBgI9x3
+X-Gm-Gg: ASbGncs6c+8HrRQqbDALUbUUK+HkkvdePyMr+rhlZwxeLo+FJ8jBTUnZBIzaMBBxXX8
+	UKec3vnzB5vTwCzQx6wvMXSeZYyUbiu8pN+edpy40zR6gDUmMVbDaPLVRVzTMhM+8qU2qVwadJj
+	7uX1qDRJ+Bvz+USiy5I0T9LtyoF+wfT5WzyVHWmHIkvxBFYpE0YgSfNKb+44nzSMQFwW32uGzv1
+	l1Rb8H6RwMEvsr/X0ZW47MFjwZqDjM9hhB47tEH25lTGXnFvvky8WBfJ1bH0cJFYIs9rkkw4clY
+	AiZEozq11ktwQ+/aOemnO3wnV9DvXptDy5xsu96AS1LMM0COgrV6hZ6Udol1yQH3f/lOQiG/ogf
+	QuB4QZCtRESreGRK6w5sIPzfNEP9VnMe0we2GMlyNFPKM+rqJmbz/hsbSOo8QOgpNVWTXpMPLti
+	BQMps=
+X-Google-Smtp-Source: AGHT+IEzulod+TcRd82XYq5299hF3YYW0eriJP67UXNInTYJ+ZnrHWKSPy0cJtoLv0clmyFSXlS9Ew==
+X-Received: by 2002:a05:6102:4a94:b0:5db:d60a:6b24 with SMTP id ada2fe7eead31-5e1de342e84mr15526327137.22.1764686800032;
+        Tue, 02 Dec 2025 06:46:40 -0800 (PST)
+Received: from localhost ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-93cd7661ae8sm6582676241.12.2025.12.02.06.46.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Dec 2025 06:46:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251201-spi-add-multi-bus-support-v3-2-34e05791de83@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 02 Dec 2025 09:46:37 -0500
+Message-Id: <DENT9F7BM1O3.1XA58W93TC6AQ@gmail.com>
+To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
+ <kuurtb@gmail.com>, "Andy Shevchenko" <andriy.shevchenko@intel.com>
+Cc: "Jonathan Cameron" <jic23@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Tobias Sperling" <tobias.sperling@softing.com>,
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
+ <andy@kernel.org>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
+ Cameron" <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 2/2] iio: adc: Add ti-ads1018 driver
+From: "Kurt Borja" <kuurtb@gmail.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251128-ads1x18-v3-0-a6ebab815b2d@gmail.com>
+ <20251128-ads1x18-v3-2-a6ebab815b2d@gmail.com>
+ <aSsBdJZDWcadxEHC@smile.fi.intel.com>
+ <DELPNLNPGQSM.1YDTB81AG0RAY@gmail.com>
+ <18fbf486-c1cc-4cd2-af12-ffa093fa9ce7@baylibre.com>
+ <DEN50VFOIB5O.1ENBKI6JQ0ZC@gmail.com>
+ <248b009e-0401-4531-b9f0-56771e16bdef@baylibre.com>
+In-Reply-To: <248b009e-0401-4531-b9f0-56771e16bdef@baylibre.com>
 
-On Mon, Dec 01, 2025 at 08:20:40PM -0600, David Lechner wrote:
-> Add support for SPI controllers with multiple physical SPI data lanes.
-> (A data lane in this context means lines connected to a serializer, so a
-> controller with two data lanes would have two serializers in a single
-> controller).
+On Mon Dec 1, 2025 at 4:53 PM -05, David Lechner wrote:
+> On 12/1/25 1:47 PM, Kurt Borja wrote:
+>> On Mon Dec 1, 2025 at 11:07 AM -05, David Lechner wrote:
+>>=20
+>> ...
+>>=20
+>>>>>> +	if (iio_device_claim_buffer_mode(indio_dev))
+>>>>>> +		goto out_notify_done;
+>>>>>> +
+>>>>>> +	if (iio_trigger_using_own(indio_dev)) {
+>>>>>> +		disable_irq(ads1018->drdy_irq);
+>>>>>> +		ret =3D ads1018_read_unlocked(ads1018, &scan.conv, true);
+>>>>>> +		enable_irq(ads1018->drdy_irq);
+>>>>>> +	} else {
+>>>>>> +		ret =3D spi_read(ads1018->spi, ads1018->rx_buf, sizeof(ads1018->r=
+x_buf));
+>>>>>> +		scan.conv =3D ads1018->rx_buf[0];
+>>>>>> +	}
+>>>>>> +
+>>>>>> +	iio_device_release_buffer_mode(indio_dev);
+>>>>>> +
+>>>>>> +	if (ret)
+>>>>>> +		goto out_notify_done;
+>>>>>> +
+>>>>>> +	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan), pf->ti=
+mestamp);
+>>>>>> +
+>>>>>> +out_notify_done:
+>>>>>> +	iio_trigger_notify_done(ads1018->indio_trig);
+>>>>>
+>>>>> Jonathan et al., maybe we need an ACQUIRE() class for this? It will s=
+olve
+>>>>> the conditional scoped guard case, no?
+>>>
+>>> No, ACQUIRE() is not scoped, just conditional. I don't think it
+>>> will improve anything here.
+>>=20
+>> Maybe I'm not understanding the problem fully?
+>>=20
+>> I interpreted "ACQUIRE() class" as a general GUARD class, i.e.
+>> =09
+>> 	guard(iio_trigger_notify)(indio_dev->trig);
+>>=20
+>> This way drivers may use other cleanup.h helpers cleaner, because of the
+>> goto problem?
+>>=20
+>> I do think it's a good idea, like a `defer` keyword. But it is a bit
+>> unorthodox using guard for non locks.
+>>=20
+>>=20
+>
+> To take a simple example first:
+>
+> static int
+> ads1018_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *c=
+han,
+> 		 int *val, int *val2, long mask)
+> {
+> 	int ret;
+>
+> 	if (!iio_device_claim_direct(indio_dev))
+> 		return -EBUSY;
+>
+> 	ret =3D ads1018_read_raw_unlocked(indio_dev, chan, val, val2, mask);
+>
+> 	iio_device_release_direct(indio_dev);
+>
+> 	return ret;
+> }
+>
+> using ACQUIRE would look like:
+>
+> static int
+> ads1018_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *c=
+han,
+> 		 int *val, int *val2, long mask)
+> {
+> 	int ret;
+>
+> 	ACQUIRE(iio_device_claim_direct_mode, claim)(indio_dev);
+> 	if ((ret =3D ACQUIRE_ERR(iio_device_claim_direct_mode, &claim)))
+> 		return ret;
+>
+> 	return ads1018_read_raw_unlocked(indio_dev, chan, val, val2, mask);
+> }
+>
+> It makes it quite more verbose IMHO with little benefit (the direct
+> return is nice, but comes at at an expense of the rest being less
+> readable).
 
-I'm a bit confused. Does it mean the three data lanes require three
-serializers?
+This is verbose yes, but we could avoid having two functions in the
+first place and implement everything inside ads1018_read_raw() with
+ACQUIRE(...) on top.
 
-> This is common in the type of controller that can be used with parallel
-> flash memories, but can be used for general purpose SPI as well.
-> 
-> To indicate support, a controller just needs to set ctlr->num_data_lanes
-> to something greater than 1. Peripherals indicate which lane they are
-> connected to via device tree (ACPI support can be added if needed).
+>
+>
+>
+> And when we need it to be scoped, it adds indent and we have to do
+> some unusual things still to avoid using goto.
+>
+> static irqreturn_t ads1018_trigger_handler(int irq, void *p)
+> {
+> 	struct iio_poll_func *pf =3D p;
+> 	struct iio_dev *indio_dev =3D pf->indio_dev;
+> 	struct ads1018 *ads1018 =3D iio_priv(indio_dev);
+> 	struct {
+> 		__be16 conv;
+> 		aligned_s64 ts;
+> 	} scan =3D {};
+> 	int ret;
+>
+> 	do {
+> 		ACQUIRE(iio_device_claim_direct_mode, claim)(indio_dev);
+> 		if ((ret =3D ACQUIRE_ERR(iio_device_claim_direct_mode, &claim)))
+> 			break;
+>
+> 		if (iio_trigger_using_own(indio_dev)) {
+> 			disable_irq(ads1018->drdy_irq);
+> 			ret =3D ads1018_read_unlocked(ads1018, &scan.conv, true);
+> 			enable_irq(ads1018->drdy_irq);
+> 		} else {
+> 			ret =3D spi_read(ads1018->spi, ads1018->rx_buf, sizeof(ads1018->rx_buf=
+));
+> 			scan.conv =3D ads1018->rx_buf[0];
+> 		}
+> 	} while (0);
 
-...
+Here we could use scoped_cond_guard() instead, no?
 
-> +	rc = of_property_read_variable_u32_array(nc, "data-lanes", lanes, 1,
-> +						 ARRAY_SIZE(lanes));
-> +	if (rc < 0 && rc != -EINVAL) {
+>
+> 	if (!ret)
+> 		iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan), pf->timesta=
+mp);
+>
+> 	iio_trigger_notify_done(ads1018->indio_trig);
+>
+> 	return IRQ_HANDLED;
+> }
+>
+> So unless Jonathan says this is what he wants, I would avoid it.
 
-It's a dup check for EINVAL, see below...
-
-> +		dev_err(&ctlr->dev, "%pOF has invalid 'data-lanes' property (%d)\n",
-> +			nc, rc);
-> +		return rc;
-> +	}
-> +
-> +	if (rc == -EINVAL) {
-> +		/* Default when property is omitted. */
-> +		spi->num_data_lanes = 1;
+I will submit this as a separate RFC patch. We can continue the
+discussion there to avoid delaying this series.
 
 
-...just move it here as
-
-	} else if (rc < 0) {
-		...
-
-(and yes, I know that this is not so usual pattern, but it makes the code less
- duplicative).
-
-> +	} else {
-> +		for (idx = 0; idx < rc; idx++) {
-> +			if (lanes[idx] >= ctlr->num_data_lanes) {
-> +				dev_err(&ctlr->dev,
-> +					"%pOF has out of range 'data-lanes' property (%d/%d)\n",
-> +					nc, lanes[idx], ctlr->num_data_lanes);
-> +				return -EINVAL;
-> +			}
-> +			spi->data_lanes[idx] = lanes[idx];
-> +		}
-> +
-> +		spi->num_data_lanes = rc;
-> +	}
-
-...
-
->   * @chip_select: Array of physical chipselect, spi->chipselect[i] gives
->   *	the corresponding physical CS for logical CS i.
->   * @num_chipselect: Number of physical chipselects used.
-> + * @data_lanes: Array of physical data lanes. This is only used with specialized
-> + * controllers that support multiple data lanes.
-> + * @num_data_lanes: Number of physical data lanes used.
-
-This split the group of cs related members. Can you move it out or explain how
-does it relate?
-
->   * @cs_index_mask: Bit mask of the active chipselect(s) in the chipselect array
->   * @cs_gpiod: Array of GPIO descriptors of the corresponding chipselect lines
->   *	(optional, NULL when not using a GPIO line)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+--=20
+ ~ Kurt
 
 

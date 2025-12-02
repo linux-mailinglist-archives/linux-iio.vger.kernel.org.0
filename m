@@ -1,207 +1,180 @@
-Return-Path: <linux-iio+bounces-26639-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26640-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C390C9BF10
-	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 16:28:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 699CEC9C277
+	for <lists+linux-iio@lfdr.de>; Tue, 02 Dec 2025 17:13:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B2B994E373E
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 15:28:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD3D43A9D80
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Dec 2025 16:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5158E25EFBE;
-	Tue,  2 Dec 2025 15:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2E328469A;
+	Tue,  2 Dec 2025 16:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GAD7m/BS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IbmZ5G9F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B132571C5
-	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 15:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6588287268
+	for <linux-iio@vger.kernel.org>; Tue,  2 Dec 2025 16:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764689293; cv=none; b=kbdotiFHiz8G74Qn5A76rcKXtF5q0Cst8ymUQFW32uyrNzunDJ5prrU3H+mTTi8Gahn8VA3q2V/uNEe6zmR5gD6YiXcjl8F32MxsZDpLSJkpwJLWnwDNYJR2qVN+xdWOdCCGkrYSIpLKWXIg2ICJFcTfkXJtpblQqnD7Gw6bwes=
+	t=1764691698; cv=none; b=BQ4sPELb4XgJ2FhhoVjcpoUk0MF8+WXDQn0d0NeiHy9YtdZquHkFin9wRfvdW9cDbe12ZBdTeNH2OV5fMrAuuRs21dIg0A7fdPP6dBta5rNJNVC986LpZy30oyUwdO9I3QicjkLbzhbJe0qBXHt6Uj4TNB6MbkCnayYehy0c6oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764689293; c=relaxed/simple;
-	bh=kmK8IXka++Woo6EuxqS0W1td/ojOZN8PXH2MFsle03E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s393Vg+IgBnBKTeYWMTBsM6Ak+gG/WIQkk3Fc7Q/EpkWr22qMC7BVEzBaQ3y1bjVnaAZsTE6/z7/sz9PQTfQ6uYexguuVe0Uo4OvZE0qGf5+BkLfsBpuyTboD0ZvoFFzZKk4OcT4tnU5ATvaPvuwxpphnxcjqIlpPjN3ylJDQNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GAD7m/BS; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-3e80c483a13so2498551fac.2
-        for <linux-iio@vger.kernel.org>; Tue, 02 Dec 2025 07:28:09 -0800 (PST)
+	s=arc-20240116; t=1764691698; c=relaxed/simple;
+	bh=g+P6WznOZVMRIKxm6yWTjkhYjM78AYVWkUJIRoCPcC0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SO/kRkFA1gRB4xJx6Kv0WQSI8JBTrAftDBlksgxgPVjqR2gCqUKwbbGdY11szsVqJ/lScWs0ek6xLIYkFlt2xA4WyfoHoMuPPskhmnc8+BhIFQcinLjSdNdaPLcgj0C1//tyF4optOvf4pswTSWcng/NDBJJX3tzCC2wWd8RqTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IbmZ5G9F; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso64685475e9.3
+        for <linux-iio@vger.kernel.org>; Tue, 02 Dec 2025 08:08:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764689288; x=1765294088; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FxaljqfDlevKYOFRmhhVtp6SuKsOmRMPKv6uIFomRCM=;
-        b=GAD7m/BS1KYFPCfhAlmsBXYYbWe8gcn4+MALba4lbvzn0gSBN2pVY3jQVcPIQV1s2L
-         fxWsiC0x7Hwuy+l9839NWMdJHpXbOZukVYt/dryuDOOXlFDoqA0WsgMxnUQJRqwQpCq3
-         nIf3YQXJxjEulweZ4TRiMpBqAZPyu8QAlqELl815QJsak9ezWJxtCgqU6X4HVxMfj7Db
-         DExFNuM3BKUb18ZIIXMaqWdJ3HVBhzDoZYKG/T0x1oweRhsrP7Q3+TjOe4+c3HQQ0YBn
-         hOcEbTsB1LJ1dmYFZwxUS2B85ytz/E46WPFVNhkJ1NICaB0L9Jw2vOAiMQs0sKbtXUS1
-         Xtww==
+        d=gmail.com; s=20230601; t=1764691695; x=1765296495; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8taEGCmJMa0QdyAqmJiHyi9j2hnnWICf9uWNlE276Ag=;
+        b=IbmZ5G9FfNxl2/BwbXzWr42hLowUspd+UojzRsZh2mYAMd0nRtFeAwJBv2p44ufVh+
+         tKd3V1/xgF8qQFBYwtLF0b2xeTQLThMRKHHRk6BQuN09IeQHgWpN2JVB1VSz94BGs/N0
+         Behry0u05+HAxKU7RKwTgVv/5ymSC7vN7VkzweKkICXzVO85aOmyNDY/LkCaWuqMEIcK
+         cQzW6mgP9bj9QJOdN31hBbAq/celLpzFrb91FI/6jwYukhneWqZXHPg+aN2eQE2SWZ8j
+         yDt2F1B4eL7jdis8dHVKWjNb6tY/n9oAeeVtt4P/ENI9C9gGGWBLCGgdYniVTjhIyuN+
+         QgoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764689288; x=1765294088;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FxaljqfDlevKYOFRmhhVtp6SuKsOmRMPKv6uIFomRCM=;
-        b=R5qIBXs+BPVJ2CIXDsT73j8BsrfiXeDihPk8wrvGOkMumOB6C7usM94V2qQvnkgmpp
-         kM7BVvvoA/dqBW7uj/Q1DlMXHW11c2TSBLp0RPhxohiOhKuUD+i0H8C6XDUTfchE2stA
-         /hdOcYC/ghJDUIVRku3YF00YfVnIk2JnTLYYd4zitzxTa8oTvxptBA1OAkyCTfxEx6kH
-         +eFBJ3m5lYRwc4/aiOVfrCsYbD143aL10S+fqFFgztxK6/YHKRRJhVPrcOfwAe0H0KkZ
-         bjvfj6ywl852EwW4EBLQYoGqnbIsYEvEYKuTAGyEHxx5BzazyPMd5x8SHhhS89O8XNNS
-         gpsw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCp7grcw9PizDjwYrNobgIxGurPkaWssqR5hAo1RHAd09Y3dH8SLG4XmFA2igS+bxc8cvDD3o2ySw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWlRcgIBtO1BQPzt3K+PD8u3MZaIBRqdx9QVRTI0tR1HmYSRfx
-	Xqq11LrQFssUZX64+xzFZV6qKMfaUHaaShqKh77jIIyAQaifMtM3XuPSBiShrqzSuiw=
-X-Gm-Gg: ASbGncsLUrmQB+19yyDfvbxZtOJ40sEJvVC6ErZ2ZA0jZhuSedLYHa+HKeDPT4F3trt
-	5wlc44BmAKwLUiHwCz/APPmaB74cbdtkUSjhAtmi2UcPWfk6ys+OuDeoknT8LUcgngNonCWVii8
-	SlsaXHI5soehOhetxmhwK0aBqjMGYGSvCCLiG6+cnUVxgCAkQZsxC2uEdIISj+eTho3nCFSBa3V
-	AR/YY6SklBCbd/zulKm9zdfTkEAOkmDOx9uZKulsri8DeYC1EF+s6q6eSMDuiRHhWu3mlCbZXKY
-	uFrqNsRAcLB9MTqg7jYLjjUJ9J1KjSBM2QYWLiqNYWmnFLBUWejzKmMOiQ7LfsRE/6NBMjLtbJK
-	N+/N+82NsY5H/3KNchV/iYRiCfNg0SZ6ANFq+28vPJW1UKz+6kcLEaIn/NyyviljJSxa9M0Sxkn
-	qWmoh13ZywRYDEcHCl6Auwnf7r1zJvsWtMVQEc7OFA3rE5yvdK+oREae8s921p
-X-Google-Smtp-Source: AGHT+IFarSgDBAChAWtpWJ8VS3uXvq7r5vMy/w8dFdyeVdiiEfXnWxryliLUIlZ2ckeUXhj+eG4xKw==
-X-Received: by 2002:a05:6870:709d:b0:3ec:3ee9:3aa with SMTP id 586e51a60fabf-3ecbe326836mr19327017fac.20.1764689288526;
-        Tue, 02 Dec 2025 07:28:08 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:8f05:e265:a988:1b22? ([2600:8803:e7e4:500:8f05:e265:a988:1b22])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3f0dca3ad8asm7841250fac.6.2025.12.02.07.28.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Dec 2025 07:28:08 -0800 (PST)
-Message-ID: <3edc68e2-e46a-4315-b2db-a221fee94b9e@baylibre.com>
-Date: Tue, 2 Dec 2025 09:28:07 -0600
+        d=1e100.net; s=20230601; t=1764691695; x=1765296495;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8taEGCmJMa0QdyAqmJiHyi9j2hnnWICf9uWNlE276Ag=;
+        b=eCloRdv7sLEQFwBSdIZBvzINifGdyqeVO40Es7UKOsDA8honA4LL8u+ptV8svuOwxn
+         lO5YHrHWQkCZtSCTYhIADtXWnRjn7Bi5/Nvy1RtRzcuuXlF4d6K71Ns+85APCNrsME6m
+         R/7Hlx1V9REx6+ba6SaogNuamlkvvElVya5E5UTFn0Rc0i+eukewmSpMhUCWVbe3bHPR
+         EZtMXbcpiEXMl519tcILIFAgOFIQVPnbi6kmigNrIifY+31V8prbji9ngD/WzxK+P5Ej
+         2iioHvcbQKBekNu9E70k3Ex5hdxOdPXLziMXUZ0IfrR6kv/yQCN6UBt1elAQwZ7afhMz
+         4/2w==
+X-Forwarded-Encrypted: i=1; AJvYcCWSOkGyeFvzfHDiewYid/kvdJlN2QqPvA/y7c0vZP5aNzJ+mvwIMxO+ggyFGNlBaj+ikuUsbeuMifk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkXMacH0ug9gKuaDbW+2enw59sCiEMNFjCy7NnKOJyUrDx5Zso
+	xu25eoSHZ8Hn+MLJTM28E9WjMg+SuMj1avHduQYB02tZ8nYmEOkSbmAg
+X-Gm-Gg: ASbGncuofJpNv+ee4i5I4qvz7mon+rmxlcL1Zdl7Z/ktWeWQyhAZt22IJX6I7sNemeK
+	lBCHv9j+9cbdKawZ0Xp6Jqi/nWytr+0I8o/jRM/DmXWhkqX+uOJbyDNdyFAx2PtvUwgQcNC6QRL
+	4Wq744UeHzGu3aMyFlhA6yM3CNTTroKdzIS3wtdKASwzL0+Sx3efR932ch5ov6zNSNjrz26Pb/3
+	3tV5FzSLjfTg383JCk6hDTHP6TIWAAyFC94Uj03XSjHJin9KyZWYU6MGB5lSrNGM7kxHLyqsAgc
+	ZcFzXxdl80noXkWeJh5ZgF6pfdqc1SlDsjpbkwq1L7ngfszgDI/wxQfwdNxSGHsiOA0y/nmj+a8
+	0M7xTWTrA7IwepVeFK7Z1pn35M334UARpvIFVjc84EPacHjeiEfYpL2eWsytYuUIu7cqkKMb2zC
+	otzHza0lDPpyVMfchJRew=
+X-Google-Smtp-Source: AGHT+IHN8MLUgVqG1TZJOjfcwHO3vzVTApj51Da/zxDzFVWxbtRl2/o/4nKL8gjUmVEELWg/xEjhFQ==
+X-Received: by 2002:a05:600c:4f50:b0:477:ae31:1311 with SMTP id 5b1f17b1804b1-4792a47aadfmr1656855e9.13.1764691695014;
+        Tue, 02 Dec 2025 08:08:15 -0800 (PST)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42e1ca4078csm32812818f8f.29.2025.12.02.08.08.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Dec 2025 08:08:14 -0800 (PST)
+Message-ID: <2ccd698bb58f36fc1d25c36c43e20a6b689cdf5c.camel@gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: ad9467: support write/read offset
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Tomas Melin <tomas.melin@vaisala.com>, Andy Shevchenko
+	 <andriy.shevchenko@intel.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich	
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Jonathan
+ Cameron	 <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Andy
+ Shevchenko	 <andy@kernel.org>, Alexandru Ardelean
+ <alexandru.ardelean@analog.com>,  Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Tue, 02 Dec 2025 16:08:54 +0000
+In-Reply-To: <c1cce165-0c34-4277-89b4-b0117ebb4bba@vaisala.com>
+References: <20251202-ad9434-fixes-v2-0-fa73d4eabbea@vaisala.com>
+	 <20251202-ad9434-fixes-v2-2-fa73d4eabbea@vaisala.com>
+	 <aS7zf3ZGVEdTrNvF@smile.fi.intel.com>
+	 <c1cce165-0c34-4277-89b4-b0117ebb4bba@vaisala.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: adc: ad9467: support write/read offset
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Tomas Melin <tomas.melin@vaisala.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
- Andy Shevchenko <andy@kernel.org>,
- Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251202-ad9434-fixes-v2-0-fa73d4eabbea@vaisala.com>
- <20251202-ad9434-fixes-v2-2-fa73d4eabbea@vaisala.com>
- <5d343af235c499382bd2eac987357e857865b457.camel@gmail.com>
- <8edcbe15-b3cf-4259-9d07-87c07f1f400e@vaisala.com>
- <a6194f8f0b8506283d2941a869961fd4f284634d.camel@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <a6194f8f0b8506283d2941a869961fd4f284634d.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 12/2/25 9:05 AM, Nuno Sá wrote:
-> On Tue, 2025-12-02 at 16:52 +0200, Tomas Melin wrote:
->> Hi,
->>
->> On 02/12/2025 15:47, Nuno Sá wrote:
->>> On Tue, 2025-12-02 at 12:53 +0000, Tomas Melin wrote:
->>
->>>>  static const struct iio_chan_spec ad9434_channels[] = {
->>>> -	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 12, 's'),
->>>> +	{
->>>> +		.type = IIO_VOLTAGE,
->>>> +		.indexed = 1,
->>>> +		.channel = 0,
->>>> +		.info_mask_shared_by_type =
->>>> +		BIT(IIO_CHAN_INFO_SCALE) |
->>>> +		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
->>>> +		BIT(IIO_CHAN_INFO_CALIBBIAS),
->>>> +		.info_mask_shared_by_type_available =
->>>> +		BIT(IIO_CHAN_INFO_SCALE) |
->>>> +		BIT(IIO_CHAN_INFO_CALIBBIAS),
->>>
->>> Odd style for info_mask_shared_by_type_available and info_mask_shared_by_type. Seems we have
->>> more line breaks than needed.
->>>
->> Looking at existing code, there seems to many different ways to indent
->> these kind of lines. Can you please provide your preferred style?
->>
-> 
-> Looking at the same driver I would expect something like:
-> 
-> https://elixir.bootlin.com/linux/v6.18/source/drivers/iio/adc/ad9467.c#L289
-> 
-> So, just break the line when the col limit is reached.
-> 
->>
->>>
->>>> +		.scan_index = 0,
->>>> +		.scan_type = {
->>>> +			.sign = 's',
->>>> +			.realbits = 12,
->>>> +			.storagebits = 16,
->>>> +		},
->>>> +	},
->>>>  };
->>>>  
->>>>  static const struct iio_chan_spec ad9467_channels[] = {
->>>> @@ -367,6 +389,7 @@ static const struct ad9467_chip_info ad9434_chip_tbl = {
->>>>  	.default_output_mode = AD9434_DEF_OUTPUT_MODE,
->>>>  	.vref_mask = AD9434_REG_VREF_MASK,
->>>>  	.num_lanes = 6,
->>>> +	.offset_range = ad9434_offset_range,
->>>>  };
->>>>  
->>>>  static const struct ad9467_chip_info ad9265_chip_tbl = {
->>>> @@ -499,6 +522,33 @@ static int ad9467_set_scale(struct ad9467_state *st, int val, int val2)
->>>>  	return -EINVAL;
->>>>  }
->>>>  
->>>> +static int ad9467_get_offset(struct ad9467_state *st, int *val)
->>>> +{
->>>> +	int ret;
->>>> +
->>>> +	ret = ad9467_spi_read(st, AN877_ADC_REG_OFFSET);
->>>> +	if (ret < 0)
->>>> +		return ret;
->>>> +	*val = ret;
->>>> +
->>>> +	return IIO_VAL_INT;
->>>> +}
->>>> +
->>>> +static int ad9467_set_offset(struct ad9467_state *st, int val)
->>>> +{
->>>> +	int ret;
->>>> +
->>>> +	if (val < st->info->offset_range[0] || val > st->info->offset_range[2])
->>>> +		return -EINVAL;
->>>> +
->>>> +	ret = ad9467_spi_write(st, AN877_ADC_REG_OFFSET, val);
->>>> +	if (ret < 0)
->>>> +		return ret;
->>>> +	/* Sync registers */
->>>
->>> I think this is not what David meant by adding a comment. IMHO, the comment as-is does not
->>> bring any added value.
->> The sync operation is needed in several places and is not commented in
->> other locations either. Do you prefer no comment or even more elaborate
->> comment for this particular sync operation?
->>
-> 
-> I know. I'm just stating the comment, as is, does not bring much value. But I was not the one asking
-> for it so I guess you should ask David :)
-> 
-> - Nuno Sá
+On Tue, 2025-12-02 at 17:01 +0200, Tomas Melin wrote:
+>=20
+>=20
+> On 02/12/2025 16:11, Andy Shevchenko wrote:
+> > On Tue, Dec 02, 2025 at 12:53:09PM +0000, Tomas Melin wrote:
+> > > Support configuring output calibration value. Among the devices
+> > > currently supported by this driver, this setting is specific to
+> > > ad9434. The offset can be used to calibrate the output against
+> > > a known input. The register is called offset, but the procedure
+> > > is best mapped internally with calibbias operation.
+> >=20
+> > ...
+> >=20
+> > > =C2=A0static const struct iio_chan_spec ad9434_channels[] =3D {
+> > > -	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 12, 's'),
+> > > +	{
+> > > +		.type =3D IIO_VOLTAGE,
+> > > +		.indexed =3D 1,
+> > > +		.channel =3D 0,
+> > > +		.info_mask_shared_by_type =3D
+> > > +		BIT(IIO_CHAN_INFO_SCALE) |
+> > > +		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+> > > +		BIT(IIO_CHAN_INFO_CALIBBIAS),
+> >=20
+> > Wrong indentation.
+>=20
+> Can you please provide example of your preferred indentation for this
+> particular case? This is used in several places around the code and
+> seemed like one of the more readable.
+>=20
+> >=20
+> > > +		.info_mask_shared_by_type_available =3D
+> > > +		BIT(IIO_CHAN_INFO_SCALE) |
+> > > +		BIT(IIO_CHAN_INFO_CALIBBIAS),
+> >=20
+> > Ditto.
+> >=20
+> > > +		.scan_index =3D 0,
+> > > +		.scan_type =3D {
+> > > +			.sign =3D 's',
+> > > +			.realbits =3D 12,
+> > > +			.storagebits =3D 16,
+> > > +		},
+> > > +	},
+> > > =C2=A0};
+> >=20
+> > I'm not sure about macro-less approach here, I think that we want more
+> > consistency and hence before doing this change probably we want to clea=
+n up
+> > the existing macro, then split it to two, and add another one here base=
+d on
+> > the low-level, which was split in the previous clean up.
+>=20
+> As mentioned, this is only needed for a single channel, and since it is
+> different than the other, it needs to be separated. Do You think we
+> actually need another macro for this?
+>=20
+> >=20
+> > ...
+> >=20
+> > > +	return ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
+> > > +				AN877_ADC_TRANSFER_SYNC);
+> >=20
+> > I would make it one line, despite on being 85 characters long.
+> > But it's up to you and maintainers.
+> I would like to not fight against checkpatch here.
+>=20
+> >=20
 
-I did not look at the rest of the driver before. I guess the
-fact that it does the sync after every register write makes it
-clear enough that this is just a thing you have to do. So I'm
-OK with leaving out the comment.
+AFAIK, Jonathan policy is that 80 column limit is still the preferred limit=
+ unless readability is
+hurt. So I would say the line break here is up to the IIO policy.
 
-What I was asking for though is _why_ do we need to do that?
+- Nuno S=C3=A1
+
 

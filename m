@@ -1,148 +1,144 @@
-Return-Path: <linux-iio+bounces-26693-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26694-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDC2C9FD97
-	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 17:14:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62709CA0B92
+	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 19:00:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 250DF304F65C
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 16:06:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB2E6307FC19
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 16:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3712234F492;
-	Wed,  3 Dec 2025 16:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F23311C31;
+	Wed,  3 Dec 2025 16:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="refI+7c8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIeXhyFv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE722F0699
-	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 16:06:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E345F3112B2
+	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 16:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777999; cv=none; b=MdUJPeQeiytbxzkdtepRoHuzL6D103CaiTtufC7zQAwijhVOBFueqkj0DERJv0jMrLkA3UnZBn99rFsA39TghefKOqHjpBpyTwZUIsUlRIazH4waADR6ERuD5AeyqP1pkbV2cDQkoGfgAaJd22gcjBRH0Zyp4K5v+Lua0Fh/TUI=
+	t=1764778185; cv=none; b=jEb21dbSO4/tVrvVzGZRcHXuVtuItaYkpiuKIcCH8EWYmRKR/GcX2TvRGGDuYt2FFtbM8yVLZIaMwx5NrqApsMIbnGAbDWHNSRGZhyQXUot8zK8nUC3RJ2BeDHfqZFSjjD/TvP41lpFkZkOP7qR1zO69JJaz67pw/ZmlQIdNxdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777999; c=relaxed/simple;
-	bh=HC0V+cL9Xq/jRXEnrRC7XXfzGS7syO4dU2ji9FJ15UU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OByEJMYka9MQY69T9uKcXU6A+L3PFrJ4/PAey6yC+yE0Fm9TMB6cnjEljuFt3GDOj5PjYnkJFXvzTKPWl/kTyYAllAtf4cHzVP+vpFe8bvHWmh4rJSQjl5Xy4n6dCOIbrE9GRyQwVSxFwXTTIStjZh6kJgVEUcuLDSbRTlMAGqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=refI+7c8; arc=none smtp.client-ip=209.85.167.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-45330fe6e1bso2813283b6e.2
-        for <linux-iio@vger.kernel.org>; Wed, 03 Dec 2025 08:06:37 -0800 (PST)
+	s=arc-20240116; t=1764778185; c=relaxed/simple;
+	bh=AMeda2PnLpAhsNgtpMjk9rLgK/Dl9RdumGlImJ5SVRI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ATQsABEFDlrO0H9MTR6L0D0x89OOcBJA28nF12xNvEVvbKmG9rvVSJH1j+pvBXOW1HgN1RY6W0wnkhP8HrCb5QDsjdrR/hLD/MYNSbRHhjKfq38/z/tFxspnOeIez09vjNnmn1KEDu/q5GMOzPPIDIIbZf1i7nMSEyVnbtPjvKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIeXhyFv; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-640c6577120so12113306a12.1
+        for <linux-iio@vger.kernel.org>; Wed, 03 Dec 2025 08:09:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764777996; x=1765382796; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pG6n+m/7QkQ9BUTPnCeeyPho3Nl41XqYiInpb0M+j3Q=;
-        b=refI+7c8sKImUzHPyCZ+bCOvjBRjgK7fWUS0nvlx+jaukfTW01ZkDtWr3/yfnythrF
-         DOqdY4CPKLjLm7VJYqSgaiPGt6PaZohQRDa6mPdBqCfvkBgdgzaGYlsBZN4LbTVzh0i5
-         G49o56tPwFLTt/GfqvCjYrnLaTY+VhOjd0FjVERmhKyCi3tKAmltj0Ek86deicJEBe0s
-         hTrBsIOJ9gXLL4BiKx3HZXJQfUZVtsj5USeI9Qa06VTDTNJRLp6+uM7E9g6BpFJx2s3V
-         Cq0DlJVmG8YA6hgjFPK+9xp3pdYQql16ler+AdrMPgAfmk6FEUDFktQWpQhdwODqNTJA
-         p+xA==
+        d=gmail.com; s=20230601; t=1764778182; x=1765382982; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=790LUITxhKLWzCs8qQsIA+Y8o74zqMnK7Hol5PzAlXc=;
+        b=XIeXhyFvUu0zRHysWmurUl7qZGEtFv+MrKzqDIVOMX56fso8EAx+3uXnhlj5obA1jJ
+         qNdgLXUvbGt859lVNMrB46twzecOoJKdxS5V5KF5UhxwI29kTLu/decAQLSSjVODrVl8
+         C2mYK5vjPgKhQS4o7/aHugIkJVsrNEZql0OteuhFDJh70DoN+bTdQPqP9rlC+UKDxeUP
+         WbBb6eYFp0Nazu+SzKycooCMmQb3T7JeeO8rmt+qd+zWC313npdYpLH1bIXqlymEkiJL
+         0oiUlCbbckG+DfSDonCGIU5J76UNSEsdc3Un6HHKNDxJyDyRTIwUVDBUcD0XCnV/7Ot5
+         sl8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764777996; x=1765382796;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pG6n+m/7QkQ9BUTPnCeeyPho3Nl41XqYiInpb0M+j3Q=;
-        b=cyydTeDWa32aBupzmwmoUm+X40B3dqLuFHVXPQtrcI/o2utzgh4ia8qc8cEyVhVkiM
-         HXa0pkrvcvISl4wtG7O8cK2scU9dx28j1ZEsG0tfJjJmqxZxna4tjjE3Fbh8Zqufsc81
-         uGA6obxqe2SWaaAepNrSkM59e11EENKP69BRzpsdc1aEo8Ef0BOmdXmh1UagWyb5+dPj
-         obASg3WhB+5Roe7GfVsAsezeB/o8i71mGj0GLWCrfF0amQAlhMfRkioyZOy+LtBUkV6r
-         9/k18OrOSGH5xY/LiePgRboqiEJ7XPurWuyjF2At3k484WngYtpJXFOC0lLF3VdTFBUr
-         gt+A==
-X-Forwarded-Encrypted: i=1; AJvYcCWIq5gGYqPLT8ZH1fos3jRmjDx9nXIvYla6iRhwwxnqpAMVTyvx2P/cvI2tafMmrFLE7Rd9YBeIo2U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz2+pgegRHRyLEnIkY2OFdlV26ikcNzYflnnMBmSRfIADVyAf4
-	OT6maGfdZ9RxwWz4kNtTt3RJ6y2Q5dhdLvh/s2gjRj5NOLrgHKNQU/Gd6fOZs/rDI08=
-X-Gm-Gg: ASbGncuKw7e5+VAqx6RAf6r6LM1iOXuFu3bjGZtN2TaDitKo1o8KtJNfM6shlbrAMKA
-	u7IpPIH/1CcJ23tid0HeKXCe4t8Zyx9SPrcvE/Ed0M2l+5jxKUGGNn253VHEwRVp7ZVDJZSrL3h
-	g/WKGW4MFihzOnnSnRAwB/LKGItetoHlOmpYajJKfHFpJxPJXb4MDavcoiKzRHEkND+Cas4rz3R
-	AawS2SzL+6KWhz6+ThKN1LtX/Up8V3EimjVB1id34g2oCBIEays8qxCY7axDw99WBVQjyDaFdaA
-	R/46MbQPHmP5gmldjHFRd2v1CsrHaJueh/CV2/sSxzpmMbUy79DAtbexjOPYSWQywMvtRvUALqL
-	bNeQw6vz9qNbmst8G1sr2THxvAEp9BzudVX7rUOYUblTNSxxkEQ3Xe6JenpgX1XapegqWd6vc6y
-	YXDJ4yJHCNY9RG8h9VYL5G839JjxpQBM2mKdaFJAYfFNQeSvpdgIwFgI1BVQ==
-X-Google-Smtp-Source: AGHT+IGS+zbMreg2z7pKM1sf6oRGE5uZXXukxJ/dLQj9rKcaHGq68GL8FvHDKaBnCzpUlnZ+ts0y+Q==
-X-Received: by 2002:a05:6808:6716:b0:450:abd0:d815 with SMTP id 5614622812f47-4536e43d52bmr1331148b6e.28.1764777996203;
-        Wed, 03 Dec 2025 08:06:36 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:6b05:aad2:5053:6d1? ([2600:8803:e7e4:500:6b05:aad2:5053:6d1])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3f0dcfdb503sm10347653fac.14.2025.12.03.08.06.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Dec 2025 08:06:35 -0800 (PST)
-Message-ID: <07439e95-47f5-434a-9f6d-d7740375a3d6@baylibre.com>
-Date: Wed, 3 Dec 2025 10:06:33 -0600
+        d=1e100.net; s=20230601; t=1764778182; x=1765382982;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=790LUITxhKLWzCs8qQsIA+Y8o74zqMnK7Hol5PzAlXc=;
+        b=fhG3FS9gpptdAWJbljYV1yZPBsWzy5UCr22dz08IIpC+Q9wGgyq+Lpj4Alj3I8hWtv
+         4KE5Aa+27ml3arj6XU7aBz0VzM3AsaBB0L3prb7Gm57YReiOwfCeH/zvHCLaNO6IaRVw
+         Nt72ERGADsWdKlmOhPYtbXmnDGCHAgfgMrYdcoxbzPIIkzc+lYe2oHZncI6f+uRFfrdt
+         1bWJ7jS1b1skR8eaWRgME0QE74ojWGa6UnEYim4llI/qvz03zc3aeYFD8htogNnVxWav
+         J8OCgkiSRm2oIDcu8yDYMB2eEg1yY3qrPFuZgmh96pmpZqd4WgHhfN+bMc81XFarJbob
+         Y/zQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUNhy/o6ct0OtU2cvInbwgTbPT3MvITmcuHyo79ZHHv6Jl0H3P02qIhLkmjyo6i7tkAOiF49bhuOjY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaQM6u/tQxw5vC94QBqyEmgiuBxttuTwFbBU6IzDkXwF5cThIl
+	TLzCVxVjSga0dyi0t4ESYOXueF8C+ZasGf0R+YLgLIA1NiYTrjlPgIpH
+X-Gm-Gg: ASbGncv7cRQEMwWWDHd3OxlBLLSGuXdlJT0nxMu6xUV6XuPAllDA39zcQXWV9q5Cm+O
+	ABAhHCAeV2HpkEu1cMjXtJfeyDEAUSyPjXd5bvTdZrIdPWlVVVYVWtlx6EAt23EUZoUq6DZJwVl
+	89QtPIvCQIS6MZPidS5x+1NToZ8mRTQWTjOO5UPbSzHMV8O0KuyT5B4yI0z3u7hJWHZVQ4UgIMJ
+	Ws08SECJzI5mwKAVnuSGTv808yPeLxj+OqE9cUmJgWWnMbY3USSzovbU5W5WwFZt0kzTS3hs33L
+	vYjP99EqcIhl+RrsQn9WUbEpKCvU081XPbrTQcZLwvFDg82KOXzVAed9zc6yTtPS9G/FyEfYUu2
+	/+liTSNIGK2CQy+0sjIAdmj9kO+hhmF0d38o3or9fLdtdErOCZakf19qpk166bcG9DBsFj8TZkb
+	9zMU744yLSJHc=
+X-Google-Smtp-Source: AGHT+IFI8YszJTzdVA1V+yDi6An+lSjLFDFsoEVlke+XdtBNLvQox6jEhAdUUQ0sSKcCzKn+2QPy0A==
+X-Received: by 2002:a17:907:97d0:b0:b73:3d15:6337 with SMTP id a640c23a62f3a-b79dbe8d3b0mr328548966b.21.1764778181465;
+        Wed, 03 Dec 2025 08:09:41 -0800 (PST)
+Received: from [10.5.0.2] ([185.128.9.168])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f51c8577sm1786027666b.30.2025.12.03.08.09.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 08:09:41 -0800 (PST)
+Message-ID: <13c8796d8c24f2d0eefd99e6529bc91d448243b8.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: dac: adi-axi-dac: Turn dev_info() into
+ dev_dbg()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com, 
+	linux-iio@vger.kernel.org
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron
+	 <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
+Date: Wed, 03 Dec 2025 16:10:21 +0000
+In-Reply-To: <a17f410b-17b3-4abd-98c0-be6952894eaf@baylibre.com>
+References: 
+	<20251203-iio-axi-dac-minor-changes-v1-0-b54650cbeb33@analog.com>
+	 <20251203-iio-axi-dac-minor-changes-v1-2-b54650cbeb33@analog.com>
+	 <a17f410b-17b3-4abd-98c0-be6952894eaf@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] iio: dac: adi-axi-dac: Make use of dev_err_probe()
-To: nuno.sa@analog.com, linux-iio@vger.kernel.org
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
-References: <20251203-iio-axi-dac-minor-changes-v1-0-b54650cbeb33@analog.com>
- <20251203-iio-axi-dac-minor-changes-v1-1-b54650cbeb33@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20251203-iio-axi-dac-minor-changes-v1-1-b54650cbeb33@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 12/3/25 9:53 AM, Nuno Sá via B4 Relay wrote:
-> From: Nuno Sá <nuno.sa@analog.com>
-> 
-> Be consistent and use dev_err_probe() as in all other places in the
-> .probe() path.
-> 
-> While at it, remove the line break in the version condition. Yes, it
-> goes over the 80 column limit but I do think the line break hurts
-> readability in this case.
-> 
-> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-> ---
->  drivers/iio/dac/adi-axi-dac.c | 20 +++++++++-----------
->  1 file changed, 9 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
-> index 0d525272a8a8..0c7b62f5357d 100644
-> --- a/drivers/iio/dac/adi-axi-dac.c
-> +++ b/drivers/iio/dac/adi-axi-dac.c
-> @@ -942,17 +942,15 @@ static int axi_dac_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
->  
-> -	if (ADI_AXI_PCORE_VER_MAJOR(ver) !=
-> -		ADI_AXI_PCORE_VER_MAJOR(st->info->version)) {
-> -		dev_err(&pdev->dev,
-> -			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
-> -			ADI_AXI_PCORE_VER_MAJOR(st->info->version),
-> -			ADI_AXI_PCORE_VER_MINOR(st->info->version),
-> -			ADI_AXI_PCORE_VER_PATCH(st->info->version),
-> -			ADI_AXI_PCORE_VER_MAJOR(ver),
-> -			ADI_AXI_PCORE_VER_MINOR(ver),
-> -			ADI_AXI_PCORE_VER_PATCH(ver));
-> -		return -ENODEV;
-> +	if (ADI_AXI_PCORE_VER_MAJOR(ver) != ADI_AXI_PCORE_VER_MAJOR(st->info->version)) {
+On Wed, 2025-12-03 at 10:05 -0600, David Lechner wrote:
+> On 12/3/25 9:53 AM, Nuno S=C3=A1 via B4 Relay wrote:
+> > From: Nuno S=C3=A1 <nuno.sa@analog.com>
+> >=20
+> > We should not abuse logging and logging a successful probe is clearly
+> > abuse. Turn it into dev_dbg().
+> >=20
+> > If it turns out the IP version is that relevant we can make it easy to
+> > get through a new debugfs interface later on.
+> >=20
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> > ---
+> > =C2=A0drivers/iio/dac/adi-axi-dac.c | 8 ++++----
+> > =C2=A01 file changed, 4 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-da=
+c.c
+> > index 0c7b62f5357d..f536158beb4c 100644
+> > --- a/drivers/iio/dac/adi-axi-dac.c
+> > +++ b/drivers/iio/dac/adi-axi-dac.c
+> > @@ -1000,10 +1000,10 @@ static int axi_dac_probe(struct platform_device=
+ *pdev)
+> > =C2=A0						"cannot create device.");
+> > =C2=A0	}
+> > =C2=A0
+> > -	dev_info(&pdev->dev, "AXI DAC IP core (%d.%.2d.%c) probed\n",
+> > -		 ADI_AXI_PCORE_VER_MAJOR(ver),
+> > -		 ADI_AXI_PCORE_VER_MINOR(ver),
+> > -		 ADI_AXI_PCORE_VER_PATCH(ver));
+> > +	dev_dbg(&pdev->dev, "AXI DAC IP core (%d.%.2d.%c) probed\n",
+>=20
+> Didn't ADI HDL versioning policy change to semver so that the last number
+> is no longer necessarily an ASCII character?
+>=20
+> We could probably change this to %d.%.d.%d while here.
 
-Can drop the braces now.
+Honestly, I'm not sure how that settled up. I'll check and if that's the ca=
+se I can change it.
+But then it will be a bit messy with older IPs. Maybe moving this into debu=
+gfs and handle the format
+there would make sense.
 
-> +		return dev_err_probe(&pdev->dev, -ENODEV,
-> +				     "Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
-> +				     ADI_AXI_PCORE_VER_MAJOR(st->info->version),
-> +				     ADI_AXI_PCORE_VER_MINOR(st->info->version),
-> +				     ADI_AXI_PCORE_VER_PATCH(st->info->version),
-> +				     ADI_AXI_PCORE_VER_MAJOR(ver),
-> +				     ADI_AXI_PCORE_VER_MINOR(ver),
-> +				     ADI_AXI_PCORE_VER_PATCH(ver));
->  	}
->  
->  	/* Let's get the core read only configuration */
-> 
+- Nuno S=C3=A1
 
+>=20
 

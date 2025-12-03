@@ -1,72 +1,71 @@
-Return-Path: <linux-iio+bounces-26703-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26704-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CAB6CA0051
-	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 17:39:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C07B1CA0D0A
+	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 19:12:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 367D93009418
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 16:33:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75D1E319A745
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 17:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4253AA1A2;
-	Wed,  3 Dec 2025 16:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18814346799;
+	Wed,  3 Dec 2025 16:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IGi1p8nD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hQm+Hq9o"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE8735F8AF
-	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 16:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385C03446C4
+	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 16:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779606; cv=none; b=q3jZy7iqarFxngmPhDGyZK77z+J9DY9mo/jdGR+WX4LjFzsG40dPJK3jBLwLu/C3jL2RZvsQupROfJcnDN8XkbS2yxfbjF2WygvycUi4hriJhDLm7u3lq0wsOPr8s5BhF+lkhDFw5xiZz2ToY7FNCrUsQnORdoZ5TLuDBfWNFLY=
+	t=1764779704; cv=none; b=YwTqQ4IiBGr26hzFKcYuRu6mtmKtv2yZy16Glm8/7n+CINx4SHUblw1O+I2kWgRHR7BKnAihWkpKEyz8eO2r8dpKHJRyJZBSqJOq49pW+/xD0nvTxpErjVPE70f3vKemmUzu6KvanaBLL8D6EluxLgDe70APc1Bq9Jq2Jro8wLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779606; c=relaxed/simple;
-	bh=JiTK9ToulJV884NCnvrpngbHjUUn0mZiutsYuTJ0Nt4=;
+	s=arc-20240116; t=1764779704; c=relaxed/simple;
+	bh=1Ff3ZIzYM6U0oExFkCr+cQ2E0ZWOCEfHu5wAFyKyLJg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R1zRQDXoAQeCrfKnfUCOSnrTHW+Ki79UuQfJv8xY6fJW4EIMFtov1uP91onEZHnoTFqBeYc7OYWZOi4M9NJIAFH4TmxLJJi/bfkheoCYFNZ1Fh4Mx6u6R7PaBOCgPSj8KOlSbjIr4HcXOxmVneb0d+4n1fHz+9vZMVeXNT0EsAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IGi1p8nD; arc=none smtp.client-ip=198.175.65.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=h08OZDUpGLpKrztN4qmUlWZ9+dRLT/AKhu7zjD7nYn6ZVoFFE0XEiQncq9WelN3RgpKh9yda3dimNTNSnqMKPS0/RMynsy703UlmX3ieCMT7dauX1X2+Z15YsuVxOiyvFhtHQNuxFXuSYfJZ/396W3P8I31XTeJZ5Rz6BzPTh64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hQm+Hq9o; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764779604; x=1796315604;
+  t=1764779700; x=1796315700;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=JiTK9ToulJV884NCnvrpngbHjUUn0mZiutsYuTJ0Nt4=;
-  b=IGi1p8nDQ8oVaEfGdOKXE33IQZHZrUQWrxy4OcYyQnfNar0MYIhFjYN+
-   q7FiloPenRCd3nflqnFKoNZoP4c0GOSFp+L57FcUmXsT/GApQt4mlwdDe
-   ca7fCX4CQmX33gW5CUaj65PdUeAoAgVOkOfVv3kjk5jHMJey5w2UyHE3f
-   fKpD7bswHMoRSQdHy5E7ctMN8/hajNk5B9DqWmTlV5BhDe7gyyX+bEkDJ
-   YHyxmw5PtNoO9B3n/oFMheVh8kwJSJwDFVDBAahDnomg2bGNzUtyJaO0l
-   XmisJJPk3rYRebdVhcMPf/rtbXwA6CEJyL78xzzex7qBJv8D6Vz52BEJ9
+  bh=1Ff3ZIzYM6U0oExFkCr+cQ2E0ZWOCEfHu5wAFyKyLJg=;
+  b=hQm+Hq9oEX+N6U1dSOgWi8wbFdj3GgG+hwjtuXs7w8wXFVzpV/u3IC9y
+   1Ta0qx1vSKMiZFX+Ma9hEvRvnBIE2XjsJupgYq7S6BlWUT0co9lfXgggG
+   OVDMxIPJKBaUixI/9DGQAKAulHIqGeUUyRhDBbFBOL2gBProR6mayO9sT
+   troDANB6cPjV6/PX7Vc1OZSCTULrnUeUp5Epa7GGNqlqPVZMuD/tevMj0
+   i7sPHYCFM90krAODdOplh2vUde6ljE5rO+w3Mnl1JPt6ktpzQbwNulWxj
+   aK6Cy3l++O8q0pDvpSGQgbcXteQDZOun1YL1JhSD3ZUWAhPGHA9DB7Cfe
    A==;
-X-CSE-ConnectionGUID: 7ILuBuqjSmWeHA3hw95Adw==
-X-CSE-MsgGUID: ivqi+SYURDCpNKmapMUM9w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="89431310"
+X-CSE-ConnectionGUID: gYQxaT2tQFK8Vs8eWUSzCw==
+X-CSE-MsgGUID: f6hYixQ9TB6lUwkDevAjbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="54331231"
 X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
-   d="scan'208";a="89431310"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:33:23 -0800
-X-CSE-ConnectionGUID: O7uWtZqlSq64EKOp9ZmV1Q==
-X-CSE-MsgGUID: sZxDUeCKRrekgumctJ2Vjw==
+   d="scan'208";a="54331231"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:34:58 -0800
+X-CSE-ConnectionGUID: a/Yb/cOmToqzYdeSs4vD/w==
+X-CSE-MsgGUID: 602J7plBQNO5j+nip6f0MA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
-   d="scan'208";a="225407886"
+   d="scan'208";a="199197251"
 Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.81])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:33:23 -0800
-Date: Wed, 3 Dec 2025 18:33:19 +0200
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:34:57 -0800
+Date: Wed, 3 Dec 2025 18:34:54 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: nuno.sa@analog.com
 Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH 6/6] iio: buffer-dmaengine: Fix coding style complains
-Message-ID: <aTBmT605yRjGtTR1@smile.fi.intel.com>
+Subject: Re: [PATCH 3/6] iio: buffer-dma: Turn iio_dma_buffer_init() void
+Message-ID: <aTBmriwVrMwlKiXX@smile.fi.intel.com>
 References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
- <20251203-iio-dmabuf-improvs-v1-6-0e4907ce7322@analog.com>
- <aTBl9U1KS__Lkfbt@smile.fi.intel.com>
+ <20251203-iio-dmabuf-improvs-v1-3-0e4907ce7322@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,22 +75,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aTBl9U1KS__Lkfbt@smile.fi.intel.com>
+In-Reply-To: <20251203-iio-dmabuf-improvs-v1-3-0e4907ce7322@analog.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Dec 03, 2025 at 06:31:53PM +0200, Andy Shevchenko wrote:
-> On Wed, Dec 03, 2025 at 03:11:41PM +0000, Nuno Sá via B4 Relay wrote:
-> 
-> > Just making sure checkpatch is happy. No functional change intended.
-> 
-> ...but trigger the fighters for 80 rule!
+On Wed, Dec 03, 2025 at 03:11:38PM +0000, Nuno Sá via B4 Relay wrote:
 
-I believe
+> iio_dma_buffer_init() always return 0. Therefore there's no point in
+> returning int.
 
-	scripts/checkpatch.pl --strict ...
+> While at it, fix a mismatch between the function declaration and definition
+> regarding the struct device (dma_dev != dev).
 
-should catch this up.
+So, all others use simple dev?
 
 -- 
 With Best Regards,

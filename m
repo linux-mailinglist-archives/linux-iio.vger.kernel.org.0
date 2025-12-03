@@ -1,97 +1,163 @@
-Return-Path: <linux-iio+bounces-26704-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26705-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07B1CA0D0A
-	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 19:12:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32484CA167B
+	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 20:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75D1E319A745
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 17:08:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3308A303212C
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 19:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18814346799;
-	Wed,  3 Dec 2025 16:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369D93321D4;
+	Wed,  3 Dec 2025 19:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hQm+Hq9o"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JSKoJovZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385C03446C4
-	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 16:34:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2328F324B26
+	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 19:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779704; cv=none; b=YwTqQ4IiBGr26hzFKcYuRu6mtmKtv2yZy16Glm8/7n+CINx4SHUblw1O+I2kWgRHR7BKnAihWkpKEyz8eO2r8dpKHJRyJZBSqJOq49pW+/xD0nvTxpErjVPE70f3vKemmUzu6KvanaBLL8D6EluxLgDe70APc1Bq9Jq2Jro8wLY=
+	t=1764789580; cv=none; b=Ufq/6utZULWN0mDFny95+FguvXS1XA24OPGyrR80A3nB7PGGz5MymMNmN1O7NW/T63929lU7xDMqLexggp0W+aIqOz1gm+zq52a4F/SCdhKjeaiSyEMebBFfqdvGxo3nfgh9NsaBE4aN1jKnemsgGQtz6UoA0jl0rBasl6gcScs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779704; c=relaxed/simple;
-	bh=1Ff3ZIzYM6U0oExFkCr+cQ2E0ZWOCEfHu5wAFyKyLJg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h08OZDUpGLpKrztN4qmUlWZ9+dRLT/AKhu7zjD7nYn6ZVoFFE0XEiQncq9WelN3RgpKh9yda3dimNTNSnqMKPS0/RMynsy703UlmX3ieCMT7dauX1X2+Z15YsuVxOiyvFhtHQNuxFXuSYfJZ/396W3P8I31XTeJZ5Rz6BzPTh64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hQm+Hq9o; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764779700; x=1796315700;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=1Ff3ZIzYM6U0oExFkCr+cQ2E0ZWOCEfHu5wAFyKyLJg=;
-  b=hQm+Hq9oEX+N6U1dSOgWi8wbFdj3GgG+hwjtuXs7w8wXFVzpV/u3IC9y
-   1Ta0qx1vSKMiZFX+Ma9hEvRvnBIE2XjsJupgYq7S6BlWUT0co9lfXgggG
-   OVDMxIPJKBaUixI/9DGQAKAulHIqGeUUyRhDBbFBOL2gBProR6mayO9sT
-   troDANB6cPjV6/PX7Vc1OZSCTULrnUeUp5Epa7GGNqlqPVZMuD/tevMj0
-   i7sPHYCFM90krAODdOplh2vUde6ljE5rO+w3Mnl1JPt6ktpzQbwNulWxj
-   aK6Cy3l++O8q0pDvpSGQgbcXteQDZOun1YL1JhSD3ZUWAhPGHA9DB7Cfe
-   A==;
-X-CSE-ConnectionGUID: gYQxaT2tQFK8Vs8eWUSzCw==
-X-CSE-MsgGUID: f6hYixQ9TB6lUwkDevAjbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="54331231"
-X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
-   d="scan'208";a="54331231"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:34:58 -0800
-X-CSE-ConnectionGUID: a/Yb/cOmToqzYdeSs4vD/w==
-X-CSE-MsgGUID: 602J7plBQNO5j+nip6f0MA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
-   d="scan'208";a="199197251"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.81])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:34:57 -0800
-Date: Wed, 3 Dec 2025 18:34:54 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: nuno.sa@analog.com
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH 3/6] iio: buffer-dma: Turn iio_dma_buffer_init() void
-Message-ID: <aTBmriwVrMwlKiXX@smile.fi.intel.com>
-References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
- <20251203-iio-dmabuf-improvs-v1-3-0e4907ce7322@analog.com>
+	s=arc-20240116; t=1764789580; c=relaxed/simple;
+	bh=2Ews3nCp5RcsOWe3/ZSjBTP5CQV+y44P8Wfs0s+BuQA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=udvZ6HBk30yZ0wcEJEQ6jseqbm8828RKoEal2+jB49ASR696UuW9SVFe5FgOVx3G/csbdZyxZVALl139rlZX8DiTh5X+8te57Dlq3eQ1Wa3Ax1r4ZNkU8leSgHSxkCfJEkzVDHtBwIOotTHo1IaIAjR6kUQxnG3XhBnK0rJLcGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JSKoJovZ; arc=none smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-559836d04f6so78568e0c.0
+        for <linux-iio@vger.kernel.org>; Wed, 03 Dec 2025 11:19:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764789576; x=1765394376; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FsWm84k2qtEC6zCHV3II8eQa45w/fBWOUPbdCR/O5So=;
+        b=JSKoJovZ/6DwuAMPU28HIaO5WEJv1YyUM7WDiDG0YFGHoNASxZC++RwXzs9kwDUxVn
+         mnz0mvrrehgJDex3FyCYWWf1fEnu/t1ku9CYgywOz7Q1AGaW75wPRQGWx83VwWdOpdlY
+         DqzYV2xRvUmgkNkog0PAYvmYqqNjnLUG2k6i+L8BMYH5K+g3pEkVYPyaMvIDaFLKc+lh
+         SJCJaN6/+IIMX1GQWQfOh+NRTEMFFmKZLwxkvZWQnpA5c5jWypSXTq6kvzY/99urB8B2
+         /tQbyi5IwvLCLBElOJHnwzO1UvuCnHFdEijuA2UvIjoNG5l8HDlo6ppY0wDUlMHVyKBj
+         DiXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764789576; x=1765394376;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FsWm84k2qtEC6zCHV3II8eQa45w/fBWOUPbdCR/O5So=;
+        b=PIV9u6h+y1z0V1BsPtTZgM4dqneXftvhjftgrjV+XCKxKECvqXZfw/Fn9e9OM7MPm+
+         uFTo2+77fJG8wP7qjjvBFjUZjcd+ZhQU0Cxs4avrWy2+le5cTUaK1v7LJV9lid+J/GUJ
+         o4nFc9jE6Qex8A1NQnhrqyBajJm+P0KctCpzC8nlD8o1lGisYkv3iPUNdhrdEVs1RPwG
+         DnqtdmPBVi/VpTGyLOpAYejQFwFmXCDpmDLN7ZOdQykpLY0MSDf0KVSo5ZGoaYu3Pbwm
+         9el5U4h5QvtzHcBj2SPokkEJHdEpgDpWunjjT0IDHcxv8RyDvhrwtGZZ3Vnrm1yTz/zE
+         aZSg==
+X-Forwarded-Encrypted: i=1; AJvYcCVtEoVG5pN8JY7wmveQOdFzNx9TztgQSW9AytblA7tEUZXDMpAoHn9gXbiFUvjGRUYbGDp2b0GIInA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjNnlqzfrGKTJpSNhDVlxFUS2uWfstGWueJ4O/gYA6b4Y2qDq3
+	MVVz5/eY5PIjgu3ypWh6WKwUxHRFsSubgIwymCcAI6hrrITL8o6mfkjj
+X-Gm-Gg: ASbGnctgTQruU9VjglsY7cFPqMeCehQhVq++NAWKxLNhlKuCT2NcCl6WMFGlM5sXg+s
+	A3LZWXUQwl5dHLhtKHAsjVjdqRcNLZjFrNNFeLkipqlcZa629lZQEGzsNCrSQGRdYbFbGLtEH9g
+	GL3Zhc8A5i9Zjz8BrDDWq2zwYZWDYgY+VEo5xxGfJeFrQpnJ2N4NgX+AeSXLZT9uC4LcnKKM4QH
+	u0VtduilJT9drfm9q33PD/kW0+eQyd7jWrHG4QEerNM3X5Oy9agCDw2O8pWG0glDy4K1gyPYIVp
+	UAH37ZRQdiQD4mKdRL7AruNGloLEa/5izt3BSHIPjqPao/V0V6G61UyqDudxEhIfcUdB6dsN4Xd
+	V4/2wbmw7opAM8yVNhNNpw4DRGkRECc6jwD5NwnOwJ0pYdwwhp7IN55m/VEaRI5ewzRUwpSx6B0
+	XKzxAIkbrdE/1v
+X-Google-Smtp-Source: AGHT+IFawNilC7IYRWjKVXVVeZWmWiJzDYwMx1u5PNwmhAzymV5Livw2jtngj7e3+W9FLy7L6P6jMw==
+X-Received: by 2002:a05:6122:2516:b0:55b:305b:4e29 with SMTP id 71dfb90a1353d-55e5bfe64c5mr1532422e0c.21.1764789575866;
+        Wed, 03 Dec 2025 11:19:35 -0800 (PST)
+Received: from [192.168.100.70] ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-55cf4e1d56asm8121346e0c.4.2025.12.03.11.19.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 11:19:35 -0800 (PST)
+From: Kurt Borja <kuurtb@gmail.com>
+Subject: [PATCH RFC 0/6] iio: core: Introduce cleanup.h support for mode
+ locks
+Date: Wed, 03 Dec 2025 14:18:14 -0500
+Message-Id: <20251203-lock-impr-v1-0-b4a1fd639423@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251203-iio-dmabuf-improvs-v1-3-0e4907ce7322@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPaMMGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDQ2MD3Zz85GzdzNyCIl2zNCMjcxOLZEPTVAsloPqCotS0zAqwWdFKQW7
+ OSrG1tQAFzaXRYAAAAA==
+X-Change-ID: 20251130-lock-impr-6f22748c15e8
+To: Andy Shevchenko <andriy.shevchenko@intel.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Benson Leung <bleung@chromium.org>, 
+ Antoniu Miclaus <antoniu.miclaus@analog.com>, 
+ Gwendal Grignou <gwendal@chromium.org>, 
+ Shrikant Raskar <raskar.shree97@gmail.com>, 
+ Per-Daniel Olsson <perdaniel.olsson@axis.com>
+Cc: David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Guenter Roeck <groeck@chromium.org>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
+ Kurt Borja <kuurtb@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1948; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=2Ews3nCp5RcsOWe3/ZSjBTP5CQV+y44P8Wfs0s+BuQA=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDJkGvRp1XLc4OYPm/FDJq/q6YFfM4W8frz1/z/hnyvo7n
+ YpChbemdZSyMIhxMciKKbK0Jyz69igq763fgdD7MHNYmUCGMHBxCsBE7Kcz/M+0N9Kq/3vA1m/v
+ lO3LGR2755830pTXPnL0nPCf5B+rNkxkZJilu5BxSXHHZoUT0b//7gt6w7TBiZO3MvtMyx3xYiN
+ bBh4A
+X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
+ fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 
-On Wed, Dec 03, 2025 at 03:11:38PM +0000, Nuno Sá via B4 Relay wrote:
+Hi,
 
-> iio_dma_buffer_init() always return 0. Therefore there's no point in
-> returning int.
+In a recent driver review discussion [1], Andy Shevchenko suggested we
+add cleanup.h support for the lock API:
 
-> While at it, fix a mismatch between the function declaration and definition
-> regarding the struct device (dma_dev != dev).
+	iio_device_claim_{direct,buffer_mode}().
 
-So, all others use simple dev?
+Which would allow some nice code simplification* in many places. Some
+examples are given as patches, but the last two are the biggest
+differences.
+
+Although I was never entirely sure if Andy meant cleanup classes for
+locks or for iio_trigger_notify_done(), I still think this is a great
+addition to the API :).
+
+Thanks for taking a look!
+
+* It's important to mention that David Lechner expressed some concerns
+  about this [2], hence why this is an RFC series.
+
+[1] https://lore.kernel.org/linux-iio/aSsBdJZDWcadxEHC@smile.fi.intel.com/
+[2] https://lore.kernel.org/linux-iio/248b009e-0401-4531-b9f0-56771e16bdef@baylibre.com/
+
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+Kurt Borja (6):
+      iio: core: Match iio_device_claim_*() return semantics
+      iio: core: Match iio_device_claim_*() naming
+      iio: core: Add cleanup.h support for iio_device_claim_*()
+      iio: light: vcnl4000: Use cleanup.h for IIO locks
+      iio: health: max30102: Use cleanup.h for IIO locks
+      iio: light: opt4060: Use cleanup.h for IIO locks
+
+ drivers/iio/adc/ade9000.c                          |  4 +-
+ .../common/cros_ec_sensors/cros_ec_sensors_core.c  |  7 +--
+ drivers/iio/health/max30100.c                      |  4 +-
+ drivers/iio/health/max30102.c                      | 24 +++-------
+ drivers/iio/industrialio-core.c                    | 34 +++++++++-----
+ drivers/iio/light/opt4060.c                        | 52 +++++++---------------
+ drivers/iio/light/vcnl4000.c                       | 24 ++++------
+ include/linux/iio/iio.h                            | 24 +++++++++-
+ 8 files changed, 83 insertions(+), 90 deletions(-)
+---
+base-commit: f9e05791642810a0cf6237d39fafd6fec5e0b4bb
+change-id: 20251130-lock-impr-6f22748c15e8
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+ ~ Kurt
 
 

@@ -1,108 +1,150 @@
-Return-Path: <linux-iio+bounces-26698-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26699-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8278CC9FFCD
-	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 17:35:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08607C9FFDC
+	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 17:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 51E433000B61
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 16:35:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB53E3031CD6
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 16:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79691334C36;
-	Wed,  3 Dec 2025 16:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028B73128CE;
+	Wed,  3 Dec 2025 16:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Na21dhxd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dkzx+MK9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A35335BAD
-	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 16:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80003612E4
+	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 16:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779057; cv=none; b=T37ncM9PgjrG0C9tEYunahkBy6S5aK/qs24rujj5LzUrRK+glOTla04v3xnrHnIwrIVgcHMlL/an3dJfTmu8OhSMyR8r7scwPck61Q4JRtICI3K09bWL1e+hVvIeKBZIaBSBJW7rzXysS/KjB5XLYF1d/iOcjKXzC7E+gFd5xhU=
+	t=1764779318; cv=none; b=iN5ApvgMc9HO+z1nG9CTz/b8vWQ89KbZI+2S+6vq+xI7cIyv7Woi04QE54kP5TJogMSrxymBaDq0x5DoVu3AykmcZjSuz96GbBWxmqFy+Jc+aAzqfiYe1R7Figf5/B7WaNhpbG6oKLlSMvYiC7hhZ/3NWv3hOBmfQ4GWzozdSgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779057; c=relaxed/simple;
-	bh=V4YtWVmJnX3TMduvIUUPT7oTz/SHQERlUnBmeGRh0/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b/y5pEm00NoCMkeog7Da5hyQzwhZ7H7tV50Zgx4zBy5kRJZj4Lm9nc+vncDCWXqMofOH0x0rmIxa8qI/KqUiPxgBDLj3wARp61r/kKhvndgUkVe2dP/MPBD+nzYqilJnZGHXp+RGXg9TC7J1p0wXi6EYUzp3R17Az+14I21qbas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Na21dhxd; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764779040; x=1796315040;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=V4YtWVmJnX3TMduvIUUPT7oTz/SHQERlUnBmeGRh0/I=;
-  b=Na21dhxdYIUe3oOxpz9wMOpyqIG7TzprtLvWgCS+ZavXkdeYzb/AQJD2
-   Z3Nq8PDqsbtnRgXrPAs5xcF2/NE8QCTMhXSsxGQjy8XSTMBC5Q0aclpUt
-   25wEf8Ab4Zx6l0gbwfIZVG/gSYijqVxLuzkRN13GfTAP7WB6ByGvbrLL4
-   Xv14+X+YB0f/2AdfpaoKwIJi+lQxwr4VUDiKKqBT3O2bKhSZHHtekHJP0
-   +I3XFZd2BXfwPWFhqHU1u0yUAO7DNdz3ivF/o56KkyiQrFI7OnXG9Jd9e
-   VmKjK06iiiI6vTVHhAvp5UXna0wK6XeZqy4cnHsFh1xLdgaxb5ApBRkoi
-   w==;
-X-CSE-ConnectionGUID: inmQby+HQMq2zGtuNitfDw==
-X-CSE-MsgGUID: 279ZNmPATSqe5t+2JQb+tQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="84376981"
-X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
-   d="scan'208";a="84376981"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:24:00 -0800
-X-CSE-ConnectionGUID: 3Z3HNfzOQfeP8i3tJzH+Pg==
-X-CSE-MsgGUID: tm/36oJORKu+FbLCuDP06g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
-   d="scan'208";a="225681302"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.81])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:23:58 -0800
-Date: Wed, 3 Dec 2025 18:23:56 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: nuno.sa@analog.com
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH 2/6] iio: buffer-dma: Use the cleanup.h API
-Message-ID: <aTBkHIq-SL26fABN@smile.fi.intel.com>
-References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
- <20251203-iio-dmabuf-improvs-v1-2-0e4907ce7322@analog.com>
+	s=arc-20240116; t=1764779318; c=relaxed/simple;
+	bh=0IBYtpUvAe4CHpRNet5vi4B8ZC5k6fPjwLC7v4GaCyI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hB8FNOIlWfDYRk1XpypTaqcyBSSMidK/KbYUf/15OYBfeigw25LfVx856pLM4VrN48xgHkW1S7LyiEOsxLrjgFu/gbRnXMUPxP3NEcQ2honXKc34FMjBsDXyyX+0X2zV8aR+6wows1iOhvaylOBoO4jmHzDr1WYmpO+uHZKKa5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dkzx+MK9; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-37b999d0c81so57691821fa.2
+        for <linux-iio@vger.kernel.org>; Wed, 03 Dec 2025 08:28:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764779311; x=1765384111; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lZEaEf6zCWfznWFsYXIftbCsWzg6prmhaMiElS9+gMQ=;
+        b=dkzx+MK9S/+Kkyf/Je2taoEqDDDIXYV/ogxMPTBw2cFCbAaTHD40p29dlImtiVO19d
+         Be2vS6cdATmXZaFjQL2xba/lYG9c9g3FOcUSEaXVxKOJmdsx2RkbsOaMePKi2G1dx+EI
+         qXJmSPKu9wkKQX0ccbXOjwkQZVSqSmmwFNi2ZH/T1fxB07/HRp+OUzFNVP7suoOoCPqs
+         F9cm0wn3NHVKkCgNm3X88F8ebVhci9CdQ6ezeTTBD2kmzvVnP5FLwSceUat3zXigBFfm
+         oZMUyX2HqPfBo0wQ5I9cm8RzDYla0WCfm0SNrIjWHsNl1SW169RjNQ43tO6QJwXf3aoN
+         uYDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764779311; x=1765384111;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lZEaEf6zCWfznWFsYXIftbCsWzg6prmhaMiElS9+gMQ=;
+        b=UFbHvLd/DYvkpxqc7T7nkX88TI9PGXvNdTL96Q05AxNeu7JvjVMOpXoPQGwVQd361e
+         c2JKqfdGJ+e9BnqAtnXGq9xpeHeeKGomLhvcZtkdzMukRQ+qf6qyTeHUlVdTEV1rgZpR
+         Nx6Ca82kC4FvzAJmqCNTqjhfGQQ/I3CE03gcAV1Scd5jFoBYJm7TwITR0qRS7uHElvwM
+         qYAxwYLo+LZpQGJGvLHXHcQZwkxYuc1duPwqh/Is497IZV7NCmwqdw0SHXbP44zk5YUi
+         pxu+yG+Jq9Oihj/uZvbSgLx3S7qXrUQf59au3QILzMMStfl9wsdkxQmW1QU95Va/Zu68
+         4pKg==
+X-Forwarded-Encrypted: i=1; AJvYcCWoLBFJGpAzDwawRI2Mutcb4YLAEYHbpYRHH9pFU2cOm7hMPBd+PGwDnMJU8OobGVV9dHcXVo3Rs/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw59sQfoFwwdBD/B6cViJR+jFE1hFZYd8XgVdgAe9CzbAYwyF9H
+	FLFLDPmlLxFJ1hCJXFIA2ard7akv6fgzUyLkd1URiym5pXIPhRZwRLa1
+X-Gm-Gg: ASbGncuG7xT7de2r+QatHpuh9mz/iIR9qAxVBQgkoNk/3NgvJAIxoiGRNHPwf0c9oyr
+	iIdOcX33JKIuJvYP8ILnWLP2O9QZtnPIGGkoKFMsi6duELFnIsUEtvDkT+uFxQA1TLj2xUdglBI
+	ee56OPuo7ntKB8hp0mEqwzpDYLiNlJsgs8HbYU7D7tuBByUdZvSi4yq8ZK1dTUmOJXC497wBgU5
+	qpnHgc3FmT3kVtWDRficF+qo7d8ySCyMNbZSyJHSuUvUslfsqRALwpHM+as8c260+eK5r1aH2sy
+	ZEJNSAm7MLCRizUhpfrWaqCYpfVaX+hkf/RWBmfvSYbDngioIbZPmqvp5FDRL4a6nNcMMbgItSL
+	/jwpYm/pSHoD7XFY4e9DIMHhBcEFPnYVP7xBEPCvF6xTekOY+9mbtBR4OmXX4z5nTJWiCGtmI4i
+	D+AHtCYJ67AV0=
+X-Google-Smtp-Source: AGHT+IEiTHXvWrMiBrCOdya6kj6SNL6GbPBEpEYmYUwm6jslwyfYIaaBcoq4VYssRbLP5Lmxx3UAyQ==
+X-Received: by 2002:a05:651c:20c5:b0:37b:aaf7:eff3 with SMTP id 38308e7fff4ca-37e638e67eamr8385761fa.28.1764779310836;
+        Wed, 03 Dec 2025 08:28:30 -0800 (PST)
+Received: from [10.5.0.2] ([185.128.9.168])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37d24113084sm42507771fa.46.2025.12.03.08.28.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 08:28:30 -0800 (PST)
+Message-ID: <9bdbdb91ea6b8049658fd6015722c5e2beea183e.camel@gmail.com>
+Subject: Re: [PATCH 1/2] iio: dac: adi-axi-dac: Make use of dev_err_probe()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com, 
+	linux-iio@vger.kernel.org
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron
+	 <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
+Date: Wed, 03 Dec 2025 16:29:10 +0000
+In-Reply-To: <07439e95-47f5-434a-9f6d-d7740375a3d6@baylibre.com>
+References: 
+	<20251203-iio-axi-dac-minor-changes-v1-0-b54650cbeb33@analog.com>
+	 <20251203-iio-axi-dac-minor-changes-v1-1-b54650cbeb33@analog.com>
+	 <07439e95-47f5-434a-9f6d-d7740375a3d6@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251203-iio-dmabuf-improvs-v1-2-0e4907ce7322@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Dec 03, 2025 at 03:11:37PM +0000, Nuno Sá via B4 Relay wrote:
+On Wed, 2025-12-03 at 10:06 -0600, David Lechner wrote:
+> On 12/3/25 9:53 AM, Nuno S=C3=A1 via B4 Relay wrote:
+> > From: Nuno S=C3=A1 <nuno.sa@analog.com>
+> >=20
+> > Be consistent and use dev_err_probe() as in all other places in the
+> > .probe() path.
+> >=20
+> > While at it, remove the line break in the version condition. Yes, it
+> > goes over the 80 column limit but I do think the line break hurts
+> > readability in this case.
+> >=20
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> > ---
+> > =C2=A0drivers/iio/dac/adi-axi-dac.c | 20 +++++++++-----------
+> > =C2=A01 file changed, 9 insertions(+), 11 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-da=
+c.c
+> > index 0d525272a8a8..0c7b62f5357d 100644
+> > --- a/drivers/iio/dac/adi-axi-dac.c
+> > +++ b/drivers/iio/dac/adi-axi-dac.c
+> > @@ -942,17 +942,15 @@ static int axi_dac_probe(struct platform_device *=
+pdev)
+> > =C2=A0	if (ret)
+> > =C2=A0		return ret;
+> > =C2=A0
+> > -	if (ADI_AXI_PCORE_VER_MAJOR(ver) !=3D
+> > -		ADI_AXI_PCORE_VER_MAJOR(st->info->version)) {
+> > -		dev_err(&pdev->dev,
+> > -			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n=
+",
+> > -			ADI_AXI_PCORE_VER_MAJOR(st->info->version),
+> > -			ADI_AXI_PCORE_VER_MINOR(st->info->version),
+> > -			ADI_AXI_PCORE_VER_PATCH(st->info->version),
+> > -			ADI_AXI_PCORE_VER_MAJOR(ver),
+> > -			ADI_AXI_PCORE_VER_MINOR(ver),
+> > -			ADI_AXI_PCORE_VER_PATCH(ver));
+> > -		return -ENODEV;
+> > +	if (ADI_AXI_PCORE_VER_MAJOR(ver) !=3D ADI_AXI_PCORE_VER_MAJOR(st->inf=
+o->version)) {
+>=20
+> Can drop the braces now.
 
-> Make use of the cleanup.h API for locks and memory allocation in order
-> to simplify some code paths.
+Yes, I thought about it but then kept the braces as we still have "multiple=
+" lines (note checkpatch
+does not complain in cases like this).=C2=A0
 
-...
+But I don't feel strong about it so can drop them if you do :)
 
-> -	struct iio_dma_buffer_block *block;
-> -
-> -	block = kzalloc(sizeof(*block), GFP_KERNEL);
-> +	struct iio_dma_buffer_block *block __free(kfree) = kzalloc(sizeof(*block), GFP_KERNEL);
->  	if (!block)
->  		return NULL;
-
-In another thread I believe you referred to the 80 rule.
-Follow it then :-)
-
-	struct iio_dma_buffer_block *block __free(kfree) =
-		kzalloc(sizeof(*block), GFP_KERNEL);
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+- Nuno S=C3=A1
+>=20
+> >=20
 

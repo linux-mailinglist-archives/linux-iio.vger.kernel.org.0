@@ -1,150 +1,153 @@
-Return-Path: <linux-iio+bounces-26699-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26700-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08607C9FFDC
-	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 17:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B54CA044C
+	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 18:08:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB53E3031CD6
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 16:32:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BFF330BE6BA
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 16:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028B73128CE;
-	Wed,  3 Dec 2025 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683103502AA;
+	Wed,  3 Dec 2025 16:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dkzx+MK9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a4E+eFUy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80003612E4
-	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 16:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04FC34FF4E
+	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 16:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779318; cv=none; b=iN5ApvgMc9HO+z1nG9CTz/b8vWQ89KbZI+2S+6vq+xI7cIyv7Woi04QE54kP5TJogMSrxymBaDq0x5DoVu3AykmcZjSuz96GbBWxmqFy+Jc+aAzqfiYe1R7Figf5/B7WaNhpbG6oKLlSMvYiC7hhZ/3NWv3hOBmfQ4GWzozdSgU=
+	t=1764779401; cv=none; b=lvxAlwda1w5MfpjiVKkYe4cYwJ+c4AFKTkvBc8+jn6qqj6iZPngWLz+LANJ/es/mNtzjrWEwsWQIx+ENRrl/+glk0NteQ+Qu4AywOFZeoZ/sra7Dyt72hdvN4IrQNMMSQh04+Mk9EQUcDDnZLcZtO/dFGCCHfHmMyTFpL0BUcBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779318; c=relaxed/simple;
-	bh=0IBYtpUvAe4CHpRNet5vi4B8ZC5k6fPjwLC7v4GaCyI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hB8FNOIlWfDYRk1XpypTaqcyBSSMidK/KbYUf/15OYBfeigw25LfVx856pLM4VrN48xgHkW1S7LyiEOsxLrjgFu/gbRnXMUPxP3NEcQ2honXKc34FMjBsDXyyX+0X2zV8aR+6wows1iOhvaylOBoO4jmHzDr1WYmpO+uHZKKa5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dkzx+MK9; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-37b999d0c81so57691821fa.2
-        for <linux-iio@vger.kernel.org>; Wed, 03 Dec 2025 08:28:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764779311; x=1765384111; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lZEaEf6zCWfznWFsYXIftbCsWzg6prmhaMiElS9+gMQ=;
-        b=dkzx+MK9S/+Kkyf/Je2taoEqDDDIXYV/ogxMPTBw2cFCbAaTHD40p29dlImtiVO19d
-         Be2vS6cdATmXZaFjQL2xba/lYG9c9g3FOcUSEaXVxKOJmdsx2RkbsOaMePKi2G1dx+EI
-         qXJmSPKu9wkKQX0ccbXOjwkQZVSqSmmwFNi2ZH/T1fxB07/HRp+OUzFNVP7suoOoCPqs
-         F9cm0wn3NHVKkCgNm3X88F8ebVhci9CdQ6ezeTTBD2kmzvVnP5FLwSceUat3zXigBFfm
-         oZMUyX2HqPfBo0wQ5I9cm8RzDYla0WCfm0SNrIjWHsNl1SW169RjNQ43tO6QJwXf3aoN
-         uYDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764779311; x=1765384111;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lZEaEf6zCWfznWFsYXIftbCsWzg6prmhaMiElS9+gMQ=;
-        b=UFbHvLd/DYvkpxqc7T7nkX88TI9PGXvNdTL96Q05AxNeu7JvjVMOpXoPQGwVQd361e
-         c2JKqfdGJ+e9BnqAtnXGq9xpeHeeKGomLhvcZtkdzMukRQ+qf6qyTeHUlVdTEV1rgZpR
-         Nx6Ca82kC4FvzAJmqCNTqjhfGQQ/I3CE03gcAV1Scd5jFoBYJm7TwITR0qRS7uHElvwM
-         qYAxwYLo+LZpQGJGvLHXHcQZwkxYuc1duPwqh/Is497IZV7NCmwqdw0SHXbP44zk5YUi
-         pxu+yG+Jq9Oihj/uZvbSgLx3S7qXrUQf59au3QILzMMStfl9wsdkxQmW1QU95Va/Zu68
-         4pKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWoLBFJGpAzDwawRI2Mutcb4YLAEYHbpYRHH9pFU2cOm7hMPBd+PGwDnMJU8OobGVV9dHcXVo3Rs/g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw59sQfoFwwdBD/B6cViJR+jFE1hFZYd8XgVdgAe9CzbAYwyF9H
-	FLFLDPmlLxFJ1hCJXFIA2ard7akv6fgzUyLkd1URiym5pXIPhRZwRLa1
-X-Gm-Gg: ASbGncuG7xT7de2r+QatHpuh9mz/iIR9qAxVBQgkoNk/3NgvJAIxoiGRNHPwf0c9oyr
-	iIdOcX33JKIuJvYP8ILnWLP2O9QZtnPIGGkoKFMsi6duELFnIsUEtvDkT+uFxQA1TLj2xUdglBI
-	ee56OPuo7ntKB8hp0mEqwzpDYLiNlJsgs8HbYU7D7tuBByUdZvSi4yq8ZK1dTUmOJXC497wBgU5
-	qpnHgc3FmT3kVtWDRficF+qo7d8ySCyMNbZSyJHSuUvUslfsqRALwpHM+as8c260+eK5r1aH2sy
-	ZEJNSAm7MLCRizUhpfrWaqCYpfVaX+hkf/RWBmfvSYbDngioIbZPmqvp5FDRL4a6nNcMMbgItSL
-	/jwpYm/pSHoD7XFY4e9DIMHhBcEFPnYVP7xBEPCvF6xTekOY+9mbtBR4OmXX4z5nTJWiCGtmI4i
-	D+AHtCYJ67AV0=
-X-Google-Smtp-Source: AGHT+IEiTHXvWrMiBrCOdya6kj6SNL6GbPBEpEYmYUwm6jslwyfYIaaBcoq4VYssRbLP5Lmxx3UAyQ==
-X-Received: by 2002:a05:651c:20c5:b0:37b:aaf7:eff3 with SMTP id 38308e7fff4ca-37e638e67eamr8385761fa.28.1764779310836;
-        Wed, 03 Dec 2025 08:28:30 -0800 (PST)
-Received: from [10.5.0.2] ([185.128.9.168])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37d24113084sm42507771fa.46.2025.12.03.08.28.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 08:28:30 -0800 (PST)
-Message-ID: <9bdbdb91ea6b8049658fd6015722c5e2beea183e.camel@gmail.com>
-Subject: Re: [PATCH 1/2] iio: dac: adi-axi-dac: Make use of dev_err_probe()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, nuno.sa@analog.com, 
-	linux-iio@vger.kernel.org
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron
-	 <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
-Date: Wed, 03 Dec 2025 16:29:10 +0000
-In-Reply-To: <07439e95-47f5-434a-9f6d-d7740375a3d6@baylibre.com>
-References: 
-	<20251203-iio-axi-dac-minor-changes-v1-0-b54650cbeb33@analog.com>
-	 <20251203-iio-axi-dac-minor-changes-v1-1-b54650cbeb33@analog.com>
-	 <07439e95-47f5-434a-9f6d-d7740375a3d6@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+	s=arc-20240116; t=1764779401; c=relaxed/simple;
+	bh=jg1DU953IcKgLd66oFBdK2TaQwvz6Q50xoaLLzy++TM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aTcJULngdpM2vGRLxKumM3q7svRwhGwIcliAAsY7pPRYTkiaxrcdI1pjZHiSn6L1aNPHXkILTBj54q/cECH95hv0AdTnVMKl+5sMrh0hnFderRxP7KDwAXvyc/nU0e7r9Nu1LBX6yHdKxM4dAcz+b6+7RahSzjjYCAPhlcPgYHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a4E+eFUy; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764779400; x=1796315400;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=jg1DU953IcKgLd66oFBdK2TaQwvz6Q50xoaLLzy++TM=;
+  b=a4E+eFUy7qvrlo1lYJU9KZk7CgxNJ66ElswrkR8ndXAAJ1hwZxxs0brC
+   pEpgx8fDLeS+SrCvKl4EK6ySwiRHpfCxk6N7fCYav/uMqDMttuWx2/pbp
+   QszLBDzfP0jEPozHyFeJQ0YC5ZyfuFW4sZSHjUypZeD4uElY/xOkTG2+H
+   wSI3ubQsZL5xd/TfFPPDTD2SGOthKYkCx75t1NZOL7WRO0YgXAmkYPifP
+   cPl3uLd9/+eMwgdwXC7qXa/fDmF9udsYp07cB4Odt7efWtqXGLXOo+ADd
+   7Y6FyC3Y89qPPiJHHI85XqgX8o96xCS4vZTABZUpyMa3QYJSR+AY7Cq9+
+   A==;
+X-CSE-ConnectionGUID: +XLGSgeaQkKXFQY+i+7/cg==
+X-CSE-MsgGUID: P72tCDsLRk2wiY0+0aHA1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66822743"
+X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
+   d="scan'208";a="66822743"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:29:59 -0800
+X-CSE-ConnectionGUID: EHEA6ZHFQVG5OUd/b4BpQg==
+X-CSE-MsgGUID: S9u2tDPWS3KCOZ8iQzJQWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
+   d="scan'208";a="194771045"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.81])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:29:58 -0800
+Date: Wed, 3 Dec 2025 18:29:55 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: nuno.sa@analog.com
+Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH 4/6] iio: buffer-dma: Fix coding style complains
+Message-ID: <aTBlg2rW0rrjHh73@smile.fi.intel.com>
+References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
+ <20251203-iio-dmabuf-improvs-v1-4-0e4907ce7322@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251203-iio-dmabuf-improvs-v1-4-0e4907ce7322@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, 2025-12-03 at 10:06 -0600, David Lechner wrote:
-> On 12/3/25 9:53 AM, Nuno S=C3=A1 via B4 Relay wrote:
-> > From: Nuno S=C3=A1 <nuno.sa@analog.com>
-> >=20
-> > Be consistent and use dev_err_probe() as in all other places in the
-> > .probe() path.
-> >=20
-> > While at it, remove the line break in the version condition. Yes, it
-> > goes over the 80 column limit but I do think the line break hurts
-> > readability in this case.
-> >=20
-> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > ---
-> > =C2=A0drivers/iio/dac/adi-axi-dac.c | 20 +++++++++-----------
-> > =C2=A01 file changed, 9 insertions(+), 11 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-da=
-c.c
-> > index 0d525272a8a8..0c7b62f5357d 100644
-> > --- a/drivers/iio/dac/adi-axi-dac.c
-> > +++ b/drivers/iio/dac/adi-axi-dac.c
-> > @@ -942,17 +942,15 @@ static int axi_dac_probe(struct platform_device *=
-pdev)
-> > =C2=A0	if (ret)
-> > =C2=A0		return ret;
-> > =C2=A0
-> > -	if (ADI_AXI_PCORE_VER_MAJOR(ver) !=3D
-> > -		ADI_AXI_PCORE_VER_MAJOR(st->info->version)) {
-> > -		dev_err(&pdev->dev,
-> > -			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n=
-",
-> > -			ADI_AXI_PCORE_VER_MAJOR(st->info->version),
-> > -			ADI_AXI_PCORE_VER_MINOR(st->info->version),
-> > -			ADI_AXI_PCORE_VER_PATCH(st->info->version),
-> > -			ADI_AXI_PCORE_VER_MAJOR(ver),
-> > -			ADI_AXI_PCORE_VER_MINOR(ver),
-> > -			ADI_AXI_PCORE_VER_PATCH(ver));
-> > -		return -ENODEV;
-> > +	if (ADI_AXI_PCORE_VER_MAJOR(ver) !=3D ADI_AXI_PCORE_VER_MAJOR(st->inf=
-o->version)) {
->=20
-> Can drop the braces now.
+On Wed, Dec 03, 2025 at 03:11:39PM +0000, Nuno Sá via B4 Relay wrote:
 
-Yes, I thought about it but then kept the braces as we still have "multiple=
-" lines (note checkpatch
-does not complain in cases like this).=C2=A0
+> Just making sure checkpatch is happy. No functional change intended.
 
-But I don't feel strong about it so can drop them if you do :)
+...
 
-- Nuno S=C3=A1
->=20
-> >=20
+> -static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(
+> -	struct iio_dma_buffer_queue *queue, size_t size, bool fileio)
+> +static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(struct iio_dma_buffer_queue *queue,
+> +							       size_t size,
+> +							       bool fileio)
+
+What about 80 rule?
+
+static struct iio_dma_buffer_block *
+iio_dma_buffer_alloc_block(struct iio_dma_buffer_queue *queue, size_t size,
+			   bool fileio)
+
+(And personally I think that in 2025 we should grow up and forget about this
+ and move on to 100, but... not a maintainer here :-)
+
+...
+
+> -static struct iio_dma_buffer_block *iio_dma_buffer_dequeue(
+> -	struct iio_dma_buffer_queue *queue)
+> +static struct iio_dma_buffer_block *iio_dma_buffer_dequeue(struct iio_dma_buffer_queue *queue)
+
+Ditto.
+
+static struct iio_dma_buffer_block *
+iio_dma_buffer_dequeue(struct iio_dma_buffer_queue *queue)
+
+...
+
+> -		if (block != queue->fileio.active_block
+> -		    && block->state == IIO_BLOCK_STATE_DONE)
+> +		if (block != queue->fileio.active_block && block->state == IIO_BLOCK_STATE_DONE)
+
+Ditto.
+
+		if (block != queue->fileio.active_block &&
+		    block->state == IIO_BLOCK_STATE_DONE)
+
+>  			data_available += block->size;
+>  	}
+
+...
+
+> +	/*
+> +	 * mutex to protect accessing, configuring (eg: enqueuing DMA blocks)
+
+A mutex
+
+e.g.:
+
+(this is Latin exempli gratia)
+
+> +	 * and do file IO on struct iio_dma_buffer_queue objects.
+> +	 */
+
+...
+
+> +	/* spinlock to protect adding/removing blocks to the queue list */
+
+A spin lock
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

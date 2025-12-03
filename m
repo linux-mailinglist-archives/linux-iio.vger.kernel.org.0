@@ -1,174 +1,113 @@
-Return-Path: <linux-iio+bounces-26662-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26663-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CA9C9E640
-	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 10:05:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B3AC9E6E1
+	for <lists+linux-iio@lfdr.de>; Wed, 03 Dec 2025 10:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EB86C346FB9
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 09:04:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2D5644E065D
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Dec 2025 09:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265442D9EF9;
-	Wed,  3 Dec 2025 09:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495762D7DDC;
+	Wed,  3 Dec 2025 09:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DxUSDQ4Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mV53UnzK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07410257431;
-	Wed,  3 Dec 2025 09:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7851A2BEC2C
+	for <linux-iio@vger.kernel.org>; Wed,  3 Dec 2025 09:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764752655; cv=none; b=Kh1qVbSnLGrSVlUekvGlHK8UbbyxXS7oSR2f4lYlaqT1VmnJs3bVA2HV9ch7sAsXpSQZ5wfg+ccY47T0mUZqGzxeLN2j2wrC21Q2nXBTfHAuoMb7D7wXRIj6DNuJmUfMAMbAexYbTuJ9rBtICEAGXyToI3s2wAheyB4v0AZhljM=
+	t=1764753429; cv=none; b=LpIYYK1rRdecnb+Qb8TIOWE2DLwIu4cqmseQepI8XU0YzFR3zbMotHooDH/3JtaB9PrSUoSG0P+qHeXYhQzFtyesTo88vbuW5c33w5oh9o7BvycYxlTPnuHK0aWQSfZNiFp9dpoqTSWv/p4wjKZPdj1bXqStCbHGORfO/725Iuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764752655; c=relaxed/simple;
-	bh=b2sk3duwoNE9H2KK2expw74SH44y7GQ2lYs8ssrQsLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AvOxJzmzsHhIJcnaKH5yTloznzZ+mW9Tt0lXF9lflCm2LHcb/2Xi1svERZboEdV7zAh3ntSvbyaEVlMVubo7FH09XoVpARe4pGG9EZKSQtHxApv1E8mBkiptqWVd9EwXT508QxrkXBh2Rv7VbyPHiBEYXwzXpohTg+g6dIoQYUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DxUSDQ4Q; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764752655; x=1796288655;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=b2sk3duwoNE9H2KK2expw74SH44y7GQ2lYs8ssrQsLg=;
-  b=DxUSDQ4Qm5t1o68mi5vcIcSgokgRfGzsJ3TxeKDlV71y+KlQuEmSjsxd
-   a7nhrGEC3vLcSuM1bwjMgFiVK4FmfHSo6Avo71TFuyEYg0OLqPVzz3Dwr
-   N18V2ttTuAiy5viQBPaYNI+ye7Zsm1NZ/CJisQL9lNMbjBLI8u3133Tq2
-   EnIlOEBVonDLqBJSfsVnqgLNE4GHAWFrmUw7lOlOLBYgNtBpGT0ZmRQCt
-   Qlkq/cD8Jfo/gR2TxH3OxRpO1pk56fA1kYuzINm+Ul8kD97FacvUfcw0w
-   5Pu0i1PkRrYYDhXMb73cQpjOOTStiEYdN5pFZVt1LIT3YVfSI86qjlwTF
-   Q==;
-X-CSE-ConnectionGUID: qr/UlcSyT2GTmqKA4qI71w==
-X-CSE-MsgGUID: fwlhXfHxTAKqZVvYPF4vMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66781089"
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
-   d="scan'208";a="66781089"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 01:04:14 -0800
-X-CSE-ConnectionGUID: 4E56NDC2QPO08Jg+Ema02w==
-X-CSE-MsgGUID: 697kwrfQRjWsBpHoISpQrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
-   d="scan'208";a="194301438"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.217])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 01:04:10 -0800
-Date: Wed, 3 Dec 2025 11:04:08 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Tomas Melin <tomas.melin@vaisala.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Alexandru Ardelean <alexandru.ardelean@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: ad9467: support write/read offset
-Message-ID: <aS_9CB9sQc2s1LMI@smile.fi.intel.com>
-References: <20251202-ad9434-fixes-v2-0-fa73d4eabbea@vaisala.com>
- <20251202-ad9434-fixes-v2-2-fa73d4eabbea@vaisala.com>
- <aS7zf3ZGVEdTrNvF@smile.fi.intel.com>
- <c1cce165-0c34-4277-89b4-b0117ebb4bba@vaisala.com>
- <4a64c388-f141-4998-96e0-f6840d70f139@vaisala.com>
+	s=arc-20240116; t=1764753429; c=relaxed/simple;
+	bh=1kPmDdDU1xVZtJJcyPGg23TEhqlkgn7AeJk/PIWhlQI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dzqFUy8ObM+9Cq3ePdk0v4vTpyuTaTTcPiVNHeYb6LpFGL/S66GW2BdKd5AI3pJbYQFU42NnA0JtSAJx5rrBIx8Ocfun5c8GvsTvXFaL5XhFx9h50ITfnOXFN5ENhjDXNWcjmboHpSlZdA2f443zhx+dR1XOqtSIilTIXYOZayM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mV53UnzK; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-640ca678745so11129986a12.2
+        for <linux-iio@vger.kernel.org>; Wed, 03 Dec 2025 01:17:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764753423; x=1765358223; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1kPmDdDU1xVZtJJcyPGg23TEhqlkgn7AeJk/PIWhlQI=;
+        b=mV53UnzKZ/mvRjwP7bN6l1pCGWpAMlyarlM4MRVjdw+d6OwOE36wQREW9xjQEO7US+
+         IrT9sJPNID+FGRDa+9lkFlTaIbr/Q3E1xyLuN2RL+uU1qbqs2WzEV95VtvjXspCujMqn
+         E7LiI9tTqjGOsfqTV/xRcC5TafOFuzOPWbok5gzz4DaHfsmUHHpCs8OKd8z4oeL2xt45
+         zjbBVpvoj8fF90QK4sMJdf81fkAf93KQ/qZNfZ73MzNoU9H/WRtBAc5dAuueYRvEzFyg
+         xxS4SwOxumUfrEI2mWNfTi1N3NKb5t/ctFm2tfB+hgI8qH1WAsV4fzicVVBOQMLeqmRm
+         IAjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764753423; x=1765358223;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1kPmDdDU1xVZtJJcyPGg23TEhqlkgn7AeJk/PIWhlQI=;
+        b=kW+AtxqGHwoCFDzG31ws1yTOoQChpl8ctsKkDiG9DAnPjHRiV8fbmRiflFtTSIUEUh
+         Lf7+NrdwiCJDkAAXjw7nH5Hr504arfAzhmKqR38RRUseIxK9vwBk5Y9AVhoJjhBqwZfJ
+         NNRmc0+BmpqdW3/YIqzBEO23T0hXCh3Vbe+egR8tEaWMtozvS8Y5riPFSjcmuOPV9LQ+
+         uRrlJKP3DMa7Jh6fADbIWRX9xzQIBjamZ7U3m9mqBxJc0893F0zgUdju5TNtZqkLCLNO
+         n8XS/hBRvRxm2cIvdSnLJ3CLqZuBY2Lv+kzcUa+IBazxiK3p66hfKxujHKVRZueD5Nfo
+         rbjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVRKuolnP8lpVDWqF9eFH0kvFEYm8OdagbBWNh43xb5uSere5WAuz+huf2e8xpnDbZ68fqpp1cnv0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz718s+M3jpmnbGdZni67UKS+syof/qR3grNmuXCcb9YGVTOqw7
+	VuApZsOLMhX3sfIF+07xeMfxWkFcs3siq8jIgMaR1U9Wan9jhUhcRIMEhpTZx8mNA3ZbR7vtjc3
+	yyNSfupvSUEHyPtFTNrdyBeoMXvSX5v0=
+X-Gm-Gg: ASbGnctp8/LPRpE1BFvszXy0EgkWhqCL5TdircyX8jeYfjyKuKSvuTCh9yeblNMCirt
+	MGtwIhXj7t+CreV4RNrJi7USuEwQ+6lD5rpxRtwpSxKe9NcAGKtnmZGSBJr5Q0zt6Xq08xJIGC3
+	IJLqviWJLYGUhb22RXA96BDnkaLOc1+u7fxXPxYRARcML7lgZk7+sUmf6YTLgh9teEbKLX6Ayxz
+	H34jZtZzDRqyC6J3RPt184LuhPP60f/ULBM+YvhVR5jrNFV7ysz77f9/UH6AQdEvnEEU4FtF8lS
+	2dpyQy+R3/WAopSM8t9L3J+mE2TP1cmkp12KvtLt/+pjT/y6kANJh6btHSGqUIB1DYQd00c=
+X-Google-Smtp-Source: AGHT+IGMngDD2xi+lWZU8ugTjaML5M+Z+itTwCcU+b3Krr1DkJCQyxEvz5cWx/Fv67yxX/QQuUgc1pz0lQ3MyD74zbs=
+X-Received: by 2002:a17:907:3f22:b0:b72:a5bd:c585 with SMTP id
+ a640c23a62f3a-b79dc77d819mr155154266b.46.1764753422602; Wed, 03 Dec 2025
+ 01:17:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4a64c388-f141-4998-96e0-f6840d70f139@vaisala.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20251203050844.330-1-vulab@iscas.ac.cn>
+In-Reply-To: <20251203050844.330-1-vulab@iscas.ac.cn>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Wed, 3 Dec 2025 11:16:26 +0200
+X-Gm-Features: AWmQ_bmG9s4b7cWRUr-mXnXr6Vq5uHaWGLKrAPRh0GE1LEES_sdPFg38WA1dR0M
+Message-ID: <CAHp75Vf=GOsvXsCmbKzpiui2=jbetTkm9Yru9ZCp9T0+txMF-g@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: ad7606: Fix incorrect type for error return variable
+To: Haotian Zhang <vulab@iscas.ac.cn>
+Cc: lars@metafoo.de, michael.hennerich@analog.com, jic23@kernel.org, 
+	dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 03, 2025 at 09:28:23AM +0200, Tomas Melin wrote:
-> On 02/12/2025 17:01, Tomas Melin wrote:
-> > On 02/12/2025 16:11, Andy Shevchenko wrote:
-> >> On Tue, Dec 02, 2025 at 12:53:09PM +0000, Tomas Melin wrote:
+On Wed, Dec 3, 2025 at 7:09=E2=80=AFAM Haotian Zhang <vulab@iscas.ac.cn> wr=
+ote:
+>
+> The variable ret is declared as unsigned int but is used to store return
+> values from functions returning int, which may be negative error codes.
+>
+> Change ret from unsigned int to int.
 
-...
+> Fixes: 849cebf8dc67 ("iio: adc: ad7606: Add iio-backend support")
 
-> >>>  static const struct iio_chan_spec ad9434_channels[] = {
-> >>> -	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 12, 's'),
-> >>> +	{
-> >>> +		.type = IIO_VOLTAGE,
-> >>> +		.indexed = 1,
-> >>> +		.channel = 0,
-> >>> +		.info_mask_shared_by_type =
-> >>> +		BIT(IIO_CHAN_INFO_SCALE) |
-> >>> +		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> >>> +		BIT(IIO_CHAN_INFO_CALIBBIAS),
-> >>
-> >> Wrong indentation.
-> > 
-> > Can you please provide example of your preferred indentation for this
-> > particular case? This is used in several places around the code and
-> > seemed like one of the more readable.
-> 
-> Would this be the preferred indentation?
+Since it returns an int, it is just double conversion (however in the
+standard promotion from unsigned to signed is UB if I remember
+correctly). That said, I am not sure this justifies the Fixes tag, but
+I'm not against it.
 
-Almost LGTM, thanks.
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
-> {
-> 	.type = IIO_VOLTAGE,
-> 	.indexed = 1,
-> 	.channel = 0,
-> 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |
-> 				    BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> 				    BIT(IIO_CHAN_INFO_CALIBBIAS),
-> 	.info_mask_shared_by_type_available =
-> 		BIT(IIO_CHAN_INFO_SCALE) |
-> 		BIT(IIO_CHAN_INFO_CALIBBIAS),
-
-	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE) |
-					      BIT(IIO_CHAN_INFO_CALIBBIAS),
-
-It's still less than 80.
-
-_OR_
-
-rake the style consistent with the second one
-
-	.info_mask_shared_by_type =
-		BIT(IIO_CHAN_INFO_SCALE) |
-		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-		BIT(IIO_CHAN_INFO_CALIBBIAS),
-
-But I dunno which one is preferred. These two are fine with me.
-
-> 	.scan_index = 0,
-> 	.scan_type = {
-> 		.sign = 's',
-> 		.realbits = 12,
-> 		.storagebits = 16,
-> 	},
-> },
-
-> >>> +		.info_mask_shared_by_type_available =
-> >>> +		BIT(IIO_CHAN_INFO_SCALE) |
-> >>> +		BIT(IIO_CHAN_INFO_CALIBBIAS),
-> >>
-> >> Ditto.
-> >>
-> >>> +		.scan_index = 0,
-> >>> +		.scan_type = {
-> >>> +			.sign = 's',
-> >>> +			.realbits = 12,
-> >>> +			.storagebits = 16,
-> >>> +		},
-> >>> +	},
-> >>>  };
-
--- 
+--=20
 With Best Regards,
 Andy Shevchenko
-
-
 

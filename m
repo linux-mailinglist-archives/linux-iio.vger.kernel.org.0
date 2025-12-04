@@ -1,190 +1,128 @@
-Return-Path: <linux-iio+bounces-26735-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26736-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 878E8CA4093
-	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 15:35:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44086CA40E7
+	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 15:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8C8431103AD
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 14:28:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 021A8307DF1A
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 14:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B55342C99;
-	Thu,  4 Dec 2025 14:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1654344057;
+	Thu,  4 Dec 2025 14:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a9GptvhQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S6/rHqn9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC8F3054F2;
-	Thu,  4 Dec 2025 14:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A149C32A3DE
+	for <linux-iio@vger.kernel.org>; Thu,  4 Dec 2025 14:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764858529; cv=none; b=DYxPZ8v3oO6R3rga+bNDBqF7P5XRngXgl2Ljtr/0Dsx0j97lT9ouY1g/mfhQk/EI16Kuw/xiKp8Gv20L82vEPYGecyOtgBJaA+fPM24U0pb13Ar3aXcJ2ZNZX+f0A2yg0LpxLBOqDJC/Bxcbbjl6X8UAvVwFCYLBtWTyERgXeLE=
+	t=1764858954; cv=none; b=ZwUQ2YxVCqyquierl2eO7oOmrCcWI+dB4rrOC/vH9QwcBD1DDtcIDcwJ0yrZ6QTDajJMnaXqX0ykrIGFpHGAv8YgUxDcaiy/8Vpxz/e7SNoZRKxgfVzIgWb7CmFzWwUeJh/YEURKeEnQ5y9UfLeITWBnBrpGsNBJ4QOZvWCEV9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764858529; c=relaxed/simple;
-	bh=A7S0aqhNRp49+kPkpgOvDyswMTwDTAIZeVEntaKMiNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bMZZF4nunW2mJSt10bEZaypS5GrBNLKK1zrx1ZNvoX+BrCNa56dJrRiZq125APyIofC9JDF+E+oUYynRmlkKLFsFLn/rHOJn4FKWJ8n8GogZL4Uy5zHferaKbt24CTdobTdu4YGBfH8BKdK8aCbRWLPTanNjk7aGEiGfAdbnJGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a9GptvhQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BA4C4CEFB;
-	Thu,  4 Dec 2025 14:28:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764858528;
-	bh=A7S0aqhNRp49+kPkpgOvDyswMTwDTAIZeVEntaKMiNQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a9GptvhQzmrjIUAqXiGQVaXFPMJNpIA4Qs32xCzl131Ra7qCHiyRdEQsozNMtl1Ld
-	 NUQCKuQH+qKMmEk2IfpmR2tNKt5MdF77GT8GUOaJO5EPx2ZpOnJBAt8o21q9C9p1yi
-	 nP6zSys2/qtwTh/vrJ+6ncCJw2FEux1vriv+ePMLn68vWQTF3Q1IZpkRSLo9Sr55UY
-	 Ufs5Cc1zW8i6EVQa520w3g+9VIDoSQsSLQdmGsS//oju94/ju9Xz9DxNBDHPu+TX/1
-	 T5833m7y33jm87qabnz8O7cALxpnmAk++SUOJM8lg6i7EVU0xABXsYyCt9ki8LbOUF
-	 /yEgbRVcPHnTQ==
-Date: Thu, 4 Dec 2025 08:28:45 -0600
-From: Rob Herring <robh@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 5/6] dt-bindings: iio: adc: adi,ad7380: add spi-buses
- property
-Message-ID: <20251204142845.GA1303976-robh@kernel.org>
-References: <20251107-spi-add-multi-bus-support-v2-0-8a92693314d9@baylibre.com>
- <20251107-spi-add-multi-bus-support-v2-5-8a92693314d9@baylibre.com>
- <20251118155905.GB3236324-robh@kernel.org>
- <97c6b55d-9505-4091-8f0b-317dcbd70838@baylibre.com>
- <CAL_Jsq+ZZE0g424jE75xeCt2KY1ThPLqmbmOs0o_ddaJ8fOf3w@mail.gmail.com>
- <f2ac13fc-8f47-465e-8cef-e2e34bf41818@baylibre.com>
+	s=arc-20240116; t=1764858954; c=relaxed/simple;
+	bh=Hzz+mPxqldPjZ0UGeBzerpsI2NE9QERo1z4GmIcyRAs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=as143RV2RwnqBjyUn4q39GVGpqi/GXKIhuzNmzTWKDD4kqsXUscEpKc+NJW10c+Alb9OEID5/kKRq01kdJrgTFcI1WEjIN3P6B8Uo0r+zSySnpE29kwz/P6N01cXlin2uAmigyxBsO9nX/1NrCxHMkK54XxR9GS6CM2hDI3VczU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S6/rHqn9; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-477a1c28778so14312025e9.3
+        for <linux-iio@vger.kernel.org>; Thu, 04 Dec 2025 06:35:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764858951; x=1765463751; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1Ns2EjNq5op1uWpU/IDU/iN5rRJVwaStIACnAldV00Y=;
+        b=S6/rHqn9E6dMhZrOqG2IzpTGVHBQ19zK7R718LJs9Iz26CEyqyf7DL9awAwNoszkEA
+         tYQmXqr2ybPV6TBnMYYrL934rQNohrDGcEp9ZfZEAJfOzx+eP+IGrXTofOF5YSJAJ+wp
+         iUMxsLvZD75PVUeFe8YrAVeLKi0raOZAz1BiALhZ3F169EjPMZNP2w/W9UTB7wLP3LBt
+         3Cvg8sCEnPVkyOXfJa7vasrmBBKA4w+V46HbqsDO4UM4za8O2DO1njhhgvTAisiVluFR
+         OT31nZvEt4qmURA2hKYOyvGWeWGbYt8rzMBUE/Jm1VqLXK3pns3anS8VRZMrWjGzIQPb
+         BJXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764858951; x=1765463751;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Ns2EjNq5op1uWpU/IDU/iN5rRJVwaStIACnAldV00Y=;
+        b=qIEErmT6fXYDOxMsfWbj2k9NpV4bvE27VmLRzzqjDYaUg2GgGan02uZYa6TNkFYFCM
+         XtZugvuiY1TTamWzYpJJY02Ku9KNA1UxzbfW0KqkjMLweFngPls8AvUZ0BPdkUK6DEWr
+         lyADixYXeShhdtfif64Td+CFOtG+c5vq6xmquJIGiMrgnTJKn3LDR6FPv3voOeMplAkG
+         S+xe47oYddGUSv1Q15ufa6q+6NxSuoQlkXz8xrqVznq3Z9Y0RuniwiW+styJNWVdKPLO
+         h4QFXYKVLByECFlbfufyMunKEfW/hVc6PF9RsT996mAKhNDzzqUMNKL0kuEHxHmLRn74
+         tRgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXz1RNtejRlsf/nFCltUus6RZ7Tx1k6vdEG9uCLKAzOJ6x1X2q2TpKIvoRD8i7+uijbfz4+XPxu4uE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPhkhXsovFl2YaFn+m4C4NqROWYorF5Uo3Jc7MgCJ2hzemcEU/
+	r8XtuENCezcsZBVJZRRQTFZCxIxKlLtAP49CQFWI6/uNWAeZIYDq6rQ0
+X-Gm-Gg: ASbGncuLqx8KDaTd8mGbF/xWi/8jc9ir1QoSueCR1GSHqA+Qs0dXCeSXAqBR7HmPYw/
+	9CsMQQaIR9hVfu1THE5MO/VFXM46G8R8RxXCHCNqBYhxZDmYWDikCCJHly4FfEn3wvRy8sDyknR
+	41aj7TLOAYpiS8IZiteFRFGp/ujG8yRqnzbWrVTVh8WbmI4rr3ft7CfXPw+jkVYSC1TFR0pb1EX
+	w7AThCUzJYkxLIqLPv7i5oZQB7OdCDmAAY8mCkbsY+EC2grPD4oaNZmBGFNCbK1zK+NkcFelhAu
+	XGcgGqvO5dxI2xXtx6ttwro9dTCSHjkVBYFzmJgrmhx027rLV8auDJYFYMQtImmBfakbJFLee6b
+	MFESv3FC9Om6Td/AJUzT0/8FhEPrBUiTj6EiKUiwV4Ee103QdN7C+XZ3i9fnBxuA4vYT4pBigyN
+	PflWu/dz3fOqrcTIFJQoA=
+X-Google-Smtp-Source: AGHT+IG2seHuOWerjwXCdph63ZC8vZL+eIqVpQkFO/I0w+Uy389U61OmS2BgkM1euyc2+4rlvr7rWg==
+X-Received: by 2002:a05:600c:4e8a:b0:477:9986:5e6b with SMTP id 5b1f17b1804b1-4792f395439mr23688625e9.28.1764858950670;
+        Thu, 04 Dec 2025 06:35:50 -0800 (PST)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7d22249esm3624680f8f.25.2025.12.04.06.35.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 06:35:50 -0800 (PST)
+Message-ID: <77ca77847511e67066a150096a7af2fb84f1f25f.camel@gmail.com>
+Subject: Re: [PATCH RFC 0/6] iio: core: Introduce cleanup.h support for mode
+ locks
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Kurt Borja <kuurtb@gmail.com>, Andy Shevchenko
+ <andriy.shevchenko@intel.com>,  Lars-Peter Clausen	 <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,  Jonathan Cameron	
+ <jic23@kernel.org>, Benson Leung <bleung@chromium.org>, Antoniu Miclaus	
+ <antoniu.miclaus@analog.com>, Gwendal Grignou <gwendal@chromium.org>, 
+ Shrikant Raskar <raskar.shree97@gmail.com>, Per-Daniel Olsson
+ <perdaniel.olsson@axis.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Guenter Roeck
+	 <groeck@chromium.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	chrome-platform@lists.linux.dev
+Date: Thu, 04 Dec 2025 14:36:30 +0000
+In-Reply-To: <20251203-lock-impr-v1-0-b4a1fd639423@gmail.com>
+References: <20251203-lock-impr-v1-0-b4a1fd639423@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f2ac13fc-8f47-465e-8cef-e2e34bf41818@baylibre.com>
 
-On Wed, Nov 19, 2025 at 08:45:42AM -0600, David Lechner wrote:
-> On 11/19/25 7:18 AM, Rob Herring wrote:
-> > On Tue, Nov 18, 2025 at 11:46 AM David Lechner <dlechner@baylibre.com> wrote:
-> >>
-> >> On 11/18/25 9:59 AM, Rob Herring wrote:
-> >>> On Fri, Nov 07, 2025 at 02:52:51PM -0600, David Lechner wrote:
-> >>>> Add spi-buses property to describe how many SDO lines are wired up on
-> >>>> the ADC. These chips are simultaneous sampling ADCs and have one SDO
-> >>>> line per channel, either 2 or 4 total depending on the part number.
-> >>>>
-> >>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> >>>> ---
-> >>>>  .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 22 ++++++++++++++++++++++
-> >>>>  1 file changed, 22 insertions(+)
-> >>>>
-> >>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> >>>> index b91bfb16ed6bc6c605880f81050250d1ed9c307a..9ef46cdb047d45d088e0fbc345f58c5b09083385 100644
-> >>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> >>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
-> >>>> @@ -62,6 +62,10 @@ properties:
-> >>>>    spi-cpol: true
-> >>>>    spi-cpha: true
-> >>>>
-> >>>> +  spi-data-buses:
-> >>>> +    minItems: 1
-> >>>> +    maxItems: 4
-> >>>> +
-> >>>
-> >>> As the property is not required, what's the default?
-> >>
-> >> spi-perepheral-props.yaml defines:
-> >>
-> >>         default: [0]
-> >>
-> >> Do I need to repeat that here?
-> > 
-> > No. So that means you only use one channel and the others are not connected?
-> 
-> Correct.
-> 
-> > 
-> >>
-> >>>
-> >>>>    vcc-supply:
-> >>>>      description: A 3V to 3.6V supply that powers the chip.
-> >>>>
-> >>>> @@ -245,6 +249,22 @@ allOf:
-> >>>>        patternProperties:
-> >>>>          "^channel@[0-3]$": false
-> >>>>
-> >>>> +  # 2-channel chip can only have up to 2 buses
-> >>>> +  - if:
-> >>>> +      properties:
-> >>>> +        compatible:
-> >>>> +          enum:
-> >>>> +            - adi,ad7380
-> >>>> +            - adi,ad7381
-> >>>> +            - adi,ad7386
-> >>>> +            - adi,ad7387
-> >>>> +            - adi,ad7388
-> >>>> +            - adi,ad7389
-> >>>> +    then:
-> >>>> +      properties:
-> >>>> +        spi-data-buses:
-> >>>> +          maxItems: 2
-> >>>> +
-> >>>>  examples:
-> >>>>    - |
-> >>>>      #include <dt-bindings/interrupt-controller/irq.h>
-> >>>> @@ -260,6 +280,7 @@ examples:
-> >>>>              spi-cpol;
-> >>>>              spi-cpha;
-> >>>>              spi-max-frequency = <80000000>;
-> >>>> +            spi-data-buses = <0>, <1>;
-> >>>>
-> >>>>              interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
-> >>>>              interrupt-parent = <&gpio0>;
-> >>>> @@ -284,6 +305,7 @@ examples:
-> >>>>              spi-cpol;
-> >>>>              spi-cpha;
-> >>>>              spi-max-frequency = <80000000>;
-> >>>> +            spi-data-buses = <0>, <1>, <2>, <3>;
-> >>>
-> >>> An example that doesn't look like a 1 to 1 mapping would be better.
-> >>> Otherwise, it still looks to me like you could just define the bus
-> >>> width.
-> >>
-> >> I'm not sure we could do that on this chip since it doesn't have
-> >> the possibility of more than one line per channel.
-> > 
-> > That's a property of the SPI controller though, right?
-> > 
-> > If the above controller had 4 lines per channel/serializer, then you could have:
-> > 
-> > spi-data-buses = <0>, <4>, <8>, <12>;
-> 
-> Ah, I get what you mean now. The intention here though was that the
-> index numbers correspond to the data lane (channel/serializer), not
-> to individual lines. So the example you gave would mean that the chip
-> has at least 13 data lanes (rather than what I think your intention was
-> of saying it has at least 16 data wires). I did it that way because all
-> of the hardware I looked at didn't allow assigning arbitrary data lines
-> to arbitrary lanes/channels so it keeps things simpler and easier to match
-> to the actual hardware docs.
+On Wed, 2025-12-03 at 14:18 -0500, Kurt Borja wrote:
+> Hi,
+>=20
+> In a recent driver review discussion [1], Andy Shevchenko suggested we
+> add cleanup.h support for the lock API:
+>=20
+> 	iio_device_claim_{direct,buffer_mode}().
 
-But what happens if there is such h/w? Better to design things for 
-something we can visualize and not have to revisit this. Of course there 
-will be things we don't anticipate. (Who thought we'd have parallel 
-SPI...)
+We already went this patch and then reverted it. I guess before we did not =
+had
+ACQUIRE() and ACQUIRE_ERR() but I'm not sure that makes it much better. Loo=
+king at the
+last two patches on how we are handling the buffer mode stuff, I'm really n=
+ot convinced...
 
-I suppose if that's rare enough we can just have another property to map 
-pins to channels.
+Also, I have doubts sparse can keep up with the __cleanup stuff so I'm not =
+sure the
+annotations much make sense if we go down this path. Unless we want to use =
+both=C2=A0
+approaches which is also questionable.
 
-Rob
+- Nuno S=C3=A1
+
+
 

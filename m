@@ -1,126 +1,124 @@
-Return-Path: <linux-iio+bounces-26729-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26730-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04670CA3825
-	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 12:57:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0D1CA3936
+	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 13:16:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A7AA3085B39
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 11:55:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57254306B156
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 12:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CA4338F36;
-	Thu,  4 Dec 2025 11:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA27533ADB2;
+	Thu,  4 Dec 2025 12:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PtreamYp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HzQqqQb3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EEF3358CD
-	for <linux-iio@vger.kernel.org>; Thu,  4 Dec 2025 11:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A32C33508C;
+	Thu,  4 Dec 2025 12:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764849342; cv=none; b=s5JZB8OIMFTOAxXMGzg77/rln5cZt4nKoF9vFR26ttpFbB4vOCTjO2WFbZFIA5Ur5KWAE1nTKNWZP8OjleZHuCOFwYFYwhTwv1dxb38Q2uAO5kFOGNNIs40UDptlTTxPts5+Sx/mRkbLGiqPocQA0Amk9ji7021A6GemFP9KeaQ=
+	t=1764850490; cv=none; b=FLa2LjafjpzrOW9qVUvpK74s3NqDDCYwUNhfPUgWHp9l4R4lgn/1jdNuXd+J8M+HRzCgiMxKhdevz3pE8AwD4ojFMaUBJojkVsLjQlkgLTsEDrpwJptGZe7eITmaKF/zkhJ0MWPgtzB5lP5NAR5WvQ4Zf7PHyOUvbSzt6UC1rP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764849342; c=relaxed/simple;
-	bh=IB+CVqmpzh0kLvvZg/Dd3zycTMcxF2M6DkP6u4fOVc4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CkUObZ8HkAv9eST6OuyuoWl1Iz1iXDOUClSpG/S5UVPupRwfzNpKBzGJZXTyjlhgtRXRsG1lmMZ30iSTZ2hd+/kQS+Zm8v6E9tNOnquyIFpJ9biEGd3QcBjVRrTqV4ZdkTuX0XE2SNJrYisST2Hmot3eGgq5uNCpQ4RLq0HE3Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PtreamYp; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b7697e8b01aso150375366b.2
-        for <linux-iio@vger.kernel.org>; Thu, 04 Dec 2025 03:55:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764849339; x=1765454139; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8R7tvInWg0RlbJhmXHjG8LzzcBi8ppE7VEkw+ToZ9tQ=;
-        b=PtreamYpD2FtFMTBMfqG3DPUR4S8PaQGfxG6IHDZNkL7Zka5YyKUvkJOnHh0d+y2lR
-         gd87jspnEZhhbgfiilqctnFGh5aggfCbpfifZcn1ZF18E1Re/ZSJMudpoJLt1Bh8761L
-         BhKA9OYfJqlBcPowV8XSS33LzusJdkCj60hDGFVFmfrmmQGGnt/CUdVHhUjRBfjZcF4W
-         Y/a52b4/KUtMfJgTbZ9MtVOJdPZTCOaTHrRHougYYmgiHqYTCuhQg5fM5FtPOHpjXAoD
-         W4vjXEokPMxXAZhiD7eX23oznhygh8S6RAxcud4B+II+lTIcs6ip3YMk8gSFtxn99Ktc
-         1lWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764849339; x=1765454139;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8R7tvInWg0RlbJhmXHjG8LzzcBi8ppE7VEkw+ToZ9tQ=;
-        b=Nr12ZjM9EiqvgavEUlTqoTP/ftkQt8u+P1EKozMsqfeYueEq4PLRVM3w09ZJkqL62p
-         txxfOFypxro3fkrM4L6viYHvfQv24SXMYp/X+oM5Z1aa1lutCCVG2sp6lPXKUSAFymWQ
-         IbOS3YsJ6wjctasS5K+QANKqN++ugyN35rYYEInG/3UH1MPrKkAs2cseamGMkmdxipc2
-         wa/nIB72wHvWn+mgctYgYNuipM65jsMT9ds+RjKEdkNKVbSIB3C9fC6K7neygqErOas6
-         qxJtN0ToB48cJc0N/k4lZ+7kDNSAVldD/Uf3T+sondbnJ/YuMApZjItqyvmTpvl9qNQo
-         x4fA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2QdikMBEXEXRri6Rxh7feKpkm7r2niNmkyeQRmhu5GsG6o10zS6VPSfXWfjqFblUF/YI9MrpUZkQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU5zNvH44g68zBdJkwh9FeVCe3SZWio9XYXYm/HPbPk2OGnCPS
-	EoNsgYEhOrwVYvWx1ptlwfYvD8g9QvFmZk1CpkHx1wEiUi7noqxvCUl0sZwejlxdNXUefAmwhlg
-	KaBvk5w+Nj3J33DY9RsEMwdS02et95aA=
-X-Gm-Gg: ASbGncvh3SlhfNpZG/YvRF3D7TI8bBa0HkVDI+u9+Zum/oBBRO+EqEiktDzw1+s4ndR
-	L7kKWuRotMxsfcwaOfLkmJQ1KUKkur4ionFvor+UYqnoeMgkni0gNDl2EgflvoORxGYgFcAV2lH
-	TLMJ1fWCnlcNAgyANzksILaTk8HlivbNidVP5INLsKrc6MweoRuBzgdELoDgIob16Hc9AsWxVYR
-	CrjyB/xDSzmVIpifrLMh9kKruCYryh1/Spprx84R5rJ35G5WJhiI6n82oZTV9XjgnIVDqkG/JLA
-	32EYnzj16cV3sIq2TClWQBO3dA4uKf06T3WpEFPBuYxr/AJhuPcPn5FN+1kr3PsuiGFQvEk=
-X-Google-Smtp-Source: AGHT+IGqmBkS00spfGR2RzYpuTRVImjFbTu//ZjLI1id/ns/1YIVfh3WBqHOr48ILyc8yDd00ojeF+TbMO0jgFySg0k=
-X-Received: by 2002:a17:907:7ba1:b0:b73:8903:f4b9 with SMTP id
- a640c23a62f3a-b79dbeacd74mr630178266b.24.1764849339054; Thu, 04 Dec 2025
- 03:55:39 -0800 (PST)
+	s=arc-20240116; t=1764850490; c=relaxed/simple;
+	bh=MPq0zB2XEgEFHAyQydLvh1QQ6ccbl96AUloCUxPSaQ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZprmsgnMDyTIto8BO6ykhkmEc1+mbStINnQ6tQ/D3wMCS7ZXCqHkYFn9OleY0ts0zT8kSeTeg8y1BOeeuuDyQ0kh55rzsI2ttStZz/JuDWnNnR3lwvjopajA+3udq1kJZ2ZCBnWn6TIFhrBdyTxW3RZ9TKvW3G1ze4XP/ywwVV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HzQqqQb3; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764850490; x=1796386490;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MPq0zB2XEgEFHAyQydLvh1QQ6ccbl96AUloCUxPSaQ8=;
+  b=HzQqqQb3okszCJQkbeeKAjLmAPeq0TKKfFK9wGH9cwPtenp+7hV++exA
+   SRQRTzY4gG1/3HvAptN5/wjtEaWC55lJIELFgh0QwgNpZR4YYGfQ7wB3O
+   eCOK27AkiWS5re2sEoRQxpdYzM1bjIg/eQGxefQ+dHo2F49uIY7Pp8Ohe
+   Tv/VF7jGWlbeBFxCbBy37EET5gyNx6FTdHgJWJ1wNk6e31tLcyolinXA2
+   vhAt6XVCajMujRX2g2pfINVbhMKxiPx3wytJCTuw7/Je6fOyLiUz3eLsb
+   7m9Ym94KA1DkgxTkVhmhIIoz9IbHc7/Js5LKP8hiBa0Wmh1lXtwI0lKR1
+   g==;
+X-CSE-ConnectionGUID: RBcg+quXSgWK0L4k3+F04A==
+X-CSE-MsgGUID: RIcPCb3BTLOzWwq9mOCL/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="89515280"
+X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
+   d="scan'208";a="89515280"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2025 04:14:49 -0800
+X-CSE-ConnectionGUID: WMUx0yiSRXqVtyx0Pwj9mg==
+X-CSE-MsgGUID: /LA5He7LTY6/0yc0CxyUOQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
+   d="scan'208";a="199925103"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.222])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2025 04:14:45 -0800
+Date: Thu, 4 Dec 2025 14:14:43 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Tomas Melin <tomas.melin@vaisala.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: ad9467: add support for ad9211
+Message-ID: <aTF7M7NAFJM1OpWl@smile.fi.intel.com>
+References: <20251204-add-ad9211-v2-0-a1561f977ee5@vaisala.com>
+ <20251204-add-ad9211-v2-2-a1561f977ee5@vaisala.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
- <20251203-iio-dmabuf-improvs-v1-6-0e4907ce7322@analog.com>
- <aTBl9U1KS__Lkfbt@smile.fi.intel.com> <aTBmT605yRjGtTR1@smile.fi.intel.com> <9f42333103ad4a0703f557aad7a2b3954ac55fa8.camel@gmail.com>
-In-Reply-To: <9f42333103ad4a0703f557aad7a2b3954ac55fa8.camel@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 4 Dec 2025 13:55:02 +0200
-X-Gm-Features: AWmQ_bkrHpe1J2Uex-RdyIL3zpLIf5LvqpTW4FbsVrrOTlJI45sDg52v98oO9LU
-Message-ID: <CAHp75VcUpHiu5J2OPYbUn2sxkStZQ063o6YGC5+AqGNKoyA=cg@mail.gmail.com>
-Subject: Re: [PATCH 6/6] iio: buffer-dmaengine: Fix coding style complains
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, nuno.sa@analog.com, 
-	linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251204-add-ad9211-v2-2-a1561f977ee5@vaisala.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Dec 4, 2025 at 1:20=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.com>=
- wrote:
-> On Wed, 2025-12-03 at 18:33 +0200, Andy Shevchenko wrote:
-> > On Wed, Dec 03, 2025 at 06:31:53PM +0200, Andy Shevchenko wrote:
-> > > On Wed, Dec 03, 2025 at 03:11:41PM +0000, Nuno S=C3=A1 via B4 Relay w=
-rote:
+On Thu, Dec 04, 2025 at 08:01:04AM +0000, Tomas Melin wrote:
+> The AD9211 is a 10-bit monolithic sampling analog-to-digital
+> converter optimized for high performance, low power, and ease
+> of use. The product operates at up to a 300 MSPS conversion
+> rate and is optimized for outstanding dynamic performance
+> in wideband carrier and broadband systems.
+> 
+> The scale table implemented here is not an exact match with the
+> datasheet as the table presented there is missing some information.
+> The reference presents these values as being linear,
+> but that does not add up. There is information missing in the table.
+> Implemented scale table matches values at the middle and at the ends,
+> smoothing the curve towards middle and end.
+> Impact on end result from deviation in scale factor affects only software
+> using it for scaling. All the possible hw-settings are also available with
+> this implementation.
+
+
+Some amendment in the headers would be nice to have,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 
 ...
 
-> > > > Just making sure checkpatch is happy. No functional change intended=
-.
-> > >
-> > > ...but trigger the fighters for 80 rule!
-> >
-> > I believe
-> >
-> >       scripts/checkpatch.pl --strict ...
-> >
-> > should catch this up.
->
-> Don't think so. I do have b4 configured so that --check runs checkpatch w=
-ith --strict.
->
-> Checking patches using:
->   scripts/checkpatch.pl -q --terse --strict --no-summary --mailback --sho=
-wfile
++ array_size.h
 
-Hmm... okay, then I have (had) a wrong impression.
+>  #include <linux/delay.h>
+>  #include <linux/gpio/consumer.h>
+>  #include <linux/of.h>
+> +#include <linux/units.h>
+>  
 
+You can drop one blank line here.
 
---=20
+-- 
 With Best Regards,
 Andy Shevchenko
+
+
 

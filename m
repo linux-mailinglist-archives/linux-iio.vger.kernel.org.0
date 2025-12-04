@@ -1,135 +1,126 @@
-Return-Path: <linux-iio+bounces-26728-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26729-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F02ACA36D0
-	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 12:24:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04670CA3825
+	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 12:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 91516300D8FA
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 11:24:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A7AA3085B39
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 11:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F73533EB15;
-	Thu,  4 Dec 2025 11:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CA4338F36;
+	Thu,  4 Dec 2025 11:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YrkzkOP+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PtreamYp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA5D33EB10
-	for <linux-iio@vger.kernel.org>; Thu,  4 Dec 2025 11:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EEF3358CD
+	for <linux-iio@vger.kernel.org>; Thu,  4 Dec 2025 11:55:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764847475; cv=none; b=d6QVvgzRVbWCIh+F7EXpEdZfEnnMgijf7FKoBDZcWWVmGCc2qthJWFWRLqGVWbPvHp8RTnESgrc46ezMM+69Qv3NwAnghjIyRSCn7WpwkImDSSbhrn/bQHKLI+Oqdx5fyBCnypmmwqUzrbUnbaJGGh1rtfyfh9iijqd9gOYpFJk=
+	t=1764849342; cv=none; b=s5JZB8OIMFTOAxXMGzg77/rln5cZt4nKoF9vFR26ttpFbB4vOCTjO2WFbZFIA5Ur5KWAE1nTKNWZP8OjleZHuCOFwYFYwhTwv1dxb38Q2uAO5kFOGNNIs40UDptlTTxPts5+Sx/mRkbLGiqPocQA0Amk9ji7021A6GemFP9KeaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764847475; c=relaxed/simple;
-	bh=NH5gE8Ndk3TwErT/rG1HuBv7sWfd8MhpxgEZMMH+Quc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ff1tBM+ULwZiKU7g6J3kYVDLUpxCuB7WNh8XRoUeGxbgjnbiPSzb/yBdrAFK5elfqMc434NANrbk4QAscteQcwjdtLPPArUxSxhi5049tKFyY37sLY93jLO2NnjxwXEt3WmRr5kLLz6fsbjDe5soOiW7+MnkK0UNd137N+uw9mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YrkzkOP+; arc=none smtp.client-ip=209.85.221.43
+	s=arc-20240116; t=1764849342; c=relaxed/simple;
+	bh=IB+CVqmpzh0kLvvZg/Dd3zycTMcxF2M6DkP6u4fOVc4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CkUObZ8HkAv9eST6OuyuoWl1Iz1iXDOUClSpG/S5UVPupRwfzNpKBzGJZXTyjlhgtRXRsG1lmMZ30iSTZ2hd+/kQS+Zm8v6E9tNOnquyIFpJ9biEGd3QcBjVRrTqV4ZdkTuX0XE2SNJrYisST2Hmot3eGgq5uNCpQ4RLq0HE3Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PtreamYp; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42e2e239ec0so571206f8f.0
-        for <linux-iio@vger.kernel.org>; Thu, 04 Dec 2025 03:24:33 -0800 (PST)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b7697e8b01aso150375366b.2
+        for <linux-iio@vger.kernel.org>; Thu, 04 Dec 2025 03:55:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764847472; x=1765452272; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wypQGdn5H+5kjaeZkD663jT2abr6XmzSQ5E2XOZo8Gs=;
-        b=YrkzkOP+3PoZfg0MQLrdkmhC479wYRqmlYjONUXIvCdsq47jjmRRircNvQ+Q//2MuU
-         0AY9ezhj02YAuX1ZlVqjY+5mdZq27ha0RueEiVSSarT0aqB8IPXRjnLm+1DOChqD4mgB
-         /zwwTuKlLM0fyHnOE9i+jXHhCFAgZLbCDrKjxDYg5qvNE40qF2xQtwDGZIzybr04JzOj
-         Lj4ZHKwBSUJHotUrpcHJzkU/aB9fxdxGgpotfy53OQtpLJ5I9DB17Tj8DmlZqpMW7D/k
-         CDJYISPVJiu1L4zOP56RMSpmegbfZ0cf7vNDnoZSH2+hUvSjp4e36E2IwkcQjiLDWa30
-         pOyQ==
+        d=gmail.com; s=20230601; t=1764849339; x=1765454139; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8R7tvInWg0RlbJhmXHjG8LzzcBi8ppE7VEkw+ToZ9tQ=;
+        b=PtreamYpD2FtFMTBMfqG3DPUR4S8PaQGfxG6IHDZNkL7Zka5YyKUvkJOnHh0d+y2lR
+         gd87jspnEZhhbgfiilqctnFGh5aggfCbpfifZcn1ZF18E1Re/ZSJMudpoJLt1Bh8761L
+         BhKA9OYfJqlBcPowV8XSS33LzusJdkCj60hDGFVFmfrmmQGGnt/CUdVHhUjRBfjZcF4W
+         Y/a52b4/KUtMfJgTbZ9MtVOJdPZTCOaTHrRHougYYmgiHqYTCuhQg5fM5FtPOHpjXAoD
+         W4vjXEokPMxXAZhiD7eX23oznhygh8S6RAxcud4B+II+lTIcs6ip3YMk8gSFtxn99Ktc
+         1lWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764847472; x=1765452272;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wypQGdn5H+5kjaeZkD663jT2abr6XmzSQ5E2XOZo8Gs=;
-        b=k1gj93s/FKACjG1MVqcWJyNVlDcgUU8u9KWC6faqeGpePek3MNxz1ww7LfFOm0uQcf
-         UqH0zWLWtsr4JsI2bw71BZdHT8wC7zxqOgqFpyPJWKUpsObCZw+Fmic8newUgZwKvvF1
-         Rw3sPGbwDplmzyU2Qoxg6QMA2Ps9fxxS7m+UsAO1BfI0D2IGERMSvPFz3jSYjeR8NPJq
-         6pi6pTKTIl9TIlFpRwD9m3nM7Z9xkvgJkvfdcxj28mTTuDyYaRbCaw/4E1mhgK1kCLWl
-         8dfrVS06RRjgqMYa2Kc2ZPoaBq3i7PZZpCWAikZSoEQb5mfl5B5eAjnZeehdNXLjC8YK
-         txeg==
-X-Gm-Message-State: AOJu0YwzXlA64Eu3Ta2GA5ZkPN9xA1UrnG+vsmCQnf59GFCVxVziNlZr
-	QeceepsKBRL2qN0169l1ZOOl3HOMigt+fqoYmiWEC/kWEhVtan694xDk
-X-Gm-Gg: ASbGncvauKuVXL6EQBQZYVgiq0LgtLaJYB7mbk93aJ4SDbCHCX6DQaC0Lcq/7aykCfl
-	AkQ4RJ83XrMXicmU4kzywfBpnZkDYY29+g7cl1e54gB5NEDPuHzA9NUmDx9zNDoxrSJuQKci1bx
-	OH8Q0m64DcW8Fgo4ixX6PNN32LmXGIOZDKmDW4KV5/E7dk8bgQwWJ8vwz/A8E7YFFRRNcYAXZ7u
-	r/VW/8A2BwJatbPGjA4XWfyOPcZTsqLle6nJyrY/1YHWuCPzPxt31mBIFJBT9PbClR7iQYb0GP1
-	IGMjZk5kuXOogwGOQtVx8w6IGs5VBhp86qKecibZ2ZVr3fcOfL2bSAXSSQpNCMxU2O0SXrPQCzv
-	E7VhHkPNBTg4bZRtSAEl+BJAwHpJt7g1p2Z2mv2H5WTkOSOFPT0lYTIJhe3iWqH7jlJxU99FLlr
-	SNYraDMMQdiJ4dpMsiWcs=
-X-Google-Smtp-Source: AGHT+IHESwAdCER78uO8Lgwx/GXnEYyUU+519Fj2iZNtB92XTPhQ8RqBg1Epir6nMtOONvD6jDy/uA==
-X-Received: by 2002:a05:6000:4383:b0:429:d350:802d with SMTP id ffacd0b85a97d-42f731a30e3mr6030403f8f.45.1764847471710;
-        Thu, 04 Dec 2025 03:24:31 -0800 (PST)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7d331092sm2670073f8f.30.2025.12.04.03.24.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Dec 2025 03:24:31 -0800 (PST)
-Message-ID: <0824e2b0d4c29de9f4bba37dbf60dbba97bcd789.camel@gmail.com>
-Subject: Re: [PATCH 4/6] iio: buffer-dma: Fix coding style complains
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>, nuno.sa@analog.com
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, David
- Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
-Date: Thu, 04 Dec 2025 11:25:12 +0000
-In-Reply-To: <aTBlg2rW0rrjHh73@smile.fi.intel.com>
-References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
-	 <20251203-iio-dmabuf-improvs-v1-4-0e4907ce7322@analog.com>
-	 <aTBlg2rW0rrjHh73@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+        d=1e100.net; s=20230601; t=1764849339; x=1765454139;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8R7tvInWg0RlbJhmXHjG8LzzcBi8ppE7VEkw+ToZ9tQ=;
+        b=Nr12ZjM9EiqvgavEUlTqoTP/ftkQt8u+P1EKozMsqfeYueEq4PLRVM3w09ZJkqL62p
+         txxfOFypxro3fkrM4L6viYHvfQv24SXMYp/X+oM5Z1aa1lutCCVG2sp6lPXKUSAFymWQ
+         IbOS3YsJ6wjctasS5K+QANKqN++ugyN35rYYEInG/3UH1MPrKkAs2cseamGMkmdxipc2
+         wa/nIB72wHvWn+mgctYgYNuipM65jsMT9ds+RjKEdkNKVbSIB3C9fC6K7neygqErOas6
+         qxJtN0ToB48cJc0N/k4lZ+7kDNSAVldD/Uf3T+sondbnJ/YuMApZjItqyvmTpvl9qNQo
+         x4fA==
+X-Forwarded-Encrypted: i=1; AJvYcCW2QdikMBEXEXRri6Rxh7feKpkm7r2niNmkyeQRmhu5GsG6o10zS6VPSfXWfjqFblUF/YI9MrpUZkQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwU5zNvH44g68zBdJkwh9FeVCe3SZWio9XYXYm/HPbPk2OGnCPS
+	EoNsgYEhOrwVYvWx1ptlwfYvD8g9QvFmZk1CpkHx1wEiUi7noqxvCUl0sZwejlxdNXUefAmwhlg
+	KaBvk5w+Nj3J33DY9RsEMwdS02et95aA=
+X-Gm-Gg: ASbGncvh3SlhfNpZG/YvRF3D7TI8bBa0HkVDI+u9+Zum/oBBRO+EqEiktDzw1+s4ndR
+	L7kKWuRotMxsfcwaOfLkmJQ1KUKkur4ionFvor+UYqnoeMgkni0gNDl2EgflvoORxGYgFcAV2lH
+	TLMJ1fWCnlcNAgyANzksILaTk8HlivbNidVP5INLsKrc6MweoRuBzgdELoDgIob16Hc9AsWxVYR
+	CrjyB/xDSzmVIpifrLMh9kKruCYryh1/Spprx84R5rJ35G5WJhiI6n82oZTV9XjgnIVDqkG/JLA
+	32EYnzj16cV3sIq2TClWQBO3dA4uKf06T3WpEFPBuYxr/AJhuPcPn5FN+1kr3PsuiGFQvEk=
+X-Google-Smtp-Source: AGHT+IGqmBkS00spfGR2RzYpuTRVImjFbTu//ZjLI1id/ns/1YIVfh3WBqHOr48ILyc8yDd00ojeF+TbMO0jgFySg0k=
+X-Received: by 2002:a17:907:7ba1:b0:b73:8903:f4b9 with SMTP id
+ a640c23a62f3a-b79dbeacd74mr630178266b.24.1764849339054; Thu, 04 Dec 2025
+ 03:55:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
+ <20251203-iio-dmabuf-improvs-v1-6-0e4907ce7322@analog.com>
+ <aTBl9U1KS__Lkfbt@smile.fi.intel.com> <aTBmT605yRjGtTR1@smile.fi.intel.com> <9f42333103ad4a0703f557aad7a2b3954ac55fa8.camel@gmail.com>
+In-Reply-To: <9f42333103ad4a0703f557aad7a2b3954ac55fa8.camel@gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 4 Dec 2025 13:55:02 +0200
+X-Gm-Features: AWmQ_bkrHpe1J2Uex-RdyIL3zpLIf5LvqpTW4FbsVrrOTlJI45sDg52v98oO9LU
+Message-ID: <CAHp75VcUpHiu5J2OPYbUn2sxkStZQ063o6YGC5+AqGNKoyA=cg@mail.gmail.com>
+Subject: Re: [PATCH 6/6] iio: buffer-dmaengine: Fix coding style complains
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, nuno.sa@analog.com, 
+	linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2025-12-03 at 18:29 +0200, Andy Shevchenko wrote:
-> On Wed, Dec 03, 2025 at 03:11:39PM +0000, Nuno S=C3=A1 via B4 Relay wrote=
-:
->=20
-> > Just making sure checkpatch is happy. No functional change intended.
->=20
-> ...
->=20
-> > -static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(
-> > -	struct iio_dma_buffer_queue *queue, size_t size, bool fileio)
-> > +static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(struct =
-iio_dma_buffer_queue
-> > *queue,
-> > +							=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 size_t size,
-> > +							=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool fileio)
->=20
-> What about 80 rule?
->=20
+On Thu, Dec 4, 2025 at 1:20=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.com>=
+ wrote:
+> On Wed, 2025-12-03 at 18:33 +0200, Andy Shevchenko wrote:
+> > On Wed, Dec 03, 2025 at 06:31:53PM +0200, Andy Shevchenko wrote:
+> > > On Wed, Dec 03, 2025 at 03:11:41PM +0000, Nuno S=C3=A1 via B4 Relay w=
+rote:
 
-This falls in the bucket where readability is hurt. At least IMHO, so that'=
-s why I
-did it this way. If Jonathan disagrees, I'll of course change it to the bel=
-ow style.
+...
 
+> > > > Just making sure checkpatch is happy. No functional change intended=
+.
+> > >
+> > > ...but trigger the fighters for 80 rule!
+> >
+> > I believe
+> >
+> >       scripts/checkpatch.pl --strict ...
+> >
+> > should catch this up.
+>
+> Don't think so. I do have b4 configured so that --check runs checkpatch w=
+ith --strict.
+>
+> Checking patches using:
+>   scripts/checkpatch.pl -q --terse --strict --no-summary --mailback --sho=
+wfile
 
-> static struct iio_dma_buffer_block *
-> iio_dma_buffer_alloc_block(struct iio_dma_buffer_queue *queue, size_t siz=
-e,
-> 			=C2=A0=C2=A0 bool fileio)
->=20
-> (And personally I think that in 2025 we should grow up and forget about t=
-his
-> =C2=A0and move on to 100, but... not a maintainer here :-)
-
-FWIW, Agreed! (And that is what I do for all the out of tree stuff :))
-
-- Nuno S=C3=A1
+Hmm... okay, then I have (had) a wrong impression.
 
 
-
+--=20
+With Best Regards,
+Andy Shevchenko
 

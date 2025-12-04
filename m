@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-26751-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26752-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B57CA4AC4
-	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 18:08:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 655A7CA4B9D
+	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 18:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D1FBC300B164
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 17:07:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D85B03005D25
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 17:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215642D8387;
-	Thu,  4 Dec 2025 17:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1EF2FF17B;
+	Thu,  4 Dec 2025 17:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fao3rDKO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EM3+o/sW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C73F285050
-	for <linux-iio@vger.kernel.org>; Thu,  4 Dec 2025 17:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DB72F8BDC
+	for <linux-iio@vger.kernel.org>; Thu,  4 Dec 2025 17:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764868069; cv=none; b=S7LN9/LAYlomi+z9/lhuQ/pxCu7aSlVcLNTgOPxQQuCAreI1b3n9AYhHBDljZHaPtu05LkZILncDXBZZ5+PuS4TzTaKyD1JBfw6ep6B6/Wgb5JVaERTfxTmGe0O0+1vEdTsTzDuyPyUx3nKl3wViKDST+V7KNgD13zXzzfY0BWc=
+	t=1764868718; cv=none; b=C3HCcjOp0qed1doSsWJIbpdFCkQIQu3mok3KOaQJrd9SbCgdAmjusi2WWAjljQF9VFjTTK30XIcOeEYRBjm31T+E84r2r82BVV02DTQ32F/PNSDSuaAqfOvs43o+FhuWk8YfXfrdTJsOhtDGFR89cAInto09vxQodaca4Nplxxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764868069; c=relaxed/simple;
-	bh=3ngML/Jq7dnnl6CYo/sspTAs/M19EnvjGfsPsQ9/WIY=;
+	s=arc-20240116; t=1764868718; c=relaxed/simple;
+	bh=w5RO6277pwEdoRV/iCWPDDTJbBvxzyRZV8oInYrd1Ks=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=MMdu5XhV9d8L7lr+SzObreFeJofWhderp09Rb9BacCABjZOATvWmuYvYa9e6gLRPZrwSetb2Fpkt6LJYtp4zbmzOb4RNBFK7i+XOx45htE5IXosjXuKZsseT+wY0hDDcuKi661UCja1RX2LXYj0HsmIRQWPY0EljDSryV9OOCjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fao3rDKO; arc=none smtp.client-ip=209.85.128.177
+	 References:In-Reply-To; b=LURQRKJO6tQERFdK3FH0IJwRqH3am60rdvpzt+zUL3XDgowDaSuH3h3x6CkZdUnpfSWGy+vJFAXa3xPvqcMZvCAp0b/OyWbg2GdJS8V0cQEXYXZEJpVMVqquFmKVlpMDYHcweU6NiZRUyBmADBjMky0ymODPxku+Hja7ketTkKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EM3+o/sW; arc=none smtp.client-ip=74.125.224.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-78ac9f30833so10348117b3.0
-        for <linux-iio@vger.kernel.org>; Thu, 04 Dec 2025 09:07:47 -0800 (PST)
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6432842cafdso1032902d50.2
+        for <linux-iio@vger.kernel.org>; Thu, 04 Dec 2025 09:18:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764868066; x=1765472866; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764868714; x=1765473514; darn=vger.kernel.org;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dodiYRijYOTY+6wzJ7p3kpwOxeuNqeJeiUwFQNKlPr0=;
-        b=fao3rDKO4dlwqD2ZC7sxk1iBH9Ub7EPNfIj0lG634drib5fugIxrmLjxE296FTJzaF
-         m0h6P4SFNpRBmFMS7H6/PNPSpx5Wn9R+toIdZFisBWUTh869UduJfxaLFVaVLvKjETfz
-         8xBSZpXRAm1Jpl9HVdrjhaTYPsGvize08PK7767aUdxzntNrzlwv06N3kV96ZmCTr2kk
-         5rY0/A9io1RGfUhxyilNkoljfxU5t0t/2p13mbtT2adRfpCf+CAQjIroXbLg8I6kjbac
-         GZIFYDtQ/BQPRLzvDxNkI2gZYdgOXo6jRWnsOcTLorp0l6sU7IFbJHyUa34uuT3cEoI3
-         QX1w==
+        bh=ivAIPIWdEQpOqShwhFKKKcoQuY7GbJruOniXmCZT+v4=;
+        b=EM3+o/sWuolwQSvrsBLdrRDywsuDMVVObAZtFG3wx18Agi63TSsxFXEK2qKZjiYXAp
+         mAAS64aQYaKT1q/m80jdVdtKgOhARVE6mtK76unjujs9BoLl47rIb2KIM+7cha9+QeH4
+         BC0Iy/b3bUaMJoIbYT3dywLwtcv0pmejmiZs8rkI0LeawHxGfX/f4J3e/8vg9tMrua73
+         zGp2lCk99yAlYLm9UgNXDWMeF30jQ1FPhc+IzOJWkQCdMphgp4mTK+z51G3u9JxkMsiq
+         +diDWNIsz6zcxdM5jr3D+tT3bbbL7cvRhIYsUQ4PawLbMKtWDQ3PlUGVU8Q+joNBPCoH
+         s7lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764868066; x=1765472866;
+        d=1e100.net; s=20230601; t=1764868714; x=1765473514;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=dodiYRijYOTY+6wzJ7p3kpwOxeuNqeJeiUwFQNKlPr0=;
-        b=tha7+Lf2xGSKFTDWC+EA0EaK54uo/J3uEW1fKz0F6y/34Eb3AmoEcMKm8wT/FAKh2P
-         BDJqHkEDKHzR/anzza6tP1r2/rcQoKS6eEXG38ab+uhYsEcYB4S5uveOsibCsN+3a5PV
-         yE8mZX1fhpem2GuI6PlYsxDNb/r1dCmctJWg7BSGjDJtMWeJ4uqwTN5YJQtX3RDXZdYF
-         a5+VBmFcSdCcJw6TufNtyk/B6BIQMzS947PFcNrUGutBtSGAHrgZmZ2xmMcT7MTL7njn
-         VwNRmI+lnd+35n5GikypuHETS+7zEBrh47CICswpWbz3tWCLWcoF/2rjrJPhEZBR8WsL
-         aeHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVx+VP+UqreRZLmdMsQmc6eSw4/3TYx3clFLZZLA1IAzki2szSl6Bf9+6QZiRErVFcynD1JL8mzGF8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyL8DnsK9vigCs8TLmmnrBiUwKt45ZwhxW8t4X+M4zlyH0uukV1
-	Zau9Bv1vDh9jMTf2l5hoYssWc4b0OWhHubhfoLNsfmL9phHOsrV5NV5A
-X-Gm-Gg: ASbGncvX5LCMHTbTAdLV67sc3cvb4L0VPvYK6hOMoz1eJY54uouLqF9XNF6n0BslXxN
-	66ukWShZi7iPe/+5+p920Jn0pJd4+CvEEq5RSZ7vPo/XJ9JRr4MNwAeEka6t6KQQEDW0VGD7A6Z
-	4Ko/vqNEn+n1POb3w+sM2zIro1s9vB90FXawjI4oZVV0pY5I8gUe5wQIVzbuelrAHo7mfYY4cNk
-	VNGEmzGND16Y0SEcBzaTEwstwbKMOC85YTRiY7ZCmESQHqaWHfVrLkT/CcFuIqiHMH0VZRN+CSA
-	knXyc8UWWIBsTwHegimzQKATByTDnXmIoaTkjkWCOJlInIMK/DIgDZ1qURoaH9B0dglCXp5Ords
-	1xKNYnDW7ipkPlc1F7eD64ga2GrlWUG/GX8ZH3MQp2l5usbzn2V21E0weZvYUHGA00w7Ph30U36
-	rRLv6tJA==
-X-Google-Smtp-Source: AGHT+IEex4E/v8syAVkEMByk59a7h0uIcRlr5mbQVnRjs06eIXWWVY8PiZvvFzioBr5dCBQlvKANaw==
-X-Received: by 2002:a05:690e:250f:20b0:644:444f:3bb7 with SMTP id 956f58d0204a3-644444f40ccmr429565d50.5.1764868066048;
-        Thu, 04 Dec 2025 09:07:46 -0800 (PST)
+        bh=ivAIPIWdEQpOqShwhFKKKcoQuY7GbJruOniXmCZT+v4=;
+        b=APGbOzJ9NC45763dgW9w50KbKuOoT63IlyCfzVL8Wuz2ciWNqiZWlsfdYmdxrN/L3v
+         m5gQc772/tTlN62tb2GLo3wk0dlUmn/a5w7PW50r6KnoD9K3EoE9b0sURId/7DTQwdp5
+         6UJWOSeGi6YJZG0CvdJ4RIyiZbERzqbL7wVCtP5M7R8l0E9jIJdgNjEymJILSNfMRAxv
+         SA0tbNYVkdoSryGrS70tpTpu+DCCjGFfA/Pck3BNf8yF7zEoTs223siw+TG0I5O/3lD5
+         xiCrMLxu9dQ7RNPpN4KxPme/Y2ipDXLtLUGP8oAVFA+s0HFh4qOJtoDTr6uITgp+7OHp
+         14Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCUl0UIncmh4XUApMMMjaetmMKmxahMdNOhMDum2QcsicemVIesRO+ndB4FdUqXLuok1qzEkeTAR1bk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB5hvyd0BfRCgwkVpt9TpuMKiP1Q/eRJfZaL7FDp3BZxb0NPS6
+	xDARLz0IIRZqYqw8FjBPvQYdMT1dk5nYM3EHQj1WZJdrSA+rKjVJSCIA
+X-Gm-Gg: ASbGncvCt+Hr0QXotAzmtv+UZGgxVkCnzHAQMEyUEqQbIvqd9XMYAicn4wzpx6LFjUb
+	9PgVNQ0rRTjVl9MJjhA/hdfFWQ/coM785Xxi6nCr8xtsRjGOjMJ2xpzxJ52buuY5uo6axRX4QNZ
+	OT3vtKs5rfstKVe7b5YRxKI5O3YaX30KAjX2TQ/7Gl6AUl/24484XLE5xHzwKYMi9AAuHVG+vpu
+	zVHG7fOCbVrqbIsV043+NwfJzyt1fOqtlR+bs9LeVDOaaIa4YdbhhtTv0fKSnRURMkZ1G58Oau5
+	zzJ77dvWjztLxx0iZbVChR9VNzxTBQxf5W2ilotwo7jrWuLLDMayLcSFyT98Zb+K2z2u0WlUkwU
+	ldkb9v+GSwqbhWcPCPFtODiG+xZTVprAH2dlslZ4x01xsQzfcwjfBtHeN+rOGAjq7O2bo1baIml
+	CC02c3Uw==
+X-Google-Smtp-Source: AGHT+IFU4LjIIZEnMPIZfgYISjzHy2WuWRbeXPAd/C/KtX4PeTBWdjMsBm52g/3NTmdJv1w+Mg+DCQ==
+X-Received: by 2002:a05:690e:e8d:b0:640:dda6:e957 with SMTP id 956f58d0204a3-64436ff2772mr5243894d50.36.1764868714036;
+        Thu, 04 Dec 2025 09:18:34 -0800 (PST)
 Received: from localhost ([2800:bf0:4580:3149:7d4:54b1:c444:6f2f])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6443f2abfd4sm840396d50.5.2025.12.04.09.07.43
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78c1b78e5f5sm7330197b3.41.2025.12.04.09.18.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Dec 2025 09:07:45 -0800 (PST)
+        Thu, 04 Dec 2025 09:18:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -80,14 +80,14 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 04 Dec 2025 12:07:43 -0500
-Message-Id: <DEPLIJFBZQ36.20XX5DCMCJVB3@gmail.com>
+Date: Thu, 04 Dec 2025 12:18:31 -0500
+Message-Id: <DEPLQT84HBAO.2GAY5BHP05HNL@gmail.com>
 Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
  <andy@kernel.org>, "Guenter Roeck" <groeck@chromium.org>, "Jonathan
  Cameron" <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, <chrome-platform@lists.linux.dev>
-Subject: Re: [PATCH RFC 5/6] iio: health: max30102: Use cleanup.h for IIO
- locks
+Subject: Re: [PATCH RFC 3/6] iio: core: Add cleanup.h support for
+ iio_device_claim_*()
 From: "Kurt Borja" <kuurtb@gmail.com>
 To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
  <kuurtb@gmail.com>, "Andy Shevchenko" <andriy.shevchenko@intel.com>,
@@ -99,125 +99,170 @@ To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
  <perdaniel.olsson@axis.com>
 X-Mailer: aerc 0.21.0-0-g5549850facc2
 References: <20251203-lock-impr-v1-0-b4a1fd639423@gmail.com>
- <20251203-lock-impr-v1-5-b4a1fd639423@gmail.com>
- <f96694db-2ad5-46d3-a380-cba3eaa2de2f@baylibre.com>
-In-Reply-To: <f96694db-2ad5-46d3-a380-cba3eaa2de2f@baylibre.com>
+ <20251203-lock-impr-v1-3-b4a1fd639423@gmail.com>
+ <3b80f8f3-c435-49f8-8c55-42568215bf0b@baylibre.com>
+ <bf1c82f7-da25-47b6-846d-9f8427ee5790@baylibre.com>
+In-Reply-To: <bf1c82f7-da25-47b6-846d-9f8427ee5790@baylibre.com>
 
-On Wed Dec 3, 2025 at 4:52 PM -05, David Lechner wrote:
-> On 12/3/25 1:18 PM, Kurt Borja wrote:
->> Simplify and drop "hacky" busy-waiting code in max30102_read_raw() by
->> using scoped_guard().
+On Wed Dec 3, 2025 at 5:34 PM -05, David Lechner wrote:
+> On 12/3/25 3:50 PM, David Lechner wrote:
+>> On 12/3/25 1:18 PM, Kurt Borja wrote:
+>>> Add guard() and ACQUIRE() support for iio_device_claim_*() lock.
+>>>
+>>> This involves exporting iio_device_{claim, release}() wrappers to defin=
+e
+>>> a general GUARD class, and then defining the _direct and _buffer
+>>> conditional ones.
 >>=20
->> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
->> ---
->>  drivers/iio/health/max30102.c | 24 +++++++-----------------
->>  1 file changed, 7 insertions(+), 17 deletions(-)
+>> Commit messages should say why we need this.
 >>=20
->> diff --git a/drivers/iio/health/max30102.c b/drivers/iio/health/max30102=
-.c
->> index 678720102f2b..c642842cb5fb 100644
->> --- a/drivers/iio/health/max30102.c
->> +++ b/drivers/iio/health/max30102.c
->> @@ -24,6 +24,7 @@
->>  #include <linux/iio/iio.h>
->>  #include <linux/iio/buffer.h>
->>  #include <linux/iio/kfifo_buf.h>
->> +#include <linux/cleanup.h>
->> =20
->>  #define MAX30102_DRV_NAME	"max30102"
->>  #define MAX30102_PART_NUMBER	0x15
->> @@ -468,6 +469,7 @@ static int max30102_read_raw(struct iio_dev *indio_d=
-ev,
->>  {
->>  	struct max30102_data *data =3D iio_priv(indio_dev);
->>  	int ret =3D -EINVAL;
->> +	bool direct_en;
->> =20
->>  	switch (mask) {
->>  	case IIO_CHAN_INFO_RAW:
->> @@ -475,25 +477,13 @@ static int max30102_read_raw(struct iio_dev *indio=
-_dev,
->>  		 * Temperature reading can only be acquired when not in
->>  		 * shutdown; leave shutdown briefly when buffer not running
->>  		 */
->> -any_mode_retry:
->> -		if (!iio_device_claim_buffer(indio_dev)) {
->> -			/*
->> -			 * This one is a *bit* hacky. If we cannot claim buffer
->> -			 * mode, then try direct mode so that we make sure
->> -			 * things cannot concurrently change. And we just keep
->> -			 * trying until we get one of the modes...
->> -			 */
->> -			if (!iio_device_claim_direct(indio_dev))
->> -				goto any_mode_retry;
->> +		scoped_guard(iio_device_claim, indio_dev) {
->
-> scoped_guard() is sketchy in switch statements because there is
-> a hidden for loop. If someone came along later and put a break;
-> inside of the scope, it would break out of the hidden for loop
-> rather than the apparent switch case!
->
-> Besides that, it adds extra indent that we could avoid.
->
->> +			direct_en =3D !iio_buffer_enabled(indio_dev);
->> =20
->> -			ret =3D max30102_get_temp(data, val, true);
->> -			iio_device_release_direct(indio_dev);
->> -		} else {
->> -			ret =3D max30102_get_temp(data, val, false);
->> -			iio_device_release_buffer(indio_dev);
->> +			ret =3D max30102_get_temp(data, val, direct_en);
->> +			if (ret)
->> +				return ret;
->>  		}
->> -		if (ret)
->> -			return ret;
->> =20
->>  		ret =3D IIO_VAL_INT;
->>  		break;
+>> Also, this seems like two separate things. Adding a new claim/release pa=
+ir
+>> and adding the conditional guard support to the existing ones. So perhap=
+s
+>> better as two separate patches.
 >>=20
->
-> I would write the whole function like this:
->
-> static int max30102_read_raw(struct iio_dev *indio_dev,
-> 			     struct iio_chan_spec const *chan,
-> 			     int *val, int *val2, long mask)
-> {
-> 	struct max30102_data *data =3D iio_priv(indio_dev);
-> 	int ret;
->
-> 	switch (mask) {
-> 	case IIO_CHAN_INFO_RAW: {
-> 		/*
-> 		 * Temperature reading can only be acquired when not in
-> 		 * shutdown; leave shutdown briefly when buffer not running
-> 		 */
-> 		guard(iio_device_claim)(indio_dev);
+>>>
+>>> Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+>>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+>>> ---
+>>>  drivers/iio/industrialio-core.c | 12 ++++++++++++
+>>>  include/linux/iio/iio.h         | 20 ++++++++++++++++++++
+>>>  2 files changed, 32 insertions(+)
+>>>
+>>> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio=
+-core.c
+>>> index adf0142d0300..da090c993fe8 100644
+>>> --- a/drivers/iio/industrialio-core.c
+>>> +++ b/drivers/iio/industrialio-core.c
+>>> @@ -2171,6 +2171,18 @@ int __devm_iio_device_register(struct device *de=
+v, struct iio_dev *indio_dev,
+>>>  }
+>>>  EXPORT_SYMBOL_GPL(__devm_iio_device_register);
+>>> =20
+>>> +void __iio_device_claim(struct iio_dev *indio_dev)
+>>> +{
+>>> +	mutex_lock(&to_iio_dev_opaque(indio_dev)->mlock);
+>>> +}
+>>> +EXPORT_SYMBOL_GPL(__iio_device_claim);
+>>> +
+>>> +void __iio_device_release(struct iio_dev *indio_dev)
+>>> +{
+>>> +	mutex_unlock(&to_iio_dev_opaque(indio_dev)->mlock);
+>>> +}
+>>> +EXPORT_SYMBOL_GPL(__iio_device_release);
+>>> +
+>>>  /**
+>>>   * __iio_device_claim_direct - Keep device in direct mode
+>>>   * @indio_dev:	the iio_dev associated with the device
+>>> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+>>> index 27da9af67c47..472b13ec28d3 100644
+>>> --- a/include/linux/iio/iio.h
+>>> +++ b/include/linux/iio/iio.h
+>>> @@ -10,6 +10,7 @@
+>>>  #include <linux/align.h>
+>>>  #include <linux/device.h>
+>>>  #include <linux/cdev.h>
+>>> +#include <linux/cleanup.h>
+>>>  #include <linux/compiler_types.h>
+>>>  #include <linux/minmax.h>
+>>>  #include <linux/slab.h>
+>>> @@ -661,9 +662,23 @@ void iio_device_unregister(struct iio_dev *indio_d=
+ev);
+>>>  int __devm_iio_device_register(struct device *dev, struct iio_dev *ind=
+io_dev,
+>>>  			       struct module *this_mod);
+>>>  int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timesta=
+mp);
+>>> +void __iio_device_claim(struct iio_dev *indio_dev);
+>>> +void __iio_device_release(struct iio_dev *indio_dev);
+>>>  bool __iio_device_claim_direct(struct iio_dev *indio_dev);
+>>>  void __iio_device_release_direct(struct iio_dev *indio_dev);
+>>> =20
+>>> +static inline void iio_device_claim(struct iio_dev *indio_dev)
+>>> +	__acquires(indio_dev)
+>>> +{
+>>> +	__iio_device_claim(indio_dev);
+>>> +}
+>>> +
+>>> +static inline void iio_device_release(struct iio_dev *indio_dev)
+>>> +	__releases(indio_dev)
+>>> +{
+>>> +	__iio_device_release(indio_dev);
+>>> +}
+>>=20
+>> It was unfortunate that we had to drop "mode" from iio_device_claim_dire=
+ct_mode()
+>> during the recent API change, but at least it is fairly obvious that "di=
+rect"
+>> is a mode. Here, dropping "mode" from the name hurts the understanding. =
+These
+>> could also use some documentation comments to explain what these are for=
+ and
+>> when it is appropriate to use them. I had to really dig around the code =
+to
+>> come to the understanding that these mean "don't allow switching modes u=
+ntil
+>> we release the claim".
 
-AFAIK you can't guard() inside switch-case blocks. I don't know the
-exact reason, but it has to be scoped_guard().
+I agree.
 
-> 		ret =3D max30102_get_temp(data, val, !iio_buffer_enabled(indio_dev));
-> 		if (ret)
-> 			return ret;
+>>=20
+>> I would call it something like iio_device_{claim,release}_current_mode()=
+.
+>>=20
+>>=20
+>>> +
+>>>  /*
+>>>   * Helper functions that allow claim and release of direct mode
+>>>   * in a fashion that doesn't generate many false positives from sparse=
+.
+>>> @@ -690,6 +705,11 @@ static inline void iio_device_release_direct(struc=
+t iio_dev *indio_dev)
+>>>  bool iio_device_claim_buffer(struct iio_dev *indio_dev);
+>>>  void iio_device_release_buffer(struct iio_dev *indio_dev);
+>>> =20
+>>> +DEFINE_GUARD(iio_device_claim, struct iio_dev *, iio_device_claim(_T),
+>>> +	     iio_device_release(_T));
+>>> +DEFINE_GUARD_COND(iio_device_claim, _buffer, iio_device_claim_buffer(_=
+T));
+>>> +DEFINE_GUARD_COND(iio_device_claim, _direct, iio_device_claim_direct(_=
+T));
+>>> +
 >
-> 		return IIO_VAL_INT;
-> 	}
-> 	case IIO_CHAN_INFO_SCALE:
-> 		*val =3D 1000;  /* 62.5 */
-> 		*val2 =3D 16;
-> 		return IIO_VAL_FRACTIONAL;
-> 	default:
-> 		return -EINVAL;
-> 	}
-> }
+> When I made the comments about keeping "mode" in the name, I forgot
+> that DEFINE_GUARD_COND() only extends a DEFINE_GUARD(). So I understand
+> if we need to make names that fit a certain pattern rather than what
+> I suggested.
 >
-> Could also simplify things further by moving the call to iio_buffer_enabl=
-ed()
-> into max30102_get_temp().
+> Still would be nice to have:
+>
+> iio_device_claim_mode()
+> iio_device_claim_mode_direct()
+> iio_device_claim_mode_buffer()
+> iio_device_release_mode()
+>
+> Just really annoying to rename iio_device_{claim,release}_direct()
+> everywhere since we just did that. We could keep both names around
+> for a while though to avoid the churn.
 
-I'll do it like this if this survives v2.
+If we rename iio_device_claim_direct() (which is huge), maybe we can
+pick shorter names and more descriptive names while at it? I was
+thinking something like:
 
+	iio_mode_lock()
+	iio_mode_lock_direct()
+	iio_mode_lock_buffer()
+	iio_mode_unlock()
+
+Shorter names will also keep lines short when using guards.
+
+>
+> It also means that we should remove __iio_device_release_direct() and
+> iio_device_release_buffer_mode() to make it clear that there is only
+> a single "release" function used by all variants of "claim".
+
+I agree.
 
 --=20
  ~ Kurt

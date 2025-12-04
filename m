@@ -1,233 +1,225 @@
-Return-Path: <linux-iio+bounces-26750-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26751-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD2ECA4643
-	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 17:03:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B57CA4AC4
+	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 18:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3195E3055BA2
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 16:01:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D1FBC300B164
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 17:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7038217F36;
-	Thu,  4 Dec 2025 16:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215642D8387;
+	Thu,  4 Dec 2025 17:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JQQHQvTP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fao3rDKO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E882F5483
-	for <linux-iio@vger.kernel.org>; Thu,  4 Dec 2025 16:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C73F285050
+	for <linux-iio@vger.kernel.org>; Thu,  4 Dec 2025 17:07:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764864073; cv=none; b=nd6C8YtFSzcNYCF/kE31blPk4PudZeWSS+4UMH8txhb3ou8CiChI+zMi6+jKVYZ4Yo8EvQxnmcjPxlVhH0e3spqSKXWK6iMGlR3D359TNiWkgtoReDVCbzE7sA3vtYzoNGKE9O5oJ3C57qLKhM7l3Q0O/jxiNI/fw7f/3V9sS3I=
+	t=1764868069; cv=none; b=S7LN9/LAYlomi+z9/lhuQ/pxCu7aSlVcLNTgOPxQQuCAreI1b3n9AYhHBDljZHaPtu05LkZILncDXBZZ5+PuS4TzTaKyD1JBfw6ep6B6/Wgb5JVaERTfxTmGe0O0+1vEdTsTzDuyPyUx3nKl3wViKDST+V7KNgD13zXzzfY0BWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764864073; c=relaxed/simple;
-	bh=2Bvr3wqtvTF0X8pSuqN0GBBTbwjmx0BXKC073bEllm8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IBsQvtawYv7ilLqFny+l1JuTb5i5gpZt0xVLIafGBH6SSXy2HsNjoFx59cfU4uzsMN+RINvAPEMP6piEgyllX9xg5RAPfY3FDlXpdw7I58yIJUJqXbrh5xw46Yhe6LSpyO0DEoDNIDb+KpEPvYuPY4GZ7+lmZNNuCTcMYfyZdEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=JQQHQvTP; arc=none smtp.client-ip=209.85.167.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-450c9057988so539899b6e.1
-        for <linux-iio@vger.kernel.org>; Thu, 04 Dec 2025 08:01:10 -0800 (PST)
+	s=arc-20240116; t=1764868069; c=relaxed/simple;
+	bh=3ngML/Jq7dnnl6CYo/sspTAs/M19EnvjGfsPsQ9/WIY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=MMdu5XhV9d8L7lr+SzObreFeJofWhderp09Rb9BacCABjZOATvWmuYvYa9e6gLRPZrwSetb2Fpkt6LJYtp4zbmzOb4RNBFK7i+XOx45htE5IXosjXuKZsseT+wY0hDDcuKi661UCja1RX2LXYj0HsmIRQWPY0EljDSryV9OOCjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fao3rDKO; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-78ac9f30833so10348117b3.0
+        for <linux-iio@vger.kernel.org>; Thu, 04 Dec 2025 09:07:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764864070; x=1765468870; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I7lmrgZnNGOSMbDpoJyPl+iLmEUkk93lr2vfH3+QGII=;
-        b=JQQHQvTPInn6UQ+SoMhHT/u3achP59k85c0m9CFD2B4tVSNFT43Cql7UeYQ55khhFR
-         LnEDH81ghhJaaAzsQ2ZkTzTzlCGbzErP5Z+pABW5mq8A/0n5cOJJkYFYWyg8u23ZKQYi
-         SEIa9mAvpCx/uxpsZFog7wv55wNtZ/zDJpI4PMqGE9DEfetc7v8IkNdEw6VaOOnsUIZZ
-         QPcTpmHbJl6PXgzzuzdU6PSaYyRpRYHgxWnJg1Q8WKB3ix6zT8M+UdNizKekXZdJT47C
-         1xNJ7Nu1o3XxuQZEVDnpmew6BVtw4J4e+FXBbia3x8ZD6O/ZmeQfWj8TitXyWKrTMu/s
-         xt9Q==
+        d=gmail.com; s=20230601; t=1764868066; x=1765472866; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dodiYRijYOTY+6wzJ7p3kpwOxeuNqeJeiUwFQNKlPr0=;
+        b=fao3rDKO4dlwqD2ZC7sxk1iBH9Ub7EPNfIj0lG634drib5fugIxrmLjxE296FTJzaF
+         m0h6P4SFNpRBmFMS7H6/PNPSpx5Wn9R+toIdZFisBWUTh869UduJfxaLFVaVLvKjETfz
+         8xBSZpXRAm1Jpl9HVdrjhaTYPsGvize08PK7767aUdxzntNrzlwv06N3kV96ZmCTr2kk
+         5rY0/A9io1RGfUhxyilNkoljfxU5t0t/2p13mbtT2adRfpCf+CAQjIroXbLg8I6kjbac
+         GZIFYDtQ/BQPRLzvDxNkI2gZYdgOXo6jRWnsOcTLorp0l6sU7IFbJHyUa34uuT3cEoI3
+         QX1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764864070; x=1765468870;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I7lmrgZnNGOSMbDpoJyPl+iLmEUkk93lr2vfH3+QGII=;
-        b=NELIC+eBKT9AMXvZMn5vkK4ViiWnSr4zm3XxIq5lHgJbHOYla3cGlO0nU/YH/SWaGJ
-         XTN5pW/RAEsZyFBczkw7i64y/tpeajVEDEJl/lIsdW95rGA/gscF7UU9ngqrGw4Accoe
-         fdsTwTsKJuuf0QVo5OXGUftNnkUxyJtXUOVmfJr6tnZ5LJvE8bwUy7HRouxzWTkic2pa
-         Cg23q7BcRRYdk2IjnNq2TOSytyVknF2q+qYGpPM/lsdl0pslOMSQa20zGHy4sgKQNQ0y
-         qwbq4BwLIrX3IUXx8DM9a6z0s/dYlHhJOkcRsvdVC1U2cSSbglqxkffaVD9iRRXoDkb/
-         w9Bg==
-X-Forwarded-Encrypted: i=1; AJvYcCXke0XrKFDGetCGn1XDOHG+h0SwNxOwM3lwGYezt8sMwBe+EhN9KamBP6vyHeb/mCZeEKG0sV8ZgTI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8dLVvTYDAkG3WtR9q2XhXXr59SN9flKl/WWglXi3gd8uNsB57
-	0BxV2kzLRQQfK9agO61q/TOzGlCk1wTJ4oedRjx3feyJ2WKgd2EkAx3Xg0p6kGXyvm8=
-X-Gm-Gg: ASbGnctTuey5yxNnVa8vUFob1mmCNBE5vUnOeovy5tyC1Y9VgfDAgRjIifdGX8NWajb
-	1A+bPiypjoXdPpg4/sDPlDfwrvVc8O1/iEU73l2wn1uo4NZyVDjR8i2vRgdddFauj+w3lNFQ2Ye
-	syWhe2WEHfGQ/wb2SA2PMpZfUBqGPZPIEaB4L47uRolBKq73pHeKMK5TZa+vrwJ68eBAPPsKk0G
-	8ksoEqCgEPTBkBO/WILiKfKanIbSC8QeTB5jjFGgLGyifcR8v2+HDNvGK2Y6Dl3IODSbxiipL8V
-	50svLhb9Snd+8UdfYJs97iFizmRCQtqLJ3RMSviXvefUpQen5NX/tYWyZbNhQzKy1xbX8r/jMYD
-	2aIbAE7Oo9XMUbL4bvenblzDMPaaxIsLPneBQ40irsJyBFBykcsECzOHejLWJmItHOQ0HDZ/h07
-	7Ga8R9nxmRvKwRutsn0BwGy3pX0KGvY3C1pECQfwrSurf0KSmLhoiDrj0en1k2
-X-Google-Smtp-Source: AGHT+IGZZAax15Af5NGLBUepTetUxGjxZFKoAVrOVF3bcdCDJa0fOioWrcYIjFugBCatyd4R4v/QPw==
-X-Received: by 2002:a05:6808:4fd2:b0:441:8f74:fc1 with SMTP id 5614622812f47-45379eb7aaamr1847366b6e.62.1764864069654;
-        Thu, 04 Dec 2025 08:01:09 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:25f4:78dc:7b9e:e7a4? ([2600:8803:e7e4:500:25f4:78dc:7b9e:e7a4])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4538016e337sm773682b6e.22.2025.12.04.08.01.08
+        d=1e100.net; s=20230601; t=1764868066; x=1765472866;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dodiYRijYOTY+6wzJ7p3kpwOxeuNqeJeiUwFQNKlPr0=;
+        b=tha7+Lf2xGSKFTDWC+EA0EaK54uo/J3uEW1fKz0F6y/34Eb3AmoEcMKm8wT/FAKh2P
+         BDJqHkEDKHzR/anzza6tP1r2/rcQoKS6eEXG38ab+uhYsEcYB4S5uveOsibCsN+3a5PV
+         yE8mZX1fhpem2GuI6PlYsxDNb/r1dCmctJWg7BSGjDJtMWeJ4uqwTN5YJQtX3RDXZdYF
+         a5+VBmFcSdCcJw6TufNtyk/B6BIQMzS947PFcNrUGutBtSGAHrgZmZ2xmMcT7MTL7njn
+         VwNRmI+lnd+35n5GikypuHETS+7zEBrh47CICswpWbz3tWCLWcoF/2rjrJPhEZBR8WsL
+         aeHg==
+X-Forwarded-Encrypted: i=1; AJvYcCVx+VP+UqreRZLmdMsQmc6eSw4/3TYx3clFLZZLA1IAzki2szSl6Bf9+6QZiRErVFcynD1JL8mzGF8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyL8DnsK9vigCs8TLmmnrBiUwKt45ZwhxW8t4X+M4zlyH0uukV1
+	Zau9Bv1vDh9jMTf2l5hoYssWc4b0OWhHubhfoLNsfmL9phHOsrV5NV5A
+X-Gm-Gg: ASbGncvX5LCMHTbTAdLV67sc3cvb4L0VPvYK6hOMoz1eJY54uouLqF9XNF6n0BslXxN
+	66ukWShZi7iPe/+5+p920Jn0pJd4+CvEEq5RSZ7vPo/XJ9JRr4MNwAeEka6t6KQQEDW0VGD7A6Z
+	4Ko/vqNEn+n1POb3w+sM2zIro1s9vB90FXawjI4oZVV0pY5I8gUe5wQIVzbuelrAHo7mfYY4cNk
+	VNGEmzGND16Y0SEcBzaTEwstwbKMOC85YTRiY7ZCmESQHqaWHfVrLkT/CcFuIqiHMH0VZRN+CSA
+	knXyc8UWWIBsTwHegimzQKATByTDnXmIoaTkjkWCOJlInIMK/DIgDZ1qURoaH9B0dglCXp5Ords
+	1xKNYnDW7ipkPlc1F7eD64ga2GrlWUG/GX8ZH3MQp2l5usbzn2V21E0weZvYUHGA00w7Ph30U36
+	rRLv6tJA==
+X-Google-Smtp-Source: AGHT+IEex4E/v8syAVkEMByk59a7h0uIcRlr5mbQVnRjs06eIXWWVY8PiZvvFzioBr5dCBQlvKANaw==
+X-Received: by 2002:a05:690e:250f:20b0:644:444f:3bb7 with SMTP id 956f58d0204a3-644444f40ccmr429565d50.5.1764868066048;
+        Thu, 04 Dec 2025 09:07:46 -0800 (PST)
+Received: from localhost ([2800:bf0:4580:3149:7d4:54b1:c444:6f2f])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6443f2abfd4sm840396d50.5.2025.12.04.09.07.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Dec 2025 08:01:09 -0800 (PST)
-Message-ID: <9e1ca753-572f-43fe-be54-d2fbc350b3a2@baylibre.com>
-Date: Thu, 4 Dec 2025 10:01:07 -0600
+        Thu, 04 Dec 2025 09:07:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] dt-bindings: iio: adc: adi,ad7380: add spi-buses
- property
-To: Rob Herring <robh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20251107-spi-add-multi-bus-support-v2-0-8a92693314d9@baylibre.com>
- <20251107-spi-add-multi-bus-support-v2-5-8a92693314d9@baylibre.com>
- <20251118155905.GB3236324-robh@kernel.org>
- <97c6b55d-9505-4091-8f0b-317dcbd70838@baylibre.com>
- <CAL_Jsq+ZZE0g424jE75xeCt2KY1ThPLqmbmOs0o_ddaJ8fOf3w@mail.gmail.com>
- <f2ac13fc-8f47-465e-8cef-e2e34bf41818@baylibre.com>
- <20251204142845.GA1303976-robh@kernel.org>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20251204142845.GA1303976-robh@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Thu, 04 Dec 2025 12:07:43 -0500
+Message-Id: <DEPLIJFBZQ36.20XX5DCMCJVB3@gmail.com>
+Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
+ <andy@kernel.org>, "Guenter Roeck" <groeck@chromium.org>, "Jonathan
+ Cameron" <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <chrome-platform@lists.linux.dev>
+Subject: Re: [PATCH RFC 5/6] iio: health: max30102: Use cleanup.h for IIO
+ locks
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
+ <kuurtb@gmail.com>, "Andy Shevchenko" <andriy.shevchenko@intel.com>,
+ "Lars-Peter Clausen" <lars@metafoo.de>, "Michael Hennerich"
+ <Michael.Hennerich@analog.com>, "Jonathan Cameron" <jic23@kernel.org>,
+ "Benson Leung" <bleung@chromium.org>, "Antoniu Miclaus"
+ <antoniu.miclaus@analog.com>, "Gwendal Grignou" <gwendal@chromium.org>,
+ "Shrikant Raskar" <raskar.shree97@gmail.com>, "Per-Daniel Olsson"
+ <perdaniel.olsson@axis.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251203-lock-impr-v1-0-b4a1fd639423@gmail.com>
+ <20251203-lock-impr-v1-5-b4a1fd639423@gmail.com>
+ <f96694db-2ad5-46d3-a380-cba3eaa2de2f@baylibre.com>
+In-Reply-To: <f96694db-2ad5-46d3-a380-cba3eaa2de2f@baylibre.com>
 
-On 12/4/25 8:28 AM, Rob Herring wrote:
-> On Wed, Nov 19, 2025 at 08:45:42AM -0600, David Lechner wrote:
->> On 11/19/25 7:18 AM, Rob Herring wrote:
->>> On Tue, Nov 18, 2025 at 11:46 AM David Lechner <dlechner@baylibre.com> wrote:
->>>>
->>>> On 11/18/25 9:59 AM, Rob Herring wrote:
->>>>> On Fri, Nov 07, 2025 at 02:52:51PM -0600, David Lechner wrote:
->>>>>> Add spi-buses property to describe how many SDO lines are wired up on
->>>>>> the ADC. These chips are simultaneous sampling ADCs and have one SDO
->>>>>> line per channel, either 2 or 4 total depending on the part number.
->>>>>>
->>>>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
->>>>>> ---
->>>>>>  .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 22 ++++++++++++++++++++++
->>>>>>  1 file changed, 22 insertions(+)
->>>>>>
->>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
->>>>>> index b91bfb16ed6bc6c605880f81050250d1ed9c307a..9ef46cdb047d45d088e0fbc345f58c5b09083385 100644
->>>>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
->>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
->>>>>> @@ -62,6 +62,10 @@ properties:
->>>>>>    spi-cpol: true
->>>>>>    spi-cpha: true
->>>>>>
->>>>>> +  spi-data-buses:
->>>>>> +    minItems: 1
->>>>>> +    maxItems: 4
->>>>>> +
->>>>>
->>>>> As the property is not required, what's the default?
->>>>
->>>> spi-perepheral-props.yaml defines:
->>>>
->>>>         default: [0]
->>>>
->>>> Do I need to repeat that here?
->>>
->>> No. So that means you only use one channel and the others are not connected?
->>
->> Correct.
->>
->>>
->>>>
->>>>>
->>>>>>    vcc-supply:
->>>>>>      description: A 3V to 3.6V supply that powers the chip.
->>>>>>
->>>>>> @@ -245,6 +249,22 @@ allOf:
->>>>>>        patternProperties:
->>>>>>          "^channel@[0-3]$": false
->>>>>>
->>>>>> +  # 2-channel chip can only have up to 2 buses
->>>>>> +  - if:
->>>>>> +      properties:
->>>>>> +        compatible:
->>>>>> +          enum:
->>>>>> +            - adi,ad7380
->>>>>> +            - adi,ad7381
->>>>>> +            - adi,ad7386
->>>>>> +            - adi,ad7387
->>>>>> +            - adi,ad7388
->>>>>> +            - adi,ad7389
->>>>>> +    then:
->>>>>> +      properties:
->>>>>> +        spi-data-buses:
->>>>>> +          maxItems: 2
->>>>>> +
->>>>>>  examples:
->>>>>>    - |
->>>>>>      #include <dt-bindings/interrupt-controller/irq.h>
->>>>>> @@ -260,6 +280,7 @@ examples:
->>>>>>              spi-cpol;
->>>>>>              spi-cpha;
->>>>>>              spi-max-frequency = <80000000>;
->>>>>> +            spi-data-buses = <0>, <1>;
->>>>>>
->>>>>>              interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
->>>>>>              interrupt-parent = <&gpio0>;
->>>>>> @@ -284,6 +305,7 @@ examples:
->>>>>>              spi-cpol;
->>>>>>              spi-cpha;
->>>>>>              spi-max-frequency = <80000000>;
->>>>>> +            spi-data-buses = <0>, <1>, <2>, <3>;
->>>>>
->>>>> An example that doesn't look like a 1 to 1 mapping would be better.
->>>>> Otherwise, it still looks to me like you could just define the bus
->>>>> width.
->>>>
->>>> I'm not sure we could do that on this chip since it doesn't have
->>>> the possibility of more than one line per channel.
->>>
->>> That's a property of the SPI controller though, right?
->>>
->>> If the above controller had 4 lines per channel/serializer, then you could have:
->>>
->>> spi-data-buses = <0>, <4>, <8>, <12>;
->>
->> Ah, I get what you mean now. The intention here though was that the
->> index numbers correspond to the data lane (channel/serializer), not
->> to individual lines. So the example you gave would mean that the chip
->> has at least 13 data lanes (rather than what I think your intention was
->> of saying it has at least 16 data wires). I did it that way because all
->> of the hardware I looked at didn't allow assigning arbitrary data lines
->> to arbitrary lanes/channels so it keeps things simpler and easier to match
->> to the actual hardware docs.
-> 
-> But what happens if there is such h/w? Better to design things for 
-> something we can visualize and not have to revisit this. Of course there 
-> will be things we don't anticipate. (Who thought we'd have parallel 
-> SPI...)
-> 
-> I suppose if that's rare enough we can just have another property to map 
-> pins to channels.
-> 
-> Rob
+On Wed Dec 3, 2025 at 4:52 PM -05, David Lechner wrote:
+> On 12/3/25 1:18 PM, Kurt Borja wrote:
+>> Simplify and drop "hacky" busy-waiting code in max30102_read_raw() by
+>> using scoped_guard().
+>>=20
+>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+>> ---
+>>  drivers/iio/health/max30102.c | 24 +++++++-----------------
+>>  1 file changed, 7 insertions(+), 17 deletions(-)
+>>=20
+>> diff --git a/drivers/iio/health/max30102.c b/drivers/iio/health/max30102=
+.c
+>> index 678720102f2b..c642842cb5fb 100644
+>> --- a/drivers/iio/health/max30102.c
+>> +++ b/drivers/iio/health/max30102.c
+>> @@ -24,6 +24,7 @@
+>>  #include <linux/iio/iio.h>
+>>  #include <linux/iio/buffer.h>
+>>  #include <linux/iio/kfifo_buf.h>
+>> +#include <linux/cleanup.h>
+>> =20
+>>  #define MAX30102_DRV_NAME	"max30102"
+>>  #define MAX30102_PART_NUMBER	0x15
+>> @@ -468,6 +469,7 @@ static int max30102_read_raw(struct iio_dev *indio_d=
+ev,
+>>  {
+>>  	struct max30102_data *data =3D iio_priv(indio_dev);
+>>  	int ret =3D -EINVAL;
+>> +	bool direct_en;
+>> =20
+>>  	switch (mask) {
+>>  	case IIO_CHAN_INFO_RAW:
+>> @@ -475,25 +477,13 @@ static int max30102_read_raw(struct iio_dev *indio=
+_dev,
+>>  		 * Temperature reading can only be acquired when not in
+>>  		 * shutdown; leave shutdown briefly when buffer not running
+>>  		 */
+>> -any_mode_retry:
+>> -		if (!iio_device_claim_buffer(indio_dev)) {
+>> -			/*
+>> -			 * This one is a *bit* hacky. If we cannot claim buffer
+>> -			 * mode, then try direct mode so that we make sure
+>> -			 * things cannot concurrently change. And we just keep
+>> -			 * trying until we get one of the modes...
+>> -			 */
+>> -			if (!iio_device_claim_direct(indio_dev))
+>> -				goto any_mode_retry;
+>> +		scoped_guard(iio_device_claim, indio_dev) {
+>
+> scoped_guard() is sketchy in switch statements because there is
+> a hidden for loop. If someone came along later and put a break;
+> inside of the scope, it would break out of the hidden for loop
+> rather than the apparent switch case!
+>
+> Besides that, it adds extra indent that we could avoid.
+>
+>> +			direct_en =3D !iio_buffer_enabled(indio_dev);
+>> =20
+>> -			ret =3D max30102_get_temp(data, val, true);
+>> -			iio_device_release_direct(indio_dev);
+>> -		} else {
+>> -			ret =3D max30102_get_temp(data, val, false);
+>> -			iio_device_release_buffer(indio_dev);
+>> +			ret =3D max30102_get_temp(data, val, direct_en);
+>> +			if (ret)
+>> +				return ret;
+>>  		}
+>> -		if (ret)
+>> -			return ret;
+>> =20
+>>  		ret =3D IIO_VAL_INT;
+>>  		break;
+>>=20
+>
+> I would write the whole function like this:
+>
+> static int max30102_read_raw(struct iio_dev *indio_dev,
+> 			     struct iio_chan_spec const *chan,
+> 			     int *val, int *val2, long mask)
+> {
+> 	struct max30102_data *data =3D iio_priv(indio_dev);
+> 	int ret;
+>
+> 	switch (mask) {
+> 	case IIO_CHAN_INFO_RAW: {
+> 		/*
+> 		 * Temperature reading can only be acquired when not in
+> 		 * shutdown; leave shutdown briefly when buffer not running
+> 		 */
+> 		guard(iio_device_claim)(indio_dev);
 
-I haven't seen any hardware that can handle arbitrary wiring like this
-and most hardware designs tend to wire things up in a logical order
-so I'm inclined to go with the "adding a controller-specific property
-for this later if we find we really need it" approach.
+AFAIK you can't guard() inside switch-case blocks. I don't know the
+exact reason, but it has to be scoped_guard().
 
-(BTW I sent a v3 on Monday when you have a chance to take a look)
+> 		ret =3D max30102_get_temp(data, val, !iio_buffer_enabled(indio_dev));
+> 		if (ret)
+> 			return ret;
+>
+> 		return IIO_VAL_INT;
+> 	}
+> 	case IIO_CHAN_INFO_SCALE:
+> 		*val =3D 1000;  /* 62.5 */
+> 		*val2 =3D 16;
+> 		return IIO_VAL_FRACTIONAL;
+> 	default:
+> 		return -EINVAL;
+> 	}
+> }
+>
+> Could also simplify things further by moving the call to iio_buffer_enabl=
+ed()
+> into max30102_get_temp().
+
+I'll do it like this if this survives v2.
+
+
+--=20
+ ~ Kurt
 
 

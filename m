@@ -1,270 +1,190 @@
-Return-Path: <linux-iio+bounces-26734-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26735-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8DDCA4001
-	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 15:26:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 878E8CA4093
+	for <lists+linux-iio@lfdr.de>; Thu, 04 Dec 2025 15:35:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F57330255AE
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 14:22:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8C8431103AD
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Dec 2025 14:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D051B24A06A;
-	Thu,  4 Dec 2025 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B55342C99;
+	Thu,  4 Dec 2025 14:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TZdN0/6Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a9GptvhQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A92226CF6
-	for <linux-iio@vger.kernel.org>; Thu,  4 Dec 2025 14:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC8F3054F2;
+	Thu,  4 Dec 2025 14:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764858163; cv=none; b=o19CjTA3PbJU1vByYqpsalkGE3MVcsIRFTWvHT47tjosw9WyfY5PwvMaQSQLPVFexZlgrjWNmmOfEeFQrkZjRp5kG7PTSvAgZAHkdEQ3p4OFsuuVQJzW9vzLgF6w/cBh4EfcZL4qBEz6bdegh5aDKV1MmDySTgrR5LYCoBUC3I4=
+	t=1764858529; cv=none; b=DYxPZ8v3oO6R3rga+bNDBqF7P5XRngXgl2Ljtr/0Dsx0j97lT9ouY1g/mfhQk/EI16Kuw/xiKp8Gv20L82vEPYGecyOtgBJaA+fPM24U0pb13Ar3aXcJ2ZNZX+f0A2yg0LpxLBOqDJC/Bxcbbjl6X8UAvVwFCYLBtWTyERgXeLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764858163; c=relaxed/simple;
-	bh=FNBg/aXlkpeZs8DBArvFxRgWWANEdgPP75jkUWYJflw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ACahmS3lTc2A692n7q4Q7TtVqbiETpL6JbXKSM5dKz0uC0A0j+gXbzDVqLl14xiZZJqUWBDNaaBTNXoMYDfaLSmygtJeY6urQMfxRpPJ8e07Y5Re/atIiisfi9W1dm8ToSkIKiOeTl59/Ydc4S2171GhUY7mMNaut/oqkRsDKys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TZdN0/6Y; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-477563e28a3so8040605e9.1
-        for <linux-iio@vger.kernel.org>; Thu, 04 Dec 2025 06:22:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764858159; x=1765462959; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lNDG6GuMsZDqikeQhQzdv2px+61VwRvh7/YTpl3X4ic=;
-        b=TZdN0/6Ye6mgyu0eix3uVdLr7jVom89SwClt5yS8/MoWUOSZ7Eb+yFq2P7+8KxJfyo
-         MrEEsrrHTMaxppDSTow702MxCp47Gl3z4RA4L1GUyHqopkXJWTPVQupxtvcx8yPcTg3M
-         OGQ5o02fU4QeRnpWcyA7DF5N6UczNcSjlc1qKqmlE/wslZ44zjpKKirWbByvZyGo1eIE
-         c4YZqaZsUdN2LgQch8UW8j9AmiapfYPqjW2tbSdtfQ5QRls7FfLkj3We4NwwrhFv1UYv
-         eZBxvn0blENpr13vFQk00aBlAqD1zJpegfv0atjku2RmEYUEedSG4pX04IgXoc3MF6TX
-         GdWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764858159; x=1765462959;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lNDG6GuMsZDqikeQhQzdv2px+61VwRvh7/YTpl3X4ic=;
-        b=XFhn/RhekU8EL9Qew9Mx9Ww/6v5zUfYlHbUFBJJ5458mh7cz8BdtNO3rDDDpRxGCV7
-         5Fy9zbZg9ncVip+bKOm9+ganjDDkyfJr0rkKlutO39sXwQIYwNGIYZ4Dw6c2KvP/mL47
-         e6ooEYvTypwLHQ/Tv1DzgOOfuZqAptv113XbEE2kprFq6yUZqnp6zSsiP30MykCVUz8L
-         SMdorkK9jqq+nhu7tpOC6+kaNoBHGwyHNmr2Unxb5k9sjJEvi/I4nizQps8eOW4HLV1b
-         LO3msn3VLyhc6IW/TfzYJ3d7Hnv7R7F847LcJ/oF7GuwtQZ4hR2kvdb647inPRu7Ne06
-         +anQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWlfmBK6pr3HM3E4yETh5ilZtMVIG11J7tMd6V5O4c0vKIYw4REZ3+bPHfVAMPFV4GT3clB9C7mV8w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznGwlEZ81vYYEabThpsUVxYNo+Kcblf33oxQtZVf5P01hLQCa1
-	BDuatjpZuBqdct/k3a7UD5MWNyXjdf49AT3AUQLtKYyIXCpqlv/PJedb
-X-Gm-Gg: ASbGncs2ijd+Ui5BbV5lIiwY5W7IcjC+Id80BZYlsNoDvSVeAVgx5fArrDmN/bNssSo
-	dA/ev/VQeeUABmrhSmTBdVRRHVY2MD54qUWDft1vIVvk6dF5jeJzOrgKZ5+uLpd/iJBKUinSbJC
-	5Umq8ouoRn+V7RLUCPyqk1lNV1/U+rB2nAKIzfHA5+y5nGpCPzSLvdCeEdi8igm0L5UtUWt/Vq3
-	X2qYvmY58vSt8zBGOeHTs8ZaUYTy1MpshQO35UVnpzNntFasO0dlK8KiJhgCwtrCCyXjB1Ikqrq
-	Ltk1ent9diR0NbIlWsoacFWsf15OhokWmKlVh7oYPe438sqGw95vGobq/gu6V74I1WUmkl1bI7u
-	kM9IIFqr9hCSMV7DbdFBEVjQl63pous8jF9lY+r4blwej0m0k8ltAIUXUMGVGDa0krokXQ6GRob
-	qY6L90UIazphIpw3yzRyo=
-X-Google-Smtp-Source: AGHT+IE8ryaq+bro+W0C+oPynjAr8yRyWAwkzp4GpExnDcsobnvZZMTRh3TBX5P0XKrrpanLsjAClA==
-X-Received: by 2002:a05:600c:1f90:b0:477:9e0c:f59 with SMTP id 5b1f17b1804b1-4792eb12478mr38164195e9.2.1764858159131;
-        Thu, 04 Dec 2025 06:22:39 -0800 (PST)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479310c802bsm32350095e9.6.2025.12.04.06.22.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Dec 2025 06:22:38 -0800 (PST)
-Message-ID: <9562673ef83dd73b6092b5a7d2042b380a55700c.camel@gmail.com>
-Subject: Re: [PATCH RFC 1/6] iio: core: Match iio_device_claim_*() return
- semantics
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Kurt Borja <kuurtb@gmail.com>, Andy Shevchenko
- <andriy.shevchenko@intel.com>,  Lars-Peter Clausen	 <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,  Jonathan Cameron	
- <jic23@kernel.org>, Benson Leung <bleung@chromium.org>, Antoniu Miclaus	
- <antoniu.miclaus@analog.com>, Gwendal Grignou <gwendal@chromium.org>, 
- Shrikant Raskar <raskar.shree97@gmail.com>, Per-Daniel Olsson
- <perdaniel.olsson@axis.com>
-Cc: David Lechner <dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?=
-	 <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Guenter Roeck
-	 <groeck@chromium.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	chrome-platform@lists.linux.dev
-Date: Thu, 04 Dec 2025 14:23:19 +0000
-In-Reply-To: <20251203-lock-impr-v1-1-b4a1fd639423@gmail.com>
-References: <20251203-lock-impr-v1-0-b4a1fd639423@gmail.com>
-	 <20251203-lock-impr-v1-1-b4a1fd639423@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+	s=arc-20240116; t=1764858529; c=relaxed/simple;
+	bh=A7S0aqhNRp49+kPkpgOvDyswMTwDTAIZeVEntaKMiNQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bMZZF4nunW2mJSt10bEZaypS5GrBNLKK1zrx1ZNvoX+BrCNa56dJrRiZq125APyIofC9JDF+E+oUYynRmlkKLFsFLn/rHOJn4FKWJ8n8GogZL4Uy5zHferaKbt24CTdobTdu4YGBfH8BKdK8aCbRWLPTanNjk7aGEiGfAdbnJGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a9GptvhQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BA4C4CEFB;
+	Thu,  4 Dec 2025 14:28:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764858528;
+	bh=A7S0aqhNRp49+kPkpgOvDyswMTwDTAIZeVEntaKMiNQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a9GptvhQzmrjIUAqXiGQVaXFPMJNpIA4Qs32xCzl131Ra7qCHiyRdEQsozNMtl1Ld
+	 NUQCKuQH+qKMmEk2IfpmR2tNKt5MdF77GT8GUOaJO5EPx2ZpOnJBAt8o21q9C9p1yi
+	 nP6zSys2/qtwTh/vrJ+6ncCJw2FEux1vriv+ePMLn68vWQTF3Q1IZpkRSLo9Sr55UY
+	 Ufs5Cc1zW8i6EVQa520w3g+9VIDoSQsSLQdmGsS//oju94/ju9Xz9DxNBDHPu+TX/1
+	 T5833m7y33jm87qabnz8O7cALxpnmAk++SUOJM8lg6i7EVU0xABXsYyCt9ki8LbOUF
+	 /yEgbRVcPHnTQ==
+Date: Thu, 4 Dec 2025 08:28:45 -0600
+From: Rob Herring <robh@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] dt-bindings: iio: adc: adi,ad7380: add spi-buses
+ property
+Message-ID: <20251204142845.GA1303976-robh@kernel.org>
+References: <20251107-spi-add-multi-bus-support-v2-0-8a92693314d9@baylibre.com>
+ <20251107-spi-add-multi-bus-support-v2-5-8a92693314d9@baylibre.com>
+ <20251118155905.GB3236324-robh@kernel.org>
+ <97c6b55d-9505-4091-8f0b-317dcbd70838@baylibre.com>
+ <CAL_Jsq+ZZE0g424jE75xeCt2KY1ThPLqmbmOs0o_ddaJ8fOf3w@mail.gmail.com>
+ <f2ac13fc-8f47-465e-8cef-e2e34bf41818@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f2ac13fc-8f47-465e-8cef-e2e34bf41818@baylibre.com>
 
-On Wed, 2025-12-03 at 14:18 -0500, Kurt Borja wrote:
-> In order to improve API consistency with conditional locks, use
-> true/false return semantics in iio_device_claim_buffer_mode().
->=20
-> This also matches iio_device_claim_direct() return semantics.
->=20
-> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-> ---
+On Wed, Nov 19, 2025 at 08:45:42AM -0600, David Lechner wrote:
+> On 11/19/25 7:18 AM, Rob Herring wrote:
+> > On Tue, Nov 18, 2025 at 11:46 AM David Lechner <dlechner@baylibre.com> wrote:
+> >>
+> >> On 11/18/25 9:59 AM, Rob Herring wrote:
+> >>> On Fri, Nov 07, 2025 at 02:52:51PM -0600, David Lechner wrote:
+> >>>> Add spi-buses property to describe how many SDO lines are wired up on
+> >>>> the ADC. These chips are simultaneous sampling ADCs and have one SDO
+> >>>> line per channel, either 2 or 4 total depending on the part number.
+> >>>>
+> >>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> >>>> ---
+> >>>>  .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 22 ++++++++++++++++++++++
+> >>>>  1 file changed, 22 insertions(+)
+> >>>>
+> >>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> >>>> index b91bfb16ed6bc6c605880f81050250d1ed9c307a..9ef46cdb047d45d088e0fbc345f58c5b09083385 100644
+> >>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> >>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7380.yaml
+> >>>> @@ -62,6 +62,10 @@ properties:
+> >>>>    spi-cpol: true
+> >>>>    spi-cpha: true
+> >>>>
+> >>>> +  spi-data-buses:
+> >>>> +    minItems: 1
+> >>>> +    maxItems: 4
+> >>>> +
+> >>>
+> >>> As the property is not required, what's the default?
+> >>
+> >> spi-perepheral-props.yaml defines:
+> >>
+> >>         default: [0]
+> >>
+> >> Do I need to repeat that here?
+> > 
+> > No. So that means you only use one channel and the others are not connected?
+> 
+> Correct.
+> 
+> > 
+> >>
+> >>>
+> >>>>    vcc-supply:
+> >>>>      description: A 3V to 3.6V supply that powers the chip.
+> >>>>
+> >>>> @@ -245,6 +249,22 @@ allOf:
+> >>>>        patternProperties:
+> >>>>          "^channel@[0-3]$": false
+> >>>>
+> >>>> +  # 2-channel chip can only have up to 2 buses
+> >>>> +  - if:
+> >>>> +      properties:
+> >>>> +        compatible:
+> >>>> +          enum:
+> >>>> +            - adi,ad7380
+> >>>> +            - adi,ad7381
+> >>>> +            - adi,ad7386
+> >>>> +            - adi,ad7387
+> >>>> +            - adi,ad7388
+> >>>> +            - adi,ad7389
+> >>>> +    then:
+> >>>> +      properties:
+> >>>> +        spi-data-buses:
+> >>>> +          maxItems: 2
+> >>>> +
+> >>>>  examples:
+> >>>>    - |
+> >>>>      #include <dt-bindings/interrupt-controller/irq.h>
+> >>>> @@ -260,6 +280,7 @@ examples:
+> >>>>              spi-cpol;
+> >>>>              spi-cpha;
+> >>>>              spi-max-frequency = <80000000>;
+> >>>> +            spi-data-buses = <0>, <1>;
+> >>>>
+> >>>>              interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+> >>>>              interrupt-parent = <&gpio0>;
+> >>>> @@ -284,6 +305,7 @@ examples:
+> >>>>              spi-cpol;
+> >>>>              spi-cpha;
+> >>>>              spi-max-frequency = <80000000>;
+> >>>> +            spi-data-buses = <0>, <1>, <2>, <3>;
+> >>>
+> >>> An example that doesn't look like a 1 to 1 mapping would be better.
+> >>> Otherwise, it still looks to me like you could just define the bus
+> >>> width.
+> >>
+> >> I'm not sure we could do that on this chip since it doesn't have
+> >> the possibility of more than one line per channel.
+> > 
+> > That's a property of the SPI controller though, right?
+> > 
+> > If the above controller had 4 lines per channel/serializer, then you could have:
+> > 
+> > spi-data-buses = <0>, <4>, <8>, <12>;
+> 
+> Ah, I get what you mean now. The intention here though was that the
+> index numbers correspond to the data lane (channel/serializer), not
+> to individual lines. So the example you gave would mean that the chip
+> has at least 13 data lanes (rather than what I think your intention was
+> of saying it has at least 16 data wires). I did it that way because all
+> of the hardware I looked at didn't allow assigning arbitrary data lines
+> to arbitrary lanes/channels so it keeps things simpler and easier to match
+> to the actual hardware docs.
 
-Even if the rest gets a NACK, I think at least this patch makes sense. In f=
-act I
-would even extend it so that we have the same inline API with proper annota=
-tions:
+But what happens if there is such h/w? Better to design things for 
+something we can visualize and not have to revisit this. Of course there 
+will be things we don't anticipate. (Who thought we'd have parallel 
+SPI...)
 
-https://elixir.bootlin.com/linux/v6.18/source/include/linux/iio/iio.h#L679
+I suppose if that's rare enough we can just have another property to map 
+pins to channels.
 
-So it really has the same semantics as iio_device_claim_direct()
-
-- Nuno S=C3=A1
-
-> =C2=A0drivers/iio/adc/ade9000.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- | 2 +-
-> =C2=A0drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 5 +----
-> =C2=A0drivers/iio/health/max30100.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
-> =C2=A0drivers/iio/health/max30102.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
-> =C2=A0drivers/iio/industrialio-core.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 8 ++++----
-> =C2=A0drivers/iio/light/opt4060.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
-> =C2=A0include/linux/iio/iio.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 2 +-
-> =C2=A07 files changed, 10 insertions(+), 13 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ade9000.c b/drivers/iio/adc/ade9000.c
-> index 2de8a718d62a..b345c4d1ef24 100644
-> --- a/drivers/iio/adc/ade9000.c
-> +++ b/drivers/iio/adc/ade9000.c
-> @@ -964,7 +964,7 @@ static irqreturn_t ade9000_dready_thread(int irq, voi=
-d *data)
-> =C2=A0	struct iio_dev *indio_dev =3D data;
-> =C2=A0
-> =C2=A0	/* Handle data ready interrupt from C4/EVENT/DREADY pin */
-> -	if (!iio_device_claim_buffer_mode(indio_dev)) {
-> +	if (iio_device_claim_buffer_mode(indio_dev)) {
-> =C2=A0		ade9000_iio_push_buffer(indio_dev);
-> =C2=A0		iio_device_release_buffer_mode(indio_dev);
-> =C2=A0	}
-> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> index 9ac80e4b7d75..8ed4b2e410c8 100644
-> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-> @@ -188,11 +188,8 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_=
-dev,
-> =C2=A0	/*
-> =C2=A0	 * Ignore samples if the buffer is not set: it is needed if the OD=
-R is
-> =C2=A0	 * set but the buffer is not enabled yet.
-> -	 *
-> -	 * Note: iio_device_claim_buffer_mode() returns -EBUSY if the buffer
-> -	 * is not enabled.
-> =C2=A0	 */
-> -	if (iio_device_claim_buffer_mode(indio_dev) < 0)
-> +	if (!iio_device_claim_buffer_mode(indio_dev))
-> =C2=A0		return 0;
-> =C2=A0
-> =C2=A0	out =3D (s16 *)st->samples;
-> diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.=
-c
-> index 3d441013893c..3f3680c4b42f 100644
-> --- a/drivers/iio/health/max30100.c
-> +++ b/drivers/iio/health/max30100.c
-> @@ -417,7 +417,7 @@ static int max30100_read_raw(struct iio_dev *indio_de=
-v,
-> =C2=A0		 * Temperature reading can only be acquired while engine
-> =C2=A0		 * is running
-> =C2=A0		 */
-> -		if (iio_device_claim_buffer_mode(indio_dev)) {
-> +		if (!iio_device_claim_buffer_mode(indio_dev)) {
-> =C2=A0			/*
-> =C2=A0			 * Replacing -EBUSY or other error code
-> =C2=A0			 * returned by iio_device_claim_buffer_mode()
-> diff --git a/drivers/iio/health/max30102.c b/drivers/iio/health/max30102.=
-c
-> index a48c0881a4c7..288c2f37a4a2 100644
-> --- a/drivers/iio/health/max30102.c
-> +++ b/drivers/iio/health/max30102.c
-> @@ -476,7 +476,7 @@ static int max30102_read_raw(struct iio_dev *indio_de=
-v,
-> =C2=A0		 * shutdown; leave shutdown briefly when buffer not running
-> =C2=A0		 */
-> =C2=A0any_mode_retry:
-> -		if (iio_device_claim_buffer_mode(indio_dev)) {
-> +		if (!iio_device_claim_buffer_mode(indio_dev)) {
-> =C2=A0			/*
-> =C2=A0			 * This one is a *bit* hacky. If we cannot claim buffer
-> =C2=A0			 * mode, then try direct mode so that we make sure
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-c=
-ore.c
-> index f69deefcfb6f..a10590ac4e17 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -2224,19 +2224,19 @@ EXPORT_SYMBOL_GPL(__iio_device_release_direct);
-> =C2=A0 *
-> =C2=A0 * Use with iio_device_release_buffer_mode().
-> =C2=A0 *
-> - * Returns: 0 on success, -EBUSY on failure.
-> + * Returns: true on success, false on failure.
-> =C2=A0 */
-> -int iio_device_claim_buffer_mode(struct iio_dev *indio_dev)
-> +bool iio_device_claim_buffer_mode(struct iio_dev *indio_dev)
-> =C2=A0{
-> =C2=A0	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(indio_=
-dev);
-> =C2=A0
-> =C2=A0	mutex_lock(&iio_dev_opaque->mlock);
-> =C2=A0
-> =C2=A0	if (iio_buffer_enabled(indio_dev))
-> -		return 0;
-> +		return true;
-> =C2=A0
-> =C2=A0	mutex_unlock(&iio_dev_opaque->mlock);
-> -	return -EBUSY;
-> +	return false;
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL_GPL(iio_device_claim_buffer_mode);
-> =C2=A0
-> diff --git a/drivers/iio/light/opt4060.c b/drivers/iio/light/opt4060.c
-> index 981c704e7df5..8cb3fa38077e 100644
-> --- a/drivers/iio/light/opt4060.c
-> +++ b/drivers/iio/light/opt4060.c
-> @@ -304,7 +304,7 @@ static int opt4060_set_driver_state(struct iio_dev *i=
-ndio_dev,
-> =C2=A0	struct opt4060_chip *chip =3D iio_priv(indio_dev);
-> =C2=A0	int ret =3D 0;
-> =C2=A0any_mode_retry:
-> -	if (iio_device_claim_buffer_mode(indio_dev)) {
-> +	if (!iio_device_claim_buffer_mode(indio_dev)) {
-> =C2=A0		/*
-> =C2=A0		 * This one is a *bit* hacky. If we cannot claim buffer mode,
-> =C2=A0		 * then try direct mode so that we make sure things cannot
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index 872ebdf0dd77..bf7b7337ff1b 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -687,7 +687,7 @@ static inline void iio_device_release_direct(struct i=
-io_dev *indio_dev)
-> =C2=A0	__release(indio_dev);
-> =C2=A0}
-> =C2=A0
-> -int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
-> +bool iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
-> =C2=A0void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
-> =C2=A0
-> =C2=A0extern const struct bus_type iio_bus_type;
+Rob
 

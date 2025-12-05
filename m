@@ -1,142 +1,154 @@
-Return-Path: <linux-iio+bounces-26787-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26788-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A95CA77D9
-	for <lists+linux-iio@lfdr.de>; Fri, 05 Dec 2025 13:00:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E336BCA7800
+	for <lists+linux-iio@lfdr.de>; Fri, 05 Dec 2025 13:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39B233077E4E
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Dec 2025 12:00:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0DAEA30987B4
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Dec 2025 12:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1F732F757;
-	Fri,  5 Dec 2025 12:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A0426F2A0;
+	Fri,  5 Dec 2025 12:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P1Zo+Mi/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WMt2ahl3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE8A319850
-	for <linux-iio@vger.kernel.org>; Fri,  5 Dec 2025 11:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E11E316915
+	for <linux-iio@vger.kernel.org>; Fri,  5 Dec 2025 12:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764936002; cv=none; b=qp7RoaJmWKXIkvjIYaq/Ek9SfS9CUw5oIsEzo7A9nJu+Z0pza/XBApK3RnMDkO83A6zJnQKbUeWm564DnlKIp/fslSUAda6xmWRiHOcYzdCUM5klut5aCiLLIs4bdeIom3zlUzyEtDsr6MuDBv2EhC5iuk9BM5UYi71Ud7ZlIHY=
+	t=1764936163; cv=none; b=jP8buj3rqa9SVlU2Edy8nuO4qJfKO2pGX5lVScXDnwKVIWWbKN1+y0KgyK/uCvRASB2FGqI6F/0SGDpdNXz7IQ92aDJoyiy5ugamry+MhFvKddOwmtDeCESAW8euMwyZUNipDME2383ycebPjYeHjPMtAvyBV6z3jmYHgoY/fxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764936002; c=relaxed/simple;
-	bh=jVqMrg+A47H2zjTYGrLGwGz2mIySQrWA9BXlTHSCoj0=;
+	s=arc-20240116; t=1764936163; c=relaxed/simple;
+	bh=bgYeGMAzm6Y6sfhlpNRYEBYM+0aMUuWk/NuSWaFkkTs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N763CcK3tjd6O0cPbUYOMp3HUIbrIxVXLyUt41hELMvYeSbzhCqChNMPs65iqNBnP5Ee9YFkGxri2P4plMqNSLsOX82JQPz70u5dkoS+6RbLv5mcNIJLhBAAXBdItY5eNak07CkOlj3UPwBnLJWuLz8Cm6HGNgfjPYYdoKhOUGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P1Zo+Mi/; arc=none smtp.client-ip=209.85.218.54
+	 To:Cc:Content-Type; b=P/liMFMPKEWSlx3xe4TVVuRtVvZ0AHIC6gwhQfjGCLE3UGkJVxW19mmvuaEcuPc5/OwU735siRckByAUYcSB0AypRnWthToTkHrakZEaCtLcMkN7M1j3jZkXdqe+AkTrOPbSh1GfI5bKw/nbI2+k2QqEr6fbY7dtF1LhnJDZ9d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WMt2ahl3; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b76b5afdf04so302424166b.1
-        for <linux-iio@vger.kernel.org>; Fri, 05 Dec 2025 03:59:59 -0800 (PST)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b737502f77bso262644066b.2
+        for <linux-iio@vger.kernel.org>; Fri, 05 Dec 2025 04:02:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764935998; x=1765540798; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764936158; x=1765540958; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jVqMrg+A47H2zjTYGrLGwGz2mIySQrWA9BXlTHSCoj0=;
-        b=P1Zo+Mi/36P0ALphUhwPq6kb+SdH0/UPh2e0M3cGaJbRHL2TswWLBprtl6B+JpxphC
-         Bf1JwZNF9GiA6sac3Mqp95YZWj8GaU9K7WcD9DkZwSzb8aQueVuf7BANngABMTAF6U4f
-         bq2fIvmf81T4L6yy6UdltYAh32LcU7hJH0Qktbp1U6DIDbwzr56onaOW1fsmV/imlNAK
-         juzialOgl+6CkGs5eu66a0RURlIdgydlUZdeyP7duraAq72djruVV6QMSjT7OTlxfkGz
-         eyu7MW7+IrTGasofZKx68a3c08mh2LpypfMJD8SxZ7FbmNg5S39eTfI0GXmDdt5wlkpl
-         whSQ==
+        bh=VgyaUQ07yV5AbaD6jWa5R2iO6mlnxudcEFZdveJPHlE=;
+        b=WMt2ahl3Go75Px38hXZd/4f7k5fSV4uIJHmp5qLW61Gdy06MSZIRfVgVrkeTdQXdyg
+         V9xct/0yL7Yn/Y3Eh/vn1MTOXHc7N2Vdzg2dtMxwQJpISsFDLdeQdtRF3BGp7neiLsTI
+         kWmnazS6cmIQ2pJxX1ytEfm7yPHMCfJ+GxX7Gh32ttxO847xtad/+PxmepZf9FbIEnVv
+         k7NH8FPU+1pfZxjG3+crlTzmj19EllgpR+iYzZgbt74Qia0It84Dvpi4gSXiT1uE2ljW
+         nXarr9fnXxBEErW0fw8X5UowjJD7OMcx1P9pX2Yr0kOIp+qfUDYE6LVJsEA2lKy0sMiY
+         BcSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764935998; x=1765540798;
+        d=1e100.net; s=20230601; t=1764936158; x=1765540958;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jVqMrg+A47H2zjTYGrLGwGz2mIySQrWA9BXlTHSCoj0=;
-        b=bXFaFFrGPR6k+CLVemVCIiNcmp61lg/bize+en43EjK23yUOJx2PZC4q4g4hHi/dB+
-         h65obLUrOlD01xxaXFr2byP6FCPm1Je+xv26L4KeIjeL8SmzIT/QiCHhzLdxayalnjRL
-         zsYLAPNboz0KVEBbfIqzjltBLoCT3zpf+0NrHIQMVD4rhLdzrjjI961NOKt8NGiPskCv
-         ExQVtwJfjkxg1JmLi/NId0WHdI80saX3+4YI105CxE2DWCuAAgv+COAIec6JtVHUNtfO
-         PC9MPVY56Su+VVgheFa8cbSLKJEeWybcAPz4QoKX3xGAAEWxs6LGGQVU8buBmfsEfBmF
-         JAmg==
-X-Forwarded-Encrypted: i=1; AJvYcCUf6lSXSlE9264ZH8BpeGpy5P5zLTC5bPQwIXHjYHGxh0OFceulsF88qeskppM5JnYqtf49ApR8H0o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynVCmvHPJzzXNN7SQYSQdgWNI9HkZ5QmkBoy+vzXimLuyzC3Gj
-	j3Y12kQ9QMyn0RuktHq5Oxa2v7RTYaoBi+Rw2NBVT12P4jllNjqxD4qeTVOlwjN8k5snF7wK62S
-	4bmds9ipj5NugjaAi8hvEVmfq/BWelWo=
-X-Gm-Gg: ASbGncu/gHbwKtxaGydLX1obZuxMbxSgRPoX0ZwPHlLaMeDkZri8S3bY3Als9Ur+U/1
-	dKJdtNn0FPp0N1X5+8uCuSWsrE4XRk73qP7/rJoAIrWf6RaJ5uhkkXtnrb8Kj9s3dN55d3mNi42
-	e/miIvPDaEoWoXm8IadPqi/dDKdTRqELRAm4HZr7Le4SBJ5Jy/e18Scw/S4HODdIkZrFmv7c72Q
-	QMLQpMeWfDV8YhkM+xm33RQmlNwGlIaDg/JaaGR3xXTvMFd1Roetc1mOTE5tz3rF/28UqhQ62lw
-	mTOSXIkHoeCOwYVvjEhTrY4hhQjSZih6bCSO/KOmwwhQ6phzO7A8+G5BjzixG9D2Cf38k0A=
-X-Google-Smtp-Source: AGHT+IGOCYPdLfHy+mrMcAwzJiVXn2hrBbSyAPUcFQ7TxX6PZMhE0DKFSXlFzbZ8l/wWYlRGRGVkoXNMC0NTaFa4CXE=
-X-Received: by 2002:a17:907:970a:b0:b54:7778:c62d with SMTP id
- a640c23a62f3a-b79dbea380fmr919219466b.15.1764935997559; Fri, 05 Dec 2025
- 03:59:57 -0800 (PST)
+        bh=VgyaUQ07yV5AbaD6jWa5R2iO6mlnxudcEFZdveJPHlE=;
+        b=tGOCz8hMOASQLdQDvHA9PEvVzrnrRzK77xP/bNz/tQTbaGPDmQyr+3VSP8JIZFCbUM
+         CfwyCs15nm3uRJ8VRF8V7J/MDhijnHBO8OafiYejUbEi1I1U7xbiDxmq2Z3qKxlL3ae3
+         LkG9ymUsT1g59XigzdWgOGPMjNnr2+jcHBIsS6lNTBFcd+nV7reKNTyK4Lqi9HgTxSEl
+         FrU0IQVRtlLt8zFl0fFcoDbxmz/c8uax6JTizPLzbtUcx81W9L0LU49y1EvkfCYutcHS
+         U85HDVVs6HEGt3u2BH9nbP7fEHFO4KqQCFJYQ6/S1DOBpbDMrThmGsrICNiLus65hfjs
+         qUWg==
+X-Forwarded-Encrypted: i=1; AJvYcCXZJo+VkL7TVRFUh5Owaxs7l2FavgJUl63CPGGHmHfR1lbDSuOJBh320jSbU3kOossBNy3lgs+l+X4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEgyBmExowLs5IIqBmAJd1arE8FXRYYkLdOMP5vW1ZhgXf2vtH
+	c6PDzk6HmdD6OzkQ3XQSkX47ZWxExq0WSkl9hthon2uGYKnX+Th+ICuJ8u5Gmz1gkvQwXyCpOWC
+	zen5c0XCuKbLYyH6InFmWo2gjMoy7kJI=
+X-Gm-Gg: ASbGncvFLJhg6n+8W9Sew9tNuIYpIPUsAYHmJZhSDXiakWyLGKOU1IpBoIQnBjluapd
+	H5qPfe5O/8kAHQfMJolmw2fpp6MLahqQ2iVmDteD5BifHjHoUjKxVcGzUlQ0nch9P6wlb88gQzc
+	UzpV0Utc33j7b+YMjE83D84TJGqIg0WFUzeehMl9J8UpV7quvhrEN/qWC+DDlewwsKZgE2B+mpv
+	cuE/tOVihKLbAANNqyMCn2NkrC1iywsaW6kp1aFRh4kJ6J2zCwPTofW/KMFanPHIvCHCpBUT59u
+	MFq+DEUr+wIuMH9hTHs+uriIheW+DaVsiKAXq0huSBPurc3xJyCOPSUmBge1idA9KcygSrg=
+X-Google-Smtp-Source: AGHT+IGBQ0GhvwVKLqSDdmB+0hEDhHnoYfYYmLqHuYVoO1l7rAv2wXtwBjAHttKeBb0IocJiCANgCIPU3cmgESB5dxQ=
+X-Received: by 2002:a17:907:7ea3:b0:b79:cec4:f1ad with SMTP id
+ a640c23a62f3a-b79ec6b93c7mr675997966b.40.1764936157439; Fri, 05 Dec 2025
+ 04:02:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251204-iio-axi-adc-minor-change-v1-0-2d441d6c5b65@analog.com>
- <20251204-iio-axi-adc-minor-change-v1-2-2d441d6c5b65@analog.com>
- <CAHp75Vc46cy7vGPAHksFB5QT0Mc_ztGaODtyLeEQHveNrYKg=Q@mail.gmail.com>
- <d385344e47410305be75aed6ad1d1183cb93d450.camel@gmail.com> <CAHp75Vdk7tsqzf04SGWuCY+=q95HhA0A4dQy15QceGieQqQO=g@mail.gmail.com>
-In-Reply-To: <CAHp75Vdk7tsqzf04SGWuCY+=q95HhA0A4dQy15QceGieQqQO=g@mail.gmail.com>
+References: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
+ <20251124-staging-ad4062-v2-9-a375609afbb7@analog.com> <aSQ2JUN05vmMQC1I@smile.fi.intel.com>
+ <rk4hmupbrb5ugxft6upj7ru43x3z7ybrobax45rorpwbcwleh6@vzxrr3m7r6ep>
+ <aSgX9nMBwBtAlSyj@smile.fi.intel.com> <3izg5lyxjye24pvzoibk4tmnxbdfokr53abkpbjo5epqjoz55j@6wc7i4wsgwkt>
+ <CAHp75VfLd46xt_2W35gjoTCoh+PqExL-faZ8snhzfOx=65qXWw@mail.gmail.com> <egl65ctlz2umzcdzf7ke5c2hnd33ghudklmf4pdgnp64vnzjg3@rpqrludyv4p2>
+In-Reply-To: <egl65ctlz2umzcdzf7ke5c2hnd33ghudklmf4pdgnp64vnzjg3@rpqrludyv4p2>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 5 Dec 2025 13:59:21 +0200
-X-Gm-Features: AWmQ_bnn7Gx1nIQ8uaxdVvpqVVqKP2HAXwmvE6h8sBaJozB9XkIBY13G5q2BLwM
-Message-ID: <CAHp75Vcxu87JFwpd=+yGonhYZB0a=NK=1MffP4j=Md7Vb8G-aA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] iio: adc: adi-axi-adc: Turn dev_info() into dev_dbg()
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
+Date: Fri, 5 Dec 2025 14:02:00 +0200
+X-Gm-Features: AWmQ_bnpd4_oFl4c5azPbk7HXaspqhnY9oSEmM6KqrHSmwBU-kDUBFomCH8ufok
+Message-ID: <CAHp75VcJZavRo7TKXAZagDc8Vt4-y-zm+EySyugRtSxSLMGX-Q@mail.gmail.com>
+Subject: Re: [PATCH v2 9/9] iio: adc: ad4062: Add GPIO Controller support
+To: Jorge Marques <gastmaier@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Jorge Marques <jorge.marques@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-gpio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 5, 2025 at 1:58=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Fri, Dec 5, 2025 at 1:24=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.co=
-m> wrote:
-> > On Thu, 2025-12-04 at 21:11 +0200, Andy Shevchenko wrote:
-> > > On Thu, Dec 4, 2025 at 5:23=E2=80=AFPM Nuno S=C3=A1 via B4 Relay
-> > > <devnull+nuno.sa.analog.com@kernel.org> wrote:
-> > >
-> > > > We should not abuse logging and logging a successful probe is clear=
-ly
-> > > > abuse. Turn it into dev_dbg().
+On Fri, Dec 5, 2025 at 1:53=E2=80=AFPM Jorge Marques <gastmaier@gmail.com> =
+wrote:
+> On Fri, Dec 05, 2025 at 12:21:31AM +0200, Andy Shevchenko wrote:
+> > On Thu, Dec 4, 2025 at 11:38=E2=80=AFPM Jorge Marques <gastmaier@gmail.=
+com> wrote:
+> > > On Thu, Nov 27, 2025 at 11:20:54AM +0200, Andy Shevchenko wrote:
+> > > > On Wed, Nov 26, 2025 at 04:55:41PM +0100, Jorge Marques wrote:
+> > > > > On Mon, Nov 24, 2025 at 12:40:37PM +0200, Andy Shevchenko wrote:
+> > > > > > On Mon, Nov 24, 2025 at 10:18:08AM +0100, Jorge Marques wrote:
+
+...
+
+> > > > > > > +       return reg_val =3D=3D AD4062_GP_STATIC_HIGH ? 1 : 0;
+> > > > > >
+> > > > > >   return !!(reg_val =3D=3D AD4062_GP_STATIC_HIGH);
+> > > > > >
+> > > > > > also will work.
+> > > > > >
+> > > > >     return reg_val =3D=3D AD4062_GP_STATIC_HIGH;
 > > > >
-> > > > If it turns out the IP version is that relevant we can make it easy=
- to
-> > > > get through a new debugfs interface later on.
-> > >
-> > > Hmm... This prints a version information. Does the user have differen=
-t
-> > > means to get the same information?
+> > > > Hmm... This will include implicit bool->int. The !! guarantees valu=
+es 0 or 1,
+> > > > but I don't remember about implicit bool->int case.
 > >
-> > It can read it directly from the registers through debugFS. But is that=
- a blocker? I mean,
-> > there are tons of devices where we could potentially print some product=
-_id or silicion rev but that
-> > should not be a reason for bloating the console, right? Or is your argu=
-ment that once done, it's a
-> > bad to take it back?
+> > > I don't think the implicit bool->int is an issue, grepping `return .*=
+ =3D=3D .*;`
+> > > matches a few methods that return int.
+> >
+> > Yes, the Q here is the value of true _always_ be promoted to 1?
 >
-> At least when one of my regmap patches regressed, this was the exact
-> information that was printed by the affected driver and more or less
+> The relational operator result has type int (c99 6.5.9 Equality
+> operators); and when any scalar value is converted to _Bool, the result
+> is 0 if the value compares equal to 0; otherwise, the result is 1 (c99
+> 6.3.1.2).
+> https://www.dii.uchile.cl/~daespino/files/Iso_C_1999_definition.pdf
 
-Just to be clear, the "affected driver" is *not* this driver.
+Okay, thanks for checking this!
+So, let's go with a simplified variant then.
 
-> immediately visible to the user and/or easy to get.
+> No conversion warnings even when forcing _Bool type.
+> There are many usages like this, for example:
 >
-> > As mentioned in the commit message, we could add a "version" debugFS fi=
-le to print the same info but
-> > that would require a bit more work.
+> drivers/iio/accel/adxl313_core.c @ int adxl313_is_act_inact_ac()
+> drivers/iio/light/opt4060.c @ int opt4060_read_event_config()
+> drivers/iio/light/tsl2772.c @ int tsl2772_device_id_verify()
+> lib/zstd/compress/zstd_fast.c @ int ZSTD_match4Found_branch()
 >
-> Not sure it is worth doing so.
->
-> > Anyways, if too much trouble, I can drop the patch...
->
-> Up to you, I'm talking from my own experience.
-
-
+> I cannot find many legitimate usage of relational operator with the
+> double negation.
+>   git ls-files | xargs grep -s 'return !!' | grep '=3D=3D'
 
 --=20
 With Best Regards,

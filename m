@@ -1,319 +1,193 @@
-Return-Path: <linux-iio+bounces-26808-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26809-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D33CA8382
-	for <lists+linux-iio@lfdr.de>; Fri, 05 Dec 2025 16:36:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B924CA9430
+	for <lists+linux-iio@lfdr.de>; Fri, 05 Dec 2025 21:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C0403256A4D
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Dec 2025 15:30:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D86C3066DBF
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Dec 2025 20:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE752E8DFA;
-	Fri,  5 Dec 2025 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38EDC2DCF46;
+	Fri,  5 Dec 2025 20:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="daJifsFO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AEnGdXUV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D14A32720C;
-	Fri,  5 Dec 2025 15:13:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9752C17B3
+	for <linux-iio@vger.kernel.org>; Fri,  5 Dec 2025 20:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764947600; cv=none; b=Vv8/Xyo7Ey4S5hThb2Ppx62hqwULcxdYGNIGg5jNE7oMKOwcTojANcYBUCQpUs6CKTNZWuHy5L2A+UA4n1R2BP5x4mbJ2Vz8vQBQ0cA0NvRH7Z4pw9Lc2j8Ey4GObBE/uS8au0QqGl3jqWZLJ3DjhGLV2nY2ZeQGEYrY9FzZ7Rc=
+	t=1764966494; cv=none; b=sHRl05EaPQXygaq72gkFuqM7tCENRkrrukBsH/REeMhdYiL9084Uoi4jAaUH04KIi8nCL5B8Hd96f0+TOsl4c8YWYU9+MXOCQOm7VfxwjJoCFW92ChFns4h4x8NfhiMTNpqiTqRORSCIaJDlHZTNmTYd+8RKKuAmA/xALP4Mw+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764947600; c=relaxed/simple;
-	bh=uq609zIRAOVsAf4uucshpjyCAMyR9HyUFzZbfYrcEe0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=mz8e2M6pIK6qzPGurHnSK1jbI9lMVBjzlY/1ABkaSYaNPqvFf7QUqzhqYX+zs/1O77t6GgxPCwe+kxI7mRiBu8nyPT2IvTll06LG321j8+TKmStAJoH4CaItgc/AWqaKSonS+ctUbtTvBBbxsF2D1F0A4aLXSEzPrfJWjGhyB9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=daJifsFO; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B5EjxBO172678;
-	Fri, 5 Dec 2025 10:12:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=Vbtuk
-	usOXD7WxI062sEQzo5CcWBmHPyhF4OcVREbmS4=; b=daJifsFO6FCttOwbkBURF
-	SteXBzUgTQ5Jrdn7ealJSJvJZMi26pVIMgCj3GBACQVRkC8zZwu+U97sAs1kn2Kz
-	pjEXvZeyI6e/JqKeJWIVhP40+vdmCPKq0P2JyW/QyahXh/vyAPn2x3CoopHDUZ1G
-	7ReEGgjjwex1MQ110cylCHvwCm78uFjRLfyQbulYVkBuHAKh9E4ADfoNkMJmmJqC
-	ol18lYE7uWX9ef1PoncVppEaodmhGbFlWSVfZCZiVlweizbowX6kZcMyKum94wpG
-	M1N3n2E15pFwjKuXHCzBFhto3KSgNk8F+H4PO25ldTwO5iVJ5krPk6RbG4juhgDj
-	g==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4aufyscn6p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Dec 2025 10:12:51 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5B5FCoXq033585
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 5 Dec 2025 10:12:50 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Fri, 5 Dec 2025 10:12:50 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Fri, 5 Dec 2025 10:12:50 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Fri, 5 Dec 2025 10:12:50 -0500
-Received: from HYB-DlYm71t3hSl.ad.analog.com ([10.66.6.192])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5B5FC8SJ029946;
-	Fri, 5 Dec 2025 10:12:43 -0500
-From: Jorge Marques <jorge.marques@analog.com>
-Date: Fri, 5 Dec 2025 16:12:10 +0100
-Subject: [PATCH v3 9/9] iio: adc: ad4062: Add GPIO Controller support
+	s=arc-20240116; t=1764966494; c=relaxed/simple;
+	bh=EVOhk1HI6FciASKyQp7+FOie/7X+cAATsS5lmRg1qfs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gbpkJur92LQ/trh5+9k2UmBpRa/0oaeKKw6gSBtOOw3yBukCKoACFdVgd/6uFz4wn3qkmB9+OkVeU1AyaM3fFdVk6BOL0jMe6YMlOX2SKdfIWLcqyfawk4dDIMyZArOOqhATVDPcgzbR3QL2qK0S5pC0yWS3eSIdITXEDau7kAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AEnGdXUV; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2955623e6faso34664995ad.1
+        for <linux-iio@vger.kernel.org>; Fri, 05 Dec 2025 12:28:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764966492; x=1765571292; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SdEQYEeEhg+Pxb0AQxBFfKIUgC+j17YfvZoVKrA407E=;
+        b=AEnGdXUVRhpew8isONlRzdg21vZAj8cfIOYo8LhLaevJJ7+LS5TEzepZUSFTEEK7WN
+         0bB3FXitKY9sNTVM2OtoBu+zYPx8uoYyQgJ1kDeXyy14u3URPM9m5S3p/8tr697LhRsE
+         hbvMebovHNnMUZaIO7DPPhKMaBiGSpF5uUjiZrYnRBT5EAzU0rnrIr1+AsAhDskAmLdl
+         BbTpPZpFQ1CvEuSU3h69ma/jsLIrSM0Ut9l09A+yreBlObFObbe7fDOCGrb9S1/a2cDH
+         yxWyD3ZjOImlMgp+962SqXbCDnzoXHq0k3eaGWtxd4Yxekk3ZCPNHGS2A6ZBmfjr4rWN
+         h70w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764966492; x=1765571292;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SdEQYEeEhg+Pxb0AQxBFfKIUgC+j17YfvZoVKrA407E=;
+        b=GqQ5kayrq9PD1ld1UFTdchQ8xIKX0atHSdpwUXt3OSScTzfwivs0+qUKU2PMyy+XQV
+         jeSorJxDn6wEjJAx1OHJQge6NpOiYJV9KysCUNz9onEWMo2Z/4GMUVBuHVHM63hv+qgT
+         FoKr0wki3LMvxtAu2bor23ca414cTyYg4AJSe0koxNUzGdkm7Yo3ovxZ6himCxrlJd8p
+         njt7TFJUuu84S455S9fAcRJq1bpHaHT/jssUpebgfvK/Osme4lZjV0vdvDsLOMsJlw0H
+         IYOfUCkeVn04ELCTPJ7JSWwEenXN/ZeqGq2UfbF5wWDnbbxmMLZvhlmoRf7Sl8ogvDvk
+         j9Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCWdtSTrHhI2nSdK4VAYLVY4Oh9LaV/h+BNlBjXb7hvfMPMbXynGsJvnHq33gAgS9EFscfvmgIC3cFY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrRqrvXPwF9sctxcnXdrFZDzq72rElD9TDwuwtIoEVvuivydIx
+	w3gwMMONZiA4CGq7xEEnUco0m5rioF6QiAhPdCjQMk0xG6MnBsnvqp7mJHG+9r78Ss8=
+X-Gm-Gg: ASbGncv3F+E8tkZwmpTWCo43jWwHv1e8H4jEWwjheEhWO006FHC2U9QjvsJ/ut9NPml
+	I6+0ChhNc9OZESMN2p8btjG5y3bpfatrA/Ti4EEBk4KPKtrV3qC8Flla7q1zCsVDbjpAexKKbuy
+	wk/5L2szHoBI5YsAPG3znGDgmDuIsRdd/R8pIKSgvEmmm0y9ztgeu5eWdaKszkQkB8xNZraLMft
+	0iS0hCCX67TyBnNnYgMI/VMTGOHsUZSFn5Rs70hZ0RumdE6m6jpSHqruASwy43LjCVlbK/em0Ch
+	TBiFNDpaglL6B6pSA1Y0V+TnIns4JEJMtQ5FRKXXk6mjxywnM5JWcqrUEhxOZxwgX9rjltpnnZo
+	5wRh0+Q+w+2eAxus1aBpJ8mCd/TnJ0Y2utOLHdQH32xkEhfxnsL661BkaGL40MNbs3ECwNQLO5g
+	02xSIc7AhgflpDTDXpG6fdccjBTi7YOkP0gayMNZ2rjqKsYqwfVbycKmKO3IWJWFRGyQHsw465t
+	TzGPFpqNuuYKR0kDEFx1dSvolw44tRKmY6O8mLJIpmJ1twFurodpp2u5c+kdtRFi3Pu56mR
+X-Google-Smtp-Source: AGHT+IE7SZxJEEgg2GMHkTTXb7pxe8bAQ0ErqGaRLH8Fgf3Ui7YDuS3yTvPgzhY3cUjHgxCL6TCIsw==
+X-Received: by 2002:a17:903:3510:b0:298:3a2f:2333 with SMTP id d9443c01a7336-29df610f3eamr2230825ad.31.1764966491847;
+        Fri, 05 Dec 2025 12:28:11 -0800 (PST)
+Received: from Lewboski.localdomain ([181.191.143.42])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae99fa59sm57256845ad.58.2025.12.05.12.28.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Dec 2025 12:28:11 -0800 (PST)
+From: Tomas Borquez <tomasborquez13@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	Tomas Borquez <tomasborquez13@gmail.com>
+Subject: [RFC PATCH 0/3] ad9832: driver cleanup
+Date: Fri,  5 Dec 2025 17:27:40 -0300
+Message-ID: <20251205202743.10530-1-tomasborquez13@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20251205-staging-ad4062-v3-9-8761355f9c66@analog.com>
-References: <20251205-staging-ad4062-v3-0-8761355f9c66@analog.com>
-In-Reply-To: <20251205-staging-ad4062-v3-0-8761355f9c66@analog.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich
-	<Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "David
- Lechner" <dlechner@baylibre.com>,
-        =?utf-8?q?Nuno_S=C3=A1?=
-	<nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-        Linus Walleij
-	<linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, Jorge Marques <jorge.marques@analog.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764947528; l=5635;
- i=jorge.marques@analog.com; s=20250303; h=from:subject:message-id;
- bh=uq609zIRAOVsAf4uucshpjyCAMyR9HyUFzZbfYrcEe0=;
- b=EMgSPj6+FkEhY8ozHtLL8QCCDWIiDiJ+ZLQQNK6psLbPjKfBfcCF3vhhMacHzNqrcvLbhpu5B
- j4a9vCJkBCMBgOBJlrx2bPR4FjAvt8Ew5wy7djjF7tKqsDUEkpBrV3S
-X-Developer-Key: i=jorge.marques@analog.com; a=ed25519;
- pk=NUR1IZZMH0Da3QbJ2tBSznSPVfRpuoWdhBzKGSpAdbg=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=G4cR0tk5 c=1 sm=1 tr=0 ts=6932f674 cx=c_pps
- a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=gAnH3GRIAAAA:8 a=xMyuZJbwAj7bCYiyej4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: iyXUigWsP5l9yKJZiyOEghs_Dm0xCzOe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA1MDExMCBTYWx0ZWRfXxPSX+6dzbUCR
- EHKTFjcIQHappZv2EtWoE+R1IfxOvEH1kmUJ2WvVzBtBNY7JPag+Hbh+jgUBlcM6ZkGsnOXnc5U
- sC3WQYON55GEM6vObZ7uqTSHm0d5H2neuN7KhgsM0dEIWZfDjj2CjwqmFWILCf0bttkO0yxr+iV
- BEIb3eFaEEtsOVilVtB1MkXBN3TklXYo/J+6L4vTnlTeXRGcHLm9xmbzbu2YQUv6liz5rR8jn3q
- J/DyArDogOCou99k4oc2xXZjSMOYMnIUXwXbZGXiqSegB7P3Q1joKRk2RGqhAfKf053p1m3dwv6
- AiA1Q2Y3ekfw15cwh9F/nDR7ZGe5ofOyBHQukIfKZDFfXetc6DNpXrogCU6kSiKdcW2Ee+hXLmX
- 8k8kI3x/ZkSAHXVgKLZe04OtG4Mlng==
-X-Proofpoint-ORIG-GUID: iyXUigWsP5l9yKJZiyOEghs_Dm0xCzOe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-05_05,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- spamscore=0 clxscore=1015 phishscore=0 malwarescore=0 adultscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512050110
+Content-Transfer-Encoding: 8bit
 
-When gp0 or gp1 is not taken as an interrupt, expose them as GPO if
-gpio-contoller is set in the devicetree. gpio-regmap is not used
-because the GPO static low is 'b101 and static high is 0b110; low state
-requires setting bit 0, not fitting the abstraction of low=0 and
-high=mask.
+This series is a general cleanup of ad9832, with the purpose of 
+graduating it from staging. The main changes are removing legacy 
+platform_data support, converting to IIO channels with read/write_raw 
+callbacks, and adding devicetree support.
 
-Signed-off-by: Jorge Marques <jorge.marques@analog.com>
----
- drivers/iio/adc/ad4062.c | 125 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 125 insertions(+)
+I'm sending this as an RFC because I have some concerns about the ABI 
+design and would appreciate guidance before putting more time into this.
 
-diff --git a/drivers/iio/adc/ad4062.c b/drivers/iio/adc/ad4062.c
-index e432aa60a224e..e52894ed757f7 100644
---- a/drivers/iio/adc/ad4062.c
-+++ b/drivers/iio/adc/ad4062.c
-@@ -11,6 +11,7 @@
- #include <linux/delay.h>
- #include <linux/devm-helpers.h>
- #include <linux/err.h>
-+#include <linux/gpio/driver.h>
- #include <linux/i3c/device.h>
- #include <linux/i3c/master.h>
- #include <linux/iio/buffer.h>
-@@ -87,8 +88,11 @@
- #define AD4060_MAX_AVG		0x7
- #define AD4062_MAX_AVG		0xB
- 
-+#define AD4062_GP_DISABLED	0x0
- #define AD4062_GP_INTR		0x1
- #define AD4062_GP_DRDY		0x2
-+#define AD4062_GP_STATIC_LOW	0x5
-+#define AD4062_GP_STATIC_HIGH	0x6
- 
- #define AD4062_LIMIT_BITS	11
- 
-@@ -652,12 +656,14 @@ static int ad4062_request_irq(struct iio_dev *indio_dev)
- 	if (ret == -EPROBE_DEFER) {
- 		return ret;
- 	} else if (ret < 0) {
-+		st->gpo_irq[0] = false;
- 		ret = regmap_update_bits(st->regmap, AD4062_REG_ADC_IBI_EN,
- 					 AD4062_REG_ADC_IBI_EN_MAX | AD4062_REG_ADC_IBI_EN_MIN,
- 					 AD4062_REG_ADC_IBI_EN_MAX | AD4062_REG_ADC_IBI_EN_MIN);
- 		if (ret)
- 			return ret;
- 	} else {
-+		st->gpo_irq[0] = true;
- 		ret = devm_request_threaded_irq(dev, ret, NULL,
- 						ad4062_irq_handler_thresh,
- 						IRQF_ONESHOT, indio_dev->name,
-@@ -1268,6 +1274,121 @@ static int ad4062_regulators_get(struct ad4062_state *st, bool *ref_sel)
- 	return 0;
- }
- 
-+static int ad4062_gpio_get_direction(struct gpio_chip *gc, unsigned int offset)
-+{
-+	return GPIO_LINE_DIRECTION_OUT;
-+}
-+
-+static int ad4062_gpio_set(struct gpio_chip *gc, unsigned int offset, int value)
-+{
-+	struct ad4062_state *st = gpiochip_get_data(gc);
-+	unsigned int reg_val = value ? AD4062_GP_STATIC_HIGH : AD4062_GP_STATIC_LOW;
-+
-+	if (offset)
-+		return regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
-+					  AD4062_REG_GP_CONF_MODE_MSK_1,
-+					  FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_1, reg_val));
-+	else
-+		return regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
-+					  AD4062_REG_GP_CONF_MODE_MSK_0,
-+					  FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_0, reg_val));
-+}
-+
-+static int ad4062_gpio_get(struct gpio_chip *gc, unsigned int offset)
-+{
-+	struct ad4062_state *st = gpiochip_get_data(gc);
-+	unsigned int reg_val;
-+	int ret;
-+
-+	ret = regmap_read(st->regmap, AD4062_REG_GP_CONF, &reg_val);
-+	if (ret)
-+		return ret;
-+
-+	if (offset)
-+		reg_val = FIELD_GET(AD4062_REG_GP_CONF_MODE_MSK_1, reg_val);
-+	else
-+		reg_val = FIELD_GET(AD4062_REG_GP_CONF_MODE_MSK_0, reg_val);
-+
-+	return reg_val == AD4062_GP_STATIC_HIGH;
-+}
-+
-+static void ad4062_gpio_disable(void *data)
-+{
-+	struct ad4062_state *st = data;
-+	u8 val = FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_0, AD4062_GP_DISABLED) |
-+		 FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_1, AD4062_GP_DISABLED);
-+
-+	regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
-+			   AD4062_REG_GP_CONF_MODE_MSK_1 | AD4062_REG_GP_CONF_MODE_MSK_0,
-+			   val);
-+}
-+
-+static int ad4062_gpio_init_valid_mask(struct gpio_chip *gc,
-+				       unsigned long *valid_mask,
-+				       unsigned int ngpios)
-+{
-+	struct ad4062_state *st = gpiochip_get_data(gc);
-+
-+	bitmap_zero(valid_mask, ngpios);
-+
-+	for (unsigned int i = 0; i < ARRAY_SIZE(st->gpo_irq); i++)
-+		__assign_bit(i, valid_mask, !st->gpo_irq[i]);
-+
-+	return 0;
-+}
-+
-+static int ad4062_gpio_init(struct ad4062_state *st)
-+{
-+	struct device *dev = &st->i3cdev->dev;
-+	struct gpio_chip *gc;
-+	u8 val, mask;
-+	int ret;
-+
-+	if (!device_property_read_bool(dev, "gpio-controller"))
-+		return 0;
-+
-+	gc = devm_kzalloc(dev, sizeof(*gc), GFP_KERNEL);
-+	if (!gc)
-+		return -ENOMEM;
-+
-+	val = 0;
-+	mask = 0;
-+	if (!st->gpo_irq[0]) {
-+		mask |= AD4062_REG_GP_CONF_MODE_MSK_0;
-+		val |= FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_0, AD4062_GP_STATIC_LOW);
-+	}
-+	if (!st->gpo_irq[1]) {
-+		mask |= AD4062_REG_GP_CONF_MODE_MSK_1;
-+		val |= FIELD_PREP(AD4062_REG_GP_CONF_MODE_MSK_1, AD4062_GP_STATIC_LOW);
-+	}
-+
-+	ret = regmap_update_bits(st->regmap, AD4062_REG_GP_CONF,
-+				 mask, val);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev, ad4062_gpio_disable, st);
-+	if (ret)
-+		return ret;
-+
-+	gc->parent = dev;
-+	gc->label = st->chip->name;
-+	gc->owner = THIS_MODULE;
-+	gc->base = -1;
-+	gc->ngpio = 2;
-+	gc->init_valid_mask = ad4062_gpio_init_valid_mask;
-+	gc->get_direction = ad4062_gpio_get_direction;
-+	gc->set = ad4062_gpio_set;
-+	gc->get = ad4062_gpio_get;
-+	gc->can_sleep = true;
-+
-+	ret = devm_gpiochip_add_data(dev, gc, st);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Unable to register GPIO chip\n");
-+
-+	return 0;
-+}
-+
- static const struct i3c_device_id ad4062_id_table[] = {
- 	I3C_DEVICE(AD4062_I3C_VENDOR, ad4060_chip_info.prod_id, &ad4060_chip_info),
- 	I3C_DEVICE(AD4062_I3C_VENDOR, ad4062_chip_info.prod_id, &ad4062_chip_info),
-@@ -1356,6 +1477,10 @@ static int ad4062_probe(struct i3c_device *i3cdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to request i3c ibi\n");
- 
-+	ret = ad4062_gpio_init(st);
-+	if (ret)
-+		return ret;
-+
- 	ret = devm_work_autocancel(dev, &st->trig_conv, ad4062_trigger_work);
- 	if (ret)
- 		return ret;
+Patch 1 removes the legacy platform_data support as suggested by
+Jonathan [1]. The driver now initializes to a safe state and lets
+userspace configure frequencies/phases via sysfs.
+
+Patch 2 converts frequency and phase configuration from custom sysfs
+attributes to proper IIO channels using read_raw/write_raw callbacks
+(This is the main area where I'd like feedback).
+
+Patch 3 adds devicetree bindings documentation.
+
+Design Concerns:
+1) Channel Organization and ABI Break
+
+   The device has 2 frequency registers and 4 phase registers. Since both
+   frequency and phase must use IIO_ALTVOLTAGE since there's no better fit
+   (as far as I know), I've organized channels as:
+
+     out_altvoltage0_frequency  (FREQ0)
+     out_altvoltage1_frequency  (FREQ1)
+     out_altvoltage2_phase      (PHASE0)
+     out_altvoltage3_phase      (PHASE1)
+     out_altvoltage4_phase      (PHASE2)
+     out_altvoltage5_phase      (PHASE3)
+
+   The old ABI used out_altvoltage0_frequency0, out_altvoltage0_frequency1,
+   out_altvoltage0_phase0, etc. 
+
+   The new approach felt cleaner but I'm open to alternatives and better 
+   ways of mapping them. Is this channel mapping reasonable, or would a 
+   different organization be preferred? And is the ABI break okay?
+
+2) Scale Attributes
+
+   The frequency scale is 1 Hz and phase scale is 2*PI/4096 radians.
+   I cannot use info_mask_shared_by_type for IIO_CHAN_INFO_SCALE because
+   all channels share IIO_ALTVOLTAGE.
+
+   So instead I'm using IIO_CONST_ATTR for the scales:
+
+     out_altvoltage_frequency_scale = "1"
+     out_altvoltage_phase_scale = "0.0015339808"
+
+   Is there a better approach here? Or should I just document the units and
+   skip scale attributes entirely?
+
+3) Remaining Custom Attributes
+
+   Other controls remain as custom sysfs attributes:
+
+     - out_altvoltage_frequencysymbol: select active frequency register
+     - out_altvoltage_phasesymbol: select active phase register  
+     - out_altvoltage_pincontrol_en: hardware pin control enable
+     - out_altvoltage_out_enable: output enable
+
+   I'm not sure if these map cleanly to IIO interfaces. Should these be
+   documented in ABI or is there a preferred way to handle them?
+
+4) Implementation Notes
+
+   - read_raw uses explicit address switching rather than channel index
+     arithmetic for clarity, though phase values could alternatively be
+     accessed via st->phase[chan->channel - 2] and directly in freq with
+     st->freq[chan->channel].
+   - I'm unsure if mutex guards on cached reads are necessary.
+
+Link: https://lore.kernel.org/linux-iio/20250628161040.3d21e2c4@jic23-huawei/ [1]
+Signed-off-by: Tomas Borquez <tomasborquez13@gmail.com>
+
+Tomas Borquez (3):
+  staging: iio: ad9832: remove platform_data support
+  staging: iio: ad9832: convert to iio channels
+  dt-bindings: iio: add analog devices ad9832/ad9835
+
+ .../bindings/iio/frequency/adi,ad9832.yaml    |  65 +++++
+ drivers/staging/iio/frequency/ad9832.c        | 264 +++++++++++-------
+ drivers/staging/iio/frequency/ad9832.h        |  33 ---
+ 3 files changed, 233 insertions(+), 129 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,ad9832.yaml
+ delete mode 100644 drivers/staging/iio/frequency/ad9832.h
 
 -- 
-2.51.1
+2.43.0
 
 

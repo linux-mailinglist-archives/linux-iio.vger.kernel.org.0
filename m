@@ -1,174 +1,145 @@
-Return-Path: <linux-iio+bounces-26790-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26791-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607FACA7B4D
-	for <lists+linux-iio@lfdr.de>; Fri, 05 Dec 2025 14:13:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FFECA7FC5
+	for <lists+linux-iio@lfdr.de>; Fri, 05 Dec 2025 15:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 751F3302B051
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Dec 2025 13:13:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0E215302A2CE
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Dec 2025 14:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3E733711E;
-	Fri,  5 Dec 2025 12:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E3427C866;
+	Fri,  5 Dec 2025 14:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X1LXGo3P"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="qqjLchFr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D50337105
-	for <linux-iio@vger.kernel.org>; Fri,  5 Dec 2025 12:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485891DBB3A;
+	Fri,  5 Dec 2025 14:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764938926; cv=none; b=AWDKGvcihE1d1cARZHSoXeZhoaSkgD8p+vOLApooRZrYKFvVbOu0H47mGM/kjegStUAlRd7VF91OUXW+1W8uIqzdVgYAccwmnnIdcIsWNPYMWqwvF/OwXJ3eCeEJZft8uSg+k54gIOMLhlOhwWqA6NhddCH3A5jMPflvqOSRU3c=
+	t=1764945590; cv=none; b=eXJNIw+q2uKJGOvhs9pTpkbtltj6seOQ7VsUYzuhJg9abulABNVlWXOU8R52dK3q94RqIRnLV5fKpcrs7fX9vR2HG7XVrfZvm4Sv284qDiBFxwgpTzPbeUS5Jwkl/pf88If9k6e0oZoh/F7hXThAoeX11TIYfCSv8BgTktXN36c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764938926; c=relaxed/simple;
-	bh=lSNiJQ1hWv2H33MlCLh9IZa2Uo/O6wrA1GmmBJ4ngcc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qIkoASamM3x+E2vG6PRZUflGTmiwcKTCKReGKViHazvZssvaUDPtrTsYwCrfN1K4HV9xLMP/CQ089zy8NQ94byGOr/histMlbe8w5zZTwFeqgbZpj9LIKCwNCViC95pqu8tXZsTzPQgdg87imzA5Hhw67S7BpzR1dYuEKNfGR4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X1LXGo3P; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7bb710d1d1dso3281058b3a.1
-        for <linux-iio@vger.kernel.org>; Fri, 05 Dec 2025 04:48:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764938916; x=1765543716; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=h8TfSQdqzSVt80P55nncCARa3JN8Npg0bjx7e6GoNp4=;
-        b=X1LXGo3PzlBQ+5uc/v2/1MGQqJaQu+IbjGL/h+qtTVbab2MZXbsM8oVBQ3XOXWuecK
-         0bxBaJmQPfiwKuoBvoVKyvXodZ7LbNEBNv+rBH0AOl5AthjvdpvpyClsxNcOVaYsDSa2
-         4vQGRag1JzOZqTF6qgpWl3LEukdBTK4wyIfFVes7Yb2Cpfb3d7gk4Nz7dQAKNxRjks3/
-         xKz4piiOdMyVGcAOaKuApEPSiPB1t1cy8nZFWqfY6UpAAfAQbZD785nr3bUj9oKUIuks
-         MyV/U9YRfQu0GHSvwjLeIyKOsjCW6waKR4KmG4T6Dp3bON3y93Vbm4Eic7CNOhIxWW2P
-         M/pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764938916; x=1765543716;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h8TfSQdqzSVt80P55nncCARa3JN8Npg0bjx7e6GoNp4=;
-        b=Q6QZI6sYJ29eIS56YGzBHVsa9/+HamglaC8vnHRnobxZ4KHzAWRTAD6H1ZYTYvPFZA
-         wOKMvJm+yEZtQRZflfs75WJ1jFViyHXrcWAvZNsPt2u9QM2AVs7I5NU2iL9yurckybKQ
-         gzcP9ODmhNvULt8OO79kvZ8hmrHdhDvLuOLExwdvktKSrPbKXmgR2AvYAJxPMnpyDYue
-         Di09F+sn4HPRujdSm8Y4INp4TJxarrEXQqmi1Px8FHDSSzSww7kf1LwcKHS5ppGxfaxs
-         Fx1omp+qvYZqb3meytd6b9OuGItz7dAjrQaQC7ufdcxaIp8/WXaQsBuefD/bmB12U1us
-         vomA==
-X-Forwarded-Encrypted: i=1; AJvYcCXwbrMvZ7BAp/HZbUIw1BDll8FwSlRY0m6w7i2z4uIEsvfIcE9Awn6i9QaZaKKCeNPzeHbosMEHMu8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5TC5BRJ+o0I8e+t/vQ7ZKQhmjdqJId7L0G8Rsgrtb2o2ITg39
-	O5CYTyPTC46xaK2d7uVno3CUS0KEME6Q9C07roB86wWL4Cw4Qn8+NiNc
-X-Gm-Gg: ASbGncvWb0jNcSBrEEvq0mkGMyaWHR1+qiBCimID5P9b5ekoCavq9Z7IaasNIAYjdex
-	ebDhOjy6AZZC70Rg6RLMeIQx5jle7JANNX13sIGsGcUzsXe6mwCfKFrgfkC0tsj607T4JeZ5k44
-	XWw7D0dWtoo4K9Bds9kXY3HeawYXYIekS+pZJKEAEEganLO2uUybGYOUexG4+MrOLh4veHMcbby
-	fksRW0r22PweUBigReP9vaQ85r8nOVIFNzL0P4tNiM2PePt3jlJOE217/ZrCBsSrg10/7S+4dn3
-	fB64u+JcYl4WLEiRChw1PGLV6gyFnfV7U8LOmBrudKGys7hnOnFFuntyckbc6OcQPgt4rOnQXKQ
-	s0rYi/9SN5XCHAes/YpcZoJ8b6OX+TwdF2qWb3nAPljlQHgWRHejSTNOPg55PcAtW+vtmlcPLfu
-	jLe16dXFRHAsKHO1iJ3HS8VkbZNMQ5V1U=
-X-Google-Smtp-Source: AGHT+IEjzb7U9ofM4A37xXKz1ctej3Hg6VdyG9/RNNT0ZH2QqjidYtcKGEfTZb6PcdctwKhrBgNzQg==
-X-Received: by 2002:a05:701a:c949:b0:11d:f682:e475 with SMTP id a92af1059eb24-11df682e6f1mr2793043c88.40.1764938915794;
-        Fri, 05 Dec 2025 04:48:35 -0800 (PST)
-Received: from localhost ([2804:30c:2712:fd00:9579:9ff6:e506:6147])
-        by smtp.gmail.com with UTF8SMTPSA id a92af1059eb24-11df7703bd7sm20366748c88.10.2025.12.05.04.48.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 04:48:34 -0800 (PST)
-Date: Fri, 5 Dec 2025 09:50:08 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Tomas Melin <tomas.melin@vaisala.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jic23@kernel.org, nuno.sa@analog.com,
-	dlechner@baylibre.com, andy@kernel.org,
-	Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, corbet@lwn.net,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: Add AD4134
-Message-ID: <aTLVAAQH-I8Rc372@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1764708608.git.marcelo.schmitt@analog.com>
- <06d7be2af0f6520c23f612fa0249ff6a26655cb7.1764708608.git.marcelo.schmitt@analog.com>
- <95dfb96e-f7b8-45df-a704-2984bd0a2946@vaisala.com>
+	s=arc-20240116; t=1764945590; c=relaxed/simple;
+	bh=oUmMnc8xejYGbc2lGoFWiVeGVU9QA8ZrQPDfsp53xew=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TRmXFivU2B7ANsOJu/PEu7ADUM4yNPRiUrxiSqdRuUtxiuJIvq5zbXken9bGd6UFTKECG+Den1PHirYULfuVCL3hbkGbmUEw2h1KGPkP5DYJ04to1mG4bi0J/ZWGBxNCx2h28QGw1rrvw9jLNMULTpI9YVIu/70dPZ3U9ZhMWqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=qqjLchFr; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B59R33E172678;
+	Fri, 5 Dec 2025 09:39:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=8x93ym73UQhgTalxOGTeQlRsQEx
+	TkCbFm/bOlHOQ22E=; b=qqjLchFr9VlN4pinlexcef0uXc5Q0nclBpnJxgABAaK
+	n3sNv6bNmXZEv542u8uHiddPDOSK2zVFfPN0TIckOUFxCZrBRt2yqUyWOj2B1J8E
+	tnXF9tWWwYGkBfegjLD2BMqRO5b9SpREzmmU+D56XyiexPFg0DBCnigsyslWHb9E
+	L6feQ/DbuLP1StrgR9HeQvb4lqYN5mBFG3SErrblqto9XIAuNBFCAC4bamcAvFTs
+	654aodlnwfEw0/fz4BdCLeU409408Gpqeu4WrArO1NWCtHFoHerDdaPHaLM7V1L5
+	BI0tzS2Xa8hubqX42zId010TKsQDQcdsjqceQXSVAdw==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4aufyscg1b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Dec 2025 09:39:18 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5B5EdGdT029269
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 5 Dec 2025 09:39:16 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Fri, 5 Dec 2025 09:39:16 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Fri, 5 Dec 2025 09:39:16 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Fri, 5 Dec 2025 09:39:16 -0500
+Received: from HYB-b1tGeUj4GP1.ad.analog.com ([10.32.13.98])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5B5Ed1pr027828;
+	Fri, 5 Dec 2025 09:39:04 -0500
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        David Lechner <dlechner@baylibre.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Andy Shevchenko
+	<andy@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Turquette
+	<mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Dragos Bogdan
+	<dragos.bogdan@analog.com>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>
+Subject: [PATCH v4 0/2] This series adds clock provider functionality to the ADF4377 frequency
+Date: Fri, 5 Dec 2025 16:38:44 +0200
+Message-ID: <20251205143848.989-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <95dfb96e-f7b8-45df-a704-2984bd0a2946@vaisala.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Authority-Analysis: v=2.4 cv=G4cR0tk5 c=1 sm=1 tr=0 ts=6932ee96 cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=NEAV23lmAAAA:8
+ a=TbiDcMNEsNnl46sf-WwA:9
+X-Proofpoint-GUID: cCNnU-62KSAz94YmDGuXVuFCNsMvHPr5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA1MDEwNSBTYWx0ZWRfX1kSf3rRw3U/1
+ yatwm9lelO5M1g6Eu/5lIokNiFJO7XXRQT+/OXU+KJmUDJByXrwDfoaFbC4dj5v0D8pshRk6pHp
+ v3vmn7JzPxpCOhLVIlQmYaas0gW01Uom/oLzve6SrEWEeRZjmdZDhVKUA5e5fN4pMvkX+dVMng6
+ qSJ5OU1Rl2D5U6YR6HYRml1NKT7Kaw4OKKNmtB9KNNzGRnhld1eYT7Zu/g2Af9hcFWowlGZZB1M
+ gLYmux9CIc2GOvGxJ6BOAGqUv/WScl1uL2zLlF5CkjcNvnKrvIV+wN2B6d2GohEUIZD4oYc9S4F
+ jXcoEx3M7FQ8jgUCIRXdMdchi4NUrHB49bLAzz0crdDdq61kbW5kQKefaTHGYCS5JZUWRTcL89j
+ +xkbClDjm2+Esopd43sszMKimZAvqw==
+X-Proofpoint-ORIG-GUID: cCNnU-62KSAz94YmDGuXVuFCNsMvHPr5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-05_05,2025-12-04_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ spamscore=0 clxscore=1015 phishscore=0 malwarescore=0 adultscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2512050105
 
-On 12/05, Tomas Melin wrote:
-> Hi,
-> 
-> On 02/12/2025 22:55, Marcelo Schmitt wrote:
-> > Add device tree documentation for AD4134 24-Bit, 4-channel simultaneous
-> > sampling, precision ADC.
-> > 
-> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > ---
-> > Change log v2 -> v3:
-> > - fixed typo in powerdown-gpios description.
-> > - picked up Conor's review tag. 
-> > 
-> >  .../bindings/iio/adc/adi,ad4134.yaml          | 198 ++++++++++++++++++
-...
-> > +description: |
-> > +  The AD4134 is a quad channel, low noise, simultaneous sampling, precision
-> > +  analog-to-digital converter (ADC).
-> > +  Specifications can be found at:
-> > +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4134.pdf
-> > +
-> > +$ref: /schemas/spi/spi-peripheral-props.yaml#
-> > +
-> > +properties:
-> > +    maxItems: 1
-> > +
-> > +  adi,asrc-mode:
-> > +    $ref: /schemas/types.yaml#/definitions/string
-> > +    description:
-> > +      Asynchronous Sample Rate Converter (ASRC) operation mode control input.
-> > +      Describes whether the MODE pin is set to a high level (for master mode
-> > +      operation) or to a low level (for slave mode operation).
-> > +    enum: [ high, low ]
-> > +    default: low
-> Since minimim I/O mode is only one currently supported, this should
-> always be low, right? Is the property needed at this point?
+While implemented as an IIO driver, the ADF4377 is commonly used as a
+clock source. This patch series enables it to function as either:
+- A traditional IIO device (when #clock-cells is not specified)
+- A clock provider (when #clock-cells is present in device tree)
 
-Correct, it is expected that adi,asrc-mode will always be low for minimum I/O mode.
-The property is not _needed_ but, according to dt-binding guidelines [1], it is
-desired.
+The implementation provides standard clock framework integration with
+rate control, enable/disable support, and maintains backward
+compatibility with existing IIO configurations.
 
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/writing-bindings.rst?h=v6.18#n17
+The current approach follows the recently accepted version of adding
+clock provider for adf4350 device:
+https://github.com/torvalds/linux/commit/a1a09713b40dfc1c0b7d1f9233a7698c93a9af05
 
-> 
-> > +
-> > +  adi,dclkio:
-> > +    description:
-> > +      DCLK pin I/O direction control for when the device operates in Pin Control
-> > +      Slave Mode or in SPI Control Mode. Describes if DEC0/DCLKIO pin is at a
-> > +      high level (which configures DCLK as an output) or to set to a low level
-> > +      (configuring DCLK for input).
-> > +    enum: [ out, in ]
-> > +    default: in
-> > +
-> > +  adi,dclkmode:
-> > +    description:
-> > +      DCLK mode control for when the device operates in Pin Control Slave Mode
-> > +      or in SPI Control Mode. Describes whether the DEC1/DCLKMODE pin is set to
-> > +      a high level (configuring the DCLK to operate in free running mode) or
-> > +      to a low level (to configure DCLK to operate in gated mode).
-> > +    enum: [ free-running, gated ]
-> > +    default: gated
-> In minimum I/O mode datasheet mentions this should always be gated.
-> Perhaps this and adi,dclkio can be left out and added when driver gains
-> other support than I/O mode?
+Antoniu Miclaus (2):
+  dt-bindings: iio: frequency: adf4377: add clk provider
+  iio: frequency: adf4377: add clk provider support
 
-Yes, that's also correct. A few properties are actually not needed for minimum
-I/O mode (i.e. can have their values inferred from the minimum I/O mode requirements).
-Sure, from developer's perspective it's easier to document only what the driver
-uses. adi,dclkio, adi,dclkmode, adi,asrc-mode, powerdown-gpios, regulators, could
-all be left to a latter time. Fine by me if dt maintainers agree with that.
+ .../bindings/iio/frequency/adi,adf4377.yaml   |   8 ++
+ drivers/iio/frequency/adf4377.c               | 121 +++++++++++++++++-
+ 2 files changed, 127 insertions(+), 2 deletions(-)
 
-With best regards,
-Marcelo
+-- 
+2.43.0
+
 

@@ -1,107 +1,145 @@
-Return-Path: <linux-iio+bounces-26832-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26833-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5135FCAAA62
-	for <lists+linux-iio@lfdr.de>; Sat, 06 Dec 2025 17:34:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F87CAAA77
+	for <lists+linux-iio@lfdr.de>; Sat, 06 Dec 2025 17:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E9153035D33
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Dec 2025 16:33:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0D7E3022AAC
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Dec 2025 16:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838372FC877;
-	Sat,  6 Dec 2025 16:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F65B2FC877;
+	Sat,  6 Dec 2025 16:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XgkhFnFS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kneAz/sm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E471329ACDD;
-	Sat,  6 Dec 2025 16:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E6E79DA;
+	Sat,  6 Dec 2025 16:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765038781; cv=none; b=VTuKg7yF/Q2lx+scE4YZYTWyOSBGp8i9gFyn3f22MO3o+DXw7Pa/oHqS2umpV4NxN+8orZTPYARdbpQR8nMVqiVgzttE8KwXxEVDLb71WVxIRulXTuWxZd4uVQ0J6nMPpeLEnMJyQIUs1rvbkuUdEv/6VGIM04zYIw8/EU6ZqWo=
+	t=1765039203; cv=none; b=BYpw1niKbkcWHpzeOAIUg+PSEXcJRbPS2ciWxxehZuxSJTdk+kt2w+cvcaWs7wcoGEzO9GGXTLXd7JcxDXbfhbbG9lYpAcJxNonh636SJQ/5gsE2T4WwjvLkF4zteTZJoJiroyKOTz5/sFbIrHBKJCXtL5oEdIxnwuGTt/Px/rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765038781; c=relaxed/simple;
-	bh=ob25n/82zM8zU+Kp0oVp6ToXh0EkTp7b0grG87/yDM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jwiQx7PwiGAxXZoPxu0+eqHuixMN4GqtLAfXvWTbCJDSnlmedz7ZnyB5SyQWY8fruL8At6Ktpx3nJkFiF10Wzu2BCFcru/TkOY4cmTqoqI9j4lLeACISJrYzFX8paI5TZbqKZ/88WkpjXMutvX97XOO2xTaqJSXigpNRcNHm0FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XgkhFnFS; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765038780; x=1796574780;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ob25n/82zM8zU+Kp0oVp6ToXh0EkTp7b0grG87/yDM0=;
-  b=XgkhFnFSaVynpYDTNNlz54wiLNv3etx1wx8SJRwpplvEJ3LxQIwJCfXM
-   zdpmh2m6bWV7aoClLvwPzkduYYeyWqk4ib6VPK2FqV9ZV+/EBGA3T/6kv
-   aVqoO0HUYumOxzBGSXiNBlbUx1stFrWGjJloW+I/VC96xOu1QTxJLsF5k
-   yMLkQhjX1fx8yqZ+UfNgIf9nyiYUE2/yRlUD2eHikpm0fXuYNrBFTjYSG
-   iR6kSUOhxcJYsrAzmH9MAko0xQwDleiGWpyy4yQL2wrVN6FYJl2YLNOBn
-   NIrarZpG2XpZjQZahaqoorvg29w8a76/9AeBKhJNvjtVxTFUgUgD2dcP5
-   Q==;
-X-CSE-ConnectionGUID: Qj2MgagsQBm9NcDL8hAXAw==
-X-CSE-MsgGUID: 1MFh9gqpRrGStCuzv0OkwA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11634"; a="70894218"
-X-IronPort-AV: E=Sophos;i="6.20,255,1758610800"; 
-   d="scan'208";a="70894218"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2025 08:32:59 -0800
-X-CSE-ConnectionGUID: AJGSFgOgTBCRmSDpvi5LWQ==
-X-CSE-MsgGUID: SWl0Cf1TQgKKVF9ue9eMgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,255,1758610800"; 
-   d="scan'208";a="195464577"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.204])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2025 08:32:57 -0800
-Date: Sat, 6 Dec 2025 18:32:54 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Dharanitharan R <dharanitharan725@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] staging: iio: frequency: ad9832: replace long/short
- with u32/u16
-Message-ID: <aTRatkxEqIxL3EEP@smile.fi.intel.com>
-References: <20251206054831.26045-1-dharanitharan725@gmail.com>
+	s=arc-20240116; t=1765039203; c=relaxed/simple;
+	bh=nDyiQgWzVr5xrxezFIqVJ+LMCfjhgCRDxxrrb2v8FM4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MiOX4M0kV5aDEyr6/b7WHhbH2BacU100FRUIy8RBEjI0pbkPPT3M1iFSWDvPZpWsszGQH5BjiahQmqci0y0bDcSIQV7r+vxFOPHIe4efShFx8E7m7+AzNZBbb+GYU0Z+aLf8+weEZobuZgUWVfBsbkfNFs5xUYj22pXhLYer5u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kneAz/sm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA96C116B1;
+	Sat,  6 Dec 2025 16:39:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765039202;
+	bh=nDyiQgWzVr5xrxezFIqVJ+LMCfjhgCRDxxrrb2v8FM4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kneAz/smE0fNqN9flFMEfL6pxRk+9ecl8m3G15aIrv8hn065sN/+G9AN4N4e4q4qD
+	 t5zmrdFdkfR2FmzJwvPdGbvkYJ4CGWkJR/p22eCS6PUZfqZgkesI58RpRCV21uLau5
+	 5LBppxIaDjTnXd4uO0RtFSDiy0xgb9J3VMw05o8WYr+PSKnXvZm6hePSWMe0eau0of
+	 AzxyS/SP0+OO5HhuC8pbgKASCjSiTqqlV37q8dltDBEX6BxiVyOK7/B5o2L7nWmb6o
+	 hNvXKFMEbibTymgqDWqN9A7gSdOnjS4iNwSMsJVEXe8ah70E9xZQMyluxPOTszhjXm
+	 O6EMFhr4rTmfw==
+Date: Sat, 6 Dec 2025 16:39:50 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jorge Marques <gastmaier@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Jorge Marques
+ <jorge.marques@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v2 3/9] iio: adc: Add support for ad4062
+Message-ID: <20251206163950.545da8cc@jic23-huawei>
+In-Reply-To: <aslj3klmv6heyyhgltzewkdze5p4c3hlkzfbxbfnzwwgd375gv@m6iqpst5sv6b>
+References: <20251124-staging-ad4062-v2-0-a375609afbb7@analog.com>
+	<20251124-staging-ad4062-v2-3-a375609afbb7@analog.com>
+	<aSQxiSoZcI_ol3S5@smile.fi.intel.com>
+	<aslj3klmv6heyyhgltzewkdze5p4c3hlkzfbxbfnzwwgd375gv@m6iqpst5sv6b>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251206054831.26045-1-dharanitharan725@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Dec 06, 2025 at 05:48:31AM +0000, Dharanitharan R wrote:
-> Cleanup the AD9832 header by explicitly including <linux/types.h> and
-> replacing ambiguous integer types with fixed-width kernel types:
+On Wed, 26 Nov 2025 12:40:00 +0100
+Jorge Marques <gastmaier@gmail.com> wrote:
+
+> On Mon, Nov 24, 2025 at 12:20:57PM +0200, Andy Shevchenko wrote:
+> > On Mon, Nov 24, 2025 at 10:18:02AM +0100, Jorge Marques wrote:  
+> > > The AD4060/AD4062 are versatile, 16-bit/12-bit, successive approximation
+> > > register (SAR) analog-to-digital converter (ADC) with low-power and
+> > > threshold monitoring modes.  
+> > 
+> > ...
+> >   
+> Hi Andy,
+> > > +#define AD4062_SOFT_RESET	0x81  
+> > 
+> > The grouping seems a bit strange. Haven't you forgotten a blank line here?
+> > Ditto for other similar cases.
+> >   
+> Ack.
+
+Side note. For efficiency, if you agree with something just delete that
+block of the thread and don't say so.  Reviewers should be safe to assume
+that anything the author agrees with will just be fixed in the next version.
+
+That lets us focus in very fast on the key discussions.
+
+> >   
+> > > +struct ad4062_state {
+> > > +	const struct ad4062_chip_info *chip;
+> > > +	const struct ad4062_bus_ops *ops;
+> > > +	enum ad4062_operation_mode mode;
+> > > +	struct completion completion;
+> > > +	struct iio_trigger *trigger;
+> > > +	struct iio_dev *indio_dev;
+> > > +	struct i3c_device *i3cdev;
+> > > +	struct regmap *regmap;
+> > > +	u16 sampling_frequency;
+> > > +	int vref_uv;
+> > > +	int samp_freqs[ARRAY_SIZE(ad4062_conversion_freqs)];
+> > > +	u8 oversamp_ratio;
+> > > +	union {
+> > > +		__be32 be32;
+> > > +		__be16 be16;
+> > > +		u8 bytes[4];
+> > > +	} buf __aligned(IIO_DMA_MINALIGN);
+> > > +	u8 reg_addr_conv;  
+> > 
+> > Can't we group u8:s to save a few bytes of memory?
+> >   
+> Sure
 > 
-> - unsigned long → u32
-> - unsigned short → u16
-> 
-> This improves type clarity and ensures consistent behavior across
-> architectures.
+>   struct ad4062_state {
+>   	// ...
+>   	union {
+>   		__be32 be32;
+>   		__be16 be16;
+>   		u8 bytes[4];
+>   	} buf __aligned(IIO_DMA_MINALIGN);
+>   	u16 sampling_frequency;
+>   	u8 oversamp_ratio;
+>   	u8 reg_addr_conv;
 
-I have nothing to add to the Jonathan's review, just shift your focus to
-another driver instead. And if see another platform data, kill it. We don't
-use platform data approach in a new code.
+Unless my assumption is wrong and those 3 values are passed
+as buffers for DMA (or otherwise very carefully protected
+against access racing with the DMA buffers) then this is very wrong.
+Refresh your memory on why we do the __aligned(IIO_DMA_MINALIGN) and
+exactly how that works.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Short answer, nothing must come after it in the structure as it
+only forces the start of the buffer, not it's end and hence the
+following data ends up in the same cacheline and fun data corruption
+is the result.
 
-
+>   };
 

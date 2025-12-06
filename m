@@ -1,55 +1,57 @@
-Return-Path: <linux-iio+bounces-26824-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26825-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8053BCAA95B
-	for <lists+linux-iio@lfdr.de>; Sat, 06 Dec 2025 16:34:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A55EFCAA961
+	for <lists+linux-iio@lfdr.de>; Sat, 06 Dec 2025 16:43:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C11C30DE353
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Dec 2025 15:33:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8CD230CEA8C
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Dec 2025 15:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D094425F79A;
-	Sat,  6 Dec 2025 15:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FC82652B6;
+	Sat,  6 Dec 2025 15:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ttJUZs8f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nnjZPVAb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB2B24C076;
-	Sat,  6 Dec 2025 15:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C081E244675;
+	Sat,  6 Dec 2025 15:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765035226; cv=none; b=Uv6UNnFPaeepTevauDpEMxExtzuLjB9hSlir1rizYqFX1y1sPECX7vr825jMiZBJOvvC5DxZh3Gft3uZWMwvPljt03nSdkiG6CV8VL23xU55GmLtEuV9As2guxo+bhVTKR55M1RWwBLKPd6+mdOIHcGhi502foHeJKHtg+R/gZw=
+	t=1765035779; cv=none; b=XBo07MX5Lwx/KmV5w58g5lfaj0z9IRmmm6cfGuywdJ45osawqJ1zRNFZeMPVPHa+vdPJYttVmF6ltygNI2ad3xlYuECOALnkjJTjDBWvM9m4mI2r+g/vBG24xR5TpJCnceU/HMcNWN/KRw76fw6hAaQj/7tmg2p5IiD8Stw1lCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765035226; c=relaxed/simple;
-	bh=AnQmFEU9zXW52WS9qQeG8ngPhpCGuhBG295DUAiZI50=;
+	s=arc-20240116; t=1765035779; c=relaxed/simple;
+	bh=Y+nB8jUrNe/Vy9wuhhDeU1eHbQjXRG5ckwzSR47dIVA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EpBhZLRjCIYmWXemH74gkDRQ7wxuHT1a4dj8/xgTCY1bafATcISvKcexVky7YfNmn+knlNCeqltNjEL0E5XG8paep5qmrVmcoKrMbNRattfZyeq2htrwprGLiDLzZBrJlSDRbEJrJv0yCD4CNQxQc3G7b9/Z87mg8ENQCAI0sDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ttJUZs8f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7DFC4CEF5;
-	Sat,  6 Dec 2025 15:33:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YScvTEUDY16oStczagez00/j7K+6cAWdHIBuLSNiT56cMN5L+FdzpUN9M4RjP+Cj+f9LkYjA5FsOljSURkwYQQT5XnR/KjPncM2LQe4m/MbFp1Z8N762dQz+7ycqB93q1RIjE78Lbv7PKSONucyXLFt/z4RLnKMMVjD1oLVC150=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nnjZPVAb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCEBC4CEF5;
+	Sat,  6 Dec 2025 15:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765035226;
-	bh=AnQmFEU9zXW52WS9qQeG8ngPhpCGuhBG295DUAiZI50=;
+	s=k20201202; t=1765035779;
+	bh=Y+nB8jUrNe/Vy9wuhhDeU1eHbQjXRG5ckwzSR47dIVA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ttJUZs8fFA6USqlUTvPmsELWGu71cKHdbIYaAK05h01n9jONUg1n9/R9r19AKdb1r
-	 5NQmKiz+wC9EE1rE5gyC+Dflny1dWU3qYph65ubpFhxR0P+yCb9w7KzF/dvBcm4TSO
-	 pH+xJVggzfn6PAfAThg09eD0nT3wFKpOQKgrmtAQ8+pqkoLzsqFGde4XRbtiohNYbP
-	 wMdzIk0KgwRC479EZlPYbZDdF/ZxowxwcPyxDMJA7HCoVLIrmstch9r7BwzXahFtb4
-	 2ZjLtSz6oCvD9m1Wqqg++inHzM5BJrF+wFhG6AdJPAsPj/3v1A1sjHb2vTJf8tqXhi
-	 gbZPfrPpTyj5g==
-Date: Sat, 6 Dec 2025 15:33:38 +0000
+	b=nnjZPVAbnht9sCYOwQ88rRnQuxy2iUxSfI/mpYJJV4mO1WUZ/avgpC3RTLJ0bMvLF
+	 7LcOe36daTdTcjfB13F7m1GhL8I/KGSoPex8U7gmqRgTtuCG4BWMPAtKXHoS+5ve+3
+	 rBm7AKrz1EMltT9WQHtVQb6Ox7aEWfrmPd4phNpbYbMV62Pvg0pEvbeYsjHKbDQQ34
+	 laqI5whJjuGhaS1WRnYqutTCeuKLMaiVN/gn7li5Z9tgVL3jmFvCLsNHApF0qAXnnB
+	 P8Lme+vt6Dx2fZVzHJGWaGwJD/gEUyG5huQWG9hoytGtfbJii/ai8SwGqGvXnSBgln
+	 anKG08Qr1KqmQ==
+Date: Sat, 6 Dec 2025 15:42:50 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- ~lkcamp/patches@lists.sr.ht, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: spear_adc: cleans up, update and sorts the
- existing includes
-Message-ID: <20251206153338.57c4159b@jic23-huawei>
-In-Reply-To: <20251206132120.11059-1-rodrigo.gobbi.7@gmail.com>
-References: <20251206132120.11059-1-rodrigo.gobbi.7@gmail.com>
+To: Dharanitharan R <dharanitharan725@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] staging: iio: frequency: ad9832: replace long/short
+ with u32/u16
+Message-ID: <20251206154250.7d5dfa74@jic23-huawei>
+In-Reply-To: <20251206054831.26045-1-dharanitharan725@gmail.com>
+References: <20251206054831.26045-1-dharanitharan725@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,111 +59,91 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat,  6 Dec 2025 10:15:12 -0300
-Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com> wrote:
+On Sat,  6 Dec 2025 05:48:31 +0000
+Dharanitharan R <dharanitharan725@gmail.com> wrote:
 
-> Remove unused includes and add what is being used (IWYU principle) and
-> sort the remaining ones.
-> 
-> Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-Hi Rodrigo,
+> Cleanup the AD9832 header by explicitly including <linux/types.h> and
+> replacing ambiguous integer types with fixed-width kernel types:
+>=20
+> - unsigned long =E2=86=92 u32
+> - unsigned short =E2=86=92 u16
+>=20
+> This improves type clarity and ensures consistent behavior across
+> architectures.
+>=20
+> Signed-off-by: Dharanitharan R <dharanitharan725@gmail.com>
 
-Much closer but I still spotted one include I'm not sure needs
-to be here.
+Hi Dharanitharan,
+
+Thanks for sending this.
+
+A few comments.  Firstly there is a reasonably high chance we'll be shortly
+dropping this driver from staging because it's had no significant work to
+bring it up to date in a very long time.  Unfortunately unless you were
+following that discussion deep in an unrelated looking thread there was
+no way for you to know that :(
+
+Following up on this particular patch, it doesn't make sense to just
+change the types where they are stored here.  These are passed into
+various functions that continue to take unsigned long / short parameters.
+For example, ad9832_write_frequency() and the calls under that.
+If we were going to tighten the types up it should be consistent.
+Such a patch would then show how these updated types interact with the
+other values in the driver for example the output of clk_get_rate().
+
+So in general this sort of cleanup might makes sense only if done
+right across all use of the values for which the types are being changed
+otherwise it just ends up adding to the confusion.
+
+Third, platform data like this is a nasty bit of legacy from the pre
+device tree days (this is a very old driver!) and so if we didn't fix
+up this driver it would likely go away as part of that effort.
+
+As noted though I wouldn't advise continuing with this particular
+driver on simple basis it will probably go away (unless someone shouts
+that they still need it when I send the removal patch!)
+
+Jonathan
+
 
 > ---
-> My reasoning was not correct at [1], tks for pointing that out @Jonathan.
-> With that in mind, I've reviewed some discussions about the principle and
-> I`ve changed a little bit approach: I`ve inspected the source code again
-> to find  out what was being used and also checked incorrectly "indirect includes"
-> using the spear_adc.i file to avoid them. The result is something like this now:
-> 
-> Removed:
-> #include <linux/device.h>
-> #include <linux/kernel.h>
-> #include <linux/slab.h>
-> #include <linux/iio/sysfs.h>
-> 
-> Added:
-> #include <linux/array_size.h>
-> #include <linux/bits.h>
-> #include <linux/compiler_types.h>
-> #include <linux/dev_printk.h>
-> #include <linux/math.h>
-> #include <linux/mutex.h>
-> #include <linux/of.h>
-
-For these, given we've been round a few times, it is useful to add a
-brief on what is being used from each header in this change log or
-indeed the patch description.
-
-> 
-> #include <linux/iio/types.h>
-> 
-> Tks and regards!
-> 
-> [1] https://lore.kernel.org/all/20251009182636.187026-1-rodrigo.gobbi.7@gmail.com/
-> ---
->  drivers/iio/adc/spear_adc.c | 26 +++++++++++++++-----------
->  1 file changed, 15 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
-> index 50b0a607baeb..b9eeed5533c6 100644
-> --- a/drivers/iio/adc/spear_adc.c
-> +++ b/drivers/iio/adc/spear_adc.c
-> @@ -5,22 +5,26 @@
->   * Copyright 2012 Stefan Roese <sr@denx.de>
+>  drivers/staging/iio/frequency/ad9832.h | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/staging/iio/frequency/ad9832.h b/drivers/staging/iio=
+/frequency/ad9832.h
+> index d0d840edb8d2..d59ad0627a9b 100644
+> --- a/drivers/staging/iio/frequency/ad9832.h
+> +++ b/drivers/staging/iio/frequency/ad9832.h
+> @@ -6,6 +6,7 @@
 >   */
->  
-> -#include <linux/mod_devicetable.h>
-> -#include <linux/module.h>
-> -#include <linux/platform_device.h>
-> -#include <linux/property.h>
-> -#include <linux/interrupt.h>
-> -#include <linux/device.h>
-> -#include <linux/kernel.h>
-> -#include <linux/slab.h>
-> -#include <linux/io.h>
-> +#include <linux/array_size.h>
->  #include <linux/bitfield.h>
-> +#include <linux/bits.h>
->  #include <linux/clk.h>
-> -#include <linux/err.h>
-> +#include <linux/compiler_types.h>
->  #include <linux/completion.h>
-> +#include <linux/dev_printk.h>
-> +#include <linux/err.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/math.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/mutex.h>
-> +#include <linux/of.h>
-
-Why include of.h?
-
-I'm not immediately seeing any use stuff defined in there
-but I may be missing something.
-
-The only thing prefixed with of_ is of_match_id which
-is mod_devicetable.h
-
-We've scrub unneeded includes of that file out of IIO a few
-times in the past, so I don't really want to see new ones added.
-
-
-> +#include <linux/platform_device.h>
-> +#include <linux/property.h>
->  
->  #include <linux/iio/iio.h>
-> -#include <linux/iio/sysfs.h>
-> +#include <linux/iio/types.h>
->  
->  /* SPEAR registers definitions */
->  #define SPEAR600_ADC_SCAN_RATE_LO(x)	((x) & 0xFFFF)
+>  #ifndef IIO_DDS_AD9832_H_
+>  #define IIO_DDS_AD9832_H_
+> +#include <linux/types.h>
+> =20
+>  /*
+>   * TODO: struct ad9832_platform_data needs to go into include/linux/iio
+> @@ -22,12 +23,12 @@
+>   */
+> =20
+>  struct ad9832_platform_data {
+> -	unsigned long		freq0;
+> -	unsigned long		freq1;
+> -	unsigned short		phase0;
+> -	unsigned short		phase1;
+> -	unsigned short		phase2;
+> -	unsigned short		phase3;
+> +	u32 freq0;
+> +	u32 freq1;
+> +	u16 phase0;
+> +	u16 phase1;
+> +	u16 phase2;
+> +	u16 phase3;
+>  };
+> =20
+>  #endif /* IIO_DDS_AD9832_H_ */
 
 

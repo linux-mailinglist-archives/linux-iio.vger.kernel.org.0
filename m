@@ -1,57 +1,55 @@
-Return-Path: <linux-iio+bounces-26862-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26863-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095C4CAADDA
-	for <lists+linux-iio@lfdr.de>; Sat, 06 Dec 2025 22:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB93ACAADE0
+	for <lists+linux-iio@lfdr.de>; Sat, 06 Dec 2025 22:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C1A88306DCA7
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Dec 2025 21:09:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1F71306DC86
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Dec 2025 21:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2AE178372;
-	Sat,  6 Dec 2025 21:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3F71D61A3;
+	Sat,  6 Dec 2025 21:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHt5pbDV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YdqKhu/y"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6C6EEB3
-	for <linux-iio@vger.kernel.org>; Sat,  6 Dec 2025 21:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC45BEEB3
+	for <linux-iio@vger.kernel.org>; Sat,  6 Dec 2025 21:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765055359; cv=none; b=eAU+j7YIinhqfcIeSVhaaKqm1wLsAQMN6ikiAGz4v74VFCl3EzVxCDFbZi83chBNXBsFYb6IrzFj5uwETsYeFDzlU6jWa1uslNRz/zZaXeRSJ+DutBCkZb7zl5h4nnJ/Lkg4ogS0edFtySlKi7wt1I/rcIVhWWX04nDAAcFY92E=
+	t=1765055532; cv=none; b=p/3Vncsk4kLZElH+F/ggrKUfhRFq8NRw08j1P7nOpyYue+iPvp84bXjrOfbkGjv7ESjDRWHXD+OLNMQiReVQ9TTQD2YW94qlf4lmHVuB3P7Go4MASLz60gz/0+DH8BxqDRZNhIkKw1aXXXvdMTEPL9OuWwrprTUEVcXDtlKR3cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765055359; c=relaxed/simple;
-	bh=CsktMh/lZUjOsAUqHSfp2iedjwS3hDm4Yxk/0oL5TgQ=;
+	s=arc-20240116; t=1765055532; c=relaxed/simple;
+	bh=GNeY4N9ACHOU9NkcbRs8lWFh1xGNHjREvqWuWwpvhM0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FhQoqnxWu0xMLJhCpagc7fwWc8UcjWtPtV7rwkUFPpMHYOaXVTZxRjoi46lqH2vnGxQVa2yLyzDGDVe3ab+Jpx1pPYD2JHBBJOtTR2qsfO98TEhmrs28ypte/GFZRk/Ue7rxXIHvtMkQLyuK5rb8OYk2wAZOQh2MPNiG9+bS188=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHt5pbDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FDFC4CEF5;
-	Sat,  6 Dec 2025 21:09:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G0TT4dnaEDicJgWaqFgRchRNlbTNTvDeyObkTcsdXx3nXZuyvpvPCACPB/i06SM+5zEvKtGdB/o/DyYlZrgcBBd4MStJHSGYOshFc+I1iMJwnKh/SFV30gXvTLJZtZ6hWbdESfzfSMyHQzn0KeNT+giLE/TzscU9fruY/ZWXpL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YdqKhu/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AEFC4CEF5;
+	Sat,  6 Dec 2025 21:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765055359;
-	bh=CsktMh/lZUjOsAUqHSfp2iedjwS3hDm4Yxk/0oL5TgQ=;
+	s=k20201202; t=1765055531;
+	bh=GNeY4N9ACHOU9NkcbRs8lWFh1xGNHjREvqWuWwpvhM0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bHt5pbDVBlRCqWm7RUBwBun6KFH8TndDz1F7cetrAMS1mKxPGimPhwOGARM3P594n
-	 RBBaglIOoPV7Yo2Eq7vaEDOczz3I6FT7bYPbenQgwr++4WmCHxU/57Pdahv0dwN2CR
-	 XyMyE1xwNrCiFl+xN1GmSp5UL3RfkPFcFTK4Z9cTEQnN9byxkySuZVMJI3laCp5Ivc
-	 lO4ov6sFNKsizFs1dMKrqmXYMFaOKV7Vy+oG7zRMOIlOZDLTVMaDvjhs1I3GzTKzO0
-	 0ds+i2ptKE7K3Oy+R6cjLmK2bpJQN6fZ7dAr9hQSWEFUjepKkl/zL2ynLDYWZzcZde
-	 SgNIVlOriqQYQ==
-Date: Sat, 6 Dec 2025 21:09:11 +0000
+	b=YdqKhu/yfUIsDBWLm7J93uE3fCGJyi5UawvdpTUvkow2SM+nDhPZVrM3Pp6/I+nEn
+	 jS4GD42vTxia0LZEUJmjvsypjvqmBlGYrbEJYsCtAobSV34oF6AiKNX7rM/ySY/4AL
+	 wCoGQN3jkCZ8vOe8GzKWVMaXnak4gmI9u+cM58vpR2INwzmfT3OLBCuMX2+FbOcJl7
+	 vLINdrGf+R6xYQT107k/KztgCy72e94oCXjAnKydWKDJoPeYTbd8R4zfFMHDhaIiAG
+	 8dqk6wbzpExyT+NiMoyKJDHM0aK8ZJ4vN2jdrYcyibyNu6mW4dw9MF4yJCcOmIgV7Z
+	 AXl+FH5rDCccg==
+Date: Sat, 6 Dec 2025 21:12:04 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, nuno.sa@analog.com,
- linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>, Andy
- Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH 4/6] iio: buffer-dma: Fix coding style complains
-Message-ID: <20251206210911.57ec8340@jic23-huawei>
-In-Reply-To: <0824e2b0d4c29de9f4bba37dbf60dbba97bcd789.camel@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, David Lechner
+ <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
+Subject: Re: [PATCH 2/6] iio: buffer-dma: Use the cleanup.h API
+Message-ID: <20251206211204.3b486324@jic23-huawei>
+In-Reply-To: <aTBkHIq-SL26fABN@smile.fi.intel.com>
 References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
-	<20251203-iio-dmabuf-improvs-v1-4-0e4907ce7322@analog.com>
-	<aTBlg2rW0rrjHh73@smile.fi.intel.com>
-	<0824e2b0d4c29de9f4bba37dbf60dbba97bcd789.camel@gmail.com>
+	<20251203-iio-dmabuf-improvs-v1-2-0e4907ce7322@analog.com>
+	<aTBkHIq-SL26fABN@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,61 +60,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 04 Dec 2025 11:25:12 +0000
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Wed, 3 Dec 2025 18:23:56 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> On Wed, 2025-12-03 at 18:29 +0200, Andy Shevchenko wrote:
-> > On Wed, Dec 03, 2025 at 03:11:39PM +0000, Nuno S=C3=A1 via B4 Relay wro=
-te:
-> >  =20
-> > > Just making sure checkpatch is happy. No functional change intended. =
-=20
-> >=20
-> > ...
-> >  =20
-> > > -static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(
-> > > -	struct iio_dma_buffer_queue *queue, size_t size, bool fileio)
-> > > +static struct iio_dma_buffer_block *iio_dma_buffer_alloc_block(struc=
-t iio_dma_buffer_queue
-> > > *queue,
-> > > +							=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 size_t size,
-> > > +							=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool fileio) =20
-> >=20
-> > What about 80 rule?
-> >  =20
+> On Wed, Dec 03, 2025 at 03:11:37PM +0000, Nuno S=C3=A1 via B4 Relay wrote:
 >=20
-> This falls in the bucket where readability is hurt. At least IMHO, so tha=
-t's why I
-> did it this way. If Jonathan disagrees, I'll of course change it to the b=
-elow style.
+> > Make use of the cleanup.h API for locks and memory allocation in order
+> > to simplify some code paths. =20
 >=20
-Marginal readability benefit. The complex return type on the line above is =
-pretty
-common pattern so my eyes are used to it even if no one else's are ;)
-
-
+> ...
 >=20
-> > static struct iio_dma_buffer_block *
-> > iio_dma_buffer_alloc_block(struct iio_dma_buffer_queue *queue, size_t s=
-ize,
-> > 			=C2=A0=C2=A0 bool fileio)
-> >=20
-> > (And personally I think that in 2025 we should grow up and forget about=
- this
-> > =C2=A0and move on to 100, but... not a maintainer here :-) =20
+> > -	struct iio_dma_buffer_block *block;
+> > -
+> > -	block =3D kzalloc(sizeof(*block), GFP_KERNEL);
+> > +	struct iio_dma_buffer_block *block __free(kfree) =3D kzalloc(sizeof(*=
+block), GFP_KERNEL);
+> >  	if (!block)
+> >  		return NULL; =20
 >=20
-> FWIW, Agreed! (And that is what I do for all the out of tree stuff :))
+> In another thread I believe you referred to the 80 rule.
+> Follow it then :-)
+>=20
+> 	struct iio_dma_buffer_block *block __free(kfree) =3D
+> 		kzalloc(sizeof(*block), GFP_KERNEL);
 
-Given it another few years and maybe I'll relax more. :)
+This one is so common I will argue the shorter line form is better.
 
-I don't really care that much as long as people are consistent and don't
-end up with something really hard to read!
+The other cases you have in some of these patches like the final
+one are fine.
+
+Rest of series looks fine to me but open question from Andy
+on patch 3 and maybe a trivial patch description change for
+that "it WARN() anyway" discussion.
 
 Jonathan
 
->=20
-> - Nuno S=C3=A1
->=20
 >=20
 >=20
 

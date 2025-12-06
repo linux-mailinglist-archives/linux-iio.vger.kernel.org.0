@@ -1,120 +1,178 @@
-Return-Path: <linux-iio+bounces-26828-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26829-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDB8CAAA1D
-	for <lists+linux-iio@lfdr.de>; Sat, 06 Dec 2025 17:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE414CAAA2C
+	for <lists+linux-iio@lfdr.de>; Sat, 06 Dec 2025 17:27:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 654393025F8B
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Dec 2025 16:24:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3F42302E073
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Dec 2025 16:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CF52FFF9D;
-	Sat,  6 Dec 2025 16:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC662E764B;
+	Sat,  6 Dec 2025 16:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E6uupJMa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2+Goi7g"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB99A2FABE7;
-	Sat,  6 Dec 2025 16:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EA425CC40;
+	Sat,  6 Dec 2025 16:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765038266; cv=none; b=gOluEXltAUNN7TDC5/u6ReDJg+Rgy8NJj3RsLQesoF87ceKZgs7Y/gnrePaCSihrS0yHrgq861CqqbLlLwS2zLSlp36XgzKSoqz2bLMIB9oUhZPgafVngTP8tXUAKdh+NSiqnIzMKfYvi7c3Vj+QPcQTODa5RTIx8oRasgGTukE=
+	t=1765038413; cv=none; b=hieXIUWHFMYCbxFi+wRDy7R1MbX7WFppmv4q3mler/fykKv3fvsJnn9eZkAWW8l9LkhDu5zV13JuwmWnBnWf8fPo5fqSOu5yiXLEnX+PVwdKWWRdryCMTqijRtWUPDC6KkxFYf95lwu3dKEtG0SdLATxWe1BjcDLCZs4+PgZeqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765038266; c=relaxed/simple;
-	bh=CVzDzQgA7F/6phatzvEyKmHq5v0ECn3LJTolVg6ewak=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lnnGiYV5oSWe6lbSxrPXacs+T4KyJrDrOSdcxL4KLqVjoB9+CXiZI2k89mvBTwUrUe7hOCC2pHDEQSihbbbNSjZUd8ZSqlOgym6LE0qjqmhNoNTTy5PYOYdMIdrLYMMIwrBREO/r1m6wWnv9Q3Buz9fKby4cnOgLM2B5irBiMQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E6uupJMa; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765038265; x=1796574265;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CVzDzQgA7F/6phatzvEyKmHq5v0ECn3LJTolVg6ewak=;
-  b=E6uupJMakdIUCEct2xseYLRddEqUOPPR4KoqMzBcsjz/UfNJCwcQhLzc
-   l38D6G4xZ78LbfhY17JRh6v3SBMHMTtVrwLkzPiU7wiXdPxrpOVRJlFIe
-   XlxCkfy0ja7FC95VXb4iVdlcsS5xmC6X7KsJ9qTY8aTFQmczkAr8aoaim
-   HmZvMJXhNHzwMgqAA2jlh0LhDMBu4M1fs0Dgb1swVODOsjU5Ef4xCsfyx
-   4y+zNJ2JFDMQk7ihqfUW/PIVAtzUaGRPxbG74IyZG6Z2CXOg1259hqujw
-   Thoe9YfDp2yTaxAbL3qrilkW8topBDn6aXAO2/JGTwwzVXQ+KzTHr56Ah
-   w==;
-X-CSE-ConnectionGUID: zYX1gjrGS2OK8FElWOsREw==
-X-CSE-MsgGUID: 7J53K+mnQeqWxxieuU6tHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11634"; a="70900822"
-X-IronPort-AV: E=Sophos;i="6.20,255,1758610800"; 
-   d="scan'208";a="70900822"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2025 08:24:25 -0800
-X-CSE-ConnectionGUID: Lk7d7yE9TfCJUfwnuBUIOg==
-X-CSE-MsgGUID: /mhhoiV3T7yZesO+5UdZvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,255,1758610800"; 
-   d="scan'208";a="226206361"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.204])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2025 08:24:21 -0800
-Date: Sat, 6 Dec 2025 18:24:18 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
+	s=arc-20240116; t=1765038413; c=relaxed/simple;
+	bh=zlh6R34eLvBCutMwxLhNz1D7zkl+YobUWg9d9oj9hjs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NKM5qjYMw2EOOQQx79cJZNTYw+fPMdeb4Jku8vew5NMixXJk86bGjdJ9tXSKLuVf7VyGBGcigA9nVMH7X1I6MZYKKL99Ce/2SFBQAKiGaZkW4y+kUYs0e69AoKmke1GSEpCesK60J57CUqpfp2vavaaw4+n+1Pu9neVknMUCDKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2+Goi7g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CD7C4CEF5;
+	Sat,  6 Dec 2025 16:26:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765038413;
+	bh=zlh6R34eLvBCutMwxLhNz1D7zkl+YobUWg9d9oj9hjs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=k2+Goi7gn14RM99gy+jqv0HDG+ILpo2xdjCfDDixJQBfHg//cv5K2c5owg0ledR3z
+	 3iVMTNt3dsjwl7atEmUmUSjzPkUupcqFS+bhdK89qKxxztywn50FUdiR8cDiRpYBwp
+	 S34NYniVTpYwU8plQLZoO9NC2VDBNGeSI3zf5qzofvHzNpjveiD5HylBUsFy/BhIrZ
+	 tlZzJWkoz+v54APkswRYFoGeKXZdKGZza8kUqLpM0SqpziOhQjN9PLdMS2p9mvU3JX
+	 biSVa5oDVurkKc4uZnKJFI7tJgl2Dhinu2yVoFXmT2iNkgl88NFt3v0pTaPGi93H5g
+	 nm6IXplEywZTA==
+Date: Sat, 6 Dec 2025 16:26:42 +0000
+From: Jonathan Cameron <jic23@kernel.org>
 To: Tomas Borquez <tomasborquez13@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev
-Subject: Re: [RFC PATCH 1/3] staging: iio: ad9832: remove platform_data
- support
-Message-ID: <aTRYsueq31e3CtYJ@smile.fi.intel.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-staging@lists.linux.dev
+Subject: Re: [RFC PATCH 3/3] dt-bindings: iio: add analog devices
+ ad9832/ad9835
+Message-ID: <20251206162642.5b4a3e9b@jic23-huawei>
+In-Reply-To: <20251205202743.10530-4-tomasborquez13@gmail.com>
 References: <20251205202743.10530-1-tomasborquez13@gmail.com>
- <20251205202743.10530-2-tomasborquez13@gmail.com>
+	<20251205202743.10530-4-tomasborquez13@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251205202743.10530-2-tomasborquez13@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 05, 2025 at 05:27:41PM -0300, Tomas Borquez wrote:
-> Remove legacy platform_data support as there are no in tree users and
-> this approach belongs to a long gone era. The policy decision on what
-> to output is a userspace problem, not something that should be provided
-> from firmware.
+On Fri,  5 Dec 2025 17:27:43 -0300
+Tomas Borquez <tomasborquez13@gmail.com> wrote:
+
+> Add devicetree binding documentation for the AD9832 and AD9835
+> Digital Synthesizer chips.
 > 
-> The driver now initializes the device to a safe state (SLEEP|RESET|CLR)
-> outputting nothing. Userspace can configure the desired frequencies and
-> phases via the existing sysfs attributes once the device is ready to be 
+> Signed-off-by: Tomas Borquez <tomasborquez13@gmail.com>
 
-Tailing space on the above line (and the only line with this issue).
+Normally we only add a binding as part of the staging graduation
+which typically involves a full review of the whole driver (make sure
+to disable move detection in git if you send the code moving patch).
 
-> used.
+Anyhow, we can still give early feedback on this!
+
+Whilst checking the pin mappings I finally noticed this a current source DAC
+not a voltage one so all the channel types should be out_altcurrent0_...
+
+Michael, I don't suppose you happen to remember why it is pretending to
+be a voltage DAC?  
+
+Jonathan
+
+> ---
+>  .../bindings/iio/frequency/adi,ad9832.yaml    | 65 +++++++++++++++++++
+>  1 file changed, 65 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,ad9832.yaml
 > 
-> Original discussion started here [1].
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,ad9832.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,ad9832.yaml
+> new file mode 100644
+> index 0000000000..f14e054ab2
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,ad9832.yaml
+> @@ -0,0 +1,65 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/frequency/adi,ad9832.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD9832/AD9835 Direct Digital Synthesizer
+> +
+> +maintainers:
+> +  - Michael Hennerich <michael.hennerich@analog.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad9832
+> +      - adi,ad9835
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 20000000
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    const: mclk
+> +
+> +  avdd-supply:
+> +    description: Analog power supply.
+> +
+> +  dvdd-supply:
+> +    description: Digital power supply.
+There looks to be a REFIN pin (and FS Adjust which is a bit of an oddity)
+We probably need to desribe any resistor connected to fs adjust a bit like
+a shunt resistor.
 
-The change LGTM, Jonathan, can you amend the above and apply it?
-(Yes, I have read the discussion about removal the driver, but meanwhile
- the change is good on itself even if we are going to remove the driver.
- It just makes an additional harmless step in my opinion.)
 
-FWIW,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+See cover letter discussion for the ways the various
+inputs could be wired.  Some of the recent discussion on tied
+GPIOs is also relevant here. I'm not up to date with where that
+ended up yet though!
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - avdd-supply
+> +  - dvdd-supply
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        dds@0 {
+> +            compatible = "adi,ad9832";
+> +            reg = <0>;
+> +            spi-max-frequency = <20000000>;
+> +            clocks = <&dds_clk>;
+> +            clock-names = "mclk";
+> +            avdd-supply = <&avdd_reg>;
+> +            dvdd-supply = <&dvdd_reg>;
+> +        };
+> +    };
+> +...
 
 

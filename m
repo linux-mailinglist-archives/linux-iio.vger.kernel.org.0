@@ -1,62 +1,57 @@
-Return-Path: <linux-iio+bounces-26877-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26878-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0FFCAB565
-	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 14:29:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E151BCAB58C
+	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 14:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF30F304A284
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 13:29:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C43883045F4B
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 13:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CD82ED866;
-	Sun,  7 Dec 2025 13:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5902D97AF;
+	Sun,  7 Dec 2025 13:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPn+bVWr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfXBt6S9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E0E1662E7;
-	Sun,  7 Dec 2025 13:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C10A1E5B9E;
+	Sun,  7 Dec 2025 13:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765114140; cv=none; b=p6KrPH1864yWPWH9Cp9WOdIT+0SHVNIxHP2uBASt0UVeeUMsPMe+iYskUzqgsBzS09FA6Fjwfvht5ndj5nAo/H23EMW+MMDn475ST8sUuSUUGpNBRmOcKBUgbYZRQDwhJo6D1zqaHvy0NmCQCOs5dOM6Nu+BrUFCwvDTQSQzni8=
+	t=1765114902; cv=none; b=DCrhmuSaHi+LIEi6oYSLXaWG1RUOH0lA3HZO8r3jRGXmeoDmKa/9BFNj0ARmoFYuIcGGJC0nyaarPQu2JuE4dXNgJ90TZ60OLZ1pIC3bqzyAulN7fpnPnT8CjU+XjxeGIMCGvPWw7WYm4kT7BtOCQ3lnAJzVV9iHpgfHM/xZsmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765114140; c=relaxed/simple;
-	bh=JxuxSBOD+uVmA4tthFiQuqKDxE+UGBvxxyYX/JBfRtE=;
+	s=arc-20240116; t=1765114902; c=relaxed/simple;
+	bh=eOKxloQZSKnEuMHoDAJ+och1P2JGXo4BV3PNqIIwi/8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A7cPwbV+xUuSzejYUmtpXh7pORju7pZRfU7b+hAzDAKr04IqPZrPp3s/JpL6oo5FUFNZojkNaQ6QLdegly4X+IEyULKAYBQ559L4ZFYDquPus749n32zhvg8wla6hZnLw3Wdd0/VWF5cAwMkt3t1rukxz11xIAKPHFbIOLE1GwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPn+bVWr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B4EC4CEFB;
-	Sun,  7 Dec 2025 13:28:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oIPxv32DKeCxXixH7HVGs/3XQp0Tj3PeVo1oSX2gQBYYcH5fbWW0XOmHZ7a3UmnXFmlBUP9hz2q1ZjLxHkUEV32oTLN9X3/RDqJXuYuhAUTSQ5rNleknsVCYZhr+KZZfSJ5e61wjAC/ofewNe2p+W+nABv7K+nbWOln8Y57c1hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfXBt6S9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B5CC4CEFB;
+	Sun,  7 Dec 2025 13:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765114139;
-	bh=JxuxSBOD+uVmA4tthFiQuqKDxE+UGBvxxyYX/JBfRtE=;
+	s=k20201202; t=1765114901;
+	bh=eOKxloQZSKnEuMHoDAJ+och1P2JGXo4BV3PNqIIwi/8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LPn+bVWrxIDH9xaiFjZSLo4d4I1/45TGP+OZNS1qhIGhNE1QUH34KOckncRvUusgL
-	 2B+hmA6Ys9z6vXzM6Lh6VCGxOy3nnUWASaZ+pagTQjZtTM9TTWNCGxG+kn+KLQdBJZ
-	 9ttg7B60UauCu4IqcvU+Ars6eQzq4nlAgQmZHyZ73eSHxsnfs14c//tSe3Z/NuHV3P
-	 l4aIjxXtNWRRyZwz44cNr4ud3EdUivbSRk5DvE82C0useNkTEb/R23qG0sQJ5C9V75
-	 9rmIEk7VOE78BFkc8WHXZxt5Y5Vm3TVugcx20Ee5TWz3c7MC9VN63mXeJPDMDuQLdc
-	 LtRFRQGbxYIRQ==
-Date: Sun, 7 Dec 2025 13:28:50 +0000
+	b=YfXBt6S9NSwPIAptYHrGdi+h+2LJFAZ37VQUCRWLBJEaLAPY0RdJwcpqGGiNrP8NJ
+	 97SJ+C9syOBQ+e+sEKscF0dUkl0gbt5zbqR19qp46sXmM1jlwQ+Z1y8ej/TaL8Vm1X
+	 TcmjfUfoK9E44FgiWp7tPPQtqTgWG6T4j/DG0uyf+BUsabKSo99dTcRUCJAkF2zqW7
+	 +8jKwBH2YGsIjkOSnRBt0sSdG32ShtBWy660rSxtNyxC6oFqwteqnuGHwJQRMxbUKI
+	 s4DjnGr+ZmdOi9Ebu7oLDxGdbTn013xa7AeJ6jd1be2d4r+v8LPhYCp/StuCQv2wXq
+	 nIv88NbMPpwBg==
+Date: Sun, 7 Dec 2025 13:41:32 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Tomas Melin <tomas.melin@vaisala.com>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
- andy@kernel.org, Michael.Hennerich@analog.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, corbet@lwn.net
-Subject: Re: [PATCH v3 3/3] Docs: iio: Add AD4134
-Message-ID: <20251207132850.1b0f8f71@jic23-huawei>
-In-Reply-To: <aTLQxIGc5jMgQnnx@debian-BULLSEYE-live-builder-AMD64>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nuno.sa@analog.com>, <dlechner@baylibre.com>, <andy@kernel.org>,
+ <Michael.Hennerich@analog.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+ <conor+dt@kernel.org>, <corbet@lwn.net>, <marcelo.schmitt1@gmail.com>
+Subject: Re: [PATCH v3 2/3] iio: adc: Initial support for AD4134
+Message-ID: <20251207134132.33f80c08@jic23-huawei>
+In-Reply-To: <c189c25b1c46f406c3f7942e5ac4cdb0b964ee52.1764708608.git.marcelo.schmitt@analog.com>
 References: <cover.1764708608.git.marcelo.schmitt@analog.com>
-	<69b230190abb4cd76ad9eb25e2bde51caaa23d9a.1764708608.git.marcelo.schmitt@analog.com>
-	<19d5c51d-41f3-446a-aced-5be2fe6ec0d2@vaisala.com>
-	<aTGpgEFew2vP1CTG@debian-BULLSEYE-live-builder-AMD64>
-	<49465e36-882c-41c2-a8bb-3c2e87bcdfd7@vaisala.com>
-	<aTLQxIGc5jMgQnnx@debian-BULLSEYE-live-builder-AMD64>
+	<c189c25b1c46f406c3f7942e5ac4cdb0b964ee52.1764708608.git.marcelo.schmitt@analog.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,50 +62,164 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 5 Dec 2025 09:32:04 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+On Tue, 2 Dec 2025 17:55:21 -0300
+Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
 
-> On 12/05, Tomas Melin wrote:
-> > Hi,
-> > 
-> > On 04/12/2025 17:32, Marcelo Schmitt wrote:  
-> > > On 12/03, Tomas Melin wrote:  
-> > >> Hi,
-> > >>
-> > >> On 02/12/2025 22:55, Marcelo Schmitt wrote:  
-> > >>> Add initial documentation for the ad4134 IIO driver.  
-> > >>
-> > >> I wonder is there some information in here that is not readily available
-> > >> in the device datasheet? After all, isn't idea with this file to
-> > >> document peculiarities that are not easily found elsewhere?  
-> > > 
-> > > You are correct, these docs are mostly from data sheet info.
-> > > The main idea of having the doc is to make clear what peripheral connection
-> > > schema is currently supported.
-> > > Because AD4134 is both flexible and somewhat extensible in the way it can be
-> > > connected to the host, we could have different wiring configurations, for
-> > > example  
-> > 
-> > Thanks for your explanation. My humble opinion is that it would be
-> > enough to mention in the commit message for the driver being added, or
-> > in the device-tree bindings that basic I/O mode is only configuration
-> > that is currently supported.  
+> AD4134 is a 24-bit, 4-channel, simultaneous sampling, precision
+> analog-to-digital converter (ADC). The device can be managed through SPI or
+> direct control of pin logical levels (pin control mode). The AD4134 design
+> also features a dedicated bus for ADC sample data output. Though, this
+> initial driver for AD4134 only supports usual SPI connections.
 > 
-> Okay, I'll drop the docs from v4.
+> Add basic support for AD4134 that enables single-shot ADC sample read.
 > 
-On this: I only rarely request docs for a particular driver when
-it gets really complex - particularly when the ABI might not obviously
-align with the terminology in a datasheet.
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Hi Marcelo
 
-For other drivers I've always taken the view that if the documentation
-is clean and potentially useful I don't mind adding it.
-
-I get Tomas' point here though as this is very light so maybe a 'not yet'.
+Nice and clean which makes for pleasant reviewing :)
+A few minor comments inline.
 
 Jonathan
 
+> diff --git a/drivers/iio/adc/ad4134.c b/drivers/iio/adc/ad4134.c
+> new file mode 100644
+> index 000000000000..7158eefcd877
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad4134.c
 
-> Thanks,
-> Marcelo
 
+> +static int ad4134_read_raw(struct iio_dev *indio_dev,
+> +			   struct iio_chan_spec const *chan,
+> +			   int *val, int *val2, long info)
+> +{
+> +	struct ad4134_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		gpiod_set_value_cansleep(st->odr_gpio, 1);
+> +		fsleep(1);
+Any section reference for required pulse width that you can add as a comment here?
+
+It's useful if people end up wondering if the pulse is long enough if they have
+problems with a board.
+
+> +		gpiod_set_value_cansleep(st->odr_gpio, 0);
+> +		ret = regmap_read(st->regmap, AD4134_CH_VREG(chan->channel), val);
+> +		if (ret)
+> +			return ret;
+> +
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*val = st->refin_mv;
+> +		*val2 = AD4134_CHAN_PRECISION_BITS - 1;
+> +
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+
+> +
+> +static const char * const ad4143_regulator_names[] = {
+> +	"avdd5", "dvdd5", "iovdd", "refin",
+> +	"avdd1v8", "dvdd1v8", "clkvdd",	"ldoin",
+> +};
+> +
+> +static int ad4134_regulator_setup(struct ad4134_state *st)
+> +{
+> +	struct device *dev = &st->spi->dev;
+> +	bool use_internal_ldo_regulator;
+> +	int ret;
+> +
+> +	/* Required regulators */
+> +	ret = devm_regulator_bulk_get_enable(dev, 3, ad4143_regulator_names);
+
+Why list names of regulators in that array that you don't use? I'd call it
+ad4143_required_regulator_names and then you can use ARRAY_SIZE() to replace
+that 3.
+
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "failed to enable power supplies\n");
+> +
+> +	/* Required regulator that we need to read the voltage */
+> +	ret = devm_regulator_get_enable_read_voltage(dev, "refin");
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "failed to get REFIN voltage.\n");
+> +
+> +	st->refin_mv = ret / (MICRO / MILLI);
+> +
+> +	/*
+> +	 * If ldoin is not provided, then avdd1v8, dvdd1v8, and clkvdd are
+> +	 * required.
+> +	 */
+> +	ret = devm_regulator_get_enable_optional(dev, "ldoin");
+> +	if (ret < 0 && ret != -ENODEV)
+> +		return dev_err_probe(dev, ret, "failed to enable ldoin supply\n");
+> +
+> +	use_internal_ldo_regulator = ret == 0;
+> +
+> +	if (use_internal_ldo_regulator)
+> +		return 0;
+> +
+
+For these 3 you can use a second array of names and devm_regulator_bulk_get_enable()
+Finding a short descriptive name for that array might be tricky however.
+
+> +	ret = devm_regulator_get_enable(dev, "avdd1v8");
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "failed to enable avdd1v8 supply\n");
+> +
+> +	ret = devm_regulator_get_enable(dev, "dvdd1v8");
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "failed to enable dvdd1v8 supply\n");
+> +
+> +	ret = devm_regulator_get_enable(dev, "clkvdd");
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "failed to enable clkvdd supply\n");
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4134_clock_select(struct ad4134_state *st)
+> +{
+> +	struct device *dev = &st->spi->dev;
+> +	struct clk *sys_clk;
+> +
+> +	/*
+> +	 * AD4134 requires one external clock source and only one external clock
+> +	 * source can be provided at a time. Try get a crystal provided clock.
+> +	 * If that fails, try to get a CMOS clock.
+> +	 */
+> +	sys_clk = devm_clk_get_optional_enabled(dev, "xtal1-xtal2");
+
+I should have noticed this in the binding review.  Why do we need to call out which
+xtal pins?  Previous cases of this have just used the name "xtal" for the clock
+type selection.  Maybe there was some discussion I missed.
+
+> +	if (IS_ERR_OR_NULL(sys_clk)) {
+> +		if (PTR_ERR(sys_clk) == -EPROBE_DEFER)
+> +			return -EPROBE_DEFER;
+> +
+> +		/* Try the CMOS clock */
+> +		sys_clk = devm_clk_get_enabled(dev, "clkin");
+> +		if (IS_ERR(sys_clk)) {
+> +			if (PTR_ERR(sys_clk) == -EPROBE_DEFER)
+> +				return -EPROBE_DEFER;
+> +
+> +			return dev_err_probe(dev, PTR_ERR(sys_clk),
+> +					     "failed to get external clock\n");
+> +		}
+> +	}
+> +
+> +	st->sys_clk_hz = clk_get_rate(sys_clk);
+> +	if (st->sys_clk_hz != AD4134_EXT_CLOCK_MHZ)
+> +		dev_warn(dev, "invalid external clock frequency %lu\n",
+> +			 st->sys_clk_hz);
+> +
+> +	return 0;
+> +}
 

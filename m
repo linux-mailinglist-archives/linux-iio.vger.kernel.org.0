@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-26886-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26887-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B50DCAB696
-	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 16:23:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D12CAB69C
+	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 16:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96854301B4BD
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 15:23:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD1F7301C97B
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 15:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298EB276038;
-	Sun,  7 Dec 2025 15:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24DD26FA60;
+	Sun,  7 Dec 2025 15:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VrtP7bKK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZfAK4EK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B44B218845;
-	Sun,  7 Dec 2025 15:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1886025E469;
+	Sun,  7 Dec 2025 15:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765120989; cv=none; b=Cv4kLCxHCE4FWxyM0kA7hBWzU5vhBb7ggp7LhPEuR8cFRXjGK2uUJG3VAyZPUc3FE6ulguKVHBleJOJ6Kdy/5capunmWonSmDADDOJJ5cXG4iVJAldIyOUJ69iVk+PJBQ5n7XftZFisZmRpOPSSSJIqiLSlBtExXja03MKeewzk=
+	t=1765121274; cv=none; b=lfgfvqmUzTtVd8SjH5R/4hA0bqXDtyAiZJsHBRL5Vr4qNJ+gfPIfbLu+xDLEmZkumOMhOMXMp8gjZruwGrjV7taBguYhIXz4h+WW3RAFmHd9DIJrk0+2q2cFd5imNb7tsr0FOc1xMBsn8tzWaFbXwzxMTDTCxdVeyW4JY82FNiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765120989; c=relaxed/simple;
-	bh=q3dOoZ1cYtuIkfbc7FjLHwrKh2yOG37JhBl13bWpzSU=;
+	s=arc-20240116; t=1765121274; c=relaxed/simple;
+	bh=QutVBuzh2z43sHo1wtva6NARqk1HqcJkUe0SJ2WRSKs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OFXJlPRPntcec6bGtZJh+MVIScoCzgIJ+42cBAodaR4FTDsYGv6ktGIUy9bhb6uExyJr+nPeEVxeofJq+k3bl1diivUIUIqnm9bB9L2kEigHdklQzbGwxoKkstIl3OcQFfU8CoGhQfhJ7YBkr8l642G/NAa1klI7vqwZW9KMUms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VrtP7bKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD726C4CEFB;
-	Sun,  7 Dec 2025 15:23:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rvGwIP02jm7MzPnYcYuqhQImWG5InLT6r3Kc4AMsNRYK63RqzghoJBXcvaTkNj3VFZMiK3TaK6/ExB8JNcORWDRNS4z8eOShXOlr1tRsJdD4nzb/Qj7Vy9XM6VOFFnjgXr3RS/U49LVMokJXLUQqn0CBUiDTXeBAF4R1tuEg5ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZfAK4EK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770FFC4CEFB;
+	Sun,  7 Dec 2025 15:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765120984;
-	bh=q3dOoZ1cYtuIkfbc7FjLHwrKh2yOG37JhBl13bWpzSU=;
+	s=k20201202; t=1765121273;
+	bh=QutVBuzh2z43sHo1wtva6NARqk1HqcJkUe0SJ2WRSKs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VrtP7bKK6rnVUjXZmeCRhlEkHUpLjL4QJ1plXgC0g3y1iPnp0+E6WIIW+0Go5Af/G
-	 cMlKFW8NPJmYjUZ0LAXgsrgsQ3+SrN/LKR4+erwBQSVxWqm5iUAGWYqsawPT1YLqMz
-	 4JFpwQ3UMVPfP+WVWiKPwTtwQrMUh/bLRIkEead2OScHhwLRLSML2Qxt3lsru+fKJJ
-	 824Ch00j8Zu9rO+r9bhjv/EwBOu2hSABysG7tQtygYcTMAIamHLeCgons2jDdMtHDv
-	 8dhxAgNR9AyQzXmTiT5LjF0x8sndQlsWqwjDY77MIOnVPjBh5owUBIgmHsEuRBFug3
-	 yCidgaMjAkTmg==
-Date: Sun, 7 Dec 2025 15:22:56 +0000
+	b=XZfAK4EKjqJGPPXyy+WAPpqzETaIHWLRiXRDs+HqJJARN7eiSLKUbfWUjJ0ANybGI
+	 i9Azz85wZVmfxgPacIVkn0EwhFzk3NkoWHDpRs55fhzFqZOh5NyWJIbgqE8O5AtDIh
+	 e+wZNpt7YeQe4nrE+KoPgoglmOjnT/KvTSfHo+Fj3r12x2OWQYr+ekXVpEyyz5XvaL
+	 fnHhCwewU5+XcsuynL6WfimjBx9J/TTNURYXO7X7wak2jzRT9tzuWaqgXETQnL+m7Q
+	 q870Q1ZYkX1ptLawCcYQhp/9VsBPgWQzVjGotNrcqRmSgfCNQgJ8wb6nqUg50eoH40
+	 iiLSg6SK1AYwQ==
+Date: Sun, 7 Dec 2025 15:27:44 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Francesco Lavra <flavra@baylibre.com>
 Cc: Lorenzo Bianconi <lorenzo@kernel.org>, David Lechner
  <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
  Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@intel.com>
-Subject: Re: [PATCH v4 3/9] iio: imu: st_lsm6dsx: move wakeup event enable
- mask to event_src
-Message-ID: <20251207152256.1f432c62@jic23-huawei>
-In-Reply-To: <20251201100018.426749-4-flavra@baylibre.com>
+Subject: Re: [PATCH v4 4/9] iio: imu: st_lsm6dsx: rework code to check for
+ enabled events
+Message-ID: <20251207152744.5ec17be4@jic23-huawei>
+In-Reply-To: <20251201100018.426749-5-flavra@baylibre.com>
 References: <20251201100018.426749-1-flavra@baylibre.com>
-	<20251201100018.426749-4-flavra@baylibre.com>
+	<20251201100018.426749-5-flavra@baylibre.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,23 +62,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  1 Dec 2025 11:00:12 +0100
+On Mon,  1 Dec 2025 11:00:13 +0100
 Francesco Lavra <flavra@baylibre.com> wrote:
 
-> The mask value being assigned to the irq1_func and irq2_func fields of the
-> irq_config struct is specific to a single event source (i.e. the wakeup
-> event), and as such it should be separate from the definition of the
-> interrupt function registers, which cover multiple event sources.
-> In preparation for adding support for more event types, change the
-> irq1_func and irq2_func type from an {address, mask} pair to an address,
-> and move the mask value to a new field of struct st_lsm6dsx_event_src. No
-> functional changes.
+> The enable_event field in struct st_lsm6dsx_hw does not lend itself well to
+> handling multiple event sources, so it will have to be modified to add
+> support for more event sources. As a preparatory step, remove references to
+> this field from code that does not deal with event management; rework the
+> st_lsm6dsx_check_events() function so that it returns whether any events
+> are currently enabled on a given sensor.
 > 
 > Signed-off-by: Francesco Lavra <flavra@baylibre.com>
 > Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Applied
+Applied.
+
+Note that if anyone else has more comments or wants to add tags
+I'm fine rebasing as appropriate until sometime after rc1 when
+I push out as togreg and linux-next picks it up.
 
 Thanks,
+
 Jonathan
 

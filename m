@@ -1,45 +1,45 @@
-Return-Path: <linux-iio+bounces-26906-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26907-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474C9CAB7EB
-	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 17:54:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2BFCAB81A
+	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 18:04:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97004301DB8B
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 16:54:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9308A30050B4
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 17:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2D52D0618;
-	Sun,  7 Dec 2025 16:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60694246BD5;
+	Sun,  7 Dec 2025 17:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQzF94fl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jpz/UF4f"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DE116DC28;
-	Sun,  7 Dec 2025 16:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9861E4AB;
+	Sun,  7 Dec 2025 17:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765126448; cv=none; b=PgZtvnSandPjZCn336cmLD1NR93V400mIQwYZ5lWEN5WqnCNRx0AzXiAg4SwI1l/56dokywsuL4tfK5B77EV7CmN9abGazsj3b7hN9iSElYBdBOCq8ADBhxMd8x5s6l+lPWpq3Bg6s31ZI+57hdFntMFFJYFOls7b5RW53mG5UY=
+	t=1765127059; cv=none; b=HkRzq53lAJi7pBuQHJjpM2Lm9R5VULutTJs1ToKeXy0teY1sAEfUz/iSeH8yn6K3UrlGtZSP9Y05fffcEYVF5lwdjRfEDP3Nw+me9rCdT4ppuor+nnAZp1v05FgqO4XASyH8lNsi3KKic71YoQJcsMvCSrtITnV2Xv/PQEs3HdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765126448; c=relaxed/simple;
-	bh=C5sZX87PayaYSX4KfMWn5QhVbDjq7mIXp6DtwTMeVlE=;
+	s=arc-20240116; t=1765127059; c=relaxed/simple;
+	bh=KJLtZJF4YlnNvE54Gufo9xlhia0LAFoIMWhVglcOiak=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SqrEYM4Tzx07l2QFyKC9J7qhnvcZC1uP/s2Ekh/YP5YJd0QSPnBZLCPMH4rqzEQfkf64nkRf5QpDV5B0IYkFqOq0htkpnRS1koFiXI6KqKAuQ4A83q3sxHDJlQ3PAuIwFADD9hTpauunKn/aLGMPwFPMv/1hlnj9DpwvskWdQVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQzF94fl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A1EC4CEFB;
-	Sun,  7 Dec 2025 16:53:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fde5pjf+7X/6yPHv588nikokpLny8n0e+I2AIoy7poucIN4MiQDqiZZUHqw+wf6l040UNnrABKtba3f691FUlOtwAWU+wCb1ZBi/OqO1ax52usDWvrOOefOwXOBBTovnBhFU6sW4oO198xFwX1HE5vG+liG5VioK0qpDU7iVRpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jpz/UF4f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3A0C4CEFB;
+	Sun,  7 Dec 2025 17:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765126445;
-	bh=C5sZX87PayaYSX4KfMWn5QhVbDjq7mIXp6DtwTMeVlE=;
+	s=k20201202; t=1765127057;
+	bh=KJLtZJF4YlnNvE54Gufo9xlhia0LAFoIMWhVglcOiak=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YQzF94flU5YhTWDez2epfvKC5EqjVvI+7is443ff5YfWy2/yt9djUUsn6PgYcOvsC
-	 HU8339fb5BHU7u9WDDaDROzxM+w5fu15J0e7xN1JamuDggwX4dcgDYB+ZoIl6FC+Q8
-	 d25Ckwd9ov3r8z9+1/5IQLV+Qp7xRL3Kj/ZzCfo4kg+aDf5P2IOb7hNIaLzuHbenDj
-	 QaSfBxpKKa7InHW3e5J/E2ngtAtQzGp8dBQNOQ4LGWDrlAuE2DdS74Gzdcyap4dits
-	 yuKzlA32Zgps8id9w1zY7HZntERbC72KU1phfiTiXOE/J/xFT9dzKHCGJmsPv6gx1W
-	 ZTBcBMWCwQAOQ==
-Date: Sun, 7 Dec 2025 16:53:49 +0000
+	b=Jpz/UF4fr3CqD7xB+e2krzMjA5K2DkOqc2f9RZdQCbnCNZD3/ftGAM0OCluKKwFKl
+	 m0wqlhHR3eibzE2v2tVFxRjDb7cMBGmfICvGrqGVXkIIg9hSGu9YZNZZ1i9oHEes3P
+	 NuKpaAbrhn3tQ+bzYwOAywxa5LjOWo+anrGDf83XVmDHsaxEOH+2kNeplvz1xTfU/J
+	 e+ohqWlhI2MoE7nPRhh9rYa12/MNqyvTVsOr6SEwM9V1jMZb11cXpeFm/nRCp64yJK
+	 wUaotIrnUJX8qlEjI4OeNKY8Fa87ekpTxVBAxjfAg0BvdQv6jJxP3ASITBRSVFVMRM
+	 632uz4P0erL7w==
+Date: Sun, 7 Dec 2025 17:04:01 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
 Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
@@ -55,11 +55,12 @@ Cc: robh@kernel.org, krzysztof.kozlowski@linaro.org, krzk+dt@kernel.org,
  linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
  quic_kotarake@quicinc.com, neil.armstrong@linaro.org,
  stephan.gerhold@linaro.org
-Subject: Re: [PATCH V8 3/4] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
-Message-ID: <20251207165349.72f80659@jic23-huawei>
-In-Reply-To: <20251127134036.209905-4-jishnu.prakash@oss.qualcomm.com>
+Subject: Re: [PATCH V8 4/4] thermal: qcom: add support for PMIC5 Gen3 ADC
+ thermal monitoring
+Message-ID: <20251207170401.1143fc22@jic23-huawei>
+In-Reply-To: <20251127134036.209905-5-jishnu.prakash@oss.qualcomm.com>
 References: <20251127134036.209905-1-jishnu.prakash@oss.qualcomm.com>
-	<20251127134036.209905-4-jishnu.prakash@oss.qualcomm.com>
+	<20251127134036.209905-5-jishnu.prakash@oss.qualcomm.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,112 +71,138 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 27 Nov 2025 19:10:35 +0530
+On Thu, 27 Nov 2025 19:10:36 +0530
 Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
 
-> The ADC architecture on PMIC5 Gen3 is similar to that on PMIC5 Gen2,
-> with all SW communication to ADC going through PMK8550 which
-> communicates with other PMICs through PBS.
+> Add support for ADC_TM part of PMIC5 Gen3.
 > 
-> One major difference is that the register interface used here is that
-> of an SDAM (Shared Direct Access Memory) peripheral present on PMK8550.
-> There may be more than one SDAM used for ADC5 Gen3 and each has eight
-> channels, which may be used for either immediate reads (same functionality
-> as previous PMIC5 and PMIC5 Gen2 ADC peripherals) or recurring measurements
-> (same as ADC_TM functionality).
-> 
-> By convention, we reserve the first channel of the first SDAM for all
-> immediate reads and use the remaining channels across all SDAMs for
-> ADC_TM monitoring functionality.
-> 
-> Add support for PMIC5 Gen3 ADC driver for immediate read functionality.
-> ADC_TM is implemented as an auxiliary thermal driver under this ADC
-> driver.
+> This is an auxiliary driver under the Gen3 ADC driver, which implements the
+> threshold setting and interrupt generating functionalities of QCOM ADC_TM
+> drivers, used to support thermal trip points.
 > 
 > Signed-off-by: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
+> ---
 Hi Jishnu
 
-Biggest thing I noticed on a fresh review is that you include
-very few headers.  This only compiles (I think) because of lots
-of deeply nested includes.  General principle in kernel code is
-to follow IWYU approach with a few exceptions.  That makes code
-much less prone to changes deep in the header hierarchy.
+Fresh read threw up a few more comments from me.
 
-You can even use the tooling that exists for clang to give you suggestions
-though search around for config files (I posted one a long time back)
-that reduce the noise somewhat.
+See inline
+
+Thanks,
 
 Jonathan
 
-
-> diff --git a/drivers/iio/adc/qcom-adc5-gen3-common.c b/drivers/iio/adc/qcom-adc5-gen3-common.c
+> diff --git a/drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c b/drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c
 > new file mode 100644
-> index 000000000000..46bb09424f22
+> index 000000000000..c6cc8ef76f7e
 > --- /dev/null
-> +++ b/drivers/iio/adc/qcom-adc5-gen3-common.c
-> @@ -0,0 +1,107 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-> + *
-> + * Code shared between the main and auxiliary Qualcomm PMIC voltage ADCs
-> + * of type ADC5 Gen3.
-> + */
+> +++ b/drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c
+
 > +
-> +#include <linux/bitfield.h>
-> +#include <linux/delay.h>
-> +#include <linux/iio/adc/qcom-adc5-gen3-common.h>
-> +#include <linux/regmap.h>
-This seems like very light set of includes.
-If nothing else should be seeing linux/types.h I think
+> +static void tm_handler_work(struct work_struct *work)
+> +{
+> +	struct adc_tm5_gen3_chip *adc_tm5 = container_of(work, struct adc_tm5_gen3_chip,
+> +							 tm_handler_work);
+> +	struct adc_tm5_gen3_channel_props *chan_prop;
 
-In general try to follow include what you use principles (loosely as some
-conventions exit for not including particular headers). 
-
-Sorry I didn't notice this in earlier reviews!
+Why not declare in the reduced scope below?  Then could probably combine
+declaration and assignment for this, and offset.
 
 
-> diff --git a/drivers/iio/adc/qcom-spmi-adc5-gen3.c b/drivers/iio/adc/qcom-spmi-adc5-gen3.c
-> new file mode 100644
-> index 000000000000..effd4bd49989
-> --- /dev/null
-> +++ b/drivers/iio/adc/qcom-spmi-adc5-gen3.c
+> +	u8 tm_status[2] = { };
+> +	u8 buf[16] = { };
+> +	int sdam_index = -1;
+> +	int i, ret;
+> +
+> +	for (i = 0; i < adc_tm5->nchannels; i++) {
+It's considered fine in new kernel code to declare the loop variable
+as
+	for (int i = 0;
 
-> +/**
-> + * struct adc5_chip - ADC private structure.
-> + * @dev: SPMI ADC5 Gen3 device.
-> + * @dev_data: Top-level ADC device data.
-> + * @nchannels: number of ADC channels.
-> + * @chan_props: array of ADC channel properties.
-> + * @iio_chans: array of IIO channels specification.
-> + * @complete: ADC result notification after interrupt is received.
-> + * @lock: ADC lock for access to the peripheral, to prevent concurrent
-> + * requests from multiple clients.
-> + * @data: software configuration data.
-> + * @n_tm_channels: number of ADC channels used for TM measurements.
-> + * @tm_aux: pointer to auxiliary TM device.
-> + */
-> +struct adc5_chip {
-> +	struct device *dev;
-> +	struct adc5_device_data dev_data;
-> +	unsigned int nchannels;
-> +	struct adc5_channel_prop *chan_props;
-> +	struct iio_chan_spec *iio_chans;
-> +	struct completion complete;
-> +	/*
-> +	 * lock for access to the peripheral, to prevent concurrent requests
-> +	 * from multiple clients.
-> +	 */
+> +		bool upper_set, lower_set;
+> +		int temp, offset;
+> +		u16 code = 0;
+> +
+> +		chan_prop = &adc_tm5->chan_props[i];
+> +		offset = chan_prop->tm_chan_index;
+> +
+> +		adc5_gen3_mutex_lock(adc_tm5->dev);
+> +		if (chan_prop->sdam_index != sdam_index) {
+> +			sdam_index = chan_prop->sdam_index;
+> +			ret = adc5_gen3_tm_status_check(adc_tm5, sdam_index,
+> +							tm_status, buf);
+> +			if (ret) {
+> +				adc5_gen3_mutex_unlock(adc_tm5->dev);
 
-Whilst checkpatch is dumb on this and complains if you don't have a comment
-here feel free to drop it as the one in the kernel-doc is enough.
+If you had the guard() below, could perhaps use scoped_guard() here
+to avoid need for unlocking in error paths.
+That would be at the cost of increased indent however, so may not be worth it
+or that may suggest factoring out some of this code as a helper.
 
-> +	struct mutex lock;
-> +	const struct adc5_data *data;
-> +	unsigned int n_tm_channels;
-> +	struct auxiliary_device *tm_aux;
-> +};
+> +				break;
+> +			}
+> +		}
+> +
+> +		upper_set = ((tm_status[0] & BIT(offset)) && chan_prop->high_thr_en);
+> +		lower_set = ((tm_status[1] & BIT(offset)) && chan_prop->low_thr_en);
+> +		adc5_gen3_mutex_unlock(adc_tm5->dev);
+> +
+> +		if (!(upper_set || lower_set))
+> +			continue;
+> +
+> +		code = get_unaligned_le16(&buf[2 * offset]);
+> +		pr_debug("ADC_TM threshold code:%#x\n", code);
+> +
+> +		ret = adc5_gen3_therm_code_to_temp(adc_tm5->dev,
+> +						   &chan_prop->common_props,
+> +						   code, &temp);
+> +		if (ret) {
+> +			dev_err(adc_tm5->dev,
+> +				"Invalid temperature reading, ret = %d, code=%#x\n",
+> +				ret, code);
+> +			continue;
+> +		}
+> +
+> +		chan_prop->last_temp = temp;
+> +		chan_prop->last_temp_set = true;
+> +		thermal_zone_device_update(chan_prop->tzd, THERMAL_TRIP_VIOLATED);
+> +	}
+> +}
 
+> +static int adc_tm5_gen3_set_trip_temp(struct thermal_zone_device *tz,
+> +				      int low_temp, int high_temp)
+> +{
+> +	struct adc_tm5_gen3_channel_props *prop = thermal_zone_device_priv(tz);
+> +	struct adc_tm5_gen3_chip *adc_tm5;
+> +	int ret;
+> +
+> +	if (!prop || !prop->chip)
+> +		return -EINVAL;
+> +
+> +	adc_tm5 = prop->chip;
+> +
+> +	dev_dbg(adc_tm5->dev, "channel:%s, low_temp(mdegC):%d, high_temp(mdegC):%d\n",
+> +		prop->common_props.label, low_temp, high_temp);
+> +
+> +	adc5_gen3_mutex_lock(adc_tm5->dev);
+> +	if (high_temp == INT_MAX && low_temp <= -INT_MAX)
 
->
+How is low temp lower than the min value that fits in an integer?
+
+> +		ret = adc_tm5_gen3_disable_channel(prop);
+> +	else
+> +		ret = adc_tm5_gen3_configure(prop, low_temp, high_temp);
+> +	adc5_gen3_mutex_unlock(adc_tm5->dev);
+Might be worth a DEFINE_GUARD() so you can do
+	guard(adc5_gen3)(adc_tm5->dev);
+	if (high_temp = INT_MAX && low_temp <= -INT_MAX)
+		return adc_tm5_gen3_disable_channel(prop);
+	
+	return adc_tm5...
+
+I haven't looked to see if this is useful elsewhere in these drivers.
+
+> +
+> +	return ret;
+> +}
 

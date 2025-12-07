@@ -1,95 +1,94 @@
-Return-Path: <linux-iio+bounces-26898-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26899-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6086CAB720
-	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 17:00:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A910FCAB71D
+	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 17:00:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 777803019BEA
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 15:59:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EE8193000B7F
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 15:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F401227B352;
-	Sun,  7 Dec 2025 15:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A471273D6D;
+	Sun,  7 Dec 2025 15:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q7apaoMR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B2wbkJtv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE34230BF6
-	for <linux-iio@vger.kernel.org>; Sun,  7 Dec 2025 15:59:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE0823B604
+	for <linux-iio@vger.kernel.org>; Sun,  7 Dec 2025 15:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765123182; cv=none; b=flH9jW0K1Y0UaX6jYI/Y0dT5uo1laWgTH3em0vpcUp7BAAxi2AXLOA27OiAbCTBJGHUUT8uviZgLDAN58PH5/FvwLFlqwpl5bsQIo7OUsIfOtnSMOd6naBT0BDTYmG6fLJ4zk2ytTSgscA2L+uTLtAWARvmF33BBd/UXhSJS7dw=
+	t=1765123195; cv=none; b=f5C2HwCUP+wA6B99oSpn0pPrNc1NevYHDmHsru8H3vHJtxL3bWKrEJUci3wGwgUw73XH6QqPFN5+h/ptQofuhD1EV+sJvJhTByoevfa6y8/zWgygw8y9zgQDLE6EDUlVjU/8WJrMCYAUSsb+IpgOPxjTrA7PwwI8XgPM6rZUDs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765123182; c=relaxed/simple;
-	bh=yyNUlROQCvKp4HOi2SP71/oqKu0yWaC+JHckQnMu9DQ=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:Mime-Version:
-	 References:In-Reply-To; b=C0Y6CP2MQA3rHU9LEq10LULF58prIsy8uo34tc66z9pTcaMkeT2V9kHr9J3aV9QrWPgfKTz/oI6MN0+6SbMif/8SEbMkQMECeAJZ9VDzy4yL+5xmxJBxDbnNByax/PTt2nGVeZjuUCPZGJ0WVjxc+xmC3vj4AHTTT/WHWbwg/l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q7apaoMR; arc=none smtp.client-ip=209.85.221.180
+	s=arc-20240116; t=1765123195; c=relaxed/simple;
+	bh=lN2nyMT5KURr5BnJaibgIHzRgf7UPdc+YsOVRYAzzEs=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:Mime-Version:
+	 References:In-Reply-To; b=s+8D6bY9IJU2z11S2Wjwgr82ypgU60haJYCAp/m9qUHXpVbAuP+19W7KsE8/YypIy33HYEeDDaVGOZL7xqmwvw/6IV4vDTGSCxcomEIGUXwEpn3eneKh/excOGWJxuvJ8x3v5EkPGz+2T8CY4C5b77VsiEX8cxNgYTPkmQhEptM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B2wbkJtv; arc=none smtp.client-ip=209.85.221.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-55b302b8369so2254660e0c.0
-        for <linux-iio@vger.kernel.org>; Sun, 07 Dec 2025 07:59:40 -0800 (PST)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-55b6a642a4cso2611155e0c.3
+        for <linux-iio@vger.kernel.org>; Sun, 07 Dec 2025 07:59:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765123180; x=1765727980; darn=vger.kernel.org;
-        h=in-reply-to:references:content-transfer-encoding:mime-version
-         :subject:cc:to:from:message-id:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h1tqJEH0nvtzunebE0gFQ9Z6ukbX9uGV2B9981sp0bk=;
-        b=Q7apaoMR8IQXj/ugax8lNuArcR7ygGwodTrfhDEIeVtEdgORzkx5l9K4+1xKXv/zzQ
-         gbiZLuVOLHa1HxDt1+Vv02v27u5CdOSDojovSrWUObZAYFGHlga+3sU7XUnW3zQ+odDJ
-         U2YBGQM6jmfMl02sv3p2vb+Bj2LagdxuIiwAl4kTbrnX5zLYa+DgutDWLYXSBS1hOaCq
-         Cu6lZKmzMfiY8eLzuGXujNuyxFlIzjLRWNNfo+gvpNGtLyX/N8ZU7QQlXK246dWJglNr
-         MMT/fkNwvMlg7XsuQ1YfLApPyzoowJvmv4WMuspmwAEy3LsDpi3/p1YbrEaipQd3c3NL
-         CGvQ==
+        d=gmail.com; s=20230601; t=1765123193; x=1765727993; darn=vger.kernel.org;
+        h=in-reply-to:references:content-transfer-encoding:mime-version:to
+         :from:subject:cc:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lN2nyMT5KURr5BnJaibgIHzRgf7UPdc+YsOVRYAzzEs=;
+        b=B2wbkJtv5/I3xKcPY7+hZZjjt0igG9KmUzrYhQYhRG5wvmmGvvPv1OstvOxwOKfY0L
+         X5F7Mmz4/5LZQWL5GenxEgxk4oiV/WBfalzObMOLx4aEYgZRv7YKBT9YNXrySbtY7SDE
+         LW6O8XArIKe0jvRW0zapvYfI0SYNOMN39Iw8G1j3dGbWe/C5EO136fzSUOVxBjn4YE3L
+         0OHOi35jy0aS9idN5GXcOEaA4TLcrkPwypR2uU24MIsLf76oxheIi+xxi7lsJetOFjQd
+         IqxtHVJ0m+FYzGWUxSrpNfRdcmparUXSeYHXCYxplPukyWfcNY9utthBdCKvQomW+fGN
+         fHDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765123180; x=1765727980;
-        h=in-reply-to:references:content-transfer-encoding:mime-version
-         :subject:cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=h1tqJEH0nvtzunebE0gFQ9Z6ukbX9uGV2B9981sp0bk=;
-        b=pSAvDAOTaXAhV3K87ZCVhQ7rV/6w/aZYQwEjRdsZMWy2Ckv+qt91URYUeK1dfiqzzJ
-         ap2w8BoPadap3PI01A0WmLqUDFDt6F06j3SyZv/0a/G35cqegolygBOkQHF8OvbuO+FO
-         aIkhDSm9Dwm8vZ7DWyIfpuXbl8CpyZejA4H0zJHne5+gdvjeUeu1m8jI42cug8SzzDFr
-         iBZTb9uMJHTidM+hmizKpZzGH6sitoVEOm12bjCWGMR47L6GGEi1nIgHgp16nkyBppoH
-         3qDs5e9H+oXZUe3jSGqQ2hDz19p8fqNOILhZIBZtw1Q97YjQqmn+FL2X7iPd4awM8aUD
-         +UNw==
-X-Forwarded-Encrypted: i=1; AJvYcCUizwMgExZFe9oZEWtFZdST6DcpXtd9kE0LD/mca9uyabTMH8QxZiNA3OS6Koq12/nIwu/pQ6haGgU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0UHkNsVEyVXXoxQEmx1gsjvJc5D+TuVkvZqRvcndCuUsQqlkU
-	Y9/PFIKRbjcabb2pebNasA9eYO/KLmdtsjQwf7/8oroCpwh/CDp+uQsI
-X-Gm-Gg: ASbGncsqFhbW5dlBr72wG7JTnm98LPq8rSJBqcFkv1JtxDp61lHF/jdrSrhsc8W02vm
-	JQ6d26jG2ZOctn+wunOpG7Pdr15yeJQ4tpsWUfOtR43pf1yFbjhqIiTmJW2KqK8M5u/6PlW/vzh
-	M5oV8QxlIs5jfV430f4fI+ljGH0WxKI97J5o4CagTWaqz47M2FD/wVCnpswL8pvjM5lEn/3DpDk
-	A6Pt185hkPYyhn+Ze4wZauGnNUzupMzJLBW5xS+uF6xmNuzCg0PzRrUeJnm/MrFMp9BSrmWoCNJ
-	saUk/KhBgYd8UGgJbEt85YY3YE1QCv3EViOZzeYFxyzw5VCWpUTyirBw11JJT6t4i2ZGk8Pxhk1
-	1+7WIay3uOpzULP7mTxhb32y1yF1y8VZw76XEA19qgXflm4C0jSaa4RNyrkBq2xGygDZTHYbfSy
-	oT0Fw=
-X-Google-Smtp-Source: AGHT+IH3R7zodvMeVJJJJ7fn2S6JQ+o/S6MOmjVgK3nMnTwxe+33R4LGyRZImJUof8loaB4NiZRB9Q==
-X-Received: by 2002:a05:6122:6598:b0:55b:d85:5073 with SMTP id 71dfb90a1353d-55e84587aeamr1556249e0c.4.1765123180107;
-        Sun, 07 Dec 2025 07:59:40 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765123193; x=1765727993;
+        h=in-reply-to:references:content-transfer-encoding:mime-version:to
+         :from:subject:cc:message-id:date:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lN2nyMT5KURr5BnJaibgIHzRgf7UPdc+YsOVRYAzzEs=;
+        b=TQMpt15W9Ue0QT8q9Lm+amGx51muVHracHvYgG7dZCyyRjpcDgGOA1q1Wv+vZn2aP6
+         /pirGNmS0UnGkjQj80wQoDR1jOFwb6spg0oQew1Rq0Avky3tBtdwtwWjyhuVxVHsAJ5w
+         gta3t248iI8zjGC6Dz3VVQc2iaIb+4iNDpk7zWbPCN6e8qm/TN1XGIx1uwQAAY6AmnHg
+         rd5txATiSp+KFm/CMtMbOyPmr0Gvn2Q9pwUQTT3yuWaXSmbP6oK8WTjEuLDAhOcFFxPR
+         XcgXVFUm8/Ncpsp7FXsFN+6i8auu2sFHck8dMPd+Sq+aZommK2gj5ItHpWQqjRw93QDd
+         f3yQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXa6741fRrfXrbKUaRSXb8LxNJSX2J4kiXll3tBh52v4W4PGqIYc94snyqVQXqjumGchZ1lxGlYhLk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFkB4HBExk50x2JQXDFa7FuzGR6tc+9BgqBi/CpSB9doJFx7t6
+	dbZvQGzxXDHp7Kkd7YtH+SBN0uiUbAV7C2MbFQO0X4UetAz2gMOZJNCa
+X-Gm-Gg: ASbGncub0CBp0tbl3O0bjbfS7mVFTsiDKW1p6JMcI993lpX1opeFt3Be0ndv/86f/66
+	U0UkbvrvxNCo4gLbDjhsZ959d4hoZ1lx2YHKtU8oANynzTuf2oElBSrtp94Kllmq+xujG8zzmKM
+	Ui0ZsGPy1OrerQLy0Qvf29aKT5pdwGZbaEEFTU5J6c8Tvqovpffcnqlw3UQ7izM1UDJJv60RCzO
+	8f1oVE/46oXGoSltDwpKlc9VRL8RpOaz0bdRMopiLRkwyWUf7ILvlYDJY46G2Lc+TTg/SvpFH0/
+	DJgxko1mQEXqycFL0FvgJN8CxLd40b43NUODTRop6jv39fazBxlUtYLSkCs0j52gqOIQ+CH1rJ0
+	am9tWnP/mLclQqKCrnHUFOv89M7ctpId/yWDJ1yuu6vCFMzKd8eigF0GtNDjV2WcUquq+Cbhkoe
+	/eZkA=
+X-Google-Smtp-Source: AGHT+IHb5qCj47GPIJks5IrPfFovkp1AcVzoXUqVEm5uXUvz/i0JGsqz6kwhm3CHmygeESKzo+fSKw==
+X-Received: by 2002:a05:6122:330a:b0:554:b32c:6f76 with SMTP id 71dfb90a1353d-55e846e664dmr1336197e0c.15.1765123192735;
+        Sun, 07 Dec 2025 07:59:52 -0800 (PST)
 Received: from localhost ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-55e6c972414sm4860987e0c.15.2025.12.07.07.59.38
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-55e6c568ae2sm4895821e0c.5.2025.12.07.07.59.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Dec 2025 07:59:39 -0800 (PST)
+        Sun, 07 Dec 2025 07:59:52 -0800 (PST)
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 07 Dec 2025 10:59:37 -0500
-Message-Id: <DES3Y1DXTLGR.38DNWI7NC291D@gmail.com>
+Date: Sun, 07 Dec 2025 10:59:50 -0500
+Message-Id: <DES3Y754XVT8.1KUU58F8LQUHA@gmail.com>
+Cc: "Andy Shevchenko" <andriy.shevchenko@intel.com>, "Lars-Peter Clausen"
+ <lars@metafoo.de>, "Michael Hennerich" <Michael.Hennerich@analog.com>,
+ "Benson Leung" <bleung@chromium.org>, "Antoniu Miclaus"
+ <antoniu.miclaus@analog.com>, "Gwendal Grignou" <gwendal@chromium.org>,
+ "Shrikant Raskar" <raskar.shree97@gmail.com>, "Per-Daniel Olsson"
+ <perdaniel.olsson@axis.com>, "David Lechner" <dlechner@baylibre.com>,
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
+ <andy@kernel.org>, "Guenter Roeck" <groeck@chromium.org>, "Jonathan
+ Cameron" <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <chrome-platform@lists.linux.dev>
+Subject: Re: [PATCH RFC 3/6] iio: core: Add cleanup.h support for
+ iio_device_claim_*()
 From: "Kurt Borja" <kuurtb@gmail.com>
 To: "Jonathan Cameron" <jic23@kernel.org>, "Kurt Borja" <kuurtb@gmail.com>
-Cc: "David Lechner" <dlechner@baylibre.com>, "Andy Shevchenko"
- <andriy.shevchenko@intel.com>, "Lars-Peter Clausen" <lars@metafoo.de>,
- "Michael Hennerich" <Michael.Hennerich@analog.com>, "Benson Leung"
- <bleung@chromium.org>, "Antoniu Miclaus" <antoniu.miclaus@analog.com>,
- "Gwendal Grignou" <gwendal@chromium.org>, "Shrikant Raskar"
- <raskar.shree97@gmail.com>, "Per-Daniel Olsson"
- <perdaniel.olsson@axis.com>, =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- "Andy Shevchenko" <andy@kernel.org>, "Guenter Roeck" <groeck@chromium.org>,
- "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
- <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <chrome-platform@lists.linux.dev>
-Subject: Re: [PATCH RFC 5/6] iio: health: max30102: Use cleanup.h for IIO
- locks
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -99,68 +98,34 @@ Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-Mailer: aerc 0.21.0-0-g5549850facc2
 References: <20251203-lock-impr-v1-0-b4a1fd639423@gmail.com>
- <20251203-lock-impr-v1-5-b4a1fd639423@gmail.com>
- <f96694db-2ad5-46d3-a380-cba3eaa2de2f@baylibre.com>
- <DEPLIJFBZQ36.20XX5DCMCJVB3@gmail.com>
- <c9efd563-9d52-4761-a5f1-be0df0222dff@baylibre.com>
- <DEPMCPWLO4FO.2B2OXMF2CZ1G@gmail.com> <20251206181758.2bfefde1@jic23-huawei>
-In-Reply-To: <20251206181758.2bfefde1@jic23-huawei>
+ <20251203-lock-impr-v1-3-b4a1fd639423@gmail.com>
+ <20251206182057.40402e66@jic23-huawei>
+In-Reply-To: <20251206182057.40402e66@jic23-huawei>
 
-On Sat Dec 6, 2025 at 1:17 PM -05, Jonathan Cameron wrote:
-> On Thu, 04 Dec 2025 12:47:08 -0500
-> "Kurt Borja" <kuurtb@gmail.com> wrote:
+On Sat Dec 6, 2025 at 1:20 PM -05, Jonathan Cameron wrote:
+> On Wed, 03 Dec 2025 14:18:17 -0500
+> Kurt Borja <kuurtb@gmail.com> wrote:
 >
->> On Thu Dec 4, 2025 at 12:35 PM -05, David Lechner wrote:
->> > On 12/4/25 11:07 AM, Kurt Borja wrote: =20
->> >> On Wed Dec 3, 2025 at 4:52 PM -05, David Lechner wrote: =20
->> >>> On 12/3/25 1:18 PM, Kurt Borja wrote: =20
->> >
->> > ...
->> > =20
->> >>> I would write the whole function like this:
->> >>>
->> >>> static int max30102_read_raw(struct iio_dev *indio_dev,
->> >>> 			     struct iio_chan_spec const *chan,
->> >>> 			     int *val, int *val2, long mask)
->> >>> {
->> >>> 	struct max30102_data *data =3D iio_priv(indio_dev);
->> >>> 	int ret;
->> >>>
->> >>> 	switch (mask) {
->> >>> 	case IIO_CHAN_INFO_RAW: {
->> >>> 		/*
->> >>> 		 * Temperature reading can only be acquired when not in
->> >>> 		 * shutdown; leave shutdown briefly when buffer not running
->> >>> 		 */
->> >>> 		guard(iio_device_claim)(indio_dev); =20
->> >>=20
->> >> AFAIK you can't guard() inside switch-case blocks. I don't know the
->> >> exact reason, but it has to be scoped_guard(). =20
->> >
->> > You can. You just need the braces like I showed in my suggestion.
->> >
->> > The reason is that guard() is declaring local variables and some
->> > compilers like LLVM don't like declaring local variables in a
->> > switch case. By adding the { } scope, the variables are limited
->> > to that scope and the issue goes away. =20
+>> Add guard() and ACQUIRE() support for iio_device_claim_*() lock.
 >>=20
->> Ah - You're right. I dind't see the braces.
+>> This involves exporting iio_device_{claim, release}() wrappers to define
+>> a general GUARD class, and then defining the _direct and _buffer
+>> conditional ones.
 >>=20
->> Now it is overly complicated. In this case I see why guard() isn't
->> really an improvement.
+>> Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 >
-> This bit of guard() usage is fairly well known and I think people are
-> getting familiar with it.
+> I'd like some documentation (alongside the DEFINE_GUARD() stuff)
+> - particularly warn people that using the non conditional variant
+> is very much the unusual one.
 >
-> So I'd prefer the form David suggested. It is nice to get rid
-> of the mode claiming dance in here.
+> Perhaps add examples of usage for the other two and ignore that one
+> on basis alarm bells will ring whenever we see it in code.
 
-Ok, that's good to hear. I'll take David's suggestions for the next
-version.
+Sure! I'll add it.
 
 >
 > Jonathan
-
 
 --=20
  ~ Kurt

@@ -1,137 +1,119 @@
-Return-Path: <linux-iio+bounces-26918-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26919-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D1DCAB982
-	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 20:56:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E976CABA8B
+	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 23:50:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 045A73004788
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 19:56:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6207C3005790
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 22:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C862E0B71;
-	Sun,  7 Dec 2025 19:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3042DC35C;
+	Sun,  7 Dec 2025 22:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W3I/R5pK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g85scAoJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E212D839C;
-	Sun,  7 Dec 2025 19:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81FE23A9BE;
+	Sun,  7 Dec 2025 22:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765137384; cv=none; b=gdC67Z4c9wEdI7jJZpsX/MFRM5lWt8yYyVM0wc6SMXrZykc4NwAnVmyGRAK5UlPpNerI4EAF1WlmmFB7SiKLKi5iWCsPvCgwWsOsQnKmbipow/DCNTA09G9pglidQn7eclb7XSDYg1xchPyxe8yiGxQFV4MwEv8TdQ0WYtpriTY=
+	t=1765147849; cv=none; b=rj9UKuwlR7p5ea9vGiNDPp9aCTYBUu2HaEIKiK9qm4IrGPOmH7WYHsHDKeIZ0L4y81HqiKhLUB6XZtfvcXVBnlCc0yhejixNvK1CBA14c+vZiu2fmlDDWtpxWpcYLsX1blVKAiDekjBIZ7KTfK+P+3xXlrOEP8S6sqGu2VRw+t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765137384; c=relaxed/simple;
-	bh=0deVdN2tw0uwmwWzij6NAyvqEtFvxMegmN58/qDKTcU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ltr6fX9JCb/kOdecyJ/a/zn48H0uSzjDgUyh/E3rU6SteCvREmtYX4jJk3U1xbcTSKc0I2y5/lPFTCg+y+MKAgxyeorU2WX3WiHqrCYZaVL58mWXS7m+9L48KQGTuNjR8Jh/VFeJOrVmKz6DINfxZCKXy8T24GVYz5Sm+/Y5lsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W3I/R5pK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF245C4CEFB;
-	Sun,  7 Dec 2025 19:56:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765137383;
-	bh=0deVdN2tw0uwmwWzij6NAyvqEtFvxMegmN58/qDKTcU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=W3I/R5pKm+cUVwflUmf112xMi2EAa7z4mj2pt1iRFLe3H0P0kKCR7vWHWdZ2r2ARK
-	 J+qvaHnct958KqNm9LrCDor4IExjFvHx2Rcs6b/mnIPBp7Keth3LruSG5TmL0p6caR
-	 CaX3loUE2Frsi40EdVdxeaeYMBgJ/NaLjPydNLyW2DV/T/4U5M78mVMUia2bNoiaoY
-	 cTgQKngqIy2BhgK8cwGRQBDLxdGIfJ29tWc3ojPaCzxJhNZsoykms1NIMAS6BOfqui
-	 h8VHA+VQMOS4FJz895rZe0lHLpTzPCsuLwL+wSWV4yyuhzWFQcTBYWlFQFawkhRrtx
-	 fy1ONZc6CNl3Q==
-Date: Sun, 7 Dec 2025 19:56:13 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Kurt Borja <kuurtb@gmail.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Tobias
- Sperling <tobias.sperling@softing.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v6 2/2] iio: adc: Add ti-ads1018 driver
-Message-ID: <20251207195613.0e222b3a@jic23-huawei>
-In-Reply-To: <5b843df0-138e-4e2e-a70d-beb8a39ed85f@baylibre.com>
-References: <20251204-ads1x18-v6-0-2ae4a2f8e90c@gmail.com>
-	<20251204-ads1x18-v6-2-2ae4a2f8e90c@gmail.com>
-	<20251206200721.5e683a83@jic23-huawei>
-	<DES3ZWAKXXEB.2LQPMDZN4JFCB@gmail.com>
-	<5b843df0-138e-4e2e-a70d-beb8a39ed85f@baylibre.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1765147849; c=relaxed/simple;
+	bh=YiZwseGkAamdCheyyAUEaM8RKE6E4uP2MnNEVskxMRw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YwGHgaDjvyCAONTbWkWja+ZL3hxyEfMXDyC1k+GlOBOC9/gtDirl17mU4SsrYcSTDDdkHltg7DhB6mU4kY6Z01jJbHHfxz2qRd1hnZ+4IM1hkcaSJkmHMdiYum1J/8bUz5cgq/paZB012hDe9zGwId+P2j+JS/3c4aZSSL6mlus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g85scAoJ; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765147848; x=1796683848;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YiZwseGkAamdCheyyAUEaM8RKE6E4uP2MnNEVskxMRw=;
+  b=g85scAoJ7iC6JWaOivIlCLEFwSU2MtjZwXNHOaqrZAkzH0NSIfyRM5RV
+   Ydf2PoLMwnEwM8vel5ZEqSQxOSvVZ6xdsZiUCskObjC94a8/I10/ZtreC
+   GZXn8UHeA1U2oYwp7AscE/zzKKEST2JAblbKQrOjcAYD0uajedd71KyHl
+   Yuz6rxjRLiGUW4WoAfru9rU2GSmd5if2lOYHZMymGQCXnMgHhzMQn/V7z
+   Ua7qqR4XGi4VBHj0nD9TBFAXT1Ph4cAcBDLjTvedgLUMay+u/6xpT6yDV
+   GEKykeGR/I5yfpt+DjoZ2qes2mN9aYGISRcaoKHqk7TW68Dc5b/7VzzRl
+   A==;
+X-CSE-ConnectionGUID: udqygBtJSiqhJ44Suc0e/Q==
+X-CSE-MsgGUID: jTW+I0lTTsC0Y+5QkB0UQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="78452459"
+X-IronPort-AV: E=Sophos;i="6.20,257,1758610800"; 
+   d="scan'208";a="78452459"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2025 14:50:46 -0800
+X-CSE-ConnectionGUID: Gi0xBQ+9QIKq3vj3iJ3POw==
+X-CSE-MsgGUID: HqIoZWX8TMm78gfk7Y3icw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,257,1758610800"; 
+   d="scan'208";a="226452787"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.218])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2025 14:50:43 -0800
+Date: Mon, 8 Dec 2025 00:50:41 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Francesco Lavra <flavra@baylibre.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 5/9] iio: imu: st_lsm6dsx: remove event_threshold
+ field from hw struct
+Message-ID: <aTYEwUU0xkPGSZHF@smile.fi.intel.com>
+References: <20251201100018.426749-1-flavra@baylibre.com>
+ <20251201100018.426749-6-flavra@baylibre.com>
+ <20251207153113.20c97fa9@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251207153113.20c97fa9@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Sun, 7 Dec 2025 11:12:51 -0600
-David Lechner <dlechner@baylibre.com> wrote:
-
-> On 12/7/25 10:02 AM, Kurt Borja wrote:
-> > On Sat Dec 6, 2025 at 3:07 PM -05, Jonathan Cameron wrote:  
-> >> On Thu, 04 Dec 2025 13:01:28 -0500
-> >> Kurt Borja <kuurtb@gmail.com> wrote:
-> >>  
-> >>> Add ti-ads1018 driver for Texas Instruments ADS1018 and ADS1118 SPI
-> >>> analog-to-digital converters.
-> >>>
-> >>> These chips' MOSI pin is shared with a data-ready interrupt. Defining
-> >>> this interrupt in devicetree is optional, therefore we only create an
-> >>> IIO trigger if one is found.
-> >>>
-> >>> Handling this interrupt requires some considerations. When enabling the
-> >>> trigger the CS line is tied low (active), thus we need to hold
-> >>> spi_bus_lock() too, to avoid state corruption. This is done inside the
-> >>> set_trigger_state() callback, to let users use other triggers without
-> >>> wasting a bus lock.
-> >>>
-> >>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>  
-> > 
-> > ...
-> >   
-> >>> +#define ADS1018_VOLT_CHAN(_index, _chan, _realbits) {				\
-> >>> +	.type = IIO_VOLTAGE,							\
-> >>> +	.channel = _chan,							\
-> >>> +	.scan_index = _index,							\
-> >>> +	.scan_type = {								\
-> >>> +		.sign = 's',							\
-> >>> +		.realbits = _realbits,						\
-> >>> +		.storagebits = 16,						\
-> >>> +		.shift = 16 - _realbits,					\
-> >>> +		.endianness = IIO_BE,						\
-> >>> +	},									\
-> >>> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |				\
-> >>> +			      BIT(IIO_CHAN_INFO_SCALE) |			\
-> >>> +			      BIT(IIO_CHAN_INFO_SAMP_FREQ),			\  
-> >>
-> >> What motivates per channel sampling frequency?
-> >>
-> >> Given you have to write it each time you configure I guess it doesn't matter much
-> >> either way.  
-> > 
-> > I guess making it shared by all is simpler too, so I'll go with that.
-> >   
-> Just keep in mind that if there is ever some use case we don't know
-> about that would require a different rate per channel, we can't change
-> it without breaking usespace. Once the decision is made, we are
-> locked in. Keeping it per-channel seems more future-proof to me.
-
-Only way I can think of that might cause that to matter would be
-if the complex dance to avoid the onehot buffer restriction is added.
-Given you gave this response I went looking and that might make
-sense as an enhancement as the SPI protocol would allow a crafted message
-sequence to do this efficiently.  Extension of figure 15 where first message
-sets config and after that they read out channel and set config for next one.
-
-Given that is sane, I agree with you that we should probably keep these separate.
-I doubt anyone will use different sampling frequencies even if possible but you
-never know.
-
-Jonathan
-
+On Sun, Dec 07, 2025 at 03:31:13PM +0000, Jonathan Cameron wrote:
+> On Mon,  1 Dec 2025 11:00:14 +0100
+> Francesco Lavra <flavra@baylibre.com> wrote:
 > 
+> > This field is used to store the wakeup event detection threshold value.
+> > When adding support for more event types, some of which may have different
+> > threshold values for different axes, storing all threshold values for all
+> > event sources would be cumbersome. Thus, remove this field altogether, and
+> > read the currently configured value from the sensor when requested by
+> > userspace.
+
+...
+
+> >  #define ST_LSM6DSX_SHIFT_VAL(val, mask)	(((val) << __ffs(mask)) & (mask))
+> > +#define st_lsm6dsx_field_get(mask, reg)	((reg & mask) >> __ffs(mask))
+> 
+> I'm not going to fuss too much about this as expectation is that
+> this will be replaced soon anyway with a generic version but convention
+> would be to (reg) & (mask) to avoid precedence of operator problems if
+> there are any in the parameters passed.  The generic version will I guess also deal
+> with avoiding multiple evaluation of mask.
+> 
+> Anyhow, doesn't matter here given the simple user.
+> 
+> Applied.
+
+Note, the new API is already in Linus' tree.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

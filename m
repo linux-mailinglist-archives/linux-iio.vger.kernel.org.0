@@ -1,59 +1,58 @@
-Return-Path: <linux-iio+bounces-26913-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26914-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C703CAB944
-	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 19:52:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843A5CAB955
+	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 20:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 069723004CA0
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 18:52:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05B5D3016CD8
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 19:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D612F2D94AC;
-	Sun,  7 Dec 2025 18:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10A829B8E0;
+	Sun,  7 Dec 2025 19:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ukALtdYH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQAd/hFO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D735272805;
-	Sun,  7 Dec 2025 18:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D481D90DD;
+	Sun,  7 Dec 2025 19:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765133546; cv=none; b=L8j+ruScu3oEfuWtUpeTO3EWsdzCctSfQtJCu0FSIqIfPLtvZSvcXrvcqKG39IWFQJGF0oI9wSqLgvxyfrXdR7JnrnisSVeuwZOVP/++c+7Fzc+niPEmZ9mEczpSuGAW8M75wwD7kc9fswzDDmHfQC4pbNsU8M3V1vSqH4OAkHI=
+	t=1765135315; cv=none; b=lqlAZmtrxIlpbbPADB5qHyRfX23jaIrAa6ICQPkfyyoLy3/nTnkGiBFNuj/gT6zP3AS/cLKlMhJH6IB2cEBsAgRQ3CaKPn5jUbaN3TeTrCssCpmqwpK9n9QJXw9sKhMtue8B4DrxBG/ZO3sxodyKJ18bUNm3yxA0ucNOkKeZUEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765133546; c=relaxed/simple;
-	bh=Jl9xgbfPEfUyJdr1AfOMTKTT1iWVo8UXst339ZG/qjA=;
+	s=arc-20240116; t=1765135315; c=relaxed/simple;
+	bh=Y8uX2NB9R7BEetXh6OX5/itsa/c1bJMyd0J7HZw6nqY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R8gged/+CA1V9/mW9jXhY2lRLKg/tPAx/lKfg5y7xbEjQMeuSjGBwSCJX+5SbWBhIZ9rGBDcWmI6mxkZGFQvafmdIw0Cq4vycUcDqyLl3QSx2GK/4jJVqu2mVp1HNG5LzLWLXFncQpSfiN2GSQ2PeqshKQu0egHnXfIzrFxbP38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ukALtdYH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B812C4CEFB;
-	Sun,  7 Dec 2025 18:52:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MtsPJbc3MKlBZioV7uUha7VChpqb838bT1og87CPXmnvyTNVBV3i5IMjf+K2hYvBvBmPnFBAgkDMlo/u7YKImketNLScKRAnhSQmVB0cHsDxujEAsoQ5rPaYf4nEpeU5aDlchJaBF375cigEakORgsdY0WaWBgjGl1nl+QTMTa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQAd/hFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A987DC4CEFB;
+	Sun,  7 Dec 2025 19:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765133546;
-	bh=Jl9xgbfPEfUyJdr1AfOMTKTT1iWVo8UXst339ZG/qjA=;
+	s=k20201202; t=1765135315;
+	bh=Y8uX2NB9R7BEetXh6OX5/itsa/c1bJMyd0J7HZw6nqY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ukALtdYHQWoWQDNR3BInpMpcDtjO7cvS+YHwR8Ix/c5vgRDrnhGXCVREVn0rp9DWT
-	 6dKkhEbHpIk0B6dZQ9pSHfMd+w9y/qL9eAlO/neoYFOOQG2OWIdMwRfWBCxophVmQa
-	 C6WhRly425F8XGGmrRU6TDcJkKiQMqRognioh8b0rUNmX14e7gSK0o1GJDHXOjXmFx
-	 Ff5z+WZWPMjJOpN0lCzLXWDE7jybWwh2yt+7zqUfTd8op7a8t/W2Ycs6cgbZN/Etis
-	 ZUm7ldr3wvRkR9OR1NqsSzD+pUiFKgrXZKKeQAMuBRfhbXizSPp1zqlYrUiZ1Ktx6R
-	 e8GXH8mjQCb6w==
-Date: Sun, 7 Dec 2025 18:52:16 +0000
+	b=ZQAd/hFOdBh9kjcO0ylLdBCnJAfes5IOT+YtXlFJayQfFCRbwXzK3/Lj2avUuSR66
+	 J0zAaBgbqU73fG0xqjjmigxpGt2AtsowGR72rISkFtv1YxxtLRraTdn9VNtlMkinUu
+	 7eXTKr03tnbH+IT+D2tleiO9wmzfn0oyIj3nKUis1nmHPGrHdYOYVlL5TIbnEfO5Q+
+	 H2hxxlzVXaNKtgsGLEURMYu7OgxG0UtK/6dCrJecye+/HYA/DYtsdLXaJHb7Bs663k
+	 9VxQAyb6h8nIMQ5mI63yiegiadLPhdgBpjtN+YeajHB2spMBffkf6ZvDtn5EYt7ew8
+	 xm4bXL/2EvoNQ==
+Date: Sun, 7 Dec 2025 19:21:45 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v4 3/6] iio: add processed write API
-Message-ID: <20251207185216.7498ab0f@jic23-huawei>
-In-Reply-To: <20251124-ltm8054-driver-v4-3-107a8a814abe@bootlin.com>
-References: <20251124-ltm8054-driver-v4-0-107a8a814abe@bootlin.com>
-	<20251124-ltm8054-driver-v4-3-107a8a814abe@bootlin.com>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
+ linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
+ ghennadi.procopciuc@oss.nxp.com, vkoul@kernel.org
+Subject: Re: [PATCH v8 2/2] iio: adc: Add the NXP SAR ADC support for the
+ s32g2/3 platforms
+Message-ID: <20251207192145.646e3d2d@jic23-huawei>
+In-Reply-To: <20251119223905.107065-3-daniel.lezcano@linaro.org>
+References: <20251119223905.107065-1-daniel.lezcano@linaro.org>
+	<20251119223905.107065-3-daniel.lezcano@linaro.org>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,229 +60,243 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 24 Nov 2025 15:48:07 +0100
-Romain Gantois <romain.gantois@bootlin.com> wrote:
+On Wed, 19 Nov 2025 23:39:05 +0100
+Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
 
-> Add a function to allow IIO consumers to write a processed value to a
-> channel.
-> 
-> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
-I'm lazy so I'll just ask the question rather than try to find an answer.
-Is there any existing consumer of DAC channels that can use this?
-It might be easier to land as a refactor than with the new driver and
-reduce what is in the more controversial patch for the regulator.
+> The NXP S32G2 and S32G3 platforms integrate a successive approximation
+> register (SAR) ADC. Two instances are available, each providing 8
+> multiplexed input channels with 12-bit resolution. The conversion rate
+> is up to 1 Msps depending on the configuration and sampling window.
+>=20
+> The SAR ADC supports raw, buffer, and trigger modes. It can operate
+> in both single-shot and continuous conversion modes, with optional
+> hardware triggering through the cross-trigger unit (CTU) or external
+> events. An internal prescaler allows adjusting the sampling clock,
+> while per-channel programmable sampling times provide fine-grained
+> trade-offs between accuracy and latency. Automatic calibration is
+> performed at probe time to minimize offset and gain errors.
+>=20
+> All modes have been validated on the S32G274-RDB2 platform using an
+> externally generated square wave captured by the ADC. Tests covered
+> buffered streaming via IIO, trigger synchronization, and accuracy
+> verification against a precision laboratory signal source.
+>=20
+> One potential scenario, not detected during testing, is that in some
+> corner cases the DMA may already have been armed for the next
+> transfer, which can lead dmaengine_tx_status() to return an incorrect
+> residue.  The callback_result() operation=E2=80=94intended to supply the
+> residue directly and eliminate the need to call
+> dmaengine_tx_status()=E2=80=94also does not work.  Attempting to use
+> dmaengine_pause() and dmaengine_resume() to prevent the residue from
+> being updated does not work either.
+>=20
+> This potential scenario should apply to any driver using cyclic DMA.
+> However, no current driver actually handles this case, and they all rely
+> on the same acquisition routine (e.g., the STM32 implementation).
+> The NXP SAR acquisition routine has been used in production for several
+> years, which is a good indication of its robustness.
+>=20
+> As the IIO is implementing the cyclic DMA support API, it is not worth
+> to do more spins to the current routine as it will go away when the
+> new API will be available.
+>=20
+> The driver is derived from the BSP implementation and has been partly
+> rewritten to comply with upstream requirements. For this reason, all
+> contributors to the original code are listed as co-developers.
+>=20
+> Originally-by: Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>
+> Co-developed-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.c=
+om>
+> Signed-off-by: Alexandru-Catalin Ionita <alexandru-catalin.ionita@nxp.com>
+> Co-developed-by: Ciprian Costea <ciprianmarian.costea@nxp.com>
+> Signed-off-by: Ciprian Costea <ciprianmarian.costea@nxp.com>
+> Co-developed-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+> Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+
+Hi Daniel,
+
+Sorry for delay - I had to send the pull a tiny bit early to increase chance
+of it landing before I went offline for 10 days. This would have been very
+marginal anyway to make it with 1 week before merge window (which is my nor=
+mal
+cut off +- a day or two). In practice that means near final code on list be=
+fore
+rc6 so that I'm sure others have had time to review.  I do sympathise though
+as I'm often the one trying to sneak code into the kernel very late in cycl=
+es.
+
+On a final read I noticed one thing (see below).  I'm fine making that chan=
+ge
+whilst applying the series if you don't mind me doing so.  It is just above
+the level that I'd tweak without asking first!
 
 Jonathan
 
-> ---
->  drivers/iio/inkern.c         | 127 +++++++++++++++++++++++++++++++++++++++++++
->  include/linux/iio/consumer.h |  36 ++++++++++++
->  2 files changed, 163 insertions(+)
-> 
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index 70b6f589f37a..6667e8e7648b 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -635,6 +635,54 @@ int iio_multiply_value(int *result, s64 multiplier,
->  }
->  EXPORT_SYMBOL_NS_GPL(iio_multiply_value, "IIO_UNIT_TEST");
->  
-> +int iio_divide_by_value(int *result, s64 numerator,
-> +			unsigned int type, int val, int val2)
+
+> +++ b/drivers/iio/adc/nxp-sar-adc.c
+
+
+> +static inline int nxp_sar_adc_calibration_wait(void __iomem *base)
 > +{
-> +	s64 tmp_num, tmp_den;
+> +	u32 msr, ret;
 > +
-> +	switch (type) {
-> +	case IIO_VAL_INT:
-> +		tmp_num = numerator;
-> +		tmp_den = val;
-> +		break;
-> +	case IIO_VAL_INT_PLUS_MICRO:
-> +		tmp_num = numerator * MICRO;
-> +		/* Cast inside abs() to avoid undefined behavior if val* == -INT_MIN. */
-> +		tmp_den = abs((s64)val) * MICRO + abs((s64)val2);
-> +
-> +		if (val < 0 || val2 < 0)
-> +			tmp_num *= -1;
-> +
-> +		break;
-> +	case IIO_VAL_INT_PLUS_NANO:
-> +		tmp_num = numerator * NANO;
-> +		tmp_den = abs((s64)val) * NANO + abs((s64)val2);
-> +
-> +		if (val < 0 || val2 < 0)
-> +			tmp_num *= -1;
-> +
-> +		break;
-> +	case IIO_VAL_FRACTIONAL:
-> +		tmp_num = (s64)numerator * (s64)val2;
-> +		tmp_den = val;
-> +		break;
-> +	case IIO_VAL_FRACTIONAL_LOG2:
-> +		tmp_num = (s64)numerator << val2;
-> +		tmp_den = val;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!tmp_den)
-> +		return -EDOM;
-> +
-> +	*result = div64_s64(tmp_num, tmp_den);
-> +
-> +	return IIO_VAL_INT;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(iio_divide_by_value, "IIO_UNIT_TEST");
-> +
->  static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
->  						 int raw, int *processed,
->  						 unsigned int scale)
-> @@ -703,6 +751,66 @@ int iio_convert_raw_to_processed(struct iio_channel *chan, int raw,
->  }
->  EXPORT_SYMBOL_NS_GPL(iio_convert_raw_to_processed, "IIO_CONSUMER");
->  
-> +static int iio_convert_processed_to_raw_unlocked(struct iio_channel *chan,
-> +						 int processed, int *raw,
-> +						 unsigned int scale)
-> +{
-> +	int scale_type, scale_val, scale_val2;
-> +	int offset_type, offset_val, offset_val2;
-> +	int ret, half_step = 0;
-> +
-> +	scale_type = iio_channel_read(chan, &scale_val, &scale_val2,
-> +				      IIO_CHAN_INFO_SCALE);
-> +	if (scale_type >= 0) {
-> +		ret = iio_divide_by_value(raw, processed, scale_type, scale_val, scale_val2);
-> +		if (ret < 0)
-> +			return ret;
-> +	} else {
-> +		*raw = processed;
-> +	}
-> +
-> +	if (!scale)
-> +		return -EDOM;
-> +
-> +	*raw = div_s64(*raw, scale);
-> +
-> +	offset_type = iio_channel_read(chan, &offset_val, &offset_val2,
-> +				       IIO_CHAN_INFO_OFFSET);
-> +
-> +	switch (offset_type) {
-> +	case IIO_VAL_INT:
-> +	case IIO_VAL_INT_PLUS_MICRO:
-> +		half_step = MICRO / 2;
-> +		break;
-> +	case IIO_VAL_INT_PLUS_NANO:
-> +		half_step = NANO / 2;
-> +		break;
-> +	case IIO_VAL_FRACTIONAL:
-> +		offset_val = DIV_ROUND_CLOSEST(offset_val, offset_val2);
-> +		break;
-> +	case IIO_VAL_FRACTIONAL_LOG2:
-> +		offset_val >>= offset_val2;
-> +		break;
-> +	default:
-> +		if (offset_type >= 0)
-> +			return -EINVAL;
-> +
-> +		offset_val = 0;
-> +	}
-> +
-> +	/* Round fractional part to closest to reduce rounding bias. */
-> +	if (half_step) {
-> +		if (offset_val2 >= half_step)
-> +			*raw -= 1;
-> +		else if (offset_val2 <= -half_step)
-> +			*raw += 1;
-> +	}
-> +
-> +	*raw -= offset_val;
-> +
-> +	return 0;
-> +}
-> +
->  int iio_read_channel_attribute(struct iio_channel *chan, int *val, int *val2,
->  			       enum iio_chan_info_enum attribute)
->  {
-> @@ -1039,3 +1147,22 @@ ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf)
->  	return do_iio_read_channel_label(chan->indio_dev, chan->channel, buf);
->  }
->  EXPORT_SYMBOL_NS_GPL(iio_read_channel_label, "IIO_CONSUMER");
-> +
-> +int iio_write_channel_processed_scale(struct iio_channel *chan, int val,
-> +				      unsigned int scale)
-> +{
-> +	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
-> +	int ret, processed;
-> +
-> +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-> +
-> +	if (!chan->indio_dev->info)
-> +		return -ENODEV;
-> +
-> +	ret = iio_convert_processed_to_raw_unlocked(chan, val, &processed, scale);
+> +	ret =3D readl_poll_timeout(NXP_SAR_ADC_MSR(base), msr,
+> +				 !FIELD_GET(NXP_SAR_ADC_MSR_CALBUSY, msr),
+> +				 NXP_SAR_ADC_WAIT_US,
+> +				 NXP_SAR_ADC_CAL_TIMEOUT_US);
 > +	if (ret)
 > +		return ret;
 > +
-> +	return iio_channel_write(chan, processed, 0, IIO_CHAN_INFO_RAW);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(iio_write_channel_processed_scale, "IIO_CONSUMER");
-> diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
-> index a38b277c2c02..f80ab1b80234 100644
-> --- a/include/linux/iio/consumer.h
-> +++ b/include/linux/iio/consumer.h
-> @@ -399,6 +399,24 @@ int iio_read_channel_scale(struct iio_channel *chan, int *val,
->  int iio_multiply_value(int *result, s64 multiplier,
->  		       unsigned int type, int val, int val2);
->  
-> +/**
-> + * iio_divide_by_value() - Divide by an IIO value
-> + * @result:	Destination pointer for the division result
-> + * @numerator:	Numerator.
-> + * @type:	One of the %IIO_VAL_* constants. This decides how the @val
-> + *		and @val2 parameters are interpreted.
-> + * @val:	Denominator.
-> + * @val2:	Denominator. @val2 use depends on type.
-> + *
-> + * Divide @numerator by an IIO value, storing the result as
-> + * %IIO_VAL_INT. This is typically used for scaling.
-> + *
-> + * Returns:
-> + * %IIO_VAL_INT on success or a negative error-number on failure.
-> + */
-> +int iio_divide_by_value(int *result, s64 numerator,
-> +			unsigned int type, int val, int val2);
-> +
->  /**
->   * iio_convert_raw_to_processed() - Converts a raw value to a processed value
->   * @chan:		The channel being queried
-> @@ -469,4 +487,22 @@ ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
->   */
->  ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf);
->  
-> +/**
-> + * iio_write_channel_processed_scale() - scale and write processed value to a given channel
-> + * @chan:		The channel being queried.
-> + * @val:		Value to write.
-> + * @scale:		Processed value is divided by this scale factor during the conversion.
-> + *
-> + * This function writes a processed value to a channel. A processed value means
-> + * that this value will have the correct unit and not some device internal
-> + * representation. If the device does not support writing a processed value, the
-> + * function will query the channel's scale and offset and write an appropriately
-> + * transformed raw value.
-> + *
-> + * Returns:
-> + * 0 or a negative error-number on failure.
-> + */
-> +int iio_write_channel_processed_scale(struct iio_channel *chan, int val,
-> +				      unsigned int scale);
-> +
->  #endif
-> 
+> +	if (FIELD_GET(NXP_SAR_ADC_MSR_CALFAIL, msr)) {
+> +		/*
+> +		 * If the calibration fails, the status register bit
+> +		 * must be cleared.
 
+Really trivial but slightly short wrap for standard 80 chars.
+So trivial I might no bother changing it.
+> +		 */
+> +		FIELD_MODIFY(NXP_SAR_ADC_MSR_CALFAIL, &msr, 0x0);
+> +		writel(msr, NXP_SAR_ADC_MSR(base));
+> +
+> +		return -EAGAIN;
+> +	}
+> +
+> +	return 0;
+> +}
+
+> +static void nxp_sar_adc_dma_cb(void *data)
+> +{
+> +	struct iio_dev *indio_dev =3D data;
+> +	struct nxp_sar_adc *info =3D iio_priv(indio_dev);
+> +	struct dma_tx_state state;
+> +	struct circ_buf *dma_buf;
+> +	struct device *dev_dma;
+> +	u32 *dma_samples;
+> +	s64 timestamp;
+> +	int idx, ret;
+> +
+> +	guard(spinlock_irqsave)(&info->lock);
+> +
+> +	dma_buf =3D &info->dma_buf;
+> +	dma_samples =3D (u32 *)dma_buf->buf;
+> +	dev_dma =3D info->dma_chan->device->dev;
+> +
+> +	/*
+> +	 * DMA in some corner cases might have already be charged for
+> +	 * the next transfer. Potentially there can be a race where
+> +	 * the residue changes while the dma engine updates the
+> +	 * buffer. That could be handled by using the
+> +	 * callback_result() instead of callback() because the residue
+> +	 * will be passed as a parameter to the function. However this
+> +	 * new callback is pretty new and the backend does not update
+> +	 * the residue. So let's stick to the version other drivers do
+> +	 * which has proven running well in production since several
+> +	 * years.
+> +	 */
+> +	dmaengine_tx_status(info->dma_chan, info->cookie, &state);
+> +
+> +	dma_sync_single_for_cpu(dev_dma, info->rx_dma_buf,
+> +				NXP_SAR_ADC_DMA_BUFF_SZ, DMA_FROM_DEVICE);
+> +
+> +	/* Current head position. */
+> +	dma_buf->head =3D (NXP_SAR_ADC_DMA_BUFF_SZ - state.residue) /
+> +			NXP_SAR_ADC_DMA_SAMPLE_SZ;
+> +
+> +	/* If everything was transferred, avoid an off by one error. */
+> +	if (!state.residue)
+> +		dma_buf->head--;
+> +
+> +	/* Something went wrong and nothing transferred. */
+> +	if (state.residue =3D=3D NXP_SAR_ADC_DMA_BUFF_SZ)
+> +		goto out;
+
+This doesn't align with the guidance in cleanup.h about not mixing
+stuff from there with goto style error handling.  However
+that guidance is just an easy way to describe how to avoid issues
+that can occur around gotos that cross the definition of new stuff
+buried in guard() etc.  So this is (I believe anyway) not actually a bug
+just something considered bad practice because it leaves a footgun that
+someone may encounter in later refactoring of this driver.
+
+Easiest route here is just cope with the extra indent and do
+
+	/* Transfer occurred as expected */
+	if (state.residue !=3D NXP_SAR_ADC_DMA_BUF_SZ) {
+		/* Make sure that head is multiple of info->channels_used. */
+		dma_buf->head -=3D dma_buf->head % info->channels_used;
+
+		/*
+		 * dma_buf->tail !=3D dma_buf->head condition will become false
+		 * because dma_buf->tail will be incremented with 1.
+		 */
+		while (dma_buf->tail !=3D dma_buf->head) {
+			idx =3D dma_buf->tail % info->channels_used;
+			info->buffer[idx] =3D dma_samples[dma_buf->tail];
+			dma_buf->tail =3D (dma_buf->tail + 1) % NXP_SAR_ADC_DMA_SAMPLE_CNT;
+			if (idx !=3D info->channels_used - 1)
+				continue;
+=09
+			/*
+			 * iio_push_to_buffers_with_ts() should not be
+			 * called with dma_samples as parameter. The samples
+			 * will be smashed if timestamp is enabled.
+			 */
+			timestamp =3D iio_get_time_ns(indio_dev);
+			ret =3D iio_push_to_buffers_with_ts(indio_dev,
+							  info->buffer,
+							  sizeof(info->buffer),
+							  timestamp);
+			if (ret < 0 && ret !=3D -EBUSY)
+				dev_err_ratelimited(&indio_dev->dev,
+						    "failed to push iio buffer: %d",
+						    ret);
+		}
+	}
+	dma_sync_single_for_device(dev_dma, info->rx_dma_buf,
+				   NXP_SAR_ADC_DMA_BUFF_SZ, DMA_FROM_DEVICE);
+
+Not that bad, and avoids potential grumpy Linus (he contributed that partic=
+ular
+statement in cleanup.h IIRC)
+
+> +
+> +	/* Make sure that head is multiple of info->channels_used. */
+> +	dma_buf->head -=3D dma_buf->head % info->channels_used;
+> +
+> +	/*
+> +	 * dma_buf->tail !=3D dma_buf->head condition will become false
+> +	 * because dma_buf->tail will be incremented with 1.
+> +	 */
+> +	while (dma_buf->tail !=3D dma_buf->head) {
+> +		idx =3D dma_buf->tail % info->channels_used;
+> +		info->buffer[idx] =3D dma_samples[dma_buf->tail];
+> +		dma_buf->tail =3D (dma_buf->tail + 1) % NXP_SAR_ADC_DMA_SAMPLE_CNT;
+> +		if (idx !=3D info->channels_used - 1)
+> +			continue;
+> +
+> +		/*
+> +		 * iio_push_to_buffers_with_ts() should not be
+> +		 * called with dma_samples as parameter. The samples
+> +		 * will be smashed if timestamp is enabled.
+> +		 */
+> +		timestamp =3D iio_get_time_ns(indio_dev);
+> +		ret =3D iio_push_to_buffers_with_ts(indio_dev, info->buffer,
+> +						  sizeof(info->buffer),
+> +						  timestamp);
+> +		if (ret < 0 && ret !=3D -EBUSY)
+> +			dev_err_ratelimited(&indio_dev->dev,
+> +					    "failed to push iio buffer: %d",
+> +					    ret);
+> +	}
+> +
+> +	dma_buf->tail =3D dma_buf->head;
+> +out:
+> +	dma_sync_single_for_device(dev_dma, info->rx_dma_buf,
+> +				   NXP_SAR_ADC_DMA_BUFF_SZ, DMA_FROM_DEVICE);
+> +}
 

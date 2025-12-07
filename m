@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-26908-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26909-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1624FCAB833
-	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 18:13:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D3BCAB86C
+	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 18:33:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2266C30052F9
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 17:12:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EBEE301F5DC
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 17:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA462BEFEF;
-	Sun,  7 Dec 2025 17:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C162D4801;
+	Sun,  7 Dec 2025 17:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AEcpZAJg"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PBkC56dl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE332877F4
-	for <linux-iio@vger.kernel.org>; Sun,  7 Dec 2025 17:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9860526CE11
+	for <linux-iio@vger.kernel.org>; Sun,  7 Dec 2025 17:33:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765127576; cv=none; b=Nq+RtM09KhpMcICtICjJYL7G8ixRxjCmh7zHpONa7343QfiTBEbKxkUaprjvk7CGtR0Hn6vMBUPHU7HGk5OziSyZrGTMtDY4N3bJVguVpX0CJzgqEZcxc1dbo2+Y69qiGGIkUvmIyYBsyZ524Ffof5RxEG5A01Yk9+rBybJWPt4=
+	t=1765128808; cv=none; b=jLrGihsrMANHtKutvKh0pBTEKIw32mSWGikuoUFuhRrG89DgTGqozOje5qbZUqI9j9rxDoWnPsAcbt5sCJzLpSP/MI+jdGlbnI+zbp2ZVhSxNA/R2Ifc3KXRE26IGnLjpvixZ8MGn04GIYeLMZoFcidJ/U9woCljdsKwE31aygs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765127576; c=relaxed/simple;
-	bh=6fIJmy+yjwjMHNsDI+pH7pWh9h6/tAFr/2fxK7jhgjU=;
+	s=arc-20240116; t=1765128808; c=relaxed/simple;
+	bh=upuLaWJUfJ9Dtg6RiVX8ZQwvFkfM6+82FyVeqtASJt8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qRTKmweU3+9p5a83RqF2dhntiYuO9mxt7C9AIDTUc65ZFABaegmoLkzdYOCQmWaL3YVl4hLd5L5muc00QLdoAkGBfSk5aeNy6W6apQcx59npX4l7uY1RCSjCYKGNOGpkKmZo8WOYHmZmp9gST7VGIGNXlYOT5F+SHm/ZHIrXhUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AEcpZAJg; arc=none smtp.client-ip=209.85.210.46
+	 In-Reply-To:Content-Type; b=NXJy9LA6xWM4YFnKhMmJUlyZ5CC07G5XgaOVBT1E6Holr/MULBFqZrVKoYuFTriVrs8NtJu+dPaQxC/XWABQykrxQLYQ6m9pJQfGxL460BIAJVNIQi6exlVW/qvJpGwxNvUs5dWSseZGcyEhRzrH2KeeVv1/h+58W3pY5uuwJYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PBkC56dl; arc=none smtp.client-ip=209.85.160.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7c95936e43cso1288579a34.0
-        for <linux-iio@vger.kernel.org>; Sun, 07 Dec 2025 09:12:54 -0800 (PST)
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-3e37ad3d95aso2750186fac.3
+        for <linux-iio@vger.kernel.org>; Sun, 07 Dec 2025 09:33:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765127573; x=1765732373; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765128806; x=1765733606; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Rz+hbdFu/Zj5TShBfYbaQ4glba7CKEYXsGsVmzlXQwE=;
-        b=AEcpZAJgSzgEEmmCM9uh0mnFUULHzUbijjqHptOIWQpIK6eAqO6pYXJllnYzGBax2O
-         126COpenZQIpCKdNIPr/XjQqw3WjSlNkoKkOsvwghey8gLInNsz+RHGBvNWrYmrYXLGW
-         UKekfCWImvGn3IOcm/zoCf3y9u+/9K2t56NA8n/s9DwZ3SPv8fQ6lbcAz8CwuA4ycbSm
-         fQZ3zxDhu/uLR3xrrfuW2MQu4D3U27lbqCHYEeQSfKwtGSwro8Geda4Rsohha19+P84p
-         XRjlmOwTrOZsKQeLUe42P20a7gL0w4qdKsD+xmPJBMBSEmkLD9e7KcdZRtox4eALjs0p
-         R7GA==
+        bh=WuX0Nt/dS55N6wWwLBaQ7tdaGgJps7NbD2DaK1qGYx4=;
+        b=PBkC56dl2GewTlli7x5ahG5JIt1bFqIsNKMnyB8hCt2qYhHA9iMKMFzugaFS8Tkr6T
+         tUmx8Qtr9zWiYG8WAeF7iVo+eJAjN4bm9YSFm1EuQYOGjLCwzXvcYPyRH3SQWlJLalsM
+         jA54fvWvujZ+6TlsevwqQ+cQ602jCMO1hGAZUhB6G7nA2kpLrGEZpqkyYEgqhryHRnAY
+         K4USwuQoeWcF4fwOg8l4C4yeNaRmTi4MvdqbI3RNOgiH0AnFPlc2zlUJU89evCAzBVT7
+         p21EO+MwP7iGnDb4ai93MWCwLH97r9B26PcisEHD1slZS3Wn64qBWYemGXMTHg2oqonS
+         Jd1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765127573; x=1765732373;
+        d=1e100.net; s=20230601; t=1765128806; x=1765733606;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Rz+hbdFu/Zj5TShBfYbaQ4glba7CKEYXsGsVmzlXQwE=;
-        b=M3Z0OJYzXNp1kVoi65WhefPZc6ySWCAJ7voUlA4Y3uvOyRsjb6W805+F8PWFrppPPW
-         w4k4DSkycQ5DrjQzAf+PNVCHtJwJOjRLKLPgkgyNyI4w6zr6mvDraIAqAIh8dfVlW+CK
-         tf8uH/k0YQfpMkotZ3juC8GCqWRC71svvbWvLtoYtVd5lASrpbLmfrZHRHRDIwNLECQ1
-         fLr+nwdG6XpjO/S2GJbUYT2jd39jzYrN+imDVQQlx5sfH2NWeV6FCNLjRKGuj2vRlAFD
-         8UC16m9lM6u+0V1G7RzM2VJY17iwImtWjas6sceEN/7gvrIMZDNQwTG5pVnDuMIRsYNi
-         fs2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWt20WH4bM1RaNDtmHl++DdIgKndmXq7kyXy83Y9kK6C0mVrOHaPscAQBl3oXQchG1V3lJCMQNKR5k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbzteKWZIci4LnLKmlSgHzABByPwP3feCKhi9CRzqG8I7TEiL0
-	CkoDIvaYHB7DQT1y2QufAAnLzoSd5CJOfrpdDkKwKgfXIflsXjgPn5peHD+EpIeUcSk=
-X-Gm-Gg: ASbGncuE/z+1wR1kY4RPr/GBPApfxhp6pbAJGmkBFv3f6KdO3z7v/ur71lrTvseyOAy
-	uPwr+PSITThF3jQmfDaImB39MKzws58qaX4/hx+4zRUJmGBjBR41lNcw1UZWeGkzBMDSRYCYfVh
-	SZWVn/VCvgolSiwXOC8adeoVF5WyuU79NP3QYzTsxQdJ5wpR1DRWpTCUTj8c6XZDUL27wgTSJ//
-	1jKKbwJYSG+/aP5perAhVhYiZWNZmlPmhc3h2vE4iNfWUbS3CXAXywbK3rty/MsblLqmqyeZEi5
-	++/U3hcGxDSmh3TrxC/ZI+vWfmfESCxnEe3FTFDUdQxQ/53s9dblDumojyQfZY0fHtuxGvNVEcz
-	iTr03jFg1ZD6zjUoyr49OeB6xuYd+jj5bZN49pH++gsxHBoLHak1xO6sEhb6dJjMyHfQfjBzD+0
-	+D8gInk7kr+kTZIWA+sb1MJHysoQNq3VVLn29IYb+Kv9a5PUWDr5GXsA9bp/fa
-X-Google-Smtp-Source: AGHT+IEM+RUk6l87X+4+Tlmn1OItINTU/R0vum7LolDYV7SnuylndTDMKzytRw/7CMc51VrD1vkNbA==
-X-Received: by 2002:a05:6830:6b96:b0:7c7:e3b:488a with SMTP id 46e09a7af769-7c97083b2c4mr2190057a34.30.1765127573303;
-        Sun, 07 Dec 2025 09:12:53 -0800 (PST)
+        bh=WuX0Nt/dS55N6wWwLBaQ7tdaGgJps7NbD2DaK1qGYx4=;
+        b=GZ0TOw0euMjVbg3PSPq4rOC1iOt0kb8F6gFi0CS2HtMZCGoFuRlG2H3GldxhCfzvEo
+         bCwR/bBP9MGVdDA+Ib7cXp4nHO7sKX+BvOPmrR0nUFwnZyQnnKbOzV8gT/FgUEsHHP89
+         /UFkV56nYIfUi8k3edI2FEPG8PLkBhZeeZRW+hmDmkxzq9icrgshTCgChVY+UcM43Pgg
+         y2HR/gixnz3z6PLdkhpqnxmJYtXXh1jckitgUFjrzPkYCgDfI+1XWttIXNYle9KWbZ5F
+         3DweZ1hRxGqppJSbWoOVhCUHyLFPJIHYqDTsKgpwRpSjUPuZQLw/dDaXT79a8JFBkpVv
+         CxTg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4j0EXIz/K2GA4L/QUtWc0dENMLl5BzQ/43umo2+uxzcyOyk38ea76RoCBsVmTh8fRCaBEmH70Cpg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+UFweY+rRsSM2RP9FnUl/+nduhz99KRm5nhfS3is5f6IuAIXI
+	Shvfa43IA58gLJsFhV0jkkrWnZ3uLKA6kq44s1FwNrmgtXqUzDX9f87y0yxajq94oD4=
+X-Gm-Gg: ASbGncv89gl/qWhZL2yovI6oqgOrn16x1+0Dzo8wYmhJXgvj4z34BLvhNBxY9UELd1R
+	hYOvfh1m4Os3HN+uRoBuZLqXy0rIPToDWyCT//sGttO0u3PRXV9HhUb6iKw9yXvQrP08N096f+W
+	vJq+GoYuHBLdD2CJMGd7a9y33XxolkvJ8BKFYb7e7eE5R45D17PsXWFyn44rAEfAfjLtS+3QDwb
+	L1kOlaiEKZcS2K/9HnOIk13ryc6DdOPim1ka+ViwuFExUeMAkP9xiK6Ctf/32WQ7Fj1wa9rUWge
+	MRJsqSvv3lV4TBu1I1v38ZwOZkCc4FGXT3/M19YqLH50bQlq5ZdKsUcKQnIiAR0GmeHmywzYoXu
+	zUkvUyoLeAOJBq/mD4MXwqPvfzb0omrnJ4O3TylpHs+SUs8yX77/c+WnBhL678Wyd/YPuD/cGhq
+	LRdphrRxz89+82lu8a3zba/VxcVp5/RWc5H03XARsQwDU1ddKPWpyrqyUGiEDX
+X-Google-Smtp-Source: AGHT+IEw7s/MMgwNbpoSL6Z3OPXYKqE1GK2i9be0sI0avG5SlO7iW66QamD3JVTnVg509CwIrcNanQ==
+X-Received: by 2002:a05:6870:ec8a:b0:3e7:e08e:742 with SMTP id 586e51a60fabf-3f5440896b2mr2553279fac.32.1765128805623;
+        Sun, 07 Dec 2025 09:33:25 -0800 (PST)
 Received: from ?IPV6:2600:8803:e7e4:500:be99:7ce8:d200:2438? ([2600:8803:e7e4:500:be99:7ce8:d200:2438])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c95acadb16sm8248687a34.21.2025.12.07.09.12.52
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3f50aa34d4fsm7406835fac.5.2025.12.07.09.33.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Dec 2025 09:12:52 -0800 (PST)
-Message-ID: <5b843df0-138e-4e2e-a70d-beb8a39ed85f@baylibre.com>
-Date: Sun, 7 Dec 2025 11:12:51 -0600
+        Sun, 07 Dec 2025 09:33:24 -0800 (PST)
+Message-ID: <668712cb-06e8-40d1-8a21-bf8be3522e0d@baylibre.com>
+Date: Sun, 7 Dec 2025 11:33:22 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,70 +82,69 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] iio: adc: Add ti-ads1018 driver
-To: Kurt Borja <kuurtb@gmail.com>, Jonathan Cameron <jic23@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Tobias Sperling <tobias.sperling@softing.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20251204-ads1x18-v6-0-2ae4a2f8e90c@gmail.com>
- <20251204-ads1x18-v6-2-2ae4a2f8e90c@gmail.com>
- <20251206200721.5e683a83@jic23-huawei> <DES3ZWAKXXEB.2LQPMDZN4JFCB@gmail.com>
+Subject: Re: [PATCH 1/2] iio: dac: adi-axi-dac: Make use of dev_err_probe()
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>, nuno.sa@analog.com,
+ linux-iio@vger.kernel.org
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
+References: <20251203-iio-axi-dac-minor-changes-v1-0-b54650cbeb33@analog.com>
+ <20251203-iio-axi-dac-minor-changes-v1-1-b54650cbeb33@analog.com>
+ <07439e95-47f5-434a-9f6d-d7740375a3d6@baylibre.com>
+ <9bdbdb91ea6b8049658fd6015722c5e2beea183e.camel@gmail.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <DES3ZWAKXXEB.2LQPMDZN4JFCB@gmail.com>
+In-Reply-To: <9bdbdb91ea6b8049658fd6015722c5e2beea183e.camel@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/7/25 10:02 AM, Kurt Borja wrote:
-> On Sat Dec 6, 2025 at 3:07 PM -05, Jonathan Cameron wrote:
->> On Thu, 04 Dec 2025 13:01:28 -0500
->> Kurt Borja <kuurtb@gmail.com> wrote:
->>
->>> Add ti-ads1018 driver for Texas Instruments ADS1018 and ADS1118 SPI
->>> analog-to-digital converters.
+On 12/3/25 10:29 AM, Nuno Sá wrote:
+> On Wed, 2025-12-03 at 10:06 -0600, David Lechner wrote:
+>> On 12/3/25 9:53 AM, Nuno Sá via B4 Relay wrote:
+>>> From: Nuno Sá <nuno.sa@analog.com>
 >>>
->>> These chips' MOSI pin is shared with a data-ready interrupt. Defining
->>> this interrupt in devicetree is optional, therefore we only create an
->>> IIO trigger if one is found.
+>>> Be consistent and use dev_err_probe() as in all other places in the
+>>> .probe() path.
 >>>
->>> Handling this interrupt requires some considerations. When enabling the
->>> trigger the CS line is tied low (active), thus we need to hold
->>> spi_bus_lock() too, to avoid state corruption. This is done inside the
->>> set_trigger_state() callback, to let users use other triggers without
->>> wasting a bus lock.
+>>> While at it, remove the line break in the version condition. Yes, it
+>>> goes over the 80 column limit but I do think the line break hurts
+>>> readability in this case.
 >>>
->>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-> 
-> ...
-> 
->>> +#define ADS1018_VOLT_CHAN(_index, _chan, _realbits) {				\
->>> +	.type = IIO_VOLTAGE,							\
->>> +	.channel = _chan,							\
->>> +	.scan_index = _index,							\
->>> +	.scan_type = {								\
->>> +		.sign = 's',							\
->>> +		.realbits = _realbits,						\
->>> +		.storagebits = 16,						\
->>> +		.shift = 16 - _realbits,					\
->>> +		.endianness = IIO_BE,						\
->>> +	},									\
->>> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |				\
->>> +			      BIT(IIO_CHAN_INFO_SCALE) |			\
->>> +			      BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
+>>> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+>>> ---
+>>>  drivers/iio/dac/adi-axi-dac.c | 20 +++++++++-----------
+>>>  1 file changed, 9 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
+>>> index 0d525272a8a8..0c7b62f5357d 100644
+>>> --- a/drivers/iio/dac/adi-axi-dac.c
+>>> +++ b/drivers/iio/dac/adi-axi-dac.c
+>>> @@ -942,17 +942,15 @@ static int axi_dac_probe(struct platform_device *pdev)
+>>>  	if (ret)
+>>>  		return ret;
+>>>  
+>>> -	if (ADI_AXI_PCORE_VER_MAJOR(ver) !=
+>>> -		ADI_AXI_PCORE_VER_MAJOR(st->info->version)) {
+>>> -		dev_err(&pdev->dev,
+>>> -			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
+>>> -			ADI_AXI_PCORE_VER_MAJOR(st->info->version),
+>>> -			ADI_AXI_PCORE_VER_MINOR(st->info->version),
+>>> -			ADI_AXI_PCORE_VER_PATCH(st->info->version),
+>>> -			ADI_AXI_PCORE_VER_MAJOR(ver),
+>>> -			ADI_AXI_PCORE_VER_MINOR(ver),
+>>> -			ADI_AXI_PCORE_VER_PATCH(ver));
+>>> -		return -ENODEV;
+>>> +	if (ADI_AXI_PCORE_VER_MAJOR(ver) != ADI_AXI_PCORE_VER_MAJOR(st->info->version)) {
 >>
->> What motivates per channel sampling frequency?
+>> Can drop the braces now.
+> 
+> Yes, I thought about it but then kept the braces as we still have "multiple" lines (note checkpatch
+> does not complain in cases like this). 
+> 
+> But I don't feel strong about it so can drop them if you do :)
+> 
+> - Nuno Sá
 >>
->> Given you have to write it each time you configure I guess it doesn't matter much
->> either way.
-> 
-> I guess making it shared by all is simpler too, so I'll go with that.
-> 
-Just keep in mind that if there is ever some use case we don't know
-about that would require a different rate per channel, we can't change
-it without breaking usespace. Once the decision is made, we are
-locked in. Keeping it per-channel seems more future-proof to me.
+>>>
 
+No, I don't' feel strongly about it.
 

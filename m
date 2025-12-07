@@ -1,150 +1,154 @@
-Return-Path: <linux-iio+bounces-26909-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26910-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D3BCAB86C
-	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 18:33:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D52CAB8FC
+	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 19:24:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EBEE301F5DC
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 17:33:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6C1030189AA
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 18:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C162D4801;
-	Sun,  7 Dec 2025 17:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1702E4266;
+	Sun,  7 Dec 2025 18:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PBkC56dl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NKa1uriU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9860526CE11
-	for <linux-iio@vger.kernel.org>; Sun,  7 Dec 2025 17:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F3E8F4A;
+	Sun,  7 Dec 2025 18:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765128808; cv=none; b=jLrGihsrMANHtKutvKh0pBTEKIw32mSWGikuoUFuhRrG89DgTGqozOje5qbZUqI9j9rxDoWnPsAcbt5sCJzLpSP/MI+jdGlbnI+zbp2ZVhSxNA/R2Ifc3KXRE26IGnLjpvixZ8MGn04GIYeLMZoFcidJ/U9woCljdsKwE31aygs=
+	t=1765131875; cv=none; b=HpwMnn8JZPHN5tUBuMZlXH+xubTxPc4QM0n9Ep1nJHBpugWCl3HEE1OSlMailUjlOi7AJyTPLGYBGoDBcTVxUMKr71XnKSkCO0NaK7+M+cmR+SvB0bovVprfCnT7ea/eMvIsYJCC1yKh5joHlb2ouzIXp0Na9aOcvUoRTv6VaP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765128808; c=relaxed/simple;
-	bh=upuLaWJUfJ9Dtg6RiVX8ZQwvFkfM6+82FyVeqtASJt8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NXJy9LA6xWM4YFnKhMmJUlyZ5CC07G5XgaOVBT1E6Holr/MULBFqZrVKoYuFTriVrs8NtJu+dPaQxC/XWABQykrxQLYQ6m9pJQfGxL460BIAJVNIQi6exlVW/qvJpGwxNvUs5dWSseZGcyEhRzrH2KeeVv1/h+58W3pY5uuwJYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PBkC56dl; arc=none smtp.client-ip=209.85.160.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-3e37ad3d95aso2750186fac.3
-        for <linux-iio@vger.kernel.org>; Sun, 07 Dec 2025 09:33:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765128806; x=1765733606; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WuX0Nt/dS55N6wWwLBaQ7tdaGgJps7NbD2DaK1qGYx4=;
-        b=PBkC56dl2GewTlli7x5ahG5JIt1bFqIsNKMnyB8hCt2qYhHA9iMKMFzugaFS8Tkr6T
-         tUmx8Qtr9zWiYG8WAeF7iVo+eJAjN4bm9YSFm1EuQYOGjLCwzXvcYPyRH3SQWlJLalsM
-         jA54fvWvujZ+6TlsevwqQ+cQ602jCMO1hGAZUhB6G7nA2kpLrGEZpqkyYEgqhryHRnAY
-         K4USwuQoeWcF4fwOg8l4C4yeNaRmTi4MvdqbI3RNOgiH0AnFPlc2zlUJU89evCAzBVT7
-         p21EO+MwP7iGnDb4ai93MWCwLH97r9B26PcisEHD1slZS3Wn64qBWYemGXMTHg2oqonS
-         Jd1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765128806; x=1765733606;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WuX0Nt/dS55N6wWwLBaQ7tdaGgJps7NbD2DaK1qGYx4=;
-        b=GZ0TOw0euMjVbg3PSPq4rOC1iOt0kb8F6gFi0CS2HtMZCGoFuRlG2H3GldxhCfzvEo
-         bCwR/bBP9MGVdDA+Ib7cXp4nHO7sKX+BvOPmrR0nUFwnZyQnnKbOzV8gT/FgUEsHHP89
-         /UFkV56nYIfUi8k3edI2FEPG8PLkBhZeeZRW+hmDmkxzq9icrgshTCgChVY+UcM43Pgg
-         y2HR/gixnz3z6PLdkhpqnxmJYtXXh1jckitgUFjrzPkYCgDfI+1XWttIXNYle9KWbZ5F
-         3DweZ1hRxGqppJSbWoOVhCUHyLFPJIHYqDTsKgpwRpSjUPuZQLw/dDaXT79a8JFBkpVv
-         CxTg==
-X-Forwarded-Encrypted: i=1; AJvYcCU4j0EXIz/K2GA4L/QUtWc0dENMLl5BzQ/43umo2+uxzcyOyk38ea76RoCBsVmTh8fRCaBEmH70Cpg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+UFweY+rRsSM2RP9FnUl/+nduhz99KRm5nhfS3is5f6IuAIXI
-	Shvfa43IA58gLJsFhV0jkkrWnZ3uLKA6kq44s1FwNrmgtXqUzDX9f87y0yxajq94oD4=
-X-Gm-Gg: ASbGncv89gl/qWhZL2yovI6oqgOrn16x1+0Dzo8wYmhJXgvj4z34BLvhNBxY9UELd1R
-	hYOvfh1m4Os3HN+uRoBuZLqXy0rIPToDWyCT//sGttO0u3PRXV9HhUb6iKw9yXvQrP08N096f+W
-	vJq+GoYuHBLdD2CJMGd7a9y33XxolkvJ8BKFYb7e7eE5R45D17PsXWFyn44rAEfAfjLtS+3QDwb
-	L1kOlaiEKZcS2K/9HnOIk13ryc6DdOPim1ka+ViwuFExUeMAkP9xiK6Ctf/32WQ7Fj1wa9rUWge
-	MRJsqSvv3lV4TBu1I1v38ZwOZkCc4FGXT3/M19YqLH50bQlq5ZdKsUcKQnIiAR0GmeHmywzYoXu
-	zUkvUyoLeAOJBq/mD4MXwqPvfzb0omrnJ4O3TylpHs+SUs8yX77/c+WnBhL678Wyd/YPuD/cGhq
-	LRdphrRxz89+82lu8a3zba/VxcVp5/RWc5H03XARsQwDU1ddKPWpyrqyUGiEDX
-X-Google-Smtp-Source: AGHT+IEw7s/MMgwNbpoSL6Z3OPXYKqE1GK2i9be0sI0avG5SlO7iW66QamD3JVTnVg509CwIrcNanQ==
-X-Received: by 2002:a05:6870:ec8a:b0:3e7:e08e:742 with SMTP id 586e51a60fabf-3f5440896b2mr2553279fac.32.1765128805623;
-        Sun, 07 Dec 2025 09:33:25 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:be99:7ce8:d200:2438? ([2600:8803:e7e4:500:be99:7ce8:d200:2438])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3f50aa34d4fsm7406835fac.5.2025.12.07.09.33.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Dec 2025 09:33:24 -0800 (PST)
-Message-ID: <668712cb-06e8-40d1-8a21-bf8be3522e0d@baylibre.com>
-Date: Sun, 7 Dec 2025 11:33:22 -0600
+	s=arc-20240116; t=1765131875; c=relaxed/simple;
+	bh=F5b9CSFIVL7dkvtH38DlsENOwFOCMpKZ+Bnc43sUjL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FBJjOfPbSr5BSmGont+2+R2DDr6N8nDMIm0h1DljbKWlTy6d8DBqRnGqjh+20HSMN/o3zAEJAWOAYlNgka9FjFIs6ZGGVpLWTFMAHvBUTWhqAl99C5f+VLYzkGFoapGBmrWtUmUTjsJQKFJS8IK1/y8PqXzsE0qDViRUWMZK/Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NKa1uriU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA958C4CEFB;
+	Sun,  7 Dec 2025 18:24:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765131874;
+	bh=F5b9CSFIVL7dkvtH38DlsENOwFOCMpKZ+Bnc43sUjL0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NKa1uriUaz6yXULpOz0+3rKGfrW5c/++1vuhelVInfif4X70kVC4uRhmoz8cZwMi6
+	 lPmusMkhlIK0XXW5HgTILX1EQDSvfTIy6oZmx9WLCyV42QYo7zjwhIQgvUGRd2v1Dn
+	 qjXuiP0kcU0Ox04/01p34diVnQQrv1lO8M4nomKehPU9XirGVFwoIG7B9pvpd70mZR
+	 6sFknSkVK8IXp9VCESA3Lm+t9kcwwZaXA47IhVaXOz20g/ZTl37HV+kPtdSm06Ir8t
+	 hFL66pnr4vjvj2WCIAtSkefgt2n4B3f1QhCkUTr4B1eLjVWPPXgMlAVp6oMHfS+kbe
+	 vvB20Pne8Tauw==
+Date: Sun, 7 Dec 2025 18:24:23 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <Michael.Hennerich@analog.com>,
+ <dlechner@baylibre.com>, <nuno.sa@analog.com>, <andy@kernel.org>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+ <marcelo.schmitt@analog.com>, <jonath4nns@gmail.com>
+Subject: Re: [PATCH v4 4/4] iio: adc: ad7768-1: add support for ADAQ776x-1
+ ADC Family
+Message-ID: <20251207182423.54e4b33d@jic23-huawei>
+In-Reply-To: <c3b79acfd171b3625b0e6ed8af4c95cc8409af18.1764101647.git.Jonathan.Santos@analog.com>
+References: <cover.1764101647.git.Jonathan.Santos@analog.com>
+	<c3b79acfd171b3625b0e6ed8af4c95cc8409af18.1764101647.git.Jonathan.Santos@analog.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] iio: dac: adi-axi-dac: Make use of dev_err_probe()
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>, nuno.sa@analog.com,
- linux-iio@vger.kernel.org
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>
-References: <20251203-iio-axi-dac-minor-changes-v1-0-b54650cbeb33@analog.com>
- <20251203-iio-axi-dac-minor-changes-v1-1-b54650cbeb33@analog.com>
- <07439e95-47f5-434a-9f6d-d7740375a3d6@baylibre.com>
- <9bdbdb91ea6b8049658fd6015722c5e2beea183e.camel@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <9bdbdb91ea6b8049658fd6015722c5e2beea183e.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 12/3/25 10:29 AM, Nuno Sá wrote:
-> On Wed, 2025-12-03 at 10:06 -0600, David Lechner wrote:
->> On 12/3/25 9:53 AM, Nuno Sá via B4 Relay wrote:
->>> From: Nuno Sá <nuno.sa@analog.com>
->>>
->>> Be consistent and use dev_err_probe() as in all other places in the
->>> .probe() path.
->>>
->>> While at it, remove the line break in the version condition. Yes, it
->>> goes over the 80 column limit but I do think the line break hurts
->>> readability in this case.
->>>
->>> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
->>> ---
->>>  drivers/iio/dac/adi-axi-dac.c | 20 +++++++++-----------
->>>  1 file changed, 9 insertions(+), 11 deletions(-)
->>>
->>> diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
->>> index 0d525272a8a8..0c7b62f5357d 100644
->>> --- a/drivers/iio/dac/adi-axi-dac.c
->>> +++ b/drivers/iio/dac/adi-axi-dac.c
->>> @@ -942,17 +942,15 @@ static int axi_dac_probe(struct platform_device *pdev)
->>>  	if (ret)
->>>  		return ret;
->>>  
->>> -	if (ADI_AXI_PCORE_VER_MAJOR(ver) !=
->>> -		ADI_AXI_PCORE_VER_MAJOR(st->info->version)) {
->>> -		dev_err(&pdev->dev,
->>> -			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
->>> -			ADI_AXI_PCORE_VER_MAJOR(st->info->version),
->>> -			ADI_AXI_PCORE_VER_MINOR(st->info->version),
->>> -			ADI_AXI_PCORE_VER_PATCH(st->info->version),
->>> -			ADI_AXI_PCORE_VER_MAJOR(ver),
->>> -			ADI_AXI_PCORE_VER_MINOR(ver),
->>> -			ADI_AXI_PCORE_VER_PATCH(ver));
->>> -		return -ENODEV;
->>> +	if (ADI_AXI_PCORE_VER_MAJOR(ver) != ADI_AXI_PCORE_VER_MAJOR(st->info->version)) {
->>
->> Can drop the braces now.
-> 
-> Yes, I thought about it but then kept the braces as we still have "multiple" lines (note checkpatch
-> does not complain in cases like this). 
-> 
-> But I don't feel strong about it so can drop them if you do :)
-> 
-> - Nuno Sá
->>
->>>
+On Wed, 26 Nov 2025 18:56:35 -0300
+Jonathan Santos <Jonathan.Santos@analog.com> wrote:
 
-No, I don't' feel strongly about it.
+> Add support for ADAQ7767/68/69-1 series, which includes PGIA and
+> Anti-aliasing filter (AAF) gains. Unlike the AD7768-1, they do not
+> provide a VCM regulator interface.
+> 
+> The PGA gain is configured in run-time through the scale attribute,
+> if supported by the device. PGA is controlled by GPIOs provided in
+> the device tree.
+> 
+> The AAF gain is defined by hardware connections and should be specified
+> in the device tree.
+> 
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> ---
+> v4 Changes:
+> * replaced shift_right() with '>>' operator in the ad7768_fill_scale_tbl()
+>   function.
+> * Refactored ad7768_parse_aaf_gain () as requested.
+> * renamed ad7768_register_regulators() to ad7768_register_vcm_regulator()
+>   to better reflect its purpose (not sure if this is ok to do).
+> * Replaced u64_fract with u32_fract -> after reviewing the numbers again, I
+>   realized that u32_fract is sufficient for these calculations.
+> * addressed minor suggestions.
+> * Adopted a new approach to manage the PGA GPIOs, using pga-gpios property.
+>   This avoids possible conflicts when the internal gpio controller is used
+>   externally (and also allows hardwiring, as soon as the gpio interface 
+>   supports it). However, using GPIOs from the device's own controller causes
+>   a deadlock when claiming direct mode in the ad7768_gpio_get() function.
+>   This happens because the direct mode remains locked by the ad7768_write_raw()
+>   function. I have kept this approach for now to discuss a way around this
+>   problem. It would be good to have the flexibility provided by pga-gpios 
+>   property.
+
+See below. I 'think' this is easy enough to resolve by relaxing the need
+to claim direct mode for scale changes - if it were an external gpio that
+should be safe anyway and if it is internal, then the inner direct mode
+claim should do the job.
+
+Other than that, to me this code looks nice and clean so hopefully we can
+merge it once that fix is in place.
+
+Thanks,
+
+Jonathan
+
+
+
+
+> @@ -464,6 +531,42 @@ static int ad7768_reg_access(struct iio_dev *indio_dev,
+>  	return ret;
+>  }
+
+>  
+> +/*
+> + * FIXME: Using GPIOs from the device's own controller causes the device
+> + * to get stuck when claiming direct mode in the ad7768_gpio_get() function.
+> + * This happens because the direct mode remains locked by the
+> + * ad7768_write_raw() function.
+
+Ouch. I'm not spotting why we need to claim direct mode for this particular
+use of write_raw().  Seems safe enough to modify the gain whilst in buffered
+mode.  Bit confusing perhaps if a user does this, but not a functional problem.
+Sometimes we over protect in that path because userspace rarely uses write_raw
+with the buffer mode enabled as it doesn't work on many devices.
+
+So I'd squash the __ad7768_write_raw() back into ad7768_write_raw()
+and claim and release direct mode only in the switch legs that need it
+(oversampling and sampling frequency probably).  That should resolve
+the deadlock.
+
+
+> + */
+> +static int ad7768_setup_pga(struct device *dev, struct ad7768_state *st)
+> +{
+> +	st->pga_gpios = devm_gpiod_get_array(dev, "pga", GPIOD_OUT_LOW);
+> +	if (IS_ERR(st->pga_gpios))
+> +		return dev_err_probe(dev, PTR_ERR(st->pga_gpios),
+> +				     "Failed to get PGA gpios.\n");
+> +
+> +	if (st->pga_gpios->ndescs != ADAQ7768_PGA_PINS)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "Expected %d GPIOs for PGA control.\n",
+> +				     ADAQ7768_PGA_PINS);
+> +	return 0;
+> +}
+
 

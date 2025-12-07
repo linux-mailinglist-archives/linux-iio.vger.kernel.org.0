@@ -1,60 +1,61 @@
-Return-Path: <linux-iio+bounces-26874-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26875-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 818E4CAB520
-	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 14:09:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68989CAB52F
+	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 14:13:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7807430562C1
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 13:09:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E99003050377
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 13:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B772D3A69;
-	Sun,  7 Dec 2025 13:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5585F2F25F0;
+	Sun,  7 Dec 2025 13:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RkDYgUCG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIf13hZc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32273B8D71;
-	Sun,  7 Dec 2025 13:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080562EF65F;
+	Sun,  7 Dec 2025 13:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765112989; cv=none; b=oB6cIcksDbjm0zlIVY9sa0yhFVp/QD0OwOF4vcIxHz2Rq0AOT0fItoNunlt0JB0I8ZgBNWAOgjTnK0fwFt6H0RfiqpFp4gMuLI9LEJ5uyMMZdx4SJGmk8Gz8uRZ4m1X9MWrIQU6THPFBPAwOIzEAoNQw1mtDkEFWPcrnRS74qzU=
+	t=1765113214; cv=none; b=Ri6lev3fKeeBlMgd8oL+/7WKRAAfq+/yh/SaYFp2cz7Q/1K32xIuw2MjFtf64hlCnSVMJZhyt9yKzX4gonIiagmVsLpvi9vJ/Layb1N7qKtf9tkcFfmRMpHsyymMmUxptsOQz/xCitJm/Us1+zfPQeT7S+ofwykoyx6jVeLVfkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765112989; c=relaxed/simple;
-	bh=MfV/7ZHFiqQjaNaOycta3KjrAqwsiSKxlCt4pooHHIY=;
+	s=arc-20240116; t=1765113214; c=relaxed/simple;
+	bh=nSRVRlvH2TOmH+q56OrUc1tG4J8RyYZQf5RQUQu98cc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tyRhlUV6U5yeEPT2PJh9BgSUSyYJ7ESdeiQy/JX0UYtI3IUfrnfYLhLCd4TKExR9Il017Z/jq18tobLRF3AnKjtkTWK/LBBjWVXjkra3QiBNGvHw0I4dnzpFcu6vRoTF5sRyhOjrjKjRfLdQnrv2nGAln7+BIYOJ6oudrDLDrN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RkDYgUCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B249C4CEFB;
-	Sun,  7 Dec 2025 13:09:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Toncd/lApZLsFF9j+qvEenjpUcFyjYozSA5EZaVW+9+kfFFJ+J8mBpMft9EAXBXMP6CPTxF0PPCp94yQZA8Y+6JEn04XyUMtZS6NPThh7uEB0tVy+H7RBnmOya2iO95/ut2q7oZy9UxeOXdTh86S1rawyU9lYbUP1jvZWMJJ7MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIf13hZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20106C4CEFB;
+	Sun,  7 Dec 2025 13:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765112988;
-	bh=MfV/7ZHFiqQjaNaOycta3KjrAqwsiSKxlCt4pooHHIY=;
+	s=k20201202; t=1765113213;
+	bh=nSRVRlvH2TOmH+q56OrUc1tG4J8RyYZQf5RQUQu98cc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RkDYgUCGUzfHNIfZ3hY7Xp8Tg54IGA3hcuGa/E/IB4dwWTzdWeBl7gUDpLWQmMosS
-	 oX6UmdVh69zHLhCXivueiILpjiSDCWsR3VA0oPA59sxAiumoDmgs7XGWSZ5R/hOJyH
-	 RJl6oyRVA5U27/qZq/i3xVMD0UHlkR2YOuwzwfaVSLolQ//jfdib+W1IYkEbKLp/rR
-	 xVZGeK/MFLUwsmjmiZ/YEvMY1JRuHgbBktj2GWDXU3xEPSArCNn4kWEHeuvy3bwHuR
-	 fugdPZB418DmzqNUkjKirDTpU0c/hY5eZXXLdtgq0QIf8bmDc/KoBCPr0K2m9ZoGDK
-	 HyJkBomIZr95w==
-Date: Sun, 7 Dec 2025 13:09:39 +0000
+	b=LIf13hZcwkl50m/zh7glJSM3jpmsdEcsYyEsN7SQdRZvVnwNMWfBSu9c7jdy7/xqw
+	 qYIrn7TBmHxkqSFPFACNadnsJth9/v0MeNyitEnIjVJwIrMBWwgwf5/o3dX4ZI7Rk5
+	 0XUQAGQtgEPDI5j737ZGQVnJJBQSER1J2fP8iOxaA1mDOs1lYEsyM5u421nR0iVccg
+	 Qbb++6jE6Folgq/SRrvp8n1490pR3rIbhEM4K/PBpLuBUrIeQaRA/2lrHvGassnxC5
+	 x7q9OMBM1y5jjAxqXajf0oxOY+p7+tj7ESv08V4CeSccmLIOAJm5Z56SV9FzVCknTk
+	 Xhs5eob/O/97w==
+Date: Sun, 7 Dec 2025 13:13:22 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Tomas Melin <tomas.melin@vaisala.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Andy
- Shevchenko <andy@kernel.org>, Alexandru Ardelean	
- <alexandru.ardelean@analog.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: adc: ad9467: support write/read offset
-Message-ID: <20251207130939.6e72fb9d@jic23-huawei>
-In-Reply-To: <fdf00f852543f9da3efd0c87c78165d9f22db367.camel@gmail.com>
-References: <20251203-ad9434-fixes-v3-0-38d14f28456f@vaisala.com>
-	<20251203-ad9434-fixes-v3-2-38d14f28456f@vaisala.com>
-	<fdf00f852543f9da3efd0c87c78165d9f22db367.camel@gmail.com>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Tomas Melin <tomas.melin@vaisala.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
+ andy@kernel.org, Michael.Hennerich@analog.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, corbet@lwn.net, Conor Dooley
+ <conor.dooley@microchip.com>
+Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: Add AD4134
+Message-ID: <20251207131322.3b270a18@jic23-huawei>
+In-Reply-To: <aTLVAAQH-I8Rc372@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1764708608.git.marcelo.schmitt@analog.com>
+	<06d7be2af0f6520c23f612fa0249ff6a26655cb7.1764708608.git.marcelo.schmitt@analog.com>
+	<95dfb96e-f7b8-45df-a704-2984bd0a2946@vaisala.com>
+	<aTLVAAQH-I8Rc372@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,174 +63,93 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 03 Dec 2025 11:05:50 +0000
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Fri, 5 Dec 2025 09:50:08 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-> On Wed, 2025-12-03 at 09:28 +0000, Tomas Melin wrote:
-> > Support configuring output calibration value. Among the devices
-> > currently supported by this driver, this setting is specific to
-> > ad9434. The offset can be used to calibrate the output against
-> > a known input. The register is called offset, but the procedure
-> > is best mapped internally with calibbias operation.
-> >=20
-> > Reviewed-by: David Lechner <dlechner@baylibre.com>
-> > Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
-> > --- =20
->=20
-> Still don't really like the style in .info_mask_shared_by_type and=20
-> .info_mask_shared_by_type_available. But ok, it seems I'm the only one. S=
-o:
->=20
-> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> On 12/05, Tomas Melin wrote:
+> > Hi,
+> > 
+> > On 02/12/2025 22:55, Marcelo Schmitt wrote:  
+> > > Add device tree documentation for AD4134 24-Bit, 4-channel simultaneous
+> > > sampling, precision ADC.
+> > > 
+> > > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > > ---
+> > > Change log v2 -> v3:
+> > > - fixed typo in powerdown-gpios description.
+> > > - picked up Conor's review tag. 
+> > > 
+> > >  .../bindings/iio/adc/adi,ad4134.yaml          | 198 ++++++++++++++++++  
+> ...
+> > > +description: |
+> > > +  The AD4134 is a quad channel, low noise, simultaneous sampling, precision
+> > > +  analog-to-digital converter (ADC).
+> > > +  Specifications can be found at:
+> > > +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4134.pdf
+> > > +
+> > > +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> > > +
+> > > +properties:
+> > > +    maxItems: 1
+> > > +
+> > > +  adi,asrc-mode:
+> > > +    $ref: /schemas/types.yaml#/definitions/string
+> > > +    description:
+> > > +      Asynchronous Sample Rate Converter (ASRC) operation mode control input.
+> > > +      Describes whether the MODE pin is set to a high level (for master mode
+> > > +      operation) or to a low level (for slave mode operation).
+> > > +    enum: [ high, low ]
+> > > +    default: low  
+> > Since minimim I/O mode is only one currently supported, this should
+> > always be low, right? Is the property needed at this point?  
+> 
+> Correct, it is expected that adi,asrc-mode will always be low for minimum I/O mode.
+> The property is not _needed_ but, according to dt-binding guidelines [1], it is
+> desired.
+> 
+> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/writing-bindings.rst?h=v6.18#n17
+> 
+> >   
+> > > +
+> > > +  adi,dclkio:
+> > > +    description:
+> > > +      DCLK pin I/O direction control for when the device operates in Pin Control
+> > > +      Slave Mode or in SPI Control Mode. Describes if DEC0/DCLKIO pin is at a
+> > > +      high level (which configures DCLK as an output) or to set to a low level
+> > > +      (configuring DCLK for input).
+> > > +    enum: [ out, in ]
+> > > +    default: in
+> > > +
+> > > +  adi,dclkmode:
+> > > +    description:
+> > > +      DCLK mode control for when the device operates in Pin Control Slave Mode
+> > > +      or in SPI Control Mode. Describes whether the DEC1/DCLKMODE pin is set to
+> > > +      a high level (configuring the DCLK to operate in free running mode) or
+> > > +      to a low level (to configure DCLK to operate in gated mode).
+> > > +    enum: [ free-running, gated ]
+> > > +    default: gated  
+> > In minimum I/O mode datasheet mentions this should always be gated.
+> > Perhaps this and adi,dclkio can be left out and added when driver gains
+> > other support than I/O mode?  
+> 
+> Yes, that's also correct. A few properties are actually not needed for minimum
+> I/O mode (i.e. can have their values inferred from the minimum I/O mode requirements).
+> Sure, from developer's perspective it's easier to document only what the driver
+> uses. adi,dclkio, adi,dclkmode, adi,asrc-mode, powerdown-gpios, regulators, could
+> all be left to a latter time. Fine by me if dt maintainers agree with that.
 
-Applied but with via _calibbias added to the patch title to make
-it clear this isn't via _offset which might make people waste time
-wondering what is going on.
-
-Note this is on my local tree that I might push out as testing
-but will only become togreg after I rebase on rc1 in a week or so.
-
-Thanks,
+Add as much as you are sure about to the binding now.  Sometimes
+we will add properties later (with defaults) to cover things that are
+complex enough that they will delay the initial binding merge.
 
 Jonathan
 
->=20
-> > =C2=A0drivers/iio/adc/ad9467.c | 60 +++++++++++++++++++++++++++++++++++=
-++++++++++++-
-> > =C2=A01 file changed, 59 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> > index 2d8f8da3671dac61994a1864a82cdbef7f54c1af..48c10acb1566ba471be0804=
-e7c39b0b553d76188 100644
-> > --- a/drivers/iio/adc/ad9467.c
-> > +++ b/drivers/iio/adc/ad9467.c
-> > @@ -145,6 +145,7 @@ struct ad9467_chip_info {
-> > =C2=A0	unsigned int num_lanes;
-> > =C2=A0	unsigned int dco_en;
-> > =C2=A0	unsigned int test_points;
-> > +	const int *offset_range;
-> > =C2=A0	/* data clock output */
-> > =C2=A0	bool has_dco;
-> > =C2=A0	bool has_dco_invert;
-> > @@ -234,6 +235,10 @@ static int ad9467_reg_access(struct iio_dev *indio=
-_dev, unsigned int reg,
-> > =C2=A0	return 0;
-> > =C2=A0}
-> > =C2=A0
-> > +static const int ad9434_offset_range[] =3D {
-> > +	-128, 1, 127,
-> > +};
-> > +
-> > =C2=A0static const unsigned int ad9265_scale_table[][2] =3D {
-> > =C2=A0	{1250, 0x00}, {1500, 0x40}, {1750, 0x80}, {2000, 0xC0},
-> > =C2=A0};
-> > @@ -298,7 +303,24 @@ static void __ad9467_get_scale(struct ad9467_state=
- *st, int index,
-> > =C2=A0}
-> > =C2=A0
-> > =C2=A0static const struct iio_chan_spec ad9434_channels[] =3D {
-> > -	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 12, 's'),
-> > +	{
-> > +		.type =3D IIO_VOLTAGE,
-> > +		.indexed =3D 1,
-> > +		.channel =3D 0,
-> > +		.info_mask_shared_by_type =3D
-> > +			BIT(IIO_CHAN_INFO_SCALE) |
-> > +			BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> > +			BIT(IIO_CHAN_INFO_CALIBBIAS),
-> > +		.info_mask_shared_by_type_available =3D
-> > +			BIT(IIO_CHAN_INFO_SCALE) |
-> > +			BIT(IIO_CHAN_INFO_CALIBBIAS),
-> > +		.scan_index =3D 0,
-> > +		.scan_type =3D {
-> > +			.sign =3D 's',
-> > +			.realbits =3D 12,
-> > +			.storagebits =3D 16,
-> > +		},
-> > +	},
-> > =C2=A0};
-> > =C2=A0
-> > =C2=A0static const struct iio_chan_spec ad9467_channels[] =3D {
-> > @@ -367,6 +389,7 @@ static const struct ad9467_chip_info ad9434_chip_tb=
-l =3D {
-> > =C2=A0	.default_output_mode =3D AD9434_DEF_OUTPUT_MODE,
-> > =C2=A0	.vref_mask =3D AD9434_REG_VREF_MASK,
-> > =C2=A0	.num_lanes =3D 6,
-> > +	.offset_range =3D ad9434_offset_range,
-> > =C2=A0};
-> > =C2=A0
-> > =C2=A0static const struct ad9467_chip_info ad9265_chip_tbl =3D {
-> > @@ -499,6 +522,33 @@ static int ad9467_set_scale(struct ad9467_state *s=
-t, int val, int val2)
-> > =C2=A0	return -EINVAL;
-> > =C2=A0}
-> > =C2=A0
-> > +static int ad9467_get_offset(struct ad9467_state *st, int *val)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret =3D ad9467_spi_read(st, AN877_ADC_REG_OFFSET);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +	*val =3D ret;
-> > +
-> > +	return IIO_VAL_INT;
-> > +}
-> > +
-> > +static int ad9467_set_offset(struct ad9467_state *st, int val)
-> > +{
-> > +	int ret;
-> > +
-> > +	if (val < st->info->offset_range[0] || val > st->info->offset_range[2=
-])
-> > +		return -EINVAL;
-> > +
-> > +	ret =3D ad9467_spi_write(st, AN877_ADC_REG_OFFSET, val);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +
-> > +	return ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
-> > +				AN877_ADC_TRANSFER_SYNC);
-> > +}
-> > +
-> > =C2=A0static int ad9467_outputmode_set(struct ad9467_state *st, unsigne=
-d int mode)
-> > =C2=A0{
-> > =C2=A0	int ret;
-> > @@ -802,6 +852,8 @@ static int ad9467_read_raw(struct iio_dev *indio_de=
-v,
-> > =C2=A0	struct ad9467_state *st =3D iio_priv(indio_dev);
-> > =C2=A0
-> > =C2=A0	switch (m) {
-> > +	case IIO_CHAN_INFO_CALIBBIAS:
-> > +		return ad9467_get_offset(st, val);
-> > =C2=A0	case IIO_CHAN_INFO_SCALE:
-> > =C2=A0		return ad9467_get_scale(st, val, val2);
-> > =C2=A0	case IIO_CHAN_INFO_SAMP_FREQ:
-> > @@ -836,6 +888,8 @@ static int ad9467_write_raw(struct iio_dev *indio_d=
-ev,
-> > =C2=A0	int ret;
-> > =C2=A0
-> > =C2=A0	switch (mask) {
-> > +	case IIO_CHAN_INFO_CALIBBIAS:
-> > +		return ad9467_set_offset(st, val);
-> > =C2=A0	case IIO_CHAN_INFO_SCALE:
-> > =C2=A0		return ad9467_set_scale(st, val, val2);
-> > =C2=A0	case IIO_CHAN_INFO_SAMP_FREQ:
-> > @@ -874,6 +928,10 @@ static int ad9467_read_avail(struct iio_dev *indio=
-_dev,
-> > =C2=A0	const struct ad9467_chip_info *info =3D st->info;
-> > =C2=A0
-> > =C2=A0	switch (mask) {
-> > +	case IIO_CHAN_INFO_CALIBBIAS:
-> > +		*type =3D IIO_VAL_INT;
-> > +		*vals =3D info->offset_range;
-> > +		return IIO_AVAIL_RANGE;
-> > =C2=A0	case IIO_CHAN_INFO_SCALE:
-> > =C2=A0		*vals =3D (const int *)st->scales;
-> > =C2=A0		*type =3D IIO_VAL_INT_PLUS_MICRO; =20
+> 
+> With best regards,
+> Marcelo
 
 

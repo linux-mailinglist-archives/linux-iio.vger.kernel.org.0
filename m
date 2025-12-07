@@ -1,223 +1,148 @@
-Return-Path: <linux-iio+bounces-26896-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26897-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05AE2CAB70E
-	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 16:59:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A5ECAB714
+	for <lists+linux-iio@lfdr.de>; Sun, 07 Dec 2025 16:59:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC97130102A0
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 15:58:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 62A73300D430
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Dec 2025 15:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC7D26F29F;
-	Sun,  7 Dec 2025 15:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBD8155326;
+	Sun,  7 Dec 2025 15:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSCrv8kQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jD5GHYkO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDB1242D6C;
-	Sun,  7 Dec 2025 15:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DBB242D6C
+	for <linux-iio@vger.kernel.org>; Sun,  7 Dec 2025 15:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765123129; cv=none; b=RLTAkCEmTJjeszRRSgPDP9wS9bkHvce26u4jK9yHyShth+gTC6kK/iJ+QIHVOQLxZ7m1VEtKgCdheTFNQVJa7SstHo2JB5IDas93gckOi7q2/25rOKpbX7CuOs3qKDksuB9DpXjoryoYQBLPS5YdzPzGj5AjzNsZsCM7nHeGeQ8=
+	t=1765123168; cv=none; b=gVF0AWS6QR4Am2H3ebDmO8aYmTxekPUrxnB1ASa8pWETexcJIflyzFFsntyZx5IMq6/m/DMkmo2WvbckuAhGI/QBH7V6q+BwNuBPAYD0C9fbgTn1U1/30wpSYhQ4kRiDRKudWg5yXFuTQc5ZLy6ZAvlsGR/DEwNYSDos+vWAVWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765123129; c=relaxed/simple;
-	bh=WZLbksTy0pFDHVLlkzWAsSseWpLGYXKBbHAr/H5sJdo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sBGS5XhSM2VECNzLkFZz94rkC4EJRv4uKhoJsVBWac0NalFadcOFiOvCsQ1ovkLtpUE6QeY9lM0WizmfMoFsUvDAAfNC7g+0PPR7hOCfLaGyNQrsPXo4dMGhbGlS+rdUQhCqOHZjFgBPLZbR0a8Fe+DS13IML7zU+sb+kHESbKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSCrv8kQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FB4C4CEFB;
-	Sun,  7 Dec 2025 15:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765123129;
-	bh=WZLbksTy0pFDHVLlkzWAsSseWpLGYXKBbHAr/H5sJdo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YSCrv8kQHcjS1DXXcwHALFwFhrpJzfsZc23wA4cHmyGiPbnbl3rPkUIck1jaf+ap1
-	 mrCftClPUcHPgsnfomOKsgOAkSl/fXAp4u9hyVl6C0RUJuLwyCfunVrSujG0f7+L6K
-	 CTEr8DiMPC842AHr0Z0cPuzY0YPIiGo36GpZ7oL7YmAQe07K105eu46yXiplD57Iw5
-	 GS552njp0XxpdGSUV9G5hroumTjNGT1sva6a9DdmDdZ7NDVGwDMLv71MA2IxLpNXml
-	 Mw8cbjK/mnn7+t/sq63Q6bu6i96WyoKoYtL+lpwxH0Hq/F4pVwWMuj1uH61+umWO0d
-	 RF68jfYmekcvg==
-Date: Sun, 7 Dec 2025 15:58:38 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Shrikant Raskar <raskar.shree97@gmail.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
- heiko@sntech.de, neil.armstrong@linaro.org, skhan@linuxfoundation.org,
- david.hunter.linux@gmail.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] iio: proximity: rfd77402: Add interrupt handling
- support
-Message-ID: <20251207155838.5b41324e@jic23-huawei>
-In-Reply-To: <20251130153712.6792-5-raskar.shree97@gmail.com>
-References: <20251130153712.6792-1-raskar.shree97@gmail.com>
-	<20251130153712.6792-5-raskar.shree97@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1765123168; c=relaxed/simple;
+	bh=Ebs9xnJdozT9JhjRrPwwYTQ932pWegL9n1JhdAV3v+o=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:Mime-Version:
+	 References:In-Reply-To; b=B/Pg1GrikFB8S+67qbXFYrvF/nqQgA0CSZvVqHutlzFnkw6IQhErmut8i7Kb5l5sSPXj0rU+94Cy5w+aUjdqBKVnFQKQPByz6ioVJ4mv50A6lE372rHNrpa8Tl+v6o2li5EA0AKZ7vL5dAfBRRp/4KjFDq0A0V79ml0AQ51G7lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jD5GHYkO; arc=none smtp.client-ip=209.85.222.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-9371f7571cfso1052157241.1
+        for <linux-iio@vger.kernel.org>; Sun, 07 Dec 2025 07:59:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765123166; x=1765727966; darn=vger.kernel.org;
+        h=in-reply-to:references:content-transfer-encoding:mime-version:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lAgMFlNyMLRLjBCsqD3swe1jJ7Gk8kx8vIqYEMB0v5c=;
+        b=jD5GHYkOoZJtlPbwPMQxVecjjv7TiUINuO67OuNnFhhNExLfGhLcBVXCrhUWak3tO0
+         dIaqi+s7rxlnhHcvAqTSU2+x6o0R0ZtWcJwYepGzuEDFuNx6n2Zgj3ldsCCcCO+o4S4G
+         h13TnhN65CHJzJRILtDB5PDo6jjO/GV/owvtwN5tHUc0CBfPu5NMy8vsbRMrWyzBmyW1
+         6IBy7F7IcuAf7KlFvXnR3yF4fJzkQc/UUOq16Zf824SRxM44n9OepH8t8HhlZ8mA7Psn
+         EQ2TjzTi4AawbuvskfbXY8u3C6GE+WgqPgp7BqHl+Q9ogF9GsLLp4oXRitbE8/dKmwXZ
+         C/mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765123166; x=1765727966;
+        h=in-reply-to:references:content-transfer-encoding:mime-version:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lAgMFlNyMLRLjBCsqD3swe1jJ7Gk8kx8vIqYEMB0v5c=;
+        b=rsNUMEPYtXIufEoZkxacfJpou4Kg7BDHzeUDIJtinT9FGebTsPi+E4UWfOOBoEa/yF
+         UJpJ9Ejs1BjtaaUqeZ4ZvdXTorq2brwoipHO8tp17Ssxl8N37zgBduXwkJ9aN1NL24iM
+         CvllIshlhUN689vtmAAtYsiRIu7ax7KRon8KIq5lcSBd3CeaL5SADYfB9AAUHbA9Dr0R
+         KRTSGJAW+Sg45SJJ1t7+L/2H3mog+yuBziSC4NIXiQJOoaiI7Ae7J3uQXMMLv5fWXMFB
+         /v6MlVcKvQ5SdRn2KewVjQMEsV4vDDHoPQ6NcV7/9VUDFOgwcYVvxOpO/Flbz/bNg+7o
+         eMog==
+X-Forwarded-Encrypted: i=1; AJvYcCWFti6VygM5YNE+bHPxxk/4dPorpPXkpLTgYRiFIZAS87GojUzXpQ73RcsV8zTPX1N2YewKj3dWcxs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy15yYyQcJ8K2gyIrk/4aho7C9fxyBmOwDcgSb5Twt143C1RHTH
+	V0a+nCAEqieI3gulPJlQqgVc8lI9xVMWqdACt5dt6pvLt+1os6dDIK0Z
+X-Gm-Gg: ASbGnculWr7rEhQwp0qQSTTAuTrjHpTVLEzqAjemfoQTtUnkjR6ucSAVtubLYKL+JFM
+	mOa14xiBhc3sTgdAtzJZx8c/uEQ25uILUUMF0ALKFDAOWXebrAiPEOnGKc56/CbEIBG2GpOc5Mh
+	oBdg9k5WN/Q7w7Wp+gPw4XY9J7uSFrq5ICTmrhRIZLyX3piGl2JACbpa5Us149GgCHchKASyAe1
+	28Tvq+zvFRUNpMX99gXCkCS8N9CgLUhteBvrw06VmMpMRB5iuiUvPca0qdVEyLsq3o+s/YmRxEw
+	aPmR8eREcxklU9M0MOHCpXQsEYpW5R4Jv84GkY2Rf+/vglVT4zKY3RVYjH9cIrlAlaLGpQgYwlP
+	oQat1bt/ITzZTs8gkBVNYp9Jv6UE3looHFRaOpkJuyU9qRmf7rqhgGrEvAkDv4pUdnRVehtN2e2
+	/0Bgw=
+X-Google-Smtp-Source: AGHT+IFfxCyfUKoveUH7oGp1n4BsXKh+nrF3WusJSRi8+b035IQ1lyTlQABylKlq6X/maPcFuV+GdQ==
+X-Received: by 2002:a05:6102:1590:b0:5de:8e5:222d with SMTP id ada2fe7eead31-5e52cbda9admr1225249137.22.1765123165695;
+        Sun, 07 Dec 2025 07:59:25 -0800 (PST)
+Received: from localhost ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5e510cbb3dasm4480414137.9.2025.12.07.07.59.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 07 Dec 2025 07:59:25 -0800 (PST)
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 07 Dec 2025 10:59:22 -0500
+Message-Id: <DES3XUNSY5DQ.3GYGCUOO0EVQI@gmail.com>
+To: "Jonathan Cameron" <jic23@kernel.org>, =?utf-8?q?Nuno_S=C3=A1?=
+ <noname.nuno@gmail.com>
+Cc: "Kurt Borja" <kuurtb@gmail.com>, "Andy Shevchenko"
+ <andriy.shevchenko@intel.com>, "Lars-Peter Clausen" <lars@metafoo.de>,
+ "Michael Hennerich" <Michael.Hennerich@analog.com>, "Benson Leung"
+ <bleung@chromium.org>, "Antoniu Miclaus" <antoniu.miclaus@analog.com>,
+ "Gwendal Grignou" <gwendal@chromium.org>, "Shrikant Raskar"
+ <raskar.shree97@gmail.com>, "Per-Daniel Olsson"
+ <perdaniel.olsson@axis.com>, "David Lechner" <dlechner@baylibre.com>,
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
+ <andy@kernel.org>, "Guenter Roeck" <groeck@chromium.org>, "Jonathan
+ Cameron" <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <chrome-platform@lists.linux.dev>
+Subject: Re: [PATCH RFC 1/6] iio: core: Match iio_device_claim_*() return
+ semantics
+From: "Kurt Borja" <kuurtb@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251203-lock-impr-v1-0-b4a1fd639423@gmail.com>
+ <20251203-lock-impr-v1-1-b4a1fd639423@gmail.com>
+ <9562673ef83dd73b6092b5a7d2042b380a55700c.camel@gmail.com>
+ <20251206180546.2a8b8780@jic23-huawei>
+In-Reply-To: <20251206180546.2a8b8780@jic23-huawei>
 
-Hi Shrikant,
+On Sat Dec 6, 2025 at 1:05 PM -05, Jonathan Cameron wrote:
+> On Thu, 04 Dec 2025 14:23:19 +0000
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>
+>> On Wed, 2025-12-03 at 14:18 -0500, Kurt Borja wrote:
+>> > In order to improve API consistency with conditional locks, use
+>> > true/false return semantics in iio_device_claim_buffer_mode().
+>> >=20
+>> > This also matches iio_device_claim_direct() return semantics.
+>> >=20
+>> > Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+>> > --- =20
+>>=20
+>> Even if the rest gets a NACK, I think at least this patch makes sense. I=
+n fact I
+>> would even extend it so that we have the same inline API with proper ann=
+otations:
+>>=20
+>> https://elixir.bootlin.com/linux/v6.18/source/include/linux/iio/iio.h#L6=
+79
+>>=20
+>> So it really has the same semantics as iio_device_claim_direct()
+>
+> Yeah. This was on my mental todo list. So great to see Kurt
+> dealing with it! :)  These calls are much rarer than the direct ones
+> so I wasn't so fussed about getting the sparse coverage. Makes
+> sense to do it just wasn't high priority.
+>
+> As Nuno, suggested though I would like the sparse support for these.
+>
+> Jonathan
 
-I'll try not to replicate too much stuff from Andy's review.
+Hi Jonathan,
 
-> +static irqreturn_t rfd77402_interrupt_handler(int irq, void *dev_id)
-
-Why dev_id?  Seems unrelated to what it is which is data about the device.
-
-> +{
-> +	struct rfd77402_data *data = dev_id;
-> +	int ret;
-> +
-> +	ret = i2c_smbus_read_byte_data(data->client, RFD77402_ICSR);
-> +	if (ret < 0)
-> +		return IRQ_NONE;
-> +
-> +	/* Check if the interrupt is from our device */
-> +	if (!(ret & RFD77402_ICSR_RESULT))
-> +		return IRQ_NONE;
-> +
-> +	/* Signal completion of measurement */
-> +	complete(&data->completion);
-> +	return IRQ_HANDLED;
-> +}
-
-> -static int rfd77402_measure(struct i2c_client *client)
-> +static int rfd77402_measure(struct rfd77402_data *data)
->  {
-> +	struct i2c_client *client = data->client;
->  	int ret;
-> +
-
-Blank line should have been in patch 3.  I just replied to that
-having missed it whilst reading that one.
-
-
->  	ret = rfd77402_set_state(client, RFD77402_CMD_MCPU_ON,
->  				 RFD77402_STATUS_MCPU_ON);
-
-> @@ -195,8 +247,25 @@ static const struct iio_info rfd77402_info = {
->  	.read_raw = rfd77402_read_raw,
->  };
->  
-> +static int rfd77402_config_irq(struct i2c_client *client, u8 csr, u8 ier)
-> +{
-> +	int ret;
-> +
-> +	ret = i2c_smbus_write_byte_data(client, RFD77402_ICSR, csr);
-> +	if (ret < 0)
-
-I would use
-	if (ret)
-here to make the next change more consistent looking.
-
-> +		return ret;
-> +
-> +	ret = i2c_smbus_write_byte_data(client, RFD77402_IER, ier);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
-	return i2c_smbus_write_byte_data();
-
-is fine as it is documented as never returning anything other than negative
-or 0.
-
-> +}
-> +
->  static int rfd77402_init(struct i2c_client *client)
->  {
-> +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> +	struct rfd77402_data *data = iio_priv(indio_dev);
->  	int ret, i;
->  
->  	ret = rfd77402_set_state(client, RFD77402_CMD_STANDBY,
-> @@ -204,9 +273,25 @@ static int rfd77402_init(struct i2c_client *client)
->  	if (ret < 0)
->  		return ret;
->  
-> -	/* configure INT pad as push-pull, active low */
-> -	ret = i2c_smbus_write_byte_data(client, RFD77402_ICSR,
-> -					RFD77402_ICSR_INT_MODE);
-> +	if (data->irq_en) {
-> +	/*
-> +	 * Enable interrupt mode:
-> +	 * - Configure ICSR for auto-clear on read, push-pull output and falling edge
-> +	 * - Enable "result ready" interrupt in IER
-> +	 */
-
-Indent should match code.  Will require a bit more wrapping.
+Great! I'll squash all "semantics" patches and add sparse support.
 
 
-> +		ret = rfd77402_config_irq(client,
-> +					  RFD77402_ICSR_CLR_CFG |
-> +					  RFD77402_ICSR_INT_MODE,
-> +					  RFD77402_IER_RESULT);
-> +	} else {
-> +	/*
-> +	 * Disable all interrupts:
-> +	 * - Clear ICSR configuration
-> +	 * - Disable all interrupt in IER
-> +	 */
-As above.
-
-> +		ret = rfd77402_config_irq(client, 0, 0);
-> +	}
-> +
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -283,6 +368,31 @@ static int rfd77402_probe(struct i2c_client *client)
->  	data = iio_priv(indio_dev);
->  	data->client = client;
->  	mutex_init(&data->lock);
-> +	init_completion(&data->completion);
-> +
-> +	i2c_set_clientdata(client, indio_dev);
-> +
-> +	data->irq_en = false;
-> +	if (client->irq > 0) {
-> +		/* interrupt mode */
-
-Kind of obvious comment. I'd drop it.
-
-> +		ret = devm_request_threaded_irq(&client->dev, client->irq,
-> +						NULL, rfd77402_interrupt_handler,
-> +						IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-
-Repeating Andy here the direction is a firmware problem.
-We have some historical drivers doing this which we now can't
-fix as we don't know if boards need it.  But no new cases should
-be added.
-
-> +						"rfd77402", data);
-> +		if (ret < 0) {
-> +			dev_err(&client->dev,
-> +				"Failed to request IRQ %d: %d\n",
-> +				client->irq, ret);
-> +			return ret;
-> +		}
-> +
-> +		data->irq_en = true;
-> +		dev_info(&client->dev, "Using interrupt mode\n");
-
-dev_dbg()
-
-> +
-> +	} else {
-> +		/* polling mode */
-> +		dev_info(&client->dev, "No interrupt specified, using polling mode\n");
-Easy to tell from userspace with cat /proc/interrupts so no need for such a noisy print.
-dev_dbg()
-> +	}
->  
->  	indio_dev->info = &rfd77402_info;
->  	indio_dev->channels = rfd77402_channels;
+--=20
+ ~ Kurt
 
 

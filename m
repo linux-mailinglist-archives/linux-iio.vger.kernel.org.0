@@ -1,76 +1,84 @@
-Return-Path: <linux-iio+bounces-26939-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26940-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923FDCAD446
-	for <lists+linux-iio@lfdr.de>; Mon, 08 Dec 2025 14:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A25CAD9CF
+	for <lists+linux-iio@lfdr.de>; Mon, 08 Dec 2025 16:37:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24CC43071AA6
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Dec 2025 13:27:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B572300C0FD
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Dec 2025 15:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35DE313277;
-	Mon,  8 Dec 2025 13:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FE6267B02;
+	Mon,  8 Dec 2025 15:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ud0e8hqg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AQifH5nI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FA21E5B7A;
-	Mon,  8 Dec 2025 13:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BCF2B9B9
+	for <linux-iio@vger.kernel.org>; Mon,  8 Dec 2025 15:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765200449; cv=none; b=hPZSlpSffC//JaE139pXd4SIqDMVu4rRhruFwUHfcBLRGj9U7e444MAIojl8w6yBF3RSLVWfxLs0s+/mcZRFlSFt+UQVY3WGIff4xAUOu83DIgSuuJIc1DQwvoGHbTOH+QxLbvAzdtaDNvhBEOr3UdmRy6mUnKRw5esfyCEtba0=
+	t=1765208224; cv=none; b=qOFyao6XvdFKs3oM0DKcHIssjXbwwXOVw95iAirKnq3s+W/muMgvr6Dt4J9saKip3tGyQELCuO/pPLRlmABVmJqVkdPpz6N9EoGkjge/FT8Mjm5cFgUyHMpGAteD+L85w3qtNtI8jjXxWE31QDUYjzwx/sQn1VD93cDe0WqZRSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765200449; c=relaxed/simple;
-	bh=XMTcb1/gYnNP+8nq0VZfYw0+4rpEVrK7AEwVB73HoVo=;
+	s=arc-20240116; t=1765208224; c=relaxed/simple;
+	bh=0a4dwMpBBIfI9xTxKD35Li1k32wcNYYYk3dybFc2/1o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NzOnzxn/ZPAwQqW/oh+HwVsZIKtx1EIC9iJHLE3rqDFbc1a9xJQ5uB/T91aPwlE7arRXjQtp6RrgqqL47AYBNWaI2CRwHTNauEQx0wsQCR8tpTeSGyoWolG3CecljDBMbG1RTfLXIfaduB3/2TzWNkqZwTS3Fcm+gWrSjSTkeWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ud0e8hqg; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765200448; x=1796736448;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XMTcb1/gYnNP+8nq0VZfYw0+4rpEVrK7AEwVB73HoVo=;
-  b=Ud0e8hqgHdx1iKKnOuKELIskLy2XKSzDuf5GuBy1ga07cOLDvEPkSLi/
-   7pIsj/qA9qZ3HxGgv8iaXGr1ZVYbiBO1ecWTs07Jp+He4HyvCE57T0yz2
-   k+u8MjL3QqvnVpwV7BcvNW4vVaMsXoa8ySoibtiI5ZYocqXSL4Lwhgjjh
-   swHjnJUoz1y70dCqqqCzQ9qhjJ9ePGc/j0TKof8/v+47pM6Mh7PzrgdWV
-   8Yk2O9TZTzipQLyNB5FDY4CNycXPMvsjoBQLBjqu+7Sogh5+ufjhux4WS
-   mPYGHwrzdir69WQWKmVDjvl3YIpVuGtKai3FuCrU6kz+ZBVOz6rCU6XJy
-   w==;
-X-CSE-ConnectionGUID: jj7VAv/nRFS5o8C4IaA6+A==
-X-CSE-MsgGUID: APD8K9vdS96QSSPQ1mSUxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="67177426"
-X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; 
-   d="scan'208";a="67177426"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 05:27:26 -0800
-X-CSE-ConnectionGUID: /dg/rHMcQiCBkNmYiwrxIw==
-X-CSE-MsgGUID: n4Mt4cwcRPiqVSiG4Yj4kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; 
-   d="scan'208";a="200400681"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.47])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 05:27:22 -0800
-Date: Mon, 8 Dec 2025 15:27:19 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Tomas Melin <tomas.melin@vaisala.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] iio: adc: ad9467: add support for ad9211
-Message-ID: <aTbSN22rSC55G-nd@smile.fi.intel.com>
-References: <20251208-add-ad9211-v3-0-c49897fa91c4@vaisala.com>
- <20251208-add-ad9211-v3-2-c49897fa91c4@vaisala.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=OGtY3EWlq5TJdXX1Nukesgk7Wyx4X5xYsOKo8ol5hCEFDenuprD1fe7a50G2aQeIKeV+HkOe7fC8V2KdwK/M5DHZTy/EThBa/h3Y0RySVWwPAbSeXXNMEpg43yg/l97KMYTo53Qnx7c/bjju1wNAZLobQESw+/PIPsqPxYwKubo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AQifH5nI; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7ade456b6abso3785553b3a.3
+        for <linux-iio@vger.kernel.org>; Mon, 08 Dec 2025 07:37:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765208222; x=1765813022; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dJ9fRIoaXrFePWfJyjcX9mlmAJ92ptU0OJk0UFqvTAI=;
+        b=AQifH5nIgTykq3gbtI7gXycS//0lVx14VgkkkizTct9HXHKBticGg8ajfgdasuggWY
+         Xu4XaaKY0pTH365bEoGLW6QYUUXrgLbrBWJKvgX3ChdRAQ3/O1rJf7XXajP/zGn43L1U
+         Bnwy4YAEZVhpsTgeYEEuaisoQ2OJDMJ0AuN5f748RZVdUcCP5sSCsTdlexRqbTr1lWhk
+         Nh80+qUkcTwyZn1to9ywOl6m/2xTzXaxBGK7NPijTFtVAhMbW7NvSx7q2bsckZPiDYe7
+         /1IDL4UY8Eq0JJNoXF7cGjZMS4EbfNHx2ugXnawQ7PxMZBKjUtE7xRYJhh6bpBXb2qbd
+         /IrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765208222; x=1765813022;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dJ9fRIoaXrFePWfJyjcX9mlmAJ92ptU0OJk0UFqvTAI=;
+        b=h6ODRH6jnICaPELgXQOMDCKaEN4bpXOpIeJbRC/3t3CRqPPB20VvNs6yEcLiFPdYb9
+         BxSJm8ByjwAiAcUT7Dsq3E/OBvlx0zzxe+PmwdR34xX462Eg056UKKoOLTyzCI/wINmD
+         bhpA/RFQP/klq7Y0NuyrKRUk0IHAX30Y6HDhFMifOfSmn15AC/9UQYPmo627QZxco/rV
+         AdM/SG04O/fk6Z37zwh6OXCNzYpXtYD4FMN7iiO8ZK55r6xMcGxMsfkfK07qRSVwlOlY
+         nC6HUT61so6NKM6BKBDTWkcoVlManKL5SiaBNz2sM78BKLydpchC5YISYji9nux0w1Vs
+         mNIg==
+X-Gm-Message-State: AOJu0Ywmr3kix6c9BH+CIqb6JKBSyXLRC8qXHXy2y1tBIOaxNLDE7kdR
+	HuZlH4KW/voaLSgl6GDupwzJxyZFBAFvecljNTU85zN8TQqYWJAoIPsm7Ch+kksk
+X-Gm-Gg: ASbGncutD+l1FBvBkfyph+4qKewVIjLVUTMOzHz9DUhmE8zXPJ8bOOCl5WmxL4OldKS
+	KIXOm19f16E9WqYu9/U02rGo61+EZzv57SilD0ckME5cLNH65PRCB/qFXdeJmXk/AM4MYxQyxrl
+	2HsnpUcvMZGtuDYsIq60aelhxjnDrEhrivn1dJeuhAqRylkCoNEVQ5YuS9WeZM9vcIFhl45b/pC
+	NQippzmulhfeTBi5Rw4ZHnc99uAOJc1ZNVqz6p3s/H2rq+yEvKzVP/mKdRNYgaeZO8Ow4+H+9vQ
+	E8pyFKez8awkpiJCEd7qwmjxcENP6C3e+uOlqDjcKNfkGvd5wX5A6xLtSArTjiYZGqKFY4tkka+
+	INg+c8iIu5dps/wCgFU20Gjwm/uHbLrPWfSWJzAD4av2sKulGOUSEy2Acz5FsqWR8ihYQ/4V+S7
+	adA+O8AqquaP9Zka626nee2VJmV4ZUG1blF15aSwLY1LPXaRLodjpqpjkGcdOfUaPMQ8g9+PXvh
+	MiXahf4eUTOAYYIfF9O2jWAj4vX1pk3od+SeQaev8UN8OX3v+5yE+rYvw==
+X-Google-Smtp-Source: AGHT+IHTE9mtGISDZUwxGiFQ+/FTfOTulE9lYil/XVmUis6qjiYPhdCQSfkDs7dPL+BzwggaBookVg==
+X-Received: by 2002:a05:7022:928:b0:11a:342e:8a98 with SMTP id a92af1059eb24-11e0310cb45mr6623393c88.0.1765208221941;
+        Mon, 08 Dec 2025 07:37:01 -0800 (PST)
+Received: from localhost ([181.191.143.42])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11df7552defsm56707150c88.2.2025.12.08.07.37.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Dec 2025 07:37:01 -0800 (PST)
+Date: Mon, 8 Dec 2025 12:36:59 -0300
+From: Tomas Borquez <tomasborquez13@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org
+Subject: Re: [RFC PATCH 0/3] ad9832: driver cleanup
+Message-ID: <aTbwmynIVfIbGWJ7@Lewboski.localdomain>
+References: <20251205202743.10530-1-tomasborquez13@gmail.com>
+ <20251206160933.46d45e5f@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,37 +87,75 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251208-add-ad9211-v3-2-c49897fa91c4@vaisala.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20251206160933.46d45e5f@jic23-huawei>
 
-On Mon, Dec 08, 2025 at 12:30:58PM +0000, Tomas Melin wrote:
-> The AD9211 is a 10-bit monolithic sampling analog-to-digital converter
-> optimized for high performance, low power, and ease of use. The product
-> operates at up to a 300 MSPS conversion rate and is optimized for
-> outstanding dynamic performance in wideband carrier and broadband systems.
+On Sat, Dec 06, 2025 at 04:09:33PM +0000, Jonathan Cameron wrote:
+> On Fri,  5 Dec 2025 17:27:40 -0300
+> Tomas Borquez <tomasborquez13@gmail.com> wrote:
+
+Hey Jonathan, thanks for all the feedback!
+
+> Opening question for a cleanup of a driver like this is how you plan
+> to test it. Do you have the hardware, or are you emulating / stubbing
+> functions to test it? It is very brave to take on major refactoring
+> without a good way to test.
 > 
-> The scale table implemented here is not an exact match with the
-> datasheet as the table presented there is missing some information.
-> The reference presents these values as being linear,
-> but that does not add up. There is information missing in the table.
-> Implemented scale table matches values at the middle and at the ends,
-> smoothing the curve towards middle and end.
-> Impact on end result from deviation in scale factor affects only software
-> using it for scaling. All the possible hw-settings are also available with
-> this implementation.
+> I was kind of planning to drop this driver this cycle on basis of no
+> interest in sorting it out, but clearly you are interested so great
+> as long as we can be sure it works well after your work on it
+> (or indeed that it works currently!)
+
+I don't have the hardware, so I've been testing with a stubbed SPI layer.
+I created a platform device wrapper that registers the IIO device without
+real SPI and replaced spi_sync() with a function that dumps the TX buffer
+via print_hex_dump() which allows me verify the register protocol against
+the datasheet, I validated:
+
+- Frequency tuning word calculation (32-bit, formula from datasheet)
+- Phase register writes (12-bit values across two transfers)
+- Control register state machine (SLEEPRESCLR, FPSELECT commands)
+- Proper preservation of ctrl_fp bits when updating freq_symbol vs
+phase_symbol independently
+- Input validation (bounds checking on phase/frequency values)
+
+All the SPI command bytes match what the datasheet specifies. Obviously
+this can't catch electrical issues or timing problems that would only show
+up with real hardware but it does verify the driver's logic and register
+protocol are correct.
+
+I also ran it through sparse, smatch, and checkpatch with no warnings.
+I can share the test module + logs if that's useful for review.
 
 ...
 
-> +	.max_rate = 300 * HZ_PER_MHZ,
+> > 2) Scale Attributes
+> > 
+> >    The frequency scale is 1 Hz and phase scale is 2*PI/4096 radians.
+> >    I cannot use info_mask_shared_by_type for IIO_CHAN_INFO_SCALE because
+> >    all channels share IIO_ALTVOLTAGE.
+> > 
+> >    So instead I'm using IIO_CONST_ATTR for the scales:
+> > 
+> >      out_altvoltage_frequency_scale = "1"
+> >      out_altvoltage_phase_scale = "0.0015339808"
+> > 
+> >    Is there a better approach here? Or should I just document the units and
+> >    skip scale attributes entirely?
+> 
+> Good question.  I think right option is to just do the maths in the driver and
+> have out_altvoltage0_frequencyN take the scaled value rather than the register
+> value.  Then do some fixed point maths to get to the required register value.
 
-With this change applied, you may consider adding a new patch to convert other
-initialisers to use the same approach for the sake of consistency and making it
-less error prone (easier to count up to 3 digits than zillions of zeroes).
+Which is already done in write_frequency(), should I do it with phase too?
+And should I accept radians or microradians?
 
--- 
-With Best Regards,
-Andy Shevchenko
+...
 
+I've been working on v2 based on your ABI feedback. If the testing approach
+sounds acceptable I'll send it out and if someone with hardware wants to
+test it, that would be great.
 
+...
+
+Tomas
 

@@ -1,422 +1,232 @@
-Return-Path: <linux-iio+bounces-26944-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26945-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD771CADB5E
-	for <lists+linux-iio@lfdr.de>; Mon, 08 Dec 2025 17:14:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EF2CADBB6
+	for <lists+linux-iio@lfdr.de>; Mon, 08 Dec 2025 17:22:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 89323300F712
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Dec 2025 16:14:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DEB8300CBAB
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Dec 2025 16:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B3C2D839B;
-	Mon,  8 Dec 2025 16:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB152DA77F;
+	Mon,  8 Dec 2025 16:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="YOgOZ+f4"
+	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="dDngfic+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021099.outbound.protection.outlook.com [52.101.65.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0B62D3EF2
-	for <linux-iio@vger.kernel.org>; Mon,  8 Dec 2025 16:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765210480; cv=none; b=QPRt5fuDMoQBDXoOdKcfiuEZJNCoyNZB1U7txjryiWgY9CJpvhocs/NAQRdvup7KM/faSVTYVoJeazAYrqKO8vXDa4JwvFBwk1mRZCcWOm9cNxH4XsusTJcfvOhyR+L1LaKQ3WznYehdE4/xskDw5xVCpJnlT/w0/XfZtYPrZJI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765210480; c=relaxed/simple;
-	bh=nXy23Bdwi535Yx2EL8Hh3oZzCDTv7/Wa0MPKypdO2Rs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LWfAdOCY8kVfZB3hyOY1lDvLEMf7FtzPdUd4b7XnzCXZMymeNII0Hy7N8OGaEzvs2A3YA4zOt3dSV0HAhlJkcz5jYNdZQgvcKdxonsepyoE1vPsm/heGeaRmzFUIph27H2v+n0oWYfun1GcZFnfJdNC3gHKQfUgrhXvU9so7ZL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=YOgOZ+f4; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7c704bf2d9eso2864446a34.0
-        for <linux-iio@vger.kernel.org>; Mon, 08 Dec 2025 08:14:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765210478; x=1765815278; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=60jz7VvJKPdvGdgnAs8DXOx0sg5E/usMxjrlgYTUYQk=;
-        b=YOgOZ+f4BR3m/4kqoulK52zKbyj/1pVtV6540/D7BIlbs9CPYqJKa//oOdZRxIlkG5
-         2zBbqZpufS+h+eCb/rNwpgR+ijM3oauM7n27q79khswvmMVn8jrJ1g4ao7fNQPI7qGja
-         ZVhPX8OGKqEHLSAzhc3c62ok7bZLBywjHO/JcKjFxK22Ba+yEAY1IOJPTGhW7Ugst9bO
-         DH8UFRqYZbce+54310JAtVYKt6X23BJ8/FpZ3OSrM37Qe8amdL3wTLHzVKsWrLl/W+5p
-         TMUNwByawsVWkEkretrrMI1X76lKQYCX2FGe3u5Bg76SZOmJdzfapclyHHT21XxgzIm7
-         UNvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765210478; x=1765815278;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=60jz7VvJKPdvGdgnAs8DXOx0sg5E/usMxjrlgYTUYQk=;
-        b=BpmV/kvOmETNCs0v1LK/gMstdajYNUKirPrtNdfKA1SN7MMpjHIZwPAA5rLu7aLmZl
-         Jp1P2loU4wg3GPxnek/YkQy7ICorJVbG73BTsJGxsBb98nkD9AHO+M5M5DINCgjkuwQ0
-         XhCpo52jr9oJDTFcoCOWCaIrF/zgYnnlJrqCId+GGNshFC/FB0ZlGJqZd0Cddye4qEEA
-         LkkACY/UcrES24+fE+ul9lcCjTf8fCldTv4lgBw1IFXJhJ5yRA2QvTL0gQLkcVH5FQyH
-         kKayI+sDr1IxquawE7lnNfbn6k3cZqBAU/xMRJCLXSHpYW+kR6jybu/QsxIWqh4UBdpr
-         V3ew==
-X-Forwarded-Encrypted: i=1; AJvYcCVRYJ/HkFpW/MI3zL6xGlHtHhl+mUoUi8BZSYIBMY6QpHAKNkqbyjsxtzn5Azoj9LFrDJKJqdlFWPc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgtKCBVMsqMrfcKQahtsTmd4bKQ3nPkOLza7jLaDA3/MjjcsJs
-	Ux3Gw+t/lB5aXbyxjZYmLqw3jqid/XrQXXOmPTDZ1igk87ZLJ32nTT1MQreJmwafJno=
-X-Gm-Gg: ASbGncuTXKtVTTKH/A5k2Gh8d+2skO25kov8NWlQT1ihpLA2gHWdyQTCuoJg51SjPqm
-	OJwRM+VmXwFuOq+DBBe0bYPyOa8PwPIxDGPdTDl6hPXlS0k1ScocU0DvgIki573DWWwC4j1n8nM
-	75jnWqCYb0elJZyiFdCf/XLGa7/pFUaU3CTcVUvBbVWJUkqPDFMijZUi/EYNwSkUPeCX4AGYa0Z
-	gAPcpBMAxKLmTykmG92ZbkZr11tOyPr+0l1OmsMC+8laoDYv1c0sw6zSbN3LF4jnpd5vdB8BsfO
-	X192u3Hh4CzO7TGdSMUzAUO3ntNR0LGI1Bpn0glQ/7hE3p9hFuG2Hry7c11RfHtNnuBPE4wo2MX
-	pgeDUfp6BW1+sled3HXbpcOOVx1tQd7e2/Qicp/b5xst59fntzvRwdpzQdFcKpQl2G+q+/12N6r
-	3MpdTAJsXlzUd4oxc+oH4S/nFCKDpDhwiIXdX6aYO5tsPjnewTbmROnyN/7gR5
-X-Google-Smtp-Source: AGHT+IF2+UF58msdLPJbF7PQNjrhfGMeUdPJGh8VjdYwvDauAVt9b5rfmVUVo9CC6z5nGZ4+Xw1WWg==
-X-Received: by 2002:a05:6830:6001:b0:7c7:10ca:bf with SMTP id 46e09a7af769-7c9707510b0mr4668447a34.10.1765210477611;
-        Mon, 08 Dec 2025 08:14:37 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:532a:767c:1f4d:c31a? ([2600:8803:e7e4:500:532a:767c:1f4d:c31a])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c95ac85170sm10003530a34.15.2025.12.08.08.14.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Dec 2025 08:14:36 -0800 (PST)
-Message-ID: <b31f9e88-a078-47f4-8d6c-359a0394ef7e@baylibre.com>
-Date: Mon, 8 Dec 2025 10:14:36 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFC5225403;
+	Mon,  8 Dec 2025 16:21:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.99
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765210896; cv=fail; b=nFpwlpynsF6ON7FOX4SdZE0TzVI4GPuISE2veefi3v/Fv6J/KPgE0xap1iep1ys9EnPDWcudMjFf0kEe98zbBYk45KJI1+ctTVQ153qISmZMNTid22n806vEL68rBgd9g7fEmjpPMRNdKw33cRT2VgeqGB6tw0RRXoiTUc7FrO8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765210896; c=relaxed/simple;
+	bh=yDj9Y0oMg8RE/9EsNlTEH1LcXWlvEeqpXWdJz1bVHVw=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=nsqxi1a4OZ/kuAhQFVklhheHeZ6/bqitwcA8HuCiOV9QOao32237u2wIpyRQFa4MSV5hGEdLwBtKnv48B88E5QosA0JEF12p8vfH19SEcjfcLgdCIOv87ZKnlArZ9R9s0xYg7aHHC/m5Ps7ZxuznHE8kAGMT+OaIIxF1qwp6Z6s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=dDngfic+; arc=fail smtp.client-ip=52.101.65.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bj7dHyhRSD8ADxfBcvFjFxNsOHl5dwbWdtxAZKw2ve5vqNVxEFZOYgiKz6WRCw3n1IOW71M/B7L1n47QPtLAfoBYmflwhriP/1gisRBsXSNqNfwb4U4uBap30kQRoqNZT9Eyhja2i/zSjL/uAu33svYKdMYQ3/8S3aHVgXsMbfvI/NB3IrrXq9CHUECfzscJ0k5qFJgwXlFsLgyisc1LYJH0gy2GmDD6ArcopUQu5+RWFbpJUQ8KE1YBx3JTyRKceyDPHXccxh8IhJhHzpBPY9nKinsmAYE7BFilT9QRGvKOxkbTV8lQnSJDV1a362aQhDmsxW9aR0RnXffo2DHl6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Q8fvmAjkcFkfNYZg/TKwrIMPD5tRRoSdjzdyMhvmWOM=;
+ b=FkaYjxp3BNNZm5D/Xd0BNEvYAYQMiF8DTkyYymLF9PJC0nO9pVDpbewQMKWwG5zVJbgZraicgHsKj4zjHU7qlrJJG2Hk+vY1u+CYpwKQQpi4+Jxwn80RYiinMNFhEIivxin5EtdNANs3TOvnzFJqCxiWrxPQbdVI7wOAx+UdM66ynTz4GYiPkwI+JaYAkX6/stwV1b2z+Pf0ElOOgeKNldWNKMfM/BhtCWvXU+5bDqZDpsEuAi+tCgaZpS+cyqaE9cwblCylLx7Q3rTnDX+7vEt2a25aCezsct+VG8Mw4McAitnDktcbV0ybJuExBj8ub2IalkFJxBhPYV2q8kA5UA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
+ dkim=pass header.d=vaisala.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q8fvmAjkcFkfNYZg/TKwrIMPD5tRRoSdjzdyMhvmWOM=;
+ b=dDngfic+hfN0JLK+jXnhkl58cnMag+0ypObuW0a0fR9CRwcV5RmL13TFpi9eEMvtPWh7bu/kLNwRdVulQgFbafFkBjmjhAMikWzQriUzOD7+n/EITNJ9WabF5Y8pToPGV9uPYSqiVvZJQphI3Z2k4Affn/qe8NdKKShBgLj07s58v5HxMoCfiQJvyNhRgThNKhR3WRhKdsihA27LOwxoechQ83kEwDotWENQ+oHNj4TNNbzJsI2okLnqcqF7G13krQRHKuV9ekzMiOqVQlQ6brm3k3Au6xxz7M7ZwXtLrP1+C9J9AwvDfqwZlyYzW3HUMTge7fOkQ9flEyyWGGfHbQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vaisala.com;
+Received: from AMBPR06MB10365.eurprd06.prod.outlook.com (2603:10a6:20b:6f0::7)
+ by DB8PR06MB6492.eurprd06.prod.outlook.com (2603:10a6:10:126::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Mon, 8 Dec
+ 2025 16:21:27 +0000
+Received: from AMBPR06MB10365.eurprd06.prod.outlook.com
+ ([fe80::4606:8e25:96e6:bede]) by AMBPR06MB10365.eurprd06.prod.outlook.com
+ ([fe80::4606:8e25:96e6:bede%5]) with mapi id 15.20.9388.013; Mon, 8 Dec 2025
+ 16:21:27 +0000
+Message-ID: <905d3a14-1e78-469f-99f1-4c1d2299d97c@vaisala.com>
+Date: Mon, 8 Dec 2025 18:21:25 +0200
+User-Agent: Mozilla Thunderbird
+From: Tomas Melin <tomas.melin@vaisala.com>
+Subject: Re: [PATCH v3 3/3] iio: adc: ad9467: drop kernel.h in favor of
+ array_size.h
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251208-add-ad9211-v3-0-c49897fa91c4@vaisala.com>
+ <20251208-add-ad9211-v3-3-c49897fa91c4@vaisala.com>
+ <aTbQmOpMfQnYkeLT@smile.fi.intel.com>
+ <1467f6e5-9d50-4b51-a283-aec19c031470@vaisala.com>
+ <aTb1vEEJRY6Uom2l@smile.fi.intel.com>
+Content-Language: en-US
+In-Reply-To: <aTb1vEEJRY6Uom2l@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: GV3PEPF000167FD.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::67b) To AMBPR06MB10365.eurprd06.prod.outlook.com
+ (2603:10a6:20b:6f0::7)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/7] dt-bindings: iio: adc: adi,ad4030: add data-lanes
- property
-To: Rob Herring <robh@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
- Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20251201-spi-add-multi-bus-support-v3-0-34e05791de83@baylibre.com>
- <20251201-spi-add-multi-bus-support-v3-7-34e05791de83@baylibre.com>
- <20251204213348.GA2198382-robh@kernel.org>
- <aTNKyaWAEjVJixMI@debian-BULLSEYE-live-builder-AMD64>
- <0cf78f84-01e7-4507-abf9-2f82f98206b2@baylibre.com>
- <221d5ed6-51da-4dce-b8a7-58b4d2423101@baylibre.com>
- <20251206004757.GA980619-robh@kernel.org>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20251206004757.GA980619-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMBPR06MB10365:EE_|DB8PR06MB6492:EE_
+X-MS-Office365-Filtering-Correlation-Id: 225811ee-e00d-4d2b-82bf-08de3675d6b2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OHB0TDd0NzZQbFZ5YUdHN3hWK0JNZDVmV0ZZNk56K2tVQUZlMEVvMk5GdmtU?=
+ =?utf-8?B?bWg4R2xWVitHdXVJM0RYSlFMVUhvaUlMVndmNTNwQkVJYlkycjdyOUdvYUtm?=
+ =?utf-8?B?Sk84a1pXMm4weUMvcDhESTdRT25jeUpzWDdlSHpBaUhDaFlHbE5QL3BUNjE2?=
+ =?utf-8?B?NHRnbXZMa2dyTjhBMjVvQmYvclR2TnNEYmhjcFB3d2tDck9IaHRkR202K1hF?=
+ =?utf-8?B?d2ZRbjBaamlMVU5sY3ZoWDBYeVNOYzlLT3JFZGN1VEo0TU12WVBTUzVQWWx6?=
+ =?utf-8?B?dytNWnZTdXRCZnArcFo5ZDlwbFVhYkJLRytXa3pDdWI2dUlsa2h0dm9Ibld3?=
+ =?utf-8?B?cTM3dE9XUVVFR2NpR0QyUEs1Q2JJVGdIUFZrNGZTVnBYcnozZmtNcW41dFUz?=
+ =?utf-8?B?REpwZE9oN290dnNzQ2JYREVNQkEyT1lrcm1OcEpIa1Znd2JtanA2TWo3OUhj?=
+ =?utf-8?B?TnZnd3BYNEJwTkduUVpjZmU1WkNMY3I1aVEwWlpJZk5JNDJMWGxJcm9nT1RT?=
+ =?utf-8?B?K2NRZnozWEhqL2lLemc1VllWaUx5TUVId1kxb2VWQ0JZc2ExZGNsMWNabkJP?=
+ =?utf-8?B?bGVkTk1McTM3TTN2REhHSE5jTjlnQi9HR0dFRmdLTVRyL2tpbno3ZGptRGFa?=
+ =?utf-8?B?bEgxTHpSV1JCZmFaSXJ0R0FJcGFuMnp4dzdZazhhMWExRXd0MWxsczJ0bXkz?=
+ =?utf-8?B?L3gxNEVkTkJmZjYrY3d1M1lWbmN6d3cxbzgwWU01Z2hDSmVaWjhONVRWK014?=
+ =?utf-8?B?VGY2cERUdzl3Y3RTN3NtY0JLbHBWN0EyZmk2YlU1RGFmanlteFExWktlbGlZ?=
+ =?utf-8?B?d2NyZEhUL3JhbTQ1TGoxUjhwV0x1ZkNoVFRlK1NZYzZTMGRONjM3aTVsSWRv?=
+ =?utf-8?B?b1gvVDEzK1hyL05qbDdFcTlzK2NGNzFzZFJBVlo1ajZ3bnIwMXJaNnFrVW5t?=
+ =?utf-8?B?WVRyVXhDeDNQSkdRbDFLNEs4dzNMcWlUOVY2aWNYNUM3ekd4QzlDN1hkVi9v?=
+ =?utf-8?B?S255T1ZST0s1WHR5YjNZWUtsNVRhU1VVWWNCNFh2cExwcUNhcExuVGlIWm1n?=
+ =?utf-8?B?TnJoTkQwdUJVQVl1Qjl6am5TeUpQMTUwcDZKSmw5QnJScnpabXBYamFPV0pw?=
+ =?utf-8?B?OXdETE8zRUpHVHNtUUZDNU5qSG5KK2JuaHlyZ0UvbTJ6RkVYM25uL2RTQnM3?=
+ =?utf-8?B?dmlLOFRiVTIzektmTmtvc3lNNW02cEw2cDhLaFMxTno1Nk1jcTl5L01IZFkz?=
+ =?utf-8?B?cWlxMG1ZenJlTEMzUjY4OUkwc2dqSFgyTHNtOUpNSGxqeTZiTFNmUG80ZmVI?=
+ =?utf-8?B?TnZVMncwNkZicFJodFFjUkpOOGhhNnZidlFkS25MaExtZ0wxZHlCaGxvNmI0?=
+ =?utf-8?B?OFV5YmkxY2JEb3JOTHlKM2hRYm9OYUZsejlkY1VETnZyMkR1R05BRko4dXhI?=
+ =?utf-8?B?bVdFTCs0SExvVlZUSTFxc1VMb3g4WGlMZmxjcEwvejFtNmlNUzl4bmlHREQ3?=
+ =?utf-8?B?WldVVU1wU0J3NWcwWnRwWTBBT1l4MlZmUlRtbVNWVW1PeUozQTRXakMrWm10?=
+ =?utf-8?B?ODgxNU5NYzdMUmVmUUNvVDRuNWRhemRNb242OGxhSEN4bG8yRkc4ZUVUWjJo?=
+ =?utf-8?B?WGllRGlOUkxEdU5nQ2dKWm0yN1ZBZEhWNThvOVJwUEZUeVFlM1JNTkk2cHJP?=
+ =?utf-8?B?OG5UMURmOFBxc04xdFNab2NKMHpZVEg1M3NqYTllandnVXhsWVB2dVFUSE1X?=
+ =?utf-8?B?VlpnZjdObUxubGZiWGh2Z3ZLYVNWUGlZQWxWdzJ2L1dCb0JsMm5QRE1YVFln?=
+ =?utf-8?B?cDFKNjdMbjJxeVBaWC8rQnFZMDRzdEI3cGlsOGh3RERmNHlmYXFuOHZldENn?=
+ =?utf-8?B?US9hd3I2SEZ2cUFkMEQ0dTdPTVBEVUhIT08xMS9HN0ptTXo2ekpiaThTM002?=
+ =?utf-8?Q?r5IRnMtSsSChaO2ae1MFLQllwpUkxCoH?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR06MB10365.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MVRkSUMwQUQydXYwTVRsOWVadldrMmhwdWxtaEdaS0NDSzF4b1Z4QXVxaXBl?=
+ =?utf-8?B?NFdacDVQTDd3N0QwR3VRbmJwME95bk4vRFk4ZTVCNmpXNHlkUHRZcXJIWEJR?=
+ =?utf-8?B?V0Z1V2ZoM2NDL2dvRUdZMHFuOXNOeVcyWndvSlF6SEs3WS80ZHY4WXQ1UDFz?=
+ =?utf-8?B?ZmwrRXR5bHc4VVgrQkJiR0puS2FNT01BeFJlUHMwNmJDQ2t1YUg2bWtXSmZz?=
+ =?utf-8?B?VnlBRTVTQ1p0T1NkbnhjVXRFS2YwYk1rTG4xWEI2UW1LMGs1Y1BEVDRmQkZ2?=
+ =?utf-8?B?L0FHbGdPdkxaVUVtRlNveXZ2UHh6d1Y0N0dXT2J6dlRISTk4OFlvQnVvOGtI?=
+ =?utf-8?B?L0JkeEluYithMVY3Q0s0dDYrdzJzMGNJMGQ3eHAxUS80Mk5yanEreWRndWlO?=
+ =?utf-8?B?SXJ0WlFRSkVHTXBXZEgvSFFESGEvNlo3QnBNV2FlNUFnNXI1Qnhmb1dQL21J?=
+ =?utf-8?B?RVhuZWcza2g0bDAzSFN2VXEwTzkxcXh5dzZucVkvOEJYK08rdHduRlFzcEtD?=
+ =?utf-8?B?eElaNkJJc0FDM2U1YVg1UmxpN0k3R0FsdkFsckZYTEdnUGRyMUZpbGVSZ3hp?=
+ =?utf-8?B?dmNxZmlha1RlaEdXNGlzd2RicUlFZlVsb0J6M0pnN084cVNBWVFIdFcxWGhB?=
+ =?utf-8?B?dHNjL2RURlp3b0ZRUnp1Q1FBUzYrcTh0VmRqRHR5bVBZVkkvd1R5cXc3QkhK?=
+ =?utf-8?B?allvcm1vUHlnV0l1c3I5VjNmQWV6TUZSYzZhTmlTMFNNTFpRaUdnMVREQjJn?=
+ =?utf-8?B?am92UVdDMjRtTzBvUGI5NEV6L0RURzRTcStvZy9SZzROOXVDQUhnRnFrN0Y0?=
+ =?utf-8?B?a1k2Y3l0SngyWWJ5U0VISWlBc1R1SGRISHROL2xhTk8xRFRmVWJkejBxRDdY?=
+ =?utf-8?B?V2c0U1JsamRMcW9oblNvMVg1MTdPQnRjOGVtN3pOKzdtaGcwVFNqYlV0SGFs?=
+ =?utf-8?B?em41dEVzNG1iSnBLdjdtUWhVTG1UNll2NFo4VmdtYTF2bnd4ckUyM0tUY0xY?=
+ =?utf-8?B?OFNSUDEwcmNSdUE5cXBDN3VZUmw1NEVMUnhrL3kyZTRIeFZVcTRzajViMnpk?=
+ =?utf-8?B?VnZ1bmdoc2t5TnJoQm5PQVpDWitnL1lFdjZjNC9JbFB6MHdHWHlwcEJUYlVY?=
+ =?utf-8?B?ek5vZENkWGE4dTBPY2owclVtU1c5VGREMDhSQ1NUS3V2TXFLM0VwTEIwRXdG?=
+ =?utf-8?B?b2p4SXpLVVpPQ1pNY0FHZEpqNTF5aHRacXFLYUlVM1UxS3lUVTFhRHFVK1Vz?=
+ =?utf-8?B?MkhHUWliaVdxS1RhcGk0RXhmQWhuZWw1allZVHo1d0lKK0p3YTM3aVcyUklU?=
+ =?utf-8?B?MEQ4ako5SnJxSGt2RUdpNEVhR1V1MlJNZUwvbG9YbzFUdkFNTVB2dFpYMlNB?=
+ =?utf-8?B?Sk40aE5idnQrdEtBdlNBYlhHSXUray9EUVVoZm5pQW00R3dHSlFYWGZzdXZK?=
+ =?utf-8?B?M0pqTmRnS0svUGE3ekhIYTFha3JsZ3RQbjJRWnVYRFIvMm4raGMxZldzeWow?=
+ =?utf-8?B?WmQ0S0pGMVJkVG9ndTNlWE5IMG9SQmczL20zZ1dPT1g0VUZxV3pZcVRTRXQ4?=
+ =?utf-8?B?SWs1TXljOEpoUEN6TWlOYWZEOTFvOVFvVjdkMk9WN3RubHpJMVBUeC9rMFhN?=
+ =?utf-8?B?cy8xOFl6RWNiNFhkSzByMlcwbGlVTUpyd2prem5tMldWeWUya0hJcGxXVEU5?=
+ =?utf-8?B?RWxuckNwaHFlQkRVL2ZmYkpmcWc5WjFoaitTYjBoYWVGSjBYb1lrYllwWU0r?=
+ =?utf-8?B?WHZPbWQ2MDQ4V0ZsQ3lsRzZSZXRqVmJmT3UxWUtMb0UzNFgxRWNDWnZQdmkv?=
+ =?utf-8?B?Zkp1R1Z5Q3ZrdW90QXVXanNQYkJrSTdZVFplTXNsYjk4TzdIMzc3WC8xNTlK?=
+ =?utf-8?B?eDd0RGR3N2NrYlRKT2M5YzhhZ0hRTm9YdS9tRG1mVTU3R2xzcS84RllzWGJy?=
+ =?utf-8?B?RytwTkJuekNWR0dVQWM1MUFZUk15eklZTk93cHZYcjNMeVNHZ0RON0pmUE55?=
+ =?utf-8?B?NS9IMkFpT2x5TXBaR1RhQ0d6MUFzY3lPcVkrMDlKZHBVT0d1RDRhaTd0aEs3?=
+ =?utf-8?B?QklweTNRSEliUG1OYXBlZlJSNTg0OXVETXNoQ1pNa0VIcXo2RXY4MnU1ZktI?=
+ =?utf-8?B?UDlSeGtCWmpGQVJxOFlqN1AvUkRTQno1STlDTklBaERjVmwvZUtoQWVQcE13?=
+ =?utf-8?B?WUE9PQ==?=
+X-OriginatorOrg: vaisala.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 225811ee-e00d-4d2b-82bf-08de3675d6b2
+X-MS-Exchange-CrossTenant-AuthSource: AMBPR06MB10365.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2025 16:21:27.5569
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FqvAudw/86HScpDz8S/zZfRU30BTCjpfZBll9Sk0NORDoAtdRrplEwUps5UEAkw6++BTrRQCHldGEAG2TlKeLg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR06MB6492
 
-On 12/5/25 6:47 PM, Rob Herring wrote:
-> On Fri, Dec 05, 2025 at 05:43:31PM -0600, David Lechner wrote:
->> On 12/5/25 3:33 PM, David Lechner wrote:
->>> On 12/5/25 3:12 PM, Marcelo Schmitt wrote:
->>>> On 12/04, Rob Herring wrote:
->>>>> On Mon, Dec 01, 2025 at 08:20:45PM -0600, David Lechner wrote:
->>>>>> Add data-lanes property to specify the number of data lanes used on the
->>>>>> ad463x chips that support reading two samples at the same time using
->>>>>> two data lanes with a capable SPI controller.
->>>>>>
->>>>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
->>>>>> ---
->>>>>> v3 changes: new patch
->>>>>>
->>>>>> I added this one to give a real-world use case where spi-rx-bus-width
->>>>>> was not sufficient to fully describe the hardware configuration.
->>>>>>
->>>>>> spi-rx-bus-width = <4>; alone could be be interpreted as either:
->>>>>>
->>>>>> +--------------+    +----------+
->>>>>> | SPI          |    | AD4630   |
->>>>>> | Controller   |    | ADC      |
->>>>>> |              |    |          |
->>>>>> |        SDIA0 |<---| SDOA0    |
->>>>>> |        SDIA1 |<---| SDOA1    |
->>>>>> |        SDIA2 |<---| SDOA2    |
->>>>>> |        SDIA3 |<---| SDOA3    |
->>>>>> |              |    |          |
->>>>>> |        SDIB0 |x   | SDOB0    |
->>>>>> |        SDIB1 |x   | SDOB1    |
->>>>>> |        SDIB2 |x   | SDOB2    |
->>>>>> |        SDIB3 |x   | SDOB3    |
->>>>>> |              |    |          |
->>>>>> +--------------+     +---------+
->>>>>>
->>>>>> or
->>>>>>
->>>>>> +--------------+    +----------+
->>>>>> | SPI          |    | AD4630   |
->>>>>> | Controller   |    | ADC      |
->>>>>> |              |    |          |
->>>>>> |        SDIA0 |<---| SDOA0    |
->>>>>> |        SDIA1 |<---| SDOA1    |
->>>>>> |        SDIA2 |x   | SDOA2    |
->>>>>> |        SDIA3 |x   | SDOA3    |
->>>>>> |              |    |          |
->>>>>> |        SDIB0 |<---| SDOB0    |
->>>>>> |        SDIB1 |<---| SDOB1    |
->>>>>> |        SDIB2 |x   | SDOB2    |
->>>>>> |        SDIB3 |x   | SDOB3    |
->>>>>> |              |    |          |
->>>>>> +--------------+     +---------+
->>>>>>
->>>>>> Now, with data-lanes having a default value of [0] (inherited from
->>>>>> spi-peripheral-props.yaml), specifying:
->>>>>>
->>>>>>     spi-rx-bus-width = <4>;
->>>>>>
->>>>>> is unambiguously the first case and the example given in the binding
->>>>>> documentation is the second case:
->>>>>>
->>>>>>     spi-rx-bus-width = <2>;
->>>>>>     data-lanes = <0>, <1>;
->>>>>
->>>>> I just reviewed this and all, but what if you just did:
->>>>>
->>>>> spi-rx-bus-width = <2>, <2>;
->>>>>
->>>>> So *-bus-width becomes equal to the number of serializers/channels.
->>>>
->>>> Unless I'm missing something, I think that would also describe the currently
->>>> possible use cases as well. To me, it actually seems even more accurate than
->>>> data-lanes. The data-lanes property only describes the SPI controller input
->>>> lines/lanes, no info is given about the output lanes.
->>>
->>> It describes both directions.
->>>
->>>> Well yeah, that would only> be a problem for a device with multiple input serializers and multiple output
->>>> serializers. Still, the *-bus-width = <N>, <N>, ... <N>; notation looks clearer,
->>>> IMHO.
->>>>
->>>>>
->>>>> Rob
->>>>>
->>>
->>> It think it complicates Sean's use case though where such
->>> a controller is being used as basically two separate SPI
->>> buses.
->>>
->>> For that case, we want to be able to do:
->>>
->>> spi {
->>> 	...
->>>
->>> 	thing@0 {
->>> 		compatible = ...;
->>> 		reg = <0>;
->>> 		/* (implicit) data-lanes = <0>; */
->>> 	};
->>>
->>> 	thing@1 {
->>> 		compatible = ...;
->>> 		reg = <1>;
->>> 		data-lanes = <1>;
->>> 	};
->>> };
->>>
->>> Meaning:
->>>
->>> +--------------+    +----------+
->>> | SPI          |    | Thing 1  |
->>> | Controller   |    |          |
->>> |              |    |          |
->>> |          CS0 |--->| CS       |
->>> |         SDI0 |<---| SDO      |
->>> |         SDO0 |--->| SDI      |
->>> |        SCLK0 |--->| SCLK     |
->>> |              |    |          |
->>> |              |    +----------+
->>> |              |                
->>> |              |    +----------+
->>> |              |    | Thing 2  |
->>> |              |    |          |
->>> |          CS1 |--->| CS       |
->>> |         SDI1 |<---| SDO      |
->>> |         SDO1 |--->| SDI      |
->>> |        SCLK1 |--->| SCLK     |
->>> |              |    |          |
->>> +--------------+    +----------+
->>>
->>> (I don't remember if SCLKs are shared or separate, but I don't
->>> think that is relevant anyway).
->>>
->>>
->>> I guess we could write it like this?
->>>
->>> spi {
->>> 	...
->>>
->>> 	thing@0 {
->>> 		compatible = ...;
->>> 		reg = <0>;
->>> 	};
->>>
->>> 	thing@1 {
->>> 		compatible = ...;
->>> 		reg = <1>;
->>> 		spi-tx-bus-width = <0>, <1>;
->>> 		spi-rx-bus-width = <0>, <1>;
->>> 	};
->>> };
-> 
-> I forget the details on that, but just looking at the above I think 
-> something like that should have 2 SPI bus nodes under the controller. 
-> Unless CS0 and CS1 can't be asserted at the same time and they aren't 
-> really independent.
+Hi,
 
-It is the case that they aren't really independent. Only one "bus"
-can operate at a time.
+On 08/12/2025 17:58, Andy Shevchenko wrote:
+> On Mon, Dec 08, 2025 at 05:41:20PM +0200, Tomas Melin wrote:
+>> On 08/12/2025 15:20, Andy Shevchenko wrote:
+>>> On Mon, Dec 08, 2025 at 12:30:59PM +0000, Tomas Melin wrote:
+>>>> No need to include the entire kernel.h when the only thing needed
+>>>> is the ARRAY_SIZE macro.
 
-> 
-> But would be good to wait for Sean's comments here.
-> 
+>>> While this change is almost (*) okay per se, I think we can address more
+>>> while at it.
+>>> - Make the header inclusions ordered (also fix the location of clk.h)
+>>> - drop other proxy (device.h) or unneeded headers (bitops.h as it's implied by bitmap.h)
+>>> - add missing ones (dev_printk.h, device/devres.h, ...)
 >>
->> I started down this road. Before I do the working of changing the
->> whole series, this is what it will probably look like. Is this really
->> what we want?
->>
->> There is one issue I see with this. If we allow <0> to mean that a lane
->> isn't wired up on the controller, then we can't constrain the length of
->> the array in peripheral bindings. For example, the ad403x chips can only
->> have one lane and the ad463x chips can have one or two lanes. But I
->> don't see a way to express that in the binding if <0> at any index
->> doesn't count towards the number of lanes that are actually wired up.
+>> As this change (kernel.h) does not seem at all as straightforward as I
+>> envisoned based on your initial request, I will likely change this patch
+>> to instead just sort the headers. Reworking the includes is separate
+>> topic from the intent of this patch series.
 > 
-> That's fine I think. How many entries is primarily a controller 
-> property. We set the length in the controller binding. The device just 
-> sets the maximum width per channel.
+> If you don't feel going that deep, than it's a (small) problem.
 > 
->>
->> This is e.g. why the binding in sitronix,st7789v.yaml is
->>
->> 	items:
->> 	  enum: [0, 1]
->>
->> rather than
->>
->> 	items:
->> 	  - enum: [0, 1]
->>
->> ---
->> commit 049b9508b1b0190f87a4b35fe3ed8a9f3d0d3c50
->> Author: David Lechner <dlechner@baylibre.com>
->> Date:   Fri Dec 5 16:09:08 2025 -0600
->>
->>     spi: dt-bindings: change spi-{rx,tx}-bus-width to arrays
->>     
->>     Change spi-rx-bus-width and spi-tx-bus-width properties from single
->>     uint32 values to arrays of uint32 values. This allows describing SPI
->>     peripherals connected to controllers that have multiple data lanes for
->>     receiving or transmitting two or more words at the same time.
->>     
->>     Bindings that make use of this property are updated in the same commit
->>     to avoid validation errors. Bindings that used minimum/maximum are
->>     changed to use enum instead to be consistent with the base property
->>     definition.
->>     
->>     The adi,ad4030 binding has an example added now that we can fully
->>     describe the peripheral's capabilities.
->>     
->>     Converting from single uint32 to array of uint32 does not break .dts/
->>     .dtb files since there is no difference between specifying a single
->>     uint32 value and an array with a single uint32 value in devicetree.
->>     
->>     Signed-off-by: David Lechner <dlechner@baylibre.com>
->> ---   
->>
->> diff --git a/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml b/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml
->> index 0ce2ea13583d..23b33dcd5ed4 100644
->> --- a/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml
->> +++ b/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml
->> @@ -34,8 +34,8 @@ properties:
->>    spi-cpol: true
->>  
->>    spi-rx-bus-width:
->> -    minimum: 0
->> -    maximum: 1
->> +    items:
->> +      enum: [0, 1]
->>  
->>    dc-gpios:
->>      maxItems: 1
->> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
->> index 54e7349317b7..6052a44b04de 100644
->> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
->> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
->> @@ -37,7 +37,8 @@ properties:
->>      maximum: 102040816
->>  
->>    spi-rx-bus-width:
->> -    enum: [1, 2, 4]
->> +    items:
->> +      enum: [1, 2, 4]
-> 
-> We'd need to allow 0 here, right?
-
-To avoid binding check failures, yes, I suppose so. All of the
-`const: 1` would need to be changed to `enum: [0, 1]` as well.
-
-Although since the controller also could have limitations maybe
-we should have the controller use `enum` and have the peripheral
-use `maximum`?
-
-Then, if we have a controller with:
-
-patternProperties:
-  "@[0-9a-f]+$":
-      # controller has 2 lanes with 2 lines per lane
-      spi-rx-bus-width:
-	maxItems: 2
-        items:
-          enum: [0, 1, 2]
-
-And a peripheral with:
-
-properties:
-  spi-rx-bus-width:
-    items:
-      maximum: 4
-
-The controller limit would be in effect and cause a binding check error
-if attempting to use bus width of 4.
-
-But if the controller was enum: [0, 1, 2, 4, 8], then the peripheral
-maximum would be the limiting factor if attempting to use bus width of 8.
+> As the author of a driver feature one should understand slightly more about
+> this (yeah, currently mess) header stuff. So, your first patch should add
+> missed headers, if any, that's required to your changes, this one can be
+> omitted after all.
+Well, I think reworking the headers is a sane idea, but it is not the
+topic of this series.
 
 > 
-> What we really want to say is there is exactly 1 entry of 1, 2, or 4. I
+> But on some day you will still need to understand a bit more about headers...
+> 
+> TL;DR: make sure you have all needed headers for your changes in the previous
+> patch and drop this one.
 
-Not sure this is what we want. For the ADC cases, we want 2 or 4 items
-in the array to be the same value.
- 
-> can't think of a concise way to say that. The closest is something like 
-> this:
-> 
-> uniqueItems: true
-> items:
->   enum: [0, 1, 2, 4]
-> contains:
->   enum: [1, 2, 4]
-> 
-> That implicitly limits the length to 4, but does allow [0, 1, 2, 4] and 
-> other ordering. More generally, if the device supports fewer channels 
-> than the host, then we can't constrain that. Oh well, we can't check 
-> everything (we hardly check values within reg, interrupts, clocks, and 
-> on and on). But most controllers are going to limit the length to 1 
-> entry, so it should end up with the same constraints most of the time.
-> 
-> Are these updates all of them or just a sampling.
+Hope we mean the same thing, I was thinking more like
+   1. sort current headers
+   2. add feature which adds the new header in correct location
 
-This is everything currently in linux-next.
 
-> If the latter and 
-> there's a lot more, then we may want to split spi-controller.yaml into 
-> 2 (3 really with a common part). Make spi-controller.yaml define single 
-> channel SPI controllers which keeps the length of spi-[rt]x-bus-width at 
-> 1 entry and then define a spi-multi-chan-controller.yaml which doesn't 
-> constrain it. 
+Thanks,
+Tomas
+
+
 > 
-> Rob
+>>> (*) no, kernel.h provides more for this driver, for example, your patch
+>>> misses types.h.
+> 
 
 

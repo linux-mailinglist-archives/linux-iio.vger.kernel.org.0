@@ -1,122 +1,132 @@
-Return-Path: <linux-iio+bounces-26968-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26969-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282D3CB04F8
-	for <lists+linux-iio@lfdr.de>; Tue, 09 Dec 2025 15:42:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E7FCB0541
+	for <lists+linux-iio@lfdr.de>; Tue, 09 Dec 2025 15:47:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 50E303009C1D
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Dec 2025 14:42:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91CF330528D6
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Dec 2025 14:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134122FDC49;
-	Tue,  9 Dec 2025 14:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAE62FF166;
+	Tue,  9 Dec 2025 14:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fqZNDQ1o"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BtyMn/T4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E815217723
-	for <linux-iio@vger.kernel.org>; Tue,  9 Dec 2025 14:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350CF2FE580
+	for <linux-iio@vger.kernel.org>; Tue,  9 Dec 2025 14:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765291322; cv=none; b=p02+iPlTP3/nMI26tDUEfglQX/tLHpK0/BydG6jIaaYaSeypeoVwgo2F1UY9rcxgeeeyxglLYfQ+OQ6ySjgQ+P2QTFUDfHS8Lflahef/qSjILxfdIr8W+eJoG8RO3g3p3CbuXcEA67AzzTQ2eRuBmnZIvBs7f32p9WqfW79D2RA=
+	t=1765291570; cv=none; b=G3WE4Hi8Kk4LFA4griWQuOhvOT1AnFFLr+wglc6LY7BFK7pKo2ziE31vyFGpwY+aaBrlsEMYrNFGziNG+4NXacaTJBg7gqlwuMBrIqbp7ZmK230rjLTrxTr3OabFaD48u7qrfFdYWSjtkNNz+5JzNDfU/5ZeRNeYQx8UZ76Uo50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765291322; c=relaxed/simple;
-	bh=gHqdCRggiC1qawexOpb4AjKThsp/g++sisBWtwBvyLY=;
+	s=arc-20240116; t=1765291570; c=relaxed/simple;
+	bh=4fmZfYSUNdsaSTLHpM8yeyepmqTOQi5Ko0nHpOXwYuc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sZp5ENWZ2PpEk5E/iSAM8PDzGzqpWN7wFmDasfF4+Bmm24kKq47y2UGKuF5eEZ6GRMPyWsbEAvZiUQwGZag+MIPWg94WugtdT1FkfX+WuMU/WRDbHG/t5BCKIReQi/cWfONz8sIJEwFr33AelFmaenDoLSG7xjWtb5qg/leXNnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fqZNDQ1o; arc=none smtp.client-ip=209.85.218.53
+	 To:Cc:Content-Type; b=cWT9JmWsnc7HiotIBuCsD601R8TSIayX87/l/9RcyJbcXP9P/iPu8Holfk5U9V9wBnvBGG4Eb57TkCDcndaOlgA0ACU3ij1PuXd3cBHNTRU7RWO/D2q5xlUaAhFMNKkIbEzGxmbzgyv14w02HK3gcmKoyqtHF6ppSRBuYRlAYI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BtyMn/T4; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b7a6e56193cso100117266b.3
-        for <linux-iio@vger.kernel.org>; Tue, 09 Dec 2025 06:42:01 -0800 (PST)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b77030ffad9so839044066b.0
+        for <linux-iio@vger.kernel.org>; Tue, 09 Dec 2025 06:46:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765291320; x=1765896120; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1765291566; x=1765896366; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RqRkHX3uUoTV7RGz58i34DgHDqrGLuheoNHC1Vcq2fo=;
-        b=fqZNDQ1od+BLFiOV3Way36DsEUMPUoq+ve4gd55/4oxztgPF81vbQX9R3L5IwJ4fOn
-         BMC980G5s+Wwqf2Zqhhv0O2ZSqkUp/VYmtjFHeayU314Na5S2mDBhxBoDez2fI1wOp0L
-         x4yF4Paox2vjOD/DV744FS9ILCxGC5zzE065Z2kiGJ+oKzI0cqLm+hePndFRbs/OhLxp
-         /051PoVi7aVvI9jBzuaEk8abmJXkq31io9Iwm5R0c/geDf282OhU8+ZbhqxbHoa60bHc
-         2bkCaWe9vtf8sqcbRjUDDRLuhIETnxUA6mUFSNbKkDIR9vE7P2IDHl/qLx1B8ZPPVR4s
-         sUEw==
+        bh=4fmZfYSUNdsaSTLHpM8yeyepmqTOQi5Ko0nHpOXwYuc=;
+        b=BtyMn/T4Aw9KeqxSQvIu8krvp/m4mn3Plad2gMYfyrHDF3M0MobzDcRqmL+8VupfU1
+         MzZplvNo5kyaxxolg5LDo3WIdyzWneU9ulL0Gc8uYICDZ0dyZ+6/XDof3IWbnmVrirhh
+         AyI7dZ5UQZ8N+MbJhU/EKTb+bBB8vkX1H+b+X4xiJhWdh3LsCLchnMmnIYf0ZYun3c2T
+         1EDtw3Nd6QEehE0TaVSA5wZl/ZmFGvSLHGQ7WnYypyvUDVYmfMWsyPBZCMVRXKb2fuiw
+         vHPPgkpeWMqhbrkttf8mKhpAP6CL5grGLqXqxMn3sM5vfJiQu38Htj/IW9YCea7VWzf2
+         iWPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765291320; x=1765896120;
+        d=1e100.net; s=20230601; t=1765291566; x=1765896366;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=RqRkHX3uUoTV7RGz58i34DgHDqrGLuheoNHC1Vcq2fo=;
-        b=AAbOKJDoMUTCT+lo6PDpbfN7TbuziREUCSETdbmDd95rstflWssBqwpGvlYoNBOdE9
-         c5i6WABjbRiC13hDv9th9v/uk8E+PoEWVlunRLm7tpdLj6K9zIrX/mzOw9JSjzXXGdfb
-         TVRSLHq+my/GgL9GW7AWI+W8Jg3tQ+20bUK8+YopJ4Gj/HPNaaaEsEC+dLM4yrFommC5
-         p4y1yBUFH9L1YD9e/qUVLM8u8ztiexxkgwVSLjcXaTZ1kxaNOBzQsBxdksZGuCDN8cUK
-         wbjv0Au6YPDTaJezqlPwL7z3s7wOUuOPazK9hOVstFmI4pL9sZiHQtxWfL6HHYbTo6OY
-         wGCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWxSuTAsLw+kJ8iNKg67szPmWNYugDnQm/AU07Z4v3ftHbUFprIWKC3LbsTGluuoM6HsCN7LaIHKeg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCLtlNzQtghb+TIvChGu0CnYgNmdYdj1GyZiViqU66cTFW/jnd
-	an7fvOAkqVA1cyqQwNQAjfBc+5SD/NciKffqAVAnsijQVVe/eZ3uvNOL2uN4LEZt7JfXbtKIooS
-	UqRTd9D/0H4Cj4Mu/Y1gY2IBwHFBo4YQ=
-X-Gm-Gg: ASbGncsXBLU0LWTqAeJsBfFTZe9YgLeJ+Ty36FubdlQvLt0SS1XDamojBG9nsPGUj7C
-	HulwH6OsXruMFL9jamYkjyJmRKFU1dqttBGsjVrbWQ3tAKhpKEYmAnGgy532lnO++vCKYWyX6Bm
-	LDv2NBhWmcV/YA0gxUJWk3fcjsJBesqImX99ByZJh4KtWagFXMWhgHzn78yFH4xe/mMyFgUFyDI
-	47fd+a286lBpS/FNgjpod5ykGarTz/a7BB4tIOYJQVkBakP0hGjbdGBKEtRmTftHKzHCqk2cnMp
-	XZSj6uUTljHpHHiZ8NWuLYQZnd7l+8tW+XM8k2sg4cVhA+w7zNQvgnhZ+K4DzeBZNMLjpvM=
-X-Google-Smtp-Source: AGHT+IFxmZiNI42SRpXqXTDNB51Gn26kid+01P2lpGxZFZVLJJktwR5+c0QfKmFQciisvQS6DYt+VQuwhMDpI9J1SCY=
-X-Received: by 2002:a17:906:c109:b0:b76:52d3:c870 with SMTP id
- a640c23a62f3a-b7a24514134mr1260140066b.43.1765291319480; Tue, 09 Dec 2025
- 06:41:59 -0800 (PST)
+        bh=4fmZfYSUNdsaSTLHpM8yeyepmqTOQi5Ko0nHpOXwYuc=;
+        b=Y/mJNZwuApxTVO8NS6/vVIcgp+stjRlY05TMcLQRPFP0MICzkJ/eVnC/ex7RMI5pSV
+         4L56v+KOkWtH2wQ1COJa2okS+6u6jkwB9xTCXyolbVcyQrvkDnW6FtMGkvupQkOKOvNG
+         IYED3yRSlyMRm20ZNjHvQpw2CiogMeKggcWaWEYrbpnhsQ9eQUkFuatqD+imApbHTUgh
+         Cq272MHGKCKl/Y8PEUfK5jdDYzpDFMHh88OBx2R9Sg2kDN0svfaFZO5bWYI6iBLPVXMz
+         c3aR3gVo2rJPDAHTXas8bVv8/KOF+rYcU4Cdt8CQom1fCb4Vh7OxyAKF38ukNIXyhSTt
+         Glog==
+X-Forwarded-Encrypted: i=1; AJvYcCXDP/H93DwFJjjM260o7+gVbLwzicazImSIBIRFv1JiQIiySbusrLcHmgQjVh3hK8oEwcB8He/BdQQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuUZ7QAufEoyUHf3dVkFk0Sppju9Kl483o3toOm9XfotMeyUTt
+	Kv/cCHK3gD60WqjzXLajgUJ7txZubb0kWS+apmNb7j3TNSuvyNJPkHx4AycdWMEu3+P3dAikibS
+	ElR2E+XDnc5+noyEp4L9NfkG0u1W+ouU=
+X-Gm-Gg: ASbGncuYYXu3eh+XksvvoRwX3HOT0IfE3CK9/IXavhu9bPsjpDL8VJ+t4df1HZHWuR2
+	E26/z74as09gWo4FFcdB6bXJqFY2PjwPIZIu/tHLXLc8fPBMkvSyov2uhsxO9G0+UclnlZ8ruhG
+	L4PLKVJAH2yyB2udge9MjGynI8I+xkQWrQ+iJtepKi+BUUMR8UmvTJ4BCsJ/8gFxEbN+7hBr0lS
+	ARc7stuoPqR3qsKRw3F4AC9UVj4fLatYVc24mAxOmWSC+oUhYvPCYGQhb74h099806jkVH0jnt/
+	kRT0ZBB+GJI1w70WLwf5mHLigmVjpn4h2eakgNevbrrB6GSD0HcZkIMqretyn/5Ixi2Y5PM=
+X-Google-Smtp-Source: AGHT+IGlXu3dCFc83X6xkCFhuuTuzxpgBAzwDgILyS6ZUDAbBGi1U97b1Qfz8jIne/sjhUc3CyUOVqmVWZN3jo3XIyM=
+X-Received: by 2002:a17:907:d9e:b0:b73:845f:4432 with SMTP id
+ a640c23a62f3a-b7a2455d577mr1325347966b.32.1765291566315; Tue, 09 Dec 2025
+ 06:46:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251209-add-ad9211-v4-0-02217f401292@vaisala.com> <20251209-add-ad9211-v4-2-02217f401292@vaisala.com>
-In-Reply-To: <20251209-add-ad9211-v4-2-02217f401292@vaisala.com>
+References: <20251209-iio-inkern-use-namespaced-exports-v2-0-9799a33c4b7f@bootlin.com>
+ <20251209-iio-inkern-use-namespaced-exports-v2-1-9799a33c4b7f@bootlin.com>
+In-Reply-To: <20251209-iio-inkern-use-namespaced-exports-v2-1-9799a33c4b7f@bootlin.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 9 Dec 2025 16:41:22 +0200
-X-Gm-Features: AQt7F2pBBS715lQDsqRAwsno830A62St3Z5PysjEvjs99zqnEB7jPn5_JfMVi4E
-Message-ID: <CAHp75VeOZHvxr60R0TCS5_c-xsrmfC97gWdP4-EWvFPpbodLTA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] iio: adc: ad9467: sort header includes
-To: Tomas Melin <tomas.melin@vaisala.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 9 Dec 2025 16:45:29 +0200
+X-Gm-Features: AQt7F2rGwi5_TocOmRGciLvaWe8Y7Fghi7KYuOXmk6PhKTOAwIFDPQlb6Jsx554
+Message-ID: <CAHp75VcX_z6q879gmWcb76SeFHtqMvpZ=y9PwNn0=eVFb06wAw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: dac: ds4424: drop unused include IIO consumer header
+To: Romain Gantois <romain.gantois@bootlin.com>
+Cc: MyungJoo Ham <myungjoo.ham@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Guenter Roeck <linux@roeck-us.net>, Peter Rosin <peda@axentia.se>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Mariel Tinaco <Mariel.Tinaco@analog.com>, 
+	Kevin Tsai <ktsai@capellamicro.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Eugen Hristev <eugen.hristev@linaro.org>, 
+	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+	Chen-Yu Tsai <wens@csie.org>, Hans de Goede <hansg@kernel.org>, 
+	Support Opensource <support.opensource@diasemi.com>, Paul Cercueil <paul@crapouillou.net>, 
+	Iskren Chernev <me@iskren.info>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Matheus Castello <matheus@castello.eng.br>, 
+	Saravanan Sekar <sravanhome@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Casey Connolly <casey.connolly@linaro.org>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Amit Kucheria <amitk@kernel.org>, 
+	Thara Gopinath <thara.gopinath@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
+	Lukasz Luba <lukasz.luba@arm.com>, Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Sylwester Nawrocki <s.nawrocki@samsung.com>, Olivier Moysan <olivier.moysan@foss.st.com>, 
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org, 
+	linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-input@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-pm@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 9, 2025 at 7:34=E2=80=AFAM Tomas Melin <tomas.melin@vaisala.com=
-> wrote:
+On Tue, Dec 9, 2025 at 10:26=E2=80=AFAM Romain Gantois
+<romain.gantois@bootlin.com> wrote:
 >
-> Include headers in ascending order.
+> To prepare for the introduction of namespaced exports for the IIO consume=
+r
+> API, remove this include directive which isn't actually used by the drive=
+r.
 
-Thanks, but...
-
->  #include <linux/iio/backend.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-
-...this was specifically grouped to show the relation to the certain
-subsystem. At the end we should have something like this
-
-linux/*.h // generic ones
-...blank line...
-asm/*.h // generic ones (optionally, if there is a need in a such)
-...blank line...
-linux/iio/*.h
-...blank line...
-
-So, what I meant with fixing clk.h is just to move it to the main
-group and sort that.
-
-You can check (recent enough) drivers for the examples. Yes, some of
-them (but minority IIRC) might have linux/iio/*.h among linux/*.h, but
-usually they are grouped separately.
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
 --=20
 With Best Regards,

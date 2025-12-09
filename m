@@ -1,222 +1,189 @@
-Return-Path: <linux-iio+bounces-26975-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26977-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E622CB075B
-	for <lists+linux-iio@lfdr.de>; Tue, 09 Dec 2025 16:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC8CCB0C23
+	for <lists+linux-iio@lfdr.de>; Tue, 09 Dec 2025 18:43:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E9D430D283A
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Dec 2025 15:47:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B78DD3078CAF
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Dec 2025 17:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7322FF672;
-	Tue,  9 Dec 2025 15:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C1732ABF6;
+	Tue,  9 Dec 2025 17:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="NkdvjBKb"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="iIkUEtvX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022091.outbound.protection.outlook.com [52.101.66.91])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F01F27F759;
-	Tue,  9 Dec 2025 15:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765295267; cv=fail; b=MjV+ANkspTz83l46sML2/+zD4cBn11owCAh8kDc2xVU1/aisjcHICkFWJUJ4zKO305iaRO+dnWFm8C7UsKOx9cHA8sO5fz0NGkLui8Zz6lV4SXqbUfaBMwCrH5AJ/Ugm+8t1f6yjnVJ7uAHWHAGn2enZjIYzEV01e+amQfKK/DY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765295267; c=relaxed/simple;
-	bh=qz9JDfSWeIclZ1n3gEl0RWGzPKjnQ/UClUOE2WtOqQ4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RG5zJNOWOB5vN8Y768juAlwfocdNO9wfSKmRMXCUsbsA9WL7KJGLj7GpljFadKVmyEYmgxK39/YnaiVD6eRFJBYx+tSmV1M8LgQOl4yauVKoN7r0r8eH8ESnWKTMAAzTZTWItqiqWSg7iu/JGqX2/NHzsveEq5A1zmwn91kf604=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=NkdvjBKb; arc=fail smtp.client-ip=52.101.66.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Bd8mGc4p3dS0UqoTqii7RAipazlkDabm1xArOf4jeEubuAJRzbsJOGmR+7BiWwoQ2ISR6TwVHkbLy//YtUIsxUsVhUrU/1tTRNilsP2Ck7jdwUSAYRxgmx2KnMNXXHo4n4fXpaDyPmAhfqagTBp4bX9xT/NwLTSLGUlUwmW8Vgs7yqtbfDKrDMM4Q8xAXjWkXB0GY2XVqq2CqQd8lqbwz3RjS74hGOGLUEWtMZkOY2ePc+ih6sVPVGzce0lq/lCBNjDj74amuUXyfTQXxSvxhX429M2gm5FXQP2spN5eYbPeJIsWK+wAnQZyyC1mqDzdr8UsysEGJ3G6m75p6QWVJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OAiVMuG8Epna+Q6krFxPMcVvUYSCC3mpaZ021toLkhk=;
- b=h57kOg9BkW5n2zhLuo1PiufyGVlwF5fmP3A1nD6QzX7EAmp56jVB+mkkKYxuq96+GiiybMr8y5Bem6S0EXRKLpYxeEbQlzaX+PC/FGwSUEZgnTtOj2SusCad8XyxclbKuiOHbjGYB9krXZb5r2pOxU/p7IuQHr2kD9fTSIcwWWQhEBVy4nr1Vvqr20USwthX+0MW+5n5rErFbfJac7VKZ3BZizQJBQC27w08SfrDkVS265zhu6lMdoETEuE48Svf7hnRq0YX7hey+heA+9kxSm7XBboarkFXL5JpL1V9sae8pZFdRwWCjvAxr3Sl616p/KnkndrFAP/FjSAFnOeefg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OAiVMuG8Epna+Q6krFxPMcVvUYSCC3mpaZ021toLkhk=;
- b=NkdvjBKbfjKc7cq9rW613OmjjaToNtk/Mpyo6G/Od7FiX2xUOQzLIm/S8Op/fhY8GXXG5CCifeu/Fb6wjYgCYaEfUYIDhK2RezcTyAebwfsuBphKzzbX5OqJ6kkvRm9FbKh9uaPK5rXXOGpUeWBsHP8g4nSJO4H7wMs3Rl5PWr7zw5UD1QBQtiWFY1CJd06aXGtI/5cUZck33QDoiIWRINPy0siiYrFWldo/IY45tX8NrzCWFb2Tu3+DY6LtAi0u6IRdEcnDy7iJ349NTod/Dof6p++WMr3YdM1++FvBL8KJ3YR1GOMDfCKRcd/20NIg+7+Khj5MAz8UP0rheT2oUA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from AMBPR06MB10365.eurprd06.prod.outlook.com (2603:10a6:20b:6f0::7)
- by GVXPR06MB9536.eurprd06.prod.outlook.com (2603:10a6:150:1bd::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Tue, 9 Dec
- 2025 15:47:37 +0000
-Received: from AMBPR06MB10365.eurprd06.prod.outlook.com
- ([fe80::4606:8e25:96e6:bede]) by AMBPR06MB10365.eurprd06.prod.outlook.com
- ([fe80::4606:8e25:96e6:bede%5]) with mapi id 15.20.9388.013; Tue, 9 Dec 2025
- 15:47:37 +0000
-Message-ID: <7a792f4e-edba-42f3-bcc8-76004972c2f7@vaisala.com>
-Date: Tue, 9 Dec 2025 17:46:16 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] iio: adc: ad9467: sort header includes
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
- David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251209-add-ad9211-v4-0-02217f401292@vaisala.com>
- <20251209-add-ad9211-v4-2-02217f401292@vaisala.com>
- <CAHp75VeOZHvxr60R0TCS5_c-xsrmfC97gWdP4-EWvFPpbodLTA@mail.gmail.com>
-Content-Language: en-US
-From: Tomas Melin <tomas.melin@vaisala.com>
-In-Reply-To: <CAHp75VeOZHvxr60R0TCS5_c-xsrmfC97gWdP4-EWvFPpbodLTA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: GV2PEPF00003836.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:144:1:0:5:0:1f) To AMBPR06MB10365.eurprd06.prod.outlook.com
- (2603:10a6:20b:6f0::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936E1199FAB;
+	Tue,  9 Dec 2025 17:42:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765302173; cv=none; b=I+VO5dGqUh3OpU8UUaJN1ITBSV8XfQ4N4rV/32voprT+nThix0MnzdjHK9KUhgxHOpK6V8NubtHFVLlAXryXdTMZb8QNUI4SXgljCp0G4WDq8/oJjLoJMaHaCPqJcPrn8BLq1SDSbNiGhJDB5PpFCuzlisYWlwZB308/43hL22I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765302173; c=relaxed/simple;
+	bh=ltbEnJePxGHfiWbMRJejKVkhJ9FvXRiTBky6V8Q0BXM=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=jqlbHTlWs33nZqiEKs0p/9Xyv5RwZSLva+77xPiSOv5fPqHM706CX4PkM+wXhiVVf2LhwRS88+Y7SoSwET5DCBggqDg5mDV5H5Q+HYJpPts7F0Zhjbmc73NjCWjK/q5imkMXrNKvZNYSQnRMVoj8TmTv6aML34/kIF9hB8yanPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=iIkUEtvX; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1765302171; x=1796838171;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=ltbEnJePxGHfiWbMRJejKVkhJ9FvXRiTBky6V8Q0BXM=;
+  b=iIkUEtvXJ2cto+BjKR4Heq1JsvkT73W1ebcxN0FL4Xf9p46IRTyJo7p7
+   LJAYKFaJOhn1ApbwNKsqGLCRhRprbGah8loX5HM6Xb7Zn7wQGpZ4LZiGc
+   UAmc3lvqKldXJ/5pfi+RzMCj8OCMJPOl8gbEJ7y0p2cHrzTmxq5Wy125n
+   sCAEq7h8X4mq4MJ8i3lSvzqL2ZEe5rLPEYCFyZEh2AK+i0gq5jSTc4aBi
+   Bqb8Gz1XKKbE1UnLy1367g/si01rCHUZaCd8K+SmGfahfIMFgoIxntkwv
+   6vtra6yErrjDE6SWv4NmF/8P79uiEE+BjmeTSv71DiSYoY7JC3/QhwRFh
+   A==;
+X-CSE-ConnectionGUID: LG0HgYJJTZ+gWu6GgiIt8w==
+X-CSE-MsgGUID: Y75IwKQcQeOcyOtd1erMbw==
+X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
+   d="scan'208";a="50302834"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Dec 2025 10:42:44 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Tue, 9 Dec 2025 10:42:33 -0700
+Received: from [127.0.1.1] (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Tue, 9 Dec 2025 10:42:31 -0700
+From: Ariana Lazar <ariana.lazar@microchip.com>
+Subject: [PATCH v3 0/2] Adding support for Microchip MCP47FEB02
+Date: Tue, 9 Dec 2025 18:06:22 +0200
+Message-ID: <20251209-mcp47feb02-v3-0-bb0ba9052f4f@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMBPR06MB10365:EE_|GVXPR06MB9536:EE_
-X-MS-Office365-Filtering-Correlation-Id: f43bde7b-c378-4ced-1685-08de373a4758
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bFpubVZHZFQ2RG8yOUgwMys3Q2QzSW9nQTU0UDVjam9rYXZzQ2JlaTN4QmlY?=
- =?utf-8?B?UjFrTDdJMkxVRjhsVU4xVVAzWmdaTmM1T0h3VGxIM1lLcmZ5U0dPK0VsUmtM?=
- =?utf-8?B?MXdDSkppN3AyNlBUTFRSOFFpWmZyc0Y1TUJVK3g3NWx1WW9ObVpUNTVWcnlC?=
- =?utf-8?B?TXZOSkxHZ2VBNlRoR2M0WmowTkhYSElmY0l4MjB6a0J5MjMxYU4rUnErWnVW?=
- =?utf-8?B?MU1PbEhYYmVpR1MzSkphOEVqanIvcmZob0hWdEcyV1JyTUJ2Rzc3bHRYdFFD?=
- =?utf-8?B?cWl3cUd4K0tCelpvN21rVXlrbTN5YTNxZUdXNmdFZ2pQY2taQXRuci9NbVBN?=
- =?utf-8?B?SUdGUEtCWFZiRTZCd2hpNkUyTjFxanNjUjhad0JkNU43bGxqVEpQaEswMVpE?=
- =?utf-8?B?MDNzSEJwUjN5WFJTYnlNbWxyQW44UUM3TGhoWnR2ZXpKcTdXWlRVZFhiUmxS?=
- =?utf-8?B?aTM0VHg4V29JejdmZFhmQXRrRkJKc0NPWGtUOHQ3VDJMZjdvSWx6aENYY3Bz?=
- =?utf-8?B?dGIrS21XZ3dNVDVZUmt4MVdDU3QvS2ovdjdldzB0MjRkeVkyWlM5S2NSQWlR?=
- =?utf-8?B?Nk5Sek1QTllHYTE3TmNXTnB4VzAvR0IrVmpOVnAvbExSOElWbkhxZW01WDJI?=
- =?utf-8?B?TlZsQXY5MXVEWXhjc0grbTlWUEhKYkxLeXBqYXNlWFRBak5waWtZOWZxS1NN?=
- =?utf-8?B?Um9nU291Z0gzYWJZRkUzTW1aZzExNmJVd1o0bWl6d0FidTJwRGVLMXl4UzNs?=
- =?utf-8?B?NUZaVEl4akNhT1VGUGFSRHJjLzhyTGh6OWduZTJwZmNJU0hjV2NxOHpxM0pj?=
- =?utf-8?B?Yll6L2pWVnlCSDhhc0c0QmVKZUhTVGE4NHNYV0JBc1lXSEdqT1h6VG1VYUpk?=
- =?utf-8?B?ZXA1SjZFQzNUU0FVcnVGZDJsK0IxMkZSN29WVHIvN1VNdndvOW5iQVd4WUlO?=
- =?utf-8?B?Qm9XcnRmNnZFYVBqU0xmYXNFS3pVVFZlMk5aK3RmR1lLOXhmSm1NZVlpM2VT?=
- =?utf-8?B?Yk5RTGNNaTdaTFZQUlliVzBXdm8wS1haNGloUXV2cW9iYkhTSkNzM2M3R0xj?=
- =?utf-8?B?bVd5RWFMR1FBUHYzT01EUVZqdjhLMnV1dUZUc0NGL2gxM212bG5ncm9NcXE4?=
- =?utf-8?B?bjd0YkFrci83NlBiWXp0bWZSWFQ4S20vS1BTWjhBOUwwZHZ0VnV1eHlpOHFo?=
- =?utf-8?B?N0I2UHZPVzhWMFUyTnRyd0R4SVhsTWVVYkc1ankvT0lIUEdaTlhJWXB0L3Rl?=
- =?utf-8?B?VTJmL0wrbXNzcEdRNnlocEZpSnNiTXg0REl4a2g3a3MyMEEzZXprUVYwVitB?=
- =?utf-8?B?SlJDTHUwR2szYWpLczlZZGduSzVGSmVDR1VpbFl3eDRCR05ZQ2RwWWM0S3Vn?=
- =?utf-8?B?eExITDR0bjViMm1pWlpVWHBETTExVGdNbVhXTkNhbGRWRHA1NUJIaW9vaFVK?=
- =?utf-8?B?eHlWTW9XUGV3U09hVjhHRFJ6TWlTdldJbjJVK01OTFU0dnlFSWQ2b2VBdEQz?=
- =?utf-8?B?UUZGYUtxa2F5WmYwLzJKS01NREs1MCtqSjNteDY2dW9EOWFjSTk5WmJyN0pK?=
- =?utf-8?B?YS85RCtWaTNmNkFUZzFIMTk1UmpFSHQvam9abjB6RzV0cXUwMDNVUFpwQ2RQ?=
- =?utf-8?B?azBxSmxxMVVqeTlwZERaa3NwaUw2Zy9HMkVheHlrTE1mcGJyZEdwYnRUazg1?=
- =?utf-8?B?QjdvZUpFUy90N3EwdlVyV0JGM3hqNDRFVnlaWFhWOVIrdWtIbHBZQlRiR0h3?=
- =?utf-8?B?WDZ2Z1Ric2l5OU5CNlZkUUFjSUJVZ1ROdHdwM2p1RERkdXJBVjZpS2Y4QkNh?=
- =?utf-8?B?SG14VndueUZuNVJnM2JWT0tXbitpZ0plcjlwQkFnaXIybVpLdlZHdjlUWSsw?=
- =?utf-8?B?OTRyTlVXOUEwS0IvRjNsbG5QUzB4aE4vL2xpRVRlOEpoZkhlMTEyeVZhSzBm?=
- =?utf-8?Q?tvWQTUwZOvK8KZd50Q0858y92ZE1zSzo?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR06MB10365.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Ymo4QUFXdTVSRzNWSzBtS25rcDVFa3o3M0xRTU80ZTBSSC9LaG5TdnBRZnB0?=
- =?utf-8?B?eTdETlp4elpHanFkc2p6cmp2UkRMY25GWTk4Nzh1bW1OQXo1MjV0R3J3cnIv?=
- =?utf-8?B?Rm5FOWVuTEIzZ293dC9zdDFWenpKWjMvT0xkRVdCdkhMRFh1RjBSOXRkeVlj?=
- =?utf-8?B?Nm5wOERzYUhxZmtOUng5VnhLaG1JcFhVa081WnBUdkdkRk84YXVGMGJvQjNO?=
- =?utf-8?B?cjhmV3Z5ZjdiN0xUM0pNdjJ1RE5uV2poZXVCT1l0V0dhQWh5TGhldkNTeFdY?=
- =?utf-8?B?em5NUXFnSk0yMlVGU25NM1Jmd1VtTXZkWnpKUHlTenZKQUcrRmw1Z2ZnTFpD?=
- =?utf-8?B?YzhQbDhvUW91MXZqM0JPd1hkdENvUkU5YTMxZVhuL1h1bW91bEowVHVqMHc4?=
- =?utf-8?B?L1VZWDFpdThRM3hhQXdMUFFndnpOeit3b1k2bzRwTTdSME1kUmFRRC9UemNL?=
- =?utf-8?B?dnR2ZWJKaHV5VUZrNm5nYmZlcWMyV0xwRm1sQ0pCY3VnR1NjUUsrL3ZGajJp?=
- =?utf-8?B?TFVtOFRYSmlyRU9uZ0tGQjNxU2F2d0tRTXMrMnBvK1BSRURqL2E2dHNKSWpO?=
- =?utf-8?B?UXZlMDdHcGVIL2VZMU5aK093R3VzWjVkL2JCY3dSTzU1U1MxQkpicU1Jd0Nn?=
- =?utf-8?B?Q0tqeExpeXJvcG5oZ1N4bWUzRHJpaGpLS0s0SWo4SFV1dGZ4Q1RpRVlMNXN4?=
- =?utf-8?B?aEZKUThFa3Mvc2FaRjlKOS91Q0RxUzBueXUxU0g4NlE5M3I1b1lOZHMyb3ZT?=
- =?utf-8?B?TkRaZSs3eElsdWlxYlYzUkpHcGttY0VJc3l5dm5YajlObkNpNHYyLzRtTTls?=
- =?utf-8?B?aXZ4ZU9nSm1aNGIxYVhLdTlqa2ZIRjBYNjJJakNNUTBYQlQ4SnJkVngySVo1?=
- =?utf-8?B?OUZoNnZaU3B1YkVQUFNtUThkRm4rUm5Jd2FYQllXYTNaanFqMkRvekhtejha?=
- =?utf-8?B?WXBGcFRxbU8wWVJ6dnBaV2lTSWV0TW5rOGZrUmlYS0lyR0d1dlVzdlZ5T1NJ?=
- =?utf-8?B?SDBEYVJobW9XdnJCMHN5aTRYTVhDYWVUVmpJMnowOVczUEU2dFZTcHZEZFdB?=
- =?utf-8?B?dFFLYlI2b3lxcDRiQXBpaXR6MytBSmxGQ2xXRjBpWldKYUlmcXFBbkpIbzls?=
- =?utf-8?B?YmZ3NkZ1Sms0eDR5NFNzbnlNSHJSc1Y1R3ZkVW5FNFdhUG5CMXVnbWVkTjVn?=
- =?utf-8?B?T3VnR0cxZllCOXNpOVJiazNxeE9Pc1dxbmg2a2RvRGFZVVVNS0w4WUhScXVF?=
- =?utf-8?B?Qzc4dFprOVRha3laWXcxa2NJRndVMmVMdWZsbUxsanV0S3BoSXFITzk5MG85?=
- =?utf-8?B?K09lRDI4VldxMC9xOHI5b3d1SmZIdzlNL2FHM3B0SjJDL1lGSEtwUW91U1cv?=
- =?utf-8?B?bVFsWlhHWmU2bkloU094QnNZNTFwaWdaRk5USDM2aWhOQklnM3Ixc29qbE96?=
- =?utf-8?B?U29wZUYvRU5DaUdSTXBzZzFNN3F2L01RaklJUnRwWk8xd2JXWHJadGFIU1BS?=
- =?utf-8?B?MHg0VHhXYkhxSlR1U0pPamswaE1NMTAwZEFVV2hWdWR0a2o1ZDRlUzVwTGty?=
- =?utf-8?B?bEZoV3NROFRLTHVwQWNUaGY2RDI0OUYwNHdnNGFmbHk1S2Y0ZUdaSnNEdXZt?=
- =?utf-8?B?ekIrSk5mR2diWGN1bi9sUlZnSzd3SFRpMDBnNmgwSEY0NHhyVlR3cml0cUR4?=
- =?utf-8?B?YWtHeitkMXRqL0VJR3liVzlQYks2c2NNUHNDWVIyVEdib3RJd1VCcnZkMkhy?=
- =?utf-8?B?Z05GR0UvYVJwM28vQU1CTzZPK1Qwa2tyT3NTSm9UL2dhS3VVTTJTdld0Titu?=
- =?utf-8?B?ZmhsSnNlUGkzblZ5b0Z1aFI2QWwrL25JczdCeW9UVGpYaXdYOUZxaC9EUmRR?=
- =?utf-8?B?VXJ0WDZpQUJrQWJBRFFGcEJUSmpwWlNseElSZ0xMU0xma0VnTFNwOXorUERs?=
- =?utf-8?B?Q3VJS3QwcHl1VWIxcEpRVk9lZnRxVzhrcmh1S1FqaXdtN2hUc3JhZjJzL0F3?=
- =?utf-8?B?eU1OUUlzV3JrSEFJZStqczNPQmpkWXU2VnpTWWhkNTJubTk1V0VNajExcUJ4?=
- =?utf-8?B?cm01eUY4TEFLd25SRWw4YzJDeUZVay9tZEo0c3pOaXl3U1FrVlRyV0padHNt?=
- =?utf-8?B?bUhIWE1pUGxmdGRmNEwxUC90SjAzY0RIL0VkY3B0QnpTajBLWWlHbThnNjEw?=
- =?utf-8?B?eEE9PQ==?=
-X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f43bde7b-c378-4ced-1685-08de373a4758
-X-MS-Exchange-CrossTenant-AuthSource: AMBPR06MB10365.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2025 15:47:37.8373
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YiC2mIhM4pFYGxpB7C2aDV8FOhBBDOBTDWhHL883Y1k0UyUjxDzqqiSFAG5vyRJpO+5Lxiu3BOs2ndMh7WuhcQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR06MB9536
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAP5IOGkC/13MQQ6CMBCF4auQrq1pp+CAK+9hXJShyCywpDWNh
+ nB3CyZGXb6X/N8sogvsojgWswgucWR/y8PsCkGDvV2d5C5vAQoqVUMlR5pK7F2rQBpNiHWF1kE
+ jcjAF1/Njw86XvAeOdx+em530+r6ZBuCbSVoqqQ7UlpasNSWeRqbgaeBpT34UK5Xgk2utzE8OO
+ a/JIJa67Rq0//myLC/jGene5wAAAA==
+X-Change-ID: 20250825-mcp47feb02-31c77857ae29
+To: Ariana Lazar <ariana.lazar@microchip.com>, Jonathan Cameron
+	<jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Andy Shevchenko
+	<andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765296389; l=4389;
+ i=ariana.lazar@microchip.com; s=20250825; h=from:subject:message-id;
+ bh=ltbEnJePxGHfiWbMRJejKVkhJ9FvXRiTBky6V8Q0BXM=;
+ b=UIHgkxJ7kTCiN27HHBGGyOYXhlYfdsWmZ0VjPowCewVHENYyRVOjaJVSvHBvstEgwDj6jNdXy
+ NvWfY806aP2Axtew/EdNsVgbJpq27PbwMiooP5zym6RXtLt0XFZQLbl
+X-Developer-Key: i=ariana.lazar@microchip.com; a=ed25519;
+ pk=jmvf1fSxcnzZmXfITM3L94IwutM+wqA1POQHiYyD6Dk=
 
+Adding support for Microchip MCP47F(E/V)B(0/1/2)1, MCP47F(E/V)B(0/1/2)2,
+MCP47F(E/V)B(0/1/2)4 and MCP47F(E/V)B(0/1/2)8 series of buffered voltage
+output Digital-to-Analog converters with an I2C Interface. This driver
+covers the following part numbers:
+ - With nonvolatile memory:
+   - MCP47FEB01, MCP47FEB11, MCP47FEB21, MCP47FEB02, MCP47FEB12,
+   - MCP47FEB22, MCP47FEB04, MCP47FEB14, MCP47FEB24, MCP47FEB08,
+     MCP47FEB18, MCP47FEB28
+ - With volatile memory:
+   - MCP47FVB01, MCP47FVB11, MCP47FVB21, MCP47FVB02, MCP47FVB12,
+     MCP47FVB22, MCP47FVB04, MCP47FVB14, MCP47FVB24, MCP47FVB08,
+     MCP47FVB18, MCP47FVB28
 
+The families support up to 8 output channels. The devices can be 8-bit,
+10-bit and 12-bit resolution.
 
-On 09/12/2025 16:41, Andy Shevchenko wrote:
-> On Tue, Dec 9, 2025 at 7:34 AM Tomas Melin <tomas.melin@vaisala.com> wrote:
->>
->> Include headers in ascending order.
-> 
-> Thanks, but...
-> 
->>  #include <linux/iio/backend.h>
->>  #include <linux/iio/iio.h>
->>  #include <linux/iio/sysfs.h>
-> 
-> ...this was specifically grouped to show the relation to the certain
-> subsystem. At the end we should have something like this
-> 
-> linux/*.h // generic ones
-> ...blank line...
-> asm/*.h // generic ones (optionally, if there is a need in a such)
-> ...blank line...
-> linux/iio/*.h
-> ...blank line...
+---
+Changes in v3:
+- fix review comments driver:
+    run pahole on mcp47feb02_features, mcp47feb02_channel_data and
+      mcp47feb02_data structs
+    rephase comment with datasheet links
+    add missing include files
+    remove shift operations from defines and provided the shifted values
+      instead
+    remove MCP47FEB02_DELAY_1_MS define, renamed _MV to _mV
+    correct style issue in struct definition 
+    remove fwnode_property_present
+    protect setting active mask bits operation with mutex
+    use unsigned int instead of int where possible
+    use IIO_DEVICE_ATTR_WO() for store_eeprom instead of IIO_DEVICE_ATTR()
+    refractor Kconfig entry for better visibility
+- Link to v2: https://lore.kernel.org/r/20251103-mcp47feb02-v2-0-8c37741bd97a@microchip.com
 
-Thanks for the clarification. Sure, it's not a big deal to do a new
-version. But FWIW, that convention is not AFAIS explicitly stated
-anywhere and with even recent drivers not all following it, it's
-somewhat hard to know what expected formatting should be.
-It would really be good to have that documented somewhere.
+Changes in v2:
+v2:
+- fix review comments device tree binding:
+    corrected the use of patternProperties and enum with an array of
+      channel numbers instead of minimum/maximum
+    gave more specific names to the labels of the channels
+    removed '|' from where it was unneccesarry
+    removed unneccesarry setting of attributes to true
 
-Thanks,
-Tomas
+- fix review comments driver:
+    replace custom write function with regmap_update_bits.
+    add read_flag_mask field to regmap_config struct and shifted all
+       register addresses with 3 bits in order to correctly apply R/W
+       command mask
+    change cache_type field of regmap_config structs to REGCACHE_MAPLE
+    add val_format_endian field to regmap_config struct as
+       REGMAP_ENDIAN_BIG
+    keep in powerdown_mode last value written to register before reloading
+       the driver
+    create defines for magic bits used in probe function
+    remove unneccesarry channel enabled checks
+    add in parse_fw initialization of reg with 0, check for valid
+    reg number after reading it from devicetree and nonzero num_channels
+    initialize vref_mv, vref1_mv, vdd_mv
+    replace CH_0, ... CH_7 masks with DAC_CTRL_BITS(ch) and  G_0, ... G_7
+      with DAC_GAIN_BIT(ch)
+    correct write_powerdown function to write normal operation into
+      specific bit mask from power-down register when a channel exits
+      power-down mode.
+    add const pointer to info in data struct
+    delete device_property_present checks for vref, vref1. Read vref1 only
+      if have_ext_vref1 is present in features
+    protect write operations with mutex using scoped_guard or guard
+    refactor probe function by creating 2 setup functions,
+      mcp47feb02_init_ctrl_regs and mcp47feb02_init_ch_scales.
+    correct info/debug messages where it was specified
+    use devm_iio_device_register and deleted remove() function
+    in write_raw only update struct data if regmap write succeeds
 
+v1:
+- first version committed to review
+- Link to v1: https://lore.kernel.org/r/20250922-mcp47feb02-v1-0-06cb4acaa347@microchip.com
 
-> 
-> So, what I meant with fixing clk.h is just to move it to the main
-> group and sort that.
-> 
-> You can check (recent enough) drivers for the examples. Yes, some of
-> them (but minority IIRC) might have linux/iio/*.h among linux/*.h, but
-> usually they are grouped separately.
-> 
+Signed-off-by: Ariana Lazar <ariana.lazar@microchip.com>
+
+---
+Ariana Lazar (2):
+      dt-bindings: iio: dac: adding support for Microchip MCP47FEB02
+      iio: dac: adding support for Microchip MCP47FEB02
+
+ .../bindings/iio/dac/microchip,mcp47feb02.yaml     |  302 +++++
+ MAINTAINERS                                        |    7 +
+ drivers/iio/dac/Kconfig                            |   17 +
+ drivers/iio/dac/Makefile                           |    1 +
+ drivers/iio/dac/mcp47feb02.c                       | 1254 ++++++++++++++++++++
+ 5 files changed, 1581 insertions(+)
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250825-mcp47feb02-31c77857ae29
+
+Best regards,
+-- 
+Ariana Lazar <ariana.lazar@microchip.com>
 
 

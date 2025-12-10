@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-26985-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26986-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962CECB1DFA
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 05:09:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BFCCB1E12
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 05:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A57A30577EE
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 04:07:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE8E930FD4E4
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 04:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E315230F533;
-	Wed, 10 Dec 2025 04:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD39E30FC37;
+	Wed, 10 Dec 2025 04:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TCwhRmx7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZX3fWj0C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2737830E0D8
-	for <linux-iio@vger.kernel.org>; Wed, 10 Dec 2025 04:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D238030E0F1
+	for <linux-iio@vger.kernel.org>; Wed, 10 Dec 2025 04:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765339674; cv=none; b=Tl3Qu0Xvqy2uE9UauEYG2XxHGzD4hCnNZvZLMBnToNdhsGhyrh/aDrQRpFZt4l0Rg0OfOrRQfE8hQpsJgWOiibRPcnJtNj/q8F0god8OakJTonDODinQsM3dSwCO9UcxZDDyntsU6JkXzhADZS7DEkSl157SSmc/uOpuj0vZObA=
+	t=1765339718; cv=none; b=ECNnUmJvLNQlYZutSijYPAnTWIZDugAqpF9OWYf9D8hDew+TRX9Jk6i6O3IjLWoyUy+NCR6v2jZTmaP5pN0gcrRN+BAJgQjMgqS4V2OpVQ5cg3xcBiVVDt2iLirtSLE6ObdBTIeqxapZ9SURMFlYyzUorxyAv/9NhvNElOkdxhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765339674; c=relaxed/simple;
-	bh=i1gpkRHjj52HV/bqp8fIanguYj2f3n3g7/smx5nUqtQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=bKMYhPFw4N7m+5ptlHcBsQS4LsW8kRzw2Xfyq2ufeab6ILwLHLlVnW108LPvhBJ7HuZPQv+VDsd/uBzH+nECSQuQ5M8bgadcGg5bPLjc8gT/U5j0ItwMEjNmALAGiACfhFFTq3O/MYE5dCKdpwog+NsQj54ajJpqDfzfExvlaew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TCwhRmx7; arc=none smtp.client-ip=209.85.217.54
+	s=arc-20240116; t=1765339718; c=relaxed/simple;
+	bh=Gr53fuTbHZKpl46q1LFj7gcfKtH2HbjrpK1Otwbijug=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=eAO1HRqw9Xy5tlWzCcX4FUqIDlvyBA1OK3j5mcWeVKX7DQ/CpWeQlCOedK8A57geFqD7vCh/upJYR+qFn7iBNo0BYTLG5Nq/6UO6jkuxxUC7FWWvOd24sf0QzRDx+DGOYr56SoCE4HbeylVS457x2qq9BzjZjRLohoHimIKifJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZX3fWj0C; arc=none smtp.client-ip=209.85.217.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-5dbd9c7e468so2812140137.3
-        for <linux-iio@vger.kernel.org>; Tue, 09 Dec 2025 20:07:52 -0800 (PST)
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-5e55bd6f5bbso1317475137.0
+        for <linux-iio@vger.kernel.org>; Tue, 09 Dec 2025 20:08:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765339672; x=1765944472; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=gmail.com; s=20230601; t=1765339716; x=1765944516; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jCN+wOZwpo+EvlIubaoI595wTf7FwItvq914uZQahfk=;
-        b=TCwhRmx7DKQcjs1fd2pZ00L5G2gMNwzG3ge9d5wMJcWkwm7PjeI0i1iAI+IvLQh0KY
-         ZpT9+SvotPFyivH19cKXZMCiGBKTQfCddUiTeKmbN5XNpADMv2SDx00G6AL3RvK7KVz/
-         F0htTaYiZ02mwLz5e1xPs2UE3v17LngYwg2LVceVWqwMBHkXBrCuaHaQvazM15FutHTs
-         w0TweSXNXfttP2RmnSCPHYJ4cpGx8ZGHwWecGzHfpbqvP+ShIB6ECfFQ7Z5e+xyIWuq4
-         4pdUa6QGZkGm87oxFzRC9sloq9NQ70PxgMUw2+or4Te8DtH9RfeTizWU9Z2BxJE0cWa5
-         Jb2g==
+        bh=8j58EbJRehVD66NIXI6Vngeh4NEZg0BT3sgTrmPRCJg=;
+        b=ZX3fWj0C7UAwfkoTgwzOWxF41qAJaP8U/Y9XUwZb/k19ylwNMaGjcGv4cFGuLiGRrk
+         op6oAJWRbHjLGSIbkbcxgWs8wvDbSnal06XXuvaEQMjG3BAY/NvwEE5Vk6poG0AKnzdv
+         0MeZTDt8Einri/pVFJaGYB8e+nTbB0XqgE+ukTblDLgXNd2kp06u/5Za/FeLzGTjGKb3
+         vFpAALA2Unrevc3xA4Fr+/bJdBAgEBaBhzdiB7w4MduqlmAz7RzzLKFQ5ycdhJIHwT7M
+         bMKhYlSK1JtkyCFwweFSmGk1xatuguTCjfDbrjMXJYVgxBvZhYg9JyWo67jJBDPA3Bmn
+         Wn5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765339672; x=1765944472;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=1e100.net; s=20230601; t=1765339716; x=1765944516;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=jCN+wOZwpo+EvlIubaoI595wTf7FwItvq914uZQahfk=;
-        b=H+3yVf/F+uwo55v3r3YxEAsrt92sf1r+flt29EtXV3k4+FvbBsKKHcuJ9Fbd/nkhCD
-         3wjUrjIHnhVhwpkizQR0OD4cI31eweTH/C7EKhY7c7bRmhs5bq4d/HTFshW9u/Ij+gRb
-         zhLws+v6W7tTYnGPbnSsAQAzNpS1Nd1arm3YipjIcnTYnY7xi/UV7cVPSbpVtt2ilgrI
-         8odYyFXWtMPLrpqTxtEMqGKGKoEQcOcU05SR2Ae1571shmsNepHZt/AWsggW0lcq0hgH
-         Up1lSgaJeio4LCHaxabOOqY9F0g3oDOHlqDz774W5eehStd5dVgLgE0kjeiPXWmDJ/vq
-         MCvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX2w5obcRwXhb0R9GxM8KdI+RMMQKIwR8QndxDt2wM5k4jCSQl7tTG8r+v4zQQdK1TR16NJ0+WEXrI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAQmtGLRdzeUa8aWddBza35ILY0fc1Ugl5gHcfFeoj1EbV5foo
-	giop1JNTwhXhALSWi9nQ0JXHbo2/sRRgjRBDkNHvQc7HaAU0mA8vqPxWWxuq7g==
-X-Gm-Gg: AY/fxX7AhG9EOsjUbxSVs9FlFgLBX3kMyy0e5GStPEwehIA2W5dq8rI4WZJHs7lUMkT
-	qwpGXis0GyJqd4crzVzBoRL6QjuIXYOSbnS6jdRkPB6A5MZ1ZIj9NoyXuhfvzjke6QxR8wiCwQf
-	5p4gAjWfrrpHG28JyjVw/7s6DtFk0RoQzMeukb9T6NzxEyW5MlivQ2TlFQ4ae1wLsVfh0NC3wca
-	oXu9eg+CJpH4WqdXWzhXFoewNJ+COJqyWgE0oq3cI1QAYq3972DGUx7+fuahfq7whXjbFciK2XA
-	9+iFrjoy8SfEhp/+mfUSHuM1PX5OTFl8EkVIdj5UT6tC6hPHhy8H+KheO5BakQVcZ5u+VI3hQmr
-	cXoX9vR1eVj5mk54093F0pAkMUpyw5+ZeRJbnaS2OwIjkLZFvTgFoICSXOZkHJ38mO021ZoMsvs
-	B3KFo=
-X-Google-Smtp-Source: AGHT+IHM30DvWmYtT07T8M42FAxd4lX1UgnTiBhKzv5t+gCOoi7mVGJuQlvB9Bjp4pGe49Z4oPi6Rg==
-X-Received: by 2002:a05:6102:390f:b0:5db:faa2:f3e1 with SMTP id ada2fe7eead31-5e571a3b7eemr309836137.15.1765339672002;
-        Tue, 09 Dec 2025 20:07:52 -0800 (PST)
+        bh=8j58EbJRehVD66NIXI6Vngeh4NEZg0BT3sgTrmPRCJg=;
+        b=V/xXe9rY7QcqqWZRlKYHYsuFrO0Dbs93j6RRYtMdtMe90Jv4LYUVUWBdzUBHdpmZRt
+         VVXY3Bhep6wc1o+x8zaBQUwmr19L+kkwG0Wr5L4rzhH/oZQrWCjX6ZMb9IAtrJoveV2A
+         tNCnMtSfgLLjCTTaEgMCgPjoLqaSCjCWeQPAJ5FAa6+9L1ktBG28QFp6R6AVgG7rzvlc
+         v8Zgoj4cb8JaBobSMY1pLJsvOkZYSHVjp+B8qHaX5XsWiTIyxINFf7gyq2SeQObM1tYV
+         dp23k187vJamU/W5XjxH9lYwYedBp1MseMGefRTYs1twG4Tu65biFVj2s+XFVrzsOHuF
+         uKDA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgiT0VLjP/9cILdMyV3fN1mGK5hTPu6QXmrQUsTTuuSNInWMoDk+TnoaRnTBzm0AhAfUAOor2G1gA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWyOkpz4ah3WeBlz0soe7Ho5K6IwDrDm40xxw45dQdlQtiaNyT
+	UImmZgc2gu/i9yZdcW0K1Of6Z9vohQXoNqQTvlMKj3uQY78i1yT1Mzca
+X-Gm-Gg: AY/fxX5Af5T6xvU1NcZEzz/7KpEFuxvjdt+ufJEvVUBahqiXZn9WPUxyoseUb8vtrkr
+	qPjdC/180y1FoU6p9wI9QG5FX9Y1D2rvQ6n1ZIGnqn7NKi2ZO6zi7DvAnjemvyp0m9ABLzy6+cQ
+	pAdRA69NcqDsvZmunggC8wfAEYRS51p2axt1w/9u1rdkS4tKSWOvnZbjKQIubquMpbrrbTxFm2B
+	vYBX7p3yETw2d7U6eq9pr9gEm8SkLGgIJU5ErQjS64wTy/Uk+G3lHVNi5goomkfbnwdWJAH3cvv
+	PYrKZchPkE+UWw9ck/4nTeSsbRiZfsmwZQtI3Vf/50/Isgy9CWnyC6P0qn1hXWkHZzbgxHG2FzM
+	WNVUuXKtBm8k4qk0bGI9YYBAl0uHlMQDaenuKPJ+F+g7ATUtfWhCNY3wzgD+SjtJd6+JpVITdne
+	divHOXanwvQRt29A==
+X-Google-Smtp-Source: AGHT+IHeJyww8xPuUv2NJf/IVFsizp5qbt8Bdk/UY3APTv8xhYUgPWJ1SWgJYbINgzgxJuiNKs4R1w==
+X-Received: by 2002:a05:6102:6b0a:b0:5e5:7055:66f5 with SMTP id ada2fe7eead31-5e571f2f71emr373127137.27.1765339715682;
+        Tue, 09 Dec 2025 20:08:35 -0800 (PST)
 Received: from localhost ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-93eed6c41c6sm7781948241.5.2025.12.09.20.07.50
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5e51068471asm7888292137.0.2025.12.09.20.08.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Dec 2025 20:07:51 -0800 (PST)
+        Tue, 09 Dec 2025 20:08:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -80,73 +80,115 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 09 Dec 2025 23:07:49 -0500
-Message-Id: <DEU8OOETPWRO.12I8HY6SHTQAA@gmail.com>
-Subject: Re: [PATCH v7 2/2] iio: adc: Add ti-ads1018 driver
+Date: Tue, 09 Dec 2025 23:08:33 -0500
+Message-Id: <DEU8P8MUASOG.228OIP4QQDZD1@gmail.com>
 From: "Kurt Borja" <kuurtb@gmail.com>
-To: "Andy Shevchenko" <andy.shevchenko@gmail.com>, "Kurt Borja"
- <kuurtb@gmail.com>
-Cc: "Jonathan Cameron" <jic23@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
- <conor+dt@kernel.org>, "Tobias Sperling" <tobias.sperling@softing.com>,
- "David Lechner" <dlechner@baylibre.com>, =?utf-8?q?Nuno_S=C3=A1?=
+To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
+ <kuurtb@gmail.com>, "Jonathan Cameron" <jic23@kernel.org>
+Cc: "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Tobias
+ Sperling" <tobias.sperling@softing.com>, =?utf-8?q?Nuno_S=C3=A1?=
  <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>,
  <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, "Jonathan Cameron"
  <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v6 2/2] iio: adc: Add ti-ads1018 driver
 X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251208-ads1x18-v7-0-b1be8dfebfa2@gmail.com>
- <20251208-ads1x18-v7-2-b1be8dfebfa2@gmail.com>
- <CAHp75VcOVpGbb3UBm+QQrw25=yU+J624c29ptMk8yrJpNEL=jA@mail.gmail.com>
-In-Reply-To: <CAHp75VcOVpGbb3UBm+QQrw25=yU+J624c29ptMk8yrJpNEL=jA@mail.gmail.com>
+References: <20251204-ads1x18-v6-0-2ae4a2f8e90c@gmail.com>
+ <20251204-ads1x18-v6-2-2ae4a2f8e90c@gmail.com>
+ <20251206200721.5e683a83@jic23-huawei>
+ <DES3ZWAKXXEB.2LQPMDZN4JFCB@gmail.com>
+ <5b843df0-138e-4e2e-a70d-beb8a39ed85f@baylibre.com>
+ <20251207195613.0e222b3a@jic23-huawei>
+ <DESJEELPCGK3.3H15VL3YAC0RT@gmail.com>
+ <04aee30f-908b-4390-934a-e49990217d15@baylibre.com>
+In-Reply-To: <04aee30f-908b-4390-934a-e49990217d15@baylibre.com>
 
-On Mon Dec 8, 2025 at 3:19 PM -05, Andy Shevchenko wrote:
-
-...
-
->> +/**
->> + * ads1018_calc_delay - Calculates a suitable delay for a single-shot r=
-eading
->> + * @hz: Sampling frequency
->> + *
->> + * Calculates an appropriate delay for a single shot reading given a sa=
-mpling
->> + * frequency.
->> + *
->> + * Return: Delay in microseconds (Always greater than 0).
->> + */
->> +static u32 ads1018_calc_delay(unsigned int hz)
->> +{
->> +       /*
->> +        * Calculate the worst-case sampling rate by subtracting 10% err=
-or
->> +        * specified in the datasheet...
->> +        */
->> +       hz -=3D DIV_ROUND_UP(hz, 10);
->> +
->> +       /* ...Then calculate time per sample in microseconds. */
->> +       return DIV_ROUND_UP(MICROHZ_PER_HZ, hz);
+On Mon Dec 8, 2025 at 11:00 AM -05, David Lechner wrote:
+> On 12/7/25 10:06 PM, Kurt Borja wrote:
+>> On Sun Dec 7, 2025 at 2:56 PM -05, Jonathan Cameron wrote:
+>>> On Sun, 7 Dec 2025 11:12:51 -0600
+>>> David Lechner <dlechner@baylibre.com> wrote:
+>>>
+>>>> On 12/7/25 10:02 AM, Kurt Borja wrote:
+>>>>> On Sat Dec 6, 2025 at 3:07 PM -05, Jonathan Cameron wrote: =20
+>>>>>> On Thu, 04 Dec 2025 13:01:28 -0500
+>>>>>> Kurt Borja <kuurtb@gmail.com> wrote:
+>>>>>> =20
+>>>>>>> Add ti-ads1018 driver for Texas Instruments ADS1018 and ADS1118 SPI
+>>>>>>> analog-to-digital converters.
+>>>>>>>
+>>>>>>> These chips' MOSI pin is shared with a data-ready interrupt. Defini=
+ng
+>>>>>>> this interrupt in devicetree is optional, therefore we only create =
+an
+>>>>>>> IIO trigger if one is found.
+>>>>>>>
+>>>>>>> Handling this interrupt requires some considerations. When enabling=
+ the
+>>>>>>> trigger the CS line is tied low (active), thus we need to hold
+>>>>>>> spi_bus_lock() too, to avoid state corruption. This is done inside =
+the
+>>>>>>> set_trigger_state() callback, to let users use other triggers witho=
+ut
+>>>>>>> wasting a bus lock.
+>>>>>>>
+>>>>>>> Signed-off-by: Kurt Borja <kuurtb@gmail.com> =20
+>>>>>
+>>>>> ...
+>>>>>  =20
+>>>>>>> +#define ADS1018_VOLT_CHAN(_index, _chan, _realbits) {				\
+>>>>>>> +	.type =3D IIO_VOLTAGE,							\
+>>>>>>> +	.channel =3D _chan,							\
+>>>>>>> +	.scan_index =3D _index,							\
+>>>>>>> +	.scan_type =3D {								\
+>>>>>>> +		.sign =3D 's',							\
+>>>>>>> +		.realbits =3D _realbits,						\
+>>>>>>> +		.storagebits =3D 16,						\
+>>>>>>> +		.shift =3D 16 - _realbits,					\
+>>>>>>> +		.endianness =3D IIO_BE,						\
+>>>>>>> +	},									\
+>>>>>>> +	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |				\
+>>>>>>> +			      BIT(IIO_CHAN_INFO_SCALE) |			\
+>>>>>>> +			      BIT(IIO_CHAN_INFO_SAMP_FREQ),			\ =20
+>>>>>>
+>>>>>> What motivates per channel sampling frequency?
+>>>>>>
+>>>>>> Given you have to write it each time you configure I guess it doesn'=
+t matter much
+>>>>>> either way. =20
+>>>>>
+>>>>> I guess making it shared by all is simpler too, so I'll go with that.
+>>>>>  =20
+>>>> Just keep in mind that if there is ever some use case we don't know
+>>>> about that would require a different rate per channel, we can't change
+>>>> it without breaking usespace. Once the decision is made, we are
+>>>> locked in. Keeping it per-channel seems more future-proof to me.
+>>>
+>>> Only way I can think of that might cause that to matter would be
+>>> if the complex dance to avoid the onehot buffer restriction is added.
+>>> Given you gave this response I went looking and that might make
+>>> sense as an enhancement as the SPI protocol would allow a crafted messa=
+ge
+>>> sequence to do this efficiently.  Extension of figure 15 where first me=
+ssage
+>>> sets config and after that they read out channel and set config for nex=
+t one.
+>>=20
+>> This is possible, yes. But would the timestamp even make sense in this
+>> case? Even in the fastest sampling rate, we would have to wait at least
+>> 1 ms for each channel and the timestamp would become stale.
+>>=20
+>> That was my reasoning for using the onehot restriction.
+>>=20
+>> Is that acceptable? Or maybe we would need to disallow the timestamp
+>> channel if more than one channel is selected?
 >
-> If time per sample is in =C2=B5s, the associated frequency is in MHz, so
-> the correct constant is HZ_PER_MHZ. What did I miss here?
+> Yes. We have pretty much the same situation with timestamps on every
+> other ADC. The timestamp is usually when one full set of samples is
+> triggered. Not when the actual individual conversions are performed.
 
-I was very confused about this, but the dimensional analysis works with
-HZ_PER_MHZ so it should be the right constant. Thanks!
-
-...
-
-> Other than above, LGTM!
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
-
-Thanks a lot for all your feedback!
-
-I also found that the sysfs ABI specifies millivolt for voltage final
-calculation and millidegree for temps. I will adjust scales to comply
-with this in the next version.
-
-Do you have a suggestion for this? I can keep the ADS1018_FSR_TO_SCALE()
-macro but it will get a bit more complex or I can just hard code the
-scales and document the calculation. I'm inclined to do the latter.
+This is good to know for future patches or drivers. Thanks!
 
 
 --=20

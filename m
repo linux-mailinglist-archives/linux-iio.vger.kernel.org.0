@@ -1,348 +1,169 @@
-Return-Path: <linux-iio+bounces-26983-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26984-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19C9CB139C
-	for <lists+linux-iio@lfdr.de>; Tue, 09 Dec 2025 22:46:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0346CCB175C
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 01:02:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C7653015970
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Dec 2025 21:46:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6134230AECA3
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 00:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5C62DC77E;
-	Tue,  9 Dec 2025 21:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1748182D2;
+	Wed, 10 Dec 2025 00:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GpVY8996"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="o2mVzEiK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0283B8D64;
-	Tue,  9 Dec 2025 21:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988E06FC5
+	for <linux-iio@vger.kernel.org>; Wed, 10 Dec 2025 00:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765316758; cv=none; b=Cp9rCJzUI0L+X882XVASeMfkqT3PdkBrD4srJq5/1qHB/Z6cDfrMLoxvIj+zL6G8/9sk+heVwwidj8ys9sp6zGPUrnfMciWJpTQy/kBBkmW0nKYgGdYILHlgx/GRexVJHLTIVPnOCFVDB+4xc1iTeQ2/Wk9KOjzaMhH/zRqhf8w=
+	t=1765324930; cv=none; b=ls+ZB/0Rh5jXBtzHfU5T0+F0NuZDZ3+udp/m45pEaW/wttwmy8JVPIuEMr9x52u4JoV62jSBFZGjKxjazX3L5Hx1bppu02D10uV0fvP2PfEjsE7br0aDtPL3LV8M9UjJ1dKL621CypgSGgJd0zJGImkQkmunSFG0UP2/16ZdyLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765316758; c=relaxed/simple;
-	bh=7cOGOPo9B83cnNVv8VlN+MM28FfPF8tkuK6gWxDTV64=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MaslfbfTX4Sg8N5toMJ3ssJPbHWxc7WP8Rf1zPTxzL0ovU1glVU2lukxRqEb7xzLP1n6sVUQQzPg0M/+cvnEzpDoECzw318aRIrhVvaaXdISr7t2KdEcK1qJTt1bazcqoQgtBSLRAevGztJMsMSUtdkrg+Ho2HjfzaaMr34m6ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GpVY8996; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765316756; x=1796852756;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7cOGOPo9B83cnNVv8VlN+MM28FfPF8tkuK6gWxDTV64=;
-  b=GpVY8996CGbzwk6Yv00Z0n7TCOs3KzdKBWFso8tfhukMJ+MJQJTlSVIF
-   o1k/V8fPeCH40xKuLMujZOEdNxSlA9z8RFhwmFcK8MQN3eqOcMeBTUUHM
-   vPo6CCHKLB91yq26rvKffpxCy58HU/oD4kRh66wlqdql/Z7JF8KqxVWty
-   afsEbl2w0B7MdzMF+uIKKWi561jWHyoQRTqRWDJOshhn8Z61ajeMwEmwK
-   Dxj/Wei3sRDOykhGrxH8+QvoGmU1ib2ZV8A7pOxAqmyqNT0Y7ACu7+BX/
-   cpQM52Bi01uw5aEuisa3zgwn3a0M9bqkEhTODCzwgo9ZL7wnlllKK9x00
-   Q==;
-X-CSE-ConnectionGUID: mvfyb6o1RdScNhsAs+dYdg==
-X-CSE-MsgGUID: P1aYqwBMSqu283JWHDKwFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="71148412"
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
-   d="scan'208";a="71148412"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 13:45:56 -0800
-X-CSE-ConnectionGUID: o8vhg7mET4+eL0B8pRB4oA==
-X-CSE-MsgGUID: 8PPUNGmTQr2qBhqYzbNJpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
-   d="scan'208";a="196336860"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.237])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 13:45:52 -0800
-Date: Tue, 9 Dec 2025 23:45:49 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Ariana Lazar <ariana.lazar@microchip.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: dac: adding support for Microchip MCP47FEB02
-Message-ID: <aTiYjT1kjOP3xN8x@smile.fi.intel.com>
-References: <20251209-mcp47feb02-v3-0-bb0ba9052f4f@microchip.com>
- <20251209-mcp47feb02-v3-2-bb0ba9052f4f@microchip.com>
+	s=arc-20240116; t=1765324930; c=relaxed/simple;
+	bh=XBETjClpZtzYEHwW4MMmqqNrYdl+mNXjJ9Nw2T/r6ug=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lHe5vvQDKi0S2ehAuSnviUfoLphi+bUHqlDrUd39dorwmEFG9qY0sx4BAJDa8psDDEdbl8fByPJ6e4RN9nsLXe7yv84DzTHRREN6uWgqc4Pd3gYY3yGbh4WGHMXw9M22TjA0+mHYryrjrPWQl3+J5KQe3yInvOqQAYkKZ23/3Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=o2mVzEiK; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-4557f0e5e60so506746b6e.3
+        for <linux-iio@vger.kernel.org>; Tue, 09 Dec 2025 16:02:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765324927; x=1765929727; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KTbKv1vVkKrPnK5tPm0Gi9Pxe85hhjzLCItkx/m3ECs=;
+        b=o2mVzEiKtLvParW8MIt+HyguZ8r4uGUCDt2dduQDFXE0LzWQFw0gjui02HG+4IhNkl
+         409BV5nvOa059qM61XKZKJ3HYts1U5KAyamuSlkpSV9yNn4wvEQXYGy1/mum7Xhz91O/
+         r9NOFOAbwP5vNLpNzyyJTdS/bzJBbL2hlTCK2jtXzSswH+ZgcZjuiSbDpKUFOAVwUqpg
+         jC+ESX4b7NsnY3XGW+Y+O6d2S9jP+84wQs8eL6YXcLA0ohvAJZ8UfQuatIeurd78LrNf
+         VQotZNh1RJHZD/xZY7Sq/iOzval7WeNL8woxmotj5rgRBzLzkfrkQ6D6JRNGqCUVMnqh
+         NMlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765324927; x=1765929727;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KTbKv1vVkKrPnK5tPm0Gi9Pxe85hhjzLCItkx/m3ECs=;
+        b=oUQrMoVf72oFqnEmn+xwDh3zJRhNJIoybZqgdqqMS2onA6ImOTdXq+i2Ewa91S4ZYw
+         TwOQAeuoMFMzndXyWneXwIIpvp2N14R/0tjTi1aL3/2s5ptm5EjccmiYJ1gcrJaJdAI0
+         DaDJmE4QzXEO4iRXYosEDdQe0ov47Qji8yIqNqJL+LO1aZRrJy8KnTuUWK255c6t1PFV
+         DxnrsH7VTFL66sMSo2VNcXRhx+993Tbdj1CE16q1Hx9ZufZd+C5iZxDeGbuljCniN+Qx
+         7Ux4AIadoAsxrVTWjPh7wxAy156zMFA72wX2d+s3Nj3sv8XR1l9uGp4avN4GSqYC6S39
+         nn0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUYIBo7C3m0qaWSQAI3T/ixXm3ig5DYPeKPk7t4lbrIi1HKmlnmBlldA9M6E5Bk1Wg69thKdXwihAc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4KSpV0CynEE0+EQLmZz/h/M/UcCxQU31EO2nIxf2rP8KNtkoA
+	5i12fPawDlX4tsXQ/cpsUMOjSObn4CGl1y+t+VeQkO+rwH+uZUuswiDnO3u0T/rU0JM=
+X-Gm-Gg: ASbGnctPjfGwh1yBNMEtMM7Hlrp5QzU93uJlRqV9k1ukeX0saQDWCtSghEvLymEqcn0
+	jREc+FS2596+bhF9/dxQKoeUQdohkG410OWU9rZk/DLrrqyw75CXRuI43c1sF1d/izZMdN5VK09
+	E8zZSw6uLQtl2zJFcuOYO/cPrX8vLgoXQQzQUyKf24oYFFjDBGLpQxHk77CjlbfxVwQbpJTwDRo
+	mNXN0tyERU68HFD24cDBtYExV/EJs3RwgoJISgn5wCqw73FR/Rqb7Y2JyVuMUdJDjX/Kr5Ef6AH
+	YxAaXLN1mgJvQh1xkIuW5ZYyIjA7/kN3Sn26/GFJ5rLw8uEYX0Cf9UD71E2M351ZFaK8oDkZvt+
+	rqvd2l4m+rXEEtWP81+I43g8AvKEf1lKVDvsGAiql5tnABxoxwfqd5aEvZgXmrMUqA8SZvGFO/t
+	qNc2me2AQ17VXDiQQn5ncM+BvooCv9FFVqwAcidS7kpI1joaeHuuWKynpgTNwt
+X-Google-Smtp-Source: AGHT+IGelHO7cGCcA6PiEhLrrcOt3bTb3YgxI0Xmgu0mriW2zt4R+0Laragye1p41eo80Tns9fCO7g==
+X-Received: by 2002:a05:6808:3989:b0:450:d773:ad1e with SMTP id 5614622812f47-45586960a3bmr393107b6e.66.1765324927565;
+        Tue, 09 Dec 2025 16:02:07 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:1635:b560:bfdd:f758? ([2600:8803:e7e4:500:1635:b560:bfdd:f758])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4537f6bc9d5sm8556424b6e.0.2025.12.09.16.02.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Dec 2025 16:02:05 -0800 (PST)
+Message-ID: <2aca99a6-9541-4cd4-933e-815ceaabe365@baylibre.com>
+Date: Tue, 9 Dec 2025 18:02:03 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251209-mcp47feb02-v3-2-bb0ba9052f4f@microchip.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/7] spi: axi-spi-engine: support
+ SPI_MULTI_LANE_MODE_STRIPE
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Michael Hennerich <michael.hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <20251201-spi-add-multi-bus-support-v3-0-34e05791de83@baylibre.com>
+ <20251201-spi-add-multi-bus-support-v3-4-34e05791de83@baylibre.com>
+ <aS79ex5Konr_EeMA@smile.fi.intel.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <aS79ex5Konr_EeMA@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 09, 2025 at 06:06:24PM +0200, Ariana Lazar wrote:
-> This is the iio driver for Microchip MCP47F(E/V)B(0/1/2)1,
-> MCP47F(E/V)B(0/1/2)2, MCP47F(E/V)B(0/1/2)4 and MCP47F(E/V)B(0/1/2)8 series
-> of buffered voltage output Digital-to-Analog Converters with nonvolatile or
-> volatile memory and an I2C Interface.
+On 12/2/25 8:53 AM, Andy Shevchenko wrote:
+> On Mon, Dec 01, 2025 at 08:20:42PM -0600, David Lechner wrote:
+>> Add support for SPI_MULTI_LANE_MODE_STRIPE to the AXI SPI engine driver.
+>>
+>> The v2.0.0 version of the AXI SPI Engine IP core supports multiple
+>> lanes. This can be used with SPI_MULTI_LANE_MODE_STRIPE to support
+>> reading from simultaneous sampling ADCs that have a separate SDO line
+>> for each analog channel. This allows reading all channels at the same
+>> time to increase throughput.
 > 
-> The families support up to 8 output channels.
+> ...
 > 
-> The devices can be 8-bit, 10-bit and 12-bit.
+>> +static u8 spi_engine_all_lane_flags(struct spi_device *spi)
+>> +{
+>> +	u8 flags = 0;
+> 
+>> +	int i;
+> 
+> Why signed?
 
-Thank you for the update, almost good. See my comments below.
+Because it is conventional.
 
-...
+> 
+>> +	for (i = 0; i < spi->num_data_lanes; i++)
+>> +		flags |= BIT(spi->data_lanes[i]);
+>> +
+>> +	return flags;
+>> +}
+> 
+> ...
+> 
+>>  static void spi_engine_gen_xfer(struct spi_engine_program *p, bool dry,
+>> -	struct spi_transfer *xfer)
+>> +				struct spi_transfer *xfer, u32 num_lanes)
+> 
+> Side note: this bool parameter makes code harder to follow. And now we have
+> pointers and integers/booleans to be interleaved. Perhaps reconsider the order
+> of the parameters (and ideally get rid of boolean by making two distinct
+> functions?).
 
-> +config MCP47FEB02
-> +	tristate "MCP47F(E/V)B01/02/04/08/11/12/14/18/21/22/24/28 DAC driver"
-> +	depends on I2C
-> +	help
-> +	  Say yes here if you want to build the driver for the Microchip:
-> +	  8-bit DAC: MCP47FEB01, MCP47FEB02, MCP47FEB04, MCP47FEB08,
-> +	  MCP47FVB01, MCP47FVB02, MCP47FVB04, MCP47FVB08
-> +	  10-bit DAC: MCP47FEB11, MCP47FEB12, MCP47FEB14, MCP47FEB18,
-> +	  MCP47FVB11, MCP47FVB12, MCP47FVB14, MCP47FVB18
-> +	  12-bit DAC: MCP47FEB21, MCP47FEB22, MCP47FEB24, MCP47FEB28,
-> +	  MCP47FVB21, MCP47FVB22, MCP47FVB24, MCP47FVB28
+There would be significant code duplication if we split this
+which would make it error prone.
 
-This is good, but you can do even better, like in cover letter:
+Perhaps a bit unusual parameter ordering according to data type,
+but they are grouped logically, so I think it is OK. `dry` affects
+what is written to `p` and `num_lanes` supplements `xfer`.
 
-	  - 8-bit DAC:
-	    MCP47FEB01, MCP47FEB02, MCP47FEB04, MCP47FEB08,
-	    MCP47FVB01, MCP47FVB02, MCP47FVB04, MCP47FVB08
-	  - ...
+> 
+> ...
+> 
+>>  	version = readl(spi_engine->base + ADI_AXI_REG_VERSION);
+>> -	if (ADI_AXI_PCORE_VER_MAJOR(version) != 1) {
+>> +	if (ADI_AXI_PCORE_VER_MAJOR(version) > 2) {
+> 
+> But this includes v0 as well!
 
-> +	  having 1 to 8 channels, 8/10/12-bit digital-to-analog converter
-> +	  (DAC) with I2C interface.
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called mcp47feb02.
+I think it is OK. There was never a version 0 released, nor
+is one expected.
 
-...
-
-> +struct mcp47feb02_features {
-> +	const char	*name;
-> +	unsigned int	phys_channels;
-> +	unsigned int	resolution;
-
-> +	bool		have_ext_vref1;
-> +	bool		have_eeprom;
-
-Now it's not difference, but maybe in the future we would want more than 4
-flags, which will occupy more memory with such an approach. In any case,
-currently it is fine.
-
-> +};
-
-...
-
-> +	ret = kstrtobool(buf, &state);
-
-+ kstrtox.h
-
-> +	if (ret)
-> +		return ret;
-
-...
-
-> +static ssize_t mcp47feb02_write_powerdown(struct iio_dev *indio_dev, uintptr_t private,
-> +					  const struct iio_chan_spec *ch, const char *buf,
-> +					  size_t len)
-> +{
-> +	struct mcp47feb02_data *data = iio_priv(indio_dev);
-> +	u8 tmp_pd_mode;
-> +	bool state;
-> +	u32 reg;
-> +	int ret;
-> +
-> +	guard(mutex)(&data->lock);
-> +
-> +	ret = kstrtobool(buf, &state);
-> +	if (ret < 0)
-
-	if (ret)
-
-Be consistent with a style.
-
-> +		return ret;
-> +
-> +	reg = ch->address;
-> +
-> +	/*
-> +	 * Set channel to the power-down mode selected. Normal operation mode (0000h)
-> +	 * must be written to register in order to exit  power-down mode.
-> +	 */
-> +	tmp_pd_mode = state ? (data->chdata[reg].powerdown_mode + 1) : MCP47FEB02_NORMAL_OPERATION;
-> +	ret = regmap_update_bits(data->regmap, MCP47FEB02_POWER_DOWN_REG_ADDR,
-> +				 DAC_CTRL_MASK(reg), DAC_CTRL_VAL(reg, tmp_pd_mode));
-> +	if (ret)
-> +		return ret;
-> +
-> +	data->chdata[reg].powerdown = state;
-> +
-> +	return len;
-> +}
-
-...
-
-> +static int mcp47feb02_init_scales_avail(struct mcp47feb02_data *data, int vdd_mV,
-> +					int vref_mV, int vref1_mV)
-> +{
-> +	struct device *dev = &data->client->dev;
-
-Derive it from regmap (here and everywhere else, where no explicit 'client').
-
-> +	int tmp_vref;
-> +
-> +	mcp47feb02_init_scale(data, MCP47FEB02_SCALE_VDD, vdd_mV, data->scale);
-> +
-> +	if (data->use_vref)
-> +		tmp_vref = vref_mV;
-> +	else
-> +		tmp_vref = MCP47FEB02_INTERNAL_BAND_GAP_mV;
-> +
-> +	mcp47feb02_init_scale(data, MCP47FEB02_SCALE_GAIN_X1, tmp_vref, data->scale);
-> +	mcp47feb02_init_scale(data, MCP47FEB02_SCALE_GAIN_X2, tmp_vref * 2, data->scale);
-> +
-> +	if (data->phys_channels >= 4) {
-> +		mcp47feb02_init_scale(data, MCP47FEB02_SCALE_VDD, vdd_mV, data->scale_1);
-
-> +		if (data->use_vref1 && vref1_mV <= 0)
-> +			return dev_err_probe(dev, -EINVAL, "Invalid voltage for Vref1\n");
-
-Hmm... Does negative vref1_mV contain an actual error code? If so, use it.
-
-> +		if (data->use_vref1)
-> +			tmp_vref = vref1_mV;
-> +		else
-> +			tmp_vref = MCP47FEB02_INTERNAL_BAND_GAP_mV;
-> +
-> +		mcp47feb02_init_scale(data, MCP47FEB02_SCALE_GAIN_X1,
-> +				      tmp_vref, data->scale_1);
-> +		mcp47feb02_init_scale(data, MCP47FEB02_SCALE_GAIN_X2,
-> +				      tmp_vref * 2, data->scale_1);
-> +	}
-> +
-> +	return 0;
-> +}
-
-...
-
-> +		ret = fwnode_property_read_string(child, "label", &data->labels[reg]);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret, "%s: invalid label\n",
-> +					     fwnode_get_name(child));
-
-%pfw
-
-...
-
-> +static int mcp47feb02_probe(struct i2c_client *client)
-> +{
-> +	const struct mcp47feb02_features *info;
-> +	struct device *dev = &client->dev;
-> +	struct mcp47feb02_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int vref1_mV = 0;
-> +	int vref_mV = 0;
-> +	int vdd_mV = 0;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-
-> +	data->client = client;
-
-This is used solely for the getting struct device out of it. Since the struct
-mcp47feb02_data contains regmap, this member is duplication and redundancy.
-Use regmap_get_device() in the users.
-
-> +	info = i2c_get_match_data(client);
-> +	if (!info)
-> +		return -EINVAL;
-> +
-> +	data->info = info;
-> +
-> +	if (info->have_eeprom) {
-> +		data->regmap = devm_regmap_init_i2c(client, &mcp47feb02_regmap_config);
-> +		indio_dev->info = &mcp47feb02_info;
-> +	} else {
-> +		data->regmap = devm_regmap_init_i2c(client, &mcp47fvb02_regmap_config);
-> +		indio_dev->info = &mcp47fvb02_info;
-> +	}
-
-> +
-
-Unneeded blank line.
-
-> +	if (IS_ERR(data->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(data->regmap), "Error initializing i2c regmap\n");
-> +
-> +	indio_dev->name = info->name;
-> +
-> +	ret = mcp47feb02_parse_fw(indio_dev, info);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Error parsing firmware data\n");
-> +
-> +	ret = devm_mutex_init(dev, &data->lock);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = devm_regulator_get_enable_read_voltage(dev, "vdd");
-> +	if (ret < 0)
-> +		return ret;
-
-> +	vdd_mV = ret / 1000;
-
-It might be (MICRO / MILLI)
-
-
-> +	ret = devm_regulator_get_enable_read_voltage(dev, "vref");
-> +	if (ret > 0) {
-> +		vref_mV = ret / 1000;
-
-Ditto.
-
-> +		data->use_vref = true;
-> +	} else {
-> +		dev_dbg(dev, "using internal band gap as voltage reference.\n");
-> +		dev_dbg(dev, "Vref is unavailable.\n");
-> +	}
-> +
-> +	if (info->have_ext_vref1) {
-> +		ret = devm_regulator_get_enable_read_voltage(dev, "vref1");
-> +		if (ret > 0) {
-> +			vref1_mV = ret / 1000;
-
-Ditto.
-
-> +			data->use_vref1 = true;
-> +		} else {
-> +			dev_dbg(dev, "using internal band gap as voltage reference 1.\n");
-> +			dev_dbg(dev, "Vref1 is unavailable.\n");
-> +		}
-> +	}
-> +
-> +	ret = mcp47feb02_init_ctrl_regs(data);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Error initialising vref register\n");
-> +
-> +	ret = mcp47feb02_init_ch_scales(data, vdd_mV, vref_mV, vref1_mV);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> 
+>>  	}
+> 
 
 

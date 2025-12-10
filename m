@@ -1,169 +1,155 @@
-Return-Path: <linux-iio+bounces-26984-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-26985-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0346CCB175C
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 01:02:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 962CECB1DFA
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 05:09:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6134230AECA3
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 00:02:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A57A30577EE
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 04:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1748182D2;
-	Wed, 10 Dec 2025 00:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E315230F533;
+	Wed, 10 Dec 2025 04:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="o2mVzEiK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TCwhRmx7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988E06FC5
-	for <linux-iio@vger.kernel.org>; Wed, 10 Dec 2025 00:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2737830E0D8
+	for <linux-iio@vger.kernel.org>; Wed, 10 Dec 2025 04:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765324930; cv=none; b=ls+ZB/0Rh5jXBtzHfU5T0+F0NuZDZ3+udp/m45pEaW/wttwmy8JVPIuEMr9x52u4JoV62jSBFZGjKxjazX3L5Hx1bppu02D10uV0fvP2PfEjsE7br0aDtPL3LV8M9UjJ1dKL621CypgSGgJd0zJGImkQkmunSFG0UP2/16ZdyLc=
+	t=1765339674; cv=none; b=Tl3Qu0Xvqy2uE9UauEYG2XxHGzD4hCnNZvZLMBnToNdhsGhyrh/aDrQRpFZt4l0Rg0OfOrRQfE8hQpsJgWOiibRPcnJtNj/q8F0god8OakJTonDODinQsM3dSwCO9UcxZDDyntsU6JkXzhADZS7DEkSl157SSmc/uOpuj0vZObA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765324930; c=relaxed/simple;
-	bh=XBETjClpZtzYEHwW4MMmqqNrYdl+mNXjJ9Nw2T/r6ug=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lHe5vvQDKi0S2ehAuSnviUfoLphi+bUHqlDrUd39dorwmEFG9qY0sx4BAJDa8psDDEdbl8fByPJ6e4RN9nsLXe7yv84DzTHRREN6uWgqc4Pd3gYY3yGbh4WGHMXw9M22TjA0+mHYryrjrPWQl3+J5KQe3yInvOqQAYkKZ23/3Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=o2mVzEiK; arc=none smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-4557f0e5e60so506746b6e.3
-        for <linux-iio@vger.kernel.org>; Tue, 09 Dec 2025 16:02:08 -0800 (PST)
+	s=arc-20240116; t=1765339674; c=relaxed/simple;
+	bh=i1gpkRHjj52HV/bqp8fIanguYj2f3n3g7/smx5nUqtQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=bKMYhPFw4N7m+5ptlHcBsQS4LsW8kRzw2Xfyq2ufeab6ILwLHLlVnW108LPvhBJ7HuZPQv+VDsd/uBzH+nECSQuQ5M8bgadcGg5bPLjc8gT/U5j0ItwMEjNmALAGiACfhFFTq3O/MYE5dCKdpwog+NsQj54ajJpqDfzfExvlaew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TCwhRmx7; arc=none smtp.client-ip=209.85.217.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-5dbd9c7e468so2812140137.3
+        for <linux-iio@vger.kernel.org>; Tue, 09 Dec 2025 20:07:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765324927; x=1765929727; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KTbKv1vVkKrPnK5tPm0Gi9Pxe85hhjzLCItkx/m3ECs=;
-        b=o2mVzEiKtLvParW8MIt+HyguZ8r4uGUCDt2dduQDFXE0LzWQFw0gjui02HG+4IhNkl
-         409BV5nvOa059qM61XKZKJ3HYts1U5KAyamuSlkpSV9yNn4wvEQXYGy1/mum7Xhz91O/
-         r9NOFOAbwP5vNLpNzyyJTdS/bzJBbL2hlTCK2jtXzSswH+ZgcZjuiSbDpKUFOAVwUqpg
-         jC+ESX4b7NsnY3XGW+Y+O6d2S9jP+84wQs8eL6YXcLA0ohvAJZ8UfQuatIeurd78LrNf
-         VQotZNh1RJHZD/xZY7Sq/iOzval7WeNL8woxmotj5rgRBzLzkfrkQ6D6JRNGqCUVMnqh
-         NMlA==
+        d=gmail.com; s=20230601; t=1765339672; x=1765944472; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jCN+wOZwpo+EvlIubaoI595wTf7FwItvq914uZQahfk=;
+        b=TCwhRmx7DKQcjs1fd2pZ00L5G2gMNwzG3ge9d5wMJcWkwm7PjeI0i1iAI+IvLQh0KY
+         ZpT9+SvotPFyivH19cKXZMCiGBKTQfCddUiTeKmbN5XNpADMv2SDx00G6AL3RvK7KVz/
+         F0htTaYiZ02mwLz5e1xPs2UE3v17LngYwg2LVceVWqwMBHkXBrCuaHaQvazM15FutHTs
+         w0TweSXNXfttP2RmnSCPHYJ4cpGx8ZGHwWecGzHfpbqvP+ShIB6ECfFQ7Z5e+xyIWuq4
+         4pdUa6QGZkGm87oxFzRC9sloq9NQ70PxgMUw2+or4Te8DtH9RfeTizWU9Z2BxJE0cWa5
+         Jb2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765324927; x=1765929727;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KTbKv1vVkKrPnK5tPm0Gi9Pxe85hhjzLCItkx/m3ECs=;
-        b=oUQrMoVf72oFqnEmn+xwDh3zJRhNJIoybZqgdqqMS2onA6ImOTdXq+i2Ewa91S4ZYw
-         TwOQAeuoMFMzndXyWneXwIIpvp2N14R/0tjTi1aL3/2s5ptm5EjccmiYJ1gcrJaJdAI0
-         DaDJmE4QzXEO4iRXYosEDdQe0ov47Qji8yIqNqJL+LO1aZRrJy8KnTuUWK255c6t1PFV
-         DxnrsH7VTFL66sMSo2VNcXRhx+993Tbdj1CE16q1Hx9ZufZd+C5iZxDeGbuljCniN+Qx
-         7Ux4AIadoAsxrVTWjPh7wxAy156zMFA72wX2d+s3Nj3sv8XR1l9uGp4avN4GSqYC6S39
-         nn0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUYIBo7C3m0qaWSQAI3T/ixXm3ig5DYPeKPk7t4lbrIi1HKmlnmBlldA9M6E5Bk1Wg69thKdXwihAc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4KSpV0CynEE0+EQLmZz/h/M/UcCxQU31EO2nIxf2rP8KNtkoA
-	5i12fPawDlX4tsXQ/cpsUMOjSObn4CGl1y+t+VeQkO+rwH+uZUuswiDnO3u0T/rU0JM=
-X-Gm-Gg: ASbGnctPjfGwh1yBNMEtMM7Hlrp5QzU93uJlRqV9k1ukeX0saQDWCtSghEvLymEqcn0
-	jREc+FS2596+bhF9/dxQKoeUQdohkG410OWU9rZk/DLrrqyw75CXRuI43c1sF1d/izZMdN5VK09
-	E8zZSw6uLQtl2zJFcuOYO/cPrX8vLgoXQQzQUyKf24oYFFjDBGLpQxHk77CjlbfxVwQbpJTwDRo
-	mNXN0tyERU68HFD24cDBtYExV/EJs3RwgoJISgn5wCqw73FR/Rqb7Y2JyVuMUdJDjX/Kr5Ef6AH
-	YxAaXLN1mgJvQh1xkIuW5ZYyIjA7/kN3Sn26/GFJ5rLw8uEYX0Cf9UD71E2M351ZFaK8oDkZvt+
-	rqvd2l4m+rXEEtWP81+I43g8AvKEf1lKVDvsGAiql5tnABxoxwfqd5aEvZgXmrMUqA8SZvGFO/t
-	qNc2me2AQ17VXDiQQn5ncM+BvooCv9FFVqwAcidS7kpI1joaeHuuWKynpgTNwt
-X-Google-Smtp-Source: AGHT+IGelHO7cGCcA6PiEhLrrcOt3bTb3YgxI0Xmgu0mriW2zt4R+0Laragye1p41eo80Tns9fCO7g==
-X-Received: by 2002:a05:6808:3989:b0:450:d773:ad1e with SMTP id 5614622812f47-45586960a3bmr393107b6e.66.1765324927565;
-        Tue, 09 Dec 2025 16:02:07 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:1635:b560:bfdd:f758? ([2600:8803:e7e4:500:1635:b560:bfdd:f758])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4537f6bc9d5sm8556424b6e.0.2025.12.09.16.02.03
+        d=1e100.net; s=20230601; t=1765339672; x=1765944472;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jCN+wOZwpo+EvlIubaoI595wTf7FwItvq914uZQahfk=;
+        b=H+3yVf/F+uwo55v3r3YxEAsrt92sf1r+flt29EtXV3k4+FvbBsKKHcuJ9Fbd/nkhCD
+         3wjUrjIHnhVhwpkizQR0OD4cI31eweTH/C7EKhY7c7bRmhs5bq4d/HTFshW9u/Ij+gRb
+         zhLws+v6W7tTYnGPbnSsAQAzNpS1Nd1arm3YipjIcnTYnY7xi/UV7cVPSbpVtt2ilgrI
+         8odYyFXWtMPLrpqTxtEMqGKGKoEQcOcU05SR2Ae1571shmsNepHZt/AWsggW0lcq0hgH
+         Up1lSgaJeio4LCHaxabOOqY9F0g3oDOHlqDz774W5eehStd5dVgLgE0kjeiPXWmDJ/vq
+         MCvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX2w5obcRwXhb0R9GxM8KdI+RMMQKIwR8QndxDt2wM5k4jCSQl7tTG8r+v4zQQdK1TR16NJ0+WEXrI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAQmtGLRdzeUa8aWddBza35ILY0fc1Ugl5gHcfFeoj1EbV5foo
+	giop1JNTwhXhALSWi9nQ0JXHbo2/sRRgjRBDkNHvQc7HaAU0mA8vqPxWWxuq7g==
+X-Gm-Gg: AY/fxX7AhG9EOsjUbxSVs9FlFgLBX3kMyy0e5GStPEwehIA2W5dq8rI4WZJHs7lUMkT
+	qwpGXis0GyJqd4crzVzBoRL6QjuIXYOSbnS6jdRkPB6A5MZ1ZIj9NoyXuhfvzjke6QxR8wiCwQf
+	5p4gAjWfrrpHG28JyjVw/7s6DtFk0RoQzMeukb9T6NzxEyW5MlivQ2TlFQ4ae1wLsVfh0NC3wca
+	oXu9eg+CJpH4WqdXWzhXFoewNJ+COJqyWgE0oq3cI1QAYq3972DGUx7+fuahfq7whXjbFciK2XA
+	9+iFrjoy8SfEhp/+mfUSHuM1PX5OTFl8EkVIdj5UT6tC6hPHhy8H+KheO5BakQVcZ5u+VI3hQmr
+	cXoX9vR1eVj5mk54093F0pAkMUpyw5+ZeRJbnaS2OwIjkLZFvTgFoICSXOZkHJ38mO021ZoMsvs
+	B3KFo=
+X-Google-Smtp-Source: AGHT+IHM30DvWmYtT07T8M42FAxd4lX1UgnTiBhKzv5t+gCOoi7mVGJuQlvB9Bjp4pGe49Z4oPi6Rg==
+X-Received: by 2002:a05:6102:390f:b0:5db:faa2:f3e1 with SMTP id ada2fe7eead31-5e571a3b7eemr309836137.15.1765339672002;
+        Tue, 09 Dec 2025 20:07:52 -0800 (PST)
+Received: from localhost ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-93eed6c41c6sm7781948241.5.2025.12.09.20.07.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Dec 2025 16:02:05 -0800 (PST)
-Message-ID: <2aca99a6-9541-4cd4-933e-815ceaabe365@baylibre.com>
-Date: Tue, 9 Dec 2025 18:02:03 -0600
+        Tue, 09 Dec 2025 20:07:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/7] spi: axi-spi-engine: support
- SPI_MULTI_LANE_MODE_STRIPE
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20251201-spi-add-multi-bus-support-v3-0-34e05791de83@baylibre.com>
- <20251201-spi-add-multi-bus-support-v3-4-34e05791de83@baylibre.com>
- <aS79ex5Konr_EeMA@smile.fi.intel.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aS79ex5Konr_EeMA@smile.fi.intel.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 09 Dec 2025 23:07:49 -0500
+Message-Id: <DEU8OOETPWRO.12I8HY6SHTQAA@gmail.com>
+Subject: Re: [PATCH v7 2/2] iio: adc: Add ti-ads1018 driver
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: "Andy Shevchenko" <andy.shevchenko@gmail.com>, "Kurt Borja"
+ <kuurtb@gmail.com>
+Cc: "Jonathan Cameron" <jic23@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Tobias Sperling" <tobias.sperling@softing.com>,
+ "David Lechner" <dlechner@baylibre.com>, =?utf-8?q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>,
+ <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Jonathan Cameron"
+ <Jonathan.Cameron@huawei.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251208-ads1x18-v7-0-b1be8dfebfa2@gmail.com>
+ <20251208-ads1x18-v7-2-b1be8dfebfa2@gmail.com>
+ <CAHp75VcOVpGbb3UBm+QQrw25=yU+J624c29ptMk8yrJpNEL=jA@mail.gmail.com>
+In-Reply-To: <CAHp75VcOVpGbb3UBm+QQrw25=yU+J624c29ptMk8yrJpNEL=jA@mail.gmail.com>
 
-On 12/2/25 8:53 AM, Andy Shevchenko wrote:
-> On Mon, Dec 01, 2025 at 08:20:42PM -0600, David Lechner wrote:
->> Add support for SPI_MULTI_LANE_MODE_STRIPE to the AXI SPI engine driver.
->>
->> The v2.0.0 version of the AXI SPI Engine IP core supports multiple
->> lanes. This can be used with SPI_MULTI_LANE_MODE_STRIPE to support
->> reading from simultaneous sampling ADCs that have a separate SDO line
->> for each analog channel. This allows reading all channels at the same
->> time to increase throughput.
-> 
-> ...
-> 
->> +static u8 spi_engine_all_lane_flags(struct spi_device *spi)
+On Mon Dec 8, 2025 at 3:19 PM -05, Andy Shevchenko wrote:
+
+...
+
+>> +/**
+>> + * ads1018_calc_delay - Calculates a suitable delay for a single-shot r=
+eading
+>> + * @hz: Sampling frequency
+>> + *
+>> + * Calculates an appropriate delay for a single shot reading given a sa=
+mpling
+>> + * frequency.
+>> + *
+>> + * Return: Delay in microseconds (Always greater than 0).
+>> + */
+>> +static u32 ads1018_calc_delay(unsigned int hz)
 >> +{
->> +	u8 flags = 0;
-> 
->> +	int i;
-> 
-> Why signed?
-
-Because it is conventional.
-
-> 
->> +	for (i = 0; i < spi->num_data_lanes; i++)
->> +		flags |= BIT(spi->data_lanes[i]);
+>> +       /*
+>> +        * Calculate the worst-case sampling rate by subtracting 10% err=
+or
+>> +        * specified in the datasheet...
+>> +        */
+>> +       hz -=3D DIV_ROUND_UP(hz, 10);
 >> +
->> +	return flags;
->> +}
-> 
-> ...
-> 
->>  static void spi_engine_gen_xfer(struct spi_engine_program *p, bool dry,
->> -	struct spi_transfer *xfer)
->> +				struct spi_transfer *xfer, u32 num_lanes)
-> 
-> Side note: this bool parameter makes code harder to follow. And now we have
-> pointers and integers/booleans to be interleaved. Perhaps reconsider the order
-> of the parameters (and ideally get rid of boolean by making two distinct
-> functions?).
+>> +       /* ...Then calculate time per sample in microseconds. */
+>> +       return DIV_ROUND_UP(MICROHZ_PER_HZ, hz);
+>
+> If time per sample is in =C2=B5s, the associated frequency is in MHz, so
+> the correct constant is HZ_PER_MHZ. What did I miss here?
 
-There would be significant code duplication if we split this
-which would make it error prone.
+I was very confused about this, but the dimensional analysis works with
+HZ_PER_MHZ so it should be the right constant. Thanks!
 
-Perhaps a bit unusual parameter ordering according to data type,
-but they are grouped logically, so I think it is OK. `dry` affects
-what is written to `p` and `num_lanes` supplements `xfer`.
+...
 
-> 
-> ...
-> 
->>  	version = readl(spi_engine->base + ADI_AXI_REG_VERSION);
->> -	if (ADI_AXI_PCORE_VER_MAJOR(version) != 1) {
->> +	if (ADI_AXI_PCORE_VER_MAJOR(version) > 2) {
-> 
-> But this includes v0 as well!
+> Other than above, LGTM!
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
-I think it is OK. There was never a version 0 released, nor
-is one expected.
+Thanks a lot for all your feedback!
 
-> 
->>  	}
-> 
+I also found that the sysfs ABI specifies millivolt for voltage final
+calculation and millidegree for temps. I will adjust scales to comply
+with this in the next version.
+
+Do you have a suggestion for this? I can keep the ADS1018_FSR_TO_SCALE()
+macro but it will get a bit more complex or I can just hard code the
+scales and document the calculation. I'm inclined to do the latter.
+
+
+--=20
+ ~ Kurt
 
 

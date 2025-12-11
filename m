@@ -1,94 +1,165 @@
-Return-Path: <linux-iio+bounces-27000-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27017-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A1CCB450D
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 00:50:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA8DCB547E
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 10:01:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C6A23050BB5
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Dec 2025 23:49:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C0BB0301784D
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 09:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250232EDD70;
-	Wed, 10 Dec 2025 23:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4798D30171A;
+	Thu, 11 Dec 2025 08:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z5PcNG/u"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="bqC5HF97"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB4D2D8DC8
-	for <linux-iio@vger.kernel.org>; Wed, 10 Dec 2025 23:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF9530149C;
+	Thu, 11 Dec 2025 08:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765410541; cv=none; b=lCfHWtP0uYeO+ABjSQdP32L+AM2KtJaGE9bSnFo3JnbreWnjJXwTB4nJ0uST7Y1X+e+AZwF1CgTQdUcqilkEHU33FEB4R+vb+Kb6y4cm+quvqMusSl9cXk38Oh+51glX2smJ3jMuqaCRK7qp1rmkM3qktkx60Wf9K1bd+cDMOe8=
+	t=1765443116; cv=none; b=mmkaTS1a30I7Ad2ygyXVMmwletC4lOskwWReYx2vzDnK9hjLAgH8eUkIwSe1fQXoZNglV1C6iv/cDZtYcV8RMEffoX+UDTZRxJ9eIbd+ENKEregYO24PehCpZT6EQ92DH/4av9u4Oe0KvECeuTWHzmxCEMAd1kfNBgAXC8eSWlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765410541; c=relaxed/simple;
-	bh=y60yzOXBri/L+USfjESMvBfJsbTzqKzZQxx5cZLYtRE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R5pVYQ/skqLDjWGFflesZFnUOqD35OD6rdRZSfBv6lp8G5CD32xkccPsiNY2zLRM6H6YPvmT0siuYgmCP11yd6UUs3zopjtf/57bFFcltxRFRqhYom733qzt68epwvRpkEZ8R3l1uj4kAiLbQ4KjZ5tLdB+yrobsLNa+6ESHssY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z5PcNG/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604E4C4AF0D
-	for <linux-iio@vger.kernel.org>; Wed, 10 Dec 2025 23:49:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765410541;
-	bh=y60yzOXBri/L+USfjESMvBfJsbTzqKzZQxx5cZLYtRE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Z5PcNG/uTJVf8ovzG92XbInb4q24y8r41AstnbLrJFLDt5QLKazLsd809WCY3YjRl
-	 /Bt5nHS3rEKbwZKpgbeOKdnw45dydjGAzC6HKjUuOQ/1h3Mfgtyu2NTIvVwf+Nd0Sv
-	 esbhxLVcghcF16UOxj9Gk/T5NgU4oSVl97S4SrL/St98jJOqXCFAsTnczBHtXwQSVP
-	 uYrY4+PHiPgRTyI5rGJSjktcsV27IJ4fSN4LaK/lNjV9aThTFBryjLshyOAqYSGZ70
-	 1JC1Uuuc5DcRs9Te9ig5lD144ps/zZnFzaivGSnckFhbIs2+R83w1YBIxbe7dPadcM
-	 bUZPGvXr8nwXg==
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-78c6957a327so3881207b3.3
-        for <linux-iio@vger.kernel.org>; Wed, 10 Dec 2025 15:49:01 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVBy4x9iJVDWhuU5DZefsTMix8NykP3SdLBgOSfSmKfBZKWiOYkRP8McHQ0BigvRCFMehou3r/eqCg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgthXzIbEx3/ihS4UkVSdyTCPjG7gIwv15hvuCNMc7h/DEwBt6
-	ps6CzqrZ+q93EDVzFGAO0OvD3wNgOjrl+8WxkSv7V6plo0I9lBM1NRNORk4ivYoev+Ga4ErJG0D
-	ieo+I9D2+Cjj4InMhWgDVywpujq03pi4=
-X-Google-Smtp-Source: AGHT+IEHXvr05tQprOfY4yuLemAclzGDIykx0DQotGMLD9Gxdxo14Y7Yq0Ns1rtG/7YuZgr9lz1HdVefclNdAjlBPqA=
-X-Received: by 2002:a05:690c:45c5:b0:786:a185:13b6 with SMTP id
- 00721157ae682-78c9d6fd106mr38184447b3.22.1765410540740; Wed, 10 Dec 2025
- 15:49:00 -0800 (PST)
+	s=arc-20240116; t=1765443116; c=relaxed/simple;
+	bh=5nJRX8cBMM5cpww6xJMJgmgVNn29qROHtAouR2sAhjw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WDh9jT7s5e3+5Y3i7G807N9F7Pk+a90Q1QvB5alh9MyNaXjzXyN/m73m0bMtDZRhqW46XYgePxmM9frw0qgBA/QHXtc9AcUxFi2EQvcTbsV58z414CNBU5mnet62xk7CPRMLrF6xu9zkaTAKwAhqk7TFfj/gqkDOqgSvT505yyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=bqC5HF97; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1765442785;
+	bh=e/DM6Sr1SqiFaFi6So6itNGziX/g9agVvmrw9nqOKwk=;
+	h=From:Subject:Date:To:Cc;
+	b=bqC5HF97IEXGGiwn8BjKImcZTCClNnB5F20Ne02GYuzhc+xDMiDRF+Z09oKeAgrrL
+	 jLJwO0XqylJgqUw5ZMQxQBGVLJk8bZNZm//deP56z5ytmmRPS1z919GTDPdpgieASR
+	 wQj3FYYvWzGaCnsX7lvoNg6pAbH8wMrWcz+aeqHbvZsOqDZNdr6zUbki4wtinbPe/p
+	 YEMg+SviXUlGezg5bkwlU/iDzeNrtJ4W0Viu8jpT69TRVD/cg7WOIPEiaS8gkz2iCb
+	 W68/0xn4kthIfGBvzsjLKS29+37YApjp2QqNC4f8WR7bnVOuDqSn7QTMljkot5glDw
+	 DoCvbsMthhpKQ==
+Received: from [127.0.1.1] (fs98a57d9c.tkyc007.ap.nuro.jp [152.165.125.156])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 490B164DF5;
+	Thu, 11 Dec 2025 16:46:19 +0800 (AWST)
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH RFC 00/16] Eliminate warnings for AST2500 and AST2600 EVB
+ devicetrees
+Date: Thu, 11 Dec 2025 17:45:42 +0900
+Message-Id: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251205-staging-ad4062-v3-0-8761355f9c66@analog.com> <20251205-staging-ad4062-v3-9-8761355f9c66@analog.com>
-In-Reply-To: <20251205-staging-ad4062-v3-9-8761355f9c66@analog.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 11 Dec 2025 00:48:49 +0100
-X-Gmail-Original-Message-ID: <CAD++jLnAcBv0Lb_e6edAz82UkDZSeb-3y9Xm3m4rsgHiw0kLJg@mail.gmail.com>
-X-Gm-Features: AQt7F2rsb8LxbmyiV3W00GvP06QDfHAe-VUxMX5VRApDEsFfkERPeYu_jWokYRY
-Message-ID: <CAD++jLnAcBv0Lb_e6edAz82UkDZSeb-3y9Xm3m4rsgHiw0kLJg@mail.gmail.com>
-Subject: Re: [PATCH v3 9/9] iio: adc: ad4062: Add GPIO Controller support
-To: Jorge Marques <jorge.marques@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-gpio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALeEOmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDI0ND3ZTUMt2UEt3yxKK8zLz0Yt3EnBzdpBRTC1OTJAOTFDMDJaDOgqL
+ UtMwKsKnRSkFuzkqxtbUAFLhwe2oAAAA=
+X-Change-ID: 20251211-dev-dt-warnings-all-bd5854b04d60
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>
+Cc: Joel Stanley <joel@jms.id.au>, linux-hwmon@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
+ linux-mmc@vger.kernel.org, linux-crypto@vger.kernel.org, 
+ linux-iio@vger.kernel.org, Andrew Jeffery <andrew@codeconstruct.com.au>
+X-Mailer: b4 0.14.3
 
-On Fri, Dec 5, 2025 at 4:19=E2=80=AFPM Jorge Marques <jorge.marques@analog.=
-com> wrote:
+Hi all,
 
-> When gp0 or gp1 is not taken as an interrupt, expose them as GPO if
-> gpio-contoller is set in the devicetree. gpio-regmap is not used
-> because the GPO static low is 'b101 and static high is 0b110; low state
-> requires setting bit 0, not fitting the abstraction of low=3D0 and
-> high=3Dmask.
->
-> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+This series removes the remaining warnings produced by `make
+CHECK_DTBS=y ...` for the AST2500 and AST2600 EVBs and their related
+DTSIs. The tidy-up has the usual benefit of making it clear to
+contributors that any warnings are likely their own to fix before their
+patches will be considered for merging.
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+I've framed it as an RFC with all patches contained in the one series
+so the goal is clear, we can see what's needed to reach it, and we can
+decide whether and how it should be split or merged going forward.
 
-Yours,
-Linus Walleij
+As it stands there's little in the way of code change, except to
+pinctrl (though also not much there). As such I've included the
+binding maintainers and subsystem lists as recipients but not yet Cc'ed
+subsystem maintainers directly because there are quite a few and I hope
+to avoid mostly uninteresting patches being a source of irritation.
+
+The patches fall into several groups:
+
+Patch 1:
+  Rob's conversion of the PWM/tach binding to DT schema with fixes
+  applied for the license and typos identified by Krzysztof.
+
+Patches 2-5:
+  Fixes for the warnings related to the LPC and pinctrl nodes, touching
+  relevant drivers and the devicetrees.
+
+  I expect that if this approach is acceptable that we'll need to split
+  application of the patches across successive release cycles, with the
+  driver changes going in first.
+
+Patches 6-8:
+  Fix MMC/SDHCI warnings, touching the relevant binding and devicetrees
+
+Patches 9-10:
+  Clarify the relationships between the ACRY and AHB controller
+
+Patches 11-16:
+  The remaining pieces that eliminate the warnings
+
+I'm at plumbers so don't have hardware on hand to test with, but some
+brief smoke tests under qemu look okay. Given that it's all RFC that
+should be enough for the moment. I'll do more testing after discussions
+and when I have boards at hand.
+
+Please review!
+
+Andrew
+
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+---
+Andrew Jeffery (15):
+      pinctrl: aspeed: g5: Constrain LPC binding revision workaround to AST2500
+      pinctrl: aspeed: g5: Allow use of LPC node instead of LPC host controller
+      ARM: dts: aspeed: g5: Use LPC phandle for pinctrl aspeed,external-nodes
+      ARM: dts: aspeed: Remove unspecified LPC host controller node
+      dt-bindings: mmc: Switch ref to sdhci-common.yaml
+      ARM: dts: aspeed: Remove sdhci-drive-type property from AST2600 EVB
+      ARM: dts: aspeed: Use specified wp-inverted property for AST2600 EVB
+      dt-bindings: bus: aspeed: Require syscon for AST2600 AHB controller
+      dt-bindings: crypto: Document aspeed,ahbc property for Aspeed ACRY
+      ARM: dts: aspeed: Drop syscon compatible from EDAC in g6 dtsi
+      ARM: dts: aspeed: g6: Drop unspecified aspeed,ast2600-udma node
+      ARM: dts: aspeed: ast2600-evb: Tidy up A0 work-around for UART5
+      dt-bindings: iio: adc: Allow interrupts property for AST2600
+      ARM: dts: aspeed: g6: Drop clocks property from arm,armv7-timer
+      dt-bindings: mfd: Document smp-memram node for AST2600 SCU
+
+Rob Herring (Arm) (1):
+      dt-bindings: hwmon: Convert aspeed,ast2400-pwm-tacho to DT schema
+
+ .../bindings/bus/aspeed,ast2600-ahbc.yaml          |   8 +-
+ .../bindings/crypto/aspeed,ast2600-acry.yaml       |   7 ++
+ .../bindings/hwmon/aspeed,ast2400-pwm-tacho.yaml   | 106 +++++++++++++++++++++
+ .../devicetree/bindings/hwmon/aspeed-pwm-tacho.txt |  73 --------------
+ .../bindings/iio/adc/aspeed,ast2600-adc.yaml       |   3 +
+ .../bindings/mfd/aspeed,ast2x00-scu.yaml           |  18 ++++
+ .../devicetree/bindings/mmc/aspeed,sdhci.yaml      |   2 +-
+ arch/arm/boot/dts/aspeed/aspeed-ast2600-evb.dts    |   7 +-
+ .../dts/aspeed/aspeed-bmc-facebook-clemente.dts    |   4 -
+ arch/arm/boot/dts/aspeed/aspeed-g4.dtsi            |   5 -
+ arch/arm/boot/dts/aspeed/aspeed-g5.dtsi            |   8 +-
+ arch/arm/boot/dts/aspeed/aspeed-g6.dtsi            |  17 +---
+ drivers/pinctrl/aspeed/pinctrl-aspeed-g5.c         |  32 ++++---
+ 13 files changed, 165 insertions(+), 125 deletions(-)
+---
+base-commit: 5ce74bc1b7cb2732b22f9c93082545bc655d6547
+change-id: 20251211-dev-dt-warnings-all-bd5854b04d60
+
+Best regards,
+-- 
+Andrew Jeffery <andrew@codeconstruct.com.au>
+
 

@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-27025-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27026-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F47CCB7147
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 20:56:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5BBCB7199
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 20:58:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C6A2C30028B7
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 19:56:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6CD5D301EFEC
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 19:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFCE3271EA;
-	Thu, 11 Dec 2025 19:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52ABD31A56C;
+	Thu, 11 Dec 2025 19:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Doq9lqp+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJwriffR"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFF230BF59;
-	Thu, 11 Dec 2025 19:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE246313294;
+	Thu, 11 Dec 2025 19:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765482992; cv=none; b=Hrwx3i3gH80XKzzhdggBPabQexsA7os6N3IL2FiM+wUGPL9GYQyNUN7DcJz4WsHAyP4olHWEBA7kOM80FKw0VM0nmJEXG1b7pTpGh2kqRSYHHsleTPAjI2pDi9qKrpSbU+04EP9AxEfRiUSCtE3adT5eO5XeJj6r6vSvpvRQboo=
+	t=1765483062; cv=none; b=Jxw+b/jO465p29yZ/cnNLCb3k30wA8veDdR8kik9jUT41HdJO4JmBC2Svb2jcPcD9v9Es3C0oOXRWa2z7iMFH3faI8ZEJVR4PtbaCnfgwD9X736B2kBX4VAmfQgPPZys9L5RgN5FFTr+vk1qchB5u3iLpcCwN0YGVmQ31zulxfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765482992; c=relaxed/simple;
-	bh=HMv7vikpdiyc0tr0TYhhhGH6GWe2x1iyzq1EumBTr7g=;
+	s=arc-20240116; t=1765483062; c=relaxed/simple;
+	bh=Io33r65MkdLUI5ebj+eMtKFDPiobvPbUbAdbp66gtmM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LmvjvjCIL4sns/lN8yrKz0Qk5zP4/35YZrhFwI5q1KPBUUdR0WTfw4PaZibcHDqdWhwRXXg3nesYBKSwyZl9TGixZyMfBVUuo5CQJsNRZWhcVlCSEyueSBFrLPInCUW0eZjcXErBXP2Pq2nhnxSzLfDDG3TLV5nZqYO9HBxEX58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Doq9lqp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C135C4CEF7;
-	Thu, 11 Dec 2025 19:56:31 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=QsT2cIs+ibn0aZoj3XueGsg2Jkpq3Y5ZRijYu/osJDNNFErMfbFDaMUiXf2XO7eoSskhVR2M384Y/6lzx0Tx6qWeMv89HIFOnTcYCOYQqI4mGVvaeFGejtoE0SgV2kYpGgip8w9ThYwr/LKbSI7KG2IyF4dp+uhfO4BtC/DqQJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJwriffR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D7EC4CEF7;
+	Thu, 11 Dec 2025 19:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765482991;
-	bh=HMv7vikpdiyc0tr0TYhhhGH6GWe2x1iyzq1EumBTr7g=;
+	s=k20201202; t=1765483061;
+	bh=Io33r65MkdLUI5ebj+eMtKFDPiobvPbUbAdbp66gtmM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Doq9lqp+j2BkKC59X5d5xNwaCtkHdKMBqSJU7xd3VUKEqtGRMStY3+hLyCm4cx0PY
-	 GLAbUgXK69XtkVMGraP+oCePaYTvpho4LQX16dgzQU1+DO00Nz7RcTjFKFBOuONG85
-	 2hR0JZ7ywSzoUAA/FuiUFFdJ3ShigaABCVM40fAqO/QyaSay5gu4EU85LRfFAaa+hX
-	 faR5MhuXj9/QnQr/LosBEaKF3bQds37XndtjoLJknc2/MmhaxM4oGTuWXoag+2mIEd
-	 Ph46y5A3pEv34txN9cZWx3UGV9trTMC1k0Uzd3PUSZMn/6Svnsr7Ewt9n0lTSQKP1N
-	 Bh8xxGiRogr9g==
-Date: Thu, 11 Dec 2025 13:56:28 -0600
+	b=IJwriffR9MxTEwDY8BFqGcfGKTyA9NAJZYyNkQxepc3ukZDkbmlLiKZnUuUg5BdpK
+	 +rDsFiU20ettgn8YFwTV59q0fKS8i7z9iiB6wl+9lzfRWDAY/Zuj4Y/Myg+zO3UmsY
+	 HS/D5dGWLaGcK0X3un+3iTS7eoW1xKKfXGc9h3rIp/GFfx7Q9KASCQ/D4K+bwv5BiT
+	 vvrB5Wstcdhi2i18vI+CBPhTlcSAulgmYvhh4QripX7dKRxdFeZpJJASdUAP+stp7E
+	 cwsxoA3FUK02G6cbNXED9jumWAIa3H3gqGjX6KJhTwSD3zJwvuwBIbP9LeRKtv0Ecx
+	 QUk3WGja0XMpA==
+Date: Thu, 11 Dec 2025 13:57:38 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Andrew Jeffery <andrew@codeconstruct.com.au>
-Cc: linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org,
-	Joel Stanley <joel@jms.id.au>, Linus Walleij <linusw@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-hwmon@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-aspeed@lists.ozlabs.org, linux-mmc@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH RFC 09/16] dt-bindings: bus: aspeed: Require syscon for
- AST2600 AHB controller
-Message-ID: <176548298699.1799665.1259025609428986424.robh@kernel.org>
+Cc: linux-hwmon@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	openbmc@lists.ozlabs.org, linux-mmc@vger.kernel.org,
+	Linus Walleij <linusw@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-iio@vger.kernel.org, Joel Stanley <joel@jms.id.au>,
+	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org
+Subject: Re: [PATCH RFC 10/16] dt-bindings: crypto: Document aspeed,ahbc
+ property for Aspeed ACRY
+Message-ID: <176548305816.1801207.6301308659120970227.robh@kernel.org>
 References: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
- <20251211-dev-dt-warnings-all-v1-9-21b18b9ada77@codeconstruct.com.au>
+ <20251211-dev-dt-warnings-all-v1-10-21b18b9ada77@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -63,19 +63,18 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251211-dev-dt-warnings-all-v1-9-21b18b9ada77@codeconstruct.com.au>
+In-Reply-To: <20251211-dev-dt-warnings-all-v1-10-21b18b9ada77@codeconstruct.com.au>
 
 
-On Thu, 11 Dec 2025 17:45:51 +0900, Andrew Jeffery wrote:
-> The AST2600's ACRY (eliptic curve and RSA crypto engine) requires access
-> to configuration exposed by the AHB controller. The devicetree already
-> describes the AHB controller node as a syscon, so require this in the
-> binding to satisfy the ACRY relationship.
+On Thu, 11 Dec 2025 17:45:52 +0900, Andrew Jeffery wrote:
+> The g6 DTSI already provides the property and the driver errors out if
+> the AHB controller's syscon can't be located, so define the property and
+> mark it as required.
 > 
 > Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 > ---
->  Documentation/devicetree/bindings/bus/aspeed,ast2600-ahbc.yaml | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>  Documentation/devicetree/bindings/crypto/aspeed,ast2600-acry.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
 
 Applied, thanks!

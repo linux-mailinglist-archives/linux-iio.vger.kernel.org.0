@@ -1,51 +1,51 @@
-Return-Path: <linux-iio+bounces-27005-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27006-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106DECB536A
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 09:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1ED4CB5387
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 09:51:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CF3B3042FD6
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 08:47:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9474E304E55B
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Dec 2025 08:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974352F3600;
-	Thu, 11 Dec 2025 08:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D622F6592;
+	Thu, 11 Dec 2025 08:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="LBexYCu5"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="B8t9I1BI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FDF29BDBA;
-	Thu, 11 Dec 2025 08:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA8B41C71;
+	Thu, 11 Dec 2025 08:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765442824; cv=none; b=hWE0nDCuef46iHjkOPx6fGWHOafZJStRzINu6Y+70YPokDHnuLL5qVuSz74xSdN+7+y6qDgG7NV6ikdL/ESM0usSyyRy/iYOKhsLymE0j+i2lk/F+56WHFEGgSRvEMchxE7ThSFc337RhPgZH/AHUnDdQ4FWM2MTtLWspXTWDW0=
+	t=1765442828; cv=none; b=OFFWzrrGSqSjtmLqOxIE8gLRoO5YTz//5CZ0doD+IhTotUh7wbnZ7U6/ePkbQP8hD0MhUDHmJ1DE9cjHTSPkxF6KYEeEWhNoRrUroPGy8qsLi5SqWUVt2lsm2oQDg4wAv0/hw/6zt9SteWlJUB3VIK46Rme0zzjj12nvI1gfrks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765442824; c=relaxed/simple;
-	bh=5c/EtVOwEFrZpuLYD48rxEyL1ambe2YWVVgA5y5GtMc=;
+	s=arc-20240116; t=1765442828; c=relaxed/simple;
+	bh=IO32uN08wSLVBaTvAz1jQdyNr+G1ASvU88TQ4UeRBYA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aMP+E58WUMEEBDAVQ9tBTXR4+3j0ilrTU+LVnI71GyVizZ4PA5+FucHDqH+0B7LgsJWMqzlAfm2rB+Y47V0o8WhPaN4ldzSu3LT5mHdl9t0eaxcuOWAFxJPnJjnFSRBIAMqqEzH7Kga954DKKtnRatxJ1DvlyfeCWfygVplVr2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=LBexYCu5; arc=none smtp.client-ip=203.29.241.158
+	 In-Reply-To:To:Cc; b=BBJ7Y+axR7MdgNbNJpa1IEfwvyUh+W0ziEDgC1OAo19NkdAAWfBfjuvYtvNfwUGeYUXoWTyq9g7FoYQQserlPIYHE+1PKS4/PaT1onRuFfRbj6iKDrAb5/rw13jUdI7K1NDIUCH8oqJdOSFD7GZLELo44o01qOBlOzwpEYom0N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=B8t9I1BI; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1765442818;
-	bh=xzi4Fz/8qdzZMUIpWOM8hn8WXDg65D2r48ph45pVRFM=;
+	d=codeconstruct.com.au; s=2022a; t=1765442824;
+	bh=wKc2i0CrPvuU1yF1mbUmVahRwUdSF7nDlBOZD6lUOdk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=LBexYCu5FLXa70UuDT+IeSRE9494xvFnAQ5B1VicNIsbUW/qZG3jj6tGJ59lFFv0I
-	 R46vEDyKtZxOXwmamOgLKTDcuGERt+/frBHXX6bUkc69HCtm3sg+06255Mp4KZ2dxb
-	 stTMwTcVtHS/42CGKOwJLJVKUU9oFQ43SFhZtRmkpOsnn/lPqpi+y0kxyagQv+DqSG
-	 H4axat0DbeF83B/6ycx3p61xRxKqi2PeoKRDTFjs+PBJOsLyADQGkNcalLG6gLIEvv
-	 Cv6cuNW6EQuYeXPn9nrSIxWREXM2hmAl7sseCtAKg8d+Db5a7WdhH8NvUyOJKvGirY
-	 zTGENCcHCgpMw==
+	b=B8t9I1BIs5UeAK2qrj6W0cam9GDEz9JQEsllJCfUXrNppjnaHgcRHhW/9sQOYq5Y5
+	 Ebhpy5xshRlM30oEfH8+BHfvFLG19aZ98PEloPYo/q9BIbt/YWuDd9UNbUOPY3Ufgf
+	 RQs4vTNHdEr+XKoqQF/5SZLFQA36B3Gy8a89R2AhJoXirgahN0C0IjoanRa8wV50pq
+	 +Gj9Oy36Q+S4+jRIcknK8OtPGfypeQxD1dBkbHZ2oKjrsey6rUGHSa+OHLwggUKLYG
+	 //JetDhyHkm+nCznnAMj+skz8xW533V6aGKRFJQzrd4OmBEiN6NBWEXIdfGYSA5WAq
+	 Jw4xesDSSU43g==
 Received: from [127.0.1.1] (fs98a57d9c.tkyc007.ap.nuro.jp [152.165.125.156])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 7F8D67D6BB;
-	Thu, 11 Dec 2025 16:46:53 +0800 (AWST)
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 7081A7D6B0;
+	Thu, 11 Dec 2025 16:46:59 +0800 (AWST)
 From: Andrew Jeffery <andrew@codeconstruct.com.au>
-Date: Thu, 11 Dec 2025 17:45:48 +0900
-Subject: [PATCH RFC 06/16] dt-bindings: mmc: Switch ref to
- sdhci-common.yaml
+Date: Thu, 11 Dec 2025 17:45:49 +0900
+Subject: [PATCH RFC 07/16] ARM: dts: aspeed: Remove sdhci-drive-type
+ property from AST2600 EVB
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251211-dev-dt-warnings-all-v1-6-21b18b9ada77@codeconstruct.com.au>
+Message-Id: <20251211-dev-dt-warnings-all-v1-7-21b18b9ada77@codeconstruct.com.au>
 References: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
 In-Reply-To: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -67,27 +67,34 @@ Cc: Joel Stanley <joel@jms.id.au>, linux-hwmon@vger.kernel.org,
  linux-iio@vger.kernel.org, Andrew Jeffery <andrew@codeconstruct.com.au>
 X-Mailer: b4 0.14.3
 
-Enable use of common SDHCI-related properties such as sdhci-caps-mask as
-found in the AST2600 EVB DTS.
+The property isn't specified in the bindings and is not used by the
+corresponding driver, so drop it.
 
 Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 ---
- Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/aspeed/aspeed-ast2600-evb.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-index 9fce8cd7b0b6..d24950ccea95 100644
---- a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-+++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-@@ -41,7 +41,7 @@ properties:
- patternProperties:
-   "^sdhci@[0-9a-f]+$":
-     type: object
--    $ref: mmc-controller.yaml
-+    $ref: sdhci-common.yaml
-     unevaluatedProperties: false
- 
-     properties:
+diff --git a/arch/arm/boot/dts/aspeed/aspeed-ast2600-evb.dts b/arch/arm/boot/dts/aspeed/aspeed-ast2600-evb.dts
+index de83c0eb1d6e..3eba676e57f1 100644
+--- a/arch/arm/boot/dts/aspeed/aspeed-ast2600-evb.dts
++++ b/arch/arm/boot/dts/aspeed/aspeed-ast2600-evb.dts
+@@ -314,7 +314,6 @@ &sdhci0 {
+ 	status = "okay";
+ 	bus-width = <4>;
+ 	max-frequency = <100000000>;
+-	sdhci-drive-type = /bits/ 8 <3>;
+ 	sdhci-caps-mask = <0x7 0x0>;
+ 	sdhci,wp-inverted;
+ 	vmmc-supply = <&vcc_sdhci0>;
+@@ -326,7 +325,6 @@ &sdhci1 {
+ 	status = "okay";
+ 	bus-width = <4>;
+ 	max-frequency = <100000000>;
+-	sdhci-drive-type = /bits/ 8 <3>;
+ 	sdhci-caps-mask = <0x7 0x0>;
+ 	sdhci,wp-inverted;
+ 	vmmc-supply = <&vcc_sdhci1>;
 
 -- 
 2.47.3

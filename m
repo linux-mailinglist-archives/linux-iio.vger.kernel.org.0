@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-27035-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27036-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F96CB7B43
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Dec 2025 03:48:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 792BBCB7B46
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Dec 2025 03:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 903683066707
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Dec 2025 02:45:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 791273071968
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Dec 2025 02:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FC413D503;
-	Fri, 12 Dec 2025 02:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B704299A87;
+	Fri, 12 Dec 2025 02:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SaoAKfpK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KRohjAg9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69000EEAB
-	for <linux-iio@vger.kernel.org>; Fri, 12 Dec 2025 02:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A94EEAB
+	for <linux-iio@vger.kernel.org>; Fri, 12 Dec 2025 02:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765507549; cv=none; b=JcS1iVeAeIDoVV3KgQiNwARkI6DZ+aVkYeo9hWEYNTG6uate1wpId4ET54Zt4K86E2kQzJSU8dCutuGFKEIxFLdkqfHXlYyY8wyhAJrXFE4tjHuxEUnDmr9U01mxoDloCEBr3SeMMyCpHTfZ6BDdFLTT64ju9ZgEL65VJu4cLAo=
+	t=1765507552; cv=none; b=sIgoaFxXw8bRVhhLqTF39+B8jZ5Bpy7d9n/yGElt7HQSbsqnpf7rQC8ZL90hF6ZW9Z/PUux/UuimclQo8sZeXoS7ppMGVs7SC10aipg++JUw+/7fMxS2zY9o+SCsfDScipvN5wrMoR+lV2HOJS77wrJH5ytbIedZpsAXujz9Yy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765507549; c=relaxed/simple;
-	bh=m4docKzSN6U3IisnQGU0vDNlqcdF+sgdQ/746l+2whQ=;
+	s=arc-20240116; t=1765507552; c=relaxed/simple;
+	bh=ROdGE9UYn9t3GKB795F+w4NovlxCcnGyj52uJR8yT5g=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hrOvTR7LyKydzTZRnGBwYk0WLoUMgTgoeUVATZWxqFzh2bfeGGnE3EpBmZFggGt3tJ9O1uFLbHup3jAMfQQ1VrswZGUf5McLhCifckf7lu1qFN1DlNxqJfEyRM0OD9PV3HKRcxQLP2RRjYw7L9VRFCNvihvQrjYC0RE2Z0QRHPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SaoAKfpK; arc=none smtp.client-ip=209.85.221.177
+	 In-Reply-To:To:Cc; b=YVU0hCY8aiJ6ZT2lrKTMFCUeN+kT+WCiaTKiOD/L+tS+jrMuB+Vt1Utl7K3YOYbPEu7c2kATgq7oQdMSVNDuGSmxVoIeL279puivUqp5VkT+5ne05CEx81IlwB0dTbyd46lB2dzk9nG/s0wwnbZVZFsudMBR5PxRZDu9K5WIsik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KRohjAg9; arc=none smtp.client-ip=209.85.221.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-55b26461e78so236932e0c.3
-        for <linux-iio@vger.kernel.org>; Thu, 11 Dec 2025 18:45:47 -0800 (PST)
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-55b6a66f155so313670e0c.3
+        for <linux-iio@vger.kernel.org>; Thu, 11 Dec 2025 18:45:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765507546; x=1766112346; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1765507548; x=1766112348; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SZxE86UOpBkEr43S5oO3m/muydq3y/4ppHxIwZHfNzc=;
-        b=SaoAKfpKRDp+Pf5nRlOYCPsBb7uyOwpVe/VI0nsJxnOuf0MDhieXaKaoR2djWH/j13
-         m4qPp2GzDxJ2W6qMy2+rWzfE8EAsnpJjhNET5mdt68Gykh/SBTafbDkhyZ8kpc8wFE5L
-         nxdxVz63trEvcAyOgyj4CTGJEu8WLq6liXe/hXbA/g5zZO+a7wunqoTctT4NNX6UdhPJ
-         DFuVtvmi+eHYQ0jgdt6kv3rGPUPD/jycAoCkAjvy8OmRYgE0+lmH9hExB81vfsJJXbZa
-         rvIiZsrKJ+ZkqTKJO29VLGZDyYLRfe/WQ+TDRZXp0tsLMNWqtSE5mv3UNJC6lT/60Xh6
-         8+sw==
+        bh=iYZRIuaNXC2L9F0wrej4K4cGwCXMfBa56Esw3K/nF6w=;
+        b=KRohjAg9pi+ViCK3zzHXWnMXcvkwZP/iDMOdPEiQBEvZmIy9FLLlAQG095/jimVBkT
+         WWTOvTNA/IdaovkqNwRV6FrFa/+AFQd6VXS3CvwTfHMkRjmiVF6Jal0jeHAcC5+8WWrt
+         nPq/JXJVeNV+NL0k1defaXVdON9Q3yxoO9YiESfXbQtgizjRtEXJH0eqsUtBX/+cgEZc
+         Ph/V0zrKykgUYCKcY4y1gLLogIwA2QHAVWkmFlhIsob3SNNV+UN6F9fAEdCPYh8LsLsx
+         J99osHEdEd1wg+C7NWkBxARlYA6xh5Igw50Y3JIWRXrADJ4JIgmywtfTDce6HMefjgD1
+         X1bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765507546; x=1766112346;
+        d=1e100.net; s=20230601; t=1765507548; x=1766112348;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=SZxE86UOpBkEr43S5oO3m/muydq3y/4ppHxIwZHfNzc=;
-        b=g4E80f5JJzMe/sQHBoP/QqleXA3u4stZTDSgKbJpg0Ges3PJltwS+oo5Gg3lITafoo
-         XE6Z263aRrzeBXQgHK7Xq/4D/9moN2AgoLIXl7tC5dA/F7IT6a0aJL+ZJSMYeRoLa8yg
-         I+/NFNY/Ix70AKguyhhOtFKYrX5L73w99aFTA7Y98NluabqfiZQ5u7KtFH3VLTnwe32y
-         Ajsvl6RjXNQjwhUQpQqUpQhdO7yFkb6eY33KeLjSqxZkEvP/M+ujl2NA4LoncqAK58/l
-         Zi0b3vJS+kqwJyj7tSOjgFu/LJJ3qsl9Xoo9vD0rgtn8EFvU4rc0cvgk+YHa9v/FUSGN
-         0G7A==
-X-Forwarded-Encrypted: i=1; AJvYcCVf/i4so9htW2MtF+MTRjs7XGWV3DTKtN581XRg6rigZVNodmYYVSqIBSzTH+tpk5dqvo83f1mYtOA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBIsT3ijUyFgq2HHZSFYS1ZBGp5Weif+OPDYnxRA+nl9I7LTLW
-	b+jjjtG7qA7A5gPtTqJWxnAxCKVJWMTKr+2hfAJWleTss3R4wv8Wfscs
-X-Gm-Gg: AY/fxX5PYjoZUIbOF2nIkvCsYCxXLbaLAkMGl1yvruhrv1aJQRfvqBlBVeUwvDh2NnT
-	qnMgJtt2UOgr9yfHQmnOhp810qUNtU/9oQAGbb6Clsww1YuDEtJkaXkC5p5qFzAq2hj4/BzoOeJ
-	N97X70Ec/h0mIwq/ELFNz/hoKjAbzWdotyjsv0ECi/A2/TqK+0biC1TY3moT4rxJtC+TBMir016
-	nh3VoFG8GM3qP7w35SHmv7zPrap/6HzUhcSxNaz4Whg+I0JDYBJnFKER44iqV+kTqcVC7YKt7Vo
-	Ct+dE2HnN9QiEcw8JvyZHbsAqXay2Q+O4nvqgu1QM25Fg6Zl9CzN8zJimniNGgvSaawrSZaZ2dz
-	HpmiWqFqTMLiSAxcleQafrUNAktYaruAn0A8MVvBaQnnucOv4dpiCxosyiym9SUUhDrVi7t7VDL
-	A10oLh4wyWY5xL
-X-Google-Smtp-Source: AGHT+IE6R1SPTPYAVrVVaJYQAbRBZp7N0gNjOqqIWn71FlnxAZHPp5xMi1+R7KzVuAZ/J+ZqU/BtQg==
-X-Received: by 2002:a05:6102:5a9a:b0:5dd:84f1:b51a with SMTP id ada2fe7eead31-5e82788200bmr94910137.43.1765507546232;
-        Thu, 11 Dec 2025 18:45:46 -0800 (PST)
+        bh=iYZRIuaNXC2L9F0wrej4K4cGwCXMfBa56Esw3K/nF6w=;
+        b=rQrYFD3xVajpcpC3Uo17dQ0vtoNhPSWdbbmyo601UCtAqzpH1R9anpRy/GrU6WPhh6
+         l1NLQWquyIIBTATbNFtca+dEcNB0QdX0uWReVIHDOM4ovgkz/0B63DxMsL7Js2QEOLgz
+         xnjRocFbhinHPoe/NtjdB0Ch+7pDXKSP8o+zwlL6gH6iYYS98i9pQRHv/RXkmFVTg8v6
+         o8YZJXAc/zpEu0xksTeqqSyabnPj2HCz8cq94nj3vN+C8Gap3Vey4DX8a2HbEgu5eeUK
+         WmdgIPcLT4zZNbdgQKhQCA+CUqN/vndZnbPh1IJWHHhcaZG3HviigXZug0EXLmH4HHCv
+         Tk4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUM6iFjN9yeJg0fR6C6+x2S2Ao2eoZbk8PMggYcDJsHBqBXM5Q69XswU1v5qJr3DwuuKNiG6iDAnu4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAYmS5DW/F1C5utK8S7dPuPRfTn1f554rZwul8h4xkVY8+lEMp
+	yiFLCLwgYYf3+0DYewIK5baQvKLiMmVafXinX6bVyIOQBlDUR/iUF2Ps
+X-Gm-Gg: AY/fxX68pJIYIaZqkf7lrwjLCfF4dwwXqM/l+ZMYVCv/8ECnbDoUT7B2LSLsb3mQNpJ
+	0Vk6bybK39H0AIm1z7Pnr0+VN3jCisFKF5vaoWqlLScorBioyKQoiSZkGRjWXB/QUbCRUhjA0V/
+	kb8V7jM5oCzSgV5pp34uNn8kofvMbUCSWG2paA+o0I0jLPCjQWLhtUdVjN+UEJBTfnp5igqvUNP
+	CXjIpAU73q1QQhmnuA+9741u2CNoTE3kw4d3p4I5QfZ/ozKv16nBa80aFziEStyZc52DagOwNNA
+	Agm1zO6FO4PyVtQnpD2iNJyyFE1XX3qpKgS9cNBnETfam3fiN7lvPYIdjIJLeVWis/tJGcXIx5x
+	3ijYGi+RRGphjdvh9nbVzm6FbgMlDHAL5ZytiN+L3DHqpeXTqehUtN9ZO6tEKhiQ/MBKy7FhkHJ
+	NOZongrd5CxuG5sgHcy+OjwcE=
+X-Google-Smtp-Source: AGHT+IH5i7dtBfVcr5pIDPh38IKpcxO7iBsFvqjyiDMjJP75f9PBiuTE5pSrUZG3ggjTiJvDMCDRxw==
+X-Received: by 2002:a05:6102:54a2:b0:5dd:c568:d30d with SMTP id ada2fe7eead31-5e82783585dmr129533137.30.1765507548500;
+        Thu, 11 Dec 2025 18:45:48 -0800 (PST)
 Received: from [192.168.100.70] ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5e7d0f25ce2sm1693762137.8.2025.12.11.18.45.44
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5e7d0f25ce2sm1693762137.8.2025.12.11.18.45.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 18:45:45 -0800 (PST)
+        Thu, 11 Dec 2025 18:45:48 -0800 (PST)
 From: Kurt Borja <kuurtb@gmail.com>
-Date: Thu, 11 Dec 2025 21:45:24 -0500
-Subject: [PATCH v2 6/7] iio: health: max30102: Use IIO cleanup helpers
+Date: Thu, 11 Dec 2025 21:45:25 -0500
+Subject: [PATCH v2 7/7] iio: light: opt4060: Use IIO cleanup helpers
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251211-lock-impr-v2-6-6fb47bdaaf24@gmail.com>
+Message-Id: <20251211-lock-impr-v2-7-6fb47bdaaf24@gmail.com>
 References: <20251211-lock-impr-v2-0-6fb47bdaaf24@gmail.com>
 In-Reply-To: <20251211-lock-impr-v2-0-6fb47bdaaf24@gmail.com>
 To: Andy Shevchenko <andriy.shevchenko@intel.com>, 
@@ -101,81 +101,86 @@ Cc: David Lechner <dlechner@baylibre.com>,
  linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
  Kurt Borja <kuurtb@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1978; i=kuurtb@gmail.com;
- h=from:subject:message-id; bh=m4docKzSN6U3IisnQGU0vDNlqcdF+sgdQ/746l+2whQ=;
- b=owGbwMvMwCUmluBs8WX+lTTG02pJDJnWjSf782TM12mtP8/XLVE3/SujM+vX+E7D3v0PsgoT4
- 7rSlvN2lLIwiHExyIopsrQnLPr2KCrvrd+B0Pswc1iZQIYwcHEKwEQO8TEyXOz/F91xtu8Zq0IN
- k7oqW+9J0QJmwWzmaWVZK+Sm75UqYmSYWfog54KZl+KBeV8agr+f2KM/yclxx5tNi3Y3TJomx2f
- MBQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2580; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=ROdGE9UYn9t3GKB795F+w4NovlxCcnGyj52uJR8yT5g=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDJnWjSeZoj/PfmBy4cD3SRt/BpS75GZkG51a/1Wv7M4Rx
+ w1behXWdJSyMIhxMciKKbK0Jyz69igq763fgdD7MHNYmUCGMHBxCsBEXrYyMrSsPeb+OkilQE3R
+ dts/rp81J080b85Kv6J0cPaRT25H7jYxMiysck6yNzwq+1b2Vs9Snvy5DCqSH+etDbdJ+12cmu8
+ wiwMA
 X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
  fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 
 Use IIO_DEV_GUARD_ANY_MODE() cleanup helper to simplify and drop
-busy-waiting code in max30102_read_raw().
+busy-waiting code in opt4060_set_driver_state().
 
 Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 ---
- drivers/iio/health/max30102.c | 33 +++++++++------------------------
- 1 file changed, 9 insertions(+), 24 deletions(-)
+ drivers/iio/light/opt4060.c | 52 +++++++++++++++------------------------------
+ 1 file changed, 17 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/iio/health/max30102.c b/drivers/iio/health/max30102.c
-index 288c2f37a4a2..94e15598ffe7 100644
---- a/drivers/iio/health/max30102.c
-+++ b/drivers/iio/health/max30102.c
-@@ -467,44 +467,29 @@ static int max30102_read_raw(struct iio_dev *indio_dev,
- 			     int *val, int *val2, long mask)
+diff --git a/drivers/iio/light/opt4060.c b/drivers/iio/light/opt4060.c
+index 8cb3fa38077e..943e5963d568 100644
+--- a/drivers/iio/light/opt4060.c
++++ b/drivers/iio/light/opt4060.c
+@@ -302,41 +302,23 @@ static int opt4060_set_driver_state(struct iio_dev *indio_dev,
+ 				    bool continuous_irq)
  {
- 	struct max30102_data *data = iio_priv(indio_dev);
--	int ret = -EINVAL;
-+	int ret;
- 
- 	switch (mask) {
--	case IIO_CHAN_INFO_RAW:
-+	case IIO_CHAN_INFO_RAW: {
- 		/*
- 		 * Temperature reading can only be acquired when not in
- 		 * shutdown; leave shutdown briefly when buffer not running
- 		 */
+ 	struct opt4060_chip *chip = iio_priv(indio_dev);
+-	int ret = 0;
 -any_mode_retry:
--		if (!iio_device_claim_buffer_mode(indio_dev)) {
--			/*
--			 * This one is a *bit* hacky. If we cannot claim buffer
--			 * mode, then try direct mode so that we make sure
--			 * things cannot concurrently change. And we just keep
--			 * trying until we get one of the modes...
--			 */
--			if (!iio_device_claim_direct(indio_dev))
--				goto any_mode_retry;
-+		IIO_DEV_GUARD_ANY_MODE(indio_dev);
- 
--			ret = max30102_get_temp(data, val, true);
--			iio_device_release_direct(indio_dev);
--		} else {
--			ret = max30102_get_temp(data, val, false);
--			iio_device_release_buffer_mode(indio_dev);
--		}
-+		ret = max30102_get_temp(data, val, !iio_buffer_enabled(indio_dev));
- 		if (ret)
- 			return ret;
- 
--		ret = IIO_VAL_INT;
--		break;
-+		return IIO_VAL_INT;
-+	}
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 1000;  /* 62.5 */
- 		*val2 = 16;
--		ret = IIO_VAL_FRACTIONAL;
--		break;
-+		return IIO_VAL_FRACTIONAL;
-+	default:
-+		return -EINVAL;
- 	}
--
+-	if (!iio_device_claim_buffer_mode(indio_dev)) {
+-		/*
+-		 * This one is a *bit* hacky. If we cannot claim buffer mode,
+-		 * then try direct mode so that we make sure things cannot
+-		 * concurrently change. And we just keep trying until we get one
+-		 * of the modes...
+-		 */
+-		if (!iio_device_claim_direct(indio_dev))
+-			goto any_mode_retry;
+-		/*
+-		 * This path means that we managed to claim direct mode. In
+-		 * this case the buffer isn't enabled and it's okay to leave
+-		 * continuous mode for sampling and/or irq.
+-		 */
+-		ret = opt4060_set_state_common(chip, continuous_sampling,
+-					       continuous_irq);
+-		iio_device_release_direct(indio_dev);
+-		return ret;
+-	} else {
+-		/*
+-		 * This path means that we managed to claim buffer mode. In
+-		 * this case the buffer is enabled and irq and sampling must go
+-		 * to or remain continuous, but only if the trigger is from this
+-		 * device.
+-		 */
+-		if (!iio_trigger_validate_own_device(indio_dev->trig, indio_dev))
+-			ret = opt4060_set_state_common(chip, true, true);
+-		else
+-			ret = opt4060_set_state_common(chip, continuous_sampling,
+-						       continuous_irq);
+-		iio_device_release_buffer_mode(indio_dev);
+-	}
 -	return ret;
++
++	IIO_DEV_GUARD_ANY_MODE(indio_dev);
++
++	/*
++	 * If we manage to claim buffer mode and we are using our own trigger,
++	 * IRQ and sampling must go to or remain continuous.
++	 */
++	if (iio_buffer_enabled(indio_dev) &&
++	    iio_trigger_validate_own_device(indio_dev->trig, indio_dev))
++		return opt4060_set_state_common(chip, true, true);
++
++	/*
++	 * This path means that we managed to claim direct mode. In this case
++	 * the buffer isn't enabled and it's okay to leave continuous mode for
++	 * sampling and/or irq.
++	 */
++	return opt4060_set_state_common(chip, continuous_sampling, continuous_irq);
  }
  
- static const struct iio_info max30102_info = {
+ /*
 
 -- 
 2.52.0

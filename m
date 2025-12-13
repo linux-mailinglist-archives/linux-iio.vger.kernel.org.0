@@ -1,62 +1,57 @@
-Return-Path: <linux-iio+bounces-27069-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27070-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FFBCBB17A
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Dec 2025 17:35:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE15ACBB192
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Dec 2025 17:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E6766300B6A0
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Dec 2025 16:35:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B423E30019DE
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Dec 2025 16:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E30A2D46A9;
-	Sat, 13 Dec 2025 16:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A278B242D8E;
+	Sat, 13 Dec 2025 16:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="naxpG4tB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dETTlPF3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138F621FF5F;
-	Sat, 13 Dec 2025 16:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593F6381C4;
+	Sat, 13 Dec 2025 16:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765643709; cv=none; b=fMrZBo9UpKdZppRg5oiuZfVr1HpM0BoF8cUhNrDyNomyvqeBoxEPUNuU+utM6q/Y3BgRh7pqifRcu07ZHgsGwbw3GCYLrcpiCUT+wD5nCYlGaE5DFMHCOm8sOAJBZzgFAYQ8d5wC9V1xgkKg+fxf18roHyJGxajBfL+7R8cJ3Bs=
+	t=1765645052; cv=none; b=O9IgQskZCBAtYm6HyYZBf6dXmXRsNny/a+QZ8HVVs2AY0TEQHUS0SnHxrpAaIz29jex2ZwU7OCMuLtporpNXoUqA0w4L2BNIiApyTLcg8Sr5V57azvn4nFAfBl8bC5BCQRReojidf0LElsPr5Q2p3AtWzXBmuJdbh4S+llGAOWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765643709; c=relaxed/simple;
-	bh=ViazW6PvriH9HwsLAvmSJVMIKy5+cXD6aXT4TXjigo0=;
+	s=arc-20240116; t=1765645052; c=relaxed/simple;
+	bh=JDR3x0gFMqvNKk8GJNNBhZ8GAtTDToO1ukIK84PNFZc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KqsTXEvWdXfeF0DRPG3hWUW9uHP4GINphu5lpDNtR/FOlYzZFMWZ7Y7VGpRKkWu5mlaEWTvLpen5I9BJYbrF5I1rvshQOGe9pUPDlE3OsYmTnlhYzmFOmIAH8g/cSnDiyabdDyd34MarH+LjP+iAj2tgZhignpaUoNEebbHNX4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=naxpG4tB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B90EC4CEF7;
-	Sat, 13 Dec 2025 16:35:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dw/1FVR73G3RVW5lcfsPe/cpAav7K1L2sZXgE0l3VLYWmuvFIiuoBKm/mAqQBt453FFjEuobAEHcHDrGa6ZDxTWsAfF0N2KzYuDmmFaRIixbnNOxuCmMoOZuvlMGT0MvL5KVNPxG21XhW96DE2FSCcEwKIrLKPcKWr23VQupjhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dETTlPF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EEBC4CEF7;
+	Sat, 13 Dec 2025 16:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765643706;
-	bh=ViazW6PvriH9HwsLAvmSJVMIKy5+cXD6aXT4TXjigo0=;
+	s=k20201202; t=1765645051;
+	bh=JDR3x0gFMqvNKk8GJNNBhZ8GAtTDToO1ukIK84PNFZc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=naxpG4tBO73G0tkktqL+EWUsebfhMp104Ac2O8xTJsNt6oFbz6DijoL7ICvpNucsK
-	 GnySRcK8OMvZ5zUt2MbIpdchfCczbJjK3HG4nCweZk9x68xqVqM/YSSbKTl1uKZgXY
-	 42Jdjq9ZhrIEuBE7OAT+yFsh0EGCjzvXjQ/wMfD0hZ02xlXMOx4euA2kd1XRbUQcFa
-	 bfgtvM2CnB5MBwvAgP9/Pa+s4d7vH7eLreoV0yaPv+A6ymsT+kNS18nbawu41rljp+
-	 zDyh6MQ0AWJegbAbvGTU3OeNRzcNW72mCwVD+jp6TeY9089h2kadvOhuq29buHIBqG
-	 ZR6jtSpQiBOiQ==
-Date: Sat, 13 Dec 2025 16:34:56 +0000
+	b=dETTlPF3HnpkP6wwCE2xZwAALBuxeQRLOQLcmvUI+pvmTx+OGtpVrPzLlJcd81kzf
+	 zTAcV0cnzhaCXajVCP+t5u9+tJ21ZpVjYQsu2pqlwFUR6jzfnbXk8dZSpzI9nGk/GE
+	 n6cZ8iCOIIqwERmwKZPl/5aYl3/b+hB4ta2YKKxFLqrE1ZcVJI2OWPEj1+MJTzC1+0
+	 Im04TFjF1ooC9JT/ItI5+aCPSYGw5+/4rUiX8wJFzjNmdObdqz+oECAUGYL59vAywI
+	 bPP7BHrkU6/fZTkMfQLsWcEmN3GRHjTwzXxSiJApyhFg3Z2ceCa4HW25Hi1aH7HSvK
+	 WbBQ82EBBJPlQ==
+Date: Sat, 13 Dec 2025 16:57:23 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Tomas Melin <tomas.melin@vaisala.com>, Andy Shevchenko
- <andy.shevchenko@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] iio: adc: ad9467: sort header includes
-Message-ID: <20251213163456.2ba481b6@jic23-huawei>
-In-Reply-To: <aThnybDs4lk9ht_f@smile.fi.intel.com>
-References: <20251209-add-ad9211-v4-0-02217f401292@vaisala.com>
-	<20251209-add-ad9211-v4-2-02217f401292@vaisala.com>
-	<CAHp75VeOZHvxr60R0TCS5_c-xsrmfC97gWdP4-EWvFPpbodLTA@mail.gmail.com>
-	<7a792f4e-edba-42f3-bcc8-76004972c2f7@vaisala.com>
-	<aThnybDs4lk9ht_f@smile.fi.intel.com>
+To: Rasmus Villemoes <ravi@prevas.dk>
+Cc: Peter Rosin <peda@axentia.se>, Guenter Roeck <linux@roeck-us.net>,
+ <linux-iio@vger.kernel.org>, <linux-hwmon@vger.kernel.org>
+Subject: Re: lockdep splat involving iio-hwmon and iio-rescale drivers
+Message-ID: <20251213165723.762035e4@jic23-huawei>
+In-Reply-To: <87ms3nu9m7.fsf@prevas.dk>
+References: <87qzt2tnlu.fsf@prevas.dk>
+	<17697c17-753e-46a4-8e57-107dc744f18d@roeck-us.net>
+	<ced7efb0-02eb-f1b0-9033-e546ca302f1d@axentia.se>
+	<307296eb-e5b4-705b-6851-53cecb87a69c@axentia.se>
+	<87ms3nu9m7.fsf@prevas.dk>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,57 +59,78 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 9 Dec 2025 20:17:45 +0200
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+On Fri, 12 Dec 2025 14:12:48 +0100
+Rasmus Villemoes <ravi@prevas.dk> wrote:
 
-> On Tue, Dec 09, 2025 at 05:46:16PM +0200, Tomas Melin wrote:
-> > On 09/12/2025 16:41, Andy Shevchenko wrote: =20
-> > > On Tue, Dec 9, 2025 at 7:34=E2=80=AFAM Tomas Melin <tomas.melin@vaisa=
-la.com> wrote: =20
-> > >>
-> > >> Include headers in ascending order. =20
-> > >=20
-> > > Thanks, but...
-> > >  =20
-> > >>  #include <linux/iio/backend.h>
-> > >>  #include <linux/iio/iio.h>
-> > >>  #include <linux/iio/sysfs.h> =20
-> > >=20
-> > > ...this was specifically grouped to show the relation to the certain
-> > > subsystem. At the end we should have something like this
-> > >=20
-> > > linux/*.h // generic ones
-> > > ...blank line...
-> > > asm/*.h // generic ones (optionally, if there is a need in a such)
-> > > ...blank line...
-> > > linux/iio/*.h
-> > > ...blank line... =20
-> >=20
-> > Thanks for the clarification. Sure, it's not a big deal to do a new
-> > version. But FWIW, that convention is not AFAIS explicitly stated
-> > anywhere and with even recent drivers not all following it, it's
-> > somewhat hard to know what expected formatting should be.
-> > It would really be good to have that documented somewhere. =20
->=20
-> I fully agree. The problem with such a documentation is that you will alw=
-ays
-> have 50/50% split at best. At worse ~100% will be against any doc updates
-> like this. For minimum we can do it on an IIO level (only for this subsys=
-tem),
-> see how others do Documentation/process/maintainer-*.rst. There is no IIO.
-> You can start it :-)
->=20
+> On Thu, Dec 11 2025, Peter Rosin <peda@axentia.se> wrote:
+> 
+> > 2025-12-10 at 23:54, Peter Rosin wrote:  
+> >> Before commit 3092bde731ca ("iio: inkern: move to the cleanup.h
+> >> magic") I think this could have been solved with a number of:
+> >> 
+> >> -	mutex_lock(&iio_dev_opaque->info_exist_lock);
+> >> +	mutex_lock_nested(&iio_dev_opaque->info_exist_lock);  
+> >
+> > Oops, we need something clever for the (missing) subclass
+> > argument to the mutex_lock_nested() calls, which I simply forgot
+> > all about. It should have been:
+> >
+> > +	mutex_lock_nested(&iio_dev_opaque->info_exist_lock, *subclass*);
+> >
+> > I don't know what sane subclasses there are. One thing could be
+> > the recursion depth, but I don't think we want to keep track of that
+> > just for lockdep? Another is to use one lockdep class for every
+> > info_exist_lock, but that can generate a lot of lockdep classes...  
 
-That maintainer doc is my xmas holiday todo list.  Then again it was
-on there last year and I think the year before :(
+Either option should work but agreed tracking depth when
+we otherwise don't care about it feels excessive.
+We already have classes for the other major internal lock in IIO devices (mlock)
 
-It's possibly something where we need a rolling draft for a bit out
-of tree so that by the time it actually merges it doesn't imply things
-simply because we forgot certain aspects.
+https://elixir.bootlin.com/linux/v6.18.1/source/drivers/iio/industrialio-core.c#L1722
+
+I'm a bit curious we haven't seen many reports of this one. Whilst
+there are relatively few IIO drivers that consume other IIO driver provided
+channels it's also not a particularly new thing.
+
+> 
+> It doesn't seem to me that that info_exist_lock is the proper
+> mechanism for whatever it is it is protecting against.
+> 
+> I'm not even sure it's needed, because if the device could be
+> unregistered while somebody has a reference to it, why is it even
+> allowed to take that lock in the first place (i.e., why is the memory
+> containing the info_exist_lock guaranteed to still be valid)?
+
+It's to protect against racing with setting of iio_dev->info to NULL.
+The iio_dev itself is reference counted so it should always be safe
+to do this lookup. Note that use of info == NULL isn't about accessing
+info alone, but as a general gate on device has gone away (but
+structures are still there until all consumers - in kernel or userspace
+- are done).
+
+In theory at least all consumers use proxy functions that check that
+and error out if the thing being consumed has gone away.  Those that
+are sleeping on anything are woken up and return errors.
+
+Sure there are other approaches to providing that protection and
+there was an attempt to do a generic solution a while back. I lost
+track of where that got to.  Might be worth a revisit at some point.
+
+For now though a lockdep class per instance seems the way to go to me.
 
 Jonathan
+
+
+> 
+> But, since I'm not going to propose just ripping it out, perhaps a
+> better approach would be something like what the gpio subsystem did in
+> d83cee3d2bb1 ("gpio: protect the pointer to gpio_chip in gpio_device
+> with SRCU"), at least superficially it seems to be about a similar
+> problem.
+> 
+> Rasmus
 
 

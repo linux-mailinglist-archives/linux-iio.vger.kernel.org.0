@@ -1,119 +1,95 @@
-Return-Path: <linux-iio+bounces-27062-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27063-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6737FCBA3EB
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Dec 2025 04:16:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99023CBB110
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Dec 2025 17:02:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6C3E308181C
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Dec 2025 03:16:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 728813059AD5
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Dec 2025 16:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AC62E1722;
-	Sat, 13 Dec 2025 03:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B50260569;
+	Sat, 13 Dec 2025 16:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3I+s6WU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tqE7DdoL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F8F29A2;
-	Sat, 13 Dec 2025 03:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CAB3B8D4B;
+	Sat, 13 Dec 2025 16:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765595767; cv=none; b=l0FQfvbmzMb8O63Df9CFPyKbBjtwX9JIgmVnFqtDWAbWmMN+mw+PulfCZCD/uHlz92dpwVhlTdOUPRnZN4Ll+SEWne2Ff5tUqklPQjBtlpsSJn7atNCf82EsM+5mMgwFO7bu2F2GqVZfJa8nvC9sHBJ6Op2+e/cGdfasvQQ4Sa8=
+	t=1765641726; cv=none; b=LSsJj42rcpKO0c/NlUrHibF5SLAVYiJHEwb96aek1Runy+yq0PgPh1uq3weQB3YqeQnpxQIiy7XDIeDSPP6ZXbq3BnNPc/t5NaG1prnPtWRJxEgRlyik4tcPpSeSp0X8zSbg0N11CLS41oaQmR7KVZui+PRsFLSFd3b3CoWxNoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765595767; c=relaxed/simple;
-	bh=KOXoqXt5Xmrh921+CW5vaUGrvh86vh0stCQ6djrzqE4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ym3rIhxIhd6fdHEn9HN4LTkbPgo+eq+lkfqTNUdm0aqeutnkHZpfW73qBKzseWX9nmvQjxso6RXUo4/irJAGld/JsZ53Vwb8EdyrXTx4GnI11Y0sY6SOcgVJEeyo2iPHDU0g9jB8R8cyo2QL8aH0hlmQlO60k8RToyVLdUl1/v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3I+s6WU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F60BC4CEF7;
-	Sat, 13 Dec 2025 03:16:05 +0000 (UTC)
+	s=arc-20240116; t=1765641726; c=relaxed/simple;
+	bh=nnhX1g4Ordr61I3/Mes91IwQ59xozmblbvAnSRlmb+k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fWfu95ZN+2kokoT4K3O2n7P29wcEt4mXICv4qcEo5FOss3AfA9O7/X8shQ0IPLclH3a+nq/29URPoZ1xOCniLKslt8eC7uGp3TZHptCDMEZmUHjoIKq9xRINIr4qhJ499zpL6LHC+vXCONt5i6ug+kY7qwGyMPWfK8B/GGRk/9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tqE7DdoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C2DC4CEF7;
+	Sat, 13 Dec 2025 16:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765595765;
-	bh=KOXoqXt5Xmrh921+CW5vaUGrvh86vh0stCQ6djrzqE4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m3I+s6WUp1W0mDBHh3cXyXcKGUScadcndF+cR3bgdkuVT8PtPMHZEyLDDCKB6/lvo
-	 88P9PXI72Czg+bZKQlpV+eY9jQ1t7gDn5pPxgi77RX1wV1Cf43YTNwypRjgpbHjUsT
-	 /XwvzDaMAMK3vmvKqVyrQYiPLhUgwOmqFodb/rtOHkt45fyTXRPLA1mAh8+sPEL0gx
-	 cuIN66MjtHUbl3Raq6JnufW9dEwnQWqXOH3FNEKMClq9koFS9HG53PJGil0z+rP1hN
-	 sWCKhvX/uF8pFTAUXBymg6e7qcSJYcw7pDIdRzTyWUUCOWB3nHatb/Q5WiS6y79fJe
-	 L1+w9wqtxnhQw==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 9308C1AC5657; Sat, 13 Dec 2025 12:16:03 +0900 (JST)
-Date: Sat, 13 Dec 2025 12:16:03 +0900
-From: Mark Brown <broonie@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Michal Simek <michal.simek@amd.com>, Vinod Koul <vkoul@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
-	Peter Rosin <peda@axentia.se>, Linus Walleij <linusw@kernel.org>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-iio@vger.kernel.org, iommu@lists.linux.dev,
-	linux-gpio@vger.kernel.org, linux-sunxi@lists.linux.dev,
-	imx@lists.linux.dev, linux-sound@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Remove unused includes
-Message-ID: <aTzaczBfsrH2nY5w@sirena.co.uk>
-References: <20251212231203.727227-1-robh@kernel.org>
+	s=k20201202; t=1765641725;
+	bh=nnhX1g4Ordr61I3/Mes91IwQ59xozmblbvAnSRlmb+k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tqE7DdoLHSDeAfff65N2f7UxQC7BiBCT8Jdrrb9YvDvaMegqzrVROhb85t/UjqNCi
+	 VoG0PBRlIm5Ta4tPe5hTj+qbPUt3Th9muOuoectjK5zl1CeXioG/UFL6giXjsplJMF
+	 c5ZrH/7vMkm6XNrAbZTBMbRFnh14hc/JAjbAWIkkr6W9RjR+m6nrwAvi8P6QtiYNU7
+	 c1WTQP7T5yPmCmZp8t8ozC02Ff3P38Ymyhd09d2Q6aPHla2rNNGC1CWZ7TiTC7NQ/Y
+	 EYjhVOlMDXuZM/wrXerapqNxzR7pa4wfBw8yXl+K+CxrDIiFFSteRScwEW4S3oPkLb
+	 wqi62zJXbiPaw==
+Date: Sat, 13 Dec 2025 16:01:54 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: dlechner@baylibre.com, nuno.sa@analog.com, andy@kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, krzk+dt@kernel.org,
+ linux-iio@vger.kernel.org, s32@nxp.com, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, chester62515@gmail.com, mbrugger@suse.com,
+ ghennadi.procopciuc@oss.nxp.com, vkoul@kernel.org
+Subject: Re: [PATCH v9 0/2] NXP SAR ADC IIO driver for s32g2/3 platforms
+Message-ID: <20251213160154.6b1aba67@jic23-huawei>
+In-Reply-To: <20251208020819.3063506-1-daniel.lezcano@linaro.org>
+References: <20251208020819.3063506-1-daniel.lezcano@linaro.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8bHZTj54bYLdLiw+"
-Content-Disposition: inline
-In-Reply-To: <20251212231203.727227-1-robh@kernel.org>
-X-Cookie: DYSLEXICS OF THE WORLD, UNTIE!
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon,  8 Dec 2025 03:08:17 +0100
+Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
 
---8bHZTj54bYLdLiw+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> The S32G2 and S32G3 platforms have a couple of successive
+> approximation register (SAR) ADCs with eight channels and 12-bit
+> resolution. These changes provide the driver support for these ADCs
+> and the bindings describing them.
+> 
+> The driver is derived from the BSP driver version. It has been partly
+> rewritten to conform to upstream criteria.
+> 
+> https://github.com/nxp-auto-linux/linux/blob/release/bsp44.0-6.6.85-rt/drivers/iio/adc/s32cc_adc.c
+> 
+> After the V1 posting there were some discussions around the DMA code
+> to be converted to use the IIO DMA API [1]. Unfortunately this one is
+> not yet fully implemented and merged in the framework to support the
+> cyclic DMA. The current DMA code in the driver has been used in
+> production since several years and even if I agree it can be improved
+> with a dedicated IIO DMA API in the future, IMO, it sounds reasonable
+> to keep it as is until the IIO DMA API supporting the cyclic DMA is
+> merged. I'll be glad to convert the driver code if such an API exists
+> and allows to remove code inside the driver.
+> 
+> [1] https://lore.kernel.org/all/c30bb4b6328d15a9c213c0fa64b909035dc7bf40.camel@gmail.com/
+> [2] https://lore.kernel.org/all/aRyBKH4KOQ1L8lA4@black.igk.intel.com/
+Series applied to the testing branch of iio.git. It will go out as togreg once
+I have rebased on rc1.
 
-On Fri, Dec 12, 2025 at 05:11:52PM -0600, Rob Herring (Arm) wrote:
-> Remove includes which are not referenced by either DTS files or drivers.
->=20
-> There's a few more which are new, so they are excluded for now.
+Thanks,
 
-Acked-by: Mark Brown <broonie@kernel.org>
-
---8bHZTj54bYLdLiw+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmk82nAACgkQJNaLcl1U
-h9AF0wf/RU9WagcpUCZ1sx0lAc8LqeClGvN8UmsUry3bwmzqht7//PCIqy9YES2b
-YonKgjyQSc6jVAso760Vy8kMyVo3qmDtZh/+HhG+hKZKYjuWXTgNDZbcuHqLLC0n
-VfP2g8L5ainnzUQn4d6fuC7yTPCemUe5LXXlfAXcsxgTzYp9lCOfPAzCQ8AXP8dR
-3nfijzX8hDff/ZC7rmalUnnhx/RkrrAxxNALfZTo2xmgpP63cimXvuJt8oQEAPBU
-Sl4lfIk/svMJjz8wkCP6p7YT9E2tyyrKpLCsduZAXCRi8+OSbV/EMEwVvn0DbsAO
-zBEwV/somQyTbEe29Lzi683OStqqEg==
-=3mYQ
------END PGP SIGNATURE-----
-
---8bHZTj54bYLdLiw+--
+Jonathan
 

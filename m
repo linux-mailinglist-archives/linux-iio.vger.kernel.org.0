@@ -1,59 +1,58 @@
-Return-Path: <linux-iio+bounces-27074-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27075-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47743CBBBB5
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Dec 2025 15:48:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220F0CBBC49
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Dec 2025 16:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 568333009114
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Dec 2025 14:48:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1100300763B
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Dec 2025 15:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA651B81CA;
-	Sun, 14 Dec 2025 14:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650EC286D5C;
+	Sun, 14 Dec 2025 15:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWJ6S4Zj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pDssLOw/"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793D741C72;
-	Sun, 14 Dec 2025 14:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BAB285CAA;
+	Sun, 14 Dec 2025 15:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765723729; cv=none; b=MngE9SYaPzNbZCoNAuXgbPNNW1umNpSQaH8THVD7TUcj2EwyZlS46N3SDxD56qnahXK5K8heKyMMw335kUmtSSKVuZO60Icht+8GiyVYP3gZjHx1SZTv6CMj/QkYp1OG6lJrbEG4kMtpaDyolwczAuQC/1d+0OD1uRLtTRBxPs4=
+	t=1765725011; cv=none; b=iw/KUZe9U468zPvg2W0eu3YodP6WkrPqVQp55b1cMGN8PBQm98nggMYyU2Oi9mBeulWcvzMuK3gR1pCddhCHJg8DYPEeT4hLng/AdXYMOOm/qFpNqGjgNQb2dewIncNTWNqAJ5+9aa5ucw9LU0E7OnDyVkm/jdLMKur0RnDiOz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765723729; c=relaxed/simple;
-	bh=xFKsuig1p11Hi+asDXDjOoc+F13m61ehJo9EJKbLRdY=;
+	s=arc-20240116; t=1765725011; c=relaxed/simple;
+	bh=tTajTZxuRKktLqOyplqR5swnGojT4l6zDRF4/PQYxyc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mO2DkZoV1hTRNuSRWajoxzCZQazeAB9+FeMyTxQ+MhWjeGYellleCELFmEmqpRv9JsuBCezLRQCFcyt5VVgLA8soeFFsPLrJ87mMZsUw5Weo37zdu5//49mH71OpVH7knuP8NsNkZgGt6TWKFzfGzlS9uvo2iBE8IWVGuwoGpm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWJ6S4Zj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BA9C4CEF1;
-	Sun, 14 Dec 2025 14:48:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fUWJ7Jjfr3qMgkxDSbQg+9n/cS966AtRvKYQNXeaSoVrq0IJ8NwFicq9zS+DCrb5GiKLipPj3sbEPHVrUtumUxn79Lvchbzk6UIVGLOPHbS86LIpQfS+3tyqjEP1zVzlIF9hiF1qGUwFRam37AmlN4cDXU7cpWwgCE9W/8QZG3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pDssLOw/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C5DC4CEF1;
+	Sun, 14 Dec 2025 15:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765723728;
-	bh=xFKsuig1p11Hi+asDXDjOoc+F13m61ehJo9EJKbLRdY=;
+	s=k20201202; t=1765725010;
+	bh=tTajTZxuRKktLqOyplqR5swnGojT4l6zDRF4/PQYxyc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mWJ6S4Zj4qLB2OhRRnhDdeDuKX/feWfImtu8M3zJB0CZovH8UoWfAQHJmkqwQ7hOK
-	 tJLDkN+GIuUYDjNUwr940Kblo7Ji97mNNiK4gI6xC0jA53X380U1ZJ1By1PoDrUUKl
-	 aXM3z1V4iDH+4TGDgeB5sV4t0uTd2D3LpUtl9G8trye6jE0drDqbZoEFliWcgl9lsw
-	 fDjlWDjyz4y2gJiUXCBcy9/dqUL83HXPBRNqJ8g8P2JF2ar3NVqth/5Sg6UVEqAjkC
-	 PLa4m/MU0EPVyYDO+Zmy5LogQ+XkdSFz40a+lO5FA/9DV41hXutosHLkT6pPIY6kr/
-	 6wWoBNBsTTu0Q==
-Date: Sun, 14 Dec 2025 14:48:39 +0000
+	b=pDssLOw/ZnGcvwmRCxmSWrU34kh7bkzXhaXY3gEqAX6uhPtJJJH6YbqDhh/a5R0iX
+	 ii9or0xaQr2JAYG+D3iPt0yVi7G0Cc3Z58cOPW3mEJ4tDeH8quhIf5he9P9V2L3r01
+	 B+0QWct+5mqNcnYBQFwRBcC/5m76xvJfqDxdx6tnlCdr4P4avSoL+6MgEoJ1h6JquK
+	 Se+e8mhcRbOg6a9cFxEJ1EFpJ3hv3w4/ttV7810o9XbeJtt9ZslS4FvRsnFeEjEon3
+	 MOq3YeukUdCv3XwFm1VNTOscEp21caDZypD/9RQGn2GVx7wujzdMHMYLCryyEd1Bui
+	 30m/YO9x6gZUQ==
+Date: Sun, 14 Dec 2025 15:10:01 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Kurt Borja <kuurtb@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Tobias Sperling
- <tobias.sperling@softing.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v8 2/2] iio: adc: Add ti-ads1018 driver
-Message-ID: <20251214144839.2eec58f9@jic23-huawei>
-In-Reply-To: <20251211-ads1x18-v8-2-5cd12ac556da@gmail.com>
-References: <20251211-ads1x18-v8-0-5cd12ac556da@gmail.com>
-	<20251211-ads1x18-v8-2-5cd12ac556da@gmail.com>
+To: Ariana Lazar <ariana.lazar@microchip.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] iio: dac: adding support for Microchip
+ MCP47FEB02
+Message-ID: <20251214151001.5e3690ca@jic23-huawei>
+In-Reply-To: <20251209-mcp47feb02-v3-2-bb0ba9052f4f@microchip.com>
+References: <20251209-mcp47feb02-v3-0-bb0ba9052f4f@microchip.com>
+	<20251209-mcp47feb02-v3-2-bb0ba9052f4f@microchip.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,97 +63,316 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 11 Dec 2025 23:25:44 -0500
-Kurt Borja <kuurtb@gmail.com> wrote:
+On Tue, 9 Dec 2025 18:06:24 +0200
+Ariana Lazar <ariana.lazar@microchip.com> wrote:
 
-> Add ti-ads1018 driver for Texas Instruments ADS1018 and ADS1118 SPI
-> analog-to-digital converters.
+> This is the iio driver for Microchip MCP47F(E/V)B(0/1/2)1,
+> MCP47F(E/V)B(0/1/2)2, MCP47F(E/V)B(0/1/2)4 and MCP47F(E/V)B(0/1/2)8 series
+> of buffered voltage output Digital-to-Analog Converters with nonvolatile or
+> volatile memory and an I2C Interface.
 > 
-> This chips' MOSI pin is shared with a data-ready interrupt. Defining
-> this interrupt in devicetree is optional, therefore we only create an
-> IIO trigger if one is found.
+> The families support up to 8 output channels.
 > 
-> Handling this interrupt requires some considerations. When enabling the
-> trigger the CS line is tied low (active), thus we need to hold
-> spi_bus_lock() too, to avoid state corruption. This is done inside the
-> set_trigger_state() callback, to let users use other triggers without
-> wasting a bus lock.
+> The devices can be 8-bit, 10-bit and 12-bit.
 > 
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+> Signed-off-by: Ariana Lazar <ariana.lazar@microchip.com>
+Hi Ariana,
 
-Hi Kurt, 
+Given you are going to be doing a v4, a few really minor things inline.
 
-A couple of minor formatting things. All trivial so I tweaked whilst
-applying. Applied to the testing branch of iio.git. I'll rebase that
-on rc1 once available then push out as togreg for linux-next to pick
-it up.
-
-Thanks,
+thanks,
 
 Jonathan
 
-
-
-> diff --git a/drivers/iio/adc/ti-ads1018.c b/drivers/iio/adc/ti-ads1018.c
+> diff --git a/drivers/iio/dac/mcp47feb02.c b/drivers/iio/dac/mcp47feb02.c
 > new file mode 100644
-> index 000000000000..e3087bb47699
+> index 0000000000000000000000000000000000000000..40c68767a98f165a3ab91d4a8610b69badf3d3a5
 > --- /dev/null
-> +++ b/drivers/iio/adc/ti-ads1018.c
+> +++ b/drivers/iio/dac/mcp47feb02.c
 
 > +
-> +static int
-> +ads1018_write_raw_get_fmt(struct iio_dev *indio_dev,
-> +			  struct iio_chan_spec const *chan, long mask)
-I'm not immediately seeing why this particular line wrap mapes sense.
-static int ads1018_write_raw_get_fmt(struct iio_dev *indio_dev,
-			  	     struct iio_chan_spec const *chan,
-				     long mask)
+> +/**
+> + * struct mcp47feb02_data - chip configuration
+> + * @chdata: options configured for each channel on the device
+> + * @lock: prevents concurrent reads/writes to driver's state members
+> + * @info: pointer to features struct
+> + * @scale_1: scales set on channels that are based on Vref1
+> + * @scale: scales set on channels that are based on Vref/Vref0
+> + * @active_channels_mask: enabled channels
+> + * @client: the i2c-client attached to the device
+> + * @regmap: regmap for directly accessing device register
+> + * @vref1_buffered: Vref1 buffer is enabled
+> + * @vref_buffered: Vref/Vref0 buffer is enabled
+> + * @phys_channels: physical channels on the device
+> + * @labels: table with channels labels
+> + * @use_vref1: vref1-supply is defined
+> + * @use_vref: vref-supply is defined
+> + */
+> +struct mcp47feb02_data {
+> +	struct mcp47feb02_channel_data chdata[MCP47FEB02_MAX_CH];
+> +	struct mutex lock; /* prevents concurrent reads/writes to driver's state members */
+> +	const struct mcp47feb02_features *info;
 
-Is more common way to do this particular combination.
+See below comment.  Rethink that structure element just to avoid confusiong
+with iio_dev->info which is a very different thing from this.
 
-There are a few other places where the wrap choice wasn't quite what
-I'd have gone with, so I tweaked those as well.
-
-
+> + static ssize_t store_eeprom_store(struct device *dev, struct device_attribute *attr,
+> +				  const char *buf, size_t len)
 > +{
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		return IIO_VAL_INT_PLUS_NANO;
-> +	default:
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	}
-> +}
-> +
-> +static const struct iio_info ads1018_iio_info = {
-> +	.read_raw = ads1018_read_raw,
-> +	.read_avail = ads1018_read_avail,
-> +	.write_raw = ads1018_write_raw,
-> +	.write_raw_get_fmt = ads1018_write_raw_get_fmt,
-> +};
-
-
-> +static int ads1018_spi_probe(struct spi_device *spi)
-> +{
-> +	const struct ads1018_chip_info *info = spi_get_device_match_data(spi);
-> +	struct device *dev = &spi->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct ads1018 *ads1018;
+> +	struct mcp47feb02_data *data = iio_priv(dev_to_iio_dev(dev));
+> +	unsigned int i, val, val1, eewa_val;
+> +	bool state;
 > +	int ret;
-
-...
-
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> +					      iio_pollfunc_store_time,
-> +					      ads1018_trigger_handler,
-> +					      &ads1018_buffer_ops);
+> +
+> +	ret = kstrtobool(buf, &state);
 > +	if (ret)
 > +		return ret;
 > +
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +	if (!state)
+> +		return 0;
+> +
+> +	/*
+> +	 * Verify DAC Wiper and DAC Configuratioin are unlocked. If both are disabled,
 
-You have dev, so makes sense to use it here too.
+Configuration
 
+Give comments a quick spell check.
+
+> +	 * writing to EEPROM is available.
+> +	 */
+> +	ret = regmap_read(data->regmap, MCP47FEB02_WIPERLOCK_STATUS_REG_ADDR, &val);
+> +	if (ret)
+> +		return ret;
+> +
+
+...
+
+
+> +static int mcp47feb02_parse_fw(struct iio_dev *indio_dev, const struct mcp47feb02_features *info)
+> +{
+> +	struct iio_chan_spec chanspec = mcp47febxx_ch_template;
+> +	struct mcp47feb02_data *data = iio_priv(indio_dev);
+> +	struct device *dev = &data->client->dev;
+> +	struct iio_chan_spec *channels;
+> +	u32 num_channels;
+> +	u8 chan_idx = 0;
+> +	u32 reg = 0;
+
+I would keep scope more local where possible. In this case that means moving the
+declaration of reg into the device_for_each_child_node_scoped() loop body.
+That will also make it much more obvious why it needs initialization.
+
+Similar applies in a few other places.
+
+> +	int ret;
+> +
+> +	guard(mutex)(&data->lock);
+> +
+> +	num_channels = device_get_child_node_count(dev);
+> +	if (num_channels > info->phys_channels)
+> +		return dev_err_probe(dev, -EINVAL, "More channels than the chip supports\n");
+> +
+> +	if (!num_channels)
+> +		return dev_err_probe(dev, -EINVAL, "No channel specified in the devicetree.\n");
+> +
+> +	channels = devm_kcalloc(dev, num_channels, sizeof(*channels), GFP_KERNEL);
+> +	if (!channels)
+> +		return -ENOMEM;
+> +
+> +	device_for_each_child_node_scoped(dev, child) {
+> +		ret = fwnode_property_read_u32(child, "reg", &reg);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret, "Invalid channel number\n");
+> +
+> +		if (reg >= info->phys_channels)
+> +			return dev_err_probe(dev, -EINVAL,
+> +					     "The index of the channels does not match the chip\n");
+> +
+> +		set_bit(reg, &data->active_channels_mask);
+> +
+> +		ret = fwnode_property_read_string(child, "label", &data->labels[reg]);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret, "%s: invalid label\n",
+> +					     fwnode_get_name(child));
+> +
+> +		chanspec.address = reg;
+> +		chanspec.channel = reg;
+> +		channels[chan_idx] = chanspec;
+> +		chan_idx++;
+> +	}
+> +
+> +	indio_dev->num_channels = num_channels;
+> +	indio_dev->channels = channels;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	data->phys_channels = info->phys_channels;
+> +
+> +	/*
+> +	 * Check if microchip,vref-buffered and microchip,vref1-buffered are defined
+> +	 * in the devicetree
+> +	 */
+> +	data->vref_buffered = device_property_read_bool(dev, "microchip,vref-buffered");
+> +
+> +	if (info->have_ext_vref1)
+> +		data->vref1_buffered = device_property_read_bool(dev, "microchip,vref1-buffered");
+> +
+> +	return 0;
 > +}
 
+
+> +
+> +static int mcp47feb02_probe(struct i2c_client *client)
+> +{
+> +	const struct mcp47feb02_features *info;
+> +	struct device *dev = &client->dev;
+> +	struct mcp47feb02_data *data;
+> +	struct iio_dev *indio_dev;
+> +	int vref1_mV = 0;
+> +	int vref_mV = 0;
+> +	int vdd_mV = 0;
+
+Always initialized before use so no need to set this here.
+Different for this one and the vref ones where they are optional
+and hence we do need the zeros.
+
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	data = iio_priv(indio_dev);
+> +	data->client = client;
+> +	info = i2c_get_match_data(client);
+> +	if (!info)
+> +		return -EINVAL;
+> +
+> +	data->info = info;
+> +
+> +	if (info->have_eeprom) {
+> +		data->regmap = devm_regmap_init_i2c(client, &mcp47feb02_regmap_config);
+> +		indio_dev->info = &mcp47feb02_info;
+> +	} else {
+> +		data->regmap = devm_regmap_init_i2c(client, &mcp47fvb02_regmap_config);
+> +		indio_dev->info = &mcp47fvb02_info;
+> +	}
+> +
+> +	if (IS_ERR(data->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(data->regmap), "Error initializing i2c regmap\n");
+> +
+> +	indio_dev->name = info->name;
+
+Given we have this info and the indio_dev->info used very near together
+and they are complete unrelated things I'd rename the mcp47feb02_features to
+features or similar.
+
+> +
+> +	ret = mcp47feb02_parse_fw(indio_dev, info);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Error parsing firmware data\n");
+> +
+> +	ret = devm_mutex_init(dev, &data->lock);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_regulator_get_enable_read_voltage(dev, "vdd");
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	vdd_mV = ret / 1000;
+> +
+> +	ret = devm_regulator_get_enable_read_voltage(dev, "vref");
+> +	if (ret > 0) {
+> +		vref_mV = ret / 1000;
+> +		data->use_vref = true;
+> +	} else {
+> +		dev_dbg(dev, "using internal band gap as voltage reference.\n");
+> +		dev_dbg(dev, "Vref is unavailable.\n");
+> +	}
+> +
+> +	if (info->have_ext_vref1) {
+> +		ret = devm_regulator_get_enable_read_voltage(dev, "vref1");
+> +		if (ret > 0) {
+> +			vref1_mV = ret / 1000;
+> +			data->use_vref1 = true;
+> +		} else {
+> +			dev_dbg(dev, "using internal band gap as voltage reference 1.\n");
+> +			dev_dbg(dev, "Vref1 is unavailable.\n");
+> +		}
+> +	}
+> +
+> +	ret = mcp47feb02_init_ctrl_regs(data);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Error initialising vref register\n");
+> +
+> +	ret = mcp47feb02_init_ch_scales(data, vdd_mV, vref_mV, vref1_mV);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+> +}
+> +
+> +static const struct i2c_device_id mcp47feb02_id[] = {
+> +	{ "mcp47feb01", (kernel_ulong_t)&mcp47feb01_chip_info },
+> +	{ "mcp47feb11", (kernel_ulong_t)&mcp47feb11_chip_info },
+> +	{ "mcp47feb21", (kernel_ulong_t)&mcp47feb21_chip_info },
+> +	{ "mcp47feb02", (kernel_ulong_t)&mcp47feb02_chip_info },
+> +	{ "mcp47feb12", (kernel_ulong_t)&mcp47feb12_chip_info },
+> +	{ "mcp47feb22", (kernel_ulong_t)&mcp47feb22_chip_info },
+> +	{ "mcp47feb04", (kernel_ulong_t)&mcp47feb04_chip_info },
+> +	{ "mcp47feb14", (kernel_ulong_t)&mcp47feb14_chip_info },
+> +	{ "mcp47feb24", (kernel_ulong_t)&mcp47feb24_chip_info },
+> +	{ "mcp47feb08", (kernel_ulong_t)&mcp47feb08_chip_info },
+> +	{ "mcp47feb18", (kernel_ulong_t)&mcp47feb18_chip_info },
+> +	{ "mcp47feb28", (kernel_ulong_t)&mcp47feb28_chip_info },
+> +	{ "mcp47fvb01", (kernel_ulong_t)&mcp47fvb01_chip_info },
+> +	{ "mcp47fvb11", (kernel_ulong_t)&mcp47fvb11_chip_info },
+> +	{ "mcp47fvb21", (kernel_ulong_t)&mcp47fvb21_chip_info },
+> +	{ "mcp47fvb02", (kernel_ulong_t)&mcp47fvb02_chip_info },
+> +	{ "mcp47fvb12", (kernel_ulong_t)&mcp47fvb12_chip_info },
+> +	{ "mcp47fvb22", (kernel_ulong_t)&mcp47fvb22_chip_info },
+> +	{ "mcp47fvb04", (kernel_ulong_t)&mcp47fvb04_chip_info },
+> +	{ "mcp47fvb14", (kernel_ulong_t)&mcp47fvb14_chip_info },
+> +	{ "mcp47fvb24", (kernel_ulong_t)&mcp47fvb24_chip_info },
+> +	{ "mcp47fvb08", (kernel_ulong_t)&mcp47fvb08_chip_info },
+> +	{ "mcp47fvb18", (kernel_ulong_t)&mcp47fvb18_chip_info },
+> +	{ "mcp47fvb28", (kernel_ulong_t)&mcp47fvb28_chip_info },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, mcp47feb02_id);
+> +
+> +static const struct of_device_id mcp47feb02_of_match[] = {
+> +	{ .compatible = "microchip,mcp47feb01", .data = &mcp47feb01_chip_info },
+> +	{ .compatible = "microchip,mcp47feb11", .data = &mcp47feb11_chip_info },
+> +	{ .compatible = "microchip,mcp47feb21", .data = &mcp47feb21_chip_info },
+
+Whilst I can see you've grouped these by properties, I think it would probably
+be better to just put them in alpha numeric order.  That makes it more obvious
+where new parts belong if they are added in future.
+
+Same applies to the array above.
+
+> +	{ .compatible = "microchip,mcp47feb02", .data = &mcp47feb02_chip_info },
+> +	{ .compatible = "microchip,mcp47feb12", .data = &mcp47feb12_chip_info },
+> +	{ .compatible = "microchip,mcp47feb22", .data = &mcp47feb22_chip_info },
+> +	{ .compatible = "microchip,mcp47feb04", .data = &mcp47feb04_chip_info },
+> +	{ .compatible = "microchip,mcp47feb14", .data = &mcp47feb14_chip_info },
+> +	{ .compatible = "microchip,mcp47feb24", .data = &mcp47feb24_chip_info },
+> +	{ .compatible = "microchip,mcp47feb08", .data = &mcp47feb08_chip_info },
+> +	{ .compatible = "microchip,mcp47feb18", .data = &mcp47feb18_chip_info },
+> +	{ .compatible = "microchip,mcp47feb28", .data = &mcp47feb28_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb01", .data = &mcp47fvb01_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb11", .data = &mcp47fvb11_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb21", .data = &mcp47fvb21_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb02", .data = &mcp47fvb02_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb12", .data = &mcp47fvb12_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb22", .data = &mcp47fvb22_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb04", .data = &mcp47fvb04_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb14",	.data = &mcp47fvb14_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb24", .data = &mcp47fvb24_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb08", .data = &mcp47fvb08_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb18", .data = &mcp47fvb18_chip_info },
+> +	{ .compatible = "microchip,mcp47fvb28", .data = &mcp47fvb28_chip_info },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, mcp47feb02_of_match);
 

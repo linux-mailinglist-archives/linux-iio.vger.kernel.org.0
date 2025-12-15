@@ -1,164 +1,139 @@
-Return-Path: <linux-iio+bounces-27097-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27098-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74ABCBF19B
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 18:04:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F064ACBF425
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 18:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 09CFF30024C8
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 17:04:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2FB2C3006A8A
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 17:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4CB330304;
-	Mon, 15 Dec 2025 17:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9AA30FC22;
+	Mon, 15 Dec 2025 17:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C0AwtroY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4aE9rhB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D21A336EC8
-	for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 17:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80BE15E97
+	for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 17:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765818079; cv=none; b=h4PskoszbioOxTHOqIVqMQwqxDcA6inqEZEv0d93SJR+RhFbcUhWt9xW/QQ/gRXYUubUdrB3cpgUbhrWxYkYtdta+oVgtyRolsE59qu7aQ56l3fGjdLBiTIrl5Ls5B90cOU4rP9QgwzZYBY2UJCgIfZs8AafAYbi6iyDFUA6xcI=
+	t=1765820348; cv=none; b=BTMbi55yazmlBZiLAl+2/4FUdMoLfNyLbg9fh5R9u2SnKd6vKRvw7ZSVtDWApOna6+j81Qgq3hjRUKN7DFVMoPfvqkvpGPmGQPU1ClCUH+48+PB+eXslxpkwViZ2XykshhNdwkRPGcc4jdbXJmbab1LbM9SqQq8PZ/JUSysUaW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765818079; c=relaxed/simple;
-	bh=edcxT4cXcjzjFU7UKD3gumpI6i2oeUC5T5fmFwgJQVo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RsAbvUgCQ+q4w5REwp8rdSIYwXmekba3ryOi8yJmA0urw6ecyXG6Qse2yBjks4d+OC3/cXrv4soJVkcCMXkGRTS4lbpZyXdsAtW9D4lL6p726IdS++zE5QCXT0AgUNo6zP1o5Ub35y7wVAciZWr7EQMV1QvTtqw2UWx2PAdlTHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C0AwtroY; arc=none smtp.client-ip=209.85.208.54
+	s=arc-20240116; t=1765820348; c=relaxed/simple;
+	bh=psA0R8uGmpGOA2fhUCx8jrhNdynv6YxOoiERa8JAm0A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l7vADCGmXBqcM+GD7Hox/yi0JNZnBmOgCjv2hZUoNfX9H3S/NgEXawPXRO2nB3SN7pGlCDbNrMsuGOhc3l+GLQprtVX2iI4/QpJ87C8PbFpbV7AyCDMpiWcaKDkiaQRp99lt6F4Vg+hf6ZLXCPP+0KSwXucwzIHJZdd76rEivdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4aE9rhB; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6496a8dc5a7so4995970a12.2
-        for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 09:01:14 -0800 (PST)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a0bb2f093aso18252005ad.3
+        for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 09:39:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765818073; x=1766422873; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=14paOATnTuGbpoBHlEqvmaIpAnH15tDpAkptToEMSzg=;
-        b=C0AwtroYs9RXqQtKvo2a4dhT80JgY7iqpax4coqn1fdJbSihCzFNVGUQQFmwae58Ml
-         aGV6lw960wokZB8RnzurpbHG1hwmmbiGkTpZmWEB0Fgy0wXw71qq/PzBbIZpt/e6rKBN
-         ERPOz7GWARjHxF3sM7VMMbBoZzq70v0gS5wqvmnE1HpHpFXDQKQl7kgN2ubfWiveY3S+
-         Xak6YX+Vr28RIwFtg6/rHZT3QyMtH0EHRIa4xGmubYo4TMAf0JIfBNHddX9keJUrz6E3
-         fR8lbrMQnKYpOu54Pf6V3hMgidTP3mB4IhlDO3JWWMjtkunKpOpbXZKAkpiQgt9jvamc
-         WGbA==
+        d=gmail.com; s=20230601; t=1765820346; x=1766425146; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a4h6/dnocvbSI7wy9WOBKXhAE/Pd1GTroBa3YOvaI4E=;
+        b=W4aE9rhBtPanpxXLQdmxHy+8eHxo+o73fkJCn5h0QY1h2QF6Bhqj+ftuI3Ht68FC2c
+         +Yl+aqRWDoQGaBgJKbqGKbEDNIeK7rT8ipZlittt05DBf1/pzrTH4bv1L1tyqliny+Ri
+         DsollwYUoGd6eAAgXJS/t7SPg033SW9Rvt46oAPvGWoe5vpPiDtcroeCjb/9lsSeExcb
+         QzTpo18xz1I74FZxsrMsPcNg9PAsORn6iqw074xX/FytYJohM1LDKD52EJcAEr/K/th4
+         LjbiozT3BNp5lrfWwowXN49VACCJP8I2JJ+/ntL7wr3EfgO6oXG88EM9gTCCn5xyUFqs
+         zgwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765818073; x=1766422873;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=14paOATnTuGbpoBHlEqvmaIpAnH15tDpAkptToEMSzg=;
-        b=pdsW2wlg3zYZg0x7V/KN0/LxzLAPhqTGh8nsXGT1HZsH/c3IuFfEryWmbYSRoyZ1SC
-         kCjA3CZh5pN2aOE9c55Z79HsTz22pRxwpUePqDvMibqnXn6AQLU6oUaPHs65MMiAW0Qb
-         OsWjV+DR82XAnMKgRSJBcFXZzG0XqDgD7O7oClKx8wQzAequ7zns0og812ENFXeWudIi
-         UYJwSkKgFxTXn7OFZAVtQxd9u8lxV/bqUXG0O22BwfA2uApxn2qdy9lkh2QIXXZYkcDz
-         /y/yJA1eUH+LTVmPqxKkjjMwuOhWAm9CygwVHTdIO7UsgebG9Hnkemt3cmj0CWRHV/hW
-         sWOw==
-X-Forwarded-Encrypted: i=1; AJvYcCU8S2NMwMPhO7Npn5SBGhJna/1p/NUwEAO/qoY/bwnJ0WnVvT8CzSC8YD3SQsEPmTp/h6TNGOI3wys=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuLuOGI1W6UZVKpDYt6ECLzlQ/LBJxJ3yiWBEPouMPyLy+k2k2
-	ZcPiFRwzuX0q82Jj8Mr8PWS99XuWBijyJFeFenPfu/rjY7Ex6sn4h4QC0S1VlcldGi5vwlkhK4r
-	mFj2+xhC9iUdye1Vpf8USQfHeU4x2GXg=
-X-Gm-Gg: AY/fxX63ML329uhQ9To46qbO2K0q5oH59QsKaE2VbVJQAvUJdWTtz5yF3tFg9pbaBKL
-	R23Lyfw7cqpehQBrltvaPE+d2BOdevH2lAN7nQcAVJZnFmGI09bqlcDT9pBpNp1SkwFxzqUJZ/V
-	lfp+mFAvIeXOjLLPcjXBLoNowYxfS3c8F1z0SylZzv+uKSAFrMGCcUEX5hpfjKA0Hq4roVY0DXu
-	HPS4vGM9SsqiqoKZZuKHRN/XcUXoLuFTtSKkG3sqWrQdY0ZUB0dFMYA2kOXzFlFWpCD12EJXsia
-	uWL7DDEYhv6FVvYsmnIucfHWXg5iveD/AewaN8R3dHr9ULDhhKDwHI66eRb1FACXGAMiGfyD+/O
-	PXRQ=
-X-Google-Smtp-Source: AGHT+IEslj1Fsbja32LV9ONgff3lUyGEL2tcsS4Bosl1t1oXCFrK07BfwXVZXeC5kd1XbxYsTCpBl5wZjIz2jsZwWb8=
-X-Received: by 2002:a17:906:794f:b0:b79:a827:4c4a with SMTP id
- a640c23a62f3a-b7d23663422mr1205521766b.15.1765818072622; Mon, 15 Dec 2025
- 09:01:12 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765820346; x=1766425146;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a4h6/dnocvbSI7wy9WOBKXhAE/Pd1GTroBa3YOvaI4E=;
+        b=mOFuHiS4b5xDB8HehMq6PdEt6CGO0QVSzrfMYR8vtg8CbDqL2QuXWBn9U5XKrlsa7m
+         Vi28hIepHJ64d4jLsLa5eSMrS0wWTuuIcbGwdsUyQRhjesLoDANwQoTUDA6u3GmhW44L
+         orrzdTIuw7RkWSh0L9dppit+Zt3COHahIl8FLmF5XVzHq/tjrrDiXbQasf31Cmss5aM9
+         uLQYPBj5Hch93pWQPAdksfTTWNKqa551UllGpuawd672hSqNNscfsqT1WSQck4XVACyi
+         jbURb+QEUEiMp6FRn+lbKLX8IP+3TNbmJqQZWAArd6HK2NmzT2E/kkm3q4MFYSLD/KMZ
+         WZtw==
+X-Forwarded-Encrypted: i=1; AJvYcCXUgejSffySQaGesUrvoO+5qzrsd4Q+GIN/NNk3Xdwihl2U2n7tiREtAMqhcOkkJ/+c0jLjQqdvsh8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/PDg5liK04AbZTXwz4Jr/o574nppVuyO72QAYP0xSgr6aMrt+
+	/URBN8mHDBpCAQKo457SzaOg10NnRMA7xGajeknG8mBmAINXWb1n6g45f+wT5gVq
+X-Gm-Gg: AY/fxX52KDLQnnY9/czXrbuRSSEv7rQBfMq6ULalfevyG16C1QV6kHxl/gzxwZOtHn6
+	ctVk89oAlbeELHW6csVuhHsqA8BkW2gfEmQhLhMuZTtVypt5EX7TEsDVywZaXSWAL+Ej5/gXxjz
+	KvaltAtsxLlxMrxz9o7uwAsbE7BrecN5wzjdTpdIlMlc5vUfggozrFRbomjrfvTkBX78DsB1puQ
+	7miDS0tmCa2Ce3b/v56liRjsygYL1MsztgXZgLCcKMYAMgzHSIXSkJdWky8cqsNdB/aILtXtvSQ
+	fPzHQAm6bgSwnfsuUERwsb4Pv4LpEMCWYNgHZptsTvKnfdXf5IjF0dA4I0JUTSRO1y/zsKpgB6v
+	yUqCvIlUC0WOTgccGKB2HDKsHeNlbJev+UQt9x3cPYtGSZLECym7vqJphnGBQDKAGAioIzhY/HR
+	/GvxL3KALpX748k36SWRkSY44duaVnZrdTzBzo9bIlq+rIzeOM2+GdzUYNZFrVHhw=
+X-Google-Smtp-Source: AGHT+IE46iX/+UepoP75ugQxR9RVc4LZtluzmX+M6lYVRNxOVnAo/xUyAvLUfTOY+OUvXeZbNmPVLw==
+X-Received: by 2002:a17:902:d488:b0:2a0:d149:5d0f with SMTP id d9443c01a7336-2a0d1495d3emr54427205ad.17.1765820345955;
+        Mon, 15 Dec 2025 09:39:05 -0800 (PST)
+Received: from ?IPV6:2402:e280:21d3:2:50bc:8636:2ee8:5158? ([2402:e280:21d3:2:50bc:8636:2ee8:5158])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a0be984c7csm55202695ad.66.2025.12.15.09.38.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Dec 2025 09:39:05 -0800 (PST)
+Message-ID: <bf220707-cca1-4a11-a194-04e131544d54@gmail.com>
+Date: Mon, 15 Dec 2025 23:08:58 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251109141119.561756-1-ajithanandhan0406@gmail.com>
- <20251109141119.561756-3-ajithanandhan0406@gmail.com> <5f15284b-159b-4860-b58b-35c624e2539f@baylibre.com>
- <8e2c73ca-3746-4b2a-9d85-c12b51a69059@gmail.com> <8ad18de5-53cd-49ba-8e84-1e8c7e5bd627@baylibre.com>
- <15106906-3bcc-4187-87d9-c838fe99b583@gmail.com>
-In-Reply-To: <15106906-3bcc-4187-87d9-c838fe99b583@gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 15 Dec 2025 19:00:35 +0200
-X-Gm-Features: AQt7F2pRcI9amJXjbl2Z5tr0_ickskCvuKLcMkmW-cmgPMFrNAUbVYeyj4M7Jko
-Message-ID: <CAHp75VcA2SNGb6cpHaOQwQ_dNaG5xCZnfrXtu+u9pB1+oz7xew@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/2] iio: adc: Add support for TI ADS1120
-To: Ajith Anandhan <ajithanandhan0406@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, jic23@kernel.org, nuno.sa@analog.com, 
-	andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, jic23@kernel.org,
+ nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251109141119.561756-1-ajithanandhan0406@gmail.com>
+ <20251109141119.561756-3-ajithanandhan0406@gmail.com>
+ <5f15284b-159b-4860-b58b-35c624e2539f@baylibre.com>
+ <8e2c73ca-3746-4b2a-9d85-c12b51a69059@gmail.com>
+ <8ad18de5-53cd-49ba-8e84-1e8c7e5bd627@baylibre.com>
+ <15106906-3bcc-4187-87d9-c838fe99b583@gmail.com>
+ <CAHp75VcA2SNGb6cpHaOQwQ_dNaG5xCZnfrXtu+u9pB1+oz7xew@mail.gmail.com>
+Content-Language: en-US
+From: Ajith Anandhan <ajithanandhan0406@gmail.com>
+In-Reply-To: <CAHp75VcA2SNGb6cpHaOQwQ_dNaG5xCZnfrXtu+u9pB1+oz7xew@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 15, 2025 at 6:49=E2=80=AFPM Ajith Anandhan
-<ajithanandhan0406@gmail.com> wrote:
-> On 12/15/25 10:06 PM, David Lechner wrote:
-> > On 12/15/25 10:13 AM, Ajith Anandhan wrote:
-> >> On 11/18/25 7:34 PM, David Lechner wrote:
-> >>> On 11/9/25 8:11 AM, Ajith Anandhan wrote:
+On 12/15/25 10:30 PM, Andy Shevchenko wrote:
+>> Thanks for the pointer.
+>>
+>> I did look at reg_shift, but it doesn’t fit this device. With .reg_shift
+>> = 2, regmap would send only (reg << 2) (e.g. 0x0c for reg 3).
+>>
+>> The ADS1120 requires the command byte to be CMD | (reg << 2) (e.g. 0x20
+>> | 0x0c = 0x2c for an RREG of reg 3).
+>>
+>> Similarly,
+>>
+>>    .read_flag_mask would produce reg | mask (e.g. 0x03 | 0x20 = 0x23),
+>> which is also not the required format.
+>>
+>> Unless I’m missing a regmap configuration that can generate (reg << 2) |
+>> CMD as a single byte,
+>>
+>> a custom regmap bus seems necessary here. Please let me know if there is
+>> a way to express this with standard regmap-spi.
+> So, and if you define both?
 
-Please, do not forget to remove context that is not being discussed.
+Hi Andy,
 
-...
+You're right! Using both reg_shift and the flag masks produces the 
+correct format
+Thank you for catching this! I will drop the custom regmap wrapper.
 
-> >>>> +/* Regmap write function for ADS1120 */
-> >>>> +static int ads1120_regmap_write(void *context, const void *data, si=
-ze_t count)
-> >>>> +{
-> >>>> +    struct ads1120_state *st =3D context;
-> >>>> +    const u8 *buf =3D data;
-> >>>> +
-> >>>> +    if (count !=3D 2)
-> >>>> +        return -EINVAL;
-> >>>> +
-> >>>> +    /* WREG command: 0100rr00 where rr is register address */
-> >>>> +    st->data[0] =3D ADS1120_CMD_WREG | (buf[0] << 2);
-> >>>> +    st->data[1] =3D buf[1];
-> >>>> +
-> >>>> +    return spi_write(st->spi, st->data, 2);
-> >>>> +}
-> >>> I don't see anyting unusal about these read/write functions. We shoul=
-d
-> >>> be able to use the existing spi_regmap with the proper configuration
-> >>> instead of making a custom regmap_bus.
-> >>
-> >>     The ADS1120 needs register address shifted by 2 bits
-> >>     in command byte (reg << 2). I couldn't find a way to do this with =
-standard
-> >>     SPI regmap. If there's a configuration I'm missing, please point m=
-e to it and I'll gladly simplify.
-> >>
-> > I think you are looking for reg_shift in struct regmap_config.
+BR,
 
-> Thanks for the pointer.
+Ajith.
+
 >
-> I did look at reg_shift, but it doesn=E2=80=99t fit this device. With .re=
-g_shift
-> =3D 2, regmap would send only (reg << 2) (e.g. 0x0c for reg 3).
 >
-> The ADS1120 requires the command byte to be CMD | (reg << 2) (e.g. 0x20
-> | 0x0c =3D 0x2c for an RREG of reg 3).
 >
-> Similarly,
->
->   .read_flag_mask would produce reg | mask (e.g. 0x03 | 0x20 =3D 0x23),
-> which is also not the required format.
->
-> Unless I=E2=80=99m missing a regmap configuration that can generate (reg =
-<< 2) |
-> CMD as a single byte,
->
-> a custom regmap bus seems necessary here. Please let me know if there is
-> a way to express this with standard regmap-spi.
 
-So, and if you define both?
-
-
-
---=20
-With Best Regards,
-Andy Shevchenko
 

@@ -1,76 +1,77 @@
-Return-Path: <linux-iio+bounces-27095-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27096-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AF2CBF159
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 18:00:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD769CBF343
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 18:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 941B33015EC7
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 16:54:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93201303AE98
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 17:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40D43491E1;
-	Mon, 15 Dec 2025 16:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833C233557D;
+	Mon, 15 Dec 2025 16:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTLmcUVy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FB7kETwe"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A03348895
-	for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 16:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B41335098
+	for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 16:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765817660; cv=none; b=pXritASaaqy55OrxkUm4xSTT49ZxICCP/B02DhY7Us/WwZHuQPo54QYv6DwclpeIrRVi+ufqYafKL/M1q5ILT75ADX7dwKu4cpUi4uSxzwS/ebc6OvR3CtmvTVeP7KAJn6VswMIGQaiqHD5uNRQoPBpYwmZSO/YakG+hiDZ3p5g=
+	t=1765817842; cv=none; b=OI+gAwwdId6F8Nj3XeR0FkKiswWEuKuOlaLjBIYz5iVvoALqRJc6+kkAFbi7jLUkjx8QpK4USRP7kq5i/zvfGeJHUXuli+1c83ECgYQ8TLDaz69TtM8Bx8xEfJEi8CVo9jhuhV3pN+U1Ehi4UJMbh96QxsSRC2w89cv3hHWj7FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765817660; c=relaxed/simple;
-	bh=rnO5Sdw9CmVSx/Z5NmJjTrrElPXvm9DyjfkPt5SbLq4=;
+	s=arc-20240116; t=1765817842; c=relaxed/simple;
+	bh=iRP8tmXMtbl9jHWOwI2GLvhWvQ/O/bSRM3cgmpbaHUs=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=aZtWPAyjuypDWdja3QiS6oRafNvVes4lagFCSPu1PUz0A7jiGBg0EwBvhRG91IIzp06zshSI0lse+xlMVRbBl8xBRn0DyushNy5l5HX3KmNctEu/rRXGMvLNjM55C/a4MBkOuh5GfDoZgAVQ399HKkw/dSUQWaBBG8x5VzH5wpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTLmcUVy; arc=none smtp.client-ip=209.85.217.43
+	 References:In-Reply-To; b=a6ULA4Qyfye/KjntnqHdiiwTDbQD4KaeM4nQV/cgJDKE8H+5HUH6ZfOIBXpkRCYkyWq6lq7Ft3cOxNnslRWpH7FeUL5EpI6Z4Fl3CMfNssMO+tdhjsfF46iFS9PqmoxNhXzZTuyOLcJcCi2gMaaor51MEbFu7tuIqkr1shy96gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FB7kETwe; arc=none smtp.client-ip=209.85.221.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-5dd6fbe50c0so1311202137.2
-        for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 08:54:18 -0800 (PST)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-55cda719128so839072e0c.0
+        for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 08:57:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765817658; x=1766422458; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1765817839; x=1766422639; darn=vger.kernel.org;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mSRhsoBal2wN7jYjEUi6QPuFghZh1OrtK4e8inDJt7w=;
-        b=BTLmcUVyTDxNjEKor51GKikIFzvN9hw42PYavTJXQUJElOmmInrScdi+iU3PCGQb0T
-         xohu8I+tbWeRo7OMcMwGgDTS4SEd+eW503QhPMXZNPL7VCS8QLm58I5TPKDodF9DhkHj
-         HrzcW8qBaC+9fmVkzhwdzxvO4CUmKRke4D+urFzHcR3cu9sRjDu+MtWvJgxUoxwvu0ic
-         jKax2oBtngpVYjEjPt8PFp8bfGaN8tzEmfz5VVIGDUmXU8pbwPfaTDZzK3qcYHYFrpmQ
-         iT5Z7AqcLcWF227KmIaY21MUQxn0419RDd5WZ3Shrj/w/TUIwPV4nAEHHod1SiL7hpVI
-         pvNw==
+        bh=iRP8tmXMtbl9jHWOwI2GLvhWvQ/O/bSRM3cgmpbaHUs=;
+        b=FB7kETweaUAfFoEQhSPoAX9dg58gxEoHkaalNMFVVKugQ4PYBECkoaf99sOQJGNsfO
+         ncHus001qiBs8zwQK6EpiuZoI1wqVoVYhlcouUMr5TcmfPOJpa4+jMJKm4f1GWYjn5/4
+         Gx1jqBt/LbQe/ma2KccrY6x58Ljr6093MzJX/RGOo46qfueB/f2IuwoGPNL3i3GG77TJ
+         klQYp+SAny5QAZqpedSlntCHjtiBjdDymqd0kCA8GW2P4lx5gUqqK+lNcFwD84S1hzUV
+         k2KR3WKtHlVU9ox7Y5gtBW7i5g/vZwobNEB4hEJ33dwtP+6QlKrnD1FKujFuQ8DWk2KT
+         wESw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765817658; x=1766422458;
+        d=1e100.net; s=20230601; t=1765817839; x=1766422639;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=mSRhsoBal2wN7jYjEUi6QPuFghZh1OrtK4e8inDJt7w=;
-        b=cjmQ/owL1VtP0cVLHhkdgODzv1iBbqUrPFZnoftX2FTmzSAJT72zmapqifjEd84UMc
-         VWeMa5kzTUG9UNdTw1okR4UJADfgV5FO9gmqiCa8GMb2pcHQ2VCcsQ4Yr92k7JJs9Ahk
-         kxk0D4iXj2kLm4y7D6iEvSqS1kJF9JofNOW8ec4n7j3bAWzMwVIWxQt7o0ijn3myk7qE
-         5OM4kmF8PuFa8+pCuw7SHT6aM3MjgfZT8ARuh2FNrx+u9FL57gWbubPXpKy2DWRNvtEp
-         cmDjWOYyTg1NOa0kKASLi9ugJeYZCxL/So3iGcnUfseu5EDHXdvJypGWOxuZsUSntEeA
-         mHBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQDOxB5NijRRYHTphLd2bD3lYnxlWpukVJu3+uLmqwPIVqya8y1k4FvgFXrzIW+Lzv3sBfD51Y3zs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4gDtoNH+sXLdLcuhvq+Q3JTSMUucaTKwTfTe2NzcHh8DQlAyR
-	Wq6mF54tpvd4sTi9uan6HgOdoQ6rLrokLFuoCgrVbTYpg0jF48POhuHM
-X-Gm-Gg: AY/fxX6EQT891voMAxXlEQ10i3XGEG0r27+2KuiswA4i1qFV+aE0BhdDpd36rGp6YG+
-	T51Ey0yE+lwyNYXFHQf+cDqYeWKJ2MCSvR9I3cJW7WQKB8mcHn9p7WmSyTEB4gVTi5895snmtU6
-	Zk/I5fUcMQ/WN2o10zP6rAlQ+lbL8nN2lo0JknWQsEMTh9pCWIGHkEcptg1CbodiKtB2dsFM1e1
-	keoEWM0yndA/wOnB8UUtiYJKJMHPgl53OMD3KAqyHzKup1kDq7VvDnPFURvTO2EcoRkE35df9V+
-	cjgbKm/DENLY71H7ikA1XLhhciGXSVIc1wQVpoBRYy+eKba7BziqS4HOwPh1jAvpZyL0SZT0Q7E
-	PWQYQJkgGr7qWSDGeRmbupLEeBOiLfxcpyyU5LJk=
-X-Google-Smtp-Source: AGHT+IHs/QkmSIt7YE/0e2oN1zB3O/b1MenolN8mPEpk3FecyzQ1b8IYT8tOSQ58dgTHsOxXLlTnOg==
-X-Received: by 2002:a05:6102:41ac:b0:5dd:b2a1:a5a4 with SMTP id ada2fe7eead31-5e82748b438mr3654429137.5.1765817655638;
-        Mon, 15 Dec 2025 08:54:15 -0800 (PST)
+        bh=iRP8tmXMtbl9jHWOwI2GLvhWvQ/O/bSRM3cgmpbaHUs=;
+        b=OlCEV6UBHySNjDnUQ8n2+JLSjUOTp2Cbjm2clI4gf1xCJ/KMnuA3HkLMEWNsePmE7F
+         8rASILFnmrsa/rPfCqGkQ2B63vyFMCCIy3Kit0T90H2Xpcp6YPV+DjJ2qJbLdE0LDr5w
+         X+3957xBr1+ykpBUI3Rs6i6guryDdSeh4LHGWFgIJkWyjHGTRFkcltAaI0iM+tOhMPN6
+         UuDxLfjKXUHx1gg+X5qWXZsw4T77tVWvPFcwGh7qjaujcueABpy86sFlNlID987G7enI
+         k7WTkG9kSXr8jPlgCe+2KFQAa1gMet6QoTvQ0yq4qvoyAczyz845zI1CnuL0UFqveu65
+         W3xQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX/3RhyYWJty0/rz5EmtSdJ9vrsZzxWUKcbZ27FN1k+br5dQVwPgQVmBRo+U+W3KkMN9X3yLQ3sYIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+wU3M7xGZOvkfzLns5itmg/j/yvB2jNW+RslwIPB5sMAl/dxR
+	cDzVgrBeeDZzvrurd9uklDgdprr3x+ghhb7J8ZaJpGLYUn9+xiER8neH
+X-Gm-Gg: AY/fxX42VMCp446jaavOmzLveKrF9AsbpJk/LPuVO0WkbYjjfbX7FwZ/GSIKnpo81N1
+	2+/PD3k5CxqAnze4njj+CF977lh9fz3PZEPOQ27GU/y0Kw4cf5Tq+yIeUkCNX5+gzgVzI9+3nnf
+	4ManzfDe48yj/FOONFclqAxw3OUsFrhXV3lzF+tB9axXQ8Dgd+XP9noGYkORDo3ByBQPd/dq6+w
+	lh2BlypdP4/knm/PulKH5D4DNXMEEdYDxNqhHcaYbm3aC9Jntz3xWeOf+mWRSCKMH8GuzrqqIOa
+	VoNRpLnonrE6HVJzI434diQ+5WmXgAj1nZGHzqxmsd7lh51HzpLP8xGm3fsMB/kDljxD69g2AwA
+	7IdmQ1Wv5ZNbtuGiLyMCt4sblwRmPr/p0MK9hks6yaJa9mRYTam7cEviX5MSTTZskZY+O8fl/zB
+	/uZK2mow==
+X-Google-Smtp-Source: AGHT+IF0duYtbh6rimYipQ0gT9A2nPffn1c0ynYhlc+imPFc3cMR0Hl8XDCUZSrigOtwFreaQRoBYA==
+X-Received: by 2002:a05:6122:2228:b0:559:6723:628c with SMTP id 71dfb90a1353d-55fed643c05mr3394845e0c.16.1765817839601;
+        Mon, 15 Dec 2025 08:57:19 -0800 (PST)
 Received: from localhost ([2800:bf0:4580:3149:7d4:54b1:c444:6f2f])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5e7db24c1dfsm6551404137.10.2025.12.15.08.54.14
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-55fdc739e8bsm6595964e0c.15.2025.12.15.08.57.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Dec 2025 08:54:15 -0800 (PST)
+        Mon, 15 Dec 2025 08:57:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,13 +80,14 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 Dec 2025 11:54:13 -0500
-Message-Id: <DEYY46ZUJQ35.YBNYWLGZMRYA@gmail.com>
+Date: Mon, 15 Dec 2025 11:57:16 -0500
+Message-Id: <DEYY6JGHSTQ9.1NAQUNJVP55A0@gmail.com>
 Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, "Andy Shevchenko"
  <andy@kernel.org>, <linux-iio@vger.kernel.org>,
  <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v8 2/2] iio: adc: Add ti-ads1018 driver
+ Cameron" <Jonathan.Cameron@huawei.com>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v8 0/2] iio: Add support for TI ADS1X18 ADCs
 From: "Kurt Borja" <kuurtb@gmail.com>
 To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
  <kuurtb@gmail.com>, "Jonathan Cameron" <jic23@kernel.org>, "Rob Herring"
@@ -94,97 +96,33 @@ To: "David Lechner" <dlechner@baylibre.com>, "Kurt Borja"
  <tobias.sperling@softing.com>
 X-Mailer: aerc 0.21.0-0-g5549850facc2
 References: <20251211-ads1x18-v8-0-5cd12ac556da@gmail.com>
- <20251211-ads1x18-v8-2-5cd12ac556da@gmail.com>
- <064e059b-5c86-4c41-8de8-b6a728361fd3@baylibre.com>
-In-Reply-To: <064e059b-5c86-4c41-8de8-b6a728361fd3@baylibre.com>
+ <9b73421e-d08b-4480-ab28-5ff5a845e264@baylibre.com>
+In-Reply-To: <9b73421e-d08b-4480-ab28-5ff5a845e264@baylibre.com>
 
-On Mon Dec 15, 2025 at 10:55 AM -05, David Lechner wrote:
+On Mon Dec 15, 2025 at 10:56 AM -05, David Lechner wrote:
 > On 12/11/25 10:25 PM, Kurt Borja wrote:
->> Add ti-ads1018 driver for Texas Instruments ADS1018 and ADS1118 SPI
->> analog-to-digital converters.
+>> Hi,
 >>=20
+>> This series adds a new driver for TI ADS1X18 SPI devices.
+>>=20
+>> This is my first time contributing to the IIO subsystem and making
+>> dt-bindings documentation, so (don't) go easy on me :p.
+>>=20
+>> As explained in Patch 2 changelog, the DRDY interrupt line is shared
+>> with the MOSI pin. This awkward quirk is also found on some Analog
+>> Devices sigma-delta SPI ADCs, so the interrupt and trigger design is
+>> inspired by those.
+>>=20
+>> Thank you in advance for your reviews.
+>>=20
+>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+>> ---
 >
-> ...
+> I had a few minor comments on the driver, but nothing serious.
 >
->> +/**
->> + * ads1018_spi_read_exclusive - Reads a conversion value from the devic=
-e
->> + * @ads1018: Device data
->> + * @cnv: ADC Conversion value (optional)
->> + * @hold_cs: Keep CS line asserted after the SPI transfer
->> + *
->> + * Reads the most recent ADC conversion value, without updating the
->> + * device's configuration.
->> + *
->> + * Context: Expects iio_device_claim_buffer_mode() is held and SPI bus
->> + *	    *exclusive* use.
->
-> I guess "exclusive" is supposed to mean that the SPI bus lock is held?
-> Would have been more clear to just say "SPI bus lock is held".
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
 
-I went with "exclusive" because we are not holding the lock on the same
-thread, so that could be misleading.
-
-...
-
->> +static int ads1018_buffer_postdisable(struct iio_dev *indio_dev)
->> +{
->> +	struct ads1018 *ads1018 =3D iio_priv(indio_dev);
->> +	u16 cfg;
->> +
->> +	cfg =3D ADS1018_CFG_VALID;
->> +	cfg |=3D FIELD_PREP(ADS1018_CFG_MODE_MASK, ADS1018_MODE_ONESHOT);
->> +
->> +	ads1018->tx_buf[0] =3D cpu_to_be16(cfg);
->> +	ads1018->tx_buf[1] =3D 0;
->> +
->> +	return spi_write(ads1018->spi, ads1018->tx_buf, sizeof(ads1018->tx_buf=
-));
->> +}
->> +
->> +static const struct iio_buffer_setup_ops ads1018_buffer_ops =3D {
->> +	.preenable =3D ads1018_buffer_preenable,
->> +	.postdisable =3D ads1018_buffer_postdisable,
->> +	.validate_scan_mask =3D iio_validate_scan_mask_onehot,
->
-> Why do we only allow one channel to be selected at a time?
-> I guess we can remove that restriction later. I just didn't
-> notice this in previous reviews.
-
-I chose this restriction because of the timestamp discussion a few
-versions ago.
-
-I will remove it later and implement multichannel buffers as Jonathan
-suggested.
-
-...
-
->> +static irqreturn_t ads1018_trigger_handler(int irq, void *p)
->> +{
->> +	struct iio_poll_func *pf =3D p;
->> +	struct iio_dev *indio_dev =3D pf->indio_dev;
->> +	struct ads1018 *ads1018 =3D iio_priv(indio_dev);
->> +	struct {
->> +		__be16 conv;
->> +		aligned_s64 ts;
->> +	} scan =3D {};
->> +	int ret;
->> +
->
->
->> +	if (iio_device_claim_buffer_mode(indio_dev))
->> +		goto out_notify_done;
->
-> This should not be needed. It should not be possible to
-> exit buffer mode without triggers being stopped first.
-> (No other driver is doing this.)
-
-Previously I had my own lock here because ads1018_spi_read_exclusive()
-needs locking. I dropped it per your suggestion in v1 I believe, but
-given the discussion in the cleanup.h series I was thinking in bringing
-it back.
-
-But yes, the scope can be adjusted too.
+Thank you, David!
 
 --=20
 Thanks,

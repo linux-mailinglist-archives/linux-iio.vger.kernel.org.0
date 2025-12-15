@@ -1,138 +1,150 @@
-Return-Path: <linux-iio+bounces-27079-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27080-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2704CBC1E1
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 00:53:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E461CBC38B
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 03:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E75BA30062DC
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Dec 2025 23:53:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E18EF300C2B5
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 02:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60EE2BFC8F;
-	Sun, 14 Dec 2025 23:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aLx/by4D"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEACB1FF1C4;
+	Mon, 15 Dec 2025 02:04:10 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBDA27A465
-	for <linux-iio@vger.kernel.org>; Sun, 14 Dec 2025 23:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D636213C8EA;
+	Mon, 15 Dec 2025 02:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765756405; cv=none; b=VND6pkUF7LAzBUuuNJP+DxUvE3unb+d2DPy6fnjeiIrVeqxSJzpI2VZPHVd+NuK4gcs2HTCUsuQzXhuF26cMPsmcsZwv1Gs0L4BrFkFbTqbjrtqlo0OpjmF0GzB/irt6+Za/F1FTC43eEJr1vJiI6UOZBOK2Va98QvEAfOhyXsg=
+	t=1765764250; cv=none; b=MrO0yLPJMP2OXDt4Un6It3G0ON1qa/r6X1KCQt8XoH2sPjv+FqPsF2MYEjrgM/xv1MTt/eQ6IqyXI3cJRhRC0ESJUD5NEmtoXpNzHCxWGm61SEhc+s6OP+nnOu2MDG/hGtc4SEVFVvZ/UUOOo8PO6A3RC4bgE/2MMGbcYqRTshk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765756405; c=relaxed/simple;
-	bh=imomqWpqkx+6bjRUCXg45LFde/m/ON6xIRymtOfup9U=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Z9ikGEqqJYYqA38UrMxTU8nEWPpfXdnFeKiTmcpzlldrtFX+3XDDifsIUw/5f3zRno+ycB8jNVys3T0KMnsHY2FgcVe8zubp0265cNhoc9/N732pdZtbGEW5Eiz0Qh2wpnSSUIL6R1Nu6VzEINqqsa+jTkXUqntVAsJLVVeqCys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aLx/by4D; arc=none smtp.client-ip=209.85.221.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5597a426807so1902799e0c.2
-        for <linux-iio@vger.kernel.org>; Sun, 14 Dec 2025 15:53:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765756402; x=1766361202; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=imomqWpqkx+6bjRUCXg45LFde/m/ON6xIRymtOfup9U=;
-        b=aLx/by4DSNPUTIIAxfOjwNm5epKzulUATUZjVFYcZAopTYmCzNqX3EHp1uvwV97ToP
-         Fuo2ARJUnfIatMPD3J/eG7VIVZZXfj098g0fWqZQHVqkygaQ3ANNCzfyzjCbtK2zLXXR
-         PGrNMTuv4/DTVPZTDsozIKxIo2uvZTct/Sq8zvjwicG5vMcs5LYbLNfNkg0QX+Z17R3J
-         TT+0n6Fd/4p7wB1zuGCEIWFzfZFMYQbawYhgQ0UxuWN+a3Dn12bS08z4RDphCMUlQXoU
-         btZHSK9R9ciarE3dON/58ONd27nj2/ocYUaUDLUnbtQ/vxDeoEUl7HcwJasvM7VXFnNv
-         RN9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765756402; x=1766361202;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=imomqWpqkx+6bjRUCXg45LFde/m/ON6xIRymtOfup9U=;
-        b=P7nOgPiH4bezdn+bVWmhbKG3OQEUcwJb7BAKCVdTzZ4YN9yZb9dwc3qXPfdqHNpwNM
-         wQqttVClKtOrgwmVlYnY6UAinhqZnveeLtogfDef00m+IpOanNjlhfBjq9cyKPgTLsEe
-         hKJppesfYA9sJ3+UkVqWeuizS4qi+Yvu5tCyEZ+D8SHMHZc+MNoaBfxtoyrzFNpo3Sxz
-         fWnTKit2rLlJ2PKjcDwSB6rYk7Q6zreiwNOClqdR/7Pg65lDvXOzynQWtjJBpVL+uWNK
-         7n4FHQKgYAgPR0AyP6xw+qqaf1yrj+vcDSfIpK85VSBAt4DakcfadeEaPzB/Qa3nZzHw
-         FrTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVdQ7FNLpS8LaZ0wP3mOaBA8F54gOEBvH58GHkIZCGKBw5NcrsulnJAFBwN263vDYNAqTeDd0mW7Tg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcizJ/v0+NToDXuNY78WvHi1VZg+p3aSEk5upCcigOcBhCOQmA
-	zP+DSCPdf85Ho5atvwrYk2HoATMEq+3Xo0QoPHdHzEnRMdmJoKl6oWd8
-X-Gm-Gg: AY/fxX61wCewOMcNPAblrgS8JBu3UZHWmCP+JPnXTDWt/OIIoU3KP4sMj214cwr2jw8
-	vrqvbfqg1sGHnCxoJr5jLQZmlvDo4/t0BiIwal7Gonspk0WIKj2y3qErdZt5V4meDWnY4/RM5bm
-	QYGl/4ttd6yz9hxMTfUD0Bze+IdGa1J6QKGhe5TI4eNas9Sp55ocOThnLtEYo9UTZ8xi9k0yM34
-	yGCm5IFlA0uNSUNqZBxsIG8IagZdWIWvKrVVlCj4aigxMwJJsukMhHb9ImsCj3xof7z0IwJxydN
-	dCGnne01wAs0sus9gP29j1YzI6g6XPRbERUeu8Xa/USR1CIqCpUHPXWCCkTbi0AfeNTEKAmCqE2
-	rOxn1A3KKA3fkJRjj106roQJNVxr0tOAgJv4OWoOD50yMEL2x8GEqor+HmoQxfgAs5J3hDVy4zv
-	YwFPHW
-X-Google-Smtp-Source: AGHT+IEoqQCjZSwLiCqkVJ07lox30kIA6ldc1LVKWm44vuHifiI/AUWhZSeSHNiSZdDgEAi1bOnPUA==
-X-Received: by 2002:a05:6122:458b:b0:55b:305b:4e27 with SMTP id 71dfb90a1353d-55fed66a7b0mr3186745e0c.19.1765756402003;
-        Sun, 14 Dec 2025 15:53:22 -0800 (PST)
-Received: from localhost ([2800:bf0:82:11a2:c6ad:1d0e:15de:a612])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-55fdc638a23sm5590944e0c.8.2025.12.14.15.53.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Dec 2025 15:53:21 -0800 (PST)
+	s=arc-20240116; t=1765764250; c=relaxed/simple;
+	bh=BEEmsxlzCrN5ceNiLGBxj9dRct+fsZAiRyA8dgziHXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JyIsRpC3BqWc3m6X2oAp6QINkTcmWZ9Cqpx1wSEsZXouQmpXXaj0qcJZrnhadpteiY4ZuIkbKfb+qznIqU2hip7bosa3gXGVesLVuSdrgR6w8MEGLAdtnXbh7nWShbQBne0QLe/79OTn30Wb/ha6qZ839+8Pq0tUTalIHPaJFqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from DESKTOP-L0HPE2S (unknown [124.16.141.245])
+	by APP-03 (Coremail) with SMTP id rQCowAAnSuGTbD9pWh7BAA--.57049S2;
+	Mon, 15 Dec 2025 10:04:03 +0800 (CST)
+From: Haotian Zhang <vulab@iscas.ac.cn>
+To: wbg@kernel.org,
+	andriy.shevchenko@linux.intel.com
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haotian Zhang <vulab@iscas.ac.cn>
+Subject: [PATCH v3] counter: 104-quad-8: Fix incorrect return value in IRQ handler
+Date: Mon, 15 Dec 2025 10:01:14 +0800
+Message-ID: <20251215020114.1913-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20251202083952.1975-1-vulab@iscas.ac.cn>
+References: <20251202083952.1975-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 14 Dec 2025 18:53:19 -0500
-Message-Id: <DEYCEJB4SWZ3.13MX1YUFLI1QI@gmail.com>
-Cc: "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
- <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Tobias
- Sperling" <tobias.sperling@softing.com>, "David Lechner"
- <dlechner@baylibre.com>, =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- "Andy Shevchenko" <andy@kernel.org>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v8 2/2] iio: adc: Add ti-ads1018 driver
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "Jonathan Cameron" <jic23@kernel.org>, "Kurt Borja" <kuurtb@gmail.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251211-ads1x18-v8-0-5cd12ac556da@gmail.com>
- <20251211-ads1x18-v8-2-5cd12ac556da@gmail.com>
- <20251214144839.2eec58f9@jic23-huawei>
-In-Reply-To: <20251214144839.2eec58f9@jic23-huawei>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAAnSuGTbD9pWh7BAA--.57049S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZFyfuFW3GF17ur13Cry3urg_yoW5XFy8pF
+	W0ka4qyF4Sqr1UXF4rA3WDJryY9FW7trWfCrn7Zw1Ivwn0yFW5WFW8Ka4jqrZ3CFWkGFy5
+	Z3y3KF48Ca15AF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvm14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
+	6r126r1DMxkIecxEwVAFwVW8JwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
+	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
+	1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
+	IIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
+	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnU
+	UI43ZEXa7VUjR6wtUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAURA2k+0jr0LwAAs-
 
-On Sun Dec 14, 2025 at 9:48 AM -05, Jonathan Cameron wrote:
-> On Thu, 11 Dec 2025 23:25:44 -0500
-> Kurt Borja <kuurtb@gmail.com> wrote:
->
->> Add ti-ads1018 driver for Texas Instruments ADS1018 and ADS1118 SPI
->> analog-to-digital converters.
->>=20
->> This chips' MOSI pin is shared with a data-ready interrupt. Defining
->> this interrupt in devicetree is optional, therefore we only create an
->> IIO trigger if one is found.
->>=20
->> Handling this interrupt requires some considerations. When enabling the
->> trigger the CS line is tied low (active), thus we need to hold
->> spi_bus_lock() too, to avoid state corruption. This is done inside the
->> set_trigger_state() callback, to let users use other triggers without
->> wasting a bus lock.
->>=20
->> Reviewed-by: Andy Shevchenko <andy@kernel.org>
->> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
->
-> Hi Kurt,=20
->
-> A couple of minor formatting things. All trivial so I tweaked whilst
-> applying. Applied to the testing branch of iio.git. I'll rebase that
-> on rc1 once available then push out as togreg for linux-next to pick
-> it up.
->
-> Thanks,
->
-> Jonathan
+quad8_irq_handler() should return irqreturn_t enum values, but it
+directly returns negative errno codes from regmap operations on error.
 
-Hi Jonathan,
+Return IRQ_NONE if the interrupt status cannot be read. If clearing the
+interrupt fails, return IRQ_HANDLED to prevent the kernel from disabling
+the IRQ line due to a spurious interrupt storm. Also, log these regmap
+failures with dev_WARN_ONCE.
 
-Thank you, Andy and David for your guidance (and the little tweaks) :)
+Fixes: 98ffe0252911 ("counter: 104-quad-8: Migrate to the regmap API")
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+---
+Changes in v3:
+  - Replace WARN_ONCE() calls with dev_WARN_ONCE() to automatically include
+    device context in log messages.
+  - Provide more descriptive warning messages indicating the specific
+    register operation that failed.
+Changes in v2:
+  - Return IRQ_HANDLED if regmap_write() fails.
+  - Add WARN_ONCE() to log the error messages.
+---
+ drivers/counter/104-quad-8.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---=20
- ~ Kurt
+diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+index ce81fc4e1ae7..573b2fe93253 100644
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -1192,6 +1192,7 @@ static irqreturn_t quad8_irq_handler(int irq, void *private)
+ {
+ 	struct counter_device *counter = private;
+ 	struct quad8 *const priv = counter_priv(counter);
++	struct device *dev = counter->parent;
+ 	unsigned int status;
+ 	unsigned long irq_status;
+ 	unsigned long channel;
+@@ -1200,8 +1201,11 @@ static irqreturn_t quad8_irq_handler(int irq, void *private)
+ 	int ret;
+ 
+ 	ret = regmap_read(priv->map, QUAD8_INTERRUPT_STATUS, &status);
+-	if (ret)
+-		return ret;
++	if (ret) {
++		dev_WARN_ONCE(dev, true,
++			"Attempt to read Interrupt Status Register failed: %d\n", ret);
++		return IRQ_NONE;
++	}
+ 	if (!status)
+ 		return IRQ_NONE;
+ 
+@@ -1223,8 +1227,9 @@ static irqreturn_t quad8_irq_handler(int irq, void *private)
+ 				break;
+ 		default:
+ 			/* should never reach this path */
+-			WARN_ONCE(true, "invalid interrupt trigger function %u configured for channel %lu\n",
+-				  flg_pins, channel);
++			dev_WARN_ONCE(dev, true,
++				"invalid interrupt trigger function %u configured for channel %lu\n",
++				flg_pins, channel);
+ 			continue;
+ 		}
+ 
+@@ -1232,8 +1237,11 @@ static irqreturn_t quad8_irq_handler(int irq, void *private)
+ 	}
+ 
+ 	ret = regmap_write(priv->map, QUAD8_CHANNEL_OPERATION, CLEAR_PENDING_INTERRUPTS);
+-	if (ret)
+-		return ret;
++	if (ret) {
++		dev_WARN_ONCE(dev, true,
++			"Attempt to clear pending interrupts by writing to Channel Operation Register failed: %d\n", ret);
++		return IRQ_HANDLED;
++	}
+ 
+ 	return IRQ_HANDLED;
+ }
+-- 
+2.50.1.windows.1
+
 

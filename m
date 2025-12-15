@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-27100-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27101-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653D1CBF4B6
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 18:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB6FCBF5C8
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 19:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 64D313011B36
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 17:50:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0CFF9301AE30
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 18:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5958F322B8E;
-	Mon, 15 Dec 2025 17:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B3D338901;
+	Mon, 15 Dec 2025 18:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hexUCcYB"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iZ/4CjFk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49BA322B62
-	for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 17:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09EF337B87
+	for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 18:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765821050; cv=none; b=dPuCtL9pQcP3uzC+qr04CewxRLetqwOxjQ5JZ3y89Vdn+PQMLFVczOgMOYE+wRR+WnlA4Aeuz64ml7eqFPNMEitt2DDWszkpcLNvhwGhvl6w98P8Fd+JqJKnbJW/xFwgrw8WAfSvHeJqI+yChK9kBpE/AR4+L+SJJCXkM9DDbGg=
+	t=1765822176; cv=none; b=soGUufE6WkV7P3O7Mrj76ZH822rejhMJEfsJ3cZrZEfUl1BCaNMKMtbq/Zw+X+faajxEnRDl2C6e+4Kp3QvAwiC7RdElw3dMERmOtjo/Tj/TzPk56DQi68/pdUcuL6HzQs8PItAov8HaIDsyplYi1PzXHBNPDukvXcLT3cc8uGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765821050; c=relaxed/simple;
-	bh=wKhD1Qe/u0NUDdPbkZCfx21AlyFOuwnlV2jBRJnXtPU=;
+	s=arc-20240116; t=1765822176; c=relaxed/simple;
+	bh=jJoPLn1fkI9wPRU/0HMgfFAMd/C9HMYFq8hNraw6c8s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bBU2HV0rBcfyM48vYP8h94LZ6B4mNOZvvbbp53CUze6Ngflfol1c6cjBRBEXI1kEU2WBy6RwejVdjrifX1zsiX5WhdWxmAMSucSjXXMEk5C/+JoyXHr54uKCVH3Lne1okaPUNLAx3Hws0ONMxBJsPASUhRmgvEmR9f/9lx5zi/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hexUCcYB; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a09a3bd9c5so18205435ad.3
-        for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 09:50:48 -0800 (PST)
+	 In-Reply-To:Content-Type; b=tpwEAquRYvezqmB/hC2XW+HO15QOk88CvK/Y3JMGOFpo+YgPB/lfzavq0Jo1IlG1l+2SzZ5HXaKOR7aVA+pVr337P+51YL87EnDyADL0X+Na7Dss1ibjOzmlF4176t13T+GevRQ9SW4bDDHu8KkdY5vNLYJI9C3vv+sNVc761rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iZ/4CjFk; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7c6e815310aso2812950a34.0
+        for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 10:09:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765821048; x=1766425848; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765822173; x=1766426973; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=SizWLQ4gEz9gKPbNGWru/XLkTBLjWoFV840U2e1HA8M=;
-        b=hexUCcYB1TE+HATDnbKeTaDuKuvvBXq/paWnXZrXovf4zuzbsfCfMWxawT82ca7rqL
-         KnOwvLIk17liUzLdarKhjl8FKHjk5uW+aL+PMCJnw8bNb61k6Bf4900Q3I5ee0fsQGri
-         rNL7CuYy8mDC8RmIeCQ8RqSbz5vNCh+gURzBUZVpNZYqm5Ww57lW6ix2tm87R+EHg6bh
-         WM0ULBe0LDVK+207ObCgetTQ/przfnzxYp2kIMUUx9FhZVfM3B0+0NO4XJ/XUJyqwQfM
-         XgAI06UFtv8wrkB/4o+d3dgAQuDz9NeOFmdM+9gwS6X0s/9AOXh+cImWQMBQWc3cYaJB
-         PB7g==
+        bh=P8D3gbs8j8tMtsoO/hc4EokJzJyu5XdrUi05ido4tmo=;
+        b=iZ/4CjFk2LA4hX415hTiI2scaCuQDIqgruse8zSwUhG67SY1JKd9+WLPc+XsAufsDE
+         Zn+vlHK63b2G1BZdmfBuGnl9cmlGegXdismUZIIe1FhuTYOiIAaIeECCGmSpF7m5fPHX
+         GyjULtfMSKpcOWeO78IQjTA3uAEbvN7Hmpnt/0kBSEbILMPJbZlXOaz3xd1DTbcP2yPd
+         eEJB18HgDVEkzVjgRKKrEInjuxsMKFI14p2yYK4/i4P9ABLSfCVvb9ePoBidaBIrXKve
+         /e7+8utLQ3hYWNtTqano7HKlzYs/wu/NrXV/A+nLtASlh8/7TP4YVV3OdSmX71DB2WCB
+         Yr1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765821048; x=1766425848;
+        d=1e100.net; s=20230601; t=1765822173; x=1766426973;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SizWLQ4gEz9gKPbNGWru/XLkTBLjWoFV840U2e1HA8M=;
-        b=xNIOdDH4W5wclMy08nGxajlkql3sXDYos4C5KqdxjTmxwg5iwDbkqFY3GEmilxN2DE
-         jgL5m4MzGNy6DmC4l0nC2uSJoQT5Nj7m31DXeFAkmAqHyOZYa85Ev4D6cfU3nw0Eomdm
-         F3qQA3RFkDpPstsMXln/88tx5w1LuohQr3fRRm3aIyuY3BmZvkR1d84i3U6p3UItVevt
-         QWWpEOrJjwwVeiGzrPPQMFolaIQOPqwou9OyAesDVhUU/ss1d2FlkgDxPlcvhxsXDIdI
-         cqbbigyZqF1DY5pdflkvn4z4RYOmPmdw+f1/VBpC3kLQMZdFMGheqAl6tGEEM7Idqx6X
-         MLnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUsXJrltoUw6ZjfGogUNtoppdKJ7c5my/VDphjLSn/NVifDwfADhT8EeT8slAcCcoKcbk+IPve3AHg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJNezW7HAf6qNCEC48+8GizZa1rbe3HYtcuqPGPr/kfTVi38nB
-	5WISc/k6wFvijhIoUJnAzYiW5U/xeVcxJ0Z57A5ai7/PF7Gpn9O+fiOJ
-X-Gm-Gg: AY/fxX64pMb8UroqgMl4X8Q0jrr7di947Fq4ICedW+rCcTtdBBdPJTnYbO8careBgh6
-	QxoIuw0OkmjzX6nRCOOdJ3jpAKfVnjmUbwyQw5v43ZWPkIAKffTNzHgUe+uXIb6rcZxj9F1dbn6
-	dPydzEVHRUyW3j4RwVkI/PubKRjp3uw0XFIDP0xc5J3Psm54RLkNIiYMzGsmu0uCuQHBY+mcf9E
-	TdnoB//Py/NZMmfdUY7O9qEpsOq2nyeQSngWz3xD8N3UvPr4uOQxBzv9Z5xdCEovQsr4lHqHv4K
-	KVVKenyH6jxs3XDCLPWAiTeRPG+MDzLm4mYVjESI571XXda0gu9zPnB8ubUM3dH+CaM7PGmJPns
-	/mMcc0W6FReO4XcTWm4NIciXZP0R4VtW/vCMuirFTsTkpmAYaunJaPCpx0vHrLxvY6WmP1VYGtS
-	jeRwpzfh9/nMR7VxclBWVjEj4PgPvZi6Vx+ZMzxuQKheDa1ZJbwqXsqi1NFgAnMyk=
-X-Google-Smtp-Source: AGHT+IEQ+4+TeVYmp/ChyVlFUe2X4ufWClEt78idDjNBALBIwJCrPDr379ZA25vJ6B1jLbIM6oZ2/Q==
-X-Received: by 2002:a17:903:fa6:b0:29f:13d2:1c5e with SMTP id d9443c01a7336-29f23e4696fmr129429535ad.21.1765821047933;
-        Mon, 15 Dec 2025 09:50:47 -0800 (PST)
-Received: from ?IPV6:2402:e280:21d3:2:50bc:8636:2ee8:5158? ([2402:e280:21d3:2:50bc:8636:2ee8:5158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a0e2318990sm43179675ad.38.2025.12.15.09.50.44
+        bh=P8D3gbs8j8tMtsoO/hc4EokJzJyu5XdrUi05ido4tmo=;
+        b=X2SpQlL+tyDSPiJCgcYp2iOqJy3hghmxQ1u+nQkm5y9KRA32ZCVuSdFvhE+9FhQq8K
+         sW+X+LQZpWV1IpSPCnubzstI4TF8acX+jUKoAMAXUc/dxueoD6XQwBfjj19YlpDa9YqL
+         eo4iCl/zR9+W8CFFQ6ZbfUVlE4q7SnQ8i5taorpSyehlOJ6KMc2d7SbPnFrG3ZyHFBd1
+         n24ua7VxQuIKnbB9z9SY6MuSjrgAnDcwAr8njiDigL2OuhKto8cxxEFZMay1Ob/Fz633
+         ycWDecq0acQP/EYPQosBSQouczRodv5wAAPuNKeN4fDPb9l9SnUQNCLsGP1z3JJKy7Iq
+         VC7A==
+X-Forwarded-Encrypted: i=1; AJvYcCUzVrB/i+DD72XLHGWpupk19hcJmaF7msjVbWmOwqcb1SJW4Wij1h1n4dcjsxVIqg+JcQpa4rpnmmA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuujDNyVn/vIr3EWlbHCA78f2peFSoq65W6TdoQ7Db1cqomAMb
+	tFvlawUKcrGTL3yn+LE47InvONywtkaXxnv3aIEPR/APi8IAjM2aLAHIEWNdQwuWPhc=
+X-Gm-Gg: AY/fxX4SwBQFcr5S8GN8cFM1Sm87Na/OF+UHqE5kZTj+idA2OslPAFgFMNUw6qb2n7O
+	9GYJTtiAmfsH3hrCbLqQ80CyNisTRT1jz7FNu0UC4sgfVQdUeQ13I1PVU5aJNAJHVbHapWA64B9
+	bbJssDomLYVD0xBIEYQh0VwYmLMeK9BpoGNlc01NehMpTQFb7Lq6V5YwLtoj9yH5sBsnwMmbDCP
+	uSFLZWZDndTJ/ILDWUrl645mjiIscCFbbJWxxc9f8wI3745ohDdPIeeQo/ZwNNV8kJosphMzHw+
+	VJvlaC3EKtV4KHJCXrYCYHPc7OvmKjM7eRvTR2V7968ilfk/WMcA9EKqirKzHCZ3nxS0Twe3QiE
+	Luu/hDbwVNGNzMh0zDKY2hObb3WfGzFIq4udNRF+yb/huO16+1+w/is3RjQAzmBWSeSdP5fihj0
+	DcJDArcXUJcvJr5vbFCmT7gtdqukwamq0OsJaLAyUa5RDFyysumZ+iBDn47B8u
+X-Google-Smtp-Source: AGHT+IHHsNWWpcFL7pxsMf0NT+Ch5aoGLcrbIOKR0HmNu8rxcH3yGMLa5YDaJGBvj/3gZjcMR41VGg==
+X-Received: by 2002:a05:6830:4c08:b0:7c7:54e1:a3ad with SMTP id 46e09a7af769-7cae8366e93mr8570713a34.17.1765822172981;
+        Mon, 15 Dec 2025 10:09:32 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:1635:b560:bfdd:f758? ([2600:8803:e7e4:500:1635:b560:bfdd:f758])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cadb2fcc39sm9838677a34.19.2025.12.15.10.09.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Dec 2025 09:50:47 -0800 (PST)
-Message-ID: <37d8b0fc-db25-4ce6-89e1-3cd4e447e005@gmail.com>
-Date: Mon, 15 Dec 2025 23:20:37 +0530
+        Mon, 15 Dec 2025 10:09:32 -0800 (PST)
+Message-ID: <bef2e71c-fd76-4e73-9e53-422f9fa96757@baylibre.com>
+Date: Mon, 15 Dec 2025 12:09:31 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,56 +82,73 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: adc: Add support for TI ADS1120
-To: David Lechner <dlechner@baylibre.com>, jic23@kernel.org
-Cc: nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251109141119.561756-1-ajithanandhan0406@gmail.com>
- <20251109141119.561756-3-ajithanandhan0406@gmail.com>
- <5f15284b-159b-4860-b58b-35c624e2539f@baylibre.com>
- <8e2c73ca-3746-4b2a-9d85-c12b51a69059@gmail.com>
- <8ad18de5-53cd-49ba-8e84-1e8c7e5bd627@baylibre.com>
- <15106906-3bcc-4187-87d9-c838fe99b583@gmail.com>
- <5926ca19-c204-4abc-9e59-86a797b63b5c@baylibre.com>
+Subject: Re: [PATCH v8 2/2] iio: adc: Add ti-ads1018 driver
+To: Kurt Borja <kuurtb@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Tobias Sperling <tobias.sperling@softing.com>
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20251211-ads1x18-v8-0-5cd12ac556da@gmail.com>
+ <20251211-ads1x18-v8-2-5cd12ac556da@gmail.com>
+ <064e059b-5c86-4c41-8de8-b6a728361fd3@baylibre.com>
+ <DEYY46ZUJQ35.YBNYWLGZMRYA@gmail.com>
 Content-Language: en-US
-From: Ajith Anandhan <ajithanandhan0406@gmail.com>
-In-Reply-To: <5926ca19-c204-4abc-9e59-86a797b63b5c@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <DEYY46ZUJQ35.YBNYWLGZMRYA@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
->>
->>
->> Thanks for the pointer.
->>
->> I did look at reg_shift, but it doesn’t fit this device. With .reg_shift = 2, regmap would send only (reg << 2) (e.g. 0x0c for reg 3).
->>
->> The ADS1120 requires the command byte to be CMD | (reg << 2) (e.g. 0x20 | 0x0c = 0x2c for an RREG of reg 3).
->>
->> Similarly,
->>
->>   .read_flag_mask would produce reg | mask (e.g. 0x03 | 0x20 = 0x23), which is also not the required format.
->>
->> Unless I’m missing a regmap configuration that can generate (reg << 2) | CMD as a single byte,
->>
->> a custom regmap bus seems necessary here. Please let me know if there is a way to express this with standard regmap-spi.
->>
->>
->>
-> Sorry, I didn't read carefully enough. Wouldn't this work though?
->
-> 	.reg_bits = 2,
-> 	.reg_shift = 2,
-> 	.read_flag_mask = 0x20,
-> 	.write_flag_mask = 0x40,
->
->
-> Then a read should be 0x20 | ((reg & 0x3) << 2) and a write should be 0x40 | ((reg & 0x3) << 2).
+On 12/15/25 10:54 AM, Kurt Borja wrote:
+> On Mon Dec 15, 2025 at 10:55 AM -05, David Lechner wrote:
+>> On 12/11/25 10:25 PM, Kurt Borja wrote:
+>>> Add ti-ads1018 driver for Texas Instruments ADS1018 and ADS1118 SPI
+>>> analog-to-digital converters.
+>>>
 
+...
 
-Yes, that works thanks for spelling it out.
-I missed the reg_bits interaction earlier.
-I’ll drop the custom regmap bus and switch to standard regmap-spi.
+>>> +static irqreturn_t ads1018_trigger_handler(int irq, void *p)
+>>> +{
+>>> +	struct iio_poll_func *pf = p;
+>>> +	struct iio_dev *indio_dev = pf->indio_dev;
+>>> +	struct ads1018 *ads1018 = iio_priv(indio_dev);
+>>> +	struct {
+>>> +		__be16 conv;
+>>> +		aligned_s64 ts;
+>>> +	} scan = {};
+>>> +	int ret;
+>>> +
+>>
+>>
+>>> +	if (iio_device_claim_buffer_mode(indio_dev))
+>>> +		goto out_notify_done;
+>>
+>> This should not be needed. It should not be possible to
+>> exit buffer mode without triggers being stopped first.
+>> (No other driver is doing this.)
+> 
+> Previously I had my own lock here because ads1018_spi_read_exclusive()
+> needs locking.
 
+What exactly are we protecting against here? I.e. give side-by-side
+lists of possible concurrent function calls where there could be a
+problem.
+
+Any call to iio_device_claim_direct() will already fail without
+calling iio_device_claim_buffer_mode() here. And since this is
+an interrupt handler, we don't have to worry about reentrancy (it
+can't be called again until the previous call returns). And nowhere
+else in the driver is calling iio_device_claim_buffer_mode(). So
+calling it here doesn't actually add any protection AFAICT.
+
+> I dropped it per your suggestion in v1 I believe, but
+> given the discussion in the cleanup.h series I was thinking in bringing
+> it back.
+> 
+> But yes, the scope can be adjusted too.
+> 
 
 

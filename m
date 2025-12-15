@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-27098-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27099-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F064ACBF425
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 18:40:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF402CBF47C
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 18:44:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FB2C3006A8A
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 17:39:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F58D3012DC7
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Dec 2025 17:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9AA30FC22;
-	Mon, 15 Dec 2025 17:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA27328B61;
+	Mon, 15 Dec 2025 17:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4aE9rhB"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="u8D+ZdW8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80BE15E97
-	for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 17:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB4B163
+	for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 17:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765820348; cv=none; b=BTMbi55yazmlBZiLAl+2/4FUdMoLfNyLbg9fh5R9u2SnKd6vKRvw7ZSVtDWApOna6+j81Qgq3hjRUKN7DFVMoPfvqkvpGPmGQPU1ClCUH+48+PB+eXslxpkwViZ2XykshhNdwkRPGcc4jdbXJmbab1LbM9SqQq8PZ/JUSysUaW0=
+	t=1765820539; cv=none; b=gC3jNMjQFQW4T6cZBlTzWXVBwOzRAS3vS+reuBaXwGfSD80uWoXku902BNO2LkSbcAcqyXl1XZJyeUHeZ7wDutiJqDLCtI3SEaMr5D3BxsRYSHeUBlihl7Zb+tvIoXW2X3qO6OFXnWHARbsvYDYBFX9RN/am+wqskQbvzNjFT88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765820348; c=relaxed/simple;
-	bh=psA0R8uGmpGOA2fhUCx8jrhNdynv6YxOoiERa8JAm0A=;
+	s=arc-20240116; t=1765820539; c=relaxed/simple;
+	bh=JCbw/Tkfl7qcStJ/t/KoL7tabiMhXYBLCGI4xWIdDl0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l7vADCGmXBqcM+GD7Hox/yi0JNZnBmOgCjv2hZUoNfX9H3S/NgEXawPXRO2nB3SN7pGlCDbNrMsuGOhc3l+GLQprtVX2iI4/QpJ87C8PbFpbV7AyCDMpiWcaKDkiaQRp99lt6F4Vg+hf6ZLXCPP+0KSwXucwzIHJZdd76rEivdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4aE9rhB; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a0bb2f093aso18252005ad.3
-        for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 09:39:06 -0800 (PST)
+	 In-Reply-To:Content-Type; b=Ckr2xZYquTIpuWQTKoGk1s95j91Dl30FlfHrlQppecgXHI8PW8c0KUiShvPQrjnn/950PltYhuHv0NNo/8AirhgIsZ9giMUuY4R1bhmg8vEpepguKH63U0393KWTEtdHOkjb+UtKKkx8yzzmr2WSLKqaOefKDkUJil+/B1yNfHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=u8D+ZdW8; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-3e8819eda8bso1234088fac.3
+        for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 09:42:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765820346; x=1766425146; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765820537; x=1766425337; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=a4h6/dnocvbSI7wy9WOBKXhAE/Pd1GTroBa3YOvaI4E=;
-        b=W4aE9rhBtPanpxXLQdmxHy+8eHxo+o73fkJCn5h0QY1h2QF6Bhqj+ftuI3Ht68FC2c
-         +Yl+aqRWDoQGaBgJKbqGKbEDNIeK7rT8ipZlittt05DBf1/pzrTH4bv1L1tyqliny+Ri
-         DsollwYUoGd6eAAgXJS/t7SPg033SW9Rvt46oAPvGWoe5vpPiDtcroeCjb/9lsSeExcb
-         QzTpo18xz1I74FZxsrMsPcNg9PAsORn6iqw074xX/FytYJohM1LDKD52EJcAEr/K/th4
-         LjbiozT3BNp5lrfWwowXN49VACCJP8I2JJ+/ntL7wr3EfgO6oXG88EM9gTCCn5xyUFqs
-         zgwg==
+        bh=mlSnlLmCn+QNW2/CaTtJGlhnE1xXNcqwO0s1EpmEebg=;
+        b=u8D+ZdW8zNqFdGjl1gaD4cPQGqrRl5xearAu8LX8VqSxYHNTm6zYOnrwwXQV7R+MGg
+         R3QSwU992QCbe+/A51F5mC6gR1FIqfEOmltzGTaIyv8TnX292c5JT80QaZlSKxCoonlg
+         Ar9d+ZHYU9GCGbXUn5G8L/Nh7DC8DcFz3JQQSoknE2AvrNEGl3vRHkxkP9UcHulzUXny
+         GUtWSPt50FRFlONIXwiO7/e3vzGr6nMYD6SEjak3yCqjh7EtL2Ukt9r86RqlC+V82pYt
+         1+kBlNzjJ5ZHWJEcqXLKKtuZhoX8TDmimCzr012tz47xYM5prUuC+P3YC7AOLtqrUd/e
+         IoUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765820346; x=1766425146;
+        d=1e100.net; s=20230601; t=1765820537; x=1766425337;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=a4h6/dnocvbSI7wy9WOBKXhAE/Pd1GTroBa3YOvaI4E=;
-        b=mOFuHiS4b5xDB8HehMq6PdEt6CGO0QVSzrfMYR8vtg8CbDqL2QuXWBn9U5XKrlsa7m
-         Vi28hIepHJ64d4jLsLa5eSMrS0wWTuuIcbGwdsUyQRhjesLoDANwQoTUDA6u3GmhW44L
-         orrzdTIuw7RkWSh0L9dppit+Zt3COHahIl8FLmF5XVzHq/tjrrDiXbQasf31Cmss5aM9
-         uLQYPBj5Hch93pWQPAdksfTTWNKqa551UllGpuawd672hSqNNscfsqT1WSQck4XVACyi
-         jbURb+QEUEiMp6FRn+lbKLX8IP+3TNbmJqQZWAArd6HK2NmzT2E/kkm3q4MFYSLD/KMZ
-         WZtw==
-X-Forwarded-Encrypted: i=1; AJvYcCXUgejSffySQaGesUrvoO+5qzrsd4Q+GIN/NNk3Xdwihl2U2n7tiREtAMqhcOkkJ/+c0jLjQqdvsh8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/PDg5liK04AbZTXwz4Jr/o574nppVuyO72QAYP0xSgr6aMrt+
-	/URBN8mHDBpCAQKo457SzaOg10NnRMA7xGajeknG8mBmAINXWb1n6g45f+wT5gVq
-X-Gm-Gg: AY/fxX52KDLQnnY9/czXrbuRSSEv7rQBfMq6ULalfevyG16C1QV6kHxl/gzxwZOtHn6
-	ctVk89oAlbeELHW6csVuhHsqA8BkW2gfEmQhLhMuZTtVypt5EX7TEsDVywZaXSWAL+Ej5/gXxjz
-	KvaltAtsxLlxMrxz9o7uwAsbE7BrecN5wzjdTpdIlMlc5vUfggozrFRbomjrfvTkBX78DsB1puQ
-	7miDS0tmCa2Ce3b/v56liRjsygYL1MsztgXZgLCcKMYAMgzHSIXSkJdWky8cqsNdB/aILtXtvSQ
-	fPzHQAm6bgSwnfsuUERwsb4Pv4LpEMCWYNgHZptsTvKnfdXf5IjF0dA4I0JUTSRO1y/zsKpgB6v
-	yUqCvIlUC0WOTgccGKB2HDKsHeNlbJev+UQt9x3cPYtGSZLECym7vqJphnGBQDKAGAioIzhY/HR
-	/GvxL3KALpX748k36SWRkSY44duaVnZrdTzBzo9bIlq+rIzeOM2+GdzUYNZFrVHhw=
-X-Google-Smtp-Source: AGHT+IE46iX/+UepoP75ugQxR9RVc4LZtluzmX+M6lYVRNxOVnAo/xUyAvLUfTOY+OUvXeZbNmPVLw==
-X-Received: by 2002:a17:902:d488:b0:2a0:d149:5d0f with SMTP id d9443c01a7336-2a0d1495d3emr54427205ad.17.1765820345955;
-        Mon, 15 Dec 2025 09:39:05 -0800 (PST)
-Received: from ?IPV6:2402:e280:21d3:2:50bc:8636:2ee8:5158? ([2402:e280:21d3:2:50bc:8636:2ee8:5158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a0be984c7csm55202695ad.66.2025.12.15.09.38.59
+        bh=mlSnlLmCn+QNW2/CaTtJGlhnE1xXNcqwO0s1EpmEebg=;
+        b=T8ZsrLm3ypFwpCxELTrlFXyUehwuz9s9HVsN8ldJbV98On8Bjn6N9GuPObNnE2VWI5
+         3DerWYdsFp2Q6muvIkrY3+mzK9bJkzXNun8ns6fKIjDXgQD+qepWiTCz83W/QlBlCCFr
+         vO4+lhZCjHyG4HKrgxN5+cHeavY72LmeDklJF3bttlx7sIjFBsQPUKQ3EZgV/ESXnBnE
+         JtpP0i6/yvP/0yi7/OjZ3Nglxu9asovpBo5uBPMwoKA9QACFVqH1bgX1PY71m88mTJOn
+         m5bOqqyDp3EjPMgNG8+YSPGy94fIoBPC5kookNDHfSOc2lpFgUkF2umZBlrpPma2ZQ8r
+         amyg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPrnPU7J319fV/5t6yOzke3jyKwmicOtD3lgMlVTXpyV3KRbAXwdKawM0xeiNKO74ahFBFne5Nf20=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUy4BEe2+sY+LloPflNiGIof1hplGRs9Nnita96T1OrifmgEnI
+	4RXkKlT5zylBiXuwsRhFUIplRN9BQH9ZNxFfSsUsTNSMYGVlN+Lkly9lNurSP4ZIaKw=
+X-Gm-Gg: AY/fxX6+TuvvbZaFKf/uLTMJF3ogVIAio5q/45851SIGcxayP1icTWwQmd5eqY2NyZ3
+	HQlpgzT2pjkinKusuHUjsAoF5PdpFNyZCFFgLJr26+J2gby0Mr8HlOHReLeHzmI5d8ASqjGpGcn
+	Vukys8KKM2FUbZ4cshCthINsLNS6nRGNM4kG/IPAJclWERileOQXAdyWQVZf8Dtc9JQVORRbbHb
+	h+AkF0ZVWlEcR4hU00f0EfH+5V/6sQn2ZkLJR+IwKo9YIwj3mq5GuCud++5lsvm7bEkzaM4yFuw
+	GVwfiN0aKS7eLwKmZoXpslz7tLyUBx5bGq6wg2F7iyW2rRbJzVmJ1DyUD75nkSZNwsdhL2kBCR9
+	nUY9DjkXtwrN4d9sYU8oEhXzTq25l1LmMclAcZ2HAWipxl7HeJnd2+kMHBnZ4xSb1c0IKJBNp8n
+	oO4n20EnuViLldJFD0+7sjslB2cKVU1/3Y6BUKFgRBAoUlJKQq1X95YOGtSd32Rvl8z+KvgP0=
+X-Google-Smtp-Source: AGHT+IGuB01bc3hrG6FQiQnnv0dYgwD1dfK5LrfV7pzOIuWcBx0XmqTUnDO8pJby08UqR/zVI5Laeg==
+X-Received: by 2002:a05:6871:b07:b0:3ec:41eb:6e48 with SMTP id 586e51a60fabf-3f5f890fb0fmr5685338fac.40.1765820536604;
+        Mon, 15 Dec 2025 09:42:16 -0800 (PST)
+Received: from ?IPV6:2600:8803:e7e4:500:1635:b560:bfdd:f758? ([2600:8803:e7e4:500:1635:b560:bfdd:f758])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3f614ea526bsm5010675fac.22.2025.12.15.09.42.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Dec 2025 09:39:05 -0800 (PST)
-Message-ID: <bf220707-cca1-4a11-a194-04e131544d54@gmail.com>
-Date: Mon, 15 Dec 2025 23:08:58 +0530
+        Mon, 15 Dec 2025 09:42:16 -0800 (PST)
+Message-ID: <5926ca19-c204-4abc-9e59-86a797b63b5c@baylibre.com>
+Date: Mon, 15 Dec 2025 11:42:15 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,9 +83,8 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/2] iio: adc: Add support for TI ADS1120
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, jic23@kernel.org,
- nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+To: Ajith Anandhan <ajithanandhan0406@gmail.com>, jic23@kernel.org
+Cc: nuno.sa@analog.com, andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20251109141119.561756-1-ajithanandhan0406@gmail.com>
@@ -94,46 +93,120 @@ References: <20251109141119.561756-1-ajithanandhan0406@gmail.com>
  <8e2c73ca-3746-4b2a-9d85-c12b51a69059@gmail.com>
  <8ad18de5-53cd-49ba-8e84-1e8c7e5bd627@baylibre.com>
  <15106906-3bcc-4187-87d9-c838fe99b583@gmail.com>
- <CAHp75VcA2SNGb6cpHaOQwQ_dNaG5xCZnfrXtu+u9pB1+oz7xew@mail.gmail.com>
 Content-Language: en-US
-From: Ajith Anandhan <ajithanandhan0406@gmail.com>
-In-Reply-To: <CAHp75VcA2SNGb6cpHaOQwQ_dNaG5xCZnfrXtu+u9pB1+oz7xew@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <15106906-3bcc-4187-87d9-c838fe99b583@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 12/15/25 10:30 PM, Andy Shevchenko wrote:
->> Thanks for the pointer.
+On 12/15/25 10:49 AM, Ajith Anandhan wrote:
+> On 12/15/25 10:06 PM, David Lechner wrote:
+>> On 12/15/25 10:13 AM, Ajith Anandhan wrote:
+>>> On 11/18/25 7:34 PM, David Lechner wrote:
+>>>> On 11/9/25 8:11 AM, Ajith Anandhan wrote:
+>>>>> Add driver for the Texas Instruments ADS1120, a precision 16-bit
+>>>>> analog-to-digital converter with an SPI interface.
+>>>>>
+>>>> ...
+>>>>
+>>>>> +#define ADS1120_CFG0_GAIN_MASK        GENMASK(3, 1)
+>>>>> +#define ADS1120_CFG0_GAIN_1        0
+>>>>> +#define ADS1120_CFG0_GAIN_2        1
+>>>>> +#define ADS1120_CFG0_GAIN_4        2
+>>>>> +#define ADS1120_CFG0_GAIN_8        3
+>>>>> +#define ADS1120_CFG0_GAIN_16        4
+>>>>> +#define ADS1120_CFG0_GAIN_32        5
+>>>>> +#define ADS1120_CFG0_GAIN_64        6
+>>>>> +#define ADS1120_CFG0_GAIN_128        7
+>>>> We could avoid these macros by just doing ilog2(gain).
+>>>
+>>> I understand your concern about unused macros. I've kept them for documentation purposes as they map directly to the datasheet register definitions, which makes it easier to verify correctness against hardware specs also I'd prefer to keep it like this since it give more readability Shall i keep this as it is for this initial version?
+>> I would argue that if they aren't being used then omitting them would
+>> save us the time of having to verify the correctness in the first place.
 >>
->> I did look at reg_shift, but it doesn’t fit this device. With .reg_shift
->> = 2, regmap would send only (reg << 2) (e.g. 0x0c for reg 3).
+> I understand your concern about unused macros. This was suggested by Jonathan earlier.
+
+Jonathan is the maintainer, so if he is fine with it, he has the final say. :-)
+
+> 
+> I’m fine with removing the unused macros if that is preferred. Please let me know how you’d like me to proceed.
+> 
+>>>>> +static int ads1120_set_gain(struct ads1120_state *st, int gain_val)
+>>>>> +{
+>>>>> +    int i;
+>>>>> +
+>>>>> +    for (i = 0; i < ARRAY_SIZE(ads1120_gain_values); i++) {
+>>>>> +        if (ads1120_gain_values[i] == gain_val)
+>>>>> +            break;
+>>>>> +    }
+>>>>> +
+>>>>> +    if (i == ARRAY_SIZE(ads1120_gain_values))
+>>>>> +        return -EINVAL;
+>>>> Since there is only one gain register, we should store this in a
+>>>> per-channel variable, then set the gain in the register in
+>>>> ads1120_set_mux() instead (and it would make sense to rename
+>>>> that function as well to something like ads1120_configure_channel()).
+>>>
+>>> I've implemented a global gain that applies to all channels for simplicity. I planed to add
+>>>
+>>>   per-channel gain storage in the later patches.
+>>>
+>> OK. Just mention this in the commit message.
 >>
->> The ADS1120 requires the command byte to be CMD | (reg << 2) (e.g. 0x20
->> | 0x0c = 0x2c for an RREG of reg 3).
 >>
->> Similarly,
->>
->>    .read_flag_mask would produce reg | mask (e.g. 0x03 | 0x20 = 0x23),
->> which is also not the required format.
->>
->> Unless I’m missing a regmap configuration that can generate (reg << 2) |
->> CMD as a single byte,
->>
->> a custom regmap bus seems necessary here. Please let me know if there is
->> a way to express this with standard regmap-spi.
-> So, and if you define both?
+>>>>> +/* Regmap write function for ADS1120 */
+>>>>> +static int ads1120_regmap_write(void *context, const void *data, size_t count)
+>>>>> +{
+>>>>> +    struct ads1120_state *st = context;
+>>>>> +    const u8 *buf = data;
+>>>>> +
+>>>>> +    if (count != 2)
+>>>>> +        return -EINVAL;
+>>>>> +
+>>>>> +    /* WREG command: 0100rr00 where rr is register address */
+>>>>> +    st->data[0] = ADS1120_CMD_WREG | (buf[0] << 2);
+>>>>> +    st->data[1] = buf[1];
+>>>>> +
+>>>>> +    return spi_write(st->spi, st->data, 2);
+>>>>> +}
+>>>> I don't see anyting unusal about these read/write functions. We should
+>>>> be able to use the existing spi_regmap with the proper configuration
+>>>> instead of making a custom regmap_bus.
+>>>
+>>>     The ADS1120 needs register address shifted by 2 bits
+>>>     in command byte (reg << 2). I couldn't find a way to do this with standard
+>>>     SPI regmap. If there's a configuration I'm missing, please point me to it and I'll gladly simplify.
+>>>
+>>>
+>> I think you are looking for reg_shift in struct regmap_config.
+> 
+> 
+> 
+> 
+> Thanks for the pointer.
+> 
+> I did look at reg_shift, but it doesn’t fit this device. With .reg_shift = 2, regmap would send only (reg << 2) (e.g. 0x0c for reg 3).
+> 
+> The ADS1120 requires the command byte to be CMD | (reg << 2) (e.g. 0x20 | 0x0c = 0x2c for an RREG of reg 3).
+> 
+> Similarly,
+> 
+>  .read_flag_mask would produce reg | mask (e.g. 0x03 | 0x20 = 0x23), which is also not the required format.
+> 
+> Unless I’m missing a regmap configuration that can generate (reg << 2) | CMD as a single byte,
+> 
+> a custom regmap bus seems necessary here. Please let me know if there is a way to express this with standard regmap-spi.
+> 
+> 
+> 
 
-Hi Andy,
+Sorry, I didn't read carefully enough. Wouldn't this work though?
 
-You're right! Using both reg_shift and the flag masks produces the 
-correct format
-Thank you for catching this! I will drop the custom regmap wrapper.
+	.reg_bits = 2,
+	.reg_shift = 2,
+	.read_flag_mask = 0x20,
+	.write_flag_mask = 0x40,
 
-BR,
 
-Ajith.
-
->
->
->
-
+Then a read should be 0x20 | ((reg & 0x3) << 2) and a write should be 0x40 | ((reg & 0x3) << 2).
 

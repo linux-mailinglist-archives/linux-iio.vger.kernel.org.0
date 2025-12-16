@@ -1,145 +1,88 @@
-Return-Path: <linux-iio+bounces-27110-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27111-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976E8CC0591
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Dec 2025 01:26:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF4ECC10F6
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Dec 2025 07:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77E043011A6D
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Dec 2025 00:26:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4E41D3037B9B
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Dec 2025 06:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0492309B9;
-	Tue, 16 Dec 2025 00:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E07338925;
+	Tue, 16 Dec 2025 06:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bUXJy7U/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TBLMNwqj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94C3227B95
-	for <linux-iio@vger.kernel.org>; Tue, 16 Dec 2025 00:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ACE339B44;
+	Tue, 16 Dec 2025 06:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765844811; cv=none; b=tlaulyC2hExNV6bcWstanH8XO4JjLJStd4f0laEcgXaMb17E+eqsBVT8TPaEhg3L0b/4t/Tckvu4OpJBopfqbx7aCRxkhgeEhQwi7M8j2EE8ZUpRG0fbHaU8ss3oYON+6QC4Y5bZelLgenG71Nik4rJT7sVKP213AN0pAv30I2g=
+	t=1765865314; cv=none; b=bNI59FCWX1LvpZ44qzRI4T6EuE33IFdhcG9lKKZM6YgllwksbE4E9YAWhw0qc949bSQ8yQ/xJrtHTm3Ilf0BQoEv4deZ47tT6FFXHfcruNVh7+jnuyq4U6prZK4eTonP/JdC4hJHe5uiMVaTF1dCJAINnv+43Dvru0P4avEtUfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765844811; c=relaxed/simple;
-	bh=Rf2vh/bQ95xAd4D7d7UP3aqU1zMCM9f46oH/0MNUnyQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Rjf+5w97uEd2EK08OTRBdGwK8iAiANYMNwA+DNa8W63c5h2qqDpJ3hsg/CSVIAXd/ETcZeCyqk7SPkYJLRduR4MhoocNszRiLDFtfWf9Xpd/lclgxXS7Szj3sSwtwSuj0d3OwT3ggqpa3SFR8Ewnzr+S1yTb6vDlePa49ROO18Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bUXJy7U/; arc=none smtp.client-ip=209.85.160.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-3f0ec55ce57so2417912fac.2
-        for <linux-iio@vger.kernel.org>; Mon, 15 Dec 2025 16:26:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765844807; x=1766449607; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=e1WdkoezGW051cvtWm8NknZdX+IzOtpg2baHzjgkxPc=;
-        b=bUXJy7U/kaJYn4x7RmZgcX/PCWOV+JwsHik7gHOMtqbznJMdY7o1iIciC2gNNcicJ3
-         kOMPlW6Gqp9fEg9qCJX7iA3pQejCntpGnQLN5m5mouukToKH03OPgAHXDzGVLSeJJMcH
-         QKDzzYSDQFQnCqsTd3Z4xaTRG7BZq/qYLLrRFHpDQMM+pvscXC5wyaNOyA1AalD83m6t
-         oq60HV5Ps4bbmfw7BMSjTdN0edizFaEWNYVGsUUcSYf+xgTozFtSPqC9YvwyTbHpgB+W
-         wy1VGsdUzrtdL3g7AiFf3C1fRtvYD03pI1sluLN4d/T7o4cOgnk4JxzlS6ilCssawxPw
-         elJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765844807; x=1766449607;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e1WdkoezGW051cvtWm8NknZdX+IzOtpg2baHzjgkxPc=;
-        b=AbpUWK1WC0jPMHPhUFB927v3YLsklOYkslHkOTLDpgsI7b2RFrO9aM+5sRfZYWiyql
-         F4JxGexyNXmuMbr75leDdsyZgjY82xJVAJr38/J2kTCYdJZnh2WtYC0ornfqFQSF8NLJ
-         UEMlRMeNTUwnBFpXJ4tNEwybxm5Uo6PlBrmIa3TW3lcjrguSmanv8qI29cf18YlBQOMX
-         ZRtVA5AE9B1DMGvHG0Opy/X+ZmYUvmVGqT5QZ6AKyYlYIk4tlLZztZvF/X55bxkpdTiJ
-         8XaWYmYt3ZPgZmb3kHLnIaSLO26t4RksFbMakrl/s+tqK9MtOyY7Dj13vGMIbCp3oh6W
-         gBaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZxgdQ/3pP/w4iVjRpX7DSYHEAoLoUIsFDoYiJ4leIjx+sTwaU7KoPl/WIogrgyOZCx7DY++I3zpo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRSwu1IZ5dlt+jHPLrzKeClhDU3ML+tNGMYGZA0BsP2XpZLDb8
-	kQFf0/OCCdY5GxHtV8d1uAYiA4CcAqXPsh1UXEf7SjYVRh6T0scko6cvyoJTBjLO5Hk=
-X-Gm-Gg: AY/fxX4WQzClhKoAGKblA8iEFGCLw2WoferrRVHunEP7OoC5VNWRHepqIYXjQEEjVPq
-	FGTXs3tu7QBW2LNwFTmvXF50a+jfo/cw3MAu5c9/VR+4bHbvCQi2a/nGNyU+PbOi0fvMi4QrHND
-	KvrtlGD82EjTDERII2DcgVxx2A5N76P7osm2A51YtV6DruVh7OBu2ERhzY81Tmuad6cQ1JPlG9y
-	zjzCXEus5xU13pe7UU1uZ4LWcDyQfBn32fHhBSPw5EHZk8eZLuZCEdgPA3A2RFB+XeMlASAFiug
-	oRo/vnxDec05Q+esM6EoaceNHCD3SKn1xx1ndEZm83D0gnIomhdXsyFlwHMEd5ha/7OJAjyhhwG
-	J3Mbo2ZmVhERrrNv8OWvFr63kxf7KExP7hSDgWbnOZbd2QTHOrAw0TgOlc/Fq6YdkFr34ryUUXE
-	KvL5IwZzyS/su2RsTKA5Z2CpUOE6tdGDiYK9yDw8a9I/DcrFjDQ6eVkiMXZ9ZG
-X-Google-Smtp-Source: AGHT+IEUYjNzC2/6Rbw2SBCUU9VyGKxu+9RT3GlnEhvSg6PohNVSqgaFiVuE7oEWFe4FbXUx8jlVPQ==
-X-Received: by 2002:a05:6870:168e:b0:3f5:5af:c9d3 with SMTP id 586e51a60fabf-3f5f8e40575mr6106302fac.52.1765844807482;
-        Mon, 15 Dec 2025 16:26:47 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:b28e:2ce1:6967:e2b5? ([2600:8803:e7e4:500:b28e:2ce1:6967:e2b5])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3f614be6be3sm5529641fac.7.2025.12.15.16.26.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Dec 2025 16:26:47 -0800 (PST)
-Message-ID: <e1284b0c-3ad5-4c54-aa58-30f416aa98f8@baylibre.com>
-Date: Mon, 15 Dec 2025 18:26:46 -0600
+	s=arc-20240116; t=1765865314; c=relaxed/simple;
+	bh=2zAWi84WvyQUlBO0Sf5n8zskjgwYyuYE4XKw67Rd+Z4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l+xviZz5fdtsy6rA/t58h9JVAEME5DjS6rFNr1h8G7uwmhXKr9EzCROqE6EZ64K2voDOvfcEV+jHSmoVAJdmG/wQ4+igdjU7bObXxqRhyyjbNCJI95OI44j6i5i8d71ghzDqTTD0Im5l5KZLvOGnrPRTYU/6WN7U7Wu9AG7Oe+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TBLMNwqj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F9DC4CEF1;
+	Tue, 16 Dec 2025 06:08:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765865310;
+	bh=2zAWi84WvyQUlBO0Sf5n8zskjgwYyuYE4XKw67Rd+Z4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TBLMNwqjjVOKADQFaXAROpTDGxvbmNsu0u8ppzGK16+gsvCjepOKqsLHDFJXKffwU
+	 0f20YuQc/Pfx68thtvd+PjJmPh1l8A/78NW11YRR+VIr692KuG1qJxbJ9+GWH5zNJb
+	 C6A2VdZlhxHDkf814SjPj1JkuyxGsOWP4RdcJkBsRFdE2IQ+nRitfzaYSKxt8EzTFh
+	 15p0Zn/mY07ZDBbAMAO7oTTxKgVZphCEJ8Qm4QSHDkQzGp9Ssr6KEnsW8LmRZAZH9N
+	 T070tG0ebarWo8Y7bFT3bpml5k/H2y6SlltuPjbbT0gtjJZw9/kuepkVG4OWOM8kjV
+	 lfbWm4+167DLw==
+Date: Tue, 16 Dec 2025 07:08:28 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Tomas Borquez <tomasborquez13@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev
+Subject: Re: [RFC PATCH 3/3] dt-bindings: iio: add analog devices
+ ad9832/ad9835
+Message-ID: <20251216-convivial-emerald-chamois-888a3a@quoll>
+References: <20251205202743.10530-1-tomasborquez13@gmail.com>
+ <20251205202743.10530-4-tomasborquez13@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: ad7606_spi: use bitmap_full() in
- ad7606_spi_update_scan_mode()
-To: Yury Norov <yury.norov@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251216001808.333053-1-yury.norov@gmail.com>
- <aUCmZk0S_tq3SOOY@yury>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aUCmZk0S_tq3SOOY@yury>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251205202743.10530-4-tomasborquez13@gmail.com>
 
-On 12/15/25 6:23 PM, Yury Norov wrote:
-> On Mon, Dec 15, 2025 at 07:18:06PM -0500, Yury Norov (NVIDIA) wrote:
->> bitmap_empty() is more verbose and efficient, as it stops traversing
->> scan_mask as soon as the 1st set bit found.
->  
-> Ah, please read this as:
-> 
-> bitmap_full() is more verbose and efficient, as it stops traversing
-> scan_mask as soon as the 1st unset bit found.
-> 
+On Fri, Dec 05, 2025 at 05:27:43PM -0300, Tomas Borquez wrote:
+> +$id: http://devicetree.org/schemas/iio/frequency/adi,ad9832.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD9832/AD9835 Direct Digital Synthesizer
+> +
+> +maintainers:
+> +  - Michael Hennerich <michael.hennerich@analog.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad9832
+> +      - adi,ad9835
 
-I think you mean "bitmap_full() is less verbose"?
+Driver suggests these are compatible. Are they? If yes, then express it
+with fallback. In any case explain actual compatibility in the commit msg.
 
-This isn't a hot path, so efficiency isn't important.
-
-This makes the code easier to understand anyway, so a worthy change.
-
-
-> Sorry for miswording the commit message.
-> 
->> Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
->> ---
->>  drivers/iio/adc/ad7606_spi.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
->> index f28e4ca37707..7e17ccbcedd0 100644
->> --- a/drivers/iio/adc/ad7606_spi.c
->> +++ b/drivers/iio/adc/ad7606_spi.c
->> @@ -345,7 +345,7 @@ static int ad7606_spi_update_scan_mode(struct iio_dev *indio_dev,
->>  		 * has no way of demuxing the data to filter out unwanted
->>  		 * channels.
->>  		 */
->> -		if (bitmap_weight(scan_mask, num_adc_ch) != num_adc_ch)
->> +		if (!bitmap_full(scan_mask, num_adc_ch))
->>  			return -EINVAL;
->>  	}
->>  
->> -- 
->> 2.43.0
-
-With the commit message fixed:
-
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+Best regards,
+Krzysztof
 
 

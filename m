@@ -1,273 +1,342 @@
-Return-Path: <linux-iio+bounces-27156-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27135-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B338DCCA131
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 03:21:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E79B6CC78B3
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 13:18:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 60A263011BDB
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 02:21:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4BF73305B93F
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 12:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DD72F618B;
-	Thu, 18 Dec 2025 02:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7794633FE35;
+	Wed, 17 Dec 2025 12:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b="C6ZPt1WN"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="dLARWTq4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023131.outbound.protection.outlook.com [52.101.83.131])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2832C327D;
-	Thu, 18 Dec 2025 02:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766024464; cv=fail; b=rczXOFqMxHzhsbKgjP/ywRwTPXH1UW7MxPLmpTIySypctc/ejELSi75bBcuI5QctcRQh4dRn03aD4Lomy9WmMoYTl7G3I7VWhaxCf67BcPZ5Dw19/ERkEyaf5EA4s9WXMGwyRYNgSA824Dgpxa27Oz+Z6mNzc0FYRZ7yZFNlhGg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766024464; c=relaxed/simple;
-	bh=3tC8fhJ6lVwnHvYuoZygH7OPs9JjXg/QtVJGjvXF0YM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ow8p67zOD4yx6QsJsuSk/R1+f1RXDRLW8ykSW4auzcZBBHrZF6aJhC1Rxk75jb+pE3TuqDXnvkPkr3hS3SCCB2HHV3gyd78zSozFsDRj8GVn/EsaUzPZ1qJngf75n0sGmPTBzUN7TqjoMZHfF/XJtCb9BmmUImNmbnBBU42SUfg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com; spf=pass smtp.mailfrom=vaisala.com; dkim=pass (2048-bit key) header.d=vaisala.com header.i=@vaisala.com header.b=C6ZPt1WN; arc=fail smtp.client-ip=52.101.83.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vaisala.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vaisala.com
-Received: from DU2PR06MB8333.eurprd06.prod.outlook.com (2603:10a6:10:2e4::6)
- by DB9PR06MB8583.eurprd06.prod.outlook.com (2603:10a6:10:369::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Wed, 17 Dec
- 2025 22:45:36 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PF/hvg9XzSKTWpy0JgKyxCLqS1EaLcJSgoZrxTIHUfu0cHrzEkCAqGpROk4xJBEDTOvXBV2KWKlwvQtWTy4JyhJ3kq0oD6zsFMpJO/drMscqZZ464YBGVW18xkB+m5AJtoFRt7YFhZim5drEVKtF0J8xftqVAqwARa6aybqe0r3ZN5WT+WK332sQOAf6RYjVC9i9LWf0Q/wCVMAfdDQfJVDDmXUkMY+vFqnIdlMAyq0gw+9guEoG+X58rZSBM0KmAgNN+6lwxHO0HcSpMdRDnx8aJ1pobADrYWPli/rZJsE+iXpvtQNJkFeIpT4jAFXTUfWousCoV3p9iYawF22Z7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wZ9fPZunvrgDbSo5IK1qa4gAmKPebXapihRUCEem4TI=;
- b=hj1n95cTrtmtGF2mOCvvtf+tluOZIHIz4qZWan3da3HL/XYODdJi4FoDu1qcCQZxDZNSyzUHi4Tg7ZxF1pVyxnx1tVvbQQqTOtJCFoZZOqlHc362qKA9C6udjaZ/IWc85NqOoeFFFks8u7+afSjHOrZ4TC/h/fEE5QPfyCf7eNM/dYOvElhNLFqicS9lTtoJ5vfNS4PhsACYovvyPMoOmXDIg0wHP8NbI8RbPUvtis6YpvJzOJBj23GSEtUsxjt6Ps0nwdMvLvnSb5vtCtBrnZUo6/e+6BVXmUJUjVa/lbHUUmSnZx0XIWQwYTlMd4C6ji0+9YMxYehd7G2zIAczjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wZ9fPZunvrgDbSo5IK1qa4gAmKPebXapihRUCEem4TI=;
- b=C6ZPt1WNa6LUxKbX9L/aKsjzAEFpQkYOVkRC3FwN2mCPi7BismAR3TAxhZT6Fmz5KZP26AJI4tivySix2PUkLRV+0swxkL5Jk64YQNVNPCGxrDMwrvMiaR1rXQoMVsp7+jfwF9Ix1Nqp3SixcHsJUduuhve/WVdxfS4vp/Aesq9htXFxQtfTyIidvrCNuWp/29MsAcu0umCR4CEE4JOCBYDA3qkp3zmGlcU1/5yxpox330ezS/R01WmQIVNpu+95XEMPHKnidD1VSm9zaQ5/KHE26+KL9CYlCAa3jrBcUlAJgJzTC0wZXL76D8OVLEDk0BDF5Gfw7Lwf7VP8hJb5tg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from AMBPR06MB10365.eurprd06.prod.outlook.com (2603:10a6:20b:6f0::7)
- by DU2PR06MB8333.eurprd06.prod.outlook.com (2603:10a6:10:2e4::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Wed, 17 Dec
- 2025 11:44:07 +0000
-Received: from AMBPR06MB10365.eurprd06.prod.outlook.com
- ([fe80::4606:8e25:96e6:bede]) by AMBPR06MB10365.eurprd06.prod.outlook.com
- ([fe80::4606:8e25:96e6:bede%5]) with mapi id 15.20.9434.001; Wed, 17 Dec 2025
- 11:44:06 +0000
-Message-ID: <5fa44e46-2d94-47dd-8429-9748aa28f908@vaisala.com>
-Date: Wed, 17 Dec 2025 13:44:03 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: adc: ad9467: make iio backend optional
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Andy Shevchenko <andy@kernel.org>
-Cc: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20251216-b4-ad9467-optional-backend-v1-0-83e61531ef4d@vaisala.com>
- <20251216-b4-ad9467-optional-backend-v1-2-83e61531ef4d@vaisala.com>
- <2a265681ad73bebf1ad7aeea418fb9399b8350cf.camel@gmail.com>
- <d2cfd1bb-0bc0-47c0-a68a-3967cd64878c@vaisala.com>
- <c3ed08159082c15f8804c6963b4422bbbf2039ab.camel@gmail.com>
-Content-Language: en-US
-From: Tomas Melin <tomas.melin@vaisala.com>
-In-Reply-To: <c3ed08159082c15f8804c6963b4422bbbf2039ab.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: GV2PEPF00003833.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:144:1:0:5:0:1a) To AMBPR06MB10365.eurprd06.prod.outlook.com
- (2603:10a6:20b:6f0::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F7B33F393;
+	Wed, 17 Dec 2025 12:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765973659; cv=none; b=HHNQQlKBTy6ZtazfkinrNmDd5iR0DowiQrZ4DpTEleRqlh0aatMgvjt/WnFB28MzFPiMrzdxrU2paKNmAbF4arImTIj1pHezC8P6k2n3o5oiwiyseG27NePODug7WWKhgiy4XjaUPxvZIGV4e5vS0yGehcl2ORTH0cHreVHaqMo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765973659; c=relaxed/simple;
+	bh=3xXovRQ/1ylp7buP09ZMaPp6n5XXl7n0zDhd/YnPNvQ=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=QGoulNfj3/+oSV3A/GuX5tQq69/1kbjo0AD5GwvAX1egFBAi2A6dG+OrsyEAOhhfti0dXrR0/ZWG6d0LEqnJypdLB7e0jdd99O3GMcUtDB3uNUq3R1haqg/mIVaEozqyBrNECEkK3ogwve+/n9r7/Eo8FCXGE4c1hJcg6e5On2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=dLARWTq4; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BHC7Tww3978997;
+	Wed, 17 Dec 2025 07:13:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=vbES2cAArBda0zrgo+2QaEFlawF
+	LdgzMoGzKMM3jEeQ=; b=dLARWTq4UK5DsAiP3f8nsxAy013TcB9qO5UQKrauoBJ
+	AIykIWYb3am1b1fUqnhFQaiJPEUNzDp4pyOCS4E1XY3TO5OOFtUWY4lS08Umxhz2
+	/FTPNqO0ITq4nh/EDKY+xgrdmi5o6LsNr3By3SDg1887WfPgrdpjqOXye9ZJCz/v
+	g3++0VEsznt3iGojAG3xDMALt1jjht5qp2XOmR+Jl79zvoVvqut++24KQghKa7Vq
+	xfgmsBYz+GUp4znUTYNN1P5t7wr0RLarmSNt1HbPkdFlToiIjTMwBg96YxImz9Hz
+	QBm4hr2HZcyGbVnBUU4TEqm85yGLWpNeXqBluc60opA==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4b3bbevk59-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Dec 2025 07:13:46 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5BHCDjdJ041070
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 17 Dec 2025 07:13:45 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.37; Wed, 17 Dec
+ 2025 07:13:45 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Wed, 17 Dec 2025 07:13:44 -0500
+Received: from HYB-DlYm71t3hSl.ad.analog.com (HYB-DlYm71t3hSl.ad.analog.com [10.44.3.73])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5BHCDUv6014815;
+	Wed, 17 Dec 2025 07:13:32 -0500
+From: Jorge Marques <jorge.marques@analog.com>
+Subject: [PATCH v4 0/9] Add support for AD4062 device family
+Date: Wed, 17 Dec 2025 13:13:23 +0100
+Message-ID: <20251217-staging-ad4062-v4-0-7890a2951a8f@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic:
-	AMBPR06MB10365:EE_|DU2PR06MB8333:EE_|DB9PR06MB8583:EE_
-X-MS-Office365-Filtering-Correlation-Id: de1fd3dc-83b4-4e9f-0871-08de3d6195c2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?ajR2ZUppZ1IyZjF1ZGZ3OHdScEp4MmdCSlVzOGpMaG5xN1VQazhzU1NHeDFQ?=
- =?utf-8?B?YlNmRkFFS2NsZ3QwN3BtN04veHB6cS90eE8ydFZ1ZG9pNU1yUHdKWXhERWdy?=
- =?utf-8?B?UGpQbVRZWXlhU25UR3RQbDFlKzZqTE9IT0orY29jSVQ3RFMvZUk2dkdMeHFz?=
- =?utf-8?B?MnFSWGhtVkRoYyt2Z2x3WDJGY05DOVYxMlhyL2l2Z0ZyRzBOelhOYUVsZDda?=
- =?utf-8?B?MkM2eFNwSjd6bU1mc3g1cU9ka0oyRGhMZTRHZm52OSsyL2FPVW1vYmxLN3ZE?=
- =?utf-8?B?RENHeUlIZVlvdWQvck5SOTRwdjRmQWlNclZKd005VkNZMW5GK0x6MmJ0dnAv?=
- =?utf-8?B?TXNkaXpUSHd1K1JWQUxvNi9HZFRDK0xGRmZZNjJIV0xsSXlPZU1LU3NQTXFE?=
- =?utf-8?B?NHJkUmNUbFpJY1dNRmd4dERWcUhnMldvU2cxNlNpTmlTSGpVZ25nelpJbDNC?=
- =?utf-8?B?UWRJd2hMSjNyWU5NWGtKbmVKby9xVk1BbjB3YlAwek4wUU1ZSXU3a0owcUVO?=
- =?utf-8?B?TnFTVWZBZGdOdjFWV3BNN05RdkNkK082cWEvSEhScm80Z2RQWDNHVHFLUWti?=
- =?utf-8?B?dzdJbDh1eER2aHFSdnJ6d1plZzhrRitOSi83SmdWZHF6QXd1ZHY3OFRVSEV0?=
- =?utf-8?B?MmM0UnNmLy9SNnV4WlREL2JDYUJ4a1VQWEMzc2FxNzhHaG9iY1BxMkt0NG1o?=
- =?utf-8?B?OHZCc0dOQUNGeGlkTHlwMzNGQnlsQnlMbXhaVHRHYUgrQUNuY3YxcjArZlVY?=
- =?utf-8?B?aWZZd1IvZU1uRXE0cFBKRTlaQ3ptbVlSK3ZLdWFydzJ0bCttbVVKbTk0cWpZ?=
- =?utf-8?B?SitlcjBWVUpvM1pHZGRtQ2lZZXh1bHNNZHQxVmFWVXZPOGRyTEM4N2RpZEJE?=
- =?utf-8?B?Y2wzdU9pTVBGZUg5bTJLUEJ4dTFxa2dGZ3JoMkRYRW41NXA0QlViZWlYckw2?=
- =?utf-8?B?NFlpZnMyYVBiSnZrS05YNmdhS1h0QzIwMjJFOWR1NFhLamFxTURHY21GWS9r?=
- =?utf-8?B?Mmp2REM4elQ1bzB0SFBqMmZxLytrQXE0OElTVHRTcUpBc2h1SSsxek5NY2d0?=
- =?utf-8?B?VFU5dFhtVmZ5Mm50TVJpeHR5dmFyaThtdVdwTGNYVXpzN1Y4Z3AxTE9nL1g1?=
- =?utf-8?B?V1E4cE82QmExNGZ4VEs2cHp5TVJjSnArTWpwWGg3Q2J4TXFjbDNiUE5uR0ZR?=
- =?utf-8?B?K2tEQ3I2U0FIbGszUDE3M2tkVHM4RjhEZWJIOUp6Vm1JemF3UEFHR2hLZ1hN?=
- =?utf-8?B?OHdYK3VzSzh6a2YxTWZNd0xncU1wZjU5RDdyVGlaMEhOdXJacEZHaHlxV0Vx?=
- =?utf-8?B?aDFxVzFPbEd0aFJZWFpSQTlnMmZKcklmODQ4UDVJb01sYk9sQS92bGx0dmc4?=
- =?utf-8?B?azFkYTJPZzlpN3lSSzVsM1lhZlNtUnRMaHZoY2ZNcWxCUTVjWGFpRzJLVnBi?=
- =?utf-8?B?bHFibHNWOFZyQXV0Yy9aNnYyWEtZYU00a0RNY3ArbktLN0RuRnlvNGJGYTE0?=
- =?utf-8?B?NUJQYnQ0YWNLRG1HcGJwSnhITC9kRlN0VXRCRFhMNEI1L3VHNDFRNmtSZ0F2?=
- =?utf-8?B?VFhWWExnazIwaEY3anJqSVNJcUR4TFltWVdyaVdOL0lZNWdoZnQwS0ZzWlNz?=
- =?utf-8?B?VWFYU3RTMHNrQUlUakpvbkQ0cXVwOFhKdkJyaGwrVlkvQkdnRmJTQ3J6ZjhZ?=
- =?utf-8?B?aVA4ZTYzaG95TDVMaWdoeTdNNklTdlQ0bU0rN2RCN01kaVpIdTlpUU9mUVJh?=
- =?utf-8?B?c08zTHRuOUs1UGsxMGwxZmlZZk4yU29qNzBhOEVMRXNoSGtCcDZCQkhtMVQx?=
- =?utf-8?B?eHpMc1ZzM2ZPYW1LTER6UDdFTDF0Vmp3WGxxRFdzYnZqOUFCUlBadFdORUtN?=
- =?utf-8?B?SWJPSjFPV0FZQXRaY2k1bUZKTG5uNVliM1AwTytzWWRQWnoxRjZ3dGxPMVRP?=
- =?utf-8?Q?1+ShaLyu7jGCEiUWj/TnPNqfeGYY9lho?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR06MB10365.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?WkthSEJPOWtBZ3g2ZFJ3OFJqcFI3Q2QrYTFjOU9McC9YbkZnWE1MRlh3WWFS?=
- =?utf-8?B?cWxqUWZWbUc1V1d3QVhxZlJIejNyL08wYVRZVkV3UWdmeW9IRE1abEtxQkZ3?=
- =?utf-8?B?aHFOVkVXdWlXMVMyWnc4RlFBRmdLTVByYWF0MUs2Ykp5YVMvY0ZrbG5qU2JX?=
- =?utf-8?B?Tm9uWlZ1aGt4aml4SnRRSFlYa1dkK1VrNEp2Ym11cVozU3Y4NHIwMllub2ti?=
- =?utf-8?B?R21YTjNvaTlUd05NN2prSWFpVFhUNkNMeGptYVp5U08zdm11RzFBMkxsMkdu?=
- =?utf-8?B?ajY0dTMvVkoreENYc2ZJY3hsRUtTcFE4VmJwSzQ4Und5VVB6TXRTZ0J6Y3ZP?=
- =?utf-8?B?U09MVWVLeVJQTEJ3TWRsb1BWaWF6aTlUVm1kaGVZTm9WYW9aOE8rNjJnd2tE?=
- =?utf-8?B?b2Q2WjM5TEVsaEZWM2xZMlN0ZDNpLytUZlpVOTVWdDFmSC9DM1JHUWprRW9X?=
- =?utf-8?B?R05BOE9XZFpyNEdSaGRqN2QwNVE5Q3o1SVNsV09kUEJkM3g1ZkN1SDMyZ2RC?=
- =?utf-8?B?aXNzN2ErZS9JdU5leUZTaDhUcE1nQzJPeDB3VVA3RWhnWWVyazhhQkJjTFZH?=
- =?utf-8?B?ZVE0NDhoSWR1RTM2RDNwMGRaNGhNSzV2WnEyU3g0bnE4T2FMRjZYOUlhVHN2?=
- =?utf-8?B?bzUvS2V2OGlpVHhwNWVGdnFPUEJuYzRadWRienIzMFFQSlloUmd4Q1VjOFBw?=
- =?utf-8?B?R2l5OU83T1VodDBiWGc2TmlxdWk2SUN0KzA4bTlqZzRGdm80ZUtpMVJ6WDFW?=
- =?utf-8?B?ZXJpQXRQWkh6UzhFRmNxeXNYbFE3MlpzY3VSSTJmUHNXN2FKekJsSkFwR3J6?=
- =?utf-8?B?OVpuZDhZODRzZlh4WUVUVVdEME9KNHE2MWluUCszZVV3SWlLam0rUTVZUFZM?=
- =?utf-8?B?WnVwamdEOFl2VEd1T0ZqV0x1a3c0Y1F6RlM3QnNNejFxZkQ1SFkvZHFaTzVD?=
- =?utf-8?B?ekRha2FpL3QrWlBCSURMQmNkOGp6ZHZ4R0lqLzg4ejBXNUVHdXc4cVk5a1Jk?=
- =?utf-8?B?cVR4cWR2Q2VTLzZMSHRteEE3TGcySjRIRXlDRXR2cHY4QURVbHBDcjZleUxM?=
- =?utf-8?B?ODlicVlFRWVTR3lSdWlpbFM3NXdqOTVldnZFUUJOWG9JcVUwU1pNTytIbm1y?=
- =?utf-8?B?R1ZKdzk2Y0dEWjA0VnNvNitCVjd6cnJmbkNQRmQ0V3Y0Skw0MStaNlRXZWJR?=
- =?utf-8?B?dDMvdDNpWnhBNURqZjIwZzNtTGxUSnZBOGJVd2hUMDBxVXIyVXVJTkNwejJW?=
- =?utf-8?B?OGdFMXp2dXVGUHNtZy9zSDN1czd0TkFsVGV2cFcxTzdLWGNnQWtYN0ZPOXFn?=
- =?utf-8?B?VnEzelJJUTNmSUVIV1lMamNRQjJOYXYvL2FyemMybXpneTlIMlFkVG9yNWdZ?=
- =?utf-8?B?Z2JoY2Eyc2MvbHE1dnZORWF5ckk4R2gzUlVFQkxHV1lGeWFtVmQyRUNaOWJn?=
- =?utf-8?B?aTg4TFd0V0hsZ1BVVlpEWjRkcEI3NnZ0Y1VNekdwK1dWT2pSUUx2WG1LU0Jl?=
- =?utf-8?B?azNwZUZ1V2JxUFVOZGZOUERnODd5K1lTajN1aFhYZEY1d0Nld1N2bVpLcmpI?=
- =?utf-8?B?YUM0b0FtVXRvNU9PbnFOV0FGNmJrb25NWjk0RnBEOFo1VEJxS2FUUHpxYTFu?=
- =?utf-8?B?Z0Q2aVhuR2RvamcrL2RLSHMwU0RMcElKaWhXNHVQQ3hPTGxpR1oyYzAxbHRV?=
- =?utf-8?B?Rk5GMEk4YmYwekdtRDBOS2FSODhzVENmK2NXN2lEbElUZlZ2NGlvQkJHU1E2?=
- =?utf-8?B?ekViUytZV2VmaFlDMzRpeEl1WCsySi9rb2taWkVPWmhmS3FOMHFZZUNQOHFt?=
- =?utf-8?B?N01pZmVIZFI4V0JIY0JiWWFoKzUrUElCT2wxK1NDc1hkaWxUTVJUWEVucWh1?=
- =?utf-8?B?UnhDMEI0bnl0bzZUR3M5b3JldFFEeXRPVVpLNVNDTlVXUWQvT0dzeVYvTm9z?=
- =?utf-8?B?T21qc2dmWmtGeU9jUytCeGxEa1dWN24rQ29SYldnZStidkhVNFk5RGxzRnVC?=
- =?utf-8?B?KzZ0TFkxaXJJQVBrek8vcEh5RVlGQ2F2dHV4eXc1dWxlZkVBRlJ1bGxBV1FK?=
- =?utf-8?B?M011RXdtSE0rakJDeUk5SE1hcE9GeGNZdWtRY0ZyMVREYmRzeWNLRGxLTnVU?=
- =?utf-8?B?MGNLKzZTdTdoS25MMitlVUlrM2dpNE9DL0puSEx5L3pIaWlrTDhZV2I0NU0v?=
- =?utf-8?B?QVE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: de1fd3dc-83b4-4e9f-0871-08de3d6195c2
-X-MS-Exchange-CrossTenant-AuthSource: AMBPR06MB10365.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2025 11:44:06.7928
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z9eYkAf++Fq28vWSqleL+QI5M26tq+lk/cmL8DIrPi1eESROds1lsSNz9ng7fDTEhCxusMhU+Phml5fMUzP1LQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR06MB8333
-X-OriginatorOrg: vaisala.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGSeQmkC/2WRy07DMBBFfyXyFoz8tpNVvwBVUDYgFrYzTi21C
+ dhpClT9d9wWVEGW19I5nrlzQBlShIya6oASTDHHoS9B3FbIr23fAY5tyYgRJimhFOfRdrHvsG0
+ FUQwz0ppat5xbp1CB3hKE+HEWvryWvI55HNLn2T/R0+uviv9XTRQTTILxoAMESfzC9nYzdHd+2
+ KKTa2JXnjIx41nhLddSkdoG5/SM51eeETnjeeGNVpRLGWqv1B/+eFkuwfuulDReNrx21FSXsSj
+ D0UW867MNgIUJXHCg2jjTlPWLw9kMuBi3cWyqUAORuqZKMEOJJT4oxkubdbChVQG8BOKEcydwC
+ znbn7/sA9zfLOXT86p/pKv9frGJX+uIlwn8+YJ4NewhYVmkZfLjN4SLU9jmAQAA
+X-Change-ID: 20251011-staging-ad4062-20d897d33ab6
+To: Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        David
+ Lechner <dlechner@baylibre.com>,
+        =?utf-8?q?Nuno_S=C3=A1?=
+	<nuno.sa@analog.com>,
+        Andy Shevchenko <andy@kernel.org>, Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        Linus Walleij
+	<linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, Jorge Marques <jorge.marques@analog.com>,
+        Linus
+ Walleij <linusw@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765973610; l=9702;
+ i=jorge.marques@analog.com; s=20250303; h=from:subject:message-id;
+ bh=3xXovRQ/1ylp7buP09ZMaPp6n5XXl7n0zDhd/YnPNvQ=;
+ b=sv+DxD0//soL3j8+OqPpFICAJdfB/ZQ5VOqahSCVfs6oDqh1cbpRYAlsH9LRe6xKkqCuEuN8u
+ 7gf7gONrRCOBBRCCqnqw6EHqxW9vxcDcKIFkCcZAnFNgTFFH4B3+V5K
+X-Developer-Key: i=jorge.marques@analog.com; a=ed25519;
+ pk=NUR1IZZMH0Da3QbJ2tBSznSPVfRpuoWdhBzKGSpAdbg=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: apS4_mqk3Rz6uDPCT2LBdk1kRIo38dbM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDA5NSBTYWx0ZWRfX+s3FjL2v6ku/
+ QryK1TZ63/Yh3yvhH7K5QXOBfM4OPd871Vp2/0w09vBTADasGiyQF6yXMoTglDAejVlEbu0JXjS
+ ZbsPjsm4vw15p1IG5FOVy7Uzp3NrjR26VyxMBNTCJWkAxc/nMRm9pfOQtPtKH82GOZ4YLI/JOim
+ M8F8z3ioyTKZH2JChga22Is7Ow7kx3oVPDQT+ffr7WtQGDAn0PTvfz6ztdJRI16X8hdXgPHBlLr
+ nZ3iBQpmXckgKNdw/RPG+xxMe6MXSzQvxp8NWNqvU3wpLsxzFtXzPqixP8aYNglnbRPZkmaRUBW
+ Cjgo9qJjYBGIPiDEtOAdjmW/pAPrE1XZMaNuNca6sYGm0j/mh+IGywMFqB8a2749CIPQREf2LUw
+ UNVYQeXdPW2Gtow0UJne/6oKr5quSA==
+X-Authority-Analysis: v=2.4 cv=YqsChoYX c=1 sm=1 tr=0 ts=69429e7b cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=gAnH3GRIAAAA:8 a=wI1k2SEZAAAA:8 a=VwQbUJbxAAAA:8 a=P-IC7800AAAA:8
+ a=cvPtK7EBaPg4IFj9mP0A:9 a=QEXdDO2ut3YA:10 a=6HWbV-4b7c7AdzY24d_u:22
+ a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-GUID: apS4_mqk3Rz6uDPCT2LBdk1kRIo38dbM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-17_01,2025-12-16_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ phishscore=0 impostorscore=0 clxscore=1011 adultscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512170095
 
-[resend, I think there was some problem with my first reply]
+The AD4060/AD4062 are versatile, 16-bit/12-bit, successive approximation
+register (SAR) analog-to-digital converter (ADC).
 
-Hi,
+The device uses a 2-wire I3C interface. The device simplifies acquisition
+by providing 4-bytes in the register map, signal-extending the sample
+reading accordingly.
 
-On 17/12/2025 11:26, Nuno Sá wrote:
-> On Tue, 2025-12-16 at 15:39 +0000, Tomas Melin wrote:
->> Hi,
->>
->> On 16/12/2025 14:56, Nuno Sá wrote:
->>> On Tue, 2025-12-16 at 11:40 +0000, Tomas Melin wrote:
->>>> Not all users can or want to use the device with an iio-backend.
->>>> For these users, let the driver work in standalone mode, not coupled
->>>> to the backend or the services it provides.
->>>>
->>>> Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
->>>> ---
->>>
->>> Which users? The only usecases (for all the supported devices) we have require
->>> the FPGA backend. So do you have a specific usecase for a specific device? If so, I would
->>> prefer an explicit boolean in the chip_info struture for the device(s) we know this
->>> can happen (unless you have a usecase for all :)).
->>
->> This is generically for all the devices supported by the ad9467, not
->> only a specific device. So it's about how this is used as part of the
->> design.
->>
->> This is aimed at users that do not use the ADI HDL reference backend
->> with these devices, but instead have custom backends suited for their
->> own needs.
-> 
-> Hmm, ideally I would then like to see the backend driver upstreamed...
+The device has autonomous monitoring capabilities, that are exposed as
+IIO events. Since register access requires leaving the monitoring state
+and returning, any device access exits monitoring mode, disabling the
+IIO event.
 
-First of all, as I responded in another thread, there is certainly real
-use case behind this, I would not be suggesting it otherwise.
+The device contains two optional outputs:
 
-Driver for custom backend would not be of any interest for mainline
-kernel as the IP would not be publicly available. So nobody could really
-use such a driver, nor would it be accepted. The default ADI backend is
- a different story, as it is available and documented.
+- gp0: ADC conversion ready signal on the falling edge.
+       The user should either invert the signal or set the IRQ as falling edge.
+- gp1: Threshold either event interrupt on the rising edge.
 
-> 
->> In that case, we need to be able to skip the backend registration and
->> register device as a standalone iio device.
->>
->> Hopefully this made the use case clearer?
->>
-> 
-> I mean, I don't love this and I'm not really sure I'm ok with it. These are fairly
-> high speed devices which often do require an FPGA IP to handle the data flow. Now
-> we can ignore the backend device (which is an essential piece) being it
-> expected or not.
-> 
-> Or maybe we can just do something like regulators and get a dummy backend or just add
-> some fixed kind of backend. Bottom line is, it still seems the backend device is a core
-> piece in your design and we're just hacking around the driver in way that conceptually
-> doesn't make sense to me.
+The devices utilizes PM to enter the low power mode.
 
-I considered the idea of dummy backend, but in the end it doesn't make
-much sense to me.
-These ADCs can work perfectly fine with a minimalistic custom backend
-that does exactly what the design needs, without the need for basically
-any configuration. So the ADCs rely on some sort of backend, ofcourse,
-but they are in the end standalone devices that can be integrated in
-many ways, the adi backend being only one such option.
+The devices datasheet:
+https://www.analog.com/media/en/technical-documentation/data-sheets/ad4060.pdf
+https://www.analog.com/media/en/technical-documentation/data-sheets/ad4062.pdf
 
-Another problem with a dummy backend is that for example calibration
-cannot really work. It expects certain features from the backend to be
-available, etc. Similarly would a custom backend connected need to
-implemented exactly same test features as the backend now assumes.
+The monitoring capabilities, I3C protocol, and multiple GPIOs were the
+decision factor to have a standalone driver for this device family. The
+device is expected to work with any I3C Bus. I tested the device with
+with off-the-shelf I3C controllers STM32H7 (baremetal only) and the
+open-source ADI I3C Controller (with Linux driver):
+https://analogdevicesinc.github.io/hdl/library/i3c_controller/index.html
+ADI I3C Controller lore:
+https://lore.kernel.org/linux-i3c/175788312841.382502.16653824321627644225.b4-ty@bootlin.com/
 
-> 
-> Other question that comes to mind (I guess I was not that clear)... Do you have a real
-> usecase with your own custom backend IP or is this just theoretical?
+The series is divided in 3 blocks, adding:
+- The base driver.
+- An software IIO trigger: captures samples continuously.
+- IIO events support: exposes the device's threshold monitoring
+  capability.
 
-This dependency on the adi hdl has been causing me problems over the
-years for a number of adi devices, and the iio-backend has been a step
-in the right direction.
-I hope we can take this further in direction that allows use cases that
-were not expected from the beginning but are still valid.
+The device internal clock register is exposed twice, as
+sampling_frequency and events/sampling_frequency, storing in distinct 
+state variables, since the usage (burst averaging mode and monitor mode)
+cannot be executed at the same time.
 
-Thanks,
-Tomas
+Non-implemented features:
 
-> 
-> - Nuno Sá
+- Averaging mode: Similar to burst averaging mode used in the
+  oversampling, but requiring a sequence of CNV triggers for each
+  conversion.
+- Trigger mode: Similar to monitor mode used in the monitoring mode, but
+  exits to configuration mode on event.
+
+This device is almost identical to AD4052 family, but I decided to
+submit the AD4062 before re-submitting AD4052 to better contextualize
+the focus of the device family (high latency, medium-speed protocol,
+low-power autonomous monitoring rather than high-throughput
+acquisition).
+
+Depending on the resolution of this driver, the AD4052 family may be
+added to it, by splitting into ad4062_i3c.c, ad4062_spi.c,
+ad4062_core.c, or as a standalone driver ad4052.c.
+
+Depends on:
+https://lore.kernel.org/linux-i3c/aRYLc%2F+KAD13g7T7@lizhi-Precision-Tower-5810/T/#t
+(for devm ibi clean-up)
+
+Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+---
+Changes in v4:
+- dt-bindings:
+  * Simplification of interrupts description
+  * Add minItems to interrupt-names, now symmetrical to interrupts.
+- docs/ad4052.rst:
+  * Drop "Unimplemented features" list (normally forgotten in the long term).
+- Move scan_type implementation to iio trigger commit.
+- Move #include sysfs.h to iio event commit (used by events/sampling_frequency)
+- Fix avg_max type (u8 -> u16) to fit all variants.
+- Assert val2 != 0, -EINVAL at oversampling_ratio, store bit position
+  instead of resolved value
+- Use u32 instead of u64 arithmetics on all possible locations.
+- Fix regression at ad4062_get_sampling_frequency missing IIO_VAL_INT return.
+- Use be*_to_cpu/cpu_to_be* instead of get/put_unaligned_u*
+- Use devm_add_action for IBI
+- Refactor methods to use _dispatch methods to, for future usage with
+  "ACQUIRE for claim direct mode".
+- Fix regression on GPIO configuration, introduced by misuse of masks.
+- Simplify calibscale by using IIO_VAL_FRACTIONAL_LOG2.
+- Simplify read_chan_raw by using "un-optimized" option for sample
+  read, to not depend on scan_type (triggered buffer uses the optimized
+  version).
+- Fix non-compile constant ad4060_chip_info.prod_id at i3c_device_id by
+  using defines AD406*_PROD_ID (kernel ci caught).
+- Fix scan-type realbits/storagebits.
+- Introduce st->conv_sizeof, st->conv_addr for the optimize triggered
+  buffer readings (lest protocol overhead). Adds intuitive
+  ad4062_sizeof_storagebits() and ad4062_get_conv_addr() helpers for the
+  changing scan_type (due to oversampling).
+- Use iio_push_to_buffers_with_ts
+- Review chan_scale, add clearer units and move "signed" comment to the
+  vref_uV multiplication, as in the datasheet (result is unchanged).
+- Use devm for trigger_work.
+- Use clearer fieldbit-dependent expression like
+  `val != sign_extend32(val, AD4062_LIMIT_BITS - 1)` instead of magic numbers
+  `val > 2047 || val < -2048`
+- Fix regression on range for threshold value.
+- Fix regression on enter MONITOR_MODE by adding missing address point
+  write
+- Note: false checkpatch positive at "iio: adc: ad4062: Add IIO Trigger
+  support" due to macro change adding "bits", used by the ext_scan_type.
+- Link to v3: https://lore.kernel.org/r/20251205-staging-ad4062-v3-0-8761355f9c66@analog.com
+
+Changes in v3:
+- dt-bidings:
+  * Add minItems to interrupt-names, to match interrupts.
+  * Reword descriptions.
+- Add () to methods in commit messages.
+- Group defines by context, adding blanking line between.
+- Change ad4062_conversion_freqs from int to unsigned int
+- Rename vref_uv to vref_uV
+- Re-order state struct, to save some bytes.
+- At oversampling_ratio(), use in_range()
+- Add formulas, units where appropriate.
+- Tune reset delay (data sheet value) and sleep mode resume delay
+  (experimental).
+- Rework st->oversamp_ratio to store the exponent, so 0 is ratio 1 (2**0).
+- Rework get_chan_calibscale() to use IIO_VAL_FRACTIONAL_LOG2,
+  simplifying the logic.
+- Rework set_chan_calibscale() to not use 64-bits arithmetics, and
+  provide formulas, and comments.
+- Merge __ad4062_read_chan_raw() into ad4062_read_chan_raw(), since was
+  the only consumer.
+- Optimize readings with GPO set as DATA_READY, by using CONV_READ
+  register (roughly doubles the effective sample rate).
+- Use new ACQUIRE macros for pm.
+- Use devm wrapper for INIT_WORK, cancelling on driver removal,
+  resolving exception if the duffer was enabled during removal.
+- When possible, use  `return ret ?:`.
+- Use IIO_DEVICE_ATTR_RW() instead of IIO_DEVICE_ATTR().
+- Use AD4062_LIMIT_BITS - 1 or BIT(x) - 1 to indicate hw limit/field
+  size.
+- Explain in the commit message why gpio-regmap cannot be used, and
+  gpio-controller is used instead.
+- Return  relational operator directly (has type int).
+
+- Link to v2: https://lore.kernel.org/r/20251124-staging-ad4062-v2-0-a375609afbb7@analog.com
+
+Changes in v2:
+- dt-bindings:
+  * add a short description of all mode that can be configured to during
+    runtime.
+  * add gpio-controller, to expose GPs not listed in interrupt-names as
+    a GPO.
+- sampling_frequency is the duration of a single sample (convert-start
+  high edge until RDY falling edge) ((n_avg - 1) / fosc + tconv)
+- Remove .grade from chip_info, since the supported devices have a
+  single speed grade.
+- Update state buffer to use dma-aligned union of __be32, __be16, u8 bytes[4].
+- Use standard IIO_CHAN_INFO_SAMP_FREQ and _AVAIL
+- Add defines to magic numbers.
+- Ensure commits only contain code related to the particular commit.
+- Use new ACQUIRE pm macros.
+- Drop lock for debugfs, let user mess the state thorugh the debug
+  interface.
+- Restructure vio, vdd, ref voltages, only read if needed.
+- Have error handling on top.
+- Drop unnecessary check_ids error message.
+- Use devm for IBI remove (requires patch on i3c subystem).
+- Use heap buffers for all i3c_priv_xfer.
+- Use CONV_READ if GP1 is routed (less overhead), use CONV_TRIGGER for
+  IBI fallback.
+- Drop usage pm_runtime_mark_last_busy, since it is now internal to pm_runtime_put_autosuspend
+- Don't allow access if monitor mode is enabled, return -EBUSY.
+- Implement gpio-controller to expose GPs not listed in interrupt-names
+  as a GPO.
+- Value in mv as ``raw * _scale`` (embed caliscale).
+- Link to v1: https://lore.kernel.org/r/20251013-staging-ad4062-v1-0-0f8ce7fef50c@analog.com
+
+---
+Jorge Marques (9):
+      dt-bindings: iio: adc: Add adi,ad4062
+      docs: iio: New docs for ad4062 driver
+      iio: adc: Add support for ad4062
+      docs: iio: ad4062: Add IIO Trigger support
+      iio: adc: ad4062: Add IIO Trigger support
+      docs: iio: ad4062: Add IIO Events support
+      iio: adc: ad4062: Add IIO Events support
+      docs: iio: ad4062: Add GPIO Controller support
+      iio: adc: ad4062: Add GPIO Controller support
+
+ .../devicetree/bindings/iio/adc/adi,ad4062.yaml    |  120 ++
+ Documentation/iio/ad4062.rst                       |  148 ++
+ Documentation/iio/index.rst                        |    1 +
+ MAINTAINERS                                        |    8 +
+ drivers/iio/adc/Kconfig                            |   13 +
+ drivers/iio/adc/Makefile                           |    1 +
+ drivers/iio/adc/ad4062.c                           | 1609 ++++++++++++++++++++
+ 7 files changed, 1900 insertions(+)
+---
+base-commit: f9e05791642810a0cf6237d39fafd6fec5e0b4bb
+change-id: 20251011-staging-ad4062-20d897d33ab6
+prerequisite-change-id: 20251112-ibi-unsafe-48f343e178b8:v1
+prerequisite-patch-id: 5f04cbbca0fcc3657c7a4d254656b03e289ad222
+prerequisite-message-id: aReN+P5UZTnS1Tww@lizhi-Precision-Tower-5810
+
+Best regards,
+-- 
+Jorge Marques <jorge.marques@analog.com>
 
 

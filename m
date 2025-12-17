@@ -1,93 +1,105 @@
-Return-Path: <linux-iio+bounces-27151-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27152-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89880CC889F
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 16:43:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 424CCCC8A28
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 17:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31F9530BF82D
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 15:38:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BC733062591
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 15:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A09937C0E9;
-	Wed, 17 Dec 2025 15:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C7433C190;
+	Wed, 17 Dec 2025 15:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4Kf/q84"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jzDRu8PF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCD737A3EB
-	for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 15:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D35133A00A
+	for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 15:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765985333; cv=none; b=HxgNgKagtCqpN8pZI0WSwrbfnNJqrTm54+O88QGZyl9mOhMAPSTQANr7ANd+dEspyf692A79Pb8Jeo49B5fn1/dCLqWf3AdpOOaHKrdKReD/znmFhIup7x3QioMYg9TYTxA2uY7ZbT+oqjqQdGjOIPeTAtwZQMBdlh7c8GSTLt4=
+	t=1765985862; cv=none; b=npR6wgnMsMtP6UJSY88s/34r6a/rItbkdrdO+8wE52Pwkb7YA9Kujwjvuu1fUKrH6m18KaD0/Kg+cmDtFwqz2DUp+aPB6feGtRYjZ00e8jnPHjot0kMuUx2kqWrmmST1Ob/hdmca8sGt97Y8v2eyHnRQlNcnjLXwmLWsQxQjdaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765985333; c=relaxed/simple;
-	bh=g2GBN3njSzISEBsyHXvbwpMCDA/0jrfTyD+Ehz7ZsM8=;
+	s=arc-20240116; t=1765985862; c=relaxed/simple;
+	bh=3zWGgAak/FBm7Vkk94ZrLytELeHbedaeePRas4C5o5A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qw+Z/PlkR6pW+QLxxjs22NgOuRdZNsqkdJbo1rx9+0e1JuC+u4zQz3PkkKs+RioIZLz+PgGKjuVkvWzJuK30Jg8eQHbdxqOlFJBF0rz6o0K1BQFfPZNmxuZkSYGEDyYKJiT2qqrlJVeViM+fNTHgXorCJX3cfVsaEhI4Fv4yfLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4Kf/q84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F37C19421
-	for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 15:28:53 +0000 (UTC)
+	 To:Cc:Content-Type; b=ATUwgId1BZmtG3uAIjtwkijS/45DrljwzfBPHbskp9WHy4kszOyexDZdrHtAm8h/37psUFj3uboi60g2/lzUI+ubETlsVN720wI+zhfwl1/Gd/YZvkx6miRtiJOLra3RF3EH12m3DFwmvO75PuIDkDqwmBvpRBfuwoTMuP5AU2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jzDRu8PF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED19EC2BCB0
+	for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 15:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765985333;
-	bh=g2GBN3njSzISEBsyHXvbwpMCDA/0jrfTyD+Ehz7ZsM8=;
+	s=k20201202; t=1765985862;
+	bh=3zWGgAak/FBm7Vkk94ZrLytELeHbedaeePRas4C5o5A=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=k4Kf/q84Ays23eHaSOpgsQjrbt3sCf1ABQeRmFMST0zqpaLKqxEIAzoxc1Skq3zcX
-	 wwUbrPtFJuiWy0r5ehThItRlySTgiMjS+vQ0ug1RfTeaWRzKTZpxTQ/91kn62VJc1K
-	 6RN7rg5bvQb/n50je4j8FV9qIesN8o3hUQsG6mzwapbHbNlJ/olfEjY2LoZWczWpFh
-	 8rDyczzT7cU9EmjzfSAtm4xLGRvMmDAKfi5VOWNMcbOwFYTS+OAFjclIsxjhwpQqud
-	 8CrfY+uI391DE+1yrLohV0COTaTkcDewU3mWQ66yVRxDYGp10DO63puiwbpYxLEYg+
-	 nITRrJjJ4XENg==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-59581e32163so6909099e87.1
-        for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 07:28:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVN3vckeICy7BwuqTkwJO34+r0RZOsfihP5dYhvvfxouPgzbwkyxDG0Byns0PiAPm1TNUv8cf/FCYs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvyPSLRiCkvnvdMQ9eiZdiTffkhJeVBb9neS5HuegKI0itDb21
-	Xd7cctKWMBBW0IRfPH4DX+/Rd4QW4GKXa3D11GAbFNAT1fnrQUMVkCgsKUkII6c82LxnpN6t6j7
-	NIfJK4OH0TyDzZjprv0NG3ewF/DZhDj+sjVpxSE3GJA==
-X-Google-Smtp-Source: AGHT+IHLFGulb3z/eo2szi6786N8kGEmVFIwSvl4dUMvlzw1VLQQUCCeWzohDS2Sm0Bl5s7XXHCH8EBa2sM93x2lPWA=
-X-Received: by 2002:a05:6512:1096:b0:595:9d6b:1174 with SMTP id
- 2adb3069b0e04-598faa86c0bmr5281960e87.35.1765985332003; Wed, 17 Dec 2025
- 07:28:52 -0800 (PST)
+	b=jzDRu8PFTl++cXmT88mvEAMSAa6Vz5M58zuzplAGF2utYgr8XKLBVfKn/k939Bop1
+	 wgBETilhPzkKMLaP+jwu7XDaiPr95r0NQsLUTzGQciRSuy8oUgFJzaF3gbQa7X0vo6
+	 4Cg2igOisGKqDylMjSlkMJA6x7jXA/8rDeKRVwZW+rTxlE2xu6pcIbVPm0zmcd8Wt6
+	 f/0k760aMU2fx0c0i77/nTgTJfYLbEQYxABH9Wix7ua7zQtvCJBO+9p5JrZdZguZKh
+	 nqa4X1bISPoo8VdgvZTMeGPyIshbVzG8Z6eiDb2JMOhe7ATxtArJlEFGVzKXFOUtKj
+	 3LkQIkuUQFmYg==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b7ce5d6627dso491672166b.2
+        for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 07:37:41 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVtMbbmWW++clF15eqZRPhmDyxZph0LoRlopMhc92r5L9kQl73HnA/A2tRQ6Wu/ujfQoKtuMtbqyzE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4sFiXzUJqkv3b4ZEJrD1DeFwRN1YCTgNlJomk2mRN9/W+KuWb
+	UwKlZG27AdZzokCmZKC87RHf2n6FVQA5NC5MfmmrRZXmQ+A1Z9EC8Zj9DOZW6sCTsIGC3rdKrSh
+	ZeWWy1YjpC82lrRhIbKgFMRh2ehuv5w==
+X-Google-Smtp-Source: AGHT+IE+MbpVy0D9cI7vtayEcuAQ5BpKDVDav3dQlj552I/4svzEpwf9VDtWU/NeRoVokGuFNkCPT8ATPD0NU91eNy8=
+X-Received: by 2002:a17:907:3cca:b0:b72:c261:3ad2 with SMTP id
+ a640c23a62f3a-b7d23af00e6mr1859042566b.50.1765985860268; Wed, 17 Dec 2025
+ 07:37:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251217-staging-ad4062-v4-0-7890a2951a8f@analog.com> <20251217-staging-ad4062-v4-9-7890a2951a8f@analog.com>
-In-Reply-To: <20251217-staging-ad4062-v4-9-7890a2951a8f@analog.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Wed, 17 Dec 2025 16:28:40 +0100
-X-Gmail-Original-Message-ID: <CAMRc=McPAORcG2hiLO35q5UgXpTvbzAhdoprgE_9xSCJG=QPoA@mail.gmail.com>
-X-Gm-Features: AQt7F2oNHCsrRoHfSHESys1l2uJDHi95XvDyM4YYcEDD4aTW-_SzkbJW2Zj6aGg
-Message-ID: <CAMRc=McPAORcG2hiLO35q5UgXpTvbzAhdoprgE_9xSCJG=QPoA@mail.gmail.com>
-Subject: Re: [PATCH v4 9/9] iio: adc: ad4062: Add GPIO Controller support
-To: Jorge Marques <jorge.marques@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Linus Walleij <linus.walleij@linaro.org>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	Linus Walleij <linusw@kernel.org>
+References: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
+ <20251211-dev-dt-warnings-all-v1-1-21b18b9ada77@codeconstruct.com.au>
+In-Reply-To: <20251211-dev-dt-warnings-all-v1-1-21b18b9ada77@codeconstruct.com.au>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 17 Dec 2025 09:37:28 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJUaKKsJ8BCNbVXe4vLVsQ2Av7VuWqf9DnUKHeLzLb8NQ@mail.gmail.com>
+X-Gm-Features: AQt7F2q-nb9Xy6ZmXCdkQqrO-_0mpnqJ_RWJ9ZzKv3sOBl98lQ-TH7L8rvtaBLo
+Message-ID: <CAL_JsqJUaKKsJ8BCNbVXe4vLVsQ2Av7VuWqf9DnUKHeLzLb8NQ@mail.gmail.com>
+Subject: Re: [PATCH RFC 01/16] dt-bindings: hwmon: Convert aspeed,ast2400-pwm-tacho
+ to DT schema
+To: Andrew Jeffery <andrew@codeconstruct.com.au>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Linus Walleij <linusw@kernel.org>, Joel Stanley <joel@jms.id.au>, linux-hwmon@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-iio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 17, 2025 at 1:14=E2=80=AFPM Jorge Marques <jorge.marques@analog=
-.com> wrote:
+On Thu, Dec 11, 2025 at 2:46=E2=80=AFAM Andrew Jeffery
+<andrew@codeconstruct.com.au> wrote:
 >
-> When gp0 or gp1 is not taken as an interrupt, expose them as GPO if
-> gpio-contoller is set in the devicetree. gpio-regmap is not used
-> because the GPO static low is 'b101 and static high is 0b110; low state
-> requires setting bit 0, not fitting the abstraction of low=3D0 and
-> high=3Dmask.
+> From: "Rob Herring (Arm)" <robh@kernel.org>
 >
-> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> ---
+> Convert the ASpeed fan controller binding to DT schema format.
+>
+> The '#cooling-cells' value used is 1 rather than 2. '#size-cells' is 0
+> rather 1.
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Okay, I can't figure out why I thought '#cooling-cells' needed to be 1
+here. I don't see that anywhere in the tree. The driver for sure only
+supports 2, so anything that's not is an error in any case.
+
+> Some users define more that 8 fan nodes where 2 fans share a PWM. The
+> driver seems to let the 2nd fan just overwrite the 1st one. That also
+> creates some addressing errors in the DT (duplicate addresses and wrong
+> unit-addresses).
+>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+> ---
+>  .../bindings/hwmon/aspeed,ast2400-pwm-tacho.yaml   | 106 +++++++++++++++=
+++++++
+>  .../devicetree/bindings/hwmon/aspeed-pwm-tacho.txt |  73 --------------
+>  2 files changed, 106 insertions(+), 73 deletions(-)
 

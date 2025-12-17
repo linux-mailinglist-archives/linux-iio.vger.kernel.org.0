@@ -1,72 +1,68 @@
-Return-Path: <linux-iio+bounces-27138-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27139-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56247CC78CE
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 13:18:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76AD3CC78DB
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 13:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9BE5A3085463
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 12:14:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3864D30887B2
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 12:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF79341650;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A405F342169;
 	Wed, 17 Dec 2025 12:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="KEPwSgiv"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="n1Qy5ZF0"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A9B33D6CE;
-	Wed, 17 Dec 2025 12:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC9833F8BF;
+	Wed, 17 Dec 2025 12:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765973659; cv=none; b=fPHqIVhA9TXtV+v/RgN8v16oUtXVdzn9u/vugX9PRA/aRmFYOkYqHHi3icLF+NJMV86fweJ0RphpZykbTPoVb1/AFwvsZyWvbPVu0iWDczXiIBPYU6H/aqbqE9WKATiBs1/ElAGEqG0jTXaFVs4KGjY7w74YWPLFpFLXWpBThWA=
+	t=1765973660; cv=none; b=e8OOtTSn7Uy3KA3DCM74BLCPkDavWpisYwVutnqnJ0ZM/2cgJONsJQ7MGgdQ2XM1cPzXRPwMksabQzzqNed4YNbAukIjJKrr7/0HigcZc9ovTYzud5Efr2es8xxH4zHStTV/1vl5wdLft+mJUjaIjwXwY+VpfHChbTSUaQ+79Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765973659; c=relaxed/simple;
-	bh=XMHgFlcph+hjiJBoruxvKS8ORHPLsT08GUu7BcsJ6w0=;
+	s=arc-20240116; t=1765973660; c=relaxed/simple;
+	bh=MuHYsLjxwdN8IkJNsHAUBMs6LN4MRGpg5MuRP0IoWa8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=plGBWdw8Mr7pPqKPR7Hg46j4tz0M8u36OXU84MQ4JHexwkEe99z+SSwdx35gtjrlf6pvS7STFH92Eg50ViYuBULreo5COP8ceCtgW2sXfcXZ/F+lXOgboQSqE2f7+32mS3M62nB8BOHC77Mmphf8KS0pKsmoAUYi3cIh8s8SKiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=KEPwSgiv; arc=none smtp.client-ip=148.163.135.77
+	 In-Reply-To:To:CC; b=rdb7ZmoxlaxYG/w9Np/yPi53sYk4Ql0vfOfxsXXdcxMpV5I6mVZ4KnnJzMhjyjkh7Bya9b7bdcXR1OfsbKjOERgnn/MaytWUBlvyn8tQo300DGsS3Y7Wj9YMuxVoiJqhQl4GZaofQ7dLrtwy4wg4zo49fJcRgwXYfEV+/lxlsh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=n1Qy5ZF0; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BHAf3EL3838948;
-	Wed, 17 Dec 2025 07:13:48 -0500
+	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BHAsJYx3839967;
+	Wed, 17 Dec 2025 07:13:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=L+eIq
-	togxlz1Wcn5tOARQmcvO0+cuebCV50KF8s+gGU=; b=KEPwSgivbzC1h06qDhAvq
-	HE6NH8ECSFmo4hFM5silPHLTq9OqFJ3IKzn96Y/+75babhocn2nrcKLDzbF7XS6P
-	oYPDu666NV9/yro6otrOcSrALHHFGgmcj9asd1Sdyy415rqlyOmN3jBiZoU5riw7
-	FoJBFGi97a4kFmYh07vx6AxxLVUvmCWcjyV70EWfn+Lw0QWucOjTiJe1EKYKgCeM
-	nUu3jnz9diuz08tHdU8DPwzrA+BY89AKi+kXzGlywuvUOIf1vbfq41nglKLyg5gY
-	wbwY0XM7fXRiUhiebnuEirvR2bSi8F0d2MEJizEJqwvQtcfa4YFnlH3kjb9OGqtp
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=xrV4J
+	cgO8S4mlg0S60Bb6DHITfHakEA08GWxAiwTfrU=; b=n1Qy5ZF0aRb252PGD/GMg
+	9UHoAtDMUK//AkXKre7U8qz3qnWfPzH9dw+RJOQU2d/1mBVzvmob1YgHznVDEqhM
+	Qisctj/o1htCVzP6+WDVlfzlL8aCIh+PU4luafAxgayRad5zBz+O4DrPetfTNv6Y
+	7zO2R248YEZYzSlrRguPig7zoXEiUwLXPu1MidaiFdaIalmB2nrhZSnTB0b5D8YJ
+	E3xGkwWsmAhxIYj7y9lBW5AG21lxU5u+0DskW98bbkBdVDqDb57nXY2SF5qu/9z0
+	e1NlVZy0GLQAWmkMQF7yQKqtFv6Fp2KnH39AVtOkEt7bgZFKxfpcboDP99wD08k0
 	Q==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4b3jw9jeg9-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4b3jw9jegb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 07:13:48 -0500 (EST)
+	Wed, 17 Dec 2025 07:13:50 -0500 (EST)
 Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5BHCDl8q041077
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 5BHCDnho041082
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 17 Dec 2025 07:13:47 -0500
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Wed, 17 Dec 2025 07:13:47 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Wed, 17 Dec 2025 07:13:47 -0500
+	Wed, 17 Dec 2025 07:13:49 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.37; Wed, 17 Dec
+ 2025 07:13:49 -0500
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Wed, 17 Dec 2025 07:13:47 -0500
+ Transport; Wed, 17 Dec 2025 07:13:49 -0500
 Received: from HYB-DlYm71t3hSl.ad.analog.com (HYB-DlYm71t3hSl.ad.analog.com [10.44.3.73])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5BHCDUv7014815;
-	Wed, 17 Dec 2025 07:13:40 -0500
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 5BHCDUv8014815;
+	Wed, 17 Dec 2025 07:13:42 -0500
 From: Jorge Marques <jorge.marques@analog.com>
-Date: Wed, 17 Dec 2025 13:13:24 +0100
-Subject: [PATCH v4 1/9] dt-bindings: iio: adc: Add adi,ad4062
+Date: Wed, 17 Dec 2025 13:13:25 +0100
+Subject: [PATCH v4 2/9] docs: iio: New docs for ad4062 driver
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,15 +71,15 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20251217-staging-ad4062-v4-1-7890a2951a8f@analog.com>
+Message-ID: <20251217-staging-ad4062-v4-2-7890a2951a8f@analog.com>
 References: <20251217-staging-ad4062-v4-0-7890a2951a8f@analog.com>
 In-Reply-To: <20251217-staging-ad4062-v4-0-7890a2951a8f@analog.com>
 To: Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich
 	<Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        "David
- Lechner" <dlechner@baylibre.com>,
+        David
+ Lechner <dlechner@baylibre.com>,
         =?utf-8?q?Nuno_S=C3=A1?=
 	<nuno.sa@analog.com>,
         Andy Shevchenko <andy@kernel.org>, Rob Herring
@@ -98,28 +94,27 @@ CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
         <linux-gpio@vger.kernel.org>, Jorge Marques <jorge.marques@analog.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1765973610; l=4736;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765973610; l=4189;
  i=jorge.marques@analog.com; s=20250303; h=from:subject:message-id;
- bh=XMHgFlcph+hjiJBoruxvKS8ORHPLsT08GUu7BcsJ6w0=;
- b=pJAqmwOOxZ5yFDLEHx1/4LjfZzQZWPVwIRzmpKbf4+5Mu8AUajGjEMWL050Jk79ek/uAoxLXu
- a8aXAOxh1GhCABcGFT+ShGvgMm58/T/+irUoV2s+1DlaN2A1kKc5d/C
+ bh=MuHYsLjxwdN8IkJNsHAUBMs6LN4MRGpg5MuRP0IoWa8=;
+ b=X20dKF/QcN5DGrpOir73v8AawVMq83fiQvD+On/JHzQg4YhNG+nKSdazkThkWQ4u28i+XPhsS
+ kewKQnbj1iWBhsk5UPa3TvNU0tUn9U3VytacQgTR1nnxXUWgv3g3so5
 X-Developer-Key: i=jorge.marques@analog.com; a=ed25519;
  pk=NUR1IZZMH0Da3QbJ2tBSznSPVfRpuoWdhBzKGSpAdbg=
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDA5NCBTYWx0ZWRfX3eAa+ScZLljl
- 8dTOaxXBhnKlSml6byxyTUse87M53eAoFrw/dnBXUtpus2ZHEZ53GF5OZPcZkeRZ2PZC7yK8MSr
- Wm0jS7E3enziUlgx+8hhj6opntNFrHDy0ILy5kHGMA6FpMj/Zy3IU0rdaCDdWTxIL2V1LnwTfJc
- FE/Iq621kYGkCvUUkZbpXP7/8W7IAIjJNFiNA6Q+e4Wr1ZRHFYL2W/XoCBtaLHJkXgXq2lMFGUQ
- xsiB/g5MzJ1qH9EImPAbq6MC4WX2CuAUISm4r+C5X896Ql3IibY/8d/j0UjGH3eiETdVjniedcy
- YbbMQoHw1oSw/jRVLhZrpmdisVxtHVrd+1gnGHIwKPF740/z6DmKWISEzjiGPCArJRwGQpwz+l+
- rLVjVq01f2XVy2RaLkyozdw5H7NNdw==
-X-Authority-Analysis: v=2.4 cv=TZGbdBQh c=1 sm=1 tr=0 ts=69429e7c cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDA5NCBTYWx0ZWRfXwR+c+D0k6ocy
+ gR7Q4vehIDyyW5XaSBONmRpu5nTxOJwsOwBR1urcYN8H2eWvtL6zveFoQod4MdzWLpBIh3cUhgY
+ BL9Y6HW0pEtEKNAPVworFoLebTkU2eJ9k3A4B+P2py5pETjOtVW0/xez3AynI4W4yiASCDn9fn2
+ w1QgN86B1uRxO8rgsynoY57jx3+/vOx3tpgOgUFFoR8baNcR/4wy/MB1eHVZX/YiMuzz/26LQpN
+ PCwvLg5xQlaoSY/Tccngv281QzltMOTVWE9J4E0f7dlmVM2LnPhYwKrnEPwnnyFc/A0znvqpofm
+ d6FR8ehjxt1qOLvErMMRm/Xe0yUOl0Y7B2cqUzgqjfdI6NdgEzDEZ5MEUX/uKUlJjVa+TJ4o35p
+ DW14NvxCqgTtozmlsigLKG98T6ugjg==
+X-Authority-Analysis: v=2.4 cv=TZGbdBQh c=1 sm=1 tr=0 ts=69429e7e cx=c_pps
  a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
  a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=gEfo2CItAAAA:8 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8 a=COXgcu1q7tYCwoEp4oAA:9
- a=QEXdDO2ut3YA:10 a=sptkURWiP4Gy88Gu7hUp:22
-X-Proofpoint-GUID: PHjD3JXWfmEtTdbp81o3kVN4_3wFoPdn
-X-Proofpoint-ORIG-GUID: PHjD3JXWfmEtTdbp81o3kVN4_3wFoPdn
+ a=gAnH3GRIAAAA:8 a=5m_mccj1f-mIrhuec74A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: GHcQ39509lgPrKWvMBbAGQCkocVIVqxt
+X-Proofpoint-ORIG-GUID: GHcQ39509lgPrKWvMBbAGQCkocVIVqxt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-17_01,2025-12-16_05,2025-10-01_01
@@ -129,161 +124,131 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512170094
 
-Add dt-bindings for AD4062 family, devices AD4060/AD4062, low-power with
-monitor capabilities SAR ADCs. Each variant of the family differs in
-resolution. The device contains two outputs (gp0, gp1). The outputs can
-be configured for range of options, such as threshold and data ready.
-The device uses a 2-wire I3C interface.
+This adds a new page to document how to use the ad4062 ADC driver.
 
 Signed-off-by: Jorge Marques <jorge.marques@analog.com>
 ---
- .../devicetree/bindings/iio/adc/adi,ad4062.yaml    | 120 +++++++++++++++++++++
- MAINTAINERS                                        |   6 ++
- 2 files changed, 126 insertions(+)
+ Documentation/iio/ad4062.rst | 86 ++++++++++++++++++++++++++++++++++++++++++++
+ Documentation/iio/index.rst  |  1 +
+ MAINTAINERS                  |  1 +
+ 3 files changed, 88 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
+diff --git a/Documentation/iio/ad4062.rst b/Documentation/iio/ad4062.rst
 new file mode 100644
-index 0000000000000..eeb148081663c
+index 0000000000000..30200adf90c38
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
-@@ -0,0 +1,120 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+# Copyright 2025 Analog Devices Inc.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad4062.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/Documentation/iio/ad4062.rst
+@@ -0,0 +1,86 @@
++.. SPDX-License-Identifier: GPL-2.0-only
 +
-+title: Analog Devices AD4062 ADC family device driver
++=============
++AD4062 driver
++=============
 +
-+maintainers:
-+  - Jorge Marques <jorge.marques@analog.com>
++ADC driver for Analog Devices Inc. AD4060/AD4062 devices. The module name is
++``ad4062``.
 +
-+description: |
-+  Analog Devices AD4062 Single Channel Precision SAR ADC family
++Supported devices
++=================
 +
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4060.pdf
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4062.pdf
++The following chips are supported by this driver:
 +
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad4060
-+      - adi,ad4062
++* `AD4060 <https://www.analog.com/AD4060>`_
++* `AD4062 <https://www.analog.com/AD4062>`_
 +
-+  reg:
-+    maxItems: 1
++Wiring modes
++============
 +
-+  interrupts:
-+    description:
-+      Two pins are available that can be configured as either a general purpose
-+      digital output, device enable signal (used to synchronise other parts of
-+      the signal chain with ADC sampling), device ready (GP1 only) or various
-+      interrupt signals. If intended for use as a GPIO or device enable, will not
-+      present here.
-+    minItems: 1
-+    items:
-+      - description:
-+          GP0 pin, cannot be configured as DEV_RDY.
-+      - description:
-+          GP1 pin, can be configured to any setting.
++The ADC is interfaced through an I3C bus, and contains two programmable GPIOs.
 +
-+  interrupt-names:
-+    minItems: 1
-+    items:
-+      - const: gp0
-+      - const: gp1
++The ADC convert-start happens on the SDA rising edge of the I3C stop (P) bit
++at the end of the read command.
 +
-+  gpio-controller:
-+    description:
-+      Marks the device node as a GPIO controller. GPs not listed as interrupts
-+      are exposed as a GPO.
++The two programmable GPIOS are optional and have a role assigned if present in
++the devicetree ``interrupt-names`` property:
 +
-+  '#gpio-cells':
-+    const: 2
-+    description:
-+      The first cell is the GPIO number and the second cell specifies
-+      GPIO flags, as defined in <dt-bindings/gpio/gpio.h>.
++- GP1: Is assigned the role of Data Ready signal.
 +
-+  vdd-supply:
-+    description: Analog power supply.
++Device attributes
++=================
 +
-+  vio-supply:
-+    description: Digital interface logic power supply.
++The ADC contains only one channel with following attributes:
 +
-+  ref-supply:
-+    description:
-+      Reference voltage to set the ADC full-scale range. If not present,
-+      vdd-supply is used as the reference voltage.
++.. list-table:: Channel attributes
++   :header-rows: 1
 +
-+required:
-+  - compatible
-+  - reg
-+  - vdd-supply
-+  - vio-supply
++   * - Attribute
++     - Description
++   * - ``in_voltage_calibscale``
++     - Sets the gain scaling factor that the hardware applies to the sample,
++       to compensate for system gain error.
++   * - ``in_voltage_oversampling_ratio``
++     - Sets device's burst averaging mode to over sample using the
++       internal sample rate. Value 1 disable the burst averaging mode.
++   * - ``in_voltage_oversampling_ratio_available``
++     - List of available oversampling values.
++   * - ``in_voltage_raw``
++     - Returns the raw ADC voltage value.
++   * - ``in_voltage_scale``
++     - Returns the channel scale in reference to the reference voltage
++       ``ref-supply`` or ``vdd-supply`` if the former not present.
 +
-+allOf:
-+  - $ref: /schemas/i3c/i3c.yaml#
++Also contain the following device attributes:
 +
-+unevaluatedProperties: false
++.. list-table:: Device attributes
++   :header-rows: 1
 +
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
++   * - Attribute
++     - Description
++   * - ``sampling_frequency``
++     - Sets the duration of a single scan, used in the burst averaging mode.
++       The duration is described by ``(n_avg - 1) / fosc + tconv``, where
++       ``n_avg`` is the oversampling ratio, ``fosc`` is the internal sample
++       rate and ``tconv`` is the ADC conversion time.
++   * - ``sampling_frequency_available``
++     - Lists the available sampling frequencies, computed on the current
++       oversampling ratio. If the ratio is 1, the frequency is ``1/tconv``.
 +
-+    i3c {
-+        #address-cells = <3>;
-+        #size-cells = <0>;
++Interrupts
++==========
 +
-+        adc@0,2ee007c0000 {
-+            reg = <0x0 0x2ee 0x7c0000>;
-+            vdd-supply = <&vdd>;
-+            vio-supply = <&vio>;
-+            ref-supply = <&ref>;
++The interrupts are mapped through the ``interrupt-names`` and ``interrupts``
++properties.
 +
-+            interrupt-parent = <&gpio>;
-+            interrupts = <0 0 IRQ_TYPE_EDGE_RISING>,
-+                         <0 1 IRQ_TYPE_EDGE_FALLING>;
-+            interrupt-names = "gp0", "gp1";
-+        };
-+    };
++The ``interrupt-names`` ``gp1`` entry sets the role of Data Ready signal.
++If it is not present, the driver fallback to enabling the same role as an
++I3C IBI.
 +
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
++Low-power mode
++==============
 +
-+    i3c {
-+        #address-cells = <3>;
-+        #size-cells = <0>;
-+
-+        adc@0,2ee007c0000 {
-+            reg = <0x0 0x2ee 0x7c0000>;
-+            vdd-supply = <&vdd>;
-+            vio-supply = <&vio>;
-+            ref-supply = <&ref>;
-+
-+            gpio-controller;
-+            #gpio-cells = <2>;
-+        };
-+    };
++The device enters low-power mode on idle to save power. Enabling an event puts
++the device out of the low-power since the ADC autonomously samples to assert
++the event condition.
+diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
+index 315ae37d6fd4b..ba3e609c6a13c 100644
+--- a/Documentation/iio/index.rst
++++ b/Documentation/iio/index.rst
+@@ -22,6 +22,7 @@ Industrial I/O Kernel Drivers
+    ad3552r
+    ad4000
+    ad4030
++   ad4062
+    ad4695
+    ad7191
+    ad7380
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 29340394ac9d7..bc1d6b2d0a11e 100644
+index bc1d6b2d0a11e..0730b79c3dd0d 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1432,6 +1432,12 @@ F:	Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
- F:	Documentation/iio/ad4030.rst
- F:	drivers/iio/adc/ad4030.c
+@@ -1437,6 +1437,7 @@ M:	Jorge Marques <jorge.marques@analog.com>
+ S:	Supported
+ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
++F:	Documentation/iio/ad4062.rst
  
-+ANALOG DEVICES INC AD4062 DRIVER
-+M:	Jorge Marques <jorge.marques@analog.com>
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/adc/adi,ad4062.yaml
-+
  ANALOG DEVICES INC AD4080 DRIVER
  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
- L:	linux-iio@vger.kernel.org
 
 -- 
 2.51.1

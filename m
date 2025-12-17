@@ -1,556 +1,157 @@
-Return-Path: <linux-iio+bounces-27133-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27134-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098F5CC66C3
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 08:51:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9105FCC6C84
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 10:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 080C930442BC
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 07:50:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 09666301705E
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 09:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2542433B6D3;
-	Wed, 17 Dec 2025 07:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC01A314B7A;
+	Wed, 17 Dec 2025 09:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nbHxNbPt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="deH2tIfd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0482233C191
-	for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 07:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2313833986E
+	for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 09:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765957825; cv=none; b=uZoacixgAQhyos9Kcgjhqu2nsB4MYtLkj8UkfSkup5d8+AT/eXH37pT+I05H50gTnEV3ZCexl20vkfJKUNinGJMpJs1xCYNuTFLkiylW1Ib1KYlg+alab6kh8ybWOqGcld+kJxzf2HtgzxktQWE8bzaHSREDC8cHeRVQW6Y6iSc=
+	t=1765963533; cv=none; b=RWpK3Vi4dpLAL893bwGkJWDWlbJ8BYGK3MQhncqX1+fcbLP5l7s9NFhPReSUjKQczjlI2Dua02JMJhvD3bk3esLXsn2CxEAgmsKfFq0zMccbG7NqCBb2PHY/jCWr5E3C5XYavUfpaBK/UTEH7eODGZcHU2077fy+ealAuc7jb8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765957825; c=relaxed/simple;
-	bh=Fqv9y7a9HPIIUX574t6eHC7roCbUyY72GmQtdqF+kd0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhdyYNDsOpWhVuL/EqmZyL/DLp8QbSrpcLWpYirGOfdaZYaRkQc/MM+HPH4x5NvaDmStXlEqPwnuhFFa7HoP7hm69D54l2wdq0Hq3mynkFGITBUmU7GtuH9gfKY4AF3kkp0CcGz/A6lvs9amxzYljDUDn1Gn/KvFiTmv+K9TowY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nbHxNbPt; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so59865145e9.2
-        for <linux-iio@vger.kernel.org>; Tue, 16 Dec 2025 23:50:22 -0800 (PST)
+	s=arc-20240116; t=1765963533; c=relaxed/simple;
+	bh=mh8sWPmSpWx3ZdkV9IT1FsYBpWFgM3TDmQCsYyUuY4M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ssl3aPHPxjiqjiSAEEVezg493MHmjgfpJJ6f+oX4TiS75PC7RurRFAkj7byRLJtUxLa9yrvCQ189sNSvZ7bOyhhVvyP/yGLiM+0Dvd5CY0vDPrGcT92GkXLqQeX+vTXszFhgZ4dkWztWl1+/k0w8NHqHZUlgn2dFo66vaaB0iSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=deH2tIfd; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477b1cc8fb4so32787225e9.1
+        for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 01:25:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765957821; x=1766562621; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3mEDspWRxu8ev/Lf8BHmK/EnPiZCfkr2HvPb/NoKe5Q=;
-        b=nbHxNbPtHc6WfYDXuz+gvj46AdVEV8XlNX8yDBOSmIatwLQT1GQyRRMs5KcfLCXiGx
-         /BrCOutYPIG3dly7QB2s9dnyNSSQEPg1/XrYuu89iEn2r43You7xQ82D4HhBsfFSQalm
-         SoX7rZt2GjEG5kXx9yKr1cs3uct8oS8ZyITg9akyunKTBkpQd3iIAbhM1YiCj9/y4DSF
-         VEWVvHlg5ENl10i27S+AhnacUOopk6CFZx5J3iARioiSwloS4/dDNg4SjZ1j9+MbnoTC
-         j1TpgKPZyUV2VWBC+AJrvikbLpGgdMWfKC8qnT7nLBSWLZ6ZOQLypeQWfBJ32gv2w/sT
-         U2bQ==
+        d=gmail.com; s=20230601; t=1765963529; x=1766568329; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mh8sWPmSpWx3ZdkV9IT1FsYBpWFgM3TDmQCsYyUuY4M=;
+        b=deH2tIfdegTEXXDfZNaDG8rU26H/FRtEwL8Jbx5YtbxLJNNb4OkCujcH61egVZAjOR
+         HLlyMn3pog6zIhMfH9JTF8qpzPPdT4PF1SOF8wrhjVNmXdZ9g6ZJh53EeR8UBq67UFU8
+         35ZZ1ggrctthZ6zFkIAe+2381IxtqLwh5NfzpA4oU8FIPmjFkAC73hr+LEWAtnKwY/mG
+         fCLXC8LU+tDW8qc9pWVsSec3DIeRiQvNhbsUxjduAbCFn4VkHrhFkFpfXRGuEPOWd++r
+         lXTq4cxM7mkwwYV0rvOdE0g/jlnBGKTrIDGe4a8aY9Y/5fC9+Yz3/cqkpvCNB5CKlu/h
+         vUmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765957821; x=1766562621;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3mEDspWRxu8ev/Lf8BHmK/EnPiZCfkr2HvPb/NoKe5Q=;
-        b=PQ+R2C2guD106W6QDp8VFlLU0FFfsEqc1Jj7wqpzLaDVQX9y8oMHi+UH5BPVNtuW5J
-         4Ru1QpHPjrQjmstW+keTEXQw/Y/rh3CYp+XdrIpqxIoe0VSRFpF0iv3IlKsDEqCVQwrP
-         ajDFZLI3jeoFz9WYO9JcDrdW/au0LUht0kVbVIJmwAoOFUxP5/mnMqJlzahXtZ0V6RdW
-         JwRTQEK1JWfbCvknrR1DmwhELRUZOpK1qFLyvtTA6+8ULj+wpywBfqgtdkXIVWRI7q5h
-         uBTyvT8BgnJ9jCvH+rzpNB0xhgk88kKnj4wVb2QHi43+aqr9Qzq9SvRMxbn3HePWN+u+
-         HcEA==
-X-Forwarded-Encrypted: i=1; AJvYcCXFk/kJmVaOK6YC1ZkTaRJn8RWx8KWDU6WDVVg4p1OtGdE4J98C1fjfqkby6u46xv76Ulugm9tPK7I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPVLi2do++sICLw4JHgZZQv1MJApGuoHLB0JZxLjp3XKBo093X
-	7kzY6i4tf2uDy/49dg8SnXAq4f92tjSimicHw7IwVXjoMwLd13hjopTyQkzTfCzEh+M=
-X-Gm-Gg: AY/fxX4Ks+2PVoELn0M7v9sI2oTrt+FQQhR7h2bQ6tqofZCGL7XDxb0npNEDrORux60
-	MASsvRnnfoRrJ+jt68RD2oGfWLxtLI5wGmFOPTRgc5UeR+IsTyH+C3lI8O9BMB8LaAcVv294Vr8
-	/H6RhQSSyp6lZjq9LnoqhSCH3muhcKtVbKO9sslldLQ0typpl+vHjuL++8V1YYrzGayX2xRm7yr
-	GlzI5SAk3g43DQ1sOxdHp5nVqTUjTcjzD9UySD7lycH9IiRjPdUgZBraHBUWg6fgshHL2vCevxU
-	dfdn3Ia+/chKGsNLmtzMO6uhQ5pt3qymhk/hVUIMlFarpwyJixgMvKv3f3hzMgvifdkmifbclun
-	TSSQkr670VI9ufRa7ZmhV3TGeyx8q8HmzS2KZmIXWVPgKApJH0tYykZRyC3KWnovtrTtxc7f3Cv
-	KZbCe/v/7e1eqmw+/y03OolXYSK9JOSLY=
-X-Google-Smtp-Source: AGHT+IE5wiDfaK/vzIGieNFAGeN1n7bTb5hWPHvlVtjJbKESFVmmsC3/l1Mw+mozuxMdTSpQ8GYC6A==
-X-Received: by 2002:a05:600c:4e54:b0:477:9eb8:97d2 with SMTP id 5b1f17b1804b1-47a8f8a7092mr197954635e9.8.1765957821327;
-        Tue, 16 Dec 2025 23:50:21 -0800 (PST)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:37e6:ed62:3c8b:2621])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47bdc1edff5sm26094315e9.14.2025.12.16.23.50.20
+        d=1e100.net; s=20230601; t=1765963529; x=1766568329;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mh8sWPmSpWx3ZdkV9IT1FsYBpWFgM3TDmQCsYyUuY4M=;
+        b=ZYcD7Sv4XZzSLtJ2fnBKt30wyfTNaQ/1Kpmar6VNUdR5NQskhXVMrqCbGleFyUCMuC
+         VMGZZ85Do4pcZocEFjqyufpfUuDPF+TCeWPwm4d8VyTqMCHqU3N2xUELhYtDYAz8t8PO
+         gpYFTZi35Ok6MfGewnjx3McgWljINyfi7sBzzcF1vmgB90AJ9Li0tQaW3J2jB/2rPlEY
+         EUOxRrLQ3Bma+sZYRZfHXjLOPeKNIXeyzEoU0rFJYIdxIXQ4L0SPXv2Ed3T4CPp+BW+W
+         eLYO4XWx2+GtKgVuGl6Ug2EyCaugXplxGGBXHcTeAonLuWqcNNSnf65jmTGBW+N253nM
+         hZAQ==
+X-Gm-Message-State: AOJu0YwCNsBgw+GlmSLkdcYUEn4kUTqFKZQcHwr9gXmfAvajWcY9sWgS
+	/PEaBm6SRKXkar/+pfZ14KAG/egQ4r4NQO4Cl3JllglSRzJx4ls1RG2R7nOe9g==
+X-Gm-Gg: AY/fxX6rUDL7GLszdRp82/Blr9y0y86+aVs4OovxG8VXCjhN+UsBcaURIxVAwS4Lilz
+	HX/Z9p7Z8FO+cHqwmlqd9CshErjPqc/8G8Hsd3IC4U43kwAxgDnyA0mzdIq4boJgqdvweDVb+63
+	w3dze2YaBmFyiPXeNht3U3b4IbGpfcaipxQmWZG1lkw+hATTZWn1GKFrzo8mN4HyPkYVVTQClvW
+	7mpeW+SOSFW81ukgLYY6wboBGXXJgHTxAsn0s0Sh557S2yxAwopN+N7GkTlYDi5TvCRG055wA8J
+	MQ0MG23Z07+yS3e+7sjirPnSYhQqN3aGsFA0+OqT5SG5eCWKwVMNoM6PCpqjr8KFsxHaIWGNOwQ
+	gqez4gzbE3nGkdTKPnT0rnAA7BKwq+6sEwMIfXTZLv5bHbLq1e5tvxHURY2oWB0hl72ZLgHGU7u
+	6dPyLO/8aE1QE=
+X-Google-Smtp-Source: AGHT+IG2ersucBiyzONpcJgR7W3RTu2Yc+gUs2vocQ0U+PZmiVw3HjlOZQIp3HWvl0bVa4juC08aWQ==
+X-Received: by 2002:a05:600c:4691:b0:471:d2f:7987 with SMTP id 5b1f17b1804b1-47a8f90ee62mr196853745e9.26.1765963529027;
+        Wed, 17 Dec 2025 01:25:29 -0800 (PST)
+Received: from [10.5.0.2] ([45.94.208.162])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be011cc67sm1644745e9.10.2025.12.17.01.25.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 23:50:20 -0800 (PST)
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-To: wbg@kernel.org,
-	robh@kernel.org,
-	conor+dt@kernel.org,
-	krzk+dt@kernel.org
-Cc: s32@nxp.com,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-stm32@st-md-mailman.stormreply.com (moderated list:ARM/STM32 ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/STM32 ARCHITECTURE)
-Subject: [PATCH v3 3/3] counter: Add STM based counter
-Date: Wed, 17 Dec 2025 08:49:57 +0100
-Message-ID: <20251217075000.2592966-4-daniel.lezcano@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251217075000.2592966-1-daniel.lezcano@linaro.org>
-References: <20251217075000.2592966-1-daniel.lezcano@linaro.org>
+        Wed, 17 Dec 2025 01:25:28 -0800 (PST)
+Message-ID: <c3ed08159082c15f8804c6963b4422bbbf2039ab.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: ad9467: make iio backend optional
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Tomas Melin <tomas.melin@vaisala.com>, Michael Hennerich	
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
+ Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, David
+ Lechner	 <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
+Cc: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
+ "linux-kernel@vger.kernel.org"
+	 <linux-kernel@vger.kernel.org>
+Date: Wed, 17 Dec 2025 09:26:10 +0000
+In-Reply-To: <d2cfd1bb-0bc0-47c0-a68a-3967cd64878c@vaisala.com>
+References: 
+	<20251216-b4-ad9467-optional-backend-v1-0-83e61531ef4d@vaisala.com>
+	 <20251216-b4-ad9467-optional-backend-v1-2-83e61531ef4d@vaisala.com>
+	 <2a265681ad73bebf1ad7aeea418fb9399b8350cf.camel@gmail.com>
+	 <d2cfd1bb-0bc0-47c0-a68a-3967cd64878c@vaisala.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The NXP S32G2 automotive platform integrates four Cortex-A53 cores and
-three Cortex-M7 cores, along with a large number of timers and
-counters. These hardware blocks can be used as clocksources or
-clockevents, or as timestamp counters shared across the various
-subsystems running alongside the Linux kernel, such as firmware
-components. Their actual usage depends on the overall platform
-software design.
+On Tue, 2025-12-16 at 15:39 +0000, Tomas Melin wrote:
+> Hi,
+>=20
+> On 16/12/2025 14:56, Nuno S=C3=A1 wrote:
+> > On Tue, 2025-12-16 at 11:40 +0000, Tomas Melin wrote:
+> > > Not all users can or want to use the device with an iio-backend.
+> > > For these users, let the driver work in standalone mode, not coupled
+> > > to the backend or the services it provides.
+> > >=20
+> > > Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
+> > > ---
+> >=20
+> > Which users? The only usecases (for all the supported devices) we have =
+require
+> > the FPGA backend. So do you have a specific usecase for a specific devi=
+ce? If so, I would
+> > prefer an explicit boolean in the chip_info struture for the device(s) =
+we know this
+> > can happen (unless you have a usecase for all :)).
+>=20
+> This is generically for all the devices supported by the ad9467, not
+> only a specific device. So it's about how this is used as part of the
+> design.
+>=20
+> This is aimed at users that do not use the ADI HDL reference backend
+> with these devices, but instead have custom backends suited for their
+> own needs.
 
-In a Linux-based system, the kernel controls the counter, which is a
-read-only shared resource for the other subsystems. One of its primary
-purposes is to act as a common timestamp source for messages or
-traces, allowing correlation of events occurring in different
-operating system contexts.
+Hmm, ideally I would then like to see the backend driver upstreamed...
 
-These changes introduce a basic counter driver that can start, stop,
-and reset the counter. It also handles overflow accounting and
-configures the prescaler value.
+> In that case, we need to be able to skip the backend registration and
+> register device as a standalone iio device.
+>=20
+> Hopefully this made the use case clearer?
+>=20
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
----
- drivers/counter/Kconfig       |  10 +
- drivers/counter/Makefile      |   1 +
- drivers/counter/nxp-stm-cnt.c | 386 ++++++++++++++++++++++++++++++++++
- 3 files changed, 397 insertions(+)
- create mode 100644 drivers/counter/nxp-stm-cnt.c
+I mean, I don't love this and I'm not really sure I'm ok with it. These are=
+ fairly
+high speed devices which often do require an FPGA IP to handle the data flo=
+w. Now
+we can ignore the backend device (which is an essential piece) being it
+expected or not.
 
-diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-index d30d22dfe577..bf5b281f194c 100644
---- a/drivers/counter/Kconfig
-+++ b/drivers/counter/Kconfig
-@@ -90,6 +90,16 @@ config MICROCHIP_TCB_CAPTURE
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called microchip-tcb-capture.
- 
-+config NXP_STM_CNT
-+	tristate "NXP System Timer Module Counter driver"
-+	depends on ARCH_S32 || COMPILE_TEST
-+	help
-+	  Select this option to enable the NXP System Timer Module
-+	  Counter driver.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called nxp_stm_cnt.
-+
- config RZ_MTU3_CNT
- 	tristate "Renesas RZ/G2L MTU3a counter driver"
- 	depends on RZ_MTU3
-diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-index 40e644948e7a..196b3c216875 100644
---- a/drivers/counter/Makefile
-+++ b/drivers/counter/Makefile
-@@ -12,6 +12,7 @@ obj-$(CONFIG_I8254)			+= i8254.o
- obj-$(CONFIG_INTEL_QEP)			+= intel-qep.o
- obj-$(CONFIG_INTERRUPT_CNT)		+= interrupt-cnt.o
- obj-$(CONFIG_MICROCHIP_TCB_CAPTURE)	+= microchip-tcb-capture.o
-+obj-$(CONFIG_NXP_STM_CNT)		+= nxp-stm-cnt.o
- obj-$(CONFIG_RZ_MTU3_CNT)		+= rz-mtu3-cnt.o
- obj-$(CONFIG_STM32_TIMER_CNT)		+= stm32-timer-cnt.o
- obj-$(CONFIG_STM32_LPTIMER_CNT)		+= stm32-lptimer-cnt.o
-diff --git a/drivers/counter/nxp-stm-cnt.c b/drivers/counter/nxp-stm-cnt.c
-new file mode 100644
-index 000000000000..36463fcbc9df
---- /dev/null
-+++ b/drivers/counter/nxp-stm-cnt.c
-@@ -0,0 +1,386 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright 2018,2021-2025 NXP
-+ * Copyright 2025 Linaro Limited
-+ *
-+ * Author: Daniel Lezcano <daniel.lezcano@linaro.org>
-+ *
-+ * NXP S32G System Timer Module counters:
-+ *
-+ *  STM supports commonly required system and application software
-+ *  timing functions. STM includes a 32-bit count-up timer and four
-+ *  32-bit compare channels with a separate interrupt source for each
-+ *  channel. The timer is driven by the STM module clock divided by an
-+ *  8-bit prescale value (1 to 256). It has ability to stop the timer
-+ *  in Debug mode
-+ *
-+ */
-+#include <linux/bitfield.h>
-+#include <linux/clk.h>
-+#include <linux/counter.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+
-+#define STM_CR(__base)		(__base)
-+#define STM_CR_TEN		BIT(0)
-+#define STM_CR_FRZ		BIT(1)
-+#define STM_CR_CPS_MASK         GENMASK(15, 8)
-+
-+#define STM_CCR0(__base)	((__base) + 0x10)
-+#define STM_CCR_CEN		BIT(0)
-+
-+#define STM_CIR0(__base)	((__base) + 0x14)
-+#define STM_CIR_CIF		BIT(0)
-+
-+#define STM_CMP0(__base)	((__base) + 0x18)
-+
-+#define STM_CNT(__base)		((__base) + 0x04)
-+
-+#define STM_ENABLE_MASK	(STM_CR_FRZ | STM_CR_TEN)
-+
-+struct nxp_stm_cnt {
-+	spinlock_t lock;
-+	void __iomem *base;
-+	u64 overflow;
-+	u32 counter;
-+	u8 prescaler;
-+	bool is_started;
-+};
-+
-+static void nxp_stm_cnt_enable(struct nxp_stm_cnt *stm_cnt)
-+{
-+	u32 reg;
-+
-+	reg = readl(STM_CR(stm_cnt->base));
-+
-+	reg |= STM_ENABLE_MASK;
-+
-+	writel(reg, STM_CR(stm_cnt->base));
-+}
-+
-+static void nxp_stm_cnt_disable(struct nxp_stm_cnt *stm_cnt)
-+{
-+	u32 reg;
-+
-+	reg = readl(STM_CR(stm_cnt->base));
-+
-+	reg &= ~STM_ENABLE_MASK;
-+
-+	writel(reg, STM_CR(stm_cnt->base));
-+}
-+
-+static void nxp_stm_cnt_ccr_disable(struct nxp_stm_cnt *stm_cnt)
-+{
-+	writel(0, STM_CCR0(stm_cnt->base));
-+}
-+
-+static void nxp_stm_cnt_ccr_enable(struct nxp_stm_cnt *stm_cnt)
-+{
-+	writel(STM_CCR_CEN, STM_CCR0(stm_cnt->base));
-+}
-+
-+static void nxp_stm_cnt_set_overflow(struct nxp_stm_cnt *stm_cnt)
-+{
-+	writel(UINT_MAX, STM_CMP0(stm_cnt->base));
-+}
-+
-+static u32 nxp_stm_cnt_get_counter(struct nxp_stm_cnt *stm_cnt)
-+{
-+	return readl(STM_CNT(stm_cnt->base));
-+}
-+
-+static void nxp_stm_cnt_set_counter(struct nxp_stm_cnt *stm_cnt, u32 counter)
-+{
-+	writel(counter, STM_CNT(stm_cnt->base));
-+}
-+
-+static void nxp_stm_cnt_set_prescaler(struct nxp_stm_cnt *stm_cnt, u8 prescaler)
-+{
-+	u32 reg;
-+
-+	reg = readl(STM_CR(stm_cnt->base));
-+
-+	FIELD_MODIFY(STM_CR_CPS_MASK, &reg, prescaler);
-+
-+	writel(reg, STM_CR(stm_cnt->base));
-+}
-+
-+static u8 nxp_stm_cnt_get_prescaler(struct nxp_stm_cnt *stm_cnt)
-+{
-+	u32 reg = readl(STM_CR(stm_cnt->base));
-+
-+	return FIELD_GET(STM_CR_CPS_MASK, reg);
-+}
-+
-+static bool nxp_stm_cnt_is_started(struct nxp_stm_cnt *stm_cnt)
-+{
-+	u32 reg;
-+
-+	reg = readl(STM_CR(stm_cnt->base));
-+
-+	return !!FIELD_GET(STM_CR_TEN, reg);
-+}
-+
-+static void nxp_stm_cnt_irq_ack(struct nxp_stm_cnt *stm_cnt)
-+{
-+	writel(STM_CIR_CIF, STM_CIR0(stm_cnt->base));
-+}
-+
-+static irqreturn_t nxp_stm_cnt_irq(int irq, void *dev_id)
-+{
-+	struct nxp_stm_cnt *stm_cnt = dev_id;
-+
-+	nxp_stm_cnt_irq_ack(stm_cnt);
-+
-+	spin_lock(&stm_cnt->lock);
-+	stm_cnt->overflow++;
-+	spin_unlock(&stm_cnt->lock);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static void nxp_stm_cnt_start(struct nxp_stm_cnt *stm_cnt)
-+{
-+	nxp_stm_cnt_ccr_enable(stm_cnt);
-+	nxp_stm_cnt_set_overflow(stm_cnt);
-+	nxp_stm_cnt_enable(stm_cnt);
-+}
-+
-+static void nxp_stm_cnt_stop(struct nxp_stm_cnt *stm_cnt)
-+{
-+	nxp_stm_cnt_disable(stm_cnt);
-+	nxp_stm_cnt_irq_ack(stm_cnt);
-+	nxp_stm_cnt_ccr_disable(stm_cnt);
-+}
-+
-+static int nxp_stm_cnt_overflow_read(struct counter_device *counter,
-+				     struct counter_count *count, u64 *val)
-+{
-+	struct nxp_stm_cnt *stm_cnt = counter_priv(counter);
-+	unsigned long irqflags;
-+
-+	spin_lock_irqsave(&stm_cnt->lock, irqflags);
-+	*val = stm_cnt->overflow;
-+	spin_unlock_irqrestore(&stm_cnt->lock, irqflags);
-+
-+	return 0;
-+}
-+
-+static int nxp_stm_cnt_overflow_write(struct counter_device *counter,
-+				      struct counter_count *count, u64 val)
-+{
-+	struct nxp_stm_cnt *stm_cnt = counter_priv(counter);
-+	unsigned long irqflags;
-+
-+	spin_lock_irqsave(&stm_cnt->lock, irqflags);
-+	stm_cnt->overflow = val;
-+	spin_unlock_irqrestore(&stm_cnt->lock, irqflags);
-+
-+	return 0;
-+}
-+
-+static int nxp_stm_cnt_reset_write(struct counter_device *counter,
-+				   struct counter_count *count, u8 val)
-+{
-+	struct nxp_stm_cnt *stm_cnt = counter_priv(counter);
-+
-+	nxp_stm_cnt_set_counter(stm_cnt, 0);
-+	spin_lock(&stm_cnt->lock);
-+	stm_cnt->overflow = 0;
-+	spin_unlock(&stm_cnt->lock);
-+
-+	return 0;
-+}
-+
-+static int nxp_stm_cnt_prescaler_read(struct counter_device *counter,
-+				      struct counter_count *count, u8 *val)
-+{
-+	struct nxp_stm_cnt *stm_cnt = counter_priv(counter);
-+
-+	*val = nxp_stm_cnt_get_prescaler(stm_cnt);
-+
-+	return 0;
-+}
-+
-+static int nxp_stm_cnt_prescaler_write(struct counter_device *counter,
-+				       struct counter_count *count, u8 val)
-+{
-+	struct nxp_stm_cnt *stm_cnt = counter_priv(counter);
-+
-+	nxp_stm_cnt_set_prescaler(stm_cnt, val);
-+
-+	return 0;
-+}
-+
-+static int nxp_stm_cnt_count_enable_write(struct counter_device *counter,
-+					  struct counter_count *count, u8 enable)
-+{
-+	struct nxp_stm_cnt *stm_cnt = counter_priv(counter);
-+
-+	if (enable)
-+		nxp_stm_cnt_start(stm_cnt);
-+	else
-+		nxp_stm_cnt_stop(stm_cnt);
-+
-+	return 0;
-+}
-+
-+static int nxp_stm_cnt_count_enable_read(struct counter_device *counter,
-+					 struct counter_count *count, u8 *enable)
-+{
-+	struct nxp_stm_cnt *stm_cnt = counter_priv(counter);
-+
-+	*enable = nxp_stm_cnt_is_started(stm_cnt);
-+
-+	return 0;
-+}
-+
-+static struct counter_comp stm_cnt_count_ext[] = {
-+	COUNTER_COMP_COUNT_BOOL("reset",  NULL, nxp_stm_cnt_reset_write),
-+	COUNTER_COMP_COUNT_U8("prescaler", nxp_stm_cnt_prescaler_read, nxp_stm_cnt_prescaler_write),
-+	COUNTER_COMP_COUNT_U64("overflows", nxp_stm_cnt_overflow_read, nxp_stm_cnt_overflow_write),
-+	COUNTER_COMP_ENABLE(nxp_stm_cnt_count_enable_read, nxp_stm_cnt_count_enable_write),
-+};
-+
-+static int nxp_stm_cnt_count_read(struct counter_device *dev,
-+				  struct counter_count *count, u64 *val)
-+{
-+	struct nxp_stm_cnt *stm_cnt = counter_priv(dev);
-+
-+	*val = nxp_stm_cnt_get_counter(stm_cnt);
-+
-+	return 0;
-+}
-+
-+static const struct counter_ops nxp_stm_cnt_counter_ops = {
-+	.count_read  = nxp_stm_cnt_count_read,
-+};
-+
-+static struct counter_count nxp_stm_cnt_counts[] = {
-+	{
-+		.id = 0,
-+		.name = "stm_cnt",
-+		.ext = stm_cnt_count_ext,
-+		.num_ext = ARRAY_SIZE(stm_cnt_count_ext),
-+	},
-+};
-+
-+static int nxp_stm_cnt_suspend(struct device *dev)
-+{
-+	struct nxp_stm_cnt *stm_cnt = dev_get_drvdata(dev);
-+
-+	stm_cnt->is_started = nxp_stm_cnt_is_started(stm_cnt);
-+
-+	if (stm_cnt->is_started) {
-+		nxp_stm_cnt_stop(stm_cnt);
-+		stm_cnt->prescaler = nxp_stm_cnt_get_prescaler(stm_cnt);
-+		stm_cnt->counter = nxp_stm_cnt_get_counter(stm_cnt);
-+	}
-+
-+	return 0;
-+}
-+
-+static int nxp_stm_cnt_resume(struct device *dev)
-+{
-+	struct nxp_stm_cnt *stm_cnt = dev_get_drvdata(dev);
-+
-+	if (stm_cnt->is_started) {
-+		nxp_stm_cnt_set_counter(stm_cnt, stm_cnt->counter);
-+		nxp_stm_cnt_set_prescaler(stm_cnt, stm_cnt->prescaler);
-+		nxp_stm_cnt_start(stm_cnt);
-+	}
-+
-+	return 0;
-+}
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(nxp_stm_cnt_pm_ops, nxp_stm_cnt_suspend,
-+				nxp_stm_cnt_resume);
-+
-+static int nxp_stm_cnt_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct device_node *np = dev->of_node;
-+	struct counter_device *counter;
-+	struct nxp_stm_cnt *stm_cnt;
-+	struct clk *clk;
-+	void __iomem *base;
-+	int irq, ret;
-+
-+	base = devm_of_iomap(dev, np, 0, NULL);
-+	if (IS_ERR(base))
-+		return dev_err_probe(dev, PTR_ERR(base), "Failed to iomap %pOFn\n", np);
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		return dev_err_probe(dev, irq, "Failed to get IRQ\n");
-+
-+	clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return dev_err_probe(dev, PTR_ERR(clk), "Clock not found\n");
-+
-+	counter = devm_counter_alloc(dev, sizeof(*stm_cnt));
-+	if (!counter)
-+		return -ENOMEM;
-+
-+	stm_cnt = counter_priv(counter);
-+
-+	stm_cnt->base = base;
-+	stm_cnt->overflow = 0;
-+	spin_lock_init(&stm_cnt->lock);
-+
-+	counter->name       = "stm_counter";
-+	counter->parent     = &pdev->dev;
-+	counter->ops        = &nxp_stm_cnt_counter_ops;
-+	counter->counts     = nxp_stm_cnt_counts;
-+	counter->num_counts = ARRAY_SIZE(nxp_stm_cnt_counts);
-+
-+	ret = devm_request_irq(dev, irq, nxp_stm_cnt_irq, IRQF_TIMER | IRQF_NOBALANCING,
-+			       dev_name(&counter->dev), stm_cnt);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Unable to allocate interrupt line\n");
-+
-+	ret = devm_counter_add(dev, counter);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to register counter\n");
-+
-+	platform_set_drvdata(pdev, stm_cnt);
-+
-+	return 0;
-+}
-+
-+static void nxp_stm_cnt_remove(struct platform_device *pdev)
-+{
-+	struct nxp_stm_cnt *stm_cnt = platform_get_drvdata(pdev);
-+
-+	if (nxp_stm_cnt_is_started(stm_cnt))
-+		nxp_stm_cnt_stop(stm_cnt);
-+}
-+
-+static const struct of_device_id nxp_stm_cnt_of_match[] = {
-+	{ .compatible = "nxp,s32g2-stm-cnt", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, nxp_stm_cnt_of_match);
-+
-+static struct platform_driver nxp_stm_cnt_driver = {
-+	.probe  = nxp_stm_cnt_probe,
-+	.remove = nxp_stm_cnt_remove,
-+	.driver = {
-+		.name           = "nxp-stm-cnt",
-+		.pm		= pm_sleep_ptr(&nxp_stm_cnt_pm_ops),
-+		.of_match_table = nxp_stm_cnt_of_match,
-+	},
-+};
-+module_platform_driver(nxp_stm_cnt_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Daniel Lezcano");
-+MODULE_DESCRIPTION("NXP System Timer Module counter driver");
-+MODULE_IMPORT_NS("COUNTER");
--- 
-2.43.0
+Or maybe we can just do something like regulators and get a dummy backend o=
+r just add
+some fixed kind of backend. Bottom line is, it still seems the backend devi=
+ce is a core
+piece in your design and we're just hacking around the driver in way that c=
+onceptually
+doesn't make sense to me.
 
+Other question that comes to mind (I guess I was not that clear)... Do you =
+have a real
+usecase with your own custom backend IP or is this just theoretical?
+
+- Nuno S=C3=A1
 

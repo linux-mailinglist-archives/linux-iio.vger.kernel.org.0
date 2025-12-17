@@ -1,105 +1,116 @@
-Return-Path: <linux-iio+bounces-27152-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27153-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424CCCC8A28
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 17:00:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC04CCC939D
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 19:12:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8BC733062591
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 15:52:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 32D2C30203A6
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Dec 2025 18:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C7433C190;
-	Wed, 17 Dec 2025 15:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C06249EB;
+	Wed, 17 Dec 2025 18:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jzDRu8PF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cNkDLH1d"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D35133A00A
-	for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 15:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C45271448
+	for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 18:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765985862; cv=none; b=npR6wgnMsMtP6UJSY88s/34r6a/rItbkdrdO+8wE52Pwkb7YA9Kujwjvuu1fUKrH6m18KaD0/Kg+cmDtFwqz2DUp+aPB6feGtRYjZ00e8jnPHjot0kMuUx2kqWrmmST1Ob/hdmca8sGt97Y8v2eyHnRQlNcnjLXwmLWsQxQjdaY=
+	t=1765995081; cv=none; b=OPKSTF1JRhUHdLoGAAL+SZfY9ArnJvm79NYciZolou5M9JUDmI35tgtCE98q+jcI7wVhz7t/b6yXpBnkhosrwvrZzZ+ePtZl7jQDP4BXMPPp4tjnWPxNQyo6sz/ys7dyD2rKdw9xfRsvE9q5+hThgNeQCjeik3X3ZuecfV0uwNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765985862; c=relaxed/simple;
-	bh=3zWGgAak/FBm7Vkk94ZrLytELeHbedaeePRas4C5o5A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ATUwgId1BZmtG3uAIjtwkijS/45DrljwzfBPHbskp9WHy4kszOyexDZdrHtAm8h/37psUFj3uboi60g2/lzUI+ubETlsVN720wI+zhfwl1/Gd/YZvkx6miRtiJOLra3RF3EH12m3DFwmvO75PuIDkDqwmBvpRBfuwoTMuP5AU2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jzDRu8PF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED19EC2BCB0
-	for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 15:37:41 +0000 (UTC)
+	s=arc-20240116; t=1765995081; c=relaxed/simple;
+	bh=D8VzXhneEGg4vZwRoxLekAUp7JxQesHy/EO6KPYQzZ8=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tdFfNJDGiafQs9DRptqsmqyAi+ca/bAE1o2fZMUmWtbB5xJoBPUXh93iLxzPWGq09rNfSWN0NKM5dknYSxnyIv4a/X0qfsbDOpgtkeEjzoXRngTlU8Xxr67DKM0/RksYnChz0N0dB30JZpAQuW9TI58ZWXNwRKFlGOepnxqDbpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cNkDLH1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A9D8C4CEF5
+	for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 18:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765985862;
-	bh=3zWGgAak/FBm7Vkk94ZrLytELeHbedaeePRas4C5o5A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=jzDRu8PFTl++cXmT88mvEAMSAa6Vz5M58zuzplAGF2utYgr8XKLBVfKn/k939Bop1
-	 wgBETilhPzkKMLaP+jwu7XDaiPr95r0NQsLUTzGQciRSuy8oUgFJzaF3gbQa7X0vo6
-	 4Cg2igOisGKqDylMjSlkMJA6x7jXA/8rDeKRVwZW+rTxlE2xu6pcIbVPm0zmcd8Wt6
-	 f/0k760aMU2fx0c0i77/nTgTJfYLbEQYxABH9Wix7ua7zQtvCJBO+9p5JrZdZguZKh
-	 nqa4X1bISPoo8VdgvZTMeGPyIshbVzG8Z6eiDb2JMOhe7ATxtArJlEFGVzKXFOUtKj
-	 3LkQIkuUQFmYg==
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b7ce5d6627dso491672166b.2
-        for <linux-iio@vger.kernel.org>; Wed, 17 Dec 2025 07:37:41 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVtMbbmWW++clF15eqZRPhmDyxZph0LoRlopMhc92r5L9kQl73HnA/A2tRQ6Wu/ujfQoKtuMtbqyzE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4sFiXzUJqkv3b4ZEJrD1DeFwRN1YCTgNlJomk2mRN9/W+KuWb
-	UwKlZG27AdZzokCmZKC87RHf2n6FVQA5NC5MfmmrRZXmQ+A1Z9EC8Zj9DOZW6sCTsIGC3rdKrSh
-	ZeWWy1YjpC82lrRhIbKgFMRh2ehuv5w==
-X-Google-Smtp-Source: AGHT+IE+MbpVy0D9cI7vtayEcuAQ5BpKDVDav3dQlj552I/4svzEpwf9VDtWU/NeRoVokGuFNkCPT8ATPD0NU91eNy8=
-X-Received: by 2002:a17:907:3cca:b0:b72:c261:3ad2 with SMTP id
- a640c23a62f3a-b7d23af00e6mr1859042566b.50.1765985860268; Wed, 17 Dec 2025
- 07:37:40 -0800 (PST)
+	s=k20201202; t=1765995081;
+	bh=D8VzXhneEGg4vZwRoxLekAUp7JxQesHy/EO6KPYQzZ8=;
+	h=From:To:Subject:Date:From;
+	b=cNkDLH1dGiZszxCuvir9k6MNdy8aVGlYbxG4b1kvsvtHC1DNiHElJg7l1B1w/TFZj
+	 tkZVexdiFd2/vZAsTKMvITibz41fLPhmxRm5kl18g3eGogQ44LpwzsmrbM/n4+stPT
+	 EIgIqiqddzgC34VpeNsNt8CZkE3mhhfTQTKvzJXUoOYkHl7UzJppXI36r+GF7lbUBc
+	 MG0p1024jrHzSA3qDdzf2Q16vR/M8BrB0TDIfR4yZa34/L3snUCZnUMR3EmJwbHJy0
+	 NhHzBPFu4WZHqzM6CJ1RrIE6l2qCGpaLsg+026+RfrGB0kbxby5P6y6x7HqtqlzDII
+	 gP9Ebzv6H72QA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 147DAC4160E; Wed, 17 Dec 2025 18:11:21 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 220867] New: illuminance goes to zero after suspend
+Date: Wed, 17 Dec 2025 18:11:20 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: xaver.hugl@kde.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version rep_platform
+ op_sys bug_status bug_severity priority component assigned_to reporter
+ cf_regression
+Message-ID: <bug-220867-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251211-dev-dt-warnings-all-v1-0-21b18b9ada77@codeconstruct.com.au>
- <20251211-dev-dt-warnings-all-v1-1-21b18b9ada77@codeconstruct.com.au>
-In-Reply-To: <20251211-dev-dt-warnings-all-v1-1-21b18b9ada77@codeconstruct.com.au>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 17 Dec 2025 09:37:28 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJUaKKsJ8BCNbVXe4vLVsQ2Av7VuWqf9DnUKHeLzLb8NQ@mail.gmail.com>
-X-Gm-Features: AQt7F2q-nb9Xy6ZmXCdkQqrO-_0mpnqJ_RWJ9ZzKv3sOBl98lQ-TH7L8rvtaBLo
-Message-ID: <CAL_JsqJUaKKsJ8BCNbVXe4vLVsQ2Av7VuWqf9DnUKHeLzLb8NQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 01/16] dt-bindings: hwmon: Convert aspeed,ast2400-pwm-tacho
- to DT schema
-To: Andrew Jeffery <andrew@codeconstruct.com.au>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Linus Walleij <linusw@kernel.org>, Joel Stanley <joel@jms.id.au>, linux-hwmon@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	openbmc@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 11, 2025 at 2:46=E2=80=AFAM Andrew Jeffery
-<andrew@codeconstruct.com.au> wrote:
->
-> From: "Rob Herring (Arm)" <robh@kernel.org>
->
-> Convert the ASpeed fan controller binding to DT schema format.
->
-> The '#cooling-cells' value used is 1 rather than 2. '#size-cells' is 0
-> rather 1.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D220867
 
-Okay, I can't figure out why I thought '#cooling-cells' needed to be 1
-here. I don't see that anywhere in the tree. The driver for sure only
-supports 2, so anything that's not is an error in any case.
+            Bug ID: 220867
+           Summary: illuminance goes to zero after suspend
+           Product: Drivers
+           Version: 2.5
+          Hardware: AMD
+                OS: Linux
+            Status: NEW
+          Severity: normal
+          Priority: P3
+         Component: IIO
+          Assignee: drivers_iio@kernel-bugs.kernel.org
+          Reporter: xaver.hugl@kde.org
+        Regression: No
 
-> Some users define more that 8 fan nodes where 2 fans share a PWM. The
-> driver seems to let the 2nd fan just overwrite the 1st one. That also
-> creates some addressing errors in the DT (duplicate addresses and wrong
-> unit-addresses).
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-> ---
->  .../bindings/hwmon/aspeed,ast2400-pwm-tacho.yaml   | 106 +++++++++++++++=
-++++++
->  .../devicetree/bindings/hwmon/aspeed-pwm-tacho.txt |  73 --------------
->  2 files changed, 106 insertions(+), 73 deletions(-)
+Every time the system suspends, illuminance_raw reads zero, until it's not =
+read
+for a few seconds, at which point it recovers and reads correct measurement
+values again.
+
+Reproduction steps are
+1. run "watch -n 1 cat /sys/bus/iio/devices/iio:device0/in_illuminance_raw"
+2. suspend, wake the device again. The output is now zero
+3. interrupt the process, wait for a few seconds, run it again. The output =
+is
+now a correct measurement value
+
+This is on a Framework 13 with a Ryzen 7840U, tested with kernel version
+6.17.11.
+It's not a recent regression, when I looked into automatic brightness contr=
+ol
+for KDE Plasma a few months ago, I already saw the zero readings once (but
+didn't look into it further).
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-27180-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27181-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F717CCC529
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 15:43:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64839CCC65C
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 16:06:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96CA83069C8A
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 14:38:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E5E2306CF43
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 15:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4103F29ACC6;
-	Thu, 18 Dec 2025 14:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174152D24BC;
+	Thu, 18 Dec 2025 15:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AWALlaHo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eSZaBXm/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61256275B15
-	for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 14:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085D32C21F7
+	for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 15:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766068637; cv=none; b=kc3hsbQcnObUNmtprbnpWxTK4wXwH1AOglL0lNmWs6YwNHY+ajTTx2xd7nBXDYu17sjCvUpGH7cVfIKe2dnrKVbqQp9PG0e/fv4gMlreTzMzcOlqfZMxRGdVhcai1DeRGJdVVRI3bmNJ/NUUF8nXoPeNxjNroBuSg6lxWtXbWcQ=
+	t=1766070181; cv=none; b=cdgguttl7uWW/aeLTcYqHwkSHKBcqfmW1MacF61K2NvK3CNCfwJ6V8WnOOvilBGwdINULv26G4X8EgvFUstFRxAiv+aslwomVAgpjwRGHjQYXPdC1AeAEGcDwZyg1hD2U3Fxkx/JCqzkvio+G41KjTB8JD7q59iaiWm3d4qw6Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766068637; c=relaxed/simple;
-	bh=DxtyRnzdSJwt8HkqzKj/nu+FArvP4MZdiT5K2ZOumNw=;
+	s=arc-20240116; t=1766070181; c=relaxed/simple;
+	bh=w0THe4Lp8brKdBJivpncKFOSxMmuG3qeA43zPqKvDqM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FLEh3SXkwcnX+DW6+XrCm6LHmpaZX+dUDixvIyrEi/4nb9IH5LuNcZEms07foUA+4Csj7iXWmA1nqmgU2+DRsqbI2jtQw+KVAUsk/sOghGshAcvSg631TkbAeP/6NOkoRkP496saTrxO9hGPzfl4YXnnAHSP2A6bjBifu8zVnms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AWALlaHo; arc=none smtp.client-ip=209.85.214.181
+	 Content-Type:Content-Disposition:In-Reply-To; b=fr6EF471sH+K81KRSTLjSdN46eaIybDcF05XlGkZYEhzFzYpzMsciBwAJcJ3EKQDfbhBb5TJwN3Km7aTi12UaTUGPFM994DrhUFz0kuFjpZ75HIM7FjCQpZWRm5a1qy5K6ShQhRx5fVlOV5EI6UaX5jtc/4pcTPnWXcAyL5hqUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eSZaBXm/; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a0d52768ccso9383805ad.1
-        for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 06:37:15 -0800 (PST)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a0d5c365ceso8833965ad.3
+        for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 07:02:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766068634; x=1766673434; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766070178; x=1766674978; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TR3PplabcnA7UkJBFlt/TnM938reXt23QxQT7MrdzIY=;
-        b=AWALlaHodyvxjzvpP8G1eXpNOUswcJZ3CoM7VGuAgd2Jp0MuwtMir24gjUFvCBV2nI
-         4ipI/xyGUO+L4J5k8vuWfdgC6m8hbKfHSvJIzDwRWNtwEebOjqGSSLboTWvHDV0p4P/T
-         Fxz3Uj9GF+/VvW8A+UUxjNUZ1LphbVabMVGGDx8hlJK46LxYQ7zDbd+lVln92taUyqrL
-         +bVi8UrMPY7bAuy39TAtpkv7S1hkZ1WwryYol3a7ZQsrw//K6l9D2yVJZxmw2f477rP2
-         WilgzlU1oxijmUAxihS5GxHwgBFUc7COEZsOjb130PJFfJRsVGW1TrFKmjv/0IJt++IO
-         d9Nw==
+        bh=FZ+bJ8pyTlr1XYIP3IpwCQQATQ0QeMjZ+3f/m9PBBnw=;
+        b=eSZaBXm/dtW9y71HkGxHAJ3SLVKQvKd2uSOXmMVGe14CjqaTnxdnNmVKhxLFcUhjZw
+         8qvlGmb7XmafxRHk15pST9n0+oRSqJWre3V4TOGjczyGOsQf6JvPiH/nAcHUoAjevV+b
+         8+1ggBLreNaYWTrgs4GlZ1EnAU4J5KRKFiWKatFE+QL/oAWljSjtSNPV/H+762Nc1TOa
+         TyrNTGBZGwElisKFjEfYUMrbEDAN5BMUHgfoRunhOSAuxLkTVqngdU3qm9N8wMhzWEkx
+         FSnVPiPMefB0BMP5dLi39M5nLav2c3DbcyqgmTdxI/LjSiVmMLC5N81UcRk4KrFz+p9K
+         0VUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766068634; x=1766673434;
+        d=1e100.net; s=20230601; t=1766070178; x=1766674978;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TR3PplabcnA7UkJBFlt/TnM938reXt23QxQT7MrdzIY=;
-        b=o5yvLH0AXa59pLg1xCeAPZWDWxNtLRMPSkB3bIjk/5AqmXkrfJwVUCHGy/jUjqpL60
-         PQjoz29bVOcG0jpZPdpz4Rqou+t55ZJItfmzR36TCA/DZ8rnpm/LQwJm9baR3M36/DU2
-         l0BYRwJtYh6FvsGXDChjuiQhUjVXvslmF9Rdhre2X16CQoJU1PzhRgHGqT/SVnInZAcD
-         D4ZXT+wvqrVPW/FKGcOHgYhCdQ1NyL+cOocxbo23KhNGNSLshaFGHED4o3avTQwA0wUu
-         Rw9EnU4euTQXwbxiY3x6g+3cxEXcLUJPLa2RtgikXiIbY4tMY3eocu3apeb1BU67cV1L
-         bD+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXH0UnU/9f19TYPYauB2B7o2g85k5DDvjjl4/0XYPPohPBudZGiY02AK75I/ASnsYOosoxuO/2mQnw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzqzxteg220VwsslbGs63qltaobbIQqJ8gvZSJSOnlBub5faAkk
-	k9Favo7EHjvQsQyd0yZiNXNt0K47Vjso1iVJl0w9cjfO83rmvVtVZya9dzZsdw==
-X-Gm-Gg: AY/fxX5gC4w0SsDYDBpZJKH3raAuMsnY2vubdBuSsMU+cCTdLmG3H0qCKQGN7j/59Ac
-	vD4hRvpgvWM3y5NTDTspLXrMu0FWtSWwsWNSXtqVOCgLBEZpmPJkVITtvI/lbLHIzTcPJRWayar
-	S+gBRG5PMUdSRRYDE27/JaETsgprmAQ42HS1wP8MUvyD2RuqE2AyeYQVe0sWbS4qOwSCbRnwYGV
-	TMUiQkuoVote8z5q92Y5fOHfos8zDVPGPZjDYo1UvcxGhyxHXgnKczAhDGsaDGMUg5mFAuTvwK+
-	4kKrkX7OCkMBpKYGXlUnGmQZ0C/m7oNfjgQgMSJi4zWdntnWO/kN07tn1oJAcNFgJuwJwBrjeN3
-	08CbQ6ichhWaVz1PxTVvnTP2ymUugR7M0svXhkqrH7aAM+/qCTHetpeYg+SnRaWG+rgBH5O4Xlk
-	j3tPCTatppwO3kje19Jpc=
-X-Google-Smtp-Source: AGHT+IHklmQ9OYtCFpJ6W2rLqAN4zF9YoH2D4KR8JaJzkloRbmKoMsSz7BP5QMv66aUqN8WuYp28+Q==
-X-Received: by 2002:a05:701b:2605:b0:11b:f056:a1b3 with SMTP id a92af1059eb24-11f34be9b9cmr18708999c88.11.1766068634462;
-        Thu, 18 Dec 2025 06:37:14 -0800 (PST)
+        bh=FZ+bJ8pyTlr1XYIP3IpwCQQATQ0QeMjZ+3f/m9PBBnw=;
+        b=PWTOT36vcuuwoEOrX/RKpQSwKulgsPJBU84ThCm/YfzXkxOiYe9FoQsl0aia2LrKm8
+         s7yFF5vl3CukBUu22tI4NN3b5oCm9cEbThxBwfWsr4LpnsJuAqwfVURKB5Fz8bAem9HC
+         FZBLidugCRsuZHp7uDXg9C5bI1dZM7wkaLSjl8NdEngUE5VmbrkmeqfGRIYLpygG6pAl
+         joyGcQmQrcGYCFYn6P57yw/vL7RJPK1Qmj/qU/us8lztqG9dymPsVMq4aOaPJbnZqmet
+         linYtnroSJiTGI7u+PH+ooZz3UzPJw9xP/NJAbqW0B/SFq64jugV8DAME5WOsaMlq67B
+         dhHg==
+X-Forwarded-Encrypted: i=1; AJvYcCV9hCcJjncl5Hr0RjJXtPGTzuKWUCXwY4ncHp//NtCcO7zmSLeOmcmZui/LDwZhAFE15lYG9uzqlpU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxPwFkpDfMPIRIHfY3kicKqZY9aV2zLNyTiYT7cGwAWRqHDJA0
+	mcFc8dssKEfuCQBhajBlch+yEwoC1mV9TeHZk8szGhMQ3uov5/z8n6Nq
+X-Gm-Gg: AY/fxX7zas55aSNdGWlgzLxqymiKY+6P0ejOANgLAgn/+NBuRB3Ew5yWSK1CFH0v0XA
+	B/AiM1Klf+zFpJ6H9H0isLSwJwcNKB6kXSN4EnoBf7h50sLPOrzQRN8lDdql1LzugIdj0rnxb7+
+	QFOlnZRAW/csX5OyXobtXwhpacHX9zJtIUi7mePukleFeyEVnGrzesoe4iZCer00Ho4u4NYrucL
+	mAq0jTfT82G5PrARxp8lqFzYo5gV/u1QBvayY5hyDmELzWAfAd5uFHL7clsQwtV6mxrPqAxud3d
+	/8XuBw8OCUNMWtou1/Aw+Sal8w7cQAaeYPWzHQF/1/UdANyxzQd2lSpVt2Yo1B2iSHmDN9Y9v0H
+	hIOA3mIHvjXJkvZKAZhHoP0+1SGiWurNP4t3MFi0L1GIJBjeoUUUh+orJ+EX/EXu142+zmLSd25
+	5Kduim9HG00Mt2A6+NU4R+UO17KwYnuA==
+X-Google-Smtp-Source: AGHT+IGEZgxlURlbc9BT6zUVww+KIhdG/P7myFVk8CEhf45jw4gx6KpSM7glhLqD7CAM4n2HprtcqQ==
+X-Received: by 2002:a05:7022:7e0a:b0:119:fac9:cdb1 with SMTP id a92af1059eb24-11f34ac0a18mr16490521c88.20.1766070177283;
+        Thu, 18 Dec 2025 07:02:57 -0800 (PST)
 Received: from localhost ([2804:30c:165b:7000:d59:b973:da75:f845])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12061f58ba0sm7980511c88.8.2025.12.18.06.37.13
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12061fceec2sm8059249c88.13.2025.12.18.07.02.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 06:37:13 -0800 (PST)
-Date: Thu, 18 Dec 2025 11:38:54 -0300
+        Thu, 18 Dec 2025 07:02:56 -0800 (PST)
+Date: Thu, 18 Dec 2025 12:04:37 -0300
 From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To: Tomas Borquez <tomasborquez13@gmail.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -82,10 +82,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>, linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
-Subject: Re: [PATCH 3/5] staging: iio: ad9832: cleanup dev_err_probe()
-Message-ID: <aUQR_vBHQwg9CWFn@debian-BULLSEYE-live-builder-AMD64>
+Subject: Re: [PATCH 4/5] staging: iio: ad9832: convert to iio channels and
+ ext_info attrs
+Message-ID: <aUQYBdiYVy3sn0Nx@debian-BULLSEYE-live-builder-AMD64>
 References: <20251215190806.11003-1-tomasborquez13@gmail.com>
- <20251215190806.11003-4-tomasborquez13@gmail.com>
+ <20251215190806.11003-5-tomasborquez13@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -94,55 +95,173 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251215190806.11003-4-tomasborquez13@gmail.com>
+In-Reply-To: <20251215190806.11003-5-tomasborquez13@gmail.com>
+
+Hi Tomas,
+
+The updates look mostly good to me. A few comments inline.
 
 On 12/15, Tomas Borquez wrote:
-> Cleanup dev_err_probe() by keeping messages consistent and adding
-> error message for clock acquisition failure.
+> Convert ad9832 from custom sysfs attributes to standard channel interface
+> using a single IIO_ALTCURRENT channel with ext_info attributes, as this
+> device is a current source DAC with one output, as well as removing the
+> dds.h header.
+> 
+> Changes:
+> - Add single iio_chan_spec with ext_info for frequency0/1 and phase0-3
+> - Phase attributes accept radians directly, driver converts internally
+> - Frequency attributes accept Hz (unchanged)
+> - Cache frequency and phase values in driver state for readback
+> - Remove dependency on dds.h macros
+I'm not sure, was the dds stuff being used before this patch? Maybe dds.h
+removal would be better as another separate clean up patch.
 
-This is also a clean-up patch while patch 2 is a driver update so I would
-provide this patch (currently patch 3) before the patch updating to use guard().
+> - Rename symbol attributes to frequency_symbol and phase_symbol
+It's nice to have a change log between patch versions. Though, it's usually
+provided as part of extra patch info, not commit message.
 
+> 
+> The pincontrol_en attribute is kept temporarily with a TODO noting it
+> should become a DT property during staging graduation.
+> 
+> NOTE: This changes the ABI from out_altvoltage0_* to out_altcurrent0_*
+> with different attribute organization.
 > 
 > Signed-off-by: Tomas Borquez <tomasborquez13@gmail.com>
 > ---
->  drivers/staging/iio/frequency/ad9832.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+
+The change log is usually provided here, below the '---'.
+
+>  drivers/staging/iio/frequency/ad9832.c | 279 +++++++++++++++++++------
+>  1 file changed, 215 insertions(+), 64 deletions(-)
+
+This patch fails to apply? I've tried getting it applied on top of current
+IIO testing branch with b4 shazam, git am <individual patches>, and
+git apply <patch4 on top of applied patch3>, but patch 4 fails to apply either way.
+Couldn't figure out how to fix that.
+
 > 
 > diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-> index f9ef3aede4..8d04f1b44f 100644
+> index 8d04f1b44f..454a317732 100644
 > --- a/drivers/staging/iio/frequency/ad9832.c
 > +++ b/drivers/staging/iio/frequency/ad9832.c
-> @@ -302,15 +302,15 @@ static int ad9832_probe(struct spi_device *spi)
+...
+> +static const u32 ad9832_phase_addr[] = {
+> +	AD9832_PHASE0H, AD9832_PHASE1H, AD9832_PHASE2H, AD9832_PHASE3H
+> +};
+> +
+> +static ssize_t ad9832_write_phase(struct iio_dev *indio_dev,
+> +				  uintptr_t private,
+> +				  struct iio_chan_spec const *chan,
+> +				  const char *buf, size_t len)
+>  {
+> +	struct ad9832_state *st = iio_priv(indio_dev);
+>  	u8 phase_bytes[2];
+>  	u16 phase_cmd;
+> +	u32 phase_urad, phase;
+> +	int val, val2, ret;
 >  
->  	ret = devm_regulator_get_enable(&spi->dev, "avdd");
->  	if (ret)
-> -		return dev_err_probe(&spi->dev, ret, "failed to enable specified AVDD voltage\n");
-> +		return dev_err_probe(&spi->dev, ret, "failed to enable AVDD supply\n");
-I'd break the lines and write the message in the line below for this and other
-dev_err_probe() that exceed 80 columns. E.g.
+> -	if (phase >= BIT(AD9832_PHASE_BITS))
+> +	if (private >= ARRAY_SIZE(ad9832_phase_addr))
+>  		return -EINVAL;
+>  
+> +	ret = iio_str_to_fixpoint(buf, 100000, &val, &val2);
+Maybe I'm missing something but, why 100000 here? Should it be MICRO instead?
 
-		return dev_err_probe(&spi->dev, ret,
-				     "failed to enable AVDD supply\n");
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (val < 0 || val2 < 0)
+> +		return -EINVAL;
+> +
+> +	phase_urad = val * 1000000 + val2;
+We can use macros to make it easier to read values that are related to metric units.
+	phase_urad = val * MICRO + val2;
+then
+#include <linux/units.h>
 
-Note this is just a personal preference of mine, not enforced code style, so
-fine if you prefer keep it as it is.
+...
+> +static ssize_t ad9832_read_phase(struct iio_dev *indio_dev,
+> +				 uintptr_t private,
+> +				 struct iio_chan_spec const *chan,
+> +				 char *buf)
+> +{
+> +	struct ad9832_state *st = iio_priv(indio_dev);
+> +	u32 phase_urad;
+> +
+> +	if (private >= ARRAY_SIZE(ad9832_phase_addr))
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&st->lock);
+> +	phase_urad = ((u64)st->phase[private] * AD9832_2PI_URAD) >> AD9832_PHASE_BITS;
+> +
+> +	return sysfs_emit(buf, "%u.%06u\n", phase_urad / 1000000, phase_urad % 1000000);
+	return sysfs_emit(buf, "%u.%06u\n", phase_urad / MICRO, phase_urad % MICRO);
+?
 
+>  }
 >  
->  	ret = devm_regulator_get_enable(&spi->dev, "dvdd");
->  	if (ret)
-> -		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVDD supply\n");
-> +		return dev_err_probe(&spi->dev, ret, "failed to enable DVDD supply\n");
+...
+> @@ -234,49 +322,110 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+>  		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
+>  						  st->ctrl_src);
+>  		ret = spi_sync(st->spi, &st->msg);
+> +		if (ret)
+> +			return ret;
+> +
+> +		st->output_en = val;
+> +		break;
+> +	case AD9832_PINCTRL_EN:
+> +		if (val != 1 && val != 0)
+> +			return -EINVAL;
+> +
+> +		st->ctrl_ss &= ~AD9832_SELSRC;
+> +		st->ctrl_ss |= FIELD_PREP(AD9832_SELSRC, val ? 0 : 1);
+this would then be only
+		st->ctrl_ss |= FIELD_PREP(AD9832_SELSRC, val);
+so we keep consistency with previous FIELD_PREP() in ad9832_store().
+
+> +
+> +		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SYNCSELSRC) |
+> +						 st->ctrl_ss);
+> +		ret = spi_sync(st->spi, &st->msg);
+> +		if (ret)
+> +			return ret;
+> +
+> +		st->pinctrl_en = val;
+>  		break;
+>  	default:
+>  		return -ENODEV;
+>  	}
 >  
->  	st->mclk = devm_clk_get_enabled(&spi->dev, "mclk");
->  	if (IS_ERR(st->mclk))
-> -		return PTR_ERR(st->mclk);
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->mclk), "failed to enable MCLK\n");
+> -	return ret ? ret : len;
+> +	return len;
+>  }
 >  
->  	st->spi = spi;
->  	mutex_init(&st->lock);
-> -- 
-> 2.43.0
-> 
-> 
+...
+> +#define AD9832_CHAN_FREQ(_name, _channel) {			\
+> +	.name = _name,						\
+> +	.write = ad9832_write_frequency,			\
+> +	.read = ad9832_read_frequency,				\
+> +	.private = _channel,					\
+Since the DAC has only one output channel, doesn't it look somewhat misleading
+to call private data _channel?
+Based on data sheet naming, I'd call it _select. Maybe _fselect _psel?
+
+> +	.shared = IIO_SEPARATE,					\
+> +}
+> +
+> +#define AD9832_CHAN_PHASE(_name, _channel) {			\
+> +	.name = _name,						\
+> +	.write = ad9832_write_phase,				\
+> +	.read = ad9832_read_phase,				\
+> +	.private = _channel,					\
+same here
+
+> +	.shared = IIO_SEPARATE,					\
+> +}
+> +
+
+Best regards,
+Marcelo
 

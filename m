@@ -1,90 +1,89 @@
-Return-Path: <linux-iio+bounces-27176-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27177-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F43CCC0FE
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 14:43:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1BFCCC345
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 15:13:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C92E8301C0B3
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 13:43:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 863F03031063
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 14:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381D6334C0A;
-	Thu, 18 Dec 2025 13:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1CF33C1B7;
+	Thu, 18 Dec 2025 13:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LgFj7LTZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QvcZr9B/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF9732E697
-	for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 13:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9381333A6EE
+	for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 13:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766065389; cv=none; b=K1SlnLRBjiLJ4TSPqntAK1hyG1AotctRp6PDU1XjVABWmwL8nyIFGGPJNLGnqn8Pp8E340UDNectV/YeZAK5QIWl0YYrhdWGFrGmSwq8iHmOjiYY75BvUrN7uINVTjn2NhL1yZbzyOtoYm4oub4+6Q9aFjgGveCSS8K9Uk0DzH0=
+	t=1766065710; cv=none; b=NX04pHhGf6lBrEkM6igC1joMFla3ie/ckhYIrdheqOc1DYXFZL2dVrzqnAZ/PEHyOfr3U++XxOUI0hN+3La8ttZdTUEM2CEamNin0080eabGhZWJ+7+r8UFKO+YyyLTELOmxEL+sfIQrEzQZ7zCuKC4/R3doy55HIMPZQzDTIRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766065389; c=relaxed/simple;
-	bh=3uKgmcbEavrud2dny+EGlUg4Q9Rhn8PqzITF6l8cU3k=;
+	s=arc-20240116; t=1766065710; c=relaxed/simple;
+	bh=ZnIegsC3Gyy9VFNbUZxdrDxtSveJ4mNx7L3shQp8w14=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=im295W/+8D1xDQzSOGpmOxSD04mpbbFkEn9bQnwECILPAW1qscWj6S8z2g/A7eYGkQnF1TZ9xPEl83VqXnKa92i9RUIhDwOZ+AW8OhyI3RldqeysyfbrhVzfIXKLiVTVJTHr8yrssFkABv2epDIMJhgukOWsq4ETyOm5YPtboWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LgFj7LTZ; arc=none smtp.client-ip=209.85.218.48
+	 Content-Type:MIME-Version; b=jK22gc7tHEdW1wRc6uGnRkRiOmbLbDBBexA4CJqXKOCgYSJMCjWCIINsfhWVlOSRCnRc7sCKHzLBVuWbrNTZ7hc4+Cfsmlzo/PQGfqXTCRT0BWxqamyETClIebB6Pyz3nqPx35sK833DHUkhNqqOZLnRT9R2ZVFOb9T1sCcavNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QvcZr9B/; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b7a72874af1so111755466b.3
-        for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 05:43:04 -0800 (PST)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4779cb0a33fso7067675e9.0
+        for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 05:48:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766065383; x=1766670183; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766065707; x=1766670507; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=9MNCy+3Op+1UssWJjdakMXoziKFg7kF95mrRH4k/yFY=;
-        b=LgFj7LTZUXcLDrrx262QS8knur89BbHgc6/loCfQ8lowTpvQ83wlNiEmv5+p2yXUjg
-         yOC3i2np51U8CHZI0L1M3iI2yn5fhDlU/FRJNCqZtrYSfkqJYXI4JEnrrE2mDHSjkrcA
-         U+GGcRP4785HO2iXoJWfcCtTIn0rIKE6fSyrKEcPOkf0ExJsS3MLKreYSTDYFXdcD4aR
-         B3F6DECam5IDEAK9otP5GufwAwplokeOrVbwrryjCCpPFNCPNj8k/A+cqD4VCzrqDrl7
-         anB5w0NUMG1Gb79aNHh/ZPHXp+vpjyCImUcaJhHtD1F7QiO8PYelHR3iiBbRb/tLVT2M
-         oZPg==
+        bh=+RKDiQXHaclpMfqjcaOyio0I5Z0xDgJAm3l0KAwmXfA=;
+        b=QvcZr9B/ycXV90oodOexmLIuPm8SWcsSW2T4RAsXs2ERsrHs5rRsPQzr1y4NXPCoLS
+         pOo99kTfMkbXHlROAN7Cy7AKrOvb0Y7YEqdkgOtTyLPcc6NMRC7Q+6Gv30D+rFBJwlTd
+         xzEMZNnoMHUOSe5PSTEZ/DFI3yRUJ+agTSRLOHiPPlmF4p5ICg0jr2zqtM7T7IZg1DH7
+         yOWztXG9akESOSMRI4+XRS6t6N3m1qhqIKc+x6rb1f74hR70qQNZ9u0Qd3R6MZkQX6BF
+         X3HhNWObG6PHHP50finHZFVpHYAkQewl8dT0wCkzqADHkqM5LTdmfENTpncuaP5qYDVI
+         YWTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766065383; x=1766670183;
+        d=1e100.net; s=20230601; t=1766065707; x=1766670507;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9MNCy+3Op+1UssWJjdakMXoziKFg7kF95mrRH4k/yFY=;
-        b=Oy9mVOMtzFHr1GeK+RPZFyeFtaIyZaZSQa/P9IFj0akO9sSywqJXL/9Yn8I7qNc6rB
-         XKHWlGgLDKPczyWTLhIaiym4LAEr3mRxJ96/O86apSIDL/5fP/AFbmmofSz95o908892
-         vIopwW/RyzdVAzIHPP+NoTbxlgtHh7ESkLIBlzfYDcqpmXxLLw7tiqaurkgmSq93lM8F
-         1E1TaPtkNgOvKtuxli2kmYRL01UypUGIZGGiRMDRWfSn88qlylouh5BQWvWKgJpu0Gs5
-         WYyVwBExSNL7lfwPfD5KzKNPQuq846tsgGe8IbWTEnhxG2GGDr52dsEpFrXlB+z2qTQK
-         Zdyw==
-X-Gm-Message-State: AOJu0Yz8lMeDXEqmMkF6cYD2dU2jUnd5bIEHy7B+s1BcSnwND8e5IVou
-	MISqLD2U58gzy+mGxXDzdgqNK1g3Iivm3HYQnwcw1ryhDi/yZwOlXvxluju4oA==
-X-Gm-Gg: AY/fxX7JteLzSqmEB7lXHyEGgqE+TIaxzFlAbMK58AVxZb5sSu7kQgImV7rmjMpEXI/
-	XwsgUkh5s2HgyikEsjB9dc7mcodCx6xP62WrBQtTsuf+zTXDSYiaiUhq7rYMjB83kHvvJmzV9jw
-	bMKgTXc8tdcBjCJC6pvEwrQGdypa/FmC7wk7dG6lE1uC4dcURkaEZrqhSY8pSSg4vcdgZifMSiG
-	/1p8fmIwxBjjOzq2WbqEUwVWinTPrtg2iQzCIA7+JFMo2/NGCoGj1Fqh9R2qqoetrt0t1MZBW0D
-	8WfPrAXqOIgHH3YQN8MF1SQk8eOi2RkeNeE883y2JA5pX2NjxKF87vXiqVySgjhC5uQmoc5sqeK
-	5d3itIiTnNAKJaOLoO6v4E4pzJxcgBQFanCmcaIT3VrEYV4nfc/PJXVYn+wfdZwV/W+VUxCExbv
-	LGfgHHbpflSuc=
-X-Google-Smtp-Source: AGHT+IEIvgQZ6GSNj21nMDBBGU3lT72Djs9e9SGoncRuFMosxpAYOsMQzte+sKYjy/n3c9LS8LDddA==
-X-Received: by 2002:a17:907:6d24:b0:b7a:1bde:1223 with SMTP id a640c23a62f3a-b7d23ad88e6mr2046349966b.64.1766065382942;
-        Thu, 18 Dec 2025 05:43:02 -0800 (PST)
+        bh=+RKDiQXHaclpMfqjcaOyio0I5Z0xDgJAm3l0KAwmXfA=;
+        b=AnHUCYpEfrgG7OQDKGl3rBO896lXyP3Szb0Ak1mLw48YlL9kgK01lzClYmDAY4P/dr
+         fxVuz4RrkBE5dii5Z2IpmRu++3CiQBToDDHF40McoUv/W0EJ0B0cALyeKa3JtH2q1eXr
+         wUV1q4WH+0MmnvF+kQAUtqgHIGFOUpKcWTiH529Woaen2oyd/Y8PVliDjaPnqBPQnOWh
+         hosy3bMtiixhkToQDD7K0/w4iS9+uocT+rprtDgJt/quQwB13vdEUcF8B8PmPrXTiDAW
+         9+OlwIztdAXgIVY7Tzir8MqioLRxWsNAtADLF0H3w+v8Wjqkd9nHtf8A/nRwoMuLpMJh
+         ctHg==
+X-Gm-Message-State: AOJu0Yziwf7FYiW2/OeOU5S3Rc8IxTeY26Hm7TV/mZpJs2PUeBo9JaB5
+	s3JjHsAmst2gHXdXVLKwMLO/8J+pzvr0cnBY8GRDlmcg8pQjV+8ZXjPm
+X-Gm-Gg: AY/fxX5c6T9RAWRbme+8NhEt2Qe+UGgitBzcZElvSeZk1Bkk/G5vjtyBBIF/fjKi1y9
+	GvdSBIzmdORwPGcwzccYatlQxmxrnGMIjOV0pWjnX/50UeVzpLkwRSiyMjUdUKyhZ4c2JJEembN
+	LnPPrLqJpi26mBPzpLjvvd3AR7vnVJbxWqhmpKaaG9/k6h8dH8vRQWiF0kaxVcjBWJ2UtTaV1AP
+	7l/yAjSJUUvOVwBY//RyU1crxPj2D7fqqG27hkqPNvKuif6MLQnkUSAYkQHwfDsrOecL32dPnzf
+	t0PqtMNR7nrQaegCIuLKS+X66ue87IJe22FQ5isviZacErk3Hz+zmq09mM1yrwbKZLFJSiofe72
+	O8ZwE5/3lBwVW1e9VVOq2qSJeNIQm3y9m/aG5x7dQLxgv9pj43xe5+tdzTfwEcaDN7zURPvuqF4
+	k1qu9BQo9J9U0=
+X-Google-Smtp-Source: AGHT+IHxI4NcgLibs10P8ERS3NVgrM2LIUaADcTQVD2Njbb3HrKZvZOwi8s+0QzT7KTYaYP7ns5RbQ==
+X-Received: by 2002:a05:6000:3111:b0:430:fcac:24ba with SMTP id ffacd0b85a97d-430fcac2aa2mr16838373f8f.36.1766065706795;
+        Thu, 18 Dec 2025 05:48:26 -0800 (PST)
 Received: from [10.5.0.2] ([45.94.208.108])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b802350db89sm233624166b.63.2025.12.18.05.43.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43244934cf5sm5193168f8f.1.2025.12.18.05.48.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 05:43:02 -0800 (PST)
-Message-ID: <b5e91011ce6628542da7bd25d7b143401b155406.camel@gmail.com>
-Subject: Re: [PATCH 1/2] iio: adc: ad9467: include two's complement in
- default mode
+        Thu, 18 Dec 2025 05:48:26 -0800 (PST)
+Message-ID: <88efd2784c9fce72e432a59a03472bb4441e975b.camel@gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: ad9467: make iio backend optional
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Tomas Melin <tomas.melin@vaisala.com>, Michael Hennerich	
  <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
  Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, David
  Lechner	 <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 18 Dec 2025 13:43:43 +0000
-In-Reply-To: <20251216-b4-ad9467-optional-backend-v1-1-83e61531ef4d@vaisala.com>
+Date: Thu, 18 Dec 2025 13:49:07 +0000
+In-Reply-To: <20251216-b4-ad9467-optional-backend-v1-2-83e61531ef4d@vaisala.com>
 References: 
 	<20251216-b4-ad9467-optional-backend-v1-0-83e61531ef4d@vaisala.com>
-	 <20251216-b4-ad9467-optional-backend-v1-1-83e61531ef4d@vaisala.com>
+	 <20251216-b4-ad9467-optional-backend-v1-2-83e61531ef4d@vaisala.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.2 
@@ -96,172 +95,48 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Tue, 2025-12-16 at 11:40 +0000, Tomas Melin wrote:
-> All supported drivers currently implicitly use two's complement mode.
-> Make this clear by declaring two's complement in the default
-> output mode. Calibration mode uses offset binary, so change the output
-> mode only when running the calibration or other test mode.
+> Not all users can or want to use the device with an iio-backend.
+> For these users, let the driver work in standalone mode, not coupled
+> to the backend or the services it provides.
 >=20
 > Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
 > ---
-
-Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-
-> =C2=A0drivers/iio/adc/ad9467.c | 33 +++++++++++++++++++++++++--------
-> =C2=A01 file changed, 25 insertions(+), 8 deletions(-)
+> =C2=A0drivers/iio/adc/ad9467.c | 37 +++++++++++++++++++++++++------------
+> =C2=A01 file changed, 25 insertions(+), 12 deletions(-)
 >=20
 > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> index 59c3fa3bcc9b0b8b36b78c3b54fd7977cae23496..60fc3361b2689a4c38287c613=
-ef93fe00338e5fa 100644
+> index 60fc3361b2689a4c38287c613ef93fe00338e5fa..37b8f88da6681d44f3fbbb6c8=
+c171ae7117b9090 100644
 > --- a/drivers/iio/adc/ad9467.c
 > +++ b/drivers/iio/adc/ad9467.c
-> @@ -72,6 +72,7 @@
-> =C2=A0#define AN877_ADC_OUTPUT_MODE_OFFSET_BINARY	0x0
-> =C2=A0#define AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT	0x1
-> =C2=A0#define AN877_ADC_OUTPUT_MODE_GRAY_CODE		0x2
-> +#define AN877_ADC_OUTPUT_MODE_MASK		GENMASK(1, 0)
-> =C2=A0
-> =C2=A0/* AN877_ADC_REG_OUTPUT_PHASE */
-> =C2=A0#define AN877_ADC_OUTPUT_EVEN_ODD_MODE_EN	0x20
-> @@ -85,7 +86,7 @@
-> =C2=A0 */
-> =C2=A0
-> =C2=A0#define CHIPID_AD9211			0x06
-> -#define AD9211_DEF_OUTPUT_MODE		0x00
-> +#define AD9211_DEF_OUTPUT_MODE		0x01
-> =C2=A0#define AD9211_REG_VREF_MASK		GENMASK(4, 0)
-> =C2=A0
-> =C2=A0/*
-> @@ -93,7 +94,7 @@
-> =C2=A0 */
-> =C2=A0
-> =C2=A0#define CHIPID_AD9265			0x64
-> -#define AD9265_DEF_OUTPUT_MODE		0x40
-> +#define AD9265_DEF_OUTPUT_MODE		0x41
-> =C2=A0#define AD9265_REG_VREF_MASK		0xC0
-> =C2=A0
-> =C2=A0/*
-> @@ -101,7 +102,7 @@
-> =C2=A0 */
-> =C2=A0
-> =C2=A0#define CHIPID_AD9434			0x6A
-> -#define AD9434_DEF_OUTPUT_MODE		0x00
-> +#define AD9434_DEF_OUTPUT_MODE		0x01
-> =C2=A0#define AD9434_REG_VREF_MASK		0xC0
-> =C2=A0
-> =C2=A0/*
-> @@ -109,7 +110,7 @@
-> =C2=A0 */
-> =C2=A0
-> =C2=A0#define CHIPID_AD9467			0x50
-> -#define AD9467_DEF_OUTPUT_MODE		0x08
-> +#define AD9467_DEF_OUTPUT_MODE		0x09
-> =C2=A0#define AD9467_REG_VREF_MASK		0x0F
-> =C2=A0
-> =C2=A0/*
-> @@ -117,6 +118,7 @@
-> =C2=A0 */
-> =C2=A0
-> =C2=A0#define CHIPID_AD9643			0x82
-> +#define AD9643_DEF_OUTPUT_MODE		0x01
-> =C2=A0#define AD9643_REG_VREF_MASK		0x1F
-> =C2=A0
-> =C2=A0/*
-> @@ -124,6 +126,7 @@
-> =C2=A0 */
-> =C2=A0
-> =C2=A0#define CHIPID_AD9652=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0xC1
-> +#define AD9652_DEF_OUTPUT_MODE		0x01
-> =C2=A0#define AD9652_REG_VREF_MASK=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 0xC0
-> =C2=A0
-> =C2=A0/*
-> @@ -131,6 +134,7 @@
-> =C2=A0 */
-> =C2=A0
-> =C2=A0#define CHIPID_AD9649			0x6F
-> +#define AD9649_DEF_OUTPUT_MODE		0x01
-> =C2=A0#define AD9649_TEST_POINTS		8
-> =C2=A0
-> =C2=A0#define AD9647_MAX_TEST_POINTS		32
-> @@ -461,6 +465,7 @@ static const struct ad9467_chip_info ad9643_chip_tbl =
-=3D {
-> =C2=A0	.test_mask =3D BIT(AN877_ADC_TESTMODE_RAMP) |
-> =C2=A0		GENMASK(AN877_ADC_TESTMODE_MIXED_BIT_FREQUENCY, AN877_ADC_TESTMOD=
-E_OFF),
-> =C2=A0	.test_mask_len =3D AN877_ADC_TESTMODE_RAMP + 1,
-> +	.default_output_mode =3D AD9643_DEF_OUTPUT_MODE,
-> =C2=A0	.vref_mask =3D AD9643_REG_VREF_MASK,
-> =C2=A0	.has_dco =3D true,
-> =C2=A0	.has_dco_invert =3D true,
-> @@ -479,6 +484,7 @@ static const struct ad9467_chip_info ad9649_chip_tbl =
-=3D {
-> =C2=A0	.test_mask =3D GENMASK(AN877_ADC_TESTMODE_MIXED_BIT_FREQUENCY,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0 AN877_ADC_TESTMODE_OFF),
-> =C2=A0	.test_mask_len =3D AN877_ADC_TESTMODE_MIXED_BIT_FREQUENCY + 1,
-> +	.default_output_mode =3D AD9649_DEF_OUTPUT_MODE,
-> =C2=A0	.has_dco =3D true,
-> =C2=A0	.has_dco_invert =3D true,
-> =C2=A0	.dco_en =3D AN877_ADC_DCO_DELAY_ENABLE,
-> @@ -496,6 +502,7 @@ static const struct ad9467_chip_info ad9652_chip_tbl =
-=3D {
-> =C2=A0	.test_mask =3D GENMASK(AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0 AN877_ADC_TESTMODE_OFF),
-> =C2=A0	.test_mask_len =3D AN877_ADC_TESTMODE_ONE_ZERO_TOGGLE + 1,
-> +	.default_output_mode =3D AD9652_DEF_OUTPUT_MODE,
-> =C2=A0	.vref_mask =3D AD9652_REG_VREF_MASK,
-> =C2=A0	.has_dco =3D true,
-> =C2=A0};
-> @@ -671,10 +678,14 @@ static int ad9467_backend_testmode_off(struct ad946=
-7_state *st,
-> =C2=A0
-> =C2=A0static int ad9647_calibrate_prepare(struct ad9467_state *st)
-> =C2=A0{
-> +	unsigned int cmode;
+> @@ -1000,6 +1000,9 @@ static int ad9467_update_scan_mode(struct iio_dev *=
+indio_dev,
 > =C2=A0	unsigned int c;
 > =C2=A0	int ret;
 > =C2=A0
-> -	ret =3D ad9467_outputmode_set(st, st->info->default_output_mode);
-> +	cmode =3D (st->info->default_output_mode & ~AN877_ADC_OUTPUT_MODE_MASK)=
- |
-> +		FIELD_PREP(AN877_ADC_OUTPUT_MODE_MASK,
-> +			=C2=A0=C2=A0 AN877_ADC_OUTPUT_MODE_OFFSET_BINARY);
-> +	ret =3D ad9467_outputmode_set(st, cmode);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> @@ -778,7 +789,7 @@ static int ad9647_calibrate_stop(struct ad9467_state =
-*st)
-> =C2=A0			return ret;
-> =C2=A0	}
-> =C2=A0
-> -	mode =3D st->info->default_output_mode | AN877_ADC_OUTPUT_MODE_TWOS_COM=
-PLEMENT;
-> +	mode =3D st->info->default_output_mode;
-> =C2=A0	return ad9467_outputmode_set(st, mode);
-> =C2=A0}
-> =C2=A0
-> @@ -1174,12 +1185,18 @@ static ssize_t ad9467_chan_test_mode_write(struct=
- file *file,
-> =C2=A0		if (ret)
-> =C2=A0			return ret;
-> =C2=A0
-> -		out_mode =3D st->info->default_output_mode | AN877_ADC_OUTPUT_MODE_TWO=
-S_COMPLEMENT;
-> +		out_mode =3D st->info->default_output_mode;
-> =C2=A0		ret =3D ad9467_outputmode_set(st, out_mode);
-> =C2=A0		if (ret)
-> =C2=A0			return ret;
-> =C2=A0	} else {
-> -		ret =3D ad9467_outputmode_set(st, st->info->default_output_mode);
-> +		unsigned int cmode;
+> +	if (!st->back)
+> +		return -EOPNOTSUPP;
 > +
-> +		cmode =3D (st->info->default_output_mode &
-> +			~AN877_ADC_OUTPUT_MODE_MASK) |
-> +			FIELD_PREP(AN877_ADC_OUTPUT_MODE_MASK,
-> +				=C2=A0=C2=A0 AN877_ADC_OUTPUT_MODE_OFFSET_BINARY);
-> +		ret =3D ad9467_outputmode_set(st, cmode);
-> =C2=A0		if (ret)
-> =C2=A0			return ret;
-> =C2=A0
+
+Let's not add the buffering interface if we can't control it.
+Having it just to return error does not make sense to me. This means yet an=
+other info:
+
+https://elixir.bootlin.com/linux/v6.18.1/source/drivers/iio/adc/ad9467.c#L9=
+16
+
+Also the channel definition should not have the scan index. But, given that=
+ the IIO device
+won't have any buffer I think there's no way to reach ad9467_update_scan_mo=
+de() (unless I'm
+missing something).
+
+Still, while I understand that updating the channels to not include the sca=
+n_index is very
+cumbersome, having a new iio_info with no .update_scan_mode() is trivial an=
+d make things
+more clear and explicit.
+
+- Nuno S=C3=A1
+
 

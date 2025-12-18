@@ -1,120 +1,132 @@
-Return-Path: <linux-iio+bounces-27158-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27159-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8EE8CCB7D1
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 11:51:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E63CCB6B7
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 11:37:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E13830AEC82
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 10:46:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 232BF303D9F6
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 10:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670CE33769A;
-	Thu, 18 Dec 2025 10:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3EC331231;
+	Thu, 18 Dec 2025 10:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Gljlr9qD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZw9W97h"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A992337686
-	for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 10:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8AD30F947;
+	Thu, 18 Dec 2025 10:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766052635; cv=none; b=ThEc32ZWioKY8Gdj75irCeBUvB+W7hEceuwe+v3LpSXEdpxildsUP2qGt4X732OZ2iMzz4YR32LUHcrOeI/oFEvjJx1HdnBc7W/dSd4qeijHqMnkavMrX4SYNbmX1yquYLXrvG+NhQhDljZkNVW3d0pxQ0nYKzwQJzP3zg7YEuE=
+	t=1766053873; cv=none; b=QfLN9pTnxRTbX29pnA2kFVgBXvqXohBnRjtdupNeYcU+bVVPD2p8mFmvcNJmbH4FDwbsn1KfqqVEGA4umEjh/oPkh0QaR9o54r15+DC3FubrbGALPEwLA7/hslM+DbgAGiWEnXOeFi8TE1iJp95xxIM+y5AnNLft9/nODv5H+IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766052635; c=relaxed/simple;
-	bh=d50Px/qfr+PrzgR0I8JX0AmIlDh1UVS8W8GyqkC6p9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GScsOGCM8qVanw9KuqPRoEokH4Ki4qo0TsleKu/LkFAib5+ZRPdYUjuCENEAGug70kUhjxMQ7/8uzCve9oasB8Cw6/ezdTqFgpRSQIK+2j7HdaxrNrVQ3+6AmAEC2cA/9Fuz1NwCjrlJlhmt+o5ppqyOyTVTsmoi7+kEh/jcDyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Gljlr9qD; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 853E64E41C78;
-	Thu, 18 Dec 2025 10:10:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4FAC9606B6;
-	Thu, 18 Dec 2025 10:10:29 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3913E102F0B35;
-	Thu, 18 Dec 2025 11:10:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1766052628; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=aO3u3ejVDuiMShV21LEf8qEp3E0KkHu3ersORiBehYo=;
-	b=Gljlr9qDSS1/Gj4pw5zXrFzy1YL53sD3GN1zjdWZjbGON7nln+uq/9x/2PpstZcxSrQuR1
-	3dnOrS0pBZaf3eg8tgbsv/begC9SAbs4lplOOY9uOAqsLP7+9d1HsFe6771y7BLPwJFZkn
-	a/4OMdYCRBemi+S6g0tINiOJutdcrtBGUWJy33bBZASENhXnWvaqkrriXNjfzmHdvlzxs5
-	yCckCm6VciJKjrIBhsHmABBIJ+84V0bUNbt1NKnH1J5J/ra1g9J5oWDyCFJUp47xm1OeNs
-	v+uzDWcDm6jwem6XE0h2vycLVqofp7iahE05saicu4FG3IWB98rWtJ7e77xD1A==
-Date: Thu, 18 Dec 2025 11:10:21 +0100
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Miquel Raynal <miquel.raynal@bootlin.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, linux@roeck-us.net,
-	Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>
-Subject: Re: [PATCH v11 6/6] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <202512181010210ddb2a03@mail.local>
-References: <20251106-i3c_ddr-v11-0-33a6a66ed095@nxp.com>
- <20251106-i3c_ddr-v11-6-33a6a66ed095@nxp.com>
- <20251109135728.223d3857@jic23-huawei>
+	s=arc-20240116; t=1766053873; c=relaxed/simple;
+	bh=6PQoCtg5eP3Kd27EWqZAvTdnh8jlXwyPej5/4mwGK10=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OO6dxtWnmooSf/ilZFoE+D8yPPCu8Ubk/kt1rPKu9mUQW4oWyOCpDuws22siN54s3uLqp8h0STTYb/RbyBKKdVtDBpDW3HiHjIFJDkqdCj23cxEB9rpLIm8y3TqX21vAj/AJkUbxPAh273W5hC0IVxaDf/7vPMzUwi9t5bS1GmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZw9W97h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 98DD3C4CEFB;
+	Thu, 18 Dec 2025 10:31:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766053872;
+	bh=6PQoCtg5eP3Kd27EWqZAvTdnh8jlXwyPej5/4mwGK10=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=LZw9W97hj0V5+0wuz4GDwsTJJcVh2/DWcM756Kss8RarwsiTWET2HBkGg//2TYhsX
+	 EgsZj1niar3OHCkGhjstYFzBm9GKiJ6fmzthWJah3xgfY2JAZUBnnWm/sSI7j3QQCO
+	 fGt/ZsXujIL17YYalHvzzHry3+zMexPjMbbW+cp9RJlqORkRPvz7C2r1pdCaeHdVgo
+	 ZJKu2z5gv6Oz39YtTgzQYtuQiia5QEZHvBIMsamgNAbgbA4aVizf4L7zCc73ixwu4n
+	 3nMSODRy/yDnOX8DKacGeNBiz7018BvBgI5RSG+Nkn5Z/Tdqw/sHFO8UK3tkrXLbRQ
+	 HoFLvw6dk5nXw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 851E6D6ACD5;
+	Thu, 18 Dec 2025 10:31:12 +0000 (UTC)
+From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Date: Thu, 18 Dec 2025 11:30:59 +0100
+Subject: [PATCH] iio: imu: inv_icm45600: fix temperature offset reporting
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251109135728.223d3857@jic23-huawei>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20251218-inv-icm45600-fix-temperature-offset-reporting-v1-1-4872f381cbc2@tdk.com>
+X-B4-Tracking: v=1; b=H4sIAOLXQ2kC/x2NMQrDMAwAvxI0VyCbpjT9SukgYjnVENvIbiiE/
+ D0m4w13t0MVU6nwGnYw2bRqTh3cbYD5y2kR1NAZPPnRefdETRvqvN7HBxFG/WOTtYhx+5lgjrF
+ KQ5OSrWla0E3ENHGIgQP0ZjHpzvV7f47jBCY3kld/AAAA
+X-Change-ID: 20251218-inv-icm45600-fix-temperature-offset-reporting-190a09adfdad
+To: Remi Buisson <remi.buisson@tdk.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766053871; l=1672;
+ i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
+ bh=xHzUisfu0BLrHdPVA8yrhePvVSwj6H9ilNUk2ycuOgo=;
+ b=cn6pEMLtqaKZPYTByBvhgKorl9JZG4k5oW3iwONW+ePPrOxspibxVVJIMVkTAawnI4r0KenX1
+ b6F7sJdob0iAYzA6SYBW5r3SjjxlU31UjA9+UFEhkCiNYNyFNuN6rvb
+X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
+ pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
+X-Endpoint-Received: by B4 Relay for
+ jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
+X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Reply-To: jean-baptiste.maneyrol@tdk.com
 
-On 09/11/2025 13:57:28+0000, Jonathan Cameron wrote:
-> On Thu, 06 Nov 2025 12:36:05 -0500
-> Frank Li <Frank.Li@nxp.com> wrote:
-> 
-> > Add mmc5633 sensor basic support.
-> > - Support read 20 bits X/Y/Z magnetic.
-> > - Support I3C HDR mode to send start measurememt command.
-> > - Support I3C HDR mode to read all sensors data by one command.
-> > 
-> > Co-developed-by: Carlos Song <carlos.song@nxp.com>
-> > Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> > Co-developed-by: Adrian Fluturel <fluturel.adrian@gmail.com>
-> > Signed-off-by: Adrian Fluturel <fluturel.adrian@gmail.com>
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > change in v11
-> > - add andy shevchenak's reviewed by tag
-> > - use unsigned int for regmap
-> > - compact mmc5633_read_avail arg list to few lines
-> > - move check condition to one line for read_poll_timeout()
-> > - leave i3c_xfer as size 1 array to align existed code style in kernel
-> > tree, git grep -r i3c_priv_xfer drivers/, leave to jonathan to do decide.
-> I don't feel strongly either way, so fine with just having it as
-> you have it here.
-> 
-> I'm assuming there will either be an immutable branch that I can
-> pick up to get the i3c changes, or that we'll split this across cycles
-> (so i3c bit goes in this cycle, driver next).
-> 
-> So I'll keep an eye open for how that part merges if everyone is happy
-> with it.  Feel free to poke me if I look like I missed it.
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-I guess you have seen the resend by now but I took the i3c patches quite
-late in the previous cycle so I didn't bother creating an immutable
-branch. Feel free to review and apply v12 when you have time.
+Correct temperature computation is (raw + offset) * scale and not
+apply scale and offset afterward.
+Fix temperature offset reporting to the correct value and update
+commentaries for the new computation.
 
+Fixes: 27e072bc34d1 ("iio: imu: inv_icm45600: add IMU IIO gyroscope device")
+
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/iio/imu/inv_icm45600/inv_icm45600_core.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+index ab1cb7b9dba435a3280e50ab77cd16e903c7816c..25bd9757a594d0180d7f53b49f959a49a50c64a9 100644
+--- a/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
++++ b/drivers/iio/imu/inv_icm45600/inv_icm45600_core.c
+@@ -960,16 +960,17 @@ int inv_icm45600_temp_read_raw(struct iio_dev *indio_dev,
+ 		return IIO_VAL_INT;
+ 	/*
+ 	 * T°C = (temp / 128) + 25
+-	 * Tm°C = 1000 * ((temp * 100 / 12800) + 25)
+-	 * scale: 100000 / 13248 = 7.8125
+-	 * offset: 25000
++	 * Tm°C = ((temp + 25 * 128) / 128)) * 1000
++	 * Tm°C = (temp + 3200) * (1000 / 128)
++	 * scale: 1000 / 128 = 7.8125
++	 * offset: 3200
+ 	 */
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 7;
+ 		*val2 = 812500;
+ 		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_OFFSET:
+-		*val = 25000;
++		*val = 3200;
+ 		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
+
+---
+base-commit: a7b10f0963c651a6406d958a5f64b9c5594f84da
+change-id: 20251218-inv-icm45600-fix-temperature-offset-reporting-190a09adfdad
+
+Best regards,
 -- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+
+
 

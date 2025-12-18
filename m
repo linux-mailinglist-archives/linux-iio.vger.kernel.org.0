@@ -1,56 +1,55 @@
-Return-Path: <linux-iio+bounces-27168-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27169-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC51CCB89B
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 12:06:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD95CCB8BF
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 12:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2AC0E3048E41
+	by sea.lore.kernel.org (Postfix) with ESMTP id B512D30A4751
 	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 11:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AE1316900;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57169315D58;
 	Thu, 18 Dec 2025 11:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="STHmHVpl"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="G7O8DHya"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B32314B8C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BD1314B9A;
 	Thu, 18 Dec 2025 11:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766055989; cv=none; b=D/Xsr+uxsXp9RTY8wOI6opkfXk6284SPBncXL1dKPp8DF+gGUDdfN97N8MCjniAB3uovaiJmVPotAuXtXkSHHIqYmBJfYMXxJ1kiuPaWrS+CQHkIOiAvcPz5VowCyK7e7mGXTLLbqDLoRrs2/9A8EQIr9QIf7GuBsY4liXZnee0=
+	t=1766055990; cv=none; b=RJscZ0r7oN8oR8/rtJjAtjJQXNEWHQqjJw18S5qbOxdnoI236xHet8tuBtTqydWRIxgOfZoIGuQeUq4kl4PgSFWJPowvGuDvOa2k7P/ZBQpgnxvB/tjxMoBkVZd0gjL1wnvcd9aI9z+T/V22gO1e0ISGshnjbw4P9WmaTkzu4Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766055989; c=relaxed/simple;
-	bh=eYI9DcCaMYxKhzj6DDAt0VqNKVXU5dxJET6/UXZKNZo=;
+	s=arc-20240116; t=1766055990; c=relaxed/simple;
+	bh=GCkK0VAT6YURJVUHsAV2cRDK2Ylk9MKA9vKPrxg8PHA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pGWFZ08/84x/uLjTmMB/qmz7u0QENbYj9C16FpWG+EOxIzzstcvwbW8x5QfIoIe68IAUomXhfhxa0NyHnNTWGGS4JCzY0pfBylcN+BMwZYsOZJ36xPhBtlJJ0c4dTAvkp79L1McawfiMRBdan7mKMBeMMGZFeUug8jj1tc1C/oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=STHmHVpl; arc=none smtp.client-ip=172.105.74.154
+	 In-Reply-To:To:Cc; b=alNWArFY+vHMrcCNIZAXGUMxNWI14DRP7joFHU4BIKZR2qNHWLvDR88136lc/Cf4iSlBfOFTIs0NJ3ZreOxL6FKseZbsPbgG4UiedomAJtEtzVhf4AUrKHnd5q406HQhSK7tDHSrzQikDE0yzMve01R4vg/W3DfTiSR/KYkz7tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=G7O8DHya; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:3804:ac00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id AB1E7160216;
-	Thu, 18 Dec 2025 13:06:21 +0200 (EET)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 3F7DA160217;
+	Thu, 18 Dec 2025 13:06:22 +0200 (EET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
 	s=mail; t=1766055982;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0UyQA0DniInIHUpPsEpLVH2XA8YqZtFjrZ8MhD1diSk=;
-	b=STHmHVplAzFJuztjJtHgj95p38GdOfo/O8gmw2E8ZZAObJhcKZBVDJ42eHbX9CV9m9IN2u
-	PjvedyGmPAozZlQoRqwOcHZZ2eM7Ge5MCXkV99BsC6KBuMS0SXIxf7VaVwhwKz4ZGDKzLv
-	955c/KJCtzTVXNKYDwfnrYG2UtPw/O10UuUvwrjq9YqVkeMPJgOZ0kXCeJJ5Yvzm4BxGbj
-	17/NcCaZuDwn46w7vUUvPLpJEzRd6jIP8NttUGiGWv8C+BUCRgZ5ofibNZqfoBkDxnmBff
-	Gqv3LU69QTyDpv43izaDlENfCZxB/0ttHiamlzsmTlCvbJxj/5olAz7XpECEQg==
+	bh=5I6rVkaUyMlNAVNjMbpzYJ5yxuGb41VpMPmiTDGi4EA=;
+	b=G7O8DHya0Dv/v84ctsxX2qzV6HaI6ozrtHo5i1y2/xSoRuUmkd2De5q8omGAP1MgN58hpm
+	eZJ4O4Kf5OPz6xPkkSXhUJdjELfHaHh2G9s3KW3oWzLAMBYByHDdb+U6qPipj6vY+gsGWf
+	54d8cv0cKA+VK/qlDoJ+y3ZJHknC3s7viVnrgVR7o23CeHUcJdZuBnZIg5dpEC9yeiRuJT
+	7zaMq6po0gNAyHVuR07vdcAQVO+dCslEvT5sox7qJc2GNRRdIzSGY+YewUWXjwnFo50tS1
+	Xo3M3vGtNWWO4NH+iE58kSkU56aBCnY31ywi60/qZ9TemYPHed7S3xq5O+uybg==
 From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Thu, 18 Dec 2025 13:05:55 +0200
-Subject: [PATCH 13/14] iio: pressure: mprls0025pa: cleanup includes and
- forward declarations
+Date: Thu, 18 Dec 2025 13:05:56 +0200
+Subject: [PATCH 14/14] iio: pressure: mprls0025pa: add copyright line
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -59,7 +58,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251218-mprls_cleanup-v1-13-b36a170f1a5c@subdimension.ro>
+Message-Id: <20251218-mprls_cleanup-v1-14-b36a170f1a5c@subdimension.ro>
 References: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
 In-Reply-To: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -69,86 +68,48 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1636;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=884;
  i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=eYI9DcCaMYxKhzj6DDAt0VqNKVXU5dxJET6/UXZKNZo=;
+ bh=GCkK0VAT6YURJVUHsAV2cRDK2Ylk9MKA9vKPrxg8PHA=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQmRDc25wM
- k02U1dNQnl5WmlBR2xENENPVHppLzJJK3k5TWRabnJ5WFE2alhNCjl3c3NEd1gxN0JVMkg3UnJz
- WDRTMm9rQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFErQWp
- BQW9KRUhRcko2ZGpPa2xqQ3IwUC8wQzQyVUJDQTJWb3RDMm42Ly92OFljMFFTWW5zakFCS09ldw
- pnSVA2K2dwRFFRNEJMWTBoelFMQkVFRmRyK3BBQlJDNjYzWVFwa3EwL3AydlorQmg4Y01xU1M3R
- jFiYk01VnJSClNRdDkxZjZjQkZkY293SVdvaW9ZSkZNR1prMy93UGdkZEE3eHhzRDNQN240RGxL
- bVlnSGNlWnlucnMzZFhwN2cKM1htbi9mdVV0MVdKamJydlRlaWp1d0dZU1ZzQ21pWlorNXFQK2t
- XaUYwTktyYWZ2N3FCbWJaTk00ZmxtTmluRgpUcEpkS25GcTJHd0lrSmRKd1Q1U1BMK1U4OXFYM0
- krb2JLd2pCcWJSbHpIbkRlV3kyUUZndFFvY3pkUGpsNTFTCjNLQ3BueGtvaDZ2YXlQeGVXeTMyV
- kcrUEg0MG5nMW1KZnZ1MStDdGtEaElsY1BHNFRaSVV4bzFuM2FIWXZySTMKbmplL3FpWjhLRkF2
- RnZYblVhcDNPRHNzTzBNZkhBTlJMTTFuRm1UZ2pRYTl1QlErazBkVmIzcHRPbVJ2S0JUdgpGUWs
- 2VGNQdGdtNkgxYkZyRUQyUWkzV1I1QVFqay90dGZjVllRNnNQakI5WU5vcnU4dFFTUlFGVzFLMU
- NadXRrCjJJVG1jVTc0NjRVQWZYTmhVM1k2ZnFaSms5bTVwSEpqRkN4VmFNVTVOeG94eWFTb2xxU
- zdhY1Q2Y25LbCtyeXcKZCtuc0x2V3NWcmNlbmFMUnRtNW8yVWc2ZmZoT0lmZGV5ZFV1UUpaT2xN
- WHVPNmFGUHU4UXBmaXJQeTIxbEM0dwpkRkt2YVJYSXBKTE53ZkVyZWVxSDYzRTBvRlY0SFQyci8
- rdzdEYnM4UzhJdHVtYXg3a1QxUUFQZ3p3Skx4YWNFCk1JNWp5RS9BaVl3a3N3PT0KPWhNbnAKLS
+ k02U1dNQnl5WmlBR2xENENWM2NKb2Vzak42NlVvTWoxbWRaZ2tUCmJ5eDNJNjFHZWp2TDZaWDFz
+ SDJ3RG9rQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFErQWx
+ BQW9KRUhRcko2ZGpPa2xqN0xBUC9qSlRyZzQram5qR2Q3UlRLZ2YzLyt4cStTeVp3aG1PSDJDbg
+ ppOW5qa1JHYStsVzVmMmRnOERwV3FBQnBaS0greVNQSGpPQVlscTVsYzlTY3IzT1dYNGQrb0Ire
+ lp4TmVGdVF2CjI4RmRxVkJRZ3NseS91OTJLNy9QMWVsajU1anZ4Q2UxWm93cDlka1VrOGVkS3ZT
+ ekhkVmdxSGN1NlQ0cGM4UjcKam5nOVIxWkpISiszMzNibjJtelc3d29JVDM5OVdLb0NiUXlxRkV
+ TenFJT1B4cmo3WU1LWFF3OUNPeUVoNFpVTwpmZVNPUmxrYXVFM1ZXK3B1RXB6SXdRK2ZZRHMwZm
+ loaDRUbDIrUnJzMHRWdVZwY1MxbDVaOXc1cjF0SVlCVXVtCjJpZWhWNFRwdm9PNDFwU3JaaGQ0T
+ 0JmT3A4b0tzNm04VDlienRxcUpHZFBwQzk2akU4YmZYNnRDRVptazI3ZXoKWUZBVGI0YUhaUENY
+ OXRTQ3ZRV0ZHMXRCQ01qRTMzY3plaWtyRlc0UXI0ZnBuQ2JWZDdKTDZiTVg5dXd3K0xVdwpxNGl
+ SQ3dHNHNNemEvd1Jma0ZmL0tHaDQxQThUb3RKRElqWjc0MmFQNVh3QmN1d2RKdXRFU3FHbGRvem
+ FmYUZXCk5ya29ETk1HN242c25BRmhmdGJuUFBHVGxhV1FKT2poa0h5VUd6a2YxWDZHVFZqZTR1N
+ EczTUU5cUJwRWZmK2EKbDVQN2JTeUpVNWhQd0owKzRQQWE4VGxSRW1hZEdyNjF3NHU2M0ZtZ2VX
+ UWtTSlRuaTRoSUI3MExaeGJnUVJZcAoxZlZhakpEcm9MdmhBMzRRVDRNSjRlZnZsYWh6SFZScU0
+ 2WkpBYXg4OW9YbjZCbXpIQkdtU3RaekY5blFBQk9NCldNU2tMRE40Vk5rblhRPT0KPWMyT0IKLS
  0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
 X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
  fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
-Remove unused headers and add required headers as needed.
+Add copyright line to the core driver.
 
 Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 ---
- drivers/iio/pressure/mprls0025pa.c | 4 ++++
- drivers/iio/pressure/mprls0025pa.h | 6 ------
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ drivers/iio/pressure/mprls0025pa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-index fc04988b9437..71728f9fc498 100644
+index 71728f9fc498..d71b36fcc982 100644
 --- a/drivers/iio/pressure/mprls0025pa.c
 +++ b/drivers/iio/pressure/mprls0025pa.c
-@@ -12,9 +12,12 @@
- #include <linux/array_size.h>
- #include <linux/bitfield.h>
- #include <linux/bits.h>
-+#include <linux/completion.h>
- #include <linux/delay.h>
- #include <linux/errno.h>
-+#include <linux/export.h>
- #include <linux/interrupt.h>
-+#include <linux/jiffies.h>
- #include <linux/math64.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-@@ -26,6 +29,7 @@
- #include <linux/gpio/consumer.h>
- 
- #include <linux/iio/buffer.h>
-+#include <linux/iio/iio.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
- 
-diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
-index 2bdffe1e0eb1..ccd252f64351 100644
---- a/drivers/iio/pressure/mprls0025pa.h
-+++ b/drivers/iio/pressure/mprls0025pa.h
-@@ -12,9 +12,6 @@
- #define _MPRLS0025PA_H
- 
- #include <linux/completion.h>
--#include <linux/delay.h>
--#include <linux/device.h>
--#include <linux/stddef.h>
- #include <linux/types.h>
- 
- #include <linux/iio/iio.h>
-@@ -23,9 +20,6 @@
- 
- struct device;
- 
--struct iio_chan_spec;
--struct iio_dev;
--
- struct mpr_data;
- struct mpr_ops;
- 
+@@ -3,6 +3,7 @@
+  * MPRLS0025PA - Honeywell MicroPressure pressure sensor series driver
+  *
+  * Copyright (c) Andreas Klinger <ak@it-klinger.de>
++ * Copyright (c) 2023-2025 Petre Rodan <petre.rodan@subdimension.ro>
+  *
+  * Data sheet:
+  *  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/pressure-sensors/board-mount-pressure-sensors/micropressure-mpr-series/documents/sps-siot-mpr-series-datasheet-32332628-ciid-172626.pdf
 
 -- 
 2.51.2

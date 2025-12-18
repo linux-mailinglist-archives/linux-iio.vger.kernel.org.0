@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-27184-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27185-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42681CCC723
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 16:24:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D78ECCC91E
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 16:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D40C30C5DD2
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 15:17:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 09E203079AB2
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 15:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C7B34CFD9;
-	Thu, 18 Dec 2025 15:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B81934B1B4;
+	Thu, 18 Dec 2025 15:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h0lWPtZY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gn0lB8oq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045EF34D4C4
-	for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 15:16:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F90345753
+	for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 15:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766070999; cv=none; b=GxMwzK1o/XLDCdtFZaJbgki8RFIw6WfCFtM4g3k0ggBZezQ5OOeUpmO4BYCoQX5drSmEVpM8CxrWi7gKxKO3R4uobn+yi+v1zW9E8jRzR8z/ranRREG3FPsniaIvtT1jNJPE0qipvLeMU6yU/LQ/h1co2k4biDRow9BgZ39Mhkw=
+	t=1766072803; cv=none; b=nTATKCr/HQa3RlHbYHUjMa/YVHTzdFHewPea0mdjCbgqnQEcCHa6xOLGSnH3MQj0+ls0z/fgvFd6WFbfhZiAzFnYgg6nbbYwcDIaHxCen3PYvulkRrXHTO2lxSt+FyJ4MeRvFh6n+MulP3P4b2CS5W7P+4IRzw0viNpbkaXg4Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766070999; c=relaxed/simple;
-	bh=ffSKSXXWSRpI3xx9H/itO7rvifidsrztH8orFHjfVHQ=;
+	s=arc-20240116; t=1766072803; c=relaxed/simple;
+	bh=ABS6WeCxCL8XmcbmIplxXpFY8pwjfQdhazzFikeqcR8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C3DGMrlCmTgQE4ONavv8+Aorhksyz0CiPwRLmmUEnyOd01LRLOKzoqeD10PRIriTs1Bs+AuNVc023jHdXSgISBzpkfHyL7Zwou+ObUzn9DshZAbDbMoYNKWSYqEQpQuMBaMYTUp8YTyc79x/rbzir6RqQ4LHGZJrdlgom3CX7u8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h0lWPtZY; arc=none smtp.client-ip=209.85.214.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=e2DsNaSIHKuVlrt++c20ZxzOdAWxw40xdDKj4rySBJoxGPJTxsFec69qjtGh/R9Edeix3Pb5GRwqy69gyKU24Byi82oWOGA9x5koEQ11fltKKLKA3dGS96AJ6FZ5I1c+1uVFmXoKtGR3YZLH6xZAw/oiHdnYjPe//dQ2cELTobY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gn0lB8oq; arc=none smtp.client-ip=74.125.82.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a0833b5aeeso9990795ad.1
-        for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 07:16:36 -0800 (PST)
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-11b6bc976d6so2821619c88.0
+        for <linux-iio@vger.kernel.org>; Thu, 18 Dec 2025 07:46:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766070995; x=1766675795; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766072798; x=1766677598; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=V4YgC8/woMPQ+Xj9m7PS+PcfWejcCQtxAUQpAaE4ZbE=;
-        b=h0lWPtZYVADkGTZc8MIJ6KbOuFbtWr/CEXOluJHEz2yZ1bAjk9sGW779lPFLgXI1ng
-         w6g53qq5sVXBeMTAe9FeTcWlLkX4usFrwpYYQVZJHb/OvY4wc0BMaXtKd+lA16mcX/sT
-         y+9bs6Qv0uyw0Zkw6/0xrNTBG3NQbndXsBmbDQWVHIxtF/QRrcGix0EQBrGysq3s0EDG
-         LRE9j3HkILsaev3RfwXtZf1bWR3yk3PPfML3rKhHwmwiFIIvLq64mFrlxjzXlX74eJFK
-         1PQfelxdp0P0h+G0nTn7+lYIQHlQIKG4RK/K8pA6uEiyWSBHfOFEWkA0CUUlOMmNe5uw
-         mMmg==
+        bh=2pY3Dj22eRFI6euLJuJo7wjRAoKSeAvX/5BXg+N1IlA=;
+        b=gn0lB8oq2Bhsukz92UZPA6ndUMSrUwbnu3gksfhs158XgYuEIr27n/n6dWQr9VZkPC
+         4MLlFh6s9pBf94OniVBsTwtSvX7yeLjFIOsDnxb5xOluZjTNFmrc/j85QOk2O1GRv9dp
+         9fQQQzky7dh83TdTEpsje1tZmEGgTmREzgdSk+8dTIcU3DywAZdX9uJ5IjZyxPb5R1uB
+         c278ZA/Pga4dtWaXiqebjP5Mpl4+Tjp6qpzqBqtSoLBKWu3ZUfKUtS+mW4LlIH/3Yong
+         kh3n17nzX8+TWaLi0+k6FUNkx9khRH/KEgH4pjQdhJ6exVHn6IADuEyLdEY4ifgumy9A
+         rBfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766070995; x=1766675795;
+        d=1e100.net; s=20230601; t=1766072798; x=1766677598;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=V4YgC8/woMPQ+Xj9m7PS+PcfWejcCQtxAUQpAaE4ZbE=;
-        b=mmOZG8P4oPHo8cRNHMXg+jyRTwTbpmpbE2Xizei4UjhrZRTuwzJ3chnkIyRgu7HIHr
-         7FdgV8/P/b/3kPCNlCe0kOjqI0R7bHYcHY+bxikm5+ovDwnP4XCWPgMEi5Z4hL7MyV9u
-         P3R+R3aQNctSjczc2zoy70h44Gm5e7EaNp7as29sO01y/HjaoscKK8UokUAmQ8Vb5X8t
-         L+UcufglkLD9rbEmXE3gJlkweHkJ5BOtbD5IHPWYEFAgPzX1jW9O4Ru7m8zBsxAuq2xg
-         QLG834cJ7foBgKCWadKYBnFV69+Gp9QpEkX3rIZueEO305qxN7L8bEMouHETzy4lqM++
-         8tUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUgXmbY31nxWC5uxmcv8FQr/XJybeQMZYll+l8U1LUwJjeMGiN9BFNYisUPy/Z0Mce1DONFOFaVWig=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbSnBcsu3vaoQe0UgN9DAWCszRU4DBxqOvllbKNWwqlnh3M+ia
-	bhOGwlWbAIFNMdwT8bjMC5OaN8OrkQCusGdyxTOnmsOHITFT7wZZXNNV
-X-Gm-Gg: AY/fxX5G4BZfyM0c0VLj2Y0TMx+QeO/6ge2rYdJDczSfncbBZ8usE3H5TX9x01XsQLo
-	RQ3Se1Kgb/238bllPRRqTAnV2b4W6SMDTw6QArciFb2xZmzaGV3C1gfpUZJL+1hTY8Xvm4wH+uj
-	QELoJDqO6u3xu/iyJ+H8Gi8kQvYfnnEz8MDei1mEXathSD69VeHGyfJtWnWHZg1fRGY3ZYHd6ij
-	jzT7zGMnreuv5rxSXpTUeR0Hb3NwxlURk982dXSoHZo/1HkTqcb16tVOmrJQrOaKKgsDXD62kYP
-	4gKLbJ1xf7YpNJaTnbuhMPVH0m6+O69QhMoqqKOnE8+bP8bgsxQPd8dB+oIJRMngcPIZEWt630z
-	AForUlxt9mWRCqI1o7OmvjICHLy36tKYo16tgSW106BqjfvdLy1IOPZIlITsSGXxdzgXbvIyQki
-	sq/yVyC+QDTFJzKN1UbMxjCUi50fN2ysgiLMdezNS9elgzChD3N/7XdHSvvV6IGxTp+MDDTxIqP
-	QKd9HS4dQiAsqJvZTkhXLHVdeQHpMrRPGxrrVHzAyDTyDSFCexSzR8M+PEDJZ9LtqI4
-X-Google-Smtp-Source: AGHT+IEFIRglE5Bb+2e+0uum5FO1qaZ3iQ7LMvzkffpqPwvsjCl32isCjpg6y5tRTxoVDhkYEOmzfg==
-X-Received: by 2002:a05:7022:1b0c:b0:11b:ceee:a49f with SMTP id a92af1059eb24-11f349a17bdmr15451076c88.8.1766070994721;
-        Thu, 18 Dec 2025 07:16:34 -0800 (PST)
+        bh=2pY3Dj22eRFI6euLJuJo7wjRAoKSeAvX/5BXg+N1IlA=;
+        b=g+4SfdiFl/GrnbuuQRcI9sOtSDQUP8W+o2b7sYInydjbq4vKMjx4XWgJs0LP+/GxGZ
+         xLmClUEAKzChUgJ1KumQoWrvBvfJfTrUjK12iG9SXNvPmwHiO8PrsgtqE9NPNQEoLyNo
+         bfOUc7473wB5ADeSX7IkLkyZbBQsRGu2XJSXqQ1tNtG0oYOpPgtFL/UuOzs30Jq0UayB
+         qzgIwGVQ6t8/T+xNfwMpPP7p3gyX/SdbJK/EsNf2uk/so+QE7Eh2qRqxNYKnf67nwPiI
+         +p6DVK0qLxQBWlA+haZBgGbMNRV4tr6tzGsgk8qol1Nn47ulrQvNt9CQgrLrZW9uuLhz
+         kafg==
+X-Forwarded-Encrypted: i=1; AJvYcCW9XrISL0EinLn0NSrLLEgpFx3pWNUWSlOR0Fm5+jRIdIjCpenj47tB3dXPMl3tXH1tK9JDJQi3xpI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeJbAbhgxb+PM4FqmT96hGWSrlgvGF3tEAgCn3xIDLkcbJUoHT
+	fqoWmvXkYWRvP+SviF/jOlieB7faL1yh0l2UDdLoZkVxiJIr2h/j6iXK
+X-Gm-Gg: AY/fxX5CgoxbgNSIUCwGgS9KugVryWGvX2EBvwoW1QSGcxvqC6tYtGJ+zEOnNjCWBDq
+	JtYotPmsJ9J8e9QesVeHjVP+121NzSbVcnfWO3kGDT4D+wU1D0ngLs+4woxHHrenv9eXUP5b7i1
+	2Z6iY3tVwOGzMCcFoMpwYz4eGcmAYtPmMD2Yci1LpH/J439ZJXzTGtEpSfP8FP2uZXt0Jl4092G
+	0zlv04EA9RYXOqHU59FyuO+LKNd3STAC2iKx4STwuhpkxwOvypM64nk1ACeNdUUnHWRA/Wivl9C
+	panAGZGCQdvldkYKPC/fCux8p862fr0/z2ghrhngJs/AVJhrl64gdfVobNZ4qriGudF9kJuRKSG
+	8hkJfhFvczndzHFmW4TfLdzB1wQYVwV8B++3IH72JWzPAcE1LYPkKtzTP5sCCNCzxkK8zXd4uF7
+	df4fxPxwck2h2rowSqg0bU/cvjuUC9/HjRCZbVsm0p2mATUfmsUKteL51t64d5EU0gMFwQPTK1Q
+	uofoJmqpLcrz3d6Mss/0ULvwc6soqkbC5CgHnNU9Ubr9pdiGutLdjW/JCpJyUBPHJIx
+X-Google-Smtp-Source: AGHT+IHakG1mTeS/TpPra0zj9B9gXizYj4XxBwSdmKSjjmjy7IkFavN6SQhkCFG558NqSUEyBk3ZGQ==
+X-Received: by 2002:a05:7022:4584:b0:11b:2a5:3b9b with SMTP id a92af1059eb24-12171a752b0mr81467c88.8.1766072798015;
+        Thu, 18 Dec 2025 07:46:38 -0800 (PST)
 Received: from localhost ([181.191.143.42])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12061f5412esm9195941c88.6.2025.12.18.07.16.33
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12061fc54b4sm8927625c88.10.2025.12.18.07.46.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 07:16:34 -0800 (PST)
-Date: Thu, 18 Dec 2025 12:16:32 -0300
+        Thu, 18 Dec 2025 07:46:37 -0800 (PST)
+Date: Thu, 18 Dec 2025 12:46:36 -0300
 From: Tomas Borquez <tomasborquez13@gmail.com>
 To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -83,11 +83,12 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
 	Andy Shevchenko <andy@kernel.org>, linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev
-Subject: Re: [PATCH 2/5] staging: iio: ad9832: convert to guard(mutex)
-Message-ID: <aUQa0IBuE7EITq9G@Lewboski.localdomain>
+Subject: Re: [PATCH 4/5] staging: iio: ad9832: convert to iio channels and
+ ext_info attrs
+Message-ID: <aUQh3KAvgm5_QIMO@Lewboski.localdomain>
 References: <20251215190806.11003-1-tomasborquez13@gmail.com>
- <20251215190806.11003-3-tomasborquez13@gmail.com>
- <aUQQ3YnaZau2RO2d@debian-BULLSEYE-live-builder-AMD64>
+ <20251215190806.11003-5-tomasborquez13@gmail.com>
+ <aUQYBdiYVy3sn0Nx@debian-BULLSEYE-live-builder-AMD64>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -96,58 +97,82 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aUQQ3YnaZau2RO2d@debian-BULLSEYE-live-builder-AMD64>
+In-Reply-To: <aUQYBdiYVy3sn0Nx@debian-BULLSEYE-live-builder-AMD64>
 
-On Thu, Dec 18, 2025 at 11:34:05AM -0300, Marcelo Schmitt wrote:
-> On 12/15, Tomas Borquez wrote:
+On Thu, Dec 18, 2025 at 12:04:37PM -0300, Marcelo Schmitt wrote:
+> Hi Tomas,
+
 ...
-> > -	mutex_lock(&st->lock);
-> > +	guard(mutex)(&st->lock);
-> >  	switch ((u32)this_attr->address) {
-> >  	case AD9832_FREQ0HM:
-> >  	case AD9832_FREQ1HM:
-> > @@ -203,22 +205,18 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
-> >  		ret = spi_sync(st->spi, &st->msg);
-> >  		break;
-> >  	case AD9832_FREQ_SYM:
-> > -		if (val == 1 || val == 0) {
-> > -			st->ctrl_fp &= ~AD9832_FREQ;
-> > -			st->ctrl_fp |= FIELD_PREP(AD9832_FREQ, val ? 1 : 0);
-> > -		} else {
-> > -			ret = -EINVAL;
-> > -			break;
-> > -		}
-> > +		if (val != 1 && val != 0)
-> > +			return -EINVAL;
-> > +
-> > +		st->ctrl_fp &= ~AD9832_FREQ;
-> > +		st->ctrl_fp |= FIELD_PREP(AD9832_FREQ, val ? 1 : 0);
-> >  		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
-> >  						  st->ctrl_fp);
-> >  		ret = spi_sync(st->spi, &st->msg);
-> >  		break;
-> Since we now have the mutex unlock handled by guard, why not returning directly
-> from each case?
-> E.g.
-> 	case AD9832_FREQ1HM:
-> -		ret = ad9832_write_frequency(st, this_attr->address, val);
-> -		break;
-> +		return ad9832_write_frequency(st, this_attr->address, val);
-> I think the last return (outside the default clause) won't be needed anymore.
-Wouldn't work because we need to return len too, so it would be more like:
 
- case AD9832_FREQ1HM:
-		 ret = ad9832_write_frequency(st, this_attr->address, val);
-+    return ret ?: len;
+> > Convert ad9832 from custom sysfs attributes to standard channel interface
+> > using a single IIO_ALTCURRENT channel with ext_info attributes, as this
+> > device is a current source DAC with one output, as well as removing the
+> > dds.h header.
+> > 
+> > Changes:
+> > - Add single iio_chan_spec with ext_info for frequency0/1 and phase0-3
+> > - Phase attributes accept radians directly, driver converts internally
+> > - Frequency attributes accept Hz (unchanged)
+> > - Cache frequency and phase values in driver state for readback
+> > - Remove dependency on dds.h macros
+> I'm not sure, was the dds stuff being used before this patch? Maybe dds.h
+> removal would be better as another separate clean up patch.
 
-Which is a bit more repetitive than just returning at the end ret ?: len,
-but lemme know what you think.
+Yep it was used, dds.h contains some macros for creating the sysfs
+attributes, I could make a separate patch which transforms the custom
+macros to "native" ones.
 
->
-> And, since you are touching the lock, you may also update to use
-> devm_mutex_init() (that would probably be best appreciated as a separate patch).
+> > - Rename symbol attributes to frequency_symbol and phase_symbol
+> It's nice to have a change log between patch versions. Though, it's usually
+> provided as part of extra patch info, not commit message.
 
-Yup, sounds good :)
+You are right mb, I realized too late I'll add it next time under ---
+
+...
+
+> This patch fails to apply? I've tried getting it applied on top of current
+> IIO testing branch with b4 shazam, git am <individual patches>, and
+> git apply <patch4 on top of applied patch3>, but patch 4 fails to apply either way.
+> Couldn't figure out how to fix that.
+
+I think I made some weird change which makes it unappliable but I'll make
+sure that does not happen next version.
+
+...
+
+> > +static ssize_t ad9832_write_phase(struct iio_dev *indio_dev,
+> > +				  uintptr_t private,
+> > +				  struct iio_chan_spec const *chan,
+> > +				  const char *buf, size_t len)
+> >  {
+> > +	struct ad9832_state *st = iio_priv(indio_dev);
+> >  	u8 phase_bytes[2];
+> >  	u16 phase_cmd;
+> > +	u32 phase_urad, phase;
+> > +	int val, val2, ret;
+> >  
+> > -	if (phase >= BIT(AD9832_PHASE_BITS))
+> > +	if (private >= ARRAY_SIZE(ad9832_phase_addr))
+> >  		return -EINVAL;
+> >  
+> > +	ret = iio_str_to_fixpoint(buf, 100000, &val, &val2);
+> Maybe I'm missing something but, why 100000 here? Should it be MICRO instead?
+
+iio_str_to_fixpoint parses one more decimal digit than the fract_mult
+suggests, passing 100000 gives 6 decimal digits (microradians precision).
+Using MICRO here would parse 7 digits instead, as far as I understood.
+
+> We can use macros to make it easier to read values that are related to metric units.
+
+Agreed, I'll use MICRO for the multiplication and division/modulo operations.
+
+...
+
+> Best regards,
+> Marcelo
+
+Agree on the rest of the feedback, thanks for the comments from these and
+previous patches
 
 Tomas
 

@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-27171-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27172-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C9FCCB919
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 12:16:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E187CCB908
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 12:14:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BCBD30528EE
+	by tor.lore.kernel.org (Postfix) with ESMTP id C068F3030CB7
 	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 11:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A8D315D35;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D261C316193;
 	Thu, 18 Dec 2025 11:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="aMrj6yMW"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="4L3P97xQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17DB3128A1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18EA314A9F;
 	Thu, 18 Dec 2025 11:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766056469; cv=none; b=GjAF68tJOuzbsFap3bxrj7rd7qdyyJrBJBejGQs0c/09bnU8p+aR1b4o92bLWLz4P1Qpp0uvBa5QmBYyDriyZJPmB1i2qOY7eho4syQUhQAyc6sA54mXIv7A23B9pcwdqWBZvI/eLjC5PTG2Zo+9DFwuZR8m3/DbzkYedDUnvEk=
+	t=1766056469; cv=none; b=R4h0cSN/U6OO0aKgte6XwTLtunfnixv8gCP/n38O20AWOu1iCXWEyr9bBrQueCp8GyuiOxkW7W1Bsytl/uQWJm7aKvtl9Suyqb87rjq8q0XWFP48sVHL/Nr/sbzs1eI1Q6P4VCm8fWDxd77NtNojjgxLXV58Kz9HsUlEKypLuUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1766056469; c=relaxed/simple;
-	bh=1coGTefDFpJud9GjaT9tBoJNihKOd+3uZmtnEgI/peU=;
+	bh=sKTW6IBIfdkk0iNLSPI1Dms7VRckFpx2Oph0OcH66iI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UGJcVMCtqqLX3j2iwPPZV0QWwzinCaEz7iHzfPNAoGKbzwuIV0Tg+7vvapr0OqjN7tlYE3uKb1LLJQVfx4elH5QsSDwVWDrLu4IAXlfw55k+mNg9stfTexpmT4hfifeQODVj//sgf0EzJg9uvd9biJfttalHU6cV4YZ9Tu2M/mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=aMrj6yMW; arc=none smtp.client-ip=172.105.74.154
+	 In-Reply-To:To:Cc; b=FdY/66n7eC8hv/+TNYjWxG4H7F4PmDdtZw/PCKZukw0XwdEuL+u7bv8by0nO3yWslkmswzhxFBOzb9DK5X+BH/OPt2bHQeRlNJCtMzoG1NIAq6kvvSVTM4lQjCS/vEYIiHTzQ2z2rc86eb4XtWNusaGuf27T/3OaZhFnw/lr2cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=4L3P97xQ; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:3804:ac00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 9D8A516020B;
-	Thu, 18 Dec 2025 13:06:16 +0200 (EET)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 0EB4E16020C;
+	Thu, 18 Dec 2025 13:06:17 +0200 (EET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
-	s=mail; t=1766055976;
+	s=mail; t=1766055977;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qMjFVRQ20JyE32MWgj0CsR8LhHhUMC95H0NKR5JiROQ=;
-	b=aMrj6yMWu9wEqQxyBox3sJNIsaCPQLYp65JGVSfrb5tb9nYVP/pJ2lGtBqnyIN+nb2yTZR
-	wymMV/9mUfGJytyZpAu1h0i9kp9kVOwQ8mn7u2JpGJcsSgfyJG9xJOlYz+IVMR/acSwz5E
-	Ov6SKTEGQq2tnOI+r43+HYiQMBowAhjRxAxmBg+gjHXZVtSBCSMREiqEKIYyqI3NcoOqYZ
-	7P+V3OZWfVCDI7rSzIgc8j6RCSye2YQR5v5vxLo5UT2sMM1o7RDERrJsMQaNNui6M0pEKw
-	9uOBrgb8cNOd8njnQC1P0M6KwKxaxO2JXRCkEvKA+OdaWI3HWk2z57zMdQF3zg==
+	bh=12Hs/dr79kvV6QCKEYb2XzPrzqxb3/7HkJRFJtYNjUg=;
+	b=4L3P97xQ5/U8rglACXXBPc7pwb2iCntayqgYnUqF9lH6Dx0aJrI5nAwf18evYxmW5vbq6i
+	geJbMwcPEbbugFLcKWkD7kRf6gNhi+pEgAGbQzEcMotu1LLyMYtePXcgmqWU1lQQJ+2e1l
+	WBWDrmBDszNvyZ10a5LtgjNU/OhPOrkGSC38dNnEkOvxYu9JIdfEKdkMR3jAeLhjIPK3M3
+	gPQcj60j0VKA+SyZQ9TfJTNShf96hvXwVk9PNFQ0+hw2q8MvSdYaBiijd6wi4YL9ZXFca0
+	ZAsd4upAJlhw2Wju8sLavYK8Ef/Ml0UXA8atJywqBoo+BC/91zkolEPLsUi3ZA==
 From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Thu, 18 Dec 2025 13:05:44 +0200
-Subject: [PATCH 02/14] iio: pressure: mprls0025pa: remove redundant mutex
+Date: Thu, 18 Dec 2025 13:05:45 +0200
+Subject: [PATCH 03/14] iio: pressure: mprls0025pa: rename buffer variable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251218-mprls_cleanup-v1-2-b36a170f1a5c@subdimension.ro>
+Message-Id: <20251218-mprls_cleanup-v1-3-b36a170f1a5c@subdimension.ro>
 References: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
 In-Reply-To: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -68,112 +68,123 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2917;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3471;
  i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=1coGTefDFpJud9GjaT9tBoJNihKOd+3uZmtnEgI/peU=;
+ bh=sKTW6IBIfdkk0iNLSPI1Dms7VRckFpx2Oph0OcH66iI=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQmRDc25wM
- k02U1dNQnl5WmlBR2xENEE5eDZTSXBBREY3eENCbGlwWEJJdHdHCm1zMjREWUF2dHY2cUNzenJ3
- U04vZ0lrQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFErQVB
- BQW9KRUhRcko2ZGpPa2xqUGxrUC8zRUlxWGFOU2lRK0t6YStlelRCaDMweGNrNVlZOThmdEtqLw
- oydHNJUi9IYlA4SmJvQUxFaURTNW5RdldsVHF6QjN4SFNCbjg3U29XaXdhUnBWMzRISWxEanNuV
- FY0Sk9iZEl3CkFLcmw3Vzg3NUF0RUhoWHJRRFlSazQ1dzBybXV6clppdkE5Uy84dXpZbWI3VGs4
- VnczSU9jblRIdHRMWkZoalkKSUIxU0xuS1N1bENJS2J1K3ZOZHljY2taeXNFSEVSMzg4d1NZdjY
- 3aS8rMTVLcExwUzJ6ek9uQkxoTjMxc3NVcQo3NDlseGxiQzdaWVJoL3lpMHdzVnJDeVNnVFFhWm
- h4ZkJRYlVqTm5uNjVZUGpheTRtUUo1VzcycTVVeEZockcvCk0rSVV2ajFaM3piMlFROFVSdnlhT
- EcyMFhFWXhrcW1tYkZPTEJXRDBiMnNybXpmSGtUWHRMZVdRTFNGckhzZkYKenJRcmtvRkpRTmYx
- S1hBMjAxRzRQR2pGSDNYVytrNWFaYkFuVDFQOEV5M1dXNVV0SjRIMWJBclFOUDNHL2lZMApyaml
- PU0Y4YXFjbUtKMWFEbkMzQTY1VTdoUFVpOGNxcjBiWlA0TWkyY1VOTzhYQUhIWXVnZ1owWDByYj
- RBTW1FCkZpR2c2MGo3RVp1U1ViRlhMcW96Unl6Q092UWczRGZNV29KRDUzNENwM0thcElzcmxaL
- 1FVa1NvM1FrMHRtNXYKcmFHWnVkTy9xVW9FeEZSWlpnYUJYZGNwYUREMEFuOUlJTlNpcEZ5ZmZD
- S0NyTFlGQ3I0T0Z2aFA2VmlCV3JrSwpEYVE4SjRHckRsMnRQaTA4SWVMVi9WMjYveXNETVB6dEw
- 1VEVuMmVUQi9vNW5pM1doeTlXSE5tSkxhUVBIZ2hFClVHSFdTbkpSeEVRYldnPT0KPXBscysKLS
+ k02U1dNQnl5WmlBR2xENEJFNU5PcnlsMUdmVkk4dEJuTjViYk9yCmN2RytwbFU3ZTA4VWtGZXZY
+ elUwZFlrQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFErQVJ
+ BQW9KRUhRcko2ZGpPa2xqdlpZUC8yMDRLVzh2L29kbXIxa1lhVUJDcjZSQmR0ZDg3YVVNUUh5Zw
+ pxWFFvV0VjUEh2aXArTHhpM3ZYcmk1aUhPOWxscWpVS1dpajc5ZEw3ZllzRTQ0WVBoQVpYanFne
+ WhmNjFDVTJxCkEvM0wxRzk5U0FwSVpManBQUlFDa1hhWlhZaVdlbHpIS3dsa0NOemphTFk2ZEJi
+ UEN1Sk9iK1RmalJIbnZVaXcKMG9JdEJ6QTB0U3d0aVNZNHdWbXlwY09NMGhHNjdCYnZZdXZvLzR
+ CWHlnS3oxdjRSZGNuNzRSdndxR295djZsMQpFRGpoL3BhODFkMlJTbmJXNCtxWXdyRDNyNlUwMl
+ ZRSTNGdng4VGkxZkUxTG94Wm5FdnBEbytLYmNvY3U0c0FKCkoxbDJPdXUySzNITVMzZWkvZG1xR
+ TY2WU9jdEEzMFZKbFkxVVhVWFVRMXZMOEtHSkdGMHVoUXNqSUpYTmhaaHAKRE9SUEM0ZmNnSGZx
+ clV3bWQxT1o2a2dlczNxdytteFh0YTE1bGV2NUpYRmRUbEYvTW13d1k2am84MStWY3YyWApQbXM
+ 4WlhRdmY2UDNzc3hzSjEzQ2g5Q3haVWxPOHhEbUNWUm9peHdTeVYrZm5zZEFybzdDWEh2ajZDSE
+ 15TGVoCkptNDIrWnZoMTI3eU4xYW0vQlZ2QUhTN3Rpbkc2b004OFgyYlp4S1JUUGZUc3I3VVYwR
+ EJONmNXUEdCL1Jqb20KY1pnbVRxcWZmeVpVZzZaVThkTkJJV0hEcG5EVzgxVHpmREFRSlE3T09r
+ cVVhcUVueWlDNlNjM0FYT2pCTjhhOAp6Slp4cE84TExTa0dxamxaalBtQXFZbGxobU92YTdCdVM
+ wVHA0aHdDVEprSkUvVVJVTEg5MVlFdURRUEpiOWdKCkliTENuMFQ3ZER3bThRPT0KPVZwdHgKLS
  0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
 X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
  fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
-Remove the redundant mutex since both i2c and spi transfer functions
-provide their own locking mechanism.
+For the reason of better naming consistency rename priv->buffer into
+priv->rx_buf since tx_buf will get introduced in the next patch.
 
 Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 ---
- drivers/iio/pressure/mprls0025pa.c | 6 ------
- drivers/iio/pressure/mprls0025pa.h | 3 ---
- 2 files changed, 9 deletions(-)
+ drivers/iio/pressure/mprls0025pa.c     | 10 +++++-----
+ drivers/iio/pressure/mprls0025pa.h     |  4 ++--
+ drivers/iio/pressure/mprls0025pa_i2c.c |  4 ++--
+ drivers/iio/pressure/mprls0025pa_spi.c |  2 +-
+ 4 files changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-index 2336f2760eae..d3e76eed07e6 100644
+index d3e76eed07e6..a1fd3807b455 100644
 --- a/drivers/iio/pressure/mprls0025pa.c
 +++ b/drivers/iio/pressure/mprls0025pa.c
-@@ -188,7 +188,6 @@ static void mpr_reset(struct mpr_data *data)
-  * If there is an end of conversion (EOC) interrupt registered the function
-  * waits for a maximum of one second for the interrupt.
-  *
-- * Context: The function can sleep and data->lock should be held when calling it
-  * Return:
-  * * 0		- OK, the pressure value could be read
-  * * -ETIMEDOUT	- Timeout while waiting for the EOC interrupt or busy flag is
-@@ -273,7 +272,6 @@ static irqreturn_t mpr_trigger_handler(int irq, void *p)
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct mpr_data *data = iio_priv(indio_dev);
- 
--	mutex_lock(&data->lock);
- 	ret = mpr_read_pressure(data, &data->chan.pres);
+@@ -230,7 +230,7 @@ static int mpr_read_pressure(struct mpr_data *data, s32 *press)
+ 					ret);
+ 				return ret;
+ 			}
+-			if (!(data->buffer[0] & MPR_ST_ERR_FLAG))
++			if (!(data->rx_buf[0] & MPR_ST_ERR_FLAG))
+ 				break;
+ 		}
+ 		if (i == nloops) {
+@@ -243,15 +243,15 @@ static int mpr_read_pressure(struct mpr_data *data, s32 *press)
  	if (ret < 0)
- 		goto err;
-@@ -282,7 +280,6 @@ static irqreturn_t mpr_trigger_handler(int irq, void *p)
- 					   iio_get_time_ns(indio_dev));
+ 		return ret;
  
- err:
--	mutex_unlock(&data->lock);
- 	iio_trigger_notify_done(indio_dev->trig);
+-	if (data->buffer[0] & MPR_ST_ERR_FLAG) {
++	if (data->rx_buf[0] & MPR_ST_ERR_FLAG) {
+ 		dev_err(data->dev,
+-			"unexpected status byte %02x\n", data->buffer[0]);
++			"unexpected status byte %02x\n", data->rx_buf[0]);
+ 		return -ETIMEDOUT;
+ 	}
  
- 	return IRQ_HANDLED;
-@@ -300,9 +297,7 @@ static int mpr_read_raw(struct iio_dev *indio_dev,
+-	*press = get_unaligned_be24(&data->buffer[1]);
++	*press = get_unaligned_be24(&data->rx_buf[1]);
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		mutex_lock(&data->lock);
- 		ret = mpr_read_pressure(data, &pressure);
--		mutex_unlock(&data->lock);
- 		if (ret < 0)
- 			return ret;
- 		*val = pressure;
-@@ -342,7 +337,6 @@ int mpr_common_probe(struct device *dev, const struct mpr_ops *ops, int irq)
- 	data->ops = ops;
- 	data->irq = irq;
+-	dev_dbg(dev, "received: %*ph cnt: %d\n", ret, data->buffer, *press);
++	dev_dbg(dev, "received: %*ph cnt: %d\n", ret, data->rx_buf, *press);
  
--	mutex_init(&data->lock);
- 	init_completion(&data->completion);
- 
- 	indio_dev->name = "mprls0025pa";
+ 	return 0;
+ }
 diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
-index d62a018eaff3..d38ac750e392 100644
+index d38ac750e392..567f9a465a01 100644
 --- a/drivers/iio/pressure/mprls0025pa.h
 +++ b/drivers/iio/pressure/mprls0025pa.h
-@@ -14,7 +14,6 @@
- #include <linux/completion.h>
- #include <linux/delay.h>
- #include <linux/device.h>
--#include <linux/mutex.h>
- #include <linux/stddef.h>
- #include <linux/types.h>
- 
-@@ -44,7 +43,6 @@ enum mpr_func_id {
-  * struct mpr_data
-  * @dev: current device structure
-  * @ops: functions that implement the sensor reads/writes, bus init
-- * @lock: access to device during read
-  * @pmin: minimal pressure in pascal
-  * @pmax: maximal pressure in pascal
-  * @function: transfer function
-@@ -66,7 +64,6 @@ enum mpr_func_id {
+@@ -59,7 +59,7 @@ enum mpr_func_id {
+  * @chan: channel values for buffered mode
+  * @chan.pres: pressure value
+  * @chan.ts: timestamp
+- * @buffer: raw conversion data
++ * @rx_buf: raw conversion data
+  */
  struct mpr_data {
  	struct device		*dev;
- 	const struct mpr_ops	*ops;
--	struct mutex		lock;
- 	u32			pmin;
- 	u32			pmax;
- 	enum mpr_func_id	function;
+@@ -80,7 +80,7 @@ struct mpr_data {
+ 		s32 pres;
+ 		aligned_s64 ts;
+ 	} chan;
+-	u8	    buffer[MPR_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
++	u8 rx_buf[MPR_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
+ };
+ 
+ struct mpr_ops {
+diff --git a/drivers/iio/pressure/mprls0025pa_i2c.c b/drivers/iio/pressure/mprls0025pa_i2c.c
+index 79811fd4a02b..36da0059b19f 100644
+--- a/drivers/iio/pressure/mprls0025pa_i2c.c
++++ b/drivers/iio/pressure/mprls0025pa_i2c.c
+@@ -30,8 +30,8 @@ static int mpr_i2c_read(struct mpr_data *data, const u8 unused, const u8 cnt)
+ 	if (cnt > MPR_MEASUREMENT_RD_SIZE)
+ 		return -EOVERFLOW;
+ 
+-	memset(data->buffer, 0, MPR_MEASUREMENT_RD_SIZE);
+-	ret = i2c_master_recv(client, data->buffer, cnt);
++	memset(data->rx_buf, 0, MPR_MEASUREMENT_RD_SIZE);
++	ret = i2c_master_recv(client, data->rx_buf, cnt);
+ 	if (ret < 0)
+ 		return ret;
+ 	else if (ret != cnt)
+diff --git a/drivers/iio/pressure/mprls0025pa_spi.c b/drivers/iio/pressure/mprls0025pa_spi.c
+index d04102f8a4a0..65958b1186fa 100644
+--- a/drivers/iio/pressure/mprls0025pa_spi.c
++++ b/drivers/iio/pressure/mprls0025pa_spi.c
+@@ -47,7 +47,7 @@ static int mpr_spi_xfer(struct mpr_data *data, const u8 cmd, const u8 pkt_len)
+ 
+ 	buf->tx[0] = cmd;
+ 	xfer.tx_buf = buf->tx;
+-	xfer.rx_buf = data->buffer;
++	xfer.rx_buf = data->rx_buf;
+ 	xfer.len = pkt_len;
+ 
+ 	return spi_sync_transfer(spi, &xfer, 1);
 
 -- 
 2.51.2

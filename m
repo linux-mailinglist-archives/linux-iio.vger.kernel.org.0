@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-27164-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27165-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81C5CCB8A1
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 12:07:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A74ECCB8AD
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 12:07:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF56B305A114
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 11:06:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95417302E164
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Dec 2025 11:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80C4315D37;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EB0315D42;
 	Thu, 18 Dec 2025 11:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="0sAK5z0l"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="y6q9O9u7"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A9C2F83A2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B2D30CDB0;
 	Thu, 18 Dec 2025 11:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766055988; cv=none; b=VQ+vjBAa6eFRyKvXidBDa1iVw5Dz6aS4DICc3RK4nvIvW45XjJTaW2sR9i6dqD0MfrGDkhawLjqkCzPJYjFOyeBGrbShKIWNk6kgolbP1zZ2Kt/rTBxel8PfLubSV0WnccJeMyfMNE3UdGrawl8cidRvDPyr8o+joy7iAFUP7xU=
+	t=1766055988; cv=none; b=OMKIkvmoae6DmW3tN7o93lKK9dmpYqSJdmM62xJzL4j3vl7RNiEQF8arBX59JRsL95i7fuIcHYHZfmc5gPOji9PV0o7+RcOPqFARJebRDb0MhTN9L8/Y0AAm8i8+P4YFCRNlySANsc1NVTlMPpKUnMRjKfZXjyhROmBUchfJb/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1766055988; c=relaxed/simple;
-	bh=4s2rTfy8Rc4f0E6bbCAsoMkgp8IOoWPTrBeuhgLf6TU=;
+	bh=u5IPrFscRXthy8l7601VVgnJrNDzYLylzHB94d7fGm0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nvG4uVIc9A6y0FpsXo57umSdLiC1uBOjU8ekG8G/9TDHHlPCy1/58y2zU8GePN+br3ck788/y9GVUlvSSr/IWXkYrmijQlKH+7kMf0OA0Qwxe4Txn5gQFYj/2eNahDNyMyNNlioxoy5peEzzHIHtWMb/YA8TioaACAWC8PRJwUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=0sAK5z0l; arc=none smtp.client-ip=172.105.74.154
+	 In-Reply-To:To:Cc; b=exNCzYC3FF1fhx+10c/nYzW8cCXbmxnep2a19klKvnqqiOonZzrrWm2a/Hypx+lkSaSF4noQ0ypWdPgxM/tV+qbMJ49FZfNCqQ5JqG6jvXeXQ+ddQYss+AQIPApameFwpAcxyXTaHh2nGQRYrxXvqfpVanY0xhNEdCgOuo6eeXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=y6q9O9u7; arc=none smtp.client-ip=172.105.74.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
 Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:3804:ac00:e2d5:5eff:fed9:f1c4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id A1FD1160210;
-	Thu, 18 Dec 2025 13:06:18 +0200 (EET)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id 28566160211;
+	Thu, 18 Dec 2025 13:06:19 +0200 (EET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
 	s=mail; t=1766055979;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oPOp+RTkgUDq1Xobzu5FbM62WKoxXthWCEcNxYe1Q3E=;
-	b=0sAK5z0ltB967s14ri190aqetrHqAMsbAMnYNgv2aLTuF1LmboEBQ+qnHrNo9AySpFOZPU
-	FygoAPU4ZU3zmB0uj5HrM9z1EgJAGfOY5rfBpImU4O0BuIq/O7u4vqPZUwNbA+7EuMInTr
-	ZN/E2imUhntuQzSawkM+b4VQZ2wsianhdRbETMWPnEpnZ2DOqA5KB+5kBR0KdvVRai5p38
-	0Nl8FtTG/JxrizcGR+FkjnYov9WRGBe3lXh+S3Bs8gJN+M1rbRJ95eJqz1YzsifNWEBTZY
-	5d3LMcNXxoKBOUwNxEG4H2GHof2XS/btio99tbLs2wMt9/CkQL03BULwNGFWLA==
+	bh=Ns8Jixq24EilpK8SnZ5Vu6qrCnipfGw2ulbcsyqUak8=;
+	b=y6q9O9u7R9TtOC+02pkMvC7KoGTo9Ka0By+bycru7GOba/x+KM0RJTyiGOZjVTWrytkoLs
+	fK/Z4cWJmaSwDLwHxXhK2oj8uBsdJDJtTaBTzjAAqlGQn8waww+EiY48vNUTy4sGV0o8jW
+	tPEHAvmenSWiHSE89YZFnIwNdmK8Z8hFCNW0JTrcm8a94EOnRvKvNayQVTQNZwxIpxR49o
+	5OfqcWRV7CmcDjoZb6bLvqmJPv/fhSHZQQCOxjub1dSU6ipGcQsIuH9AW2mTtXw9YA5OlU
+	qqL29lHxtDsGkF9wl9lF49DE0iZHL7PNkMQ7atNfDt8kaVsSvJKA6kODkVX9Hg==
 From: Petre Rodan <petre.rodan@subdimension.ro>
-Date: Thu, 18 Dec 2025 13:05:49 +0200
-Subject: [PATCH 07/14] iio: pressure: mprls0025pa: make ops->write function
- consistent
+Date: Thu, 18 Dec 2025 13:05:50 +0200
+Subject: [PATCH 08/14] iio: pressure: mprls0025pa: stricter checks for the
+ status byte
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -59,7 +59,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251218-mprls_cleanup-v1-7-b36a170f1a5c@subdimension.ro>
+Message-Id: <20251218-mprls_cleanup-v1-8-b36a170f1a5c@subdimension.ro>
 References: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
 In-Reply-To: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -69,98 +69,93 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2320;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2424;
  i=petre.rodan@subdimension.ro; h=from:subject:message-id;
- bh=4s2rTfy8Rc4f0E6bbCAsoMkgp8IOoWPTrBeuhgLf6TU=;
+ bh=u5IPrFscRXthy8l7601VVgnJrNDzYLylzHB94d7fGm0=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQmRDc25wM
- k02U1dNQnl5WmlBR2xENEJlc1Vta0VRNEZFMkZ4WWdVeGQvTlhOCk5nczNMeXJJMWg1QURreFNo
- cDBEWG9rQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFErQVh
- BQW9KRUhRcko2ZGpPa2xqd2lrUC9STHQ2dTNtY3pDRm9kTGl1ckg5QTVFRXZwWXRTQUl2VGExaQ
- pTektXS09odHk1YjIvMjhLbUdSVk8rVllCOVdmdFpGUHh0eWtZTXdPOVdSYnRXQVJMYWFNa3FXe
- WQ2UDJLakR1ClUxSm1rclZFSnhwelJCS1owY3BQODZ6cGlIaHhkRmdLTVk0dXpaSm52R3BOdTND
- ZlQyRTJqeWwrWGw0cjFvYVUKc21rWXRDcExKSlEwWHhZbGFMdFViTUdXa2t6aFlVbFdCWWlWMEJ
- rYWRwZ1lUMzZLR2JPd09OOUFhb2liTmo1cwpRVGRrMGtnMHpsZjZwUHBjKzROZG5yanNoZXVzKz
- B6ZFpGRW5GNXlNbUZtVUU5aU42OUVxSkJuUW1VNi9UVGM5CjhHL3lqWHRjcDZhSm90UEJHYkFKV
- 3ZodlVva2NFNVRxL3JDcWRaN3ZiWWkwdWJ3YUNVMU9KNkJxSUE2bDU2dHMKSDlsdmNHYlVFdTMv
- Tk1xMXB1ZE9RZnlZbUhySXdCV01aeU1iOXpNSE5lTExHdlI4bGRDRVJ3b1hSbCs5cVZoZQpCbkt
- GMkhzMm1FUE5pYVR6bVpib2xsSG42UUI1a2ErMzRDTkZvS0RpQ254bkVVTVJIdWZua1NWOUVWTD
- J5b2xGCitQbkpQS0kvUkdiUmNKK293MXVMY2NiRk5mMUlUTWtrSGtMemF4a01kTFN6aHJjQkFvY
- jFaQjd6WnJLSUdSKzMKV1BLdVJpamY4a3poVXFNMjJaRE1PQlNIeVp5aXpwSm1yVEdRQTVTSGpz
- aUd0a0syMFBvWStSRmNyNnMwOHo1MwoySlh1SXlUd0RqTy9KVGZRMzVMRzQwWnVLVG5ycjBtWEQ
- 4UWVEeGVhMG0vT1BGdVdhN3NJeUxpc3d2R21GUlVPCkZpUnQrUlh0NXY0Z1hRPT0KPVNhcGEKLS
+ k02U1dNQnl5WmlBR2xENEJrditrdW1RYXpXV0trc1BCZk81Wk1kCk15TlRZY3JNRmd1cUswRnd1
+ bWh4a0lrQ013UUFBUW9BSFJZaEJCb2ltQncrRGJ4UXBFNmlkM1FySjZkak9rbGoKQlFKcFErQVp
+ BQW9KRUhRcko2ZGpPa2xqSTc4UC8xTHUxY0g4YzdUZUNDVGJXejMzVVFGamtCTldMM215UGErTg
+ pXT2FQWHN3RmlPM3RLR1NFb0RJQTVjVkR1S0JKWXFYMmNwcGFwSHdabm9oeGcyN1BqaEVMYUNHM
+ HRXVjIxVGhmCkZpWVpKTmdGKzlvMEEzRENwYnh3ZTJyL05PTnVyMTBOY3lVdUNSM1lHNjlHZWVz
+ ZGxnajB1NTFJME1iZG13TFcKakRjY0hGZDZDQzJLTmI3blRUbVNVTmI0NjZxV083am5FeTRIblB
+ ZbXlmckNobTVZck5sVXBFdlphMlFHVjVseAppVERxZVRRK2ZwRXNUK3dIYkVNWHRjOEpLd3UxUG
+ Q5d3hRbmpOdW5XcE5mbEd2V1VtTjBGbzJvTENVczRNY29aCjArQTR0ZzJhV29kVnRZM2Q2Rk9BQ
+ 25iMXZPUVV5VnhicExocm81bzFqdVBGSmd4azYydEs2S3BvaU5ncXpOWFcKMnhiRjloR2x1emQ2
+ ZlFFQ3kxQ1V1cjJFeHNQbC8wRGx2dytGaGtQTVRJSEt3K3RIeHFxWU5DRzNZY1htOGlyMgpGSUY
+ 1ZkZ1L2NMM2pJWkNpWjQwL2FiWHZTZXNlU1EwdGVLL3MrSEhyOWN4OHM2ZG5XRXV2dVNRdGVZSz
+ U1U1VJCmJsbnhnbjVQdWxLUmJmRkp0cDFtWVh1akJCcDJwWTZzb0NZZTF0Vk9ra3JjdU5aOTc5Q
+ 3pYSldIK2ozU2NkSm0KM2NiUnBhUDAzYnpuaHRYdk43OVBaZDVxdmkzUStqVFBZVk9LanJPdE1h
+ NStSYlFRczEyWTYwK0lyeXZLTzhrVwpmTkhJMzYvSGJrOHlTZUlFdVBvN2t4MTFETVZsdnc3STA
+ 5OFZKVFNwSzA5dHJGRmVxQ08rNGZKRlBYTSthQnlFCko3bmxiWUo0VWMwcHl3PT0KPUVXdzYKLS
  0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
 X-Developer-Key: i=petre.rodan@subdimension.ro; a=openpgp;
  fpr=D80A7FC176151935EC3E5FA9CF269999844E7F30
 
-Make the i2c bus write operation more consistent with the rest of the
-driver.
-Also move defines only used by core out of the common header file.
+Make sure a valid conversion comes with a status byte that only has
+the MPR_ST_POWER bit set.
+Return -EBUSY if also MPR_ST_BUSY is set or -EIO otherwise.
 
 Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 ---
- drivers/iio/pressure/mprls0025pa.c     | 5 +++++
- drivers/iio/pressure/mprls0025pa.h     | 4 ----
- drivers/iio/pressure/mprls0025pa_i2c.c | 9 ++++++---
- 3 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/iio/pressure/mprls0025pa.c | 29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-index 7cc8dd0d8476..7f8dc47d7073 100644
+index 7f8dc47d7073..973d205da3e9 100644
 --- a/drivers/iio/pressure/mprls0025pa.c
 +++ b/drivers/iio/pressure/mprls0025pa.c
-@@ -39,6 +39,11 @@
- 
- #define MPR_ST_ERR_FLAG  (MPR_ST_BUSY | MPR_ST_MEMORY | MPR_ST_MATH)
- 
-+#define MPR_CMD_NOP      0xf0
-+#define MPR_CMD_SYNC     0xaa
-+#define MPR_PKT_NOP_LEN  MPR_MEASUREMENT_RD_SIZE
-+#define MPR_PKT_SYNC_LEN 3
-+
- /*
-  * support _RAW sysfs interface:
+@@ -12,6 +12,7 @@
+ #include <linux/array_size.h>
+ #include <linux/bitfield.h>
+ #include <linux/bits.h>
++#include <linux/errno.h>
+ #include <linux/math64.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+@@ -195,9 +196,10 @@ static void mpr_reset(struct mpr_data *data)
+  * waits for a maximum of one second for the interrupt.
   *
-diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
-index 83dbc3ef8ba4..50c99ddc8937 100644
---- a/drivers/iio/pressure/mprls0025pa.h
-+++ b/drivers/iio/pressure/mprls0025pa.h
-@@ -20,10 +20,6 @@
- #include <linux/iio/iio.h>
- 
- #define MPR_MEASUREMENT_RD_SIZE 4
--#define MPR_CMD_NOP      0xf0
--#define MPR_CMD_SYNC     0xaa
--#define MPR_PKT_NOP_LEN  MPR_MEASUREMENT_RD_SIZE
--#define MPR_PKT_SYNC_LEN 3
- 
- struct device;
- 
-diff --git a/drivers/iio/pressure/mprls0025pa_i2c.c b/drivers/iio/pressure/mprls0025pa_i2c.c
-index 0fe8cfe0d7e7..5508a1681b7b 100644
---- a/drivers/iio/pressure/mprls0025pa_i2c.c
-+++ b/drivers/iio/pressure/mprls0025pa_i2c.c
-@@ -34,16 +34,19 @@ static int mpr_i2c_read(struct mpr_data *data, const u8 unused, const u8 cnt)
- 	return 0;
- }
- 
--static int mpr_i2c_write(struct mpr_data *data, const u8 cmd, const u8 unused)
-+static int mpr_i2c_write(struct mpr_data *data, const u8 cmd, const u8 cnt)
+  * Return:
+- * * 0		- OK, the pressure value could be read
+- * * -ETIMEDOUT	- Timeout while waiting for the EOC interrupt or busy flag is
+- *		  still set after nloops attempts of reading
++ * * 0          - OK, the pressure value could be read
++ * * -EBUSY     - Sensor does not have a new conversion ready
++ * * -ETIMEDOUT - Timeout while waiting for the EOC interrupt
++ * * -EIO       - Invalid status byte received from sensor
+  */
+ static int mpr_read_pressure(struct mpr_data *data, s32 *press)
  {
- 	int ret;
- 	struct i2c_client *client = to_i2c_client(data->dev);
- 
-+	if (cnt > MPR_MEASUREMENT_RD_SIZE)
-+		return -EOVERFLOW;
-+
- 	data->tx_buf[0] = cmd;
--	ret = i2c_master_send(client, data->tx_buf, MPR_PKT_SYNC_LEN);
-+	ret = i2c_master_send(client, data->tx_buf, cnt);
+@@ -250,10 +252,25 @@ static int mpr_read_pressure(struct mpr_data *data, s32 *press)
  	if (ret < 0)
  		return ret;
--	else if (ret != MPR_PKT_SYNC_LEN)
-+	else if (ret != cnt)
- 		return -EIO;
  
- 	return 0;
+-	if (data->rx_buf[0] & MPR_ST_ERR_FLAG) {
++	/*
++	 * Status byte flags
++	 *  bit7 SANITY_CHK   - must always be 0
++	 *  bit6 MPR_ST_POWER - 1 if device is powered
++	 *  bit5 MPR_ST_BUSY  - 1 if device has no new conversion ready
++	 *  bit4 SANITY_CHK   - must always be 0
++	 *  bit3 SANITY_CHK   - must always be 0
++	 *  bit2 MEMORY_ERR   - 1 if integrity test has failed
++	 *  bit1 SANITY_CHK   - must always be 0
++	 *  bit0 MATH_ERR     - 1 during internal math saturation error
++	 */
++
++	if (data->rx_buf[0] == (MPR_ST_POWER | MPR_ST_BUSY))
++		return -EBUSY;
++
++	if (data->rx_buf[0] != MPR_ST_POWER) {
+ 		dev_err(data->dev,
+-			"unexpected status byte %02x\n", data->rx_buf[0]);
+-		return -ETIMEDOUT;
++			"unexpected status byte 0x%02x\n", data->rx_buf[0]);
++		return -EIO;
+ 	}
+ 
+ 	*press = get_unaligned_be24(&data->rx_buf[1]);
 
 -- 
 2.51.2

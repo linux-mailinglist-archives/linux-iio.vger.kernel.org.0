@@ -1,120 +1,117 @@
-Return-Path: <linux-iio+bounces-27209-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27210-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8947CD06B1
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 15:59:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A723CD072A
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 16:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 98E01304621F
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 14:57:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32B0730B2133
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 15:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3404E339710;
-	Fri, 19 Dec 2025 14:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B26B33A030;
+	Fri, 19 Dec 2025 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="L3Mqft++"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2BRbNrr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-m15596.qiye.163.com (mail-m15596.qiye.163.com [101.71.155.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED181FF7B3;
-	Fri, 19 Dec 2025 14:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6922213254
+	for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 15:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766156233; cv=none; b=iFPy0eDy/WbXBTFuj634BEoQwGiiSu+XPpRbyFQQom0/N+XFCQYsp+wMzfQAxtHc7Ut3enLJ2WoKuDBQqcWnO/PLg/pFQo/0nyHHwx/ZgoXT5nXyUO8sLz5R0hnDizi7gSr40M87oGfJoSjyORs8exkjCdxcwIPkE6P3veduSNA=
+	t=1766156602; cv=none; b=q07XiEl48lVrXk+ukD1Dq8qjk9trEtcu8QfqaF1k2zmXXMFI3+FotIebnBYrAP1O/I1Jd1jBOtfitopKaoCdR0dsWCMz1XO7Fbz3QdZc3BR4NP5Og5e47xly88BckxL0SdK8VGLbZj2GpkUj1v/cFPApXHVjvQwURTIDqlBnWek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766156233; c=relaxed/simple;
-	bh=tg2uhjnb2sKL7o1HVa8W2iAZx+MaYDiybQb1untzHz0=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ExKJ4O6qdBpLXx0SqHn1WG/Wh3/EBa6eleWoz6qtW/1IFDj+efTg/q6j89kh1zcaxvIZguDPqVmgnh6gYww5Mu5iF/Q5BaQ1PqF2kddaswTFmv4mJfuOm61wgJf93rC2m4TpJfuoL9bS+Z1HEQ1jpqGRLGdBZJWg13+eoxoo2Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=L3Mqft++; arc=none smtp.client-ip=101.71.155.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-Received: from [172.16.12.14] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2de8ecb5a;
-	Fri, 19 Dec 2025 22:51:48 +0800 (GMT+08:00)
-Message-ID: <1ca8f181-7784-469a-b498-622a39737e1e@rock-chips.com>
-Date: Fri, 19 Dec 2025 22:51:47 +0800
+	s=arc-20240116; t=1766156602; c=relaxed/simple;
+	bh=n22d2txH7wo6U025+Kr95FcHrE764h9Y09W1efLLMNQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kbZpvw+Ipcx3wkjMDTzQ62ic3wr2+rODz7sWvE183v7fpm3nAI828yGbdEAYLk/vXiIFwFcPM0VcN2RCcNAjbk5lL2OvhRncFTFI8/3AxQpixcqtpKVQIiMAQwog+2ulJshU+ZaUeejGfW9w5wzX5n+TpBycMZlm4EWHfeYT5mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2BRbNrr; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42fbc305882so1002316f8f.0
+        for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 07:03:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766156596; x=1766761396; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=n22d2txH7wo6U025+Kr95FcHrE764h9Y09W1efLLMNQ=;
+        b=C2BRbNrrI4KTyC5lilFVvoxDsxhP1YU6r3g9aGRjncIr22k5KqDSiFXk+5s6+maHjb
+         RTz78KftqSRosPJOBMtEQ+25rUMiR0s0YOunflMvUPNlvvd+7cCPfUPvFsHuwQ/zVXy4
+         5nW9iDc9NrztxFku9CqUknmU/Gj0Ca4iSDubdEnffI7ThFiUx/PTVvyEHL9TE2HdVWsC
+         r9E+N22TsRgt7TBo8UUn0NvEqOhw4UEbI8MiJxT6JuUSabJ+Wl5yUGKBBMM+HoiBl951
+         bFsA8E6Lchr2bisKScF/CFLs6bC+h4yWYo9P2r16erjmWJCUfU/7DGz5wkxbJvmhbpPd
+         VDQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766156596; x=1766761396;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=n22d2txH7wo6U025+Kr95FcHrE764h9Y09W1efLLMNQ=;
+        b=unZ7XdUOpM+nF2jtkcegTXeS/kteSjdTNR48CrCD76CG8a2ES6OxhnZBX5QiWdc6bd
+         vUcjgGZh86gInUeRkcYhybiw73SzV9F4CkHKNfaWwR8bz1NFTl8cezBaFDt8oUswViFc
+         kQaEreYlZ9+IY99xtlIqHOnKIqnjxDrRhLFk+7ql8JbpkfqEeWWO4o41bA5SoFCWOkvg
+         LpWV5hJVNVZlbO5/dkdBh7zFJp48fTnishNBIpwA+/hpPLP5KAYq7u2zKAnkfwplSPaf
+         zY56nq6zLhHpLLGdyOas670BKInU/8jL8fsuTV4kM6ML+HQutjLMAuqXlUMas7Z4NhRh
+         xlng==
+X-Gm-Message-State: AOJu0YzdF+fL+ooAJEZ0evwQ1AqQBey892RXA7oj1bccAiqynan3ScgK
+	pxjQ0fWE2cVce91CZAfMiQIb55nNebr3QezlxgNyHLjPdi9p66tJVQRt
+X-Gm-Gg: AY/fxX68RdQZuLcHgCXnPKeOtctyagy8IWLDv49uBV4bTWCkIgES5oxMUe2bA4aO3Qa
+	WWum5+IgfY1BnHTHnO9U+/N2dd/0vMECDyH7eGdhbvFyrn49YvgC22agbuHs1PLo/biog6jdqfK
+	EqY4A0jWhjBY5yU9tWhJGVOYcaXK5FeUCHP874MylmMXdgzn4SmcQBtxWv6lM2eMkoXVVJzUqRF
+	2pLjuA9XjYsXO39Ys1VGcXOy9TttGYRyS4c5X71Y5aot7/4kJThcGV0/Tv+PkJcbenSRtBcUEsG
+	HckhiQUpp73JLr85CMpU/eceR04O921OaWJEXhBLXbQLa9CTJcdrN1gRe0eL1kbXRLa/dZvxYKI
+	oqm8iS9jH61KPI6E97UrjPOkbChIMQylvtTW8yVsVM9aV5VC9u9JypAsu6h7j//un86aRE3+5Uv
+	xcwJBMj3qk1Jjx5nlIH94=
+X-Google-Smtp-Source: AGHT+IFcU3WiI5k6PLKVvu1TLKGeoZ6aj+Aj3KpbVK8kqiT47sNxqvwMrsudjyeu9+PEZmHGQeZCKA==
+X-Received: by 2002:a05:6000:200e:b0:42f:bb9b:9a82 with SMTP id ffacd0b85a97d-4324e6fa0a6mr3567106f8f.60.1766156596326;
+        Fri, 19 Dec 2025 07:03:16 -0800 (PST)
+Received: from [192.168.1.187] ([161.230.67.253])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea1af20sm5008078f8f.2.2025.12.19.07.03.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Dec 2025 07:03:15 -0800 (PST)
+Message-ID: <760dce5b5721ae6e46daeac03b96df7b009db3ce.camel@gmail.com>
+Subject: Re: [PATCH 3/6] iio: buffer-dma: Turn iio_dma_buffer_init() void
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>, nuno.sa@analog.com
+Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, David
+ Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
+Date: Fri, 19 Dec 2025 15:03:57 +0000
+In-Reply-To: <aTBmriwVrMwlKiXX@smile.fi.intel.com>
+References: <20251203-iio-dmabuf-improvs-v1-0-0e4907ce7322@analog.com>
+	 <20251203-iio-dmabuf-improvs-v1-3-0e4907ce7322@analog.com>
+	 <aTBmriwVrMwlKiXX@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: shawn.lin@rock-chips.com, linux-iio@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH 4/5] iio: adc: rockchip: Simplify with dev_err_probe
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>, Heiko Stuebner <heiko@sntech.de>,
- Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>
-References: <20251219-iio-dev-err-probe-v1-0-bd0fbc83c8a0@oss.qualcomm.com>
- <20251219-iio-dev-err-probe-v1-4-bd0fbc83c8a0@oss.qualcomm.com>
-From: Shawn Lin <shawn.lin@rock-chips.com>
-In-Reply-To: <20251219-iio-dev-err-probe-v1-4-bd0fbc83c8a0@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9b371876c109cckunm523b6161c55b6
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGkpLQlZISkxISh9MSUxPTUxWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=L3Mqft++QW1keeakifFX4r26Bo0K6b98n4bO3SkNmgCq8A7i7LaIGFWE33BuWDvjygTygfaTOhEhZeN8KwRErxShB2KrucqxNKw+Kd0nc3xTFXibEhJOhbcD08iJuqEY8SBejR1zFuRW/6LxVsItsK6il0sxsFTK4A2FeCidGBw=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=+dpxgpVjronVSwUPCPFj5OzYc6xfTN7Fz/RJWrifxaw=;
-	h=date:mime-version:subject:message-id:from;
 
-在 2025/12/19 星期五 22:31, Krzysztof Kozlowski 写道:
-> Use dev_err_probe() to make error code handling simpler and handle
-> deferred probe nicely (avoid spamming logs).
-> 
+On Wed, 2025-12-03 at 18:34 +0200, Andy Shevchenko wrote:
+> On Wed, Dec 03, 2025 at 03:11:38PM +0000, Nuno S=C3=A1 via B4 Relay wrote=
+:
+>=20
+> > iio_dma_buffer_init() always return 0. Therefore there's no point in
+> > returning int.
+>=20
+> > While at it, fix a mismatch between the function declaration and defini=
+tion
+> > regarding the struct device (dma_dev !=3D dev).
+>=20
+> So, all others use simple dev?
 
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+Totally forgot about this. What do you mean by the above? If other function=
+s in the
+header use just dev? If so, the one I changed is the only one that uses str=
+uct device
+(in that header). It is also consistent with what we have for the devm_iio_=
+dmaengine_*
+APIs.
 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> ---
->   drivers/iio/adc/rockchip_saradc.c | 13 +++++--------
->   1 file changed, 5 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-> index 6721da0ed7bb..263d80c5fc50 100644
-> --- a/drivers/iio/adc/rockchip_saradc.c
-> +++ b/drivers/iio/adc/rockchip_saradc.c
-> @@ -492,10 +492,9 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
->   	 */
->   	info->reset = devm_reset_control_get_optional_exclusive(&pdev->dev,
->   								"saradc-apb");
-> -	if (IS_ERR(info->reset)) {
-> -		ret = PTR_ERR(info->reset);
-> -		return dev_err_probe(&pdev->dev, ret, "failed to get saradc-apb\n");
-> -	}
-> +	if (IS_ERR(info->reset))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(info->reset),
-> +				     "failed to get saradc-apb\n");
->   
->   	init_completion(&info->completion);
->   
-> @@ -505,10 +504,8 @@ static int rockchip_saradc_probe(struct platform_device *pdev)
->   
->   	ret = devm_request_irq(&pdev->dev, irq, rockchip_saradc_isr,
->   			       0, dev_name(&pdev->dev), info);
-> -	if (ret < 0) {
-> -		dev_err(&pdev->dev, "failed requesting irq %d\n", irq);
-> -		return ret;
-> -	}
-> +	if (ret < 0)
-> +		return dev_err_probe(&pdev->dev, ret, "failed requesting irq %d\n", irq);
->   
->   	info->vref = devm_regulator_get(&pdev->dev, "vref");
->   	if (IS_ERR(info->vref))
-> 
-
+- Nuno S=C3=A1
 

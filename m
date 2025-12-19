@@ -1,179 +1,88 @@
-Return-Path: <linux-iio+bounces-27232-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27233-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9045FCD1764
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 19:52:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5340CD1EA7
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 22:05:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF4F9301C8BD
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 18:51:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C3503043909
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 21:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BD8333750;
-	Fri, 19 Dec 2025 18:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EAC33DEDF;
+	Fri, 19 Dec 2025 21:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZfMs3aZS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF39319873
-	for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 18:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8422E1E520C;
+	Fri, 19 Dec 2025 21:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766169846; cv=none; b=oqk3sykrzTzGbrb3UI/tfsE65wFOsoWZli8L+UdsCsI/xUR9aPfX78TzvEnbw7zjcU87ZWSFOId4WWSck/heJ8uVEY/LNfKA8W9pjKf1QeQyXzF07H9jDa4j9H4aqsYFpY4aiZTXU4081kZ4PVQfSth3+9Aj4qk/MEpduJgxqD8=
+	t=1766178300; cv=none; b=O2SQdtyq3pTs/BqmjiIawahC8MJqR8++TB0GKbJDO5jNRrMTiIcLaxSHQcspDb0ysi0H78wIWZPSsejOK7Ghtxu2Yc1QWqUNSctEUtPtkuGHdGc1svj/b+Rtrb1fXykiqKgLJR5myWamJDJacDMGX8b1Sa1JMMQTdRYKxKjC54Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766169846; c=relaxed/simple;
-	bh=PZvQSk/l6JaNRyIauG6d+pnuxVrYrOqR9+gggBTQjdU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QtZEvHvyGHSqYlfU0M9SZBTF5kcfx9tbm2QhdCXj4lIdyy3L1ZrPFDyDfE8KyglllPiY3ULDkTUMv9b0t3pHQCf8kHVTc4AHeWJAwO2BKjLNEsIcw+ZOBAFxhpdnB1JNSCt2rhrlIDQBNkHhzOdZSszEnjznANp5zsmXm821rbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXxJ34hd5zHnGd6;
-	Sat, 20 Dec 2025 02:43:31 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 477C940570;
-	Sat, 20 Dec 2025 02:44:01 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 19 Dec
- 2025 18:43:57 +0000
-Date: Fri, 19 Dec 2025 18:43:56 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-CC: Nuno =?ISO-8859-1?Q?S=E1?= via B4 Relay
-	<devnull+nuno.sa.analog.com@kernel.org>, <nuno.sa@analog.com>,
-	<linux-iio@vger.kernel.org>, Michael Hennerich
-	<Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, "David
- Lechner" <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v2] iio: dac: adi-axi-dac: Make use of dev_err_probe()
-Message-ID: <20251219184356.000077d4@huawei.com>
-In-Reply-To: <c513acf3003d1e1129d1f76bf285b79c888f78b5.camel@gmail.com>
-References: <20251219-iio-axi-dac-minor-changes-v2-1-e9fccc019b01@analog.com>
-	<20251219162129.00006aa9@huawei.com>
-	<c513acf3003d1e1129d1f76bf285b79c888f78b5.camel@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1766178300; c=relaxed/simple;
+	bh=4sgIqEwPXXLAOBFYR/9KviOsCVn5w5BeCFeoELqc7Mo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PS2dZVoLRIb2NKqXz6GKK6lFZFon46Ps4V2ExsUdfcIR9Ih5CxrLQHjBlduqd7qKowOXEmgJi9Lfq5zfpjz1RC6WaJNwcl1dRdT6TKLlygg9dJrUyMoPaE5eYbPfYV1cm4oDd/ZE/kF6rIxwNLpMDmKmYLaIhPOtUem52qQwpzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZfMs3aZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA953C4CEF1;
+	Fri, 19 Dec 2025 21:04:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766178300;
+	bh=4sgIqEwPXXLAOBFYR/9KviOsCVn5w5BeCFeoELqc7Mo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZfMs3aZSNNfkQ9MoZuxxd+vbw82OrHIh/AKb8fyfm5jNcaTraQayNloRHtyjaM//P
+	 DgvdFLVvl+4P7NnH6m8tVhw6DNodUcsXCoziLQBwP0Frp8Amb6aMFcC0DdUo3Ub7T0
+	 YPCCRnXBXU1why3bYJiVEy/IWpIJtCrQ81Mppt46NvONPRycpVbBBtjjm606fxz0cJ
+	 /tMBHJnntONP3QhGxeGthJHUCCmJ/R+YMPxAzXl6RwFR37g95To62VMbZRVvjr4Kyi
+	 TKFVctjpumN1YCUFUsIJu9P3En05rUJWXMJ4IAj2yNS0igWUrA/jsamySjwgdGFvpO
+	 LzZX2mYwJiQEg==
+Date: Fri, 19 Dec 2025 15:04:57 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Jorge Marques <jorge.marques@analog.com>
+Cc: linux-kernel@vger.kernel.org,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	linux-iio@vger.kernel.org,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	linux-gpio@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Andy Shevchenko <andy@kernel.org>,
+	linux-doc@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, devicetree@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Lechner <dlechner@baylibre.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v4 1/9] dt-bindings: iio: adc: Add adi,ad4062
+Message-ID: <176617829657.3934846.6702160905493410565.robh@kernel.org>
+References: <20251217-staging-ad4062-v4-0-7890a2951a8f@analog.com>
+ <20251217-staging-ad4062-v4-1-7890a2951a8f@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251217-staging-ad4062-v4-1-7890a2951a8f@analog.com>
 
-On Fri, 19 Dec 2025 17:46:52 +0000
-Nuno S=E1 <noname.nuno@gmail.com> wrote:
 
-> On Fri, 2025-12-19 at 16:21 +0000, Jonathan Cameron wrote:
-> > On Fri, 19 Dec 2025 15:54:29 +0000
-> > Nuno S=E1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
-> >  =20
-> > > From: Nuno S=E1 <nuno.sa@analog.com>
-> > >=20
-> > > Be consistent and use dev_err_probe() as in all other places in the
-> > > .probe() path.
-> > >=20
-> > > While at it, remove the line break in the version condition. Yes, it
-> > > goes over the 80 column limit but I do think the line break hurts
-> > > readability in this case. And use a struct device *dev helper for
-> > > neater code.
-> > >=20
-> > > Signed-off-by: Nuno S=E1 <nuno.sa@analog.com> =20
-> >=20
-> > This has turned into a bit of an X and Y and Z patch.=A0 In theory
-> > should be split up but I guess it's not too bad. =20
->=20
-> Yeah, I kind of felt a bit like that when looking at the patch diff.
-> >=20
-> > However I'm not sure why you fixed one indent and left a bunch of simil=
-ar
-> > cases looking worse?
-> >=20
-> > Jonathan
-> >  =20
-> > > ---
-> > > Ended up dropping the dev_info() -> dev_dbg() patch.
-> > > ---
-> > > Changes in v2:
-> > > - Patch 1
-> > > =A0 * Added helper struct device variable as suggested by Andy;
-> > > =A0 * Removed the braces as suggested by David.
-> > > - Link to v1:
-> > > https://lore.kernel.org/r/20251203-iio-axi-dac-minor-changes-v1-0-b54=
-650cbeb33@analog.com
-> > > ---
-> > > =A0drivers/iio/dac/adi-axi-dac.c | 63 +++++++++++++++++++++----------=
-------------
-> > > =A01 file changed, 30 insertions(+), 33 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-=
-dac.c
-> > > index 0d525272a8a8..ceab9f6fa3b4 100644
-> > > --- a/drivers/iio/dac/adi-axi-dac.c
-> > > +++ b/drivers/iio/dac/adi-axi-dac.c =20
-> >=20
-> >  =20
-> > > =A0	/* Let's get the core read only configuration */
-> > > =A0	ret =3D regmap_read(st->regmap, AXI_DAC_CONFIG_REG, &st->reg_conf=
-ig);
-> > > @@ -975,34 +972,34 @@ static int axi_dac_probe(struct platform_device=
- *pdev)
-> > > =A0
-> > > =A0	mutex_init(&st->lock);
-> > > =A0
-> > > -	ret =3D devm_iio_backend_register(&pdev->dev, st->info->backend_inf=
-o, st);
-> > > +	ret =3D devm_iio_backend_register(dev, st->info->backend_info, st);
-> > > =A0	if (ret)
-> > > -		return dev_err_probe(&pdev->dev, ret,
-> > > +		return dev_err_probe(dev, ret,
-> > > =A0				=A0=A0=A0=A0 "failed to register iio backend\n");
-> > > =A0
-> > > -	device_for_each_child_node_scoped(&pdev->dev, child) {
-> > > +	device_for_each_child_node_scoped(dev, child) {
-> > > =A0		int val;
-> > > =A0
-> > > =A0		if (!st->info->has_child_nodes)
-> > > -			return dev_err_probe(&pdev->dev, -EINVAL,
-> > > +			return dev_err_probe(dev, -EINVAL,
-> > > =A0					=A0=A0=A0=A0 "invalid fdt axi-dac compatible.");
-> > > =A0
-> > > =A0		/* Processing only reg 0 node */
-> > > =A0		ret =3D fwnode_property_read_u32(child, "reg", &val);
-> > > =A0		if (ret)
-> > > -			return dev_err_probe(&pdev->dev, ret,
-> > > +			return dev_err_probe(dev, ret,
-> > > =A0						"invalid reg property.");
-> > > =A0		if (val !=3D 0)
-> > > -			return dev_err_probe(&pdev->dev, -EINVAL,
-> > > +			return dev_err_probe(dev, -EINVAL,
-> > > =A0						"invalid node address.");
-> > > =A0
-> > > =A0		ret =3D axi_dac_create_platform_device(st, child);
-> > > =A0		if (ret)
-> > > -			return dev_err_probe(&pdev->dev, -EINVAL,
-> > > -						"cannot create device.");
-> > > +			return dev_err_probe(dev, -EINVAL,
-> > > +					=A0=A0=A0=A0 "cannot create device."); =20
-> > I'm not against this fixing up the indent but why not the ones above ht=
-at look
-> > just as bad? =20
->=20
-> Hmm I think this one were my automated fingers... Maybe the best thing to=
- do is
-> to split up the patches and take care of these indents in the patch adding
-> the local struct device *dev variable. Does that works for you?
+On Wed, 17 Dec 2025 13:13:24 +0100, Jorge Marques wrote:
+> Add dt-bindings for AD4062 family, devices AD4060/AD4062, low-power with
+> monitor capabilities SAR ADCs. Each variant of the family differs in
+> resolution. The device contains two outputs (gp0, gp1). The outputs can
+> be configured for range of options, such as threshold and data ready.
+> The device uses a 2-wire I3C interface.
+> 
+> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+> ---
+>  .../devicetree/bindings/iio/adc/adi,ad4062.yaml    | 120 +++++++++++++++++++++
+>  MAINTAINERS                                        |   6 ++
+>  2 files changed, 126 insertions(+)
+> 
 
-Yes. Sounds good to me.
-
-J
->=20
-> - Nuno S=E1
-> =20
->=20
->=20
-> >  =20
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
 

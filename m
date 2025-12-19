@@ -1,154 +1,163 @@
-Return-Path: <linux-iio+bounces-27207-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27208-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32995CD0605
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 15:51:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56DB2CD05A9
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 15:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1519A30A2998
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 14:45:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 138223009FD3
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 14:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826B833A032;
-	Fri, 19 Dec 2025 14:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C8032BF21;
+	Fri, 19 Dec 2025 14:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fYKEpf1o"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="flCd99Wd";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Rk794HgI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1B033A013
-	for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 14:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542DA2D876A
+	for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 14:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766155544; cv=none; b=bxo6Fk5ZgQ2zgO3/j/6ygvWwgULNkCy8qBV0oSVb9nMPfehEdVjyC4xjzu8lWcEyMgYKFS5GeCXXx+KBcAK2WECQC747iJjcDyC3viBYAoM9D+F6GzY/eipqKL/ZOwD28vKe8YQIKA+rvj2xL7WeBFemJ44mjMH+K+kgznJT6dE=
+	t=1766155635; cv=none; b=DGBWp5Nu9MPqUtaLAM64XF6JdbACwpMErYWcYbg8bJ5lOj6ZfE6HMnjeY/G46U8E/GUcAZEiFE/ihK5QbbYc3zStth+Uu+xw+obGQmS44ZS0V9kc4shK492EvhMN8/L9vNJVMTWFqPrnF+P9GOqZ7CdXOD8+TvrFtmEsYXRSeyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766155544; c=relaxed/simple;
-	bh=0ED9b1vBXcUM/wufkmBFTxQAaOBzOuTk/rxQ6+xOxAI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YnAvv6g/IJnEn/LAOsq/DVQ/E/nlSOoIC36RAbAulqtjDC99IrLrMYDDZAJc/iWsu6q4x10qdgfydFGGZXTPKCVwDBPU1TaMxacbpM/JcAi8k4fH/JU+pxesfgq45V0Z63HOXxVV62vUB+DfOJ5lUHAaV+vAtC3jMr/g14gtw+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fYKEpf1o; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4775e891b5eso7664445e9.2
-        for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 06:45:41 -0800 (PST)
+	s=arc-20240116; t=1766155635; c=relaxed/simple;
+	bh=5XjcOwMBg2ujPqV40PeKRngJIvkzbjW5EfjSJIsg1AI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GRv2niJud90Q3UNATfVoAPMc6hXdbhCW76o8Vm005Gm5vsc9Zk/Qa0EgyKvBGj/HVmXdQzJ3mn9S1O1ceCv2dz0RAoFLJUYb58qdN4rgyooX7ivHp+9QXoRI8ed7bh4y6JcYbLGOnbA9qVyW5PagaJ3tr6OSLV3OPxq++sLmCiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=flCd99Wd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Rk794HgI; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BJBDhbG3559086
+	for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 14:47:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2llrig2VlkvP/lmBhRWbS2Hi5oOu1YmedcLpczcjcPg=; b=flCd99WdIB49zGTc
+	An1q1Hdk9XGhbN7baTxHWBodnU9IW1OuTO4Ri0dNVIe8iKl7+QAxfGOpvzuCuLEy
+	xutFuVjEyrqw13VgdUvVFv/TcsBADcZ40zRSGu56JCSh58KPtaX2B8Zqa5wSJ3dT
+	4QNz3wM7Ej+VVrSQg244rwJ0Vw048cNys4KRXIQjG6w5u1PeVzz6WSn8qLflojB1
+	JlEIWc3hcVgEKy2lZwJ6hWJouHkUytIFY5KwMWr+GVd1+YiAaXWBg3lHj/+Ak8Zq
+	+mBm1TjcUcEm0SnXRB7dSKGsjp+mO3B4MpXuM+moWgwrG0kO++3MO2VScncdD5Jh
+	1Fgk+Q==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b4r2cb15y-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 14:47:12 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b1be0fdfe1so68203785a.2
+        for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 06:47:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766155540; x=1766760340; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bBrb5/2asiO+xAwBsYh2X2OwJ8WzDyacND+6TSxABek=;
-        b=fYKEpf1oDTThHEPN6+Bjetg1MbZhK6YO6Xvu16tTYHbKq/D8Y+onqqoogAneG3itlB
-         uXSOUu/FFc4k1rK/BcjhnQMSqlT9naeRqzhi187l7ucLR4ftzG/G3E87cZ0ZVKO+gLyv
-         EH5XmjnfdoBagB5Qw74R13Sxk736ftULyjiskpaaB+8P05FPS34Olewu0JOKVJqr0UUc
-         Byo/+CoxgwoZFttnuDiQt60pC63WHM05QJXIKKeGRIiMSddnBwivfclHIecvLsoIzYhC
-         HttD4CUmzhtyEvtyQr11NVQUBBIgpap2RNXemYOe1eYEk7B6qmQmmE6PiERYgpy4v3aE
-         VwIw==
+        d=oss.qualcomm.com; s=google; t=1766155632; x=1766760432; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2llrig2VlkvP/lmBhRWbS2Hi5oOu1YmedcLpczcjcPg=;
+        b=Rk794HgIa/rYdvcj0kc2FX7eDTrHg4rkNdP7YnKfmW80JOdFledU/1kA7/DYvtBbXN
+         VcbxtszbJDr1DQzMx7dhjW8zuPrvog7pthrI5T9WvSH93MjDKCjcqT9ULOVgiFnCbVDg
+         MzQyikr/MCfhTYo7Z3TEVtF5nnyt4ExB+eMI5TGAGPhyacQKOh/m+Kd8zI5gF9v5My6d
+         dk/VFjXSJDw2WELqmdtOREIAnDlFR2gyOgxEzIT1bvq7ByUpbNjYFMV2rgosz73fCvuf
+         +mhEEqY2cttLvZJABlDAqTUt0ZWhB/EW/4vNvZSXQz3ufsXrO3a0xSzW/Cw04ltCQZj5
+         oMlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766155540; x=1766760340;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bBrb5/2asiO+xAwBsYh2X2OwJ8WzDyacND+6TSxABek=;
-        b=eSR7dVcumX7E3LPeEexviASkuSTSQd7rJuby8/rei8T4n/C3Hd8DOTkmdyruKU5Tm2
-         NdgAp4qbayj0J8+GUjSfuaKLt7PI+4PXmwcs4Ny02l5bnWMtDhTIGtjeMKlUZl5crHHr
-         apDP0gMD0zHlwMAMMR527CO171ITNYs1gwVnRfLVCnWMlRn5JNUAz2byP6fc6p55GKTv
-         UDR8RVqwFlBlgDNifCftvLPQw1OIA6DJZXT64HvrZg/o+1fcCpOjZ2K43VX4fqXhfzDi
-         Yjj6a6KLJI3D3KhdWZHG46PGjDR+gLpFXqG2AainzC1kP7rGB/bzroUBK3ek+myCnE00
-         cKIA==
-X-Gm-Message-State: AOJu0Ywx5Sa/68coQe6+/fjSlu/r1XNq4ckP3brc2UciAQcWvROrjqlV
-	Fm5/VMf3C4hAczxSRWHWQzIjnyQWAGAvflm4A86QkwGCyczrr1AdVy/O
-X-Gm-Gg: AY/fxX7ORfTFXJhW9nDkvbIMJWnvHHXF0ky9XTyINGg6uykCspZVwkMr0wrozs5fQAq
-	diY+BVUeROiVB01f44tzY43bN1i9I5Pyci+XKEhpW5vqL9tzIf/78CGssMcBAqNUzrBbmOEczzw
-	Z4aR3Xq7WKjiPwyTXSILKpoNnmtMGL1F44Chet/W5Jp1250uP006WS+YWvd3oWv9KGymdrqUfHa
-	Z76tg2RhFPnzE6Fd4X2jnXc5VobTAGek8MPq6mAIFCmSR7Uoo5RIfzAw1mQ+JG5R3nUuMUV6l4/
-	zt4gIHJ6N3KKWBP/RdO0cXjgEaXfRbA3pOSVBIZvlBLUNWB2WDVVIsn0FXxxQhXPfoKyo3PPDVn
-	+I2KR92xXTfU9uBc1HUgbfSsDu2ep7qlZMrUEHD7xjuuV+xSGyiJ5d7AJ3NcDH3fzdLuk48OJOs
-	nFviEcmujpUMILaX7Zaj0=
-X-Google-Smtp-Source: AGHT+IHKUy36Sx6/ExOq5gSuVJgdUyBG4b2jjTB/QWNUpTi+b8Y8pC0yozUwEOblhw5gaelW6BZqbQ==
-X-Received: by 2002:a05:600c:1d1d:b0:477:a21c:2066 with SMTP id 5b1f17b1804b1-47d19532f48mr29879215e9.5.1766155539477;
-        Fri, 19 Dec 2025 06:45:39 -0800 (PST)
-Received: from [192.168.1.187] ([161.230.67.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be26a81b6sm101968425e9.0.2025.12.19.06.45.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 06:45:39 -0800 (PST)
-Message-ID: <2c61d7f3e169ee5204f795784a686e46613b7aa8.camel@gmail.com>
-Subject: Re: [PATCH 2/2] iio: adc: ad9467: make iio backend optional
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Tomas Melin <tomas.melin@vaisala.com>, Michael Hennerich	
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, David
- Lechner	 <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 19 Dec 2025 14:46:20 +0000
-In-Reply-To: <e095bc11-9986-40bb-8ad2-967ee85f67e9@vaisala.com>
-References: 
-	<20251216-b4-ad9467-optional-backend-v1-0-83e61531ef4d@vaisala.com>
-	 <20251216-b4-ad9467-optional-backend-v1-2-83e61531ef4d@vaisala.com>
-	 <88efd2784c9fce72e432a59a03472bb4441e975b.camel@gmail.com>
-	 <e095bc11-9986-40bb-8ad2-967ee85f67e9@vaisala.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 
+        d=1e100.net; s=20230601; t=1766155632; x=1766760432;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2llrig2VlkvP/lmBhRWbS2Hi5oOu1YmedcLpczcjcPg=;
+        b=XBH6h+4b74CMGAZ3rsoIBorwzPNBMbLvNsc0EWrJmL5aWDt4ZHi6T99Uv96SL5rmJL
+         vIqkDQPrwgkH+S9KuCDJgPQyRpwJLr3jlQheFsmXPrjAZ+Ev893NRKI1AsPSCiV2ZGqp
+         emnsbfsvBjdQUoVGL3ON2tw0OTHosEAxzZZFWCag3+vAMZCVmHVJWu0Milv4nTH9AyIR
+         Muf2MJS3fm7gLPVGySLyRrKkkOwDtBgG2mVOZKFzDkNHtT/1SR/+XUtYlMKcc+AHKEGo
+         S1kJ+VHPxY99KtZreSCJd0wxFDq0xl05gguHJjQE/B4Ok+vE2LhsqlARfxU7mn2pQiyz
+         yW9A==
+X-Gm-Message-State: AOJu0YxpaW0QIUWpgfIc+xqroymBCVy+0L12l48NiOWGGt8FP89leWf1
+	lbHzu+Ubt2RhIshPXr9taq3RgGUO7d9wiCsGrvyO6mZLA04qX+ZOiow4fAaeNqhizPZ8AC+1052
+	fy3Q1XLoA5DDj2p0N/Dw7FiUIcLMKeFqgUx9+0KnudoyVQF0zO5YdOIhxgT0+JMM=
+X-Gm-Gg: AY/fxX5pMIZgHAaIDDkQi6WtgSuvvoCAy5zh6nruYmmUo+HGjW6xkummS8W//34EulF
+	m0oR07uUAtfnNFUpaHTB5RoMT7ZaSgjRjM5G2ZKl2YHysSmwoyMm8z9Wp6Nthxx71XYroW8G8tr
+	cVmFMtwRePuNjmeRoaymrXIROlORl/mCQCN8NGt5y1ekJ63usdHV9ETkPRYiNdEILDamYcoVZuy
+	dxDg6dK6vQVleSCAA4iQH+CqUhU4qvdcOqXfxH61kXy3NLXNi9UVdXdprloWLNZgf4PZZiybCSU
+	ZJsDaagcYogP3MLFsOB5JLIiFlZTxQ+3vKKXO49HIOtQCvQWhDi5038s3pAVnxip8ODD7qZClkc
+	hqsJzTx4G09wVpKpyfhTDy8/QlXUdp+Lv3DHOnMcFQMaeon3umXjWJE+lGV0mthxvOQ==
+X-Received: by 2002:a05:620a:2911:b0:8a2:568c:a88b with SMTP id af79cd13be357-8c08fbbc3damr339356085a.11.1766155631504;
+        Fri, 19 Dec 2025 06:47:11 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHEve108+vsMnz6uQvHSLsQBNpRTIRrSI8CXrS6ViEziIGCv/1+cO2DfuCTVgDsGgQRx9jhOg==
+X-Received: by 2002:a05:620a:2911:b0:8a2:568c:a88b with SMTP id af79cd13be357-8c08fbbc3damr339351385a.11.1766155630854;
+        Fri, 19 Dec 2025 06:47:10 -0800 (PST)
+Received: from [192.168.119.72] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b9105b31esm2309173a12.13.2025.12.19.06.47.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Dec 2025 06:47:10 -0800 (PST)
+Message-ID: <528cf0f7-6025-45de-a061-2d4f6fcc5bce@oss.qualcomm.com>
+Date: Fri, 19 Dec 2025 15:47:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] iio: adc: qcom-spmi-rradc: Simplify with
+ dev_err_probe
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        David Lechner <dlechner@baylibre.com>,
+        =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+        Andy Shevchenko <andy@kernel.org>, Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@codeconstruct.com.au>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alim Akhtar
+ <alim.akhtar@samsung.com>,
+        Heiko Stuebner <heiko@sntech.de>, Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang
+ <baolin.wang@linux.alibaba.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
+References: <20251219-iio-dev-err-probe-v1-0-bd0fbc83c8a0@oss.qualcomm.com>
+ <20251219-iio-dev-err-probe-v1-3-bd0fbc83c8a0@oss.qualcomm.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20251219-iio-dev-err-probe-v1-3-bd0fbc83c8a0@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=cpSWUl4i c=1 sm=1 tr=0 ts=69456570 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=Y9TzTQZwL3x8CsvTrzoA:9
+ a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDEyNCBTYWx0ZWRfX2U8f7/W81pJU
+ wVO+m8F37AwXhgPreoc/Ldv68gkUmvBQEukV7EuEqae7QNN1FaiprSD4Ip2Sgz5NgDOpxb6uYk8
+ Uo2xWsZ/Hk1ww+WqG4ChqwtTj7AjAE2WvN/b9FXfTSXk2TRw6RD+vjq+bbnHiWWn3u2JoFAI4pQ
+ fc8enFwf010ixOnYFJ4EHve4L+lIpE3g4snCf21QolnsFzqrKNdq8K/KeeTJnnpB4YCGRMSWL/4
+ Ntuzm74JjicL0pjv/LlxaGKp2hUmG5ZPfAefFc1hs96WYB1zE01Pb6aie4lsDQwc/5S8NmB/ttb
+ o1Gi8LkvTFBPSTzIg8EvQaBUXK91Y311tP8VU/VFDG8vrmQffuvbZ0n4gJBTYsH++yfbPeVPRV5
+ I/E44sM+6qnCeN/nXJDTHYpIue+A/8EC+aCaSdBQJ+7utcnBNuPujDPeiAge4jAHRar3AE39gNo
+ uoHR40OxhAg2A00dfcw==
+X-Proofpoint-GUID: zApI6EfdNfnmvc5iEELFwPCNYSrBn6bX
+X-Proofpoint-ORIG-GUID: zApI6EfdNfnmvc5iEELFwPCNYSrBn6bX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_05,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 clxscore=1015 suspectscore=0 bulkscore=0 phishscore=0
+ impostorscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512190124
 
-On Fri, 2025-12-19 at 13:16 +0200, Tomas Melin wrote:
->=20
-> On 18/12/2025 15:49, Nuno S=C3=A1 wrote:
-> > On Tue, 2025-12-16 at 11:40 +0000, Tomas Melin wrote:
-> > > Not all users can or want to use the device with an iio-backend.
-> > > For these users, let the driver work in standalone mode, not coupled
-> > > to the backend or the services it provides.
-> > >=20
-> > > Signed-off-by: Tomas Melin <tomas.melin@vaisala.com>
-> > > ---
-> > > =C2=A0drivers/iio/adc/ad9467.c | 37 +++++++++++++++++++++++++--------=
-----
-> > > =C2=A01 file changed, 25 insertions(+), 12 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> > > index 60fc3361b2689a4c38287c613ef93fe00338e5fa..37b8f88da6681d44f3fbb=
-b6c8c171ae7117b9090
-> > > 100644
-> > > --- a/drivers/iio/adc/ad9467.c
-> > > +++ b/drivers/iio/adc/ad9467.c
-> > > @@ -1000,6 +1000,9 @@ static int ad9467_update_scan_mode(struct iio_d=
-ev *indio_dev,
-> > > =C2=A0	unsigned int c;
-> > > =C2=A0	int ret;
-> > > =C2=A0
-> > > +	if (!st->back)
-> > > +		return -EOPNOTSUPP;
-> > > +
-> >=20
-> > Let's not add the buffering interface if we can't control it.
-> > Having it just to return error does not make sense to me. This means ye=
-t another info:
-> >=20
-> > https://elixir.bootlin.com/linux/v6.18.1/source/drivers/iio/adc/ad9467.=
-c#L916
-> >=20
->=20
-> I agree, not having the scan_mode at all would be more clean.
-> But adding those different iio_info structs comes across as a bit messy.
-> Would it make sense to create that iio_info dynamically in the probe and
-> fill out the callbacks that are supported for the configuration we
-> encounter? I could try out something like that and see how it would look
-> like in practice.
->=20
+On 12/19/25 3:31 PM, Krzysztof Kozlowski wrote:
+> Use dev_err_probe() to make error code handling simpler.
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> ---
 
-Hmm yeah, it's not just one more iio_info we need but 2. But maybe let's ke=
-ep it simple
-and remove the check in ad9467_update_scan_mode(). I mean, if I'm not missi=
-ng nothing,=20
-if there's no buffer, there's no real way for userspace to reach that code =
-path.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-- Nuno S=C3=A1
-
->=20
+Konrad
 

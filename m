@@ -1,53 +1,57 @@
-Return-Path: <linux-iio+bounces-27227-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27228-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BF8CD0DD0
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 17:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFEBCD0F3B
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 17:44:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7979E30038D2
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 16:21:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFA72301A190
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 16:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6722A3930C6;
-	Fri, 19 Dec 2025 16:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3512833D4EC;
+	Fri, 19 Dec 2025 16:40:21 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78273930C5
-	for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 16:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B71317A2EA;
+	Fri, 19 Dec 2025 16:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766161297; cv=none; b=IEe6pnPRulFRM493rwRNH92qJvfW1C4JxADTp9ZyJAXXhmHNWx84Eu1GP1NDVRwu6wkj827up0SfajoC8JKadCR9kQ6Tgu8lysFKv46LOeXr58+U+QyPTXlT+xscktfABXgxIg3ANWyNK3jvfC4A+b7cGStrR1CtHaAXJQa18kU=
+	t=1766162417; cv=none; b=IJcFve5M28fLIRo8yhsrNz5Tg7GKDDHwDhmZqiWZsE5cyrbgG6fVYgrYejt53SyY+5/08dXtPBHA4QlzoMLVwqgNVwi+Yce/enrocOzPUftkr/R24BT00YHtvcxojD8UONcCNE7ujsU56/++jHdxFh/ehri5TF3QJhQ7XJc62Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766161297; c=relaxed/simple;
-	bh=oKpvRf15PKI/JexCOmdqnaIYBcrKocXGJ7JPTW/odUE=;
+	s=arc-20240116; t=1766162417; c=relaxed/simple;
+	bh=Qnt5Ry3F4wGHOQAR8Zm+Q2n2lWPabtn+cXRIdgbU/j4=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JeKwSC8YTMepOgc+rR+OqJsW/4raxa+X5pHNO8mYGDmi43TDjvfQInHVl1fONW2xOtTCYMDOakLcSwKeQDA1QYK+E6DUpJwMOGYFh8ZoXGzHWIKrt/U5KoEcSH9iOE5ZjW+NszV1HAOqGVElSxg76gHxHqhSfQPBaMLaISJE+pY=
+	 MIME-Version:Content-Type; b=lsTNk9v13UbKNRd74uySeEYmZ7SFRmZDKAySLihlvDdARuCN4ga229e+qZf37B/Ea5Yj+tZAx8V7Aqd+LR9K18py+U01us4lVuliNWTjVY8Jo5cPdMXt79UU0FaC1Zu+b0iMPdoO4gO8IxfB8Zc9gG+a3yYJZpXEVJ5c+f85JZI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXt7Z3XBzzJ46Zv;
-	Sat, 20 Dec 2025 00:20:58 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXtY01cMbzJ46Bq;
+	Sat, 20 Dec 2025 00:39:32 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 583B140086;
-	Sat, 20 Dec 2025 00:21:31 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 1BC9B40570;
+	Sat, 20 Dec 2025 00:40:05 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 19 Dec
- 2025 16:21:30 +0000
-Date: Fri, 19 Dec 2025 16:21:29 +0000
+ 2025 16:40:04 +0000
+Date: Fri, 19 Dec 2025 16:40:02 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Nuno =?ISO-8859-1?Q?S=E1?= via B4 Relay
-	<devnull+nuno.sa.analog.com@kernel.org>
-CC: <nuno.sa@analog.com>, <linux-iio@vger.kernel.org>, Michael Hennerich
-	<Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, "David
- Lechner" <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v2] iio: dac: adi-axi-dac: Make use of dev_err_probe()
-Message-ID: <20251219162129.00006aa9@huawei.com>
-In-Reply-To: <20251219-iio-axi-dac-minor-changes-v2-1-e9fccc019b01@analog.com>
-References: <20251219-iio-axi-dac-minor-changes-v2-1-e9fccc019b01@analog.com>
+To: Janani Sunil <janani.sunil@analog.com>
+CC: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+	<Michael.Hennerich@analog.com>, Alexandru Ardelean
+	<alexandru.ardelean@analog.com>, Jonathan Cameron <jic23@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: iio: dac: Add max22007
+Message-ID: <20251219164002.00004c74@huawei.com>
+In-Reply-To: <20251219-max22007-dev-v1-1-242da2c2b868@analog.com>
+References: <20251219-max22007-dev-v1-0-242da2c2b868@analog.com>
+	<20251219-max22007-dev-v1-1-242da2c2b868@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -55,118 +59,143 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Fri, 19 Dec 2025 15:54:29 +0000
-Nuno S=E1 via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Fri, 19 Dec 2025 16:31:15 +0100
+Janani Sunil <janani.sunil@analog.com> wrote:
 
-> From: Nuno S=E1 <nuno.sa@analog.com>
->=20
-> Be consistent and use dev_err_probe() as in all other places in the
-> .probe() path.
->=20
-> While at it, remove the line break in the version condition. Yes, it
-> goes over the 80 column limit but I do think the line break hurts
-> readability in this case. And use a struct device *dev helper for
-> neater code.
->=20
-> Signed-off-by: Nuno S=E1 <nuno.sa@analog.com>
+Hi Janani and welcome to IIO.
 
-This has turned into a bit of an X and Y and Z patch.  In theory
-should be split up but I guess it's not too bad.
 
-However I'm not sure why you fixed one indent and left a bunch of similar
-cases looking worse?
+> Devicetree bindings for MAX22007 4-channel
+> 12-bit DAC that drives a voltage or current
+> output on each channel
 
-Jonathan
+This is a very short wrap. Aim for 75 characters in patch description lines
+(so slightly shorter than 80 chars standard for everything else).
+
+> 
+> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
 
 > ---
-> Ended up dropping the dev_info() -> dev_dbg() patch.
-> ---
-> Changes in v2:
-> - Patch 1
->   * Added helper struct device variable as suggested by Andy;
->   * Removed the braces as suggested by David.
-> - Link to v1: https://lore.kernel.org/r/20251203-iio-axi-dac-minor-change=
-s-v1-0-b54650cbeb33@analog.com
-> ---
->  drivers/iio/dac/adi-axi-dac.c | 63 +++++++++++++++++++++----------------=
-------
->  1 file changed, 30 insertions(+), 33 deletions(-)
->=20
-> diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
-> index 0d525272a8a8..ceab9f6fa3b4 100644
-> --- a/drivers/iio/dac/adi-axi-dac.c
-> +++ b/drivers/iio/dac/adi-axi-dac.c
+>  .../devicetree/bindings/iio/dac/adi,max22007.yaml  | 116 +++++++++++++++++++++
+>  MAINTAINERS                                        |   7 ++
+>  2 files changed, 123 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml b/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml
+> new file mode 100644
+> index 000000000000..c2f65d9e42d4
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml
 
+...
 
->  	/* Let's get the core read only configuration */
->  	ret =3D regmap_read(st->regmap, AXI_DAC_CONFIG_REG, &st->reg_config);
-> @@ -975,34 +972,34 @@ static int axi_dac_probe(struct platform_device *pd=
-ev)
-> =20
->  	mutex_init(&st->lock);
-> =20
-> -	ret =3D devm_iio_backend_register(&pdev->dev, st->info->backend_info, s=
-t);
-> +	ret =3D devm_iio_backend_register(dev, st->info->backend_info, st);
->  	if (ret)
-> -		return dev_err_probe(&pdev->dev, ret,
-> +		return dev_err_probe(dev, ret,
->  				     "failed to register iio backend\n");
-> =20
-> -	device_for_each_child_node_scoped(&pdev->dev, child) {
-> +	device_for_each_child_node_scoped(dev, child) {
->  		int val;
-> =20
->  		if (!st->info->has_child_nodes)
-> -			return dev_err_probe(&pdev->dev, -EINVAL,
-> +			return dev_err_probe(dev, -EINVAL,
->  					     "invalid fdt axi-dac compatible.");
-> =20
->  		/* Processing only reg 0 node */
->  		ret =3D fwnode_property_read_u32(child, "reg", &val);
->  		if (ret)
-> -			return dev_err_probe(&pdev->dev, ret,
-> +			return dev_err_probe(dev, ret,
->  						"invalid reg property.");
->  		if (val !=3D 0)
-> -			return dev_err_probe(&pdev->dev, -EINVAL,
-> +			return dev_err_probe(dev, -EINVAL,
->  						"invalid node address.");
-> =20
->  		ret =3D axi_dac_create_platform_device(st, child);
->  		if (ret)
-> -			return dev_err_probe(&pdev->dev, -EINVAL,
-> -						"cannot create device.");
-> +			return dev_err_probe(dev, -EINVAL,
-> +					     "cannot create device.");
-I'm not against this fixing up the indent but why not the ones above htat l=
-ook
-just as bad?
+> +  vdd-supply:
+> +    description: Low-Voltage Power Supply from +2.7V to +5.5V.
+> +
+> +  hvdd-supply:
+> +    description:
+> +      Positive High-Voltage Power Supply from +8V to (HVSS +24V) for
+> +      the Output Channels.
+> +
+> +  hvss-supply:
+> +    description:
+> +      Negative High-Voltage Power Supply from -2V to 0V for the Output Channels.
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +    description:
+> +      GPIO used for hardware reset of the device.
+> +
+> +patternProperties:
+> +  "^channel@[0-3]$":
+> +    allOf:
+> +      - $ref: /schemas/iio/dac/dac.yaml#
+> +      - type: object
+> +        description:
+> +          Represents the external channels which are connected to the DAC.
+> +          Channels not specified in the device tree will be powered off.
+> +
+> +        properties:
+> +          reg:
+> +            description: Channel number
+> +            maxItems: 1
 
+min / max?
 
->  	}
-> =20
-> -	dev_info(&pdev->dev, "AXI DAC IP core (%d.%.2d.%c) probed\n",
-> +	dev_info(dev, "AXI DAC IP core (%d.%.2d.%c) probed\n",
->  		 ADI_AXI_PCORE_VER_MAJOR(ver),
->  		 ADI_AXI_PCORE_VER_MINOR(ver),
->  		 ADI_AXI_PCORE_VER_PATCH(ver));
->=20
-> ---
-> base-commit: f9e05791642810a0cf6237d39fafd6fec5e0b4bb
-> change-id: 20251203-iio-axi-dac-minor-changes-945fa5f2e1eb
-> --
->=20
-> Thanks!
-> - Nuno S=E1
->=20
->=20
->=20
->=20
+> +
+> +          adi,type:
+> +            description: Channel output type.
+> +            $ref: /schemas/types.yaml#/definitions/string
+> +            enum: [voltage, current]
+This is much more constrained (as only two types of channel) but we do have
+precedence for adi,ch-func in adi,ad74115.yaml and adi,ad74413r.yaml
+
+That's not a particularly pretty binding but we should probably stick to
+it anyway.
+
+adi,type is too vague a name for this property anyway.
+
+> +
+> +        required:
+> +          - reg
+> +          - adi,type
+> +
+> +        unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+
+For supplies we document as required any that are needed for the device
+to function, whether or not we happen to need to specify them on
+a given board (given fallbacks that apply on assumption that fixes
+always on supplies are in use).  So I'd expect to see at least some
+of the supplies listed here.
+
+> +  - reg
+> +
+> +anyOf:
+> +  - required: [channel@0]
+> +  - required: [channel@1]
+> +  - required: [channel@2]
+> +  - required: [channel@3]
+
+Interesting. I'm not sure we have never bothered to document this before and there
+are other devices for which some sort of channel config is pretty much needed.
+What is the justification to have this explicitly listed here?
+
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        dac@0 {
+> +            compatible = "adi,max22007";
+> +            reg = <0>;
+> +            spi-max-frequency = <500000>;
+> +            reset-gpios = <&gpio 19 GPIO_ACTIVE_LOW>;
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            channel@0 {
+> +                reg = <0>;
+> +                adi,type = "voltage";
+> +            };
+> +
+> +            channel@1 {
+> +                reg = <1>;
+> +                adi,type = "current";
+> +            };
+> +        };
+> +    };
+> +...
 
 

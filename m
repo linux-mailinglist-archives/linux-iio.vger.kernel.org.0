@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-27236-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27235-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C34CCD1F9D
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 22:33:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E38CD1FA3
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 22:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7C8293002167
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 21:33:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1EAB304A7F7
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 21:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0195B3446AF;
-	Fri, 19 Dec 2025 21:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3706434404D;
+	Fri, 19 Dec 2025 21:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="h5xDNzCY"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eiKenuxs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391A42E8DEB
-	for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 21:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3537633C193
+	for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 21:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766180013; cv=none; b=VJBkAkbroSfDed897tGxDbbz1eE2DtGDbGBLbC00TsOIIS7baydlpfDfnpSH/f2i72q73MJzX7Mf4grDrTgA2N4O2uF1MvrCq+9bEYjWo4pfrcVSP5xg4oMtcG/8iydrI8t0g/PFOxJRxWK2AQ9dCIscnPS6nrHgmGzroYROQv0=
+	t=1766180013; cv=none; b=NwHNMHUTuNQ66sUeojdZYQaaxUm+Bacp5JUqsWSIPHx3I+Y+PEncHz/8EYq5kMNLRUBVaMwF7zqJu4JEk5csZ5kTzPLe/rtC6pYLtPj5IztnC/7kxs8WfFemeRgw74mm8wxPhjiHS3H9D2+Vj5OXj342u+U7IgfBbhuXajX608U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1766180013; c=relaxed/simple;
-	bh=eXLLDXKfOA+2V2f1sRQNUzsvVCDsgch7yTVzmIc7Kfs=;
+	bh=TqPWfvOKcEsi12rSA+ulOC61NeC7/72fTMR7lVl6WbU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Yu++AwtJM9zul1IYvuclKF10Zsydy9B3oxIiWvZ/r5vcJRMtJwc6k7thQaX37aRO1jt6VpAl03J+Glggny7WYhWpk6vuDmVX1QtSgdLeeaxhIMJiFQpZ0JYcIAAJ4AmwR49KNcWdfc3Kzp2Yo7WQkGytGCKwG4pX/+m47IJUnCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=h5xDNzCY; arc=none smtp.client-ip=209.85.167.177
+	 In-Reply-To:To:Cc; b=JZkGjk3ll7W2TRC0OJdD7MWmyFEHK7k18UZxsHY81VsKt6OPja1NUfeSv8UK8N6I1/3niIuBaT7axpvUhXFbwg6vt/Q7ReQ8FKyx7yC56mMKZMqxji3+Wj/KTGVMzt6UyNM08asM3Nm3dXDQtya6RggBmTlPNM3VWESpMcbMHAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eiKenuxs; arc=none smtp.client-ip=209.85.210.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-45085a4ab72so1270476b6e.1
-        for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 13:33:30 -0800 (PST)
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7c75fc222c3so880465a34.0
+        for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 13:33:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1766180009; x=1766784809; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1766180010; x=1766784810; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CwhL2XTdSKphpbDNArSNYm/QFBPbMdsK+MdRobcyzN8=;
-        b=h5xDNzCYa+kR/oZEZWzDXsu2VAju3tz9jqbZH4p16XSnK2vaFfv9RC4ETj2MfTg+7R
-         d6JVlEAsiGiA7gSYYVW26FtqFYG48LYc0qVKQOIwDIUdPDJ3MRw899XtSBB0/JjeNrVH
-         QQSqIc6K2BXHHMyuDyO6W5JtymoC6wNmfBiSScdRal11J+zzA74yky/gzm9U1aBbRj/L
-         lvf/l2xeICZEyxWqk/r67rQUGapGB5Q4lNYLAlsZM9C4Xyg1suQa7VcS0lBES41XX7h8
-         tq1/eFQWFse2jJZz7AblaEKkbbHlQpBruRAkbSAcO5mR86Y2YXaUuDRn77OglurseAHR
-         Jc/g==
+        bh=iqTEzojZ7TZAx7J/CtrZy1pdl4/BgUd5w2Zhg+1M8js=;
+        b=eiKenuxsWbO2Wf3tFNv7lnyWkvmxYDK4pfGNzZBEKiqBlDcuFpNabK8taP/NfBHune
+         TEV62AXnAICztvGJ9dEI7LwEVVk544gMSnSY9FXX8V0SgFKfFYp370iYHz3yvlS/P5tJ
+         HVLdnmTTuTKntb/qjYqP6AFJvF/lu1Qda+Vss+8nET2AOQEcF/Sw5dlWRoC4qdzy7DS7
+         /3SXlgiz8V30ihw+MWcl0Kp6VIruBCWCVkpcyhdoaCDiSPKbCshK1rBTF/Ii0ZLvWNpy
+         Uy6UTijR725FqE4y9PBctdudCI+beUnrt279FGmqnq29PiPsg1UnSsDyr7sHZRXeTZ7C
+         UR3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766180009; x=1766784809;
+        d=1e100.net; s=20230601; t=1766180010; x=1766784810;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=CwhL2XTdSKphpbDNArSNYm/QFBPbMdsK+MdRobcyzN8=;
-        b=KEBAQRHd06igPdvu519tjN3Cs6E7bYbcHJBJpzPF2e/RJJ1zeeRZPsp2XiddtQCMGU
-         FBHTTZRqC/3j99LCOTgnq12kDS+0ErJL78LWyZRum/rtQATYjDf3RHKd1l1/8OmDJkLm
-         hLdU+kKN42VphPjdC4u0OtfypjTOtEpgW+Dx/kqj+EOskjJsvgDmbM4oLr0Ihk2c/4lj
-         ArYKzToB7pbu+TcBWfKQ2lnCsTiCoNV33ENT52KOyseNEKOji1zt9d4MornZL8nDn1k2
-         jxi5FmETRXCgQ4PlqqNjzGVedFBXL5H9rma+H0KJhrpj/NsUxxBtuHj3jccS3tcHNwll
-         LS3A==
-X-Forwarded-Encrypted: i=1; AJvYcCWPOckLkk5f2A13CpNLgvZUFFIpP9EnUd/zg657B79XYYCQMzhCo8ZQQYo0/7vI+YtZpMnUJhwThbg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwypdEimC/sv3T66E8cPHe7cLTai3oCPdt2IO6t5RU6nNb1IKCM
-	I6/BfbJIc8UqtY2Q3haTxwgcIUO/6vcSdvgpBtuS3IMyfGOj39ntQ0uwlosqt1pSLKo=
-X-Gm-Gg: AY/fxX42pkHNhP3HQHJkT3e0chf8iYSGnMSZ491Upyp1AHeX6RmCK7phOlpbYuWhl1S
-	ASx4QpTG2bamsXAI672OKZg29o9x9a6/JCpHaFEfxRbMDWK0NvQkok68txRbR491d7rsvs392MT
-	rykGmK1D4HDIF7n9js4U5PlcholKzLsJJmAGNiRzFO2qvCnyZgzt7keNYFxsKCbsJ98Xd2dymb0
-	UHURCzVZjXyong9kiSRXaBzmHtDDxxYt/SeKcb5jj2DAfZ8lSfPiSS/hPKYtH1CtJyQeIDWurCF
-	0KWKwWEgrrDxOF7dkFE/z73UM0505I/hNgmmvEpv2NtcaujNhLwve9b1gQ6WUGjANsFCLxL9st0
-	XZw9V5Qa/AImtH7MKhVKebcIUlHOV2pmY6IA9jLNQOXJqdeCnN+3JmNdgTsHdItw5iv/1bQBPZC
-	P6p5YgyIx1+dDjjA==
-X-Google-Smtp-Source: AGHT+IHZJw+RiDLBmaeDbeQUFrqbDtSK1//gqrxlOK/7F319JCtYiEBVmJe2iut00bN7PQ7TNXN7GQ==
-X-Received: by 2002:a05:6808:189e:b0:450:c877:fd5f with SMTP id 5614622812f47-457b200ba40mr2182741b6e.49.1766180009065;
+        bh=iqTEzojZ7TZAx7J/CtrZy1pdl4/BgUd5w2Zhg+1M8js=;
+        b=cnTK5YRNtnzJfcNfWw5JrGFCDkvewaRIGd+rUYZRkaTcIYcDUNE8rj9WF8M0cKEKBX
+         yEBJ+YK08OcrPOhpZ0CasoomLCZDtyl8WAAMaaE5h/RMc23TwULc51eDxk5/chmwu/bX
+         RyUdYM6s4E0qglxIyimgb3zKnQpLfVTTBvAgLMK+3/xH8xgu5DmwGLF+QadwmFSA33oX
+         bMIvKl6iZHVDJQ9U10W7Rb5Lx73VI6Rm0/lts4BmfupCgZPuvFp7Nsv9nVA8StcTB7sH
+         +9sP1tIrhlV5JV/iWZxSRyw5dDPxN9ARhFrmTQY98YGkQxeEzYApkvhQRpEF2g/5+5Ds
+         vkLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXzCG0NviXHV/mFZ8TTImutzCwsoOJPGi/ZFa+Lb8RIuxiA7LoZUUyTTqI5eu76CHw9ZWPHJuprDt8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3WdC76VwO79oPlMMLuQ2uIvLqWoGUcuxvfphceAD6/WHeIt6Q
+	AoTP/FfoG6NdgRRS2yGKpqX3VFnSx/+5ZobSWThwxRVYxd0p1v9i5f6RvGVpMv6Ctaw=
+X-Gm-Gg: AY/fxX5k3i7f4NLrbrSviHDHbAFEWHsazy8lP7TuxydZbq/ODI6NB5CldJtiG57jzdE
+	MjXflQAwgJoQs+rWP2HL2U6u/igGNuTaWhrQUrng3xdKZ7pammJNbhMUr4XGl/YEl1ZwzcrDGgg
+	l60cg5tipCpq9VY6n3N+AdsY4sIxbMi63+3xpdeiGfCEPoTtFblqtSR1pPB4khNt7DaLqzVexd3
+	PazhcxxVTTg5TurO0pdAReC5eCj7IQAizbWijz9MlW8VlszX4Q7nLAXUHLiVqNk2B+q2ABzO3KF
+	aPlHK19Sp2EBX0jwBtQoULuL6nWINrihei8a8saYl+jWlGl9O3h2vAdbfpqcj2r91rhTFog0Cyp
+	oG3AdkOphOKnhm8bnIlgCkeBwnxoMRT2YF+auzDqacNJzoJ0y2kx3XRIyJkmLIxPDcS4jh0W9wI
+	1bb+6gjnGTTgvHiL/qV+SzcjRQ
+X-Google-Smtp-Source: AGHT+IHyP6fh0H8vwvnVPTmgakBhXpLLWUkiet6oHZRcT83wBBX+S6YNzLE4KzjmaR9ePZdUYAayXg==
+X-Received: by 2002:a05:6830:44a4:b0:78e:a394:ca24 with SMTP id 46e09a7af769-7cc668d0fb4mr2768916a34.8.1766180009947;
         Fri, 19 Dec 2025 13:33:29 -0800 (PST)
 Received: from [127.0.1.1] ([2600:8803:e7e4:500:9b20:bac4:9680:435])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667563ffsm2485045a34.13.2025.12.19.13.33.28
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667563ffsm2485045a34.13.2025.12.19.13.33.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 13:33:28 -0800 (PST)
+        Fri, 19 Dec 2025 13:33:29 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 19 Dec 2025 15:32:09 -0600
-Subject: [PATCH v4 1/9] spi: dt-bindings: change spi-{rx,tx}-bus-width to
- arrays
+Date: Fri, 19 Dec 2025 15:32:10 -0600
+Subject: [PATCH v4 2/9] spi: dt-bindings: add spi-{tx,rx}-lane-map
+ properties
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,7 +84,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251219-spi-add-multi-bus-support-v4-1-145dc5204cd8@baylibre.com>
+Message-Id: <20251219-spi-add-multi-bus-support-v4-2-145dc5204cd8@baylibre.com>
 References: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
 In-Reply-To: <20251219-spi-add-multi-bus-support-v4-0-145dc5204cd8@baylibre.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -98,263 +98,68 @@ Cc: Sean Anderson <sean.anderson@linux.dev>, linux-spi@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-iio@vger.kernel.org, David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9014; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=eXLLDXKfOA+2V2f1sRQNUzsvVCDsgch7yTVzmIc7Kfs=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBpRcRqhY5V6vWS8QZzXn5TO9ZsSyacivD7iII1g
- aFHllTGzXWJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaUXEagAKCRDCzCAB/wGP
- wKTNCACM6BZcUhlLZs31DgYm4ylqfRE/65t20Nh62ANpb0i3H5ZSZEa+LB73pzj868YLQjlEYo/
- IEiz3BUDJdRjxh+Jc1hY7490TCgX9uLua7OCy88M58/i5SfTm/mFkmfSPJQ90vPciOLVWyO9G5d
- ++uOVWW8BHbx1Jy5/bMZnsNaTXS1kHDBCnM/VoSObk+8GYuY/UpKgZENTF3Cye1LF80HOQAs/Sz
- Mqgc645DVmGl2gP3qWifSinC+0Or2hjuwjuAoT7SZ9k6J8gr1M+ACfhL8WBEcNLSJJLrDPaaaZL
- /ZawSYElxndMZbmh6FBhDYyXuGKcx6mVg+3Z0LzxfslZ7tk+
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2219; i=dlechner@baylibre.com;
+ h=from:subject:message-id; bh=TqPWfvOKcEsi12rSA+ulOC61NeC7/72fTMR7lVl6WbU=;
+ b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBpRcRxkkWWmrsQKWOdOOI4zUmj8yp+SSBCoYPla
+ Ijt1bECtPOJATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaUXEcQAKCRDCzCAB/wGP
+ wOS5B/95gImmMOy/n5PIPOKuqGZKZlN6KkZHhVvrFPsEYpOxGhMAm2wfTl/Hi6Ro1jAT1xSOPGF
+ e9a7iLotreIH1SHeMvvvzUyZM8OSPL1PYw72p+OXRAnXJLkAFv1SH1irWKZ4klHAkfkpQPs/Z/D
+ bmsFLhKMWtTS8Cjh9MCflaYH6uETdgh7NwIyECT/z2BqK/RQWjJ0PkBijrJfbryfoQiPbJIQgkJ
+ XGHzpjN2RaX9Q/XhkJxq8z7yyeWEbS3Am7uW54r13ra/K7v/G+AupfGhqZU7T4paWW8fR6/WUGQ
+ RozmMQzn7BtuCXf8H1q8+SGyD7Om84FmAVZYKv91k6mn3/BY
 X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
  fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
 
-Change spi-rx-bus-width and spi-tx-bus-width properties from single
-uint32 values to arrays of uint32 values. This allows describing SPI
-peripherals connected to controllers that have multiple data lanes for
-receiving or transmitting two or more words in parallel.
-
-Each index in the array corresponds to a physical data lane (one or more
-wires depending on the bus width). Additional mapping properties will be
-needed in cases where a lane on the controller or peripheral is skipped.
-
-Bindings that make use of this property are updated in the same commit
-to avoid validation errors.
-
-The adi,ad4030 binding can now better describe the chips multi-lane
-capabilities, so that binding is refined and gets a new example.
-
-Converting from single uint32 to array of uint32 does not break .dts/
-.dtb files since there is no difference between specifying a single
-uint32 value and an array with a single uint32 value in devicetree.
+Add spi-tx-lane-map and spi-rx-lane-map properties to the SPI peripheral
+device tree binding. These properties allow specifying the mapping of
+peripheral data lanes to controller data lanes. This is needed e.g. when
+some lanes are skipped on the controller side so that the controller
+can correctly route data to/from the peripheral.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
 v4 changes:
-- New patch to replace data-lanes property patch.
-
-In v3, Rob suggested possibly splitting the spi-controller.yaml file
-to have a way to make most SPI controllers have maxItems: 1 for these
-properties. I would like to avoid that because it doesn't seem scalable,
-e.g. if we need another similar split in the future, the number of
-combinations would grow exponentially (factorially?). I have an idea to
-instead do this using $dynamicAnchor and $dynamicRef, but dt-schema
-doesn't currently support that. So I propose we do the best we can for
-now with the current dt-schema and make further improvements later.
-
-Also, in v3, I suggested that we could have leading 0s in the arrays
-to indicate unused lanes. But after further consideration, I think it's
-better to have separate lane-mapping properties for that purpose. It
-will be easier to explain and parse and be a bit more flexible that way.
+- This replaces the data-lanes property from the previous revision. Now
+  there are separate properties for tx and rx lane maps. And instead of
+  being the primary property for determining the number of lanes, this
+  is only needed in special cases where the mapping is non-trivial.
 ---
- .../bindings/display/panel/sitronix,st7789v.yaml   |  5 +--
- .../devicetree/bindings/iio/adc/adi,ad4030.yaml    | 42 +++++++++++++++++++++-
- .../devicetree/bindings/iio/adc/adi,ad4695.yaml    |  5 +--
- .../bindings/spi/allwinner,sun4i-a10-spi.yaml      |  6 ++--
- .../bindings/spi/allwinner,sun6i-a31-spi.yaml      |  6 ++--
- .../bindings/spi/nvidia,tegra210-quad.yaml         |  6 ++--
- .../bindings/spi/spi-peripheral-props.yaml         | 26 ++++++++++----
- 7 files changed, 79 insertions(+), 17 deletions(-)
+ .../devicetree/bindings/spi/spi-peripheral-props.yaml      | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml b/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml
-index 0ce2ea13583d..c35d4f2ab9a4 100644
---- a/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml
-@@ -34,8 +34,9 @@ properties:
-   spi-cpol: true
- 
-   spi-rx-bus-width:
--    minimum: 0
--    maximum: 1
-+    items:
-+      minimum: 0
-+      maximum: 1
- 
-   dc-gpios:
-     maxItems: 1
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
-index 54e7349317b7..e22d518135f2 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
-@@ -37,7 +37,15 @@ properties:
-     maximum: 102040816
- 
-   spi-rx-bus-width:
--    enum: [1, 2, 4]
-+    maxItems: 2
-+    # all lanes must have the same width
-+    oneOf:
-+      - contains:
-+          const: 1
-+      - contains:
-+          const: 2
-+      - contains:
-+          const: 4
- 
-   vdd-5v-supply: true
-   vdd-1v8-supply: true
-@@ -88,6 +96,18 @@ oneOf:
- 
- unevaluatedProperties: false
- 
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          enum:
-+            - adi,ad4030-24
-+            - adi,ad4032-24
-+    then:
-+      properties:
-+        spi-rx-bus-width:
-+          maxItems: 1
-+
- examples:
-   - |
-     #include <dt-bindings/gpio/gpio.h>
-@@ -108,3 +128,23 @@ examples:
-             reset-gpios = <&gpio0 1 GPIO_ACTIVE_LOW>;
-         };
-     };
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+            compatible = "adi,ad4630-24";
-+            reg = <0>;
-+            spi-max-frequency = <80000000>;
-+            spi-rx-bus-width = <4>, <4>;
-+            vdd-5v-supply = <&supply_5V>;
-+            vdd-1v8-supply = <&supply_1_8V>;
-+            vio-supply = <&supply_1_8V>;
-+            ref-supply = <&supply_5V>;
-+            cnv-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
-+            reset-gpios = <&gpio0 1 GPIO_ACTIVE_LOW>;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
-index cbde7a0505d2..ae8d0b5f328b 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
-@@ -38,8 +38,9 @@ properties:
-   spi-cpha: true
- 
-   spi-rx-bus-width:
--    minimum: 1
--    maximum: 4
-+    items:
-+      minimum: 1
-+      maximum: 4
- 
-   avdd-supply:
-     description: Analog power supply.
-diff --git a/Documentation/devicetree/bindings/spi/allwinner,sun4i-a10-spi.yaml b/Documentation/devicetree/bindings/spi/allwinner,sun4i-a10-spi.yaml
-index e1ab3f523ad6..a34e6471dbe8 100644
---- a/Documentation/devicetree/bindings/spi/allwinner,sun4i-a10-spi.yaml
-+++ b/Documentation/devicetree/bindings/spi/allwinner,sun4i-a10-spi.yaml
-@@ -55,10 +55,12 @@ patternProperties:
-           maximum: 4
- 
-       spi-rx-bus-width:
--        const: 1
-+        items:
-+          - const: 1
- 
-       spi-tx-bus-width:
--        const: 1
-+        items:
-+          - const: 1
- 
- required:
-   - compatible
-diff --git a/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml b/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
-index 3b47b68b92cb..414f5bc36304 100644
---- a/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
-+++ b/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
-@@ -77,10 +77,12 @@ patternProperties:
-           maximum: 4
- 
-       spi-rx-bus-width:
--        const: 1
-+        items:
-+          - const: 1
- 
-       spi-tx-bus-width:
--        const: 1
-+        items:
-+          - const: 1
- 
- required:
-   - compatible
-diff --git a/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml b/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
-index 8b3640280559..909c204b8adf 100644
---- a/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
-+++ b/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
-@@ -54,10 +54,12 @@ patternProperties:
- 
-     properties:
-       spi-rx-bus-width:
--        enum: [1, 2, 4]
-+        items:
-+          - enum: [1, 2, 4]
- 
-       spi-tx-bus-width:
--        enum: [1, 2, 4]
-+        items:
-+          - enum: [1, 2, 4]
- 
- required:
-   - compatible
 diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-index 8b6e8fc009db..59ddead7da14 100644
+index 59ddead7da14..2f278f145f78 100644
 --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
 +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-@@ -64,9 +64,16 @@ properties:
-     description:
-       Bus width to the SPI bus used for read transfers.
-       If 0 is provided, then no RX will be possible on this device.
--    $ref: /schemas/types.yaml#/definitions/uint32
--    enum: [0, 1, 2, 4, 8]
--    default: 1
-+
-+      Some SPI peripherals and controllers may have multiple data lanes for
-+      receiving two or more words at the same time. If this is the case, each
-+      index in the array represents the lane on both the SPI peripheral and
-+      controller. Additional mapping properties may be needed if a lane is
-+      skipped on either side.
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    items:
-+      enum: [0, 1, 2, 4, 8]
-+    default: [1]
+@@ -75,6 +75,13 @@ properties:
+       enum: [0, 1, 2, 4, 8]
+     default: [1]
  
++  spi-rx-lane-map:
++    description: Mapping of peripheral RX lanes to controller RX lanes.
++      Each index in the array represents a peripheral RX lane, and the value
++      at that index represents the corresponding controller RX lane.
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    default: [0, 1, 2, 3, 4, 5, 6, 7]
++
    spi-rx-delay-us:
      description:
-@@ -81,9 +88,16 @@ properties:
-     description:
-       Bus width to the SPI bus used for write transfers.
-       If 0 is provided, then no TX will be possible on this device.
--    $ref: /schemas/types.yaml#/definitions/uint32
--    enum: [0, 1, 2, 4, 8]
--    default: 1
-+
-+      Some SPI peripherals and controllers may have multiple data lanes for
-+      transmitting two or more words at the same time. If this is the case, each
-+      index in the array represents the lane on both the SPI peripheral and
-+      controller. Additional mapping properties may be needed if a lane is
-+      skipped on either side.
-+    $ref: /schemas/types.yaml#/definitions/uint32-array
-+    items:
-+      enum: [0, 1, 2, 4, 8]
-+    default: [1]
+       Delay, in microseconds, after a read transfer.
+@@ -99,6 +106,13 @@ properties:
+       enum: [0, 1, 2, 4, 8]
+     default: [1]
  
++  spi-tx-lane-map:
++    description: Mapping of peripheral TX lanes to controller TX lanes.
++      Each index in the array represents a peripheral TX lane, and the value
++      at that index represents the corresponding controller TX lane.
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    default: [0, 1, 2, 3, 4, 5, 6, 7]
++
    spi-tx-delay-us:
      description:
+       Delay, in microseconds, after a write transfer.
 
 -- 
 2.43.0

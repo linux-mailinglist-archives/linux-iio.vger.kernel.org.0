@@ -1,43 +1,43 @@
-Return-Path: <linux-iio+bounces-27229-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27230-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B316CD1074
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 18:02:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 781FFCD1258
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 18:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3C00305C4D9
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 16:57:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3B6E30699F8
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Dec 2025 17:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1863363C6C;
-	Fri, 19 Dec 2025 16:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613F933C195;
+	Fri, 19 Dec 2025 17:25:19 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2D3362149;
-	Fri, 19 Dec 2025 16:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A828933C526;
+	Fri, 19 Dec 2025 17:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766162880; cv=none; b=eHo7LXgBpu/1Z+hMXX2ArfOFa/P39D+TK28WtO/n33xmsz40cacNH1ld38fKKLATbvlj9tzZE3Ps9i0EV/W+8gaXSc7zSPrDTfyOnhEAExYUdrNIHL3efwk3ZctZjT16zWBARkK8LYPhnsBCuGELrb8FDQjn3y8CPIXTzZZxPHA=
+	t=1766165119; cv=none; b=JPGRtIneZnjanFaunsdcdPHN7hDYS5m7OI/uJAO1zgpg8ugYua9D7r/e5nBvZ4IhzPQNYIpNT6tYWw3TAk94MDPsDAhqRkmMiB+TVNpiX5regzb09pIqkkdRc6MzYPPuizdc7lwmvhJhui/XgRimnktkKD9jpej5I2UYD+AjdQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766162880; c=relaxed/simple;
-	bh=veaI2Hyw5XDkCbLY7TNen/xnQCUK4A9YfVNXGZc4LK4=;
+	s=arc-20240116; t=1766165119; c=relaxed/simple;
+	bh=2w+DYCeMPk4/HycoIpp2rzdmdOGFmloapcqs7tnJV2Y=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T411TbTwoyUOTJvrENUD8Ct8vt1wiIPn1gANwYcKP9OiUgFtlW8eGJoeLCE/5LVhOjXBa3gTG4hSm/S2dbrhpsPTu6VMpa2RJp6SaQRb+MmZGqqa4hopCey5hV/6ESlLrLYI0rtDDeVSqA+QPFlrVpstVRkMrXvYiw8Qw4v/qYk=
+	 MIME-Version:Content-Type; b=eizPAo5T4kQ29RIyLz9kxeFrhmKVHSnZIZnYDOFce0fF/GGEgjtF3KkqgkPJ/+VW3HEx+ezgSw0KlfGu3WrtLGzfQOlLpED3PJExBkUtSuXNg1xuR5jr6zhs7DXHZkS5CPRcoWeiTY2N2M9gWj7TkazAa8ytCAkfgviiZlbpJ68=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXtk10WVYzJ468s;
-	Sat, 20 Dec 2025 00:47:21 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXvY71shzzHnGk1;
+	Sat, 20 Dec 2025 01:24:43 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id EC06B40570;
-	Sat, 20 Dec 2025 00:47:53 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id BEB644056C;
+	Sat, 20 Dec 2025 01:25:12 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 19 Dec
- 2025 16:47:53 +0000
-Date: Fri, 19 Dec 2025 16:47:51 +0000
+ 2025 17:25:11 +0000
+Date: Fri, 19 Dec 2025 17:25:10 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Janani Sunil <janani.sunil@analog.com>
 CC: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
@@ -47,11 +47,11 @@ CC: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
  Dooley" <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
 	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH 2/3] docs: iio: Add documentation for MAX22007 driver
-Message-ID: <20251219164751.000071a1@huawei.com>
-In-Reply-To: <20251219-max22007-dev-v1-2-242da2c2b868@analog.com>
+Subject: Re: [PATCH 3/3] iio: dac: Add MAX22007 DAC driver support
+Message-ID: <20251219172510.00007208@huawei.com>
+In-Reply-To: <20251219-max22007-dev-v1-3-242da2c2b868@analog.com>
 References: <20251219-max22007-dev-v1-0-242da2c2b868@analog.com>
-	<20251219-max22007-dev-v1-2-242da2c2b868@analog.com>
+	<20251219-max22007-dev-v1-3-242da2c2b868@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,250 +59,442 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Fri, 19 Dec 2025 16:31:16 +0100
+On Fri, 19 Dec 2025 16:31:17 +0100
 Janani Sunil <janani.sunil@analog.com> wrote:
 
-> Add documentation for MAX22007 driver which describes how the user
-> can access the driver using dtoverlays
->=20
+> Add support for the MAX22007 4 channel DAC
+> that drives a voltage or current output on each channel.
+wrap to 75 chars rather than 50-60ish
+> 
 > Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+Hi Janani
 
-Hi Janani,
+A few minor things inline.  Also add turning on any required
+power supplies.  See how other drivers do it with a single call
+in in probe. If your board is using always on supplies it will just
+work as a stub regulator will be provided by the regulator core.
 
-We've recently had a few comments on whether driver specific docs add value
-(for particular drivers, sometimes they definitely do!).  From what I'm
-seeing here, I'm not thinking this one needs a document.  Not most drivers
-don't have such a file because they make use of standard ABI that is well
-documented.  DT stuff always belongs in the dt-binding rather than these
-files.  With both those elements gone there isn't much value to this file.
-So I'd drop it.  We can easily add a file if something complex shows up
-in later patches, that justifies this.
 
 Thanks,
 
 Jonathan
 
-> ---
->  Documentation/iio/index.rst    |   1 +
->  Documentation/iio/max22007.rst | 145 +++++++++++++++++++++++++++++++++++=
-++++++
->  MAINTAINERS                    |   1 +
->  3 files changed, 147 insertions(+)
->=20
-> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-> index 315ae37d6fd4..7601bc2882e7 100644
-> --- a/Documentation/iio/index.rst
-> +++ b/Documentation/iio/index.rst
-> @@ -37,4 +37,5 @@ Industrial I/O Kernel Drivers
->     adxl345
->     bno055
->     ep93xx_adc
-> +   max22007
->     opt4060
-> diff --git a/Documentation/iio/max22007.rst b/Documentation/iio/max22007.=
-rst
+> diff --git a/drivers/iio/dac/max22007.c b/drivers/iio/dac/max22007.c
 > new file mode 100644
-> index 000000000000..e04c563f1fd0
+> index 000000000000..0d57fee27367
 > --- /dev/null
-> +++ b/Documentation/iio/max22007.rst
-> @@ -0,0 +1,145 @@
-> +.. SPDX-License-Identifier: GPL-2.0-only
-> +
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +MAX22007 driver
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Device driver for Analog Devices Inc. MAX22007 quad-channel industrial D=
-AC.
-> +The module name is ``max22007``.
-> +
-> +Supported devices
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +* `MAX22007 <https://www.analog.com/en/products/max22007.html>`_
-> +
-> +Wiring connections
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The MAX22007 uses a standard SPI interface.
-I'd not bother with this section.  Most SPI devices after all use
-the standard interface, so we can document this by not documenting anything
-else :)
+> +++ b/drivers/iio/dac/max22007.c
+> @@ -0,0 +1,487 @@
 
 > +
-> +Device Tree Configuration
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
+> +#define MAX22007_NUM_CHANNELS				4
+> +#define MAX22007_REV_ID_REG				0x00
+> +#define MAX22007_STAT_INTR_REG				0x01
+> +#define MAX22007_INTERRUPT_EN_REG			0x02
+> +#define MAX22007_CONFIG_REG				0x03
+> +#define MAX22007_CONTROL_REG				0x04
+> +#define MAX22007_CHANNEL_MODE_REG			0x05
+> +#define MAX22007_SOFT_RESET_REG				0x06
+> +#define MAX22007_DAC_CHANNEL_REG(ch)			(0x07 + (ch))
+> +#define MAX22007_GPIO_CTRL_REG				0x0B
+> +#define MAX22007_GPIO_DATA_REG				0x0C
+> +#define MAX22007_GPI_EDGE_INT_CTRL_REG			0x0D
+> +#define MAX22007_GPI_INT_STATUS_REG			0x0E
+> +
+> +/* Channel mask definitions */
+> +#define     MAX22007_CH_MODE_CH_MASK(channel)		BIT(12 + (channel))
+maybe use x or ch rather than channel to shorten the defines a little.
 
-Anything here should be in the dt-binding. As such this section isn't usefu=
-l.
+> +#define     MAX22007_CH_PWR_CH_MASK(channel)		BIT(8 + (channel))
+> +#define     MAX22007_DAC_LATCH_MODE_MASK(channel)	BIT(12 + (channel))
+> +#define     MAX22007_LDAC_UPDATE_MASK(channel)		BIT(12 + (channel))
+> +#define     MAX22007_SW_RST_MASK			BIT(8)
+> +#define     MAX22007_SW_CLR_MASK			BIT(12)
+> +#define     MAX22007_SOFT_RESET_BITS_MASK		(MAX22007_SW_RST_MASK | \
+> +	    MAX22007_SW_CLR_MASK)
 
-> +
-> +The device supports both global and per-channel configuration through de=
-vice tree.
-> +
-> +Global Properties:
-> +
-> +* ``reset-gpios``: GPIO pin for hardware reset (optional, falls back to
-> +  software reset if not specified)
-> +* ``vdd-supply``: Low-Voltage Power Supply from +2.7V to +5.5V (optional)
-> +* ``hvdd-supply``: Positive High-Voltage Power Supply from +8V to (HVSS =
-+24V)
-> +  for the Output Channels (optional)
-> +* ``hvss-supply``: Negative High-Voltage Power Supply from -2V to 0V for=
- the
-> +  Output Channels (optional)
-> +
-> +Per-channel properties:
-> +
-> +* ``adi,type``: Specify the channel output type - must be either "voltag=
-e" or "current" (mandatory)
-> +
-> +Note: The driver operates in transparent mode (immediate register-to-out=
-put updates).
-> +Channel mode is determined by the ``adi,type`` property:
-> +
-> +* ``adi,type =3D "current"``: the channel operates in current mode
-> +* ``adi,type =3D "voltage"``: the channel operates in voltage mode
-> +
-> +Device attributes
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The MAX22007 driver provides IIO DAC interfaces that vary based on the
-> +configured channel mode. Each channel appears as a separate IIO device
-> +attribute:
-> +
-> +* ``out_voltage_raw`` (voltage mode channels)
-> +* ``out_current_raw`` (current mode channels)
-> +* ``out_voltage_scale`` / ``out_current_scale`` (channel scaling factors)
-> +* ``out_voltage_powerdown`` / ``out_current_powerdown`` (channel power c=
-ontrol)
-> +
-> +The driver automatically configures the IIO channel type based on the co=
-nfigured
-> +channel mode from device tree.
-This bit feels very standard and so not in need of extra documentation.
+Align after (
 
+> +#define     MAX22007_DAC_DATA_MASK			GENMASK(15, 4)
+> +#define     MAX22007_DAC_MAX_RAW			GENMASK(11, 0)
+> +#define     MAX22007_CRC8_POLYNOMIAL			0x8C
+> +#define     MAX22007_CRC_EN_MASK			BIT(0)
+> +#define     MAX22007_RW_MASK				BIT(0)
+> +#define     MAX22007_CRC_OVERHEAD			1
 > +
-> +Power Mode Control
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +/* Field value preparation macros with masking */
+> +#define     MAX22007_CH_PWR_VAL(channel, val)	(((val) & 0x1) << (8 + (channel)))
+> +#define     MAX22007_CH_MODE_VAL(channel, val)	(((val) & 0x1) << (12 + (channel)))
+> +#define     MAX22007_DAC_LATCH_MODE_VAL(channel, val)	(((val) & 0x1) << (12 + (channel)))
 > +
-> +Each channel provides standard IIO ``powerdown`` attributes for runtime =
-power
-> +control:
+> +static u8 max22007_crc8_table[256];
 > +
-> +* Write ``1`` to power down (disable) the channel output
-> +* Write ``0`` to power up (enable) the channel output
-> +* Read the attribute to get the current power state (1=3Dpowered down, 0=
-=3Dpowered up)
-> +
-> +This allows individual channels to be powered on/off independently for p=
-ower
-> +management and safety purposes.
+> +enum max22007_channel_mode {
+> +	MAX22007_VOLTAGE_MODE,
+> +	MAX22007_CURRENT_MODE
+Add trailing comma. Not obvious there will never be more if other devices are supported
+by the driver.
 
-Likewise, this is very standard.
+I'd also give these explicit values given they are written to HW.
+= 0, 
+= 1,
 
+> +};
 > +
-> +Usage Examples
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Setting DAC output values:
-> +
-> +.. code-block:: bash
-> +
-> +   # Set channel 0 (voltage mode) to raw value 655 (=E2=89=882V)
-> +   # Output is updated immediately in transparent mode
-> +   echo 655 > /sys/bus/iio/devices/iio:deviceX/out_voltage0_raw
-> +
-> +   # Set channel 1 (current mode)
-> +   # Output is updated immediately in transparent mode
-> +   echo 1024 > /sys/bus/iio/devices/iio:deviceX/out_current1_raw
-> +
-> +Controlling channel power modes:
-> +
-> +.. code-block:: bash
-> +
-> +   # Enable channel 0 (power up)
-> +   echo 0 > /sys/bus/iio/devices/iio:deviceX/out_voltage0_powerdown
-> +
-> +   # Disable channel 1 (power down)
-> +   echo 1 > /sys/bus/iio/devices/iio:deviceX/out_current1_powerdown
-> +
-> +   # Check current power state (0=3Dpowered up, 1=3Dpowered down)
-> +   cat /sys/bus/iio/devices/iio:deviceX/out_voltage0_powerdown
-> +
-> +Reading channel values and scale factors:
-> +
-> +.. code-block:: bash
-> +
-> +   # Read raw DAC value
-> +   cat /sys/bus/iio/devices/iio:deviceX/out_voltage0_raw
-> +
-> +   # Read scale factor (volts per LSB)
-> +   cat /sys/bus/iio/devices/iio:deviceX/out_voltage0_scale
-> +
-> +Check available channels:
-> +
-> +.. code-block:: bash
-> +
-> +   ls /sys/bus/iio/devices/iio:deviceX/out_*_raw
-> +
-> +Scale Calculations
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The driver provides accurate scale factors based on the hardware configu=
-ration:
+> +enum max22007_channel_power {
+> +	MAX22007_CH_POWER_OFF,
+> +	MAX22007_CH_POWER_ON,
+This isn't bringing value over renaming the field mask define
+to MAX22007_CH_PWRON_CH_MASK()
+and using 0 / 1 as appropriate.
 
-This information doesn't need to be provided explicitly.  Anyone who
-wonders in detail about it can check the driver. For most users the fact
-it obeys the standard ABI rules is eough.
+> +};
+> +
+> +struct max22007_state {
+> +	struct spi_device *spi;
+> +	struct regmap *regmap;
+> +	struct iio_chan_spec *iio_chan;
+
+I'd go with iio_chans just to make it clear there can be multiple.
+
+> +	u8 tx_buf[4] __aligned(IIO_DMA_MINALIGN);
+> +	u8 rx_buf[4];
+> +};
+> +
+> +static int max22007_spi_read(void *context, const void *reg, size_t reg_size,
+> +			     void *val, size_t val_size)
+> +{
+> +	struct max22007_state *st = context;
+> +	u8 calculated_crc, received_crc;
+> +	u8 crc_data[3];
+> +	int ret;
+> +	struct spi_transfer xfer = {
+> +		.tx_buf = st->tx_buf,
+> +		.rx_buf = st->rx_buf,
+> +	};
+> +
+> +	xfer.len = reg_size + val_size + MAX22007_CRC_OVERHEAD;
+> +
+> +	memcpy(st->tx_buf, reg, reg_size);
+> +
+> +	ret = spi_sync_transfer(st->spi, &xfer, 1);
+> +	if (ret) {
+> +		dev_err(&st->spi->dev, "SPI transfer failed: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	crc_data[0] = st->tx_buf[0];
+> +	crc_data[1] = st->rx_buf[1];
+> +	crc_data[2] = st->rx_buf[2]
+
+The use of only the first byte for tx and later for rx suggest this a
+spi_write_then_read()
+
+Using that should simplify your code a little particularly as it doesn't need
+dma safe buffers (bounces anyway).
+
+I'd be tempted to check reg_size == 1 then hard code that through this function.
+
 
 > +
-> +**Voltage Mode:**
+> +	calculated_crc = crc8(max22007_crc8_table, crc_data, 3, 0x00);
+> +	received_crc = st->rx_buf[3];
 > +
-> +- Scale =3D (5 =C3=97 2.5V) / 4096 =3D 0.003051757 V per LSB
-> +- Range: 0V to 12.5V over 12-bit (0-4095)
-> +- Formula: Output =3D Raw_Value =C3=97 Scale
+> +	if (calculated_crc != received_crc) {
+> +		dev_err(&st->spi->dev, "CRC mismatch on read register %02x:\n", *(u8 *)reg);
+> +		return -EIO;
+> +	}
 > +
-> +**Current Mode:**
+> +	/* Ignore the dummy byte 0 */
+> +	memcpy(val, &st->rx_buf[1], val_size);
 > +
-> +- Scale =3D (2.5V / (2 =C3=97 50=CE=A9)) / 4096 =3D 0.000006103515625 A =
-per LSB
-> +- Range: 0A to 0.025A over 12-bit (0-4095)
-> +- Formula: Output =3D Raw_Value =C3=97 Scale
+> +	return 0;
+> +}
 > +
-> +Driver Architecture
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +static int max22007_spi_write(void *context, const void *data, size_t count)
+> +{
+> +	struct max22007_state *st = context;
+> +	struct spi_transfer xfer = {
+> +		.tx_buf = st->tx_buf,
+> +		.rx_buf = st->rx_buf,
+> +	};
 > +
-> +The driver implements:
+> +	memset(st->tx_buf, 0, sizeof(st->tx_buf));
 > +
-> +* **CRC8 Error Checking**: Always-enabled CRC8 for SPI data integrity
-> +* **Channel Configuration**: Supports per-channel mode and power configu=
-ration
+> +	xfer.len = count + MAX22007_CRC_OVERHEAD;
 > +
-> +Channel configuration (voltage/current mode) is set via the ``adi,type``
-> +device tree property and cannot be changed dynamically The driver requir=
-es
-> +proper device tree configuration with mandatory ``adi,type`` property fo=
-r each
-> +channel.
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e1addbd21562..6561455732c9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1599,6 +1599,7 @@ L:	linux-iio@vger.kernel.org
->  S:	Supported
->  W:	https://ez.analog.com/linux-software-drivers
->  F:	Documentation/devicetree/bindings/iio/dac/adi,max22007.yaml
-> +F:	Documentation/iio/max22007.rst
-> =20
->  ANALOG DEVICES INC ADA4250 DRIVER
->  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
->=20
+> +	memcpy(st->tx_buf, data, count);
+> +	st->tx_buf[count] = crc8(max22007_crc8_table, st->tx_buf,
+> +				 sizeof(st->tx_buf) - 1, 0x00);
+> +
+> +	return spi_sync_transfer(st->spi, &xfer, 1);
+> +}
+
+> +static int max22007_write_channel_data(struct max22007_state *state, unsigned int channel,
+> +				       unsigned int data)
+> +{
+> +	unsigned int reg_val;
+> +
+> +	if (data > MAX22007_DAC_MAX_RAW)
+> +		return -EINVAL;
+> +
+> +	reg_val = FIELD_PREP(MAX22007_DAC_DATA_MASK, data);
+> +
+> +	return regmap_write(state->regmap, MAX22007_DAC_CHANNEL_REG(channel), reg_val);
+> +}
+> +
+> +static int max22007_read_channel_data(struct max22007_state *state, unsigned int channel,
+
+Where it doesn't hurt readability my preference is still to stay nearer to 80 chars.
+
+> +				      int *data)
+> +{
+> +	int ret;
+> +	unsigned int reg_val;
+> +
+> +	ret = regmap_read(state->regmap, MAX22007_DAC_CHANNEL_REG(channel), &reg_val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*data = FIELD_GET(MAX22007_DAC_DATA_MASK, reg_val);
+> +
+> +	return 0;
+> +}
+> +
+> +static int max22007_read_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int *val, int *val2, long mask)
+> +{
+> +	struct max22007_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = max22007_read_channel_data(st, chan->channel, val);
+> +		if (ret)
+> +			return ret;
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		if (chan->type == IIO_VOLTAGE) {
+> +			*val = 5 * 2500;  /* 5 * Vref(2.5V) in mV */
+> +			*val2 = 12;  /* 12-bit DAC resolution (2^12) */
+
+Given resolution is the same either way, drop that out of the if / else
+		if (chan->type == IIO_VOLTAGE)
+			*val = ...
+		else
+			*val = ...
+		val2 = 12; /* 12-bit DAC resolution */
+
+The 2^12 is a bit confusing so I'd drop that bit.
+
+> +		} else {
+> +			*val = 25;  /* Vref / (2 * Rsense) = 2500mV / 100 */
+> +			*val2 = 12;  /* 12-bit DAC resolution (2^12) */
+> +		}
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+
+
+> +static const struct iio_chan_spec_ext_info max22007_ext_info[] = {
+> +	{
+> +		.name = "powerdown",
+> +		.read = max22007_read_dac_powerdown,
+> +		.write = max22007_write_dac_powerdown,
+> +		.shared = IIO_SEPARATE,
+> +	},
+> +	{ },
+No trailing comma for a 'terminating' entry like this. We don't want
+to make it easy to add stuff after.
+> +};
+> +
+> +static const struct iio_chan_spec max22007_channel_template = {
+> +	.output = 1,
+> +	.indexed = 1,
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+> +	.ext_info = max22007_ext_info,
+> +};
+> +
+> +static int max22007_parse_channel_cfg(struct max22007_state *st, u8 *num_channels)
+> +{
+> +	struct device *dev = &st->spi->dev;
+> +	struct iio_chan_spec *iio_chan;
+> +	int ret, num_chan = 0, i = 0;
+Please don't mix declarations that assign with those that don't. It makes
+it to easy to miss which ones are in which category.
+	int num_chan = 0, i = 0;
+	int ret;
+
+> +	u32 reg;
+> +
+> +	num_chan = device_get_child_node_count(dev);
+> +	if (!num_chan)
+> +		return dev_err_probe(dev, -ENODEV, "no channels configured\n");
+> +
+> +	st->iio_chan = devm_kcalloc(dev, num_chan, sizeof(*st->iio_chan), GFP_KERNEL);
+> +	if (!st->iio_chan)
+> +		return -ENOMEM;
+> +
+> +	device_for_each_child_node_scoped(dev, child) {
+> +		const char *channel_type_str;
+> +		enum max22007_channel_mode mode;
+> +
+> +		ret = fwnode_property_read_u32(child, "reg", &reg);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					     "failed to read reg property of %pfwP\n", child);
+> +
+> +		if (reg >= MAX22007_NUM_CHANNELS)
+> +			return dev_err_probe(dev, -EINVAL,
+> +					     "reg out of range in %pfwP\n", child);
+> +
+> +		iio_chan = &st->iio_chan[i];
+> +
+> +		*iio_chan = max22007_channel_template;
+The template is only used here so I'd be tempted to just do
+		*iio_chan = (struct iio_chan_spec) {
+			.output = 1,
+			.indexed = 1,
+			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+					      BIT(IIO_CHAN_INFO_SCALE),
+			.ext_info = max22007_ext_info,
+			.channel = reg,
+		};
+inline here.
+Or after other changes suggested below you can do
+
+		st->iio_chan[i++] = (struct iio_chan_spec) {
+			.output = 1,
+			.indexed = 1,
+			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+					      BIT(IIO_CHAN_INFO_SCALE),
+			.ext_info = max22007_ext_info,
+			.channel = reg,
+			.type = chan_type,
+		}
+
+> +		iio_chan->channel = reg;
+> +
+> +		ret = fwnode_property_read_string(child, "adi,type", &channel_type_str);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					     "missing adi,type property for %pfwP\n", child);
+> +
+> +		if (strcmp(channel_type_str, "current") == 0) {
+> +			mode = MAX22007_CURRENT_MODE;
+> +			iio_chan->type = IIO_CURRENT;
+> +		} else if (strcmp(channel_type_str, "voltage") == 0) {
+> +			mode = MAX22007_VOLTAGE_MODE;
+> +			iio_chan->type = IIO_VOLTAGE;
+> +		} else {
+> +			return dev_err_probe(dev, -EINVAL,
+> +					     "invalid adi,type '%s' for %pfwP\n",
+> +					     channel_type_str, child);
+> +		}
+
+If you do this to set a local type variable before the *iio_chan =
+suggestion above, can assign it when filling in the rest of the chan_spec
+
+> +
+> +		ret = regmap_update_bits(st->regmap, MAX22007_CHANNEL_MODE_REG,
+> +					 MAX22007_CH_MODE_CH_MASK(reg),
+> +					 MAX22007_CH_MODE_VAL(reg, mode));
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* Set DAC to transparent mode (immediate update) */
+> +		ret = regmap_update_bits(st->regmap, MAX22007_CONFIG_REG,
+> +					 MAX22007_DAC_LATCH_MODE_MASK(reg),
+> +					 MAX22007_DAC_LATCH_MODE_VAL(reg, 1));
+> +		if (ret)
+> +			return ret;
+> +
+> +		i++;
+With other changes suggested above, i will only be used in one place I think
+so you can do the ++ inline at that point. See above for details.
+
+		
+> +	}
+> +
+> +	*num_channels = num_chan;
+> +
+> +	return 0;
+> +}
+> +
+> +static int max22007_probe(struct spi_device *spi)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct max22007_state *state;
+> +	struct gpio_desc *reset_gpio;
+> +	u8 num_channels;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*state));
+Use a local
+	struct device *dev = &spi->dev;
+to shorten all the places you have &spi->dev currently in this function.
+
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	state = iio_priv(indio_dev);
+> +	state->spi = spi;
+> +
+> +	crc8_populate_lsb(max22007_crc8_table, MAX22007_CRC8_POLYNOMIAL);
+> +
+> +	state->regmap = devm_regmap_init(&spi->dev, &max22007_regmap_bus, state,
+> +					 &max22007_regmap_config);
+> +	if (IS_ERR(state->regmap))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(state->regmap),
+> +				     "Failed to initialize regmap\n");
+> +
+> +	reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_LOW);
+
+What sets the gpio high? I'd expect a transition from what is requested here
+to what is set in the set_value() below.
+
+> +	if (IS_ERR(reset_gpio))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(reset_gpio),
+> +				     "Failed to get reset GPIO\n");
+> +
+> +	if (reset_gpio) {
+> +		gpiod_set_value_cansleep(reset_gpio, 0);
+> +	} else {
+> +		ret = regmap_write(state->regmap, MAX22007_SOFT_RESET_REG,
+> +				   MAX22007_SOFT_RESET_BITS_MASK);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	ret = regmap_update_bits(state->regmap, MAX22007_CONFIG_REG,
+> +				 MAX22007_CRC_EN_MASK,
+> +				 MAX22007_CRC_EN_MASK);
+
+regmap_set_bits() saves repeating the mask.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = max22007_parse_channel_cfg(state, &num_channels);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->info = &max22007_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = state->iio_chan;
+> +	indio_dev->num_channels = num_channels;
+> +	indio_dev->name = "max22007";
+> +
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +}
+
 
 

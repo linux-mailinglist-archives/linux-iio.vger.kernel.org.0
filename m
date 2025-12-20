@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-27250-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27251-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79FCACD278F
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 05:48:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315CDCD2792
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 05:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F283E30141E1
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 04:47:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0DE3D3012CD0
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 04:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83032E7F14;
-	Sat, 20 Dec 2025 04:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE4E288537;
+	Sat, 20 Dec 2025 04:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VaXUAkWm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VOJoBVvZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F182253EE
-	for <linux-iio@vger.kernel.org>; Sat, 20 Dec 2025 04:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BE923507B
+	for <linux-iio@vger.kernel.org>; Sat, 20 Dec 2025 04:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766206074; cv=none; b=Nu9DqzDM606ewsXflQb/feK3MwxRYkaEjnXgAKUg5iXxTQFOTeMZ1nenB4ggWE4Ntf2od4l8OIwwsIJvzGKMjUg0aumeDPZviR2sVcdEWq9Kw5+OLM+rhoalkJpGlVE6DTSv0B9FAKfgKuI1oRCLwZfU38D6QqKUiIe7c9V0mAc=
+	t=1766206111; cv=none; b=iaFNr8jPpUGvIxwB8jVrSpZUtuxNDjpZYaNII98D6buHW4Xf4+M7TJKf/JwB2VwBilSarSz1mOHxRrPIYLr540j6zKfvJ0RrrLaa/oHmA1ZadEXWzBrm2Wt0/gMxRNKSxRAVR1PyEvMWbUNP7h4HNdHmpBQoDOWjcLPp9YS5eIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766206074; c=relaxed/simple;
-	bh=zYIclOZgCl0ZOfhFHStfmpDiNwAuEu81x0JVjxabh88=;
+	s=arc-20240116; t=1766206111; c=relaxed/simple;
+	bh=+L23A1py+fllNiKs7ldFSclxFjvRTzXLLF6jgHq1Bzs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F6rvapwczQFYpuQbQf32YUzMGy2ruxjC87BWHJ9AenutnXZ2GSWgEgdr7G0TBgotR1ZmVPMPH9ft7MjdBPR47s8EgeXsOu2tLgO78uddh3HGv37hoUcfX19EpSjaIpmQojHxgdZt8JKKQBS/gi0IiGWf5NivEno6BdhclshwZPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VaXUAkWm; arc=none smtp.client-ip=74.125.82.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=PwcZOC2ZkDXbKzuE7yHf8jZMp8Bz+J01+D3BAyKJqrxZUaKxuEudog1GXuNO0TFAxjw/ERTLskaECxp3zwxTYI8M4UMRtuHqXd3mwwjTpT4fKrWY+DLMDNpAN6JJJ0hoaiL1mOZcndqaasF9xMTDIUYdqCSktIrGCCVQQ3hZ29I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VOJoBVvZ; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2ae29ddaed9so3206327eec.0
-        for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 20:47:51 -0800 (PST)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a07f8dd9cdso26451815ad.1
+        for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 20:48:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766206071; x=1766810871; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766206110; x=1766810910; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bn2q8IIyeumrRPVac1dicPR7zPs8ygyeBmiVwFiJBoM=;
-        b=VaXUAkWm6y85ib24JwNGhdiCthh2lZciDmzs/6dFaQ0ccGrFQV5SjmM49plfVHTFPO
-         4tTHcbdDJO6u84Tf8F4lMexiNOTqLA3rp9xmEhz+qwtcyP8k8hiw9XkO7pZddpWRFRyB
-         HSCQzwP0QbLqgth2lWxM6tJsN3A4IIGeqsA0fvBeapwxcINkncqlLj4lkxJXaiIrY2Fe
-         WgqX5qe5WdAJVt/ghS7zJ7eGiy+NIMB6UH41jHLiInovgiUNuQiugCvXtU+vLlnm/ike
-         eWxM6MBCxY4EULR8AQbGiXiJROntVUqAsoBYazaQsowfUqNHQ/FwdeNM2elFlzQ0xcDC
-         Rk7g==
+        bh=+LN3CyXMZdKGItabzCPVp1yMPiGAjLeQulsNPQaqCSA=;
+        b=VOJoBVvZ2h6EKd9EhoGKHNRpSVEfCcdq/yTsIXvPi5MsfBJk58yyGQOy+JsIj/Omgh
+         C0geCicrOBtteKvoYe4XO+pdb5dGUfo1WX0dUkxg1N8/S5uwO/eGBoVqOnd2Xd8vhSn+
+         oz69izHFo5o/RIMELwwbst2/T3wRwxRtLPC0ad8Peiay9Ntwq/fd9DzdB+CpEEDMrR7T
+         SYZbew8z9TaPMZJXFIFHSQi0ogaJM2HmfgJdlg3RL5yrrQ6guNcTzqDlZII64OgmlPAj
+         e6rbWtSKHBiRBavAzQ3auMXD9rZLYl6diMuO8CBpUuJOPEREH3S4L53XAq4/YZ5xllAD
+         ALcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766206071; x=1766810871;
+        d=1e100.net; s=20230601; t=1766206110; x=1766810910;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bn2q8IIyeumrRPVac1dicPR7zPs8ygyeBmiVwFiJBoM=;
-        b=VinUpowD4p3VaDTS7fQ8ys2yBHUb5v1/yRpnsfIHihx2njq7BGriV90EajZsi5VrfD
-         R8dBpI5E3l2m0DZygQj+s9nMGNde5VNo1n9cLJWuhrLpKI2eLvwwMgIxuskffMjIjaIR
-         iDpV5g9GtQa783R6duLKNGb1Zo8JdEQNhXGgN0e3hilxKo+jLy1ENcoCZ6Szl1iR3oIQ
-         VT0+gs7ZNPZEEC6HKBjEcshlk+jVF3JHssBbq3FOWTPVZOsxdVuzJt2huKHZefC0aDnc
-         YYWIBaMl4KKGfefE8oW9KecWwkl8XyrbWC2+yn1EEsIqQIgFUrPaABebAx2qKfYzEO1e
-         3e2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW/UczxT7EGt0ynAwp+P/DzrYxq1PUzJHWurwlZIqsgr3/RK1S0OVhvZSq8hnn8BZJ+iryrPIKBAg8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpechqZOdSTDUCwIcQ6eYLMfDpEHxNJCingBlNvMwrKA98Acbb
-	poCm+pSPMo0j2v0r/o6VxM05IwlDjSkb3cr9t1XYghBmxZUAezr1ii8f
-X-Gm-Gg: AY/fxX66pIYk+wSZY5yVHJ3LjScpoQQP9ndTNf4bUky/X6i0DWb/+0TTsulwbulyrUe
-	0ts17MqS7NHWkAn6yRwpMlqB+GlU15YKU/5QBeBi63ktuDLau6HPi9zH0jVuGlhInDkLCTfuZz4
-	iQN+twYu1cnylrvG5/GIaPOtpiRBKcq7wHgL8bw4P8D573LboNTuA1w3+3XeyT1NUyoh/HiCsgB
-	OsKoCjjCXs/TAxTgsFjAVZX0d/58mALNnrZl+LpPt7l7wUrlQtpz3xscelAwhyJf6Xx8OvLmWEp
-	vhCiy27LtN9aa9mnwzqEmviXso4zqW0Ub+JeZqLitTT8AiVPnyaABMg/lkEnA7xeCTKH7GLSOSC
-	e6/LaL2yH2L1umAr27JSAwfN/dHJXnn5E+eUsgOnPuSpocUkMlg+VKLmwfazbteGTEKBnwy087J
-	yET7WWbLDjoFEpfjcLI30=
-X-Google-Smtp-Source: AGHT+IF+6E+AHWTkWnukA4AV2mf/MQyKZpOlD5h2Lh5FY8EVVYHcw2vf1TZKzquPq8oZQDv7ALq/ow==
-X-Received: by 2002:a05:7301:5793:b0:2a4:3593:ccbb with SMTP id 5a478bee46e88-2b05e591842mr6743671eec.2.1766206071103;
-        Fri, 19 Dec 2025 20:47:51 -0800 (PST)
+        bh=+LN3CyXMZdKGItabzCPVp1yMPiGAjLeQulsNPQaqCSA=;
+        b=JK0MagiH0Ul/LhjIo+glRQcVMJLjrkQKfikF3vcGgs5ExxS2vf+80noaoFFQGKOWA/
+         ZgG8VsA2u2v3aavgf+A+cwROaJJC7rAttZQDgCDwau3VyLlaqGIMWdp0oFyzTC11hevm
+         +EzI1FltUWtPRiN9ERb2iFRX329cJ9BQ1l2rG/+t/RSfsK5JSh+FXB37Ml99750i76Ns
+         1SUYrYMH27+rSHU782oNv/hUOeuXVcXI/7woUss/ipsc0Tg+Vj42DIovg/yPxvpRCgNu
+         fCWuHLsBHf4Z8HjltczNY2N8/EFu5m/B/QtOCOuFOaaJ+YEV7pTawUZmemxfIAnSMD0s
+         vFUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxmSla/Y2tpRx7Wd6BR1XUTTgzqYQD465RUEoinfNLo0dhWIYTPyF9Q52ctiLud/oRpTQ3whngxA4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCWhdHYTIyuXLVTLjyVBNFHAG8iAmfm1IwJ7Q2fRXtSge6oTlX
+	MDciJ6BkoO7L4IartGiv71HKzk3E3qsFp9fvYu5v56vkemPoJfNw5/4y
+X-Gm-Gg: AY/fxX4//PWAodeyMijHn1EnimnCWo7igvtzWwuoh18R8xt3C+J1OgTz+OqG7ULTVmo
+	SI2wFt542NjHiffhqEz/tyEqkcehGrZbziusOTomta7sfCILa21tzwFdIclLkil3lAhnySKEm3q
+	BkOL8fCLpvG0+cw4ejKceTr6fgc8YgrN0DX9WsqgILxzcJBFo8mYIxUc5K4PgXwOhWi8miRB0TO
+	HXpHx6YlzEtsAJRDpRXDAfp9+Dz8tkky2g7nLG4dMjValiPEhxRJIlT2KObA/iwjGVdarnHq7FQ
+	gz6N9qTMIaHHUOaO1NCnVy4QhUFQHz/Mr+ZFCd0QH8gM+NmBURuOYjByRfZb6173f+odaqucauO
+	nnNRU2OUdSN+6v2U8hipRjC+fUJajeYMX9drkxg7cQdYf+Ous7wkPb53sAmHL86fzzVyEztHZre
+	MJdb9WyqKV0Gu1pTEgPkE=
+X-Google-Smtp-Source: AGHT+IE5/eUpFyHxwEZDOHdHSOrWWsWpQ0wvTezbWV37iXwbvizDvMQIlDIFcT3z7VGWtWvOZhe+kQ==
+X-Received: by 2002:a05:7022:989:b0:119:e56b:98c1 with SMTP id a92af1059eb24-1217230320emr5838606c88.40.1766206109875;
+        Fri, 19 Dec 2025 20:48:29 -0800 (PST)
 Received: from localhost ([2804:30c:165b:7000:d59:b973:da75:f845])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b05ff8634csm11961233eec.3.2025.12.19.20.47.49
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217253c058sm15804734c88.11.2025.12.19.20.48.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 20:47:50 -0800 (PST)
-Date: Sat, 20 Dec 2025 01:49:30 -0300
+        Fri, 19 Dec 2025 20:48:29 -0800 (PST)
+Date: Sat, 20 Dec 2025 01:50:10 -0300
 From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To: Petre Rodan <petre.rodan@subdimension.ro>
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -81,11 +81,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 07/14] iio: pressure: mprls0025pa: make ops->write
- function consistent
-Message-ID: <aUYq2tpt45cTjKIv@debian-BULLSEYE-live-builder-AMD64>
+Subject: Re: [PATCH 08/14] iio: pressure: mprls0025pa: stricter checks for
+ the status byte
+Message-ID: <aUYrAqp21hQr6_yI@debian-BULLSEYE-live-builder-AMD64>
 References: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
- <20251218-mprls_cleanup-v1-7-b36a170f1a5c@subdimension.ro>
+ <20251218-mprls_cleanup-v1-8-b36a170f1a5c@subdimension.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -94,26 +94,15 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251218-mprls_cleanup-v1-7-b36a170f1a5c@subdimension.ro>
+In-Reply-To: <20251218-mprls_cleanup-v1-8-b36a170f1a5c@subdimension.ro>
 
 On 12/18, Petre Rodan wrote:
-> Make the i2c bus write operation more consistent with the rest of the
-> driver.
-That's not the most appealing reason for updating driver code. Is the update
-meaningful for a different purpose? Consider squashing that with another patch
-that makes better use of the updated function. 
-
-> Also move defines only used by core out of the common header file.
-Do the define thing in a separate patch.
-Commits/patches should be semantically concise (in other words, do one thing on each one).
-Usually, the word 'also' in a commit description is a strong indicator that the
-second thing being done should be on a patch of it's own.
-
+> Make sure a valid conversion comes with a status byte that only has
+> the MPR_ST_POWER bit set.
+> Return -EBUSY if also MPR_ST_BUSY is set or -EIO otherwise.
 > 
 > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 > ---
->  drivers/iio/pressure/mprls0025pa.c     | 5 +++++
->  drivers/iio/pressure/mprls0025pa.h     | 4 ----
->  drivers/iio/pressure/mprls0025pa_i2c.c | 9 ++++++---
->  3 files changed, 11 insertions(+), 7 deletions(-)
+
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 

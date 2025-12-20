@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-27253-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27254-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D551CCD27A1
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 05:51:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4BDDCD27A7
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 05:54:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D5CA301227C
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 04:51:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F284301174B
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 04:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EB62D1914;
-	Sat, 20 Dec 2025 04:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E89B2D7387;
+	Sat, 20 Dec 2025 04:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O8bUffGI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cNAMbX5A"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A93156236
-	for <linux-iio@vger.kernel.org>; Sat, 20 Dec 2025 04:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3547262E
+	for <linux-iio@vger.kernel.org>; Sat, 20 Dec 2025 04:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766206287; cv=none; b=NoqP6nB9V8T23Fjw4rCV7VTLUSbbJxjXeGDZKP32zx9O9W+4ReL81H+eMbOTTFf4MxXnaNw0itsMFO4tlcg+IyWWIy5xz1ASFk1kwBva7Y8OGpMY+AZBgPrhROTh7o4SBraQ7F3H+YJlx6ZpFgKu0xt/Zf42TwPRVefoIBzprKM=
+	t=1766206453; cv=none; b=ZbHnCl6pNBMQ0fuy/nL3J9arQL51pDWZ2qC/shrb1D3JOJYkL6bTB3J3qBsl7+VAV/GKg3W1lsyUCKRNH26Svnr5K/eBpdzAqpn7Qws5Q0lPzc+W1UHJR63k8TzwFBAd7yAx4VGQHy9qkSP8Y+lqES8AA9H668KVhaFalvAL7dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766206287; c=relaxed/simple;
-	bh=4lttTiT7yHtS61u4orrfa3+e7yCTVNEY0StrUm6YAKo=;
+	s=arc-20240116; t=1766206453; c=relaxed/simple;
+	bh=lA0AgYVo4VJ1zieQYmUekCz/QbrYGOw1cTer2l1uJRk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WgkHVmTQnDGBFbqLz1FQVBbqOhfhKYGTXzZXLswactosQsc9m4l5zaYpaY8TvIkoX7hZq0q3E4pTFjpOXBM+RTB4i85ByXRttUxGDMGlqv38rdxcv1xTEBnBxR5IYBZhCy7AJnR15tuCeZ/i01ejF3FUpc9ldPvcjrj8OdhdrCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O8bUffGI; arc=none smtp.client-ip=209.85.214.174
+	 Content-Type:Content-Disposition:In-Reply-To; b=tEJgCJDdhTrYCcGuRjsKL9w7i+eKtrL4GNvmqxVgH3xP02YtgVFY4jCdxn0klRo+FwHCy4/ZNiU4dST0AO5PRTZQz9W7XBJyZVGtNczdOBB6CO48+e6nTstlAXWDAEkSrRZSVWKKb5kMBlrQKkcOJYxfHzfj9G047SER2XEN9Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cNAMbX5A; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29f2676bb21so30230175ad.0
-        for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 20:51:25 -0800 (PST)
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-bddba676613so1718186a12.2
+        for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 20:54:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766206285; x=1766811085; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1766206451; x=1766811251; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=37wqG5R217LEgGPeH7cKdi378+O5Rod8oTAHyv2jg3g=;
-        b=O8bUffGI7qQtEM+7UYybhdPe3d7se/tZsMW4WL3yWA6VFqp0wTJG7Rycuv9r/1ussE
-         0yQd15KUZTH2hZkcsrY7NNb8m7Ml3ad62Nby/UxBaK404Vdj5M9JxYy2ea82W8ox7D6o
-         1qtzaBbzeyF13vjocW0TH5jonOLGalqwexQa/wB1ilAxwAoPnSYFKYCWauCZC9nPyReJ
-         9nufmCdNnUQ/tSJxZWtMtbBgU3aT4vMmBIlCMzTbAEL7xHHWYh6OjHzRe34WbL+GR/AA
-         0RdxLSFYkkzv5NB0l7CVB7/rb5zMtMNpPj89cRwAA9HYB3qE+C6kLxF+4qEOXs+KJPKb
-         fghA==
+        bh=qMFXrY7x6s6vMdaMthcq9rW2uUHtnPnKggV9npnLU+8=;
+        b=cNAMbX5Aq7lS6Pt/qLy5PI8YcC8BqPWD7QZJOFJ4LED6PfjCrS8XF+1E8Hy/ajXUP9
+         tWQMF4ZECvmXpYSPdWH0/VdNx3kRY8LgLmH+roF5Vo2kWjrlDWnLCiPkeF7LGC3vod38
+         IoxHxVgE8HMjFAW9fpXdu2r82GnD0WBwrlX90t4mt5X3rQgQs15t/KAoxMBrHLgbkVwy
+         P9dk+R6HSKB0/nXaE/pfo5q5Li59ZtDhFXSFJ7CaeG6Ql82hL7Y4hgFM+WCBXZ4qESGt
+         S0c4hqVtKg1a1lvgNoQELJyvwG/0ld7CED76jlgix5HT9RT4DzCH5wpC5jXytRzCZu96
+         +umQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766206285; x=1766811085;
+        d=1e100.net; s=20230601; t=1766206451; x=1766811251;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=37wqG5R217LEgGPeH7cKdi378+O5Rod8oTAHyv2jg3g=;
-        b=joRoGT4fdLNrolv+FpH/aB9K1g8kZDNyQ+83isV32aQJgAGJa4ingSZwj4/sKe/JNO
-         x1bB670+Pvu7jhu4N9b+hWAq9DmQQsGtrf2qAqTHopH6kL5BcZtc4rfJfOKpTNsY/7AD
-         ixDWHoyT50met15LioCwGIUoyYdOR1q5PYn0Q/TsYjFJVGTzoG6u6wlXn29BMi+TV1l0
-         Ytz0tv1ydBe2V2MqmLTJlD+8rA1erdsh9q8CG6b1mUEaHfMR0kjOTstJ6vp+dV2l9nTT
-         NZJigBZ9cJLhmI6R7KQ+syfK12RI2j6gmgahxgNuIXH8cvUtXg1I/gzMcq1m+DsTIY1t
-         l8Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCUT9795RuyOn8mgokwUPu9Ya8gIypyb8UlVhLYYPDocFWgnaopyJiGWSfvAVmXrbwLE/vWipgzgpGo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUhgH/IEe14s+EntVREnWDNYGSqDX3yF5hbC3DKDlsBsgCDINn
-	lV5cf2e5wh285QBURzHVOzj3+cCpDUeuspRxMjl4ygBxe8mREbU69TX2GHtshg==
-X-Gm-Gg: AY/fxX6FCtTSexPKJTNHV6UpmrGo91c3SeUStNcBeR0QYKPLUKUwigCjH0ObKW0hTs5
-	AQUNrqBLnKv4rg9ACnfvsNrKixCdJZ8l22YRYyz/5lLZf5+OHzos2zJoFo8kilpJYKTOd2ANzBD
-	jFDxVuOa9enhldviAELPNNTsCuG0mJFu9dkHMKfvxMQbFqKB9nZNMY50xsXTcQvusfn+YDYMoMm
-	vhJnJTWKtpexHTkA0Kk8ZXi3H7g4fr8VAQdbjKIdKl4IAieyfPYxfT0FEfJ84f4uPjLWVswNq3G
-	/nUwFOA18Itg1u38wZmjSObn677ud+AalodqQ6JQ8uoVWs8CP4wwf3lp3kw5v10as1KBf2Km+kL
-	iMd4C5vB7w+tRFF6u/87uauiB3o3e7w4m8Q67Z3ZeMsuoHnXrjeHAzY+Cp9C+wApSXpEQ4/zg/e
-	19Jfe95pH7f5BQMqv+7MYY6Pz3S24lDw==
-X-Google-Smtp-Source: AGHT+IGyRHJgViYFO8d9rrlcvo3odYPp3UwIjCjAQ5KdThHOq/24uUyKSTiqrsFDjB+caPsYO/D2Bg==
-X-Received: by 2002:a05:7022:3715:b0:119:e569:f624 with SMTP id a92af1059eb24-121722e041dmr3961118c88.29.1766206285161;
-        Fri, 19 Dec 2025 20:51:25 -0800 (PST)
+        bh=qMFXrY7x6s6vMdaMthcq9rW2uUHtnPnKggV9npnLU+8=;
+        b=LBE9QJSJUHnqNyehVRRnHvPyKXZ7Mq8aChkimbgmb6uPMqloulXHdzu8oNsZumCdN8
+         yluiJvftriAsC7em34u1vba354uyAZBWSBKxyrwMwkiyWhBugFN8TxC80/WBCLrLJhM4
+         z7fyePvwEBO0bZK13Is0NnoQJv7QJceJDgD+RuXF/94B4I/P1S24/g1//dX2FBew2xBH
+         rG1ehN9lmKasmc/nJjx52hd5oOPxoEOv3izNyS/Nj2dlbzCaxoA2hmFWc3SUmDEmseIG
+         +GlaifBrleflnTJdVQgQ0xf8ijYy0GAP5zd2793yB7kQi8MgAaOQBRTGFoB+qHVZTJGN
+         Vygg==
+X-Forwarded-Encrypted: i=1; AJvYcCWwQZFqxStICegj20aPnEZneSJ/T96KG8G+QrHk76kQkOb7bjOYiMnEmlO0vseLwjcMxlPbUGsClpM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaxoAoY9MDJVBaQ+D5vzkBWWr0Pz99UdfhLqFUiAccCnTINnQX
+	z8cWeRHRYCM/KIWM+p2RhXadVA3wha7G7SF3G4NxKVbL+KlNoksF+OHO
+X-Gm-Gg: AY/fxX6jOujeWlXMOUsKCZgTQfz9Dfj8fUi7NeypkRKd/zevnQpAbzGsF/zAc1RPRIZ
+	Zjc8Thv/OSjlikPsQNEjI/GfoDj5hb794/FgRVFJiPkh76k0ixlN4onuehIr00aylhcYRMV+4Ln
+	P5bTk5tZRpPEDfACg+zOKZhkalPm1l1sO83ZipXq3NoWWdCG/7BWYaUlU7FZ6f7aNmrm/UcumfJ
+	vA8pJLiIPfrmgMmV82oMopDNEkUw/2r/9p/ZMY5GXQZF1cmRqSyEaQuZUYGHV0gOQtiVa/OxN3b
+	F3C7z6rXqQRrCoF2V2vAhBYj7PjnOfpka/GOb/W4CPz9pxDcWyCjyShJ39dxrad9n9CKq9ufCwv
+	AsunOzQX06geqhKVW+EYmX8PawkNkTrhzbwfIwZgT3NMX/03+RRU2DNcvIB0kB6KwchLD73jT3b
+	fX6BjKI20+7XYQEfsZXns=
+X-Google-Smtp-Source: AGHT+IG4GUpAXhh5GjINeiC9oowR+1WM54RneaWJlRDZ+tq5NQwxqCU41EE2GSYF+2owEGZsu7SNHA==
+X-Received: by 2002:a05:7022:4185:b0:11a:2ec0:dd02 with SMTP id a92af1059eb24-121722ebc42mr6715988c88.33.1766206450960;
+        Fri, 19 Dec 2025 20:54:10 -0800 (PST)
 Received: from localhost ([2804:30c:165b:7000:d59:b973:da75:f845])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217253c058sm15831628c88.11.2025.12.19.20.51.23
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217243bbe3sm16448108c88.0.2025.12.19.20.54.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 20:51:24 -0800 (PST)
-Date: Sat, 20 Dec 2025 01:53:05 -0300
+        Fri, 19 Dec 2025 20:54:10 -0800 (PST)
+Date: Sat, 20 Dec 2025 01:55:50 -0300
 From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To: Petre Rodan <petre.rodan@subdimension.ro>
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -81,11 +81,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 10/14] iio: pressure: mprls0025pa: cleanup pressure
- calculation
-Message-ID: <aUYrsUVKmQX7Czy7@debian-BULLSEYE-live-builder-AMD64>
+Subject: Re: [PATCH 13/14] iio: pressure: mprls0025pa: cleanup includes and
+ forward declarations
+Message-ID: <aUYsVl-GeVpABEhu@debian-BULLSEYE-live-builder-AMD64>
 References: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
- <20251218-mprls_cleanup-v1-10-b36a170f1a5c@subdimension.ro>
+ <20251218-mprls_cleanup-v1-13-b36a170f1a5c@subdimension.ro>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -94,27 +94,42 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251218-mprls_cleanup-v1-10-b36a170f1a5c@subdimension.ro>
+In-Reply-To: <20251218-mprls_cleanup-v1-13-b36a170f1a5c@subdimension.ro>
 
 On 12/18, Petre Rodan wrote:
-> A sign change is needed for proper calculation of the pressure.
-> The value of the affected element is zero for all official MPR sensors
-> covered in the datasheet.
-> 
-> The change will however ensure a correct calculation if a custom chip
-> is used (and if honeywell,pmin-pascal != 0 in the device tree overlay).
-I don't think this should be relevant to the commit log. Correct calculation
-should be supported regardless of what is in firmware.
-Was pressure data read buggy before? If so, this patch needs a Fixes tag.
+> Remove unused headers and add required headers as needed.
+Bring the patches that fix something to the beginning of the series and
+bring this one right after the fixes.
 
-> 
-> Also due to the fact that raw pressure values can not be lower
-> than output_min (400k-3.3M) there is no need to calculate a decimal for
-> the offset.
 > 
 > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
 > ---
->  drivers/iio/pressure/mprls0025pa.c | 26 +++++++++++---------------
->  drivers/iio/pressure/mprls0025pa.h |  2 --
->  2 files changed, 11 insertions(+), 17 deletions(-)
+...
+>  
+> diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
+> index 2bdffe1e0eb1..ccd252f64351 100644
+> --- a/drivers/iio/pressure/mprls0025pa.h
+> +++ b/drivers/iio/pressure/mprls0025pa.h
+> @@ -12,9 +12,6 @@
+>  #define _MPRLS0025PA_H
+>  
+>  #include <linux/completion.h>
+> -#include <linux/delay.h>
+> -#include <linux/device.h>
+> -#include <linux/stddef.h>
+>  #include <linux/types.h>
+>  
+>  #include <linux/iio/iio.h>
+> @@ -23,9 +20,6 @@
+>  
+>  struct device;
+>  
+> -struct iio_chan_spec;
+> -struct iio_dev;
+> -
+Also, I'd suggest to not mess with other stuff if this patch is supposedly only
+organizing/cleaning up includes.
+
+>  struct mpr_data;
+>  struct mpr_ops;
 

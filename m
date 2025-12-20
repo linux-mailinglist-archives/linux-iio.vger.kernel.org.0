@@ -1,171 +1,128 @@
-Return-Path: <linux-iio+bounces-27258-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27259-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF78CD2C1B
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 10:21:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E24BCD2CB9
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 10:59:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6928E3013564
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 09:21:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67B663010CD2
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 09:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16C22FFDF9;
-	Sat, 20 Dec 2025 09:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230ED304BB4;
+	Sat, 20 Dec 2025 09:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqqswYzE"
+	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="p7pUzw+I"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAA0156678;
-	Sat, 20 Dec 2025 09:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573EB19E97B;
+	Sat, 20 Dec 2025 09:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766222489; cv=none; b=Y9SiGmpMhKfa/N7Ad8zaPItvWkMwyNbHNFXRhvUxFWb8RJtRXzhpY3QsMkLT1rSj85dJ5HqH4f9t3EZZayhaE1eAEOneYHScBIgFBk43g8AFoZXG2dJH8ih4Ny+FOazn+j5q6bsEgavoQ6wOZsKFChVyzGjknYlkpCtSzCxGTYU=
+	t=1766224766; cv=none; b=WSN7WZPp7+wLgfrxO7+t/ASQXO2LQbE6BHiTrDYVxQFVl6lcy2CKO/O1fD52x0DPuJnHvBKPEPLgJNPt5Vc88hE8P3oGPlz88PkOXEC8vQNG/IqkKteRQH56EmXfgMR7FrdMRKyB/qp/MNjyhpg22x9SCfC7+f7rDweq5DuUFt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766222489; c=relaxed/simple;
-	bh=A5E7SDuf7s71s7Xpwhh1fIjfwD+NEhAu730QEr/YR9M=;
+	s=arc-20240116; t=1766224766; c=relaxed/simple;
+	bh=z4gVZtve8a6NLjtWjx82TwYn6cm5dgO8XqSs8x97slo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mK7dSkvJTUBD6/U67zzf7Wy6mP8vDhMxBXBKz8nCupyc3yJRA6DBig0LLauvGOAWJKO1IEeXv1LjVpo2oY//IQzPByT4a3iuHBJpZ5NyeVYeQFkC6XIncDTmgAIvXRN+6Ngop4TDWEjahstuWaYqt2m3JCkodT63ZnvblmdHq30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqqswYzE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E60C4CEF5;
-	Sat, 20 Dec 2025 09:21:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766222488;
-	bh=A5E7SDuf7s71s7Xpwhh1fIjfwD+NEhAu730QEr/YR9M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dqqswYzEb0SJWK5KIEnkChjiHjGZsCWbXgmOh+tu2STfrQPnvDqeT5Mqc52UhQ2zS
-	 3nwJiXD7eyexOzfNlqS8mQFREpSwQfQUBIY382JOyat0qcPlwAQ8Iu+su90fnBHQEe
-	 3crbxb8FkZhV/V32s/1hy+BmWze1Tc6uQo50/wOH21l7QD/kOm1t3NQrzE5/GTIWuD
-	 8Ui7bqiMXrBurxqpYoV/nqA36DO056HpMRhcrQxlNq250pYvo7ereGLVjlbEa5aTtj
-	 CVtY4UypiNIqYcr0rXnjCLCrnPF/ysuNSxJfswIWpsGk4+6HlRIdU2XfbcDoivCiF/
-	 VRsK+rODWXuvg==
-Date: Sat, 20 Dec 2025 10:21:25 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Rodrigo Alencar <rodrigo.alencar@analog.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v2 1/6] dt-bindings: iio: frequency: add adf41513
-Message-ID: <20251220-bouncy-perky-tarantula-d9b3be@quoll>
-References: <20251219-adf41513-iio-driver-v2-0-be29a83d5793@analog.com>
- <20251219-adf41513-iio-driver-v2-1-be29a83d5793@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=NC2EUVleNkET5I1X36iINf/VwM6wu/uMbylQ27Kbmu6JQr3XAsg56+RHJGweKB3/Aho0ofQctghh1u3YsLdC4CGQKNR+MqzVM8apCSvmlqVJXquv+MtyIYvNpZB5NqTNxEBXKE9vqNIUk4gc9bp9/jxPpKp7yH82xzubfWTvzG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=p7pUzw+I; arc=none smtp.client-ip=172.105.74.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
+Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:3804:ac00:e2d5:5eff:fed9:f1c4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.subdimension.ro (Postfix) with ESMTPSA id E5ED6160209;
+	Sat, 20 Dec 2025 11:59:20 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
+	s=mail; t=1766224761;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z4gVZtve8a6NLjtWjx82TwYn6cm5dgO8XqSs8x97slo=;
+	b=p7pUzw+IFGB7vAoNH88owNd1RQe3hI45KSBadIOJFkUAknIa65c1bGPSEOQnb1HrawWc8z
+	W/uhDbbqpl8L3uruYZiDjqpOtKbA8D+f8DLUryT9L6jqXp34ZW3/2lN8R1JFhMO8av6EcG
+	7dX7cKYWjEvsSyNUwLdeOoxsIU/J/NNdnyLT7K9Q0vcp0G5cHt5wwoZw5oG14B+ndGF1g6
+	Djs75l9gEU1JGsbFTpJbf95RTOp6MY8TKRRYlFwUXJd9CWvWaA5jssmOrBrcFX6W7bgLr5
+	xQDEcBYsbtWHWGb5fzGzGaQNs/Nf9u48CwxlwSrNi19AwTjfn3toUWF6vEvQHw==
+Date: Sat, 20 Dec 2025 11:59:17 +0200
+From: Petre Rodan <petre.rodan@subdimension.ro>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 07/14] iio: pressure: mprls0025pa: make ops->write
+ function consistent
+Message-ID: <aUZzdbBUJtf4mAjQ@sunspire.home.arpa>
+References: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
+ <20251218-mprls_cleanup-v1-7-b36a170f1a5c@subdimension.ro>
+ <aUYq2tpt45cTjKIv@debian-BULLSEYE-live-builder-AMD64>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="IQIJuRd5cTAWZ+09"
 Content-Disposition: inline
-In-Reply-To: <20251219-adf41513-iio-driver-v2-1-be29a83d5793@analog.com>
-
-On Fri, Dec 19, 2025 at 12:34:48PM +0000, Rodrigo Alencar wrote:
-> dt-bindings for ADF41513, an ultralow noise PLL frequency synthesizer that
-> can be used to implement local oscillators (LOs) as high as 26.5 GHz.
-> Most properties refer to existing PLL driver properties (e.g. ADF4350).
-
-What is "existing PLL driver"? I know about motor drivers, but can you
-drive PLL?
-
-And how is ADF4350 related to this binding. I do not see ADF4350
-compatible here at all. Describe hardware, a real one.
+In-Reply-To: <aUYq2tpt45cTjKIv@debian-BULLSEYE-live-builder-AMD64>
 
 
-> 
-> Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
-> ---
->  .../bindings/iio/frequency/adi,adf41513.yaml       | 246 +++++++++++++++++++++
->  MAINTAINERS                                        |   7 +
->  2 files changed, 253 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml
-> new file mode 100644
-> index 000000000000..01ceb2a7d21b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml
-> @@ -0,0 +1,246 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/frequency/adi,adf41513.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices ADF41513 PLL Frequency Synthesizer
-> +
-> +maintainers:
-> +  - Rodrigo Alencar <rodrigo.alencar@analog.com>
-> +
-> +description:
-> +  The ADF41513 is an ultralow noise frequency synthesizer that can be used to
-> +  implement local oscillators (LOs) as high as 26.5 GHz in the upconversion and
-> +  downconversion sections of wireless receivers and transmitters. The ADF41510
-> +  supports frequencies up to 10 GHz.
-> +
-> +  https://www.analog.com/en/products/adf41513.html
-> +  https://www.analog.com/en/products/adf41510.html
-> +
-> +$ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,adf41510
-> +      - adi,adf41513
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 25000000
-> +
-> +  clocks:
-> +    maxItems: 1
-> +    description: Clock that provides the reference input frequency.
-> +
-> +  avdd1-supply:
-> +    description: PFD and Up and Down Digital Driver Power Supply (3.3 V)
-> +
-> +  avdd2-supply:
-> +    description: RF Buffer and Prescaler Power Supply (3.3 V)
-> +
-> +  avdd3-supply:
-> +    description: N Divider Power Supply (3.3 V)
-> +
-> +  avdd4-supply:
-> +    description: R Divider and Lock Detector Power Supply (3.3 V)
-> +
-> +  avdd5-supply:
-> +    description: Sigma-Delta Modulator and SPI Power Supply (3.3 V)
-> +
-> +  vp-supply:
-> +    description: Charge Pump Power Supply (3.3 V)
-> +
-> +  enable-gpios:
-> +    description:
-> +      GPIO that controls the chip enable pin. A logic low on this pin
-> +      powers down the device and puts the charge pump output into
-> +      three-state mode.
-> +    maxItems: 1
-> +
-> +  lock-detect-gpios:
-> +    description:
-> +      GPIO for lock detect functionality. When configured for digital lock
-> +      detect, this pin will output a logic high when the PLL is locked.
-> +    maxItems: 1
-> +
-> +  adi,power-up-frequency:
+--IQIJuRd5cTAWZ+09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Nothing improved.
 
-You ignored comments, did not bother to respond to them and then sent
-the same.
+Hello,
 
-NAK
+On Sat, Dec 20, 2025 at 01:49:30AM -0300, Marcelo Schmitt wrote:
+> On 12/18, Petre Rodan wrote:
+> > Make the i2c bus write operation more consistent with the rest of the
+> > driver.
+> That's not the most appealing reason for updating driver code. Is the upd=
+ate
+> meaningful for a different purpose? Consider squashing that with another =
+patch
+> that makes better use of the updated function.=20
 
-Best regards,
-Krzysztof
+I see your point.
 
+I wanted to have device specific logic in _core instead of one of the bus d=
+rivers,
+but if I'm the only one upset about it then I will skip this change.
+
+best regards,
+peter
+
+--=20
+petre rodan
+
+--IQIJuRd5cTAWZ+09
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEGiKYHD4NvFCkTqJ3dCsnp2M6SWMFAmlGc3IACgkQdCsnp2M6
+SWP8HBAAmRIYKUk0TOlOjygG7RPvU7BSzqdcH375GKPSBuV2JPzjFOz2CiICAWgb
+YNFaa3LuIhN/+L7QXBt5XYtbQqvtb5kA+fjCNN7vgYItqzq/rvqmNmZMoPWn0Q9k
+9DmO2/f14wDUlOqYdF/qwrjwpD3GJGYiH3FBdtvAjag2mljw/pwF6jJI5pw6hxrQ
+FxPXrwyO3bBC3q422yA/Nu6fWUn5g6jNjeV3fai8NSC3DpWxu50eTpDTs4J/+Y1y
+Dl0FoANrlzWxY0+5o7MO0ckNe7e0GmVapm5etyCeeCs8GgsNHdQH2aj2ie0xZ+ao
+378Ou0iPuDZbbPSu03zWEgoN9O6QPhEF4UvXf2BVKE9gNghvoF9hA/K0Uhg2PjLw
+S8CsXHMeEMg1O3V/dYw+uSiXzQC/N+T5vcT4/jMDqW5+bXdkp57eXEnYIciGK6uM
+P/XDO7Po5zTbohPck8TgULvur0ucqxmRFduVGmRbeaq3uEq6ZyurXjI5UlyulKG3
+sfwbyHLZB/NeZVamrsW0oTmKNeVKluPm8JzwVgxL5RtgI9vrFUV+bEvCVlqhyHsv
+I5BtuqN1JNDyyJmFlX5ykgbgNfiz7q+Q7bnn9Lds/j1sent5kIBFCIxd8wJOkcB5
+3lT3JHbhXRNM+A2sNDvndhCI0u9KMsTkboDKsVlQEDrb3ZXZzIE=
+=k0Sp
+-----END PGP SIGNATURE-----
+
+--IQIJuRd5cTAWZ+09--
 

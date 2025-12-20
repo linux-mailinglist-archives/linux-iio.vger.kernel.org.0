@@ -1,91 +1,80 @@
-Return-Path: <linux-iio+bounces-27254-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27255-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4BDDCD27A7
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 05:54:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D32CCD27BE
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 06:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F284301174B
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 04:54:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DF5B230115FE
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 05:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E89B2D7387;
-	Sat, 20 Dec 2025 04:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D6E2BE03B;
+	Sat, 20 Dec 2025 05:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cNAMbX5A"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mBySW845"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3547262E
-	for <linux-iio@vger.kernel.org>; Sat, 20 Dec 2025 04:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624C01B808;
+	Sat, 20 Dec 2025 05:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766206453; cv=none; b=ZbHnCl6pNBMQ0fuy/nL3J9arQL51pDWZ2qC/shrb1D3JOJYkL6bTB3J3qBsl7+VAV/GKg3W1lsyUCKRNH26Svnr5K/eBpdzAqpn7Qws5Q0lPzc+W1UHJR63k8TzwFBAd7yAx4VGQHy9qkSP8Y+lqES8AA9H668KVhaFalvAL7dc=
+	t=1766207627; cv=none; b=d8CacllknMqTTgaPRB4cbiZhrXLF1UOJbP8QIUwCmtRUtjCjMDVWpifH8MetAMKsz58AifD2Rd1++qVGoSRFKH/mVR+6oipH7ml5CZnJ+9zymH69qOX49uYl6/6NqlnYvBi1SmKAmtGUyy16IMAAH2ohUrDyVrRJYAl+gW0nP+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766206453; c=relaxed/simple;
-	bh=lA0AgYVo4VJ1zieQYmUekCz/QbrYGOw1cTer2l1uJRk=;
+	s=arc-20240116; t=1766207627; c=relaxed/simple;
+	bh=ZcLSKFFXyPlwDK310t9a5hYrDRgEz8LSQOm4CLfkE00=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tEJgCJDdhTrYCcGuRjsKL9w7i+eKtrL4GNvmqxVgH3xP02YtgVFY4jCdxn0klRo+FwHCy4/ZNiU4dST0AO5PRTZQz9W7XBJyZVGtNczdOBB6CO48+e6nTstlAXWDAEkSrRZSVWKKb5kMBlrQKkcOJYxfHzfj9G047SER2XEN9Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cNAMbX5A; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-bddba676613so1718186a12.2
-        for <linux-iio@vger.kernel.org>; Fri, 19 Dec 2025 20:54:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766206451; x=1766811251; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qMFXrY7x6s6vMdaMthcq9rW2uUHtnPnKggV9npnLU+8=;
-        b=cNAMbX5Aq7lS6Pt/qLy5PI8YcC8BqPWD7QZJOFJ4LED6PfjCrS8XF+1E8Hy/ajXUP9
-         tWQMF4ZECvmXpYSPdWH0/VdNx3kRY8LgLmH+roF5Vo2kWjrlDWnLCiPkeF7LGC3vod38
-         IoxHxVgE8HMjFAW9fpXdu2r82GnD0WBwrlX90t4mt5X3rQgQs15t/KAoxMBrHLgbkVwy
-         P9dk+R6HSKB0/nXaE/pfo5q5Li59ZtDhFXSFJ7CaeG6Ql82hL7Y4hgFM+WCBXZ4qESGt
-         S0c4hqVtKg1a1lvgNoQELJyvwG/0ld7CED76jlgix5HT9RT4DzCH5wpC5jXytRzCZu96
-         +umQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766206451; x=1766811251;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qMFXrY7x6s6vMdaMthcq9rW2uUHtnPnKggV9npnLU+8=;
-        b=LBE9QJSJUHnqNyehVRRnHvPyKXZ7Mq8aChkimbgmb6uPMqloulXHdzu8oNsZumCdN8
-         yluiJvftriAsC7em34u1vba354uyAZBWSBKxyrwMwkiyWhBugFN8TxC80/WBCLrLJhM4
-         z7fyePvwEBO0bZK13Is0NnoQJv7QJceJDgD+RuXF/94B4I/P1S24/g1//dX2FBew2xBH
-         rG1ehN9lmKasmc/nJjx52hd5oOPxoEOv3izNyS/Nj2dlbzCaxoA2hmFWc3SUmDEmseIG
-         +GlaifBrleflnTJdVQgQ0xf8ijYy0GAP5zd2793yB7kQi8MgAaOQBRTGFoB+qHVZTJGN
-         Vygg==
-X-Forwarded-Encrypted: i=1; AJvYcCWwQZFqxStICegj20aPnEZneSJ/T96KG8G+QrHk76kQkOb7bjOYiMnEmlO0vseLwjcMxlPbUGsClpM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaxoAoY9MDJVBaQ+D5vzkBWWr0Pz99UdfhLqFUiAccCnTINnQX
-	z8cWeRHRYCM/KIWM+p2RhXadVA3wha7G7SF3G4NxKVbL+KlNoksF+OHO
-X-Gm-Gg: AY/fxX6jOujeWlXMOUsKCZgTQfz9Dfj8fUi7NeypkRKd/zevnQpAbzGsF/zAc1RPRIZ
-	Zjc8Thv/OSjlikPsQNEjI/GfoDj5hb794/FgRVFJiPkh76k0ixlN4onuehIr00aylhcYRMV+4Ln
-	P5bTk5tZRpPEDfACg+zOKZhkalPm1l1sO83ZipXq3NoWWdCG/7BWYaUlU7FZ6f7aNmrm/UcumfJ
-	vA8pJLiIPfrmgMmV82oMopDNEkUw/2r/9p/ZMY5GXQZF1cmRqSyEaQuZUYGHV0gOQtiVa/OxN3b
-	F3C7z6rXqQRrCoF2V2vAhBYj7PjnOfpka/GOb/W4CPz9pxDcWyCjyShJ39dxrad9n9CKq9ufCwv
-	AsunOzQX06geqhKVW+EYmX8PawkNkTrhzbwfIwZgT3NMX/03+RRU2DNcvIB0kB6KwchLD73jT3b
-	fX6BjKI20+7XYQEfsZXns=
-X-Google-Smtp-Source: AGHT+IG4GUpAXhh5GjINeiC9oowR+1WM54RneaWJlRDZ+tq5NQwxqCU41EE2GSYF+2owEGZsu7SNHA==
-X-Received: by 2002:a05:7022:4185:b0:11a:2ec0:dd02 with SMTP id a92af1059eb24-121722ebc42mr6715988c88.33.1766206450960;
-        Fri, 19 Dec 2025 20:54:10 -0800 (PST)
-Received: from localhost ([2804:30c:165b:7000:d59:b973:da75:f845])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217243bbe3sm16448108c88.0.2025.12.19.20.54.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 20:54:10 -0800 (PST)
-Date: Sat, 20 Dec 2025 01:55:50 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Petre Rodan <petre.rodan@subdimension.ro>
-Cc: Jonathan Cameron <jic23@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=c9dZlWr6eT7SOnZHGmdj/tRy2W7+U+/6LAgwYpxAo6dcBp3YNK1J78Im/cdGNuQLJb7setXjO4nLWBe24pTsgF5MVYzLcaxQnq7SdDEmuBs9Yk5/VXDXSQVX28M+L16p0ppZW12LjqG61EVjkkff20CiclzMwAtBfdN2R99/f0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mBySW845; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766207625; x=1797743625;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZcLSKFFXyPlwDK310t9a5hYrDRgEz8LSQOm4CLfkE00=;
+  b=mBySW845x1WnDjWlncpNF7Ldi0wt/rmH3hq742TrXEt2pVHHkbdDM7mL
+   58hs7Oad1BQoKlEZPF7sLlK2cLWBK0Y3Uq3DgAI6UO85LLJfGUtbPxuYe
+   nAEZKxbKjX9mgd7LxFSBsj2MBl/2S+bOq9dci1AatQ9qdH4ARZm7ah7sK
+   Km5y+J1DWbaHTrnSH3EGqiSKkfsjUia4Cq3k7dalHW7Gx4RD1IV/H6+yF
+   EBT/ZuNr/jDkNnbZuadCIPqQQpRJ1SwigvfQbJQWuYtCALt8XGoumF5iH
+   w9bP634kOjiwC57C7nF9EhmSbyvjAUhFjNiP2/Wb6aW6FhasKRMHL606C
+   g==;
+X-CSE-ConnectionGUID: nZ81PX3XQdOtUZsxQTXwbQ==
+X-CSE-MsgGUID: zGGmwRWlQ/m38hb4J9DCMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="78478932"
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; 
+   d="scan'208";a="78478932"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 21:13:45 -0800
+X-CSE-ConnectionGUID: W9jqGzsISjqRa9i4XVC5zg==
+X-CSE-MsgGUID: PnZH+RuoQzmb3XUMSfIIBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; 
+   d="scan'208";a="222454505"
+Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 19 Dec 2025 21:13:42 -0800
+Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vWpHf-000000004Lt-3QWK;
+	Sat, 20 Dec 2025 05:13:39 +0000
+Date: Sat, 20 Dec 2025 13:13:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Tomas Melin <tomas.melin@vaisala.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 13/14] iio: pressure: mprls0025pa: cleanup includes and
- forward declarations
-Message-ID: <aUYsVl-GeVpABEhu@debian-BULLSEYE-live-builder-AMD64>
-References: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
- <20251218-mprls_cleanup-v1-13-b36a170f1a5c@subdimension.ro>
+	Andy Shevchenko <andy@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Tomas Melin <tomas.melin@vaisala.com>
+Subject: Re: [PATCH 1/2] iio: adc: ad9467: include two's complement in
+ default mode
+Message-ID: <202512201254.2FFxkibV-lkp@intel.com>
+References: <20251216-b4-ad9467-optional-backend-v1-1-83e61531ef4d@vaisala.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -94,42 +83,70 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251218-mprls_cleanup-v1-13-b36a170f1a5c@subdimension.ro>
+In-Reply-To: <20251216-b4-ad9467-optional-backend-v1-1-83e61531ef4d@vaisala.com>
 
-On 12/18, Petre Rodan wrote:
-> Remove unused headers and add required headers as needed.
-Bring the patches that fix something to the beginning of the series and
-bring this one right after the fixes.
+Hi Tomas,
 
-> 
-> Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-> ---
-...
->  
-> diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
-> index 2bdffe1e0eb1..ccd252f64351 100644
-> --- a/drivers/iio/pressure/mprls0025pa.h
-> +++ b/drivers/iio/pressure/mprls0025pa.h
-> @@ -12,9 +12,6 @@
->  #define _MPRLS0025PA_H
->  
->  #include <linux/completion.h>
-> -#include <linux/delay.h>
-> -#include <linux/device.h>
-> -#include <linux/stddef.h>
->  #include <linux/types.h>
->  
->  #include <linux/iio/iio.h>
-> @@ -23,9 +20,6 @@
->  
->  struct device;
->  
-> -struct iio_chan_spec;
-> -struct iio_dev;
-> -
-Also, I'd suggest to not mess with other stuff if this patch is supposedly only
-organizing/cleaning up includes.
+kernel test robot noticed the following build errors:
 
->  struct mpr_data;
->  struct mpr_ops;
+[auto build test ERROR on a7b10f0963c651a6406d958a5f64b9c5594f84da]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Tomas-Melin/iio-adc-ad9467-include-two-s-complement-in-default-mode/20251216-233841
+base:   a7b10f0963c651a6406d958a5f64b9c5594f84da
+patch link:    https://lore.kernel.org/r/20251216-b4-ad9467-optional-backend-v1-1-83e61531ef4d%40vaisala.com
+patch subject: [PATCH 1/2] iio: adc: ad9467: include two's complement in default mode
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20251220/202512201254.2FFxkibV-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251220/202512201254.2FFxkibV-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512201254.2FFxkibV-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/adc/ad9467.c:686:3: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     686 |                 FIELD_PREP(AN877_ADC_OUTPUT_MODE_MASK,
+         |                 ^
+   drivers/iio/adc/ad9467.c:1197:4: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    1197 |                         FIELD_PREP(AN877_ADC_OUTPUT_MODE_MASK,
+         |                         ^
+   2 errors generated.
+
+
+vim +/FIELD_PREP +686 drivers/iio/adc/ad9467.c
+
+   678	
+   679	static int ad9647_calibrate_prepare(struct ad9467_state *st)
+   680	{
+   681		unsigned int cmode;
+   682		unsigned int c;
+   683		int ret;
+   684	
+   685		cmode = (st->info->default_output_mode & ~AN877_ADC_OUTPUT_MODE_MASK) |
+ > 686			FIELD_PREP(AN877_ADC_OUTPUT_MODE_MASK,
+   687				   AN877_ADC_OUTPUT_MODE_OFFSET_BINARY);
+   688		ret = ad9467_outputmode_set(st, cmode);
+   689		if (ret)
+   690			return ret;
+   691	
+   692		for (c = 0; c < st->info->num_channels; c++) {
+   693			ret = ad9467_testmode_set(st, c, AN877_ADC_TESTMODE_PN9_SEQ);
+   694			if (ret)
+   695				return ret;
+   696	
+   697			ret = ad9467_backend_testmode_on(st, c,
+   698							 IIO_BACKEND_ADI_PRBS_9A);
+   699			if (ret)
+   700				return ret;
+   701		}
+   702	
+   703		return 0;
+   704	}
+   705	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

@@ -1,171 +1,171 @@
-Return-Path: <linux-iio+bounces-27257-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27258-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0A5CD2A5D
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 09:25:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF78CD2C1B
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 10:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DE90301513F
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 08:25:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6928E3013564
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Dec 2025 09:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045182F691F;
-	Sat, 20 Dec 2025 08:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16C22FFDF9;
+	Sat, 20 Dec 2025 09:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b="wcuP7Neq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqqswYzE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.subdimension.ro (nalicastle.subdimension.ro [172.105.74.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032A81D90DD;
-	Sat, 20 Dec 2025 08:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.105.74.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAA0156678;
+	Sat, 20 Dec 2025 09:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766219126; cv=none; b=L6NqV9k9TjcdCE+QOwkKMSVbyPg50VWSwKRgsz29P8UyQka+iXcF0AHUBqNgpQOBXgUZx5TGwsHymeMrGIOxRs3u+ykX7wr/i2XxQHJ99/uvfRlAF7RPCS3kwLBaWcFpAzvncd918s1TiqONp1Au5iY5FHG6V72Log8IZhtVJjI=
+	t=1766222489; cv=none; b=Y9SiGmpMhKfa/N7Ad8zaPItvWkMwyNbHNFXRhvUxFWb8RJtRXzhpY3QsMkLT1rSj85dJ5HqH4f9t3EZZayhaE1eAEOneYHScBIgFBk43g8AFoZXG2dJH8ih4Ny+FOazn+j5q6bsEgavoQ6wOZsKFChVyzGjknYlkpCtSzCxGTYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766219126; c=relaxed/simple;
-	bh=J/g5p0yVuUJga1D56jQE8+El+A9EqWMBa68xloOLQok=;
+	s=arc-20240116; t=1766222489; c=relaxed/simple;
+	bh=A5E7SDuf7s71s7Xpwhh1fIjfwD+NEhAu730QEr/YR9M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oD+mzGwLuYLT85kjWz3XXYeoewnMdPoC0hE72B7xgvpT24jGnsURMby+aJwSMRiWpbjcG6DjnAJKpPe4VcGXc8t/U4F9ZAWU0FsYVMWtN6qx0iiorvpK//SPplbXk6rHXAKYSUwULYaHNNVVKEBWhxjtP8Ll19NFO/5F8+AFGak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro; spf=pass smtp.mailfrom=subdimension.ro; dkim=pass (2048-bit key) header.d=subdimension.ro header.i=@subdimension.ro header.b=wcuP7Neq; arc=none smtp.client-ip=172.105.74.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=subdimension.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=subdimension.ro
-Received: from sunspire.home.arpa (unknown [IPv6:2a02:2f0e:3804:ac00:e2d5:5eff:fed9:f1c4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.subdimension.ro (Postfix) with ESMTPSA id 6DAE2160209;
-	Sat, 20 Dec 2025 10:25:22 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=subdimension.ro;
-	s=mail; t=1766219122;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VVlWLT0OiLNanbSYkmxwheITGaHT1XI8QkzVmIM2hkg=;
-	b=wcuP7NeqezvdSvX4p3Ji56o66dMo+yjaHYSl6GLhqeKb+QGIS7P3+/l/2LOf9tjPYdplXK
-	wJRWUiZL9gGY0dZqANFQDXh3p1K7KGu9cSSksQJXzFD59QamU80S2RLg98PQB0jNs+UHUf
-	FI46m4nYIJlBuVQYKlkwlRNoqYIK58pTfFEUWIpdCFO59ZApZGLjKMC2bpabbORNPviUCU
-	SDgG57+Ft5DNA2bi3JwsoZ+R5RApWG/vTGvxpxOThUe8Sq+r/fG178xqPvHPBy19nI5ALc
-	tmqnoD+GqXi9hVqakdkRBqjSRfkyAIzRnr6dGBry8dLwbfrKBwrRAL3e5kV60g==
-Date: Sat, 20 Dec 2025 10:25:19 +0200
-From: Petre Rodan <petre.rodan@subdimension.ro>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andreas Klinger <ak@it-klinger.de>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 06/14] iio: pressure: mprls0025pa: memset rx_buf before
- reading new data
-Message-ID: <aUZdb9R9BLMfBpLJ@sunspire.home.arpa>
-References: <20251218-mprls_cleanup-v1-0-b36a170f1a5c@subdimension.ro>
- <20251218-mprls_cleanup-v1-6-b36a170f1a5c@subdimension.ro>
- <aUYqSUvA9fF_n-0Y@debian-BULLSEYE-live-builder-AMD64>
+	 Content-Type:Content-Disposition:In-Reply-To; b=mK7dSkvJTUBD6/U67zzf7Wy6mP8vDhMxBXBKz8nCupyc3yJRA6DBig0LLauvGOAWJKO1IEeXv1LjVpo2oY//IQzPByT4a3iuHBJpZ5NyeVYeQFkC6XIncDTmgAIvXRN+6Ngop4TDWEjahstuWaYqt2m3JCkodT63ZnvblmdHq30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqqswYzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E60C4CEF5;
+	Sat, 20 Dec 2025 09:21:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766222488;
+	bh=A5E7SDuf7s71s7Xpwhh1fIjfwD+NEhAu730QEr/YR9M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dqqswYzEb0SJWK5KIEnkChjiHjGZsCWbXgmOh+tu2STfrQPnvDqeT5Mqc52UhQ2zS
+	 3nwJiXD7eyexOzfNlqS8mQFREpSwQfQUBIY382JOyat0qcPlwAQ8Iu+su90fnBHQEe
+	 3crbxb8FkZhV/V32s/1hy+BmWze1Tc6uQo50/wOH21l7QD/kOm1t3NQrzE5/GTIWuD
+	 8Ui7bqiMXrBurxqpYoV/nqA36DO056HpMRhcrQxlNq250pYvo7ereGLVjlbEa5aTtj
+	 CVtY4UypiNIqYcr0rXnjCLCrnPF/ysuNSxJfswIWpsGk4+6HlRIdU2XfbcDoivCiF/
+	 VRsK+rODWXuvg==
+Date: Sat, 20 Dec 2025 10:21:25 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH v2 1/6] dt-bindings: iio: frequency: add adf41513
+Message-ID: <20251220-bouncy-perky-tarantula-d9b3be@quoll>
+References: <20251219-adf41513-iio-driver-v2-0-be29a83d5793@analog.com>
+ <20251219-adf41513-iio-driver-v2-1-be29a83d5793@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+qKjAMj95J81NkLd"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aUYqSUvA9fF_n-0Y@debian-BULLSEYE-live-builder-AMD64>
+In-Reply-To: <20251219-adf41513-iio-driver-v2-1-be29a83d5793@analog.com>
+
+On Fri, Dec 19, 2025 at 12:34:48PM +0000, Rodrigo Alencar wrote:
+> dt-bindings for ADF41513, an ultralow noise PLL frequency synthesizer that
+> can be used to implement local oscillators (LOs) as high as 26.5 GHz.
+> Most properties refer to existing PLL driver properties (e.g. ADF4350).
+
+What is "existing PLL driver"? I know about motor drivers, but can you
+drive PLL?
+
+And how is ADF4350 related to this binding. I do not see ADF4350
+compatible here at all. Describe hardware, a real one.
 
 
---+qKjAMj95J81NkLd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> 
+> Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+> ---
+>  .../bindings/iio/frequency/adi,adf41513.yaml       | 246 +++++++++++++++++++++
+>  MAINTAINERS                                        |   7 +
+>  2 files changed, 253 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml
+> new file mode 100644
+> index 000000000000..01ceb2a7d21b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,adf41513.yaml
+> @@ -0,0 +1,246 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/frequency/adi,adf41513.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices ADF41513 PLL Frequency Synthesizer
+> +
+> +maintainers:
+> +  - Rodrigo Alencar <rodrigo.alencar@analog.com>
+> +
+> +description:
+> +  The ADF41513 is an ultralow noise frequency synthesizer that can be used to
+> +  implement local oscillators (LOs) as high as 26.5 GHz in the upconversion and
+> +  downconversion sections of wireless receivers and transmitters. The ADF41510
+> +  supports frequencies up to 10 GHz.
+> +
+> +  https://www.analog.com/en/products/adf41513.html
+> +  https://www.analog.com/en/products/adf41510.html
+> +
+> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,adf41510
+> +      - adi,adf41513
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 25000000
+> +
+> +  clocks:
+> +    maxItems: 1
+> +    description: Clock that provides the reference input frequency.
+> +
+> +  avdd1-supply:
+> +    description: PFD and Up and Down Digital Driver Power Supply (3.3 V)
+> +
+> +  avdd2-supply:
+> +    description: RF Buffer and Prescaler Power Supply (3.3 V)
+> +
+> +  avdd3-supply:
+> +    description: N Divider Power Supply (3.3 V)
+> +
+> +  avdd4-supply:
+> +    description: R Divider and Lock Detector Power Supply (3.3 V)
+> +
+> +  avdd5-supply:
+> +    description: Sigma-Delta Modulator and SPI Power Supply (3.3 V)
+> +
+> +  vp-supply:
+> +    description: Charge Pump Power Supply (3.3 V)
+> +
+> +  enable-gpios:
+> +    description:
+> +      GPIO that controls the chip enable pin. A logic low on this pin
+> +      powers down the device and puts the charge pump output into
+> +      three-state mode.
+> +    maxItems: 1
+> +
+> +  lock-detect-gpios:
+> +    description:
+> +      GPIO for lock detect functionality. When configured for digital lock
+> +      detect, this pin will output a logic high when the PLL is locked.
+> +    maxItems: 1
+> +
+> +  adi,power-up-frequency:
 
+Nothing improved.
 
-Hello,
+You ignored comments, did not bother to respond to them and then sent
+the same.
 
-On Sat, Dec 20, 2025 at 01:47:05AM -0300, Marcelo Schmitt wrote:
-> On 12/18, Petre Rodan wrote:
-> > Zero out input buffer before reading the new conversion.
-> > Perform this operation in core instead of in the bus specific code.
-> >=20
-> > Signed-off-by: Petre Rodan <petre.rodan@subdimension.ro>
-> > ---
-> >  drivers/iio/pressure/mprls0025pa.c     | 2 ++
-> >  drivers/iio/pressure/mprls0025pa_i2c.c | 1 -
-> >  2 files changed, 2 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/=
-mprls0025pa.c
-> > index 00b1ff1e50a8..7cc8dd0d8476 100644
-> > --- a/drivers/iio/pressure/mprls0025pa.c
-> > +++ b/drivers/iio/pressure/mprls0025pa.c
-> > @@ -16,6 +16,7 @@
-> >  #include <linux/mod_devicetable.h>
-> >  #include <linux/module.h>
-> >  #include <linux/property.h>
-> > +#include <linux/string.h>
-> >  #include <linux/units.h>
-> > =20
-> >  #include <linux/gpio/consumer.h>
-> > @@ -239,6 +240,7 @@ static int mpr_read_pressure(struct mpr_data *data,=
- s32 *press)
-> >  		}
-> >  	}
-> > =20
-> > +	memset(data->rx_buf, 0, sizeof(data->rx_buf));
-> This is unusual and I don't think it's needed for the SPI path. Doesn't t=
-he I2C
-> subsystem overwrite the rx buffer with what it reads from the device?
+NAK
 
-I thought it's best practice to ensure that old conversions are not acciden=
-tally re-used in case the read operation fell thru the cracks.
-that's exactly why in this particular case the BUSY flag is implemented on =
-the hardware side.
+Best regards,
+Krzysztof
 
-please tell me how a few byte memset() would be detrimental.
-
-best regards,
-peter
-
-> >  	ret =3D data->ops->read(data, MPR_CMD_NOP, MPR_PKT_NOP_LEN);
-> >  	if (ret < 0)
-> >  		return ret;
-> > diff --git a/drivers/iio/pressure/mprls0025pa_i2c.c b/drivers/iio/press=
-ure/mprls0025pa_i2c.c
-> > index a0bbc6af9283..0fe8cfe0d7e7 100644
-> > --- a/drivers/iio/pressure/mprls0025pa_i2c.c
-> > +++ b/drivers/iio/pressure/mprls0025pa_i2c.c
-> > @@ -25,7 +25,6 @@ static int mpr_i2c_read(struct mpr_data *data, const =
-u8 unused, const u8 cnt)
-> >  	if (cnt > MPR_MEASUREMENT_RD_SIZE)
-> >  		return -EOVERFLOW;
-> > =20
-> > -	memset(data->rx_buf, 0, MPR_MEASUREMENT_RD_SIZE);
-> >  	ret =3D i2c_master_recv(client, data->rx_buf, cnt);
-> >  	if (ret < 0)
-> >  		return ret;
-
---=20
-petre rodan
-
---+qKjAMj95J81NkLd
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEGiKYHD4NvFCkTqJ3dCsnp2M6SWMFAmlGXWwACgkQdCsnp2M6
-SWPcPRAAn1GMk3W5pJEU/UZjuolMr9MMXGSzkeoXz6jqO+WqB4lnGcmdfZSDi7Cs
-j1Bp+nWKRVVQTZjn/DoCJXedbuhTMc0EGNaEZseSUEUtF26gIdnV+tZsu8UWSYD/
-SvphTfudwKguiP+Vwbym7hhaNA1TJ6R/XwavVHhPkqbnH8t2xuAg9KeVU7G9B1GA
-78PkUSP8KpSA536CF+1CzBXe7ETW+ReysyZOYx9dpsRKInetojBrkubI61rFMP5V
-uakVJl95Pafib9AftD4Id+RFJE/csJTFEAEp+H1ZRueJ+CJ9wjq3lnKjCywR9mzP
-wz41MrMK8CutTCAA0taV0AXNGi+OFV7FLp7Foi1UhEuC+Wq9W2TBnXoMQpLx10lm
-BDZw9bmWcaYVPOdWvlBPOSWJTTuaqWyfeJcq9QT66UJpXcG+qRfG+3MMnR97kxbp
-vxqWhpLezn1SKjEVZFIL6GHilz/Dvxov/3D7HQuyrqd5bh/xbSF9eMKmGgcSAVEg
-dqPz+vB5JC2t97t3c2jsyDNo3lQK/3QSfRI5vaZ2yACqGa/0e6wEsWTR05zhb2ln
-vUkKayXsa0xk3r+xgv9X4rBDxKFxt7L1p52ZaNPp6TLhS+WSmo9RTw/uja+rAB4l
-6PD5YkIhe4iH9H4QFTVF89pN8v1Fpdpi0X4qWKLB9qKaSLROk9M=
-=yjuu
------END PGP SIGNATURE-----
-
---+qKjAMj95J81NkLd--
 

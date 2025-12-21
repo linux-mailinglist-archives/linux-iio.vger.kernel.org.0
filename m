@@ -1,61 +1,66 @@
-Return-Path: <linux-iio+bounces-27290-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-27291-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1754CD445E
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 19:57:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C746CCD446E
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 20:00:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93286300795D
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 18:57:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8534B3008185
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Dec 2025 19:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A49B309DAB;
-	Sun, 21 Dec 2025 18:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6053C235C01;
+	Sun, 21 Dec 2025 19:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YWB3cU3S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HAjiaKal"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08223093AC;
-	Sun, 21 Dec 2025 18:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9421531C8;
+	Sun, 21 Dec 2025 19:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766343446; cv=none; b=KBJIyOnMUZPtMbF4fQqX+F4W8Ae3eZLlCT21csvtr5faTV/Wbh4R4L3ripSN3Hjj35eW5WuernziAv6zf04aVTxH4XtZUqwCrA0YWQmcSskY+6fEk4EOW+JZkCYOQ59svCmpTYfKmjyW2juTKcBnw6mNbiXlALe95MSzEeTs5AE=
+	t=1766343627; cv=none; b=n2Zid2vx6rQrKqvSCJOuK7DymYVWKMZhX5DjhGANTjssXY4xL1VLGtXroUsLGE25GXrDDX1IXJUXxni3DnSC8K6J4a0VH6mViOf/kH5MRMmTV1BQNoN8tlSDla/0dWYR7E6NPDxxGYr/ICdFGiXlvfwOlP9TJaAEaBef6lWzYnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766343446; c=relaxed/simple;
-	bh=lR5rejZHjAKu1vr8f+ap+f4znDOGloNIQ1y+C75VKZ8=;
+	s=arc-20240116; t=1766343627; c=relaxed/simple;
+	bh=gISvZ7uiRw2DVeZyAbf8mU5/eO1t0LE5VqvXtGRHxNY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hlnF+OVtU+r9BPTs8quuilMXZAFazizieelD7rMMf9RYBFfcrU+qi8ICI/IKZAcf7SwSuZoz77zpjZLy25Yboah5+HSmPyN9kb8i4rjbs4L1NT8h49hD5UNpb/44KwneQgaBc9JVagViH5BeOxv82tt+Iy6A2DrIhZzsZyp2wYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YWB3cU3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09E3C4CEFB;
-	Sun, 21 Dec 2025 18:57:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u+zvfETmKtuCIvI+JZhde6xgZxJxygvWNp0D9O5vFXH3jVtq6leBG2d/1B4R5ToQEk4U3xRhBo8mjUgo63mjfLnX6YpXzQnjMszZdpG7gWv5PAoer5Q8hp7c/10ma5PKjqTtNw817RKRLS++S8O3UR5J1AnhI6SX+CrekLn53TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HAjiaKal; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F811C4CEFB;
+	Sun, 21 Dec 2025 19:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766343445;
-	bh=lR5rejZHjAKu1vr8f+ap+f4znDOGloNIQ1y+C75VKZ8=;
+	s=k20201202; t=1766343626;
+	bh=gISvZ7uiRw2DVeZyAbf8mU5/eO1t0LE5VqvXtGRHxNY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YWB3cU3S91k7I+0VnmIZPg9+5hF8e94Dl6zszZ8mGQSVfPJx4e4sq8t5tEicKv3z/
-	 OoChXwARUeTJ0rsCxh+5DFiE0JLDYqU7mtvQGbLdU7l0CcuFeQ9AggGjahg7Ow5gXw
-	 h/RjPgqQLz1bMJBNtqUasWSDA8JI78TZFyf6ScQiQld66feCYyG9TOIvbnnJguH/Zy
-	 CVqfRsQ954OOf5IAYRy69pIvGACYbjB7fk0NF/pLdtfQCNUJXyWiKIV6Jt0Fs6JuxD
-	 wKK2f5AoVqYGXMnpo+HmEGkSKzMhmECywyc9Mzo/dTJIsEm9VxZgIKEHQvhnFk4qqd
-	 UAUlQVLY00bSQ==
-Date: Sun, 21 Dec 2025 18:57:16 +0000
+	b=HAjiaKalwmMZ81LniL2x0dAGc2dJJzFJ0TwDrYI+C8vQUmcZIMhH9jexZuXX5c0vh
+	 zwCNzIgHBV5ls9zC6qvNIWRAKXYWPXUC+IJ0cVuMopxwWL6DGyVjUkcgRAyzwsisFn
+	 SRA2fLrD3Opd6rmEge0GmvWLAoroh6KDES6hknHTiLXPJY8LGPp4xkCeQxM57LWEvF
+	 nh0QfbqjNUxxmilMu+mphOeWpELcszEZHP1/4UgUY+RxzUK266Th9vntALhxoSe7dw
+	 qTtz4OjEesXBdMKpwxAxBvu9rRDv+TWCo7G8y6eec84sn/piCtv5QzeVPn/ByX2EUv
+	 VfHqTuEArmeRQ==
+Date: Sun, 21 Dec 2025 19:00:10 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Ajith Anandhan <ajithanandhan0406@gmail.com>, nuno.sa@analog.com,
- andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: Add support for TI ADS1120
-Message-ID: <20251221185716.65b442d9@jic23-huawei>
-In-Reply-To: <5926ca19-c204-4abc-9e59-86a797b63b5c@baylibre.com>
-References: <20251109141119.561756-1-ajithanandhan0406@gmail.com>
-	<20251109141119.561756-3-ajithanandhan0406@gmail.com>
-	<5f15284b-159b-4860-b58b-35c624e2539f@baylibre.com>
-	<8e2c73ca-3746-4b2a-9d85-c12b51a69059@gmail.com>
-	<8ad18de5-53cd-49ba-8e84-1e8c7e5bd627@baylibre.com>
-	<15106906-3bcc-4187-87d9-c838fe99b583@gmail.com>
-	<5926ca19-c204-4abc-9e59-86a797b63b5c@baylibre.com>
+To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ agross@kernel.org, andersson@kernel.org, lumag@kernel.org,
+ dmitry.baryshkov@oss.qualcomm.com, konradybcio@kernel.org,
+ daniel.lezcano@linaro.org, sboyd@kernel.org, amitk@kernel.org,
+ thara.gopinath@gmail.com, lee@kernel.org, rafael@kernel.org,
+ subbaraman.narayanamurthy@oss.qualcomm.com, david.collins@oss.qualcomm.com,
+ anjelique.melendez@oss.qualcomm.com, kamal.wadhwa@oss.qualcomm.com,
+ rui.zhang@intel.com, lukasz.luba@arm.com, devicetree@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ cros-qcom-dts-watchers@chromium.org, quic_kotarake@quicinc.com,
+ neil.armstrong@linaro.org, stephan.gerhold@linaro.org
+Subject: Re: [PATCH V8 3/4] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+Message-ID: <20251221190010.2d111e0e@jic23-huawei>
+In-Reply-To: <6afcb26f-6f6a-41ef-ac45-976e5e2f17ae@oss.qualcomm.com>
+References: <20251127134036.209905-1-jishnu.prakash@oss.qualcomm.com>
+	<20251127134036.209905-4-jishnu.prakash@oss.qualcomm.com>
+	<20251207165349.72f80659@jic23-huawei>
+	<6afcb26f-6f6a-41ef-ac45-976e5e2f17ae@oss.qualcomm.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,65 +68,94 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 15 Dec 2025 11:42:15 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Fri, 19 Dec 2025 18:45:32 +0530
+Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
 
-> On 12/15/25 10:49 AM, Ajith Anandhan wrote:
-> > On 12/15/25 10:06 PM, David Lechner wrote: =20
-> >> On 12/15/25 10:13 AM, Ajith Anandhan wrote: =20
-> >>> On 11/18/25 7:34 PM, David Lechner wrote: =20
-> >>>> On 11/9/25 8:11 AM, Ajith Anandhan wrote: =20
-> >>>>> Add driver for the Texas Instruments ADS1120, a precision 16-bit
-> >>>>> analog-to-digital converter with an SPI interface.
-> >>>>> =20
-> >>>> ...
-> >>>> =20
-> >>>>> +#define ADS1120_CFG0_GAIN_MASK=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 GENMASK(3, 1)
-> >>>>> +#define ADS1120_CFG0_GAIN_1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 0
-> >>>>> +#define ADS1120_CFG0_GAIN_2=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 1
-> >>>>> +#define ADS1120_CFG0_GAIN_4=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 2
-> >>>>> +#define ADS1120_CFG0_GAIN_8=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 3
-> >>>>> +#define ADS1120_CFG0_GAIN_16=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 4
-> >>>>> +#define ADS1120_CFG0_GAIN_32=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 5
-> >>>>> +#define ADS1120_CFG0_GAIN_64=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 6
-> >>>>> +#define ADS1120_CFG0_GAIN_128=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 7 =20
-> >>>> We could avoid these macros by just doing ilog2(gain). =20
-> >>>
-> >>> I understand your concern about unused macros. I've kept them for doc=
-umentation purposes as they map directly to the datasheet register definiti=
-ons, which makes it easier to verify correctness against hardware specs als=
-o I'd prefer to keep it like this since it give more readability Shall i ke=
-ep this as it is for this initial version? =20
-> >> I would argue that if they aren't being used then omitting them would
-> >> save us the time of having to verify the correctness in the first plac=
-e.
-> >> =20
-> > I understand your concern about unused macros. This was suggested by Jo=
-nathan earlier. =20
->=20
-> Jonathan is the maintainer, so if he is fine with it, he has the final sa=
-y. :-)
+> Hi Jonathan,
+> 
+> On 12/7/2025 10:23 PM, Jonathan Cameron wrote:
+> > On Thu, 27 Nov 2025 19:10:35 +0530
+> > Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
+> >   
+> >> The ADC architecture on PMIC5 Gen3 is similar to that on PMIC5 Gen2,
+> >> with all SW communication to ADC going through PMK8550 which
+> >> communicates with other PMICs through PBS.
+> >>
+> >> One major difference is that the register interface used here is that
+> >> of an SDAM (Shared Direct Access Memory) peripheral present on PMK8550.
+> >> There may be more than one SDAM used for ADC5 Gen3 and each has eight
+> >> channels, which may be used for either immediate reads (same functionality
+> >> as previous PMIC5 and PMIC5 Gen2 ADC peripherals) or recurring measurements
+> >> (same as ADC_TM functionality).
+> >>
+> >> By convention, we reserve the first channel of the first SDAM for all
+> >> immediate reads and use the remaining channels across all SDAMs for
+> >> ADC_TM monitoring functionality.
+> >>
+> >> Add support for PMIC5 Gen3 ADC driver for immediate read functionality.
+> >> ADC_TM is implemented as an auxiliary thermal driver under this ADC
+> >> driver.
+> >>
+> >> Signed-off-by: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>  
+> > Hi Jishnu
+> > 
+> > Biggest thing I noticed on a fresh review is that you include
+> > very few headers.  This only compiles (I think) because of lots
+> > of deeply nested includes.  General principle in kernel code is
+> > to follow IWYU approach with a few exceptions.  That makes code
+> > much less prone to changes deep in the header hierarchy.
+> > 
+> > You can even use the tooling that exists for clang to give you suggestions
+> > though search around for config files (I posted one a long time back)
+> > that reduce the noise somewhat.
+> > 
+> > Jonathan
+> > 
+> >   
+> >> diff --git a/drivers/iio/adc/qcom-adc5-gen3-common.c b/drivers/iio/adc/qcom-adc5-gen3-common.c
+> >> new file mode 100644
+> >> index 000000000000..46bb09424f22
+> >> --- /dev/null
+> >> +++ b/drivers/iio/adc/qcom-adc5-gen3-common.c
+> >> @@ -0,0 +1,107 @@
+> >> +// SPDX-License-Identifier: GPL-2.0-only
+> >> +/*
+> >> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+> >> + *
+> >> + * Code shared between the main and auxiliary Qualcomm PMIC voltage ADCs
+> >> + * of type ADC5 Gen3.
+> >> + */
+> >> +
+> >> +#include <linux/bitfield.h>
+> >> +#include <linux/delay.h>
+> >> +#include <linux/iio/adc/qcom-adc5-gen3-common.h>
+> >> +#include <linux/regmap.h>  
+> > This seems like very light set of includes.
+> > If nothing else should be seeing linux/types.h I think
+> > 
+> > In general try to follow include what you use principles (loosely as some
+> > conventions exit for not including particular headers). 
+> >   
+> 
+> I have a question about this - I'm including some header files in my
+> newly added common header file too (include/linux/iio/adc/qcom-adc5-gen3-common.h).
+> Do I need to repeat those in the driver files where this header is already
+> included?
 
-I don't care strongly either way.  Personally I slightly prefer
-to see full definition of a specific register rather than just some
-fields so we now what else is being written to 0.  For the
-case of registers that aren't touched at all it can be a lot
-of noise to define them if there are lots of them. For one
-or two it can be better to just do it even if they aren't used.
+Yes. If things defined in those headers are used directly in this
+c code. 
 
-Anyhow, I'm not going to be fussy about it either way!
+Just because they are in the header today, doesn't mean they will be 
+after some future change and we shouldn't make that sort of future
+change harder by requiring people look at all the files that include your
+header with those includes.
+
+It's also fairly common for stuff to be needed in the header that isn't needed
+directly in the c file (maybe cause it's only needed for a macro). In those
+cases no need to include in the c file.
 
 Jonathan
 
